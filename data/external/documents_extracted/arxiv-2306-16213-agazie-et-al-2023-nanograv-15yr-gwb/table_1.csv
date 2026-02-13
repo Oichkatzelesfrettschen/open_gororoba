@@ -1,0 +1,3 @@
+within model H, θ denotes all of the model’s parameters, and the expectation ⟨ln p(d,θ)⟩β is approximated
+by MCMC with respect to the posterior pβ(θ,d) ∝
+p(d,θ, H)

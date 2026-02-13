@@ -1,0 +1,3 @@
+return. Thus, for,= 1, updating according to the -return is a Monte Carlo algorithm.
+On the other hand, if,= 0, then the -return reduces to Gt:t+1, the one-step return.
+Thus, for,= 0, updating according to the -return is a one-step TD method.

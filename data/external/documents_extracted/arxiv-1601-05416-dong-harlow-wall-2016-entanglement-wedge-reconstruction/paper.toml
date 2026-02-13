@@ -1,0 +1,1315 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+Reconstruction of Bulk Operators within the Entanglement Wedge\r
+in Gauge-Gravity Duality\r
+Xi Dong,1 Daniel Harlow,2 and Aron C. Wall1\r
+1School of Natural Sciences, Institute for Advanced Study, Princeton, NJ 08540, USA\r
+2Center for the Fundamental Laws of Nature, Harvard University, Cambridge MA, 02138 USA\r
+In this Letter we prove a simple theorem in quantum information theory, which implies that\r
+bulk operators in the Anti-de Sitter / Conformal Field Theory (AdS/CFT) correspondence can\r
+be reconstructed as CFT operators in a spatial subregion A, provided that they lie in its entan\u0002glement wedge. This is an improvement on existing reconstruction methods, which have at most\r
+succeeded in the smaller causal wedge. The proof is a combination of the recent work of Jafferis,\r
+Lewkowycz, Maldacena, and Suh on the quantum relative entropy of a CFT subregion with earlier\r
+ideas interpreting the correspondence as a quantum error correcting code.\r
+INTRODUCTION\r
+The AdS/CFT correspondence tells us that certain\r
+large-N strongly-coupled CFTs define theories of quan\u0002tum gravity in asymptotically AdS space [1–6]. For this\r
+definition to be complete, we need to know how to use\r
+CFT language to ask any question of interest in the bulk.\r
+The most basic items in this dictionary are:\r
+• Quantum states in the Hilbert space of the CFT\r
+correspond to quantum states in the bulk.\r
+• The conformal and global symmetry generators in\r
+the CFT correspond to the analogous asymptotic\r
+symmetries in the bulk. For example the CFT\r
+Hamiltonian maps to the ADM Hamiltonian, and\r
+a U(1) charge maps to the electric flux at infinity.\r
+• In the large N limit, any single-trace primary oper\u0002ator O(x) in the CFT, with scaling dimension ∆ of\r
+order N0, corresponds to a bulk field φ(x, r). They\r
+are related by the “extrapolate dictionary” [4, 7, 8]\r
+O(x) = limr→∞r\r
+∆φ(x, r). (1)\r
+These give an excellent starting point for understanding\r
+the correspondence, but the limiting procedure in the ex\u0002trapolate dictionary makes it difficult to concretely dis\u0002cuss what is going on deep within the bulk. There is a\r
+good reason for this: although the CFT side of the du\u0002ality is defined exactly, the bulk side is ultimately some\r
+nonperturbative theory of quantum gravity, which is only\r
+approximately given by a semiclassical path integral over\r
+local bulk fields. This means that any attempt to “back\r
+off of the extrapolate dictionary” and formulate a CFT\r
+representation of the bulk operator φ(x, r), usually called\r
+a reconstruction, must itself be only an approximate no\u0002tion. Nonetheless, there is a standard algorithm for pro\u0002ducing such a φ(x, r) perturbatively in 1/N: one con\u0002structs it by solving the bulk equations of motion with\r
+boundary conditions (1) [4, 9–14]. This algorithm has\r
+the nice feature that it can be done quite explicitly, but\r
+it has the disadvantage that it relies on solving a rather\r
+nonstandard Cauchy problem [11, 15]. In this paper we\r
+will refer to it as the HKLL procedure, after [9], who were\r
+the first to study it in detail.\r
+The HKLL procedure has the interesting property that\r
+it also is sometimes able to reconstruct a bulk operator\r
+φ(x, r) as a CFT operator with nontrivial support only\r
+on some spatial subregion A of a boundary Cauchy slice\r
+Σ [9, 14]. This is believed to occur whenever the point\r
+(x, r) lies in the causal wedge of A, denoted CA.\r
+1 CA is\r
+defined as the intersection in the bulk of the bulk causal\r
+future and past of the boundary domain of dependence\r
+of A [16].\r
+Causal wedge reconstruction via the HKLL procedure\r
+gives an explicit illustration of “subregion-subregion du\u0002ality”, which is the notion that a spatial subregion A\r
+in the boundary theory contains complete information\r
+about some subregion of the bulk [15, 17, 18]. It has\r
+been proposed however that the subregion dual to A is\r
+not just CA, but rather a larger region: the entanglement\r
+wedge EA [18–20]. To define the entanglement wedge, we\r
+must first define the HRT surface χA [21] (the covariant\r
+generalization of the Ryu-Takayanagi proposal [22]). χA\r
+is defined as a codimension-two bulk surface of extremal\r
+area, which has boundary ∂χA = ∂A and is homologous\r
+to A through the bulk (in the event that multiple such\r
+surfaces exist, it is the one with least area). The HRT\r
+formula tells us that at leading order in 1/N, the area of\r
+χA is proportional to the von Neumann entropy of the\r
+region A in the CFT [21–23]. The entanglement wedge\r
+EA is then defined as the bulk domain of dependence of\r
+any achronal bulk surface whose boundary is A ∪ χA.\r
+1 As mentioned above, this reconstruction relies on solving a non\u0002standard Cauchy problem [11, 15]. In general it is not known if\r
+the solution really exists, but it can be found explicitly (in a dis\u0002tributional sense [14]) for the case of spherical boundary regions\r
+in the vicinity of the AdS vacuum; in this case it is called the\r
+AdS-Rindler reconstruction.\r
+arXiv:1601.05416v3 [hep-th] 11 Jul 2016
+
+2\r
+Recently, plausibility arguments for entanglement\r
+wedge reconstruction have been developing along two dif\u0002ferent lines. [24] proposed a re-interpretation of causal\r
+wedge reconstruction as quantum error correction, which\r
+is a structure that very naturally allows an extension to\r
+entanglement wedge reconstruction. This was explicitly\r
+realized in toy models [25, 26]. At the same time it has\r
+gradually been understood that a proposal [27] for the\r
+first 1/N correction to the HRT formula is indicative\r
+that entanglement wedge reconstruction should be possi\u0002ble [24, 28, 29]. In particular Jafferis, Lewkowycz, Mal\u0002dacena, and Suh (JLMS) have given a remarkable bulk\r
+formula for the modular Hamiltonian associated to any\r
+CFT region, which implies that the relative entropy of\r
+two states in a boundary spatial region A is simply equal\r
+to the relative entropy of the two bulk states in EA [29].\r
+The purpose of this paper is to tie all of these ideas to\u0002gether into a proof that entanglement wedge reconstruc\u0002tion is in fact possible in AdS/CFT: given a boundary\r
+subregion A, all bulk operators in EA have CFT recon\u0002structions as operators in A.\r
+ENTANGLEMENT WEDGE RECONSTRUCTION\r
+AS QUANTUM ERROR CORRECTION\r
+We mentioned above that the holographic nature of\r
+AdS/CFT prevents bulk operator reconstruction from\r
+being a precise notion. This reveals itself not just in\r
+the perturbative nature of the the HKLL algorithm, but\r
+also in its regime of validity. As one acts with more\r
+and more reconstructed operators in a region, the thresh\u0002old for black hole formation is eventually crossed. This\r
+leads to a breakdown of the construction. In [24] this\r
+was formalized into the notion that one should think of\r
+reconstructed bulk operators as only making sense in a\r
+code subspace of the CFT Hilbert space, which we denote\r
+Hcode. The choice of this subspace is not unique, since\r
+in general we can choose to define it based on whatever\r
+observables we are interested in studying, but the sim\u0002plest thing to do is choose a state which we know has a\r
+geometric interpretation, and then consider the subspace\r
+of all states where the backreaction of the metric about\r
+that geometry is perturbatively small.2\r
+As a concrete example, we can consider the subspace\r
+of states of the CFT on a sphere whose energy is less\r
+than that of a Planck-sized black hole in the center of\r
+the bulk, together with the image of this subspace under\r
+the conformal group. For example in the N = 4 super\r
+2 This is an overly conservative definition of the code subspace,\r
+since a certain amount of backreaction (such as that present in\r
+the solar system) can be included by resumming subclasses of\r
+diagrams in the perturbative expansion [11, 30]. We adopt it\r
+nonetheless to simplify our arguments below.\r
+FIG. 1. Factorizing the bulk and boundary on a time slice.\r
+The entanglement wedge EA is shaded. For simplicity we have\r
+shown a connected boundary region A, although this might\r
+not be the case.\r
+Yang-Mills theory with gauge group SU(N), and with\r
+gauge coupling g ∼ 1 to equate the string and Planck\r
+scales, this corresponds to the set of primary operators\r
+whose dimensions are . N1/4, together with their con\u0002formal descendants. If the duality is correct, meaning\r
+that correlation functions of local boundary operators in\r
+these states can be reproduced by bulk Feynman-Witten\r
+diagrams with some effective action,3then the machinery\r
+of [4, 9–14] enables us to explicitly reconstruct all low\u0002energy bulk operators φ(x, r) in such a way that their\r
+correlation functions in any state in the code subspace\r
+agree with those computed in bulk effective field theory\r
+with that effective action to all orders in 1/N. For this to\r
+work in detail we must choose some sort of covariant UV\r
+cutoff in the bulk, but we will not discuss this explicitly\r
+in what follows.\r
+We can now describe entanglement wedge reconstruc\u0002tion. Say that we split a Cauchy slice Σ of the boundary\r
+CFT into a region A and its complement A. The CFT\r
+Hilbert space has a tensor factorization as\r
+HCF T = HA ⊗ HA. (2)\r
+Similarly we can think of the code subspace as factorizing\r
+as\r
+Hcode = Ha ⊗ Ha , (3)\r
+where Ha denotes the Hilbert space of bulk excitations\r
+in EA, and Ha denotes the Hilbert space of bulk excita\u0002tions in EA\r
+. We illustrate this in Figure 1. Both tensor\r
+factorizations are complicated by the fact that gauge con\u0002straints might be present [31–38], but likely this problem\r
+can be absorbed into the choice of UV cutoff (as shown\r
+for U(1) gauge fields by [39]). We could dispense with\r
+this issue by formulating our arguments in terms of sub\u0002algebras instead of subfactors, see [32] for the relevant\r
+3 See [6] for a discussion of which CFTs have this property, and\r
+also for how to determine the effective action in terms of CFT\r
+data if they do.
+
+3\r
+definitions, but we have opted for the latter for familiar\u0002ity.\r
+Entanglement wedge reconstruction is then the state\u0002ment that any bulk operator Oa acting within Ha can\r
+always be represented in the CFT with an operator OA\r
+that has support only on HA. In fact this is the precise\r
+definition of the idea that the operator Oa can be “cor\u0002rected” for the erasure of the region A [40], and the obser\u0002vation that a given Oa can be reconstructed on different\r
+choices of A reflects the ability of the code to correct for\r
+a variety of erasures [24]. We will establish the existence\r
+of OA below, but first we need to review a recent result\r
+that will be essential for the proof.\r
+REVIEW OF THE JLMS ARGUMENT\r
+In [29], JLMS argued for an equivalence of relative en\u0002tropy between bulk and boundary. In this section we\r
+give a more detailed derivation of this result, which also\r
+extends it to higher orders in the semiclassical expansion\r
+given an assumption we state precisely below. Let us\r
+first recall that the von Neumann entropy of any state is\r
+defined as\r
+S(ρ) ≡ −Tr (ρ log ρ) , (4)\r
+its modular Hamiltonian is defined as\r
+Kρ ≡ − log ρ , (5)\r
+and the relative entropy of a state ρ to a state σ is\r
+S(ρ|σ) ≡ Tr (ρ log ρ) − Tr (ρ log σ) = −S(ρ) + Tr (ρKσ) .\r
+(6)\r
+Relative entropy is non-negative, and vanishes if and only\r
+if ρ = σ. Under small perturbations of the state, the en\u0002tropy and modular Hamiltonian are related by the “first\r
+law of entanglement”:4\r
+S(ρ + δρ) − S(ρ) = Tr (δρ Kρ) + O(δρ2). (7)\r
+Now consider the setup of the previous section, where\r
+in some holographic CFT we pick a code subspace\r
+Hcode = Ha ⊗ Ha in which effective field theory per\u0002turbatively coupled to gravity is valid, and in which all\r
+states can be derived from path integral constructions\r
+in this effective theory. Following JLMS, we recall that\r
+Faulkner et al. [27] showed that such states5 ρ obey\r
+S(ρA) = S(ρa) + Tr (ρaAloc) . (8)\r
+4 This is derived in e.g. [41, 42] by linearizing the entropy.\r
+To deal with possible non-commutativity of ρ and δρ one\r
+can use the Baker-Campbell-Hausdorff formula and recall that\r
+Tr (A[B, C]) = 0 if A and B are simultaneously diagonalizable.\r
+5 The argument of [27], like the earlier classical argument [23],\r
+assumes that the von Neumann entropy can be found by an ana\u0002Here Aloc denotes a bulk operator that is a local integral\r
+over the HRT surface χA. At leading order in 1/N, or\r
+equivalently at leading order in the gravitational coupling\r
+G, we have\r
+Aloc =\r
+Area(χA)\r
+4G\r
+, (9)\r
+as required by the HRT formula, but Aloc receives correc\u0002tions at higher orders in 1/N [27, 44], or in the presence\r
+of more general gravitational interactions [45–55].\r
+In fact [27] only established (8) to order N0. In [56] it\r
+was suggested that (8) continues to hold to all orders in\r
+1/N, provided that one always defines χA to be extremal\r
+with respect to the sum on the right hand side of (8)\r
+(sometimes called the “generalized entropy”); such a χA\r
+is known as a quantum extremal surface. We will assume\r
+this to be the case throughout the code subspace in what\r
+follows: if it is not then our arguments only establish\r
+entanglement wedge reconstruction to order N0.\r
+To establish the JLMS result, we now observe that\r
+linearizing (8) about σ and using the first law (7), we\r
+have\r
+Tr (δσAKσA ) = Tr \u0010δσa\r
+\u0010\r
+A\r
+{σ}\r
+loc + Kσa\r
+\u0011\u0011 . (10)\r
+Here we have taken δσ to be an arbitrary perturbation\r
+that acts within the code subspace Hcode. We have writ\u0002ten A\r
+{σ}\r
+loc to emphasize that Aloc is still located at the\r
+surface defined by extremizing S(σa) + Aloc. (10) is lin\u0002ear in δσ, so we can integrate it to obtain\r
+Tr (ρAKσA ) = Tr \u0010ρ\r
+{σ}\r
+a\r
+\u0010\r
+A\r
+{σ}\r
+loc + Kσa\r
+\u0011\u0011 , (11)\r
+where now ρ and σ are arbitrary states acting within\r
+Hcode. We have written ρ\r
+{σ}\r
+a to clarify that we are still\r
+factorizing the bulk Hilbert space at the quantum ex\u0002tremal surface for σ, even though we are now considering\r
+another state ρ as well. Since (11) holds for any ρ acting\r
+within Hcode, it implies that\r
+ΠcKσA Πc = Kσa + A\r
+{σ}\r
+loc , (12)\r
+where Πc is the projection operator onto the code sub\u0002space, and where we have defined the operators on the\r
+right hand side to annihilate H⊥\r
+code. This is one of the\r
+main results of [29].\r
+lytic continuation of certain “Renyi entropies” Tr(ρ\r
+n), and that\r
+the bulk path integral for calculating the n-th Renyi entropy does\r
+not spontaneously break the associated Zn symmetry. There is\r
+also some subtlety in applying the argument to states that do not\r
+possess a moment of time-reflection symmetry, but this seems to\r
+just be a matter of convenience, and an argument that dispenses\r
+with this criterion will appear elsewhere soon [43].
+
+4\r
+Moreover combining (6), (8), and (11), we find that\r
+S(ρA|σA) =S(ρ\r
+{σ}\r
+a\r
+|σa)\r
++\r
+h\r
+Tr \u0010ρ\r
+{σ}\r
+a A\r
+{σ}\r
+loc \u0011\r
+− Tr \u0010ρ\r
+{ρ}\r
+a A\r
+{ρ}\r
+loc \u0011\r
++ S\r
+\u0010\r
+ρ\r
+{σ}\r
+a\r
+\u0011\r
+− S\r
+\u0010\r
+ρ\r
+{ρ}\r
+a\r
+\u0011 i . (13)\r
+To order N0the terms in square brackets cancel due to\r
+the extremality of χ\r
+{ρ}\r
+A with respect to S(ρa) + Aloc, so\r
+we find the equivalence of relative entropies which is the\r
+other main result of [29].6\r
+More generally, we find that the relative entropies dif\u0002fer by the difference of generalized entropies of ρ on the\r
+two quantum extremal surfaces χ\r
+{ρ}\r
+A and χ\r
+{σ}\r
+A . In either\r
+case, we observe that if ρa\r
+{σ} = σa, then (13) implies\r
+S(ρA|σA) = 0, and thus ρA = σA. This is the result that\r
+we will use in the proof below.\r
+By symmetry, the results (13),(12) apply also for the\r
+complement regions A and a, although for a mixed state\r
+one must use S(ρa) rather than S(ρa) when extremizing\r
+to find χA\r
+.\r
+7\r
+At order N0it is intuitively clear that (13) says that we\r
+must be able to reconstruct in the entanglement wedge.\r
+Relative entropy is a measure of the distinguishability of\r
+two quantum states, so we can only have (13) if ρA, σA\r
+have just as much information about the bulk as ρa, σa.\r
+We now prove a theorem that makes this precise, and\r
+extends it to higher orders in 1/N given the proposal of\r
+[56].\r
+A RECONSTRUCTION THEOREM\r
+Theorem. Let H be a finite-dimensional Hilbert space,\r
+H = HA ⊗ HA\r
+be a tensor factorization, and Hcode be a\r
+subspace of H. Let O be an operator that, together with\r
+its Hermitian conjugate, acts within Hcode. If for any\r
+two pure states |φi, |ψi ∈ Hcode, there exists a tensor\r
+factorization Hcode = Ha ⊗ Ha such that O acts only on\r
+Ha, and the reduced density matrices\r
+ρA ≡ TrA|φihφ| , σA ≡ TrA|ψihψ| ,\r
+ρa ≡ Tra|φihφ| , σa ≡ Tra|ψihψ| (14)\r
+satisfy\r
+ρa = σa ⇒ ρA = σA\r
+, (15)\r
+then both of the following statements are true:\r
+6 This equivalence is complicated by gravitons, which are metric\r
+variations of order √\r
+G and thus can produce second-order varia\u0002tions of order N0\r
+. These can be dispensed with by introducing a\r
+gauge (e.g. the one in [29]) where the quantum extremal surface\r
+χA does not move until order N0.\r
+7\r
+In this case, we expect that the two entanglement wedges can\r
+never overlap.\r
+1. For any XAacting on HAand any state |φi ∈\r
+Hcode, we have\r
+hφ|[O, XA\r
+]|φi = 0 . (16)\r
+2. There exists an operator OA acting just on HA such\r
+that OA and O have the same action on Hcode, i.e.\r
+OA|φi = O|φi, O†\r
+A|φi = O\r
+†\r
+|φi, (17)\r
+for any state |φi ∈ Hcode.\r
+Proof. First we note that the two statements are guaran\u0002teed to be equivalent by the theorem proved in Appendix\r
+B of [24]; for the convenience of the reader we sketch the\r
+logic of that proof in an appendix below. Therefore we\r
+will only need to prove the first statement. Furthermore\r
+it is sufficient to prove the theorem when O is a Hermi\u0002tian operator which we assume now.8\r
+Consider any state |φi ∈ Hcode, and let λ be an arbi\u0002trary real number. For the two states |φi and\r
+|ψi ≡ e\r
+iλO|φi (18)\r
+which are both in Hcode, the assumption of the theorem\r
+guarantees the existence of a tensor factorization Hcode =\r
+Ha ⊗ Ha such that O acts only on Ha, which implies\r
+ρa = σa (19)\r
+because the two states only differ by the action of a uni\u0002tary operator e\r
+iλO on Ha. Using (15) we find\r
+ρA = σA ⇒ hψ|XA|ψi = hφ|XA|φi. (20)\r
+Using (18) we may rewrite (20) as\r
+hφ|e\r
+−iλOXA\r
+e\r
+iλO|φi − hφ|XA\r
+|φi = 0 . (21)\r
+Expanding this equation to linear order in λ, we find\r
+hφ|[O, XA]|φi = 0 , (22)\r
+which proves (16), and hence also (17).\r
+In the above theorem we assumed that H is finite\u0002dimensional to avoid any subtleties with the proof of Ap\u0002pendix B of [24]. In AdS/CFT we can accomplish this\r
+by introducing a UV cutoff in the CFT. This only affects\r
+physics near the asymptotic boundary of AdS, and there\u0002fore is not essential to our discussion. In bulk language\r
+the assumptions for the theorem follow from picking an\r
+O that lies in the entanglement wedge EA for any state in\r
+Hcode, with the choice of factorization coming from the\r
+quantum extremal surface for the state |φi. This ensures\r
+that we can apply eq. (13) for the complement region A,\r
+which then implies (15).\r
+8 To see this, we recall that any operator is a (complex) linear\r
+combination of two Hermitian operators.
+
+5\r
+DISCUSSION\r
+We view the theorem of the previous section as estab\u0002lishing the existence of entanglement wedge reconstruc\u0002tion. Several comments are in order:\r
+Our argument ultimately rests on the validity of the\r
+quantum version (8) of the HRT formula, derived to order\r
+N0 by [27], and conjecturally extended to higher orders\r
+in 1/N by [56]. Understanding those results better is thus\r
+clearly of interest for bulk reconstruction. Any discussion\r
+of bulk reconstruction will ultimately be approximate, so\r
+it would be interesting to prove an approximate version\r
+of our theorem and use it to clarify the stability of our\r
+results under small perturbations.\r
+Note that our proof is constructive. After establishing\r
+the assumptions of the theorem of Appendix B in [24]\r
+hold, that theorem provides an explicit formula for the\r
+reconstruction OA. Our construction is thus an improve\u0002ment on the HKLL procedure even within the causal\r
+wedge, since the nonstandard Cauchy problem involved\r
+in causal wedge reconstruction has only been solved in\r
+special cases. However, it does not give much insight\r
+into how to think about the reconstruction from a bulk\r
+point of view. This is to be contrasted with the HKLL\r
+algorithm, which (at least when it works) proceeds by\r
+solving bulk equations of motion. We believe that a bulk\r
+interpretation should exist, and finding it could be quite\r
+illuminating.\r
+ACKNOWLEDGMENTS\r
+This work was initiated at the Quantum Error Correction\r
+and Tensor Network Project Meeting of the It from Qubit\r
+Collaboration. We would like to thank the participants for\r
+many useful discussions, the KITP for hospitality during the\r
+meeting, the Simons foundation for funding the collaboration,\r
+and the National Science Foundation for supporting the KITP\r
+under Grant No. NSF PHY11-25915. We would also like to\r
+thank Aitor Lewkowycz for useful discussions about gravitons\r
+and the extremal surface, and William Donnelly for pointing\r
+out a defect in an earlier version of our proof of the theorem\r
+of Section 4. XD is supported in part by the Department of\r
+Energy under grant DE-SC0009988 and by a Zurich Financial\r
+Services Membership at the Institute for Advanced Study.\r
+DH is supported by DOE grant DE-FG0291ER-40654 and the\r
+Harvard Center for the Fundamental Laws of Nature. AW is\r
+supported by the Martin A. & Helen Chooljian Membership\r
+at the Institute for Advanced Study.\r
+Appendix: Theorem of Operator Algebra Quantum\r
+Error Correction\r
+In this appendix, we give an intuitive summary of the\r
+derivation of the theorem establishing the equivalence be\u0002tween (16) and (17). More details can be found in the\r
+full proof provided in Appendix B of [24].\r
+Suppose that Hcode is spanned by an orthonormal basis\r
+|iiAA. Consider the state\r
+|Φi =\r
+X\r
+i\r
+|iiR ⊗ |iiAA\r
+, (23)\r
+where R is a reference system whose Hilbert space is\r
+spanned by an orthonormal basis |iiR. Using (23) we may\r
+mirror any operator O acting within Hcode to an operator\r
+OR on R such that O|Φi = OR|Φi, O†|Φi = O\r
+†\r
+R|Φi.\r
+The task is then to instead view OR as OR ⊗ IA\r
+and\r
+mirror it back to an operator OA on A. To do this we\r
+need the Schmidt decomposition\r
+|Φi =\r
+X\r
+α\r
+cα|αiA ⊗ |αiRA, (24)\r
+where the states |αiRA with cα 6= 0 generally span a\r
+subspace of HR ⊗ HA. We can mirror OR ⊗ IAonto A if\r
+it acts within this subspace which is guaranteed by\r
+[OR ⊗ IA, ρRA(Φ)] = 0 . (25)\r
+This statement is implied by (16). Therefore we obtain\r
+(17).\r
+[1] Juan Martin Maldacena, “The Large N limit of su\u0002perconformal field theories and supergravity,” Int. J.\r
+Theor. Phys. 38, 1113–1133 (1999), [Adv. Theor. Math.\r
+Phys.2,231(1998)], arXiv:hep-th/9711200 [hep-th].\r
+[2] S. S. Gubser, Igor R. Klebanov, and Alexander M.\r
+Polyakov, “Gauge theory correlators from noncritical\r
+string theory,” Phys. Lett. B428, 105–114 (1998),\r
+arXiv:hep-th/9802109 [hep-th].\r
+[3] Edward Witten, “Anti-de Sitter space and holography,”\r
+Adv. Theor. Math. Phys. 2, 253–291 (1998), arXiv:hep\u0002th/9802150 [hep-th].\r
+[4] Tom Banks, Michael R. Douglas, Gary T. Horowitz, and\r
+Emil J. Martinec, “AdS dynamics from conformal field\r
+theory,” (1998), arXiv:hep-th/9808016 [hep-th].\r
+[5] Ofer Aharony, Steven S. Gubser, Juan Martin Malda\u0002cena, Hirosi Ooguri, and Yaron Oz, “Large N field theo\u0002ries, string theory and gravity,” Phys. Rept. 323, 183–386\r
+(2000), arXiv:hep-th/9905111 [hep-th].\r
+[6] Idse Heemskerk, Joao Penedones, Joseph Polchinski, and\r
+James Sully, “Holography from Conformal Field Theory,”\r
+JHEP 10, 079 (2009), arXiv:0907.0151 [hep-th].\r
+[7] Vijay Balasubramanian, Per Kraus, Albion E. Lawrence,\r
+and Sandip P. Trivedi, “Holographic probes of anti-de\r
+Sitter space-times,” Phys. Rev. D59, 104021 (1999),\r
+arXiv:hep-th/9808017 [hep-th].\r
+[8] Daniel Harlow and Douglas Stanford, “Operator Dictio\u0002naries and Wave Functions in AdS/CFT and dS/CFT,”\r
+(2011), arXiv:1104.2621 [hep-th].\r
+[9] Alex Hamilton, Daniel N. Kabat, Gilad Lifschytz, and\r
+David A. Lowe, “Holographic representation of local bulk\r
+operators,” Phys. Rev. D74, 066009 (2006), arXiv:hep\u0002th/0606141 [hep-th].
+
+6\r
+[10] Daniel Kabat, Gilad Lifschytz, and David A.\r
+Lowe, “Constructing local bulk observables in inter\u0002acting AdS/CFT,” Phys. Rev. D83, 106009 (2011),\r
+arXiv:1102.2910 [hep-th].\r
+[11] Idse Heemskerk, Donald Marolf, Joseph Polchinski, and\r
+James Sully, “Bulk and Transhorizon Measurements in\r
+AdS/CFT,” JHEP 10, 165 (2012), arXiv:1201.3664 [hep\u0002th].\r
+[12] Daniel Kabat, Gilad Lifschytz, Shubho Roy, and Deba\u0002jyoti Sarkar, “Holographic representation of bulk fields\r
+with spin in AdS/CFT,” Phys. Rev. D86, 026004 (2012),\r
+arXiv:1204.0126 [hep-th].\r
+[13] Idse Heemskerk, “Construction of Bulk Fields\r
+with Gauge Redundancy,” JHEP 09, 106 (2012),\r
+arXiv:1201.3666 [hep-th].\r
+[14] Ian A. Morrison, “Boundary-to-bulk maps for AdS causal\r
+wedges and the Reeh-Schlieder property in holography,”\r
+JHEP 05, 053 (2014), arXiv:1403.3426 [hep-th].\r
+[15] Raphael Bousso, Ben Freivogel, Stefan Leichenauer,\r
+Vladimir Rosenhaus, and Claire Zukowski, “Null\r
+Geodesics, Local CFT Operators and AdS/CFT\r
+for Subregions,” Phys. Rev. D88, 064057 (2013),\r
+arXiv:1209.4641 [hep-th].\r
+[16] Veronika E. Hubeny and Mukund Rangamani, “Causal\r
+Holographic Information,” JHEP 06, 114 (2012),\r
+arXiv:1204.1698 [hep-th].\r
+[17] Raphael Bousso, Stefan Leichenauer, and Vladimir\r
+Rosenhaus, “Light-sheets and AdS/CFT,” Phys. Rev.\r
+D86, 046009 (2012), arXiv:1203.6619 [hep-th].\r
+[18] Bartlomiej Czech, Joanna L. Karczmarek, Fernando\r
+Nogueira, and Mark Van Raamsdonk, “The Gravity\r
+Dual of a Density Matrix,” Class. Quant. Grav. 29,\r
+155009 (2012), arXiv:1204.1330 [hep-th].\r
+[19] Aron C. Wall, “Maximin Surfaces, and the Strong\r
+Subadditivity of the Covariant Holographic Entangle\u0002ment Entropy,” Class. Quant. Grav. 31, 225007 (2014),\r
+arXiv:1211.3494 [hep-th].\r
+[20] Matthew Headrick, Veronika E. Hubeny, Albion\r
+Lawrence, and Mukund Rangamani, “Causality & holo\u0002graphic entanglement entropy,” JHEP 12, 162 (2014),\r
+arXiv:1408.6300 [hep-th].\r
+[21] Veronika E. Hubeny, Mukund Rangamani, and Tadashi\r
+Takayanagi, “A Covariant holographic entanglement en\u0002tropy proposal,” JHEP 07, 062 (2007), arXiv:0705.0016\r
+[hep-th].\r
+[22] Shinsei Ryu and Tadashi Takayanagi, “Holographic\r
+derivation of entanglement entropy from AdS/CFT,”\r
+Phys. Rev. Lett. 96, 181602 (2006), arXiv:hep\u0002th/0603001 [hep-th].\r
+[23] Aitor Lewkowycz and Juan Maldacena, “General\u0002ized gravitational entropy,” JHEP 08, 090 (2013),\r
+arXiv:1304.4926 [hep-th].\r
+[24] Ahmed Almheiri, Xi Dong, and Daniel Harlow, “Bulk\r
+Locality and Quantum Error Correction in AdS/CFT,”\r
+JHEP 04, 163 (2015), arXiv:1411.7041 [hep-th].\r
+[25] Fernando Pastawski, Beni Yoshida, Daniel Harlow, and\r
+John Preskill, “Holographic quantum error-correcting\r
+codes: Toy models for the bulk/boundary correspon\u0002dence,” JHEP 06, 149 (2015), arXiv:1503.06237 [hep-th].\r
+[26] Patrick Hayden, Sepehr Nezami, Xiao-Liang Qi,\r
+Nathaniel Thomas, Michael Walter, and Zhao Yang,\r
+“Holographic duality from random tensor networks,”\r
+(2016), arXiv:1601.01694 [hep-th].\r
+[27] Thomas Faulkner, Aitor Lewkowycz, and Juan Malda\u0002cena, “Quantum corrections to holographic entanglement\r
+entropy,” JHEP 11, 074 (2013), arXiv:1307.2892 [hep\u0002th].\r
+[28] Daniel L. Jafferis and S. Josephine Suh, “The\r
+Gravity Duals of Modular Hamiltonians,” (2014),\r
+arXiv:1412.8465 [hep-th].\r
+[29] Daniel L. Jafferis, Aitor Lewkowycz, Juan Maldacena,\r
+and S. Josephine Suh, “Relative entropy equals bulk rel\u0002ative entropy,” (2015), arXiv:1512.06431 [hep-th].\r
+[30] Donald Marolf and Joseph Polchinski, “Violations of the\r
+Born rule in cool state-dependent horizons,” JHEP 01,\r
+008 (2016), arXiv:1506.01337 [hep-th].\r
+[31] William Donnelly, “Decomposition of entanglement en\u0002tropy in lattice gauge theory,” Phys. Rev. D85, 085004\r
+(2012), arXiv:1109.0036 [hep-th].\r
+[32] Horacio Casini, Marina Huerta, and Jose Alejandro\r
+Rosabal, “Remarks on entanglement entropy for gauge\r
+fields,” Phys. Rev. D89, 085012 (2014), arXiv:1312.1183\r
+[hep-th].\r
+[33] William Donnelly and Aron C. Wall, “Entanglement en\u0002tropy of electromagnetic edge modes,” Phys. Rev. Lett.\r
+114, 111603 (2015), arXiv:1412.1895 [hep-th].\r
+[34] William Donnelly and Aron C. Wall, “Geometric entropy\r
+and edge modes of the electromagnetic field,” (2015),\r
+arXiv:1506.05792 [hep-th].\r
+[35] Djordje Radicevic, “Entanglement in Weakly Cou\u0002pled Lattice Gauge Theories,” JHEP 04, 163 (2016),\r
+arXiv:1509.08478 [hep-th].\r
+[36] Ronak M Soni and Sandip P. Trivedi, “Aspects of En\u0002tanglement Entropy for Gauge Theories,” JHEP 01, 136\r
+(2016), arXiv:1510.07455 [hep-th].\r
+[37] Chen-Te Ma, “Entanglement with Centers,” JHEP 01,\r
+070 (2016), arXiv:1511.02671 [hep-th].\r
+[38] William Donnelly and Laurent Freidel, “Local sub\u0002systems in gauge theory and gravity,” (2016),\r
+arXiv:1601.04744 [hep-th].\r
+[39] Daniel Harlow, “Wormholes, Emergent Gauge Fields,\r
+and the Weak Gravity Conjecture,” JHEP 01, 122\r
+(2016), arXiv:1510.07911 [hep-th].\r
+[40] C´edric B´eny, Achim Kempf, and David W Kribs, “Gen\u0002eralization of quantum error correction via the heisenberg\r
+picture,” Physical review letters 98, 100502 (2007).\r
+[41] Eugenio Bianchi, “Horizon entanglement entropy and\r
+universality of the graviton coupling,” (2012),\r
+arXiv:1211.0522 [gr-qc].\r
+[42] Nima Lashkari, Michael B. McDermott, and Mark\r
+Van Raamsdonk, “Gravitational dynamics from en\u0002tanglement ’thermodynamics’,” JHEP 04, 195 (2014),\r
+arXiv:1308.3716 [hep-th].\r
+[43] Xi Dong, Aitor Lewkowycz, and Mukund Rangamani,\r
+“Covariant holographic entanglement: a derivation,” to\r
+appear (2016).\r
+[44] Taylor Barrella, Xi Dong, Sean A. Hartnoll, and Victo\u0002ria L. Martin, “Holographic entanglement beyond classi\u0002cal gravity,” JHEP 09, 109 (2013), arXiv:1306.4682 [hep\u0002th].\r
+[45] Robert M. Wald, “Black hole entropy is the Noether\r
+charge,” Phys. Rev. D48, R3427 (1993), arXiv:gr\u0002qc/9307038 [gr-qc].\r
+[46] Vivek Iyer and Robert M. Wald, “Some properties of\r
+Noether charge and a proposal for dynamical black hole\r
+entropy,” Phys. Rev. D50, 846–864 (1994), arXiv:gr\u0002qc/9403028 [gr-qc].\r
+[47] Ted Jacobson, Gungwon Kang, and Robert C. Myers,
+
+7\r
+“On black hole entropy,” Phys. Rev. D49, 6587–6598\r
+(1994), arXiv:gr-qc/9312023 [gr-qc].\r
+[48] Ted Jacobson and Robert C. Myers, “Black hole entropy\r
+and higher curvature interactions,” Phys. Rev. Lett. 70,\r
+3684–3687 (1993), arXiv:hep-th/9305016 [hep-th].\r
+[49] Sergey N. Solodukhin, “Entanglement entropy, conformal\r
+invariance and extrinsic geometry,” Phys. Lett. B665,\r
+305–309 (2008), arXiv:0802.3117 [hep-th].\r
+[50] Ling-Yan Hung, Robert C. Myers, and Michael Smolkin,\r
+“On Holographic Entanglement Entropy and Higher Cur\u0002vature Gravity,” JHEP 04, 025 (2011), arXiv:1101.5813\r
+[hep-th].\r
+[51] Arpan Bhattacharyya, Apratim Kaviraj, and Aninda\r
+Sinha, “Entanglement entropy in higher derivative holog\u0002raphy,” JHEP 08, 012 (2013), arXiv:1305.6694 [hep-th].\r
+[52] Dmitri V. Fursaev, Alexander Patrushev, and Sergey N.\r
+Solodukhin, “Distributional Geometry of Squashed\r
+Cones,” Phys. Rev. D88, 044054 (2013), arXiv:1306.4000\r
+[hep-th].\r
+[53] Xi Dong, “Holographic Entanglement Entropy for Gen\u0002eral Higher Derivative Gravity,” JHEP 01, 044 (2014),\r
+arXiv:1310.5713 [hep-th].\r
+[54] Joan Camps, “Generalized entropy and higher derivative\r
+Gravity,” JHEP 03, 070 (2014), arXiv:1310.6659 [hep\u0002th].\r
+[55] Rong-Xin Miao and Wu-zhong Guo, “Holographic Entan\u0002glement Entropy for the Most General Higher Derivative\r
+Gravity,” JHEP 08, 031 (2015), arXiv:1411.5579 [hep\u0002th].\r
+[56] Netta Engelhardt and Aron C. Wall, “Quantum Ex\u0002tremal Surfaces: Holographic Entanglement Entropy\r
+beyond the Classical Regime,” JHEP 01, 073 (2015),\r
+arXiv:1408.3203 [hep-th]."""
+
+[metadata]
+title = "arxiv 1601.05416 dong harlow wall 2016 entanglement wedge reconstruction"
+authors = ["Unknown"]
+arxiv = "1601.05416"
+year = 2016
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Reconstruction of Bulk Operators within the Entanglement Wedge\r
+in Gauge-Gravity Duality\r
+Xi Dong,1 Daniel Harlow,2 and Aron C. Wall1\r
+1School of Natural Sciences, Institute for Advanced Study, Princeton, NJ 08540, USA\r
+2Center for the Fundamental Laws of Nature, Harvard University, Cambridge MA, 02138 USA\r
+In this Letter we prove a simple theorem in quantum information theory, which implies that\r
+bulk operators in the Anti-de Sitter / Conformal Field Theory (AdS/CFT) correspondence can\r
+be reconstructed as CFT operators in a spatial subregion A, provided that they lie in its entan\u0002glement wedge. This is an improvement on existing reconstruction methods, which have at most\r
+succeeded in the smaller causal wedge. The proof is a combination of the recent work of Jafferis,\r
+Lewkowycz, Maldacena, and Suh on the quantum relative entropy of a CFT subregion with earlier\r
+ideas interpreting the correspondence as a quantum error correcting code.\r
+INTRODUCTION\r
+The AdS/CFT correspondence tells us that certain\r
+large-N strongly-coupled CFTs define theories of quan\u0002tum gravity in asymptotically AdS space [1–6]. For this\r
+definition to be complete, we need to know how to use\r
+CFT language to ask any question of interest in the bulk.\r
+The most basic items in this dictionary are:\r
+• Quantum states in the Hilbert space of the CFT\r
+correspond to quantum states in the bulk.\r
+• The conformal and global symmetry generators in\r
+the CFT correspond to the analogous asymptotic\r
+symmetries in the bulk. For example the CFT\r
+Hamiltonian maps to the ADM Hamiltonian, and\r
+a U(1) charge maps to the electric flux at infinity.\r
+• In the large N limit, any single-trace primary oper\u0002ator O(x) in the CFT, with scaling dimension ∆ of\r
+order N0, corresponds to a bulk field φ(x, r). They\r
+are related by the “extrapolate dictionary” [4, 7, 8]\r
+O(x) = limr→∞r\r
+∆φ(x, r). (1)\r
+These give an excellent starting point for understanding\r
+the correspondence, but the limiting procedure in the ex\u0002trapolate dictionary makes it difficult to concretely dis\u0002cuss what is going on deep within the bulk. There is a\r
+good reason for this: although the CFT side of the du\u0002ality is defined exactly, the bulk side is ultimately some\r
+nonperturbative theory of quantum gravity, which is only\r
+approximately given by a semiclassical path integral over\r
+local bulk fields. This means that any attempt to “back\r
+off of the extrapolate dictionary” and formulate a CFT\r
+representation of the bulk operator φ(x, r), usually called\r
+a reconstruction, must itself be only an approximate no\u0002tion. Nonetheless, there is a standard algorithm for pro\u0002ducing such a φ(x, r) perturbatively in 1/N: one con\u0002structs it by solving the bulk equations of motion with\r
+boundary conditions (1) [4, 9–14]. This algorithm has\r
+the nice feature that it can be done quite explicitly, but\r
+it has the disadvantage that it relies on solving a rather\r
+nonstandard Cauchy problem [11, 15]. In this paper we\r
+will refer to it as the HKLL procedure, after [9], who were\r
+the first to study it in detail.\r
+The HKLL procedure has the interesting property that\r
+it also is sometimes able to reconstruct a bulk operator\r
+φ(x, r) as a CFT operator with nontrivial support only\r
+on some spatial subregion A of a boundary Cauchy slice\r
+Σ [9, 14]. This is believed to occur whenever the point\r
+(x, r) lies in the causal wedge of A, denoted CA."""
+
+[[sections]]
+number = "1"
+title = "CA is"
+text = """
+defined as the intersection in the bulk of the bulk causal\r
+future and past of the boundary domain of dependence\r
+of A [16].\r
+Causal wedge reconstruction via the HKLL procedure\r
+gives an explicit illustration of “subregion-subregion du\u0002ality”, which is the notion that a spatial subregion A\r
+in the boundary theory contains complete information\r
+about some subregion of the bulk [15, 17, 18]. It has\r
+been proposed however that the subregion dual to A is\r
+not just CA, but rather a larger region: the entanglement\r
+wedge EA [18–20]. To define the entanglement wedge, we\r
+must first define the HRT surface χA [21] (the covariant\r
+generalization of the Ryu-Takayanagi proposal [22]). χA\r
+is defined as a codimension-two bulk surface of extremal\r
+area, which has boundary ∂χA = ∂A and is homologous\r
+to A through the bulk (in the event that multiple such\r
+surfaces exist, it is the one with least area). The HRT\r
+formula tells us that at leading order in 1/N, the area of\r
+χA is proportional to the von Neumann entropy of the\r
+region A in the CFT [21–23]. The entanglement wedge\r
+EA is then defined as the bulk domain of dependence of\r
+any achronal bulk surface whose boundary is A ∪ χA.\r
+1 As mentioned above, this reconstruction relies on solving a non\u0002standard Cauchy problem [11, 15]. In general it is not known if\r
+the solution really exists, but it can be found explicitly (in a dis\u0002tributional sense [14]) for the case of spherical boundary regions\r
+in the vicinity of the AdS vacuum; in this case it is called the\r
+AdS-Rindler reconstruction.\r
+arXiv:1601.05416v3 [hep-th] 11 Jul 2016"""
+
+[[sections]]
+number = "2"
+title = "Recently, plausibility arguments for entanglement"
+text = """
+wedge reconstruction have been developing along two dif\u0002ferent lines. [24] proposed a re-interpretation of causal\r
+wedge reconstruction as quantum error correction, which\r
+is a structure that very naturally allows an extension to\r
+entanglement wedge reconstruction. This was explicitly\r
+realized in toy models [25, 26]. At the same time it has\r
+gradually been understood that a proposal [27] for the\r
+first 1/N correction to the HRT formula is indicative\r
+that entanglement wedge reconstruction should be possi\u0002ble [24, 28, 29]. In particular Jafferis, Lewkowycz, Mal\u0002dacena, and Suh (JLMS) have given a remarkable bulk\r
+formula for the modular Hamiltonian associated to any\r
+CFT region, which implies that the relative entropy of\r
+two states in a boundary spatial region A is simply equal\r
+to the relative entropy of the two bulk states in EA [29].\r
+The purpose of this paper is to tie all of these ideas to\u0002gether into a proof that entanglement wedge reconstruc\u0002tion is in fact possible in AdS/CFT: given a boundary\r
+subregion A, all bulk operators in EA have CFT recon\u0002structions as operators in A.\r
+ENTANGLEMENT WEDGE RECONSTRUCTION\r
+AS QUANTUM ERROR CORRECTION\r
+We mentioned above that the holographic nature of\r
+AdS/CFT prevents bulk operator reconstruction from\r
+being a precise notion. This reveals itself not just in\r
+the perturbative nature of the the HKLL algorithm, but\r
+also in its regime of validity. As one acts with more\r
+and more reconstructed operators in a region, the thresh\u0002old for black hole formation is eventually crossed. This\r
+leads to a breakdown of the construction. In [24] this\r
+was formalized into the notion that one should think of\r
+reconstructed bulk operators as only making sense in a\r
+code subspace of the CFT Hilbert space, which we denote\r
+Hcode. The choice of this subspace is not unique, since\r
+in general we can choose to define it based on whatever\r
+observables we are interested in studying, but the sim\u0002plest thing to do is choose a state which we know has a\r
+geometric interpretation, and then consider the subspace\r
+of all states where the backreaction of the metric about\r
+that geometry is perturbatively small.2\r
+As a concrete example, we can consider the subspace\r
+of states of the CFT on a sphere whose energy is less\r
+than that of a Planck-sized black hole in the center of\r
+the bulk, together with the image of this subspace under\r
+the conformal group. For example in the N = 4 super"""
+
+[[sections]]
+number = "2"
+title = "This is an overly conservative definition of the code subspace,"
+text = """
+since a certain amount of backreaction (such as that present in\r
+the solar system) can be included by resumming subclasses of\r
+diagrams in the perturbative expansion [11, 30]. We adopt it\r
+nonetheless to simplify our arguments below.\r
+FIG. 1. Factorizing the bulk and boundary on a time slice.\r
+The entanglement wedge EA is shaded. For simplicity we have\r
+shown a connected boundary region A, although this might\r
+not be the case.\r
+Yang-Mills theory with gauge group SU(N), and with\r
+gauge coupling g ∼ 1 to equate the string and Planck\r
+scales, this corresponds to the set of primary operators\r
+whose dimensions are . N1/4, together with their con\u0002formal descendants. If the duality is correct, meaning\r
+that correlation functions of local boundary operators in\r
+these states can be reproduced by bulk Feynman-Witten\r
+diagrams with some effective action,3then the machinery\r
+of [4, 9–14] enables us to explicitly reconstruct all low\u0002energy bulk operators φ(x, r) in such a way that their\r
+correlation functions in any state in the code subspace\r
+agree with those computed in bulk effective field theory\r
+with that effective action to all orders in 1/N. For this to\r
+work in detail we must choose some sort of covariant UV\r
+cutoff in the bulk, but we will not discuss this explicitly\r
+in what follows.\r
+We can now describe entanglement wedge reconstruc\u0002tion. Say that we split a Cauchy slice Σ of the boundary\r
+CFT into a region A and its complement A. The CFT\r
+Hilbert space has a tensor factorization as\r
+HCF T = HA ⊗ HA. (2)\r
+Similarly we can think of the code subspace as factorizing\r
+as\r
+Hcode = Ha ⊗ Ha , (3)\r
+where Ha denotes the Hilbert space of bulk excitations\r
+in EA, and Ha denotes the Hilbert space of bulk excita\u0002tions in EA\r
+. We illustrate this in Figure 1. Both tensor\r
+factorizations are complicated by the fact that gauge con\u0002straints might be present [31–38], but likely this problem\r
+can be absorbed into the choice of UV cutoff (as shown\r
+for U(1) gauge fields by [39]). We could dispense with\r
+this issue by formulating our arguments in terms of sub\u0002algebras instead of subfactors, see [32] for the relevant"""
+
+[[sections]]
+number = "3"
+title = "See [6] for a discussion of which CFTs have this property, and"
+text = """
+also for how to determine the effective action in terms of CFT\r
+data if they do.
+
+3\r
+definitions, but we have opted for the latter for familiar\u0002ity.\r
+Entanglement wedge reconstruction is then the state\u0002ment that any bulk operator Oa acting within Ha can\r
+always be represented in the CFT with an operator OA\r
+that has support only on HA. In fact this is the precise\r
+definition of the idea that the operator Oa can be “cor\u0002rected” for the erasure of the region A [40], and the obser\u0002vation that a given Oa can be reconstructed on different\r
+choices of A reflects the ability of the code to correct for\r
+a variety of erasures [24]. We will establish the existence\r
+of OA below, but first we need to review a recent result\r
+that will be essential for the proof.\r
+REVIEW OF THE JLMS ARGUMENT\r
+In [29], JLMS argued for an equivalence of relative en\u0002tropy between bulk and boundary. In this section we\r
+give a more detailed derivation of this result, which also\r
+extends it to higher orders in the semiclassical expansion\r
+given an assumption we state precisely below. Let us\r
+first recall that the von Neumann entropy of any state is\r
+defined as\r
+S(ρ) ≡ −Tr (ρ log ρ) , (4)\r
+its modular Hamiltonian is defined as\r
+Kρ ≡ − log ρ , (5)\r
+and the relative entropy of a state ρ to a state σ is\r
+S(ρ|σ) ≡ Tr (ρ log ρ) − Tr (ρ log σ) = −S(ρ) + Tr (ρKσ) .\r
+(6)\r
+Relative entropy is non-negative, and vanishes if and only\r
+if ρ = σ. Under small perturbations of the state, the en\u0002tropy and modular Hamiltonian are related by the “first\r
+law of entanglement”:4\r
+S(ρ + δρ) − S(ρ) = Tr (δρ Kρ) + O(δρ2). (7)\r
+Now consider the setup of the previous section, where\r
+in some holographic CFT we pick a code subspace\r
+Hcode = Ha ⊗ Ha in which effective field theory per\u0002turbatively coupled to gravity is valid, and in which all\r
+states can be derived from path integral constructions\r
+in this effective theory. Following JLMS, we recall that\r
+Faulkner et al. [27] showed that such states5 ρ obey\r
+S(ρA) = S(ρa) + Tr (ρaAloc) . (8)"""
+
+[[sections]]
+number = "4"
+title = "This is derived in e.g. [41, 42] by linearizing the entropy."
+text = """
+To deal with possible non-commutativity of ρ and δρ one\r
+can use the Baker-Campbell-Hausdorff formula and recall that\r
+Tr (A[B, C]) = 0 if A and B are simultaneously diagonalizable."""
+
+[[sections]]
+number = "5"
+title = "The argument of [27], like the earlier classical argument [23],"
+text = """
+assumes that the von Neumann entropy can be found by an ana\u0002Here Aloc denotes a bulk operator that is a local integral\r
+over the HRT surface χA. At leading order in 1/N, or\r
+equivalently at leading order in the gravitational coupling\r
+G, we have\r
+Aloc =\r
+Area(χA)\r
+4G\r
+, (9)\r
+as required by the HRT formula, but Aloc receives correc\u0002tions at higher orders in 1/N [27, 44], or in the presence\r
+of more general gravitational interactions [45–55].\r
+In fact [27] only established (8) to order N0. In [56] it\r
+was suggested that (8) continues to hold to all orders in\r
+1/N, provided that one always defines χA to be extremal\r
+with respect to the sum on the right hand side of (8)\r
+(sometimes called the “generalized entropy”); such a χA\r
+is known as a quantum extremal surface. We will assume\r
+this to be the case throughout the code subspace in what\r
+follows: if it is not then our arguments only establish\r
+entanglement wedge reconstruction to order N0.\r
+To establish the JLMS result, we now observe that\r
+linearizing (8) about σ and using the first law (7), we\r
+have\r
+Tr (δσAKσA ) = Tr \u0010δσa\r
+\u0010\r
+A\r
+{σ}\r
+loc + Kσa\r
+\u0011\u0011 . (10)\r
+Here we have taken δσ to be an arbitrary perturbation\r
+that acts within the code subspace Hcode. We have writ\u0002ten A\r
+{σ}\r
+loc to emphasize that Aloc is still located at the\r
+surface defined by extremizing S(σa) + Aloc. (10) is lin\u0002ear in δσ, so we can integrate it to obtain\r
+Tr (ρAKσA ) = Tr \u0010ρ\r
+{σ}\r
+a\r
+\u0010\r
+A\r
+{σ}\r
+loc + Kσa\r
+\u0011\u0011 , (11)\r
+where now ρ and σ are arbitrary states acting within\r
+Hcode. We have written ρ\r
+{σ}\r
+a to clarify that we are still\r
+factorizing the bulk Hilbert space at the quantum ex\u0002tremal surface for σ, even though we are now considering\r
+another state ρ as well. Since (11) holds for any ρ acting\r
+within Hcode, it implies that\r
+ΠcKσA Πc = Kσa + A\r
+{σ}\r
+loc , (12)\r
+where Πc is the projection operator onto the code sub\u0002space, and where we have defined the operators on the\r
+right hand side to annihilate H⊥\r
+code. This is one of the\r
+main results of [29].\r
+lytic continuation of certain “Renyi entropies” Tr(ρ\r
+n), and that\r
+the bulk path integral for calculating the n-th Renyi entropy does\r
+not spontaneously break the associated Zn symmetry. There is\r
+also some subtlety in applying the argument to states that do not\r
+possess a moment of time-reflection symmetry, but this seems to\r
+just be a matter of convenience, and an argument that dispenses\r
+with this criterion will appear elsewhere soon [43]."""
+
+[[sections]]
+number = "4"
+title = "Moreover combining (6), (8), and (11), we find that"
+text = """
+S(ρA|σA) =S(ρ\r
+{σ}\r
+a\r
+|σa)\r
++\r
+h\r
+Tr \u0010ρ\r
+{σ}\r
+a A\r
+{σ}\r
+loc \u0011\r
+− Tr \u0010ρ\r
+{ρ}\r
+a A\r
+{ρ}\r
+loc \u0011\r
++ S\r
+\u0010\r
+ρ\r
+{σ}\r
+a\r
+\u0011\r
+− S\r
+\u0010\r
+ρ\r
+{ρ}\r
+a\r
+\u0011 i . (13)\r
+To order N0the terms in square brackets cancel due to\r
+the extremality of χ\r
+{ρ}\r
+A with respect to S(ρa) + Aloc, so\r
+we find the equivalence of relative entropies which is the\r
+other main result of [29].6\r
+More generally, we find that the relative entropies dif\u0002fer by the difference of generalized entropies of ρ on the\r
+two quantum extremal surfaces χ\r
+{ρ}\r
+A and χ\r
+{σ}\r
+A . In either\r
+case, we observe that if ρa\r
+{σ} = σa, then (13) implies\r
+S(ρA|σA) = 0, and thus ρA = σA. This is the result that\r
+we will use in the proof below.\r
+By symmetry, the results (13),(12) apply also for the\r
+complement regions A and a, although for a mixed state\r
+one must use S(ρa) rather than S(ρa) when extremizing\r
+to find χA\r
+."""
+
+[[sections]]
+number = "7"
+title = "At order N0it is intuitively clear that (13) says that we"
+text = """
+must be able to reconstruct in the entanglement wedge.\r
+Relative entropy is a measure of the distinguishability of\r
+two quantum states, so we can only have (13) if ρA, σA\r
+have just as much information about the bulk as ρa, σa.\r
+We now prove a theorem that makes this precise, and\r
+extends it to higher orders in 1/N given the proposal of\r
+[56].\r
+A RECONSTRUCTION THEOREM\r
+Theorem. Let H be a finite-dimensional Hilbert space,\r
+H = HA ⊗ HA\r
+be a tensor factorization, and Hcode be a\r
+subspace of H. Let O be an operator that, together with\r
+its Hermitian conjugate, acts within Hcode. If for any\r
+two pure states |φi, |ψi ∈ Hcode, there exists a tensor\r
+factorization Hcode = Ha ⊗ Ha such that O acts only on\r
+Ha, and the reduced density matrices\r
+ρA ≡ TrA|φihφ| , σA ≡ TrA|ψihψ| ,\r
+ρa ≡ Tra|φihφ| , σa ≡ Tra|ψihψ| (14)\r
+satisfy\r
+ρa = σa ⇒ ρA = σA\r
+, (15)\r
+then both of the following statements are true:"""
+
+[[sections]]
+number = "6"
+title = "This equivalence is complicated by gravitons, which are metric"
+text = """
+variations of order √\r
+G and thus can produce second-order varia\u0002tions of order N0\r
+. These can be dispensed with by introducing a\r
+gauge (e.g. the one in [29]) where the quantum extremal surface\r
+χA does not move until order N0."""
+
+[[sections]]
+number = "7"
+title = "In this case, we expect that the two entanglement wedges can"
+text = "never overlap."
+
+[[sections]]
+number = "1"
+title = "For any XAacting on HAand any state |φi ∈"
+text = """
+Hcode, we have\r
+hφ|[O, XA\r
+]|φi = 0 . (16)"""
+
+[[sections]]
+number = "2"
+title = "There exists an operator OA acting just on HA such"
+text = """
+that OA and O have the same action on Hcode, i.e.\r
+OA|φi = O|φi, O†\r
+A|φi = O\r
+†\r
+|φi, (17)\r
+for any state |φi ∈ Hcode.\r
+Proof. First we note that the two statements are guaran\u0002teed to be equivalent by the theorem proved in Appendix\r
+B of [24]; for the convenience of the reader we sketch the\r
+logic of that proof in an appendix below. Therefore we\r
+will only need to prove the first statement. Furthermore\r
+it is sufficient to prove the theorem when O is a Hermi\u0002tian operator which we assume now.8\r
+Consider any state |φi ∈ Hcode, and let λ be an arbi\u0002trary real number. For the two states |φi and\r
+|ψi ≡ e\r
+iλO|φi (18)\r
+which are both in Hcode, the assumption of the theorem\r
+guarantees the existence of a tensor factorization Hcode =\r
+Ha ⊗ Ha such that O acts only on Ha, which implies\r
+ρa = σa (19)\r
+because the two states only differ by the action of a uni\u0002tary operator e\r
+iλO on Ha. Using (15) we find\r
+ρA = σA ⇒ hψ|XA|ψi = hφ|XA|φi. (20)\r
+Using (18) we may rewrite (20) as\r
+hφ|e\r
+−iλOXA\r
+e\r
+iλO|φi − hφ|XA\r
+|φi = 0 . (21)\r
+Expanding this equation to linear order in λ, we find\r
+hφ|[O, XA]|φi = 0 , (22)\r
+which proves (16), and hence also (17).\r
+In the above theorem we assumed that H is finite\u0002dimensional to avoid any subtleties with the proof of Ap\u0002pendix B of [24]. In AdS/CFT we can accomplish this\r
+by introducing a UV cutoff in the CFT. This only affects\r
+physics near the asymptotic boundary of AdS, and there\u0002fore is not essential to our discussion. In bulk language\r
+the assumptions for the theorem follow from picking an\r
+O that lies in the entanglement wedge EA for any state in\r
+Hcode, with the choice of factorization coming from the\r
+quantum extremal surface for the state |φi. This ensures\r
+that we can apply eq. (13) for the complement region A,\r
+which then implies (15)."""
+
+[[sections]]
+number = "8"
+title = "To see this, we recall that any operator is a (complex) linear"
+text = "combination of two Hermitian operators."
+
+[[sections]]
+number = "5"
+title = "DISCUSSION"
+text = """
+We view the theorem of the previous section as estab\u0002lishing the existence of entanglement wedge reconstruc\u0002tion. Several comments are in order:\r
+Our argument ultimately rests on the validity of the\r
+quantum version (8) of the HRT formula, derived to order\r
+N0 by [27], and conjecturally extended to higher orders\r
+in 1/N by [56]. Understanding those results better is thus\r
+clearly of interest for bulk reconstruction. Any discussion\r
+of bulk reconstruction will ultimately be approximate, so\r
+it would be interesting to prove an approximate version\r
+of our theorem and use it to clarify the stability of our\r
+results under small perturbations.\r
+Note that our proof is constructive. After establishing\r
+the assumptions of the theorem of Appendix B in [24]\r
+hold, that theorem provides an explicit formula for the\r
+reconstruction OA. Our construction is thus an improve\u0002ment on the HKLL procedure even within the causal\r
+wedge, since the nonstandard Cauchy problem involved\r
+in causal wedge reconstruction has only been solved in\r
+special cases. However, it does not give much insight\r
+into how to think about the reconstruction from a bulk\r
+point of view. This is to be contrasted with the HKLL\r
+algorithm, which (at least when it works) proceeds by\r
+solving bulk equations of motion. We believe that a bulk\r
+interpretation should exist, and finding it could be quite\r
+illuminating.\r
+ACKNOWLEDGMENTS\r
+This work was initiated at the Quantum Error Correction\r
+and Tensor Network Project Meeting of the It from Qubit\r
+Collaboration. We would like to thank the participants for\r
+many useful discussions, the KITP for hospitality during the\r
+meeting, the Simons foundation for funding the collaboration,\r
+and the National Science Foundation for supporting the KITP\r
+under Grant No. NSF PHY11-25915. We would also like to\r
+thank Aitor Lewkowycz for useful discussions about gravitons\r
+and the extremal surface, and William Donnelly for pointing\r
+out a defect in an earlier version of our proof of the theorem\r
+of Section 4. XD is supported in part by the Department of\r
+Energy under grant DE-SC0009988 and by a Zurich Financial\r
+Services Membership at the Institute for Advanced Study.\r
+DH is supported by DOE grant DE-FG0291ER-40654 and the\r
+Harvard Center for the Fundamental Laws of Nature. AW is\r
+supported by the Martin A. & Helen Chooljian Membership\r
+at the Institute for Advanced Study.\r
+Appendix: Theorem of Operator Algebra Quantum\r
+Error Correction\r
+In this appendix, we give an intuitive summary of the\r
+derivation of the theorem establishing the equivalence be\u0002tween (16) and (17). More details can be found in the\r
+full proof provided in Appendix B of [24].\r
+Suppose that Hcode is spanned by an orthonormal basis\r
+|iiAA. Consider the state\r
+|Φi =\r
+X\r
+i\r
+|iiR ⊗ |iiAA\r
+, (23)\r
+where R is a reference system whose Hilbert space is\r
+spanned by an orthonormal basis |iiR. Using (23) we may\r
+mirror any operator O acting within Hcode to an operator\r
+OR on R such that O|Φi = OR|Φi, O†|Φi = O\r
+†\r
+R|Φi.\r
+The task is then to instead view OR as OR ⊗ IA\r
+and\r
+mirror it back to an operator OA on A. To do this we\r
+need the Schmidt decomposition\r
+|Φi =\r
+X\r
+α\r
+cα|αiA ⊗ |αiRA, (24)\r
+where the states |αiRA with cα 6= 0 generally span a\r
+subspace of HR ⊗ HA. We can mirror OR ⊗ IAonto A if\r
+it acts within this subspace which is guaranteed by\r
+[OR ⊗ IA, ρRA(Φ)] = 0 . (25)\r
+This statement is implied by (16). Therefore we obtain\r
+(17).\r
+[1] Juan Martin Maldacena, “The Large N limit of su\u0002perconformal field theories and supergravity,” Int. J.\r
+Theor. Phys. 38, 1113–1133 (1999), [Adv. Theor. Math.\r
+Phys.2,231(1998)], arXiv:hep-th/9711200 [hep-th].\r
+[2] S. S. Gubser, Igor R. Klebanov, and Alexander M.\r
+Polyakov, “Gauge theory correlators from noncritical\r
+string theory,” Phys. Lett. B428, 105–114 (1998),\r
+arXiv:hep-th/9802109 [hep-th].\r
+[3] Edward Witten, “Anti-de Sitter space and holography,”\r
+Adv. Theor. Math. Phys. 2, 253–291 (1998), arXiv:hep\u0002th/9802150 [hep-th].\r
+[4] Tom Banks, Michael R. Douglas, Gary T. Horowitz, and\r
+Emil J. Martinec, “AdS dynamics from conformal field\r
+theory,” (1998), arXiv:hep-th/9808016 [hep-th].\r
+[5] Ofer Aharony, Steven S. Gubser, Juan Martin Malda\u0002cena, Hirosi Ooguri, and Yaron Oz, “Large N field theo\u0002ries, string theory and gravity,” Phys. Rept. 323, 183–386\r
+(2000), arXiv:hep-th/9905111 [hep-th].\r
+[6] Idse Heemskerk, Joao Penedones, Joseph Polchinski, and\r
+James Sully, “Holography from Conformal Field Theory,”\r
+JHEP 10, 079 (2009), arXiv:0907.0151 [hep-th].\r
+[7] Vijay Balasubramanian, Per Kraus, Albion E. Lawrence,\r
+and Sandip P. Trivedi, “Holographic probes of anti-de\r
+Sitter space-times,” Phys. Rev. D59, 104021 (1999),\r
+arXiv:hep-th/9808017 [hep-th].\r
+[8] Daniel Harlow and Douglas Stanford, “Operator Dictio\u0002naries and Wave Functions in AdS/CFT and dS/CFT,”\r
+(2011), arXiv:1104.2621 [hep-th].\r
+[9] Alex Hamilton, Daniel N. Kabat, Gilad Lifschytz, and\r
+David A. Lowe, “Holographic representation of local bulk\r
+operators,” Phys. Rev. D74, 066009 (2006), arXiv:hep\u0002th/0606141 [hep-th].
+
+6\r
+[10] Daniel Kabat, Gilad Lifschytz, and David A.\r
+Lowe, “Constructing local bulk observables in inter\u0002acting AdS/CFT,” Phys. Rev. D83, 106009 (2011),\r
+arXiv:1102.2910 [hep-th].\r
+[11] Idse Heemskerk, Donald Marolf, Joseph Polchinski, and\r
+James Sully, “Bulk and Transhorizon Measurements in\r
+AdS/CFT,” JHEP 10, 165 (2012), arXiv:1201.3664 [hep\u0002th].\r
+[12] Daniel Kabat, Gilad Lifschytz, Shubho Roy, and Deba\u0002jyoti Sarkar, “Holographic representation of bulk fields\r
+with spin in AdS/CFT,” Phys. Rev. D86, 026004 (2012),\r
+arXiv:1204.0126 [hep-th].\r
+[13] Idse Heemskerk, “Construction of Bulk Fields\r
+with Gauge Redundancy,” JHEP 09, 106 (2012),\r
+arXiv:1201.3666 [hep-th].\r
+[14] Ian A. Morrison, “Boundary-to-bulk maps for AdS causal\r
+wedges and the Reeh-Schlieder property in holography,”\r
+JHEP 05, 053 (2014), arXiv:1403.3426 [hep-th].\r
+[15] Raphael Bousso, Ben Freivogel, Stefan Leichenauer,\r
+Vladimir Rosenhaus, and Claire Zukowski, “Null\r
+Geodesics, Local CFT Operators and AdS/CFT\r
+for Subregions,” Phys. Rev. D88, 064057 (2013),\r
+arXiv:1209.4641 [hep-th].\r
+[16] Veronika E. Hubeny and Mukund Rangamani, “Causal\r
+Holographic Information,” JHEP 06, 114 (2012),\r
+arXiv:1204.1698 [hep-th].\r
+[17] Raphael Bousso, Stefan Leichenauer, and Vladimir\r
+Rosenhaus, “Light-sheets and AdS/CFT,” Phys. Rev.\r
+D86, 046009 (2012), arXiv:1203.6619 [hep-th].\r
+[18] Bartlomiej Czech, Joanna L. Karczmarek, Fernando\r
+Nogueira, and Mark Van Raamsdonk, “The Gravity\r
+Dual of a Density Matrix,” Class. Quant. Grav. 29,\r
+155009 (2012), arXiv:1204.1330 [hep-th].\r
+[19] Aron C. Wall, “Maximin Surfaces, and the Strong\r
+Subadditivity of the Covariant Holographic Entangle\u0002ment Entropy,” Class. Quant. Grav. 31, 225007 (2014),\r
+arXiv:1211.3494 [hep-th].\r
+[20] Matthew Headrick, Veronika E. Hubeny, Albion\r
+Lawrence, and Mukund Rangamani, “Causality & holo\u0002graphic entanglement entropy,” JHEP 12, 162 (2014),\r
+arXiv:1408.6300 [hep-th].\r
+[21] Veronika E. Hubeny, Mukund Rangamani, and Tadashi\r
+Takayanagi, “A Covariant holographic entanglement en\u0002tropy proposal,” JHEP 07, 062 (2007), arXiv:0705.0016\r
+[hep-th].\r
+[22] Shinsei Ryu and Tadashi Takayanagi, “Holographic\r
+derivation of entanglement entropy from AdS/CFT,”\r
+Phys. Rev. Lett. 96, 181602 (2006), arXiv:hep\u0002th/0603001 [hep-th].\r
+[23] Aitor Lewkowycz and Juan Maldacena, “General\u0002ized gravitational entropy,” JHEP 08, 090 (2013),\r
+arXiv:1304.4926 [hep-th].\r
+[24] Ahmed Almheiri, Xi Dong, and Daniel Harlow, “Bulk\r
+Locality and Quantum Error Correction in AdS/CFT,”\r
+JHEP 04, 163 (2015), arXiv:1411.7041 [hep-th].\r
+[25] Fernando Pastawski, Beni Yoshida, Daniel Harlow, and\r
+John Preskill, “Holographic quantum error-correcting\r
+codes: Toy models for the bulk/boundary correspon\u0002dence,” JHEP 06, 149 (2015), arXiv:1503.06237 [hep-th].\r
+[26] Patrick Hayden, Sepehr Nezami, Xiao-Liang Qi,\r
+Nathaniel Thomas, Michael Walter, and Zhao Yang,\r
+“Holographic duality from random tensor networks,”\r
+(2016), arXiv:1601.01694 [hep-th].\r
+[27] Thomas Faulkner, Aitor Lewkowycz, and Juan Malda\u0002cena, “Quantum corrections to holographic entanglement\r
+entropy,” JHEP 11, 074 (2013), arXiv:1307.2892 [hep\u0002th].\r
+[28] Daniel L. Jafferis and S. Josephine Suh, “The\r
+Gravity Duals of Modular Hamiltonians,” (2014),\r
+arXiv:1412.8465 [hep-th].\r
+[29] Daniel L. Jafferis, Aitor Lewkowycz, Juan Maldacena,\r
+and S. Josephine Suh, “Relative entropy equals bulk rel\u0002ative entropy,” (2015), arXiv:1512.06431 [hep-th].\r
+[30] Donald Marolf and Joseph Polchinski, “Violations of the\r
+Born rule in cool state-dependent horizons,” JHEP 01,\r
+008 (2016), arXiv:1506.01337 [hep-th].\r
+[31] William Donnelly, “Decomposition of entanglement en\u0002tropy in lattice gauge theory,” Phys. Rev. D85, 085004\r
+(2012), arXiv:1109.0036 [hep-th].\r
+[32] Horacio Casini, Marina Huerta, and Jose Alejandro\r
+Rosabal, “Remarks on entanglement entropy for gauge\r
+fields,” Phys. Rev. D89, 085012 (2014), arXiv:1312.1183\r
+[hep-th].\r
+[33] William Donnelly and Aron C. Wall, “Entanglement en\u0002tropy of electromagnetic edge modes,” Phys. Rev. Lett.\r
+114, 111603 (2015), arXiv:1412.1895 [hep-th].\r
+[34] William Donnelly and Aron C. Wall, “Geometric entropy\r
+and edge modes of the electromagnetic field,” (2015),\r
+arXiv:1506.05792 [hep-th].\r
+[35] Djordje Radicevic, “Entanglement in Weakly Cou\u0002pled Lattice Gauge Theories,” JHEP 04, 163 (2016),\r
+arXiv:1509.08478 [hep-th].\r
+[36] Ronak M Soni and Sandip P. Trivedi, “Aspects of En\u0002tanglement Entropy for Gauge Theories,” JHEP 01, 136\r
+(2016), arXiv:1510.07455 [hep-th].\r
+[37] Chen-Te Ma, “Entanglement with Centers,” JHEP 01,\r
+070 (2016), arXiv:1511.02671 [hep-th].\r
+[38] William Donnelly and Laurent Freidel, “Local sub\u0002systems in gauge theory and gravity,” (2016),\r
+arXiv:1601.04744 [hep-th].\r
+[39] Daniel Harlow, “Wormholes, Emergent Gauge Fields,\r
+and the Weak Gravity Conjecture,” JHEP 01, 122\r
+(2016), arXiv:1510.07911 [hep-th].\r
+[40] C´edric B´eny, Achim Kempf, and David W Kribs, “Gen\u0002eralization of quantum error correction via the heisenberg\r
+picture,” Physical review letters 98, 100502 (2007).\r
+[41] Eugenio Bianchi, “Horizon entanglement entropy and\r
+universality of the graviton coupling,” (2012),\r
+arXiv:1211.0522 [gr-qc].\r
+[42] Nima Lashkari, Michael B. McDermott, and Mark\r
+Van Raamsdonk, “Gravitational dynamics from en\u0002tanglement ’thermodynamics’,” JHEP 04, 195 (2014),\r
+arXiv:1308.3716 [hep-th].\r
+[43] Xi Dong, Aitor Lewkowycz, and Mukund Rangamani,\r
+“Covariant holographic entanglement: a derivation,” to\r
+appear (2016).\r
+[44] Taylor Barrella, Xi Dong, Sean A. Hartnoll, and Victo\u0002ria L. Martin, “Holographic entanglement beyond classi\u0002cal gravity,” JHEP 09, 109 (2013), arXiv:1306.4682 [hep\u0002th].\r
+[45] Robert M. Wald, “Black hole entropy is the Noether\r
+charge,” Phys. Rev. D48, R3427 (1993), arXiv:gr\u0002qc/9307038 [gr-qc].\r
+[46] Vivek Iyer and Robert M. Wald, “Some properties of\r
+Noether charge and a proposal for dynamical black hole\r
+entropy,” Phys. Rev. D50, 846–864 (1994), arXiv:gr\u0002qc/9403028 [gr-qc].\r
+[47] Ted Jacobson, Gungwon Kang, and Robert C. Myers,
+
+7\r
+“On black hole entropy,” Phys. Rev. D49, 6587–6598\r
+(1994), arXiv:gr-qc/9312023 [gr-qc].\r
+[48] Ted Jacobson and Robert C. Myers, “Black hole entropy\r
+and higher curvature interactions,” Phys. Rev. Lett. 70,\r
+3684–3687 (1993), arXiv:hep-th/9305016 [hep-th].\r
+[49] Sergey N. Solodukhin, “Entanglement entropy, conformal\r
+invariance and extrinsic geometry,” Phys. Lett. B665,\r
+305–309 (2008), arXiv:0802.3117 [hep-th].\r
+[50] Ling-Yan Hung, Robert C. Myers, and Michael Smolkin,\r
+“On Holographic Entanglement Entropy and Higher Cur\u0002vature Gravity,” JHEP 04, 025 (2011), arXiv:1101.5813\r
+[hep-th].\r
+[51] Arpan Bhattacharyya, Apratim Kaviraj, and Aninda\r
+Sinha, “Entanglement entropy in higher derivative holog\u0002raphy,” JHEP 08, 012 (2013), arXiv:1305.6694 [hep-th].\r
+[52] Dmitri V. Fursaev, Alexander Patrushev, and Sergey N.\r
+Solodukhin, “Distributional Geometry of Squashed\r
+Cones,” Phys. Rev. D88, 044054 (2013), arXiv:1306.4000\r
+[hep-th].\r
+[53] Xi Dong, “Holographic Entanglement Entropy for Gen\u0002eral Higher Derivative Gravity,” JHEP 01, 044 (2014),\r
+arXiv:1310.5713 [hep-th].\r
+[54] Joan Camps, “Generalized entropy and higher derivative\r
+Gravity,” JHEP 03, 070 (2014), arXiv:1310.6659 [hep\u0002th].\r
+[55] Rong-Xin Miao and Wu-zhong Guo, “Holographic Entan\u0002glement Entropy for the Most General Higher Derivative\r
+Gravity,” JHEP 08, 031 (2015), arXiv:1411.5579 [hep\u0002th].\r
+[56] Netta Engelhardt and Aron C. Wall, “Quantum Ex\u0002tremal Surfaces: Holographic Entanglement Entropy\r
+beyond the Classical Regime,” JHEP 01, 073 (2015),\r
+arXiv:1408.3203 [hep-th]."""

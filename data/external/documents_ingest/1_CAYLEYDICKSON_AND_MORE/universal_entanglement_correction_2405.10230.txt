@@ -1,0 +1,969 @@
+Universal entanglement correction induced by relevant deformations at the quantum
+critical point
+Rui-Zhen Huang1 and Chen Peng2, ∗
+1
+
+arXiv:2405.10230v1 [cond-mat.str-el] 16 May 2024
+
+2
+
+Department of Physics and Astronomy, University of Ghent, Belgium
+Kavli Institute for Theoretical Sciences, University of Chinese Academy of Sciences, Beijing 100190, China
+(Dated: May 17, 2024)
+Local relevant deformations are important tool to study universal properties of quantum critical
+points. We investigate the effect of small relevant deformations on the bi-partite entanglement
+entropy at the quantum critical points. Within the quantum critical region, a universal power-law
+correction in the entanglement entropy induced by the relevant operator is found in both one- and
+two-dimensional critical lattice models. The exponent of the power-law correction term is determined
+by the scaling dimension of the relevant operator. Based on numerical simulations and scaling theory
+argument, it is conjectured that such a universal power-law correction in the entanglement entropy
+is universal for Lorentz invariant quantum critical points. Without Lorentz invariance, it is found
+the exponent in the power-law correction term does not fit in with the scaling argument in models
+with a dynamical exponent z = 2 in two dimension. This may be because the relevant operator
+added in the lattice model corresponds to complicated operators in the corresponding conformal
+field theory. Our study provides a different perspective to extract universal information of quantum
+critical points. We expect it would be useful to detect unique properties of topological quantum
+phase transitions.
+
+I.
+
+INTRODUCTION
+
+Along with the recent fast development of quantum
+computing technologies, the study and understanding
+of quantum entanglement becomes one of the most important topics. As a key concept in quantum theories, the entanglement has already inspired many researches for both high energy and condensed matter
+physics in recent years. The measure of the amount of
+quantum entanglement, the entanglement entropy (EE)
+S := −tr (ρA log(ρA )) (ρA is the reduced density matrix
+for the sub-region A in the whole system) deepens our understanding of quantum matter in many aspects [1–22],
+especially in the study of gapped quantum phases. The
+famous area law for the EE in gapped ground states not
+only reveals the relation between degrees of freedom in a
+quantum system [1–3], but also inspired novel quantum
+many-body frameworks [4–6].Moreover, a finer structure
+of the entanglement, including the degeneracy in the entanglement spectrum and the long-range entanglement,
+becomes the key to classify gapped topological quantum
+phases [4, 7–11].
+The entanglement scaling is also found important applications in critical systems [12–26]. The logarithmic
+scaling of the EE becomes one of the canonical methods
+to identify one-dimensional quantum critical points and
+extract the central charge for the underlying conformal
+field theory (CFT) [3, 12–15]. For two-dimensional quantum critical points, the corner EE is found to be related
+to Goldstone modes and is utilized to diagnose a class of
+controversial quantum phase transitions [23, 24]. Despite
+these successful applications of entanglement in critical-
+
+∗ pengchen@ucas.ac.cn
+
+ity, the information of the fixed point is not included
+there. For example, one can extract the central charge
+from the scaling the EE, however there may be different
+CFTs with the same central charge [27, 28]. A natural
+question is thus how one can find universal data from
+the EE. Recently it is found in one dimensions, the entanglement spectrum can be used to detect the operator
+contents of the corresponding CFT in some cases, provided with some other input information [15, 25, 26, 29].
+For two-dimensional universalities, or even more general
+cases without emergent Lorentz invariance, it is still an
+open question.
+From the scaling theory viewpoint, the universal scaling form of the EE [3] at the quantum critical point allows one to resemble local physical quantities and regard it as a quantity with a scaling dimension. For
+two-dimensional quantum critical points with emergent
+Lorentz invariance, such as the two-dimensional critical
+quantum Ising model on the square lattice, the EE satisfies an area law. One may expect close to the quantum
+critical point, a scaling theory may be written down for
+the EE and its deviation from the area law be universal.
+There has already been research in this area, primarily
+focusing on conformal field theory in (1+1)D and free
+field theories [30, 31]. For lattice models in the quantum
+critical region, especially two-dimensional models, there
+is still much to explore.
+In this paper, we study the effect of small relevant deformations on the entangle for both one- and
+two-dimensional quantum critical points with emergent
+Lorentz invariance on the lattice. In one dimension,
+we use the finite-entanglement scaling approach based
+on the infinite matrix product state (MPS) representation [11, 32–34]. The finite length scale ξ in the MPS is
+introduced by the entanglement cutoff. In two dimensions, we use the correlation matrix technique [35] to
+
+2
+
+S(g; 9) ! S(0; 9)
+
+S(0; 9) ! S(g; 9)
+
+-1
+
+10
+
+10-2
+-5e-04
+-3e-04
+-1e-04
+
+-3
+
+10
+
+1
+
+10
+
+2
+
+10
+
+10
+
+10-1
+
+-2
+
+10
+
+-3
+
+10
+
+3
+
+9
+
+5e-04
+3e-04
+1e-04
+
+101
+
+102
+
+103
+
+9
+
+S(0; 9) ! S(g; 9)
+
+FIG. 1. Power-law correction of the EE for the critical quantum Ising chain deformed by the transverse field g = h−hc obtained from the infinite uniform MPS. The exponent from the
+power-law fitting (dashed lines) are found to be ∆g = 1.00.
+
+10-1
+
+δS ∼ g ξ d+z−∆g
+
+(1)
+
+where d = 1 is the space dimension, z = 1 denotes the
+dynamical exponent, and ∆g is the scaling dimension of
+Og .
+We considered the quantum Ising chain
+X
+H=
+(−Zi Zi+1 − hXi )
+(2)
+i
+
+10-2
+
+10-3
+
+EE, the length scale therein is the correlation length ξ induced by the entanglement cutoff. MPS is a generic class
+of tensor network states describing low-energy states of
+one-dimensional lattice models well. The bipartite EE
+for critical the ground states is known to scale logarithmically with respect to the finite length scale of the system S ∼ 6c log(ξ) where the sub-region A is assumed
+to the left half spin chain. We add a relevant operator
+H ′ := g Og to the Hamiltonian H0 at the critical point
+and study the deviation of the logarithmic scaling for the
+EE. Resembling the EE as a conventional physical quantity (dimensionless), we expect the leading correction in
+the EE may be of the form
+
+1e-05
+2e-05
+3e-05
+1e-04
+
+101
+
+102
+
+9
+FIG. 2. Power-law correction of the EE for the critical quantum Ising chain deformed by a longitudinal field g = hz obtained from the infinite uniform MPS. The exponent from the
+power-law fitting (dashed lines) is found to be ∆g = 1.88.
+
+study the EE of free Dirac fermions. We consider relevant deformations with or without U (1) symmetries to
+the critical fermions. Combing the numerical calculations
+and the scaling theory argument, we propose there is a
+universal power-law correction in the EE induced by the
+relevant deformation. After that we present our study
+of critical points without Lorentz invariance. Finally we
+give a summary and conclusion.
+
+II. ENTANGLEMENT CORRECTION IN ONE
+DIMENSIONAL QUANTUM CRITICAL POINTS
+
+Before we present our study of the entanglement properties of (2+1)D theories, we investigate the influence of
+relevant deformations in one-dimensional quantum critical points with a underlying (1+1)D CFT description.
+Since we are going to use the infinite uniform matrix
+product state (MPS) framework. [32, 34, 36] to study the
+
+where Z and X are Pauli matrices defined on the twodimensional Hilbert space. The model has a global Z2
+symmetry. There is a quantum phase transition in the
+ground state at hc = 1 separating the symmetry-breaking
+phase h < 1 and the symmetric phase when h > 1. At the
+low energy, the critical Ising model is described by the
+A-series minimal model M (4, 3) CFT [27]. There are two
+non-trivial relevant operator for the Ising CFT, including
+the spin and the energy operator. On the lattice they are
+realized by adding a longitudinal field hz or deforming the
+transverse field to hc + δh, respectively.
+In Fig. 1, we show the correction for the entanglement
+against the finite correlation length induced by adding
+a small relevant field g = δh. The relevant deformation
+is the energy operator ϵ with a scaling dimension ∆ϵ =
+1. The correction of the EE shows a perfect power-law
+behavior ξ p with an exponent p ∼ 1.00. This is consistent
+with the form Eq. 1. Interestingly, we notice that there
+is a sign change for the EE correction term when adding
+a positive δh > 0 or a negative δh < 0 deformation.
+This is because the phase transition in the Ising model
+is induced by the energy operator and there is a shift
+for the critical point at finite length scales. Hence there
+exists an imbalance distributions for the EE and other
+physical quantities within the quantum critical region.
+We also consider deforming the
+Pcritical point with a
+symmetry-breaking field H ′ = hz i Zi . This lattice operator realizes the spin operator σ with a scaling dimension ∆σ = 1/8 in the Ising CFT. The numerical results in
+Fig. 2 confirm the power-law behavior and the exponent
+p ∼ 1.88 is close to the exponent d + z − ∆σ = 15/8.
+The power-law correction for the EE found in the numerical calculation in Figs. 1 and 2 may be explained
+from the scaling theory argument. One can regard the
+EE or exponential of the EE as a physical quantity with
+
+3
+a dimension ∆ = 0 or ∆ = −1, respectively. The EE
+close to the critical point can be written down as
+S(g, ξ) ∼
+
+
+c
+log ξ f1 (g ξ d+z−∆g ) ,
+6
+
+(3)
+
+where the finite length scale ξ can be replaced by other
+scales in different finite scaling approaches. Assuming a
+small parameter g and the scaling function being smooth,
+one can write down an approximated scaling theory up
+to the leading correction
+S(g, ξ) ∼
+
+c
+log(ξ) + cg gξ d+z−∆g + O(g 2 )
+6
+
+(4)
+
+where cg is obtained from the expansion of the scaling
+function and assumed to be non-zero. It predicts a universal power-law correction for the EE with an exponent
+p = d + z − ∆g . This is consistent with our numerical
+results in Fig. 1 by deforming the energy and the spin
+operators.
+
+FIG. 3. (a) The honeycomb lattice studied in Sec. III A. (b)
+The bernal-stacked bilayer graphene studied in Sec. III C. The
+upper and lower layer are shown with solid and dash lines, respectively. The inter-layer hopping ti connects different subsite A and B of each layer.
+
+where H0 denotes the critical free fermion term
+
+X  †
+ci,σ cj,σ + c†j,σ ci,σ ,
+H0 = −t
+
+(6)
+
+<ij>,σ
+
+III. ENTANGLEMENT ENTROPY
+CORRECTION IN TWO-DIMENSIONAL FREE
+LATTICE FERMIONS
+
+In two dimensions, the underlying (2+1)D CFT [27] for
+the critical lattice models is not as powerful as the onedimensional case. The numerical study of the EE is also
+challenging for, e.g. tensor networks or quantum Monte
+Carlo methods. Here we study the critical free lattice
+fermion models, which are well under control numerically.
+Thanks to the Wick theorem, the EE can be easily obtained from the single-particle correlation function [35].
+Note that since the fermion annihilation/creation operator has a scaling dimension ∆ = 1, the relevant operators
+we can write down must be bi-linear fermion operators
+with an even fermion parity.
+
+A.
+
+Entanglement entropy in free Dirac fermions
+
+In this section, we study the entanglement in critical free lattice fermion under small relevant perturbations. The critical lattice model is described by the Dirac
+fermion in the low energy. We consider L × L finite lattices with periodic boundary conditions on both x and
+y spatial directions. Two sub-regions A of different geometries are considered, either a L2 × L cylinder without
+corners or a L2 × L2 square with four corners. The EE
+between the sub-region A and its rest part Ā is calculated from the single-particle correlation defined within
+the sub-region [35].
+We consider the simplest lattice model that realizes
+free Dirac fermions on the honeycomb lattice as shown
+in Fig. 3 (a)
+H = H0 + H ′
+
+(5)
+
+and H ′ = g Og denotes a small relevant operator. The
+gapless point g = 0 can be viewed as a fine-tuning quantum critical point between the g > 0 and g < 0 gapped
+phases. At the gapless point, there are two Dirac points
+at the K and K ′ points in the first Brillouin zone. The
+number of Dirac points must be even for lattice models [37].
+Without a finite fermi surface, the EE in the Dirac
+fermion model satisfies an area law S ∼ αL. Similar to
+the one-dimensional case, regarding the EE as a conventional physical quantity, a power-law correction
+δS ∼ gLd+z+1−∆g
+
+(7)
+
+is expected. Interestingly, the gapped phases induced by
+a relevant field g also satisfy an area law S ∼ αg L for the
+EE at large length scales L ≫ ξg . One notices that it is
+very different from the the one-dimensional case studied
+in the last section, in which the EE satisfies different
+scaling forms between the critical point and the gapped
+phase. This makes the identification of the EE response
+to a mall relevant field more challenging numerically in
+two dimensions. Nevertheless, we expect that within the
+quantum critical region L ≪ ξg , the correction in the EE
+induced by the small relevant operator can be observed,
+assuming the area law coefficient does not change much
+for a small deformation.
+
+1.
+
+The EE correction induced by a small mass deformation
+
+We investigate the scaling behavior of the EE in the
+vicinity of the Dirac fermion with a small deformation –
+a U (1) symmetric mass term m
+X
+i
+H′ = m
+(−1) c†i,σ ci,σ
+(8)
+i,σ
+
+4
+-1
+
+which stands for the on-site staggered chemical potential.
+H ′ opens a small energy gap 1/ξm at the Dirac points.
+When m changes sign, an inversion of energy bands occur. The quantum critical region is well-defined for small
+systems L ≪ ξm ∼ 1/|m|. The positive and negative m
+regions are related by a unitary transformation, therefor
+we only consider m > 0 in the following.
+
+S(0; L) ! S(g; L)
+
+10
+
+We first consider the sub-region A of a cylinder geometry with a smooth entangling surface. The area law term
+should dominate the scaling for the EE. As expected, the
+EE shows perfect area law in the quantum critical region.
+Figure. 4 shows the scaling behavior of the leading correction
+
+-2
+
+10
+
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+10-3
+
+10
+
+20
+
+40
+
+60
+
+L
+
+which satisfies a perfect power-law fitting. The exponent
+found 1.94 is close to 2, consistent with the power-law
+form Ld+z+1−∆m in which the mass term has a scaling
+dimension ∆m = 2 for the free Dirac fermion.
+Now we begin to study the sub-region A of a square
+geometry with corners. As analysed above, the existence
+of singularity points in the entangling surface leads to
+another divergent logarithmic EE. To study the corner
+contribution, one needs to properly subtract the area law
+part. Here we define
+S c (g, L) = |S(g, 2L) − 2S(g, L)|
+
+(10)
+
+by using the 2L × 2L and L × L lattices [38]. Such a
+logarithmic divergent term is accurately produced in the
+finite size scaling, see Fig. 5 (a). Turing on a small mass
+perturbation, one can also observe small deviations from
+the logarithmic form at large lengths. This deviation signals the correction induced by the deformation. In Fig. 5
+(b), we show the scaling of the correction S (1) (g, L) defined in Eq. 9. It also satisfies a perfect power-law fitting
+with an exponent 1.95 which is also consistent with the
+form Ld+z+1−∆m . The existence of corners in the subregion A does not change the leading correction by the
+deformation. One may wonder the corner contribution
+also contains a correction term with a smaller exponent.
+It belongs to next leading contribution, which is beyond
+the scope of the present research.
+We have concentrated on the finite size scaling (L ≪ ξ)
+approach so far. It is interesting that we can also use
+a different way to study the logarithmic term S c (g, L).
+For a given mass term, we first calculate the converged
+value at the thermodynamic limit S c (g, L → ∞). The
+inverse mass becomes the length scale, which can be used
+to perform a finite mass scaling analysis. At the small
+mass regime, the corner EE should behave like S c (m) ∼
+log(1/m). This is verified in Fig. 6, where the numerical
+data shows an accurate finite mass scaling behavior.
+
+FIG. 4. Power-law correction of the EE induced by a small
+mass term to the critical free fermion on the Honeycomb lattice. The exponent is found to be 1.94 from the power-law
+fitting (dashed line). The sub-region is of a cylinder geometry.
+
+0.0e+00
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+1.7
+1.6
+1.5
+
+S(0; L) ! S(g; L)
+
+(9)
+
+2S(g; L) ! S(g; 2L)
+
+S (1) (g, L) = S(g, L) − S(0, L)
+
+1.4
+1.3
+10
+
+20
+
+40 60
+
+L
+
+10-1
+10-2
+10-3
+10-4
+10
+
+20
+
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+40 60
+
+L
+
+FIG. 5. The EE for the free fermion on the Honeycomb lattice
+with a sub-region of the square geometry. (a) Logarithmic
+scaling term S c in the EE caused by the corner in the subregion A. (b) Power-law correction of the EE induced by a
+small mass term. The exponent is found to be 1.95 from the
+power-law fitting (dashed line).
+
+2.
+
+The EE correction induced by a small pairing
+deformation
+
+In the previous subsection, we have shown that a U (1)
+symmetric mass term could contribute to a universal
+power-law correction. Here we switch to an s-wave pairing (superconducting) deformation
+
+X † †
+H′ = g
+ci↑ ci↓ + ci↓ ci↑ .
+(11)
+i
+
+where g is small. It has the same scaling dimension as the
+mass term ∆g = 2. This superconducting term breaks
+the global U (1) symmetry and results in a fully gapped
+superconductor ground state. The s-wave pairing ensures
+a small energy gap opening exactly at the Dirac points.
+
+5
+
+B.
+
+Scaling theory for the universal correction in
+(2+1)D quantum critical point
+
+Here we give a scaling theory argument to the powerlaw correction term found in the numerical calculations.
+In (2+1)D the EE for critical theories with conformal
+symmetry satisfy the area law for a sub-region with a
+smooth entangling surface. With a small relevant deformation g Ôg to the critical point, we conjecture a scaling
+theory for the EE
+
+S(g, L) ∼ L f g Ld+z−∆g
+(12)
+where ∆g < d + z is the scaling dimension of the operator Og . Similar to the one-dimensional case, assuming
+
+S c (g; 1)
+
+1.2
+1
+
+0.8
+0.6
+0.4
+
+10-1
+
+100
+
+g
+FIG. 6. Finite mass scaling for the corner EE S c . S c (g, ∞) is
+obtained by extrapolating the finite size L to infinitely large
+in S c (g, L).
+
+100
+
+S(0; L) ! S(g; L)
+
+When g changes sign, the single particle energy band also
+inverses, in which the vacuum ground state becomes fully
+occupied state. The two phases are related by a canonical transformation. Note that there is no global U (1)
+symmetry, the correlation matrix should also include the
+correlation function for the annihilation (creation) operators.
+We first study the EE correction for the sub-region of
+a cylinder geometry. As shown in Fig.7, the correction
+term induced by a small pairing deformation shows a
+power-law behavior accurately. The exponent is found to
+be 1.96, which is again consistent with the scaling form
+Ld+z+1−∆g .
+Next we consider the sub-region of the square geometry. The numerical results for the Sc is shown in Fig. 8.
+It shows a perfect logarithmic scaling behavior. Again,
+turning small pairing deformations, one can see there are
+deviations from the perfect logarithmic scaling. The correction in the EE induced by the deformation shows an
+accurately power-law behavior, see Fig. 8 (b). The exponent is fitted to be δg ∼ 1.94 is again consistent with the
+scaling form Eq. 7.
+
+10-1
+-2
+
+10
+
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+10-3
+10
+
+20
+
+40
+
+60
+
+L
+FIG. 7. Power-law correction of the EE induced by a small
+pairing term to the critical free fermion on the Honeycomb
+lattice. The exponent is found to be 1.96 from the power-law
+fitting (dashed line). The sub-region is of a cylinder geometry.
+
+the scaling function f to be smooth and a small enough
+perturbation g, one maybe expands the scaling theory in
+terms of g
+S(g, L) ∼ S(0, L) + a1 g Ld+z+1−∆g + O(g 2 )
+
+(13)
+
+where S(0, L) ∼ a0 L is the leading area law contribution. This gives rise to the universal power-law correction in Eq. 7. Such a universal correction can be detected
+when the length scale is much smaller than the correlation length, L ≪ ξg . It should be noted that this leading
+correction relies on a non-zero expansion constant a1 .
+The power-law correction shown above may disappear
+and the leading correction comes from one order higher
+expansion O(g 2 ) when c1 disappears accidentally.
+The EE distribution may become more complicated
+if the entangling surface contains singular points. It
+is known that a singular corner in the sub-region contributes an extra logarithmic divergent term log(L) compared with those with a smooth entangling surface. Thus
+when the entangling surface contains corners, one may
+rewrite the EE as
+S(g, L) = a0 L + ac log(L) + a1 gLd+z+1−∆g + O(g 2 )
+(14)
+where only leading corrections are considered. There may
+exist a power-law correction term from the corner contribution, which has a smaller exponent, hence difficult to
+demonstrate in numerical simulations.
+Besides critical theories with emergent conformal symmetry, we are also interested in critical points without
+emergent Lorentz invariance, z > 1, at the low-energy
+limit. We expect the scaling theory, especially the EE
+correction in Eqs. 9 and 7 hold when the dynamical exponent is close to that in Lorentz invariant systems z ∼ 1.
+
+6.5
+6
+
+0.0e+00
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+5.5
+5
+20
+
+10
+
+0
+
+10-1
+
+4.0e-03
+8.0e-03
+1.2e-02
+1.6e-02
+
+S(0; L) ! S(g; L)
+
+7
+
+S(0; L) ! S(g; L)
+
+2S(g; L) ! S(g; 2L)
+
+6
+
+-2
+
+10
+
+40 60
+
+20
+
+L
+
+40 60
+
+L
+
+-1
+
+4
+
+10
+
+3.5
+0e+00
+1e-03
+2e-03
+3e-03
+4e-03
+
+3
+2.5
+
+20
+
+L
+
+40 60
+
+S(0; L) ! S(g; L)
+
+2S(g; L) ! S(g; 2L)
+
+FIG. 8. EE for the free fermion on the Honeycomb lattice with
+a sub-region of the square geometry. (a) The Logarithmic
+scaling term in the EE caused by the corner in the sub-region
+A. (b) The power-law correction of the EE induced by a
+small pairing term. The exponent is found to be 1.94 from
+the power-law fitting (dashed line).
+
+10-2
+10-3
+1e-03
+2e-03
+3e-03
+4e-03
+
+10-4
+10-5
+
+20
+
+40 60
+
+L
+
+FIG. 9. EE for the BSBG model (ti = 0.3) with a sub-region
+of the square geometry. (a) The Logarithmic scaling term in
+the EE caused by the corner in the sub-region A. (b) The
+power-law correction of the EE induced by a mass term. The
+exponent is found to be 3.6 from the power-law fitting (dashed
+line).
+
+C.
+
+Entanglement entropy in critical fermions
+without Lorentz invariance
+
+The critical lattice models studied above admit Lorentz
+invariance (z = 1) at the low energy. From the scaling argument, this is not a necessary requirement in principle.
+For free fermions, a non-integer dynamical exponent is
+usually realized in models with long-range hoppings. For
+simplicity, here we study critical free lattice fermions with
+a dynamical exponent z = 2, whose low-energy modes
+read ω ∼ k 2 . Note that the scaling dimension of the
+fermionic annihilation operator ψ does not rely on the
+value of z. A simple dimension counting gives ∆ψ = 1
+for the free fermion in two dimensions. In the following,
+we are going to rely on numerical analysis to study the
+
+10-2
+10-3
+ti =0.3
+ti =0.5
+ti =0.7
+ti =1.1
+
+-4
+
+10
+
+-5
+
+10
+
+10
+
+20
+
+30
+
+40 50 60
+
+L
+FIG. 10. Power-law EE correction induced by a small mass
+term m = 0.001 for different inter-layer hoppings.
+
+EE.
+We consider the bernal-stacked bi-layer graphene 3
+with both intra- (t = 1) and inter-layer (ti ) hoppings.
+The model admits two quadratic band touching points
+when ti ̸= 0, which results in a dynamical exponent
+z = 2 at the low-energy. Deforming the critical model
+by adding a staggered mass term m in both layers opens
+a small energy gap at the band-touching points. A simple dimensional counting tells that the scaling dimension
+of the relevant operator is ∆m = 2. The leading EE
+correction is thus expected to be the form of δS ∼ mL3 .
+Figure. 9 shows the EE for a given inter-layer hopping
+ti = 0.3. It turns out the EE shows similar behavior as
+that in the Lorentz invariant theories. The corner contribution S c satisfies a logarithmic scaling for this model.
+Turning on the small mass deformation, it becomes deviated from the logarithmic form. Moreover, the leading
+correction induced by the small mass deformation is of
+a power-law form. However, the exponent is fitted to
+be ∼ 3.6, which does not fit in with the scaling form
+Ld+z+1−∆m . We also check the power-law correction for
+different inter-layer hopping ti . Figure. 10 demonstrates
+that S c remains to be a power-law form with the same
+exponent. Considering the fact that, the space-time dimension and the dimension of the fermion operators are
+all integers, this is a surprising result. The scaling argument does not apply here. In a different model, the free
+fermion model on the square lattice with a flux [39, 40],
+we find the power-law correction due to the variation of
+the flux gives an power-law correction for the EE, which
+again can not be explained by the scaling argument.
+These results indicate that, small relevant deformations indeed induce a power-law correction term for the
+EE in non-Lorentz invariant critical points. However, the
+power-law correction term may not be universal in the
+sense that its exponent is not determined by the scaling dimension ∆ of the relevant operator in the form
+of Ld+z+a−∆ and the exponent may change in different
+models. In our studies, the models have a dynamical
+
+7
+exponent z = 2, which is a strongly anisotropic critical
+point and can be described by the so-called conformal
+quantum critical point [41, 42]. The overlap of its ground
+state wave function with itself usually results in a partition function of a (1+1)D CFT. The scaling for the corner
+EE may be related to that in the (1+1)D CFT [42]. However, the correspondence between the relevant operator
+we added in the two-dimensional lattice model and operators in (1+1)D CFT can be complicated. Identifying
+the non-trivial correspondence may be helpful to explain
+the non-universal exponent in the power-law correction
+term.
+
+IV.
+
+SUMMARY
+
+In this paper, we studied the bipartite EE induced by
+a small relevant deformation to Lorentz invariant quantum critical points in both one and two dimensions. We
+argue that, within the quantum critical region small relevant deformations at the critical point induce a universal
+power-law correction to the EE. The exponent for this
+term is determined by the scaling dimension of the relevant operator. We applied numerical simulations and
+scaling argument to verify the universal correction term.
+In one dimension, we used the finite entanglement scaling
+to study critical lattice models and confirm the universal
+power-law correction to the leading logarithmic scaling
+for the EE. In two dimensions, we studied the critical lattice free fermion models which is described by the Dirac
+fermion at the low energy. We utilized the correlation
+matrix method to calculate the EE. With different types
+of relevant deformations, the universal pow-law correction is verified and its exponent is also determined by
+the scaling dimension of the relevant operator. We also
+
+[1] M. B. Hastings, An area law for one-dimensional quantum systems, Journal of statistical mechanics: theory
+and experiment 2007, P08024 (2007).
+[2] J. Eisert, M. Cramer, and M. B. Plenio, Colloquium:
+Area laws for the entanglement entropy, Reviews of Modern Physics 82, 277 (2010).
+[3] T. Nishioka, Entanglement entropy: holography and
+renormalization group, Reviews of Modern Physics 90,
+035007 (2018).
+[4] B. Zeng, X. Chen, D.-L. Zhou, and X.-G. Wen, Quantum
+information meets quantum matter (Springer, 2019).
+[5] F. Verstraete and J. I. Cirac, Renormalization algorithms
+for quantum-many body systems in two and higher dimensions (2004), arXiv:cond-mat/0407066.
+[6] F. Verstraete, M. M. Wolf, D. Pérez-Garcı́a, and J. I.
+Cirac, Criticality, the area law, and the computational
+power of projected entangled pair states, Physiscal Review Letters 96, 220601 (2006).
+[7] X. Chen, Z.-C. Gu, and X.-G. Wen, Complete classification of one-dimensional gapped quantum phases in interacting spin systems, Physical Review B 84, 235128
+
+studied the corner contribution in the EE. The logarithmic contribution by the singularity point in the entangling surface is confirmed with two different scaling approaches. We also studied non-Lorentz invariant critical
+models with a dynamical exponent z = 2. The pow-law
+correction for the EE induced by small relevant deformations is also found. However, such a power-law correction
+may not be universal.
+The models studied here in two dimensions are free
+fermion models. We expect the universal power-law correction to hold for non-trivial quantum critical points in
+interacting models, where there are anomalous correction
+to the dimension of relevant operators. In addition, there
+would be shift for the critical point at finite length scales.
+We expect there exists a sign change for the EE universal correction term at two different sides of the critical
+point. It is also interesting to further study EE in nonLorentz invariant models at the special point z = 2 from
+the (1+1)D CFT viewpoint. Another interesting topic
+is to study the correction for the EE for critical points
+close to the Lorentz invariant point z ∼ 1. We leave these
+interesting topics for future studies.
+V.
+
+ACKNOWLEDGEMENTS
+
+We thank Hui-Ke Jin, Zi-Xiang Li and Long Zhang
+for helpful discussions. R.Z.H would like to thank HaiJun Liao and Tao Xiang for their kind hospitality during the recent visit to the Institute of Physics, Chinese
+Academy of Sciences, where part of this paper was completed. R.Z.H is supported by a postdoctoral fellowship
+from the Special Research Fund (BOF) of Ghent University. C.P is supported by the National Natural Science
+Foundation of China (Grant No. 12304182).
+
+(2011).
+[8] X. Chen, Z.-C. Gu, Z.-X. Liu, and X.-G. Wen, Symmetry
+protected topological orders and the group cohomology of
+their symmetry group, Phys. Rev. B 87, 155114 (2013).
+[9] M. Levin and X.-G. Wen, Detecting topological order in
+a ground state wave function, Physical Review Letters
+96, 110405 (2006).
+[10] A. Kitaev and J. Preskill, Topological entanglement entropy, Physical Review Letters 96, 110404 (2006).
+[11] J. I. Cirac, D. Pérez-Garcı́a, N. Schuch, and F. Verstraete, Matrix product states and projected entangled
+pair states: Concepts, symmetries, theorems, Reviews of
+Modern Physics 93, 045003 (2021).
+[12] C. Holzhey, F. Larsen, and F. Wilczek, Geometric and
+renormalized entropy in conformal field theory, Nuclear
+Physics B 424, 443 (1994).
+[13] G. Vidal, J. I. Latorre, E. Rico, and A. Kitaev, Entanglement in quantum critical phenomena, Physical Review
+Letters 90, 227902 (2003).
+[14] P. Calabrese and J. L. Cardy, Entanglement entropy and
+quantum field theory, Journal of Statistical Mechanics:
+
+8
+Theory and Experiment 2004, P06002 (2004).
+[15] J. L. Cardy and E. Tonni, Entanglement Hamiltonians in
+two-dimensional conformal field theory, Journal of Statistical Mechanics: Theory and Experiment 2016, 123103
+(2016).
+[16] R. R. P. Singh, R. G. Melko, and J. Oitmaa, Thermodynamic singularities in the entanglement entropy at a
+two-dimensional quantum critical point, Phys. Rev. B
+86, 075106 (2012).
+[17] A. B. Kallin, K. Hyatt, R. R. P. Singh, and R. G.
+Melko, Entanglement at a two-dimensional quantum critical point: A numerical linked-cluster expansion study,
+Phys. Rev. Lett. 110, 135702 (2013).
+[18] A. B. Kallin, E. M. Stoudenmire, P. Fendley, R. R. P.
+Singh, and R. G. Melko, Corner contribution to the entanglement entropy of an o(3) quantum critical point in
+2 + 1 dimensions, Journal of Statistical Mechanics: Theory and Experiment 2014, P06009 (2014).
+[19] J. Helmes and S. Wessel, Entanglement entropy scaling
+in the bilayer heisenberg spin system, Phys. Rev. B 89,
+245120 (2014).
+[20] T. Devakul and R. R. P. Singh, Quantum critical universality and singular corner entanglement entropy of bilayer
+heisenberg-ising model, Phys. Rev. B 90, 064424 (2014).
+[21] J. Helmes, L. E. Hayward Sierens, A. Chandran,
+W. Witczak-Krempa, and R. G. Melko, Universal corner
+entanglement of dirac fermions and gapless bosons from
+the continuum to the lattice, Phys. Rev. B 94, 125142
+(2016).
+[22] W. Zhu, X. Chen, Y.-C. He, and W. WitczakKrempa, Entanglement signatures of emergent
+dirac fermions: Kagome spin liquid and quantum
+criticality, Science Advances 4, eaat5535 (2018),
+https://www.science.org/doi/pdf/10.1126/sciadv.aat5535.
+[23] J. Zhao, Y.-C. Wang, Z. Yan, M. Cheng, and Z. Y. Meng,
+Scaling of entanglement entropy at deconfined quantum
+criticality, Phys. Rev. Lett. 128, 010601 (2022).
+[24] M. Song, J. Zhao, M. Cheng, C. Xu, M. M. Scherer,
+L. Janssen, and Z. Y. Meng, Deconfined quantum criticality lost (2024), arXiv:2307.02547 [cond-mat.str-el].
+[25] G. Y. Cho, A. W. W. Ludwig, and S. Ryu, Universal entanglement spectra of gapped one-dimensional field theories, Physical Review B 95, 115122 (2017).
+[26] R.-Z. Huang, L. Zhang, A. M. Läuchli, J. Haegeman,
+F. Verstraete, and L. Vanderstraeten, Emergent conformal boundaries from finite-entanglement scaling in matrix product states, Physical Review Letters 132, 086503
+(2024).
+
+[27] P. Francesco, P. Mathieu, and D. Sénéchal, Conformal
+field theory (Springer Science & Business Media, 2012).
+[28] R. Blumenhagen and E. Plauschinn, Introduction to conformal field theory: with applications to String theory,
+Vol. 779 (2009).
+[29] A. M. Läuchli, Operator content of real-space entanglement spectra at conformal critical points (2013),
+arXiv:1303.0741.
+[30] J. Cardy and P. Calabrese, Unusual corrections to scaling
+in entanglement entropy, Journal of Statistical Mechanics: Theory and Experiment 2010, P04023 (2010).
+[31] P. Calabrese, J. Cardy, and I. Peschel, Corrections to
+scaling for block entanglement in massive spin chains,
+Journal of Statistical Mechanics: Theory and Experiment 2010, P09003 (2010).
+[32] S. R. White, Density matrix formulation for quantum
+renormalization groups, Physical Review Letters 69,
+2863 (1992).
+[33] F. Pollmann, S. Mukerjee, A. M. Turner, and J. E.
+Moore, Theory of finite-entanglement scaling at onedimensional quantum critical points, Physical Review
+Letters 102, 255701 (2009).
+[34] V. Zauner-Stauber, L. Vanderstraeten, M. T. Fishman,
+F. Verstraete, and J. Haegeman, Variational optimization
+algorithms for uniform matrix product states, Physical
+Review B 97, 045145 (2018).
+[35] I. Peschel and V. Eisler, Reduced density matrices and
+entanglement entropy in free lattice models, Journal of
+Physics A: Mathematical and Theoretical 42, 504003
+(2009).
+[36] G. Vidal, Classical simulation of infinite-size quantum
+lattice systems in one spatial dimension, Phys. Rev. Lett.
+98, 070201 (2007).
+[37] A. H. Castro Neto, F. Guinea, N. M. R. Peres, K. S.
+Novoselov, and A. K. Geim, The electronic properties of
+graphene, Rev. Mod. Phys. 81, 109 (2009).
+[38] Note that the logarithmic term remains invariant.
+[39] T.-S. Zeng, W. Zhu, and D. Sheng, Tuning topological
+phase and quantum anomalous hall effect by interaction
+in quadratic band touching systems, npj Quantum Materials 3, 49 (2018).
+[40] J.-M. Hou, Hidden-symmetry-protected topological
+semimetals on a square lattice, Phys. Rev. Lett. 111,
+130403 (2013).
+[41] E. Ardonne, P. Fendley, and E. Fradkin, Topological order and conformal quantum critical points, Annals of
+Physics 310, 493 (2004).
+[42] B. Hsu, M. Mulligan, E. Fradkin, and E.-A. Kim, Universal entanglement entropy in two-dimensional conformal quantum critical points, Phys. Rev. B 79, 115421
+(2009).
+
+

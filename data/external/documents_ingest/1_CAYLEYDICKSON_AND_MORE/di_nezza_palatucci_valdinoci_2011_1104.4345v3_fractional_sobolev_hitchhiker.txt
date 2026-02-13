@@ -1,0 +1,5705 @@
+arXiv:1104.4345v3 [math.FA] 19 Nov 2011
+
+Hitchhiker’s guide
+to the fractional Sobolev spaces
+Eleonora Di Nezzaa , Giampiero Palatuccia,b,1,∗, Enrico Valdinocia,c,2
+a
+
+Dipartimento di Matematica, Università di Roma “Tor Vergata” - Via della Ricerca
+Scientifica, 1, 00133 Roma, Italy
+b
+Dipartimento di Matematica, Università degli Studi di Parma, Campus - Viale delle
+Scienze, 53/A, 43124 Parma, Italy
+c
+Dipartimento di Matematica, Università degli Studi di Milano - Via Saldini, 50, 20133
+Milano, Italy
+
+Abstract
+This paper deals with the fractional Sobolev spaces W s,p . We analyze the
+relations among some of their possible definitions and their role in the trace
+theory. We prove continuous and compact embeddings, investigating the
+problem of the extension domains and other regularity results.
+Most of the results we present here are probably well known to the experts, but we believe that our proofs are original and we do not make use
+of any interpolation techniques nor pass through the theory of Besov spaces.
+We also present some counterexamples in non-Lipschitz domains.
+Keywords: Fractional Sobolev spaces, Gagliardo norm, fractional
+Laplacian, nonlocal energy, Sobolev embeddings, Riesz potential
+2010 MSC: Primary 46E35, Secondary 35S30, 35S05
+Corresponding author
+Email addresses: dinezza@mat.uniroma2.it (Eleonora Di Nezza),
+giampiero.palatucci@unimes.fr (Giampiero Palatucci), enrico@math.utexas.edu
+(Enrico Valdinoci)
+1
+Giampiero Palatucci has been supported by Istituto Nazionale di Alta Matematica
+“F. Severi” (Indam) and by ERC grant 207573 “Vectorial problems”.
+2
+Enrico Valdinoci has been supported by the ERC grant “ǫ Elliptic Pde’s and Symmetry of Interfaces and Layers for Odd Nonlinearities” and the FIRB project “A&B Analysis and Beyond”.
+3
+These notes grew out of a few lectures given in an undergraduate class held at the
+Università di Roma “Tor Vergata”. It is a pleasure to thank the students for their warm
+interest, their sharp observations and their precious feedback.
+∗
+
+Preprint submitted to Elsevier
+
+November 26, 2024
+
+Contents
+1 Introduction
+
+2
+
+2 The fractional Sobolev space W s,p
+
+5
+
+3 The space H s and the fractional Laplacian operator
+
+11
+
+4 Asymptotics of the constant C(n, s)
+
+22
+
+5 Extending a W s,p(Ω) function to the whole of Rn
+
+33
+
+6 Fractional Sobolev inequalities
+
+39
+
+7 Compact embeddings
+
+49
+
+8 Hölder regularity
+
+54
+
+9 Some counterexamples in non-Lipschitz domains
+
+59
+
+References
+
+65
+
+1. Introduction
+These pages are for students and young researchers of all ages who
+may like to hitchhike their way from 1 to s ∈ (0, 1). To wit, for anybody
+who, only endowed with some basic undergraduate analysis course (and
+knowing where his towel is), would like to pick up some quick, crash and
+essentially self-contained information on the fractional Sobolev spaces W s,p .
+The reasons for such a hitchhiker to start this adventurous trip might
+be of different kind: (s)he could be driven by mathematical curiosity,
+or could be tempted by the many applications that fractional calculus
+seems to have recently experienced. In a sense, fractional Sobolev spaces
+have been a classical topic in functional and harmonic analysis all along,
+and some important books, such as [59, 90] treat the topic in detail.
+On the other hand, fractional spaces, and the corresponding nonlocal
+
+2
+
+equations, are now experiencing impressive applications in different subjects, such as, among others, the thin obstacle problem [87, 69], optimization [37], finance [26], phase transitions [2, 14, 88, 40, 45], stratified
+materials [83, 23, 24], anomalous diffusion [68, 98, 65], crystal dislocation [92, 47, 8], soft thin films [57], semipermeable membranes and flame
+propagation [15], conservation laws [9], ultra-relativistic limits of quantum mechanics [41], quasi-geostrophic flows [64, 27, 21], multiple scattering [36, 25, 50], minimal surfaces [16, 20], materials science [4], water
+waves [81, 100, 99, 32, 29, 74, 33, 34, 31, 30, 42, 51, 75, 35], elliptic
+problems with measure data [71, 54], non-uniformly elliptic problems [39],
+gradient potential theory [72] and singular set of minima of variational
+functionals [70, 56]. Don’t panic, instead, see also [86, 87] for further
+motivation.
+For these reasons, we thought that it could be of some interest to write
+down these notes – or, more frankly, we wrote them just because if you
+really want to understand something, the best way is to try and
+explain it to someone else.
+Some words may be needed to clarify the style of these pages have been
+gathered. We made the effort of making a rigorous exposition, starting from
+scratch, trying to use the least amount of technology and with the simplest,
+low-profile language we could use – since capital letters were always
+the best way of dealing with things you didn’t have a good answer
+to.
+Differently from many other references, we make no use of Besov spaces4
+or interpolation techniques, in order to make the arguments as elementary
+as possible and the exposition suitable for everybody, since when you are
+a student or whatever, and you can’t afford a car, or a plane fare,
+or even a train fare, all you can do is hope that someone will stop
+and pick you up, and it’s nice to think that one could, even here
+and now, be whisked away just by hitchhiking.
+Of course, by dropping fine technologies and powerful tools, we will miss
+several very important features, and we apologize for this. So, we highly
+4
+
+About this, we would like to quote [53], according to which “The paradox of Besov
+spaces is that the very thing that makes them so successful also makes them very
+difficult to present and to learn”.
+
+3
+
+recommend all the excellent, classical books on the topic, such as [59, 90, 1,
+93, 94, 101, 80, 91, 67, 60], and the many references given therein. Without
+them, our reader would remain just a hitchhiker, losing the opportunity of
+performing the next crucial step towards a full mastering of the subject
+and becoming the captain of a spaceship.
+In fact, compared to other Guides, this one is not definitive, and it
+is a very evenly edited book and contains many passages that simply
+seemed to its editors a good idea at the time. In any case, of course,
+we know that we cannot solve any major problems just with potatoes
+– it’s fun to try and see how far one can get though.
+In this sense, while most of the results we present here are probably well
+known to the experts, we believe that the exposition is somewhat original.
+These are the topics we cover. In Section 2, we define the fractional
+Sobolev spaces W s,p via the Gagliardo approach and we investigate some
+of their basic properties. In Section 3 we focus on the Hilbert case p = 2,
+dealing with its relation with the fractional Laplacian, and letting the
+principal value integral definition interplay with the definition in the Fourier
+space. Then, in Section 4 we analyze the asymptotic behavior of the
+constant factor that appears in the definition of the fractional Laplacian.
+Section 5 is devoted to the extension problem of a function in W s,p(Ω)
+to W s,p(Rn ): technically, this is slightly more complicated than the classical analogue for integer Sobolev spaces, since the extension interacts with
+the values taken by the function in Ω via the Gagliardo norm and the
+computations have to take care of it.
+Sobolev inequalities and continuous embeddings are dealt with in Section 6, while Section 7 is devoted to compact embeddings. Then, in Section 8, we point out that functions in W s,p are continuous when sp is large
+enough.
+In Section 9, we present some counterexamples in non-Lipschitz domains.
+After that, we hope that our hitchhiker reader has enjoyed his trip from
+the integer Sobolev spaces to the fractional ones, with the advantages
+of being able to get more quickly from one place to another particularly when the place you arrived at had probably become, as
+a result of this, very similar to the place you had left.
+The above sentences written in old-fashioned fonts are Douglas
+4
+
+Adams’s of course, and we took the latitude of adapting their meanings to
+our purposes. The rest of these pages are written in a more conventional,
+may be boring, but hopefully rigorous, style.
+2. The fractional Sobolev space W s,p
+This section is devoted to the definition of the fractional Sobolev spaces.
+No prerequisite is needed. We just recall the definition of the Fourier
+transform of a distribution. First, consider the Schwartz space S of rapidly
+decaying C ∞ functions in Rn . The topology of this space is generated by
+the seminorms
+X
+pN (ϕ) = sup (1 + |x|)N
+|D α ϕ(x)| , N = 0, 1, 2, ... ,
+x∈Rn
+
+|α|≤N
+
+where ϕ ∈ S (Rn ). Let S ′ (Rn ) be the set of all tempered distributions,
+that is the topological dual of S (Rn ). As usual, for any ϕ ∈ S (Rn ), we
+denote by
+Z
+1
+F ϕ(ξ) =
+e−iξ·x ϕ(x) dx
+(2π)n/2 Rn
+the Fourier transform of ϕ and we recall that one can extend F from
+S (Rn ) to S ′ (Rn ).
+Let Ω be a general, possibly non smooth, open set in Rn . For any real
+s > 0 and for any p ∈ [1, ∞), we want to define the fractional Sobolev
+spaces W s,p (Ω). In the literature, fractional Sobolev-type spaces are also
+called Aronszajn, Gagliardo or Slobodeckij spaces, by the name of the ones
+who introduced them, almost simultaneously (see [3, 44, 89]).
+We start by fixing the fractional exponent s in (0, 1). For any p ∈
+[1, +∞), we define W s,p (Ω) as follows
+)
+(
+|u(x)
+−
+u(y)|
+∈ Lp (Ω × Ω) ;
+(2.1)
+W s,p (Ω) := u ∈ Lp (Ω) :
+n
+|x − y| p +s
+i.e, an intermediary Banach space between Lp (Ω) and W 1,p (Ω), endowed
+with the natural norm
+Z
+ p1
+Z Z
+|u(x) − u(y)|p
+p
+(2.2)
+kukW s,p (Ω) :=
+|u| dx +
+dx dy ,
+n+sp
+Ω
+Ω Ω |x − y|
+5
+
+where the term
+[u]W s,p (Ω) :=
+
+Z Z
+Ω
+
+|u(x) − u(y)|p
+dx dy
+n+sp
+Ω |x − y|
+
+ p1
+
+is the so-called Gagliardo (semi )norm of u.
+It is worth noticing that, as in the classical case with s being an integer,
+′
+the space W s ,p is continuously embedded in W s,p when s ≤ s′ , as next
+result points out.
+Proposition 2.1. Let p ∈ [1, +∞) and 0 < s ≤ s′ < 1. Let Ω be an open
+set in Rn and u : Ω → R be a measurable function. Then
+kukW s,p (Ω) ≤ CkukW s′,p (Ω)
+for some suitable positive constant C = C(n, s, p) ≥ 1. In particular,
+′
+
+W s ,p (Ω) ⊆ W s,p (Ω) .
+Proof. First,
+Z Z
+Ω
+
+|u(x)|p
+dx dy ≤
+n+sp
+Ω ∩ {|x−y|≥1} |x − y|
+
+Z Z
+Ω
+
+|z|≥1
+
+1
+|z|n+sp
+
+
+
+dz |u(x)|p dx
+
+≤ C(n, s, p)kukpLp (Ω) ,
+where we used the fact that the kernel 1/|z|n+sp is integrable since n+ sp >
+n.
+Taking into account the above estimate, it follows
+Z Z
+|u(x) − u(y)|p
+dx dy
+n+sp
+Ω Ω ∩ {|x−y|≥1} |x − y|
+Z Z
+|u(x)|p + |u(y)|p
+p−1
+≤2
+dx dy
+|x − y|n+sp
+Ω Ω ∩{|x−y|≥1}
+≤ 2p C(n, s, p)kukpLp (Ω) .
+
+(2.3)
+
+On the other hand,
+Z Z
+Z Z
+|u(x) − u(y)|p
+|u(x) − u(y)|p
+dx
+dy
+≤
+dx dy .
+n+sp
+n+s′p
+Ω Ω ∩ {|x−y|<1} |x − y|
+Ω Ω ∩ {|x−y|<1} |x − y|
+(2.4)
+6
+
+Thus, combining (2.3) with (2.4), we get
+Z Z
+|u(x) − u(y)|p
+dx dy
+n+sp
+Ω Ω |x − y|
+≤ 2 C(n, s, p)kukpLp (Ω) +
+p
+
+Z Z
+Ω
+
+|u(x) − u(y)|p
+dx dy
+n+s′p
+Ω |x − y|
+
+and so
+kukpW s,p (Ω)
+
+≤
+
+
+2 C(n, s, p) + 1 kukpLp (Ω) +
+p
+
+Z Z
+Ω
+
+|u(x) − u(y)|p
+dx dy
+n+s′p
+Ω |x − y|
+
+≤ C(n, s, p)kukpW s′,p (Ω) ,
+
+which gives the desired estimate, up to relabeling the constant C(n, p, s).
+We will show in the forthcoming Proposition 2.2 that the result in
+Proposition 2.1 holds also in the limit case, namely when s′ = 1, but for
+this we have to take into account the regularity of ∂Ω (see Example 9.1).
+As usual, for any k ∈ N and α ∈ (0, 1], we say that Ω is of class C k,α if
+there exists M > 0 such that for any x ∈ ∂Ω there exists a ball B = Br (x),
+r > 0, and an isomorphism T : Q → B such that
+T ∈ C k,α (Q), T −1 ∈ C k,α(B), T (Q+ ) = B ∩ Ω, T (Q0 ) = B ∩ ∂Ω
+and kT kC k,α (Q) + kT −1 kC k,α (B) ≤ M,
+where
+
+Q := x = (x′ , xn ) ∈ Rn−1 × R : |x′ | < 1 and |xn | < 1 ,
+
+Q+ := x = (x′ , xn ) ∈ Rn−1 × R : |x′ | < 1 and 0 < xn < 1
+and Q0 := {x ∈ Q : xn = 0} .
+
+We have the following result.
+
+7
+
+Proposition 2.2. Let p ∈ [1, +∞) and s ∈ (0, 1). Let Ω be an open set
+in Rn of class C 0,1 with bounded boundary and u : Ω → R be a measurable
+function. Then
+kukW s,p (Ω) ≤ CkukW 1,p (Ω)
+(2.5)
+for some suitable positive constant C = C(n, s, p) ≥ 1. In particular,
+W 1,p (Ω) ⊆ W s,p(Ω) .
+Proof. Let u ∈ W 1,p (Ω). Thanks to the regularity assumptions on the
+domain Ω, we can extend u to a function ũ : Rn → R such that ũ ∈
+W 1,p (Rn ) and kũkW 1,p (Rn ) ≤ CkukW 1,p (Ω) for a suitable constant C (see,
+e.g., [49, Theorem 7.25]).
+Now, using the change of variable z = y − x and the Hölder inequality,
+we have
+Z Z
+|u(x) − u(y)|p
+dx dy
+n+sp
+Ω Ω ∩ {|x−y|<1} |x − y|
+Z Z
+|u(x) − u(z + x)|p
+≤
+dz dx
+|z|n+sp
+Ω B1
+Z Z
+|u(x) − u(z + x)|p
+1
+=
+dz dx
+p
+n+(s−1)p
+|z|
+|z|
+Ω B1
+!p
+Z 1
+Z Z
+|∇u(x + tz)|
+≤
+dt dz dx
+n
+|z| p +s−1
+Ω B1
+0
+Z Z Z 1
+|∇ũ(x + tz)|p
+dt dz dx
+≤
+|z|n+p(s−1)
+Rn B1 0
+Z Z 1 k∇ũkp
+Lp (Rn )
+≤
+dt dz
+|z|n+p(s−1)
+B1 0
+≤ C1 (n, s, p)k∇ũkpLp (Rn )
+≤ C2 (n, s, p)kukpW 1,p(Ω) .
+
+(2.6)
+
+|u(x) − u(y)|p
+dx dy ≤ C(n, s, p)kukpLp (Ω) .
+n+sp
+Ω ∩ {|x−y|≥1} |x − y|
+
+(2.7)
+
+Also, by (2.3),
+Z Z
+Ω
+
+8
+
+Therefore, from (2.6) and (2.7) we get estimate (2.5).
+We remark that the Lipschitz assumption in Proposition 2.2 cannot be
+completely dropped (see Example 9.1 in Section 9); we also refer to the
+forthcoming Section 5, in which we discuss the extension problem in W s,p .
+Let us come back to the definition of the space W s,p (Ω). Before going
+ahead, it is worth explaining why the definition in (2.1) cannot be plainly
+extended to the case s ≥ 1. Suppose that Ω is a connected open set in Rn ,
+then any measurable function u : Ω → R such that
+Z Z
+|u(x) − u(u)|p
+dx dy < +∞
+n+sp
+Ω Ω |x − y|
+is actually constant (see [10, Proposition 2]). This fact is a matter of
+scaling and it is strictly related to the following result that holds for any
+u in W 1,p (Ω):
+Z
+Z Z
+|u(x) − u(y)|p
+dx dy = C1 |∇u|p dx
+(2.8)
+lim (1 − s)
+n+sp
+s→1−
+|x
+−
+y|
+Ω
+Ω Ω
+
+for a suitable positive constant C1 depending only on n and p (see [11]).
+In the sameSspirit, in [66], Maz’ja and Shaposhnikova proved that, for
+a function u ∈ 0<s<1 W s,p (Rn ), it yields
+Z Z
+Z
+|u(x) − u(y)|p
+lim s
+dx dy = C2
+|u|p dx,
+(2.9)
+n+sp
+s→0+
+|x
+−
+y|
+n
+n
+n
+R
+R
+R
+for a suitable positive constant C2 depending5 only on n and p.
+
+When s > 1 and it is not an integer we write s = m + σ, where m
+is an integer and σ ∈ (0, 1). In this case the space W s,p (Ω) consists of
+those equivalence classes of functions u ∈ W m,p (Ω) whose distributional
+derivatives D α u, with |α| = m, belong to W σ,p (Ω), namely
+n
+o
+W s,p (Ω) := u ∈ W m,p (Ω) : D α u ∈ W σ,p (Ω) for any α s.t. |α| = m
+(2.10)
+5
+
+For the sake of simplicity, in the definition of the fractional Sobolev spaces and those
+of the corresponding norms in (2.1) and (2.2) we avoided any normalization constant.
+In view of (2.8) and (2.9), it is worthing notice that, in order to recover the classical
+W 1,p and Lp spaces, one may consider to add a factor C(n, p, s) ≈ s(1 − s) in front of
+the double integral in (2.2).
+
+9
+
+and this is a Banach space with respect to the norm
+
+
+kukW s,p (Ω) := kukpW m,p (Ω) +
+
+X
+
+|α|=m
+
+p1
+
+kD α ukpW σ,p(Ω)  .
+
+(2.11)
+
+Clearly, if s = m is an integer, the space W s,p(Ω) coincides with the Sobolev
+space W m,p (Ω).
+Corollary 2.3. Let p ∈ [1, +∞) and s, s′ > 1. Let Ω be an open set in Rn
+of class C 0,1 . Then, if s′ ≥ s, we have
+′
+
+W s ,p (Ω) ⊆ W s,p(Ω).
+Proof. We write s = k + σ and s′ = k ′ + σ ′ , with k, k ′ integers and σ, σ ′ ∈
+(0, 1). In the case k ′ = k, we can use Proposition 2.1 in order to conclude
+′
+that W s ,p (Ω) is continuously embedded in W s,p(Ω). On the other hand, if
+k ′ ≥ k + 1, using Proposition 2.1 and Proposition 2.2 we have the following
+chain
+′
+′
+′
+W k +σ ,p (Ω) ⊆ W k ,p (Ω) ⊆ W k+1,p(Ω) ⊆ W k+σ,p (Ω) .
+The proof is complete.
+As in the classic case with s being an integer, any function in the
+fractional Sobolev space W s,p (Rn ) can be approximated by a sequence of
+smooth functions with compact support.
+Theorem 2.4. For any s > 0, the space C0∞ (Rn ) of smooth functions with
+compact support is dense in W s,p(Rn ).
+A proof can be found in [1, Theorem 7.38].
+Let W0s,p (Ω) denote the closure of C0∞ (Ω) in the norm k·kW s,p (Ω) defined
+in (2.11). Note that, in view of Theorem 2.4, we have
+W0s,p(Rn ) = W s,p (Rn ) ,
+
+(2.12)
+
+but in general, for Ω ⊂ Rn , W s,p (Ω) 6= W0s,p(Ω), i.e. C0∞ (Ω) is not dense in
+W s,p(Ω). Furthermore, it is clear that the same inclusions stated in Proposition 2.1, Proposition 2.2 and Corollary 2.3 hold for the spaces W0s,p (Ω).
+10
+
+Remark 2.5. For s < 0 and p ∈ (1, ∞), we can define W s,p (Ω) as the dual
+space of W0−s,q (Ω) where 1/p + 1/q = 1. Notice that, in this case, the space
+W s,p(Ω) is actually a space of distributions on Ω, since it is the dual of a
+space having C0∞ (Ω) as density subset.
+Finally, it is worth noticing that the fractional Sobolev spaces play an
+important role in the trace theory. Precisely, for any p ∈ (1, +∞), assume
+that the open set Ω ⊆ Rn is sufficiently smooth, then the space of traces T u
+on ∂Ω of u in W 1,p (Ω) is characterized by kT uk 1− p1 ,p
+< +∞ (see [43]).
+W
+
+(∂Ω)
+
+1
+
+Moreover, the trace operator T is surjective from W (Ω) onto W 1− p ,p (∂Ω).
+In the quadratic case p = 2, the situation simplifies considerably, as we will
+see in the next section and a proof of the above trace embedding can be
+find in the forthcoming Proposition 3.8.
+1,p
+
+3. The space H s and the fractional Laplacian operator
+In this section, we focus on the case p = 2. This is quite an important
+case since the fractional Sobolev spaces W s,2(Rn ) and W0s,2 (Rn ) turn out
+to be Hilbert spaces. They are usually denoted by H s (Rn ) and H0s (Rn ),
+respectively. Moreover, they are strictly related to the fractional Laplacian
+operator (−∆)s (see Proposition 3.6), where, for any u ∈ S and s ∈ (0, 1),
+(−∆)s is defined as
+Z
+u(x) − u(y)
+s
+dy
+(3.1)
+(−∆) u(x) = C(n, s) P.V.
+n+2s
+Rn |x − y|
+Z
+u(x) − u(y)
+dy.
+= C(n, s) lim+
+n+2s
+ε→0
+C Bε (x) |x − y|
+Here P.V. is a commonly used abbreviation for “in the principal value
+sense” (as defined by the latter equation) and C(n, s) is a dimensional
+constant that depends on n and s, precisely given by
+Z
+−1
+1 − cos(ζ1 )
+C(n, s) =
+dζ
+.
+(3.2)
+|ζ|n+2s
+Rn
+The choice of this constant is motived by Proposition 3.3.
+
+11
+
+Remark 3.1. Due to the singularity of the kernel, the right hand-side of
+(3.1) is not well defined in general. In the case s ∈ (0, 1/2) the integral in
+(3.1) is not really singular near x. Indeed, for any u ∈ S , we have
+Z
+|u(x) − u(y)|
+dy
+n+2s
+Rn |x − y|
+Z
+Z
+1
+|x − y|
+dy + kukL∞ (Rn )
+dy
+≤C
+n+2s
+n+2s
+C BR |x − y|
+BR |x − y|
+Z
+
+Z
+1
+1
+=C
+dy +
+dy
+n+2s−1
+n+2s
+BR |x − y|
+C BR |x − y|
+
+Z R
+Z +∞
+1
+1
+dρ +
+dρ < +∞
+=C
+2s
+|ρ|2s+1
+R
+0 |ρ|
+where C is a positive constant depending only on the dimension and on
+the L∞ norm of u.
+Now, we show that one may write the singular integral in (3.1) as a
+weighted second order differential quotient.
+Lemma 3.2. Let s ∈ (0, 1) and let (−∆)s be the fractional Laplacian
+operator defined by (3.1). Then, for any u ∈ S ,
+Z
+1
+u(x + y) + u(x − y) − 2u(x)
+s
+(−∆) u(x) = − C(n, s)
+dy, ∀x ∈ Rn .
+n+2s
+2
+|y|
+n
+R
+(3.3)
+Proof. The equivalence of the definitions in (3.1) and (3.3) immediately
+follows by the standard changing variable formula.
+Indeed, by choosing z = y − x, we have
+Z
+u(y) − u(x)
+s
+dy
+(−∆) u(x) = − C(n, s) P.V.
+n+2s
+Rn |x − y|
+Z
+u(x + z) − u(x)
+= − C(n, s) P.V.
+dz.
+|z|n+2s
+Rn
+
+(3.4)
+
+Moreover, by substituting z̃ = −z in last term of the above equality, we
+have
+Z
+Z
+u(x + z) − u(x)
+u(x − z̃) − u(x)
+P.V.
+dz = P.V.
+dz̃.
+(3.5)
+n+2s
+|z|
+|z̃|n+2s
+Rn
+Rn
+12
+
+and so after relabeling z̃ as z
+Z
+u(x + z) − u(x)
+2P.V.
+dz
+|z|n+2s
+Rn
+Z
+Z
+u(x − z) − u(x)
+u(x + z) − u(x)
+dz + P.V.
+dz
+= P.V.
+n+2s
+|z|
+|z|n+2s
+Rn
+Rn
+Z
+u(x + z) + u(x − z) − 2u(x)
+= P.V.
+dz.
+(3.6)
+|z|n+2s
+Rn
+Therefore, if we rename z as y in (3.4) and (3.6), we can write the fractional
+Laplacian operator in (3.1) as
+Z
+u(x + y) + u(x − y) − 2u(x)
+1
+s
+dy.
+(−∆) u(x) = − C(n, s) P.V.
+2
+|y|n+2s
+Rn
+The above representation is useful to remove the singularity of the integral
+at the origin. Indeed, for any smooth function u, a second order Taylor
+expansion yields
+u(x + y) + u(x − y) − 2u(x)
+kD 2 ukL∞
+≤
+,
+|y|n+2s
+|y|n+2s−2
+which is integrable near 0 (for any fixed s ∈ (0, 1)). Therefore, since u ∈ S ,
+one can get rid of the P.V. and write (3.3).
+
+3.1. An approach via the Fourier transform
+Now, we take into account an alternative definition of the space H s (Rn ) =
+W s,2(Rn ) via the Fourier transform. Precisely, we may define
+
+
+Z
+s
+n
+2
+n
+2s
+2
+Ĥ (R ) = u ∈ L (R ) :
+(1 + |ξ| )|F u(ξ)| dξ < +∞
+(3.7)
+Rn
+
+and we observe that the above definition, unlike the ones via the Gagliardo
+norm in (2.2), is valid also for any real s ≥ 1.
+We may also use an analogous definition for the case s < 0 by setting
+
+
+Z
+s
+n
+′
+n
+2 s
+2
+Ĥ (R ) = u ∈ S (R ) :
+(1 + |ξ| ) |F u(ξ)| dξ < +∞ ,
+Rn
+
+13
+
+although in this case the space Ĥ s (Rn ) is not a subset of L2 (Rn ) and, in
+order to use the Fourier transform, one has to start from an element of
+S ′ (Rn ), (see also Remark 2.5).
+The equivalence of the space Ĥ s (Rn ) defined in (3.7) with the one
+defined in the previous section via the Gagliardo norm (see (2.1)) is stated
+and proven in the forthcoming Proposition 3.4.
+First, we will prove that the fractional Laplacian (−∆)s can be viewed
+as a pseudo-differential operator of symbol |ξ|2s . The proof is standard and
+it can be found in many papers (see, for instance, [91, Chapter 16]). We
+will follow the one in [97] (see Section 3), in which is shown how singular
+integrals naturally arise as a continuous limit of discrete long jump random
+walks.
+Proposition 3.3. Let s ∈ (0, 1) and let (−∆)s : S → L2 (Rn ) be the
+fractional Laplacian operator defined by (3.1). Then, for any u ∈ S ,
+(−∆)s u = F −1 (|ξ|2s (F u))
+
+∀ξ ∈ Rn .
+
+(3.8)
+
+Proof. In view of Lemma 3.2, we may use the definition via the weighted
+second order differential quotient in (3.3). We denote by L u the integral
+in (3.3), that is
+Z
+1
+u(x + y) + u(x − y) − 2u(x)
+L u(x) = − C(n, s)
+dy,
+2
+|y|n+2s
+Rn
+
+with C(n, s) as in (3.2).
+L is a linear operator and we are looking for its “symbol” (or “multiplier”),
+that is a function S : Rn → R such that
+L u = F −1 (S(F u)).
+
+(3.9)
+
+S(ξ) = |ξ|2s,
+
+(3.10)
+
+We want to prove that
+where we denoted by ξ the frequency variable. To this scope, we point out
+that
+|u(x + y) + u(x − y) − 2u(x)|
+|y|n+2s
+
+
+≤ 4 χB1 (y)|y|2−n−2s sup |D 2 u| + χRn \B1 (y)|y|−n−2s sup |u|
+Rn
+
+B1 (x)
+
+
+
+≤ C χB1 (y)|y|2−n−2s(1 + |x|n+1 )−1 + χRn \B1 (y)|y|−n−2s ∈ L1 (R2n ).
+14
+
+Consequently, by the Fubini-Tonelli’s Theorem, we can exchange the integral in y with the Fourier transform in x. Thus, we apply the Fourier
+transform in the variable x in (3.9) and we obtain
+S(ξ)(F u)(ξ) = F (L u)
+1
+= − C(n, s)
+2
+
+Z
+
+F (u(x + y) + u(x − y) − 2u(x))
+dy
+|y|n+2s
+Rn
+Z
+1
+eiξ·y + e−iξ·y − 2
+= − C(n, s)
+dy(F u)(ξ)
+2
+|y|n+2s
+Rn
+Z
+1 − cos(ξ · y)
+dy(F u)(ξ).
+(3.11)
+= C(n, s)
+|y|n+2s
+Rn
+Hence, in order to obtain (3.10), it suffices to show that
+Z
+1 − cos(ξ · y)
+dy = C(n, s)−1 |ξ|2s .
+n+2s
+|y|
+n
+R
+
+(3.12)
+
+To check this, first we observe that, if ζ = (ζ1 , ..., ζn ) ∈ Rn , we have
+1 − cos ζ1
+|ζ1 |2
+1
+≤
+≤
+n+2s
+n+2s
+n−2+2s
+|ζ|
+|ζ|
+|ζ|
+near ζ = 0. Thus,
+Z
+
+1 − cos ζ1
+dζ is finite and positive.
+n+2s
+Rn |ζ|
+
+(3.13)
+
+Now, we consider the function I : Rn → R defined as follows
+Z
+1 − cos (ξ · y)
+I(ξ) =
+dy.
+|y|n+2s
+Rn
+We have that I is rotationally invariant, that is
+I(ξ) = I(|ξ|e1 ),
+
+(3.14)
+
+where e1 denotes the first direction vector in Rn . Indeed, when n = 1,
+then we can deduce (3.14) by the fact that I(−ξ) = I(ξ). When n ≥ 2,
+15
+
+we consider a rotation R for which R(|ξ|e1 ) = ξ and we denote by RT its
+transpose. Then, by substituting ỹ = RT y, we obtain
+
+Z
+1 − cos (R(|ξ|e1)) · y
+I(ξ) =
+dy
+|y|n+2s
+Rn
+
+Z
+1 − cos (|ξ|e1) · (RT y)
+=
+dy
+|y|n+2s
+Rn
+
+Z
+1 − cos (|ξ|e1) · ỹ
+=
+dỹ = I(|ξ|e1 ),
+|ỹ|n+2s
+Rn
+which proves (3.14).
+As a consequence of (3.13) and (3.14), the substitution ζ = |ξ|y gives
+that
+I(ξ) = I(|ξ|e1 )
+Z
+1 − cos (|ξ|y1)
+=
+dy
+|y|n+2s
+Rn
+Z
+1 − cos ζ1
+1
+dζ = C(n, s)−1 |ξ|2s.
+=
+n
+|ξ| Rn ζ/|ξ| n+2s
+Z
+
+1 − cos(ζ1 )
+dζ by (3.2).
+|ζ|n+2s
+Rn
+Hence, we deduce (3.12) and then the proof is complete.
+where we recall that C(n, s)
+
+−1
+
+is equal to
+
+Proposition 3.4. Let s ∈ (0, 1). Then the fractional Sobolev space H s (Rn )
+defined in Section 2 coincides with Ĥ s (Rn ) defined in (3.7). In particular,
+for any u ∈ H s (Rn )
+Z
+2
+−1
+|ξ|2s |F u(ξ)|2 dξ.
+[u]H s (Rn ) = 2C(n, s)
+Rn
+
+where C(n, s) is defined by (3.2).
+Proof. For every fixed y ∈ Rn , by changing of variable choosing z = x − y,
+
+16
+
+we get
+Z Z
+Rn
+
+
+Z Z
+|u(x) − u(y)|2
+|u(z + y) − u(y)|2
+dx
+dy
+=
+dz dy
+|x − y|n+2s
+|z|n+2s
+Rn
+Rn Rn
+!
+Z
+Z
+2
+u(z + y) − u(y)
+dy dz
+=
+|z|n/2+s
+Rn
+Rn
+Z
+2
+u(z + ·) − u(·)
+=
+dz
+|z|n/2+s
+Rn
+L2 (Rn )
+
+ 2
+Z
+u(z + ·) − u(·)
+=
+F
+dz,
+|z|n/2+s
+Rn
+L2 (Rn )
+
+where Plancherel Formula has been used.
+Now, using (3.12) we obtain
+ 2
+
+Z
+u(z + ·) − u(·)
+dz
+F
+|z|n/2+s
+Rn
+L2 (Rn )
+Z Z
+|eiξ·z − 1|2
+|F u(ξ)|2 dξ dz
+=
+n+2s
+|z|
+n
+n
+R
+R
+Z Z
+(1 − cos ξ · z)
+= 2
+|F u(ξ)|2 dz dξ
+n+2s
+|z|
+Rn Rn
+Z
+|ξ|2s |F u(ξ)|2 dξ.
+= 2C(n, s)−1
+Rn
+
+This completes the proof.
+Remark 3.5. The equivalence of the spaces H s and Ĥ s stated in Proposition 3.4 relies on Plancherel Formula. As well known, unless p = q = 2,
+one cannot go forward and backward between an Lp and an Lq via Fourier
+transform (see, for instance, the sharp inequality in [5] for the case 1 <
+p < 2 and q equal to the conjugate exponent p/(p − 1) ). That is why the
+general fractional space defined via Fourier transform for 1 < p < ∞ and
+s > 0, say H s,p(Rn ), does not coincide with the fractional Sobolev spaces
+W s,p(Rn ) and will be not discussed here (see, e.g., [101]).
+Finally, we are able to prove the relation between the fractional Laplacian operator (−∆)s and the fractional Sobolev space H s .
+17
+
+Proposition 3.6. Let s ∈ (0, 1) and let u ∈ H s (Rn ). Then,
+s
+
+[u]2H s (Rn ) = 2C(n, s)−1 k(−∆) 2 uk2L2 (Rn ) .
+
+(3.15)
+
+where C(n, s) is defined by (3.2).
+Proof. The equality in (3.15) plainly follows from Proposition 3.3 and
+Proposition 3.4. Indeed,
+s
+
+s
+
+k(−∆) 2 uk2L2 (Rn ) = kF (−∆) 2 uk2L2(Rn ) = k|ξ|s F uk2L2(Rn )
+=
+
+1
+C(n, s)[u]2H s (Rn ) .
+2
+
+Remark 3.7. In the same way as the fractional Laplacian (−∆)s is related
+to the space
+W s,2 as its
+R
+ Euler-Lagrange equation or from the formula
+2
+s
+kukW s,2 = u(−∆) u dx , a more general integral operator can be defined
+that is related to the space W s,p for any p (see the recent paper [52]).
+Armed with the definition of H s (Rn ) via the Fourier transform, we
+can easily analyze the traces of the Sobolev functions (see the forthcoming Proposition 3.8). We will follow Sections 13, 15 and 16 in [91].
+Let Ω ⊆ Rn be an open set with continuous boundary ∂Ω. Denote by
+T the trace operator, namely the linear operator defined by the uniformly
+continuous extension of the operator of restriction to ∂Ω for functions
+in D(Ω), that is the space of functions C0∞ (Rn ) restricted6 to Ω.
+Now, for any x = (x′ , xn ) ∈ Rn and for any u ∈ S (Rn ), we denote by
+v ∈ S (Rn−1 ) the restriction of u on the hyperplane xn = 0, that is
+v(x′ ) = u(x′ , 0)
+
+∀x′ ∈ Rn−1 .
+
+(3.16)
+
+Then, we have
+′
+
+F v(ξ ) =
+
+Z
+
+F u(ξ ′, ξn ) dξn
+
+∀ξ ′ ∈ Rn−1 ,
+
+(3.17)
+
+R
+
+6
+
+Notice that we cannot simply take T as the restriction operator to the boundary,
+since the restriction to a set of measure 0 (like the set ∂Ω) is not defined for functions
+which are not smooth enough.
+
+18
+
+where, for the sake of simplicity, we keep the same symbol F for both the
+Fourier transform in n − 1 and in n variables.
+To check (3.17), we write
+1
+
+′
+
+F v(ξ ) =
+=
+
+(2π)
+
+n−1
+2
+
+1
+(2π)
+
+n−1
+2
+
+Z
+Z
+
+′
+
+′
+
+′
+
+′
+
+e−iξ ·x v(x′ ) dx′
+Rn−1
+
+e−iξ ·x u(x′ , 0) dx′ .
+
+(3.18)
+
+Rn−1
+
+On the other hand, we have
+Z
+F u(ξ ′, ξn ) dξn
+R
+
+=
+
+=
+=
+
+Z
+
+1
+n
+R (2π) 2
+Z
+1
+
+Z
+
+′
+
+Rn
+
+n−1
+
+(2π) 2
+1
+(2π)
+
+n−1
+2
+
+Rn−1
+
+Z
+
+′
+
+e−i (ξ ,ξn )·(x ,xn ) u(x′ , xn ) dx′ dxn dξn
+
+Rn−1
+
+−iξ ′ ·x′
+
+e
+
+"
+
+1
+1
+
+(2π) 2
+
+Z Z
+
+R R
+
+#
+
+e−iξn ·xn u(x′ , xn ) dxn dξn dx′
+
+
+′ ′
+e−iξ ·x u(x′ , 0) dx′ ,
+
+where the last equality follows by transforming and anti-transforming u in
+the last variable, and this coincides with (3.18).
+Now, we are in position to characterize the traces of the function
+in H s (Rn ), as stated in the following proposition.
+> 1/2, then any function
+Proposition 3.8. ([91, Lemma 16.1]). Let s 
+s
+n
+u ∈ H (R ) has a trace v on the hyperplane xn = 0 , such that v ∈
+1
+H s− 2 (Rn−1 ). Also, the trace operator T is surjective from H s (Rn ) onto
+1
+H s− 2 (Rn−1 ).
+Proof. In order to prove the first claim, it suffices to show that there exists
+an universal constant C such that, for any u ∈ S (Rn ) and any v defined
+as in (3.16),
+(3.19)
+kvkH s− 21 (Rn−1 ) ≤ CkukH s(Rn ) .
+19
+
+By taking into account (3.17), the Cauchy-Schwarz inequality yields
+Z
+ Z
+
+dξn
+′ 2
+2 s
+′
+2
+|F v(ξ )| ≤
+(1 + |ξ| ) |F u(ξ , ξn )| dξn
+. (3.20)
+2 s
+R
+R (1 + |ξ| )
+p
+Using the changing of variable formula by setting ξn = t 1 + |ξ ′|2 , we have
+Z
+
+dξn
+=
+2 s
+R (1 + |ξ| )
+
+Z
+
+Z
+
+1 + |ξ ′|2
+
+1/2
+
+(1 + |ξ ′|2 )(1 + t2 )
+ 1 −s
+= C(s) 1 + |ξ ′ |2 2 ,
+R
+
+s dt =
+
+Z
+
+R
+
+ 1 −s
+1 + |ξ ′| 2
+dt
+(1 + t2 )s
+
+(3.21)
+
+dt
+< +∞ since s > 1/2.
+2 s
+R (1 + t )
+Combining (3.20) with (3.21) and integrating in ξ ′ ∈ Rn−1 , we obtain
+Z
+s− 1
+1 + |ξ ′|2 2 |F v(ξ ′)|2 dξ ′
+Rn−1
+Z
+Z
+s
+≤ C(s)
+1 + |ξ|2 |F u(ξ ′, ξn )|2 dξn dξ ′,
+
+where C(s) :=
+
+Rn−1
+
+R
+
+that is (3.19).
+
+Now, we will prove the surjectivity of the trace operator T . For this,
+1
+we show that for any v ∈ H s− 2 (Rn−1 ) the function u defined by
+!
+ξ
+1
+n
+p
+F u(ξ ′, ξn ) = F v(ξ ′) ϕ p
+,
+(3.22)
+1 + |ξ ′|2
+1 + |ξ ′ |2
+
+with ϕ ∈ C0∞ (R) and
+
+Z
+
+ϕ(t) dt = 1, is such that u ∈ H s (Rn ) and T u = v.
+
+R
+
+Indeed,
+we integrate (3.22) with respect to ξn ∈ R, we substitute ξn =
+p
+t 1 + |ξ ′|2 and we obtain
+!
+Z
+Z
+ξ
+1
+n
+p
+F u(ξ ′, ξn ) dξn =
+F v(ξ ′) ϕ p
+dξn
+1 + |ξ ′|2
+1 + |ξ ′ |2
+R
+R
+Z
+=
+F v(ξ ′) ϕ(t) dt = F v(ξ ′ )
+(3.23)
+R
+
+20
+
+and this implies v = T u because of (3.17).
+The proof of the H s -boundedness of u is straightforward. In fact, from
+(3.22), for any ξ ′ ∈ Rn−1 , we have
+Z
+s
+1 + |ξ|2 |F u(ξ ′, ξn )|2 dξn
+R
+!2
+Z
+
+1
+ξ
+s
+n
+=
+dξn
+1 + |ξ|2 |F v(ξ ′)|2 ϕ p
+1 + |ξ ′|2
+1 + |ξ ′ |2
+R
+1
+
+= C 1 + |ξ ′|2 )s− 2 |F v(ξ ′)|2 ,
+
+(3.24)
+
+p
+where we used again the changingZof variable formula with ξn = t 1 + |ξ ′ |2
+s
+and the constant C is given by
+1 + t2 |ϕ(t)|2 dt. Finally, we obtain
+R
+
+that u ∈ H s (Rn ) by integrating (3.24) in ξ ′ ∈ Rn−1 .
+
+Remark 3.9. We conclude this section by recalling that the fractional Laplacian (−∆)s , which is a nonlocal operator on functions defined in Rn , may
+be reduced to a local, possibly singular or degenerate, operator on functions sitting in the higher dimensional half-space Rn+1
+= Rn × (0, +∞).
++
+We have
+
+
+s
+1−2s ∂U
+(−∆) u(x) = −C lim t
+(x, t) ,
+t→0
+∂t
+where the function U : Rn+1
+→ R solves div(t1−2s ∇U) = 0 in Rn+1
+and
++
++
+U(x, 0) = u(x) in Rn .
+This approach was pointed out by Caffarelli and Silvestre in [19]; see, in
+particular, Section 3.2 there, where was also given an equivalent definition
+of the H s (Rn )-norm:
+Z
+Z
+2s
+2
+|ξ| |F u| dξ = C
+|∇U|2 t1−2s dx dt.
+Rn+1
++
+
+Rn
+
+The cited results turn out to be very fruitful in order to recover an
+elliptic PDE approach in a nonlocal framework, and they have recently
+been used very often (see, e.g., [18, 88, 13, 17, 78], etc.).
+
+21
+
+4. Asymptotics of the constant C(n, s)
+In this section, we go into detail on the constant factor C(n, s) that
+appears in the definition of the fractional Laplacian (see (3.1)), by analyzing
+its asymptotic behavior as s → 1− and s → 0+ . This is relevant if one
+wants to recover the Sobolev norms of the spaces H 1(Rn ) and L2 (Rn ) by
+starting from the one of H s (Rn ).
+We recall that in Section 3, the constant C(n, s) has been defined by
+C(n, s) =
+
+Z
+
+1 − cos(ζ1 )
+dζ
+|ζ|n+2s
+Rn
+
+−1
+
+.
+
+Precisely, we are interested in analyzing the asymptotic behavior as s → 0+
+and s → 1− of a scaling of the quantity in the right hand-side of the above
+formula.
+′
+By changing variable η ′ = ζ /|ζ1|, we have
+Z Z
+Z
+1 − cos(ζ1 )
+1
+1 − cos(ζ1 )
+′
+dζ =
+n+2s dζ dζ1
+n+2s
+n+2s
+′
+2
+2
+|ζ|
+|ζ1|
+(1 + |ζ | /|ζ1| ) 2
+R Rn−1
+Rn
+Z Z
+1 − cos(ζ1 )
+1
+′
+=
+n+2s dη dζ1
+1+2s
+′
+2
+|ζ
+|
+n−1
+2
+1
+(1 + |η | )
+R R
+=
+
+A(n, s) B(s)
+s(1 − s)
+
+where
+A(n, s) =
+
+Z
+
+Rn−1
+
+1
+
+dη ′
+
+(4.1)
+
+1 − cos t
+dt.
+1+2s
+R |t|
+
+(4.2)
+
+(1 + |η ′ |2 )
+
+and7
+B(s) = s(1 − s)
+
+Z
+
+n+2s
+2
+
+Proposition 4.1. For any n > 1, let A and B be defined by (4.1) and (4.2)
+respectively. The following statements hold:
+7
+
+Of course, when n = 1 (4.1) reduces to A(n, s) = 1, so we will just consider the case
+n > 1.
+
+22
+
+(i) lim− A(n, s) = ωn−2
+s→1
+
+(ii) lim+ A(n, s) = ωn−2
+s→0
+
+Z +∞
+0
+
+Z +∞
+0
+
+ρn−2
+dρ < +∞;
+n
+(1 + ρ2 ) 2 +1
+ρn−2
+n dρ < +∞;
+(1 + ρ2 ) 2
+
+1
+(iii) lim− B(s) = ;
+s→1
+2
+(iv) lim+ B(s) = 1,
+s→0
+
+where ωn−2 denotes (n − 2)-dimensional measure of the unit sphere S n−2 .
+As a consequence,
+
+−1
+Z
+ωn−2 +∞
+ρn−2
+C(n, s)
+=
+dρ
+(4.3)
+lim
+n
+s→1− s(1 − s)
+2
+(1 + ρ2 ) 2 +1
+0
+and
+C(n, s)
+lim+
+=
+s→0 s(1 − s)
+
+
+Z +∞
+ωn−2
+0
+
+−1
+ρn−2
+.
+n dρ
+(1 + ρ2 ) 2
+
+(4.4)
+
+Proof. First, by polar coordinates, for any s ∈ (0, 1), we get
+Z +∞
+Z
+ρn−2
+1
+′
+dη
+=
+ω
+n−2
+n+2s
+n+2s dρ.
+(1 + ρ2 ) 2
+0
+Rn−1 (1 + |η ′ |2 ) 2
+Now, observe that for any s ∈ (0, 1) and any ρ ≥ 0, we have
+ρn−2
+(1 + ρ2 )
+
+n+2s
+2
+
+≤
+
+ρn−2
+n
+(1 + ρ2 ) 2
+
+and the function in the right hand-side of the above inequality belongs
+to L1 ((0, +∞)) for any n > 1.
+Then, the Dominated Convergence Theorem yields
+Z +∞
+ρn−2
+lim− A(n, s) = ωn−2
+dρ
+n
+s→1
+(1 + ρ2 ) 2 +1
+0
+and
+lim+ A(n, s) = ωn−2
+
+s→0
+
+23
+
+Z +∞
+0
+
+ρn−2
+n dρ.
+(1 + ρ2 ) 2
+
+This proves (i) and (ii).
+Now, we want to prove (iii). First, we split the integral in (4.2) as follows
+Z
+Z
+Z
+1 − cos t
+1 − cos t
+1 − cos t
+dt =
+dt +
+dt.
+1+2s
+1+2s
+1+2s
+|t|<1 |t|
+|t|≥1 |t|
+R |t|
+Also, we have that
+Z
+
+1 − cos t
+0≤
+dt ≤ 4
+1+2s
+|t|≥1 |t|
+
+Z +∞
+1
+
+1
+t1+2s
+
+dt =
+
+2
+s
+
+and
+Z
+
+1 − cos t
+dt −
+1+2s
+|t|<1 |t|
+
+Z
+
+t2
+dt ≤ C
+1+2s
+|t|<1 2|t|
+
+Z
+
+2C
+|t|3
+dt =
+,
+1+2s
+3 − 2s
+|t|<1 |t|
+
+for some suitable positive constant C.
+From the above estimates it follows that
+Z
+1 − cos t
+dt = 0
+lim− s(1 − s)
+1+2s
+s→1
+|t|≥1 |t|
+and
+Z
+
+1 − cos t
+lim− s(1 − s)
+dt = lim− s(1 − s)
+1+2s
+s→1
+s→1
+|t|<1 |t|
+
+Z
+
+t2
+dt.
+1+2s
+|t|<1 2|t|
+
+Hence, we get
+lim B(s) = lim− s(1 − s)
+
+s→1−
+
+s→1
+
+Z 1
+
+1−2s
+
+t
+
+0
+
+
+1
+s(1 − s)
+= .
+dt = lim−
+s→1 2(1 − s)
+2
+
+Similarly, we can prove (iv). For this we notice that
+Z 1
+Z
+1 − cos t
+dt ≤ C
+t1−2s dt
+0≤
+1+2s
+0
+|t|<1 |t|
+which yields
+lim+ s(1 − s)
+
+s→0
+
+Z
+
+1 − cos t
+dt = 0.
+1+2s
+|t|<1 |t|
+24
+
+Now, we observe that for any k ∈ N, k ≥ 1, we have
+Z 2kπ+π
+Z 2kπ+π
+cos t
+cos(τ + π)
+cos t
+dt =
+dt +
+dτ
+1+2s
+1+2s
+t
+t
+(τ + π)1+2s
+2kπ
+2kπ
+2kπ
+
+
+Z 2kπ+π
+1
+1
+=
+cos t 1+2s −
+dt
+t
+(t + π)1+2s
+2kπ
+Z 2kπ+π
+1
+1
+dt
+−
+≤
+1+2s
+t
+(t + π)1+2s
+2kπ
+Z 2kπ+π
+(t + π)1+2s − t1+2s
+dt
+=
+t1+2s (t + π)1+2s
+2kπ
+Z π
+
+Z 2kπ+π
+1
+2s
+=
+(1 + 2s)(t + ϑ) dϑ dt
+t1+2s (t + π)1+2s
+2kπ
+0
+Z 2kπ+π
+3π(t + π)2s
+dt
+≤
+t1+2s (t + π)1+2s
+2kπ
+Z 2kπ+π
+3π
+≤
+dt
+t(t + π)
+2kπ
+Z 2kπ+π
+C
+3π
+dt
+≤
+.
+≤
+t2
+k2
+2kπ
+
+Z 2(k+1)π
+
+As a consequence,
+Z +∞
+1
+
+cos t
+dt ≤
+t1+2s
+
+Z 2π
+1
+
++∞ Z 2(k+1)π
+X
+cos t
+1
+dt +
+dt
+1+2s
+t
+t
+2kπ
+k=1
+
+≤ log(2π) +
+
++∞
+X
+C
+
+k2
+k=1
+
+up to relabeling the constant C > 0.
+It follows that
+Z
+Z
+1 − cos t
+1
+dt
+−
+dt
+1+2s
+1+2s
+|t|≥1 |t|
+|t|≥1 |t|
+
+25
+
+≤ C,
+
+Z
+
+cos t
+dt
+1+2s
+|t|≥1 |t|
+Z +∞
+cos t
+dt ≤ C
+= 2
+t1+2s
+1
+
+=
+
+and then
+Z
+
+1 − cos t
+lim+ s(1 − s)
+dt = lim+ s(1 − s)
+1+2s
+s→0
+s→0
+|t|≥1 |t|
+
+Z
+
+1
+
+|t|≥1
+
+|t|1+2s
+
+dt.
+
+Hence, we can conclude that
+lim+ B(s) = lim+ s(1 − s)
+
+s→0
+
+s→0
+
+Z
+
+= lim+ 2s(1 − s)
+s→0
+
+= lim+
+s→0
+
+1
+|t|1+2s
+
+|t|≥1
+Z +∞
+
+dt
+
+t−1−2s dt
+
+1
+
+2s(1 − s)
+= 1.
+2s
+
+Finally, (4.3) and (4.4) easily follow combining the previous estimates
+and recalling that
+s(1 − s)
+.
+C(n, s) =
+A(n, s)B(s)
+The proof is complete.
+Corollary 4.2. For any n > 1, let C(n, s) be defined by (3.2).
+following statements hold:
+(i) lim−
+
+C(n, s)
+4n
+;
+=
+s(1 − s)
+ωn−1
+
+(ii) lim+
+
+C(n, s)
+2
+=
+.
+s(1 − s)
+ωn−1
+
+s→1
+
+s→0
+
+The
+
+where ωn−1 denotes the (n−1)-dimensional measure of the unit sphere S n−1 .
+Proof. For any θ ∈ R such that θ > n − 1, let us define
+Z +∞
+ρn−2
+En (θ) :=
+θ dρ.
+(1 + ρ2 ) 2
+0
+
+26
+
+Observe that the assumption on the parameter θ ensures the convergence
+of the integral. Furthermore, integrating by parts we get
+Z +∞
+1
+(ρn−1 )′
+En (θ) =
+θ dρ
+n−1 0
+(1 + ρ2 ) 2
+Z +∞
+ρn
+θ
+=
+θ+2 dρ
+n−1 0
+(1 + ρ2 ) 2
+θ
+En+2 (θ + 2).
+(4.5)
+=
+n−1
+Then, we set
+In(1) := En (n + 2) =
+and
+In(0) := En (n) =
+
+Z +∞
+0
+
+Z +∞
+0
+
+ρn−2
+dρ
+n
+(1 + ρ2 ) 2 +1
+
+ρn−2
+n dρ.
+(1 + ρ2 ) 2
+
+(1)
+(0)
+In view of (4.5), it follows that In and In can be obtained in a recursive
+
+way, since
+(1)
+
+n − 1 (1)
+n−1
+En (n + 2) =
+I
+n+2
+n+2 n
+
+(4.6)
+
+n−1
+n − 1 (0)
+En (n) =
+In .
+n
+n
+
+(4.7)
+
+In(1) =
+
+ωn−1
+2nωn−2
+
+(4.8)
+
+In(0) =
+
+ωn−1
+.
+2ωn−2
+
+(4.9)
+
+In+2 = En+2 (n + 4) =
+and
+(0)
+
+In+2 = En+2 (n + 2) =
+Now we claim that
+and
+
+We will prove the previous identities by induction. We start by noticing
+that the inductive basis are satisfied, since
+Z +∞
+Z +∞
+π
+ρ
+1
+1
+(1)
+(1)
+dρ = ,
+I3 =
+I2 =
+5 dρ =
+2
+2
+(1 + ρ )
+4
+3
+(1 + ρ2 ) 2
+0
+0
+27
+
+and
+(0)
+I2 =
+
+Z +∞
+0
+
+1
+π
+dρ = ,
+2
+(1 + ρ )
+2
+
+(0)
+I3 =
+
+Z +∞
+0
+
+ρ
+3
+
+(1 + ρ2 ) 2
+
+dρ = 1.
+
+Now, using (4.6) and (4.7), respectively, it is clear that in order to check
+the inductive steps, it suffices to verify that
+ωn+1
+n − 1 ωn−1
+=
+.
+ωn
+n ωn−2
+
+(4.10)
+
+We claim that the above formula plainly follows from a classical recursive
+formula on ωn , that is
+2π
+ωn =
+ωn−2 .
+(4.11)
+n−1
+To prove this, let us denote by ̟n the Lebesgue measure of the ndimensional unit ball and let us fix the notation x = (x̃, x′ ) ∈ Rn−2 × R2 .
+By integrating on Rn−2 and then using polar coordinates in R2 , we see
+that
+Z
+
+Z
+Z
+̟n =
+dx =
+dx̃ dx′
+|x|2 ≤1
+
+= ̟n−2
+
+Z
+
+1 − |x′ |2
+
+|x′ |≤1
+
+= 2π̟n−2
+
+|x̃|2 ≤1−|x′ |2
+
+|x′ |≤1
+
+Z 1
+
+ρ 1 − ρ2
+
+0
+
+ (n−2)
+2
+
+ (n−2)
+2
+
+dx′
+dρ =
+
+2π̟n−2
+.
+n
+
+Moreover, by polar coordinates in Rn ,
+Z
+Z 1
+ωn−1
+̟n =
+dx = ωn−1
+ρn−1 dρ =
+.
+n
+|x|≤1
+0
+
+(4.12)
+
+(4.13)
+
+Thus, we use (4.13) and (4.12) and we obtain
+ωn−1 = n̟n = 2π̟n−2 =
+
+2πωn−3
+,
+n−2
+
+which is (4.11), up to replacing n with n − 1. In turn, (4.11) implies (4.10)
+and so (4.8) and (4.9).
+28
+
+Finally, using (4.8), (4.9) and Proposition 4.1 we can conclude that
+lim−
+
+C(n, s)
+2
+4n
+=
+=
+(1)
+s(1 − s)
+ωn−1
+ωn−2 In
+
+lim+
+
+1
+2
+C(n, s)
+,
+=
+=
+(0)
+s(1 − s)
+ωn−1
+ωn−2 In
+
+s→1
+
+and
+s→0
+
+as desired8 .
+Remark 4.3. It is worth noticing that when p = 2 we recover the constants
+C1 and C2 in (2.8) and (2.9), respectively. In fact, in this case it is known
+that
+Z
+n Z
+1
+1 X
+ωn−1
+2
+|ξ1 | dσ(ξ) =
+|ξi |2 dσ(ξ) =
+C1 =
+2 S n−1
+2n i=1 S n−1
+2n
+
+and C2 = ωn−1 (see [11] and [66]). Then, by Proposition 3.15 and Corollary 4.2 it follows that
+Z Z
+|u(x) − u(y)|2
+dx dy
+lim− (1 − s)
+s→1
+|x − y|n+2s
+Rn Rn
+= lim− 2(1 − s)C(n, s)−1 k|ξ|sF uk2L2 (Rn )
+s→1
+
+=
+
+ωn−1
+k∇uk2L2 (Rn )
+2n
+
+= C1 kuk2H 1 (Rn )
+and
+lim+ s
+
+s→0
+
+Z
+
+Rn
+
+Z
+
+|u(x) − u(y)|2
+dx dy =
+|x − y|n+2s
+Rn
+
+lim 2sC(n, s)−1 k|ξ|sF uk2L2 (Rn )
+
+s→0+
+
+= ωn−1 kuk2L2 (Rn )
+= C2 kuk2L2 (Rn ) .
+8
+
+Another (less elementary) way to obtain this result is to notice that En (θ) =
+2 B ((n − 1)/2, (θ − n − 1)/2), where B is the Beta function.
+
+29
+
+We will conclude this section with the following proposition that one
+could plainly deduce from Proposition 3.3. We prefer to provide a direct proof, based on Lemma 3.2, in order to show the consistency in the
+definition of the constant C(n, s).
+Proposition 4.4. Let n > 1. For any u ∈ C0∞ (Rn ) the following statements
+hold:
+(i) lims→0+ (−∆)s u = u;
+(ii) lims→1− (−∆)s u = −∆u.
+Proof. Fix x ∈ Rn , R0 > 0 such that supp u ⊆ BR0 and set R = R0 +|x|+1.
+First,
+Z
+Z
+|y|2
+u(x + y) + u(x − y) − 2u(x)
+2 (Rn )
+≤
+kuk
+dy
+dy
+C
+n+2s
+|y|n+2s
+BR |y|
+BR
+Z R
+1
+dρ
+≤ ωn−1 kukC 2 (Rn )
+2s−1
+0 ρ
+=
+
+ωn−1 kukC 2 (Rn ) R2−2s
+.
+2(1 − s)
+
+(4.14)
+
+Furthermore, observe that |y| ≥ R yields |x±y| ≥ |y|−|x| ≥ R−|x| > R0
+and consequently u(x ± y) = 0. Therefore,
+Z
+Z
+u(x + y) + u(x − y) − 2u(x)
+1
+1
+dy = u(x)
+dy
+−
+n+2s
+n+2s
+2 Rn \BR
+|y|
+Rn \BR |y|
+Z +∞
+1
+dρ
+= ωn−1u(x)
+2s+1
+ρ
+R
+ωn−1R−2s
+=
+u(x).
+(4.15)
+2s
+Now, by (4.14) and Corollary 4.2, we have
+Z
+u(x + y) + u(x − y) − 2u(x)
+C(n, s)
+dy = 0
+lim+ −
+s→0
+2
+|y|n+2s
+BR
+
+30
+
+and so we get, recalling Lemma 3.2,
+Z
+C(n, s)
+u(x + y) + u(x − y) − 2u(x)
+s
+lim+ (−∆) u = lim+ −
+dy
+s→0
+s→0
+2
+|y|n+2s
+Rn \BR
+=
+
+lim+
+
+s→0
+
+C(n, s)ωn−1 R−2s
+u(x) = u(x),
+2s
+
+where the last identities follow from (4.15) and again Corollary 4.2. This
+proves (i).
+Similarly, we can prove (ii). In this case, when s goes to 1, we have no
+contribution outside the unit ball, as the following estimate shows
+Z
+u(x + y) + u(x − y) − 2u(x)
+dy
+|y|n+2s
+Rn \B1
+Z
+1
+≤ 4kukL∞ (Rn )
+dy
+n+2s
+Rn \B1 |y|
+Z +∞
+1
+dρ
+≤ 4ωn−1 kukL∞ (Rn )
+2s+1
+ρ
+1
+2ωn−1
+=
+kukL∞ (Rn ) .
+s
+As a consequence (recalling Corollary 4.2), we get
+Z
+C(n, s)
+u(x + y) + u(x − y) − 2u(x)
+lim− −
+dy = 0.
+s→1
+2
+|y|n+2s
+Rn \B1
+On the other hand, we have
+Z
+u(x + y) + u(x − y) − 2u(x) − D 2 u(x)y · y
+dy
+|y|n+2s
+B1
+Z
+≤ kukC 3 (Rn )
+
+(4.16)
+
+|y|3
+dy
+n+2s
+B1 |y|
+Z 1
+1
+dρ
+≤ ωn−1 kukC 3 (Rn )
+2s−2
+0 ρ
+
+=
+31
+
+ωn−1 kukC 3 (Rn )
+3 − 2s
+
+and this implies that
+C(n, s)
+lim− −
+s→1
+2
+
+Z
+
+u(x + y) + u(x − y) − 2u(x)
+dy
+|y|n+2s
+B1
+Z
+D 2 u(x)y · y
+C(n, s)
+dy. (4.17)
+= lim− −
+s→1
+2
+|y|n+2s
+B1
+
+Now, notice that if i 6= j then
+Z
+Z
+2
+∂ij u(x)yi · yj dy = −
+B1
+
+B1
+
+∂ij2 u(x)ỹi · ỹj dỹ,
+
+where ỹk = yk for any k 6= j and ỹj = −yj , and thus
+Z
+∂ij2 u(x)yi · yj dy = 0.
+
+(4.18)
+
+B1
+
+Also, up to permutations, for any fixed i, we get
+Z
+Z
+Z
+∂ii2 u(x)yi2
+yi2
+y12
+2
+2
+dy
+=
+∂
+u(x)
+dy
+=
+∂
+u(x)
+dy
+ii
+ii
+n+2s
+n+2s
+n+2s
+B1 |y|
+B1 |y|
+B1 |y|
+Z
+n Z
+yj2
+∂ii2 u(x) X
+∂ii2 u(x)
+|y|2
+=
+dy
+=
+dy
+n+2s
+n
+|y|n+2s
+n
+B1 |y|
+j=1 B1
+=
+
+∂ii2 u(x) ωn−1
+.
+2n(1 − s)
+
+(4.19)
+
+Finally, combining (4.16), (4.17), (4.18), (4.19), Lemma 3.2 and Corollary 4.2, we can conclude
+Z
+C(n, s)
+u(x + y) + u(x − y) − 2u(x)
+s
+lim− (−∆) u = lim− −
+dy
+s→1
+s→1
+2
+|y|n+2s
+B1
+Z
+D 2 u(x)y · y
+C(n, s)
+dy
+= lim− −
+s→1
+2
+|y|n+2s
+B1
+n Z
+C(n, s) X
+∂ii2 u(x)yi2
+= lim− −
+dy
+s→1
+2
+|y|n+2s
+i=1 B1
+n
+
+C(n, s)ωn−1 X 2
+∂ u(x) = −∆u(x).
+= lim− −
+s→1
+4n(1 − s) i=1 ii
+32
+
+5. Extending a W s,p (Ω) function to the whole of Rn
+As well known when s is an integer, under certain regularity assumptions on the domain Ω, any function in W s,p (Ω) may be extended to a
+function in W s,p(Rn ). Extension results are quite important in applications and are necessary in order to improve some embeddings theorems, in
+the classic case as well as in the fractional case (see Section 6 and Section 7
+in the following).
+For any s ∈ (0, 1) and any p ∈ [1, ∞), we say that an open set Ω ⊆
+Rn is an extension domain for W s,p if there exists a positive constant
+C = C(n, p, s, Ω) such that: for every function u ∈ W s,p(Ω) there exists
+ũ ∈ W s,p (Rn ) with ũ(x) = u(x) for all x ∈ Ω and kũkW s,p (Rn ) ≤ CkukW s,p (Ω) .
+In general, an arbitrary open set is not an extension domain for W s,p .
+To the authors’ knowledge, the problem of characterizing the class of sets
+that are extension domains for W s,p is open9 . When s is an integer, we
+cite [58] for a complete characterization in the special case s = 1, p = 2 and
+n = 2, and we refer the interested reader to the recent book by Leoni [60],
+in which this problem is very well discussed (see, in particular, Chapter 11
+and Chapter 12 there).
+In this section, we will show that any open set Ω of class C 0,1 with
+bounded boundary is an extension domain for W s,p .
+We start with some preliminary lemmas, in which we will construct the
+extension to the whole of Rn of a function u defined on Ω in two separated
+cases: when the function u is identically zero in a neighborhood of the
+boundary ∂Ω and when Ω coincides with the half-space Rn+ .
+Lemma 5.1. Let Ω be an open set in Rn and u a function in W s,p (Ω) with
+s ∈ (0, 1) and p ∈ [1, +∞). If there exists a compact subset K ⊂ Ω such
+that u ≡ 0 in Ω \ K, then the extension function ũ defined as
+(
+u(x) x ∈ Ω ,
+(5.1)
+ũ(x) =
+0
+x ∈ Rn \ Ω
+9
+
+While revising this paper, we were informed that an answer to this question has
+been given by Zhou, by analyzing the link between extension domains in W s,p and the
+measure density condition (see [102]).
+
+33
+
+belongs to W s,p(Rn ) and
+kũkW s,p (Rn ) ≤ CkukW s,p(Ω) ,
+where C is a suitable positive constant depending on n, p, s, K and Ω.
+Proof. Clearly ũ ∈ Lp (Rn ). Hence, it remains to verify that the Gagliardo
+norm of ũ in Rn is bounded by the one of u in Ω. Using the symmetry of
+the integral in the Gagliardo norm with respect to x and y and the fact
+that ũ ≡ 0 in Rn \ Ω, we can split as follows
+Z Z
+Z Z
+|ũ(x) − ũ(y)|p
+|u(x) − u(y)|p
+dx
+dy
+=
+dx dy
+(5.2)
+n+sp
+|x − y|n+sp
+Rn Rn
+Ω Ω |x − y|
+
+Z Z
+|u(x)|p
++2
+dy dx,
+n+sp
+Ω
+Rn \Ω |x − y|
+where the first term in the right hand-side of (5.2) is finite since u ∈
+W s,p(Ω). Furthermore, for any y ∈ Rn \ K,
+1
+χK (x)|u(x)|p
+|u(x)|p
+=
+≤ χK (x)|u(x)|p sup
+n+sp
+n+sp
+n+sp
+|x − y|
+|x − y|
+x∈K |x − y|
+and so
+Z Z
+Ω
+
+|u(x)|p
+dy
+n+sp
+Rn \Ω |x − y|
+
+
+
+dx ≤
+
+Z
+
+1
+dy kukpLp (Ω) . (5.3)
+n+sp
+dist(y,
+∂K)
+n
+R \Ω
+
+Note that the integral in (5.3) is finite since dist(∂Ω, ∂K) ≥ α > 0 and
+n + sp > n. Combining (5.2) with (5.3), we get
+kũkW s,p (Rn ) ≤ CkukW s,p (Ω)
+where C = C(n, s, p, K).
+Lemma 5.2. Let Ω be an open set in Rn , symmetric with respect to
+the coordinate xn , and consider the sets Ω+ = {x ∈ Ω : xn > 0} and
+Ω− = {x ∈ Ω : xn ≤ 0}. Let u be a function in W s,p (Ω+ ), with s ∈ (0, 1)
+and p ∈ [1, +∞). Define
+(
+u(x′ , xn )
+xn ≥ 0 ,
+(5.4)
+ū(x) =
+u(x′ , −xn ) xn < 0 .
+Then ū belongs to W s,p (Ω) and
+kūkW s,p (Ω) ≤ 4kukW s,p(Ω+ ) .
+34
+
+Proof. By splitting the integrals and changing variable x̂ = (x′ , −xn ), we
+get
+Z
+Z
+p
+p
+|u(x̂′ , xˆn )|p dx̃ = 2kukpLp (Ω+ ) .
+(5.5)
+|u(x)| dx +
+kūkLp (Ω) =
+Ω+
+
+Ω+
+
+Also, if x ∈ Rn+ and y ∈ C Rn+ then (xn − yn )2 ≥ (xn + yn )2 and therefore
+Z Z
+Z Z
+|ū(x) − ū(y)|p
+|u(x) − u(y)|p
+dx
+dy
+=
+dx dy
+n+sp
+|x − y|n+sp
+Ω Ω |x − y|
+Ω+ Ω+
+Z Z
+|u(x) − u(y ′, −yn )|p
++2
+dx dy
+|x − y|n+sp
+Ω+ C Ω+
+Z
+Z
+|u(x′ , −xn ) − u(y ′, −yn )|p
+dx dy
++
+|x − y|n+sp
+C Ω+ C Ω+
+≤ 4kukpW s,p (Ω+ ) .
+This concludes the proof.
+Now, a truncation lemma near ∂Ω.
+Lemma 5.3. Let Ω be an open set in Rn , s ∈ (0, 1) and p ∈ [1, +∞). Let
+us consider u ∈ W s,p(Ω) and ψ ∈ C 0,1 (Ω), 0 ≤ ψ ≤ 1. Then ψu ∈ W s,p(Ω)
+and
+kψ ukW s,p (Ω) ≤ CkukW s,p (Ω) ,
+(5.6)
+where C = C(n, p, s, Ω).
+Proof. It is clear that kψ ukLp (Ω) ≤ kukLp (Ω) since |ψ| ≤ 1. Furthermore,
+adding and subtracting the factor ψ(x)u(y), we get
+Z Z
+|ψ(x) u(x) − ψ(y) u(y)|p
+dx dy
+|x − y|n+sp
+Ω Ω
+Z Z
+|ψ(x) u(x) − ψ(x) u(y)|p
+p−1
+≤ 2
+dx dy
+|x − y|n+sp
+Ω Ω
+
+Z Z
+|ψ(x) u(y) − ψ(y) u(y)|p
+dx dy
++
+|x − y|n+sp
+Ω Ω
+Z Z
+|u(x) − u(y)|p
+p−1
+≤ 2
+dx dy
+(5.7)
+n+sp
+Ω Ω |x − y|
+
+Z Z
+|u(x)|p |ψ(x) − ψ(y)|p
+dx dy .
++
+|x − y|n+sp
+Ω Ω
+35
+
+Since ψ belongs to C 0,1 (Ω), we have
+Z Z
+Z Z
+|u(x)|p |ψ(x) − ψ(y)|p
+|u(x)|p |x − y|p
+p
+dx
+dy
+≤
+Λ
+dx dy
+|x − y|n+sp
+|x − y|n+sp
+Ω Ω
+Ω Ω∩|x−y|≤1
+Z Z
+|u(x)|p
+dx dy
++
+n+sp
+Ω Ω∩|x−y|≥1 |x − y|
+≤ C̃kukpLp (Ω) ,
+
+(5.8)
+
+where Λ denotes the Lipschitz constant of ψ and C̃ is a positive constant
+depending on n, p and s. Note that the last inequality follows from the fact
+that the kernel |x − y|−n+(1−s)p is summable with respect to y if |x − y| ≤ 1
+since n + (s − 1)p < n and, on the other hand, the kernel |x − y|−n−sp is
+summable when |x − y| ≥ 1 since n + sp > n. Finally, combining (5.7) with
+(5.8), we obtain estimate (5.6).
+Now, we are ready to prove the main theorem of this section, that states
+that every open Lipschitz set Ω with bounded boundary is an extension
+domain for W s,p.
+Theorem 5.4. Let p ∈ [1, +∞), s ∈ (0, 1) and Ω ⊆ Rn be an open set of
+class C 0,1 with bounded boundary10 . Then W s,p(Ω) is continuously embedded
+in W s,p (Rn ), namely for any u ∈ W s,p(Ω) there exists ũ ∈ W s,p(Rn ) such
+that ũ|Ω = u and
+kũkW s,p (Rn ) ≤ CkukW s,p (Ω)
+where C = C(n, p, s, Ω).
+Proof. Since ∂Ω is compact, we can find a finite number of balls Bj such
+k
+k
+[
+[
+n
+that ∂Ω ⊂
+Bj and so we can write R =
+Bj ∪ (Rn \ ∂Ω).
+j=1
+
+j=1
+
+If we consider this covering, there exists a partition of unity related
+to it, i.e. there exist k + 1 smooth functions ψ0 , ψ1 ,..., ψk such that
+10
+Motivated by an interesting remark of the anonymous Referee, we point out that
+it should be expected that the Lipschitz assumption on the boundary of Ω may be
+weakened when s ∈ (0, 1), since in the case s = 0 clearly no regularity at all is needed
+for the extension problem.
+
+36
+
+spt ψ0 ⊂ Rn \ ∂Ω, spt ψj ⊂ Bj for any j ∈ {1, ..., k}, 0 ≤ ψj ≤ 1 for any
+k
+X
+j ∈ {0, ..., k} and
+ψj = 1. Clearly,
+j=0
+
+u=
+
+k
+X
+
+ψj u .
+
+j=0
+
+By Lemma 5.3, we know that ψ0 u belongs to W s,p(Ω). Furthermore, since
+ψ0 u ≡ 0 in a neighborhood of ∂Ω, we can extend it to the whole of Rn ,
+by setting
+(
+ψ0 u(x) x ∈ Ω,
+ψg
+0 u(x) =
+0
+x ∈ Rn \ Ω
+s,p
+and ψg
+(Rn ). Precisely
+0u ∈ W
+
+kψg
+0 ukW s,p (Rn ) ≤ C kψ0 ukW s,p (Ω) ≤ C kukW s,p (Ω) ,
+
+(5.9)
+
+where C = C(n, s, p, Ω) (possibly different step by step, see Lemma 5.1 and
+Lemma 5.3).
+For any j ∈ {1, ..., k}, let us consider u|Bj ∩Ω and set
+vj (y) := u (Tj (y))
+
+for any y ∈ Q+ ,
+
+where Tj : Q → Bj is the isomorphism of class C 0,1 defined in Section 2.
+Note that such a Tj exists by the regularity assumption on the domain Ω.
+Now, we state that vj ∈ W s,p (Q+ ). Indeed, using the standard changing
+variable formula by setting x = Tj (x̂) we have
+Z Z
+|v(x̂) − v(ŷ)|p
+dx̂ dŷ
+n+sp
+Q+ Q+ |x̂ − ŷ|
+Z Z
+|u(Tj (x̂)) − u(Tj (ŷ))|p
+dx̂ dŷ
+=
+|x̂ − ŷ|n+sp
+Q+ Q+
+Z
+Z
+|u(x) − u(y)|p
+=
+det(Tj−1 )dx dy
+−1
+−1
+n+sp
+|T
+(x)
+−
+T
+(y)|
+Bj ∩Ω Bj ∩Ω
+j
+j
+Z
+Z
+|u(x) − u(y)|p
+≤ C
+dx dy,
+(5.10)
+n+sp
+Bj ∩Ω Bj ∩Ω |x − y|
+37
+
+where (5.10) follows from the fact that Tj is bi-Lipschitz. Moreover, using
+Lemma 5.2 we can extend vj to all Q so that the extension v̄j belongs to
+W s,p(Q) and
+kv̄j kW s,p (Q) ≤ 4kvj kW s,p (Q+ ) .
+We set
+wj (x) := v̄j Tj−1 (x)
+
+
+
+for any x ∈ Bj .
+
+Since Tj is bi-Lipschitz, by arguing as above it follows that wj ∈
+W (Bj ). Note that wj ≡ u (and consequently ψj wj ≡ ψj u) on Bj ∩ Ω.
+By definition ψj wj has compact support in Bj and therefore, as done for
+n
+ψ0 u, we can consider the extension ψ]
+j wj to all R in such a way that
+s,p
+ψ]
+(Rn ). Also, using Lemma 5.1, Lemma 5.2, Lemma 5.3 and
+j wj ∈ W
+estimate (5.10) we get
+s,p
+
+kψ]
+j wj kW s,p (Rn ) ≤ Ckψj wj kW s,p (Bj ) ≤ C kwj kW s,p (Bj )
+≤ Ckv̄j kW s,p (Q) ≤ Ckvj kW s,p (Q+ )
+≤ CkukW s,p (Ω∩Bj ) ,
+
+(5.11)
+
+where C = C(n, p, s, Ω) and it is possibly different step by step.
+Finally, let
+ũ = ψg
+0u+
+
+k
+X
+
+ψ]
+j wj
+
+j=1
+
+be the extension of u defined on all Rn . By construction, it is clear that
+ũ|Ω = u and, combining (5.9) with (5.11), we get
+kũkW s,p (Rn ) ≤ CkukW s,p (Ω)
+with C = C(n, p, s, Ω).
+Corollary 5.5. Let p ∈ [1, +∞), s ∈ (0, 1) and Ω be an open set in Rn of
+class C 0,1 with bounded boundary. Then for any u ∈ W s,p (Ω), there exists
+a sequence {un } ∈ C0∞ (Rn ) such that un → u as n → +∞ in W s,p(Ω), i.e.,
+lim kun − ukW s,p (Ω) = 0 .
+
+n→+∞
+
+38
+
+Proof. The proof follows directly by Theorem 2.4 and Theorem 5.4.
+
+6. Fractional Sobolev inequalities
+In this section, we provide an elementary proof of a Sobolev-type inequality involving the fractional norm k · kW s,p (see Theorem 6.5 below).
+The original proof is contained in the Appendix of [84] and it deals
+with the case p = 2 (see, in particular, Theorem 7 there). We note that
+when p = 2 and s ∈ [1/2, 1) some of the statements may be strengthened
+(see [10]). We also note that more general embeddings for the spaces W s,p
+can be obtained by interpolation techniques and by passing through Besov
+spaces; see, for instance, [6, 7, 95, 96, 63]. For a more comprehensive
+treatment of fractional Sobolev-type inequalities we refer to [61, 62, 12, 1,
+91] and the references therein.
+We remark that the proof here is self-contained. Moreover, we will not
+make use of Besov or fancy interpolation spaces.
+In order to prove the Sobolev-type inequality in forthcoming Theorem 6.5, we need some preliminary results. The first of them is an elementary estimate involving the measure of finite measurable sets E in
+Rn as stated in the following lemma (see [85, Lemma A.1] and also [20,
+Corollary 24 and 25]).
+Lemma 6.1. Fix x ∈ Rn . Let p ∈ [1, +∞), s ∈ (0, 1) and E ⊂ Rn be a
+measurable set with finite measure. Then,
+Z
+dy
+≥ C |E|−sp/n ,
+n+sp
+|x
+−
+y|
+CE
+for a suitable constant C = C(n, p, s) > 0.
+Proof. We set
+ρ :=
+and then it follows
+
+
+
+|E|
+ωn
+
+n1
+
+|(C E) ∩ Bρ (x)| = |Bρ (x)| − |E ∩ Bρ (x)| = |E| − |E ∩ Bρ (x)|
+= |E ∩ C Bρ (x)|.
+39
+
+Therefore,
+Z
+
+Z
+dy
+dy
++
+n+sp
+n+sp
+(C E)∩Bρ (x) |x − y|
+(C E)∩C Bρ (x) |x − y|
+Z
+Z
+dy
+dy
+≥
++
+n+sp
+n+sp
+(C E)∩Bρ (x) ρ
+(C E)∩C Bρ (x) |x − y|
+Z
+|(C E) ∩ Bρ (x)|
+dy
+=
++
+n+sp
+n+sp
+ρ
+(C E)∩C Bρ (x) |x − y|
+Z
+|E ∩ C Bρ (x)|
+dy
+=
++
+n+sp
+n+sp
+ρ
+(C E)∩C Bρ (x) |x − y|
+Z
+Z
+dy
+dy
+≥
++
+n+sp
+n+sp
+E∩C Bρ (x) |x − y|
+(C E)∩C Bρ (x) |x − y|
+Z
+dy
+=
+.
+n+sp
+C Bρ (x) |x − y|
+
+dy
+=
+n+sp
+C E |x − y|
+
+Z
+
+The desired result easily follows by using polar coordinates centered at
+x.
+Now, we recall a general statement about a useful summability property
+(see [84, Lemma 5]. For related results, see also [38, Lemma 4]).
+Lemma 6.2. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp < n. Fix T > 1;
+let N ∈ Z and
+ak be a bounded, nonnegative, decreasing sequence
+with ak = 0 for any k ≥ N.
+Then,
+
+(6.1)
+
+X (n−sp)/n
+X
+−sp/n k
+ak
+Tk ≤ C
+ak+1 ak
+T ,
+k∈Z
+
+k∈Z
+ak 6=0
+
+for a suitable constant C = C(n, p, s, T ) > 0, independent of N.
+Proof. By (6.1),
+X (n−sp)/n
+X
+−sp/n k
+both
+ak
+T k and
+ak+1 ak
+T are convergent series.
+k∈Z
+
+k∈Z
+ak 6=0
+
+40
+
+(6.2)
+
+Moreover, since ak is nonnegative and decreasing, we have that if ak = 0,
+then ak+1 = 0. Accordingly,
+X (n−sp)/n
+X (n−sp)/n
+ak+1
+Tk =
+ak+1
+T k.
+k∈Z
+
+k∈Z
+ak 6=0
+
+Therefore, we may use the Hölder inequality with exponents α := n/sp and
+β := n/(n − sp) by arguing as follows.
+1 X (n−sp)/n k X (n−sp)/n k
+ak+1
+T
+a
+T =
+T k∈Z k
+k∈Z
+X (n−sp)/n
+=
+ak+1
+Tk
+k∈Z
+ak 6=0
+
+
+
+X  sp/(nβ)
+1/β −sp/(nβ) k/β
+ak
+T k/α ak+1 ak
+T
+
+=
+
+k∈Z
+ak 6=0
+
+≤
+
+α
+X  sp/(nβ)
+k/α
+ak
+T
+k∈Z
+
+≤
+
+X (n−sp)/n
+ak
+Tk
+k∈Z
+
+!1/α
+
+!sp/n
+
+
+
+1/β
+
+
+ X 1/β −sp/(nβ) k/β β 
+ak+1 ak
+T
+
+
+
+
+k∈Z
+ak 6=0
+
+(n−sp)/n
+
+X
+−sp/n k 
+ak+1 ak
+T 
+
+
+.
+
+k∈Z
+ak 6=0
+
+So, recalling (6.2), we obtain the desired result.
+
+We use the above tools to deal with the measure theoretic properties
+of the level sets of the functions (see [84, Lemma 6]).
+Lemma 6.3. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp < n. Let
+f ∈ L∞ (Rn ) be compactly supported.
+
+(6.3)
+
+ak := {|f | > 2k } .
+
+(6.4)
+
+For any k ∈ Z let
+Then,
+
+Z
+
+Rn
+
+Z
+
+X
+|f (x) − f (y)|p
+−sp/n pk
+dx
+dy
+≥
+C
+ak+1 ak
+2 ,
+n+sp
+|x
+−
+y|
+n
+R
+k∈Z
+ak 6=0
+
+41
+
+for a suitable constant C = C(n, p, s) > 0.
+Proof. Notice that
+|f (x)| − |f (y)| ≤ |f (x) − f (y)|,
+and so, by possibly replacing f with |f |, we may consider the case in
+which f ≥ 0.
+We define
+Ak := {|f | > 2k }.
+(6.5)
+We remark that Ak+1 ⊆ Ak , hence
+ak+1 ≤ ak .
+
+(6.6)
+
+We define
+Dk := Ak \ Ak+1 = {2k < f ≤ 2k+1 }
+
+and
+
+dk := |Dk |.
+
+Notice that
+dk and ak are bounded and they become zero when k is large enough,
+(6.7)
+thanks to (6.3). Also, we observe that the Dk ’s are disjoint, that
+[
+Dℓ = C Ak+1
+(6.8)
+ℓ∈Z
+ℓ≤k
+
+and that
+
+[
+
+Dℓ = Ak .
+
+(6.9)
+
+As a consequence of (6.9), we have that
+X
+ak =
+dℓ
+
+(6.10)
+
+ℓ∈Z
+ℓ≥k
+
+ℓ∈Z
+ℓ≥k
+
+and so
+dk = ak −
+
+X
+
+ℓ∈Z
+ℓ≥k+1
+
+42
+
+dℓ .
+
+(6.11)
+
+We stress that the series in (6.10) is convergent, due to (6.7), thus so is
+the series in (6.11). Similarly, we can define the convergent series
+X
+−sp/n
+S :=
+2pℓ aℓ−1 dℓ .
+(6.12)
+ℓ∈Z
+aℓ−1 6=0
+
+−sp/n
+
+−sp/n
+
+We notice that Dk ⊆ Ak ⊆ Ak−1 , hence ai−1 dℓ ≤ ai−1 aℓ−1 . Therefore
+n
+o
+−sp/n
+(i, ℓ) ∈ Z s.t. ai−1 6= 0 and ai−1 dℓ 6= 0
+n
+o
+(6.13)
+⊆ (i, ℓ) ∈ Z s.t. aℓ−1 6= 0 .
+We use (6.13) and (6.6) in the following computation:
+X X
+X
+X
+−sp/n
+−sp/n
+2pi ai−1 dℓ
+2pi ai−1 dℓ =
+i∈Z
+ℓ∈Z
+ai−1 6=0 ℓ≥i+1
+
+i∈Z
+ai−1 6=0
+
+≤
+
+X X
+
+2pi ai−1 dℓ
+
+X X
+
+2pi ai−1 dℓ
+
+i∈Z
+
+=
+
+ℓ∈Z
+ℓ≥i+1
+sp/n
+a
+d 6=0
+i−1 ℓ
+
+−sp/n
+
+ℓ∈Z
+ℓ≥i+1
+aℓ−1 6=0
+
+−sp/n
+
+i∈Z
+ℓ∈Z
+aℓ−1 6=0 i≤ℓ−1
+
+≤
+
+X X
+
+−sp/n
+
+2pi aℓ−1 dℓ
+
+ℓ∈Z
+i∈Z
+aℓ−1 6=0 i≤ℓ−1
+
+=
+
++∞
+X X
+
+−sp/n
+
+2p(ℓ−1) 2−pk aℓ−1 dℓ ≤ S. (6.14)
+
+ℓ∈Z
+k=0
+aℓ−1 6=0
+
+Now, we fix i ∈ Z and x ∈ Di : then, for any j ∈ Z with j ≤ i − 2 and
+any y ∈ Dj we have that
+|f (x) − f (y)| ≥ 2i − 2j+1 ≥ 2i − 2i−1 = 2i−1
+and therefore, recalling (6.8),
+X Z |f (x) − f (y)|p
+j∈Z
+j≤i−2
+
+Dj
+
+|x − y|n+sp
+
+dy ≥ 2
+
+p(i−1)
+
+X Z
+
+j∈Z
+j≤i−2
+
+= 2
+43
+
+p(i−1)
+
+Z
+
+dy
+n+sp
+Dj |x − y|
+
+dy
+.
+n+sp
+C Ai−1 |x − y|
+
+This and Lemma 6.1 imply that, for any i ∈ Z and any x ∈ Di , we have
+that
+X Z |f (x) − f (y)|p
+−sp/n
+dy ≥ co 2pi ai−1 ,
+n+sp
+|x
+−
+y|
+Dj
+j∈Z
+j≤i−2
+
+for a suitable co > 0.
+As a consequence, for any i ∈ Z,
+X Z
+|f (x) − f (y)|p
+−sp/n
+dx dy ≥ co 2pi ai−1 di .
+n+sp
+|x
+−
+y|
+Di ×Dj
+j∈Z
+
+(6.15)
+
+j≤i−2
+
+Therefore, by (6.11), we conclude that, for any i ∈ Z,
+
+
+Z
+X
+X
+|f (x) − f (y)|p
+ pi −sp/n
+−sp/n 
+dx
+dy
+≥
+c
+2
+a
+a
+−
+2pi ai−1 dℓ  .
+o
+i
+i−1
+n+sp
+|x
+−
+y|
+Di ×Dj
+j∈Z
+ℓ∈Z
+j≤i−2
+
+ℓ≥i+1
+
+(6.16)
+
+By (6.12) and (6.15), we have that
+X X Z
+|f (x) − f (y)|p
+dx dy ≥ co S.
+|x − y|n+sp
+Di ×Dj
+i∈Z
+j∈Z
+
+(6.17)
+
+ai−1 6=0 j≤i−2
+
+Then, using (6.16), (6.14) and (6.17),
+X X Z
+|f (x) − f (y)|p
+dx dy
+n+sp
+|x
+−
+y|
+D
+×D
+i
+j
+i∈Z
+j∈Z
+ai−1 6=0 j≤i−2
+
+
+
+
+
+X X
+ X pi −sp/n
+−sp/n 
+2pi ai−1 dℓ 
+2 ai−1 ai −
+≥ co 
+
+
+i∈Z
+ai−1 6=0
+
+i∈Z
+ℓ∈Z
+ai−1 6=0 ℓ≥i+1
+
+
+
+
+ X pi −sp/n
+2 ai−1 ai − S 
+≥ co
+i∈Z
+ai−1 6=0
+
+≥ co
+
+X
+
+i∈Z
+ai−1 6=0
+
+−sp/n
+2pi ai−1 ai −
+
+X XZ
+
+i∈Z
+j∈Z
+ai−1 6=0 j≤i−2
+
+44
+
+|f (x) − f (y)|p
+dx dy.
+n+sp
+Di ×Dj |x − y|
+
+That is, by taking the last term to the left hand side,
+X XZ
+X
+|f (x) − f (y)|p
+−sp/n
+dx
+dy
+≥
+c
+2pi ai−1 ai ,
+o
+n+sp
+|x − y|
+Di ×Dj
+i∈Z
+j∈Z
+i∈Z
+ai−1 6=0 j≤i−2
+
+(6.18)
+
+ai−1 6=0
+
+up to relabeling the constant c0 .
+On the other hand, by symmetry,
+Z
+|f (x) − f (y)|p
+dx dy
+|x − y|n+sp
+Rn ×Rn
+XZ
+|f (x) − f (y)|p
+dx dy
+=
+n+sp
+|x
+−
+y|
+D
+×D
+i
+j
+i,j∈Z
+XZ
+|f (x) − f (y)|p
+≥2
+dx dy
+|x − y|n+sp
+Di ×Dj
+i,j∈Z
+j<i
+
+≥2
+
+X X Z
+
+i∈Z
+j∈Z
+ai−1 6=0 j≤i−2
+
+|f (x) − f (y)|p
+dx dy.
+|x − y|n+sp
+Di ×Dj
+
+(6.19)
+
+Then, the desired result plainly follows from (6.18) and (6.19).
+Lemma 6.4. Let q ∈ [1, ∞). Let f : Rn → R be a measurable function.
+For any N ∈ N, let
+
+fN (x) := max min{f (x), N}, −N ∀x ∈ Rn .
+(6.20)
+Then
+
+lim kfN kLq (Rn ) = kf kLq (Rn ) .
+
+N →+∞
+
+Proof. We denote by |f |N the function obtained by cutting |f | at level N.
+We have that |f |N = |fN | and so, by Fatou Lemma, we obtain that
+lim inf kfN kLq (Rn ) = lim inf
+N →+∞
+
+N →+∞
+
+Z
+
+Rn
+
+|f |qN
+
+q1
+
+≥
+
+Z
+
+|f |q
+Rn
+
+q1
+
+= kf kLq (Rn ) .
+
+The reverse inequality easily follows by the fact that |f |N (x) ≤ |f (x)| for
+any x ∈ Rn .
+45
+
+Taking into account the previous lemmas, we are able to give an elementary proof of the Sobolev-type inequality stated in the following theorem.
+Theorem 6.5. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp < n. Then
+there exists a positive constant C = C(n, p, s) such that, for any measurable
+and compactly supported function f : Rn → R, we have
+Z Z
+|f (x) − f (y)|p
+p
+kf kLp⋆ (Rn ) ≤ C
+dx dy.
+(6.21)
+|x − y|n+sp
+Rn Rn
+where p⋆ = p⋆ (n, s) is the so-called “fractional critical exponent” and it is
+equal to np/(n − sp).
+Consequently, the space W s,p (Rn ) is continuously embedded in Lq (Rn )
+for any q ∈ [p, p⋆ ].
+Proof. First, we note that if the right hand side of (6.21) is unbounded
+then the claim in the theorem plainly follows. Thus, we may suppose that
+f is such that
+Z Z
+|f (x) − f (y)|p
+dx dy < +∞.
+(6.22)
+|x − y|n+sp
+Rn Rn
+Moreover, we can suppose, without loss of generality, that
+f ∈ L∞ (Rn ).
+
+(6.23)
+
+Indeed, if (6.22) holds for bounded functions, then it holds also for the
+function fN , obtained by any (possibly unbounded) f by cutting at levels
+−N and +N (see (6.20)). Therefore, by Lemma 6.4 and the fact that (6.22)
+together with the Dominated Convergence Theorem imply
+Z Z
+Z Z
+|f (x) − f (y)|p
+|fN (x) − fN (y)|p
+dx
+dy
+=
+dx dy,
+lim
+N →+∞ Rn Rn
+|x − y|n+sp
+|x − y|n+sp
+Rn Rn
+we obtain estimate (6.21) for the function f .
+Now, take ak and Ak defined by (6.4) and (6.5), respectively. We have
+XZ
+XZ
+⋆
+p⋆
+p⋆
+kf kLp⋆ (Rn ) =
+|f (x)| dx ≤
+(2k+1 )p dx
+k∈Z
+
+≤
+
+X
+
+Ak \Ak+1
+
+k∈Z
+
+⋆
+
+2(k+1)p ak .
+
+k∈Z
+
+46
+
+Ak \Ak+1
+
+That is,
+kf kpLp⋆ (Rn )
+
+≤ 2
+
+X
+
+p
+
+k∈Z
+
+2
+
+kp⋆
+
+ak
+
+!p/p⋆
+
+.
+
+Thus, since p/p⋆ = (n − sp)/n = 1 − sp/n < 1,
+X
+(n−sp)/n
+2kp ak
+kf kpLp⋆ (Rn ) ≤ 2p
+
+(6.24)
+
+and, then, by choosing T = 2p , Lemma 6.2 yields
+X
+− sp
+2kp ak+1 ak n ,
+kf kpLp⋆ (Rn ) ≤ C
+
+(6.25)
+
+k∈Z
+
+k∈Z
+ak 6=0
+
+for a suitable constant C depending on n, p and s.
+Finally, it suffices to apply Lemma 6.3 and we obtain the desired result,
+up to relabeling the constant C in (6.25).
+Furthermore, the embedding for q ∈ (p, p⋆ ) follows from standard application of Hölder inequality.
+Remark 6.6. From Lemma 6.1, it follows that
+Z Z
+dx dy
+≥ c(n, s) |E|(n−sp)/n
+n+sp
+E C E |x − y|
+
+(6.26)
+
+for all measurable sets E with finite measure.
+On the other hand, we see that (6.21) reduces to (6.26) when f = χE ,
+so (6.26) (and thus Lemma 6.1) may be seen as a Sobolev-type inequality
+for sets.
+The above embedding does not generally hold for the space W s,p(Ω)
+since it not always possible to extend a function f ∈ W s,p(Ω) to a function
+f˜ ∈ W s,p (Rn ). In order to be allowed to do that, we should require further
+regularity assumptions on Ω (see Section 5).
+Theorem 6.7. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp < n. Let
+Ω ⊆ Rn be an extension domain for W s,p. Then there exists a positive
+constant C = C(n, p, s, Ω) such that, for any f ∈ W s,p(Ω), we have
+kf kLq (Ω) ≤ Ckf kW s,p (Ω) ,
+47
+
+(6.27)
+
+for any q ∈ [p, p⋆ ]; i.e., the space W s,p(Ω) is continuously embedded in Lq (Ω)
+for any q ∈ [p, p⋆ ].
+If, in addition, Ω is bounded, then the space W s,p (Ω) is continuously
+embedded in Lq (Ω) for any q ∈ [1, p⋆ ].
+Proof. Let f ∈ W s,p (Ω). Since Ω ⊆ Rn is an extension domain for W s,p ,
+then there exists a constant C1 = C1 (n, p, s, Ω) > 0 such that
+kf˜kW s,p (Rn ) ≤ C1 kf kW s,p (Ω) ,
+
+(6.28)
+
+with f˜ such that f˜(x) = f (x) for x a.e. in Ω.
+On the other hand, by Theorem 6.5, the space W s,p (Rn ) is continuously
+embedded in Lq (Rn ) for any q ∈ [p, p⋆ ]; i.e., there exists a constant C2 =
+C2 (n, p, s) > 0 such that
+kf˜kLq (Rn ) ≤ C2 kf˜kW s,p (Rn ) .
+
+(6.29)
+
+Combining (6.28) with (6.29), we get
+kf kLq (Ω) = kf˜kLq (Ω) ≤ kf˜kLq (Rn ) ≤ C2 kf˜kW s,p (Rn )
+≤ C2 C1 kf kW s,p (Ω) ,
+that gives the inequality in (6.27), by choosing C = C2 C1 .
+In the case of Ω being bounded, the embedding for q ∈ [1, p) plainly
+follows from (6.27), by using the Hölder inequality.
+Remark 6.8. In the critical case q = p⋆ the constant C in Theorem 6.7
+does not depend on Ω: this is a consequence of (6.21) and of the extension
+property of Ω.
+6.1. The case sp = n
+We note that when sp → n the critical exponent p⋆ goes to ∞ and so
+it is not surprising that, in this case, if f is in W s,p then f belongs to Lq
+for any q, as stated in the following two theorems.
+Theorem 6.9. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp = n. Then
+there exists a positive constant C = C(n, p, s) such that, for any measurable
+and compactly supported function f : Rn → R, we have
+kf kLq (Rn ) ≤ Ckf kW s,p (Rn ) ,
+48
+
+(6.30)
+
+for any q ∈ [p, ∞); i.e., the space W s,p (Rn ) is continuously embedded in
+Lq (Rn ) for any q ∈ [p, ∞).
+Theorem 6.10. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp = n. Let
+Ω ⊆ Rn be an extension domain for W s,p. Then there exists a positive
+constant C = C(n, p, s, Ω) such that, for any f ∈ W s,p(Ω), we have
+kf kLq (Ω) ≤ Ckf kW s,p (Ω) ,
+
+(6.31)
+
+for any q ∈ [p, ∞); i.e., the space W s,p(Ω) is continuously embedded
+in Lq (Ω) for any q ∈ [p, ∞).
+If, in addition, Ω is bounded, then the space W s,p (Ω) is continuously
+embedded in Lq (Ω) for any q ∈ [1, ∞).
+The proofs can be obtained by simply combining Proposition 2.1 with
+Theorem 6.5 and Theorem 6.7, respectively.
+7. Compact embeddings
+In this section, we state and prove some compactness results involving
+the fractional spaces W s,p (Ω) in bounded domains. The main proof is a
+modification of the one of the classical Riesz-Frechet-Kolmogorov Theorem
+(see [55, 79]) and, again, it is self-contained and it does not require to use
+Besov or other interpolation spaces, nor Fourier transform and semigroup
+flows (see [28, Theorem 1.5]). We refer to [77, Lemma 6.11] for the case
+p = q = 2.
+Theorem 7.1. Let s ∈ (0, 1), p ∈ [1, +∞), q ∈ [1, p], Ω ⊂ Rn be a bounded
+extension domain for W s,p and T be a bounded subset of Lp (Ω). Suppose
+that
+Z Z
+|f (x) − f (y)|p
+sup
+dx dy < +∞.
+|x − y|n+sp
+f ∈T Ω Ω
+Then T is pre-compact in Lq (Ω).
+
+Proof. We want to show that T is totally bounded in Lq (Ω), i.e., for any
+ε ∈ (0, 1) there exist β1 , . . . , βM ∈ Lq (Ω) such that for any f ∈ T there
+exists j ∈ {1, . . . , M} such that
+kf − βj kLq (Ω) ≤ ε.
+49
+
+(7.1)
+
+Since Ω is an extension domain, there exists a function f˜ in W s,p (Rn )
+such that kf˜kW s,p (Rn ) ≤ Ckf kW s,p (Ω) . Thus, for any cube Q containing Ω,
+we have
+kf˜kW s,p (Q) ≤ kf˜kW s,p (Rn ) ≤ Ckf kW s,p (Ω) .
+Observe that, since Q is a bounded open set, f˜ belongs also to Lq (Q)
+for any q ∈ [1, p]. Now, for any ε ∈ (0, 1), we let
+Co := 1 + sup kf˜kLq (Q) + sup
+f ∈T
+
+f ∈T
+
+ε
+
+ρ = ρε :=
+
+1
+q
+
+2Co n
+
+n+sp
+2p
+
+!1s
+
+Z Z
+Q
+
+|f˜(x) − f˜(y)|p
+dx dy,
+n+sp
+Q |x − y|
+n
+
+ερq
+η = ηε :=
+,
+2
+
+and
+
+and we take a collection of disjoints cubes Q1 , . . . , QN of side ρ such that11
+Ω⊆Q=
+
+N
+[
+
+Qj .
+
+j=1
+
+For any x ∈ Ω, we define
+j(x) as the unique integer in {1, . . . , N} for which x ∈ Qj(x) .
+
+(7.2)
+
+Also, for any f ∈ T , let
+P (f )(x) :=
+
+1
+|Qj(x) |
+
+Z
+
+f˜(y) dy.
+
+Qj(x)
+
+Notice that
+P (f + g) = P (f ) + P (g)
+
+for any f, g ∈ T
+
+and that P (f ) is constant, say equal to qj (f ), in any Qj , for j ∈ {1, . . . , N}.
+Therefore, we can define
+
+R(f ) := ρn/q q1 (f ), . . . , qN (f ) ∈ RN
+11
+
+To be precise, for this one needs to take ε ∈ (0, 1) arbitrarily small and such that
+the ration between the side of Q and ρε is integer.
+
+50
+
+and consider the spatial q-norm in RN as
+N
+X
+
+kvkq :=
+
+|vj |q
+
+j=1
+
+!1q
+
+, for any v ∈ RN .
+
+We observe that R(f + g) = R(f ) + R(g). Moreover,
+kP (f )kqLq (Ω)
+
+=
+
+N
+XZ
+j=1
+n
+
+≤ ρ
+
+|P (f )(x)|q dx
+
+Qj ∩Ω
+
+N
+X
+
+|qj (f )|
+
+q
+
+=
+
+kR(f )kqq
+
+j=1
+
+kR(f )kqq
+≤
+.
+ρn
+
+(7.3)
+
+Also, by Hölder inequality,
+kR(f )kqq =
+
+N
+X
+
+≤
+
+N Z
+X
+j=1
+
+Qj
+
+q
+
+f˜(y) dy
+ρn(q−1) j=1 Qj
+Z
+q
+|f˜(y)| dy =
+|f˜(y)|q dy = kf˜kqLq (Q) .
+
+ρn |qj (f )|q =
+
+j=1
+
+N Z
+X
+
+1
+
+Q
+
+In particular,
+sup kR(f )kqq ≤ Co ,
+
+f ∈T
+
+that is, the set R(T ) is bounded in RN (with respect to the q-norm of
+RN as well as to any equivalent norm of RN ) and so, since it is finite
+dimensional, it is totally bounded. Therefore, there exist b1 , . . . , bM ∈ RN
+such that
+M
+[
+R(T ) ⊆
+Bη (bi ),
+(7.4)
+i=1
+
+where the balls Bη are taken in the q-norm of RN .
+For any i ∈ {1, . . . , M}, we write the coordinates of bi as
+bi = (bi,1 , . . . , bi,N ) ∈ RN .
+
+For any x ∈ Ω, we set
+βi (x) := ρ−n/q bi,j(x) ,
+51
+
+where j(x) is as in (7.2).
+Notice that βi is constant on Qj , i.e. if x ∈ Qj then
+n
+
+P (βi )(x) = ρ− q bi,j = βi (x)
+−n
+q
+
+and so qj (βi ) = ρ
+
+(7.5)
+
+bi,j ; thus
+R(βi ) = bi .
+
+(7.6)
+
+Furthermore, for any f ∈ T
+kf − P (f )kqLq (Ω)
+
+=
+
+=
+
+N
+XZ
+
+|f (x) − P (f )(x)|q dx
+
+j=1
+
+Qj ∩Ω
+
+N Z
+X
+
+1
+f (x) −
+|Qj |
+Qj ∩Ω
+
+j=1
+
+Z
+
+q
+
+f˜(y) dy dx
+
+Qj
+
+q
+Z
+1
+f (x) − f˜(y) dy dx
+=
+q
+|Q
+|
+j
+Q
+Q
+∩Ω
+j
+j
+j=1
+"Z
+#q
+N Z
+1 X
+|f (x) − f˜(y)| dy dx.
+≤ nq
+ρ j=1 Qj ∩Ω Qj
+N Z
+X
+
+(7.7)
+
+Now for any fixed j ∈ 1, · · · , N, by Hölder inequality with p and p/(p −
+1) we get
+"Z
+#q
+1
+|f (x) − f˜(y)| dy
+ρnq
+Qj
+"Z
+# pq
+q(p−1)
+1
+p
+≤ nq |Qj | p
+f (x) − f˜(y) dy
+ρ
+Qj
+=
+
+≤
+
+1
+ρnq/p
+1
+ρnq/p
+
+≤ n(
+
+"Z
+
+p
+f (x) − f˜(y) dy
+
+Qj
+
+n(
+
+n+sp
+2
+
+q
+p
+
+n+sp
+2
+
+) ρsq
+
+q
+p
+
+) ρ
+"Z
+
+52
+
+q
+(n+sp)
+p
+
+"Z
+
+# pq
+
+|f (x) − f˜(y)|p
+dy
+|x − y|n+sp
+Qj
+
+# pq
+
+# pq
+
+(7.8)
+
+|f (x) − f˜(y)|p
+dy
+n+sp
+Q |x − y|
+
+.
+
+Hence, combining (7.7) with (7.8), we obtain that
+kf − P (f )kqLq (Ω)
+
+≤ n(
+
+n+sp
+2
+
+q
+p
+
+) ρsq
+
+Z "Z
+Q
+
+≤ n(
+
+n+sp
+2
+
+q
+p
+
+) ρsq
+
+"Z Z
+Q
+
+|f˜(x) − f˜(y)|p
+dy
+n+sp
+Q |x − y|
+
+# pq
+
+dx
+
+|f˜(x) − f˜(y)|p
+dy dx
+n+sp
+Q |x − y|
+
+# pq
+
+(7.9)
+
+q
+
+n+sp q
+ε
+≤ Co n( 2 ) p ρsq = q .
+2
+
+where (7.9) follows from Jensen inequality since t 7→ |t|q/p is a concave
+function for any fixed p and q such that q/p ≤ 1.
+Consequently, for any j ∈ {1, ..., M}, recalling (7.3) and (7.5)
+kf − βj kLq (Ω) ≤ kf − P (f )kLq (Ω) + kP (βj ) − βj kLq (Ω) + kP (f − βj )kLq (Ω)
+ε kR(f ) − R(βj )kq
+≤
++
+.
+(7.10)
+2
+ρn/q
+Now, given any f ∈ T , we recall (7.4) and (7.6) and we take j ∈
+{1, . . . , M} such that R(f ) ∈ Bη (bj ). Then, (7.5) and (7.10) give that
+kf − βj kLq (Ω) ≤
+
+ε kR(f ) − bj kq
+ε
+η
++
+≤
++ n/q = ε.
+n/q
+2
+ρ
+2 ρ
+
+(7.11)
+
+This proves (7.1), as desired.
+Corollary 7.2. Let s ∈ (0, 1) and p ∈ [1, +∞) such that sp < n. Let
+q ∈ [1, p⋆ ), Ω ⊆ Rn be a bounded extension domain for W s,p and T be a
+bounded subset of Lp (Ω). Suppose that
+Z Z
+|f (x) − f (y)|p
+dx dy < +∞.
+sup
+|x − y|n+sp
+f ∈T Ω Ω
+Then T is pre-compact in Lq (Ω).
+Proof. First, note that for 1 ≤ q ≤ p the compactness follows from Theorem 7.1.
+53
+
+For any q ∈ (p, p⋆ ), we may take θ = θ(p, p⋆ , q) ∈ (0, 1) such that
+1/q = θ/p + 1 − θ/p⋆ , thus for any f ∈ T and βj with j ∈ {1, ..., N} as in
+the theorem above, using Hölder inequality with p/(θq) and p⋆ /((1 − θ)q),
+we get
+kf − βj kLq (Ω) =
+
+Z
+
+qθ
+
+|f − βj | |f − βj |
+
+q(1−θ)
+
+Ω
+
+≤
+
+Z
+
+Ω
+
+1/q
+dx
+
+θ/p Z
+(1−θ)/p⋆
+p⋆
+|f − βj | dx
+|f − βj | dx
+p
+
+Ω
+
+θ
+= kf − βj k1−θ
+Lp⋆ (Ω) kf − βj kLp (Ω)
+θ
+θ
+≤ Ckf − βj k1−θ
+W s,p (Ω) kf − βj kLp (Ω) ≤ C̃ε ,
+
+where the last inequalities comes directly from (7.11) and the continuos
+embedding (see Theorem 6.7).
+Remark 7.3. As well known in the classical case s = 1 (and, more generally,
+when s is an integer), also in the fractional case the lack of compactness
+for the critical embedding (q = p⋆ ) is not surprising, because of translation
+and dilation invariance (see [76] for various results in this direction, for any
+0 < s < n/2).
+Notice that the regularity assumption on Ω in Theorem 7.1 and Corollary 7.2 cannot be dropped (see Example 9.2 in Section 9).
+8. Hölder regularity
+In this section we will show certain regularity properties for functions
+in W s,p (Ω) when sp > n and Ω is an extension domain for W s,p with no
+external cusps. For instance, one may take Ω any Lipschitz domain (recall
+Theorem 5.4).
+The main result is stated in the forthcoming Theorem 8.2. First, we
+need a simple technical lemma, whose proof can be found in [46] (for
+instance).
+
+54
+
+Lemma 8.1. ([46, Lemma 2.2]). Let p ∈ [1, +∞) and sp ∈ (n, n + p].
+Let Ω ⊂ Rn be a domain with no external cusps and f be a function in
+W s,p(Ω). Then, for any x0 ∈ Ω and R, R′ , with 0 < R′ < R < diam(Ω), we
+have
+|hf iBR (x0 )∩Ω − hf iBR′ (x0 )∩Ω | ≤ c [f ]p,sp |BR (x0 ) ∩ Ω|(sp−n)/np
+
+(8.1)
+
+where
+[f ]p,sp :=
+
+sup
+x0 ∈Ω ρ>0
+
+and
+
+ρ−sp
+
+Z
+
+!p1
+
+|f (x) − hf iBρ (x0 )∩Ω |p dx
+Bρ (x0 )∩Ω
+
+1
+hf iBρ (x0 )∩Ω :=
+|Bρ (x0 ) ∩ Ω|
+
+Z
+
+f (x)dx.
+Bρ (x0 )∩Ω
+
+Theorem 8.2. Let Ω ⊆ Rn be an extension domain for W s,p with no
+external cusps and let p ∈ [1, +∞), s ∈ (0, 1) such that sp > n. Then, there
+exists C > 0, depending on n, s, p and Ω, such that
+p1
+
+Z Z
+|f (x) − f (y)|p
+p
+(8.2)
+dx dy ,
+kf kC 0,α(Ω) ≤ C kf kLp (Ω) +
+|x − y|n+sp
+Ω Ω
+for any f ∈ Lp (Ω), with α := (sp − n)/p.
+Proof. In the following, we will denote by C suitable positive quantities,
+possibly different from line to line, and possibly depending on p and s.
+First, we notice that if the right hand side of (8.2) is not finite, then
+we are done. Thus, we may suppose that
+Z Z
+|f (x) − f (y)|p
+dx dy ≤ C,
+|x − y|n+sp
+Ω Ω
+for some C > 0.
+Second, since Ω is an extension domain for W s,p, we can extend any f
+to a function f˜ such that kf˜kW s,p (Rn ) ≤ Ckf kW s,p (Ω) .
+Now, for any bounded measurable set U ⊂ Rn , we consider the average
+value of the function f˜ in U, given by
+Z
+1
+˜
+hf iU :=
+f˜(x) dx.
+|U| U
+55
+
+For any ξ ∈ Rn , the Hölder inequality yields
+Z
+Z
+p
+1
+1
+p
+˜
+˜
+ξ − hf iU =
+|ξ − f˜(y)|p dy.
+ξ − f (y) dy ≤
+|U|p U
+|U| U
+Accordingly, by taking xo ∈ Ω and U := Br (xo ), ξ := f˜(x) and integrating
+over Br (xo ), we obtain that
+Z
+|f˜(x) − hf˜iBr (xo ) |p dx
+Br (xo )
+Z
+Z
+1
+≤
+|f˜(x) − f˜(y)|p dx dy.
+|Br (xo )| Br (xo ) Br (xo )
+Hence, since |x − y| ≤ 2r for any x, y ∈ Br (xo ), we deduce that
+Z
+|f˜(x) − hf˜iBr (xo ) |p dx
+Br (xo )
+
+Z
+
+(2r)n+sp
+≤
+|Br (xo )|
+≤
+that implies
+
+2
+
+n+sp
+
+Br (xo )
+
+Z
+
+|f˜(x) − f˜(y)|p
+dx dy
+|x − y|n+sp
+Br (xo )
+
+r Ckf kpW s,p(Ω)
+sp
+
+,
+
+(8.3)
+
+[f ]pp,sp ≤ Ckf kpW s,p (Ω) ,
+
+(8.4)
+
+|B1 |
+
+for a suitable constant C.
+Now, we will show that f is a continuos function. Taking into account
+(8.1), it follows that the sequence of functions x → hf iBR (x)∩Ω converges
+uniformly in x ∈ Ω when R → 0. In particular the limit function g will be
+continuos and the same holds for f , since by Lebesgue theorem we have
+that
+Z
+1
+f (y) dy = f (x) for almost every x ∈ Ω.
+lim
+R→0 |BR (x) ∩ Ω| B (x)∩Ω
+R
+Now, take any x, y ∈ Ω and set R = |x − y|. We have
+|f (x) − f (y)| ≤ |f (x) − hf˜iB2R (x) | + |hf˜iB2R (x) − hf˜iB2R (y) | + |hf˜iB2R (y) − f (y)|
+56
+
+We can estimate the first and the third term of right hand-side of the
+above inequality using Lemma 8.1. Indeed, getting the limit in (8.1) as
+R′ → 0 and writing 2R instead of R, for any x ∈ Ω we get
+|hf˜iB2R (x) − f (x)| ≤ c [f ]p,sp|B2R (x)|(sp−n)/np ≤ C[f ]p,sp R(sp−n)/p
+
+(8.5)
+
+where the constant C is given by c 2(sp−n)/p /|B1 |.
+On the other hand,
+|hf˜iB2R (x) − hf˜iB2R (y) | ≤ |f (z) − hf˜iB2R (x) | + |f˜(z) − hf˜iB2R (y) |
+and so, integrating on z ∈ B2R (x) ∩ B2R (y), we have
+˜ B (x) − hf˜iB (y) |
+|B2R (x) ∩ B2R (y)| |hfi
+2R
+2R
+Z
+≤
+|f˜(z) − hf˜iB2R (x) | dz
+B2R (x)∩B2R (y)
+Z
++
+|f˜(z) − hf˜iB2R (y) | dz
+≤
+
+Z
+
+B2R (x)∩B2R (y)
+
+|f˜(z) − hf˜iB2R (x) | dz +
+
+B2R (x)
+
+Z
+
+|f˜(z) − hf˜iB2R (y) | dz.
+
+B2R (y)
+
+
+Furthermore, since BR (x) ∪ BR (y) ⊂ B2R (x) ∩ B2R (y) , we have
+
+|BR (x)| ≤ |B2R (x) ∩ B2R (y)| and |BR (y)| ≤ |B2R (x) ∩ B2R (y)|
+
+and so
+|hf˜iB2R (x) − hf˜iB2R (y) | ≤
+
+1
+|BR (x)|
+
+Z
+
+1
++
+|BR (y)|
+
+57
+
+|f˜(z) − hf˜iB2R (x) | dz
+
+B2R (x)
+
+Z
+
+|f˜(z) − hf˜iB2R (y) | dz.
+B2R (y)
+
+An application of the Hölder inequality gives
+Z
+1
+|f˜(z) − hf˜iB2R (x) | dz
+|BR (x)| B2R (x)
+Z
+1/p
+|B2R (x)|(p−1)/p
+p
+˜
+˜
+|f (z) − hf iB2R (x) | dz
+≤
+|BR (x)|
+B2R (x)
+≤
+
+|B2R (x)|(p−1)/p
+(2R)s [f ]p,sp
+|BR (x)|
+
+≤ C [f ]p,sp R(sp−n)/p .
+
+(8.6)
+
+Analogously, we obtain
+Z
+1
+|f˜(z) − hf˜iB2R (y) | dz ≤ C [f ]p,sp R(sp−n)/p .
+|BR (y)| B2R (y)
+
+(8.7)
+
+Combining (8.5), (8.6) with (8.7) it follows
+|f (x) − f (y)| ≤ C [f ]p,sp |x − y|(sp−n)/p ,
+
+(8.8)
+
+up to relabeling the constant C.
+Therefore, by taking into account (8.4), we can conclude that f ∈
+C 0,α (Ω), with α = (sp − n)/p.
+Finally, taking R0 < diam(Ω) (note that the latter can be possibly
+infinity), using estimate in (8.5) and the Hölder inequality we have, for
+any x ∈ Ω,
+|f (x)| ≤ |hf˜iBR0 (x) | + |f (x) − hf˜iBR0 (x) |
+C
+≤
+kf kLp (Ω) + c [f ]p,sp |BR0 (x)|α .
+1/p
+|BR0 (x)|
+Hence, by (8.4), (8.8) and (8.9), we get
+kf kC 0,α(Ω)
+
+|f (x) − f (y)|
+|x − y|α
+x,y∈Ω
+x6=y
+
+≤ C kf kLp (Ω) + [f ]p,sp
+=
+
+kf kL∞ (Ω) + sup
+
+≤ Ckf kW s,p (Ω) .
+for a suitable positive constant C.
+58
+
+(8.9)
+
+Remark 8.3. The estimate in (8.3) says that f belongs to the Campanato
+space L p,λ, with λ := sp, (see [22] and, e.g., [46, Definition 2.4]). Then,
+the conclusion in the proof of Theorem 8.2 is actually an application of the
+Campanato Isomorphism (see, for instance, [46, Theorem 2.9]).
+Just for a matter of curiosity, we observe that, according to the definition (2.1), the fractional Sobolev space W s,∞ (Ω) could be view as the
+space of functions
+
+
+|u(x) − u(y)|
+∞
+∞
+u ∈ L (Ω) :
+∈ L (Ω × Ω) ,
+|x − y|s
+but this space just boils down to C 0,s (Ω), that is consistent with the
+Hölder embedding proved in this section; i.e., taking formally p = ∞
+in Theorem 8.2, the function u belongs to C 0,s (Ω).
+9. Some counterexamples in non-Lipschitz domains
+When the domain Ω is not Lipschitz, some interesting things happen,
+as next examples show.
+Example 9.1. Let s ∈ (0, 1). We will construct a function u in W 1,p (Ω) that
+does not belong to W s,p (Ω), providing a counterexample to Proposition 2.2
+when the domain is not Lipschitz.
+Take any
+p ∈ (1/s, +∞).
+
+(9.1)
+
+p+1
+.
+sp − 1
+
+(9.2)
+
+Due to (9.1), we can fix
+κ>
+We remark that κ > 1.
+
+Let us consider the cusp in the plane
+
+C := (x1 , x2 ) with x1 ≤ 0 and |x2 | ≤ |x1 |κ
+
+and take polar coordinates on R2 \ C, say ρ = ρ(x) ∈ (0, +∞) and θ =
+θ(x) ∈ (−π, π), with x = (x1 , x2 ) ∈ R2 \ C.
+
+59
+
+We define the function u(x) := ρ(x)θ(x) and the heart-shaped domain Ω := (R2 \ C) ∩ B1 , with B1 being the unit ball centered in the
+origin. Then, u ∈ W 1,p (Ω) \ W s,p(Ω).
+To check this, we observe that
+∂x1 ρ = (2ρ)−1 ∂x1 ρ2 = (2ρ)−1 ∂x1 (x21 + x22 ) =
+and, in the same way,
+∂x2 ρ =
+
+x1
+ρ
+
+x2
+.
+ρ
+
+Accordingly,
+1 = ∂x1 x1 = ∂x1 (ρ cos θ) = ∂x1 ρ cos θ − ρ sin θ∂x1 θ =
+= 1−
+
+x21
+− x2 ∂x1 θ
+ρ2
+
+x22
+− x2 ∂x1 θ.
+ρ2
+
+That is
+
+x2
+∂x1 θ = − 2 .
+ρ
+
+By exchanging the roles of x1 and x2 (with some care on the sign of the
+derivatives of the trigonometric functions), one also obtains
+∂x2 θ =
+
+x1
+.
+ρ2
+
+Therefore,
+∂x1 u = ρ−1 (x1 θ − x2 ) and ∂x2 u = ρ−1 (x2 θ + x1 )
+and so
+|∇u|2 = θ2 + 1 ≤ π 2 + 1.
+This shows that u ∈ W 1,p (Ω).
+On the other hand, let us fix r ∈ (0, 1), to be taken arbitrarily small
+at the end, and let us define r0 := r and, for any j ∈ N, rj+1 := rj − rjκ .
+By induction, one sees that rj is strictly decreasing, that rj > 0 and
+so rj ∈ (0, r) ⊂ (0, 1). Accordingly, we can define
+ℓ := lim rj ∈ [0, 1].
+j→+∞
+
+60
+
+By construction
+ℓ = lim rj+1 = lim rj − rjκ = ℓ − ℓκ ,
+j→+∞
+
+j→+∞
+
+hence ℓ = 0. As a consequence,
++∞
+X
+
+rjκ
+
+=
+
+j=0
+
+=
+
+lim
+
+N →+∞
+
+N
+X
+
+rjκ
+
+j=0
+
+=
+
+lim
+
+N →+∞
+
+lim r0 − rN +1 = r.
+
+N
+X
+
+rj − rj+1
+
+j=0
+
+(9.3)
+
+N →+∞
+
+We define
+Dj :=
+
+
+(x, y) ∈ R2 × R2 s.t. x1 , y1 ∈ (−rj , −rj+1 ),
+x2 ∈ (|x1 |κ , 2|x1 |κ ) and − y2 ∈ (|y1 |κ , 2|y1|κ ) .
+
+We observe that
+
+(x, y) ∈ R2 × R2 s.t. x1 , y1 ∈ (−r, 0),
+x2 ∈ (|x1 |κ , 2|x1 |κ ) and − y2 ∈ (|y1 |κ , 2|y1|κ )
++∞
+[
+⊇
+Dj ,
+
+Ω×Ω ⊇
+
+j=0
+
+and the union is disjoint. Also,
+rj+1 = rj (1 − rjκ−1 ) ≥ rj (1 − r κ−1 ) ≥
+
+rj
+,
+2
+
+for small r. Hence, if (x, y) ∈ Dj ,
+|x1 | ≤ rj ≤ 2rj+1 ≤ 2|y1 |
+and, analogously,
+|y1 | ≤ 2|x1 |.
+Moreover, if (x, y) ∈ Dj ,
+κ
+|x1 − y1 | ≤ rj − rj+1 = rjκ ≤ 2κ rj+1
+≤ 2κ |x1 |κ
+
+and
+|x2 − y2 | ≤ |x2 | + |y2 | ≤ 2|x1 |κ + 2|y1|κ ≤ 2κ+2|x1 |κ .
+61
+
+As a consequence, if (x, y) ∈ Dj ,
+|x − y| ≤ 2κ+3 |x1 |κ .
+Notice also that, when (x, y) ∈ Dj , we have θ(x) ≥ π/2 and θ(y) ≤ −π/2,
+so
+π ρ(x)
+π |x1 |
+u(x) − u(y) ≥ u(x) ≥
+≥
+.
+2
+2
+As a consequence, for any (x, y) ∈ Dj ,
+|u(x) − u(y)|p
+≥ c|x1 |p−κ(2+sp),
+2+sp
+|x − y|
+for some c > 0. Therefore,
+ZZ
+ZZ
+|u(x) − u(y)|p
+dx dy ≥
+c|x1 |p−κ(2+sp) dx dy
+2+sp
+|x
+−
+y|
+Dj
+Dj
+Z −rj+1
+Z −rj+1
+Z 2|x1 |κ
+Z −|y1 |κ
+=c
+dx1
+dy1
+dx2
+dy2|x1 |p−κ(2+sp)
+−rj
+
+=c
+
+Z −rj+1
+
+dx1
+
+−rj
+
+≥ c2
+
+−κ
+
+Z −rj+1
+
+Z −rj+1
+
+−2|y1 |κ
+
+dy1 |x1 |p−κ(2+sp)|x1 |κ |y1|κ
+
+−rj
+
+dx1
+
+−rj
+
+≥ c 2−κ
+
+|x1 |κ
+
+−rj
+
+Z −rj+1
+
+Z −rj+1
+
+dy1 |x1 |p−κsp
+
+−rj
+
+dx1
+
+Z −rj+1
+
+dy1 rjp−κsp
+
+−rj
+−rj
+−κ p−κsp+2κ
+= c 2 rj
+= c 2−κ rjκ−α ,
+
+with
+α := κ(sp − 1) − p > 1,
+
+(9.4)
+
+thanks to (9.2).
+In particular,
+ZZ
+
+|u(x) − u(y)|p
+dx dy ≥ c 2−κ r −α rjκ
+|x − y|2+sp
+Dj
+
+and so, by summing up and exploiting (9.3),
+Z Z
++∞ Z Z
+X
+|u(x) − u(y)|p
+|u(x) − u(y)|p
+dx
+dy
+≥
+dx dy ≥ c 2−κ r 1−α .
+2+sp
+2+sp
+|x
+−
+y|
+|x
+−
+y|
+Dj
+Ω Ω
+j=0
+62
+
+By taking r as small as we wish and recalling (9.4), we obtain that
+Z Z
+|u(x) − u(y)|p
+dx dy = +∞,
+|x − y|2+sp
+Ω Ω
+so u 6∈ W s,p (Ω).
+
+✷
+
+Example 9.2. Let s ∈ (0, 1). We will construct a sequence of functions
+{fn } bounded in W s,p (Ω) that does not admit any convergent subsequence
+in Lq (Ω), providing a counterexample to Theorem 7.1 when the domain is
+not Lipschitz.
+We follow an observation by [82]. For the sake of simplicity, fix n =
+p = q = 2.
+We take ak := 1/C k for a constant C > 10 and we consider the
+S∞
+set Ω = k=1 Bk where, for any k ∈ N, Bk denotes the ball of radius a2k
+centered in ak . Notice that
+ak → 0 as k → ∞ and ak − a2k > ak+1 + a2k+1 .
+Thus, Ω is the union of disjoint balls, it is bounded and it is not a Lipschitz
+domain.
+For any n ∈ N, we define the function fn : Ω → R as follows
+( 1
+π − 2 a−2
+x ∈ Bn ,
+n
+fn (x) =
+0
+x ∈ Ω \ Bn .
+We observe that we cannot extract any subsequence convergent in L2 (Ω)
+from the sequence of functions {fn }, because fn (x) → 0 as n → +∞, for
+any fixed x ∈ Ω but
+Z
+Z
+2
+2
+π −1 a−4
+kfn kL2 (Ω) =
+|fn (x)| dx =
+n dx = 1.
+Ω
+
+Bn
+
+Now, we compute the H s norm of fn in Ω. We have
+Z
+Z
+Z Z
+π −1 a−4
+|fn (x) − fn (y)|2
+n
+dx
+dy
+=
+2
+dx dy
+2+2s
+2+2s
+|x
+−
+y|
+|x
+−
+y|
+Ω\Bn Bn
+Ω Ω
+XZ Z
+a−4
+n
+−1
+= 2π
+dx dy. (9.5)
+|x
+−
+y|2+2s
+k6=n Bk Bn
+63
+
+Thanks to the choice of {ak } we have that
+|a2n + a2k | = a2n + a2k ≤
+
+|an − ak |
+.
+2
+
+Thus, since x ∈ Bn , y ∈ Bk , it follows
+|x − y| ≥ |an − a2n − (ak + a2k )| = |an − ak − (a2n + a2k )|
+|an − ak |
+≥ |an − ak | − |a2n + a2k | ≥ |an − ak | −
+2
+|an − ak |
+=
+.
+2
+Therefore,
+Z Z
+Z Z
+a−4
+a−4
+n
+n
+2+2s
+dx
+dy
+≤
+2
+dx dy
+2+2s
+|x
+−
+y|
+|a
+−
+ak |2+2s
+n
+Bk Bn
+Bk Bn
+a4k
+2+2s 2
+= 2
+π
+.
+|an − ak |2+2s
+Also, if m ≥ j + 1 we have
+1
+1
+1
+aj − am ≥ aj − aj+1 = j − j+1 = j
+C
+C
+C
+
+
+
+1
+1−
+C
+
+
+
+≥
+
+aj
+.
+2
+
+Therefore, combining (9.7) with (9.5) and (9.6), we get
+Z Z
+|fn (x) − fn (y)|2
+dx dy
+|x − y|2+2s
+Ω Ω
+X
+a4k
+≤ 23+2s π
+|an − ak |2+2s
+k6=n
+= 2
+
+3+2s
+
+π
+
+≤ 25+4s π
+
+≤ 2
+
+6+4s
+
+π
+
+X
+
+X
+a4k
+a4k
++
+(ak − an )2+2s k>n (an − ak )2+2s
+k<n
+!
+X a4
+X a4
+k
+k
+2+2s +
+2+2s
+a
+a
+k<n k
+k>n n
+
+X
+
+a2−2s
+k
+
+= 2
+
+6+4s
+
+π
+
+X
+k6=n
+
+k6=n
+
+This shows that {fn } is bounded in H s (Ω).
+
+64
+
+1
+C 2−2s
+
+k
+
+(9.6)
+
+(9.7)
+
+!
+
+< +∞.
+✷
+
+References
+[1] R. A. Adams, Sobolev Spaces, Academic Press, New York, 1975.
+[2] G. Alberti, G. Bouchitté and P. Seppecher, Phase transition
+with the line-tension effect, Arch. Rational Mech. Anal. 144 (1998),
+no. 1, 1–46.
+[3] N. Aronszajn, Boundary values of functions with finite Dirichlet
+integral, Techn. Report of Univ. of Kansas 14 (1955), 77–94.
+[4] P. W. Bates, On some nonlocal evolution equations arising in
+materials science. In Nonlinear dynamics and evolution equations,
+Vol. 48 of Fields Inst. Commun., pages 13–52. Amer. Math. Soc.,
+Providence, RI, 2006.
+[5] W. Beckner, Inequalities in Fourier Analysis in Rn , Proc. Nat.
+Acad. Sci. USA 72 (1975), no. 2, 638–641.
+[6] O. V. Besov, On a certain family of functional spaces. Imbedding and continuation theorems, Dokl. Akad. Nauk SSSR 126 (1959),
+1163–1165.
+[7] O. V. Besov, On some conditions of membership in Lp for derivatives of periodic functions, Nauĉn. Dokl. Vyss. Skoly. Fiz.-Mat. Nauki
+(1959), 13–17.
+[8] P. Biler, G. Karch and R. Monneau, Nonlinear diffusion of
+dislocation density and self-similar solutions, Comm. Math. Phys.
+294 (2010), no. 1, 145–168.
+[9] P. Biler, G. Karch and W. A. Woyczyński, Critical nonlinearity exponent and self-similar asymptotics for Lévy conservation
+laws, Ann. Inst. H. Poincaré Anal. Non Linéaire 18 (2001), no. 5,
+613–637.
+[10] H. Brezis, How to recognize constant functions. Connections with
+Sobolev spaces, Uspekhi Mat. Nauk 57 (2002), no. 4 (346), 59–74;
+translation in Russian Math. Surveys 57 (2002), no. 4, 693–708.
+[11] J. Bourgain, H. Brezis and P. Mironescu, Another look at
+Sobolev spaces, in Optimal Control and Partial Differential Equations,
+J. L. Menaldi, E. Rofman, A. Sulem (Eds.), a volume in honor of
+65
+
+A. Bensoussan’s 60th birthday, IOS Press, Amsterdam, 2001, 439–
+455.
+[12] H. Brezis and P. Mironescu, Gagliardo-Nirenberg, composition
+and products in fractional Sobolev spaces, J. Evol. Equ. 1 (2001), no.
+4, 387–404.
+[13] X. Cabré and E. Cinti, Energy estimates and 1-D symmetry for
+nonlinear equations involving the half-Laplacian, Discrete and Continuous Dynamical Systems 28 (2010), 1179-1206.
+[14] X. Cabré and J. Solà-Morales, Layer solutions in a half-space
+for boundary reactions, Comm. Pure Appl. Math. 58 (2005), no. 12,
+1678–1732.
+[15] L. Caffarelli, A. Mellet and Y. Sire, Traveling waves for
+a boundary reaction-diffusion equation, preprint, available online at
+http://arxiv.org/abs/1101.4381v1.
+[16] L. Caffarelli, J.-M. Roquejoffre and O. Savin, Non-local
+minimal surfaces, Comm. Pure Appl. Math. 63 (2010), 1111–1144.
+[17] L. Caffarelli, J.-M. Roquejoffre and Y. Sire, Variational
+problems with free boundaries for the fractional laplacian, J. Eur.
+Math. Soc. 12 (2010), 1151–1179.
+[18] L. Caffarelli, S. Salsa and L. Silvestre, Regularity estimates
+for the solution and the free boundary of the obstacle problem for
+the fractional Laplacian, Invent. Math. 171 (2008), no. 2, 425–461.
+[19] L. Caffarelli and L. Silvestre, An extension problem related
+to the fractional Laplacian, Comm. Partial Differential Equations 32
+(2007), 1245–1260.
+[20] L. Caffarelli and E. Valdinoci, Uniform estimates and limiting
+arguments for nonlocal minimal surfaces, Calc. Var. Partial Differential Equations 41, No. 1-2, 203–240.
+[21] L. Caffarelli and A. Vasseur, Drift diffusion equations with
+fractional diffusion and the quasi-geostrophic equation Annals of
+Math. 171 (2010), No. 3, 1903–1930.
+
+66
+
+[22] S. Campanato, Proprietà di hölderianità di alcune classi di funzioni,
+Ann. Scuola Norm. Sup. Pisa 17 (1963), no. 3, 175–188.
+[23] M. Chermisi and E. Valdinoci, Fibered nonlinearities for p(x)Laplace equations, Adv. Calc. Var. 2(2009), no. 2, 185–205.
+[24] M. Chermisi and E. Valdinoci, A symmetry result for a general
+class of divergence form PDEs in fibered media. Nonlinear Anal.
+73(2010), no. 3, 695–703.
+[25] D. Colton and R. Kress, Inverse acoustic and electromagnetic
+scattering theory, Vol. 93 of Applied Mathematical Sciences, SpringerVerlag, Berlin, 2nd edition, 1998.
+[26] R. Cont and P. Tankov, Financial modelling with jump processes,
+Chapman & Hall/CRC Financial Mathematics Series, Chapman &
+Hall/CRC, Boca Raton, FL, 2004.
+[27] D. Cordoba, Nonexistence of simple hyperbolic blow-up for the
+quasi-geostrophic equation, Ann. of Math. (2) 148 (1998), no. 3,
+1135–1152.
+[28] A. Cotsiolis and N. K. Tavoularis, Best constants for Sobolev
+inequalities for higher order fractional derivatives, J. Math. Anal.
+Appl., 295 (2004), 225–236.
+[29] W. Craig and M. D. Groves, Hamiltonian long-wave approximations to the water-wave problem, Wave Motion 19 (1994), no. 4,
+367–389.
+[30] W. Craig and D. P. Nicholls, Travelling two and three dimensional capillary gravity water waves, SIAM J. Math. Anal. 32 (2000),
+no. 2, 323–359 (electronic).
+[31] W. Craig, U. Schanz and C. Sulem, The modulational regime
+of three-dimensional water waves and the Davey-Stewartson system,
+Ann. Inst. H. Poincaré Anal. Non Linéaire 14 (1997), no. 5, 615–667.
+[32] W. Craig, C. Sulem and P.-L. Sulem, Nonlinear modulation
+of gravity waves: a rigorous approach, Nonlinearity 5 (1992), no. 2,
+497–522.
+
+67
+
+[33] W. Craig and P. A. Worfolk, An integrable normal form for
+water waves in infinite depth, Phys. D 84 (1995), no. 3-4, 513–531.
+[34] R. de la Llave and P. Panayotaros, Gravity waves on the
+surface of the sphere, J. Nonlinear Sci. 6 (1986), no. 2, 147–167.
+[35] R. de la Llave and E. Valdinoci, Symmetry for a DirichletNeumann problem arising in water waves, Math. Res. Lett. 16 (2009),
+no. 5, 909918.
+[36] J. J. Duistermaat and V. W. Guillemin, The spectrum of
+positive elliptic operators and periodic bicharacteristics, Invent. Math.
+29 (1975), no. 1, 39–79.
+[37] G. Duvaut and J.-L. Lions, Inequalities in mechanics and physics,
+Springer-Verlag, Berlin, 1976. Translated from the French by C. W.
+John, Grundlehren der Mathematischen Wissenschaften, 219.
+[38] B. Dyda, Embedding theorems for Lipschitz and Lorentz spaces on
+lower Ahlfors regular sets, Studia Math. 197 (2010), no. 3, 247–256.
+[39] L. Esposito, F. Leonetti and G. Mingione, Sharp regularity
+for functionals with (p, q) growth, J. Diff. Eq. 204 (2004), 5–55.
+[40] A. Farina and E. Valdinoci, Rigidity results for elliptic
+PDEs with uniform limits: an abstract framework with applications, to appear in Indiana Univ. Math. J., available online at
+http://www.iumj.indiana.edu/IUMJ/Preprints/4433.pdf.
+[41] C. Fefferman and R. de la Llave, Relativistic stability of
+matter. I, Rev. Mat. Iberoamericana 2 (1986), no. 1-2, 119–213.
+[42] G. K. Gächter and M. J. Grote, Dirichlet-to-Neumann map
+for three-dimensional elastic waves, Wave Motion 37 (2003), no. 3,
+293–311.
+[43] E. Gagliardo, Caratterizzazioni delle tracce sulla frontiera relative
+ad alcune classi di funzioni in n variabili, Rend. Sem. Mat. Univ.
+Padova 27 (1957), 284–305.
+[44] E. Gagliardo, Proprietà di alcune classi di funzioni in più variabili,
+Ricerche Mat. 7 (1958), 102–137.
+
+68
+
+[45] A. Garroni and G. Palatucci, A singular perturbation result
+with a fractional norm, in Variational problems in material science,
+Progress in Nonlinear Differential Equations and Their Applications
+68 (2006), Birkhäuser, Basel, 111–126.
+[46] E. Giusti, Metodi diretti nel calcolo delle variazioni, Unione Matematica Italiana, Bologna, 1994.
+[47] M. d. M. Gonzalez and R. Monneau, Slow motion of particle
+systems as a limit of a reaction-diffusion equation with half-Laplacian
+in dimension one, to appear in Discrete Cont. Dyn. S., available
+online at http://arxiv.org/abs/1007.0740v1.
+[48] R. Gorenflo and F. Mainardi, Random walk models for Spacefractional diffusion process, Fractional Calculus and Applied Analysis
+1 (1998), 167–191.
+[49] D. Gilbarg and N. S. Trudinger, Elliptic Partial Differential
+Equations of Second Order, Springer-Verlag, Berlin, 2001.
+[50] M. J. Grote and C. Kirsch, Dirichlet-to-Neumann boundary
+conditions for multiple scattering problems, J. Comput. Phys. 201
+(2004), no. 2, 630–650.
+[51] B. Hu and D. P. Nicholls, Analyticity of Dirichlet-Neumann
+operators on Hölder and Lipschitz domains, SIAM J. Math. Anal. 37
+(2005), no. 1, 302–320 (electronic).
+[52] H. Ishii and G. Nakamura, A class of integral equations and
+approximation of p-laplace equations, Calc. Var. and PDE 37 (2010),
+No. 3, 485–522.
+[53] R. Johnson, Book Review: Theory of function spaces. Bull. Amer.
+Math. Soc. 13 (1985), no. 1, 76–80.
+[54] K. H. Karlsen, F. Petitta and S. Ulusoy, A duality approach
+to the fractional laplacian with measure data, Publ. Mat. 55 (2011),
+151–161.
+[55] A. N. Kolmogorov, Über Kompaktheit der Funktionenmengen bei
+der Konvergenz im Mittel, Nachr. Ges. Wiss. Göttingen 9 (1931),
+60–63.
+69
+
+[56] J. Kristensen and G. Mingione, The singular set of minima of
+integral functionals, Arch. Rational Mech. Anal. 180 (2006), 331–398.
+[57] M. Kurzke, A nonlocal singular perturbation problem with periodic
+well potential, ESAIM Control Optim. Calc. Var. 12 (2006), no. 1,
+52–63 (electronic).
+[58] P. W. Jones, Quasiconformal mappings and extendability of functions in Sobolev spaces, Acta Math. 147(1981), no. 1-2, 71–88.
+[59] N. S. Landkof, Foundations of Modern Potential Theory. Translated from Russian, Grundlehren der Mathematischen Wissenschaften
+[Fundamental Principles of Mathematical Sciences], 180. SpringerVerlag, Berlin, 1973.
+[60] G. Leoni, A first course in Sobolev spaces. Graduate Studies in
+Mathematics 105, American Mathematical Society, Providence, RI,
+2009.
+[61] J. L. Lions, Théorèmes de trace et d’interpolation (IV), Math. Ann.
+151 (1963), 42–56.
+[62] J. L. Lions and E. Magenes, Problémes aux limites non homogénes et applications, xx+372 pp., Vol. 1. Travaux et Recherches
+Mathématiques, No. 17, Dunod, Paris, 1968.
+[63] P. I. Lizorkin, Boundary properties of functions from “weight”
+classes, Dokl. Akad. Nauk SSSR 132 (1960), 514–517. English translation in Soviet Math. Dokl. 1 (1960), 589–593.
+[64] A. J. Majda and E. G. Tabak, A two-dimensional model for
+quasigeostrophic flow: comparison with the two-dimensional Euler
+flow, Phys. D 98 (1996), no. 2-4, 515–522. Nonlinear phenomena in
+ocean dynamics (Los Alamos, NM, 1995).
+[65] A. Mellet, S. Mischler and C. Mouhot, Fractional diffusion
+limit for collisional kinetic equations, Arch. Rational Mech. Anal. 199,
+No. 2, 493-525.
+[66] V. Maz’ya and T. Shaposhnikova, On the Bourgain, Brezis,
+and Mironescu theorem concerning limiting embeddings of fractional
+Sobolev spaces, J. Funct. Anal. 195 (2002), 230–238.
+70
+
+[67] V. Maz’ya and T. Shaposhnikova, Theory of Sobolev multipliers. With applications to differential and integral operators.
+Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of Mathematical Sciences], 337. Springer-Verlag, Berlin, 2009.
+[68] R. Metzler and J. Klafter, The random walk’s guide to anomalous diffusion: a fractional dynamics approach, Phys. Rep. 339
+(2000), 1–77.
+[69] E. Milakis and L. Silvestre, Regularity for the nonlinear Signorini problem, Advances in Math. 217 (2008), 1301–1312.
+[70] G. Mingione, The singular set of solutions to non-differentiable
+elliptic systems, Arch. Rational Mech. Anal. 166 (2003), 287–301.
+[71] G. Mingione, The Calderón-Zygmund theory for elliptic problems
+with measure data, Ann. Scuola Norm. Sup. Pisa Cl. Sci. (5) 6
+(2007), 195–261.
+[72] G. Mingione, Gradient potential estimates, J. Eur. Math. Soc. 13
+(2011), 459–486.
+[73] B. Muckenhoupt, Weighted norm inequalities for the Hardy maximal function, Trans. Amer. Math. Soc., 165 (1972), 207–226.
+[74] P. I. Naumkin and I. A. Shishmarëv, Nonlinear nonlocal equations in the theory of waves. American Mathematical Society, Providence, RI, 1994. Translated from the Russian manuscript by Boris
+Gommerstadt.
+[75] D. P. Nicholls and M. Taber, Joint analyticity and analytic
+continuation of Dirichlet-Neumann operators on doubly perturbed domains, J. Math. Fluid Mech. 10 (2008), no. 2, 238–271.
+[76] G.
+Palatucci
+and
+A.
+Pisante,
+Sobolev
+embeddings and concentration-compactness alternative for fractional Sobolev spaces, submitted paper, available online at
+http://mipa.unimes.fr/preprints.html.
+[77] G. Palatucci, O. Savin and E. Valdinoci, Local and
+global minimizers for a variational energy involving a fractional
+norm, to appear in Ann. Mat. Pura Appl., available online at
+http://arxiv.org/abs/1104.1725v2.
+71
+
+[78] G. Palatucci and Y. Sire, Γ-Convergence of some super quadratic
+functionals with singular weights, Math. Z. 266 (2010), No. 3, 533–
+560.
+[79] M. Riesz, Sur les ensembles compacts de fonctions sommables, Acta
+Szeged Sect. Math. 6 (1933), 136–142.
+[80] T. Runst and W. Sickel, Sobolev spaces of fractional order,
+Nemytskij operators, and nonlinear partial differential equations. de
+Gruyter Series in Nonlinear Analysis and Applications, no. 3. Walter
+de Gruyter & Co., Berlin, 1996.
+[81] J. J. Stoker, Water waves: The mathematical theory with applications. Pure and Applied Mathematics, Vol. IV, Interscience Publishers, Inc., New York, 1957.
+[82] O. Savin, Personal communication, 2011.
+[83] O. Savin and E. Valdinoci, Elliptic PDEs with fibered nonlinearities, J. Geom. Anal. 19 (2009), no. 2, 420–432.
+[84] O. Savin and E. Valdinoci, Density estimates for a nonlocal
+variational model via the Sobolev inequality, to appear in SIAM J.
+Math. Anal., available online at http://arxiv.org/abs/1103.6205.
+[85] O. Savin and E. Valdinoci, Density estimates for a variational
+model driven by the Gagliardo norm, submitted paper, available online
+at http://arxiv.org/abs/1007.2114v3.
+[86] L. Silvestre,
+Regularity of the obstacle problem for
+a
+fractional
+power
+of
+the
+Laplace
+operator.
+Ph.D.
+Thesis,
+Austin
+University,
+2005,
+available
+online
+at
+http://www.math.uchicago.edu/∼ luis/preprints/luisdissreadable.pdf.
+[87] L. Silvestre, Regularity of the obstacle problem for a fractional
+power of the Laplace operator, Communications on Pure and Applied
+Mathematics 60 (2007), no. 1, 67–112.
+[88] Y. Sire and E. Valdinoci, Fractional Laplacian phase transitions
+and boundary reactions: a geometric inequality and a symmetry result, J. Funct. Anal. 256 (2009), no. 6, 1842–1864.
+
+72
+
+[89] L. N. Slobodeckij, Generalized Sobolev spaces and their applications to boundary value problems of partial differential equations,
+Leningrad. Gos. Ped. Inst. Učep. Zap. 197 (1958), 54–112.
+[90] E. M. Stein, Singular integrals and differentiability properties of
+functions. Princeton Mathematical Series 30, Princeton University
+Press, Princeton, N.J., 1970.
+[91] L. Tartar, An Introduction to Sobolev Spaces and Interpolation
+Spaces. Lecture Notes of the Unione Matematica Italiana 3, SpringerVerlag, Berlin Heidelberg 2007.
+[92] J. F. Toland, The Peierls-Nabarro and Benjamin-Ono equations,
+J. Funct. Anal. 145 (1997), no. 1, 136–150.
+[93] H. Triebel, Interpolation theory, Fourier analysis and function
+spaces. Teubner-Texte Math., Teubner, Leipzig, 1977.
+[94] H. Triebel, Interpolation theory, Spaces of Besov-Hardy-Sobolev
+type. Teubner-Texte Math., Teubner, Leipzig, 1978.
+[95] S. V. Uspenskii, An imbedding theorem for S. L. Sobolev’s classes
+Wpr of fractional order, Dokl. Akad. Nauk SSSR 130 (1960), 992-993.
+English translation in Soviet Math. Dokl. 1 (1960), 132-133.
+[96] S. V. Uspenskii, Properties of the classes Wpr with fractional derivatives on differentiable manifolds, Dokl. Akad. Nauk SSSR 132 (1960),
+60–62. English translation in Soviet Math. Dokl. 1 (1960), 495–497.
+[97] E. Valdinoci, From the lung jump random walk to the fractional
+Laplacian, Bol. Soc. Esp. Mat. Apl. S~eMA 49 (2009), 33–44.
+[98] J. L. Vázquez, Nonlinear Diffusion with Fractional Laplacian Operators, to appear in Proc. Abel Symp., available online at
+http://www.uam.es/personal pdi/ciencias/jvazquez/JLV-ABEL-2010.pdf.
+[99] G. B. Whitham, Linear and nonlinear waves. Pure and Applied
+Mathematics, Wiley-Interscience [John Wiley & Sons], New York,
+1974.
+[100] V.E. Zakharov, Stability of periodic waves of finite amplitude on
+the surface of a deep fluid, Zh. Prikl. Mekh. Tekh. Fiz. 9 (1968),
+86–94.
+73
+
+[101] W. P. Ziemer, Weakly Differentiable Functions: Sobolev Spaces and
+Functions of Bounded Variation. Springer-Verlag, Berlin, 1989.
+[102] Y. Zhou, Fractional Sobolev Extension and Imbedding, preprint.
+
+74
+
+

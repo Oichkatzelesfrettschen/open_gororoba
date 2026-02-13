@@ -1,0 +1,1991 @@
+                                                 Draft version June 24, 2020
+                                                 Typeset using LATEX twocolumn style in AASTeX63
+
+
+
+
+                                                              GW190814: Gravitational Waves from the Coalescence of a 23 M                         Black Hole
+                                                                                  with a 2.6 M Compact Object
+
+                                                                              LIGO Scientific Collaboration and Virgo Collaboration
+
+
+
+                                                                                                    (Dated: June 24, 2020)
+
+
+
+
+arXiv:2006.12611v1 [astro-ph.HE] 22 Jun 2020
+                                                                                                        ABSTRACT
+                                                          We report the observation of a compact binary coalescence involving a 22.2 – 24.3 M black hole and
+                                                        a compact object with a mass of 2.50 – 2.67 M (all measurements quoted at the 90% credible level).
+                                                        The gravitational-wave signal, GW190814, was observed during LIGO’s and Virgo’s third observing
+                                                        run on August 14, 2019 at 21:10:39 UTC and has a signal-to-noise ratio of 25 in the three-detector
+                                                        network. The source was localized to 18.5 deg2 at a distance of 241+41          −45 Mpc; no electromagnetic
+                                                        counterpart has been confirmed to date. The source has the most unequal mass ratio yet measured
+                                                                                         +0.008
+                                                        with gravitational waves, 0.112−0.009   , and its secondary component is either the lightest black hole
+                                                        or the heaviest neutron star ever discovered in a double compact-object system. The dimensionless
+                                                        spin of the primary black hole is tightly constrained to ≤ 0.07. Tests of general relativity reveal no
+                                                        measurable deviations from the theory, and its prediction of higher-multipole emission is confirmed at
+                                                        high confidence. We estimate a merger rate density of 1–23 Gpc−3 yr−1 for the new class of binary
+                                                        coalescence sources that GW190814 represents. Astrophysical models predict that binaries with mass
+                                                        ratios similar to this event can form through several channels, but are unlikely to have formed in
+                                                        globular clusters. However, the combination of mass ratio, component masses, and the inferred merger
+                                                        rate for this event challenges all current models for the formation and mass distribution of compact-
+                                                        object binaries.
+                                                                  1. INTRODUCTION                                  The first six months of the third observing run (O3)
+                                                 The first two observing runs (O1 and O2) with                  were   completed between April 1 and September 30,
+                                               Advanced LIGO (Aasi et al. 2015) and Advanced                    2019.   The LVC recently reported on the discovery of
+                                               Virgo (Acernese et al. 2015) opened up the field of              GW190425,      the coalescence signal of what is most likely
+                                               gravitational-wave astrophysics with the detection of            a  BNS   with   unusually large chirp mass and total mass
+                                               the first binary black hole (BBH) coalescence signal,            compared     to  the Galactic BNSs known from radio pul-
+                                               GW150914 (Abbott et al. 2016a). Another nine such                sar observations       (Abbott et al. 2020a). Another dis-
+                                               events (Abbott et al. 2016b, 2019a) were discovered by           covery from O3 is that of GW190412, the first BBH
+                                               the LIGO Scientific and Virgo Collaborations (LVC)               coalescence with an unequivocally unequal mass ratio
+                                               during this period, and additional events were reported          q = m2 /m1 of 0.28+0.12  −0.06 (all measurements are reported
+                                               by independent groups (Venumadhav et al. 2020; Za-               as symmetric      90%    credible intervals around the median
+                                               ckay et al. 2019a,b; Nitz et al. 2020). The first binary         of the  marginalized       posterior distribution, unless other-
+                                               neutron star (BNS) coalescence signal, GW170817, was             wise specified).    It  is also the first event for which higher-
+                                               discovered during the second of these observing cam-             multipole   gravitational      radiation was detected with high
+                                               paigns (Abbott et al. 2017a, 2019b). It proved to be a           significance   (Abbott      et al. 2020d).
+                                               multi-messenger source with emission across the electro-            Here  we  report    on   another   O3 detection, GW190814,
+                                               magnetic spectrum (Abbott et al. 2017b), with implica-           the signal of a compact binary coalescence with the
+                                               tions for the origin of short gamma-ray bursts (Abbott           most unequal mass ratio yet measured with gravitational
+                                               et al. 2017c), the formation of heavy elements (Abbott           waves: q = 0.112+0.008 −0.009 . The signal was first identified
+                                               et al. 2017d; Chornock et al. 2017; Tanvir et al. 2017;          in data  from   two   detectors,   LIGO Livingston and Virgo,
+                                               Rosswog et al. 2018; Kasliwal et al. 2019; Watson et al.         on  2019   August    14,   21:11:00  UTC. Subsequent analysis
+                                               2019), cosmology (Abbott et al. 2017e, 2019c) and fun-           of data   from   the   full  three-detector  network revealed a
+                                               damental physics (Abbott et al. 2017c, 2019d).                   merger   signal   with    signal-to-noise  ratio (SNR) of ≃ 25.
+2
+
+   The primary component of GW190814 is conclusively
+                                          +1.1                                                        Normalized energy
+a black hole (BH) with mass m1 = 23.2−1.0      M . Its di-
+                                                                                      0.0      2.5    5.0    7.5    10.0    12.5       15.0
+mensionless spin magnitude is constrained to χ1 ≤ 0.07.
+The nature of the 2.59+0.08
+                        −0.09 M secondary component is
+unclear. The lack of measurable tidal deformations and
+the absence of an electromagnetic counterpart are con-                                      LIGO Hanford
+sistent with either a neutron star (NS) or a BH given the
+event’s asymmetric masses and distance of 241+41                                100
+                                                 −45 Mpc.
+However, we show here that comparisons with the maxi-
+mum NS mass predicted by studies of GW170817’s rem-
+nant, by current knowledge of the NS equation of state,
+and by electromagnetic observations of NSs in binary                             10
+systems indicate that the secondary is likely too heavy
+to be a NS. Either way, this is an unprecedented source                                     LIGO Livingston
+
+
+
+                                                               Frequency (Hz)
+because the secondary’s well-constrained mass of 2.50–
+2.67 M makes it either the lightest BH or the heaviest                          100
+NS ever observed in a double compact-object system.
+   As in the case of GW190412, we are able to measure
+the presence of higher multipoles in the gravitational ra-
+diation, and a set of tests of general relativity with the                       10
+signal reveal no deviations from the theory. Treating
+this event as a new class of compact binary coalescences,                                   Virgo
+we estimate a merger rate density of 1–23 Gpc−3 yr−1 for
+GW190814-like events. Forming coalescing compact bi-                            100
+naries with this unusual combination of masses at such a
+rate challenges our current understanding of astrophys-
+ical models.
+   We report on the status of the detector network and                           10
+the specifics of the detection in Sections 2 and 3. In                             −10          −8      −6     −4      −2          0
+Section 4, we estimate physical source properties with                                 Time (seconds) from 2019-08-14 21:10:39 UTC
+a set of waveform models, and we assess statistical and
+systematic uncertainties. Tests of general relativity are    Figure 1. Time–frequency representations (Chatterji et al.
+described in Section 5. In Section 6, we calculate the       2004) of data containing GW190814, observed by LIGO Han-
+merger rate density and discuss implications for the na-     ford (top), LIGO Livingston (middle), and Virgo (bottom).
+ture of the secondary component, compact binary for-         Times are shown relative to 2019 August 14, 21:10:39 UTC.
+                                                             Each detector’s data are whitened by their respective noise
+mation and cosmology. Section 7 summarizes our find-
+                                                             amplitude spectral density and a Q-transform is calculated.
+ings.                                                        The colorbar displays the normalized energy reported by the
+                                                             Q-transform at each frequency. These plots are not used in
+             2. DETECTOR NETWORK                             our detection procedure and are for visualization purposes
+                                                             only.
+   At the time of GW190814, LIGO Hanford, LIGO Liv-
+ingston and Virgo were operating with typical O3 sen-
+                                                             of analyzed frequencies. A time–frequency representa-
+sitivities (Abbott et al. 2020a). Although LIGO Han-
+                                                             tion (Chatterji et al. 2004) of the data from all three
+ford was in a stable operating configuration at the time
+                                                             detectors around the time of the signal is shown in Fig-
+of GW190814, the detector was not in observing mode
+                                                             ure 1.
+due to a routine procedure to minimize angular noise
+                                                               We used validation procedures similar to those used
+coupling to the strain measurement (Kasprzack & Yu
+                                                             to vet previous gravitational-wave events (Abbott et al.
+2017). This same procedure took place at LIGO Han-
+                                                             2016c, 2019a). Overall we found no evidence that instru-
+ford around the time of GW170608; we refer the reader
+                                                             mental or environmental disturbances (Effler et al. 2015)
+to Abbott et al. (2017f) for details of this procedure.
+                                                             could account for GW190814. However, we did identify
+Within a 5 min window around GW190814, this pro-
+                                                             low-frequency transient noise due to scattered light at
+cedure was not taking place, therefore LIGO Hanford
+                                                             LIGO Livingston, a common source of noise in all three
+data for GW190814 are usable in the nominal range
+                                                                                                                    3
+
+interferometers (Nuttall 2018). Scattered light features    ization computed using the rapid Bayesian algorithm
+in the strain data are produced when a small fraction       BAYESTAR (Singer & Price 2016) that is shown in
+of the main laser beam reflects off a moving surface and    Figure 2. The event was initially classified as “Mass-
+is phase modulated before recombining with the main         Gap” (Kapadia et al. 2020; LIGO Scientific Collabora-
+beam. This recombination can result in excess noise         tion, Virgo Collaboration 2019b), implying that at least
+with the morphology of arches in the time–frequency         one of the binary merger components was found to have
+plane; the frequency of this noise is determined by the     a mass between 3–5 M in the low-latency analyses.
+velocity of the moving surface (Accadia et al. 2010).          Other low-latency searches, including the matched-
+Thunderstorms near LIGO Livingston around the time          filtering based MBTA (Adams et al. 2016) and Py-
+of GW190814 resulted in acoustic noise coupling to the      CBC (Usman et al. 2016; Nitz et al. 2017; Nitz et al.
+detector and caused features in the strain data asso-       2018, 2019) pipelines, could not detect the event at
+ciated with scattered light (Abbott et al. 2019a). In       the time as its SNR in Virgo data was below their
+this instance, this form of noise affects frequencies up    single-detector detection thresholds. Test versions of
+to 30 Hz from roughly 22 s to 8 s before and 0.2 s to       MBTA and the additional matched-filtering pipeline
+1.5 s after the detected time of GW190814, as seen in the   SPIIR (Hooper et al. 2012; Liu et al. 2012; Guo et al.
+middle panel of Figure 1. Since this noise could bias the   2018) operating with a lower SNR threshold also iden-
+estimation of GW190814’s source parameters, we used a       tified the event with consistent attributes.
+starting frequency of 30 Hz to analyse LIGO Livingston         Shortly thereafter, reanalyses including LIGO Han-
+data. Virgo was operating nominally and there are no        ford data were performed using GstLAL and PyCBC.
+quality issues in the Virgo data.                           A coincident gravitational-wave signal was identified in
+   The LIGO and Virgo detectors are calibrated by pho-      all three detectors by both searches, with SNR 21.6 in
+ton pressure from modulated auxiliary lasers inducing       LIGO Livingston, 10.6 in LIGO Hanford, and 4.5 in
+test-mass motion (Karki et al. 2016; Acernese et al.        Virgo data (as measured by GstLAL, consistent with
+2018; Viets et al. 2018). Over the frequency range 20–      SNRs reported by PyCBC). Results of these 3-detector
+2048 Hz, the maximum 1σ calibration uncertainties for       analyses were reported in a GCN Circular within 2.3
+strain data used in the analysis of GW190814 were 6% in     hours of the time of the event (LIGO Scientific Col-
+amplitude and 4 deg in phase for LIGO data, and 5% in       laboration, Virgo Collaboration 2019c,d), providing a
+amplitude and 7 deg in phase for Virgo data. These cali-    3-detector localization (Singer & Price 2016) constrain-
+bration uncertainties are propagated into the parameter     ing the distance to 220–330 Mpc and the sky area to
+estimation reported in Section 4 via marginalization.       38 deg2 at the 90% credible level. Another GCN Cir-
+                                                            cular (LIGO Scientific Collaboration, Virgo Collabora-
+                   3. DETECTION                             tion 2019e) sent 13.5 hours after the event updated the
+ 3.1. Low-latency Identification of a Candidate Event       source localization to a distance of 215–320 Mpc, the
+                                                            sky area to 23 deg2 , and the source classification to
+  GW190814 was first identified on 2019 August 14,
+                                                            “NSBH” (Kapadia et al. 2020; LIGO Scientific Collabo-
+21:11:00 UTC as a loud two-detector event in LIGO
+                                                            ration, Virgo Collaboration 2019b), indicating that the
+Livingston and Virgo data (SNR 21.4 and 4.3) by the
+                                                            secondary had a mass below 3 M . These updated sky
+low-latency GstLAL matched-filtering search pipeline
+                                                            localizations are also shown in Figure 2. The two dis-
+for coalescing binaries (Cannon et al. 2012; Privitera
+                                                            joint sky localizations arise because the low SNR in the
+et al. 2014; Messick et al. 2017; Sachdev et al. 2019;
+                                                            Virgo detector (4.5) means that the data are consistent
+Hanna et al. 2020). Matched-filtering searches use
+                                                            with two different signal arrival times in that detector.
+banks (Sathyaprakash & Dhurandhar 1991; Blanchet
+et al. 1995; Owen 1996; Owen & Sathyaprakash 1999;
+Damour et al. 2001; Blanchet et al. 2005; Cokelaer                      3.2. Multi-messenger Follow-up
+2007; Harry et al. 2009; Brown et al. 2013; Ajith et al.      Several external groups performed multi-messenger
+2014; Harry et al. 2014; Capano et al. 2016b; Roy           follow-up of the source with observations across the elec-
+et al. 2017, 2019; Indik et al. 2018) of modeled gravi-     tromagnetic spectrum (e.g., Lipunov et al. 2019; Gomez
+tational waveforms (Buonanno & Damour 1999; Arun            et al. 2019; Antier et al. 2020; Andreoni et al. 2020; Do-
+et al. 2009; Blanchet 2014; Bohé et al. 2017; Pürrer      bie et al. 2019; Watson et al. 2020; Ackley et al. 2020;
+2016) as filter templates. A Notice was issued through      Vieira et al. 2020) and with neutrino observations (e.g.,
+NASA’s Gamma-ray Coordinates Network (GCN) 20               Ageron et al. 2019; The IceCube Collaboration 2019).
+min later (LIGO Scientific Collaboration, Virgo Col-        No counterpart candidates were reported. The non-
+laboration 2019a) with a two-detector source local-         detection is consistent with the source’s highly un-
+4
+                                                                                                        5°
+equal mass ratio and low primary spin (LIGO Scientific
+                                                                                       60◦
+Collaboration, Virgo Collaboration 2019d,e; Fernández
+et al. 2020; Morgan et al. 2020). Tentative constraints
+placed by multi-messenger studies on the properties of        30◦
+                                                                                                                     N
+
+the system, such as the ejecta mass and maximum pri-
+                                                                                                                 E
+mary spin (Andreoni et al. 2020; Ackley et al. 2020;
+                                                            0◦
+Kawaguchi et al. 2020; Coughlin et al. 2020) or the                   4h          0h          20h
+circum-merger density (Dobie et al. 2019) assuming a                                                         BAYESTAR LV
+neutron-star–black-hole (NSBH) source, may need to be             ◦                                 ◦        BAYESTAR HLV
+                                                            −30                               −30
+revisited in light of the updated source parameters we                                                       Latest Circular
+present in Sec. 4.1.                                                                                         Combined PHM
+                                                                                       −60◦
+
+                   3.3. Significance                        Figure 2. Posterior distributions for the sky location of
+                                                            GW190814. The contours show the 90% credible interval for
+   The significance of GW190814 was estimated by
+                                                            a LIGO Livingston–Virgo (blue) and LIGO Hanford–LIGO
+follow-up searches using improved calibration and re-       Livingston–Virgo (orange) detector network based on the
+fined data-quality information that are not available in    rapid localization algorithm BAYESTAR (Singer & Price
+low latency. They also used longer stretches of data for    2016). The sky localization circulated 13.5 hours after the
+better precision (Abbott et al. 2016b,c). With LIGO         event, based on a LIGO Hanford–LIGO Livingston–Virgo
+Hanford data being usable but not in nominal observing      analysis with the LALInference stochastic sampling soft-
+mode at the time of GW190814, we used only data from        ware (Veitch et al. 2015), is shown in green. The purple
+the LIGO Livingston and Virgo detectors for significance    contour indicates the final sky localization as presented in
+                                                            this paper, which constrains the source to within 18.5 deg2
+estimation. GW190814 was identified as a confident de-
+                                                            at 90% probability.
+tection in analyses of detector data collected over the
+period from August 7 to August 15, 2019 by the two in-
+dependent matched-filtering searches GstLAL and Py-         with the signal in LIGO Livingston data and elevate
+CBC, with SNR values consistent with the low-latency        the noise background estimate for coincident events, es-
+analyses. The production version of PyCBC for O3 es-        pecially when considering shorter data periods. All esti-
+timates significance only for events that are coincident    mated background events that were ranked higher than
+in the LIGO Hanford and LIGO Livingston detectors,          GW190814 by PyCBC were indeed confirmed to be co-
+and therefore an extended version (Davies et al. 2020)      incidences of the candidate event itself in LIGO Liv-
+was used for GW190814 in order to enable the use of         ingston with random noise events in Virgo. The stated
+Virgo data in significance estimation.                      background estimates are therefore conservative (Ca-
+   GstLAL and PyCBC use different techniques for es-        pano et al. 2016a). We also estimate the background
+timating the noise background and methods of ranking        excluding the candidate from the calculation, a proce-
+gravitational-wave candidates. Both use results from        dure that yields a mean-unbiased estimation of the dis-
+searches over non time-coincident data to improve their     tribution of noise events (Capano et al. 2016a; Abbott
+noise background estimation (Privitera et al. 2014; Mes-    et al. 2016d). In this case, with GstLAL we found a
+sick et al. 2017; Usman et al. 2016). Using data from       FAR of < 1 in 105 yr while with PyCBC we found a
+the first six months of O3 and including all events dur-    FAR of < 1 in 4.2 × 104 yr. With both pipelines iden-
+ing this period in the estimation of noise background,      tifying GW190814 as more significant than any event in
+GstLAL estimated a false-alarm rate (FAR) of 1 in           the background, the FARs assigned are upper bounds.
+1.3 × 103 yr for GW190814. Using data from the 8-day           When data from LIGO Hanford were included,
+period surrounding GW190814 and including this and          GW190814 was also identified by the unmodelled co-
+all quieter events during this period in noise background   herent Wave Burst (cWB) search that targets generic
+estimation, the extended PyCBC pipeline (Davies et al.      gravitational-wave transients with increasing frequency
+2020) estimated a FAR for the event of 1 in 8.1 yr.         over time without relying on waveform models (Kli-
+The higher FAR estimate from PyCBC can be at-               menko et al. 2008, 2016; Abbott et al. 2016e). We found
+tributed to the event being identified by the pipeline      a FAR of < 1 in 103 yr of observing time against the
+as being quieter than multiple noise events in Virgo        noise background from LIGO Hanford and LIGO Liv-
+data. As PyCBC estimates background statistics using        ingston data, consistent with the other searches.
+non-coincident data from both detectors, these louder
+noise events in Virgo data can form chance coincidences                    4. PROPERTIES OF GW190814
+                                                                                                                           5
+
+                                                            EOBNR PHM             Phenom PHM             Combined
+ Primary mass m1 /M                                            23.2+1.0
+                                                                   −0.9              23.2+1.3
+                                                                                         −1.1              23.2+1.1
+                                                                                                               −1.0
+ Secondary mass m2 /M                                         2.59+0.08
+                                                                   −0.08            2.58+0.09
+                                                                                         −0.10            2.59+0.08
+                                                                                                               −0.09
+ Mass ratio q                                                0.112+0.008
+                                                                   −0.008          0.111+0.009
+                                                                                         −0.010          0.112+0.008
+                                                                                                               −0.009
+ Chirp mass M/M                                               6.10+0.06
+                                                                   −0.05            6.08+0.06
+                                                                                         −0.05            6.09+0.06
+                                                                                                               −0.06
+ Total mass M/M                                                25.8+0.9
+                                                                   −0.8              25.8+1.2
+                                                                                         −1.0              25.8+1.0
+                                                                                                               −0.9
+ Final mass Mf /M                                              25.6+1.0
+                                                                   −0.8              25.5+1.2
+                                                                                         −1.0              25.6+1.1
+                                                                                                               −0.9
+
+
+ Upper bound on primary spin magnitude χ1                        0.06                  0.08                  0.07
+ Effective inspiral spin parameter χeff                      0.001+0.059
+                                                                   −0.056          −0.005+0.061
+                                                                                          −0.065         −0.002+0.060
+                                                                                                                −0.061
+ Upper bound on effective precession parameter χp                0.07                  0.07                  0.07
+ Final spin χf                                                0.28+0.02
+                                                                   −0.02            0.28+0.02
+                                                                                         −0.03            0.28+0.02
+                                                                                                               −0.02
+
+
+ Luminosity distance DL /Mpc                                   235+40
+                                                                  −45                 249+39
+                                                                                         −43               241+41
+                                                                                                              −45
+ Source redshift z                                           0.051+0.008
+                                                                  −0.009            0.054+0.008
+                                                                                         −0.009          0.053+0.009
+                                                                                                              −0.010
+ Inclination angle Θ/rad                                       0.9+0.3
+                                                                  −0.2                0.8+0.2
+                                                                                         −0.2              0.8+0.3
+                                                                                                              −0.2
+
+
+ Signal to noise ratio in LIGO Hanford ρH                     10.6+0.1
+                                                                  −0.1               10.7+0.1
+                                                                                         −0.2              10.7+0.1
+                                                                                                               −0.2
+ Signal to noise ratio in LIGO Livingston ρL                 22.21+0.09
+                                                                  −0.15             22.16+0.09
+                                                                                         −0.17            22.18+0.10
+                                                                                                               −0.17
+ Signal to noise ratio in Virgo ρV                             4.3+0.2
+                                                                  −0.5                4.1+0.2
+                                                                                         −0.6               4.2+0.2
+                                                                                                               −0.6
+ Network Signal to noise ratio ρHLV                           25.0+0.1
+                                                                  −0.2               24.9+0.1
+                                                                                         −0.2              25.0+0.1
+                                                                                                               −0.2
+
+Table 1. Source properties of GW190814: We report the median values along with the symmetric 90% credible intervals
+for the SEOBNRv4PHM (EOBNR PHM) and IMRPhenomPv3HM (Phenom PHM) waveform models. The primary spin
+magnitude and the effective precession is given as the 90% upper limit. The inclination angle is folded to [0, π/2]. The last
+column is the result of combining the posteriors of each model with equal weight. The sky location of GW190814 is shown in
+Figure 2.
+
+  We infer the physical properties of GW190814 using a            Cotesta et al. 2018; Ossokine et al. 2020) and the other
+coherent Bayesian analysis of the data from LIGO Liv-             on a phenomenological approach (Phenom; Khan et al.
+ingston, LIGO Hanford and Virgo following the method-             2016; Husa et al. 2016; London et al. 2018; Khan et al.
+ology described in Appendix B of Abbott et al. (2019a).           2019; Khan et al. 2020).
+Results presented here are obtained using 16 s of data              For the NSBH analyses, we use BBH waveform mod-
+around the time of detection. We use a low-frequency              els augmented with tidal effects (Matas et al. 2020;
+cutoff of 20 Hz for LIGO Hanford and Virgo and 30 Hz              Thompson et al. 2020). Systematic uncertainties due
+for LIGO Livingston for the likelihood evaluations, and           to waveform modeling are expected to be subdomi-
+we choose uninformative and wide priors, as defined in            nant compared to statistical errors (Huang et al. 2020).
+Appendix B.1 of Abbott et al. (2019a). The LALInfer-              When sampling the parameter space with the SEOB-
+ence stochastic sampling software (Veitch et al. 2015) is         NRv4 ROM NRTidalv2 NSBH (Matas et al. 2020)
+the primary tool used to sample the posterior distribu-           and IMRPhenomNSBH (Thompson et al. 2020) wave-
+tion. A parallelized version of the parameter estimation          form models, we obtained posterior distributions for
+software bilby (pbilby; Smith & Ashton 2019; Ashton               the secondary component’s tidal deformability Λ2 that
+et al. 2019) is used for computationally expensive signal         are uninformative relative to a uniform prior in Λ2 ∈
+models. The power spectral density used in the likeli-            [0, 3000]. The absence of a measurable tidal signature is
+hood calculations is a fair draw estimate calculated with         consistent with the highly unequal mass ratio (Foucart
+BayesWave (Cornish & Littenberg 2015; Littenberg &                et al. 2013; Kumar et al. 2017) and with the relatively
+Cornish 2015).                                                    large secondary mass (Flanagan & Hinderer 2008). The
+  This signal is analyzed under two different assump-             large asymmetry in the masses implies that the binary
+tions: that it represents a BBH, or that it represents a          will merge before the neutron star is tidally disrupted for
+NSBH. For the BBH analyses, two different waveform                any expected NS equation of state (Foucart et al. 2013).
+families are used, one based on the effective-one-body            Given that the signal carries no discernible information
+approach (EOBNR; Bohé et al. 2017; Babak et al. 2017;
+6
+
+about matter effects, here we present quantitative re-                        2018) and observational estimates (Farr & Chatziioan-
+sults only from BBH waveform models.                                          nou 2020). The inferred secondary mass is comparable
+  Our primary analyses include the effect of subdom-                          to the putative BH remnant mass of GW170817 (Abbott
+inant multipole moments in precessing waveform tem-                           et al. 2019b).
+plate models (PHM): IMRPhenomPv3HM (Phenom                                       The primary object is identified as a BH based on its
+PHM; Khan et al. 2019; Khan et al. 2020) from the phe-                        measured mass of 23.2+1.1−1.0 M . Due to accurately ob-
+nomenological family and SEOBNRv4PHM (EOBNR                                   serving the frequency evolution over a long inspiral, the
+PHM; Babak et al. 2017; Ossokine et al. 2020) from the                        chirp mass is well constrained to 6.09+0.06−0.06 M . The in-
+EOBNR family.1 Analyses that assume the spins are                             ferred mass ratio q = 0.112+0.008
+                                                                                                            −0.009  makes  GW190814 only
+aligned with the orbital angular momentum were also                           the second gravitational-wave observation with a signif-
+performed, either including (Phenom/EOBNR HM) or                              icantly unequal mass ratio (Abbott et al. 2019a, 2020d).
+excluding (Phenom/EOBNR) the effect of subdominant                               Given that this system is in a region of the parame-
+multipole moments.                                                            ter space that has not been explored via gravitational-
+                                                                              wave emission previously, we test possible waveform sys-
+                          4.1. Properties                                     tematics by comparing the Phenom and EOB waveform
+                                                                              families. Differences in the inferred secondary mass are
+   From the ∼ 300 observed cycles above 20 Hz, we
+                                                                              shown in Figure 4. The results indicate that the inferred
+are able to tightly constrain the source properties of
+                                                                              secondary mass is robust to possible waveform system-
+GW190814. Our analysis shows that GW190814’s
+                                                                              atics, with good agreement between the Phenom PHM
+source is a binary with an unequal mass ratio q =
+                                                                              and EOBNR PHM signal models. Signal models that
+0.112+0.008
+      −0.009 , with individual source masses m1         =
+                                                                              exclude higher multipoles or precession do not constrain
+23.2+1.1
+     −1.0 M    and m2 = 2.59+0.08 −0.09 M , as shown in
+                                                                              the secondary mass as well.
+Figure 3. A summary of the inferred source prop-
+                                                                                 The time delay of a signal across a network of gravi-
+erties is given in Table 1. We assume a standard
+                                                                              tational wave detectors, together with the relative am-
+flat ΛCDM cosmology with Hubble constant H0 =
+                                                                              plitude and phase at each detector, allows us to mea-
+67.9 km s−1 Mpc−1 (Ade et al. 2016).
+                                                                              sure the location of the GW source on the sky (Abbott
+   We report detailed results obtained from the two pre-
+                                                                              et al. 2020b). We localize GW190814’s source to within
+cessing BBH signal models including subdominant mul-
+                                                                              18.5 deg2 at 90% probability, as shown in Figure 2. This
+tipole moments: Phenom PHM and EOBNR PHM. In
+                                                                              is comparable to the localization of GW170817 (Abbott
+order to compare the template models, we compute their
+                                                                              et al. 2017a, 2019a).
+Bayes factor (log10 B). We find no significant evidence
+                                                                                 Spins are a fundamental property of BHs. Their mag-
+that one waveform family is preferred over the other as
+                                                                              nitude and orientation carry information regarding the
+the Bayes factor between Phenom PHM and EOBNR
+                                                                              evolution history of the binary. The effective inspiral
+PHM is log10 B ≃ 1.0. As a result, we combine the
+                                                                              spin parameter χeff (Damour 2001; Racine 2008; Ajith
+posterior samples with equal weight, in effect marginal-
+                                                                              et al. 2011; Santamarı́a et al. 2010) contains informa-
+izing over a discrete set of signal models with a uniform
+                                                                              tion about the spin components that are perpendicular
+probability. This is shown in the last column of Table 1,
+                                                                              to the orbital plane. We infer that χeff = −0.002+0.060−0.061 .
+and we refer to these values throughout the paper unless
+                                                                              The tight constraints are consistent with being able to
+stated otherwise.
+                                                                              measure the phase evolution from the long inspiral.
+   We find that the secondary mass lies in the
+                                                                                 Orbital precession occurs when there is a significant
+range 2.50– 2.67 M . This inferred secondary mass
+                                                                              spin component in the orbital plane of the binary (Apos-
+exceeds the bounds of the primary component in
+                                                                              tolatos et al. 1994). We parameterize precession by the
+GW190425 (1.61–2.52 M ; Abbott et al. 2020a) and the
+                                                                              effective precession spin parameter 0 ≤ χp ≤ 1 (Schmidt
+most massive known pulsar in the Galaxy: 2.14+0.10
+                                                 −0.09 M
+                                                                              et al. 2015). This effect is difficult to measure for face-on
+at 68.3% credible interval (Cromartie et al. 2019). Fur-
+                                                                              and face-off systems (Apostolatos et al. 1994; Buonanno
+thermore, the secondary is more massive than bounds
+                                                                              et al. 2003; Vitale et al. 2014, 2017; Fairhurst et al.
+on the maximum NS mass from studies of the rem-
+                                                                              2019a,b). GW190814 constrains the inclination of the
+nant of GW170817, and from theoretical (Abbott et al.
+                                                                              binary to be Θ = 0.8+0.3−0.2 rad. Since the system is nei-
+                                                                              ther face-on nor face-off, we are able to put strong con-
+    1 In  the co-precessing frame the EOBNR model in-                         straints on the precession of the system: χp = 0.04+0.04−0.03 .
+     cludes the (l, m)        =      (2, ±2), (2, ±1), (3, ±3), (4, ±4) and   This is both the strongest constraint on the amount of
+     (5, ±5) multipoles, and the Phenom model includes the
+     (2, ±2), (2, ±1), (3, ±3), (3, ±2), (4, ±4) and (4, ±3) multipoles.      precession for any gravitational-wave detection to date,
+                                                                                                                         7
+
+                                                                                     10.0
+                                                                                                                 EOBNR PHM
+
+
+
+
+                                                               Probability Density
+                                                                                                                 EOBNR HM
+                                                                                      7.5
+                                                                                                                 EOBNR
+                                                                                                                 Phenom PHM
+                                                                                      5.0                        Phenom HM
+          2.8                                                                                                    Phenom
+          2.7                                                                         2.5
+          2.6
+                                                                                      0.0
+
+ m2[M ]
+          2.5
+                                                                                            2.3   2.5      2.7   2.9     3.1
+          2.4                                                                                           m2[M ]
+                       Combined PHM
+          2.3                                                  Figure 4. The marginalized posterior distribution for the
+                       EOBNR PHM
+                       Phenom PHM                              secondary mass obtained using a suite of waveform mod-
+          2.2
+                       Abbott+ 2018 Mmax                       els. The vertical lines indicate the 90% credible bounds
+          2.1                                                  for each waveform model. The labels Phenom/EOBNR
+                       Farr+Chatziioannou 2020 Mmax
+                                                               PHM (generic spin directions + higher multipoles), Phe-
+          2.0                                                  nom/EOBNR HM (aligned-spin + higher multipoles) and
+             20   21    22    23   24    25   26      27
+                             m1[M ]                            Phenom/EOBNR (aligned-spin, quadrupole only) indicate
+                                                               the different physical content in each of the waveform mod-
+                                                               els.
+Figure 3. The posterior distribution of the primary and sec-
+ondary source masses for two waveform models that include
+                                                                  Figure 4 shows that signal models including spin-
+precession and subdominant multipole moments. The pos-
+terior distribution resulting from combining their samples
+                                                               precession effects give tighter constraints on the sec-
+is also shown. Each contour, as well as the colored hori-      ondary mass compared to their non-precessing equiva-
+zontal and vertical lines, shows the 90% credible intervals.   lents. Signal models that include spin-precession effects
+The right panel compares m2 to predictions for the maxi-       can constrain χp , whereas non-precessing signal mod-
+mum NS mass, Mmax (see Section 6). The posterior distri-       els cannot provide information on in-plane spin com-
+bution for Mmax from the spectral equation of state analysis   ponents. In all analyses, we assume a prior equivalent
+of GW170817 (Abbott et al. 2018) is shown in orange, and       to spin orientations being isotropically distributed. We
+the empirical Mmax distribution from the population model
+                                                               find that the data are inconsistent with large χp and
+of Farr & Chatziioannou (2020) is shown in green. The grey
+dashed line and shading represent the measured mass of the     consistent with any secondary spin. Therefore, for pre-
+heaviest pulsar in the Galaxy (median and 68% confidence in-   cessing signal models the allowed q–χeff parameter space
+terval; Cromartie et al. 2019). The solid grey band at 2.3 M   is restricted, which helps to break the degeneracy (Pois-
+is the upper bound on Mmax from studies of GW170817’s          son & Will 1995; Baird et al. 2013; Farr et al. 2016;
+merger remnant.                                                Baird et al. 2013; Ng et al. 2018). Consequently, the
+                                                               extra information from constraining χp to small values
+and the first gravitational-wave measurement which con-        enables a more precise measurement of the secondary
+clusively measures near-zero precession (Abbott et al.         mass.
+2019a, 2020a,d).                                                  The asymmetry in the masses of GW190814 means
+   By computing the Bayes factor between a precessing          that the spin of the more massive object dominates con-
+and non-precessing signal model (log10 B ∼ 0.5 in favor        tributions to χeff and χp . As both χeff and χp are tightly
+of precession), we find inconclusive evidence for in-plane     constrained, we are able to bound the primary spin of
+spin. This is consistent with the inferred power from          GW190814 to be χ1 ≤ 0.07, as shown in Figure 6. This
+precession SNR ρp (Fairhurst et al. 2019a,b), whose re-        is the strongest constraint on the primary spin for any
+covered distribution resembles that expected in the ab-        gravitational-wave event to date (Abbott et al. 2019a,
+sence of any precession in the signal; see Figure 5. The       2020a,d).
+ρp calculation assumes a signal dominated by the ` = 2            The joint posterior probability of the magnitude and
+mode; however, we have verified that the contribution of       orientation of χ1 and χ2 are shown in Figure 6. De-
+higher harmonics to the measurement of spin precession         viations from uniform shading indicate a spin property
+is subdominant by a factor of 5. The data are therefore        measurement. The primary spin is tightly constrained
+consistent with the signal from a non-precessing system.       to small magnitudes, but its orientation is indistinguish-
+8
+
+                     0.8                                    Precession
+                                                            33-mode
+
+
+
+
+Probabilty Density
+                     0.6                                    Noise distribution
+                                                                                                             0◦         0◦
+                                                                                                   ◦                            30 ◦
+                                                                                                  30                                    tilt
+                                                                                                                  0.8
+                     0.4
+                                                                                        60 ◦                      0.6                   60
+                                                                                                                                         ◦
+                                                                                                                  0.4
+                     0.2
+                                                                                                                  0.2        magnitude
+                     0.0                                                             90◦                          0.0                        90◦
+                            0        2        4        6       8         10
+                                                   ρ
+                                                                                        ◦
+                                                                                                                                        120 ◦
+Figure 5. Posterior distributions for the precessing SNR,                                  120
+ρp (green) and the optimal SNR in the (3,3) sub-dominant
+multipole moment, ρ (orange). The grey dotted line shows
+the expected distribution for Gaussian noise.                                                    150 ◦                          150
+                                                                                                                                ◦
+                                                                                                            180◦    180◦
+able from the prior distribution. The spin of the less
+massive object, χ2 , remains unconstrained; the poste-
+rior distribution is broadly consistent with the prior.
+   The final mass Mf and final dimensionless spin χf of                          Figure 6. Two-dimensional posterior probability for the
+the merger remnant are estimated under the assump-                               tilt-angle and spin-magnitude for the primary object (left)
+tion that the secondary is a BH. By averaging several                            and secondary object (right) based on the Combined sam-
+fits calibrated to numerical relativity (Hofmann et al.                          ples. The tilt angles are 0◦ for spins aligned and 180◦ for
+                                                                                 spins anti-aligned with the orbital angular momentum. The
+2016; Johnson-McDaniel et al. 2016; Healy & Lousto
+                                                                                 tiles are constructed linearly in spin magnitude and the co-
+2017; Jiménez-Forteza et al. 2017), we infer the final                          sine of the tilt angles such that each tile contains identical
+mass and spin of the remnant BH to be 25.6+1.1 −0.9 M and                        prior probability. The color indicates the posterior proba-
+0.28+0.02
+     −0.02 , respectively. The final spin is lower than for                      bility per pixel. The probabilities are marginalized over the
+previous mergers (Abbott et al. 2019a, 2020d), as ex-                            azimuthal angles.
+pected from the low primary spin and smaller orbital
+contribution due to the asymmetric masses.                                       multipole vs. a pure quadrupole model. The (`, m) =
+                           4.2. Evidence for Higher-order Multipoles             (3, 3) is the strongest subdominant multipole, with
+                                                                                 log10 B ≃ 9.1 in favor of a signal model including
+  The relative importance of a subdominant multipole                             both the (`, m) = (2, 2) and (3, 3) multipole moments.
+moment increases with mass ratio. Each subdominant                               GW190814’s stronger evidence for higher multipoles is
+multipole moment has a different angular dependence                              expected given its more asymmetric masses and the
+on the emission direction. With significant evidence                             larger network SNR.
+for multipoles other than the dominant (`, m) = (2, 2)                             The orthogonal optimal SNR of a subdominant mul-
+quadrupole, we gain an independent measurement of the                            tipole is calculated by decomposing each multipole into
+inclination of the source. This allows for the distance-                         components parallel and perpendicular to the domi-
+inclination degeneracy to be broken (Cutler & Flanagan                           nant harmonic (Mills & Fairhurst 2020; Abbott et al.
+1994; Abbott et al. 2016f; Usman et al. 2019; Kalaghatgi                         2020d). We infer that the orthogonal optimal SNR of
+et al. 2020). Measuring higher-order multipoles there-                           the (`, m) = (3, 3) multipole is 6.6+1.3
+                                                                                                                     −1.4 , as shown in Fig-
+fore gives more precise measurements of source parame-                           ure 5. This is the strongest evidence for measuring a
+ters (Van Den Broeck & Sengupta 2007a,b; Kidder 2008;                            subdominant multipole to date (Payne et al. 2019; Ku-
+Blanchet et al. 2008; Mishra et al. 2016; Kumar et al.                           mar et al. 2019; Abbott et al. 2020d).
+2019).                                                                             Finally, we perform two complementary analyses in-
+  GW190412 was the first event where there was sig-                              volving time–frequency tracks in the data to provide fur-
+nificant evidence for higher-order multipoles (Payne                             ther evidence for the presence of higher multipoles in the
+et al. 2019; Kumar et al. 2019; Abbott et al. 2020d).                            signal. In the first approach (also outlined in Abbott
+GW190814 exhibits stronger evidence for higher-order                             et al. 2020d, Section 4) we predict the time–frequency
+multipoles, with log10 B ≃ 9.6 in favor of a higher-
+                                                                                                                                       9
+
+                              On-source Y (α) (modelled approach)              The second analysis uses waveform-agnostic methods
+              8               Off-source Y (α) (modelled approach)          to reconstruct the signal. It then compares the ob-
+              6                                                             served coherent signal energy in the LIGO Hanford–
+
+       Y(α)
+                                                                            LIGO Livingston–Virgo network of detectors, as iden-
+              4                                                             tified by the cWB detection pipeline (Klimenko et al.
+                                                                            2016), with the predictions of a waveform model with-
+              2
+                                                                            out higher multipoles (EOBNR; Prodi et al. 2020) to
+              0                                                             investigate if the description of the underlying signal is
+             100                                                            incomplete if we do not include contributions from the
+                                       On-source p-value
+                                       (waveform-agnostic approach)         m = 3 multipole in our waveform model. We compute a
+                                                                            test statistic, the squared sum of the coherent residuals
+
+  p-value
+                                                                            estimated over selected time–frequency tracks parame-
+            10−1
+                                                                            terized in terms of the same α parameter defined in the
+                                                                            previous analysis (Roy et al. 2019; Abbott et al. 2020d).
+                                                                            Each time–frequency track centered on α includes fre-
+            10−2
+                                                                            quencies within [α − 0.1, α + 0.1] × f22 (t), and times
+               0.5   1.0         1.5               2.0                2.5   within [tmerger − 0.5 s, tmerger − 0.03 s], where f22 (t) and
+                                 α                                          tmerger correspond to the maximum likelihood template
+                                                                            from the EOBNR parameter estimation analysis. We
+Figure 7. Top panel : Variation of Y (α), i.e, the energy in                further compute a background distribution using simu-
+the pixels along the α-th track defined by fα (t) = αf22 (t),
+                                                                            lated signals in off-source data (Prodi et al. 2020), and
+using the modelled approach. The peaks at α = 1 and 1.5
+indicate the energies in the m = 2 and m = 3 multipoles,
+                                                                            compute p-values for the on-source results as a func-
+respectively. The grey band indicates the 68% confidence                    tion of α (Figure 7, bottom panel). We find a minimum
+interval on the off-source measurements of Y (α). Bottom                    p–value of 6.8 × 10−3 at α = 1.5, providing strong ev-
+panel : The variation of p-value of the on-source results, as               idence that the disagreement between the actual event
+a function of α, using the waveform-agnostic approach. The                  and the EOBNR prediction is because of the absence
+dip at α = 1.5 is strong evidence of the presence of the                    of the m = 3 multipoles in the waveform model. The
+m = 3 mode in the underlying signal. The red dashed line                    local minimum near α = 2 is not an indication of the
+in both panels corresponds to general relativity’s prediction
+                                                                            m = 4 multipoles, but rather a statistical fluctuation
+of α = 1.5 for the m = 3 mode.
+                                                                            which is consistent with similar behaviour seen for stud-
+                                                                            ies with simulated signals described in detail in Prodi
+track of the dominant (2, 2) multipole in the LIGO Liv-
+                                                                            et al. (2020).
+ingston detector (as seen in Figure 1, middle panel) from
+                                                                               Although the two time–frequency analyses are simi-
+an EOBNR HM parameter estimation analysis. This
+                                                                            lar in motivation, the latter differs from the former in
+analysis collects energies along a time–frequency track
+                                                                            that it is not restricted to data from just one detector,
+which is α × f22 (t), the (2, 2) multipole’s instantaneous
+                                                                            but rather uses the coherent signal energy across the
+frequency, where α is a dimensionless parameter (Roy
+                                                                            three-detector network. Both analyses point to strong
+et al. 2019; Abbott et al. 2020d). We find prominent
+                                                                            evidence for the presence of higher multipoles in the sig-
+peaks in Y (α), the energy in the pixels along the α-th
+                                                                            nal.
+track defined in Abbott et al. (2020d), at α = 1 and 1.5,
+as can be seen from the on-source curve in the top panel
+of Figure 7. These peaks correspond to the m = 2 and                               5. TESTS OF GENERAL RELATIVITY
+m = 3 multipole predictions in the data containing the                        GW190814 is the gravitational-wave event with the
+signal (on-source data). We also compute a detection                        most unequal mass ratio to date, and can therefore be
+statistic β (Roy et al. 2019) of 10.09 for the presence of                  used to test general relativity (GR) in a region of pa-
+the m = 3 multipole with a p-value of < 2.5 × 10−4 ,                        rameter space previously unexplored with strong-field
+compared to a background distribution estimated over                        tests of GR (Abbott et al. 2016g, 2019e,d). The asym-
+18 hours of data adjacent to the event (off-source data),                   metric nature of a system excites the higher multipole
+where the largest background β is 7.59. The signifi-                        moments of the gravitational signal, which allows us to
+cant difference between on- and off-source values pro-                      test the multipolar structure of gravity (Kastha et al.
+vides much stronger evidence for the presence of higher                     2018, 2019; Dhanpal et al. 2019; Islam et al. 2020). The
+multipoles than what is reported for GW190412 (Abbott                       addition of information from the higher harmonics of a
+et al. 2020d).                                                              signal also breaks certain degeneracies in the description
+10
+
+of the source, and could potentially enable us to place       terms appear at second post-Newtonian order (Poisson
+stronger constraints on certain deviations from GR (Van       1998). For Kerr BHs in GR, κ1 = κ2 = 1, where
+Den Broeck & Sengupta 2007b,a). We perform sev-               κ1 , κ2 are the individual deformation parameters of the
+eral null tests of GR using GW190814. These tests as-         primary and secondary compact objects in the binary.
+sume GW190814 is a (quasi-circular) BBH merger as de-         Since κ1 and κ2 are strongly degenerate in the gravita-
+scribed in GR, and look for inconsistencies between the       tional waveform, we instead measure a linear symmetric
+observed signal and predictions of the theory. An incon-      combination of these quantities, κs = (κ1 +κ2 )/2, which
+sistency might arise from an incomplete understanding         is 1 for a BBH in GR. The posteriors on κs are rela-
+of the underlying signal (or noise), and could indicate a     tively uninformative, and nearly span the prior range
+non-BBH nature of the signal or a potential departure         of [0, 500], with increased support at κs = 0 relative to
+from GR.                                                      the prior. The upper bound of the prior was chosen to
+   First, as a consistency test of the signal reconstruc-     accommodate all the objects listed above. The result
+tion, we subtract from the data the maximum like-             shows that GW190814 is consistent with having a BBH
+lihood compact binary coalescence waveforms, Phe-             source described by GR. However, the broad posterior
+nom (Khan et al. 2016), Phenom HM (Kalaghatgi                 means that we cannot exclude the possibility that one
+et al. 2020), Phenom PHM (Khan et al. 2020), and              or both components of the source is not a BH. We can
+EOBNR PHM (Ossokine et al. 2020) and analyze 4 s              attempt to understand this result in terms of the spin
+of the resulting residual data centered around the time       measurements for the binary. The measurements of κs
+of merger with the morphology-independent transient           and a non-zero χeff are highly correlated (Krishnendu
+analysis BayesWave (Cornish & Littenberg 2015; Lit-           et al. 2019), and for a system with small χeff the bounds
+tenberg & Cornish 2015). We measure the 90% credible          on the measured value of κs are weak.
+upper limit on the coherent SNR, ρ90 , and compare it            Finally, we investigate the source dynamics of the
+to the SNR, ρN  90 , recovered by analyzing 175 randomly      binary through a parameterized test of gravitational
+selected data segments in surrounding time (off–source        waveform generation, where we allow for the coeffi-
+data) with the same configuration settings. If the resid-     cients describing the post-Newtonian inspiral of a BBH
+ual data are consistent with the noise, we expect ρ90         coalescence to deviate away from their predictions in
+to be consistent with ρN    90 . We compute the p-value       GR (Arun et al. 2006a,b; Yunes & Pretorius 2009;
+by comparing the distribution of ρN     90 to ρ90 through     Mishra et al. 2010; Cornish et al. 2011; Li et al. 2012;
+p = P (ρN 90 <   ρ90 ).  We  obtain p-values of 0.59, 0.82,   Meidam et al. 2018). We use an aligned-spin EOB wave-
+0.82, and 0.75 for Phenom, Phenom HM, Phenom PHM,             form without higher modes (EOBNR), and find no de-
+and EOBNR PHM, respectively. Hence, we find no evi-           viations in the post-Newtonian coefficients from their
+dence for deviations in the behavior of the residual data     nominal values in GR. In summary, none of our tests of
+stream.                                                       GR indicate any departure from the predictions of the
+   We also look for deviations in the spin-induced            theory, and GW190814 is consistent with the description
+quadrupole moments of the binary components. Accord-          of a compact binary merger in GR.
+ing to the no-hair conjecture (Carter 1971; Hansen 1974)
+the multipole moments of a Kerr BH are completely                    6. ASTROPHYSICAL IMPLICATIONS
+described by its mass and spin angular momentum.
+                                                                The highly unequal mass ratio of 0.112+0.008
+                                                                                                          −0.009 and un-
+At leading order in spin, the spin-induced quadrupole
+                                                              usual secondary mass of 2.59+0.08
+                                                                                             −0.09 M   make   the source
+moment scalar is (Hartle 1967; Pappas & Apostolatos
+                                                              of GW190814 unlike any other compact binary coales-
+2012), Q = −κa2 m3 , where (m, a) are the mass and
+                                                              cence observed so far. The average mass ratio for BBH
+dimensionless spin of the compact object, and κ is a
+                                                              coalescences detected by the LVC during O1 and O2 is
+dimensionless deformation parameter characterizing de-
+                                                              ≃ 0.9 (Roulet & Zaldarriaga 2019), and an inference
+viations in the spin-induced quadrupole moment. Kerr
+                                                              of the underlying population predicted that 99% of de-
+BHs have κ = 1 (Thorne 1980), while κ ∼ 2–14 for NSs
+                                                              tectable BBHs have mass ratios q ≥ 0.5 (Fishbach &
+(depending on the equation of state) and κ ∼ 10–150
+                                                              Holz 2020). However, the paucity of events from O1
+for spinning boson stars with large self-interaction (Ryan
+                                                              and O2 means that this picture is limited. Indeed, the
+1997). The deformation parameter can even be negative
+                                                              discovery of GW190412 has already changed the picture
+for (slowly-rotating, thin-shelled) gravastars (Uchikata
+                                                              substantially (Abbott et al. 2020d).
+et al. 2016). Hence, an accurate measurement of κ
+                                                                GW190814’s secondary mass lies in the hypothesized
+sheds light onto the nature of the compact object. For
+                                                              lower mass gap of 2.5–5 M (Bailyn et al. 1998; Özel
+compact binaries, the spin-induced quadrupole moment
+                                                              et al. 2010; Farr et al. 2011; Özel et al. 2012) between
+                                                                                                                           11
+
+known NSs and BHs. It is heavier than the most mas-                 ibration errors are much smaller than the statistical er-
+sive pulsar in the Galaxy (Cromartie et al. 2019), and al-          rors associated with the estimate. The simulated sources
+most certainly exceeds the mass of the 1.61–2.52 M pri-             were uniformly distributed in comoving volume, compo-
+mary component of GW190425, which is itself an out-                 nent masses, and component spins aligned with the or-
+lier relative to the Galactic population of BNSs (Abbott            bital angular momentum. For O1 and O2, the simulated
+et al. 2020a). On the other hand, it is comparable in               BH mass range was 5–100 M , but for the first part of
+mass to two BH candidates: the ≃ 2.7 M merger rem-                  O3 we are analyzing here, the injected range was 2.5–
+nant of GW170817 (Abbott et al. 2019b) and the 2.6–                 40 M (following our updated knowledge of the BH mass
+6.1 M compact object (95% confidence interval) dis-                 distribution); the NS mass range was 1–3 M , and com-
+covered by Thompson et al. (2019).2 It is also compara-             ponent spins are < 0.95. As GW190814 occurred when
+ble to the millisecond pulsar PSR J1748−2021B (Freire               LIGO Hanford was not in nominal observing mode, it is
+                                              +0.21
+et al. 2008), whose mass is claimed as 2.74−0.21    M at            not included in the production PyCBC results, and we
+68% confidence. However, this estimate, obtained via                use GstLAL results to calculate the merger rate.
+measurement of the periastron advance, could be inac-                  We assume a Poisson likelihood over the astrophysical
+curate if the system inclination is low or the pulsar’s             rate with a single count and we apply a Jeffreys R−1/2
+companion is rapidly rotating (Freire et al. 2008). In              prior to obtain rate posteriors. The analysis was done
+sum, it is not clear if GW190814’s secondary is a BH or             using samples from the Phenom PHM posterior and sep-
+a NS.                                                               arately from the EOBNR PHM posterior, producing the
+   GW190814 poses a challenge for our understanding of              same result in both cases. We find the merger rate den-
+the population of merging compact binaries. In what                 sity of GW190814-like systems to be 7+16
+                                                                                                           −6 Gpc
+                                                                                                                   −3
+                                                                                                                      yr−1 .
+follows, we estimate the merger rate density of the com-               As a consistency check, we used the PyCBC search
+pact binary subpopulation represented by this source,               results to calculate an upper limit. Repeating the rate
+investigate the nature of its secondary component and               calculation with a PyCBC-based hV T i calibration and
+possible implications for the NS equation of state, dis-            zero event count, we obtain an upper limit consistent
+cuss how the system may have formed, and study its                  (to within 10%) with the upper limit of the merger rate
+implications for cosmology.                                         estimated using GstLAL search results. We conclude
+                                                                    that the uncertainty in our estimate of the rate density
+                6.1. Merger Rate Density                            for the class of mergers represented by GW190814 is
+  Given the unprecedented combination of component                  primarily dominated by Poisson statistics.
+masses found in GW190814, we take the system to rep-
+resent a new class of compact binary mergers, and use                      6.2. Nature of the Secondary Component
+our analysis of its source properties to estimate a merger
+rate density for GW190814-like events. Following a                    The primary mass measurement of 23.2+1.1    −1.0 M   se-
+method described in Kim et al. (2003), we calculate                 curely identifies the heavier component of GW190814 as
+a simple, single-event rate density estimate R accord-              a BH, but the secondary mass of 2.59+0.08
+                                                                                                            −0.09 M may be
+
+ing to our sensitivity to a population of systems drawn             compatible with either a NS or a BH depending on the
+from the parameter-estimation posteriors. As in Ab-                 maximum mass supported by the unknown NS equa-
+bott et al. (2020a), we calculate our surveyed space-               tion of state (EOS). The source’s asymmetric masses,
+time volume hV T i semi-analytically, imposing single-              the non-detection of an electromagnetic counterpart and
+detector and network SNR thresholds of 5 and 10, re-                the lack of a clear signature of tides or spin-induced
+spectively (Tiwari 2018). The semi-analytic hV T i for              quadrupole effects in the waveform do not allow us to
+GW190814 is then multiplied by a calibration factor to              distinguish between a BBH or a NSBH. Instead, we rely
+match results from the search pipelines assuming a once-            on comparisons between m2 and different estimates of
+per-century FAR threshold. The sensitivity of a search              the maximum NS mass, Mmax , to indicate the source
+pipeline is estimated using a set of simulated signals.             classification preferred by data: if m2 > Mmax , then the
+For computational efficiency, this was done using pre-              NSBH scenario is untenable.
+existing search pipeline simulations and the mass prop-               While some candidate EOSs from nuclear theory can
+erties were not highly optimized. However, given that               support nonrotating NSs with masses of up to ∼ 3 M
+we are estimating a rate based on a single source, the cal-         (e.g., Müller & Serot 1996), such large values of Mmax
+                                                                    are disfavored by the relatively small tidal deforma-
+                                                                    bilities measured in GW170817 (Abbott et al. 2017a,
+  2 See van den Heuvel & Tauris (2020) and Thompson et al. (2020)
+                                                                    2019b), which correlate with smaller internal pressure
+   for discussion about the interpretation of this observation.     gradients as a function of density and hence a lower
+12
+
+threshold for gravitational collapse. By adopting a phe-     particular, masses are only measurable for binary pul-
+nomenological model for the EOS, conditioning it on          sars, and the mass distribution of isolated NSs could be
+GW170817, and extrapolating the constraints to the           different. Additionally, the discovery of GW190425 (Ab-
+high densities relevant for the maximum mass, Lim &          bott et al. 2020a) should also be taken into account in
+Holt (2019) and Essick et al. (2020) place Mmax .            the population when predicting Mmax .
+2.3 M . Similarly, the EOS inference reported in Abbott         Finally, the NS maximum mass is constrained by stud-
+et al. (2018), based on an analysis of GW170817 with         ies of the merger remnant of GW170817. Although no
+a spectral parameterization (Lindblom 2010; Lindblom         postmerger gravitational waves were observed (Abbott
+& Indik 2012, 2014) for the EOS, implies a 90% credi-        et al. 2017g, 2019f), modeling of the associated kilonova
+ble upper bound of Mmax ≤ 2.43 M , with tenuous but          (Abbott et al. 2017b; Kasen et al. 2017; Villar et al. 2017;
+non-zero posterior support beyond 2.6 M . We calculate       Cowperthwaite et al. 2017; Abbott et al. 2017d) sug-
+the corresponding Mmax posterior distribution, shown         gests that the merger remnant collapsed to a BH after
+in the right panel of Figure 3, from the GW170817-           a brief supramassive or hypermassive NS phase during
+informed spectral EOS samples used in Abbott et al.          which it was stabilized by uniform or differential rota-
+(2018) by reconstructing each EOS from its parameters        tion. Assuming this ultimate fate for the merger rem-
+and computing its maximum mass. Comparison with              nant immediately implies that no NS can be stable above
+the m2 posterior suggests that the secondary component       ∼ 2.7 M , but it places a more stringent constraint on
+of GW190814 is probably more massive than this predic-       NSs that are not rotationally supported. The precise
+tion for Mmax : the posterior probability of m2 ≤ Mmax ,     mapping from the collapse threshold mass of the rem-
+marginalized over the uncertainty in m2 and Mmax , is        nant to Mmax depends on the EOS, but by developing
+only 3%. Nevertheless, the maximum mass predictions          approximate prescriptions based on sequences of rapidly
+from these kinds of EOS inferences come with impor-          rotating stars for a range of candidate EOSs, Mmax has
+tant caveats: their extrapolations are sensitive to the      been bounded below approximately 2.2–2.3 M (Mar-
+phenomenological model assumed for the EOS; they use         galit & Metzger 2017; Rezzolla et al. 2018; Ruiz et al.
+hard Mmax thresholds on the EOS prior to account for         2018; Shibata et al. 2019; Abbott et al. 2020c). Although
+the existence of the heaviest Galactic pulsars, which is     the degree of EOS uncertainty in these results is difficult
+known to bias the inferred maximum mass distribution         to quantify precisely, if we take the more conservative
+towards the threshold (Miller et al. 2020); and they pre-    2.3 M bound at face value, then m2 is almost certainly
+date the NICER observatory’s recent simultaneous mass        not a NS: the m2 posterior distribution has negligible
+and radius measurement for J0030+0451, which may in-         support below 2.3 M .
+crease the Mmax estimates by a few percent (Landry              Overall, these considerations suggest that GW190814
+et al. 2020) because it favors slightly stiffer EOSs than    is probably not the product of a NSBH coalescence, de-
+GW170817 (Raaijmakers et al. 2019; Riley et al. 2019;        spite its preliminary classification as such. Nonetheless,
+Miller et al. 2019; Jiang et al. 2020).                      the possibility that the secondary component is a NS
+   NS mass measurements also inform bounds on Mmax           cannot be completely discounted due to the current un-
+independently of EOS assumptions. Fitting the known          certainty in Mmax .
+population of NSs in binaries to a double-Gaussian mass         There are two further caveats to this assessment.
+distribution with a high-mass cutoff, Alsing et al. (2018)   First, because the secondary’s spin is unconstrained, it
+obtained an empirical constraint of Mmax ≤ 2.6 M             could conceivably be rotating rapidly enough for m2
+(one-sided 90% confidence interval). Farr & Chatzi-          to exceed Mmax without triggering gravitational col-
+ioannou (2020) recently updated this analysis to in-         lapse: rapid uniform rotation can stabilize a star up
+clude PSR J0740+6620 (Cromartie et al. 2019), which          to ∼ 20% more massive than the nonrotating maximum
+had not been discovered at the time of the original          mass (Cook et al. 1994), in which case only the absolute
+study. Based on samples from the Farr & Chatzi-              upper bound of ∼ 2.7 M is relevant. However, it is very
+ioannou (2020) maximum-mass posterior distribution,          unlikely that a NSBH system could merge before dissi-
+which is plotted in the right panel of Figure 3, we          pating such extreme natal NS spin angular momentum.
+find Mmax = 2.25+0.81
+                   −0.26 M . In this case, the posterior        Second, our discussion has thus far neglected the pos-
+probability of m2 ≤ Mmax is 29%, again favoring the          sibility that the secondary component is an exotic com-
+m2 > Mmax scenario, albeit less strongly because of the      pact object, such as a boson star (Kaup 1968) or a
+distribution’s long tail up to ∼ 3 M . However, the em-      gravastar (Mazur & Mottola 2004), instead of a NS or a
+pirical Mmax prediction is sensitive to selection effects    BH. Depending on the model, some exotic compact ob-
+that could potentially bias it (Alsing et al. 2018). In      jects can potentially support masses up to and beyond
+                                                                                                                      13
+
+                                                              tions of a few candidates with masses in this range seem
+                                                              to disfavor the existence of a gap (Freire et al. 2008;
+                                                              Neustroev et al. 2014; Giesers et al. 2018; Wyrzykowski
+                                                              & Mandel 2020; Thompson et al. 2019), but whether the
+                                                              mass gap is physical or caused by selection biases is still
+                                                              a matter of debate (e.g., Kreidberg et al. 2012).
+                                                                 From a theoretical point of view, accurately calculat-
+                                                              ing the masses of compact remnants at formation is chal-
+                                                              lenging, because it depends on the complex physics of
+                                                              the supernova explosion and the details of stellar evolu-
+                                                              tion, especially for the late evolutionary stages of mas-
+                                                              sive stars (Janka 2012; Müller 2016; Burrows et al. 2018;
+                                                              Burrows et al. 2019). Whether the models favor the
+Figure 8. Constraints on the NS EOS assuming GW190814         presence of a gap or a smooth transition between NSs
+was produced by a BBH (blue) or a NSBH (orange) coales-       and BHs is still unclear, and in fact some models have
+cence. The 90% and 50% credible contours of the posterior     been developed with the purpose of reproducing this
+in the pressure-density plane are shown. The constraints
+                                                              lower mass gap (Ugliano et al. 2012; Fryer et al. 2012;
+are calculated by assuming a spectral decomposition for the
+EOS, following Abbott et al. (2018). The BBH constraints
+                                                              Kochanek 2014; Sukhbold & Woosley 2014; Ertl et al.
+are identical to those from the analysis of GW170817, while   2016). Therefore, our robust discovery of an object with
+for the NSBH case the posterior is reweighted by the prob-    a well-constrained mass in this regime may provide cru-
+ability that each EOS’s maximum mass is at least m2 . The     cial constraints on compact-object formation models. In
+dashed lines indicate the 90% credible region of the prior.   fact, GW190814 demonstrates the need to adjust rem-
+                                                              nant mass prescriptions previously designed to produce
+2.6 M (Cardoso & Pani 2019). Our analysis does not            a perceived mass gap. The combination of mass ratio
+exclude this hypothesis for the secondary.                    and component masses challenges most results obtained
+  Since the NSBH scenario cannot be definitively ruled        from population synthesis simulations for isolated bina-
+out, we examine GW190814’s potential implications for         ries (Dominik et al. 2012, 2015; Marchant et al. 2017;
+the NS EOS, assuming that the secondary proves to be          Giacobbo & Mapelli 2018; Mapelli & Giacobbo 2018;
+a NS. This would require Mmax to be no less than m2 ,         Kruckow et al. 2018; Neijssel et al. 2019; Mapelli et al.
+a condition that severely constrains the distribution of      2019; Spera et al. 2019; Olejak et al. 2020) .
+EOSs compatible with existing astrophysical data. The            Population synthesis models distinguish between NSs
+combined constraints on the EOS from GW170817 and             and BHs using only a mass threshold, which is gen-
+this hypothetical maximum mass information are shown          erally in the range 2–3 M . Thus, depending on the
+in Figure 8. Specifically, we have taken the spectral         adopted threshold and on the adopted supernova explo-
+EOS distribution conditioned on GW170817 from Ab-             sion model, a GW190814-like event may be labeled as
+bott et al. (2018) and reweighted each EOS by the prob-       either a NSBH merger or a BBH merger. Most BBH
+ability that its maximum mass is at least as large as m2 .    mergers have q > 0.5, while the distributions of merging
+The updated posterior favors stiffer EOSs, which trans-       NSBH binaries suggest that systems with q . 0.1 may
+lates to larger radii for NSs of a given mass. The cor-       be up to ∼ 103 times less common than more symmet-
+responding constraints on the radius and tidal deforma-       ric ones (q > 0.1) and that the mass-ratio distribution
+bility of a canonical 1.4 M NS are R1.4 = 12.9+0.8−0.7 km     peaks at q ≈ 0.2. Furthermore, models tend to favor
+and Λ1.4 = 616+273
+                 −158 .                                       mergers of massive (& 1.3 M ) NSs with relatively small
+                                                              BHs (. 15 M ) in environments with sub-solar metal-
+        6.3. Origins of GW190814-like Systems                 licity (Z . 0.5 Z ). The tendency to disfavor mergers
+                                                              with highly asymmetric masses in isolated binaries may
+  The source of GW190814 represents a previously un-
+                                                              be the consequence of mass transfer (e.g., Postnov &
+detected class of coalescences that has the potential to
+                                                              Yungelson 2014) and common envelope episodes (e.g.,
+shed light on the formation of merging compact-object
+                                                              Ivanova et al. 2013) that cause systems with initially
+binaries with highly asymmetric masses.
+                                                              asymmetric masses to evolve towards more symmetric
+  Electromagnetic observations of Galactic NSs and
+                                                              configurations. Overall, producing mergers with such
+stellar-mass BHs suggest a dearth of compact objects in
+                                                              unequal masses, with a secondary in the perceived mass
+the ∼ 2.5 M to 5 M range (Bailyn et al. 1998; Özel
+et al. 2010; Farr et al. 2011; Özel et al. 2012). Observa-
+14
+
+gap, and at the rate implied by this discovery is a chal-       A GW190814-like merger may also have originated
+lenge for current models.                                    from a hierarchical triple in the field (e.g., Silsbee &
+   Nevertheless, particular choices of poorly constrained    Tremaine 2017; Fragione & Loeb 2019; Antonini et al.
+assumptions within rapid population synthesis models         2017), from a wide hierarchical quadruple system (Sa-
+may increase the number of mergers with q . 0.1 so           farzadeh et al. 2020), or from hierarchical triples in
+that the latter may be only a few times less common          galactic centers, where the tertiary body is a supermas-
+than (or even comparable to) systems with q ≃ 0.2 (e.g.,     sive BH (Antonini & Perets 2012; Stephan et al. 2019;
+Eldridge & Stanway 2016; Eldridge et al. 2017; Giacobbo      Petrovich & Antonini 2017; Hoang et al. 2018; Fragione
+& Mapelli 2018).                                             et al. 2019). Specifically, Safarzadeh et al. (2020) ex-
+   Another possibility is that GW190814 is of dynami-        plore the possibility that a second-generation remnant
+cal origin. Dynamical exchanges in dense stellar envi-       with mass 3 M may merge with a 30 M BH, cat-
+ronments tend to pair up massive compact objects with        alyzed by a 50 M -BH perturber. The mass-ratio dis-
+similar masses (e.g., Sigurdsson & Hernquist 1993). This     tributions of BBH and NSBH mergers from hierarchical
+process is effective for globular clusters, where compact-   systems are similar to those of field binaries and it is
+object binaries may undergo tens of exchanges before         unclear whether hierarchies may enhance the formation
+they get ejected from the cluster (Portegies Zwart &         of merging compact-object binaries with highly asym-
+McMillan 2000; Rodriguez et al. 2016; Park et al. 2017;      metric masses (e.g., Silsbee & Tremaine 2017).
+Askar et al. 2017; Rodriguez et al. 2019). For such envi-       Disks of gas around supermassive BHs in active galac-
+ronments, models predict that most merging BBHs have         tic nuclei may be promising environments for the forma-
+q ≃ 1 (e.g., Rodriguez et al. 2016), and the formation       tion of GW190814-like systems. For such environments,
+of NSBH binaries is highly suppressed because BHs dy-        theoretical models show that merging compact-object
+namically dominate the cores over the complete lifetime      binaries with asymmetric masses are likely, but cannot
+of the clusters, preventing the interactions between BHs     necessarily accommodate masses as low as the secondary
+and NSs, with the consequence that the merger rate of        mass of GW190814 (e.g., Yang et al. 2019). However,
+NSBH binaries in globular clusters in the local Universe     McKernan et al. (2020) show that the median mass ratio
+is ∼ 10−2 –10−1 Gpc−3 yr−1 (Clausen et al. 2013; Ye et al.   of NSBH mergers in active galactic nucleus disks may be
+2020; Arca Sedda 2020). The rate for GW190814-like           as low as ∼ 0.07.
+events, with a secondary in the perceived mass gap, is          We conclude that the combination of masses, mass
+likely even lower. In contrast, the NSBH merger rate         ratio and inferred rate of GW190814 is challenging to
+may be significantly higher in young star clusters (e.g.,    explain, but potentially consistent with multiple forma-
+Ziosi et al. 2014) and the latter can effectively increase   tion scenarios. However, it is not possible to assess the
+the number of progenitors leading to merging compact-        validity of models that produce the right properties but
+object binaries with q . 0.15 (Di Carlo et al. 2019;         do not make quantitative predictions about formation
+Rastello et al. 2020). Thus, young star clusters may         rates, even at some order-of-magnitude level.
+be promising hosts for GW190814-like events, but the            Young star clusters and active galactic nucleus disks
+parameter space relevant for GW190814 is mostly unex-        seem to be more promising hosts for GW190814-like
+plored in the context of star clusters.                      mergers, since both these environments may enhance
+   In dense stellar environments, GW190814-like sys-         the formation of either progenitors of or directly merg-
+tems may also form from a low-mass merger remnant            ing compact-object binaries with more asymmetric
+that acquires a BH companion via dynamical interac-          masses to relevant rates. In contrast, globular-cluster
+tions (Gupta et al. 2020). Gupta et al. (2020) pre-          models provide more robust predictions, showing that
+dicts a population of second-generation BHs in the 2.2–      GW190814-like mergers with such asymmetric masses
+3.8 M range, with a peak in the distribution at 2.6 M ,      are outliers in the population predictions, even though a
+assuming a double-Gaussian mass distribution for the         revision of the remnant-mass prescription is still needed.
+NSs. However, recent dynamical simulations of globular       Isolated binaries binaries could prove possible progeni-
+clusters (e.g., Ye et al. 2020) find the subsequent merger   tors provided similar revisions are implemented. The
+of such a second-generation BH with a larger stellar-        importance of field multiples remains to be fully ex-
+mass BH to be exceedingly rare. A high component spin        plored. Future gravitational-wave observations will pro-
+could be a distinguishing feature of a second-generation     vide further insights into the dominance of different
+compact object, but the uninformative spin posterior         channels.
+for the lighter component of GW190814 provides no ev-
+idence for or against this hypothesis.                                   6.4. Cosmological Implications
+                                                                                                                    15
+
+   Luminosity distances inferred directly from observed     prising 60% of the prior range. Combining the result for
+gravitational-wave events can be used with measure-         GW190814 with the result obtained from GW170817, we
+ments of source redshifts in the electromagnetic spec-      see an improvement over the GW170817-only result, to
+trum to constrain cosmological parameters (Schutz           H0 = 70+17
+                                                                     −8 km s
+                                                                              −1
+                                                                                  Mpc−1 (the median and 90% sym-
+1986). Redshifts can be either obtained directly from       metric credible interval is H0 = 77+33
+                                                                                                 −23 km s
+                                                                                                           −1
+                                                                                                              Mpc−1 ).
+counterparts to the gravitational-wave source (Holz &       This result is not yet sufficiently constraining to pro-
+Hughes 2005), as was the case for GW170817 (Ab-             vide further insight into current tensions in low and high
+bott et al. 2017a,b,e), by cross-correlation of the         redshift measurements of the Hubble constant (Verde
+gravitational-wave localization posterior with catalogs     et al. 2019), but these constraints will continue to im-
+of galaxy redshifts (Del Pozzo 2012; Nair et al. 2018;      prove as further gravitational-wave observations are in-
+Chen et al. 2018; Fishbach et al. 2019; Gray et al.         cluded (e.g., projections in Chen et al. 2018; Vitale &
+2020; Soares-Santos et al. 2019; Abbott et al. 2019c),      Chen 2018; Gray et al. 2020; Feeney et al. 2019).
+by exploiting information in the neutron star equation
+of state (Messenger & Read 2012), or by using the red-                        7. CONCLUSIONS
+shifted masses inferred from the gravitational wave ob-
+                                                               During their third observing run, on 2019 August 14,
+servation and assumptions about the mass distribution
+                                                            21:10:39 UTC, the LIGO and Virgo detectors observed
+of the sources (Chernoff & Finn 1993; Taylor et al.
+                                                            GW190814, a novel source unlike any other known com-
+2012; Taylor & Gair 2012; Farr et al. 2019). At cur-
+                                                            pact binary coalescence. Thanks in part to the obser-
+rent sensitivities, the cosmological parameter to which
+                                                            vation of significant power in subdominant multipoles
+LIGO–Virgo observations are most sensitive is the Hub-
+                                                            of the gravitational radiation, and the conclusive mea-
+ble constant, H0 . The gravitational-wave observation
+                                                            surement of little to no spin precession, we obtain pre-
+of GW170817 provided a posterior on H0 with mode
+                                                            cise measurements of its physical source properties that
+and 68.3% highest posterior density interval of H0 =
+                                                            clearly set it apart from other compact binaries.
+69+22
+   −8 km s
+             −1
+                 Mpc−1 (Abbott et al. 2017e, 2019b,c),
+                                                               In particular, (a) its mass ratio of q = 0.112+0.008
+                                                                                                                 −0.009
+assuming a flat prior on H0 .
+                                                            is the most unequal ever observed with gravitational
+   GW190814 is the best localized dark siren, i.e.,
+                                                            waves, (b) the bound χ1 ≤ 0.07 on the spin of the
+gravitational-wave source without an electromagnetic
+                                                            23.2+1.1
+                                                                 −1.0 M BH is the strongest constraint on a primary
+counterpart, observed to date, and so it is a good candi-
+                                                            spin for any gravitational-wave source to date, and (c)
+date for the statistical cross-correlation method. For a
+                                                            the secondary mass measurement of 2.59+0.08 −0.09 M makes
+fixed reference cosmology (Ade et al. 2016), the GLADE
+                                                            it the lightest BH or the heaviest NS discovered in a dou-
+galaxy catalog (Dálya et al. 2018) is approximately
+                                                            ble compact-object system. We find no evidence of mea-
+40% complete at the distance of GW190814 and con-
+                                                            surable tidal effects in the signal, and no electromagnetic
+tains 472 galaxies within the 90% posterior credible vol-
+                                                            counterpart to the gravitational waves has been identi-
+ume of GW190814. To obtain a constrain on H0 , we
+                                                            fied.
+use the methodology described in Abbott et al. (2019c)
+                                                               Comparisons between the secondary mass and sev-
+and the GLADE catalog. We take a flat prior for H0 ∈
+                                                            eral current estimates of the maximum NS mass sug-
+[20, 140] km s−1 Mpc−1 and assign a probability to each
+                                                            gest that GW190814 is unlikely to originate in a NSBH
+galaxy that it is the true host of the event that is pro-
+                                                            coalescence. Nevertheless, the Mmax estimates are un-
+portional to its B-band luminosity. Using the posterior
+                                                            certain enough that improved knowledge of the NS EOS
+distribution on the distance obtained from the combined
+                                             −1             or further observations of the astrophysical population
+PHM samples, we obtain H0 = 75+59   −13 km s    Mpc−1 us-
+                                                            of compact objects could alter this assessment. For this
+ing GW190814 alone (mode and 68.3% highest posterior
+                                                            reason, we cannot firmly exclude the possibility that the
+density interval; the median and 90% symmetric credi-
+                                                            secondary is a NS, nor can we be certain that it is a BH.
+ble interval is H0 = 83+55
+                        −53 km s
+                                 −1
+                                    Mpc−1 ), which can be
+                       +40                                  Regardless, this event sheds new light on the compact-
+compared to H0 = 75−32 km s Mpc−1 (Soares-Santos
+                                −1
+                                                            object mass distribution at the interface between known
+et al. 2019) obtained using the dark siren GW170814
+                                                            NSs and BHs.
+alone. The GW190814 result is the most precise mea-
+                                                               The unique combination of masses and inferred merger
+surement from a single dark siren observation to date,
+                                                            rate for this event is difficult to produce in population
+albeit comparable to the GW170814 result, which is
+                                                            synthesis models of multi-component systems in galactic
+expected given GW190814’s small localization volume
+                                                            fields or dense stellar environments. The discovery of
+(∼ 39000 Mpc3 ). The result is not very constraining,
+                                                            GW190814 may therefore reshape our understanding of
+with the 68.3% highest posterior density interval com-
+                                                            the processes by which the lightest BHs or the most
+16
+
+massive NSs form. Based on our rate density estimate,        and Fonds Wetenschappelijk Onderzoek – Vlaanderen
+we may reasonably expect to detect more systems of this      (FWO), Belgium, the Paris Île-de-France Region, the
+kind after a year at design sensitivity. This discovery      National Research, Development and Innovation Office
+may prove to be the first hint of a larger population        Hungary (NKFIH), the National Research Foundation
+that could change our perspective on the formation and       of Korea, Industry Canada and the Province of On-
+mass spectrum of compact objects.                            tario through the Ministry of Economic Development
+  Segments of data containing the signal from all three      and Innovation, the Natural Science and Engineering
+interferometers, and samples from the posterior dis-         Research Council Canada, the Canadian Institute for
+tributions for the source parameters, are available          Advanced Research, the Brazilian Ministry of Science,
+from the Gravitational Wave Open Science Center              Technology, Innovations, and Communications, the In-
+(https://doi.org/10.7935/zzw5-ak90).     The software        ternational Center for Theoretical Physics South Ameri-
+packages used in our analysis are open source.               can Institute for Fundamental Research (ICTP-SAIFR),
+                                                             the Research Grants Council of Hong Kong, the Na-
+   The authors gratefully acknowledge the support of the     tional Natural Science Foundation of China (NSFC),
+United States National Science Foundation (NSF) for          the Leverhulme Trust, the Research Corporation, the
+the construction and operation of the LIGO Laboratory        Ministry of Science and Technology (MOST), Taiwan
+and Advanced LIGO as well as the Science and Tech-           and the Kavli Foundation. The authors gratefully ac-
+nology Facilities Council (STFC) of the United King-         knowledge the support of the NSF, STFC, INFN and
+dom, the Max-Planck-Society (MPS), and the State of          CNRS for provision of computational resources. Some
+Niedersachsen/Germany for support of the construction        of the parameter estimation analyses presented in this
+of Advanced LIGO and construction and operation of           paper were performed using the supercomputer cluster
+the GEO600 detector. Additional support for Advanced         at the Swinburne University of Technology (OzSTAR
+LIGO was provided by the Australian Research Council.        and SSTAR).
+The authors gratefully acknowledge the Italian Istituto        We would like to thank all of the essential workers who
+Nazionale di Fisica Nucleare (INFN), the French Centre       put their health at risk during the COVID-19 pandemic,
+National de la Recherche Scientifique (CNRS) and the         without whom we would not have been able to complete
+Netherlands Organization for Scientific Research, for the    this work.
+construction and operation of the Virgo detector and the
+                                                               Software: The detection of the signal and subse-
+creation and support of the EGO consortium.
+                                                             quent significance evaluation were performed with the
+   The authors also gratefully acknowledge research sup-
+                                                             GstLAL-based inspiral software pipeline (Cannon et al.
+port from these agencies as well as by the Council of Sci-
+                                                             2012; Privitera et al. 2014; Messick et al. 2017; Sachdev
+entific and Industrial Research of India, the Department
+                                                             et al. 2019; Hanna et al. 2020), built on the LALSuite
+of Science and Technology, India, the Science & Engi-
+                                                             software library (LIGO Scientific Collaboration 2018),
+neering Research Board (SERB), India, the Ministry
+                                                             and with the PyCBC (Nitz et al. 2018, 2019; Usman
+of Human Resource Development, India, the Spanish
+                                                             et al. 2016) and MBTAOnline (Adams et al. 2016)
+Agencia Estatal de Investigación, the Vicepresidència
+                                                             packages. Parameter estimation was performed with the
+i Conselleria d’Innovació, Recerca i Turisme and the
+                                                             LALInference (Veitch et al. 2015) and LALSimula-
+Conselleria d’Educació i Universitat del Govern de les
+                                                             tion libraries within LALSuite (LIGO Scientific Col-
+Illes Balears, the Conselleria d’Innovació, Universitats,
+                                                             laboration 2018), as well as the Bilby and pBilby Li-
+Ciència i Societat Digital de la Generalitat Valenciana
+                                                             braries (Ashton et al. 2019; Smith & Ashton 2019) and
+and the CERCA Programme Generalitat de Catalunya,
+                                                             the dynesty nested sampling package (Speagle 2020).
+Spain, the National Science Centre of Poland, the Swiss
+                                                             Interpretation and curation of the posterior samples was
+National Science Foundation (SNSF), the Russian Foun-
+                                                             handled by the PESummary library (Hoy & Raymond
+dation for Basic Research, the Russian Science Foun-
+                                                             2020). Estimates of the noise spectra were obtained us-
+dation, the European Commission, the European Re-
+                                                             ing BayesWave (Cornish & Littenberg 2015; Littenberg
+gional Development Funds (ERDF), the Royal Society,
+                                                             & Cornish 2015). Plots were prepared with Matplotlib
+the Scottish Funding Council, the Scottish Universi-
+                                                             (Hunter 2007). The sky map plot also used Astropy
+ties Physics Alliance, the Hungarian Scientific Research
+                                                             (http://www.astropy.org) a community-developed core
+Fund (OTKA), the French Lyon Institute of Origins
+                                                             Python package for Astronomy (Astropy Collaboration
+(LIO), the Belgian Fonds de la Recherche Scientifique
+                                                             et al. 2013; Price-Whelan et al. 2018) and ligo.skymap
+(FRS-FNRS), Actions de Recherche Concertées (ARC)
+                                                             (https://lscsoft.docs.ligo.org/ligo.skymap).
+                                                                                                                         17
+
+                                                       REFERENCES
+Aasi, J., Abbott, B. P., Abbott, R., et al. 2015, CQGra, 32,   Acernese, F., Agathos, M., Agatsuma, K., et al. 2015,
+  074001, doi: 10.1088/0264-9381/32/7/074001                     CQGra, 32, 024001, doi: 10.1088/0264-9381/32/2/024001
+Abbott, B. P., Abbott, R., Abbott, T. D., et al. 2016a,        Ackley, K., Amati, L., Barbieri, C., et al. 2020,
+  PhRvL, 116, 061102,                                            arXiv:2002.01950
+  doi: 10.1103/PhysRevLett.116.061102                          Adams, T., Buskulic, D., Germain, V., et al. 2016, CQGra,
+—. 2016b, PhRvX, 6, 041015,                                      33, 175012, doi: 10.1088/0264-9381/33/17/175012
+  doi: 10.1103/PhysRevX.6.041015                               Ade, P. A. R., Aghanim, N., Arnaud, M., et al. 2016, A&A,
+—. 2016c, CQGra, 33, 134001,                                     594, A13, doi: 10.1051/0004-6361/201525830
+  doi: 10.1088/0264-9381/33/13/134001                          Ageron, M., Baret, B., Coleiro, A., et al. 2019, GCN,
+—. 2016d, PhRvD, 93, 122003,                                     25330. https://gcn.gsfc.nasa.gov/gcn3/25330.gcn3
+  doi: 10.1103/PhysRevD.93.122003                              Ajith, P., Fotopoulos, N., Privitera, S., Neunzert, A., &
+—. 2016e, PhRvD, 93, 122004,                                     Weinstein, A. J. 2014, PhRvD, 89, 084041,
+  doi: 10.1103/PhysRevD.93.122004                                doi: 10.1103/PhysRevD.89.084041
+—. 2016f, PhRvL, 116, 241102,                                  Ajith, P., Hannam, M., Husa, S., et al. 2011, PhRvL, 106,
+  doi: 10.1103/PhysRevLett.116.241102                            241101, doi: 10.1103/PhysRevLett.106.241101
+—. 2016g, PhRvL, 116, 221101,                                  Alsing, J., Silva, H. O., & Berti, E. 2018, MNRAS, 478,
+  doi: 10.1103/PhysRevLett.116.221101                            1377, doi: 10.1093/mnras/sty1065
+—. 2017a, PhRvL, 119, 161101,                                  Andreoni, I., Goldstein, D. A., Kasliwal, M. M., et al. 2020,
+                                                                 ApJ, 890, 131, doi: 10.3847/1538-4357/ab6a1b
+  doi: 10.1103/PhysRevLett.119.161101
+                                                               Antier, S., Agayeva, S., Aivazyan, V., et al. 2020, MNRAS,
+—. 2017b, ApJL, 848, L12, doi: 10.3847/2041-8213/aa91c9
+                                                                 492, 3904, doi: 10.1093/mnras/stz3142
+—. 2017c, ApJL, 848, L13, doi: 10.3847/2041-8213/aa920c
+                                                               Antonini, F., & Perets, H. B. 2012, ApJ, 757, 27,
+—. 2017d, ApJL, 850, L39, doi: 10.3847/2041-8213/aa9478
+                                                                 doi: 10.1088/0004-637X/757/1/27
+—. 2017e, Nat, 551, 85, doi: 10.1038/nature24471
+                                                               Antonini, F., Toonen, S., & Hamers, A. S. 2017, ApJ, 841,
+—. 2017f, ApJL, 851, L35, doi: 10.3847/2041-8213/aa9f0c
+                                                                 77, doi: 10.3847/1538-4357/aa6f5e
+—. 2017g, ApJL, 851, L16, doi: 10.3847/2041-8213/aa9a35
+                                                               Apostolatos, T. A., Cutler, C., Sussman, G. J., & Thorne,
+—. 2018, PhRvL, 121, 161101,
+                                                                 K. S. 1994, PhRvD, 49, 6274,
+  doi: 10.1103/PhysRevLett.121.161101
+                                                                 doi: 10.1103/PhysRevD.49.6274
+—. 2019a, PhRvX, 9, 031040,
+                                                               Arca Sedda, M. 2020, CmPhy, 3, 43,
+  doi: 10.1103/PhysRevX.9.031040
+                                                                 doi: 10.1038/s42005-020-0310-x
+—. 2019b, PhRvX, 9, 011001,
+                                                               Arun, K. G., Buonanno, A., Faye, G., & Ochsner, E. 2009,
+  doi: 10.1103/PhysRevX.9.011001
+                                                                 PhRvD, 79, 104023, doi: 10.1103/PhysRevD.79.104023
+—. 2019c, arXiv:1908.06060
+                                                               Arun, K. G., Iyer, B. R., Qusailah, M. S. S., &
+—. 2019d, PhRvL, 123, 011102,                                    Sathyaprakash, B. S. 2006a, PhRvD, 74, 024006,
+  doi: 10.1103/PhysRevLett.123.011102                            doi: 10.1103/PhysRevD.74.024006
+—. 2019e, PhRvD, 100, 104036,                                  —. 2006b, CQGra, 23, L37–L43,
+  doi: 10.1103/PhysRevD.100.104036                               doi: 10.1088/0264-9381/23/9/l01
+—. 2019f, ApJ, 875, 160, doi: 10.3847/1538-4357/ab0f3d         Ashton, G., Hübner, M., Lasky, P. D., et al. 2019, ApJS,
+—. 2020a, ApJL, 892, L3, doi: 10.3847/2041-8213/ab75f5           241, 27, doi: 10.3847/1538-4365/ab06fc
+—. 2020b, arXiv:1304.0670v10                                   Askar, A., Szkudlarek, M., Gondek-Rosińska, D., Giersz,
+—. 2020c, CQGra, 37, 045006,                                     M., & Bulik, T. 2017, MNRAS, 464, L36,
+  doi: 10.1088/1361-6382/ab5f7c                                  doi: 10.1093/mnrasl/slw177
+Abbott, R., Abbott, T. D., Abraham, S., et al. 2020d,          Astropy Collaboration, Robitaille, T. P., Tollerud, E. J.,
+  arXiv:2004.08342                                               et al. 2013, A&A, 558, A33,
+Accadia, T., Acernese, F., Antonucci, F., et al. 2010,           doi: 10.1051/0004-6361/201322068
+  CQGra, 27, 194011,                                           Babak, S., Taracchini, A., & Buonanno, A. 2017, PhRvD,
+  doi: 10.1088/0264-9381/27/19/194011                            95, 024010, doi: 10.1103/PhysRevD.95.024010
+Acernese, F., Adams, T., Agatsuma, K., et al. 2018,            Bailyn, C. D., Jain, R. K., Coppi, P., & Orosz, J. A. 1998,
+  CQGra, 35, 205004, doi: 10.1088/1361-6382/aadf1a               ApJ, 499, 367, doi: 10.1086/305614
+18
+
+Baird, E., Fairhurst, S., Hannam, M., & Murphy, P. 2013,       Cornish, N., Sampson, L., Yunes, N., & Pretorius, F. 2011,
+  PhRvD, 87, 024035, doi: 10.1103/PhysRevD.87.024035             PhRvD, 84, 062003, doi: 10.1103/PhysRevD.84.062003
+Blanchet, L. 2014, LRR, 17, 2, doi: 10.12942/lrr-2014-2        Cornish, N. J., & Littenberg, T. B. 2015, CQGra, 32,
+Blanchet, L., Damour, T., Esposito-Farèse, G., & Iyer,          135012, doi: 10.1088/0264-9381/32/13/135012
+  B. R. 2005, PhRvD, 71, 124004,                               Cotesta, R., Buonanno, A., Bohé, A., et al. 2018, PhRvD,
+  doi: 10.1103/PhysRevD.71.124004                                98, 084028, doi: 10.1103/PhysRevD.98.084028
+Blanchet, L., Damour, T., Iyer, B. R., Will, C. M., &          Coughlin, M. W., Dietrich, T., Antier, S., et al. 2020,
+  Wiseman, A. G. 1995, PhRvL, 74, 3515,                          MNRAS, 492, 863, doi: 10.1093/mnras/stz3457
+  doi: 10.1103/PhysRevLett.74.3515                             Cowperthwaite, P. S., Berger, E., Villar, V. A., et al. 2017,
+Blanchet, L., Faye, G., Iyer, B. R., & Sinha, S. 2008,           ApJL, 848, L17, doi: 10.3847/2041-8213/aa8fc7
+  CQGra, 25, 165003, doi: 10.1088/0264-9381/25/16/             Cromartie, H. T., Fonseca, E., Ransom, S. M., et al. 2019,
+  165003,10.1088/0264-9381/29/23/239501                          NatAs, 439, doi: 10.1038/s41550-019-0880-2
+Bohé, A., Shao, L., Taracchini, A., et al. 2017, PhRvD, 95,   Cutler, C., & Flanagan, E. E. 1994, PhRvD, 49, 2658,
+  044028, doi: 10.1103/PhysRevD.95.044028                        doi: 10.1103/PhysRevD.49.2658
+Brown, D. A., Kumar, P., & Nitz, A. H. 2013, PhRvD, 87,        Dálya, G., Galgóczi, G., Dobos, L., et al. 2018, MNRAS,
+  082004, doi: 10.1103/PhysRevD.87.082004                        479, 2374, doi: 10.1093/mnras/sty1703
+Buonanno, A., & Damour, T. 1999, PhRvD, 59, 084006,            Damour, T. 2001, Phys. Rev., D64, 124013,
+  doi: 10.1103/PhysRevD.59.084006                                doi: 10.1103/PhysRevD.64.124013
+                                                               Damour, T., Jaranowski, P., & Schäfer, G. 2001, PhLB,
+Buonanno, A., et al. 2003, PhRvD, 67, 104025, doi: 10.
+                                                                 513, 147, doi: 10.1016/S0370-2693(01)00642-6
+  1103/PhysRevD.67.104025,10.1103/PhysRevD.74.029904
+                                                               Davies, G. S., Dent, T., Tápai, M., et al. 2020,
+Burrows, A., Radice, D., & Vartanyan, D. 2019, MNRAS,
+                                                                 arXiv:2002.08291
+  485, 3153, doi: 10.1093/mnras/stz543
+                                                               Del Pozzo, W. 2012, PhRvD, 86, 043011,
+Burrows, A., Vartanyan, D., Dolence, J. C., Skinner, M. A.,
+                                                                 doi: 10.1103/PhysRevD.86.043011
+  & Radice, D. 2018, SSRv, 214, 33,
+                                                               Dhanpal, S., Ghosh, A., Mehta, A. K., Ajith, P., &
+  doi: 10.1007/s11214-017-0450-9
+                                                                 Sathyaprakash, B. 2019, PhRvD, 99,
+Cannon, K., Cariou, R., Chapman, A., et al. 2012, ApJ,
+                                                                 doi: 10.1103/physrevd.99.104056
+  748, 136, doi: 10.1088/0004-637X/748/2/136
+                                                               Di Carlo, U. N., Giacobbo, N., Mapelli, M., et al. 2019,
+Capano, C., Dent, T., Hanna, C., et al. 2016a, PhRvD, 96,
+                                                                 MNRAS, 487, 2947, doi: 10.1093/mnras/stz1453
+  082002, doi: 10.1103/PhysRevD.96.082002
+                                                               Dobie, D., Stewart, A., Murphy, T., et al. 2019, ApJL, 887,
+Capano, C., Harry, I., Privitera, S., & Buonanno, A. 2016b,
+                                                                 L13, doi: 10.3847/2041-8213/ab59db
+  PhRvD, 93, 124007, doi: 10.1103/PhysRevD.93.124007
+                                                               Dominik, M., Belczynski, K., Fryer, C., et al. 2012, ApJ,
+Cardoso, V., & Pani, P. 2019, LRR, 22, 4,
+                                                                 759, 52, doi: 10.1088/0004-637X/759/1/52
+  doi: 10.1007/s41114-019-0020-4
+                                                               Dominik, M., Berti, E., O’Shaughnessy, R., et al. 2015,
+Carter, B. 1971, PhRvL, 26, 331,                                 ApJ, 806, 263, doi: 10.1088/0004-637X/806/2/263
+  doi: 10.1103/PhysRevLett.26.331                              Effler, A., Schofield, R. M. S., Frolov, V. V., et al. 2015,
+Chatterji, S., et al. 2004, CQGra, 21, S1809,                    CQGra, 32, 035017, doi: 10.1088/0264-9381/32/3/035017
+  doi: 10.1088/0264-9381/21/20/024                             Eldridge, J. J., & Stanway, E. R. 2016, MNRAS, 462, 3302,
+Chen, H.-Y., Fishbach, M., & Holz, D. E. 2018, Nat, 562,         doi: 10.1093/mnras/stw1772
+  545, doi: 10.1038/s41586-018-0606-0                          Eldridge, J. J., Stanway, E. R., Xiao, L., et al. 2017, PASA,
+Chernoff, D. F., & Finn, L. S. 1993, ApJL, 411, L5,              34, e058, doi: 10.1017/pasa.2017.51
+  doi: 10.1086/186898                                          Ertl, T., Janka, H. T., Woosley, S. E., Sukhbold, T., &
+Chornock, R., Berger, E., Kasen, D., et al. 2017, ApJL,          Ugliano, M. 2016, ApJ, 818, 124,
+  848, L19, doi: 10.3847/2041-8213/aa905c                        doi: 10.3847/0004-637X/818/2/124
+Clausen, D., Sigurdsson, S., & Chernoff, D. F. 2013,           Essick, R., Landry, P., & Holz, D. E. 2020, PhRvD, 101,
+  MNRAS, 428, 3618, doi: 10.1093/mnras/sts295                    063007, doi: 10.1103/PhysRevD.101.063007
+Cokelaer, T. 2007, PhRvD, 76, 102004,                          Fairhurst, S., et al. 2019a, arXiv:1908.00555
+  doi: 10.1103/PhysRevD.76.102004                              —. 2019b, arXiv:1908.05707
+Cook, G. B., Shapiro, S. L., & Teukolsky, S. A. 1994, ApJ,     Farr, B., Berry, C. P. L., Farr, W. M., et al. 2016, ApJ,
+  424, 823, doi: 10.1086/173934                                  825, 116, doi: 10.3847/0004-637X/825/2/116
+                                                                                                                            19
+
+Farr, W. M., & Chatziioannou, K. 2020, Research Notes of         Harry, I. W., Allen, B., & Sathyaprakash, B. S. 2009,
+  the American Astronomical Society, 4, 65,                         PhRvD, 80, 104014, doi: 10.1103/PhysRevD.80.104014
+  doi: 10.3847/2515-5172/ab9088                                  Hartle, J. B. 1967, ApJ, 150, 1005, doi: 10.1086/149400
+Farr, W. M., Fishbach, M., Ye, J., & Holz, D. E. 2019,           Healy, J., & Lousto, C. O. 2017, PhRvD, 95, 024037,
+  ApJL, 883, L42, doi: 10.3847/2041-8213/ab4284                     doi: 10.1103/PhysRevD.95.024037
+Farr, W. M., Sravan, N., Cantrell, A., et al. 2011, ApJ, 741,    Hoang, B.-M., Naoz, S., Kocsis, B., Rasio, F. A., &
+  103, doi: 10.1088/0004-637X/741/2/103                             Dosopoulou, F. 2018, ApJ, 856, 140,
+Feeney, S. M., Peiris, H. V., Williamson, A. R., et al. 2019,       doi: 10.3847/1538-4357/aaafce
+  PhRvL, 122, 061105,                                            Hofmann, F., Barausse, E., & Rezzolla, L. 2016, ApJL, 825,
+  doi: 10.1103/PhysRevLett.122.061105                               L19, doi: 10.3847/2041-8205/825/2/L19
+Fernández, R., Foucart, F., & Lippuner, J. 2020, The            Holz, D. E., & Hughes, S. A. 2005, ApJ, 629, 15,
+  landscape of disk outflows from black hole - neutron star         doi: 10.1086/431341
+  mergers. https://arxiv.org/abs/2005.14208                      Hooper, S., Chung, S. K., Luan, J., et al. 2012, PhRvD, 86,
+Fishbach, M., Gray, R., Magaña Hernandez, I., Qi, H., &            024012, doi: 10.1103/PhysRevD.86.024012
+  Sur, A. 2019, ApJ, 871, L13,                                   Hoy, C., & Raymond, V. 2020.
+  doi: 10.3847/2041-8213/aaf96e                                     https://arxiv.org/abs/2006.06639
+Fishbach, M., & Holz, D. E. 2020, ApJL, 891, L27,                Huang, Y., Haster, C.-J., Vitale, S., et al. 2020, Statistical
+  doi: 10.3847/2041-8213/ab7247                                     and systematic uncertainties in extracting the source
+                                                                    properties of neutron star - black hole binaries with
+Flanagan, E. E., & Hinderer, T. 2008, PhRvD, 77, 021502,
+                                                                    gravitational waves. https://arxiv.org/abs/2005.11850
+  doi: 10.1103/PhysRevD.77.021502
+                                                                 Hunter, J. D. 2007, CSE, 9, 90, doi: 10.1109/MCSE.2007.55
+Foucart, F., Buchman, L., Duez, M. D., et al. 2013,
+                                                                 Husa, S., Khan, S., Hannam, M., et al. 2016, PhRvD, 93,
+  PhRvD, 88, 064017, doi: 10.1103/PhysRevD.88.064017
+                                                                    044006, doi: 10.1103/PhysRevD.93.044006
+Fragione, G., Grishin, E., Leigh, N. W. C., Perets, H. B., &
+                                                                 Indik, N., Fehrmann, H., Harke, F., Krishnan, B., &
+  Perna, R. 2019, MNRAS, 488, 47,
+                                                                    Nielsen, A. B. 2018, PhRvD, 97, 124008,
+  doi: 10.1093/mnras/stz1651
+                                                                    doi: 10.1103/PhysRevD.97.124008
+Fragione, G., & Loeb, A. 2019, MNRAS, 486, 4443,
+                                                                 Islam, T., Mehta, A. K., Ghosh, A., et al. 2020, PhRvD,
+  doi: 10.1093/mnras/stz1131
+                                                                    101, doi: 10.1103/physrevd.101.024032
+Freire, P. C. C., Ransom, S. M., Bégin, S., et al. 2008, ApJ,
+                                                                 Ivanova, N., Justham, S., Chen, X., et al. 2013, A&A Rv,
+  675, 670, doi: 10.1086/526338
+                                                                    21, 59, doi: 10.1007/s00159-013-0059-2
+Fryer, C. L., Belczynski, K., Wiktorowicz, G., et al. 2012,
+                                                                 Janka, H.-T. 2012, ARNPS, 62, 407,
+  ApJ, 749, 91, doi: 10.1088/0004-637X/749/1/91
+                                                                    doi: 10.1146/annurev-nucl-102711-094901
+Giacobbo, N., & Mapelli, M. 2018, MNRAS, 480, 2011,
+                                                                 Jiang, J.-L., Tang, S.-P., Wang, Y.-Z., Fan, Y.-Z., & Wei,
+  doi: 10.1093/mnras/sty1999
+                                                                    D.-M. 2020, ApJ, 892, 55, doi: 10.3847/1538-4357
+Giesers, B., Dreizler, S., Husser, T.-O., et al. 2018,           Jiménez-Forteza, X., Keitel, D., Husa, S., et al. 2017,
+  MNRAS, 475, L15, doi: 10.1093/mnrasl/slx203                       PhRvD, 95, 064024, doi: 10.1103/PhysRevD.95.064024
+Gomez, S., Hosseinzadeh, G., Cowperthwaite, P. S., et al.        Johnson-McDaniel, N. K., et al. 2016, Determining the final
+ 2019, ApJL, 884, L55, doi: 10.3847/2041-8213/ab4ad5                spin of a binary black hole system including in-plane
+Gray, R., Hernandez, I. M., Qi, H., et al. 2020, PhRvD,             spins: Method and checks of accuracy, Tech. Rep.
+  101, 122001, doi: 10.1103/PhysRevD.101.122001                     LIGO-T1600168, LIGO Project.
+Guo, X., Chu, Q., Chung, S. K., et al. 2018, Computer               https://dcc.ligo.org/T1600168/public
+ Physics Communications, 231, 62,                                Kalaghatgi, C., Hannam, M., & Raymond, V. 2020,
+ doi: 10.1016/j.cpc.2018.05.002                                     PhRvD, 101, 103004, doi: 10.1103/PhysRevD.101.103004
+Gupta, A., Gerosa, D., Arun, K. G., et al. 2020, PhRvD,          Kapadia, S. J., et al. 2020, CQGra, 37, 045007,
+ 101, 103036, doi: 10.1103/PhysRevD.101.103036                      doi: 10.1088/1361-6382/ab5f2d
+Hanna, C., Caudill, S., Messick, C., et al. 2020, PhRvD,         Karki, S., Tuyenbayev, D., Kandhasamy, S., et al. 2016,
+  101, 022003, doi: 10.1103/PhysRevD.101.022003                     RScI, 87, 114503, doi: 10.1063/1.4967303
+Hansen, R. O. 1974, JMP, 15, 46, doi: 10.1063/1.1666501          Kasen, D., Metzger, B., Barnes, J., Quataert, E., &
+Harry, I., et al. 2014, PhRvD, 89, 024010,                          Ramirez-Ruiz, E. 2017, Nat, 551, 80,
+  doi: 10.1103/PhysRevD.89.024010                                   doi: 10.1038/nature24453
+20
+
+Kasliwal, M. M., Kasen, D., Lau, R. M., et al. 2019,           LIGO Scientific Collaboration, Virgo Collaboration. 2019a,
+ MNRAS, L14, doi: 10.1093/mnrasl/slz007                          GCN. https://gcn.gsfc.nasa.gov/notices l/S190814bv.lvc
+Kasprzack, M., & Yu, H. 2017, Beam Position from Angle         —. 2019b, Public Alerts User Guide.
+ to Length minimization, Tech. Rep. LIGO-T1600397,               https://emfollow.docs.ligo.org/userguide/content.html
+ LIGO Project. https://dcc.ligo.org/T1600397/public            —. 2019c, GraceDB, S190814bv.
+Kastha, S., Gupta, A., Arun, K., Sathyaprakash, B., & Van        https://gracedb.ligo.org/superevents/S190814bv/
+ Den Broeck, C. 2018, PhRvD, 98,                               —. 2019d, GCN, 25324.
+ doi: 10.1103/physrevd.98.124033                                 https://gcn.gsfc.nasa.gov/other/GW190814bv.gcn3
+Kastha, S., Gupta, A., Arun, K. G., Sathyaprakash, B. S.,      —. 2019e, GCN, 25333.
+ & Van Den Broeck, C. 2019, PhRvD, 100, 044007,                  https://gcn.gsfc.nasa.gov/gcn3/25333.gcn3
+ doi: 10.1103/PhysRevD.100.044007                              Lim, Y., & Holt, J. W. 2019, EPJA, 55, 209,
+Kaup, D. J. 1968, PhRv, 172, 1331,                               doi: 10.1140/epja/i2019-12917-9
+ doi: 10.1103/PhysRev.172.1331                                 Lindblom, L. 2010, PhRvD, 82, 103011,
+Kawaguchi, K., Shibata, M., & Tanaka, M. 2020, ApJ, 893,         doi: 10.1103/PhysRevD.82.103011
+ 153, doi: 10.3847/1538-4357/ab8309                            Lindblom, L., & Indik, N. M. 2012, PhRvD, 86, 084003,
+Khan, S., Chatziioannou, K., Hannam, M., & Ohme, F.              doi: 10.1103/PhysRevD.86.084003
+ 2019, PhRvD, 100, 024059,                                     —. 2014, PhRvD, 89, 064003,
+ doi: 10.1103/PhysRevD.100.024059                                doi: 10.1103/PhysRevD.89.064003
+                                                               Lipunov, V., Gorbovskoy, E., Kornilov, V., et al. 2019,
+Khan, S., Husa, S., Hannam, M., et al. 2016, PhRvD, 93,
+                                                                 GCN, 25354.
+ 044007, doi: 10.1103/PhysRevD.93.044007
+                                                                 https://gcn.gsfc.nasa.gov/gcn/gcn3/25354.gcn3
+Khan, S., Ohme, F., Chatziioannou, K., & Hannam, M.
+                                                               Littenberg, T. B., & Cornish, N. J. 2015, PhRvD, 91,
+ 2020, PhRvD, 101, 024056,
+                                                                 084034, doi: 10.1103/PhysRevD.91.084034
+ doi: 10.1103/PhysRevD.101.024056
+                                                               Liu, Y., Du, Z., Chung, S. K., et al. 2012, Classical and
+Kidder, L. E. 2008, PhRvD, 77, 044016,
+                                                                 Quantum Gravity, 29, 235018,
+  doi: 10.1103/PhysRevD.77.044016
+                                                                 doi: 10.1088/0264-9381/29/23/235018
+Kim, C., Kalogera, V., & Lorimer, D. R. 2003, ApJ, 584,
+                                                               London, L., Khan, S., Fauchon-Jones, E., et al. 2018,
+  985, doi: 10.1086/345740
+                                                                 PhRvL., 120, 161102,
+Klimenko, S., et al. 2008, CQGra, 25, 114029
+                                                                 doi: 10.1103/PhysRevLett.120.161102
+—. 2016, PhRvD, 93, 042004,
+                                                               Mapelli, M., & Giacobbo, N. 2018, MNRAS, 479, 4391,
+ doi: 10.1103/PhysRevD.93.042004
+                                                                 doi: 10.1093/mnras/sty1613
+Kochanek, C. S. 2014, ApJ, 785, 28,
+                                                               Mapelli, M., Giacobbo, N., Santoliquido, F., & Artale,
+ doi: 10.1088/0004-637X/785/1/28
+                                                                 M. C. 2019, MNRAS, 487, 2, doi: 10.1093/mnras/stz1150
+Kreidberg, L., Bailyn, C. D., Farr, W. M., & Kalogera, V.      Marchant, P., Langer, N., Podsiadlowski, P., et al. 2017,
+  2012, ApJ, 757, 36, doi: 10.1088/0004-637X/757/1/36            A&A, 604, A55, doi: 10.1051/0004-6361/201630188
+Krishnendu, N. V., Saleem, M., Samajdar, A., et al. 2019,      Margalit, B., & Metzger, B. D. 2017, ApJL, 850, L19,
+  PhRvD, 100, 104019, doi: 10.1103/PhysRevD.100.104019           doi: 10.3847/2041-8213/aa991c
+Kruckow, M. U., Tauris, T. M., Langer, N., Kramer, M., &       Matas, A., et al. 2020, arXiv:2004.10001
+  Izzard, R. G. 2018, MNRAS, 481, 1908,                        Mazur, P. O., & Mottola, E. 2004, PNAS, 101, 9545,
+  doi: 10.1093/mnras/sty2190                                     doi: 10.1073/pnas.0402717101
+Kumar, P., Pürrer, M., & Pfeiffer, H. P. 2017, PhRvD, 95,     McKernan, B., Ford, K. E. S., & O’Shaughnessy, R. 2020,
+ 044039, doi: 10.1103/PhysRevD.95.044039                         arXiv:2002.00046
+Kumar, P., Blackman, J., Field, S. E., et al. 2019, PhRvD,     Meidam, J., Tsang, K. W., Goldstein, J., et al. 2018,
+ 99, 124005, doi: 10.1103/PhysRevD.99.124005                     PhRvD, 97, 044033, doi: 10.1103/PhysRevD.97.044033
+Landry, P., Essick, R., & Chatziioannou, K. 2020, PhRvD,       Messenger, C., & Read, J. 2012, PhRvL, 108, 091101,
+  101, 123007, doi: 10.1103/PhysRevD.101.123007                  doi: 10.1103/PhysRevLett.108.091101
+Li, T. G. F., Del Pozzo, W., Vitale, S., et al. 2012, PhRvD,   Messick, C., Blackburn, K., Brady, P., et al. 2017, PhRvD,
+  85, 082003, doi: 10.1103/PhysRevD.85.082003                    95, 042001, doi: 10.1103/PhysRevD.95.042001
+LIGO Scientific Collaboration. 2018, LIGO Algorithm            Miller, M. C., Chirenti, C., & Lamb, F. K. 2020, ApJ, 888,
+  Library, doi: 10.7935/GT1W-FZ16                                12, doi: 10.3847/1538-4357/ab4ef9
+                                                                                                                               21
+
+Miller, M. C., Lamb, F. K., Dittmann, A. J., et al. 2019,        Pappas, G., & Apostolatos, T. A. 2012, PhRvL, 108,
+   ApJL, 887, L24, doi: 10.3847/2041-8213/ab50c5                   231104, doi: 10.1103/PhysRevLett.108.231104
+Mills, J. C., & Fairhurst, S. 2020, Measuring                    Park, D., Kim, C., Lee, H. M., Bae, Y.-B., & Belczynski, K.
+   gravitational-wave subdominant multipoles, Tech. Rep.           2017, MNRAS, 469, 4665, doi: 10.1093/mnras/stx1015
+   LIGO-P2000136.                                                Payne, E., Talbot, C., & Thrane, E. 2019, PhRvD, 100,
+   https://https://dcc.ligo.org/P2000136/public                    123017, doi: 10.1103/PhysRevD.100.123017
+Mishra, C. K., Arun, K. G., Iyer, B. R., & Sathyaprakash,        Petrovich, C., & Antonini, F. 2017, ApJ, 846, 146,
+   B. S. 2010, PhRvD, 82, 064010,                                  doi: 10.3847/1538-4357/aa8628
+   doi: 10.1103/PhysRevD.82.064010                               Poisson, E. 1998, PhRvD, 57, 5287,
+Mishra, C. K., Kela, A., Arun, K. G., & Faye, G. 2016,             doi: 10.1103/PhysRevD.57.5287
+   PhRvD, 93, 084054, doi: 10.1103/PhysRevD.93.084054            Poisson, E., & Will, C. M. 1995, PhRvD, 52, 848,
+Morgan, R., Soares-Santos, M., Annis, J., et al. 2020,             doi: 10.1103/PhysRevD.52.848
+   Constraints on the Physical Properties of S190814bv           Portegies Zwart, S. F., & McMillan, S. L. W. 2000, ApJL,
+   through Simulations based on DECam Follow-up                    528, L17, doi: 10.1086/312422
+   Observations by the Dark Energy Survey.
+                                                                 Postnov, K. A., & Yungelson, L. R. 2014, LRR, 17, 3,
+   https://arxiv.org/abs/2006.07385
+                                                                   doi: 10.12942/lrr-2014-3
+Müller, B. 2016, PASA, 33, e048, doi: 10.1017/pasa.2016.40
+                                                                 Price-Whelan, A. M., Sipőcz, B. M., Günther, H. M., et al.
+Müller, H., & Serot, B. D. 1996, NuPhA, 606, 508,
+                                                                   2018, AJ, 156, 123, doi: 10.3847/1538-3881/aabc4f
+   doi: 10.1016/0375-9474(96)00187-X
+                                                                 Privitera, S., Mohapatra, S. R. P., Ajith, P., et al. 2014,
+Nair, R., Bose, S., & Saini, T. D. 2018, PhRvD, 98, 023502,
+                                                                   PhRvD, 89, 024003, doi: 10.1103/PhysRevD.89.024003
+   doi: 10.1103/PhysRevD.98.023502
+                                                                 Prodi, G., Vedovato, G., Drago, M., et al. 2020, Technical
+Neijssel, C. J., Vigna-Gómez, A., Stevenson, S., et al. 2019,
+                                                                   note on the measurement of inspiral higher order modes
+   MNRAS, 490, 3740, doi: 10.1093/mnras/stz2840
+                                                                   by coherentWaveBurst in GW190814, Tech. Rep.
+Neustroev, V. V., Veledina, A., Poutanen, J., et al. 2014,
+                                                                   LIGO-T2000124, LIGO Project.
+   MNRAS, 445, 2424, doi: 10.1093/mnras/stu1924
+                                                                   https://dcc.ligo.org/T2000124/public
+Ng, K. K. Y., Vitale, S., Zimmerman, A., et al. 2018,
+                                                                 Pürrer, M. 2016, PhRvD, 93, 064041,
+   PhRvD, 98, 083007, doi: 10.1103/PhysRevD.98.083007
+                                                                   doi: 10.1103/PhysRevD.93.064041
+Nitz, A., Harry, I., Brown, D., et al. 2019, gwastro/pycbc:
+                                                                 Raaijmakers, G., Riley, T. E., Watts, A. L., et al. 2019,
+   PyCBC Release v1.15.2, doi: 10.5281/zenodo.3596447
+Nitz, A. H., Dal Canton, T., Davis, D., & Reyes, S. 2018,          ApJL, 887, L22, doi: 10.3847/2041-8213/ab451a
+   PhRvD, 98, 024050, doi: 10.1103/PhysRevD.98.024050            Racine, E. 2008, PhRvD, 78, 044021,
+Nitz, A. H., Dent, T., Dal Canton, T., Fairhurst, S., &            doi: 10.1103/PhysRevD.78.044021
+   Brown, D. A. 2017, ApJ, 849, 118,                             Rastello, S., Mapelli, M., Di Carlo, U. N., et al. 2020,
+   doi: 10.3847/1538-4357/aa8f50                                   arXiv:2003.02277
+Nitz, A. H., Dent, T., Davies, G. S., et al. 2020, ApJ, 891,     Rezzolla, L., Most, E. R., & Weih, L. R. 2018, ApJL, 852,
+   123, doi: 10.3847/1538-4357/ab733f                              L25, doi: 10.3847/2041-8213/aaa401
+Nuttall, L. K. 2018, RSPTA, 376, 20170286,                       Riley, T. E., Watts, A. L., Bogdanov, S., et al. 2019, ApJL,
+   doi: 10.1098/rsta.2017.0286                                     887, L21, doi: 10.3847/2041-8213/ab481c
+Olejak, A., Belczynski, K., Holz, D. E., et al. 2020,            Rodriguez, C. L., Chatterjee, S., & Rasio, F. A. 2016,
+   arXiv:2004.11866                                               PhRvD, 93, 084029, doi: 10.1103/PhysRevD.93.084029
+Ossokine, S., et al. 2020, arXiv:2004.09442                      Rodriguez, C. L., Zevin, M., Amaro-Seoane, P., et al. 2019,
+Owen, B. J. 1996, PhRvD, 53, 6749,                                PhRvD, 100, 043027, doi: 10.1103/PhysRevD.100.043027
+   doi: 10.1103/PhysRevD.53.6749                                 Rosswog, S., Sollerman, J., Feindt, U., et al. 2018, A&A,
+Owen, B. J., & Sathyaprakash, B. S. 1999, PhRvD, 60,               615, A132, doi: 10.1051/0004-6361/201732117
+   022002, doi: 10.1103/PhysRevD.60.022002                       Roulet, J., & Zaldarriaga, M. 2019, MNRAS, 484, 4216,
+Özel, F., Psaltis, D., Narayan, R., & McClintock, J. E.           doi: 10.1093/mnras/stz226
+   2010, ApJ, 725, 1918,                                         Roy, S., Sengupta, A. S., & Ajith, P. 2019, PhRvD, 99,
+   doi: 10.1088/0004-637X/725/2/1918                               024048, doi: 10.1103/PhysRevD.99.024048
+Özel, F., Psaltis, D., Narayan, R., & Villarreal, A. S. 2012,   Roy, S., Sengupta, A. S., & Arun, K. G. 2019,
+   ApJ, 757, 55, doi: 10.1088/0004-637X/757/1/55                   arXiv:1910.04565
+22
+
+Roy, S., Sengupta, A. S., & Thakor, N. 2017, PhRvD, 95,         Thorne, K. S. 1980, RvMP, 52, 299,
+   104045, doi: 10.1103/PhysRevD.95.104045                        doi: 10.1103/RevModPhys.52.299
+Ruiz, M., Shapiro, S. L., & Tsokaros, A. 2018, PhRvD, 97,       Tiwari, V. 2018, CQGra, 35, 145009,
+   021501, doi: 10.1103/PhysRevD.97.021501                        doi: 10.1088/1361-6382/aac89d
+Ryan, F. D. 1997, PhRvD, 55, 6081,                              Uchikata, N., Yoshida, S., & Pani, P. 2016, PhRvD, 94,
+   doi: 10.1103/PhysRevD.55.6081                                  064015, doi: 10.1103/PhysRevD.94.064015
+Sachdev, S., Caudill, S., Fong, H., et al. 2019,                Ugliano, M., Janka, H.-T., Marek, A., & Arcones, A. 2012,
+   arXiv:1901.08580                                               ApJ, 757, 69, doi: 10.1088/0004-637X/757/1/69
+Safarzadeh, M., Hamers, A. S., Loeb, A., & Berger, E.           Usman, S. A., Mills, J. C., & Fairhurst, S. 2019, ApJ, 877,
+   2020, ApJL, 888, L3, doi: 10.3847/2041-8213/ab5dc8             82, doi: 10.3847/1538-4357/ab0b3e
+Santamarı́a, L., Ohme, F., Ajith, P., et al. 2010, PhRvD,       Usman, S. A., Nitz, A. H., Harry, I. W., et al. 2016, CQGra,
+   82, 064016, doi: 10.1103/PhysRevD.82.064016                    33, 215004, doi: 10.1088/0264-9381/33/21/215004
+Sathyaprakash, B., & Dhurandhar, S. 1991, PhRvD, 44,            Van Den Broeck, C., & Sengupta, A. S. 2007a, CQGra, 24,
+   3819, doi: 10.1103/PhysRevD.44.3819                            155, doi: 10.1088/0264-9381/24/1/009
+Schmidt, P., Ohme, F., & Hannam, M. 2015, PhRvD, 91,            —. 2007b, CQGra, 24, 1089,
+   024043, doi: 10.1103/PhysRevD.91.024043                        doi: 10.1088/0264-9381/24/5/005
+Schutz, B. F. 1986, Nat, 323, 310, doi: 10.1038/323310a0        van den Heuvel, E. P. J., & Tauris, T. M. 2020, Sci, 368,
+Shibata, M., Zhou, E., Kiuchi, K., & Fujibayashi, S. 2019,        eaba3282, doi: 10.1126/science.aba3282
+   PhRvD, 100, 023015, doi: 10.1103/PhysRevD.100.023015         Veitch, J., Raymond, V., Farr, B., et al. 2015, PhRvD, 91,
+Sigurdsson, S., & Hernquist, L. 1993, Nat, 364, 423,              042003, doi: 10.1103/PhysRevD.91.042003
+   doi: 10.1038/364423a0                                        Venumadhav, T., Zackay, B., Roulet, J., Dai, L., &
+Silsbee, K., & Tremaine, S. 2017, ApJ, 836, 39,                   Zaldarriaga, M. 2020, PhRvD, 101, 083030,
+   doi: 10.3847/1538-4357/aa5729                                  doi: 10.1103/PhysRevD.101.083030
+Singer, L. P., & Price, L. 2016, PhRvD, 93, 024013,             Verde, L., Treu, T., & Riess, A. G. 2019, NatAs, 3, 891,
+   doi: 10.1103/PhysRevD.93.024013                                doi: 10.1038/s41550-019-0902-0
+Smith, R., & Ashton, G. 2019, arXiv:1909.11873                  Vieira, N., Ruan, J. J., Haggard, D., et al. 2020, ApJ, 895,
+Soares-Santos, M., Palmese, A., Hartley, W., et al. 2019,         96, doi: 10.3847/1538-4357/ab917d
+   ApJL, 876, L7, doi: 10.3847/2041-8213/ab14f1                 Viets, A. D. Wade, M., Urban, A. L., et al. 2018, CQGra,
+Speagle, J. S. 2020, MNRAS, 493, 3132–3158,                       35, 095015, doi: 10.1088/1361-6382/aab658
+   doi: 10.1093/mnras/staa278                                   Villar, V. A., Guillochon, J., Berger, E., et al. 2017, ApJL,
+Spera, M., Mapelli, M., Giacobbo, N., et al. 2019, MNRAS,         851, L21, doi: 10.3847/2041-8213/aa9c84
+   485, 889, doi: 10.1093/mnras/stz359                          Vitale, S., & Chen, H.-Y. 2018, PhRvL, 121, 021303,
+Stephan, A. P., Naoz, S., Ghez, A. M., et al. 2019, ApJ,          doi: 10.1103/PhysRevLett.121.021303
+   878, 58, doi: 10.3847/1538-4357/ab1e4d                       Vitale, S., Lynch, R., Raymond, V., et al. 2017, PhRvD, 95,
+Sukhbold, T., & Woosley, S. E. 2014, ApJ, 783, 10,                064053, doi: 10.1103/PhysRevD.95.064053
+   doi: 10.1088/0004-637X/783/1/10                              Vitale, S., Lynch, R., Veitch, J., Raymond, V., & Sturani,
+Tanvir, N. R., Levan, A. J., González-Fernández, C., et al.     R. 2014, PhRvL, 112, 251101,
+   2017, ApJL, 848, L27, doi: 10.3847/2041-8213/aa90b6            doi: 10.1103/PhysRevLett.112.251101
+Taylor, S. R., & Gair, J. R. 2012, PhRvD, 86, 023502,           Watson, A. M., Butler, N. R., Lee, W. H., et al. 2020,
+   doi: 10.1103/PhysRevD.86.023502                                MNRAS, 159, doi: 10.1093/mnras/staa161
+Taylor, S. R., Gair, J. R., & Mandel, I. 2012, PhRvD, 85,       Watson, D., Hansen, C. J., Selsing, J., et al. 2019, Nat, 574,
+   023535, doi: 10.1103/PhysRevD.85.023535                        497, doi: 10.1038/s41586-019-1676-3
+The IceCube Collaboration. 2019, GCN, 25557.                    Wyrzykowski, L., & Mandel, I. 2020, A&A, 636, A20,
+   https://gcn.gsfc.nasa.gov/gcn3/25557.gcn3                      doi: 10.1051/0004-6361/201935842
+Thompson, J. E., Fauchon-Jones, E., Khan, S., et al. 2020,      Yang, Y., Bartos, I., Haiman, Z., et al. 2019, ApJ, 876, 122,
+   arXiv:2002.08383                                               doi: 10.3847/1538-4357/ab16e3
+Thompson, T. A., Kochanek, C. S., Stanek, K. Z., et al.         Ye, C. S., Fong, W.-F., Kremer, K., et al. 2020, ApJL, 888,
+   2019, Sci, 366, 637, doi: 10.1126/science.aau4005              L10, doi: 10.3847/2041-8213/ab5dc5
+Thompson, T. A., Kochanek, C. S., Stanek, K. Z., et al.         Yunes, N., & Pretorius, F. 2009, PhRvD, 80, 122003,
+   2020, Sci, 368, eaba4356, doi: 10.1126/science.aba4356         doi: 10.1103/PhysRevD.80.122003
+                                                                                                                      23
+
+Zackay, B., Dai, L., Venumadhav, T., Roulet, J., &           Ziosi, B. M., Mapelli, M., Branchesi, M., & Tormen, G.
+  Zaldarriaga, M. 2019a, arXiv e-prints, arXiv:1910.09528.
+  https://arxiv.org/abs/1910.09528                             2014, MNRAS, 441, 3703, doi: 10.1093/mnras/stu824
+Zackay, B., Venumadhav, T., Dai, L., Roulet, J., &
+  Zaldarriaga, M. 2019b, PhRvD, 100, 023007,
+  doi: 10.1103/PhysRevD.100.023007
+                                     All Authors and Affiliations
+
+  R. Abbott,1 T. D. Abbott,2 S. Abraham,3 F. Acernese,4, 5 K. Ackley,6 C. Adams,7 R. X. Adhikari,1
+V. B. Adya,8 C. Affeldt,9, 10 M. Agathos,11, 12 K. Agatsuma,13 N. Aggarwal,14 O. D. Aguiar,15 A. Aich,16
+ L. Aiello,17, 18 A. Ain,3 P. Ajith,19 S. Akcay,20, 11 G. Allen,21 A. Allocca,22 P. A. Altin,8 A. Amato,23
+     S. Anand,1 A. Ananyeva,1 S. B. Anderson,1 W. G. Anderson,24 S. V. Angelova,25 S. Ansoldi,26, 27
+      S. Antier,28 S. Appert,1 K. Arai,1 M. C. Araya,1 J. S. Areeda,29 M. Arène,28 N. Arnaud,30, 31
+   S. M. Aronson,32 K. G. Arun,33 Y. Asali,34 S. Ascenzi,17, 35 G. Ashton,6 S. M. Aston,7 P. Astone,36
+     F. Aubin,37 P. Aufmuth,10 K. AultONeal,38 C. Austin,2 V. Avendano,39 S. Babak,28 P. Bacon,28
+        F. Badaracco,17, 18 M. K. M. Bader,40 S. Bae,41 A. M. Baer,42 J. Baird,28 F. Baldaccini,43, 44
+  G. Ballardin,31 S. W. Ballmer,45 A. Bals,38 A. Balsamo,42 G. Baltus,46 S. Banagiri,47 D. Bankar,3
+       R. S. Bankar,3 J. C. Barayoga,1 C. Barbieri,48, 49 B. C. Barish,1 D. Barker,50 K. Barkett,51
+    P. Barneo,52 F. Barone,53, 5 B. Barr,54 L. Barsotti,55 M. Barsuglia,28 D. Barta,56 J. Bartlett,50
+    I. Bartos,32 R. Bassiri,57 A. Basti,58, 22 M. Bawaj,59, 44 J. C. Bayley,54 M. Bazzan,60, 61 B. Bécsy,62
+          M. Bejger,63 I. Belahcene,30 A. S. Bell,54 D. Beniwal,64 M. G. Benjamin,38 R. Benkel,65
+    J. D. Bentley,13 F. Bergamin,9 B. K. Berger,57 G. Bergmann,9, 10 S. Bernuzzi,11 C. P. L. Berry,14
+      D. Bersanetti,66 A. Bertolini,40 J. Betzwieser,7 R. Bhandare,67 A. V. Bhandari,3 J. Bidler,29
+E. Biggs,24 I. A. Bilenko,68 G. Billingsley,1 R. Birney,69 O. Birnholtz,70, 71 S. Biscans,1, 55 M. Bischi,72, 73
+   S. Biscoveanu,55 A. Bisht,10 G. Bissenbayeva,16 M. Bitossi,31, 22 M. A. Bizouard,74 J. K. Blackburn,1
+    J. Blackman,51 C. D. Blair,7 D. G. Blair,75 R. M. Blair,50 F. Bobba,76, 77 N. Bode,9, 10 M. Boer,74
+   Y. Boetzel,78 G. Bogaert,74 F. Bondu,79 E. Bonilla,57 R. Bonnand,37 P. Booker,9, 10 B. A. Boom,40
+      R. Bork,1 V. Boschi,22 S. Bose,3 V. Bossilkov,75 J. Bosveld,75 Y. Bouffanais,60, 61 A. Bozzi,31
+        C. Bradaschia,22 P. R. Brady,24 A. Bramley,7 M. Branchesi,17, 18 J. E. Brau,80 M. Breschi,11
+       T. Briant,81 J. H. Briggs,54 F. Brighenti,72, 73 A. Brillet,74 M. Brinkmann,9, 10 R. Brito,82, 36, 65
+   P. Brockill,24 A. F. Brooks,1 J. Brooks,31 D. D. Brown,64 S. Brunett,1 G. Bruno,83 R. Bruntz,42
+         A. Buikema,55 T. Bulik,84 H. J. Bulten,85, 40 A. Buonanno,65, 86 D. Buskulic,37 R. L. Byer,57
+ M. Cabero,9, 10 L. Cadonati,87 G. Cagnoli,88 C. Cahillane,1 J. Calderón Bustillo,6 J. D. Callaghan,54
+   T. A. Callister,1 E. Calloni,89, 5 J. B. Camp,90 M. Canepa,91, 66 K. C. Cannon,92 H. Cao,64 J. Cao,93
+ G. Carapella,76, 77 F. Carbognani,31 S. Caride,94 M. F. Carney,14 G. Carullo,58, 22 J. Casanueva Diaz,22
+C. Casentini,95, 35 J. Castañeda,52 S. Caudill,40 M. Cavaglià,96 F. Cavalier,30 R. Cavalieri,31 G. Cella,22
+  P. Cerdá-Durán,97 E. Cesarini,98, 35 O. Chaibi,74 K. Chakravarti,3 C. Chan,92 M. Chan,54 S. Chao,99
+         P. Charlton,100 E. A. Chase,14 E. Chassande-Mottin,28 D. Chatterjee,24 M. Chaturvedi,67
+       K. Chatziioannou,101, 102 H. Y. Chen,103 X. Chen,75 Y. Chen,51 H.-P. Cheng,32 C. K. Cheong,104
+  H. Y. Chia,32 F. Chiadini,105, 77 R. Chierici,106 A. Chincarini,66 A. Chiummo,31 G. Cho,107 H. S. Cho,108
+       M. Cho,86 N. Christensen,74 Q. Chu,75 S. Chua,81 K. W. Chung,104 S. Chung,75 G. Ciani,60, 61
+P. Ciecielag,63 M. Cieślar,63 A. A. Ciobanu,64 R. Ciolfi,109, 61 F. Cipriano,74 A. Cirone,91, 66 F. Clara,50
+ J. A. Clark,87 P. Clearwater,110 S. Clesse,83 F. Cleva,74 E. Coccia,17, 18 P.-F. Cohadon,81 D. Cohen,30
+      M. Colleoni,111 C. G. Collette,112 C. Collins,13 M. Colpi,48, 49 M. Constancio Jr.,15 L. Conti,61
+   S. J. Cooper,13 P. Corban,7 T. R. Corbitt,2 I. Cordero-Carrión,113 S. Corezzi,43, 44 K. R. Corley,34
+   N. Cornish,62 D. Corre,30 A. Corsi,94 S. Cortese,31 C. A. Costa,15 R. Cotesta,65 M. W. Coughlin,1
+S. B. Coughlin,114, 14 J.-P. Coulon,74 S. T. Countryman,34 P. Couvares,1 P. B. Covas,111 D. M. Coward,75
+      M. J. Cowart,7 D. C. Coyne,1 R. Coyne,115 J. D. E. Creighton,24 T. D. Creighton,16 J. Cripe,2
+     M. Croquette,81 S. G. Crowder,116 J.-R. Cudell,46 T. J. Cullen,2 A. Cumming,54 R. Cummings,54
+           L. Cunningham,54 E. Cuoco,31 M. Curylo,84 T. Dal Canton,65 G. Dálya,117 A. Dana,57
+ L. M. Daneshgaran-Bajastani,118 B. D’Angelo,91, 66 S. L. Danilishin,9, 10 S. D’Antonio,35 K. Danzmann,10, 9
+      C. Darsow-Fromm,119 A. Dasgupta,120 L. E. H. Datrier,54 V. Dattilo,31 I. Dave,67 M. Davier,30
+          G. S. Davies,121 D. Davis,45 E. J. Daw,122 D. DeBra,57 M. Deenadayalan,3 J. Degallaix,23
+M. De Laurentis,89, 5 S. Deléglise,81 M. Delfavero,70 N. De Lillo,54 W. Del Pozzo,58, 22 L. M. DeMarchi,14
+V. D’Emilio,114 N. Demos,55 T. Dent,121 R. De Pietri,123, 124 R. De Rosa,89, 5 C. De Rossi,31 R. DeSalvo,125
+    O. de Varona,9, 10 S. Dhurandhar,3 M. C. Dı́az,16 M. Diaz-Ortiz Jr.,32 T. Dietrich,40 L. Di Fiore,5
+       C. Di Fronzo,13 C. Di Giorgio,76, 77 F. Di Giovanni,97 M. Di Giovanni,126, 127 T. Di Girolamo,89, 5
+     A. Di Lieto,58, 22 B. Ding,112 S. Di Pace,82, 36 I. Di Palma,82, 36 F. Di Renzo,58, 22 A. K. Divakarla,32
+        A. Dmitriev,13 Z. Doctor,103 F. Donovan,55 K. L. Dooley,114 S. Doravari,3 I. Dorrington,114
+ T. P. Downes,24 M. Drago,17, 18 J. C. Driggers,50 Z. Du,93 J.-G. Ducoin,30 P. Dupej,54 O. Durante,76, 77
+  D. D’Urso,128, 129 S. E. Dwyer,50 P. J. Easter,6 G. Eddolls,54 B. Edelman,80 T. B. Edo,122 O. Edy,130
+       A. Effler,7 P. Ehrens,1 J. Eichholz,8 S. S. Eikenberry,32 M. Eisenmann,37 R. A. Eisenstein,55
+   A. Ejlli,114 L. Errico,89, 5 R. C. Essick,103 H. Estelles,111 D. Estevez,37 Z. B. Etienne,131 T. Etzel,1
+   M. Evans,55 T. M. Evans,7 B. E. Ewing,132 V. Fafone,95, 35, 17 S. Fairhurst,114 X. Fan,93 S. Farinon,66
+  B. Farr,80 W. M. Farr,101, 102 E. J. Fauchon-Jones,114 M. Favata,39 M. Fays,122 M. Fazio,133 J. Feicht,1
+M. M. Fejer,57 F. Feng,28 E. Fenyvesi,56, 134 D. L. Ferguson,87 A. Fernandez-Galiana,55 I. Ferrante,58, 22
+      E. C. Ferreira,15 T. A. Ferreira,15 F. Fidecaro,58, 22 I. Fiori,31 D. Fiorucci,17, 18 M. Fishbach,103
+    R. P. Fisher,42 R. Fittipaldi,135, 77 M. Fitz-Axen,47 V. Fiumara,136, 77 R. Flaminio,37, 137 E. Floden,47
+                                                                                                           25
+
+         E. Flynn,29 H. Fong,92 J. A. Font,97, 138 P. W. F. Forsyth,8 J.-D. Fournier,74 S. Frasca,82, 36
+         F. Frasconi,22 Z. Frei,117 A. Freise,13 R. Frey,80 V. Frey,30 P. Fritschel,55 V. V. Frolov,7
+   G. Fronzè,139 P. Fulda,32 M. Fyffe,7 H. A. Gabbard,54 B. U. Gadre,65 S. M. Gaebel,13 J. R. Gair,65
+    S. Galaudage,6 D. Ganapathy,55 A. Ganguly,19 S. G. Gaonkar,3 C. Garcı́a-Quirós,111 F. Garufi,89, 5
+       B. Gateley,50 S. Gaudio,38 V. Gayathri,140 G. Gemme,66 E. Genin,31 A. Gennai,22 D. George,21
+   J. George,67 L. Gergely,141 S. Ghonge,87 Abhirup Ghosh,65 Archisman Ghosh,142, 143, 144, 40 S. Ghosh,24
+B. Giacomazzo,126, 127 J. A. Giaime,2, 7 K. D. Giardina,7 D. R. Gibson,69 C. Gier,25 K. Gill,34 J. Glanzer,2
+  J. Gniesmer,119 P. Godwin,132 E. Goetz,2, 96 R. Goetz,32 N. Gohlke,9, 10 B. Goncharov,6 G. González,2
+         A. Gopakumar,145 S. E. Gossan,1 M. Gosselin,31, 58, 22 R. Gouaty,37 B. Grace,8 A. Grado,146, 5
+M. Granata,23 A. Grant,54 S. Gras,55 P. Grassia,1 C. Gray,50 R. Gray,54 G. Greco,72, 73 A. C. Green,32
+  R. Green,114 E. M. Gretarsson,38 H. L. Griggs,87 G. Grignani,43, 44 A. Grimaldi,126, 127 S. J. Grimm,17, 18
+         H. Grote,114 S. Grunewald,65 P. Gruning,30 G. M. Guidi,72, 73 A. R. Guimaraes,2 G. Guixé,52
+H. K. Gulati,120 Y. Guo,40 A. Gupta,132 Anchal Gupta,1 P. Gupta,40 E. K. Gustafson,1 R. Gustafson,147
+           L. Haegel,111 O. Halim,18, 17 E. D. Hall,55 E. Z. Hamilton,114 G. Hammond,54 M. Haney,78
+     M. M. Hanke,9, 10 J. Hanks,50 C. Hanna,132 M. D. Hannam,114 O. A. Hannuksela,104 T. J. Hansen,38
+    J. Hanson,7 T. Harder,74 T. Hardwick,2 K. Haris,19 J. Harms,17, 18 G. M. Harry,148 I. W. Harry,130
+          R. K. Hasskew,7 C.-J. Haster,55 K. Haughian,54 F. J. Hayes,54 J. Healy,70 A. Heidmann,81
+  M. C. Heintze,7 J. Heinze,9, 10 H. Heitmann,74 F. Hellman,149 P. Hello,30 G. Hemming,31 M. Hendry,54
+            I. S. Heng,54 E. Hennes,40 J. Hennig,9, 10 M. Heurs,9, 10 S. Hild,150, 54 T. Hinderer,144, 40, 142
+    S. Y. Hoback,29, 148 S. Hochheim,9, 10 E. Hofgard,57 D. Hofman,23 A. M. Holgado,21 N. A. Holland,8
+       K. Holt,7 D. E. Holz,103 P. Hopkins,114 C. Horst,24 J. Hough,54 E. J. Howell,75 C. G. Hoy,114
+         Y. Huang,55 M. T. Hübner,6 E. A. Huerta,21 D. Huet,30 B. Hughey,38 V. Hui,37 S. Husa,111
+        S. H. Huttner,54 R. Huxford,132 T. Huynh-Dinh,7 B. Idzkowski,84 A. Iess,95, 35 H. Inchauspe,32
+        C. Ingram,64 G. Intini,82, 36 J.-M. Isac,81 M. Isi,55 B. R. Iyer,19 T. Jacqmin,81 S. J. Jadhav,151
+        S. P. Jadhav,3 A. L. James,114 K. Jani,87 N. N. Janthalur,151 P. Jaranowski,152 D. Jariwala,32
+     R. Jaume,111 A. C. Jenkins,153 J. Jiang,32 G. R. Johns,42 N. K. Johnson-McDaniel,12 A. W. Jones,13
+        D. I. Jones,154 J. D. Jones,50 P. Jones,13 R. Jones,54 R. J. G. Jonker,40 L. Ju,75 J. Junker,9, 10
+        C. V. Kalaghatgi,114 V. Kalogera,14 B. Kamai,1 S. Kandhasamy,3 G. Kang,41 J. B. Kanner,1
+         S. J. Kapadia,19 S. Karki,80 R. Kashyap,19 M. Kasprzack,1 W. Kastaun,9, 10 S. Katsanevas,31
+ E. Katsavounidis,55 W. Katzman,7 S. Kaufer,10 K. Kawabe,50 F. Kéfélian,74 D. Keitel,130 A. Keivani,34
+     R. Kennedy,122 J. S. Key,155 S. Khadka,57 F. Y. Khalili,68 I. Khan,17, 35 S. Khan,9, 10 Z. A. Khan,93
+    E. A. Khazanov,156 N. Khetan,17, 18 M. Khursheed,67 N. Kijbunchoo,8 Chunglee Kim,157 G. J. Kim,87
+          J. C. Kim,158 K. Kim,104 W. Kim,64 W. S. Kim,159 Y.-M. Kim,160 C. Kimball,14 P. J. King,50
+ M. Kinley-Hanlon,54 R. Kirchhoff,9, 10 J. S. Kissel,50 L. Kleybolte,119 S. Klimenko,32 T. D. Knowles,131
+     E. Knyazev,55 P. Koch,9, 10 S. M. Koehlenbeck,9, 10 G. Koekoek,40, 150 S. Koley,40 V. Kondrashov,1
+A. Kontos,161 N. Koper,9, 10 M. Korobko,119 W. Z. Korth,1 M. Kovalam,75 D. B. Kozak,1 V. Kringel,9, 10
+       N. V. Krishnendu,33 A. Królak,162, 163 N. Krupinski,24 G. Kuehn,9, 10 A. Kumar,151 P. Kumar,164
+ Rahul Kumar,50 Rakesh Kumar,120 S. Kumar,19 L. Kuo,99 A. Kutynia,162 B. D. Lackey,65 D. Laghi,58, 22
+ E. Lalande,165 T. L. Lam,104 A. Lamberts,74, 166 M. Landry,50 P. Landry,29 B. B. Lane,55 R. N. Lang,167
+  J. Lange,70 B. Lantz,57 R. K. Lanza,55 I. La Rosa,37 A. Lartaux-Vollard,30 P. D. Lasky,6 M. Laxen,7
+ A. Lazzarini,1 C. Lazzaro,61 P. Leaci,82, 36 S. Leavey,9, 10 Y. K. Lecoeuche,50 C. H. Lee,108 H. M. Lee,168
+H. W. Lee,158 J. Lee,107 K. Lee,57 J. Lehmann,9, 10 N. Leroy,30 N. Letendre,37 Y. Levin,6 A. K. Y. Li,104
+              J. Li,93 K. li,104 T. G. F. Li,104 X. Li,51 F. Linde,169, 40 S. D. Linker,118 J. N. Linley,54
+     T. B. Littenberg,170 J. Liu,9, 10 X. Liu,24 M. Llorens-Monteagudo,97 R. K. L. Lo,1 A. Lockwood,171
+       L. T. London,55 A. Longo,172, 173 M. Lorenzini,17, 18 V. Loriette,174 M. Lormand,7 G. Losurdo,22
+J. D. Lough,9, 10 C. O. Lousto,70 G. Lovelace,29 H. Lück,10, 9 D. Lumaca,95, 35 A. P. Lundgren,130 Y. Ma,51
+    R. Macas,114 S. Macfoy,25 M. MacInnis,55 D. M. Macleod,114 I. A. O. MacMillan,148 A. Macquet,74
+     I. Magaña Hernandez,24 F. Magaña-Sandoval,32 R. M. Magee,132 E. Majorana,36 I. Maksimovic,174
+           A. Malik,67 N. Man,74 V. Mandic,47 V. Mangano,54, 82, 36 G. L. Mansell,50, 55 M. Manske,24
+       M. Mantovani,31 M. Mapelli,60, 61 F. Marchesoni,59, 44, 175 F. Marion,37 S. Márka,34 Z. Márka,34
+        C. Markakis,12 A. S. Markosyan,57 A. Markowitz,1 E. Maros,1 A. Marquina,113 S. Marsat,28
+ F. Martelli,72, 73 I. W. Martin,54 R. M. Martin,39 V. Martinez,88 D. V. Martynov,13 H. Masalehdan,119
+   K. Mason,55 E. Massera,122 A. Masserot,37 T. J. Massinger,55 M. Masso-Reid,54 S. Mastrogiovanni,28
+        A. Matas,65 F. Matichard,1, 55 N. Mavalvala,55 E. Maynard,2 J. J. McCann,75 R. McCarthy,50
+     D. E. McClelland,8 S. McCormick,7 L. McCuller,55 S. C. McGuire,176 C. McIsaac,130 J. McIver,1
+    D. J. McManus,8 T. McRae,8 S. T. McWilliams,131 D. Meacher,24 G. D. Meadors,6 M. Mehmet,9, 10
+     A. K. Mehta,19 E. Mejuto Villa,125, 77 A. Melatos,110 G. Mendell,50 R. A. Mercer,24 L. Mereni,23
+       K. Merfeld,80 E. L. Merilh,50 J. D. Merritt,80 M. Merzougui,74 S. Meshkov,1 C. Messenger,54
+C. Messick,177 R. Metzdorff,81 P. M. Meyers,110 F. Meylahn,9, 10 A. Mhaske,3 A. Miani,126, 127 H. Miao,13
+  I. Michaloliakos,32 C. Michel,23 H. Middleton,110 L. Milano,89, 5 A. L. Miller,32, 82, 36 M. Millhouse,110
+ J. C. Mills,114 E. Milotti,178, 27 M. C. Milovich-Goff,118 O. Minazzoli,74, 179 Y. Minenkov,35 A. Mishkin,32
+      C. Mishra,180 T. Mistry,122 S. Mitra,3 V. P. Mitrofanov,68 G. Mitselmakher,32 R. Mittleman,55
+26
+
+     G. Mo,55 K. Mogushi,96 S. R. P. Mohapatra,55 S. R. Mohite,24 M. Molina-Ruiz,149 M. Mondin,118
+M. Montani,72, 73 C. J. Moore,13 D. Moraru,50 F. Morawski,63 G. Moreno,50 S. Morisaki,92 B. Mours,181
+       C. M. Mow-Lowry,13 S. Mozzon,130 F. Muciaccia,82, 36 Arunava Mukherjee,54 D. Mukherjee,132
+    S. Mukherjee,16 Subroto Mukherjee,120 N. Mukund,9, 10 A. Mullavey,7 J. Munch,64 E. A. Muñiz,45
+ P. G. Murray,54 A. Nagar,98, 139, 182 I. Nardecchia,95, 35 L. Naticchioni,82, 36 R. K. Nayak,183 B. F. Neil,75
+ J. Neilson,125, 77 G. Nelemans,184, 40 T. J. N. Nelson,7 M. Nery,9, 10 A. Neunzert,147 K. Y. Ng,55 S. Ng,64
+  C. Nguyen,28 P. Nguyen,80 D. Nichols,144, 40 S. A. Nichols,2 S. Nissanke,144, 40 F. Nocera,31 M. Noh,55
+    C. North,114 D. Nothard,185 L. K. Nuttall,130 J. Oberling,50 B. D. O’Brien,32 G. Oganesyan,17, 18
+       G. H. Ogin,186 J. J. Oh,159 S. H. Oh,159 F. Ohme,9, 10 H. Ohta,92 M. A. Okada,15 M. Oliver,111
+  C. Olivetto,31 P. Oppermann,9, 10 Richard J. Oram,7 B. O’Reilly,7 R. G. Ormiston,47 L. F. Ortega,32
+    R. O’Shaughnessy,70 S. Ossokine,65 C. Osthelder,1 D. J. Ottaway,64 H. Overmier,7 B. J. Owen,94
+ A. E. Pace,132 G. Pagano,58, 22 M. A. Page,75 G. Pagliaroli,17, 18 A. Pai,140 S. A. Pai,67 J. R. Palamos,80
+           O. Palashov,156 C. Palomba,36 H. Pan,99 P. K. Panda,151 P. T. H. Pang,40 C. Pankow,14
+F. Pannarale,82, 36 B. C. Pant,67 F. Paoletti,22 A. Paoli,31 A. Parida,3 W. Parker,7, 176 D. Pascucci,54, 40
+ A. Pasqualetti,31 R. Passaquieti,58, 22 D. Passuello,22 B. Patricelli,58, 22 E. Payne,6 B. L. Pearlstone,54
+ T. C. Pechsiri,32 A. J. Pedersen,45 M. Pedraza,1 A. Pele,7 S. Penn,187 A. Perego,126, 127 C. J. Perez,50
+      C. Périgois,37 A. Perreca,126, 127 S. Perriès,106 J. Petermann,119 H. P. Pfeiffer,65 M. Phelps,9, 10
+        K. S. Phukon,3, 169, 40 O. J. Piccinni,82, 36 M. Pichot,74 M. Piendibene,58, 22 F. Piergiovanni,72, 73
+      V. Pierro,125, 77 G. Pillant,31 L. Pinard,23 I. M. Pinto,125, 77, 98 K. Piotrzkowski,83 M. Pirello,50
+   M. Pitkin,188 W. Plastino,172, 173 R. Poggiani,58, 22 D. Y. T. Pong,104 S. Ponrathnam,3 P. Popolizio,31
+       E. K. Porter,28 J. Powell,189 A. K. Prajapati,120 K. Prasai,57 R. Prasanna,151 G. Pratten,13
+   T. Prestegard,24 M. Principe,125, 98, 77 G. A. Prodi,126, 127 L. Prokhorov,13 M. Punturo,44 P. Puppo,36
+        M. Pürrer,65 H. Qi,114 V. Quetschke,16 P. J. Quinonez,38 F. J. Raab,50 G. Raaijmakers,144, 40
+ H. Radkins,50 N. Radulesco,74 P. Raffai,117 H. Rafferty,190 S. Raja,67 C. Rajan,67 B. Rajbhandari,94
+    M. Rakhmanov,16 K. E. Ramirez,16 A. Ramos-Buades,111 Javed Rana,3 K. Rao,14 P. Rapagnani,82, 36
+     V. Raymond,114 M. Razzano,58, 22 J. Read,29 T. Regimbau,37 L. Rei,66 S. Reid,25 D. H. Reitze,1, 32
+           P. Rettegno,139, 191 F. Ricci,82, 36 C. J. Richardson,38 J. W. Richardson,1 P. M. Ricker,21
+    G. Riemenschneider,191, 139 K. Riles,147 M. Rizzo,14 N. A. Robertson,1, 54 F. Robinet,30 A. Rocchi,35
+   R. D. Rodriguez-Soto,38 L. Rolland,37 J. G. Rollins,1 V. J. Roma,80 M. Romanelli,79 R. Romano,4, 5
+ C. L. Romel,50 I. M. Romero-Shaw,6 J. H. Romie,7 C. A. Rose,24 D. Rose,29 K. Rose,185 D. Rosińska,84
+        S. G. Rosofsky,21 M. P. Ross,171 S. Rowan,54 S. J. Rowlinson,13 P. K. Roy,16 Santosh Roy,3
+ Soumen Roy,192 P. Ruggi,31 G. Rutins,69 K. Ryan,50 S. Sachdev,132 T. Sadecki,50 M. Sakellariadou,153
+        O. S. Salafia,193, 48, 49 L. Salconi,31 M. Saleem,33 F. Salemi,126 A. Samajdar,40 E. J. Sanchez,1
+      L. E. Sanchez,1 N. Sanchis-Gual,194 J. R. Sanders,195 K. A. Santiago,39 E. Santos,74 N. Sarin,6
+     B. Sassolas,23 B. S. Sathyaprakash,132, 114 O. Sauter,37 R. L. Savage,50 V. Savant,3 D. Sawant,140
+     S. Sayah,23 D. Schaetzl,1 P. Schale,80 M. Scheel,51 J. Scheuer,14 P. Schmidt,13 R. Schnabel,119
+         R. M. S. Schofield,80 A. Schönbeck,119 E. Schreiber,9, 10 B. W. Schulte,9, 10 B. F. Schutz,114
+  O. Schwarm,186 E. Schwartz,7 J. Scott,54 S. M. Scott,8 E. Seidel,21 D. Sellers,7 A. S. Sengupta,192
+       N. Sennett,65 D. Sentenac,31 V. Sequino,66 A. Sergeev,156 Y. Setyawati,9, 10 D. A. Shaddock,8
+ T. Shaffer,50 M. S. Shahriar,14 A. Sharma,17, 18 P. Sharma,67 P. Shawhan,86 H. Shen,21 M. Shikauchi,92
+    R. Shink,165 D. H. Shoemaker,55 D. M. Shoemaker,87 K. Shukla,149 S. ShyamSundar,67 K. Siellez,87
+     M. Sieniawska,63 D. Sigg,50 L. P. Singer,90 D. Singh,132 N. Singh,84 A. Singha,54 A. Singhal,17, 36
+  A. M. Sintes,111 V. Sipala,128, 129 V. Skliris,114 B. J. J. Slagmolen,8 T. J. Slaven-Blair,75 J. Smetana,13
+      J. R. Smith,29 R. J. E. Smith,6 S. Somala,196 E. J. Son,159 S. Soni,2 B. Sorazu,54 V. Sordini,106
+   F. Sorrentino,66 T. Souradeep,3 E. Sowell,94 A. P. Spencer,54 M. Spera,60, 61, 14 A. K. Srivastava,120
+V. Srivastava,45 K. Staats,14 C. Stachie,74 M. Standke,9, 10 D. A. Steer,28 J. Steinhoff,65 M. Steinke,9, 10
+J. Steinlechner,119, 54 S. Steinlechner,119 D. Steinmeyer,9, 10 S. Stevenson,189 D. Stocks,57 D. J. Stops,13
+        M. Stover,185 K. A. Strain,54 G. Stratta,197, 73 A. Strunk,50 R. Sturani,198 A. L. Stuver,199
+      S. Sudhagar,3 V. Sudhir,55 T. Z. Summerscales,200 L. Sun,1 S. Sunil,120 A. Sur,63 J. Suresh,92
+       P. J. Sutton,114 B. L. Swinkels,40 M. J. Szczepańczyk,32 M. Tacca,40 S. C. Tait,54 C. Talbot,6
+     A. J. Tanasijczuk,83 D. B. Tanner,32 D. Tao,1 M. Tápai,141 A. Tapia,29 E. N. Tapia San Martin,40
+J. D. Tasson,201 R. Taylor,1 R. Tenorio,111 L. Terkowski,119 M. P. Thirugnanasambandam,3 M. Thomas,7
+      P. Thomas,50 J. E. Thompson,114 S. R. Thondapu,67 K. A. Thorne,7 E. Thrane,6 C. L. Tinsman,6
+ T. R. Saravanan,3 Shubhanshu Tiwari,78, 126, 127 S. Tiwari,145 V. Tiwari,114 K. Toland,54 M. Tonelli,58, 22
+     Z. Tornasi,54 A. Torres-Forné,65 C. I. Torrie,1 I. Tosta e Melo,128, 129 D. Töyrä,8 E. A. Trail,2
+     F. Travasso,59, 44 G. Traylor,7 M. C. Tringali,84 A. Tripathee,147 A. Trovato,28 R. J. Trudeau,1
+K. W. Tsang,40 M. Tse,55 R. Tso,51 L. Tsukada,92 D. Tsuna,92 T. Tsutsui,92 M. Turconi,74 A. S. Ubhi,13
+       K. Ueno,92 D. Ugolini,190 C. S. Unnikrishnan,145 A. L. Urban,2 S. A. Usman,103 A. C. Utina,54
+    H. Vahlbruch,10 G. Vajente,1 G. Valdes,2 M. Valentini,126, 127 N. van Bakel,40 M. van Beuzekom,40
+     J. F. J. van den Brand,85, 150, 40 C. Van Den Broeck,40, 202 D. C. Vander-Hyde,45 L. van der Schaaf,40
+    J. V. Van Heijningen,75 A. A. van Veggel,54 M. Vardaro,169, 40 V. Varma,51 S. Vass,1 M. Vasúth,56
+    A. Vecchio,13 G. Vedovato,61 J. Veitch,54 P. J. Veitch,64 K. Venkateswara,171 G. Venugopalan,1
+                                                                                                                                 27
+
+        D. Verkindt,37 D. Veske,34 F. Vetrano,72, 73 A. Viceré,72, 73 A. D. Viets,203 S. Vinciguerra,13
+      D. J. Vine,69 J.-Y. Vinet,74 S. Vitale,55 Francisco Hernandez Vivanco,6 T. Vo,45 H. Vocca,43, 44
+  C. Vorvick,50 S. P. Vyatchanin,68 A. R. Wade,8 L. E. Wade,185 M. Wade,185 R. Walet,40 M. Walker,29
+    G. S. Wallace,25 L. Wallace,1 S. Walsh,24 J. Z. Wang,147 S. Wang,21 W. H. Wang,16 R. L. Ward,8
+    Z. A. Warden,38 J. Warner,50 M. Was,37 J. Watchi,112 B. Weaver,50 L.-W. Wei,9, 10 M. Weinert,9, 10
+       A. J. Weinstein,1 R. Weiss,55 F. Wellmann,9, 10 L. Wen,75 P. Weßels,9, 10 J. W. Westhouse,38
+       K. Wette,8 J. T. Whelan,70 B. F. Whiting,32 C. Whittle,55 D. M. Wilken,9, 10 D. Williams,54
+  J. L. Willis,1 B. Willke,10, 9 W. Winkler,9, 10 C. C. Wipf,1 H. Wittel,9, 10 G. Woan,54 J. Woehler,9, 10
+ J. K. Wofford,70 C. Wong,104 J. L. Wright,54 D. S. Wu,9, 10 D. M. Wysocki,70 L. Xiao,1 H. Yamamoto,1
+        L. Yang,133 Y. Yang,32 Z. Yang,47 M. J. Yap,8 M. Yazback,32 D. W. Yeeles,114 Hang Yu,55
+      Haocun Yu,55 S. H. R. Yuen,104 A. K. Zadrożny,16 A. Zadrożny,162 M. Zanolin,38 T. Zelenova,31
+    J.-P. Zendri,61 M. Zevin,14 J. Zhang,75 L. Zhang,1 T. Zhang,54 C. Zhao,75 G. Zhao,112 M. Zhou,14
+                Z. Zhou,14 X. J. Zhu,6 A. B. Zimmerman,177 M. E. Zucker55, 1 And J. Zweizig1
+                               LIGO Scientific Collaboration and Virgo Collaboration
+
+                               1 LIGO, California Institute of Technology, Pasadena, CA 91125, USA
+                                     2 Louisiana State University, Baton Rouge, LA 70803, USA
+                           3 Inter-University Centre for Astronomy and Astrophysics, Pune 411007, India
+                         4 Dipartimento di Farmacia, Università di Salerno, I-84084 Fisciano, Salerno, Italy
+                    5 INFN, Sezione di Napoli, Complesso Universitario di Monte S.Angelo, I-80126 Napoli, Italy
+                  6 OzGrav, School of Physics & Astronomy, Monash University, Clayton 3800, Victoria, Australia
+                                    7 LIGO Livingston Observatory, Livingston, LA 70754, USA
+                  8 OzGrav, Australian National University, Canberra, Australian Capital Territory 0200, Australia
+              9 Max Planck Institute for Gravitational Physics (Albert Einstein Institute), D-30167 Hannover, Germany
+                                   10 Leibniz Universität Hannover, D-30167 Hannover, Germany
+                 11 Theoretisch-Physikalisches Institut, Friedrich-Schiller-Universität Jena, D-07743 Jena, Germany
+                                       12 University of Cambridge, Cambridge CB2 1TN, UK
+                                      13 University of Birmingham, Birmingham B15 2TT, UK
+ 14 Center for Interdisciplinary Exploration & Research in Astrophysics (CIERA), Northwestern University, Evanston, IL 60208, USA
+                  15 Instituto Nacional de Pesquisas Espaciais, 12227-010 São José dos Campos, São Paulo, Brazil
+                            16 The University of Texas Rio Grande Valley, Brownsville, TX 78520, USA
+                                   17 Gran Sasso Science Institute (GSSI), I-67100 L’Aquila, Italy
+                                18 INFN, Laboratori Nazionali del Gran Sasso, I-67100 Assergi, Italy
+          19 International Centre for Theoretical Sciences, Tata Institute of Fundamental Research, Bengaluru 560089, India
+                                           20 University College Dublin, Dublin 4, Ireland
+                           21 NCSA, University of Illinois at Urbana-Champaign, Urbana, IL 61801, USA
+                                            22 INFN, Sezione di Pisa, I-56127 Pisa, Italy
+     23 Laboratoire des Matériaux Avancés (LMA), IP2I - UMR 5822, CNRS, Université de Lyon, F-69622 Villeurbanne, France
+                                 24 University of Wisconsin-Milwaukee, Milwaukee, WI 53201, USA
+                                     25 SUPA, University of Strathclyde, Glasgow G1 1XQ, UK
+                       26 Dipartimento di Matematica e Informatica, Università di Udine, I-33100 Udine, Italy
+                                         27 INFN, Sezione di Trieste, I-34127 Trieste, Italy
+28 APC, AstroParticule et Cosmologie, Université Paris Diderot, CNRS/IN2P3, CEA/Irfu, Observatoire de Paris, Sorbonne Paris Cité,
+
+                                                   F-75205 Paris Cedex 13, France
+                                 29 California State University Fullerton, Fullerton, CA 92831, USA
+                      30 LAL, Univ. Paris-Sud, CNRS/IN2P3, Université Paris-Saclay, F-91898 Orsay, France
+                             31 European Gravitational Observatory (EGO), I-56021 Cascina, Pisa, Italy
+                                        32 University of Florida, Gainesville, FL 32611, USA
+                                     33 Chennai Mathematical Institute, Chennai 603103, India
+                                         34 Columbia University, New York, NY 10027, USA
+                                    35 INFN, Sezione di Roma Tor Vergata, I-00133 Roma, Italy
+                                          36 INFN, Sezione di Roma, I-00185 Roma, Italy
+  37 Laboratoire d’Annecy de Physique des Particules (LAPP), Univ. Grenoble Alpes, Université Savoie Mont Blanc, CNRS/IN2P3,
+
+                                                       F-74941 Annecy, France
+                                 38 Embry-Riddle Aeronautical University, Prescott, AZ 86301, USA
+                                      39 Montclair State University, Montclair, NJ 07043, USA
+                                 40 Nikhef, Science Park 105, 1098 XG Amsterdam, The Netherlands
+                       41 Korea Institute of Science and Technology Information, Daejeon 34141, South Korea
+28
+
+                                 42 Christopher Newport University, Newport News, VA 23606, USA
+                                           43 Università di Perugia, I-06123 Perugia, Italy
+                                         44 INFN, Sezione di Perugia, I-06123 Perugia, Italy
+                                          45 Syracuse University, Syracuse, NY 13244, USA
+                                            46 Université de Liège, B-4000 Liège, Belgium
+                                      47 University of Minnesota, Minneapolis, MN 55455, USA
+                                  48 Università degli Studi di Milano-Bicocca, I-20126 Milano, Italy
+                                      49 INFN, Sezione di Milano-Bicocca, I-20126 Milano, Italy
+                                      50 LIGO Hanford Observatory, Richland, WA 99352, USA
+                                            51 Caltech CaRT, Pasadena, CA 91125, USA
+  52 Departament de Fı́sica Quàntica i Astrofı́sica, Institut de Ciències del Cosmos (ICCUB), Universitat de Barcelona (IEEC-UB),
+
+                                                       E-08028 Barcelona, Spain
+53 Dipartimento di Medicina, Chirurgia e Odontoiatria “Scuola Medica Salernitana,” Università di Salerno, I-84081 Baronissi, Salerno,
+
+                                                                  Italy
+                                       54 SUPA, University of Glasgow, Glasgow G12 8QQ, UK
+                            55 LIGO, Massachusetts Institute of Technology, Cambridge, MA 02139, USA
+                         56 Wigner RCP, RMKI, H-1121 Budapest, Konkoly Thege Miklós út 29-33, Hungary
+                                          57 Stanford University, Stanford, CA 94305, USA
+                                               58 Università di Pisa, I-56127 Pisa, Italy
+                             59 Università di Camerino, Dipartimento di Fisica, I-62032 Camerino, Italy
+                         60 Università di Padova, Dipartimento di Fisica e Astronomia, I-35131 Padova, Italy
+                                         61 INFN, Sezione di Padova, I-35131 Padova, Italy
+                                       62 Montana State University, Bozeman, MT 59717, USA
+                  63 Nicolaus Copernicus Astronomical Center, Polish Academy of Sciences, 00-716, Warsaw, Poland
+                             64 OzGrav, University of Adelaide, Adelaide, South Australia 5005, Australia
+           65 Max Planck Institute for Gravitational Physics (Albert Einstein Institute), D-14476 Potsdam-Golm, Germany
+                                         66 INFN, Sezione di Genova, I-16146 Genova, Italy
+                                          67 RRCAT, Indore, Madhya Pradesh 452013, India
+                         68 Faculty of Physics, Lomonosov Moscow State University, Moscow 119991, Russia
+                                 69 SUPA, University of the West of Scotland, Paisley PA1 2BE, UK
+                                   70 Rochester Institute of Technology, Rochester, NY 14623, USA
+                                          71 Bar-Ilan University, Ramat Gan 5290002, Israel
+                                72 Università degli Studi di Urbino “Carlo Bo,” I-61029 Urbino, Italy
+                                73 INFN, Sezione di Firenze, I-50019 Sesto Fiorentino, Firenze, Italy
+           74 Artemis, Université Côte d’Azur, Observatoire Côte d’Azur, CNRS, CS 34229, F-06304 Nice Cedex 4, France
+                       75 OzGrav, University of Western Australia, Crawley, Western Australia 6009, Australia
+                 76 Dipartimento di Fisica “E.R. Caianiello,” Università di Salerno, I-84084 Fisciano, Salerno, Italy
+     77 INFN, Sezione di Napoli, Gruppo Collegato di Salerno, Complesso Universitario di Monte S. Angelo, I-80126 Napoli, Italy
+                      78 Physik-Institut, University of Zurich, Winterthurerstrasse 190, 8057 Zurich, Switzerland
+                            79 Univ Rennes, CNRS, Institut FOTON - UMR6082, F-3500 Rennes, France
+                                          80 University of Oregon, Eugene, OR 97403, USA
+     81 Laboratoire Kastler Brossel, Sorbonne Université, CNRS, ENS-Université PSL, Collège de France, F-75005 Paris, France
+                                      82 Università di Roma “La Sapienza,” I-00185 Roma, Italy
+                               83 Université catholique de Louvain, B-1348 Louvain-la-Neuve, Belgium
+                              84 Astronomical Observatory Warsaw University, 00-478 Warsaw, Poland
+                                85 VU University Amsterdam, 1081 HV Amsterdam, The Netherlands
+                                      86 University of Maryland, College Park, MD 20742, USA
+                            87 School of Physics, Georgia Institute of Technology, Atlanta, GA 30332, USA
+      88 Université de Lyon, Université Claude Bernard Lyon 1, CNRS, Institut Lumière Matière, F-69622 Villeurbanne, France
+               89 Università di Napoli “Federico II,” Complesso Universitario di Monte S.Angelo, I-80126 Napoli, Italy
+                                 90 NASA Goddard Space Flight Center, Greenbelt, MD 20771, USA
+                          91 Dipartimento di Fisica, Università degli Studi di Genova, I-16146 Genova, Italy
+                                     92 RESCEU, University of Tokyo, Tokyo, 113-0033, Japan.
+                                 93 Tsinghua University, Beijing 100084, People’s Republic of China
+                                         94 Texas Tech University, Lubbock, TX 79409, USA
+                                       95 Università di Roma Tor Vergata, I-00133 Roma, Italy
+                              96 Missouri University of Science and Technology, Rolla, MO 65409, USA
+                                                                                                                                    29
+
+             97 Departamento de Astronomı́a y Astrofı́sica, Universitat de València, E-46100 Burjassot, València, Spain
+                    98 Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi,” I-00184 Roma, Italy
+                         99 National Tsing Hua University, Hsinchu City, 30013 Taiwan, Republic of China
+                           100 Charles Sturt University, Wagga Wagga, New South Wales 2678, Australia
+                   101 Physics and Astronomy Department, Stony Brook University, Stony Brook, NY 11794, USA
+               102 Center for Computational Astrophysics, Flatiron Institute, 162 5th Ave, New York, NY 10010, USA
+                                          103 University of Chicago, Chicago, IL 60637, USA
+                   104 The Chinese University of Hong Kong, Shatin, NT, Hong Kong, People’s Republic of China
+              105 Dipartimento di Ingegneria Industriale (DIIN), Università di Salerno, I-84084 Fisciano, Salerno, Italy
+ 106 Institut de Physique des 2 Infinis de Lyon (IP2I) - UMR 5822, Université de Lyon, Université Claude Bernard, CNRS, F-69622
+
+                                                          Villeurbanne, France
+                                       107 Seoul National University, Seoul 08826, South Korea
+                                      108 Pusan National University, Busan 46241, South Korea
+                               109 INAF, Osservatorio Astronomico di Padova, I-35122 Padova, Italy
+                              110 OzGrav, University of Melbourne, Parkville, Victoria 3010, Australia
+                        111 Universitat de les Illes Balears, IAC3—IEEC, E-07122 Palma de Mallorca, Spain
+                                     112 Université Libre de Bruxelles, Brussels B-1050, Belgium
+                   113 Departamento de Matemáticas, Universitat de València, E-46100 Burjassot, València, Spain
+                                            114 Cardiff University, Cardiff CF24 3AA, UK
+                                      115 University of Rhode Island, Kingston, RI 02881, USA
+                                           116 Bellevue College, Bellevue, WA 98007, USA
+           117 MTA-ELTE Astrophysics Research Group, Institute of Physics, Eötvös University, Budapest 1117, Hungary
+                118 California State University, Los Angeles, 5151 State University Dr, Los Angeles, CA 90032, USA
+                                        119 Universität Hamburg, D-22761 Hamburg, Germany
+                                 120 Institute for Plasma Research, Bhat, Gandhinagar 382428, India
+                           121 IGFAE, Campus Sur, Universidade de Santiago de Compostela, 15782 Spain
+                                        122 The University of Sheffield, Sheffield S10 2TN, UK
+            123 Dipartimento di Scienze Matematiche, Fisiche e Informatiche, Università di Parma, I-43124 Parma, Italy
+                      124 INFN, Sezione di Milano Bicocca, Gruppo Collegato di Parma, I-43124 Parma, Italy
+                           125 Dipartimento di Ingegneria, Università del Sannio, I-82100 Benevento, Italy
+                            126 Università di Trento, Dipartimento di Fisica, I-38123 Povo, Trento, Italy
+                 127 INFN, Trento Institute for Fundamental Physics and Applications, I-38123 Povo, Trento, Italy
+                                      128 Università degli Studi di Sassari, I-07100 Sassari, Italy
+                                   129 INFN, Laboratori Nazionali del Sud, I-95125 Catania, Italy
+                                      130 University of Portsmouth, Portsmouth, PO1 3FX, UK
+                                     131 West Virginia University, Morgantown, WV 26506, USA
+                              132 The Pennsylvania State University, University Park, PA 16802, USA
+                                     133 Colorado State University, Fort Collins, CO 80523, USA
+       134 Institute for Nuclear Research (Atomki), Hungarian Academy of Sciences, Bem tér 18/c, H-4026 Debrecen, Hungary
+                             135 CNR-SPIN, c/o Università di Salerno, I-84084 Fisciano, Salerno, Italy
+                             136 Scuola di Ingegneria, Università della Basilicata, I-85100 Potenza, Italy
+                  137 National Astronomical Observatory of Japan, 2-21-1 Osawa, Mitaka, Tokyo 181-8588, Japan
+                       138 Observatori Astronòmic, Universitat de València, E-46980 Paterna, València, Spain
+                                          139 INFN Sezione di Torino, I-10125 Torino, Italy
+                             140 Indian Institute of Technology Bombay, Powai, Mumbai 400 076, India
+                                      141 University of Szeged, Dóm tér 9, Szeged 6720, Hungary
+                142 Delta Institute for Theoretical Physics, Science Park 904, 1090 GL Amsterdam, The Netherlands
+                     143 Lorentz Institute, Leiden University, P.O. Box 9506, Leiden 2300 RA, The Netherlands
+144 GRAPPA, Anton Pannekoek Institute for Astronomy and Institute for High-Energy Physics, University of Amsterdam, Science Park
+
+                                              904, 1098 XH Amsterdam, The Netherlands
+                                 145 Tata Institute of Fundamental Research, Mumbai 400005, India
+                             146 INAF, Osservatorio Astronomico di Capodimonte, I-80131 Napoli, Italy
+                                       147 University of Michigan, Ann Arbor, MI 48109, USA
+                                       148 American University, Washington, D.C. 20016, USA
+                                       149 University of California, Berkeley, CA 94720, USA
+                          150 Maastricht University, P.O. Box 616, 6200 MD Maastricht, The Netherlands
+                       151 Directorate of Construction, Services & Estate Management, Mumbai 400094 India
+ 30
+
+                                         152 University of Bialystok, 15-424 Bialystok, Poland
+                              153 King’s College London, University of London, London WC2R 2LS, UK
+                                     154 University of Southampton, Southampton SO17 1BJ, UK
+                                   155 University of Washington Bothell, Bothell, WA 98011, USA
+                                  156 Institute of Applied Physics, Nizhny Novgorod, 603950, Russia
+                                       157 Ewha Womans University, Seoul 03760, South Korea
+                                  158 Inje University Gimhae, South Gyeongsang 50834, South Korea
+                            159 National Institute for Mathematical Sciences, Daejeon 34047, South Korea
+                          160 Ulsan National Institute of Science and Technology, Ulsan 44919, South Korea
+                              161 Bard College, 30 Campus Rd, Annandale-On-Hudson, NY 12504, USA
+                                               162 NCBJ, 05-400 Świerk-Otwock, Poland
+                          163 Institute of Mathematics, Polish Academy of Sciences, 00656 Warsaw, Poland
+                                            164 Cornell University, Ithaca, NY 14850, USA
+                            165 Université de Montréal/Polytechnique, Montreal, Quebec H3T 1J4, Canada
+           166 Lagrange, Université Côte d’Azur, Observatoire Côte d’Azur, CNRS, CS 34229, F-06304 Nice Cedex 4, France
+                                            167 Hillsdale College, Hillsdale, MI 49242, USA
+                            168 Korea Astronomy and Space Science Institute, Daejeon 34055, South Korea
+       169 Institute for High-Energy Physics, University of Amsterdam, Science Park 904, 1098 XH Amsterdam, The Netherlands
+                                 170 NASA Marshall Space Flight Center, Huntsville, AL 35811, USA
+                                        171 University of Washington, Seattle, WA 98195, USA
+                    172 Dipartimento di Matematica e Fisica, Università degli Studi Roma Tre, I-00146 Roma, Italy
+                                         173 INFN, Sezione di Roma Tre, I-00146 Roma, Italy
+                                               174 ESPCI, CNRS, F-75005 Paris, France
+175 Center for Phononics and Thermal Energy Science, School of Physics Science and Engineering, Tongji University, 200092 Shanghai,
+
+                                                       People’s Republic of China
+                              176 Southern University and A&M College, Baton Rouge, LA 70813, USA
+                               177 Department of Physics, University of Texas, Austin, TX 78712, USA
+                                178 Dipartimento di Fisica, Università di Trieste, I-34127 Trieste, Italy
+                              179 Centre Scientifique de Monaco, 8 quai Antoine Ier, MC-98000, Monaco
+                                  180 Indian Institute of Technology Madras, Chennai 600036, India
+                          181 Université de Strasbourg, CNRS, IPHC UMR 7178, F-67000 Strasbourg, France
+                            182 Institut des Hautes Etudes Scientifiques, F-91440 Bures-sur-Yvette, France
+                                      183 IISER-Kolkata, Mohanpur, West Bengal 741252, India
+      184 Department of Astrophysics/IMAPP, Radboud University Nijmegen, P.O. Box 9010, 6500 GL Nijmegen, The Netherlands
+                                            185 Kenyon College, Gambier, OH 43022, USA
+                               186 Whitman College, 345 Boyer Avenue, Walla Walla, WA 99362 USA
+                                  187 Hobart and William Smith Colleges, Geneva, NY 14456, USA
+                              188 Department of Physics, Lancaster University, Lancaster, LA1 4YB, UK
+                           189 OzGrav, Swinburne University of Technology, Hawthorn VIC 3122, Australia
+                                         190 Trinity University, San Antonio, TX 78212, USA
+                          191 Dipartimento di Fisica, Università degli Studi di Torino, I-10125 Torino, Italy
+                          192 Indian Institute of Technology, Gandhinagar Ahmedabad Gujarat 382424, India
+                      193 INAF, Osservatorio Astronomico di Brera sede di Merate, I-23807 Merate, Lecco, Italy
+   194 Centro de Astrofı́sica e Gravitação (CENTRA), Departamento de Fı́sica, Instituto Superior Técnico, Universidade de Lisboa,
+
+                                                       1049-001 Lisboa, Portugal
+                           195 Marquette University, 11420 W. Clybourn Street, Milwaukee, WI 53233, USA
+                     196 Indian Institute of Technology Hyderabad, Sangareddy, Khandi, Telangana 502285, India
+                         197 INAF, Osservatorio di Astrofisica e Scienza dello Spazio, I-40129 Bologna, Italy
+           198 International Institute of Physics, Universidade Federal do Rio Grande do Norte, Natal RN 59078-970, Brazil
+                             199 Villanova University, 800 Lancaster Avenue, Villanova, PA 19085, USA
+                                       200 Andrews University, Berrien Springs, MI 49104, USA
+                                           201 Carleton College, Northfield, MN 55057, USA
+                           202 Department of Physics, Utrecht University, 3584CC Utrecht, The Netherlands
+                       203 Concordia University Wisconsin, 2800 N Lake Shore Drive, Mequon, WI 53097, USA
+

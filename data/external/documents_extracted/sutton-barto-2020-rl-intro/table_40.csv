@@ -1,0 +1,3 @@
+(c) Express the eligibility r ln ⇡(a,s, ✓) for a Bernoulli-logistic unit, in terms of a, x(s),
+and ⇡(a,s, ✓) by calculating the gradient.
+Hint for part (c): Define P = ⇡(1,s, ✓) and compute the derivative of the logarithm, for

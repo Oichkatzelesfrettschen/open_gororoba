@@ -1,0 +1,3 @@
+v⇡(s) .= E⇡[Gt,St =s]
+= E⇡[Rt+1 + Gt+1,St =s] (from (3.9))
+= E⇡[Rt+1 + v⇡(St+1),St =s] (4.3)

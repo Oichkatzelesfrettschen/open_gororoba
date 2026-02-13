@@ -1,0 +1,301 @@
+                                                Generalization of Quantum Error Correction via the Heisenberg Picture
+
+                                                                         Cédric Bény,1 Achim Kempf,1 and David W. Kribs2, 3
+                                                           1
+                                                             Department of Applied Mathematics, University of Waterloo, ON, Canada, N2L 3G1
+                                                   2
+                                                       Department of Mathematics and Statistics, University of Guelph, Guelph, ON, Canada, N1G 2W1
+                                                             3
+                                                               Institute for Quantum Computing, University of Waterloo, ON Canada, N2L 3G1
+                                                                                        (Dated: November 26, 2024)
+                                                          We show that the theory of operator quantum error correction can be naturally generalized by
+                                                       allowing constraints not only on states but also on observables. The resulting theory describes
+                                                       the correction of algebras of observables (and may therefore suitably be called “operator algebra
+                                                       quantum error correction”). In particular, the approach provides a framework for the correction of
+                                                       hybrid quantum-classical information and it does not require the state to be entirely in one of the
+                                                       corresponding subspaces or subsystems. We discuss applications to quantum teleportation and to
+
+
+
+
+arXiv:quant-ph/0608071v2 10 Mar 2007
+                                                       the study of information flows in quantum interactions.
+
+
+                                          Error correction methods are of crucial importance for          sense that there exists a correction channel R such that
+                                       quantum computing and the so far most general frame-               R(E(ρ)) = ρ for all states ρ in the subspace; that is, all
+                                       work, called operator quantum error correction (OQEC)              ρ which satisfy ρ = P ρP . This amounts to asking for a
+                                       [1, 2], encompasses active error correction [4, 5, 6, 7, 8]        subspace on which E has a left inverse that is a physical
+                                       (QEC), together with the concepts of decoherence-free              map. From QEC to OQEC the scope of error correction
+                                       and noiseless subspaces and subsystems [9, 10, 11, 12,             is generalized by only requiring the states of a subsys-
+                                       13, 14, 15]. The OQEC approach has enabled more ef-                tem to be conserved: R(E(ρ ⊗ τ )) = ρ ⊗ τ ′ for all ρ ⊗ τ
+                                       ficient correction procedures in active error correction           in the subspace. As we will show, this amounts to the
+                                       [16, 17, 18, 19], has led to improved threshold results            correction of special types of algebras. In general, every
+                                       in fault tolerant quantum computing [20], and has moti-            algebra A of observables induces a decomposition of the
+                                       vated the development of a structure theory for passive            Hilbert space H into H = ⊕dk=1 (Ak ⊗ Bk ) ⊕ C. Here
+                                       error correction [21, 22] which has recently been used in          all operators in the algebra have C in their kernel and
+                                       quantum gravity [23, 24, 25, 26].                                  act irreducibly on each Ak while acting trivially on the
+                                          In this paper, we introduce a natural generalization of         subsystem Bk . This means that the algebra decomposes
+                                       this theory. To this end, we change the focus from that of         as
+                                       states to that of observables: conservation of a state by
+                                                                                                                        A = ⊕dk=1 (L(Ak ) ⊗ 1Bk ) ⊕ 0C ,          (1)
+                                       a given noise model implies the conservation of all of its
+                                       observables, and is therefore a rather strong requirement.         where L(Ak ) denotes the set of all operators on Ak , 1Bk
+                                       This can be alleviated by specifically selecting only some         is the identity operator on Bk , and 0C is the zero opera-
+                                       observables to be conserved. In this context it is natu-           tor on C. From this perspective, we can view the QEC
+                                       ral to consider algebras of observables [27]. Hence our            framework as focussing on codes L(A)⊗1B (or subspaces
+                                       codes take the form of operator algebras that are closed           A) with dim B = 1. Moreover, OQEC considers “subsys-
+                                       under Hermitian conjugation; that is, finite dimensional           tem codes” encoded in algebras of the form L(A) ⊗ 1B
+                                       C∗ -algebras [28]. As a convenience, we shall simply refer         for general subsystems A and B. Classical information is
+                                       to such operator algebras as “algebras”. Correspondingly           captured by the case in which dim A = 1: commutative
+                                       we refer to the new theory as “operator algebra quantum            algebras. Thus, in addition to the classical, QEC, and
+                                       error correction” (OAQEC). We present results that es-             OQEC cases, our new OAQEC approach also provides a
+                                       tablish testable conditions for correctability in OAQEC.           framework for the correction of hybrid quantum-classical
+                                       We also discuss illustrative examples and consider appli-          information and memory [30] exposed to external noise.
+                                       cations to quantum teleportation and information flow in           In particular, this includes cases in which separate (or-
+                                       quantum interactions. We shall present the proofs and              thogonal) parcels of quantum information are labelled by
+                                       more examples in [29].                                             classical “addresses”.
+                                          Noise models in quantum information are described by               Let us discuss in more detail the motivation for consid-
+                                       channels, which are (in the Schrödinger picture) trace-           ering algebras. We begin by recalling that a general ob-
+                                       preserving (TP) and completely positive (CP) linear                servable is a positive operator-valued measure (POVM)
+                                       maps E on mixed states, ρ, which are operators acting              X(∆) where ∆ ⊂ Ω, the set in which the observable X
+                                       on a Hilbert space H. If ρP   is a density matrix we can           takes values. For simplicity we consider observables with
+                                                                               †
+                                       always write ρ 7→ E(ρ) =        a Ea ρEa where {Ea } is a          a finite number of outcomes which can be characterized
+                                       non-unique family of channel elements. The QEC frame-              by a family of positive operators {Xa }. In the Heisen-
+                                       work addresses the question of whether a given subspace            berg picture an observable evolves according to the unital
+                                       of states P H, called the code, can be corrected in the            CP-map E † with elements Ea† instead of Ea . If for all val-
+                                                                                                                          2
+
+ues of the label a there exists an operator Ya such that           Conserved observables — If P E † (Xa )P = P Xa P for
+Xa = E † (Ya ) then all the statistical information about X     all a we say that the observable X is conserved by E for
+has been conserved by E since for any initial state ρ we        states in P H. More generally, let us say an algebra A is
+have, Tr(ρXa ) = Tr(ρE † (Ya )) = Tr(E(ρ)Ya ), the latter       conserved by E for states in P H if every element of A is
+equality following from the definition of E † . In this case,   conserved; that is,
+to correct for the errors induced by E we need a channel
+R that maps each Xa to one of the operators Ya through                       P E † (X) P = P XP     ∀X ∈ A.             (3)
+R† (Xa ) = Ya , so that (R ◦ E)† (Xa ) = (E † ◦ R† )(Xa ) =
+                                                                   Notice that Eq. (3) gives a generalization of noiseless
+Xa . In such a scenario, we will say that Xa is correctable
+                                                                subsystems. Indeed, any subalgebra A of L(P H) for
+for E and conserved by R ◦ E. In particular, if X is
+                                                                which all elements X ∈ A satisfy Eq. (3) is a direct sum
+a standard projective measurement, and so Xa2 = Xa
+                                                                of noiseless subsystems. This can be seen by first not-
+for all a, then the projectors Xa linearly span the alge-
+                                                                ing that any algebra A has a decomposition of the form
+bra they generate. Hence, in this case R ◦ E conserves
+                                                                given in Eq. (1), and then applying Eq. (2). In particular,
+an entire commutative algebra. Therefore, focussing on
+                                                                focussing on the so-called “simple” algebras L(A) ⊗ 1B
+the correctability of sets of observables which have the
+                                                                captures standard noiseless subsystems as in Eq. (2).
+structure of an algebra, apart from allowing a complete
+                                                                   The following theorem provides testable conditions
+characterization, is also sufficient for the study of all the
+                                                                that characterize when an algebra is conserved on states
+correctable projective observables.
+                                                                in a given subspace by a channel, strictly in terms of the
+   One result of this paper will be to show that there al-
+                                                                operation elements for the channel. The result comes as
+ways exists a single channel R correcting all projective
+                                                                an adaptation of results from [21] and we shall present
+observables correctable in the above sense. In fact, we
+                                                                its proof in [29]. It is a generalization because, here, the
+study a more general question: If we have some con-
+                                                                algebra need not contain the projector P .
+trol on the initial states, which is expected in a quantum
+computation, then we can ask for an observable to be            Theorem 1. A subalgebra A of L(P H) is conserved on
+conserved only if the state starts in a certain subspace        states in P H by a channel E if and only if [Ea P, X] = 0
+P H. That is, P (E † ◦ R† )(X)P = P XP . We derive a            for all elements Ea and all X ∈ A.
+necessary and sufficient condition for an entire algebra of
+operators on P H to be simultaneously correctable in that          Heuristically, an algebra supported on a subspace is
+sense. The resulting theory contains OQEC and QEC in            conserved by a channel precisely when elements of the
+the special cases discussed above.                              algebra commute with the generators of the noise, re-
+   We remark that our approach differs from that of the         stricted to the subspace.
+stabilizer formalism [8] where observables in the Heisen-          Error correction of observables — We say that an al-
+berg picture are used as a way to characterize a subspace       gebra A is correctable for E on states in the subspace P H
+of states. Our approach is closer in spirit to that of [31].    if there exists a channel R such that
+The idea that observables naturally characterize subsys-                   P (R ◦ E)† (X)P = P XP      ∀X ∈ A.          (4)
+tems has also been exploited in [32].
+   Noiseless subsystems — First we recall the definition        This notion of correctability is more general than the one
+of a noiseless subsystem and we give an equivalent def-         addressed by the framework of OQEC. Indeed, OQEC fo-
+inition in terms of the dual channel E † . Consider a de-       cusses on simple algebras, L(A)⊗1B . Here, correctability
+composition of a finite-dimensional Hilbert space H as          is defined for any finite-dimensional algebra. A further
+H = (A ⊗ B) ⊕ C. We introduce the projector P on the            generalization is that we do not require P to belong to
+subspace A ⊗ B. By definition, A is a noiseless subsys-         the algebra considered. We expand on these points in
+tem for E if for all ρ ∈ L(A) and σ ∈ L(B) there exists         [29] via an examination of the Schrödinger formulation
+τ ∈ L(B) such that E(ρ ⊗ σ) = ρ ⊗ τ . In terms of the           of OAQEC.
+dual channel E † , the subsystem A is noiseless for E if and       We now state the main result of the paper, which gen-
+only if                                                         eralizes the fundamental result for both QEC [5] and
+                                                                OQEC [1, 18]. It provides conditions for testing whether
+                 P E † (X ⊗ 1) P = X ⊗ 1                 (2)
+                                                                an algebra is correctable for a given channel in terms of
+for all operators X acting on A. This is a consequence          its operation elements.
+of the noiseless subsystem characterization from [1] as
+                                                                Theorem 2. A subalgebra A of B(P H) is correctable on
+can be readily verified. In Eq. (2), the projectors P are
+                                                                P H for the channel E if and only if
+needed since the definition of the noiseless subsystem is
+only concerned with what happens to states initially in                    [P Ec† Eb P, X] = 0   ∀X ∈ A ∀c, b.          (5)
+the subspace A⊗B. In general, an initial component out-
+side this space may, after evolution, disturb the otherwise       We present the proof in [29]. Not surprisingly, the
+noiseless observables.                                          operation elements {Ec† Eb } for E † ◦ E play a key role as
+                                                                                                                            3
+
+in other error correction settings. We also note that the       be elucidated further in [29]. In this case one can eas-
+correction channel R constructed in the proof corrects          ily verify that the channel R with elements {P1 , Z1 P2 }
+any channel whose elements are linear combinations of           satisfies (R ◦ E)† (X) = X for all X ∈ A.
+the elements Ea . Thus, as in the original theory of error         Application: noisy quantum teleportation — In the
+correction, we can in practice neglect the channel E and        standard picture for quantum teleportation [33], Alice
+focus instead directly on the discrete error operators Ea .     can send Bob an entire qubit by sending two classical
+    It is instructive to consider the special case of clas-     bits, provided they share a maximally entangled pair
+sical OAQEC codes. A classical channel has elements             of qubits initially. Consider a pair of qubits in the
+         √
+Eij = pij |iihj|, where (pij ) forms a stochastic matrix        maximally entangled state |ψi = √12 (|00i + |11i). We
+with transitional probabilities pij from j to i. Thus,
+   †            √                                               assume that Alice and Bob each possess one qubit of
+Eij  Ekl = δik pij pil |jihl|, and Theorem 2 shows that if      this pair. Consider also the unitary Pauli operators
+α = (αj ) are the diagonal components of a classical (di-       {U0 = 1, U1 = X, U2 = Y, U3 = Z}. In the language
+agonal) observable, then α can be corrected if and only         of channels, teleportation can be viewed as the channel
+if αj = αk for all k, j such that there is an i with pij 6= 0   E that has for input the qubit |ψi to be teleported and
+and pik 6= 0. Heuristically, two states cannot be distin-       for output three qubits: two which represent the bits Al-
+guished from each other after the channel has acted pre-        ice needs to send to Bob, and Bob’s qubit: E(|ψihψ|) =
+cisely when there is a nonzero probability of a transition      1 P3                          †
+from both states to a common state.                             4    i=0 |iihi| ⊗ Ui (|ψihψ|)Ui ,where |ii form an orthonor-
+                                                                mal basis of the four-dimensional Hilbert space represent-
+    Does OAQEC offer more powerful error correction pro-
+                                                                ing the two bits that Alice must send to Bob over a clas-
+cedures than OQEC? It is easy to see that if an algebra
+                                                                sical channel. We can readily verify that Bob can indeed
+A is correctable according to this scheme then each sim-
+                                                                fully correct the channel. The channel elements are of the
+ple sector L(A) ⊗ 1B is individually correctable through
+                                                                form Ei ∝ |ii⊗ Ui , and hence the condition of Theorem 2
+OQEC (or QEC when dim B = 1). However, OAQEC
+                                                                is met since Ei† Ej ∝ hi||ji⊗Ui† Uj = δij Ui† Ui = δij 1. Thus
+codes have at least two attractive features: First, all
+                                                                all operators on the initial qubit can be corrected, and all
+simple sectors can be corrected simultaneously by the
+                                                                the information can be recovered. Note that even though
+same correction channel. Secondly, each simple sector
+                                                                the operators Ei map between two different spaces, the
+can be corrected even if the initial state is not entirely
+                                                                operators Ei† Ej map the initial qubit space to itself. One
+in the corresponding subspace. In particular, the initial
+                                                                can teleport as many qubits as desired in parallel pro-
+state could be in a quantum superposition between var-
+                                                                vided that one starts with one shared entangled pair per
+ious sectors even though combined sectors may not be
+                                                                qubit to be teleported.
+correctable in the traditional sense.
+    As an illustrative example, consider a 2-qubit sys-            Consider now the case in which the classical step of
+tem exposed to noise inducing a phase flip error Z              the teleportation process, when Alice transmits bits to
+(a unitary Pauli operator) on the first qubit with              Bob, is implemented over a noisy classical channel. We
+nonzero    probability p. The noise model E has elements        shall also assume unitary encodings are taken from more
+  √           √
+{ 1 − p 1, p Z1 }. Let C1 be the (subspace) code with           general families of unitary operators. To this end, con-
+basis |0L i = |00i, |1L i = |01i and C2 the code with basis     sider a family {Ug }g∈S of unitary operators in L(H) for
+|0L i = |10i, |1L i = |11i. It is clear that each of C1 and     some Hilbert space H. In the standard teleportation pro-
+C2 , or from the OAQEC perspective the algebras L(C1 )          tocol, S is the set of single qubit Pauli operators. Now
+and L(C2 ), is correctable individually for E. Indeed, each     suppose that a noisy stochastic channel is applied on the
+code is a stabilizer subspace for Z1 (for eigenvalue 1 and      classical bits |gi, g ∈ S, that Alice must send to Bob
+−1 respectively). However, the combined code C1 ⊕ C2 ,          with transition probabilities pgh . Then one could ask,
+or equivalently L(C1 ⊕ C2 ) = L(C4 ), is clearly not cor-       what information can be recovered by Bob once he is in
+rectable for E because E is not a unitary operation.            possession of all the data? The overall channel is given
+    Nevertheless, the hybrid qubit-qubit OAQEC code             by composing E with the classical channel. Thus, the
+                                                                                                        √
+A = L(C1 ) ⊕ L(C2 ) is correctable for E. This immedi-          error operators Fghl satisfy Fghl ∝ pgh |gihh||li ⊗ Ul =
+                                                                    √
+ately follows from Theorem 2 and the observation that           δhl pgh |gi ⊗ Uh . It follows that the commutant of the
+Z1 belongs to the set of operators which commute with           correctable algebra, which is contained in L(H), has gen-
+                                                                           †                  √
+A: the commutant A′ = CP1 ⊕ CP2 , where we have                 erators Fghl  Fg′ h′ l′ = δgg′ pgh pgh′ Uh† Uh′ . We are only
+written Pi for the projector onto Ci . As discussed above,      interested in the nonzero generators; that is, those for
+separate (orthogonal) codes that determine the simple           which pgh 6= 0 and pgh′ 6= 0. This condition means that
+summands of an OAQEC code can all be corrected by               classically, because of the noise, we can no longer distin-
+the same correction operation, which is clearly not the         guish between the state |hi and the state |h′ i. Therefore,
+case in general for non-OAQEC codes. Moreover, as in            the commutant of the conserved algebra has a generator
+QEC and OQEC, the theory includes an explicit recipe            Ug† Uh for each pair of classical states g, h that became
+for constructing the correction operation. This point will      indistinguishable under the noisy channel. In short, if
+                                                                                                                            4
+
+Bob is not sure whether Alice’s classical message was g        to consider the possible conservation of the statistics of
+or h, then he can only completely recover those proper-        general POVMs.
+ties of the quantum states that are invariant under the          Acknowledgments — We thank our colleagues at IQC,
+transformations Ug† Uh . In particular, this implies more      PI, UG, and UW for helpful discussions. This work was
+general code algebras will be obtained. We shall further       partially supported by NSERC, PREA, ERA, CFI and
+investigate this “noisy” version of quantum teleportation      OIT.
+in [29].
+   Application: information flow in interactions — Con-
+sider the interaction U between a system S and an
+apparatus A where the initial state of the apparatus
+                                                                [1] D. Kribs, R. Laflamme, and D. Poulin, Phys. Rev. Lett.
+is known to be ρA . Tracing out either over A or
+                                                                    94, 180501 (2005).
+S after the evolution yields respectively the channel           [2] D. W. Kribs, R. Laflamme, D. Poulin, and M. Lesosky,
+ESS (ρS ) = TrA (U (ρS ⊗ρA )U † ) from S to S or ESA (ρS ) =        Quant. Inf. & Comp. 6, 382 (2006).
+TrS (U (ρS ⊗ ρA )U † ) from S to A.                             [3] L. Viola, E. Knill, and R. Laflamme, J. Phys. A 34, 7067
+   Using OAQEC we can determine what observables of                 (2001).
+the system can be corrected for either of the two chan-         [4] C. H. Bennett, D. P. DiVincenzo, J. A. Smolin, and W. K.
+nels. The algebra ASA preserved by ESA , that represents            Wootters, Phys. Rev. A 54, 3824 (1996).
+                                                                [5] E. Knill and R. Laflamme, Phys. Rev. A 55, 900 (1997).
+the information about S which is transferred to A, can be
+                                                                [6] P. W. Shor, Phys. Rev. A 52, R2493 (1995).
+computed to be the largest algebra of operators commut-         [7] A. M. Steane, Phys. Rev. Lett. 77, 793 (1996).
+                         †
+ing with the range of ESS  . Hence a direct consequence of      [8] D. Gottesman, Phys. Rev. A 54, 1862 (1996).
+Theorem 2 is that in an open dynamics defined by a chan-        [9] P. Zanardi and M. Rasetti, Phys. Rev. Lett. 79, 3306
+nel E, full information about a projective observable can           (1997).
+escape the system if and only if it commutes with all the      [10] G. Palma, K.-A. Suominen, and A. Ekert, Proc. Royal
+operators in the range of the channel; that is, those ob-           Soc. A 452, 567 (1996).
+                                                               [11] L.-M. Duan and G.-C. Guo, Phys. Rev. Lett. 79, 1953
+servables whose first moment is correctable for E. This is
+                                                                    (1997).
+a generalization of work in [34]. Furthermore this method      [12] D. A. Lidar, I. L. Chuang, and K. B. Whaley, Phys. Rev.
+characterizes those observables which are effectively du-           Lett. 81, 2594 (1998).
+plicated; in other words, those whose information stayed       [13] E. Knill, R. Laflamme, and L. Viola, Phys. Rev. Lett.
+in S and also flowed to A. They form the commutative                84, 2525 (2000).
+algebra ASS ∩ ASA . Those observables have been non-           [14] P. Zanardi, Phys. Rev. A 63, 12301 (2001).
+destructively measured by the system A. This analysis          [15] J. Kempe, D. Bacon, D. A. Lidar, and K. B. Whaley,
+                                                                    Phys. Rev. A 63, 42307 (2001).
+has implications for the theory of decoherence [35, 36]: a
+                                                               [16] D. Bacon, Phys. Rev. A 73, 012340 (2006).
+unique commutative algebra of observables emerges nat-         [17] D. Poulin, Phys. Rev. Lett. 95, 230504 (2005).
+urally as characterizing the information which is shared       [18] M. A. Nielsen and D. Poulin, e-print quant-ph/0506069
+between the system and the environment after an inter-              (2005).
+action. This suggests that the pointer observables should      [19] A. Klappenecker and P. K. Sarvepalli, e-print
+be defined not just by their property of being stably en-           quant-ph/0604161 (2006).
+coded in the system but also by the requirement that the       [20] P. Aliferis and A. W. Cross, e-print quant-ph/0610063
+                                                                    (2006).
+information they represent is transmitted to the environ-
+                                                               [21] M.-D. Choi and D. W. Kribs, Phys. Rev. Lett. 96, 050501
+ment. In this sense there is no basis ambiguity [37] for the        (2006).
+interpretation of a unitary interaction as a measurement       [22] E. Knill, e-print quant-ph/0603252 (2006).
+of the system by the apparatus.                                [23] O. Dreyer, F. Markopoulou, and L. Smolin, Nucl.Phys.
+   Outlook — We have presented a generalization of the              B 744, 1 (2006).
+theory of operator quantum error correction that allows        [24] D. Poulin, e-print quant-ph/0505081 (2005).
+for the correction of an arbitrary algebra of operators.       [25] D. W. Kribs and F. Markopoulou, e-print gr-qc/0510052
+                                                                    (2005).
+Our main result gives a characterization of correctable        [26] T. Konopka and F. Markopoulou, e-print gr-qc/0601028
+codes in this scheme. Proofs and more applications will             (2006).
+be provided in [29]. The recent experience with opera-         [27] J. von Neumann, Mathematical foundations of quantum
+tor quantum error correction suggests a reinvestigation             mechanics, Princeton University Press, Princeton, 1955.
+of codes that have appeared in the literature for pos-         [28] K. R. Davidson, C ∗ -algebras by example, Fields Institute
+sibly improved efficiency or other applications enabled             Monographs, 6. American Mathematical Society, Provi-
+                                                                    dence, RI, 1996.
+by this approach. We also suggest that the applications
+                                                               [29] C. Beny, A. Kempf, and D. W. Kribs, in preparation
+to quantum teleportation and information flow presented             (2006).
+here warrant further investigation. Furthermore, we have       [30] G. Kuperberg, IEEE Trans. Inform. Theory 49, 1465
+here focussed on algebras of operators rather than gen-             (2003).
+eral operator subspaces. It should be most interesting         [31] D. Deutsch and P. Hayden, Proc. R. Soc. Lond. A 456,
+                                                                                                                        5
+
+     1759 (1999).                                              [35] D. Giulini et al., Decoherence and the Appearance of a
+[32] P. Zanardi, D. A. Lidar, and S. Lloyd, Phys. Rev. Lett.        Classical World in Quantum Theory (Springer, Berlin,
+     92, 060402 (2004).                                             1996).
+[33] C. H. Bennett, G. Brassard, C. Crepeau, R. Jozsa, A.      [36] W. H. Zurek, Rev. Mod. Phys. 75, 715 (2003).
+     Peres, W. Wootters, Phys. Rev. Lett. 70, 1895 (1993).     [37] W. H. Zurek, Phys. Rev. D 24, 1516 (1981).
+[34] G. Lindblad, Lett. Math. Phys. 47, 189 (1999).
+

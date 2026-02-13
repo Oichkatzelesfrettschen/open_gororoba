@@ -1,0 +1,1396 @@
+equations = []
+full_text = """
+arXiv:nlin/0105068v1 [nlin.CD] 30 May 2001\r
+Equivalence between isospectrality and iso-length\r
+spectrality for a certain class of planar billiard\r
+domains\r
+Yuichiro Okada †and Akira Shudo ‡\r
+Department of Physics, Tokyo Metropolitan University, Minami-Ohsawa,\r
+Hachioji, Tokyo 192-0397, Japan\r
+Abstract.\r
+Isospectrality of the planar domains which are obtained by successive\r
+unfolding of a fundamental building block is studied in relation to iso-length\r
+spectrality of the corresponding domains. Although an explicit and exact trace\r
+formula such as Poisson’s summation formula or Selberg’s trace formula is not\r
+known to exist for such planar domains, equivalence between isospectrality and\r
+iso-length spectrality in a certain setting can be proved by employing the matrix\r
+representation of “transplantation of eigenfunctions”. As an application of the\r
+equivalence, transplantable pairs of domains, which are all isospectral pair of\r
+planar domains and therefore counter examples of Kac’s question “can one hear\r
+the shape of a drum?”, are numerically enumerated and it is found at least up\r
+to the domain composed of 13 building blocks transplantable pairs coincide with\r
+those constructed by the method due to Sunada.\r
+1. Introduction\r
+A famous question of M. Kac, “can one hear the shape of a drum?”, is concerned\r
+with isospectrality of the planar domains [1]. The bounded domains D1 and D2 are\r
+called isospectral if two domains have the same eigenvalue spectrum up to the degree\r
+of multiplicities, i.e., spec(D1) = spec(D2), where\r
+spec(D) = {µ1 ≤ µ2 ≤ · · · | ∆fi = µifiin D, fi = 0 on ∂D (i = 1, 2, · · ·)}.(1)\r
+Kac’s question is alternatively stated as “are the planar domains D1 and D2 congruent\r
+if spec(D1) = spec(D2)?”.\r
+Iso-length spectrality of the domains is analogously introduced for the length\r
+spectrum of closed billiard trajectories on the corresponding domains D1 and D2.\r
+Also for iso-length spectrality one can pose the same question as Kac’s. The problem\r
+we discuss here is equivalence between isospectrality and iso-length spectrality on the\r
+planar domains of a certain class.\r
+If either the eigenvalue spectrum or the length spectrum determines the shape of\r
+the domain uniquely, the equivalence problem becomes obvious since a congruent pair\r
+of domains trivially provides both isospectrum and iso-length spectrum. However, it\r
+is known that there exists a non-trivial case where equivalence between isospectrality\r
+and iso-length spectrality is concluded. Such a situation was reported by Milnor for\r
+the first time [2]. It is known that there exist the self-dual lattices L1 and L2 in\r
+R\r
+16 which are not congruent in the sense that no rotation of R16 carries L1 to L2,
+
+Equivalence between isospectrality and iso-length spectrality 2\r
+nevertheless they own the same length spectrum. That is, the quotients of R16 by these\r
+lattices, R16/L1 and R16/L2 are non-isometric but iso-length spectral. Furthermore\r
+its isospectrality can also be derived from the exact trace formula which represents\r
+duality relation between the spectrum of Laplacian acting on the flat torus and the\r
+corresponding length spectrum of closed geodesics. The flat torus which is defined as\r
+a quotient Rn/Γ of Rn by a lattice Γ of rank n, the set of eigenvalues of Helmholtz\r
+equation ∆f = µf is explicitly given as,\r
+{4π\r
+2\r
+kσk\r
+2\r
+| σ ∈ Γ\r
+∗\r
+}. (2)\r
+Here Γ∗ denotes the dual lattice of Γ, i.e., Γ∗ = {σ ∈ Rn | σ · γ ∈ Z ∀γ ∈ Γ}. The\r
+corresponding length spectrum which is the set of closed geodesics on the same torus\r
+is expressed just by the distance between the origin and each lattice point on Γ:\r
+{kγk | γ ∈ Γ}. (3)\r
+The two spectra are connected via Poisson’s summation formula or Jacobi identity:\r
+X\r
+σ∈Γ∗\r
+exp(−4π\r
+2\r
+kσk\r
+2\r
+t) = (4πt)\r
+−n/2\r
+vol(Rn/Γ)X\r
+γ∈Γ\r
+exp(−kγk\r
+2\r
+/4t). (4)\r
+This trace formula immediately leads us to equivalence between the isospectrality and\r
+iso-length spectrality, that is, two flat tori are isospectral if and only if they have the\r
+same length spectrum. Milnor’s work is not a direct answer to the original version\r
+of Kac’s question because it is not concerned with the planar domains. But from\r
+Milnor’s example one learned that there really exist non-congruent domains with a\r
+common length and eigenvalue spectrum.\r
+In more general cases where two Riemannian manifolds have a common finite\r
+Riemannian covering, a sufficient condition for isospectrality was given by Sunada [3].\r
+Let G be a finite group which acts freely on a certain compact Riemannian manifold\r
+M by isometries. Sunada’s theorem tells us that the quotients M/H1 and M/H2 are\r
+isospectral if there exist two subgroups H1 and H2 of G, which satisfy so-called almost\r
+conjugate condition:\r
+♯\r
+([g] ∩ H1) =♯([g] ∩ H2) (5)\r
+for any conjugacy class [g] in G. The proof is based on a sort of trace formula which\r
+can be regarded as a prototype of the Selberg trace formula [3, 4]. If subgroups H1\r
+and H2 are conjugate in the usual sense, then these quotients M/H1 and M/H2 are\r
+merely isometric. However it had been known that there exist triplets (G, H1, H2)\r
+so that H1 and H2 are almost conjugate but not conjugate in G. Such triplets were\r
+used to construct some isospectral but non-isometric pairs of Riemannian surfaces by\r
+Buser [5] and Brooks and Tse [6]. Sunada also proved that M/H1 and M/H2 have\r
+the same length spectrum of closed geodesics [3]. Therefore, in this case, iso-length\r
+spectrality is derived together with isospectrality from the same source.\r
+In case of planar domains, after a quarter of century, Gordon, Webb, and Wolpert\r
+[7] solved Kac’s original question also negatively by constructing an isospectral but\r
+non-congruent pair of planar domains (see Fig. 1). For the construction, they used\r
+a version of Sunada’s theorem, which was extended to the orbiford (billiard) setting\r
+by B´erard [8]. Since the source of isospectrality was Sunada’s theorem, iso-length\r
+spectrality naturally follows as well.\r
+However, if there exists an isospectral pair of planar domains which are not\r
+given by Sunada’s construction, equivalence of isospectrality and iso-length spectrality\r
+cannot straightforwardly be discussed. In fact, no one can exclude such a situation
+
+Equivalence between isospectrality and iso-length spectrality 3\r
+because the Sunada’s condition gives merely a sufficient condition for the isospectrality\r
+and also iso-length spectrality. Nevertheless, as we will show below, it is possible to\r
+relate them through the notion of so-called transplantation of eigenfunctions. The\r
+transplantation method is originally invented by Buser, Conway, Doyle, and Semmler\r
+to reexamine isospectrality of some given domains [9]. They constructed 17 families\r
+of isospectral pairs of domains based on the Sunada’s method, and confirmed these\r
+isospectrality by the transplantation method. As far as planar domains are concerned,\r
+these pairs are, to authors’ knowledge, all isospectral pairs ever known.\r
+It should be remarked that the transplantation method is not independent of the\r
+Sunada’s theorem. In the above case of quotient manifolds, Brooks gave an alternative\r
+proof of Sunada’s theorem based on the transplantation method, which appears a\r
+necessary condition for the assumption of the theorem [10] . However equivalence\r
+between these two methods has not been proved in case of planar domains.\r
+Figure 1. Isospectral pairs of domains constructed by Gordon et al .\r
+The organization of this paper is as follows. We first explain the transplantation\r
+method in section 2 and give its matrix representation in section 3. In section 4, we\r
+provide a proof showing that isospectrality and iso-length spectrality is equivalent for\r
+a certain class of domains, that is, those domains constructed by successive unfolding\r
+of a fundamental building block. All isospectral pairs ever known belong to this class.\r
+In section 5 we enumerate isospectral pairs of domains and compared them with the\r
+table obtained by Buser, Conway, Doyle, and Semmler [9]. It is shown that our labor\r
+of searching isospectral pairs is considerably reduced as a bi-product of our result in\r
+section 4. Section 6 is devoted to summary and discussion of our work.\r
+2. Transplantation method\r
+Let us consider two domains D1 and D2 as Fig. 2. We here describe the\r
+transplantation method by taking an example of the proof of isospectrality based\r
+on it. We follow the exposition given by Buser et al [9].\r
+Transplantation is a procedure which is cutting an arbitrary function f defined\r
+on D1 into its restrictions on each building block, say f1, f2, . . . , f7, and rebuilding a\r
+new function g on D2 by superposing f1, f2, . . . , f7. Note that such a procedure relied\r
+crucially on the peculiarity of the domains, which are composed of several pieces\r
+obtained by successive reflection of a certain common building block.\r
+By the transplantation shown in Fig. 2, any eigenfunction f with any eigenvalue\r
+µ on D1 is transplanted onto D2 so that the transform g is also an eigenfunction
+
+Equivalence between isospectrality and iso-length spectrality 4\r
+with the same eigenvalue µ. This can actually be confirmed by checking the following\r
+conditions:\r
+• ∆g = µg in the interior of each piece.\r
+This is always true because g is given as a sum of several fi’s on each piece.\r
+• The function g is smoothly connected on all reflecting segments\r
+This is not trivial, but true on this example. On the reflecting segment r in Fig.\r
+2, for example, −f2 + f3 − f5 fits smoothly with +f2 + f6 − f7 because f3 and\r
+f6, or −f5 and −f7 was smoothly connected on the original domain D1 and −f2\r
+and f2 also fits smoothly on the segment by the reflection principle. We can also\r
+check the smoothness condition on the other reflecting segments in the same way.\r
+• The function g vanishes on the boundary of D2.\r
+This is not trivial, but true on this example. On the boundary segment b in Fig.\r
+2, for example, −f2 + f3 − f5 vanishes because −f2 cancels f3 there and f5 was\r
+already zero. We can also check the boundary condition on the other boundary\r
+segments in the same way.\r
+One more condition is invertibility of transplantation, which guarantees that the\r
+dimensions of the space belonging to the eigenvalue µ, i.e., the multiplicity of µ,\r
+on D1 is equal to the dimension on D2 or less. This is expressed as the condition,\r
+• The transplantation is invertible as a linear map.\r
+This is not trivial, but can be easily checked to be true for this example.\r
+Thus these four conditions lead to Spec(D1) ⊂ Spec(D2). The last condition\r
+becomes the check to see that any eigenfunction with any eigenvalue ν on D2 can\r
+be transplanted onto D1 conversely, that is, spec(D2) ⊂ spec(D1). In this way, we\r
+know that these two domains are isospectral.\r
+f\r
+1\r
+f\r
+4\r
+f\r
+7\r
+f\r
+5\r
+f\r
+3\r
+f\r
+6\r
+f\r
+2\r
+3 6 4\r
++f f- - f\r
+1 7 3\r
++ ff f + +\r
+4 12\r
++ -+ f ff\r
+- f\r
+4\r
+f\r
+5\r
+f\r
+7\r
++ +\r
+2 3 5\r
+f f f + - - 6 7 2 f f f+ + -\r
+f\r
+1\r
+f\r
+5\r
+f\r
+6\r
++ - +\r
+r\r
+b\r
+Figure 2. Isospectral pairs of domains and the transplantation.\r
+These are conditions for eigenfunctions satisfying Dirichlet boundary conditions,\r
+but they are also Neumann isospectral. This can be verified by changing all the\r
+minus signs before each element of transplanted function fi to the plus one when one\r
+superposes them on the transformed domain. Conversely it is possible to construct\r
+Dirichlet isospectral pairs once Neumann isospectral are at hand. The procedure is\r
+as follows: (i) for both domains, attach the code σi = 1 or -1 to each building block\r
+i such that the codes of neighboring blocks are different, (ii) let the building block i
+
+Equivalence between isospectrality and iso-length spectrality 5\r
+with code σi be transformed onto the building block i\r
+′ with code σ′\r
+i\r
+, and if σiσi\r
+′ = 1\r
+then the sign before fiis set to be plus and otherwise minus. It is easy to show that\r
+the resulting pair of domains are Dirichlet isospectral. Therefore, isospectrality with\r
+respect to the Dirichlet and Neumann boundary conditions is equivalent.\r
+We also remark that the above proof is independent of the choice of a building\r
+block. This means that this example represents not only a single pair of isospectral\r
+domains but also a family of isospectral pairs, which are realized by replacing a\r
+building triangle simultaneously with another shaped building block. In particular,\r
+we can obtain the example of Gordon et al . in Fig. 1 by replacing the building block\r
+in Fig. 2 by a heptagon.\r
+3. Transplantability and its matrix representation\r
+In this section, we provide an alternative and more transparent condition for the\r
+transplantability of eigenfunctions. In what follows, we limit ourselves to the class of\r
+domains constructed by successive reflection of a fundamental building block, which\r
+we call unfolded domains, since transplantation of eigenfunctions is most simply done\r
+between such domains. In order to make successive unfolding possible, each building\r
+block is supposed to have three line segments at which the building block is reflected.\r
+The domains shown in Figs 1 and 2 are the examples. Hereafter we denote N as the\r
+number of building blocks composing the unfolded domain.\r
+The whole shape of the unfolded domain is determined by the choice of the\r
+building block and the rule specifying unfolding. The unfolding rule can be identified\r
+with the edge-colored graph and the correspondence is given in table 1. Each\r
+piece obtained by reflection is represented by the vertex of the graph, and the\r
+reflecting segment by its edge. The three boundary segments of the building block\r
+are distinguished by the color of the edges. Some boundary segments of the building\r
+block form the boundary of the whole unfolded domain, and we represent the edge\r
+corresponding to one of such boundary segments as the closed loop. An example of\r
+edge-colored graph is demonstrated in Fig. 3.\r
+Table 1.\r
+unfolding rule edge-colored graph\r
+pieces ←→ vertices\r
+reflecting segments ←→ edges\r
+kind of segment ←→ color of edge\r
+The structure of a graph is also represented by the adjacency matrix. That is, the\r
+reflecting rule to generate an unfolded domain P is given by the triplet of adjacency\r
+matrices MP\r
+a\r
+, MP\r
+b\r
+, and MP\r
+c defined as follows:\r
+(MP\r
+γ\r
+)\r
+ij =\r
+(\r
+1 if the piece i is adjacent to j by segment γ\r
+0 otherwise\r
+. (6)\r
+γ = a, b, c.\r
+Diagonal element (MP\r
+γ\r
+)\r
+ii is set to be 1 if the piece i has the boundary segment γ. The\r
+adjacency matrix is, in general, not uniquely determined even if one fixed the graph\r
+because there remains a freedom to determine the order of labeling vertices. In this
+
+Equivalence between isospectrality and iso-length spectrality 6\r
+Figure 3. An example of edge-colored graph representing an unfolding rule. The\r
+three types of lines(solid, dotted, broken with dots) denote three colors.\r
+setting, two unfolded domains P and Q are congruent if there exists a permutation\r
+matrix U such that\r
+UMP\r
+a U\r
+−1 = MQ\r
+a\r
+, UMP\r
+b U\r
+−1 = MQ\r
+b\r
+, UMP\r
+c U\r
+−1 = MQ\r
+c\r
+. (7)\r
+Here the permutation matrix is defined as a N ×N matrix in which each row or column\r
+has only one unity, and all the other elements are zero. If the building block has some\r
+symmetry, for example reflecting symmetry with respect to a certain axis, it might\r
+happen that non-permutation matrix connects the congruent pair P and Q. However,\r
+if one destructs the symmetry by changing the shape of the building block, such an\r
+“accidental” situation can be avoided. The condition (7) for a permutation matrix U,\r
+therefore, becomes the necessary and sufficient condition for the congruency of P and\r
+Q in this sense.\r
+Next we give the condition for transplantability of eigenfunction of two given\r
+unfolded domains using the adjacency matrices. By transplantability we mean the\r
+possibility that isospectrality of a pair of unfolded domains can be verified by the\r
+transplantation method.\r
+The transplantation procedure described in section 3 is explicitly expressed as\r
+follows. Let P and Q be two unfolded domains composed of N copies of a common\r
+building block. Let T : L\r
+2\r
+(P) ∋ f 7→ g ∈ L\r
+2\r
+(Q) be a linear transformation. We\r
+say that the transformation T is a transplantation if the transform g is obtained by\r
+cutting and pasting f, namely,\r
+gi =\r
+X\r
+N\r
+j=1\r
+Tijfj, i = 1, 2, . . . , N, (8)\r
+where fj and gi denote restrictions of f and g = T f to each piece, respectively. Also\r
+as mentioned in section 2, it is not trivial at all that the transform g becomes an\r
+eigenfunction on the transformed domain at this stage.\r
+For given unfolded domains P and Q, we say that they are transplantable if there\r
+exists an invertible transplantation T satisfying the following conditions:\r
+TMP\r
+a T\r
+−1 = MQ\r
+a\r
+, TMP\r
+b T\r
+−1 = MQ\r
+b\r
+, TMP\r
+c T\r
+−1 = MQ\r
+c\r
+. (9)\r
+It can be easily checked that smoothness on all the reflecting segments and the\r
+boundary conditions on the unfolded domains are satisfied if the above conditions
+
+Equivalence between isospectrality and iso-length spectrality 7\r
+are fulfilled. Here, existence of the inverse matrix T\r
+−1\r
+corresponds to the invertible\r
+condition. The condition (9) is the one for transplantability of Neumann boundary\r
+condition, but as remarked in section 2, it is equivalent to transplantability of the\r
+Dirichlet case. As was seen in the previous section, P and Q are isospectral if they\r
+are transplantable.\r
+Note that if T is a permutation matrix, then P and Q are merely congruent.\r
+Therefore, in order to construct isospectral but non-congruent pair of unfolded\r
+domains, we must find a matrix satisfying the condition (9), but not a permutation\r
+matrix.\r
+4. Transplantability and iso-length spectrality\r
+We next consider the length spectrum of the unfolded domain. The length spectrum\r
+is the set of length of closed trajectories or periodic orbits on the billiard domain. We\r
+first consider the relation between closed trajectories on the unfolded domain P and\r
+its fundamental building block B. Note that any periodic orbit on P can be regarded\r
+as the lift of a closed trajectory on B, because its projection is always a periodic orbit\r
+on B. However, the converse is not necessarily true. A single closed orbit on B yields\r
+N trajectories as its lift on the unfolded domain P, which are sometimes closed orbits\r
+on P but the others not. By the construction of the adjacency matrix MP\r
+γ\r
+, it is easy\r
+to see that the number of closed lifts of a given closed trajectory on B is counted as\r
+n\r
+P\r
+(γ) = Tr(MP\r
+γmMP\r
+γm−1\r
+· · · MP\r
+γ1\r
+), (10)\r
+where γ = γ1γ2 · · · γm (γi = a, b, c) denotes the sequence representing in which order\r
+a given closed trajectory on B hits the boundary segments (for example, see Fig.\r
+4). Such a sequence is not determined uniquely for a given closed orbit. In fact, if\r
+γ = γ1γ2 · · · γm is a sequence specifying some closed trajectory, then all sequences\r
+obtained by its cyclic shift such as γ2 · · · γmγ1, γ3 · · · γmγ1γ2, etc. can be regarded as\r
+the sequence giving to the same closed trajectory. However the number of closed lifts\r
+is invariant because of the relation:\r
+Tr(MP\r
+γm\r
+· · · MP\r
+γ2MPγ1\r
+) = Tr(MP\r
+γ1MPγm\r
+· · · MP\r
+γ2MPγ1\r
+(MP\r
+γ1\r
+)\r
+−1\r
+)\r
+= Tr(MP\r
+γ1MPγm\r
+· · · MP\r
+γ2\r
+)\r
+= · · · .\r
+(11)\r
+Thus the length spectrum of closed trajectories for P is determined by the length\r
+spectrum for B and n\r
+P (γ).\r
+In order that two unfolded domains P and Q constructed by the same-shaped\r
+building block B have the same length spectrum, it is sufficient that the numbers of\r
+closed lifts should coincide for all possible sequences of γ. It can easily be checked that\r
+n\r
+P (γ) and nQ(γ) are invariant if P and Q are transplantable, i.e., the condition (9)\r
+is satisfied for the adjacent matrices of P and Q. Therefore we obtain the following\r
+claim.\r
+Proposition 1 Let P and Q be two unfolded domains obtained by N times successive\r
+reflections of the same building block . If P and Q are transplantable, then n\r
+P (γ) =\r
+n\r
+Q(γ) for any sequence γ, which leads to iso-length spectrality of P and Q.\r
+The inverse of the above proposition is to inquire whether or not n\r
+P (γ) = nQ(γ)\r
+gives the sufficient condition for transplantability. The following statement gives its
+
+Equivalence between isospectrality and iso-length spectrality 8\r
+a\r
+b\r
+c\r
+Figure 4. Lifts of a closed billiard trajectory o with the sequence γ = babacbacbc.\r
+For the sequence γ, n\r
+P (γ) is equal to 1.\r
+answer: the condition n\r
+P (γ) = nQ(γ) is precisely the analog of the transplantability\r
+of eigenfunctions.\r
+Proposition 2 Let P and Q be two unfolded domains obtained by N times successive\r
+reflection of the same building block. If n\r
+P (γ) = nQ(γ) for any sequence γ, then P\r
+and Q are transplantable, which leads to isospectrality of P and Q.\r
+Proof We have shown that transplantability implies isospectrality in section 3. Here\r
+we will show that transplantability follows from n\r
+P (γ) = nQ(γ). Let GP and GQ be\r
+the groups generated by adjacency matrices:\r
+G\r
+P = hMP\r
+a\r
+, MP\r
+b\r
+, MP\r
+c\r
+i, GQ = hMQ\r
+a\r
+, MQ\r
+b\r
+, MQ\r
+c\r
+i. (12)\r
+Since adjacency matrices themselves are also permutation matrices introduced in\r
+section 4, GP and GQ are subgroups of the symmetric group SN , so they are finite.\r
+Let F3 be a free group generated by characters a, b, and c. We can define surjective\r
+homomorphism:\r
+Φ\r
+P\r
+: F3 ∋ γ1γ2 . . . γm 7−→ MP\r
+γmMP\r
+γm−1\r
+· · · MP\r
+γ1\r
+∈ G\r
+P\r
+, (13)\r
+then GP is isomorphic to F3/ ker ΦP . GQ is also isomorphic to F3/ ker ΦQ.\r
+We now assume that n\r
+P (γ) = nQ(γ) for any sequence γ, and note that MP\r
+γ =\r
+E ⇔ nP (γ) = N, where E denotes N × N identity matrix. Then we have\r
+ker ΦP = {γ | MP\r
+γ = E}\r
+= {γ | nP (γ) = N}\r
+= {γ | nQ(γ) = N}\r
+= {γ | MQ\r
+γ = E}.\r
+= ker ΦQ\r
+(14)
+
+Equivalence between isospectrality and iso-length spectrality 9\r
+Here MP\r
+γ\r
+and MQ\r
+γ denote MPγmMPγm−1\r
+· · · MP\r
+γ1\r
+and MQ\r
+γmMQγm−1\r
+· · · MQ\r
+γ1\r
+, respectively.\r
+This means that GP is isomorphic to GQ. We can suppose identity maps:\r
+ρ\r
+P\r
+: G\r
+P → GL(N, C), ρQ : GQ → GL(N, C) (15)\r
+to be linear representations of GP and GQ, respectively. Since GP is isomorphic to\r
+GQ,\r
+ρ : G\r
+P ∋ MP\r
+γ\r
+7→ MQ\r
+γ ∈ GL(N, C) (16)\r
+is another linear representation of GP . Note that n\r
+P (γ) and nQ(γ) become the\r
+characters of representations ρ\r
+P and ρ respectively, and they are equal by our\r
+assumption. Character theory tells that two representations with the same character\r
+are similar[11]. This means that there exists an invertible matrix T such that\r
+TMP\r
+γ = MQγ T for any γ (17)\r
+This leads to transplantability between P and Q. (Q.E.D)\r
+By propositions 1 and 2, we know equivalence between transplantability\r
+and coincidence of the numbers of closed lifts, which are sufficient conditions\r
+for isospectrality and iso-length spectrality respectively. However if we assume\r
+transplantability, which is more strict condition than isospectrality, then iso-length\r
+spectrality follows. Conversely, we assume coincidence of the numbers of closed lifts,\r
+as a sufficient condition for iso-length spectrality, then isospectrality follows. Our\r
+results can be summarized as the following schema.\r
+isospectrality ⇐ transplantability\r
+⇔ ∀γ nP(γ) = n\r
+Q(γ)\r
+⇒ iso-length spectrality\r
+5. List of transplantable pairs for N ≤ 13\r
+As an application of the above propositions, we enumerate isospectral pairs of unfolded\r
+domains whose isospectrality can be verified by the transplantation method. The\r
+candidate space we have to explore is the set UN which consists of all possible edge\u0002colored graphs without cycles, each of which represents an unfolding rule. The absence\r
+of cycles guarantees for the unfolded domain to be formed flatly for any shaped building\r
+block.\r
+The advantage to use the propositions 1 and 2 (and their proof) is that even\r
+for the purpose of listing up transplantable pairs(or triplets if possible), we do not\r
+have to make pairwise comparisons. This is because we can regard each relation\r
+n\r
+P (γ) = nQ(γ) as a necessary condition for the transplantability of P and Q, and use\r
+each relation as a “filter” to pick up transplantable candidates. More precise steps to\r
+find out the transplantable pairs is as follows:\r
+(i) For all edge-colored graphs P in UN , compute the character n\r
+P (γ) for all possible\r
+γ.\r
+(ii) prepare the spectrum of characters {n\r
+P (γ)} by ordering the character nP (γ)\r
+according to an appropriate rule for γ (lexicographical order of sequence γ, for\r
+example).\r
+(iii) pick up the pair of edge-colored graphs whose character spectra are the same.
+
+Equivalence between isospectrality and iso-length spectrality 10\r
+According to the proposition 2, if one finds the identical character spectra, i.e.,\r
+{n\r
+P (γ)} = {nQ(γ)}, they yield the transplantable pairs. One might be afraid that the\r
+step (i), i.e., enumeration of the character spectrum seems to require infinite number\r
+of steps, reflecting the fact that γ should run over all possible sequences composed of\r
+a, b, c. However, this is not the case, since GP only forms a finite group as mentioned\r
+in the proof of proposition 2.\r
+It is interesting to note that coincidence of the “ground state”, i.e., n\r
+P (γ) = nQ(γ)\r
+for null sequence of γ leads that the number of building blocks forming the unfolded\r
+domains is equal, which can be read that the area of two domains are equal. Also the\r
+condition for the “first exited state”, i.e., n\r
+P (γ) = nQ(γ) where γ = a, b or c, gives\r
+the condition for the length of the boundary to coincide. These geometrical quantities\r
+agree with the first and second terms in the Weyl expansion respectively [1, 12, 13].\r
+Table 2. The list of transplantable pairs up to N ≤ 13\r
+N ♯UN N ♯UN\r
+2 3 none 8 450 none\r
+3 3 none 9 1326 none\r
+4 10 none 10 4262 none\r
+5 18 none 11 13566 none\r
+6 57 none 12 44772 none\r
+7 143 7 pairs 13 148577 26 pairs\r
+Applying the above procedure to the edge colored graphs up to N = 13, we have\r
+enumerated all possible transplantable pairs, which are listed in Table 2. Fig. 5 shows\r
+isospectral pairs ever known, which are listed in [9]. Our result completely agrees with\r
+the list of known transplantable pairs presented in Fig. 5 at least up to N = 13. Note\r
+that all 17 examples given in [9] have been generated based on the Sunada’s method.\r
+6. Summary and discussion\r
+We have shown that transplantability of eigenfunctions on unfolded domains is\r
+equivalent to coincidence of the character spectrum {n(γ)}. The former is a sufficient\r
+condition for isospectrality and the latter for iso-length spectrality.\r
+As mentioned in the introduction, if so-called almost conjugate condition (5) is\r
+satisfied for a pair of subgroups H1 and H2, one knows that the quotients M/H1 and\r
+M/H2 are isospectral, and iso-length spectrality of M/H1 and M/H2 simultaneously\r
+follows. The first counter example of Kac’s original problem has been constructed\r
+with this Sunada’s condition [7]. Once an isospectral pair is obtained based on such\r
+a group theoretical argument together with the orbifold construction, one can easily\r
+check isospectrality of the resulting pair using the transplantation method. In this way,\r
+at the beginning, transplantation procedure serves only as a check or demonstration\r
+for a given pair of domains to be really isospectral. It is uncertain whether or not there\r
+exist transplantable pairs of domains which are not constructed based on the Sunada’s\r
+condition, while the Sunada’s condition is a sufficient condition for transplantability.\r
+However, by expressing an explicit condition (5) for transplantability using\r
+adjacency matrices, one notices the similarity between the almost conjugate condition\r
+(5) in Sunada’s theorem and the condition for existence of non permutation matrix T\r
+in (9). Even if there exists an invertible matrix T satisfying (9), it is not necessarily
+
+Equivalence between isospectrality and iso-length spectrality 11\r
+true that they give an isospectral pair because they are congruent if T is merely\r
+a permutation matrix. Such a situation reminds us of the case where the almost\r
+conjugate condition (5) is satisfied but the subgroups H1 and H2 are conjugate, which\r
+gives only an isometric pair.\r
+Therefore it would become a natural question to inquire about the relation\r
+between the Sunada’s construction of isospectral domains and the transplantation\r
+method. Numerical enumeration attempted in section 5 elucidated that at least up to\r
+N = 13 all the transplantable pairs are those pairs derived by Sunada’s method. This\r
+suggests the possibility of its equivalence.\r
+The condition n\r
+P (γ) = nQ(γ) for all possible sequences of γ, which is\r
+equivalent to transplantability of eigenfunctions, provides not only an efficient\r
+algorithm to enumerate transplantable pairs of planar domains, but has an interesting\r
+“geometrical” interpretation: Each n\r
+P (γ) plays a role of the coefficient of Weyl\r
+expansion as mentioned in section 5.\r
+Transplantation method, on which we have relied in this paper, is available only\r
+to the class of unfolded domains. Whether isospectrality is equivalent to iso-length\r
+spectrality in more general domains is still an open problem.\r
+Acknowledgments\r
+One of authors (Y. O.) would like to thank Prof. H. Urakawa and Dr. M.M. Sano for\r
+their encouragements and helpful discussions.\r
+References\r
+[1] Kac M 1966 Amer. Math. Monthly 73 1-23\r
+[2] Milnor J 1964 Proc. Nat. Acad. Sci. U.S.A. 51 542\r
+[3] Sunada T 1985 Ann. Math. 121 169-86\r
+[4] Brooks R 1988 Amer. Math. Monthly 95 823-39\r
+[5] Buser P 1986 Ann. Inst. Fourier, Grenoble 36 167-92\r
+[6] Brooks R and Tse R 1987 Nagoya Math. J. 36 823-39\r
+[7] Gordon C, Webb D and Wolpert S 1992 Invent. math. 110 1-22\r
+[8] B´erard P 1992 Math. Ann. 292 547-59\r
+[9] Buser P, Conway J, Doyle P and Semmler K D 1994 Internat. Math. Res. Notices 9\r
+[10] Brooks R 1999 Contemp. Math. 231 25-35.\r
+[11] Serre J P 1977 Linear representations of finite groups (NewYork: Springer-Verlag)\r
+[12] Berg M and Srisatkunarajah S 1988 J. London Math. Soc. 37 119-27\r
+[13] Mckean, Jr H P and Singer I M 1967 J. Diff. Geom. 1 43-69
+
+Equivalence between isospectrality and iso-length spectrality 12\r
+7172 7\r
+3 131\r
+132\r
+13\r
+3\r
+134 135\r
+136 137 138\r
+13\r
+9\r
+151\r
+152 15\r
+3\r
+15\r
+4\r
+211\r
+Figure 5. Known isospectral pairs of domains represented as edge-colored graph.\r
+Three colors of edges are distinguished by the types of lines (solid, zig-zag, double),\r
+and their loops are omitted. Note that if the colors of edges are permuted the\r
+resulting pairs also become isospectral. For example, the pair 72 represents three\r
+distinguishable pairs of domains for a fixed building block."""
+
+[metadata]
+title = "arxiv nlin0105068 okada shudo 2001 isospectrality iso length spectrality"
+authors = ["Unknown"]
+year = 2001
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:nlin/0105068v1 [nlin.CD] 30 May 2001\r
+Equivalence between isospectrality and iso-length\r
+spectrality for a certain class of planar billiard\r
+domains\r
+Yuichiro Okada †and Akira Shudo ‡\r
+Department of Physics, Tokyo Metropolitan University, Minami-Ohsawa,\r
+Hachioji, Tokyo 192-0397, Japan\r
+Abstract.\r
+Isospectrality of the planar domains which are obtained by successive\r
+unfolding of a fundamental building block is studied in relation to iso-length\r
+spectrality of the corresponding domains. Although an explicit and exact trace\r
+formula such as Poisson’s summation formula or Selberg’s trace formula is not\r
+known to exist for such planar domains, equivalence between isospectrality and\r
+iso-length spectrality in a certain setting can be proved by employing the matrix\r
+representation of “transplantation of eigenfunctions”. As an application of the\r
+equivalence, transplantable pairs of domains, which are all isospectral pair of\r
+planar domains and therefore counter examples of Kac’s question “can one hear\r
+the shape of a drum?”, are numerically enumerated and it is found at least up\r
+to the domain composed of 13 building blocks transplantable pairs coincide with\r
+those constructed by the method due to Sunada."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+A famous question of M. Kac, “can one hear the shape of a drum?”, is concerned\r
+with isospectrality of the planar domains [1]. The bounded domains D1 and D2 are\r
+called isospectral if two domains have the same eigenvalue spectrum up to the degree\r
+of multiplicities, i.e., spec(D1) = spec(D2), where\r
+spec(D) = {µ1 ≤ µ2 ≤ · · · | ∆fi = µifiin D, fi = 0 on ∂D (i = 1, 2, · · ·)}.(1)\r
+Kac’s question is alternatively stated as “are the planar domains D1 and D2 congruent\r
+if spec(D1) = spec(D2)?”.\r
+Iso-length spectrality of the domains is analogously introduced for the length\r
+spectrum of closed billiard trajectories on the corresponding domains D1 and D2.\r
+Also for iso-length spectrality one can pose the same question as Kac’s. The problem\r
+we discuss here is equivalence between isospectrality and iso-length spectrality on the\r
+planar domains of a certain class.\r
+If either the eigenvalue spectrum or the length spectrum determines the shape of\r
+the domain uniquely, the equivalence problem becomes obvious since a congruent pair\r
+of domains trivially provides both isospectrum and iso-length spectrum. However, it\r
+is known that there exists a non-trivial case where equivalence between isospectrality\r
+and iso-length spectrality is concluded. Such a situation was reported by Milnor for\r
+the first time [2]. It is known that there exist the self-dual lattices L1 and L2 in\r
+R\r
+16 which are not congruent in the sense that no rotation of R16 carries L1 to L2,
+
+Equivalence between isospectrality and iso-length spectrality 2\r
+nevertheless they own the same length spectrum. That is, the quotients of R16 by these\r
+lattices, R16/L1 and R16/L2 are non-isometric but iso-length spectral. Furthermore\r
+its isospectrality can also be derived from the exact trace formula which represents\r
+duality relation between the spectrum of Laplacian acting on the flat torus and the\r
+corresponding length spectrum of closed geodesics. The flat torus which is defined as\r
+a quotient Rn/Γ of Rn by a lattice Γ of rank n, the set of eigenvalues of Helmholtz\r
+equation ∆f = µf is explicitly given as,\r
+{4π\r
+2\r
+kσk\r
+2\r
+| σ ∈ Γ\r
+∗\r
+}. (2)\r
+Here Γ∗ denotes the dual lattice of Γ, i.e., Γ∗ = {σ ∈ Rn | σ · γ ∈ Z ∀γ ∈ Γ}. The\r
+corresponding length spectrum which is the set of closed geodesics on the same torus\r
+is expressed just by the distance between the origin and each lattice point on Γ:\r
+{kγk | γ ∈ Γ}. (3)\r
+The two spectra are connected via Poisson’s summation formula or Jacobi identity:\r
+X\r
+σ∈Γ∗\r
+exp(−4π\r
+2\r
+kσk\r
+2\r
+t) = (4πt)\r
+−n/2\r
+vol(Rn/Γ)X\r
+γ∈Γ\r
+exp(−kγk\r
+2\r
+/4t). (4)\r
+This trace formula immediately leads us to equivalence between the isospectrality and\r
+iso-length spectrality, that is, two flat tori are isospectral if and only if they have the\r
+same length spectrum. Milnor’s work is not a direct answer to the original version\r
+of Kac’s question because it is not concerned with the planar domains. But from\r
+Milnor’s example one learned that there really exist non-congruent domains with a\r
+common length and eigenvalue spectrum.\r
+In more general cases where two Riemannian manifolds have a common finite\r
+Riemannian covering, a sufficient condition for isospectrality was given by Sunada [3].\r
+Let G be a finite group which acts freely on a certain compact Riemannian manifold\r
+M by isometries. Sunada’s theorem tells us that the quotients M/H1 and M/H2 are\r
+isospectral if there exist two subgroups H1 and H2 of G, which satisfy so-called almost\r
+conjugate condition:\r
+♯\r
+([g] ∩ H1) =♯([g] ∩ H2) (5)\r
+for any conjugacy class [g] in G. The proof is based on a sort of trace formula which\r
+can be regarded as a prototype of the Selberg trace formula [3, 4]. If subgroups H1\r
+and H2 are conjugate in the usual sense, then these quotients M/H1 and M/H2 are\r
+merely isometric. However it had been known that there exist triplets (G, H1, H2)\r
+so that H1 and H2 are almost conjugate but not conjugate in G. Such triplets were\r
+used to construct some isospectral but non-isometric pairs of Riemannian surfaces by\r
+Buser [5] and Brooks and Tse [6]. Sunada also proved that M/H1 and M/H2 have\r
+the same length spectrum of closed geodesics [3]. Therefore, in this case, iso-length\r
+spectrality is derived together with isospectrality from the same source.\r
+In case of planar domains, after a quarter of century, Gordon, Webb, and Wolpert\r
+[7] solved Kac’s original question also negatively by constructing an isospectral but\r
+non-congruent pair of planar domains (see Fig. 1). For the construction, they used\r
+a version of Sunada’s theorem, which was extended to the orbiford (billiard) setting\r
+by B´erard [8]. Since the source of isospectrality was Sunada’s theorem, iso-length\r
+spectrality naturally follows as well.\r
+However, if there exists an isospectral pair of planar domains which are not\r
+given by Sunada’s construction, equivalence of isospectrality and iso-length spectrality\r
+cannot straightforwardly be discussed. In fact, no one can exclude such a situation
+
+Equivalence between isospectrality and iso-length spectrality 3\r
+because the Sunada’s condition gives merely a sufficient condition for the isospectrality\r
+and also iso-length spectrality. Nevertheless, as we will show below, it is possible to\r
+relate them through the notion of so-called transplantation of eigenfunctions. The\r
+transplantation method is originally invented by Buser, Conway, Doyle, and Semmler\r
+to reexamine isospectrality of some given domains [9]. They constructed 17 families\r
+of isospectral pairs of domains based on the Sunada’s method, and confirmed these\r
+isospectrality by the transplantation method. As far as planar domains are concerned,\r
+these pairs are, to authors’ knowledge, all isospectral pairs ever known.\r
+It should be remarked that the transplantation method is not independent of the\r
+Sunada’s theorem. In the above case of quotient manifolds, Brooks gave an alternative\r
+proof of Sunada’s theorem based on the transplantation method, which appears a\r
+necessary condition for the assumption of the theorem [10] . However equivalence\r
+between these two methods has not been proved in case of planar domains.\r
+Figure 1. Isospectral pairs of domains constructed by Gordon et al .\r
+The organization of this paper is as follows. We first explain the transplantation\r
+method in section 2 and give its matrix representation in section 3. In section 4, we\r
+provide a proof showing that isospectrality and iso-length spectrality is equivalent for\r
+a certain class of domains, that is, those domains constructed by successive unfolding\r
+of a fundamental building block. All isospectral pairs ever known belong to this class.\r
+In section 5 we enumerate isospectral pairs of domains and compared them with the\r
+table obtained by Buser, Conway, Doyle, and Semmler [9]. It is shown that our labor\r
+of searching isospectral pairs is considerably reduced as a bi-product of our result in\r
+section 4. Section 6 is devoted to summary and discussion of our work."""
+
+[[sections]]
+number = "2"
+title = "Transplantation method"
+text = """
+Let us consider two domains D1 and D2 as Fig. 2. We here describe the\r
+transplantation method by taking an example of the proof of isospectrality based\r
+on it. We follow the exposition given by Buser et al [9].\r
+Transplantation is a procedure which is cutting an arbitrary function f defined\r
+on D1 into its restrictions on each building block, say f1, f2, . . . , f7, and rebuilding a\r
+new function g on D2 by superposing f1, f2, . . . , f7. Note that such a procedure relied\r
+crucially on the peculiarity of the domains, which are composed of several pieces\r
+obtained by successive reflection of a certain common building block.\r
+By the transplantation shown in Fig. 2, any eigenfunction f with any eigenvalue\r
+µ on D1 is transplanted onto D2 so that the transform g is also an eigenfunction
+
+Equivalence between isospectrality and iso-length spectrality 4\r
+with the same eigenvalue µ. This can actually be confirmed by checking the following\r
+conditions:\r
+• ∆g = µg in the interior of each piece.\r
+This is always true because g is given as a sum of several fi’s on each piece.\r
+• The function g is smoothly connected on all reflecting segments\r
+This is not trivial, but true on this example. On the reflecting segment r in Fig.\r
+2, for example, −f2 + f3 − f5 fits smoothly with +f2 + f6 − f7 because f3 and\r
+f6, or −f5 and −f7 was smoothly connected on the original domain D1 and −f2\r
+and f2 also fits smoothly on the segment by the reflection principle. We can also\r
+check the smoothness condition on the other reflecting segments in the same way.\r
+• The function g vanishes on the boundary of D2.\r
+This is not trivial, but true on this example. On the boundary segment b in Fig.\r
+2, for example, −f2 + f3 − f5 vanishes because −f2 cancels f3 there and f5 was\r
+already zero. We can also check the boundary condition on the other boundary\r
+segments in the same way.\r
+One more condition is invertibility of transplantation, which guarantees that the\r
+dimensions of the space belonging to the eigenvalue µ, i.e., the multiplicity of µ,\r
+on D1 is equal to the dimension on D2 or less. This is expressed as the condition,\r
+• The transplantation is invertible as a linear map.\r
+This is not trivial, but can be easily checked to be true for this example.\r
+Thus these four conditions lead to Spec(D1) ⊂ Spec(D2). The last condition\r
+becomes the check to see that any eigenfunction with any eigenvalue ν on D2 can\r
+be transplanted onto D1 conversely, that is, spec(D2) ⊂ spec(D1). In this way, we\r
+know that these two domains are isospectral.\r
+f\r
+1\r
+f\r
+4\r
+f\r
+7\r
+f\r
+5\r
+f\r
+3\r
+f\r
+6\r
+f\r
+2\r
+3 6 4\r
++f f- - f\r
+1 7 3\r
++ ff f + +\r
+4 12\r
++ -+ f ff\r
+- f\r
+4\r
+f\r
+5\r
+f\r
+7\r
++ +\r
+2 3 5\r
+f f f + - - 6 7 2 f f f+ + -\r
+f\r
+1\r
+f\r
+5\r
+f\r
+6\r
++ - +\r
+r\r
+b\r
+Figure 2. Isospectral pairs of domains and the transplantation.\r
+These are conditions for eigenfunctions satisfying Dirichlet boundary conditions,\r
+but they are also Neumann isospectral. This can be verified by changing all the\r
+minus signs before each element of transplanted function fi to the plus one when one\r
+superposes them on the transformed domain. Conversely it is possible to construct\r
+Dirichlet isospectral pairs once Neumann isospectral are at hand. The procedure is\r
+as follows: (i) for both domains, attach the code σi = 1 or -1 to each building block\r
+i such that the codes of neighboring blocks are different, (ii) let the building block i
+
+Equivalence between isospectrality and iso-length spectrality 5\r
+with code σi be transformed onto the building block i\r
+′ with code σ′\r
+i\r
+, and if σiσi\r
+′ = 1\r
+then the sign before fiis set to be plus and otherwise minus. It is easy to show that\r
+the resulting pair of domains are Dirichlet isospectral. Therefore, isospectrality with\r
+respect to the Dirichlet and Neumann boundary conditions is equivalent.\r
+We also remark that the above proof is independent of the choice of a building\r
+block. This means that this example represents not only a single pair of isospectral\r
+domains but also a family of isospectral pairs, which are realized by replacing a\r
+building triangle simultaneously with another shaped building block. In particular,\r
+we can obtain the example of Gordon et al . in Fig. 1 by replacing the building block\r
+in Fig. 2 by a heptagon."""
+
+[[sections]]
+number = "3"
+title = "Transplantability and its matrix representation"
+text = """
+In this section, we provide an alternative and more transparent condition for the\r
+transplantability of eigenfunctions. In what follows, we limit ourselves to the class of\r
+domains constructed by successive reflection of a fundamental building block, which\r
+we call unfolded domains, since transplantation of eigenfunctions is most simply done\r
+between such domains. In order to make successive unfolding possible, each building\r
+block is supposed to have three line segments at which the building block is reflected.\r
+The domains shown in Figs 1 and 2 are the examples. Hereafter we denote N as the\r
+number of building blocks composing the unfolded domain.\r
+The whole shape of the unfolded domain is determined by the choice of the\r
+building block and the rule specifying unfolding. The unfolding rule can be identified\r
+with the edge-colored graph and the correspondence is given in table 1. Each\r
+piece obtained by reflection is represented by the vertex of the graph, and the\r
+reflecting segment by its edge. The three boundary segments of the building block\r
+are distinguished by the color of the edges. Some boundary segments of the building\r
+block form the boundary of the whole unfolded domain, and we represent the edge\r
+corresponding to one of such boundary segments as the closed loop. An example of\r
+edge-colored graph is demonstrated in Fig. 3.\r
+Table 1.\r
+unfolding rule edge-colored graph\r
+pieces ←→ vertices\r
+reflecting segments ←→ edges\r
+kind of segment ←→ color of edge\r
+The structure of a graph is also represented by the adjacency matrix. That is, the\r
+reflecting rule to generate an unfolded domain P is given by the triplet of adjacency\r
+matrices MP\r
+a\r
+, MP\r
+b\r
+, and MP\r
+c defined as follows:\r
+(MP\r
+γ\r
+)\r
+ij =\r
+(\r
+1 if the piece i is adjacent to j by segment γ\r
+0 otherwise\r
+. (6)\r
+γ = a, b, c.\r
+Diagonal element (MP\r
+γ\r
+)\r
+ii is set to be 1 if the piece i has the boundary segment γ. The\r
+adjacency matrix is, in general, not uniquely determined even if one fixed the graph\r
+because there remains a freedom to determine the order of labeling vertices. In this
+
+Equivalence between isospectrality and iso-length spectrality 6\r
+Figure 3. An example of edge-colored graph representing an unfolding rule. The\r
+three types of lines(solid, dotted, broken with dots) denote three colors.\r
+setting, two unfolded domains P and Q are congruent if there exists a permutation\r
+matrix U such that\r
+UMP\r
+a U\r
+−1 = MQ\r
+a\r
+, UMP\r
+b U\r
+−1 = MQ\r
+b\r
+, UMP\r
+c U\r
+−1 = MQ\r
+c\r
+. (7)\r
+Here the permutation matrix is defined as a N ×N matrix in which each row or column\r
+has only one unity, and all the other elements are zero. If the building block has some\r
+symmetry, for example reflecting symmetry with respect to a certain axis, it might\r
+happen that non-permutation matrix connects the congruent pair P and Q. However,\r
+if one destructs the symmetry by changing the shape of the building block, such an\r
+“accidental” situation can be avoided. The condition (7) for a permutation matrix U,\r
+therefore, becomes the necessary and sufficient condition for the congruency of P and\r
+Q in this sense.\r
+Next we give the condition for transplantability of eigenfunction of two given\r
+unfolded domains using the adjacency matrices. By transplantability we mean the\r
+possibility that isospectrality of a pair of unfolded domains can be verified by the\r
+transplantation method.\r
+The transplantation procedure described in section 3 is explicitly expressed as\r
+follows. Let P and Q be two unfolded domains composed of N copies of a common\r
+building block. Let T : L\r
+2\r
+(P) ∋ f 7→ g ∈ L\r
+2\r
+(Q) be a linear transformation. We\r
+say that the transformation T is a transplantation if the transform g is obtained by\r
+cutting and pasting f, namely,\r
+gi =\r
+X\r
+N\r
+j=1\r
+Tijfj, i = 1, 2, . . . , N, (8)\r
+where fj and gi denote restrictions of f and g = T f to each piece, respectively. Also\r
+as mentioned in section 2, it is not trivial at all that the transform g becomes an\r
+eigenfunction on the transformed domain at this stage.\r
+For given unfolded domains P and Q, we say that they are transplantable if there\r
+exists an invertible transplantation T satisfying the following conditions:\r
+TMP\r
+a T\r
+−1 = MQ\r
+a\r
+, TMP\r
+b T\r
+−1 = MQ\r
+b\r
+, TMP\r
+c T\r
+−1 = MQ\r
+c\r
+. (9)\r
+It can be easily checked that smoothness on all the reflecting segments and the\r
+boundary conditions on the unfolded domains are satisfied if the above conditions
+
+Equivalence between isospectrality and iso-length spectrality 7\r
+are fulfilled. Here, existence of the inverse matrix T\r
+−1\r
+corresponds to the invertible\r
+condition. The condition (9) is the one for transplantability of Neumann boundary\r
+condition, but as remarked in section 2, it is equivalent to transplantability of the\r
+Dirichlet case. As was seen in the previous section, P and Q are isospectral if they\r
+are transplantable.\r
+Note that if T is a permutation matrix, then P and Q are merely congruent.\r
+Therefore, in order to construct isospectral but non-congruent pair of unfolded\r
+domains, we must find a matrix satisfying the condition (9), but not a permutation\r
+matrix."""
+
+[[sections]]
+number = "4"
+title = "Transplantability and iso-length spectrality"
+text = """
+We next consider the length spectrum of the unfolded domain. The length spectrum\r
+is the set of length of closed trajectories or periodic orbits on the billiard domain. We\r
+first consider the relation between closed trajectories on the unfolded domain P and\r
+its fundamental building block B. Note that any periodic orbit on P can be regarded\r
+as the lift of a closed trajectory on B, because its projection is always a periodic orbit\r
+on B. However, the converse is not necessarily true. A single closed orbit on B yields\r
+N trajectories as its lift on the unfolded domain P, which are sometimes closed orbits\r
+on P but the others not. By the construction of the adjacency matrix MP\r
+γ\r
+, it is easy\r
+to see that the number of closed lifts of a given closed trajectory on B is counted as\r
+n\r
+P\r
+(γ) = Tr(MP\r
+γmMP\r
+γm−1\r
+· · · MP\r
+γ1\r
+), (10)\r
+where γ = γ1γ2 · · · γm (γi = a, b, c) denotes the sequence representing in which order\r
+a given closed trajectory on B hits the boundary segments (for example, see Fig.\r
+4). Such a sequence is not determined uniquely for a given closed orbit. In fact, if\r
+γ = γ1γ2 · · · γm is a sequence specifying some closed trajectory, then all sequences\r
+obtained by its cyclic shift such as γ2 · · · γmγ1, γ3 · · · γmγ1γ2, etc. can be regarded as\r
+the sequence giving to the same closed trajectory. However the number of closed lifts\r
+is invariant because of the relation:\r
+Tr(MP\r
+γm\r
+· · · MP\r
+γ2MPγ1\r
+) = Tr(MP\r
+γ1MPγm\r
+· · · MP\r
+γ2MPγ1\r
+(MP\r
+γ1\r
+)\r
+−1\r
+)\r
+= Tr(MP\r
+γ1MPγm\r
+· · · MP\r
+γ2\r
+)\r
+= · · · .\r
+(11)\r
+Thus the length spectrum of closed trajectories for P is determined by the length\r
+spectrum for B and n\r
+P (γ).\r
+In order that two unfolded domains P and Q constructed by the same-shaped\r
+building block B have the same length spectrum, it is sufficient that the numbers of\r
+closed lifts should coincide for all possible sequences of γ. It can easily be checked that\r
+n\r
+P (γ) and nQ(γ) are invariant if P and Q are transplantable, i.e., the condition (9)\r
+is satisfied for the adjacent matrices of P and Q. Therefore we obtain the following\r
+claim.\r
+Proposition 1 Let P and Q be two unfolded domains obtained by N times successive\r
+reflections of the same building block . If P and Q are transplantable, then n\r
+P (γ) =\r
+n\r
+Q(γ) for any sequence γ, which leads to iso-length spectrality of P and Q.\r
+The inverse of the above proposition is to inquire whether or not n\r
+P (γ) = nQ(γ)\r
+gives the sufficient condition for transplantability. The following statement gives its
+
+Equivalence between isospectrality and iso-length spectrality 8\r
+a\r
+b\r
+c\r
+Figure 4. Lifts of a closed billiard trajectory o with the sequence γ = babacbacbc.\r
+For the sequence γ, n\r
+P (γ) is equal to 1.\r
+answer: the condition n\r
+P (γ) = nQ(γ) is precisely the analog of the transplantability\r
+of eigenfunctions.\r
+Proposition 2 Let P and Q be two unfolded domains obtained by N times successive\r
+reflection of the same building block. If n\r
+P (γ) = nQ(γ) for any sequence γ, then P\r
+and Q are transplantable, which leads to isospectrality of P and Q.\r
+Proof We have shown that transplantability implies isospectrality in section 3. Here\r
+we will show that transplantability follows from n\r
+P (γ) = nQ(γ). Let GP and GQ be\r
+the groups generated by adjacency matrices:\r
+G\r
+P = hMP\r
+a\r
+, MP\r
+b\r
+, MP\r
+c\r
+i, GQ = hMQ\r
+a\r
+, MQ\r
+b\r
+, MQ\r
+c\r
+i. (12)\r
+Since adjacency matrices themselves are also permutation matrices introduced in\r
+section 4, GP and GQ are subgroups of the symmetric group SN , so they are finite.\r
+Let F3 be a free group generated by characters a, b, and c. We can define surjective\r
+homomorphism:\r
+Φ\r
+P\r
+: F3 ∋ γ1γ2 . . . γm 7−→ MP\r
+γmMP\r
+γm−1\r
+· · · MP\r
+γ1\r
+∈ G\r
+P\r
+, (13)\r
+then GP is isomorphic to F3/ ker ΦP . GQ is also isomorphic to F3/ ker ΦQ.\r
+We now assume that n\r
+P (γ) = nQ(γ) for any sequence γ, and note that MP\r
+γ =\r
+E ⇔ nP (γ) = N, where E denotes N × N identity matrix. Then we have\r
+ker ΦP = {γ | MP\r
+γ = E}\r
+= {γ | nP (γ) = N}\r
+= {γ | nQ(γ) = N}\r
+= {γ | MQ\r
+γ = E}.\r
+= ker ΦQ\r
+(14)
+
+Equivalence between isospectrality and iso-length spectrality 9\r
+Here MP\r
+γ\r
+and MQ\r
+γ denote MPγmMPγm−1\r
+· · · MP\r
+γ1\r
+and MQ\r
+γmMQγm−1\r
+· · · MQ\r
+γ1\r
+, respectively.\r
+This means that GP is isomorphic to GQ. We can suppose identity maps:\r
+ρ\r
+P\r
+: G\r
+P → GL(N, C), ρQ : GQ → GL(N, C) (15)\r
+to be linear representations of GP and GQ, respectively. Since GP is isomorphic to\r
+GQ,\r
+ρ : G\r
+P ∋ MP\r
+γ\r
+7→ MQ\r
+γ ∈ GL(N, C) (16)\r
+is another linear representation of GP . Note that n\r
+P (γ) and nQ(γ) become the\r
+characters of representations ρ\r
+P and ρ respectively, and they are equal by our\r
+assumption. Character theory tells that two representations with the same character\r
+are similar[11]. This means that there exists an invertible matrix T such that\r
+TMP\r
+γ = MQγ T for any γ (17)\r
+This leads to transplantability between P and Q. (Q.E.D)\r
+By propositions 1 and 2, we know equivalence between transplantability\r
+and coincidence of the numbers of closed lifts, which are sufficient conditions\r
+for isospectrality and iso-length spectrality respectively. However if we assume\r
+transplantability, which is more strict condition than isospectrality, then iso-length\r
+spectrality follows. Conversely, we assume coincidence of the numbers of closed lifts,\r
+as a sufficient condition for iso-length spectrality, then isospectrality follows. Our\r
+results can be summarized as the following schema.\r
+isospectrality ⇐ transplantability\r
+⇔ ∀γ nP(γ) = n\r
+Q(γ)\r
+⇒ iso-length spectrality"""
+
+[[sections]]
+number = "5"
+title = "List of transplantable pairs for N ≤ 13"
+text = """
+As an application of the above propositions, we enumerate isospectral pairs of unfolded\r
+domains whose isospectrality can be verified by the transplantation method. The\r
+candidate space we have to explore is the set UN which consists of all possible edge\u0002colored graphs without cycles, each of which represents an unfolding rule. The absence\r
+of cycles guarantees for the unfolded domain to be formed flatly for any shaped building\r
+block.\r
+The advantage to use the propositions 1 and 2 (and their proof) is that even\r
+for the purpose of listing up transplantable pairs(or triplets if possible), we do not\r
+have to make pairwise comparisons. This is because we can regard each relation\r
+n\r
+P (γ) = nQ(γ) as a necessary condition for the transplantability of P and Q, and use\r
+each relation as a “filter” to pick up transplantable candidates. More precise steps to\r
+find out the transplantable pairs is as follows:\r
+(i) For all edge-colored graphs P in UN , compute the character n\r
+P (γ) for all possible\r
+γ.\r
+(ii) prepare the spectrum of characters {n\r
+P (γ)} by ordering the character nP (γ)\r
+according to an appropriate rule for γ (lexicographical order of sequence γ, for\r
+example).\r
+(iii) pick up the pair of edge-colored graphs whose character spectra are the same.
+
+Equivalence between isospectrality and iso-length spectrality 10\r
+According to the proposition 2, if one finds the identical character spectra, i.e.,\r
+{n\r
+P (γ)} = {nQ(γ)}, they yield the transplantable pairs. One might be afraid that the\r
+step (i), i.e., enumeration of the character spectrum seems to require infinite number\r
+of steps, reflecting the fact that γ should run over all possible sequences composed of\r
+a, b, c. However, this is not the case, since GP only forms a finite group as mentioned\r
+in the proof of proposition 2.\r
+It is interesting to note that coincidence of the “ground state”, i.e., n\r
+P (γ) = nQ(γ)\r
+for null sequence of γ leads that the number of building blocks forming the unfolded\r
+domains is equal, which can be read that the area of two domains are equal. Also the\r
+condition for the “first exited state”, i.e., n\r
+P (γ) = nQ(γ) where γ = a, b or c, gives\r
+the condition for the length of the boundary to coincide. These geometrical quantities\r
+agree with the first and second terms in the Weyl expansion respectively [1, 12, 13].\r
+Table 2. The list of transplantable pairs up to N ≤ 13\r
+N ♯UN N ♯UN\r
+2 3 none 8 450 none\r
+3 3 none 9 1326 none\r
+4 10 none 10 4262 none\r
+5 18 none 11 13566 none\r
+6 57 none 12 44772 none\r
+7 143 7 pairs 13 148577 26 pairs\r
+Applying the above procedure to the edge colored graphs up to N = 13, we have\r
+enumerated all possible transplantable pairs, which are listed in Table 2. Fig. 5 shows\r
+isospectral pairs ever known, which are listed in [9]. Our result completely agrees with\r
+the list of known transplantable pairs presented in Fig. 5 at least up to N = 13. Note\r
+that all 17 examples given in [9] have been generated based on the Sunada’s method."""
+
+[[sections]]
+number = "6"
+title = "Summary and discussion"
+text = """
+We have shown that transplantability of eigenfunctions on unfolded domains is\r
+equivalent to coincidence of the character spectrum {n(γ)}. The former is a sufficient\r
+condition for isospectrality and the latter for iso-length spectrality.\r
+As mentioned in the introduction, if so-called almost conjugate condition (5) is\r
+satisfied for a pair of subgroups H1 and H2, one knows that the quotients M/H1 and\r
+M/H2 are isospectral, and iso-length spectrality of M/H1 and M/H2 simultaneously\r
+follows. The first counter example of Kac’s original problem has been constructed\r
+with this Sunada’s condition [7]. Once an isospectral pair is obtained based on such\r
+a group theoretical argument together with the orbifold construction, one can easily\r
+check isospectrality of the resulting pair using the transplantation method. In this way,\r
+at the beginning, transplantation procedure serves only as a check or demonstration\r
+for a given pair of domains to be really isospectral. It is uncertain whether or not there\r
+exist transplantable pairs of domains which are not constructed based on the Sunada’s\r
+condition, while the Sunada’s condition is a sufficient condition for transplantability.\r
+However, by expressing an explicit condition (5) for transplantability using\r
+adjacency matrices, one notices the similarity between the almost conjugate condition\r
+(5) in Sunada’s theorem and the condition for existence of non permutation matrix T\r
+in (9). Even if there exists an invertible matrix T satisfying (9), it is not necessarily
+
+Equivalence between isospectrality and iso-length spectrality 11\r
+true that they give an isospectral pair because they are congruent if T is merely\r
+a permutation matrix. Such a situation reminds us of the case where the almost\r
+conjugate condition (5) is satisfied but the subgroups H1 and H2 are conjugate, which\r
+gives only an isometric pair.\r
+Therefore it would become a natural question to inquire about the relation\r
+between the Sunada’s construction of isospectral domains and the transplantation\r
+method. Numerical enumeration attempted in section 5 elucidated that at least up to\r
+N = 13 all the transplantable pairs are those pairs derived by Sunada’s method. This\r
+suggests the possibility of its equivalence.\r
+The condition n\r
+P (γ) = nQ(γ) for all possible sequences of γ, which is\r
+equivalent to transplantability of eigenfunctions, provides not only an efficient\r
+algorithm to enumerate transplantable pairs of planar domains, but has an interesting\r
+“geometrical” interpretation: Each n\r
+P (γ) plays a role of the coefficient of Weyl\r
+expansion as mentioned in section 5.\r
+Transplantation method, on which we have relied in this paper, is available only\r
+to the class of unfolded domains. Whether isospectrality is equivalent to iso-length\r
+spectrality in more general domains is still an open problem.\r
+Acknowledgments\r
+One of authors (Y. O.) would like to thank Prof. H. Urakawa and Dr. M.M. Sano for\r
+their encouragements and helpful discussions.\r
+References\r
+[1] Kac M 1966 Amer. Math. Monthly 73 1-23\r
+[2] Milnor J 1964 Proc. Nat. Acad. Sci. U.S.A. 51 542\r
+[3] Sunada T 1985 Ann. Math. 121 169-86\r
+[4] Brooks R 1988 Amer. Math. Monthly 95 823-39\r
+[5] Buser P 1986 Ann. Inst. Fourier, Grenoble 36 167-92\r
+[6] Brooks R and Tse R 1987 Nagoya Math. J. 36 823-39\r
+[7] Gordon C, Webb D and Wolpert S 1992 Invent. math. 110 1-22\r
+[8] B´erard P 1992 Math. Ann. 292 547-59\r
+[9] Buser P, Conway J, Doyle P and Semmler K D 1994 Internat. Math. Res. Notices 9\r
+[10] Brooks R 1999 Contemp. Math. 231 25-35.\r
+[11] Serre J P 1977 Linear representations of finite groups (NewYork: Springer-Verlag)\r
+[12] Berg M and Srisatkunarajah S 1988 J. London Math. Soc. 37 119-27\r
+[13] Mckean, Jr H P and Singer I M 1967 J. Diff. Geom. 1 43-69
+
+Equivalence between isospectrality and iso-length spectrality 12\r
+7172 7\r
+3 131\r
+132\r
+13\r
+3\r
+134 135\r
+136 137 138\r
+13\r
+9\r
+151\r
+152 15\r
+3\r
+15\r
+4"""
+
+[[sections]]
+number = "211"
+title = "Figure 5. Known isospectral pairs of domains represented as edge-colored graph."
+text = """
+Three colors of edges are distinguished by the types of lines (solid, zig-zag, double),\r
+and their loops are omitted. Note that if the colors of edges are permuted the\r
+resulting pairs also become isospectral. For example, the pair 72 represents three\r
+distinguishable pairs of domains for a fixed building block."""
+
+[[tables]]
+page_num = 8
+headers = [
+    "= {γ",
+    "nP (γ) = N}",
+]
+rows = [
+    [
+    "= {γ",
+    "nQ(γ) = N}",
+],
+    [
+    "= {γ",
+    "MQ",
+],
+]
+
+[[figures]]
+label = "fig:1"
+page_num = 5
+image_path = "images/image_p5_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 5
+image_path = "images/image_p5_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 5
+image_path = "images/image_p5_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 10
+image_path = "images/image_p10_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 10
+image_path = "images/image_p10_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 10
+image_path = "images/image_p10_6.png"

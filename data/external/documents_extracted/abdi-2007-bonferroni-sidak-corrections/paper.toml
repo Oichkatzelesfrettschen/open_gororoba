@@ -1,0 +1,610 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+The Bonferonni and Šidák\r
+Corrections for Multiple Comparisons\r
+Hervé Abdi1\r
+1 Overview\r
+The more tests we perform on a set of data, the more likely we are\r
+to reject the null hypothesis when it is true (i.e., a “Type I” error).\r
+This is a consequence of the logic of hypothesis testing: We reject\r
+the null hypothesis if we witness a rare event. But the larger the\r
+number of tests, the easier it is to find rare events and therefore\r
+the easier it is to make the mistake of thinking that there is an ef\u0002fect when there is none. This problem is called the inflation of the\r
+alpha level. In order to be protected from it, one strategy is to cor\u0002rect the alpha level when performing multiple tests. Making the\r
+alpha level more stringent (i.e., smaller) will create less errors, but\r
+it may also make it harder to detect real effects.\r
+2 The different meanings of alpha\r
+Maybe it is because computers make it easier to run statistical analy\u0002ses that researchers perform more and more statistical tests on a\r
+1\r
+In: Neil Salkind (Ed.) (2007). Encyclopedia of Measurement and Statistics.\r
+Thousand Oaks (CA): Sage.\r
+Address correspondence to: Hervé Abdi\r
+Program in Cognition and Neurosciences, MS: Gr.4.1,\r
+The University of Texas at Dallas,\r
+Richardson, TX 75083–0688, USA\r
+E-mail: herve@utdallas.edu http://www.utd.edu/∼herve\r
+1
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+same set of data. For example, brain imaging researchers will rou\u0002tinely run millions of tests to analyze an experiment. Running so\r
+many tests increases the risk of false alarms. To illustrate, imagine\r
+the following “pseudo-experiment":\r
+I toss 20 coins, and I try to force the coins to fall on the\r
+heads. I know that, from the “binomial test," the null\r
+hypothesis is rejected at the α = .05 level if the number\r
+of heads is greater than 14. I repeat this experiment 10\r
+times.\r
+Suppose that one trial gives the “significant" result of 16 heads\r
+versus 4 tails. Did I influence the coins on that occasion? Of course\r
+not, because the larger the number of experiments, the greater the\r
+probability of detecting a low-probability event (like 16 versus 4).\r
+In fact, waiting long enough is a sure way of detecting rare events!\r
+2.1 Probability in the family\r
+A family of tests is the technical term for a series of tests performed\r
+on a set of data. In this section we show how to compute the prob\u0002ability of rejecting the null hypothesis at least once in a family of\r
+tests when the null hypothesis is true.\r
+For convenience, suppose that we set the significance level at\r
+α=.05. For each test (i.e., one trial in the example of the coins) the\r
+probability of making a Type I error is equal to α = .05. The events\r
+“making a Type I error" and “not making a Type I error" are com\u0002plementary events (they cannot occur simultaneously). Therefore\r
+the probability of not making a Type I error on one trial is equal to\r
+1−α = 1−.05 = .95 .\r
+Recall that when two events are independent, the probability of\r
+observing these two events together is the product of their proba\u0002bilities. Thus, if the tests are independent, the probability of not\r
+making a Type I error on the first and the second tests is\r
+.95×.95 = (1−.05)2 = (1−α)\r
+2\r
+.\r
+2
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+With 3 tests, we find that the probability of not making a Type I\r
+error on all tests is:\r
+.95×.95×.95 = (1−.05)3 = (1−α)\r
+3\r
+.\r
+For a family of C tests, the probability of not making a Type I error\r
+for the whole family is:\r
+(1−α)\r
+C\r
+.\r
+For our example, the probability of not making a Type I error\r
+on the family is\r
+(1−α)\r
+C = (1−.05)10 = .599 .\r
+Now, what we are looking for is the probability of making one or\r
+more Type I errors on the family of tests. This event is the com\u0002plement of the event not making a Type I error on the family and\r
+therefore it is equal to\r
+1−(1−α)\r
+C\r
+.\r
+For our example, we find\r
+1−(1−.05)10 = .401 .\r
+So, with an α level of .05 for each of the 10 tests, the probability of\r
+wrongly rejecting the null hypothesis is .401.\r
+This example makes clear the need to distinguish between two\r
+meanings of α when performing multiple tests:\r
+• The probability of making a Type I error when dealing only\r
+with a specific test. This probability is denoted α[PT ] (pro\u0002nounced “alpha per test"). It is also called the testwise alpha.\r
+• The probability of making at least one Type I error for the\r
+whole family of tests. This probability is denotedα[PF] (pro\u0002nounced “alpha per family of tests”). It is also called the fam\u0002ilywise or the experimentwise alpha.\r
+3
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+Table 1: Results of a Monte Carlo simulation. Numbers of Type 1\r
+errors when performing C = 5 tests for 10,000 families when H0 is\r
+true. How to read the table? For example, 192 families over 10,000\r
+have 2 Type 1 errors, this gives 2×192 = 384 Type 1 errors.\r
+Number of families X : Number of Type I Number of\r
+with X Type I errors errors per family Type I errors\r
+7,868 0 0\r
+1,907 1 1,907\r
+192 2 384\r
+20 3 60\r
+13 4 52\r
+0 5 0\r
+10,000 2,403\r
+2.2 A Monte Carlo illustration\r
+A “Monte Carlo" simulation can illustrate the difference between\r
+α[PT ] and α[PF]. The Monte Carlo technique consists of running\r
+a simulated experiment many times using random data. This gives\r
+the pattern of results that happens on the basis of chance.\r
+Here 6 groups with 100 observations per group were created\r
+with data randomly sampled from the same normal population.\r
+By construction, H0 is true (i.e., all population means are equal).\r
+Call that procedure an experiment. We performed 5 independent\r
+tests from these 6 groups. For each test, we computed an F-test. If\r
+its probability was smaller than α = .05, the test was declared sig\u0002nificant (i.e., α[PT ] is used). We performed this experiment 10,000\r
+times. Therefore, there were 10,000 experiments, 10,000 families,\r
+and 5 × 10,000 = 50,000 tests. The results of this simulation are\r
+given in Table 1.\r
+Table 1 shows that H0 is rejected for 2,403 tests over 50,000\r
+tests performed. From these data, an estimation of α[PT ] is com\u0002puted as:\r
+4
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+α[PT ] =\r
+number of significant tests\r
+total number of tests\r
+=\r
+2,403\r
+50,000\r
+= .0479 . (1)\r
+This value falls close to the theoretical value of α = .05.\r
+For 7,868 families, no test reaches significance. Equivalently\r
+for 2,132 families (10,000−7,868) at least one Type I error is made.\r
+From these data, α[PF] can be estimated as:\r
+α[PF] =\r
+number of families with at least 1 Type I error\r
+total number of families\r
+=\r
+2,132\r
+10,000\r
+= .2132 . (2)\r
+This value falls close to the theoretical value of\r
+α[PF] = 1−(1−α[PT ])\r
+C = 1−(1−.05)5 = .226 .\r
+2.3 How to correct for multiple tests: Šidàk, Bonfer\u0002onni, Boole, Dunn\r
+Recall that the probability of making as least one Type I error for a\r
+family of C tests is\r
+α[PF] = 1−(1−α[PT ])\r
+C\r
+.\r
+This equation can be rewritten as\r
+α[PT ] = 1−(1−α[PF])\r
+1/C\r
+.\r
+This formula—derived assuming independence of the tests—is some\u0002times called the Šidàk equation. It shows that in order to reach a\r
+given α[PF] level, we need to adapt the α[PT ] values used for each\r
+test.\r
+Because the Šidàk equation involves a fractional power, it is dif\u0002ficult to compute by hand and therefore several authors derived\r
+5
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+a simpler approximation which is known as the Bonferonni (the\r
+most popular name), or Boole, or even Dunn approximation. Tech\u0002nically, it is the first (linear) term of a Taylor expansion of the Šidàk\r
+equation. This approximation gives\r
+α[PT ] ≈\r
+α[PF]\r
+C\r
+.\r
+Šidàk and Bonferonni are linked to each other by the inequality\r
+α[PT ] = 1−(1−α[PF])\r
+1/C ≥\r
+α[PF]\r
+C\r
+.\r
+They are, in general, very close to each other but the Bonferonni\r
+approximation is pessimistic (it always does worse than Šidàk equa\u0002tion). Probably because it is easier to compute, the Bonferonni ap\u0002proximation is more well known (and cited more often) than the\r
+exact Šidàk equation.\r
+The Šidàk-Bonferonni equations can be used to find the value\r
+of α[PT ] when α[PF] is fixed. For example, suppose that you want\r
+to perform 4 independent tests, and you want to limit the risk of\r
+making at least one Type I error to an overall value of α[PF] = .05,\r
+you will consider a test significant if its associated probability is\r
+smaller than\r
+α[PT ] = 1−(1−α[PF])\r
+1/C = 1−(1−.05)1/4 = .0127 .\r
+With the Bonferonni approximation, a test reaches significance\r
+if its associated probability is smaller than\r
+α[PT ] =\r
+α[PF]\r
+C\r
+=\r
+.05\r
+4\r
+= .0125 ,\r
+which is very close to the exact value of .0127.\r
+2.4 Correction for non-independent tests\r
+The Šidàk equation is derived assuming independence of the tests.\r
+When they are not independent, it gives a lower bound (cf. Šidàk,\r
+1967; Games, 1977), and then:\r
+α[PF] ≤ 1−(1−α[PT ])\r
+C\r
+.\r
+6
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+As previously, we can use a Bonferonni approximation because:\r
+α[PF] < Cα[PT ] .\r
+Šidàk and Bonferonni are related by the inequality\r
+α[PF] ≤ 1−(1−α[PT ])\r
+C < Cα[PT ] .\r
+The Šidàk and Bonferonni inequalities can also be used to find\r
+a correction on α[PT ] in order to keep α[PF] fixed. the Šidàk in\u0002equality gives\r
+α[PT ] ≈ 1−(1−α[PF])\r
+1/C\r
+.\r
+This is a conservative approximation, because the following in\u0002equality holds:\r
+α[PT ] ≥ 1−(1−α[PF])\r
+1/C\r
+.\r
+The Bonferonni approximation gives\r
+α[PT ] ≈\r
+α[PF]\r
+C\r
+.\r
+2.5 Splitting up α[PF] with unequal slices\r
+With the Bonferonni approximation we can make an unequal allo\u0002cation of α[PF]. This works because with the Bonferonni approxi\u0002mation, α[PF] is the sum of the individual α[PT ]:\r
+α[PF] ≈ Cα[PT ] = α[PT ]+α[PT ]+··· +α[PT ]\r
+| {z }\r
+C times\r
+.\r
+If some tests are judged more important a priori than some oth\u0002ers, it is possible to allocate unequally α[PF] (cf. Rosenthal & Ros\u0002now, 1985). For example, suppose we have 3 tests that we want\r
+to test with an overall α[PF] = .05, and we think that the first test\r
+is the most important of the set. Then we can decide to test it\r
+with α[PT ] = .04, and share the remaining value .01 = .05−.04 be\u0002tween the last 2 tests, which will be evaluated each with a value\r
+of α[PT ] = .005. The overall Type I error for the family is equal to\r
+α[PF] = .04 + .005 + .005 = .05 which was indeed the value we set\r
+7
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+beforehand. It should be emphasized, however, that the (subjec\u0002tive) importance of the tests and the unequal allocation of the in\u0002dividual α[PT ] should be decided a priori for this approach to be\r
+statistically valid. An unequal allocation of the α[PT ] can also be\r
+achieved using the Šidàk inequality, but it is more computationally\r
+involved.\r
+3 Alternatives to Bonferonni\r
+The Šidàk-Bonferonni approach becomes very conservative when\r
+the number of comparisons becomes large and when the tests are\r
+not independent (e.g., as in brain imaging). Recently, some al\u0002ternative approaches have been proposed (see Shaffer, 1995, for\r
+a review) to make the correction less stringent (e.g., Holm 1979,\r
+Hochberg, 1988). A more recent approach redefines the problem\r
+by replacing the notion of α[PF] by the false discovery rate (FDR)\r
+which is defined as the ratio of the number of Type I errors by the\r
+number of significant tests (Benjamini & Hochberg, 1995).\r
+References\r
+[1] Benjamini & Hochberg, (1995). Controlling the false discovery\r
+rate: A practical and powerful approach to multiple testing.\r
+Journal of the Royal Statistical Society, Serie B, 57, 289–300.\r
+[2] Games, P.A. (1977). An improved t table for simultaneous control\r
+on g contrasts. Journal of the American Statistical Association,\r
+72, 531–534.\r
+[3] Hochberg Y. (1988). A sharper Bonferonni procedure for multi\u0002ple tests of significance. Biometrika, 75, 800–803.\r
+[4] Holm, S. (1979). A simple sequentially rejective multiple test\r
+procedure. Scandinavian Journal of Statistics, 6, 65–70.\r
+[5] Rosenthal, R. & Rosnow, R.L. (1985). Contrast analysis: focused\r
+comparisons. Boston: Cambridge University Press.\r
+[6] Shaffer, J.P. (1995). Multiple Hypothesis Testing Annual Review\r
+of Psychology, 46, 561–584.\r
+8
+
+Hervé Abdi: The Bonferonni and Šidák Corrections\r
+[7] Šidàk, Z. (1967). Rectangular confidence region for the means of\r
+multivariate normal distributions. Journal of the American Sta\u0002tistical Association, 62, 626–633.\r
+9"""
+
+[metadata]
+title = "abdi 2007 bonferroni sidak corrections"
+authors = ["Unknown"]
+year = 2007
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+The Bonferonni and Šidák\r
+Corrections for Multiple Comparisons\r
+Hervé Abdi1"""
+
+[[sections]]
+number = "1"
+title = "Overview"
+text = """
+The more tests we perform on a set of data, the more likely we are\r
+to reject the null hypothesis when it is true (i.e., a “Type I” error).\r
+This is a consequence of the logic of hypothesis testing: We reject\r
+the null hypothesis if we witness a rare event. But the larger the\r
+number of tests, the easier it is to find rare events and therefore\r
+the easier it is to make the mistake of thinking that there is an ef\u0002fect when there is none. This problem is called the inflation of the\r
+alpha level. In order to be protected from it, one strategy is to cor\u0002rect the alpha level when performing multiple tests. Making the\r
+alpha level more stringent (i.e., smaller) will create less errors, but\r
+it may also make it harder to detect real effects."""
+
+[[sections]]
+number = "2"
+title = "The different meanings of alpha"
+text = "Maybe it is because computers make it easier to run statistical analy\u0002ses that researchers perform more and more statistical tests on a"
+
+[[sections]]
+number = "1"
+title = "In: Neil Salkind (Ed.) (2007). Encyclopedia of Measurement and Statistics."
+text = """
+Thousand Oaks (CA): Sage.\r
+Address correspondence to: Hervé Abdi\r
+Program in Cognition and Neurosciences, MS: Gr.4.1,\r
+The University of Texas at Dallas,\r
+Richardson, TX 75083–0688, USA\r
+E-mail: herve@utdallas.edu http://www.utd.edu/∼herve"""
+
+[[sections]]
+number = "1"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+same set of data. For example, brain imaging researchers will rou\u0002tinely run millions of tests to analyze an experiment. Running so\r
+many tests increases the risk of false alarms. To illustrate, imagine\r
+the following “pseudo-experiment":\r
+I toss 20 coins, and I try to force the coins to fall on the\r
+heads. I know that, from the “binomial test," the null\r
+hypothesis is rejected at the α = .05 level if the number\r
+of heads is greater than 14. I repeat this experiment 10\r
+times.\r
+Suppose that one trial gives the “significant" result of 16 heads\r
+versus 4 tails. Did I influence the coins on that occasion? Of course\r
+not, because the larger the number of experiments, the greater the\r
+probability of detecting a low-probability event (like 16 versus 4).\r
+In fact, waiting long enough is a sure way of detecting rare events!"""
+
+[[sections]]
+number = "2.1"
+title = "Probability in the family"
+text = """
+A family of tests is the technical term for a series of tests performed\r
+on a set of data. In this section we show how to compute the prob\u0002ability of rejecting the null hypothesis at least once in a family of\r
+tests when the null hypothesis is true.\r
+For convenience, suppose that we set the significance level at\r
+α=.05. For each test (i.e., one trial in the example of the coins) the\r
+probability of making a Type I error is equal to α = .05. The events\r
+“making a Type I error" and “not making a Type I error" are com\u0002plementary events (they cannot occur simultaneously). Therefore\r
+the probability of not making a Type I error on one trial is equal to\r
+1−α = 1−.05 = .95 .\r
+Recall that when two events are independent, the probability of\r
+observing these two events together is the product of their proba\u0002bilities. Thus, if the tests are independent, the probability of not\r
+making a Type I error on the first and the second tests is\r
+.95×.95 = (1−.05)2 = (1−α)\r
+2\r
+."""
+
+[[sections]]
+number = "2"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+With 3 tests, we find that the probability of not making a Type I\r
+error on all tests is:\r
+.95×.95×.95 = (1−.05)3 = (1−α)"""
+
+[[sections]]
+number = "3"
+title = "For a family of C tests, the probability of not making a Type I error"
+text = """
+for the whole family is:\r
+(1−α)\r
+C\r
+.\r
+For our example, the probability of not making a Type I error\r
+on the family is\r
+(1−α)\r
+C = (1−.05)10 = .599 .\r
+Now, what we are looking for is the probability of making one or\r
+more Type I errors on the family of tests. This event is the com\u0002plement of the event not making a Type I error on the family and\r
+therefore it is equal to\r
+1−(1−α)\r
+C\r
+.\r
+For our example, we find\r
+1−(1−.05)10 = .401 .\r
+So, with an α level of .05 for each of the 10 tests, the probability of\r
+wrongly rejecting the null hypothesis is .401.\r
+This example makes clear the need to distinguish between two\r
+meanings of α when performing multiple tests:\r
+• The probability of making a Type I error when dealing only\r
+with a specific test. This probability is denoted α[PT ] (pro\u0002nounced “alpha per test"). It is also called the testwise alpha.\r
+• The probability of making at least one Type I error for the\r
+whole family of tests. This probability is denotedα[PF] (pro\u0002nounced “alpha per family of tests”). It is also called the fam\u0002ilywise or the experimentwise alpha."""
+
+[[sections]]
+number = "3"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+Table 1: Results of a Monte Carlo simulation. Numbers of Type 1\r
+errors when performing C = 5 tests for 10,000 families when H0 is\r
+true. How to read the table? For example, 192 families over 10,000\r
+have 2 Type 1 errors, this gives 2×192 = 384 Type 1 errors.\r
+Number of families X : Number of Type I Number of\r
+with X Type I errors errors per family Type I errors\r
+7,868 0 0\r
+1,907 1 1,907\r
+192 2 384\r
+20 3 60\r
+13 4 52\r
+0 5 0\r
+10,000 2,403"""
+
+[[sections]]
+number = "2.2"
+title = "A Monte Carlo illustration"
+text = """
+A “Monte Carlo" simulation can illustrate the difference between\r
+α[PT ] and α[PF]. The Monte Carlo technique consists of running\r
+a simulated experiment many times using random data. This gives\r
+the pattern of results that happens on the basis of chance.\r
+Here 6 groups with 100 observations per group were created\r
+with data randomly sampled from the same normal population.\r
+By construction, H0 is true (i.e., all population means are equal).\r
+Call that procedure an experiment. We performed 5 independent\r
+tests from these 6 groups. For each test, we computed an F-test. If\r
+its probability was smaller than α = .05, the test was declared sig\u0002nificant (i.e., α[PT ] is used). We performed this experiment 10,000\r
+times. Therefore, there were 10,000 experiments, 10,000 families,\r
+and 5 × 10,000 = 50,000 tests. The results of this simulation are\r
+given in Table 1.\r
+Table 1 shows that H0 is rejected for 2,403 tests over 50,000\r
+tests performed. From these data, an estimation of α[PT ] is com\u0002puted as:"""
+
+[[sections]]
+number = "4"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+α[PT ] =\r
+number of significant tests\r
+total number of tests\r
+=\r
+2,403\r
+50,000\r
+= .0479 . (1)\r
+This value falls close to the theoretical value of α = .05.\r
+For 7,868 families, no test reaches significance. Equivalently\r
+for 2,132 families (10,000−7,868) at least one Type I error is made.\r
+From these data, α[PF] can be estimated as:\r
+α[PF] =\r
+number of families with at least 1 Type I error\r
+total number of families\r
+=\r
+2,132\r
+10,000\r
+= .2132 . (2)\r
+This value falls close to the theoretical value of\r
+α[PF] = 1−(1−α[PT ])\r
+C = 1−(1−.05)5 = .226 ."""
+
+[[sections]]
+number = "2.3"
+title = "How to correct for multiple tests: Šidàk, Bonfer\u0002onni, Boole, Dunn"
+text = """
+Recall that the probability of making as least one Type I error for a\r
+family of C tests is\r
+α[PF] = 1−(1−α[PT ])\r
+C\r
+.\r
+This equation can be rewritten as\r
+α[PT ] = 1−(1−α[PF])\r
+1/C\r
+.\r
+This formula—derived assuming independence of the tests—is some\u0002times called the Šidàk equation. It shows that in order to reach a\r
+given α[PF] level, we need to adapt the α[PT ] values used for each\r
+test.\r
+Because the Šidàk equation involves a fractional power, it is dif\u0002ficult to compute by hand and therefore several authors derived"""
+
+[[sections]]
+number = "5"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+a simpler approximation which is known as the Bonferonni (the\r
+most popular name), or Boole, or even Dunn approximation. Tech\u0002nically, it is the first (linear) term of a Taylor expansion of the Šidàk\r
+equation. This approximation gives\r
+α[PT ] ≈\r
+α[PF]\r
+C\r
+.\r
+Šidàk and Bonferonni are linked to each other by the inequality\r
+α[PT ] = 1−(1−α[PF])\r
+1/C ≥\r
+α[PF]\r
+C\r
+.\r
+They are, in general, very close to each other but the Bonferonni\r
+approximation is pessimistic (it always does worse than Šidàk equa\u0002tion). Probably because it is easier to compute, the Bonferonni ap\u0002proximation is more well known (and cited more often) than the\r
+exact Šidàk equation.\r
+The Šidàk-Bonferonni equations can be used to find the value\r
+of α[PT ] when α[PF] is fixed. For example, suppose that you want\r
+to perform 4 independent tests, and you want to limit the risk of\r
+making at least one Type I error to an overall value of α[PF] = .05,\r
+you will consider a test significant if its associated probability is\r
+smaller than\r
+α[PT ] = 1−(1−α[PF])\r
+1/C = 1−(1−.05)1/4 = .0127 .\r
+With the Bonferonni approximation, a test reaches significance\r
+if its associated probability is smaller than\r
+α[PT ] =\r
+α[PF]\r
+C\r
+=\r
+.05\r
+4\r
+= .0125 ,\r
+which is very close to the exact value of .0127."""
+
+[[sections]]
+number = "2.4"
+title = "Correction for non-independent tests"
+text = """
+The Šidàk equation is derived assuming independence of the tests.\r
+When they are not independent, it gives a lower bound (cf. Šidàk,\r
+1967; Games, 1977), and then:\r
+α[PF] ≤ 1−(1−α[PT ])\r
+C\r
+."""
+
+[[sections]]
+number = "6"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+As previously, we can use a Bonferonni approximation because:\r
+α[PF] < Cα[PT ] .\r
+Šidàk and Bonferonni are related by the inequality\r
+α[PF] ≤ 1−(1−α[PT ])\r
+C < Cα[PT ] .\r
+The Šidàk and Bonferonni inequalities can also be used to find\r
+a correction on α[PT ] in order to keep α[PF] fixed. the Šidàk in\u0002equality gives\r
+α[PT ] ≈ 1−(1−α[PF])\r
+1/C\r
+.\r
+This is a conservative approximation, because the following in\u0002equality holds:\r
+α[PT ] ≥ 1−(1−α[PF])\r
+1/C\r
+.\r
+The Bonferonni approximation gives\r
+α[PT ] ≈\r
+α[PF]\r
+C\r
+."""
+
+[[sections]]
+number = "2.5"
+title = "Splitting up α[PF] with unequal slices"
+text = """
+With the Bonferonni approximation we can make an unequal allo\u0002cation of α[PF]. This works because with the Bonferonni approxi\u0002mation, α[PF] is the sum of the individual α[PT ]:\r
+α[PF] ≈ Cα[PT ] = α[PT ]+α[PT ]+··· +α[PT ]\r
+| {z }\r
+C times\r
+.\r
+If some tests are judged more important a priori than some oth\u0002ers, it is possible to allocate unequally α[PF] (cf. Rosenthal & Ros\u0002now, 1985). For example, suppose we have 3 tests that we want\r
+to test with an overall α[PF] = .05, and we think that the first test\r
+is the most important of the set. Then we can decide to test it\r
+with α[PT ] = .04, and share the remaining value .01 = .05−.04 be\u0002tween the last 2 tests, which will be evaluated each with a value\r
+of α[PT ] = .005. The overall Type I error for the family is equal to\r
+α[PF] = .04 + .005 + .005 = .05 which was indeed the value we set"""
+
+[[sections]]
+number = "7"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+beforehand. It should be emphasized, however, that the (subjec\u0002tive) importance of the tests and the unequal allocation of the in\u0002dividual α[PT ] should be decided a priori for this approach to be\r
+statistically valid. An unequal allocation of the α[PT ] can also be\r
+achieved using the Šidàk inequality, but it is more computationally\r
+involved."""
+
+[[sections]]
+number = "3"
+title = "Alternatives to Bonferonni"
+text = """
+The Šidàk-Bonferonni approach becomes very conservative when\r
+the number of comparisons becomes large and when the tests are\r
+not independent (e.g., as in brain imaging). Recently, some al\u0002ternative approaches have been proposed (see Shaffer, 1995, for\r
+a review) to make the correction less stringent (e.g., Holm 1979,\r
+Hochberg, 1988). A more recent approach redefines the problem\r
+by replacing the notion of α[PF] by the false discovery rate (FDR)\r
+which is defined as the ratio of the number of Type I errors by the\r
+number of significant tests (Benjamini & Hochberg, 1995).\r
+References\r
+[1] Benjamini & Hochberg, (1995). Controlling the false discovery\r
+rate: A practical and powerful approach to multiple testing.\r
+Journal of the Royal Statistical Society, Serie B, 57, 289–300.\r
+[2] Games, P.A. (1977). An improved t table for simultaneous control\r
+on g contrasts. Journal of the American Statistical Association,\r
+72, 531–534.\r
+[3] Hochberg Y. (1988). A sharper Bonferonni procedure for multi\u0002ple tests of significance. Biometrika, 75, 800–803.\r
+[4] Holm, S. (1979). A simple sequentially rejective multiple test\r
+procedure. Scandinavian Journal of Statistics, 6, 65–70.\r
+[5] Rosenthal, R. & Rosnow, R.L. (1985). Contrast analysis: focused\r
+comparisons. Boston: Cambridge University Press.\r
+[6] Shaffer, J.P. (1995). Multiple Hypothesis Testing Annual Review\r
+of Psychology, 46, 561–584."""
+
+[[sections]]
+number = "8"
+title = "Hervé Abdi: The Bonferonni and Šidák Corrections"
+text = """
+[7] Šidàk, Z. (1967). Rectangular confidence region for the means of\r
+multivariate normal distributions. Journal of the American Sta\u0002tistical Association, 62, 626–633.\r
+9"""

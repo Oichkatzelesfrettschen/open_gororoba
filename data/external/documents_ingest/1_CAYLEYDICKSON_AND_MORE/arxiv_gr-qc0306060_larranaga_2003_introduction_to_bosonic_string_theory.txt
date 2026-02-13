@@ -1,0 +1,2735 @@
+arXiv:gr-qc/0306060v2 16 Jul 2007
+
+Introduction to Bosonic String Theory
+Eduard Alexis Larrañaga Rubio
+Bogotá, D.C. November 2002
+
+ii
+
+Contents
+Introduction
+
+v
+
+1 Classical String Theory
+
+1
+
+1.1
+
+World-Line of a Point Particle . . . . . . . . . . . . . . . . . . .
+1.1.1 Alternative Action for a point particle . . . . . . . . . . .
+
+1
+3
+
+1.2
+1.3
+
+World-Volume Action . . . . . . . . . . . . . . . . . . . . . . . .
+Nambu-Goto Action . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+5
+
+1.4
+1.5
+1.6
+
+Polyakov Action . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Symmetries of the Polyakov Action . . . . . . . . . . . . . . . . .
+Light-cone coordinates . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+7
+9
+
+1.7
+
+Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . .
+
+10
+
+1.8 Oscillator expansions . . . . . . . . . . . . . . . . . . . . . . . . .
+1.9 Center of mass Position and Momentum . . . . . . . . . . . . . .
+1.10 Classical Visaroro Algebra . . . . . . . . . . . . . . . . . . . . . .
+
+11
+13
+14
+
+2 Bosonic String Quantization
+2.1
+
+19
+
+Covariant Canonical Quantization . . . . . . . . . . . . . . . . .
+2.1.1 Visaroro Operators . . . . . . . . . . . . . . . . . . . . . .
+2.1.2 Bosonic String Spectrum . . . . . . . . . . . . . . . . . .
+
+Conclusion
+
+19
+21
+22
+27
+
+iii
+
+iv
+
+CONTENTS
+
+Introduction
+The development of fundamental physics in the past century arose from the
+identification and the overcoming of contradictions between the existing ideas.
+Fro example, the incompatibility of Maxwell’s equations and Galilean invariance
+led Einstein to create the Special Theory of Relativity, and the inconsistency
+of this ones with Newtonian gravity produced the General Theory of Relativity. Same thing happend with the conciliation between special relativity and
+quantum mechanics, wich led to the development of Quantum Field Theory.
+Now, there is another incompatibility: General Relativity and Quantum
+Field theory. The quantization of gravity seems to be a non-renormalizable
+theory.
+In the past year, String Theory has been the leading candidate for a theory
+that unifies all fundamental forces in nature in a consistent scheme. The way
+that string theory does this is to give up one of the basic assumptions of quantum
+field theory, that elementary particles are mathematical points, and instead
+to develop aquantum field theory of one-dimensional extended objects, called
+strings.
+Ths string theory is still in progress, and there is not yet a complete description of the standard model of elementary particles based on it. However, there
+are some important features that seems to be gnereic in every kind of string
+theory: The first, and most important, is that general relativity is already incorporated in the theory. Although ordinary quantum field theory does not
+allow gravity, string theory requires it. The second fact is that the Yang-Mills
+gauge theories of the sort that comprise the standard model naturally arise in
+string theory, but there is not yet a fully understanding of why should we prefer
+the specific SU (3) ⊗ SU (2) ⊗ U (1) gauge theory.
+Here is given a little introduction to the most basic string theory: th bosonic
+string. First there is given the basics of the classical string theory as a generalization of the concept of world-line of a particle. Then the bosonic string is
+constructed and the oscillation modes are described. The covariant canonical
+quantization procedure is used and the bosonic spectra is shown.
+
+v
+
+vi
+
+INTRODUCTION
+
+Chapter 1
+
+Classical String Theory
+1.1
+
+World-Line of a Point Particle
+
+Classically, a point particle follow a trajectory in space time that is called ’worldline’. The world line can be expressed as functions xµ (τ ) with a parameter τ.
+The path is an extremal of the action, that for a point particle of mass m is
+proportional to the length of the world line:
+Z
+Z q
+.µ.v
+−ηµν x x dτ
+(1.1)
+S = m ds = m
+where ηµν is the flat Minkowski space-time metric. The momentum conjugate to xµ (τ ) is:
+
+pµ = −
+
+∂L
+.µ = −
+∂x
+
+
+ q
+.µ.
+∂ m −x xµ
+.µ
+
+∂x
+
+.
+
+xµ
+pµ = m p . 2
+−x
+
+.
+
+xµ
+= mq
+.µ.
+−x xµ
+
+(1.2)
+
+(1.3)
+
+This equation gives the constrain of mass-shell:
+p2 = −m2
+
+(1.4)
+
+The Lagrange equation from varying S with respect to x (τ ) is:
+∂L
+∂
+−
+∂xµ
+∂τ
+
+
+1
+
+∂L
+.µ
+∂x
+
+
+
+=0
+
+(1.5)
+
+2
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+!
+
+=0
+
+.
+
+.µ
+
+.
+
+mxµ
+p .
+2
+−x
+
+∂
+∂τ
+
+(1.6)
+
+The canonical Hamiltonian is:
+∂L . µ
+mxµ x
+Hcan = . µ x − L = q
+−m
+.µ .
+∂x
+−x x
+µ
+
+q
+.µ .
+−x xµ
+
+Hcan = 0
+
+(1.7)
+
+(1.8)
+
+So, Hcan vanishes identically. This means that the constrain given in (1.4)
+governs the dynamics of the system completly. This constrain can be added to
+the Hamiltonian by using a Lagrange multiplier. This gives:
+H=
+
+
+N
+p 2 + m2
+2m
+
+The equation of motion in Poisson bracket notation is:
+
+N ∂ p 2 + m2
+∂H
+.µ
+µ
+=
+x = {x , H} =
+∂pµ
+2m
+∂pµ
+.µ
+
+x =
+
+(1.9)
+
+(1.10)
+
+.µ
+
+N µ
+x
+p = N p .2
+m
+−x
+
+(1.11)
+
+So, it gives:
+.2
+
+x = −N 2
+
+(1.12)
+
+i.e. we are describing time-like trajectories.
+The action in (1.1) is invariant under local reparametrizations. This kind of
+gauge invariance is represented by a change τ −→ τ (e
+τ ). This reparametrization
+invariance is a one-dimensional analog of the four dimensional general coordinate
+invariance. The choice N = 1 corresponds to the called ”static gauge”:
+x0 = τ
+And in this gauge the action becomes:
+Z p
+S=m
+1 − v 2 dt
+where the parameter is renamed t and:
+
+(1.13)
+
+(1.14)
+
+1.1.
+
+WORLD-LINE OF A POINT PARTICLE
+→
+d−
+x
+→
+−
+v =
+dt
+
+3
+
+(1.15)
+
+The equation of motion becomes:
+→
+d−
+p
+=0
+dt
+
+(1.16)
+
+→
+m−
+v
+−
+→
+p =√
+1 − v2
+
+(1.17)
+
+with:
+
+1.1.1
+
+Alternative Action for a point particle
+
+An alternative action for the point particle is:
+Z
+
+1 
+.µ .v
+S=−
+ηµν x x e−1 (τ ) − m2 e (τ ) dτ
+2
+
+(1.18)
+
+where e (τ ) (called the ’einbein’) is a new independient function. This action
+allows to make the generalization to the massless case, and doesn’t have square
+roots like in (1.1) that makes the treatment of the quantum theory complicated.
+In order to prove that the action are equivalent, lets make the variation of e (τ ):
+Z
+
+1 
+.µ.v
+(1.19)
+ηµν x x e−2 (τ ) + m2 δe (τ ) dτ
+δS =
+2
+Then, setting δS = 0 we obtain:
+.µ .v
+
+ηµν x x e−2 (τ ) + m2 = 0
+
+(1.20)
+
+q
+.µ .v
+−ηµν x x
+
+(1.21)
+
+e (τ ) =
+
+1
+m
+
+If we substitute (1.21) in (1.18) we get:
+1
+S=−
+2
+
+ q
+−1
+#
+ q
+Z "
+1
+1
+.µ.v
+.µ.v
+.µ.v
+2
+dτ (1.22)
+−m
+−ηµν x x
+−ηµν x x
+ηµν x x
+m
+m
+S=−
+
+1
+2
+
+Z 
+
+
+q
+q
+.µ.v
+.µ.v
+−m −ηµν x x − m −ηµν x x dτ
+
+(1.23)
+
+4
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+Z
+
+S=
+
+q
+.µ.v
+m −ηµν x x dτ
+
+(1.24)
+
+Hence, the actions are equivalent. Varying xµ in (1.18) we get:
+1
+2
+
+Z
+
+δS = −
+
+Z
+
+δS = −
+
+ . µ −1
+ . µ
+2x e (τ ) δ x dτ
+ . µ −1
+
+x e (τ ) ∂τ δxµ dτ
+
+(1.25)
+
+(1.26)
+
+Integrating by parts we obtain:
+
+.µ
+
+δS = − x e−1 (τ ) δxµ +
+
+Z
+
+.µ
+
+∂τ x e−1 (τ ) δxµ dτ
+
+(1.27)
+
+since at the extremes the variation is zero, then:
+Z
+
+δS =
+
+.µ
+
+∂τ x e−1 (τ ) δxµ dτ
+
+(1.28)
+
+Then, setting δS = 0 gives:
+.µ
+
+∂τ x e−1 (τ ) = 0
+
+(1.29)
+
+Substituing (1.21) we get:
+"
+
+.µ
+
+∂τ x
+
+
+
+1
+m
+
+
+
+−1 #
+q
+.µ.v
+=0
+−ηµν x x
+.µ
+
+
+
+mx
+=0
+∂τ  q
+.µ.v
+−ηµν x x
+and this is the same equation of motion as (1.6).
+
+(1.30)
+
+(1.31)
+
+5
+
+1.2. WORLD-VOLUME ACTION
+
+1.2
+
+World-Volume Action
+
+As we have seen, the action for a point particle was proportional to the lenght
+of its world-line. For strings, the action will be prportional to the surface
+area of its world-sheet, and in general for a p−brane the action involves the
+(p + 1) −dimensional volume:
+Z
+S = −Tp dµp+1
+(1.32)
+
+where the constant Tp makes the action dimensionless, so it has dimensions
+of [mass](p+1) or [lenght]−(p+1) . This factor is asociated with the tension of
+the p−brane. For a 0− brane, (i.e. a point particle) it is just the mass.
+
+Suppose that ξ α (α = 0, 1, 2, ..., p + 1) are the coordinates in the worldvolume of the p−brane, and gµν (µ, ν = 0, 1, 2, ...., d − 1) is the metric of the
+d−dimensional space-time in which the p−brane propagates. Then, gµν induces
+a metric in the world-volume given by:
+ds2 = −gµν dxµ dxν = −gµν
+
+∂xµ ∂xν α β
+dξ dξ = Gαβ dξ α dξ β
+∂ξ α ∂ξ β
+
+(1.33)
+
+where the induced metric is:
+Gαβ = −gµν
+
+∂xµ ∂xν
+∂ξ α ∂ξ β
+
+(1.34)
+
+Then, the invariant volume element is given by:
+dµp+1 =
+
+1.3
+
+p
+− det Gαβ dp+1 ξ
+
+(1.35)
+
+Nambu-Goto Action
+
+In the case of 1−branes, i.e. strings, the world-volume action (1.32) becomes:
+Z p
+S = −T
+− det Gαβ d2 ξ
+(1.36)
+If the space-time is flat Minkowski gµν = ηµν we have:
+s
+
+
+p
+∂xµ ∂xν
+− det Gαβ = − det −ηµν α β
+∂ξ ∂ξ
+Defining ξ 0 = τ and ξ 1 = σ, then:
+
+(1.37)
+
+6
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+where:
+
+q
+p
+2 . 2
+.
+− det Gαβ =
+x · x′ − x x′2
+.
+
+x=
+
+∂x
+∂τ
+
+x′ =
+
+(1.38)
+
+∂x
+∂σ
+
+(1.39)
+
+and the action for the string, called Nambu-Goto action becomes:
+Z q
+2 . 2
+.
+SN G = −T
+x · x′ − x x′2 dσdτ
+
+1.4
+
+(1.40)
+
+Polyakov Action
+
+Again, as in the point particle case, the square root in the Nambu-Goto action make the quantum treatment complicated. So, we introduce an equivalent
+action:
+Z
+p
+T
+− det hαβ hαβ ηµν ∂α xµ ∂β xν d2 ξ
+(1.41)
+SP = −
+2
+µ
+
+where hαβ (σ, τ ) is the world-sheet metric and ∂α xµ = ∂x
+∂ξ α . The stress-tensor
+is defined as the variation of the action with respect to the metric:
+Tαβ ≡ −
+
+1
+2
+δS
+p
+T − det hαβ δhαβ
+
+1
+Tαβ = ηµν ∂α xµ ∂β xν − hαβ hγδ ηµν ∂γ xµ ∂δ xν
+2
+
+(1.42)
+(1.43)
+
+Hence, the Euler-Lagrange equation is:
+1
+∂α x · ∂β x − hαβ hγδ ∂γ x · ∂δ x = 0
+2
+
+(1.44)
+
+Solving for hαβ we obtain:
+hαβ = ∂α x · ∂β x = ηµν ∂α xµ ∂β xν
+
+(1.45)
+
+Substituing this in (1.44) gives:
+1
+1
+hαβ − hαβ hγδ hγδ = hαβ − hαβ δγγ = hαβ − hαβ = 0
+2
+2
+
+(1.46)
+
+1.5. SYMMETRIES OF THE POLYAKOV ACTION
+
+7
+
+So, (1.45) means that the metric in the world-sheet hαβ is equal (at least
+classically) to the induced metric. Substituing this in the Polyakov action we
+obtain:
+Z q
+T
+− det (ηµν ∂α xµ ∂β xν )hαβ hαβ d2 ξ
+(1.47)
+SP = −
+2
+Z q
+T
+− det (ηµν ∂α xµ ∂β xν )δαα d2 ξ
+(1.48)
+SP = −
+2
+Z q
+(1.49)
+SP = −T
+− det (ηµν ∂α xµ ∂β xν )d2 ξ = SN G
+Hence the Polyakov and the Nambu-Goto actions are equivalent, at least
+classically, since in the quantum treatment it is not in general.
+
+1.5
+
+Symmetries of the Polyakov Action
+
+Polyakov action has the symmetries:
+1. Poincaré invariance:
+xµ 7−→ ω µν xν + aµ
+
+,
+
+hαβ 7−→ hαβ
+
+(1.50)
+
+with ωµν = −ωνµ .
+2. Local 2-dimensional reparametrization invariance
+ξ α 7−→ ξ ′α ξ β
+3. Conformal or Weyl invariance
+hαβ 7−→ Λ (ξ γ ) hαβ
+
+,
+
+
+
+(1.51)
+
+xµ = xµ
+
+(1.52)
+
+The two reparametrization invariance symmetries of S allow us to choose a
+gauge in which the three independient components of hαβ are expressed with
+just one function. The usual choose is th conformal flat gauge:
+hαβ = eΛ(ξ) ηαβ
+
+
+(1.53)
+
+
+−1 0
+is the 2-dimensional Minkowski metric for a flat
+0 1
+world-sheet. Substituing this in the action que obtain:
+where ηαβ =
+
+8
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+S=−
+
+T
+2
+
+Z q
+
+− det eΛ(ξ) ηαβ e−Λ(ξ) η αβ ηµν ∂α xµ ∂β xν d2 ξ
+S=−
+
+T
+2
+
+Z p
+e2Λ(ξ) e−Λ(ξ) η αβ ηµν ∂α xµ ∂β xν d2 ξ
+
+S=−
+
+T
+2
+
+Z
+
+η αβ ηµν ∂α xµ ∂β xν d2 ξ
+
+(1.54)
+
+(1.55)
+
+(1.56)
+
+As can be seen, the gauge fixed action is quadratic in the x’s. Thus, mathematically it is the same as a theory of d free scalar fields in two dimensions.
+Varying xµ we obtain the equation of motion:
+.. µ
+
+x − x′′µ = 0
+
+(1.57)
+
+This is simply a free two dimensional wave equation. Also, we have to take
+account of the constraints Tαβ = 0. In the conformal gauge this constrain is:
+1
+Tαβ = ηµν ∂α xµ ∂β xν − ηαβ η γδ ηµν ∂γ xµ ∂δ xν = 0
+2
+
+(1.58)
+
+This can be writen as:
+1
+.µ.ν
+T00 = ηµν x x + η γδ ηµν ∂γ xµ ∂δ xν = 0
+2
+
+(1.59)
+
+1
+1
+.µ .ν
+.µ.ν
+T00 = ηµν x x − ηµν x x + ηµν x′µ x′ν = 0
+2
+2
+
+(1.60)
+
+T00 = T11 =
+
+
+1
+.µ.ν
+ηµν x x + ηµν x′µ x′ν = 0
+2
+.µ
+
+T01 = T10 = ηµν x x′ν = 0
+
+(1.61)
+
+(1.62)
+
+Adding and substracting (1.61) and (1.62) gives the condition:
+.
+
+x ± x′
+
+2
+
+=0
+
+(1.63)
+
+Known as the Visaroro constraints, and they are the analog of the Gauss
+law in the string case.
+
+9
+
+1.6. LIGHT-CONE COORDINATES
+
+1.6
+
+Light-cone coordinates
+
+Define the light-cone coordinates as:
+ξ± = τ ± σ
+
+(1.64)
+
+ds2 = −dτ 2 + dσ 2 = − (dτ + dσ) (dτ − dσ) = −dξ+ dξ−
+
+(1.65)
+
+The flat metric becomes:
+
+Thus, the metric components are:
+g++ = g−− = 0
+
+,
+
+g+− = g−+ = −
+
+1
+2
+
+(1.66)
+
+and we have:
+∂± =
+
+1
+(∂τ ± ∂σ )
+2
+
+(1.67)
+
+Then, the Polyakov action in the conformal gauge (1.56) may be writen as:
+Z
+S = 2T ηµν ∂+ xµ ∂− xν d2 ξ
+(1.68)
+The equations of motion from the Polyakov action (1.57) becomes:
+.. µ
+
+x − x′′µ = ∂τ ∂τ xµ − ∂σ ∂σ xµ = 0
+
+(1.69)
+
+(∂τ + ∂σ ) (∂τ xµ − ∂σ xµ ) = 0
+
+(1.70)
+
+(∂τ + ∂σ ) (∂τ − ∂σ ) xµ = 0
+
+(1.71)
+
+∂+ ∂− xµ = 0
+
+(1.72)
+
+The stress-tensor in light-coordinates is:
+
+T++ =
+
+T−− =
+
+ .ν
+
+1
+1
+.µ
+ηµν ∂+ xµ ∂+ xν = ηµν x + x′µ x + x′ν = T00 + 2T10
+2
+2
+
+ .ν
+1
+1
+.µ
+ηµν ∂− xµ ∂− xν = ηµν x − x′µ x − x′ν = T00 − 2T10
+2
+2
+
+(1.73)
+
+(1.74)
+
+10
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+T+− = T−+ = 0
+
+(1.75)
+
+In these coordinates, the Energy-momentum conservation is given by:
+1
+1
+∇α Tαβ = − (∂− T++ + ∂+ T−+ ) = − (∂+ T−− + ∂− T+− ) = 0
+2
+2
+
+(1.76)
+
+but using (1.75) we obtain:
+∂− T++ = ∂+ T−− = 0
+
+(1.77)
+
+And finally, the Visaroro constraints (1.63) can be written as:
+
+T−− =
+
+1.7
+
+1
+ηµν ∂− xµ ∂− xν = 0
+2
+
+,
+
+T++ =
+
+1
+ηµν ∂+ xµ ∂+ xν = 0
+2
+
+(1.78)
+
+Boundary Conditions
+
+In string theory there are three important types:
+In the case of closed strings the world-sheet is a tube, and one should impose
+periodicity in the spacial parameter σ. Usually the period is choosen to be π:
+xµ (σ + π, τ ) = xµ (σ, τ )
+
+(1.79)
+
+For open strings the world-sheet is a strip. The conditions used are:
+Neumann:
+
+∂xµ
+=0
+∂σ
+
+at σ = 0 or π
+
+(1.80)
+
+Dirichlet:
+
+∂xµ
+=0
+∂τ
+
+at σ = 0 or π
+
+(1.81)
+
+Neumann condition imply that no momentum flows off the ends of the string.
+Dirichlet condition implies that the end points of the string are fixed in spacetime, and that they ends on a physical object called D−brane ( D stands for
+Dirichlet).
+
+11
+
+1.8. OSCILLATOR EXPANSIONS
+
+1.8
+
+Oscillator expansions
+
+As we have seen the equation of motion for the string is (1.57):
+.. µ
+
+x − x′′µ = 0
+
+(1.82)
+
+but we must treat each case of boundary condition separately:
+1. Closed Strings
+For closed strings the general solution of the two-dimensional wave equation is a sum of ’right’ movers and ’left’ movers:
+xµ (σ, τ ) = xµR (τ − σ) + xµL (τ + σ)
+
+(1.83)
+
+This solution must satisfy the conditions:
+• xµ (σ, τ ) is real
+
+• xµ (σ + π, τ ) = xµ (σ, τ )
+This condition can be solved in terms of Fourier series as:
+
+xµR (τ − σ) =
+
+xµL (τ + σ) =
+
+1 µ
+i X 1 µ −in(τ −σ)
+1 µ
+xo +
+p (τ − σ) + √
+α e
+2
+2πT
+n n
+4πT
+
+(1.84)
+
+n6=0
+
+1 µ
+1 µ
+i X 1 µ −in(τ +σ)
+xo +
+p (τ + σ) + √
+α
+e e
+2
+2πT
+n n
+4πT
+
+(1.85)
+
+n6=0
+
+where αµn and α
+eµn are Fourier modes that must satisfy (in order to xµ (σ, τ )
+to be real):
+(αµn )† = αµ−n
+
+and
+
+(e
+αµn )† = α
+eµ−n
+
+(1.86)
+
+The center of mass coordinate xµ and the momentum pµ are real too, and
+the factor :
+ℓs = √
+
+1
+2πT
+
+(1.87)
+
+is called the fundamental string lenght scale. So, the solution is:
+
+xµ (σ, τ ) = xµo +
+
+
+1 µ
+i X 1 µ inσ
+αn e
++α
+eµn e−inσ e−inτ (1.88)
+p τ+√
+πT
+n
+4πT
+n6=0
+
+12
+
+CHAPTER 1. CLASSICAL STRING THEORY
+Now, defining
+1
+αµ0 = α
+eµ0 = √ pµ
+πT
+
+(1.89)
+
+we can write in light-cone coordinates:
+
+1 X µ −in(τ −σ)
+∂− xµ (σ, τ ) = ∂− xµR = √
+αn e
+4πT n
+1 X µ −in(τ +σ)
+α
+en e
+∂+ xµ (σ, τ ) = ∂+ xµL = √
+4πT n
+
+(1.90)
+(1.91)
+
+2. Open Strings
+
+In the case of open strings we will use the Neumann boundary conditions:
+∂xµ
+=0
+∂σ
+
+at σ = 0 or π
+
+(1.92)
+
+Using the solution (1.83) with the expresion for right and left movers (1.84)
+and (1.85) and substituing in the Neumann condition we get:
+∂xµR
+∂xµL
+∂xµ
+=
++
+=0
+(1.93)
+∂σ σ=0
+∂σ σ=0
+∂σ σ=0
+1 µ
+1 X µ −inτ
+1 X µ −inτ
+1 µ
+−
+p −√
+pe + √
+αn e
++
+α
+en e
+= 0 (1.94)
+2πT
+2πT
+4πT n6=0
+4πT n6=0
+1 X µ
+1
+(e
+pµ − pµ ) + √
+(e
+αn − αµn ) e−inτ = 0
+2πT
+4πT
+
+(1.95)
+
+n6=0
+
+Then we obtain:
+peµ = pµ
+
+α
+eµn = αµn
+
+(1.96)
+(1.97)
+
+This means that the right and left movers get mixed in the solution for
+the open string. Now, using the boundary condition at σ = π we get:
+∂xµR
+∂xµL
+∂xµ
+=
++
+=0
+(1.98)
+∂σ σ=π
+∂σ σ=π
+∂σ σ=π
+1 X µ −in(τ −π)
+1 X µ −in(τ +π)
+1 µ
+1 µ
+p π− √
+p π+ √
+αn e
++
+αn e
+=0
+−
+2πT
+2πT
+4πT n6=0
+4πT n6=0
+(1.99)
+
+13
+
+1.9. CENTER OF MASS POSITION AND MOMENTUM
+−√
+
+1 X µ −in(τ +π)
+1 X µ −in(τ −π)
+αn e
++√
+αn e
+=0
+4πT n6=0
+4πT n6=0
+
+1 X µ −inπ
+√
+− einπ = 0
+αn e
+4πT n6=0
+
+(1.100)
+(1.101)
+
+Then, we get the condition:
+e−inπ − einπ = 0
+
+(1.102)
+
+− 2i sin (nπ) = 0
+
+(1.103)
+
+So, n must be an integer. The solution now becomes:
+
+xµ (τ, σ) = xµo +
+
+
+pµ
+i X 1 µ −inτ inσ
+e
++ e−inσ
+τ+√
+αn e
+πT
+n
+4πT
+
+(1.104)
+
+n6=0
+
+xµ (τ, σ) = xµo +
+
+i X 1 µ −inτ
+pµ
+τ+√
+α e
+2 cos (nσ)
+πT
+n n
+4πT
+
+(1.105)
+
+n6=0
+
+xµ (τ, σ) = xµo +
+
+pµ
+i X 1 µ −inτ
+τ+√
+α e
+cos (nσ)
+πT
+n n
+πT
+
+(1.106)
+
+n6=0
+
+Defining again αµ0 = √1πT pµ we get:
+∂± xµ (τ, σ) =
+
+1 µ
+1 X µ −in(τ ±σ)
+p +√
+αn e
+2πT
+4πT
+
+1 X µ −in(τ ±σ)
+αn e
+∂± xµ (τ, σ) = √
+4πT n
+
+1.9
+
+(1.107)
+
+n6=0
+
+(1.108)
+
+Center of mass Position and Momentum
+
+The position and momentum of the center of mass for the open and closed
+strings can be calculated, and they are given by:
+Z
+1 π µ
+µ
+XCM
+=
+x (τ, σ) dσ
+(1.109)
+π 0
+Z
+1 π µ
+i X 1 µ −inτ
+1 µ
+µ
+XCM =
+p τ+√
+αn e
+cos (nσ) dσ
+(1.110)
+xo +
+π 0
+πT
+πT n6=0 n
+
+
+µ
+X
+1
+1
+p
+i
+µ
+XCM
+= xµo π +
+τπ + √
+αµ e−inτ sin (nσ)|πo 
+(1.111)
+π
+πT
+n n
+πT
+n6=0
+
+14
+
+CHAPTER 1. CLASSICAL STRING THEORY
+pµ
+τ
+πT
+Z π
+Z π
+.µ
+x dσ
+pµCM =
+Πµ dσ = T
+µ
+XCM
+= xµo +
+
+pµCM = T
+
+Z π
+0
+
+0
+
+(1.113)
+
+0
+
+
+X
+ 1 pµ + √1
+αµn e−inτ cos (nσ) dσ
+πT
+πT n6=0
+
+
+(1.112)
+
+pµCM = pµ
+
+(1.114)
+(1.115)
+
+We can see that xµo is the position of the center of mass at τ = 0 and it
+moves as a free particle. The variables that describe the motion of the string
+are xµo and pµ plus the collection of αµn . This means that the string moves as a
+whole (center of mass) and vibrate in various modes.
+
+1.10
+
+Classical Visaroro Algebra
+
+The equal-τ Poison Brackets for the xµ and their conjugate momenta Πµ =
+.µ
+T x are:
+ µ
+1
+.ν
+x (σ, τ ) , x (σ ′ , τ ) P B = η µν δ (σ − σ ′ )
+T
+{xµ (σ, τ ) , xν (σ ′ , τ )}P B = 0
+
+.µ
+.ν
+x (σ, τ ) , x (σ ′ , τ ) P B = 0
+
+(1.116)
+(1.117)
+(1.118)
+
+Using the expresion for xµ (σ, τ ) we get:
+{αµm , ανn } = {e
+αµm , α
+eνn } = −imη µν δm+n,0
+
+(1.119)
+
+{e
+αµm , ανn } = 0
+
+(1.120)
+
+{xµ0 , pν } = η µν
+
+(1.121)
+
+The Hamiltonian is give by:
+Z
+Z
+
+.µ
+x Πµ − L dσ = T
+H=
+H=
+
+
+.µ .
+x xµ − L dσ
+
+
+Z 
+T
+.µ.
+T x xµ + η αβ ηµν ∂α xµ ∂β xν dσ
+2
+
+(1.122)
+(1.123)
+
+15
+
+1.10. CLASSICAL VISARORO ALGEBRA
+
+Z 
+
+T
+.µ.
+.µ.
+′µ ′
+T x xµ +
+−x xµ + x xµ dσ
+H=
+2
+Z
+.µ .
+
+T
+H=
+x xµ + x′µ x′µ dσ
+2
+
+(1.124)
+(1.125)
+
+This hamiltonian can be expresed in terms of the oscillators in the closed
+1
+pµ ,as:
+string case, using αµ0 = √πT
+!
+!
+
+
+X
+X
+1
+−inτ
+inσ
+−inσ
+imτ
+µ † −imσ
+µ † imσ
+e
+(αn )µ e
++ (e
+αn )µ e
+e
+(αm ) e
++ (e
+αm ) e
+4πT
+n
+m
+
+
+
+
+
+
+X
+1 X 
++
+− (αn )µ einσ + (e
+αn )µ e−inσ e−inτ  dσ
+− (αµm )† e−imσ + (e
+αµm )† eimσ eimτ  
+4πT
+
+T
+H=
+2
+
+Z
+
+n6=0
+
+m6=0
+
+!
+!
+
+X µ
+X
+ imτ
+1
+µ
+−imσ
+imσ
+inσ
+−inσ
+−inτ
+α−m e
++α
+e−m e
+e
+(αn )µ e
++ (e
+αn )µ e
+e
+4πT
+m
+n
+
+
+
+
+X
+
+1 X
+µ
+µ
+− (αn )µ einσ + (e
+αn )µ e−inσ e−inτ  dσ
+−α−m e−imσ + α
+e−m eimσ eimτ  
++
+4πT
+
+T
+H=
+2
+
+Z
+
+m6=0
+
+n6=0
+
+Since:
+
+Z
+
+Z
+
+we obtain:
+
+T 1
+H=
+2 4πT
++2π
+
+X
+
+n6=0
+
+H=
+
+
+
+"
+
+2π
+
+X
+n
+
+e−imσ einσ dσ = 2πδ (m − n)
+
+(1.126)
+
+eimσ einσ dσ = 2πδ (m + n)
+
+(1.127)
+
+α−n · αn + α
+en · αn e−2inτ + αn · α
+en e−2inτ + α
+e−n · α
+en
+
+α−n · αn − α
+en · αn e
+
+T 2π 
+α0 · α
+e0 + α
+e0 · α0 +
+2 4πT
+
+−2inτ
+
+X
+n
+
+− αn · α
+en e
+
+−2inτ
+
+
+
+
+
++α
+e−n · α
+en 
+
+(α−n · αn + α
+e−n · α
+en ) +
+
+X
+
+n6=0
+
+
+
+(1.128)
+
+
+
+(α−n · αn + α
+e−n · α
+en )
+(1.129)
+
+16
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+
+
+X
+X
+1
+H=
+2 (α0 · α0 + α
+e0 · α
+e0 ) +
+(α−n · αn + α
+e−n · α
+en ) +
+(α−n · αn + α
+e−n · α
+en )
+4
+n6=0
+
+n6=0
+
+(1.130)
+
+H=
+
+
+
+1
+2 (α0 · α0 + α
+e0 · α
+e0 ) +
+4
+
+X
+
+n6=0
+
+(α−n · αn + α
+e−n · α
+en ) +
+
+X
+
+n6=0
+
+
+
+(α−n · αn + α
+e−n · α
+en )
+(1.131)
+
+
+
+X
+1
+H=
+2 (α0 · α0 + α
+e0 · α
+e0 ) + 2
+(α−n · αn + α
+e−n · α
+en )
+4
+
+(1.132)
+
+
+
+X
+1
+(α0 · α0 + α
+e0 · α
+e0 ) +
+(α−n · αn + α
+e−n · α
+en )
+H=
+2
+
+(1.133)
+
+n6=0
+
+n6=0
+
+H=
+
+1X
+(α−n · αn + α
+e−n · α
+en )
+2 n
+
+(1.134)
+
+µ
+
+For the open string using again αµo = √pπT , we have:
+
+!
+!
+X
+X
+
+
+1
+†
+(αµm ) e−imσ + eimσ eimτ
+(αn )µ einσ + e−inσ e−inτ
+4πT
+m
+n
+
+
+
+X
+
+
+1 X µ †
+(αm ) −e−imσ + eimσ eimτ  
+(αn )µ −einσ + e−inσ e−inτ  dσ
++
+4πT
+
+T
+H=
+2
+
+Z
+
+m6=0
+
+n6=0
+
+!
+!
+X µ
+X
+ imτ
+ −inτ
+1
+−imσ
+imσ
+inσ
+−inσ
++e
+e
+α−m e
+(αn )µ e
++e
+e
+4πT
+m
+n
+
+
+
+X
+X
+
+
+1 
++
+αµ−m −e−imσ + eimσ eimτ  
+(αn )µ −einσ + e−inσ e−inτ  dσ
+4πT
+
+T
+H=
+2
+
+Z
+
+m6=0
+
+n6=0
+
+17
+
+1.10. CLASSICAL VISARORO ALGEBRA
+
+T 1
+H=
+2 4πT
++π
+
+X
+
+n6=0
+
+"
+
+π
+
+X
+n
+
+α−n · αn + αn · αn e−2inτ + αn · αn e−2inτ + α−n · αn
+
+
+
+α−n · αn − αn · αn e−2inτ − αn · αn e−2inτ + α−n · αn 
+
+
+
+(1.135)
+
+
+
+X
+X
+T π 
+H=
+α0 · α0 + α0 · α0 +
+(α−n · αn + α−n · αn ) +
+(α−n · αn + α−n · αn )
+2 4πT
+n
+n6=0
+
+(1.136)
+
+
+
+X
+X
+1
+H=
+2 (α0 · α0 + α0 · α0 ) +
+2α−n · αn +
+2α−n · αn 
+8
+n6=0
+
+H=
+
+
+
+(1.137)
+
+n6=0
+
+1
+4 (α0 · α0 ) + 4
+8
+
+X
+
+
+
+α−n · αn 
+
+n6=0
+
+
+
+X
+1
+(α0 · α0 ) +
+α−n · αn 
+H=
+2
+
+(1.138)
+
+(1.139)
+
+n6=0
+
+H=
+
+1X
+α−n · αn
+2 n
+
+(1.140)
+
+TheVisaroro operators are defined as the Fourier modes of the Stress tensor.
+For the closed string they are:
+
+Lm =
+
+1
+2
+
+Z 2π
+0
+
+T−− eim(τ −σ) dσ
+
+,
+
+em = 1
+L
+2
+
+Z 2π
+
+T++ eim(τ +σ) dσ (1.141)
+
+0
+
+Expressed in oscillators these operators are:
+Lm =
+
+1X
+αm−n · αn
+2 n
+
+,
+
+X
+em = 1
+L
+α
+em−n · α
+en
+2 n
+
+Because of the properties of the α’s, the operators satisfy:
+
+(1.142)
+
+18
+
+CHAPTER 1. CLASSICAL STRING THEORY
+
+L†m =
+
+1X †
+1X
+αm−n · α†n =
+α−m+n · α−n = L−m
+2 n
+2 n
+
+X †
+1X
+e −m
+e† = 1
+α
+em−n · α
+e†n =
+α
+e−m+n · α
+e−n = L
+L
+m
+2 n
+2 n
+
+(1.143)
+(1.144)
+
+In terms of the Visaroro operators, the Hamiltonian (1.134) can be expresed
+as:
+e0
+H = L0 + L
+
+(1.145)
+
+For the open string the α
+e’s are equal to the α’s, then the Visaroro operators
+are definied as:
+Z
+i
+1 πh
+(1.146)
+Lm =
+T−− eim(τ −σ) + T++ eim(τ +σ) dσ
+2 0
+or in terms of the oscillators:
+Lm =
+
+1X
+αm−n · αn
+2 n
+
+(1.147)
+
+In this case, the Hamiltonian (1.140) can be written as:
+H = L0
+
+(1.148)
+
+Using (1.119),(1.120) and (1.121) is easy to derive the Poison brackets for
+the Visaroro operators:
+{Lm , Ln }P B = −i (m − n) Lm+n
+n
+
+em, L
+en
+L
+
+o
+
+n
+
+PB
+
+e m+n
+= −i (m − n) L
+
+en
+Lm , L
+
+o
+
+PB
+
+=0
+
+e operators are absent.
+For the open string the L’s
+
+(1.149)
+(1.150)
+(1.151)
+
+Chapter 2
+
+Bosonic String Quantization
+There exist three aproaches to quantize classical strings:
+1. Canonical Quantization:
+In this aproach the classical variables become operators. Because of the
+constraints there are two options:
+(a) Covariant Quantization
+This procedure quantize first and then impose the constraints as conditions on states in Hilbert space. Is named covariant because it
+preserves the Lorentz invariace.
+(b) Light-Cone Quantization
+Here, the constraints are solved in the classical system, so it leaves
+a smaller number of classical variables. Then they are quantized. In
+this aproach the manifest Lorentz invariance is lost.
+2. Path Integral Quantization
+This way preserves the manifest Lorentz invarinace, but contains ghost
+fields.
+
+2.1
+
+Covariant Canonical Quantization
+
+In the canonical quantization the fields are replaced by operators, and the Poisson brackets are reemplazed by commutators following the rule:
+{ , }P B −→ −i [ , ]
+Following this rule, the relations (1.116)-(1.118) become:
+19
+
+(2.1)
+
+20
+
+CHAPTER 2. BOSONIC STRING QUANTIZATION
+
+h
+i
+.ν
+xµ (σ, τ ) , Π (σ ′ , τ ) = iη µν δ (σ − σ ′ )
+
+(2.2)
+
+[xµ (σ, τ ) , xν (σ ′ , τ )] = 0
+
+(2.3)
+
+h.µ
+i
+.ν
+Π (σ, τ ) , Π (σ ′ , τ ) = 0
+
+(2.4)
+
+Or in terms of the oscillator we can write:
+[αµm , ανn ] = [e
+αµm , α
+eνn ] = mη µν δm+n,0
+[e
+αµm , ανn ] = 0
+
+(2.6)
+
+[xµ0 , pν ] = iη µν
+
+(2.7)
+
+(2.5)
+
+The first of this conditions can be written, absorbing the factor m as:
+i
+i h
+h
+(2.8)
+ανn )† = η µν δm,n
+eµm , (e
+αµm , (ανn )† = α
+
+In Quantum Mechanics the harmonic oscillator can be described using raising
+and lowering operatos that satisfy the condition:
+
+
+
+α, α† = 1
+
+(2.9)
+†
+
+Then, we see that the expansion coefficients αµ−n = (αµn ) and αµn are raising
+and lowering operators respectively. But there are one problem. Because of the
+metric tensor sign: η 00 = −1 the time component of the oscillators has a minus
+sign. this means that they create states of negative norm, and it makes the
+quantum theory inconsistent. However, as we will see the classical condition
+Tαβ = 0 will eliminate the negative-norm states from physical spectrum.
+Since the system is now an infinite set of harmonic oscillators, we may define
+the Hilbert space in a simple way. The ground-state is the one that is anihilated
+by all the lowering operators, but since this state is not completly determined
+by this, we use the center-of-mass momentum operator. Diagonalizing pµ the
+states are caracterized by its momentum. So, the ground state may be written
+as:
+αm |0, pi = 0
+
+∀m > 0
+
+Other states are obtained by aplying the raising operators:
+Y
+αµ−1 |0, pi , αµ−2 |pi ,
+αµm |0, pi
+m
+
+(2.10)
+
+(2.11)
+
+2.1. COVARIANT CANONICAL QUANTIZATION
+
+2.1.1
+
+21
+
+Visaroro Operators
+
+In order to define the Visaroro operators in the quantum system we have to
+introduce the normal ordering operation that puts all positive frequency modes
+(lowering operators) to the right of the negative frequency modes (raising operators).
+With this definition the Visaroro operators are defined as :
+Lm =
+
+1X
+: αm−n · αn :
+2 n
+
+(2.12)
+
+and similarly for the closed string:
+
+X
+em = 1
+:α
+em−n · α
+en :
+L
+2 n
+
+(2.13)
+
+From now on, for the closed string there are similar relations for the operators
+em.
+L
+The only operator affected by the normal ordering is L0 :
+L0 =
+
+1
+1X
+α0 · α0 +
+: α−n · αn :
+2
+2 n
+
+L0 =
+
+∞
+X
+1
+α0 · α0 +
+α−n · αn
+2
+n=1
+
+(2.14)
+
+(2.15)
+
+Now, because of the arbitrariness in definig the normal ordering we have to
+include a normal-ordering constant q in the expresion for L0 .
+L0 −→ L0 − q
+
+(2.16)
+
+The visaroro algebra can be calculated using the definition of the operators,
+and it gives ( for a detailed calculation see [4]):
+[Lm , Ln ] = (m − n) Lm+n +
+
+
+c
+m m2 − 1 δm+n,0
+12
+
+(2.17)
+
+Its important to note that there exist a difference between the operator
+and the Poisson algebra. this diference is a c-number which depends on the
+dimension of space-time, since in the case we have c = d. This term is called
+the ”conformal anomaly term” and the cnstant c is in general called the ”central
+charge”. This term is an inescapable consequence of the quantization, and is
+because of this that the string theory depends so much on the dimension of
+space-time.
+The classical Visaroro constraints (1.63) cannot be imposed as operators
+constraints Lm |ψi = 0, because (2.17) gives:
+
+22
+
+CHAPTER 2. BOSONIC STRING QUANTIZATION
+
+hψ| [Lm , L−m ] |ψi = 2m hψ| L0 |ψi +
+
+
+d
+m m2 − 1 hψ| ψi 6= 0
+12
+
+(2.18)
+
+Thus, the constraints are imposed as:
+(L0 − q) |φi = 0
+Lm |φi = 0
+
+(2.19)
+
+m>0
+
+(2.20)
+
+where |φi denotes a physical state. This is consistent with the classical
+constraints because:
+hφ′ | (Lm − qδm,0 ) |φi = 0
+
+for all m
+
+(2.21)
+
+As we will see, the constraint for L0 is a generalization of the Klein-Gordon
+equation since it contains a term with p2 = −∂ · ∂ and a term that determines
+the mass of the state.
+
+2.1.2
+
+Bosonic String Spectrum
+
+Open String.
+Using the form of L0 given by (2.15), the constraint (2.19) gives:
+X
+1
+α0 · α0 +
+α−n · αn = q
+2
+n
+
+X
+1
+α0 · α0 = − α−n · αn + q
+2
+n
+
+X
+1 µ
+p pµ = − α−n · αn + q
+2πT
+n
+
+(2.22)
+(2.23)
+(2.24)
+
+And using the mass-shell condition pµ pµ = −m2 , we have:
+1
+m2 = N − q
+2πT
+where is defined the level-number operator as:
+X
+N=
+α−n · αn
+
+(2.25)
+
+(2.26)
+
+n
+
+Now, we will set q = 1 since this value is necessary for a consistent theory
+(as we will se later). Since each α−n · αn has eiegnvalues 0, 1, 2, 3, ... etc. then
+
+2.1. COVARIANT CANONICAL QUANTIZATION
+
+23
+
+the number operator also has values 0, 1, 2, .... The ground state, |0, pi is given
+by N = 0 . So we have:
+1
+m2 = −1
+(2.27)
+2πT
+This state corresponds to a Tachyon (since pµ is space-like). This particle
+may cause a vacuum unstability, then it is not possible in a consisten quantum
+theory. Anyway, we will not worry about it now and will continue with the
+spectum analisis.
+The first excited state has N = 1 and (2.25) gives m = 0. To obtain this
+sate we need:
+|φi = ξµ αµ−1 |0, pi
+
+(2.28)
+
+where ξ µ is the polarization vector for a massless spin-1 particle. Now, the
+Visaroro constraint gives:
+L1 |φi = 0
+
+(2.29)
+
+ξµ L1 αµ−1 |0, pi = 0
+
+(2.30)
+
+Since the operators αm (m > 0) anihilates the ground-state, L1 has just the
+contributions:
+!
+1X
+: α1−n · αn : αµ−1 |0, pi = 0
+(2.31)
+ξµ
+2 n
+1
+ξµ (α0 · α1 + α1 · α0 ) αµ−1 |0, pi = 0
+2
+
+(2.32)
+
+ξµ (α0 )ν αν1 αµ−1 |0, pi = 0
+
+(2.33)
+
+
+
+ξµ (α0 )ν αµ−1 αν1 + η µν |0, pi = 0
+
+ξµ (α0 )ν αµ−1 αν1 |0, pi + ξµ (α0 )ν η µν |0, pi = 0
+µ
+
+(2.34)
+(2.35)
+
+ξµ (α0 ) |0, pi = 0
+
+(2.36)
+
+1
+ξµ √ pµ |0, pi = 0
+πT
+
+(2.37)
+
+ξµ pµ |0, pi = 0
+
+(2.38)
+
+24
+
+CHAPTER 2. BOSONIC STRING QUANTIZATION
+Then , the Visaroro constraint implies that ξµ must satisfy:
+pµ ξµ = 0
+
+(2.39)
+
+This condition ensures that the spin is transversely polarized, so there are
+just d − 2 independient polarization states.
+The second excited state, with N = 2 , has:
+1
+m2 = 1
+2πT
+
+(2.40)
+
+The most general state is a superposition :
+
+|φi = ξµ αµ−2 + λµν αµ−1 αν−1 |0, pi
+
+(2.41)
+
+And again, the Visaroro constraints
+
+L1 |φi = L2 |φi = 0
+
+(2.42)
+
+restrict the values of ξµ and λµν .
+Closed String.
+For the closed string we have the conditions:
+(L0 − q) |φi = 0
+
+(2.43)
+
+
+
+(2.44)
+
+
+e 0 − q |φi = 0
+L
+
+the sum of this conditions gives:
+
+
+e 0 − 2q |φi = 0
+L0 + L
+So;
+
+X
+X
+1
+1
+α0 · α0 +
+e0 · α
+e0 +
+α−n · αn + α
+α
+e−n · α
+en = 2q
+2
+2
+n
+n
+α0 · α0 = −
+
+X
+X
+α−n · αn −
+α
+e−n · α
+en + 2q
+n
+
+(2.45)
+
+(2.46)
+(2.47)
+
+n
+
+X
+X
+1 µ
+p pµ = − α−n · αn −
+α
+e−n · α
+en + 2q
+πT
+n
+n
+
+(2.48)
+
+Using the mass-shell condition pµ pµ = −m2 , we have:
+1 2
+e − 2q
+m =N +N
+πT
+
+(2.49)
+
+25
+
+2.1. COVARIANT CANONICAL QUANTIZATION
+where the level-number operators are:
+N=
+
+X
+
+α−n · αn
+
+(2.50)
+
+α
+e−n · α
+en
+
+(2.51)
+
+n
+
+n
+
+e=
+N
+
+X
+
+The difference between (2.43) and (2.44) gives:
+
+
+e 0 |φi = 0
+L0 − L
+
+(2.52)
+
+Then we have the level-matching condition:
+e0
+L0 = L
+
+(2.53)
+
+X
+X
+1
+1
+α0 · α0 +
+e0 · α
+e0 +
+α−n · αn = α
+α
+e−n · α
+en
+2
+2
+n
+n
+X
+n
+
+α−n · αn =
+
+X
+n
+
+e
+N =N
+
+α
+e−n · α
+en
+
+(2.54)
+(2.55)
+(2.56)
+
+The closed string states are then the tensor product of left moving and right
+moving states subject to the level matching condition. Then, the ground state
+for the closed string is (without displaying the momuentum of the state):
+|0i ⊗ |0i
+
+(2.57)
+
+e = 0, then, setting q = 1 we obtain:
+Since in the ground state has N = N
+
+1
+m2 = −2
+(2.58)
+2πT
+Again we obtain a spin 0 tachyon that makes the theory unststable.
+The first excited state is:
+
+eν−1 |0i
+|φi = ξµν αµ−1 |0i ⊗ α
+
+(2.59)
+
+This state has m2 = 0. Again the Visaroro constraints
+e 1 |φi = 0
+L1 |φi = L
+
+(2.60)
+
+pµ ξµν = 0
+
+(2.61)
+
+restricts the possible values of the polarization to:
+
+26
+
+CHAPTER 2. BOSONIC STRING QUANTIZATION
+
+This kind of tensor gives three distinct spin states: the symmetric part
+encodes a massless spin-2 particle (gµν ), the antisymmetric part is a massless
+antisymmetric tensor gauge field Bµν = −Bνµ ; and finally there is encoded also
+an scalar field Φ.
+
+Conclusion
+We have described some of the basic ideas of the 26-dimensional bosonic string
+theory. There exist different kinds of bosonic strings, but all of them are sick,
+because in each case the spectra contains a tachyon. This means that the
+vacuum state is unstable, and it is still an open problem.The most remarkable
+feature of string theories is their dimensionality. Here we have seen that 26
+dimensions are needed and there is no consistent explication of why this number
+is prefered.
+Anyway the study of this toy model give a better understanding of the
+different process and features that the final theory should or should not have,
+and its a necesary step for the study of more elaborated models, sucha as the
+Superstings.
+
+27
+
+28
+
+CONCLUSION
+
+Bibliography
+[1] Berkovits, N. An Introduction to Superstring Theory and its Duality Symmetries. Proceedings for the First School on Field Theory and Gravitation.
+Vitória, Brasil. 1997.
+[2] Green, M. Schwarz J. and Witten, E. Superstring Theory. (2 Volumes) Cambridge University Press.U.K. 1987.
+[3] Kiritsis, E. Introduction to Superstring Theory. Lectures presented at the
+Catholic University of Leuven and at the University of Padova. 1996-1997.
+[4] Scherk, J. An Intorduction to the Theory of Dual Models and Strings. Rev.
+Mod. Phys. 47-1. (1975)
+[5] Schwarz, J. Introduction to Superstring Theory. Lectures presented at the
+NATO Advanced Study Institue on Techniques and Concepts of High Energy
+Physics. St. Croix, Virgin Islands. June 2000.
+
+29
+
+

@@ -1,0 +1,2875 @@
+ISSN: 1401-5617
+
+Wheels
+—
+On Division by Zero
+Jesper Carlström
+
+Research Reports in Mathematics
+Number 11, 2001
+Department of Mathematics
+Stockholm University
+
+Electronic versions of this document are available at
+http://www.matematik.su.se/reports/2001/11
+Date of publication: September 10, 2001
+2000 Mathematics Subject Classification: Primary 16Y99, Secondary 13B30, 13P99,
+03F65, 08A70.
+Keywords: fractions, quotients, localization.
+Postal address:
+Department of Mathematics
+Stockholm University
+S-106 91 Stockholm
+Sweden
+Electronic addresses:
+http://www.matematik.su.se
+info@matematik.su.se
+
+Wheels
+—
+On Division by Zero
+Jesper Carlström
+Department of Mathematics
+Stockholm University
+http://www.matematik.su.se/˜jesper/
+
+Filosofie licentiatavhandling
+
+Abstract
+We show how to extend any commutative ring (or semiring) so that division by any element, including 0, is in a sense possible. The resulting
+structure is what is called a wheel. Wheels are similar to rings, but 0x = 0
+does not hold in general; the subset {x | 0x = 0} of any wheel is a commutative ring (or semiring) and any commutative ring (or semiring) with
+identity can be described as such a subset of a wheel.
+The main goal of this paper is to show that the given axioms for wheels
+are natural and to clarify how valid identities for wheels relate to valid
+identities for commutative rings and semirings.
+
+Contents
+1 Introduction
+1.1 Why invent the wheel? . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 A sketch . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+3
+4
+
+2 Involution-monoids
+7
+2.1 Definitions and examples . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.2 The construction of involution-monoids from commutative monoids 9
+2.3 Insertion of the parent monoid . . . . . . . . . . . . . . . . . . . 11
+∗
+2.4 The role of X in the structure of M X
+. . . . . . . . . . . . . . . 12
+2.5 The construction as a functor . . . . . . . . . . . . . . . . . . . . 14
+3 Applications to semirings
+15
+3.1 Applications to additive monoids of semirings . . . . . . . . . . . 16
+3.2 Applications to multiplicative monoids of commutative semirings 19
+4 Wheels
+23
+4.1 Basic properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+4.2 Applications to wheels of fractions . . . . . . . . . . . . . . . . . 27
+4.2.1 The semiring in a wheel of fractions . . . . . . . . . . . . 27
+4.2.2 Obtaining /-invertible wheels of fractions . . . . . . . . . 28
+4.2.3 Axiomatizing the class of wheels of fractions . . . . . . . . 29
+4.2.4 Cancellation of zero-terms . . . . . . . . . . . . . . . . . . 30
+4.3 Equational logic for wheels of fractions . . . . . . . . . . . . . . . 32
+5 Wheel-modules
+
+44
+
+Acknowledgements
+I would like to thank Clas Löfwall for his support during this work. He
+followed the process through all of its stages, listening to my vague ideas
+and reading many preliminary versions of the manuscript. He put me in
+the right direction many times. If anything is easy to grasp in this paper,
+it is probably because he asked me to simplify that part and to give some
+examples.
+I would also like to thank Per Martin-Löf, who spent many hours
+discussing constructive aspects with me. He also read several versions of
+the manuscript and gave me many valuable comments, on the content as
+well as on how it should be expressed. The first idea, of which wheel
+theory is a generalization, originates from him.
+Thanks also to Jörgen Backelin, with whom I discussed possible choices
+of axioms, before the final selection was made.
+
+Typeset by LATEX, using Paul Taylor’s package ‘Commutative Diagrams’.
+c 2001 Jesper Carlström
+2
+
+1
+
+Introduction
+
+1.1
+
+Why invent the wheel?
+
+The fact that multiplicative inversion of real numbers is a partial function is
+annoying for any beginner in mathematics: “Who has forbidden division by
+zero?”. This problem seems not to be a serious one from a professional point
+of view, but the situation remains as an unaesthetic fact. We know how to
+extend the semiring of natural numbers so that we get solutions to equations
+like 5 + x = 2, 2x = 3, x 2 = 2, x2 = −1 etc., we even know how to get
+completeness, but not how to divide by 0.
+There are also concrete, pragmatic aspects of this problem, especially in connection with exact computations with real numbers. Since it is not in general
+decidable whether a real number is non-zero, one can’t in general tell whether
+it is invertible. Edalat and Potts [EP00, Pot98] suggested that two extra ‘numbers’, ∞ = 1/0 and ⊥ = 0/0, be adjoined to the set of real numbers (thus
+obtaining what in domain theory is called the ‘lifting’ of the real projective
+line) in order to make division always possible. In a seminar, Martin-Löf proposed that one should try to include these ‘numbers’ already in the construction
+of the rationals from the integers, by allowing not only non-zero denominators,
+but arbitrary denominators, thus ending up not with a field, but with a field
+with two extra elements. Such structures were called ‘wheels’ (the term inspired
+by the topological picture of the projective line together with an extra point
+0/0) by Setzer [Set97], who showed how to modify the construction of fields of
+fractions from integral domains so that wheels are obtained instead of fields.
+In this paper, we generalize Setzer’s construction, so that it applies not
+only to integral domains, but to any commutative semiring. Our construction
+introduces a ‘reciprocal’ to every element, the resulting structure being what
+will be called a ‘wheel of fractions’. We use the term ‘wheel’ in a more general
+sense than Setzer, but a wheel in our sense is still a structure in which addition,
+multiplication and division can always be performed. A wheel in Setzer’s sense
+will be recognized as what we denote by ‘ S0 A’, where A is an integral domain,
+S0 the subset A \ {0}.1
+Beside applications to exact computations, there are other applications to
+computer programming: algorithms that split into cases depending on whether
+their arguments are zero or not, can sometimes be simplified using a total division function.
+We also hope for applications in algebraic geometry. Instead of considering
+‘rational maps’ as partial functions from a variety to a field, one may consider
+‘rational functions’ from the variety to the wheel extending the field. The set
+of all such rational functions is a wheel in our sense (but not in Setzer’s) with
+the operations defined point-wise. We say that rational functions are ‘equal as
+maps’ if they agree on some non-empty Zariski open subset. This is a congruence
+relation (it is transitive since the Zariski topology of a variety is irreducible)
+and the set of congruence classes is again a wheel — the ‘wheel of rational
+maps’. In the same way, there is a ‘wheel of regular functions’. Every regular
+function is equal as a map to some rational function. Finally, the most important
+1 The notation S will be used for the set of cancellable elements in a monoid, i.e., a ∈
+0
+S0 means that ax = ay ⇒ x = y for all x, y. When considering semirings, we use the
+multiplicative monoid for this definition. In integral domains, we get S0 = A \ {0}.
+
+3
+
+methods in algebraic geometry are the projection onto a quotient of the ring of
+functions considered (the geometric interpretation being restricting attention to
+a Zariski closed subset of the variety) and the construction of a ring of fractions
+(localization in the sense that attention is restricted to what happens near some
+Zariski closed subset). Usually, those constructions are formally very different,
+even though their interpretations are similar. Using wheels instead of rings,
+those two situations are both handled by the same method: by projection onto
+a quotient. That suggests possible simplifications when wheels are used instead
+of rings.2
+Finally, there should be applications to the development of constructive
+mathematic, in which total functions are preferred to partial functions. 3
+
+1.2
+
+A sketch
+
+We indicate briefly what the basic ideas are. Proofs and technical verifications
+are postponed to the following sections.
+The natural way of trying to introduce inverses to all elements of a ring, is to
+modify the usual construction of rings of fractions. If A is a commutative ring
+with identity, S a multiplicative submonoid of it, then the usual construction is
+as follows: Define the relation ∼ S on A × S (here the product is taken in the
+category of sets) as
+(x, s) ∼S (x0 , s0 )
+
+means ∃s00 ∈ S : s00 (xs0 − x0 s) = 0.
+
+Then ∼S is an equivalence relation and A × S/ ∼ S is a commutative ring with
+(the class containing (x, y) is denoted by [x, y])
+0 = [0, 1]
+1 = [1, 1]
+[x, s] + [x0 , s0 ] = [xs0 + x0 s, ss0 ]
+[x, s][x0 , s0 ] = [xx0 , ss0 ].
+Clearly, 0 can’t be inverted unless 0 ∈ S, but if that is the case, then ∼ S is the
+improper relation, so that A × S/ ∼ S is trivial.
+The obvious thing to try is to replace A × S by A × A. Considering the
+multiplicative structure only, A×S is a product of monoids and ∼ S a congruence
+relation on it. Let ≡S be the congruence relation that is generated on the monoid
+A × A by ∼S . Then
+(x, y) ≡S (x0 , y 0 ) ⇐⇒ ∃s, s0 ∈ S : (sx, sy) = (s0 x0 , s0 y 0 ).
+
+2 We do not treat algebraic geometry in this paper, but the statements in this paragraph
+are rather obvious corollaries of the theory developed. It is also possible to treat the more
+general situation of spectrums and schemes.
+3 That a function f (think of the inversion of real numbers) is ‘partial’ on a set A means that
+f (x) is defined provided a certain predicate holds for x, say, that P (x) is true. In constructive
+type theory [ML84], this is interpreted as that f takes pairs (x, p) as arguments, with x an
+element of A and p a proof of P (x). Thus, formally, f is not at all in the usual sense a
+partial function, but total on a set of pairs. In that sense, there are no partial functions in
+constructive type theory, but the term ‘partial’ can still be useful as a way of explaining that
+one informally thinks of f as defined on some ‘part’ of A. Since a proof of P (x) is needed
+as an argument for f , it is clearly preferable to have f replaced by a total function. That is
+a reason for asking for a program of reworking mathematics without partial functions. This
+paper is in the line with such a program.
+
+4
+
+We define S A (the wheel of fractions with respect to S) as A × A/ ≡ S with
+the operations
+0 = [0, 1]
+1 = [1, 1]
+[x, y] + [x , y ] = [xy 0 + x0 y, yy 0 ]
+0
+
+0
+
+[x, y][x0 , y 0 ] = [xx0 , yy 0 ]
+/[x, y] = [y, x].
+This structure is not a ring (unless it is trivial), since 0x = 0 is not valid
+in general: with x = [0, 0], we get 0x = [0, 0] which is not equal to [0, 1] unless
+0 ∈ S, but then ≡S is improper and S A is trivial.
+The additive structure is a commutative monoid, as well as the multiplicative. However, the group structure of addition is destroyed, since [0, 0] + x = 0
+has no solution in non-trivial cases. Instead, one has the formula x − x = 0x 2
+if x − y is defined as x + (−1)y, where −1 = [−1, 1]. Thus x − x = 0 is true for
+any x with 0x = 0; and in many wheels, there are many such x’s.
+The unary operation / is an involution on the multiplicative monoid, i.e.
+//x = x and /(xy) = /y/x. We call it the ‘reciprocal’ operation, with /x being
+the ‘reciprocal’ of x. One does not have x/x = 1 in general, but x/x = 1+0x/x. 4
+Wheels of fractions are wheels, abstractly defined as follows.
+Definition 1.1 (wheel). A wheel is a structure hH, 0, 1, +, ·, /i in which the
+following holds:
+hH, 0, +i is a commutative monoid
+
+hH, 1, ·, /i is a commutative monoid with involution /
+
+(1)
+(2)
+
+Distributivity
+(x + y)z + 0z = xz + yz
+x
+x + yz
++ z + 0y =
+y
+y
+
+(3)
+(4)
+
+Rules for zero-terms
+0·0=0
+
+(5)
+
+(x + 0y)z = xz + 0y
+/(x + 0y) = /x + 0y
+
+(6)
+(7)
+
+x + 0/0 = 0/0.
+
+(8)
+
+Here, H is a set (we will use the same symbol for the wheel), 0 and 1 are
+constants, + and · are binary operations and / is a unary operation. We often
+omit the dot for multiplication and we sometimes write xy for x/y. The usual
+priority rules apply: lower -arity gives higher priority and multiplication is prior
+to addition.
+4 That x/x = 1 is not in general true, is the reason why we avoid the notation x−1 for
+/x. The reciprocal should be thought of as a unary version of division, like negation is a
+unary version of subtraction. The unary negation corresponds to the binary subtraction by
+x − y = x + (−y) and −y = 0 − y. In the same way, there is a correspondence between the
+unary reciprocal and the binary division by x/y = x(/y) and /y = 1/y.
+
+5
+
+Note that the usual rule ‘0x = 0’, which states that “zero-terms can be
+erased”, is replaced by rules stating that zero-terms can be moved in certain
+ways in an expression. Indeed, (6) and (7) state that addition by a zero-term
+commutes with multiplication and reciprocal, so that if a zero-term occurs somewhere inside an expression, then it can be moved outside.
+Example 1.2. ((x+4+0y)(2+0z)+0x)(2+0z) = ((x+4)2)2+0x+0y+0z +0z.
+As a derived rule (rule (10) on page 24), we have 0x + 0y = 0xy, so that
+several zero-terms can be merged together in one.
+Example 1.3. 0x + 0y + 0z + 0z = 0xyz 2 .
+The distributivity rule (3) looks different from the usual one, since we have
+a zero-term on the left-hand side. But it reduces to the usual rule when 0z = 0.
+Since e.g. 0 · 2 = 0, 5 we have (x + y)2 = x2 + y2 and hence we get from the
+examples above that ((x + 4 + 0y)(2 + 0z) + 0x)(2 + 0z) = 4x + 16 + 0xyz 2 .
+Some examples of wheels of fractions are (we list only the underlying sets):
+1.
+
+Z\{0} Z = Q ∪ {/0, 0/0}.
+
+2.
+
+A A = {0}. This is the trivial wheel.
+
+3.
+
+{1} (Z/2Z) = {0, 1, /0, 0/0}.
+
+4.
+
+{1} Z, the set of fractions of integers where no identifications are made.
+Hence two fractions are regarded as equal only if they have the same
+numerators and the same denominators.
+
+5.
+
+{1,3} (Z/4Z) = {0, 1, 2, 3, /0, /2, 0/0, 0/2, 2/0, 2/2}. Note that this wheel
+extends the ring Z/4Z with six new elements. Thus, it is possible for such
+an extension to have more “new” elements than “old” ones.
+
+6.
+
+S0 A, where S0 = {x ∈ A | xy = xz ⇒ y = z}, is the ‘total wheel
+of fractions’. It contains the well-known total ring of fractions as the
+subset {x | 0x = 0}. Moreover, S0 A is what we will call ‘/-invertible’:
+if xy = 1, then y = /x. Hence / can be used to compute multiplicative
+inverses whenever such exist.
+
+7.
+
+U A, where U is the set of units in A, is /-invertible and the subset
+{x | 0x = 0} is an isomorphic copy of A. This shows that A can be
+extended to a /-invertible wheel in a structure-preserving way (as opposed
+to the construction of a total wheel of fractions, which often kills a lot of
+ideals).
+
+An advantage of wheels as compared to rings is that several rules that are
+valid in rings only in special cases, will have counterparts that are generally
+valid in wheels. One example is the rule
+xz = yz ∧ z 6= 0 ⇒ x = y
+of integral domains, whose general counterpart for wheels is
+xz = yz ⇒ x + 0z/z = y + 0z/z
+
+5 0(1 + 1) = 0(1 + 1) + 0 · 0 = 0 · 1 + 0 · 1 = 0 + 0 = 0.
+
+6
+
+(derived rule (13) on page 24).
+Since any ring can be extended to a wheel in a structure-preserving way, one
+may always switch to wheel theory if one likes, even if one works with a problem
+which originates from a context of rings. Suppose for instance that a, b, c are
+elements of a ring A and that we have concluded that
+ac = bc.
+We may then think of a, b, c as elements of a /-invertible wheel that extends A
+and use 0c = 0, concluding that
+a + 0/c = b + 0/c.
+This does always make sense. Additional information about c can later be used
+to go further in the calculation.
+We arrived at wheels of fractions by a modification of a well-known construction, and it was by no means clear that the chosen construction yields the
+best result. We will however show that, in a certain sense, this construction is
+very natural. We do that in the following steps.
+First, we forget the operations 0 and + of the ring we started with, so that
+we are left with the multiplicative monoid. We show that the construction can
+be carried out in this setting, and that it solves a universal problem for monoids.
+This shows that it is very natural from the point of view of the multiplicative
+monoid. We then show that there is a unique way of defining 0 and + such that
+the construction is functorial from the category of semirings to the category of
+‘weak wheels’, which is a very general category. That unique way is precisely
+the one described above.
+Convention. Any category with structures as objects is assumed
+to have algebraic morphisms as arrows, i.e., mappings that preserve
+all operations, including constants which are to be viewed as nullary
+operations.
+
+2
+
+Involution-monoids
+
+The construction sketched in the previous section was motivated by a wish
+to make certain changes to the multiplicative monoid of a commutative ring.
+Fortunately, it turns out that the construction is compatible with the additive
+structure too, but that is not needed for the construction to be made. In fact,
+if one forgets about the additive structure and treats the multiplicative monoid
+only, then the construction becomes even more natural. A few sections will
+therefore be devoted to a study of commutative monoids. In this context, the
+motivation from the previous section amounts to the following.
+Every monoid M comes with a partial inversion function, defined on the
+group of units in M . M can be extended to a group only when every element of
+it is cancellable. However, we will show that if M is commutative, then it can
+always be extended to a commutative monoid with an involution ∗, such that
+the partial inversion function of M is the restriction of ∗. This will follow as an
+application of the more general construction given below.
+
+7
+
+2.1
+
+Definitions and examples
+
+We use the following notion of involution, the canonical example being the
+inverse of a group.
+Definition 2.1 (involution). An involution on M is a mapping ∗ : M → M
+such that
+x∗∗ = x
+(xy)∗ = y ∗ x∗ .
+Note that e∗ = e for the identity e, since e ∗ = ee∗ = e∗∗ e∗ = (ee∗ )∗ =
+e = e. Therefore, an involution is a homomorphism M op → M . If M is
+commutative, then an involution is precisely an automorphism of order 2.
+∗∗
+
+Definition 2.2 (involution-monoid). An involution-monoid is a pair hM, ∗i
+where M is a monoid and ∗ an involution on it. A morphism of involutionmonoids ϕ : hM, ∗i → hN, ?i is a monoid morphism M → N with ϕ(x∗ ) = ϕ(x)?
+for every x.
+Example 2.3.
+
+1. A group with x ∗ = x−1 .
+
+2. An abelian group (or any commutative monoid) with ∗ being the identity
+morphism.
+3. The multiplicative monoid of a field together with
+(
+0
+(x = 0)
+x∗ =
+−1
+x
+(x 6= 0).
+Note however that this definition is constructive only if x = 0 is decidable.
+That is not the case in e.g. R.
+4. The monoid of n × n matrices with ∗ being transposition.
+5. The monoid of strings from a given alphabet (e being the empty string
+and the composition being concatenation) with x ∗ being the string x in
+reversed order.
+As is seen, involutions can sometimes be used as approximations of inversion
+functions. We therefore use the following different notions of inversion.
+Definition 2.4. Let hM, ∗i be an involution-monoid.
+1. An element x ∈ M is invertible or a unit if there exists a y ∈ M with
+xy = yx = e. This is the ordinary notion for monoids and we use the
+ordinary notation x−1 for the element with xx−1 = x−1 x = e. We call
+x−1 the multiplicative inverse of x.
+2. An element x ∈ M is ∗-invertible or a ∗-unit if xx∗ = x∗ x = e (hence
+∗-units are units).
+3. hM, ∗i is said to be ∗-invertible if all units are ∗-invertible, i.e., if x−1 = x∗
+whenever x−1 is defined.
+Example 2.5. ‘Orthogonal’ is a more common term for ∗-invertible n × nmatrixes.
+8
+
+2.2
+
+The construction of involution-monoids from commutative monoids
+From now on, M is assumed to be a commutative monoid and X a
+subset of it. S is assumed to be the submonoid generated by X, i.e.,
+S consists of all finite products of elements of X (e being the empty
+product). Variables s, s0 , s00 , . . . , s0 , s1 , . . . are assumed to vary over
+S when nothing else is stated.
+
+The ordinary construction of commutative monoids of fractions is precisely
+like that of commutative rings of fractions, except that one needs a minor
+modification to take care of the fact that no subtraction is present. Bourbaki [Bou73] defines M X as the monoid M × S/ ∼ S , where (m, s) ∼S (m0 , s0 )
+means ∃s00 : s00 ms0 = s00 m0 s0 . That construction solves the following universal
+problem:
+Find a monoid MX with ι(M,X) : M → MX , having the property
+that whenever ϕ : M → N is a monoid-morphism with ϕ(x) a
+unit for every x ∈ X, then there is a unique ϕ̂ : M X → N with
+ϕ = ϕ̂ ◦ ι(M,X) .
+MX
+ι(M,X)
+M
+
+
+
+@
+@ ϕ̂
+@
+@
+R
+@
+ϕ
+- N
+
+Informally, one asks that the elements of a subset X should ‘turn into units’
+when mapped into N and defines MX to be universal with that property. Bourbaki does not assume that N is commutative, but the generality is somewhat
+illusory, since the homomorphic image of a commutative monoid is again commutative. Since everything takes place inside the image of M , one has all
+commutativity that is needed. One could therefore as well require that N be
+commutative and handle a morphism M → N 0 (N 0 not commutative) by letting
+N be the image, factorizing the morphism as M → N → N 0 .
+An analogue for involution-monoids is to ask that the elements x ∈ X should
+‘turn into ?-units’ when mapped into an involution-monoid hN, ?i. Formally, we
+state it as follows, with T denoting the forgetful functor taking the monoid out of
+an involution-monoid. Motivated by the arguments in the previous paragraph,
+we assume that N is commutative.6
+Let M be a commutative monoid and X an arbitrary subset of M .
+∗
+∗
+Then find an involution-monoid M X
+with η(M,X) : M → T (MX
+),
+having the property that whenever hN, ?i is a commutative involution-monoid and ϕ : M → N a monoid-morphism with ϕ(x)ϕ(x)? =
+∗
+ϕ(x)? ϕ(x) = e for every x ∈ X, then there is a unique ϕ̂ : M X
+→
+hN, ?i with ϕ = T (ϕ̂) ◦ η(M,X) .
+
+6 In our situation, this requirement is really essential, since we do not any longer work
+inside the image of M , but in the generated involution-monoid, which is not automatically
+commutative.
+
+9
+
+∗
+T (MX
+)
+
+η(M,X)
+M
+
+
+
+@
+@ T (ϕ̂)
+@
+@
+R
+@
+ϕ
+- N
+
+∗
+We show how to find MX
+. Consider the involution-monoid hM × M, ∗i
+∗
+where (x, y) = (y, x) and define ≡S on it by
+
+(x, y) ≡S (x0 , y 0 ) means ∃s1 , s2 : (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ).
+Then ≡S is clearly reflexive and symmetric, but it is also transitive, since if
+(s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ) and (s3 , s3 )(x0 , y 0 ) = (s4 , s4 )(x00 , y 00 ), then it follows that (s1 s3 , s1 s3 )(x, y) = (s2 s4 , s2 s4 )(x00 , y 00 ). It is easily seen that ≡S preserves the operations, so that it is in fact a congruence relation. The congruence
+class containing (x, y) will be denoted by [x, y].
+∗
+∗
+Definition 2.6. Let M X
+= hM × M, ∗i / ≡ S , and let η(M,X) : M → T (MX
+) be
+defined by x 7→ [x, e].
+
+Theorem 2.7 (solution to the universal problem). Suppose hN, ?i is a
+commutative involution-monoid and ϕ : M → N a monoid-morphism. Then
+∗
+ϕ̂([x, y]) = ϕ(x)ϕ(y)? defines a morphism of involution-monoids MX
+→ hN, ?i
+and if ψ is such a morphism too, then ϕ = T (ψ) ◦ η(M,X) if and only if ψ = ϕ̂.
+Proof. We first prove uniqueness of ψ. In order for it to extend ϕ, we must
+have
+ψ([x, y]) = ψ([x, e][y, e]∗ ) = ψ([x, e])ψ([y, e])? = ψ(η(M,X) (x))ψ(η(M,X) (y))?
+= ϕ(x)ϕ(y)? .
+Hence, ϕ̂ is the only candidate. It is well-defined, since if [x, y] = [x 0 , y 0 ] then
+there are s1 , s2 with (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ) and therefore
+ϕ(x)ϕ(y)? = ϕ(x)eϕ(y)? = ϕ(x)ϕ(s1 )ϕ(s1 )? ϕ(y)? = ϕ(xs1 )ϕ(ys1 )?
+= ϕ(x0 s2 )ϕ(y 0 s2 )? = ϕ(x0 )ϕ(s2 )ϕ(s2 )? ϕ(y 0 )? = ϕ(x0 )eϕ(y 0 )?
+= ϕ(x0 )ϕ(y 0 )? .
+It is a monoid-morphism since
+ϕ̂([x, y][x0 , y 0 ]) = ϕ̂([xx0 , yy 0 ]) = ϕ(xx0 )ϕ(y 0 y)? = ϕ(x)ϕ(x0 )ϕ(y)? ϕ(y 0 )?
+= ϕ(x)ϕ(y)? ϕ(x0 )ϕ(y 0 )? = ϕ̂([x, y])ϕ̂([x0 , y 0 ])
+and
+ϕ̂([e, e]) = ϕ(e)ϕ(e)? = ee? = e.
+It preserves the involution since
+ϕ̂([x, y]∗ ) = ϕ̂([y, x]) = ϕ(y)ϕ(x)? = ϕ(y)?? ϕ(x)? = (ϕ(x)ϕ(y)? )?
+= ϕ̂([x, y])? .
+
+10
+
+2.3
+
+Insertion of the parent monoid
+
+The mapping η(M,X) differs from the usual ι(M,X) only in the choice of codomain,
+∗
+since we will see in theorem 2.10 that M X is included in MX
+. Hence, many
+properties of ι carry over to η. One such is that η (M,X) is not in general injective.
+Proposition 2.8. η (M,X) (a) = η(M,X) (b) iff there is some s ∈ S with sa = sb.
+Proof.
+[a, e] = [b, e]
+∃s1 , s2 : (s1 , s1 )(a, e) = (s2 , s2 )(b, e)
+
+⇐⇒
+
+⇐⇒
+
+∃s : sa = sb.
+
+Corollary 2.9. η(M,X) is injective iff every x ∈ X is cancellable.
+Proof. If every x ∈ X is cancellable, then every s ∈ S is too, since S is generated
+by X. Hence sa = sb ⇒ a = b and the rest follows from the proposition.
+It is convenient to use the same symbol for an element of a monoid M and
+its image under η(M,X) , even when η(M,X) is not injective (remembering that
+∗
+lack of injectivity means that equality in M X
+need not imply equality in M ).
+We will use that notation frequently. In particular, it allows us to write xy ∗
+instead of [x, y].
+∗
+Theorem 2.10. The homomorphism η̂(M,X) : MX → T (MX
+), induced by
+η(M,X) according to the universal property of MX , is injective.
+
+MX
+ι(M,X)
+M
+
+
+
+@
+@ η̂(M,X)
+@
+@
+R
+@
+η(M,X)
+- T (M ∗ )
+X
+
+Proof. This is best seen in a very concrete way, examining how the constructions
+∗
+of MX and MX
+are related.
+Let ∼S be the restriction of ≡S to M × S. Then
+(x, s) ∼S (x0 , s0 ) ⇐⇒ ∃s00 : s00 xs0 = s00 x0 s,
+because on the one hand, if s00 xs0 = s00 x0 s, then we have
+(s00 s0 , s00 s0 )(x, s) = (s00 xs0 , s00 ss0 ) = (s00 x0 s, s00 ss0 ) = (s00 s, s00 s)(x0 , s0 )
+and on the other, if (s1 , s1 )(x, s) = (s2 , s2 )(x0 , s0 ), then
+s1 xs0 = s2 x0 s0 = s1 x0 s.
+
+11
+
+Since ∼S is a restriction of ≡ S , it follows that the mapping M × S/ ∼ S →
+M × M/ ≡S is injective. This mapping is clearly η̂ (M,X) .
+M ×S ⊂
+
+- M ×M
+
+?
+?
+M × S/ ∼S
+
+?
+?
+- M × M/ ≡S
+
+∗
+We therefore regard M X as a submonoid of T (M X
+).
+
+2.4
+
+The role of X in the structure of MX∗
+
+∗
+When exploring possible structures of M X
+, we don’t have to consider arbitrary
+∗
+subsets X, but only submonoids S, since M X
+= MS∗ when S is the submonoid
+generated by X. When comfortable, we may even restrict our attention to a
+special class of submonoids: those “closed under division”.
+
+Definition 2.11. A submonoid S of M is closed under division if it holds that
+sx ∈ S ⇒ x ∈ S.
+
+(s ∈ S, x ∈ M )
+
+Definition 2.12. The divisional closure of a submonoid S of M is the smallest
+submonoid of M that contains S and is closed under division.
+Lemma 2.13. S̃ = {x ∈ M | ∃s : sx ∈ S} is the divisional closure of S.
+Proof. Since es ∈ S, we have s ∈ S̃ and hence S ⊂ S̃.
+It is obvious that S̃ cannot be smaller, the question is whether it is closed
+under multiplication and division. Suppose x, y ∈ S̃, say s1 x, s2 y ∈ S. Then
+(s1 s2 )(xy) ∈ S, so that xy ∈ S̃. Hence it is a submonoid of M .
+To see that it is closed under division, suppose that s̃x ∈ S̃, with s̃ ∈ S̃.
+Then there is an s with s(s̃x) ∈ S. But there is also an s 0 such that s0 s̃ ∈ S.
+Then ss0 s̃ ∈ S and (ss0 s̃)x = (ss0 )(s̃x) ∈ S, so that x ∈ S̃.
+This is an algebraic closure operator (in the sense of e.g. [BS81]).
+∗
+Proposition 2.14. M X
+= MS∗ = MS̃∗ (they are identical as sets and have
+identical operations).
+∗
+Proof. It is clear by definition of MX
+that it is identical to MS∗ . We prove
+∗
+∗
+MS = MS̃ .
+Suppose that [x, y] = [x0 , y 0 ] in MS∗ , say (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ).
+Then, since S ⊂ S̃, [x, y] = [x0 , y 0 ] in MS̃∗ . On the other hand, suppose
+[x, y] = [x0 , y 0 ] in MS̃∗ , say (x1 , x1 )(x, y) = (x2 , x2 )(x0 , y 0 ) with x1 , x2 ∈ S̃.
+Then there are by definition of S̃ some s1 , s2 ∈ S with s1 x1 , s2 x2 ∈ S. Hence
+((s1 x1 )s2 , (s1 x1 )s2 )(x, y) = (s1 (s2 x2 ), s1 (s2 x2 ))(x0 , y 0 ), which means that [x, y]
+= [x0 , y 0 ] in MS∗ .
+Thus MS∗ and MS̃∗ are identical as sets. Their operations are identical since
+they are defined in the same way.
+
+12
+
+We now investigate the connection between the involution of M S∗ and the
+partial inversion function on its underlying monoid.
+Proposition 2.15. η (M,X) (x) is ∗-invertible if and only if x belongs to the
+divisional closure of the submonoid S generated by X.
+Proof. Let x ∈ S̃, say sx = s0 ∈ S. Then (s, s)(x, x) = (s0 , s0 )(e, e), so that
+xx∗ = e in MS∗ .
+On the other hand, suppose xx∗ = e in MS∗ , say (s, s)(x, x) = (s0 , s0 )(e, e).
+Then sx = s0 ∈ S, so that x ∈ S̃.
+In particular, we will often (and without explanation) use that ss ∗ = e for
+any s ∈ S.
+Definition 2.16. A submonoid S ⊂ M is saturated if xy ∈ S ⇒ x, y ∈ S.
+Example 2.17. The group of units is saturated as a subset of M .
+Example 2.18. Let S 0 = {x ∈ A | xy = xz ⇒ y = z}. It is saturated as a
+subset of M . We call it “the submonoid of cancellable elements”.
+Proposition 2.19. M S∗ is ∗-invertible if and only if S̃ is saturated in M .
+Proof. By proposition 2.14 we may assume that S = S̃.
+Suppose that S is saturated and that [a, b] is a unit in M S∗ , say [a, b][a0 , b0 ] =
+e, which is to say that (s1 , s1 )(aa0 , bb0 ) = (s2 , s2 )(e, e) for some s1 , s2 . Then
+s1 aa0 = s1 bb0 = s2 ∈ S, so that a, b ∈ S by saturation. Hence ab ∈ S so that
+[a, b][a, b]∗ = [ab, ab] = e.
+Suppose on the other hand that every unit is ∗-invertible and take xy ∈ S.
+We shall prove x ∈ S. In MS∗ , x is a unit with x−1 = y(xy)∗ , but then it is
+∗-invertible by assumption, so that y(xy) ∗ = x∗ . That means that there are
+s1 , s2 with (s1 , s1 )(y, xy) = (s2 , s2 )(e, x), in particular s2 x = s1 (xy). But xy
+was taken from S, so we conclude that s 2 x ∈ S and hence that x ∈ S̃. Since
+we have assumed that S = S̃, we get x ∈ S. A similar argument proves that
+y ∈ S.
+Corollary 2.20. Let U be the group of units in M . Then MU∗ is ∗-invertible and
+it contains M as a submonoid (this solves the problem of finding an extension of
+M together with an involution extending the partial inversion function of M ).
+Proof. Since U is saturated, MU∗ is ∗-invertible by the previous proposition. By
+corollary 2.9, η (M,U ) is injective, since units are cancellable.
+Proposition 2.21. The restriction to M of the involution of MU∗ , is the partial
+inversion function of M .
+Proof. The restriction of ∗ to M extends the partial inversion function since M U∗
+is ∗-invertible. We shall prove that if x, y ∈ M with y = x ∗ in MU∗ , then xy = e.
+Suppose therefore that x, y ∈ M and that y = x ∗ . The latter means that there
+are units u1 , u2 ∈ M with (u1 , u1 )(y, e) = (u2 , u2 )(e, x), but then u2 x = u1 , so
+that x ∈ U . Hence xx∗ = e, thus xy = e.
+
+13
+
+2.5
+
+The construction as a functor
+
+∗
+We may turn the construction (M, X) 7→ M X
+into a functor F in the following
+way.
+Let C be the category of pairs (M, X) where M is a commutative monoid
+and X a subset of M . A C-arrow (M, X) → (M 0 , X 0 ) is a monoid-morphism
+∗
+ϕ : M → M 0 with ϕ(X) ⊂ X 0 . Define F (M, X) to be MX
+and F (ϕ) to be
+the mapping [x, y] 7→ [ϕ(x), ϕ(y)]. It is well-defined since if [x, y] = [x0 , y 0 ],
+then there are s1 , s2 such that (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ). Since ϕ(X) ⊂ X 0 ,
+it follows that ϕ(s1 ) and ϕ(s2 ) are elements of the submonoid generated by
+X 0 . Since (ϕ(s1 ), ϕ(s1 ))(ϕ(x), ϕ(y)) = (ϕ(s2 ), ϕ(s2 ))(ϕ(x0 ), ϕ(y 0 )), it follows
+that [ϕ(x), ϕ(y)] = [ϕ(x0 ), ϕ(y 0 )]. It is easily seen that F (ϕ) is a morphism of
+involution-monoids. It is now easy to check that F is a functor from C to the
+category CInvMon of commutative involution-monoids.
+
+Proposition 2.22. F has a right adjoint G, which is defined on objects by
+hM, ∗i 7→ (M, X), with X the set of ∗-units in hM, ∗i, and on morphisms by
+α 7→ T (α). η is a natural transformation from the identity to GF and it is the
+unit of the adjunction. The counit is  with hM,∗i : [x, y] 7→ xy ∗ .
+Proof. η(M,X) maps X into the set U of ∗-units, thus is a C-arrow (M, X) →
+∗
+T (MX
+, U ). The naturalness is obvious.
+We have to prove that
+(F )(M,X) (F η)(M,X) = IdMX∗
+and
+(G)hM,∗i (ηF )hM,∗i = IdG(hM,∗i) .
+∗
+∗
+(F )(M,X) : F G(MX
+) → MX
+by [[x, y], [z, w]] 7→ [xw, yz]
+
+∗
+∗
+(F η)(M,X) : MX
+→ F G(MX
+) by [x, y] 7→ [[x, e], [y, e]]
+(G)H : GF G(hM, ∗i) → G(hM, ∗i) by [x, y] 7→ xy∗
+
+(ηG)H : G(hM, ∗i) → GF G(hM, ∗i) by x 7→ [x, e]
+Then
+
+(F )(M,X) (F η)(M,X) ([x, y]) = (F )(M,X) ([[x, e], [y, e]]) = [xe, ye] = [x, y]
+and
+
+(G)hM,∗i (ηG)hM,∗i (x) = (G)hM,∗i ([x, e]) = xe∗ = x.
+
+∗
+η̂(M,X) is a transformation from M X to T (MX
+), natural in (M, X).
+
+Remark. Involutions on monoids hM, 0, +i will throughout be denoted by −. We write −x for x∗ in this case. Further, we write x − y
+for x + (−y).
+Involutions on monoids hM, 1, ·i will throughout be denoted by /.
+We write /x for x∗ in this case. Further, we write x/y for x · (/y).
+
+14
+
+3
+
+Applications to semirings
+
+The consideration of commutative monoids leads naturally to consideration of
+semirings in the sense of e.g. Golan [Gol99] (we define this notion below, the
+word ‘semiring’ has no uniform meaning in the literature), in the following way.
+When addition has been defined on the natural numbers, turning N into
+a commutative monoid, one finds that N can be used to add, not only finite
+collections of elements, but also finite collections of equally large finite collections
+of elements. This motivates the introduction of multiplication on N.
+The argument in the previous paragraph is an elementary way of saying
+that N can be viewed as its own endomorphism monoid with multiplication
+being composition. The combination with addition turns N into a semiring.
+In general, suppose that M = hM, 0, +i is a commutative monoid. Then its
+monoid End(M ) of endomorphisms has a natural additive structure inherited
+from M by
+0(x) = 0,
+(f + g)(x) = f (x) + g(x).
+These definitions make End(M ) a semiring.
+Definition 3.1. A semiring is a structure hM, 0, 1, +, ·i such that
+1. hM, 0, +i is a commutative monoid.
+2. hM, 1, ·i is a monoid.
+3. (x + y)z = xz + yz and x(y + z) = xy + xz.
+4. 0x = x0 = 0.
+We do not exclude the trivial case 0 = 1.
+If there is a solution a to the equation 1 + x = 0 in a semiring A, then we
+may define −x = ax and we get x + (−x) = 1x + ax = (1 + a)x = 0x = 0, so
+that A is a ring in this case.
+Beside the important example End(M ), we have many mathematical structures that are semirings, for instance:
+1. Any ring with identity.
+2. The (left or right) ideals of a ring, with I + J defined to be {i + j | i ∈
+I, j ∈ J} and IJ defined to be the (left or right) ideal generated by
+{ij | i ∈ I, j ∈ J}. 0 is the trivial ideal and 1 is the improper ideal.
+3. Any bounded distributive lattice, e.g. Heyting algebras and Boolean algebras. Here h0, 1, +, ·i is h⊥, >, ∨, ∧i.
+We need some definitions, which are taken from [Gol99], except that we
+use the word ‘module’ for what there is called ‘semimodule’. The reason for
+this choice is that ‘module’ is shorter and we see no point in distinguishing
+the notions since if A happens to be a ring, then an A-module in the following
+sense is automatically an A-module in the sense of rings, since if we define
+−m = (−1)m, then m + (−m) = (1 + (−1))m = 0m = 0.
+15
+
+Definition 3.2. Let A be a semiring. A left A-module is a commutative monoid
+hM, 0, +i with multiplication by A-elements to the left defined (formally, a function A×M → M written (a, m) 7→ am) such that for any a, a0 ∈ A, m, m0 ∈ M ,
+(aa0 )m = a(a0 m)
+1m = m
+(a + a0 )m = am + a0 m
+a(m + m0 ) = am + am0
+0m = 0
+a0 = 0
+where 0 to the left is in A, while 0 to the right or alone is in M .
+Every commutative monoid hM, e, ·i is an N-module with the multiplication
+(n, m) 7→ mn . This is in analogy with the fact that every abelian group is a
+Z-module.
+Definition 3.3. A left ideal of A is a left A-module inside A; i.e., it is a
+submonoid of the additive monoid of A and it is closed under multiplication to
+the left by any element from A.7
+The notions of right A-module and right ideal are defined analogously.
+
+3.1
+
+Applications to additive monoids of semirings
+
+We show how our construction can be used for extending a semiring so that an
+additive involution − can be defined on the result. The process is similar to the
+construction of Z from N, but it does not need that all elements are additively
+cancellable.
+The idea is that we first apply our construction to the additive monoid, then
+defining multiplication on the result.
+Suppose that hA, 0, +i is the additive monoid of a semiring A and that X is
+a subset. Let S be the right ideal generated by X; i.e., S consists of all finite
+sums
+X
+xi ai
+(xi ∈ X, ai ∈ A).
+i
+
+∗
+
+We use the construction hA, 0, +iS , given in section 2.2, writing −x for x ∗ .
+∗
+In section 2.2, we noted that each element of M X
+is of the form xy ∗ for x, y ∈ M ;
+the corresponding statement now is that each element is of the form x + (−y),
+which will be written as x−y. Such elements x−y and x0 −y 0 (with x, y, x0 , y 0 ∈
+A) are equal when there exists s, s 0 with (s, s)+(x, y) = (s0 , s0 )+(x0 , y 0 ) in A×A
+(in particular, 1−1 = 0 holds precisely when there is some s such that s+1 ∈ S,
+see proposition 2.15).
+We now define a ‘multiplication’ by
+(x − y)(z − w) = (xz + yw) − (xw + yz).
+
+(x, y, z, w ∈ A)
+
+7 We accept improper ideals, which [Gol99] does not. This is natural since we accept trivial
+
+semirings.
+
+16
+
+It is well-defined, since if x − y = x0 − y 0 , then there are s, s0 ∈ S with (s, s) +
+(x, y) = (s0 , s0 ) + (x0 , y 0 ) in A × A, so that
+(sx0 + sy 0 , sx0 + sy 0 ) + (xz + yw, xw + yz)
+= ((s + x)z + (s + y)w, (s + x)w + (s + y)z)
+= ((s0 + x0 )z + (s0 + y 0 )w, (s0 + x0 )w + (s0 + y 0 )z)
+= (s0 z + s0 w, s0 w + s0 z) + (x0 z + y 0 w, x0 w + y 0 z)
+and since S is a right ideal, sx 0 + sy 0 ∈ S and s0 z + s0 w ∈ S. Hence (xz + yz) −
+(xw + yz) = (x0 z + y 0 z) − (x0 w + y 0 z).
+The structure obtained, together with the constant 1, will be denoted by A −
+X.
+It is clearly a semiring: indeed, it is a quotient of A −
+∅ which is the ‘convolution
+algebra’, or ‘monoid-semiring’, on A defined by the monoid {1, −1}. 8 A natural
+morphism η(A,X) : A → A−
+X is given by η(A,X) (x) = η(hA,0,+i,X) (x) = x.
+Example 3.4. Z = N −
+N.
+Example 3.5. An example when 1 − 1 6= 0 is obtained by thinking of machines
+not capable of counting with elements larger than the natural number N .
+Let ∼ be defined on N as “equal or large”, formally:
+x∼y
+
+means x = y ∨ (x ≥ N ∧ y ≥ N ).
+
+Then ∼ is a congruence relation and N/∼ consists of N + 1 elements. Since
+no element except 0 is additively cancellable, we can’t introduce an additive
+inverse, but we may construct (N/∼) −
+∅ , in which 1 − 1 6= 0.
+Now, consider (N/∼) × (Z/7Z) (it can be thought of as a data structure with
+elements being pairs representing numbers together with a day of the week). An
+element (x, y) of it is additively cancellable if and only if x = 0. Let S 0 be the
+set of such elements. It holds in ((N/∼) × (Z/7Z))−
+S0 that (0, x) − (0, x) = 0,
+but not that 1 − 1 = 0.
+Example 3.6. Let N ∞ be N extended with an element ∞ with
+x+∞=∞+x=∞
+(
+0 (x = 0)
+x∞ = ∞x =
+∞ (x 6= 0).
+This notion of infinity differs from that in the introduction, since here we have
+0∞ = 0, while we had 0∞ = ⊥ in the introduction.
+N∞ is clearly a semiring, thus we may construct (N ∞ )−
+X . However, if a ∈ X
+for some a 6= 0, then ∞ is an element of the right ideal generated by X, hence
+0 0
+0 0
+(N∞ )−
+X is trivial, since (∞, ∞) + (x, y) = (∞, ∞) + (x , y ) for all x, y, x , y .
+Hence, if we want non-triviality, we need to take X ⊂ {0}, ending up with the
+structure (N∞ )−
+∅ . In that structure, x − x = 0 is true only for x = 0.
+−
+The operation − makes A −
+X a semiring :
+
+8 See [Gol99, example 3.3, p. 29]. The notation is different.
+
+17
+
+Definition 3.7. A semiring − is a semiring with an additive involution − such
+that
+−x = (−1)x = x(−1).
+
+A homomorphism of semirings− is a semiring homomorphism which also preserves −.
+One could also describe a semiring − as a semiring with a constant −1 such
+that (−1)(−1) = 1 and (−1)x = x(−1) for all x. An involution with the required
+properties is then given by −x = (−1)x.
+Note that a ring is precisely a semiring − in which 1 − 1 = 0 holds. Then
+x − x = (1 − 1)x = 0x = 0 for all x.
+The construction solves the following universal problem. Let T be the functor which forgets the − of semirings − , turning them into semirings.
+
+Theorem 3.8. Suppose that A is a semiring and X a subset of it. Suppose
+also that B is a semiring− and ϕ : A → T (B) a semiring morphism such
+that ϕ(x) − ϕ(x) = 0 for all x ∈ X. Then there exists a unique morphism
+−
+ϕ̂ : A−
+X → B of semirings such that ϕ = T (ϕ̂) ◦ η(A,X) .
+T (A−
+X)
+
+
+η(A,X)
+A
+
+@
+@ T (ϕ̂)
+@
+@
+R
+@
+ϕ
+- T (B)
+
+Proof. Note first that if s ∈ S, then ϕ(s) − ϕ(s) = 0, since
+X
+X
+X
+ϕ(
+xi ai ) − ϕ(
+xi ai ) =
+(ϕ(xi ) − ϕ(xi ))ϕ(ai )
+i
+
+i
+
+i
+
+=
+
+X
+
+(0ϕ(ai )) = 0.
+
+i
+
+Hence, we may replace X by S everywhere in the statement of the theorem.
+Then theorem 2.7 gives the unique candidate ϕ̂ : [x, y] 7→ ϕ(x)−ϕ(y) and proves
+that it preserves 0, +, −. It also preserves 1, since ϕ̂(1) = ϕ̂([1, 0]) = ϕ(1) = 1.
+Preservation of multiplication is checked thus: Let x, y, z, w ∈ A.
+ϕ̂((x − y)(z − w)) = ϕ̂((xz + yw) − (xw + yz))
+= ϕ(xz + yw) − ϕ(xw + yz)
+
+= ϕ(x)ϕ(z) + ϕ(y)ϕ(w) − (ϕ(x)ϕ(w) + ϕ(y)ϕ(z))
+
+= (ϕ(x) − ϕ(y))(ϕ(z) − ϕ(w))
+= ϕ̂(x − y)ϕ̂(z − w).
+
+The rules −x = (−1)x = x(−1) were applied in the fourth step.
+
+18
+
+3.2
+
+Applications to multiplicative monoids of commutative semirings
+In the following, all monoids and semirings are assumed to be commutative (a semiring is commutative if + and · are commutative).
+When we use notions like units, divisional closures etc., we refer to
+the multiplicative monoid (when nothing else is stated).
+We will sometimes write xy for x/y.
+
+Given a commutative semiring, one may first apply the construction to the
+additive monoid, introducing an additive involution as was explained in the
+previous section. One may then continue by applying the construction to the
+multiplicative monoid, introducing also a multiplicative involution /. We show
+in this section how that second step is carried out. It is not necessary that
+an additive involution is present, one may as well start from a plain semiring.
+However, if both − and / are wanted, then − should be constructed first, since
+the result of the construction in this section will not be a semiring anymore.
+In section 1.2, it was sketched how this construction is made. We there
+supposed that it was applied to a ring, but semirings work as well. We now
+show that the choice of definition of + was not arbitrary, it is the unique choice
+which yields a functorial definition (using some very general conditions). More
+precisely, let M be the multiplicative monoid of a semiring. Then there is a
+∗
+unique way of defining on MX
+a binary operation + with neutral element 0,
+∗
+such that the functor F : M 7→ MX
+acts functorially also with respect to 0 and
++ and such that η(M,X) preserves also these operations.
+Technically, we state it in the theorem below. We need some preliminaries.
+Definition 3.9. Let C 0 be the category with objects (A, X) where A is a (commutative) semiring and X a subset of it. An arrow (A, X) → (A0 , X 0 ) is a
+semiring morphism ϕ : A → A0 with ϕ(X) ⊂ X 0 .
+Note that there is a forgetful functor T 1 : C0 → C (the category C was
+defined on page 14), forgetting the additive structure.
+Definition 3.10 (weak wheel). A weak wheel is a structure hH, 0, 1, +, ·, /i
+with hH, 1, ·, /i a commutative involution-monoid and 0 neutral for +, i.e. 0 +
+x = x + 0 = x.
+Let T2 be the forgetful functor (forgetting 0 and +) from the category WW
+of weak wheels to the category CInvMon of commutative involution-monoids.
+Theorem 3.11. There is a unique functor F 0 : C0 → WW such that the
+diagram
+C0
+
+F0
+
+T1
+?
+C
+
+- WW
+T2
+
+F
+
+19
+
+?
+- CInvMon
+
+commutes and such that, for each (A, X), there is an operation-preserving function η(A,X) which makes the following diagram commute (here M is the multiplicative monoid of A).
+(A, X)
+
+η(A,X)
+
+x 7→ x
+
+?
+(M, X)
+
+- F 0 (A, X)
+x 7→ x
+
+η(M,X)
+
+?
+∗
+- MX
+
+Proof. There is a unique possible definition of η(A,X) : by the lower diagram,
+∗
+F 0 (A, X) is MX
+with additional structure (with the notation / instead of ∗ and
+x
+with ‘ y ’ sometimes denoting x/y), so that we must have η (A,X) (x) = η(M,X) (x).
+We therefore define η(A,X) as x 7→ η(M,X) (x). We then have what is needed to
+check that the lower diagram commutes, but it is not clear that η (A,X) preserves
+the operations, since 0 and + have not yet been defined.
+Preservation of 0 requires that 0 be defined in F 0 (A, X) as η(A,X) (0), which
+has to be η(M,X) (0) by the previous paragraph. We therefore make this definition. Note that it is compatible with our general use of the notation ‘x’ for
+η(M,X) (x).
+It remains to investigate how + must be defined in order for η (A,X) to preserve + and for the upper diagram to commute.
+Uniqueness:
+The requirement that + be preserved by η (A,X) means that there should be
+no difference between η(A,X) (x) + η(A,X) (y) and η(A,X) (x + y). Thus, we may
+safely use the notation ‘x + y’ for both.
+We have to know how F 0 must act on arrows. Let ϕ be an arrow in C 0 . How
+0
+F (ϕ) acts on elements is given by how it acts after the forgetful functor T 2 has
+been applied. We have for x, y ∈ A that ((T2 F 0 )(ϕ))(x/y) = ((F T1 )(ϕ))(x/y) =
+ϕ(x)/ϕ(y).
+Consider N[x1 , x2 , x3 , x4 ], the semiring of polynomials in {x 1 , x2 , x3 , x4 }
+with natural numbers as coefficients. 9 Clearly, in F 0 (N[x1 , x2 , x3 , x4 ], ∅), we
+have
+x1
+x3
+p(x1 , x2 , x3 , x4 )
++
+=
+x2
+x4
+q(x1 , x2 , x3 , x4 )
+for some pair of polynomials (p, q) with natural numbers as coefficients. For
+any (A, X) in C0 and any a1 , a2 , a3 , a4 ∈ A, there is a unique morphism ϕ :
+(N[x1 , x2 , x3 , x4 ], ∅) → (A, X) with ϕ(xi ) = ai , hence
+
+
+a3
+ϕ(x1 ) ϕ(x3 )
+x1
+x3
+a1
+0
++
+=
++
+= (F (ϕ))
++
+a2
+a4
+ϕ(x2 ) ϕ(x4 )
+x2
+x4
+
+
+ϕ(p(x
+p(x
+,
+x
+,
+x
+,
+x
+)
+1 , x2 , x3 , x4 ))
+1
+2
+3
+4
+= (F 0 (ϕ))
+=
+q(x1 , x2 , x3 , x4 )
+ϕ(q(x1 , x2 , x3 , x4 ))
+p(a1 , a2 , a3 , a4 )
+=
+.
+q(a1 , a2 , a3 , a4 )
+9 We use x , x , x , x as formal symbols, distinguishing them from variables x , x , x , x .
+1
+2
+3
+4
+1
+2
+3 4
+
+20
+
+So, addition has to be defined by p and q in F 0 (A, X), for any choice of (A, X).
+The polynomials p and q are homogeneous of the same degree, since in F 0 (N, {2})
+we must have (for x, y, z, w ∈ N)
+2x
+2z
+2 x 2 z
+p(2x, 2y, 2z, 2w)
+=
++
+= · + ·
+q(2x, 2y, 2z, 2w)
+2y
+2w
+2 y
+2 w
+z
+x
+z
+p(x, y, z, w)
+x
+=1· +1· = + =
+y
+w
+y
+w
+q(x, y, z, w)
+so that there exist n, m with
+(2n , 2n )(p(2x, 2y, 2z, 2w), q(2x, 2y, 2z, 2w)) =
+(2m , 2m )(p(x, y, z, w), q(x, y, z, w)).
+But then p and q must be homogeneous of degree m − n.
+We now compute q. Since the η(A,X) are required to preserve +, we must
+have
+x y
+x+y
++ =
+1
+1
+1
+so that q(x, 1, z, 1) = 1. Hence q(x, y, z, w) = y i wj for some i, j with i + j =
+m − n. Since 0 is required to be neutral for +, we must also have
+x
+x 0
++ = ,
+y
+1
+y
+
+0
+z
+z
++ = ,
+1 w
+w
+
+hence q(x, y, 0, 1) = y and q(0, 1, z, w) = w. Hence i = j = 1 and we conclude
+that q(x, y, z, w) = yw.
+We now compute p, which has to be homogeneous of degree 2, as q is.
+Preservation of + gives (see above) that p(x, 1, z, 1) = x+z, hence p(x, y, z, w) =
+xy k w1−k +zy `w1−` for some k, ` ∈ {0, 1}. That 0 is neutral gives p(x, y, 0, 1) = x
+and p(0, 1, z, w) = z, hence k = 0 and ` = 1, so that p(x, y, z, w) = xw + yz.
+Existence:
+∗
+Let F 0 (A, X) be MX
+(again with the notation / instead of ∗ and with ‘ xy ’
+sometimes denoting x/y) with 0 = [0, 1] and + defined as
+z
+xw + yz
+x
++ =
+.
+y
+w
+yw
+
+(x, y, z, w ∈ A)
+
+It is well-defined, since if x0 , y 0 , z 0 , w0 ∈ A and x0 /y 0 = x/y and z 0 /w0 = z/w,
+then there are s1 , s2 , s3 , s4 with (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ) and (s3 , s3 )(z, w)
+= (s4 , s4 )(z 0 , w0 ), hence
+x0 w0 + y 0 z 0
+s2 s4 x0 w0 + y 0 z 0
+s2 x0 s4 w0 + s2 y 0 s4 z 0
+s1 xs3 w + s1 ys3 z
+=
+·
+=
+=
+0
+0
+0
+0
+0
+0
+yw
+s2 s4
+yw
+s2 y s4 w
+s1 ys3 w
+s1 s3 xw + yz
+xw + yz
+=
+·
+=
+.
+s1 s3
+yw
+yw
+If ϕ : (A, XA ) → (B, XB ) is a C0 -arrow, then let F 0 (ϕ) be x/y 7→ ϕ(x)/ϕ(y)
+(for x, y ∈ A). Let us check that it is well-defined. Let SA be the multiplicative
+monoid generated by X A and SB the one generated by XB . That ϕ is a C0 arrow means that ϕ(X A ) ⊂ XB , hence ϕ(s) ∈ SB for all s ∈ SA , so that every
+21
+
+ϕ(s) is /-invertible in F 0 (B, X). Suppose x/y = x0 /y 0 with x0 , y 0 ∈ A. That
+means that there are s, s 0 ∈ S such that (s, s)(x, y) = (s0 , s0 )(x0 , y 0 ) and hence
+ϕ(s0 ) ϕ(x0 )
+ϕ(s0 )ϕ(x0 )
+ϕ(s0 x0 )
+ϕ(sx)
+ϕ(x0 )
+=
+·
+=
+=
+=
+0
+0
+0
+0
+0
+ϕ(y )
+ϕ(s ) ϕ(y )
+ϕ(s )ϕ(y )
+ϕ(s0 y 0 )
+ϕ(sy)
+ϕ(s)ϕ(x)
+ϕ(s) ϕ(x)
+ϕ(x)
+=
+=
+·
+=
+.
+ϕ(s)ϕ(y)
+ϕ(s) ϕ(y)
+ϕ(y)
+
+F 0 is now clearly a functor.
+According to the proof of this theorem, the construction of wheels of fractions, as given in section 1.2, is in a sense the most well-behaving one can
+have as a solution to the problem of making division a total function. We used
+the category WW as a tool for showing that, and we will not need this category anymore, neither the functor F 0 , as defined in the proof above. Instead,
+we use the full subcategory Wheel, with objects being the wheels (definition
+1.1). We regard
+as a functor C 0 → Wheel, given by (A, X) 7→ X A and
+ϕ 7→ (x/y 7→ ϕ(x)/ϕ(y)) (it is easy to verify that wheels of fractions are indeed
+wheels). The full subcategory of wheels of fractions will be denoted by WF.
+Note that X A is defined for any commutative semiring A, not only for
+rings as was the case in section 1.2.
+Example 3.12.
+
+∅ N is the initial object in Wheel.
+
+Example 3.13. N\{0} N is the wheel which is obtained from the semiring of
+non-negative rational numbers by adjoining two extra elements 1/0 and 0/0.
+The next proposition shows that the wheels of fractions are special among
+the wheels and the theorem that follows states that these rules characterize
+wheels of fractions completely up to isomorphism.
+Proposition 3.14. Any wheel of fractions is a wheel (definition 1.1 on page 5)
+and it holds in it that
+1. ∀x∃y∃z : x = y/z ∧ 0y = 0z = 0,
+
+2. ∀x∀y∀x0 ∀y 0 : (x/y = x0 /y 0 ∧ 0x = 0y = 0x0 = 0y 0 = 0 ⇒ ∃z : x = zx0 ∧ y =
+zy 0 ∧ 0z = 0/z = 0).
+
+Proof. That a wheel of fractions is a wheel is straight-forward to check.
+To show ∀x∃y∃z : x = y/z ∧ 0y = 0z = 0, use that every element x ∈
+is of the form y/z, where y, z ∈ A.
+See theorem 4.16 for the proof of 2.
+
+XA
+
+Theorem 3.15 (completeness for wheels of fractions). A wheel is isomorphic to a wheel of fractions if and only if it has the properties given in the
+previous proposition.
+Proof. See theorem 4.16.
+Remark.
+We refer in the proofs to theorem 4.16 which is not
+yet given. There is no risk for circular reasoning, since we will not
+use these results for deriving others, just for constructions of some
+examples.
+We state them now because it is good to know a complete axiomatization in order to understand the class of structures under consideration.
+22
+
+4
+
+Wheels
+
+Since the class of wheels is defined by a set of equations (it is an ‘equational
+class’), it follows that substructures of wheels are wheels (‘subwheels’), that
+homomorphic images of wheels are wheels, and that products of wheels are
+wheels (for formal definitions, see some textbook in universal algebra, e.g. [BS81,
+Grä79]). It is also complete and cocomplete as a category (see [Bor94, p. 138]).
+The corresponding is however not true for wheels of fractions: there are
+such which have subwheels or quotients that are not isomorphic to any wheel
+of fractions.
+Example 4.1. Let A be the ring of functions Z × Z → Z, with the operations
+defined point-wise. Let x be the element [π1 , π2 ] of ∅ A, with π1 (x, y) = x and
+π2 (x, y) = y. Let H be the subwheel generated by x, i.e., the elements of H
+are those which are given by terms composed of (zero or more occurrences of)
+x and the operations. We will show that ∀x∃y∃z : x = y/z ∧ 0y = 0z = 0 fails
+to hold in H. We do that by showing that for any y, z ∈ H with 0y = 0z = 0,
+we have x 6= y/z.
+Every element [f, g] of ∅ A defines a function Z×Z → Z×Z by [f, g](x, y) =
+(f (x, y), g(x, y)). x defines the identity function. Note that
+x(0, 0) = (0, 0)
+(x + [f, g])(0, 0) = (0, 0)
+(x · [f, g])(0, 0) = (0, 0)
+
+(/x)(0, 0) = (0, 0)
+
+so that the elements of H which are given by terms in which x occurs at least
+once, define functions which takes the value (0, 0) in at least one point.
+Suppose 0y = 0z = 0 and y, z ∈ H. Take f, g such that y = [f, g]. Then
+0y = [0, g] = [0, 1], but then g = 1 and hence y = [f, 1], so that y defines a
+function that does not take (0, 0) as value. Hence y is described by a term
+which does not contain x. The same argument applies to z. But then y/z is
+described by a term which does not contain x, so that y/z defines a constant
+function. Then x 6= y/z, since the function defined by x is not constant.
+Hence H is not isomorphic to any wheel of fractions.
+Example 4.2. Let H =
+x≡y
+
+{1,3} (Z/4Z) and define the congruence relation
+
+means x = y ∨ x, y ∈ {0/0, 0/2, 2/0, 2/2}.
+
+Then the rule ∀x, y, x0 , y 0 : (x/y = x0 /y 0 ∧ 0x = 0y = 0x0 = 0y 0 = 0 ⇒ ∃z : x =
+zx0 ∧ y = zy 0 ∧ 0z = 0/z = 0) fails in H/ ≡, since 0/0 = 2/2, but 2 6= z0 for
+every z.
+Hence H/ ≡ is not isomorphic to any wheel of fractions.
+Hence, the class of wheels isomorphic to wheels of fractions is not axiomatizable by equations. It is therefore not an accident that we needed non-equational
+rules to characterize (up to isomorphism) the wheels of fractions among the
+wheels.
+It is not satisfactory to work in a class that is not closed under such operations, sooner or later one is lead to consider constructions like those given above.
+23
+
+Also, it is not satisfactory to succeed in making division total, but introducing
+partiality of important class operations.
+That is the reason why we choose to study wheels, instead of wheels of
+fractions only.10
+
+4.1
+
+Basic properties
+
+We devote some pages to an abstract study of wheels (definition 1.1, p. 5).
+Wheels of fractions are studied more in section 4.2.
+Remember that the distributivity rule (3) for wheels looks different from the
+one for rings (or semirings). However, when 0z = 0, it gives that (x + y)z =
+xz + yz. We emphasize this fact now once and for all, in the following we will
+apply it freely in computing things like 0(x + y) = 0x + 0y.
+Proposition 4.3 (derived rules). The following rules hold in wheels:
+/1 = 1
+0x + 0y = 0xy
+
+(9)
+(10)
+
+(0/0)x = 0/0
+x/x = 1 + 0x/x
+
+(11)
+(12)
+
+xz = yz ⇒ x + 0z/z = y + 0z/z.
+
+(13)
+
+Proof. (9) Since / is an involution. To repeat the argument: /1 = 1/1 =
+//1/1 = /(/1 · 1) = //1 = 1.
+(6)
+
+(10) 0x + 0y = (0 + 0y)x = 0xy.
+(10)
+
+(8)
+
+(11) (0/0)x = 0x/0 = 0x + 0/0 = 0/0.
+(4)
+
+(10)
+
+(12) x/x = (0 + x · 1)/x = 0/x + 1 + 0x = 1 + 0x/x.
+(13) One should really learn to do without implicational rules like this, but we
+state it since it is characteristic for computations in wheel algebra.
+xz = yz
+xz/z = yz/z
+x(1 + 0z/z) = y(1 + 0z/z)
+
+by (12)
+
+x + 0z/z = y + 0z/z.
+
+by (6)
+
+Note that by (8) and (11), a term is equal to ‘0/0’ if it contains ‘0/0’ as a
+subterm.
+A notion of negation can sometimes be introduced. If H is a wheel and
+a ∈ H with 0a = 0 and a2 = 1, then − : x 7→ ax is an additive involution since
+a(x + y) = (x + y)a + 0a = xa + ya = ay + ax and aax = 1x = x. There are at
+least three natural ways in which such an a can appear.
+1. a = 1. This gives the identity (thus not an interesting involution to use).
+10 See section 4.3 for further comments on the choice of axioms
+
+24
+
+2. If H = X A with A a semiring− . Then a = −1 gives an involution which
+extends the − of A. If A is a ring, then this case coincides with the next.
+3. If a is a solution to the equation 1+x = 0, then 0a = 1·0+a·0 = (1+a)0 =
+0·0 = 0 and a2 = 1+a+a2 = 1+(1+a)a+0a = 1+0a+0a = 1+0+0 = 1.
+With this choice of a, we have the nice formula
+x − x = 0x2 ,
+since x − x = 1x + ax = (1 + a)x + 0x = 0x + 0x = 0x 2 .
+The wheel of fractions ∅ (Z/2Z) is the (up to isomorphism unique) smallest
+non-trivial wheel, since it contains only four elements:
+Proposition 4.4. If any two of the elements 0, 1, /0 and 0/0 are equal in a
+wheel H, then H is trivial.
+Proof. There are six cases to go through.
+0=1
+0 = /0
+
+Then 1 = 1/1 = 0/0. See below for the rest.
+Then 0 = 0 · 0 = 0/0. See below.
+
+0 = 0/0
+1 = /0
+
+Then x = 0 + x = 0/0 + x = 0/0.
+Then 1 = 1/1 = /0//0 = 0/0. See below.
+
+1 = 0/0
+/0 = 0/0
+
+Then x = 1x = (0/0)x = 0/0.
+Then x = 0 + x = //0 + x = /(0/0) + x = 0/0 + x = 0/0.
+
+The two notions of reciprocal and multiplicative inverse are connected by
+the operations 0, + as follows.
+Proposition 4.5. Let x be a unit.
+1. x−1 + 0/x = /x + 0x−1 .
+−1
+
+2. x−1 = /x + 0 xx−1 .
+3. /x = x−1 + 0 xx .
+Proof.
+
+1. x−1 + 0/x = x−1 /(xx−1 ) + 0/x = /x + 0x−1 /(xx−1 ) = /x + 0x−1 .
+
+2. Add 0/(x−1 ) to each side of 1.
+3. Add 0x to each side of 1.
+Note also that if xy is /-invertible, then x and y are units with x −1 =
+y/(xy) = /x + 0y/y and y −1 = x/(xy) = /y + 0x/x.
+We may construct a right adjoint to the functor in the following steps.
+Definition 4.6. Let H be a wheel. Then define the following subsets:
+RH = {x | 0x = 0},
+SH = {x | 0x = 0/x = 0}.
+25
+
+Proposition 4.7. RH is a semiring under the operations 0, 1, + and ·. SH
+is a multiplicative group in RH.
+Proof. Suppose that x, y ∈ RH. Then
+1. 0(x + y) = 0(x + y) + 0 · 0 = 0x + 0y = 0 + 0 = 0,
+2. 0(xy) = (0x)y = 0y = 0.
+Thus RH is closed under addition and multiplication. 0 ∈ RH by (5) and
+1 ∈ RH since 1 is the identity in the multiplicative monoid.
+That SH is closed under multiplication follows from the fact that if x, y ∈
+SH, then 0/(xy) = (0/y)/x = 0/x = 0. We have 1 ∈ SH by (9). Given
+an element x ∈ SH, then /x ∈ SH (since / is an involution) and it is the
+multiplicative inverse of x by the computation x/x = 1+0x/x = 1+0/x = 1.
+We will use the notation RH also for the semiring it becomes when the
+operations 0, 1, +, · are induced by H. It will be called ‘the semiring of H’ or
+simply ‘the semiring’ when the context is clear. It is the largest semiring in H
+since 0x = 0 holds in any semiring.
+Remarks. We showed that every element of SH is /-invertible. On
+the other hand, SH contains every /-unit that is inside the subset
+RH, since if x is /-invertible and 0x = 0, then 0/x = 0x/x = 0·1 = 0.
+
+An element of RH is a unit in RH iff it is a unit in H. To see
+this, note that if x ∈ RH and xy = 1, then also y ∈ RH, since
+0y = 0xy = 0 · 1 = 0.
+The question whether x ∈ H is a unit or not is partially answered
+by the information whether or not x ∈ RH and/or /x ∈ RH:
+x ∈ RH?
+No
+Yes
+No
+Yes
+
+/x ∈ RH?
+No
+No
+Yes
+Yes
+
+⇒
+⇒
+⇒
+⇒
+
+x unit?
+Maybe
+Maybe
+Maybe
+Yes
+
+x /-unit?
+Maybe
+No
+No
+Yes
+
+Let us consider η(A,X) : x 7→ [x, 0] as a C0 -arrow (A, X) → (R X A, S X A),
+which we may do since, if x ∈ X, then 0/η(A,X) (x) = [0, 1]/[x, 1] = [0, x] =
+[0, 1] = 0, so that η (A,X) (X) ⊂ S X A.
+Let (R, S) be the functor Wheel → C0 given by (R, S)(H) = (RH, SH)
+and (R, S)(ϕ) being the restriction of ϕ to RH. This works since if 0x = 0,
+then 0ϕ(x) = ϕ(0)ϕ(x) = ϕ(0x) = ϕ(0) = 0 (thus ϕ actually maps the semiring
+of the domain into the semiring of the codomain), and if in addition 0/x = 0,
+then 0/ϕ(x) = ϕ(0)/ϕ(x) = ϕ(0/x) = ϕ(0) = 0 (thus (R, S)(ϕ) behaves as it
+should with respect to S).
+Theorem 4.8. The functor
+: C0 → Wheel is left adjoint to (R, S) :
+0
+Wheel → C with unit η and counit , given by H : [x, y] 7→ x/y.
+Proof. H is well-defined since if [x, y] = [x0 , y 0 ], then there exist s1 , s2 ∈ SH
+such that (s1 , s1 )(x, y) = (s2 , s2 )(x0 , y 0 ) and hence x/y = (x/y)(1 + 0s 1 /s1 ) =
+
+26
+
+(s1 x)/(s1 y) = (s2 x0 )/(s2 y 0 ) = (x0 /y 0 )(1 + 0s2 /s2 ) = x0 /y 0 . It is easily seen that
+ is a natural transformation.
+By basic category theory, the result follows if we show that for any C-object
+(A, X) and any wheel H, we have11
+( )(A,X) ( η)(A,X) = Id X A
+and
+((R, S))H (η(R, S))H = Id(RH,SH) .
+R
+
+( )(A,X) :
+
+S
+
+( η)(A,X) :
+
+XA →
+
+XA
+
+XA →
+S
+
+XA
+
+R
+
+X A by [[x, y], [z, w]] 7→ [xw, yz]
+X A by [x, y] 7→ [[x, 1], [y, 1]]
+
+((R, S))H : (R SH RH, S SH RH) → (RH, SH) by [x, y] 7→ x/y
+(η(R, S))H : (RH, SH) → (R SH RH, S SH RH) by x 7→ [x, 1]
+Then
+
+( )(A,X) ( η)(A,X) ([x, y]) = ( )(A,X) ([[x, 1], [y, 1]]) = [x · 1, y · 1] = [x, y]
+and
+((R, S))H (η(R, S))H (x) = ((R, S))H ([x, 1]) = x/1 = x.
+
+4.2
+
+Applications to wheels of fractions
+
+4.2.1
+
+The semiring in a wheel of fractions
+
+The following fact will be used freely without reference to the proposition.
+Proposition 4.9. If x ∈ A, then 0/x = 0 in X A if and only if x ∈ S̃, which
+is the divisional closure of S, which is the multiplicative monoid generated by
+X.
+Proof. Proposition 2.15 gives us that x/x = 1 is equivalent to x ∈ S̃. We need
+to prove x/x = 1 ⇐⇒ 0/x = 0 under the condition 0x = 0.
+Suppose x/x = 1. Then 0/x = 0x/x = 0 · 1 = 0.
+Suppose 0/x = 0. Then x/x = 1 + 0x/x = 1.
+The elements of R
+
+X A are of a very special form:
+
+Lemma 4.10. x ∈ R X A iff x = r/s for some r ∈ A, s ∈ S, with S the
+multiplicative monoid generated by X.
+Proof. If x = r/s, then 0x = 0r/s = 0/s = 0. On the other hand, suppose that
+0x = 0, say with x = y/z (y, z ∈ A). Then 0/z = 0x = 0, so that z ∈ S̃, say
+s0 z ∈ S. With r = s0 y, s = s0 z, we get r/s = (s0 y)/(s0 z) = (s0 /s0 )(y/z) = x.
+In commutative algebra and algebraic geometry, one often uses the ring of
+fractions S −1 A, where S is a multiplicative submonoid of a commutative ring
+A (often the complement of a prime ideal). One defines S −1 A as the monoid
+AS together with 0 = [0, 1] and [x, s] + [x 0 , s0 ] = [xs0 + x0 s, ss0 ]. As is seen, this
+construction is similar to ours. In fact, we have factorized it in two parts: as
+followed by R.
+11 The naturalness must also be checked, but our constructions are obviously natural.
+
+27
+
+Theorem 4.11. If A is a commutative ring with identity and S a multiplicative
+submonoid, then S −1 A ∼
+= R S A by the isomorphism r/s 7→ r/s.
+Proof. The mapping η̂(A,S) : AS → R S A, r/s 7→ r/s is an injective morphism
+of the multiplicative monoids by theorem 2.10. It is easy to see that it preserves
+0 and + too. It is surjective by the previous lemma and thus a bijection. S −1 A
+is a ring so η̂ (A,S) is an isomorphism of rings.
+Any wheel of fractions is (according to proposition 2.14) of the form S A
+with S being closed under division. For that presentation, we have a stronger
+version of the previous theorem.
+Theorem 4.12. S −1 A and R
+
+S A are identical iff S is closed under division.
+
+Proof. Take [x, y] ∈ R S A. Then 0/y = 0x/y = 0, so that y ∈ S̃. If S is closed
+under division, we get y ∈ S, so that (x, y) ∈ A × S. Hence R S A = S −1 A in
+that case.
+Suppose instead that R S A and S −1 A are identical as sets. Take x ∈ S̃;
+we shall prove x ∈ S. We have (x, x) ∈ [x, x] = x/x but since x/x ∈ R S A
+by the previous lemma, we get that (x, x) ∈ A × S when R S A and S −1 A are
+identical as sets.
+We summarize the results above in the following corollary. It states one
+isomorphism and two identities:
+Corollary 4.13. Let A be a semiring, S a multiplicative monoid in it, S̃ its
+divisional closure. Then S−1 A ∼
+= R S A = R S̃ A = S̃ −1 A.
+Proof. By theorem 4.11, S −1 A ∼
+= R S A. By theorem 2.14, R
+and by theorem 4.12, R S̃ A = S̃ −1 A.
+4.2.2
+
+SA = R
+
+S̃ A
+
+Obtaining /-invertible wheels of fractions
+
+In the choice between S −1 A and S A in practical computing when A is a
+ring, it may seem to be a drawback of the latter that one has to distinguish
+between reciprocals and multiplicative inverses. One should then remember that
+S −1 A and R S A are isomorphic as rings and that the multiplicative inversion
+therefore is the same in both structures. The difficulty appears first at the
+moment when we start using the involution /. Hence, there is no real drawback,
+since one can stick to multiplicative inversion when that is more comfortable.
+But that does not explain why we introduced the operation /. If finding
+inverses is what we want it for, then we would like to have no difference between
+reciprocals and inverses, i.e., we would like to have a /-invertible wheel, so that
+x−1 = /x whenever x−1 is defined. By proposition 2.19, we obtain that if
+and only if S̃ is saturated as a submonoid of the multiplicative monoid of A.
+The question is therefore if a given S can be replaced by one having saturated
+divisional closure.
+Definition 4.14 (saturated closure). The saturated closure S̄ of a submonoid S of a commutative monoid M is the set {x ∈ M | ∃y ∈ M : xy ∈ S}
+(it is the smallest saturated submonoid of M that contains S).
+
+28
+
+Since S̄˜ = S̄, S̄ is a submonoid with saturated divisional closure. In the
+following, S̄ will denote the saturated closure of S in the multiplicative monoid
+of A.
+There is a well-known natural isomorphism S −1 A ∼
+= S̄ −1 A given by r/s 7→
+−1
+r/s. Theorem 4.12 shows that S̄ A = R S̄ A, so that the isomorphism is
+in fact S −1 A → R S̄ A. Since S̄ A is /-invertible, it is in a sense a better
+extension of S −1 A than S A is.12
+It is well-known that any ring A may be extended to its ‘total ring of fractions’ S0−1 A, so that every multiplicatively cancelable element in A becomes a
+unit. However, when doing that, some structure of A can be lost. For instance,
+in extending Z to Q, one looses all non-trivial proper ideals. Hence, there is
+a reason for not always extending rings as much as one can. The construction
+of wheels of fractions have the advantage that it need not destroy any structure. The following corollary shows that a semiring can always be extended to
+a /-invertible wheel in such a way that it can be retrieved using the R operator.
+Corollary 4.15. Let U be the set of units in a semiring A. Then
+/-invertible and it extends A in the sense that
+1. R
+
+U A is
+
+U A is isomorphic to A,
+
+2. the operations 0, 1, +, · of A are extended to corresponding operations of
+U A,
+3. if A is a semiring− , then the involution − of A is extended to an involution
+− of U A.
+4. the restriction of / to A is the partial function ·−1 .
+Proof. This is just a restatement of 2.20 and 2.21, together with information on
+how + and − are defined (see page 24 for the latter).
+4.2.3
+
+Axiomatizing the class of wheels of fractions
+
+We now restate and prove the completeness theorem for the axioms of wheels
+of fractions. The symbols R and S simplify the notation compared to that used
+in proposition 3.14.
+Theorem 4.16. A wheel H is isomorphic to some wheel of fractions if and only
+if it has the following properties:
+0
+
+0
+
+∀x∃y, z ∈ RH : x = y/z
+0
+
+0
+
+(14)
+0
+
+0
+
+∀x, y, x , y ∈ RH : (x/y = x /y ⇒ ∃s ∈ SH : x = sx ∧ y = sy )
+
+(15)
+
+Proof. (14) holds in any X A since every x is of the form y/z for some y, z ∈ A
+so we have x = y/z for the corresponding elements in R X A.
+To show that (15) holds in X A, suppose that x/y = x0 /y 0 ∧0x = 0y = 0x0 =
+0
+0y = 0. By lemma 4.10, we may assume that x = a/s 1 , y = b/s2 , x0 = c/s3 ,
+12 It is true that R
+S A and R S̄ A are isomorphic as rings by the mapping r/s 7→ r/s, but
+not in general that / is preserved under this isomorphism. Consider e.g. R {1,2,3,...} and
+R {±1,±2,±3,...} . They are isomorphic as rings, but /(−1) = −1 is true only in the latter.
+(−1)−1 = −1 is of course true whenever − is obtained in one of the ways mentioned on page
+24.
+
+29
+
+y 0 = d/s4 with a, b, c, d ∈ A. Then (s2 /s1 )a/b = x/y = x0 /y 0 = (s4 /s3 )(c/d), so
+there exist s0 , s00 such that
+(s0 , s0 )(s2 , s1 )(a, b) = (s00 , s00 )(s4 , s3 )(c, d).
+Taking
+s=
+
+s3 s4 s00
+s1 s2 s0
+
+(which is in SH), we get
+sx0 =
+
+s3 s4 s00 c
+s3 s2 s0 a
+a
+s3 s4 s00 c
+·
+=
+=
+=
+= x.
+0
+0
+0
+s1 s2 s s3
+s1 s2 s3 s
+s1 s2 s3 s
+s1
+
+sy 0 =
+
+s3 s4 s00 d
+s3 s4 s00 d
+s1 s4 s0 b
+b
+·
+=
+=
+=
+= y.
+0
+0
+0
+s1 s2 s s4
+s1 s2 s4 s
+s1 s2 s4 s
+s2
+
+and
+
+On the other hand, suppose that (14) and (15) are true in a wheel H. Then
+H (defined in theorem 4.8) is surjective by (14) and injective by (15). Hence it
+is an isomorphism SH RH → H.
+4.2.4
+
+Cancellation of zero-terms
+
+In computing with (semi-)rings, one does not only use equational rules, but
+additional information, for instance, that a certain element a is ‘multiplicatively
+cancellable’ (·-cancellable): ax = ay ⇒ x = y.
+We have seen that any semiring can be viewed as a part of a wheel; technically, that any semiring A is embedded in U A (where U is the set of units
+of A) and that an isomorphic copy of A can be recovered from U A by the
+operator R. It is important that we can transfer information about cancellation
+to the wheel.
+Consider the equation ax = ay in a semiring A. The information ‘a is ·cancellable’ lets us conclude that x = y. When A is considered as embedded in a
+wheel, it is instead natural to reason as follows (without any use of cancellation):
+ax = ay
+ax/a = ay/a
+x + 0a/a = y + 0a/a
+x + 0/a = y + 0/a.
+The question of cancellation now comes in since we need to know whether
+0/a is additively cancellable (+-cancellable). In this way, the problem of ·cancellation is reduced to a problem of +-cancellation. One might however
+suspect that there could be situations in which a is ·-cancellable in A, but 0/a
+is not +-cancellable in X A. Fortunately, there are no such cases, according to
+the following proposition.
+Proposition 4.17. If a is ·-cancellable in A, then 0/a is +-cancellable in
+
+X A.
+
+Proof. Suppose that a is ·-cancellable in A. Suppose also that [x, y] + 0/a =
+[x0 , y 0 ] + 0/a, that is, that [ax, ay] = [ax0 , ay 0 ]. Then there are s, s0 such that
+sax = s0 ax0 and say = s0 ay 0 but since a is ·-cancellable, we conclude that
+sx = s0 x and sy = s0 y 0 , hence [x, y] = [x0 , y 0 ].
+30
+
+Suppose now that if a 6= 0 in A, then a is ·-cancellable, i.e., that S 0 = A\{0}.
+We say (following [Gol99]) that such a semiring is multiplicatively cancellative.13
+This is a maximality property, since if a = 0, then a cannot be ·-cancellable
+unless the semiring is trivial. A corresponding maximality property for wheels
+is 0x 6= x ⇒ (0/x is +-cancellable), since if 0x = x, then 0/x can’t be +cancellable unless the wheel is trivial (y + 0/x = z + 0/x holds for any y and
+z if 0x = x, since then y + 0/x = y + 0/(0x) = 0/0 = z + 0/(0x) = z + 0/x).
+These properties are connected as follows.
+Proposition 4.18.
+1. If A is multiplicatively cancellative, then 0x 6= x ⇒
+(0/x is +-cancellable) holds in X A.
+2. If 0x 6= x ⇒ (0/x is +-cancellable) holds in H, then RH is multiplicatively
+cancellative.
+Proof.
+1. We shall prove that 0/x is +-cancellable whenever 0x 6= x. Let
+x = [x0 , x00 ] and assume 0x 6= x. Suppose that x0 = 0. Then x = [0, x00 ] =
+[0, 1][0, x00 ] = 0x, which is refuted, hence x0 6= 0. If A is multiplicatively
+cancellative, then x0 is ·-cancellable. Hence 0/x 0 is +-cancellable, but
+0/x = 0/x0 and we are done.
+2. Take x ∈ RH with x 6= 0. Then 0x = 0 6= x, so that 0/x is +-cancellable.
+We may then compute as follows:
+xy = xz
+xy/x = xz/x
+y + 0x/x = z + 0x/x
+y + 0/x = z + 0/x
+y = z.
+Note that we did not need to assume that y, z ∈ RH.
+Example 4.19. Solve the equation 3x = 12.
+We have x + 0/3 = 3x/3 = 12/3 = 3 · 4/3 = 4 + 0/3. That gives x =
+4 whenever 0/3 is +-cancellable, which happens for instance if the wheel in
+question is X Z, for any subset X ⊂ Z, since 3 is ·-cancellable in Z. In general
+we may not conclude more than x + 0/3 = 4 + 0/3, which is sound since the
+equation does not have a unique solution in general.
+Ring algebra does not allow us to derive anything from 3x = 12 when 3
+is not ·-cancellable (e.g. when the equation have several solutions), but wheel
+algebra always lets us develop to x + 0/3 = 4 + 0/3, which can be used in further
+calculations: if x and 0/3 appear in the left hand side of an equation, then we
+may use the axioms for zero-terms to move 0/3 close to x, then replacing x+0/3
+by 4+0/3 and finally move the term 0/3 out using the rules for zero-terms again.
+If x appears, but not 0/3, then we may add 0/3 to both sides of the equation,
+hence introducing 0/3 but eliminating an occurrence of x. Note that when such
+an introduction has been made, then one can use the introduced term over and
+13 The term ‘integral’ is unfortunately already used in another sense in the context of semirings [Gol99]. E.g. /6 is integral as a semiring in this sense.
+
+31
+
+over again, until all occurrences of x are eliminated. One may view these 0/3terms as flags indicating that the result is worthless if e.g. 0 = 3, since then the
+rule ‘x + 0/0 = 0/0’ can be used for reducing the equation to 0/0 = 0/0.
+Say that we want to compute the value of x2 + x, given that 3x = 12. We
+can’t give a definite answer, since the value is not uniquely determined unless we
+specify which semiring we think of. What we can do is to compute x 2 + x + 0/3:
+x2 + x + 0/3 = x2 + 4 + 0/3 = x(x + 0/3) + 4 = x(4 + 0/3) + 4
+= (x + 0/3)4 + 4 = (4 + 0/3)4 + 4 = 4 · 4 + 4 + 0/3
+= 20 + 0/3.
+
+If we get information at a later stage, letting us conclude that 0/3 is +cancellable, then we can get something explicit for x 2 + x. This might happen if
+we get more knowledge about the semiring we started with, but also if we pass
+to a quotient of that semiring. For instance, suppose that we conclude that we
+need the value modulo 16. We then pass to a quotient defined by 0 = 16. In
+such a quotient, 3 is a unit, and hence 0/3 is +-cancellable. 14 We conclude that
+x2 + x = 20 = 4 (mod 16).
+We may view the wheel alternative as computing modulo everything at the
+same time.
+
+4.3
+
+Equational logic for wheels of fractions
+
+One may ask if our definition of ‘wheel’ is ‘the right one’. Are the axioms chosen
+ad hoc, or do they axiomatize a class of structures that is in some sense naturally
+delimited?
+There is some evidence that we can’t improve the definition:
+1. The wheels of fractions are wheels according to our definition.
+2. The axioms are a set of equations. That is by Birkhoff’s theorem [Bir35]
+necessary for the axiomatized class to be closed under substructures, quotients, products and isomorphisms. Further, by ‘compactness for equational logic’, if it is finitely axiomatizable in first order predicate logic,
+then it is finitely axiomatizable by equations. Hence, there is no need to
+consider other candidates than equations as axioms.
+3. The axioms are finitely many.
+4. We have empirical experience that the axioms are precisely what we need
+to make natural computations.
+On the other hand, there is some counterevidence too: There are identities,
+like (x + 1)2 = x(x + 2) + 1, that hold in any wheel of fractions but does not
+seem to be provable from our axioms. But (x + 1) 2 = x(x + 2) + 1 is not a
+very natural identity and may be thought of as valid in wheels of fractions ‘by
+accident’: that it just ‘happens to be’ and that there is nothing conceptual that
+suggests that it should be valid in all wheels. 15
+14 If x is a unit, then 0x and 0/x are +-cancellable since 0x + 0x−1 = 0xx−1 = 0 and
+0/x + 0/(x−1 ) = 0/(xx−1 ) = 0 in that case.
+15 However, by completeness, (14) (see theorem 4.16) suffices (together with wheel axioms)
+for derivation of any identity that is valid in all wheels of fractions, since every wheel which
+has this property is a homomorphic image of a wheel of fractions. This is because H (defined
+in theorem 4.8) is surjective by (14).
+
+32
+
+Anyway, one might wish to include more axioms for wheels, perhaps those
+needed to prove every identity that is valid in the class WF of wheels of fractions.
+By Birkhoff’s theorem, we should have equational axioms only, so that the class
+axiomatized is still closed under products, substructures and quotients. This
+amounts to axiomatizing the class V (WF), called ‘the variety generated by
+WF’, consisting of structures that can be obtained in finitely many steps from
+wheels of fractions, taking products, substructures, quotients and isomorphic
+copies.16
+We will study the class V (WF), but also simultaneously the following. A
+wheel with negation is a wheel with an additional constant −1 such that 1 +
+(−1) = 0. By the discussion on page 24, such a constant determines an additive
+involution by −x = (−1)x and it holds that x − x = 0x 2 , hence the semiring in
+such a wheel is in fact a ring. A wheel of fractions with negation is obtained
+for instance when the semiring used in the construction is a ring. We denote by
+Wheelneg the class of wheels with negation and by WFneg the class of wheels
+of fractions with negation. A morphism of wheels with negation should preserve
+−1, but that is automatically satisfied by any morphism of wheels: suppose H
+and H 0 are wheels with negation and ϕ : H → H 0 a wheel morphism. Then it
+holds in H 0 that ϕ(−1) = 1+(−1)+ϕ(−1) = −1+ϕ(1+(−1)) = −1+ϕ(0) = −1.
+We will emphasize on the classes Wheel, WF and V (WF) in the following,
+but the treatment of Wheelneg, WFneg and V (WFneg) is precisely analogous, just replace N by Z, N[x1 , . . . , xn ] by Z[x1 , . . . , xn ], ∅ N by ∅ Z, “wheel
+axioms” by “wheel axioms and ‘1+(−1) = 0’ ”, “semirings” by “rings with identity”, and so on. One has to check some details of negation in the proofs, but
+that is straight-forward and omitted for the purpose of readability (we include
+a remark at a crucial point).
+Definition 4.20. A term p(x 1 , . . . , xn ) is a polynomial term if it contains no
+occurrence of /. We say that such terms are equivalent if they can be proved
+to be equal using the axioms for commutative semirings. This is an equivalence
+relation and its equivalence classes are called polynomials.
+Example 4.21. The polynomial terms ‘(x + 1)(x + 1)’ and ‘(xx) + ((2x) + 1)’
+are not identical, but equivalent. Hence they define the same polynomial.
+When wheels with negation are treated, polynomial terms are equivalent if
+they can be proved to be equal using axioms for commutative rings with identity.
+Theorem 4.22. The following are equivalent for a wheel H.
+1. H ∈ V (WF).
+2. H ∈ V ({
+
+∅ N}).
+
+3. Any identity which is valid in all wheels of fractions is valid in H too.
+4. Any identity which is valid in
+
+∅ N is valid in H too.
+
+5. H is isomorphic to a quotient of a subwheel of a power of
+6. H is isomorphic to a quotient of a subwheel of
+semiring of functions I → N, for some set I.
+16 See some textbook in universal algebra, e.g. [BS81, Grä79].
+
+33
+
+∅ N.
+
+I
+I
+∅ (N ), where N
+
+is the
+
+Proof. We first prove 1 ⇐⇒ 2 ⇐⇒ 3 ⇐⇒ 4 by showing 1 ⇒ 3 ⇒ 4 ⇒ 2 ⇒ 1.
+The step 4 ⇒ 2 follows from Birkhoff’s theorem and the other steps are obvious,
+except for 3 ⇒ 4 which needs a proof.
+Suppose t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid in ∅ N. We shall prove that it
+is valid in all wheels of fractions. Substitute [x 0i , x00i ] for every xi in the identity
+and compute the values of each side. The result is [p(x 1 , . . . , xn ), q(x1 , . . . , xn )]
+= [p0 (x1 , . . . , xn ), q 0 (x1 , . . . , xn )] for polynomials p, p 0 , q, q 0 with coefficients from
+N. That t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid in ∅ N means that (p(x1 , . . . , xn ),
+q(x1 , . . . , xn )) and (p0 (x1 , . . . , xn ), q 0 (x1 , . . . , xn )) takes the same values if we
+substitute natural numbers for the variables. But then p = p 0 and q = q 0 as
+polynomials, so that the identity is valid in any wheel of fractions.
+A theorem by Tarski gives 2 ⇒ 5 (see e.g. [BS81]) and 5 ⇒ 2 is obvious.
+To establish 5 ⇐⇒ 6, we need to show ( ∅ N)I ∼
+= ∅ (NI ). We get this
+I ∼ I
+I
+from the identity (N × N) = N × N for the multiplicative monoid of N. It is
+obvious that this isomorphism preserves also 0 and +.
+One says that ∅ N is generic for V (WF), because of the equivalence 1 ⇐⇒
+4. It is moreover the WF-free wheel over ∅. In general, if K is a class of wheels,
+then the K-free wheel over a set X is the (up to isomorphism unique) wheel
+FK (X) with the property that for any function X → H, where H ∈ K, there
+is a morphism FK (X) → H that extends it. It is easily seen from Birkhoff’s
+construction that FK (X) = FV (K) (X) and in our case we have V (WF) =
+V ({ ∅ N}), so that FWF (X) = F{ ∅ N} (X) and the latter is (again by Birkhoff’s
+construction) a subwheel of some wheel of the form ( ∅ N)I — which, as we
+proved in the theorem, is isomorphic to ∅ (NI ). One may consider it as the
+wheel of wheel-terms with identification made when two terms yield identical
+values in ∅ N. Hence an equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid in WF
+if and only if t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }).
+Remark. Note how we use the terms ‘valid’ and ‘true’. We only
+apply ‘true’ to a closed formula (which in our case means a formula
+in which no variable occur, since we consider quantifier-free formulas only). An open formula is valid if it becomes true after any
+substitution with elements from any of the structures considered.
+The corresponding theorem for wheels with negation reads as follows.
+Theorem 4.23. The following are equivalent for a wheel H with negation ( ∅ Z
+is here considered as a wheel with negation, that means for instance that ∅ N
+is not considered to be a substructure of it).
+1. H ∈ V (WFneg).
+2. H ∈ V ({
+
+∅ Z}).
+
+3. Any identity which is valid in all wheels of fractions with negation is valid
+in H too.
+4. Any identity which is valid in
+
+∅ Z is valid in H too.
+
+5. H is isomorphic to a quotient of a subwheel of a power of
+6. H is isomorphic to a quotient of a subwheel of
+ring of functions I → Z, for some set I.
+34
+
+∅ Z.
+
+I
+I
+∅ (Z ), where Z
+
+is the
+
+Proof. As the previous proof.
+Since validity in WF is equivalent to truth in FWF ({x1 , . . . , xn }), we get a
+completeness result for WF if we give a complete method for deriving formulas which are true in FWF ({x1 , . . . , xn }). In this section, we will study such
+derivations, and similar ones.
+We work in a language which is obtained from the language of wheels by
+adjoining constant symbols x 1 , . . . , xn (and when wheels with negation are considered, the language has an additional constant symbol ‘−1’). In the following,
+xi will denote
+1. a constant symbol in the language,
+2. an element of FK ({x1 , . . . , xn }) for several choices of K,
+3. an element of N[x1 , . . . , xn ],
+4. an element of
+
+∅ (N[x1 , . . . , xn ]),
+
+so the reader should be careful to observe which is the case for every occurrence.
+As a consequence, when t is a term, t(x 1 , . . . , xn ) can be interpreted as a closed
+term in the language or as an element of F K ({x1 , . . . , xn }) for several choices
+of K, or as an element of ∅ (N[x1 , . . . , xn ]).
+When we say things like “t(x1 , . . . , xn ) = s(x1 , . . . , xn ) can be proved using
+the wheel axioms together with an axiom ‘0x i = 0’ for each i”, we mean that
+there is a formal derivation of the formula t(x 1 , . . . , xn ) = s(x1 , . . . , xn ) in the
+system of equational logic with the axioms indicated (here, ‘axioms’ should be
+interpreted in the sense of formal systems). The formula ‘1 + (−1) = 0’ is an
+axiom when we work with wheels with negation.
+Theorem 4.24 (completeness). The equation t(x 1 , . . . , xn ) = s(x1 , . . . , xn )
+is valid in WF (and hence valid in V (WF)) if and only if t(x1 , . . . , xn ) =
+s(x1 , . . . , xn ) is provable using the axioms for wheels together with the axioms
+‘0xi is +-cancellable’ (i = 1, . . . , n).
+Proof. Validity of the equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is equivalent to
+the truth of t(x1 , . . . , xn ) = s(x1 , . . . , xn ) in FWF ({x1 , . . . , xn ) (by definition
+of the latter wheel). Lemma 4.47 will show that if the latter equation is true,
+then it is provable using the axioms for wheels together with the axioms ‘0x i is
++-cancellable’.
+On the other hand, if it is provable by that technique, then it is true by
+lemma 4.39.
+Before we state and prove some technical lemmas, we state the following theorems, which are alternatives to the previous ones. By distinguishing between
+‘balanced’ and ‘unbalanced’ equations, they make more precise statements than
+the previous ones.
+Definition 4.25. An equation is balanced if each variable occurs equally many
+times on each side. Otherwise, it is unbalanced.
+Note that all axioms for wheels except ‘x + 0/0 = 0/0’ are balanced. Remember that x occurs n times in ‘xn ’, since ‘xn ’ is just a short notation for a
+product of n x’s. A warning: the equation ‘0x i = 0’ is balanced, since xi is not
+35
+
+a variable in our formal sense, but a constant symbol, interpreted as a special
+element of the structure considered in the context.
+Theorem 4.26. An unbalanced equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid
+in WF (and hence valid in V (WF)) if and only if t(x1 , . . . , xn ) = 0/0 and
+s(x1 , . . . , xn ) = 0/0 are true in ∅ (N[x1 , . . . , xn ]).
+Proof. Use lemma 4.49 and the equivalence between validity and truth.
+Example 4.27. The formula 1 + x1 = x+1
+x is valid in Q \ {0}. Is it perhaps
+valid in all wheels of fractions? The answer is no, since it is not balanced, and
+one easily checks that 1 + x1 6= 00 in ∅ (N[x]). A balanced analogue is
+1+
+
+x+1
+1
++ 0x =
+,
+x
+x
+
+which is easily proved by the wheel axioms.
+Theorem 4.28. A balanced equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid in
+WF (and hence valid in V (WF)) if and only if t(x1 , . . . , xn ) = s(x1 , . . . , xn )
+is true in ∅ (N[x1 , . . . , xn ]).
+Proof. If t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid, t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is
+clearly true.
+For the other direction, use lemma 4.50 and the equivalence between validity
+and truth.
+2
+
+Example 4.29. (x+1)
+= x(x+2)+1
+is valid in all wheels of fractions since it is
+x
+x
+2
+
+= x(x+2)+1
+is true in
+balanced (x occurs three times on each side) and (x+1)
+x
+x
+(N[x]).
+∅
+Example 4.30. (x + y)(x − y) = x 2 − y 2 is valid in all wheels of fractions with
+negation. This follows since it is balanced and (x 1 + x2 )(x1 − x2 ) = x21 − x22 is
+true in ∅ (Z[x1 , x2 ]).
+These two results give a completeness result for WF together with the following theorem:
+Theorem 4.31. The equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in the wheel
+∅ (N[x1 , . . . , xn ]) if and only if it is provable by the wheel axioms together with
+the rules ‘0xi = 0’ for each i = 1, . . . , n.
+Proof. 0xi = 0 is evidently true in ∅ (N[x1 , . . . , xn ]), so provable equations are
+true.
+Suppose on the other hand that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in
+∅ (N[x1 , . . . , xn ]). Then t(x1 , . . . , xn ) ≡ s(x1 , . . . , xn ) in FWheel ({x1 , . . . , xn })
+(definition 4.40 and lemma 4.44), say t(x 1 , . . . , xn ) + zt1 = s(x1 , . . . , xn ) + zt2
+is true in FWheel ({x1 , . . . , xn }) for some zero-terms zt 1 and zt2 . Then (by
+completeness) it is provable from the wheel axioms. The rules ‘0x i = 0’ can
+finally be used to prove that zt 1 = 0 and zt2 = 0.
+The acceptance of the rules ‘0x i = 0’ lets us count as in rings with polynomial
+expressions in x1 , . . . , xn .
+
+36
+
+Example 4.32. (x + 1) 2 = x(x + 2) + 1 is provable using wheel axioms and
+‘0x = 0’:
+(x + 1)2 = (x + 1)(x + 1) + 0x + 0 · 1 = (x + 1)(x + 1) + 0(x + 1)
+= x(x + 1) + 1(x + 1) = x(x + 1) + x + 1
+= x(x + 1 + 1) + 0x + 1 = x(x + 2) + 1
+
+The theorems above have some corollaries. The first states how identities
+from semirings can be transferred to wheels of fractions.
+Corollary 4.33. If t(x1 , . . . , xn ) and s(x1 , . . . , xn ) are polynomial terms, then
+t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is valid in WF if and only if it is balanced and
+valid in N.
+Proof. Suppose it is valid in WF. Then it is valid in ∅ N and hence in N. Since
+t(x1 , . . . , xn ) ∈ N[x1 , . . . , xn ] ∼
+= R ∅ (N[x1 , . . . , xn ]), we conclude that it cannot
+be equal to 0/0. So the equation is balanced.
+On the other hand, if the equation is valid in N, then t(x1 , . . . , xn ) =
+s(x1 , . . . , xn ) in
+N[x1 , . . . , xn ] ⊂ ∅ (N[x1 , . . . , xn ]).
+If it is also balanced, then it is valid in WF.
+Example 4.34. (x + 1) 2 = x(x + 2) + 1 is balanced and valid in N, hence it is
+valid in wheels of fractions.
+Example 4.35. (x + y)(x − y) = x 2 − y 2 is balanced and valid in Z, hence it
+is valid in wheels of fractions with negation.
+The next result states how equations that have partial meaning and partial
+validity in fields of characteristic zero can be transferred to wheels of fractions.
+Corollary 4.36. Suppose there is an infinite subset X of Q such that the terms
+t(x1 , . . . , xn ) and s(x1 , . . . , xn ) are meaningful and Q-valued when values from
+X are substituted for the variables and / is interpreted as inversion. Suppose
+also that t and s yield the same values when such substitutions are made. Then
+t(x1 , . . . , xn ) + 0s(x1 , . . . , xn ) = s(x1 , . . . , xn ) + 0t(x1 , . . . , xn )
+is valid in WF.
+Proof. Since the latter equation is balanced, we use that its validity in WF is
+equivalent to the truth of
+t(x1 , . . . , xn ) + 0s(x1 , . . . , xn ) = s(x1 , . . . , xn ) + 0t(x1 , . . . , xn )
+in
+
+∅ (N[x1 , . . . , xn ]).
+If each side is computed, we get [pt (x1 , . . . , xn ), qt (x1 , . . . , xn )] on the left
+for some polynomials p t , qt and [ps (x1 , . . . , xn ), qs (x1 , . . . , xn )] on the right for
+some polynomials p s , qs . Clearly, qt and qs will be equal as polynomials. We
+shall prove that also p t and ps must be equal as polynomials.
+When x1 , . . . , xn are replaced by values from X, then we get values in Q =
+R S0 Z. Hence qt and qs are non-zero for such substitutions. Since we also
+know that the values for t and s are equal for such substitutions, we conclude
+that the values for pt and ps are equal. But since X is infinite, that implies that
+pt and ps are equal as polynomials.
+
+37
+
+Example 4.37. The equation x/x = 1 is valid in Q \ {0}, hence x/x + 0 · 1 =
+1 + 0x/x is valid in wheels of fractions (this is of course a known rule for wheels,
+but it is instructive to see how it is related to validity in Q).
+Example 4.38. The equation x/x − 1 = 0 is valid in Q \ {0}, hence x/x − 1 =
+0x/x is valid in wheels of fractions with negation.
+We now prove the lemmas for the theorems.
+Lemma 4.39. 0xi is +-cancellable in FWF ({x1 , . . . , xn }), for i = 1, . . . , n.
+Proof. We shall prove that if t(x1 , . . . , xn ) + 0xi = s(x1 , . . . , xn ) + 0xi is valid
+in ∅ N, then t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is too.
+Substitute therefore x0j /x00j for every variable x j and compute the values of
+the terms, ending up with the following form, where p t , qt , ps , qs are polynomials:
+pt (x01 , . . . , x0n , x001 , . . . , x00n )
+qt (x01 , . . . , x0n , x001 , . . . , x00n )
+ps (x01 , . . . , x0n , x001 , . . . , x00n )
+s(x1 , . . . , xn ) =
+.
+qs (x01 , . . . , x0n , x001 , . . . , x00n )
+t(x1 , . . . , xn ) =
+
+The values of t(x1 , . . . , xn ) + 0xi and s(x1 , . . . , xn ) + 0xi are then
+pt (x01 , . . . , x0n , x001 , . . . , x00n )x00i
+qt (x01 , . . . , x0n , x001 , . . . , x00n )x00i
+ps (x01 , . . . , x0n , x001 , . . . , x00n )x00i
+.
+s(x1 , . . . , xn ) + 0xi =
+qs (x01 , . . . , x0n , x001 , . . . , x00n )x00i
+t(x1 , . . . , xn ) + 0xi =
+
+Since t(x1 , . . . , xn ) + 0xi = s(x1 , . . . , xn ) + 0xi is valid in ∅ N, we have
+identical values for any substitution in ∅ N, hence pt = ps and qt = qs as
+polynomials. But then t(x1 , . . . , xn ) and s(x1 , . . . , xn ) take the same values for
+any substitution with elements from ∅ N, hence t(x1 , . . . , xn ) = s(x1 , . . . , xn )
+is valid in ∅ N.
+Definition 4.40. Let t(x 1 , . . . , xn ) ≡ s(x1 , . . . , xn ) mean that there are zeromn
+1
+terms 0xn1 1 . . . xnnn and 0xm
+such that
+1 . . . xn
+n
+t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = s(x1 , . . . , xn ) + 0x1m1 . . . xm
+n
+
+in FWheel ({x1 , . . . , xn }).
+Lemma 4.41. ≡ is a congruence relation.
+Proof. It is clearly reflexive and symmetric. The transitivity follows from 0x +
+0y = 0xy (10). We must prove that it preserves +, · and /. Suppose therefore
+that t ≡ s (let us suppress the part (x1 , . . . , xn ) everywhere). Then there are
+zero-terms, say zt 1 and zt2 for short, such that t + zt1 = s + zt2 . We then have
+(using (6) and (7) in the second and third row)
+t + u + zt1 = s + u + zt 2
+tu + zt1 = (t + zt1 )u = (s + zt2 )u = su + zt2
+/t + zt1 = /(t + zt1 ) = /(s + zt2 ) = /s + zt2 .
+
+38
+
+Lemma 4.42. If the polynomial terms p(x1 , . . . , xn ) and q(x1 , . . . , xn ) are equivalent, then p(x1 , . . . , xn ) ≡ q(x1 , . . . , xn ).
+Proof. We first prove that 0p(x1 , . . . , xn ) ≡ 0 by induction on the number
+of occurrences of operations composing p. It is obvious if p is x i or a constant. If p is t + s, then 0p(x1 , . . . , xn ) = 0(t(x1 , . . . , xn ) + s(x1 , . . . , xn )) =
+0t(x1 , . . . , xn ) + 0s(x1 , . . . , xn ) ≡ 0 + 0 = 0. If p is ts, then 0p(x 1 , . . . , xn ) =
+0t(x1 , . . . , xn )s(x1 , . . . , xn ) ≡ 0s(x1 , . . . , xn ) ≡ 0.
+Hence, if p is a polynomial term and z = p(x 1 , . . . , xn ), then for every
+x, y ∈ FWheel ({x1 , . . . , xn }) we have (x + y)z = (x + y)z + 0z ≡ xz + yz, so that
+we have
+x+y =y+x
+x + (y + z) = (x + y) + z
+0+x =x
+xy = yx
+x(yz) = (xy)z
+1x = x
+(x + y)z ≡ xz + yz
+0z ≡ 0
+
+when counting with polynomial terms. We conclude that every derivation of
+p(x1 , . . . , xn ) = q(x1 , . . . , xn ) that uses the axioms for commutative semirings
+only, is transformed into an argument that proves p(x 1 , . . . , xn ) ≡ q(x1 , . . . , xn ),
+by changing each ‘=’ to ‘≡’.
+Remark: The analogous case of wheels with negation is treated by use of
+z − z ≡ 0, which is true since z − z = 0z 2 .
+On the other hand, if p(x1 , . . . , xn ) ≡ q(x1 , . . . , xn ) for polynomial terms p
+and q, then they are equivalent. Hence ≡ can be thought of as an extension of
+the equivalence for polynomial terms. 17
+Lemma 4.43. For any term t(x1 , . . . , xn ), one can find two polynomial terms
+p(x1 , . . . , xn ) and q(x1 , . . . , xn ) with
+t(x1 , . . . , xn ) ≡
+
+p(x1 , . . . , xn )
+q(x1 , . . . , xn )
+
+in FWheel ({x1 , . . . , xn }).
+Proof. We use induction on the number of occurrences of operations composing
+t.
+0 occurrences: t(x1 , . . . , xn ) is xi . Then choose p(x1 , . . . , xn ) = xi and
+q(x1 , . . . , xn ) = 1 and the result is obvious.
+N +1 occurrences, assuming that we have proved the result for N occurrences
+(let us suppress the part (x1 , . . . , xn ) everywhere): If t is a constant, then choose
+p = t and q = 1. Otherwise, we have the following possibilities.
+17 Note however that this statement is informal, since ≡ is not a relation between terms,
+but between elements of a certain wheel.
+
+39
+
+1. t is t1 + t2 . By the induction hypotheses, we have t 1 ≡ p1 /q1 and t2 ≡
+p2 /q2 . Hence
+pt2 qt1
+
+pt1 + qt
+pt
+pt
+pt
+pt
+2
+t = t1 + t2 ≡ 1 + 2 ≡ 1 + 2 + 0qt1 =
+qt1
+qt2
+qt1
+qt2
+qt1
+≡
+
+pt1 +
+
+pt2 qt1
+qt2
+
++ 0qt2 =
+qt1
+pt qt + pt2 qt1
+= 1 2
+.
+qt1 qt2
+
+pt1 +
+
+pt2 qt1
+qt2 + 0qt2
+
+qt1
+
+=
+
+pt1 qt2 +pt2 qt1
+qt2
+
+qt1
+
+2. t is t1 t2 .
+t = t 1 t2 ≡
+
+
+
+pt1
+qt1
+
+
+
+pt2
+qt2
+
+
+
+=
+
+pt1 pt2
+qt1 qt2
+
+3. t is /t1 .
+t = /t1 ≡ /(pt1 /qt1 ) = qt1 /pt1
+Lemma 4.44. (FWheel ({x1 , . . . , xn })/≡) ∼
+=
+
+∅ (N[x1 , . . . , xn ]).
+
+Proof. The evaluation morphism FWheel ({x1 , . . . , xn }) → ∅ (N[x1 , . . . , xn ]) is
+surjective, we shall prove that its kernel is ≡.
+Clearly, if t(x1 , . . . , xn ) ≡ s(x1 , . . . , xn ) is true in FWheel ({x1 , . . . , xn }),
+then t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in ∅ (N[x1 , . . . , xn ]). We need to
+prove the other direction.
+Suppose that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) in ∅ (N[x1 , . . . , xn ]). By the
+previous lemma, there are polynomial terms p t , qt , ps , qs such that
+t(x1 , . . . , xn ) ≡
+
+pt (x1 , . . . , xn )
+qt (x1 , . . . , xn )
+
+s(x1 , . . . , xn ) ≡
+
+ps (x1 , . . . , xn )
+.
+qs (x1 , . . . , xn )
+
+and
+
+Hence it holds in
+
+∅ (N[x1 , . . . , xn ]) that
+
+pt (x1 , . . . , xn )
+ps (x1 , . . . , xn )
+= t(x1 , . . . , xn ) = s(x1 , . . . , xn ) =
+.
+qt (x1 , . . . , xn )
+qs (x1 , . . . , xn )
+Therefore, pt and ps are equivalent, as well as q t and qs . Hence, by lemma 4.42,
+we have
+pt (x1 , . . . , xn ) ≡ ps (x1 , . . . , xn )
+and
+
+qt (x1 , . . . , xn ) ≡ qs (x1 , . . . , xn ),
+
+so that
+t(x1 , . . . , xn ) ≡
+
+pt (x1 , . . . , xn )
+ps (x1 , . . . , xn )
+≡
+≡ s(x1 , . . . , xn ).
+qt (x1 , . . . , xn )
+qs (x1 , . . . , xn )
+
+40
+
+Lemma 4.45. Suppose p and q are polynomial terms, not both equivalent to 0.
+If
+p(x1 , . . . , xn )
+p(x1 , . . . , xn )
+mn
+1
++ 0xn1 1 . . . xnnn =
++ 0xm
+1 . . . xn
+q(x1 , . . . , xn )
+q(x1 , . . . , xn )
+is true in FWF ({x1 , . . . , xn }), then it is true in FWheel ({x1 , . . . , xn }) too.
+Proof. We prove that (n1 , . . . , nn ) = (m1 , . . . , mn ).
+Choose distinct positive prime numbers a 1 , . . . , an , b1 , . . . , bn such that
+a
+0
+p(a1 /b1 , . . . , an /bn )
+= 6=
+q(a1 /b1 , . . . , an /bn )
+b
+0
+in
+
+∅ N.
+Then
+
+abn1 . . . bnnn
+p(a1 /b1 , . . . , an /bn )
++ 0(a1 /b1 )n1 . . . (an /bn )nn = n1 1
+q(a1 /b1 , . . . , an /bn )
+bb1 . . . bnnn
+and
+mn
+1
+abm
+p(a1 /b1 , . . . , an /bn )
+1 . . . bn
++ 0(a1 /b1 )m1 . . . (an /bn )mn = m
+mn
+1
+q(a1 /b1 , . . . , an /bn )
+bb1 . . . bn
+
+but by assumption, these should be equal. Since a 6= 0 or b 6= 0, we conclude
+that (n1 , . . . , nn ) = (m1 , . . . , mn ).
+Lemma 4.46. If t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }),
+then there is a term 0xn1 1 . . . xnnn such that t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn =
+s(x1 , . . . , xn ) + 0xn1 1 . . . xnnn is true in FWheel ({x1 , . . . , xn }).
+Proof. Suppose t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }).
+Then it is in ∅ (N[x1 , . . . , xn ]) too. Hence, there are polynomials p(x 1 , . . . , xn )
+and q(x1 , . . . , xn ) with
+p(x1 , . . . , xn )
+q(x1 , . . . , xn )
+p(x1 , . . . , xn )
+s(x1 , . . . , xn ) =
+q(x1 , . . . , xn )
+t(x1 , . . . , xn ) =
+
+true in ∅ (N[x1 , . . . , xn ]).
+If both p and q are equivalent to ‘0’, then we may suppose that they are
+actually both the term ‘0’.
+Since FWheel ({x1 , . . . , xn })/≡ ∼
+= ∅ (N[x1 , . . . , xn ]), there are zero-terms,
+say zt1 , zt2 , zt3 , zt4 for short, such that
+p(x1 , . . . , xn )
++ zt2
+q(x1 , . . . , xn )
+p(x1 , . . . , xn )
+s(x1 , . . . , xn ) + zt3 =
++ zt4
+q(x1 , . . . , xn )
+t(x1 , . . . , xn ) + zt1 =
+
+in FWheel ({x1 , . . . , xn )}).
+
+41
+
+Since
+p(x1 , . . . , xn )
++ zt2 + zt3 = t(x1 , . . . , xn ) + zt1 + zt3
+q(x1 , . . . , xn )
+= s(x1 , . . . , xn ) + zt1 + zt3
+=
+
+p(x1 , . . . , xn )
++ zt4 + zt1
+q(x1 , . . . , xn )
+
+in FWF ({x1 , . . . , xn ) and zt2 + zt3 and zt4 + zt1 compute to zero-terms of the
+form used in the statement of the previous lemma, we may use that lemma to
+conclude that if p and q are not both the term ‘0’, then
+p(x1 , . . . , xn )
+p(x1 , . . . , xn )
++ zt2 + zt3 =
++ zt4 + zt1
+q(x1 , . . . , xn )
+q(x1 , . . . , xn )
+is true also in FWheel ({x1 , . . . , xn }). But if p and q are both ‘0’, then this fact
+follows from the axiom 8 instead of from the lemma.
+Now choose (n1 , . . . , nn ) such that zt1 + zt3 = 0xn1 1 . . . xnnn . Then
+p(x1 , . . . , xn )
++ zt2 + zt3
+q(x1 , . . . , xn )
+p(x1 , . . . , xn )
++ zt4 + zt1
+=
+q(x1 , . . . , xn )
+= s(x1 , . . . , xn ) + 0xn1 1 . . . xnnn
+
+t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn =
+
+Lemma 4.47. Any equation t(x1 , . . . , xn ) = s(x1 , . . . , xn ) which is true in
+FWF ({x1 , . . . xn }) can be proved using the wheel axioms together with the axioms
+‘0xi is +-cancellable’ (i = 1, . . . , n).
+Proof. Suppose t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }). By
+the previous lemma, we get an equation which is true in F Wheel ({x1 , . . . , xn })
+by adding a zero-term 0x n1 1 . . . xnnn to each side. The resulting equation can
+be proved using the axioms for wheels. The term 0x n1 1 . . . xnnn can then be
+cancelled by the use of ‘0xi is +-cancellable’ several times for different i, since
+it is provable that
+nj
+n X
+X
+0xn1 1 . . . xnnn =
+0xj .
+j=1 k=1
+
+Lemma 4.48. Suppose that t(x1 , . . . , xn ) = 0/0 is true in
+Then it is true in FWF ({x1 , . . . , xn }) too.
+
+∅ (N[x1 , . . . , xn ]).
+
+Proof. Assume the conditions. t(x1 , . . . , xn ) ≡ 0/0 in FWheel ({x1 , . . . , xn })
+according to lemma 4.44, say
+t(x1 , . . . , xn ) + zt1 = 0/0 + zt 2 = 0/0 = 0/0 + zt 1 .
+Hence t(x1 , . . . , xn ) + zt1 = 0/0 + zt1 also in FWF ({x1 , . . . , xn }), but by lemma
+4.39, we conclude that t(x1 , . . . , xn ) = 0/0.
+42
+
+Lemma 4.49. Suppose that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is an unbalanced
+equation. Then t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }) if
+and only if each side is equal to 0/0 in ∅ (N[x1 , . . . , xn ]) (and hence, by the
+previous lemma, in FWF ({x1 , . . . , xn }) too).
+Proof. Suppose that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }).
+By lemma 4.46, there is a zero-term 0x n1 1 . . . xnnn such that
+t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = s(x1 , . . . , xn ) + 0xn1 1 . . . xnnn
+in FWheel ({x1 , . . . , xn }). By completeness, this equation is provable using the
+wheel axioms, but since it is unbalanced, one must use an unbalanced axiom.
+There is just one, namely ‘x + 0/0 = 0/0’. That can be used only if ‘0/0’ occurs
+as a subterm in the derivation; but if it does, then every term in the derivation
+can be proved to be equal to 0/0.
+Hence
+t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = 0/0
+and
+s(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = 0/0
+in FWF ({x1 , . . . , xn }) and hence also in ∅ (N[x1 , . . . , xn ]). But in the latter,
+we have 0xn1 1 . . . xnnn = 0, hence we conclude that
+t(x1 , . . . , xn ) = t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = 0/0
+and
+s(x1 , . . . , xn ) = s(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = 0/0
+holds in ∅ (N[x1 , . . . , xn ]).
+The other direction was proved in the previous lemma.
+Lemma 4.50. Suppose that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is a balanced equation
+and that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in ∅ (N[x1 , . . . , xn ]). Then it is
+true also in FWF ({x1 , . . . , xn }).
+Proof. Assume the conditions. Then t(x1 , . . . , xn ) ≡ s(x1 , . . . , xn ) is true in
+FWheel ({x1 , . . . , xn }) by lemma 4.44, say that t(x 1 , . . . , xn ) + 0xn1 1 . . . xnnn =
+mn
+1
+s(x1 , . . . , xn ) + 0xm
+1 . . . xn . Since this is true in FWheel ({x1 , . . . , xn }), it is
+in FWF ({x1 , . . . , xn }) too. If (n1 , . . . , nn ) = (m1 , . . . , mn ), then it follows by
+lemma 4.39 that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in FWF ({x1 , . . . , xn }).
+If (n1 , . . . , nn ) 6= (m1 , . . . , mn ), then the equation t(x1 , . . . , xn )+0xn1 1 . . . xnnn
+mn
+1
+= s(x1 , . . . , xn ) + 0xm
+1 . . . xn is unbalanced, hence, by the previous lemma, we
+mn
+1
+have that t(x1 , . . . , xn ) + 0xn1 1 . . . xnnn = 0/0 and s(x1 , . . . , xn ) + 0xm
+1 . . . xn =
+n1
+nn
+0/0 in ∅ (N[x1 , . . . , xn ]). But since 0x1 . . . xn = 0 in ∅ (N[x1 , . . . , xn ]), we
+have
+t(x1 , . . . , xn ) = 0/0
+and
+s(x1 , . . . , xn ) = 0/0
+which by lemma 4.48 implies that t(x1 , . . . , xn ) = s(x1 , . . . , xn ) is true in
+FWF ({x1 , . . . , xn }).
+43
+
+5
+
+Wheel-modules
+
+Since the notion of module is central in the study of rings, and wheels can be
+used as a replacement of rings, we should introduce the notion of an H-module
+over a wheel H. We indicate briefly how a theory of modules may be developed.
+The notion of A-module, where A is an arbitrary semiring, was defined in
+section 3 (definition 3.2) and it was noted that when A happens to be a ring,
+then an A-module in the defined sense is an A-module in the usual sense of rings.
+The following definition is similar to that definition. Note that the axioms are
+the wheel axioms that are interpretable in the given context, we mark to the
+right to which wheel axiom each axiom corresponds.
+Definition 5.1. Let H be a wheel. An H-module is a commutative monoid
+hM, 0, +i with multiplication by H-elements defined (formally, a function H ×
+M → M written (x, m) 7→ xm) such that for any x, x0 ∈ H, m, m0 ∈ M ,
+(xx0 )m = x(x0 m)
+
+(as 2)
+
+1m = m
+
+(as 2)
+
+(x + x0 )m + 0m = xm + x0 m
+x(m + m0 ) + x0 = xm + xm0
+
+(as 3)
+(as 3)
+
+(/x)m + m0 + x0 = (/x)(m + xm0 )
+0·0=0
+
+(as 4)
+(as 5)
+
+x(m + 0m0 ) = xm + 0m0
+m + (/0)0 = (/0)0
+
+(as 6)
+(as 8)
+
+where 0 to the left is in H, while 0 to the right or alone is in M .
+A morphism of H-modules is as usual a monoid-morphism which also preserves the multiplication. Let RH M be the subset {m ∈ M | 0m = 0}, which is
+clearly an RH-module and for any H-module-morphism ϕ : M → N , let R H ϕ
+be the RH-module-morphism obtained by restriction to R H M . RH is clearly
+a functor from the category of H-modules to the category of RH-modules.
+The construction of wheels of fractions works also for modules over commutative semirings, so that we may construct “ X A-modules” from A-modules.
+Let A be a commutative semiring, X a subset and S the multiplicative
+monoid generated by X. Let M be an A-module and define ∼ on M × A by
+(m, a) ∼ (m0 , a0 ) ⇐⇒ ∃s1 , s2 ∈ S : (s1 m, s1 a) = (s2 m0 , s2 a0 ).
+That this is an equivalence relation is seen in the same way as before. Let
+be M × A/∼ with the operations ([c, d] ∈ X A)
+
+XM
+
+0 = [0, 1]
+[m, a] + [m , a ] = [a0 m + am0 , aa0 ]
+0
+
+0
+
+[c, d][m, a0 ] = [cm, da0 ].
+These operations are well-defined by the same arguments as before, and the
+resulting structure is clearly a X A-module, denoted X M .
+If ϕ : M → N is an A-module homomorphism, let X ϕ be the X Amodule homomorphism X M → X N given by [m, a] 7→ [ϕ(m), a]. X is then
+44
+
+a functor from the category of A-modules to the category of X A-modules;
+with right adjoint R X A . If A is a ring, then the composition R X A X is the
+well-known functor S −1 .
+As an application, we may define X A in the case when A is a commutative
+ring without identity element. Suppose A is such a ring, X a subset of it. Let
+A[1] be (following Nagata) the additive group Z × A together with the extra
+operations 1 = (1, 0) and
+(n, a)(n0 , a0 ) = (nn0 , na0 + n0 a + aa0 ),
+which makes A[1] a commutative ring with identity 1, and with A injectively
+embedded by the operation-preserving injection x 7→ (0, x). Identify A with
+its image under this embedding. A is then an ideal of A[1], in particular an
+A[1]-module. In this way, X A is defined as a X A[1]-module.
+Another application is exponentiation with fractions as exponents. Since
+every commutative monoid hM, e, ·i is an N-module by multiplication m n (m ∈
+M, n ∈ N), it is extended to a S0 N-module S0 M consisting of elements [m, n]
+√
+√ p/q
+√
+= qn mp . In particular,
+(m ∈ M, n ∈ N, write n m for [m, n]). One has n m
+x1/0 and x0/0 is defined in this way.
+
+45
+
+References
+[AM69]
+
+M. F. Atiyah and I. G. MacDonald. Introduction to Commutative
+Algebra. Addison-Wesley, London, 1969.
+
+[Bir35]
+
+Birkhoff, 1935. See e.g. [BS81] theorem 11.9, p. 75 or [Grä79] theorem
+3, p. 171.
+
+[Bor94]
+
+F. Borceux. Handbook of Categorical Algebra, volume 2. Cambridge
+University Press, Cambridge, 1994.
+
+[Bou73]
+
+N. Bourbaki. Elements of Mathematics, Algebra, Part I. AddisonWesley, Reading, Massachusetts, 1973.
+
+[BS81]
+
+S. Burris and H. P. Sankappanavar. A Course in Universal Algebra.
+Springer-Verlag, New York, 1981.
+
+[EP00]
+
+A. Edalat and P. J. Potts. A new representation for exact real numbers. In S. Brookes and M. Mislove, editors, Electronic Notes in
+Theoretical Computer Science, volume 6. Elsevier Science Publishers,
+2000.
+
+[Gol99]
+
+J. S. Golan. Semirings and their Applications. Kluwer Academic
+Publishers, Dordrecht, 1999.
+
+[Grä79]
+
+G. Grätzer. Universal Algebra. Springer-Verlag, New York, second
+edition, 1979.
+
+[Har77]
+
+R. Hartshorne. Algebraic Geometry. Springer-Verlag, New York, 1977.
+
+[Hey56]
+
+A. Heyting. Intuitionism: An Introduction. North-Holland, Amsterdam, 1956.
+
+[ML84]
+
+P. Martin-Löf. Intuitionistic Type Theory. Bibliopolis, Naples, 1984.
+
+[MRR88] R. Mines, F. Richman, and W. Ruitenburg. A Course in Constructive
+Algebra. Springer-Verlag, New York, 1988.
+[Öbe00]
+
+M. Öberg. Algebraiska och topologiska hjul. Examensarbete i matematik, Stockholm University, 2000.
+
+[Pot98]
+
+P. J. Potts. Exact Real Arithmetic using Möbius Transformations.
+PhD thesis, University of London, 1998. Currently available at
+http://www.purplefinder.com/˜potts/.
+
+[Set97]
+
+A. Setzer. Wheels (draft). Currently available at http://wwwcompsci.swan.ac.uk/˜csetzer/, 1997.
+
+46
+
+

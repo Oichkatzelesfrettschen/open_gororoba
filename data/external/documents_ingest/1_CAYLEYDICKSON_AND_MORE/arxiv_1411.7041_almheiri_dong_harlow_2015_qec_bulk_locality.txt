@@ -1,0 +1,1817 @@
+                                         Prepared for submission to JHEP
+
+
+
+
+                                         Bulk Locality and Quantum Error Correction
+                                         in AdS/CFT
+
+
+
+
+arXiv:1411.7041v3 [hep-th] 28 Jul 2015
+                                         Ahmed Almheiri,a Xi Dong,a Daniel Harlowb
+                                         a Stanford Institute for Theoretical Physics, Department of Physics, Stanford University,
+                                          Stanford, CA 94305, USA
+                                         b Princeton Center for Theoretical Science, Princeton University, Princeton NJ 08540 USA
+
+                                          E-mail: almheiri@stanford.edu, xidong@stanford.edu,
+                                          dharlow@princeton.edu
+
+                                         Abstract: We point out a connection between the emergence of bulk locality in
+                                         AdS/CFT and the theory of quantum error correction. Bulk notions such as Bogoliubov
+                                         transformations, location in the radial direction, and the holographic entropy bound
+                                         all have natural CFT interpretations in the language of quantum error correction. We
+                                         also show that the question of whether bulk operator reconstruction works only in
+                                         the causal wedge or all the way to the extremal surface is related to the question
+                                         of whether or not the quantum error correcting code realized by AdS/CFT is also a
+                                         “quantum secret sharing scheme”, and suggest a tensor network calculation that may
+                                         settle the issue. Interestingly, the version of quantum error correction which is best
+                                         suited to our analysis is the somewhat nonstandard “operator algebra quantum error
+                                         correction” of Beny, Kempf, and Kribs. Our proposal gives a precise formulation of
+                                         the idea of “subregion-subregion” duality in AdS/CFT, and clarifies the limits of its
+                                         validity.
+Contents
+1 Introduction                                                      2
+
+2 Bulk reconstruction and an AdS-Rindler puzzle                    3
+  2.1 Global AdS reconstruction                                    3
+  2.2 AdS-Rindler reconstruction                                   5
+  2.3 Overlapping wedges                                           7
+
+3 Correcting quantum erasures                                       8
+  3.1 A simple example of erasure correction                        9
+  3.2 General erasure correction                                   11
+  3.3 Quantum secret sharing                                       14
+  3.4 Approximate erasure correction                               14
+  3.5 Operator algebra quantum error correction                    15
+
+4 AdS/CFT as quantum error correction                              16
+  4.1 Defining code subspaces                                      17
+  4.2 Bulk correlation and smearing                                18
+  4.3 Disconnected regions and quantum secret sharing              21
+  4.4 MERA as an error correcting code?                            22
+
+5 Backreaction and holography                                      23
+  5.1 Defining local operators                                     24
+  5.2 Shrinking of the causal wedge                                27
+  5.3 Counting states                                              29
+
+6 Conclusion                                                       30
+
+A More details on AdS-Rindler reconstruction                       31
+
+B The basic theorem of operator algebra quantum error correction   34
+
+
+
+
+                                      –1–
+1       Introduction
+Almost twenty years after its initial formulation, the AdS/CFT correspondence remains
+our best-understood example of a precise theory of quantum gravity. It has shed light
+on many deep puzzles in quantum gravity, and has also been of practical use in studying
+the dynamics of strongly interacting quantum field theories. One aspect that remains
+mysterious, however, is the emergence of approximate bulk locality. Locality near the
+boundary is straightforward. In the “extrapolate” version of the AdS/CFT dictionary
+we have a simple relation [1, 2]
+
+                                        lim r∆ φ(r, x) = O(x)                                        (1.1)
+                                        r→∞
+
+between limiting values of a bulk field φ and a conformal field theory operator O;
+this dictionary manifestly respects locality in the x directions since the CFT does.
+The radial direction, however, is more subtle. One way to see this is to observe that
+naively a local operator in the center of the bulk should commute with every local
+operator at the boundary on a fixed time slice containing that bulk operator. This
+is not consistent, however, with a standard property of quantum field theory; any
+operator that commutes with all local operators at a fixed time must be proportional
+to the identity.1 Bulk locality thus cannot be respected within the CFT at the level of
+the algebra of operators; we’d then like to know in what sense it is respected.2
+     The basic idea of this paper is that bulk locality is a statement about certain
+subspaces of states in the CFT. That these subspaces can be large is a consequence
+of the large-N properties of the CFT, but the large degree of non-local entanglement
+in finite energy states of the CFT also plays an essential role. Our strategy will be to
+gradually back away from the r → ∞ limit in equation (1.1) and study how the the
+CFT representations of bulk operators spread in spatial support as we do so. On the
+    1
+      In lattice theories with scalars and fermions coupled to abelian gauge fields this property is essen-
+tially obvious in the Hamiltonian formulation. Showing it for non-abelian gauge fields on the lattice
+requires more work. In either case the idea is to show that the algebra generated by local operators
+on a time-slice acts irreducibly on the Hilbert space; the statement then follows from Schur’s lemma.
+In the continuum this idea is called the “time-slice axiom” [3, 4]; for recent rigorous discussions, see,
+e.g., [5, 6]. There are actually topological theories where the time-slice axiom is false, for example in
+Chern-Simons theory quantized on a topologically nontrivial Riemann surface, but we don’t expect
+this loophole to be relevant for CFTs with ordinary gravity duals.
+    2
+      One subtlety in this argument is that to put the operator at a definite bulk point in a
+diffeomorphism-invariant way we need to include “gravitational dressing” that will allow the oper-
+ator to not necessarily commute with local operators at the boundary at subleading order in 1/N . We
+will discuss this more in section 5, where we will see that this level of non-locality is not enough to
+avoid a contradiction between the bulk and boundary algebras.
+
+
+
+
+                                                  –2–
+bulk side the tool we will mostly use is the AdS-Rindler reconstruction of bulk fields
+introduced in [7] and refined in [8]. We will observe that this construction has several
+paradoxical features, which we will illuminate by recasting it on the CFT side in the
+language of quantum error correcting codes [9, 10]. This language gives a new, more
+general perspective on the issue of bulk reconstruction, and we believe that it is the
+natural framework for understanding the idea of “subregion-subregion” duality [11–14].
+In particular, the radial direction in the bulk is realized in the CFT as a measure of
+how well CFT representations of bulk quantum information are protected from local
+erasures. The holographic principle also naturally arises in the guise of the general
+statement that there is an upper bound on how much quantum information a given
+code can protect from erasures.
+     One point that will appear in this analysis is that truncated subalgebras of bulk
+observables are of interest; these were also advocated in [15] in the context of describing
+the black hole interior. Aspects of our proposal are inspired by their construction, but
+here we do not discuss black hole interiors and we are not violating quantum mechanics
+[16]. A connection between black holes and quantum error correction was also made in
+[17], which is essentially an earlier version of the proposal of [15], but again the context
+was different and our work here should be uncontroversial by comparison.
+     Before proceeding, let us establish a few conventions used throughout this paper.
+We will frequently discuss subspaces and tensor factors of the Hilbert space. When we
+say that an operator acts within a subspace we also mean that the same is true for
+its hermitian conjugate. If the Hilbert space is a tensor product HE ⊗ HE , for any
+operator OE that acts on E we may trivially form an operator IE ⊗ OE that acts on the
+entire Hilbert space. We will often drop the identity operator IE and write it simply
+as OE . The reader should also keep in mind that the CFT regions A and A that we
+will talk about in section 4 unfortunately correspond to E and E respectively in the
+language of section 3.
+
+2     Bulk reconstruction and an AdS-Rindler puzzle
+2.1   Global AdS reconstruction
+We begin by briefly recalling the standard CFT construction of local bulk fields in AdS
+[1, 7, 18]. We will first work in global coordinates, where the metric asymptotically has
+the form
+                                                  dr2
+                          ds2 ∼ −(r2 + 1)dt2 + 2       + r2 dΩ2d−1 .                 (2.1)
+                                                r +1
+The CFT dual to this system lives on Sd−1 × R, with the R being the time direction.
+The Hilbert space of states is the set of field configurations on Sd−1 . The idea is then
+
+
+
+                                           –3–
+to perturbatively construct operators in the CFT which obey the bulk equations of
+motion, with the boundary conditions set by the dictionary (1.1). For simplicity we
+will assume that all bulk interactions are suppressed by inverse powers of a quantity
+N , which will also set the AdS radius in Planck units. At leading order in 1/N , this
+procedure results in a straightforward prescription for the CFT representation of a bulk
+field φ(x); we simply have
+                                   Z
+                            φ(x) =         dY K(x; Y )O(Y ),                       (2.2)
+                                          Sd−1 ×R
+
+where the integral is over the conformal boundary and K(x, Y ) is a so-called “smearing
+function”. The smearing function obeys the bulk wave equation in its x index, and leads
+to (1.1) as we take x to the boundary. It can be chosen to only have support when x
+and Y are spacelike separated, which we illustrate for AdS3 in the left diagram of figure
+1; the point x is represented by a boundary integral over the green region only. In the
+case of empty AdS, where we take (2.1) to hold everywhere, explicit representations of
+the smearing function can be found in [7, 18].3 1/N corrections can be systematically
+included [18, 19], although we won’t really need to discuss them here. At higher orders
+in this perturbation theory we will need to confront the problem of defining local
+operators in a diffeomorphism invariant theory, but we postpone discussion of this
+until section 5.
+     It is not obvious from the definition that the operators (2.2) have the expected com-
+mutators in the bulk; this has been checked perturbatively within low point correlation
+functions in [19], but must eventually break down in states with enough excitations to
+avoid a contradiction with the argument in our introduction. We will argue below that,
+within the subspace of states that are “perturbatively close” to the vacuum, it breaks
+down only at the level of non-perturbatively small corrections.
+     Note that once we have a representation of the form (2.2), we can use the CFT
+Hamiltonian to re-express all operators on the right hand side in terms of Heisenberg
+picture fields on a single Cauchy surface in the CFT, denoted as Σ in figure 1. This
+representation is quite nontrivial, in general it involves severely nonlocal and multitrace
+operators. It also has the property that if we take x to be near the boundary but
+not quite on it, the single-time CFT representation of φ(x) still involves operators
+   3
+    One subtlety here is that for more general asymptotically AdS backgrounds, we are not aware of a
+rigorous argument for the existence of K, even in the distributional sense that we will see we need to
+allow in the following subsection. One obvious problem is that x could be behind a horizon, but even
+for geometries with no horizons the only precise argument for the existence of K (or more precisely
+the existence of the “spacelike Green’s function” it is built from) requires spherical symmetry [18]. We
+are not aware of any obstruction to its existence, but it would nonetheless be very interesting to see
+a detailed analysis of this somewhat nonstandard problem in partial differential equations.
+
+
+
+
+                                                 –4–
+                        x                             x   χA
+                                         Σ
+                                                  A                   Σ
+
+
+
+
+          Figure 1. AdS3 reconstruction globally, and in an AdS-Rindler wedge.
+
+
+
+with support on all of Σ. We might hope to find a representation whose boundary
+support shrinks as the operator approaches the boundary, and indeed the AdS-Rindler
+representation does exactly this, as we will now explain.
+
+2.2   AdS-Rindler reconstruction
+Consider a subregion A of a CFT Cauchy surface Σ. The boundary domain of depen-
+dence of A, denoted D[A], is defined as the set of points on the boundary with the
+property that every inextendible causal curve, meaning a curve whose tangent vector is
+never spacelike and which is not part of a larger curve with this property, that passes
+through it must also intersect A. This is illustrated for the boundary of AdS3 in the
+right diagram of figure 1, where A is the boundary interval lying between the two ver-
+tical hash marks and D[A] is shaded green. For any boundary region R, its bulk causal
+future/past J ± [R] is defined as the set of bulk points which can be reached by bulk
+causal curves evolving from/to the region R. The causal wedge of a CFT subregion A
+[14] (for earlier related definitions see [20]) is defined as
+
+                            WC [A] ≡ J + [D[A]] ∩ J − [D[A]].                       (2.3)
+
+In the right diagram of figure 1, WC [A] roughly lies between the dashed lines and D[A].
+The bulk codimension-two surface χA in the figure is the “rim” of the wedge and is
+commonly referred to as the causal surface of A [14]; more precisely it is defined as the
+part of the intersection of the boundaries of J ± [D[A]] that does not also intersect the
+
+
+
+                                         –5–
+                                                        τ=
+
+
+
+                                   Σ                         ρ=
+                                               1
+                                              ρ=
+
+
+
+                                                   τ=
+                                                        -
+
+
+
+
+Figure 2. Coordinates for the AdS-Rindler wedge for AdS3 , shaded in blue. In this case we
+have −∞ < x < ∞.
+
+
+
+conformal boundary at infinity. χA can also be described as the intersection of the past
+and future horizons of D[A].
+    A simple example of these definitions is where we take the geometry to be pure
+AdSd+1 , Σ = Sd−1 to be the t = 0 slice of the boundary, and A to be one hemisphere of
+Σ. In this case WC [A] becomes what is usually referred to as the AdS-Rindler wedge.
+A natural set of bulk coordinates on the AdS-Rindler wedge gives a metric with the
+form
+                                        dρ2
+                 2       2       2
+                                              + ρ2 dx2 + sinh2 xdΩ2d−2 ,
+                                                                      
+               ds = −(ρ − 1)dτ + 2                                                 (2.4)
+                                      ρ −1
+where the coordinate ranges are ρ > 1, x ≥ 0, −∞ < τ < ∞ and the geometry in
+parentheses is just the d − 1 dimensional hyperbolic disc. The causal surface χA is
+given by the limit ρ → 1 at fixed τ , and A itself is given by ρ → ∞ and τ = 0. We
+illustrate this for AdS3 in figure 2. By acting on this example with bulk isometries (or
+equivalently boundary conformal transformations), we can arrive at the causal wedge
+for any round disc in Σ. The case of AdS3 is especially simple; all connected boundary
+regions are intervals and thus can be produced in this way.
+     The point then is that the construction of CFT representations of bulk fields in
+the previous subsection can also be implemented purely within the causal wedge [7].4
+At leading order in 1/N , the claim is that for any φ(x) with x ∈ WC [A], we can again
+represent φ(x) via the expression (2.2), but with the Y integral now taken only over
+D[A]. This is illustrated for AdS3 in the right diagram in figure 1, where we have
+   4
+    This has been worked out explicitly only at leading order in 1/N for the case of the AdS-Rindler
+wedge, the 1/N corrections should basically be treatable using the same methods as for the global
+construction and the existence for more general geometries has the same caveats as before.
+
+
+
+
+                                               –6–
+                                                               A                       B
+                       φ(x)
+      O(Y)
+
+                                                 x
+
+                                         A              B
+                                                                            C
+
+Figure 3. Three examples of AdS3 -Rindler reconstruction. Shown here is a top-down view of
+a bulk Cauchy slice whose boundary is Σ. On the left, the blue shaded region is the intersection
+of this Cauchy slice with the causal wedge for a CFT region A that is the complement of a
+small boundary interval around the boundary point Y . In the center we have the point x
+lying in the causal wedge of two different CFT regions, A and B. A borders the blue and
+green regions, while B borders the green and yellow regions. The black circle segments are
+χA , χB , and χA∩B . On the right we have split Σ into a union of three disjoint intervals, A,
+B, and C, and the circle segments are χA , χB , and χC .
+
+
+
+allowed for a conformal transformation that changes the size of the boundary interval
+A. We review more details of this construction in appendix A; the only major subtlety
+is that the smearing function K no longer exists as a function and must be understood
+as a distribution for integration against CFT expectation values [8] (see also [21] for
+some related discussion).
+     Thus we see that the AdS-Rindler construction of φ indeed has the property that
+if x is close to the boundary, only a small boundary region A localized near x is needed
+to be able to reconstruct φ in D(A). Moreover, by making use of the CFT evolution we
+can again rewrite the expression (2.2) entirely in terms of nonlocal Heisenberg operators
+acting at t = 0, but now they will act only on A.
+
+2.3   Overlapping wedges
+The AdS-Rindler construction of bulk fields we have just described has the somewhat
+counter-intuitive property that the same bulk field operator φ(x) lies in multiple causal
+wedges, and thus can be represented as an operator on distinct regions A, B, . . . in
+Σ. One consequence of this is shown in the left diagram of figure 3; for any bulk
+field operator φ(x) and any CFT local operator O(Y ) such that x and Y are spacelike
+separated, we can choose a causal wedge WC [A] such that O(Y ) lies in the complement
+of A in Σ. By CFT locality O(Y ) then must exactly commute with our representation
+of φ(x) in that wedge. This is coming dangerously close to contradicting the theorem
+
+
+
+
+                                             –7–
+mentioned in the introduction, that is that no nontrivial operator in the CFT can
+commute with all local CFT operators on Σ.
+     To avoid this contradiction it must be the case that the representations of φ(x) in
+different wedges are not really all the same operator on the CFT Hilbert space. We
+can see this in another way by considering the setup of the center diagram in figure 3,
+where we have two overlapping wedges WC [A] and WC [B] that both contain the point
+x but x is not contained in WC [A ∩ B]. For a CFT operator defined with support only
+on A to really be equal to a CFT operator defined with support only on B, it must be
+that the operator really only has support on A ∩ B. But given that we have chosen x to
+lie outside of WC [A ∩ B], we do not expect the operator to have such a representation.
+In fact in this example the operator has a representation on the complement of A ∩ B,
+and we will see in section (3.5) that when this is so a version of the no-cloning theorem
+of quantum mechanics forbids an accurate representation of the operator on A ∩ B.
+     We can see the non-equivalence of the operators even more clearly by considering a
+third example, shown in the right diagram in figure 3. Now a bulk field at the point x
+lies outside of the causal wedge for any one of the regions, but it can be reconstructed
+in A ∪ B, B ∪ C, or A ∪ C. The mutual intersection of these regions is just three points,
+and if we consider another set of three regions slightly rotated from these we can come
+up with a set of six possible reconstructions whose mutual intersection is genuinely
+empty. There is simply no possible way that they can all be equal as operators. For
+future reference we will refer to the three operators as φAB (x), φBC (x), and φAC (x).
+     We thus need to decide how we are to reconcile these operator inequivalences with
+the fact that in the bulk theory it seems that the operators are equivalent. There
+will clearly be some CFT states where they act quite differently, and we would like to
+understand the physics of the subset of states where their action is equivalent. This
+problem can be nicely understood in the language of quantum error correction, to which
+we now turn.
+
+
+3       Correcting quantum erasures
+Say Alice wants to send Bob a quantum state of k qubits in the mail, but she is worried
+that some of the qubits might get lost on the way. Quantum error correction is a
+procedure that allows her to embed this state into n > k qubits in such a way that
+even if some qubits are lost, Bob can still recover it. In this section we review some
+basic facts about this, beginning with an example.5
+    5
+    Our presentation of quantum error correction is somewhat nonstandard, since we are interested
+only correcting for the erasure of a known set of qubits. This allows us to omit many of the usual
+
+
+
+
+                                              –8–
+3.1     A simple example of erasure correction
+The simplest example of quantum error correction actually involves three-state “qutrits”
+instead of two-state qubits, and it uses three qutrits to send a single-qutrit message
+[25]. Say Alice wishes to send the state
+                                                  2
+                                                  X
+                                          |ψi =         ai |ii.                                 (3.1)
+                                                  i=0
+
+The idea is to instead send the state
+                                                  2
+                                                  X
+                                          |ψi
+                                           e =          ai |eii,                                (3.2)
+                                                  i=0
+
+where
+                                     1
+                                0i = √ (|000i + |111i + |222i)
+                               |e
+                                      3
+                                     1
+                                1i = √ (|012i + |120i + |201i)
+                               |e                                                               (3.3)
+                                      3
+                                     1
+                                2i = √ (|021i + |102i + |210i) .
+                               |e
+                                      3
+This protocol has two remarkable properties. First of all for any state |ψi,
+                                                                         e the reduced
+density matrix on any one of the qutrits is maximally mixed. Thus no single qutrit
+can be used to acquire any information about the state. Secondly, from any two of the
+qutrits Bob can reconstruct the state. For example, say he has access to only the first
+two qutrits. He can make use of the fact that there exists a unitary transformation U12
+acting only on the first two qutrits that implements
+                                                 1
+                        (U12 ⊗ I3 ) |eii = |ii ⊗ √ (|00i + |11i + |22i) .                       (3.4)
+                                                  3
+Acting with this on the encoded message, we see that Bob can recover the state |ψi:
+
+                                    e = |ψi ⊗ √1 (|00i + |11i + |22i) .
+                       (U12 ⊗ I3 ) |ψi                                                          (3.5)
+                                                3
+Explicitly U12 is a permutation that acts as
+                           |00i → |00i |11i → |01i |22i → |02i
+                           |01i → |12i |12i → |10i |20i → |11i .                                (3.6)
+                           |02i → |21i |10i → |22i |21i → |20i
+topics, such as quantum channels, ancilla, check operators, etc. Standard reviews of this more general
+formalism are [22, 23]; for a concise description of the basic ideas see section 4 of [24].
+
+
+
+
+                                                –9–
+Clearly by the symmetry of (3.3) a similar construction is also possible if Bob has
+access only to the second and third, or first and third qutrits. Thus Bob can correct for
+the loss of any one of the qutrits; in quantum information terminology one describes
+this as a quantum error correcting code that can protect against arbitrary single qutrit
+erasures. The subspace spanned by (3.3) is called the code subspace; the entanglement
+of the states in the code subspace is essential for the functioning of the protocol.
+     In our discussion of reconstruction in the previous section we were interested in the
+action of operators rather than the recovery of states, and we can rephrase the error
+correction protocol in this language. Indeed, say that O is an operator that acts on the
+single qutrit Hilbert space as6
+                                           X
+                                   O|ii =      (O)ji |ji.                            (3.7)
+                                                  j
+
+
+For any such O we can always find a (non-unique) three-qutrit operator O
+                                                                       e which
+implements the same transformation on the code subspace:
+                                        X
+                               O|
+                                e eii =   (O)ji |e
+                                                 ji.                      (3.8)
+                                                  j
+
+
+In quantum computing language, operators like O  e that act directly on the code subspace
+in this manner are called logical operations, since they are the types of things that we
+want to implement when performing a fault-tolerant quantum computation.
+    For a general code subspace, O e would need to have nontrivial support on all three
+qutrits. For the code subspace in question, however, is straightforward to see that the
+operator
+                                             †
+                                    O12 ≡ U12  OU12 ,                                (3.9)
+where O is taken to act on the first qutrit, acts as
+                                            X
+                                 O12 |eii =    (O)ji |e
+                                                      ji.                                       (3.10)
+                                                      j
+
+
+O12 is thus an Oe that has support only on the first two qutrits. Since we can also
+analogously construct O23 or O13 , we have realized a situation where operators with
+nontrivial support on different qutrits have the same action on the code subspace. This
+should be reminiscent of our discussion of overlapping wedges in the previous section;
+we will make the connection more explicit soon but first we need to discuss some general
+properties of quantum erasure correction.
+   6
+    Here we write (O)ij to indicate the matrix elements of the operator O on the code subspace, with
+the parentheses there to distinguish this from the operators O12 , O23 , etc to be defined momentarily.
+
+
+
+
+                                               – 10 –
+    Before moving on, however, we want to introduce a notational simplification. So
+far we have been careful to distinguish the single-qutrit operator O from its three-qutrit
+representations O.
+                e We find it convenient, however, to from now on abuse notation by
+instead thinking of “O” as an abstract logical operation and using it both cases; which
+operator we mean should always be clear from the context. So for example we can
+write
+                                      O12 |eii = O|eii.                             (3.11)
+
+3.2    General erasure correction
+We now describe a natural generalization of the protocol of the previous subsection.
+For familiarity we will describe it using qubits, although none of the results rely on
+this. Say that we want to protect a k-qubit code subspace of an n-qubit system against
+the loss of some collection of E of l of the qubits. We define the code subspace HC as
+the span of the orthonormal states
+
+                                 |eii = Uenc |i1 . . . ik 0k+1 . . . 0n i,                    (3.12)
+
+where Uenc is called the encoding unitary transformation. There is a necessary and
+sufficient condition for the correctability of the erasure of E [26]. Say that we adjoin
+to our system a reference system R of k additional qubits. We then consider the state
+                                             X
+                                |φi = 2−k/2      |iiR |eiiEE ,                    (3.13)
+                                                      i
+
+
+where E denotes the set of n − l qubits that aren’t erased. The code (3.12) can correct
+for the erasure of E if and only if we have
+
+                                    ρRE [φ] = ρR [φ] ⊗ ρE [φ].                                (3.14)
+
+Here ρR [φ], ρE [φ], etc are the reduced density matrices obtained from |φi by partial
+trace. This is equivalent to saying that the mutual information IRE = SR + SE −
+SRE vanishes, where SX is the Von Neumman entropy, SX ≡ −trρX log ρX . Let us
+first see that this ensures we can correct the erasure. The Schmidt decomposition7 of
+   7
+    The Schmidt decomposition of a pure state |ψi in a bipartite Hilbert space HA ⊗ HB is the
+observation that for any |ψi ∈ HA ⊗ HB there exists a set of orthonormal states |iiA in HA , a set of
+orthonormal states |iiB in HB , and a set of non-negative real numbers Ci such that
+                                               X
+                                        |ψi =     Ci |iiA |iiB .                              (3.15)
+                                                  i
+
+For a derivation and some more details see for example [27].
+
+
+
+
+                                                 – 11 –
+|φi, together with (3.14), ensures us that there exists a basis |ei for E and a set of
+orthonormal states |ψi,e iE in E such that
+                                        X
+                            |φi = 2−k/2    Ce |iiR |eiE |ψi,e iE ,              (3.16)
+                                           i,e
+
+where Ce are some non-negative coefficients obeying e Ce2 = 1. In other words there
+                                                        P
+
+exists a unitary transformation UE acting only on E such that
+                                        X
+                         UE |φi = 2−k/2    |iiR |iiE 1 ⊗ |χiE 2 E ,          (3.17)
+                                             i
+
+where we have denoted the first k qubits of E as E 1 and the rest as E 2 . |χi is some
+state that is independent of i. This then implies that we must have
+
+                                 UE |eiiEE = |iiE 1 ⊗ |χiE 2 E ,                       (3.18)
+
+which is the analogue of (3.4) above and demonstrates that we can use UE to correct
+the erasure. If we do not have (3.14), then there is nonzero correlation between R
+and E, so we can learn about the state of R by doing measurements on E. Since
+any successful protocol must not care about what happens to the qubits we lose, this
+prevents us from being able to correct the erasure. We can thus loosely rephrase (3.14)
+as the statement that the erasure of E is correctable if and only if no information about
+i can be obtained from E. This is related to the no-cloning theorem; if we were able
+to get the same quantum information about the encoded state |ψi    e from both E and E
+then we would have built a machine for cloning that information.
+    There is a useful reformulation of the condition (3.14) as the statement that for
+any operator XE acting on E, we must have [28]
+
+                                    hei|XE |e
+                                            ji = δij C(X).                             (3.19)
+
+In other words we must have the projection of XE onto the code subspace be propor-
+tional to the identity. One immediate consequence of this is that in any state |ψi
+                                                                                 e in
+the code subspace, the correlation function of XE with any operator O that acts within
+the code subspace8 must vanish:
+
+                          hψ|OX
+                           e    E |ψi − hψ|O|ψihψ|XE |ψi = 0.
+                                   e     e e e        e                                (3.20)
+
+This is another manifestation of the idea that E has no access to the encoded informa-
+tion.
+  8
+   Throughout this paper, when we say that an operator acts within a subspace we mean that the
+same is true for its hermitian conjugate as well.
+
+
+
+
+                                            – 12 –
+    As in the previous subsection, we can use UE to realize any operator O acting
+within the code subspace as an operator OE that acts just on E. Indeed we have both
+
+                                         OE |ψi
+                                              e = O|ψi
+                                                     e
+                                         O† | e
+                                           E
+                                             ψi = O† | e
+                                                      ψi.                                     (3.21)
+
+In fact the converse of this statement also holds; if any operator on the code subspace
+can be realized as an operator on E as in (3.21), then the code is able to correct for
+the loss of E. The proof is simple. Say that the code were not correctable; then as
+just discussed there must exist an operator XE on E where (3.19) does not hold. By
+Schur’s lemma, there must then exist an operator O on the code subspace that does
+not commute with XE on HC , that is with hei|[O, XE ]|e ji 6= 0 for some i and j. But this
+operator O can’t be realized on HC by an operator OE that acts only on E, since any
+such operator by definition would commute with XE .
+    We now turn to the question of when we should expect (3.14) (or equivalently
+(3.19) or (3.21)) to hold. In situations where we would like our code to be able to
+correct against a wide variety of erasures, we expect that ρE [φ] will have full rank.9 In
+that case, in order to be able to have the orthonormal set of states |ψi,e i we need the
+dimensionality of E to be at least as large as dimensionality of RE. In other words we
+need
+                                       n ≥ 2l + k.                                  (3.22)
+This condition is quite intuitive; wanting to send a larger message or correct larger
+erasures requires more qubits.
+     In fact for large systems (3.22) is typically not only necessary but sufficient. Say we
+take |φi to be a random state of 2k+n qubits in the Haar measure. By Page’s theorem
+[29]10 , the density matrix of R will be exponentially close to maximally mixed provided
+that n−k  1, so by the Schmidt decomposition this is equivalent to choosing a random
+k-qubit code subspace of n qubits. The condition (3.14) will hold if RE is maximally
+mixed, which again by Page’s theorem should be true provided that n − 2l − k  1.
+Thus, not only is (3.22) necessary for a typical code to correct for the loss of a particular
+set E of l qubits, it is basically sufficient for the code to correct for the loss of any set
+of l qubits.
+   9
+      This excludes trivial cases like Uenc = 1 with E chosen to be the last n − k qubits. This code
+is completely defeated by erasing any of the first k qubits, and if we knew that erasures would only
+affect the last n − k qubits why would we include those qubits at all?
+   10
+      Page’s theorem is the statement that a random state of a bipartite Hilbert space HA ⊗ HB will
+be maximally mixed on the smaller factor up to corrections that go like the ratio of dimension of the
+smaller factor to the dimension of the larger factor. For more details see e.g. [27].
+
+
+
+
+                                               – 13 –
+3.3   Quantum secret sharing
+The three-qutrit example of section 3.1 has the interesting property that every collection
+of qutrits either can perfectly reconstruct the state |ψi or has no information about
+it at all. General error correcting codes do not have this property, since sometimes
+we can have erasures which can be “partially corrected”, but it is interesting to think
+about the codes that do. Say that we have a Hilbert space that is a tensor product of
+p factors of not necessarily equal size, which in this context we will refer to as shares.
+A code subspace C of this Hilbert space is called a Quantum Secret Sharing Scheme
+if it has the property that every collection of shares either can distinguish perfectly
+different elements of C, meaning given access to it we can correct for the erasure of its
+complement, or it cannot distinguish different elements at all [25]. Collections which
+enable erasure correction are called authorized and collections which do not are called
+unauthorized. We will see a possible application of quantum secret sharing to AdS/CFT
+in section 4.3 below.
+
+3.4   Approximate erasure correction
+So far we have discussed exact quantum error correction, but in AdS/CFT we only
+expect the emergence of the bulk to be approximate. It will thus be important for us
+to get a sense of how badly we might want to allow our three necessary and sufficient
+conditions for correctability to be violated. The simplest way to relax the condition
+(3.14) is to require only [30]
+
+                                ||ρRE − ρR ⊗ ρE ||1  1.                           (3.23)
+                  √
+Here ||M ||1 ≡ tr M † M is the trace norm of M ; two density matrices whose difference
+has trace norm  are “operationally close” in the sense that the probability distributions
+they predict for arbitrary measurements differ by at most . This essentially says that
+typical states in the code subspace can be reconstructed to accuracy ; following [30] we
+take this to be the definition of approximate error correction. We would like to relate
+this to our second condition for correctability, (3.19), but we need a convenient way to
+quantify the violation of (3.19). One good choice is to use correlation functions of the
+form
+                     T               T
+                                                           T                    
+   Cφ (O, XE ) ≡ hφ|OR XE |φi − hφ|OR  |φihφ|XE |φi = trRE OR XE (ρRE − ρR ⊗ ρE ) .
+                                                                                (3.24)
+        T
+Here OR denotes taking the transpose of an operator O on the code subspace and
+acting with it on the reference system R; by construction acting on the state |φi this
+is equivalent to acting with O on EE. Cφ (O, XE ) is essentially the average of the
+
+
+
+                                         – 14 –
+correlation function (3.20) over all | e
+                                      ψi ∈ HC ; they become equal in the limit of a large
+               11
+code subspace. From the right hand side of (3.24) it is not difficult to show that [31]
+                                                   Cφ (O, XE )
+                              ||ρRE − ρR ⊗ ρE ||1 ≥            ,                 (3.25)
+                                                     λO λX
+where λO and λX are the largest eigenvalues of their respective operators. Thus we see
+that, as one might expect from our discussion around (3.19), the presence of nonzero
+correlation between O and XE puts a limit on how accurately we can correct for the era-
+sure of E. This inequality will be very useful in our discussion of AdS/CFT, since after
+all computing correlation functions in the bulk theory is much easier than computing
+the trace norm directly.
+
+3.5    Operator algebra quantum error correction
+In our discussion of AdS/CFT we will soon see that the presence of bulk correlation puts
+nontrivial restrictions on the correctability of errors via the inequality (3.25). There
+is, however, a generalized version of quantum error correction, called operator algebra
+quantum error correction, that is able to accommodate such correlation by requiring
+that our third necessary and sufficient condition (3.21) apply only to a subalgebra of
+operators on the code subspace [32, 33]. This requirement is greatly illuminated by the
+following theorem:
+Theorem. Say that we have a code subspace HC ⊂ HE ⊗ HE and an operator O that,
+together with its hermitian conjugate, acts within the code subspace. In other words we
+have
+                                           X
+                                   O|eii =     Oji |e
+                                                    ji ,
+                                                   j
+                                                   X
+                                       O† |eii =        ∗ e
+                                                       Oij |ji .                               (3.26)
+                                                   j
+
+Then there exists an operator OE acting just on E that obeys
+                                         OE |ψi
+                                             e = O|ψi
+                                                    e ,
+                                         O† |ψi
+                                           E
+                                             e = O† |ψi
+                                                     e                                         (3.27)
+
+for any |ψi
+         e ∈ HC if and only if O commutes with the projection of any operator XE
+onto the code subspace, where XE acts on E. In other words
+                                   hei|[O, XE ]|e
+                                                ji = 0        ∀i, j.                           (3.28)
+  11
+     This average can be computed using the unitary integration technology described for example in
+appendix D of [27]; the corrections vanish like powers of 2−k , which will be exponentially small in N
+for our AdS-CFT construction.
+
+
+
+
+                                               – 15 –
+     We give a proof of this theorem in appendix B. It is clear that the set of O’s that
+satisfy the assumptions of the theorem form a unital *-subalgebra A of the operators
+on the code subspace, meaning they include the identity and are closed under addition,
+multiplication, and hermitian conjugation. If we take A to be the entire algebra of
+operators on HC then we recover our condition (3.21). Notice, however, that when A
+is a proper subalgebra we cannot use our previous argument to derive the condition
+(3.19) from (3.21), since the O that we constructed that doesn’t have an OE will not
+be in A. This gives a loophole that simultaneously allows correlation between O and
+XE and the existence of OE .
+     For example in the two qubit system, consider a code subspace spanned by √12 (|00i + |11i)
+and √12 (|01i + |10i). The operator X that exchanges these two states can be realized
+just on the first qubit as the X1 operator that flips it, even though in either state this
+operator is perfectly correlated with the X2 operator that flips the second qubit. This
+is possible because the Z operator on the code subspace, for which the first state is a
++1 eigenstate and the second state is a −1 eigenstate, cannot be realized as an operator
+just on the first qubit; this code corrects only the subalgebra generated by 1 and X.
+     This example has the perhaps surprising property that the encoded 1 and X op-
+erators can be realized on either of the two qubits, which seems in tension with our
+discussion of the no-cloning theorem above (3.19). This is an artifact, however, of the
+fact that this subalgebra is abelian, and is thus in some sense classical. It is easy
+to prove that as long as the subalgebra is non-abelian, if it can be represented on E
+then it cannot be represented on E; the proof follows immediately by contradiction if
+we look at the commutator of two non-commuting elements of the algebra, but with
+one represented on E and one represented on E. We used this “algebraic no-cloning
+theorem” above in our discussion of figure 3.
+
+
+4   AdS/CFT as quantum error correction
+We now return to our discussion of bulk reconstruction. Consider again the right
+diagram in figure 3. We argued using the AdS-Rindler reconstruction that the operator
+in the center can be represented either as an operator φAB with support on A ∪ B, an
+operator φBC with support on B ∪ C, or an operator φAC with support on A ∪ C. By
+now it should be obvious that this is directly analogous to the situation with O12 , O23 ,
+and O13 in the three qutrit example, or more generally the existence of the operator
+OE . The main proposal of this paper is that this is more than an analogy, it is actually
+how AdS/CFT is reproducing the bulk! In other words we can think of local bulk
+operators as logical operations on an encoded subspace, which becomes better and
+better protected against localized boundary errors as we move the operators inwards in
+
+
+
+                                         – 16 –
+Figure 4. Correcting for erasures in AdS/CFT. Bulk quantum information at point in the
+center is protected in the CFT against the erasure of the boundary of any one of the green
+regions, but bulk information at the point near the boundary is completely lost by an erasure
+of the boundary of the red region.
+
+
+
+the radial direction.12 We illustrate this in figure 4. In the remainder of the paper we
+will spell out this idea in more detail, giving the bulk versions of most of the statements
+of the previous section.
+
+4.1    Defining code subspaces
+We begin by defining a set of candidate code subspaces for AdS/CFT. Our proposal is
+that we should pick some finite set of local bulk operators φi (x), realized in the CFT
+via the global representation of section 2.1. We then define a code subspace HC as the
+linear span of states of the form
+
+                              |Ωi, φi (x)|Ωi, φi (x1 )φj (x2 )|Ωi, . . . ,                     (4.1)
+
+where we take the range of i, the number of φi (x)’s we act with, and the number of
+points x where the operators can be located to be bounded by some fixed finite number.
+Here |Ωi is the ground state of the system; we could also do a similar construction
+around other sufficiently “semiclassical” states, but for rigor we will stick to |Ωi since,
+as mentioned in section 2.1, the existence of appropriate smearing functions has not
+been completely established in the general case. We postpone to section 5 the question
+of how large HC can be. It is essential that our definition of the code subspace will
+be different for different choices of the operators φi (x); the set of erasures that are
+  12
+    One detail here is that in defining the “center” of AdS we are implicitly choosing a conformal
+frame in the CFT; otherwise AdS is a homogeneous space and no point is special. This is also implicit
+in our notion of “small” and “large” erasures in the CFT.
+
+
+
+
+                                                – 17 –
+correctable will depend on this choice, and we can learn about the way that the bulk
+theory is realized in the CFT by studying this dependence. For example, in figure 4
+we see that moving the operators closer to the boundary makes our code subspace less
+protected against small erasures. The CFT is not just one error-correcting code, it is
+many at once!
+     We would like to think of the operators φi (x) as logical operations on this code
+subspace, but this does not quite work since by construction acting repeatedly with
+φi (x) will eventually take us out of HC . To get a set of operators that really act
+within HC we can include projection operators onto HC on both sides of φi ; these will
+be irrelevant except in studying high-point correlation functions, so we will not carry
+them around explicitly here.13 Now consider a decomposition of the boundary Cauchy
+surface Σ into A and A. If our code subspace HC can protect against the erasure of A,
+then by our condition (3.21) it must be that we can find a representation of any operator
+on HC with support only in A. In fact, this is what the AdS-Rindler reconstruction
+we reviewed in section 2.2 provides us; any causal wedge WC [A] which contains the
+locations of the φi (x)’s used in defining HC will allow a set of operators φA,i (x) with
+support only on A and whose action on HC is the same as that of φi (x). We now see
+that in the CFT this is a statement about being able to correct for the erasure of A.
+     To avoid confusion, we stress that, just because we do not include some φ(x) in
+defining the code subspace, we do not mean to imply that its AdS-Rindler recon-
+struction does not work on that subspace. We could easily consider a slightly larger
+subspace where we include it, and we could then interpret its AdS-Rindler reconstruc-
+tion as arising from quantum error correction. The only fundamental limitation on the
+AdS-Rindler reconstruction comes from the backreaction considerations we discuss in
+section 5 below.
+
+4.2    Bulk correlation and smearing
+It is illuminating to understand in more detail to what extent the AdS-Rindler recon-
+struction is consistent with our three equivalent conditions (3.14), (3.19), (3.21) for
+quantum erasure correction. We clearly do not expect them to hold exactly, but we
+might hope for them to hold in the approximate sense of (3.23). As we explained in
+section 3.4, a good diagnostic for approximate quantum erasure correction is that the
+  13
+    A subtlety here is that the states (4.1) are not mutually orthogonal; a state of the form φm |Ωi
+                                                         m
+has a normalized overlap with the vacuum of order √hΩ|φ 2m |Ωi
+                                                                ∼ 2−m . The scaling with m follows
+                                                        hΩ|φ   |Ωi
+from counting Wick contractions at leading order in 1/N . If we choose our code subspace such that
+the maximum power of each φ grows like some power of N , then for states on which the projection
+onto HC is nontrivial this overlap will be exponentially small in N . It then will be okay to conjugate
+the φ’s by these projectors without ruining their low-point correlation functions.
+
+
+
+
+                                               – 18 –
+                                   A      φ(x)   φ(y)
+
+
+
+
+Figure 5. Potentially troublesome bulk correlation. Here φ(x) is an operator that acts
+within the code subspace HC , and which we thus expect can be represented as an operator
+on A. φ(y) we similarly expect to reconstructed on A, but there is nonvanishing correlation
+between them in the ground state |Ωi. Using inequality (3.25), this correlation puts a lower
+bound on the accuracy with which we can view AdS/CFT as quantum error correction in the
+conventional sense of section 3.2.
+
+
+
+correlation functions between operators acting within the code subspace and operators
+acting on the set to be erased are small enough that the inequality (3.25) does not
+preclude (3.23) from holding.14
+     In fact it is a basic property of bulk physics that there is correlation between fields
+in WC [A] and fields in WC [A], as we indicate in figure 5. In deciding whether or not
+this bulk correlation interferes with our interpretation of AdS-Rindler reconstruction as
+quantum error correction, we need to properly take into account the operator eigenval-
+ues in the denominator of (3.25). Formally these are infinite in a continuum quantum
+field theory, but every quantum field theorist knows that field operators are not really
+well-defined until they are integrated against smooth test functions with support over
+some region of nonzero measure, which we will take to have linear size s . For simplicity
+we will take the bulk fields to be massless scalars and take their separation to be small
+compared to the AdS radius, in which case we have
+                                                          d−1
+                              hΩ|φ(x)φ(y)|Ωi         s
+                                              ∼                 .                      (4.2)
+                                    λ2φ            d(x, y)
+
+Here d is the spacetime dimension of the boundary theory and d(x, y) is the geodesic
+distance between x and y. This formula also holds in other states we produce by acting
+on |Ωi with smeared operators near x, and thus on average in the code subspace HC .
+ 14
+      We thank Juan Maldacena for pointing out the relevance of (3.25) in this situation.
+
+
+
+
+                                                 – 19 –
+We thus see that the right hand side of (3.25) will be small in our case provided that
+the operators φi (x) used in constructing HC are smeared over a distance which is small
+compared to their distance to the causal surface χA of the wedge WC [A] in which we
+are trying to reconstruct them.
+    This observation does much to justify our interpretation of AdS-Rindler reconstruc-
+tion as quantum error correction, but it is somewhat unsatisfactory in the sense that
+the AdS-Rindler reconstruction still seems to work in the situation where we smear the
+operators over a distance that is comparable to their distance to the bifurcate Rindler
+horizon χA , even though the bulk correlation is then too large to be ignored. Indeed we
+interpret this as saying that the conventional quantum error correction of section 3.2
+does not fully capture the mechanism by which AdS/CFT realizes bulk locality. The
+operator algebra quantum error correction introduced in section 3.5, however, provides
+precisely the generalization we need to fix this. Consider for example an operator S
+which acts on φ(x)|Ωi as Sφ(x)|Ωi = |Ωi, and which annihilates any state orthogonal
+to φ(x)|Ωi. This is an operator that acts within the code subspace, but its commutator
+with an operator φ(y) in WC [A] obeys
+
+                            hΩ|[S, φ(y)]|Ωi = hΩ|φ(x)φ(y)|Ωi 6= 0.                              (4.3)
+
+Thus S clearly cannot have a representation as an operator just on A. Fortunately
+there is no reason to expect this operator to have an AdS-Rindler reconstruction, but
+the broader lesson is that we should really expect AdS-Rindler reconstruction to in
+general produce only a subalgebra of the operators on HC . We saw in section 3.5 that
+the condition a subalgebra must obey for this to be possible is that the subalgebra must
+commute with the projection onto HC of any operator on A. In fact this is precisely
+the condition that we expect to be true for local operators in WC [A] (and their sums
+and products), which by bulk causality should commute with operators in WC [A].15
+That this commutator vanishes with the projections onto HC of all CFT operators in
+A is not something we can prove directly, but AdS-Rindler reconstruction requires it.
+    A second reason to prefer operator algebra quantum error correction is that even
+when the right hand side of (4.2) is small, it will at most be suppressed by some
+fixed power of 1/N . This is because we should not smear the operators over distances
+shorter than the Planck length. Since we in principle would like a version of AdS-
+Rindler reconstruction that works to all orders in 1/N , it would be unsatisfying if our
+error correction interpretation failed at some finite order because of bulk correlation.
+  15
+    This statement is rendered somewhat more subtle by the need for gravitational dressing to localize
+operators in a gravitational theory; we will see in section 5 that this commutator continues to vanish
+at higher orders in 1/N , as required by operator algebra quantum error correction.
+
+
+
+
+                                               – 20 –
+                              A                              A
+
+
+
+
+                              A                              A
+
+
+Figure 6. A reconstruction phase transition? As we increase the region A, the extremal-
+area codimension two surface of smallest area whose boundary is ∂A, shown as the solid lines,
+changes discontinuously. Does this mean that we can now reconstruct the point in the center
+as an operator on A?
+
+
+
+     We can now state our final proposal: the AdS-Rindler reconstruction of local bulk
+operators in [7, 8] is dual in the CFT to the operator algebra quantum error correction
+of [32, 33]. An erasure of a region A is correctable if the φi (x)’s used in defining the
+code subspace all lie within the causal wedge WC [A]. In cases where the operators
+we are interested in are well-localized away from the causal surface χA of WC [A], the
+situation is well-approximated by conventional quantum error correction. Either way,
+the further the φi (x)’s are from the asymptotic boundary, the better they are protected
+from CFT erasures.
+     It is worth emphasizing that in the case where a bulk operator is of order an AdS
+radius distance from WC [A], our approximate equivalence between conventional and
+operator algebra quantum error correction requires sub-AdS scale bulk locality. This
+is a special property of those CFTs that have local holographic duals, which we have
+here reformulated in the language of quantum information theory.
+
+4.3   Disconnected regions and quantum secret sharing
+So far we have only discussed the erasure of connected regions of the boundary. More
+general erasures are also interesting. Consider for example the AdS3 situation depicted
+in figure 6. Here we consider a region A which is the union of two disjoint intervals;
+in other words we have erased two disjoint intervals. Can we choose a code subspace
+where we can realize the bulk operator in the center as an operator acting on A or
+A? If the AdS-Rindler reconstruction is the last word on bulk reconstruction [11],
+then the answer is clearly no; this point lies neither in WC [A] nor in WC [A]. This is
+possible within the context of quantum error correction, but only if both A and A can
+
+
+
+                                           – 21 –
+access partial information about the code subspace. For example, say that A had no
+information whatsoever about which state of the code subspace we are in. Then by
+definition (3.14) would hold, so we could recover the information from A. We are not,
+however, able to determine whether or not such partial information is really present.
+      In fact there have been recent conjectures in the literature that this operator can
+still be reconstructed in A as long as A is bigger than A; more generally, the claim is that
+one can do reconstruction throughout the entanglement wedge, which is defined as the
+bulk domain of dependence of any bulk spacelike surface whose boundary is the union
+of A and the codimension two extremal-area surface of minimal area whose boundary
+is ∂A [12, 34–36].16 In the figure, the intersection of the entanglement wedge with a
+bulk Cauchy surface is shaded blue; the minimal area condition causes a discontinuous
+change as we increase the size of A. Is this conjecture compatible with our proposal?
+Indeed it is; we saw below equation (3.22) that in a generic code subspace any A which
+is greater than half of the system can correct for the erasure of its complement A.17 The
+sharp jump in correctability as A surpasses A in size is consistent with our analysis
+around (3.22), where from Page’s theorem we expect that the density matrix of A
+together with the reference system will approach being maximally mixed exponentially
+fast once we cross the transition.
+      In section 3.3 we saw that a division of the CFT into a union of shares with
+the property that any collection of the shares has either complete information or no
+information about the encoded state is called a quantum secret sharing scheme; we
+now see that in the situation of figure 6 we will be able to reconstruct the operator in
+the center if and only if our boundary division into four regions gives a quantum secret
+sharing scheme.
+
+4.4    MERA as an error correcting code?
+One shortcoming of our work so far is that, although we have laid out a plausible
+CFT interpretation of AdS-Rindler reconstruction as quantum error correction, we
+have ultimately relied on the bulk in deriving this reconstruction. This boils down to
+  16
+     One argument that this must be the case is as follows: the extension by [37] of the Ryu-Takayanagi
+proposal [38] to next to leading order in 1/N claims that bulk entanglement entropy in the entangle-
+ment wedge contributes to the Von Neumann entropy SA . So for example if we have a spin sitting
+in the entanglement wedge of A that is entangled with another spin in WC [A], then the spin in the
+entanglement wedge contributes log 2 to SA . It is hard to see how this could be the case if we could not
+project the spin onto a definite state by doing some measurement on A, but the operator we measure
+would then be a representation on A of a logical operator on the spin.
+  17
+     More carefully it has to be greater than half by an amount that depends on the size of the code
+subspace, which we can think of as being parametrically smaller than the full Hilbert space. We
+explore this in more detail in the following section.
+
+
+
+
+                                                – 22 –
+the assumption that there exist operators in the CFT that obey the bulk equations
+of motion and algebra on a subspace. We then use this assumption to perform the
+Bogoliubov transformation that relates the global and the Rindler reconstructions.
+This assumption is quite plausible, and essentially follows from the assumed large-N
+structure of the CFT [39], but it would still be nice if we could explicitly demonstrate
+the structure of the quantum error correcting code in the CFT. In particular, in section
+4.2 we had to use bulk causality to argue that the necessary and sufficient condition
+(3.28) for operator algebra quantum error correction held, and we were not able to
+check it explicitly for all possible CFT operators on A. Similarly we were unable to
+determine whether or not the central point could be reconstructed in the two-interval
+A of the previous subsection.
+     A promising starting point for addressing these issues is the MERA tensor network
+construction of a discrete version of AdS/CFT [40–42]. It seems possible that in that
+fairly controlled setting one could rigorously confirm the quantum error correction
+structure we have motivated in this paper. Moreover, one could attempt to determine
+explicitly whether or not the example of the previous subsection allows reconstruction of
+the operator in the center; this could be done by using the global construction to make
+a code subspace, entangling this code subspace with a reference system R to prepare
+a state |φi, and then seeing whether there is mutual information between R and A.
+The state |φi would still be prepared by a tensor network, with tensors acting both on
+the CFT and/or the reference system. This calculation would go a long way towards
+settling the “causal wedge vs. entanglement wedge” debate of bulk reconstruction.18
+We will not attempt this calculation here, but the typicality argument leading to (3.22)
+favors the entanglement wedge; we will say more about this in section 5.3.
+
+
+5        Backreaction and holography
+We now turn to the question of how large we can make the code subspace HC . Each
+φi (x) that we act with raises the energy of the state, so doing so repeatedly will eventu-
+ally lead to backreaction becoming important. When this happens it is clear that the
+approximation of perturbation theory around a fixed background geometry will break
+down. In this section we argue that this is related to a basic property of error correct-
+    18
+    One challenge in doing this is that the region of discrepancy between the entanglement wedge and
+the causal wedge in that example has a size which is only of order the AdS radius, and it is not so
+clear how to represent sub-AdS scale physics using MERA. One strategy for getting around this is to
+consider the limit of A being a union of a large number of smaller disjoint intervals of equal size; this
+allows a parametrically large separation between the causal wedge and the entanglement wedge.
+
+
+
+
+                                                – 23 –
+                                        t
+                                            r=0            r=
+
+
+Figure 7. Locating bulk points using spatial geodesics. By construction we can only define
+points that lie in the bulk domain of dependence of any bulk Cauchy surface with boundary
+Σ.
+
+
+ing codes: the larger the code subspace, the fewer correctable errors. For erasures we
+quantified this in equation (3.22) above.
+
+5.1    Defining local operators
+Once we allow nontrivial backreaction, it is no longer possible to ignore the issue of how
+we define bulk local operators in a diffeomorphism-invariant way. Following [43, 44],
+we do this by choosing a cutoff surface at large but finite radius, with induced metric
+Sd−1 × R, and then specifying bulk points by sending in spacelike geodesics from the
+t = 0 slice of this cutoff surface that start out orthogonal to the Sd−1 directions. We
+then take the limit as the cutoff surface approaches the boundary. Points are labeled
+by a location on Sd−1 , a renormalized proper distance along the geodesic, and an angle
+in the radial/temporal plane. This is illustrated in figure 7. These geodesics can
+be thought of as the “gravitational dressing” of the bulk operator, analogous to the
+Wilson line one would use to connect a charged operator to the boundary to make it
+gauge-invariant in electrodynamics.
+    As in the electromagnetic case, the operators defined in this way will have nonlocal
+commutators due to their nontrivial Dirac brackets. The study of these commutators
+was initiated in [18], and more recently elaborated in [44].19 A full analysis has not yet
+been completed, however, and one point that has not yet been addressed is essential
+  19
+    A subtlety here is that they send their geodesics from arbitrary boundary times, but take them
+to be orthogonal to the boundary in the temporal direction as well as the Sd−1 directions. These
+operators agree with ours at t = 0, which is where we will study them, but as a matter of principle we
+have not made their choice because we want to restrict to Schrodinger-picture operators acting on a
+
+
+
+
+                                                  – 24 –
+Figure 8. Two dressed bulk local operators. If the operator on the right is to be reconstructed
+on the boundary of the green wedge, and the operator on the left to be reconstructed on the
+boundary of the blue wedge, then they must be commuting operators. By taking one of these
+operators to the boundary, we conclude that any dressed bulk local operator must commute
+with all boundary local operators except possibly those at the endpoint of its geodesic.
+
+
+
+for the consistency of the AdS/Rindler reconstruction at higher orders in 1/N : to
+all orders in 1/N perturbation theory around a fixed background, two dressed bulk
+operators with the property that all points on their dressing geodesics are mutually
+spacelike separated in that background must commute.20 The reason this must be the
+case is illustrated in figure 8.
+     We can use this observation to verify that bulk non-locality from the gravitational
+dressing of operators does not invalidate some of our previous claims. In the introduc-
+tion we argued that, because in the bulk theory a local operator in the center of the
+space commutes with all local operators at the boundary, the bulk operator algebra
+is inconsistent with the CFT algebra. We can now give a version of this argument
+that includes the gravitational dressing; from figure 8, we see that we should modify
+the previous statement to “commutes with all local operators at the boundary except
+at one point”. Were this to hold as an operator equation in the CFT, it would now
+not imply that the operator in the center must be trivial in the CFT, but it would
+imply that this operator can be nontrivial at t = 0 only at the point where the dressing
+fixed time slice at the boundary. As explained in more detail in section 4.2 of [18], this is the natural
+way to define the fixed-time Hilbert space in the bulk, since it makes it clear that expectation values
+are independent of possible sources on the boundary at later times.
+   20
+      More carefully, we should hold the boundary endpoints of the geodesics fixed as we take N → ∞
+for this statement to hold. One of us (DH) has checked this statement directly in bulk canonical
+gravity in the setup of [44], by computing the Dirac brackets and seeing that they are local in the x̂
+directions to any finite order in perturbation theory, but we postpone discussion of this to a future
+publication.
+
+
+
+
+                                                – 25 –
+                                                   x
+                                       X
+                                            Σ
+
+
+                                                                 Y
+
+
+
+Figure 9. An algebraic paradox: a bulk operator at φ(x) is dressed by a geodesic ending at
+X. The bulk algebra suggests this operator commutes with all local CFT operators on the
+Cauchy surface Σ except those at X, and is thus a local operator there. However, we can find
+a boundary point Y which is both spacelike separated from X and causally separated from
+x; the bulk would then require local operators there which don’t commute with φ(x), while
+the CFT would require them all to commute.
+
+
+
+geodesic ends.21 This statement, however, is not consistent with bulk causality, as we
+illustrate in figure 9. So we thus indeed find that the bulk operator algebra cannot
+be realized in the CFT at the level of operator equations. As already explained, the
+resolution is that the bulk algebra holds in the CFT only acting on a code subspace of
+states.
+     Similarly we can now revisit our claim that bulk operators in WC [A] perturba-
+tively commute with bulk operators in WC [A], which was a necessary condition for
+our interpretation of the AdS-Rindler construction as operator algebra quantum error
+correction. But this is exactly what the argument of figure 8 accomplishes; as long
+as the gravitational dressing of an operator at x ∈ WC [A] also lies entirely in WC [A],
+meaning that the spatial geodesic connecting x to the boundary also lies in WC [A], then
+it will only have non-local commutators with operators that are also located in WC [A];
+any operator whose localizing geodesic is entirely in one wedge will still perturbatively
+commute with any operator whose localizing geodesic is entirely in the complementary
+wedge.
+  21
+     As before this statement is straightforwardly true for scalars, fermions, and/or abelian gauge fields
+on a lattice, and we expect it to hold also for non-abelian lattice gauge fields. In the continuum it
+follows from a combination of the time-slice axiom and “Haag duality”, which says that if we split a
+time-slice into two regions the commutant of the set of local operators in the domain of dependence
+of one of the regions is the set of local operators in the domain of dependence of the other region. In
+the case of gauge theories one has to be careful since Haag duality does not quite hold, since there can
+be a nontrivial center of the algebra for a region, but the center is always localized near the boundary
+[45] and shouldn’t disrupt this argument.
+
+
+
+
+                                                 – 26 –
+    In this subsection, to connect to the formalism of [44] we studied only operators
+attached to geodesics that start out orthogonal to the boundary time direction at t = 0.
+It would be interesting to do the analogue of their analysis at arbitrary temporal-radial
+angle; this amounts to working with boundary conditions that approach the “open-
+FRW” slicing of AdS
+
+                        ds2 = −dt2 + sin2 t dχ2 + sinh2 χdΩ2d−1
+                                                                  
+                                                                                     (5.1)
+
+as χ → ∞. As explained in [18], this would be a natural bulk construction of
+Schrodinger picture gauge-invariant operators on the fixed-boundary-time Hilbert space.
+
+5.2    Shrinking of the causal wedge
+We now return to the question of how backreaction affects causal wedge reconstruction.
+Our basic proposal is that adding energy in the bulk causes the causal wedge of a
+fixed boundary region A to recede towards the boundary, giving it less access to bulk
+operators defined at fixed renormalized geodesic distance (for some related discussion
+see [14, 34, 35, 46, 47]).
+     Consider for example the AdS-Schwarzschild geometry in d + 1 dimensions.
+
+                             2            2dr2
+                           ds = −f (r)dt +       + r2 dΩ2d−1 ,                       (5.2)
+                                           f (r)
+
+with
+                                                      α
+                                  f (r) ≡ r2 + 1 −          .                        (5.3)
+                                                     rd−2
+α is proportional to the ADM mass of this geometry. Now consider a boundary disc A
+of angular size θ; its causal wedge reaches a radius rθ (α) in the bulk defined implicitly
+by                                       Z ∞
+                                     θ            dr0
+                                       =             0
+                                                        .                           (5.4)
+                                     2    rθ (α) f (r )
+
+The proper distance of this radius to a cutoff surface at r = rc is
+               Z rc               Z rc                    !
+                         dr0                    1       1           rc
+                        p       =         dr0 p      − 0 + log           ,           (5.5)
+                 rθ (α)
+                             0
+                         f (r )    rθ (α)      f (r ) r
+                                                   0              rθ (α)
+
+so we can subtract log rc to define a renormalized proper distance
+                             Z ∞                      !
+                                            1       1
+                    dθ (α) ≡          dr0 p       −     − log rθ (α).                (5.6)
+                               rθ (α)      f (r0 ) r0
+
+
+
+
+                                          – 27 –
+We claim that dθ (α) is a decreasing function of α at fixed θ, which by differentiating
+under the integral sign is equivalent to the claim that
+                          Z ∞                  "s            #
+                                dr0     1         f (r)    1
+                                                         −     >0                 (5.7)
+                           r  r0d−2 f (r0 )3/2    f (r0 ) 2
+
+for all α > 0 and for all r > r+ (α), where r+ (α) is the positive root of f . This can be
+shown analytically in various limits, and is easily checked numerically in the general
+case. One can also study the asymptotically-AdS3 BTZ black hole, where a similar
+result holds and all integrals can be done analytically. Thus we see that indeed the
+causal wedge has access to fewer and fewer bulk observables as we increase the mass of
+the matter in the center. This after all must be the case, since as we keep increasing the
+mass a point at fixed renormalized geodesic distance from the boundary will eventually
+go through the horizon.
+     It is interesting to think about how general this statement is; under what circum-
+stances can the causal wedge move inwards in renormalized geodesic distance as we
+insert energy? One might guess that the null energy condition should generically pre-
+vent this, but to test that we need a more precise conjecture. One first guess is that in
+any geometry obeying the null energy condition the causal wedge of a fixed boundary
+region can see at most as far in renormalized geodesic distance as it can in the vacuum.
+In fact this conjecture is false, we have constructed explicit counterexamples. Indeed
+a weaker conjecture, where we replace the null energy condition by the dominant en-
+ergy condition22 , still has counterexamples. One counterexample is given by a small
+perturbation of AdS4 , with the metric
+                                                  dr2
+                              ds2 = −f (r)dt2 +         + r2 dΩ22 ,                        (5.8)
+                                                  f (r)
+where
+                                                                      r2
+                  f (r) = r2 + 1 + h(r) ,      h(r) = − √               3 .              (5.9)
+                                                              r2 + 1 + 10
+With a small positive , the causal wedges of certain fixed boundary regions can see
+farther in renormalized geodesic distance than they can in the vacuum. These bound-
+ary regions include spherical regions whose causal wedges probe deep into the bulk
+geometry.
+    Although these counterexamples prevent any straightforward “monoticity of causal
+wedge recession theorem”, we expect that the Schwarzschild calculation we have just
+  22
+    With the presence of a negative cosmological constant, we only impose the dominant energy
+condition on the “matter” part of stress tensor which does not include the cosmological constant.
+This was used in [48] to prove the positive mass theorem in asymptotically anti-de Sitter space.
+
+
+
+
+                                             – 28 –
+discussed captures the general tendency. It would be nice to prove a more general
+theorem verifying this, but we have not succeeded in finding one.
+
+5.3    Counting states
+The recession of the causal wedge has a nice quantum error correction interpretation;
+as we allow the code subspace to have more and more excited states, a bulk operator
+localized at some fixed geodesic distance will eventually no longer lie in the causal
+wedge of a fixed boundary region. In other words, the code will lose some of its ability
+to correct erasures; we will need access to more of the boundary to study the same bulk
+observables. In this subsection we study this a bit more quantitatively, making contact
+with the general condition (3.22) for typical correctability.
+     To apply (3.22) to AdS/CFT, we need to identify CFT analogues of the quantities
+n, l, and k. n is the total number of qubits used in doing the encoding, and should
+roughly correspond to the total number of CFT degrees of freedom relevant for recon-
+structing a particular bulk region of interest. This is somewhat nontrivial; the CFT
+has an infinite number of degrees of freedom in the UV which are needed to reconstruct
+bulk operators that are arbitrarily close to the boundary. To deal with this we take
+our code subspace to only involve states where we act on the vacuum with operators
+φi (x) that are all localized within a region R at the center of the AdS space that has
+proper size of order the AdS radius. We will also take them to be smeared over dis-
+tances that are small compared to their separation from the boundary of R, so that we
+do not have to worry about the difference between conventional and operator algebra
+quantum error correction. The global reconstructions (2.2) of these operators involve
+integrals over functions that vary smoothly on the scale of the radius of curvature of
+the boundary Sd−1 , so we can integrate out all CFT degrees of freedom with shorter
+wavelength.23 For concreteness we will consider the case of the N = 4 super Yang-Mills
+theory in 3 + 1 boundary dimensions with gauge group SU (N ), in which case we have
+
+                                              n ∼ N 2.                                         (5.10)
+
+Erasing a disc of angular size θ will then correspond to erasing
+                                               θ − sin θ
+                                          l=             n                                     (5.11)
+                                                  2π
+qubits, where this function is just n times the ratio of the area of the disc to the area
+of the S3 .
+  23
+    It is not hard to generalize to the case where R is taken to be parametrically larger than the AdS
+radius, this essentially involves a repeat of the analysis of [49].
+
+
+
+
+                                               – 29 –
+    Let us first consider the case where the code subspace is small, that is when k ∼ 1.
+From (3.22) we then expect that we can correct for the erasure as long as n − 2l  1,
+or in other words θ < π. But this is exactly what we expect from the AdS-Rindler
+reconstruction; once θ < π, WC [A] will contain the center of the space. It is interesting
+to note that the derivation of (3.22) applied to an erasure of an arbitrary collection of
+` qubits, so this suggests that we should also be able to reconstruct operators in the
+center on a union of disconnected regions, provided that together they make up more
+than half of the boundary. With regards to our discussion of section 4.3, this gives
+support to the entanglement wedge over the causal wedge.
+    We can now start increasing k; nothing interesting will happen until we get k ∼ N 2 ,
+after which the set of erasures we are able to correct will start decreasing. But this is
+exactly the condition for backreaction to become important in the center; with k ∼ N 2
+the entropy of the code subspace is comparable to that of a black hole filling R and
+thus most states in the code subspace must actually be black holes. So both on the
+CFT side through equation (3.22) and the bulk side via backreaction we arrive at the
+same conclusion for when correctability should break down. This is a manifestation of
+the holographic entropy bound of [50].
+
+
+6   Conclusion
+In this paper we have provided what we consider to be a new understanding of how
+the holographic principle is realized in AdS/CFT. Bulk effective field theory operators
+emerge as a set of logical operations on various encoded subspaces, which are protected
+against local errors in the boundary CFT. The bulk algebra is realized only on these
+subspaces, and only if we do not try to describe too many operations at once. Asking
+for more causes the error correction procedure to fail, which in the bulk is manifested
+by the formation of a black hole.
+     To some extent we have only recast known facts about the AdS-Rindler recon-
+struction in a new language, but in our view that construction is quite opaque once the
+operators in the boundary domain of dependence of A are evolved back to the bound-
+ary Cauchy surface Σ at t = 0. Our description in terms of error correction is phrased
+entirely on this Cauchy surface, and gives what we feel to be a satisfying interpretation
+of how the AdS-Rindler reconstruction is realized in the CFT that cleanly resolves some
+of its paradoxical features.
+     It is of course interesting to ask if there are any implications of this work for the
+recent controversy on whether or not the interiors of black holes are describable in
+AdS/CFT; for now we leave this for future study.
+
+
+
+
+                                         – 30 –
+Acknowledgments We’d like to thank Vijay Balasubramanian, Will Donnelly, Ethan
+Dyer, Patrick Hayden, Jennifer Lin, Juan Maldacena, Don Marolf, Eric Mintun, Ian
+Morrison, Joe Polchinski, Vladimir Rosenhaus, Steve Shenker, Douglas Stanford, Lenny
+Susskind, Herman Verlinde, Bob Wald, and Aron Wall for useful discussions. XD is
+supported by the National Science Foundation under grant PHY-0756174, and DH is
+supported by the Princeton Center for Theoretical Science. We are also grateful to the
+Aspen Center for Physics for providing a stimulating research environment during the
+“Emergent Spacetime in String Theory” workshop, where this work was initiated. The
+center is funded in part by the NSF grant no. PHYS-1066293.
+
+
+A    More details on AdS-Rindler reconstruction
+In this appendix we review a bit more about the AdS-Rindler reconstruction. The
+AdS-Rindler wedge has metric
+
+                                                dρ2
+                       ds2 = −(ρ2 − 1)dτ 2 +    2
+                                                    + ρ2 dHd−1
+                                                           2
+                                                               ,                  (A.1)
+                                               ρ −1
+          2
+where dHd−1   is the standard metric on the d − 1 dimensional hyperbolic ball Hd−1 .
+We will refer to coordinates on Hd−1 collectively as α. A free real scalar field on this
+background can be expressed in the Heisenberg picture as
+                           Z ∞
+                               dω X                      ∗            †
+                                                                         
+              φ(ρ, τ, α) =            fωλ (ρ, τ, α)aωλ + fωλ (ρ, τ, α)aωλ ,       (A.2)
+                            0  2π λ
+
+where fωλ (ρ, τ, α) is a solution of the Klein-Gordon equation of the form
+
+                           fωλ (ρ, τ, α) = e−iωτ Yλ (α)ψωλ (ρ).                   (A.3)
+
+Here Yλ (α) is an eigenfunction of the Laplacian on Hd−1 with eigenvalue −λ; the set
+                                        P
+of λ’s is continuous (and positive) so “ λ ” should really be understood as shorthand
+for an integral together with a sum over degeneracies. ψωλ is explicitly given by
+                           − iω2                             r
+                          1             (d − 2)  ∆     iω    1   (d − 2)2
+ψω,λ (ρ) = Nωλ ρ−∆ 1 − 2           F −          + −       +               − λ,
+                         ρ                 4      2     2    2      4
+                                                               r                         !
+                                        (d − 2) ∆ iω 1 (d − 2)2                    d−2 1
+                                      −         + −       −               − λ, ∆ −    , 2 ,
+                                           4      2     2    2      4               2  ρ
+                                                                                  (A.4)
+
+
+
+
+                                         – 31 –
+with
+                                        q                                        q              
+                     (d−2)   ∆   iω    1   (d−2)2    λ          (d−2)   ∆   iω    1   (d−2)2   λ
+          1    Γ   −   4
+                           + 2
+                               + 2rs
+                                     + 2     4
+                                                  − rs2
+                                                           Γ  −   4
+                                                                      + 2
+                                                                          + 2rs
+                                                                                − 2      4
+                                                                                             − rs2
+Nωλ = p                                                         
+          2|ω|                                Γ ∆ − d−2       Γ iω
+                                                            
+                                                         2       rs
+                                                                                        (A.5)
+and
+                                       d 1√ 2
+                                 ∆= +          d + 4m2 .                                (A.6)
+                                       2 2
+The normalization is chosen to ensure that a and a† have the usual algebra, and implies
+that for ρ large and negative, ψωλ is of order √1ω . F is a hypergeometric function that
+goes to one as ρ → ∞. By comparing to the extrapolate dictionary (1.1) we can read
+off that                       Z
+                        Oωλ = dτ dαeiωτ Yλ∗ (α)O(τ, α) = Nωλ aωλ ,                      (A.7)
+
+and substituting back into (A.2) and formally exchanging the τ α integral with the ωλ
+integral/sum we arrive at
+                                Z
+                    φ(ρ, τ, α) = dτ 0 dα0 K(ρ, τ, α; τ 0 α0 )O(τ 0 , α0 ).      (A.8)
+
+The “smearing function” K is given by
+                              Z ∞
+                       0 0        dω X 1                    0             0
+           K(ρ, τ, α; τ α ) =              fωλ (ρ, τ, α)eiωτ Yλ∗ (α0 )eiωτ .            (A.9)
+                               −∞ 2π λ Nωλ
+
+
+K can be understood as a kernel for constructing a bulk solution of the KG equation
+in the AdS-Rindler wedge given arbitrary boundary conditions at spatial infinity as a
+function of τ and α. It was immediately realized, however, that in fact this expression
+for K is not well-defined [7] (see also [51, 52]); the reason is that from Stirling’s formula
+it is straightforward to see that at large λ we have
+                                                    √
+                                      |Nωλ |2 ∼ e−π λ .                                (A.10)
+
+This is problematic for the convergence of the λ integral in (A.9), and using the WKB
+approximation for Y and ψ at large λ it is not hard to see that indeed the integral does
+not converge for any choice of bulk and boundary points [8, 51, 52].
+    In fact, the nonconvergence of K is necessary to avoid the following paradox; say
+that we have two overlapping Rindler wedges, WC [A] and WC [B], as in figure 10. If K
+existed then since the fωλ solutions are complete it would construct a unique solution
+of the KG equation in WC [A] with some particular boundary conditions in D[A]. We
+
+
+
+
+                                           – 32 –
+                                                        x
+
+
+
+
+Figure 10. Overlapping Rindler wedges, shown in the boundary. D[A] is in blue, D[B] is in
+yellow, and their overlap is in green.
+
+
+
+can, however, imagine modifying the spatial boundary conditions at a point x that is
+in D[B] but not in D[A], such that x is nonetheless causally separated from a point
+in WC [A]. We then should be able to send a signal to WC [A] without modifying the
+boundary conditions in D[A], which contradicts the uniqueness of the solution.
+     In [7] it was argued that one should analytically continue in the boundary spatial
+coordinates to avoid this divergence, but this is a rather unusual thing to do to a
+quantum field theory and would be rather problematic from the point of view of our
+analysis in this paper. The issue was recently illuminated considerably in [8] (see also
+[21]), where it was argued that as long as we are careful to think of K as a distribution
+for integration against CFT correlation functions we are allowed to use it without any
+analytic continuations. The key point of [8] was that at least at leading order in 1/N ,
+if we integrate K against appropriate bulk test functions then its singularity structure
+is such that we are always able to integrate it against CFT expectation values and get
+a reasonable answer. Intuitively, the reason that this is able to avoid the contradiction
+of the previous paragraph is that in the CFT O obeys a boundary equation of motion;
+we are not free to choose it independently at different boundary times. Turning on a
+source at x will necessarily propagate in the boundary into D[A] ∪ D[B], so we will not
+be able to change the boundary data at x without also changing it in D[A].
+     The argument of [8] does not immediately generalize to higher order corrections in
+1/N , but we expect a more detailed analysis will show that it can be improved order
+by order in 1/N .24
+  24
+    Recently it was argued that AdS/CFT in the AdS-Rindler wedge cannot be understood as a
+statement about subregions in the global CFT [53]. It is true that there is a subtlety here in that
+the cutoffs in the bulk are different in the two cases, but AdS/CFT is really a statement about the
+continuum CFTs. The discrepancies discussed in [53] were localized to “cutoff sized regions” in the
+CFT, which really means that they are not part of the continuum theory. That CFT expectation
+
+
+
+
+                                             – 33 –
+B     The basic theorem of operator algebra quantum error cor-
+      rection
+In this appendix we prove the theorem of section 3.5. The proof is original, but the
+theorem is a special case of the results of [32, 33].
+
+Proof. Indeed say that we have a code subspace HC spanned by an orthonormal basis
+|eiiEE . Moreover say that O is an operator which acts as
+                                            X
+                                    O|eii =   Oji |e
+                                                   ji
+                                                         j
+                                                         X
+                                        O† |eii =             ∗ e
+                                                             Oij |ji.                          (B.1)
+                                                         j
+
+Finally, say that for any operator XE acting on E we have
+
+                                hei|[O, XE ]|e
+                                             ji = 0                     ∀i, j.                 (B.2)
+
+We’d then like to show that there exists an operator OE acting only on E and obeying
+
+                                          OE |eii = O|eii
+                                          O† |eii = O† |eii.
+                                            E
+                                                                                               (B.3)
+
+    Let us first observe that in general in a bipartite system in a state
+                                       X
+                                 |ψi =      Cba |aiA |biB ,                                    (B.4)
+                                                ab
+
+operators OA on A and OB on B will obey
+
+                                         OB |ψi = OA |ψi                                       (B.5)
+
+if and only if
+                                                   T
+                                          OB C = COA .                                         (B.6)
+    Now in the setup of the theorem, let us consider the state25
+                                       X
+                                 |φi =     |iiR |eiiEE .                                       (B.7)
+                                                     i
+
+values have the right singularity structure to be integrated against K in (A.9) is related to the fact
+that they are computed in states that remain finite energy as we take the continuum limit, and as
+explained in [8] it is forgetting this that leads to trouble.
+  25
+     For convenience we have dropped the overall normalization, it will cancel between the two sides
+of (B.6).
+
+
+
+
+                                                 – 34 –
+The properties (B.3) will clearly hold if and only if they hold on |φi, ie if
+
+                                         OE |φi = O|φi
+                                         OE† |φi = O† |φi,                               (B.8)
+
+so this is all we need to show ((B.3) follows from applying projections to R).
+    Our strategy then is to notice that we can decompose REE into a bipartite system
+in two different ways, either as the R system and the EE system or as the E system
+and the RE system. The first decomposition is manifest in (B.7), and since in this case
+C is just the identity we see that (B.6) holds and we have
+
+                                         OR |φi = O|φi,                                  (B.9)
+
+where OR ≡ OT acts just on R. The point then is that we can interpret OR as OR ⊗ IE ,
+and then see if we can mirror it back onto E using (B.6). If so then we succeed in
+constructing OE .
+    To proceed, we can define
+                                     X
+                                         i
+                              |eii =   Cam |miE |aiE ,                       (B.10)
+                                           a,m
+
+in which case we have                    X
+                                                  i
+                                 |φi =           Cam |imiRE |aiE .                      (B.11)
+                                         i,a,m
+
+It will be very convenient in what follows to treat C as a rectangular matrix, with a
+being the first index and im being the second index. For example, we have the reduced
+density matrices
+
+                                          ρE = CC † ≡ g
+                                      ρRE = C T C ∗ .                                   (B.12)
+
+Since g is a non-negative hermitian matrix with positive trace, it will be invertible on a
+subspace of E. Moreover, any state orthogonal to this subspace will also be orthogonal
+to all of the |eii’s, so we can just take E to be given by this subspace; g is then invertible.
+This then means that C has a right inverse C † g −1 .
+     Now observe that the commutator condition (B.2) implies that
+
+                                      C † CO = OC † C,                                  (B.13)
+
+or equivalently that
+                                    [OR ⊗ IE , ρRE ] = 0.                               (B.14)
+
+
+
+                                                 – 35 –
+If C † g −1 were a left inverse of C, then (B.6) would hold if we define
+
+                                        OE = COC † g −1 ,                                   (B.15)
+
+which would then give us the first equation in (B.8) (remember that OR = OT ). In
+fact it is a right inverse, but we can use (B.13) to show that (B.6) holds nonetheless:26
+
+                                  OE C = COC † g −1 C
+                                        = g −1 CC † COC † g −1 C
+                                        = g −1 COC † CC † g −1 C
+                                        = g −1 COC † C
+                                        = g −1 CC † CO
+                                        = CO.                                               (B.16)
+
+       Moreover
+
+                                   OE† = g −1 CO† C †
+                                        = g −1 CO† C † CC † g −1
+                                        = CO† C † g −1 ,                                    (B.17)
+
+where we’ve used (B.13), so the second equation in (B.8) is also satisfied. This concludes
+the proof.
+
+
+References
+ [1] T. Banks, M. R. Douglas, G. T. Horowitz, and E. J. Martinec, AdS dynamics from
+     conformal field theory, hep-th/9808016.
+ [2] D. Harlow and D. Stanford, Operator Dictionaries and Wave Functions in AdS/CFT
+     and dS/CFT, arXiv:1104.2621.
+ [3] R. Streater and A. Wightman, PCT, spin and statistics, and all that, .
+ [4] R. Haag, Local quantum physics: Fields, particles, algebras, .
+ [5] B. Chilian and K. Fredenhagen, The Time slice axiom in perturbative quantum field
+     theory on globally hyperbolic spacetimes, Commun.Math.Phys. 287 (2009) 513–522,
+     [arXiv:0802.1642].
+  26
+    Intuitively this is because if we do a Schmidt decomposition of |φi into RE and E, we can choose
+a basis where C is actually a square matrix, so there is no difference between its left and right
+inverses. The condition (B.13) ensures us that OR acts within the subspace defined by the Schmidt
+decomposition.
+
+
+
+
+                                              – 36 –
+ [6] M. Benini, C. Dappiaggi, T.-P. Hack, and A. Schenkel, A C*-algebra for quantized
+     principal U(1)-connections on globally hyperbolic Lorentzian manifolds,
+     Commun.Math.Phys. 332 (2014) 477–504, [arXiv:1307.3052].
+ [7] A. Hamilton, D. N. Kabat, G. Lifschytz, and D. A. Lowe, Holographic representation of
+     local bulk operators, Phys.Rev. D74 (2006) 066009, [hep-th/0606141].
+ [8] I. A. Morrison, Boundary-to-bulk maps for AdS causal wedges and the Reeh-Schlieder
+     property in holography, JHEP 1405 (2014) 053, [arXiv:1403.3426].
+ [9] P. W. Shor, Scheme for reducing decoherence in quantum computer memory, Physical
+     review A 52 (1995), no. 4 R2493.
+[10] D. Gottesman, Stabilizer codes and quantum error correction, quant-ph/9705052.
+[11] R. Bousso, S. Leichenauer, and V. Rosenhaus, Light-sheets and AdS/CFT, Phys.Rev.
+     D86 (2012) 046009, [arXiv:1203.6619].
+[12] B. Czech, J. L. Karczmarek, F. Nogueira, and M. Van Raamsdonk, The Gravity Dual
+     of a Density Matrix, Class.Quant.Grav. 29 (2012) 155009, [arXiv:1204.1330].
+[13] R. Bousso, B. Freivogel, S. Leichenauer, V. Rosenhaus, and C. Zukowski, Null
+     Geodesics, Local CFT Operators and AdS/CFT for Subregions, Phys.Rev. D88 (2013)
+     064057, [arXiv:1209.4641].
+[14] V. E. Hubeny and M. Rangamani, Causal Holographic Information, JHEP 1206 (2012)
+     114, [arXiv:1204.1698].
+[15] K. Papadodimas and S. Raju, State-Dependent Bulk-Boundary Maps and Black Hole
+     Complementarity, Phys.Rev. D89 (2014) 086010, [arXiv:1310.6335].
+[16] D. Harlow, Aspects of the Papadodimas-Raju Proposal for the Black Hole Interior,
+     arXiv:1405.1995.
+[17] E. Verlinde and H. Verlinde, Black Hole Entanglement and Quantum Error Correction,
+     JHEP 1310 (2013) 107, [arXiv:1211.6913].
+[18] I. Heemskerk, D. Marolf, J. Polchinski, and J. Sully, Bulk and Transhorizon
+     Measurements in AdS/CFT, JHEP 1210 (2012) 165, [arXiv:1201.3664].
+[19] D. Kabat, G. Lifschytz, and D. A. Lowe, Constructing local bulk observables in
+     interacting AdS/CFT, Phys.Rev. D83 (2011) 106009, [arXiv:1102.2910].
+[20] R. Bousso and L. Randall, Holographic domains of anti-de Sitter space, JHEP 0204
+     (2002) 057, [hep-th/0112080].
+[21] K. Papadodimas and S. Raju, An Infalling Observer in AdS/CFT, JHEP 1310 (2013)
+     212, [arXiv:1211.6767].
+[22] J. Preskill, Lecture Notes on Quantum Computation.
+     http://www.theory.caltech.edu/people/preskill/ph229/, 1998.
+
+
+
+
+                                          – 37 –
+[23] M. A. Nielsen and I. L. Chuang, Quantum computation and quantum information.
+     Cambridge university press, 2010.
+[24] D. Harlow and P. Hayden, Quantum Computation vs. Firewalls, JHEP 1306 (2013)
+     085, [arXiv:1301.4504].
+[25] R. Cleve, D. Gottesman, and H.-K. Lo, How to share a quantum secret, Phys.Rev.Lett.
+     83 (1999) 648–651, [quant-ph/9901025].
+[26] B. Schumacher and M. A. Nielsen, Quantum data processing and error correction,
+     Phys. Rev. A 54 (Oct, 1996) 2629–2635.
+[27] D. Harlow, Jerusalem Lectures on Black Holes and Quantum Information,
+     arXiv:1409.1231.
+[28] M. Grassl, T. Beth, and T. Pellizzari, Codes for the quantum erasure channel, Physical
+     Review A 56 (1997), no. 1 33.
+[29] D. N. Page, Average entropy of a subsystem, Phys.Rev.Lett. 71 (1993) 1291–1294,
+     [gr-qc/9305007].
+[30] B. Schumacher and M. D. Westmoreland, Approximate quantum error correction,
+     Quantum Information Processing 1 (2002), no. 1-2 5–12.
+[31] M. M. Wolf, F. Verstraete, M. B. Hastings, and J. I. Cirac, Area laws in quantum
+     systems: mutual information and correlations, Physical review letters 100 (2008), no. 7
+     070502.
+[32] C. Bény, A. Kempf, and D. W. Kribs, Generalization of quantum error correction via
+     the heisenberg picture, Physical review letters 98 (2007), no. 10 100502.
+[33] C. Bény, A. Kempf, and D. W. Kribs, Quantum error correction of observables,
+     Physical Review A 76 (2007), no. 4 042303.
+[34] A. C. Wall, Maximin Surfaces, and the Strong Subadditivity of the Covariant
+     Holographic Entanglement Entropy, arXiv:1211.3494.
+[35] M. Headrick, V. E. Hubeny, A. Lawrence, and M. Rangamani, Causality & holographic
+     entanglement entropy, arXiv:1408.6300.
+[36] D. L. Jafferis and S. J. Suh, The Gravity Duals of Modular Hamiltonians,
+     arXiv:1412.8465.
+[37] T. Faulkner, A. Lewkowycz, and J. Maldacena, Quantum corrections to holographic
+     entanglement entropy, JHEP 1311 (2013) 074, [arXiv:1307.2892].
+[38] S. Ryu and T. Takayanagi, Holographic derivation of entanglement entropy from
+     AdS/CFT, Phys.Rev.Lett. 96 (2006) 181602, [hep-th/0603001].
+[39] I. Heemskerk, J. Penedones, J. Polchinski, and J. Sully, Holography from Conformal
+     Field Theory, JHEP 0910 (2009) 079, [arXiv:0907.0151].
+
+
+
+
+                                          – 38 –
+[40] G. Vidal, Class of Quantum Many-Body States That Can Be Efficiently Simulated,
+     Phys.Rev.Lett. 101 (2008) 110501.
+[41] B. Swingle, Entanglement Renormalization and Holography, Phys.Rev. D86 (2012)
+     065007, [arXiv:0905.1317].
+[42] G. Evenbly and G. Vidal, Tensor network states and geometry, Journal of Statistical
+     Physics 145 (2011), no. 4 891–918.
+[43] I. Heemskerk, Construction of Bulk Fields with Gauge Redundancy, JHEP 1209 (2012)
+     106, [arXiv:1201.3666].
+[44] D. Kabat and G. Lifschytz, Decoding the hologram: Scalar fields interacting with
+     gravity, Phys.Rev. D89 (2014) 066010, [arXiv:1311.3020].
+[45] H. Casini, M. Huerta, and J. A. Rosabal, Remarks on entanglement entropy for gauge
+     fields, Phys.Rev. D89 (2014), no. 8 085012, [arXiv:1312.1183].
+[46] V. E. Hubeny, Extremal surfaces as bulk probes in AdS/CFT, JHEP 1207 (2012) 093,
+     [arXiv:1203.1044].
+[47] D. D. Blanco, H. Casini, L.-Y. Hung, and R. C. Myers, Relative Entropy and
+     Holography, JHEP 1308 (2013) 060, [arXiv:1305.3182].
+[48] G. Gibbons, S. Hawking, G. T. Horowitz, and M. J. Perry, Positive Mass Theorems for
+     Black Holes, Commun.Math.Phys. 88 (1983) 295.
+[49] L. Susskind and E. Witten, The Holographic bound in anti-de Sitter space,
+     hep-th/9805114.
+[50] L. Susskind, The World as a hologram, J.Math.Phys. 36 (1995) 6377–6396,
+     [hep-th/9409089].
+[51] S. Leichenauer and V. Rosenhaus, AdS black holes, the bulk-boundary dictionary, and
+     smearing functions, Phys.Rev. D88 (2013), no. 2 026003, [arXiv:1304.6821].
+[52] S.-J. Rey and V. Rosenhaus, Scanning Tunneling Macroscopy, Black Holes, and
+     AdS/CFT Bulk Locality, JHEP 1407 (2014) 050, [arXiv:1403.3943].
+[53] B. D. Chowdhury and M. K. Parikh, When UV and IR Collide: Inequivalent CFTs
+     From Different Foliations Of AdS, arXiv:1407.4467.
+
+
+
+
+                                          – 39 –
+

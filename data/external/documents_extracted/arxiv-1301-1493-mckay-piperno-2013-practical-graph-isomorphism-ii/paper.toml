@@ -1,0 +1,2878 @@
+equations = []
+figures = []
+full_text = """
+Practical graph isomorphism, II\r
+Brendan D. McKay\r
+Research School of Computer Science, Australian National University, Canberra ACT 0200,\r
+Australia 1\r
+Adolfo Piperno\r
+Dipartimento di Informatica, Sapienza Universit`a di Roma, Via Salaria 113, I-00198 Roma,\r
+Italy\r
+Abstract\r
+We report the current state of the graph isomorphism problem from the practical point of view.\r
+After describing the general principles of the refinement-individualization paradigm and proving\r
+its validity, we explain how it is implemented in several of the key programs. In particular, we\r
+bring the description of the best known program nauty up to date and describe an innova\u0002tive approach called Traces that outperforms the competitors for many difficult graph classes.\r
+Detailed comparisons against saucy, Bliss and conauto are presented.\r
+Email addresses: bdm@cs.anu.edu.au (Brendan D. McKay), piperno@di.uniroma1.it (Adolfo\r
+Piperno).\r
+1 Supported by the Australian Research Council.\r
+Preprint submitted to Elsevier — nautytraces2b — 27 November 2024 —\r
+arXiv:1301.1493v1 [cs.DM] 8 Jan 2013
+
+1. Introduction\r
+An isomorphism between two graphs is a bijection between their vertex sets that pre\u0002serves adjacency. An automorphism is an isomorphism from a graph to itself. The set of\r
+all automorphisms of a graph G form a group under composition called the automorphism\r
+group Aut(G).\r
+The graph isomorphism problem (GI) is that of determining whether there is an\r
+isomorphism between two given graphs. GI has long been a favorite target of algorithm\r
+designers—so much so that it was already described as a “disease” in 1976 (Read and\r
+Corneil, 1977).\r
+Though it is not the focus of this paper, we summarize the current state of the the\u0002oretical study of graph isomorphism. It is obvious that GI ∈ NP but unknown whether\r
+GI ∈ co-NP. As that implies, no polynomial time algorithm is known (despite many\r
+published claims), but neither is GI known to be NP-complete. NP-completeness is con\u0002sidered unlikely since it would imply collapse of the polynomial-time hierarchy (Goldre\u0002ich et al., 1991). The fastest proven running time for GI has stood for three decades at\r
+e\r
+O(\r
+√\r
+n log n)\r
+(Babai et al., 1983).\r
+On the other hand, polynomial time algorithms are known for many special classes of\r
+graphs. The most general such classes are those with a forbidden minor (Ponomarenko,\r
+1988; Grohe, 2010) and those with a forbidden topological minor (Grohe, 2012). These\r
+classes include many earlier classes such as graphs of bounded degree (Luks, 1982),\r
+bounded genus (Filotti and Mayer, 1980; Miller, 1980) and bounded tree-width (Bod\u0002laender, 1990). The algorithms resulting from this theory are most unlikely to be useful\r
+in practice. Only for a very few important graph classes, such as trees (Aho et al., 1974)\r
+and planar graphs (Colbourn and Booth, 1981) are there practical approaches which are\r
+sure to outperform general methods such as described in this paper.\r
+Testing two graphs for isomorphism directly can have the advantage that an isomor\u0002phism might be found long before an exhaustive search is complete. On the other hand,\r
+it is poorly suited for the common problems of rejecting isomorphs from a collection of\r
+graphs or identifying a graph in a database of graphs. For this reason, the most common\r
+practical approach is “canonical labelling”, a process in which a graph is relabeled in such\r
+a way that isomorphic graphs are identical after relabelling. When we have an efficient\r
+canonical labelling procedure, we can use a sorting algorithm for removing isomorphs\r
+from a large collection and standard data structures for database retrieval.\r
+It is impossible to comprehensively survey the history of this problem since there are\r
+at least a few hundred published algorithms. However, a clear truth of history is that\r
+the most successful approach has involved fixing of vertices together with refinement of\r
+partitions of the vertex set. This “individualization-refinement” paradigm was introduced\r
+by Parris and Read (1969) and developed by Corneil and Gotlieb (1970) and Arlazarov et\r
+al. (1974). However, the first program that could handle both structurally regular graphs\r
+with hundreds of vertices and graphs with large automorphism groups was that of McKay\r
+(1978b, 1980), that later became known as nauty. The main advantage of nauty over\r
+earlier programs was its innovative use of automorphisms to prune the search. Although\r
+there were some worthy competitors (Leon, 1990; Kocay, 1996), nauty dominated the\r
+field for the next several decades.\r
+This situation changed when Darga et al. (2004) introduced saucy, which at that stage\r
+was essentially a reimplementation of the automorphism group subset of nauty using\r
+2
+
+sparse data structures. This gave it a very large advantage for many graphs of practical\r
+interest, prompting the first author to release a version of nauty for sparse graphs. Saucy\r
+has since introduced some important innovations, such as the ability to detect some types\r
+of automorphism (such as those implied by a locally tree-like structure) very early (Darga\r
+et al., 2008). Soon afterwards Juntilla and Kaski (2007, 2011) introduced Bliss, which\r
+also used the same algorithm but had some extra ideas that helped its performance on\r
+difficult graphs. In particular, it allowed refinement operations to be aborted early in\r
+some cases. The latter idea reached its full expression in Traces, which we introduce in\r
+this paper. More importantly, Traces pioneered a major revision of the way the search\r
+tree is scanned, which we will demonstrate to produce great efficiency gains.\r
+Another program worthy of consideration is conauto (L´opez-Presa and Fern´andez\r
+Anta, 2009; L´opez-Presa et al., 2011). It does not feature canonically labelling, though\r
+it can compare two graphs for isomorphism.\r
+In Section 2, we provide a description of algorithms based on the individualization\u0002refinement paradigm. It is sufficiently general to encompass the primary structure of all\r
+of the most successful algorithms. In Section 3, we flesh out the details of how nauty and\r
+Traces are implemented, with emphasis on how they differ from differ. In Section 4, we\r
+compare the performance of nauty and Traces with Bliss, saucy and conauto when\r
+applied to a variety of families of graphs ranging from those traditionally easy to the\r
+most difficult known. Although none of the programs is the fastest in all cases, we will\r
+see that nauty is generally the fastest for small graphs and some easier families, while\r
+Traces is better, sometimes in dramatic fashion, for most of the difficult graph families.\r
+2. Generic Algorithm\r
+In this section, we give formal definitions of colourings (partitions), invariants, and\r
+group actions. We then define the search tree which is at the heart of most recent graph\r
+isomorphism algorithms and explain how it enables computation of automorphism groups\r
+and canonical forms. This section is intended to be a self-contained introduction to the\r
+overall strategy and does not contain new features.\r
+Let G = Gn denote the set of graphs with vertex set V = {1, 2, . . . , n}.\r
+2.1. Colourings\r
+A colouring of V (or of G ∈ G) is a surjective function π from V onto {1, 2, . . . , k} for\r
+some k. The number of colours, i.e. k, is denoted by |π|. A cell of π is the set of vertices\r
+with some given colour; that is, π\r
+−1\r
+(j) for some j with 1 ≤ j ≤ |π|. A discrete colouring\r
+is a colouring in which each cell is a singleton, in which case |π| = n. Note that a discrete\r
+colouring is a permutation of V .\r
+If π, π0 are colourings, then π\r
+0\r
+is finer than or equal to π, written π\r
+0 \u0016 π, if π(v) <\r
+π(w) ⇒ π\r
+0\r
+(v) < π0(w) for all v, w ∈ V . (This implies that each cell of π\r
+0\r
+is a subset of a\r
+cell of π, but the converse is not true.)\r
+Since a colouring partitions V into cells, it is frequently called a partition. However,\r
+note that the colours come in a particular order and this matters when defining concepts\r
+like “finer”.\r
+A pair (G, π), where π is a colouring of G, is called a coloured graph.\r
+3
+
+2.2. Group actions and isomorphisms\r
+Let Sn denote the symmetric group acting on V . We indicate the action of elements\r
+of Sn by exponentiation. That is, for v ∈ V and g ∈ Sn, v\r
+g\r
+is the image of v under g.\r
+The same notation indicates the induced action on complex structures derived from V ;\r
+in particular:\r
+(a) If W ⊆ V , then Wg = {w\r
+g\r
+: w ∈ W}, and similarly for sequences.\r
+(b) If G ∈ G, then Gg ∈ G has v\r
+g adjacent to wg\r
+exactly when v and w are adjacent\r
+in G. As a special case, a discrete colouring π is a permutation on V so we can\r
+write Gπ.\r
+(c) If π is a colouring of V , then π\r
+g\r
+is the colouring with π\r
+g\r
+(v) = π(v\r
+g\r
+) for each v ∈ V .\r
+(d) If (G, π) is a coloured graph, then (G, π)\r
+g = (Gg\r
+, πg).\r
+Two coloured graphs (G, π),(G0, π0) are isomorphic if there is g ∈ Sn such that\r
+(G0, π0) = (G, π)\r
+g\r
+, in which case we write (G, π) ∼= (G0, π0). Such a g is called an isomor\u0002phism. The automorphism group Aut(G, π) is the group of isomorphisms of the coloured\r
+graph (G, π) to itself; that is,\r
+Aut(G, π) = {g ∈ Sn : (G, π)\r
+g = (G, π)}.\r
+A canonical form is a function\r
+C : G × Π → G × Π\r
+such that, for all G ∈ G, π ∈ Π and g ∈ Sn,\r
+(C1) C(G, π) ∼= (G, π),\r
+(C2) C(Gg, πg) = C(G, π).\r
+In other words, it assigns to each coloured graph an isomorphic coloured graph that\r
+is a unique representative of its isomorphism class. It follows from the definition that\r
+(G, π) ∼= (G0\r
+, π0) ⇔ C(G, π) = C(G0, π0).\r
+Property (C2) is an important property that must be satisfied by many functions\r
+we define. It says that if the elements of V appearing in the inputs to the function are\r
+renamed in some manner, the elements of V appearing in the function value are renamed\r
+in the same manner. We call this label-invariance.\r
+2.3. Search tree\r
+Now we define a rooted tree whose nodes correspond to sequences of vertices, with the\r
+empty sequence at the root of the tree. The sequences become longer as we move down\r
+the tree. Each sequence corresponds to a colouring of the graph obtained by giving the\r
+vertices in the sequence unique colours then inferring in a controlled fashion a colouring\r
+of the other vertices. Leaves of the tree correspond to sequences for which the derived\r
+colouring is discrete.\r
+To formally define the tree, we first define a “refinement function” that specifies the\r
+colouring that corresponds to a sequence. Let V\r
+∗ denote the set of finite sequences of ver\u0002tices. For ν ∈ V\r
+∗\r
+, |ν| denotes the number of components of ν. If ν = (v1, . . . , vk) ∈ V\r
+∗ and\r
+w ∈ V , then ν kw denotes (v1, . . . , vk, w). Furthermore, for 0 ≤ s ≤ k, [ν]s = (v1, . . . , vs).\r
+The ordering ≤ on finite sequences is the lexicographic order: If ν = (v1, . . . , vk) and\r
+ν\r
+0 = (v0\r
+1\r
+, . . . , v0\r
+`\r
+), then ν ≤ ν\r
+0\r
+if ν is a prefix of ν\r
+0 or there is some j ≤ min{k, `} such\r
+that vi = v\r
+0\r
+i\r
+for i < j and vj < v0\r
+j\r
+.\r
+4
+
+A refinement function is a function\r
+R : G × Π × V\r
+∗ → Π\r
+such that for any G ∈ G, π ∈ Π and ν ∈ V\r
+∗\r
+,\r
+(R1) R(G, π, ν) \u0016 π;\r
+(R2) if v ∈ ν, then {v} is a cell of R(G, π, ν);\r
+(R3) for any g ∈ Sn, we have R(Gg, πg, νg) = R(G, π, ν)\r
+g\r
+.\r
+To complete the definition of the tree, we need to specify what are the children of each\r
+node. We do this by choosing one non-singleton cell of the colouring, called the target\r
+cell, and appending an element of it to the sequence.\r
+A target cell selector chooses a non-singleton cell of a colouring, if there is one. For\u0002mally, it is a function\r
+T : G × Π × V\r
+∗ → 2V\r
+such that for any π0 ∈ Π, G ∈ G and ν ∈ V\r
+∗\r
+,\r
+(T1) if R(G, π0, ν) is discrete, then T(G, π0, ν) = ∅;\r
+(T2) if R(G, π0, ν) is not discrete, then T(G, π0, ν) is a non-singleton cell of R(G, π0, ν);\r
+(T3) for any g ∈ Sn, we have T(Gg, πg, νg) = T(G, π, ν)\r
+g\r
+.\r
+Now we can define the search tree T (G, π0) depending on an initially-specified coloured\r
+graph (G, π0). The nodes of the tree are elements of V\r
+∗\r
+.\r
+(a) The root of T (G, π0) is the empty sequence ( ).\r
+(b) If ν is a node of T (G, π0), let W = T(G, π0, ν). Then the children of π are\r
+{ν k w : w ∈ W}.\r
+This definition implies by (T2) that a node ν of T (G, π0) is a leaf iff R(G, π0, ν) is\r
+discrete.\r
+For any node ν of T (G, π0), define T (G, π0, ν) to be the subtree of T (G, π0) consisting\r
+of ν and all its descendants. The following lemmas are easily derived using induction from\r
+the definition of the search tree and the properties of the functions R, T and I.\r
+Lemma 1. For any G ∈ G, π0 ∈ Π, g ∈ Sn, we have T (Gg, π\r
+g\r
+0\r
+) = T (G, π0)\r
+g\r
+.\r
+Proof. Let ν = (v1, . . . , vk) be a node of T (G, π0). It is easily proved by induction on s\r
+that [ν\r
+g\r
+]s is a node of T (Gg, π\r
+g\r
+0\r
+) for 0 ≤ s ≤ k. Therefore, T (G, π0)\r
+g ⊆ T (Gg\r
+, π\r
+g\r
+0\r
+). The\r
+reverse inclusion follows on considering g\r
+−1\r
+instead, so the lemma is proved. ✷\r
+Corollary 2. Let ν be a node of T (G, π0) and let g ∈ Aut(G, π0). Then ν\r
+g\r
+is a node of\r
+T (G, π0) and T (G, π0, νg) = T (G, π0, ν)\r
+g\r
+.\r
+Proof. This follows from Lemma 1 on noticing that (G, π0)\r
+g = (G, π) if g ∈ Aut(G, π0). ✷\r
+Lemma 3. Let ν be a node of T (G, π0) and let π = R(G, π0, ν). Then Aut(G, π) is the\r
+point-wise stabilizer of ν in Aut(G, π0).\r
+Proof. By condition (R2), every element of Aut(G, π) stabilizes ν. Conversely, suppose\r
+g ∈ Aut(G, π0) stabilizes ν. Then by (R3), π\r
+g = R(G, π0, ν)g = R(G, π0, ν) = π, so\r
+g ∈ Aut(G, π). ✷\r
+5
+
+2.4. Automorphisms and canonical forms\r
+Now we describe how the search tree T (G, π0), defined as in the previous subsection,\r
+can be used to compute Aut(G, π0) and a canonical form.\r
+Let Ω be some totally ordered set. A node invariant is a function\r
+φ : G × Π × V\r
+∗ → Ω,\r
+such that for any π0 ∈ Π, G ∈ G, and distinct ν, ν0 ∈ T (G, π0),\r
+(φ1) if |ν| = |ν\r
+0\r
+| and φ(G, π0, ν) < φ(G, π0, ν0), then for every leaf ν1 ∈ T (G, π0, ν) and\r
+leaf ν\r
+0\r
+1 ∈ T (G, π0, ν0\r
+) we have φ(G, π0, ν1) < φ(G, π0, ν0\r
+1\r
+);\r
+(φ2) if π = R(G, π0, ν) and π\r
+0 = R(G, π0, ν0\r
+) are discrete, then φ(G, π0, ν) = φ(G, π0, ν0)\r
+⇔ Gπ = Gπ\r
+0\r
+(note that the last relation is equality, not isomorphism);\r
+(φ3) for any g ∈ Sn, we have φ(Gg, π\r
+g\r
+0\r
+, νg) = φ(G, π0, ν).\r
+Say that leaves ν, ν0 are equivalent if φ(G, π0, ν) = φ(G, π0, ν0). If this is the case, there\r
+is a unique g ∈ Aut(G, π0) such that ν\r
+g = ν0\r
+, namely g = R(G, π0, ν0)R(G, π0, ν)\r
+−1\r
+.\r
+(Recall that R(G, π0, ν) is a permutation if ν is a leaf.)\r
+According to Corollary 2, if ν is a leaf of T (G, π0), then so is ν\r
+g\r
+for any g ∈ Aut(G, π0).\r
+Moreover, by the properties of φ these leaves (over g ∈ Aut(G, π0)) have the same value\r
+of φ and no other leaf has that value. Consequently, for any leaf ν,\r
+Aut(G, π0) = {R(G, π0, ν0)R(G, π0, ν)\r
+−1\r
+: ν\r
+0\r
+is a leaf of T (G, π0) with φ(G, π0, ν0) = φ(G, π0, ν)}.\r
+To define a canonical form, let\r
+φ\r
+∗\r
+(G, π0) = max{φ(G, π0, ν) : ν is a leaf of T (G, π0)},\r
+and let ν\r
+∗ be any leaf of T (G, π0) that achieves the maximum. Now define C(G, π0) =\r
+(G, π0)\r
+R(G,π0,ν∗)\r
+. By the properties of φ, C(G, π0) thus defined is independent of the\r
+choice of ν\r
+∗\r
+. In particular, we have:\r
+Lemma 4. The function\r
+C : G × Π → G × Π\r
+as just defined is a canonical form.\r
+These observations provide an algorithm for computing Aut(G, π0) and C(G, π0), once\r
+we have defined T and φ. In practice it is not of much use, since the search tree can\r
+be extremely large and the group is found element by element rather than as a set\r
+of generators. However, in practice we can dramatically improve the performance by\r
+judicious pruning of the tree.\r
+When we refer to a leaf of T (G, π0), we always mean a node ν of T (G, π0) for which\r
+R(G, π0, ν) is discrete, even if our pruning of the tree results in additional nodes having\r
+no children.\r
+We define three types of pruning operation on the search tree.\r
+(A) Suppose ν, ν0 are distinct nodes of T (G, π0) with |ν| = |ν|\r
+0 and φ(G, π0, ν) >\r
+φ(G, π0, ν0). Operation PA(ν, ν0) is to remove T (G, π0, ν0).\r
+(B) Suppose ν, ν0 are distinct nodes of T (G, π0) with |ν| = |ν|\r
+0 and φ(G, π0, ν) 6=\r
+φ(G, π0, ν0). Operation PB(ν, ν0) is to remove T (G, π0, ν0).\r
+(C) Suppose g ∈ Aut(G, π0) and suppose ν < ν0 are nodes of T (G, π0) such that\r
+ν\r
+g = ν0\r
+. Operation PC (ν, g) is to remove T (G, π0, ν0).\r
+6
+
+Theorem 5. Consider any G ∈ G and π0 ∈ Π.\r
+(a) Suppose any sequence of operations of the form PA(ν, ν0) or PC (ν, g) are performed.\r
+Then there remains at least one leaf ν1 with φ(G, π0, ν1) = φ\r
+∗\r
+(G, π0).\r
+(b) Let ν0 be some fixed leaf of T (G, π0). Suppose any sequence of operations of the\r
+form PB(ν, ν0) or PC (ν\r
+00, g) are performed, where φ(G, π0, ν00) 6= φ(G, π0, [ν0]|ν00|).\r
+Let g1, . . . , gk be the automorphisms used in the operations PC that were performed,\r
+and let\r
+A = {g ∈ Aut(G, π0) : ν\r
+g\r
+0\r
+is a remaining leaf }.\r
+Then Aut(G, π0) is generated by {g1, . . . , gk} ∪ A.\r
+Proof. To prove claim (a), note that the lexicographically least leaf ν1 with φ(G, π0, ν1) =\r
+φ\r
+∗\r
+(G, π0) is never removed.\r
+For claim (b), note that the lexicographically least leaf ν1 equivalent to ν0 is not\r
+removed by the allowed operations. Choose an arbitrary g ∈ Aut(G, π0). By Corollary 2,\r
+ν\r
+g\r
+0\r
+is a leaf of T (G, π0). If it has been removed, that must have been by some PC (ν\r
+00, gi)\r
+with ν\r
+00 < νg\r
+, since operation PB(ν, ν0) only removes leaves inequivalent to ν0. Note\r
+that ν\r
+gg\r
+−1\r
+i\r
+0\r
+is a leaf descended from ν\r
+00 and ν\r
+gg\r
+−1\r
+i\r
+0 < νg0\r
+. If ν\r
+gg\r
+−1\r
+i\r
+0\r
+, has been removed,\r
+that must have been due to some PC (ν\r
+000, gj ) with ν000 < ν\r
+gg\r
+−1\r
+i\r
+0\r
+, so consider the leaf\r
+ν\r
+gg\r
+−1\r
+i\r
+g\r
+−1\r
+j\r
+0 < ν\r
+gg\r
+−1\r
+i\r
+0\r
+. Continuing in this way we must eventually find a leaf that has not\r
+been removed, since the leaf ν1 is still present. That is, there is some h ∈ hg1, . . . , gki\r
+such that leaf ν\r
+gh\r
+0 has not been removed. This proves g belongs to the group generated\r
+by {g1, . . . , gk} ∪ A, as we wished to prove. ✷\r
+The theorem leaves unspecified where the automorphisms for PC (ν, g) operations come\r
+from. They might be provided in advance, detected by noticing two leaves are equivalent,\r
+or otherwise. This is discussed in the following section.\r
+3. Implementation strategies\r
+In this section, we describe two implementations of the generic algorithm, which are\r
+distributed together as nauty and Traces (McKay and Piperno, 2012a).\r
+3.1. Refinement\r
+Let G ∈ G. A colouring of G is called equitable if any two vertices of the same colour\r
+are adjacent to the same number of vertices of each colour. 2\r
+It is well known that for every colouring π there is a coarsest equitable colouring π\r
+0\r
+such that π\r
+0 \u0016 π, and that π0\r
+is unique up to the order of its cells. An algorithm for\r
+computing π\r
+0 appears in McKay (1980). We summarize it in Algorithm 1.\r
+Let F(G, π, α) be the function defined by Algorithm 1, which we assume to be imple\u0002mented in a label-invariant manner. Now define the function\r
+I : Π × V → Π,\r
+2 Unfortunately, “equitable colouring” also has another meaning in graph theory. More commonly, our\r
+concept is called an equitable partition.\r
+7
+
+Data: π is the input colouring and α is a sequence of some cells of π\r
+Result: the final value of π is the output colouring\r
+while α is not empty and π is not discrete do\r
+Remove some element W from α.\r
+for each cell X of π do\r
+Let X1, . . . , Xk be the fragments of X distinguished according\r
+to the number of edges from each vertex to W.\r
+Replace X by X1, . . . , Xk in π.\r
+if X ∈ α then\r
+Replace X by X1, . . . , Xk in α.\r
+else\r
+Add all but one of the largest of X1, . . . , Xk to α.\r
+end\r
+end\r
+end\r
+Algorithm 1: Refinement algorithm F(G, π, α)\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+Fig. 1. Example of an equitable colouring\r
+such that, if v is a vertex in a non-singleton cell of π and π\r
+0 = I(π, v), then for w ∈ V ,\r
+π\r
+0\r
+(w) = (\r
+π(w), if π(w) < π(v) or w = v;\r
+π(w) + 1, otherwise.\r
+We see that I(π, v) differs from π in that a unique colour has been given to vertex v.\r
+Now we can define a refinement function. For a sequence of vertices v1, v2, . . . , define\r
+R(G, π0,( )) = F(G, π0, a list of all the cells of π0),\r
+R(G, π0,(v1)) = F\r
+\r
+G, I(R(G, π0,( )), v1),({v1})\r
+\u0001\r
+,\r
+R(G, π0,(v1, v2)) = F\r
+\r
+G, I(R(G, π0,(v1)), v2),({v2}))\u0001,\r
+R(G, π0,(v1, v2, v3)) = F\r
+\r
+G, I(R(G, π0,(v1, v2)), v3),({v3}))\u0001,\r
+and so on. According to Theorem 2.7 and Lemma 2.8 of McKay (1980), R satisfies (R1)–\r
+(R3) and, moreover, R(G, π0, ν) is equitable.\r
+In practice most of the execution time of the whole algorithm is devoted to refining\r
+colourings, so the implementation is critical. Since the splitting of X into fragments can\r
+8
+
+be coded more efficiently if W is a singleton, we have found it advantageous to choose\r
+singletons out of α in preference to larger cells.\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+Fig. 2. Individualization of vertex 1 and subsequent refinement\r
+While the function R defined above is sufficient for many graphs, there are difficult\r
+classes (see Section 4) for which it does not adequately separate inequivalent vertices.\r
+Regular graphs are the simplest example, since the colouring with only one colour is\r
+equitable. A simple way of doing better is to count the number of triangles incident to\r
+each vertex. In choosing such a strategy, there is a trade-off between the partitioning\r
+power and the cost. nauty provides a small library of stronger partitioning functions,\r
+some of them designed for particular classes of difficult graphs. The improvement in\r
+performance can be very dramatic. On the other hand, choice of which partitioning\r
+function to employ is left to the user and requires skill, which is not very satisfactory.\r
+Traces has a different approach to this problem, as we will see in Section 3.3.\r
+3.2. Target cell selection\r
+The choice of target cell has a significant effect on the shape of the search tree, and\r
+thus on performance. A small target cell may perhaps have a greater chance of being an\r
+orbit of the group which fixes the current stabilizer sequence. For this reason, McKay\r
+(1980) recommended using the first smallest non-singleton cell. However, Kocay (1996)\r
+found (without realizing it) that using the first non-singleton cell regardless of size was\r
+better for most test cases, as confirmed by Kirk (1985). The current version of nauty\r
+has two strategies. One is to use the first non-singleton cell, and the other is to choose\r
+the first cell which is joined in a non-trivial fashion to the largest number of cells, where\r
+a non-trivial join between two cells means that there is more than 0 edges and less than\r
+the maximum possible.\r
+Traces, on the other hand prefers large target cells, as they tend to make the tree less\r
+deep. A strategy developed by experiment is to use the first largest non-singleton cell\r
+that is a subset of the target cell in the parent node. If there are no such non-singleton\r
+cells, the target cell in the grandparent node is used, and so on, with the first largest cell\r
+altogether being the last possibility.\r
+3.3. Node invariants\r
+Information useful for computing node invariants can come from two related sources.\r
+At each node ν there is a colouring R(G, π0, ν) and we can use properties of this colouring\r
+such as the number and size of the cells, as well as combinatorial properties of the coloured\r
+9
+
+graph. Another source is the intermediate states of the computation of a colouring from\r
+that of the parent node, such as the order, position and size of the cells produced by\r
+the refinement procedure and various counts of edges that are determined during the\r
+computation.\r
+If f(ν) is some function of this information, computed during the computation of\r
+R(G, π0, ν) and from the resulting coloured graph, the vector \r
+f([ν]0), f([ν]1), . . . , f(ν)\r
+\u0001\r
+,\r
+with lexicographic ordering, satisfies Conditions (φ1) and (φ3) for a node invariant. If ν\r
+is a leaf, we can append Gπ, where π is the discrete colouring R(G, π0, ν), to the vector\r
+so as to satisfy (φ2) as well.\r
+In nauty, the value of f(ν) is an integer, and the pruning rules are applied as each\r
+node is computed. Traces introduced a major improvement, defining each f(ν) as a\r
+vector itself. The primary components of f(ν) are the sizes and positions of the cells in\r
+the order that they are created by the refinement procedure. φ(G, π0, ν) thus becomes\r
+a vector of vectors, called the trace (and hence the name “Traces”). The advantage is\r
+that it often enables the comparison of f(ν) and f(ν\r
+0\r
+) to be made while the computation\r
+of ν\r
+0\r
+is only partly complete. A limited form of this idea appeared in Bliss (Juntilla\r
+and Kaski, 2007), and also appears in a recent version of saucy (Darga et al., 2008).\r
+For many difficult graph families, only a fraction of all refinement operations need to be\r
+completed. A practical consequence is that the stronger refinements used by nauty (see\r
+Section 3.1) are rarely needed. This makes good performance in Traces less dependent\r
+on user expertise than is the case with nauty.\r
+If π is an equitable colouring of a graph G, we can define a the quotient graph Q(G, π)\r
+as follows. The vertices of Q(G, π) are the cells of π, labelled with the cell number and\r
+size. For any two cells C1, C2 ∈ π, possibly equal, the corresponding vertices of Q(G, π)\r
+are joined by an edge labelled with the number of edges of G between C1 and C2.\r
+The node invariant φ(G, π0, ν) computed by Traces, and also by nauty if the standard\r
+refinement process Algorithm 1 is used, is a deterministic function of the sequence of\r
+quotient graphs Q\r
+\r
+G, R(G, π0, [ν]i)\r
+\u0001\r
+for i = 0, . . . , |ν|. We could in fact use that sequence\r
+of quotient graphs, but that would be expensive in both time and space. Our experience\r
+is that the information we do use, which is essentially information about the quotient\r
+matrices collected during the refinement process, rarely has less pruning power than the\r
+quotient matrices themselves would have.\r
+3.4. Strategies for tree generation\r
+Now we have described the search tree T (g, π0) as defined by nauty and Traces.\r
+In general only a fraction of the search tree is actually generated, since the pruning\r
+rules of Section 2.4 are applied. These pruning rules utilise both node invariants, as\r
+described in Section 3.3, and automorphisms, which are mainly discovered by noticing\r
+that two discrete colourings give the same coloured graph. Now we will describe order of\r
+generation of the tree, which is fundamentally different for nauty and Traces.\r
+In nauty, the tree is generated in depth-first order. The lexicographically least leaf ν1\r
+is kept. If the canonical labelling is sought (rather than just the automorphism group),\r
+the leaf ν\r
+∗ with the greatest invariant discovered so far is also kept. A non-leaf node ν is\r
+pruned if neither φ(G, π0, ν) = φ(G, π0, [ν1]|ν|) or φ(G, π0, ν) ≥ φ(G, π0, [ν\r
+∗\r
+]|ν|). Such op\u0002erations have both type PA(ν\r
+∗\r
+, ν) and PB(ν1, ν), so Theorem 5 applies. Automorphisms\r
+are found by discovering leaves equivalent to ν1 or ν\r
+∗\r
+, and also to a limited extent from\r
+10
+
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+[7|5|3|1|8|6|2|0|4]\r
+[7|3|5|1|6|8|0|2|4]\r
+[5|7|1|3|8|2|6|0|4]\r
+[5|1|7|3|2|8|0|6|4]\r
+[3|7|1|5|6|0|8|2|4]\r
+[3|1|7|5|0|6|2|8|4]\r
+[1|5|3|7|2|0|8|6|4]\r
+[1|3 5|7|0 2|6 8|4]\r
+[3|1 7|5|0 6|2 8|4]\r
+[5|1 7|3|2 8|0 6|4]\r
+[7|3 5|1|6 8|0 2|4]\r
+[1|3|5|7|0|2|6|8|4]\r
+1\r
+3 3\r
+5\r
+7\r
+3\r
+5\r
+1\r
+7\r
+1\r
+7\r
+3\r
+5\r
+[1|3 5 7|0 2 6 8|4]\r
+1\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+Fig. 3. Example of a search tree for the graph of Fig. 1\r
+the properties of equitable colourings. Pruning operation PC is performed wherever pos\u0002sible, as high in the tree as possible (i.e., at the children of the nearest common ancestor\r
+of the two leaves found to be equivalent).\r
+Until a recent version of nauty, the only automorphisms used for pruning operation\r
+PC were those directly discovered, without any attempt to compose them. Now we use the\r
+random Schreier method (Seress, 2003) to perform more complete pruning. By Lemma 3,\r
+nodes ν k v1 and ν k v2 are equivalent if v1, v2 belong to the same orbit of the point\u0002wise stabiliser of ν in Γ, where Γ is the group generated by the automorphisms found\r
+so far. This stabiliser could be computed with a deterministic algorithm as proposed\r
+by Kocay (1996) and Butler and Lam (1985), but we have found the random Schreier\r
+method (Seress, 2003) to be more efficient and it doesn’t matter if occasionally (due to\r
+its probabilistic nature) it computes smaller orbits. The usefulness of this for nauty’s\r
+efficiency with some classes of difficult graph was demonstrated in 1985 by Kirk (1985)\r
+but only made it into the distributed edition of nauty in 2011.\r
+Nauty’s basic depth-first approach is also followed by Bliss and saucy. However,\r
+Traces introduces an entirely different order of generating the tree. Some variations are\r
+possible but we will first describe the normative method, which is based on a breadth-first\r
+search. Define level k to be the set of nodes ν with |ν| = k. In the k-th phase, Traces\r
+computes those nodes ν in level k which have the greatest value of φ(G, π0, ν) on that\r
+11
+
+prunedbygn\r
+1 prunedbygT\r
+1\r
+gn\r
+1=(02)(35)(68)\r
+1gT=(0682)(1375)\r
+Fig. 4. Search tree order for nauty (left) and Traces (right)\r
+level. By property (φ1), such nodes are the children of the nodes with greatest φ on the\r
+previous level, so no backtracking is needed. This order of tree generation has the big\r
+advantage that pruning operation PA is used to the maximum possible extent.\r
+As mentioned in Section 3.3, the node invariant φ(G, π0, ν) is computed incrementally\r
+during the refinement process, so that pruning operation PA can often be applied when\r
+the refinement is only partly complete.\r
+An apparent disadvantage of breadth-first order is that pruning by automorphisms\r
+(operation PC ) is only possible when automorphisms are known, which in general re\u0002quires leaves of the tree. To remedy this problem, for every node a single path, called\r
+an “experimental path”, is generated from that node down to a leaf of the tree. Auto\u0002morphisms are found by comparing the labelled graphs that correspond to those leaves,\r
+with the value of φ(G, π0, ν) at the leaf being used to avoid most unnecessary compar\u0002isons. We have found experimentally that generating experimental paths randomly tends\r
+to find automorphisms that generate larger subgroups, so that the group requires fewer\r
+generators altogether and more of the group is available early for pruning.\r
+The group generated by the automorphisms found so far is maintained using the\r
+random Schreier method. Some features of the Schreier method are turned on and off in\r
+Traces when it is possible to heuristically infer their computational weight.\r
+Figure 4 continues the example of Figure 3, showing the portion of the search tree tra\u0002versed by nauty (left) and Traces (right). Node labels indicate the order in which nodes\r
+are visited, and edge labels indicate which vertex is individualized. During its backtrack\r
+search, nauty stores the first leaf (2) for comparison with subsequent leaves. Leaves 2\r
+and 3 provide the generator g\r
+n\r
+1 = (0 2)(3 5)(6 8), which for example allows pruning of the\r
+greyed subtree formed by individualizing vertex 5 at the root. Traces executes a breadth\u0002first search, storing with each visited node the discrete partition obtained by a randomly\r
+chosen experimental path (shown by green arrow). After processing node 2 of the tree, the\r
+experimental leaves 1 and 2 are compared, revealing the generator g\r
+T\r
+1 = (0 6 8 2)(1 3 7 5),\r
+12
+
+which allows for pruning the greyed subtrees formed by individualizing vertices 5 and 7\r
+at the root.\r
+3.5. Detection of automorphisms\r
+The primary way that automorphisms are detected, in all the programs under consid\u0002eration, is to compare the labelled graphs corresponding to leaves of the search tree as\r
+described above.\r
+An important innovation of saucy (Darga et al., 2008) was to detect some types of\r
+automorphism higher in the tree. Suppose that π, π0 are equitable colourings with the\r
+same number of vertices of each colour. Any automorphism of (G, π0) that takes π onto\r
+π\r
+0 has known action on the fixed vertices of π: it maps them to the fixed vertices of π0\r
+with the same colours. In some cases that saucy can detect very quickly, this partial\r
+mapping is an automorphism when extended as the identity on the non-fixed vertices.\r
+This happens, for example, when a component of G is completely fixed by two different\r
+but equivalent stabilization sequences. This is one of the main reasons saucy can be very\r
+fast on graphs with many automorphisms that move few vertices.\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+Level L best leaf node ν\r
+Fig. 5. Traces search strategies for canonical labelling or automorphism group\r
+Traces extends this idea by finding many automorphisms that do not require the\r
+identity mapping on the non-trivial vertices. It does this by a heuristic that extends the\r
+mapping from the fixed vertices to the non-fixed vertices, which is applied in certain\r
+situations where it is more likely to succeed.\r
+When Traces is only looking for the automorphism group, and not for a canonical\r
+labelling, it employs another strategy which is sometimes much faster. Suppose that while\r
+generating the nodes on some level L, it notices (during experimental path generation)\r
+that one of them, say ν, has a child which is discrete. At this point, Traces determines\r
+and keeps all the discrete children of ν (modulo the usual automorphism pruning). Now,\r
+for all nodes ν\r
+0 on level L, a single discrete child ν00 is found, if any, and an automorphism\r
+is discovered if it is equivalent to any child of ν. The validity of this approach follows\r
+from Theorem 5 with the role of ν0 played by the first discrete child of ν.\r
+13
+
+Figure 5 (left) shows the whole tree up to level L+1, where a node labelled by X\r
+represents a discrete partition corresponding to labelled graph X, while an unlabelled\r
+(and smaller) node stands for a non-discrete partition. Figure 5 (center) shows the part\r
+of the tree which is traversed by Traces during the search for a canonical labelling. Only\r
+the best leaf is kept for comparison with subsequent discrete partitions.\r
+Figure 5 (right) shows the part of the tree which is traversed by Traces during an\r
+automorphism group computation. All the discrete children of ν are kept for comparison\r
+with subsequent discrete partitions. When the first discrete partition is found as a child\r
+of a node ν\r
+0 at level L, either it has the same labelled graph as one of those stored, or the\r
+whole subtree rooted at ν\r
+0 has no leaf with one of the stored graphs. In the first case, an\r
+automorphism is found. In both cases, the computation is resumed from the next node\r
+at level L.\r
+3.6. Low degree vertices\r
+Graphs in some applications, such as constraint satisfaction problems described by\r
+Darga et al. (2004) have many small components with vertices of low degree, vertices\r
+with common neighborhoods, and so on. Saucy handles them efficiently by a refinement\r
+procedure tuned to this situation plus early detection of sparse automorphisms. Traces\r
+employs another method. Recall that after the first refinement vertices with equal colours\r
+also have equal degrees. The target cell selector never selects cells containing vertices of\r
+degree 0, 1, 2 or n−1, and nodes whose non-trivial cells are only of those degrees are not\r
+expanded further. Special-purpose code then produces generators for the automorphism\r
+group fixed by the node and, if necessary, a unique discrete colouring that refines the\r
+node.\r
+This technique is quite successful. However, in our opinion, graphs of this type ought to\r
+be handled by preprocessing. For example, sets of vertices with the same neighborhoods\r
+ought to be replaced by single vertices with a colour that encodes the multiplicity. All\r
+tree-like appendages, long paths of degree 2 vertices, and similar easy subgraphs, could\r
+be efficiently factored out in this manner.\r
+4. Performance\r
+In the following figures, we present some comparisons between programs for a variety\r
+of graphs ranging from very easy to very difficult. We made an effort to include graphs\r
+that are easy and difficult for each of the programs tested.\r
+Most of the graphs are taken from the Bliss collection, but for the record we provide\r
+all of our test graphs at the nauty and Traces website (McKay and Piperno, 2012a).\r
+The times given are for a Macbook Pro with 2.66 GHz Intel i7 processor, compiled\r
+using gcc 4.7 and running in a single thread. Easy graphs were processed multiple times\r
+to give more precise times. In order to avoid non-typical behaviour due to the input\r
+labelling, all the graphs were randomly labelled before processing. In some classes, such as\r
+the “combinatorial graphs”, the processing time can depend a lot on the initial labelling;\r
+the plots show whatever happened in our tests.\r
+The following programs were included. Programs (c)–(e) reflect their distributed ver\u0002sions at the end of October 2012.\r
+14
+
+(a) nauty version 2.5\r
+(b) Traces version 2.0\r
+(c) saucy version 3.0\r
+(d) Bliss version 7.2\r
+(e) conauto version 2.0.1\r
+The first column of plots in each figure is for computation of the automorphism group\r
+alone. The second column is for computation of a canonical labelling, which for all the\r
+programs here includes an automorphism group computation.\r
+For nauty we used the dense or sparse version consistently within each class, depending\r
+on whether the class is inherently dense or sparse. We did not use an invariant except\r
+where indicated, even though it would often help.\r
+Saucy does not have a canonical labelling option. Version 3.0, which was released\r
+just as this paper neared completion, has an amalgam of saucy and Bliss that can do\r
+canonical labelling, but we have not tested it much.\r
+Conauto features automorphism group computation and the ability for testing two\r
+graphs for isomorphism. We decided that the latter is outside the scope of this study. For\r
+the same reason we did not include the program of Foggia et al. (2001) in our comparisons.\r
+Another excellent program, that we were unfortunately unable to include for technical\r
+reasons, is due to Stoichev (2010). Many more experiments and comments can be found\r
+at http://pallini.di.uniroma1.it.\r
+5. Conclusions\r
+We have brought the published description of nauty up to date and introduced the\r
+program Traces. In particular, we have shown that the highly innovative tree scanning\r
+algorithm introduced by Traces can have a remarkable effect on the processing power.\r
+Although none of the programs tested have the best performance on all graph classes, it is\r
+clear that Traces is currently the leader on the majority of difficult graph classes tested,\r
+while nauty is still preferred for mass testing of small graphs. An exception is provided\r
+by some classes of graphs consisting of disjoint or minimally-overlapping components,\r
+here represented by non-disjoint unions of tripartite graphs. Conauto and Bliss (Juntilla\r
+and Kaski, 2011) have special code for such graphs, but as yet nauty and Traces do not.\r
+We wish to thank Gordon Royle for many useful test graphs. We also thank the authors\r
+of saucy, Bliss and conauto for many useful discussions. The second author is indebted\r
+to Riccardo Silvestri for his strong encouragement and valuable suggestions.\r
+15
+
+References\r
+Aho, A. V., Hopcroft, J. E. and Ullman, J. D. 1974. The design and analysis of computer\r
+algorithms. Addison-Wesley. p. 86.\r
+Arlazarov, V. L., Zuev, I. I., Uskov, A. V. and Faradzev, I. A. 1974. An algorithm for the\r
+reduction of finite non-oriented graphs to canonical form. Zh. v¯ychisl. Mat. mat. Fiz.\r
+14, 737–743.\r
+Babai, L., Kantor, W. M. and Luks, E. M. 1983. Computational complexity and the\r
+classification of finite simple groups. In: Proceedings of the 24th Annual Symposium\r
+on the Foundations of Computer Science, 162–171.\r
+Beyer, T. and Proskurowski, A. 1975. Symmetries in the graph coding problem. In:\r
+Proceedings of NW76 ACM/CIPC Pac. Symp., 198–203.\r
+Bodlaender, H. 1990. Polynomial algorithms for graph isomorphism and chromatic index\r
+on partial k-trees. J. Algorithms 11, 631–643.\r
+Butler, G. and Lam, C.W. H. 1985 A general backtrack algorithm for the isomorphism\r
+problem of combinatorial objects. J. Symbolic Computation 1, 363–381.\r
+Colbourn, C. S. 1978. A Bibliography of the Graph Isomorphism Problem. Technical\r
+Report, University of Toronto.\r
+Colbourn, C. S. and Booth, K. S. 1981. Linear time automorphism algorithms for trees,\r
+interval graphs, and planar graphs. SIAM J. Comput. 10, 203–225\r
+Corneil, D. G. and Gotlieb, C. C. 1970. An efficient algorithm for graph isomorphism.\r
+JACM 17, 51–64.\r
+Darga, P. T., Liffiton, M. H., Sakallah, K. A. and Markov, I. L. 2004. Exploiting struc\u0002ture in symmetry detection for CNF. In: Proceedings of the 41st Design Automation\r
+Conference, 530–534.\r
+Darga, P. T., Sakallah, K. A. and Markov, I. L. 2004. Faster Symmetry Discovery using\r
+Sparsity of Symmetries. In: Proceedings of the 45th Design Automation Conference,\r
+149–154.\r
+Filotti, I. S. and Mayer, J. N. 1980. A polynomial-time algorithm for determining the\r
+isomorphism of graphs of fixed genus. In: Proceedings of the 12th ACM Symposium\r
+on Theory of Computing, 236–243.\r
+Foggia, P., Sansone, C. and Vento, M. 2001. A performance comparison of five algorithms\r
+for graph isomorphism. In: Proceedings of the 3rd IAPR TC-15 Workshop on Graph\u0002based Representations in Pattern Recognition, 188–199.\r
+Goldreich, O., Micali, S. and Wigderson, A. 1991. Proofs that yield nothing but their\r
+validity, or all languages in np have zero-knowledge proof systems. JACM 38, 690–728.\r
+Grohe, M. 2010. Fixed-point definability and polynomial time on graphs with excluded\r
+minors. In: Proceedings of the 25th Annual IEEE Symposium on Logic in Computer\r
+Science, 179–188.\r
+Grohe, M. 2012. Structural and Logical Approaches to the Graph Isomorphism Problem,\r
+In: Proceedings of the 23rd Annual ACM-SIAM Symposium on Discrete Algorithms,\r
+188.\r
+Junttila, T. and Kaski, P. 2007. Engineering an efficient canonical labeling tool for large\r
+and sparse graphs. In: Proceedings of the 9th Workshop on Algorithm Engineering\r
+and Experiments and the 4th Workshop on Analytic Algorithms and Combinatorics,\r
+135–149.\r
+16
+
+Junttila, T. and Kaski, P. 2011. Conflict Propagation and Component Recursion for\r
+Canonical Labeling. In: Proceedings of the 1st International ICST Conference on The\u0002ory and Practice of Algorithms, 151–162.\r
+Kirk, A. 1985. Efficiency considerations in the canonical labelling of graphs. Technical\r
+report TR-CS-85-05, Computer Science Department, Australian National University.\r
+Kocay, W. 1996. On writing isomorphism programs. In: Wallis, W. D. (Ed.), Computa\u0002tional and Constructive Design Theory, Kluwer, 135–175.\r
+Leon, J. S. 1990. Permutation group algorithms based on partitions, I: Theory and algo\u0002rithms. J. Symbolic Comput. 43, 545–581.\r
+L´opez-Presa, J. L. and Fern´andez Anta, A. 2009. Fast algorithm for graph isomorphism\r
+testing. In: Proceedings of the 8th International Symposium on Experimental Algo\u0002rithms, 221–232.\r
+L´opez-Presa, J. L., Fern´andez Anta, A. and N´u˜nez Chiroque, L. 2011. Conauto-2.0: Fast\r
+isomorphism testing and automorphism group computation. Preprint 2011. Available\r
+at http://arxiv.org/abs/1108.1060.\r
+Luks, E. 1982. Isomorphism of graphs of bounded valence can be tested in polynomial\r
+time. J. Comp. System Sci. 25, 42–65.\r
+McKay, B. D 1978a. Backtrack programming and isomorph rejection on ordered subsets.\r
+Ars Combin. 5, 65–99.\r
+McKay, B. D 1978b. Computing automorphisms and canonical labellings of graphs. In:\r
+Combinatorial Mathematics, Lecture Notes in Mathematics, 686. Springer-Verlag,\r
+Berlin, 223–232.\r
+McKay, B. D. 1980. Practical graph isomorphism. Congr. Numer. 30, 45–87.\r
+McKay, B. D. and Piperno, A. 2012a. nautyTraces, Software distribution web page.\r
+http://cs.anu.edu.au/∼bdm/nauty/ and http://pallini.di.uniroma1.it/.\r
+McKay, B. D. and Piperno, A. 2012b. nauty and Traces User’s Guide (Version 2.5).\r
+Available at McKay and Piperno (2012a).\r
+Miller, G. L. 1980 Isomorphism testing for graphs of bounded genus. In: Proceedings of\r
+the 12th ACM Symposium on Theory of Computing, 225–235.\r
+Parris, R. and Read, R. C. 1969. A coding procedure for graphs. Scientific Report.\r
+UWI/CC 10. Univ. of West Indies Computer Centre.\r
+Piperno, A. 2008. Search space contraction in canonical labeling of graphs. Preprint\r
+2008–2011. Available at http://arxiv.org/abs/0804.4881.\r
+Ponomarenko, I. N. 1988. The isomorphism problem for classes of graphs that are invari\u0002ant with respect to contraction (Russian). Zap. Nauchn. Sem. Leningrad. Otdel. Mat.\r
+Inst. Steklov. (LOMI) 174, no. Teor. Slozhn. Vychisl. 3, 147–177.\r
+Read, R. C. and Corneil, D. G. 1977. The graph isomorphism disease. J. Graph Theory\r
+1, 339–363.\r
+Seress, A. 2003. Permutation Group Algorithms. Cambridge University Press, pp. x+264. ´\r
+Stoichev, S. D. 2010. Polynomial time and space exact and heuristic algorithms for de\u0002termining the generators, orbits and order of the graph automorphism group. Preprint\r
+2010. Available at http://arxiv.org/abs/1007.1726.\r
+17
+
+Automorphism group Canonical label\r
+Random graphs with p =\r
+1\r
+2\r
+101 102 103\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+101 102 103\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+Random graphs with p = n\r
+−1/2\r
+101 102 103 104\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+101 102 103 104\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+Random cubic graphs (nauty invariant distances(2))\r
+2,000 4,000 6,000 8,000 10,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+2,000 4,000 6,000 8,000 10,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+Bliss saucy conauto nauty nauty with invariant Traces\r
+Fig. 6. Performance comparison (horizontal: number of vertices; vertical: time in seconds)\r
+18
+
+Automorphism group Canonical label\r
+Hypercubes (vertex-transitive)\r
+101 102 103 104 105 106\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+101 102 103 104 105 106\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+Miscellaneous vertex-transitive graphs\r
+101 102 103 104\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+101 102 103 104\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+(Non-disjoint) union of tripartite graphs\r
+200 400 600 800 1,000 10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+200 400 600 800 1,000\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 7. Performance comparison (horizontal: number of vertices; vertical: time in seconds)\r
+19
+
+Automorphism group Canonical label\r
+Small strongly-regular graphs\r
+100 200 300 400 500 10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+100 200 300 400 500 10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+Large strongly-regular graphs\r
+500 1,000 1,500 2,000 2,500\r
+10−1\r
+100\r
+101\r
+102\r
+500 1,000 1,500 2,000 2,500\r
+100\r
+101\r
+102\r
+timeout: 600 secs\r
+Hadamard matrix graphs\r
+0 200 400 600 800 1,000\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+0 200 400 600 800 1,000\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 8. Performance comparison (horizontal: number of vertices; vertical: time in seconds)\r
+20
+
+Automorphism group Canonical label\r
+Random trees\r
+101 102 103 104 105\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+101 102 103 104 105\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Cai-F¨urer-Immerman graphs\r
+200 400 600 800 1,200 1,600 2,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+200 400 600 800 1,200 1,600 2,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+Miyazaki graphs\r
+200 400 600 800 1,000 1,200\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+200 400 600 800 1,000 1,200\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 9. Performance comparison (horizontal: number of vertices; vertical: time in seconds)\r
+21
+
+Automorphisms groups of projective planes of order 16\r
+(regular bipartite graphs of order 546 and degree 17)\r
+P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+104\r
+timeout: 3600 secs # group size orbits\r
+P1 3.42171648e10 1\r
+P2 921,600 6\r
+P3 884,736 3\r
+P4 258,048 6\r
+P5 147,456 3\r
+P6 92,160 8\r
+P7 55,296 8\r
+P8 18,432 5\r
+P9 12,288 6\r
+P10 3,840 10\r
+P11 3,456 12\r
+P12 2,304 14\r
+Automorphisms of some combinatorial graphs\r
+C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+timeout: 3600 secs # (V, E) group size orbits\r
+C1 (3650, 598600) 324 30\r
+C2 (15984, 10725264) 2,125,873,200 2\r
+C3 (7300, 2693700) 188,956,800 2\r
+C4 (2752, 481600) 38,723,328 2\r
+C5 (900000, 1200000) 600,000 2\r
+C6 (15984, 10725264) 231,913,440 2\r
+C7 (1302, 16926) 1,488,000 2\r
+C8 (8322, 270465) 43,352,064 8\r
+C9 (3650, 598600) 72 65\r
+C10 (3276, 245700) 9,000,000 3\r
+C11 (756, 49140) 9,000,000 2\r
+C12 (1514, 21196) 122,472 4\r
+Canonical labelling of the above graphs\r
+P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+timeout: 3600 secs\r
+Bliss saucy conauto nauty nauty with invariant cellfano2 Traces\r
+Fig. 10. Performance comparison (horizontal: graph number; vertical: time in seconds)\r
+22"""
+
+[metadata]
+title = "arxiv 1301.1493 mckay piperno 2013 practical graph isomorphism II"
+authors = ["Unknown"]
+arxiv = "1301.1493"
+year = 2013
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Practical graph isomorphism, II\r
+Brendan D. McKay\r
+Research School of Computer Science, Australian National University, Canberra ACT 0200,\r
+Australia 1\r
+Adolfo Piperno\r
+Dipartimento di Informatica, Sapienza Universit`a di Roma, Via Salaria 113, I-00198 Roma,\r
+Italy\r
+Abstract\r
+We report the current state of the graph isomorphism problem from the practical point of view.\r
+After describing the general principles of the refinement-individualization paradigm and proving\r
+its validity, we explain how it is implemented in several of the key programs. In particular, we\r
+bring the description of the best known program nauty up to date and describe an innova\u0002tive approach called Traces that outperforms the competitors for many difficult graph classes.\r
+Detailed comparisons against saucy, Bliss and conauto are presented.\r
+Email addresses: bdm@cs.anu.edu.au (Brendan D. McKay), piperno@di.uniroma1.it (Adolfo\r
+Piperno)."""
+
+[[sections]]
+number = "1"
+title = "Supported by the Australian Research Council."
+text = """
+Preprint submitted to Elsevier — nautytraces2b — 27 November 2024 —\r
+arXiv:1301.1493v1 [cs.DM] 8 Jan 2013"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+An isomorphism between two graphs is a bijection between their vertex sets that pre\u0002serves adjacency. An automorphism is an isomorphism from a graph to itself. The set of\r
+all automorphisms of a graph G form a group under composition called the automorphism\r
+group Aut(G).\r
+The graph isomorphism problem (GI) is that of determining whether there is an\r
+isomorphism between two given graphs. GI has long been a favorite target of algorithm\r
+designers—so much so that it was already described as a “disease” in 1976 (Read and\r
+Corneil, 1977).\r
+Though it is not the focus of this paper, we summarize the current state of the the\u0002oretical study of graph isomorphism. It is obvious that GI ∈ NP but unknown whether\r
+GI ∈ co-NP. As that implies, no polynomial time algorithm is known (despite many\r
+published claims), but neither is GI known to be NP-complete. NP-completeness is con\u0002sidered unlikely since it would imply collapse of the polynomial-time hierarchy (Goldre\u0002ich et al., 1991). The fastest proven running time for GI has stood for three decades at\r
+e\r
+O(\r
+√\r
+n log n)\r
+(Babai et al., 1983).\r
+On the other hand, polynomial time algorithms are known for many special classes of\r
+graphs. The most general such classes are those with a forbidden minor (Ponomarenko,\r
+1988; Grohe, 2010) and those with a forbidden topological minor (Grohe, 2012). These\r
+classes include many earlier classes such as graphs of bounded degree (Luks, 1982),\r
+bounded genus (Filotti and Mayer, 1980; Miller, 1980) and bounded tree-width (Bod\u0002laender, 1990). The algorithms resulting from this theory are most unlikely to be useful\r
+in practice. Only for a very few important graph classes, such as trees (Aho et al., 1974)\r
+and planar graphs (Colbourn and Booth, 1981) are there practical approaches which are\r
+sure to outperform general methods such as described in this paper.\r
+Testing two graphs for isomorphism directly can have the advantage that an isomor\u0002phism might be found long before an exhaustive search is complete. On the other hand,\r
+it is poorly suited for the common problems of rejecting isomorphs from a collection of\r
+graphs or identifying a graph in a database of graphs. For this reason, the most common\r
+practical approach is “canonical labelling”, a process in which a graph is relabeled in such\r
+a way that isomorphic graphs are identical after relabelling. When we have an efficient\r
+canonical labelling procedure, we can use a sorting algorithm for removing isomorphs\r
+from a large collection and standard data structures for database retrieval.\r
+It is impossible to comprehensively survey the history of this problem since there are\r
+at least a few hundred published algorithms. However, a clear truth of history is that\r
+the most successful approach has involved fixing of vertices together with refinement of\r
+partitions of the vertex set. This “individualization-refinement” paradigm was introduced\r
+by Parris and Read (1969) and developed by Corneil and Gotlieb (1970) and Arlazarov et\r
+al. (1974). However, the first program that could handle both structurally regular graphs\r
+with hundreds of vertices and graphs with large automorphism groups was that of McKay\r
+(1978b, 1980), that later became known as nauty. The main advantage of nauty over\r
+earlier programs was its innovative use of automorphisms to prune the search. Although\r
+there were some worthy competitors (Leon, 1990; Kocay, 1996), nauty dominated the\r
+field for the next several decades.\r
+This situation changed when Darga et al. (2004) introduced saucy, which at that stage\r
+was essentially a reimplementation of the automorphism group subset of nauty using\r
+2
+
+sparse data structures. This gave it a very large advantage for many graphs of practical\r
+interest, prompting the first author to release a version of nauty for sparse graphs. Saucy\r
+has since introduced some important innovations, such as the ability to detect some types\r
+of automorphism (such as those implied by a locally tree-like structure) very early (Darga\r
+et al., 2008). Soon afterwards Juntilla and Kaski (2007, 2011) introduced Bliss, which\r
+also used the same algorithm but had some extra ideas that helped its performance on\r
+difficult graphs. In particular, it allowed refinement operations to be aborted early in\r
+some cases. The latter idea reached its full expression in Traces, which we introduce in\r
+this paper. More importantly, Traces pioneered a major revision of the way the search\r
+tree is scanned, which we will demonstrate to produce great efficiency gains.\r
+Another program worthy of consideration is conauto (L´opez-Presa and Fern´andez\r
+Anta, 2009; L´opez-Presa et al., 2011). It does not feature canonically labelling, though\r
+it can compare two graphs for isomorphism.\r
+In Section 2, we provide a description of algorithms based on the individualization\u0002refinement paradigm. It is sufficiently general to encompass the primary structure of all\r
+of the most successful algorithms. In Section 3, we flesh out the details of how nauty and\r
+Traces are implemented, with emphasis on how they differ from differ. In Section 4, we\r
+compare the performance of nauty and Traces with Bliss, saucy and conauto when\r
+applied to a variety of families of graphs ranging from those traditionally easy to the\r
+most difficult known. Although none of the programs is the fastest in all cases, we will\r
+see that nauty is generally the fastest for small graphs and some easier families, while\r
+Traces is better, sometimes in dramatic fashion, for most of the difficult graph families."""
+
+[[sections]]
+number = "2"
+title = "Generic Algorithm"
+text = """
+In this section, we give formal definitions of colourings (partitions), invariants, and\r
+group actions. We then define the search tree which is at the heart of most recent graph\r
+isomorphism algorithms and explain how it enables computation of automorphism groups\r
+and canonical forms. This section is intended to be a self-contained introduction to the\r
+overall strategy and does not contain new features.\r
+Let G = Gn denote the set of graphs with vertex set V = {1, 2, . . . , n}."""
+
+[[sections]]
+number = "2.1"
+title = "Colourings"
+text = """
+A colouring of V (or of G ∈ G) is a surjective function π from V onto {1, 2, . . . , k} for\r
+some k. The number of colours, i.e. k, is denoted by |π|. A cell of π is the set of vertices\r
+with some given colour; that is, π\r
+−1\r
+(j) for some j with 1 ≤ j ≤ |π|. A discrete colouring\r
+is a colouring in which each cell is a singleton, in which case |π| = n. Note that a discrete\r
+colouring is a permutation of V .\r
+If π, π0 are colourings, then π\r
+0\r
+is finer than or equal to π, written π\r
+0 \u0016 π, if π(v) <\r
+π(w) ⇒ π\r
+0\r
+(v) < π0(w) for all v, w ∈ V . (This implies that each cell of π\r
+0\r
+is a subset of a\r
+cell of π, but the converse is not true.)\r
+Since a colouring partitions V into cells, it is frequently called a partition. However,\r
+note that the colours come in a particular order and this matters when defining concepts\r
+like “finer”.\r
+A pair (G, π), where π is a colouring of G, is called a coloured graph.\r
+3"""
+
+[[sections]]
+number = "2.2"
+title = "Group actions and isomorphisms"
+text = """
+Let Sn denote the symmetric group acting on V . We indicate the action of elements\r
+of Sn by exponentiation. That is, for v ∈ V and g ∈ Sn, v\r
+g\r
+is the image of v under g.\r
+The same notation indicates the induced action on complex structures derived from V ;\r
+in particular:\r
+(a) If W ⊆ V , then Wg = {w\r
+g\r
+: w ∈ W}, and similarly for sequences.\r
+(b) If G ∈ G, then Gg ∈ G has v\r
+g adjacent to wg\r
+exactly when v and w are adjacent\r
+in G. As a special case, a discrete colouring π is a permutation on V so we can\r
+write Gπ.\r
+(c) If π is a colouring of V , then π\r
+g\r
+is the colouring with π\r
+g\r
+(v) = π(v\r
+g\r
+) for each v ∈ V .\r
+(d) If (G, π) is a coloured graph, then (G, π)\r
+g = (Gg\r
+, πg).\r
+Two coloured graphs (G, π),(G0, π0) are isomorphic if there is g ∈ Sn such that\r
+(G0, π0) = (G, π)\r
+g\r
+, in which case we write (G, π) ∼= (G0, π0). Such a g is called an isomor\u0002phism. The automorphism group Aut(G, π) is the group of isomorphisms of the coloured\r
+graph (G, π) to itself; that is,\r
+Aut(G, π) = {g ∈ Sn : (G, π)\r
+g = (G, π)}.\r
+A canonical form is a function\r
+C : G × Π → G × Π\r
+such that, for all G ∈ G, π ∈ Π and g ∈ Sn,\r
+(C1) C(G, π) ∼= (G, π),\r
+(C2) C(Gg, πg) = C(G, π).\r
+In other words, it assigns to each coloured graph an isomorphic coloured graph that\r
+is a unique representative of its isomorphism class. It follows from the definition that\r
+(G, π) ∼= (G0\r
+, π0) ⇔ C(G, π) = C(G0, π0).\r
+Property (C2) is an important property that must be satisfied by many functions\r
+we define. It says that if the elements of V appearing in the inputs to the function are\r
+renamed in some manner, the elements of V appearing in the function value are renamed\r
+in the same manner. We call this label-invariance."""
+
+[[sections]]
+number = "2.3"
+title = "Search tree"
+text = """
+Now we define a rooted tree whose nodes correspond to sequences of vertices, with the\r
+empty sequence at the root of the tree. The sequences become longer as we move down\r
+the tree. Each sequence corresponds to a colouring of the graph obtained by giving the\r
+vertices in the sequence unique colours then inferring in a controlled fashion a colouring\r
+of the other vertices. Leaves of the tree correspond to sequences for which the derived\r
+colouring is discrete.\r
+To formally define the tree, we first define a “refinement function” that specifies the\r
+colouring that corresponds to a sequence. Let V\r
+∗ denote the set of finite sequences of ver\u0002tices. For ν ∈ V\r
+∗\r
+, |ν| denotes the number of components of ν. If ν = (v1, . . . , vk) ∈ V\r
+∗ and\r
+w ∈ V , then ν kw denotes (v1, . . . , vk, w). Furthermore, for 0 ≤ s ≤ k, [ν]s = (v1, . . . , vs).\r
+The ordering ≤ on finite sequences is the lexicographic order: If ν = (v1, . . . , vk) and\r
+ν\r
+0 = (v0\r
+1\r
+, . . . , v0\r
+`\r
+), then ν ≤ ν\r
+0\r
+if ν is a prefix of ν\r
+0 or there is some j ≤ min{k, `} such\r
+that vi = v\r
+0\r
+i\r
+for i < j and vj < v0\r
+j\r
+."""
+
+[[sections]]
+number = "4"
+title = "A refinement function is a function"
+text = """
+R : G × Π × V\r
+∗ → Π\r
+such that for any G ∈ G, π ∈ Π and ν ∈ V\r
+∗\r
+,\r
+(R1) R(G, π, ν) \u0016 π;\r
+(R2) if v ∈ ν, then {v} is a cell of R(G, π, ν);\r
+(R3) for any g ∈ Sn, we have R(Gg, πg, νg) = R(G, π, ν)\r
+g\r
+.\r
+To complete the definition of the tree, we need to specify what are the children of each\r
+node. We do this by choosing one non-singleton cell of the colouring, called the target\r
+cell, and appending an element of it to the sequence.\r
+A target cell selector chooses a non-singleton cell of a colouring, if there is one. For\u0002mally, it is a function\r
+T : G × Π × V\r
+∗ → 2V\r
+such that for any π0 ∈ Π, G ∈ G and ν ∈ V\r
+∗\r
+,\r
+(T1) if R(G, π0, ν) is discrete, then T(G, π0, ν) = ∅;\r
+(T2) if R(G, π0, ν) is not discrete, then T(G, π0, ν) is a non-singleton cell of R(G, π0, ν);\r
+(T3) for any g ∈ Sn, we have T(Gg, πg, νg) = T(G, π, ν)\r
+g\r
+.\r
+Now we can define the search tree T (G, π0) depending on an initially-specified coloured\r
+graph (G, π0). The nodes of the tree are elements of V\r
+∗\r
+.\r
+(a) The root of T (G, π0) is the empty sequence ( ).\r
+(b) If ν is a node of T (G, π0), let W = T(G, π0, ν). Then the children of π are\r
+{ν k w : w ∈ W}.\r
+This definition implies by (T2) that a node ν of T (G, π0) is a leaf iff R(G, π0, ν) is\r
+discrete.\r
+For any node ν of T (G, π0), define T (G, π0, ν) to be the subtree of T (G, π0) consisting\r
+of ν and all its descendants. The following lemmas are easily derived using induction from\r
+the definition of the search tree and the properties of the functions R, T and I.\r
+Lemma 1. For any G ∈ G, π0 ∈ Π, g ∈ Sn, we have T (Gg, π\r
+g\r
+0\r
+) = T (G, π0)\r
+g\r
+.\r
+Proof. Let ν = (v1, . . . , vk) be a node of T (G, π0). It is easily proved by induction on s\r
+that [ν\r
+g\r
+]s is a node of T (Gg, π\r
+g\r
+0\r
+) for 0 ≤ s ≤ k. Therefore, T (G, π0)\r
+g ⊆ T (Gg\r
+, π\r
+g\r
+0\r
+). The\r
+reverse inclusion follows on considering g\r
+−1\r
+instead, so the lemma is proved. ✷\r
+Corollary 2. Let ν be a node of T (G, π0) and let g ∈ Aut(G, π0). Then ν\r
+g\r
+is a node of\r
+T (G, π0) and T (G, π0, νg) = T (G, π0, ν)\r
+g\r
+.\r
+Proof. This follows from Lemma 1 on noticing that (G, π0)\r
+g = (G, π) if g ∈ Aut(G, π0). ✷\r
+Lemma 3. Let ν be a node of T (G, π0) and let π = R(G, π0, ν). Then Aut(G, π) is the\r
+point-wise stabilizer of ν in Aut(G, π0).\r
+Proof. By condition (R2), every element of Aut(G, π) stabilizes ν. Conversely, suppose\r
+g ∈ Aut(G, π0) stabilizes ν. Then by (R3), π\r
+g = R(G, π0, ν)g = R(G, π0, ν) = π, so\r
+g ∈ Aut(G, π). ✷\r
+5"""
+
+[[sections]]
+number = "2.4"
+title = "Automorphisms and canonical forms"
+text = """
+Now we describe how the search tree T (G, π0), defined as in the previous subsection,\r
+can be used to compute Aut(G, π0) and a canonical form.\r
+Let Ω be some totally ordered set. A node invariant is a function\r
+φ : G × Π × V\r
+∗ → Ω,\r
+such that for any π0 ∈ Π, G ∈ G, and distinct ν, ν0 ∈ T (G, π0),\r
+(φ1) if |ν| = |ν\r
+0\r
+| and φ(G, π0, ν) < φ(G, π0, ν0), then for every leaf ν1 ∈ T (G, π0, ν) and\r
+leaf ν\r
+0\r
+1 ∈ T (G, π0, ν0\r
+) we have φ(G, π0, ν1) < φ(G, π0, ν0\r
+1\r
+);\r
+(φ2) if π = R(G, π0, ν) and π\r
+0 = R(G, π0, ν0\r
+) are discrete, then φ(G, π0, ν) = φ(G, π0, ν0)\r
+⇔ Gπ = Gπ\r
+0\r
+(note that the last relation is equality, not isomorphism);\r
+(φ3) for any g ∈ Sn, we have φ(Gg, π\r
+g\r
+0\r
+, νg) = φ(G, π0, ν).\r
+Say that leaves ν, ν0 are equivalent if φ(G, π0, ν) = φ(G, π0, ν0). If this is the case, there\r
+is a unique g ∈ Aut(G, π0) such that ν\r
+g = ν0\r
+, namely g = R(G, π0, ν0)R(G, π0, ν)\r
+−1\r
+.\r
+(Recall that R(G, π0, ν) is a permutation if ν is a leaf.)\r
+According to Corollary 2, if ν is a leaf of T (G, π0), then so is ν\r
+g\r
+for any g ∈ Aut(G, π0).\r
+Moreover, by the properties of φ these leaves (over g ∈ Aut(G, π0)) have the same value\r
+of φ and no other leaf has that value. Consequently, for any leaf ν,\r
+Aut(G, π0) = {R(G, π0, ν0)R(G, π0, ν)\r
+−1\r
+: ν\r
+0\r
+is a leaf of T (G, π0) with φ(G, π0, ν0) = φ(G, π0, ν)}.\r
+To define a canonical form, let\r
+φ\r
+∗\r
+(G, π0) = max{φ(G, π0, ν) : ν is a leaf of T (G, π0)},\r
+and let ν\r
+∗ be any leaf of T (G, π0) that achieves the maximum. Now define C(G, π0) =\r
+(G, π0)\r
+R(G,π0,ν∗)\r
+. By the properties of φ, C(G, π0) thus defined is independent of the\r
+choice of ν\r
+∗\r
+. In particular, we have:\r
+Lemma 4. The function\r
+C : G × Π → G × Π\r
+as just defined is a canonical form.\r
+These observations provide an algorithm for computing Aut(G, π0) and C(G, π0), once\r
+we have defined T and φ. In practice it is not of much use, since the search tree can\r
+be extremely large and the group is found element by element rather than as a set\r
+of generators. However, in practice we can dramatically improve the performance by\r
+judicious pruning of the tree.\r
+When we refer to a leaf of T (G, π0), we always mean a node ν of T (G, π0) for which\r
+R(G, π0, ν) is discrete, even if our pruning of the tree results in additional nodes having\r
+no children.\r
+We define three types of pruning operation on the search tree.\r
+(A) Suppose ν, ν0 are distinct nodes of T (G, π0) with |ν| = |ν|\r
+0 and φ(G, π0, ν) >\r
+φ(G, π0, ν0). Operation PA(ν, ν0) is to remove T (G, π0, ν0).\r
+(B) Suppose ν, ν0 are distinct nodes of T (G, π0) with |ν| = |ν|\r
+0 and φ(G, π0, ν) 6=\r
+φ(G, π0, ν0). Operation PB(ν, ν0) is to remove T (G, π0, ν0).\r
+(C) Suppose g ∈ Aut(G, π0) and suppose ν < ν0 are nodes of T (G, π0) such that\r
+ν\r
+g = ν0\r
+. Operation PC (ν, g) is to remove T (G, π0, ν0)."""
+
+[[sections]]
+number = "6"
+title = "Theorem 5. Consider any G ∈ G and π0 ∈ Π."
+text = """
+(a) Suppose any sequence of operations of the form PA(ν, ν0) or PC (ν, g) are performed.\r
+Then there remains at least one leaf ν1 with φ(G, π0, ν1) = φ\r
+∗\r
+(G, π0).\r
+(b) Let ν0 be some fixed leaf of T (G, π0). Suppose any sequence of operations of the\r
+form PB(ν, ν0) or PC (ν\r
+00, g) are performed, where φ(G, π0, ν00) 6= φ(G, π0, [ν0]|ν00|).\r
+Let g1, . . . , gk be the automorphisms used in the operations PC that were performed,\r
+and let\r
+A = {g ∈ Aut(G, π0) : ν\r
+g\r
+0\r
+is a remaining leaf }.\r
+Then Aut(G, π0) is generated by {g1, . . . , gk} ∪ A.\r
+Proof. To prove claim (a), note that the lexicographically least leaf ν1 with φ(G, π0, ν1) =\r
+φ\r
+∗\r
+(G, π0) is never removed.\r
+For claim (b), note that the lexicographically least leaf ν1 equivalent to ν0 is not\r
+removed by the allowed operations. Choose an arbitrary g ∈ Aut(G, π0). By Corollary 2,\r
+ν\r
+g\r
+0\r
+is a leaf of T (G, π0). If it has been removed, that must have been by some PC (ν\r
+00, gi)\r
+with ν\r
+00 < νg\r
+, since operation PB(ν, ν0) only removes leaves inequivalent to ν0. Note\r
+that ν\r
+gg\r
+−1\r
+i\r
+0\r
+is a leaf descended from ν\r
+00 and ν\r
+gg\r
+−1\r
+i\r
+0 < νg0\r
+. If ν\r
+gg\r
+−1\r
+i\r
+0\r
+, has been removed,\r
+that must have been due to some PC (ν\r
+000, gj ) with ν000 < ν\r
+gg\r
+−1\r
+i\r
+0\r
+, so consider the leaf\r
+ν\r
+gg\r
+−1\r
+i\r
+g\r
+−1\r
+j\r
+0 < ν\r
+gg\r
+−1\r
+i"""
+
+[[sections]]
+number = "0"
+title = "Continuing in this way we must eventually find a leaf that has not"
+text = """
+been removed, since the leaf ν1 is still present. That is, there is some h ∈ hg1, . . . , gki\r
+such that leaf ν\r
+gh\r
+0 has not been removed. This proves g belongs to the group generated\r
+by {g1, . . . , gk} ∪ A, as we wished to prove. ✷\r
+The theorem leaves unspecified where the automorphisms for PC (ν, g) operations come\r
+from. They might be provided in advance, detected by noticing two leaves are equivalent,\r
+or otherwise. This is discussed in the following section."""
+
+[[sections]]
+number = "3"
+title = "Implementation strategies"
+text = """
+In this section, we describe two implementations of the generic algorithm, which are\r
+distributed together as nauty and Traces (McKay and Piperno, 2012a)."""
+
+[[sections]]
+number = "3.1"
+title = "Refinement"
+text = """
+Let G ∈ G. A colouring of G is called equitable if any two vertices of the same colour\r
+are adjacent to the same number of vertices of each colour. 2\r
+It is well known that for every colouring π there is a coarsest equitable colouring π\r
+0\r
+such that π\r
+0 \u0016 π, and that π0\r
+is unique up to the order of its cells. An algorithm for\r
+computing π\r
+0 appears in McKay (1980). We summarize it in Algorithm 1.\r
+Let F(G, π, α) be the function defined by Algorithm 1, which we assume to be imple\u0002mented in a label-invariant manner. Now define the function\r
+I : Π × V → Π,\r
+2 Unfortunately, “equitable colouring” also has another meaning in graph theory. More commonly, our\r
+concept is called an equitable partition."""
+
+[[sections]]
+number = "7"
+title = "Data: π is the input colouring and α is a sequence of some cells of π"
+text = """
+Result: the final value of π is the output colouring\r
+while α is not empty and π is not discrete do\r
+Remove some element W from α.\r
+for each cell X of π do\r
+Let X1, . . . , Xk be the fragments of X distinguished according\r
+to the number of edges from each vertex to W.\r
+Replace X by X1, . . . , Xk in π.\r
+if X ∈ α then\r
+Replace X by X1, . . . , Xk in α.\r
+else\r
+Add all but one of the largest of X1, . . . , Xk to α.\r
+end\r
+end\r
+end\r
+Algorithm 1: Refinement algorithm F(G, π, α)\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6"""
+
+[[sections]]
+number = "2"
+title = "Fig. 1. Example of an equitable colouring"
+text = """
+such that, if v is a vertex in a non-singleton cell of π and π\r
+0 = I(π, v), then for w ∈ V ,\r
+π\r
+0\r
+(w) = (\r
+π(w), if π(w) < π(v) or w = v;\r
+π(w) + 1, otherwise.\r
+We see that I(π, v) differs from π in that a unique colour has been given to vertex v.\r
+Now we can define a refinement function. For a sequence of vertices v1, v2, . . . , define\r
+R(G, π0,( )) = F(G, π0, a list of all the cells of π0),\r
+R(G, π0,(v1)) = F\r
+\r
+G, I(R(G, π0,( )), v1),({v1})\r
+\u0001\r
+,\r
+R(G, π0,(v1, v2)) = F\r
+\r
+G, I(R(G, π0,(v1)), v2),({v2}))\u0001,\r
+R(G, π0,(v1, v2, v3)) = F\r
+\r
+G, I(R(G, π0,(v1, v2)), v3),({v3}))\u0001,\r
+and so on. According to Theorem 2.7 and Lemma 2.8 of McKay (1980), R satisfies (R1)–\r
+(R3) and, moreover, R(G, π0, ν) is equitable.\r
+In practice most of the execution time of the whole algorithm is devoted to refining\r
+colourings, so the implementation is critical. Since the splitting of X into fragments can\r
+8
+
+be coded more efficiently if W is a singleton, we have found it advantageous to choose\r
+singletons out of α in preference to larger cells.\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6"""
+
+[[sections]]
+number = "2"
+title = "Fig. 2. Individualization of vertex 1 and subsequent refinement"
+text = """
+While the function R defined above is sufficient for many graphs, there are difficult\r
+classes (see Section 4) for which it does not adequately separate inequivalent vertices.\r
+Regular graphs are the simplest example, since the colouring with only one colour is\r
+equitable. A simple way of doing better is to count the number of triangles incident to\r
+each vertex. In choosing such a strategy, there is a trade-off between the partitioning\r
+power and the cost. nauty provides a small library of stronger partitioning functions,\r
+some of them designed for particular classes of difficult graphs. The improvement in\r
+performance can be very dramatic. On the other hand, choice of which partitioning\r
+function to employ is left to the user and requires skill, which is not very satisfactory.\r
+Traces has a different approach to this problem, as we will see in Section 3.3."""
+
+[[sections]]
+number = "3.2"
+title = "Target cell selection"
+text = """
+The choice of target cell has a significant effect on the shape of the search tree, and\r
+thus on performance. A small target cell may perhaps have a greater chance of being an\r
+orbit of the group which fixes the current stabilizer sequence. For this reason, McKay\r
+(1980) recommended using the first smallest non-singleton cell. However, Kocay (1996)\r
+found (without realizing it) that using the first non-singleton cell regardless of size was\r
+better for most test cases, as confirmed by Kirk (1985). The current version of nauty\r
+has two strategies. One is to use the first non-singleton cell, and the other is to choose\r
+the first cell which is joined in a non-trivial fashion to the largest number of cells, where\r
+a non-trivial join between two cells means that there is more than 0 edges and less than\r
+the maximum possible.\r
+Traces, on the other hand prefers large target cells, as they tend to make the tree less\r
+deep. A strategy developed by experiment is to use the first largest non-singleton cell\r
+that is a subset of the target cell in the parent node. If there are no such non-singleton\r
+cells, the target cell in the grandparent node is used, and so on, with the first largest cell\r
+altogether being the last possibility."""
+
+[[sections]]
+number = "3.3"
+title = "Node invariants"
+text = """
+Information useful for computing node invariants can come from two related sources.\r
+At each node ν there is a colouring R(G, π0, ν) and we can use properties of this colouring\r
+such as the number and size of the cells, as well as combinatorial properties of the coloured\r
+9
+
+graph. Another source is the intermediate states of the computation of a colouring from\r
+that of the parent node, such as the order, position and size of the cells produced by\r
+the refinement procedure and various counts of edges that are determined during the\r
+computation.\r
+If f(ν) is some function of this information, computed during the computation of\r
+R(G, π0, ν) and from the resulting coloured graph, the vector \r
+f([ν]0), f([ν]1), . . . , f(ν)\r
+\u0001\r
+,\r
+with lexicographic ordering, satisfies Conditions (φ1) and (φ3) for a node invariant. If ν\r
+is a leaf, we can append Gπ, where π is the discrete colouring R(G, π0, ν), to the vector\r
+so as to satisfy (φ2) as well.\r
+In nauty, the value of f(ν) is an integer, and the pruning rules are applied as each\r
+node is computed. Traces introduced a major improvement, defining each f(ν) as a\r
+vector itself. The primary components of f(ν) are the sizes and positions of the cells in\r
+the order that they are created by the refinement procedure. φ(G, π0, ν) thus becomes\r
+a vector of vectors, called the trace (and hence the name “Traces”). The advantage is\r
+that it often enables the comparison of f(ν) and f(ν\r
+0\r
+) to be made while the computation\r
+of ν\r
+0\r
+is only partly complete. A limited form of this idea appeared in Bliss (Juntilla\r
+and Kaski, 2007), and also appears in a recent version of saucy (Darga et al., 2008).\r
+For many difficult graph families, only a fraction of all refinement operations need to be\r
+completed. A practical consequence is that the stronger refinements used by nauty (see\r
+Section 3.1) are rarely needed. This makes good performance in Traces less dependent\r
+on user expertise than is the case with nauty.\r
+If π is an equitable colouring of a graph G, we can define a the quotient graph Q(G, π)\r
+as follows. The vertices of Q(G, π) are the cells of π, labelled with the cell number and\r
+size. For any two cells C1, C2 ∈ π, possibly equal, the corresponding vertices of Q(G, π)\r
+are joined by an edge labelled with the number of edges of G between C1 and C2.\r
+The node invariant φ(G, π0, ν) computed by Traces, and also by nauty if the standard\r
+refinement process Algorithm 1 is used, is a deterministic function of the sequence of\r
+quotient graphs Q\r
+\r
+G, R(G, π0, [ν]i)\r
+\u0001\r
+for i = 0, . . . , |ν|. We could in fact use that sequence\r
+of quotient graphs, but that would be expensive in both time and space. Our experience\r
+is that the information we do use, which is essentially information about the quotient\r
+matrices collected during the refinement process, rarely has less pruning power than the\r
+quotient matrices themselves would have."""
+
+[[sections]]
+number = "3.4"
+title = "Strategies for tree generation"
+text = """
+Now we have described the search tree T (g, π0) as defined by nauty and Traces.\r
+In general only a fraction of the search tree is actually generated, since the pruning\r
+rules of Section 2.4 are applied. These pruning rules utilise both node invariants, as\r
+described in Section 3.3, and automorphisms, which are mainly discovered by noticing\r
+that two discrete colourings give the same coloured graph. Now we will describe order of\r
+generation of the tree, which is fundamentally different for nauty and Traces.\r
+In nauty, the tree is generated in depth-first order. The lexicographically least leaf ν1\r
+is kept. If the canonical labelling is sought (rather than just the automorphism group),\r
+the leaf ν\r
+∗ with the greatest invariant discovered so far is also kept. A non-leaf node ν is\r
+pruned if neither φ(G, π0, ν) = φ(G, π0, [ν1]|ν|) or φ(G, π0, ν) ≥ φ(G, π0, [ν\r
+∗\r
+]|ν|). Such op\u0002erations have both type PA(ν\r
+∗\r
+, ν) and PB(ν1, ν), so Theorem 5 applies. Automorphisms\r
+are found by discovering leaves equivalent to ν1 or ν\r
+∗\r
+, and also to a limited extent from\r
+10
+
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+[7|5|3|1|8|6|2|0|4]\r
+[7|3|5|1|6|8|0|2|4]\r
+[5|7|1|3|8|2|6|0|4]\r
+[5|1|7|3|2|8|0|6|4]\r
+[3|7|1|5|6|0|8|2|4]\r
+[3|1|7|5|0|6|2|8|4]\r
+[1|5|3|7|2|0|8|6|4]\r
+[1|3 5|7|0 2|6 8|4]\r
+[3|1 7|5|0 6|2 8|4]\r
+[5|1 7|3|2 8|0 6|4]\r
+[7|3 5|1|6 8|0 2|4]\r
+[1|3|5|7|0|2|6|8|4]\r
+1\r
+3 3\r
+5\r
+7\r
+3\r
+5\r
+1\r
+7\r
+1\r
+7\r
+3\r
+5\r
+[1|3 5 7|0 2 6 8|4]\r
+1\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6\r
+2\r
+4 1\r
+3\r
+5\r
+7\r
+0\r
+8\r
+6"""
+
+[[sections]]
+number = "2"
+title = "Fig. 3. Example of a search tree for the graph of Fig. 1"
+text = """
+the properties of equitable colourings. Pruning operation PC is performed wherever pos\u0002sible, as high in the tree as possible (i.e., at the children of the nearest common ancestor\r
+of the two leaves found to be equivalent).\r
+Until a recent version of nauty, the only automorphisms used for pruning operation\r
+PC were those directly discovered, without any attempt to compose them. Now we use the\r
+random Schreier method (Seress, 2003) to perform more complete pruning. By Lemma 3,\r
+nodes ν k v1 and ν k v2 are equivalent if v1, v2 belong to the same orbit of the point\u0002wise stabiliser of ν in Γ, where Γ is the group generated by the automorphisms found\r
+so far. This stabiliser could be computed with a deterministic algorithm as proposed\r
+by Kocay (1996) and Butler and Lam (1985), but we have found the random Schreier\r
+method (Seress, 2003) to be more efficient and it doesn’t matter if occasionally (due to\r
+its probabilistic nature) it computes smaller orbits. The usefulness of this for nauty’s\r
+efficiency with some classes of difficult graph was demonstrated in 1985 by Kirk (1985)\r
+but only made it into the distributed edition of nauty in 2011.\r
+Nauty’s basic depth-first approach is also followed by Bliss and saucy. However,\r
+Traces introduces an entirely different order of generating the tree. Some variations are\r
+possible but we will first describe the normative method, which is based on a breadth-first\r
+search. Define level k to be the set of nodes ν with |ν| = k. In the k-th phase, Traces\r
+computes those nodes ν in level k which have the greatest value of φ(G, π0, ν) on that\r
+11
+
+prunedbygn\r
+1 prunedbygT\r
+1\r
+gn\r
+1=(02)(35)(68)\r
+1gT=(0682)(1375)\r
+Fig. 4. Search tree order for nauty (left) and Traces (right)\r
+level. By property (φ1), such nodes are the children of the nodes with greatest φ on the\r
+previous level, so no backtracking is needed. This order of tree generation has the big\r
+advantage that pruning operation PA is used to the maximum possible extent.\r
+As mentioned in Section 3.3, the node invariant φ(G, π0, ν) is computed incrementally\r
+during the refinement process, so that pruning operation PA can often be applied when\r
+the refinement is only partly complete.\r
+An apparent disadvantage of breadth-first order is that pruning by automorphisms\r
+(operation PC ) is only possible when automorphisms are known, which in general re\u0002quires leaves of the tree. To remedy this problem, for every node a single path, called\r
+an “experimental path”, is generated from that node down to a leaf of the tree. Auto\u0002morphisms are found by comparing the labelled graphs that correspond to those leaves,\r
+with the value of φ(G, π0, ν) at the leaf being used to avoid most unnecessary compar\u0002isons. We have found experimentally that generating experimental paths randomly tends\r
+to find automorphisms that generate larger subgroups, so that the group requires fewer\r
+generators altogether and more of the group is available early for pruning.\r
+The group generated by the automorphisms found so far is maintained using the\r
+random Schreier method. Some features of the Schreier method are turned on and off in\r
+Traces when it is possible to heuristically infer their computational weight.\r
+Figure 4 continues the example of Figure 3, showing the portion of the search tree tra\u0002versed by nauty (left) and Traces (right). Node labels indicate the order in which nodes\r
+are visited, and edge labels indicate which vertex is individualized. During its backtrack\r
+search, nauty stores the first leaf (2) for comparison with subsequent leaves. Leaves 2\r
+and 3 provide the generator g\r
+n\r
+1 = (0 2)(3 5)(6 8), which for example allows pruning of the\r
+greyed subtree formed by individualizing vertex 5 at the root. Traces executes a breadth\u0002first search, storing with each visited node the discrete partition obtained by a randomly\r
+chosen experimental path (shown by green arrow). After processing node 2 of the tree, the\r
+experimental leaves 1 and 2 are compared, revealing the generator g\r
+T\r
+1 = (0 6 8 2)(1 3 7 5),\r
+12
+
+which allows for pruning the greyed subtrees formed by individualizing vertices 5 and 7\r
+at the root."""
+
+[[sections]]
+number = "3.5"
+title = "Detection of automorphisms"
+text = """
+The primary way that automorphisms are detected, in all the programs under consid\u0002eration, is to compare the labelled graphs corresponding to leaves of the search tree as\r
+described above.\r
+An important innovation of saucy (Darga et al., 2008) was to detect some types of\r
+automorphism higher in the tree. Suppose that π, π0 are equitable colourings with the\r
+same number of vertices of each colour. Any automorphism of (G, π0) that takes π onto\r
+π\r
+0 has known action on the fixed vertices of π: it maps them to the fixed vertices of π0\r
+with the same colours. In some cases that saucy can detect very quickly, this partial\r
+mapping is an automorphism when extended as the identity on the non-fixed vertices.\r
+This happens, for example, when a component of G is completely fixed by two different\r
+but equivalent stabilization sequences. This is one of the main reasons saucy can be very\r
+fast on graphs with many automorphisms that move few vertices.\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+B\r
+A\r
+C\r
+B\r
+A\r
+D\r
+D\r
+C\r
+A\r
+C\r
+B\r
+E\r
+E\r
+F\r
+Level L best leaf node ν\r
+Fig. 5. Traces search strategies for canonical labelling or automorphism group\r
+Traces extends this idea by finding many automorphisms that do not require the\r
+identity mapping on the non-trivial vertices. It does this by a heuristic that extends the\r
+mapping from the fixed vertices to the non-fixed vertices, which is applied in certain\r
+situations where it is more likely to succeed.\r
+When Traces is only looking for the automorphism group, and not for a canonical\r
+labelling, it employs another strategy which is sometimes much faster. Suppose that while\r
+generating the nodes on some level L, it notices (during experimental path generation)\r
+that one of them, say ν, has a child which is discrete. At this point, Traces determines\r
+and keeps all the discrete children of ν (modulo the usual automorphism pruning). Now,\r
+for all nodes ν\r
+0 on level L, a single discrete child ν00 is found, if any, and an automorphism\r
+is discovered if it is equivalent to any child of ν. The validity of this approach follows\r
+from Theorem 5 with the role of ν0 played by the first discrete child of ν."""
+
+[[sections]]
+number = "13"
+title = "Figure 5 (left) shows the whole tree up to level L+1, where a node labelled by X"
+text = """
+represents a discrete partition corresponding to labelled graph X, while an unlabelled\r
+(and smaller) node stands for a non-discrete partition. Figure 5 (center) shows the part\r
+of the tree which is traversed by Traces during the search for a canonical labelling. Only\r
+the best leaf is kept for comparison with subsequent discrete partitions.\r
+Figure 5 (right) shows the part of the tree which is traversed by Traces during an\r
+automorphism group computation. All the discrete children of ν are kept for comparison\r
+with subsequent discrete partitions. When the first discrete partition is found as a child\r
+of a node ν\r
+0 at level L, either it has the same labelled graph as one of those stored, or the\r
+whole subtree rooted at ν\r
+0 has no leaf with one of the stored graphs. In the first case, an\r
+automorphism is found. In both cases, the computation is resumed from the next node\r
+at level L."""
+
+[[sections]]
+number = "3.6"
+title = "Low degree vertices"
+text = """
+Graphs in some applications, such as constraint satisfaction problems described by\r
+Darga et al. (2004) have many small components with vertices of low degree, vertices\r
+with common neighborhoods, and so on. Saucy handles them efficiently by a refinement\r
+procedure tuned to this situation plus early detection of sparse automorphisms. Traces\r
+employs another method. Recall that after the first refinement vertices with equal colours\r
+also have equal degrees. The target cell selector never selects cells containing vertices of\r
+degree 0, 1, 2 or n−1, and nodes whose non-trivial cells are only of those degrees are not\r
+expanded further. Special-purpose code then produces generators for the automorphism\r
+group fixed by the node and, if necessary, a unique discrete colouring that refines the\r
+node.\r
+This technique is quite successful. However, in our opinion, graphs of this type ought to\r
+be handled by preprocessing. For example, sets of vertices with the same neighborhoods\r
+ought to be replaced by single vertices with a colour that encodes the multiplicity. All\r
+tree-like appendages, long paths of degree 2 vertices, and similar easy subgraphs, could\r
+be efficiently factored out in this manner."""
+
+[[sections]]
+number = "4"
+title = "Performance"
+text = """
+In the following figures, we present some comparisons between programs for a variety\r
+of graphs ranging from very easy to very difficult. We made an effort to include graphs\r
+that are easy and difficult for each of the programs tested.\r
+Most of the graphs are taken from the Bliss collection, but for the record we provide\r
+all of our test graphs at the nauty and Traces website (McKay and Piperno, 2012a).\r
+The times given are for a Macbook Pro with 2.66 GHz Intel i7 processor, compiled\r
+using gcc 4.7 and running in a single thread. Easy graphs were processed multiple times\r
+to give more precise times. In order to avoid non-typical behaviour due to the input\r
+labelling, all the graphs were randomly labelled before processing. In some classes, such as\r
+the “combinatorial graphs”, the processing time can depend a lot on the initial labelling;\r
+the plots show whatever happened in our tests.\r
+The following programs were included. Programs (c)–(e) reflect their distributed ver\u0002sions at the end of October 2012.\r
+14
+
+(a) nauty version 2.5\r
+(b) Traces version 2.0\r
+(c) saucy version 3.0\r
+(d) Bliss version 7.2\r
+(e) conauto version 2.0.1\r
+The first column of plots in each figure is for computation of the automorphism group\r
+alone. The second column is for computation of a canonical labelling, which for all the\r
+programs here includes an automorphism group computation.\r
+For nauty we used the dense or sparse version consistently within each class, depending\r
+on whether the class is inherently dense or sparse. We did not use an invariant except\r
+where indicated, even though it would often help.\r
+Saucy does not have a canonical labelling option. Version 3.0, which was released\r
+just as this paper neared completion, has an amalgam of saucy and Bliss that can do\r
+canonical labelling, but we have not tested it much.\r
+Conauto features automorphism group computation and the ability for testing two\r
+graphs for isomorphism. We decided that the latter is outside the scope of this study. For\r
+the same reason we did not include the program of Foggia et al. (2001) in our comparisons.\r
+Another excellent program, that we were unfortunately unable to include for technical\r
+reasons, is due to Stoichev (2010). Many more experiments and comments can be found\r
+at http://pallini.di.uniroma1.it."""
+
+[[sections]]
+number = "5"
+title = "Conclusions"
+text = """
+We have brought the published description of nauty up to date and introduced the\r
+program Traces. In particular, we have shown that the highly innovative tree scanning\r
+algorithm introduced by Traces can have a remarkable effect on the processing power.\r
+Although none of the programs tested have the best performance on all graph classes, it is\r
+clear that Traces is currently the leader on the majority of difficult graph classes tested,\r
+while nauty is still preferred for mass testing of small graphs. An exception is provided\r
+by some classes of graphs consisting of disjoint or minimally-overlapping components,\r
+here represented by non-disjoint unions of tripartite graphs. Conauto and Bliss (Juntilla\r
+and Kaski, 2011) have special code for such graphs, but as yet nauty and Traces do not.\r
+We wish to thank Gordon Royle for many useful test graphs. We also thank the authors\r
+of saucy, Bliss and conauto for many useful discussions. The second author is indebted\r
+to Riccardo Silvestri for his strong encouragement and valuable suggestions."""
+
+[[sections]]
+number = "15"
+title = "References"
+text = """
+Aho, A. V., Hopcroft, J. E. and Ullman, J. D. 1974. The design and analysis of computer\r
+algorithms. Addison-Wesley. p. 86.\r
+Arlazarov, V. L., Zuev, I. I., Uskov, A. V. and Faradzev, I. A. 1974. An algorithm for the\r
+reduction of finite non-oriented graphs to canonical form. Zh. v¯ychisl. Mat. mat. Fiz.\r
+14, 737–743.\r
+Babai, L., Kantor, W. M. and Luks, E. M. 1983. Computational complexity and the\r
+classification of finite simple groups. In: Proceedings of the 24th Annual Symposium\r
+on the Foundations of Computer Science, 162–171.\r
+Beyer, T. and Proskurowski, A. 1975. Symmetries in the graph coding problem. In:\r
+Proceedings of NW76 ACM/CIPC Pac. Symp., 198–203.\r
+Bodlaender, H. 1990. Polynomial algorithms for graph isomorphism and chromatic index\r
+on partial k-trees. J. Algorithms 11, 631–643.\r
+Butler, G. and Lam, C.W. H. 1985 A general backtrack algorithm for the isomorphism\r
+problem of combinatorial objects. J. Symbolic Computation 1, 363–381.\r
+Colbourn, C. S. 1978. A Bibliography of the Graph Isomorphism Problem. Technical\r
+Report, University of Toronto.\r
+Colbourn, C. S. and Booth, K. S. 1981. Linear time automorphism algorithms for trees,\r
+interval graphs, and planar graphs. SIAM J. Comput. 10, 203–225\r
+Corneil, D. G. and Gotlieb, C. C. 1970. An efficient algorithm for graph isomorphism.\r
+JACM 17, 51–64.\r
+Darga, P. T., Liffiton, M. H., Sakallah, K. A. and Markov, I. L. 2004. Exploiting struc\u0002ture in symmetry detection for CNF. In: Proceedings of the 41st Design Automation\r
+Conference, 530–534.\r
+Darga, P. T., Sakallah, K. A. and Markov, I. L. 2004. Faster Symmetry Discovery using\r
+Sparsity of Symmetries. In: Proceedings of the 45th Design Automation Conference,\r
+149–154.\r
+Filotti, I. S. and Mayer, J. N. 1980. A polynomial-time algorithm for determining the\r
+isomorphism of graphs of fixed genus. In: Proceedings of the 12th ACM Symposium\r
+on Theory of Computing, 236–243.\r
+Foggia, P., Sansone, C. and Vento, M. 2001. A performance comparison of five algorithms\r
+for graph isomorphism. In: Proceedings of the 3rd IAPR TC-15 Workshop on Graph\u0002based Representations in Pattern Recognition, 188–199.\r
+Goldreich, O., Micali, S. and Wigderson, A. 1991. Proofs that yield nothing but their\r
+validity, or all languages in np have zero-knowledge proof systems. JACM 38, 690–728.\r
+Grohe, M. 2010. Fixed-point definability and polynomial time on graphs with excluded\r
+minors. In: Proceedings of the 25th Annual IEEE Symposium on Logic in Computer\r
+Science, 179–188.\r
+Grohe, M. 2012. Structural and Logical Approaches to the Graph Isomorphism Problem,\r
+In: Proceedings of the 23rd Annual ACM-SIAM Symposium on Discrete Algorithms,\r
+188.\r
+Junttila, T. and Kaski, P. 2007. Engineering an efficient canonical labeling tool for large\r
+and sparse graphs. In: Proceedings of the 9th Workshop on Algorithm Engineering\r
+and Experiments and the 4th Workshop on Analytic Algorithms and Combinatorics,\r
+135–149.\r
+16
+
+Junttila, T. and Kaski, P. 2011. Conflict Propagation and Component Recursion for\r
+Canonical Labeling. In: Proceedings of the 1st International ICST Conference on The\u0002ory and Practice of Algorithms, 151–162.\r
+Kirk, A. 1985. Efficiency considerations in the canonical labelling of graphs. Technical\r
+report TR-CS-85-05, Computer Science Department, Australian National University.\r
+Kocay, W. 1996. On writing isomorphism programs. In: Wallis, W. D. (Ed.), Computa\u0002tional and Constructive Design Theory, Kluwer, 135–175.\r
+Leon, J. S. 1990. Permutation group algorithms based on partitions, I: Theory and algo\u0002rithms. J. Symbolic Comput. 43, 545–581.\r
+L´opez-Presa, J. L. and Fern´andez Anta, A. 2009. Fast algorithm for graph isomorphism\r
+testing. In: Proceedings of the 8th International Symposium on Experimental Algo\u0002rithms, 221–232.\r
+L´opez-Presa, J. L., Fern´andez Anta, A. and N´u˜nez Chiroque, L. 2011. Conauto-2.0: Fast\r
+isomorphism testing and automorphism group computation. Preprint 2011. Available\r
+at http://arxiv.org/abs/1108.1060.\r
+Luks, E. 1982. Isomorphism of graphs of bounded valence can be tested in polynomial\r
+time. J. Comp. System Sci. 25, 42–65.\r
+McKay, B. D 1978a. Backtrack programming and isomorph rejection on ordered subsets.\r
+Ars Combin. 5, 65–99.\r
+McKay, B. D 1978b. Computing automorphisms and canonical labellings of graphs. In:\r
+Combinatorial Mathematics, Lecture Notes in Mathematics, 686. Springer-Verlag,\r
+Berlin, 223–232.\r
+McKay, B. D. 1980. Practical graph isomorphism. Congr. Numer. 30, 45–87.\r
+McKay, B. D. and Piperno, A. 2012a. nautyTraces, Software distribution web page.\r
+http://cs.anu.edu.au/∼bdm/nauty/ and http://pallini.di.uniroma1.it/.\r
+McKay, B. D. and Piperno, A. 2012b. nauty and Traces User’s Guide (Version 2.5).\r
+Available at McKay and Piperno (2012a).\r
+Miller, G. L. 1980 Isomorphism testing for graphs of bounded genus. In: Proceedings of\r
+the 12th ACM Symposium on Theory of Computing, 225–235.\r
+Parris, R. and Read, R. C. 1969. A coding procedure for graphs. Scientific Report.\r
+UWI/CC 10. Univ. of West Indies Computer Centre.\r
+Piperno, A. 2008. Search space contraction in canonical labeling of graphs. Preprint\r
+2008–2011. Available at http://arxiv.org/abs/0804.4881.\r
+Ponomarenko, I. N. 1988. The isomorphism problem for classes of graphs that are invari\u0002ant with respect to contraction (Russian). Zap. Nauchn. Sem. Leningrad. Otdel. Mat.\r
+Inst. Steklov. (LOMI) 174, no. Teor. Slozhn. Vychisl. 3, 147–177.\r
+Read, R. C. and Corneil, D. G. 1977. The graph isomorphism disease. J. Graph Theory\r
+1, 339–363.\r
+Seress, A. 2003. Permutation Group Algorithms. Cambridge University Press, pp. x+264. ´\r
+Stoichev, S. D. 2010. Polynomial time and space exact and heuristic algorithms for de\u0002termining the generators, orbits and order of the graph automorphism group. Preprint"""
+
+[[sections]]
+number = "2010"
+title = "Available at http://arxiv.org/abs/1007.1726."
+text = ""
+
+[[sections]]
+number = "17"
+title = "Automorphism group Canonical label"
+text = """
+Random graphs with p =\r
+1\r
+2\r
+101 102 103\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+101 102 103\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1"""
+
+[[sections]]
+number = "100"
+title = "Random graphs with p = n"
+text = """
+−1/2\r
+101 102 103 104\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+101 102 103 104\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+Random cubic graphs (nauty invariant distances(2))\r
+2,000 4,000 6,000 8,000 10,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+2,000 4,000 6,000 8,000 10,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101"""
+
+[[sections]]
+number = "102"
+title = "Bliss saucy conauto nauty nauty with invariant Traces"
+text = "Fig. 6. Performance comparison (horizontal: number of vertices; vertical: time in seconds)"
+
+[[sections]]
+number = "18"
+title = "Automorphism group Canonical label"
+text = """
+Hypercubes (vertex-transitive)\r
+101 102 103 104 105 106\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+101 102 103 104 105 106\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101"""
+
+[[sections]]
+number = "102"
+title = "Miscellaneous vertex-transitive graphs"
+text = """
+101 102 103 104\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+101 102 103 104\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+(Non-disjoint) union of tripartite graphs\r
+200 400 600 800 1,000 10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+200 400 600 800 1,000\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 7. Performance comparison (horizontal: number of vertices; vertical: time in seconds)"""
+
+[[sections]]
+number = "19"
+title = "Automorphism group Canonical label"
+text = """
+Small strongly-regular graphs\r
+100 200 300 400 500 10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+100 200 300 400 500 10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100"""
+
+[[sections]]
+number = "101"
+title = "Large strongly-regular graphs"
+text = """
+500 1,000 1,500 2,000 2,500\r
+10−1\r
+100\r
+101\r
+102\r
+500 1,000 1,500 2,000 2,500\r
+100\r
+101\r
+102\r
+timeout: 600 secs\r
+Hadamard matrix graphs\r
+0 200 400 600 800 1,000\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+0 200 400 600 800 1,000\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 8. Performance comparison (horizontal: number of vertices; vertical: time in seconds)"""
+
+[[sections]]
+number = "20"
+title = "Automorphism group Canonical label"
+text = """
+Random trees\r
+101 102 103 104 105\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+101 102 103 104 105\r
+10−6\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Cai-F¨urer-Immerman graphs\r
+200 400 600 800 1,200 1,600 2,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+200 400 600 800 1,200 1,600 2,000\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101"""
+
+[[sections]]
+number = "102"
+title = "Miyazaki graphs"
+text = """
+200 400 600 800 1,000 1,200\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+200 400 600 800 1,000 1,200\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103 timeout: 600 secs\r
+Bliss saucy conauto nauty Traces\r
+Fig. 9. Performance comparison (horizontal: number of vertices; vertical: time in seconds)"""
+
+[[sections]]
+number = "21"
+title = "Automorphisms groups of projective planes of order 16"
+text = """
+(regular bipartite graphs of order 546 and degree 17)\r
+P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+104\r
+timeout: 3600 secs # group size orbits\r
+P1 3.42171648e10 1\r
+P2 921,600 6\r
+P3 884,736 3\r
+P4 258,048 6\r
+P5 147,456 3\r
+P6 92,160 8\r
+P7 55,296 8\r
+P8 18,432 5\r
+P9 12,288 6\r
+P10 3,840 10\r
+P11 3,456 12\r
+P12 2,304 14\r
+Automorphisms of some combinatorial graphs\r
+C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+timeout: 3600 secs # (V, E) group size orbits\r
+C1 (3650, 598600) 324 30\r
+C2 (15984, 10725264) 2,125,873,200 2\r
+C3 (7300, 2693700) 188,956,800 2\r
+C4 (2752, 481600) 38,723,328 2\r
+C5 (900000, 1200000) 600,000 2\r
+C6 (15984, 10725264) 231,913,440 2\r
+C7 (1302, 16926) 1,488,000 2\r
+C8 (8322, 270465) 43,352,064 8\r
+C9 (3650, 598600) 72 65\r
+C10 (3276, 245700) 9,000,000 3\r
+C11 (756, 49140) 9,000,000 2\r
+C12 (1514, 21196) 122,472 4\r
+Canonical labelling of the above graphs\r
+P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 C11 C12\r
+10−2\r
+10−1\r
+100\r
+101\r
+102\r
+103\r
+timeout: 3600 secs\r
+Bliss saucy conauto nauty nauty with invariant cellfano2 Traces\r
+Fig. 10. Performance comparison (horizontal: graph number; vertical: time in seconds)\r
+22"""
+
+[[tables]]
+page_num = 11
+headers = [
+    "[7",
+    "5",
+    "3",
+    "1",
+    "8",
+    "6",
+    "2",
+    "0",
+    "4]",
+]
+rows = [
+    [
+    "[7",
+    "3",
+    "5",
+    "1",
+    "6",
+    "8",
+    "0",
+    "2",
+    "4]",
+],
+    [
+    "[5",
+    "7",
+    "1",
+    "3",
+    "8",
+    "2",
+    "6",
+    "0",
+    "4]",
+],
+    [
+    "[5",
+    "1",
+    "7",
+    "3",
+    "2",
+    "8",
+    "0",
+    "6",
+    "4]",
+],
+    [
+    "[3",
+    "7",
+    "1",
+    "5",
+    "6",
+    "0",
+    "8",
+    "2",
+    "4]",
+],
+    [
+    "[3",
+    "1",
+    "7",
+    "5",
+    "0",
+    "6",
+    "2",
+    "8",
+    "4]",
+],
+    [
+    "[1",
+    "5",
+    "3",
+    "7",
+    "2",
+    "0",
+    "8",
+    "6",
+    "4]",
+],
+]
+
+[[tables]]
+page_num = 11
+headers = [
+    "[1",
+    "3 5",
+    "7",
+    "0 2",
+    "6 8",
+    "4]",
+]
+rows = [
+    [
+    "[3",
+    "1 7",
+    "5",
+    "0 6",
+    "2 8",
+    "4]",
+],
+    [
+    "[5",
+    "1 7",
+    "3",
+    "2 8",
+    "0 6",
+    "4]",
+],
+    [
+    "[7",
+    "3 5",
+    "1",
+    "6 8",
+    "0 2",
+    "4]",
+],
+]

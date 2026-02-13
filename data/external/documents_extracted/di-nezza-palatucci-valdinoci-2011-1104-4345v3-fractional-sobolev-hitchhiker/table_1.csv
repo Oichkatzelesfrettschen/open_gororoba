@@ -1,0 +1,3 @@
+Now, take any x, y ∈ Ω and set R =,x − y,. We have
+f(x) − f(y),≤,f(x) − h ˜fiB2R(x)
++,h ˜fiB2R(x) − h ˜fiB2R(y),+,h ˜fiB2R(y) − f(y)

@@ -1,0 +1,5607 @@
+Phys. Lett. B 857 (2024) 138979
+
+Contents lists available at ScienceDirect
+
+Physics Letters B
+journal homepage: www.elsevier.com/locate/physletb
+
+Letter
+
+Searches for violation of Lorentz invariance in top quark pair production
+using dilepton events in 13 TeV proton-proton collisions
+.The CMS Collaboration ⋆
+CERN, Geneva, Switzerland
+
+A R T I C L E
+Editor: M. Doser
+Keywords:
+CMS
+Top quark
+Beyond standard model
+Lorentz symmetry
+
+I N F O
+
+A B S T R A C T
+A search for violation of Lorentz invariance in the production of top quark pairs (tt ) is presented. The measured
+normalized diﬀerential tt production cross section, as a function of the sidereal time, is examined for potential
+modulations induced by Lorentz-invariance breaking operators in an eﬀective ﬁeld theory extension of the
+standard model (SM). The cross section is measured from collision events collected by the CMS detector at a
+center-of-mass-energy of 13 TeV, corresponding to an integrated luminosity of 77.8 fb−1 , and containing one
+electron and one muon. The results are found to be compatible with zero, in agreement with the SM, and are
+used to place upper limits at 68% conﬁdence level on the magnitude of the Lorentz-violating couplings ranging
+from 1–8 × 10−3 . This is the ﬁrst precision test of the isotropy in special relativity with top quarks at the LHC,
+restricting further the bounds on such couplings by up to two orders of magnitude with respect to previous
+searches conducted at the Tevatron.
+
+1. Introduction
+Lorentz invariance is a key ingredient of the relativistic description
+of our world, on the scale of elementary particles as well as on large
+scales in the Universe. The standard model (SM) of particle physics
+is a relativistic quantum ﬁeld theory, and as such it must contain a
+Lorentz-invariant action. General relativity preserves Lorentz invariance
+locally. The Lorentz group contains rotations and boosts in Minkowski
+spacetime. Models of quantum gravity, e.g., string theory [1] and loop
+quantum gravity [2], can, however, predict breaking of Lorentz invariance at a high mass scale. A quantum theory including gravity may be
+governed by an energy scale lower than the Planck mass, possibly at the
+TeV scale [3]. Thus, induced deviations from Lorentz invariance may be
+measurable at the LHC.
+The standard model extension (SME) [4,5] is an eﬀective ﬁeld theory in which all operators violating Lorentz invariance are added to the
+SM Lagrangian. Its coeﬃcients, controlling the size of Lorentz invariance breaking, are diﬀerent for each particle. While coeﬃcients related
+to photons, neutrons, protons, and neutrinos have been measured precisely [6], the quark sector remains constrained at a relatively lower
+precision. The ZEUS Collaboration at the DESY HERA recently searched
+for violation of Lorentz invariance arising from light quarks in deep
+inelastic scattering data [7]. Searches for Lorentz invariance violation
+were performed in neutral meson mixing at KLOE [8], KTeV [9], FO-
+
+⋆
+
+CUS [10], BaBar [11], D0 [12], and LHCb [13]. Violation of Lorentz
+invariance was searched for with top quark pairs (tt ) by the D0 experiment [14] at the Fermilab Tevatron, showing compatibility with
+Lorentz invariance with an absolute uncertainty of about 10% on the
+tested SME
+√ coeﬃcients. The proton-proton (pp) collisions at the CERN
+LHC at 𝑠 = 13 TeV produce tt events with a cross section approximately 100 times higher than that of the Tevatron. Studies showed that
+the measurements at the LHC have a large potential to signiﬁcantly improve upon existing results [15].
+In this Letter, the ﬁrst search for Lorentz invariance violation with
+top quarks at the LHC is presented, within the context of the SME.
+Signatures for violation of Lorentz invariance involving top quarks are
+parameterized with the SME Lagrangian [16]:
+
+1
+SME = 𝑖 ̄
+𝜓𝜓,
+(1)
+𝜓(𝛾 𝜈 + 𝑐 𝜇𝜈 𝛾𝜇 + 𝑑 𝜇𝜈 𝛾5 𝛾𝜇 )⃖𝜕⃖⃖𝜈⃗𝜓 − 𝑚t ̄
+2
+where 𝜓 and 𝜓̄ are the Dirac ﬁelds for top quarks and antiquarks, 𝑚t
+is the top quark mass, and 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 are the unitless SME coeﬃcients. Unlike the SM ﬁelds, 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 are not modiﬁed under Lorentz
+transformations of the particle system: they are constant 4×4 matrices,
+thereby breaking Lorentz invariance of the Lagrangian. They indicate
+a preferential direction in spacetime as seen by top quarks, violating
+the isotropy of special relativity. Boosts associated with the Earth’s rotation and with the revolution around the sun are negligible relative to
+
+E-mail address: cms-publication-committee-chair@cern.ch.
+
+https://doi.org/10.1016/j.physletb.2024.138979
+Received 23 May 2024; Received in revised form 12 August 2024; Accepted 20 August 2024
+Available online 23 August 2024
+0370-2693/© 2024 CERN for the benefit of the CMS Collaboration. Published by Elsevier B.V. Funded by SCOAP³. This is an open access article under the CC BY
+license (http://creativecommons.org/licenses/by/4.0/).
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+top quark boosts. Lorentz invariance is preserved when 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 are
+zero.
+Choosing a reference frame is needed to report measurements of
+Lorentz-violating coeﬃcients, in analogy, for instance, with the measurement of particle energies, which are not invariant under Lorentz
+transformation. By convention, results are reported in the sun-centered
+frame (SCF) [6], with its origin at the center of the sun; the 𝑍 axis
+pointing north, parallel to the Earth’s rotation axis; the 𝑋 axis pointing
+to the intersection of the ecliptic and celestial equator on January 1st,
+2000 (J2000); and the 𝑌 axis completing the direct basis. The SCF can be
+considered as inertial in the lifetime of a physics experiment. Hereafter,
+the coeﬃcients 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 with space-time indices 𝜇 or 𝜈 = 𝑇 , 𝑋, 𝑌 , 𝑍
+are expressed in the SCF (to be distinguished from the space-time indices
+of the CMS frame). The relevant measure of time in this reference frame
+is called sidereal time. While one rotation period of the Earth is equal
+to approximately 23 h 56 min UTC (i.e., Universal Time Coordinated,
+where UTC seconds are deﬁned from Cesium atomic hyperﬁne transitions), one rotation period is deﬁned as being equal to 24 sidereal hours.
+The CMS detector moves around the Earth’s rotation axis during a sidereal day, and so does the beam line direction at the interaction point,
+or the average direction of top quarks produced in the collisions. As a
+consequence, top quark couplings 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 depend on time, resulting in cross sections for top quark production modulating with sidereal
+time. Searching for such signatures is the goal of this Letter.
+We report a search for violation of
+√Lorentz invariance in pp → tt production with the CMS experiment at 𝑠 = 13 TeV, using events with one
+muon and one electron of opposite charge in the ﬁnal state, stemming
+from the decay tt → bbeνe μνμ (where the particle or antiparticle nature
+of the leptons is implied). The eμ channel provides a high purity sample
+of tt events owing to the negligible contribution from Z+jets processes.
+A data sample recorded in 2016–2017 with the CMS experiment and corresponding to an integrated luminosity of 77.8 fb−1 is analyzed. Events
+are categorized based on the number of jets identiﬁed as originating
+from b quarks (b jets) to improve the separation between the tt signal
+and the background processes. The normalized tt cross section is measured diﬀerentially as a function of the sidereal time, in bins of hours
+within the sidereal day, by performing a proﬁle maximum likelihood ﬁt
+to the event yields in the b jet multiplicity. The measurement is used
+to constrain, for the ﬁrst time at the LHC, the Lorentz-violating coeﬃcients 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 impacting top quarks. Tabulated results are provided
+in the HEPData record for this analysis [17].
+The Letter is organized as follows. A description of the CMS detector and event reconstruction is provided in Section 2. Section 3 gives
+details on simulation samples, and Section 4 describes the event selection. Event corrections and associated systematic uncertainties, as well
+as their treatment relative to sidereal time, are detailed in Section 5. The
+normalized diﬀerential cross section for tt production as a function of
+sidereal time is measured in Section 6, providing a model-independent
+result. Bounds on the coeﬃcients 𝑐 𝜇𝜈 and 𝑑 𝜇𝜈 within the SME framework are extracted in Section 7. The Letter concludes with a Summary
+in Section 8.
+
+tion of the coordinate system used and the relevant kinematic variables,
+can be found in Refs. [18–20].
+Events of interest are selected using a two-tiered trigger system. The
+ﬁrst level (L1), composed of custom hardware processors, uses information from the calorimeters and muon detectors to select events at
+a rate of around 100 kHz within a ﬁxed latency of about 4 μs [21].
+During the 2016–2017 data taking, a gradual shift in the timing of the
+inputs of the ECAL L1 trigger in the region at |𝜂| > 2.0, where 𝜂 is the
+pseudorapidity, caused a speciﬁc trigger ineﬃciency. Correction factors,
+which are small, were computed from data and applied to the simulation. The second level, known as the high-level trigger (HLT), consists
+of a farm of processors running a version of the full event reconstruction software optimized for fast processing, and reduces the event rate
+to around 1 kHz before data storage [22]. Events are selected at the HLT
+by requiring the presence of one or two leptons, with transverse momentum (𝑝T ) thresholds as follows: one electron with 𝑝T > 12 GeV and one
+muon with 𝑝T > 23 GeV; one electron with 𝑝T > 23 GeV and one muon
+with 𝑝T > 8 GeV; one electron with 𝑝T > 27 (35) GeV in 2016 (2017);
+or one muon with 𝑝T > 24 (27) GeV in 2016 (2017).
+The electron momentum is estimated by combining the energy measurement in the ECAL with the momentum measurement in the tracker.
+Electron candidates are required to satisfy 𝑝T > 25 and 20 GeV for the
+highest 𝑝T (leading) and second-highest 𝑝T (subleading) lepton. Furthermore, electrons must have |𝜂| < 2.4, and their energy deposit in
+the ECAL must lie outside of the transition region between the barrel
+and endcap sections (1.44 < |𝜂| < 1.56). Electron candidates must satisfy
+tight identiﬁcation criteria and are required to be isolated in the detector
+to reject jets misidentiﬁed as electrons. Identiﬁcation criteria comprise
+selections on a shower shape variable in the ECAL, on the matching of
+the track with the ECAL energy deposit, on the ratio of HCAL over ECAL
+energy deposits around the candidate, the hits in the inner tracker, and
+on criteria to reject electrons arising from photon conversions [23]. An
+isolation variable is computed with the PF algorithm as the scalar 𝑝T sum
+of photons, charged and neutral hadrons √
+in a cone around the electron
+
+direction. The cone is deﬁned by Δ𝑅 = (Δ𝜂)2 + (Δ𝜙)2 < 0.3, where
+Δ𝜂 and Δ𝜙 are the 𝜂 and azimuthal angle diﬀerences between the PF
+particles and the electron, respectively. Contributions to the isolation
+sum from other inelastic pp interactions in the same or nearby bunch
+crossing (pileup) are corrected using the FastJet estimator [30]. The
+relative isolation, calculated as the isolation sum divided by the electron
+𝑝T , is used. Diﬀerences in reconstruction and identiﬁcation eﬃciencies
+between data and simulation are corrected using Z → e+ e− events with
+a “tag-and-probe” method [31].
+Muons are measured in the range |𝜂| < 2.4, with detection planes
+made using three technologies: drift tubes, cathode strip chambers, and
+resistive-plate chambers. Muon candidates are reconstructed with the PF
+algorithm. They are required to satisfy 𝑝T > 25 (20) GeV for the leading (subleading) lepton. Muon candidates are required to satisfy tight
+identiﬁcation and isolation criteria, to suppress contributions from jets
+misidentiﬁed as muons. Identiﬁcation criteria include selections on the
+number of matched muon detector planes, hits in the pixel and tracker,
+the 𝜒 2 of the trajectory ﬁt including tracking layers and muon detector
+planes, and the transverse impact parameter of the track [24]. A relative
+isolation variable is calculated with the PF algorithm similar to electrons
+but with a cone size Δ𝑅 < 0.4. Diﬀerences in identiﬁcation and isolation
+eﬃciencies between data and simulation are corrected using Z → μ+ μ−
+events with the tag-and-probe method.
+Jets are reconstructed from PF candidates, using the anti-𝑘T algorithm with a distance parameter of 0.4 [30,32]. Jet momentum is determined as the vectorial sum of all particle momenta in the jet, and
+is found from simulation to be, on average, within 5–10% of the true
+momentum over the entire 𝑝T spectrum and detector acceptance. To
+mitigate pileup contributions, tracks identiﬁed to be originating from
+pileup vertices are discarded, and an oﬀset correction is applied to correct for the remaining contributions. Jet energy corrections are derived
+from simulation studies so that the average measured energy of jets be-
+
+2. Event reconstruction with the CMS detector
+The CMS apparatus [18–20] is a multipurpose, nearly hermetic detector, designed to trigger on [21,22] and identify electrons, muons,
+photons, and hadrons [23–25]. A global “particle-ﬂow” (PF) algorithm [26] aims to reconstruct all individual particles in an event, combining information provided by the all-silicon inner tracker and by the
+crystal electromagnetic (ECAL) and brass-scintillator hadron (HCAL)
+calorimeters, operating inside a 3.8 T superconducting solenoid, with
+data from the gas-ionization muon detectors embedded in the ﬂuxreturn yoke outside the solenoid. The reconstructed particles are used
+to build τ leptons, jets, and missing transverse momentum [27–29]. A
+more detailed description of the CMS detector, together with a deﬁni2
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+comes identical to that of particle level jets. In situ measurements of
+the momentum balance in dijet, photon+jet, Z+jet, and multijet events
+are used to determine any residual diﬀerences between the jet energy
+scale in data and simulation, and appropriate corrections are made [28].
+Additional selection criteria are applied to each jet to remove jets potentially dominated by instrumental eﬀects or reconstruction failures.
+Jets are selected if they satisfy 𝑝T > 30 GeV and |𝜂| < 2.4. Jets are not
+considered if their distance Δ𝑅 from selected leptons is less than 0.4.
+For the identiﬁcation of b jets, a loose selection on the score of
+the deepCSV algorithm, a deep-learning discriminant using secondary
+vertex and lifetime information [33,34], is used. The identiﬁcation eﬃciency of b quark jets is about 84% with a probability of misidentifying
+light-quark and gluon jets of 10%, estimated for b jet candidates with
+𝑝T > 20 GeV in simulated tt events. Corrections for the diﬀerence in
+identiﬁcation eﬃciency of b jets and light jets between data and simulation are computed as a function of the jet 𝑝T and 𝜂 and applied to all
+jets in the event.
+
+Table 1
+Event yields in data and MC simulation in 2016–2017,
+after selection. The uncertainties include statistical
+and systematic sources, with correlations.
+Process
+
+2016
+
+2017
+
+tt SM
+ttV
+Single top quark
+Diboson
+V+jets
+
+169 500 ± 6100
+460 ± 60
+8 500 ± 1600
+700 ± 150
+2 100 ± 500
+
+196 000 ± 7300
+540 ± 70
+9 900 ± 2000
+650 ± 130
+2 300 ± 600
+
+Total background
+Total MC
+
+11 700 ± 1700
+181 000 ± 6700
+
+13 404 ± 2000
+209 000 ± 8100
+
+Data
+
+168 282
+
+203 584
+
+The CMS detector response is simulated with the Geant4 toolkit
+[52]. Data and simulation events are passed through the same CMS software reconstruction chain. Pileup interactions generated with pythia
+8 are added to the simulations, and the distribution in the number of
+pileup interactions is corrected for each MC sample to reproduce the
+numbers observed in data.
+
+3. Simulation samples
+Monte Carlo (MC) samples for tt production are generated at next-toleading order (NLO) in perturbative quantum chromodynamics (pQCD)
+with the powheg v2 [35] generator, interfaced with pythia 8 [36] for
+simulating parton shower, hadronization, and the underlying event. Revision 3453 is used for all the MC samples generated with powheg,
+while all of the simulation samples use pythia 8.226 (8.230) in 2016
+(2017). The tt cross section is computed with the top++ v2.0 program [37] at next-to-NLO (NNLO) and next-to-next-to-leading logarithmic accuracy. It has been observed that the top quark 𝑝T spectrum in
+data is softer than the spectrum predicted in simulation [38–40]. Simulated events for tt production are therefore corrected for the ratio of
+unfolded tt data over powheg predictions as a function of the top quark
+and antiquark 𝑝T at parton level.
+Since this analysis targets the tt ﬁnal state with two charged leptons
+of diﬀerent ﬂavors and at least one b jet, single top quark production
+in association with a W boson (tW) constitutes the main background,
+with one lepton each arising from the top quark and associated W boson
+decay. Simulated samples of tW and 𝑡-channel single top quark production are generated at NLO in pQCD with powheg v2. The cross section for the tW channel is computed at approximate NNLO [41]. Other
+backgrounds involving top quarks include 𝑠-channel single top quark
+production and tt production in association with a vector boson (ttW
+and ttZ, grouped together and denoted as ttV). Simulated samples for
+these processes are generated at NLO with MadGraph5_amc@nlo [42]
+(version 2.4.2 in 2016 and 2.6.0 in 2017 in all samples using MadGraph5_amc@nlo) with additional jets using FxFx merging [43]. The
+cross sections for single top 𝑡- and 𝑠-channel production are computed with the hathor v2.1 program [44] at NLO accuracy. The cross
+sections for ttW and ttZ processes are computed at NLO with MadGraph5_amc@nlo generation [42]. In the simulated samples, a ﬁxed
+value of 𝑚t = 172.5 GeV is used. Diboson production samples (WW, WZ,
+ZZ) are generated with pythia 8. The cross section for the WW process is computed at NNLO [45], while the WZ and ZZ cross sections
+are computed at NLO with mcfm [46] version 6.6. The W+jets and
+Z+jets processes (grouped together and denoted as V+jets) are generated using MadGraph5_amc@nlo, at leading order (LO) matched
+with additional jets using the MLM algorithm [47] or at NLO with additional jets using FxFx merging. Cross sections for Z+jets and W+jets
+processes are computed with fewz [48] version 3.1 at NNLO.
+The underlying event is modeled with the CP5 tune [49] for all of the
+simulated samples with 2017 detector conditions, and for the simulation
+of tt and tW processes with 2016 detector conditions. The samples simulated with 2016 detector conditions are using the CUETP8M1 tune [50]
+for all other background processes. The parton distribution functions
+(PDFs) used are the NNPDF3.1 NNLO set [51] for samples using the
+CP5 tune, and NNPDF3.0 NNLO for samples using the CUETP8M1 tune.
+
+4. Event selection
+Events with exactly one electron and one muon are selected. Events
+are rejected if there are additional electrons or muons with 𝑝T > 20 GeV.
+In addition, the invariant mass of the dilepton pair is required to satisfy
+𝑚eμ > 20 GeV, to reduce contributions from low-mass resonances and
+Drell–Yan τ pair production. Events with at least two jets are selected,
+among which at least one must be identiﬁed as a b jet.
+The distribution in the number of b jets is compared between data
+and simulation in Fig. 1. The MC simulation of signal and backgrounds
+provides a description of the data distribution in the number of b jets
+agreeing within uncertainties. Inclusively, the event yields are 7.1%
+(2016) and 2.7% (2017) lower in data than in simulation, as shown
+in Table 1.
+The distribution in the number of b jets is used as discriminant for the
+signal extraction in Sections 6 and 7, since it provides clear separation
+between the tt signal and the single top quark background, with the
+latter having only one top quark decaying to bW, compared to two for
+the signal process.
+5. Treatment of the sidereal time dependence in corrections and
+systematic uncertainties
+The CMS data is recorded in UNIX time, whose seconds having the
+same duration as UTC seconds. The UNIX timestamp of the events is
+translated to sidereal time with the following formula:
+
+Ωsidereal 𝑡sidereal = ΩUTC 𝑡UNIX + 𝜙UNIX + 𝜙longitude ,
+= 2𝜋∕86 400 s−1
+
+(2)
+
+where Ωsidereal
+(sidereal) is the angular velocity of
+Earth’s rotation around its axis in sidereal time, ΩUTC = 2𝜋∕86 164 s−1
+(UTC) is the angular velocity of Earth’s rotation around its axis in UTC
+time, and 𝑡UNIX represents the event timestamp recorded at CMS in UNIX
+time since January 1st, 1970 (UNIX epoch). The azimuthal angle 𝜙UNIX
+encodes the phase between the UNIX epoch and J2000, which is the origin of the sidereal time count, and 𝜙longitude is the eﬀective longitude,
+deﬁned as the angle between the LHC beam at the CMS interaction point
+and the Greenwich meridian in rad.
+Data events are classiﬁed in 24 bins, corresponding to the 24 sidereal
+hours within a sidereal day. In the MC simulation, event timestamps are
+not included; instead, a time-integrated distribution is built and scaled
+by 1∕24 to deﬁne the expected prediction in each sidereal hour bin.
+This prediction and its associated systematic uncertainties need to be
+corrected for eﬀects that would potentially depend on sidereal time.
+3
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+independent subdetectors (referred to as luminometers). The normalization, as well as detector-speciﬁc normalization uncertainties are not expected to depend on sidereal time and are treated as uniform. The uncertainties in the time stability and the linearity with respect to pileup, however, are estimated from cross-detector comparisons, i.e., by comparing
+the agreement between diﬀerent luminometers, and their dependence
+on sidereal time can be evaluated explicitly. In 2016, the three main luminometers and methods used for the luminosity measurement [55] are
+the cluster counting in the pixel tracker, an occupancy-based algorithm
+using the HCAL measurement, and an LHC radiation monitoring system.
+In 2017, the three main luminometers and methods [56] are a method
+based on the sum of transverse energy in HCAL towers, pixel detector
+cluster counting, and the pixel luminosity telescope [57]. The main luminometers used for the luminosity measurement are not the same at all
+times, since the individual luminosity detectors can be aﬀected by various operational issues. A small dependence of the stability and linearity
+estimates on the sidereal time is found:
+• The cross-detector stability is evaluated separately in each sidereal time bin by taking the maximum diﬀerence among the integrated luminosities estimated with the three main luminometers.
+The relative uncertainty is found to be 0.1–0.3 (0.2–0.4)% in 2016
+(2017), consistent with the time-integrated uncertainties evaluated
+in Refs. [55,56].
+• The time dependence of the linearity of the luminometer response
+is evaluated in each sidereal time bin by computing the average single-bunch instantaneous luminosity (SBIL), as measured
+with the diﬀerent luminometers, and weighting the largest diﬀerence with the corresponding cross-detector linearity slopes from
+Refs. [56,55]. The slopes are obtained from a ﬁt of the ratios of SBIL
+estimates for pairs of luminometers, as a function of SBIL. The relative uncertainty is found to be at most 0.3 (0.5)% in 2016 (2017),
+depending on the sidereal time bin. The 2016 result is in agreement
+with the time-integrated uncertainty evaluated in Ref. [55], but the
+2017 result is smaller than the uncertainty from Ref. [56] due to
+the usage of the less-conservative approach from Ref. [55] for the
+evaluation of the 2017 luminosity.
+Cross-detector stability and linearity uncertainties are included in the
+analysis with explicit dependence on sidereal time. The LHC-related uncertainties (normalization uncertainties related to the van der Meer scan
+procedure) are evaluated to be 0.6 (0.9)% in 2016 (2017), and other luminosity uncertainties related to the detector are evaluated to be 0.9
+(1.4)% in 2016 (2017).
+The trigger eﬃciency, potentially changing slightly over the course
+of the year with the instantaneous luminosity proﬁle, might also depend on sidereal time. Simulated events are therefore corrected for the
+diﬀerence in the trigger eﬃciency between data and simulation as a
+function of sidereal time. The trigger eﬃciencies are measured with the
+same method as in Ref. [58], using events triggered with requirements
+on the missing transverse momentum 𝑝miss
+, which is the magnitude of
+T
+the 𝑝⃗miss
+vector,
+deﬁned
+as
+the
+projection
+onto
+the plane perpendicular
+T
+to the beam axis of the negative vector sum of the momenta of all PF
+objects in the event, corrected for pileup eﬀects. Events triggered with
+𝑝miss
+requirements are correlated at less than 1% with those passing
+T
+single-lepton and dilepton triggers. Events must satisfy a requirement
+on reconstructed 𝑝miss
+> 100 GeV. At least one jet identiﬁed as b jet is
+T
+required. For each sidereal time bin, a statistical uncertainty is computed, and two systematic uncertainties are evaluated by repeating the
+measurement in subpartitions of the data: an uncertainty for the dependence of the trigger eﬃciency on the number of jets and on the period
+of data taking. The ratio of trigger eﬃciencies in data and simulation is
+found to be in a range 97–99%, with uncertainties at the level of 1%,
+depending on the sidereal time bin.
+For other experimental corrections and uncertainties, the dependence on sidereal time is unknown. As a consequence, an individual
+
+Fig. 1. Distribution of the number of b jets in data and simulation, after the
+event selection, (upper) in 2016 and (lower) in 2017 samples. The hatched band
+includes statistical and systematic uncertainties in the predictions. The vertical
+bars associated with the data points represent their statistical uncertainty. The
+lower panels show the ratio of the observed data event yields to those expected
+from simulation.
+
+According to the deﬁnition of sidereal time, events recorded every day
+within a year at the same UTC time would populate the bins uniformly.
+The instantaneous luminosity delivered by the LHC, and thus the distribution of the number of pileup interactions per bunch crossing evolves
+over the year. To allow for diﬀerences in the instantaneous luminosity
+proﬁle between sidereal time bins, the distribution in the number of
+pileup interactions in simulation is corrected to agree with data, as a
+function of the sidereal hour within a day. The associated uncertainty
+arises from our imprecise knowledge of the total inelastic cross section,
+and is computed by varying this cross section by its uncertainty (4.6%)
+simultaneously in each sidereal time bin.
+The recorded integrated luminosity per sidereal time bin varies by
+up to 25% within a sidereal day, reﬂecting the time structure of the LHC
+operations. The simulated events are corrected to match the integrated
+luminosity in each sidereal time bin. The uncertainty in the integrated
+luminosity measurement originates from various sources in the normalization (related to the van der Meer calibration procedure [53–55]) and
+the integration of the luminosity measurement performed with several
+4
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+nuisance parameter per sidereal time bin is conservatively attributed
+to most of the other experimental uncertainties, whose size is evaluated from an estimate not depending on time, allowing the ﬁt to accommodate possible time dependence. These experimental uncertainties
+include the following sources: ratios of eﬃciencies between data and
+simulation for electron and muon reconstruction, identiﬁcation, and
+isolation that arise from tag-and-probe measurements with Z → 𝓁 + 𝓁 −
+events [23,24] (where 𝓁 = e or μ; uncertainties associated with the jet
+energy corrections (including jet energy resolution) [28]; uncertainties
+arising from the identiﬁcation of b jets [33]; and uncertainties associated
+with the gradual shift in the timing of the inputs of the ECAL L1 trigger.
+All of these uncertainties are treated as impacting the shape of the number of b jets distribution, as well as its normalization, and are treated
+as uncorrelated across sidereal time. Where relevant, each uncertainty
+source is split into systematic uncertainties correlated year-to-year, and
+a year-to-year uncorrelated component essentially of statistical nature.
+Two additional sources of theoretical origin impact experimental quantities and are treated as correlated as functions of sidereal time and years:
+the uncertainty in the jet energy scale arising from the parton ﬂavors,
+obtained by comparing herwig and pythia simulation; and the uncertainty in lepton isolation arising from the phase space extrapolation of
+eﬃciencies, from Z → 𝓁 + 𝓁 − to tt events. The uncertainties inducing the
+largest impact on the distribution of the number of b jets for the tt process are the electron identiﬁcation (1.2% in 2016 and 2.1% in 2017)
+and b jet identiﬁcation uncertainty (2% at low number of jets to 5% at
+high number of jets).
+Contributions from background processes are estimated from simulation. After the selection, the event yield for background processes is
+about 8% of the total number of expected events (Table 1), dominated
+by single top quark processes. The normalization of single top quark
+processes, whose contribution is dominated by the tW process, is assigned an uncertainty of 30%, accounting for the interference with the
+tt process in the selected phase space. Diboson and V+jets processes
+are attributed an uncertainty of 30% as well estimated for the predictions in the selected phase-space. All these uncertainties are estimated
+following the prescription from Ref. [59]. An uncertainty of 20% is associated with ttV processes [60]. A normalization uncertainty of 4% is
+assigned to the SM tt process [59] in the SME ﬁt (Section 7).
+The uncertainty corresponding to the correction of the top quark
+𝑝T in the tt process is estimated by the diﬀerence with respect to not
+applying the correction (signatures for violation of Lorentz invariance
+searched for in this Letter cannot induce a modiﬁcation of the top quark
+and antiquark 𝑝T , once integrated over time). Other theoretical uncertainties are arising from the top quark mass (obtained by varying 𝑚t by
+1 GeV up and down around its nominal value); from the parameter ℎdamp
+controlling the matching between matrix element and parton shower in
+the powheg generator (varied around its nominal value as 1.379+0.926
+−0.505
+times 𝑚t ); uncertainties associated with the CP5 underlying event tune
+(estimated during the tuning process [49]); and color reconnection uncertainties in the parton shower. Uncertainties in the parton shower
+modeling, related to initial- and ﬁnal-state radiation, are included for
+tt and single top quark processes by varying the renormalization scale
+for initial- and ﬁnal-state QCD emission in the parton shower by a factor 2 up and down. Uncertainties arising from our missing knowledge of
+higher-order corrections in pQCD are included separately for tt , single
+top quark, ttV, and V+jets processes by constructing an envelope of
+maximum variation computed from renormalization and factorization
+scale varied by a factor 1/2 to 2, excluding anticorrelated variations.
+Uncertainties in the PDFs and the strong coupling constant 𝛼S are evaluated with the Hessian set of NNPDF3.1 (102 replicas) and added in
+quadrature, with a single nuisance parameter for tt , single top quark,
+ttV, and V+jets processes. The ℎdamp , CP5 tune, and color reconnection sources modify the normalization of the distribution in the number
+of b jets, while all the other theoretical uncertainties modify the shape
+of the distribution. Theoretical uncertainties related to SM predictions
+are uniform across sidereal time.
+
+A theoretical uncertainty corresponding to single top quark time
+modulation in the SME is included in the SME ﬁt (described in Section 7), and treated as correlated across sidereal time.
+The same MC samples are used to predict the event yields in each
+sidereal time bin, separately for 2016 and 2017. Statistical uncertainties in the MC samples are included as log-normal uncertainties independently for each bin of the b jet multiplicity distribution, treated as
+correlated across sidereal time bins.
+The assumed correlations of the uncertainties between years of data
+taking and sidereal time bins are detailed in Table 2.
+6. Measurement of the normalized 𝐭𝐭 diﬀerential cross section
+with sidereal time
+The normalized diﬀerential cross section for tt production is measured by employing a proﬁle likelihood template ﬁt of the predictions
+from simulation to the data including all sidereal time bins, based on
+the LHC test statistic [61–63]. Since the SM predictions for the tt cross
+section are identical in each particle-level bin 𝑖, and because unfolding
+for detector eﬀects is not needed (particle- and reconstructed-level sidereal time are identical), the normalized diﬀerential cross section 𝜎𝑖 ∕𝜎avg
+in bin 𝑖 (where 𝜎avg is the averaged cross section over all sidereal time
+bins) reduces to 𝜇𝑖 ∕𝜇avg , where 𝜇𝑖 is the ratio of the observed tt yield
+
+∑
+
+to the tt yield predicted in the SM, and 𝜇avg = 𝑘 𝜇𝑘 ∕24. The fractions
+𝑓𝑖 = 𝜇𝑖 ∕𝜇avg for 23 sidereal time bins are directly ﬁtted as parameters of
+interest together with 𝜇avg ; the remaining fraction and its uncertainty is
+computed via error propagation using the covariance matrix of the ﬁt.
+In performing the measurement of the tt normalized diﬀerential
+cross section as a function of sidereal time, the distributions in the number of b jets in each sidereal time bin are used as discriminant observables between tt and background processes. Uncertainties described in
+Section 5 are considered either as nuisance parameters with log-normal
+distribution attributed to the normalization of the distribution in the
+number of b jets, or as nuisance parameters distorting the shape of the
+distribution in the number of b jets. Uncertainties follow the correlation scheme highlighted in Table 2: when the dependency with sidereal
+time is known, the uncertainties are treated as correlated across sidereal time bin (including uniform theory and background normalization
+uncertainties); and when the dependency is not known, the uncertainties are treated as uncorrelated across sidereal time bin. Preﬁt and postﬁt
+distributions are illustrated in Fig. 2. The preﬁt distribution corresponds
+to the expected SM event yields and their uncertainties before the ﬁt is
+performed. After the model is ﬁtted to the data, the ﬁnal values of the
+parameters and their uncertainties are obtained, corresponding to the
+postﬁt distribution. The predicted distributions of the number of b jets
+are not the same in each time bin, because corrections for integrated
+luminosity, pileup, and trigger eﬃciencies are applied as a function of
+sidereal time.
+The normalized diﬀerential cross section is shown in Fig. 3. A
+goodness-of-ﬁt test including constraints from the nuisance parameters [64] results in a 𝑝-value [65] of 0.92 for the adequacy of the MC
+model to describe data.
+Fig. 4 shows a breakdown of the uncertainties associated with the
+measurement of tt normalized diﬀerential cross section, according to
+the treatment of their dependences on sidereal time. The measurement is
+dominated by systematic uncertainties. The experimental uncertainties
+that are treated as uncorrelated in sidereal time have the largest impact on the normalized diﬀerential cross section, and they arise mainly
+from sources related to electrons, jet energy scale, and b tagging. The
+uncertainties featuring explicit dependence on sidereal time have an impact that is smaller than the statistical uncertainty, and are dominated
+by trigger uncertainties. Uncertainties that are uniform in sidereal time
+(ﬂat luminosity component, background normalization, theory uncertainties) contribute to a lesser extent.
+5
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+Table 2
+Summary of the systematic uncertainties and their correlation scheme between 2016 and
+2017 data sets, and between sidereal time bins. Sources marked with an asterisk are only
+included in the SME ﬁts. Sources marked with a dagger are uniform and correlated in
+sidereal time.
+Systematic uncertainty source
+
+Correlation
+2016–2017
+
+Correlation
+time bins
+
+Magnitude
+
+Flat luminosity, year-to-year correlated part
+Flat luminosity, year-to-year uncorrelated part
+Time-dependent luminosity stability
+Time-dependent luminosity linearity
+Time-dependent pileup reweighting
+Time-dependent trigger eﬃciency, syst. component
+Time-dependent trigger eﬃciency, stat. component
+
+100%
+0%
+0%
+0%
+100%
+0%
+0%
+
+100%
+100%
+100%
+100%
+100%
+100%
+0%
+
+0.6–0.9%
+0.9–1.4%
+0.2–0.4%
+0.2–0.4%
+0.3–5%
+0.5–1%
+0.5%
+
+L1 ECAL timing shift
+Electron reconstruction
+Electron identiﬁcation
+Muon identiﬁcation, syst. component
+Muon identiﬁcation, stat. component
+Muon isolation, syst. component
+Muon isolation, stat. component
+Phase-space extrapolation of lepton isolation
+Jet energy scale, year-to-year correlated part
+Jet energy scale, year-to-year uncorrelated part
+Parton ﬂavor impact on jet energy scale
+b tagging
+
+100%
+100%
+100%
+100%
+0%
+100%
+0%
+100%
+100%
+0%
+100%
+0%
+
+0%
+0%
+0%
+0%
+0%
+0%
+0%
+100%
+0%
+0%
+100%
+0%
+
+0.5%
+0.4%
+1.2–2.2%
+0.3%
+0.5%
+<0.1%
+0.2%
+0.5–1%
+0.8%
+1.4%
+1.1%
+2–4%
+
+Matrix element scale †
+PDF+𝛼S †
+Initial- & ﬁnal-state radiation scale †
+Top quark 𝑝T †
+Matrix element to parton shower matching †
+Underlying event tune †
+Color reconnection †
+Top quark mass †
+
+100%
+100%
+100%
+100%
+100%
+100%
+100%
+100%
+
+100%
+100%
+100%
+100%
+100%
+100%
+100%
+100%
+
+0.3–6%
+0.1–0.4%
+1–5%
+0.5–2.5%
+0.7%
+0.2%
+0.3%
+0.5–3%
+
+Single top quark cross section †
+ttV cross section †
+Diboson cross section †
+V+jets cross section †
+tt cross section ∗†
+
+100%
+100%
+100%
+100%
+100%
+
+100%
+100%
+100%
+100%
+100%
+
+30%
+20%
+30%
+30%
+4%
+
+Single top quark time modulation ∗
+
+100%
+
+100%
+
+2%
+
+MC statistical uncertainty
+
+0%
+
+100%
+
+0.1–1%
+
+gitude (𝓁 = 6.08◦ E). Furthermore, the LHC plane, and thus the CMS
+cavern, has an angle of 𝛾 = 0.705◦ relative to the surface.
+A tt production sample, generated with MadGraph5_amc@nlo at
+LO in pQCD with parton shower, underlying event, and hadronization
+simulated with pythia 8, followed by full detector simulation, is used
+to evaluate the signal 𝑓 (𝑡) functions. The 𝑓 (𝑡) functions are computed
+for each number of reconstructed b jets separately for each year and
+sidereal time bin. Events containing exactly 1, 2, 3, or ≥4 b jets at the
+reconstructed level are used to evaluate the matrix elements 𝑃 , 𝐹 , 𝐹̄
+and their SME corrections, using exact LO kinematics before showering.
+The SME coeﬃcients are classiﬁed into four families extracted separately, corresponding to 𝑐𝐿,𝜇𝜈 (assuming 𝑐𝑅,𝜇𝜈 = 0), 𝑐𝑅,𝜇𝜈 (assuming
+𝑐𝐿,𝜇𝜈 = 0), 𝑐 𝜇𝜈 (assuming 𝑑 𝜇𝜈 = 0), and 𝑑 𝜇𝜈 (assuming 𝑐 𝜇𝜈 = 0). Within
+the chosen basis of coeﬃcients adopted in the SME, these matrices are
+deﬁned as symmetric and traceless. Coeﬃcients with indices 𝜇𝜈 = 𝑇 𝑇
+induce a shift in the tt cross section and are not considered. Since the
+𝑍 -axis is deﬁned as the Earth’s rotation axis, and because modulation
+of the tt cross section with sidereal time is induced by rotation around
+this axis, there is by deﬁnition no sensitivity in the coeﬃcients with indices 𝜇𝜈 = 𝑍𝑍 . For similar reasons, coeﬃcients with indices 𝜇𝜈 = 𝑍𝑇
+are not considered. Coeﬃcients with 𝜇𝜈 = 𝑋𝑇 or 𝑌 𝑇 are found to induce very small SME corrections and are also not considered. Remaining
+coeﬃcients correspond to the combinations 𝑐𝑋𝑋 = −𝑐𝑌 𝑌 , 𝑐𝑋𝑍 = 𝑐𝑍𝑋 ,
+𝑐𝑌 𝑍 = 𝑐𝑍𝑌 , and 𝑐𝑋𝑌 = 𝑐𝑌 𝑋 (and similar expressions for the three other
+scenarios). A total of 16 sets of coeﬃcients is determined. An illustration
+of their impact on the tt cross section is shown in Fig. 5.
+
+7. Testing Lorentz invariance with the SME
+Corrections to the matrix element of tt production and decay arising
+from Lorentz-violating terms in the SME are known at LO in pQCD [16],
+and are linear in the SME coeﬃcients, stemming from the interference
+between SME and SM predictions. Within the CMS reference frame, the
+variation of the tt cross section with sidereal time 𝑡 is quantiﬁed with
+the function [14] 𝑓 (𝑡) = 𝜎SME (𝑡)∕𝜎SM − 1, where 𝜎SME (𝜎SM ) are the
+values predicted in the SME (SM):
+
+(
+𝑓 (𝑡) = (𝑐𝐿,𝜇𝜈 + 𝑐𝑅,𝜇𝜈 )𝑅𝜇𝛼 (𝑡)𝑅𝜈𝛽 (𝑡)
+
+𝛿𝑃
+𝑃
+
+)𝛼𝛽
+(
+
++ 𝑐𝐿,𝜇𝜈 𝑅𝜇𝛼 (𝑡)𝑅𝜈𝛽 (𝑡)
+
+𝛿𝐹
+𝛿 𝐹̄
++
+𝐹
+𝐹̄
+
+)𝛼𝛽
+,
+
+(3)
+
+with 𝑐𝐿,𝜇𝜈 = 𝑐 𝜇𝜈 + 𝑑 𝜇𝜈 and 𝑐𝑅,𝜇𝜈 = 𝑐 𝜇𝜈 − 𝑑 𝜇𝜈 ; where 𝛼 and 𝛽 represent
+summation over space-time indices in the CMS detector frame; 𝑃 , 𝐹 ,
+and 𝐹̄ are the squared LO matrix elements of the SM tt production (either quark-antiquark annihilation or gluon fusion), and top quark and
+antiquark decays; and 𝛿𝑃 , 𝛿𝐹 , 𝛿 𝐹̄ are their corrections predicted in the
+SME. Rotation matrices 𝑅(𝑡) represent transformations of observer coordinates from the SCF to the CMS reference frame, depending on the
+Earth’s rotation around its axis with angular velocity Ωsidereal . The coordinates of the CMS interaction point are speciﬁed [66] by the azimuth
+on the LHC ring (𝜙 = 101.28◦ ), the latitude (𝜆 = 46.31◦ N), and the lon6
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+Fig. 2. Preﬁt (upper) and postﬁt (lower) distributions of the number of b jets in sidereal hour bins, in 2016 and 2017 data. The gray band reﬂects the statistical
+and systematic uncertainty predicted in each bin, including correlations across bins. The vertical bars associated with the data points represent their statistical
+uncertainty. The lower panels show the ratio of the observed data event yields to those expected from simulation.
+
+The Lagrangian deﬁned in Eq. (1) impacts all processes involving
+top quarks, including single top quark and ttV processes. The latter processes have a small yield and their variation with sidereal time can be
+neglected, contrary to the former processes. Expressions for the matrix
+elements of single top quark production in the SME are not available,
+to our knowledge. Among the single top quark processes, tW production has the largest contribution in the selected dileptonic event sample.
+Therefore, uncertainties corresponding to single top quark time modulation in the SME are attributed to single top quark processes, and
+computed from matrix elements predicted in the SME for top quark and
+antiquark decay only, in an MC sample of tW processes generated at
+LO. These uncertainties correspond to a value of the SME coeﬃcients
+of ±3 × 10−3 in 𝑋𝑋 and 𝑋𝑌 directions, and ±10 × 10−3 in 𝑋𝑍 and
+𝑌 𝑍 directions, at the same order of magnitude as the expected sensitivity in the worst case among 𝑐𝐿 , 𝑐𝑅 , 𝑐 , and 𝑑 sets of coeﬃcients. In
+the case of 𝑐𝑅,𝜇𝜈 coeﬃcients, which do not aﬀect the top quark or antiquark in the decay (as highlighted in Eq. (3)), the uncertainty model for
+𝑐𝐿,𝜇𝜈 is used. In measuring individually the SME coeﬃcients, the SME
+uncertainty for single top quark processes in a given direction has been
+
+Fig. 3. The normalized diﬀerential cross section for tt as a function of sidereal
+time, using combined 2016–2017 data. The error bars show statistical, as well
+as statistical and systematic uncertainties, including correlations across bins.
+7
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+Table 3
+Expected and observed 68% conﬁdence level interval measured for the SME ﬁts
+of single coeﬃcients while the others are ﬁxed to their SM value, and while coeﬃcients for the three other directions are ﬂoating. The expected intervals represent
+the results obtained using simulation only, assuming null values of the coeﬃcients in the data. Reported intervals are to be multiplied by 10−3 .
+SME coeﬃcient
+(10
+
+−3
+
+unit)
+
+Others ﬁxed to SM
+
+Others ﬂoating
+
+Expected
+
+Observed
+
+Expected
+
+Observed
+
+𝑐𝐿,𝑋𝑋 = −𝑐𝐿,𝑌 𝑌
+𝑐𝐿,𝑋𝑌 = 𝑐𝐿,𝑌 𝑋
+𝑐𝐿,𝑋𝑍 = 𝑐𝐿,𝑍𝑋
+𝑐𝐿,𝑌 𝑍 = 𝑐𝐿,𝑍𝑌
+
+[−0.96; 0.96]
+[−0.97; 0.97]
+[−3.23; 3.23]
+[−3.24; 3.24]
+
+[−0.9; 1.03]
+[−1.92; 0.0]
+[−0.97; 5.49]
+[−4.61; 1.85]
+
+[−0.96; 0.96]
+[−0.97; 0.97]
+[−3.23; 3.23]
+[−3.24; 3.24]
+
+[−0.9; 1.03]
+[−1.94; −0.02]
+[−0.92; 5.54]
+[−4.64; 1.82]
+
+𝑐𝑅,𝑋𝑋 = −𝑐𝑅,𝑌 𝑌
+𝑐𝑅,𝑋𝑌 = 𝑐𝑅,𝑌 𝑋
+𝑐𝑅,𝑋𝑍 = 𝑐𝑅,𝑍𝑋
+𝑐𝑅,𝑌 𝑍 = 𝑐𝑅,𝑍𝑌
+
+[−1.7; 1.7]
+[−1.71; 1.71]
+[−5.78; 5.78]
+[−5.8; 5.8]
+
+[−1.65; 1.77]
+[0.09; 3.5]
+[−9.36; 2.2]
+[−3.82; 7.76]
+
+[−1.7; 1.7]
+[−1.71; 1.71]
+[−5.78; 5.78]
+[−5.8; 5.8]
+
+[−1.66; 1.76]
+[0.12; 3.52]
+[−9.45; 2.11]
+[−3.77; 7.82]
+
+𝑐𝑋𝑋 = −𝑐𝑌 𝑌
+𝑐𝑋𝑌 = 𝑐𝑌 𝑋
+𝑐𝑋𝑍 = 𝑐𝑍𝑋
+𝑐𝑌 𝑍 = 𝑐𝑍𝑌
+
+[−2.17; 2.17]
+[−2.18; 2.18]
+[−7.21; 7.21]
+[−7.24; 7.24]
+
+[−1.76; 2.62]
+[−4.23; 0.17]
+[−1.49; 13.07]
+[−11.05; 3.38]
+
+[−2.17; 2.17]
+[−2.18; 2.18]
+[−7.21; 7.21]
+[−7.24; 7.24]
+
+[−1.83; 2.55]
+[−4.31; 0.09]
+[−1.29; 13.27]
+[−11.21; 3.28]
+
+𝑑𝑋𝑋 = −𝑑𝑌 𝑌
+𝑑𝑋𝑌 = 𝑑𝑌 𝑋
+𝑑𝑋𝑍 = 𝑑𝑍𝑋
+𝑑𝑌 𝑍 = 𝑑𝑍𝑌
+
+[−0.61; 0.61]
+[−0.62; 0.62]
+[−2.07; 2.07]
+[−2.08; 2.08]
+
+[−0.6; 0.63]
+[−1.24; −0.01]
+[−0.68; 3.46]
+[−2.9; 1.25]
+
+[−0.61; 0.61]
+[−0.62; 0.62]
+[−2.08; 2.07]
+[−2.08; 2.08]
+
+[−0.59; 0.64]
+[−1.25; −0.02]
+[−0.65; 3.49]
+[−2.92; 1.23]
+
+with zero, in agreement with the SM within one standard deviation or
+less, indicating no sign of deviation from Lorentz invariance. The precision achieved on the values of the coeﬃcients of the 𝑐𝐿 and 𝑐𝑅 families
+on the one hand, and on the values of the coeﬃcients of the 𝑑 family
+on the other hand, is improved respectively by a factor 20–50 and up to
+100 over the previous constraints [14]. The coeﬃcients of the 𝑐 family
+are measured for the ﬁrst time.
+The impact of the uncertainties in the SME coeﬃcients is shown in
+Fig. 7 in the case of the ﬁt of individual sets of coeﬃcients, while the
+coeﬃcients corresponding to the three other directions are left ﬂoating.
+Systematic uncertainties uncorrelated between sidereal time bins are
+dominating the precision, at a level of approximately three times higher
+than the statistical uncertainties. The systematic uncertainties that are
+nonuniform and correlated across sidereal time impact the precision at
+about half the impact of the statistical uncertainties. The uncertainties
+that are uniform in sidereal time have a smaller impact.
+
+Fig. 4. Comparison of systematic and statistical uncertainties, where the former are grouped according to the treatment of time dependence: uniform (ﬂat
+luminosity component, background normalization, theory), correlated (trigger,
+luminosity stability and linearity, pileup, and MC statistical uncertainty), or uncorrelated (other experimental uncertainties) across sidereal time bins.
+
+8. Summary
+A search for violation of Lorentz invariance has been performed using top quark pairs (tt ), requiring the presence of one muon and one
+electron in the events. Data collected in 2016–2017 with the CMS detector corresponding to an integrated luminosity of 77.8 fb−1 are used.
+A measurement of the tt normalized diﬀerential cross section as a function of sidereal time is performed. The Lorentz invariance assumption is
+tested by measuring 16 sets of coeﬃcients within the standard model extension, an eﬀective ﬁeld theory predicting a modulation of the tt cross
+section with sidereal time. Measurements of the Lorentz-violating couplings are found to be compatible with the standard model hypothesis.
+The precision of the results ranges from less than 1 × 10−3 to 8 × 10−3
+for the measured coeﬃcients. This constitutes the most precise test of
+the isotropy in special relativity using top quarks at a hadron collider.
+
+veriﬁed to impact only the coeﬃcients related to the same direction,
+with an uncertainty corresponding to approximately 15% of the total
+uncertainty on the coeﬃcient.
+The discriminant observable used to extract the SME coeﬃcients is
+the same as in the diﬀerential measurement (Section 6), with event
+corrections and systematic uncertainties described in Section 5. The likelihood ﬁt is performed in two scenarios: 1) independently for each set
+of coeﬃcients as a single parameter of interest, with all other parameters being set to zero; 2) independently for each set of coeﬃcients as a
+single parameter of interest, with the parameters corresponding to the
+three other directions (among 𝑋𝑋 , 𝑋𝑌 , 𝑋𝑍 , 𝑌 𝑍 directions) ﬂoating
+in the ﬁt, for the four families of coeﬃcients 𝑐𝐿 , 𝑐𝑅 , 𝑐 , and 𝑑 separately.
+The measured values of the SME sets of coeﬃcients in the latter scenario is shown in Fig. 6, while Table 3 compares the values for the two
+scenarios. Scenarios 1 and 2 yield expected uncertainties identical up to
+the second digit, because the correlation between the four sets of coeﬃcients in a family is found to be 0–4%. A 𝑝-value of 0.98 is obtained for
+the measurements of the coeﬃcients in a given direction while the coeﬃcients corresponding to the three other directions are ﬂoating in the
+ﬁt. All of the measured values for the SME coeﬃcients are compatible
+
+Declaration of competing interest
+The authors declare that they have no known competing ﬁnancial
+interests or personal relationships that could have appeared to inﬂuence
+the work reported in this paper.
+8
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+Fig. 5. Number of tt events reconstructed in the SME hypothesis divided by the number of events in the SM hypothesis, as a function of the number of b jets and
+sidereal time, for the four directions of the 𝑐𝐿 coeﬃcients. The uncertainty band represents the MC statistical uncertainty in the sample used to compute the SME
+hypothesis. The sinusoidal variation is arising from the 𝑓 (𝑡) dependence on sidereal time, while smaller structures reﬂect the number of b jets in each sidereal time
+bin.
+
+Fig. 6. Fitted SME coeﬃcients and their 68 and 95% CL, measured in ﬁts of single coeﬃcients while the coeﬃcients corresponding to the three other directions are
+left ﬂoating, within the 𝑐𝐿 , 𝑐𝑅 , 𝑐 , and 𝑑 families. The error bar includes statistical and systematic uncertainties. Fitting a single coeﬃcient, with the others ﬁxed to
+the SM value, leads to negligible changes in the results.
+
+Data availability
+
+eﬀectively the computing infrastructure essential to our analyses. Finally, we acknowledge the enduring support for the construction and
+operation of the LHC, the CMS detector, and the supporting computing
+infrastructure provided by the following funding agencies: SC (Armenia), BMBWF and FWF (Austria); FNRS and FWO (Belgium); CNPq,
+CAPES, FAPERJ, FAPERGS, and FAPESP (Brazil); MES and BNSF (Bulgaria); CERN; CAS, MoST, and NSFC (China); MINCIENCIAS (Colombia);
+MSES and CSF (Croatia); RIF (Cyprus); SENESCYT (Ecuador); ERC PRG,
+RVTT3 and MoER TK202 (Estonia); Academy of Finland, MEC, and
+HIP (Finland); CEA and CNRS/IN2P3 (France); SRNSF (Georgia); BMBF,
+DFG, and HGF (Germany); GSRI (Greece); NKFIH (Hungary); DAE and
+DST (India); IPM (Iran); SFI (Ireland); INFN (Italy); MSIP and NRF
+(Republic of Korea); MES (Latvia); LMTLT (Lithuania); MOE and UM
+(Malaysia); BUAP, CINVESTAV, CONACYT, LNS, SEP, and UASLP-FAI
+
+Release and preservation of data used by the CMS Collaboration as
+the basis for publications is guided by the CMS data preservation, re-use
+and open access policy.
+Acknowledgements
+We congratulate our colleagues in the CERN accelerator departments for the excellent performance of the LHC and thank the technical and administrative staﬀs at CERN and at other CMS institutes
+for their contributions to the success of the CMS eﬀort. In addition,
+we gratefully acknowledge the computing centers and personnel of the
+Worldwide LHC Computing Grid and other centers for delivering so
+9
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+tugal); the National Priorities Research Program by Qatar National
+Research Fund; MCIN/AEI/10.13039/501100011033, ERDF “a way of
+making Europe”, and the Programa Estatal de Fomento de la Investigación Cientíﬁca y Técnica de Excelencia María de Maeztu, grant
+MDM-2017-0765 and Programa Severo Ochoa del Principado de Asturias (Spain); the Chulalongkorn Academic into Its 2nd Century Project
+Advancement Project, and the National Science, Research and Innovation Fund via the Program Management Unit for Human Resources & Institutional Development, Research and Innovation, grant B37G660013
+(Thailand); the Kavli Foundation; the Nvidia Corporation; the SuperMicro Corporation; the Welch Foundation, contract C-1845; and the
+Weston Havens Foundation (USA).
+References
+[1] V.A. Kostelecký, S. Samuel, Spontaneous breaking of Lorentz symmetry in string
+theory, Phys. Rev. D 39 (1989) 683, https://doi.org/10.1103/PhysRevD.39.683.
+[2] R. Gambini, J. Pullin, Nonstandard optics from quantum space-time, Phys. Rev.
+D 59 (1999) 124021, https://doi.org/10.1103/PhysRevD.59.124021, arXiv:gr-qc/
+9809038.
+[3] M. Pospelov, C. Tamarit, Lifshitz-sector mediated SUSY breaking, J. High Energy
+Phys. 01 (2014) 048, https://doi.org/10.1007/JHEP01(2014)048, arXiv:1309.5569.
+[4] D. Colladay, V.A. Kostelecký, 𝐶𝑃 𝑇 violation and the standard model, Phys. Rev. D 55
+(1997) 6760, https://doi.org/10.1103/PhysRevD.55.6760, arXiv:hep-ph/9703464.
+[5] D. Colladay, V.A. Kostelecký, Lorentz-violating extension of the standard model,
+Phys. Rev. D 58 (1998) 116002, https://doi.org/10.1103/PhysRevD.58.116002,
+arXiv:hep-ph/9809521.
+[6] V.A. Kostelecký, N. Russell, Data tables for Lorentz and 𝐶𝑃 𝑇 violation, Rev. Mod.
+Phys. 83 (2011) 11, https://doi.org/10.1103/RevModPhys.83.11, arXiv:0801.0287.
+[7] I. Abt, et al., ZEUS, Search for eﬀective Lorentz and 𝐶𝑃 𝑇 violation using ZEUS data,
+Phys. Rev. D 107 (2023) 092008, https://doi.org/10.1103/PhysRevD.107.092008,
+arXiv:2212.12750.
+[8] D. Babusci, et al., KLOE-2, Test of 𝐶𝑃 𝑇 and Lorentz symmetry in entangled neutral
+kaons with the KLOE experiment, Phys. Lett. B 730 (2014) 89, https://doi.org/10.
+1016/j.physletb.2014.01.026, arXiv:1312.6818.
+[9] H. Nguyen, 𝐶𝑃 𝑇 results from KTeV, in: Proc. 2nd Meeting on 𝐶𝑃 𝑇 and Lorentz Symmetry, Bloomington IN, USA, August 15–18, 2001, 2002, arXiv:hep-ex/0112046.
+[10] J.M. Link, et al., FOCUS, Charm system tests of 𝐶𝑃 𝑇 and Lorentz invariance with
+FOCUS, Phys. Lett. B 556 (2003) 7, https://doi.org/10.1016/S0370-2693(03)001035, arXiv:hep-ex/0208034.
+
+Fig. 7. Uncertainty breakdown for SME ﬁts of single coeﬃcients while the coefﬁcients corresponding to the three other directions are left ﬂoating, by splitting
+according to the treatment of time dependence: ﬂat across sidereal time (ﬂat luminosity component, background normalization, theory), correlated in sidereal
+time bins (trigger, luminosity stability and linearity, pileup, MC statistical uncertainty, single top quark decay in the SME), systematics uncorrelated in sidereal
+time bins (other experimental uncertainties), and statistical uncertainty.
+
+(Mexico); MOS (Montenegro); MBIE (New Zealand); PAEC (Pakistan);
+MES and NSC (Poland); FCT (Portugal); MESTD (Serbia); MCIN/AEI
+and PCTI (Spain); MOSTR (Sri Lanka); Swiss Funding Agencies (Switzerland); MST (Taipei); MHESI and NSTDA (Thailand); TUBITAK and TENMAK (Turkey); NASU (Ukraine); STFC (United Kingdom); DOE and NSF
+(USA).
+Individuals have received support from the Marie-Curie program
+and the European Research Council and Horizon 2020 Grant, contract
+Nos. 675440, 724704, 752730, 758316, 765710, 824093, 101115353,
+101002207, and COST Action CA16108 (European Union); the Leventis Foundation; The Alfred P. Sloan Foundation; the Alexander von
+Humboldt Foundation; the Science Committee, project no. 22rl-037 (Armenia); the Belgian Federal Science Policy Oﬃce; the Fonds pour la
+Formation à la Recherche dans l’Industrie et dans l’Agriculture (FRIABelgium); the Agentschap voor Innovatie door Wetenschap en Technologie (IWT-Belgium); the F.R.S.-FNRS and FWO (Belgium) under the
+“Excellence of Science – EOS” – be.h project n. 30820817; the Beijing
+Municipal Science & Technology Commission, No. Z191100007219010
+and Fundamental Research Funds for the Central Universities (China);
+the Ministry of Education, Youth and Sports (MEYS) of the Czech Republic; the Shota Rustaveli National Science Foundation, grant FR22-985 (Georgia); the Deutsche Forschungsgemeinschaft (DFG), under Germany’s Excellence Strategy – EXC 2121 “Quantum Universe”
+– 390833306, and under project number 400140256 - GRK2497; the
+Hellenic Foundation for Research and Innovation (HFRI), Project Number 2288 (Greece); the Hungarian Academy of Sciences, the New National Excellence Program - ÚNKP, the NKFIH research grants K 131991,
+K 133046, K 138136, K 143460, K 143477, K 146913, K 146914,
+K 147048, 2020-2.2.1-ED-2021-00181, and TKP2021-NKTA-64 (Hungary); the Council of Science and Industrial Research, India; ICSC –
+National Research Center for High Performance Computing, Big Data
+and Quantum Computing and FAIR – Future Artiﬁcial Intelligence Research, funded by the NextGenerationEU program (Italy); the Latvian
+Council of Science; the Ministry of Education and Science, project
+no. 2022/WK/14, and the National Science Center, contracts Opus
+2021/41/B/ST2/01369 and 2021/43/B/ST2/01552 (Poland); the Fundação para a Ciência e a Tecnologia, grant CEECIND/01334/2018 (Por-
+
+0
+
+[11] B. Aubert, et al., BaBar, Search for 𝐶𝑃 𝑇 and Lorentz violation in B0 –B oscillations
+with dilepton events, Phys. Rev. Lett. 100 (2008) 131802, https://doi.org/10.1103/
+PhysRevLett.100.131802, arXiv:0711.2713.
+[12] V.M. Abazov, et al., D0, Search for violation of 𝐶𝑃 𝑇 and Lorentz invariance in B0s
+meson oscillations, Phys. Rev. Lett. 115 (2015) 161601, https://doi.org/10.1103/
+PhysRevLett.115.161601, arXiv:1506.04123.
+[13] LHCb Collaboration, Search for violations of Lorentz invariance and 𝐶𝑃 𝑇 symmetry in B0(s) mixing, Phys. Rev. Lett. 116 (2016) 241601, https://doi.org/10.1103/
+PhysRevLett.116.241601, arXiv:1603.04804.
+[14] V.M. Abazov, et al., D0, Search for violation of Lorentz invariance in top quark
+pair production and decay, Phys. Rev. Lett. 108 (2012) 261603, https://doi.org/10.
+1103/PhysRevLett.108.261603, arXiv:1203.6106.
+[15] A. Carle, N. Chanon, S. Perries, Prospects for Lorentz invariance violation searches
+with top pair production at the LHC and future hadron colliders, Eur. Phys. J. C 80
+(2020) 128, https://doi.org/10.1140/epjc/s10052-020-7715-2, arXiv:1908.11256.
+[16] M.S. Berger, V.A. Kostelecký, Z. Liu, Lorentz and 𝐶𝑃 𝑇 violation in top-quark production and decay, Phys. Rev. D 93 (2016) 036005, https://doi.org/10.1103/PhysRevD.
+93.036005, arXiv:1509.08929.
+[17] HEPData record for this analysis, https://doi.org/10.17182/hepdata.138418, 2024.
+[18] CMS Collaboration, The CMS experiment at the CERN LHC, J. Instrum. 3 (2008)
+S08004, https://doi.org/10.1088/1748-0221/3/08/S08004.
+[19] W. Adam, et al., CMS Tracker Group, The CMS Phase-1 pixel detector upgrade,
+J. Instrum. 16 (2021) P02027, https://doi.org/10.1088/1748-0221/16/02/P02027,
+arXiv:2012.14304.
+[20] CMS Collaboration, Development of the CMS detector for the CERN LHC Run 3,
+J. Instrum. 19 (2024) P05064, https://doi.org/10.1088/1748-0221/19/05/P05064,
+arXiv:2309.05466.
+[21] CMS √
+Collaboration, Performance of the CMS Level-1 trigger in proton-proton collisions at 𝑠 = 13 TeV, J. Instrum. 15 (2020) P10017, https://doi.org/10.1088/17480221/15/10/P10017, arXiv:2006.10165.
+[22] CMS Collaboration, The CMS trigger system, J. Instrum. 12 (2017) P01020, https://
+doi.org/10.1088/1748-0221/12/01/P01020, arXiv:1609.02366.
+[23] CMS Collaboration, Electron and photon reconstruction and identiﬁcation with the
+CMS experiment at the CERN LHC, J. Instrum. 16 (2021) P05014, https://doi.org/
+10.1088/1748-0221/16/05/P05014, arXiv:2012.06888.
+[24] CMS Collaboration, Performance√of the CMS muon detector and muon reconstruction
+with proton-proton collisions at 𝑠 = 13 TeV, J. Instrum. 13 (2018) P06015, https://
+doi.org/10.1088/1748-0221/13/06/P06015, arXiv:1804.04528.
+10
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+[25] CMS Collaboration, Description and performance of track and primary-vertex reconstruction with the CMS tracker, J. Instrum. 9 (2014) P10009, https://doi.org/
+10.1088/1748-0221/9/10/P10009, arXiv:1405.6569.
+[26] CMS Collaboration, Particle-ﬂow reconstruction and global event description with
+the CMS detector, J. Instrum. 12 (2017) P10003, https://doi.org/10.1088/17480221/12/10/P10003, arXiv:1706.04965.
+[27] CMS Collaboration, Performance of reconstruction
+√ and identiﬁcation of τ leptons
+decaying to hadrons and ντ in pp collisions at 𝑠 = 13 TeV, J. Instrum. 13 (2018)
+P10005, https://doi.org/10.1088/1748-0221/13/10/P10005, arXiv:1809.02816.
+[28] CMS Collaboration, Jet energy scale and resolution in the CMS experiment in pp
+collisions at 8 TeV, J. Instrum. 12 (2017) P02014, https://doi.org/10.1088/17480221/12/02/P02014, arXiv:1607.03663.
+[29] CMS Collaboration, Performance
+√ of missing transverse momentum reconstruction
+in proton-proton collisions at 𝑠 = 13 TeV using the CMS detector, J. Instrum. 14
+(2019) P07004, https://doi.org/10.1088/1748-0221/14/07/P07004, arXiv:1903.
+06078.
+[30] M. Cacciari, G.P. Salam, G. Soyez, FastJet user manual, Eur. Phys. J. C 72 (2012)
+1896, https://doi.org/10.1140/epjc/s10052-012-1896-2, arXiv:1111.6097.
+[31] CMS
+Collaboration, Measurements of inclusive W and Z cross sections in pp colli√
+sions at 𝑠 = 7 TeV, J. High Energy Phys. 01 (2011) 080, https://doi.org/10.1007/
+JHEP01(2011)080, arXiv:1012.2466.
+[32] M. Cacciari, G.P. Salam, G. Soyez, The anti-𝑘T jet clustering algorithm, J. High
+Energy Phys. 04 (2008) 063, https://doi.org/10.1088/1126-6708/2008/04/063,
+arXiv:0802.1189.
+[33] CMS Collaboration, Identiﬁcation of heavy-ﬂavour jets with the CMS detector in pp
+collisions at 13 TeV, J. Instrum. 13 (2018) P05011, https://doi.org/10.1088/17480221/13/05/P05011, arXiv:1712.07158.
+[34] CMS Collaboration, Performance summary of AK4 jet b tagging with data from
+proton-proton collisions at 13 TeV with the CMS detector, CMS Detector Performance Note CMS-DP-2023-005, https://cds.cern.ch/record/2854609, 2023.
+[35] S. Alioli, P. Nason, C. Oleari, E. Re, A general framework for implementing NLO
+calculations in shower Monte Carlo programs: the powheg box, J. High Energy
+Phys. 06 (2010) 043, https://doi.org/10.1007/JHEP06(2010)043, arXiv:1002.2581.
+[36] T. Sjöstrand, S. Ask, J.R. Christiansen, R. Corke, N. Desai, P. Ilten, S. Mrenna, S.
+Prestel, C.O. Rasmussen, P.Z. Skands, An introduction to pythia 8.2, Comput. Phys.
+Commun. 191 (2015) 159, https://doi.org/10.1016/j.cpc.2015.01.024, arXiv:1410.
+3012.
+[37] M. Czakon, A. Mitov, top++: a program for the calculation of the top-pair crosssection at hadron colliders, Comput. Phys. Commun. 185 (2014) 2930, https://doi.
+org/10.1016/j.cpc.2014.06.021, arXiv:1112.5675.
+[38] CMS Collaboration, Measurement
+√ of the diﬀerential cross section for top quark pair
+production in pp collisions at 𝑠 = 8 TeV, Eur. Phys. J. C 75 (2015) 542, https://
+doi.org/10.1140/epjc/s10052-015-3709-x, arXiv:1505.04480.
+[39] CMS Collaboration, Measurement of diﬀerential cross sections for top quark pair
+production using the lepton+jets ﬁnal state in proton-proton collisions at 13 TeV,
+Phys. Rev. D 95 (2017) 092001, https://doi.org/10.1103/PhysRevD.95.092001,
+arXiv:1610.04191.
+[40] CMS Collaboration, Diﬀerential cross section measurements for the production of
+√top
+quark pairs and of additional jets using dilepton events from pp collisions at 𝑠 =
+13 TeV, J. High Energy Phys. (2024), submitted for publication, arXiv:2402.08486.
+[41] N. Kidonakis, N. Yamanaka, Higher-order corrections for tW production at highenergy hadron colliders, J. High Energy Phys. 05 (2021) 278, https://doi.org/10.
+1007/JHEP05(2021)278, arXiv:2102.11300.
+[42] J. Alwall, R. Frederix, S. Frixione, V. Hirschi, F. Maltoni, O. Mattelaer, H.-S. Shao, T.
+Stelzer, P. Torrielli, M. Zaro, The automated computation of tree-level and next-toleading order diﬀerential cross sections, and their matching to parton shower simulations, J. High Energy Phys. 07 (2014) 079, https://doi.org/10.1007/JHEP07(2014)
+079, arXiv:1405.0301.
+[43] R. Frederix, S. Frixione, Merging meets matching in mc@nlo, J. High Energy Phys.
+12 (2012) 061, https://doi.org/10.1007/JHEP12(2012)061, arXiv:1209.6215.
+[44] P. Kant, O.M. Kind, T. Kintscher, T. Lohse, T. Martini, S. Mölbitz, P. Rieck, P. Uwer,
+hathor for single top-quark production: updated predictions and uncertainty estimates for single top-quark production in hadronic collisions, Comput. Phys. Commun. 191 (2015) 74, https://doi.org/10.1016/j.cpc.2015.02.001, arXiv:1406.4403.
+[45] T. Gehrmann, M. Grazzini, S. Kallweit, P. Maierhöfer, A. von Manteuﬀel, S. Pozzorini, D. Rathlev, L. Tancredi, W+ W− production at hadron colliders in next to
+next to leading order QCD, Phys. Rev. Lett. 113 (2014) 212001, https://doi.org/10.
+1103/PhysRevLett.113.212001, arXiv:1408.5243.
+
+[46] J.M. Campbell, R.K. Ellis, C. Williams, Vector boson pair production at the LHC,
+J. High Energy Phys. 07 (2011) 018, https://doi.org/10.1007/JHEP07(2011)018,
+arXiv:1105.0020.
+[47] J. Alwall, S. de Visscher, F. Maltoni, QCD radiation in the production of heavy colored particles at the LHC, J. High Energy Phys. 02 (2009) 017, https://doi.org/10.
+1088/1126-6708/2009/02/017, arXiv:0810.5350.
+[48] R. Gavin, Y. Li, F. Petriello, S. Quackenbush, fewz 2.0: a code for hadronic Z production at next-to-next-to-leading order, Comput. Phys. Commun. 182 (2011) 2388,
+https://doi.org/10.1016/j.cpc.2011.06.008, arXiv:1011.3540.
+[49] CMS Collaboration, Extraction and validation of a new set of CMS pythia 8 tunes
+from underlying-event measurements, Eur. Phys. J. C 80 (2020) 4, https://doi.org/
+10.1140/epjc/s10052-019-7499-4, arXiv:1903.12179.
+[50] CMS Collaboration, Event generator tunes obtained from underlying event and multiparton scattering measurements, Eur. Phys. J. C 76 (2016) 155, https://doi.org/
+10.1140/epjc/s10052-016-3988-x, arXiv:1512.00815.
+[51] R.D. Ball, V. Bertone, S. Carrazza, L. Del Debbio, S. Forte, P. Groth-Merrild, A. Guffanti, N.P. Hartland, Z. Kassabov, J.I. Latorre, E.R. Nocera, J. Rojo, L. Rottoli, E.
+Slade, M. Ubiali, NNPDF, Parton distributions from high-precision collider data,
+Eur. Phys. J. C 77 (2017) 663, https://doi.org/10.1140/epjc/s10052-017-5199-5,
+arXiv:1706.00428.
+[52] S. Agostinelli, et al., GEANT4, [Geant4]—a simulation toolkit, Nucl. Instrum. Methods Phys. Res., Sect. A 506 (2003) 250, https://doi.org/10.1016/S0168-9002(03)
+01368-8.
+[53] S. van der Meer, Calibration of the eﬀective beam height in the ISR, ISR Report
+CERN-ISR-PO-68-31, 1968, https://cds.cern.ch/record/296752.
+[54] P. Grafström, W. Kozanecki, Luminosity determination at proton colliders, Prog.
+Part. Nucl. Phys. 81 (2015) 97, https://doi.org/10.1016/j.ppnp.2014.11.002.
+[55] CMS
+√ Collaboration, Precision luminosity measurement in proton-proton collisions
+at 𝑠 = 13 TeV in 2015 and 2016 at CMS, Eur. Phys. J. C 81 (2021) 800, https://
+doi.org/10.1140/epjc/s10052-021-09538-2, arXiv:2104.01927.
+[56] √
+CMS Collaboration, CMS luminosity measurement for the 2017 data-taking period at
+𝑠 = 13 TeV, CMS Physics Analysis Summary CMS-PAS-LUM-17-004, 2018, https://
+cds.cern.ch/record/2621960.
+[57] E. Ayala, et al., CMS BRIL, The Pixel Luminosity Telescope: a detector for luminosity
+measurement at CMS using silicon pixel sensors, Eur. Phys. J. C 83 (2023) 673,
+https://doi.org/10.1140/epjc/s10052-023-11713-6, arXiv:2206.08870.
+[58] CMS Collaboration, Search for charged-lepton
+ﬂavor violation in top quark produc√
+tion and decay in pp collisions at 𝑠 = 13 TeV, J. High Energy Phys. 06 (2022) 082,
+https://doi.org/10.1007/JHEP06(2022)082, arXiv:2201.07859.
+[59] CMS Collaboration, Measurement of the tt production cross section, the top quark
+√
+mass, and the strong coupling constant using dilepton events in pp collisions at 𝑠 =
+13 TeV, Eur. Phys. J. C 79 (2019) 368, https://doi.org/10.1140/epjc/s10052-0196863-8, arXiv:1812.10505.
+[60] CMS Collaboration, Measurement of the cross section for top quark pair
+√ production
+in association with a W or Z boson in proton-proton collisions at 𝑠 = 13 TeV,
+J. High Energy Phys. 08 (2018) 011, https://doi.org/10.1007/JHEP08(2018)011,
+arXiv:1711.02547.
+[61] ATLAS CMS Collaborations, LHC Higgs Combination Group, Combination Group,
+Procedure for the LHC Higgs boson search combination in Summer 2011, Technical
+Report CMS-NOTE-2011-005, ATL-PHYS-PUB-2011-11, 2011, https://cds.cern.ch/
+record/1379837.
+[62] G. Cowan, K. Cranmer, E. Gross, O. Vitells, Asymptotic formulae for likelihoodbased tests of new physics, Eur. Phys. J. C 71 (2011) 1554, https://doi.org/
+10.1140/epjc/s10052-011-1554-0, arXiv:1007.1727, Erratum: https://doi.org/10.
+1140/epjc/s10052-013-2501-z.
+[63] CMS Collaboration, The CMS statistical analysis and combination tool: combine, Comput. Softw. Big Sci. (2024), https://doi.org/10.1007/s41781-024-001214, arXiv:2404.06614, in press.
+[64] S. Baker, R.D. Cousins, Clariﬁcation of the use of chi-square and likelihood functions
+in ﬁts to histograms, Nucl. Instrum. Methods 221 (1984) 437, https://doi.org/10.
+1016/0167-5087(84)90016-4.
+[65] L. Demortier, 𝑝 values and nuisance parameters, in: Proc. LHC Workshop on Statistical Issues for LHC Physics (PHYSTAT-LHC), Geneva, Switzerland, June 27–29, 2007,
+2007, p. 23, https://doi.org/10.5170/CERN-2008-001.23.
+[66] M. Jones, Computation of WGS84 geodetic coordinates and azimuths at the LHC
+interaction points, CERN TS/SU-ACG Activity Report, 2005, https://edms.cern.ch/
+document/322747, eDMS Document 322747.
+
+The CMS collaboration
+
+A. Hayrapetyan, A. Tumasyan
+
+,1
+
+Yerevan Physics Institute, Yerevan, Armenia
+11
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+W. Adam
+
+, J.W. Andrejkovic, T. Bergauer
+
+, S. Chatterjee
+
+, K. Damanakis
+
+P.S. Hussain , M. Jeitler ,2 , N. Krammer , A. Li , D. Liko , I. Mikulec
+D. Schwarz , M. Sonawane , S. Templ , W. Waltenberger , C.-E. Wulz
+
+, M. Dragicevic
+, J. Schieck
+
+,2
+
+,
+
+, R. Schöfbeck
+
+,
+
+,2
+
+Institut für Hochenergiephysik, Vienna, Austria
+
+,3 , T. Janssen
+
+M.R. Darwish
+
+, P. Van Mechelen
+
+Universiteit Antwerpen, Antwerpen, Belgium
+
+E.S. Bols , J. D’Hondt , S. Dansana , A. De Moor , M. Delcourt , H. El Faham , S. Lowette ,
+I. Makarenko , D. Müller , A.R. Sahasransu , S. Tavernier , M. Tytgat ,4 , G.P. Van Onsem ,
+S. Van Putte
+
+, D. Vannerom
+
+Vrije Universiteit Brussel, Brussel, Belgium
+
+B. Clerbaux , A.K. Das, G. De Lentdecker , L. Favart , P. Gianneios , D. Hohov , J. Jaramillo ,
+A. Khalilzadeh, K. Lee , M. Mahdavikhorrami , A. Malara , S. Paredes , L. Pétré , N. Postiau,
+L. Thomas , M. Vanden Bemden , C. Vander Velde , P. Vanlaer
+Université Libre de Bruxelles, Bruxelles, Belgium
+
+M. De Coen
+
+, D. Dobur
+
+, Y. Hong
+
+C. Rendón, A. Samalan, K. Skovpen
+
+, J. Knolle
+
+, L. Lambrecht
+
+, N. Van Den Bossche
+
+, G. Mestdach, K. Mota Amarilo
+
+, J. van der Linden
+
+,
+
+, L. Wezenbeek
+
+Ghent University, Ghent, Belgium
+
+A. Benecke
+K. Jaﬀel
+
+, A. Bethani
+
+, Sa. Jain
+
+, G. Bruno
+
+, C. Caputo
+
+, V. Lemaitre, J. Lidrych
+
+, C. Delaere
+
+, I.S. Donertas
+
+, A. Giammanco
+
+, P. Mastrapasqua
+
+, K. Mondal
+
+, T.T. Tran
+
+,
+
+, S. Wertz
+
+Université Catholique de Louvain, Louvain-la-Neuve, Belgium
+
+G.A. Alves
+
+, E. Coelho
+
+, C. Hensel
+
+, T. Menezes De Oliveira
+
+, A. Moraes
+
+, P. Rebello Teles
+
+, M. Soeiro
+
+Centro Brasileiro de Pesquisas Fisicas, Rio de Janeiro, Brazil
+
+W.L. Aldá Júnior , M. Alves Gallo Pereira , M. Barroso Ferreira Filho , H. Brandao Malbouisson ,
+W. Carvalho , J. Chinellato 5 , E.M. Da Costa , G.G. Da Silveira ,6 , D. De Jesus Damiao ,
+S. Fonseca De Souza , R. Gomes De Souza, J. Martins ,7 , C. Mora Herrera , L. Mundim , H. Nogima
+J.P. Pinheiro
+
+, A. Santoro
+
+, A. Sznajder
+
+, M. Thiel
+
+, A. Vilela Pereira
+
+Universidade do Estado do Rio de Janeiro, Rio de Janeiro, Brazil
+
+C.A. Bernardes
+S.F. Novaes
+
+,6
+
+, L. Calligaris
+
+, B. Orzari
+
+, T.R. Fernandez Perez Tomei
+
+, E.M. Gregores
+
+, P.G. Mercadante
+
+,
+
+, Sandra S. Padula
+
+Universidade Estadual Paulista, Universidade Federal do ABC, São Paulo, Brazil
+
+A. Aleksandrov
+
+, G. Antchev
+
+, R. Hadjiiska
+
+, P. Iaydjiev
+
+, M. Misheva
+
+Institute for Nuclear Research and Nuclear Energy, Bulgarian Academy of Sciences, Soﬁa, Bulgaria
+
+A. Dimitrov
+
+, L. Litov
+
+, B. Pavlov
+
+, P. Petkov
+
+, A. Petrov
+
+University of Soﬁa, Soﬁa, Bulgaria
+
+S. Keshri
+
+, S. Thakur
+
+Instituto De Alta Investigación, Universidad de Tarapacá, Casilla 7 D, Arica, Chile
+
+T. Cheng
+
+, Q. Guo, T. Javaid
+
+, L. Yuan
+
+Beihang University, Beijing, China
+
+Z. Hu
+
+, J. Liu, K. Yi
+
+,8,9
+
+Department of Physics, Tsinghua University, Beijing, China
+12
+
+, E. Shumka
+
+, M. Shopova
+
+, G. Sultanov
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+G.M. Chen
+
+,10 , H.S. Chen
+
+R. Sharma
+
+,13
+
+,10 , M. Chen
+
+, J.N. Song 12 , J. Tao
+
+,10 , F. Iemmi
+
+, C.H. Jiang, A. Kapoor
+
+, C. Wang 10 , J. Wang
+
+,11 , H. Liao
+
+, Z.-A. Liu
+
+, Z. Wang 10 , H. Zhang
+
+Institute of High Energy Physics, Beijing, China
+
+A. Agapitos
+L. Zhang
+
+, Y. Ban
+
+, A. Levin
+
+, C. Li
+
+, Q. Li
+
+, Y. Mao, S.J. Qian
+
+, X. Sun
+
+, D. Wang
+
+, H. Yang,
+
+, C. Zhou
+
+State Key Laboratory of Nuclear Physics and Technology, Peking University, Beijing, China
+
+Z. You
+Sun Yat-Sen University, Guangzhou, China
+
+N. Lu
+University of Science and Technology of China, Hefei, China
+
+G. Bauer 14
+Nanjing Normal University, Nanjing, China
+
+,15 , D. Leggat, H. Okawa
+
+X. Gao
+
+Institute of Modern Physics and Key Laboratory of Nuclear Physics and Ion-beam Application (MOE) - Fudan University, Shanghai, China
+
+Z. Lin
+
+, C. Lu
+
+, M. Xiao
+
+Zhejiang University, Hangzhou, Zhejiang, China
+
+C. Avila
+
+, D.A. Barbosa Trujillo, A. Cabrera
+
+, C. Florez
+
+, J. Fraga
+
+, J.A. Reyes Vega
+
+Universidad de Los Andes, Bogota, Colombia
+
+J. Mejia Guisao
+
+, F. Ramirez
+
+, M. Rodriguez
+
+, J.D. Ruiz Alvarez
+
+Universidad de Antioquia, Medellin, Colombia
+
+D. Giljanovic
+
+, N. Godinovic
+
+, D. Lelas
+
+, A. Sculac
+
+University of Split, Faculty of Electrical Engineering, Mechanical Engineering and Naval Architecture, Split, Croatia
+
+M. Kovac
+
+, T. Sculac
+
+University of Split, Faculty of Science, Split, Croatia
+
+P. Bargassa
+
+, V. Brigljevic
+
+, B.K. Chitroda
+
+, D. Ferencek
+
+, S. Mishra
+
+, A. Starodumov
+
+,16
+
+, T. Susa
+
+Institute Rudjer Boskovic, Zagreb, Croatia
+
+A. Attikis , K. Christoforou , S. Konstantinou
+H. Rykaczewski, H. Saka , A. Stepennov
+
+, J. Mousa
+
+, C. Nicolaou, F. Ptochos
+
+University of Cyprus, Nicosia, Cyprus
+
+M. Finger
+
+, M. Finger Jr.
+
+, A. Kveton
+
+Charles University, Prague, Czech Republic
+
+E. Ayala
+Escuela Politecnica Nacional, Quito, Ecuador
+
+E. Carrera Jarrin
+Universidad San Francisco de Quito, Quito, Ecuador
+
+H. Abdalla
+
+,17
+
+, Y. Assran 18,19
+
+Academy of Scientiﬁc Research and Technology of the Arab Republic of Egypt, Egyptian Network of High Energy Physics, Cairo, Egypt
+
+A. Lotfy
+
+, M.A. Mahmoud
+
+Center for High Energy Physics (CHEP-FU), Fayoum University, El-Fayoum, Egypt
+13
+
+, P.A. Razis
+
+,
+
+,12 ,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+K. Ehataht
+
+, M. Kadastik, T. Lange
+
+, S. Nandan
+
+, C. Nielsen
+
+, J. Pata
+
+, M. Raidal
+
+, L. Tani
+
+,
+
+C. Veelken
+National Institute of Chemical Physics and Biophysics, Tallinn, Estonia
+
+H. Kirschenmann
+
+, K. Osterberg
+
+, M. Voutilainen
+
+Department of Physics, University of Helsinki, Helsinki, Finland
+
+S. Bharthuar
+S. Lehti
+
+, E. Brücken
+
+, T. Lindén
+
+, F. Garcia
+
+, K.T.S. Kallonen
+
+, L. Martikainen
+
+, M. Myllymäki
+
+, R. Kinnunen, T. Lampén
+
+, K. Lassila-Perini
+
+, M.m. Rantanen
+
+, H. Siikonen
+
+, E. Tuominen
+
+, D. Denegri, J.L. Faure, F. Ferri
+
+, S. Ganjour
+
+, P. Gras
+
+,
+,
+
+J. Tuominiemi
+Helsinki Institute of Physics, Helsinki, Finland
+
+P. Luukka
+
+, H. Petrow
+
+Lappeenranta-Lahti University of Technology, Lappeenranta, Finland
+
+M. Besancon
+
+, F. Couderc
+
+, M. Dejardin
+
+G. Hamel de Monchenault
+A. Savoy-Navarro
+
+,20
+
+, V. Lohezic
+
+, P. Simkina
+
+, J. Malcles
+
+, M. Titov
+
+, J. Rander, A. Rosowsky
+
+, M.Ö. Sahin
+
+,
+
+,
+
+, M. Tornago
+
+IRFU, CEA, Université Paris-Saclay, Gif-sur-Yvette, France
+
+C. Baldenegro Barrera
+F. Damas
+
+, F. Beaudette
+
+, A. Buchot Perraguin
+
+, P. Busson
+
+, O. Davignon
+
+, A. De Wit
+
+, B.A. Fontana Santos Alves
+
+R. Granier de Cassagnac
+
+, A. Hakimi
+
+, B. Harikrishnan
+
+M. Nguyen
+
+, C. Ochando
+
+E. Vernazza
+
+, A. Zabi
+
+, L. Portales
+
+, R. Salerno
+
+, A. Cappati
+
+, S. Ghosh
+
+, L. Kalipoliti
+
+, J.B. Sauvan
+
+, C. Charlot
+
+, A. Gilbert
+
+,
+
+, J. Motta
+
+,
+
+, G. Liu
+
+, Y. Sirois
+
+, A. Tarabini
+
+,
+
+,
+
+, A. Zghiche
+
+Laboratoire Leprince-Ringuet, CNRS/IN2P3, Ecole Polytechnique, Institut Polytechnique de Paris, Palaiseau, France
+
+J.-L. Agram
+
+,21 , J. Andrea
+
+, D. Apparu
+
+, D. Bloch
+
+S. Falke , U. Goerlach , C. Grimault, R. Haeberle
+M.A. Sessini , P. Van Hove
+
+, J.-M. Brom
+
+, E.C. Chabert
+
+, A.-C. Le Bihan
+
+, M. Meena
+
+, C. Collard
+, G. Saha
+
+,
+
+,
+
+Université de Strasbourg, CNRS, IPHC UMR 7178, Strasbourg, France
+
+S. Beauceron
+
+, B. Blancon
+
+, G. Boudoul
+
+,22 , H. El Mamouni, J. Fay
+
+C. Dozen
+
+I.B. Laktineh, M. Lethuillier
+J. Xiao
+
+, A. Carle, N. Chanon
+
+, S. Gascon
+
+, J. Choi
+
+, M. Gouzevitch
+
+, L. Mirabito, S. Perries, A. Purohit
+
+, D. Contardo
+
+, P. Depasse
+
+, C. Greenberg, G. Grenier
+
+, M. Vander Donckt
+
+, B. Ille
+
+, P. Verdier
+
+,
+
+Institut de Physique des 2 Inﬁnis de Lyon (IP2I ), Villeurbanne, France
+
+I. Lomidze
+
+,23
+
+, T. Toriashvili
+
+, Z. Tsamalaidze
+
+,16
+
+Georgian Technical University, Tbilisi, Georgia
+
+V. Botta
+
+, L. Feld
+
+, K. Klein
+
+, M. Lipinski
+
+, D. Meuser
+
+, A. Pauls
+
+, N. Röwert
+
+, M. Teroerde
+
+, J. Erdmann
+
+, M. Erdmann
+
+RWTH Aachen University, I. Physikalisches Institut, Aachen, Germany
+
+S. Diekmann
+
+, A. Dodonova
+
+P. Fackeldey
+
+, B. Fischer
+
+, N. Eich
+
+, D. Eliseev
+
+, T. Hebbeker
+
+, F. Engelke
+
+, K. Hoepfner
+
+, F. Ivone
+
+, A. Jung
+
+L. Mastrolorenzo, F. Mausolf
+
+, M. Merschmeyer
+
+, A. Meyer
+
+F. Nowotny, A. Pozdnyakov
+
+, Y. Rath, W. Redjeb
+
+, F. Rehm, H. Reithler
+
+A. Schmidt
+
+, A. Sharma
+
+S. Wiedenbeck
+
+, J.L. Spah
+
+, A. Stein
+
+, S. Mukherjee
+
+, M.y. Lee
+, D. Noll
+
+, U. Sarkar
+
+, F. Torres Da Silva De Araujo
+
+, S. Zaleski
+14
+
+,24
+
+,
+
+,
+
+, A. Novak
+, V. Sarkisovi
+
+, L. Vigilante,
+
+,
+,
+
+,
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+RWTH Aachen University, III. Physikalisches Institut A, Aachen, Germany
+
+C. Dziwok
+
+, G. Flügge
+
+T. Ziemons
+
+, A. Zotz
+
+,25
+
+, W. Haj Ahmad
+
+, T. Kress
+
+, A. Nowack
+
+, O. Pooth
+
+, A. Stahl
+
+,
+
+RWTH Aachen University, III. Physikalisches Institut B, Aachen, Germany
+
+H. Aarup Petersen
+H. Becerril Gonzalez
+A. Campbell
+
+, M. Aldaya Martin
+, O. Behnke
+
+, A. Cardini
+
+, J. Alimena
+
+, A. Belvedere
+
+, S. Amoroso, Y. An
+
+, S. Bhattacharya
+
+, C. Cheng, F. Colombina
+
+, S. Baxter
+
+, K. Borras
+
+,27
+
+, G. Correia Silva
+
+,
+
+, F. Blekman
+
+, S. Consuegra Rodríguez
+
+, M. Bayatmakou
+
+,26
+
+,26
+
+M. De Silva , G. Eckerlin, D. Eckstein , L.I. Estevez Banos , O. Filatov , E. Gallo
+, A. Geiser
+,28
+A. Giraldi , G. Greau, V. Guglielmi , M. Guthoﬀ , A. Hinzmann , A. Jafari
+, L. Jeppe ,
+
+,
+
+N.Z. Jomhari
+
+, D. Krücker
+
+,
+
+, B. Kaech
+
+, M. Kasemann
+
+W. Lange, D. Leyva Pernia
+
+, K. Lipka
+
+,29
+
+M. Mendizabal Morentin
+
+, A.B. Meyer
+
+, G. Milella
+
+J. Park
+
+, E. Ranken
+
+, A. Raspereza
+
+, D. Pérez Adán
+
+,31,27 , S. Schnake
+
+M. Scham
+
+, C. Kleinwort
+,30
+
+, W. Lohmann
+
+,27 , P. Schütze
+
+, R. Kogler
+
+, M. Komm
+
+, R. Mankel
+
+, I.-A. Melzer-Pellmann
+
+, A. Mussgiller
+
+, L.P. Nair
+
+, B. Ribeiro Lopes
+
+, C. Schwanenberger
+
+, A. Nürnberg
+
+,
+
+,
+, Y. Otarid,
+
+, J. Rübenach, A. Saggio
+
+,26 , D. Selivanova
+
+,
+
+, K. Sharko
+
+,
+,
+
+M. Shchedrolosiev , R.E. Sosa Ricardo , D. Staﬀord, F. Vazzoler , A. Ventura Barroso , R. Walsh ,
+Q. Wang , Y. Wen , K. Wichmann, L. Wiens ,27 , C. Wissing , Y. Yang , A. Zimermmane Castro Santos
+Deutsches Elektronen-Synchrotron, Hamburg, Germany
+
+A. Albrecht , S. Albrecht , M. Antonello , S. Bein
+K. El Morabit , Y. Fischer , A. Fröhlich, C. Garbers
+
+, L. Benato , M. Bonanomi , P. Connor , M. Eich,
+, E. Garutti , A. Grohsjean , M. Hajheidari,
+
+J. Haller , H.R. Jabusch , G. Kasieczka , P. Keicher, R. Klanner , W. Korcari , T. Kramer ,
+V. Kutzner , F. Labe , J. Lange , A. Lobanov , C. Matthies , A. Mehta , L. Moureaux , M. Mrowietz,
+A. Nigamova
+D. Savoiu
+
+, Y. Nissan, A. Paasch
+
+, J. Schindler
+
+G. Steinbrück
+
+, K.J. Pena Rodriguez
+
+, P. Schleper
+
+, M. Schröder
+
+, T. Quadfasel
+
+, J. Schwandt
+
+, B. Raciti
+
+, M. Rieger
+
+, M. Sommerhalder
+
+,
+
+, H. Stadie
+
+,
+
+, A. Tews, M. Wolf
+
+University of Hamburg, Hamburg, Germany
+
+S. Brommer , M. Burkart, E. Butz , T. Chwalek , A. Dierlamm , A. Droll, N. Faltermann , M. Giﬀels ,
+A. Gottmann , F. Hartmann ,32 , R. Hofsaess , M. Horzela , U. Husemann , J. Kieseler , M. Klute ,
+R. Koppenhöfer , J.M. Lawhorn , M. Link, A. Lintuluoto , S. Maier , S. Mitra , M. Mormile ,
+Th. Müller
+
+, M. Neukum, M. Oh
+
+, M. Presilla
+
+, G. Quast
+
+I. Shvetsov
+S. Wieland
+
+, H.J. Simonis , M. Toms , N. Trevisani
+, F. Wittig, R. Wolf , X. Zuo
+
+, K. Rabbertz
+
+, R. Ulrich
+
+, B. Regnery
+
+, R.F. Von Cube
+
+, N. Shadskiy
+
+, M. Wassmer
+
+Karlsruher Institut fuer Technologie, Karlsruhe, Germany
+
+G. Anagnostou, G. Daskalakis
+
+, A. Kyriakis, A. Papadopoulos 32 , A. Stakia
+
+Institute of Nuclear and Particle Physics (INPP), NCSR Demokritos, Aghia Paraskevi, Greece
+
+P. Kontaxakis
+
+, G. Melachroinos, A. Panagiotou, I. Papavergou
+
+K. Theoﬁlatos
+
+, E. Tziaferi
+
+, K. Vellidis
+
+, I. Paraskevas
+
+, N. Saoulidou
+
+,
+
+, I. Zisopoulos
+
+National and Kapodistrian University of Athens, Athens, Greece
+
+G. Bakas
+
+, T. Chatzistavrou, G. Karapostoli
+
+G. Tsipolitis
+
+, K. Kousouris
+
+, A. Zacharopoulou
+
+National Technical University of Athens, Athens, Greece
+
+15
+
+, I. Papakrivopoulos
+
+, E. Siamarkou,
+
+,
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+K. Adamidis, I. Bestintzanos, I. Evangelou
+
+, C. Foudas, C. Kamtsikis, P. Katsoulis, P. Kokkas
+
+P.G. Kosmoglou Kioseoglou
+
+, I. Papadopoulos
+
+, N. Manthos
+
+,
+
+, J. Strologas
+
+University of Ioánnina, Ioánnina, Greece
+
+,33
+
+M. Bartók
+
+, C. Hajdu
+
+,34,35
+
+, D. Horvath
+
+, F. Sikler
+
+, V. Veszpremi
+
+HUN-REN Wigner Research Centre for Physics, Budapest, Hungary
+
+M. Csanád
+
+, K. Farkas
+,37
+
+A.J. Rádl
+
+,36
+
+, M.M.A. Gadallah
+
+, Á. Kadlecsik
+
+, P. Major
+
+, K. Mandal
+
+, G. Pásztor
+
+,
+
+, G.I. Veres
+
+MTA-ELTE Lendület CMS Particle and Nuclear Physics Group, Eötvös Loránd University, Budapest, Hungary
+
+P. Raics, B. Ujvari
+
+, G. Zilizi
+
+Faculty of Informatics, University of Debrecen, Debrecen, Hungary
+
+G. Bencze, S. Czellar, J. Molnar, Z. Szillasi
+Institute of Nuclear Research ATOMKI, Debrecen, Hungary
+
+,37 , F. Nemes
+
+T. Csorgo
+
+,37 , T. Novak
+
+Karoly Robert Campus, MATE Institute of Technology, Gyongyos, Hungary
+
+J. Babbar
+
+, S. Bansal
+
+A. Kaur
+
+, A. Kaur
+
+, S.B. Beri, V. Bhatnagar
+
+, H. Kaur
+
+, M. Kaur
+
+, G. Chaudhary
+
+, S. Kumar
+
+, S. Chauhan
+
+, K. Sandeep
+
+, N. Dhingra
+
+, T. Sheokand, J.B. Singh
+
+,38 ,
+
+, A. Singla
+
+Panjab University, Chandigarh, India
+
+A. Ahmed
+
+, A. Bhardwaj
+
+K. Ranjan
+
+, S. Saumya
+
+, A. Chhetri
+
+, B.C. Choudhary
+
+, A. Kumar
+
+, A. Kumar
+
+, M. Naimuddin
+
+,
+
+, J.R. Komaragiri
+
+,40 ,
+
+University of Delhi, Delhi, India
+
+S. Baradia
+
+,39 , S. Bhattacharya
+
+, S. Barman
+
+, S. Dutta
+
+, S. Dutta, S. Sarkar
+
+Saha Institute of Nuclear Physics, HBNI, Kolkata, India
+
+M.M. Ameen
+
+, P.K. Behera
+
+,40
+
+D. Kumar
+
+, L. Panwar
+
+,40
+
+, S.C. Behera
+
+, S. Chatterjee
+
+, P. Jana
+
+, P.R. Pujahari
+
+, N.R. Saha
+
+, A. Sharma
+
+, P. Kalbhor
+, A.K. Sikdar
+
+, S. Verma
+
+, Sh. Jain
+
+, S. Karmakar
+
+Indian Institute of Technology Madras, Madras, India
+
+S. Dugad, M. Kumar
+
+, G.B. Mohanty
+
+, P. Suryadevara
+
+Tata Institute of Fundamental Research-A, Mumbai, India
+
+A. Bala
+
+, S. Banerjee
+
+S. Kumar
+
+, R.M. Chatterjee, R.K. Dewanjee
+
+, G. Majumder
+
+, K. Mazumdar
+
+, S. Parolia
+
+,41
+
+, M. Guchait
+
+,
+
+, A. Thachayath
+
+Tata Institute of Fundamental Research-B, Mumbai, India
+
+S. Bahinipati
+K. Naskar
+
+,42
+
+, C. Kar
+
+,43 , A. Nayak
+
+,43
+
+, D. Maity
+
+, P. Mal
+
+, T. Mishra
+
+,43 , P. Sadangi, P. Saha
+
+, S.K. Swain
+
+, V.K. Muraleedharan Nair Bindhu
+, S. Varghese
+
+,43 , D. Vats
+
+,43
+
+,
+
+,43
+
+National Institute of Science Education and Research, An OCC of Homi Bhabha National Institute, Bhubaneswar, Odisha, India
+
+S. Acharya
+
+,44
+
+, A. Alpana
+
+, S. Dube
+
+, B. Gomber
+
+,44
+
+, B. Kansal
+
+, A. Laha
+
+Indian Institute of Science Education and Research (IISER), Pune, India
+
+H. Bakhshiansohi
+
+,45
+
+, E. Khazaie
+
+,46
+
+, M. Zeinali
+
+,47
+
+Isfahan University of Technology, Isfahan, Iran
+
+S. Chenarani
+
+,48
+
+, S.M. Etesami
+
+, M. Khakzad
+
+, M. Mohammadi Najafabadi
+
+Institute for Research in Fundamental Sciences (IPM), Tehran, Iran
+
+16
+
+, B. Sahu
+
+,44
+
+, S. Sharma
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+M. Grunewald
+University College Dublin, Dublin, Ireland
+
+M. Abbrescia a,b, , R. Aly a,c,
+
+,49 , A. Colaleo a,b,
+
+, D. Creanza a,c, , B. D’Anzi a,b, , N. De Filippis a,c, ,
+
+M. De Palma a,b, , A. Di Florio a,c, , W. Elmetenawee a,b, ,49 , L. Fiore a, , G. Iaselli a,c, , M. Louka a,b ,
+G. Maggi a,c, , M. Maggi a, , I. Margjeka a,b, , V. Mastrapasqua a,b, , S. My a,b, , S. Nuzzo a,b, ,
+A. Pellecchia a,b, , A. Pompili a,b, , G. Pugliese a,c, , R. Radogna a, , G. Ramirez-Sanchez a,c, , D. Ramos a, ,
+A. Ranieri a, , L. Silvestris a, , F.M. Simone a,b, , Ü. Sözbilir a, , A. Stamerra a, , R. Venditti a, ,
+P. Verwilligen a, , A. Zaza a,b,
+a
+b
+c
+
+INFN Sezione di Bari, Bari, Italy
+Università di Bari, Bari, Italy
+Politecnico di Bari, Bari, Italy
+
+G. Abbiendi a, , C. Battilana a,b, , D. Bonacorsi a,b, , L. Borgonovi a, , R. Campanini a,b, , P. Capiluppi a,b, ,
+A. Castro a,b, , F.R. Cavallo a, , M. Cuﬃani a,b, , G.M. Dallavalle a, , T. Diotalevi a,b, , F. Fabbri a, ,
+A. Fanfani a,b, , D. Fasanella a,b, , P. Giacomelli a, , L. Giommi a,b, , C. Grandi a, , L. Guiducci a,b, ,
+S. Lo Meo a, ,50 , L. Lunerti a,b, , S. Marcellini a, , G. Masetti a, , F.L. Navarria a,b, , F. Primavera a,b, ,
+A.M. Rossi a,b, , T. Rovelli a,b, , G.P. Siroli a,b,
+a
+b
+
+INFN Sezione di Bologna, Bologna, Italy
+Università di Bologna, Bologna, Italy
+
+S. Costa a,b,
+a
+b
+
+,51
+
+, A. Di Mattia a, , R. Potenza a,b , A. Tricomi a,b,
+
+,51
+
+, C. Tuve a,b,
+
+INFN Sezione di Catania, Catania, Italy
+Università di Catania, Catania, Italy
+
+P. Assiouras a, , G. Barbagli a, , G. Bardelli a,b, , B. Camaiani a,b, , A. Cassese a, , R. Ceccarelli a, ,
+V. Ciulli a,b, , C. Civinini a, , R. D’Alessandro a,b, , E. Focardi a,b, , T. Kello a , G. Latino a,b, , P. Lenzi a,b, ,
+M. Lizzo a, , M. Meschini a, , S. Paoletti a, , A. Papanastassiou a,b , G. Sguazzoni a, , L. Viliani a,
+a INFN Sezione di Firenze, Firenze, Italy
+b Università di Firenze, Firenze, Italy
+
+L. Benussi
+
+, S. Bianco
+
+, S. Meola
+
+,52 , D. Piccolo
+
+INFN Laboratori Nazionali di Frascati, Frascati, Italy
+
+P. Chatagnon a, , F. Ferro a, , E. Robutti a, , S. Tosi a,b,
+a INFN Sezione di Genova, Genova, Italy
+b Università di Genova, Genova, Italy
+
+A. Benaglia a, , G. Boldrini a,b, , F. Brivio a, , F. Cetorelli a, , F. De Guio a,b, , M.E. Dinardo a,b, , P. Dini a, ,
+S. Gennai a, , R. Gerosa a,b, , A. Ghezzi a,b, , P. Govoni a,b, , L. Guzzi a, , M.T. Lucchini a,b, , M. Malberti a, ,
+S. Malvezzi a, , A. Massironi a, , D. Menasce a, , L. Moroni a, , M. Paganoni a,b, , D. Pedrini a, ,
+B.S. Pinolini a , S. Ragazzi a,b, , T. Tabarelli de Fatis a,b, , D. Zuolo a,
+a
+b
+
+INFN Sezione di Milano-Bicocca, Milano, Italy
+Università di Milano-Bicocca, Milano, Italy
+
+S. Buontempo a, , A. Cagnotta a,b, , F. Carnevali a,b , N. Cavallo a,c, , A. De Iorio a,b, , F. Fabozzi a,c, ,
+A.O.M. Iorio a,b, , L. Lista a,b,
+
+,53 , P. Paolucci a,
+
+,32 , B. Rossi a,
+
+, C. Sciacca a,b,
+
+a INFN Sezione di Napoli, Napoli, Italy
+b Università di Napoli ‘Federico II’, Napoli, Italy
+c Università della Basilicata, Potenza, Italy
+d Scuola Superiore Meridionale (SSM), Napoli, Italy
+
+R. Ardino a, , P. Azzi a, , N. Bacchetta a,
+
+,54 , M. Biasotto a,
+
+,55 , P. Bortignon a,
+
+, A. Bragagnolo a,b, ,
+
+R. Carlin a,b, , P. Checchia a, , T. Dorigo a, , F. Gasparini a,b, , U. Gasparini a,b, , E. Lusiani a, ,
+17
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+M. Margoni a,b, , F. Marini a, , A.T. Meneguzzo a,b, , M. Migliorini a,b, , J. Pazzini a,b, , P. Ronchese a,b, ,
+R. Rossin a,b, , F. Simonetto a,b, , G. Strong a, , M. Tosi a,b, , A. Triossi a,b, , S. Ventura a, , H. Yarar a,b ,
+M. Zanetti a,b, , P. Zotto a,b, , A. Zucchetta a,b, , G. Zumerle a,b,
+a
+b
+c
+
+INFN Sezione di Padova, Padova, Italy
+Università di Padova, Padova, Italy
+Università di Trento, Trento, Italy
+
+S. Abu Zeid a,
+
+,56
+
+, C. Aimè a,b, , A. Braghieri a, , S. Calzaferri a, , D. Fiorina a, , P. Montagna a,b, , V. Re a, ,
+
+C. Riccardi a,b, , P. Salvini a, , I. Vai a,b, , P. Vitulo a,b,
+a INFN Sezione di Pavia, Pavia, Italy
+b Università di Pavia, Pavia, Italy
+
+S. Ajmal a,b, , G.M. Bilei a, , D. Ciangottini a,b, , L. Fanò a,b, , M. Magherini a,b, , G. Mantovani a,b ,
+V. Mariani a,b, , M. Menichelli a, , F. Moscatelli a,
+
+,57
+
+, A. Rossi a,b, , A. Santocchia a,b, , D. Spiga a, ,
+
+T. Tedeschi a,b,
+a
+b
+
+INFN Sezione di Perugia, Perugia, Italy
+Università di Perugia, Perugia, Italy
+
+P. Asenov a,b, , P. Azzurri a, , G. Bagliesi a, , R. Bhattacharya a, , L. Bianchini a,b, , T. Boccali a, ,
+E. Bossini a, , D. Bruschini a,c, , R. Castaldi a, , M.A. Ciocci a,b, , M. Cipriani a,b, , V. D’Amante a,d, ,
+R. Dell’Orso a, , S. Donato a, , A. Giassi a, , F. Ligabue a,c, , D. Matos Figueiredo a, , A. Messineo a,b, ,
+M. Musich a,b, , F. Palla a, , A. Rizzi a,b, , G. Rolandi a,c, , S. Roy Chowdhury a, , T. Sarkar a, ,
+A. Scribano a, , P. Spagnolo a, , R. Tenchini a, , G. Tonelli a,b, , N. Turini a,d, , A. Venturi a, , P.G. Verdini a,
+a
+
+INFN Sezione di Pisa, Pisa, Italy
+Università di Pisa, Pisa, Italy
+c
+Scuola Normale Superiore di Pisa, Pisa, Italy
+d
+Università di Siena, Siena, Italy
+b
+
+P. Barria a, , M. Campana a,b, , F. Cavallari a, , L. Cunqueiro Mendez a,b, , D. Del Re a,b, , E. Di Marco a, ,
+M. Diemoz a, , F. Errico a,b, , E. Longo a,b, , P. Meridiani a, , J. Mijuskovic a,b, , G. Organtini a,b, ,
+F. Pandolﬁ a, , R. Paramatti a,b, , C. Quaranta a,b, , S. Rahatlou a,b, , C. Rovelli a, , F. Santanastasio a,b, ,
+L. Soﬃ a,
+a INFN Sezione di Roma, Roma, Italy
+b Sapienza Università di Roma, Roma, Italy
+
+N. Amapane a,b, , R. Arcidiacono a,c, , S. Argiro a,b, , M. Arneodo a,c, , N. Bartosik a, , R. Bellan a,b, ,
+A. Bellora a,b, , C. Biino a, , C. Borca a,b, , N. Cartiglia a, , M. Costa a,b, , R. Covarelli a,b, , N. Demaria a, ,
+L. Finco a, , M. Grippo a,b, , B. Kiani a,b, , F. Legger a, , F. Luongo a,b, , C. Mariotti a, , L. Markovic a,b, ,
+S. Maselli a, , A. Mecca a,b, , E. Migliore a,b, , M. Monteno a, , R. Mulargia a, , M.M. Obertino a,b, ,
+G. Ortona a, , L. Pacher a,b, , N. Pastrone a, , M. Pelliccioni a, , M. Ruspa a,c, , F. Siviero a,b, , V. Sola a,b, ,
+A. Solano a,b, , A. Staiano a, , C. Tarricone a,b, , D. Trocino a, , G. Umoret a,b, , E. Vlasov a,b,
+a INFN Sezione di Torino, Torino, Italy
+b Università di Torino, Torino, Italy
+c Università del Piemonte Orientale, Novara, Italy
+
+S. Belforte a, , V. Candelise a,b, , M. Casarsa a, , F. Cossutti a, , K. De Leo a,b, , G. Della Ricca a,b,
+a
+b
+
+INFN Sezione di Trieste, Trieste, Italy
+Università di Trieste, Trieste, Italy
+
+S. Dogra
+
+, J. Hong
+
+, C. Huh
+
+M.S. Ryu
+
+, S. Sekmen
+
+, B. Kim
+
+, D.H. Kim
+
+, J. Kim, H. Lee, S.W. Lee
+
+, Y.C. Yang
+
+Kyungpook National University, Daegu, Korea
+
+M.S. Kim
+18
+
+, C.S. Moon
+
+, Y.D. Oh
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+Department of Mathematics and Physics - GWNU, Gangneung, Korea
+
+G. Bak
+
+, P. Gwak
+
+, H. Kim
+
+, D.H. Moon
+
+Chonnam National University, Institute for Universe and Elementary Particles, Kwangju, Korea
+
+E. Asilar
+
+, D. Kim
+
+, T.J. Kim
+
+, J.A. Merlin
+
+Hanyang University, Seoul, Korea
+
+S. Choi
+
+, S. Han, B. Hong
+
+, K. Lee, K.S. Lee
+
+, S. Lee
+
+, J. Park, S.K. Park, J. Yoo
+
+Korea University, Seoul, Korea
+
+J. Goh
+
+, S. Yang
+
+Kyung Hee University, Department of Physics, Seoul, Korea
+
+H.S. Kim
+
+, Y. Kim, S. Lee
+
+Sejong University, Seoul, Korea
+
+J. Almond, J.H. Bhyun, J. Choi
+B.H. Oh
+
+, S.B. Oh
+
+, H. Seo
+
+, W. Jun
+
+, J. Kim
+
+, S. Ko
+
+, H. Kwon
+
+, H. Lee
+
+, Y. Lee
+
+, I.C. Park
+
+, J. Lee
+
+, J. Lee
+
+,
+
+, U.K. Yang, I. Yoon
+
+Seoul National University, Seoul, Korea
+
+W. Jang
+
+, D.Y. Kang, Y. Kang
+
+, S. Kim
+
+, B. Ko, J.S.H. Lee
+
+, Y. Roh, I.J. Watson
+
+University of Seoul, Seoul, Korea
+
+S. Ha
+
+, H.D. Yoo
+
+Yonsei University, Department of Physics, Seoul, Korea
+
+M. Choi
+
+, M.R. Kim
+
+, H. Lee, Y. Lee
+
+, I. Yu
+
+Sungkyunkwan University, Suwon, Korea
+
+T. Beyrouthy, Y. Maghrbi
+College of Engineering and Technology, American University of the Middle East (AUM), Dasman, Kuwait
+
+K. Dreimanis
+
+, A. Gaile
+
+, G. Pikurs, A. Potrebko
+
+, M. Seidel
+
+, V. Veckalns
+
+,58
+
+Riga Technical University, Riga, Latvia
+
+N.R. Strautnieks
+University of Latvia (LU), Riga, Latvia
+
+M. Ambrozas
+
+, A. Juodagalvis
+
+, A. Rinkevicius
+
+, G. Tamulaitis
+
+Vilnius University, Vilnius, Lithuania
+
+N. Bin Norjoharuddeen
+
+, I. Yusuﬀ
+
+,59
+
+, Z. Zolkapli
+
+National Centre for Particle Physics, Universiti Malaya, Kuala Lumpur, Malaysia
+
+J.F. Benitez
+
+, A. Castaneda Hernandez
+
+J.A. Murillo Quijada
+
+, A. Sehrawat
+
+, H.A. Encinas Acosta, L.G. Gallegos Maríñez, M. León Coello
+
+,
+
+, L. Valencia Palomo
+
+Universidad de Sonora (UNISON), Hermosillo, Mexico
+
+G. Ayala
+
+, H. Castilla-Valdez
+
+, E. De La Cruz-Burelo
+
+, I. Heredia-De La Cruz
+
+C.A. Mondragon Herrera, A. Sánchez Hernández
+Centro de Investigacion y de Estudios Avanzados del IPN, Mexico City, Mexico
+
+C. Oropeza Barrera
+
+, M. Ramírez García
+
+Universidad Iberoamericana, Mexico City, Mexico
+
+I. Bautista
+
+, I. Pedraza
+
+, H.A. Salazar Ibarguen
+
+, C. Uribe Estrada
+19
+
+,60
+
+, R. Lopez-Fernandez
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+Benemerita Universidad Autonoma de Puebla, Puebla, Mexico
+
+I. Bubanja
+
+, N. Raicevic
+
+University of Montenegro, Podgorica, Montenegro
+
+P.H. Butler
+University of Canterbury, Christchurch, New Zealand
+
+A. Ahmad
+
+, M.I. Asghar, A. Awais
+
+, M.I.M. Awan, H.R. Hoorani
+
+, W.A. Khan
+
+National Centre for Physics, Quaid-I-Azam University, Islamabad, Pakistan
+
+V. Avati, L. Grzanka
+
+, M. Malawski
+
+AGH University of Krakow, Faculty of Computer Science, Electronics and Telecommunications, Krakow, Poland
+
+H. Bialkowska
+
+, M. Bluj
+
+, B. Boimska
+
+, M. Górski
+
+, M. Kazana
+
+, M. Szleper
+
+, P. Zalewski
+
+National Centre for Nuclear Research, Swierk, Poland
+
+K. Bunkowski
+
+, K. Doroba
+
+, A. Kalinowski
+
+, M. Konecki
+
+, J. Krolikowski
+
+, A. Muhammad
+
+Institute of Experimental Physics, Faculty of Physics, University of Warsaw, Warsaw, Poland
+
+K. Pozniak
+
+, W. Zabolotny
+
+Warsaw University of Technology, Warsaw, Poland
+
+M. Araujo
+
+, D. Bastos
+
+G. Da Molin
+M. Pisano
+
+, C. Beirão Da Cruz E Silva
+
+, P. Faccioli
+, J. Seixas
+
+, M. Gallinaro
+
+, J. Varela
+
+, A. Boletti
+
+, J. Hollar
+
+, M. Bozzo
+
+, N. Leonardo
+
+, T. Camporesi
+
+, T. Niknejad
+
+,
+
+, A. Petrilli
+
+,
+
+, J.W. Wulﬀ
+
+Laboratório de Instrumentação e Física Experimental de Partículas, Lisboa, Portugal
+
+P. Adzic
+
+, P. Milenovic
+
+Faculty of Physics, University of Belgrade, Belgrade, Serbia
+
+M. Dordevic
+
+, J. Milosevic
+
+, V. Rekovic
+
+VINCA Institute of Nuclear Sciences, University of Belgrade, Belgrade, Serbia
+
+M. Aguilar-Benitez, J. Alcaraz Maestre
+B. De La Cruz
+
+, A. Delgado Peris
+
+, Cristina F. Bedoya
+
+, A. Escalante Del Valle
+
+, M. Cepeda
+
+, M. Cerrada
+
+, D. Fernández Del Val
+
+J.P. Fernández Ramos
+
+, J. Flix
+
+, M.C. Fouz
+
+, O. Gonzalez Lopez
+
+, S. Goy Lopez
+
+M.I. Josa
+
+, C.M. Morcillo Perez
+
+, Á. Navarro Tobar
+
+, C. Perez Dengra
+
+, D. Moran
+
+A. Pérez-Calero Yzquierdo
+S. Sánchez Navas
+
+, J. Puerta Pelayo
+
+, L. Urda Gómez
+
+, I. Redondo
+
+, J. Vazquez Escobar
+
+, N. Colino
+
+,
+
+,
+, J.M. Hernandez
+
+, D.D. Redondo Ferrero
+
+,
+
+,
+, L. Romero,
+
+, C. Willmott
+
+Centro de Investigaciones Energéticas Medioambientales y Tecnológicas (CIEMAT), Madrid, Spain
+
+J.F. de Trocóniz
+Universidad Autónoma de Madrid, Madrid, Spain
+
+B. Alvarez Gonzalez
+
+, J. Cuevas
+
+J.R. González Fernández
+A. Soto Rodríguez
+
+, J. Fernandez Menendez
+
+, E. Palencia Cortezon
+
+, A. Trapote
+
+, S. Folgueras
+
+, C. Ramón Álvarez
+
+, C. Vico Villalba
+
+, I. Gonzalez Caballero
+
+, V. Rodríguez Bouza
+
+,
+
+,
+
+, P. Vischia
+
+Universidad de Oviedo, Instituto Universitario de Ciencias y Tecnologías Espaciales de Asturias (ICTEA), Oviedo, Spain
+
+S. Bhowmik , S. Blanco Fernández , J.A. Brochero Cifuentes , I.J. Cabrillo , A. Calderon ,
+J. Duarte Campderros , M. Fernandez , G. Gomez , C. Lasaosa García , C. Martinez Rivero ,
+P. Martinez Ruiz del Arbol , F. Matorras , P. Matorras Cuevas
+L. Scodellaro , I. Vila , J.M. Vizan Garcia
+20
+
+, E. Navarrete Ramos
+
+, J. Piedra Gomez
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+Instituto de Física de Cantabria (IFCA), CSIC-Universidad de Cantabria, Santander, Spain
+
+M.K. Jayananda
+
+,61
+
+, B. Kailasapathy
+
+, D.U.J. Sonnadara
+
+, D.D.C. Wickramarathna
+
+University of Colombo, Colombo, Sri Lanka
+
+W.G.D. Dharmaratna
+
+,62
+
+, K. Liyanage
+
+, N. Perera
+
+, N. Wickramage
+
+University of Ruhuna, Department of Physics, Matara, Sri Lanka
+
+D. Abbaneo
+
+, C. Amendola
+
+, E. Auﬀray
+
+, G. Auzinger
+
+, J. Baechler, D. Barney
+
+,
+
+A. Bermúdez Martínez , M. Bianco , B. Bilin , A.A. Bin Anuar , A. Bocci , C. Botta , E. Brondolin
+C. Caillol , G. Cerminara , N. Chernyavskaya , D. d’Enterria , A. Dabrowski , A. David ,
+
+,
+
+A. De Roeck , M.M. Defranchis , M. Deile , M. Dobson , L. Forthomme , G. Franzoni , W. Funk ,
+S. Giani, D. Gigi, K. Gill , F. Glege , L. Gouskos , M. Haranko , J. Hegeman , B. Huber, V. Innocente
+T. James
+
+, P. Janot
+
+M. Mannelli
+
+, S. Laurila
+
+, A.C. Marini
+
+, P. Lecoq
+
+, E. Leutgeb
+
+, M. Matthewman, F. Meijers
+
+F. Monti
+
+, F. Moortgat
+
+, M. Mulders
+
+A. Pfeiﬀer
+
+, M. Pierini
+
+, D. Piparo
+
+H. Sakulin
+
+, S. Scarﬁ
+
+, C. Schwick, M. Selvaggi
+
+A.G. Stahl Leiton
+J. Wanczyk
+
+, C. Lourenço
+
+, A. Steen
+
+, I. Neutelings
+, H. Qu
+
+, S. Summers
+
+,64 , J. Wang, S. Wuchterl
+
+, S. Mersi
+
+, L. Malgeri
+
+, E. Meschi
+
+, V. Milosevic
+
+, S. Orfanelli, F. Pantaleo
+
+, G. Petrucciani
+
+, D. Rabady
+
+, G. Reales Gutiérrez, M. Rovere
+
+, A. Sharma
+
+, D. Treille
+
+, P. Zehetner
+
+, B. Maier
+
+, K. Shchelina
+
+, P. Tropea
+
+, P. Zejdl
+
+, P. Silva
+
+,
+
+,
+,
+,
+
+,
+,63
+
+, P. Sphicas
+
+, A. Tsirou, D. Walter
+
+,
+
+,
+
+, W.D. Zeuner
+
+CERN, European Organization for Nuclear Research, Geneva, Switzerland
+
+,65 , L. Caminada
+
+T. Bevilacqua
+H.C. Kaestli
+
+, D. Kotlinski
+
+,65 , A. Ebrahimi
+
+, C. Lange
+
+, W. Erdmann
+,65
+
+, M. Missiroli
+
+, R. Horisberger
+,65
+
+, L. Noehte
+
+, Q. Ingram
+
+,
+
+, T. Rohe
+
+Paul Scherrer Institut, Villigen, Switzerland
+
+T.K. Aarrestad
+G. Dissertori
+D. Hits
+
+,64
+
+, K. Androsov
+
+, M. Backhaus
+
+, M. Dittmar, M. Donegà
+
+, W. Lustermann
+
+C. Martin Perez
+T. Reitenspiess
+
+, F. Eble
+
+, A.-M. Lyon
+
+, A. Mascellani
+, B. Ristic
+
+,64
+
+, F. Riti
+
+, A. Calandri
+, M. Galli
+
+, R.A. Manzoni
+
+, F. Nessi-Tedaldi
+
+, C. Cazzaniga
+, K. Gedia
+
+, D. Ruini, R. Seidita
+
+, F. Glessgen
+
+, M. Marchegiani
+
+, F. Pauss
+
+, K. Datta
+
+, C. Grab
+
+, L. Marchese
+
+, V. Perovic
+
+, J. Steggemann
+
+, A. De Cosa
+,
+
+,
+
+, S. Pigazzini
+
+, C. Reissel
+
+,64 , D. Valsecchi
+
+, R. Wallny
+
+ETH Zurich - Institute for Particle Physics and Astrophysics (IPA), Zurich, Switzerland
+
+C. Amsler ,66 , P. Bärtschi , D. Brzhechko, M.F. Canelli , K. Cormier , J.K. Heikkilä , M. Huwiler
+W. Jin , A. Jofrehei , B. Kilminster , S. Leontsinis , S.P. Liechti , A. Macchiolo , P. Meiring ,
+U. Molinatti
+
+, A. Reimers
+
+, P. Robmann, S. Sanchez Cruz
+
+, M. Senger
+
+, Y. Takahashi
+
+,
+
+, R. Tramontano
+
+Universität Zürich, Zurich, Switzerland
+
+C. Adloﬀ 67 , D. Bhowmik, C.M. Kuo, W. Lin, P.K. Rout
+
+, P.C. Tiwari
+
+,40
+
+, S.S. Yu
+
+National Central University, Chung-Li, Taiwan
+
+L. Ceard, Y. Chao
+
+, K.F. Chen
+
+G. Kole
+
+, R.-S. Lu
+
+, Y.y. Li
+
+, P.s. Chen, Z.g. Chen, W.-S. Hou
+, E. Paganis
+
+, X.f. Su
+
+, T.h. Hsu, Y.w. Kao, R. Khurana,
+
+, J. Thomas-Wilsker
+
+National Taiwan University (NTU), Taipei, Taiwan
+
+C. Asawatangtrakuldee
+
+, N. Srimanobhas
+
+, V. Wachirapusitanand
+
+High Energy Physics Research Unit, Department of Physics, Faculty of Science, Chulalongkorn University, Bangkok, Thailand
+
+21
+
+,
+
+, L.s. Tsai, H.y. Wu, E. Yazgan
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+D. Agyel
+
+, F. Boran
+,69
+
+E. Gurpinar Guler
+A. Polatoz
+
+, Z.S. Demiroglu
+, C. Isik
+,71
+
+, B. Tali
+
+, F. Dolek
+
+, O. Kara, A. Kayis Topaksu
+
+, U.G. Tok
+
+,68 , E. Eskut
+
+, I. Dumanoglu
+
+, S. Turkcapar
+
+, U. Kiminsu
+
+, E. Uslan
+
+, Y. Guler
+
+, G. Onengut
+
+,69 ,
+
+, K. Ozdemir
+
+,70
+
+,
+
+, I.S. Zorbakir
+
+Çukurova University, Physics Department, Science and Art Faculty, Adana, Turkey
+
+,72
+
+M. Yalvac
+
+Middle East Technical University, Physics Department, Ankara, Turkey
+
+B. Akgun
+
+, I.O. Atakisi
+
+, E. Gülmez
+
+, M. Kaya
+
+,73
+
+, O. Kaya
+
+,74
+
+,75
+
+, S. Tekten
+
+Bogazici University, Istanbul, Turkey
+
+A. Cakir
+
+,68,76
+
+, K. Cankocak
+
+, Y. Komurcu
+
+,77
+
+, S. Sen
+
+Istanbul Technical University, Istanbul, Turkey
+
+O. Aydilek
+O. Potok
+
+,71 , V. Epshteyn
+
+, S. Cerci
+, H. Sert
+
+, C. Simsek
+
+, B. Hacisahinoglu
+
+, I. Hos
+
+,78 , B. Kaynak
+
+, S. Ozkorucuklu
+
+,
+
+, C. Zorbilmez
+
+Istanbul University, Istanbul, Turkey
+
+,79
+
+B. Isildak
+
+,71
+
+, D. Sunar Cerci
+
+Yildiz Technical University, Istanbul, Turkey
+
+A. Boyaryntsev
+
+, B. Grynyov
+
+Institute for Scintillation Materials of National Academy of Science of Ukraine, Kharkiv, Ukraine
+
+L. Levchuk
+National Science Centre, Kharkiv Institute of Physics and Technology, Kharkiv, Ukraine
+
+D. Anthony
+
+, J.J. Brooke
+
+, A. Bundock
+
+, F. Bury
+
+M. Glowacki, J. Goldstein
+
+, H.F. Heath
+
+, L. Kreczko
+
+V.J. Smith
+
+,80
+
+, N. Stylianou
+
+, E. Clement
+
+, D. Cussans
+
+, S. Paramesvaran
+
+, H. Flacher
+
+,
+
+, S. Seif El Nasr-Storey,
+
+, K. Walkingshaw Pass, R. White
+
+University of Bristol, Bristol, United Kingdom
+
+A.H. Ball, K.W. Bell
+K. Harder
+D. Petyt
+
+, A. Belyaev
+
+, S. Harper
+, T. Reis
+
+,81
+
+, C. Brew
+,82
+
+, M.-L. Holmberg
+
+, G. Salvi
+
+, R.M. Brown
+
+, J. Linacre
+
+, D.J.A. Cockerill
+
+, C. Cooke
+
+, K.V. Ellis,
+
+, K. Manolopoulos, D.M. Newbold
+
+, E. Olaiya,
+
+, T. Schuh, C.H. Shepherd-Themistocleous
+
+, I.R. Tomalin
+
+, T. Williams
+
+Rutherford Appleton Laboratory, Didcot, United Kingdom
+
+R. Bainbridge
+G.S. Chahal
+
+, P. Bloch
+,83
+
+, D. Colling
+
+S. Fayer, G. Fedi
+J. León Holgado
+
+, G. Hall
+, L. Lyons
+
+B.C. Radburn-Smith
+G.P. Uttley
+
+, C.E. Brown
+
+, O. Buchmuller, V. Cacchio, C.A. Carrillo Montoya
+
+, J.S. Dancu, I. Das
+
+, P. Dauncey
+
+, M.H. Hassanshahi
+
+, A. Howard, G. Iles
+
+, A.-M. Magnan
+
+, A. Richards, A. Rose
+
+, L.H. Vage, T. Virdee
+
+,32
+
+, G. Davies
+
+, K. Savva
+
+, M. Vojinovic
+
+, C. Seez
+
+, N. Wardle
+
+, J. Davies, M. Della Negra
+
+, M. Knight
+
+, S. Malik, M. Mieskolainen
+
+,
+
+, J. Langford
+
+, J. Nash
+
+, R. Shukla
+
+, A. Khan, P. Kyberd
+
+, D. Winterbottom
+
+, I.D. Reid
+
+Brunel University, Uxbridge, United Kingdom
+
+S. Abdullin
+
+, A. Brinkerhoﬀ
+
+, B. Caraway
+
+, J. Dittmann
+
+, K. Hatakeyama
+
+B. McMaster
+
+, M. Saunders
+
+, S. Sawant
+
+, C. Sutantawibul
+
+, J. Wilson
+
+Baylor University, Waco, TX, USA
+
+22
+
+, J. Hiltbrand
+
+,
+
+, K. Uchida
+
+Imperial College, London, United Kingdom
+
+K. Coldham, J.E. Cole
+
+,
+
+,84 , M. Pesaresi
+
+, A. Tapper
+
+,
+
+,
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+R. Bartek
+
+, A. Dominguez
+
+, C. Huerta Escamilla, A.E. Simsek
+
+, R. Uniyal
+
+, A.M. Vargas Hernandez
+
+Catholic University of America, Washington, DC, USA
+
+B. Bam
+
+, R. Chudasama
+
+, S.I. Cooper
+
+, S.V. Gleyzer
+
+, C.U. Perez
+
+,85 , E. Usai
+
+, P. Rumerio
+
+, R. Yi
+
+The University of Alabama, Tuscaloosa, AL, USA
+
+A. Akpinar
+
+, D. Arcaro
+
+, C. Cosby
+
+, Z. Demiragli
+
+E. Fontanesi
+
+, D. Gastler
+
+, F. Golf
+
+D. Spitzbart
+
+, I. Suarez
+
+, A. Tsatsos
+
+, S. Jeon
+
+, C. Erice
+
+, I. Reed
+
+, S. Yuan
+
+, C. Fangmeier
+
+, J. Rohlf
+
+, C. Fernandez Madrazo
+
+, K. Salyer
+
+, D. Sperka
+
+,
+
+,
+
+, A.G. Zecchinelli
+
+Boston University, Boston, MA, USA
+
+, X. Coubez 27 , D. Cutts
+
+G. Benelli
+K.T. Lau
+
+, D. Li
+
+M. Stamenkovic
+
+, J. Luo
+
+, M. Hadley
+
+, S. Mondal
+
+, U. Heintz
+
+,† , N. Pervan
+
+, M. Narain
+
+, W.Y. Wong, X. Yan
+
+, J.M. Hogan
+
+,86
+
+, S. Sagir
+
+, T. Kwon
+
+, G. Landsberg
+
+,87 , F. Simpson
+
+,
+
+,
+
+, W. Zhang
+
+Brown University, Providence, RI, USA
+
+S. Abbott , J. Bonilla , C. Brainerd , R. Breedon , M. Calderon De La Barca Sanchez , M. Chertok
+M. Citron , J. Conway , P.T. Cox , R. Erbacher , F. Jensen , O. Kukral , G. Mocellin ,
+M. Mulhearn
+
+, D. Pellett
+
+, W. Wei
+
+, Y. Yao
+
+, A. Datta
+
+, G. Flores Avila
+
+,
+
+, F. Zhang
+
+University of California, Davis, Davis, CA, USA
+
+M. Bachtis
+T. Lam
+
+, R. Cousins
+
+, E. Manca
+
+, A. Nunez Del Prado, D. Saltzberg
+
+, J. Hauser
+
+, M. Ignatenko
+
+, M.A. Iqbal
+
+,
+
+, V. Valuev
+
+University of California, Los Angeles, CA, USA
+
+R. Clare
+
+, J.W. Gary
+
+, M. Gordon, G. Hanson
+
+, W. Si
+
+,†
+
+, S. Wimpenny
+
+University of California, Riverside, Riverside, CA, USA
+
+J.G. Branson
+
+, S. Cittolin
+
+R. Kansal
+
+, V. Krutelyov
+
+M. Pieri
+
+, M. Quinnan
+
+F. Würthwein
+
+, S. Cooperstein
+, R. Lee
+
+, D. Diaz
+
+, J. Letts
+
+, J. Duarte
+
+, L. Giannini
+
+, J. Guiang
+
+, M. Masciovecchio
+
+, F. Mokhtar
+
+, S. Mukherjee
+
+, B.V. Sathia Narayanan
+
+, Y. Xiang
+
+, V. Sharma
+
+, M. Tadel
+
+, E. Vourliotis
+
+,
+,
+
+,
+
+, A. Yagil
+
+University of California, San Diego, La Jolla, CA, USA
+
+A. Barzdukas
+
+, L. Brennan
+
+P. Masterson
+
+, H. Mei
+
+T.Á. Vámi
+
+, C. Campagnari
+
+, J. Richman
+
+, A. Dorsett
+
+, U. Sarica
+
+, J. Incandela
+
+, R. Schmitz
+
+, F. Setti
+
+, J. Kim
+
+, A.J. Li
+
+, J. Sheplock
+
+,
+
+, D. Stuart
+
+,
+
+, S. Wang
+
+University of California, Santa Barbara - Department of Physics, Santa Barbara, CA, USA
+
+A. Bornheim
+S. Xie
+
+, O. Cerri, A. Latorre, J. Mao
+
+, H.B. Newman
+
+, M. Spiropulu
+
+, J.R. Vlimant
+
+, C. Wang
+
+,
+
+, R.Y. Zhu
+
+California Institute of Technology, Pasadena, CA, USA
+
+J. Alison
+C. Liu
+
+, S. An
+
+, M.B. Andrews
+
+, T. Mudholkar
+
+, S. Murthy
+
+, P. Bryant
+
+, M. Cremonesi, V. Dutta
+
+, T. Ferguson
+
+, A. Harilal
+
+, P. Palit
+
+, M. Paulini
+
+, A. Sanchez
+
+, W. Terrill
+
+, A. Roberts
+
+,
+
+Carnegie Mellon University, Pittsburgh, PA, USA
+
+J.P. Cumalat
+C. Savard
+
+, W.T. Ford
+
+, A. Hassani
+
+, G. Karathanasis
+
+, N. Schonbeck
+
+, K. Stenson
+
+, K.A. Ulmer
+
+University of Colorado Boulder, Boulder, CO, USA
+
+23
+
+, E. MacDonald, N. Manganelli
+
+, S.R. Wagner
+
+, N. Zipper
+
+, A. Perloﬀ
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+J. Alexander
+
+, S. Bright-Thonney
+
+, X. Chen
+
+S. Hogan
+
+, P. Kotamnives, J. Monroy
+
+J. Thom
+
+, P. Wittich
+
+, D.J. Cranshaw
+
+, J. Fan
+
+, M. Oshiro
+
+, J.R. Patterson
+
+, A. Apresyan
+
+, X. Fan
+
+, D. Gadkari
+
+, J. Reichert
+
+, M. Reid
+
+,
+
+, A. Ryd
+
+,
+
+, R. Zou
+
+Cornell University, Ithaca, NY, USA
+
+M. Albrow
+
+, M. Alyari
+
+, O. Amram
+
+, G. Apollinari
+
+J. Berryhill
+
+, P.C. Bhat
+
+, K. Burkett
+
+, J.N. Butler
+
+F. Chlebana
+
+, G. Cummings
+
+A. Gandrakota
+O. Gutsche
+
+, J. Dickinson
+
+, A. Canepa
+
+, I. Dutta
+
+, L.A.T. Bauerdick
+
+, G.B. Cerati
+
+, V.D. Elvira
+
+,
+
+, S. Grünendahl
+
+, D. Guerrero
+
+,
+
+, D. Green, A. Grummer
+
+, R.M. Harris
+
+, R. Heller
+
+, T.C. Herwig
+
+, J. Hirschauer
+
+, U. Joshi
+
+, T. Klijnsma
+
+, B. Klima
+
+D. Lincoln
+
+, R. Lipton
+
+, T. Liu
+
+, C. Madrid
+
+P. Merkel
+
+, S. Mrenna
+
+, S. Nahn
+
+, J. Ngadiuba
+
+K. Pedro
+
+, C. Pena
+
+,88 , F. Ravera
+
+A. Soha
+
+, L. Spiegel
+
+, S. Stoynev
+
+E.W. Vaandering
+
+, K. Maeshima
+
+, J. Strait
+
+, S. Lammel
+
+, D. Mason
+
+, V. Papadimitriou
+
+,89 , L. Ristori
+
+, L. Taylor
+
+, B. Jayatilaka
+
+, K.H.M. Kwok
+
+, C. Mantilla
+
+, D. Noonan
+
+, A. Reinsvold Hall
+
+, L. Horyn
+
+,
+,
+
+, P. McBride
+
+, N. Pastika
+
+, E. Sexton-Kennedy
+
+, S. Tkaczyk
+
+, N.V. Tran
+
+,
+
+,
+
+, J. Freeman
+
+, L. Gray
+
+, M. Johnson
+
+, H.W.K. Cheung
+
+, Y. Feng
+
+, Z. Gecse
+
+S. Jindariani
+
+, D. Berry
+
+,
+
+,
+
+, N. Smith
+
+, L. Uplegger
+
+,
+
+,
+
+, I. Zoi
+
+Fermi National Accelerator Laboratory, Batavia, IL, USA
+
+C. Aruta
+
+, P. Avery
+
+E. Koenig
+
+, M. Kolosova
+
+G. Mitselmakher
+S. Rosenzweig
+
+, D. Bourilkov
+
+, J. Konigsberg
+
+, K. Mohrman
+, K. Shi
+
+, L. Cadamuro
+
+, P. Chang
+
+, A. Korytov
+
+, V. Cherepanov
+
+, K.H. Lo, K. Matchev
+
+, A. Muthirakalayil Madhu
+
+, N. Rawal
+
+, R.D. Field,
+
+, N. Menendez
+
+, D. Rosenzweig
+
+,
+
+,
+
+, J. Wang
+
+University of Florida, Gainesville, FL, USA
+
+T. Adams
+
+, A. Al Kadhim
+
+R.S. Kim
+J. Zhang
+
+, S. Kim
+
+, A. Askew
+
+, T. Kolberg
+
+, S. Bower
+
+, R. Habibullah
+
+, G. Martinez, H. Prosper
+
+, V. Hagopian
+
+, R. Hashmi
+
+, P.R. Prova, M. Wulansatiti
+
+,
+
+, R. Yohay
+
+,
+
+Florida State University, Tallahassee, FL, USA
+
+B. Alsufyani, M.M. Baarmand
+M. Rahmani, E. Yanes
+
+, S. Butalla
+
+, T. Elkafrawy
+
+,56 , M. Hohlmann
+
+, R. Kumar Verma
+
+,
+
+Florida Institute of Technology, Melbourne, FL, USA
+
+M.R. Adams
+
+, A. Baty
+
+, C. Bennett, R. Cavanaugh
+
+, R. Escobar Franco
+
+, O. Evdokimov
+
+, C.E. Gerber
+
+D.J. Hofman , J.h. Lee , D.S. Lemos , A.H. Merrit , C. Mills , S. Nanda , G. Oh , B. Ozek ,
+D. Pilipovic , R. Pradhan , T. Roy , S. Rudrabhatla , M.B. Tonjes , N. Varelas , Z. Ye , J. Yoo
+University of Illinois Chicago, Chicago, USA
+
+M. Alhusseini
+
+,90
+
+, D. Blend, K. Dilsiz
+
+A. Mestvirishvili
+
+,91 , J. Nachtman
+
+, L. Emediato
+
+, G. Karaman
+
+, O. Neogi, H. Ogul
+
+,92 , Y. Onel
+
+, O.K. Köseyan
+, A. Penzo
+
+, J.-P. Merlo,
+,93
+
+, C. Snyder, E. Tiras
+
+The University of Iowa, Iowa City, IA, USA
+
+B. Blumenfeld
+M. Roguljic
+
+, L. Corcodilos
+
+, J. Roskes
+
+, J. Davis
+
+, S. Sekhar
+
+, A.V. Gritsan
+
+, L. Kang
+
+, S. Kyriacou
+
+, P. Maksimovic
+
+,
+
+, M. Swartz
+
+Johns Hopkins University, Baltimore, MD, USA
+
+A. Abreu
+J. King
+
+, L.F. Alcerro Alcerro
+, G. Krintiras
+
+, J. Anguiano
+
+, M. Lazarovits
+
+, P. Baringer
+
+, C. Le Mahieu
+
+24
+
+, A. Bean
+
+, Z. Flowers
+
+, C. Lindsey, J. Marquez
+
+, D. Grove
+
+, N. Minafra
+
+,
+
+,
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+M. Murray
+C. Smith
+
+, M. Nickel
+, Q. Wang
+
+, M. Pitt
+
+,94 , C. Rogan
+
+, S. Popescu
+
+, C. Royon
+
+, R. Salvatico
+
+, S. Sanders
+
+,
+
+, G. Wilson
+
+The University of Kansas, Lawrence, KS, USA
+
+B. Allmond
+D. Roy
+
+, A. Ivanov
+
+, K. Kaadze
+
+, A. Kalogeropoulos
+
+, D. Kim, Y. Maravin
+
+, K. Nam, J. Natoli
+
+,
+
+, G. Sorrentino
+
+Kansas State University, Manhattan, KS, USA
+
+F. Rebassoo
+
+, D. Wright
+
+Lawrence Livermore National Laboratory, Livermore, CA, USA
+
+A. Baden
+Y. Lai
+
+, A. Belloni
+
+, S. Lascio
+
+, Y.M. Chen
+
+, S.C. Eno
+
+, N.J. Hadley
+
+, S. Jabeen
+
+, R.G. Kellogg
+
+, A.C. Mignerey
+
+, S. Nabili
+
+, C. Palmer
+
+, C. Papageorgakis
+
+, T. Koeth
+
+,
+
+, M.M. Paranjpe,
+
+L. Wang
+University of Maryland, College Park, MD, USA
+
+J. Bendavid
+
+, W. Busza
+
+, I.A. Cali
+
+, M. D’Alfonso
+
+, J. Eysermans
+
+, C. Freer
+
+M. Goncharov, G. Grosso, P. Harris, D. Hoang, D. Kovalskyi
+
+, J. Krupa
+
+K. Long
+
+, G. Roland
+
+, C. Mironov
+
+G.S.F. Stephans
+
+, C. Paus
+
+, Z. Wang
+
+, D. Rankin
+
+, B. Wyslouch
+
+, C. Roland
+
+, G. Gomez-Ceballos
+
+, L. Lavezzo
+
+, Y.-J. Lee
+
+, S. Rothman
+
+,
+
+,
+
+,
+
+, T.J. Yang
+
+Massachusetts Institute of Technology, Cambridge, MA, USA
+
+B. Crossman
+S. Pandey
+
+, B.M. Joshi
+
+, C. Kapsiak
+
+, M. Krohn
+
+, D. Mahon
+
+, J. Mans
+
+, M. Revering
+
+, R. Rusack
+
+, R. Saradhy
+
+, N. Schroeder
+
+, B. Marzocchi
+
+, N. Strobbe
+
+,
+
+, M.A. Wadud
+
+University of Minnesota, Minneapolis, MN, USA
+
+L.M. Cremaldi
+University of Mississippi, Oxford, MS, USA
+
+K. Bloom , D.R. Claes , G. Haza , J. Hossain , C. Joo
+A. Vagnerini , A. Wightman , F. Yan , D. Yu
+
+, I. Kravchenko
+
+, J.E. Siado
+
+, W. Tabb
+
+,
+
+, M. Morris
+
+, D. Nguyen
+
+, S. Rappoccio
+
+University of Nebraska-Lincoln, Lincoln, NE, USA
+
+H. Bandyopadhyay
+
+, L. Hay
+
+, I. Iashvili
+
+, A. Kharchilava
+
+,
+
+H. Rejeb Sfar, A. Williams
+State University of New York at Buﬀalo, Buﬀalo, NY, USA
+
+G. Alverson
+G. Madigan
+
+, E. Barberis , J. Dervan, Y. Haddad , Y. Han , A. Krishna , J. Li , M. Lu ,
+, R. Mccarthy , D.M. Morse , V. Nguyen , T. Orimoto , A. Parker , L. Skinnari
+
+A. Tishelman-Charny
+
+, B. Wang
+
+,
+
+, D. Wood
+
+Northeastern University, Boston, MA, USA
+
+S. Bhattacharya
+M.H. Schmitt
+
+, J. Bueghly, Z. Chen
+
+, A. Taliercio
+
+, S. Dittmer
+
+, K.A. Hahn
+
+, Y. Liu
+
+, Y. Miao
+
+, D.G. Monk
+
+,
+
+, M. Hildreth
+
+, K.W. Ho
+
+,
+
+, N. Loukas
+
+, L. Lutton
+
+,
+
+, M. Velasco
+
+Northwestern University, Evanston, IL, USA
+
+G. Agarwal
+
+, R. Band
+
+K. Hurtado Anampa
+
+, R. Bucci, S. Castells
+
+, T. Ivanov
+
+, C. Jessop
+
+, A. Das
+
+, K. Lannon
+
+J. Mariano, N. Marinelli, I. Mcalister, T. McCauley
+H. Nelson
+
+, M. Osherson
+
+M. Zarucki
+
+, L. Zygala
+
+, A. Piccinelli
+
+, R. Goldouzian
+, J. Lawrence
+
+, C. Mcgrady
+
+, R. Ruchti
+
+, C. Moore
+
+, A. Townsend
+
+25
+
+, Y. Musienko
+
+, Y. Wan, M. Wayne
+
+,16
+
+,
+
+, H. Yockey,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+University of Notre Dame, Notre Dame, IN, USA
+
+A. Basnet
+
+, B. Bylsma, M. Carrigan
+
+B.L. Winer
+
+, B.R. Yates
+
+, L.S. Durkin
+
+, C. Hill
+
+, M. Joyce
+
+, M. Nunez Ornelas
+
+, K. Wei,
+
+The Ohio State University, Columbus, OH, USA
+
+F.M. Addesa
+
+, H. Bouchamaoui
+
+N. Haubrich
+
+, G. Kopp
+
+A. Shevelev
+
+, D. Stickland
+
+, P. Das
+
+, S. Kwan
+
+, G. Dezoort
+
+, D. Lange
+
+, P. Elmer
+
+, A. Loeliger
+
+, A. Frankenthal
+
+, D. Marlow
+
+, B. Greenberg
+
+, I. Ojalvo
+
+, J. Olsen
+
+,
+
+,
+
+, C. Tully
+
+Princeton University, Princeton, NJ, USA
+
+S. Malik
+University of Puerto Rico, Mayaguez, PR, USA
+
+A.S. Bakshi
+
+, V.E. Barnes
+
+, S. Chandra
+
+A.W. Jung
+
+, D. Kondratyev
+
+S. Piperov
+
+, V. Scheurer, J.F. Schulte
+
+, R. Chawla
+
+, A.M. Koshy, M. Liu
+
+, S. Das
+
+, G. Negro
+
+, M. Stojanovic
+
+, A. Gu
+
+, L. Gutay, M. Jones
+
+, N. Neumeister
+
+, J. Thieman
+
+,
+
+, G. Paspalaki
+
+, A.K. Virdi
+
+, F. Wang
+
+,
+, W. Xie
+
+Purdue University, West Lafayette, IN, USA
+
+J. Dolen
+
+, N. Parashar
+
+, A. Pathak
+
+Purdue University Northwest, Hammond, IN, USA
+
+D. Acosta , T. Carnahan , K.M. Ecklund , P.J. Fernández Manteca , S. Freed, P. Gardner,
+F.J.M. Geurts , W. Li , O. Miguel Colin , B.P. Padley , R. Redjimi, J. Rotter , E. Yigitbasi
+
+, Y. Zhang
+
+Rice University, Houston, TX, USA
+
+A. Bodek , P. de Barbaro , R. Demina , J.L. Dulemba , A. Garcia-Bellido
+A. Khukhunaishvili , N. Parmar, P. Parygin ,95 , E. Popova ,95 , R. Taus
+
+, O. Hindrichs
+
+,
+
+University of Rochester, Rochester, NY, USA
+
+K. Goulianos
+The Rockefeller University, New York, NY, USA
+
+B. Chiarito, J.P. Chou , Y. Gershtein , E. Halkiadakis , A. Hart , M. Heindl , D. Jaroslawski ,
+O. Karacheban ,30 , I. Laﬂotte , A. Lath , R. Montalvo, K. Nash, H. Routray , S. Salur , S. Schnetzer,
+S. Somalwar
+
+, R. Stone
+
+, S.A. Thayil
+
+, S. Thomas, J. Vora
+
+, H. Wang
+
+Rutgers, The State University of New Jersey, Piscataway, NJ, USA
+
+H. Acharya, D. Ally
+N. Karunarathna
+
+, A.G. Delannoy
+
+, L. Lee
+
+, S. Fiorendi
+
+, E. Nibigira
+
+, S. Higginbotham
+
+, T. Holmes
+
+, A.R. Kanuganti
+
+,
+
+, S. Spanier
+
+University of Tennessee, Knoxville, TN, USA
+
+D. Aebi
+
+, M. Ahmad
+
+, O. Bouhali
+
+,96 , R. Eusebi
+
+, J. Gilmore
+
+S. Luo
+
+, R. Mueller
+
+, D. Overton
+
+, D. Rathjens
+
+, A. Safonov
+
+, T. Huang
+
+, T. Kamon
+
+,97 , H. Kim
+
+Texas A&M University, College Station, TX, USA
+
+N. Akchurin
+A. Mankel
+
+, J. Damgov
+, T. Peltola
+
+, V. Hegde
+
+, A. Hussain
+
+, Y. Kazhykarim, K. Lamichhane
+
+, I. Volobouev
+
+, A. Whitbeck
+
+, S.W. Lee
+
+,
+
+Texas Tech University, Lubbock, TX, USA
+
+E. Appelt
+
+, Y. Chen
+
+, S. Greene, A. Gurrola
+
+F. Romeo
+
+, P. Sheldon
+
+, S. Tuo
+
+, W. Johns
+
+, J. Velkovska
+
+, R. Kunnawalkam Elayavalli
+
+, J. Viinikainen
+
+Vanderbilt University, Nashville, TN, USA
+26
+
+, A. Melo
+
+,
+
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+
+B. Cardwell
+
+, B. Cox
+
+, J. Hakala
+
+, R. Hirosky
+
+, A. Ledovskoy
+
+, C. Neu
+
+, C.E. Perez Lara
+
+University of Virginia, Charlottesville, VA, USA
+
+P.E. Karchin
+Wayne State University, Detroit, MI, USA
+
+A. Aravind, S. Banerjee
+
+, K. Black
+
+, T. Bose
+
+, S. Dasu
+
+, I. De Bruyn
+
+, P. Everaerts
+
+, C. Galloni, H. He
+
+M. Herndon , A. Herve , C.K. Koraka , A. Lanaro, R. Loveless , J. Madhusudanan Sreekala ,
+A. Mallampalli , A. Mohammadi , S. Mondal, G. Parida , D. Pinna, A. Savin, V. Shang , V. Sharma
+W.H. Smith
+
+, D. Teague, H.F. Tsoi
+
+, W. Vetens
+
+,
+
+,
+
+, A. Warden
+
+University of Wisconsin - Madison, Madison, WI, USA
+
+S. Afanasiev
+
+, V. Andreev
+
+V. Blinov 98 , E. Boos
+
+, Yu. Andreev
+
+, V. Borshch
+
+, T. Aushev
+
+, D. Budkouski
+
+, M. Azarkin
+
+, V. Bunichev
+
+, A. Babaev
+
+, A. Belyaev
+
+,
+,98 ,
+
+, V. Chekhovsky, R. Chistov
+
+M. Danilov ,98 , A. Dermenev , T. Dimova ,98 , D. Druzhkin ,99 , M. Dubinin ,88 , L. Dudko , A. Ershov
+G. Gavrilov , V. Gavrilov , S. Gninenko , V. Golovtcov , N. Golubev , I. Golutvin , I. Gorbunov ,
+A. Gribushin , Y. Ivanov , V. Kachanov , V. Karjavine , A. Karneyeu , V. Kim ,98 , M. Kirakosyan,
+D. Kirpichnikov
+A. Lanev
+
+, M. Kirsanov
+
+, P. Levchenko
+
+V. Murzin
+
+,98
+
+A. Terkulov
+
+, O. Radchenko
+
+,98
+
+, S. Slabospitskii
+
+, O. Teryaev
+†
+
+, N. Lychkovskaya
+
+, V. Popov
+
+, Y. Skovpen
+
+, V. Korenkov
+
+,101,102 , S. Obraztsov
+
+, A. Nikitenko
+
+S. Polikarpov
+S. Shulha
+
+,100
+
+, V. Klyukhin
+
+, I. Tlisova
+
+A. Vorobyev , G. Vorotnikov
+
+,98
+
+, V. Makarenko
+, V. Oreshkin
+, M. Savina
+
+, V. Smirnov
+
+, A. Toropin
+
+, N. Voytishin
+
+, A. Kozyrev
+
+,98
+
+, N. Krasnikov
+
+, A. Malakhov
+
+, V. Palichik
+
+†
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+
+,
+
+, V. Savrin
+
+, V. Shalaev
+
+, S. Shmatov
+
+, D. Sosnov
+
+, V. Sulimov
+
+, E. Tcherniaev
+
+, L. Uvarov
+
+, B.S. Yuldashev
+
+103
+
+, A. Uzunian
+
+, A. Zarubin
+
+, P. Volkov
+
+, I. Zhizhin
+
+,
+
+, A. Zhokin
+
+Deceased.
+Also at Yerevan State University, Yerevan, Armenia.
+Also at TU Wien, Vienna, Austria.
+Also at Institute of Basic and Applied Sciences, Faculty of Engineering, Arab Academy for Science, Technology and Maritime Transport, Alexandria, Egypt.
+Also at Ghent University, Ghent, Belgium.
+Also at Universidade Estadual de Campinas, Campinas, Brazil.
+Also at Federal University of Rio Grande do Sul, Porto Alegre, Brazil.
+Also at UFMS, Nova Andradina, Brazil.
+Also at Nanjing Normal University, Nanjing, China.
+Now at The University of Iowa, Iowa City, Iowa, USA.
+Also at University of Chinese Academy of Sciences, Beijing, China.
+Also at China Center of Advanced Science and Technology, Beijing, China.
+Also at University of Chinese Academy of Sciences, Beijing, China.
+Also at China Spallation Neutron Source, Guangdong, China.
+Now at Henan Normal University, Xinxiang, China.
+Also at Université Libre de Bruxelles, Bruxelles, Belgium.
+Also at an institute or an international laboratory covered by a cooperation agreement with CERN.
+Also at Cairo University, Cairo, Egypt.
+Also at Suez University, Suez, Egypt.
+Now at British University in Egypt, Cairo, Egypt.
+Also at Purdue University, West Lafayette, Indiana, USA.
+Also at Université de Haute Alsace, Mulhouse, France.
+Also at Istinye University, Istanbul, Turkey.
+Also at Tbilisi State University, Tbilisi, Georgia.
+Also at The University of the State of Amazonas, Manaus, Brazil.
+Also at Erzincan Binali Yildirim University, Erzincan, Turkey.
+Also at University of Hamburg, Hamburg, Germany.
+Also at RWTH Aachen University, III. Physikalisches Institut A, Aachen, Germany.
+Also at Isfahan University of Technology, Isfahan, Iran.
+Also at Bergische University Wuppertal (BUW), Wuppertal, Germany.
+Also at Brandenburg University of Technology, Cottbus, Germany.
+Also at Forschungszentrum Jülich, Juelich, Germany.
+Also at CERN, European Organization for Nuclear Research, Geneva, Switzerland.
+Also at Institute of Physics, University of Debrecen, Debrecen, Hungary.
+Also at Institute of Nuclear Research ATOMKI, Debrecen, Hungary.
+Now at Universitatea Babes-Bolyai - Facultatea de Fizica, Cluj-Napoca, Romania.
+27
+
+,98
+
+, M. Perﬁlov,
+
+Authors aﬃliated with an institute or an international laboratory covered by a cooperation agreement with CERN
+
+1
+
+,
+
+, V. Matveev
+
+, V. Perelygin
+
+,
+
+,
+,
+
+Physics Letters B 857 (2024) 138979
+
+The CMS Collaboration
+36
+
+Also at Physics Department, Faculty of Science, Assiut University, Assiut, Egypt.
+Also at HUN-REN Wigner Research Centre for Physics, Budapest, Hungary.
+Also at Punjab Agricultural University, Ludhiana, India.
+39
+Also at University of Visva-Bharati, Santiniketan, India.
+40
+Also at Indian Institute of Science (IISc), Bangalore, India.
+41
+Also at Birla Institute of Technology, Mesra, Mesra, India.
+42
+Also at IIT Bhubaneswar, Bhubaneswar, India.
+43
+Also at Institute of Physics, Bhubaneswar, India.
+44
+Also at University of Hyderabad, Hyderabad, India.
+45
+Also at Deutsches Elektronen-Synchrotron, Hamburg, Germany.
+46
+Also at Department of Physics, Isfahan University of Technology, Isfahan, Iran.
+47
+Also at Sharif University of Technology, Tehran, Iran.
+48
+Also at Department of Physics, University of Science and Technology of Mazandaran, Behshahr, Iran.
+49
+Also at Helwan University, Cairo, Egypt.
+50
+Also at Italian National Agency for New Technologies, Energy and Sustainable Economic Development, Bologna, Italy.
+51
+Also at Centro Siciliano di Fisica Nucleare e di Struttura Della Materia, Catania, Italy.
+52
+Also at Università degli Studi Guglielmo Marconi, Roma, Italy.
+53
+Also at Scuola Superiore Meridionale, Università di Napoli ‘Federico II’, Napoli, Italy.
+54
+Also at Fermi National Accelerator Laboratory, Batavia, Illinois, USA.
+55
+Also at Laboratori Nazionali di Legnaro dell’INFN, Legnaro, Italy.
+56
+Also at Ain Shams University, Cairo, Egypt.
+57
+Also at Consiglio Nazionale delle Ricerche - Istituto Oﬃcina dei Materiali, Perugia, Italy.
+58
+Also at Riga Technical University, Riga, Latvia.
+59
+Also at Department of Applied Physics, Faculty of Science and Technology, Universiti Kebangsaan Malaysia, Bangi, Malaysia.
+60
+Also at Consejo Nacional de Ciencia y Tecnología, Mexico City, Mexico.
+61
+Also at Trincomalee Campus, Eastern University, Sri Lanka, Nilaveli, Sri Lanka.
+62
+Also at Saegis Campus, Nugegoda, Sri Lanka.
+63
+Also at National and Kapodistrian University of Athens, Athens, Greece.
+64
+Also at Ecole Polytechnique Fédérale Lausanne, Lausanne, Switzerland.
+65
+Also at Universität Zürich, Zurich, Switzerland.
+66
+Also at Stefan Meyer Institute for Subatomic Physics, Vienna, Austria.
+67
+Also at Laboratoire d’Annecy-le-Vieux de Physique des Particules, IN2P3-CNRS, Annecy-le-Vieux, France.
+68
+Also at Near East University, Research Center of Experimental Health Science, Mersin, Turkey.
+69
+Also at Konya Technical University, Konya, Turkey.
+70
+Also at Izmir Bakircay University, Izmir, Turkey.
+71
+Also at Adiyaman University, Adiyaman, Turkey.
+72
+Also at Bozok Universitetesi Rektörlügü, Yozgat, Turkey.
+73
+Also at Marmara University, Istanbul, Turkey.
+74
+Also at Milli Savunma University, Istanbul, Turkey.
+75
+Also at Kafkas University, Kars, Turkey.
+76
+Now at Istanbul Okan University, Istanbul, Turkey.
+77
+Also at Hacettepe University, Ankara, Turkey.
+78
+Also at Istanbul University - Cerrahpasa, Faculty of Engineering, Istanbul, Turkey.
+79
+Also at Yildiz Technical University, Istanbul, Turkey.
+80
+Also at Vrije Universiteit Brussel, Brussel, Belgium.
+81
+Also at School of Physics and Astronomy, University of Southampton, Southampton, United Kingdom.
+82
+Also at University of Bristol, Bristol, United Kingdom.
+83
+Also at IPPP Durham University, Durham, United Kingdom.
+84
+Also at Monash University, Faculty of Science, Clayton, Australia.
+85
+Also at Università di Torino, Torino, Italy.
+86
+Also at Bethel University, St. Paul, Minnesota, USA.
+87
+Also at Karamanoğlu Mehmetbey University, Karaman, Turkey.
+88
+Also at California Institute of Technology, Pasadena, California, USA.
+89
+Also at United States Naval Academy, Annapolis, Maryland, USA.
+90
+Also at Bingol University, Bingol, Turkey.
+91
+Also at Georgian Technical University, Tbilisi, Georgia.
+92
+Also at Sinop University, Sinop, Turkey.
+93
+Also at Erciyes University, Kayseri, Turkey.
+94
+Also at Horia Hulubei National Institute of Physics and Nuclear Engineering (IFIN-HH), Bucharest, Romania.
+95
+Now at an institute or an international laboratory covered by a cooperation agreement with CERN.
+96
+Also at Texas A&M University at Qatar, Doha, Qatar.
+97
+Also at Kyungpook National University, Daegu, Korea.
+98
+Also at another institute or international laboratory covered by a cooperation agreement with CERN.
+99
+Also at Universiteit Antwerpen, Antwerpen, Belgium.
+100
+Also at Northeastern University, Boston, Massachusetts, USA.
+101
+Also at Imperial College, London, United Kingdom.
+102
+Now at Yerevan Physics Institute, Yerevan, Armenia.
+103
+Also at Institute of Nuclear Physics of the Uzbekistan Academy of Sciences, Tashkent, Uzbekistan.
+37
+38
+
+28
+
+

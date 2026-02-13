@@ -1,0 +1,1668 @@
+equations = []
+tables = []
+full_text = """
+arXiv:0909.3323v2 [physics.optics] 24 Nov 2009\r
+Temporal coupled-mode theory for Fano resonance in light\r
+scattering by a single obstacle\r
+Zhichao Ruan and Shanhui Fan\r
+Ginzton Laboratory, Department of Electrical Engineering,\r
+Stanford University, Stanford, California 94305\r
+Abstract\r
+We present a theory for Fano interference in light scattering by individual obstacle, based on a\r
+temporal coupled-mode formalism. This theory is applicable for obstacles that are much smaller\r
+than the incident wavelength, or for systems with two-dimensional cylindrical or three-dimensional\r
+spherical symmetry. We show that for each angle momentum channel, the Fano interference effect\r
+can be modeled by a simple temporal coupled-mode equation, which provides a line shape formula\r
+for scattering and absorption cross-section. We validate the analysis with numerical simulations.\r
+As an application of the theory, we design a structure that exhibits strong absorption and weak\r
+scattering properties at the same frequency.\r
+1
+
+I. INTRODUCTION\r
+Understanding light scattering by individual particles is of fundamental importance [1].\r
+In recent year, Fano interference effect [2] in such light scattering has attracted significant\r
+attention. Individual particles can support resonances. In the vicinity of such resonance,\r
+the spectrum of either scattering cross-section, or extinction cross-section, can exhibit Fano\r
+line shape, where the spectrum varies asymmetrically with respect to resonant frequency\r
+[3, 4, 5, 6, 7, 8]. Such Fano interference effects are also closely related to the classical\r
+analogue to electromagnetically induced transparency (EIT) [9], which have recently been\r
+proposed and demonstrated in scattering systems consisting of metallic elements [10, 11,\r
+12, 13, 14, 15, 16]. Although the Fano effect in particle scattering has been demonstrated\r
+in different systems, given the ubiquitous nature of such effect, it would be very useful to\r
+present a broader theory that captures some of general aspects.\r
+In this paper, we generalize the temporal coupled-mode theory— previously developed\r
+to account for Fano interference effect in waveguide or grating systems [17]— to treat light\r
+scattering by individual resonant obstacle. In the theory of [17], the Fano line shape appears\r
+in the transmission spectrum of the system. For individual obstacle, transmission spectrum\r
+is no longer well defined. Instead, the theory here aims to calculate the scattering cross\u0002section of the obstacle. Also related to this work, the temporal coupled mode theory has\r
+recently been generalized to treat small particle scattering in Ref. [18]. The work of Ref. [18]\r
+however, did not include Fano interference effect.\r
+The paper is organized as follows: In Section 2, we show that for each angle momentum\r
+channel, the Fano interference effect can be modeled by a simple temporal coupled-mode\r
+equation, which provides a line shape formula for scattering and absorption cross-section.\r
+In Section 3, we compare the theoretical predictions to numerical simulations. Finally,\r
+in Section 4, as an application of the theory, we design a structure that exhibits strong\r
+absorption and weak scattering properties at the same frequency.\r
+2
+
+II. THEORY\r
+A. Brief review of standard scattering theory\r
+We start by briefly reviewing the standard scattering theory for a single obstacle. For\r
+simplicity, this paper only discusses the two-dimensional (2D) case where the obstacle is\r
+uniform in the z direction, but the concept is straightforwardly generalizable to the three\u0002dimensional cases. Consider an obstacle located at the origin, surrounding by air. When\r
+a TM wave (with its magnetic field H polarized along the z-direction) impinges on the\r
+obstacle, the total field in the air region outside the scatterer can be written as:\r
+Htotal =\r
+X∞\r
+l=−∞\r
+H0\r
+\u0010\r
+h\r
++\r
+l H\r
+(2)\r
+l\r
+(kρ) exp(ilθ) + h\r
+−\r
+l H\r
+(1)\r
+l\r
+(kρ) exp(ilθ)\r
+\u0011\r
+(1)\r
+where H0 is a normalization constant, (ρ, θ) is the polar coordinates oriented at the origin, k\r
+is the wave number in air, and H\r
+(1)\r
+l\r
+(H\r
+(2)\r
+l\r
+) is the l-th order Hankel function of the first (sec\u0002ond) kind. Since H\r
+(1,2)\r
+l\r
+(kρ) →\r
+q\r
+2\r
+πk e\r
+i(\r
+lπ\r
+2 + π4\r
+) e\r
+(+,−)ikρ\r
+√ρ\r
+when ρ → ∞, and taking the convention\r
+that the field varies in time as exp(−iωt), one can identify h\r
++\r
+l\r
+and h\r
+−\r
+l\r
+as the incoming and\r
+outgoing wave amplitudes. The power carried in such incoming (or outgoing) wave is\r
+P\r
+±\r
+l =\r
+2\r
+ωε0\r
+|H0|\r
+2\r
+\f\r
+\fh\r
+±\r
+l\r
+\f\r
+\f\r
+2\r
+(2)\r
+(Notice that the power in two-dimension has the unit of W/m.) By choosing the magnetic\r
+field normalization\r
+H0 = 1r\r
+W\r
+m\r
+ωε0\r
+2\r
+(3)\r
+we have then\r
+\f\r
+\fh\r
++\r
+l\r
+\f\r
+\f\r
+2\r
+and\r
+\f\r
+\fh\r
+−\r
+l\r
+\f\r
+\f\r
+2\r
+representing the incoming and outgoing power carried by\r
+waves in the l-th angular momentum channel, measured in the unit of W/m.\r
+In the cases where the scatterer is much smaller than the incident wavelength, or the\r
+system has cylindrical symmetry, the l-th order incoming wave only excites the same order\r
+outgoing wave. So we define Rl as\r
+Rl ≡\r
+h\r
+−\r
+l\r
+h\r
++\r
+l\r
+, (4)\r
+which can be thought of as a “reflection coefficient” since it relates the outgoing wave to\r
+the incoming wave in each channel. Moreover, if the obstacle is lossless, the power carried\r
+by the outgoing wave must be equal to that of the incoming wave. Consequently,\r
+Rl = e\r
+iφl\r
+(5)\r
+3
+
+where φl\r
+is a real phase factor.\r
+We will now calculate the scattering, absorption, and extinction cross-sections of an\r
+obstacle. For this purpose, imagining a plane wave incident upon the obstacle, the scattering\r
+(absorption) cross-section is then defined as the total power scattered (absorbed), divided\r
+by the intensity of the incident field. For 2D system the cross-section has the unit of length.\r
+Mathematically, for this scenario, we write the total field in the air region outside the\r
+scatterer as\r
+Htotal = H0\r
+ \r
+exp(ik · r) + X∞\r
+l=−∞\r
+i\r
+lSlH\r
+(1)\r
+l\r
+(kρ) exp(ilθ)\r
+!\r
+, (6)\r
+where k is the wave vector of the incident plane wave, Slis related to the scattered field and\r
+referred to as the scattering coefficient. To connect to Eq. (1), the plane wave is expanded\r
+as\r
+exp(ik · r) = X∞\r
+l=−∞\r
+i\r
+l\r
+1\r
+2\r
+\u0010\r
+H\r
+(1)\r
+l\r
+(kρ) + H\r
+(2)\r
+l\r
+(kρ)\r
+\u0011\r
+exp(ilθ). (7)\r
+Combining Eqs. (6) and (7), and comparing to Eq. (1), we have\r
+Sl =\r
+Rl − 1\r
+2\r
+. (8)\r
+Furthermore, in the l-th channel, the scattered power Psct and the absorbed power Pabs are\r
+Psct =\r
+2\r
+ωε0\r
+|Sl|\r
+2\r
+|H0|\r
+2\r
+Pabs =\r
+1\r
+ωε0\r
+\r
+1 − |Rl|\r
+2\r
+\u0001\r
+|H0|\r
+2 =\r
+2\r
+ωε0\r
+\r
+−Re{Sl} − |Sl|\r
+2\r
+\u0001\r
+|H0|\r
+2\r
+(9)\r
+Following the definition of the scattering cross-section, the contribution to the total scatter\u0002ing cross-section from the l-th channel is\r
+Csct,l ≡\r
+Psct\r
+I0\r
+=\r
+2\r
+ωε0\r
+|Sl|\r
+2\r
+|H0|\r
+2\r
+1\r
+2\r
+qµ0\r
+ε0\r
+|H0|\r
+2\r
+=\r
+2λ\r
+π\r
+|Sl|\r
+2\r
+, (10)\r
+and the total scattering cross-section is\r
+Csct =\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+|Sl|\r
+2\r
+, (11)\r
+where λ is the wavelength in air. In the same way, we have the total absorption cross-section\r
+as\r
+Cabs = −\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+(Re{Sl} + |Sl|\r
+2\r
+) (12)\r
+4
+
+Finally, the total extinction cross-section, as the sum of the the scattering cross-section and\r
+the absorption cross-section, is\r
+Cext = −\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+Re{Sl} (13)\r
+B. Coupled mode theory for light scattering\r
+The goal of our theory is then to provide a general view about these cross-sections. In\r
+the following we consider the case that the obstacle supports resonance for the l-th channel.\r
+In this circumstance, Fano effect is the result of interference of two pathways: the direct\r
+“reflectance” of the incoming wave that forms the background, and the outgoing radiation\r
+from the excited resonance. Using the temporal coupled-mode theory formalism [17, 18, 19],\r
+the dynamic equation for the amplitude c of the resonance is\r
+dc\r
+dt = (−iω0 − γ0 − γ) c + κh+\r
+h\r
+− = Bh+ + ηc\r
+(14)\r
+where ω0 is the resonant frequency, γ0 is the intrinsic loss rate due to for example material\r
+absorption, γ is the external leakage rate due to the coupling of the resonance to the outgoing\r
+wave, B is the background reflection coefficient, and κ and η correspond to the coupling\r
+constant between the resonance, and the incoming or outgoing wave, respectively. In this\r
+section, as we consider only the l-th channel, for notation simplicity we suppress the subscript\r
+l in all variables in Eq. (14). Here the amplitude c is normalized such that |c|\r
+2\r
+corresponds\r
+to the energy inside the resonator [19]. Note that such coupled-mode formalism is, strictly\r
+speaking, valid only when γ0 + γ ≪ ω0 [19].\r
+The coupling constants κ and η are related to each other by energy conservation and\r
+time-reversal symmetry considerations [17]. In the lossless case (i.e. γ0 = 0), if the incoming\r
+wave is absent (i.e. h\r
++ = 0), from Eq. (14) we have\r
+c = A exp(−iω0t − γt)\r
+h\r
+− = Aη exp(−iω0t − γt)\r
+(15)\r
+where A is an arbitrary constant. According to energy conservation, the energy leakage rate\r
+must be equal to the power of the outgoing wave, i.e.\r
+d|c|\r
+2\r
+dt\r
+= −2γ|c|\r
+2 = −\r
+\f\r
+\fh\r
+−\r
+\f\r
+\f\r
+2\r
+= −ηη∗|c|\r
+2\r
+(16)\r
+5
+
+which requires that\r
+ηη∗ = 2γ (17)\r
+Now let us perform a time-reversal transformation for the exponential decay process as\r
+described by Eq. (15). The time-reversed case is represented by feeding the resonator with\r
+exponentially growing wave amplitude (h\r
+−(−t))∗\r
+. Such excitation results in a resonant\r
+amplitude (c(−t))∗that also grows exponentially, without the outgoing wave. Described\r
+this time-reversed scenario using Eq. (14), we have\r
+κη∗ = 2γ (18a)\r
+Bη∗ + η = 0 (18b)\r
+Comparing Eq. (18a) to (17), we obtain\r
+κ = η (19)\r
+Eqs. (17)-(19) are the main results of the Fano interference theory. If the system is\r
+lossless, the background reflection is B = e\r
+iφ and therefore we can determine κ and η as\r
+κ = η =\r
+p\r
+2γei(\r
+φ\r
+2 + π2 −nπ)\r
+(20)\r
+where n is an arbitrary integer. For lossy systems, one should expect that the strongest\r
+contribution of the loss is to the resonant properties. In such a case, as an ansatz, we\r
+will introduce a non-zero intrinsic loss rate γ0 in Eq. (14), while still approximating the\r
+background scattering as a lossless process. We will see below in the numerical example\r
+that such an approach is in fact sufficient for scattering from lossy plasmonic particles. A\r
+more rigorous approach, which we will not pursue here, will be to treat explicitly the loss\r
+as coupling to an additional decay channel, the combined system with the additional decay\r
+channel can then be treated using theory that is similar to Eq. (14) but without the need\r
+of introducing the intrinsic loss rate.\r
+We now suppose that the incident wave has a frequency ω. The reflection coefficient R\r
+can be straightforwardly obtained using Eqs. (14) and (20):\r
+R =\r
+h\r
+−\r
+h+ = e\r
+iφ +\r
+−2γeiφ\r
+i(ω0−ω)+γ0+γ\r
+=\r
+i(ω0−ω)+γ0−γ\r
+i(ω0−ω)+γ0+γ\r
+e\r
+iφ\r
+(21)\r
+6
+
+One can easily identify that in the lossless case (i.e. γ0 = 0), the amplitude of R is unity as\r
+expected. Following Eq. (8), the scattering coefficient is\r
+S =\r
+1\r
+2\r
+(R − 1)\r
+=\r
+1\r
+2\r
+(i(ω0−ω)+γ0)(e\r
+iφ−1)−γ(1+eiφ)\r
+i(ω0−ω)+γ0+γ\r
+(22)\r
+Substituting Eqs. (22) into (11) and (12), we have the scattering and the absorption cross\u0002sections as\r
+Csct =\r
+2λ\r
+π\r
+\f\r
+\f\r
+\f\r
+\f\r
+1\r
+2\r
+(i(ω0 − ω) + γ0)(e\r
+iφ − 1) − γ(1 + eiφ)\r
+i(ω0 − ω) + γ0 + γ\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(23a)\r
+Cabs =\r
+2λ\r
+π\r
+γ0γ\r
+(ω − ω0)\r
+2 + (γ0 + γ)2\r
+(23b)\r
+C. General line shapes in a single channel\r
+We now use Eq. (23) to illustrate general line shapes of scattering and absorption cross\u0002section spectra in a single channel. Let us first discuss the scattering cross-section. In the\r
+lossless case where γ0 = 0, Fig. 1 plots the scattering cross-section spectra with different\r
+phase factor φ as arised from the background “reflection”.\r
+0\r
+0.5\r
+1\r
+0\r
+0.5\r
+1\r
+Csct (2\r
+λ/π)\r
+−10 −5 0 5 10\r
+0\r
+0.5\r
+1\r
+(ω − ω0)/γ\r
+φ=π\r
+φ=π/2\r
+φ=0\r
+(a)\r
+(b)\r
+(c)\r
+FIG. 1: Scattering cross-section spectrum as given by Eq. (22) for the lossless case (γ0 = 0). (a-c)\r
+correspond to φ = 0, π/2, π, respectively.\r
+For the phase factor φ = 0, the spectrum is a Lorentizian function [Fig. 1(a)]. Note\r
+that the resonance creates maximal scattering at the resonant frequency ω0. Since φ = 0\r
+7
+
+0\r
+0.5\r
+1\r
+0\r
+0.5\r
+1\r
+Csct (2\r
+λ/π)\r
+−10 −5 0 5 10\r
+0\r
+0.5\r
+1\r
+(ω − ω0)/γ\r
+φ=π\r
+φ=π/2\r
+φ=0\r
+(a)\r
+(b)\r
+(c)\r
+FIG. 2: Scattering cross-section spectrum as given by Eq. (22) for the lossy case with γ0 = γ.\r
+corresponds to a very weak background scattering, in this case the only contribution to the\r
+scattering process is from the resonance. An example of a very weak background scattering\r
+is that for the H-polarization as we consider here, when the radius of a metallic cylinder is far\r
+smaller than the wavelength. In this case, the presence of a surface-plasmon resonance would\r
+create a Lorenztian line shape in the scattering cross-section spectrum, and dramatically\r
+increase the scattering cross-section.\r
+For all cases where φ is not equal to 0 or π, the spectrum is not a Lorentizian, but rather\r
+exhibits a Fano asymmetric line shape, which exhibits both enhancement and suppression\r
+of scattering coefficients in the vicinity of the resonance. For example, Fig. 1(b) shows the\r
+scattering cross-section spectrum for φ = π/2. We note that in the Fano line shape, neither\r
+the minimum nor the maximum in scattering cross-section occurs at the resonant frequency\r
+ω0. Through Eq. (23a), we can determine that the minimum and maximum occur at the\r
+frequency ω0 ± γ tan(φ/2) and ω0 ∓ γ cot(φ/2) respectively, where the ± sign corresponds\r
+to 0 < φ < π or −π < φ < 0. Therefore, in order to switch the scattering cross-section from\r
+the minimum to the maximum, the smallest frequency required is 2γ which is for the case\r
+φ = ±π/2. This result is in fact consistent with a previous study on optical switching using\r
+Fano resonances [20].\r
+When φ = π, the background exhibits maximum scattering, and the presence of the\r
+resonance creates a dip at ω0 — no scattering occurs at the resonance frequency [Fig. 1(c)].\r
+8
+
+This effect is closely related to the all-optical analogue of EIT, which occurs when a super\u0002radiant state has the same resonant frequency as a sub-radiant state in the same scattering\r
+channel. The super-radiant state by itself establishes a broad scattering peak and thus can\r
+be regarded as establishing a background in the vicinity of the sub-radiant resonance. The\r
+presence of the sub-radiant state introduces a dip and renders the system transparent (i.e.\r
+with zero scattering) at the resonant frequency. A better treatment of EIT effect however\r
+requires one to treat the super-radiant and the sub-radiant state at an equal footing [21]\r
+and will be done in later works.\r
+To show the effect of the intrinsic loss, Fig. 2 shows the scattering cross-section spectra\r
+when γ0 = γ. Comparing it to Fig. 1, one can see that the line shapes are similar to the\r
+corresponding lossless cases, but the presence of the loss reduces the cross-section variation as\r
+a function of frequency. In particular, the scattering cross section can no longer reach 2λ/π,\r
+which is the maximal contributions possible in a single channel. Neither can the scattering\r
+cross-section reaches zero. In the presence of loss it is no longer possible to completely\r
+eliminate scattering effect at a single frequency through the use of a Fano interference with\r
+a single resonance.\r
+We now consider the absorption cross-section spectrum described by Eq. (23b). In con\u0002trast to the scattering cross-section spectrum, which varies with the background phase fac\u0002tor, the absorption cross-section is independent of the phase factor. Instead, it always has a\r
+symmetric Lorentzian line shape with its maximum at the resonant frequency. Thus, Fano\r
+interference effect does not affect the absorption properties of the obstacle.\r
+III. NUMERICAL VALIDATION\r
+To check the validity of the above theory, we compare Eq. (23) to the results of numerical\r
+simulations based on the Lorentz-Mie method of a cylindrical scatterer. Figure 3 shows\r
+the schematic of the scatterer, which consists of multiple concentric layers of metal and\r
+dielectric. The permittivity of dielectric is εd = 12.96, and the metal is described by a\r
+Drude model εm = 1−ω\r
+2\r
+p\r
+/(ω\r
+2 + iγdω) (ωp and γd are the plasma frequency and the damping\r
+rate, respectively). In the frequency range of ω < ωp, a corresponding planar structure can\r
+support surface-plasmon waveguide modes that are confined in the dielectric region. For\r
+the cylindrical structure, whispering gallery modes related to such waveguide modes can be\r
+9
+
+ρ3\r
+ρ2\r
+ρ1\r
+FIG. 3: Schematic of a metal-dielectric-metal cylinder obstacle. The dark gray area is a metal\r
+described by a Drude model. The light gray area is dielectric (ǫd = 12.96). The surrounding media\r
+is assumed as air.\r
+formed in the low angular momentum channels [22].\r
+We start with the lossless case where γd = 0. For the geometry parameters of ρ1 =\r
+0.285λp, ρ2 = λp, and ρ3 = 1.5λp (where λp = 2πc/ωp, with c being the speed of light in\r
+vacuum), the scattering cross-section for the l = 0 channel is plotted as circles in Fig. 4(a).\r
+It shows a typical Fano resonant line shape around 0.155ωp.\r
+To compare to the analytic results, we determine the parameters required in Eq. (23)\r
+in the following way: We express the H field in each layer as a linear superposition of\r
+J0(kρ) and H\r
+(1)\r
+0\r
+(kρ), except in the innermost layer where the field is proportional to only\r
+J0, and outermost layer where the field is proportional to only H\r
+(1)\r
+0\r
+. By matching the\r
+boundary condition at all metal-dielectric interfaces, we obtain a transcendental equation\r
+with frequency as a variable. By solving for the complex roots of the transcendental equation,\r
+we determine the resonance frequency (the real part of the root) and the leakage rate (the\r
+imaginary part of the root). For the structure in shown here, in the lossless case, we obtain\r
+ω0 = 0.1552ωp, γ = 1.9166 × 10−5ωp. The phase factor φ = −0.4882π is established by\r
+calculating the scattering coefficient of a uniform metallic cylinder with the same size. Using\r
+these parameters, the scattering cross-section calculated by Eq. (23a) shows an excellent\r
+agreement with the numerical result [Fig. 4(a)] .\r
+We now introduce a metal loss characterized by γd = 0.001ωp. Repeating the same\r
+process as outlined above for the lossless case, we determine a resonant frequency ω0 =\r
+0.1552ωp and a total loss rate γ + γ0 = 1.0492 × 10−4ωp. Assuming that the leakage rate\r
+is the same as the lossless case, i.e. γ = 1.9166 × 10−5ωp, we have the intrinsic loss rate\r
+10
+
+0.153 0.154 0.155 0.156 0.157\r
+0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1\r
+ω/ωp\r
+Scattering cross−section (2λ/π)\r
+Numerical method\r
+Coupled−mode theory\r
+0.153 0.154 0.155 0.156 0.157\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ωp\r
+Scattering cross−section (2λ/π)\r
+0.153 0.154 0.155 0.156 0.157\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ωp\r
+Extinction cross−section (2λ/π)\r
+0.153 0.154 0.155 0.156 0.157\r
+0\r
+0.05\r
+0.1\r
+0.15\r
+0.2\r
+ω/ωp\r
+Absorption cross−section (2λ/π)\r
+(a) (b)\r
+(c) (d)\r
+FIG. 4: Cross-section of the l = 0 channel for the scatterer shown in Fig. 3, where the geometric\r
+parameters are ρ1 = 0.285λp, ρ2 = λp, and ρ3 = 1.5λp (λp is the wavelength in the vacuum at the\r
+plasma frequency ωp). (a) Scattering cross-section for the lossless metal case of γd = 0; (b-d) the\r
+scattering, extinction, and absorption cross-section spectra for the lossy metal case of γd = 0.001ωp.\r
+γ0 = 8.5749×10−5ωp. The background phase shift φ is determined using the same procedure\r
+by considering the scattering of a corresponding uniform metallic cylinder, which results in\r
+φ = −0.4882π+8.6×10−4i. Comparing with the lossless case, we notice that the background\r
+phase shift is not significantly affected by introducing loss in the system. Thus, in the theory\r
+for the lossy case, we will choose as a parameter the background phase shift φ = −0.4882π,\r
+and ignore the small loss that occurs in the background. Using these parameters, the\r
+theoretical spectra again agree well with the numerical spectra [Figs. 4(b-d)]. The example\r
+here thus provides a validation of the theory in the single channel case.\r
+11
+
+(a)\r
+0.22 0.225 0.23\r
+0\r
+0.1\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ω\r
+p\r
+Cabs (2\r
+λ/π)\r
+(b)\r
+FIG. 5: Scattering (a) and absorption (b) cross-section spectra for the scatterer shown in Fig. 3,\r
+with the geometric parameters of ρ1 = 0.36λp, ρ2 = 0.73λp and ρ3 = λp, and the metal damping\r
+rate of γd = 0.001ωp. The circles are from the Lorentz-Mie method, and the solid lines are the\r
+theoretical fit using Eq. (22).\r
+IV. MULTIPLE-CHANNEL RESONANT OBSTACLE\r
+The theory developed in Section II can be straightforwardly generalized to include res\u0002onances in multiple channels (where the resonance in each channel can only be excited by\r
+the same channel incoming wave and coupled to the same channel outgoing wave), since the\r
+total cross-section is the sum of the contributions from all channels. As an example, here\r
+we apply our theory to a metal-dielectric-metal cylinder scatterer where all channels that\r
+strongly contribute to the scattering process exhibit the Fano effect.\r
+12
+
+We again consider the structure is shown in Fig. 3, with a new set of parameters ρ1 =\r
+0.36λp, ρ2 = 0.73λp and ρ3 = λp. The metal has a damping rate γd = 0.001ωp. The circles\r
+in Figs. 5(a), and (b) correspond to the scattering and absorption cross-section spectra,\r
+respectively, as obtained from numerical simulations. In the frequency range of 0.22 ∼\r
+0.233ωp, the total cross-section of the system is dominated by the contributions from five\r
+channels of l = 0, ±1, ±2. For each channel, the scattering cross-section spectrum and the\r
+absorption cross-section spectrum show the Fano and Lorentizian line shape, respectively.\r
+We use the above theory to fit these curves. The fitting results are plotted as the solid lines\r
+in Fig. 5, which again indicates good agreement between theory and simulation.\r
+We note that this obstacle can be potentially used as a cloaked sensor [23]— when the\r
+obstacle is placed in an electromagnetic field, it absorbs the energy but creating only mini\u0002mum scattering within a narrow range of frequencies. From Fig. 5, one can see that at the\r
+frequency ω = 0.2282ωp, the total scattering cross-section of the obstacle is only 0.03(2λ/π),\r
+while the total absorption cross-section is 0.32(2λ/π). In the presence of loss, the scattering\r
+of the particle cannot be completely eliminated in this case, as can be seen from Eq. (21).\r
+Nevertheless, the scattering can be substantially reduced as we show here. The Fano in\u0002terference effect thus provides an interesting alternative mechanism for creating a cloaked\r
+sensor as compared to Ref. [23].\r
+V. SUMMARY AND OUTLOOK\r
+In summary, we present a theory for Fano interference in light scattering by individ\u0002ual obstacle, based on a temporal coupled-mode formalism. We show that for each angle\r
+momentum channel, the Fano interference effect can be modeled by a simple temporal\r
+coupled-mode equation, which provides a line shape formula for scattering and absorption\r
+cross-section. We validate the analysis with numerical simulations. As an application, we\r
+design a structure that exhibits strong absorption and at the same time weak scattering\r
+properties.\r
+We note that this theory is applicable for obstacles that are much smaller than the in\u0002cident wavelength, or systems that have two-dimensional cylindrical or three-dimensional\r
+spherical symmetry. For arbitrary-shaped obstacles or assembled clusters, the overall scat\u0002tering matrix of the system is no longer diagonalizable in the angular momentum basis.\r
+13
+
+Instead, for a theory of Fano interference, one may define the channel as the eigenstates of\r
+the background scattering matrix, the resonance in this case is likely then to couple to several\r
+scattering channels simultaneously. Such a theory will be developed in future research.\r
+This work is supported by DARPA/MARCO under the Interconnect Focus Center, by\r
+AFOSR Grant No. FA9550-04-1-0437, and by the DOE Grant No. DE-FG 07ER46426.\r
+[1] C. Bohren and D. Huffman, Absorption and Scattering of Light by Small Particles (John\r
+Wiley & Sons Inc, 1983).\r
+[2] U. Fano, Physical Review 124, 1866 (1961).\r
+[3] M. I. Tribelsky, S. Flach, A. E. Miroshnichenko, A. V. Gorbach, and Y. S. Kivshar, Physical\r
+Review Letters 100, 043903 (2008).\r
+[4] V. A. Fedotov, M. Rose, S. L. Prosvirnin, N. Papasimakis, and N. I. Zheludev, Physical Review\r
+Letters 99, 147401 (2007).\r
+[5] B. S. Luk’yanchuk, M. I. Tribelsky, V. Ternovsky, Z. B. Wang, M. H. Hong, L. P. Shi, and\r
+T. C. Chong, Journal of Optics A: Pure and Applied Optics 9, S294 (2007).\r
+[6] A. Christ, O. J. F. Martin, Y. Ekinci, N. A. Gippius, and S. G. Tikhodeev, Nano Letters 8,\r
+2171 (2008).\r
+[7] N. Liu, S. Kaiser, and H. Giessen, Advanced Materials 20, 4521 (2008).\r
+[8] F. Hao, Y. Sonnefraud, P. Van Dorpe, S. A. Maier, N. J. Halas, and P. Nordlander, Nano Lett\r
+8, 3983 (2008).\r
+[9] S. E. Harris, Physics Today 50, 36 (1997).\r
+[10] S. Zhang, D. A. Genov, Y. Wang, M. Liu, and X. Zhang, Physical Review Letters 101, 047401\r
+(2008).\r
+[11] P. Tassin, L. Zhang, T. Koschny, E. N. Economou, and C. M. Soukoulis, Physical Review\r
+Letters 102, 053901 (2009).\r
+[12] V. Yannopapas, E. Paspalakis, and N. V. Vitanov, Physical Review B 80, 035104 (2009).\r
+[13] P. Tassin, L. Zhang, T. Koschny, E. N. Economou, and C. M. Soukoulis, Optics Express 17,\r
+5595 (2009).\r
+[14] N. Papasimakis, V. Fedotov, N. Zheludev, and S. Prosvirnin, Physical Review Letters 101,\r
+253903 (2008).\r
+14
+
+[15] N. Papasimakis, Y. H. Fu, V. A. Fedotov, S. L. Prosvirnin, D. P. Tsai, and N. I. Zheludev,\r
+Applied Physics Letters 94, 211902 (2009).\r
+[16] N. Liu, L. Langguth, T. Weiss, J. K¨astel, M. Fleischhauer, T. Pfau, and H. Giessen, Nature\r
+Materials 8, 758 (2009).\r
+[17] S. Fan, W. Suh, and J. D. Joannopoulos, Journal of the Optical Society of America A 20, 569\r
+(2003).\r
+[18] R. E. Hamam, A. Karalis, J. D. Joannopoulos, and M. Soljaˇci´c, Physical Review A 75, 53801\r
+(2007).\r
+[19] H. Haus, Waves and fields in optoelectronics. (Prentice-Hall, 1984).\r
+[20] S. Fan, Applied Physics Letters 80, 908 (2002).\r
+[21] W. Suh, Z. Wang, and S. Fan, IEEE Journal of Quantum Electronics 40, 1511 (2004).\r
+[22] P. B. Catrysse and S. Fan, Applied Physics Letters 94, 231111 (2009).\r
+[23] A. Al`u and N. Engheta, Physical Review Letters 102, 233901 (2009).\r
+15"""
+
+[metadata]
+title = "ruan fan 2009 tcmt fano arxiv 0909.3323"
+authors = ["Unknown"]
+arxiv = "0909.3323"
+year = 2009
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:0909.3323v2 [physics.optics] 24 Nov 2009\r
+Temporal coupled-mode theory for Fano resonance in light\r
+scattering by a single obstacle\r
+Zhichao Ruan and Shanhui Fan\r
+Ginzton Laboratory, Department of Electrical Engineering,\r
+Stanford University, Stanford, California 94305\r
+Abstract\r
+We present a theory for Fano interference in light scattering by individual obstacle, based on a\r
+temporal coupled-mode formalism. This theory is applicable for obstacles that are much smaller\r
+than the incident wavelength, or for systems with two-dimensional cylindrical or three-dimensional\r
+spherical symmetry. We show that for each angle momentum channel, the Fano interference effect\r
+can be modeled by a simple temporal coupled-mode equation, which provides a line shape formula\r
+for scattering and absorption cross-section. We validate the analysis with numerical simulations.\r
+As an application of the theory, we design a structure that exhibits strong absorption and weak\r
+scattering properties at the same frequency."""
+
+[[sections]]
+number = "1"
+title = "I. INTRODUCTION"
+text = """
+Understanding light scattering by individual particles is of fundamental importance [1].\r
+In recent year, Fano interference effect [2] in such light scattering has attracted significant\r
+attention. Individual particles can support resonances. In the vicinity of such resonance,\r
+the spectrum of either scattering cross-section, or extinction cross-section, can exhibit Fano\r
+line shape, where the spectrum varies asymmetrically with respect to resonant frequency\r
+[3, 4, 5, 6, 7, 8]. Such Fano interference effects are also closely related to the classical\r
+analogue to electromagnetically induced transparency (EIT) [9], which have recently been\r
+proposed and demonstrated in scattering systems consisting of metallic elements [10, 11,\r
+12, 13, 14, 15, 16]. Although the Fano effect in particle scattering has been demonstrated\r
+in different systems, given the ubiquitous nature of such effect, it would be very useful to\r
+present a broader theory that captures some of general aspects.\r
+In this paper, we generalize the temporal coupled-mode theory— previously developed\r
+to account for Fano interference effect in waveguide or grating systems [17]— to treat light\r
+scattering by individual resonant obstacle. In the theory of [17], the Fano line shape appears\r
+in the transmission spectrum of the system. For individual obstacle, transmission spectrum\r
+is no longer well defined. Instead, the theory here aims to calculate the scattering cross\u0002section of the obstacle. Also related to this work, the temporal coupled mode theory has\r
+recently been generalized to treat small particle scattering in Ref. [18]. The work of Ref. [18]\r
+however, did not include Fano interference effect.\r
+The paper is organized as follows: In Section 2, we show that for each angle momentum\r
+channel, the Fano interference effect can be modeled by a simple temporal coupled-mode\r
+equation, which provides a line shape formula for scattering and absorption cross-section.\r
+In Section 3, we compare the theoretical predictions to numerical simulations. Finally,\r
+in Section 4, as an application of the theory, we design a structure that exhibits strong\r
+absorption and weak scattering properties at the same frequency."""
+
+[[sections]]
+number = "2"
+title = "II. THEORY"
+text = """
+A. Brief review of standard scattering theory\r
+We start by briefly reviewing the standard scattering theory for a single obstacle. For\r
+simplicity, this paper only discusses the two-dimensional (2D) case where the obstacle is\r
+uniform in the z direction, but the concept is straightforwardly generalizable to the three\u0002dimensional cases. Consider an obstacle located at the origin, surrounding by air. When\r
+a TM wave (with its magnetic field H polarized along the z-direction) impinges on the\r
+obstacle, the total field in the air region outside the scatterer can be written as:\r
+Htotal =\r
+X∞\r
+l=−∞\r
+H0\r
+\u0010\r
+h\r
++\r
+l H\r
+(2)\r
+l\r
+(kρ) exp(ilθ) + h\r
+−\r
+l H\r
+(1)\r
+l\r
+(kρ) exp(ilθ)\r
+\u0011\r
+(1)\r
+where H0 is a normalization constant, (ρ, θ) is the polar coordinates oriented at the origin, k\r
+is the wave number in air, and H\r
+(1)\r
+l\r
+(H\r
+(2)\r
+l\r
+) is the l-th order Hankel function of the first (sec\u0002ond) kind. Since H\r
+(1,2)\r
+l\r
+(kρ) →\r
+q\r
+2\r
+πk e\r
+i(\r
+lπ\r
+2 + π4\r
+) e\r
+(+,−)ikρ\r
+√ρ\r
+when ρ → ∞, and taking the convention\r
+that the field varies in time as exp(−iωt), one can identify h\r
++\r
+l\r
+and h\r
+−\r
+l\r
+as the incoming and\r
+outgoing wave amplitudes. The power carried in such incoming (or outgoing) wave is\r
+P\r
+±\r
+l =\r
+2\r
+ωε0\r
+|H0|\r
+2\r
+\f\r
+\fh\r
+±\r
+l\r
+\f\r
+\f\r
+2\r
+(2)\r
+(Notice that the power in two-dimension has the unit of W/m.) By choosing the magnetic\r
+field normalization\r
+H0 = 1r\r
+W\r
+m\r
+ωε0\r
+2\r
+(3)\r
+we have then\r
+\f\r
+\fh\r
++\r
+l\r
+\f\r
+\f\r
+2\r
+and\r
+\f\r
+\fh\r
+−\r
+l\r
+\f\r
+\f\r
+2\r
+representing the incoming and outgoing power carried by\r
+waves in the l-th angular momentum channel, measured in the unit of W/m.\r
+In the cases where the scatterer is much smaller than the incident wavelength, or the\r
+system has cylindrical symmetry, the l-th order incoming wave only excites the same order\r
+outgoing wave. So we define Rl as\r
+Rl ≡\r
+h\r
+−\r
+l\r
+h\r
++\r
+l\r
+, (4)\r
+which can be thought of as a “reflection coefficient” since it relates the outgoing wave to\r
+the incoming wave in each channel. Moreover, if the obstacle is lossless, the power carried\r
+by the outgoing wave must be equal to that of the incoming wave. Consequently,\r
+Rl = e\r
+iφl\r
+(5)\r
+3
+
+where φl\r
+is a real phase factor.\r
+We will now calculate the scattering, absorption, and extinction cross-sections of an\r
+obstacle. For this purpose, imagining a plane wave incident upon the obstacle, the scattering\r
+(absorption) cross-section is then defined as the total power scattered (absorbed), divided\r
+by the intensity of the incident field. For 2D system the cross-section has the unit of length.\r
+Mathematically, for this scenario, we write the total field in the air region outside the\r
+scatterer as\r
+Htotal = H0\r
+ \r
+exp(ik · r) + X∞\r
+l=−∞\r
+i\r
+lSlH\r
+(1)\r
+l\r
+(kρ) exp(ilθ)\r
+!\r
+, (6)\r
+where k is the wave vector of the incident plane wave, Slis related to the scattered field and\r
+referred to as the scattering coefficient. To connect to Eq. (1), the plane wave is expanded\r
+as\r
+exp(ik · r) = X∞\r
+l=−∞\r
+i\r
+l\r
+1\r
+2\r
+\u0010\r
+H\r
+(1)\r
+l\r
+(kρ) + H\r
+(2)\r
+l\r
+(kρ)\r
+\u0011\r
+exp(ilθ). (7)\r
+Combining Eqs. (6) and (7), and comparing to Eq. (1), we have\r
+Sl =\r
+Rl − 1\r
+2\r
+. (8)\r
+Furthermore, in the l-th channel, the scattered power Psct and the absorbed power Pabs are\r
+Psct =\r
+2\r
+ωε0\r
+|Sl|\r
+2\r
+|H0|"""
+
+[[sections]]
+number = "2"
+title = "Pabs ="
+text = """
+1\r
+ωε0\r
+\r
+1 − |Rl|\r
+2\r
+\u0001\r
+|H0|\r
+2 =\r
+2\r
+ωε0\r
+\r
+−Re{Sl} − |Sl|\r
+2\r
+\u0001\r
+|H0|\r
+2\r
+(9)\r
+Following the definition of the scattering cross-section, the contribution to the total scatter\u0002ing cross-section from the l-th channel is\r
+Csct,l ≡\r
+Psct\r
+I0\r
+=\r
+2\r
+ωε0\r
+|Sl|\r
+2\r
+|H0|\r
+2\r
+1\r
+2\r
+qµ0\r
+ε0\r
+|H0|\r
+2\r
+=\r
+2λ\r
+π\r
+|Sl|\r
+2\r
+, (10)\r
+and the total scattering cross-section is\r
+Csct =\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+|Sl|\r
+2\r
+, (11)\r
+where λ is the wavelength in air. In the same way, we have the total absorption cross-section\r
+as\r
+Cabs = −\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+(Re{Sl} + |Sl|\r
+2\r
+) (12)\r
+4
+
+Finally, the total extinction cross-section, as the sum of the the scattering cross-section and\r
+the absorption cross-section, is\r
+Cext = −\r
+2λ\r
+π\r
+X∞\r
+l=−∞\r
+Re{Sl} (13)\r
+B. Coupled mode theory for light scattering\r
+The goal of our theory is then to provide a general view about these cross-sections. In\r
+the following we consider the case that the obstacle supports resonance for the l-th channel.\r
+In this circumstance, Fano effect is the result of interference of two pathways: the direct\r
+“reflectance” of the incoming wave that forms the background, and the outgoing radiation\r
+from the excited resonance. Using the temporal coupled-mode theory formalism [17, 18, 19],\r
+the dynamic equation for the amplitude c of the resonance is\r
+dc\r
+dt = (−iω0 − γ0 − γ) c + κh+\r
+h\r
+− = Bh+ + ηc\r
+(14)\r
+where ω0 is the resonant frequency, γ0 is the intrinsic loss rate due to for example material\r
+absorption, γ is the external leakage rate due to the coupling of the resonance to the outgoing\r
+wave, B is the background reflection coefficient, and κ and η correspond to the coupling\r
+constant between the resonance, and the incoming or outgoing wave, respectively. In this\r
+section, as we consider only the l-th channel, for notation simplicity we suppress the subscript\r
+l in all variables in Eq. (14). Here the amplitude c is normalized such that |c|\r
+2\r
+corresponds\r
+to the energy inside the resonator [19]. Note that such coupled-mode formalism is, strictly\r
+speaking, valid only when γ0 + γ ≪ ω0 [19].\r
+The coupling constants κ and η are related to each other by energy conservation and\r
+time-reversal symmetry considerations [17]. In the lossless case (i.e. γ0 = 0), if the incoming\r
+wave is absent (i.e. h\r
++ = 0), from Eq. (14) we have\r
+c = A exp(−iω0t − γt)\r
+h\r
+− = Aη exp(−iω0t − γt)\r
+(15)\r
+where A is an arbitrary constant. According to energy conservation, the energy leakage rate\r
+must be equal to the power of the outgoing wave, i.e.\r
+d|c|\r
+2\r
+dt\r
+= −2γ|c|\r
+2 = −\r
+\f\r
+\fh\r
+−\r
+\f\r
+\f\r
+2\r
+= −ηη∗|c|\r
+2\r
+(16)\r
+5
+
+which requires that\r
+ηη∗ = 2γ (17)\r
+Now let us perform a time-reversal transformation for the exponential decay process as\r
+described by Eq. (15). The time-reversed case is represented by feeding the resonator with\r
+exponentially growing wave amplitude (h\r
+−(−t))∗\r
+. Such excitation results in a resonant\r
+amplitude (c(−t))∗that also grows exponentially, without the outgoing wave. Described\r
+this time-reversed scenario using Eq. (14), we have\r
+κη∗ = 2γ (18a)\r
+Bη∗ + η = 0 (18b)\r
+Comparing Eq. (18a) to (17), we obtain\r
+κ = η (19)\r
+Eqs. (17)-(19) are the main results of the Fano interference theory. If the system is\r
+lossless, the background reflection is B = e\r
+iφ and therefore we can determine κ and η as\r
+κ = η =\r
+p\r
+2γei(\r
+φ\r
+2 + π2 −nπ)\r
+(20)\r
+where n is an arbitrary integer. For lossy systems, one should expect that the strongest\r
+contribution of the loss is to the resonant properties. In such a case, as an ansatz, we\r
+will introduce a non-zero intrinsic loss rate γ0 in Eq. (14), while still approximating the\r
+background scattering as a lossless process. We will see below in the numerical example\r
+that such an approach is in fact sufficient for scattering from lossy plasmonic particles. A\r
+more rigorous approach, which we will not pursue here, will be to treat explicitly the loss\r
+as coupling to an additional decay channel, the combined system with the additional decay\r
+channel can then be treated using theory that is similar to Eq. (14) but without the need\r
+of introducing the intrinsic loss rate.\r
+We now suppose that the incident wave has a frequency ω. The reflection coefficient R\r
+can be straightforwardly obtained using Eqs. (14) and (20):\r
+R =\r
+h\r
+−\r
+h+ = e\r
+iφ +\r
+−2γeiφ\r
+i(ω0−ω)+γ0+γ\r
+=\r
+i(ω0−ω)+γ0−γ\r
+i(ω0−ω)+γ0+γ\r
+e\r
+iφ\r
+(21)\r
+6
+
+One can easily identify that in the lossless case (i.e. γ0 = 0), the amplitude of R is unity as\r
+expected. Following Eq. (8), the scattering coefficient is\r
+S =\r
+1\r
+2\r
+(R − 1)\r
+=\r
+1\r
+2\r
+(i(ω0−ω)+γ0)(e\r
+iφ−1)−γ(1+eiφ)\r
+i(ω0−ω)+γ0+γ\r
+(22)\r
+Substituting Eqs. (22) into (11) and (12), we have the scattering and the absorption cross\u0002sections as\r
+Csct =\r
+2λ\r
+π\r
+\f\r
+\f\r
+\f\r
+\f\r
+1\r
+2\r
+(i(ω0 − ω) + γ0)(e\r
+iφ − 1) − γ(1 + eiφ)\r
+i(ω0 − ω) + γ0 + γ\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(23a)\r
+Cabs =\r
+2λ\r
+π\r
+γ0γ\r
+(ω − ω0)\r
+2 + (γ0 + γ)2\r
+(23b)\r
+C. General line shapes in a single channel\r
+We now use Eq. (23) to illustrate general line shapes of scattering and absorption cross\u0002section spectra in a single channel. Let us first discuss the scattering cross-section. In the\r
+lossless case where γ0 = 0, Fig. 1 plots the scattering cross-section spectra with different\r
+phase factor φ as arised from the background “reflection”.\r
+0\r
+0.5\r
+1\r
+0\r
+0.5"""
+
+[[sections]]
+number = "1"
+title = "Csct (2"
+text = """
+λ/π)\r
+−10 −5 0 5 10\r
+0\r
+0.5\r
+1\r
+(ω − ω0)/γ\r
+φ=π\r
+φ=π/2\r
+φ=0\r
+(a)\r
+(b)\r
+(c)\r
+FIG. 1: Scattering cross-section spectrum as given by Eq. (22) for the lossless case (γ0 = 0). (a-c)\r
+correspond to φ = 0, π/2, π, respectively.\r
+For the phase factor φ = 0, the spectrum is a Lorentizian function [Fig. 1(a)]. Note\r
+that the resonance creates maximal scattering at the resonant frequency ω0. Since φ = 0\r
+7
+
+0\r
+0.5\r
+1\r
+0\r
+0.5"""
+
+[[sections]]
+number = "1"
+title = "Csct (2"
+text = """
+λ/π)\r
+−10 −5 0 5 10\r
+0\r
+0.5\r
+1\r
+(ω − ω0)/γ\r
+φ=π\r
+φ=π/2\r
+φ=0\r
+(a)\r
+(b)\r
+(c)\r
+FIG. 2: Scattering cross-section spectrum as given by Eq. (22) for the lossy case with γ0 = γ.\r
+corresponds to a very weak background scattering, in this case the only contribution to the\r
+scattering process is from the resonance. An example of a very weak background scattering\r
+is that for the H-polarization as we consider here, when the radius of a metallic cylinder is far\r
+smaller than the wavelength. In this case, the presence of a surface-plasmon resonance would\r
+create a Lorenztian line shape in the scattering cross-section spectrum, and dramatically\r
+increase the scattering cross-section.\r
+For all cases where φ is not equal to 0 or π, the spectrum is not a Lorentizian, but rather\r
+exhibits a Fano asymmetric line shape, which exhibits both enhancement and suppression\r
+of scattering coefficients in the vicinity of the resonance. For example, Fig. 1(b) shows the\r
+scattering cross-section spectrum for φ = π/2. We note that in the Fano line shape, neither\r
+the minimum nor the maximum in scattering cross-section occurs at the resonant frequency\r
+ω0. Through Eq. (23a), we can determine that the minimum and maximum occur at the\r
+frequency ω0 ± γ tan(φ/2) and ω0 ∓ γ cot(φ/2) respectively, where the ± sign corresponds\r
+to 0 < φ < π or −π < φ < 0. Therefore, in order to switch the scattering cross-section from\r
+the minimum to the maximum, the smallest frequency required is 2γ which is for the case\r
+φ = ±π/2. This result is in fact consistent with a previous study on optical switching using\r
+Fano resonances [20].\r
+When φ = π, the background exhibits maximum scattering, and the presence of the\r
+resonance creates a dip at ω0 — no scattering occurs at the resonance frequency [Fig. 1(c)].\r
+8
+
+This effect is closely related to the all-optical analogue of EIT, which occurs when a super\u0002radiant state has the same resonant frequency as a sub-radiant state in the same scattering\r
+channel. The super-radiant state by itself establishes a broad scattering peak and thus can\r
+be regarded as establishing a background in the vicinity of the sub-radiant resonance. The\r
+presence of the sub-radiant state introduces a dip and renders the system transparent (i.e.\r
+with zero scattering) at the resonant frequency. A better treatment of EIT effect however\r
+requires one to treat the super-radiant and the sub-radiant state at an equal footing [21]\r
+and will be done in later works.\r
+To show the effect of the intrinsic loss, Fig. 2 shows the scattering cross-section spectra\r
+when γ0 = γ. Comparing it to Fig. 1, one can see that the line shapes are similar to the\r
+corresponding lossless cases, but the presence of the loss reduces the cross-section variation as\r
+a function of frequency. In particular, the scattering cross section can no longer reach 2λ/π,\r
+which is the maximal contributions possible in a single channel. Neither can the scattering\r
+cross-section reaches zero. In the presence of loss it is no longer possible to completely\r
+eliminate scattering effect at a single frequency through the use of a Fano interference with\r
+a single resonance.\r
+We now consider the absorption cross-section spectrum described by Eq. (23b). In con\u0002trast to the scattering cross-section spectrum, which varies with the background phase fac\u0002tor, the absorption cross-section is independent of the phase factor. Instead, it always has a\r
+symmetric Lorentzian line shape with its maximum at the resonant frequency. Thus, Fano\r
+interference effect does not affect the absorption properties of the obstacle.\r
+III. NUMERICAL VALIDATION\r
+To check the validity of the above theory, we compare Eq. (23) to the results of numerical\r
+simulations based on the Lorentz-Mie method of a cylindrical scatterer. Figure 3 shows\r
+the schematic of the scatterer, which consists of multiple concentric layers of metal and\r
+dielectric. The permittivity of dielectric is εd = 12.96, and the metal is described by a\r
+Drude model εm = 1−ω\r
+2\r
+p\r
+/(ω\r
+2 + iγdω) (ωp and γd are the plasma frequency and the damping\r
+rate, respectively). In the frequency range of ω < ωp, a corresponding planar structure can\r
+support surface-plasmon waveguide modes that are confined in the dielectric region. For\r
+the cylindrical structure, whispering gallery modes related to such waveguide modes can be\r
+9
+
+ρ3\r
+ρ2\r
+ρ1\r
+FIG. 3: Schematic of a metal-dielectric-metal cylinder obstacle. The dark gray area is a metal\r
+described by a Drude model. The light gray area is dielectric (ǫd = 12.96). The surrounding media\r
+is assumed as air.\r
+formed in the low angular momentum channels [22].\r
+We start with the lossless case where γd = 0. For the geometry parameters of ρ1 =\r
+0.285λp, ρ2 = λp, and ρ3 = 1.5λp (where λp = 2πc/ωp, with c being the speed of light in\r
+vacuum), the scattering cross-section for the l = 0 channel is plotted as circles in Fig. 4(a).\r
+It shows a typical Fano resonant line shape around 0.155ωp.\r
+To compare to the analytic results, we determine the parameters required in Eq. (23)\r
+in the following way: We express the H field in each layer as a linear superposition of\r
+J0(kρ) and H\r
+(1)\r
+0\r
+(kρ), except in the innermost layer where the field is proportional to only\r
+J0, and outermost layer where the field is proportional to only H\r
+(1)"""
+
+[[sections]]
+number = "0"
+title = "By matching the"
+text = """
+boundary condition at all metal-dielectric interfaces, we obtain a transcendental equation\r
+with frequency as a variable. By solving for the complex roots of the transcendental equation,\r
+we determine the resonance frequency (the real part of the root) and the leakage rate (the\r
+imaginary part of the root). For the structure in shown here, in the lossless case, we obtain\r
+ω0 = 0.1552ωp, γ = 1.9166 × 10−5ωp. The phase factor φ = −0.4882π is established by\r
+calculating the scattering coefficient of a uniform metallic cylinder with the same size. Using\r
+these parameters, the scattering cross-section calculated by Eq. (23a) shows an excellent\r
+agreement with the numerical result [Fig. 4(a)] .\r
+We now introduce a metal loss characterized by γd = 0.001ωp. Repeating the same\r
+process as outlined above for the lossless case, we determine a resonant frequency ω0 =\r
+0.1552ωp and a total loss rate γ + γ0 = 1.0492 × 10−4ωp. Assuming that the leakage rate\r
+is the same as the lossless case, i.e. γ = 1.9166 × 10−5ωp, we have the intrinsic loss rate\r
+10
+
+0.153 0.154 0.155 0.156 0.157\r
+0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1\r
+ω/ωp\r
+Scattering cross−section (2λ/π)\r
+Numerical method\r
+Coupled−mode theory\r
+0.153 0.154 0.155 0.156 0.157\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ωp\r
+Scattering cross−section (2λ/π)\r
+0.153 0.154 0.155 0.156 0.157\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ωp\r
+Extinction cross−section (2λ/π)\r
+0.153 0.154 0.155 0.156 0.157\r
+0\r
+0.05\r
+0.1\r
+0.15\r
+0.2\r
+ω/ωp\r
+Absorption cross−section (2λ/π)\r
+(a) (b)\r
+(c) (d)\r
+FIG. 4: Cross-section of the l = 0 channel for the scatterer shown in Fig. 3, where the geometric\r
+parameters are ρ1 = 0.285λp, ρ2 = λp, and ρ3 = 1.5λp (λp is the wavelength in the vacuum at the\r
+plasma frequency ωp). (a) Scattering cross-section for the lossless metal case of γd = 0; (b-d) the\r
+scattering, extinction, and absorption cross-section spectra for the lossy metal case of γd = 0.001ωp.\r
+γ0 = 8.5749×10−5ωp. The background phase shift φ is determined using the same procedure\r
+by considering the scattering of a corresponding uniform metallic cylinder, which results in\r
+φ = −0.4882π+8.6×10−4i. Comparing with the lossless case, we notice that the background\r
+phase shift is not significantly affected by introducing loss in the system. Thus, in the theory\r
+for the lossy case, we will choose as a parameter the background phase shift φ = −0.4882π,\r
+and ignore the small loss that occurs in the background. Using these parameters, the\r
+theoretical spectra again agree well with the numerical spectra [Figs. 4(b-d)]. The example\r
+here thus provides a validation of the theory in the single channel case.\r
+11
+
+(a)\r
+0.22 0.225 0.23\r
+0\r
+0.1\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+ω/ω\r
+p\r
+Cabs (2\r
+λ/π)\r
+(b)\r
+FIG. 5: Scattering (a) and absorption (b) cross-section spectra for the scatterer shown in Fig. 3,\r
+with the geometric parameters of ρ1 = 0.36λp, ρ2 = 0.73λp and ρ3 = λp, and the metal damping\r
+rate of γd = 0.001ωp. The circles are from the Lorentz-Mie method, and the solid lines are the\r
+theoretical fit using Eq. (22).\r
+IV. MULTIPLE-CHANNEL RESONANT OBSTACLE\r
+The theory developed in Section II can be straightforwardly generalized to include res\u0002onances in multiple channels (where the resonance in each channel can only be excited by\r
+the same channel incoming wave and coupled to the same channel outgoing wave), since the\r
+total cross-section is the sum of the contributions from all channels. As an example, here\r
+we apply our theory to a metal-dielectric-metal cylinder scatterer where all channels that\r
+strongly contribute to the scattering process exhibit the Fano effect.\r
+12
+
+We again consider the structure is shown in Fig. 3, with a new set of parameters ρ1 =\r
+0.36λp, ρ2 = 0.73λp and ρ3 = λp. The metal has a damping rate γd = 0.001ωp. The circles\r
+in Figs. 5(a), and (b) correspond to the scattering and absorption cross-section spectra,\r
+respectively, as obtained from numerical simulations. In the frequency range of 0.22 ∼\r
+0.233ωp, the total cross-section of the system is dominated by the contributions from five\r
+channels of l = 0, ±1, ±2. For each channel, the scattering cross-section spectrum and the\r
+absorption cross-section spectrum show the Fano and Lorentizian line shape, respectively.\r
+We use the above theory to fit these curves. The fitting results are plotted as the solid lines\r
+in Fig. 5, which again indicates good agreement between theory and simulation.\r
+We note that this obstacle can be potentially used as a cloaked sensor [23]— when the\r
+obstacle is placed in an electromagnetic field, it absorbs the energy but creating only mini\u0002mum scattering within a narrow range of frequencies. From Fig. 5, one can see that at the\r
+frequency ω = 0.2282ωp, the total scattering cross-section of the obstacle is only 0.03(2λ/π),\r
+while the total absorption cross-section is 0.32(2λ/π). In the presence of loss, the scattering\r
+of the particle cannot be completely eliminated in this case, as can be seen from Eq. (21).\r
+Nevertheless, the scattering can be substantially reduced as we show here. The Fano in\u0002terference effect thus provides an interesting alternative mechanism for creating a cloaked\r
+sensor as compared to Ref. [23].\r
+V. SUMMARY AND OUTLOOK\r
+In summary, we present a theory for Fano interference in light scattering by individ\u0002ual obstacle, based on a temporal coupled-mode formalism. We show that for each angle\r
+momentum channel, the Fano interference effect can be modeled by a simple temporal\r
+coupled-mode equation, which provides a line shape formula for scattering and absorption\r
+cross-section. We validate the analysis with numerical simulations. As an application, we\r
+design a structure that exhibits strong absorption and at the same time weak scattering\r
+properties.\r
+We note that this theory is applicable for obstacles that are much smaller than the in\u0002cident wavelength, or systems that have two-dimensional cylindrical or three-dimensional\r
+spherical symmetry. For arbitrary-shaped obstacles or assembled clusters, the overall scat\u0002tering matrix of the system is no longer diagonalizable in the angular momentum basis.\r
+13
+
+Instead, for a theory of Fano interference, one may define the channel as the eigenstates of\r
+the background scattering matrix, the resonance in this case is likely then to couple to several\r
+scattering channels simultaneously. Such a theory will be developed in future research.\r
+This work is supported by DARPA/MARCO under the Interconnect Focus Center, by\r
+AFOSR Grant No. FA9550-04-1-0437, and by the DOE Grant No. DE-FG 07ER46426.\r
+[1] C. Bohren and D. Huffman, Absorption and Scattering of Light by Small Particles (John\r
+Wiley & Sons Inc, 1983).\r
+[2] U. Fano, Physical Review 124, 1866 (1961).\r
+[3] M. I. Tribelsky, S. Flach, A. E. Miroshnichenko, A. V. Gorbach, and Y. S. Kivshar, Physical\r
+Review Letters 100, 043903 (2008).\r
+[4] V. A. Fedotov, M. Rose, S. L. Prosvirnin, N. Papasimakis, and N. I. Zheludev, Physical Review\r
+Letters 99, 147401 (2007).\r
+[5] B. S. Luk’yanchuk, M. I. Tribelsky, V. Ternovsky, Z. B. Wang, M. H. Hong, L. P. Shi, and\r
+T. C. Chong, Journal of Optics A: Pure and Applied Optics 9, S294 (2007).\r
+[6] A. Christ, O. J. F. Martin, Y. Ekinci, N. A. Gippius, and S. G. Tikhodeev, Nano Letters 8,\r
+2171 (2008).\r
+[7] N. Liu, S. Kaiser, and H. Giessen, Advanced Materials 20, 4521 (2008).\r
+[8] F. Hao, Y. Sonnefraud, P. Van Dorpe, S. A. Maier, N. J. Halas, and P. Nordlander, Nano Lett\r
+8, 3983 (2008).\r
+[9] S. E. Harris, Physics Today 50, 36 (1997).\r
+[10] S. Zhang, D. A. Genov, Y. Wang, M. Liu, and X. Zhang, Physical Review Letters 101, 047401\r
+(2008).\r
+[11] P. Tassin, L. Zhang, T. Koschny, E. N. Economou, and C. M. Soukoulis, Physical Review\r
+Letters 102, 053901 (2009).\r
+[12] V. Yannopapas, E. Paspalakis, and N. V. Vitanov, Physical Review B 80, 035104 (2009).\r
+[13] P. Tassin, L. Zhang, T. Koschny, E. N. Economou, and C. M. Soukoulis, Optics Express 17,\r
+5595 (2009).\r
+[14] N. Papasimakis, V. Fedotov, N. Zheludev, and S. Prosvirnin, Physical Review Letters 101,\r
+253903 (2008).\r
+14
+
+[15] N. Papasimakis, Y. H. Fu, V. A. Fedotov, S. L. Prosvirnin, D. P. Tsai, and N. I. Zheludev,\r
+Applied Physics Letters 94, 211902 (2009).\r
+[16] N. Liu, L. Langguth, T. Weiss, J. K¨astel, M. Fleischhauer, T. Pfau, and H. Giessen, Nature\r
+Materials 8, 758 (2009).\r
+[17] S. Fan, W. Suh, and J. D. Joannopoulos, Journal of the Optical Society of America A 20, 569\r
+(2003).\r
+[18] R. E. Hamam, A. Karalis, J. D. Joannopoulos, and M. Soljaˇci´c, Physical Review A 75, 53801\r
+(2007).\r
+[19] H. Haus, Waves and fields in optoelectronics. (Prentice-Hall, 1984).\r
+[20] S. Fan, Applied Physics Letters 80, 908 (2002).\r
+[21] W. Suh, Z. Wang, and S. Fan, IEEE Journal of Quantum Electronics 40, 1511 (2004).\r
+[22] P. B. Catrysse and S. Fan, Applied Physics Letters 94, 231111 (2009).\r
+[23] A. Al`u and N. Engheta, Physical Review Letters 102, 233901 (2009).\r
+15"""
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 3
+image_path = "images/image_p3_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 3
+image_path = "images/image_p3_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 3
+image_path = "images/image_p3_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 3
+image_path = "images/image_p3_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 3
+image_path = "images/image_p3_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 3
+image_path = "images/image_p3_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+image_path = "images/image_p3_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 4
+image_path = "images/image_p4_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 4
+image_path = "images/image_p4_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 4
+image_path = "images/image_p4_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 4
+image_path = "images/image_p4_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 4
+image_path = "images/image_p4_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 4
+image_path = "images/image_p4_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 4
+image_path = "images/image_p4_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 4
+image_path = "images/image_p4_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 4
+image_path = "images/image_p4_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 4
+image_path = "images/image_p4_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 4
+image_path = "images/image_p4_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 4
+image_path = "images/image_p4_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 4
+image_path = "images/image_p4_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 4
+image_path = "images/image_p4_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 5
+image_path = "images/image_p5_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 5
+image_path = "images/image_p5_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 5
+image_path = "images/image_p5_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 6
+image_path = "images/image_p6_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 6
+image_path = "images/image_p6_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 6
+image_path = "images/image_p6_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 6
+image_path = "images/image_p6_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 6
+image_path = "images/image_p6_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 6
+image_path = "images/image_p6_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 7
+image_path = "images/image_p7_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 7
+image_path = "images/image_p7_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 7
+image_path = "images/image_p7_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 7
+image_path = "images/image_p7_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 7
+image_path = "images/image_p7_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 7
+image_path = "images/image_p7_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 7
+image_path = "images/image_p7_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 7
+image_path = "images/image_p7_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 14
+image_path = "images/image_p14_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 14
+image_path = "images/image_p14_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 14
+image_path = "images/image_p14_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 14
+image_path = "images/image_p14_46.png"

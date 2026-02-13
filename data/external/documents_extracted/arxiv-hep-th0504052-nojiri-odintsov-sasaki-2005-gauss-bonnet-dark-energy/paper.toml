@@ -1,0 +1,5691 @@
+equations = []
+tables = []
+full_text = """
+arXiv:hep-th/0504052v1 6 Apr 2005\r
+Y IT P-05-14\r
+G auss-B onnet dark energy\r
+Shin’ichi N ojiri\r
+D epartm ent of A pplied Physics, N ationalD efence Academ y, H ashirim izu Yokosuka 239-8686, Japan\r
+Sergei D . O dintsovyz\r
+Instituci\u0012o C atalana de Recerca iEstudis A van\u0018cats (IC R EA ) and Institut d’Estudis Espacials de C atalunya (IEEC /IC E),\r
+Edi\fci N exus, G ran C apit\u0012a 2-4, 08034 B arcelona, Spain\r
+M isao Sasakix\r
+Yukawa Institute for T heoretical Physics, K yoto U niversity, K yoto 606-8502, Japan\r
+W e propose the G auss-B onnet dark energy m odel inspired by string/M -theory w here standard\r
+gravity w ith scalar contains additionalscalar-dependent coupling w ith G auss-B onnet invariant. It\r
+is dem onstrated that e\u000Bective phantom (or quintessence) phase oflate universe m ay occur due to\r
+presence ofsuch term w hich is relevant even at sm allcurvature. H owever,w ith the increase ofthe\r
+curvaturethescalarpotentialm ay becom e dom inantso thatphantom phase istransientandw=1\r
+barrier m ay be passed. H ence,the current acceleration ofthe universe m ay be caused by stringy\r
+e\u000Bects. It is rem arkable that scalar-G auss-B onnet coupling acts against the B ig R ip occurence also\r
+in phantom cosm ology realized by scalar w ith negative kinetic energy.\r
+I. IN T R O D U C T IO N\r
+It becam e clearrecently thatlate-tim e dynam ics ofthe currentaccelerated universe is governed by the m ysterious\r
+dark energy.T he interpretation ofthe astrophysicalobservationsindicates thatsuch dark energy \ruid (ifitis \ruid!)\r
+is characterized by the negative pressure and its equation ofstate param eterw lies very close to 1 (m ost probably\r
+below ofit). Q uite possible that it m ay be oscillating around 1. It is extrem ely di\u000Ecult to present the com pletely\r
+satisfactory theory ofthe dark energy (also due to lack ofallrequiered astrophysicaldata),especially in the case of\r
+(oscillating)w lessthan 1.(Forinstance,therm odynam icsisquite strange there w ith possible negative entropy [1]).\r
+T he successfuldark energy theory m ay be searched in string/M -theory. Indeed,it is quite possible that som e un\u0002usualgravity-m attercouplingspredicted by the fundam entaltheory m ay becom e im portantatcurrent,low -curvature\r
+universe(being notessentialin interm ediate epoch from strong to low curvature).Forinstance,in the study ofstring\u0002induced gravity near to initialsingularity the role ofG auss-Bonnet (G B) coupling w ith scalar was quite im portant\r
+for ocurrence of non-singular cosm ology [2, 3] (for account of dilaton and higher order corrections near to initial\r
+singularity,see also [4]). T he present paper is devoted to the study ofthe role ofG B coupling w ith the scalar \feld\r
+to the late-tim e universe. It is explicitly dem onstrated that such term m ay induce the e\u000Bective phantom late-tim e\r
+universe.Itm ay produce also the e\u000Bective quintessence era,explaining the currentacceleration by late-tim e e\u000Bectsof\r
+stringy origin.Itis interesting thatitm ay also have the im portantim pactto the Big R ip singularity [5],sim ilarly to\r
+quantum e\u000Bects [6,7],preventing it in the standard phantom cosm ology caused by negative kinetic energy ofscalar.\r
+N ote that we concentrate m ainly on the exponentialscalar-G B coupling and exponentialscalar potential,w hile the\r
+consideration ofother types ofsuch functions and their role in late tim e cosm ology w illbe considered elsew here.\r
+II. T H E A C C E LE R A T E D U N IV E R SE F R O M SC A LA R -G B G R A V IT Y\r
+W e consider a m odelofthe scalar \feld coupled w ith gravity. A s a stringy correction,the term proportionalto\r
+the G B invariantG is added:\r
+G=R\r
+2\r
+4R \u0016\u0017R\r
+\u0016\u0017\r
++R \u0016\u0017\u001A\u001BR\r
+\u0016\u0017\u001A\u001B\r
+: (1)\r
+y also at T SP U ,Tom sk\r
+E lectronic address: snojiri@ yukaw a.kyoto-u.ac.jp,nojiri@ cc.nda.ac.jp\r
+zE lectronic address: odintsov@ ieec.fcr.es xE lectronic address: m isao@ yukaw a.kyoto-u.ac.jp
+
+2\r
+T he starting action is given by\r
+S =\r
+Z\r
+d\r
+4x\r
+p\r
+g\r
+1\r
+2 2\r
+R\r
+2\r
+@ \u001E@ V ( )+ f( )G : (2)\r
+H ere = 1. For the canonicalscalar, = 1 but at least w hen G B term is not included, the scalar behaves as\r
+phantom only w hen = 1 [8]show ing in this case the properties sim ilar to quantum \feld [9]. In analogy w ith\r
+m odel[10]w here also non-trivialcoupling ofscalar Lagrangian w ith som e power ofcurvature was considered,one\r
+m ay expect that such G B coupling term m ay be relevantfor the explanation ofdark energy dom inance.\r
+By the variation over ,we obtain\r
+0 = r\r
+2 V0( )+ f0( )G : (3)\r
+O n the other hand,the variation overthe m etric g\u0016\u0017 gives\r
+0 =\r
+1\r
+2\r
+R\r
+\u0016\u0017 +\r
+1\r
+2\r
+g\r
+\u0016\u0017 R +\r
+1\r
+2\r
+@ \u001E@\r
+1\r
+4\r
+g\r
+\u0016\u0017 @ \u001E@ +\r
+1\r
+2\r
+g\r
+\u0016\u0017 ( V ( )+ f( )G )\r
+2f( )R R \u0016\u0017 + 2r r (f( )R ) 2g\r
+\u0016\u0017 r2 (f( )R )\r
++ 8f( )R R\r
+\u0017\u001A 4r r (f( )R\u0017\u001A) 4r r (f( )R\u0016\u001A )\r
++ 4r\r
+2 (f( )R\u0016\u0017 )+ 4g\u0016\u0017 r r (f( )R\u001A\u001B ) 2f( )R\u0016\u001A\u001B\u001C R \u001A\u001B\u001C + 4r r (f( )R\u0016\u001A\u001B\u0017 ) : (4)\r
+By using the identities obtained from the Bianchiidentity\r
+r R \u001A\u001C\u0016\u0017 = r R \u0017\u001C  r R \u0016\u001C ;\r
+r R \u001A\u0016 =\r
+1\r
+2\r
+r R ;\r
+r r R\r
+\u0016\u001A\u0017\u001B = r2R\u0016\u0017 1\r
+2\r
+r r R + R\r
+\u0016\u001A\u0017\u001B R \u001A\u001B R R\u0017\u001A ;\r
+r r R\r
+\u001A\u0017 + r r R\u001A\u0016 =\r
+1\r
+2\r
+(r r R + r r R ) 2R\r
+\u0016\u001A\u0017\u001B R \u001A\u001B + 2R R\u0017\u001A ;\r
+r r R\r
+\u001A\u001B =\r
+1\r
+2\r
+R ; (5)\r
+one can rew rite (4) as\r
+0 =\r
+1\r
+2\r
+R\r
+\u0016\u0017 +\r
+1\r
+2\r
+g\r
+\u0016\u0017 R +\r
+1\r
+2\r
+@ \u001E@\r
+1\r
+4\r
+g\r
+\u0016\u0017 @ \u001E@ +\r
+1\r
+2\r
+g\r
+\u0016\u0017 ( V ( )+ f( )G )\r
+2f( )R R \u0016\u0017 + 4f( )R R\r
+\u0017\u001A 2f( )R\u0016\u001A\u001B\u001C R \u001A\u001B\u001C + 4f( )R\u0016\u001A\u001B\u0017 R \u001A\u001B\r
++ 2(r r f( ))R 2g\r
+\u0016\u0017 r2f( ) R 4(r r f( ))R\u0017\u001A 4(r r f( ))R\u0016\u001A\r
++ 4 r\r
+2f( ) R\u0016\u0017 + 4g\u0016\u0017 (r r f( ))R\u001A\u001B 4(r r f( ))R\u0016\u001A\u0017\u001B : (6)\r
+T he above expression is valid in arbitrary spacetim e dim ensions. In four dim ensions,the term s proportionalto f( )\r
+w ithout derivatives, are cancelled w ith each other and vanish since the G B invariant is a totalderivative in four\r
+dim ensions.\r
+T he starting FRW universe m etric is:\r
+ds2 = dt2 + a(t)\r
+2\r
+3 X\r
+i= 1\r
+dxi\r
+2\r
+; (7)\r
+w here\r
+t\r
+ij = a\r
+2H \u000Eij ;i\r
+jt = \r
+i\r
+tj = H \u000Ei\r
+j ; R itjt = H_ + H\r
+2\r
+ij ; R ijkl = a\r
+4H2 ( ik lj il kj) ;\r
+R tt = 3 H_ + H\r
+2 ; R ij = a\r
+2 H_ + 3H\r
+2\r
+ij ; R = 6H_ + 12H\r
+2 ; other com ponents= 0 ; (8)\r
+(here the H ubble rate H is de\fned by H = _a=a). A ssum ing only depends on tim e,the (\u0016;\u0017)= (t;t)-com ponent in\r
+(4) has the follow ing sim ple form :\r
+0 =\r
+3\r
+2\r
+H\r
+2 +\r
+2\r
+_2 + V ( )+ 24\u001Ef_ 0( )H\r
+3 : (9)
+
+3\r
+O n the other hand,Eq.(2) becom es:\r
+0 = + 3H _ V\r
+0( )+ 24f0( ) H H_ 2 + H4 : (10)\r
+W e now consider the case thatV ( ) and f( ) are given as exponents w ith the constantparam etersV0,f0,and 0\r
+V = V0e\r
+2\r
+0 ; f( )= f0e\r
+2\r
+0 : (11)\r
+A ssum e thatthe scale factorbehavesasa = a0t\r
+h0 (powerlaw ).In case thath0 isnegative,thisscale factordoesnot\r
+correspond to expanding universe butitcorrespondsto shrinking one.Ifone changesthe direction oftim e ast!  t,\r
+the expanding universe w hose scale factor is given by a = a0( t)\r
+h0 em erges. In this expression,however,since h0 is\r
+not always an integer,tshould be negative so that the scale factor should be real. To avoid the apparent di\u000Eculty,\r
+we m ay further shift the origin ofthe tim e as t!  t! ts t. T hen the tim e tcan be positive as long as t< ts.\r
+H ence,we can propose\r
+H =\r
+h0\r
+t\r
+; \u001E = 0 ln\r
+t\r
+t1\r
+; (12)\r
+w hen h0 > 0 or\r
+H =\r
+h0\r
+ts t\r
+; \u001E = 0 ln\r
+ts t\r
+t1\r
+; (13)\r
+w hen h0 < 0,w ith an undeterm ined constantt1. By the assum ption (12) or (13),one obtains\r
+0 =\r
+3h\r
+2\r
+0\r
+2\r
++\r
+\r\u001E\r
+2\r
+0\r
+2\r
++ V0t\r
+2\r
+1 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+; (14)\r
+from (9) and\r
+0 = (1 3h0)\r
+2\r
+0 + 2V0t\r
+2\r
+1 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+(h0 1) ; (15)\r
+from (10). U sing (14)and (15),it follow s\r
+V0t\r
+2\r
+1 =\r
+1\r
+2 (3 h0)\r
+3h\r
+2\r
+0 (1 h0)\r
+\r\u001E\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+;\r
+48f0h\r
+2\r
+0\r
+t\r
+2\r
+1\r
+=\r
+6\r
+2 (3 h0)\r
+h0\r
+\r\u001E\r
+2\r
+0\r
+2\r
+2\r
+: (16)\r
+T he second Eq.(16) show s that ifh0 < 0 and = 1,f0 should be negative. T he \frst Eq.(16) show s that ifV0 = 0,\r
+there is no solution w ith h0 < 0 if = 1.W ithout the G B term ,that is,f0 = 0,a wellknow n resultfollow s:\r
+h0 =\r
+\r\u001E\r
+2\r
+0\r
+2\r
+2\r
+: (17)\r
+Since the equation ofstate param eterw is given by\r
+w = 1+\r
+2\r
+3h0\r
+; (18)\r
+ifh0 < 0 (h0 > 0),w < 1 (w > 1). Eqs.(16) indicate that even if = 1,w ith the proper choice ofparam etersh0\r
+can be negative orw < 1.Even ifh0 < 0,as long as\r
+3h\r
+2\r
+0 (1 h0)\r
+\r\u001E\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+> 0 ; (19)\r
+V0 is positive,w hich m eans that the potentialV ( ) is bounded below . A s a specialcase we consider\r
+2\r
+0 =\r
+6h\r
+2\r
+0 (1 h0)\r
+(3 7h0) 2\r
+; \r = 1 ; (20)
+
+4\r
+- h0\r
+6\r
+2\r
+0\r
+3\r
+7 1\r
+FIG .1: T he qualitative behavior of 2\r
+0 versush0 from (20).\r
+w hich givesV ( )= 0.In orderthat 0 could be real,one has\r
+h0 <\r
+3\r
+7\r
+orh0 1 : (21)\r
+In the case (20),the scalar\feld iscanonical( = 1),and there isno potentialV ( )= 0,butifwe include the term\r
+proportionalto the G B invariantand choosethe param eterf0 (16),wem ay obtain the e\u000Bectivephantom cosm ological\r
+solution w ith h0 < 0 orw < 1.N otef0 can be arbitrary heresince the changecould be absorbed into the integration\r
+constantt1 w ithout changing f0. T he value ofh0 is determ ined by (20). Since\r
+d\u001E2\r
+0\r
+dh0\r
+=\r
+12h0 3 8h0 + 7h\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+: (22)\r
+itfollow sd\u001E2\r
+0=dh0 = 0 w hen h0 = 0,d\u001E2 =dh0 > 0 w hen h0 > 0,and d\u001E2 =dh0 < 0 w hen h0 < 0 since3 8h0+ 7h\r
+2\r
+0 > 0.\r
+2\r
+0 vanishes w hen h0 = 0 orh0 = 1 and goes to in\fnity w hen h0 goes to 3=7. T he qualitative behavior of 20 versus\r
+h0 is given in Figure 1. T hen there are always three solutions for h0 from (20),one is negative and other two are\r
+positive.W e should also note thatthe solution corresponding to the phantom cosm ology w ith h0 < 0 appearsforany\r
+value of 2\r
+0. A s is show n in A ppendix,the solution w ith h0 < 0 is stable under the perturbations. T he quintessence\r
+dark energy era,w here h0 > 1,also appears for any value of 2\r
+0. T he solution is again stable. For the third solution,\r
+we \fnd 0 < h0 < 3=7,w hich is notphantom nor quintessence phase.\r
+A s an exam ple,we consider the case that\r
+h0 =\r
+1\r
+60\r
+; (23)\r
+w hich gives,from (18),\r
+w = 1:025 ; (24)\r
+T hisisconsistentw ith theobservationalboundsfore\u000Bectivew (forrecentdiscussion and com pletelistofrefs.,see[11]).\r
+If,in addition,it is assum ed\r
+= 1 ; \u001E\r
+2\r
+0 =\r
+61\r
+112200 2\r
+; (25)\r
+one obtains\r
+V0 = 0 ; t2\r
+1 =\r
+374 2f0\r
+945\r
+: (26)\r
+T herefore even starting from the free canonicalscalar theory before introducing the term proportionalto the G B\r
+invariant,if 0 is chosen as in (25),we m ay obtain a solution w hich reproduces the observed value ofw as in (24),\r
+w here t1 is given by (26). N ote thatf0 can be arbitrary as long asf0 is negative.
+
+5\r
+In case ofthe m odelinduced from the string theory [2],we have V0 = 0 (V ( )= 0) and\r
+2\r
+0 =\r
+2\r
+2\r
+; (27)\r
+in (11). T hen Eq.(20) reduces as\r
+3h\r
+3\r
+0 3h\r
+2\r
+0 7h0 + 3 = 0 ; (28)\r
+w hich can be solved as\r
+h0 = 1:32676;0:388953;1:93781 : (29)\r
+T he solution w ith negative h0 gives\r
+w = 1:50248 : (30)\r
+Such w issm allerthan currently observed value butstillm ay be satisfactory having in m ind the possible oscillations\r
+ofw.\r
+T here is anothersolution of(9) and (10) w ith (11). In the solution, and H are constants,\r
+= ’0 ; H = H 0 ; (31)\r
+w hat correspondsto deSitter space.U sing (9) and (10) w ith (11),one \fnds\r
+H\r
+2\r
+0 =\r
+e\r
+2’ 0\r
+0\r
+8f0\r
+2\r
+: (32)\r
+T herefore in order for the solution to exist,we m ay require f0 < 0. In (32),’0 can be arbitrary. H ence,the H ubble\r
+rate H = H 0 m ight be determ ined by an initialcondition.\r
+In case ofthe m odel(11),the term including the G B invariantalwaysgivesthe contribution in the sam e orderw ith\r
+those from otherterm seven ifthe curvature issm all.T hisisdue to the factorf( ),w hich enhancesthe contribution\r
+w hen the curvature is sm all.\r
+III. LA T E -T IM E A SY M P T O T IC C O SM O LO G Y IN SC A LA R -G B G R A V IT Y A N D B IG R IP\r
+A V O ID A N C E\r
+In the follow ing,another m odel,w hich is slightly di\u000Berentfrom (11),m ay be considered:\r
+V ( )= V0e\r
+2\r
+0 ; f( )= f0e\r
+2\r
+\u000B \u001E 0 ; (\u000B > 1) ; (33)\r
+D i\u000Berentfrom the m odel(11),the m odel(33)w illnotbe solved exactly.W e can only \fnd the asym ptotic qualitative\r
+behavior ofthe solutions. N evertheless,the asym ptotic behavior suggests the existence ofthe cosm ologicalsolution,\r
+w here the value ofw could vary w ith tim e (oscillation)and/orcould depend on the curvature.\r
+A ssum ing the solution behaves as (12) or (13),w hen the curvature is sm all,that is t in (12) or ts t in (13) is\r
+large,the G B term becom essm alland could be neglected sinceitbehaveslike 1=t\r
+2 + 4 or1=(ts t)\r
+2 + 4.W hen the\r
+curvature is sm all,the solution could be given by (17),then the e\u000Bective phantom phase w ith w < 1 could appear\r
+only in case = 1 < 0. O n the other hand,w hen the curvature is large,that istin (12) orts tin (13) is sm all,\r
+the classicalpotentialcould be neglected. W ithout the classicalpotential,by assum ing,instead of(12)\r
+H =\r
+h0\r
+t\r
+; \u001E = \u000B\u001E0 ln\r
+t\r
+t1\r
+; (34)\r
+w hen h0 > 0 or\r
+H =\r
+h0\r
+ts t\r
+; \u001E = \u000B\u001E0 ln\r
+ts t\r
+t1\r
+; (35)
+
+6\r
+w hen h0 < 0,the follow ing equations replace (14) and (15)\r
+0 =\r
+3h\r
+2\r
+0\r
+2\r
++\r
+\r\u000B\r
+2 2\r
+0\r
+2\r
++\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+;\r
+0 = (1 3h0)\r
+2 2\r
+0 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+(h0 1) : (36)\r
+By deleting f0 in the above two equations,one gets\r
+2\r
+0 =\r
+6h\r
+2\r
+0 (1 h0)\r
+\r\u000B2 (3 7h0) 2\r
+; (37)\r
+w hich correspondsto (20). T hen w hen = 1,the solutions of(37) are not qualitatively changed from those of(20),\r
+and there are three solutionsh0 < 0,0 < h0 < 3=7,and h0 > 1. O n the other hand,w hen = 1,since the sign of\r
+the r.h.s. in (20) is changed from = 1 case,as clear from FIG .1,there is only one positive solution forh0. T hen if\r
+the term proportionalto the G B invariantin case\r < 0 (w hich correspondsto a scalarphantom solution w ithoutG B\r
+term ) is included the e\u000Bective w becom es largerthan 1 and the Big R ip singularity is avoided (see [6]for quantum\r
+e\u000Bects accountto escape ofBig R ip). T hat is,in case \r < 0,w hen the curvature is sm allas in the current universe,\r
+the G B term is negligible and the potentialterm dom inates,which givesthe cosm ic acceleration w ith w < 1.T hen\r
+the curvature increases gradually and the universe seem s to tend to the Big R ip singularity [5]. H owever,w hen the\r
+curvature is large,the G B term becom es dom inant and prevents the singularity. H ence,in case \r < 0,the G B term\r
+worksagainstthe Big R ip singularity occurence,like quantum e\u000Bects [6]. W e should note,however,w hen \r > 0,the\r
+G B term generates the Big R ip singularity,w here the scale factor behaves as a (ts t)\r
+h0 w ith h0 < 0. A fter the\r
+G B term dom inates w hen \r < 0,the curvature turns to becom e sm aller. T hen the postentialterm would dom inate\r
+again. T his m ight tellthat the behavior ofthe universe m ight approach to the deSitter sapce w ith w = 1 by the\r
+dam pted oscillation. In fact even in the m odel(33),if(31) is assum ed,there is a deSitter solution corresponding to\r
+(31):\r
+H\r
+2\r
+0 =\r
+e\r
+2’ 0\r
+\u000B \u001E 0\r
+8f0\r
+2\r
+; ’0 =\r
+\u000B\u001E0\r
+2(1 )\r
+ln\r
+8V0f0\r
+2\r
+3\r
+: (38)\r
+In (33),we have assum ed \u000B > 1. Ifwe consider the case that V ( ) = V0e\r
+2\r
+0 and f( ) = f0e\r
+2\r
+\u000B \u001E 0 as in (33) but\r
+0 < \u000B < 1,there appearsa solution w here the term including G B invariantbecom esdom inanteven ifthe curvature is\r
+sm all.By assum ing (34)or(35),Eq.(36)isobtained again.Hence,w hen 0 < \u000B < 1,the solution w here h0 ispositive\r
+orw > 1 even if\r < 0 (scalarphantom )appears.\r
+O n the other hand, there is accelerated universe solution w ith w < 1, that is, h0 < 0 due to the G B term\r
+even if\r > 0. In this case, w hen the curvature is large, the potential is dom inant and the solution is given by\r
+(17) w here w > 1 as long as \r > 0. T he follow ing scenario m ight be possible: in the current expanding universe\r
+w ith sm allcurvature the e\u000Bective w < 1,due to the G B term . W ith such phantom phase,the curvature grow s.\r
+W hen the curvature becom es large enough,the potentialterm is dom inant and the universe expands w ith e\u000Bective\r
+equation of state param eter w > 1. H ence, phantom phase is transient and Big R ip does not occur eventually.\r
+Since the curvature becom essm allerw hen the potentialdom inates,the universe m ay approach to deSitter spacetim e\r
+corresponding to (38) by the dam pted oscilation. In any case,in spite ofthe sign of ,one m ay obtain the solution\r
+describing the phantom cosm ology w ith w < 1 w hen the curvature is sm alland the quintessence (m atter) era w ith\r
+w > 1 w hen the curvature is large.\r
+IV . D ISC U SSIO N\r
+W e considered essentially two m odels w ith exponentialcouplings given by (11) and (33). T he m odel(11) m ay be\r
+considered as the specialcase corresponding to = 1.T he m ain results can be sum m arized as follow s:\r
+1. = 1 case:exactly solvable\r
+(a) V = 0 case:T here are three solutions corresponding to w < 1, 1 < w < 1=3,and w > 5=9.\r
+2.1=\u000B < 1 case:the potentialterm dom inates for sm allcurvature and the G B term for large one.\r
+(a) \r > 0: T here appearsthe Big R ip singularity.
+
+7\r
+(b) \r < 0: T he solution asym ptotically approachesto the deSitter space.\r
+3.1=\u000B > 1 case:the potentialterm dom inates for large curvature and the G B term for sm allone.\r
+(a) \r > 0: T he solution asym ptotically approachesto the deSitter space.\r
+(b) \r < 0: T here w illappear the Big R ips singularity.\r
+For the m odels (11) and (33),in case V0 = 0 (that is,w hen the potentialvanishes),by replacing \u000B\u001E0 w ith 0,it\r
+follow s the two m odels are equivalent. Especially = 1 case has been wellstudied and it has been show n that there\r
+are alwaysthree e\u000Bective cosm ologicalphasescorresponding to the phantom w ith h0 < 0 orw < 1,the quintessence\r
+w ith h0 > 1 or 1 < w < 1=3,and the m atter w ith 0 < h0 < 3=7 or w > 5=9. Even ifV0 6= 0,the m odel(11)\r
+can be solved exactly and the solutions w here h0 and therefore w are constants m ay be found. O n the other hand,\r
+ifV0 6= 0,the m odel(33) cannot be solved exactly but there exist the solutions w here the values ofh0 and therefore\r
+ofw are tim e-dependent. T here could em erge a cosm ology,w hich behaves as phantom one w ith w < 1 w hen the\r
+curvature issm alland asa usualm atterdom inated universe with w > 1 w hen the curvature islarge.M oreover,Big\r
+R ip singularity does not occur.\r
+O ur study indicates that current acceleration m aybe caused by stringy/M -theory e\u000Bects (term s) w hich som ehow\r
+becam e relevantquite recently (in cosm ologicalsense).Itrem ainsa challenge to constructthe consistentdark energy\r
+universe m odelfrom string/M -theory.\r
+A cknow ledgm ents\r
+T his research has been supported in part by JSPS G rants-in-Aid for Scienti\fc R esearch,N o.13135208 (S.N .) and\r
+G rants-in-A id for Scienti\fc R esearch (S),N o.14102004 (M .S.).\r
+A P P E N D IX A : ST A B ILIT Y O F P H A N T O M C O SM O LO G Y\r
+In thisappendix,we check the stability ofthe abovesolutions.T hefollow ing quantitiesareconvenientto introduce:\r
+X\r
+_\r
+H\r
+; Z H\r
+2f0( );\r
+d\r
+dN\r
+a\r
+d\r
+da\r
+=\r
+1\r
+H\r
+d\r
+dt\r
+: (A 1)\r
+T hen by using (9) and (10) w ith (11),one \fnds\r
+dX\r
+N\r
+=\r
+6\r
+2\r
+96X Z\r
+576Z\r
+2 1 \u001A \u0012\r
+18\r
+2\r
+480V0f0\r
+\r\u001E\r
+2\r
+0\r
+X +\r
+24V0f0\r
+2\r\u001E\r
+2\r
+0Z\r
++\r
+144Z\r
+2\r
++ 264X\r
+2Z\r
+2304X Z 2\r
++ 3\rX 3 +\r
+1152X\r
+2Z2\r
+\r\u001E0\r
+48X\r
+3Z\r
+0\r
+; (A 2)\r
+dZ\r
+dN\r
+= Z\r
+6\r
+2\r
+96X Z\r
+576Z\r
+2 1\r
+12X\r
+2\r
+0\r
++ 6\rX 2 + 96X Z\r
+182V0f0\r
+\r\u001E\r
+2\r
+0\r
+1152Z\r
+2\r
++\r
+96X\r
+2Z\r
+0\r
++\r
+1152X Z 2\r
+\r\u001E0\r
+: (A 3)\r
+For the solution (12) or (13),it follow s\r
+X = X 0\r
+0\r
+h0\r
+; Z = Z0\r
+2f0h\r
+2\r
+0\r
+0t\r
+2\r
+1\r
+: (A 4)\r
+In term s ofX 0 and Z0,Eqs.(14) and (15) can be rew ritten as\r
+0 =\r
+3\r
+2\r
++\r
+\rX 2\r
+0\r
+2\r
++\r
+2V0f0\r
+0Z0\r
++ 24Z0X 0 ; (A 5)\r
+0 = \rX 2\r
+0 3 0\rX 0 +\r
+4V0f0\r
+0Z0\r
++ 24 0Z0 24Z0X 0 : (A 6)
+
+8\r
+For the solution (A 4),by using (A 5) and (A 6),the right hand sides ofEqs.(A 2) and (A 3) vanish consistently. W e\r
+now consider the perturbation around the solution (A 4):\r
+X = X 0 + \u000EX ; Y = Y0 + \u000EY : (A 7)\r
+U sing (A 2) and (A 3),one obtains\r
+d\r
+dN\r
+\u000EX\r
+\u000EY = M\r
+\u000EX\r
+\u000EY ; M =\r
+A~ B~\r
+C~ D~\r
+(A 8)\r
+H ere\r
+A~\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+18\r
+2\r
+480V0f0\r
+\r\u001E\r
+2\r
+0\r
++ 528X 0Z0\r
+2304Z\r
+2\r
+0 + 9\rX 2\r
+0 +\r
+2304X 0Z\r
+2\r
+0\r
+\r\u001E0\r
+144X\r
+2\r
+0Z0\r
+0\r
+;\r
+B~\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+24V0f0\r
+2\r\u001E\r
+2\r
+0Z\r
+2\r
+0\r
++\r
+144\r
+2\r
++ 264X\r
+2\r
+0\r
+4608X 0Z0\r
++\r
+2304X\r
+2\r
+0Z0\r
+\r\u001E0\r
+48X\r
+3\r
+0\r
+0\r
+;\r
+C~ \u0011  Z0\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+12\r
+2\r
+0\r
++ 12\rX 0 + 96Z0 +\r
+192X 0Z0\r
+0\r
++\r
+1152Z\r
+2\r
+0\r
+\r\u001E0\r
+;\r
+D~ \u0011  Z0\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+96X 0\r
+2304Z0\r
++\r
+96X\r
+2\r
+0\r
+0\r
++\r
+2304X 0Z0\r
+\r\u001E0\r
+: (A 9)\r
+Ifthe realparts ofallthe eigenvalues ofthe m atrix M are negative,the perturbation becom es sm alland the system\r
+is stable. T hen the condition ofthe stability is given by\r
+A~+ D < ~ 0 ; A~D~ B~C > ~ 0 : (A 10)\r
+First,the check ofthe stability forV = 0 case is in order.By using (A 4),(A 5),and (A 6),we \fnd\r
+X\r
+2\r
+0 =\r
+2\r
+0\r
+h\r
+2\r
+0\r
+=\r
+6(h0 1)\r
+2 (7h0 3)\r
+; Z 2\r
+0 =\r
+(3h0 1)2\r
+96 2 (h0 1)(7h0 3)\r
+; X 0Z0 =\r
+(3h0 1)\r
+4 2 (7h0 3)\r
+: (A 11)\r
+In orderthatX\r
+2\r
+0 and Z\r
+2\r
+0 are positive,it follow s\r
+h0 > 1 orh0 <\r
+3\r
+7\r
+= 0:428571:::; w hen \r > 0\r
+or 3\r
+7\r
+< h0 < 1 ; w hen \r < 0 : (A 12)\r
+By using (A 11),A~,B~,C~,and D~ in (A 9) can be expressed in term s ofh0:\r
+A~ =\r
+(h0 1) 9h\r
+2\r
+0 8h0 + 1\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+; B~ =\r
+72(h0 1)2\r
+(7h\r
+2\r
+0 6h0 + 1)\r
+; (A 13)\r
+C~ =\r
+(2h0 1)(3h0 1) 3h\r
+2\r
+0 1\r
+12h0 (h0 1)(7h\r
+2\r
+0 6h0 + 1)\r
+; D~ =\r
+4(h0 1)2\r
+(3h0 1)\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+:\r
+T hus\r
+A~+ D~ =\r
+(h0 1) 21h\r
+2\r
+0 24h0 + 5\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+; (A 14)\r
+A~D~ B~C~ =\r
+2(h0 1)(3h0 1) 36h\r
+4\r
+0 61h\r
+3\r
+0 + 46h\r
+2\r
+0 17h0 + 2\r
+h\r
+2\r
+0 (7h\r
+2\r
+0 6h0 + 1)2\r
+: (A 15)\r
+T he solutions of7h\r
+2\r
+0 6h0 + 1 = 0 are given by\r
+h0 = p =\r
+3\r
+p\r
+2\r
+7\r
+= 0:630602:::;0:226541 ; (A 16)
+
+9\r
+the solutions of21h\r
+2\r
+0 24h0 + 5 = 0 are\r
+h0 = q =\r
+12\r
+p\r
+39\r
+21\r
+= 0:868809:::;0:274048:::; (A 17)\r
+and the num ericalvalues ofthe realsolutionsof36h\r
+4\r
+0 61h\r
+3\r
+0 + 46h\r
+2\r
+0 17h0 + 2 = 0 are\r
+h0 = r = 0:637709:::;0:202029::: (A 18)\r
+T hen A~+ D~ is negative w hen\r
+h0 < 0 ; p < h0 < q ; p+ < h0 < q+ h0 > 1 ; (A 19)\r
+and A~D~ B~C > ~ 0 is positive w hen\r
+h0 < r ; p < h0 <\r
+1\r
+3\r
+; p+ < h0 < r+ ; h0 > 1 : (A 20)\r
+T herefore the system is stable if\r
+h0 < 0 ; p < h0 < q ; p+ < h0 < r+ ; h0 > 1 : (A 21)\r
+Especially the case corresponding to phantom cosm ology w ith h0 < 0 is stable.\r
+[1] I.B revik,S.N ojiri,S.D .O dintsov and L.Vanzo,Phys.R ev.D 70,043520 (2004) [arX iv:hep-th/0401073].\r
+[2] I.A ntoniadis,J.R izos,K .Tam vakis,N ucl.Phys.B 415,497 (1994) [arX iv:hep-th/9305025];\r
+P.K anti,J.R izos and K .Tam vakis,Phys.R ev.D 59,083512 (1999) [arX iv:gr-qc/9806085].\r
+[3] N . E. M avrom atos and J. R izos, Phys. R ev. D 62, 124004 (2000) [arX iv:hep-th/0008074]; JH EP 0207, 045 (2002)\r
+[arX iv:hep-th/0205099];Int.J.M od.Phys.A 18,57 (2003) [arX iv:hep-th/0205299].\r
+[4] M .G asperini,M .M aggiore and G .Veneziano,N ucl.Phys.B 494,315 (1997) [arX iv:hep-th/9611039];\r
+R .B rustein and R .M adden,Phys.R ev.D 57,712 (1998) [arX iv:hep-th/9708046];\r
+C .C artier,E.J.C opeland and R .M adden,JH EP 0001,035 (2000) [arX iv:hep-th/9910169];\r
+S.T sujikawa,Phys.Lett.B 526,179 (2002) [arX iv:gr-qc/0110124];\r
+A .Toporensky and S.T sujikawa,Phys.R ev.D 65,123509 (2002) [arX iv:gr-qc/0202067];\r
+S.T sujikawa,R .B randenberger and F.Finelli,Phys.R ev.D 66,083513 (2002) [arX iv:hep-th/0207228].\r
+[5] R .R .C aldwell,M .K am ionkow skiand N .N .W einberg,Phys.R ev.Lett.91,071301 (2003) [arX iv:astro-ph/0302506];\r
+B .M cInnes,JH EP 0208,029 (2002) [arX iv:hep-th/0112066];arX iv:hep-th/0502209;\r
+P.G onzalez-D iaz,Phys.Lett.B 586,1 (2004) [arX iv:astro-ph/0312579];\r
+M .Sam iand A .Toporensky,M od.Phys.Lett.A 19,1509 (2004) [arX iv:gr-qc/0312009];\r
+P.G onzales-D iaz and C .Siguenza,N ucl.Phys.B 697,363 (2004) [arX iv:astro-ph/0407421];\r
+F.Piazza and S.T sujikawa,JC A P 0407,004 (2004) [arX iv:hep-th/0405054];\r
+L.P.C him ento and R .Lazkoz,M od.Phys.Lett.A 19,2479 (2004) [arX iv:gr-qc/0405020];\r
+G .C alcagni,Phys.R ev.D 71,023511 (2005) [arX iv:arX iv:gr-qc/0410027];\r
+J.B arrow ,C lass.Q uant.G rav.21,L79 (2004) [arX iv:gr-qc/0403084];\r
+P.W u and H .Yu,arX iv:astro-ph/0407424;\r
+S.N esseris and L.Perivolaropoulos,Phys.R ev.D 70,123529 (2004) [arX iv:astro-ph/0410309];\r
+P.Scherrer,arX iv:astro-ph/0410508;\r
+Z.G uo,Y .Piao,X .Zhang and Y .Zhang,Phys.Lett.B 608 177 (2005) [arX iv:astro-ph/0410654];\r
+M .C .B .A bdalla,S.N ojiriand S.D .O dintsov,C lass.Q uant.G rav.22,L35 (2005) [arX iv:hep-th/0409177].\r
+Y .W ei,arX iv:gr-qc/0410050;arX iv:gr-qc/0502077;\r
+H .Stefancic,arX iv:astro-ph/0411630;\r
+S.K .Srivastava,arX iv:hep-th/0411221;\r
+M .D abrow skiand T .Stachow iak,arX iv:hep-th/0411199;\r
+R .C urbelo,T .G onzalez and I.Q uiroz,arX iv:astro-ph/0502141;\r
+V .Sahni,arX iv:astro-ph/0502032;\r
+B .G um judpai,T .N askar,M .Sam iand S.T sujikawa,arX iv:hep-th/0502191.\r
+[6] S. N ojiri and S. D . O dintsov, Phys. Lett. B 595, 1 (2004) [arX iv:hep-th/0405078]; Phys. R ev. D 70, 103522 (2004)\r
+[arX iv:hep-th/0408170];\r
+E.Elizalde,S.N ojiriand S.D .O dintsov,Phys.R ev.D 70,043539 (2004) [arX iv:hep-th/0405034].\r
+[7] S.N ojiri,S.D .O dintsov and S.T sujikawa,arX iv:hep-th/0501025.\r
+[8] R .C aldwell,Phys.Lett.B 545,23 (2002) [arX iv:astro-ph/9908168 ].\r
+[9] S.N ojiriand S.D .O dintsov,Phys.Lett.B 562,147 (2003) [arX iv:hep-th/0303117].\r
+[10] S.N ojiriand S.D . O dintsov,Phys.Lett.B 599,137 (2004) [arX iv:astro-ph/0403622].\r
+[11] R .Lazkoz,S.N esseris and L.Perivolaropoulos,arX iv:astro-ph/0503230."""
+
+[metadata]
+title = "arxiv hep th0504052 nojiri odintsov sasaki 2005 gauss bonnet dark energy"
+authors = ["Unknown"]
+year = 2005
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/0504052v1 6 Apr 2005\r
+Y IT P-05-14\r
+G auss-B onnet dark energy\r
+Shin’ichi N ojiri\r
+D epartm ent of A pplied Physics, N ationalD efence Academ y, H ashirim izu Yokosuka 239-8686, Japan\r
+Sergei D . O dintsovyz\r
+Instituci\u0012o C atalana de Recerca iEstudis A van\u0018cats (IC R EA ) and Institut d’Estudis Espacials de C atalunya (IEEC /IC E),\r
+Edi\fci N exus, G ran C apit\u0012a 2-4, 08034 B arcelona, Spain\r
+M isao Sasakix\r
+Yukawa Institute for T heoretical Physics, K yoto U niversity, K yoto 606-8502, Japan\r
+W e propose the G auss-B onnet dark energy m odel inspired by string/M -theory w here standard\r
+gravity w ith scalar contains additionalscalar-dependent coupling w ith G auss-B onnet invariant. It\r
+is dem onstrated that e\u000Bective phantom (or quintessence) phase oflate universe m ay occur due to\r
+presence ofsuch term w hich is relevant even at sm allcurvature. H owever,w ith the increase ofthe\r
+curvaturethescalarpotentialm ay becom e dom inantso thatphantom phase istransientandw=1\r
+barrier m ay be passed. H ence,the current acceleration ofthe universe m ay be caused by stringy\r
+e\u000Bects. It is rem arkable that scalar-G auss-B onnet coupling acts against the B ig R ip occurence also\r
+in phantom cosm ology realized by scalar w ith negative kinetic energy.\r
+I. IN T R O D U C T IO N\r
+It becam e clearrecently thatlate-tim e dynam ics ofthe currentaccelerated universe is governed by the m ysterious\r
+dark energy.T he interpretation ofthe astrophysicalobservationsindicates thatsuch dark energy \ruid (ifitis \ruid!)\r
+is characterized by the negative pressure and its equation ofstate param eterw lies very close to 1 (m ost probably\r
+below ofit). Q uite possible that it m ay be oscillating around 1. It is extrem ely di\u000Ecult to present the com pletely\r
+satisfactory theory ofthe dark energy (also due to lack ofallrequiered astrophysicaldata),especially in the case of\r
+(oscillating)w lessthan 1.(Forinstance,therm odynam icsisquite strange there w ith possible negative entropy [1]).\r
+T he successfuldark energy theory m ay be searched in string/M -theory. Indeed,it is quite possible that som e un\u0002usualgravity-m attercouplingspredicted by the fundam entaltheory m ay becom e im portantatcurrent,low -curvature\r
+universe(being notessentialin interm ediate epoch from strong to low curvature).Forinstance,in the study ofstring\u0002induced gravity near to initialsingularity the role ofG auss-Bonnet (G B) coupling w ith scalar was quite im portant\r
+for ocurrence of non-singular cosm ology [2, 3] (for account of dilaton and higher order corrections near to initial\r
+singularity,see also [4]). T he present paper is devoted to the study ofthe role ofG B coupling w ith the scalar \feld\r
+to the late-tim e universe. It is explicitly dem onstrated that such term m ay induce the e\u000Bective phantom late-tim e\r
+universe.Itm ay produce also the e\u000Bective quintessence era,explaining the currentacceleration by late-tim e e\u000Bectsof\r
+stringy origin.Itis interesting thatitm ay also have the im portantim pactto the Big R ip singularity [5],sim ilarly to\r
+quantum e\u000Bects [6,7],preventing it in the standard phantom cosm ology caused by negative kinetic energy ofscalar.\r
+N ote that we concentrate m ainly on the exponentialscalar-G B coupling and exponentialscalar potential,w hile the\r
+consideration ofother types ofsuch functions and their role in late tim e cosm ology w illbe considered elsew here.\r
+II. T H E A C C E LE R A T E D U N IV E R SE F R O M SC A LA R -G B G R A V IT Y\r
+W e consider a m odelofthe scalar \feld coupled w ith gravity. A s a stringy correction,the term proportionalto\r
+the G B invariantG is added:\r
+G=R\r
+2\r
+4R \u0016\u0017R\r
+\u0016\u0017\r
++R \u0016\u0017\u001A\u001BR\r
+\u0016\u0017\u001A\u001B\r
+: (1)\r
+y also at T SP U ,Tom sk\r
+E lectronic address: snojiri@ yukaw a.kyoto-u.ac.jp,nojiri@ cc.nda.ac.jp\r
+zE lectronic address: odintsov@ ieec.fcr.es xE lectronic address: m isao@ yukaw a.kyoto-u.ac.jp"""
+
+[[sections]]
+number = "2"
+title = "T he starting action is given by"
+text = """
+S =\r
+Z\r
+d\r
+4x\r
+p\r
+g\r
+1\r
+2 2\r
+R\r
+2\r
+@ \u001E@ V ( )+ f( )G : (2)\r
+H ere = 1. For the canonicalscalar, = 1 but at least w hen G B term is not included, the scalar behaves as\r
+phantom only w hen = 1 [8]show ing in this case the properties sim ilar to quantum \feld [9]. In analogy w ith\r
+m odel[10]w here also non-trivialcoupling ofscalar Lagrangian w ith som e power ofcurvature was considered,one\r
+m ay expect that such G B coupling term m ay be relevantfor the explanation ofdark energy dom inance.\r
+By the variation over ,we obtain\r
+0 = r"""
+
+[[sections]]
+number = "2"
+title = "V0( )+ f0( )G : (3)"
+text = """
+O n the other hand,the variation overthe m etric g\u0016\u0017 gives\r
+0 =\r
+1\r
+2\r
+R\r
+\u0016\u0017 +\r
+1\r
+2\r
+g\r
+\u0016\u0017 R +\r
+1\r
+2\r
+@ \u001E@\r
+1\r
+4\r
+g\r
+\u0016\u0017 @ \u001E@ +\r
+1\r
+2\r
+g\r
+\u0016\u0017 ( V ( )+ f( )G )\r
+2f( )R R \u0016\u0017 + 2r r (f( )R ) 2g\r
+\u0016\u0017 r2 (f( )R )\r
++ 8f( )R R\r
+\u0017\u001A 4r r (f( )R\u0017\u001A) 4r r (f( )R\u0016\u001A )\r
++ 4r\r
+2 (f( )R\u0016\u0017 )+ 4g\u0016\u0017 r r (f( )R\u001A\u001B ) 2f( )R\u0016\u001A\u001B\u001C R \u001A\u001B\u001C + 4r r (f( )R\u0016\u001A\u001B\u0017 ) : (4)\r
+By using the identities obtained from the Bianchiidentity\r
+r R \u001A\u001C\u0016\u0017 = r R \u0017\u001C  r R \u0016\u001C ;\r
+r R \u001A\u0016 =\r
+1\r
+2\r
+r R ;\r
+r r R\r
+\u0016\u001A\u0017\u001B = r2R\u0016\u0017 1\r
+2\r
+r r R + R\r
+\u0016\u001A\u0017\u001B R \u001A\u001B R R\u0017\u001A ;\r
+r r R\r
+\u001A\u0017 + r r R\u001A\u0016 =\r
+1\r
+2\r
+(r r R + r r R ) 2R\r
+\u0016\u001A\u0017\u001B R \u001A\u001B + 2R R\u0017\u001A ;\r
+r r R\r
+\u001A\u001B =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "R ; (5)"
+text = """
+one can rew rite (4) as\r
+0 =\r
+1\r
+2\r
+R\r
+\u0016\u0017 +\r
+1\r
+2\r
+g\r
+\u0016\u0017 R +\r
+1\r
+2\r
+@ \u001E@\r
+1\r
+4\r
+g\r
+\u0016\u0017 @ \u001E@ +\r
+1\r
+2\r
+g\r
+\u0016\u0017 ( V ( )+ f( )G )\r
+2f( )R R \u0016\u0017 + 4f( )R R\r
+\u0017\u001A 2f( )R\u0016\u001A\u001B\u001C R \u001A\u001B\u001C + 4f( )R\u0016\u001A\u001B\u0017 R \u001A\u001B\r
++ 2(r r f( ))R 2g\r
+\u0016\u0017 r2f( ) R 4(r r f( ))R\u0017\u001A 4(r r f( ))R\u0016\u001A\r
++ 4 r\r
+2f( ) R\u0016\u0017 + 4g\u0016\u0017 (r r f( ))R\u001A\u001B 4(r r f( ))R\u0016\u001A\u0017\u001B : (6)\r
+T he above expression is valid in arbitrary spacetim e dim ensions. In four dim ensions,the term s proportionalto f( )\r
+w ithout derivatives, are cancelled w ith each other and vanish since the G B invariant is a totalderivative in four\r
+dim ensions.\r
+T he starting FRW universe m etric is:\r
+ds2 = dt2 + a(t)\r
+2\r
+3 X\r
+i= 1\r
+dxi\r
+2\r
+; (7)\r
+w here\r
+t\r
+ij = a\r
+2H \u000Eij ;i\r
+jt = \r
+i\r
+tj = H \u000Ei\r
+j ; R itjt = H_ + H\r
+2\r
+ij ; R ijkl = a\r
+4H2 ( ik lj il kj) ;\r
+R tt = 3 H_ + H\r
+2 ; R ij = a"""
+
+[[sections]]
+number = "2"
+title = "H_ + 3H"
+text = """
+2\r
+ij ; R = 6H_ + 12H\r
+2 ; other com ponents= 0 ; (8)\r
+(here the H ubble rate H is de\fned by H = _a=a). A ssum ing only depends on tim e,the (\u0016;\u0017)= (t;t)-com ponent in\r
+(4) has the follow ing sim ple form :\r
+0 =\r
+3\r
+2\r
+H\r
+2 +\r
+2\r
+_2 + V ( )+ 24\u001Ef_ 0( )H\r
+3 : (9)"""
+
+[[sections]]
+number = "3"
+title = "O n the other hand,Eq.(2) becom es:"
+text = """
+0 = + 3H _ V\r
+0( )+ 24f0( ) H H_ 2 + H4 : (10)\r
+W e now consider the case thatV ( ) and f( ) are given as exponents w ith the constantparam etersV0,f0,and 0\r
+V = V0e\r
+2\r
+0 ; f( )= f0e\r
+2\r
+0 : (11)\r
+A ssum e thatthe scale factorbehavesasa = a0t\r
+h0 (powerlaw ).In case thath0 isnegative,thisscale factordoesnot\r
+correspond to expanding universe butitcorrespondsto shrinking one.Ifone changesthe direction oftim e ast!  t,\r
+the expanding universe w hose scale factor is given by a = a0( t)\r
+h0 em erges. In this expression,however,since h0 is\r
+not always an integer,tshould be negative so that the scale factor should be real. To avoid the apparent di\u000Eculty,\r
+we m ay further shift the origin ofthe tim e as t!  t! ts t. T hen the tim e tcan be positive as long as t< ts.\r
+H ence,we can propose\r
+H =\r
+h0\r
+t\r
+; \u001E = 0 ln\r
+t\r
+t1\r
+; (12)\r
+w hen h0 > 0 or\r
+H =\r
+h0\r
+ts t\r
+; \u001E = 0 ln\r
+ts t\r
+t1\r
+; (13)\r
+w hen h0 < 0,w ith an undeterm ined constantt1. By the assum ption (12) or (13),one obtains\r
+0 =\r
+3h\r
+2\r
+0\r
+2\r
++\r
+\r\u001E\r
+2\r
+0\r
+2\r
++ V0t\r
+2\r
+1 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+; (14)\r
+from (9) and\r
+0 = (1 3h0)\r
+2\r
+0 + 2V0t\r
+2\r
+1 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+(h0 1) ; (15)\r
+from (10). U sing (14)and (15),it follow s\r
+V0t\r
+2\r
+1 =\r
+1\r
+2 (3 h0)\r
+3h\r
+2\r
+0 (1 h0)\r
+\r\u001E\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+;\r
+48f0h\r
+2\r
+0\r
+t\r
+2\r
+1\r
+=\r
+6\r
+2 (3 h0)\r
+h0\r
+\r\u001E\r
+2\r
+0\r
+2\r
+2\r
+: (16)\r
+T he second Eq.(16) show s that ifh0 < 0 and = 1,f0 should be negative. T he \frst Eq.(16) show s that ifV0 = 0,\r
+there is no solution w ith h0 < 0 if = 1.W ithout the G B term ,that is,f0 = 0,a wellknow n resultfollow s:\r
+h0 =\r
+\r\u001E\r
+2\r
+0\r
+2\r
+2\r
+: (17)\r
+Since the equation ofstate param eterw is given by\r
+w = 1+\r
+2\r
+3h0\r
+; (18)\r
+ifh0 < 0 (h0 > 0),w < 1 (w > 1). Eqs.(16) indicate that even if = 1,w ith the proper choice ofparam etersh0\r
+can be negative orw < 1.Even ifh0 < 0,as long as\r
+3h\r
+2\r
+0 (1 h0)\r
+\r\u001E\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+> 0 ; (19)\r
+V0 is positive,w hich m eans that the potentialV ( ) is bounded below . A s a specialcase we consider\r
+2\r
+0 =\r
+6h\r
+2\r
+0 (1 h0)\r
+(3 7h0) 2\r
+; \r = 1 ; (20)
+
+4\r
+- h0\r
+6\r
+2\r
+0\r
+3\r
+7 1\r
+FIG .1: T he qualitative behavior of 2\r
+0 versush0 from (20).\r
+w hich givesV ( )= 0.In orderthat 0 could be real,one has\r
+h0 <\r
+3\r
+7\r
+orh0 1 : (21)\r
+In the case (20),the scalar\feld iscanonical( = 1),and there isno potentialV ( )= 0,butifwe include the term\r
+proportionalto the G B invariantand choosethe param eterf0 (16),wem ay obtain the e\u000Bectivephantom cosm ological\r
+solution w ith h0 < 0 orw < 1.N otef0 can be arbitrary heresince the changecould be absorbed into the integration\r
+constantt1 w ithout changing f0. T he value ofh0 is determ ined by (20). Since\r
+d\u001E2\r
+0\r
+dh0\r
+=\r
+12h0 3 8h0 + 7h\r
+2\r
+0\r
+2 (3 7h0)\r
+2\r
+: (22)\r
+itfollow sd\u001E2\r
+0=dh0 = 0 w hen h0 = 0,d\u001E2 =dh0 > 0 w hen h0 > 0,and d\u001E2 =dh0 < 0 w hen h0 < 0 since3 8h0+ 7h\r
+2\r
+0 > 0.\r
+2\r
+0 vanishes w hen h0 = 0 orh0 = 1 and goes to in\fnity w hen h0 goes to 3=7. T he qualitative behavior of 20 versus\r
+h0 is given in Figure 1. T hen there are always three solutions for h0 from (20),one is negative and other two are\r
+positive.W e should also note thatthe solution corresponding to the phantom cosm ology w ith h0 < 0 appearsforany\r
+value of 2\r
+0. A s is show n in A ppendix,the solution w ith h0 < 0 is stable under the perturbations. T he quintessence\r
+dark energy era,w here h0 > 1,also appears for any value of 2"""
+
+[[sections]]
+number = "0"
+title = "T he solution is again stable. For the third solution,"
+text = """
+we \fnd 0 < h0 < 3=7,w hich is notphantom nor quintessence phase.\r
+A s an exam ple,we consider the case that\r
+h0 =\r
+1\r
+60\r
+; (23)\r
+w hich gives,from (18),\r
+w = 1:025 ; (24)\r
+T hisisconsistentw ith theobservationalboundsfore\u000Bectivew (forrecentdiscussion and com pletelistofrefs.,see[11]).\r
+If,in addition,it is assum ed\r
+= 1 ; \u001E\r
+2\r
+0 =\r
+61\r
+112200 2\r
+; (25)\r
+one obtains\r
+V0 = 0 ; t2\r
+1 =\r
+374 2f0\r
+945\r
+: (26)\r
+T herefore even starting from the free canonicalscalar theory before introducing the term proportionalto the G B\r
+invariant,if 0 is chosen as in (25),we m ay obtain a solution w hich reproduces the observed value ofw as in (24),\r
+w here t1 is given by (26). N ote thatf0 can be arbitrary as long asf0 is negative.
+
+5\r
+In case ofthe m odelinduced from the string theory [2],we have V0 = 0 (V ( )= 0) and\r
+2\r
+0 =\r
+2\r
+2\r
+; (27)\r
+in (11). T hen Eq.(20) reduces as\r
+3h\r
+3\r
+0 3h\r
+2\r
+0 7h0 + 3 = 0 ; (28)\r
+w hich can be solved as\r
+h0 = 1:32676;0:388953;1:93781 : (29)\r
+T he solution w ith negative h0 gives\r
+w = 1:50248 : (30)\r
+Such w issm allerthan currently observed value butstillm ay be satisfactory having in m ind the possible oscillations\r
+ofw.\r
+T here is anothersolution of(9) and (10) w ith (11). In the solution, and H are constants,\r
+= ’0 ; H = H 0 ; (31)\r
+w hat correspondsto deSitter space.U sing (9) and (10) w ith (11),one \fnds\r
+H\r
+2\r
+0 =\r
+e\r
+2’ 0\r
+0\r
+8f0\r
+2\r
+: (32)\r
+T herefore in order for the solution to exist,we m ay require f0 < 0. In (32),’0 can be arbitrary. H ence,the H ubble\r
+rate H = H 0 m ight be determ ined by an initialcondition.\r
+In case ofthe m odel(11),the term including the G B invariantalwaysgivesthe contribution in the sam e orderw ith\r
+those from otherterm seven ifthe curvature issm all.T hisisdue to the factorf( ),w hich enhancesthe contribution\r
+w hen the curvature is sm all.\r
+III. LA T E -T IM E A SY M P T O T IC C O SM O LO G Y IN SC A LA R -G B G R A V IT Y A N D B IG R IP\r
+A V O ID A N C E\r
+In the follow ing,another m odel,w hich is slightly di\u000Berentfrom (11),m ay be considered:\r
+V ( )= V0e\r
+2\r
+0 ; f( )= f0e\r
+2\r
+\u000B \u001E 0 ; (\u000B > 1) ; (33)\r
+D i\u000Berentfrom the m odel(11),the m odel(33)w illnotbe solved exactly.W e can only \fnd the asym ptotic qualitative\r
+behavior ofthe solutions. N evertheless,the asym ptotic behavior suggests the existence ofthe cosm ologicalsolution,\r
+w here the value ofw could vary w ith tim e (oscillation)and/orcould depend on the curvature.\r
+A ssum ing the solution behaves as (12) or (13),w hen the curvature is sm all,that is t in (12) or ts t in (13) is\r
+large,the G B term becom essm alland could be neglected sinceitbehaveslike 1=t\r
+2 + 4 or1=(ts t)\r
+2 + 4.W hen the\r
+curvature is sm all,the solution could be given by (17),then the e\u000Bective phantom phase w ith w < 1 could appear\r
+only in case = 1 < 0. O n the other hand,w hen the curvature is large,that istin (12) orts tin (13) is sm all,\r
+the classicalpotentialcould be neglected. W ithout the classicalpotential,by assum ing,instead of(12)\r
+H =\r
+h0\r
+t\r
+; \u001E = \u000B\u001E0 ln\r
+t\r
+t1\r
+; (34)\r
+w hen h0 > 0 or\r
+H =\r
+h0\r
+ts t\r
+; \u001E = \u000B\u001E0 ln\r
+ts t\r
+t1\r
+; (35)
+
+6\r
+w hen h0 < 0,the follow ing equations replace (14) and (15)\r
+0 =\r
+3h\r
+2\r
+0\r
+2\r
++\r
+\r\u000B\r
+2 2\r
+0\r
+2\r
++\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+;\r
+0 = (1 3h0)\r
+2 2\r
+0 +\r
+48f0h\r
+3\r
+0\r
+t\r
+2\r
+1\r
+(h0 1) : (36)\r
+By deleting f0 in the above two equations,one gets\r
+2\r
+0 =\r
+6h\r
+2\r
+0 (1 h0)\r
+\r\u000B2 (3 7h0) 2\r
+; (37)\r
+w hich correspondsto (20). T hen w hen = 1,the solutions of(37) are not qualitatively changed from those of(20),\r
+and there are three solutionsh0 < 0,0 < h0 < 3=7,and h0 > 1. O n the other hand,w hen = 1,since the sign of\r
+the r.h.s. in (20) is changed from = 1 case,as clear from FIG .1,there is only one positive solution forh0. T hen if\r
+the term proportionalto the G B invariantin case\r < 0 (w hich correspondsto a scalarphantom solution w ithoutG B\r
+term ) is included the e\u000Bective w becom es largerthan 1 and the Big R ip singularity is avoided (see [6]for quantum\r
+e\u000Bects accountto escape ofBig R ip). T hat is,in case \r < 0,w hen the curvature is sm allas in the current universe,\r
+the G B term is negligible and the potentialterm dom inates,which givesthe cosm ic acceleration w ith w < 1.T hen\r
+the curvature increases gradually and the universe seem s to tend to the Big R ip singularity [5]. H owever,w hen the\r
+curvature is large,the G B term becom es dom inant and prevents the singularity. H ence,in case \r < 0,the G B term\r
+worksagainstthe Big R ip singularity occurence,like quantum e\u000Bects [6]. W e should note,however,w hen \r > 0,the\r
+G B term generates the Big R ip singularity,w here the scale factor behaves as a (ts t)\r
+h0 w ith h0 < 0. A fter the\r
+G B term dom inates w hen \r < 0,the curvature turns to becom e sm aller. T hen the postentialterm would dom inate\r
+again. T his m ight tellthat the behavior ofthe universe m ight approach to the deSitter sapce w ith w = 1 by the\r
+dam pted oscillation. In fact even in the m odel(33),if(31) is assum ed,there is a deSitter solution corresponding to\r
+(31):\r
+H\r
+2\r
+0 =\r
+e\r
+2’ 0\r
+\u000B \u001E 0\r
+8f0\r
+2\r
+; ’0 =\r
+\u000B\u001E0\r
+2(1 )\r
+ln\r
+8V0f0\r
+2\r
+3\r
+: (38)\r
+In (33),we have assum ed \u000B > 1. Ifwe consider the case that V ( ) = V0e\r
+2\r
+0 and f( ) = f0e\r
+2\r
+\u000B \u001E 0 as in (33) but\r
+0 < \u000B < 1,there appearsa solution w here the term including G B invariantbecom esdom inanteven ifthe curvature is\r
+sm all.By assum ing (34)or(35),Eq.(36)isobtained again.Hence,w hen 0 < \u000B < 1,the solution w here h0 ispositive\r
+orw > 1 even if\r < 0 (scalarphantom )appears.\r
+O n the other hand, there is accelerated universe solution w ith w < 1, that is, h0 < 0 due to the G B term\r
+even if\r > 0. In this case, w hen the curvature is large, the potential is dom inant and the solution is given by\r
+(17) w here w > 1 as long as \r > 0. T he follow ing scenario m ight be possible: in the current expanding universe\r
+w ith sm allcurvature the e\u000Bective w < 1,due to the G B term . W ith such phantom phase,the curvature grow s.\r
+W hen the curvature becom es large enough,the potentialterm is dom inant and the universe expands w ith e\u000Bective\r
+equation of state param eter w > 1. H ence, phantom phase is transient and Big R ip does not occur eventually.\r
+Since the curvature becom essm allerw hen the potentialdom inates,the universe m ay approach to deSitter spacetim e\r
+corresponding to (38) by the dam pted oscilation. In any case,in spite ofthe sign of ,one m ay obtain the solution\r
+describing the phantom cosm ology w ith w < 1 w hen the curvature is sm alland the quintessence (m atter) era w ith\r
+w > 1 w hen the curvature is large.\r
+IV . D ISC U SSIO N\r
+W e considered essentially two m odels w ith exponentialcouplings given by (11) and (33). T he m odel(11) m ay be\r
+considered as the specialcase corresponding to = 1.T he m ain results can be sum m arized as follow s:\r
+1. = 1 case:exactly solvable\r
+(a) V = 0 case:T here are three solutions corresponding to w < 1, 1 < w < 1=3,and w > 5=9.\r
+2.1=\u000B < 1 case:the potentialterm dom inates for sm allcurvature and the G B term for large one.\r
+(a) \r > 0: T here appearsthe Big R ip singularity.
+
+7\r
+(b) \r < 0: T he solution asym ptotically approachesto the deSitter space.\r
+3.1=\u000B > 1 case:the potentialterm dom inates for large curvature and the G B term for sm allone.\r
+(a) \r > 0: T he solution asym ptotically approachesto the deSitter space.\r
+(b) \r < 0: T here w illappear the Big R ips singularity.\r
+For the m odels (11) and (33),in case V0 = 0 (that is,w hen the potentialvanishes),by replacing \u000B\u001E0 w ith 0,it\r
+follow s the two m odels are equivalent. Especially = 1 case has been wellstudied and it has been show n that there\r
+are alwaysthree e\u000Bective cosm ologicalphasescorresponding to the phantom w ith h0 < 0 orw < 1,the quintessence\r
+w ith h0 > 1 or 1 < w < 1=3,and the m atter w ith 0 < h0 < 3=7 or w > 5=9. Even ifV0 6= 0,the m odel(11)\r
+can be solved exactly and the solutions w here h0 and therefore w are constants m ay be found. O n the other hand,\r
+ifV0 6= 0,the m odel(33) cannot be solved exactly but there exist the solutions w here the values ofh0 and therefore\r
+ofw are tim e-dependent. T here could em erge a cosm ology,w hich behaves as phantom one w ith w < 1 w hen the\r
+curvature issm alland asa usualm atterdom inated universe with w > 1 w hen the curvature islarge.M oreover,Big\r
+R ip singularity does not occur.\r
+O ur study indicates that current acceleration m aybe caused by stringy/M -theory e\u000Bects (term s) w hich som ehow\r
+becam e relevantquite recently (in cosm ologicalsense).Itrem ainsa challenge to constructthe consistentdark energy\r
+universe m odelfrom string/M -theory.\r
+A cknow ledgm ents\r
+T his research has been supported in part by JSPS G rants-in-Aid for Scienti\fc R esearch,N o.13135208 (S.N .) and\r
+G rants-in-A id for Scienti\fc R esearch (S),N o.14102004 (M .S.).\r
+A P P E N D IX A : ST A B ILIT Y O F P H A N T O M C O SM O LO G Y\r
+In thisappendix,we check the stability ofthe abovesolutions.T hefollow ing quantitiesareconvenientto introduce:\r
+X\r
+_\r
+H\r
+; Z H\r
+2f0( );\r
+d\r
+dN\r
+a\r
+d\r
+da\r
+=\r
+1\r
+H\r
+d\r
+dt\r
+: (A 1)\r
+T hen by using (9) and (10) w ith (11),one \fnds\r
+dX\r
+N\r
+=\r
+6\r
+2\r
+96X Z\r
+576Z\r
+2 1 \u001A \u0012\r
+18\r
+2\r
+480V0f0\r
+\r\u001E\r
+2"""
+
+[[sections]]
+number = "0"
+title = "X +"
+text = """
+24V0f0\r
+2\r\u001E\r
+2\r
+0Z\r
++\r
+144Z\r
+2\r
++ 264X\r
+2Z\r
+2304X Z 2\r
++ 3\rX 3 +\r
+1152X\r
+2Z2\r
+\r\u001E0\r
+48X\r
+3Z\r
+0\r
+; (A 2)\r
+dZ\r
+dN\r
+= Z\r
+6\r
+2\r
+96X Z\r
+576Z\r
+2 1\r
+12X\r
+2\r
+0\r
++ 6\rX 2 + 96X Z\r
+182V0f0\r
+\r\u001E\r
+2\r
+0\r
+1152Z\r
+2\r
++\r
+96X\r
+2Z\r
+0\r
++\r
+1152X Z 2\r
+\r\u001E0\r
+: (A 3)\r
+For the solution (12) or (13),it follow s\r
+X = X 0\r
+0\r
+h0\r
+; Z = Z0\r
+2f0h\r
+2\r
+0\r
+0t\r
+2\r
+1\r
+: (A 4)\r
+In term s ofX 0 and Z0,Eqs.(14) and (15) can be rew ritten as\r
+0 =\r
+3\r
+2\r
++\r
+\rX 2\r
+0\r
+2\r
++\r
+2V0f0\r
+0Z0\r
++ 24Z0X 0 ; (A 5)\r
+0 = \rX 2\r
+0 3 0\rX 0 +\r
+4V0f0\r
+0Z0\r
++ 24 0Z0 24Z0X 0 : (A 6)
+
+8\r
+For the solution (A 4),by using (A 5) and (A 6),the right hand sides ofEqs.(A 2) and (A 3) vanish consistently. W e\r
+now consider the perturbation around the solution (A 4):\r
+X = X 0 + \u000EX ; Y = Y0 + \u000EY : (A 7)\r
+U sing (A 2) and (A 3),one obtains\r
+d\r
+dN\r
+\u000EX\r
+\u000EY = M\r
+\u000EX\r
+\u000EY ; M =\r
+A~ B~\r
+C~ D~\r
+(A 8)\r
+H ere\r
+A~\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+18\r
+2\r
+480V0f0\r
+\r\u001E\r
+2\r
+0\r
++ 528X 0Z0\r
+2304Z\r
+2\r
+0 + 9\rX 2\r
+0 +\r
+2304X 0Z\r
+2\r
+0\r
+\r\u001E0\r
+144X\r
+2\r
+0Z0\r
+0\r
+;\r
+B~\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+24V0f0\r
+2\r\u001E\r
+2\r
+0Z\r
+2\r
+0\r
++\r
+144\r
+2\r
++ 264X\r
+2\r
+0\r
+4608X 0Z0\r
++\r
+2304X\r
+2\r
+0Z0\r
+\r\u001E0\r
+48X\r
+3\r
+0\r
+0\r
+;\r
+C~ \u0011  Z0\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+12\r
+2\r
+0\r
++ 12\rX 0 + 96Z0 +\r
+192X 0Z0\r
+0\r
++\r
+1152Z\r
+2\r
+0\r
+\r\u001E0\r
+;\r
+D~ \u0011  Z0\r
+6\r
+2\r
+96X 0Z0\r
+576Z\r
+2\r
+0\r
+1\r
+96X 0\r
+2304Z0\r
++\r
+96X\r
+2\r
+0\r
+0\r
++\r
+2304X 0Z0\r
+\r\u001E0\r
+: (A 9)\r
+Ifthe realparts ofallthe eigenvalues ofthe m atrix M are negative,the perturbation becom es sm alland the system\r
+is stable. T hen the condition ofthe stability is given by\r
+A~+ D < ~ 0 ; A~D~ B~C > ~ 0 : (A 10)\r
+First,the check ofthe stability forV = 0 case is in order.By using (A 4),(A 5),and (A 6),we \fnd\r
+X\r
+2\r
+0 =\r
+2\r
+0\r
+h\r
+2\r
+0\r
+=\r
+6(h0 1)\r
+2 (7h0 3)\r
+; Z 2\r
+0 =\r
+(3h0 1)2\r
+96 2 (h0 1)(7h0 3)\r
+; X 0Z0 =\r
+(3h0 1)\r
+4 2 (7h0 3)\r
+: (A 11)\r
+In orderthatX\r
+2\r
+0 and Z\r
+2\r
+0 are positive,it follow s\r
+h0 > 1 orh0 <\r
+3\r
+7\r
+= 0:428571:::; w hen \r > 0\r
+or 3\r
+7\r
+< h0 < 1 ; w hen \r < 0 : (A 12)\r
+By using (A 11),A~,B~,C~,and D~ in (A 9) can be expressed in term s ofh0:\r
+A~ =\r
+(h0 1) 9h\r
+2\r
+0 8h0 + 1\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+; B~ =\r
+72(h0 1)2\r
+(7h\r
+2\r
+0 6h0 + 1)\r
+; (A 13)\r
+C~ =\r
+(2h0 1)(3h0 1) 3h\r
+2\r
+0 1\r
+12h0 (h0 1)(7h\r
+2\r
+0 6h0 + 1)\r
+; D~ =\r
+4(h0 1)2\r
+(3h0 1)\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+:\r
+T hus\r
+A~+ D~ =\r
+(h0 1) 21h\r
+2\r
+0 24h0 + 5\r
+h0 (7h\r
+2\r
+0 6h0 + 1)\r
+; (A 14)\r
+A~D~ B~C~ =\r
+2(h0 1)(3h0 1) 36h\r
+4\r
+0 61h\r
+3\r
+0 + 46h\r
+2\r
+0 17h0 + 2\r
+h\r
+2\r
+0 (7h\r
+2\r
+0 6h0 + 1)2\r
+: (A 15)\r
+T he solutions of7h\r
+2\r
+0 6h0 + 1 = 0 are given by\r
+h0 = p =\r
+3\r
+p\r
+2\r
+7\r
+= 0:630602:::;0:226541 ; (A 16)
+
+9\r
+the solutions of21h\r
+2\r
+0 24h0 + 5 = 0 are\r
+h0 = q =\r
+12\r
+p\r
+39\r
+21\r
+= 0:868809:::;0:274048:::; (A 17)\r
+and the num ericalvalues ofthe realsolutionsof36h\r
+4\r
+0 61h\r
+3\r
+0 + 46h\r
+2\r
+0 17h0 + 2 = 0 are\r
+h0 = r = 0:637709:::;0:202029::: (A 18)\r
+T hen A~+ D~ is negative w hen\r
+h0 < 0 ; p < h0 < q ; p+ < h0 < q+ h0 > 1 ; (A 19)\r
+and A~D~ B~C > ~ 0 is positive w hen\r
+h0 < r ; p < h0 <\r
+1\r
+3\r
+; p+ < h0 < r+ ; h0 > 1 : (A 20)\r
+T herefore the system is stable if\r
+h0 < 0 ; p < h0 < q ; p+ < h0 < r+ ; h0 > 1 : (A 21)\r
+Especially the case corresponding to phantom cosm ology w ith h0 < 0 is stable.\r
+[1] I.B revik,S.N ojiri,S.D .O dintsov and L.Vanzo,Phys.R ev.D 70,043520 (2004) [arX iv:hep-th/0401073].\r
+[2] I.A ntoniadis,J.R izos,K .Tam vakis,N ucl.Phys.B 415,497 (1994) [arX iv:hep-th/9305025];\r
+P.K anti,J.R izos and K .Tam vakis,Phys.R ev.D 59,083512 (1999) [arX iv:gr-qc/9806085].\r
+[3] N . E. M avrom atos and J. R izos, Phys. R ev. D 62, 124004 (2000) [arX iv:hep-th/0008074]; JH EP 0207, 045 (2002)\r
+[arX iv:hep-th/0205099];Int.J.M od.Phys.A 18,57 (2003) [arX iv:hep-th/0205299].\r
+[4] M .G asperini,M .M aggiore and G .Veneziano,N ucl.Phys.B 494,315 (1997) [arX iv:hep-th/9611039];\r
+R .B rustein and R .M adden,Phys.R ev.D 57,712 (1998) [arX iv:hep-th/9708046];\r
+C .C artier,E.J.C opeland and R .M adden,JH EP 0001,035 (2000) [arX iv:hep-th/9910169];\r
+S.T sujikawa,Phys.Lett.B 526,179 (2002) [arX iv:gr-qc/0110124];\r
+A .Toporensky and S.T sujikawa,Phys.R ev.D 65,123509 (2002) [arX iv:gr-qc/0202067];\r
+S.T sujikawa,R .B randenberger and F.Finelli,Phys.R ev.D 66,083513 (2002) [arX iv:hep-th/0207228].\r
+[5] R .R .C aldwell,M .K am ionkow skiand N .N .W einberg,Phys.R ev.Lett.91,071301 (2003) [arX iv:astro-ph/0302506];\r
+B .M cInnes,JH EP 0208,029 (2002) [arX iv:hep-th/0112066];arX iv:hep-th/0502209;\r
+P.G onzalez-D iaz,Phys.Lett.B 586,1 (2004) [arX iv:astro-ph/0312579];\r
+M .Sam iand A .Toporensky,M od.Phys.Lett.A 19,1509 (2004) [arX iv:gr-qc/0312009];\r
+P.G onzales-D iaz and C .Siguenza,N ucl.Phys.B 697,363 (2004) [arX iv:astro-ph/0407421];\r
+F.Piazza and S.T sujikawa,JC A P 0407,004 (2004) [arX iv:hep-th/0405054];\r
+L.P.C him ento and R .Lazkoz,M od.Phys.Lett.A 19,2479 (2004) [arX iv:gr-qc/0405020];\r
+G .C alcagni,Phys.R ev.D 71,023511 (2005) [arX iv:arX iv:gr-qc/0410027];\r
+J.B arrow ,C lass.Q uant.G rav.21,L79 (2004) [arX iv:gr-qc/0403084];\r
+P.W u and H .Yu,arX iv:astro-ph/0407424;\r
+S.N esseris and L.Perivolaropoulos,Phys.R ev.D 70,123529 (2004) [arX iv:astro-ph/0410309];\r
+P.Scherrer,arX iv:astro-ph/0410508;\r
+Z.G uo,Y .Piao,X .Zhang and Y .Zhang,Phys.Lett.B 608 177 (2005) [arX iv:astro-ph/0410654];\r
+M .C .B .A bdalla,S.N ojiriand S.D .O dintsov,C lass.Q uant.G rav.22,L35 (2005) [arX iv:hep-th/0409177].\r
+Y .W ei,arX iv:gr-qc/0410050;arX iv:gr-qc/0502077;\r
+H .Stefancic,arX iv:astro-ph/0411630;\r
+S.K .Srivastava,arX iv:hep-th/0411221;\r
+M .D abrow skiand T .Stachow iak,arX iv:hep-th/0411199;\r
+R .C urbelo,T .G onzalez and I.Q uiroz,arX iv:astro-ph/0502141;\r
+V .Sahni,arX iv:astro-ph/0502032;\r
+B .G um judpai,T .N askar,M .Sam iand S.T sujikawa,arX iv:hep-th/0502191.\r
+[6] S. N ojiri and S. D . O dintsov, Phys. Lett. B 595, 1 (2004) [arX iv:hep-th/0405078]; Phys. R ev. D 70, 103522 (2004)\r
+[arX iv:hep-th/0408170];\r
+E.Elizalde,S.N ojiriand S.D .O dintsov,Phys.R ev.D 70,043539 (2004) [arX iv:hep-th/0405034].\r
+[7] S.N ojiri,S.D .O dintsov and S.T sujikawa,arX iv:hep-th/0501025.\r
+[8] R .C aldwell,Phys.Lett.B 545,23 (2002) [arX iv:astro-ph/9908168 ].\r
+[9] S.N ojiriand S.D .O dintsov,Phys.Lett.B 562,147 (2003) [arX iv:hep-th/0303117].\r
+[10] S.N ojiriand S.D . O dintsov,Phys.Lett.B 599,137 (2004) [arX iv:astro-ph/0403622].\r
+[11] R .Lazkoz,S.N esseris and L.Perivolaropoulos,arX iv:astro-ph/0503230."""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+image_path = "images/image_p2_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 2
+image_path = "images/image_p2_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 2
+image_path = "images/image_p2_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 2
+image_path = "images/image_p2_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 2
+image_path = "images/image_p2_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 2
+image_path = "images/image_p2_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 2
+image_path = "images/image_p2_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 2
+image_path = "images/image_p2_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 2
+image_path = "images/image_p2_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 2
+image_path = "images/image_p2_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 2
+image_path = "images/image_p2_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 2
+image_path = "images/image_p2_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 2
+image_path = "images/image_p2_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 2
+image_path = "images/image_p2_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 2
+image_path = "images/image_p2_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 2
+image_path = "images/image_p2_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 2
+image_path = "images/image_p2_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 2
+image_path = "images/image_p2_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 3
+image_path = "images/image_p3_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 3
+image_path = "images/image_p3_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 3
+image_path = "images/image_p3_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 3
+image_path = "images/image_p3_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 3
+image_path = "images/image_p3_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 3
+image_path = "images/image_p3_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 3
+image_path = "images/image_p3_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 3
+image_path = "images/image_p3_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 3
+image_path = "images/image_p3_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 3
+image_path = "images/image_p3_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 3
+image_path = "images/image_p3_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 3
+image_path = "images/image_p3_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 3
+image_path = "images/image_p3_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 3
+image_path = "images/image_p3_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 3
+image_path = "images/image_p3_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 3
+image_path = "images/image_p3_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 3
+image_path = "images/image_p3_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 3
+image_path = "images/image_p3_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 3
+image_path = "images/image_p3_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 4
+image_path = "images/image_p4_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 4
+image_path = "images/image_p4_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 4
+image_path = "images/image_p4_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 4
+image_path = "images/image_p4_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 4
+image_path = "images/image_p4_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 4
+image_path = "images/image_p4_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 4
+image_path = "images/image_p4_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 4
+image_path = "images/image_p4_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 4
+image_path = "images/image_p4_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 4
+image_path = "images/image_p4_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 4
+image_path = "images/image_p4_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 4
+image_path = "images/image_p4_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 4
+image_path = "images/image_p4_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 4
+image_path = "images/image_p4_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 4
+image_path = "images/image_p4_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 4
+image_path = "images/image_p4_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 4
+image_path = "images/image_p4_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 4
+image_path = "images/image_p4_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 4
+image_path = "images/image_p4_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 4
+image_path = "images/image_p4_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 4
+image_path = "images/image_p4_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 4
+image_path = "images/image_p4_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 4
+image_path = "images/image_p4_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 4
+image_path = "images/image_p4_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 4
+image_path = "images/image_p4_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 4
+image_path = "images/image_p4_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 4
+image_path = "images/image_p4_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 4
+image_path = "images/image_p4_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 4
+image_path = "images/image_p4_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 4
+image_path = "images/image_p4_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 4
+image_path = "images/image_p4_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 4
+image_path = "images/image_p4_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 4
+image_path = "images/image_p4_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 4
+image_path = "images/image_p4_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 4
+image_path = "images/image_p4_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 4
+image_path = "images/image_p4_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 4
+image_path = "images/image_p4_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 4
+image_path = "images/image_p4_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 4
+image_path = "images/image_p4_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 4
+image_path = "images/image_p4_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 4
+image_path = "images/image_p4_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 4
+image_path = "images/image_p4_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 4
+image_path = "images/image_p4_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 4
+image_path = "images/image_p4_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 4
+image_path = "images/image_p4_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 4
+image_path = "images/image_p4_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 4
+image_path = "images/image_p4_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 4
+image_path = "images/image_p4_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 4
+image_path = "images/image_p4_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 4
+image_path = "images/image_p4_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 4
+image_path = "images/image_p4_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 4
+image_path = "images/image_p4_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 4
+image_path = "images/image_p4_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 4
+image_path = "images/image_p4_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 4
+image_path = "images/image_p4_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 4
+image_path = "images/image_p4_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 4
+image_path = "images/image_p4_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 4
+image_path = "images/image_p4_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 4
+image_path = "images/image_p4_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 4
+image_path = "images/image_p4_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 4
+image_path = "images/image_p4_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 4
+image_path = "images/image_p4_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 4
+image_path = "images/image_p4_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 4
+image_path = "images/image_p4_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 4
+image_path = "images/image_p4_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 4
+image_path = "images/image_p4_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 4
+image_path = "images/image_p4_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 4
+image_path = "images/image_p4_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 4
+image_path = "images/image_p4_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 4
+image_path = "images/image_p4_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 4
+image_path = "images/image_p4_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 4
+image_path = "images/image_p4_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 4
+image_path = "images/image_p4_112.png"
+
+[[figures]]
+label = "fig:113"
+page_num = 4
+image_path = "images/image_p4_113.png"
+
+[[figures]]
+label = "fig:114"
+page_num = 4
+image_path = "images/image_p4_114.png"
+
+[[figures]]
+label = "fig:115"
+page_num = 4
+image_path = "images/image_p4_115.png"
+
+[[figures]]
+label = "fig:116"
+page_num = 4
+image_path = "images/image_p4_116.png"
+
+[[figures]]
+label = "fig:117"
+page_num = 4
+image_path = "images/image_p4_117.png"
+
+[[figures]]
+label = "fig:118"
+page_num = 4
+image_path = "images/image_p4_118.png"
+
+[[figures]]
+label = "fig:119"
+page_num = 4
+image_path = "images/image_p4_119.png"
+
+[[figures]]
+label = "fig:120"
+page_num = 4
+image_path = "images/image_p4_120.png"
+
+[[figures]]
+label = "fig:121"
+page_num = 4
+image_path = "images/image_p4_121.png"
+
+[[figures]]
+label = "fig:122"
+page_num = 4
+image_path = "images/image_p4_122.png"
+
+[[figures]]
+label = "fig:123"
+page_num = 4
+image_path = "images/image_p4_123.png"
+
+[[figures]]
+label = "fig:124"
+page_num = 4
+image_path = "images/image_p4_124.png"
+
+[[figures]]
+label = "fig:125"
+page_num = 4
+image_path = "images/image_p4_125.png"
+
+[[figures]]
+label = "fig:126"
+page_num = 4
+image_path = "images/image_p4_126.png"
+
+[[figures]]
+label = "fig:127"
+page_num = 4
+image_path = "images/image_p4_127.png"
+
+[[figures]]
+label = "fig:128"
+page_num = 4
+image_path = "images/image_p4_128.png"
+
+[[figures]]
+label = "fig:129"
+page_num = 4
+image_path = "images/image_p4_129.png"
+
+[[figures]]
+label = "fig:130"
+page_num = 4
+image_path = "images/image_p4_130.png"
+
+[[figures]]
+label = "fig:131"
+page_num = 4
+image_path = "images/image_p4_131.png"
+
+[[figures]]
+label = "fig:132"
+page_num = 4
+image_path = "images/image_p4_132.png"
+
+[[figures]]
+label = "fig:133"
+page_num = 4
+image_path = "images/image_p4_133.png"
+
+[[figures]]
+label = "fig:134"
+page_num = 4
+image_path = "images/image_p4_134.png"
+
+[[figures]]
+label = "fig:135"
+page_num = 4
+image_path = "images/image_p4_135.png"
+
+[[figures]]
+label = "fig:136"
+page_num = 4
+image_path = "images/image_p4_136.png"
+
+[[figures]]
+label = "fig:137"
+page_num = 4
+image_path = "images/image_p4_137.png"
+
+[[figures]]
+label = "fig:138"
+page_num = 4
+image_path = "images/image_p4_138.png"
+
+[[figures]]
+label = "fig:139"
+page_num = 4
+image_path = "images/image_p4_139.png"
+
+[[figures]]
+label = "fig:140"
+page_num = 4
+image_path = "images/image_p4_140.png"
+
+[[figures]]
+label = "fig:141"
+page_num = 4
+image_path = "images/image_p4_141.png"
+
+[[figures]]
+label = "fig:142"
+page_num = 4
+image_path = "images/image_p4_142.png"
+
+[[figures]]
+label = "fig:143"
+page_num = 4
+image_path = "images/image_p4_143.png"
+
+[[figures]]
+label = "fig:144"
+page_num = 4
+image_path = "images/image_p4_144.png"
+
+[[figures]]
+label = "fig:145"
+page_num = 4
+image_path = "images/image_p4_145.png"
+
+[[figures]]
+label = "fig:146"
+page_num = 4
+image_path = "images/image_p4_146.png"
+
+[[figures]]
+label = "fig:147"
+page_num = 4
+image_path = "images/image_p4_147.png"
+
+[[figures]]
+label = "fig:148"
+page_num = 4
+image_path = "images/image_p4_148.png"
+
+[[figures]]
+label = "fig:149"
+page_num = 4
+image_path = "images/image_p4_149.png"
+
+[[figures]]
+label = "fig:150"
+page_num = 4
+image_path = "images/image_p4_150.png"
+
+[[figures]]
+label = "fig:151"
+page_num = 4
+image_path = "images/image_p4_151.png"
+
+[[figures]]
+label = "fig:152"
+page_num = 4
+image_path = "images/image_p4_152.png"
+
+[[figures]]
+label = "fig:153"
+page_num = 4
+image_path = "images/image_p4_153.png"
+
+[[figures]]
+label = "fig:154"
+page_num = 4
+image_path = "images/image_p4_154.png"
+
+[[figures]]
+label = "fig:155"
+page_num = 4
+image_path = "images/image_p4_155.png"
+
+[[figures]]
+label = "fig:156"
+page_num = 4
+image_path = "images/image_p4_156.png"
+
+[[figures]]
+label = "fig:157"
+page_num = 4
+image_path = "images/image_p4_157.png"
+
+[[figures]]
+label = "fig:158"
+page_num = 4
+image_path = "images/image_p4_158.png"
+
+[[figures]]
+label = "fig:159"
+page_num = 4
+image_path = "images/image_p4_159.png"
+
+[[figures]]
+label = "fig:160"
+page_num = 4
+image_path = "images/image_p4_160.png"
+
+[[figures]]
+label = "fig:161"
+page_num = 4
+image_path = "images/image_p4_161.png"
+
+[[figures]]
+label = "fig:162"
+page_num = 4
+image_path = "images/image_p4_162.png"
+
+[[figures]]
+label = "fig:163"
+page_num = 4
+image_path = "images/image_p4_163.png"
+
+[[figures]]
+label = "fig:164"
+page_num = 4
+image_path = "images/image_p4_164.png"
+
+[[figures]]
+label = "fig:165"
+page_num = 4
+image_path = "images/image_p4_165.png"
+
+[[figures]]
+label = "fig:166"
+page_num = 4
+image_path = "images/image_p4_166.png"
+
+[[figures]]
+label = "fig:167"
+page_num = 4
+image_path = "images/image_p4_167.png"
+
+[[figures]]
+label = "fig:168"
+page_num = 4
+image_path = "images/image_p4_168.png"
+
+[[figures]]
+label = "fig:169"
+page_num = 4
+image_path = "images/image_p4_169.png"
+
+[[figures]]
+label = "fig:170"
+page_num = 4
+image_path = "images/image_p4_170.png"
+
+[[figures]]
+label = "fig:171"
+page_num = 4
+image_path = "images/image_p4_171.png"
+
+[[figures]]
+label = "fig:172"
+page_num = 4
+image_path = "images/image_p4_172.png"
+
+[[figures]]
+label = "fig:173"
+page_num = 4
+image_path = "images/image_p4_173.png"
+
+[[figures]]
+label = "fig:174"
+page_num = 4
+image_path = "images/image_p4_174.png"
+
+[[figures]]
+label = "fig:175"
+page_num = 4
+image_path = "images/image_p4_175.png"
+
+[[figures]]
+label = "fig:176"
+page_num = 4
+image_path = "images/image_p4_176.png"
+
+[[figures]]
+label = "fig:177"
+page_num = 4
+image_path = "images/image_p4_177.png"
+
+[[figures]]
+label = "fig:178"
+page_num = 4
+image_path = "images/image_p4_178.png"
+
+[[figures]]
+label = "fig:179"
+page_num = 4
+image_path = "images/image_p4_179.png"
+
+[[figures]]
+label = "fig:180"
+page_num = 4
+image_path = "images/image_p4_180.png"
+
+[[figures]]
+label = "fig:181"
+page_num = 4
+image_path = "images/image_p4_181.png"
+
+[[figures]]
+label = "fig:182"
+page_num = 4
+image_path = "images/image_p4_182.png"
+
+[[figures]]
+label = "fig:183"
+page_num = 4
+image_path = "images/image_p4_183.png"
+
+[[figures]]
+label = "fig:184"
+page_num = 4
+image_path = "images/image_p4_184.png"
+
+[[figures]]
+label = "fig:185"
+page_num = 4
+image_path = "images/image_p4_185.png"
+
+[[figures]]
+label = "fig:186"
+page_num = 4
+image_path = "images/image_p4_186.png"
+
+[[figures]]
+label = "fig:187"
+page_num = 4
+image_path = "images/image_p4_187.png"
+
+[[figures]]
+label = "fig:188"
+page_num = 4
+image_path = "images/image_p4_188.png"
+
+[[figures]]
+label = "fig:189"
+page_num = 4
+image_path = "images/image_p4_189.png"
+
+[[figures]]
+label = "fig:190"
+page_num = 4
+image_path = "images/image_p4_190.png"
+
+[[figures]]
+label = "fig:191"
+page_num = 4
+image_path = "images/image_p4_191.png"
+
+[[figures]]
+label = "fig:192"
+page_num = 4
+image_path = "images/image_p4_192.png"
+
+[[figures]]
+label = "fig:193"
+page_num = 4
+image_path = "images/image_p4_193.png"
+
+[[figures]]
+label = "fig:194"
+page_num = 4
+image_path = "images/image_p4_194.png"
+
+[[figures]]
+label = "fig:195"
+page_num = 4
+image_path = "images/image_p4_195.png"
+
+[[figures]]
+label = "fig:196"
+page_num = 4
+image_path = "images/image_p4_196.png"
+
+[[figures]]
+label = "fig:197"
+page_num = 4
+image_path = "images/image_p4_197.png"
+
+[[figures]]
+label = "fig:198"
+page_num = 4
+image_path = "images/image_p4_198.png"
+
+[[figures]]
+label = "fig:199"
+page_num = 4
+image_path = "images/image_p4_199.png"
+
+[[figures]]
+label = "fig:200"
+page_num = 4
+image_path = "images/image_p4_200.png"
+
+[[figures]]
+label = "fig:201"
+page_num = 4
+image_path = "images/image_p4_201.png"
+
+[[figures]]
+label = "fig:202"
+page_num = 4
+image_path = "images/image_p4_202.png"
+
+[[figures]]
+label = "fig:203"
+page_num = 4
+image_path = "images/image_p4_203.png"
+
+[[figures]]
+label = "fig:204"
+page_num = 4
+image_path = "images/image_p4_204.png"
+
+[[figures]]
+label = "fig:205"
+page_num = 4
+image_path = "images/image_p4_205.png"
+
+[[figures]]
+label = "fig:206"
+page_num = 4
+image_path = "images/image_p4_206.png"
+
+[[figures]]
+label = "fig:207"
+page_num = 4
+image_path = "images/image_p4_207.png"
+
+[[figures]]
+label = "fig:208"
+page_num = 4
+image_path = "images/image_p4_208.png"
+
+[[figures]]
+label = "fig:209"
+page_num = 4
+image_path = "images/image_p4_209.png"
+
+[[figures]]
+label = "fig:210"
+page_num = 4
+image_path = "images/image_p4_210.png"
+
+[[figures]]
+label = "fig:211"
+page_num = 4
+image_path = "images/image_p4_211.png"
+
+[[figures]]
+label = "fig:212"
+page_num = 4
+image_path = "images/image_p4_212.png"
+
+[[figures]]
+label = "fig:213"
+page_num = 4
+image_path = "images/image_p4_213.png"
+
+[[figures]]
+label = "fig:214"
+page_num = 4
+image_path = "images/image_p4_214.png"
+
+[[figures]]
+label = "fig:215"
+page_num = 4
+image_path = "images/image_p4_215.png"
+
+[[figures]]
+label = "fig:216"
+page_num = 4
+image_path = "images/image_p4_216.png"
+
+[[figures]]
+label = "fig:217"
+page_num = 4
+image_path = "images/image_p4_217.png"
+
+[[figures]]
+label = "fig:218"
+page_num = 4
+image_path = "images/image_p4_218.png"
+
+[[figures]]
+label = "fig:219"
+page_num = 4
+image_path = "images/image_p4_219.png"
+
+[[figures]]
+label = "fig:220"
+page_num = 4
+image_path = "images/image_p4_220.png"
+
+[[figures]]
+label = "fig:221"
+page_num = 4
+image_path = "images/image_p4_221.png"
+
+[[figures]]
+label = "fig:222"
+page_num = 4
+image_path = "images/image_p4_222.png"
+
+[[figures]]
+label = "fig:223"
+page_num = 4
+image_path = "images/image_p4_223.png"
+
+[[figures]]
+label = "fig:224"
+page_num = 4
+image_path = "images/image_p4_224.png"
+
+[[figures]]
+label = "fig:225"
+page_num = 4
+image_path = "images/image_p4_225.png"
+
+[[figures]]
+label = "fig:226"
+page_num = 4
+image_path = "images/image_p4_226.png"
+
+[[figures]]
+label = "fig:227"
+page_num = 4
+image_path = "images/image_p4_227.png"
+
+[[figures]]
+label = "fig:228"
+page_num = 4
+image_path = "images/image_p4_228.png"
+
+[[figures]]
+label = "fig:229"
+page_num = 4
+image_path = "images/image_p4_229.png"
+
+[[figures]]
+label = "fig:230"
+page_num = 4
+image_path = "images/image_p4_230.png"
+
+[[figures]]
+label = "fig:231"
+page_num = 4
+image_path = "images/image_p4_231.png"
+
+[[figures]]
+label = "fig:232"
+page_num = 4
+image_path = "images/image_p4_232.png"
+
+[[figures]]
+label = "fig:233"
+page_num = 4
+image_path = "images/image_p4_233.png"
+
+[[figures]]
+label = "fig:234"
+page_num = 4
+image_path = "images/image_p4_234.png"
+
+[[figures]]
+label = "fig:235"
+page_num = 4
+image_path = "images/image_p4_235.png"
+
+[[figures]]
+label = "fig:236"
+page_num = 4
+image_path = "images/image_p4_236.png"
+
+[[figures]]
+label = "fig:237"
+page_num = 4
+image_path = "images/image_p4_237.png"
+
+[[figures]]
+label = "fig:238"
+page_num = 4
+image_path = "images/image_p4_238.png"
+
+[[figures]]
+label = "fig:239"
+page_num = 4
+image_path = "images/image_p4_239.png"
+
+[[figures]]
+label = "fig:240"
+page_num = 4
+image_path = "images/image_p4_240.png"
+
+[[figures]]
+label = "fig:241"
+page_num = 4
+image_path = "images/image_p4_241.png"
+
+[[figures]]
+label = "fig:242"
+page_num = 4
+image_path = "images/image_p4_242.png"
+
+[[figures]]
+label = "fig:243"
+page_num = 4
+image_path = "images/image_p4_243.png"
+
+[[figures]]
+label = "fig:244"
+page_num = 4
+image_path = "images/image_p4_244.png"
+
+[[figures]]
+label = "fig:245"
+page_num = 4
+image_path = "images/image_p4_245.png"
+
+[[figures]]
+label = "fig:246"
+page_num = 4
+image_path = "images/image_p4_246.png"
+
+[[figures]]
+label = "fig:247"
+page_num = 4
+image_path = "images/image_p4_247.png"
+
+[[figures]]
+label = "fig:248"
+page_num = 4
+image_path = "images/image_p4_248.png"
+
+[[figures]]
+label = "fig:249"
+page_num = 4
+image_path = "images/image_p4_249.png"
+
+[[figures]]
+label = "fig:250"
+page_num = 4
+image_path = "images/image_p4_250.png"
+
+[[figures]]
+label = "fig:251"
+page_num = 4
+image_path = "images/image_p4_251.png"
+
+[[figures]]
+label = "fig:252"
+page_num = 4
+image_path = "images/image_p4_252.png"
+
+[[figures]]
+label = "fig:253"
+page_num = 4
+image_path = "images/image_p4_253.png"
+
+[[figures]]
+label = "fig:254"
+page_num = 4
+image_path = "images/image_p4_254.png"
+
+[[figures]]
+label = "fig:255"
+page_num = 4
+image_path = "images/image_p4_255.png"
+
+[[figures]]
+label = "fig:256"
+page_num = 4
+image_path = "images/image_p4_256.png"
+
+[[figures]]
+label = "fig:257"
+page_num = 4
+image_path = "images/image_p4_257.png"
+
+[[figures]]
+label = "fig:258"
+page_num = 4
+image_path = "images/image_p4_258.png"
+
+[[figures]]
+label = "fig:259"
+page_num = 4
+image_path = "images/image_p4_259.png"
+
+[[figures]]
+label = "fig:260"
+page_num = 4
+image_path = "images/image_p4_260.png"
+
+[[figures]]
+label = "fig:261"
+page_num = 4
+image_path = "images/image_p4_261.png"
+
+[[figures]]
+label = "fig:262"
+page_num = 4
+image_path = "images/image_p4_262.png"
+
+[[figures]]
+label = "fig:263"
+page_num = 4
+image_path = "images/image_p4_263.png"
+
+[[figures]]
+label = "fig:264"
+page_num = 4
+image_path = "images/image_p4_264.png"
+
+[[figures]]
+label = "fig:265"
+page_num = 4
+image_path = "images/image_p4_265.png"
+
+[[figures]]
+label = "fig:266"
+page_num = 4
+image_path = "images/image_p4_266.png"
+
+[[figures]]
+label = "fig:267"
+page_num = 4
+image_path = "images/image_p4_267.png"
+
+[[figures]]
+label = "fig:268"
+page_num = 4
+image_path = "images/image_p4_268.png"
+
+[[figures]]
+label = "fig:269"
+page_num = 4
+image_path = "images/image_p4_269.png"
+
+[[figures]]
+label = "fig:270"
+page_num = 4
+image_path = "images/image_p4_270.png"
+
+[[figures]]
+label = "fig:271"
+page_num = 4
+image_path = "images/image_p4_271.png"
+
+[[figures]]
+label = "fig:272"
+page_num = 4
+image_path = "images/image_p4_272.png"
+
+[[figures]]
+label = "fig:273"
+page_num = 4
+image_path = "images/image_p4_273.png"
+
+[[figures]]
+label = "fig:274"
+page_num = 4
+image_path = "images/image_p4_274.png"
+
+[[figures]]
+label = "fig:275"
+page_num = 4
+image_path = "images/image_p4_275.png"
+
+[[figures]]
+label = "fig:276"
+page_num = 4
+image_path = "images/image_p4_276.png"
+
+[[figures]]
+label = "fig:277"
+page_num = 4
+image_path = "images/image_p4_277.png"
+
+[[figures]]
+label = "fig:278"
+page_num = 4
+image_path = "images/image_p4_278.png"
+
+[[figures]]
+label = "fig:279"
+page_num = 4
+image_path = "images/image_p4_279.png"
+
+[[figures]]
+label = "fig:280"
+page_num = 4
+image_path = "images/image_p4_280.png"
+
+[[figures]]
+label = "fig:281"
+page_num = 4
+image_path = "images/image_p4_281.png"
+
+[[figures]]
+label = "fig:282"
+page_num = 4
+image_path = "images/image_p4_282.png"
+
+[[figures]]
+label = "fig:283"
+page_num = 4
+image_path = "images/image_p4_283.png"
+
+[[figures]]
+label = "fig:284"
+page_num = 4
+image_path = "images/image_p4_284.png"
+
+[[figures]]
+label = "fig:285"
+page_num = 4
+image_path = "images/image_p4_285.png"
+
+[[figures]]
+label = "fig:286"
+page_num = 4
+image_path = "images/image_p4_286.png"
+
+[[figures]]
+label = "fig:287"
+page_num = 4
+image_path = "images/image_p4_287.png"
+
+[[figures]]
+label = "fig:288"
+page_num = 4
+image_path = "images/image_p4_288.png"
+
+[[figures]]
+label = "fig:289"
+page_num = 4
+image_path = "images/image_p4_289.png"
+
+[[figures]]
+label = "fig:290"
+page_num = 4
+image_path = "images/image_p4_290.png"
+
+[[figures]]
+label = "fig:291"
+page_num = 4
+image_path = "images/image_p4_291.png"
+
+[[figures]]
+label = "fig:292"
+page_num = 4
+image_path = "images/image_p4_292.png"
+
+[[figures]]
+label = "fig:293"
+page_num = 4
+image_path = "images/image_p4_293.png"
+
+[[figures]]
+label = "fig:294"
+page_num = 4
+image_path = "images/image_p4_294.png"
+
+[[figures]]
+label = "fig:295"
+page_num = 4
+image_path = "images/image_p4_295.png"
+
+[[figures]]
+label = "fig:296"
+page_num = 4
+image_path = "images/image_p4_296.png"
+
+[[figures]]
+label = "fig:297"
+page_num = 4
+image_path = "images/image_p4_297.png"
+
+[[figures]]
+label = "fig:298"
+page_num = 4
+image_path = "images/image_p4_298.png"
+
+[[figures]]
+label = "fig:299"
+page_num = 4
+image_path = "images/image_p4_299.png"
+
+[[figures]]
+label = "fig:300"
+page_num = 4
+image_path = "images/image_p4_300.png"
+
+[[figures]]
+label = "fig:301"
+page_num = 4
+image_path = "images/image_p4_301.png"
+
+[[figures]]
+label = "fig:302"
+page_num = 4
+image_path = "images/image_p4_302.png"
+
+[[figures]]
+label = "fig:303"
+page_num = 4
+image_path = "images/image_p4_303.png"
+
+[[figures]]
+label = "fig:304"
+page_num = 4
+image_path = "images/image_p4_304.png"
+
+[[figures]]
+label = "fig:305"
+page_num = 4
+image_path = "images/image_p4_305.png"
+
+[[figures]]
+label = "fig:306"
+page_num = 4
+image_path = "images/image_p4_306.png"
+
+[[figures]]
+label = "fig:307"
+page_num = 4
+image_path = "images/image_p4_307.png"
+
+[[figures]]
+label = "fig:308"
+page_num = 4
+image_path = "images/image_p4_308.png"
+
+[[figures]]
+label = "fig:309"
+page_num = 4
+image_path = "images/image_p4_309.png"
+
+[[figures]]
+label = "fig:310"
+page_num = 4
+image_path = "images/image_p4_310.png"
+
+[[figures]]
+label = "fig:311"
+page_num = 4
+image_path = "images/image_p4_311.png"
+
+[[figures]]
+label = "fig:312"
+page_num = 4
+image_path = "images/image_p4_312.png"
+
+[[figures]]
+label = "fig:313"
+page_num = 4
+image_path = "images/image_p4_313.png"
+
+[[figures]]
+label = "fig:314"
+page_num = 4
+image_path = "images/image_p4_314.png"
+
+[[figures]]
+label = "fig:315"
+page_num = 4
+image_path = "images/image_p4_315.png"
+
+[[figures]]
+label = "fig:316"
+page_num = 4
+image_path = "images/image_p4_316.png"
+
+[[figures]]
+label = "fig:317"
+page_num = 4
+image_path = "images/image_p4_317.png"
+
+[[figures]]
+label = "fig:318"
+page_num = 4
+image_path = "images/image_p4_318.png"
+
+[[figures]]
+label = "fig:319"
+page_num = 4
+image_path = "images/image_p4_319.png"
+
+[[figures]]
+label = "fig:320"
+page_num = 4
+image_path = "images/image_p4_320.png"
+
+[[figures]]
+label = "fig:321"
+page_num = 4
+image_path = "images/image_p4_321.png"
+
+[[figures]]
+label = "fig:322"
+page_num = 4
+image_path = "images/image_p4_322.png"
+
+[[figures]]
+label = "fig:323"
+page_num = 4
+image_path = "images/image_p4_323.png"
+
+[[figures]]
+label = "fig:324"
+page_num = 4
+image_path = "images/image_p4_324.png"
+
+[[figures]]
+label = "fig:325"
+page_num = 4
+image_path = "images/image_p4_325.png"
+
+[[figures]]
+label = "fig:326"
+page_num = 4
+image_path = "images/image_p4_326.png"
+
+[[figures]]
+label = "fig:327"
+page_num = 4
+image_path = "images/image_p4_327.png"
+
+[[figures]]
+label = "fig:328"
+page_num = 4
+image_path = "images/image_p4_328.png"
+
+[[figures]]
+label = "fig:329"
+page_num = 4
+image_path = "images/image_p4_329.png"
+
+[[figures]]
+label = "fig:330"
+page_num = 4
+image_path = "images/image_p4_330.png"
+
+[[figures]]
+label = "fig:331"
+page_num = 4
+image_path = "images/image_p4_331.png"
+
+[[figures]]
+label = "fig:332"
+page_num = 4
+image_path = "images/image_p4_332.png"
+
+[[figures]]
+label = "fig:333"
+page_num = 4
+image_path = "images/image_p4_333.png"
+
+[[figures]]
+label = "fig:334"
+page_num = 4
+image_path = "images/image_p4_334.png"
+
+[[figures]]
+label = "fig:335"
+page_num = 4
+image_path = "images/image_p4_335.png"
+
+[[figures]]
+label = "fig:336"
+page_num = 4
+image_path = "images/image_p4_336.png"
+
+[[figures]]
+label = "fig:337"
+page_num = 4
+image_path = "images/image_p4_337.png"
+
+[[figures]]
+label = "fig:338"
+page_num = 4
+image_path = "images/image_p4_338.png"
+
+[[figures]]
+label = "fig:339"
+page_num = 4
+image_path = "images/image_p4_339.png"
+
+[[figures]]
+label = "fig:340"
+page_num = 4
+image_path = "images/image_p4_340.png"
+
+[[figures]]
+label = "fig:341"
+page_num = 4
+image_path = "images/image_p4_341.png"
+
+[[figures]]
+label = "fig:342"
+page_num = 4
+image_path = "images/image_p4_342.png"
+
+[[figures]]
+label = "fig:343"
+page_num = 4
+image_path = "images/image_p4_343.png"
+
+[[figures]]
+label = "fig:344"
+page_num = 4
+image_path = "images/image_p4_344.png"
+
+[[figures]]
+label = "fig:345"
+page_num = 4
+image_path = "images/image_p4_345.png"
+
+[[figures]]
+label = "fig:346"
+page_num = 4
+image_path = "images/image_p4_346.png"
+
+[[figures]]
+label = "fig:347"
+page_num = 4
+image_path = "images/image_p4_347.png"
+
+[[figures]]
+label = "fig:348"
+page_num = 4
+image_path = "images/image_p4_348.png"
+
+[[figures]]
+label = "fig:349"
+page_num = 4
+image_path = "images/image_p4_349.png"
+
+[[figures]]
+label = "fig:350"
+page_num = 4
+image_path = "images/image_p4_350.png"
+
+[[figures]]
+label = "fig:351"
+page_num = 4
+image_path = "images/image_p4_351.png"
+
+[[figures]]
+label = "fig:352"
+page_num = 4
+image_path = "images/image_p4_352.png"
+
+[[figures]]
+label = "fig:353"
+page_num = 4
+image_path = "images/image_p4_353.png"
+
+[[figures]]
+label = "fig:354"
+page_num = 4
+image_path = "images/image_p4_354.png"
+
+[[figures]]
+label = "fig:355"
+page_num = 4
+image_path = "images/image_p4_355.png"
+
+[[figures]]
+label = "fig:356"
+page_num = 4
+image_path = "images/image_p4_356.png"
+
+[[figures]]
+label = "fig:357"
+page_num = 4
+image_path = "images/image_p4_357.png"
+
+[[figures]]
+label = "fig:358"
+page_num = 4
+image_path = "images/image_p4_358.png"
+
+[[figures]]
+label = "fig:359"
+page_num = 4
+image_path = "images/image_p4_359.png"
+
+[[figures]]
+label = "fig:360"
+page_num = 4
+image_path = "images/image_p4_360.png"
+
+[[figures]]
+label = "fig:361"
+page_num = 4
+image_path = "images/image_p4_361.png"
+
+[[figures]]
+label = "fig:362"
+page_num = 4
+image_path = "images/image_p4_362.png"
+
+[[figures]]
+label = "fig:363"
+page_num = 4
+image_path = "images/image_p4_363.png"
+
+[[figures]]
+label = "fig:364"
+page_num = 4
+image_path = "images/image_p4_364.png"
+
+[[figures]]
+label = "fig:365"
+page_num = 4
+image_path = "images/image_p4_365.png"
+
+[[figures]]
+label = "fig:366"
+page_num = 4
+image_path = "images/image_p4_366.png"
+
+[[figures]]
+label = "fig:367"
+page_num = 4
+image_path = "images/image_p4_367.png"
+
+[[figures]]
+label = "fig:368"
+page_num = 4
+image_path = "images/image_p4_368.png"
+
+[[figures]]
+label = "fig:369"
+page_num = 4
+image_path = "images/image_p4_369.png"
+
+[[figures]]
+label = "fig:370"
+page_num = 4
+image_path = "images/image_p4_370.png"
+
+[[figures]]
+label = "fig:371"
+page_num = 4
+image_path = "images/image_p4_371.png"
+
+[[figures]]
+label = "fig:372"
+page_num = 4
+image_path = "images/image_p4_372.png"
+
+[[figures]]
+label = "fig:373"
+page_num = 4
+image_path = "images/image_p4_373.png"
+
+[[figures]]
+label = "fig:374"
+page_num = 4
+image_path = "images/image_p4_374.png"
+
+[[figures]]
+label = "fig:375"
+page_num = 4
+image_path = "images/image_p4_375.png"
+
+[[figures]]
+label = "fig:376"
+page_num = 4
+image_path = "images/image_p4_376.png"
+
+[[figures]]
+label = "fig:377"
+page_num = 4
+image_path = "images/image_p4_377.png"
+
+[[figures]]
+label = "fig:378"
+page_num = 4
+image_path = "images/image_p4_378.png"
+
+[[figures]]
+label = "fig:379"
+page_num = 4
+image_path = "images/image_p4_379.png"
+
+[[figures]]
+label = "fig:380"
+page_num = 4
+image_path = "images/image_p4_380.png"
+
+[[figures]]
+label = "fig:381"
+page_num = 4
+image_path = "images/image_p4_381.png"
+
+[[figures]]
+label = "fig:382"
+page_num = 4
+image_path = "images/image_p4_382.png"
+
+[[figures]]
+label = "fig:383"
+page_num = 4
+image_path = "images/image_p4_383.png"
+
+[[figures]]
+label = "fig:384"
+page_num = 4
+image_path = "images/image_p4_384.png"
+
+[[figures]]
+label = "fig:385"
+page_num = 4
+image_path = "images/image_p4_385.png"
+
+[[figures]]
+label = "fig:386"
+page_num = 4
+image_path = "images/image_p4_386.png"
+
+[[figures]]
+label = "fig:387"
+page_num = 4
+image_path = "images/image_p4_387.png"
+
+[[figures]]
+label = "fig:388"
+page_num = 4
+image_path = "images/image_p4_388.png"
+
+[[figures]]
+label = "fig:389"
+page_num = 4
+image_path = "images/image_p4_389.png"
+
+[[figures]]
+label = "fig:390"
+page_num = 4
+image_path = "images/image_p4_390.png"
+
+[[figures]]
+label = "fig:391"
+page_num = 4
+image_path = "images/image_p4_391.png"
+
+[[figures]]
+label = "fig:392"
+page_num = 4
+image_path = "images/image_p4_392.png"
+
+[[figures]]
+label = "fig:393"
+page_num = 4
+image_path = "images/image_p4_393.png"
+
+[[figures]]
+label = "fig:394"
+page_num = 4
+image_path = "images/image_p4_394.png"
+
+[[figures]]
+label = "fig:395"
+page_num = 4
+image_path = "images/image_p4_395.png"
+
+[[figures]]
+label = "fig:396"
+page_num = 4
+image_path = "images/image_p4_396.png"
+
+[[figures]]
+label = "fig:397"
+page_num = 4
+image_path = "images/image_p4_397.png"
+
+[[figures]]
+label = "fig:398"
+page_num = 4
+image_path = "images/image_p4_398.png"
+
+[[figures]]
+label = "fig:399"
+page_num = 4
+image_path = "images/image_p4_399.png"
+
+[[figures]]
+label = "fig:400"
+page_num = 4
+image_path = "images/image_p4_400.png"
+
+[[figures]]
+label = "fig:401"
+page_num = 4
+image_path = "images/image_p4_401.png"
+
+[[figures]]
+label = "fig:402"
+page_num = 4
+image_path = "images/image_p4_402.png"
+
+[[figures]]
+label = "fig:403"
+page_num = 4
+image_path = "images/image_p4_403.png"
+
+[[figures]]
+label = "fig:404"
+page_num = 4
+image_path = "images/image_p4_404.png"
+
+[[figures]]
+label = "fig:405"
+page_num = 4
+image_path = "images/image_p4_405.png"
+
+[[figures]]
+label = "fig:406"
+page_num = 4
+image_path = "images/image_p4_406.png"
+
+[[figures]]
+label = "fig:407"
+page_num = 4
+image_path = "images/image_p4_407.png"
+
+[[figures]]
+label = "fig:408"
+page_num = 4
+image_path = "images/image_p4_408.png"
+
+[[figures]]
+label = "fig:409"
+page_num = 4
+image_path = "images/image_p4_409.png"
+
+[[figures]]
+label = "fig:410"
+page_num = 4
+image_path = "images/image_p4_410.png"
+
+[[figures]]
+label = "fig:411"
+page_num = 4
+image_path = "images/image_p4_411.png"
+
+[[figures]]
+label = "fig:412"
+page_num = 4
+image_path = "images/image_p4_412.png"
+
+[[figures]]
+label = "fig:413"
+page_num = 4
+image_path = "images/image_p4_413.png"
+
+[[figures]]
+label = "fig:414"
+page_num = 4
+image_path = "images/image_p4_414.png"
+
+[[figures]]
+label = "fig:415"
+page_num = 4
+image_path = "images/image_p4_415.png"
+
+[[figures]]
+label = "fig:416"
+page_num = 4
+image_path = "images/image_p4_416.png"
+
+[[figures]]
+label = "fig:417"
+page_num = 4
+image_path = "images/image_p4_417.png"
+
+[[figures]]
+label = "fig:418"
+page_num = 4
+image_path = "images/image_p4_418.png"
+
+[[figures]]
+label = "fig:419"
+page_num = 4
+image_path = "images/image_p4_419.png"
+
+[[figures]]
+label = "fig:420"
+page_num = 4
+image_path = "images/image_p4_420.png"
+
+[[figures]]
+label = "fig:421"
+page_num = 4
+image_path = "images/image_p4_421.png"
+
+[[figures]]
+label = "fig:422"
+page_num = 4
+image_path = "images/image_p4_422.png"
+
+[[figures]]
+label = "fig:423"
+page_num = 4
+image_path = "images/image_p4_423.png"
+
+[[figures]]
+label = "fig:424"
+page_num = 4
+image_path = "images/image_p4_424.png"
+
+[[figures]]
+label = "fig:425"
+page_num = 4
+image_path = "images/image_p4_425.png"
+
+[[figures]]
+label = "fig:426"
+page_num = 4
+image_path = "images/image_p4_426.png"
+
+[[figures]]
+label = "fig:427"
+page_num = 4
+image_path = "images/image_p4_427.png"
+
+[[figures]]
+label = "fig:428"
+page_num = 4
+image_path = "images/image_p4_428.png"
+
+[[figures]]
+label = "fig:429"
+page_num = 4
+image_path = "images/image_p4_429.png"
+
+[[figures]]
+label = "fig:430"
+page_num = 4
+image_path = "images/image_p4_430.png"
+
+[[figures]]
+label = "fig:431"
+page_num = 4
+image_path = "images/image_p4_431.png"
+
+[[figures]]
+label = "fig:432"
+page_num = 4
+image_path = "images/image_p4_432.png"
+
+[[figures]]
+label = "fig:433"
+page_num = 4
+image_path = "images/image_p4_433.png"
+
+[[figures]]
+label = "fig:434"
+page_num = 4
+image_path = "images/image_p4_434.png"
+
+[[figures]]
+label = "fig:435"
+page_num = 4
+image_path = "images/image_p4_435.png"
+
+[[figures]]
+label = "fig:436"
+page_num = 4
+image_path = "images/image_p4_436.png"
+
+[[figures]]
+label = "fig:437"
+page_num = 4
+image_path = "images/image_p4_437.png"
+
+[[figures]]
+label = "fig:438"
+page_num = 4
+image_path = "images/image_p4_438.png"
+
+[[figures]]
+label = "fig:439"
+page_num = 4
+image_path = "images/image_p4_439.png"
+
+[[figures]]
+label = "fig:440"
+page_num = 4
+image_path = "images/image_p4_440.png"
+
+[[figures]]
+label = "fig:441"
+page_num = 4
+image_path = "images/image_p4_441.png"
+
+[[figures]]
+label = "fig:442"
+page_num = 4
+image_path = "images/image_p4_442.png"
+
+[[figures]]
+label = "fig:443"
+page_num = 4
+image_path = "images/image_p4_443.png"
+
+[[figures]]
+label = "fig:444"
+page_num = 4
+image_path = "images/image_p4_444.png"
+
+[[figures]]
+label = "fig:445"
+page_num = 4
+image_path = "images/image_p4_445.png"
+
+[[figures]]
+label = "fig:446"
+page_num = 4
+image_path = "images/image_p4_446.png"
+
+[[figures]]
+label = "fig:447"
+page_num = 4
+image_path = "images/image_p4_447.png"
+
+[[figures]]
+label = "fig:448"
+page_num = 4
+image_path = "images/image_p4_448.png"
+
+[[figures]]
+label = "fig:449"
+page_num = 4
+image_path = "images/image_p4_449.png"
+
+[[figures]]
+label = "fig:450"
+page_num = 4
+image_path = "images/image_p4_450.png"
+
+[[figures]]
+label = "fig:451"
+page_num = 4
+image_path = "images/image_p4_451.png"
+
+[[figures]]
+label = "fig:452"
+page_num = 4
+image_path = "images/image_p4_452.png"
+
+[[figures]]
+label = "fig:453"
+page_num = 4
+image_path = "images/image_p4_453.png"
+
+[[figures]]
+label = "fig:454"
+page_num = 4
+image_path = "images/image_p4_454.png"
+
+[[figures]]
+label = "fig:455"
+page_num = 4
+image_path = "images/image_p4_455.png"
+
+[[figures]]
+label = "fig:456"
+page_num = 4
+image_path = "images/image_p4_456.png"
+
+[[figures]]
+label = "fig:457"
+page_num = 4
+image_path = "images/image_p4_457.png"
+
+[[figures]]
+label = "fig:458"
+page_num = 4
+image_path = "images/image_p4_458.png"
+
+[[figures]]
+label = "fig:459"
+page_num = 4
+image_path = "images/image_p4_459.png"
+
+[[figures]]
+label = "fig:460"
+page_num = 4
+image_path = "images/image_p4_460.png"
+
+[[figures]]
+label = "fig:461"
+page_num = 4
+image_path = "images/image_p4_461.png"
+
+[[figures]]
+label = "fig:462"
+page_num = 4
+image_path = "images/image_p4_462.png"
+
+[[figures]]
+label = "fig:463"
+page_num = 4
+image_path = "images/image_p4_463.png"
+
+[[figures]]
+label = "fig:464"
+page_num = 4
+image_path = "images/image_p4_464.png"
+
+[[figures]]
+label = "fig:465"
+page_num = 4
+image_path = "images/image_p4_465.png"
+
+[[figures]]
+label = "fig:466"
+page_num = 4
+image_path = "images/image_p4_466.png"
+
+[[figures]]
+label = "fig:467"
+page_num = 4
+image_path = "images/image_p4_467.png"
+
+[[figures]]
+label = "fig:468"
+page_num = 4
+image_path = "images/image_p4_468.png"
+
+[[figures]]
+label = "fig:469"
+page_num = 4
+image_path = "images/image_p4_469.png"
+
+[[figures]]
+label = "fig:470"
+page_num = 4
+image_path = "images/image_p4_470.png"
+
+[[figures]]
+label = "fig:471"
+page_num = 4
+image_path = "images/image_p4_471.png"
+
+[[figures]]
+label = "fig:472"
+page_num = 4
+image_path = "images/image_p4_472.png"
+
+[[figures]]
+label = "fig:473"
+page_num = 4
+image_path = "images/image_p4_473.png"
+
+[[figures]]
+label = "fig:474"
+page_num = 4
+image_path = "images/image_p4_474.png"
+
+[[figures]]
+label = "fig:475"
+page_num = 4
+image_path = "images/image_p4_475.png"
+
+[[figures]]
+label = "fig:476"
+page_num = 4
+image_path = "images/image_p4_476.png"
+
+[[figures]]
+label = "fig:477"
+page_num = 4
+image_path = "images/image_p4_477.png"
+
+[[figures]]
+label = "fig:478"
+page_num = 4
+image_path = "images/image_p4_478.png"
+
+[[figures]]
+label = "fig:479"
+page_num = 4
+image_path = "images/image_p4_479.png"
+
+[[figures]]
+label = "fig:480"
+page_num = 4
+image_path = "images/image_p4_480.png"
+
+[[figures]]
+label = "fig:481"
+page_num = 4
+image_path = "images/image_p4_481.png"
+
+[[figures]]
+label = "fig:482"
+page_num = 4
+image_path = "images/image_p4_482.png"
+
+[[figures]]
+label = "fig:483"
+page_num = 4
+image_path = "images/image_p4_483.png"
+
+[[figures]]
+label = "fig:484"
+page_num = 4
+image_path = "images/image_p4_484.png"
+
+[[figures]]
+label = "fig:485"
+page_num = 4
+image_path = "images/image_p4_485.png"
+
+[[figures]]
+label = "fig:486"
+page_num = 4
+image_path = "images/image_p4_486.png"
+
+[[figures]]
+label = "fig:487"
+page_num = 4
+image_path = "images/image_p4_487.png"
+
+[[figures]]
+label = "fig:488"
+page_num = 4
+image_path = "images/image_p4_488.png"
+
+[[figures]]
+label = "fig:489"
+page_num = 4
+image_path = "images/image_p4_489.png"
+
+[[figures]]
+label = "fig:490"
+page_num = 4
+image_path = "images/image_p4_490.png"
+
+[[figures]]
+label = "fig:491"
+page_num = 4
+image_path = "images/image_p4_491.png"
+
+[[figures]]
+label = "fig:492"
+page_num = 4
+image_path = "images/image_p4_492.png"
+
+[[figures]]
+label = "fig:493"
+page_num = 4
+image_path = "images/image_p4_493.png"
+
+[[figures]]
+label = "fig:494"
+page_num = 4
+image_path = "images/image_p4_494.png"
+
+[[figures]]
+label = "fig:495"
+page_num = 4
+image_path = "images/image_p4_495.png"
+
+[[figures]]
+label = "fig:496"
+page_num = 4
+image_path = "images/image_p4_496.png"
+
+[[figures]]
+label = "fig:497"
+page_num = 4
+image_path = "images/image_p4_497.png"
+
+[[figures]]
+label = "fig:498"
+page_num = 4
+image_path = "images/image_p4_498.png"
+
+[[figures]]
+label = "fig:499"
+page_num = 4
+image_path = "images/image_p4_499.png"
+
+[[figures]]
+label = "fig:500"
+page_num = 4
+image_path = "images/image_p4_500.png"
+
+[[figures]]
+label = "fig:501"
+page_num = 4
+image_path = "images/image_p4_501.png"
+
+[[figures]]
+label = "fig:502"
+page_num = 4
+image_path = "images/image_p4_502.png"
+
+[[figures]]
+label = "fig:503"
+page_num = 4
+image_path = "images/image_p4_503.png"
+
+[[figures]]
+label = "fig:504"
+page_num = 4
+image_path = "images/image_p4_504.png"
+
+[[figures]]
+label = "fig:505"
+page_num = 4
+image_path = "images/image_p4_505.png"
+
+[[figures]]
+label = "fig:506"
+page_num = 4
+image_path = "images/image_p4_506.png"
+
+[[figures]]
+label = "fig:507"
+page_num = 4
+image_path = "images/image_p4_507.png"
+
+[[figures]]
+label = "fig:508"
+page_num = 4
+image_path = "images/image_p4_508.png"
+
+[[figures]]
+label = "fig:509"
+page_num = 4
+image_path = "images/image_p4_509.png"
+
+[[figures]]
+label = "fig:510"
+page_num = 4
+image_path = "images/image_p4_510.png"
+
+[[figures]]
+label = "fig:511"
+page_num = 4
+image_path = "images/image_p4_511.png"
+
+[[figures]]
+label = "fig:512"
+page_num = 4
+image_path = "images/image_p4_512.png"
+
+[[figures]]
+label = "fig:513"
+page_num = 4
+image_path = "images/image_p4_513.png"
+
+[[figures]]
+label = "fig:514"
+page_num = 4
+image_path = "images/image_p4_514.png"
+
+[[figures]]
+label = "fig:515"
+page_num = 4
+image_path = "images/image_p4_515.png"
+
+[[figures]]
+label = "fig:516"
+page_num = 4
+image_path = "images/image_p4_516.png"
+
+[[figures]]
+label = "fig:517"
+page_num = 4
+image_path = "images/image_p4_517.png"
+
+[[figures]]
+label = "fig:518"
+page_num = 4
+image_path = "images/image_p4_518.png"
+
+[[figures]]
+label = "fig:519"
+page_num = 4
+image_path = "images/image_p4_519.png"
+
+[[figures]]
+label = "fig:520"
+page_num = 4
+image_path = "images/image_p4_520.png"
+
+[[figures]]
+label = "fig:521"
+page_num = 4
+image_path = "images/image_p4_521.png"
+
+[[figures]]
+label = "fig:522"
+page_num = 4
+image_path = "images/image_p4_522.png"
+
+[[figures]]
+label = "fig:523"
+page_num = 4
+image_path = "images/image_p4_523.png"
+
+[[figures]]
+label = "fig:524"
+page_num = 4
+image_path = "images/image_p4_524.png"
+
+[[figures]]
+label = "fig:525"
+page_num = 4
+image_path = "images/image_p4_525.png"
+
+[[figures]]
+label = "fig:526"
+page_num = 4
+image_path = "images/image_p4_526.png"
+
+[[figures]]
+label = "fig:527"
+page_num = 4
+image_path = "images/image_p4_527.png"
+
+[[figures]]
+label = "fig:528"
+page_num = 4
+image_path = "images/image_p4_528.png"
+
+[[figures]]
+label = "fig:529"
+page_num = 4
+image_path = "images/image_p4_529.png"
+
+[[figures]]
+label = "fig:530"
+page_num = 4
+image_path = "images/image_p4_530.png"
+
+[[figures]]
+label = "fig:531"
+page_num = 4
+image_path = "images/image_p4_531.png"
+
+[[figures]]
+label = "fig:532"
+page_num = 4
+image_path = "images/image_p4_532.png"
+
+[[figures]]
+label = "fig:533"
+page_num = 4
+image_path = "images/image_p4_533.png"
+
+[[figures]]
+label = "fig:534"
+page_num = 4
+image_path = "images/image_p4_534.png"
+
+[[figures]]
+label = "fig:535"
+page_num = 4
+image_path = "images/image_p4_535.png"
+
+[[figures]]
+label = "fig:536"
+page_num = 4
+image_path = "images/image_p4_536.png"
+
+[[figures]]
+label = "fig:537"
+page_num = 4
+image_path = "images/image_p4_537.png"
+
+[[figures]]
+label = "fig:538"
+page_num = 4
+image_path = "images/image_p4_538.png"
+
+[[figures]]
+label = "fig:539"
+page_num = 4
+image_path = "images/image_p4_539.png"
+
+[[figures]]
+label = "fig:540"
+page_num = 4
+image_path = "images/image_p4_540.png"
+
+[[figures]]
+label = "fig:541"
+page_num = 4
+image_path = "images/image_p4_541.png"
+
+[[figures]]
+label = "fig:542"
+page_num = 4
+image_path = "images/image_p4_542.png"
+
+[[figures]]
+label = "fig:543"
+page_num = 4
+image_path = "images/image_p4_543.png"
+
+[[figures]]
+label = "fig:544"
+page_num = 4
+image_path = "images/image_p4_544.png"
+
+[[figures]]
+label = "fig:545"
+page_num = 4
+image_path = "images/image_p4_545.png"
+
+[[figures]]
+label = "fig:546"
+page_num = 4
+image_path = "images/image_p4_546.png"
+
+[[figures]]
+label = "fig:547"
+page_num = 4
+image_path = "images/image_p4_547.png"
+
+[[figures]]
+label = "fig:548"
+page_num = 4
+image_path = "images/image_p4_548.png"
+
+[[figures]]
+label = "fig:549"
+page_num = 4
+image_path = "images/image_p4_549.png"
+
+[[figures]]
+label = "fig:550"
+page_num = 4
+image_path = "images/image_p4_550.png"
+
+[[figures]]
+label = "fig:551"
+page_num = 4
+image_path = "images/image_p4_551.png"
+
+[[figures]]
+label = "fig:552"
+page_num = 4
+image_path = "images/image_p4_552.png"
+
+[[figures]]
+label = "fig:553"
+page_num = 4
+image_path = "images/image_p4_553.png"
+
+[[figures]]
+label = "fig:554"
+page_num = 4
+image_path = "images/image_p4_554.png"
+
+[[figures]]
+label = "fig:555"
+page_num = 4
+image_path = "images/image_p4_555.png"
+
+[[figures]]
+label = "fig:556"
+page_num = 4
+image_path = "images/image_p4_556.png"
+
+[[figures]]
+label = "fig:557"
+page_num = 4
+image_path = "images/image_p4_557.png"
+
+[[figures]]
+label = "fig:558"
+page_num = 4
+image_path = "images/image_p4_558.png"
+
+[[figures]]
+label = "fig:559"
+page_num = 4
+image_path = "images/image_p4_559.png"
+
+[[figures]]
+label = "fig:560"
+page_num = 4
+image_path = "images/image_p4_560.png"
+
+[[figures]]
+label = "fig:561"
+page_num = 4
+image_path = "images/image_p4_561.png"
+
+[[figures]]
+label = "fig:562"
+page_num = 4
+image_path = "images/image_p4_562.png"
+
+[[figures]]
+label = "fig:563"
+page_num = 4
+image_path = "images/image_p4_563.png"
+
+[[figures]]
+label = "fig:564"
+page_num = 4
+image_path = "images/image_p4_564.png"
+
+[[figures]]
+label = "fig:565"
+page_num = 4
+image_path = "images/image_p4_565.png"
+
+[[figures]]
+label = "fig:566"
+page_num = 4
+image_path = "images/image_p4_566.png"
+
+[[figures]]
+label = "fig:567"
+page_num = 4
+image_path = "images/image_p4_567.png"
+
+[[figures]]
+label = "fig:568"
+page_num = 4
+image_path = "images/image_p4_568.png"
+
+[[figures]]
+label = "fig:569"
+page_num = 4
+image_path = "images/image_p4_569.png"
+
+[[figures]]
+label = "fig:570"
+page_num = 4
+image_path = "images/image_p4_570.png"
+
+[[figures]]
+label = "fig:571"
+page_num = 4
+image_path = "images/image_p4_571.png"
+
+[[figures]]
+label = "fig:572"
+page_num = 4
+image_path = "images/image_p4_572.png"
+
+[[figures]]
+label = "fig:573"
+page_num = 4
+image_path = "images/image_p4_573.png"
+
+[[figures]]
+label = "fig:574"
+page_num = 4
+image_path = "images/image_p4_574.png"
+
+[[figures]]
+label = "fig:575"
+page_num = 4
+image_path = "images/image_p4_575.png"
+
+[[figures]]
+label = "fig:576"
+page_num = 4
+image_path = "images/image_p4_576.png"
+
+[[figures]]
+label = "fig:577"
+page_num = 4
+image_path = "images/image_p4_577.png"
+
+[[figures]]
+label = "fig:578"
+page_num = 4
+image_path = "images/image_p4_578.png"
+
+[[figures]]
+label = "fig:579"
+page_num = 4
+image_path = "images/image_p4_579.png"
+
+[[figures]]
+label = "fig:580"
+page_num = 4
+image_path = "images/image_p4_580.png"
+
+[[figures]]
+label = "fig:581"
+page_num = 4
+image_path = "images/image_p4_581.png"
+
+[[figures]]
+label = "fig:582"
+page_num = 4
+image_path = "images/image_p4_582.png"
+
+[[figures]]
+label = "fig:583"
+page_num = 4
+image_path = "images/image_p4_583.png"
+
+[[figures]]
+label = "fig:584"
+page_num = 4
+image_path = "images/image_p4_584.png"
+
+[[figures]]
+label = "fig:585"
+page_num = 4
+image_path = "images/image_p4_585.png"
+
+[[figures]]
+label = "fig:586"
+page_num = 4
+image_path = "images/image_p4_586.png"
+
+[[figures]]
+label = "fig:587"
+page_num = 4
+image_path = "images/image_p4_587.png"
+
+[[figures]]
+label = "fig:588"
+page_num = 4
+image_path = "images/image_p4_588.png"
+
+[[figures]]
+label = "fig:589"
+page_num = 4
+image_path = "images/image_p4_589.png"
+
+[[figures]]
+label = "fig:590"
+page_num = 4
+image_path = "images/image_p4_590.png"
+
+[[figures]]
+label = "fig:591"
+page_num = 4
+image_path = "images/image_p4_591.png"
+
+[[figures]]
+label = "fig:592"
+page_num = 4
+image_path = "images/image_p4_592.png"
+
+[[figures]]
+label = "fig:593"
+page_num = 4
+image_path = "images/image_p4_593.png"
+
+[[figures]]
+label = "fig:594"
+page_num = 4
+image_path = "images/image_p4_594.png"
+
+[[figures]]
+label = "fig:595"
+page_num = 4
+image_path = "images/image_p4_595.png"
+
+[[figures]]
+label = "fig:596"
+page_num = 4
+image_path = "images/image_p4_596.png"
+
+[[figures]]
+label = "fig:597"
+page_num = 4
+image_path = "images/image_p4_597.png"
+
+[[figures]]
+label = "fig:598"
+page_num = 4
+image_path = "images/image_p4_598.png"
+
+[[figures]]
+label = "fig:599"
+page_num = 4
+image_path = "images/image_p4_599.png"
+
+[[figures]]
+label = "fig:600"
+page_num = 4
+image_path = "images/image_p4_600.png"
+
+[[figures]]
+label = "fig:601"
+page_num = 4
+image_path = "images/image_p4_601.png"
+
+[[figures]]
+label = "fig:602"
+page_num = 4
+image_path = "images/image_p4_602.png"
+
+[[figures]]
+label = "fig:603"
+page_num = 4
+image_path = "images/image_p4_603.png"
+
+[[figures]]
+label = "fig:604"
+page_num = 4
+image_path = "images/image_p4_604.png"
+
+[[figures]]
+label = "fig:605"
+page_num = 4
+image_path = "images/image_p4_605.png"
+
+[[figures]]
+label = "fig:606"
+page_num = 4
+image_path = "images/image_p4_606.png"
+
+[[figures]]
+label = "fig:607"
+page_num = 4
+image_path = "images/image_p4_607.png"
+
+[[figures]]
+label = "fig:608"
+page_num = 4
+image_path = "images/image_p4_608.png"
+
+[[figures]]
+label = "fig:609"
+page_num = 4
+image_path = "images/image_p4_609.png"
+
+[[figures]]
+label = "fig:610"
+page_num = 4
+image_path = "images/image_p4_610.png"
+
+[[figures]]
+label = "fig:611"
+page_num = 4
+image_path = "images/image_p4_611.png"
+
+[[figures]]
+label = "fig:612"
+page_num = 4
+image_path = "images/image_p4_612.png"
+
+[[figures]]
+label = "fig:613"
+page_num = 4
+image_path = "images/image_p4_613.png"
+
+[[figures]]
+label = "fig:614"
+page_num = 4
+image_path = "images/image_p4_614.png"
+
+[[figures]]
+label = "fig:615"
+page_num = 4
+image_path = "images/image_p4_615.png"
+
+[[figures]]
+label = "fig:616"
+page_num = 4
+image_path = "images/image_p4_616.png"
+
+[[figures]]
+label = "fig:617"
+page_num = 4
+image_path = "images/image_p4_617.png"
+
+[[figures]]
+label = "fig:618"
+page_num = 4
+image_path = "images/image_p4_618.png"
+
+[[figures]]
+label = "fig:619"
+page_num = 4
+image_path = "images/image_p4_619.png"
+
+[[figures]]
+label = "fig:620"
+page_num = 4
+image_path = "images/image_p4_620.png"
+
+[[figures]]
+label = "fig:621"
+page_num = 4
+image_path = "images/image_p4_621.png"
+
+[[figures]]
+label = "fig:622"
+page_num = 4
+image_path = "images/image_p4_622.png"
+
+[[figures]]
+label = "fig:623"
+page_num = 4
+image_path = "images/image_p4_623.png"
+
+[[figures]]
+label = "fig:624"
+page_num = 4
+image_path = "images/image_p4_624.png"
+
+[[figures]]
+label = "fig:625"
+page_num = 4
+image_path = "images/image_p4_625.png"
+
+[[figures]]
+label = "fig:626"
+page_num = 4
+image_path = "images/image_p4_626.png"
+
+[[figures]]
+label = "fig:627"
+page_num = 4
+image_path = "images/image_p4_627.png"
+
+[[figures]]
+label = "fig:628"
+page_num = 4
+image_path = "images/image_p4_628.png"
+
+[[figures]]
+label = "fig:629"
+page_num = 4
+image_path = "images/image_p4_629.png"
+
+[[figures]]
+label = "fig:630"
+page_num = 4
+image_path = "images/image_p4_630.png"
+
+[[figures]]
+label = "fig:631"
+page_num = 4
+image_path = "images/image_p4_631.png"
+
+[[figures]]
+label = "fig:632"
+page_num = 4
+image_path = "images/image_p4_632.png"
+
+[[figures]]
+label = "fig:633"
+page_num = 4
+image_path = "images/image_p4_633.png"
+
+[[figures]]
+label = "fig:634"
+page_num = 4
+image_path = "images/image_p4_634.png"
+
+[[figures]]
+label = "fig:635"
+page_num = 4
+image_path = "images/image_p4_635.png"
+
+[[figures]]
+label = "fig:636"
+page_num = 4
+image_path = "images/image_p4_636.png"
+
+[[figures]]
+label = "fig:637"
+page_num = 4
+image_path = "images/image_p4_637.png"
+
+[[figures]]
+label = "fig:638"
+page_num = 4
+image_path = "images/image_p4_638.png"
+
+[[figures]]
+label = "fig:639"
+page_num = 4
+image_path = "images/image_p4_639.png"
+
+[[figures]]
+label = "fig:640"
+page_num = 4
+image_path = "images/image_p4_640.png"
+
+[[figures]]
+label = "fig:641"
+page_num = 4
+image_path = "images/image_p4_641.png"
+
+[[figures]]
+label = "fig:642"
+page_num = 4
+image_path = "images/image_p4_642.png"
+
+[[figures]]
+label = "fig:643"
+page_num = 4
+image_path = "images/image_p4_643.png"
+
+[[figures]]
+label = "fig:644"
+page_num = 4
+image_path = "images/image_p4_644.png"
+
+[[figures]]
+label = "fig:645"
+page_num = 4
+image_path = "images/image_p4_645.png"
+
+[[figures]]
+label = "fig:646"
+page_num = 4
+image_path = "images/image_p4_646.png"
+
+[[figures]]
+label = "fig:647"
+page_num = 4
+image_path = "images/image_p4_647.png"
+
+[[figures]]
+label = "fig:648"
+page_num = 4
+image_path = "images/image_p4_648.png"
+
+[[figures]]
+label = "fig:649"
+page_num = 4
+image_path = "images/image_p4_649.png"
+
+[[figures]]
+label = "fig:650"
+page_num = 4
+image_path = "images/image_p4_650.png"
+
+[[figures]]
+label = "fig:651"
+page_num = 4
+image_path = "images/image_p4_651.png"
+
+[[figures]]
+label = "fig:652"
+page_num = 4
+image_path = "images/image_p4_652.png"
+
+[[figures]]
+label = "fig:653"
+page_num = 4
+image_path = "images/image_p4_653.png"
+
+[[figures]]
+label = "fig:654"
+page_num = 5
+image_path = "images/image_p5_654.png"
+
+[[figures]]
+label = "fig:655"
+page_num = 5
+image_path = "images/image_p5_655.png"
+
+[[figures]]
+label = "fig:656"
+page_num = 5
+image_path = "images/image_p5_656.png"
+
+[[figures]]
+label = "fig:657"
+page_num = 5
+image_path = "images/image_p5_657.png"
+
+[[figures]]
+label = "fig:658"
+page_num = 5
+image_path = "images/image_p5_658.png"
+
+[[figures]]
+label = "fig:659"
+page_num = 5
+image_path = "images/image_p5_659.png"
+
+[[figures]]
+label = "fig:660"
+page_num = 5
+image_path = "images/image_p5_660.png"
+
+[[figures]]
+label = "fig:661"
+page_num = 5
+image_path = "images/image_p5_661.png"
+
+[[figures]]
+label = "fig:662"
+page_num = 5
+image_path = "images/image_p5_662.png"
+
+[[figures]]
+label = "fig:663"
+page_num = 5
+image_path = "images/image_p5_663.png"
+
+[[figures]]
+label = "fig:664"
+page_num = 5
+image_path = "images/image_p5_664.png"
+
+[[figures]]
+label = "fig:665"
+page_num = 6
+image_path = "images/image_p6_665.png"
+
+[[figures]]
+label = "fig:666"
+page_num = 6
+image_path = "images/image_p6_666.png"
+
+[[figures]]
+label = "fig:667"
+page_num = 6
+image_path = "images/image_p6_667.png"
+
+[[figures]]
+label = "fig:668"
+page_num = 6
+image_path = "images/image_p6_668.png"
+
+[[figures]]
+label = "fig:669"
+page_num = 6
+image_path = "images/image_p6_669.png"
+
+[[figures]]
+label = "fig:670"
+page_num = 6
+image_path = "images/image_p6_670.png"
+
+[[figures]]
+label = "fig:671"
+page_num = 6
+image_path = "images/image_p6_671.png"
+
+[[figures]]
+label = "fig:672"
+page_num = 6
+image_path = "images/image_p6_672.png"
+
+[[figures]]
+label = "fig:673"
+page_num = 6
+image_path = "images/image_p6_673.png"
+
+[[figures]]
+label = "fig:674"
+page_num = 6
+image_path = "images/image_p6_674.png"
+
+[[figures]]
+label = "fig:675"
+page_num = 6
+image_path = "images/image_p6_675.png"
+
+[[figures]]
+label = "fig:676"
+page_num = 7
+image_path = "images/image_p7_676.png"
+
+[[figures]]
+label = "fig:677"
+page_num = 7
+image_path = "images/image_p7_677.png"
+
+[[figures]]
+label = "fig:678"
+page_num = 7
+image_path = "images/image_p7_678.png"
+
+[[figures]]
+label = "fig:679"
+page_num = 7
+image_path = "images/image_p7_679.png"
+
+[[figures]]
+label = "fig:680"
+page_num = 7
+image_path = "images/image_p7_680.png"
+
+[[figures]]
+label = "fig:681"
+page_num = 7
+image_path = "images/image_p7_681.png"
+
+[[figures]]
+label = "fig:682"
+page_num = 7
+image_path = "images/image_p7_682.png"
+
+[[figures]]
+label = "fig:683"
+page_num = 7
+image_path = "images/image_p7_683.png"
+
+[[figures]]
+label = "fig:684"
+page_num = 7
+image_path = "images/image_p7_684.png"
+
+[[figures]]
+label = "fig:685"
+page_num = 7
+image_path = "images/image_p7_685.png"
+
+[[figures]]
+label = "fig:686"
+page_num = 7
+image_path = "images/image_p7_686.png"
+
+[[figures]]
+label = "fig:687"
+page_num = 7
+image_path = "images/image_p7_687.png"
+
+[[figures]]
+label = "fig:688"
+page_num = 7
+image_path = "images/image_p7_688.png"
+
+[[figures]]
+label = "fig:689"
+page_num = 7
+image_path = "images/image_p7_689.png"
+
+[[figures]]
+label = "fig:690"
+page_num = 7
+image_path = "images/image_p7_690.png"
+
+[[figures]]
+label = "fig:691"
+page_num = 7
+image_path = "images/image_p7_691.png"
+
+[[figures]]
+label = "fig:692"
+page_num = 7
+image_path = "images/image_p7_692.png"
+
+[[figures]]
+label = "fig:693"
+page_num = 7
+image_path = "images/image_p7_693.png"
+
+[[figures]]
+label = "fig:694"
+page_num = 7
+image_path = "images/image_p7_694.png"
+
+[[figures]]
+label = "fig:695"
+page_num = 7
+image_path = "images/image_p7_695.png"
+
+[[figures]]
+label = "fig:696"
+page_num = 7
+image_path = "images/image_p7_696.png"
+
+[[figures]]
+label = "fig:697"
+page_num = 7
+image_path = "images/image_p7_697.png"
+
+[[figures]]
+label = "fig:698"
+page_num = 7
+image_path = "images/image_p7_698.png"
+
+[[figures]]
+label = "fig:699"
+page_num = 7
+image_path = "images/image_p7_699.png"
+
+[[figures]]
+label = "fig:700"
+page_num = 7
+image_path = "images/image_p7_700.png"
+
+[[figures]]
+label = "fig:701"
+page_num = 7
+image_path = "images/image_p7_701.png"
+
+[[figures]]
+label = "fig:702"
+page_num = 7
+image_path = "images/image_p7_702.png"
+
+[[figures]]
+label = "fig:703"
+page_num = 7
+image_path = "images/image_p7_703.png"
+
+[[figures]]
+label = "fig:704"
+page_num = 7
+image_path = "images/image_p7_704.png"
+
+[[figures]]
+label = "fig:705"
+page_num = 8
+image_path = "images/image_p8_705.png"
+
+[[figures]]
+label = "fig:706"
+page_num = 8
+image_path = "images/image_p8_706.png"
+
+[[figures]]
+label = "fig:707"
+page_num = 8
+image_path = "images/image_p8_707.png"
+
+[[figures]]
+label = "fig:708"
+page_num = 8
+image_path = "images/image_p8_708.png"
+
+[[figures]]
+label = "fig:709"
+page_num = 8
+image_path = "images/image_p8_709.png"
+
+[[figures]]
+label = "fig:710"
+page_num = 8
+image_path = "images/image_p8_710.png"
+
+[[figures]]
+label = "fig:711"
+page_num = 8
+image_path = "images/image_p8_711.png"
+
+[[figures]]
+label = "fig:712"
+page_num = 8
+image_path = "images/image_p8_712.png"
+
+[[figures]]
+label = "fig:713"
+page_num = 8
+image_path = "images/image_p8_713.png"
+
+[[figures]]
+label = "fig:714"
+page_num = 8
+image_path = "images/image_p8_714.png"
+
+[[figures]]
+label = "fig:715"
+page_num = 8
+image_path = "images/image_p8_715.png"
+
+[[figures]]
+label = "fig:716"
+page_num = 8
+image_path = "images/image_p8_716.png"
+
+[[figures]]
+label = "fig:717"
+page_num = 8
+image_path = "images/image_p8_717.png"
+
+[[figures]]
+label = "fig:718"
+page_num = 8
+image_path = "images/image_p8_718.png"
+
+[[figures]]
+label = "fig:719"
+page_num = 8
+image_path = "images/image_p8_719.png"
+
+[[figures]]
+label = "fig:720"
+page_num = 8
+image_path = "images/image_p8_720.png"
+
+[[figures]]
+label = "fig:721"
+page_num = 8
+image_path = "images/image_p8_721.png"
+
+[[figures]]
+label = "fig:722"
+page_num = 8
+image_path = "images/image_p8_722.png"
+
+[[figures]]
+label = "fig:723"
+page_num = 8
+image_path = "images/image_p8_723.png"
+
+[[figures]]
+label = "fig:724"
+page_num = 8
+image_path = "images/image_p8_724.png"
+
+[[figures]]
+label = "fig:725"
+page_num = 8
+image_path = "images/image_p8_725.png"
+
+[[figures]]
+label = "fig:726"
+page_num = 8
+image_path = "images/image_p8_726.png"
+
+[[figures]]
+label = "fig:727"
+page_num = 8
+image_path = "images/image_p8_727.png"
+
+[[figures]]
+label = "fig:728"
+page_num = 8
+image_path = "images/image_p8_728.png"
+
+[[figures]]
+label = "fig:729"
+page_num = 8
+image_path = "images/image_p8_729.png"
+
+[[figures]]
+label = "fig:730"
+page_num = 8
+image_path = "images/image_p8_730.png"
+
+[[figures]]
+label = "fig:731"
+page_num = 8
+image_path = "images/image_p8_731.png"
+
+[[figures]]
+label = "fig:732"
+page_num = 8
+image_path = "images/image_p8_732.png"
+
+[[figures]]
+label = "fig:733"
+page_num = 8
+image_path = "images/image_p8_733.png"
+
+[[figures]]
+label = "fig:734"
+page_num = 8
+image_path = "images/image_p8_734.png"
+
+[[figures]]
+label = "fig:735"
+page_num = 8
+image_path = "images/image_p8_735.png"
+
+[[figures]]
+label = "fig:736"
+page_num = 8
+image_path = "images/image_p8_736.png"
+
+[[figures]]
+label = "fig:737"
+page_num = 8
+image_path = "images/image_p8_737.png"
+
+[[figures]]
+label = "fig:738"
+page_num = 8
+image_path = "images/image_p8_738.png"
+
+[[figures]]
+label = "fig:739"
+page_num = 8
+image_path = "images/image_p8_739.png"
+
+[[figures]]
+label = "fig:740"
+page_num = 8
+image_path = "images/image_p8_740.png"
+
+[[figures]]
+label = "fig:741"
+page_num = 8
+image_path = "images/image_p8_741.png"
+
+[[figures]]
+label = "fig:742"
+page_num = 8
+image_path = "images/image_p8_742.png"
+
+[[figures]]
+label = "fig:743"
+page_num = 8
+image_path = "images/image_p8_743.png"
+
+[[figures]]
+label = "fig:744"
+page_num = 9
+image_path = "images/image_p9_744.png"
+
+[[figures]]
+label = "fig:745"
+page_num = 9
+image_path = "images/image_p9_745.png"
+
+[[figures]]
+label = "fig:746"
+page_num = 9
+image_path = "images/image_p9_746.png"
+
+[[figures]]
+label = "fig:747"
+page_num = 9
+image_path = "images/image_p9_747.png"
+
+[[figures]]
+label = "fig:748"
+page_num = 9
+image_path = "images/image_p9_748.png"
+
+[[figures]]
+label = "fig:749"
+page_num = 9
+image_path = "images/image_p9_749.png"
+
+[[figures]]
+label = "fig:750"
+page_num = 9
+image_path = "images/image_p9_750.png"

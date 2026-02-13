@@ -1,0 +1,1556 @@
+                                                Entanglement Entropy and Quantum Field Theory
+
+                                                                  Pasquale Calabrese1 and John Cardy1,2
+                                                            1
+                                                                Rudolf Peierls Centre for Theoretical Physics,
+                                                                  1 Keble Road, Oxford OX1 3NP, U.K.
+                                                                        2
+                                                                            All Souls College, Oxford.
+
+                                                                                   Abstract
+
+
+
+
+arXiv:hep-th/0405152v3 2 Oct 2008
+                                      We carry out a systematic study of entanglement entropy in relativistic quantum field theory.
+                                    This is defined as the von Neumann entropy SA = −Tr ρA log ρA corresponding to the reduced
+                                    density matrix ρA of a subsystem A. For the case of a 1+1-dimensional critical system, whose
+                                    continuum limit is a conformal field theory with central charge c, we re-derive the result SA ∼
+                                    (c/3) log ℓ of Holzhey et al. when A is a finite interval of length ℓ in an infinite system, and extend
+                                    it to many other cases: finite systems, finite temperatures, and when A consists of an arbitrary
+                                    number of disjoint intervals (See note added). For such a system away from its critical point,
+                                    when the correlation length ξ is large but finite, we show that SA ∼ A(c/6) log ξ, where A is the
+                                    number of boundary points of A. These results are verified for a free massive field theory, which is
+                                    also used to confirm a scaling ansatz for the case of finite-size off-critical systems, and for integrable
+                                    lattice models, such as the Ising and XXZ models, which are solvable by corner transfer matrix
+                                    methods. Finally the free-field results are extended to higher dimensions, and used to motivate a
+                                    scaling form for the singular part of the entanglement entropy near a quantum phase transition.
+
+
+
+
+                                                                                       1
+I.    INTRODUCTION.
+
+
+     Recently there has been considerable interest in formulating measures of quantum entan-
+glement and applying them to extended quantum systems with many degrees of freedom,
+such as quantum spin chains.
+     One of these measures[1] is entanglement entropy. Suppose the whole system is in a pure
+quantum state |Ψi, with density matrix ρ = |ΨihΨ|, and an observer A measures only a
+subset A of a complete set of commuting observables, while another observer B may measure
+the remainder. A’s reduced density matrix is ρA = TrB ρ. The entanglement entropy is just
+the von Neumann entropy SA = −TrA ρA log ρA associated with this reduced density matrix.
+It is easy to see that SA = SB . For an unentangled product state, SA = 0. Conversely, SA
+should be a maximum for a maximally entangled state.
+     For example, for a system with two binary (spin- 12 ) degrees of freedom, with |Ψi =
+cos θ| ↑↓i + sin θ| ↓↑i, where A observes only the first spin and B the second, SA takes its
+maximum value of log 2 when cos2 θ = 12 , which agrees with our intuitive idea of maximal
+entanglement. For this system it has been shown,[1] even in the partially entangled case,
+that if there are M copies of the state available, by making only local operations A can
+produce M ′ < M states which are maximally entangled. The optimal conversion ratio
+M ′ /M is given, for large M, by SA .[28]
+     Although there are other measures of entanglement,[2] the entropy is most readily suited
+to analytic investigation. In several papers[3, 4, 5, 6], the concept has been applied to
+quantum spin chains. Typically, the subset A consists of a commuting set of components
+of the spin degrees of freedom in some interval of length ℓ, in an infinitely long chain. It is
+found that the entanglement entropy generally tends to a finite value as ℓ increases, but that
+this value diverges as the system approaches a quantum critical point. At such a critical
+point, the entropy grows proportional to log ℓ for large ℓ.
+     Close to a quantum critical point, where the correlation length ξ is much larger than the
+lattice spacing a, the low-lying excitations and the long-distance behaviour of the correlations
+in the ground state of a quantum spin chain are believed to be described by a quantum field
+theory in 1+1 dimensions. If the dispersion relation of the low-lying excitations is linear
+for wave numbers k such that ξ −1 ≪ |k| ≪ a−1 , the field theory is relativistic. We shall
+consider only those cases in this paper. At the critical point, where ξ −1 = 0, the field theory
+
+
+                                              2
+is massless, and is a conformal field theory (CFT).
+   In this case, the von Neumann entropy of subsystem corresponding to an interval of
+length ℓ was calculated some time ago by Holzhey et al.[7], in the context of black hole
+physics (although that connection has been questioned), where it was termed ‘geometric’
+entropy. Using methods of conformal field theory, based in part on earlier work of Cardy
+and Peschel[8], they found SA ∼ (c/3) log(ℓ/a), where c is the conformal anomaly number
+(sometimes called the central charge) of the corresponding CFT.
+   This result has been verified by analytic and numerical calculations on integrable quantum
+spin chains corresponding to CFTs with c = 12 and c = 1. [3, 4, 5]
+   In this paper, we first put the CFT arguments of Holzhey et al.[7] on a more systematic
+basis, and generalise their result in a number of ways. Our methods are based on a formula
+for the entropy in terms of the partition function in the path integral formulation of the
+quantum theory as a euclidean field theory on an n-sheeted Riemann surface, in the limit
+n → 1.
+   For a 1+1-dimensional theory at a critical point, we derive analogous formulas for the
+entropy in the cases when the subsystem A consists of an arbitrary number of disjoint
+intervals of the real line (see Eq. 41), and when the whole system has itself a finite length
+L. For example, for the case when A is a single interval of length ℓ, and periodic boundary
+conditions are imposed on the whole system, we find
+
+                           SA = (c/3) log ((L/πa) sin(πℓ/L)) + c′1 .                      (1)
+
+On the other hand, for a finite system of total length L with open boundaries, divided at
+some interior point into an interval A of length ℓ and its complement, we find
+
+                        SA = (c/6) log ((L/πa) sin(πℓ/L)) + 2g + c′1 ,                    (2)
+
+where g is the boundary entropy of Affleck and Ludwig[9]. We also treat the case when the
+system is infinitely long but is in a thermal mixed state at finite temperature β −1 :
+
+                          SA = (c/3) log ((β/πa) sinh(πℓ/β)) + c′1 .                      (3)
+
+In all these cases, the constant c′1 is the same, but non-universal.
+   For a massive 1+1-dimensional relativistic QFT (which corresponds to an off-critical
+quantum spin chain where the correlation length ξ ≫ a) the simplest results are for an
+
+                                             3
+infinite system divided at some point into two semi-infinite pieces. In this case we verify
+that the entanglement entropy is finite, and derive the universal formula
+
+                                     SA ∼ (c/6) log(ξ/a) .                                    (4)
+
+In the more general case when A consists of a collection of disjoint intervals, each of length
+≫ ξ, we expect (4) to be multiplied by a factor A which counts the number of boundary
+points between A and B (the 1d analogue of surface area.)
+   For A = 1 the entropy is exactly calculable in the case of a free field theory. We verify
+the above formula, and exhibit the finite-size cross-over which occurs when ξ is of the size
+L of the system. For a lattice model in this geometry, with L infinite, we point out that ρA
+is simply related to Baxter’s corner transfer matrix, and thus, for integrable models whose
+weights satisfy a Yang-Baxter relation, all its eigenvalues can be determined exactly. We
+treat explicitly the case of the Ising model and its anisotropic limit, the transverse Ising
+spin chain, and also the XXZ model, computing exactly at all values of the coupling the
+finite part of the entropy S. This agrees with our continuum result (4) for c = 21 , 1 when
+the correlation length ξ is large.
+   The analysis for the free theory is straightforward to extend to higher dimensions, at least
+in suitable geometries. This leads to the well-known law, first found by Srednicki[10], that
+the entropy should be proportional to the surface area A of the subsystem A. As pointed
+out by Srednicki, the coefficient of this term, for d > 1, depends on the UV cut-off and is
+therefore non-universal. However, based on our calculations, we propose that there should
+be a non-leading piece in SA /A, proportional to ξ −(d−1) , which depends in a singular way
+on the couplings near a quantum phase transition, and whose form is, moreover, universal.
+   The layout of this paper is as follows. In the next section, we discuss the entropy in terms
+of the euclidean path integral on an n-sheeted Riemann surface. In Sec. III we consider
+the 1+1-dimensional conformal case. We use the powerful methods of CFT to show that
+the partition function on the Riemann surface of interest is given, up to a constant, by a
+calculable correlation function of vertex operators in a c = 1 CFT in the complex plane.
+Similar results apply to a system with boundaries. This general result allows us to derive
+all the special cases described above. In Sec. IV we consider the case of a massive 1+1-
+dimensional field theory. We derive the result S ∼ (c/6) log(ξ/a) from completely general
+properties of the stress tensor in the relevant geometry. This is then verified for a free bosonic
+
+                                               4
+massive field. In the last part of this section we relate the lattice version of this problem to
+the corner transfer matrix, and compute the off-critical entropy for the case of the Ising and
+XXZ Heisenberg spin chains. In Sec. V we study the off-critical case in a finite-size system,
+propose a scaling law, and verify it for the case of a free massive field theory. We compute
+the relevant scaling function in a systematic sequence of approximations. Sec. VI is devoted
+to the discussion of higher dimensions.
+      While all this work was being carried out, some other related papers have appeared
+in the literature. In Ref. [11], the result SA ∼ (c/3) log(ℓ/a), first found by Holzhey et
+al.[7], was obtained by the following argument: it was assumed that the entropy should be
+conformally invariant and therefore some function F (x) of the variable x = (β/π) sinh(πℓ/β);
+by comparing with known case ℓ ≫ β [12, 13] it was observed that F (x) should behave as
+(c/3) log x as x → ∞; finally it was assumed (with no justification being given) that the
+log x form for F is valid for all values of x; finally the limit β ≫ ℓ was taken. In the present
+paper, we should stress, we have derived all these statements from first principles of CFT.
+      Very recently Casini and Huerta[6] have considered the case of two intervals A and B,
+and argued that the quantity F (A, B) ≡ S(A) + S(B) − S(A ∩ B) − S(A ∪ B) is UV
+finite as a → 0, and is given by a universal logarithmic function of the cross-ratio of the
+four end points. This corresponds to, and agrees with, our case N = 2. These authors,
+however, assume the conformal invariance of the entropy, while, once again, we stress that
+in the present paper we derive this from fundamental properties of the stress tensor. These
+authors also give a very nice alternative derivation of Zamolodchikov’s c-theorem[14] based
+on this quantity F (A, B).
+
+
+II.     VON NEUMANN ENTROPY AND RIEMANN SURFACES.
+
+
+      Consider a lattice quantum theory in one space and one time dimension, initially on the
+infinite line. The lattice spacing is a, and the lattice sites are labelled by a discrete variable
+x. The domain of x can be finite, i.e. some interval of length L, semi-infinite, or infinite.
+Time is considered to be continuous. A complete set of local commuting observables will
+be denoted by {φ̂(x)}, and their eigenvalues and corresponding eigenstates by {φ(x)} and
+⊗x |{φ(x)}i respectively. For a bosonic lattice field theory, these will be the fundamental
+bosonic fields of the theory; for a spin model some particular component of the local spin.
+
+
+                                               5
+The dynamics of the theory is described by a time-evolution operator Ĥ. The density matrix
+ρ in a thermal state at inverse temperature β is
+
+                  ρ({φ(x′′ )′′ }|{φ(x′ )′ }) = Z(β)−1 h{φ(x′′ )′′ }|e−β Ĥ |{φ(x′ )′ }i ,                    (5)
+
+where Z(β) = Tr e−β Ĥ is the partition function.
+   This may be expressed in the standard way as a (euclidean) path integral:
+                       Z
+                  −1
+                                                δ(φ(x, 0) − φ(x′ )′ )       δ(φ(x, β) − φ(x′′ )′′ ) e−SE ,
+                                           Y                            Y
+           ρ=Z             [dφ(x, τ )]                                                                       (6)
+                                            x                           x
+             Rβ
+where SE =    0 LE dτ , with LE the euclidean lagrangian.                       (For a spin model this would be
+replaced by a coherent state path integral.)
+   The normalisation factor of the partition function ensures that Tr ρ = 1, and is found by
+setting {φ(x)′′ } = {φ(x)′ } and integrating over these variables. This has the effect of sewing
+together the edges along τ = 0 and τ = β to form a cylinder of circumference β.
+   Now let A be a subsystem consisting of the points x in the disjoint[29] intervals
+(u1 , v1 ), . . . , (uN , vN ). An expression for the the reduced density matrix ρA may be found
+from (6) by sewing together only those points x which are not in A. This will have the effect
+of leaving open cuts, one for each interval (uj , vj ), along the the line τ = 0.
+   We may then compute Tr ρnA , for any positive integer n, by making n copies of the above,
+labelled by an integer k with 1 ≤ k ≤ n, and sewing them together cyclically along the the
+cuts so that φ(x)′k = φ(x)′′k+1 (and φ(x)′n = φ(x)′′1 ) for all x ∈ A. Let us denote the path
+integral on this n-sheeted structure by Zn (A). Then
+
+                                                                Zn (A)
+                                                    Tr ρnA =           .                                     (7)
+                                                                 Zn
+                                      n
+   Now, since Tr ρnA =           λλ       , where λ are the eigenvalues of ρA (which lie in [0, 1),) and
+                             P
+
+since Tr ρA = 1, it follows that the left hand side is absolutely convergent and therefore
+analytic for all Re n > 1. The derivative wrt n therefore also exists and is analytic in the
+region. Moreover, if the entropy ρA = −                    λ λ log λ is finite, the limit as n → 1+ of the first
+                                                       P
+
+derivative converges to this value.
+   We conclude that the right hand side of (7) has a unique analytic continuation to Re n > 1
+and that its first derivative at n = 1 gives the required entropy:
+
+                                                              ∂ Zn (A)
+                                                SA = − lim             .                                     (8)
+                                                         n→1 ∂n Z n
+
+
+                                                            6
+(Note that even before taking this limit, (7) gives an expression for the Tsallis entropy[15]
+(Tr ρnA − 1)/(1 − n).)
+   So far, everything has been in the discrete space domain. We now discuss the continuum
+limit, in which a → 0 keeping all other lengths fixed. The points x then assume real values,
+and the path integral is over fields φ(x, τ ) on an n-sheeted Riemann surface, with branch
+points at uj and vj . In this limit, SE is supposed to go over into the euclidean action for a
+quantum field theory. We shall restrict attention to the case when this is Lorentz invariant,
+since the full power of relativistic field theory can then be brought to bear. The behaviour
+of partition functions in this limit has been well studied. In two dimensions, the logarithm
+of a general partition function Z in a domain with total area A and with boundaries of total
+length L behaves as
+                               log Z = f1 Aa−2 + f2 La−1 + . . .                           (9)
+
+where f1 and f2 are the non-universal bulk and boundary free energies. Note, however, that
+these leading terms cancel in the ratio of partition functions in (7). However, as was argued
+by Cardy and Peschel[8] there are also universal terms proportional to log a. These arise
+from points of non-zero curvature of the manifold and its boundary. In our case, these are
+conical singularities at the branch points. In fact, as we shall show, it is precisely these
+logarithmic terms which give rise to the non-trivial dependence of the final result for the
+entropy on the short-distance cut-off a. For the moment let us simply remark that, in order
+to achieve a finite limit as a → 0, the right hand side of (7) should be multiplied by some
+renormalisation constant Z(A, n). Its dependence on a will emerge from the later analysis.
+
+
+III.   ENTANGLEMENT ENTROPY IN 2D CONFORMAL FIELD THEORY.
+
+
+   Now specialise the discussion of the previous section to the case when the field theory
+is relativistic and massless, i.e. a conformal field theory (CFT), with central charge c, and
+initially consider the case of zero temperature.
+   We show that in this case the ratio of partition functions in (7) is the same as the corre-
+lation function arising from the insertion of primary scaling operators Φn (uj ) and Φ−n (vj ),
+with scaling dimensions Xn = 2∆n = (c/12)(1 − 1/n2 ), into each of the n (disconnected)
+sheets. Moreover, this 2N-point correlation function is computable from the Ward identities
+of CFT.
+
+                                             7
+   In the language of string theory, the objects we consider are correlators of orbifold points
+in theories whose target space consists of n copies of the given CFT. We expect that some
+of our results may therefore have appeared in the literature of the subject.
+
+
+   A.     Single interval
+
+
+   We first consider the case N = 1 and no boundaries, that is the case considered by
+Holzhey et al.[7] of a single interval of length ℓ in an infinitely long 1d quantum system, at
+zero temperature. The conformal mapping w → ζ = (w −u)/(w −v) maps the branch points
+to (0, ∞). This is then uniformised by the mapping ζ → z = ζ 1/n = ((w − u)/(w − v))1/n .
+This maps the whole of the n-sheeted Riemann surface Rn to the z-plane C. Now consider
+the holomorphic component of the stress tensor T (w). This is related to the transformed
+stress tensor T (z) by[16]
+
+                               T (w) = (dz/dw)2 T (z) + 12
+                                                         c
+                                                           {z, w} ,                             (10)
+
+where {z, w} is the Schwartzian derivative (z ′′′ z ′ − 23 z ′′ 2 )/z ′ 2 . In particular, taking the
+expectation value of this, and using hT (z)iC = 0 by translational and rotational invariance,
+we find
+                              c          c(1 − (1/n)2 )     (v − u)2
+                   hT (w)iRn =  {z, w} =                                  .           (11)
+                             12               24        (w − u)2 (w − v)2
+This is to be compared with the standard form[16] of the correlator of T with two primary
+operators Φn (u) and Φ−n (v) which have the same complex scaling dimensions ∆n = ∆n =
+(c/24)(1 − (1/n)2 ):
+                                                              ∆n
+              hT (w)Φn (u)Φ−n (v)iC =                                                    ,      (12)
+                                           (w − u)2(w − v)2 (v − u)2∆n −2 (v̄ − ū)2∆n
+
+where Φ±n are normalised so that hΦn (u)Φ−n (v)iC = |v − u|−2∆n −2∆n . (12) is equivalent to
+the conformal Ward identity[16]
+                                                                                !
+                               ∆n          ∆n          1 ∂      1 ∂
+hT (w)Φn (u)Φ−n (v)iC =              2
+                                       +         2
+                                                   +         +         hΦn (u)Φ−n (v)iC .
+                             (w − u)     (w − v)     w − u ∂u w − v ∂v
+                                                                                     (13)
+In writing the above, we are assuming that w is a complex coordinate on a single sheet C,
+which is now decoupled from the others. We have therefore shown that
+                                     [dφ]T (w)e−SE (Rn )
+                                 R
+                                                           hT (w)Φn (u)Φ−n (v)iC
+                  hT (w)iRn ≡                            =                       .              (14)
+                                         [dφ]e−SE (Rn )
+                                       R
+                                                              hΦn (u)Φ−n (v)iC
+
+                                                  8
+Now consider the effect of an infinitesimal conformal transformation w → w ′ = w + α(w) of
+C which act identically on all the sheets of Rn . The effect of this is to insert a factor
+                             1                                 1
+                                  Z                                 Z
+                                       α(w)T (w)dw −                     α(w)T (w̄)dw̄                     (15)
+                            2πi    C                          2πi    C
+
+into the path integral, where the contour C encircles the points u and v. The insertion of
+T (w) is given by (12). Since this is to be inserted on each sheet, the right hand side gets
+multiplied by a factor n.
+   Since the Ward identity (13) determines all the properties under conformal transforma-
+tions, we conclude that the renormalised Zn (A)/Z n ∝ Tr ρnA behaves (apart from a possible
+overall constant) under scale and conformal transformations identically to the nth power
+of two-point function of a primary operator Φn with ∆n = ∆n = (c/24)(1 − (1/n)2 ). In
+particular, this means that
+
+                                  Tr ρnA = cn ((v − u)/a)−(c/6)(n−1/n) ,                                   (16)
+
+where the exponent is just 4n∆n . The power of a (corresponding to the renormalisation
+constant Z) has been inserted so as the make the final result dimensionless, as it should
+be. The constants cn are not determined by this method. However c1 must be unity.
+Differentiating with respect to n and setting n = 1, we recover the result of Holzhey et al.
+   The fact that Tr ρnA transforms under a general conformal transformation as a 2-point
+function of primary operators Φ±n means that it is simple to compute in other geometries,
+obtained by a conformal mapping z → z ′ = w(z), using the formula[16]
+
+                                                       |w ′ (zj )|2∆n hΦ(w1 , w̄1 )Φ(w2 , w̄2 ) . . .i .
+                                                   Y
+              hΦ(z1 , z̄1 )Φ(z2 , z̄2 ) . . .i =                                                           (17)
+                                                   j
+
+   For example, the transformation w → w ′ = (β/2π) log w maps each sheet in the w-plane
+into an infinitely long cylinder of circumference β. The sheets are now sewn together along
+a branch cut joining the images of the points u and v. By arranging this to lie parallel to
+the axis of the cylinder, we get an expression for Tr ρnA in a thermal mixed state at finite
+temperature β −1 . This leads to the result for the entropy
+
+                           SA (β) ∼ (c/3) log ((β/πa) sinh(πℓ/β)) + c′1 .                                  (18)
+
+For ℓ ≪ β we find SA ∼ (c/3) log(ℓ/a) as before, while, in the opposite limit ℓ ≫ β,
+SA ∼ (πc/3)(ℓ/β). In this limit, the von Neumann entropy is extensive, and its density
+
+                                                          9
+agrees with that of the Gibbs entropy of an isolated system of length ℓ, as obtained from
+the standard CFT expression[12, 13] βF ∼ −(πc/6)(ℓ/β) for its free energy.
+   Alternatively, we may orient the branch cut perpendicular to the axis of the cylinder,
+which, with the replacement β → L, corresponds to the entropy of a subsystem of length
+ℓ in a finite 1d system of length L, with periodic boundary conditions, in its ground state.
+This gives
+                            SA ∼ (c/3) log ((L/πa) sin(πℓ/L)) + c′1 .                      (19)
+
+Note that this expression is symmetric under ℓ → L − ℓ. It is maximal when ℓ = L/2.
+
+
+   B.   Finite system with a boundary.
+
+
+   Next consider the case when the 1d system is a semi-infinite line, say [0, ∞), and the
+subsystem A is the finite interval [0, ℓ). The n-sheeted Riemann surface then consists of
+n copies of the half-plane x ≥ 0, sewn together along 0 ≤ x < ℓ, τ = 0. Once again, we
+work initially at zero temperature. It is convenient to use the complex variable w = τ + ix.
+The uniformising transformation is now z = ((w − iℓ)/(w + iℓ))1/n , which maps the whole
+Riemann surface to the unit disc |z| ≤ 1. In this geometry, hT (z)i = 0 by rotational
+invariance, so that, using (10), we find
+                                                   ∆n (2ℓ)2
+                                hT (w)iRn =                        ,                       (20)
+                                               (w − iℓ)2 (w + iℓ)2
+where ∆n = (c/24)(1 − n−2 ) as before. Note that in the half-plane, T and T are related by
+analytic continuation: T (w̄) = T (w)∗. (20) has the same form as hT (w)Φn (iℓ)i, which follows
+from the Ward identities of boundary CFT[17], with the normalisation hΦn (iℓ)i = (2ℓ)−∆n .
+   The analysis then proceeds in analogy with the previous case. We find
+
+                                  Tr ρnA ∼ c̃n (2ℓ/a)(c/12)(n−1/n) ,                       (21)
+
+so that SA ∼ (c/6) log(2ℓ/a) + c̃′1 .
+   Once again, this result can be conformally transformed into a number of other cases. At
+finite temperature β −1 we find
+
+                         SA (β) ∼ (c/6) log ((β/πa) sinh(2πℓ/β)) + c̃′1 .                  (22)
+
+By taking the limit when ℓ ≫ β we find the same extensive entropy as before. However, we
+can now identify c̃′1 − c′1 as the boundary entropy g, first discussed by Affleck and Ludwig[9].
+
+                                                10
+   For a completely finite 1d system, of length L, at zero temperature, divided into two
+pieces of lengths ℓ and L − ℓ, we similarly find
+
+                                  SA = (c/6) log ((L/πa) sin(πℓ/L)) + 2g + c′1 .                                   (23)
+
+
+   C.   General case.
+
+
+   For general N, the algebra is more complicated, but the method is the same. The
+                                                                                 αi
+uniformising transformation now has the form z =                   i (w − wi )        , with       i αi = 0 (so there is
+                                                                  Q                            P
+
+no singularity at infinity.) Here wi can be uj , vj , or ±iuj in the case of a boundary. In our
+case, we have αi = ±1/n, but it is interesting to consider the more general transformation,
+and the notation is simpler. Once again we have
+                                                                                 2
+                                                c         c z ′′′ z ′ − 23 z ′′
+                                      hT (w)i = {z, w} =                        .                                  (24)
+                                               12        12          z′ 2
+
+Consider {z, w}/z. As a function of w, this is meromorphic, has a double pole at each
+w = wi , and is O(w −2) as w → ∞. Hence it has the form
+                                                  X       Ai        X Bi
+                                     {z, w}/z =                 2
+                                                                  +          ,                                     (25)
+                                                   i   (w − wi)     i w − wi
+
+where       i Bi = 0.         In order to determine Ai and Bi , we need to compute z ′ , etc, to second
+        P
+
+order in their singularities at wi . After some algebra, we find
+                                                         
+                              αi          αj 
+                     z′ = 
+                                    X
+                                  +            z;                                                                  (26)
+                            w − wi j6=i w − wj
+                                                                                
+                             −αi + αi2        αi X αj
+                    z ′′ =             + 2                     + · · · z ;                                       (27)
+                             (w − wi )2     w − wi j6=i wi − wj
+                                                                                              
+                        ′′′       2αi − 3αi2 + αi3 −3αi + 3αi2 X αj
+                    z         =                  +                        + · · · z .                            (28)
+                                    (w − wi )3      (w − wi)2 j6=i wi − wj
+
+Let
+                                                        X       αj
+                                                 Ci ≡                .                                             (29)
+                                                        j6=i wi − wj
+
+Then the coefficient of (w − wi )−2 is
+
+            {[αi (αi − 1)(αi − 2) + 3αi (αi − 1)Ci (w − wi ) + · · ·] [αi + Ci (w − wi ) + · · ·]
+                                                              o
+             − 32 [αi (αi − 1) + 2αi Ci (w − wi ) + · · ·]2 / [αi + Ci (w − wi ) + · · ·]2 ,
+
+                                                         11
+from which we find after a little more algebra that
+
+                                                     Ai = 12 (1 − αi2 ) ;                                       (30)
+                                                               1 − αi2
+                                                     Bi = Ci            .                                       (31)
+                                                                 αi
+Thus we have shown that
+                                                                                                      
+                         c X  21 (1 − αi2 )  (1 − αi2 ) X αj  1 
+              hT (w)i =                     +                                 .                                 (32)
+                        12 i (w − wi )2           αi      j6=i
+                                                               wi − wj w − wi
+
+This is to be compared with the conformal Ward identity
+                                                     "                                       #
+                           Y                    X           ∆i           1     ∂   Y
+               hT (w)          Φi (wi )i =                         2
+                                                                     +            h Φk (wk )i .                 (33)
+                           i                     i       (w − wi )     w − wi ∂wi  k
+
+For these to be equivalent, we must have ∆i = 21 (1 − αi2 ) and
+                                   (1 − αi2 ) X αj            ∂      Y
+                                                           =     logh Φk (wk )i .                               (34)
+                                      αi      j6=i wi − wj   ∂wi     k
+
+A necessary and sufficient condition for this is that
+                                                                                                  
+                  ∂  1 − αi2 X αj        ∂  1 − αk2 X    αj 
+                                        =                        ,                                              (35)
+                 ∂wk    αi j6=i wi − wj   ∂wi    αk j6=k wk − wj
+
+for each pair (i, k). This reduces to
+                                     1 − αi2  αk          1 − αk2  αi
+                               −                    2
+                                                      = −                  ,                                    (36)
+                                       αi (wk − wi)         αk (wi − wk )2
+that is, αi = ±αk for each pair (i, k). Since                        i αi = 0 the only way to satisfy this is to have
+                                                                P
+
+αi = ασi , with σi = ±1, and half the σi = +1 and the remainder −1. Interestingly enough,
+this is precisely the case we need, with α = 1/n.
+   If these conditions are satisfied,
+                                ∂                   c         X σi σk
+                                   logh Φj (wj )i = (1 − α2 )
+                                       Y
+                                                                           ,                                    (37)
+                               ∂wi     j           12         k6=i wi − wk
+
+so that
+                                                 c
+                                                   (1 − α2 )
+                               Y                                     X
+                   logh             Φj (wj )i = 12                          σi σk log(wi − wk ) + E ,           (38)
+                               j                                      k<i
+
+where E is independent of all the wi . In the case with no boundary, E can depend however
+on the w̄i . A similar calculation with T then gives a similar dependence. We conclude that
+Tr ρnA behaves under conformal transformations in the same way as
+                                                            c         2                  c       2
+                                             (wi − wk ) 12 (1−α )σi σk (w̄i − w̄k ) 12 (1−α )σ̄i σ̄k .
+                       Y                Y
+                   h       Φj i ∝                                                                               (39)
+                       j               j<k
+
+
+                                                                12
+Taking now α = 1/n, and σ = ±1 according as wi = uj or vj , we find
+                                                                    !(c/6)(n−1/n)
+                                         j<k (uk − uj )(vk − vj )
+                                     Q
+                       Tr ρnA ∼ cN
+                                 n                                                  .           (40)
+                                              j≤k (vk − uj )
+                                           Q
+
+
+The overall constant is fixed in terms of the previously defined cn by taking the intervals to
+be far apart from each other, in comparison to their lengths.
+   Differentiating with respect to n and setting n = 1, we find our main result of this section
+                                                                                           
+     c X
+                                                          log ((vk − vj )/a) + Nc′1 . (41)
+                             X                        X
+ SA =  log ((vk − uj )/a) −     log ((uk − uj )/a) −
+     3 j≤k                   j<k                      j<k
+
+   A similar expression holds in the case of a boundary, with half of the wi corresponding
+to the image points.
+   Finally we comment on the recent result of Casini and Huerta[6], which corresponds to
+N = 2. In fact, it may be generalised to the ratio of Tsallis entropies: from (40) we find
+                                                                        !(c/6)(n−1/n)
+                       Sn (A)Sn (B)              (v1 − u1 )(v2 − u2 )
+                                       =                                                ,       (42)
+                  Sn (A ∩ B)Sn (A ∪ B)           (u2 − u1 )(v2 − v1 )
+
+where Sn (A) ≡ Tr ρnA , and the expression in parentheses is the cross-ratio η of the four points.
+Notice that in this expression the dependence on the ultraviolet cut-off a disappeared, so
+have the non-universal numbers cn . Differentiating with respect to n gives the result of
+Casini and Huerta[6], who however assumed that the result should depend only on η.
+
+
+IV.     ENTROPY IN NON-CRITICAL 1+1-DIMENSIONAL MODELS
+
+
+   A.    Massive field theory - general case
+
+
+   In this section we consider an infinite non-critical model in 1+1-dimensions, in the scaling
+limit where the lattice spacing a → 0 with the correlation length (inverse mass) fixed. This
+corresponds to a massive relativistic QFT. We first consider the case when the subset A
+is the negative real axis, so that the appropriate Riemann surface has branch points of
+order n at 0 and infinity. However, for the non-critical case, the branch point at infinity is
+unimportant: we should arrive at the same expression by considering a finite system whose
+length L is much greater than ξ.
+   Our argument parallels that of Zamolodchikov[14] for the proof of his famous c-theorem.
+Let us consider the expectation value of the stress tensor Tµν of a massive euclidean QFT
+
+                                                 13
+on such a Riemann surface. In complex coordinates, there are three non-zero components:
+T ≡ Tzz , T ≡ Tz̄ z̄ , and the trace Θ = 4Tz z̄ = 4Tz̄z . These are related by the conservation
+equations
+
+                                         ∂z̄ T + 14 ∂z Θ = 0 ;                            (43)
+                                         ∂z T + 14 ∂z̄ Θ = 0 .                            (44)
+
+   Consider the expectation values of these components. In the single-sheeted geometry,
+hT i and hT i both vanish, but hΘi is constant and non-vanishing: it measures the explicit
+breaking of scale invariance in the non-critical system. In the n-sheeted geometry, however,
+they all acquire a non-trivial spatial dependence. By rotational invariance about the origin,
+they have the form
+
+                                         hT (z, z̄)i = Fn (zz̄)/z 2 ;                     (45)
+
+                                hΘ(z, z̄)i − hΘi1 = Gn (zz̄)/(zz̄) ;                      (46)
+                                         hT (z, z̄)i = Fn (zz̄)/z̄ 2 .                    (47)
+
+From the conservation conditions (43) we have
+                                                       
+                                    (zz̄) Fn′ + 14 G′n = 41 Gn .                          (48)
+
+Now we expect that Fn and Gn both approach zero exponentially fast for |z| ≫ ξ, while
+in the opposite limit, on distance scales ≪ ξ, they approach the CFT values (see previous
+section) Fn → (c/24)(1 − n−2 ), Gn → 0.
+   This means that if we define an effective C-function
+                                                                  
+                                 Cn (R2 ) ≡ F (R2 ) + 41 G(R2 ) ,                         (49)
+
+then
+                                         ∂
+                                  R2          Cn (R2 ) = 41 Gn (R2 ) .                    (50)
+                                       ∂(R2 )
+   If we were able to argue that Gn ≤ 0, that is hΘin ≤ hΘi1 , we would have found
+alternative formulation of the c-theorem. However, we can still derive an integrated form of
+the c-theorem, using the boundary conditions:[30]
+
+                                  Gn (R2 )
+                           Z ∞
+                                      2
+                                           d(R2 ) = −(c/6)(1 − n−2 ) ,                    (51)
+                            0       R
+
+                                                   14
+or equivalently
+                            Z
+                                (hΘin − hΘi1) d2R = −πn(c/6)(1 − n−2 ) ,                     (52)
+
+where the integral is over the whole of the the n-sheeted surface. Now this integral (multi-
+plied by a factor 1/2π corresponding to the conventional normalisation of the stress tensor)
+measures the response of the free energy − log Z to a scale transformation, i.e. to a change
+in the mass m, since this is the only dimensionful parameter of the renormalised theory.
+Thus the left hand side is equal to
+
+                                 − (2π) m(∂/∂m) [log Zn − n log Z] ,                         (53)
+
+giving finally
+                                      Zn
+                                        n
+                                          = cn (ma)(c/12)(n−1/n) ,                           (54)
+                                      Z
+where cn is a constant (with however c1 = 1), and we have inserted a power of a, correspond-
+ing to the renormalisation constant Z discussed earlier, to make the result dimensionless.
+   This shows that the (n − 1/n) dependence for the exponent of the Tsallis entropy is a
+general property of the continuum theory. Differentiating at n = 1, we find the main result
+of this section
+                                SA ∼ −(c/6) log(ma) = (c/6) log(ξ/a) ,                       (55)
+
+where ξ is the correlation length. We re-emphasise that this result was obtained only for the
+scaling limit ξ ≫ a. However, for lattice integrable models, we shall show how it is possible
+to obtain the full dependence without this restriction.
+   So far we have considered the simplest geometry in the which set A and its complement B
+are semi-infinite intervals. The more general case, when A is a union of disjoint intervals, is
+more difficult in the massive case. However it is still true that the entropy can be expressed
+in terms of the derivative at n = 1 of correlators of operators Φn . The above calculation can
+be thought of in terms of the one-point function hΦn i. In any quantum field theory a more
+                       Qk
+general correlator h    i=1 Φ±n (wi )i should obey cluster decomposition: that is, for separations
+
+|wi − wj | all ≫ ξ, it should approach hΦn ik . This suggests that, in this limit, the entropy
+should behave as SA ∼ A(c/6) log(ξ/a), where A = k is the number of boundary points
+between A and its complement. This would be the 1d version of the area law[10]. When the
+interval lengths are of the order of ξ, we expect to see a complicated but universal scaling
+form for the cross-over.
+
+                                                 15
+   B.   Free bosonic field theory
+
+
+   In this subsection we verify Eq. (55) by an explicit calculation for a massive free field
+theory (Gaussian model.) The action
+                                              Z                            
+                                         S=       1
+                                                  2
+                                                          (∂µ ϕ)2 + m2 ϕ2 d2r,                    (56)
+
+is, as before, considered on a n-sheeted Riemann surface with one cut, which we arbitrarily
+fix on the real negative axis.
+   To obtain the entanglement entropy we should know the ratio Zn /Z n , where Zn is the
+partition function in the n-sheeted geometry. There are several equivalent ways to calculate
+such partition function. In the following, we find easier to use the identity[31]
+                                     ∂
+                                                                  Z
+                                       2
+                                         log Zn = − 12                Gn (r, r)d2r ,              (57)
+                                    ∂m
+where Gn (r, r′ ) is the two-point correlation function in the n-sheeted geometry. Thus we
+need the combination Gn − nG1 . Gn obeys
+
+                                   (−∇2r + m2 )Gn (r, r′) = δ 2 (r − r′ ) .                       (58)
+
+Its solution (see the Appendix) may be expressed in polar coordinates as (here 0 < r, r ′ < ∞
+and 0 ≤ θ, θ′ < 2πn)
+                                              ∞
+                                          1 X
+                                                    Z ∞
+                                                            Jk/n (λr)Jk/n (λr ′ )
+                Gn (r, θ, r ′ , θ′ ) =           dk     λdλ                       Ck (θ, θ′ ) ,   (59)
+                                         2πn k=0     0            λ2 + m2
+
+where Ck (θ, θ′ ) = cos(kθ/n) cos(kθ′ /n) + sin(kθ/n) sin(kθ′ /n), d0 = 1, dk>0 = 2, and Jk (x)
+are the Bessel functions of the first kind. At coincident points (i.e. r = r ′ , θ = θ′ ), and after
+integrating over θ and λ we have
+                                                            ∞
+                                                            X
+                            Gn (r) ≡ Gn (r, r) =                  dk Ik/n (mr)Kk/n (mr) ,         (60)
+                                                            k=0
+
+where Ik (x) and Kk (x) are the modified Bessel functions of the first and second kind respec-
+tively [18].
+   The sum over k in (60) is UV divergent. This reflects the usual short-distance divergence
+which would occur even in the plane. However, if we formally exchange the order of the sum
+and integration we find
+     ∂            1                     1X       ∞                           1 X
+                        Z                                  Z
+                             2
+  −    2
+         log Zn =           d r Gn (r)=     dk     Ik/n (mr)Kk/n (mr)rdr =        dk k . (61)
+    ∂m            2                     2 k    0                           4nm2 k
+
+                                                            16
+Interpreting the last sum as 2ζ(−1) = −1/6, we obtain the correct result, which we now
+derive more systematically.
+   Let us first regularise each sum over k by inserting a function F (k/Λn ): F is chosen so
+that F (0) = 1, and all its derivatives at the origin vanish: however it goes to zero sufficiently
+fast at infinity. Since k/n is conjugate to the angle θ, we should think of this cut-off as being
+equivalent to a discretisation δθ. Thus we should choose Λn = Λ · n, where Λ ∼ (δθ)−1 .
+   To perform the sum over k, we use the Euler-MacLaurin (EML) sum formula [18]
+                       ∞                                    ∞
+                    1X               Z ∞
+                                                  1 ′      X    B2j (2j−1)
+                          dk f (k) =     f (k)dk − f (0) −           f     (0) ,             (62)
+                    2 k=0             0           12       j=2 (2j)!
+
+
+where B2n are the Bernoulli numbers [18]. Using standard identities of the Bessel function
+(namely ∂k Kk (x)|k=0 = 0 and ∂k Ik (x)|k=0 = −K0 (k) [18]), we obtain
+
+                                                 1            ∞            B2j
+             Z ∞                                                          Z
+                   dkIk/n (mr)Kk/n (mr)F (k/nΛ)+ K02 (mr) +
+                                                                    X
+Gn (r) = 2                                                      rdr               D
+                                                                              2j+1 2j+1
+                                                                                        (r) ,
+             0                                  6n          0       j≥1 (2j)!n
+                                                                                        (63)
+where we define Di (x) = ∂ i (Ik (x)Kk (x))/∂k i |k=0. In the last term in Eq. (63) the order of
+the integral, derivative, and sum can be exchanged and each term in the sum is
+
+                    ∂i                                 ∂i k
+                           Z ∞
+                                 xdxIk (x)Kk (x) = −          = 0 for i = 2j + 1 ≥ 2 ,       (64)
+                    ∂k i   0                           ∂k i 2
+
+i.e. the sum in Eq. (63) is vanishing.
+   Thus, still with the regulator in place,
+
+               ∂                ∞       ∞                                   1
+                                     Z        Z
+                  log Z n = −     rdr     dkIk/n (mr)K k/n (mr)F (k/nΛ) −                    (65)
+              ∂m2             0       0                                   24nm2
+                           R∞
+where we have used         0     rK02 (mr)dr = 1/(2m2 ).
+   Now the point is that in the integral over k the factor of n can be scaled out by letting
+k → nk. Thus this potentially divergent term cancels in the required combination Gn −nG1 .
+Having taken this combination, we may now remove the regulator to find the main result
+
+                                          ∂ log Zn     1      1
+                                                                     
+                                                   =      n −             .                  (66)
+                                         ∂m2 Z n     24m2     n
+
+The integration of the last expression wrt m2 (made following the recipe for the integration
+limits given in the previous section) gives
+
+                                               Zn   log a2 m2    1
+                                                                             
+                                          n
+                                  log Trρ = log n =           n−                  ,          (67)
+                                               Z       24        n
+
+                                                    17
+and finally the entanglement entropy
+
+                              ∂              ∂                             1
+                                               (m2 a2 ) 24 (n− n )
+                                                         1     1
+     S = −Trρ log ρ = −         Trρn     =−                            = − log m2 a2 ,     (68)
+                             ∂n      n=1
+                                            ∂n                     n=1
+                                                                          12
+
+that agrees with the general formula we derive (55), with c = 1 and m = ξ −1 .
+
+
+   C.   Integrable models and the corner transfer matrix
+
+
+   In this subsection we verify (55) for the transverse Ising chain and the uniaxial XXZ
+Heisenberg model. These results are also an independent check of the uniform convergence
+of the derivative wrt n of ρn when n → 1, since for these models we can compute the
+eigenvalues of ρA exactly.
+   Although these systems are integrable and their ground state is known, a direct calcula-
+tion of ρ is difficult. The difficulties arising in a direct calculation can be avoided mapping
+the quantum chains onto two-dimensional classical spin systems. As firstly pointed out by
+Nishino et al. [19] the density matrix of the quantum chain is the partition function of a
+two-dimensional strip with a cut perpendicular to it. In fact the ground state of a quantum
+chain described by an Hamiltonian H is also eigenstate of the transfer matrix T of a classical
+systems satisfying [H, T ] = 0. Therefore the reduced density matrix of a subsystem A of
+the chain (defined in the Introduction as ρA = TrB |ΨihΨ|, with B the complement of A) is
+the partition function of two half-infinite strips, one extending from −∞ to 0 and the other
+from +∞ to 0, with the spins in B identified.
+   This partition function is the product of four Baxter corner transfer matrices (CTMs)[20]
+Â. If the lattice is choose in a clever way (i.e. rotated by π/4 with respect to the cut) one
+ends in the infinite length limit with [21]
+
+                                       ρ̂A = Â4 = e−ĤCTM ,                               (69)
+
+where ĤCTM is an effective Hamiltonian, which, for the models under consideration, may be
+diagonalised by means of fermionisation (see for more details about this equivalence [21] and
+references therein.) Note that Trρ̂A 6= 1, thus the usual density matrix is ρA = ρ̂A /Trρ̂A .
+   The method just outlined is very general. However, for the integrable chains under
+consideration (and indeed for any model satisfying suitable Yang-Baxter equations[20]) it is
+possible to write HCTM = ǫÔ, with ǫ the scale giving the distance between the energy levels,
+
+                                               18
+and Ô is an operator with integer eigenvalues (for the Ising and XXZ models it is expressed
+in terms of free fermions.) Using this property the entropy is given by[32]
+                                           ρ̂A log ρ̂A                  ∂ log Z
+            S = −TrρA log ρA = −Tr                     + log Trρ̂A = −ǫ         + log Z ,    (70)
+                                              Trρ̂A                        ∂ǫ
+where we defined Z = Trρ̂A = Tre−ĤCTM .
+   The Ising model in a transverse field can be described by the one-dimensional Hamiltonian
+                                               L−1               L−1
+                                                     σnx − λ           σnz σn+1
+                                                                            z
+                                               X                 X
+                                      HI = −                                    ,            (71)
+                                               n=1               n=1
+
+where σn are the Pauli matrices at the site n, and we normalise the Hamiltonian (following
+[21]) by imposing the transverse field in the x direction to be one, thus the transition is
+driven by the parameter λ. The classical equivalent of (71) is two dimensional Ising model.
+For λ = 0 the ground state of the Hamiltonian (71) is a quantum “paramagnet” with all
+the spins aligned with the magnetic field in the x direction, and hσnz i = 0. In the opposite
+limit λ = ∞ the magnetic field is negligible and the ground state is ferromagnetic with
+hσnz i = ±1. The (second-order) transition between this two regimes happens at λ = 1. The
+exponent characterizing the divergence of the correlation length is ν = 1, i.e. ξ ≃ |λ − 1|−1.
+   The CTM of the Ising model may be diagonalised in terms of fermionic operators. The
+CTM Hamiltonian, written in terms of the fermion occupation number n̂i (with eigenvalues
+0 and 1) is [21]
+                                                           ∞
+                                                           X
+                                           ĤCTM =               ǫj n̂j .                    (72)
+                                                           j=0
+
+The energy levels are
+                                                                                √
+                              (2j + 1)ǫ    for λ < 1 ,
+                          (
+                                                                              K( 1 − k 2 )
+                   ǫj =                                            with ǫ = π                (73)
+                                2jǫ        for λ > 1 ,                          K(k)
+where K(k) is the complete elliptic integral of the first kind [18], and k = min[λ, λ−1 ].
+   For λ < 1
+                                                        ∞ h                         i
+                                 Z = Tre−ĤCTM =                 1 + e−ǫ(2j+1) ,
+                                                        Y
+                                                                                             (74)
+                                                        j=0
+
+and the entropy from Eq. (70) is
+                                   ∞              ∞
+                                    2j + 1
+                                                     log(1 + e−(2j+1)ǫ ) .
+                                   X             X
+                          S=ǫ          (2j+1)ǫ
+                                               +                                             (75)
+                              j=0 1 + e          j=0
+
+Analogously in the quantum ferromagnetic phase (λ > 1)
+                                       ∞             ∞
+                                           2j
+                                                        log(1 + e−2jǫ ) .
+                                       X            X
+                                S=ǫ           2jǫ
+                                                  +                                          (76)
+                                    j=0 1 + e       j=0
+
+
+                                                      19
+                           1
+
+
+
+                         0.8
+
+
+
+                    S    0.6
+
+
+
+                         0.4
+
+
+
+                         0.2
+
+
+
+                          0
+                               0        0.2      0.4      0.6        0.8   1   1.2    1.4   1.6
+
+                                                                     λ
+FIG. 1: Entanglement entropy for the 1D Ising chain as function of λ. The dashed line is the limit
+for λ → ∞, i.e. log 2.
+
+Fig. 1 shows a plot of the entropy as function of λ, characterised by a divergence at the
+quantum critical point λ = 1. Note that S(0) = 0 and S(∞) = log 2, in agreement with the
+expectation that the pure ferromagnetic ground state (λ = ∞) has two possible accessible
+configurations with opposite sign of magnetisation (i.e. S(∞) = log 2) and the pure quantum
+paramagnetic ground state (λ = 0) has only one configuration available with all the spins
+aligned in the direction of the magnetic field x and the resulting entropy is zero.
+   Let us analyze in details the behaviour at the critical point. For λ → 1, ǫ → 0 in both
+the phases, thus the sums Eqs. (75) and (76) can be approximated by the integral
+                                                   2xǫ                        π2 1
+                                    Z ∞                                       
+                                                                     −2xǫ
+                           S≃                 dx          + log(1 + e     ) =      ,              (77)
+                                        0        1 + e2xǫ                     12 ǫ
+with ≃ we mean in the critical region. The λ dependence (we use K(0) = π/2, K(x) =
+−1/2 log(1 − x) + O((1 − x)0 ) [18])
+                                        π2 1     1            1
+                                   S≃        ≃ − log(1 − k) =    log ξ + C1 ,                     (78)
+                                        12 ǫ    12            12
+where in the last equality ξ ∝ |1 − k|−1 has been used. This agrees with 55, with c = 1/2
+for the Ising model. The constant C1 is not universal.
+   Another model whose density matrix has been derived by using the CTM is the XXZ
+model
+                                                                      y
+                                                     (σnx σn+1
+                                                           x
+                                                               + σny σn+1 + ∆σnz σn+1
+                                                                                  z
+                                                X
+                                   HXXZ =                                             ),          (79)
+                                                 n
+
+
+                                                                20
+for ∆ > 1 (whose classical equivalent is the Baxter six-vertex model [20].) This model has
+an Ising-like ferromagnetic state for ∆ > 1 and a planar XX ferromagnetic ground state at
+0 < ∆ < 1 (the case ∆ < 0 describes the antiferromagnetic regime, in which we are not
+interested.) At ∆ = 1 the Hamiltonian is isotropic (XXX) and approaching such a point
+from large ∆ values the correlation length diverges as (see e.g. [20])
+
+                                           ξ     π2
+                                     log     ≃ √ √    ,                                  (80)
+                                           a  2 2 ∆−1
+because at ∆ = 1 a massless excitation (Goldstone mode) is present in the spectrum.
+     The CTM Hamiltonian ĤCTM for this model has been obtained in Ref. [21]
+                                                 ∞
+                                                 X
+                                       ĤCTM =         2jǫnj ,                           (81)
+                                                 j=0
+
+
+with ǫ = arccosh∆, for ∆ > 1. The entropy is given by Eq. (76). Close to the isotropic
+                          √ √
+point (∆ = 1) it holds ǫ ≃ 2 ∆ − 1 and (see Eq. (77))
+
+                                       π2 1   π2   1
+                                  S≃        ≃ √ √       .                                (82)
+                                       12 ǫ  12 2 ∆ − 1
+Using Eq. (80) to write ∆ in term of the correlation length, we have
+
+                                                1    ξ
+                                           S≃     log ,                                  (83)
+                                                6    a
+
+in agreement with 55, with c = 1. Again, in the limit ∆ → ∞, S = log 2, since the
+ferromagnetic ground state is Ising-like.
+     The method used here for the transverse Ising model and the XXZ model can in principle
+be applied to all those integrable model whose weights satisfy Yang-Baxter equations.
+
+
+V.     FINITE-SIZE EFFECTS
+
+
+     So far, we have studied the entropy either at the critical point, for a finite subsystem,
+or away from criticality in an infinite system. These two regimes may be linked by a
+generalisation of finite-size scaling theory. This would assert, for example, that the entropy
+of a subsystem A which forms e.g. the left half of a finite non-critical system of length 2L
+should have the form
+                                            c
+                              SA (L, ξ) =     (log L + sFSS (L/ξ)) ,                     (84)
+                                            6
+
+
+                                                21
+with sFSS (0) = 0 (this because we are referring to the scaling part, the constant term
+found before is not universal and it defines an overall additive normalisation of S) and
+sFSS (x) ∼ − log x, for large x, so as to recover S = (c/6) log ξ in the infinite length limit.
+sFSS (x) should admit a small x expansion
+
+                                                          sj x2j ,
+                                                    X
+                                      sFSS (x) =                                          (85)
+                                                    j≥1
+
+with sj universal coefficients, and a large x expansion
+                                                             X s∞
+                                                                j
+                                 sFSS (x) = − log x +             j
+                                                                      ,                   (86)
+                                                             j≥0 x
+
+with s∞
+      j also universal (in special situations logarithmic corrections could also be generated.)
+
+In the next section we test this hypothesis for the free massive field theory.
+
+
+   A.   FSS in the Gaussian model
+
+
+   Once again we consider the n-sheeted surface, but it now consists of n discs of finite
+radius L, sewn together along the negative real axis from −L to 0. The Gaussian two-point
+function in a finite geometry has been calculated in the Appendix Eq. (A2). Setting θ = θ′ ,
+r = r ′ and integrating over θ′ the propagator at coincident point is
+                                                            2
+                                ∞
+                                X     ∞
+                                      X       2/L2         Jk/n (αk/n,ir/L)
+                      Gn (r) =     dk      2                2       2     2
+                                                                            ,             (87)
+                               k=0    i=1 Jk/n+1 (αk/n,i ) αk/n,i /L + m
+
+where αν,i denotes the i−th zero of Jν (x). G(r) is the analogous of (60) in a finite geometry.
+   As we showed in the previous section, the right order to proceed to get a sensitive Zn is
+first to perform the sum over i, then sum over k and finally integrate over r. This is really
+hard, requiring a sum of Bessel functions for generic argument, over the zeroes of different
+Bessel functions. What one can do is inverting the order of the sums and integrations and
+try to understand what happens. From the previous exercise we know that this operation
+has to be done with care.
+   However, the formal result is
+                                                  2
+                                     1X X        αk/n,i /L2 + m2
+                            log Zn =     dk   log 2               .                       (88)
+                                     2 k    i    αk/n,i /L2 + a−2
+
+Since the large i behaviour of the zeroes of the Bessel functions is αν,i ∼ π(i + ν/2 − 1/4)
+(see e.g. [18]), this sum diverges.
+
+                                               22
+   A first, qualitatively correct expression for the universal function sFSS (x) can be obtained
+from Eq. (88), truncating the EML formula Eq. (62) in the variable k at the first order
+in the derivative. This approximation gives a correct form of the result because it takes
+into account the complete infinite volume result (whose truncated expression is exact.) The
+integral term in the EML is divergent, but it cancels as before in the ratio Zn /Z n if the
+cut-off in the angular modes is properly chosen as in the infinite volume case. The EML
+approximation at the first order is (we do not write the integral)
+               πL2 (a−2 − m2 ) X            α0,i             Y0 (α0,i )   F1 (mL, L/a)
+   log Zn =                        2      2 2    2     2  2
+                                                                        ≡              ,            (89)
+                     12n       i (α0,i + m L )(α0,i + L /a ) J1 (α0,i )        n
+where we used
+                                        ∂αk,i     π Y0 (α0,i )
+                                                =              ,                                    (90)
+                                         ∂k k=0   2 J1 (α0,i )
+which can be derived using the formulas [18] of the derivative of the Bessel functions with
+respect to the order. The remaining sum over i (the zeroes of the Bessel function) is now
+finite.
+   This gives the entropy as
+                                         ∂
+                                S=−        Trρn     = 2F1 (mL, L/a) ,                               (91)
+                                        ∂n      n=1
+which reproduces the correct limits for m = 0 and L = ∞.
+   From this formula we may compare with the FSS ansatz (84), with c = 1:
+      (1)                                                  X Y0 (α0,i )           m2 L2
+     sFSS (mL) = 12(F1 (mL, L/a) − F1 (0, L/a)) = −π                              2
+                                                                                                ,   (92)
+                                                            i   J1 (α0,i ) α0,i (α0,i + m2 L2 )
+that, as expected, is a function only of the product mL and all the dependence upon a
+disappears after the subtraction. This agrees with sFSS (0) = 0 and sFSS (0) = − log x, for
+large x (it can be easily shown, since in this limit the sum can be replaced by an integral.)
+The over-script (1) is there to remind that we made a first-order approximation in EML.
+   Eq.      (92) characterises completely the crossover between the mass dominated (non-
+critical) and the geometry dominated (critical) regime.
+                (1)
+   A plot of sFSS is shown in Fig. 2 (calculated as the sum of the first 1000 zeroes of J0 .)
+                                                                                   (1)
+From this figure we see that an optimum approximation for x ≥ 2 of sFSS (x) is sasy
+                                                                                FSS (x) =
+
+− log x+s∞         ∞                            ∞
+         0 , with s0 = 0.120912 (this value of s0 is a fit.) We can also calculate analytically
+
+all the universal coefficients of the small mL expansion [22]:
+                             ∞
+                (1)          X Y0 (α0,i )    1     1
+               s1     =− π                   3
+                                                 =− ,                                               (93)
+                             i=1 J1 (α0,i ) α0,i   4
+
+                                                 23
+          0
+                                                                    0
+
+
+        -0.5                                                    -0.2
+
+
+
+                                                                -0.4
+         -1
+    s                                                                   0       0.5         1       1.5   2
+                                                                                            x
+        -1.5                Exact
+                            Quadratic approximation
+                            Quartic approximation
+                            Sextic approximation
+                            Large x approximation
+         -2
+
+               0                    2                 4                     6                   8             10
+                                                                x
+               (1)
+FIG. 2: sFSS (x): Exact expression obtained as numerical sums over the first 1000 zeroes of the
+Bessel functions compared with small (quadratic, quartic and sextic) and large x (log x + s∞
+                                                                                           0 )
+
+approximations. Even the use of quadratic and large x approximation may reproduce the right
+formula over all the range. Inset: Comparison of several small x approximants for x < 2.
+
+                                    ∞
+                      (1)           X Y0 (α0,i )
+                                              1      5
+                     s2     =   π             5
+                                                  =     ,                                                          (94)
+                              i=1 J1 (α0,i ) α0,i   128
+                               ∞
+                      (1)     X   Y0 (α0,i ) 1         23
+                     s3 = − π                 7
+                                                  =−       ,                                                       (95)
+                              i=1 J1 (α0,i ) α0,i     3456
+                      (1)                           (1)                               (1)
+                     s4     ≃   1.15 × 10−3 ,      s5 ≃ −1.98 × 10−4 ,            s6 ≃ 3.42 × 10−5 .               (96)
+
+                                                          (1)
+Fig. 2 (see also the inset) shows a plot of sFSS (x), compared with quadratic, quartic, and
+sextic approximation. The agreement is excellent in the region x ≤ 2.
+   Before starting the full calculation of the function sFSS (x) let us summarise what we can
+learn from the first order approximation in the EML expansion: A rather good approxima-
+tion of the full function may be obtained by matching only the first-order small argument
+expansion with the large x behaviour ∼ log x (which is exact and does not depend upon the
+approximation.) Thus in the following we show how to calculate the coefficients sj without
+
+                                                          24
+any approximation.
+   Our starting point is again Eq. (88), but this time we will not use EML sum formula.
+For this reason we have to be care since the sum is divergent.
+   The interesting object is log Zn − n log Z. In particular we can write an FSS ansatz also
+for this “free-energy” and so subtract the m = 0 part, obtaining the universal function
+f (x = mL)                                                                       
+                                                        x2                       x2
+                                                                  !
+                               X           X
+                   f (x) = 3         dk      n log 1 +
+                                                         2
+                                                                      − log 1 + 2  ,               (97)
+                                 k         i            αk,i                    αk/n,i
+
+form which sFSS (x) = − ∂f∂n(x)              . This formula has to be intended in a formal way: in fact
+                                       n=1
+it is the difference of two diverging sums. To make this difference sensible the recipe for the
+cut-off explained in the previous section has to be used. Anyway from the computational
+point of view it is simpler to make the calculation without care of the cut-off and to adjust
+only at the end the result. The numerical sum over the zeroes of the Bessel functions of
+generic order cannot be done as before, but the small x expansion of f (x) =                    fj x2j with
+                                                                                            P
+
+coefficients                                                                 
+                                  (−1)j+1 3 X X  n       1 
+                             fj =             dk    2j − 2j    ,                                      (98)
+                                     j      k    i αk,i αk/n,i
+can be calculated analytically. For example
+                                                     "                   #
+                   ∂             X 1         2k ∂αk,i          ∂ X 1
+   swrong
+                            X                              X
+    1     =−         f1  =3   dk    2
+                                        −1 +          = −3   dk k    2
+                                                                         ,                            (99)
+                  ∂n n=1    k    i αk,i      αk,i ∂k       k   ∂k i αk,i
+
+that using [22]
+                                               ∞
+                                               X    1        1
+                                                    2
+                                                        =          ,                                 (100)
+                                               i=1 αk,i   4(k + 1)
+leads to
+                                      ∂     k        3X        1         3 π2
+               swrong
+                             X
+                1     = −3       dk               =−     dk          = −  (2 − 1) .                  (101)
+                             k        ∂k 4(k + 1)    4 k    (k + 1)2     4 6
+
+We use the over-script “wrong” because it is not strictly correct to make the calculation this
+way, since we are implicitly using the same cut-off for Z and Zn . In fact, applying the EML
+to the sum in (101), one has
+                                                                                        !
+                          3            1         3     ∞    dk     1
+                                                                  Z
+                swrong
+                                 X
+                 1     =−        dk        2
+                                             = −   2            2
+                                                                  + 2 + ... ,                        (102)
+                             4 k    (k + 1)      4   0   (k + 1)   6
+                                     (1)
+that has a first order term s1 = −1/4 (in agreement with what previously found) but the
+integral is not vanishing. This is a finite difference of the two divergent expressions with the
+
+                                                         25
+wrong cut-off. The value of the integral (2 dk(k + 1)−2 = 2) must be properly subtracted
+                                                  R
+
+to have the right result
+
+                                   3 π2
+                             s1 = − (2 − 3) = −0.217401 . . . .                               (103)
+                                   4 6
+
+This is close to the first order EML result −1/4, signaling that such approximation, not only
+reproduces the qualitative physics but is also quantitatively reliable (at the level of 10%.)
+In the same manner one can calculate all the coefficients sj , using the more complicated
+expressions for the sum of higher negative powers of zeroes of Bessel functions reported in
+the literature [22].
+
+
+VI.   HIGHER DIMENSIONS: SCALING OF ENTROPY AND AREA LAW
+
+
+   The scaling hypothesis plays a fundamental rule in understanding classical phase tran-
+sitions. Crudely speaking, it asserts that the microscopic length scale a does not enter
+explicitly into thermodynamic relations near the critical point, as long as the various ther-
+modynamic variables are suitable normalised and allowed to scale with their non-trivial
+scaling dimensions, related to the various universal critical exponents.
+   In fact, from the scaling of the singular part of the free energy density (here t = |T −Tc |/Tc ,
+ξ ∝ t−ν is the correlation length, h the external magnetic field, f± (x) a universal function,
+the subscript ± refers to the two phases, and yh is the scaling dimension of h)
+
+                                    fsing (t, h) = ξ −d f± (hξ −yh ) ,                        (104)
+
+the critical behaviour of all the thermodynamic observables and in particular the scaling laws
+may be derived. Note that fsing is not the total free energy density: there is another non-
+universal piece which has an explicit a−d dependence on the microscopic cut-off. However,
+this term is analytic in the thermodynamic variables.
+   As argued by Srednicki[10], for d > 2 the entropy SA is proportional to the surface area
+A of the subsystem A. Thus we should discuss the entropy per unit area s = SA /A. In
+analogy with the classical case, we may conjecture a scaling form for the singular part of
+the entropy per unit area near a quantum phase transition
+
+                            ssing (g, h, T ) = ξ −(d−1) s± (hξ −yh , T ξ −z ) ,               (105)
+
+
+                                                  26
+where yh > 0 describes the relevant effect of the field conjugated to the order parameter,
+z > 0 the relevance of the temperature close the the quantum phase transition (in all the
+examples considered up to now z = 1), and all other neglected operators are supposed to be
+irrelevant. s± should be a universal function apart from the normalisations of its arguments.
+The relation between ξ and g (the parameter driving the transition) is ξ = |g − gc |−ν . As for
+the free energy, ssing is not the total entropy: we also expect to find explicitly a-dependent
+pieces which are, however, analytic in g.
+   From the scaling of the entropy all the scaling laws can be obtained, e.g. the specific heat
+goes like
+                                                        ∂S
+                                           C=T             ∼ T ξ −(d−1+z) .                           (106)
+                                                        ∂T
+Similar identities can be derived for other observables.
+   This scaling can be explicitly checked in the case of the Gaussian model in all dimensions
+for h = T = 0 and z = 1. To calculate the entropy of a d-dimensional system close to a
+quantum critical point, one has to consider a d + 1 field theory. We consider the geometry
+where d − 1 dimensions are translational invariant in a domain delimited by an hypersurface
+of area A, and on the remaining two dimensional plane there is a branch cut going from 0
+to ∞ in an arbitrary direction. The choice of a different geometry is not expected to change
+the main results.
+   The two-point function is translational invariant in d − 2 directions and coincides with
+Eq. (59) on the cut plane, i.e.
+                                                   ∞
+                                dd−1 k⊥ ik⊥ r⊥ 1 X              Jk/n (λr)Jk/n (λr ′ )
+                            Z                            Z ∞
+                ′   ′
+   G(r⊥ ; r, θ, r , θ ) =            d−1
+                                         e            dk     λdλ 2       2      2
+                                                                                      Ck (θ, θ′ ) ,   (107)
+                                (2π)          2πn k=0     0       λ + m + k⊥
+where r⊥ is the vector between the two considered points in the d − 1 dimensional subspace.
+   The calculation proceeds as in the one-dimensional case with the substitution m2 →
+m2 + k⊥
+      2
+        , and the integration over k⊥ in front of all the equations. The space integration is
+obviously over dd−1 r⊥
+                     ′                ′
+                       rdrdθ (we use r⊥ to stress that it is different from that appearing in
+Eq. (107) that instead is r⊥ = 0, since the two-point function at coincident point has to be
+considered.) Thus the analogue of Eq. (67) is
+                                                         dd−1 k⊥ log(k⊥
+                                                                      2
+                                                                        + m2 )     1
+                                      Z             Z                                 
+                        log Trρn =        dd−1 r⊥
+                                                ′
+                                                                               n −         .          (108)
+                                                         (2π)d−1      24           n
+To have a finite result both the integrations are in a finite region. This means that the
+                                                    dd−1 r⊥
+                                                          ′
+                                                            = A and a cut-off proportional to a−1 must
+                                                R
+system must live in a finite box with
+
+                                                           27
+be understood for the integration over k⊥ .
+   In this way the entropy is
+                                   A           dd−1 k⊥      2
+                                                           k⊥ + m2
+                                           Z
+                               S=−                     log  2
+                                                                    .                     (109)
+                                   12          (2π)d−1     k⊥ + a−2
+
+In general, the integral diverges like a−(d−1) . However the coefficient of this divergence (and
+other sub-leading divergences which can occur for sufficiently large d) are in general analytic
+in m. There is, however, a finite piece which behaves as md−1 in agreement with (105). Note
+however that as d → 1 this singular term combines with the non-singular piece ∝ a−(d−1) to
+give the previously found result ∝ log(ma).
+   Just as for the classical free energy, one may also conjecture a finite-size scaling form for
+the entropy of the form
+
+                   ssing (L, g, h, T ) = L−(d−1) sFSS (L1/ν |g − gc |, Lyh h, Lz T ) .    (110)
+
+For h = T = 0 it reads
+
+                         ssing (L, g, h = T = 0) = As L−(d−1) sFSS (L/ξ) ,                (111)
+
+with sFSS (L/ξ) a function which satisfies sFSS (0) = 1 and sFSS (x) ∝ 1/x for large x, in
+order to reproduce the infinite volume limit, and As is a non universal constant fixing the
+normalisation of the entropy. In one dimension, this relation again does not make sense. The
+log L behaviour may be seen as resulting from a cancellation between the L−(d−1) behaviour
+of ssing against a constant term coming from the regular part, with As = O((d − 1)−1 ) as
+d → 1. This gives the anticipated form
+                                               c
+                              Ssing (L, ξ) =     (log L + sFSS (L/ξ)) ,                   (112)
+                                               6
+that has been explicitly checked for the Gaussian model in Sec. V.
+
+
+
+Acknowledgments. JC thanks D. Huse for first bringing this problem to his attention. This
+work was supported in part by the EPSRC under Grant GR/R83712/01 The initial phase
+was carried out while JC was a member of the Institute for Advanced Study. He thanks the
+School of Mathematics and the School of Natural Sciences for their hospitality. This stay
+was supported by the Bell Fund, the James D. Wolfensohn Fund, and a grant in aid from
+the Funds for Natural Sciences.
+
+                                                 28
+VII.   NOTE ADDED.
+
+
+   We recently were made aware, some time after this paper appeared in print, that the
+result (3.32) for more than one interval is incorrect in general. This error can be traced to
+the assumption at the beginning of Sec. 3C that there exists a uniformizing transformation
+for the n-sheeted Riemann surface into the sphere. In fact the surface has in general a
+non-trivial genus and therefore such a transformation does not exist. For the case of two
+intervals and n = 2 it can readily be seen that the surface is topologically a torus, and
+therefore the partition function Z2 depends on the whole operator content of the theory, not
+only the central charge as claimed. For other values of n the partition function should also
+depend on the structure constants (OPE coefficients). It is therefore highly unlikely that
+this would not remain true for the derivative at n = 1. Indeed, a study of the computation
+for the 2-interval case for a compactified boson, first carried out in 1987 by Dixon et al.[24],
+shows that this is the case, and that our (3.32) is incorrect. This is also the result of recent
+numerical investigations [25, 26]. We are grateful to V. Pasquier and F. Gliozzi for pointing
+out this work.
+   Although this error also carries over to the case of a semi-infinite system, mentioned just
+below (3.32) and also to Eq. (3.33), it does not impact on our later application of these
+methods to studying the time-dependence of the entanglement entropy following a quantum
+quench[27]. This is because in this case only the limiting behavior, when the various cross-
+ratios are either small or large, is needed, and this is insensitive to the precise form of (3.32).
+Likewise, as far as we are aware, all the other conclusions of the present paper remain valid.
+
+
+   APPENDIX A: TWO-POINT FUNCTION IN A n-SHEETED RIEMANN GE-
+OMETRY: INFINITE AND FINITE VOLUME RESULTS
+
+
+   The Green function G(r, r′) of the Helmholtz differential equation (−∇2r + m2 )f (r) = 0,
+with specific boundary condition, is the solution of
+
+                               (−∇2r + m2 )G(r, r′) = δ d (r − r′ ) .
+
+G(r, r′) admits an eigenfunction expansion
+
+                                  G(r, r′ ) =       Nk φk (r)φk (r′ ) ,
+                                                X
+
+                                                k
+
+
+                                                29
+in terms of φk (r), eigenfunctions of the Helmholtz differential operator (−∇2r + m2 ). Nk is a
+normalisation constant that should be derived from the orthonormality requirement of the
+eigenfunctions
+                                               Z
+                                          Nm       φm (r)φn (r′ )ddr = δnm .
+
+      In the case of a n-sheeted Riemann surface we are interested in, the eigenvalue problem
+is solved in polar coordinates r = (x, y) = (r cos θ, r sin θ). A complete set of eigenfunctions
+is
+                         φaν,i = cos(iνθ)Jν (λi r) ,             φbν,i = sin(iνθ)Jν (λi r) ,       (A1)
+
+with Jν (x) Bessel functions of the first kind. Note that the Bessel functions of the second
+kind Yν (x), that are also eigenfunctions of the same differential operator, do not enter in the
+expansion since we require regularity at r = 0.
+      Let us consider first the solution in a finite geometry. The infinite volume limit is recovered
+by taking the limit L → ∞ in the sense of distributions. Imposing the 2πn periodicity
+boundary condition we have that ν is an integer multiple of 1/n, i.e. ν = k/n. Constraining
+the eigenfunctions to vanish at r = L, the eigenvalues are λi L = αν,i, with αν,i the i-th zero
+of the Bessel function.
+      Using the orthogonality relation of the Bessel functions (see e.g. [18])
+
+                                                                        L2 2
+                         Z L
+                               rdrJν (αν,i r/L)Jν ′ (αν ′ ,i r/L) =       J (αν,i )δνν ′ ,
+                          0                                             2 ν+1
+
+we get from the orthonormality requirement
+
+                                                   dk     2/L2
+                                           Ni,k =      2
+                                                                      .
+                                                  2πn Jk/n+1 (αk/n,i)
+
+that gives the Green function
+                            ∞    ∞
+             ′   ′      1 X            2/L2        Jk/n (αk/n,ir/L)Jk/n (αk/n,ir ′ /L)
+                                                                                       Ck (θ, θ′ ) . (A2)
+                                 X
+     G(r, θ, r , θ ) =        dk    2                        2       2    2
+                       2πn k=0 i=1 Jk/n+1 (αk/n,i)          αk/n,i /L + m
+                                  R 2π                    R 2π
+                                                                 dx cos2 x = 02π dx sin2 x = π.
+                                                                               R
+The factor dk comes from           0     1dx = 2π and      0
+
+      In the limit L → ∞, the index i becomes continuous αν,i /L → λ and the δνν ′ in the
+orthonormality condition is replaced by δ(λ − λ′ ). The limit of the normalisation factor is
+Nk (λ) = dk λ/(2πn), that leads to the two-point function reported in the text (59). Note that
+
+
+
+
+                                                         30
+a slightly different form of this two-point function (satisfying Dirichlet boundary conditions)
+was used to investigate the critical behaviour at an edge [23].
+
+
+
+
+ [1] C. H. Bennett, H. J. Bernstein, S. Popescu, and B. Schumacher, Concentrating Partial En-
+    tanglement by Local Operations, 1996 Phys. Rev. A 53 2046 [quant-ph/9511030].
+ [2] A. Osterloh, L. Amico, G. Falci and R. Fazio, Scaling of Entanglement close to a Quantum
+    Phase Transitions, 2002 Nature 416 608;
+    T. J. Osborne and M. A. Nielsen, Entanglement in a simple quantum phase transition, 2002
+    Phys. Rev. A 66 32110 [quant-ph/0202162];
+    H. Barnum, E. Knill, G. Ortiz, R. Somma, and L. Viola, A Subsystem-Independent General-
+    ization of Entanglement, 2004 Phys. Rev. Lett. 92 107902 [quant-ph/0305023];
+    F. Verstraete, M. A. Martin-Delgado, and J. I. Cirac, Diverging Entanglement Length in
+    Gapped Quantum Spin Systems, 2004 Phys. Rev. Lett. 92 087201 [quant-ph/0311087].
+ [3] G. Vidal, J. I. Latorre, E. Rico and A. Kitaev, Entanglement in quantum critical phenomena,
+    2003 Phys. Rev. Lett. 90 227902;
+    J. I. Latorre, E. Rico, and G. Vidal, Ground state entanglement in quantum spin chains, 2004
+    Quant. Inf. and Comp. 4 048 [quant-ph/0304098];
+    J. I. Latorre, C. A. Lutken, E. Rico, and G. Vidal, Fine-grained entanglement loss along
+    renormalization group flows, 2004 Preprint quant-ph/0404120.
+ [4] B.-Q. Jin and V. E. Korepin, Quantum Spin Chain, Toeplitz Determinants and Fisher-Hartwig
+    Conjecture, 2004 J. Stat. Phys. 116 79 [quant-ph/0304108].
+ [5] N. Lambert, C. Emary, and T. Brandes, Entanglement and the Phase Transition in Single
+    Mode Super-radiance, 2004 Phys. Rev. Lett. 92 073602 [quant-ph/0309027].
+ [6] H. Casini and M. Huerta, A finite entanglement entropy and the c-theorem, 2004 Preprint
+    hep-th/0405111.
+ [7] C. Holzhey, F. Larsen, and F. Wilczek, Geometric and Renormalized Entropy in Conformal
+    Field Theory, 1994 Nucl. Phys. B 424 44 [hep-th/9403108].
+ [8] J. Cardy and I. Peschel, Finite-size dependence of the free energy in two-dimensional critical
+    systems, 1988 Nucl. Phys. B 300 377.
+ [9] I. Affleck and A. W. W. Ludwig, Universal non-integer “ground-state degeneracy” in critical
+
+                                              31
+    quantum systems, 1991 Phys. Rev. Lett. 67, 161.
+[10] M. Srednicki, Entropy and Area, 1993 Phys. Rev. Lett. 71 666 [hep-th/9303048].
+[11] V. E. Korepin, Universality of Entropy Scaling in 1D Gap-less Models, 2004 Phys. Rev. Lett.
+    92 096402 [cond-mat/0311056].
+[12] H. W. J. Blöte, J. Cardy and M. P. Nightingale, Conformal invariance, the central charge,
+    and universal finite-size amplitudes at criticality, 1986 Phys. Rev. Lett. 56 742.
+[13] I. Affleck, Universal term in the free energy at a critical point and the conformal anomaly,
+    1986 Phys. Rev. Lett. 56 746.
+[14] A. B. Zamolodchikov, Irreversibility of the flux of the renormalization group in a 2D field
+    theory, 1986 JETP Lett. 43 731 [1986 Pisma Zh. Eksp. Teor. Fiz. 43 565].
+[15] C. Tsallis, Possible generalization of Boltzmann-Gibbs statistics, 1988 J. Stat. Phys. 52 479.
+[16] A. A. Belavin, A. M. Polyakov and A. B. Zamolodchikov, Infinite conformal symmetry in
+    two-dimensional quantum field theory, 1984 Nucl. Phys. B 241 333.
+[17] J. Cardy, Conformal invariance and surface critical behavior, 1984 Nucl. Phys. B 240 514.
+[18] M. Abramowitz and I. A. Stegun, Handbook of mathematical functions, 1972 National Bureau
+    of Standards, Tenth Printing.
+[19] T. Nishino, Density Matrix Renormalization Group Method for 2D Classical Models, 1995 J.
+    Phys. Soc. Jpn. 74 3598 [cond-mat/9508111];
+    T. Nishino and K. Okunishi, Density Matrix and Renormalization for Classical Lattice Models,
+    in “Strongly Correlated Magnetic and Superconducting Systems”, 1997 Lect. Notes Phys. 478
+    167 [cond-mat/9610107].
+[20] R. J. Baxter, Exactly Solved Models in Statistical Mechanics, 1982 Academic Press, San
+    Diego.
+[21] I. Peschel, M. Kaulke, and O. Legeza, Density-matrix spectra for integrable models, 1999 Ann.
+    Physik (Leipzig) 8 153 [cond-mat/9810174].
+[22] G. N. Watson, A Treatise on the Theory of Bessel Functions, 1944, Cambridge Univ. Press.
+    I. N. Sneddon, On some infinite series involving the zeros of Bessel functions of the first kind,
+    1960 Proc. Glasgow Math. Assoc. 4 144.
+[23] J. Cardy, Critical behaviour at an edge, 1983 J. Phys. A 16 2617.
+[24] L. Dixon, D. Friedan, E. Martinec and S. Shenker, The Conformal Field Theory of Orbifolds,
+    1987 Nucl. Phys. B 282, 13.
+
+
+                                               32
+[25] M. Caraglio and F. Gliozzi, Entanglement Entropy and Twist Fields, 2008 arXiv:0808.4094.
+[26] S. Furokawa, V. Pasquier and J. Shiraishi, Mutual Information and Compactification Radius
+     in a c = 1 Critical Phase in One Dimension, 2008 arXiv:0809.5113.
+[27] P. Calabrese and J. Cardy, Evolution of Entanglement Entropy in One-Dimensional Systems,
+     2005, J.Stat.Mech., P04010.
+[28] As far as we are aware, this analysis has not been extended to systems with many degrees of
+     freedom such as we consider in this paper. Indeed, we shall see that for such systems SA can
+     be much larger than unity, so cannot have such a simple interpretation.
+[29] This restriction is not necessary, but the set-up is easier to picture in this case.
+[30] We have assumed that theory is trivial in the infrared. If the RG flow is towards a non-trivial
+     theory, c should be replaced by cU V − cIR .
+[31] This holds only for non-interacting theories: in the presence of interactions the sum of all the
+     zero-point diagrams has to be taken into account.
+[32] In the rest of this section, all logarithms are assumed taken to base e.
+
+
+
+
+                                                 33
+

@@ -1,0 +1,1041 @@
+equations = []
+tables = []
+full_text = """
+Multiband Terahertz Metamaterial Perfect Absorber\r
+for Microorganisms Detection\r
+Ruchi Bhati \r
+Chaudhary Charan Singh University\r
+Anil Malik  (  anilmalikiitd@gmail.com )\r
+Chaudhary Charan Singh University\r
+Article\r
+Keywords:\r
+Posted Date: July 5th, 2023\r
+DOI: https://doi.org/10.21203/rs.3.rs-3109229/v1\r
+License:   This work is licensed under a Creative Commons Attribution 4.0 International License.  \r
+Read Full License\r
+Additional Declarations: No competing interests reported.\r
+Version of Record: A version of this preprint was published at Scientic Reports on November 11th, 2023.\r
+See the published version at https://doi.org/10.1038/s41598-023-46787-5.
+
+Multiband Terahertz Metamaterial Perfect Absorber\r
+for Microorganisms Detection\r
+Ruchi Bhati1 and Anil K Malik1,*\r
+1Photonics and Metamaterials Laboratory, Department of physics, Chaudhary Charan Singh University Meerut,\r
+Uttar Pradesh -250004, India\r
+*anilmalikiitd@gmail.com\r
+ABSTRACT\r
+We report a multi-resonant THz metamaterial perfect absorber-based biosensor in the working frequency\r
+range of 0.2 to 4THz for the sensing of microorganisms such as fungi, yeast, and pesticides. Nearly\r
+100% absorption is realized at f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz. To obtain optimum\r
+performance of the MPA, a mapping of amplitudes and shifts in the absorption resonance peaks with\r
+different structural parameters of the resonators is carried out. Investigations of the effect of the\r
+incidence angle of the THz wave on the absorption spectra of the MPA is also carried out. It is found\r
+that incidence angle does not impact the stability of the lower resonance absorption peak (1.79T Hz). To\r
+better understand the mechanism of MPA, an equivalent circuit model using Advance Design System\r
+(ADS) software is developed. The calculated results through the model show similar trends as obtained in\r
+the simulations using CST. A significant frequency shift in the resonances is obtained with the application\r
+of microorganisms such as Penicillium chrysogenum (fungi), yeast, and pesticides (Imidacloprid, N,\r
+N-Diethyldithiocarbamate sodium salt trihydrate, Daminozide, N, N-Diethyldithiocarbamate sodium salt\r
+hydrate, and Dicofol) as testing analytes. The THz MPA-based biosensor has great potential to detect a\r
+very small change in the effective dielectric constant of the MPA environment therefore it can offer huge\r
+opportunities in label-free biosensing for future biomedical applications.\r
+Introduction\r
+Sensors are vital part of modern technology due to their applications in imaging, medicine, food quality\r
+control, agriculture, defence, etc. Food safety and security, two foremost public health concerns1–3,\r
+require fast and non-destructive inspection techniques. Due to fingerprints of pesticide and antibiotics in\r
+terahertz (THz) spectral range4, 5, THz spectroscopy facilitates non-contact, label-free, non-destructive\r
+inspection for food safety and control6–11. Moreover, the detection of microorganisms such as bacteria,\r
+viruses, and fungi is also very important for food security12. However, due to the typical size of λ/100,\r
+microorganisms are transparent at THz frequency leading to low scattering cross-section and are difficult\r
+to detect by the THz spectroscopy13. To overcome this constraint, metamaterial-based THz sensors have\r
+been proposed for the detection of microorganisms like bacteria, yeast, and molds14, where metamaterial\r
+resonators are designed in such a way that the gap area of resonators becomes compatible with the size of\r
+microorganisms. Here, the resonance frequency of metamaterials is extremely sensitive to any changes\r
+in the dielectric constant of the gap area of the resonator15, 16. Presently, extensive research is being\r
+carried out to develop metamaterial-based resonant devices such as modulators, sensors, polarization\r
+conversion devices, absorbers, etc.17–19. Among these devices, metamaterial perfect absorbers (MPAs)\r
+have fascinated worldwide attention due to their excellent performance and their potential applications20, 21.
+
+MPAs are able to minimize the reflectivity and transmissivity close to zero. To further expand the\r
+application prospects of MPAs, the number of absorption frequency peaks and workable frequency bands\r
+need to be broadened. Several reports show that flexibility to work in a wide range of frequency band\r
+can be obtained by optimizing the dimensions of MPAs22–28. Zamzam et. al29 designed an MPA with\r
+a metal-dielectric-metal multi-layer column with different heights of the dielectric layer, where they\r
+achieved two absorption peaks. Wang et. al30 demonstrate a triple-band terahertz metamaterial absorber\r
+at 0.337, 0.496, and 0.718THz where they used three concentric square ring resonators. A metamaterial\r
+absorber consisting of three closed circular ring resonators on a polyethylene terephthalate substrate is\r
+investigated by Abdulkarim et. al31. The absorption mechanism was comprehensively investigated through\r
+parametric studies, where a Q-factor of 50.72 and a maximum sensitivity of 149.5 GHz/RIU were reported.\r
+Meng et. al demonstrated a multi-band terahertz absorber made of periodic square metallic ribbon with a\r
+T-shaped gap. Several resonator structures like square spiral shape32, SSRR( square split ring resonator)33,\r
+Jerusalem Cross34 , CSRR (Circular split ring resonator)35, eight-resistive arm cell36, and Ring C-shape\r
+quasi-MMA37 have been investigated. Most of the reported THz meta-sensors suffer from the limitations\r
+such as larger unit cell size, one or two absorption peaks, low absorption coefficients, and polarization\r
+sensitivity. In this paper, we report a THz metamaterial perfect absorber-based biosensor that shows almost\r
+100% absorption in the THz frequency range for fast and non-destructive detection of microorganisms like\r
+molds, yeast cells, fungi, and pesticides. We observe multi-resonant (four) peaks in the frequency range\r
+of 0.1 - 3.8 THz. We carried out detailed simulations to study the sensing performance of the proposed\r
+sensor. A significant frequency shift in the inductive-capacitive resonance is obtained with the application\r
+of microorganisms. A mapping of shifts in the resonance peaks of MPA with structural parameters is\r
+carried out. Multi-resonant MPA-based THz biosensors are remarkably desirable for label-free biosensing\r
+of a family of microorganisms (bacteria, yeast, molds, etc.). The proposed sensor is extremely suitable for\r
+the detection of pesticides because their specific absorption fingerprint lie in the frequency range of 0.1 to\r
+3 THz.\r
+Design and analysis of MPA based sensor\r
+We investigate several metastructures consisting of 1) only one stripe resonator, 2) two stripes resonator,\r
+3) two stripes and one square resonator (SR), 4) two stripes and two SRs, and 5) two stripes and 1 open\r
+book-like resonator (designed from putting two SRs obliquely) on Gallium Arsenide (GaAs) substrate\r
+(dielectric constant 12.96) for MPA based sensor (Fig.1). GaAs substrate is selected due to its high band\r
+gap, high breakdown voltage, and better heat & moisture resistivity. A thick gold layer on the lower side\r
+of the substrate as a ground plane is used to suppress the transmission of the THz signal. We select gold\r
+due to its high conductivity, which causes inductance and capacitance to produce resonance at the desired\r
+frequency.\r
+The highest absorption coefficient is obtained for an open book-type metastructure, where oblique\r
+sheets offer the ability to manipulate the bandwidth of MPA leading to different resonance conditions\r
+and different optical paths for resonances38. Sensor parameters of an open book-type metastructure\r
+are optimized as: periodicity (P) = 70µm, substrate thickness (ts) = 15µm, width of metal stripes\r
+(ws) = 4.5µm, length of metal stripes (Ls) = 50µm, gap between the metal stripes (G) = 40µm, the\r
+thickness of ground metallic plane (tm) = 0.08µm, length(L) and width(w) of the open book resonator\r
+= 20µm and 15µm, g = 5µm respectively. A plane electromagnetic wave(THz) polarized along the x-axis\r
+is used to illuminate the proposed device. We applied unit cell boundary conditions in the x- and y\u0002directions, while the THz beam is incident normally along the z-direction. The schematic of MPA - based\r
+sensor with incident, reflected, and absorbed THz beam is shown in figure 1(f). Simulations are carried\r
+2/12
+
+Figure 1. Schematic of the unit cell with (a) only one metal stripe resonator, (b) two metal stripes\r
+resonator, (c) two stripe +one square resonator(SR), (d) two stripe + two SRs, (e)two stripes + 1 open\r
+book-like resonator, which is designed by putting two SRs obliquely., and (f)schematic of MPA - based\r
+sensor with incident, reflected, and absorbed THz beam\r
+out using commercial software CST Microwave Studio Suite in the frequency domain. A finite element\r
+method-based algorithm is employed to obtain precise simulation results. To assure minimum reflection\r
+3/12
+
+of THz beam from metamaterial surface (R(ω) = S\r
+2\r
+11), a perfect impedance matching with air intrinsic\r
+impedance (Zo) (where real and imaginary parts of Z(Ω) are close to 1 and 0 respectively) is obtained.\r
+To suppress the transmission of THz wave through MPA to zero, a metallic ground plane on the bottom\r
+side of substrate (T(ω) = S\r
+2\r
+21 = 0) is used. We obtain four absorption peaks in the frequency range 0.1 to\r
+3.7T Hz with almost 100% absorptivity. The absorption frequencies are calculated as\r
+A(ω) = 1−(R(ω) +T(ω)) (1)\r
+We calculate the absorption coefficients of MPA as\r
+A(ω) = 1−R(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+Zin −Z0\r
+Zin +Z0\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(2)\r
+where Zin is the impedance of MPA, which depends on its effective permittivity and permeability. The\r
+effective permittivity and permeability are the function of electric and magnetic responses of MPA at the\r
+resonance frequencies. In terms of S- parameters, Zin is calculated as\r
+Zin =\r
+r\r
+µ\r
+ε\r
+=\r
+s\r
+(1+S11)\r
+2 −S\r
+2\r
+21\r
+(1−S(11)\r
+2 −S\r
+2\r
+21\r
+(3)\r
+the equation for absorption coefficient in terms of S-parameters is\r
+A(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+r\r
+(1+S11)\r
+2−S\r
+2\r
+21\r
+(1−S11)\r
+2−S\r
+2\r
+21\r
+−Z0\r
+r\r
+(1+S11)\r
+2−S\r
+2\r
+21\r
+(1−S11)\r
+2−S\r
+2\r
+21\r
++Z0\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(4)\r
+by simpyfing equation (4), we get\r
+A(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+p\r
+(1+S11)\r
+2 −Z0\r
+p\r
+(1−S11)\r
+2\r
+p\r
+(1+S11)\r
+2 +Z0\r
+p\r
+(1−S11)\r
+2\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(5)\r
+To better understand the absorption behavior, we thoroughly investigate the effect of structural\r
+parameters on the resonance frequencies. 2D colormaps in Fig. 2 show the effect of variation of length\r
+of the stripe (Ls), the width of the stripes (ws), width and position of the open book resonator on the\r
+absorption coefficient. The value of Ls\r
+is varied from 20µm to 50µm as shown in Figure 2(a). Due to\r
+the increase in inductance and capacitance of metallic stripes with an increase in Ls\r
+, a redshift in the\r
+resonances are observed with the increase in Ls. The maximum absorption is obtained at Ls = 50µm.\r
+The effect of the width of the metal stripe (ws) (from 4µm to 10µm) on the absorption coefficient is\r
+shown in Figure 2(b). The absorption coefficients for all four resonances become unity at ws = 4.5µm,\r
+which starts decreasing with an increase in ws\r
+, which is due to enhancement in the size of metallic\r
+resonators leading to high reflections. We also investigate the effect of the w parameter (width of open\r
+book type SRs from w = 5−30µm) on the absorption performances of the MPA(Figure 2(c)). We obtain\r
+the highest absorption for w = 15µm without any shift in the resonance frequencies. Figure 2(d) shows\r
+the effect of the length of SRs (for L = 10 to 50µm) on resonance frequencies and absorption coefficients.\r
+It is found that the absorption coefficient decreases with the increase in the length of the open book due to\r
+high reflections. MPA gives the highest absorption for L = 20µm and zero absorption for L = 50µm.\r
+4/12
+
+Figure 2. 2D colormap absorption characteristics of different (a) length of metal stripe, (b) width of\r
+metal stripe, (c) width of SRs of open book resonator, and (d) length of SRs of open book resonator.\r
+Equivalent circuit model of MPA using Advance Design System (ADS)\r
+To better understand the absorption mechanism of the proposed MPA, an equivalent lumped circuit has\r
+been designed using ASD -2019 simulation software (Figure 3), where unit cell of MPA has four resonators\r
+i.e. two metal stripes and two SRs as shown in Figure 1(e). Each resonator behaves as an RLC circuit.\r
+The inductance of each metallic resonator (L1,L2,L3, & L4) is calculated using Grover’s formula39\r
+L = µ0µr\r
+\u0012\r
+ln 2l\r
+tm +w\r
+−0.2235lntm +w\r
+l\r
++\r
+1\r
+2\r
+\u0013\r
+(6)\r
+where l is the length of resonators, w is width of resonators, tm is thickness of resonators. The\r
+capacitance of MPA is calculated using40\r
+c = εoεr\r
+A\r
+d\r
+(7)\r
+where A,d, εo and εr represent the area of the stripe, capacitive gap between the resonators, permittivity\r
+of free space, and relative permittivity of the medium, respectively. By tuning the capacitance to get\r
+desired resonant frequency, and resistance to increase or decrease the reflection coefficient, we get similar\r
+reflection spectra of MPA as obtained in CST microwave studio suite-based simulations. The reflection\r
+characteristics (S11) obtained by ADS perfectly match with simulation results(figure 3(b)&(c)), which\r
+confirms the accuracy of the results.\r
+5/12
+
+(a)\r
+(b) (c)\r
+Figure 3. (a)Equivalent Circuit design of MPA, (b) reflection coefficient spectra calculated by ADS, (c)\r
+reflection coefficient spectra simulated by CST.\r
+Results and discussion\r
+Prospects of MPA increase with enhancement in the working frequency band and also with the increase in\r
+number of absorption peaks. We properly optimize the lattice structure (by optimizing the shape and size\r
+of the resonators) of the MPA to enhance working frequency band and also the number of absorption peaks.\r
+We carry out simulations for absorption spectra of the proposed MPA for five different structures for :\r
+(1) one stripe resonator - we get two resonance frequencies with a maximum of 32% absorption, (2) two\r
+stripes resonators- two resonances are obtained but absorption increases up to 50%, (3) two metal stripes\r
+and one square resonator (SR)- we get four absorption peaks, first with 100% absorption, second with 70%\r
+absorption, third with 58% absorption, and fourth with 55% absorption, (4) two metal stripes and two SRs\u0002we get four absorption peaks, first & second with almost 100% absorption, third with 67% absorption, and\r
+fourth with 42% absorption, and (5) two metal stripes and one open book like resonator between the stripes\r
+–four resonance absorption peaks at frequencies f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz\r
+are acheived as shown in figure 4(a). The absorption coefficients obtained forthese resonance frequencies\r
+are 99.12%,99.95%,98.5%, and 99%, respectively. The high absorption coefficients occur due to the\r
+strong inductive–capacitive coupling between the resonators. The resonators of different sizes own the\r
+ability to produce absorption peaks at specific frequencies and their superposition effect yields perfect\r
+absorption in multiple frequency bands41–43. Thus, the dimension of the unit cell structure and the shape\r
+of resonators have a vital role in accomplishing absorption near unity.\r
+6/12
+
+(a) (b)\r
+Figure 4. (a)The simulated absorbance spectra of the designed MPA for five different types of resonators;\r
+(b) Absorption spectra of the MPA with the different oblique incidence of THz beam..\r
+We also figure out the effect of incidence angle on the absorption peaks. Absorption spectra with\r
+different angles of incidence of THz wave is shown in Figure 3(b). As the incidence angle increases, the\r
+first resonance absorption peak (1.79THz) is almost stable while higher-order absorption peaks display\r
+deviations. It shows that higher-order absorption peaks are more sensitive to the incidence angle of THz\r
+than the first absorption peak. Thus, the first resonance absorption frequency is a good choice for the\r
+target sensing of microorganisms.\r
+We investigate the performance of the sensor for different microorganisms such as yeast, pesticides,\r
+and fungi. Experimental data reported by Park et.al14 and theoretical data (obtained using the effective\r
+(a) (b)\r
+Figure 5. (a)Absorbance spectra for Penicillium chrysogenum(blue), yeast(red) and air (green) with\r
+effective dielectric constant of 1.94, 8.2 and 1, respectively, and (b)Absorbance spectra for five types of\r
+pesticides.\r
+medium theory based on the Maxwell-Garnett mode) for dielectric constants of microorganisms are\r
+used for our investigations. Experimentally, Penicillium chrysogenum (fungi) and yeast were grown by\r
+streaking on medium method at 37◦C and deposited on the surface of metamaterial. A conventional photo\u0002lithography method was used to prepare the metamaterial pattern and THz time-domain spectroscopic\r
+technique was used to characterize the samples14. The measured values of the dielectric constants were\r
+7/12
+
+reported between 1.37-1.94 for fungi and 5.38-8.54 for yeast. Experimental findings were examined using\r
+the finite difference time-domain solver. The absorption patterns for Penicillium chrysogenum(fungai)\r
+and yeast are shown in Figure 5(a). The respective frequency shifts of 70GHz and 103GHz are observed\r
+for Penicillium chrysogenum and yeast. Due to large dielectric constant of yeast, redistribution of the\r
+resonance of electric and magnetic fields leading to a strong modulation of the absorption peak provides\r
+larger resonance shift. The traits of the sensed microorganism can be obtained by calculating the frequency\r
+shift of the absorption peaks.\r
+We also study the sensing performance for several pesticides like Imidacloprid, N, N-Diethyldithiocarbamate\r
+sodium salt trihydrate, Daminozide, N, N-Diethyldithiocarbamate sodium salt hydrate, and Dicofol. For\r
+this purpose, we use the experimental values of refractive indices reported by Maeng et. al5. The measured\r
+refractive index(RI) of Imidacloprid, N, N-Diethyldithiocarbamate sodium salt trihydrate, Daminozide,\r
+N, N-Diethyldithiocarbamate sodium salt hydrate, and Dicofol are shown in Table 1. The absorption vs\r
+frequency spectra of all pesticides is shown in Figure 5(b). A redshift of resonance frequencies by 70GHz\r
+is observed in presence of pesticides.\r
+Name of Pesticides Formula RI Absorption (THz)\r
+Imidacloprid C9H10CIN5O2 1.87 1.36,1.76\r
+N,N-Diethyldithiocarbamate sodium salt trihydrate C5H10NNaS2 ∗ 3H2O 1.99 1.11, 1.41, 1.74, 2.40\r
+N,N-Diethyldithiocarbamate sodium salt hydrate C3H6NNaS2 ∗H2O 2.08 0.99, 1.50\r
+Daminozide C6H12N2O3 1.68 1.32, 2.40\r
+Dicofol C14H9C15O 1.70 2.34\r
+Table 1. Nmae of pesticides used for sensing, along with their molecular formula, refractive index, and\r
+absorption peak in THz region\r
+Figure 6. Surface current distributions on top layer (a1-d1) and bottom layer (a2-d2) of the designed\r
+MPA at resonance frequencies:\r
+(a1,a2)f1 = 1.7T Hz,(b1,b2)f2 = 2.8T Hz,(c1, c2)f3 = 3.2T Hz,(d1,d2)and f4 = 3.5T Hz.\r
+8/12
+
+To gain deep insight into the physical mechanism behind the absorption of MPA, we studied the surface\r
+current distribution on the top and bottom metallic layers of the unit cell at resonance conditions. Figure.\r
+6(a1-d1) & (a2-d2) show the surface current distribution of the top and the bottom layers, respectively.\r
+Antiparallel currents form a current loop leading to the excitation of the magnetic dipole resonance44\r
+.\r
+The surface currents on both metallic layers are flowing in opposite directions at resonance (Fig. 6),\r
+which generates the magnetic flux coupling with the incident H-field. The antiparallel direction of surface\r
+currents on the top and bottom layers of MPA validates that the absorption peaks are caused by magnetic\r
+resonance responses. Therefore, the stronger absorption of the MPA is instigated by the excitation of\r
+multiple high-order magnetic resonances.\r
+Conclusion\r
+We develop a novel THz MPA-based sensor for sensing of biological analytes. The highest absorp\u0002tion coefficient is obtained for an open book-type metastructure. Four resonance absorption peaks\r
+at frequencies f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz having absorption coefficients\r
+99.12%,99.95%,98.5%, and 99%, respectively are obtained.We also study the absorption spectra of the\r
+MPA with different oblique incidences of THz wave and found that lower resonance absorption peak\r
+(1.79T Hz) is almost stable while higher absorption peaks show deviations. The effect of structural\r
+parameters(length and width of metal stripes and book resonator) on the resonance frequencies is analysed\r
+to get the optimum performance of the MPA. To gain deep insight into the mechanism of MPA, an\r
+equivalent circuit model is developed using Advance Design System (ADS) software. Surface current\r
+distribution depicts that strong absorption of the MPA is instigated by the excitation of multiple high - order\r
+resonances.Due to the change in the effective dielectric constant of MPA environment with the deposition\r
+of microorganisms, significant redshifts in the resonance peaks (redshift of 103GHz for yeast, redshift\r
+of 70GHz for fungi) are observed. These shifts in resonance frequencies are due to the redistribution of\r
+the resonance electric and magnetic fields, which lead to a strong modulation of the absorption. Thus, by\r
+functionalizing the substrates with antibodies a selective detection of microorganisms is also plausible.\r
+We believe that this MPA-based THz biosensor can open up new opportunities for obtaining dielectric\r
+information of microorganisms, which has great potential in label-free biosensing for future biomedical\r
+applications.\r
+References\r
+1. Kagan, C. R. At the nexus of food security and safety: opportunities for nanoscience and nanotech\u0002nology (2016).\r
+2. Feng, Y.-Z. & Sun, D.-W. Application of hyperspectral imaging in food safety inspection and control:\r
+a review. Critical reviews food science nutrition 52, 1039–1058 (2012).\r
+3. Bhati, R., Jewariya, M. & Malik, A. K. Independently tunable quint band electromagnetically induced\r
+transparency windows for multifunctional terahertz device. Appl. Phys. A 129, 436 (2023).\r
+4. Qin, J., Xie, L. & Ying, Y. Determination of tetracycline hydrochloride by terahertz spectroscopy\r
+with plsr model. Food chemistry 170, 415–422 (2015).\r
+5. Maeng, I. et al. Feasibility of using terahertz spectroscopy to detect seven different pesticides in\r
+wheat flour. J. Food Prot. 77, 2081–2087 (2014).\r
+6. Ferguson, B. & Zhang, X.-C. Materials for terahertz science and technology. Nat. materials 1, 26–33\r
+(2002).\r
+9/12
+
+7. George, P. A. et al. Microfluidic devices for terahertz spectroscopy of biomolecules. Opt. Express 16,\r
+1577–1582 (2008).\r
+8. Park, H.-R. et al. Colossal absorption of molecules inside single terahertz nanoantennas. Nano letters\r
+13, 1782–1786 (2013).\r
+9. Mickan, S. P. et al. Label-free bioaffinity detection using terahertz technology. Phys. Medicine &\r
+Biol. 47, 3789 (2002).\r
+10. Menikh, A., Mickan, S. P., Liu, H., MacColl, R. & Zhang, X.-C. Label-free amplified bioaffinity\r
+detection using terahertz wave technology. Biosens. Bioelectron. 20, 658–662 (2004).\r
+11. Bhati, R., Jewariya, M. & Malik, A. K. Spoof surface plasmon-based terahertz metasensor for glucose\r
+and ethanol. Appl. Phys. A 128, 840 (2022).\r
+12. Berrier, A., Schaafsma, M. C., Nonglaton, G., Bergquist, J. & Rivas, J. G. Selective detection of\r
+bacterial layers with terahertz plasmonic antennas. Biomed. optics express 3, 2937–2949 (2012).\r
+13. Park, S., Son, B., Choi, S., Kim, H. & Ahn, Y. Sensitive detection of yeast using terahertz slot\r
+antennas. Opt. Express 22, 30467–30472 (2014).\r
+14. Park, S. et al. Detection of microorganisms using terahertz metamaterials. Sci. reports 4, 1–7 (2014).\r
+15. O’Hara, J. F. et al. Thin-film sensing with planar terahertz metamaterials: sensitivity and limitations.\r
+Opt. Express 16, 1786–1795 (2008).\r
+16. Bhati, R. & Malik, A. K. Ultra-efficient terahertz metamaterial sensor. Results Opt. 8, 100236 (2022).\r
+17. Ghobadi, A., Hajian, H., Gokbayrak, M., Butun, B. & Ozbay, E. Bismuth-based metamaterials: from\r
+narrowband reflective color filter to extremely broadband near perfect absorber. Nanophotonics 8,\r
+823–832 (2019).\r
+18. Keshavarz, A. & Zakery, A. A novel terahertz semiconductor metamaterial for slow light device and\r
+dual-band modulator applications. Plasmonics 13, 459–466 (2018).\r
+19. Shen, S. et al. Recent advances in the development of materials for terahertz metamaterial sensing.\r
+Adv. Opt. Mater. 10, 2101008 (2022).\r
+20. Cui, Y. et al. Plasmonic and metamaterial structures as electromagnetic absorbers. Laser & Photonics\r
+Rev. 8, 495–520 (2014).\r
+21. Watts, C. M., Liu, X. & Padilla, W. J. Metamaterial electromagnetic wave absorbers. Adv. materials\r
+24, OP98–OP120 (2012).\r
+22. Hasan, D. & Lee, C. Hybrid metamaterial absorber platform for sensing of co2 gas at mid-ir. Adv. Sci.\r
+5, 1700581 (2018).\r
+23. Ren, Z., Lin, Z., Zhi, X. & Li, M. Double-layer broadband perfect metamaterial absorber and its\r
+potential for refractive index sensing. Opt. Mater. 99, 109575 (2020).\r
+24. Saadeldin, A. S., Hameed, M. F. O., Elkaramany, E. M. & Obayya, S. S. Highly sensitive terahertz\r
+metamaterial sensor. IEEE Sensors J. 19, 7993–7999 (2019).\r
+25. Tao, H. et al. Performance enhancement of terahertz metamaterials on ultrathin substrates for sensing\r
+applications. Appl. Phys. Lett. 97, 261909 (2010).\r
+26. Areed, N. F., El-Wasif, Z. & Obayya, S. Nearly perfect metamaterial plasmonic absorbers for solar\r
+energy applications. Opt. Quantum Electron. 50, 1–12 (2018).\r
+10/12
+
+27. Tan, S., Yan, F., Wang, W., Zhou, H. & Hou, Y. Ultrasensitive sensing with three-dimensional terahertz\r
+metamaterial absorber. J. Opt. 20, 055101 (2018).\r
+28. Cong, L. et al. Experimental demonstration of ultrasensitive sensing with terahertz metamaterial\r
+absorbers: A comparison with the metasurfaces. Appl. Phys. Lett. 106, 031107 (2015).\r
+29. Zamzam, P. & Rezaei, P. A terahertz dual-band metamaterial perfect absorber based on metal\u0002dielectric-metal multi-layer columns. Opt. Quantum Electron. 53, 1–9 (2021).\r
+30. Wang, J., Lang, T., Hong, Z., Xiao, M. & Yu, J. Design and fabrication of a triple-band terahertz\r
+metamaterial absorber. Nanomaterials 11, 1110 (2021).\r
+31. Abdulkarim, Y. I. et al. Simulation and lithographic fabrication of a triple band terahertz metamaterial\r
+absorber coated on flexible polyethylene terephthalate substrate. Opt. Mater. Express 12, 338–359\r
+(2022).\r
+32. de Araújo, J. B. O. et al. An ultrathin and ultrawideband metamaterial absorber and an equivalent\u0002circuit parameter retrieval method. IEEE Transactions on Antennas Propag. 68, 3739–3746 (2020).\r
+33. Hannan, S. et al. Modified-segmented split-ring based polarization and angle-insensitive multi-band\r
+metamaterial absorber for x, ku and k band applications. IEEE Access 8, 144051–144063 (2020).\r
+34. Jain, P. et al. Ultra-thin metamaterial perfect absorbers for single-/dual-/multi-band microwave\r
+applications. IET Microwaves, Antennas & Propag. 14, 390–396 (2020).\r
+35. Hannan, S., Islam, M. T., Almutairi, A. F. & Faruque, M. R. I. Wide bandwidth angle-and polarization\u0002insensitive symmetric metamaterial absorber for x and ku band applications. Sci. Reports 10, 1–9\r
+(2020).\r
+36. Nguyen, T. T. & Lim, S. Design of metamaterial absorber using eight-resistive-arm cell for simultane\u0002ous broadband and wide-incidence-angle absorption. Sci. reports 8, 6633 (2018).\r
+37. Hoque, A. et al. A polarization independent quasi-tem metamaterial absorber for x and ku band\r
+sensing applications. sensors 18, 4209 (2018).\r
+38. Lu, C.-Y., Chung, C.-C., Yen, T.-J. & Huang, T.-Y. Achieving broad absorption band and high incident\r
+angles by stochastically-distributed oblique-flat-sheet metamaterial perfect absorbers. Sci. Reports 11,\r
+18713 (2021).\r
+39. Grover, F. W. Inductance calculations: working formulas and tables (Courier Corporation, 2004).\r
+40. Hakim, M. L. et al. Polarization insensitive symmetrical structured double negative (dng) metamaterial\r
+absorber for ku-band sensing applications. Sci. reports 12, 1–18 (2022).\r
+41. Zhang, B., Hendrickson, J. & Guo, J. Multispectral near-perfect metamaterial absorbers using spatially\r
+multiplexed plasmon resonance metal square structures. JOSA B 30, 656–662 (2013).\r
+42. Zhang, J., Tian, J. & Li, L. A dual-band tunable metamaterial near-unity absorber composed of\r
+periodic cross and disk graphene arrays. IEEE Photonics J. 10, 1–12 (2018).\r
+43. Wang, B.-X., Tang, C., Niu, Q., He, Y. & Chen, T. Design of narrow discrete distances of dual-/triple\u0002band terahertz metamaterial absorbers. Nanoscale research letters 14, 1–7 (2019).\r
+44. Liu, N. & Giessen, H. Coupling effects in optical metamaterials. Angewandte Chemie Int. Ed. 49,\r
+9838–9852 (2010).\r
+11/12
+
+Acknowledgements\r
+The author Ruchi Bhati thanks CSIR, Government of India for her research fellowship.\r
+Author contributions statement\r
+R.B developed the concept, carried out the simulation, theoretical model, analysis of data, and wrote the\r
+manuscript. A.K.M., as the principal investigator, conceived the idea, planned, coordinated and supervised\r
+the project.\r
+Competing interests\r
+The authors declare no competing financial interests.\r
+Data availability\r
+The datasets used and/or analyzed during the current study are available from the corresponding author on\r
+reasonable request.\r
+Methods\r
+We have used commercial software CST Microwave studio suite to design and simulate our MM unit cell.\r
+In the x – and y – directions, unit cell boundary conditions are applied and in z-direction, open add space\r
+is employed to obtain the absorption behavior of the unit cell with adaptive tetrahedral messing. THz\r
+radiation is incident normally on the structure with an electric field along the x- direction. A field monitor\r
+is applied at the resonant frequency to obtain electric field and surface current distribution. Additionally,\r
+advanced design system(ADS -2019) software is used to design equivalent circuit of MPA using to analysis\r
+its functioning. In our simulation, we chose GaAs as a substrate with a dielectric constant of 12.94 and\r
+loss tangent of 0.006, and gold as a metal for resonator16.\r
+12/12
+
+Supplementary Files\r
+This is a list of supplementary les associated with this preprint. Click to download.\r
+stream.jpg"""
+
+[metadata]
+title = "researchsquare 2023 rs 3109229 metamaterial perfect absorber"
+authors = ["Unknown"]
+year = 2023
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Multiband Terahertz Metamaterial Perfect Absorber\r
+for Microorganisms Detection\r
+Ruchi Bhati \r
+Chaudhary Charan Singh University\r
+Anil Malik  (  anilmalikiitd@gmail.com )\r
+Chaudhary Charan Singh University\r
+Article\r
+Keywords:\r
+Posted Date: July 5th, 2023\r
+DOI: https://doi.org/10.21203/rs.3.rs-3109229/v1\r
+License:   This work is licensed under a Creative Commons Attribution 4.0 International License.  \r
+Read Full License\r
+Additional Declarations: No competing interests reported.\r
+Version of Record: A version of this preprint was published at Scientic Reports on November 11th, 2023.\r
+See the published version at https://doi.org/10.1038/s41598-023-46787-5.
+
+Multiband Terahertz Metamaterial Perfect Absorber\r
+for Microorganisms Detection\r
+Ruchi Bhati1 and Anil K Malik1,*\r
+1Photonics and Metamaterials Laboratory, Department of physics, Chaudhary Charan Singh University Meerut,\r
+Uttar Pradesh -250004, India\r
+*anilmalikiitd@gmail.com\r
+ABSTRACT\r
+We report a multi-resonant THz metamaterial perfect absorber-based biosensor in the working frequency\r
+range of 0.2 to 4THz for the sensing of microorganisms such as fungi, yeast, and pesticides. Nearly\r
+100% absorption is realized at f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz. To obtain optimum\r
+performance of the MPA, a mapping of amplitudes and shifts in the absorption resonance peaks with\r
+different structural parameters of the resonators is carried out. Investigations of the effect of the\r
+incidence angle of the THz wave on the absorption spectra of the MPA is also carried out. It is found\r
+that incidence angle does not impact the stability of the lower resonance absorption peak (1.79T Hz). To\r
+better understand the mechanism of MPA, an equivalent circuit model using Advance Design System\r
+(ADS) software is developed. The calculated results through the model show similar trends as obtained in\r
+the simulations using CST. A significant frequency shift in the resonances is obtained with the application\r
+of microorganisms such as Penicillium chrysogenum (fungi), yeast, and pesticides (Imidacloprid, N,\r
+N-Diethyldithiocarbamate sodium salt trihydrate, Daminozide, N, N-Diethyldithiocarbamate sodium salt\r
+hydrate, and Dicofol) as testing analytes. The THz MPA-based biosensor has great potential to detect a\r
+very small change in the effective dielectric constant of the MPA environment therefore it can offer huge\r
+opportunities in label-free biosensing for future biomedical applications.\r
+Introduction\r
+Sensors are vital part of modern technology due to their applications in imaging, medicine, food quality\r
+control, agriculture, defence, etc. Food safety and security, two foremost public health concerns1–3,\r
+require fast and non-destructive inspection techniques. Due to fingerprints of pesticide and antibiotics in\r
+terahertz (THz) spectral range4, 5, THz spectroscopy facilitates non-contact, label-free, non-destructive\r
+inspection for food safety and control6–11. Moreover, the detection of microorganisms such as bacteria,\r
+viruses, and fungi is also very important for food security12. However, due to the typical size of λ/100,\r
+microorganisms are transparent at THz frequency leading to low scattering cross-section and are difficult\r
+to detect by the THz spectroscopy13. To overcome this constraint, metamaterial-based THz sensors have\r
+been proposed for the detection of microorganisms like bacteria, yeast, and molds14, where metamaterial\r
+resonators are designed in such a way that the gap area of resonators becomes compatible with the size of\r
+microorganisms. Here, the resonance frequency of metamaterials is extremely sensitive to any changes\r
+in the dielectric constant of the gap area of the resonator15, 16. Presently, extensive research is being\r
+carried out to develop metamaterial-based resonant devices such as modulators, sensors, polarization\r
+conversion devices, absorbers, etc.17–19. Among these devices, metamaterial perfect absorbers (MPAs)\r
+have fascinated worldwide attention due to their excellent performance and their potential applications20, 21.
+
+MPAs are able to minimize the reflectivity and transmissivity close to zero. To further expand the\r
+application prospects of MPAs, the number of absorption frequency peaks and workable frequency bands\r
+need to be broadened. Several reports show that flexibility to work in a wide range of frequency band\r
+can be obtained by optimizing the dimensions of MPAs22–28. Zamzam et. al29 designed an MPA with\r
+a metal-dielectric-metal multi-layer column with different heights of the dielectric layer, where they\r
+achieved two absorption peaks. Wang et. al30 demonstrate a triple-band terahertz metamaterial absorber\r
+at 0.337, 0.496, and 0.718THz where they used three concentric square ring resonators. A metamaterial\r
+absorber consisting of three closed circular ring resonators on a polyethylene terephthalate substrate is\r
+investigated by Abdulkarim et. al31. The absorption mechanism was comprehensively investigated through\r
+parametric studies, where a Q-factor of 50.72 and a maximum sensitivity of 149.5 GHz/RIU were reported.\r
+Meng et. al demonstrated a multi-band terahertz absorber made of periodic square metallic ribbon with a\r
+T-shaped gap. Several resonator structures like square spiral shape32, SSRR( square split ring resonator)33,\r
+Jerusalem Cross34 , CSRR (Circular split ring resonator)35, eight-resistive arm cell36, and Ring C-shape\r
+quasi-MMA37 have been investigated. Most of the reported THz meta-sensors suffer from the limitations\r
+such as larger unit cell size, one or two absorption peaks, low absorption coefficients, and polarization\r
+sensitivity. In this paper, we report a THz metamaterial perfect absorber-based biosensor that shows almost\r
+100% absorption in the THz frequency range for fast and non-destructive detection of microorganisms like\r
+molds, yeast cells, fungi, and pesticides. We observe multi-resonant (four) peaks in the frequency range\r
+of 0.1 - 3.8 THz. We carried out detailed simulations to study the sensing performance of the proposed\r
+sensor. A significant frequency shift in the inductive-capacitive resonance is obtained with the application\r
+of microorganisms. A mapping of shifts in the resonance peaks of MPA with structural parameters is\r
+carried out. Multi-resonant MPA-based THz biosensors are remarkably desirable for label-free biosensing\r
+of a family of microorganisms (bacteria, yeast, molds, etc.). The proposed sensor is extremely suitable for\r
+the detection of pesticides because their specific absorption fingerprint lie in the frequency range of 0.1 to"""
+
+[[sections]]
+number = "3"
+title = "THz."
+text = """
+Design and analysis of MPA based sensor\r
+We investigate several metastructures consisting of 1) only one stripe resonator, 2) two stripes resonator,\r
+3) two stripes and one square resonator (SR), 4) two stripes and two SRs, and 5) two stripes and 1 open\r
+book-like resonator (designed from putting two SRs obliquely) on Gallium Arsenide (GaAs) substrate\r
+(dielectric constant 12.96) for MPA based sensor (Fig.1). GaAs substrate is selected due to its high band\r
+gap, high breakdown voltage, and better heat & moisture resistivity. A thick gold layer on the lower side\r
+of the substrate as a ground plane is used to suppress the transmission of the THz signal. We select gold\r
+due to its high conductivity, which causes inductance and capacitance to produce resonance at the desired\r
+frequency.\r
+The highest absorption coefficient is obtained for an open book-type metastructure, where oblique\r
+sheets offer the ability to manipulate the bandwidth of MPA leading to different resonance conditions\r
+and different optical paths for resonances38. Sensor parameters of an open book-type metastructure\r
+are optimized as: periodicity (P) = 70µm, substrate thickness (ts) = 15µm, width of metal stripes\r
+(ws) = 4.5µm, length of metal stripes (Ls) = 50µm, gap between the metal stripes (G) = 40µm, the\r
+thickness of ground metallic plane (tm) = 0.08µm, length(L) and width(w) of the open book resonator\r
+= 20µm and 15µm, g = 5µm respectively. A plane electromagnetic wave(THz) polarized along the x-axis\r
+is used to illuminate the proposed device. We applied unit cell boundary conditions in the x- and y\u0002directions, while the THz beam is incident normally along the z-direction. The schematic of MPA - based\r
+sensor with incident, reflected, and absorbed THz beam is shown in figure 1(f). Simulations are carried\r
+2/12
+
+Figure 1. Schematic of the unit cell with (a) only one metal stripe resonator, (b) two metal stripes\r
+resonator, (c) two stripe +one square resonator(SR), (d) two stripe + two SRs, (e)two stripes + 1 open\r
+book-like resonator, which is designed by putting two SRs obliquely., and (f)schematic of MPA - based\r
+sensor with incident, reflected, and absorbed THz beam\r
+out using commercial software CST Microwave Studio Suite in the frequency domain. A finite element\r
+method-based algorithm is employed to obtain precise simulation results. To assure minimum reflection\r
+3/12
+
+of THz beam from metamaterial surface (R(ω) = S\r
+2\r
+11), a perfect impedance matching with air intrinsic\r
+impedance (Zo) (where real and imaginary parts of Z(Ω) are close to 1 and 0 respectively) is obtained.\r
+To suppress the transmission of THz wave through MPA to zero, a metallic ground plane on the bottom\r
+side of substrate (T(ω) = S\r
+2\r
+21 = 0) is used. We obtain four absorption peaks in the frequency range 0.1 to\r
+3.7T Hz with almost 100% absorptivity. The absorption frequencies are calculated as\r
+A(ω) = 1−(R(ω) +T(ω)) (1)\r
+We calculate the absorption coefficients of MPA as\r
+A(ω) = 1−R(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+Zin −Z0\r
+Zin +Z0\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(2)\r
+where Zin is the impedance of MPA, which depends on its effective permittivity and permeability. The\r
+effective permittivity and permeability are the function of electric and magnetic responses of MPA at the\r
+resonance frequencies. In terms of S- parameters, Zin is calculated as\r
+Zin =\r
+r\r
+µ\r
+ε\r
+=\r
+s\r
+(1+S11)\r
+2 −S\r
+2\r
+21\r
+(1−S(11)\r
+2 −S\r
+2\r
+21\r
+(3)\r
+the equation for absorption coefficient in terms of S-parameters is\r
+A(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+r\r
+(1+S11)\r
+2−S\r
+2\r
+21\r
+(1−S11)\r
+2−S\r
+2\r
+21\r
+−Z0\r
+r\r
+(1+S11)\r
+2−S\r
+2\r
+21\r
+(1−S11)\r
+2−S\r
+2\r
+21\r
++Z0\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(4)\r
+by simpyfing equation (4), we get\r
+A(ω) = 1−\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+p\r
+(1+S11)\r
+2 −Z0\r
+p\r
+(1−S11)\r
+2\r
+p\r
+(1+S11)\r
+2 +Z0\r
+p\r
+(1−S11)\r
+2\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+2\r
+(5)\r
+To better understand the absorption behavior, we thoroughly investigate the effect of structural\r
+parameters on the resonance frequencies. 2D colormaps in Fig. 2 show the effect of variation of length\r
+of the stripe (Ls), the width of the stripes (ws), width and position of the open book resonator on the\r
+absorption coefficient. The value of Ls\r
+is varied from 20µm to 50µm as shown in Figure 2(a). Due to\r
+the increase in inductance and capacitance of metallic stripes with an increase in Ls\r
+, a redshift in the\r
+resonances are observed with the increase in Ls. The maximum absorption is obtained at Ls = 50µm.\r
+The effect of the width of the metal stripe (ws) (from 4µm to 10µm) on the absorption coefficient is\r
+shown in Figure 2(b). The absorption coefficients for all four resonances become unity at ws = 4.5µm,\r
+which starts decreasing with an increase in ws\r
+, which is due to enhancement in the size of metallic\r
+resonators leading to high reflections. We also investigate the effect of the w parameter (width of open\r
+book type SRs from w = 5−30µm) on the absorption performances of the MPA(Figure 2(c)). We obtain\r
+the highest absorption for w = 15µm without any shift in the resonance frequencies. Figure 2(d) shows\r
+the effect of the length of SRs (for L = 10 to 50µm) on resonance frequencies and absorption coefficients.\r
+It is found that the absorption coefficient decreases with the increase in the length of the open book due to\r
+high reflections. MPA gives the highest absorption for L = 20µm and zero absorption for L = 50µm.\r
+4/12
+
+Figure 2. 2D colormap absorption characteristics of different (a) length of metal stripe, (b) width of\r
+metal stripe, (c) width of SRs of open book resonator, and (d) length of SRs of open book resonator.\r
+Equivalent circuit model of MPA using Advance Design System (ADS)\r
+To better understand the absorption mechanism of the proposed MPA, an equivalent lumped circuit has\r
+been designed using ASD -2019 simulation software (Figure 3), where unit cell of MPA has four resonators\r
+i.e. two metal stripes and two SRs as shown in Figure 1(e). Each resonator behaves as an RLC circuit.\r
+The inductance of each metallic resonator (L1,L2,L3, & L4) is calculated using Grover’s formula39\r
+L = µ0µr\r
+\u0012\r
+ln 2l\r
+tm +w\r
+−0.2235lntm +w\r
+l\r
++\r
+1\r
+2\r
+\u0013\r
+(6)\r
+where l is the length of resonators, w is width of resonators, tm is thickness of resonators. The\r
+capacitance of MPA is calculated using40\r
+c = εoεr\r
+A\r
+d\r
+(7)\r
+where A,d, εo and εr represent the area of the stripe, capacitive gap between the resonators, permittivity\r
+of free space, and relative permittivity of the medium, respectively. By tuning the capacitance to get\r
+desired resonant frequency, and resistance to increase or decrease the reflection coefficient, we get similar\r
+reflection spectra of MPA as obtained in CST microwave studio suite-based simulations. The reflection\r
+characteristics (S11) obtained by ADS perfectly match with simulation results(figure 3(b)&(c)), which\r
+confirms the accuracy of the results.\r
+5/12
+
+(a)\r
+(b) (c)\r
+Figure 3. (a)Equivalent Circuit design of MPA, (b) reflection coefficient spectra calculated by ADS, (c)\r
+reflection coefficient spectra simulated by CST.\r
+Results and discussion\r
+Prospects of MPA increase with enhancement in the working frequency band and also with the increase in\r
+number of absorption peaks. We properly optimize the lattice structure (by optimizing the shape and size\r
+of the resonators) of the MPA to enhance working frequency band and also the number of absorption peaks.\r
+We carry out simulations for absorption spectra of the proposed MPA for five different structures for :\r
+(1) one stripe resonator - we get two resonance frequencies with a maximum of 32% absorption, (2) two\r
+stripes resonators- two resonances are obtained but absorption increases up to 50%, (3) two metal stripes\r
+and one square resonator (SR)- we get four absorption peaks, first with 100% absorption, second with 70%\r
+absorption, third with 58% absorption, and fourth with 55% absorption, (4) two metal stripes and two SRs\u0002we get four absorption peaks, first & second with almost 100% absorption, third with 67% absorption, and\r
+fourth with 42% absorption, and (5) two metal stripes and one open book like resonator between the stripes\r
+–four resonance absorption peaks at frequencies f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz\r
+are acheived as shown in figure 4(a). The absorption coefficients obtained forthese resonance frequencies\r
+are 99.12%,99.95%,98.5%, and 99%, respectively. The high absorption coefficients occur due to the\r
+strong inductive–capacitive coupling between the resonators. The resonators of different sizes own the\r
+ability to produce absorption peaks at specific frequencies and their superposition effect yields perfect\r
+absorption in multiple frequency bands41–43. Thus, the dimension of the unit cell structure and the shape\r
+of resonators have a vital role in accomplishing absorption near unity.\r
+6/12
+
+(a) (b)\r
+Figure 4. (a)The simulated absorbance spectra of the designed MPA for five different types of resonators;\r
+(b) Absorption spectra of the MPA with the different oblique incidence of THz beam..\r
+We also figure out the effect of incidence angle on the absorption peaks. Absorption spectra with\r
+different angles of incidence of THz wave is shown in Figure 3(b). As the incidence angle increases, the\r
+first resonance absorption peak (1.79THz) is almost stable while higher-order absorption peaks display\r
+deviations. It shows that higher-order absorption peaks are more sensitive to the incidence angle of THz\r
+than the first absorption peak. Thus, the first resonance absorption frequency is a good choice for the\r
+target sensing of microorganisms.\r
+We investigate the performance of the sensor for different microorganisms such as yeast, pesticides,\r
+and fungi. Experimental data reported by Park et.al14 and theoretical data (obtained using the effective\r
+(a) (b)\r
+Figure 5. (a)Absorbance spectra for Penicillium chrysogenum(blue), yeast(red) and air (green) with\r
+effective dielectric constant of 1.94, 8.2 and 1, respectively, and (b)Absorbance spectra for five types of\r
+pesticides.\r
+medium theory based on the Maxwell-Garnett mode) for dielectric constants of microorganisms are\r
+used for our investigations. Experimentally, Penicillium chrysogenum (fungi) and yeast were grown by\r
+streaking on medium method at 37◦C and deposited on the surface of metamaterial. A conventional photo\u0002lithography method was used to prepare the metamaterial pattern and THz time-domain spectroscopic\r
+technique was used to characterize the samples14. The measured values of the dielectric constants were\r
+7/12
+
+reported between 1.37-1.94 for fungi and 5.38-8.54 for yeast. Experimental findings were examined using\r
+the finite difference time-domain solver. The absorption patterns for Penicillium chrysogenum(fungai)\r
+and yeast are shown in Figure 5(a). The respective frequency shifts of 70GHz and 103GHz are observed\r
+for Penicillium chrysogenum and yeast. Due to large dielectric constant of yeast, redistribution of the\r
+resonance of electric and magnetic fields leading to a strong modulation of the absorption peak provides\r
+larger resonance shift. The traits of the sensed microorganism can be obtained by calculating the frequency\r
+shift of the absorption peaks.\r
+We also study the sensing performance for several pesticides like Imidacloprid, N, N-Diethyldithiocarbamate\r
+sodium salt trihydrate, Daminozide, N, N-Diethyldithiocarbamate sodium salt hydrate, and Dicofol. For\r
+this purpose, we use the experimental values of refractive indices reported by Maeng et. al5. The measured\r
+refractive index(RI) of Imidacloprid, N, N-Diethyldithiocarbamate sodium salt trihydrate, Daminozide,\r
+N, N-Diethyldithiocarbamate sodium salt hydrate, and Dicofol are shown in Table 1. The absorption vs\r
+frequency spectra of all pesticides is shown in Figure 5(b). A redshift of resonance frequencies by 70GHz\r
+is observed in presence of pesticides.\r
+Name of Pesticides Formula RI Absorption (THz)\r
+Imidacloprid C9H10CIN5O2 1.87 1.36,1.76\r
+N,N-Diethyldithiocarbamate sodium salt trihydrate C5H10NNaS2 ∗ 3H2O 1.99 1.11, 1.41, 1.74, 2.40\r
+N,N-Diethyldithiocarbamate sodium salt hydrate C3H6NNaS2 ∗H2O 2.08 0.99, 1.50\r
+Daminozide C6H12N2O3 1.68 1.32, 2.40\r
+Dicofol C14H9C15O 1.70 2.34\r
+Table 1. Nmae of pesticides used for sensing, along with their molecular formula, refractive index, and\r
+absorption peak in THz region\r
+Figure 6. Surface current distributions on top layer (a1-d1) and bottom layer (a2-d2) of the designed\r
+MPA at resonance frequencies:\r
+(a1,a2)f1 = 1.7T Hz,(b1,b2)f2 = 2.8T Hz,(c1, c2)f3 = 3.2T Hz,(d1,d2)and f4 = 3.5T Hz.\r
+8/12
+
+To gain deep insight into the physical mechanism behind the absorption of MPA, we studied the surface\r
+current distribution on the top and bottom metallic layers of the unit cell at resonance conditions. Figure.\r
+6(a1-d1) & (a2-d2) show the surface current distribution of the top and the bottom layers, respectively.\r
+Antiparallel currents form a current loop leading to the excitation of the magnetic dipole resonance44\r
+.\r
+The surface currents on both metallic layers are flowing in opposite directions at resonance (Fig. 6),\r
+which generates the magnetic flux coupling with the incident H-field. The antiparallel direction of surface\r
+currents on the top and bottom layers of MPA validates that the absorption peaks are caused by magnetic\r
+resonance responses. Therefore, the stronger absorption of the MPA is instigated by the excitation of\r
+multiple high-order magnetic resonances.\r
+Conclusion\r
+We develop a novel THz MPA-based sensor for sensing of biological analytes. The highest absorp\u0002tion coefficient is obtained for an open book-type metastructure. Four resonance absorption peaks\r
+at frequencies f1 = 1.7T Hz, f2 = 2.8T Hz, f3 = 3.2T Hz, f4 = 3.5T Hz having absorption coefficients\r
+99.12%,99.95%,98.5%, and 99%, respectively are obtained.We also study the absorption spectra of the\r
+MPA with different oblique incidences of THz wave and found that lower resonance absorption peak\r
+(1.79T Hz) is almost stable while higher absorption peaks show deviations. The effect of structural\r
+parameters(length and width of metal stripes and book resonator) on the resonance frequencies is analysed\r
+to get the optimum performance of the MPA. To gain deep insight into the mechanism of MPA, an\r
+equivalent circuit model is developed using Advance Design System (ADS) software. Surface current\r
+distribution depicts that strong absorption of the MPA is instigated by the excitation of multiple high - order\r
+resonances.Due to the change in the effective dielectric constant of MPA environment with the deposition\r
+of microorganisms, significant redshifts in the resonance peaks (redshift of 103GHz for yeast, redshift\r
+of 70GHz for fungi) are observed. These shifts in resonance frequencies are due to the redistribution of\r
+the resonance electric and magnetic fields, which lead to a strong modulation of the absorption. Thus, by\r
+functionalizing the substrates with antibodies a selective detection of microorganisms is also plausible.\r
+We believe that this MPA-based THz biosensor can open up new opportunities for obtaining dielectric\r
+information of microorganisms, which has great potential in label-free biosensing for future biomedical\r
+applications.\r
+References\r
+1. Kagan, C. R. At the nexus of food security and safety: opportunities for nanoscience and nanotech\u0002nology (2016).\r
+2. Feng, Y.-Z. & Sun, D.-W. Application of hyperspectral imaging in food safety inspection and control:\r
+a review. Critical reviews food science nutrition 52, 1039–1058 (2012).\r
+3. Bhati, R., Jewariya, M. & Malik, A. K. Independently tunable quint band electromagnetically induced\r
+transparency windows for multifunctional terahertz device. Appl. Phys. A 129, 436 (2023).\r
+4. Qin, J., Xie, L. & Ying, Y. Determination of tetracycline hydrochloride by terahertz spectroscopy\r
+with plsr model. Food chemistry 170, 415–422 (2015).\r
+5. Maeng, I. et al. Feasibility of using terahertz spectroscopy to detect seven different pesticides in\r
+wheat flour. J. Food Prot. 77, 2081–2087 (2014).\r
+6. Ferguson, B. & Zhang, X.-C. Materials for terahertz science and technology. Nat. materials 1, 26–33\r
+(2002).\r
+9/12
+
+7. George, P. A. et al. Microfluidic devices for terahertz spectroscopy of biomolecules. Opt. Express 16,\r
+1577–1582 (2008).\r
+8. Park, H.-R. et al. Colossal absorption of molecules inside single terahertz nanoantennas. Nano letters\r
+13, 1782–1786 (2013).\r
+9. Mickan, S. P. et al. Label-free bioaffinity detection using terahertz technology. Phys. Medicine &\r
+Biol. 47, 3789 (2002).\r
+10. Menikh, A., Mickan, S. P., Liu, H., MacColl, R. & Zhang, X.-C. Label-free amplified bioaffinity\r
+detection using terahertz wave technology. Biosens. Bioelectron. 20, 658–662 (2004).\r
+11. Bhati, R., Jewariya, M. & Malik, A. K. Spoof surface plasmon-based terahertz metasensor for glucose\r
+and ethanol. Appl. Phys. A 128, 840 (2022).\r
+12. Berrier, A., Schaafsma, M. C., Nonglaton, G., Bergquist, J. & Rivas, J. G. Selective detection of\r
+bacterial layers with terahertz plasmonic antennas. Biomed. optics express 3, 2937–2949 (2012).\r
+13. Park, S., Son, B., Choi, S., Kim, H. & Ahn, Y. Sensitive detection of yeast using terahertz slot\r
+antennas. Opt. Express 22, 30467–30472 (2014).\r
+14. Park, S. et al. Detection of microorganisms using terahertz metamaterials. Sci. reports 4, 1–7 (2014).\r
+15. O’Hara, J. F. et al. Thin-film sensing with planar terahertz metamaterials: sensitivity and limitations.\r
+Opt. Express 16, 1786–1795 (2008).\r
+16. Bhati, R. & Malik, A. K. Ultra-efficient terahertz metamaterial sensor. Results Opt. 8, 100236 (2022).\r
+17. Ghobadi, A., Hajian, H., Gokbayrak, M., Butun, B. & Ozbay, E. Bismuth-based metamaterials: from\r
+narrowband reflective color filter to extremely broadband near perfect absorber. Nanophotonics 8,\r
+823–832 (2019).\r
+18. Keshavarz, A. & Zakery, A. A novel terahertz semiconductor metamaterial for slow light device and\r
+dual-band modulator applications. Plasmonics 13, 459–466 (2018).\r
+19. Shen, S. et al. Recent advances in the development of materials for terahertz metamaterial sensing.\r
+Adv. Opt. Mater. 10, 2101008 (2022).\r
+20. Cui, Y. et al. Plasmonic and metamaterial structures as electromagnetic absorbers. Laser & Photonics\r
+Rev. 8, 495–520 (2014).\r
+21. Watts, C. M., Liu, X. & Padilla, W. J. Metamaterial electromagnetic wave absorbers. Adv. materials\r
+24, OP98–OP120 (2012).\r
+22. Hasan, D. & Lee, C. Hybrid metamaterial absorber platform for sensing of co2 gas at mid-ir. Adv. Sci.\r
+5, 1700581 (2018).\r
+23. Ren, Z., Lin, Z., Zhi, X. & Li, M. Double-layer broadband perfect metamaterial absorber and its\r
+potential for refractive index sensing. Opt. Mater. 99, 109575 (2020).\r
+24. Saadeldin, A. S., Hameed, M. F. O., Elkaramany, E. M. & Obayya, S. S. Highly sensitive terahertz\r
+metamaterial sensor. IEEE Sensors J. 19, 7993–7999 (2019).\r
+25. Tao, H. et al. Performance enhancement of terahertz metamaterials on ultrathin substrates for sensing\r
+applications. Appl. Phys. Lett. 97, 261909 (2010).\r
+26. Areed, N. F., El-Wasif, Z. & Obayya, S. Nearly perfect metamaterial plasmonic absorbers for solar\r
+energy applications. Opt. Quantum Electron. 50, 1–12 (2018).\r
+10/12
+
+27. Tan, S., Yan, F., Wang, W., Zhou, H. & Hou, Y. Ultrasensitive sensing with three-dimensional terahertz\r
+metamaterial absorber. J. Opt. 20, 055101 (2018).\r
+28. Cong, L. et al. Experimental demonstration of ultrasensitive sensing with terahertz metamaterial\r
+absorbers: A comparison with the metasurfaces. Appl. Phys. Lett. 106, 031107 (2015).\r
+29. Zamzam, P. & Rezaei, P. A terahertz dual-band metamaterial perfect absorber based on metal\u0002dielectric-metal multi-layer columns. Opt. Quantum Electron. 53, 1–9 (2021).\r
+30. Wang, J., Lang, T., Hong, Z., Xiao, M. & Yu, J. Design and fabrication of a triple-band terahertz\r
+metamaterial absorber. Nanomaterials 11, 1110 (2021).\r
+31. Abdulkarim, Y. I. et al. Simulation and lithographic fabrication of a triple band terahertz metamaterial\r
+absorber coated on flexible polyethylene terephthalate substrate. Opt. Mater. Express 12, 338–359\r
+(2022).\r
+32. de Araújo, J. B. O. et al. An ultrathin and ultrawideband metamaterial absorber and an equivalent\u0002circuit parameter retrieval method. IEEE Transactions on Antennas Propag. 68, 3739–3746 (2020).\r
+33. Hannan, S. et al. Modified-segmented split-ring based polarization and angle-insensitive multi-band\r
+metamaterial absorber for x, ku and k band applications. IEEE Access 8, 144051–144063 (2020).\r
+34. Jain, P. et al. Ultra-thin metamaterial perfect absorbers for single-/dual-/multi-band microwave\r
+applications. IET Microwaves, Antennas & Propag. 14, 390–396 (2020).\r
+35. Hannan, S., Islam, M. T., Almutairi, A. F. & Faruque, M. R. I. Wide bandwidth angle-and polarization\u0002insensitive symmetric metamaterial absorber for x and ku band applications. Sci. Reports 10, 1–9\r
+(2020).\r
+36. Nguyen, T. T. & Lim, S. Design of metamaterial absorber using eight-resistive-arm cell for simultane\u0002ous broadband and wide-incidence-angle absorption. Sci. reports 8, 6633 (2018).\r
+37. Hoque, A. et al. A polarization independent quasi-tem metamaterial absorber for x and ku band\r
+sensing applications. sensors 18, 4209 (2018).\r
+38. Lu, C.-Y., Chung, C.-C., Yen, T.-J. & Huang, T.-Y. Achieving broad absorption band and high incident\r
+angles by stochastically-distributed oblique-flat-sheet metamaterial perfect absorbers. Sci. Reports 11,\r
+18713 (2021).\r
+39. Grover, F. W. Inductance calculations: working formulas and tables (Courier Corporation, 2004).\r
+40. Hakim, M. L. et al. Polarization insensitive symmetrical structured double negative (dng) metamaterial\r
+absorber for ku-band sensing applications. Sci. reports 12, 1–18 (2022).\r
+41. Zhang, B., Hendrickson, J. & Guo, J. Multispectral near-perfect metamaterial absorbers using spatially\r
+multiplexed plasmon resonance metal square structures. JOSA B 30, 656–662 (2013).\r
+42. Zhang, J., Tian, J. & Li, L. A dual-band tunable metamaterial near-unity absorber composed of\r
+periodic cross and disk graphene arrays. IEEE Photonics J. 10, 1–12 (2018).\r
+43. Wang, B.-X., Tang, C., Niu, Q., He, Y. & Chen, T. Design of narrow discrete distances of dual-/triple\u0002band terahertz metamaterial absorbers. Nanoscale research letters 14, 1–7 (2019).\r
+44. Liu, N. & Giessen, H. Coupling effects in optical metamaterials. Angewandte Chemie Int. Ed. 49,\r
+9838–9852 (2010).\r
+11/12
+
+Acknowledgements\r
+The author Ruchi Bhati thanks CSIR, Government of India for her research fellowship.\r
+Author contributions statement\r
+R.B developed the concept, carried out the simulation, theoretical model, analysis of data, and wrote the\r
+manuscript. A.K.M., as the principal investigator, conceived the idea, planned, coordinated and supervised\r
+the project.\r
+Competing interests\r
+The authors declare no competing financial interests.\r
+Data availability\r
+The datasets used and/or analyzed during the current study are available from the corresponding author on\r
+reasonable request.\r
+Methods\r
+We have used commercial software CST Microwave studio suite to design and simulate our MM unit cell.\r
+In the x – and y – directions, unit cell boundary conditions are applied and in z-direction, open add space\r
+is employed to obtain the absorption behavior of the unit cell with adaptive tetrahedral messing. THz\r
+radiation is incident normally on the structure with an electric field along the x- direction. A field monitor\r
+is applied at the resonant frequency to obtain electric field and surface current distribution. Additionally,\r
+advanced design system(ADS -2019) software is used to design equivalent circuit of MPA using to analysis\r
+its functioning. In our simulation, we chose GaAs as a substrate with a dielectric constant of 12.94 and\r
+loss tangent of 0.006, and gold as a metal for resonator16.\r
+12/12
+
+Supplementary Files\r
+This is a list of supplementary les associated with this preprint. Click to download.\r
+stream.jpg"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 4
+image_path = "images/image_p4_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 4
+image_path = "images/image_p4_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 6
+image_path = "images/image_p6_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 7
+image_path = "images/image_p7_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 7
+image_path = "images/image_p7_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 8
+image_path = "images/image_p8_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 8
+image_path = "images/image_p8_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 8
+image_path = "images/image_p8_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 8
+image_path = "images/image_p8_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 9
+image_path = "images/image_p9_12.png"

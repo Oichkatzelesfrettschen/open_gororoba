@@ -1,0 +1,1218 @@
+arXiv:2407.18908v2 [cs.LG] 20 Mar 2025
+
+Wolf: Dense Video Captioning with a World Summarization Framework
+Boyi Li1,2
+Ligeng Zhu1,3
+Ran Tian1,2
+Shuhan Tan1,4
+Yuxiao Chen1
+Yao Lu1
+Yin Cui1
+Sushant Veer1
+Max Ehrlich1
+1,5
+1
+1
+1
+Jonah Philion
+Xinshuo Weng
+Fuzhao Xue
+Jim Fan
+Yuke Zhu1,4
+Jan Kautz1
+Andrew Tao1
+Ming-Yu Liu1
+Sanja Fidler1,5
+Boris Ivanovic1
+2
+2
+1,3
+Trevor Darrell
+Jitendra Malik
+Song Han
+Marco Pavone1,6
+1
+NVIDIA 2 UC Berkeley 3 MIT 4 UT Austin 5 University of Toronto 6 Stanford University
+
+Abstract
+We propose Wolf, a WOrLd summarization Framework for
+accurate video captioning. Wolf is an automated captioning
+framework that adopts a mixture-of-experts approach, leveraging complementary strengths of Vision Language Models
+(VLMs). By combining image and video models, our framework captures different levels of information and summarizes
+them efficiently. Our approach can be applied to enhance
+video understanding, auto-labeling, and captioning. To evaluate caption quality, we introduce CapScore, an LLM-based
+metric to assess the similarity and quality of generated captions compared to the ground truth captions. We further
+build four human-annotated datasets in three domains: autonomous driving, general scenes, and robotics, to facilitate
+comprehensive comparisons. We show that Wolf achieves superior captioning performance compared to state-of-the-art
+approaches from the research community (VILA-1.5, CogAgent) and commercial solutions (Gemini-Pro-1.5, GPT-4V).
+For instance, in comparison with GPT-4V, Wolf improves
+CapScore both quality-wise by 55.6% and similarity-wise
+by 77.4% on challenging driving videos. Finally, we establish a benchmark for video captioning and introduce a
+leaderboard, aiming to accelerate advancements in video
+understanding, captioning, and data alignment.
+
+1. Introduction
+Video captioning is crucial as it facilitates content understanding and retrieval by providing accurate, searchable
+descriptions. It also provides pairwise data for effective
+training of foundation models for tasks like video generation,
+such as Sora [4], Runaway [43] and Wan2.1 [48] . However,
+generating descriptive, accurate, and detailed video captions
+remains a challenging research problem for several reasons:
+firstly, high-quality labeled data are scarce. Video captions
+from the internet can be faulty and misaligned and human
+
+annotation is prohibitively expensive for large datasets. Secondly, video captioning is inherently more challenging than
+image captioning due to the additional complexity of temporal correlation and camera motion. Existing captioning
+models [16, 54] struggle with temporal reasoning and fail
+to achieve accurate scene understanding. Thirdly, there is
+no established benchmark to measure captioning progress.
+Existing video QA benchmarks [31] are often limited to
+short answers, making it difficult to measure hallucinations
+in detailed long captions. Fourthly, the correctness and completeness of the captions are crucial for safety-critical tasks.
+In the era of large language models (LLMs), text descriptions of scenarios used by embodied agents for planning
+and control become increasingly common [13, 20, 32, 33].
+Consequently, a false or incomplete description of the scenario may lead to the decision-making module overlooking a
+critical object after training on such caption data, resulting in
+safety risks. For instance, missing the presence of a human
+in the vicinity of a vegetable-chopping manipulator can lead
+to an injury.
+To handle these challenges, we introduce WOrLd summarization Framework (Wolf), a novel summarization captioning framework, along with a captioning metric CapScore,
+and the Wolf captioning benchmark with corresponding
+datasets. Unlike previous works that utilize a single model
+to generate captions, we propose to use multiple models to
+collaborate [17], producing much more accurate captions.
+By leveraging multiple models, we can provide more finegrained details while reducing hallucinations. We show that
+Wolf achieves superior captioning performance compared
+to state-of-the-art approaches from the research community
+(such as VILA [26], CogAgent [16]) to commercial solutions
+(such as Gemini-Pro-1.5 [47], GPT-4V [35]). In summary,
+we have three main contributions:
+1. We design the first world summarization framework Wolf
+for video captioning and introduce an LLM-based metric
+CapScore for evaluating the quality of captions. We
+have further verified that CapScore aligns with human
+
+Figure 1. Overview of proposed Wolf framework. Wolf utilizes both image-level and video-level models to generate diverse and detailed
+captions, which are then summarized for cross-checking. On the right side, we also provide an example of how we obtain motion captions
+based on object locations extracted from image captions.
+
+evaluations and is more effective than several widely used
+captioning metrics. The results show that our method
+improves CapScore by a large margin.
+2. We introduce four benchmark datasets. These datasets
+include autonomous driving, general scenes from Pexels, and robotics videos, along with human-annotated
+captions, referred to as the Wolf Dataset.
+3. The code, data and leaderboard are open-sourced and
+maintained on the Wolf webpage1 . Continuous efforts
+and improvements will be made to refine the Wolf Dataset,
+codebase, and CapScore. We hope that Wolf will raise
+awareness about the quality of video captioning, set a
+standard for the field, and boost community development.
+
+2. Related Works
+Image Captioning. Visual language models (VLMs) have
+shown rapid advancements, achieving leading performance
+in image captioning tasks, largely due to the success of
+LLMs. CLIP [39] pioneered this field by training a shared
+feature space for vision and language modalities on imagecaption pairs. Building on CLIP, BLIP [21] and BLIP-2 [22]
+improved performance by aligning the pre-trained encoder
+with LLMs. Following the direction, LLaVA [29] and InstructBLIP [11] demonstrated that jointly training on diverse
+datasets as an instruction-following task leads to strong generalization across various tasks. VILA [26] highlighted the
+importance of pre-training with diverse data, and therefore
+significantly scaled up the pre-training dataset. Kosmos2 [38] and PaLI-X [8] further introduced pseudo-labeling
+bounding boxes from open-vocabulary object detectors to
+scale up the size of pre-training dataset.
+Video Captioning. As image-based VLMs are not trained
+with video data, they are limited in describing details present
+in the video data [18, 19, 56]. To improve video captioning, PLLaVa [52] builds on top of LLaVa and introduced
+1 https://wolfv0.github.io
+
+a parameter-free pooling strategy to enhance the caption
+quality. Video-LLaVA [23] achieves state-of-the-art performance on several benchmarks by conducting joint training
+on images and videos, thereby learning a unified visual representation. Video-LLaMA [54] incorporates both video and
+audio into LLMs by introducing two Q-formers to extract
+features. Vid2seq [53] conducts large-scale pre-training with
+narrated videos for dense video captioning. Meanwhile, MVGPT [44] employs an automated speech recognition (ASR)
+model to provide additional labeling for the videos.
+LLM-based Summarization. Recently many works have
+found that it is efficient to summarize useful information
+using LLMs. For example, LLaDA [20] can provide users
+with helpful instructions based on the user request and corresponding traffic rules in the desired location. OpenAI team
+finds re-captioning [3] via LLMs can be very helpful.
+
+3. Wolf Framework
+We propose Wolf, which is an automated dense captioning
+summarization framework that adopts a mixture of experts
+approach to generate long, accurate, and detailed captions
+for videos. Figure 1 provides an overview of our framework. In this paper, we use CogAgent [16], GPT-4V [32] to
+generating image-level captions, and use VILA-1.5-7B [26],
+Gemini-Pro-1.5 [47] to generate video captions.
+Cascading Visual Summarization. As image-level models (image-based VLMs) have been pre-trained with a larger
+amount of data than video-level models (video-based VLMs),
+we first use image-based VLMs to generate captions. We
+design a cascading visual summarizing program to obtain
+video captions from image-level models. As illustrated in
+Figure 1, we first split the video into sequential images, sampling two key-frames every second. We start by feeding
+Image 1 into the Image-level Model to obtain Caption 1,
+where we require the model to generate detailed scene-level
+information and object locations. Given the temporal cor-
+
+relation between key frames in a video, we then feed both
+Caption 1 and Image 2 into the model to generate Caption
+2. By repeating this procedure, we generate captions for all
+sampled frames. Finally, we use GPT-4 to summarize the
+information from all captions with the prompt “Summarize
+all the captions to describe the video with accurate temporal
+information”. We also extract the bounding box locations
+for each object in each frame, then feed them into LLMs to
+summarize the trajectory of the moving object. For example,
+in a driving video, a blue car is driving into the right lane,
+and the centers of the bounding boxes are (0,0), (1,1), (1,2).
+We provide the car’s location to the LLM, and it outputs
+‘the blue car is driving to the right,’ which we refer to as a
+‘Motion Caption’.
+LLM-based Video Summarization. Besides obtaining the
+captions from image-level models, we then summarize all
+captions into one. We use the prompt “Please summarize
+on the visual and narrative elements of the video in detail
+from descriptions from Image Models (Image-level Caption
+and Motion Caption) and descriptions from Video Models
+(Video-level Caption)”. Optionally, we can also add the
+Annotated Caption to the summarization. Based on this
+simple scheme, Wolf can capture a rich variety of details of
+the video and reduce hallucinations (in Figure 2). We assume
+this is because Wolf can compare the captions and reduce
+redundant and hallucinated information. After obtaining the
+descriptions from the image-level and video-level models,
+we next apply the prompt “Please describe the visual and
+narrative elements of the video in detail, particularly the
+motion behavior”.
+
+4. Benchmarking Video Captioning
+To showcase the effectiveness of Wolf, we constructed
+four distinct datasets (please check the examples in Figure 2. These include two autonomous driving video captioning datasets based on the open-sourced NuScenes [6]
+dataset (Creative Commons Attribution-NonCommercialShareAlike 4.0 International Public License), a general daily
+video captioning dataset from Pexels 2 , and a robot manipulation video captioning dataset from an open-source robot
+learning dataset [36]. These benchmark datasets are tailored
+to assess the caption model’s scene comprehension and its
+behavior understanding capabilities, both of which are vital
+for auto-labeling in embodied AI tasks. All captions were
+generated using a combination of ground truth information,
+rule-based heuristics, human labeling, and rewriting. Please
+check our initial version of Captioning Leaderboard.
+
+2 https://www.pexels.com/
+
+4.1. Wolf Dataset Curation
+4.1.1. Autonomous Driving Dataset
+High-quality captions of driving videos are crucial not only
+for training video generation models but also for training
+VLMs to interpret the dynamic traffic environment. The
+NuScenes dataset is a large-scale collection of driving videos
+designed to accelerate autonomous driving research. It features 1,000 annotated scenes from Boston and Singapore.
+Each scene consists of a 20-second driving video clip that
+provides an ego-centric view from the ego vehicle. We split
+each scene into 5-second segments and provide the corresponding captions. Our captions emphasize the high-level
+driving behavior of the ego vehicle to stress-test the scene
+understanding ability and the behavior understanding ability
+of a captioning model. Our dataset contains 500 intensely
+interactive video-caption pairs (≈0.7 hours) in which the
+ego vehicle is involved in intense interactions with its surrounding traffic agents (such as navigating around construction zones and overtaking static obstacles) and 4785 normal
+driving scene video-caption pairs (≈6 hours). Our caption
+generation process consists of three steps: i) agent-level motion annotation, ii) ego-centric interaction annotation, and
+iii) information aggregation via LLM.
+Step 1: agent-level motion annotation. The NuScenes
+dataset provides full annotations of traffic elements in each
+scene, including 3D bounding boxes, element categories,
+and semantic map information. Similar to DriveVLM [49],
+we utilize this ground truth data along with lane topology
+information [34] to generate text descriptions of both speed
+and angular motion characteristics for the ego vehicle and
+other traffic participants within a video clip. Specifically, we
+classify agent actions into 11 categories, including Stopping,
+Accelerating, Decelerating, Lane Changes, Turns, and more,
+based on their observed movements and behaviors.
+Step 2: egocentric interaction annotation. Beyond each
+agent’s dynamics information, we also aim to capture the
+ego vehicle’s interactions with other traffic participants (e.g.,
+crossing pedestrians, blocking traffic cones) depicted in the
+video clip. To efficiently describe interactions, we use two
+categorical modes: the lane relationship (agent-ego lane
+mode) and relative motion (homotopy) between a traffic participant and the ego vehicle [9]. At each time step t, the
+agent-ego lane mode encodes the topological relationship
+between the ego vehicle’s current lane and the traffic agent’s
+lane. The categories include LEFT, RIGHT, AHEAD, BEHIND, and NOTON, where NOTON indicates that the traffic
+agent is on a lane that cannot directly reach the ego vehicle’s
+lane. To compute the agent-ego lane mode, we follow [9] by
+identifying each agent’s lane and using a lane topology map
+for annotation. Homotopy describes the relative motion between agents in a video and is categorized as: [S, CW, CCW]
+(static, clockwise, counterclockwise), as shown in Figure 3.
+
+t = 0 [s]. Key features: lane.
+
+t = 2 [s]. Key features: lane, traffic cones, construction zone.
+
+t = 1 [s]. Key features: t = 4 [s]. Key features: t = 8 [s]. Key features:
+
+person, beach, ocean, person, ocean, smile,
+person, ocean, white
+long hair, sunglass.
+sunglass, phone.
+shirt, dark shorts.
+Caption: The video opens with a person standing on a rocky beach, holding a
+smartphone. They are dressed in a white shirt and dark shorts, with long
+hair and sunglasses. In the background, there are other beachgoers and the
+ocean. The person is seen taking a selfie, with the smartphone's screen
+visible in some frames. The lighting suggests it is late afternoon or early
+evening, with the sun low on the horizon, casting a warm glow on the scene.
+The person's actions are casual and relaxed, as they pose and interact with
+the camera. The ocean is calm, and the sky is clear, indicating good
+weather.
+
+t = 5 [s]. Key features: lane, traffic cones, construction zone, lane
+change.
+
+Caption: The footage captures a car navigating through an urban
+area where traffic cones are placed in its path. The cones
+indicate a construction zone ahead and block the vehicle's
+lane. The car maintains a steady speed and smoothly switches
+lanes to pass by each traffic cone on the right side.
+
+t = 4 [s]. Key features: t = 6 [s]. Key features: t = 8 [s]. Key features:
+robot arm, bottle, table.
+
+push the bottle.
+
+the bottle falls onto table.
+
+Caption: The video shows a yellow industrial robotic arm positioned over a
+table with a green cover. The robotic arm is attempting to push a green
+bottle from the left side to the right side. However, during the process, the
+bottle falls onto the table.
+
+Figure 2. Wolf Dataset examples. We display the videos and corresponding human-annotated captions of autonomous driving (Left), Pexels
+(Top-Right), and Robot learning video dataset (Bottom-Right), totaling 25.7 hours. Our Wolf dataset is fully manually annotated to ensure a
+robust evaluation for the community. We present our dataset’s statistics in Table 1. We will keep updating and expanding the dataset.
+
+Figure 3. Illustration of homotopy types of different relative motions between a pair of vehicles.
+
+Step 3: information aggregation. By combining agent-ego
+lane mode, homotopy, traffic agents’ ground truth dynamics, and scene context (e.g., the ego vehicle is near an intersection), we can apply heuristics to annotate interaction
+descriptions. For example, in a video clip, a static object’s
+agent-ego lane mode changes from AHEAD, to LEFT, to
+BEHIND, and the ego vehicle’s first performs RIGHT-LANECHANGE, KEEP-LANE, then LEFT-LANE-CHANGE, indicating the ego vehicle overtakes that object from the ego
+vehicle’s left side. We identified six interaction categories
+from the NuScenes dataset: 1) bypass blocking traffic cones
+to navigate around construction zone; 2) yield to crossing
+pedestrians; 3) yield to incoming vehicles; 4) overtake traffic
+agents via straddling the lane dividers; 5) overtake traffic
+agent via lane-change; 6) other non-intensive interactions.
+With both agent-level motion annotations and ego-centric in-
+
+teraction annotations, we employ an LLM to aggregate this
+information and generate a human-like scene description.
+While any off-the-shelf LLM could be used for this task, we
+opted for the GPT-3.5 model. Additionally, we experimented
+with the llama 3 model and observed similar performance.
+Task Type
+
+Source
+
+Size
+
+Annotation Type
+
+Normal Driving Scenes
+Challenging Driving Scenes
+General Daily Scenes
+Robot Manipulation
+
+Nuscenes
+Nuscenes
+Pexels
+UCB
+
+4,785
+500
+473
+100
+
+Manually
+Manually
+Manually
+Manually
+
+Table 1. Statistics of the Wolf dataset.
+
+4.1.2. Robot Manipulation Dataset
+In addition to the driving environment, we collect 100 robot
+manipulation videos (each has a length ranging from 5 seconds to 1 minute) from Padalkar et al. [36] that demonstrate
+complex robot manipulations (e.g., pick and place, push,
+ect.) in various environments, including kitchen, office, lab,
+and open world. We manually caption each video. The captions focus on the description of the scene and the interaction
+between the robot and the objects.
+
+4.1.3. Pexels Dataset
+To evaluate caption models in general daily environments,
+we further collect high quality (360p to 1080p) videos from
+Pexels. It consists of 473 high-quality videos sourced globally, where each video has a length varying between 10
+seconds and 2 minutes and the content includes 15 popular
+categories (details in Appendix). This diversity not only
+adds depth to our dataset but also provides a wide range of
+scenarios and contexts for our analysis.
+
+4.2. Wolf Evaluation Metric
+4.2.1. CapScore: Evaluating Captions with LLMs
+Video captioning has been an ill-posed problem since there
+is no metric to evaluate the quality of captions and the
+alignment between the video and the caption. Inspired by
+BERTScore [55], CLIPScore [15] and the stability of LLMs
+on evaluation [7, 27, 28], we introduce CapScore (Captioning Score), a quantitative metric to use LLMs to evaluate the
+similarity between predicted and human-annotated (ground
+truth) captions. We tried both GPT-4 (model=“gpt-4”) and
+Llama 3.2 [14] as our LLM to summarize the captions. We
+noticed that GPT-4 can always obtain stable results over 3
+runs. However, for Llama 3.2, the results varied over different runs. We tried to lower the temperature (from 0.9
+to 0.5) to make the inference stable, however, we noticed
+that the scores are not consistent with human evaluation.
+Therefore we select GPT-4 as our LLM to conduct the experiments. Assume we have 6 captions, we feed all the captions
+into GPT-4 and add the prompt “Can you give a score (two
+decimal places) from 0 to 1 for captions 1, 2, 3, 4 and 5,
+indicating which one is closer to the ground truth caption
+(metric 1) and which contains fewer hallucinations and less
+misalignment (metric 2)? Please output only the scores of
+each metric separated only by a semicolon. For each metric,
+please output only the scores of captions 1, 2, 3, 4 and 5
+separated by commas, in order—no text in the output. ”.
+We ask GPT-4 to output two scores: caption similarity and
+caption quality.
+We set the range [0,1] to align with several widely
+used NLP metrics, such as BLEU [37], ROUGE [24], and
+BERTScore [55]. To address the potential concern, we followed the same settings as Table 1 and used the range [0,5]
+to calculate CapScore. The trend remains precisely the same,
+with Wolf achieving scores of 3.61 for similarity and 3.70
+for quality - almost five times the values shown in Table 1,
+demonstrating CapScore’s stability and robustness regardless
+of the range.
+Caption Similarity. Caption similarity is based on how well
+each caption aligns with the ground truth description on a
+scale from 0 to 1, considering the key criteria mentioned.
+GPT-4 lists the requirements that affect the score: this metric
+measures how similar each caption is to the ground truth
+caption. The evaluation focuses on the content and context
+
+described in the captions, assessing whether they capture the
+main themes and details of the ground truth.
+Caption Quality. Caption quality evaluates whether the
+caption contains reduced hallucination and mistakes compared to the ground truth captions on a scale from 0 to 1.
+GPT-4 lists the criteria that affect the score: this metric evaluates the accuracy and relevance of each caption, identifying
+any extraneous or incorrect details (hallucinations). Captions with fewer hallucinations and better alignment receive
+higher scores.
+4.2.2. Human-Evaluation Score and CapScore
+Through our experiments, we find that GPT-4 is very robust
+for calculating the scores. We have run the experiments for
+1-3 times, the results appear to be stable and less than 0.05
+changes. To alleviate concerns related to human alignment
+and correlation, we randomly selected 10 users to evaluate
+our set of 100 robotics videos, as detailed in Table 1 of the
+paper. The evaluators were presented with the videos, the
+generated captions, and the corresponding ground truth captions. We asked them to assign human-evaluation scores
+based on the CapScore standard, with the following prompt:
+“After reviewing the video and all the captions, please assign
+the caption similarity and caption quality score (floating
+point values) from 0 to 1 for different captions, indicating
+which caption is closest to the ground truth (caption similarity) and which one has fewer hallucinations and less
+misalignment (caption quality).” We show the results in Figure 4. Beyond that, we also conduct experiments comparing
+CapScore with other widely used image captioning evaluation metrics, as is shown in Appendix (Sec A.5). We observe
+that CapScore aligns with trends observed in other metrics
+but highlights a larger performance gap between models,
+suggesting it serves as a more effective evaluation metric.
+Finding 1: We discover CapScore is stable and
+aligns with trends of human evaluation. We calculated the Pearson correlation coefficient in Fig. 4,
+obtaining 0.93 and 0.95 for caption similarity and
+quality, which further indicate a strong positive correlation between human evaluation and CapScore.
+4.2.3. Benchmarking Video Captioning
+To our best knowledge, no standard evaluation benchmarks
+have been established for video understanding and captioning. To accelerate the advancement of this field, we have
+developed the first leaderboard for video captioning. As
+LLM evaluation has become increasingly popular [10], we
+realized the lack of a standard platform to evaluate VLM’s
+performance on video understanding. We assume this is due
+to the difficulty of collecting ground truth captions that accurately align with videos. We will release the initial version
+of our captioning leaderboard upon publication.
+
+(a) Comparison on Caption Similarity.
+
+(b) Comparison on Caption Quality.
+
+Figure 4. Comparisons on Human-Evaluation Score and Llama 3.2-based CapScore and GPT4-based CapScore (proposed).
+
+5. Experiments
+5.1. Experimental Setup
+Data Setup. We use four sets of data to evaluate the validity
+of Wolf: 1) 500 Nuscences Interactive Videos; 2) 4,785
+Nuscences Normal Videos; 3) 473 general videos and 4)
+100 robotics videos. We extract 2 frames per second for
+autonomous driving videos. For robotics videos, we extract
+1 frame per second. For short videos that sample less frames,
+we will increase fps to capture more details.
+Comparison Setup. We use our proposed CapScore to
+evaluate the similarity between predicted and ground truth
+captions. CogAgent and GPT-4V are image-level methods,
+so we upload sequential frames into the model to obtain the
+output. VILA-1.5-7B and Gemini-Pro 1.5 are video-based,
+so we directly feed a video into the model. As for the prompt
+for each captioning model, we use “elaborate on the visual
+and narrative elements of the video in detail, particularly
+the motion behavior". We compare with four state-of-theart image-level and video-level captioning Vision-Language
+Models (VLMs) CogAgent [16], GPT-4V [1], VILA-1.5 [26]
+and Gemini-Pro-1.5 [47]. As for CogAgent, we feed the middle frame of the video into the model to obtain the captions.
+As for GPT-4V, we uniformly sample 16 frames from a video
+and feed the sequential images into the model to obtain captions. As for VILA-1.5-7B and Gemini-Pro-1.5, we feed the
+video into the model to obtain the captions.
+
+captures the motion described in Gemini-Pro-1.5 but also
+successfully captures “vehicles moving in different directions” and “vehicles accelerating and decelerating as they
+approach and leave the intersection in response to traffic
+signals or the flow of other vehicles”.
+
+5.3. Quantitative Results
+We compare Wolf with various state-of-the-art captioning
+models and display the results on 4 datasets in Table 3 and 2.
+In the default setting, Wolf uses CogAgent, GPT-4V, VILA1.5-7B, and Gemini-Pro-1.5 as Video-level models. Due to
+the running cost, we use Wolf (based on VILA-1.5) on the
+Nuscenes Normal dataset, which only uses CogAgent and
+VILA-1.5-7B. We notice that existing image-level models
+fail to capture the temporal information in detail. Videolevel models perform better, while Wolf can achieve the best
+results compared to all state-of-the-art captioning models.
+Finding 2: From Table 2, we observe that all VLMs
+perform reasonably well on general daily scenes;
+however, they perform quite poorly on robotics and
+driving datasets. We assume this is due to the lack of
+training data for each individual model. Therefore,
+Wolf can effectively address this issue by distilling
+and summarizing knowledge from different models.
+
+5.4. Finetuning VLMs with Wolf Captions
+
+5.2. Qualitative Results
+
+5.4.1. Comparison on Wolf Dataset
+
+To illustrate enhanced captioning ability by Wolf, we show
+the qualitative results in Figure 5 (please check details in
+Appendix). We noticed that although GPT-4V is good at
+recognizing the scenes, capturing temporal information in
+a video is not ideal. Gemini-Pro-1.5 can capture video information such as “waiting their turn while others proceed
+through the intersection when it’s clear”, but it fails to describe the detailed motions. In comparison to these two
+state-of-the-art approaches, we observed that Wolf not only
+
+To further verify the effectiveness of Wolf, we finetune
+VILA-1.5-7B based on Wolf’s captions on 4,785 normal
+Nuscenes videos and evaluate it on 500 highly interactive
+Nuscenes videos, which have much more difficult captions
+and complex scenarios. We follow the original VILA’s training setup and launch supervised-finetuning with Wolf generated video-caption pairs for one epoch. The training is
+performed on 8xA100 GPUs with batch size 8. We set the
+learning rate to 10−4 with warmup strategy. No weight
+
+Wolf !: The video presents a series of scenes depicting city streets
+
+t= 0 [s]
+
+bustling with various vehicles such as cars, trucks, motorcycles, and a
+person riding a bicycle. The scenes are often divided into panels, each
+showcasing a different vehicle in motion, including a yellow taxi, a blue
+car, a red car, a white truck, and a silver car. The streets are marked with
+white lines and are surrounded by green trees and buildings,
+contributing to an urban landscape setting. The video captures the
+typical flow of traffic through a four-way intersection, with vehicles
+moving in different directions. The vehicles are shown in various
+positions in the lanes, implying movement through the area. The
+sequence likely shows vehicles accelerating and decelerating as
+they approach and leave the intersection in response to traffic signals or
+the flow of other vehicles. The video is a wide-angle shot of the street
+intersection, split into three sections, providing a panoramic view. The
+left section shows the road the viewer is on, the center focuses on the
+intersection itself, and the right section provides a view of the crossing
+traffic. The lighting suggests a sunny day, with a bright spot from the sun
+on the left section and more even lighting on the right. The video
+captures the typical flow of traffic at an intersection, with vehicles
+approaching, some waiting their turn while others proceed
+through the intersection when it's clear. The cars driving on
+the right side of the road suggest the location might be a country where
+right-hand drive is the standard. The absence of sound enhances the
+focus on the visual information and allows the viewer to interpret the
+scene without auditory cues. Overall, the video provides a snapshot of
+everyday life at a busy intersection, highlighting the complexities of
+navigating a traffic intersection. The wide-angle perspective and focus
+on movement create a sense of dynamism.
+
+t= 1 [s]
+
+t= 2 [s]
+
+t= 3 [s]
+
+t= 4 [s]
+
+t= 5 [s]
+
+Figure 5. Wolf example for driving that focus on interactive operations. Wolf captions discusses the motion behavior in details and serves as
+a good reference for autonomous driving. Note: Please refer to the Appendix for our caption comparison with other state-of-the-art methods.
+
+Caption Similarity ↑
+
+Method
+
+Caption Quality (eg. reduced hallucination) ↑
+
+Nuscenes
+
+Pexels
+
+Robotics
+
+Nuscenes
+
+Pexels
+
+Robotics
+
+CogAgent [16]
+GPT-4V [1]
+VILA-1.5-7B [26]
+Gemini-Pro-1.5 [47]
+
+0.18
+0.31
+0.21
+0.42
+
+0.68
+0.72
+0.85
+0.87
+
+0.38
+0.34
+0.62
+0.63
+
+0.24
+0.36
+0.25
+0.45
+
+0.72
+0.75
+0.86
+0.87
+
+0.43
+0.35
+0.67
+0.67
+
+Wolf
+
+0.55
+
+0.88
+
+0.72
+
+0.56
+
+0.89
+
+0.75
+
+Table 2. Comparison on 500 highly interactive (difficulty and challenging) Nuscenes videos, 473 Pexels videos and 100 robotics videos. Our
+Wolf exhibits better performance than both open- and closed-source models.
+
+Caption Similarity ↑
+
+Caption Quality ↑
+
+CogAgent [16]
+VILA-1.5 [26]
+
+0.27
+0.35
+
+0.30
+0.39
+
+Wolf (based on VILA-1.5-7B)
+
+0.56
+
+0.60
+
+Method
+
+Table 3. Comparison on 4,785 normal Nuscenes videos. The quality
+of Wolf is consistently better.
+
+decay is applied. We demonstrate the results in Table 4, corresponding to Table 2. We observe that finetuning with Wolf
+boosts the model performance to 71.4% on caption similarity
+and 48.0% on caption quality, which outperforms GPT-4V
+
+VILA-1.5-7B
+Default
+Fine-tuned with Wolf annotation
+
+Caption Similarity ↑
+
+Caption Quality ↑
+
+0.21
+0.36
+
+0.25
+0.37
+
+Table 4. Comparison on 500 highly interactive Nuscenes videos
+VILA-1.5 and fine-tuned VILA-1.5 with Wolf captions.
+
+and approaches Gemini-Pro-1.5. This suggests that Wolf
+captions can be easily applied to push VLMs’ performance
+to a higher level.
+
+VILA-1.5-13B
+Default
+Fine-tuned with Wolf annotation
+
+ActivityNet MSRVTT
+54.7
+55.2
+
+60.2
+60.9
+
+Table 5. QA Accuracy comparison of the fine-Tuned Model on
+Activity and MSRVTT datasets.
+
+5.4.2. Comparison on Other Benchmark Datasets
+To scalable measure the quality of captions, we compare
+the VILA-1.5-13B trained w/ Wolf captions and w/o Wolf
+captions to study the effectiveness. We benchmark the Wolffinetuned models on two widely used video datasets ActivityNet [5] and MSRVTT [51] and display the results in
+Table 5, the improved performance effectively demonstrates
+the efficiency of Wolf.
+Finding 3: Based on Tables 4 and 5, we find that
+fine-tuning the model using Wolf captions can
+effectively enhance its performance across various
+datasets.
+
+5.5. Ablation Study on Video-level Model Selection
+To further evaluate how various video-level models affect the
+performance, we conduct an ablation study on the components of the models in Table 6. We first compare the caption
+from the middle frame of CogAgent with Wolf Caption based
+on the visual cascading summarization approach (only using
+CogAgent). The visual cascading summarization procedure
+could largely improve the video understanding quality from
+an image-level model such as CogAgent. Then, we conduct
+an ablation using only the video-level models. Finally, we
+compare Wolf with various combinations of video captions.
+We notice that Wolf consistensly shows better CapScore as
+its dense framework reduces hallucination and incorporate
+video details from different models.
+
+5.6. Ablation Study on Token Efficiency
+It is well-known that the LLMs finetuned with RLHF favor
+longer response [46], a phenomenon referred to as verbosity
+issue. To better assess the efficiency of the captions, we
+performed additional evaluation using the CapScore judge.
+Specifically, we separate each caption result into sentences,
+then incrementally use more sentences to form shortened
+captions, starting from only using the first sentence, to the
+whole original caption. These shortened captions are scored
+via CapScore, and we plot the score against the number of
+tokens used. We show the results in Figure 6.
+From the result, we observe that for the better performing
+models (Wolf, Gemini-Pro-1.5 and GPT-4V) the similarity
+scores grow with token length when caption lengths are
+short, but quickly plateau or even drop as the caption lengths
+
+get too long. The caption quality score demonstrates quite
+diverse patterns from different models. GPT-4V maintains a
+relatively consistent quality score while Gemini-Pro-1.5 and
+Wolf display better quality when the caption length is short.
+
+6. Discussion and Future Works
+Limitations and Optimization. Wolf is still significantly
+more cost-effective for autolabeling and captioning than
+procuring human labels. However, there is an efficiency
+concern when using an ensemble method. This must be
+handled with care to ensure that GPU resources are used
+effectively to mitigate any throughput degradation compared
+to using single models, even though Wolf offers a significant
+improvement in caption quality. Modern GPUs are based on
+a massively parallel pipeline, and our goal is to saturate this
+pipeline with meaningful work. We consider three primary
+areas for optimization to make Wolf a unified and efficient
+framework: Low-Hanging Fruit, Batched Inference, and
+Model Quantization. For example, we reduce the size of the
+model weights for model quantization. Recent works [12,
+25, 30] have noted that LLMs and VLMs can produce highly
+accurate results even when their weights are quantized to low
+bit depths. Therefore, we quantize all constituent models
+used in Wolf to 4 bits to further improve efficiency. This
+has two benefits. First, it reduces the bandwidth required for
+computation. These algorithms work by packing two 4-bit
+numbers into a single 8-bit type, so when moving data on
+the GPU, only half the number of bits need to be moved.
+Since all currently released GPUs support native instructions
+on 8-bit floating point numbers, the two 4-bit numbers are
+extracted and expanded by each kernel. In other words, two
+computations can be performed for every move operation.
+Next-generation GPUs will natively support 4-bit data types,
+and we expect further efficiency improvements from having
+dedicated 4-bit multiply and add instructions. Second, it
+synergizes with batched inference since the model weights,
+which are traditionally 16-bit, now only require one quarter
+of the GPU memory they would ordinarily use. This allows
+us to fit larger batch sizes on each GPU and process more
+videos in parallel. Please check our Appendix for details.
+Safety Considerations. As an ensemble of captioners, Wolf
+mitigates the possibility of missing out on crucial information in the captions and rectifying any hallucinations that
+do not agree with the output of most models, which is a
+fundamental pillar for developing safe autonomous systems,
+as specified in the functional safety standard ISO 26262 [42].
+Beyond the benefits of Wolf, there are still various open questions pertaining to safety of VLM captioners in deployment
+which we aim to explore more in future: (i) We need to align
+the captions with the task at hand; e.g., in a driving scenario,
+a detailed description of the foliage around the road, even
+if correct, is irrelevant and can potentially act as distractor
+for the decision maker. (ii) Complementary to the first point,
+
+Caption Similarity ↑
+
+Caption Quality ↑
+
+CogAgent
+Wolf CogAgent part (Cascading Visual Summarization)
+
+0.18
+0.26
+
+0.24
+0.32
+
+Wolf video part (VILA-1.5-7B+Gemini-Pro-1.5+GPT-4V)
+
+0.40
+
+0.42
+
+Wolf (based on VILA-1.5-7B)
+Wolf (based on VILA-1.5-7B+Gemini-Pro-1.5)
+Wolf (based on VILA-1.5-7B+Gemini-Pro-1.5+GPT-4V)
+
+0.35
+0.48
+0.55
+
+0.37
+0.49
+0.56
+
+Method
+
+Table 6. Ablation study on 500 highly interactive Nuscenes videos. Note: The first row shows the results using only image-level models, the
+second row shows the results using only video-level models, and the last row shows the results using both image-level models (CogAgent
+part) and various video-level models.
+
+Figure 6. CapScore Caption Similarity and Caption Quality evaluated under varying caption length.
+
+we need to measure how well a caption aligns with the task
+at hand and develop an advanced version of CapScore. (iii)
+Finally, we need an approach to quantify the confidence we
+have in the captions by leveraging techniques from learning
+theory, such as conformal prediction [45]. Most prior work
+in this direction assumes an MCQ-styled outputs or those
+where a unique correct answer exists [40, 41], but these
+approaches do not translate to free-form text descriptions.
+
+7. Conclusion
+In this work, we propose Wolf, a captioning framework designed to automatically and accurately annotate any video,
+with significant improvements in data alignment. We find
+out that adopting a mixture of captioning models and summarization can largely boost the quality of the captions. This
+enables obtaining long, detailed, and accurate video captioning. We will also establish a comprehensive library that
+includes various types of videos with high-quality captions,
+regional information such as 2D and 3D bounding boxes and
+depth, as well as multiple object motions and interactions.
+
+References
+[1] Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad,
+Ilge Akkaya, Florencia Leoni Aleman, Diogo Almeida, Janko
+Altenschmidt, Sam Altman, Shyamal Anadkat, et al. Gpt-4
+technical report. arXiv preprint arXiv:2303.08774, 2023. 6, 7
+[2] Jason Ansel, Edward Yang, Horace He, Natalia Gimelshein,
+Animesh Jain, Michael Voznesensky, Bin Bao, Peter Bell,
+David Berard, Evgeni Burovski, Geeta Chauhan, Anjali
+Chourdia, Will Constable, Alban Desmaison, Zachary DeVito,
+Elias Ellison, Will Feng, Jiong Gong, Michael Gschwind,
+Brian Hirsh, Sherlock Huang, Kshiteej Kalambarkar, Laurent
+Kirsch, Michael Lazos, Mario Lezcano, Yanbo Liang, Jason
+Liang, Yinghai Lu, CK Luk, Bert Maher, Yunjie Pan, Christian Puhrsch, Matthias Reso, Mark Saroufim, Marcos Yukio
+Siraichi, Helen Suk, Michael Suo, Phil Tillet, Eikan Wang,
+Xiaodong Wang, William Wen, Shunting Zhang, Xu Zhao,
+Keren Zhou, Richard Zou, Ajit Mathews, Gregory Chanan,
+Peng Wu, and Soumith Chintala. PyTorch 2: Faster Machine
+Learning Through Dynamic Python Bytecode Transformation
+and Graph Compilation. In 29th ACM International Conference on Architectural Support for Programming Languages
+and Operating Systems, Volume 2 (ASPLOS ’24). ACM, 2024.
+13
+[3] James Betker, Gabriel Goh, Li Jing, Tim Brooks, Jianfeng
+Wang, Linjie Li, Long Ouyang, Juntang Zhuang, Joyce
+Lee, Yufei Guo, et al. Improving image generation with
+better captions. Computer Science. https://cdn. openai.
+com/papers/dall-e-3. pdf, 2(3):8, 2023. 2
+[4] Tim Brooks, Bill Peebles, Connor Holmes, Will DePue, Yufei
+Guo, Li Jing, David Schnurr, Joe Taylor, Troy Luhman, Eric
+Luhman, Clarence Ng, Ricky Wang, and Aditya Ramesh.
+Video generation models as world simulators. 2024. 1
+[5] Fabian Caba Heilbron, Victor Escorcia, Bernard Ghanem, and
+Juan Carlos Niebles. Activitynet: A large-scale video benchmark for human activity understanding. In Proceedings of the
+ieee conference on computer vision and pattern recognition,
+pages 961–970, 2015. 8
+[6] Holger Caesar, Varun Bankiti, Alex H. Lang, Sourabh Vora,
+Venice Erin Liong, Qiang Xu, Anush Krishnan, Yu Pan,
+Giancarlo Baldan, and Oscar Beijbom. nuscenes: A multimodal dataset for autonomous driving. arXiv preprint
+arXiv:1903.11027, 2019. 3
+[7] David Chan, Suzanne Petryk, Joseph E Gonzalez, Trevor
+Darrell, and John Canny. Clair: Evaluating image captions
+with large language models. arXiv preprint arXiv:2310.12971,
+2023. 5
+[8] Xi Chen, Josip Djolonga, Piotr Padlewski, Basil Mustafa,
+Soravit Changpinyo, Jialin Wu, Carlos Riquelme Ruiz, Sebastian Goodman, Xiao Wang, Yi Tay, et al. Pali-x: On scaling
+up a multilingual vision and language model. arXiv preprint
+arXiv:2305.18565, 2023. 2
+[9] Yuxiao Chen, Sander Tonkens, and Marco Pavone. Categorical traffic transformer: Interpretable and diverse behavior prediction with tokenized latent. arXiv preprint
+arXiv:2311.18307, 2023. 3
+[10] Wei-Lin Chiang, Lianmin Zheng, Ying Sheng, Anastasios Nikolas Angelopoulos, Tianle Li, Dacheng Li, Hao
+
+Zhang, Banghua Zhu, Michael Jordan, Joseph E Gonzalez,
+et al. Chatbot arena: An open platform for evaluating llms by
+human preference. arXiv preprint arXiv:2403.04132, 2024. 5
+[11] Wenliang Dai, Junnan Li, Dongxu Li, Anthony Meng Huat
+Tiong, Junqi Zhao, Weisheng Wang, Boyang Albert Li, Pascale Fung, and Steven C. H. Hoi. Instructblip: Towards
+general-purpose vision-language models with instruction tuning. ArXiv, abs/2305.06500, 2023. 2
+[12] Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke
+Zettlemoyer. Qlora: Efficient finetuning of quantized llms.
+Advances in Neural Information Processing Systems, 36, 2024.
+8, 13
+[13] Yan Ding, Xiaohan Zhang, Chris Paxton, and Shiqi Zhang.
+Task and motion planning with large language models for
+object rearrangement. In 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), pages 2086–
+2092. IEEE, 2023. 1
+[14] Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil
+Mathur, Alan Schelten, Amy Yang, Angela Fan, et al. The
+llama 3 herd of models. arXiv preprint arXiv:2407.21783,
+2024. 5
+[15] Jack Hessel, Ari Holtzman, Maxwell Forbes, Ronan Le Bras,
+and Yejin Choi. Clipscore: A reference-free evaluation metric
+for image captioning. arXiv preprint arXiv:2104.08718, 2021.
+5
+[16] Wenyi Hong, Weihan Wang, Qingsong Lv, Jiazheng Xu, Wenmeng Yu, Junhui Ji, Yan Wang, Zihan Wang, Yuxiao Dong,
+Ming Ding, and Jie Tang. Cogagent: A visual language model
+for gui agents, 2024. 1, 2, 6, 7, 13
+[17] Albert Q Jiang, Alexandre Sablayrolles, Antoine Roux,
+Arthur Mensch, Blanche Savary, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Emma Bou Hanna,
+Florian Bressand, et al. Mixtral of experts. arXiv preprint
+arXiv:2401.04088, 2024. 1
+[18] Minkuk Kim, Hyeon Bae Kim, Jinyoung Moon, Jinwoo Choi,
+and Seong Tae Kim. Do you remember? dense video captioning with cross-modal memory retrieval. In Proceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 13894–13904, 2024. 2
+[19] Ranjay Krishna, Kenji Hata, Frederic Ren, Li Fei-Fei, and
+Juan Carlos Niebles. Dense-captioning events in videos. In
+Proceedings of the IEEE international conference on computer vision, pages 706–715, 2017. 2
+[20] Boyi Li, Yue Wang, Jiageng Mao, Boris Ivanovic, Sushant
+Veer, Karen Leung, and Marco Pavone. Driving everywhere
+with large language model policy adaptation. 2024. 1, 2
+[21] Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. Blip:
+Bootstrapping language-image pre-training for unified visionlanguage understanding and generation. In International Conference on Machine Learning, pages 12888–12900. PMLR,
+2022. 2
+[22] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip2: Bootstrapping language-image pre-training with frozen
+image encoders and large language models. arXiv preprint
+arXiv:2301.12597, 2023. 2
+
+[23] Bin Lin, Yang Ye, Bin Zhu, Jiaxi Cui, Munan Ning, Peng Jin,
+and Li Yuan. Video-llava: Learning united visual representation by alignment before projection, 2023. 2
+[24] Chin-Yew Lin. Rouge: A package for automatic evaluation
+of summaries. In Text summarization branches out, pages
+74–81, 2004. 5
+[25] Ji Lin, Jiaming Tang, Haotian Tang, Shang Yang, Xingyu
+Dang, and Song Han. Awq: Activation-aware weight quantization for llm compression and acceleration. arXiv preprint
+arXiv:2306.00978, 2023. 8, 13
+[26] Ji Lin, Hongxu Yin, Wei Ping, Yao Lu, Pavlo Molchanov,
+Andrew Tao, Huizi Mao, Jan Kautz, Mohammad Shoeybi,
+and Song Han. Vila: On pre-training for visual language
+models, 2023. 1, 2, 6, 7, 13
+[27] Zhiqiu Lin, Xinyue Chen, Deepak Pathak, Pengchuan Zhang,
+and Deva Ramanan. Revisiting the role of language priors in
+vision-language models. arXiv preprint arXiv:2306.01879,
+2023. 5
+[28] Zhiqiu Lin, Deepak Pathak, Baiqi Li, Jiayao Li, Xide Xia,
+Graham Neubig, Pengchuan Zhang, and Deva Ramanan. Evaluating text-to-visual generation with image-to-text generation.
+In European Conference on Computer Vision, pages 366–384.
+Springer, 2025. 5
+[29] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee.
+Visual instruction tuning. 2023. 2
+[30] Shuming Ma, Hongyu Wang, Lingxiao Ma, Lei Wang, Wenhui Wang, Shaohan Huang, Li Dong, Ruiping Wang, Jilong
+Xue, and Furu Wei. The era of 1-bit llms: All large language
+models are in 1.58 bits. arXiv preprint arXiv:2402.17764,
+2024. 8, 13
+[31] Muhammad Maaz, Hanoona Abdul Rasheed, Salman H.
+Khan, and Fahad Shahbaz Khan. Video-chatgpt: Towards
+detailed video understanding via large vision and language
+models. arXiv, abs/2306.05424, 2023. 1
+[32] Jiageng Mao, Yuxi Qian, Hang Zhao, and Yue Wang.
+Gpt-driver: Learning to drive with gpt. arXiv preprint
+arXiv:2310.01415, 2023. 1, 2
+[33] Jiageng Mao, Junjie Ye, Yuxi Qian, Marco Pavone, and Yue
+Wang. A language agent for autonomous driving. arXiv
+preprint arXiv:2311.10813, 2023. 1
+[34] Alexander Naumann, Felix Hertlein, Daniel Grimm, Maximilian Zipfl, Steffen Thoma, Achim Rettinger, Lavdim
+Halilaj, Juergen Luettin, Stefan Schmid, and Holger Caesar.
+Lanelet2 for nuscenes: Enabling spatial semantic relationships and diverse map-based anchor paths. In Proceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR) Workshops, pages 3247–3256, 2023. 3
+[35] OpenAI.
+Gpt-4 technical report.
+arXiv preprint
+arXiv:2303.08774, 2023. 1
+[36] Abhishek Padalkar, Acorn Pooley, Ajinkya Jain, Alex Bewley,
+Alex Herzog, Alex Irpan, Alexander Khazatsky, Anant Rai,
+Anikait Singh, Anthony Brohan, et al. Open x-embodiment:
+Robotic learning datasets and rt-x models. arXiv preprint
+arXiv:2310.08864, 2023. 3, 4
+[37] Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing
+Zhu. Bleu: a method for automatic evaluation of machine
+translation. In Proceedings of the 40th annual meeting of the
+
+Association for Computational Linguistics, pages 311–318,
+2002. 5
+[38] Zhiliang Peng, Wenhui Wang, Li Dong, Yaru Hao, Shaohan
+Huang, Shuming Ma, and Furu Wei. Kosmos-2: Grounding multimodal large language models to the world. arXiv
+preprint arXiv:2306.14824, 2023. 2
+[39] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya
+Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry,
+Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen
+Krueger, and Ilya Sutskever. Learning transferable visual
+models from natural language supervision. arXiv: Computer
+Vision and Pattern Recognition, 2021. 2
+[40] Allen Z Ren, Anushri Dixit, Alexandra Bodrova, Sumeet
+Singh, Stephen Tu, Noah Brown, Peng Xu, Leila Takayama,
+Fei Xia, Jake Varley, et al. Robots that ask for help: Uncertainty alignment for large language model planners. arXiv
+preprint arXiv:2307.01928, 2023. 9
+[41] Allen Z Ren, Jaden Clark, Anushri Dixit, Masha Itkina,
+Anirudha Majumdar, and Dorsa Sadigh. Explore until confident: Efficient exploration for embodied question answering.
+arXiv preprint arXiv:2403.15941, 2024. 9
+[42] ROHM. ISO 26262: Functional safety standard for modern
+road vehicles. 8
+[43] Runway. Gen-3 alpha. https://runwayml.com/aitools/gen-3-alpha/, 2024. Accessed on [Insert Date].
+1
+[44] Paul Hongsuck Seo, Arsha Nagrani, Anurag Arnab, and
+Cordelia Schmid. End-to-end generative pretraining for multimodal video captioning. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition,
+pages 17959–17968, 2022. 2
+[45] Glenn Shafer and Vladimir Vovk. A tutorial on conformal
+prediction. Journal of Machine Learning Research, 9(3),
+2008. 9
+[46] Prasann Singhal, Tanya Goyal, Jiacheng Xu, and Greg Durrett.
+A long way to go: Investigating length correlations in rlhf.
+arXiv preprint arXiv:2310.03716, 2023. 8
+[47] Gemini Team, Rohan Anil, Sebastian Borgeaud, Yonghui
+Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan
+Schalkwyk, Andrew M Dai, Anja Hauth, et al. Gemini: a
+family of highly capable multimodal models. arXiv preprint
+arXiv:2312.11805, 2023. 1, 2, 6, 7
+[48] Wan Team. Wan: Open and advanced large-scale video generative models. 2025. 1
+[49] Xiaoyu Tian, Junru Gu, Bailin Li, Yicheng Liu, Chenxu
+Hu, Yang Wang, Kun Zhan, Peng Jia, Xianpeng Lang, and
+Hang Zhao. Drivevlm: The convergence of autonomous
+driving and large vision-language models. arXiv preprint
+arXiv:2402.12289, 2024. 3
+[50] Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue, Anthony Moi, Pierric Cistac, Tim
+Rault, Rémi Louf, Morgan Funtowicz, et al. Huggingface’s
+transformers: State-of-the-art natural language processing.
+arXiv preprint arXiv:1910.03771, 2019. 13
+[51] Jun Xu, Tao Mei, Ting Yao, and Yong Rui. Msr-vtt: A large
+video description dataset for bridging video and language. In
+Proceedings of the IEEE conference on computer vision and
+pattern recognition, pages 5288–5296, 2016. 8
+
+[52] Lin Xu, Yilin Zhao, Daquan Zhou, Zhijie Lin, See Kiong Ng,
+and Jiashi Feng. Pllava: Parameter-free llava extension from
+images to videos for video dense captioning. arXiv preprint
+arXiv:2404.16994, 2024. 2
+[53] Antoine Yang, Arsha Nagrani, Paul Hongsuck Seo, Antoine Miech, Jordi Pont-Tuset, Ivan Laptev, Josef Sivic, and
+Cordelia Schmid. Vid2seq: Large-scale pretraining of a visual
+language model for dense video captioning. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 10714–10726, 2023. 2
+[54] Hang Zhang, Xin Li, and Lidong Bing. Video-llama: An
+instruction-tuned audio-visual language model for video understanding. arXiv preprint arXiv:2306.02858, 2023. 1, 2
+[55] Tianyi Zhang, Varsha Kishore, Felix Wu, Kilian Q Weinberger, and Yoav Artzi. Bertscore: Evaluating text generation
+with bert. In International Conference on Learning Representations, 2019. 5
+[56] Xingyi Zhou, Anurag Arnab, Shyamal Buch, Shen Yan,
+Austin Myers, Xuehan Xiong, Arsha Nagrani, and Cordelia
+Schmid. Streaming dense video captioning. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 18243–18252, 2024. 2
+
+A. Contributions
+We would like to list Wolf Contributions:
+1) Framework and Evaluation Metric. We designed a
+novel world summarization framework, Wolf, for video captioning and introduced an LLM-based metric, CapScore, to
+evaluate the quality of captions. The results show that our
+method significantly improves CapScore.
+2) Datasets and Benchmark. We introduce the Wolf benchmark (leaderboard) and four human-annotated benchmark
+datasets. These datasets include autonomous driving, general
+scenes from Pexels, robotics videos, and human-annotated
+captions, collectively referred to as the Wolf Dataset.
+3) Intended Uses. We believe Wolf can serve as one of the
+best practices (auto-labeling tool) for creating and curating
+paired datasets and benchmarks.
+4) Hosting, licensing, and maintenance plan. The code,
+data, and leaderboard will be open-sourced and maintained.
+Continuous efforts will be made to refine the Wolf Dataset,
+Wolf codebase, and CapScore. We hope that Wolf will raise
+awareness about the quality of video captioning, set a standard for the field, and boost community development.
+
+B. Pexel Dataset Categories
+We categorize videos from pexel into the following types:
+Travel & Events, Sports, Education, Pets & Animals, People
+& Blogs, Nonprofits & Activism, News & Politics, Music,
+Science & Technology, Comedy, Entertainment, Film &
+Animation, Gaming, Robotics, How to Styles.
+
+C. Qualitative Caption Comparison on Interactive Nuscenes Driving Videos
+We display the details of Figure 4 of the paper (Wolf example
+for driving videos that focus on interactive operations) in
+Figure 7.
+
+D. Wolf Efficiency Optimization
+We consider three primary areas: Low-Hanging Fruit,
+Batched Inference, and Model Quantization as optimizations which make Wolf a unified and efficient framework.
+Using the optimizations detailed in this section we were able
+to increase the speed of CogVLM by a factor of approximately 10x (450s/video to 41s/video), VILA throughput was
+similarly improved to only about 3s per video.
+Low-Hanging Fruit. These are primarily systems concerns
+and work arounds for simplistically written APIs. For example, the off-the-shelf CogVLM [16] and VILA [26] supporting code is heavily based on loading PIL images to present
+to a huggingface pipeline [50]. In the naive pipeline, videos
+would need to be decoded and then converted to PIL images
+before input to the respective pipelines, which in turn convert them to GPU PyTorch [2] tensors. This is extremely
+
+inefficient. Instead, we can leverage the hardware video decoder present in modern GPUs to decode the videos directly
+to GPU tensors and rewrite the preprocessing pipelines to
+operate on these tensors directly. This has the additional
+benefit of shifting preprocessing transform work from CPU
+to GPU.
+Batched Inference. Simplifying Wolf into the simplest
+terms, we are essentially performing repeated neural network inference. Surprisingly, most VLM supporting code
+is designed to run inference on only a single example at a
+time. However, just as in other deep-learning problems, there
+fundamentally no reason why we cannot processes multiple
+videos at a single time in batches. This step is crucial to
+maximizing the use of GPU resources. Processing a single
+example may only use as little as 25% of a modern datacenter GPU which would either increase the time to process a
+dataset or the number of GPUs required to complete a task
+in a fixed time budget. We can reimplement more of the
+supporting code to enable processing batches of as many
+videos as will fit in GPU memory at a single time yielding
+a linear speedup in processing. For example, if we can fit
+batches of 4 in GPU memory we observe a speedup of 4x
+over processing single examples.
+Model Quantization. The final optimization we consider
+is to reduce the size of the model weights. Several recent
+works [12, 25, 30] have noted that LLMs and VLMs can
+produce highly accurate results even when their weights are
+quantized to low bit-depths. Therefore, we quantize all constituent models used in Wolf to 4-bits to further improve
+efficiency. This has two benefits. First, it reduces the bandwidth required for computation. These algorithms work by
+packing two 4-bit numbers into a single 8-bit type, so when
+moving data on the GPU only half the number of bits need to
+be moved. Since all currently released GPUs support native
+instructions on 8-bit floating point numbers, the two 4-bit
+numbers are extracted and expanded by each kernel. In other
+words, two computations can be performed for every move
+operation. Next generation GPUs will natively support 4-bit
+datatypes and we expect further efficiency improvements
+from having dedicated 4-bit multiply and add instructions.
+Next, it synergizes with batched inference since the model
+weights, which are traditionally 16-bit, now only require one
+quarter of the GPU memory they would ordinarily use. This
+allows us to fit larger batch sizes on each GPU and process
+more videos in parallel.
+
+E. Updated Results and Documentation
+We will regularly update Wolf results and documentation
+on our webpage. We will release the initial version of our
+captioning leaderboard upon publication.
+
+t= 0 [s]
+
+t= 2 [s]
+
+t= 5 [s]
+
+CogAgent: The picture shows a three-panel scene of a city street. In the first panel, a white truck is driving on the road, and
+there are several cars and motorcycles on the street. In the second panel, the white truck is still driving on the road, and
+there are several cars and motorcycles on the street. In the third panel, the white truck is driving on the road, and there are
+several cars and motorcycles on the street.
+VILA-1.5: The video presents a sequence of images showing a street view with a pedestrian crossing. The images feature a
+white truck parked on the left side of the frame, a pedestrian crossing the street, and a pedestrian crossing sign visible on
+the right side. The sky is clear with few clouds, and the buildings in the background have a modern architectural style. The
+street is lined with trees and there are multiple cars parked on the right side of the street. The pedestrian is wearing dark
+clothing and is seen walking from one side of the street to the other.
+GPT-4: It appears that you‘ve provided a series of still images which seem to be sequential frames from a video that
+captures a scene at a traffic intersection. The visual elements include the following: a road with multiple lanes, white lane
+markings, and a variety of vehicles, including cars and a truck, navigating the intersection. The vehicles are captured in
+various positions in the lanes, implying movement through the area. There appears to be a tree-lined median or central
+island, and trees and buildings can be seen in the background, contributing to an urban landscape setting. The motion
+behavior depicted across these frames suggests the typical flow of traffic through an intersection. Vehicles are moving in a
+coordinated manner, adhering to lane directions and traffic signals that are implied rather than visible in the images. The
+sequence likely shows vehicles accelerating and decelerating as they approach and leave the intersection in response to
+traffic signals or the flow of other vehicles. The spatial positioning of the vehicles changes progressively, implying a realtime capture of their movements. If the sequence was put together as a continuous video, you would see vehicles entering
+the frame from one side and exiting on the other, with varying speeds and some vehicles possibly turning, illustrating the
+dynamic and fluid nature of traffic movement within a regulated urban environment.
+Gemini-Pro-1.5: The video is a wide-angle shot of a street intersection. The image is split into three sections, providing a
+panoramic view. Here‘s a breakdown: Visual Elements: Perspective: The three-part image creates a wide-angle
+perspective, simulating the view a driver might have at the intersection. The left section shows the road the (assumed)
+viewer is on, the center focuses on the intersection itself, and the right section provides a view of the crossing traffic. Color
+Palette: The video appears to be in color, but the colors are somewhat muted, giving it a realistic but slightly desaturated
+feel. Lighting: The lighting suggests a sunny day. The left section has a bright spot from the sun, possibly late afternoon,
+while the right section is more evenly lit. Static Elements: Elements like trees, buildings, lampposts, and road markings
+provide context and a sense of place. Dynamic Elements: Vehicles, including cars and a truck, move through the
+intersection, creating a dynamic scene. Narrative Elements/Motion Behavior: Traffic Flow: The video captures the typical
+flow of traffic at an intersection. Vehicles approach, some wait their turn while others proceed through the intersection
+when it’s clear. Right-Hand Drive: The cars driving on the right side of the road suggest the location might be a country
+where right-hand drive is the standard. Implied Viewer: While there is no visible camera or person, the perspective of the
+shot implies the viewer is positioned within a vehicle approaching the intersection. No Sound: The absence of sound
+enhances the focus on the visual information and allows the viewer to interpret the scene without auditory cues. Overall
+Impression: The video provides a snapshot of everyday life at a busy intersection. The wide-angle perspective and focus on
+movement create a sense of dynamism and highlight the complexities of navigating a traffic intersection.
+Wolf: The video presents a series of scenes depicting city streets bustling with various vehicles such as cars, trucks,
+motorcycles, and a person riding a bicycle. The scenes are often divided into panels, each showcasing a different vehicle in
+motion, including a yellow taxi, a blue car, a red car, a white truck, and a silver car. The streets are marked with white lines
+and are surrounded by green trees and buildings, contributing to an urban landscape setting. The video captures the
+typical flow of traffic through a four-way intersection, with vehicles moving in different directions. The vehicles are shown
+in various positions in the lanes, implying movement through the area. The sequence likely shows vehicles accelerating
+and decelerating as they approach and leave the intersection in response to traffic signals or the flow of other vehicles.
+The video is a wide-angle shot of the street intersection, split into three sections, providing a panoramic view. The left
+section shows the road the viewer is on, the center focuses on the intersection itself, and the right section provides a view
+of the crossing traffic. The lighting suggests a sunny day, with a bright spot from the sun on the left section and more even
+lighting on the right. The video captures the typical flow of traffic at an intersection, with vehicles approaching, some
+waiting their turn while others proceed through the intersection when it's clear. The cars driving on the right side of the
+road suggest the location might be a country where right-hand drive is the standard. The absence of sound enhances the
+focus on the visual information and allows the viewer to interpret the scene without auditory cues. Overall, the video
+provides a snapshot of everyday life at a busy intersection, highlighting the complexities of navigating a traffic intersection.
+The wide-angle perspective and focus on movement create a sense of dynamism.
+
+Figure 7. Comparison of CogAgent, VILA-1.5, GPT-4, Gemini-Pro-1.5, and Wolf on Interactive Nuscenes Driving Videos, Corresponding
+to Figure 4 of the Paper.
+
+

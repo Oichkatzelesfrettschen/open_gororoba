@@ -1,0 +1,3761 @@
+equations = []
+tables = []
+full_text = """
+arXiv:1207.5805v2 [astro-ph.HE] 6 Nov 2012\r
+Mon. Not. R. Astron. Soc. 000, 000–000 (0000) Printed 15 November 2021 (MN LATEX style file v2.2)\r
+Multiwavelength spectral evolution during the 2011 outburst of the\r
+very faint X-ray transient Swift J1357.2–0933\r
+M. Armas Padilla1 ⋆, N. Degenaar2, D. M. Russell3and R. Wijnands1\r
+1Astronomical Institute ”Anton Pannekoek”, University of Amsterdam, Postbus 94249, 1090 GE Amsterdam, The Netherlands\r
+2University of Michigan, Department of Astronomy, 500 Church St, Ann Arbor, MI 48109, USA\r
+3\r
+Instituto de Astrof´ısica de Canarias (IAC), V´ıa L´actea s/n, La Laguna 38205, S/C de Tenerife, Spain\r
+15 November 2021\r
+ABSTRACT\r
+We report our multiwavelength study of the 2011 outburst evolution of the newly dis\u0002covered black hole candidate X-ray binary Swift J1357.2–0933. We analysed the Swift X-ray\r
+telescope and Ultraviolet/Optical telescope (UVOT) data taken during the ∼7 months duration\r
+of the outburst. It displayed a 2-10 keV X-ray peak luminosity of ∼ 1035(D/1.5 kpc)2erg s−1\r
+which classifies the source as a very faint X-ray transient. We found that the X-ray spectrum at\r
+the peak was consistent with the source being in the hard state, but it softened with decreasing\r
+luminosity, a common behaviour of black holes returning to quiescence from the hard state.\r
+The correlations between the simultaneous X-ray and ultraviolet/optical data suggest a sys\u0002tem with a black hole accreting from a viscous disc, and we do not detect X-ray reprocessing\r
+on the disc surface. The UVOT filters provide the opportunity to study these correlations up\r
+to ultraviolet wavelengths, a regime so far unexplored. If the black hole nature is confirmed,\r
+Swift J1357.2–0933 would be one of the very few established black hole very-faint X-ray\r
+transients.\r
+Key words: X-rays:binaries –stars:individual: Swift J1357.2–0933–accretion,accretion discs\r
+1 INTRODUCTION\r
+X-ray binaries are the brightest X-ray point sources in our Galaxy.\r
+They are black holes (BH) or neutron stars (NS) accreting material\r
+from a companion star. The transient X-ray binaries alternate long\r
+epochs of quiescence during which they have X-ray luminosities\r
+of LX ∼ 1030−33 erg s−1 with outburst episodes during which\r
+the luminosity increases more than two orders of magnitude. The\r
+systems that reach a peak X-ray luminosity in their outbursts of\r
+only L\r
+peak\r
+X ∼ 1034−36 erg s−1\r
+are called very-faint X-ray binary\r
+transients (VFXTs). They are several orders of magnitude fainter at\r
+their peaks than the better studied faint (L\r
+peak\r
+X ∼ 1036−37 erg s−1\r
+)\r
+and bright (L\r
+peak\r
+X ∼ 1037−39 erg s−1\r
+) systems (Wijnands et al.\r
+2006).\r
+It is in the last decade that VFXTs have been investigated in\r
+detail thanks to the improvement in sensitivity and resolution\r
+of the X-ray instruments in orbit. However, even though the\r
+number of known sources has increased, their characteristics\r
+are still not well known. A considerable fraction of them have\r
+exhibited thermonuclear Type-I X-ray bursts, identifying the\r
+accretor as a NS (eg. Cornelisse et al. 2002; Del Santo et al. 2007;\r
+Chelovekov & Grebenev 2007; Degenaar & Wijnands 2009).\r
+⋆ E-mail:M.Armaspadilla@uva.nl\r
+Swift J1357.2–0933 is a new VFXT BH candidate\r
+(Casares et al. 2011, Corral-Santana et al. 2012 submitted, private\r
+communication) discovered with the Swift Burst Alert Telescope\r
+(BAT; Barthelmy et al. 2005) on 2011 January 28 (Krimm et al.\r
+2011). In the following days it was observed with several X\u0002ray satellites as well as ground-based telescopes. The MPI/ESO\r
+2.2m telescope at La Silla detected a new optical source within\r
+the Swift/BAT error circle. The magnitude difference compared to\r
+archival Sloan Digital Sky Survey (SDSS) images (when the source\r
+was in quiescence) was ∼6 mag. This indicates a Galactic origin,\r
+likely a low mass X-ray binary (LMXB) or a dwarf nova outburst\r
+(Rau et al. 2011), although the X-ray spectrum pointed to a LMXB\r
+nature (Krimm et al. 2011). The SDSS photometry indicated that\r
+the quiescent counterpart was very red and that the companion\r
+was likely an M4 star. This resulted in a distance estimate of ∼1.5\r
+kpc (Rau et al. 2011). In this work we present analysis of the Swift\r
+X-ray and ultraviolet–optical (UV/optical) data of Swift J1357.2–\r
+0933 along its 2011 outburst.\r
+2 OBSERVATIONS AND ANALYSIS\r
+Immediately following its discovery Swift J1357.2–0933 was mon\u0002itored with the Swift satellite (Gehrels et al. 2004) throughout its\r
+outburst both with the X-ray telescope (XRT; Burrows et al. 2005)\r
+and the Ultraviolet/Optical telescope (UVOT; Roming et al. 2005),
+
+2 M. Armas Padilla et al.\r
+which lasted ∼7 months. A total of 42 pointings were performed\r
+during this period, for a total exposure time of 54.8 ks. A log of the\r
+observations is given in Table 1. The observations were performed\r
+daily in the first 10 days, and once every 2 days in the following\r
+month. After that, the observations were separated by 1 to 2 weeks.\r
+2.1 XRT data\r
+The Swift/XRT observations were obtained both in photon\u0002counting (PC) and windowed timing (WT) modes. Due to the\r
+high flux of Swift J1357.2–0933 the XRT was operated in WT\r
+mode in the early observations in order to avoid pile-up (except for\r
+the first observation; see below). When the count rate was below\r
+0.5 count/s the observations were taken in PC mode (see Table 1).\r
+The data were processed using the HEASoft v.6.11 software. The\r
+raw data were reduced running the xrtpipeline task in which\r
+standard event grades of 0–12 were selected for the PC data and\r
+0–2 for the WT mode observations.\r
+For every observation, spectra, lightcurves and images were\r
+obtained using Xselect. The regions to extract the source events\r
+both for PC and WT modes were centred at the source position\r
+(RA=13h57m16.\r
+s\r
+86, Dec=-09◦32′38.\r
+′′9, J2000, 0.′′42 error radius;\r
+Krimm et al. 2011). For the WT data, we used a circle of ∼27 pix\u0002els of radius for the source and for the background extraction we\r
+used an annulus centred on the source with ∼64 pixels for the inner\r
+radius and ∼118 pixels for the outer radius. In the case of the PC\r
+mode observations, the region used was a circle of ∼10 pixels of\r
+radius for the source and for the background three circular regions\r
+with the same size located in nearby source-free regions.\r
+To look for eclipses, dips or X-ray bursts we checked the\r
+lightcurves with different bin–sizes extracted for each observation.\r
+We did not detect any evidence or feature that suggest modulations\r
+or a pattern in the source flux, although we cannot rule out with\r
+high confidence the presence of any modulations due to the low\r
+count rate. We created the exposure maps in order to correct for\r
+the effect of bad columns on the CCD, which in turn are used to\r
+create the ancillary response files using the xrtmkarf task. The\r
+latest versions of the response matrix files (v.14) were taken from\r
+the HEASARC calibration database. Finally, with grppha we\r
+grouped the spectra to have a minimum of 20 photons per bin to be\r
+able to consistently use the χ\r
+2\r
+. Due to the low number of counts\r
+collected during observations 38/39/40/411, we fitted these data\r
+using both C-statistic and χ\r
+2\r
+but grouped them with a minimum of\r
+5 photons per bin. The results using both methods were consistent\r
+with each other.\r
+The first observation 01 was taken in PC mode which is\r
+severely affected by pile-up. It has a count rate of 2.3 c/s, while the\r
+pile-up becomes considerable in PC mode for count rates above\r
+∼0.6 c/s (Evans et al. 2009; see also the Swift/XRT analysis web2).\r
+Therefore we do not include this observation in our analysis. In\r
+the last two XRT observations (43/44) the source was not detected.\r
+The count rates were calculated using the prescription for small\r
+numbers of counts given by Gehrels (1986). We calculated the\r
+1 We refer to the observations with the last two numbers of their\r
+observation-ID’s in the main text. The full observation–ID’s are in Table\r
+1\r
+2 http://www.swift.ac.uk/analysis/xrt/xselect.php\r
+95 per cent confidence upper limits on the flux with WebPIMMS\r
+HEASARC tool3. An absorbed power-law model with a hydrogen\r
+column density (NH) of 1.2×1020 cm−2(see Section 3) was\r
+assumed. We used a photon index of Γ=2.13 which corresponds to\r
+the value we obtained in the last observation where the source was\r
+detected.\r
+In order to improve the statistics we have also combined ob\u0002servations that were performed within a few days time span and\r
+that yielded comparable fluxes. As such, we have combined obser\u0002vations 03–05, 07–12, 13–15, 17–20, 21–25, 26–20, 30–33, 34–37,\r
+38–41 and 43–44. We extracted the combined spectra, lightcurves\r
+and images in the same way as the individual cases. We merged\r
+the individual exposure maps created for each image using the task\r
+ximage.\r
+2.2 UVOT data\r
+The UVOT observations were performed in image mode. Most of\r
+them were taken with 6 filters (v, b, u, uvw1, uvm2, uvw2) but\r
+some of them with only a few filters and sometimes only one.\r
+We calculated the source’s magnitude (in the Vega system) and\r
+flux densities with the uvotsource tool, which performs aper\u0002ture photometry on the sky images. We selected a circular region\r
+with a radius of 5 arcsec centred on the source and a circular re\u0002gion source–free with a radius of 18 arcsec for the background\r
+correction. We corrected the magnitudes and fluxes for the Galac\u0002tic extinction. The reddening is E(B–V)=0.04 mag in the direction\r
+of Swift J1357.2–0933 (Schlegel et al. 1998). Using this value and\r
+the prescription of Pei (1992) we calculate the extinction for ev\u0002ery band. The obtained values are Av=0.123, Ab=0.163, Au=0.193,\r
+Auvw1=0.263, Auvm2=0.387 and Auvw2=0.349. The source is lo\u0002cated at high Galactic latitude (b=50.0042) and for a distance of\r
+1.5 kpc or larger, the source will be located outside the plane of\r
+the Galaxy. Therefore, the measured column density (or redden\u0002ing) corresponds to the full Galactic one in that direction. In case\r
+of no source detection the uvotsource tool returns a 3–sigma\r
+upper limit for the magnitudes.\r
+3 RESULTS\r
+3.1 X-ray light curve and spectra\r
+We fitted the spectra using XSPEC (v 12.7.0). All observations\r
+were well fitted with a simple power–law (powerlaw) affected\r
+by photoelectric absorption (phabs). We assumed a column\r
+density to Swift J1357.2–0933 of 1.2 ×1020cm−2constant with\r
+time. We inferred this value from the high-resolution X-ray spectra\r
+obtained with XMM-Newton (Armas Padilla et al. 2012 in prep),\r
+which is consistent with that reported by Krimm et al. (2011). The\r
+results are reported in Table 1, where the flux errors have been\r
+calculated following the procedure presented by Wijnands et al.\r
+(2004). We also tried other single component models like a black\u0002body (bbodyrad) and an accretion disk consisting of multiple\r
+blackbody components (diskbb, Makishima et al. 1986) but both\r
+models could not fit the data accurately (χ\r
+2\r
+ν> 3 and χ\r
+2\r
+ν> 1.5,\r
+respectively). A two component model (diskbb+powerlaw)\r
+can fit the data as well, however it does not improve the best fit of\r
+the single power–law model and the additional thermal component\r
+3 Available from http://heasarc.gsfc.nasa.gov/Tools/w3pimms.html
+
+Multiwavelength spectral evolution of Swift J1357.2–0933 3\r
+Table 1. Log and XRT spectral results for Swift J1357.2–0933.\r
+Obs-ID Date Mode Exp-time (ksec) Γ FX,abs\r
+a FX,unabsa LXb χ2\r
+ν\r
+/d.o.f.\r
+31918002 2/1/11 WT 3.28 1.53 ± 0.02 404 ± 6 408 ± 6 110 ± 2 0.98 / 323\r
+31918003 2/2/11 WT 0.98 1.59 ± 0.03 374 ± 7 378 ± 7 102 ± 2 1.09 / 258\r
+31918004 2/3/11 WT 1.63 1.56 ± 0.03 394 ± 7 398 ± 7 107 ± 2 0.95 / 263\r
+31918005 2/4/11 WT 1.65 1.56 ± 0.02 365 ± 6 369 ± 5 99.4 ± 1.5 0.98 / 313\r
+31918007 2/6/11 WT 1 1.54 ± 0.03 360 ± 7 364 ± 7 98.1 ± 1.8 0.96 / 250\r
+31918008 2/7/11 WT 1.1 1.53 ± 0.03 341 ± 6 345 ± 6 92.9 ± 1.7 0.95 / 260\r
+31918009 2/8/11 WT 1.74 1.52 ± 0.03 338 ± 6 342 ± 6 91.9 ± 1.6 1.10 / 274\r
+31918010 2/9/11 WT 1.14 1.57 ± 0.03 321 ± 6 325 ± 6 87.5 ± 1.7 0.90 / 244\r
+31918011 2/10/11 WT 1.03 1.55 ± 0.03 310 ± 6 314 ± 6 84.5 ± 1.7 1.08 / 240\r
+31918012 2/11/11 WT 1.19 1.56 ± 0.03 303 ± 5 306 ± 5 82.5 ± 1.5 0.94 / 260\r
+31918013 2/16/11 WT 1 1.53 ± 0.03 292 ± 6 296 ± 6 79.6 ± 1.7 0.99 / 224\r
+31918014 2/18/11 WT 1.25 1.53 ± 0.03 258 ± 5 261 ± 5 70.2 ± 1.4 0.88 / 239\r
+31918015 2/20/11 WT 1.08 1.53 ± 0.04 228 ± 5 230 ± 5 62.0 ± 1.4 0.88 / 189\r
+31918016 2/24/11 WT 0.49 1.57 ± 0.06 203 ± 7 205 ± 7 55.2 ± 1.9 1.02 / 99\r
+31918017 2/26/11 WT 1.11 1.61 ± 0.04 172 ± 4 175 ± 4 47.0 ± 1.1 0.92 / 173\r
+31918018 2/28/11 WT 1.39 1.57 ± 0.04 168 ± 4 170 ± 4 45.7 ± 1.0 0.78 / 203\r
+31918019 3/2/11 WT 1.35 1.56 ± 0.04 157 ± 4 159 ± 4 42.8 ± 1.0 0.92 / 185\r
+31918020 3/4/11 WT 1.31 1.53 ± 0.04 147 ± 4 148 ± 4 40.0 ± 1.0 1.02 / 174\r
+31918021 3/6/11 WT 1.31 1.57 ± 0.04 130 ± 4 131 ± 4 35.4 ± 1.0 0.94 / 141\r
+31918022 3/8/11 WT 1.3 1.52 ± 0.04 144 ± 4 145 ± 4 39.1 ± 1.0 0.97 / 160\r
+31918023 3/10/11 WT 1.2 1.55 ± 0.04 123 ± 3 125 ± 3 33.6 ± 0.9 0.81 / 131\r
+31918024 3/12/11 WT 1.38 1.57 ± 0.05 130 ± 4 132 ± 4 35.4 ± 1.0 1.12 / 114\r
+31918025 3/13/11 WT 1.23 1.58 ± 0.05 106 ± 3 107 ± 3 28.8 ± 0.9 1.21 / 122\r
+31918026 3/16/11 WT 0.25 1.53 ± 0.13 80.3 ± 6.6 81.2 ± 6.5 21.9 ± 1.7 0.97 / 22\r
+31918027 3/18/11 WT 1.21 1.6 ± 0.05 85.3 ± 2.8 86.3 ± 2.8 23.2 ± 0.8 0.97 / 102\r
+31918028 3/20/11 WT 1.22 1.52 ± 0.1 97.5 ± 5.8 98.5 ± 5.8 26.5 ± 1.6 0.88 / 45\r
+31918029 3/29/11 WT 1.27 1.57 ± 0.06 76.9 ± 3.1 77.8 ± 3.1 20.9 ± 0.8 0.97 / 76\r
+31918030 4/3/11 WT 1.45 1.61 ± 0.06 63.6 ± 2.2 64.3 ± 2.2 17.3 ± 0.6 0.95 / 93\r
+31918031 4/13/11 WT 1.34 1.47 ± 0.12 45.0 ± 3.2 45.4 ± 3.2 12.2 ± 0.8 0.53 / 29\r
+31918032 4/20/11 WT 1.56 1.63 ± 0.08 36.2 ± 1.6 36.6 ± 1.6 9.87 ± 0.43 1.02 / 60\r
+31918033 4/23/11 WT 1.26 1.6 ± 0.09 35.4 ± 1.8 35.8 ± 1.8 9.63 ± 0.49 0.84 / 49\r
+31918034 4/28/11 WT 1.24 1.73 ± 0.15 19.9 ± 1.7 20.2 ± 1.7 5.45 ± 0.46 1.10 / 26\r
+31918035 5/3/11 WT 1.12 1.79 ± 0.1 28.3 ± 1.7 28.7 ± 1.6 7.73 ± 0.44 1.00 / 38\r
+31918036 5/8/11 WT 1.02 1.72 ± 0.13 21.9 ± 1.6 22.2 ± 1.6 5.97 ± 0.43 1.04 / 25\r
+31918037 5/13/11 WT 1.34 1.69 ± 0.13 21.5 ± 1.6 21.8 ± 1.6 5.87 ± 0.44 1.08 / 21\r
+31918038 6/15/11 PC 1.15 1.87 ± 0.25 5.64 ± 0.70 5.74 ± 0.69 1.54 ± 0.19 0.95 / 31\r
+31918039 6/29/11 PC 1.24 1.89 ± 0.27 3.92 ± 0.51 3.99 ± 0.50 1.07 ± 0.13 0.99 / 23\r
+31918040 7/14/11 PC 1.07 1.76 ± 0.53 3.23 ± 0.85 3.28 ± 0.84 0.88 ± 0.23 1.00 / 10\r
+31918041 7/28/11 PC 0.65 2.13+1.86\r
+−0.95 1.65 ± 0.81 1.69 ± 0.79 0.45 ± 0.21 1.21 / 4\r
+31918043 8/23/11 PC 1.19 2.13 (fix) < 0.22 < 0.23 < 0.06 –\r
+31918044 9/5/11 PC 2.05 2.13 (fix) < 0.07 < 0.08 < 0.02 –\r
+Note.- NHhas been fixed to 1.2 ×1020 cm−2, value inferred from the high-resolution X-ray spectra obtained with XMM-Newton (Armas Padilla et al. 2012\r
+in prep), which is consistent with that reported by Krimm et al. (2011).\r
+a Flux in units of 10−12 erg cm−2\r
+s−1in the 0.5–10 keV energy band.\r
+b X-ray luminosity in units of 1033 erg s−1\r
+calculated from the 0.5–10 keV unabsorbed flux by adopting a distance of 1.5 kpc.\r
+contributes only a few per cent of the total flux.\r
+In Fig. 1 we show the 0.5–10 keV light curve. The out\u0002burst has its maximum as observed during observation 02\r
+in the beginning4\r
+, where the peak of the unabsorbed flux is\r
+4.1 × 10−10 erg cm−2s\r
+−1\r
+. This corresponds to a peak luminosity\r
+of 1.1 × 1035 erg s−1assuming a distance of 1.5 kpc (Rau et al.\r
+2011). After this, the luminosity monotonically decreases until\r
+the source goes undetected using the XRT ∼180 days after the\r
+discovery date. The upper–limits on the luminosity calculated from\r
+4 Observation 01 could be brighter, but due to the strong pile-up it was not\r
+included in the analysis.\r
+the last two observations are between 2 and 6 × 1031 erg s−1.\r
+Plotting the photon index evolution with time (Fig. 1) shows\r
+that the photon index increases from a value of Γ ∼1.5 to a\r
+value of Γ ∼2 indicating that the spectra became softer during\r
+the decay of the outburst. This softening behaviour is also seen\r
+when using the hardness ratio (HR; Fig.1 left panel). The hardness\r
+ratio is defined as the ratio between the counts in the hard band\r
+(2–10 keV) and the counts in the soft band (0.5–2 keV). We have\r
+performed the same analysis when combining sets of observations\r
+(see Section 2.1). The result is shown in Fig. 1 right panel. Due to\r
+the smaller error bars, the increase of the photon index and the HR\r
+decay are more clearly visible.
+
+4 M. Armas Padilla et al.\r
+Figure 1. In both plots the upper panel is the light curve (0.5-10 keV; assumed distance of 1.5 kpc), the central panel is the photon index evolution with time,\r
+and the bottom panel is the hardness ratio evolution with time (ratio of the counts in the hard, 2-10 keV, and soft, 0.5-2 keV energy bands). All data are plotted\r
+in the left figure, whereas in the right figure we present the result of the combined sets of observations (see Section 2.1).\r
+3.2 Ultraviolet/optical and X-ray correlation\r
+The Swift/UVOT observations were taken simultaneously with the\r
+X-ray ones. Most of the observations were taken with all six filters,\r
+which allows us to study the correlation between the X-ray and\r
+the UV/optical emission along the outburst. Fig. 2 shows the X\u0002ray light curve and the UV/optical magnitudes in the Vega system.\r
+The last UVOT detection (u band) was 203 days after the first de\u0002tection when the source was already undetected in X-ray. Over the\r
+course of the outburst the brightness in all bands is decreasing si\u0002multaneously with the decline in the X-rays. This resulted in a clear\r
+correlation between X-ray and UV/optical fluxes which is shown in\r
+Fig. 3. We have assumed a power-law model to fit these correlations\r
+and calculate the correlation slopes β (FUV/optical ∝ FX\r
+β\r
+). We\r
+have calculated β for every UVOT band and for the X-ray flux in\r
+the 2–10 keV energy range in order to compare them with values in\r
+previous publications (e.g. Russell et al. 2006). However, the spec\u0002tral resolution of Swift/XRT allows us to also measure the correla\u0002tion slopes for X-ray fluxes in the 0.5–10 keV energy range. The\r
+results are shown in Table 2. Clearly β increases towards shorter\r
+wavelengths, going from 0.2 in the v band to 0.37 uvw2 (using the\r
+0.5–10 keV energy range). The numbers become 0.19 to 0.35 in the\r
+2–10 keV range (see Fig. 4).\r
+4 DISCUSSION\r
+We have analysed the XRT and UVOT data taken over the\r
+∼7 months duration of the 2011 outburst of the newly discovered\r
+candidate black hole LMXB Swift J1357.2–0933. We fitted the\r
+Table 2. Correlation slope between UV/optical and X-ray fluxes\r
+(FUV/optical ∝ FX\r
+β). λef f is the effective wavelength for each band.\r
+UVOT/Band λef f β\r
+(A) 0.5–10 KeV 2–10 keV ˚\r
+v 5402 0.203 ± 0.019 0.199 ± 0.017\r
+b 4329 0.237 ± 0.011 0.232 ± 0.011\r
+u 3501 0.293 ± 0.007 0.286 ± 0.006\r
+uvw1 2634 0.321 ± 0.007 0.311 ± 0.006\r
+uvm2 2231 0.374 ± 0.007 0.357 ± 0.006\r
+uvw2 2030 0.370 ± 0.006 0.358 ± 0.005\r
+Swift/XRT spectra using a simple power-law model affected by\r
+absorption. The peak flux was reached at the beginning of the\r
+outburst, after which, it steadily decreased until the source went un\u0002detected with XRT ∼180 days after its discovery. The unabsorbed\r
+peak flux has a value of FX,unabs = 4.1× 10−10 erg cm−2s\r
+−1\r
+in\r
+the 0.5–10 keV energy range, which corresponds to an outburst\r
+peak luminosity of LX=1.1× 1035 erg s−1assuming a distance of\r
+1.5 kpc. This low peak luminosity classifies Swift J1357.2–0933\r
+as a VFXT, which have peak luminosities L\r
+peak\r
+X <1036 erg s−1\r
+.\r
+Even if the source was located at a distance of 8 kpc the inferred\r
+peak luminosity is a few times 1036 erg s−1\r
+, still in the faint\r
+regime. However, such long distance is unlikely since the high\r
+Galactic latitude (b=50.0042) would place Swift J1357.2–0933 at\r
+6 kpc above the Galactic plane.
+
+Multiwavelength spectral evolution of Swift J1357.2–0933 5\r
+Figure 2. In the top panel the X-ray light curve in the 0.5–10 keV en\u0002ergy band for a distance of 1.5 kpc is shown while in the bottom panel the\r
+UV/optical light curves in the Vega system are plotted\r
+Figure 3. Correlation between the UV/optical density fluxes and the X-ray\r
+2–10 keV flux.\r
+The system was in the hard state at peak of the outburst and\r
+remained in this state throughout the outburst, which is usual at\r
+these low X-ray luminosities (see Belloni 2010 for the state def\u0002initions). From the first observation until the last one the spectral\r
+index of the power law increases from 1.5 to 2.1. As can be seen in\r
+Fig. 1, the X-ray luminosity and photon index are anti-correlated.\r
+The softening can also be seen in the HR curve demonstrating that\r
+it does not depend on assumed spectral model. It shows how the\r
+spectrum becomes softer as the luminosity decays (Fig. 1). Such\r
+softening behaviour was also present in the VFXT XTE J1719–291\r
+(Armas Padilla et al. 2011), but for this source the spectra were\r
+Figure 4. Correlation slopes (β) between the UVOT bands and the X-ray\r
+flux in the 0.5–10 keV and 2–10 keV energy bands.\r
+considerably softer, with a photon index regime from Γ=2.0 to\r
+Γ=2.7. The reason for Swift J1357.2–0933 to have harder spectra\r
+than XTE J1719–291 could be a difference in the nature of their\r
+compact objects. Although it is not established, the characteristics\r
+of XTE J1719–291 favour a NS accretor (Armas Padilla et al.\r
+2011) whereas Swift J1357.2–0933 has been identify as a strong\r
+BH candidate system using optical spectroscopy (Casares et al.\r
+2011, Corral-Santana et al. 2012 submitted, private communica\u0002tion).\r
+The upper-limit on the luminosity inferred from the non\u0002detections in the last two observations is LX ∼ 2×1031 erg s−1\r
+.\r
+This could indicate that the nature of the accretor is a BH\r
+since they typically have quiescent luminosities in the range of\r
+LX ∼ 1030 − 1031 erg s−1 while the NS’s usually have quiescent\r
+luminosities LX >1032 erg s−1(but see Jonker et al. 2007 for an\r
+exception).\r
+Several other BH sources have shown softening in their X-ray\r
+spectra at low luminosities. XTE J1650–500 softened in its 2001-\r
+2002 outburst. The photon index changed from Γ=1.66 to Γ=1.93\r
+when the luminosity decayed to 2×1034 erg s−1(Tomsick et al.\r
+2004). Also at these intermediate luminosities 4U 1543–47 evolved\r
+from a photon index of Γ=1.64 in its hard state to a photon index\r
+of Γ=2.22 at lower LX (Kalemci et al. 2005). By studying a sam\u0002ple of 7 BHs in their quiescence state, Corbel et al. (2006) arrived\r
+to the conclusion that all BHs are softer in quiescence than in the\r
+standard hard state. Using a study of 25 BHs, Dunn et al. (2010)\r
+presented data from which the same conclusion can be inferred:\r
+when data are available, the sources show softening towards quies\u0002cence. However, in the 2008 outburst decay of H 1743–322 to qui\u0002escence, Jonker et al. (2010) did not see any evidence of softening,\r
+although it cannot be ruled out that this is caused the inaccuracy in\r
+the photon index due to the high NH.\r
+4.1 X-ray and UV/optical simultaneous data: A\r
+non-irradiated accretion disc\r
+The proximity and the low Galactic extinction towards\r
+Swift J1357.2–0933 have made it possible to obtain X-ray\r
+and UV/optical data simultaneously using XRT and UVOT\r
+instruments on board Swift. Until today this had not been possible\r
+for any VFXT since, in addition to their low luminosity, the vast
+
+6 M. Armas Padilla et al.\r
+majority are located towards the Galactic centre, which makes\r
+it very difficult to detect the optical counterpart due to the high\r
+Galactic absorption.\r
+The optical/UV and X-ray fluxes are strongly correlated during\r
+the outburst (Fig. 2). Russell et al. (2006) quantified the disc and\r
+jet contribution from the optical/infrared and X-ray (2-10 keV)\r
+correlation in the hard state. Based on the values of β expected\r
+from the different emission processes (sections 3.3 and 3.4 of\r
+their work), our correlation in the v band is consistent with a BH\r
+accreting via a non irradiated viscous disc. For a viscously heated\r
+disc, 0.15 6 β 6 0.25 is expected in the case of a BH (for V-band\r
+optical and 2–10 keV X-ray), and for Swift J1357.2–0933 we find\r
+β = 0.2 (Table 2). For a NS, 0.3 6 β 6 0.5 is predicted, so our\r
+correlation is consistent with optical emission from a viscously\r
+heated disc around a BH accretor. Higher values of β are expected\r
+if the optical emission originates in an irradiated accretion disc or\r
+a jet.\r
+Additionally, Frank et al. (2002) predict a dependency of the slopes\r
+β with the wavelength. For optical emission from a viscously\r
+heated steady-state disc, β increases at shorter wavelengths. This\r
+is consistent with our results, where β increases from 0.2 in the\r
+v band to 0.35 in the uvw2 one (see Table 2). Therefore, all the\r
+evidence favours UV/optical emission dominated by the viscously\r
+heated disc, with little or no X-ray irradiation detected.\r
+ACKNOWLEDGMENTS\r
+MAP acknowledges J. Corral-Santanta and J. Casares for useful\r
+discussion on the nature of the source. MAP and RW are sup\u0002ported by an European Research Council Starting Grant awarded\r
+by RW. RW also acknowledge support from The European Com\u0002munity’s Seventh Framework Programme (FP7/2007-2013) under\r
+grant agreement number ITN 215212 Black Hole Universe. ND is\r
+supported by NASA through Hubble Postdoctoral Fellowship grant\r
+number HST-HF-51287.01-A from the Space Telescope Science\r
+Institute (STScI). D.M.R is supported by a Marie Curie Intra Euro\u0002pean Fellowship within the 7th European Community Framework\r
+Programme under contract No. IEF 274805.\r
+REFERENCES\r
+Armas Padilla M., Degenaar N., Patruno A., Russell D. M.,\r
+Linares M., Maccarone T. J., Homan J., Wijnands R., 2011, MN\u0002RAS, 417, 659\r
+Barthelmy S. D., Barbier L. M., Cummings J. R., Fenimore\r
+E. E., Gehrels N., Hullinger D., Krimm H. A., Markwardt C. B.,\r
+Palmer D. M., Parsons A., Sato G., Suzuki M., Takahashi T.,\r
+Tashiro M., Tueller J., 2005, Space Sci. Rev., 120, 143\r
+Belloni T. M., 2010, in T. Belloni ed., Lecture Notes in Physics,\r
+Berlin Springer Verlag Vol. 794 of Lecture Notes in Physics,\r
+Berlin Springer Verlag, States and Transitions in Black Hole Bi\u0002naries. pp 53–+\r
+Burrows D. N., Hill J. E., Nousek J. A., Kennea J. A., Wells A.,\r
+Osborne J. P., Abbey A. F., Beardmore A., Mukerjee K., Short\r
+A. D. T., Chincarini G., Campana S., Citterio O., Moretti A.,\r
+Pagani e. a., 2005, Space Sci. Rev., 120, 165\r
+Casares J., Torres M. A. P., Negueruela I., Gonzalez-Fernandez\r
+C., Corral-Santana J. M., Zurita C., Llano S. R., 2011, The As\u0002tronomer’s Telegram, 3206, 1\r
+Chelovekov I. V., Grebenev S. A., 2007, Astron. Lett. , 33, 807\r
+Corbel S., Tomsick J. A., Kaaret P., 2006, ApJ, 636, 971\r
+Cornelisse R., Verbunt F., in’t Zand J. J. M., Kuulkers E., Heise J.,\r
+Remillard R. A., Cocchi M., Natalucci L., Bazzano A., Ubertini\r
+P., 2002, A&A, 392, 885\r
+Degenaar N., Wijnands R., 2009, A&A, 495, 547\r
+Del Santo M., Sidoli L., Mereghetti S., Bazzano A., Tarana A.,\r
+Ubertini P., 2007, A&A, 468, L17\r
+Dunn R. J. H., Fender R. P., K¨ording E. G., Belloni T., Cabanac\r
+C., 2010, MNRAS, 403, 61\r
+Evans P. A., Beardmore A. P., Page K. L., Osborne J. P., O’Brien\r
+P. T. e. a., 2009, MNRAS, 397, 1177\r
+Frank J., King A., Raine D. J., 2002, Accretion Power in Astro\u0002physics: Third Edition\r
+Gehrels N., 1986, ApJ, 303, 336\r
+Gehrels N., Chincarini G., Giommi P., Mason K. O., Nousek J. A.,\r
+Wells A. A., White N. E., Barthelmy S. D., Burrows D. N.,\r
+Cominsky L. R., Hurley K. C., Marshall F. E., M´esz´aros P.,\r
+Roming P. W. A., Angelini L., Barbier L. M. e. a., 2004, ApJ,\r
+611, 1005\r
+Jonker P. G., Miller-Jones J., Homan J., Gallo E., Rupen M., Tom\u0002sick J., Fender R. P., Kaaret P., Steeghs D. T. H., Torres M. A. P.,\r
+Wijnands R., Markoff S., Lewin W. H. G., 2010, MNRAS, 401,\r
+1255\r
+Jonker P. G., Steeghs D., Chakrabarty D., Juett A. M., 2007, ApJ,\r
+665, L147\r
+Kalemci E., Tomsick J. A., Buxton M. M., Rothschild R. E.,\r
+Pottschmidt K., Corbel S., Brocksopp C., Kaaret P., 2005, ApJ,\r
+622, 508\r
+Krimm H. A., Barthelmy S. D., Baumgartner W., Cummings J.,\r
+Fenimore E., Gehrels N., Markwardt C. B., Palmer D., Sakamoto\r
+T., Skinner G., Stamatikos M., Tueller J., Ukwatta T., 2011, The\r
+Astronomer’s Telegram, 3138, 1\r
+Krimm H. A., Kennea J. A., Holland S. T., 2011, The As\u0002tronomer’s Telegram, 3142, 1\r
+Makishima K., Maejima Y., Mitsuda K., Bradt H. V., Remillard\r
+R. A., Tuohy I. R., Hoshi R., Nakagawa M., 1986, ApJ, 308, 635\r
+Pei Y. C., 1992, ApJ, 395, 130\r
+Rau A., Greiner J., Filgas R., 2011, The Astronomer’s Telegram,\r
+3140, 1\r
+Roming P. W. A., Kennedy T. E., Mason K. O., Nousek J. A., Ahr\r
+L., Bingham R. E., Broos P. S., Carter M. J., Hancock B. K.,\r
+Huckle H. E., Hunsberger S. D., Kawakami H., Killough e. a.,\r
+2005, Space Sci. Rev., 120, 95\r
+Russell D. M., Fender R. P., Hynes R. I., Brocksopp C., Homan\r
+J., Jonker P. G., Buxton M. M., 2006, MNRAS, 371, 1334\r
+Schlegel D. J., Finkbeiner D. P., Davis M., 1998, ApJ, 500, 525\r
+Tomsick J. A., Kalemci E., Kaaret P., 2004, ApJ, 601, 439\r
+Wijnands R., Homan J., Miller J. M., Lewin W. H. G., 2004, ApJ,\r
+606, L61\r
+Wijnands R., in’t Zand J. J. M., Rupen M., Maccarone T., Homan\r
+J., Cornelisse R., Fender R., Grindlay J., van der Klis M., Ku\u0002ulkers E., Markwardt C. B., Miller-Jones J. C. A., Wang Q. D.,\r
+2006, A&A, 449, 1117"""
+
+[metadata]
+title = "arxiv 1207.5805 fewster 2012 lectures quantum energy inequalities"
+authors = ["Unknown"]
+arxiv = "1207.5805"
+year = 2012
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:1207.5805v2 [astro-ph.HE] 6 Nov 2012\r
+Mon. Not. R. Astron. Soc. 000, 000–000 (0000) Printed 15 November 2021 (MN LATEX style file v2.2)\r
+Multiwavelength spectral evolution during the 2011 outburst of the\r
+very faint X-ray transient Swift J1357.2–0933\r
+M. Armas Padilla1 ⋆, N. Degenaar2, D. M. Russell3and R. Wijnands1\r
+1Astronomical Institute ”Anton Pannekoek”, University of Amsterdam, Postbus 94249, 1090 GE Amsterdam, The Netherlands\r
+2University of Michigan, Department of Astronomy, 500 Church St, Ann Arbor, MI 48109, USA\r
+3\r
+Instituto de Astrof´ısica de Canarias (IAC), V´ıa L´actea s/n, La Laguna 38205, S/C de Tenerife, Spain"""
+
+[[sections]]
+number = "15"
+title = "November 2021"
+text = """
+ABSTRACT\r
+We report our multiwavelength study of the 2011 outburst evolution of the newly dis\u0002covered black hole candidate X-ray binary Swift J1357.2–0933. We analysed the Swift X-ray\r
+telescope and Ultraviolet/Optical telescope (UVOT) data taken during the ∼7 months duration\r
+of the outburst. It displayed a 2-10 keV X-ray peak luminosity of ∼ 1035(D/1.5 kpc)2erg s−1\r
+which classifies the source as a very faint X-ray transient. We found that the X-ray spectrum at\r
+the peak was consistent with the source being in the hard state, but it softened with decreasing\r
+luminosity, a common behaviour of black holes returning to quiescence from the hard state.\r
+The correlations between the simultaneous X-ray and ultraviolet/optical data suggest a sys\u0002tem with a black hole accreting from a viscous disc, and we do not detect X-ray reprocessing\r
+on the disc surface. The UVOT filters provide the opportunity to study these correlations up\r
+to ultraviolet wavelengths, a regime so far unexplored. If the black hole nature is confirmed,\r
+Swift J1357.2–0933 would be one of the very few established black hole very-faint X-ray\r
+transients.\r
+Key words: X-rays:binaries –stars:individual: Swift J1357.2–0933–accretion,accretion discs"""
+
+[[sections]]
+number = "1"
+title = "INTRODUCTION"
+text = """
+X-ray binaries are the brightest X-ray point sources in our Galaxy.\r
+They are black holes (BH) or neutron stars (NS) accreting material\r
+from a companion star. The transient X-ray binaries alternate long\r
+epochs of quiescence during which they have X-ray luminosities\r
+of LX ∼ 1030−33 erg s−1 with outburst episodes during which\r
+the luminosity increases more than two orders of magnitude. The\r
+systems that reach a peak X-ray luminosity in their outbursts of\r
+only L\r
+peak\r
+X ∼ 1034−36 erg s−1\r
+are called very-faint X-ray binary\r
+transients (VFXTs). They are several orders of magnitude fainter at\r
+their peaks than the better studied faint (L\r
+peak\r
+X ∼ 1036−37 erg s−1\r
+)\r
+and bright (L\r
+peak\r
+X ∼ 1037−39 erg s−1\r
+) systems (Wijnands et al.\r
+2006).\r
+It is in the last decade that VFXTs have been investigated in\r
+detail thanks to the improvement in sensitivity and resolution\r
+of the X-ray instruments in orbit. However, even though the\r
+number of known sources has increased, their characteristics\r
+are still not well known. A considerable fraction of them have\r
+exhibited thermonuclear Type-I X-ray bursts, identifying the\r
+accretor as a NS (eg. Cornelisse et al. 2002; Del Santo et al. 2007;\r
+Chelovekov & Grebenev 2007; Degenaar & Wijnands 2009).\r
+⋆ E-mail:M.Armaspadilla@uva.nl\r
+Swift J1357.2–0933 is a new VFXT BH candidate\r
+(Casares et al. 2011, Corral-Santana et al. 2012 submitted, private\r
+communication) discovered with the Swift Burst Alert Telescope\r
+(BAT; Barthelmy et al. 2005) on 2011 January 28 (Krimm et al.\r
+2011). In the following days it was observed with several X\u0002ray satellites as well as ground-based telescopes. The MPI/ESO\r
+2.2m telescope at La Silla detected a new optical source within\r
+the Swift/BAT error circle. The magnitude difference compared to\r
+archival Sloan Digital Sky Survey (SDSS) images (when the source\r
+was in quiescence) was ∼6 mag. This indicates a Galactic origin,\r
+likely a low mass X-ray binary (LMXB) or a dwarf nova outburst\r
+(Rau et al. 2011), although the X-ray spectrum pointed to a LMXB\r
+nature (Krimm et al. 2011). The SDSS photometry indicated that\r
+the quiescent counterpart was very red and that the companion\r
+was likely an M4 star. This resulted in a distance estimate of ∼1.5\r
+kpc (Rau et al. 2011). In this work we present analysis of the Swift\r
+X-ray and ultraviolet–optical (UV/optical) data of Swift J1357.2–\r
+0933 along its 2011 outburst."""
+
+[[sections]]
+number = "2"
+title = "OBSERVATIONS AND ANALYSIS"
+text = """
+Immediately following its discovery Swift J1357.2–0933 was mon\u0002itored with the Swift satellite (Gehrels et al. 2004) throughout its\r
+outburst both with the X-ray telescope (XRT; Burrows et al. 2005)\r
+and the Ultraviolet/Optical telescope (UVOT; Roming et al. 2005),"""
+
+[[sections]]
+number = "2"
+title = "M. Armas Padilla et al."
+text = """
+which lasted ∼7 months. A total of 42 pointings were performed\r
+during this period, for a total exposure time of 54.8 ks. A log of the\r
+observations is given in Table 1. The observations were performed\r
+daily in the first 10 days, and once every 2 days in the following\r
+month. After that, the observations were separated by 1 to 2 weeks."""
+
+[[sections]]
+number = "2.1"
+title = "XRT data"
+text = """
+The Swift/XRT observations were obtained both in photon\u0002counting (PC) and windowed timing (WT) modes. Due to the\r
+high flux of Swift J1357.2–0933 the XRT was operated in WT\r
+mode in the early observations in order to avoid pile-up (except for\r
+the first observation; see below). When the count rate was below\r
+0.5 count/s the observations were taken in PC mode (see Table 1).\r
+The data were processed using the HEASoft v.6.11 software. The\r
+raw data were reduced running the xrtpipeline task in which\r
+standard event grades of 0–12 were selected for the PC data and\r
+0–2 for the WT mode observations.\r
+For every observation, spectra, lightcurves and images were\r
+obtained using Xselect. The regions to extract the source events\r
+both for PC and WT modes were centred at the source position\r
+(RA=13h57m16.\r
+s\r
+86, Dec=-09◦32′38.\r
+′′9, J2000, 0.′′42 error radius;\r
+Krimm et al. 2011). For the WT data, we used a circle of ∼27 pix\u0002els of radius for the source and for the background extraction we\r
+used an annulus centred on the source with ∼64 pixels for the inner\r
+radius and ∼118 pixels for the outer radius. In the case of the PC\r
+mode observations, the region used was a circle of ∼10 pixels of\r
+radius for the source and for the background three circular regions\r
+with the same size located in nearby source-free regions.\r
+To look for eclipses, dips or X-ray bursts we checked the\r
+lightcurves with different bin–sizes extracted for each observation.\r
+We did not detect any evidence or feature that suggest modulations\r
+or a pattern in the source flux, although we cannot rule out with\r
+high confidence the presence of any modulations due to the low\r
+count rate. We created the exposure maps in order to correct for\r
+the effect of bad columns on the CCD, which in turn are used to\r
+create the ancillary response files using the xrtmkarf task. The\r
+latest versions of the response matrix files (v.14) were taken from\r
+the HEASARC calibration database. Finally, with grppha we\r
+grouped the spectra to have a minimum of 20 photons per bin to be\r
+able to consistently use the χ"""
+
+[[sections]]
+number = "2"
+title = "Due to the low number of counts"
+text = """
+collected during observations 38/39/40/411, we fitted these data\r
+using both C-statistic and χ\r
+2\r
+but grouped them with a minimum of\r
+5 photons per bin. The results using both methods were consistent\r
+with each other.\r
+The first observation 01 was taken in PC mode which is\r
+severely affected by pile-up. It has a count rate of 2.3 c/s, while the\r
+pile-up becomes considerable in PC mode for count rates above\r
+∼0.6 c/s (Evans et al. 2009; see also the Swift/XRT analysis web2).\r
+Therefore we do not include this observation in our analysis. In\r
+the last two XRT observations (43/44) the source was not detected.\r
+The count rates were calculated using the prescription for small\r
+numbers of counts given by Gehrels (1986). We calculated the"""
+
+[[sections]]
+number = "1"
+title = "We refer to the observations with the last two numbers of their"
+text = """
+observation-ID’s in the main text. The full observation–ID’s are in Table\r
+1\r
+2 http://www.swift.ac.uk/analysis/xrt/xselect.php\r
+95 per cent confidence upper limits on the flux with WebPIMMS\r
+HEASARC tool3. An absorbed power-law model with a hydrogen\r
+column density (NH) of 1.2×1020 cm−2(see Section 3) was\r
+assumed. We used a photon index of Γ=2.13 which corresponds to\r
+the value we obtained in the last observation where the source was\r
+detected.\r
+In order to improve the statistics we have also combined ob\u0002servations that were performed within a few days time span and\r
+that yielded comparable fluxes. As such, we have combined obser\u0002vations 03–05, 07–12, 13–15, 17–20, 21–25, 26–20, 30–33, 34–37,\r
+38–41 and 43–44. We extracted the combined spectra, lightcurves\r
+and images in the same way as the individual cases. We merged\r
+the individual exposure maps created for each image using the task\r
+ximage."""
+
+[[sections]]
+number = "2.2"
+title = "UVOT data"
+text = """
+The UVOT observations were performed in image mode. Most of\r
+them were taken with 6 filters (v, b, u, uvw1, uvm2, uvw2) but\r
+some of them with only a few filters and sometimes only one.\r
+We calculated the source’s magnitude (in the Vega system) and\r
+flux densities with the uvotsource tool, which performs aper\u0002ture photometry on the sky images. We selected a circular region\r
+with a radius of 5 arcsec centred on the source and a circular re\u0002gion source–free with a radius of 18 arcsec for the background\r
+correction. We corrected the magnitudes and fluxes for the Galac\u0002tic extinction. The reddening is E(B–V)=0.04 mag in the direction\r
+of Swift J1357.2–0933 (Schlegel et al. 1998). Using this value and\r
+the prescription of Pei (1992) we calculate the extinction for ev\u0002ery band. The obtained values are Av=0.123, Ab=0.163, Au=0.193,\r
+Auvw1=0.263, Auvm2=0.387 and Auvw2=0.349. The source is lo\u0002cated at high Galactic latitude (b=50.0042) and for a distance of\r
+1.5 kpc or larger, the source will be located outside the plane of\r
+the Galaxy. Therefore, the measured column density (or redden\u0002ing) corresponds to the full Galactic one in that direction. In case\r
+of no source detection the uvotsource tool returns a 3–sigma\r
+upper limit for the magnitudes."""
+
+[[sections]]
+number = "3"
+title = "RESULTS"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "X-ray light curve and spectra"
+text = """
+We fitted the spectra using XSPEC (v 12.7.0). All observations\r
+were well fitted with a simple power–law (powerlaw) affected\r
+by photoelectric absorption (phabs). We assumed a column\r
+density to Swift J1357.2–0933 of 1.2 ×1020cm−2constant with\r
+time. We inferred this value from the high-resolution X-ray spectra\r
+obtained with XMM-Newton (Armas Padilla et al. 2012 in prep),\r
+which is consistent with that reported by Krimm et al. (2011). The\r
+results are reported in Table 1, where the flux errors have been\r
+calculated following the procedure presented by Wijnands et al.\r
+(2004). We also tried other single component models like a black\u0002body (bbodyrad) and an accretion disk consisting of multiple\r
+blackbody components (diskbb, Makishima et al. 1986) but both\r
+models could not fit the data accurately (χ\r
+2\r
+ν> 3 and χ\r
+2\r
+ν> 1.5,\r
+respectively). A two component model (diskbb+powerlaw)\r
+can fit the data as well, however it does not improve the best fit of\r
+the single power–law model and the additional thermal component"""
+
+[[sections]]
+number = "3"
+title = "Available from http://heasarc.gsfc.nasa.gov/Tools/w3pimms.html"
+text = """
+Multiwavelength spectral evolution of Swift J1357.2–0933 3\r
+Table 1. Log and XRT spectral results for Swift J1357.2–0933.\r
+Obs-ID Date Mode Exp-time (ksec) Γ FX,abs\r
+a FX,unabsa LXb χ2\r
+ν\r
+/d.o.f.\r
+31918002 2/1/11 WT 3.28 1.53 ± 0.02 404 ± 6 408 ± 6 110 ± 2 0.98 / 323\r
+31918003 2/2/11 WT 0.98 1.59 ± 0.03 374 ± 7 378 ± 7 102 ± 2 1.09 / 258\r
+31918004 2/3/11 WT 1.63 1.56 ± 0.03 394 ± 7 398 ± 7 107 ± 2 0.95 / 263\r
+31918005 2/4/11 WT 1.65 1.56 ± 0.02 365 ± 6 369 ± 5 99.4 ± 1.5 0.98 / 313\r
+31918007 2/6/11 WT 1 1.54 ± 0.03 360 ± 7 364 ± 7 98.1 ± 1.8 0.96 / 250\r
+31918008 2/7/11 WT 1.1 1.53 ± 0.03 341 ± 6 345 ± 6 92.9 ± 1.7 0.95 / 260\r
+31918009 2/8/11 WT 1.74 1.52 ± 0.03 338 ± 6 342 ± 6 91.9 ± 1.6 1.10 / 274\r
+31918010 2/9/11 WT 1.14 1.57 ± 0.03 321 ± 6 325 ± 6 87.5 ± 1.7 0.90 / 244\r
+31918011 2/10/11 WT 1.03 1.55 ± 0.03 310 ± 6 314 ± 6 84.5 ± 1.7 1.08 / 240\r
+31918012 2/11/11 WT 1.19 1.56 ± 0.03 303 ± 5 306 ± 5 82.5 ± 1.5 0.94 / 260\r
+31918013 2/16/11 WT 1 1.53 ± 0.03 292 ± 6 296 ± 6 79.6 ± 1.7 0.99 / 224\r
+31918014 2/18/11 WT 1.25 1.53 ± 0.03 258 ± 5 261 ± 5 70.2 ± 1.4 0.88 / 239\r
+31918015 2/20/11 WT 1.08 1.53 ± 0.04 228 ± 5 230 ± 5 62.0 ± 1.4 0.88 / 189\r
+31918016 2/24/11 WT 0.49 1.57 ± 0.06 203 ± 7 205 ± 7 55.2 ± 1.9 1.02 / 99\r
+31918017 2/26/11 WT 1.11 1.61 ± 0.04 172 ± 4 175 ± 4 47.0 ± 1.1 0.92 / 173\r
+31918018 2/28/11 WT 1.39 1.57 ± 0.04 168 ± 4 170 ± 4 45.7 ± 1.0 0.78 / 203\r
+31918019 3/2/11 WT 1.35 1.56 ± 0.04 157 ± 4 159 ± 4 42.8 ± 1.0 0.92 / 185\r
+31918020 3/4/11 WT 1.31 1.53 ± 0.04 147 ± 4 148 ± 4 40.0 ± 1.0 1.02 / 174\r
+31918021 3/6/11 WT 1.31 1.57 ± 0.04 130 ± 4 131 ± 4 35.4 ± 1.0 0.94 / 141\r
+31918022 3/8/11 WT 1.3 1.52 ± 0.04 144 ± 4 145 ± 4 39.1 ± 1.0 0.97 / 160\r
+31918023 3/10/11 WT 1.2 1.55 ± 0.04 123 ± 3 125 ± 3 33.6 ± 0.9 0.81 / 131\r
+31918024 3/12/11 WT 1.38 1.57 ± 0.05 130 ± 4 132 ± 4 35.4 ± 1.0 1.12 / 114\r
+31918025 3/13/11 WT 1.23 1.58 ± 0.05 106 ± 3 107 ± 3 28.8 ± 0.9 1.21 / 122\r
+31918026 3/16/11 WT 0.25 1.53 ± 0.13 80.3 ± 6.6 81.2 ± 6.5 21.9 ± 1.7 0.97 / 22\r
+31918027 3/18/11 WT 1.21 1.6 ± 0.05 85.3 ± 2.8 86.3 ± 2.8 23.2 ± 0.8 0.97 / 102\r
+31918028 3/20/11 WT 1.22 1.52 ± 0.1 97.5 ± 5.8 98.5 ± 5.8 26.5 ± 1.6 0.88 / 45\r
+31918029 3/29/11 WT 1.27 1.57 ± 0.06 76.9 ± 3.1 77.8 ± 3.1 20.9 ± 0.8 0.97 / 76\r
+31918030 4/3/11 WT 1.45 1.61 ± 0.06 63.6 ± 2.2 64.3 ± 2.2 17.3 ± 0.6 0.95 / 93\r
+31918031 4/13/11 WT 1.34 1.47 ± 0.12 45.0 ± 3.2 45.4 ± 3.2 12.2 ± 0.8 0.53 / 29\r
+31918032 4/20/11 WT 1.56 1.63 ± 0.08 36.2 ± 1.6 36.6 ± 1.6 9.87 ± 0.43 1.02 / 60\r
+31918033 4/23/11 WT 1.26 1.6 ± 0.09 35.4 ± 1.8 35.8 ± 1.8 9.63 ± 0.49 0.84 / 49\r
+31918034 4/28/11 WT 1.24 1.73 ± 0.15 19.9 ± 1.7 20.2 ± 1.7 5.45 ± 0.46 1.10 / 26\r
+31918035 5/3/11 WT 1.12 1.79 ± 0.1 28.3 ± 1.7 28.7 ± 1.6 7.73 ± 0.44 1.00 / 38\r
+31918036 5/8/11 WT 1.02 1.72 ± 0.13 21.9 ± 1.6 22.2 ± 1.6 5.97 ± 0.43 1.04 / 25\r
+31918037 5/13/11 WT 1.34 1.69 ± 0.13 21.5 ± 1.6 21.8 ± 1.6 5.87 ± 0.44 1.08 / 21\r
+31918038 6/15/11 PC 1.15 1.87 ± 0.25 5.64 ± 0.70 5.74 ± 0.69 1.54 ± 0.19 0.95 / 31\r
+31918039 6/29/11 PC 1.24 1.89 ± 0.27 3.92 ± 0.51 3.99 ± 0.50 1.07 ± 0.13 0.99 / 23\r
+31918040 7/14/11 PC 1.07 1.76 ± 0.53 3.23 ± 0.85 3.28 ± 0.84 0.88 ± 0.23 1.00 / 10\r
+31918041 7/28/11 PC 0.65 2.13+1.86\r
+−0.95 1.65 ± 0.81 1.69 ± 0.79 0.45 ± 0.21 1.21 / 4\r
+31918043 8/23/11 PC 1.19 2.13 (fix) < 0.22 < 0.23 < 0.06 –\r
+31918044 9/5/11 PC 2.05 2.13 (fix) < 0.07 < 0.08 < 0.02 –\r
+Note.- NHhas been fixed to 1.2 ×1020 cm−2, value inferred from the high-resolution X-ray spectra obtained with XMM-Newton (Armas Padilla et al. 2012\r
+in prep), which is consistent with that reported by Krimm et al. (2011).\r
+a Flux in units of 10−12 erg cm−2\r
+s−1in the 0.5–10 keV energy band.\r
+b X-ray luminosity in units of 1033 erg s−1\r
+calculated from the 0.5–10 keV unabsorbed flux by adopting a distance of 1.5 kpc.\r
+contributes only a few per cent of the total flux.\r
+In Fig. 1 we show the 0.5–10 keV light curve. The out\u0002burst has its maximum as observed during observation 02\r
+in the beginning4\r
+, where the peak of the unabsorbed flux is\r
+4.1 × 10−10 erg cm−2s\r
+−1\r
+. This corresponds to a peak luminosity\r
+of 1.1 × 1035 erg s−1assuming a distance of 1.5 kpc (Rau et al.\r
+2011). After this, the luminosity monotonically decreases until\r
+the source goes undetected using the XRT ∼180 days after the\r
+discovery date. The upper–limits on the luminosity calculated from"""
+
+[[sections]]
+number = "4"
+title = "Observation 01 could be brighter, but due to the strong pile-up it was not"
+text = """
+included in the analysis.\r
+the last two observations are between 2 and 6 × 1031 erg s−1.\r
+Plotting the photon index evolution with time (Fig. 1) shows\r
+that the photon index increases from a value of Γ ∼1.5 to a\r
+value of Γ ∼2 indicating that the spectra became softer during\r
+the decay of the outburst. This softening behaviour is also seen\r
+when using the hardness ratio (HR; Fig.1 left panel). The hardness\r
+ratio is defined as the ratio between the counts in the hard band\r
+(2–10 keV) and the counts in the soft band (0.5–2 keV). We have\r
+performed the same analysis when combining sets of observations\r
+(see Section 2.1). The result is shown in Fig. 1 right panel. Due to\r
+the smaller error bars, the increase of the photon index and the HR\r
+decay are more clearly visible."""
+
+[[sections]]
+number = "4"
+title = "M. Armas Padilla et al."
+text = """
+Figure 1. In both plots the upper panel is the light curve (0.5-10 keV; assumed distance of 1.5 kpc), the central panel is the photon index evolution with time,\r
+and the bottom panel is the hardness ratio evolution with time (ratio of the counts in the hard, 2-10 keV, and soft, 0.5-2 keV energy bands). All data are plotted\r
+in the left figure, whereas in the right figure we present the result of the combined sets of observations (see Section 2.1)."""
+
+[[sections]]
+number = "3.2"
+title = "Ultraviolet/optical and X-ray correlation"
+text = """
+The Swift/UVOT observations were taken simultaneously with the\r
+X-ray ones. Most of the observations were taken with all six filters,\r
+which allows us to study the correlation between the X-ray and\r
+the UV/optical emission along the outburst. Fig. 2 shows the X\u0002ray light curve and the UV/optical magnitudes in the Vega system.\r
+The last UVOT detection (u band) was 203 days after the first de\u0002tection when the source was already undetected in X-ray. Over the\r
+course of the outburst the brightness in all bands is decreasing si\u0002multaneously with the decline in the X-rays. This resulted in a clear\r
+correlation between X-ray and UV/optical fluxes which is shown in\r
+Fig. 3. We have assumed a power-law model to fit these correlations\r
+and calculate the correlation slopes β (FUV/optical ∝ FX\r
+β\r
+). We\r
+have calculated β for every UVOT band and for the X-ray flux in\r
+the 2–10 keV energy range in order to compare them with values in\r
+previous publications (e.g. Russell et al. 2006). However, the spec\u0002tral resolution of Swift/XRT allows us to also measure the correla\u0002tion slopes for X-ray fluxes in the 0.5–10 keV energy range. The\r
+results are shown in Table 2. Clearly β increases towards shorter\r
+wavelengths, going from 0.2 in the v band to 0.37 uvw2 (using the\r
+0.5–10 keV energy range). The numbers become 0.19 to 0.35 in the\r
+2–10 keV range (see Fig. 4)."""
+
+[[sections]]
+number = "4"
+title = "DISCUSSION"
+text = """
+We have analysed the XRT and UVOT data taken over the\r
+∼7 months duration of the 2011 outburst of the newly discovered\r
+candidate black hole LMXB Swift J1357.2–0933. We fitted the\r
+Table 2. Correlation slope between UV/optical and X-ray fluxes\r
+(FUV/optical ∝ FX\r
+β). λef f is the effective wavelength for each band.\r
+UVOT/Band λef f β\r
+(A) 0.5–10 KeV 2–10 keV ˚\r
+v 5402 0.203 ± 0.019 0.199 ± 0.017\r
+b 4329 0.237 ± 0.011 0.232 ± 0.011\r
+u 3501 0.293 ± 0.007 0.286 ± 0.006\r
+uvw1 2634 0.321 ± 0.007 0.311 ± 0.006\r
+uvm2 2231 0.374 ± 0.007 0.357 ± 0.006\r
+uvw2 2030 0.370 ± 0.006 0.358 ± 0.005\r
+Swift/XRT spectra using a simple power-law model affected by\r
+absorption. The peak flux was reached at the beginning of the\r
+outburst, after which, it steadily decreased until the source went un\u0002detected with XRT ∼180 days after its discovery. The unabsorbed\r
+peak flux has a value of FX,unabs = 4.1× 10−10 erg cm−2s\r
+−1\r
+in\r
+the 0.5–10 keV energy range, which corresponds to an outburst\r
+peak luminosity of LX=1.1× 1035 erg s−1assuming a distance of\r
+1.5 kpc. This low peak luminosity classifies Swift J1357.2–0933\r
+as a VFXT, which have peak luminosities L\r
+peak\r
+X <1036 erg s−1\r
+.\r
+Even if the source was located at a distance of 8 kpc the inferred\r
+peak luminosity is a few times 1036 erg s−1\r
+, still in the faint\r
+regime. However, such long distance is unlikely since the high\r
+Galactic latitude (b=50.0042) would place Swift J1357.2–0933 at\r
+6 kpc above the Galactic plane.
+
+Multiwavelength spectral evolution of Swift J1357.2–0933 5\r
+Figure 2. In the top panel the X-ray light curve in the 0.5–10 keV en\u0002ergy band for a distance of 1.5 kpc is shown while in the bottom panel the\r
+UV/optical light curves in the Vega system are plotted\r
+Figure 3. Correlation between the UV/optical density fluxes and the X-ray\r
+2–10 keV flux.\r
+The system was in the hard state at peak of the outburst and\r
+remained in this state throughout the outburst, which is usual at\r
+these low X-ray luminosities (see Belloni 2010 for the state def\u0002initions). From the first observation until the last one the spectral\r
+index of the power law increases from 1.5 to 2.1. As can be seen in\r
+Fig. 1, the X-ray luminosity and photon index are anti-correlated.\r
+The softening can also be seen in the HR curve demonstrating that\r
+it does not depend on assumed spectral model. It shows how the\r
+spectrum becomes softer as the luminosity decays (Fig. 1). Such\r
+softening behaviour was also present in the VFXT XTE J1719–291\r
+(Armas Padilla et al. 2011), but for this source the spectra were\r
+Figure 4. Correlation slopes (β) between the UVOT bands and the X-ray\r
+flux in the 0.5–10 keV and 2–10 keV energy bands.\r
+considerably softer, with a photon index regime from Γ=2.0 to\r
+Γ=2.7. The reason for Swift J1357.2–0933 to have harder spectra\r
+than XTE J1719–291 could be a difference in the nature of their\r
+compact objects. Although it is not established, the characteristics\r
+of XTE J1719–291 favour a NS accretor (Armas Padilla et al.\r
+2011) whereas Swift J1357.2–0933 has been identify as a strong\r
+BH candidate system using optical spectroscopy (Casares et al.\r
+2011, Corral-Santana et al. 2012 submitted, private communica\u0002tion).\r
+The upper-limit on the luminosity inferred from the non\u0002detections in the last two observations is LX ∼ 2×1031 erg s−1\r
+.\r
+This could indicate that the nature of the accretor is a BH\r
+since they typically have quiescent luminosities in the range of\r
+LX ∼ 1030 − 1031 erg s−1 while the NS’s usually have quiescent\r
+luminosities LX >1032 erg s−1(but see Jonker et al. 2007 for an\r
+exception).\r
+Several other BH sources have shown softening in their X-ray\r
+spectra at low luminosities. XTE J1650–500 softened in its 2001-\r
+2002 outburst. The photon index changed from Γ=1.66 to Γ=1.93\r
+when the luminosity decayed to 2×1034 erg s−1(Tomsick et al.\r
+2004). Also at these intermediate luminosities 4U 1543–47 evolved\r
+from a photon index of Γ=1.64 in its hard state to a photon index\r
+of Γ=2.22 at lower LX (Kalemci et al. 2005). By studying a sam\u0002ple of 7 BHs in their quiescence state, Corbel et al. (2006) arrived\r
+to the conclusion that all BHs are softer in quiescence than in the\r
+standard hard state. Using a study of 25 BHs, Dunn et al. (2010)\r
+presented data from which the same conclusion can be inferred:\r
+when data are available, the sources show softening towards quies\u0002cence. However, in the 2008 outburst decay of H 1743–322 to qui\u0002escence, Jonker et al. (2010) did not see any evidence of softening,\r
+although it cannot be ruled out that this is caused the inaccuracy in\r
+the photon index due to the high NH."""
+
+[[sections]]
+number = "4.1"
+title = "X-ray and UV/optical simultaneous data: A"
+text = """
+non-irradiated accretion disc\r
+The proximity and the low Galactic extinction towards\r
+Swift J1357.2–0933 have made it possible to obtain X-ray\r
+and UV/optical data simultaneously using XRT and UVOT\r
+instruments on board Swift. Until today this had not been possible\r
+for any VFXT since, in addition to their low luminosity, the vast"""
+
+[[sections]]
+number = "6"
+title = "M. Armas Padilla et al."
+text = """
+majority are located towards the Galactic centre, which makes\r
+it very difficult to detect the optical counterpart due to the high\r
+Galactic absorption.\r
+The optical/UV and X-ray fluxes are strongly correlated during\r
+the outburst (Fig. 2). Russell et al. (2006) quantified the disc and\r
+jet contribution from the optical/infrared and X-ray (2-10 keV)\r
+correlation in the hard state. Based on the values of β expected\r
+from the different emission processes (sections 3.3 and 3.4 of\r
+their work), our correlation in the v band is consistent with a BH\r
+accreting via a non irradiated viscous disc. For a viscously heated\r
+disc, 0.15 6 β 6 0.25 is expected in the case of a BH (for V-band\r
+optical and 2–10 keV X-ray), and for Swift J1357.2–0933 we find\r
+β = 0.2 (Table 2). For a NS, 0.3 6 β 6 0.5 is predicted, so our\r
+correlation is consistent with optical emission from a viscously\r
+heated disc around a BH accretor. Higher values of β are expected\r
+if the optical emission originates in an irradiated accretion disc or\r
+a jet.\r
+Additionally, Frank et al. (2002) predict a dependency of the slopes\r
+β with the wavelength. For optical emission from a viscously\r
+heated steady-state disc, β increases at shorter wavelengths. This\r
+is consistent with our results, where β increases from 0.2 in the\r
+v band to 0.35 in the uvw2 one (see Table 2). Therefore, all the\r
+evidence favours UV/optical emission dominated by the viscously\r
+heated disc, with little or no X-ray irradiation detected.\r
+ACKNOWLEDGMENTS\r
+MAP acknowledges J. Corral-Santanta and J. Casares for useful\r
+discussion on the nature of the source. MAP and RW are sup\u0002ported by an European Research Council Starting Grant awarded\r
+by RW. RW also acknowledge support from The European Com\u0002munity’s Seventh Framework Programme (FP7/2007-2013) under\r
+grant agreement number ITN 215212 Black Hole Universe. ND is\r
+supported by NASA through Hubble Postdoctoral Fellowship grant\r
+number HST-HF-51287.01-A from the Space Telescope Science\r
+Institute (STScI). D.M.R is supported by a Marie Curie Intra Euro\u0002pean Fellowship within the 7th European Community Framework\r
+Programme under contract No. IEF 274805.\r
+REFERENCES\r
+Armas Padilla M., Degenaar N., Patruno A., Russell D. M.,\r
+Linares M., Maccarone T. J., Homan J., Wijnands R., 2011, MN\u0002RAS, 417, 659\r
+Barthelmy S. D., Barbier L. M., Cummings J. R., Fenimore\r
+E. E., Gehrels N., Hullinger D., Krimm H. A., Markwardt C. B.,\r
+Palmer D. M., Parsons A., Sato G., Suzuki M., Takahashi T.,\r
+Tashiro M., Tueller J., 2005, Space Sci. Rev., 120, 143\r
+Belloni T. M., 2010, in T. Belloni ed., Lecture Notes in Physics,\r
+Berlin Springer Verlag Vol. 794 of Lecture Notes in Physics,\r
+Berlin Springer Verlag, States and Transitions in Black Hole Bi\u0002naries. pp 53–+\r
+Burrows D. N., Hill J. E., Nousek J. A., Kennea J. A., Wells A.,\r
+Osborne J. P., Abbey A. F., Beardmore A., Mukerjee K., Short\r
+A. D. T., Chincarini G., Campana S., Citterio O., Moretti A.,\r
+Pagani e. a., 2005, Space Sci. Rev., 120, 165\r
+Casares J., Torres M. A. P., Negueruela I., Gonzalez-Fernandez\r
+C., Corral-Santana J. M., Zurita C., Llano S. R., 2011, The As\u0002tronomer’s Telegram, 3206, 1\r
+Chelovekov I. V., Grebenev S. A., 2007, Astron. Lett. , 33, 807\r
+Corbel S., Tomsick J. A., Kaaret P., 2006, ApJ, 636, 971\r
+Cornelisse R., Verbunt F., in’t Zand J. J. M., Kuulkers E., Heise J.,\r
+Remillard R. A., Cocchi M., Natalucci L., Bazzano A., Ubertini\r
+P., 2002, A&A, 392, 885\r
+Degenaar N., Wijnands R., 2009, A&A, 495, 547\r
+Del Santo M., Sidoli L., Mereghetti S., Bazzano A., Tarana A.,\r
+Ubertini P., 2007, A&A, 468, L17\r
+Dunn R. J. H., Fender R. P., K¨ording E. G., Belloni T., Cabanac\r
+C., 2010, MNRAS, 403, 61\r
+Evans P. A., Beardmore A. P., Page K. L., Osborne J. P., O’Brien\r
+P. T. e. a., 2009, MNRAS, 397, 1177\r
+Frank J., King A., Raine D. J., 2002, Accretion Power in Astro\u0002physics: Third Edition\r
+Gehrels N., 1986, ApJ, 303, 336\r
+Gehrels N., Chincarini G., Giommi P., Mason K. O., Nousek J. A.,\r
+Wells A. A., White N. E., Barthelmy S. D., Burrows D. N.,\r
+Cominsky L. R., Hurley K. C., Marshall F. E., M´esz´aros P.,\r
+Roming P. W. A., Angelini L., Barbier L. M. e. a., 2004, ApJ,\r
+611, 1005\r
+Jonker P. G., Miller-Jones J., Homan J., Gallo E., Rupen M., Tom\u0002sick J., Fender R. P., Kaaret P., Steeghs D. T. H., Torres M. A. P.,\r
+Wijnands R., Markoff S., Lewin W. H. G., 2010, MNRAS, 401,"""
+
+[[sections]]
+number = "1255"
+title = "Jonker P. G., Steeghs D., Chakrabarty D., Juett A. M., 2007, ApJ,"
+text = """
+665, L147\r
+Kalemci E., Tomsick J. A., Buxton M. M., Rothschild R. E.,\r
+Pottschmidt K., Corbel S., Brocksopp C., Kaaret P., 2005, ApJ,\r
+622, 508\r
+Krimm H. A., Barthelmy S. D., Baumgartner W., Cummings J.,\r
+Fenimore E., Gehrels N., Markwardt C. B., Palmer D., Sakamoto\r
+T., Skinner G., Stamatikos M., Tueller J., Ukwatta T., 2011, The\r
+Astronomer’s Telegram, 3138, 1\r
+Krimm H. A., Kennea J. A., Holland S. T., 2011, The As\u0002tronomer’s Telegram, 3142, 1\r
+Makishima K., Maejima Y., Mitsuda K., Bradt H. V., Remillard\r
+R. A., Tuohy I. R., Hoshi R., Nakagawa M., 1986, ApJ, 308, 635\r
+Pei Y. C., 1992, ApJ, 395, 130\r
+Rau A., Greiner J., Filgas R., 2011, The Astronomer’s Telegram,\r
+3140, 1\r
+Roming P. W. A., Kennedy T. E., Mason K. O., Nousek J. A., Ahr\r
+L., Bingham R. E., Broos P. S., Carter M. J., Hancock B. K.,\r
+Huckle H. E., Hunsberger S. D., Kawakami H., Killough e. a.,\r
+2005, Space Sci. Rev., 120, 95\r
+Russell D. M., Fender R. P., Hynes R. I., Brocksopp C., Homan\r
+J., Jonker P. G., Buxton M. M., 2006, MNRAS, 371, 1334\r
+Schlegel D. J., Finkbeiner D. P., Davis M., 1998, ApJ, 500, 525\r
+Tomsick J. A., Kalemci E., Kaaret P., 2004, ApJ, 601, 439\r
+Wijnands R., Homan J., Miller J. M., Lewin W. H. G., 2004, ApJ,\r
+606, L61\r
+Wijnands R., in’t Zand J. J. M., Rupen M., Maccarone T., Homan\r
+J., Cornelisse R., Fender R., Grindlay J., van der Klis M., Ku\u0002ulkers E., Markwardt C. B., Miller-Jones J. C. A., Wang Q. D.,\r
+2006, A&A, 449, 1117"""
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 4
+image_path = "images/image_p4_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 4
+image_path = "images/image_p4_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 4
+image_path = "images/image_p4_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 4
+image_path = "images/image_p4_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 4
+image_path = "images/image_p4_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 4
+image_path = "images/image_p4_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 4
+image_path = "images/image_p4_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 4
+image_path = "images/image_p4_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 4
+image_path = "images/image_p4_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 4
+image_path = "images/image_p4_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 4
+image_path = "images/image_p4_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 4
+image_path = "images/image_p4_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 4
+image_path = "images/image_p4_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 4
+image_path = "images/image_p4_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 4
+image_path = "images/image_p4_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 4
+image_path = "images/image_p4_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 4
+image_path = "images/image_p4_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 4
+image_path = "images/image_p4_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 4
+image_path = "images/image_p4_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 4
+image_path = "images/image_p4_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 4
+image_path = "images/image_p4_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 4
+image_path = "images/image_p4_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 4
+image_path = "images/image_p4_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 4
+image_path = "images/image_p4_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 4
+image_path = "images/image_p4_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 4
+image_path = "images/image_p4_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 4
+image_path = "images/image_p4_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 4
+image_path = "images/image_p4_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 4
+image_path = "images/image_p4_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 4
+image_path = "images/image_p4_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 4
+image_path = "images/image_p4_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 4
+image_path = "images/image_p4_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 4
+image_path = "images/image_p4_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 4
+image_path = "images/image_p4_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 4
+image_path = "images/image_p4_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 4
+image_path = "images/image_p4_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 4
+image_path = "images/image_p4_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 4
+image_path = "images/image_p4_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 4
+image_path = "images/image_p4_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 4
+image_path = "images/image_p4_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 4
+image_path = "images/image_p4_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 4
+image_path = "images/image_p4_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 4
+image_path = "images/image_p4_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 4
+image_path = "images/image_p4_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 4
+image_path = "images/image_p4_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 4
+image_path = "images/image_p4_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 4
+image_path = "images/image_p4_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 4
+image_path = "images/image_p4_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 4
+image_path = "images/image_p4_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 4
+image_path = "images/image_p4_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 4
+image_path = "images/image_p4_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 4
+image_path = "images/image_p4_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 4
+image_path = "images/image_p4_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 4
+image_path = "images/image_p4_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 4
+image_path = "images/image_p4_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 4
+image_path = "images/image_p4_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 4
+image_path = "images/image_p4_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 4
+image_path = "images/image_p4_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 4
+image_path = "images/image_p4_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 4
+image_path = "images/image_p4_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 4
+image_path = "images/image_p4_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 4
+image_path = "images/image_p4_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 4
+image_path = "images/image_p4_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 4
+image_path = "images/image_p4_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 4
+image_path = "images/image_p4_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 4
+image_path = "images/image_p4_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 4
+image_path = "images/image_p4_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 4
+image_path = "images/image_p4_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 4
+image_path = "images/image_p4_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 4
+image_path = "images/image_p4_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 4
+image_path = "images/image_p4_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 4
+image_path = "images/image_p4_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 4
+image_path = "images/image_p4_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 4
+image_path = "images/image_p4_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 4
+image_path = "images/image_p4_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 4
+image_path = "images/image_p4_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 4
+image_path = "images/image_p4_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 4
+image_path = "images/image_p4_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 4
+image_path = "images/image_p4_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 4
+image_path = "images/image_p4_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 4
+image_path = "images/image_p4_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 4
+image_path = "images/image_p4_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 4
+image_path = "images/image_p4_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 4
+image_path = "images/image_p4_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 4
+image_path = "images/image_p4_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 4
+image_path = "images/image_p4_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 4
+image_path = "images/image_p4_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 4
+image_path = "images/image_p4_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 4
+image_path = "images/image_p4_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 4
+image_path = "images/image_p4_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 4
+image_path = "images/image_p4_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 4
+image_path = "images/image_p4_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 4
+image_path = "images/image_p4_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 4
+image_path = "images/image_p4_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 4
+image_path = "images/image_p4_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 4
+image_path = "images/image_p4_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 4
+image_path = "images/image_p4_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 4
+image_path = "images/image_p4_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 4
+image_path = "images/image_p4_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 4
+image_path = "images/image_p4_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 4
+image_path = "images/image_p4_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 4
+image_path = "images/image_p4_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 4
+image_path = "images/image_p4_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 4
+image_path = "images/image_p4_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 4
+image_path = "images/image_p4_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 4
+image_path = "images/image_p4_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 4
+image_path = "images/image_p4_112.png"
+
+[[figures]]
+label = "fig:113"
+page_num = 4
+image_path = "images/image_p4_113.png"
+
+[[figures]]
+label = "fig:114"
+page_num = 4
+image_path = "images/image_p4_114.png"
+
+[[figures]]
+label = "fig:115"
+page_num = 4
+image_path = "images/image_p4_115.png"
+
+[[figures]]
+label = "fig:116"
+page_num = 4
+image_path = "images/image_p4_116.png"
+
+[[figures]]
+label = "fig:117"
+page_num = 4
+image_path = "images/image_p4_117.png"
+
+[[figures]]
+label = "fig:118"
+page_num = 4
+image_path = "images/image_p4_118.png"
+
+[[figures]]
+label = "fig:119"
+page_num = 4
+image_path = "images/image_p4_119.png"
+
+[[figures]]
+label = "fig:120"
+page_num = 4
+image_path = "images/image_p4_120.png"
+
+[[figures]]
+label = "fig:121"
+page_num = 4
+image_path = "images/image_p4_121.png"
+
+[[figures]]
+label = "fig:122"
+page_num = 4
+image_path = "images/image_p4_122.png"
+
+[[figures]]
+label = "fig:123"
+page_num = 4
+image_path = "images/image_p4_123.png"
+
+[[figures]]
+label = "fig:124"
+page_num = 4
+image_path = "images/image_p4_124.png"
+
+[[figures]]
+label = "fig:125"
+page_num = 4
+image_path = "images/image_p4_125.png"
+
+[[figures]]
+label = "fig:126"
+page_num = 4
+image_path = "images/image_p4_126.png"
+
+[[figures]]
+label = "fig:127"
+page_num = 4
+image_path = "images/image_p4_127.png"
+
+[[figures]]
+label = "fig:128"
+page_num = 4
+image_path = "images/image_p4_128.png"
+
+[[figures]]
+label = "fig:129"
+page_num = 4
+image_path = "images/image_p4_129.png"
+
+[[figures]]
+label = "fig:130"
+page_num = 4
+image_path = "images/image_p4_130.png"
+
+[[figures]]
+label = "fig:131"
+page_num = 4
+image_path = "images/image_p4_131.png"
+
+[[figures]]
+label = "fig:132"
+page_num = 4
+image_path = "images/image_p4_132.png"
+
+[[figures]]
+label = "fig:133"
+page_num = 4
+image_path = "images/image_p4_133.png"
+
+[[figures]]
+label = "fig:134"
+page_num = 4
+image_path = "images/image_p4_134.png"
+
+[[figures]]
+label = "fig:135"
+page_num = 4
+image_path = "images/image_p4_135.png"
+
+[[figures]]
+label = "fig:136"
+page_num = 4
+image_path = "images/image_p4_136.png"
+
+[[figures]]
+label = "fig:137"
+page_num = 4
+image_path = "images/image_p4_137.png"
+
+[[figures]]
+label = "fig:138"
+page_num = 4
+image_path = "images/image_p4_138.png"
+
+[[figures]]
+label = "fig:139"
+page_num = 4
+image_path = "images/image_p4_139.png"
+
+[[figures]]
+label = "fig:140"
+page_num = 4
+image_path = "images/image_p4_140.png"
+
+[[figures]]
+label = "fig:141"
+page_num = 4
+image_path = "images/image_p4_141.png"
+
+[[figures]]
+label = "fig:142"
+page_num = 4
+image_path = "images/image_p4_142.png"
+
+[[figures]]
+label = "fig:143"
+page_num = 4
+image_path = "images/image_p4_143.png"
+
+[[figures]]
+label = "fig:144"
+page_num = 4
+image_path = "images/image_p4_144.png"
+
+[[figures]]
+label = "fig:145"
+page_num = 4
+image_path = "images/image_p4_145.png"
+
+[[figures]]
+label = "fig:146"
+page_num = 4
+image_path = "images/image_p4_146.png"
+
+[[figures]]
+label = "fig:147"
+page_num = 4
+image_path = "images/image_p4_147.png"
+
+[[figures]]
+label = "fig:148"
+page_num = 4
+image_path = "images/image_p4_148.png"
+
+[[figures]]
+label = "fig:149"
+page_num = 4
+image_path = "images/image_p4_149.png"
+
+[[figures]]
+label = "fig:150"
+page_num = 4
+image_path = "images/image_p4_150.png"
+
+[[figures]]
+label = "fig:151"
+page_num = 4
+image_path = "images/image_p4_151.png"
+
+[[figures]]
+label = "fig:152"
+page_num = 4
+image_path = "images/image_p4_152.png"
+
+[[figures]]
+label = "fig:153"
+page_num = 4
+image_path = "images/image_p4_153.png"
+
+[[figures]]
+label = "fig:154"
+page_num = 4
+image_path = "images/image_p4_154.png"
+
+[[figures]]
+label = "fig:155"
+page_num = 4
+image_path = "images/image_p4_155.png"
+
+[[figures]]
+label = "fig:156"
+page_num = 4
+image_path = "images/image_p4_156.png"
+
+[[figures]]
+label = "fig:157"
+page_num = 4
+image_path = "images/image_p4_157.png"
+
+[[figures]]
+label = "fig:158"
+page_num = 4
+image_path = "images/image_p4_158.png"
+
+[[figures]]
+label = "fig:159"
+page_num = 4
+image_path = "images/image_p4_159.png"
+
+[[figures]]
+label = "fig:160"
+page_num = 4
+image_path = "images/image_p4_160.png"
+
+[[figures]]
+label = "fig:161"
+page_num = 4
+image_path = "images/image_p4_161.png"
+
+[[figures]]
+label = "fig:162"
+page_num = 4
+image_path = "images/image_p4_162.png"
+
+[[figures]]
+label = "fig:163"
+page_num = 4
+image_path = "images/image_p4_163.png"
+
+[[figures]]
+label = "fig:164"
+page_num = 4
+image_path = "images/image_p4_164.png"
+
+[[figures]]
+label = "fig:165"
+page_num = 4
+image_path = "images/image_p4_165.png"
+
+[[figures]]
+label = "fig:166"
+page_num = 4
+image_path = "images/image_p4_166.png"
+
+[[figures]]
+label = "fig:167"
+page_num = 4
+image_path = "images/image_p4_167.png"
+
+[[figures]]
+label = "fig:168"
+page_num = 4
+image_path = "images/image_p4_168.png"
+
+[[figures]]
+label = "fig:169"
+page_num = 4
+image_path = "images/image_p4_169.png"
+
+[[figures]]
+label = "fig:170"
+page_num = 4
+image_path = "images/image_p4_170.png"
+
+[[figures]]
+label = "fig:171"
+page_num = 4
+image_path = "images/image_p4_171.png"
+
+[[figures]]
+label = "fig:172"
+page_num = 4
+image_path = "images/image_p4_172.png"
+
+[[figures]]
+label = "fig:173"
+page_num = 4
+image_path = "images/image_p4_173.png"
+
+[[figures]]
+label = "fig:174"
+page_num = 4
+image_path = "images/image_p4_174.png"
+
+[[figures]]
+label = "fig:175"
+page_num = 4
+image_path = "images/image_p4_175.png"
+
+[[figures]]
+label = "fig:176"
+page_num = 4
+image_path = "images/image_p4_176.png"
+
+[[figures]]
+label = "fig:177"
+page_num = 4
+image_path = "images/image_p4_177.png"
+
+[[figures]]
+label = "fig:178"
+page_num = 4
+image_path = "images/image_p4_178.png"
+
+[[figures]]
+label = "fig:179"
+page_num = 4
+image_path = "images/image_p4_179.png"
+
+[[figures]]
+label = "fig:180"
+page_num = 4
+image_path = "images/image_p4_180.png"
+
+[[figures]]
+label = "fig:181"
+page_num = 4
+image_path = "images/image_p4_181.png"
+
+[[figures]]
+label = "fig:182"
+page_num = 4
+image_path = "images/image_p4_182.png"
+
+[[figures]]
+label = "fig:183"
+page_num = 4
+image_path = "images/image_p4_183.png"
+
+[[figures]]
+label = "fig:184"
+page_num = 4
+image_path = "images/image_p4_184.png"
+
+[[figures]]
+label = "fig:185"
+page_num = 4
+image_path = "images/image_p4_185.png"
+
+[[figures]]
+label = "fig:186"
+page_num = 4
+image_path = "images/image_p4_186.png"
+
+[[figures]]
+label = "fig:187"
+page_num = 4
+image_path = "images/image_p4_187.png"
+
+[[figures]]
+label = "fig:188"
+page_num = 4
+image_path = "images/image_p4_188.png"
+
+[[figures]]
+label = "fig:189"
+page_num = 4
+image_path = "images/image_p4_189.png"
+
+[[figures]]
+label = "fig:190"
+page_num = 4
+image_path = "images/image_p4_190.png"
+
+[[figures]]
+label = "fig:191"
+page_num = 4
+image_path = "images/image_p4_191.png"
+
+[[figures]]
+label = "fig:192"
+page_num = 4
+image_path = "images/image_p4_192.png"
+
+[[figures]]
+label = "fig:193"
+page_num = 4
+image_path = "images/image_p4_193.png"
+
+[[figures]]
+label = "fig:194"
+page_num = 4
+image_path = "images/image_p4_194.png"
+
+[[figures]]
+label = "fig:195"
+page_num = 4
+image_path = "images/image_p4_195.png"
+
+[[figures]]
+label = "fig:196"
+page_num = 4
+image_path = "images/image_p4_196.png"
+
+[[figures]]
+label = "fig:197"
+page_num = 4
+image_path = "images/image_p4_197.png"
+
+[[figures]]
+label = "fig:198"
+page_num = 4
+image_path = "images/image_p4_198.png"
+
+[[figures]]
+label = "fig:199"
+page_num = 4
+image_path = "images/image_p4_199.png"
+
+[[figures]]
+label = "fig:200"
+page_num = 4
+image_path = "images/image_p4_200.png"
+
+[[figures]]
+label = "fig:201"
+page_num = 4
+image_path = "images/image_p4_201.png"
+
+[[figures]]
+label = "fig:202"
+page_num = 4
+image_path = "images/image_p4_202.png"
+
+[[figures]]
+label = "fig:203"
+page_num = 4
+image_path = "images/image_p4_203.png"
+
+[[figures]]
+label = "fig:204"
+page_num = 4
+image_path = "images/image_p4_204.png"
+
+[[figures]]
+label = "fig:205"
+page_num = 4
+image_path = "images/image_p4_205.png"
+
+[[figures]]
+label = "fig:206"
+page_num = 4
+image_path = "images/image_p4_206.png"
+
+[[figures]]
+label = "fig:207"
+page_num = 4
+image_path = "images/image_p4_207.png"
+
+[[figures]]
+label = "fig:208"
+page_num = 4
+image_path = "images/image_p4_208.png"
+
+[[figures]]
+label = "fig:209"
+page_num = 4
+image_path = "images/image_p4_209.png"
+
+[[figures]]
+label = "fig:210"
+page_num = 4
+image_path = "images/image_p4_210.png"
+
+[[figures]]
+label = "fig:211"
+page_num = 4
+image_path = "images/image_p4_211.png"
+
+[[figures]]
+label = "fig:212"
+page_num = 4
+image_path = "images/image_p4_212.png"
+
+[[figures]]
+label = "fig:213"
+page_num = 4
+image_path = "images/image_p4_213.png"
+
+[[figures]]
+label = "fig:214"
+page_num = 4
+image_path = "images/image_p4_214.png"
+
+[[figures]]
+label = "fig:215"
+page_num = 4
+image_path = "images/image_p4_215.png"
+
+[[figures]]
+label = "fig:216"
+page_num = 4
+image_path = "images/image_p4_216.png"
+
+[[figures]]
+label = "fig:217"
+page_num = 4
+image_path = "images/image_p4_217.png"
+
+[[figures]]
+label = "fig:218"
+page_num = 4
+image_path = "images/image_p4_218.png"
+
+[[figures]]
+label = "fig:219"
+page_num = 4
+image_path = "images/image_p4_219.png"
+
+[[figures]]
+label = "fig:220"
+page_num = 4
+image_path = "images/image_p4_220.png"
+
+[[figures]]
+label = "fig:221"
+page_num = 4
+image_path = "images/image_p4_221.png"
+
+[[figures]]
+label = "fig:222"
+page_num = 4
+image_path = "images/image_p4_222.png"
+
+[[figures]]
+label = "fig:223"
+page_num = 4
+image_path = "images/image_p4_223.png"
+
+[[figures]]
+label = "fig:224"
+page_num = 4
+image_path = "images/image_p4_224.png"
+
+[[figures]]
+label = "fig:225"
+page_num = 4
+image_path = "images/image_p4_225.png"
+
+[[figures]]
+label = "fig:226"
+page_num = 4
+image_path = "images/image_p4_226.png"
+
+[[figures]]
+label = "fig:227"
+page_num = 4
+image_path = "images/image_p4_227.png"
+
+[[figures]]
+label = "fig:228"
+page_num = 4
+image_path = "images/image_p4_228.png"
+
+[[figures]]
+label = "fig:229"
+page_num = 4
+image_path = "images/image_p4_229.png"
+
+[[figures]]
+label = "fig:230"
+page_num = 4
+image_path = "images/image_p4_230.png"
+
+[[figures]]
+label = "fig:231"
+page_num = 4
+image_path = "images/image_p4_231.png"
+
+[[figures]]
+label = "fig:232"
+page_num = 4
+image_path = "images/image_p4_232.png"
+
+[[figures]]
+label = "fig:233"
+page_num = 4
+image_path = "images/image_p4_233.png"
+
+[[figures]]
+label = "fig:234"
+page_num = 4
+image_path = "images/image_p4_234.png"
+
+[[figures]]
+label = "fig:235"
+page_num = 4
+image_path = "images/image_p4_235.png"
+
+[[figures]]
+label = "fig:236"
+page_num = 4
+image_path = "images/image_p4_236.png"
+
+[[figures]]
+label = "fig:237"
+page_num = 4
+image_path = "images/image_p4_237.png"
+
+[[figures]]
+label = "fig:238"
+page_num = 4
+image_path = "images/image_p4_238.png"
+
+[[figures]]
+label = "fig:239"
+page_num = 4
+image_path = "images/image_p4_239.png"
+
+[[figures]]
+label = "fig:240"
+page_num = 4
+image_path = "images/image_p4_240.png"
+
+[[figures]]
+label = "fig:241"
+page_num = 4
+image_path = "images/image_p4_241.png"
+
+[[figures]]
+label = "fig:242"
+page_num = 4
+image_path = "images/image_p4_242.png"
+
+[[figures]]
+label = "fig:243"
+page_num = 4
+image_path = "images/image_p4_243.png"
+
+[[figures]]
+label = "fig:244"
+page_num = 5
+image_path = "images/image_p5_244.png"
+
+[[figures]]
+label = "fig:245"
+page_num = 5
+image_path = "images/image_p5_245.png"
+
+[[figures]]
+label = "fig:246"
+page_num = 5
+image_path = "images/image_p5_246.png"
+
+[[figures]]
+label = "fig:247"
+page_num = 5
+image_path = "images/image_p5_247.png"
+
+[[figures]]
+label = "fig:248"
+page_num = 5
+image_path = "images/image_p5_248.png"
+
+[[figures]]
+label = "fig:249"
+page_num = 5
+image_path = "images/image_p5_249.png"
+
+[[figures]]
+label = "fig:250"
+page_num = 5
+image_path = "images/image_p5_250.png"
+
+[[figures]]
+label = "fig:251"
+page_num = 5
+image_path = "images/image_p5_251.png"
+
+[[figures]]
+label = "fig:252"
+page_num = 5
+image_path = "images/image_p5_252.png"
+
+[[figures]]
+label = "fig:253"
+page_num = 5
+image_path = "images/image_p5_253.png"
+
+[[figures]]
+label = "fig:254"
+page_num = 5
+image_path = "images/image_p5_254.png"
+
+[[figures]]
+label = "fig:255"
+page_num = 5
+image_path = "images/image_p5_255.png"
+
+[[figures]]
+label = "fig:256"
+page_num = 5
+image_path = "images/image_p5_256.png"
+
+[[figures]]
+label = "fig:257"
+page_num = 5
+image_path = "images/image_p5_257.png"
+
+[[figures]]
+label = "fig:258"
+page_num = 5
+image_path = "images/image_p5_258.png"
+
+[[figures]]
+label = "fig:259"
+page_num = 5
+image_path = "images/image_p5_259.png"
+
+[[figures]]
+label = "fig:260"
+page_num = 5
+image_path = "images/image_p5_260.png"
+
+[[figures]]
+label = "fig:261"
+page_num = 5
+image_path = "images/image_p5_261.png"
+
+[[figures]]
+label = "fig:262"
+page_num = 5
+image_path = "images/image_p5_262.png"
+
+[[figures]]
+label = "fig:263"
+page_num = 5
+image_path = "images/image_p5_263.png"
+
+[[figures]]
+label = "fig:264"
+page_num = 5
+image_path = "images/image_p5_264.png"
+
+[[figures]]
+label = "fig:265"
+page_num = 5
+image_path = "images/image_p5_265.png"
+
+[[figures]]
+label = "fig:266"
+page_num = 5
+image_path = "images/image_p5_266.png"
+
+[[figures]]
+label = "fig:267"
+page_num = 5
+image_path = "images/image_p5_267.png"
+
+[[figures]]
+label = "fig:268"
+page_num = 5
+image_path = "images/image_p5_268.png"
+
+[[figures]]
+label = "fig:269"
+page_num = 5
+image_path = "images/image_p5_269.png"
+
+[[figures]]
+label = "fig:270"
+page_num = 5
+image_path = "images/image_p5_270.png"
+
+[[figures]]
+label = "fig:271"
+page_num = 5
+image_path = "images/image_p5_271.png"
+
+[[figures]]
+label = "fig:272"
+page_num = 5
+image_path = "images/image_p5_272.png"
+
+[[figures]]
+label = "fig:273"
+page_num = 5
+image_path = "images/image_p5_273.png"
+
+[[figures]]
+label = "fig:274"
+page_num = 5
+image_path = "images/image_p5_274.png"
+
+[[figures]]
+label = "fig:275"
+page_num = 5
+image_path = "images/image_p5_275.png"
+
+[[figures]]
+label = "fig:276"
+page_num = 5
+image_path = "images/image_p5_276.png"
+
+[[figures]]
+label = "fig:277"
+page_num = 5
+image_path = "images/image_p5_277.png"
+
+[[figures]]
+label = "fig:278"
+page_num = 5
+image_path = "images/image_p5_278.png"
+
+[[figures]]
+label = "fig:279"
+page_num = 5
+image_path = "images/image_p5_279.png"
+
+[[figures]]
+label = "fig:280"
+page_num = 5
+image_path = "images/image_p5_280.png"
+
+[[figures]]
+label = "fig:281"
+page_num = 5
+image_path = "images/image_p5_281.png"
+
+[[figures]]
+label = "fig:282"
+page_num = 5
+image_path = "images/image_p5_282.png"
+
+[[figures]]
+label = "fig:283"
+page_num = 5
+image_path = "images/image_p5_283.png"
+
+[[figures]]
+label = "fig:284"
+page_num = 5
+image_path = "images/image_p5_284.png"
+
+[[figures]]
+label = "fig:285"
+page_num = 5
+image_path = "images/image_p5_285.png"
+
+[[figures]]
+label = "fig:286"
+page_num = 5
+image_path = "images/image_p5_286.png"
+
+[[figures]]
+label = "fig:287"
+page_num = 5
+image_path = "images/image_p5_287.png"
+
+[[figures]]
+label = "fig:288"
+page_num = 5
+image_path = "images/image_p5_288.png"
+
+[[figures]]
+label = "fig:289"
+page_num = 5
+image_path = "images/image_p5_289.png"
+
+[[figures]]
+label = "fig:290"
+page_num = 5
+image_path = "images/image_p5_290.png"
+
+[[figures]]
+label = "fig:291"
+page_num = 5
+image_path = "images/image_p5_291.png"
+
+[[figures]]
+label = "fig:292"
+page_num = 5
+image_path = "images/image_p5_292.png"
+
+[[figures]]
+label = "fig:293"
+page_num = 5
+image_path = "images/image_p5_293.png"
+
+[[figures]]
+label = "fig:294"
+page_num = 5
+image_path = "images/image_p5_294.png"
+
+[[figures]]
+label = "fig:295"
+page_num = 5
+image_path = "images/image_p5_295.png"
+
+[[figures]]
+label = "fig:296"
+page_num = 5
+image_path = "images/image_p5_296.png"
+
+[[figures]]
+label = "fig:297"
+page_num = 5
+image_path = "images/image_p5_297.png"
+
+[[figures]]
+label = "fig:298"
+page_num = 5
+image_path = "images/image_p5_298.png"
+
+[[figures]]
+label = "fig:299"
+page_num = 5
+image_path = "images/image_p5_299.png"
+
+[[figures]]
+label = "fig:300"
+page_num = 5
+image_path = "images/image_p5_300.png"
+
+[[figures]]
+label = "fig:301"
+page_num = 5
+image_path = "images/image_p5_301.png"
+
+[[figures]]
+label = "fig:302"
+page_num = 5
+image_path = "images/image_p5_302.png"
+
+[[figures]]
+label = "fig:303"
+page_num = 5
+image_path = "images/image_p5_303.png"
+
+[[figures]]
+label = "fig:304"
+page_num = 5
+image_path = "images/image_p5_304.png"
+
+[[figures]]
+label = "fig:305"
+page_num = 5
+image_path = "images/image_p5_305.png"
+
+[[figures]]
+label = "fig:306"
+page_num = 5
+image_path = "images/image_p5_306.png"
+
+[[figures]]
+label = "fig:307"
+page_num = 5
+image_path = "images/image_p5_307.png"
+
+[[figures]]
+label = "fig:308"
+page_num = 5
+image_path = "images/image_p5_308.png"
+
+[[figures]]
+label = "fig:309"
+page_num = 5
+image_path = "images/image_p5_309.png"
+
+[[figures]]
+label = "fig:310"
+page_num = 5
+image_path = "images/image_p5_310.png"
+
+[[figures]]
+label = "fig:311"
+page_num = 5
+image_path = "images/image_p5_311.png"
+
+[[figures]]
+label = "fig:312"
+page_num = 5
+image_path = "images/image_p5_312.png"
+
+[[figures]]
+label = "fig:313"
+page_num = 5
+image_path = "images/image_p5_313.png"
+
+[[figures]]
+label = "fig:314"
+page_num = 5
+image_path = "images/image_p5_314.png"
+
+[[figures]]
+label = "fig:315"
+page_num = 5
+image_path = "images/image_p5_315.png"
+
+[[figures]]
+label = "fig:316"
+page_num = 5
+image_path = "images/image_p5_316.png"
+
+[[figures]]
+label = "fig:317"
+page_num = 5
+image_path = "images/image_p5_317.png"
+
+[[figures]]
+label = "fig:318"
+page_num = 5
+image_path = "images/image_p5_318.png"
+
+[[figures]]
+label = "fig:319"
+page_num = 5
+image_path = "images/image_p5_319.png"
+
+[[figures]]
+label = "fig:320"
+page_num = 5
+image_path = "images/image_p5_320.png"
+
+[[figures]]
+label = "fig:321"
+page_num = 5
+image_path = "images/image_p5_321.png"
+
+[[figures]]
+label = "fig:322"
+page_num = 5
+image_path = "images/image_p5_322.png"
+
+[[figures]]
+label = "fig:323"
+page_num = 5
+image_path = "images/image_p5_323.png"
+
+[[figures]]
+label = "fig:324"
+page_num = 5
+image_path = "images/image_p5_324.png"
+
+[[figures]]
+label = "fig:325"
+page_num = 5
+image_path = "images/image_p5_325.png"
+
+[[figures]]
+label = "fig:326"
+page_num = 5
+image_path = "images/image_p5_326.png"
+
+[[figures]]
+label = "fig:327"
+page_num = 5
+image_path = "images/image_p5_327.png"
+
+[[figures]]
+label = "fig:328"
+page_num = 5
+image_path = "images/image_p5_328.png"
+
+[[figures]]
+label = "fig:329"
+page_num = 5
+image_path = "images/image_p5_329.png"
+
+[[figures]]
+label = "fig:330"
+page_num = 5
+image_path = "images/image_p5_330.png"
+
+[[figures]]
+label = "fig:331"
+page_num = 5
+image_path = "images/image_p5_331.png"
+
+[[figures]]
+label = "fig:332"
+page_num = 5
+image_path = "images/image_p5_332.png"
+
+[[figures]]
+label = "fig:333"
+page_num = 5
+image_path = "images/image_p5_333.png"
+
+[[figures]]
+label = "fig:334"
+page_num = 5
+image_path = "images/image_p5_334.png"
+
+[[figures]]
+label = "fig:335"
+page_num = 5
+image_path = "images/image_p5_335.png"
+
+[[figures]]
+label = "fig:336"
+page_num = 5
+image_path = "images/image_p5_336.png"
+
+[[figures]]
+label = "fig:337"
+page_num = 5
+image_path = "images/image_p5_337.png"
+
+[[figures]]
+label = "fig:338"
+page_num = 5
+image_path = "images/image_p5_338.png"
+
+[[figures]]
+label = "fig:339"
+page_num = 5
+image_path = "images/image_p5_339.png"
+
+[[figures]]
+label = "fig:340"
+page_num = 5
+image_path = "images/image_p5_340.png"
+
+[[figures]]
+label = "fig:341"
+page_num = 5
+image_path = "images/image_p5_341.png"
+
+[[figures]]
+label = "fig:342"
+page_num = 5
+image_path = "images/image_p5_342.png"
+
+[[figures]]
+label = "fig:343"
+page_num = 5
+image_path = "images/image_p5_343.png"
+
+[[figures]]
+label = "fig:344"
+page_num = 5
+image_path = "images/image_p5_344.png"
+
+[[figures]]
+label = "fig:345"
+page_num = 5
+image_path = "images/image_p5_345.png"
+
+[[figures]]
+label = "fig:346"
+page_num = 5
+image_path = "images/image_p5_346.png"
+
+[[figures]]
+label = "fig:347"
+page_num = 5
+image_path = "images/image_p5_347.png"
+
+[[figures]]
+label = "fig:348"
+page_num = 5
+image_path = "images/image_p5_348.png"
+
+[[figures]]
+label = "fig:349"
+page_num = 5
+image_path = "images/image_p5_349.png"
+
+[[figures]]
+label = "fig:350"
+page_num = 5
+image_path = "images/image_p5_350.png"
+
+[[figures]]
+label = "fig:351"
+page_num = 5
+image_path = "images/image_p5_351.png"
+
+[[figures]]
+label = "fig:352"
+page_num = 5
+image_path = "images/image_p5_352.png"
+
+[[figures]]
+label = "fig:353"
+page_num = 5
+image_path = "images/image_p5_353.png"
+
+[[figures]]
+label = "fig:354"
+page_num = 5
+image_path = "images/image_p5_354.png"
+
+[[figures]]
+label = "fig:355"
+page_num = 5
+image_path = "images/image_p5_355.png"
+
+[[figures]]
+label = "fig:356"
+page_num = 5
+image_path = "images/image_p5_356.png"
+
+[[figures]]
+label = "fig:357"
+page_num = 5
+image_path = "images/image_p5_357.png"
+
+[[figures]]
+label = "fig:358"
+page_num = 5
+image_path = "images/image_p5_358.png"
+
+[[figures]]
+label = "fig:359"
+page_num = 5
+image_path = "images/image_p5_359.png"
+
+[[figures]]
+label = "fig:360"
+page_num = 5
+image_path = "images/image_p5_360.png"
+
+[[figures]]
+label = "fig:361"
+page_num = 5
+image_path = "images/image_p5_361.png"
+
+[[figures]]
+label = "fig:362"
+page_num = 5
+image_path = "images/image_p5_362.png"
+
+[[figures]]
+label = "fig:363"
+page_num = 5
+image_path = "images/image_p5_363.png"
+
+[[figures]]
+label = "fig:364"
+page_num = 5
+image_path = "images/image_p5_364.png"
+
+[[figures]]
+label = "fig:365"
+page_num = 5
+image_path = "images/image_p5_365.png"
+
+[[figures]]
+label = "fig:366"
+page_num = 5
+image_path = "images/image_p5_366.png"
+
+[[figures]]
+label = "fig:367"
+page_num = 5
+image_path = "images/image_p5_367.png"
+
+[[figures]]
+label = "fig:368"
+page_num = 5
+image_path = "images/image_p5_368.png"
+
+[[figures]]
+label = "fig:369"
+page_num = 5
+image_path = "images/image_p5_369.png"
+
+[[figures]]
+label = "fig:370"
+page_num = 5
+image_path = "images/image_p5_370.png"
+
+[[figures]]
+label = "fig:371"
+page_num = 5
+image_path = "images/image_p5_371.png"
+
+[[figures]]
+label = "fig:372"
+page_num = 5
+image_path = "images/image_p5_372.png"
+
+[[figures]]
+label = "fig:373"
+page_num = 5
+image_path = "images/image_p5_373.png"
+
+[[figures]]
+label = "fig:374"
+page_num = 5
+image_path = "images/image_p5_374.png"
+
+[[figures]]
+label = "fig:375"
+page_num = 5
+image_path = "images/image_p5_375.png"
+
+[[figures]]
+label = "fig:376"
+page_num = 5
+image_path = "images/image_p5_376.png"
+
+[[figures]]
+label = "fig:377"
+page_num = 5
+image_path = "images/image_p5_377.png"
+
+[[figures]]
+label = "fig:378"
+page_num = 5
+image_path = "images/image_p5_378.png"
+
+[[figures]]
+label = "fig:379"
+page_num = 5
+image_path = "images/image_p5_379.png"
+
+[[figures]]
+label = "fig:380"
+page_num = 5
+image_path = "images/image_p5_380.png"
+
+[[figures]]
+label = "fig:381"
+page_num = 5
+image_path = "images/image_p5_381.png"
+
+[[figures]]
+label = "fig:382"
+page_num = 5
+image_path = "images/image_p5_382.png"
+
+[[figures]]
+label = "fig:383"
+page_num = 5
+image_path = "images/image_p5_383.png"
+
+[[figures]]
+label = "fig:384"
+page_num = 5
+image_path = "images/image_p5_384.png"
+
+[[figures]]
+label = "fig:385"
+page_num = 5
+image_path = "images/image_p5_385.png"
+
+[[figures]]
+label = "fig:386"
+page_num = 5
+image_path = "images/image_p5_386.png"
+
+[[figures]]
+label = "fig:387"
+page_num = 5
+image_path = "images/image_p5_387.png"
+
+[[figures]]
+label = "fig:388"
+page_num = 5
+image_path = "images/image_p5_388.png"
+
+[[figures]]
+label = "fig:389"
+page_num = 5
+image_path = "images/image_p5_389.png"
+
+[[figures]]
+label = "fig:390"
+page_num = 5
+image_path = "images/image_p5_390.png"
+
+[[figures]]
+label = "fig:391"
+page_num = 5
+image_path = "images/image_p5_391.png"
+
+[[figures]]
+label = "fig:392"
+page_num = 5
+image_path = "images/image_p5_392.png"
+
+[[figures]]
+label = "fig:393"
+page_num = 5
+image_path = "images/image_p5_393.png"
+
+[[figures]]
+label = "fig:394"
+page_num = 5
+image_path = "images/image_p5_394.png"
+
+[[figures]]
+label = "fig:395"
+page_num = 5
+image_path = "images/image_p5_395.png"
+
+[[figures]]
+label = "fig:396"
+page_num = 5
+image_path = "images/image_p5_396.png"
+
+[[figures]]
+label = "fig:397"
+page_num = 5
+image_path = "images/image_p5_397.png"
+
+[[figures]]
+label = "fig:398"
+page_num = 5
+image_path = "images/image_p5_398.png"
+
+[[figures]]
+label = "fig:399"
+page_num = 5
+image_path = "images/image_p5_399.png"
+
+[[figures]]
+label = "fig:400"
+page_num = 5
+image_path = "images/image_p5_400.png"
+
+[[figures]]
+label = "fig:401"
+page_num = 5
+image_path = "images/image_p5_401.png"
+
+[[figures]]
+label = "fig:402"
+page_num = 5
+image_path = "images/image_p5_402.png"
+
+[[figures]]
+label = "fig:403"
+page_num = 5
+image_path = "images/image_p5_403.png"
+
+[[figures]]
+label = "fig:404"
+page_num = 5
+image_path = "images/image_p5_404.png"
+
+[[figures]]
+label = "fig:405"
+page_num = 5
+image_path = "images/image_p5_405.png"
+
+[[figures]]
+label = "fig:406"
+page_num = 5
+image_path = "images/image_p5_406.png"
+
+[[figures]]
+label = "fig:407"
+page_num = 5
+image_path = "images/image_p5_407.png"
+
+[[figures]]
+label = "fig:408"
+page_num = 5
+image_path = "images/image_p5_408.png"
+
+[[figures]]
+label = "fig:409"
+page_num = 5
+image_path = "images/image_p5_409.png"
+
+[[figures]]
+label = "fig:410"
+page_num = 5
+image_path = "images/image_p5_410.png"
+
+[[figures]]
+label = "fig:411"
+page_num = 5
+image_path = "images/image_p5_411.png"
+
+[[figures]]
+label = "fig:412"
+page_num = 5
+image_path = "images/image_p5_412.png"
+
+[[figures]]
+label = "fig:413"
+page_num = 5
+image_path = "images/image_p5_413.png"
+
+[[figures]]
+label = "fig:414"
+page_num = 5
+image_path = "images/image_p5_414.png"
+
+[[figures]]
+label = "fig:415"
+page_num = 5
+image_path = "images/image_p5_415.png"
+
+[[figures]]
+label = "fig:416"
+page_num = 5
+image_path = "images/image_p5_416.png"
+
+[[figures]]
+label = "fig:417"
+page_num = 5
+image_path = "images/image_p5_417.png"
+
+[[figures]]
+label = "fig:418"
+page_num = 5
+image_path = "images/image_p5_418.png"
+
+[[figures]]
+label = "fig:419"
+page_num = 5
+image_path = "images/image_p5_419.png"
+
+[[figures]]
+label = "fig:420"
+page_num = 5
+image_path = "images/image_p5_420.png"
+
+[[figures]]
+label = "fig:421"
+page_num = 5
+image_path = "images/image_p5_421.png"
+
+[[figures]]
+label = "fig:422"
+page_num = 5
+image_path = "images/image_p5_422.png"
+
+[[figures]]
+label = "fig:423"
+page_num = 5
+image_path = "images/image_p5_423.png"
+
+[[figures]]
+label = "fig:424"
+page_num = 5
+image_path = "images/image_p5_424.png"
+
+[[figures]]
+label = "fig:425"
+page_num = 5
+image_path = "images/image_p5_425.png"
+
+[[figures]]
+label = "fig:426"
+page_num = 5
+image_path = "images/image_p5_426.png"
+
+[[figures]]
+label = "fig:427"
+page_num = 5
+image_path = "images/image_p5_427.png"
+
+[[figures]]
+label = "fig:428"
+page_num = 5
+image_path = "images/image_p5_428.png"
+
+[[figures]]
+label = "fig:429"
+page_num = 5
+image_path = "images/image_p5_429.png"
+
+[[figures]]
+label = "fig:430"
+page_num = 5
+image_path = "images/image_p5_430.png"
+
+[[figures]]
+label = "fig:431"
+page_num = 5
+image_path = "images/image_p5_431.png"
+
+[[figures]]
+label = "fig:432"
+page_num = 5
+image_path = "images/image_p5_432.png"
+
+[[figures]]
+label = "fig:433"
+page_num = 5
+image_path = "images/image_p5_433.png"
+
+[[figures]]
+label = "fig:434"
+page_num = 5
+image_path = "images/image_p5_434.png"
+
+[[figures]]
+label = "fig:435"
+page_num = 5
+image_path = "images/image_p5_435.png"
+
+[[figures]]
+label = "fig:436"
+page_num = 5
+image_path = "images/image_p5_436.png"
+
+[[figures]]
+label = "fig:437"
+page_num = 5
+image_path = "images/image_p5_437.png"
+
+[[figures]]
+label = "fig:438"
+page_num = 5
+image_path = "images/image_p5_438.png"
+
+[[figures]]
+label = "fig:439"
+page_num = 5
+image_path = "images/image_p5_439.png"
+
+[[figures]]
+label = "fig:440"
+page_num = 5
+image_path = "images/image_p5_440.png"
+
+[[figures]]
+label = "fig:441"
+page_num = 5
+image_path = "images/image_p5_441.png"
+
+[[figures]]
+label = "fig:442"
+page_num = 5
+image_path = "images/image_p5_442.png"
+
+[[figures]]
+label = "fig:443"
+page_num = 5
+image_path = "images/image_p5_443.png"
+
+[[figures]]
+label = "fig:444"
+page_num = 5
+image_path = "images/image_p5_444.png"
+
+[[figures]]
+label = "fig:445"
+page_num = 5
+image_path = "images/image_p5_445.png"
+
+[[figures]]
+label = "fig:446"
+page_num = 5
+image_path = "images/image_p5_446.png"
+
+[[figures]]
+label = "fig:447"
+page_num = 5
+image_path = "images/image_p5_447.png"
+
+[[figures]]
+label = "fig:448"
+page_num = 5
+image_path = "images/image_p5_448.png"
+
+[[figures]]
+label = "fig:449"
+page_num = 5
+image_path = "images/image_p5_449.png"
+
+[[figures]]
+label = "fig:450"
+page_num = 5
+image_path = "images/image_p5_450.png"
+
+[[figures]]
+label = "fig:451"
+page_num = 5
+image_path = "images/image_p5_451.png"
+
+[[figures]]
+label = "fig:452"
+page_num = 5
+image_path = "images/image_p5_452.png"
+
+[[figures]]
+label = "fig:453"
+page_num = 5
+image_path = "images/image_p5_453.png"
+
+[[figures]]
+label = "fig:454"
+page_num = 5
+image_path = "images/image_p5_454.png"
+
+[[figures]]
+label = "fig:455"
+page_num = 5
+image_path = "images/image_p5_455.png"
+
+[[figures]]
+label = "fig:456"
+page_num = 5
+image_path = "images/image_p5_456.png"
+
+[[figures]]
+label = "fig:457"
+page_num = 5
+image_path = "images/image_p5_457.png"
+
+[[figures]]
+label = "fig:458"
+page_num = 5
+image_path = "images/image_p5_458.png"
+
+[[figures]]
+label = "fig:459"
+page_num = 5
+image_path = "images/image_p5_459.png"
+
+[[figures]]
+label = "fig:460"
+page_num = 5
+image_path = "images/image_p5_460.png"
+
+[[figures]]
+label = "fig:461"
+page_num = 5
+image_path = "images/image_p5_461.png"
+
+[[figures]]
+label = "fig:462"
+page_num = 5
+image_path = "images/image_p5_462.png"
+
+[[figures]]
+label = "fig:463"
+page_num = 5
+image_path = "images/image_p5_463.png"
+
+[[figures]]
+label = "fig:464"
+page_num = 5
+image_path = "images/image_p5_464.png"
+
+[[figures]]
+label = "fig:465"
+page_num = 5
+image_path = "images/image_p5_465.png"
+
+[[figures]]
+label = "fig:466"
+page_num = 5
+image_path = "images/image_p5_466.png"
+
+[[figures]]
+label = "fig:467"
+page_num = 5
+image_path = "images/image_p5_467.png"
+
+[[figures]]
+label = "fig:468"
+page_num = 5
+image_path = "images/image_p5_468.png"
+
+[[figures]]
+label = "fig:469"
+page_num = 5
+image_path = "images/image_p5_469.png"
+
+[[figures]]
+label = "fig:470"
+page_num = 5
+image_path = "images/image_p5_470.png"
+
+[[figures]]
+label = "fig:471"
+page_num = 5
+image_path = "images/image_p5_471.png"
+
+[[figures]]
+label = "fig:472"
+page_num = 5
+image_path = "images/image_p5_472.png"
+
+[[figures]]
+label = "fig:473"
+page_num = 5
+image_path = "images/image_p5_473.png"
+
+[[figures]]
+label = "fig:474"
+page_num = 5
+image_path = "images/image_p5_474.png"
+
+[[figures]]
+label = "fig:475"
+page_num = 5
+image_path = "images/image_p5_475.png"
+
+[[figures]]
+label = "fig:476"
+page_num = 5
+image_path = "images/image_p5_476.png"
+
+[[figures]]
+label = "fig:477"
+page_num = 5
+image_path = "images/image_p5_477.png"
+
+[[figures]]
+label = "fig:478"
+page_num = 5
+image_path = "images/image_p5_478.png"
+
+[[figures]]
+label = "fig:479"
+page_num = 5
+image_path = "images/image_p5_479.png"
+
+[[figures]]
+label = "fig:480"
+page_num = 5
+image_path = "images/image_p5_480.png"
+
+[[figures]]
+label = "fig:481"
+page_num = 5
+image_path = "images/image_p5_481.png"
+
+[[figures]]
+label = "fig:482"
+page_num = 5
+image_path = "images/image_p5_482.png"
+
+[[figures]]
+label = "fig:483"
+page_num = 5
+image_path = "images/image_p5_483.png"
+
+[[figures]]
+label = "fig:484"
+page_num = 5
+image_path = "images/image_p5_484.png"
+
+[[figures]]
+label = "fig:485"
+page_num = 5
+image_path = "images/image_p5_485.png"
+
+[[figures]]
+label = "fig:486"
+page_num = 5
+image_path = "images/image_p5_486.png"
+
+[[figures]]
+label = "fig:487"
+page_num = 5
+image_path = "images/image_p5_487.png"
+
+[[figures]]
+label = "fig:488"
+page_num = 5
+image_path = "images/image_p5_488.png"
+
+[[figures]]
+label = "fig:489"
+page_num = 5
+image_path = "images/image_p5_489.png"
+
+[[figures]]
+label = "fig:490"
+page_num = 5
+image_path = "images/image_p5_490.png"
+
+[[figures]]
+label = "fig:491"
+page_num = 5
+image_path = "images/image_p5_491.png"
+
+[[figures]]
+label = "fig:492"
+page_num = 5
+image_path = "images/image_p5_492.png"
+
+[[figures]]
+label = "fig:493"
+page_num = 5
+image_path = "images/image_p5_493.png"
+
+[[figures]]
+label = "fig:494"
+page_num = 5
+image_path = "images/image_p5_494.png"
+
+[[figures]]
+label = "fig:495"
+page_num = 5
+image_path = "images/image_p5_495.png"
+
+[[figures]]
+label = "fig:496"
+page_num = 5
+image_path = "images/image_p5_496.png"
+
+[[figures]]
+label = "fig:497"
+page_num = 5
+image_path = "images/image_p5_497.png"
+
+[[figures]]
+label = "fig:498"
+page_num = 5
+image_path = "images/image_p5_498.png"
+
+[[figures]]
+label = "fig:499"
+page_num = 5
+image_path = "images/image_p5_499.png"
+
+[[figures]]
+label = "fig:500"
+page_num = 5
+image_path = "images/image_p5_500.png"
+
+[[figures]]
+label = "fig:501"
+page_num = 5
+image_path = "images/image_p5_501.png"
+
+[[figures]]
+label = "fig:502"
+page_num = 5
+image_path = "images/image_p5_502.png"
+
+[[figures]]
+label = "fig:503"
+page_num = 5
+image_path = "images/image_p5_503.png"
+
+[[figures]]
+label = "fig:504"
+page_num = 5
+image_path = "images/image_p5_504.png"
+
+[[figures]]
+label = "fig:505"
+page_num = 5
+image_path = "images/image_p5_505.png"
+
+[[figures]]
+label = "fig:506"
+page_num = 5
+image_path = "images/image_p5_506.png"
+
+[[figures]]
+label = "fig:507"
+page_num = 5
+image_path = "images/image_p5_507.png"
+
+[[figures]]
+label = "fig:508"
+page_num = 5
+image_path = "images/image_p5_508.png"
+
+[[figures]]
+label = "fig:509"
+page_num = 5
+image_path = "images/image_p5_509.png"
+
+[[figures]]
+label = "fig:510"
+page_num = 5
+image_path = "images/image_p5_510.png"
+
+[[figures]]
+label = "fig:511"
+page_num = 5
+image_path = "images/image_p5_511.png"
+
+[[figures]]
+label = "fig:512"
+page_num = 5
+image_path = "images/image_p5_512.png"
+
+[[figures]]
+label = "fig:513"
+page_num = 5
+image_path = "images/image_p5_513.png"
+
+[[figures]]
+label = "fig:514"
+page_num = 5
+image_path = "images/image_p5_514.png"
+
+[[figures]]
+label = "fig:515"
+page_num = 5
+image_path = "images/image_p5_515.png"
+
+[[figures]]
+label = "fig:516"
+page_num = 5
+image_path = "images/image_p5_516.png"
+
+[[figures]]
+label = "fig:517"
+page_num = 5
+image_path = "images/image_p5_517.png"
+
+[[figures]]
+label = "fig:518"
+page_num = 5
+image_path = "images/image_p5_518.png"
+
+[[figures]]
+label = "fig:519"
+page_num = 5
+image_path = "images/image_p5_519.png"
+
+[[figures]]
+label = "fig:520"
+page_num = 5
+image_path = "images/image_p5_520.png"
+
+[[figures]]
+label = "fig:521"
+page_num = 5
+image_path = "images/image_p5_521.png"
+
+[[figures]]
+label = "fig:522"
+page_num = 5
+image_path = "images/image_p5_522.png"
+
+[[figures]]
+label = "fig:523"
+page_num = 5
+image_path = "images/image_p5_523.png"
+
+[[figures]]
+label = "fig:524"
+page_num = 5
+image_path = "images/image_p5_524.png"
+
+[[figures]]
+label = "fig:525"
+page_num = 5
+image_path = "images/image_p5_525.png"
+
+[[figures]]
+label = "fig:526"
+page_num = 5
+image_path = "images/image_p5_526.png"
+
+[[figures]]
+label = "fig:527"
+page_num = 5
+image_path = "images/image_p5_527.png"
+
+[[figures]]
+label = "fig:528"
+page_num = 5
+image_path = "images/image_p5_528.png"
+
+[[figures]]
+label = "fig:529"
+page_num = 5
+image_path = "images/image_p5_529.png"
+
+[[figures]]
+label = "fig:530"
+page_num = 5
+image_path = "images/image_p5_530.png"
+
+[[figures]]
+label = "fig:531"
+page_num = 5
+image_path = "images/image_p5_531.png"
+
+[[figures]]
+label = "fig:532"
+page_num = 5
+image_path = "images/image_p5_532.png"
+
+[[figures]]
+label = "fig:533"
+page_num = 5
+image_path = "images/image_p5_533.png"
+
+[[figures]]
+label = "fig:534"
+page_num = 5
+image_path = "images/image_p5_534.png"
+
+[[figures]]
+label = "fig:535"
+page_num = 5
+image_path = "images/image_p5_535.png"
+
+[[figures]]
+label = "fig:536"
+page_num = 5
+image_path = "images/image_p5_536.png"
+
+[[figures]]
+label = "fig:537"
+page_num = 5
+image_path = "images/image_p5_537.png"
+
+[[figures]]
+label = "fig:538"
+page_num = 5
+image_path = "images/image_p5_538.png"
+
+[[figures]]
+label = "fig:539"
+page_num = 5
+image_path = "images/image_p5_539.png"
+
+[[figures]]
+label = "fig:540"
+page_num = 5
+image_path = "images/image_p5_540.png"
+
+[[figures]]
+label = "fig:541"
+page_num = 5
+image_path = "images/image_p5_541.png"
+
+[[figures]]
+label = "fig:542"
+page_num = 5
+image_path = "images/image_p5_542.png"
+
+[[figures]]
+label = "fig:543"
+page_num = 5
+image_path = "images/image_p5_543.png"
+
+[[figures]]
+label = "fig:544"
+page_num = 5
+image_path = "images/image_p5_544.png"
+
+[[figures]]
+label = "fig:545"
+page_num = 5
+image_path = "images/image_p5_545.png"

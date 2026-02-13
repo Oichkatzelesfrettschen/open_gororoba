@@ -1,0 +1,1437 @@
+equations = []
+tables = []
+full_text = """
+arXiv:gr-qc/9410014v1 11 Oct 1994\r
+CGPG-94/10-3\r
+Real Ashtekar Variables for Lorentzian Signature Space-times\r
+J. Fernando Barbero G. ∗,†\r
+∗Center for Gravitational Physics and Geometry,\r
+Department of Physics,\r
+Pennsylvania State University,\r
+University Park, PA 16802\r
+U.S.A.\r
+†\r
+Instituto de Matem´aticas y F´ısica Fundamental,\r
+C.S.I.C.\r
+Serrano 119–123, 28006 Madrid, Spain\r
+October 10, 1994\r
+ABSTRACT\r
+I suggest in this letter a new strategy to attack the problem of the reality condi\u0002tions in the Ashtekar approach to classical and quantum general relativity. By writing\r
+a modified Hamiltonian constraint in the usual SO(3) Yang-Mills phase space I show\r
+that it is possible to describe space-times with Lorentzian signature without the in\u0002troduction of complex variables. All the features of the Ashtekar formalism related to\r
+the geometrical nature of the new variables are retained; in particular, it is still pos\u0002sible, in principle, to use the loop variables approach in the passage to the quantum\r
+theory. The key issue in the new formulation is how to deal with the more compli\u0002cated Hamiltonian constraint that must be used in order to avoid the introduction of\r
+complex fields.
+
+The purpose of this letter is to suggest a new strategy to deal with the problem\r
+of the reality conditions in the Ashtekar approach to classical and quantum gravity.\r
+At the present moment there is some consensus about the reasons behind the success\r
+of the Ashtekar variables program [1]. One of them is the geometrical nature of the\r
+new variables. In particular, the fact that the configuration variable is a connection\r
+is specially interesting because this allows us to use loop variables both at the clas\u0002sical and quantum level [2]. Another advantage of the formalism is the simplicity of\r
+the constraints –specially the Hamiltonian constraint– that has been very helpful in\r
+finding solutions to all of them. There are, however, some difficulties in the formalism\r
+that must be solved and are not present in the traditional ADM scheme [3]. The most\r
+conspicuous one is the fact that complex variables must be used in order to describe\r
+Lorentzian signature space-times. This is often put in relation with the fact that the\r
+definition of self-duality in these space-times demands the introduction of imaginary\r
+coefficients. The now accepted way to deal with this issue is the introduction of real\u0002ity conditions. They impose some consistency requirements on the scalar product in\r
+the Hilbert space of physical states. In fact, the hope is that this scalar product can\r
+be selected by the reality conditions. There are, however some difficulties with this\r
+approach too. Specifically it is very difficult to implement the reality conditions in\r
+the loop variables scheme. Only recently some positive results in this direction have\r
+been reported [6]. The main point of this letter is to consider the geometrical nature\r
+of the Ashtekar variables as the most important asset of the formalism. With this\r
+idea in mind, it is easy to see that the introduction of complex variables is necessary\r
+only if one wants to have an specially simple form for the Hamiltonian constraint. If\r
+we accept to live with a more complicated Hamiltonian constraint in the Ashtekar\r
+phase space we can use real variables.\r
+An interesting consequence of this, as emphasized by Rovelli and Smolin, is that\r
+all the results obtained within the loop variables approach (existence of volume and\r
+1
+
+area observables, weave states and so on [4], [5]) whose derivation is independent\r
+of the particular form of the scalar constraint scalar can be maintained even for\r
+Lorentzian signature space-times because it is possible to describe Lorentzian gravity\r
+with real fields in the Ashtekar phase space. More specifically, the issue is not the\r
+implementation of the reality conditions (at least at the kinematical) but rather the\r
+construction of a scalar product, normalizability of the quantum physical states and\r
+so on. The proposal presented in this letter does not address this problems. It must\r
+also be said that the construction of area and volume observables referred to above\r
+must still be put in a completely sound and rigorous mathematical basis that may very\r
+well be provided by the approach presented in [6] to incorporate the reality conditions\r
+in the loop variables approach by using a generalization of th e Bargmann-Siegel\r
+transform to spaces of connections. This letter has nothing to add with respect to\r
+this. In the following, tangent space indices and SO(3) indices will be represented by\r
+lowercase Latin letters from the beginning and the middle of the alphabet respectively.\r
+The 3-dimensional Levi-Civita tensor density and its inverse will be denoted1 by\r
+η˜\r
+abc and\r
+˜\r
+ηabc and the internal SO(3) Levi-Civita tensor by ǫijk. The variables in\r
+the SO(3)-ADM phase space (ADM formalism with internal SO(3) symmetry as\r
+discussed in [7]) are a densitized triad E˜a\r
+i\r
+(with determinant denoted by E\r
+˜˜) and its\r
+canonically conjugate object Ki\r
+a\r
+(closely related to the extrinsic curvature). The\r
+(densitized) three dimensional metric built from the triad will be denoted ˜q˜\r
+ab ≡\r
+E˜a\r
+i E˜bi and its determinant q˜˜ so that q\r
+ab =\r
+˜q˜\r
+ab\r
+q˜˜\r
+. I will use also the SO(3) connection\r
+Γ\r
+i\r
+a\r
+compatible with the triad. The variables in the Ashtekar phase space are E˜a\r
+i\r
+,\r
+again, and the SO(3) connection Ai\r
+a\r
+. The curvatures of Ai\r
+a\r
+and Γi\r
+a\r
+are respectively\r
+given by F\r
+i\r
+ab ≡ 2∂[aAi\r
+b] +ǫ\r
+i\r
+jkAjaAkb\r
+and Ri\r
+ab ≡ 2∂[aΓ\r
+i\r
+b] +ǫ\r
+i\r
+jkΓ\r
+j\r
+aΓ\r
+k\r
+b\r
+. Finally, the action of\r
+the covariant derivatives defined by these connections on internal indices are2 ∇aλi =\r
+1\r
+I represent the density weights by the usual convention of using tildes above and below the fields.\r
+2They may be extended to act on tangent indices, if necessary, by introducing a space-time\r
+torsion-free connection; for example the Christoffel connection Γc\r
+ab built from q\r
+ab. All the results\r
+presented in the paper will be independent of such extension\r
+2
+
+∂aλi + ǫijkA\r
+j\r
+aλ\r
+k\r
+and Daλi = ∂aλi + ǫijkΓ\r
+j\r
+aλ\r
+k\r
+. The compatibility of Γi\r
+a and E˜ai\r
+thus\r
+means DaE˜b\r
+i ≡ ∂aE˜bi + ǫ\r
+jk\r
+i ΓajE˜b\r
+k + ΓbacE˜ci − Γ\r
+c\r
+acE˜bi = 0.\r
+I will start from the SO(3)-ADM constraints\r
+ǫijkKj\r
+aE˜ak = 0\r
+Da\r
+h\r
+E˜a\r
+kKkb − δ\r
+a\r
+b E˜ckKkc\r
+i\r
+= 0 (1)\r
+−ζ\r
+q\r
+qR˜˜ +\r
+2\r
+q\r
+q˜˜\r
+E˜\r
+[c\r
+k E˜\r
+d]\r
+l Kkc Kld = 0\r
+where R is the scalar curvature of the three-metric qab (the inverse of q\r
+ab). The\r
+variables Kai(x) and E˜b\r
+j\r
+(y) are canonical; i.e. they satisfy\r
+n\r
+Ki\r
+a\r
+(x), Kj\r
+b\r
+(y)\r
+o\r
+= 0\r
+n\r
+E˜a\r
+i\r
+(x), Kj\r
+b\r
+(y)\r
+o\r
+= δ\r
+i\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (2)\r
+n\r
+E˜a\r
+i\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= 0\r
+The parameter ζ is used to control the space-time signature. For Lorentzian signatures\r
+we have ζ = −1 whereas in the Euclidean case we have ζ = +1. The constraints (1)\r
+generate internal SO(3) rotations, diffeomorphisms and time evolution. I write now\r
+the usual canonical transformation to the Ashtekar phase space\r
+E˜a\r
+i = E˜ai\r
+(3)\r
+A\r
+i\r
+a = Γia + βKia\r
+(4)\r
+here β is a free parameter that I will adjust later. The Poisson brackets between the\r
+new variables A\r
+i\r
+a and E˜ai are\r
+n\r
+A\r
+i\r
+a\r
+(x), Aj\r
+b\r
+(y)\r
+o\r
+= 0\r
+n\r
+A\r
+i\r
+a\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= −βδi\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (5)\r
+n\r
+E˜a\r
+i\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= 0\r
+3
+
+and thus, the transformation is canonical. Introducing (3, 4) in the constraints (1)\r
+we get immediately the following constraints in the Ashtekar phase space\r
+G˜\r
+i ≡ ∇aE˜a\r
+i = 0 (6)\r
+V˜\r
+a ≡ F\r
+i\r
+abE˜bi = 0 (7)\r
+˜˜\r
+S ≡ −ζǫijkE˜a\r
+i E˜bjFabk +\r
+2(β\r
+2\r
+ζ − 1)\r
+β\r
+2\r
+E˜a\r
+[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+) = 0 (8)\r
+They are the Gauss law, vector and scalar constraints of the Ashtekar formulation.\r
+The traditional attitude with regard to (8) has been to consider that the last term\r
+introduces unnecessary complications in the formalism. For this reason it has always\r
+been cancelled by choosing β such that β\r
+2\r
+ζ − 1 = 0. For Euclidean signatures\r
+we can take β\r
+2 = 1 and remain within the limits of the real theory. For Lorentzian\r
+signatures, however, we are forced to take β\r
+2 = −1 and then the variables (specifically\r
+the connection) cease to be real. It must be emphasized that this is true only if we\r
+insist in cancelling the last term in (8). If we accept to keep it, there is no reason to\r
+introduce complex objects in the theory. The value of β (as long as it is different from\r
+zero) is also irrelevant so we can choose β = −1 and have the following Hamiltonian\r
+constraint in the Lorentzian case\r
+ǫ\r
+ijkE˜a\r
+i E˜bjFabk − 4E˜a[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+) = 0 (9)\r
+The relevant Poisson bracket in (5) becomes\r
+n\r
+A\r
+i\r
+a\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= δ\r
+i\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (10)\r
+Since we have obtained this result by performing a canonical transformation, the\r
+Poisson algebra of the constraints is preserved. If we define the functionals\r
+G[N\r
+i\r
+] ≡\r
+Z\r
+d\r
+3x NiG˜\r
+i\r
+V [N\r
+a\r
+] ≡\r
+Z\r
+d\r
+3x NaV˜\r
+a (11)\r
+S[\r
+˜\r
+N ] ≡\r
+Z\r
+d\r
+3x\r
+˜\r
+NS\r
+˜˜\r
+4
+
+we have the usual Poisson algebra; in particular the Poisson bracket of S[\r
+˜\r
+N ] and\r
+S[\r
+˜\r
+M] is given by\r
+{S[\r
+˜\r
+N ], S[\r
+˜\r
+M]} = +V [E˜a\r
+i E˜bi(\r
+˜\r
+N ∂b\r
+˜\r
+M −\r
+˜\r
+M∂b\r
+˜\r
+N )] (12)\r
+The + sign in the right-hand side of (12) shows that we have, indeed, Lorentzian\r
+signature. It is possible to rewrite (9) in a more appealing form. The second term,\r
+in particular, can be expressed in terms of covariant derivatives of E˜a\r
+i\r
+. To this end I\r
+introduce the inverse of E˜a\r
+√i\r
+E\r
+˜˜\r
+eai ≡\r
+1\r
+2\r
+q\r
+E\r
+˜˜ ˜\r
+ηabcǫ\r
+ijkE˜b\r
+jE˜ck\r
+(13)\r
+where E\r
+˜˜ ≡ det E˜a\r
+i\r
+and rewrite (9) in the form\r
+ǫ\r
+ijkE˜a\r
+i E˜bjFabk − η˜\r
+a1a2a3 η˜b1b2b3\r
+h\r
+(e\r
+i\r
+a1∇a2\r
+ea3i)(e\r
+j\r
+b1∇b2\r
+eb3j ) (14)\r
+−2(e\r
+j\r
+a1∇a2\r
+ea3i)(e\r
+i\r
+b1∇b2\r
+eb3j )\r
+i\r
+= 0\r
+The last term in the previous formula is still quadratic in the connections but its\r
+dependence on E˜a\r
+i\r
+is complicated. It must be noted also that if we restrict ourselves\r
+to non-degenerate triads it can be cast in polynomial form (of degree 8 in E˜a\r
+i\r
+) by\r
+multiplying it by the square of E\r
+˜˜. If one is interested in checking explicitly the\r
+Poisson algebra and use the Hamiltonian constraint (14), it is useful to notice that\r
+eai[E˜] and −2˜η\r
+abc∇beci are canonically conjugate objects. This may eventually be\r
+useful in order to write the new Hamiltonian constraint in terms of loop variables\r
+maybe by allowing us to extend the set of T-variables with objects built out of eai[E˜]\r
+and −2˜η\r
+abc∇beci.\r
+There is another appealing way to write a Hamiltonian constraint for Lorentzian\r
+general relativity in terms of real Ashtekar variables. One starts by writing the\r
+5
+
+Hamiltonian constraint in the SO(3)-ADM formalism in the form\r
+− 2ζ\r
+q\r
+qR˜˜ + ζ\r
+q\r
+qR˜˜ +\r
+2\r
+q\r
+q˜˜\r
+E˜\r
+[c\r
+k E˜\r
+d]\r
+l Kkc Kld = (15)\r
+−2ζ\r
+q\r
+qR˜˜ −\r
+1\r
+q\r
+q˜˜\r
+"\r
+ζǫijkE˜a\r
+i E˜bjFabk −\r
+2(β\r
+2\r
+ζ + 1)\r
+β\r
+2\r
+E˜a\r
+[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+)\r
+#\r
+= 0\r
+Now, in the Lorentzian case we can choose β\r
+2 = 1 and cancel the last term to give\r
+2qR˜˜ + ǫ\r
+ijkE˜a\r
+i E˜bjFabk = 0 (16)\r
+remembering now that\r
+qR˜˜ = −ǫ\r
+ijkE˜a\r
+i E˜bjRabk (17)\r
+we can finally write the Hamiltonian constraint as3\r
+ǫ\r
+ijkE˜a\r
+i E˜bj\r
+(Fabk − 2Rabk) = 0 (18)\r
+The geometrical interpretation of the term that we must add to the familiar Hamil\u0002tonian constraint in the Ashtekar formulation in order to describe Lorentzian gravity\r
+in the Ashtekar phase space is simpler than in (14); it is just the curvature of the\r
+SO(3) connection compatible with the triad E˜a\r
+i\r
+. Some comments are now in order.\r
+First, the presence of a potential term in (14) and (18) certainly makes them more\r
+complicated than the familiar Ashtekar Hamiltonian constraint. Taking into account\r
+that one of the sources of difficulties in the ADM formalism is precisely the presence\r
+of a potential term in the Hamiltonian constraint (see [9] and references therein for\r
+examples on how the quantization of ADM gravity would simplify in the absence of\r
+such a term) it is fair to expect some difficulties in the treatment of the theory with\r
+this new Hamiltonian constraint. The simplification brought about by removing the\r
+reality conditions has been traded for a more complicated Hamiltonian constraint.\r
+3\r
+It is my understanding that this formulation was independently considered by Ashtekar [8] before\r
+the loop variables formalism had been introduced, and discarded due to the presence of the potential\r
+term.\r
+6
+
+The way the difference between the Euclidean and Lorentzian cases arises is rather\r
+interesting; there is potential term in the Lorentzian case that is absent in the Eu\u0002clidean formulation. This asymmetry between the Euclidean and Lorentzian cases\r
+is somehow puzzling. Why is it that the ”complicated formulation” is found for the\r
+Lorentzian case? In the ADM formalism such an asymmetry is not apparent in the\r
+formalism.\r
+The fact that the theory is written in an SO(3) Yang-Mills phase space makes it\r
+possible to attempt its quantization by using loop variables. This can be achieved in\r
+principle because we know [10] that loop variables are good coordinates (modulo sets\r
+of measure zero) in the (Gauss law reduced) constraint hypersurface. The key problem\r
+is now how to write the potential term in terms of the familiar loop variables. The\r
+obvious solution would be to add additional objects built with traces of holonomies\r
+of the connection Γi\r
+a\r
+, notice, however, that it is not straightforward to add them\r
+to the set of elementary variables T\r
+0 and T1 because this would spoil the closure\r
+under the Poisson brackets. It is worthwhile noting that the possibility of writing the\r
+Hamiltonian constraint for real Lorentzian general relativity in the two alternative\r
+forms (14) and (18) may be useful when trying to write them in terms of loop variables.\r
+It is conceivable that one form may be simpler to deal with than the other.\r
+The form of the constraints of the theory makes it possible to use an approach\r
+similar to that of Capovilla, Dell and Jacobson in [11] to solve both the vector and\r
+scalar constraints. We define, for non degenerate triads, the matrix ψij as\r
+ψijE˜a\r
+j = B˜ai − 2R˜ai\r
+(19)\r
+where\r
+B˜c\r
+i ≡ η˜\r
+abcFabi (20)\r
+R˜c\r
+i ≡ η˜\r
+abcRabi (21)\r
+7
+
+the scalar constraint is then\r
+ǫ\r
+ijk\r
+˜\r
+ηabcE˜a\r
+i E˜bjψklE˜cl = 2Etrψ ˜˜ = 0 =⇒ trψ = 0 (22)\r
+The vector constraint can be rewritten now as\r
+E˜a\r
+i\r
+(F\r
+i\r
+ab − 2R\r
+i\r
+ab) = 0 ⇐⇒ E˜\r
+[a\r
+i\r
+(B˜b]i − 2R˜b]i) = 0 (23)\r
+because the relation Ri\r
+ab = −\r
+1\r
+2\r
+ǫ\r
+ijkR d\r
+abc e\r
+j\r
+c\r
+e\r
+k\r
+d\r
+and the Bianchi identity R d\r
+[abc] = 0 (the\r
+three dimensional Riemann tensor built with q\r
+ab) imply that E˜a\r
+i Riab = 0. We have\r
+then\r
+E˜\r
+[a\r
+i E˜\r
+b]\r
+j ψij = 0 =⇒ ψ[ij] = 0 (24)\r
+so that a symmetric and traceless ψij solves both the vector and scalar constraints. As\r
+in the usual case we are left with one last equation: the Gauss law. Here is where the\r
+main difference between the usual Hamiltonian constraint and (18) arises. Without\r
+the potential term of (18) we could very easily write the remaining equation in terms\r
+of Aai and ψij\r
+∇a[ψ\r
+−1\r
+ij B˜aj\r
+] = 0 (25)\r
+Now the situation is more complicated because we are forced to consider a system of\r
+coupled PDE’s\r
+∇a[ψ\r
+−1\r
+ij (B˜aj − 2R˜aj\r
+)] = 0 (26)\r
+ψijE˜a\r
+j = B˜ai − 2R˜ai\r
+(27)\r
+The second equation could be solved, in principle, for E˜a\r
+i\r
+and then the first would\r
+become an equation for ψij and Ai\r
+a only as in (25).\r
+The main result presented in this letter has been the introduction of several alter\u0002native forms for the Hamiltonian constraint for Lorentzian space-times in the Ashtekar\r
+formalism with real variables. The problem of implementing the reality conditions in\r
+the theory has been transformed into the problem of working with the new Hamilto\u0002nian constraints introduced here.\r
+8
+
+The previous results strongly suggest that Lorentzian general relativity is a theory\r
+of two SO(3) connections (in the sense that both the curvatures of Ai\r
+a and Γia\r
+seem\r
+to be playing a role as is apparent in (18)). A completely different two-connection\r
+formulation for both Euclidean and Lorentzian general relativity has been reported\r
+elsewhere [12]. In that formulation the main difference between the Euclidean and\r
+Lorentzian cases is the appearance of terms depending on the difference of the curva\u0002tures for the Lorentzian signature case. The fact that, even for Lorentzian signatures,\r
+the Hamiltonian constraint of that formulation is a low order polynomial of the cur\u0002vatures makes it suitable to be written in terms of loop variables built with the two\r
+connections. My hope is that the comparison of the several different approaches\r
+discussed above may provide useful information about the way to proceed with the\r
+quantization program for general relativity and the role of complex fields in it.\r
+Acknowledgements I wish to thank A. Ashtekar, P. Peld´an and L. Smolin for\r
+their remarks and comments and the Spanish Research Council (CSIC) for providing\r
+financial support.\r
+References\r
+[1] A. Ashtekar, Phys. Rev. Lett. 57, 2244 (1986)\r
+A. Ashtekar, Phys. Rev. D36, 1587 (1987)\r
+A. Ashtekar Non Perturbative Canonical Gravity (Notes prepared in collabora\u0002tion with R. S. Tate) (World Scientific Books, Singapore, 1991)\r
+[2] C. Rovelli and L. Smolin, Phys. Rev. Lett. 61, 1155 (1988)\r
+C. Rovelli and L. Smolin, Nucl. Phys. B331, 80 (1990)\r
+[3] R. Arnowitt, S. Deser, and C. W. Misner The Dynamics of General Relativity\r
+in Gravitation, an introduction to current research edited by L. Witten (Wiley\r
+1962)\r
+9
+
+[4] C. Rovelli and L. Smolin Quantization of Area and Volume Pittsburgh and\r
+CGPG-PSU preprint\r
+[5] A. Ashtekar, C. Rovelli and L. Smolin Phys. Rev. Lett. 69, 237 (1992)\r
+[6] A. Ashtekar, J. Lewandowski, D. Marolf, J. Mour˜ao, T. Thiemann, in prepara\u0002tion.\r
+[7] A. Ashtekar, A. P. Balachandran and S. G. Jo Int. J. Mod. Phys A4, 1493 (1989)\r
+[8] A. Ashtekar, private communication.\r
+[9] K. Kuchaˇr J. Math. Phys. 22, 2640 (1981)\r
+[10] J. N. Goldberg, J. Lewandowski, and C. Stornaiolo Commun. Math. Phys. 148,\r
+377 (1992)\r
+[11] R. Capovilla, J. Dell, and T. Jacobson Phys. Rev. Lett. 63, 2325 (1989)\r
+[12] J. F. Barbero G. Int. J. Mod. Phys. D3, 397 (1994)\r
+J. F. Barbero G. Phys. Rev. D49, 6935 (1994)\r
+10"""
+
+[metadata]
+title = "arxiv gr qc9410014 barbero 1994 real ashtekar variables"
+authors = ["Unknown"]
+year = 1994
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:gr-qc/9410014v1 11 Oct 1994\r
+CGPG-94/10-3\r
+Real Ashtekar Variables for Lorentzian Signature Space-times\r
+J. Fernando Barbero G. ∗,†\r
+∗Center for Gravitational Physics and Geometry,\r
+Department of Physics,\r
+Pennsylvania State University,\r
+University Park, PA 16802\r
+U.S.A.\r
+†\r
+Instituto de Matem´aticas y F´ısica Fundamental,\r
+C.S.I.C.\r
+Serrano 119–123, 28006 Madrid, Spain\r
+October 10, 1994\r
+ABSTRACT\r
+I suggest in this letter a new strategy to attack the problem of the reality condi\u0002tions in the Ashtekar approach to classical and quantum general relativity. By writing\r
+a modified Hamiltonian constraint in the usual SO(3) Yang-Mills phase space I show\r
+that it is possible to describe space-times with Lorentzian signature without the in\u0002troduction of complex variables. All the features of the Ashtekar formalism related to\r
+the geometrical nature of the new variables are retained; in particular, it is still pos\u0002sible, in principle, to use the loop variables approach in the passage to the quantum\r
+theory. The key issue in the new formulation is how to deal with the more compli\u0002cated Hamiltonian constraint that must be used in order to avoid the introduction of\r
+complex fields.
+
+The purpose of this letter is to suggest a new strategy to deal with the problem\r
+of the reality conditions in the Ashtekar approach to classical and quantum gravity.\r
+At the present moment there is some consensus about the reasons behind the success\r
+of the Ashtekar variables program [1]. One of them is the geometrical nature of the\r
+new variables. In particular, the fact that the configuration variable is a connection\r
+is specially interesting because this allows us to use loop variables both at the clas\u0002sical and quantum level [2]. Another advantage of the formalism is the simplicity of\r
+the constraints –specially the Hamiltonian constraint– that has been very helpful in\r
+finding solutions to all of them. There are, however, some difficulties in the formalism\r
+that must be solved and are not present in the traditional ADM scheme [3]. The most\r
+conspicuous one is the fact that complex variables must be used in order to describe\r
+Lorentzian signature space-times. This is often put in relation with the fact that the\r
+definition of self-duality in these space-times demands the introduction of imaginary\r
+coefficients. The now accepted way to deal with this issue is the introduction of real\u0002ity conditions. They impose some consistency requirements on the scalar product in\r
+the Hilbert space of physical states. In fact, the hope is that this scalar product can\r
+be selected by the reality conditions. There are, however some difficulties with this\r
+approach too. Specifically it is very difficult to implement the reality conditions in\r
+the loop variables scheme. Only recently some positive results in this direction have\r
+been reported [6]. The main point of this letter is to consider the geometrical nature\r
+of the Ashtekar variables as the most important asset of the formalism. With this\r
+idea in mind, it is easy to see that the introduction of complex variables is necessary\r
+only if one wants to have an specially simple form for the Hamiltonian constraint. If\r
+we accept to live with a more complicated Hamiltonian constraint in the Ashtekar\r
+phase space we can use real variables.\r
+An interesting consequence of this, as emphasized by Rovelli and Smolin, is that\r
+all the results obtained within the loop variables approach (existence of volume and\r
+1
+
+area observables, weave states and so on [4], [5]) whose derivation is independent\r
+of the particular form of the scalar constraint scalar can be maintained even for\r
+Lorentzian signature space-times because it is possible to describe Lorentzian gravity\r
+with real fields in the Ashtekar phase space. More specifically, the issue is not the\r
+implementation of the reality conditions (at least at the kinematical) but rather the\r
+construction of a scalar product, normalizability of the quantum physical states and\r
+so on. The proposal presented in this letter does not address this problems. It must\r
+also be said that the construction of area and volume observables referred to above\r
+must still be put in a completely sound and rigorous mathematical basis that may very\r
+well be provided by the approach presented in [6] to incorporate the reality conditions\r
+in the loop variables approach by using a generalization of th e Bargmann-Siegel\r
+transform to spaces of connections. This letter has nothing to add with respect to\r
+this. In the following, tangent space indices and SO(3) indices will be represented by\r
+lowercase Latin letters from the beginning and the middle of the alphabet respectively.\r
+The 3-dimensional Levi-Civita tensor density and its inverse will be denoted1 by\r
+η˜\r
+abc and\r
+˜\r
+ηabc and the internal SO(3) Levi-Civita tensor by ǫijk. The variables in\r
+the SO(3)-ADM phase space (ADM formalism with internal SO(3) symmetry as\r
+discussed in [7]) are a densitized triad E˜a\r
+i\r
+(with determinant denoted by E\r
+˜˜) and its\r
+canonically conjugate object Ki\r
+a\r
+(closely related to the extrinsic curvature). The\r
+(densitized) three dimensional metric built from the triad will be denoted ˜q˜\r
+ab ≡\r
+E˜a\r
+i E˜bi and its determinant q˜˜ so that q\r
+ab =\r
+˜q˜\r
+ab\r
+q˜˜\r
+. I will use also the SO(3) connection\r
+Γ\r
+i\r
+a\r
+compatible with the triad. The variables in the Ashtekar phase space are E˜a\r
+i\r
+,\r
+again, and the SO(3) connection Ai\r
+a\r
+. The curvatures of Ai\r
+a\r
+and Γi\r
+a\r
+are respectively\r
+given by F\r
+i\r
+ab ≡ 2∂[aAi\r
+b] +ǫ\r
+i\r
+jkAjaAkb\r
+and Ri\r
+ab ≡ 2∂[aΓ\r
+i\r
+b] +ǫ\r
+i\r
+jkΓ\r
+j\r
+aΓ\r
+k\r
+b\r
+. Finally, the action of\r
+the covariant derivatives defined by these connections on internal indices are2 ∇aλi =\r
+1\r
+I represent the density weights by the usual convention of using tildes above and below the fields.\r
+2They may be extended to act on tangent indices, if necessary, by introducing a space-time\r
+torsion-free connection; for example the Christoffel connection Γc\r
+ab built from q\r
+ab. All the results\r
+presented in the paper will be independent of such extension\r
+2
+
+∂aλi + ǫijkA\r
+j\r
+aλ\r
+k\r
+and Daλi = ∂aλi + ǫijkΓ\r
+j\r
+aλ\r
+k\r
+. The compatibility of Γi\r
+a and E˜ai\r
+thus\r
+means DaE˜b\r
+i ≡ ∂aE˜bi + ǫ\r
+jk\r
+i ΓajE˜b\r
+k + ΓbacE˜ci − Γ\r
+c\r
+acE˜bi = 0.\r
+I will start from the SO(3)-ADM constraints\r
+ǫijkKj\r
+aE˜ak = 0\r
+Da\r
+h\r
+E˜a\r
+kKkb − δ\r
+a\r
+b E˜ckKkc\r
+i\r
+= 0 (1)\r
+−ζ\r
+q\r
+qR˜˜ +\r
+2\r
+q\r
+q˜˜\r
+E˜\r
+[c\r
+k E˜\r
+d]\r
+l Kkc Kld = 0\r
+where R is the scalar curvature of the three-metric qab (the inverse of q\r
+ab). The\r
+variables Kai(x) and E˜b\r
+j\r
+(y) are canonical; i.e. they satisfy\r
+n\r
+Ki\r
+a\r
+(x), Kj\r
+b\r
+(y)\r
+o\r
+= 0\r
+n\r
+E˜a\r
+i\r
+(x), Kj\r
+b\r
+(y)\r
+o\r
+= δ\r
+i\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (2)\r
+n\r
+E˜a\r
+i\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= 0\r
+The parameter ζ is used to control the space-time signature. For Lorentzian signatures\r
+we have ζ = −1 whereas in the Euclidean case we have ζ = +1. The constraints (1)\r
+generate internal SO(3) rotations, diffeomorphisms and time evolution. I write now\r
+the usual canonical transformation to the Ashtekar phase space\r
+E˜a\r
+i = E˜ai\r
+(3)\r
+A\r
+i\r
+a = Γia + βKia\r
+(4)\r
+here β is a free parameter that I will adjust later. The Poisson brackets between the\r
+new variables A\r
+i\r
+a and E˜ai are\r
+n\r
+A\r
+i\r
+a\r
+(x), Aj\r
+b\r
+(y)\r
+o\r
+= 0\r
+n\r
+A\r
+i\r
+a\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= −βδi\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (5)\r
+n\r
+E˜a\r
+i\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= 0\r
+3
+
+and thus, the transformation is canonical. Introducing (3, 4) in the constraints (1)\r
+we get immediately the following constraints in the Ashtekar phase space\r
+G˜\r
+i ≡ ∇aE˜a\r
+i = 0 (6)\r
+V˜\r
+a ≡ F\r
+i\r
+abE˜bi = 0 (7)\r
+˜˜\r
+S ≡ −ζǫijkE˜a\r
+i E˜bjFabk +\r
+2(β\r
+2\r
+ζ − 1)\r
+β"""
+
+[[sections]]
+number = "2"
+title = "E˜a"
+text = """
+[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+) = 0 (8)\r
+They are the Gauss law, vector and scalar constraints of the Ashtekar formulation.\r
+The traditional attitude with regard to (8) has been to consider that the last term\r
+introduces unnecessary complications in the formalism. For this reason it has always\r
+been cancelled by choosing β such that β\r
+2\r
+ζ − 1 = 0. For Euclidean signatures\r
+we can take β\r
+2 = 1 and remain within the limits of the real theory. For Lorentzian\r
+signatures, however, we are forced to take β\r
+2 = −1 and then the variables (specifically\r
+the connection) cease to be real. It must be emphasized that this is true only if we\r
+insist in cancelling the last term in (8). If we accept to keep it, there is no reason to\r
+introduce complex objects in the theory. The value of β (as long as it is different from\r
+zero) is also irrelevant so we can choose β = −1 and have the following Hamiltonian\r
+constraint in the Lorentzian case\r
+ǫ\r
+ijkE˜a\r
+i E˜bjFabk − 4E˜a[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+) = 0 (9)\r
+The relevant Poisson bracket in (5) becomes\r
+n\r
+A\r
+i\r
+a\r
+(x), E˜b\r
+j\r
+(y)\r
+o\r
+= δ\r
+i\r
+j\r
+δ\r
+b\r
+a\r
+δ\r
+3\r
+(x, y) (10)\r
+Since we have obtained this result by performing a canonical transformation, the\r
+Poisson algebra of the constraints is preserved. If we define the functionals\r
+G[N\r
+i\r
+] ≡\r
+Z\r
+d\r
+3x NiG˜\r
+i\r
+V [N\r
+a\r
+] ≡\r
+Z\r
+d\r
+3x NaV˜\r
+a (11)\r
+S[\r
+˜\r
+N ] ≡\r
+Z\r
+d\r
+3x\r
+˜\r
+NS\r
+˜˜\r
+4
+
+we have the usual Poisson algebra; in particular the Poisson bracket of S[\r
+˜\r
+N ] and\r
+S[\r
+˜\r
+M] is given by\r
+{S[\r
+˜\r
+N ], S[\r
+˜\r
+M]} = +V [E˜a\r
+i E˜bi(\r
+˜\r
+N ∂b\r
+˜\r
+M −\r
+˜\r
+M∂b\r
+˜\r
+N )] (12)\r
+The + sign in the right-hand side of (12) shows that we have, indeed, Lorentzian\r
+signature. It is possible to rewrite (9) in a more appealing form. The second term,\r
+in particular, can be expressed in terms of covariant derivatives of E˜a\r
+i\r
+. To this end I\r
+introduce the inverse of E˜a\r
+√i\r
+E\r
+˜˜\r
+eai ≡\r
+1\r
+2\r
+q\r
+E\r
+˜˜ ˜\r
+ηabcǫ\r
+ijkE˜b\r
+jE˜ck\r
+(13)\r
+where E\r
+˜˜ ≡ det E˜a\r
+i\r
+and rewrite (9) in the form\r
+ǫ\r
+ijkE˜a\r
+i E˜bjFabk − η˜\r
+a1a2a3 η˜b1b2b3\r
+h\r
+(e\r
+i\r
+a1∇a2\r
+ea3i)(e\r
+j\r
+b1∇b2\r
+eb3j ) (14)\r
+−2(e\r
+j\r
+a1∇a2\r
+ea3i)(e\r
+i\r
+b1∇b2\r
+eb3j )\r
+i\r
+= 0\r
+The last term in the previous formula is still quadratic in the connections but its\r
+dependence on E˜a\r
+i\r
+is complicated. It must be noted also that if we restrict ourselves\r
+to non-degenerate triads it can be cast in polynomial form (of degree 8 in E˜a\r
+i\r
+) by\r
+multiplying it by the square of E\r
+˜˜. If one is interested in checking explicitly the\r
+Poisson algebra and use the Hamiltonian constraint (14), it is useful to notice that\r
+eai[E˜] and −2˜η\r
+abc∇beci are canonically conjugate objects. This may eventually be\r
+useful in order to write the new Hamiltonian constraint in terms of loop variables\r
+maybe by allowing us to extend the set of T-variables with objects built out of eai[E˜]\r
+and −2˜η\r
+abc∇beci.\r
+There is another appealing way to write a Hamiltonian constraint for Lorentzian\r
+general relativity in terms of real Ashtekar variables. One starts by writing the"""
+
+[[sections]]
+number = "5"
+title = "Hamiltonian constraint in the SO(3)-ADM formalism in the form"
+text = """
+− 2ζ\r
+q\r
+qR˜˜ + ζ\r
+q\r
+qR˜˜ +\r
+2\r
+q\r
+q˜˜\r
+E˜\r
+[c\r
+k E˜\r
+d]\r
+l Kkc Kld = (15)\r
+−2ζ\r
+q\r
+qR˜˜ −\r
+1\r
+q\r
+q˜˜\r
+"\r
+ζǫijkE˜a\r
+i E˜bjFabk −\r
+2(β\r
+2\r
+ζ + 1)\r
+β"""
+
+[[sections]]
+number = "2"
+title = "E˜a"
+text = """
+[iE˜bj]\r
+(A\r
+i\r
+a − Γ\r
+i\r
+a\r
+)(A\r
+j\r
+b − Γ\r
+j\r
+b\r
+)\r
+#\r
+= 0\r
+Now, in the Lorentzian case we can choose β\r
+2 = 1 and cancel the last term to give\r
+2qR˜˜ + ǫ\r
+ijkE˜a\r
+i E˜bjFabk = 0 (16)\r
+remembering now that\r
+qR˜˜ = −ǫ\r
+ijkE˜a\r
+i E˜bjRabk (17)\r
+we can finally write the Hamiltonian constraint as3\r
+ǫ\r
+ijkE˜a\r
+i E˜bj\r
+(Fabk − 2Rabk) = 0 (18)\r
+The geometrical interpretation of the term that we must add to the familiar Hamil\u0002tonian constraint in the Ashtekar formulation in order to describe Lorentzian gravity\r
+in the Ashtekar phase space is simpler than in (14); it is just the curvature of the\r
+SO(3) connection compatible with the triad E˜a\r
+i\r
+. Some comments are now in order.\r
+First, the presence of a potential term in (14) and (18) certainly makes them more\r
+complicated than the familiar Ashtekar Hamiltonian constraint. Taking into account\r
+that one of the sources of difficulties in the ADM formalism is precisely the presence\r
+of a potential term in the Hamiltonian constraint (see [9] and references therein for\r
+examples on how the quantization of ADM gravity would simplify in the absence of\r
+such a term) it is fair to expect some difficulties in the treatment of the theory with\r
+this new Hamiltonian constraint. The simplification brought about by removing the\r
+reality conditions has been traded for a more complicated Hamiltonian constraint.\r
+3\r
+It is my understanding that this formulation was independently considered by Ashtekar [8] before\r
+the loop variables formalism had been introduced, and discarded due to the presence of the potential\r
+term.\r
+6
+
+The way the difference between the Euclidean and Lorentzian cases arises is rather\r
+interesting; there is potential term in the Lorentzian case that is absent in the Eu\u0002clidean formulation. This asymmetry between the Euclidean and Lorentzian cases\r
+is somehow puzzling. Why is it that the ”complicated formulation” is found for the\r
+Lorentzian case? In the ADM formalism such an asymmetry is not apparent in the\r
+formalism.\r
+The fact that the theory is written in an SO(3) Yang-Mills phase space makes it\r
+possible to attempt its quantization by using loop variables. This can be achieved in\r
+principle because we know [10] that loop variables are good coordinates (modulo sets\r
+of measure zero) in the (Gauss law reduced) constraint hypersurface. The key problem\r
+is now how to write the potential term in terms of the familiar loop variables. The\r
+obvious solution would be to add additional objects built with traces of holonomies\r
+of the connection Γi\r
+a\r
+, notice, however, that it is not straightforward to add them\r
+to the set of elementary variables T\r
+0 and T1 because this would spoil the closure\r
+under the Poisson brackets. It is worthwhile noting that the possibility of writing the\r
+Hamiltonian constraint for real Lorentzian general relativity in the two alternative\r
+forms (14) and (18) may be useful when trying to write them in terms of loop variables.\r
+It is conceivable that one form may be simpler to deal with than the other.\r
+The form of the constraints of the theory makes it possible to use an approach\r
+similar to that of Capovilla, Dell and Jacobson in [11] to solve both the vector and\r
+scalar constraints. We define, for non degenerate triads, the matrix ψij as\r
+ψijE˜a\r
+j = B˜ai − 2R˜ai\r
+(19)\r
+where\r
+B˜c\r
+i ≡ η˜\r
+abcFabi (20)\r
+R˜c\r
+i ≡ η˜\r
+abcRabi (21)\r
+7
+
+the scalar constraint is then\r
+ǫ\r
+ijk\r
+˜\r
+ηabcE˜a\r
+i E˜bjψklE˜cl = 2Etrψ ˜˜ = 0 =⇒ trψ = 0 (22)\r
+The vector constraint can be rewritten now as\r
+E˜a\r
+i\r
+(F\r
+i\r
+ab − 2R\r
+i\r
+ab) = 0 ⇐⇒ E˜\r
+[a\r
+i\r
+(B˜b]i − 2R˜b]i) = 0 (23)\r
+because the relation Ri\r
+ab = −\r
+1\r
+2\r
+ǫ\r
+ijkR d\r
+abc e\r
+j\r
+c\r
+e\r
+k\r
+d\r
+and the Bianchi identity R d\r
+[abc] = 0 (the\r
+three dimensional Riemann tensor built with q\r
+ab) imply that E˜a\r
+i Riab = 0. We have\r
+then\r
+E˜\r
+[a\r
+i E˜\r
+b]\r
+j ψij = 0 =⇒ ψ[ij] = 0 (24)\r
+so that a symmetric and traceless ψij solves both the vector and scalar constraints. As\r
+in the usual case we are left with one last equation: the Gauss law. Here is where the\r
+main difference between the usual Hamiltonian constraint and (18) arises. Without\r
+the potential term of (18) we could very easily write the remaining equation in terms\r
+of Aai and ψij\r
+∇a[ψ\r
+−1\r
+ij B˜aj\r
+] = 0 (25)\r
+Now the situation is more complicated because we are forced to consider a system of\r
+coupled PDE’s\r
+∇a[ψ\r
+−1\r
+ij (B˜aj − 2R˜aj\r
+)] = 0 (26)\r
+ψijE˜a\r
+j = B˜ai − 2R˜ai\r
+(27)\r
+The second equation could be solved, in principle, for E˜a\r
+i\r
+and then the first would\r
+become an equation for ψij and Ai\r
+a only as in (25).\r
+The main result presented in this letter has been the introduction of several alter\u0002native forms for the Hamiltonian constraint for Lorentzian space-times in the Ashtekar\r
+formalism with real variables. The problem of implementing the reality conditions in\r
+the theory has been transformed into the problem of working with the new Hamilto\u0002nian constraints introduced here.\r
+8
+
+The previous results strongly suggest that Lorentzian general relativity is a theory\r
+of two SO(3) connections (in the sense that both the curvatures of Ai\r
+a and Γia\r
+seem\r
+to be playing a role as is apparent in (18)). A completely different two-connection\r
+formulation for both Euclidean and Lorentzian general relativity has been reported\r
+elsewhere [12]. In that formulation the main difference between the Euclidean and\r
+Lorentzian cases is the appearance of terms depending on the difference of the curva\u0002tures for the Lorentzian signature case. The fact that, even for Lorentzian signatures,\r
+the Hamiltonian constraint of that formulation is a low order polynomial of the cur\u0002vatures makes it suitable to be written in terms of loop variables built with the two\r
+connections. My hope is that the comparison of the several different approaches\r
+discussed above may provide useful information about the way to proceed with the\r
+quantization program for general relativity and the role of complex fields in it.\r
+Acknowledgements I wish to thank A. Ashtekar, P. Peld´an and L. Smolin for\r
+their remarks and comments and the Spanish Research Council (CSIC) for providing\r
+financial support.\r
+References\r
+[1] A. Ashtekar, Phys. Rev. Lett. 57, 2244 (1986)\r
+A. Ashtekar, Phys. Rev. D36, 1587 (1987)\r
+A. Ashtekar Non Perturbative Canonical Gravity (Notes prepared in collabora\u0002tion with R. S. Tate) (World Scientific Books, Singapore, 1991)\r
+[2] C. Rovelli and L. Smolin, Phys. Rev. Lett. 61, 1155 (1988)\r
+C. Rovelli and L. Smolin, Nucl. Phys. B331, 80 (1990)\r
+[3] R. Arnowitt, S. Deser, and C. W. Misner The Dynamics of General Relativity\r
+in Gravitation, an introduction to current research edited by L. Witten (Wiley\r
+1962)\r
+9
+
+[4] C. Rovelli and L. Smolin Quantization of Area and Volume Pittsburgh and\r
+CGPG-PSU preprint\r
+[5] A. Ashtekar, C. Rovelli and L. Smolin Phys. Rev. Lett. 69, 237 (1992)\r
+[6] A. Ashtekar, J. Lewandowski, D. Marolf, J. Mour˜ao, T. Thiemann, in prepara\u0002tion.\r
+[7] A. Ashtekar, A. P. Balachandran and S. G. Jo Int. J. Mod. Phys A4, 1493 (1989)\r
+[8] A. Ashtekar, private communication.\r
+[9] K. Kuchaˇr J. Math. Phys. 22, 2640 (1981)\r
+[10] J. N. Goldberg, J. Lewandowski, and C. Stornaiolo Commun. Math. Phys. 148,\r
+377 (1992)\r
+[11] R. Capovilla, J. Dell, and T. Jacobson Phys. Rev. Lett. 63, 2325 (1989)\r
+[12] J. F. Barbero G. Int. J. Mod. Phys. D3, 397 (1994)\r
+J. F. Barbero G. Phys. Rev. D49, 6935 (1994)\r
+10"""
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 4
+image_path = "images/image_p4_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 5
+image_path = "images/image_p5_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 6
+image_path = "images/image_p6_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 6
+image_path = "images/image_p6_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 6
+image_path = "images/image_p6_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 6
+image_path = "images/image_p6_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 7
+image_path = "images/image_p7_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 7
+image_path = "images/image_p7_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 7
+image_path = "images/image_p7_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 7
+image_path = "images/image_p7_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 7
+image_path = "images/image_p7_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 7
+image_path = "images/image_p7_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 7
+image_path = "images/image_p7_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 7
+image_path = "images/image_p7_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 7
+image_path = "images/image_p7_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 9
+image_path = "images/image_p9_20.png"

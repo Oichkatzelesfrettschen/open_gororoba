@@ -1,0 +1,3 @@
+Select and store an action At+1 ⇠ b(·,St+1)
+| ⌧ t,n +1 (⌧ is the time whose estimate is being updated)
+| If ⌧,0:

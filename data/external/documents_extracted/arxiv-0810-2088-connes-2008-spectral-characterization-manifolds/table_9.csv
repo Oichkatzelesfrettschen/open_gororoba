@@ -1,0 +1,4 @@
+D,ξn →,D,ξ. Since T is bounded the sequences Tξn and T,D,ξn are convergent
+and converge to Tξ and T,D,ξ. Since [,D,, T ] is bounded the sequence (,D,T −
+T,D,)ξn converges. Thus,D,Tξn converges, and as,D,is closed one gets that Tξ
+is in the domain of,D,. Thus Dom,D,is invariant under T . Moreover one has

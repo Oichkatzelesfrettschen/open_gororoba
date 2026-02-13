@@ -1,0 +1,3 @@
+algorithms we discuss in this book,,functions as a reinforcement signal, meaning that it
+is the main driver of learning. For example,,is the critical factor in the TD model of
+classical conditioning, and,is the reinforcement signal for learning both a value function

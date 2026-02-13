@@ -1,0 +1,951 @@
+equations = []
+tables = []
+full_text = """
+Perfect Metamaterial Absorber\r
+N. I. Landy,1 S. Sajuyigbe,2 J. J. Mock,2 D. R. Smith,2 and W. J. Padilla1\r
+1\r
+Department of Physics, Boston College, 140 Commonwealth Avenue, Chestnut Hill, Massachusetts 02467, USA\r
+2\r
+Department of Electrical and Computer Engineering, Duke University, Durham, North Carolina 27708, USA\r
+(Received 6 November 2007; revised manuscript received 10 March 2008; published 21 May 2008)\r
+We present the design for an absorbing metamaterial (MM) with near unity absorbance A\u0001!\u0002. Our\r
+structure consists of two MM resonators that couple separately to electric and magnetic fields so as to\r
+absorb all incident radiation within a single unit cell layer. We fabricate, characterize, and analyze a MM\r
+absorber with a slightly lower predicted A\u0001!\u0002 of 96%. Unlike conventional absorbers, our MM consists\r
+solely of metallic elements. The substrate can therefore be optimized for other parameters of interest. We\r
+experimentally demonstrate a peak A\u0001!\u0002 greater than 88% at 11.5 GHz.\r
+DOI: 10.1103/PhysRevLett.100.207402 PACS numbers: 78.68.+m, 41.20.\u0003q, 78.20.Ci\r
+The nascent field of electromagnetic metamaterials\r
+(MMs) has produced exotic effects such as negative index\r
+of refraction [1,2], and devices such as an electromagnetic\r
+cloak [3]. The realization of such properties lies in the\r
+ability of metamaterials to create independent tailored\r
+electric [4] and magnetic [5] responses to incident radia\u0002tion. Electromagnetic MMs are also geometrically scalable\r
+which translates into operability over a significant portion\r
+of the electromagnetic spectrum. To date, MMs have been\r
+demonstrated in every technologically relevant spectral\r
+range, from radio [6], microwave [7], mm-Wave [8], THz\r
+[9], MIR [10], NIR [11], to the near optical [12]. These\r
+designer materials are ideal for the investigation of novel\r
+emergent physical phenomena while also holding great\r
+promise for future applications.\r
+As an effective medium [13], MMs can be characterized\r
+by a complex electric permittivity \u0001~\u0001!\u0002 \u0004 \u00011 \u0005 i\u00012 and\r
+magnetic permeability \u0002~\u0001!\u0002 \u0004 \u00021 \u0005 i\u00022. Much of the\r
+work in MMs has been focussed on the real part of \u0001 and\r
+\u0002 to enable the creation of a negative refractive material.\r
+However, the oft-overlooked loss components of the opti\u0002cal constants (\u00012 and \u00022) have much potential for the\r
+creation of exotic and useful materials as well. For ex\u0002ample, they can be manipulated to create a high absorber.\r
+By manipulating resonances in \u0001 and \u0002 independently, it is\r
+possible to absorb both the incident electric and magnetic\r
+field. Additionally, by matching \u0001 and \u0002, a MM can be\r
+impedance-matched to free space, minimizing reflectivity.\r
+In this Letter, we show that MMs can be fashioned to create\r
+narrow-band perfect absorbers (PAs), with the potential to\r
+be used in devices such as in bolometers.\r
+A single unit cell of the absorber consisted of two\r
+distinct metallic elements as shown in Figs. 1(a) and\r
+1(b). Electric coupling was supplied by the electric ring\r
+resonator (ERR) [14], shown in Fig. 1(a). This element\r
+consisted of two standard split ring resonators connected\r
+by the inductive ring parallel to the split-wire. We used this\r
+design instead of a conventional split-wire design because\r
+of the limitations of straight wire media [15]; i.e., a split\u0002wire design has limited tunability beyond the addition of\r
+more wires per unit cell to increase inductance [16]. The\r
+magnetic coupling required a more complicated arrange\u0002ment, and thus in order to couple to the incident H-field,\r
+we needed flux created by circulating charges perpendicu\u0002lar to the propagation vector. We created this response by\r
+combining the center wire of the ERR with a cut wire\r
+[Fig. 1(b)] in a parallel plane separated by a substrate\r
+[Fig. 1(c)]. This design is similar to the so-called ‘‘fishnet’’\r
+and paired nanorod structures [11,12], in that they derive a\r
+magnetic response from driving two antiparallel currents in\r
+conducting segments. We were then able to tune the mag\u0002netic response by changing the geometry of the cut wire\r
+and the separation between the cut wire and electric reso\u0002nator. By manipulating the magnetic coupling without\r
+changing the ERR, we were able to decouple \u0001 and \u0002\r
+and individually tune each resonance.\r
+We performed computer simulations of an ideal—but\r
+realizable—MM absorber using the commercial finite\u0002difference time domain (FDTD) solver Microwave Studio\r
+by CST [17]. The program simulated a single unit cell as\r
+shown in Fig. 1(c) with appropriate boundary conditions,\r
+i.e., perfect electric (y^ z^ -plane) and perfect magnetic\r
+(x^ z^ -plane). Waveguide ports on the other boundaries\r
+simulated a TEM plane wave propagating through the\r
+medium. Simulation produced the complex frequency de\u0002pendent S parameters, S~\r
+11 and S~21, where T\u0001!\u0002\u0004jS21j\r
+2\r
+and R\u0001!\u0002\u0004jS11j\r
+2 are the transmission and reflectance,\r
+(a) (b) (c)\r
+H\r
+E,x\r
+k, z\r
+,y\r
+a1\r
+a2\r
+W\r
+G\r
+t\r
+H\r
+L\r
+FIG. 1 (color online). Electric resonator (a) and cut wire (b).\r
+Dimension notations are listed in (a) and (b). The unit cell is\r
+shown in (c) with axes indicating the propagation direction.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending\r
+23 MAY 2008\r
+0031-9007=08=100(20)=207402(4) 207402-1 © 2008 The American Physical Society
+
+respectively. From the S parameter data, we inverted the\r
+Fresnel equations to extract the complex optical constants\r
+[18]. We then examined the behavior of the surface current\r
+density, magnetic and electric fields at !0 to verify that we\r
+were coupling to the correct resonant mode of each MM\r
+element. By tuning !0 of the \u0001 and \u0002 resonances (not\r
+shown), due to the two MM elements, we achieved \u0001 \u0004 \u0002\r
+and thus an impedance near the free space value. While\r
+100% absorbance is theoretically possible, it can only\r
+occur when the MM layer is impedance-matched to free\r
+space such that R\u0001!\u0002 is zero [19]. One may then minimize\r
+T\u0001!\u0002 such that the addition of multiple layers ensures\r
+T\u0001!\u0002 ! 0. The simulated MM had the dimensions, in\r
+millimeters, of: a1 \u0004 4:2, a2 \u0004 12, W \u0004 3:9, G \u0004 0:606,\r
+t \u0004 0:6, L \u0004 1:7, H \u0004 11:8, and the MM elements were\r
+separated by 0.65 in the z^ direction. In Fig. 2, we show the\r
+simulation results for the MM PA. R\u0001!\u0002 and absorbance\r
+[A\u0001!\u0002] are plotted from zero to 100% (left axis), and T\u0001!\u0002\r
+is plotted on the right axis from zero to 5%. R\u0001!\u0002 is large\r
+\u000697% near the bounds of the plot, 9 GHz and 14 GHz, but\r
+there is a minimum of 0.01% at !0 \u0007 11:65 GHz.\r
+Simulated T\u0001!\u0002 also undergoes a minimum near !0 and\r
+yields a value of \u00060:9%. Thus, we achieve a best simulated\r
+A\u0001!\u0002 \u0004 1 \u0003 T\u0001!\u0002 \u0003 R\u0001!\u0002 slightly less than unity A\u0001!\u0002 \u0004\r
+99% with a FWHM of 4% compared to !0.\r
+While our simulated absorber achieves narrow-band\r
+high A\u0001!\u0002, we were restricted by the minimum line widths\r
+available to us (250 \u0002m) and other various fabrication\r
+tolerances. These limitations were incorporated into the\r
+design process, and we fabricated a MM which deviated\r
+slightly from the ideal absorber and had the dimensions, in\r
+millimeters, of: a1 \u0004 4:2, a2 \u0004 12, W \u0004 4, G \u0004 0:6, t \u0004\r
+0:6, L \u0004 1:7, H \u0004 11:8. Each metallization was fabricated\r
+on a FR4 substrate with a thickness of 0.2 mm. MMs were\r
+fabricated using standard optical lithography. The substrate\r
+consisted of a photosensitized FR-4 board with a 17 \u0002m\r
+copper thickness. A mask was designed and printed in high\r
+resolution on a transparency, and each MM component was\r
+fabricated by standard optical lithography processes. These\r
+boards were then sandwiched (using an adhesive with\r
+0.06 mm thickness) about another 0.2 mm thick FR4 blank\r
+substrate to obtain the correct spacing. The end results was\r
+that the MM elements were separated by 0.72 mm in the z^\r
+direction. This allowed us to couple to both magnetic and\r
+electric resonances without out-of-plane elements typical\r
+with ‘‘wine-crate’’ designs [2].\r
+We experimentally verified the behavior of the absorber\r
+by measuring the complex S parameters of a large planar\r
+array of pixels (outer dimensions of 15 \b 15 cm). We used\r
+a vector network analyzer that produced microwaves in the\r
+range of 8–12 GHz. One microwave horn focused the GHz\r
+beam on the sample, and another horn served as a detector.\r
+Both horns coupled to linearly polarized light and had\r
+parallel polarization directions. To measure T\u0001!\u0002, we set\r
+the horns in a normal incidence confocal configuration. We\r
+performed R\u0001!\u0002 measurements at normal incidence.\r
+However, in order to eliminate large voltage standing\r
+wave ratios (VSWR) which would overwhelm the data,\r
+we used a beam splitter configuration, shown as the inset to\r
+Fig. 3(a). Radiation first traveled from the transmitting\r
+horn through the beam splitter, reflected from the sample\r
+and returned to the beam splitter where it was reflected at\r
+45% to the receiving horn. We set the normalization and\r
+phase in T\u0001!\u0002 configuration by simply removing the sam\u0002ple. For reflection, we replaced the sample with a perfect\r
+reflector for normalized measurements. Transmission tech\u0002niques have been described elsewhere [20].\r
+Simulations were performed for this MM structure and\r
+are presented for comparison to experimental data. R\u0001!\u0002 is\r
+shown as the black (red online) line in Fig. 3(a). At low\r
+frequencies, the reflectivity is high and yields values near\r
+95%. A large feature occurs in R\u0001!\u0002 and has a minimum of\r
+\u00063% near 11.5 GHz. Likewise, T\u0001!\u0002, shown as the black\r
+(red online) line in Fig. 3(b), has 4% T\u0001!\u0002 at low frequen\u0002cies and then undergoes a minimum near 11.25 GHz. A\u0001!\u0002\r
+of our MM unit cell thus has a maximum near where both\r
+R\u0001!\u0002 and T\u0001!\u0002 have their minima. We plot A\u0001!\u0002 as the\r
+Reflectance, Absorbance\r
+Frequency (GHz)\r
+0.00\r
+0.01\r
+0.02\r
+0.03\r
+0.04\r
+0.05\r
+Transmission\r
+9 10 11 12 13 14\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+FIG. 2 (color online). Simulated MM PA. R\u0001!\u0002 (light gray\r
+line, green online) and A\u0001!\u0002 (black line, red online) are plotted\r
+from zero to 100% (left axis). T\u0001!\u0002 is plotted on the right axis as\r
+the gray line (blue online) on a scale from zero to 5%.\r
+(a)\r
+(b) 0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+Reflectance\r
+8 9 10 11 12\r
+0.00\r
+0.02\r
+0.04\r
+0.06\r
+0.08\r
+Frequency (GHz)\r
+Transmission\r
+BS\r
+Sample /\r
+Reference\r
+Transmitting\r
+Horn\r
+Receiving\r
+Horn\r
+FIG. 3 (color online). Simulated (black lines, red online) and\r
+measured (gray lines, blue online) T\u0001!\u0002 and R\u0001!\u0002 for the\r
+microwave absorber. (a) Displays R\u0001!\u0002 from zero to 100%. A\r
+schematic of the reflection experiment is shown as the inset to (a)\r
+where BS is the beam splitter. T\u0001!\u0002, shown in (b), are displayed\r
+from zero to 10%. Inset to (b) shows photographs of the both\r
+sides of the MM absorber.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending\r
+23 MAY 2008\r
+207402-2
+
+black (red online) line in Fig. 4 from 8 to 12 GHz.\r
+Simulated A\u0001!\u0002 peaks at 96% at !0 \u0004 11:48 GHz and\r
+has a FWHM of 4% with respect to !0.\r
+By performing S parameter simulations, we are able to\r
+account for the form of the experimental data. The mea\u0002sured R\u0001!\u0002 and T\u0001!\u0002 are plotted as the gray (blue online)\r
+lines in Figs. 3(a) and 3(b), respectively. We find excellent\r
+agreement between simulated and measured T\u0001!\u0002 over all\r
+frequencies characterized. The measured R\u0001!\u0002 is consis\u0002tently 8% lower than the simulated R\u0001!\u0002 at low frequen\u0002cies. Both the simulated and experimental R\u0001!\u0002 reach a\r
+minimum at approximately 11.5 GHz, but experimentally,\r
+the minimum is 11%, as opposed to the simulated value of\r
+3%. There is also significant broadening in the experimen\u0002tal R\u0001!\u0002 line with respect to simulation. This is most likely\r
+due to tolerances in the fabrication and assembly.\r
+The experimental absorptivity A\u0001!\u0002 calculated from\r
+T\u0001!\u0002 and R\u0001!\u0002 is shown as the gray (blue online) line in\r
+Fig. 4. The simulated and experimental lines have maxi\u0002mum A\u0001!\u0002 at the same frequency, !max \u0004 11:5 GHz.\r
+However, the simulated line reaches a maximum of 96%,\r
+and the experimental line only reaches 88%, the difference\r
+being primarily due to deviations in R\u0001!\u0002. Better fabrica\u0002tion and assembly tolerances will permit absorbances and\r
+bandwidths similar to that shown as the black (red online)\r
+line in Fig. 4. We performed simulations to verify the origin\r
+of the broadening of A\u0001!\u0002. From a theoretical viewpoint, it\r
+is expected that the frequency location of the A\u0001!\u0002 peak\r
+depends significantly upon the separation between the\r
+electric ring resonator and the cut wire, since this distance\r
+determines the frequency location of the magnetic reso\u0002nance. Simulations verified this conjecture. We simulated\r
+various spacings centered about the designed value of\r
+0.72 mm, and computed a Gaussian weighted average\r
+A\u0001!\u0002 with a standard deviation of \u0003 \u0004 20 \u0002m. The A\u0001!\u0002\r
+calculated in this manner agrees very well with the experi\u0002mental line and is plotted as the gray dashed line in the\r
+main panel of Fig. 4. Thus, assembly errors in the MM\r
+spacing of only 5% can easily account for the disagreement\r
+between the simulation and experiment shown in Fig. 4 as\r
+the black and gray (red and blue online) lines, respectively.\r
+An investigation into the effect of adding multiple MM\r
+absorbing layers is shown in the main panel of Fig. 5. As\r
+can be observed, A\u0001!\u0002 rises sharply with additional layers\r
+and is asymptotic to unity, within computational noise.\r
+Two layers of the MM absorber achieve a value of\r
+\u000699:9972%. At this thickness, the entire MM is only\r
+\u0006\u00040=2 at resonance. For the structure shown in Fig. 1,\r
+A\u0001!0\u0002 can never reach unity since the MM is not perfectly\r
+matched to free space. However, it is important to note that\r
+although an impedance-matched structure may yield zero\r
+R\u0001!0\u0002, this does not imply T\u0001!0\u0002 \u0004 0. In this study, we are\r
+interested in achieving R\u0001!0\u0002 \u0004 T\u0001!0\u0002 \u0004 0 in a single unit\r
+cell in the propagation direction. Thus, our MM structure\r
+was optimized to maximize the A\u0001!\u0002 with the restriction of\r
+minimizing the thickness. If this constraint is relaxed,\r
+impedance matching is possible, and with multiple layers,\r
+a perfect A\u0001!\u0002 can be achieved.\r
+We further investigated the origin of the loss in our MM,\r
+as indicated in the inset to Fig. 5. The Ohmic ‘‘surface’’\r
+loss is mainly from the center conducting region of the\r
+ERR, and dielectric losses occur in between the two MM\r
+elements where the electric field is large. The major com\u0002ponent responsible for A\u0001!\u0002 in our MM structure is the\r
+dielectric loss, and simulation indicates this is an order of\r
+magnitude greater than Ohmic losses. This is consistent\r
+with studies of frequency selective surfaces (FSSs) where it\r
+was found that metallic absorption was relatively insignifi\u0002cant in comparison to dielectric losses [21].\r
+We now discuss the potential application of a perfect\r
+MM absorber as a bolometer. An ideal bolometric detector\r
+is one in which all photons that fall upon its surface are\r
+absorbed, converted to heat, and thus sensed [22]. A\r
+prominent feature of commercially available bolometers\r
+is their extreme bandwidth making them ideal candidates\r
+as detectors, especially in the far infrared frequency regime\r
+where other efficient detection methods are largely un\u0002available. However, bolometers which achieve a narrow\r
+band response also have significant application as focal\r
+plane array (FPA) detectors for imaging. The MM design\r
+presented here achieves simulated absorbtivities near unity\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+Absorbance\r
+8 9 10 11 12\r
+Frequency (GHz)\r
+-20 -10 0 10 20\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+A(ωmax)\r
+Incident Angle\r
+FIG. 4 (color online). Main panel shows the simulated (black\r
+line, red online) and measured (gray line, blue online) A\u0001!\u0002\r
+lines. The dashed gray A\u0001!\u0002 line is a Gaussian weighted average\r
+which approximates assembly error. Inset shows the simulated\r
+angular dependence of the A\u0001!\u0002 at !max.\r
+# Layers\r
+Ohmic Dielectric\r
+Peak Absorbance\r
+12 34 5\r
+0.990\r
+0.992\r
+0.994\r
+0.996\r
+0.998\r
+1.000\r
+FIG. 5 (color online). Simulated A\u0001!\u0002 with increasing MM\r
+layers; line is a guide to the eye. Insets show the simulated losses\r
+at resonance. The Ohmic loss (surface) is shown in the left inset\r
+panel, and the dielectric (volume) loss is on the right.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending\r
+23 MAY 2008\r
+207402-3
+
+making them ideal candidates for bolometric pixel ele\u0002ments. The natural narrow band MM resonance is a salient\r
+feature for FPA detectors as it is naturally apodizing and\r
+operates at room temperature. Since the elements which\r
+constitute our bolometer are subwavelength, MMs can\r
+inherently image at the diffraction limit. Further, here we\r
+have used only a single unit cell in the propagation direc\u0002tion, (with a thickness significantly smaller than the wave\u0002length \u00040=35), yet achieved an experimental A\u0001!\u0002 \u0004 88%.\r
+By adding multiple layers, one can achieve narrow band\r
+absorbance of unity. Although the design is planar and\r
+A\u0001!\u0002 should fall off relatively rapidly, we investigated\r
+the angular dependence (inset to Fig. 4) and found the\r
+MM still achieved A \t :5 at an incident full-angle of\r
+16
+. Finally, MM scalability permits the usage of these\r
+PAs at other wavelengths of interest, allowing for the\r
+possibility of room temperature high resolution imaging\r
+at mm-Wave and THz frequencies. We have designed\r
+similar MMs (not shown) that achieved A \t 1 operating\r
+at 94 GHz and 1 THz.\r
+While the creation of a MM absorber is novel, the\r
+technology to create absorptive materials in the microwave\r
+frequency range is well established. A high-impedance\r
+ground plane yields comparable absorbance, but requires\r
+metalization in the propagation direction [23]. The mate\u0002rial ‘‘chiroshield’’ is capable of very high absorption, and\r
+reduces backscatter by 15 to 25 dB [24], but has sizes on\r
+the order of \u0004, which is 35 times larger than our design at a\r
+given center frequency. Some ferrites show reflection loss\r
+of \u000330 dB [25]; however, they lack the inherent and\r
+precise tunability of MMs. Other work on bolometric\r
+frequency-selective materials require cryogenic tempera\u0002tures to operate and only achieve A\u0001!\u0002 \u0004 50% [26]. At\r
+optical, metal colloides are known to have large absorptive\r
+properties [27] due to the geometric specific surface modes\r
+[28]. This suggests an interesting possible application of\r
+artificial plasmonic wire media [4] to function as PAs [16]\r
+operating at microwave frequencies.\r
+In conclusion, we have demonstrated that MMs can be\r
+highly absorptive over a narrow frequency range. This\r
+stems from the ability to design MM elements which can\r
+individually absorb the electric and magnetic components\r
+of an incident electromagnetic wave. In contrast, previous\r
+experimental results at THz frequencies using a single type\r
+of MM element (electric) yielded values of only A\u0001!\u0002 \u0004\r
+\u000620% [29]. The resonant frequency of the MMs may be\r
+tuned throughout some range of frequencies [30,31] thus\r
+enabling hyperspectral imaging. A further benefit afforded\r
+by MMs is the ability to construct a single unit cell with\r
+\u0002\u0001!\u0002 \u0004 \u0001\u0001!\u0002 over an extended frequency range. Thus, this\r
+unit cell can achieve zero R\u0001!\u0002 since it can have an\r
+impedance equal to the free space value Z \u0004 \u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002=\u0001 p \u0004 1.\r
+This is similar to the well-known theoretical construct, the\r
+Perfectly Matched Layer (PML) Absorbing Boundary\r
+Condition (ABC) [32], which splits waves incident upon\r
+a boundary into electric and magnetic components to ob\u0002tain near perfect absorption. The PML, however, requires\r
+gain and additionally is on the order of \u00040=2 in thickness\r
+[33].\r
+The design presented here can still be improved. The\r
+current design is polarization sensitive, which is not ideal\r
+for some applications. By incorporating a substrate with a\r
+highly consistent dielectric constant, we will be able to\r
+optimize the design at the correct resonant frequency.\r
+Similarly, tighter fabrication tolerances would allow us to\r
+bring the impedance closer to unity and therefore closer to\r
+A\u0001!\u0002 \u0004 1. Additionally, the assembly is complicated due\r
+the restrictions placed on the direction of the incident wave\r
+to couple to the magnetic resonator. This resulted in unit\r
+cell variation and a less distinct A\u0001!\u0002 peak.\r
+N. I. L. and W. J. P. acknowledge support from the Los\r
+Alamos National Laboratory LDRD program, D. R. S. ac\u0002knowledges support from MDA Contract No. W9113M\u000207-C-0078, and D. R. S., S. S., and J. J. M. acknowledge\r
+support from a MURI sponsored by the Air Force Office\r
+of Scientific Research Contract No. FA9550-06-1-0279.\r
+[1] V. G. Vesalago, Sov. Phys. Usp. 10, 509 (1968).\r
+[2] R. A. Shelby et al., Science 292, 77 (2001).\r
+[3] D. Schurig et al., Science 314, 977 (2006).\r
+[4] J. B. Pendry et al., Phys. Rev. Lett. 76, 4773 (1996).\r
+[5] J. B. Pendry et al., IEEE Trans. Microwave Theory Tech.\r
+47, 2075 (1999).\r
+[6] M. C. K. Wiltshire et al., Science 291, 849 (2001).\r
+[7] D. R. Smith et al., Phys. Rev. Lett. 84, 4184 (2000).\r
+[8] M. Gokkavas et al., Phys. Rev. B 73, 193103 (2006).\r
+[9] T. J. Yen et al., Science 303, 1494 (2004).\r
+[10] S. Linden et al., Science 306, 1351 (2004).\r
+[11] S. Zhang et al., Phys. Rev. Lett. 95, 137404 (2005).\r
+[12] G. Dolling et al., Opt. Lett. 32, 53 (2007).\r
+[13] D. R. Smith et al., J. Opt. Soc. Am. B 23, 391 (2006).\r
+[14] W. J. Padilla et al., Phys. Rev. B 75, 041102(R) (2007).\r
+[15] D. Schurig et al., Appl. Phys. Lett. 88, 041109 (2006).\r
+[16] D. R. Smith et al., Appl. Phys. Lett. 75, 1425 (1999).\r
+[17] CST Studio Suite 2008, CST of America. (2008).\r
+[18] D. R. Smith et al., Phys. Rev. B 65, 195104 (2002).\r
+[19] S. G. Johnson et al., Phys. Rev. E 66, 066608 (2002).\r
+[20] A. F. Starr et al., Phys. Rev. B 70, 113102 (2004).\r
+[21] J. E. Raynolds et al., J. Appl. Phys. 93, 5346 (2003).\r
+[22] P. L. Richards, J. Appl. Phys. 76, 1 (1994).\r
+[23] Q. Gao et al., Electron. Lett. 41, 936 (2005).\r
+[24] I. V. Lindell et al., Electromagnetic Waves in Chiral and\r
+Bi-Isotropic Media (Artech House, Norwood, MA, 1994).\r
+[25] P. Singh et al., Mater. Sci. Eng. B 78, 70 (2000).\r
+[26] T. A. Perera et al., Appl. Opt. 45, 7643 (2006).\r
+[27] W. Lamb et al., Phys. Rev. B 21, 2248 (1980).\r
+[28] J. B. Pendry, J. Mod. Opt. 41, 209 (1994).\r
+[29] J. F. Ohara et al., J. Nanoelectron. Optoelectron. 2, 90\r
+(2007).\r
+[30] W. J. Padilla et al., J. Opt. Soc. Am. B 23, 404 (2006).\r
+[31] H.-T. Chen et al., Nat. Photon. (to be published).\r
+[32] J. Berenger, J. Comp. Physiol. 114, 185 (1994).\r
+[33] A. Taflove et al., Computational Electrodynamics: The\r
+Finite-Difference Time-Domain Method (Artech House,\r
+Norwood, MA, 2000), 3rd ed..\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending\r
+23 MAY 2008\r
+207402-4"""
+
+[metadata]
+title = "landy 2008 prl perfect metamaterial absorber"
+authors = ["Unknown"]
+year = 2008
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Perfect Metamaterial Absorber\r
+N. I. Landy,1 S. Sajuyigbe,2 J. J. Mock,2 D. R. Smith,2 and W. J. Padilla1\r
+1\r
+Department of Physics, Boston College, 140 Commonwealth Avenue, Chestnut Hill, Massachusetts 02467, USA\r
+2\r
+Department of Electrical and Computer Engineering, Duke University, Durham, North Carolina 27708, USA\r
+(Received 6 November 2007; revised manuscript received 10 March 2008; published 21 May 2008)\r
+We present the design for an absorbing metamaterial (MM) with near unity absorbance A\u0001!\u0002. Our\r
+structure consists of two MM resonators that couple separately to electric and magnetic fields so as to\r
+absorb all incident radiation within a single unit cell layer. We fabricate, characterize, and analyze a MM\r
+absorber with a slightly lower predicted A\u0001!\u0002 of 96%. Unlike conventional absorbers, our MM consists\r
+solely of metallic elements. The substrate can therefore be optimized for other parameters of interest. We\r
+experimentally demonstrate a peak A\u0001!\u0002 greater than 88% at 11.5 GHz.\r
+DOI: 10.1103/PhysRevLett.100.207402 PACS numbers: 78.68.+m, 41.20.\u0003q, 78.20.Ci\r
+The nascent field of electromagnetic metamaterials\r
+(MMs) has produced exotic effects such as negative index\r
+of refraction [1,2], and devices such as an electromagnetic\r
+cloak [3]. The realization of such properties lies in the\r
+ability of metamaterials to create independent tailored\r
+electric [4] and magnetic [5] responses to incident radia\u0002tion. Electromagnetic MMs are also geometrically scalable\r
+which translates into operability over a significant portion\r
+of the electromagnetic spectrum. To date, MMs have been\r
+demonstrated in every technologically relevant spectral\r
+range, from radio [6], microwave [7], mm-Wave [8], THz\r
+[9], MIR [10], NIR [11], to the near optical [12]. These\r
+designer materials are ideal for the investigation of novel\r
+emergent physical phenomena while also holding great\r
+promise for future applications.\r
+As an effective medium [13], MMs can be characterized\r
+by a complex electric permittivity \u0001~\u0001!\u0002 \u0004 \u00011 \u0005 i\u00012 and\r
+magnetic permeability \u0002~\u0001!\u0002 \u0004 \u00021 \u0005 i\u00022. Much of the\r
+work in MMs has been focussed on the real part of \u0001 and\r
+\u0002 to enable the creation of a negative refractive material.\r
+However, the oft-overlooked loss components of the opti\u0002cal constants (\u00012 and \u00022) have much potential for the\r
+creation of exotic and useful materials as well. For ex\u0002ample, they can be manipulated to create a high absorber.\r
+By manipulating resonances in \u0001 and \u0002 independently, it is\r
+possible to absorb both the incident electric and magnetic\r
+field. Additionally, by matching \u0001 and \u0002, a MM can be\r
+impedance-matched to free space, minimizing reflectivity.\r
+In this Letter, we show that MMs can be fashioned to create\r
+narrow-band perfect absorbers (PAs), with the potential to\r
+be used in devices such as in bolometers.\r
+A single unit cell of the absorber consisted of two\r
+distinct metallic elements as shown in Figs. 1(a) and\r
+1(b). Electric coupling was supplied by the electric ring\r
+resonator (ERR) [14], shown in Fig. 1(a). This element\r
+consisted of two standard split ring resonators connected\r
+by the inductive ring parallel to the split-wire. We used this\r
+design instead of a conventional split-wire design because\r
+of the limitations of straight wire media [15]; i.e., a split\u0002wire design has limited tunability beyond the addition of\r
+more wires per unit cell to increase inductance [16]. The\r
+magnetic coupling required a more complicated arrange\u0002ment, and thus in order to couple to the incident H-field,\r
+we needed flux created by circulating charges perpendicu\u0002lar to the propagation vector. We created this response by\r
+combining the center wire of the ERR with a cut wire\r
+[Fig. 1(b)] in a parallel plane separated by a substrate\r
+[Fig. 1(c)]. This design is similar to the so-called ‘‘fishnet’’\r
+and paired nanorod structures [11,12], in that they derive a\r
+magnetic response from driving two antiparallel currents in\r
+conducting segments. We were then able to tune the mag\u0002netic response by changing the geometry of the cut wire\r
+and the separation between the cut wire and electric reso\u0002nator. By manipulating the magnetic coupling without\r
+changing the ERR, we were able to decouple \u0001 and \u0002\r
+and individually tune each resonance.\r
+We performed computer simulations of an ideal—but\r
+realizable—MM absorber using the commercial finite\u0002difference time domain (FDTD) solver Microwave Studio\r
+by CST [17]. The program simulated a single unit cell as\r
+shown in Fig. 1(c) with appropriate boundary conditions,\r
+i.e., perfect electric (y^ z^ -plane) and perfect magnetic\r
+(x^ z^ -plane). Waveguide ports on the other boundaries\r
+simulated a TEM plane wave propagating through the\r
+medium. Simulation produced the complex frequency de\u0002pendent S parameters, S~\r
+11 and S~21, where T\u0001!\u0002\u0004jS21j\r
+2\r
+and R\u0001!\u0002\u0004jS11j\r
+2 are the transmission and reflectance,\r
+(a) (b) (c)\r
+H\r
+E,x\r
+k, z\r
+,y\r
+a1\r
+a2\r
+W\r
+G\r
+t\r
+H\r
+L\r
+FIG. 1 (color online). Electric resonator (a) and cut wire (b).\r
+Dimension notations are listed in (a) and (b). The unit cell is\r
+shown in (c) with axes indicating the propagation direction.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending"""
+
+[[sections]]
+number = "23"
+title = "MAY 2008"
+text = """
+0031-9007=08=100(20)=207402(4) 207402-1 © 2008 The American Physical Society
+
+respectively. From the S parameter data, we inverted the\r
+Fresnel equations to extract the complex optical constants\r
+[18]. We then examined the behavior of the surface current\r
+density, magnetic and electric fields at !0 to verify that we\r
+were coupling to the correct resonant mode of each MM\r
+element. By tuning !0 of the \u0001 and \u0002 resonances (not\r
+shown), due to the two MM elements, we achieved \u0001 \u0004 \u0002\r
+and thus an impedance near the free space value. While\r
+100% absorbance is theoretically possible, it can only\r
+occur when the MM layer is impedance-matched to free\r
+space such that R\u0001!\u0002 is zero [19]. One may then minimize\r
+T\u0001!\u0002 such that the addition of multiple layers ensures\r
+T\u0001!\u0002 ! 0. The simulated MM had the dimensions, in\r
+millimeters, of: a1 \u0004 4:2, a2 \u0004 12, W \u0004 3:9, G \u0004 0:606,\r
+t \u0004 0:6, L \u0004 1:7, H \u0004 11:8, and the MM elements were\r
+separated by 0.65 in the z^ direction. In Fig. 2, we show the\r
+simulation results for the MM PA. R\u0001!\u0002 and absorbance\r
+[A\u0001!\u0002] are plotted from zero to 100% (left axis), and T\u0001!\u0002\r
+is plotted on the right axis from zero to 5%. R\u0001!\u0002 is large\r
+\u000697% near the bounds of the plot, 9 GHz and 14 GHz, but\r
+there is a minimum of 0.01% at !0 \u0007 11:65 GHz.\r
+Simulated T\u0001!\u0002 also undergoes a minimum near !0 and\r
+yields a value of \u00060:9%. Thus, we achieve a best simulated\r
+A\u0001!\u0002 \u0004 1 \u0003 T\u0001!\u0002 \u0003 R\u0001!\u0002 slightly less than unity A\u0001!\u0002 \u0004\r
+99% with a FWHM of 4% compared to !0.\r
+While our simulated absorber achieves narrow-band\r
+high A\u0001!\u0002, we were restricted by the minimum line widths\r
+available to us (250 \u0002m) and other various fabrication\r
+tolerances. These limitations were incorporated into the\r
+design process, and we fabricated a MM which deviated\r
+slightly from the ideal absorber and had the dimensions, in\r
+millimeters, of: a1 \u0004 4:2, a2 \u0004 12, W \u0004 4, G \u0004 0:6, t \u0004\r
+0:6, L \u0004 1:7, H \u0004 11:8. Each metallization was fabricated\r
+on a FR4 substrate with a thickness of 0.2 mm. MMs were\r
+fabricated using standard optical lithography. The substrate\r
+consisted of a photosensitized FR-4 board with a 17 \u0002m\r
+copper thickness. A mask was designed and printed in high\r
+resolution on a transparency, and each MM component was\r
+fabricated by standard optical lithography processes. These\r
+boards were then sandwiched (using an adhesive with\r
+0.06 mm thickness) about another 0.2 mm thick FR4 blank\r
+substrate to obtain the correct spacing. The end results was\r
+that the MM elements were separated by 0.72 mm in the z^\r
+direction. This allowed us to couple to both magnetic and\r
+electric resonances without out-of-plane elements typical\r
+with ‘‘wine-crate’’ designs [2].\r
+We experimentally verified the behavior of the absorber\r
+by measuring the complex S parameters of a large planar\r
+array of pixels (outer dimensions of 15 \b 15 cm). We used\r
+a vector network analyzer that produced microwaves in the\r
+range of 8–12 GHz. One microwave horn focused the GHz\r
+beam on the sample, and another horn served as a detector.\r
+Both horns coupled to linearly polarized light and had\r
+parallel polarization directions. To measure T\u0001!\u0002, we set\r
+the horns in a normal incidence confocal configuration. We\r
+performed R\u0001!\u0002 measurements at normal incidence.\r
+However, in order to eliminate large voltage standing\r
+wave ratios (VSWR) which would overwhelm the data,\r
+we used a beam splitter configuration, shown as the inset to\r
+Fig. 3(a). Radiation first traveled from the transmitting\r
+horn through the beam splitter, reflected from the sample\r
+and returned to the beam splitter where it was reflected at\r
+45% to the receiving horn. We set the normalization and\r
+phase in T\u0001!\u0002 configuration by simply removing the sam\u0002ple. For reflection, we replaced the sample with a perfect\r
+reflector for normalized measurements. Transmission tech\u0002niques have been described elsewhere [20].\r
+Simulations were performed for this MM structure and\r
+are presented for comparison to experimental data. R\u0001!\u0002 is\r
+shown as the black (red online) line in Fig. 3(a). At low\r
+frequencies, the reflectivity is high and yields values near\r
+95%. A large feature occurs in R\u0001!\u0002 and has a minimum of\r
+\u00063% near 11.5 GHz. Likewise, T\u0001!\u0002, shown as the black\r
+(red online) line in Fig. 3(b), has 4% T\u0001!\u0002 at low frequen\u0002cies and then undergoes a minimum near 11.25 GHz. A\u0001!\u0002\r
+of our MM unit cell thus has a maximum near where both\r
+R\u0001!\u0002 and T\u0001!\u0002 have their minima. We plot A\u0001!\u0002 as the\r
+Reflectance, Absorbance\r
+Frequency (GHz)\r
+0.00\r
+0.01\r
+0.02\r
+0.03\r
+0.04"""
+
+[[sections]]
+number = "0.05"
+title = "Transmission"
+text = """
+9 10 11 12 13 14\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8"""
+
+[[sections]]
+number = "1.0"
+title = "FIG. 2 (color online). Simulated MM PA. R\u0001!\u0002 (light gray"
+text = """
+line, green online) and A\u0001!\u0002 (black line, red online) are plotted\r
+from zero to 100% (left axis). T\u0001!\u0002 is plotted on the right axis as\r
+the gray line (blue online) on a scale from zero to 5%.\r
+(a)\r
+(b) 0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8"""
+
+[[sections]]
+number = "1.0"
+title = "Reflectance"
+text = """
+8 9 10 11 12\r
+0.00\r
+0.02\r
+0.04\r
+0.06"""
+
+[[sections]]
+number = "0.08"
+title = "Frequency (GHz)"
+text = """
+Transmission\r
+BS\r
+Sample /\r
+Reference\r
+Transmitting\r
+Horn\r
+Receiving\r
+Horn\r
+FIG. 3 (color online). Simulated (black lines, red online) and\r
+measured (gray lines, blue online) T\u0001!\u0002 and R\u0001!\u0002 for the\r
+microwave absorber. (a) Displays R\u0001!\u0002 from zero to 100%. A\r
+schematic of the reflection experiment is shown as the inset to (a)\r
+where BS is the beam splitter. T\u0001!\u0002, shown in (b), are displayed\r
+from zero to 10%. Inset to (b) shows photographs of the both\r
+sides of the MM absorber.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending"""
+
+[[sections]]
+number = "23"
+title = "MAY 2008"
+text = """
+207402-2
+
+black (red online) line in Fig. 4 from 8 to 12 GHz.\r
+Simulated A\u0001!\u0002 peaks at 96% at !0 \u0004 11:48 GHz and\r
+has a FWHM of 4% with respect to !0.\r
+By performing S parameter simulations, we are able to\r
+account for the form of the experimental data. The mea\u0002sured R\u0001!\u0002 and T\u0001!\u0002 are plotted as the gray (blue online)\r
+lines in Figs. 3(a) and 3(b), respectively. We find excellent\r
+agreement between simulated and measured T\u0001!\u0002 over all\r
+frequencies characterized. The measured R\u0001!\u0002 is consis\u0002tently 8% lower than the simulated R\u0001!\u0002 at low frequen\u0002cies. Both the simulated and experimental R\u0001!\u0002 reach a\r
+minimum at approximately 11.5 GHz, but experimentally,\r
+the minimum is 11%, as opposed to the simulated value of\r
+3%. There is also significant broadening in the experimen\u0002tal R\u0001!\u0002 line with respect to simulation. This is most likely\r
+due to tolerances in the fabrication and assembly.\r
+The experimental absorptivity A\u0001!\u0002 calculated from\r
+T\u0001!\u0002 and R\u0001!\u0002 is shown as the gray (blue online) line in\r
+Fig. 4. The simulated and experimental lines have maxi\u0002mum A\u0001!\u0002 at the same frequency, !max \u0004 11:5 GHz.\r
+However, the simulated line reaches a maximum of 96%,\r
+and the experimental line only reaches 88%, the difference\r
+being primarily due to deviations in R\u0001!\u0002. Better fabrica\u0002tion and assembly tolerances will permit absorbances and\r
+bandwidths similar to that shown as the black (red online)\r
+line in Fig. 4. We performed simulations to verify the origin\r
+of the broadening of A\u0001!\u0002. From a theoretical viewpoint, it\r
+is expected that the frequency location of the A\u0001!\u0002 peak\r
+depends significantly upon the separation between the\r
+electric ring resonator and the cut wire, since this distance\r
+determines the frequency location of the magnetic reso\u0002nance. Simulations verified this conjecture. We simulated\r
+various spacings centered about the designed value of\r
+0.72 mm, and computed a Gaussian weighted average\r
+A\u0001!\u0002 with a standard deviation of \u0003 \u0004 20 \u0002m. The A\u0001!\u0002\r
+calculated in this manner agrees very well with the experi\u0002mental line and is plotted as the gray dashed line in the\r
+main panel of Fig. 4. Thus, assembly errors in the MM\r
+spacing of only 5% can easily account for the disagreement\r
+between the simulation and experiment shown in Fig. 4 as\r
+the black and gray (red and blue online) lines, respectively.\r
+An investigation into the effect of adding multiple MM\r
+absorbing layers is shown in the main panel of Fig. 5. As\r
+can be observed, A\u0001!\u0002 rises sharply with additional layers\r
+and is asymptotic to unity, within computational noise.\r
+Two layers of the MM absorber achieve a value of\r
+\u000699:9972%. At this thickness, the entire MM is only\r
+\u0006\u00040=2 at resonance. For the structure shown in Fig. 1,\r
+A\u0001!0\u0002 can never reach unity since the MM is not perfectly\r
+matched to free space. However, it is important to note that\r
+although an impedance-matched structure may yield zero\r
+R\u0001!0\u0002, this does not imply T\u0001!0\u0002 \u0004 0. In this study, we are\r
+interested in achieving R\u0001!0\u0002 \u0004 T\u0001!0\u0002 \u0004 0 in a single unit\r
+cell in the propagation direction. Thus, our MM structure\r
+was optimized to maximize the A\u0001!\u0002 with the restriction of\r
+minimizing the thickness. If this constraint is relaxed,\r
+impedance matching is possible, and with multiple layers,\r
+a perfect A\u0001!\u0002 can be achieved.\r
+We further investigated the origin of the loss in our MM,\r
+as indicated in the inset to Fig. 5. The Ohmic ‘‘surface’’\r
+loss is mainly from the center conducting region of the\r
+ERR, and dielectric losses occur in between the two MM\r
+elements where the electric field is large. The major com\u0002ponent responsible for A\u0001!\u0002 in our MM structure is the\r
+dielectric loss, and simulation indicates this is an order of\r
+magnitude greater than Ohmic losses. This is consistent\r
+with studies of frequency selective surfaces (FSSs) where it\r
+was found that metallic absorption was relatively insignifi\u0002cant in comparison to dielectric losses [21].\r
+We now discuss the potential application of a perfect\r
+MM absorber as a bolometer. An ideal bolometric detector\r
+is one in which all photons that fall upon its surface are\r
+absorbed, converted to heat, and thus sensed [22]. A\r
+prominent feature of commercially available bolometers\r
+is their extreme bandwidth making them ideal candidates\r
+as detectors, especially in the far infrared frequency regime\r
+where other efficient detection methods are largely un\u0002available. However, bolometers which achieve a narrow\r
+band response also have significant application as focal\r
+plane array (FPA) detectors for imaging. The MM design\r
+presented here achieves simulated absorbtivities near unity\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8"""
+
+[[sections]]
+number = "1.0"
+title = "Absorbance"
+text = """
+8 9 10 11 12\r
+Frequency (GHz)\r
+-20 -10 0 10 20\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8"""
+
+[[sections]]
+number = "1.0"
+title = "A(ωmax)"
+text = """
+Incident Angle\r
+FIG. 4 (color online). Main panel shows the simulated (black\r
+line, red online) and measured (gray line, blue online) A\u0001!\u0002\r
+lines. The dashed gray A\u0001!\u0002 line is a Gaussian weighted average\r
+which approximates assembly error. Inset shows the simulated\r
+angular dependence of the A\u0001!\u0002 at !max.\r
+# Layers\r
+Ohmic Dielectric\r
+Peak Absorbance\r
+12 34 5\r
+0.990\r
+0.992\r
+0.994\r
+0.996\r
+0.998"""
+
+[[sections]]
+number = "1.000"
+title = "FIG. 5 (color online). Simulated A\u0001!\u0002 with increasing MM"
+text = """
+layers; line is a guide to the eye. Insets show the simulated losses\r
+at resonance. The Ohmic loss (surface) is shown in the left inset\r
+panel, and the dielectric (volume) loss is on the right.\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending"""
+
+[[sections]]
+number = "23"
+title = "MAY 2008"
+text = """
+207402-3
+
+making them ideal candidates for bolometric pixel ele\u0002ments. The natural narrow band MM resonance is a salient\r
+feature for FPA detectors as it is naturally apodizing and\r
+operates at room temperature. Since the elements which\r
+constitute our bolometer are subwavelength, MMs can\r
+inherently image at the diffraction limit. Further, here we\r
+have used only a single unit cell in the propagation direc\u0002tion, (with a thickness significantly smaller than the wave\u0002length \u00040=35), yet achieved an experimental A\u0001!\u0002 \u0004 88%.\r
+By adding multiple layers, one can achieve narrow band\r
+absorbance of unity. Although the design is planar and\r
+A\u0001!\u0002 should fall off relatively rapidly, we investigated\r
+the angular dependence (inset to Fig. 4) and found the\r
+MM still achieved A \t :5 at an incident full-angle of"""
+
+[[sections]]
+number = "16"
+title = "Finally, MM scalability permits the usage of these"
+text = """
+PAs at other wavelengths of interest, allowing for the\r
+possibility of room temperature high resolution imaging\r
+at mm-Wave and THz frequencies. We have designed\r
+similar MMs (not shown) that achieved A \t 1 operating\r
+at 94 GHz and 1 THz.\r
+While the creation of a MM absorber is novel, the\r
+technology to create absorptive materials in the microwave\r
+frequency range is well established. A high-impedance\r
+ground plane yields comparable absorbance, but requires\r
+metalization in the propagation direction [23]. The mate\u0002rial ‘‘chiroshield’’ is capable of very high absorption, and\r
+reduces backscatter by 15 to 25 dB [24], but has sizes on\r
+the order of \u0004, which is 35 times larger than our design at a\r
+given center frequency. Some ferrites show reflection loss\r
+of \u000330 dB [25]; however, they lack the inherent and\r
+precise tunability of MMs. Other work on bolometric\r
+frequency-selective materials require cryogenic tempera\u0002tures to operate and only achieve A\u0001!\u0002 \u0004 50% [26]. At\r
+optical, metal colloides are known to have large absorptive\r
+properties [27] due to the geometric specific surface modes\r
+[28]. This suggests an interesting possible application of\r
+artificial plasmonic wire media [4] to function as PAs [16]\r
+operating at microwave frequencies.\r
+In conclusion, we have demonstrated that MMs can be\r
+highly absorptive over a narrow frequency range. This\r
+stems from the ability to design MM elements which can\r
+individually absorb the electric and magnetic components\r
+of an incident electromagnetic wave. In contrast, previous\r
+experimental results at THz frequencies using a single type\r
+of MM element (electric) yielded values of only A\u0001!\u0002 \u0004\r
+\u000620% [29]. The resonant frequency of the MMs may be\r
+tuned throughout some range of frequencies [30,31] thus\r
+enabling hyperspectral imaging. A further benefit afforded\r
+by MMs is the ability to construct a single unit cell with\r
+\u0002\u0001!\u0002 \u0004 \u0001\u0001!\u0002 over an extended frequency range. Thus, this\r
+unit cell can achieve zero R\u0001!\u0002 since it can have an\r
+impedance equal to the free space value Z \u0004 \u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002=\u0001 p \u0004 1.\r
+This is similar to the well-known theoretical construct, the\r
+Perfectly Matched Layer (PML) Absorbing Boundary\r
+Condition (ABC) [32], which splits waves incident upon\r
+a boundary into electric and magnetic components to ob\u0002tain near perfect absorption. The PML, however, requires\r
+gain and additionally is on the order of \u00040=2 in thickness\r
+[33].\r
+The design presented here can still be improved. The\r
+current design is polarization sensitive, which is not ideal\r
+for some applications. By incorporating a substrate with a\r
+highly consistent dielectric constant, we will be able to\r
+optimize the design at the correct resonant frequency.\r
+Similarly, tighter fabrication tolerances would allow us to\r
+bring the impedance closer to unity and therefore closer to\r
+A\u0001!\u0002 \u0004 1. Additionally, the assembly is complicated due\r
+the restrictions placed on the direction of the incident wave\r
+to couple to the magnetic resonator. This resulted in unit\r
+cell variation and a less distinct A\u0001!\u0002 peak.\r
+N. I. L. and W. J. P. acknowledge support from the Los\r
+Alamos National Laboratory LDRD program, D. R. S. ac\u0002knowledges support from MDA Contract No. W9113M\u000207-C-0078, and D. R. S., S. S., and J. J. M. acknowledge\r
+support from a MURI sponsored by the Air Force Office\r
+of Scientific Research Contract No. FA9550-06-1-0279.\r
+[1] V. G. Vesalago, Sov. Phys. Usp. 10, 509 (1968).\r
+[2] R. A. Shelby et al., Science 292, 77 (2001).\r
+[3] D. Schurig et al., Science 314, 977 (2006).\r
+[4] J. B. Pendry et al., Phys. Rev. Lett. 76, 4773 (1996).\r
+[5] J. B. Pendry et al., IEEE Trans. Microwave Theory Tech.\r
+47, 2075 (1999).\r
+[6] M. C. K. Wiltshire et al., Science 291, 849 (2001).\r
+[7] D. R. Smith et al., Phys. Rev. Lett. 84, 4184 (2000).\r
+[8] M. Gokkavas et al., Phys. Rev. B 73, 193103 (2006).\r
+[9] T. J. Yen et al., Science 303, 1494 (2004).\r
+[10] S. Linden et al., Science 306, 1351 (2004).\r
+[11] S. Zhang et al., Phys. Rev. Lett. 95, 137404 (2005).\r
+[12] G. Dolling et al., Opt. Lett. 32, 53 (2007).\r
+[13] D. R. Smith et al., J. Opt. Soc. Am. B 23, 391 (2006).\r
+[14] W. J. Padilla et al., Phys. Rev. B 75, 041102(R) (2007).\r
+[15] D. Schurig et al., Appl. Phys. Lett. 88, 041109 (2006).\r
+[16] D. R. Smith et al., Appl. Phys. Lett. 75, 1425 (1999).\r
+[17] CST Studio Suite 2008, CST of America. (2008).\r
+[18] D. R. Smith et al., Phys. Rev. B 65, 195104 (2002).\r
+[19] S. G. Johnson et al., Phys. Rev. E 66, 066608 (2002).\r
+[20] A. F. Starr et al., Phys. Rev. B 70, 113102 (2004).\r
+[21] J. E. Raynolds et al., J. Appl. Phys. 93, 5346 (2003).\r
+[22] P. L. Richards, J. Appl. Phys. 76, 1 (1994).\r
+[23] Q. Gao et al., Electron. Lett. 41, 936 (2005).\r
+[24] I. V. Lindell et al., Electromagnetic Waves in Chiral and\r
+Bi-Isotropic Media (Artech House, Norwood, MA, 1994).\r
+[25] P. Singh et al., Mater. Sci. Eng. B 78, 70 (2000).\r
+[26] T. A. Perera et al., Appl. Opt. 45, 7643 (2006).\r
+[27] W. Lamb et al., Phys. Rev. B 21, 2248 (1980).\r
+[28] J. B. Pendry, J. Mod. Opt. 41, 209 (1994).\r
+[29] J. F. Ohara et al., J. Nanoelectron. Optoelectron. 2, 90\r
+(2007).\r
+[30] W. J. Padilla et al., J. Opt. Soc. Am. B 23, 404 (2006).\r
+[31] H.-T. Chen et al., Nat. Photon. (to be published).\r
+[32] J. Berenger, J. Comp. Physiol. 114, 185 (1994).\r
+[33] A. Taflove et al., Computational Electrodynamics: The\r
+Finite-Difference Time-Domain Method (Artech House,\r
+Norwood, MA, 2000), 3rd ed..\r
+PRL 100, 207402 (2008) PHYSICAL REVIEW LETTERS week ending"""
+
+[[sections]]
+number = "23"
+title = "MAY 2008"
+text = "207402-4"
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 4
+image_path = "images/image_p4_3.png"

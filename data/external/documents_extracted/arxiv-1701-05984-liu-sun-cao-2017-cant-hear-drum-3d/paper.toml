@@ -1,0 +1,1706 @@
+equations = []
+tables = []
+full_text = """
+We can’t hear the shape of drum: revisited in 3D case\r
+Xiao Hui Liu1, Jia Chang Sun1, Jian Wen Cao1\r
+Abstract\r
+“Can one hear the shape of a drum?”was proposed by Kac in 1966. The simple answer is\r
+NO as shown through the construction of iso-spectral domains. There already exists 17 fam\u0002ilies of planar domains which are non-isometric but display the same spectra of frequencies.\r
+These frequencies, deduced from the eigenvalues of the Laplacian, are determined by solving\r
+the wave equation in a domain, which is subject to Dirichlet boundary conditions. This\r
+paper revisits the serials of reflection rule inherent in the 17 families of iso-spectral domains.\r
+In accordance with the reflection rule visualized by “red-blue-black”, we construct real 3D\r
+iso-spectral models successfully. What’s more, accompanying with the proof of transplanta\u0002tion method, we also use the numerical method to verify the iso-spectrality of the 3D models.\r
+Keywords:17 families of iso-spectral pairs; Reflection rule; Transplantation method; 3D\r
+iso-spectral models.\r
+AMS Subject Classification (2000): 65N25\r
+1 Introduction\r
+The famous question as to whether the shape of a drum can be heard has existed for half a\r
+century[1], which deduces to the eigenvalues problem of a vibrating membrane in the Euclidean\r
+space. Thus if you know the frequencies at which a drum vibrates, can you determine its shape?\r
+As we know, the vibration of a drum which spans a domain Ω in R\r
+2\r
+is governed by the wave\r
+equation with Dirichlet boundary\r
+∂\r
+2ν\r
+∂t2\r
+−\r
+\u0012\r
+∂\r
+2ν\r
+∂x2\r
++\r
+∂\r
+2ν\r
+∂y2\r
+\u0013\r
+= 0, in Ω, (1.1)\r
+ν = 0, on ∂Ω, (1.2)\r
+where ν = ν(x, y, t) denotes the transverse displacement of a point (x, y) in Ω at time t. Seeking\r
+a solution by separation of variables ν(x, y, t) = F(t)u(x, y), we obtain the stationary equation\r
+∆u + λu = 0, in Ω, (1.3)\r
+u = 0, on ∂Ω. (1.4)\r
+It is classical that there is an ordered set {λk, k = 1, 2, . . .} known as eigenvalue spectrum.\r
+0 < λ1 < λ2 ≤ . . . ≤ λk . . . ; λk → +∞, if k → +∞. (1.5)\r
+The value λk relates to the frequency of the drum with corresponding eigenfunction uk. Two\r
+bounded domains, Ω1 and Ω2, which have the same set of eigenvalues are called iso-spectral.\r
+Additionally, Ω1 and Ω2 are termed isometric if they are congruent in the sense of Euclidean\r
+geometry. It is the popularization of Kac’s question as to whether there can exist two iso-spectral\r
+1State Key Laboratory of Computer Science, Institute of Software, Chinese Academy of Sciences, Beijing\r
+100190, P.R. China\r
+E–mail addresses: xiaohui2014@iscas.ac.cn, jiachang@iscas.ac.cn, jianwen@iscas.ac.cn\r
+1\r
+arXiv:1701.05984v1 [math-ph] 21 Jan 2017
+
+but non-isometric domains in the real face. It wasn’t until 1992 that Gordon et al. [12] answered\r
+negatively by finding a pair of non-isometric planar domains with the same Laplace spectrum.\r
+Actually at Kac’s time it was known that the answer is NO in the realm of Riemannian\r
+manifolds. J. Milnor had constructed two flat tori of dimension 16 which are iso-spectral but not\r
+isometric [2]. In the ensuing 25 years many examples of iso-spectral manifolds mathematically\r
+were found, whose dimensions, topology, and curvature properties were discussed. For more\r
+detailed specification, please see [3, 4, 5, 6, 7, 8, 9]. The crucial step was achieved in 1985 by\r
+Sunada [10]. The simplest, but abstract theorem gives a sufficient condition for building pairs of\r
+iso-spectral manifolds. So, the paradigmatic example given by Gordon et al. was also generated\r
+from Sunada’s theorem. In fact, the other examples which were constructed after 1992 all\r
+followed Sunada’s theorem. Buser et al. gave 17 families of iso-spectral pairs in planar case, and\r
+a particularly simple method called transplantation technique for detecting iso-spectrality [16].\r
+Interestingly, Chapman has visualized the transplantation map in terms of “paper-folding” [23].\r
+With the paper-folding method, it is clear that what matters is the way how the building blocks\r
+are glued together (i.e. reflection rule), irrespective of their shape. More exotic iso-spectral\r
+shapes can be made just following the same patten of reflection rule.\r
+It should be remarked that the transplantation method is not independent of the Sunada’s\r
+theorem. In a summary paper [17], Brooks present four proofs of the Sunada’s theorem including\r
+the alternative proof based on the transplantation method. Continuously, Okada and Shudo\r
+employed the transplantation method to verify the equivalence between iso-spectrality and iso\u0002length [18]. 17 families of iso-length graph called “transplantation pairs” were enumerated to\r
+compare with the preexisting planar iso-spectral pairs. Following the edged-graph proposed in\r
+[18], theoretical physicist Giraud made a C program to exhaust all possible pairs numerically\r
+[25][26]. He blazed a trial combining with the finite projective plane approach to explain the\r
+reasons for the existence of iso-spectral pairs. Still, essentially only 17 families of examples\r
+that say no to Kac’s question were constructed in a 50 year period. Thus far, all examples of\r
+non-congruent iso-spectral domains in Euclidean space are non-convex. Please see [13, 14] for\r
+the convex domain in hyperbolic plane. Giraud and Thas [27] have done good job by reviewing\r
+mathematical and physical aspects of iso-spectrality, covering wide range of knowledge including\r
+also pioneering contributions of the authors.\r
+Although iso-spectrality is proved on mathematical grounds, the knowledge of exact eigenval\u0002ues and eigenfunctions can not be obtained analytically for such systems. Experiments including\r
+numerical investigation and physical implementation contribute a lot. Early in 1994, Wu and\r
+Sprung [28] verified the iso-spectrality of the first pair (termed as GWW ) numerically by an ex\u0002trapolated mode-matching method. The “analytical” 9th and 21st modes there, corresponding\r
+to known simple modes of the underlying triangles, were not only emphasized but were taken\r
+at their exact values to 4-5 digits. Subsequently, Driscoll [30], using a much more accurate\r
+modified domain-decomposition method [31], verified iso-spectrality to 12 significant digits for\r
+the first 25 modes, including the two “analytical” modes. In 2005, the same or better accu\u0002racy was achieved by Betcke and Trefethen with a simple approach [32]. They modified the\r
+famous method–Method of Particular Solutions [33], and revived it to calculate eigenvalues and\r
+eigenmodes of the Laplacian in planar regions.\r
+On the experimental side, Sridhar and Kudrolli [29] performed measurements on thin mi\u0002crowave cavities shaped like GWW. The measured spectrum has subsequently been confirmed by\r
+Wu’s numerical simulation [28]. Then Even and Pieranski [34] constructed actual shaped small\r
+“drums”–membranes made from liquid crystal smectic films, and measured their vibrations. To\r
+see earlier physical results, please refer [19, 20, 21] and references therein. More recently, Moon\r
+et al. [36] utilized the iso-spectrality of the electronic nanostructures to extract the quantum\r
+phase distributions. Interestingly, they checked that one could indeed “hear” iso-spectrality by\r
+converting the average measured spectra into audio frequencies. For more details, please see the\r
+movie caption in [36]. Later, phase extraction in disordered iso-spectral shapes was numerically\r
+2
+
+emphasized in [37]. Furthermore, P. Amore [38] extended the iso-spectrality to a wider class of\r
+physical problems, including the cases of heterogeneous drums and of quantum billiards in an\r
+external field.\r
+The most basic known planar iso-spectral domains (GWW) are nine-sided polygons that\r
+have also been termed as Bilby and Hawk [35]. Each is a polyform composed of seven identical\r
+triangles and created via a specific series of reflections, such that every triangle is the mirror\r
+image of its neighbors. Actually, they are a simplified version of the pair 73. Previously based\r
+on the reflection rule of 73, Cox [40] constructed three dimensional iso-spectral domains. In\r
+addition, 45 shapes assembled by unit cube, square-based prism and right-angled wedge were\r
+depicted to show non-isospectrality in Moorhead’s Ph.D. thesis [39]. While the GWW solid iso\u0002spectral prisms (please also see [37]) take the equal eigenvalues, they are just constructed from\r
+GWW by sweeping the face into a third orthogonal direction for the same distance. We revisit\r
+the serials of reflection rule inherent in the 17 families of iso-spectral domains, and visualize\r
+the rule in color red-blue-black. Figure 1 depicts the specific shape in 2D case. In accordance\r
+with the reflection rule, we successfully construct real 3D iso-spectral models assembled by\r
+seven tetrahedrons. The eigenfunctions of our 3D models are not only transplantable, but also\r
+numerically equal .\r
+In Section 2 we will study the transplantation method that guarantees the isospectrality\r
+of the 17 planar pairs. In Section 3 we show how to construct the iso-spectral models in 3D\r
+space. In Section 4 we present some visualized 3D pairs which are iso-spectral and non-isometric.\r
+Finally, conclusion remark briefly shows that the extension of constructing iso-spectral pairs can\r
+also be used in higher dimensions.\r
+3
+
+Figure 1. 17 families of iso-spectral pairs constructed by Buser et al. [16]. The gallery of examples\r
+represents not a single pair of iso-spectral domains, but a whole family of pairs of iso-spectral domains,\r
+gotten by replacing the equilateral triangles with general triangles. It is not the shape of basic building\r
+block, but the series of reflection which is important. The mirror reflection rule is visualized in color\r
+red-blue-black. The yellow edge means the overlapped boundary edge. For more special properties (e.g.\r
+overlapping, isometric), see the appendix in review [27].\r
+The classifications are illustrated below:\r
+• 7 tiles with 3 pairs: 71, 72, 73;\r
+• 13 tiles with 9 pairs: 131, 132, · · · , 139;\r
+• 15 tiles with 4 pairs: 151, 152, 153, 154;\r
+• 21 tiles with 1 pairs: 211.\r
+4
+
+2 Transplantation method\r
+The transplantation proof was first applied to Riemann surfaces by Buser [11], and to reexamine\r
+iso-spectrality of planar domains given in [16]. Quoting sentence from Buser “We shall show that\r
+the eigenfunctions on the first surface can be suitable transplanted to yield eigenfunctions with\r
+the same eigenvalue on the second surface and vice-versa”, we know suitable transplantation is\r
+important. B´erard [15] followed this versatile method to reproof the iso-spectrality of the pair\r
+constructed by Gordon et al.. Okada and Shudo [18] formalised the matrix representation (i.e.\r
+transplantation matrix T) of transplantation of eigenfunctions. In fact, it turns out that the\r
+matrix T is just the incidence matrix of the graph associated with a certain finite projective\r
+space [25] [26]. Giraud and Thas [27] reviewed the fascinating relation between the iso-spectral\r
+pairs and geometry of vector spaces over finite fields. Illustrating one simple method to obtain\r
+transplantation matrix of the 17 pairs, we follow the definition mentioned in [18, 25, 26, 27],\r
+and describe it with red-blue-black reflection rule.\r
+Figure 2. The special pair of 211: termed as Aye-Aye and Beluga [36]. Each is a polyform composed\r
+of 21 identical triangles with angles (30o, 60o, 90o), and created via a specific series of mirror reflections\r
+(e.g. basic tile labeled 1 is mirrored to tile 2 by red side). The labels can be arbitrary, for convenience,\r
+we keep them consistent with the labels in [36].\r
+Definition 2.1. The transplantation matrix T must be such that\r
+T Aν = B\r
+νT, ν = 1 (red), 2 (blue), 3 (black). (2.1)\r
+In Equation (2.1), matrices Aν and Bν describe how the tiles are glued togethers (i.e. reflection\r
+rule). For example,\r
+• Aν\r
+i,j = 1 if and only if the edge number (color) ν of i glues tile i to tile j;\r
+• Aν\r
+i,i = −1 if the edge number ν of i glues nothing (boundary);\r
+• 0, otherwise.\r
+For special pair of 211 depicted in Figure 2 , ν runs form 1 to 3 (red to black). That is also\r
+alternatively corresponding with middle, long and short edge. If you keep the labels of Aye-Aye\r
+and Beluga shape, line i contains a 1 at the column j where i and j are glued by their red\r
+side; Otherwise the red side is the boundary of the tile, line i contains a -1. So for the red side,\r
+the matrix A1(associated with the Aye-Aye shape) would be that A1\r
+1,2 = 1, A12,1 = 1, A13,3 =\r
+−1, A1\r
+4,5 = 1, A15,4 = 1 and so on. Similarly the B1 matrix would be associate with the Beluga\r
+5
+
+Figure 3. Three iso-spectral pairs following the reflection rule of 73 (e.g. basic tile labeled 1 is mirrored\r
+to tile 2 by blue side). (A) This pair is isometric with equilateral triangle as the basic tile. (B) This pair is\r
+non-isometric with (30o, 60o, 90o) triangle as the basic tile. Sleeman and Hua [24] utilized it to construct\r
+iso-spectral domains with fractal border. (C) This pair (GWW) is the paradigmatic pair constructed by\r
+Gordon et al.\r
+shape and yields B1\r
+1,2 = 1, B12,1 = 1, . . . , B16,6 = −1 and so on. Then once you have all matrices\r
+Aν and Bνfor the three sides, finding T just amounts to solving a system of equation. If we\r
+keep the notations that T := {Cij}N×N (N represents 7, 13, 15, 21), combining reflection rule\r
+in Figure 3 with definition 2.1, T can be calculated in the following form:\r
+T =\r
+\r
+\r
+C11 −C13 C13 −C13 −C11 C11 C13\r
+−C13 C11 −C13 C13 C13 −C11 −C11\r
+C13 −C13 C11 −C13 −C11 C13 C11\r
+−C11 C13 −C13 C11 C13 −C13 −C11\r
+C13 −C11 C13 −C11 −C11 C13 C13\r
+−C11 C11 −C11 C13 C13 −C13 −C13\r
+−C13 C13 −C11 C11 C13 −C11 −C13\r
+\r
+\r
+. (2.2)\r
+C11 and C13 are the two remaining degrees of freedom after solving Equations (2.1). Extracting\r
+C11 and C13 from Equation (2.2), hence T is simplified like this\r
+T = C11T3 + C13T4, C11 6= C13. (2.3)\r
+Tk has only k nonzero entries in each row and each column. In Buser’s words [16], T3 is the\r
+original mapping while T4 is the complementary mapping. Any linear combination like Equation\r
+(2.3) will also be a transplantation mapping. Once C11 is equal to C13, there will be the nodal line\r
+case (i.e. eigenfunctions will vanish, see book [41] for the explaination), in which the “analytical”\r
+solutions appear.\r
+One can show that transplantation is a sufficient condition to guarantee iso-spectrality (if\r
+the matrix T is not merely a permutation matrix, in which case the two domains would just\r
+have the same shape). The underlying idea is that if φ is an eigenfunction of the first domain\r
+6
+
+and φi\r
+its restriction to tile i, then one can build an eigenfunction ϕ of the second domain as\r
+ϕi = C\r
+X\r
+N\r
+j=1\r
+Tijφj , i = 1, 2, . . . , N. (2.4)\r
+C is some normalization factor in Equation (2.4). The smoothness of ϕi can be easily checked on\r
+all reflecting sides and zero boundary conditions of the second domain, if the above conditions\r
+are satisfied. Following this procedure, the two domains discussed will then be iso-spectral, since\r
+the same map transposing eigenfunctions of the second domain onto the first domain will work\r
+as before. For more mathematical proof, please see pp. 8 in review [27]. Simultaneously, you\r
+can also refer Chapman’s paper-folding for the visualization of transplantation.\r
+As previously described, it is not even necessary for the basic tile to be a triangle. Arbitrary\r
+shape with at least three edges will work. We simply choose a triangle with three sides to\r
+represent the three edges, on which we will reflect the shape. Experiments drawn on frames of\r
+arbitrary shapes were conducted by Even and Pieranski [34] using vibrations of smectic films.\r
+Meanwhile, two series of reflections generating from 73 were highly emphasized. Taking the\r
+words of Even and Pieranski, If one broke the reflection rule, the consequences on the spectrum\r
+are drastic. Moon et al. [27] also designed one “Broken Hawk” violating the rule, which led\r
+significantly difference compared with the spectrum of Bilby and Hawk. In summary, specific\r
+reflection rules inherent in the 17 iso-spectral pairs are very important, when associating with\r
+transplantation matrix to transplant eigenfunctions. Although this theorem considers the 2D\r
+case only, the 3D case is similar.\r
+With notations α and β meaning formal parameters, the calculating results of transplantation\r
+matrix for 17 iso-spectral pairs are given below:\r
+• 7 tiles: T = αT3 + βT4, α 6= β;\r
+• 13 tiles: T = αT4 + βT9, α 6= β;\r
+• 15 tiles: T = αT7 + βT8, α 6= β;\r
+• 21 tiles: T = αT5 + βT16, α 6= β.\r
+Remark 2.2. It is easy to obtain similar relations for Neumann boundary conditions by con\u0002jugating all matrices Aν and Bν\r
+in definition 2.1, with a diagonal entry Aν\r
+i,i = 1 according to\r
+whether tile i glues nothing (boundary).\r
+3 How to construct the 3D iso-spectral models\r
+In this section, we explain the idea of constructing iso-spectral pairs in 3D space, which also\r
+can be seen as a real extension of the 2D pairs. There are a number of options for selecting\r
+basic tile in 3D space, such as parallelepiped, tetrahedron, etc. Once you have selected the\r
+basic tile (tetrahedron for example), you only need to fix one of its faces (meaning that you just\r
+forget about it) and color the three other faces by red, blue and black. Then you do the mirror\r
+reflection with respect to red, blue and black according to the rule. That will automatically\r
+generate many 3D iso-spectral pairs.\r
+3.1 Extensions of 71 for instance\r
+In order to facilitate the description of this extension, we first discuss the propeller-shaped\r
+example [16], generated from the 71 pair. In both propellers the central triangle labelled “0” has\r
+a distinguishing property: its sides connect the three inward corners of the propeller. Based on\r
+this property, we choose one basic tetrahedron placing the position “0” of Figure 4. Following\r
+7
+
+the same orientation, we only need to perform the series of reflections rule depicted in Figure 4.\r
+It is remarked that the biggest difference between 2D and 3D is that 2D is reflected by edges,\r
+while 3D is reflected by faces. The following steps describe how to build up 3D iso-spectral\r
+models.\r
+Figure 4. The propeller and warped propeller iso-spectral pairs. The latter is gotten by replacing the\r
+equilateral triangles with (45o, 60o, 75o) triangles so that the triangles labelled 0 are mapped onto one\r
+another by a translation. The remaining triangles are obtained from these by the appropriate sequence\r
+of reflections, with the indication of the arrows. For convenience, each vertex of the triangle is labelled,\r
+such as Q0, Q1, etc.\r
+• Step 1: Given four 3D vertices to form a basic tetrahedron tile {P0, P1, P2, P3}.\r
+P0 = (x0, y0, z0), P1 = (x1, y1, z1), P2 = (x2, y2, z2), P3 = (x3, y3, z3).\r
+• Step 2: Given 3D face (P1, P2, P3), for a point P0, its mirror reflection mapping can be\r
+expressed as Q0 = Mirror(P0; P1, P2, P3). The relevant calculation formulas are\r
+Q0 = P0 + 2Q0P, Q0P = α1P1 + α2P2 + α3P3, (3.1)\r
+where Q0P is the projection point of P0 on the face with three constrains\r
+(Q0P − P0) · (P2 − P1) = 0, (Q0P − P0) · (P2 − P3) = 0, α1 + α2 + α3 = 1. (3.2)\r
+• Step 3: Fix or forget one 3D face (e.g. (P0, P1, P2)). Then we can obtain the other two\r
+reflection points Q1 and Q2 with respect to faces (P0, P2, P3) and (P0, P1, P3).\r
+Q1 = Mirror(P1; P0, P2, P3), Q2 = Mirror(P2; P0, P1, P3).\r
+So far, four tetrahedrons assembled in our 3D model are as follows.\r
+{P0, P1, P2, P3}, {Q0, P1, P2, P3}, {P0, Q1, P2, P3}, {P0, P1, Q2, P3}.\r
+They are all glued by “colored” faces. With further multilevel mirror operation, the next step\r
+is to construct two models by adding three tetrahedrons in two different ways (Class 71 for\r
+example).\r
+• Class 71 #A: {Q0, Q0P1, P2, P3}, {P0, Q1, Q1P2, P3}, {Q2P0, P1, Q2, P3};\r
+Q0P1 = Mirror(P1; Q0, P2, P3), Q1P2 = Mirror(P2; P0, Q1, P3), Q2P0 = Mirror(P0; P1, Q2, P3).\r
+• Class 71 #B: {Q0, P1, Q0P2, P3}, {Q1P0, Q1, P2, P3}, {P0, Q2P1, Q2, P3};\r
+Q0P2 = Mirror(P2; Q0, P1, P3), Q1P0 = Mirror(P0; Q1, P2, P3), Q2P1 = Mirror(P1; P0, Q2, P3).\r
+Remark 3.1. Sometimes, there will be isometric models in 3D space. In Appendix, we present\r
+3D models constructed by seven unit cubes. Because of the symmetry in unit cube, the models\r
+in Figure 16 and 17 are isometric. Okada and Shudo [18] demonstrated that in 2D case, if\r
+one destructs the symmetry by changing the shape of the building block, such an “accidental”\r
+situation can be avoided. That is also useful in 3D case.\r
+8
+
+3.2 Extensions of 72, 73 for instance\r
+Here, following the arrows’ indications depicted in Figure 5, we can easily construct 3D iso\u0002spectral models as an extension of 72. We choose the basic tetrahedron to replae the position\r
+“0” of Figure 5, and perform the reflection rule continuously. Figure 6 depicts the same situation\r
+of 73. The remaining tetrahedrons will be obtained with further multilevel mirror operation.\r
+For the other 14 families of iso-spectral pairs, their extensions of constructing 3D models are\r
+similar with 71, 72 and 73, so we omit it.\r
+Figure 5. Two planar 72 iso-spectral pairs. The latter is gotten by replacing the equilateral triangles\r
+with (30o, 70o, 80o) triangles (once appeared in [30]) so that the triangles labelled 0 are mapped onto one\r
+another by a translation. For convenience, each vertex of the triangle is labelled, such as Q0, Q1, etc.\r
+Figure 6. Two planar 73 iso-spectral pairs. The latter is gotten by replacing the equilateral triangles\r
+with (30o, 60o, 90o) triangles (once appeared in [24, 36]) so that the triangles labelled 0 are mapped onto\r
+one another by a translation. For convenience, each vertex of the triangle is labelled, such as Q0, Q1, etc.\r
+4 3D examples—Basic Simplex Tetrahedron—Numerical tests\r
+In this section, we shall present 3D iso-spectral models constructed by seven Basic Simplex\r
+Tetrahedrons (0 ≤ y ≤ x ≤ z ≤ 1). Numerical method finite difference is emphasized to verify\r
+the iso-spectrality of the 3D models.\r
+• Step 1. Given four 3D vertices of the Basic Simplex with coordinate,\r
+P0 = {0, 0, 0}, P1 = {0, 0, 1}, P2 = {1, 0, 1}, P3 = {1, 1, 1};\r
+• Step 2. Find three mirror points,\r
+Q0 = {0, 0, 2}, Q1 = {1, 0, 0}, Q2 = {0, 1, 1};\r
+• Step 3. Illustrate the four tetrahedrons assembled,\r
+– Simplex 0: {P0, P1, P2, P3}, 0 ≤ y ≤ x ≤ z ≤ 1;\r
+– Simplex 1: {Q0, P1, P2, P3}, 0 ≤ y ≤ x ≤ 2 − z ≤ 1;\r
+– Simplex 2: {P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ x ≤ 1;\r
+9
+
+Figure 7. Four Simplex Tetrahedrons assembled (termed as kernel Simplex), viewing from different an\u0002gles. Face (P0, P1, P2) is special colored to help us forget it when performing reflection rule. Consequently,\r
+faces (Q0, P1, P2), (P0, Q1, P2) and (P0, P1, Q2) are not considered as reflection faces, either.\r
+– Simplex 3: {P0, P1, Q2, P3}, 0 ≤ x ≤ y ≤ z ≤ 1.\r
+As a foundation of constructing non-isometric 3D models, kernel Simplex (depicted in Fig.\r
+7) plays quite an important role, especially for the extension of 71, 72 and 73. Following the\r
+reflection rule, we just conduct the multilevel mirror operation on the kernel Simplex, which\r
+is just adding some tetrahedrons. The following step is to classify two non-isometric models\r
+generated from 71.\r
+• Class 71 #A, three mirror points: Q0P1 = {1, 0, 2}, Q1P2 = {1, 1, 0}, Q2P0 = {0, 0, 2}.\r
+– Simplex 4: {Q0, Q0P1, P2, P3}, 0 ≤ y ≤ 2 − z ≤ x ≤ 1;\r
+– Simplex 5: {P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ x ≤ 1;\r
+– Simplex 6: {Q2P0, P1, Q2, P3}, 0 ≤ x ≤ y ≤ 2 − z ≤ 1.\r
+• Class 71 #B, three mirror points: Q0P2 = {0, 1, 1}, Q1P0 = {2, 0, 0}, Q2P1 = {0, 1, 0}.\r
+– Simplex 4: {Q0, P1, Q0P2, P3}, 0 ≤ x ≤ y ≤ 2 − z ≤ 1;\r
+– Simplex 5: {Q1P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ 2 − x ≤ 1;\r
+– Simplex 6: {P0, Q2P1, Q2, P3}, 0 ≤ x ≤ z ≤ y ≤ 1.\r
+Figure 8. Seven Simplex Tetrahedrons assembled (termed as Class 71 #A), viewing from different angles.\r
+The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons means the\r
+three added tetrahedrons on the Kernel Simplex. Because of the symmetry in Simplex Tetrahedron,\r
+points Q0 and Q2P0 coincide.\r
+Remark 4.1. Figure 8 and 9 depict one 3D iso-spectral pair termed as Class 71 #A and Class\r
+71 #B respectively. They are all assembled by seven Simplex Tetrahedrons in different ways.\r
+Because of the symmetry in the Simplex Tetrahedron, faces (P1, P3, Q0) and (P1, P3, Q2P0)\r
+10
+
+Figure 9. Seven Simplex Tetrahedrons assembled (termed as Class 71 #B), viewing from different angles.\r
+The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons means the\r
+three added tetrahedrons on the Kernel Simplex. Because of the symmetry in Simplex Tetrahedron,\r
+points Q2 and Q0P2 coincide.\r
+coincide in Class 71 #A. Similarly, faces (P0, P3, Q2) and (P0, P3, Q0P2) coincide in Class 71\r
+#B. For this case, we should also consider these faces as the boundary face.\r
+Remark 4.2. Class 71 #A and Class 71 #B are non-isometric. With the aid of the 3D Printing\r
+technique, we obtain two models which are obviously non-congruent. Moreover, utilizing their\r
+distance matrix (the matrix of distances between all vertices), we can also judge they are non\u0002isometric.\r
+In Moorhead’s Ph.D thesis [39], he present 45 shapes to discuss iso-spectrality, using a\r
+simple finite difference scheme to calculate eigenvalues. We are also interested in applying finite\r
+difference method to our 3D iso-spectral models. For more detailed results, please see Table 1.\r
+That is if we let λk be the approximated k-th eigenvalue for the first Class 71 #A and µk be\r
+the approximated k-th eigenvalue for the second Class 71 #B then\r
+max\r
+1≤k≤25\r
+|λk − µk| = 6.2528 × 10−13, kλk − µkkL2 = 1.4503 × 10−12.\r
+The following step is to classify two non-isometric models generated from 72. You can see\r
+the 3D view in Figure 10 and 11.\r
+• Class 72 #A, three mirror points: Q2P1 = {0, 1, 0}, Q1P0 = {2, 0, 0}, [Q1P0]P2 = {1, 1, 0}.\r
+– Simplex 4: {P0, Q2P1, Q2, P3}, 0 ≤ x ≤ z ≤ y ≤ 1;\r
+– Simplex 5: {Q1P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ 2 − x ≤ 1;\r
+– Simplex 6: {Q1P0, Q1, [Q1P0]P2, P3}, 0 ≤ z ≤ y ≤ 2 − x ≤ 1.\r
+• Class 72 #B, three mirror points: Q0P1 = {1, 0, 2}, Q1P2 = {1, 1, 0}, [Q1P2]P0 = {2, 0, 0}.\r
+– Simplex 4: {Q0, Q0P1, P2, P3}, 0 ≤ y ≤ 2 − z ≤ x ≤ 1;\r
+– Simplex 5: {P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ x ≤ 1;\r
+– Simplex 6: {[Q1P2]P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ 2 − x ≤ 1.\r
+Please see Wiki: https://en.wikipedia.org/wiki/3D printing\r
+11
+
+Table 1. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 71 #A and Class\r
+71 #B, using the simple finite difference method ( please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 71 #A Class 71 #B Difference (×10−12)\r
+1 44.4718 44.4718 0.0568\r
+2 62.8210 62.8210 0.0426\r
+3 68.9764 68.9764 0\r
+4 80.4222 80.4222 0.1279\r
+5 86.0231 86.0231 0.0284\r
+6 103.2302 103.2302 0.1279\r
+7 105.6904 105.6904 0.1847\r
+8 110.1293 110.1293 0.0284\r
+9 117.5639 117.5639 0.3411\r
+10 126.6846 126.6846 0.0853\r
+11 130.2792 130.2792 0.3126\r
+12 136.1989 136.1989 0.2842\r
+13 136.5769 136.5769 0.3695\r
+14 142.5582 142.5582 0.6253\r
+15 147.9829 147.9829 0\r
+16 154.1811 154.1811 0.0853\r
+17 161.1378 161.1378 0.1990\r
+18 164.5301 164.5301 0.3979\r
+19 169.0497 169.0497 0.5969\r
+20 172.1153 172.1153 0.3979\r
+21 176.0983 176.0983 0.1705\r
+22 180.6497 180.6497 0.1705\r
+23 185.0137 185.0137 0.0568\r
+24 190.4692 190.4692 0.0284\r
+25 194.8700 194.8700 0.5116\r
+Figure 10. Seven Simplex Tetrahedrons assembled (termed as Class 72 #A), viewing from different\r
+angles. The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons\r
+means the three added tetrahedrons on the Kernel Simplex.\r
+12
+
+Figure 11. Seven Simplex Tetrahedrons assembled (termed as Class 72 #B), viewing from different\r
+angles. The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons\r
+means the three added tetrahedrons on the Kernel Simplex.\r
+The 3D views in Figure 10 and 11 shows Class 72 #A and 72 #B are non-isometric. Please\r
+also see Table 2 for the approximated eigenvalues of this 3D iso-spectral pair. The maximum\r
+difference and L2-norm error are as follows.\r
+max\r
+1≤k≤25\r
+|λk − µk| = 0.6821 × 10−12, kλk − µkkL2 = 1.4167 × 10−12.\r
+Figure 12 shows the GWW prisms which are iso-spectral. They are just constructed from GWW\r
+by sweeping the face into a third orthogonal direction for the same distance.\r
+Figure 12. The GWW prisms once appeared in [22][39].\r
+Table 3 shows the detailed results of the first 25 approximated eigenvalues of Class 73 #A\r
+and Class 73 #B. Similarly, we also calculate the maximum difference and L2-norm error.\r
+max\r
+1≤k≤25\r
+|λk − µk| = 0.6821 × 10−12, kλk − µkkL2 = 1.6766 × 10−12.\r
+Figure 13 depicts the 3D X-ray form of Class 73 #A and 73 #B. At the same time, we also\r
+illustrate other 3D iso-spectral models constructed by Wall Tetrahedrons. Different from the\r
+construction of Class 73 #A and 73 #B, we fix or forget face (P0, P1, P3) and do multilevel\r
+13
+
+Table 2. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 72 #A and Class\r
+72 #B, using the simple finite difference method (please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 72 #A Class 72 #B Difference (×10−12)\r
+1 44.9835 44.9835 0.1137\r
+2 61.4888 61.4888 0.1208\r
+3 70.0240 70.0240 0.3837\r
+4 80.6794 80.6794 0.1705\r
+5 86.2937 86.2937 0.2700\r
+6 102.1243 102.1243 0.1990\r
+7 104.7903 104.7903 0.0711\r
+8 110.7750 110.7750 0.1847\r
+9 121.5084 121.5084 0.2416\r
+10 124.1022 124.1022 0.1279\r
+11 129.6075 129.6075 0.6821\r
+12 136.1989 136.1989 0.0568\r
+13 137.0019 137.0019 0.1421\r
+14 142.1820 142.1820 0.2842\r
+15 146.8989 146.8989 0.0853\r
+16 157.7060 157.7060 0.2842\r
+17 160.9049 160.9049 0.3695\r
+18 163.9460 163.9460 0.1421\r
+19 165.5862 165.5862 0.3411\r
+20 171.1039 171.1039 0.3695\r
+21 178.3842 178.3842 0.3979\r
+22 183.0443 183.0443 0.4547\r
+23 185.0180 185.0180 0.1137\r
+24 191.9694 191.9694 0.2274\r
+25 195.6234 195.6234 0.0284\r
+Table 3. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 73 #A and Class\r
+73 #B, using the simple finite difference method ( please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 73 #A Class 73 #B Difference (×10−12)\r
+1 49.2289 49.2289 0.0213\r
+2 56.0467 56.0467 0.0284\r
+3 72.6396 72.6396 0.1847\r
+4 79.9743 79.9743 0.1137\r
+5 92.0586 92.0586 0.1847\r
+6 99.5111 99.5111 0.3837\r
+7 104.0452 104.0452 0.2274\r
+8 113.2988 113.2988 0.2984\r
+9 120.5720 120.5720 0.1137\r
+10 124.4357 124.4357 0.5542\r
+11 131.7220 131.7220 0\r
+12 133.3562 133.3562 0.3411\r
+13 136.1989 136.1989 0.3695\r
+14 144.0266 144.0266 0.4547\r
+15 152.4877 152.4877 0.1705\r
+16 156.3340 156.3340 0.1137\r
+17 156.5645 156.5645 0.0568\r
+18 162.8653 162.8653 0.3979\r
+19 169.5866 169.5866 0.0853\r
+20 173.2912 173.2912 0.3695\r
+21 179.6543 179.6543 0.0853\r
+22 185.0656 185.0656 0.3979\r
+23 186.5775 186.5775 0.4263\r
+24 190.4249 190.4249 0.1137\r
+25 193.5350 193.5350 0.6821\r
+14
+
+Figure 13. Seven Simplex Tetrahedrons assembled (termed as Class 73 #A and 73 #B), viewing in 3D\r
+X-ray form. Because of symmetry in Simplex Tetrahedron, faces (P1, P3, Q2) and (P1, P3, Q0P2) coincide\r
+in Class 73 #A, faces (P1, P3, Q0) and (P1, P3, Q2P2) coincide in Class 73 #B.\r
+mirror reflection following the rule of 73. Given four 3D vertices of the Basic Wall Tetrahedrons\r
+with coordinate:\r
+P0 = {0, 0, 0}, P1 = {1, 0, 0}, P2 = {0, 1, 0}, P3 = {0, 0, 1}.\r
+We can calculate the mirror points according to Equation (3.1) and Equation (3.2). Figure 14\r
+depicts the two 3D iso-spectral models.\r
+Figure 14. Two 3D models assembled by seven Wall Tetrahedrons, viewing in the 3D X-ray form.\r
+Generated from 73 by fixing the face (P0, P1, P3), this pair is iso-spectral and non-isometric.\r
+Remark 4.3. For Basic Simplex Tetrahedron (0 ≤ y ≤ x ≤ z ≤ 1) , there exists “analytical”\r
+eigenmodes (please refer the explanation of the GWW’s eigenmodes in [30]). The first eigenmode\r
+is expressed in Simplex Tetrahedron of (1\r
+2 + 22 + 32\r
+)π. The first approximated eigenmodes cal\u0002culated by finite difference method are marked in red color, see Table 1-3. Numerical techniques\r
+are therefore employed to approximate such eigenvalues, but even this has its own problems\r
+(e.g. the way to deal with reentrant corners).\r
+Remark 4.4. Note that if the colors of faces are permuted the resulting 3D pairs also become\r
+iso-spectral. For example, the pair 71 represents three distinguishable pairs of models for a fixed\r
+tetrahedron.\r
+15
+
+5 Conclusion\r
+Milnor’s work is not a direct answer to the original version of Kac’s question because it is\r
+not concerned with the planar domains. But from Milnor’s example one learned that there\r
+really exists non-congruent domains with the same eigenvalue spectrum. From a mathematical\r
+point of view, the spectrum of a drum corresponds to the set of eigenvalues of the negative\r
+Laplacian on a given planar domain, where the solutions vanish at the border (Dirichlet boundary\r
+conditions). Sunada’s idea was to reduce the problem of finding iso-spectral manifolds to a group\u0002theoretical problem, namely, constructing triplets of groups having a certain property. Based on\r
+the Sunada’s method, Buser et al. constructed 17 families of iso-spectral pairs, and confirmed\r
+their iso-spectrality by the transplantation method. Giraud and Thas reviewed the highlighting\r
+mathematical and physical aspects of iso-spectrality.\r
+We revisit the serials of reflection rule inherent in the 17 families of planar iso-spectral\r
+domains. Following the reflection rule visualized by red-blue-black, many 3D iso-spectral models\r
+can be constructed. Especially for the tetrahedron as the basic building block, we present some\r
+visualized 3D pairs which are iso-spectral and non-isometric. This extension of constructing iso\u0002spectral pairs can also be used in higher dimensions, with transplantation method to guarantee\r
+the respective iso-spectrality.\r
+6 Acknowledgements\r
+This work was supported by the National Science Foundation of China (NSFC 91230109). The\r
+first author would like to thank Professor Olivier Giraud for illuminating email indication and\r
+would also like to thank Professor Hua Li, introducing me the software Google SketchUp to\r
+draw the 3D Figures.\r
+A Appendix\r
+First, we show the details of how to obtain the transplantation matrix of Class 71 #A and #B.\r
+• Class 71 #A, seven Simplex Tetrahedrons labelled by i, i = 0, 1, . . . , 6.\r
+– Face: {P1, P2, P3} = {P1, Q2, P3}, (0 1) (3 6);\r
+– Face: {P0, P2, P3} = {Q0, P2, P3}, (0 2) (1 4);\r
+– Face: {P0, P1, P3} = {P0, Q1, P3}, (0 3) (2 5).\r
+• Class 71 #B, seven Simplex Tetrahedrons labelled by i, i = 0, 1, . . . , 6.\r
+– Face: {P1, P2, P3} = {Q1, P2, P3}, (0 1) (2 5);\r
+– Face: {P0, P2, P3} = {P0, Q2, P3}, (0 2) (3 6);\r
+– Face: {P0, P1, P3} = {Q0, P1, P3}, (0 3) (1 4).\r
+A\r
+1 =\r
+\r
+\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+0 0 0 0 1 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+\r
+\r
+, A2 =\r
+\r
+\r
+0 0 1 0 0 0 0\r
+0 0 0 0 1 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 1 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+, A3 =\r
+\r
+\r
+0 0 0 1 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+;\r
+B\r
+1 =\r
+\r
+\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+, B2 =\r
+\r
+\r
+0 0 1 0 0 0 0\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 0 0 1\r
+0 0 0 0 1 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+\r
+\r
+, B3 =\r
+\r
+\r
+0 0 0 1 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+.\r
+By the definition 2.1 in Section 2, we obtain all the commutation relations (permutation matrices\r
+Aν and Bν). Finding T just amounts to solving a system of Equation (2.1).\r
+16
+
+Second,we present two isometric models generated from the Class 71. They are constructed\r
+by seven unit cubes depicted in Figure 16 and 17. The gaps between some cubes are to be\r
+interpreted as having zero boundary.\r
+Figure 15. One unit cube and four unit cubes assembled (termed as Kernel Unit Cube). The colors on\r
+faces help us to perform mirror reflection operation.\r
+Figure 16. Seven unit cubes assembled (generated from Class 71 #A), viewing in two angles. The colors\r
+on faces help us to perform mirror reflection operation.\r
+Figure 17. Seven unit cubes assembled (generated from Class 71 #B), viewing in two angles. The colors\r
+on faces help us to perform mirror reflection operation.\r
+References\r
+[1] M. Kac, Can one hear the shape of a drum? Amer. Math. Monthly 73 (1966) 1-23.\r
+[2] J. Milnor, Eigenvalues of Laplace operator on certain manifolds, Proc. Natl. Acad. Sci. 51\r
+(1964) 542.\r
+17
+
+[3] A. Ikeda, On lens spaces which are iso-spectral but not isometric, Ann. Sci. Ecole Normale\r
+Super. 13 (1980) 303.\r
+[4] M.F. Vigneras, Riemannienes iso-spectrales et non isometrigues, Ann. Math. 112 (1980)\r
+21-32.\r
+[5] H. Urakawa, Bounded domains which are iso-spectral but not congruent, Ann. Sci. Ecole\r
+Norm. Sup. (1982) 441-456.\r
+[6] M.H. Protter, Can one hear the shape of a drum? Revisited, SIAM Review 29 (1987)\r
+185-197.\r
+[7] R. Melrose, Iso-spectral sets of drumheads are compact in C, Math. Sci. Res. Inst. Report\r
+(1983) No. 48-83.\r
+[8] B. Osgood, Phillips R and Sarnak P. Compact iso-spectral sets of face domains, Proc. Natl.\r
+Acad. Sci. 85 (1988a) 5359-5361.\r
+[9] B. Osgood, Phillips R and Sarnak P. Compact iso-spectral sets of surfaces, J. Funct. Anal.\r
+textbf80 (1988b) 212-234.\r
+[10] T. Sunada, Riemannian coverings and iso-spectral manifolds, Ann. of Math. 121 (1985)\r
+169-186.\r
+[11] P. Buser, Iso-spectral Riemann surfaces, Ann. Inst. Fourier 36 (1986) 167-192.\r
+[12] C. Gordon, D.L. Webb, S. Wolpert, Iso-spectral face domains and surfaces via Riemannian\r
+orbifolds, Invent. Math. 110 (1992a) 1-22.\r
+[13] C. Gordon, D.L. Webb, Iso-spectral convex domains in Euclidean space, Math. Research\r
+Lett. 1 (1994) 539-545.\r
+[14] Gordon C, Webb D L. Iso-spectral convex domains in the hyperbolic face, Proc. Natl. Acad.\r
+Sci. 120(3) (1994).\r
+[15] P. Berard, Transplantation et isopectralite, Math. Ann. 292 (1992) 547-559.\r
+[16] P. Buser, J. Conway, P. Doyle, Some planar iso-spectral domains, Int. Math. Res. Notices\r
+9 (1994) 391-400.\r
+[17] R. Brooks R, The Sunada method, Comtemp. Math. 231 (1999) 25-35.\r
+[18] Y. Okada, A. Shudo, Equivalence between iso-spectrality and iso-length spectrality for a\r
+certain class of planar billiard domains, J. Phys. A: Math. Gen. 34 (2001) 5911-5922.\r
+[19] A. Dhar, D.M. Rao, N. UdayaShankar, S. Sridhar, Iso-spectrality in chaotic billiards, Phys\u0002ical Review 68 (2003) 026208.\r
+[20] H.P.W. Gottlied, Iso-spectral circular membrane. Inverse problems 20(1 (2004) 155.\r
+[21] I.W. Knowles, M.L. McCarthy, Iso-spectral membranes: a connection between shape and\r
+density, J. Phys. A: Math. Gen. 37 (2004) 8103-8109.\r
+[22] M. Reuter, F.E. Wolter, N. Peinecke, Laplace-Beltrami spectra as Shape-DNA of surfaces\r
+and solids, Computer-Aided Design 38 (2006) 342-366.\r
+[23] S.J. Chapman, Drums that sound the same. Amer. Math. Monthly 102(2) (1995) 124-138.\r
+[24] B.D. Sleeman, H. Chen, On nonisometric iso-spectral connected fractal domains, Rev. Mat.\r
+Iberoam. 16 (2000) 351-361.\r
+18
+
+[25] O. Giraud, Diffractive orbits in isospectral billiards, J. Phys. A: Math. Gen. 37 (2004)\r
+2571-2764.\r
+[26] O. Giraud, Finite geometries and diffractive orbits in iso-spectral billiards, J. Phys. A:\r
+Math. Gen. 38 (2005) L477.\r
+[27] O. Giraud, K. Thas, Hearing shapes of drums–mathematical and physical aspects of iso\u0002spectrality. Reviews of modern physics 82(3) (2010) 2213-2255.\r
+[28] H. Wu, D.W.L. Sprung, J. Martorell, Numerical investigation of iso-spectral cavities built\r
+from triangles? Phys. Rev. E. 51(1) (1995) 703-708.\r
+[29] S. Scridhar, A. Kudrolli. Experiments on Not Hearing the shape of Drum, Phys. Rev. Lett.\r
+72(14) (1995) 2175-2178.\r
+[30] T.A. Driscoll, Eigenmodes of iso-spectral drums, SIAM Rev. 39(1) (1997) 1-17.\r
+[31] J. Descloux, M. Tolley, An accurate algorithm for computing the eigenvalues of a polygonal\r
+membrane, Comput. Methods Appl. Mech. Engrg. 39 (1983) 37-53.\r
+[32] T. Betcke, L.N.Trefethen, Reviving the Method Of particular Solutions, SIAM Rev. 47(3)\r
+(2005) 469-491.\r
+[33] L. Fox, P. Henrici, C. Moler C, Approximations and bounds for eigenvalues of elliptic\r
+operators, SIAM J. Numer. Anal. 4(1) (1967) 89-102.\r
+[34] C. Even, P. Pieranski, On “hearing the shape of drums”: An experimental study using\r
+vibrating smectic film, Europhysics Lett. 47(5) (1999) 531-537.\r
+[35] T. A. Driscoll, H. P. W. Gottlieb, Isospectral Shapes with Neumann and Alternating Bound\u0002ary Conditions, Phys. Rev. E. 68 (2003) 016702.\r
+[36] C.R. Moon, L.S. Mattos, B.K. Foster, G. Zeltzer, W. Ko, H.C Manoharan. Quantum phase\r
+extraction in iso-spectral electronic nanostructures, Science 319 (2008) 782-787.\r
+[37] M. T¸ olea, B. Ostahie, M. Nit¸˘a, F. T¸ olea, A. Aldea, Phase extraction in disordered iso\u0002spectral shapes. Phys. Rev. E. 85 (2012) 036604.\r
+[38] P. Amore, One cannot hear the density of a drum (and further aspects of iso-spectrality),\r
+Phys. Rev. E. 88(4) (2013) 042915.\r
+[39] S. Moorhead, Can you hear the shape of a cavity? Ph.D. thesis, (2012) University of Oxford.\r
+[40] C. Cox, Iso-spectral Domains in Euclidean 3-Space, Amer. Jour. Under. Res. 11(1) 2012.\r
+[41] R. Courant, D. Hilbert, Methods of mathematical physics. Vol. I. Interscience Publishers,\r
+Inc., New York, N.Y., 1953.\r
+19"""
+
+[metadata]
+title = "arxiv 1701.05984 liu sun cao 2017 cant hear drum 3d"
+authors = ["Unknown"]
+arxiv = "1701.05984"
+year = 2017
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+We can’t hear the shape of drum: revisited in 3D case\r
+Xiao Hui Liu1, Jia Chang Sun1, Jian Wen Cao1\r
+Abstract\r
+“Can one hear the shape of a drum?”was proposed by Kac in 1966. The simple answer is\r
+NO as shown through the construction of iso-spectral domains. There already exists 17 fam\u0002ilies of planar domains which are non-isometric but display the same spectra of frequencies.\r
+These frequencies, deduced from the eigenvalues of the Laplacian, are determined by solving\r
+the wave equation in a domain, which is subject to Dirichlet boundary conditions. This\r
+paper revisits the serials of reflection rule inherent in the 17 families of iso-spectral domains.\r
+In accordance with the reflection rule visualized by “red-blue-black”, we construct real 3D\r
+iso-spectral models successfully. What’s more, accompanying with the proof of transplanta\u0002tion method, we also use the numerical method to verify the iso-spectrality of the 3D models.\r
+Keywords:17 families of iso-spectral pairs; Reflection rule; Transplantation method; 3D\r
+iso-spectral models.\r
+AMS Subject Classification (2000): 65N25"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The famous question as to whether the shape of a drum can be heard has existed for half a\r
+century[1], which deduces to the eigenvalues problem of a vibrating membrane in the Euclidean\r
+space. Thus if you know the frequencies at which a drum vibrates, can you determine its shape?\r
+As we know, the vibration of a drum which spans a domain Ω in R\r
+2\r
+is governed by the wave\r
+equation with Dirichlet boundary\r
+∂\r
+2ν\r
+∂t2\r
+−\r
+\u0012\r
+∂\r
+2ν\r
+∂x2\r
++\r
+∂\r
+2ν\r
+∂y2\r
+\u0013\r
+= 0, in Ω, (1.1)\r
+ν = 0, on ∂Ω, (1.2)\r
+where ν = ν(x, y, t) denotes the transverse displacement of a point (x, y) in Ω at time t. Seeking\r
+a solution by separation of variables ν(x, y, t) = F(t)u(x, y), we obtain the stationary equation\r
+∆u + λu = 0, in Ω, (1.3)\r
+u = 0, on ∂Ω. (1.4)\r
+It is classical that there is an ordered set {λk, k = 1, 2, . . .} known as eigenvalue spectrum.\r
+0 < λ1 < λ2 ≤ . . . ≤ λk . . . ; λk → +∞, if k → +∞. (1.5)\r
+The value λk relates to the frequency of the drum with corresponding eigenfunction uk. Two\r
+bounded domains, Ω1 and Ω2, which have the same set of eigenvalues are called iso-spectral.\r
+Additionally, Ω1 and Ω2 are termed isometric if they are congruent in the sense of Euclidean\r
+geometry. It is the popularization of Kac’s question as to whether there can exist two iso-spectral\r
+1State Key Laboratory of Computer Science, Institute of Software, Chinese Academy of Sciences, Beijing\r
+100190, P.R. China\r
+E–mail addresses: xiaohui2014@iscas.ac.cn, jiachang@iscas.ac.cn, jianwen@iscas.ac.cn\r
+1\r
+arXiv:1701.05984v1 [math-ph] 21 Jan 2017
+
+but non-isometric domains in the real face. It wasn’t until 1992 that Gordon et al. [12] answered\r
+negatively by finding a pair of non-isometric planar domains with the same Laplace spectrum.\r
+Actually at Kac’s time it was known that the answer is NO in the realm of Riemannian\r
+manifolds. J. Milnor had constructed two flat tori of dimension 16 which are iso-spectral but not\r
+isometric [2]. In the ensuing 25 years many examples of iso-spectral manifolds mathematically\r
+were found, whose dimensions, topology, and curvature properties were discussed. For more\r
+detailed specification, please see [3, 4, 5, 6, 7, 8, 9]. The crucial step was achieved in 1985 by\r
+Sunada [10]. The simplest, but abstract theorem gives a sufficient condition for building pairs of\r
+iso-spectral manifolds. So, the paradigmatic example given by Gordon et al. was also generated\r
+from Sunada’s theorem. In fact, the other examples which were constructed after 1992 all\r
+followed Sunada’s theorem. Buser et al. gave 17 families of iso-spectral pairs in planar case, and\r
+a particularly simple method called transplantation technique for detecting iso-spectrality [16].\r
+Interestingly, Chapman has visualized the transplantation map in terms of “paper-folding” [23].\r
+With the paper-folding method, it is clear that what matters is the way how the building blocks\r
+are glued together (i.e. reflection rule), irrespective of their shape. More exotic iso-spectral\r
+shapes can be made just following the same patten of reflection rule.\r
+It should be remarked that the transplantation method is not independent of the Sunada’s\r
+theorem. In a summary paper [17], Brooks present four proofs of the Sunada’s theorem including\r
+the alternative proof based on the transplantation method. Continuously, Okada and Shudo\r
+employed the transplantation method to verify the equivalence between iso-spectrality and iso\u0002length [18]. 17 families of iso-length graph called “transplantation pairs” were enumerated to\r
+compare with the preexisting planar iso-spectral pairs. Following the edged-graph proposed in\r
+[18], theoretical physicist Giraud made a C program to exhaust all possible pairs numerically\r
+[25][26]. He blazed a trial combining with the finite projective plane approach to explain the\r
+reasons for the existence of iso-spectral pairs. Still, essentially only 17 families of examples\r
+that say no to Kac’s question were constructed in a 50 year period. Thus far, all examples of\r
+non-congruent iso-spectral domains in Euclidean space are non-convex. Please see [13, 14] for\r
+the convex domain in hyperbolic plane. Giraud and Thas [27] have done good job by reviewing\r
+mathematical and physical aspects of iso-spectrality, covering wide range of knowledge including\r
+also pioneering contributions of the authors.\r
+Although iso-spectrality is proved on mathematical grounds, the knowledge of exact eigenval\u0002ues and eigenfunctions can not be obtained analytically for such systems. Experiments including\r
+numerical investigation and physical implementation contribute a lot. Early in 1994, Wu and\r
+Sprung [28] verified the iso-spectrality of the first pair (termed as GWW ) numerically by an ex\u0002trapolated mode-matching method. The “analytical” 9th and 21st modes there, corresponding\r
+to known simple modes of the underlying triangles, were not only emphasized but were taken\r
+at their exact values to 4-5 digits. Subsequently, Driscoll [30], using a much more accurate\r
+modified domain-decomposition method [31], verified iso-spectrality to 12 significant digits for\r
+the first 25 modes, including the two “analytical” modes. In 2005, the same or better accu\u0002racy was achieved by Betcke and Trefethen with a simple approach [32]. They modified the\r
+famous method–Method of Particular Solutions [33], and revived it to calculate eigenvalues and\r
+eigenmodes of the Laplacian in planar regions.\r
+On the experimental side, Sridhar and Kudrolli [29] performed measurements on thin mi\u0002crowave cavities shaped like GWW. The measured spectrum has subsequently been confirmed by\r
+Wu’s numerical simulation [28]. Then Even and Pieranski [34] constructed actual shaped small\r
+“drums”–membranes made from liquid crystal smectic films, and measured their vibrations. To\r
+see earlier physical results, please refer [19, 20, 21] and references therein. More recently, Moon\r
+et al. [36] utilized the iso-spectrality of the electronic nanostructures to extract the quantum\r
+phase distributions. Interestingly, they checked that one could indeed “hear” iso-spectrality by\r
+converting the average measured spectra into audio frequencies. For more details, please see the\r
+movie caption in [36]. Later, phase extraction in disordered iso-spectral shapes was numerically\r
+2
+
+emphasized in [37]. Furthermore, P. Amore [38] extended the iso-spectrality to a wider class of\r
+physical problems, including the cases of heterogeneous drums and of quantum billiards in an\r
+external field.\r
+The most basic known planar iso-spectral domains (GWW) are nine-sided polygons that\r
+have also been termed as Bilby and Hawk [35]. Each is a polyform composed of seven identical\r
+triangles and created via a specific series of reflections, such that every triangle is the mirror\r
+image of its neighbors. Actually, they are a simplified version of the pair 73. Previously based\r
+on the reflection rule of 73, Cox [40] constructed three dimensional iso-spectral domains. In\r
+addition, 45 shapes assembled by unit cube, square-based prism and right-angled wedge were\r
+depicted to show non-isospectrality in Moorhead’s Ph.D. thesis [39]. While the GWW solid iso\u0002spectral prisms (please also see [37]) take the equal eigenvalues, they are just constructed from\r
+GWW by sweeping the face into a third orthogonal direction for the same distance. We revisit\r
+the serials of reflection rule inherent in the 17 families of iso-spectral domains, and visualize\r
+the rule in color red-blue-black. Figure 1 depicts the specific shape in 2D case. In accordance\r
+with the reflection rule, we successfully construct real 3D iso-spectral models assembled by\r
+seven tetrahedrons. The eigenfunctions of our 3D models are not only transplantable, but also\r
+numerically equal .\r
+In Section 2 we will study the transplantation method that guarantees the isospectrality\r
+of the 17 planar pairs. In Section 3 we show how to construct the iso-spectral models in 3D\r
+space. In Section 4 we present some visualized 3D pairs which are iso-spectral and non-isometric.\r
+Finally, conclusion remark briefly shows that the extension of constructing iso-spectral pairs can\r
+also be used in higher dimensions.\r
+3
+
+Figure 1. 17 families of iso-spectral pairs constructed by Buser et al. [16]. The gallery of examples\r
+represents not a single pair of iso-spectral domains, but a whole family of pairs of iso-spectral domains,\r
+gotten by replacing the equilateral triangles with general triangles. It is not the shape of basic building\r
+block, but the series of reflection which is important. The mirror reflection rule is visualized in color\r
+red-blue-black. The yellow edge means the overlapped boundary edge. For more special properties (e.g.\r
+overlapping, isometric), see the appendix in review [27].\r
+The classifications are illustrated below:\r
+• 7 tiles with 3 pairs: 71, 72, 73;\r
+• 13 tiles with 9 pairs: 131, 132, · · · , 139;\r
+• 15 tiles with 4 pairs: 151, 152, 153, 154;\r
+• 21 tiles with 1 pairs: 211.\r
+4"""
+
+[[sections]]
+number = "2"
+title = "Transplantation method"
+text = """
+The transplantation proof was first applied to Riemann surfaces by Buser [11], and to reexamine\r
+iso-spectrality of planar domains given in [16]. Quoting sentence from Buser “We shall show that\r
+the eigenfunctions on the first surface can be suitable transplanted to yield eigenfunctions with\r
+the same eigenvalue on the second surface and vice-versa”, we know suitable transplantation is\r
+important. B´erard [15] followed this versatile method to reproof the iso-spectrality of the pair\r
+constructed by Gordon et al.. Okada and Shudo [18] formalised the matrix representation (i.e.\r
+transplantation matrix T) of transplantation of eigenfunctions. In fact, it turns out that the\r
+matrix T is just the incidence matrix of the graph associated with a certain finite projective\r
+space [25] [26]. Giraud and Thas [27] reviewed the fascinating relation between the iso-spectral\r
+pairs and geometry of vector spaces over finite fields. Illustrating one simple method to obtain\r
+transplantation matrix of the 17 pairs, we follow the definition mentioned in [18, 25, 26, 27],\r
+and describe it with red-blue-black reflection rule.\r
+Figure 2. The special pair of 211: termed as Aye-Aye and Beluga [36]. Each is a polyform composed\r
+of 21 identical triangles with angles (30o, 60o, 90o), and created via a specific series of mirror reflections\r
+(e.g. basic tile labeled 1 is mirrored to tile 2 by red side). The labels can be arbitrary, for convenience,\r
+we keep them consistent with the labels in [36].\r
+Definition 2.1. The transplantation matrix T must be such that\r
+T Aν = B\r
+νT, ν = 1 (red), 2 (blue), 3 (black). (2.1)\r
+In Equation (2.1), matrices Aν and Bν describe how the tiles are glued togethers (i.e. reflection\r
+rule). For example,\r
+• Aν\r
+i,j = 1 if and only if the edge number (color) ν of i glues tile i to tile j;\r
+• Aν\r
+i,i = −1 if the edge number ν of i glues nothing (boundary);\r
+• 0, otherwise.\r
+For special pair of 211 depicted in Figure 2 , ν runs form 1 to 3 (red to black). That is also\r
+alternatively corresponding with middle, long and short edge. If you keep the labels of Aye-Aye\r
+and Beluga shape, line i contains a 1 at the column j where i and j are glued by their red\r
+side; Otherwise the red side is the boundary of the tile, line i contains a -1. So for the red side,\r
+the matrix A1(associated with the Aye-Aye shape) would be that A1\r
+1,2 = 1, A12,1 = 1, A13,3 =\r
+−1, A1\r
+4,5 = 1, A15,4 = 1 and so on. Similarly the B1 matrix would be associate with the Beluga\r
+5
+
+Figure 3. Three iso-spectral pairs following the reflection rule of 73 (e.g. basic tile labeled 1 is mirrored\r
+to tile 2 by blue side). (A) This pair is isometric with equilateral triangle as the basic tile. (B) This pair is\r
+non-isometric with (30o, 60o, 90o) triangle as the basic tile. Sleeman and Hua [24] utilized it to construct\r
+iso-spectral domains with fractal border. (C) This pair (GWW) is the paradigmatic pair constructed by\r
+Gordon et al.\r
+shape and yields B1\r
+1,2 = 1, B12,1 = 1, . . . , B16,6 = −1 and so on. Then once you have all matrices\r
+Aν and Bνfor the three sides, finding T just amounts to solving a system of equation. If we\r
+keep the notations that T := {Cij}N×N (N represents 7, 13, 15, 21), combining reflection rule\r
+in Figure 3 with definition 2.1, T can be calculated in the following form:\r
+T =\r
+\r
+\r
+C11 −C13 C13 −C13 −C11 C11 C13\r
+−C13 C11 −C13 C13 C13 −C11 −C11\r
+C13 −C13 C11 −C13 −C11 C13 C11\r
+−C11 C13 −C13 C11 C13 −C13 −C11\r
+C13 −C11 C13 −C11 −C11 C13 C13\r
+−C11 C11 −C11 C13 C13 −C13 −C13\r
+−C13 C13 −C11 C11 C13 −C11 −C13\r
+\r
+\r
+. (2.2)\r
+C11 and C13 are the two remaining degrees of freedom after solving Equations (2.1). Extracting\r
+C11 and C13 from Equation (2.2), hence T is simplified like this\r
+T = C11T3 + C13T4, C11 6= C13. (2.3)\r
+Tk has only k nonzero entries in each row and each column. In Buser’s words [16], T3 is the\r
+original mapping while T4 is the complementary mapping. Any linear combination like Equation\r
+(2.3) will also be a transplantation mapping. Once C11 is equal to C13, there will be the nodal line\r
+case (i.e. eigenfunctions will vanish, see book [41] for the explaination), in which the “analytical”\r
+solutions appear.\r
+One can show that transplantation is a sufficient condition to guarantee iso-spectrality (if\r
+the matrix T is not merely a permutation matrix, in which case the two domains would just\r
+have the same shape). The underlying idea is that if φ is an eigenfunction of the first domain\r
+6
+
+and φi\r
+its restriction to tile i, then one can build an eigenfunction ϕ of the second domain as\r
+ϕi = C\r
+X\r
+N\r
+j=1\r
+Tijφj , i = 1, 2, . . . , N. (2.4)\r
+C is some normalization factor in Equation (2.4). The smoothness of ϕi can be easily checked on\r
+all reflecting sides and zero boundary conditions of the second domain, if the above conditions\r
+are satisfied. Following this procedure, the two domains discussed will then be iso-spectral, since\r
+the same map transposing eigenfunctions of the second domain onto the first domain will work\r
+as before. For more mathematical proof, please see pp. 8 in review [27]. Simultaneously, you\r
+can also refer Chapman’s paper-folding for the visualization of transplantation.\r
+As previously described, it is not even necessary for the basic tile to be a triangle. Arbitrary\r
+shape with at least three edges will work. We simply choose a triangle with three sides to\r
+represent the three edges, on which we will reflect the shape. Experiments drawn on frames of\r
+arbitrary shapes were conducted by Even and Pieranski [34] using vibrations of smectic films.\r
+Meanwhile, two series of reflections generating from 73 were highly emphasized. Taking the\r
+words of Even and Pieranski, If one broke the reflection rule, the consequences on the spectrum\r
+are drastic. Moon et al. [27] also designed one “Broken Hawk” violating the rule, which led\r
+significantly difference compared with the spectrum of Bilby and Hawk. In summary, specific\r
+reflection rules inherent in the 17 iso-spectral pairs are very important, when associating with\r
+transplantation matrix to transplant eigenfunctions. Although this theorem considers the 2D\r
+case only, the 3D case is similar.\r
+With notations α and β meaning formal parameters, the calculating results of transplantation\r
+matrix for 17 iso-spectral pairs are given below:\r
+• 7 tiles: T = αT3 + βT4, α 6= β;\r
+• 13 tiles: T = αT4 + βT9, α 6= β;\r
+• 15 tiles: T = αT7 + βT8, α 6= β;\r
+• 21 tiles: T = αT5 + βT16, α 6= β.\r
+Remark 2.2. It is easy to obtain similar relations for Neumann boundary conditions by con\u0002jugating all matrices Aν and Bν\r
+in definition 2.1, with a diagonal entry Aν\r
+i,i = 1 according to\r
+whether tile i glues nothing (boundary)."""
+
+[[sections]]
+number = "3"
+title = "How to construct the 3D iso-spectral models"
+text = """
+In this section, we explain the idea of constructing iso-spectral pairs in 3D space, which also\r
+can be seen as a real extension of the 2D pairs. There are a number of options for selecting\r
+basic tile in 3D space, such as parallelepiped, tetrahedron, etc. Once you have selected the\r
+basic tile (tetrahedron for example), you only need to fix one of its faces (meaning that you just\r
+forget about it) and color the three other faces by red, blue and black. Then you do the mirror\r
+reflection with respect to red, blue and black according to the rule. That will automatically\r
+generate many 3D iso-spectral pairs."""
+
+[[sections]]
+number = "3.1"
+title = "Extensions of 71 for instance"
+text = """
+In order to facilitate the description of this extension, we first discuss the propeller-shaped\r
+example [16], generated from the 71 pair. In both propellers the central triangle labelled “0” has\r
+a distinguishing property: its sides connect the three inward corners of the propeller. Based on\r
+this property, we choose one basic tetrahedron placing the position “0” of Figure 4. Following\r
+7
+
+the same orientation, we only need to perform the series of reflections rule depicted in Figure 4.\r
+It is remarked that the biggest difference between 2D and 3D is that 2D is reflected by edges,\r
+while 3D is reflected by faces. The following steps describe how to build up 3D iso-spectral\r
+models.\r
+Figure 4. The propeller and warped propeller iso-spectral pairs. The latter is gotten by replacing the\r
+equilateral triangles with (45o, 60o, 75o) triangles so that the triangles labelled 0 are mapped onto one\r
+another by a translation. The remaining triangles are obtained from these by the appropriate sequence\r
+of reflections, with the indication of the arrows. For convenience, each vertex of the triangle is labelled,\r
+such as Q0, Q1, etc.\r
+• Step 1: Given four 3D vertices to form a basic tetrahedron tile {P0, P1, P2, P3}.\r
+P0 = (x0, y0, z0), P1 = (x1, y1, z1), P2 = (x2, y2, z2), P3 = (x3, y3, z3).\r
+• Step 2: Given 3D face (P1, P2, P3), for a point P0, its mirror reflection mapping can be\r
+expressed as Q0 = Mirror(P0; P1, P2, P3). The relevant calculation formulas are\r
+Q0 = P0 + 2Q0P, Q0P = α1P1 + α2P2 + α3P3, (3.1)\r
+where Q0P is the projection point of P0 on the face with three constrains\r
+(Q0P − P0) · (P2 − P1) = 0, (Q0P − P0) · (P2 − P3) = 0, α1 + α2 + α3 = 1. (3.2)\r
+• Step 3: Fix or forget one 3D face (e.g. (P0, P1, P2)). Then we can obtain the other two\r
+reflection points Q1 and Q2 with respect to faces (P0, P2, P3) and (P0, P1, P3).\r
+Q1 = Mirror(P1; P0, P2, P3), Q2 = Mirror(P2; P0, P1, P3).\r
+So far, four tetrahedrons assembled in our 3D model are as follows.\r
+{P0, P1, P2, P3}, {Q0, P1, P2, P3}, {P0, Q1, P2, P3}, {P0, P1, Q2, P3}.\r
+They are all glued by “colored” faces. With further multilevel mirror operation, the next step\r
+is to construct two models by adding three tetrahedrons in two different ways (Class 71 for\r
+example).\r
+• Class 71 #A: {Q0, Q0P1, P2, P3}, {P0, Q1, Q1P2, P3}, {Q2P0, P1, Q2, P3};\r
+Q0P1 = Mirror(P1; Q0, P2, P3), Q1P2 = Mirror(P2; P0, Q1, P3), Q2P0 = Mirror(P0; P1, Q2, P3).\r
+• Class 71 #B: {Q0, P1, Q0P2, P3}, {Q1P0, Q1, P2, P3}, {P0, Q2P1, Q2, P3};\r
+Q0P2 = Mirror(P2; Q0, P1, P3), Q1P0 = Mirror(P0; Q1, P2, P3), Q2P1 = Mirror(P1; P0, Q2, P3).\r
+Remark 3.1. Sometimes, there will be isometric models in 3D space. In Appendix, we present\r
+3D models constructed by seven unit cubes. Because of the symmetry in unit cube, the models\r
+in Figure 16 and 17 are isometric. Okada and Shudo [18] demonstrated that in 2D case, if\r
+one destructs the symmetry by changing the shape of the building block, such an “accidental”\r
+situation can be avoided. That is also useful in 3D case.\r
+8"""
+
+[[sections]]
+number = "3.2"
+title = "Extensions of 72, 73 for instance"
+text = """
+Here, following the arrows’ indications depicted in Figure 5, we can easily construct 3D iso\u0002spectral models as an extension of 72. We choose the basic tetrahedron to replae the position\r
+“0” of Figure 5, and perform the reflection rule continuously. Figure 6 depicts the same situation\r
+of 73. The remaining tetrahedrons will be obtained with further multilevel mirror operation.\r
+For the other 14 families of iso-spectral pairs, their extensions of constructing 3D models are\r
+similar with 71, 72 and 73, so we omit it.\r
+Figure 5. Two planar 72 iso-spectral pairs. The latter is gotten by replacing the equilateral triangles\r
+with (30o, 70o, 80o) triangles (once appeared in [30]) so that the triangles labelled 0 are mapped onto one\r
+another by a translation. For convenience, each vertex of the triangle is labelled, such as Q0, Q1, etc.\r
+Figure 6. Two planar 73 iso-spectral pairs. The latter is gotten by replacing the equilateral triangles\r
+with (30o, 60o, 90o) triangles (once appeared in [24, 36]) so that the triangles labelled 0 are mapped onto\r
+one another by a translation. For convenience, each vertex of the triangle is labelled, such as Q0, Q1, etc.\r
+4 3D examples—Basic Simplex Tetrahedron—Numerical tests\r
+In this section, we shall present 3D iso-spectral models constructed by seven Basic Simplex\r
+Tetrahedrons (0 ≤ y ≤ x ≤ z ≤ 1). Numerical method finite difference is emphasized to verify\r
+the iso-spectrality of the 3D models.\r
+• Step 1. Given four 3D vertices of the Basic Simplex with coordinate,\r
+P0 = {0, 0, 0}, P1 = {0, 0, 1}, P2 = {1, 0, 1}, P3 = {1, 1, 1};\r
+• Step 2. Find three mirror points,\r
+Q0 = {0, 0, 2}, Q1 = {1, 0, 0}, Q2 = {0, 1, 1};\r
+• Step 3. Illustrate the four tetrahedrons assembled,\r
+– Simplex 0: {P0, P1, P2, P3}, 0 ≤ y ≤ x ≤ z ≤ 1;\r
+– Simplex 1: {Q0, P1, P2, P3}, 0 ≤ y ≤ x ≤ 2 − z ≤ 1;\r
+– Simplex 2: {P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ x ≤ 1;\r
+9
+
+Figure 7. Four Simplex Tetrahedrons assembled (termed as kernel Simplex), viewing from different an\u0002gles. Face (P0, P1, P2) is special colored to help us forget it when performing reflection rule. Consequently,\r
+faces (Q0, P1, P2), (P0, Q1, P2) and (P0, P1, Q2) are not considered as reflection faces, either.\r
+– Simplex 3: {P0, P1, Q2, P3}, 0 ≤ x ≤ y ≤ z ≤ 1.\r
+As a foundation of constructing non-isometric 3D models, kernel Simplex (depicted in Fig.\r
+7) plays quite an important role, especially for the extension of 71, 72 and 73. Following the\r
+reflection rule, we just conduct the multilevel mirror operation on the kernel Simplex, which\r
+is just adding some tetrahedrons. The following step is to classify two non-isometric models\r
+generated from 71.\r
+• Class 71 #A, three mirror points: Q0P1 = {1, 0, 2}, Q1P2 = {1, 1, 0}, Q2P0 = {0, 0, 2}.\r
+– Simplex 4: {Q0, Q0P1, P2, P3}, 0 ≤ y ≤ 2 − z ≤ x ≤ 1;\r
+– Simplex 5: {P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ x ≤ 1;\r
+– Simplex 6: {Q2P0, P1, Q2, P3}, 0 ≤ x ≤ y ≤ 2 − z ≤ 1.\r
+• Class 71 #B, three mirror points: Q0P2 = {0, 1, 1}, Q1P0 = {2, 0, 0}, Q2P1 = {0, 1, 0}.\r
+– Simplex 4: {Q0, P1, Q0P2, P3}, 0 ≤ x ≤ y ≤ 2 − z ≤ 1;\r
+– Simplex 5: {Q1P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ 2 − x ≤ 1;\r
+– Simplex 6: {P0, Q2P1, Q2, P3}, 0 ≤ x ≤ z ≤ y ≤ 1.\r
+Figure 8. Seven Simplex Tetrahedrons assembled (termed as Class 71 #A), viewing from different angles.\r
+The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons means the\r
+three added tetrahedrons on the Kernel Simplex. Because of the symmetry in Simplex Tetrahedron,\r
+points Q0 and Q2P0 coincide.\r
+Remark 4.1. Figure 8 and 9 depict one 3D iso-spectral pair termed as Class 71 #A and Class\r
+71 #B respectively. They are all assembled by seven Simplex Tetrahedrons in different ways.\r
+Because of the symmetry in the Simplex Tetrahedron, faces (P1, P3, Q0) and (P1, P3, Q2P0)\r
+10
+
+Figure 9. Seven Simplex Tetrahedrons assembled (termed as Class 71 #B), viewing from different angles.\r
+The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons means the\r
+three added tetrahedrons on the Kernel Simplex. Because of the symmetry in Simplex Tetrahedron,\r
+points Q2 and Q0P2 coincide.\r
+coincide in Class 71 #A. Similarly, faces (P0, P3, Q2) and (P0, P3, Q0P2) coincide in Class 71\r
+#B. For this case, we should also consider these faces as the boundary face.\r
+Remark 4.2. Class 71 #A and Class 71 #B are non-isometric. With the aid of the 3D Printing\r
+technique, we obtain two models which are obviously non-congruent. Moreover, utilizing their\r
+distance matrix (the matrix of distances between all vertices), we can also judge they are non\u0002isometric.\r
+In Moorhead’s Ph.D thesis [39], he present 45 shapes to discuss iso-spectrality, using a\r
+simple finite difference scheme to calculate eigenvalues. We are also interested in applying finite\r
+difference method to our 3D iso-spectral models. For more detailed results, please see Table 1.\r
+That is if we let λk be the approximated k-th eigenvalue for the first Class 71 #A and µk be\r
+the approximated k-th eigenvalue for the second Class 71 #B then\r
+max\r
+1≤k≤25\r
+|λk − µk| = 6.2528 × 10−13, kλk − µkkL2 = 1.4503 × 10−12.\r
+The following step is to classify two non-isometric models generated from 72. You can see\r
+the 3D view in Figure 10 and 11.\r
+• Class 72 #A, three mirror points: Q2P1 = {0, 1, 0}, Q1P0 = {2, 0, 0}, [Q1P0]P2 = {1, 1, 0}.\r
+– Simplex 4: {P0, Q2P1, Q2, P3}, 0 ≤ x ≤ z ≤ y ≤ 1;\r
+– Simplex 5: {Q1P0, Q1, P2, P3}, 0 ≤ y ≤ z ≤ 2 − x ≤ 1;\r
+– Simplex 6: {Q1P0, Q1, [Q1P0]P2, P3}, 0 ≤ z ≤ y ≤ 2 − x ≤ 1.\r
+• Class 72 #B, three mirror points: Q0P1 = {1, 0, 2}, Q1P2 = {1, 1, 0}, [Q1P2]P0 = {2, 0, 0}.\r
+– Simplex 4: {Q0, Q0P1, P2, P3}, 0 ≤ y ≤ 2 − z ≤ x ≤ 1;\r
+– Simplex 5: {P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ x ≤ 1;\r
+– Simplex 6: {[Q1P2]P0, Q1, Q1P2, P3}, 0 ≤ z ≤ y ≤ 2 − x ≤ 1.\r
+Please see Wiki: https://en.wikipedia.org/wiki/3D printing\r
+11
+
+Table 1. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 71 #A and Class\r
+71 #B, using the simple finite difference method ( please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 71 #A Class 71 #B Difference (×10−12)\r
+1 44.4718 44.4718 0.0568\r
+2 62.8210 62.8210 0.0426\r
+3 68.9764 68.9764 0\r
+4 80.4222 80.4222 0.1279\r
+5 86.0231 86.0231 0.0284\r
+6 103.2302 103.2302 0.1279\r
+7 105.6904 105.6904 0.1847\r
+8 110.1293 110.1293 0.0284\r
+9 117.5639 117.5639 0.3411\r
+10 126.6846 126.6846 0.0853\r
+11 130.2792 130.2792 0.3126\r
+12 136.1989 136.1989 0.2842\r
+13 136.5769 136.5769 0.3695\r
+14 142.5582 142.5582 0.6253\r
+15 147.9829 147.9829 0\r
+16 154.1811 154.1811 0.0853\r
+17 161.1378 161.1378 0.1990\r
+18 164.5301 164.5301 0.3979\r
+19 169.0497 169.0497 0.5969\r
+20 172.1153 172.1153 0.3979\r
+21 176.0983 176.0983 0.1705\r
+22 180.6497 180.6497 0.1705\r
+23 185.0137 185.0137 0.0568\r
+24 190.4692 190.4692 0.0284\r
+25 194.8700 194.8700 0.5116\r
+Figure 10. Seven Simplex Tetrahedrons assembled (termed as Class 72 #A), viewing from different\r
+angles. The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons\r
+means the three added tetrahedrons on the Kernel Simplex.\r
+12
+
+Figure 11. Seven Simplex Tetrahedrons assembled (termed as Class 72 #B), viewing from different\r
+angles. The labels in each vertex help us to distinguish the tetrahedrons. The colored tetrahedrons\r
+means the three added tetrahedrons on the Kernel Simplex.\r
+The 3D views in Figure 10 and 11 shows Class 72 #A and 72 #B are non-isometric. Please\r
+also see Table 2 for the approximated eigenvalues of this 3D iso-spectral pair. The maximum\r
+difference and L2-norm error are as follows.\r
+max\r
+1≤k≤25\r
+|λk − µk| = 0.6821 × 10−12, kλk − µkkL2 = 1.4167 × 10−12.\r
+Figure 12 shows the GWW prisms which are iso-spectral. They are just constructed from GWW\r
+by sweeping the face into a third orthogonal direction for the same distance.\r
+Figure 12. The GWW prisms once appeared in [22][39].\r
+Table 3 shows the detailed results of the first 25 approximated eigenvalues of Class 73 #A\r
+and Class 73 #B. Similarly, we also calculate the maximum difference and L2-norm error.\r
+max\r
+1≤k≤25\r
+|λk − µk| = 0.6821 × 10−12, kλk − µkkL2 = 1.6766 × 10−12.\r
+Figure 13 depicts the 3D X-ray form of Class 73 #A and 73 #B. At the same time, we also\r
+illustrate other 3D iso-spectral models constructed by Wall Tetrahedrons. Different from the\r
+construction of Class 73 #A and 73 #B, we fix or forget face (P0, P1, P3) and do multilevel\r
+13
+
+Table 2. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 72 #A and Class\r
+72 #B, using the simple finite difference method (please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 72 #A Class 72 #B Difference (×10−12)\r
+1 44.9835 44.9835 0.1137\r
+2 61.4888 61.4888 0.1208\r
+3 70.0240 70.0240 0.3837\r
+4 80.6794 80.6794 0.1705\r
+5 86.2937 86.2937 0.2700\r
+6 102.1243 102.1243 0.1990\r
+7 104.7903 104.7903 0.0711\r
+8 110.7750 110.7750 0.1847\r
+9 121.5084 121.5084 0.2416\r
+10 124.1022 124.1022 0.1279\r
+11 129.6075 129.6075 0.6821\r
+12 136.1989 136.1989 0.0568\r
+13 137.0019 137.0019 0.1421\r
+14 142.1820 142.1820 0.2842\r
+15 146.8989 146.8989 0.0853\r
+16 157.7060 157.7060 0.2842\r
+17 160.9049 160.9049 0.3695\r
+18 163.9460 163.9460 0.1421\r
+19 165.5862 165.5862 0.3411\r
+20 171.1039 171.1039 0.3695\r
+21 178.3842 178.3842 0.3979\r
+22 183.0443 183.0443 0.4547\r
+23 185.0180 185.0180 0.1137\r
+24 191.9694 191.9694 0.2274\r
+25 195.6234 195.6234 0.0284\r
+Table 3. The first 25 approximated eigenvalues of the 3D iso-spectral pair: Class 73 #A and Class\r
+73 #B, using the simple finite difference method ( please also see [39]) with mesh size h = 1/20. The\r
+Difference refers to the absolute difference between the eigenvalues.\r
+Eigenvalue Class 73 #A Class 73 #B Difference (×10−12)\r
+1 49.2289 49.2289 0.0213\r
+2 56.0467 56.0467 0.0284\r
+3 72.6396 72.6396 0.1847\r
+4 79.9743 79.9743 0.1137\r
+5 92.0586 92.0586 0.1847\r
+6 99.5111 99.5111 0.3837\r
+7 104.0452 104.0452 0.2274\r
+8 113.2988 113.2988 0.2984\r
+9 120.5720 120.5720 0.1137\r
+10 124.4357 124.4357 0.5542\r
+11 131.7220 131.7220 0\r
+12 133.3562 133.3562 0.3411\r
+13 136.1989 136.1989 0.3695\r
+14 144.0266 144.0266 0.4547\r
+15 152.4877 152.4877 0.1705\r
+16 156.3340 156.3340 0.1137\r
+17 156.5645 156.5645 0.0568\r
+18 162.8653 162.8653 0.3979\r
+19 169.5866 169.5866 0.0853\r
+20 173.2912 173.2912 0.3695\r
+21 179.6543 179.6543 0.0853\r
+22 185.0656 185.0656 0.3979\r
+23 186.5775 186.5775 0.4263\r
+24 190.4249 190.4249 0.1137\r
+25 193.5350 193.5350 0.6821\r
+14
+
+Figure 13. Seven Simplex Tetrahedrons assembled (termed as Class 73 #A and 73 #B), viewing in 3D\r
+X-ray form. Because of symmetry in Simplex Tetrahedron, faces (P1, P3, Q2) and (P1, P3, Q0P2) coincide\r
+in Class 73 #A, faces (P1, P3, Q0) and (P1, P3, Q2P2) coincide in Class 73 #B.\r
+mirror reflection following the rule of 73. Given four 3D vertices of the Basic Wall Tetrahedrons\r
+with coordinate:\r
+P0 = {0, 0, 0}, P1 = {1, 0, 0}, P2 = {0, 1, 0}, P3 = {0, 0, 1}.\r
+We can calculate the mirror points according to Equation (3.1) and Equation (3.2). Figure 14\r
+depicts the two 3D iso-spectral models.\r
+Figure 14. Two 3D models assembled by seven Wall Tetrahedrons, viewing in the 3D X-ray form.\r
+Generated from 73 by fixing the face (P0, P1, P3), this pair is iso-spectral and non-isometric.\r
+Remark 4.3. For Basic Simplex Tetrahedron (0 ≤ y ≤ x ≤ z ≤ 1) , there exists “analytical”\r
+eigenmodes (please refer the explanation of the GWW’s eigenmodes in [30]). The first eigenmode\r
+is expressed in Simplex Tetrahedron of (1\r
+2 + 22 + 32\r
+)π. The first approximated eigenmodes cal\u0002culated by finite difference method are marked in red color, see Table 1-3. Numerical techniques\r
+are therefore employed to approximate such eigenvalues, but even this has its own problems\r
+(e.g. the way to deal with reentrant corners).\r
+Remark 4.4. Note that if the colors of faces are permuted the resulting 3D pairs also become\r
+iso-spectral. For example, the pair 71 represents three distinguishable pairs of models for a fixed\r
+tetrahedron.\r
+15"""
+
+[[sections]]
+number = "5"
+title = "Conclusion"
+text = """
+Milnor’s work is not a direct answer to the original version of Kac’s question because it is\r
+not concerned with the planar domains. But from Milnor’s example one learned that there\r
+really exists non-congruent domains with the same eigenvalue spectrum. From a mathematical\r
+point of view, the spectrum of a drum corresponds to the set of eigenvalues of the negative\r
+Laplacian on a given planar domain, where the solutions vanish at the border (Dirichlet boundary\r
+conditions). Sunada’s idea was to reduce the problem of finding iso-spectral manifolds to a group\u0002theoretical problem, namely, constructing triplets of groups having a certain property. Based on\r
+the Sunada’s method, Buser et al. constructed 17 families of iso-spectral pairs, and confirmed\r
+their iso-spectrality by the transplantation method. Giraud and Thas reviewed the highlighting\r
+mathematical and physical aspects of iso-spectrality.\r
+We revisit the serials of reflection rule inherent in the 17 families of planar iso-spectral\r
+domains. Following the reflection rule visualized by red-blue-black, many 3D iso-spectral models\r
+can be constructed. Especially for the tetrahedron as the basic building block, we present some\r
+visualized 3D pairs which are iso-spectral and non-isometric. This extension of constructing iso\u0002spectral pairs can also be used in higher dimensions, with transplantation method to guarantee\r
+the respective iso-spectrality."""
+
+[[sections]]
+number = "6"
+title = "Acknowledgements"
+text = """
+This work was supported by the National Science Foundation of China (NSFC 91230109). The\r
+first author would like to thank Professor Olivier Giraud for illuminating email indication and\r
+would also like to thank Professor Hua Li, introducing me the software Google SketchUp to\r
+draw the 3D Figures.\r
+A Appendix\r
+First, we show the details of how to obtain the transplantation matrix of Class 71 #A and #B.\r
+• Class 71 #A, seven Simplex Tetrahedrons labelled by i, i = 0, 1, . . . , 6.\r
+– Face: {P1, P2, P3} = {P1, Q2, P3}, (0 1) (3 6);\r
+– Face: {P0, P2, P3} = {Q0, P2, P3}, (0 2) (1 4);\r
+– Face: {P0, P1, P3} = {P0, Q1, P3}, (0 3) (2 5).\r
+• Class 71 #B, seven Simplex Tetrahedrons labelled by i, i = 0, 1, . . . , 6.\r
+– Face: {P1, P2, P3} = {Q1, P2, P3}, (0 1) (2 5);\r
+– Face: {P0, P2, P3} = {P0, Q2, P3}, (0 2) (3 6);\r
+– Face: {P0, P1, P3} = {Q0, P1, P3}, (0 3) (1 4).\r
+A\r
+1 =\r
+\r
+\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+0 0 0 0 1 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+\r
+\r
+, A2 =\r
+\r
+\r
+0 0 1 0 0 0 0\r
+0 0 0 0 1 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 1 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+, A3 =\r
+\r
+\r
+0 0 0 1 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+;\r
+B\r
+1 =\r
+\r
+\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+, B2 =\r
+\r
+\r
+0 0 1 0 0 0 0\r
+0 1 0 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 0 0 0 0 0 1\r
+0 0 0 0 1 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 1 0 0 0\r
+\r
+\r
+, B3 =\r
+\r
+\r
+0 0 0 1 0 0 0\r
+0 0 0 0 1 0 0\r
+0 0 1 0 0 0 0\r
+1 0 0 0 0 0 0\r
+0 1 0 0 0 0 0\r
+0 0 0 0 0 1 0\r
+0 0 0 0 0 0 1\r
+\r
+\r
+.\r
+By the definition 2.1 in Section 2, we obtain all the commutation relations (permutation matrices\r
+Aν and Bν). Finding T just amounts to solving a system of Equation (2.1).\r
+16
+
+Second,we present two isometric models generated from the Class 71. They are constructed\r
+by seven unit cubes depicted in Figure 16 and 17. The gaps between some cubes are to be\r
+interpreted as having zero boundary.\r
+Figure 15. One unit cube and four unit cubes assembled (termed as Kernel Unit Cube). The colors on\r
+faces help us to perform mirror reflection operation.\r
+Figure 16. Seven unit cubes assembled (generated from Class 71 #A), viewing in two angles. The colors\r
+on faces help us to perform mirror reflection operation.\r
+Figure 17. Seven unit cubes assembled (generated from Class 71 #B), viewing in two angles. The colors\r
+on faces help us to perform mirror reflection operation.\r
+References\r
+[1] M. Kac, Can one hear the shape of a drum? Amer. Math. Monthly 73 (1966) 1-23.\r
+[2] J. Milnor, Eigenvalues of Laplace operator on certain manifolds, Proc. Natl. Acad. Sci. 51\r
+(1964) 542.\r
+17
+
+[3] A. Ikeda, On lens spaces which are iso-spectral but not isometric, Ann. Sci. Ecole Normale\r
+Super. 13 (1980) 303.\r
+[4] M.F. Vigneras, Riemannienes iso-spectrales et non isometrigues, Ann. Math. 112 (1980)\r
+21-32.\r
+[5] H. Urakawa, Bounded domains which are iso-spectral but not congruent, Ann. Sci. Ecole\r
+Norm. Sup. (1982) 441-456.\r
+[6] M.H. Protter, Can one hear the shape of a drum? Revisited, SIAM Review 29 (1987)\r
+185-197.\r
+[7] R. Melrose, Iso-spectral sets of drumheads are compact in C, Math. Sci. Res. Inst. Report\r
+(1983) No. 48-83.\r
+[8] B. Osgood, Phillips R and Sarnak P. Compact iso-spectral sets of face domains, Proc. Natl.\r
+Acad. Sci. 85 (1988a) 5359-5361.\r
+[9] B. Osgood, Phillips R and Sarnak P. Compact iso-spectral sets of surfaces, J. Funct. Anal.\r
+textbf80 (1988b) 212-234.\r
+[10] T. Sunada, Riemannian coverings and iso-spectral manifolds, Ann. of Math. 121 (1985)\r
+169-186.\r
+[11] P. Buser, Iso-spectral Riemann surfaces, Ann. Inst. Fourier 36 (1986) 167-192.\r
+[12] C. Gordon, D.L. Webb, S. Wolpert, Iso-spectral face domains and surfaces via Riemannian\r
+orbifolds, Invent. Math. 110 (1992a) 1-22.\r
+[13] C. Gordon, D.L. Webb, Iso-spectral convex domains in Euclidean space, Math. Research\r
+Lett. 1 (1994) 539-545.\r
+[14] Gordon C, Webb D L. Iso-spectral convex domains in the hyperbolic face, Proc. Natl. Acad.\r
+Sci. 120(3) (1994).\r
+[15] P. Berard, Transplantation et isopectralite, Math. Ann. 292 (1992) 547-559.\r
+[16] P. Buser, J. Conway, P. Doyle, Some planar iso-spectral domains, Int. Math. Res. Notices\r
+9 (1994) 391-400.\r
+[17] R. Brooks R, The Sunada method, Comtemp. Math. 231 (1999) 25-35.\r
+[18] Y. Okada, A. Shudo, Equivalence between iso-spectrality and iso-length spectrality for a\r
+certain class of planar billiard domains, J. Phys. A: Math. Gen. 34 (2001) 5911-5922.\r
+[19] A. Dhar, D.M. Rao, N. UdayaShankar, S. Sridhar, Iso-spectrality in chaotic billiards, Phys\u0002ical Review 68 (2003) 026208.\r
+[20] H.P.W. Gottlied, Iso-spectral circular membrane. Inverse problems 20(1 (2004) 155.\r
+[21] I.W. Knowles, M.L. McCarthy, Iso-spectral membranes: a connection between shape and\r
+density, J. Phys. A: Math. Gen. 37 (2004) 8103-8109.\r
+[22] M. Reuter, F.E. Wolter, N. Peinecke, Laplace-Beltrami spectra as Shape-DNA of surfaces\r
+and solids, Computer-Aided Design 38 (2006) 342-366.\r
+[23] S.J. Chapman, Drums that sound the same. Amer. Math. Monthly 102(2) (1995) 124-138.\r
+[24] B.D. Sleeman, H. Chen, On nonisometric iso-spectral connected fractal domains, Rev. Mat.\r
+Iberoam. 16 (2000) 351-361.\r
+18
+
+[25] O. Giraud, Diffractive orbits in isospectral billiards, J. Phys. A: Math. Gen. 37 (2004)\r
+2571-2764.\r
+[26] O. Giraud, Finite geometries and diffractive orbits in iso-spectral billiards, J. Phys. A:\r
+Math. Gen. 38 (2005) L477.\r
+[27] O. Giraud, K. Thas, Hearing shapes of drums–mathematical and physical aspects of iso\u0002spectrality. Reviews of modern physics 82(3) (2010) 2213-2255.\r
+[28] H. Wu, D.W.L. Sprung, J. Martorell, Numerical investigation of iso-spectral cavities built\r
+from triangles? Phys. Rev. E. 51(1) (1995) 703-708.\r
+[29] S. Scridhar, A. Kudrolli. Experiments on Not Hearing the shape of Drum, Phys. Rev. Lett.\r
+72(14) (1995) 2175-2178.\r
+[30] T.A. Driscoll, Eigenmodes of iso-spectral drums, SIAM Rev. 39(1) (1997) 1-17.\r
+[31] J. Descloux, M. Tolley, An accurate algorithm for computing the eigenvalues of a polygonal\r
+membrane, Comput. Methods Appl. Mech. Engrg. 39 (1983) 37-53.\r
+[32] T. Betcke, L.N.Trefethen, Reviving the Method Of particular Solutions, SIAM Rev. 47(3)\r
+(2005) 469-491.\r
+[33] L. Fox, P. Henrici, C. Moler C, Approximations and bounds for eigenvalues of elliptic\r
+operators, SIAM J. Numer. Anal. 4(1) (1967) 89-102.\r
+[34] C. Even, P. Pieranski, On “hearing the shape of drums”: An experimental study using\r
+vibrating smectic film, Europhysics Lett. 47(5) (1999) 531-537.\r
+[35] T. A. Driscoll, H. P. W. Gottlieb, Isospectral Shapes with Neumann and Alternating Bound\u0002ary Conditions, Phys. Rev. E. 68 (2003) 016702.\r
+[36] C.R. Moon, L.S. Mattos, B.K. Foster, G. Zeltzer, W. Ko, H.C Manoharan. Quantum phase\r
+extraction in iso-spectral electronic nanostructures, Science 319 (2008) 782-787.\r
+[37] M. T¸ olea, B. Ostahie, M. Nit¸˘a, F. T¸ olea, A. Aldea, Phase extraction in disordered iso\u0002spectral shapes. Phys. Rev. E. 85 (2012) 036604.\r
+[38] P. Amore, One cannot hear the density of a drum (and further aspects of iso-spectrality),\r
+Phys. Rev. E. 88(4) (2013) 042915.\r
+[39] S. Moorhead, Can you hear the shape of a cavity? Ph.D. thesis, (2012) University of Oxford.\r
+[40] C. Cox, Iso-spectral Domains in Euclidean 3-Space, Amer. Jour. Under. Res. 11(1) 2012.\r
+[41] R. Courant, D. Hilbert, Methods of mathematical physics. Vol. I. Interscience Publishers,\r
+Inc., New York, N.Y., 1953.\r
+19"""
+
+[[figures]]
+label = "fig:1"
+page_num = 4
+image_path = "images/image_p4_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 5
+image_path = "images/image_p5_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 6
+image_path = "images/image_p6_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 6
+image_path = "images/image_p6_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 8
+image_path = "images/image_p8_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 9
+image_path = "images/image_p9_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 9
+image_path = "images/image_p9_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 10
+image_path = "images/image_p10_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 10
+image_path = "images/image_p10_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 10
+image_path = "images/image_p10_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 10
+image_path = "images/image_p10_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 10
+image_path = "images/image_p10_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 10
+image_path = "images/image_p10_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 10
+image_path = "images/image_p10_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 10
+image_path = "images/image_p10_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 10
+image_path = "images/image_p10_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 10
+image_path = "images/image_p10_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 10
+image_path = "images/image_p10_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 10
+image_path = "images/image_p10_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 11
+image_path = "images/image_p11_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 11
+image_path = "images/image_p11_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 11
+image_path = "images/image_p11_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 11
+image_path = "images/image_p11_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 11
+image_path = "images/image_p11_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 11
+image_path = "images/image_p11_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 11
+image_path = "images/image_p11_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 11
+image_path = "images/image_p11_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 12
+image_path = "images/image_p12_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 12
+image_path = "images/image_p12_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 12
+image_path = "images/image_p12_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 12
+image_path = "images/image_p12_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 12
+image_path = "images/image_p12_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 12
+image_path = "images/image_p12_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 12
+image_path = "images/image_p12_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 12
+image_path = "images/image_p12_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 13
+image_path = "images/image_p13_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 13
+image_path = "images/image_p13_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 13
+image_path = "images/image_p13_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 13
+image_path = "images/image_p13_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 13
+image_path = "images/image_p13_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 13
+image_path = "images/image_p13_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 13
+image_path = "images/image_p13_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 13
+image_path = "images/image_p13_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 13
+image_path = "images/image_p13_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 15
+image_path = "images/image_p15_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 15
+image_path = "images/image_p15_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 15
+image_path = "images/image_p15_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 15
+image_path = "images/image_p15_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 17
+image_path = "images/image_p17_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 17
+image_path = "images/image_p17_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 17
+image_path = "images/image_p17_51.png"

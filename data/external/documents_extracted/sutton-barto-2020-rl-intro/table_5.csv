@@ -1,0 +1,3 @@
+sa s0 p(s0,s, a) r(s, a, s0)
+high search high ↵ rsearch high search low 1,↵ rsearch low search high 1,3
+low search low,rsearch high wait high 1 rwait high wait low 0 -

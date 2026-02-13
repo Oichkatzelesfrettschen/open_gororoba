@@ -1,3 +1,5 @@
 # Git LFS tracking rules
 # PDFs stored via LFS to avoid bloating git history
 papers/pdf/*.pdf    -text
+data/external/documents_ingest/**/*.pdf    -text
+data/external/documents_extracted/**/*.png    -text

@@ -1,0 +1,3350 @@
+equations = []
+tables = []
+full_text = """
+arXiv:1710.04965v2 [hep-th] 18 Mar 2018\r
+Lorentz signature and twisted spectral triples\r
+A. Devastatoa, S. Farnsworthb, F. Lizziacd and P. Martinettie\r
+a\r
+INFN sezione di Napoli,\r
+b Max Planck Institute for Gravitational Physics (Albert Einstein Institute), Germany,\r
+c Dipartimento di Fisica “E. Pancini”, Università di Napoli Federico II,\r
+d\r
+Institut de Cíencies del Cosmos (ICCUB), Universitat de Barcelona,\r
+e Dipartimento di Matematica, Università di Genova.\r
+Abstract\r
+We show how twisting the spectral triple of the Standard Model of elementary particles\r
+naturally yields the Krein space associated with the Lorentzian signature of spacetime. We\r
+discuss the associated spectral action, both for fermions and bosons. What emerges is a tight\r
+link between twists and Wick rotation.\r
+1 Introduction\r
+Noncommutative differential geometry (NCG) provides a unified framework from which to de\u0002scribe both Einstein-Hilbert gravity (in Euclidean signature) and classical gauge theories [1]. In\r
+particular, it gives an elegant description of the full Standard Model of particle physics in all of\r
+its detail, including the Higgs mechanism and neutrino mixing, as gravity on a certain “almost\r
+commutative manifold” [2, 3]. A recent and comprehensive review can be found in [4].\r
+The main benefit of the NCG approach to physics is that it offers a more constrained de\u0002scription of gauge theories than the usual effective field theory approach. Indeed, the added\r
+geometric constraints impose a range of successful and phenomenologically accurate restrictions\r
+on the allowed particle content of the Standard Model of particle physics [5–8]. Despite this suc\u0002cess, an early estimate for the Higgs mass was also furnished at mH ≃ 170 Gev. This prediction\r
+was disfavored by the Tevatron data, and has since been ruled out by the LHC [9, 10]. While\r
+falling short of an accurate comparison with experiment, this prediction depended on a number\r
+of assumptions including the big desert hypothesis, as well as the presence of a scale at which\r
+the coupling constants of the three gauge interactions unify.\r
+In light of the many successes of the NCG construction, one is led to question the various\r
+assumptions that went into the incorrect Higgs mass calculation, and above all the validity of\r
+the big desert assumption. This concern is particularly pressing as the “low” experimental value\r
+detected for the Higgs mass causes an instability (or meta-stability) in the electroweak vacuum\r
+at intermediate energies (see [11] for a recent update), that may be cured by the addition of a\r
+new scalar field suitably coupled to the Higgs - usually denoted σ (e.g. [12,13]). If the addition of\r
+such a scalar field were admissible within the NCG construction, it would not only stabilize the\r
+astinodevastato@gmail.com, shane.farnsworth@aei.mpg.de, fedele.lizzi@na.infn.it, martinetti@dima.unige.it\r
+1
+
+electroweak vacuum, but also allow compatibility with the experimentally observed Higgs mass\r
+[14]. Such an outcome is difficult to achieve however as the extra geometric constraints imposed\r
+by the NCG formalism severely restrict any allowed addition to the Standard Model. Early\r
+attempts in [15,16] to generate an extra scalar field within the framework required the adjunction\r
+of new fermions. More recently, there have been a number of phenomenologically viable Standard\r
+Model extensions singled out by the NCG framework which preserve the fermionic sector. This\r
+has been achieved for example in [17, 18] by relaxing some of the geometrical constraints, and\r
+in [19] by taking full account of the outer symmetries of the model (let us also mention some\r
+proposals to modify the grading, based on Morita equivalence, developed in [20, 21], as well as\r
+other modification of the grading in [22]).\r
+In this paper we are mostly concerned with the outcome of an extension of the Standard Model\r
+known as grand symmetry, proposed in [23] (see [24] for a shorter non-technical presentation). It\r
+relies on an enlargement of the Standard Model algebra, and ultimately allows one to obtain the\r
+field σ in agreement with the NCG principles, namely as an internal part of a connection. As\r
+shown in [25] however, in order to make the grand symmetry extension work, one is required to\r
+twist the noncommutative geometry of the Standard Model, in the sense of Connes-Moscovici [26].\r
+Besides solving some technical difficulties, the twist also permits one to understand the breaking\r
+of the grand symmetry down to the Standard Model symmetries in a dynamical process induced\r
+by the spectral action. Our first result establishes the fact that the required twist corresponds to\r
+a Wick rotation. More precisely, we show in section 3 that the twist turns the inner product of\r
+the Hilbert space of (Euclidean) spinors into a Krein product. The latter is precisely the inner\r
+product associated with spinors on a Lorentzian manifold. In a sense made precise in §3.2, the\r
+twist is actually the square of the Wick rotation.\r
+Our second result concerns the spectral action in the twisted context. While the behavior\r
+of gauge transformations for twisted spectral triples has already been worked out in [27], the\r
+corresponding gauge invariance of the spectral action has not yet been addressed. We investigate\r
+this question in section 4:\r
+• We begin with the fermionic action S\r
+F in §4.1, showing that the straightforward adaptation\r
+to the twisted case of the usual formula is indeed invariant under a twisted gauge transfor\u0002mation. However, it is not antisymmetric when restricted to the (positive) eigenvectors of\r
+the chirality operator, unlike the non-twisted case. This leads us to propose two possible\r
+definitions of S\r
+F in the twisted context: either by restricting to the eigenvectors of the uni\u0002tary implementing the twist, or by considering a Dirac operator, which is Krein-hermitian\r
+rather than hermitian.\r
+• The bosonic action S\r
+B is adressed in §4.2. We show that there is an easy way to rewrite\r
+it so that it becomes invariant under a twisted gauge transformation. We also investigate\r
+the possibility of a Krein adjoint Dirac operator. In both cases, our formulas give back the\r
+Euclidean bosonic action.\r
+The picture that emerges is that twisted geometries may provide an appropriate framework from\r
+which to facilitate the description of non-Euclidean signatures in NCG.\r
+We begin in the following section by recalling the main feature of the twisted spectral triple\r
+of the Standard Model.\r
+2
+
+2 Twisted spectral geometry for the standard model\r
+This section deals with the twisted spectral triple of the Standard Model of [25]. We do not\r
+discuss the usual non-twisted version, which can be found in [3]; neither do we motivate the\r
+importance of twists in noncommutative geometry. Let us just recall that twisted spectral triples\r
+were introduced in [26] in order to build spectral triples from algebras which do not exhibit a\r
+trace. Quite unexpectedly, they also provide the correct mathematical framework to write the\r
+“beyond SM” Grand symmetry model of [23].\r
+A twisted spectral triple (A, H, D; ρ) consists of a *-algebra A of bounded operators in a\r
+Hilbert space∗ H, together with a non-necessarily bounded self-adjoint operator D on H with\r
+compact resolvent, and an automorphism ρ of A such that the twisted commutator\r
+[D, a]ρ := Da − ρ(a)D (2.1)\r
+is bounded for any a in A. The twisted spectral triple is even if there is a Z2 grading, i.e. an\r
+operator Γ on H, Γ = Γ†, Γ\r
+2 = 1, such that ΓD + DΓ = 0 and Γa − aΓ = 0 for any a ∈ A. It is\r
+real if there is an antilinear isometry J (called real structure) which satisfies\r
+J\r
+2 = ǫI, JD = ǫ′DJ, JΓ = ǫ′′ΓJ (2.2)\r
+where ǫ, ǫ′, ǫ′′ ∈ {1, −1} define the KO-dimension (see e.g. [28] for details).\r
+The real structure implements an action of the opposite algebra† A◦, obtained by identifying\r
+Jb∗J\r
+−1 with b◦ ∈ A◦\r
+(for any b ∈ A), which is asked to commute with A:\r
+[a, JbJ−1] = 0 ∀ a, b ∈ A. (2.3)\r
+This is called the order zero condition and it permits one to define a right action of A on H\r
+ψa := a\r
+◦ψ = Ja∗\r
+J\r
+−1ψ ∀ψ ∈ H. (2.4)\r
+Another condition that plays an important role is the order one condition [29], which for twisted\r
+spectral triples one writes as [25, 30]\r
+[[D, a]ρ, JbJ−1]ρ0 = 0 ∀a, b ∈ A, (2.5)\r
+where‡\r
+ρ0(JbJ−1) := Jρ(b)J\r
+−1\r
+. (2.6)\r
+The usual conditions for untwisted spectral triples are retrieved by taking ρ to be the identity\r
+automorphism ρ(a) = a.\r
+A gauge theory is described - in its non twisted version - by an almost commutative geometry,\r
+that is the product\r
+A = C\r
+∞(M) ⊗ AF , H = L2\r
+(M, S) ⊗ HF , D = ∂/ ⊗ IF + γE ⊗ DF (2.7)\r
+∗We denote T†\r
+the adjoint of an operator T on H. As usual, we omit the symbol of representation for the\r
+algebra and identify π(a\r
+∗\r
+) = π(a)\r
+† with a∗\r
+.\r
+†\r
+Identical to A as a vector space, but with reversed product: a\r
+◦\r
+b\r
+◦ = (ba)◦\r
+.\r
+‡\r
+ρ0 is the “natural” image of ρ in the automorphism group of A\r
+◦\r
+: ρ◦(b\r
+◦\r
+) = (ρ(b))◦.\r
+3
+
+of the canonical spectral triple \r
+C∞(M), L2(M, S), ∂/\r
+\u0001\r
+associated to an (oriented closed) Rie\u0002mannian spin manifold M of even dimension§ m, with a finite dimensional spectral triple\r
+(AF , HF , DF ). Recall that L\r
+2\r
+(M, S) denotes the Hilbert space of square integrable spinors\r
+on M, on which C∞(M) acts as\r
+π(f) = f\r
+ \r
+I n\r
+2\r
+0\r
+0 I n\r
+2\r
+!\r
+f ∈ C\r
+∞(M), (2.8)\r
+with n = 2\r
+m\r
+2 the dimension of the spin representation. The Dirac operator is\r
+∂/ = −i\r
+Xm\r
+µ=1\r
+γ\r
+µ\r
+E∇S\r
+µ where ∇Sµ = ∂µ + ω\r
+S\r
+µ\r
+(2.9)\r
+with γ\r
+µ\r
+E = γ\r
+µ\r
+E\r
+†\r
+the selfadjoint Euclidean-signature Dirac matrices and ω\r
+S\r
+µ\r
+the spin connection.\r
+The grading\r
+γE = diag(I n\r
+2\r
+, −I n\r
+2\r
+) (2.10)\r
+is the product of the Dirac matrices (it is usually called γ\r
+5\r
+in the physics literature).\r
+To describe the standard model, under natural assumptions on the representation of the\r
+algebra, it is shown in [5] that the finite dimensional algebra in (2.7) has to be\r
+AF := C ⊕ H ⊕ M3(C), (2.11)\r
+acting on the finite dimensional Hilbert space.\r
+HF = HR ⊕ HL ⊕ Hc\r
+R ⊕ HcL = C\r
+96 (2.12)\r
+where HR = C\r
+8 × C3\r
+is spanned by the N = 3 generations of 8 right-handed fermions (electron,\r
+neutrino, up and down quarks with three colors each), HL stands for left fermions, and the\r
+exponent cis for the antiparticles. The finite dimensional Dirac operator DF is a 96 × 96 matrix\r
+whose entries are the Yukawa couplings of fermions, the Dirac and Majorana masses of neutrinos,\r
+the Cabibbo matrix and the mixing matrix for neutrinos.\r
+The twisted spectral triple of the Standard Model is obtained by making\r
+C\r
+∞(M) ⊗ C\r
+2 ≃ C\r
+∞(M) ⊕ C∞(M) (2.13)\r
+act on L\r
+2\r
+(M, S) as\r
+π((f, g)) := \r
+fI n\r
+2\r
+0\r
+0 gI n\r
+2\r
+!\r
+∀(f, g) ∈ C\r
+∞(M) ⊕ C∞(M), (2.14)\r
+choosing as automorphism\r
+ρ((f, g)) = (g, f) ∀(f, g) ∈ C\r
+∞(M) ⊕ C∞(M). (2.15)\r
+§\r
+In this paper we will consider only manifolds of even dimension. The odd case has technical issues which we\r
+prefer to ignore. For a full discussion of product geometries see [31] and the references therein.\r
+4
+
+The complete twisted spectral triple thus consists in\r
+\u0010\r
+(C\r
+∞(M) ⊗ AF ) ⊗ C\r
+2\r
+, L2(M, S) ⊗ C\r
+96, D = ∂/ ⊗ I96 + γE ⊗ DF ; ρ\r
+\u0011\r
+, (2.16)\r
+where the “doubled” algebra (C∞(M)⊗AF )⊗C\r
+2\r
+acts on H = L\r
+2\r
+(M, S)⊗C\r
+96 as in the Standard\r
+Model, except that the representation (2.8) of C∞(M) is substituted with the representation\r
+(2.14) of C∞(M) ⊗ C\r
+2\r
+. The Dirac operator is unchanged.\r
+The grading Γ and the real structure J are as in the non twisted case, namely\r
+Γ = γE ⊗ γF where γF := diag (I8N , −I8N , −I8N ,I8N ), (2.17)\r
+and\r
+J = J ⊗ JF where JF := \r
+0 I16N\r
+I16N 0\r
+!\r
+cc (2.18)\r
+with J = iγ0γ\r
+2\r
+cc the charge conjugation on L\r
+2\r
+(M, S)(with cc the complex conjugation).\r
+The fermionic fields are elements of the Hilbert space H. The bosonic fields are obtained by\r
+the so-called twisted fluctuations of D by A, which amount to substituting D with [25]\r
+DAρ:= D + Aρ + ǫ\r
+′ JAρJ−1\r
+(2.19)\r
+where Aρ is an element of the set of twisted generalized one forms [26]\r
+Ω\r
+1\r
+D(A, ρ) := (X\r
+i\r
+ai[D, bi]ρ, ai, bi ∈ A). (2.20)\r
+Remark 2.1. The twisted fluctuations of the Dirac operator, which were initially introduced by\r
+analogy with the non twisted case [25], have now in [27] been placed on the same rigorous footing\r
+as Connes’ original “fluctuations of the metric” [29], namely as a way to export a real twisted\r
+spectral triple to a Morita equivalent algebra. In particular, in case of self-Morita equivalence, one\r
+obtains formula (2.19). Additionally, a gauge transformation is implemented as in the non-twisted\r
+case, namely as a change of connection in the bimodule that implements Morita equivalence. This\r
+yields formula (2.25), which is our starting point in this paper.\r
+Note however, that there is an important difference between the twisted and the non-twisted\r
+cases: while usual fluctuations preserve the selfadjointness of the Dirac operator, twisted-fluctuations\r
+may not. In [27] this issue was addressed working out the necessary and sufficient conditions,\r
+such that the unitary u which implements the twisting automorphism (in case the latter lifts to\r
+an inner automorphism of B(H)) must satisfy in order to preserve selfadjointness. Interestingly,\r
+there are other solutions beyond the obvious ones (i.e. u invariant under the twist).\r
+In this paper we provide an alternative solution: instead of trying to preserve selfadjointness,\r
+we investigate whether there is a “more natural” property preserved under a twisted fluctuation.\r
+We find one: selfadjointness with respect to the inner product induced by the twist. Unexpectedly,\r
+in the case of the twisted spectral triple of the Standard Model, the induced product is the Krein\r
+product of Lorentz spinors. It is quite remarkable that the Lorentz structure emerges from the\r
+algebraic properties of the Euclidean spectral triple and its twist (all the more that the later is\r
+unique, under the condition that the fermionic sector of the theory is untouched by the twist [27]).\r
+5
+
+When DAρ\r
+is selfadjoint, we call it a twisted-covariant Dirac operator. One then shows\r
+[25] that (A, H, DAρ; ρ) is a real twisted spectral triple, with the same real structure and KO\u0002dimension as (A, H, D; ρ).\r
+A gauge transformation for a twisted spectral triple [27] is implemented by the simultaneous\r
+action on H and L(H) (the space of linear operators on H) of the group of unitaries of A,\r
+U(A) := {u ∈ A, u∗u = uu∗ = I} . (2.21)\r
+The action on H follows from the adjoint action of A (on the left via its representation, on the\r
+right by (2.4)), that is\r
+Ad(u)ψ = uψu∗ = uJuJ−1ψ ∀ψ ∈ H, u ∈ U(A). (2.22)\r
+The action on L(H) is defined as\r
+T 7→ Ad(ρ(u)) T Ad(u\r
+∗\r
+) ∀T ∈ L(H), (2.23)\r
+where\r
+Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1\r
+. (2.24)\r
+In particular, for T = DAρ a twisted covariant Dirac operator (2.19), one has (see details in\r
+appendice, and also [27])\r
+Ad(ρ(u)) DAρAd(u\r
+∗\r
+) = DAu\r
+ρ\r
+(2.25)\r
+where\r
+A\r
+u\r
+ρ\r
+:= ρ(u)Aρu\r
+∗ + ρ(u) [D, u∗\r
+]ρ. (2.26)\r
+The map Aρ 7→ Au\r
+ρ\r
+is a twisted version of the usual law of transformation of the gauge potential\r
+in noncommutative geometry [29].\r
+The interest of twisting the spectral triple of the Standard Model is that whereas the part\r
+DR of the operator DF that contains the Yukawa coupling kR of the right handed neutrino is\r
+transparent to usual inner fluctuations,\r
+[DR, a] = 0 ∀a ∈ AF , (2.27)\r
+it is not transparent to twisted inner fluctuations (2.19),\r
+[DR, a]ρ 6= 0 for some a ∈ AF ⊗ C\r
+2\r
+. (2.28)\r
+That DR did not fluctuate remained almost unnoticed until the observation in [14] that turning\r
+the (constant) kR into a field kRσ provides precisely the extra scalar field required to stabilize the\r
+electroweak vacuum, and also provides a way of naturally accommodating the mass of the Higgs\r
+boson. The non-fluctuation of DR by internal symmetries can be traced back to the first-order\r
+condition (as already noticed in [32]). To justify the substitution kR → kRσ, various solutions\r
+have been proposed:\r
+- Make the first-order condition more flexible, as investigated in [17, 18], with phenomeno\u0002logical consequences in [33] (see also [34]).\r
+6
+
+- Attempt to fluctuate the σ field using the outer symmetries of the theory, as initiated\r
+in [19], leading to a minimal and phenomenologically viable Standard Model extension.\r
+- Double the algebra and twist the first order condition, as explained above.\r
+3 Twist and Lorentz Structure\r
+We show that when the automorphism ρ in a twisted spectral triple (A, H, D; ρ) is inner, then\r
+there exists a natural ρ-twisted inner product on H. Furthermore, for the twisted geometry of\r
+the Standard Model (2.7), this inner-product is a Krein product of Lorentzian spinors.\r
+3.1 Twisted inner product\r
+Let H be an Hilbert space with inner product h·, ·i, and ρ be an automorphism of B(H).\r
+Definition 3.1. A ρ-twisted inner product h·, ·iρ is an inner product on H such that\r
+hΨ, OΦiρ = hρ(O)\r
+†Ψ, Φiρ ∀O ∈ B(H), Ψ, Φ ∈ H, (3.1)\r
+where ρ(O)\r
+†\r
+is the adjoint of ρ(O) with respect to the initial Hilbert inner product h·, ·i.\r
+We denote\r
+O\r
++ := ρ(O)†\r
+(3.2)\r
+the adjoint of a bounded operator O with respect to the ρ-twisted inner product. For short we\r
+call the later the ρ-product, and O+ the ρ-adjoint of O. An operator O (resp. U) on H is said\r
+ρ−hermitian (ρ−unitary) if it is selfadjoint (unitary) with respect to the ρ-product: O+ = O,\r
+U\r
++U = UU + = I. In terms of the initial Hilbert product on H, this reads\r
+O = ρ(O)\r
+†\r
+, ρ(U)\r
+†U = U ρ(U)† = I. (3.3)\r
+If ρ is an inner automorphism of B(H), such that there exists a unitary operator R on H\r
+satisfying\r
+ρ(O) = ROR\r
+†\r
+∀O ∈ B(H), (3.4)\r
+then a natural ρ-product is\r
+hΨ, Φiρ = hΨ, RΦi = hR\r
+†Ψ, Φi. (3.5)\r
+Indeed, for any bounded operator O on H one checks that\r
+hΨ, OΦiρ = hΨ, ROΦi = hO†R\r
+†Ψ, Φi = hO†R†Ψ, R†RΦi (3.6)\r
+= hRO\r
+†R†Ψ, RΦi = hρ(O†\r
+)Ψ, Φiρ = hρ(O)\r
+†Ψ, Φiρ = hO+Ψ, Φiρ (3.7)\r
+where we used that an inner automorphism is necessarily a ∗-automorphism, that is\r
+ρ(O)\r
+† = (ROR†\r
+)\r
+† = RO†R† = ρ(O†\r
+). (3.8)\r
+Notice that R is both unitary (by definition) and ρ-unitary: one has ρ(R) = RRR† = R so that\r
+ρ(R)\r
+†R = R†R = I = R ρ(R)†\r
+.\r
+7
+
+All the definitions above extend to any (i.e. non necessarily bounded) densely defined linear\r
+operator T on H whose domain is globally invariant under left multiplication by R†: if R†ψ ∈\r
+Dom(T) for any ψ ∈ Dom(T), then one defines the action of ρ on T as\r
+ρ(T)Ψ := R T R†Ψ. (3.9)\r
+If in addition T is adjointable (i.e. the operator T\r
+† defined by hT†η, ξi := hη, T ξi for all\r
+ξ ∈ Dom(T), is densely defined), then so is RT R† and by (3.2) one defines the ρ-adjoint of T as\r
+T\r
++ := ρ(T)†\r
+. The operator T is ρ-hermitian when T\r
++ = T.\r
+The extension of an inner automorphism a → uau∗ of A to an automorphism of B(H) is not\r
+unique (just consider two distinct unitaries R1, R2 in B(H) such that R1aR†\r
+1 = R2aR†2\r
+for any\r
+a ∈ A). Any such extension defines an automorphism of A◦:\r
+ρ(Ja∗J\r
+−1\r
+) = R Ja∗J\r
+−1R†\r
+∀a ∈ A. (3.10)\r
+We say that an inner automorphism is compatible with J if it admits an extension such that\r
+(3.10) agrees with ρ◦ ∈ Aut(A◦) defined in (2.6). More precisely:\r
+Definition 3.2. Given a real spectral triple (A, H, D), an inner automorphism ρ of A is com\u0002patible with the real structure J if there exists a unitary R ∈ B(H) such that\r
+ρ(a) = RaR†and J R a∗ R\r
+†J−1 = RJa∗J−1R† ∀a ∈ A. (3.11)\r
+This condition is verified in particular when the inner automorphism can be implemented by a\r
+unitary R such that\r
+JR = ±RJ. (3.12)\r
+3.2 Lorentzian signature and Krein space\r
+In definition 3.1 we do not require the ρ-product to be positive definite. Since R is unitary, one\r
+has that h·, ·iρ is non-degenerate. If in addition we impose that R is selfadjoint and different\r
+from the identity (i.e. the automorphism ρ is not the trivial one), then R has eigenvalues ±1.\r
+The two corresponding eigenspaces H+, H− are such that H = H+ ⊕ H− and the ρ-product is\r
+positive definite on H+, negative definite on H−. In other words, a space H equipped with the\r
+product h·, ·iρ is a Krein space. Furthermore, the operator R is a fundamental symmetry, that\r
+is it satisfies R2 = I and the inner product h·, R·iρ is positive definite on H (in our case, this is\r
+simply the Hilbert product one started with).\r
+In the twisted spectral triple of the Standard Model, the automorphism ρ is the flip (2.15).\r
+It is implemented on L\r
+2\r
+(M, S) by the adjoint action of the selfadjoint unitary operator\r
+R =\r
+ \r
+0 12\r
+12 0\r
+!\r
+. (3.13)\r
+This matrix has eingenvalues ±1, hence H equipped with the ρ-product is a Krein space. The\r
+8
+
+Euclidean Dirac matrices in the chiral basis are, for µ = 0, j with j = 1, 2, 3,\r
+γ\r
+µ\r
+E =\r
+ \r
+0 σ\r
+µ\r
+σ˜\r
+µ 0\r
+!\r
+where σ\r
+µ =\r
+\b\r
+I2, −iσi\r
+\t\r
+, σ˜\r
+µ =\r
+\b\r
+I2, iσi\r
+\t\r
+(3.14)\r
+where σj , j = 1, 2, 3 are the Pauli matrices. Thus R is nothing but γ\r
+0\r
+E\r
+and the ρ-product (3.1) is\r
+now the usual inner product of quantum field theory in Lorentz signature, where instead of ψ\r
+†\r
+it appears ψ¯ = ψ\r
+†γ0\r
+E\r
+:\r
+hψ, φiρ = hψ, γ0\r
+Eφi =\r
+ˆ\r
+d\r
+4xψ†\r
+γ\r
+0\r
+Eφ := ˆ\r
+d\r
+4xψφ. ¯ (3.15)\r
+Furthermore, one has\r
+ρ(γ\r
+0\r
+E) = (γ\r
+0\r
+E)\r
+3 = γ0\r
+E, ρ(γ\r
+j\r
+E\r
+) = γ\r
+0\r
+Eγ\r
+j\r
+E\r
+γ\r
+0\r
+E = −γ\r
+j\r
+E\r
+. (3.16)\r
+The twist therefore performs some sort of Wick rotation whereby the sign of the time-component\r
+Dirac matrix is changed with respect to the spatial directions. The matrix R is of course expressed\r
+in a particular basis, and its action on the Clifford algebra generated by the γ’s singles out one\r
+particular direction, which we identify with time. Then it makes sense to define the integral on a\r
+time slice and have fields normalized only for the space integral, which is what is commonly done.\r
+However, the ρ(γ\r
+i\r
+E\r
+)’s are not the Lorentzian signature (i.e. Minkowskian) gamma matrices,\r
+γ\r
+0\r
+M = γ\r
+0\r
+E , γ\r
+j\r
+M = iγjE\r
+j = 1, 2, 3. (3.17)\r
+Viewing the Wick rotation as the operator: W : γ\r
+µ\r
+E → γ\r
+µ\r
+M, that is\r
+W(γ\r
+0\r
+E) = γ\r
+0\r
+E, W(γ\r
+j\r
+E\r
+) = iγj\r
+E\r
+, (3.18)\r
+one has that the twist (3.16) is the square of the Wick rotation\r
+ρ(γ\r
+0\r
+E) = W(W(γ\r
+0\r
+E)), ρ(γ\r
+j\r
+E\r
+) = W(W(γ\r
+j\r
+E\r
+)). (3.19)\r
+The Euclidean Dirac matrices are selfadjoint for the Hilbert product of L\r
+2\r
+(M, S), but (except\r
+for γ\r
+0\r
+E\r
+) not ρ-hermitian since from (3.2) and (3.16) one has\r
+(γ\r
+j\r
+E\r
+)\r
++ = ρ(γ\r
+j\r
+E\r
+)\r
+† = −γ\r
+j\r
+E\r
+†\r
+. (3.20)\r
+On the contrary, the Minkowskian gamma matrices (except γ\r
+0\r
+M) are not selfadjoint for the Hilbert\r
+product since (3.17) yields (γ\r
+j\r
+M)\r
+† = −γ\r
+j\r
+M; but they are ρ-hermitian since\r
+ρ(γ\r
+j\r
+M) = iρ(γ\r
+j\r
+E\r
+) = −iγj\r
+E = −γ\r
+j\r
+M, (3.21)\r
+so that\r
+(γ\r
+j\r
+M)\r
++ = ρ(γ\r
+j\r
+M)\r
+† = (γ0γ\r
+j\r
+Mγ0)\r
+† = γ0(γ\r
+j\r
+M)\r
+†\r
+γ0 = −γ0γ\r
+j\r
+Mγ0 = −ρ(γ\r
+j\r
+M) = γ\r
+j\r
+M. (3.22)\r
+The “temporal” gamma matrix γ\r
+0\r
+:= γ\r
+0\r
+E = γ\r
+0\r
+M is both selfadjoint and ρ-hermitian.\r
+9
+
+The twist naturally defines a Krein structure, while maintaining in the background the Eu\u0002clidean structure. Applications of Krein spaces to noncommutative geometry framework have\r
+been recently studied in [35, 36] as well as in [37–39] (see reference therein for earlier attempts\r
+of adapting Connes noncommutative geometry to the Minkowskian signature).\r
+Remark 3.3. Wick rotations are a delicate issue in the presence of fermions, and have been dis\u0002cussed in detail in [40] (see also [41]). There are intimate relations with the projection necessary\r
+to remove the extra degrees of freedom given by fermion doubling [42]. In the present paper we\r
+concentrate on the issue of the change of signature, and how it relates with the twist. The tran\u0002sition from an Euclidean signature theory which contains fermions involves changes of degrees of\r
+freedom, usually a doubling, as occurred for example in [43, 44]. In the present approach there is\r
+actually a quadruplication of degrees of freedom, obtained as a product of two duplications. One\r
+of these disappears after Wick rotation, while the other must be projected out. The nature of the\r
+duplications seen in this work differ slightly from those cited above.\r
+4 Actions\r
+For an almost commutative geometry (2.7) with grading Γ, the fermionic action is [3]\r
+S\r
+F\r
+(D) := hJψ, D˜ ψ˜i (4.1)\r
+where ψ is a vector in the even part of the Hilbert space\r
+He := {ψ ∈ H, γψ = ψ} (4.2)\r
+which, seen as an operator on the Fock space, is a Grassmanian variable ψ˜. The bosonic action\r
+is [2]\r
+S\r
+B(D) := Tr f\r
+\u0012\r
+D2\r
+Λ2\r
+\u0013\r
+(4.3)\r
+where Λ is an energy cutoff and f a smooth approximation of the characteristic function of\r
+the interval [0, 1]. Both actions are invariant under a gauge transformation [3], that is the\r
+simultaneous transformation\r
+D 7→ Ad(u) D Ad(u\r
+∗\r
+) and ψ 7−→ Ad(u)ψ. (4.4)\r
+For the almost commutative geometry (2.7) with M a Riemannian spin manifold and (AF , HF , DF )\r
+as described in §2, S\r
+F yields the fermionic action of the Standard Model, while the asymptotic\r
+expansion of S\r
+B yields the bosonic part, including the Higgs, together with the Einstein-Hilbert\r
+action (in Euclidean signature) and an extra Weyl term.\r
+For a twisted spectral triple, both actions (4.1) and (4.3) are well defined, but their invari\u0002ance under a gauge transformation, that is - as explained at the end of §2 - the simultaneous\r
+transformation\r
+D 7→ DAu\r
+ρ\r
+:= Ad(ρ(u)) D Ad(u\r
+∗\r
+) and ψ 7−→ Ad(u)ψ, (4.5)\r
+is not guaranteed:\r
+10
+
+• S\r
+F (D) has no reason to be invariant, unless u is invariant under the twist: u = ρ(u);\r
+• SB(DAu\r
+ρ\r
+) is defined only if DAu\r
+ρ\r
+is selfadjoint, or at least normal (which guarantees that\r
+f\r
+\u0012 D2\r
+Au\r
+ρ\r
+Λ\r
+\u0013\r
+makes sense by the spectral theorem). But as has already been discussed in\r
+remark 2.1, for an arbitrary unitary u, the operator DAu\r
+ρ\r
+has no reason to be selfadjoint,\r
+nor even normal. Notice however that it has compact resolvent, being a perturbation by\r
+bounded operator of the selfadjoint compact-resolvent operator D. Thus as soon as it is\r
+normal, the trace in (4.3) is finite for any value of the cutoff Λ and the bosonic action\r
+S\r
+B(DAu\r
+ρ\r
+) is then well defined.\r
+So as to ensure that both the fermionic and bosonic actions remain well defined and invariant\r
+under gauge transformations, one may restrict the range of acceptable unitaries to those such\r
+that (4.1) is invariant under (4.4) and such that DAu\r
+ρ\r
+is normal. It is likely however that there\r
+is no other solution other than the unitaries invariant under the twist, which would drastically\r
+limit the interest of the whole construction: why introducing a twist only to ignore it at the\r
+end? Another solution, and the one that we explore in the following, is to take advantage of\r
+the twisted inner product (3.5) so as to modify the definitions of S\r
+F and SB, in order to obtain\r
+actions invariant under (4.5) for any unitary u.\r
+4.1 Fermionic Action\r
+To build a fermionic action for a twisted spectral triple that is invariant under the gauge trans\u0002formation (4.5), it suffices to substitute the Hilbert inner product in (4.1) with the ρ-product.\r
+Proposition 4.1. Let (A, H, D; ρ) be a real twisted spectral triple with ρ an inner automorphism\r
+of B(H) compatible with the real structure in the sense of Def. 3.2. Then\r
+A\r
+ρ\r
+D(ψ, φ) = hJψ, Dφiρ ∀ψ, φ ∈ Dom D (4.6)\r
+is a bilinear form invariant under the simultaneous transformations of (4.5). That is\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = A\r
+ρ\r
+Ad(ρ(u)) D Ad(u∗)\r
+(Ad(u)ψ, Ad(u)φ) ∀ψ, φ ∈ Dom D, u ∈ U(A). (4.7)\r
+Proof. One simply adapts to the twisted case the proof of [28, Prop. 1.213]. The Hilbert\r
+product on H is antilinear on the first variable, and the same is true for the ρ-product. Since J\r
+is antilinear, one has that A\r
+ρ\r
+D\r
+(·, ·) is linear in both variables.\r
+Let U = Ad(u) = uJuJ−1. By (3.11) one has\r
+Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1 = ρ(u)ρ(JuJ−1\r
+) = ρ(uJuJ−1) = ρ(U). (4.8)\r
+Therefore\r
+A\r
+ρ\r
+ρ(U)DU∗ (Uψ, Uφ) = hJUψ, ρ(U)DU∗Uφiρ = hUJψ, ρ(U)Dφiρ (4.9)\r
+= hJψ, U +ρ(U)Dφiρ = hJψ, Dφiρ (4.10)\r
+11
+
+where in the first line we have used the fact that J commutes with U,\r
+JU = J(uJuJ−1) = JJuJ−1u = ǫ\r
+′′u(JJ−1\r
+)J\r
+−1u = ǫ′′uJ(J−1\r
+)\r
+2u = uJu = UJ, (4.11)\r
+and the last line comes from (3.2):\r
+U\r
++ρ(U) = ρ(U)∗\r
+ρ(U) = I. (4.12)\r
+This proves the result. \u0004\r
+In the (usual) description of the Standard Model with a (non twisted) spectral triple, it is\r
+important for the bilinear form hJφ, Dψi to be antisymmetric, hJφ, Dψi = −hJψ, Dφi, and\r
+not to vanish when restricted to the even part (4.2) of the Hilbert space. This makes S\r
+F in\r
+(4.1) vanishing if computed with usual spinors, but gives the expected fermionic action when\r
+computed with Grassman fermionic fields. One restricts to He in order to solve the fermion\r
+doubling problem (see [28, I.§16.2] for details). In the twisted case, the bilinear form (4.6) is not\r
+necessarily antisymmetric. It is however, if one restricts to\r
+HR := {ψ ∈ Dom D, Rψ = ψ} . (4.13)\r
+Proposition 4.2. Let (A, H, D; ρ) be a real twisted spectral triple for which ρ is compatible with\r
+the real structure in the sense of (3.12). Then the bilinear form A\r
+ρ\r
+D is such that\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ A\r
+ρ\r
+D\r
+(φ, ψ) ∀ψ, φ ∈ HR. (4.14)\r
+Proof. By definition of antiunitary operator, hJφ, Jψi = hφ, ψi for any ψ, φ ∈ H. Thus\r
+A\r
+ρ\r
+D(ψ, φ) = hJψ, RDφi = ǫhJψ, J2RDφi = ǫhJRDφ, ψi. (4.15)\r
+Let JR = ǫ\r
+′′′RJ, where ǫ′′′ = ±1. For ψ, φ in HR, one obtains\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′′′hRJDφ, ψi = ǫǫ′ǫ\r
+′′′hRDJφ, ψi = ǫǫ′\r
+ǫ\r
+′′′hJφ, DR†ψi, (4.16)\r
+= ǫǫ′ǫ\r
+′′′hJR†Rφ, Dψi = ǫǫ′\r
+hR\r
+†\r
+JRφ, Dψi = ǫǫ′hJφ, RDψi = ǫǫ′A\r
+ρ\r
+D(φ, ψ). (4.17)\r
+where in the second line we use R†R = I and R†ψ = ψ, then R†J = ǫ\r
+′′′JR†\r
+. \u0004\r
+The twisted spectral triple of the Standard Model presented in §2 has KO-dimension 2, with\r
+a twist R = γ\r
+0\r
+E\r
+compatible with the real structure. Hence the above proposition applies with\r
+ǫ = −1, ǫ\r
+′ = 1, meaning that A\r
+ρ\r
+D is antisymmetric as expected.\r
+Formally, the twisted fermionic action (4.6) is similar to the non twisted one (4.1): it is\r
+gauge invariant and symmetric on a given subspace of H. However this subspace is HR, not He.\r
+This may have some consequences on the physical contents of the action, the study of which we\r
+leave to future work, as it will require first to compute the twisted fluctuations of the full Dirac\r
+operator D in (2.7) (in [25] was considered only the part DR of DF that contain the Yukawa\r
+coupling of the right handed neutrino).\r
+Alternatively, the Krein structure induced by the twist suggests a way to define a fermionic\r
+action which is antisymmetric on the whole of H: instead of restricting to ψ ∈ HR, the alternative\r
+12
+
+is to assume that D is ρ-hermitian. This goes beyond the definition of twisted spectral triples\r
+(which deals only with selfadjoint operator D). However, there exists several proposals for\r
+generalizing spectral triples to the Lorentzian signature (see [35] for the most recent one, and\r
+references therein). We do not intend to develop here a theory of Lorentzian twisted spectral\r
+triples, we shall simply consider (A, H, D; ρ) that has all the properties of a real twisted spectral\r
+triple, with real structure J, except that D is not selfadjoint but ρ-hermitian.\r
+Proposition 4.3. Let (A, H, D; ρ) be as explained above, with ρ implemented by a selfadjoint\r
+unitary R such that JR = ǫ\r
+′′′RJ. Then the bilinear form A\r
+ρ\r
+D is such that\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ǫ\r
+′′′ A\r
+ρ\r
+D\r
+(φ, ψ) ∀ψ, φ ∈ Dom D. (4.18)\r
+Proof. By a similar calculation to that of Prop. 4.2, one arrives at\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ǫ\r
+′′′hJφ, D†R†ψi. (4.19)\r
+The ρ-hermicity of D together with R = R†implies D†R = RD. Hence\r
+A\r
+ρ\r
+D(ψ, φ) = ǫǫ′\r
+ǫ\r
+′′′hJφ, RDψi = ǫǫ′\r
+ǫ\r
+′′′ A\r
+ρ\r
+D(φ, ψ). \u0004\r
+As an illustration, consider the twisted spectral triple of the Standard Model (2.16) with ∂/,\r
+J and γE substituted with their Lorentzian version,\r
+∂/M := −iγµ\r
+M∂µ, JM := −iγ2\r
+M cc, γM := γ\r
+0\r
+Mγ\r
+1\r
+Mγ\r
+2\r
+Mγ\r
+3\r
+M = i\r
+3\r
+γ\r
+0\r
+Mγ\r
+1\r
+Eγ\r
+2\r
+Eγ\r
+3\r
+E = −iγE, (4.20)\r
+where γ\r
+µ\r
+M are the Minkovskian Dirac matrices (3.17). One checks that\r
+DM := ∂/M ⊗ I96 + γM ⊗ DF (4.21)\r
+is ρ-hermitian for the Krein structure induced by γ\r
+0\r
+M since\r
+(DM )\r
++ = ρ((DM )†\r
+) = γ\r
+0\r
+(∂/M)\r
+†\r
+γ\r
+0 ⊗ I96 + γ0\r
+Mγ\r
+†\r
+Mγ\r
+0\r
+M ⊗ DF ,\r
+= −iγ0\r
+M(γ\r
+µ\r
+M)\r
+†\r
+γ\r
+0\r
+M∂µ + γM ⊗ DF = −iγµ\r
+M ∂µ + γM ⊗ DF = DM,\r
+where we use ∂/\r
+†\r
+M = −i(γ\r
+µ\r
+M)\r
+†∂µ then (3.22), and γ0\r
+Mγ\r
+†\r
+Mγ\r
+0\r
+M = iγ0MγEγ\r
+0\r
+M = −iγE = γM coming\r
+from (4.20) and the explicit forms (2.10) and (3.14) of γE and γ\r
+0\r
+M = γ\r
+0\r
+E\r
+. Moreover, denoting\r
+with an overbar the complex conjugate, one obtains from (3.17) and (4.20)\r
+γ\r
+0\r
+M = γ\r
+0\r
+M, γ\r
+1\r
+M = γ\r
+1\r
+M, γ\r
+2\r
+M = −γ\r
+2\r
+M, γ\r
+3\r
+M = γ\r
+3\r
+M, (4.22)\r
+so that on a Lorentzian four dimensional manifold, the real structure satisfies\r
+(JM)\r
+2 = (−iγ2\r
+M cc)\r
+2 = γ2\r
+Mγ\r
+2\r
+M = −(γ\r
+2\r
+M)\r
+2 = I;\r
+JM∂/M = ∂/MJM for JM∂/M − ∂/MJM = −\r
+\u0010\r
+γ\r
+µ\r
+Mγ\r
+2\r
+M + γ\r
+2\r
+M γ\r
+µ\r
+M\r
+\u0011\r
+∂µ cc = 0;\r
+JMγM = −iγ2\r
+M(γ\r
+0\r
+M γ\r
+1\r
+M γ\r
+2\r
+M γ\r
+3\r
+M)cc = iγ2\r
+M(γ\r
+0\r
+M γ\r
+1\r
+Mγ\r
+2\r
+Mγ\r
+3\r
+M)cc = −i(γ\r
+0\r
+M γ\r
+1\r
+Mγ\r
+2\r
+Mγ\r
+3\r
+M)γ\r
+2\r
+Mcc\r
+= γMJM.\r
+13
+
+Since J\r
+2\r
+F = I (see (2.18)), the first equation yields (JM ⊗JF )\r
+2 = I, that is ǫ = 1. The second and\r
+third equations, together with DF JF = JF DF (coming from the KO dimension 6 of the spectral\r
+triple (2.7)) yield\r
+DM(JM ⊗ JF ) = ∂/MJM ⊗ JF + γMJM ⊗ DF JF = JM∂/M ⊗ JF + JMγM ⊗ JF DF\r
+= (JM ⊗ JF )DM, (4.23)\r
+so that ǫ\r
+′ = 1. Finally one has γ0JM = −JMγ0\r
+, meaning ǫ\r
+′′′ = −1. Therefore ǫǫ′\r
+ǫ\r
+′′′ = −1,\r
+hence A\r
+ρ\r
+D\r
+in Prop. 4.3 is antisymmetric as expected.\r
+The gauge invariance proved in Prop. 4.1 does not depend on the selfadjointness of D, and\r
+thus is still valid for ρ-hermitean D. What must be checked, however, for Prop. 4.3 to make\r
+sense is that a twisted perturbation of a ρ-hermitean operator is still ρ-hermitean, and that this\r
+property is preserved under gauge transformation.\r
+Proposition 4.4. Let (A, H, D; ρ) be as in proposition 4.3. Assume ρ is compatible with the\r
+real structure in the sense of (3.12). Then a twisted fluctuation\r
+DAρ = D + Aρ + JAρJ\r
+−1\r
+(4.24)\r
+of D is ρ-hermitian as long as Aρ is ρ-hermitian, i.e.\r
+Aρ = A\r
++ = ρ(A†\r
+ρ\r
+). (4.25)\r
+In addition, any gauge transform\r
+D\r
+′\r
+Aρ\r
+:= ρ(U)DAρ U\r
+† with U := Ad(u) for u ∈ U(A) (4.26)\r
+of a ρ-hermitian operator DAρ\r
+is still ρ-hermitian.\r
+Proof. One has\r
+\r
+JAρJ\r
+−1\r
+\u0001+\r
+= R\r
+\r
+JAρJ\r
+−1\r
+\u0001†\r
+R\r
+† = R JA†\r
+ρJ\r
+−1 R†\r
+(4.27)\r
+= J RA†\r
+ρR\r
+† J−1 = JA+\r
+ρ J\r
+−1 = JAρJ−1\r
+. (4.28)\r
+Hence\r
+(DAρ)\r
++ = D+ + A+\r
+ρ +\r
+\r
+JAρJ\r
+−1\r
+\u0001+\r
+= D + Aρ + JAρJ\r
+−1 = DAρ\r
+. (4.29)\r
+For the second claim, one has\r
+\u0010\r
+D′\r
+Aρ\r
+\u0011+\r
+= ρ\r
+\u0010\r
+D′\r
+Aρ\r
+†\r
+\u0011\r
+= ρ\r
+\u0010\r
+UD†\r
+Aρ\r
+ρ(U)\r
+†\r
+\u0011\r
+= ρ(U)ρ\r
+\u0010\r
+D\r
+†\r
+Aρ\r
+\u0011\r
+U\r
+†\r
+(4.30)\r
+= ρ(U)D\r
++\r
+Aρ\r
+U\r
+† = ρ(U)DAρU† = D′\r
+Aρ\r
+(4.31)\r
+where we use\r
+ρ(ρ(U)\r
+†\r
+) = ρ\r
+\u0010\r
+(RUR)\r
+†\r
+\u0011\r
+= ρ(RU†R) = R\r
+2U†R2 = U†\r
+.\r
+\u0004\r
+Condition (4.25) is the twisted version of the usual requirement that the gauge potential A in a\r
+fluctuation of the metric should be selfadjoint.\r
+To summarize, there are two candidates for the fermionic action:\r
+14
+
+• A Lorentzian one: hJψ, DM\r
+Aρ\r
+ψiρ, where DM\r
+Aρ\r
+is a ρ-hermitian twisted fluctuation of the\r
+Minkowskian operator (4.21).\r
+• A Euclidean one: hJψ, DE\r
+Aρ\r
+ψiρ with ψ ∈ HR and DE\r
+Aρ\r
+is a selfadjoint twisted fluctuation\r
+of the Euclidean operator (2.7).\r
+The Lorentzian action has been considered in [35,45]. The Euclidean action is similar to the one\r
+of the Standard Model [3], except that ψ is in HR instead of He.\r
+4.2 Bosonic action\r
+The easiest way to make the bosonic action (4.3) well defined and invariant under a twisted\r
+gauge transformation is to rewrite it as\r
+Tr f\r
+\u0012\r
+D†D\r
+Λ2\r
+\u0013\r
+. (4.32)\r
+Indeed, given a twisted spectral triple (A, H, D; ρ) (that is D selfadjoint with compact resolvent),\r
+then under the map\r
+D → ρ(U)DU†, (4.33)\r
+one gets that D†D\r
+Λ2 is mapped to UD†DU†Λ2 which has the same trace as D†DΛ2 . This is this action\r
+that has been computed in [25] for a selfadjoint twisted fluctuation DAρ of the Dirac operator of\r
+the Standard Model.\r
+If one considers instead a ρ-hermitian Dirac operator (with compact resolvent),\r
+D = D\r
++ = ρ(D)†\r
+, (4.34)\r
+then one can write (4.32) in a twisted form (that is, without reference to the Hilbert adjoint) as\r
+Tr f\r
+\u0012\r
+ρ(D)D\r
+Λ2\r
+\u0013\r
+. (4.35)\r
+Taking for D the ρ-Hermitian Minkowskian Dirac operator −iγµ\r
+M∂µ (which has locally compact\r
+resolvent, see [46, Prop. 4.2] and reference therein), it returns the Euclidean action: by cyclicity\r
+of the trace, one can substitute ρ(D)D with 1\r
+2\r
+(ρ(D)D + Dρ(D)), which is nothing but the\r
+Euclidean Laplacian (up to a sign):\r
+1\r
+2\r
+(ρ(D)D + Dρ(D)) = 1\r
+2\r
+\u0010\r
+iγµ†\r
+M ∂µiγν\r
+M ∂ν + iγµ\r
+M ∂µiγν†M ∂ν\r
+\u0011\r
+(4.36)\r
+= −\r
+1\r
+2\r
+\u0010\r
+γ\r
+µ†\r
+M γ\r
+ν\r
+M∂µ∂ν + γ\r
+µ\r
+Mγ\r
+ν†\r
+M ∂µ∂ν\r
+\u0011\r
+(4.37)\r
+= −\r
+1\r
+2\r
+\u0010\r
+γ\r
+µ†\r
+M γ\r
+ν\r
+M + γ\r
+µ\r
+Mγ\r
+ν†\r
+M\r
+\u0011\r
+∂µ∂ν (4.38)\r
+= −g\r
+µν\r
+E\r
+∂µ∂ν (4.39)\r
+where gE is the Euclidean metric.\r
+Remark 4.5. One could be tempted to substitute the Hilbert adjoint D† with the Krein adjoint\r
+D+ in (4.32), but it is well known that this is problematic, for D+D is an hyperbolic operator,\r
+15
+
+whereas the heat kernel technique used for the asymptotic expansion of S\r
+B are well defined only\r
+for elliptic operators.\r
+5 Conclusions and Outlook\r
+The twist of the spectral triple corresponding to the Standard Model makes the Lorentzian\r
+signature naturally emerge as a twisted-inner product. The spectral action can be modified\r
+accordingly in order to make sense either of a selfadjoint Dirac operator, or of a ρ-hermitian one.\r
+The first choice permits one to maintain the usual definition for the twisted spectral triple, but\r
+restricts the gauge group to those unitaries whose twisted adjoint action preserves selfadjointness\r
+(see [27]). On the other hand, choosing a ρ-hermitian Dirac operator does not restrict the gauge\r
+group (ρ-hermicity is preserved by twisted fluctuations), but requires one to modify the definition\r
+of twisted spectral triples in order to accommodate an operator D that is twisted selfadjoint\r
+rather than selfadjoint.\r
+The modifications of the spectral action that we propose here do not yield the bosonic action\r
+in a Lorentzian signature, which is a well-known and difficult problem. Nevertheless, twists\r
+shed a new light on the problem, if one considers that the question is not so much to obtain\r
+directly from a spectral formula the Einstein-Hilbert action in the Lorentzian signature, than to\r
+be able to implement Wick rotation in a coherent way. Traditionally in quantum field theory,\r
+one begins in a given Lorentz signature, Wick rotates to perform some calculation, then Wick\r
+rotates back to obtain physical predictions. So far in noncommutative geometry, one starts with\r
+a bosonic action in Euclidean signature, expands with heat kernel techniques and then Wick\r
+rotates. The results of this paper suggest to start with a Lorentzian signature, for which a twist\r
+is adapted (for twisted fluctuations preserve Krein hermicity, whereas usual fluctuations do not).\r
+The spectral action (4.32) then yields the Einstein-Hilbert action in Euclidean signature, and\r
+physical predictions are obtained by Wick rotating back to the Lorentzian model one has started\r
+with. The added value of the twist is thus to prescribe a geometry upon which to “Wick rotate\r
+back” [40].\r
+Acknowledgement\r
+FL acknowledges the support of the INFN Iniziativa Specifica GeoSymQFT and Spanish MINECO\r
+under project MDM-2014-0369 of ICCUB (Unidad de Excelencia ‘Maria de Maeztu’). This work\r
+has been possible with the help of a Short Term Scientific Mission of SF, for this we thank the\r
+COST action QSPACE.\r
+A Appendix: twisted gauge fluctuation\r
+Given a twisted spectral (A, H, D), ρ, we check that the twisted adjoint action (2.25) of the\r
+unitaries of A yields the twisted gauge transformation (2.26). In agreement with (2.21) and\r
+(2.24)), for u a unitary of A, we write\r
+U := Ad(u) = uJuJ−1, ρ(U) = Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1\r
+. (A.1)\r
+16
+
+Assuming ρ is a ∗\r
+-automorphism (which is the case of the flip in the Standard Model), one first\r
+checks that\r
+ρ(U)DU∗ = ρ(u)Jρ(u)J\r
+∗DJu∗J∗u∗\r
+= ǫ\r
+′\r
+ρ(u)Jρ(u)Du∗J\r
+∗u∗\r
+using DJ = ǫ\r
+′\r
+JD\r
+= ǫ\r
+′\r
+ρ(u)Jρ(u) (ρ(u\r
+∗\r
+)D + [D, u∗]ρ) J\r
+∗u∗\r
+= ǫ\r
+′\r
+ρ(u)JDJ∗u\r
+∗ + ǫ′\r
+ρ(u)Jρ(u) [D, u∗]ρJ\r
+∗u∗\r
+= ρ(u)Du∗ + ǫ\r
+′JJ∗\r
+ρ(u)Jρ(u) [D, u∗]ρJ\r
+∗u∗\r
+= ρ(u)Du∗ + ǫ\r
+′Jρ(u)J∗\r
+ρ(u)J [D, u∗]ρJ\r
+∗u∗ using [J∗\r
+ρ(u)J, ρ(u)] = 0\r
+= ρ(u)Du∗ + ǫ\r
+′Jρ(u) [D, u∗\r
+]ρJ\r
+∗uJJ∗u∗ using h\r
+[D, u∗]ρ, J∗ρ(u)J\r
+i\r
+ρ\r
+= 0\r
+= ρ(u)Du∗ + ǫ\r
+′\r
+Jρ(u) [D, u∗]ρJ\r
+∗\r
+= ρ(u) (ρ(u\r
+∗\r
+)D + [D, u∗]ρ) + ǫ\r
+′\r
+Jρ(u) [D, u∗]ρJ\r
+∗\r
+= D + ρ(u) [D, u∗]ρ + ǫ\r
+′Jρ(u) [D, u∗\r
+]ρJ\r
+∗\r
+. (A.2)\r
+Then, noticing that by the order zero and the twisted first order condition one has\r
+[A, Jρ(a)J\r
+∗\r
+]ρ = 0 (A.3)\r
+for any twisted 1-form A = a\r
+i\r
+[D, bi]ρ, one has\r
+ρ(U)AU∗ = ρ(u)Jρ(u)J\r
+∗AJu∗\r
+J\r
+∗u∗\r
+= ρ(u)Jρ(u)J\r
+∗\r
+Jρ(u\r
+∗\r
+)J\r
+∗Au∗\r
+using [A, Jρ(u\r
+∗\r
+)J\r
+∗\r
+]ρ = 0\r
+= ρ(u)Au∗. (A.4)\r
+As well,\r
+ρ(U)JAJ∗U\r
+∗ = ρ(u)Jρ(u)J∗\r
+JAJ∗Ju∗J\r
+∗u∗\r
+= ρ(u)Jρ(u)Au∗J\r
+∗u∗\r
+JJ∗\r
+= ρ(u)Jρ(u)AJ∗u\r
+∗Ju∗J∗ using [J∗u∗J, u∗\r
+] = 0\r
+= ρ(u)Jρ(u)J\r
+∗\r
+ρ(u\r
+∗\r
+)JAu∗J\r
+∗ using [A, J∗u∗J]ρ = 0\r
+= Jρ(u)J\r
+∗\r
+ρ(u)ρ(u\r
+∗\r
+)JAu∗J\r
+∗\r
+using [Jρ(u)J\r
+∗\r
+, ρ(u)] = 0\r
+= Jρ(u)Au∗J\r
+∗\r
+. (A.5)\r
+Therefore, collecting (A.2), (A.4) and (A.5), one finds that a twisted covariant operator DA =\r
+D + A + ǫ\r
+′JAJ∗\r
+is mapped under a twisted gauge trasformation to\r
+ρ(U)DAU\r
+∗ = D + ρ(u)Au∗ + ρ(u) [D, u∗\r
+]ρ + ǫ\r
+′J\r
+\u0010\r
+ρ(u)Au∗ + ρ(u) [D, u∗]ρ\r
+\u0011\r
+J\r
+∗\r
+(A.6)\r
+which is nothing but D + Au + JAuJ\r
+∗\r
+for Authe twisted gauge transform (2.26).\r
+17
+
+References\r
+[1] A. Connes, Noncommutative geometry (1994), Academic Press.\r
+[2] A. H. Chamseddine and A. Connes, The Spectral action principle, Commun. Math. Phys.\r
+186 (1997) 731.\r
+[3] A. H. Chamseddine, A. Connes, and M. Marcolli, Gravity and the standard model with\r
+neutrino mixing, Adv. Theor. Math. Phys. 11 (2007), 991–1089.\r
+[4] W. D. van Suijlekom, Noncommutative geometry and particle physics, Springer (2015).\r
+[5] A. H. Chamseddine and A. Connes, Why the standard model ?, J. Geom. Phys 58 (2008),\r
+38–47.\r
+[6] L. Boyle, S. Farnsworth, Non-Commutative Geometry, Non-Associative Geometry and the\r
+Standard Model of Particle Physics, arXiv:1504.03890 [hep-ph]. New J. Phys. 16, 12 (2014).\r
+[7] C. Brouder, N. Bizi, F. Besnard, The Standard Model as an extension of the noncommutative\r
+algebra of forms, arXiv:1504.03890 [hep-th].\r
+[8] A. Devastato, Spectral Action and Gravitational effects at the Planck scale, Phys. Lett. B\r
+730 (2014) 36.\r
+[9] G. Aad et al. Observation of a new particle in the search for the Standard Model Higgs boson\r
+with the ATLAS detector at the LHC, Phys.Lett., B716:1-29, (2012).\r
+[10] S. Chatrchyan et al. Observation of a new boson at a mass of 125 GeV with the CMS\r
+experiment at the LHC. Phys.Lett., B716:30-61, (2012).\r
+[11] D. Buttazzo, G. Degrassi, P. P. Giardino, G. F. Giudice, F. Sala, and A. Salvio, Investigating\r
+the near-criticality of the Higgs boson, JHEP 89 2013.\r
+[12] C.-S. Chen and Y. Tang, Vacuum stability, neutrinos and dark matter, JHEP 1204 (2012),\r
+019.\r
+[13] J. Elias-Miro, J. R. Espinosa, G. F. Giudice, H. Min Lee, and A. Strumia, Stabilization of\r
+the electroweak vacuum by a scalar threshold effect, JHEP 06 (2012), no. 031.\r
+[14] A. H. Chamseddine and A. Connes, Resilience of the spectral standard model, JHEP 09\r
+(2012), 104.\r
+[15] C. A. Stephan, New scalar fields in noncommutative geometry, Phys. Rev. D 79 (2009),\r
+065013.\r
+[16] C. A. Stephan,Noncommutative geometry in the LHC-era, in Quantum Mathematical\r
+Physics, Birkhauser, 05 2013.\r
+[17] A. H. Chamseddine, A. Connes, and Walter van Suijlekom, Inner fluctuations in noncom\u0002mutative geometry without first order condition, J. Geom. Phy. 73 (2013), 222–234.\r
+18
+
+[18] A. H. Chamseddine, A. Connes, and W. van Suijlekom, Beyond the spectral standard model:\r
+emergence of Pati-Salam unification, JHEP 11 (2013), 132.\r
+[19] S. Farnsworth, L. Boyle, Rethinking Connes’ approach to the standard model of particle\r
+physics via non-commutative geometry", New J. Phys., 17, 2 (2015).\r
+[20] F. D’Andrea and L. Dabrowski, The standard model in noncommutative geometry and\r
+Morita equivalence, J. Noncom. Geom. 10 (2016), no. 2.\r
+[21] Ludwik Dabrowski, Francesco D’Andrea, and Andrzej Sitarz, The standard model in non\u0002commutative geometry: fundamental fermions as internal forms, Lett Math Phys (2017).\r
+[22] T. Brzezinski, N. Ciccoli, L. Dabrowski, and A. Sitarz, Twisted reality condition for Dirac\r
+operators, Math. Phys. Anal. Geo. 19 (2016), no. 3:16.\r
+[23] A. Devastato, F. Lizzi, and P. Martinetti, Grand Symmetry, Spectral Action and the Higgs\r
+mass, JHEP 01 (2014), 042.\r
+[24] A. Devastato, F. Lizzi and P. Martinetti, Higgs mass in Noncommutative Geometry,’\r
+Fortsch. Phys. 62 (2014) 863.\r
+[25] A. Devastato and P. Martinetti, Twisted spectral triple for the standard and spontaneous\r
+breaking of the grand symmetry, Math. Phys. Anal. Geo. 20 (2017), no. 2, 43.\r
+[26] A. Connes and H. Moscovici, Type III and spectral triples, Traces in number theory, geometry\r
+and quantum fields, Aspects Math. Friedt. Vieweg, Wiesbaden E38 (2008), 57–71.\r
+[27] Giovanni Landi and Pierre Martinetti, Gauge transformations for twisted spectral triples,\r
+arXiv 1704.06121 (2017).\r
+[28] Alain Connes and Matilde Marcolli, Noncommutative geometry, quantum fields and motives,\r
+AMS, 2008.\r
+[29] A. Connes, Gravity coupled with matter and the foundations of noncommutative geometry,\r
+Commun. Math. Phys. 182 (1996), 155–176.\r
+[30] G. Landi and P. Martinetti, On twisting real spectral triples by algebra automorphisms, Lett.\r
+Math. Phys. 106 (2016), 1499–1530.\r
+[31] S. Farnsworth, The graded product of real spectral triples", J. Math. Phys., 58, 2, 023507,\r
+(2017).\r
+[32] A. Connes and A. H. Chamseddine, Noncommutative geometry as a framework for unifi\u0002cation of all fundamental interactions including gravity, part 1, Fortschritte der Physik 58\r
+(2010), 553–600.\r
+[33] A. H. Chamseddine, A. Connes, and W. van Suijlekom, Grand unification in the spectral\r
+Pati-Salam model, JHEP 11 (2015).\r
+[34] C. Sun U. Aydemir, D. Minic and T. Takeuchi, Pati-Salam unification from non-commutative\r
+geometry and the TeV-scale Wr boson, Int. J. Mod. Phys. A 31 (2016), no. 1, 1550223–33.\r
+19
+
+[35] K. v. d. Dungen, Krein spectral triples and the fermionic action, Math. Phys. Anal. Geom.\r
+19 (2016) no.1, 4.\r
+[36] N. Bizi, C. Brouder and F. Besnard, Space and time dimensions of algebras with applications\r
+to Lorentzian noncommutative geometry and the standard model arXiv:1611.07062 [hep-th].\r
+[37] N. Franco and M. Eckstein, An algebraic formulation of causality for noncommutative ge\u0002ometry, Class. Quantum Grav. 30 (2013), 135007.\r
+[38] N. Franco and M. Eckstein, Exporing the causal structure of almost commutative geometries,\r
+SIGMA 10 (2014), no. 010, 23.\r
+[39] N. Franco, Temporal lorentzian spectral triples, Rev. Math. Phys. 26 (2014) no.08, 1430007.\r
+[40] F. D’Andrea, M. A. Kurkov, and F. Lizzi, Wick rotation and fermion doubling in noncom\u0002mutative geometry, Phys. Rev. D 94 (2016), no. 2.\r
+[41] M. A. Kurkov and F. Lizzi, Clifford Structures in Noncommutative Geometry and the Ex\u0002tended Scalar Sector, arXiv:1801.00260 [hep-th].\r
+[42] F. Lizzi, G. Mangano, G. Miele and G. Sparano, Fermion Hilbert space and fermion doubling\r
+in the noncommutative geometry approach to gauge theories, Phys. Rev. D 55 (1997) 6357.\r
+[43] K. Osterwalder and R. Schrader, Euclidean fermi fields and a feynman-kac formula for\r
+boson-fermion models, Helv. Phys. Acta 46 (1973) 277.\r
+[44] P. van Nieuwenhuizen and A. Waldron, On Euclidean spinors and Wick rotations, Phys.\r
+Lett. B 389 (1996) 29.\r
+[45] John W. Barrett, A Lorentzian version of the non-commutative geometry of the standard\r
+model of particle physics, J. Math. Phys. 48 (2007), 012303.\r
+[46] K. v. Dungen and A. Rennie, Indefinite Kasparov modules and pseudo-Riemannian mani\u0002folds, Annales Henri Poincaré 17 (2016), 3255-3286.\r
+20"""
+
+[metadata]
+title = "arxiv 1710.04965 van den dungen 2017 lorentz signature twisted spectral triples"
+authors = ["Unknown"]
+arxiv = "1710.04965"
+year = 2017
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:1710.04965v2 [hep-th] 18 Mar 2018\r
+Lorentz signature and twisted spectral triples\r
+A. Devastatoa, S. Farnsworthb, F. Lizziacd and P. Martinettie\r
+a\r
+INFN sezione di Napoli,\r
+b Max Planck Institute for Gravitational Physics (Albert Einstein Institute), Germany,\r
+c Dipartimento di Fisica “E. Pancini”, Università di Napoli Federico II,\r
+d\r
+Institut de Cíencies del Cosmos (ICCUB), Universitat de Barcelona,\r
+e Dipartimento di Matematica, Università di Genova.\r
+Abstract\r
+We show how twisting the spectral triple of the Standard Model of elementary particles\r
+naturally yields the Krein space associated with the Lorentzian signature of spacetime. We\r
+discuss the associated spectral action, both for fermions and bosons. What emerges is a tight\r
+link between twists and Wick rotation."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Noncommutative differential geometry (NCG) provides a unified framework from which to de\u0002scribe both Einstein-Hilbert gravity (in Euclidean signature) and classical gauge theories [1]. In\r
+particular, it gives an elegant description of the full Standard Model of particle physics in all of\r
+its detail, including the Higgs mechanism and neutrino mixing, as gravity on a certain “almost\r
+commutative manifold” [2, 3]. A recent and comprehensive review can be found in [4].\r
+The main benefit of the NCG approach to physics is that it offers a more constrained de\u0002scription of gauge theories than the usual effective field theory approach. Indeed, the added\r
+geometric constraints impose a range of successful and phenomenologically accurate restrictions\r
+on the allowed particle content of the Standard Model of particle physics [5–8]. Despite this suc\u0002cess, an early estimate for the Higgs mass was also furnished at mH ≃ 170 Gev. This prediction\r
+was disfavored by the Tevatron data, and has since been ruled out by the LHC [9, 10]. While\r
+falling short of an accurate comparison with experiment, this prediction depended on a number\r
+of assumptions including the big desert hypothesis, as well as the presence of a scale at which\r
+the coupling constants of the three gauge interactions unify.\r
+In light of the many successes of the NCG construction, one is led to question the various\r
+assumptions that went into the incorrect Higgs mass calculation, and above all the validity of\r
+the big desert assumption. This concern is particularly pressing as the “low” experimental value\r
+detected for the Higgs mass causes an instability (or meta-stability) in the electroweak vacuum\r
+at intermediate energies (see [11] for a recent update), that may be cured by the addition of a\r
+new scalar field suitably coupled to the Higgs - usually denoted σ (e.g. [12,13]). If the addition of\r
+such a scalar field were admissible within the NCG construction, it would not only stabilize the\r
+astinodevastato@gmail.com, shane.farnsworth@aei.mpg.de, fedele.lizzi@na.infn.it, martinetti@dima.unige.it\r
+1
+
+electroweak vacuum, but also allow compatibility with the experimentally observed Higgs mass\r
+[14]. Such an outcome is difficult to achieve however as the extra geometric constraints imposed\r
+by the NCG formalism severely restrict any allowed addition to the Standard Model. Early\r
+attempts in [15,16] to generate an extra scalar field within the framework required the adjunction\r
+of new fermions. More recently, there have been a number of phenomenologically viable Standard\r
+Model extensions singled out by the NCG framework which preserve the fermionic sector. This\r
+has been achieved for example in [17, 18] by relaxing some of the geometrical constraints, and\r
+in [19] by taking full account of the outer symmetries of the model (let us also mention some\r
+proposals to modify the grading, based on Morita equivalence, developed in [20, 21], as well as\r
+other modification of the grading in [22]).\r
+In this paper we are mostly concerned with the outcome of an extension of the Standard Model\r
+known as grand symmetry, proposed in [23] (see [24] for a shorter non-technical presentation). It\r
+relies on an enlargement of the Standard Model algebra, and ultimately allows one to obtain the\r
+field σ in agreement with the NCG principles, namely as an internal part of a connection. As\r
+shown in [25] however, in order to make the grand symmetry extension work, one is required to\r
+twist the noncommutative geometry of the Standard Model, in the sense of Connes-Moscovici [26].\r
+Besides solving some technical difficulties, the twist also permits one to understand the breaking\r
+of the grand symmetry down to the Standard Model symmetries in a dynamical process induced\r
+by the spectral action. Our first result establishes the fact that the required twist corresponds to\r
+a Wick rotation. More precisely, we show in section 3 that the twist turns the inner product of\r
+the Hilbert space of (Euclidean) spinors into a Krein product. The latter is precisely the inner\r
+product associated with spinors on a Lorentzian manifold. In a sense made precise in §3.2, the\r
+twist is actually the square of the Wick rotation.\r
+Our second result concerns the spectral action in the twisted context. While the behavior\r
+of gauge transformations for twisted spectral triples has already been worked out in [27], the\r
+corresponding gauge invariance of the spectral action has not yet been addressed. We investigate\r
+this question in section 4:\r
+• We begin with the fermionic action S\r
+F in §4.1, showing that the straightforward adaptation\r
+to the twisted case of the usual formula is indeed invariant under a twisted gauge transfor\u0002mation. However, it is not antisymmetric when restricted to the (positive) eigenvectors of\r
+the chirality operator, unlike the non-twisted case. This leads us to propose two possible\r
+definitions of S\r
+F in the twisted context: either by restricting to the eigenvectors of the uni\u0002tary implementing the twist, or by considering a Dirac operator, which is Krein-hermitian\r
+rather than hermitian.\r
+• The bosonic action S\r
+B is adressed in §4.2. We show that there is an easy way to rewrite\r
+it so that it becomes invariant under a twisted gauge transformation. We also investigate\r
+the possibility of a Krein adjoint Dirac operator. In both cases, our formulas give back the\r
+Euclidean bosonic action.\r
+The picture that emerges is that twisted geometries may provide an appropriate framework from\r
+which to facilitate the description of non-Euclidean signatures in NCG.\r
+We begin in the following section by recalling the main feature of the twisted spectral triple\r
+of the Standard Model.\r
+2"""
+
+[[sections]]
+number = "2"
+title = "Twisted spectral geometry for the standard model"
+text = """
+This section deals with the twisted spectral triple of the Standard Model of [25]. We do not\r
+discuss the usual non-twisted version, which can be found in [3]; neither do we motivate the\r
+importance of twists in noncommutative geometry. Let us just recall that twisted spectral triples\r
+were introduced in [26] in order to build spectral triples from algebras which do not exhibit a\r
+trace. Quite unexpectedly, they also provide the correct mathematical framework to write the\r
+“beyond SM” Grand symmetry model of [23].\r
+A twisted spectral triple (A, H, D; ρ) consists of a *-algebra A of bounded operators in a\r
+Hilbert space∗ H, together with a non-necessarily bounded self-adjoint operator D on H with\r
+compact resolvent, and an automorphism ρ of A such that the twisted commutator\r
+[D, a]ρ := Da − ρ(a)D (2.1)\r
+is bounded for any a in A. The twisted spectral triple is even if there is a Z2 grading, i.e. an\r
+operator Γ on H, Γ = Γ†, Γ\r
+2 = 1, such that ΓD + DΓ = 0 and Γa − aΓ = 0 for any a ∈ A. It is\r
+real if there is an antilinear isometry J (called real structure) which satisfies\r
+J\r
+2 = ǫI, JD = ǫ′DJ, JΓ = ǫ′′ΓJ (2.2)\r
+where ǫ, ǫ′, ǫ′′ ∈ {1, −1} define the KO-dimension (see e.g. [28] for details).\r
+The real structure implements an action of the opposite algebra† A◦, obtained by identifying\r
+Jb∗J\r
+−1 with b◦ ∈ A◦\r
+(for any b ∈ A), which is asked to commute with A:\r
+[a, JbJ−1] = 0 ∀ a, b ∈ A. (2.3)\r
+This is called the order zero condition and it permits one to define a right action of A on H\r
+ψa := a\r
+◦ψ = Ja∗\r
+J\r
+−1ψ ∀ψ ∈ H. (2.4)\r
+Another condition that plays an important role is the order one condition [29], which for twisted\r
+spectral triples one writes as [25, 30]\r
+[[D, a]ρ, JbJ−1]ρ0 = 0 ∀a, b ∈ A, (2.5)\r
+where‡\r
+ρ0(JbJ−1) := Jρ(b)J\r
+−1\r
+. (2.6)\r
+The usual conditions for untwisted spectral triples are retrieved by taking ρ to be the identity\r
+automorphism ρ(a) = a.\r
+A gauge theory is described - in its non twisted version - by an almost commutative geometry,\r
+that is the product\r
+A = C\r
+∞(M) ⊗ AF , H = L2\r
+(M, S) ⊗ HF , D = ∂/ ⊗ IF + γE ⊗ DF (2.7)\r
+∗We denote T†\r
+the adjoint of an operator T on H. As usual, we omit the symbol of representation for the\r
+algebra and identify π(a\r
+∗\r
+) = π(a)\r
+† with a∗\r
+.\r
+†\r
+Identical to A as a vector space, but with reversed product: a\r
+◦\r
+b\r
+◦ = (ba)◦\r
+.\r
+‡\r
+ρ0 is the “natural” image of ρ in the automorphism group of A\r
+◦\r
+: ρ◦(b\r
+◦\r
+) = (ρ(b))◦.\r
+3
+
+of the canonical spectral triple \r
+C∞(M), L2(M, S), ∂/\r
+\u0001\r
+associated to an (oriented closed) Rie\u0002mannian spin manifold M of even dimension§ m, with a finite dimensional spectral triple\r
+(AF , HF , DF ). Recall that L\r
+2\r
+(M, S) denotes the Hilbert space of square integrable spinors\r
+on M, on which C∞(M) acts as\r
+π(f) = f\r
+ \r
+I n\r
+2\r
+0"""
+
+[[sections]]
+number = "0"
+title = "I n"
+text = """
+2\r
+!\r
+f ∈ C\r
+∞(M), (2.8)\r
+with n = 2\r
+m\r
+2 the dimension of the spin representation. The Dirac operator is\r
+∂/ = −i\r
+Xm\r
+µ=1\r
+γ\r
+µ\r
+E∇S\r
+µ where ∇Sµ = ∂µ + ω\r
+S\r
+µ\r
+(2.9)\r
+with γ\r
+µ\r
+E = γ\r
+µ\r
+E\r
+†\r
+the selfadjoint Euclidean-signature Dirac matrices and ω\r
+S\r
+µ\r
+the spin connection.\r
+The grading\r
+γE = diag(I n\r
+2\r
+, −I n\r
+2\r
+) (2.10)\r
+is the product of the Dirac matrices (it is usually called γ\r
+5\r
+in the physics literature).\r
+To describe the standard model, under natural assumptions on the representation of the\r
+algebra, it is shown in [5] that the finite dimensional algebra in (2.7) has to be\r
+AF := C ⊕ H ⊕ M3(C), (2.11)\r
+acting on the finite dimensional Hilbert space.\r
+HF = HR ⊕ HL ⊕ Hc\r
+R ⊕ HcL = C\r
+96 (2.12)\r
+where HR = C\r
+8 × C3\r
+is spanned by the N = 3 generations of 8 right-handed fermions (electron,\r
+neutrino, up and down quarks with three colors each), HL stands for left fermions, and the\r
+exponent cis for the antiparticles. The finite dimensional Dirac operator DF is a 96 × 96 matrix\r
+whose entries are the Yukawa couplings of fermions, the Dirac and Majorana masses of neutrinos,\r
+the Cabibbo matrix and the mixing matrix for neutrinos.\r
+The twisted spectral triple of the Standard Model is obtained by making\r
+C\r
+∞(M) ⊗ C\r
+2 ≃ C\r
+∞(M) ⊕ C∞(M) (2.13)\r
+act on L\r
+2\r
+(M, S) as\r
+π((f, g)) := \r
+fI n\r
+2\r
+0\r
+0 gI n\r
+2\r
+!\r
+∀(f, g) ∈ C\r
+∞(M) ⊕ C∞(M), (2.14)\r
+choosing as automorphism\r
+ρ((f, g)) = (g, f) ∀(f, g) ∈ C\r
+∞(M) ⊕ C∞(M). (2.15)\r
+§\r
+In this paper we will consider only manifolds of even dimension. The odd case has technical issues which we\r
+prefer to ignore. For a full discussion of product geometries see [31] and the references therein."""
+
+[[sections]]
+number = "4"
+title = "The complete twisted spectral triple thus consists in"
+text = """
+\u0010\r
+(C\r
+∞(M) ⊗ AF ) ⊗ C\r
+2\r
+, L2(M, S) ⊗ C\r
+96, D = ∂/ ⊗ I96 + γE ⊗ DF ; ρ\r
+\u0011\r
+, (2.16)\r
+where the “doubled” algebra (C∞(M)⊗AF )⊗C\r
+2\r
+acts on H = L\r
+2\r
+(M, S)⊗C\r
+96 as in the Standard\r
+Model, except that the representation (2.8) of C∞(M) is substituted with the representation\r
+(2.14) of C∞(M) ⊗ C"""
+
+[[sections]]
+number = "2"
+title = "The Dirac operator is unchanged."
+text = """
+The grading Γ and the real structure J are as in the non twisted case, namely\r
+Γ = γE ⊗ γF where γF := diag (I8N , −I8N , −I8N ,I8N ), (2.17)\r
+and\r
+J = J ⊗ JF where JF :="""
+
+[[sections]]
+number = "0"
+title = "I16N"
+text = """
+I16N 0\r
+!\r
+cc (2.18)\r
+with J = iγ0γ\r
+2\r
+cc the charge conjugation on L\r
+2\r
+(M, S)(with cc the complex conjugation).\r
+The fermionic fields are elements of the Hilbert space H. The bosonic fields are obtained by\r
+the so-called twisted fluctuations of D by A, which amount to substituting D with [25]\r
+DAρ:= D + Aρ + ǫ\r
+′ JAρJ−1\r
+(2.19)\r
+where Aρ is an element of the set of twisted generalized one forms [26]\r
+Ω"""
+
+[[sections]]
+number = "1"
+title = "D(A, ρ) := (X"
+text = """
+i\r
+ai[D, bi]ρ, ai, bi ∈ A). (2.20)\r
+Remark 2.1. The twisted fluctuations of the Dirac operator, which were initially introduced by\r
+analogy with the non twisted case [25], have now in [27] been placed on the same rigorous footing\r
+as Connes’ original “fluctuations of the metric” [29], namely as a way to export a real twisted\r
+spectral triple to a Morita equivalent algebra. In particular, in case of self-Morita equivalence, one\r
+obtains formula (2.19). Additionally, a gauge transformation is implemented as in the non-twisted\r
+case, namely as a change of connection in the bimodule that implements Morita equivalence. This\r
+yields formula (2.25), which is our starting point in this paper.\r
+Note however, that there is an important difference between the twisted and the non-twisted\r
+cases: while usual fluctuations preserve the selfadjointness of the Dirac operator, twisted-fluctuations\r
+may not. In [27] this issue was addressed working out the necessary and sufficient conditions,\r
+such that the unitary u which implements the twisting automorphism (in case the latter lifts to\r
+an inner automorphism of B(H)) must satisfy in order to preserve selfadjointness. Interestingly,\r
+there are other solutions beyond the obvious ones (i.e. u invariant under the twist).\r
+In this paper we provide an alternative solution: instead of trying to preserve selfadjointness,\r
+we investigate whether there is a “more natural” property preserved under a twisted fluctuation.\r
+We find one: selfadjointness with respect to the inner product induced by the twist. Unexpectedly,\r
+in the case of the twisted spectral triple of the Standard Model, the induced product is the Krein\r
+product of Lorentz spinors. It is quite remarkable that the Lorentz structure emerges from the\r
+algebraic properties of the Euclidean spectral triple and its twist (all the more that the later is\r
+unique, under the condition that the fermionic sector of the theory is untouched by the twist [27])."""
+
+[[sections]]
+number = "5"
+title = "When DAρ"
+text = """
+is selfadjoint, we call it a twisted-covariant Dirac operator. One then shows\r
+[25] that (A, H, DAρ; ρ) is a real twisted spectral triple, with the same real structure and KO\u0002dimension as (A, H, D; ρ).\r
+A gauge transformation for a twisted spectral triple [27] is implemented by the simultaneous\r
+action on H and L(H) (the space of linear operators on H) of the group of unitaries of A,\r
+U(A) := {u ∈ A, u∗u = uu∗ = I} . (2.21)\r
+The action on H follows from the adjoint action of A (on the left via its representation, on the\r
+right by (2.4)), that is\r
+Ad(u)ψ = uψu∗ = uJuJ−1ψ ∀ψ ∈ H, u ∈ U(A). (2.22)\r
+The action on L(H) is defined as\r
+T 7→ Ad(ρ(u)) T Ad(u\r
+∗\r
+) ∀T ∈ L(H), (2.23)\r
+where\r
+Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1\r
+. (2.24)\r
+In particular, for T = DAρ a twisted covariant Dirac operator (2.19), one has (see details in\r
+appendice, and also [27])\r
+Ad(ρ(u)) DAρAd(u\r
+∗\r
+) = DAu\r
+ρ\r
+(2.25)\r
+where\r
+A\r
+u\r
+ρ\r
+:= ρ(u)Aρu\r
+∗ + ρ(u) [D, u∗\r
+]ρ. (2.26)\r
+The map Aρ 7→ Au\r
+ρ\r
+is a twisted version of the usual law of transformation of the gauge potential\r
+in noncommutative geometry [29].\r
+The interest of twisting the spectral triple of the Standard Model is that whereas the part\r
+DR of the operator DF that contains the Yukawa coupling kR of the right handed neutrino is\r
+transparent to usual inner fluctuations,\r
+[DR, a] = 0 ∀a ∈ AF , (2.27)\r
+it is not transparent to twisted inner fluctuations (2.19),\r
+[DR, a]ρ 6= 0 for some a ∈ AF ⊗ C\r
+2\r
+. (2.28)\r
+That DR did not fluctuate remained almost unnoticed until the observation in [14] that turning\r
+the (constant) kR into a field kRσ provides precisely the extra scalar field required to stabilize the\r
+electroweak vacuum, and also provides a way of naturally accommodating the mass of the Higgs\r
+boson. The non-fluctuation of DR by internal symmetries can be traced back to the first-order\r
+condition (as already noticed in [32]). To justify the substitution kR → kRσ, various solutions\r
+have been proposed:\r
+- Make the first-order condition more flexible, as investigated in [17, 18], with phenomeno\u0002logical consequences in [33] (see also [34]).\r
+6
+
+- Attempt to fluctuate the σ field using the outer symmetries of the theory, as initiated\r
+in [19], leading to a minimal and phenomenologically viable Standard Model extension.\r
+- Double the algebra and twist the first order condition, as explained above."""
+
+[[sections]]
+number = "3"
+title = "Twist and Lorentz Structure"
+text = """
+We show that when the automorphism ρ in a twisted spectral triple (A, H, D; ρ) is inner, then\r
+there exists a natural ρ-twisted inner product on H. Furthermore, for the twisted geometry of\r
+the Standard Model (2.7), this inner-product is a Krein product of Lorentzian spinors."""
+
+[[sections]]
+number = "3.1"
+title = "Twisted inner product"
+text = """
+Let H be an Hilbert space with inner product h·, ·i, and ρ be an automorphism of B(H).\r
+Definition 3.1. A ρ-twisted inner product h·, ·iρ is an inner product on H such that\r
+hΨ, OΦiρ = hρ(O)\r
+†Ψ, Φiρ ∀O ∈ B(H), Ψ, Φ ∈ H, (3.1)\r
+where ρ(O)\r
+†\r
+is the adjoint of ρ(O) with respect to the initial Hilbert inner product h·, ·i.\r
+We denote\r
+O\r
++ := ρ(O)†\r
+(3.2)\r
+the adjoint of a bounded operator O with respect to the ρ-twisted inner product. For short we\r
+call the later the ρ-product, and O+ the ρ-adjoint of O. An operator O (resp. U) on H is said\r
+ρ−hermitian (ρ−unitary) if it is selfadjoint (unitary) with respect to the ρ-product: O+ = O,\r
+U\r
++U = UU + = I. In terms of the initial Hilbert product on H, this reads\r
+O = ρ(O)\r
+†\r
+, ρ(U)\r
+†U = U ρ(U)† = I. (3.3)\r
+If ρ is an inner automorphism of B(H), such that there exists a unitary operator R on H\r
+satisfying\r
+ρ(O) = ROR\r
+†\r
+∀O ∈ B(H), (3.4)\r
+then a natural ρ-product is\r
+hΨ, Φiρ = hΨ, RΦi = hR\r
+†Ψ, Φi. (3.5)\r
+Indeed, for any bounded operator O on H one checks that\r
+hΨ, OΦiρ = hΨ, ROΦi = hO†R\r
+†Ψ, Φi = hO†R†Ψ, R†RΦi (3.6)\r
+= hRO\r
+†R†Ψ, RΦi = hρ(O†\r
+)Ψ, Φiρ = hρ(O)\r
+†Ψ, Φiρ = hO+Ψ, Φiρ (3.7)\r
+where we used that an inner automorphism is necessarily a ∗-automorphism, that is\r
+ρ(O)\r
+† = (ROR†\r
+)\r
+† = RO†R† = ρ(O†\r
+). (3.8)\r
+Notice that R is both unitary (by definition) and ρ-unitary: one has ρ(R) = RRR† = R so that\r
+ρ(R)\r
+†R = R†R = I = R ρ(R)†\r
+.\r
+7
+
+All the definitions above extend to any (i.e. non necessarily bounded) densely defined linear\r
+operator T on H whose domain is globally invariant under left multiplication by R†: if R†ψ ∈\r
+Dom(T) for any ψ ∈ Dom(T), then one defines the action of ρ on T as\r
+ρ(T)Ψ := R T R†Ψ. (3.9)\r
+If in addition T is adjointable (i.e. the operator T\r
+† defined by hT†η, ξi := hη, T ξi for all\r
+ξ ∈ Dom(T), is densely defined), then so is RT R† and by (3.2) one defines the ρ-adjoint of T as\r
+T\r
++ := ρ(T)†\r
+. The operator T is ρ-hermitian when T\r
++ = T.\r
+The extension of an inner automorphism a → uau∗ of A to an automorphism of B(H) is not\r
+unique (just consider two distinct unitaries R1, R2 in B(H) such that R1aR†\r
+1 = R2aR†2\r
+for any\r
+a ∈ A). Any such extension defines an automorphism of A◦:\r
+ρ(Ja∗J\r
+−1\r
+) = R Ja∗J\r
+−1R†\r
+∀a ∈ A. (3.10)\r
+We say that an inner automorphism is compatible with J if it admits an extension such that\r
+(3.10) agrees with ρ◦ ∈ Aut(A◦) defined in (2.6). More precisely:\r
+Definition 3.2. Given a real spectral triple (A, H, D), an inner automorphism ρ of A is com\u0002patible with the real structure J if there exists a unitary R ∈ B(H) such that\r
+ρ(a) = RaR†and J R a∗ R\r
+†J−1 = RJa∗J−1R† ∀a ∈ A. (3.11)\r
+This condition is verified in particular when the inner automorphism can be implemented by a\r
+unitary R such that\r
+JR = ±RJ. (3.12)"""
+
+[[sections]]
+number = "3.2"
+title = "Lorentzian signature and Krein space"
+text = """
+In definition 3.1 we do not require the ρ-product to be positive definite. Since R is unitary, one\r
+has that h·, ·iρ is non-degenerate. If in addition we impose that R is selfadjoint and different\r
+from the identity (i.e. the automorphism ρ is not the trivial one), then R has eigenvalues ±1.\r
+The two corresponding eigenspaces H+, H− are such that H = H+ ⊕ H− and the ρ-product is\r
+positive definite on H+, negative definite on H−. In other words, a space H equipped with the\r
+product h·, ·iρ is a Krein space. Furthermore, the operator R is a fundamental symmetry, that\r
+is it satisfies R2 = I and the inner product h·, R·iρ is positive definite on H (in our case, this is\r
+simply the Hilbert product one started with).\r
+In the twisted spectral triple of the Standard Model, the automorphism ρ is the flip (2.15).\r
+It is implemented on L\r
+2\r
+(M, S) by the adjoint action of the selfadjoint unitary operator\r
+R =\r
+ \r
+0 12\r
+12 0\r
+!\r
+. (3.13)\r
+This matrix has eingenvalues ±1, hence H equipped with the ρ-product is a Krein space. The"""
+
+[[sections]]
+number = "8"
+title = "Euclidean Dirac matrices in the chiral basis are, for µ = 0, j with j = 1, 2, 3,"
+text = """
+γ\r
+µ\r
+E =\r
+ \r
+0 σ\r
+µ\r
+σ˜\r
+µ 0\r
+!\r
+where σ\r
+µ =\r
+\b\r
+I2, −iσi\r
+\t\r
+, σ˜\r
+µ =\r
+\b\r
+I2, iσi\r
+\t\r
+(3.14)\r
+where σj , j = 1, 2, 3 are the Pauli matrices. Thus R is nothing but γ\r
+0\r
+E\r
+and the ρ-product (3.1) is\r
+now the usual inner product of quantum field theory in Lorentz signature, where instead of ψ\r
+†\r
+it appears ψ¯ = ψ\r
+†γ0\r
+E\r
+:\r
+hψ, φiρ = hψ, γ0\r
+Eφi =\r
+ˆ\r
+d\r
+4xψ†\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "Eφ := ˆ"
+text = """
+d\r
+4xψφ. ¯ (3.15)\r
+Furthermore, one has\r
+ρ(γ"""
+
+[[sections]]
+number = "0"
+title = "E) = (γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "E)"
+text = """
+3 = γ0\r
+E, ρ(γ\r
+j\r
+E\r
+) = γ"""
+
+[[sections]]
+number = "0"
+title = "Eγ"
+text = """
+j\r
+E\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "E = −γ"
+text = """
+j\r
+E\r
+. (3.16)\r
+The twist therefore performs some sort of Wick rotation whereby the sign of the time-component\r
+Dirac matrix is changed with respect to the spatial directions. The matrix R is of course expressed\r
+in a particular basis, and its action on the Clifford algebra generated by the γ’s singles out one\r
+particular direction, which we identify with time. Then it makes sense to define the integral on a\r
+time slice and have fields normalized only for the space integral, which is what is commonly done.\r
+However, the ρ(γ\r
+i\r
+E\r
+)’s are not the Lorentzian signature (i.e. Minkowskian) gamma matrices,\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "M = γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "E , γ"
+text = """
+j\r
+M = iγjE\r
+j = 1, 2, 3. (3.17)\r
+Viewing the Wick rotation as the operator: W : γ\r
+µ\r
+E → γ\r
+µ\r
+M, that is\r
+W(γ"""
+
+[[sections]]
+number = "0"
+title = "E) = γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "E, W(γ"
+text = """
+j\r
+E\r
+) = iγj\r
+E\r
+, (3.18)\r
+one has that the twist (3.16) is the square of the Wick rotation\r
+ρ(γ"""
+
+[[sections]]
+number = "0"
+title = "E) = W(W(γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "E)), ρ(γ"
+text = """
+j\r
+E\r
+) = W(W(γ\r
+j\r
+E\r
+)). (3.19)\r
+The Euclidean Dirac matrices are selfadjoint for the Hilbert product of L\r
+2\r
+(M, S), but (except\r
+for γ\r
+0\r
+E\r
+) not ρ-hermitian since from (3.2) and (3.16) one has\r
+(γ\r
+j\r
+E\r
+)\r
++ = ρ(γ\r
+j\r
+E\r
+)\r
+† = −γ\r
+j\r
+E\r
+†\r
+. (3.20)\r
+On the contrary, the Minkowskian gamma matrices (except γ"""
+
+[[sections]]
+number = "0"
+title = "M) are not selfadjoint for the Hilbert"
+text = """
+product since (3.17) yields (γ\r
+j\r
+M)\r
+† = −γ\r
+j\r
+M; but they are ρ-hermitian since\r
+ρ(γ\r
+j\r
+M) = iρ(γ\r
+j\r
+E\r
+) = −iγj\r
+E = −γ\r
+j\r
+M, (3.21)\r
+so that\r
+(γ\r
+j\r
+M)\r
++ = ρ(γ\r
+j\r
+M)\r
+† = (γ0γ\r
+j\r
+Mγ0)\r
+† = γ0(γ\r
+j\r
+M)\r
+†\r
+γ0 = −γ0γ\r
+j\r
+Mγ0 = −ρ(γ\r
+j\r
+M) = γ\r
+j\r
+M. (3.22)\r
+The “temporal” gamma matrix γ\r
+0\r
+:= γ"""
+
+[[sections]]
+number = "0"
+title = "E = γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "M is both selfadjoint and ρ-hermitian."
+text = """
+9
+
+The twist naturally defines a Krein structure, while maintaining in the background the Eu\u0002clidean structure. Applications of Krein spaces to noncommutative geometry framework have\r
+been recently studied in [35, 36] as well as in [37–39] (see reference therein for earlier attempts\r
+of adapting Connes noncommutative geometry to the Minkowskian signature).\r
+Remark 3.3. Wick rotations are a delicate issue in the presence of fermions, and have been dis\u0002cussed in detail in [40] (see also [41]). There are intimate relations with the projection necessary\r
+to remove the extra degrees of freedom given by fermion doubling [42]. In the present paper we\r
+concentrate on the issue of the change of signature, and how it relates with the twist. The tran\u0002sition from an Euclidean signature theory which contains fermions involves changes of degrees of\r
+freedom, usually a doubling, as occurred for example in [43, 44]. In the present approach there is\r
+actually a quadruplication of degrees of freedom, obtained as a product of two duplications. One\r
+of these disappears after Wick rotation, while the other must be projected out. The nature of the\r
+duplications seen in this work differ slightly from those cited above."""
+
+[[sections]]
+number = "4"
+title = "Actions"
+text = """
+For an almost commutative geometry (2.7) with grading Γ, the fermionic action is [3]\r
+S\r
+F\r
+(D) := hJψ, D˜ ψ˜i (4.1)\r
+where ψ is a vector in the even part of the Hilbert space\r
+He := {ψ ∈ H, γψ = ψ} (4.2)\r
+which, seen as an operator on the Fock space, is a Grassmanian variable ψ˜. The bosonic action\r
+is [2]\r
+S\r
+B(D) := Tr f\r
+\u0012\r
+D2\r
+Λ2\r
+\u0013\r
+(4.3)\r
+where Λ is an energy cutoff and f a smooth approximation of the characteristic function of\r
+the interval [0, 1]. Both actions are invariant under a gauge transformation [3], that is the\r
+simultaneous transformation\r
+D 7→ Ad(u) D Ad(u\r
+∗\r
+) and ψ 7−→ Ad(u)ψ. (4.4)\r
+For the almost commutative geometry (2.7) with M a Riemannian spin manifold and (AF , HF , DF )\r
+as described in §2, S\r
+F yields the fermionic action of the Standard Model, while the asymptotic\r
+expansion of S\r
+B yields the bosonic part, including the Higgs, together with the Einstein-Hilbert\r
+action (in Euclidean signature) and an extra Weyl term.\r
+For a twisted spectral triple, both actions (4.1) and (4.3) are well defined, but their invari\u0002ance under a gauge transformation, that is - as explained at the end of §2 - the simultaneous\r
+transformation\r
+D 7→ DAu\r
+ρ\r
+:= Ad(ρ(u)) D Ad(u\r
+∗\r
+) and ψ 7−→ Ad(u)ψ, (4.5)\r
+is not guaranteed:\r
+10
+
+• S\r
+F (D) has no reason to be invariant, unless u is invariant under the twist: u = ρ(u);\r
+• SB(DAu\r
+ρ\r
+) is defined only if DAu\r
+ρ\r
+is selfadjoint, or at least normal (which guarantees that\r
+f\r
+\u0012 D2\r
+Au\r
+ρ\r
+Λ\r
+\u0013\r
+makes sense by the spectral theorem). But as has already been discussed in\r
+remark 2.1, for an arbitrary unitary u, the operator DAu\r
+ρ\r
+has no reason to be selfadjoint,\r
+nor even normal. Notice however that it has compact resolvent, being a perturbation by\r
+bounded operator of the selfadjoint compact-resolvent operator D. Thus as soon as it is\r
+normal, the trace in (4.3) is finite for any value of the cutoff Λ and the bosonic action\r
+S\r
+B(DAu\r
+ρ\r
+) is then well defined.\r
+So as to ensure that both the fermionic and bosonic actions remain well defined and invariant\r
+under gauge transformations, one may restrict the range of acceptable unitaries to those such\r
+that (4.1) is invariant under (4.4) and such that DAu\r
+ρ\r
+is normal. It is likely however that there\r
+is no other solution other than the unitaries invariant under the twist, which would drastically\r
+limit the interest of the whole construction: why introducing a twist only to ignore it at the\r
+end? Another solution, and the one that we explore in the following, is to take advantage of\r
+the twisted inner product (3.5) so as to modify the definitions of S\r
+F and SB, in order to obtain\r
+actions invariant under (4.5) for any unitary u."""
+
+[[sections]]
+number = "4.1"
+title = "Fermionic Action"
+text = """
+To build a fermionic action for a twisted spectral triple that is invariant under the gauge trans\u0002formation (4.5), it suffices to substitute the Hilbert inner product in (4.1) with the ρ-product.\r
+Proposition 4.1. Let (A, H, D; ρ) be a real twisted spectral triple with ρ an inner automorphism\r
+of B(H) compatible with the real structure in the sense of Def. 3.2. Then\r
+A\r
+ρ\r
+D(ψ, φ) = hJψ, Dφiρ ∀ψ, φ ∈ Dom D (4.6)\r
+is a bilinear form invariant under the simultaneous transformations of (4.5). That is\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = A\r
+ρ\r
+Ad(ρ(u)) D Ad(u∗)\r
+(Ad(u)ψ, Ad(u)φ) ∀ψ, φ ∈ Dom D, u ∈ U(A). (4.7)\r
+Proof. One simply adapts to the twisted case the proof of [28, Prop. 1.213]. The Hilbert\r
+product on H is antilinear on the first variable, and the same is true for the ρ-product. Since J\r
+is antilinear, one has that A\r
+ρ\r
+D\r
+(·, ·) is linear in both variables.\r
+Let U = Ad(u) = uJuJ−1. By (3.11) one has\r
+Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1 = ρ(u)ρ(JuJ−1\r
+) = ρ(uJuJ−1) = ρ(U). (4.8)\r
+Therefore\r
+A\r
+ρ\r
+ρ(U)DU∗ (Uψ, Uφ) = hJUψ, ρ(U)DU∗Uφiρ = hUJψ, ρ(U)Dφiρ (4.9)\r
+= hJψ, U +ρ(U)Dφiρ = hJψ, Dφiρ (4.10)\r
+11
+
+where in the first line we have used the fact that J commutes with U,\r
+JU = J(uJuJ−1) = JJuJ−1u = ǫ\r
+′′u(JJ−1\r
+)J\r
+−1u = ǫ′′uJ(J−1\r
+)\r
+2u = uJu = UJ, (4.11)\r
+and the last line comes from (3.2):\r
+U\r
++ρ(U) = ρ(U)∗\r
+ρ(U) = I. (4.12)\r
+This proves the result. \u0004\r
+In the (usual) description of the Standard Model with a (non twisted) spectral triple, it is\r
+important for the bilinear form hJφ, Dψi to be antisymmetric, hJφ, Dψi = −hJψ, Dφi, and\r
+not to vanish when restricted to the even part (4.2) of the Hilbert space. This makes S\r
+F in\r
+(4.1) vanishing if computed with usual spinors, but gives the expected fermionic action when\r
+computed with Grassman fermionic fields. One restricts to He in order to solve the fermion\r
+doubling problem (see [28, I.§16.2] for details). In the twisted case, the bilinear form (4.6) is not\r
+necessarily antisymmetric. It is however, if one restricts to\r
+HR := {ψ ∈ Dom D, Rψ = ψ} . (4.13)\r
+Proposition 4.2. Let (A, H, D; ρ) be a real twisted spectral triple for which ρ is compatible with\r
+the real structure in the sense of (3.12). Then the bilinear form A\r
+ρ\r
+D is such that\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ A\r
+ρ\r
+D\r
+(φ, ψ) ∀ψ, φ ∈ HR. (4.14)\r
+Proof. By definition of antiunitary operator, hJφ, Jψi = hφ, ψi for any ψ, φ ∈ H. Thus\r
+A\r
+ρ\r
+D(ψ, φ) = hJψ, RDφi = ǫhJψ, J2RDφi = ǫhJRDφ, ψi. (4.15)\r
+Let JR = ǫ\r
+′′′RJ, where ǫ′′′ = ±1. For ψ, φ in HR, one obtains\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′′′hRJDφ, ψi = ǫǫ′ǫ\r
+′′′hRDJφ, ψi = ǫǫ′\r
+ǫ\r
+′′′hJφ, DR†ψi, (4.16)\r
+= ǫǫ′ǫ\r
+′′′hJR†Rφ, Dψi = ǫǫ′\r
+hR\r
+†\r
+JRφ, Dψi = ǫǫ′hJφ, RDψi = ǫǫ′A\r
+ρ\r
+D(φ, ψ). (4.17)\r
+where in the second line we use R†R = I and R†ψ = ψ, then R†J = ǫ\r
+′′′JR†\r
+. \u0004\r
+The twisted spectral triple of the Standard Model presented in §2 has KO-dimension 2, with\r
+a twist R = γ\r
+0\r
+E\r
+compatible with the real structure. Hence the above proposition applies with\r
+ǫ = −1, ǫ\r
+′ = 1, meaning that A\r
+ρ\r
+D is antisymmetric as expected.\r
+Formally, the twisted fermionic action (4.6) is similar to the non twisted one (4.1): it is\r
+gauge invariant and symmetric on a given subspace of H. However this subspace is HR, not He.\r
+This may have some consequences on the physical contents of the action, the study of which we\r
+leave to future work, as it will require first to compute the twisted fluctuations of the full Dirac\r
+operator D in (2.7) (in [25] was considered only the part DR of DF that contain the Yukawa\r
+coupling of the right handed neutrino).\r
+Alternatively, the Krein structure induced by the twist suggests a way to define a fermionic\r
+action which is antisymmetric on the whole of H: instead of restricting to ψ ∈ HR, the alternative\r
+12
+
+is to assume that D is ρ-hermitian. This goes beyond the definition of twisted spectral triples\r
+(which deals only with selfadjoint operator D). However, there exists several proposals for\r
+generalizing spectral triples to the Lorentzian signature (see [35] for the most recent one, and\r
+references therein). We do not intend to develop here a theory of Lorentzian twisted spectral\r
+triples, we shall simply consider (A, H, D; ρ) that has all the properties of a real twisted spectral\r
+triple, with real structure J, except that D is not selfadjoint but ρ-hermitian.\r
+Proposition 4.3. Let (A, H, D; ρ) be as explained above, with ρ implemented by a selfadjoint\r
+unitary R such that JR = ǫ\r
+′′′RJ. Then the bilinear form A\r
+ρ\r
+D is such that\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ǫ\r
+′′′ A\r
+ρ\r
+D\r
+(φ, ψ) ∀ψ, φ ∈ Dom D. (4.18)\r
+Proof. By a similar calculation to that of Prop. 4.2, one arrives at\r
+A\r
+ρ\r
+D\r
+(ψ, φ) = ǫǫ′ǫ\r
+′′′hJφ, D†R†ψi. (4.19)\r
+The ρ-hermicity of D together with R = R†implies D†R = RD. Hence\r
+A\r
+ρ\r
+D(ψ, φ) = ǫǫ′\r
+ǫ\r
+′′′hJφ, RDψi = ǫǫ′\r
+ǫ\r
+′′′ A\r
+ρ\r
+D(φ, ψ). \u0004\r
+As an illustration, consider the twisted spectral triple of the Standard Model (2.16) with ∂/,\r
+J and γE substituted with their Lorentzian version,\r
+∂/M := −iγµ\r
+M∂µ, JM := −iγ2\r
+M cc, γM := γ"""
+
+[[sections]]
+number = "0"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M = i"
+text = """
+3\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Eγ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Eγ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "E = −iγE, (4.20)"
+text = """
+where γ\r
+µ\r
+M are the Minkovskian Dirac matrices (3.17). One checks that\r
+DM := ∂/M ⊗ I96 + γM ⊗ DF (4.21)\r
+is ρ-hermitian for the Krein structure induced by γ"""
+
+[[sections]]
+number = "0"
+title = "M since"
+text = """
+(DM )\r
++ = ρ((DM )†\r
+) = γ\r
+0\r
+(∂/M)\r
+†\r
+γ\r
+0 ⊗ I96 + γ0\r
+Mγ\r
+†\r
+Mγ"""
+
+[[sections]]
+number = "0"
+title = "M ⊗ DF ,"
+text = """
+= −iγ0\r
+M(γ\r
+µ\r
+M)\r
+†\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "M∂µ + γM ⊗ DF = −iγµ"
+text = """
+M ∂µ + γM ⊗ DF = DM,\r
+where we use ∂/\r
+†\r
+M = −i(γ\r
+µ\r
+M)\r
+†∂µ then (3.22), and γ0\r
+Mγ\r
+†\r
+Mγ"""
+
+[[sections]]
+number = "0"
+title = "M = iγ0MγEγ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "M = −iγE = γM coming"
+text = "from (4.20) and the explicit forms (2.10) and (3.14) of γE and γ"
+
+[[sections]]
+number = "0"
+title = "M = γ"
+text = """
+0\r
+E\r
+. Moreover, denoting\r
+with an overbar the complex conjugate, one obtains from (3.17) and (4.20)\r
+γ"""
+
+[[sections]]
+number = "0"
+title = "M = γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "M, γ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "M = γ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "M, γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "M = −γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "M, γ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M = γ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M, (4.22)"
+text = """
+so that on a Lorentzian four dimensional manifold, the real structure satisfies\r
+(JM)\r
+2 = (−iγ2\r
+M cc)\r
+2 = γ2\r
+Mγ"""
+
+[[sections]]
+number = "2"
+title = "M = −(γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "M)"
+text = """
+2 = I;\r
+JM∂/M = ∂/MJM for JM∂/M − ∂/MJM = −\r
+\u0010\r
+γ\r
+µ\r
+Mγ"""
+
+[[sections]]
+number = "2"
+title = "M + γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "M γ"
+text = """
+µ\r
+M\r
+\u0011\r
+∂µ cc = 0;\r
+JMγM = −iγ2\r
+M(γ"""
+
+[[sections]]
+number = "0"
+title = "M γ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "M γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "M γ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M)cc = iγ2"
+text = "M(γ"
+
+[[sections]]
+number = "0"
+title = "M γ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M)cc = −i(γ"
+text = ""
+
+[[sections]]
+number = "0"
+title = "M γ"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Mγ"
+text = ""
+
+[[sections]]
+number = "3"
+title = "M)γ"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Mcc"
+text = "= γMJM."
+
+[[sections]]
+number = "13"
+title = "Since J"
+text = ""
+
+[[sections]]
+number = "2"
+title = "F = I (see (2.18)), the first equation yields (JM ⊗JF )"
+text = """
+2 = I, that is ǫ = 1. The second and\r
+third equations, together with DF JF = JF DF (coming from the KO dimension 6 of the spectral\r
+triple (2.7)) yield\r
+DM(JM ⊗ JF ) = ∂/MJM ⊗ JF + γMJM ⊗ DF JF = JM∂/M ⊗ JF + JMγM ⊗ JF DF\r
+= (JM ⊗ JF )DM, (4.23)\r
+so that ǫ\r
+′ = 1. Finally one has γ0JM = −JMγ0\r
+, meaning ǫ\r
+′′′ = −1. Therefore ǫǫ′\r
+ǫ\r
+′′′ = −1,\r
+hence A\r
+ρ\r
+D\r
+in Prop. 4.3 is antisymmetric as expected.\r
+The gauge invariance proved in Prop. 4.1 does not depend on the selfadjointness of D, and\r
+thus is still valid for ρ-hermitean D. What must be checked, however, for Prop. 4.3 to make\r
+sense is that a twisted perturbation of a ρ-hermitean operator is still ρ-hermitean, and that this\r
+property is preserved under gauge transformation.\r
+Proposition 4.4. Let (A, H, D; ρ) be as in proposition 4.3. Assume ρ is compatible with the\r
+real structure in the sense of (3.12). Then a twisted fluctuation\r
+DAρ = D + Aρ + JAρJ\r
+−1\r
+(4.24)\r
+of D is ρ-hermitian as long as Aρ is ρ-hermitian, i.e.\r
+Aρ = A\r
++ = ρ(A†\r
+ρ\r
+). (4.25)\r
+In addition, any gauge transform\r
+D\r
+′\r
+Aρ\r
+:= ρ(U)DAρ U\r
+† with U := Ad(u) for u ∈ U(A) (4.26)\r
+of a ρ-hermitian operator DAρ\r
+is still ρ-hermitian.\r
+Proof. One has\r
+\r
+JAρJ\r
+−1\r
+\u0001+\r
+= R\r
+\r
+JAρJ\r
+−1\r
+\u0001†\r
+R\r
+† = R JA†\r
+ρJ\r
+−1 R†\r
+(4.27)\r
+= J RA†\r
+ρR\r
+† J−1 = JA+\r
+ρ J\r
+−1 = JAρJ−1\r
+. (4.28)\r
+Hence\r
+(DAρ)\r
++ = D+ + A+\r
+ρ +\r
+\r
+JAρJ\r
+−1\r
+\u0001+\r
+= D + Aρ + JAρJ\r
+−1 = DAρ\r
+. (4.29)\r
+For the second claim, one has\r
+\u0010\r
+D′\r
+Aρ\r
+\u0011+\r
+= ρ\r
+\u0010\r
+D′\r
+Aρ\r
+†\r
+\u0011\r
+= ρ\r
+\u0010\r
+UD†\r
+Aρ\r
+ρ(U)\r
+†\r
+\u0011\r
+= ρ(U)ρ\r
+\u0010\r
+D\r
+†\r
+Aρ\r
+\u0011\r
+U\r
+†\r
+(4.30)\r
+= ρ(U)D\r
++\r
+Aρ\r
+U\r
+† = ρ(U)DAρU† = D′\r
+Aρ\r
+(4.31)\r
+where we use\r
+ρ(ρ(U)\r
+†\r
+) = ρ\r
+\u0010\r
+(RUR)\r
+†\r
+\u0011\r
+= ρ(RU†R) = R\r
+2U†R2 = U†\r
+.\r
+\u0004\r
+Condition (4.25) is the twisted version of the usual requirement that the gauge potential A in a\r
+fluctuation of the metric should be selfadjoint.\r
+To summarize, there are two candidates for the fermionic action:\r
+14
+
+• A Lorentzian one: hJψ, DM\r
+Aρ\r
+ψiρ, where DM\r
+Aρ\r
+is a ρ-hermitian twisted fluctuation of the\r
+Minkowskian operator (4.21).\r
+• A Euclidean one: hJψ, DE\r
+Aρ\r
+ψiρ with ψ ∈ HR and DE\r
+Aρ\r
+is a selfadjoint twisted fluctuation\r
+of the Euclidean operator (2.7).\r
+The Lorentzian action has been considered in [35,45]. The Euclidean action is similar to the one\r
+of the Standard Model [3], except that ψ is in HR instead of He."""
+
+[[sections]]
+number = "4.2"
+title = "Bosonic action"
+text = """
+The easiest way to make the bosonic action (4.3) well defined and invariant under a twisted\r
+gauge transformation is to rewrite it as\r
+Tr f\r
+\u0012\r
+D†D\r
+Λ2\r
+\u0013\r
+. (4.32)\r
+Indeed, given a twisted spectral triple (A, H, D; ρ) (that is D selfadjoint with compact resolvent),\r
+then under the map\r
+D → ρ(U)DU†, (4.33)\r
+one gets that D†D\r
+Λ2 is mapped to UD†DU†Λ2 which has the same trace as D†DΛ2 . This is this action\r
+that has been computed in [25] for a selfadjoint twisted fluctuation DAρ of the Dirac operator of\r
+the Standard Model.\r
+If one considers instead a ρ-hermitian Dirac operator (with compact resolvent),\r
+D = D\r
++ = ρ(D)†\r
+, (4.34)\r
+then one can write (4.32) in a twisted form (that is, without reference to the Hilbert adjoint) as\r
+Tr f\r
+\u0012\r
+ρ(D)D\r
+Λ2\r
+\u0013\r
+. (4.35)\r
+Taking for D the ρ-Hermitian Minkowskian Dirac operator −iγµ\r
+M∂µ (which has locally compact\r
+resolvent, see [46, Prop. 4.2] and reference therein), it returns the Euclidean action: by cyclicity\r
+of the trace, one can substitute ρ(D)D with 1\r
+2\r
+(ρ(D)D + Dρ(D)), which is nothing but the\r
+Euclidean Laplacian (up to a sign):\r
+1\r
+2\r
+(ρ(D)D + Dρ(D)) = 1\r
+2\r
+\u0010\r
+iγµ†\r
+M ∂µiγν\r
+M ∂ν + iγµ\r
+M ∂µiγν†M ∂ν\r
+\u0011\r
+(4.36)\r
+= −\r
+1\r
+2\r
+\u0010\r
+γ\r
+µ†\r
+M γ\r
+ν\r
+M∂µ∂ν + γ\r
+µ\r
+Mγ\r
+ν†\r
+M ∂µ∂ν\r
+\u0011\r
+(4.37)\r
+= −\r
+1\r
+2\r
+\u0010\r
+γ\r
+µ†\r
+M γ\r
+ν\r
+M + γ\r
+µ\r
+Mγ\r
+ν†\r
+M\r
+\u0011\r
+∂µ∂ν (4.38)\r
+= −g\r
+µν\r
+E\r
+∂µ∂ν (4.39)\r
+where gE is the Euclidean metric.\r
+Remark 4.5. One could be tempted to substitute the Hilbert adjoint D† with the Krein adjoint\r
+D+ in (4.32), but it is well known that this is problematic, for D+D is an hyperbolic operator,\r
+15
+
+whereas the heat kernel technique used for the asymptotic expansion of S\r
+B are well defined only\r
+for elliptic operators."""
+
+[[sections]]
+number = "5"
+title = "Conclusions and Outlook"
+text = """
+The twist of the spectral triple corresponding to the Standard Model makes the Lorentzian\r
+signature naturally emerge as a twisted-inner product. The spectral action can be modified\r
+accordingly in order to make sense either of a selfadjoint Dirac operator, or of a ρ-hermitian one.\r
+The first choice permits one to maintain the usual definition for the twisted spectral triple, but\r
+restricts the gauge group to those unitaries whose twisted adjoint action preserves selfadjointness\r
+(see [27]). On the other hand, choosing a ρ-hermitian Dirac operator does not restrict the gauge\r
+group (ρ-hermicity is preserved by twisted fluctuations), but requires one to modify the definition\r
+of twisted spectral triples in order to accommodate an operator D that is twisted selfadjoint\r
+rather than selfadjoint.\r
+The modifications of the spectral action that we propose here do not yield the bosonic action\r
+in a Lorentzian signature, which is a well-known and difficult problem. Nevertheless, twists\r
+shed a new light on the problem, if one considers that the question is not so much to obtain\r
+directly from a spectral formula the Einstein-Hilbert action in the Lorentzian signature, than to\r
+be able to implement Wick rotation in a coherent way. Traditionally in quantum field theory,\r
+one begins in a given Lorentz signature, Wick rotates to perform some calculation, then Wick\r
+rotates back to obtain physical predictions. So far in noncommutative geometry, one starts with\r
+a bosonic action in Euclidean signature, expands with heat kernel techniques and then Wick\r
+rotates. The results of this paper suggest to start with a Lorentzian signature, for which a twist\r
+is adapted (for twisted fluctuations preserve Krein hermicity, whereas usual fluctuations do not).\r
+The spectral action (4.32) then yields the Einstein-Hilbert action in Euclidean signature, and\r
+physical predictions are obtained by Wick rotating back to the Lorentzian model one has started\r
+with. The added value of the twist is thus to prescribe a geometry upon which to “Wick rotate\r
+back” [40].\r
+Acknowledgement\r
+FL acknowledges the support of the INFN Iniziativa Specifica GeoSymQFT and Spanish MINECO\r
+under project MDM-2014-0369 of ICCUB (Unidad de Excelencia ‘Maria de Maeztu’). This work\r
+has been possible with the help of a Short Term Scientific Mission of SF, for this we thank the\r
+COST action QSPACE.\r
+A Appendix: twisted gauge fluctuation\r
+Given a twisted spectral (A, H, D), ρ, we check that the twisted adjoint action (2.25) of the\r
+unitaries of A yields the twisted gauge transformation (2.26). In agreement with (2.21) and\r
+(2.24)), for u a unitary of A, we write\r
+U := Ad(u) = uJuJ−1, ρ(U) = Ad(ρ(u)) = ρ(u)Jρ(u)J\r
+−1\r
+. (A.1)"""
+
+[[sections]]
+number = "16"
+title = "Assuming ρ is a ∗"
+text = """
+-automorphism (which is the case of the flip in the Standard Model), one first\r
+checks that\r
+ρ(U)DU∗ = ρ(u)Jρ(u)J\r
+∗DJu∗J∗u∗\r
+= ǫ\r
+′\r
+ρ(u)Jρ(u)Du∗J\r
+∗u∗\r
+using DJ = ǫ\r
+′\r
+JD\r
+= ǫ\r
+′\r
+ρ(u)Jρ(u) (ρ(u\r
+∗\r
+)D + [D, u∗]ρ) J\r
+∗u∗\r
+= ǫ\r
+′\r
+ρ(u)JDJ∗u\r
+∗ + ǫ′\r
+ρ(u)Jρ(u) [D, u∗]ρJ\r
+∗u∗\r
+= ρ(u)Du∗ + ǫ\r
+′JJ∗\r
+ρ(u)Jρ(u) [D, u∗]ρJ\r
+∗u∗\r
+= ρ(u)Du∗ + ǫ\r
+′Jρ(u)J∗\r
+ρ(u)J [D, u∗]ρJ\r
+∗u∗ using [J∗\r
+ρ(u)J, ρ(u)] = 0\r
+= ρ(u)Du∗ + ǫ\r
+′Jρ(u) [D, u∗\r
+]ρJ\r
+∗uJJ∗u∗ using h\r
+[D, u∗]ρ, J∗ρ(u)J\r
+i\r
+ρ\r
+= 0\r
+= ρ(u)Du∗ + ǫ\r
+′\r
+Jρ(u) [D, u∗]ρJ\r
+∗\r
+= ρ(u) (ρ(u\r
+∗\r
+)D + [D, u∗]ρ) + ǫ\r
+′\r
+Jρ(u) [D, u∗]ρJ\r
+∗\r
+= D + ρ(u) [D, u∗]ρ + ǫ\r
+′Jρ(u) [D, u∗\r
+]ρJ\r
+∗\r
+. (A.2)\r
+Then, noticing that by the order zero and the twisted first order condition one has\r
+[A, Jρ(a)J\r
+∗\r
+]ρ = 0 (A.3)\r
+for any twisted 1-form A = a\r
+i\r
+[D, bi]ρ, one has\r
+ρ(U)AU∗ = ρ(u)Jρ(u)J\r
+∗AJu∗\r
+J\r
+∗u∗\r
+= ρ(u)Jρ(u)J\r
+∗\r
+Jρ(u\r
+∗\r
+)J\r
+∗Au∗\r
+using [A, Jρ(u\r
+∗\r
+)J\r
+∗\r
+]ρ = 0\r
+= ρ(u)Au∗. (A.4)\r
+As well,\r
+ρ(U)JAJ∗U\r
+∗ = ρ(u)Jρ(u)J∗\r
+JAJ∗Ju∗J\r
+∗u∗\r
+= ρ(u)Jρ(u)Au∗J\r
+∗u∗\r
+JJ∗\r
+= ρ(u)Jρ(u)AJ∗u\r
+∗Ju∗J∗ using [J∗u∗J, u∗\r
+] = 0\r
+= ρ(u)Jρ(u)J\r
+∗\r
+ρ(u\r
+∗\r
+)JAu∗J\r
+∗ using [A, J∗u∗J]ρ = 0\r
+= Jρ(u)J\r
+∗\r
+ρ(u)ρ(u\r
+∗\r
+)JAu∗J\r
+∗\r
+using [Jρ(u)J\r
+∗\r
+, ρ(u)] = 0\r
+= Jρ(u)Au∗J\r
+∗\r
+. (A.5)\r
+Therefore, collecting (A.2), (A.4) and (A.5), one finds that a twisted covariant operator DA =\r
+D + A + ǫ\r
+′JAJ∗\r
+is mapped under a twisted gauge trasformation to\r
+ρ(U)DAU\r
+∗ = D + ρ(u)Au∗ + ρ(u) [D, u∗\r
+]ρ + ǫ\r
+′J\r
+\u0010\r
+ρ(u)Au∗ + ρ(u) [D, u∗]ρ\r
+\u0011\r
+J\r
+∗\r
+(A.6)\r
+which is nothing but D + Au + JAuJ\r
+∗\r
+for Authe twisted gauge transform (2.26)."""
+
+[[sections]]
+number = "17"
+title = "References"
+text = """
+[1] A. Connes, Noncommutative geometry (1994), Academic Press.\r
+[2] A. H. Chamseddine and A. Connes, The Spectral action principle, Commun. Math. Phys.\r
+186 (1997) 731.\r
+[3] A. H. Chamseddine, A. Connes, and M. Marcolli, Gravity and the standard model with\r
+neutrino mixing, Adv. Theor. Math. Phys. 11 (2007), 991–1089.\r
+[4] W. D. van Suijlekom, Noncommutative geometry and particle physics, Springer (2015).\r
+[5] A. H. Chamseddine and A. Connes, Why the standard model ?, J. Geom. Phys 58 (2008),\r
+38–47.\r
+[6] L. Boyle, S. Farnsworth, Non-Commutative Geometry, Non-Associative Geometry and the\r
+Standard Model of Particle Physics, arXiv:1504.03890 [hep-ph]. New J. Phys. 16, 12 (2014).\r
+[7] C. Brouder, N. Bizi, F. Besnard, The Standard Model as an extension of the noncommutative\r
+algebra of forms, arXiv:1504.03890 [hep-th].\r
+[8] A. Devastato, Spectral Action and Gravitational effects at the Planck scale, Phys. Lett. B\r
+730 (2014) 36.\r
+[9] G. Aad et al. Observation of a new particle in the search for the Standard Model Higgs boson\r
+with the ATLAS detector at the LHC, Phys.Lett., B716:1-29, (2012).\r
+[10] S. Chatrchyan et al. Observation of a new boson at a mass of 125 GeV with the CMS\r
+experiment at the LHC. Phys.Lett., B716:30-61, (2012).\r
+[11] D. Buttazzo, G. Degrassi, P. P. Giardino, G. F. Giudice, F. Sala, and A. Salvio, Investigating\r
+the near-criticality of the Higgs boson, JHEP 89 2013.\r
+[12] C.-S. Chen and Y. Tang, Vacuum stability, neutrinos and dark matter, JHEP 1204 (2012),\r
+019.\r
+[13] J. Elias-Miro, J. R. Espinosa, G. F. Giudice, H. Min Lee, and A. Strumia, Stabilization of\r
+the electroweak vacuum by a scalar threshold effect, JHEP 06 (2012), no. 031.\r
+[14] A. H. Chamseddine and A. Connes, Resilience of the spectral standard model, JHEP 09\r
+(2012), 104.\r
+[15] C. A. Stephan, New scalar fields in noncommutative geometry, Phys. Rev. D 79 (2009),\r
+065013.\r
+[16] C. A. Stephan,Noncommutative geometry in the LHC-era, in Quantum Mathematical\r
+Physics, Birkhauser, 05 2013.\r
+[17] A. H. Chamseddine, A. Connes, and Walter van Suijlekom, Inner fluctuations in noncom\u0002mutative geometry without first order condition, J. Geom. Phy. 73 (2013), 222–234.\r
+18
+
+[18] A. H. Chamseddine, A. Connes, and W. van Suijlekom, Beyond the spectral standard model:\r
+emergence of Pati-Salam unification, JHEP 11 (2013), 132.\r
+[19] S. Farnsworth, L. Boyle, Rethinking Connes’ approach to the standard model of particle\r
+physics via non-commutative geometry", New J. Phys., 17, 2 (2015).\r
+[20] F. D’Andrea and L. Dabrowski, The standard model in noncommutative geometry and\r
+Morita equivalence, J. Noncom. Geom. 10 (2016), no. 2.\r
+[21] Ludwik Dabrowski, Francesco D’Andrea, and Andrzej Sitarz, The standard model in non\u0002commutative geometry: fundamental fermions as internal forms, Lett Math Phys (2017).\r
+[22] T. Brzezinski, N. Ciccoli, L. Dabrowski, and A. Sitarz, Twisted reality condition for Dirac\r
+operators, Math. Phys. Anal. Geo. 19 (2016), no. 3:16.\r
+[23] A. Devastato, F. Lizzi, and P. Martinetti, Grand Symmetry, Spectral Action and the Higgs\r
+mass, JHEP 01 (2014), 042.\r
+[24] A. Devastato, F. Lizzi and P. Martinetti, Higgs mass in Noncommutative Geometry,’\r
+Fortsch. Phys. 62 (2014) 863.\r
+[25] A. Devastato and P. Martinetti, Twisted spectral triple for the standard and spontaneous\r
+breaking of the grand symmetry, Math. Phys. Anal. Geo. 20 (2017), no. 2, 43.\r
+[26] A. Connes and H. Moscovici, Type III and spectral triples, Traces in number theory, geometry\r
+and quantum fields, Aspects Math. Friedt. Vieweg, Wiesbaden E38 (2008), 57–71.\r
+[27] Giovanni Landi and Pierre Martinetti, Gauge transformations for twisted spectral triples,\r
+arXiv 1704.06121 (2017).\r
+[28] Alain Connes and Matilde Marcolli, Noncommutative geometry, quantum fields and motives,\r
+AMS, 2008.\r
+[29] A. Connes, Gravity coupled with matter and the foundations of noncommutative geometry,\r
+Commun. Math. Phys. 182 (1996), 155–176.\r
+[30] G. Landi and P. Martinetti, On twisting real spectral triples by algebra automorphisms, Lett.\r
+Math. Phys. 106 (2016), 1499–1530.\r
+[31] S. Farnsworth, The graded product of real spectral triples", J. Math. Phys., 58, 2, 023507,\r
+(2017).\r
+[32] A. Connes and A. H. Chamseddine, Noncommutative geometry as a framework for unifi\u0002cation of all fundamental interactions including gravity, part 1, Fortschritte der Physik 58\r
+(2010), 553–600.\r
+[33] A. H. Chamseddine, A. Connes, and W. van Suijlekom, Grand unification in the spectral\r
+Pati-Salam model, JHEP 11 (2015).\r
+[34] C. Sun U. Aydemir, D. Minic and T. Takeuchi, Pati-Salam unification from non-commutative\r
+geometry and the TeV-scale Wr boson, Int. J. Mod. Phys. A 31 (2016), no. 1, 1550223–33.\r
+19
+
+[35] K. v. d. Dungen, Krein spectral triples and the fermionic action, Math. Phys. Anal. Geom.\r
+19 (2016) no.1, 4.\r
+[36] N. Bizi, C. Brouder and F. Besnard, Space and time dimensions of algebras with applications\r
+to Lorentzian noncommutative geometry and the standard model arXiv:1611.07062 [hep-th].\r
+[37] N. Franco and M. Eckstein, An algebraic formulation of causality for noncommutative ge\u0002ometry, Class. Quantum Grav. 30 (2013), 135007.\r
+[38] N. Franco and M. Eckstein, Exporing the causal structure of almost commutative geometries,\r
+SIGMA 10 (2014), no. 010, 23.\r
+[39] N. Franco, Temporal lorentzian spectral triples, Rev. Math. Phys. 26 (2014) no.08, 1430007.\r
+[40] F. D’Andrea, M. A. Kurkov, and F. Lizzi, Wick rotation and fermion doubling in noncom\u0002mutative geometry, Phys. Rev. D 94 (2016), no. 2.\r
+[41] M. A. Kurkov and F. Lizzi, Clifford Structures in Noncommutative Geometry and the Ex\u0002tended Scalar Sector, arXiv:1801.00260 [hep-th].\r
+[42] F. Lizzi, G. Mangano, G. Miele and G. Sparano, Fermion Hilbert space and fermion doubling\r
+in the noncommutative geometry approach to gauge theories, Phys. Rev. D 55 (1997) 6357.\r
+[43] K. Osterwalder and R. Schrader, Euclidean fermi fields and a feynman-kac formula for\r
+boson-fermion models, Helv. Phys. Acta 46 (1973) 277.\r
+[44] P. van Nieuwenhuizen and A. Waldron, On Euclidean spinors and Wick rotations, Phys.\r
+Lett. B 389 (1996) 29.\r
+[45] John W. Barrett, A Lorentzian version of the non-commutative geometry of the standard\r
+model of particle physics, J. Math. Phys. 48 (2007), 012303.\r
+[46] K. v. Dungen and A. Rennie, Indefinite Kasparov modules and pseudo-Riemannian mani\u0002folds, Annales Henri Poincaré 17 (2016), 3255-3286.\r
+20"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 4
+image_path = "images/image_p4_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 4
+image_path = "images/image_p4_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 4
+image_path = "images/image_p4_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 4
+image_path = "images/image_p4_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 4
+image_path = "images/image_p4_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 4
+image_path = "images/image_p4_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 10
+image_path = "images/image_p10_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 11
+image_path = "images/image_p11_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 13
+image_path = "images/image_p13_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 13
+image_path = "images/image_p13_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 13
+image_path = "images/image_p13_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 13
+image_path = "images/image_p13_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 13
+image_path = "images/image_p13_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 13
+image_path = "images/image_p13_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 13
+image_path = "images/image_p13_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 13
+image_path = "images/image_p13_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 13
+image_path = "images/image_p13_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 13
+image_path = "images/image_p13_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 15
+image_path = "images/image_p15_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 15
+image_path = "images/image_p15_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 15
+image_path = "images/image_p15_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 15
+image_path = "images/image_p15_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 15
+image_path = "images/image_p15_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 15
+image_path = "images/image_p15_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 15
+image_path = "images/image_p15_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 15
+image_path = "images/image_p15_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 15
+image_path = "images/image_p15_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 15
+image_path = "images/image_p15_32.png"

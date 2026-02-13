@@ -1,0 +1,1452 @@
+Y IT P-05-14
+
+G auss-B onnet dark energy
+Shin’ichi N ojiri
+D epartm ent of A pplied Physics, N ationalD efence A cadem y, H ashirim izu Yokosuka 239-8686, Japan
+
+Sergei D . O dintsovyz
+Institucio C atalana de Recerca iEstudis A vancats (IC R EA ) and Institut d’Estudis Espacials de C atalunya (IEEC /IC E),
+Edi ci N exus, G ran C apita 2-4, 08034 B arcelona, Spain
+
+M isao Sasakix
+
+arXiv:hep-th/0504052v1 6 Apr 2005
+
+Yukawa Institute for T heoretical Physics, K yoto U niversity, K yoto 606-8502, Japan
+W e propose the G auss-B onnet dark energy m odel inspired by string/M -theory w here standard
+gravity w ith scalar contains additionalscalar-dependent coupling w ith G auss-B onnet invariant. It
+is dem onstrated that e ective phantom (or quintessence) phase of late universe m ay occur due to
+presence ofsuch term w hich is relevant even at sm allcurvature. H ow ever,w ith the increase ofthe
+curvaturethe scalarpotentialm ay becom e dom inantso thatphantom phase istransientand w = 1
+barrier m ay be passed. H ence,the current acceleration of the universe m ay be caused by stringy
+e ects. It is rem arkable that scalar-G auss-B onnet coupling acts against the B ig R ip occurence also
+in phantom cosm ology realized by scalar w ith negative kinetic energy.
+
+I. IN T R O D U C T IO N
+
+It becam e clear recently that late-tim e dynam ics ofthe currentaccelerated universe is governed by the m ysterious
+dark energy. T he interpretation ofthe astrophysicalobservationsindicates that such dark energy uid (ifit is uid!)
+is characterized by the negative pressure and its equation ofstate param eter w lies very close to 1 (m ost probably
+below ofit). Q uite possible that it m ay be oscillating around 1. It is extrem ely di cult to present the com pletely
+satisfactory theory ofthe dark energy (also due to lack ofallrequiered astrophysicaldata),especially in the case of
+(oscillating)w lessthan 1.(Forinstance,therm odynam icsisquite strange there w ith possible negative entropy [1]).
+T he successfuldark energy theory m ay be searched in string/M -theory. Indeed,it is quite possible that som e unusualgravity-m attercouplingspredicted by the fundam entaltheory m ay becom e im portantatcurrent,low -curvature
+universe (being notessentialin interm ediate epoch from strong to low curvature).Forinstance,in the study ofstringinduced gravity near to initialsingularity the role ofG auss-B onnet (G B ) coupling w ith scalar was quite im portant
+for ocurrence of non-singular cosm ology [2, 3] (for account of dilaton and higher order corrections near to initial
+singularity,see also [4]). T he present paper is devoted to the study ofthe role ofG B coupling w ith the scalar eld
+to the late-tim e universe. It is explicitly dem onstrated that such term m ay induce the e ective phantom late-tim e
+universe.Itm ay produce also the e ective quintessence era,explaining the currentacceleration by late-tim e e ectsof
+stringy origin. Itis interesting that itm ay also have the im portantim pactto the B ig R ip singularity [5],sim ilarly to
+quantum e ects [6,7],preventing it in the standard phantom cosm ology caused by negative kinetic energy ofscalar.
+N ote that we concentrate m ainly on the exponentialscalar-G B coupling and exponentialscalar potential,w hile the
+consideration ofother types ofsuch functions and their role in late tim e cosm ology w illbe considered elsew here.
+
+II. T H E A C C E L E R A T E D U N IV E R SE F R O M SC A L A R -G B G R A V IT Y
+
+W e consider a m odelofthe scalar eld
+the G B invariantG is added:
+
+coupled w ith gravity. A s a stringy correction,the term proportionalto
+
+G = R2
+
+4R
+
+R
+
+y also at T SP U ,Tom sk
+
+E lectronic address: snojiri@ yukaw a.kyoto-u.ac.jp,nojiri@ cc.nda.ac.jp
+z E lectronic address: odintsov@ ieec.fcr.es
+x E lectronic address: m isao@ yukaw a.kyoto-u.ac.jp
+
++R
+
+R
+
+:
+
+(1)
+
+2
+T he starting action is given by
+Z
+S=
+
+p
+d4x
+
+1
+R
+2 2
+
+g
+
+2
+
+@
+
+V ( )+ f( )G
+
+@
+
+(2)
+
+:
+
+H ere = 1. For the canonicalscalar, = 1 but at least w hen G B term is not included, the scalar behaves as
+phantom only w hen = 1 [8] show ing in this case the properties sim ilar to quantum eld [9]. In analogy w ith
+m odel[10]w here also non-trivialcoupling of scalar Lagrangian w ith som e power of curvature was considered,one
+m ay expect that such G B coupling term m ay be relevant for the explanation ofdark energy dom inance.
+B y the variation over ,we obtain
+r2
+
+0=
+
+V 0( )+ f0( )G :
+
+O n the other hand,the variation over the m etric g
+1
+
+0 =
+
++
+
+R
+
+2
+
+1
+g R
+2
+
+1
+@
+2
+
++
+
+2f( )R R + 2r r (f( )R )
++ 8f( )R R
+4r r (f( )R
+2
+
++ 4r (f( )R
+
+(3)
+
+gives
+1
+g @ @
+4
+
+@
+
++
+
+2g r 2 (f( )R )
+) 4r r (f( )R
+
+)+ 4g r r (f( )R
+
+)
+
+1
+g
+2
+
+( V ( )+ f( )G )
+
+)
+
+2f( )R
+
+R
+
++ 4r r (f( )R
+
+):
+
+(4)
+
+B y using the identities obtained from the B ianchiidentity
+= r R
+r R ;
+1
+=
+r R ;
+2
+1
+= r 2R
+r r R+R
+R
+2
+1
+=
+(r r R + r r R ) 2R
+2
+1
+=
+R ;
+2
+
+r R
+r R
+r r R
++r r R
+
+r r R
+
+r r R
+
+R R
+R
+
+;
+
++ 2R R
+
+;
+(5)
+
+one can rew rite (4) as
+1
+
+0 =
+
+2
+
++
+
+R
+
+2f( )R R
+
+1
+1
+1
+1
+g R +
+@ @
+g @ @
++ g
+2
+2
+4
+2
++ 4f( )R R
+2f( )R
+R
++ 4f( )R
+
++ 2(r r f( ))R
+2
+
++ 4 r f( ) R
+
+2
+
+r f( ) R
+
+2g
++ 4g
+
+4(r r f( ))R
+
+(r r f( ))R
+
+( V ( )+ f( )G )
+R
+4(r r f( ))R
+
+4(r r f( ))R
+
+(6)
+
+:
+
+T he above expression is valid in arbitrary spacetim e dim ensions. In four dim ensions,the term s proportionalto f( )
+w ithout derivatives, are cancelled w ith each other and vanish since the G B invariant is a total derivative in four
+dim ensions.
+T he starting FRW universe m etric is:
+ds2 =
+
+dt2 + a(t)2
+
+X3
+
+dxi
+
+2
+
+(7)
+
+;
+
+i= 1
+
+w here
+t
+2
+ij = a H
+
+R tt =
+
+ij ;
+
+i
+jt =
+
+3 H_ + H 2
+
+i
+tj = H
+
+i
+j ;
+
+H_ + H 2
+
+R itjt =
+
+; R ij = a2 H_ + 3H 2
+
+ij ;
+
+(here the H ubble rate H is de ned by H = _
+a=a). A ssum ing
+(4) has the follow ing sim ple form :
+0=
+
+3
+2
+
+H2+
+
+2
+
+ij ;
+
+R ijkl = a4H 2 ( ik lj
+
+il kj) ;
+
+R = 6H_ + 12H 2 ; other com ponents= 0 ;
+
+(8)
+
+only depends on tim e,the ( ; )= (t;t)-com ponent in
+
+_2 + V ( )+ 24 _f0( )H 3 :
+
+(9)
+
+3
+O n the other hand,Eq.(2) becom es:
++ 3H _
+
+0=
+
+V 0( )+ 24f0( ) H_H 2 + H 4
+
+(10)
+
+:
+
+W e now consider the case that V ( ) and f( ) are given as exponents w ith the constant param eters V0,f0,and
+V = V0 e
+
+0
+
+2
+
+2
+
+; f( )= f0e 0 :
+
+0
+
+(11)
+
+A ssum e thatthe scale factorbehavesasa = a0th 0 (powerlaw ). In case thath0 is negative,this scale factordoesnot
+correspond to expanding universe butitcorrespondsto shrinking one. Ifone changesthe direction oftim e ast! t,
+the expanding universe w hose scale factor is given by a = a0 ( t)h 0 em erges. In this expression,however,since h0 is
+not always an integer,t should be negative so that the scale factor should be real. To avoid the apparent di culty,
+we m ay further shift the origin ofthe tim e as t !
+t ! ts t. T hen the tim e t can be positive as long as t < ts.
+H ence,we can propose
+h0
+;
+t
+
+H =
+
+t
+;
+t1
+
+=
+
+0 ln
+
+=
+
+0 ln
+
+(12)
+
+w hen h0 > 0 or
+h0
+
+H =
+
+ts
+
+t
+
+;
+
+ts
+
+t
+t1
+
+(13)
+
+;
+
+w hen h0 < 0,w ith an undeterm ined constant t1. B y the assum ption (12) or (13),one obtains
+3h20
+
+0=
+
+2
+0
+
++
+2
+
+2
+
++ V0t21 +
+
+48f0h30
+;
+t21
+
+(14)
+
+from (9) and
+0=
+
+3h0) 20 + 2V0t21 +
+
+(1
+
+48f0h30
+(h0
+t21
+
+1) ;
+
+(15)
+
+from (10). U sing (14) and (15),it follow s
+V0 t21 =
+48f0h20
+=
+t21
+
+1
+2 (3
+
+h0)
+
+6
+2 (3
+
+h0)
+
+3h20 (1
+
+2 2
+(3
+0
+
+h0)
+
+2
+
+2 2
+0
+
+h0
+
+7h0)
+
+;
+(16)
+
+:
+
+2
+
+T he second Eq.(16) show s that ifh0 < 0 and = 1,f0 should be negative. T he rst Eq.(16) show s that ifV0 = 0,
+there is no solution w ith h0 < 0 if = 1. W ithout the G B term ,that is,f0 = 0,a wellknow n result follow s:
+h0 =
+
+2 2
+0
+
+:
+
+(17)
+
+2
+;
+3h0
+
+(18)
+
+2
+
+Since the equation ofstate param eter w is given by
+w =
+ifh0 < 0 (h0 > 0),w <
+can be negative or w <
+
+1+
+
+1 (w > 1). Eqs.(16) indicate that even if = 1,w ith the proper choice ofparam eters h0
+1. Even ifh0 < 0,as long as
+3h20 (1
+
+h0)
+
+2 2
+(3
+0
+
+2
+
+7h0)
+
+> 0;
+
+(19)
+
+V0 is positive,w hich m eans that the potentialV ( ) is bounded below . A s a specialcase we consider
+2
+0 =
+
+6h20 (1 h0)
+;
+(3 7h0) 2
+
+= 1;
+
+(20)
+
+4
+2
+0
+
+6
+
+3
+7
+
+h0
+
+1
+
+FIG .1: T he qualitative behavior of 20 versus h0 from (20).
+
+w hich gives V ( )= 0. In order that
+
+0 could be real,one has
+
+h0 <
+
+3
+or h0
+7
+
+1:
+
+(21)
+
+In the case (20),the scalar eld is canonical( = 1),and there is no potentialV ( )= 0,butifwe include the term
+proportionalto the G B invariantand choosethe param eterf0 (16),we m ay obtain the e ective phantom cosm ological
+solution w ith h0 < 0 orw < 1.N ote f0 can be arbitrary here since the changecould be absorbed into the integration
+constant t1 w ithout changing f0. T he value ofh0 is determ ined by (20). Since
+12h0 3 8h0 + 7h20
+d 20
+:
+=
+2 (3
+dh0
+7h0)2
+
+(22)
+
+itfollow sd 20 =dh0 = 0 w hen h0 = 0,d 2 =dh0 > 0 w hen h0 > 0,and d 2 =dh0 < 0 w hen h0 < 0 since 3 8h0 + 7h20 > 0.
+2
+2
+0 vanishes w hen h0 = 0 or h0 = 1 and goes to in nity w hen h 0 goes to 3=7. T he qualitative behavior of 0 versus
+h0 is given in Figure 1. T hen there are always three solutions for h0 from (20),one is negative and other two are
+positive. W e should also note thatthe solution corresponding to the phantom cosm ology w ith h0 < 0 appearsforany
+value of 20 . A s is show n in A ppendix,the solution w ith h0 < 0 is stable under the perturbations. T he quintessence
+dark energy era,w here h0 > 1,also appears for any value of 20 . T he solution is again stable. For the third solution,
+we nd 0 < h0 < 3=7,w hich is not phantom nor quintessence phase.
+A s an exam ple,we consider the case that
+h0 =
+
+1
+;
+60
+
+(23)
+
+w =
+
+1:025 ;
+
+(24)
+
+w hich gives,from (18),
+
+T hisisconsistentw ith theobservationalboundsfore ectivew (forrecentdiscussion and com pletelistofrefs.,see[11]).
+If,in addition,it is assum ed
+2
+0 =
+
+61
+;
+112200 2
+
+(25)
+
+V0 = 0 ; t21 =
+
+374 2f0
+:
+945
+
+(26)
+
+= 1;
+one obtains
+
+T herefore even starting from the free canonicalscalar theory before introducing the term proportionalto the G B
+invariant,if 0 is chosen as in (25),we m ay obtain a solution w hich reproduces the observed value ofw as in (24),
+w here t1 is given by (26). N ote that f0 can be arbitrary as long as f0 is negative.
+
+5
+In case ofthe m odelinduced from the string theory [2],we have V0 = 0 (V ( )= 0) and
+2
+0 =
+
+2
+2
+
+(27)
+
+;
+
+in (11). T hen Eq. (20) reduces as
+3h30
+
+3h20
+
+7h0 + 3 = 0 ;
+
+(28)
+
+w hich can be solved as
+h0 =
+
+1:32676; 0:388953; 1:93781 :
+
+(29)
+
+T he solution w ith negative h0 gives
+w =
+
+1:50248 :
+
+(30)
+
+Such w is sm aller than currently observed value but stillm ay be satisfactory having in m ind the possible oscillations
+ofw .
+T here is another solution of(9) and (10) w ith (11). In the solution, and H are constants,
+= ’0 ; H = H 0 ;
+
+(31)
+
+w hat correspondsto deSitter space. U sing (9) and (10) w ith (11),one nds
+2’ 0
+
+H 02 =
+
+e 0
+:
+8f0 2
+
+(32)
+
+T herefore in order for the solution to exist,we m ay require f0 < 0. In (32),’ 0 can be arbitrary. H ence,the H ubble
+rate H = H 0 m ight be determ ined by an initialcondition.
+In case ofthe m odel(11),the term including the G B invariantalwaysgivesthe contribution in the sam e orderw ith
+those from otherterm seven ifthe curvature is sm all.T his isdue to the factorf( ),w hich enhancesthe contribution
+w hen the curvature is sm all.
+
+III. L A T E -T IM E A SY M P T O T IC C O SM O L O G Y IN SC A L A R -G B G R A V IT Y A N D B IG R IP
+A V O ID A N C E
+
+In the follow ing,another m odel,w hich is slightly di erent from (11),m ay be considered:
+2
+
+2
+
+V ( )= V0e
+
+0
+
+; f( )= f0e
+
+; ( > 1) ;
+
+0
+
+(33)
+
+D i erentfrom the m odel(11),the m odel(33)w illnotbe solved exactly. W e can only nd the asym ptotic qualitative
+behavior ofthe solutions. N evertheless,the asym ptotic behavior suggests the existence ofthe cosm ologicalsolution,
+w here the value ofw could vary w ith tim e (oscillation) and/or could depend on the curvature.
+A ssum ing the solution behaves as (12) or (13),w hen the curvature is sm all,that is t in (12) or ts t in (13) is
+2
+2
++4
+large,the G B term becom essm alland could be neglected since itbehaveslike 1=t + 4 or1=(ts t)
+. W hen the
+curvature is sm all,the solution could be given by (17),then the e ective phantom phase w ith w < 1 could appear
+only in case = 1 < 0. O n the other hand,w hen the curvature is large,that is t in (12) or ts t in (13) is sm all,
+the classicalpotentialcould be neglected. W ithout the classicalpotential,by assum ing,instead of(12)
+t
+;
+t1
+
+(34)
+
+ts t
+;
+t1
+
+(35)
+
+h0
+;
+t
+
+=
+
+0 ln
+
+h0
+;
+ts t
+
+=
+
+0 ln
+
+H =
+w hen h0 > 0 or
+H =
+
+6
+w hen h0 < 0,the follow ing equations replace (14) and (15)
+0 =
+0 =
+
+3h20
+
+48f0h30
+;
+2
+t21
+48f0h30
+3h0) 2 20 +
+(h0
+t21
+
++
+2
+
+(1
+
+2 2
+0
+
++
+
+1) :
+
+(36)
+
+B y deleting f0 in the above two equations,one gets
+2
+0 =
+
+6h20 (1 h0)
+;
+2 (3
+7h0) 2
+
+(37)
+
+w hich corresponds to (20). T hen w hen = 1,the solutions of(37) are not qualitatively changed from those of(20),
+and there are three solutions h0 < 0,0 < h0 < 3=7,and h0 > 1. O n the other hand,w hen = 1,since the sign of
+the r.h.s. in (20) is changed from
+= 1 case,as clear from FIG .1,there is only one positive solution for h0. T hen if
+the term proportionalto the G B invariantin case < 0 (w hich correspondsto a scalarphantom solution w ithoutG B
+term ) is included the e ective w becom es larger than 1 and the B ig R ip singularity is avoided (see [6]for quantum
+e ects account to escape ofB ig R ip). T hat is,in case < 0,w hen the curvature is sm allas in the current universe,
+the G B term is negligible and the potentialterm dom inates,w hich gives the cosm ic acceleration w ith w < 1. T hen
+the curvature increases gradually and the universe seem s to tend to the B ig R ip singularity [5]. H owever,w hen the
+curvature is large,the G B term becom es dom inant and prevents the singularity. H ence,in case < 0,the G B term
+works against the B ig R ip singularity occurence,like quantum e ects [6]. W e should note,however,w hen > 0,the
+h
+G B term generates the B ig R ip singularity,w here the scale factor behaves as a (ts t) 0 w ith h0 < 0. A fter the
+G B term dom inates w hen < 0,the curvature turns to becom e sm aller. T hen the postentialterm would dom inate
+again. T his m ight tellthat the behavior ofthe universe m ight approach to the deSitter sapce w ith w = 1 by the
+dam pted oscillation. In fact even in the m odel(33),if(31) is assum ed,there is a deSitter solution corresponding to
+(31):
+2’ 0
+
+H 02 =
+
+e 0
+0
+; ’0 =
+ln
+8f0 2
+2(1
+)
+
+8V0f0 2
+3
+
+(38)
+
+:
+
+2
+
+2
+
+In (33),we have assum ed > 1. Ifwe consider the case that V ( ) = V0 e 0 and f( ) = f0e 0 as in (33) but
+0 < < 1,there appearsa solution w here the term including G B invariantbecom esdom inanteven ifthe curvature is
+sm all. B y assum ing (34)or(35),Eq.(36)is obtained again.H ence,w hen 0 < < 1,the solution w here h0 is positive
+or w > 1 even if < 0 (scalar phantom ) appears.
+O n the other hand, there is accelerated universe solution w ith w < 1, that is, h0 < 0 due to the G B term
+even if > 0. In this case, w hen the curvature is large, the potential is dom inant and the solution is given by
+(17) w here w > 1 as long as > 0. T he follow ing scenario m ight be possible: in the current expanding universe
+w ith sm allcurvature the e ective w < 1,due to the G B term . W ith such phantom phase,the curvature grow s.
+W hen the curvature becom es large enough,the potentialterm is dom inant and the universe expands w ith e ective
+equation of state param eter w > 1. H ence, phantom phase is transient and B ig R ip does not occur eventually.
+Since the curvature becom es sm aller w hen the potentialdom inates,the universe m ay approach to deSitter spacetim e
+corresponding to (38) by the dam pted oscilation. In any case,in spite ofthe sign of ,one m ay obtain the solution
+describing the phantom cosm ology w ith w < 1 w hen the curvature is sm alland the quintessence (m atter) era w ith
+w > 1 w hen the curvature is large.
+
+IV . D ISC U SSIO N
+
+W e considered essentially two m odels w ith exponentialcouplings given by (11) and (33). T he m odel(11) m ay be
+considered as the specialcase corresponding to = 1. T he m ain results can be sum m arized as follow s:
+1. = 1 case: exactly solvable
+(a) V = 0 case: T here are three solutions corresponding to w <
+
+1, 1 < w <
+
+1=3,and w > 5=9.
+
+2.1= < 1 case: the potentialterm dom inates for sm allcurvature and the G B term for large one.
+(a)
+
+> 0: T here appears the B ig R ip singularity.
+
+7
+(b)
+
+< 0: T he solution asym ptotically approaches to the deSitter space.
+
+3.1= > 1 case: the potentialterm dom inates for large curvature and the G B term for sm allone.
+(a)
+
+> 0: T he solution asym ptotically approaches to the deSitter space.
+
+(b)
+
+< 0: T here w illappear the B ig R ips singularity.
+
+For the m odels (11) and (33),in case V0 = 0 (that is,w hen the potentialvanishes),by replacing 0 w ith 0 ,it
+follow s the two m odels are equivalent. Especially = 1 case has been wellstudied and it has been show n that there
+are alwaysthree e ective cosm ologicalphasescorresponding to the phantom w ith h 0 < 0 orw < 1,the quintessence
+w ith h0 > 1 or 1 < w < 1=3,and the m atter w ith 0 < h0 < 3=7 or w > 5=9. Even ifV0 6
+= 0,the m odel(11)
+can be solved exactly and the solutions w here h0 and therefore w are constants m ay be found. O n the other hand,
+ifV0 6
+= 0,the m odel(33) cannot be solved exactly but there exist the solutions w here the values ofh0 and therefore
+ofw are tim e-dependent. T here could em erge a cosm ology,w hich behaves as phantom one w ith w < 1 w hen the
+curvature issm alland asa usualm atterdom inated universe w ith w > 1 w hen the curvature islarge.M oreover,B ig
+R ip singularity does not occur.
+O ur study indicates that current acceleration m aybe caused by stringy/M -theory e ects (term s) w hich som ehow
+becam e relevantquite recently (in cosm ologicalsense). Itrem ainsa challenge to constructthe consistentdark energy
+universe m odelfrom string/M -theory.
+
+A cknow ledgm ents
+
+T his research has been supported in part by JSPS G rants-in-A id for Scienti c R esearch,N o.13135208 (S.N .) and
+G rants-in-A id for Scienti c R esearch (S),N o.14102004 (M .S.).
+
+A P P E N D IX A : ST A B IL IT Y O F P H A N T O M C O SM O L O G Y
+
+In thisappendix,we check the stability ofthe abovesolutions.T he follow ing quantitiesare convenientto introduce:
+_
+X
+
+d
+1 d
+=
+:
+da
+H dt
+
+d
+dN
+
+a
+
+18
+
+480V0f0
+
+H 2f0( ) ;
+
+; Z
+
+H
+
+(A 1)
+
+T hen by using (9) and (10) w ith (11),one nds
+dX
+N
+
+6
+
+=
+
+2
+
++
+dZ
+=
+dN
+
+144Z
+2
+
+Z
+
+1
+
+576Z 2
+
+96X Z
+
+2304X Z 2
+
++ 264X 2Z
+
+24V0f0
+2Z
+2
+0
+1152X 2Z 2 48X 3Z
+X +
+
+2
+0
+
+2
+
++ 3 X3+
+
+0
+
+6
+2
+
+182V0f0
+
+96X Z
+
+1152Z 2
+
+2
+0
+
+1
+
+576Z 2
+
+12X
+2
+
++
+
+96X 2Z
+
++
+
+(A 2)
+
++ 6 X 2 + 96X Z
+
+0
+
+1152X Z 2
+
+0
+
+;
+
+0
+
+:
+
+(A 3)
+
+2f0h20
+2 :
+0 t1
+
+(A 4)
+
+0
+
+For the solution (12) or (13),it follow s
+X = X0
+
+0
+
+h0
+
+; Z = Z0
+
+In term s ofX 0 and Z 0,Eqs.(14) and (15) can be rew ritten as
+0 =
+0 =
+
+3
+
++
+2
+
+X 02
+
+X 02 2V0 f0
++ 24Z 0X 0 ;
++
+2
+0Z 0
+4V0f0
+3 0 X0 +
++ 24 0Z 0
+0Z 0
+
+(A 5)
+24Z 0X 0 :
+
+(A 6)
+
+8
+For the solution (A 4),by using (A 5) and (A 6),the right hand sides ofEqs.(A 2) and (A 3) vanish consistently. W e
+now consider the perturbation around the solution (A 4):
+X = X0+
+
+X ; Y = Y0 +
+
+(A 7)
+
+Y :
+
+U sing (A 2) and (A 3),one obtains
+d
+dN
+
+X
+Y
+
+X
+Y
+
+= M
+
+; M =
+
+A~ B~
+C~ D~
+
+(A 8)
+
+H ere
+6
+
+A~
+
+2
+
+2304Z 02
+6
+
+B~
+
+2
+
+0
+1
+
+Z0
+
+D~
+
+Z0
+
+6
+6
+
+96X 0Z 0
+
+2
+
++ 528X 0Z 0
+;
+
+24V0f0
+144
++ 264X 02
+2Z 2 +
+2
+2
+0 0
+48X 03
+
+2304X 02Z 0
+
+96X 0Z 0
+
+2
+
+2
+0
+
+0
+
+0
+
+C~
+
+480V0f0
+
+144X 02Z 0
+
+2304X 0Z 02
+
+576Z 02
+
+96X 0Z 0
++
+
+18
+2
+
++ 9 X 02 +
+
+4608X 0Z 0
+
+1
+
+576Z 02
+
+96X 0Z 0
+
+;
+
+0
+1
+
+576Z 02
+
+12
+2
+
+192X 0Z 0
+
+0
+
+1
+
+576Z 02
+
++ 12 X 0 + 96Z 0 +
+
+96X 0
+
++
+
+1152Z 02
+
+0
+
+2304Z 0
+
++
+
+96X 02
+
++
+
+;
+
+0
+
+2304X 0Z 0
+
+0
+
+:
+
+(A 9)
+
+0
+
+Ifthe realparts ofallthe eigenvalues ofthe m atrix M are negative,the perturbation becom es sm alland the system
+is stable. T hen the condition ofthe stability is given by
+A~ + D~ < 0 ; A~D~
+
+B~C~ > 0 :
+
+(A 10)
+
+First,the check ofthe stability for V = 0 case is in order. B y using (A 4),(A 5),and (A 6),we nd
+X 02 =
+
+2
+0
+=
+h20
+
+6(h0 1)
+(3h0 1)2
+2
+;
+Z
+=
+0
+2 (7h
+3)
+96 2 (h0 1)(7h0
+0
+
+3)
+
+; X 0Z 0 =
+
+(3h0 1)
+:
+4 2 (7h0 3)
+
+(A 11)
+
+In order that X 02 and Z 02 are positive,it follow s
+h0 > 1 or h0 < 37 = 0:428571:::;
+
+w hen
+
+> 0
+
+3
+7 < h0 < 1 ;
+
+w hen
+
+< 0:
+
+or
+
+(A 12)
+
+B y using (A 11),A~,B~,C~,and D~ in (A 9) can be expressed in term s ofh0 :
+2
+
+A~ =
+
+(h0 1) 9h20 8h0 + 1
+; B~ =
+h0 (7h20 6h0 + 1)
+
+C~ =
+
+(2h0 1)(3h0 1) 3h20 1
+; D~ =
+12h0 (h0 1)(7h20 6h0 + 1)
+
+72(h0 1)
+;
+(7h20 6h0 + 1)
+
+(A 13)
+
+2
+
+4(h0 1) (3h0 1)
+:
+h0 (7h20 6h0 + 1)
+
+T hus
+A~ + D~ =
+A~D~
+T he solutions of7h20
+
+(h0
+
+2(h0
+B~C~ =
+
+1) 21h20 24h0 + 5
+;
+h0 (7h20 6h0 + 1)
+1) 36h40
+
+1)(3h0
+
+h20 (7h20
+
+(A 14)
+
+61h30 + 46h20
+2
+
+17h0 + 2
+
+:
+
+(A 15)
+
+6h0 + 1)
+
+6h0 + 1 = 0 are given by
+h0 = p =
+
+3
+
+p
+7
+
+2
+
+= 0:630602:::; 0:226541 ;
+
+(A 16)
+
+9
+the solutions of21h20
+
+24h0 + 5 = 0 are
+p
+
+39
+= 0:868809:::; 0:274048:::;
+21
+and the num ericalvalues ofthe realsolutions of36h40 61h30 + 46h20 17h0 + 2 = 0 are
+h0 = q =
+
+12
+
+h0 = r = 0:637709:::; 0:202029:::
+
+(A 17)
+
+(A 18)
+
+T hen A~ + D~ is negative w hen
+h0 < 0 ; p < h0 < q ; p+ < h0 < q+
+and A~D~
+
+h0 > 1 ;
+
+(A 19)
+
+1
+; p+ < h0 < r+ ; h0 > 1 :
+3
+
+(A 20)
+
+h0 < 0 ; p < h0 < q ; p+ < h0 < r+ ; h0 > 1 :
+
+(A 21)
+
+B~C~ > 0 is positive w hen
+h0 < r ; p < h0 <
+
+T herefore the system is stable if
+
+Especially the case corresponding to phantom cosm ology w ith h0 < 0 is stable.
+
+[1] I.B revik,S.N ojiri,S.D .O dintsov and L.Vanzo,Phys.R ev.D 70,043520 (2004) [arX iv:hep-th/0401073].
+[2] I.A ntoniadis,J.R izos,K .Tam vakis,N ucl.Phys.B 415,497 (1994) [arX iv:hep-th/9305025];
+P.K anti,J.R izos and K .Tam vakis,Phys.R ev.D 59,083512 (1999) [arX iv:gr-qc/9806085].
+[3] N . E. M avrom atos and J. R izos, Phys. R ev. D 62, 124004 (2000) [arX iv:hep-th/0008074]; JH EP 0207, 045 (2002)
+[arX iv:hep-th/0205099];Int.J.M od.Phys.A 18,57 (2003) [arX iv:hep-th/0205299].
+[4] M .G asperini,M .M aggiore and G .Veneziano,N ucl.Phys.B 494,315 (1997) [arX iv:hep-th/9611039];
+R .B rustein and R .M adden,Phys.R ev.D 57,712 (1998) [arX iv:hep-th/9708046];
+C .C artier,E.J.C opeland and R .M adden,JH EP 0001,035 (2000) [arX iv:hep-th/9910169];
+S.T sujikaw a,Phys.Lett.B 526,179 (2002) [arX iv:gr-qc/0110124];
+A .Toporensky and S.T sujikaw a,Phys.R ev.D 65,123509 (2002) [arX iv:gr-qc/0202067];
+S.T sujikaw a,R .B randenberger and F.Finelli,Phys.R ev.D 66,083513 (2002) [arX iv:hep-th/0207228].
+[5] R .R .C aldw ell,M .K am ionkow skiand N .N .W einberg,Phys.R ev.Lett.91,071301 (2003) [arX iv:astro-ph/0302506];
+B .M cInnes,JH EP 0208,029 (2002) [arX iv:hep-th/0112066];arX iv:hep-th/0502209;
+P.G onzalez-D iaz,Phys.Lett.B 586,1 (2004) [arX iv:astro-ph/0312579];
+M .Sam iand A .Toporensky,M od.Phys.Lett.A 19,1509 (2004) [arX iv:gr-qc/0312009];
+P.G onzales-D iaz and C .Siguenza,N ucl.Phys.B 697,363 (2004) [arX iv:astro-ph/0407421];
+F.Piazza and S.T sujikaw a,JC A P 0407,004 (2004) [arX iv:hep-th/0405054];
+L.P.C him ento and R .Lazkoz,M od.Phys.Lett.A 19,2479 (2004) [arX iv:gr-qc/0405020];
+G .C alcagni,Phys.R ev.D 71,023511 (2005) [arX iv:arX iv:gr-qc/0410027];
+J.B arrow ,C lass.Q uant.G rav.21,L79 (2004) [arX iv:gr-qc/0403084];
+P.W u and H .Yu,arX iv:astro-ph/0407424;
+S.N esseris and L.Perivolaropoulos,Phys.R ev.D 70,123529 (2004) [arX iv:astro-ph/0410309];
+P.Scherrer,arX iv:astro-ph/0410508;
+Z.G uo,Y .Piao,X .Zhang and Y .Zhang,Phys.Lett.B 608 177 (2005) [arX iv:astro-ph/0410654];
+M .C .B .A bdalla,S.N ojiriand S.D .O dintsov,C lass.Q uant.G rav.22,L35 (2005) [arX iv:hep-th/0409177].
+Y .W ei,arX iv:gr-qc/0410050;arX iv:gr-qc/0502077;
+H .Stefancic,arX iv:astro-ph/0411630;
+S.K .Srivastava,arX iv:hep-th/0411221;
+M .D abrow skiand T .Stachow iak,arX iv:hep-th/0411199;
+R .C urbelo,T .G onzalez and I.Q uiroz,arX iv:astro-ph/0502141;
+V .Sahni,arX iv:astro-ph/0502032;
+B .G um judpai,T .N askar,M .Sam iand S.T sujikaw a,arX iv:hep-th/0502191.
+[6] S. N ojiri and S. D . O dintsov, Phys. Lett. B 595, 1 (2004) [arX iv:hep-th/0405078]; Phys. R ev. D 70, 103522 (2004)
+[arX iv:hep-th/0408170];
+E.Elizalde,S.N ojiriand S.D .O dintsov,Phys.R ev.D 70,043539 (2004) [arX iv:hep-th/0405034].
+[7] S.N ojiri,S.D .O dintsov and S.T sujikaw a,arX iv:hep-th/0501025.
+[8] R .C aldw ell,Phys.Lett.B 545,23 (2002) [arX iv:astro-ph/9908168 ].
+[9] S.N ojiriand S.D .O dintsov,Phys.Lett.B 562,147 (2003) [arX iv:hep-th/0303117].
+[10] S.N ojiriand S.D . O dintsov,Phys.Lett.B 599,137 (2004) [arX iv:astro-ph/0403622].
+[11] R .Lazkoz,S.N esseris and L.Perivolaropoulos,arX iv:astro-ph/0503230.
+
+

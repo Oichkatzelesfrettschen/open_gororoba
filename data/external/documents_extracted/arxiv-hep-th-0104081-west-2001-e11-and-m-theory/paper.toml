@@ -1,0 +1,2948 @@
+equations = []
+tables = []
+full_text = """
+arXiv:hep-th/0104081v2 23 May 2001\r
+KCL-MTH-01-08\r
+hep-th/0104081\r
+E11 and M theory.\r
+P. West\r
+Department of Mathematics\r
+King’s College, London, UK\r
+Abstract\r
+We argue that eleven dimensional supergravity can be described by a non-linear real\u0002isation based on the group E11. This requires a formulation of eleven dimensional super\u0002gravity in which the gravitational degrees of freedom are described by two fields which are\r
+related by duality. We show the existence of such a description of gravity. 1
+
+0. Introduction\r
+There is a widespread belief that all superstring theories are manifestations of a single\r
+theory that has been called M theory. However, little is known for sure about M theory.\r
+The conjectured existence of M theory has largely relied on the properties of the supergrav\u0002ity theories. In particular, the unique eleven dimensional supergravity [1], the maximally\r
+supersymmetric ten dimensional supergravity theory which are the IIA [2,3,4] and IIB [5]\r
+supergravity theories as well as the type I supergravity coupled to the Yang-Mills theory\r
+[6]. These theories are essentially determined by the type of supersymmetry they possess\r
+and hence they are the low energy effective actions of the string theories with the cor\u0002responding space-time supersymmetry. One intriguing feature of supergravity theories is\r
+the occurance of coset space symmetries that control the way the scalars occur in these\r
+theories. The four dimensional N = 4 supergravity theory possess a SL(2,R)/ U(1) sym\u0002metry [9], the IIA theory a SO(1,1) symmetry [2], the IIB theory a SL(2,R)/ U(1) [5] and\r
+the further reductions of the eleven dimensional supergravity theory possess cosets based\r
+on the exceptional groups [10,11,25]. These symmetries have also played an important\r
+role in string dualities in recent years [12,13]. The coset construction was extended [14] to\r
+include the gauge fields of supergravity theories. This method used generators that were\r
+inert under Lorentz transformations and, as such, it is difficult to extend to include either\r
+gravity or the fermions. However, this construction did included the gauge and scalar fields\r
+as well as their duals and as a consequence the equations of motion for these fields could\r
+be expressed as a generalised self-duality condition.\r
+Recently [15], it was shown that the entire bosonic section of eleven dimensional\r
+supergravity and the ten dimensional IIA supergravity theory could be formulated as a\r
+non-linear realisation. This work made use of two old papers [16,17] which formulated\r
+gravity as a non-linear realisation. In this way of proceeding gravity and the gauge fields\r
+appeared on an equal footing. It is very likely that this construction can be extended\r
+to the bosonic sector of all supergravity theories. Although the extension to include the\r
+fermions was not given in reference [15] it was realised that this step implied that eleven\r
+dimensional supergravity must be invariant under a group that included Osp(1/64) as a\r
+subgroup.\r
+The appearance of the above mentioned coset space symmetries in dimensional reduc\u0002tions of eleven dimensional supergravity on a torus can also be viewed as a consequence of\r
+supersymmetry in the dimensionally reduced theory. However, despite their importance,\r
+there is no really simple explanation of why these symmetries occur. It has been shown\r
+[18,19] that eleven dimensional supergravity does possess an SO(1,2)×SO(16) symmetry,\r
+although the SO(1,10) tangent space symmetry is no longer apparent in this formulation.\r
+However, it has been thought that the exceptional groups found in the dimensional reduc\u0002tions can not be symmetries of eleven dimensional supergravity. Despite this, it has been\r
+noticed that some of the objects which appear in the reductions do appear naturally in\r
+the unreduced theory [20]. A similar phenomenon occurs in the reduction of string theo\u0002ries on a torus. For example, if one takes the closed bosonic string to live on the unique\r
+self-dual twenty six dimensional Lorentzian lattice one finds that it is invariant under the\r
+fake monster algebra [21].\r
+It is indeed peculiar that symmetries should appear in a theory when they are not\r
+2
+
+present in the theory before it is restricted by the dimensional reduction procedure. In\r
+this paper we will examine the possibility that eleven dimensional supergravity when for\u0002mulated as a coset realisation, as in reference [15], does possess a large symmetry algebra\r
+that includes all the symmetries that occur when it is dimensional reduced. Indeed, we\r
+conjecture that eleven dimensional supergravity can be formulated as a non-linear reali\u0002sation based on the group E11. It is crucial that the theory is formulated as a non-linear\r
+realisation as this allows one to treat all the fields of the theory in the same way. In\r
+particular, gravity and the gauge fields are all Goldstone bosons.\r
+We will show that the formulation of eleven dimensional supergravity as a non-linear\r
+realisation given in reference [15] is invariant under the Borel subgroup of E7. We will then\r
+argue that one can extend this formulation in such a way that the full theory is invariant\r
+under a Kac-Moody algebra and show that if this were the case then this algebra must be\r
+E11. We suggest that this extension can be achived in two ways. We may take the local\r
+subgroup in the coset space construction to be much larger that the choice of the Lorentz\r
+group in reference [15]. We may also use an alternative description of eleven dimensional\r
+supergravity. In particular, we use a description of gravity that possess two fields which\r
+are related by duality. As a result, we propose an enlarged algebra that underlies eleven\r
+dimensional supergravity. We show that this algebra contains the Borel subgroup of E8\r
+and leads to the algebra of the ten dimensional IIA supergravity theory.\r
+We will also argue that the effective action for the closed bosonic string in twenty six\r
+dimensions is invariant under a Kac-Moody algebra and propose such an algebra which\r
+has rank twenty seven.\r
+It is likely that the proper formulation of M theory will involve radically new concepts.\r
+However, it is possible that these concepts may be very difficult to guess with our current\r
+knowledge. There are, for example, a number of indications that space-time may not\r
+be a fundamental concept. Although non-commutative algebras have been suggested as a\r
+replacement of space-time there does not exist any definitive and concrete way to implement\r
+this suggestion in the framework of M theory. The motivation for the present paper is that\r
+M theory may be rather algebraic in character and that the known supergravity theories\r
+have hidden within them information on what are the symmetries of M theory.\r
+1. A Review of Kac-Moody Algebras\r
+In this paper we will need some basic facts about Kac-Moody algebras which we now\r
+summarise [22]. Associated with any Kac-Moody algebra is a generalised Cartan matrix\r
+Aab which satisfies the following properties:\r
+Aaa = 2, (1.1)\r
+Aab for a 6= b are negative integers or zero, (1.2)\r
+and\r
+Aab = 0 implies Aba = 0. (1.3)\r
+A Kac-Moody algebra can be formulated in terms of its Chevalley generators which consist\r
+of the generators of the commuting Cartan subalgebra, denoted by Ha, as well as the\r
+3
+
+generators of the positive and negative simple roots, denoted by Ea and Fa respectively.\r
+The Chevalley generators are taken to obey the Serre relations;\r
+[Ha, Hb] = 0, (1.4)\r
+[Ha, Eb] = AabEb, (1.5)\r
+[Ha, Fb] = −AabFb, (1.6)\r
+[Ea, Fb] = δabHa, (1.6)\r
+and\r
+[Ea, . . . [Ea, Eb] . . .] = 0, [Fa, . . . [Fa, Fb] . . .] = 0 (1.7)\r
+In equation (1.7) there are 1 − Aab number of Ea’s in the first equation and the same\r
+number of Fa’s in the second equation. Given the generalised Cartan matrix Aab, one\r
+can uniquely reconstruct the entire Kac-Moody algebra from the above Serre relations\r
+by taking the multiple commutators of the simple root generators. Hence a Kac-Moody\r
+algebra is uniquely specified by its generalised Cartan matrix.\r
+Any Kac-Moody algebra is invariant under the Cartan involution which acts on the\r
+generators as\r
+Eα → −Fα, Fα → −Eα, Ha → −Ha (1.8)\r
+where α is any positive root. It is straightforward to verify that this involution when\r
+applied to the Chevalley generators leaves invariant the above Serre relations. We may\r
+divide the generators of the Kac-Moody algebra into those that are even and those that are\r
+odd under the involution. The even generators are given by Eα−Fα. Being invariant under\r
+the Cartan involution they must form a subgroup of the original Kac-Moody algebra. The\r
+remaining odd generators are of the form Eα + Fα and Ha. We note that the subgroup\r
+which is invariant under the Cartan involution contains none of the generators of the\r
+Cartan sub-algebra of the original Kac-Moody algebra.\r
+2. Identification of E11\r
+It has been known for many years that when eleven dimensional supergravity is di\u0002mensionally reduced on a torus to 11 − n dimensions, for n = 1, . . . 8, the resulting scalars\r
+can be formulated as a non-linear realisations [10,11]. Let us denote the groups so obtained\r
+by En and the corresponding local subgroups Fn. These are given the table below\r
+Table 1 Coset Spaces of the Maximal Supergravities\r
+4
+
+D En Fn\r
+11 1 1\r
+10, IIB SL(2) SO(2)\r
+10, IIA SO(1, 1)/Z2 1\r
+9 GL(2) SO(2)\r
+8 E3 ∼ SL(3) × SL(2) U(2)\r
+7 E4 ∼ SL(5) USp(4)\r
+6 E5 ∼ SO(5, 5) USp(4) × USp(4)\r
+5 E6 USp(8)\r
+4 E7 SU(8)\r
+3 E8 S0(16)\r
+The local subgroups Fn are the maximal compact subgroups of En and also have\r
+the same rank as En, namely n. The local subgroup Fn can be used to choose the coset\r
+representatives of En/ Fn to belong to the Borel sub-group of En. We recall that the Borel\r
+subalgebra consists of the positive root and Cartan generators of the original algebra and\r
+hence the group elements of the Borel group can be written as a product of exponentials\r
+of these generators. Thus the number of scalar fields is just the number of generators in\r
+the Borel subalgebra. It has been shown that not only the scalar sector, but the entire\r
+dimensionally reduced theory is invariant under En.\r
+For n ≤ 8 the corresponding algebras found in the dimensional reduced theory are\r
+finite semi-simple Lie algebras. Dimensional reduction of eleven dimensional supergravity\r
+to two dimensions and one dimension is thought to result in theories that are invariant\r
+under the affine extension of E8, which is called E9 or E8\r
+(1) and the hyperbolic group E10\r
+respectively [23]. Some evidence for this assertion has been given for the two dimensional\r
+case in reference [19].\r
+It has not previously been proposed that eleven dimensional supergravity itself should\r
+be invariant under any of the groups En, however, it has been found that a number of the\r
+SO(1,2)×SO(16) covariant objects found in the dimensional reduced theories can be lifted\r
+to eleven dimensions. As a result, it has been proposed [20,26] that eleven dimensional\r
+supergravity has some kind of exceptional geometry.\r
+We note that the groups that occur in the dimensionally reduced theories, namely En\r
+and Fn, are Kac-Moody Lie groups. Furthermore, the local subgroups Fn for n = 1, . . . , 8\r
+are the subgroups which are invariant under the Cartan involution and were discussed in\r
+section one. For the cases of n = 9, 10 an involution has been introduced and used to define\r
+possible local subgroups [24]. However, in previous discussions of the dimensionally reduced\r
+theories, gravity plays a quite different role to that of the gauge fields and scalars under\r
+the appropriate En group. Indeed, the gauge fields and scalars transform non-trivially,\r
+while gravity is inert under En.\r
+When carrying out the dimensional reduction of eleven dimensional supergravity one\r
+has the choice whether to dualise certain fields or leave them as they appear in the usual\r
+dimensional reduction proceedure. The simplest example of this is provided by a rank two\r
+gauge fields in four dimensions that arise from the rank three gauge field in eleven dimen\u0002sions. These rank two gauge fields can be dualised to become scalars. In fact, the above\r
+5
+
+En symmetries only emerge if one does carry out the relavent duality transformations.\r
+The relationship between dualisations and the symmetries that emerge in dimensionally\r
+reduced theories has been extensively studied in reference [30]. One also has the option of\r
+introducing dual fields as well as the original fields for all the scalars and gauge fields and\r
+this was the path chosen in the coset formulation of this sector of the theory in reference\r
+[14]. This suggestion allows the equations of motion for the scalar and gauge fields to be\r
+written as a generalised self duality condition. This approach was further discussed in the\r
+papers of reference [31] where the analogy with the Ehlers symmetry of general relativity\r
+was explained. The first of these papers also includes a detailed discussion of how the\r
+fields that occur in dimensional reduction proceedure give rise to the Dynkin diagram of\r
+the corresponding En symmetries. It was noted that if one did this for all the fields then\r
+one would arrive at a rank eleven algebra associated with a dimensionally reduced theory.\r
+Let us now recall the formulation [15] of the bosonic sector of eleven dimensional\r
+supergravity as a non-linear realisation. This was based on the group G11 with a Lie\r
+algebra, also denoted, G11 whose commutators are given by\r
+[Ka\r
+b, Kcd] = δ\r
+c\r
+bKa\r
+d − δ\r
+a\r
+dKc\r
+b, [Kab, Pc] = −δ\r
+a\r
+c Pb, [Pa, Pb] = 0 (2.1)\r
+[Ka\r
+b, Rc1...c6\r
+] = δ\r
+c1\r
+b R\r
+ac2...c6 + . . . , [Ka\r
+b, Rc1...c3\r
+] = δ\r
+c1\r
+b R\r
+ac2c3 + . . . , (2.2)\r
+[R\r
+c1...c3\r
+, Rc4...c6] = 2R\r
+c1...c6\r
+, [R\r
+c1...c6\r
+, Rd1...d6] = 0, (2.3)\r
+[R\r
+c1...c3\r
+, Ra1...a6] = 0 (2.4)\r
+where + . . . denote the appropriate anti-symmetrisations. The generators Ka\r
+b and Pc gen\u0002erate the affine group IGL(11) while the generators Rc1...c3 and Rc1...c6\r
+form a subalgebra.\r
+The non-linear realisation is built from group elements g ∈ G11 such that it is invariant\r
+under\r
+g → g0gh−1(2.5)\r
+where g0 is a rigid element of the group G11 generated by the above Lie algebra and h is\r
+a local element of the Lorentz group. We may take the group element g to be of the form\r
+g = e\r
+x\r
+µPµ e\r
+ha\r
+bKa\r
+b exp(\r
+Ac1...c3Rc1...c3\r
+3! +\r
+Ac1...c6Rc1...c6\r
+6! ), (2.6)\r
+where the fields h\r
+a\r
+b, Ac1...c3\r
+and Ac1...c6 depend on x\r
+µ\r
+. Invariance under the rigid trans\u0002formations is gained by considering the g0 invariant forms given by\r
+V = g\r
+−1\r
+dg − w (2.7)\r
+where w ≡\r
+1\r
+2\r
+dxµwµb\r
+cJb\r
+c is the Lorentz connection and so transforms as\r
+w → hwh−1 + hdh−1(2.8)\r
+As a result\r
+V → hVh\r
+−1\r
+(2.9)\r
+6
+
+We observe the important fact that the Cartan forms are inert under the rigid transfor\u0002mations and only transform under the local subgroup. the\r
+Evaluating V we find that it is given by\r
+V = dxµ(eµ\r
+aPa + ΩabKa\r
+b +\r
+1\r
+3!D˜\r
+µAc1...c3R\r
+c1...c3 +\r
+1\r
+6!D˜\r
+µAc1...c6R\r
+c1...c6\r
+) (2.10)\r
+where\r
+eµ\r
+a ≡ (eh\r
+)µ\r
+a\r
+, D˜\r
+µAc1...c3 ≡ ∂µAc1c2c3 + ((e\r
+−1\r
+∂µe)c1\r
+bAbc2c3 + . . .),\r
+D˜\r
+µAc1...c6 ≡ ∂µAc1...c6 + ((e\r
+−1\r
+∂µe)c1\r
+bAbc2...c6 + . . .) − (A[c1...c3D˜\r
+µAc4...c6])\r
+Ωµb\r
+c ≡ (e−1\r
+∂µe)b\r
+c − wµbc\r
+, (2.11)\r
+where + . . . denotes the action of (e\r
+−1∂µe) on the other indices of Ac1...c3\r
+and Ac1...c6.\r
+Eleven dimensional supergravity is invariant under not just the group G11, but also\r
+under the infinite dimensional group which is the closure of G11 and the eleven dimensional\r
+conformal group. This infinite dimensional group is realised by also calculating the Cartan\r
+forms for the conformal group and then taking only those G11 Cartan forms that can\r
+be rewritten in terms of the Cartan forms, or other appropriate forms, of the conformal\r
+group. The forms so obtained are then simultaneously covariant under both groups and\r
+hence under the infinite dimensional group that is their closure. In fact, the Cartan forms\r
+just transform under composite Lorentz transformations. The result of this procedure for\r
+the rank three and six forms is that one should only use the simultaneously covariant forms\r
+F˜\r
+c1...c4 ≡ 4(e[c1\r
+µ\r
+∂µAc2...c4] + e[c1\r
+µ\r
+(e\r
+−1\r
+∂µe)c2\r
+bAbc3c4] + . . .) (2.12)\r
+and\r
+F˜\r
+c1...c7 ≡ 7(e[c1\r
+µ\r
+(∂µAc2...c7]) + e[c1\r
+µ\r
+(e\r
+−1\r
+∂µe)c2\r
+bAbc3...c7] + . . . + 5F˜\r
+[c1...c4 F˜c5...c7]) (2.13)\r
+The invariant equation of motion is then given by\r
+F˜c1...c4 =\r
+1\r
+7! ǫc1...c11 F˜c5...c11 (2.14)\r
+For the Goldstone field ha\r
+b\r
+, that is for gravity, the process of finding the simultaneously\r
+covariant forms is more complicate and for this we refer the reader to reference [15].\r
+Although the role of the conformal group is crucial, we will for the most part of this paper\r
+be concerned with the realisation of the group G11. It was also shown in reference [15]\r
+that the IIA supergravity theory can also be expressed as a non-linear realisation and it is\r
+very likely that all supergravity theories allow such a description.\r
+The scalars that occur in the dimensional reductions of eleven dimensional super\u0002gravity have their origin in the graviton and the rank three gauge field. Hence, if the\r
+symmetries that occur in the dimensional reductions have their origin in eleven dimen\u0002sional supergravity, it must be in a formulation of this theory in which all the bosonic\r
+fields of the theory, namely the graviton and the rank three gauge field, occur in a similar\r
+7
+
+manner. One advantage of the coset formulation of eleven dimensional supergravity is that\r
+it does treats gravity in the same way as the third rank gauge field; they are both Goldstone\r
+bosons. Indeed, general coordinate transformations and the gauge transformations of the\r
+third rank gauge field both arise in the coset formulation. Hence, in this paper we will\r
+search for hidden symmetries in the coset formulation of eleven dimensional supergravity.\r
+The non-linear realisation used in reference [15] to construct the eleven dimensional\r
+supergravity is based on a finite dimensional Lie algebra, namely G11 which is not a Kac\u0002Moody algebra. Furthermore, the local subgroup was chosen to be just the Lorentz group\r
+and, consequently, the coset representatives given in equation (2.6) are not members of\r
+a Borel subgroup of some larger group. Hence, the groups used in the coset formulation\r
+appear to be unlike those found in the dimensional reductions of eleven dimensional su\u0002pergravity. As noted above, the latter are Kac-Moody algebras with local subgroups such\r
+that the coset representatives can be written as elements of the Borel subgroups. From\r
+this view point, the coset construction of eleven dimensional supergravity would not at\r
+first sight appear to contain the Kac-Moody groups found in the dimensional reductions\r
+of this theory.\r
+This strongly suggests that, although the coset formulation of reference [15] does lead\r
+to the correct equations of motion, it can be extended to involve a larger group than G11.\r
+We will seek to achieve this in two ways. It is possible to introduce a larger group by\r
+introducing a larger local subgroup than the Lorentz group. This step will not introduce\r
+extra Goldstone bosons and only implies that the Cartan forms transform under the larger\r
+local subgroup (see equation (2.9)). For example, if we adopted a larger local subgroup for\r
+the formulation of eleven dimensional supergravity used in reference [15] it would lead to\r
+the same field content as the coset formulation of reference [15], the same group element\r
+as in equation (2.6) and the same Cartan forms as in equation (2.10). However, one\r
+must then show that the field equations are invariant under the larger local subgroup in\r
+order to ensure the invariance of the theory under the full group. A second possibility is\r
+to use a coset formulation that corresponds to an alternative form of eleven dimensional\r
+supergravity. This formulation would describe the same on-shell degrees of freedom, but\r
+the field content would be different. As we will explain later in this paper, gravity will\r
+be described by two fields in a dual formulation that is analogous to the way two fields\r
+Aa1...a3and Aa1...a6 describe the non-gravitational bosonic degrees of freedom. In fact we\r
+can carry out both possibilities, we can first adopt a new formulation of eleven dimensional\r
+supergravity and then enlarge the group by introducing a larger local subgroup.\r
+Having carried these steps, we must take the simultaneous non-linear realisation with\r
+the conformal group. It is natural to suppose that the resulting non-linear realisation,\r
+which is formed from two infinite dimensional groups, is based on a Kac-Moody algebra,\r
+G and that the local subalgebra H is the subgroup invariant under the Cartan involution,\r
+or some modification of it. The translation generator Pa will play no role in these consid\u0002erations. It would seem reasonable to suppose that the groups En and Fn found in the\r
+dimensional reductions of eleven dimensional supergravity are subgroups of the Kac-Moody\r
+Lie algebras G and H respectively.\r
+We now consider how to implement this strategy and, in particular, how to identify\r
+8
+
+the Kac-Moody algebra G. Let us decompose the generators of G11 into\r
+G\r
++\r
+11 = (Ka\r
+b, a < b, a, b = 1, . . . 11, Rc1...c3\r
+, Rc1...c6), (2.15)\r
+G\r
+0\r
+11 = (Ha = Ka\r
+a − Ka+1a+1, a = 1, . . . 10, D =\r
+X\r
+a\r
+Ka\r
+a) (2.16)\r
+and Ka\r
+b, a > b. The generators Ka\r
+b, a < b and Ha are the positive root generators and\r
+Cartan sub-algebra of SL(11) respectively. The only other generators of SL(11) are the\r
+negative root generators which are the generators Ka\r
+b, a > b. As explained above, we\r
+should demand that the new Kac-Moody Lie algebra G should contain, among its positive\r
+root generators, those in G\r
++\r
+11 and that its Cartan subalgebra should include the generators\r
+in G0\r
+11. We define the Lie algebra which consists of the generators of G\r
++\r
+11 and G0\r
+11 by G\r
+0+\r
+11 .\r
+As a first step in identifying the Kac-Moody Lie algebra G we now show that G\r
+0+\r
+11\r
+contains the Borel subalgebra of E7. We identify the positive root generators of E7 to be\r
+just the generators of G\r
++\r
+11 whose indices are restricted to take values from 5 to 11. Letting\r
+this index range be denoted by i, j, . . ., these generators are Ki\r
+j for i < j , Ri1...i3 and\r
+Ri1...i6. Instead of the later generators we may equally well use\r
+Si =\r
+1\r
+6! ǫii1...i6R\r
+i1...i6\r
+, Kˆ i\r
+j = Kij −\r
+1\r
+7\r
+δ\r
+j\r
+i\r
+X\r
+11\r
+l=5\r
+Kl\r
+l\r
+. (2.17)\r
+The Cartan subalgebra generators of E7 are identified with Hi and Dˆ =\r
+P11\r
+i=5 Ki\r
+i\r
+. Using\r
+equations (2.1) to (2.4), we find that these generators, together with the generators Kˆ i\r
+j =\r
+Ki\r
+j for i > j, obey the relations\r
+[Kˆ i\r
+j , Kˆ kl\r
+] = δ\r
+k\r
+j Kˆ i\r
+l − δ\r
+i\r
+lKˆ k\r
+j , (2.18)\r
+[Kˆ i\r
+j , Rk1...k3\r
+] = 3δ\r
+[k1\r
+j R\r
+|i|k2k3] −\r
+3\r
+7\r
+δ\r
+i\r
+jR\r
+k1...k3\r
+, (2.19)\r
+[R\r
+i1...i3\r
+, Ri4...i6] = 2ǫ\r
+i1...i6jSj (2.20)\r
+[D, ˆ Kˆ i\r
+j ] = 0, [D, R ˆ k1...k3\r
+] = 3R\r
+k1...k3\r
+, (2.21)\r
+[D, S ˆ\r
+k] = 6Sk, (2.24)\r
+[R\r
+i1...i3\r
+, Sk] = 0 (2.23)\r
+and\r
+[Kˆ i\r
+j , Sk] = −δ\r
+i\r
+kSj +\r
+1\r
+7\r
+δ\r
+i\r
+jSk, (2.24)\r
+In equations (2.18) to (2.24) we do indeed recognise the correct commutators of the\r
+Borel sub-algebra of E7 when written with respect to its SL(7) subgroup. As proposed\r
+above, the positive roots generators of E7 are Kˆ i\r
+j for i < j , Ri1...i3 and Si while the\r
+Cartan sub-algebra generators of E7 are Hi = Ki\r
+i − Ki+1i+1, i = 5, . . . , 10 and Dˆ. We\r
+9
+
+note that G11 also contains all the generators of the SL(7) subgroup of E7 in the correct\r
+way.\r
+Since G11 is a symmetry of eleven dimensional supergravity it follows that the Borel\r
+subalgebra of E7 is also a symmetry as is the SL(7) subgroup of E7.\r
+Under the decomposition of the adjoint (133) of E7 into SL(7) representations we find\r
+that\r
+133 = 48(Ki\r
+j ) + 1(Dˆ) + 35(R\r
+i1...i3\r
+) + ¯7(Si) + 35( ¯ Ri1...i3) + 7(S\r
+i\r
+) (2.25)\r
+Thus the full E7 algebra is found by adding the remaining negative root generators S\r
+i and\r
+Ri1...i3. To gain a theory invariant under the full E7 we would extend the group by adding\r
+these generators to the local subgroup and then hope to show that the equations of motion\r
+were invariant under the now local SU(8) subgroup. In fact, the 63 of the SU(8) subgroup\r
+decomposes under SO(7) as 63 = 21(K(ij)) + 35( ¯ Ri1...i3) + 7(S\r
+i\r
+).\r
+The simple positive root generators of E7 are given by\r
+Ei = Ki\r
+i+1, i = 5, . . . , 10, E11 = R\r
+91011 (2.26)\r
+and an appropriate basis for the generators of the Cartan sub-algebra is given by\r
+Hi = Ki\r
+i − Ki+1\r
+i+1, i = 5, . . . , 10, H11 = K9\r
+9 + K10\r
+10 + K11\r
+11 −\r
+1\r
+3\r
+Dˆ (2.27)\r
+It is straightforward to verify that these simple root and Cartan sub-algebra generators do\r
+indeed lead, using equations (2.18) to (2.24), and (1.5), to the Cartan matrix of E7 that\r
+corresponds to its well known Dynkin diagram.\r
+Let us now return to the identification of the Kac-Moody algebra G associated with the\r
+coset formulation of eleven dimensional supergravity. As noted in section one, it is sufficient\r
+to determine its Cartan matrix. As a result, we must seek in G11 the Cartan subalgebra\r
+and the simple root generators of G. The simple positive root generators are those from\r
+which all positive root generators can be constructed by multiple commutators. It is clear\r
+that all the generators of G\r
++\r
+11 can be constructed, by taking repeated commutators, from\r
+Ea = Ka\r
+a+1, a = 1, . . . 10, and E11 = R\r
+91011\r
+. (2.28)\r
+We therefore identify these as the appropriate simple root generators of the Kac-Moody\r
+algebra G we seek. The Ea, a = 1, . . . 10 are the simple root generators of SL(11) and\r
+Ea, a = 5, . . . 11 are the simple root generators of E7.\r
+The Cartan sub-algebra generators of G are those contained in G0\r
+11 in equation (2.16).\r
+Using equation (1.5), we may read off the generalised Cartan matrix Aij of the Kac-Mooody\r
+algebra Lie algebra. However, in order to find an acceptable generalised Cartan matrix\r
+Aij , that is one that satisfies equation (1.1) to (1.5), we must adopt an appropriate basis\r
+for the Cartan sub-algebra.\r
+We observe that we have the same number of simple roots generators as we have\r
+generators in the Cartan subalgebra, namely eleven. We therefore conclude that we are\r
+searching for a Kac-Moody algebra G of rank eleven which must contain SL(11), or A10\r
+and E7 as a Lie sub-algebras. Examining their Dynkin diagrams we may suspect that the\r
+10
+
+Kac-Moody Lie algebra we are searching for is E11. The Dynkin diagram of E11 is given\r
+in figure one and we observe that by deleting points in this diagram we readily find the\r
+Dynkin diagrams of A10 and E7.\r
+Given the embedding of E7 and A10 it is straightforward to show that the only allowed\r
+basis of the Cartan subalgebra, in the sense of an acceptable Cartan matrix, is given by\r
+Ha = Ka\r
+a − Ka+1\r
+a+1, a = 1, . . . , 10, H11 = K99 + K1010 + K1111 −\r
+1\r
+3\r
+D (2.29)\r
+These together with the simple roots Ea, a = 1, . . ., 11 do indeed lead to the Cartan matrix\r
+of E11. One can also verify that the Serre relations of equation (1.7) for the Ea generators\r
+are satisfied, for example\r
+[E8, [E8, E11]] = 0 (2.30)\r
+If we could be sure that there exists a non-linear realisation of eleven dimensional\r
+supergravity that is invariant under a Kac-Moody Lie algebra, we could now conclude that\r
+it is invariant under E11. This follows from the definition of a Kac-Moody algebra given\r
+in section one. Since the positive simple roots exist and obey the relevant Serre relations\r
+of E11, there must by definition exist negative simple root generators which satisfy all\r
+the remaining Serre relations. The algebra is then uniquely specified by the occurance\r
+of the Cartan matrix of E11 in these relations. However, we can not be sure that eleven\r
+dimensional supergravity is invariant under a Kac-Moody algebra. So far we have only\r
+shown the Serre relations of equations (1.4), (1.5) and the part of (1.7) which involve the\r
+Ea and Ha are satisfied. We have not shown that there exist symmetries corresponding to\r
+the generators Fa and that these obey the remaining Serre relations. Indeed, we can not\r
+be sure that the Ea and Ha generators have multiple commutators that generate the whole\r
+of the Borel subalgebra of the Kac-Moody algebra. The problem is that in the absence of\r
+the Fa generators, it can happen that a subset of the positive root generators Eα form an\r
+ideal and that this ideal may be trivially realised in eleven dimensional supergravity. As\r
+we shall see, with the coset formulation of reference [15] this is indeed the case. However,\r
+in the next section, we propose an alternative coset formulation of eleven dimensional\r
+supergravity which, we believe does realise a Borel subgroup of a Kac-Moody algebra after\r
+the full construction has been carried out.\r
+Since E11 is a very large algebra the problem is more tractable if we first consider\r
+the smaller algebras that must arise in a restriction of eleven dimensional supergravity.\r
+The restriction is obtained by keeping only those generators and fields with indices i, j, . . .\r
+that take values 11 to 11 − n + 1. The residual invariance group one would expect can\r
+be read off from the Dynkin diagram of E11 by keeping only the first n − 1 nodes on\r
+the horizontal line in the Dynkin diagram starting from the right as well as any nodes to\r
+which they are attached by vertical lines. One finds that the invariance groups are the\r
+groups En which are listed for n = 1, . . . 8 in table one. These are the groups that occur\r
+in the dimensional reductions of eleven dimensional supergravity. We would stress that\r
+the restriction discussed here is not a dimensional reduction. Indeed, the space-time is not\r
+restricted in any way and the residual groups are sub-symmetries of eleven dimensional\r
+supergravity.\r
+11
+
+To completely specify the coset formulation of the theory we must specify the local\r
+subgroup corresponding to E11. It is natural to assume that the appropriate subgroup is\r
+just that left invariant by the Cartan involution discussed in section one. It is simpler to\r
+consider the implications of this suggestion within the context of the restriction discussed\r
+above. The local subgroups that occure in the restriction must be the subgroups of En\r
+left invariant under the Cartan involution. As such, for n = 1, . . . 8, they must be the\r
+subgroups Fn that occur in table one. Clearly, Fn must contain the local subgroup in\r
+the formulation of reference [15], namely the Lorentz group SO(n) for n = 1, . . . 10 and\r
+SO(1,10) for n=11. Furthermore, Fn−1 must be contained in Fn which suggests that\r
+Fn−1 has rank one less than Fn and so Fn has rank n. For n = 1, . . . 8 these conditions\r
+are satisfied. Although the local subgroups specified by demanding invariance under the\r
+Cartan involution are also unique, for n ≥ 9, it is not so obvious what they are in practice.\r
+In fact, it could happen that a Cartan invariant subgroup of a Kac-Moody algebra is not\r
+itself a Kac-Moody algebra. However, assuming this not to be the case, the local subgroup\r
+for n = 9 is an infinite dimensional Kac-Moody algebra of rank 9. If it can be obtained\r
+by adding a node to the Dynkin diagram of F8, that is D8, and it is an affine Lie algebra\r
+there are only two possibilities D8\r
+(1) and B8(1) in the notation of reference [22]. Similarly\r
+the possible candidates for the local subgroups for n = 10 and n = 11 can be listed.\r
+As explained in section one, the subgroup invariant under the Cartan involution is\r
+of the form Eα − Fα where α is a positive root. For a finite dimensional semi-simple Lie\r
+algebras these generators are compact in the sense that if the Cartan-Killing metric is used\r
+to evaluate the scalar product of these generators it is positive definite. For these groups\r
+this definition of compactness coincides with the usual topological definition. Hence, the\r
+local subgroups Fn for n = 1, . . . 8 are compact groups. However, the real form of the local\r
+subgroup F11 that occurs in eleven dimensional supergravity must be non-compact as it\r
+contains SO(1,10) as a subgroup. Thus one might question if the subgroup F11 defined\r
+above is really correct.\r
+For an infinite dimensional Kac-Moody Lie algebra one still has an analogue of a\r
+Cartan Killing metric which when restricted to the Cartan subalgebra Ha is equal, as for\r
+the finite dimensional case, to the Cartan matrix, that is (Ha, Hb) = Aab and (Ea, Fb) =\r
+δab. These formulae hold for a simply laced algebra, but there also exists a suitable\r
+modification for the non-simply laced algebras. For finite dimensional Kac-Moody algebras\r
+the eigenvalues of the Cartan matrix are strictly positive and so the Cartan subgroup\r
+generators are compact in the above sense. However, for an infinite dimensional Kac\u0002Moody algebra the eigenvalues of the Cartan matrix are not all strictly positive and so\r
+the Cartan subalgebra generators are not compact in the above sense. Indeed, in the case\r
+of E11 the eigenvalues of the Cartan matrix have the signature (−, +, . . .+). In a similar\r
+way, the proof of the ”compactness” of the Cartan involution invariant subgroups also fails\r
+for the infinite dimensional Kac-Moody Lie algebras and there would seem no reason to\r
+suppose that F11 could not contain SO(1,10).\r
+3. E8 Lost\r
+In section two, we observed that if a non-linear realisation of eleven dimensional\r
+supergravity was based on a Kac-Moody algebra then this would have to be E11. However,\r
+we can not be sure that there does exist a non-linear realisation that is based on a Kac\u000212
+
+Moody algebra. As we noted above, if this is not the case, there can exist non-trivial ideals\r
+in the algebra and these can be trivially realised. Nonetheless, we showed in section two\r
+that the non-linear realisation of reference [15] did contain the Borel subalgebra of E7.\r
+We have also suggested how the non-linear realisation of eleven dimensional supergravity\r
+could be modified to possess a full E7 symmetry.\r
+In this section, we consider if the Borel subalgebra of E8 is a symmetry of the non\u0002linear realisation of reference [15] of eleven dimensional supergravity. Let us consider\r
+the restriction of the G11 algebra such that the indices on the generators take the values\r
+i, j, . . . = 11, . . . , 4. Introducing the generators\r
+Kˆ i\r
+j = Kij −\r
+1\r
+8\r
+δ\r
+j\r
+i\r
+X\r
+l\r
+Kl\r
+l\r
+, Dˆ =\r
+X\r
+11\r
+i=4\r
+Ki\r
+i\r
+, Ri1...i3, Sk1k2 =\r
+1\r
+6! ǫk1k2i1...i6R\r
+i1...i6\r
+, (3.1)\r
+we find, using the G11 algebra of equations (2.1) to (2.4), that they obey the algebra\r
+[Kˆ i\r
+j , Kˆ kl\r
+] = δ\r
+k\r
+j Kˆ i\r
+l − δ\r
+i\r
+lKˆ k\r
+j , (3.2)\r
+[Kˆ i\r
+j , Rk1...k3\r
+] = 3δ\r
+[k1\r
+j R\r
+|i| k2k3] −\r
+3\r
+8\r
+δ\r
+i\r
+jR\r
+k1...k3\r
+, (3.3)\r
+[R\r
+i1...i3\r
+, Ri4...i6] = ǫ\r
+i1...i6jkSjk (3.4)\r
+[D, ˆ Kˆ i\r
+j ] = 0, [D, R ˆ k1...k3\r
+] = 3R\r
+k1...k3\r
+, [D, S ˆ\r
+jk] = 6Sjk (3.5)\r
+[Kˆ i\r
+j , Sk1k2\r
+] = −2δ\r
+i\r
+[k1\r
+S|j|k2] +\r
+2\r
+8\r
+δ\r
+i\r
+jSk1k2\r
+, (4.6)\r
+[Sk1k2, Sj1j2] = 0 (3.7)\r
+and\r
+[Sk1k2, Rj1...j3] = 0 (3.8)\r
+Let us now compare this algebra to that of the Borel subalgebra of E8. The 248 adjoint\r
+of E8 decomposes into SL(8,R) representations as 248 = 1+63+(56+28+¯ ¯8)+(56+28+8). ¯\r
+The 63 are the generators of SL(8,R). The Cartan subalgebra of E8 consists of the Cartan\r
+subalgebra of SL(8,R) and the generator 1 in the above decomposition. The positive root\r
+generators of E8 are the positive root generators of SL(8,R) as well as the (56 + 28 + ¯ ¯8)\r
+and the negative root generators of E8 are the negative root generators of SL(8,R) as well\r
+as the (56 + 28 + 8). ¯\r
+We now wish to attempt to precisely identify the generators of the above restriction of\r
+the G11, that appear in the algebra of equations (4.2) to (4.8), with the Borel subalgebra\r
+of E8. In fact, it is just as simple to also include the whole of SL(8,R) rather than just the\r
+Borel subalgebra of SL(8,R). We can identify Ki\r
+j as the generators of SL(8,R), Dˆ as the\r
+remaining member of the Cartan subalgebra of E8, the Rk1...k3 are the 56 and the Sk1k2\r
+are the 28. Hence the only missing positive root generators in the ab ¯ ove decomposition\r
+are the ¯8. These form an ideal in the Borel subalgebra of E8. In fact, the commutation\r
+relations of equation (4.2) to (4.8) are those of the Borel subalgebra of E8 except that the\r
+13
+
+generators of the ¯8 are trivially realised. Indeed, the commutation relations of equations\r
+(4.2) to (4.7) are precisely those of the Borel subalgebra of E8, except that equation (4.8)\r
+should have a non-vanishing right-hand side that involves the missing ¯8 generators.\r
+4. E8 Regain’d\r
+In this section, we propose an extension of the algebra G11 that is to be used in a non\u0002linear realisation of eleven dimensional supergravity. Since the algebra has been enlarged\r
+the formulation of eleven dimensional supergravity that results will also be modified com\u0002pared to that used in reference [15]. One advantage of this new algebra is that it realises\r
+non-trivially the full Borel subalgebra of E8. This new algebra contains the generators\r
+of G11 as well as the generators Ra1...a8,b which is anti-symmetric in a1 . . . a8. The new\r
+algebra obeys the commutators\r
+[Ka\r
+b, Pc] = −δ\r
+a\r
+c Pb, [Pa, Pb] = 0 (4.1)\r
+[Ka\r
+b, Kcd] = δ\r
+c\r
+bKa\r
+d − δ\r
+a\r
+dKc\r
+b, (4.2)\r
+[Ka\r
+b, Rc1...c6\r
+] = δ\r
+c1\r
+b R\r
+ac2...c6 + . . . , [Ka\r
+b, Rc1...c3\r
+] = δ\r
+c1\r
+b R\r
+ac2c3 + . . . , (4.3)\r
+[R\r
+c1...c3\r
+, Rc4...c6] = 2R\r
+c1...c6\r
+, (4.4)\r
+[R\r
+a1...a6\r
+, Rb1...b3] = 3R\r
+a1...a6[b1b2,b3]\r
+, (4.5)\r
+[R\r
+a1...a8,b, Rb1...b3\r
+] = 0, [R\r
+a1...a8,b, Rb1...b6\r
+] = 0, [R\r
+a1...a8,b, Rc1...c8,d] = 0 (4.6)\r
+[Ka\r
+b, Rc1...c8,d] = (δ\r
+c1\r
+b R\r
+ac2...c8,d + · · ·) + δd\r
+b R\r
+c1...c8,a\r
+. (4.7)\r
+Equations (2.1) to (2.3) are the same as equations (4.1) to (4.4), but equation (2.4) is\r
+replaced by equation (4.5) and it is here that the new generator makes its appearance.\r
+This algebra satisfies the Jacobi identities provided\r
+R\r
+[c1...c8,d] = 0. (4.8)\r
+The restriction of this new algebra for n = 8 gives the generators of equation (4.1) and\r
+in addition the generator Ri1...i8,j = ǫ\r
+i1...i8 S\r
+j\r
+. These generators obey the commutators of\r
+equations (4.2) to (4.7) as well as the relations\r
+[Kˆ i\r
+j , Sk\r
+] = δ\r
+k\r
+j S\r
+i −\r
+1\r
+8\r
+δ\r
+i\r
+jS\r
+k\r
+, [Sk1k2, Rj1j2j3] = 3δ\r
+[j1j2\r
+k1k2\r
+S\r
+j3]\r
+(4.9)\r
+[R\r
+ijk, Sl\r
+] = 0, [Sij , Sk] = 0 (4.10)\r
+and\r
+[D, S ˆ k] = 9S\r
+k\r
+. (4.11)\r
+These equations together with those of (4.2) to (4.7) are indeed those of the Borel subal\u0002gebra of E8 together with the remaining generators of SL(8,R).\r
+Thus we are led to propose that eleven dimensional supergravity can be described by\r
+a non-linear realisation based on the algebra of equations (4.1) to (4.7). To specify the\r
+14
+
+non-linear realisation we must state the local subgroup. The minimal choice would be to\r
+take just the Lorentz group. We would then expect the simultaneous non-linear realisation\r
+of this coset with the conformal group to describe eleven dimensional supergravity.\r
+The algebra of equations (4.2) to (4.7) is not a Kac-Moody algebra. However, as we\r
+explained in section two, the choice of local subgroup is not unique. We can further enlarge\r
+the algebra of equations (4.2) to (4.7) by adding generators that belong to a local subgroup\r
+that includes the Lorentz group and in this way hope to arrive at a formulation of eleven\r
+dimensional supergravity that is invariant under a Kac-Moody algebra. In effect one treats\r
+the generators in equations (4.2) to (4.7), with the exception of Ka\r
+b, a > b , as part of\r
+the Borel sub-algebra of the Kac-Moody algebra and adds the corresponding negative root\r
+generators. The final equations of motion are constructed from the Cartan forms which\r
+transform non-trivially under the local subgroup. Thus a very strong constraint on the\r
+local subgroup is that it leads to the correct equations of motion.\r
+At first sight, one would not appear to arrive at E11 through this procedure. However,\r
+we are required to take the closure of the resulting algebra with the conformal algebra and\r
+construct the simultaneous non-linear realisation. The closure of these two algebras will\r
+be an infinite dimensional algebra that contains a number of the important subalgebras\r
+of E11 and it is hoped that this is actually E11. In particular, it would be interesting to\r
+examine how the affine nature of E9 arises in this closure.\r
+There is also a puzzle concerning the number of Goldstone bosons that would arise\r
+in the construction of such a non-linear realisation. It is well known that a non-linear\r
+realisation can result in a theory that has fewer Goldstone bosons than one has generators\r
+in the coset. This is due to a mechanism, called the inverse Higgs effect [27], that allows\r
+one, under certain circumstances, to solve some Goldstone bosons in terms of some of the\r
+others. In fact, this is reason why the infinite dimensional group which is the closure of the\r
+conformal group and the group of affine general linear transformations leads only to the\r
+Goldstone bosons that belong to gravity. Taking the group E11 and the local subgroup that\r
+was invariant under the Cartan involution would lead to an infinite number of Goldstone\r
+bosons, however, we may expect that most of these can be eliminated by the inverse Higgs\r
+effect to leave only a finite number of Goldstone bosons. Indeed these residual Goldstone\r
+bosons may be just those correspond to the generators in the algebra of equations (4.1) to\r
+(4.7).\r
+We hope to construct this non-linear realisation and examine these conjectures in a\r
+future paper. In the rest of this section, we will examine some of the consequences of this\r
+suggestion and, as a result, demonstrate a number of detailed checks on the suitibility of\r
+the algebra of equations (4.1) to (4.7).\r
+In a non-linear realisation based on the algebra of equations (4.1) to (4.7), the cor\u0002responding Goldstone fields consist of those of the original formulation of reference [15],\r
+that is the fields ha\r
+b\r
+, Aa1...a3, Aa1...a6, but include in addition the fields Aa1...a8,b. The\r
+Goldstone bosons Aa1...a3and Aa1...a6lead to a first order formulation of the equations of\r
+motion of the bosonic non-gravitational degrees of freedom of eleven dimensional super\u0002gravity more usually described solely by a rank three anti-symmetric tensor gauge field.\r
+The field strengths of the gauge fields Aa1...a3and Aa1...a6are related by use of the epsilon\r
+symbol. Since the only other on-shell bosonic degrees of freedom are those of the graviton,\r
+15
+
+the construction implies that there must exist a formulation of gravity involving the fields\r
+ha\r
+b and ha1...a8,b. We might expect that the the field strengths of these fields are related\r
+by the epsilon symbol. Indeed, we observe that if we regard the lower index on ha\r
+b as that\r
+corresponding to the ”gauge field” and the other index as a type of internal index then\r
+the field strength would be of the form fa1a2\r
+b and the associated ”dual gauge field” would\r
+indeed have the index structure of ha1...a8,\r
+b\r
+. Hence in this construction we may expect\r
+the graviton equation of motion to have a similar structure to that of the the three rank\r
+tensor gauge field. It is to be expected that only in such a formulation would the the full\r
+symmetry of eleven dimensional supergravity be apparent.\r
+We now show that such a formulation of gravity does exist. We will carry out the\r
+construction in a space-time of arbitrary dimension, denoted D. It is well known that\r
+Einstein theory of general relativity, whose traditional action is given by\r
+Z\r
+d\r
+DxeR(eµa\r
+, wµ,a\r
+b\r
+(e)) (4.12)\r
+can be rewritten in terms of the action\r
+Z\r
+d\r
+Dxe(Cca,aC\r
+cb,\r
+b −\r
+1\r
+2\r
+Cab,cC\r
+ac,b −\r
+1\r
+4\r
+Cab,cC\r
+ab,c) (4.13)\r
+where\r
+Cµν\r
+a = ∂µeνa − ∂ν eµa\r
+. (4.14)\r
+It is straightforward to show that this action is equivalent to taking the action\r
+1\r
+2\r
+Z\r
+d\r
+Dxe(Yab,cCcb,c +\r
+1\r
+2\r
+Yab,cY\r
+ac,b −\r
+1\r
+2(D − 2)Yca,\r
+aYcb,\r
+b) (4.15)\r
+Introducing the field Yc1...c(D−2)\r
+d by\r
+Y\r
+ab,d =\r
+1\r
+(D − 2)! ǫ\r
+abc1...c(D−2)Yc1...c(D−2)\r
+d\r
+(4.16)\r
+The action in terms of these variables is given by\r
+1\r
+2\r
+Z\r
+d\r
+Dx(ǫµν...τD−2 Yτ1...τD−2dCµν,d + e(−\r
+1\r
+2\r
+(D − 3)\r
+(D − 2)Yτ1...τD−2,\r
+dYτ1...τD−2,\r
+d\r
++\r
+1\r
+2\r
+(D − 2)Yτ1...τD−3d,\r
+dYτ1...τD−2e,\r
+e −\r
+1\r
+2\r
+Yτ1...τD−3κ,\r
+dYτ1...τD−2d,\r
+κ)) (4.17)\r
+The equations of motion for gravity in terms of the new variables become\r
+ǫ\r
+µτ1...τD−1 ∂τ1 Yτ2...τD−1d = terms of order(Yτ1...τD−2d\r
+)\r
+2\r
+(4.18)\r
+ǫµν\r
+τ1...τD−2 Yτ1...τD−2,b = −Cµν,b + Cνb,µ − Cµb,ν + 2(eνbCµcc − eµbCνc\r
+c\r
+) (4.19)\r
+16
+
+At lowest order the first of these equations implies that\r
+Yτ1...τD−2,b = ∂[τ1 hτ2...τD−2],b. (4.20)\r
+Consequently, we have found a description of gravity constructed from the field e\r
+a\r
+µ\r
+and\r
+hτ1...τD−3,\r
+b\r
+. Taking D = 11, this is precisely of the required type.\r
+Taking a non-linear realisation of eleven dimensional supergravity based on the alge\u0002bra of equations (4.1) to (4.7) resolves a puzzle concerning the relationship of the coset\r
+formulation of IIA supergravity theory to that for the eleven dimensional theory given in\r
+reference [15]. Although the coset formulations of these two theories are correct in the\r
+sense that they led to equations of motion that do describe the degrees of freedom of\r
+both of these theories, the eleven dimensional algebra does not lead in an obvious way\r
+to the algebra of the IIA supergravity theory. In particular, the algebra underlying the\r
+IIA theory involves the generators, Ka\r
+b of GL(10) as well as the generators Ra1...ap\r
+for\r
+p = 0, 1, 2, 3, 5, 6, 7, 8 and it is very unclear how the generators Ra1...apfor p = 7, 8 can arise\r
+in the eleven dimensional algebra of equations (2.1) to (2.4) since this algebra involves no\r
+generators of rank bigger than six. However, we will now show that if we adopt the new\r
+eleven dimensional algebra of equations (4.1) to (4.7) then all the generators of the ten\r
+dimensional IIA algebra arise naturally and obey in detail the ten dimensional IIA algebra\r
+of reference [15].\r
+Treating the eleventh index, denoted by 11, as special, letting a, b = 1, . . . , 10 and\r
+denoting the resulting generators with a ˜ , the generators in the new algebra can be\r
+written as\r
+K˜ a\r
+b = Kab, R˜a = Ka11, R˜a1a2 = R\r
+a1a211\r
+, R˜a1a2a3 = R\r
+a1a2a3 R˜a1...a5 = Ra1...a511\r
+,\r
+R˜a1...a6 = −R\r
+a1...a6\r
+, R˜a1...a7 =\r
+1\r
+2\r
+R\r
+a1...a711,11\r
+,\r
+R˜a1...a8 =\r
+3\r
+8\r
+R\r
+a1...a8,11\r
+, R˜ =\r
+1\r
+12\r
+(−\r
+X\r
+10\r
+a=1\r
+Ka\r
+a + 8K1111). (4.21)\r
+Evaluating the algebra of equations (4.1) to (4.7) for these generators, dropping the ˜ one\r
+indeed finds the algebra used in the non-linear realisation of IIA supergravity theory of\r
+reference [15] which included the relations\r
+[R, Ra1...ap] = cpR\r
+a1...ap\r
+, [R\r
+a1...ap\r
+, Ra1...aq] = cp,qR\r
+a1...a(p+q) (4.22)\r
+where\r
+c1 = −c7 = −\r
+3\r
+4\r
+, c2 = −c6 =\r
+1\r
+2\r
+, c3 = −c5 = −\r
+1\r
+4\r
+:\r
+c1,2 = −c2,3 = −c3,3 = c2,5 = c1,5 = 2, c1,7 = 3, c2,6 = 2, c3,5 = 1 (4.23)\r
+and all other c’s vanish.\r
+In deriving the IIA algebra, we have required that the generators Ra1...a8,b are trivally\r
+realised and so do not appear in reference [15]. Use was made of equation (4.8) and, as a\r
+17
+
+result of this relation, the equation −8R11a1...a7,a8 = Ra1...a7a8,11. Clearly, this calculation\r
+provides a detailed check on the proposed eleven dimensional algebra. The result also\r
+implies that the IIA algebra contains the Borel subgroup of E7 and that the corresponding\r
+Kac-Moody algebra as outlined in section two is E11.\r
+5. The Closed Bosonic String and K27\r
+The closed bosonic string in 26 dimensions can also be formulated as a non-linear\r
+realisation [15]. The underlying group, denoted G26, has the generators Ka\r
+b, R, Ra1a2\r
+,\r
+Ra1...a(D−4) and Ra1...a(D−2) . The generators Ka\r
+b belong to the Lie algebra GL(26) and\r
+obey equation (2.7). Their commutation relations with the other generators are the ana\u0002logues of equation (2.2). The remaining commution relations are given by\r
+[R, Ra1...ap] = cpR\r
+a1...ap\r
+, [R\r
+a1...ap\r
+, Ra1...aq] = cp,qR\r
+a1...a(p+q) (5.1)\r
+where\r
+c2 = −cD−4 =\r
+24\r
+(D − 2), c2,D−4 = 2. (5.2)\r
+We take all the other c’s to vanish and we have scaled the generator R → R\r
+6 with respect\r
+to reference [15]. The local subgroup is chosen to be the Lorentz group.\r
+The non-linear realisation of GD is built out of the group element g = ghgA where\r
+gh = exp(ha\r
+bKa\r
+b)\r
+and\r
+gA = exp(\r
+Aa1...a(D−2)Ra1...a(D−2)\r
+(D − 2)! )exp(\r
+Aa1...a(D−4)Ra1...a(D−4)\r
+(D − 4)! )exp(\r
+Aa1a2Ra1a2\r
+(2)! )exp(AR)\r
+(5.4)\r
+We refer the reader to reference [15] for the derivation of the field equations by taking the\r
+simultaneous non-linear realisation with the conformal group.\r
+Much of the discussion of eleven dimensional supergravity also applies to the non-linear\r
+realisation of the effective action for the closed bosonic string. We can hope to extend the\r
+local subgroup and the formulation of the effective action such that the resulting non\u0002linear realisation is invariant under a Kac-Moody algebra. In this section, using similar\r
+arguments as we deployed for eleven dimensional supergravity, we will find what this Kac\u0002Moody algebra is likely to be.\r
+We divide the generators of G26 into\r
+G\r
++\r
+26 = (Ka\r
+b, a < b , Ra1a2\r
+, Ra1...a(22) , Ra1...a24 ), (5.5)\r
+G\r
+0\r
+26 = (Ha = Ka\r
+a − Ka+1a+1, D =\r
+X\r
+a\r
+Ka\r
+a, R) (5.6)\r
+and the remaining generators Ka\r
+b, a > b which are the negative root generators of SL(26).\r
+18
+
+We suppose that G\r
++\r
+26 are positive root generators contained in the Kac-Moody algebra\r
+and its Cartan subalgebra generators contains the generators in G0\r
+26. To identify the Kac\u0002Moody algebra we must identify the simple roots. It is straightforward to see that the\r
+whole of G\r
++\r
+26 can be found from multiple commutators of\r
+Ka\r
+a+1, R2526, R5...26\r
+. (5.7)\r
+Therefore, we identify these as the simple root generators. We observe that we have the\r
+same number of generators in the Cartan subalgebra as we have simple roots, namely 27.\r
+Thus we are seeking a Kac-Moody algebra of rank 27.\r
+Given these simple roots, we must adopt a basis for the Cartan subalgebra generators\r
+such that equation (1.5) leads to an allowed generalised Cartan matrix. It turns out that\r
+the basis\r
+Ha, a = 1, . . . 25, H26 = K25\r
+25+K2626−\r
+1\r
+12\r
+D+\r
+1\r
+6\r
+R, H27 = K5\r
+5+· · ·+K2626−\r
+11\r
+12\r
+D−\r
+1\r
+6\r
+R.\r
+(5.8)\r
+satisfies this requirement. We call this algebra K27. The corresponding Dynkin diagram is\r
+shown in figure two. We choose the local subgroup to be the one which is invariant under\r
+the Cartan involution.\r
+The above process to find the Cartan matrix is not free from ambiguity. However, we\r
+can find further evidence for the choice K27 by considering the restriction of the theory\r
+obtained by taking the generators and fields to have indices that take values 26 to 26−n+1.\r
+The residual invariance group so obtained can be read off from the Dynkin diagram of K27\r
+by keeping only the first n−1 nodes on the horizontal line in the Dynkin diagram starting\r
+from the right as well as any nodes to which they are attached by vertical lines. The\r
+Dynkin diagram so obtained is Dn provided 3 ≤ n ≤ 22, D24 if n = 23 and affine D24 if\r
+n = 24. It is natural to take the appropriate real form to be O(n,n) for 3 ≤ n ≤ 22 and\r
+O(24,24) if n = 23. The corresponding local subgroups are taken to be those left invariant\r
+under the Cartan involution. For these groups, the local subgroups are then O(n) × O(n)\r
+for 3 ≤ n ≤ 22 and O(24) × O(24) if n = 23. We denote this series of groups by Gn\r
+and their local subgroups by Hn. For n < 23, the coset spaces agree with that found in\r
+reference [29].\r
+We would also expect the scalar fields that occur in the dimensional reduction of the\r
+effective action on an n torus to belong to the coset space Gn\r
+Kn\r
+. This coset has dimension n\r
+2\r
+for 3 ≤ n ≤ 22 and (n+1)2if n = 23. However, we can calculate the number of scalar fields\r
+that occur in the dimensional reduction. From the graviton and anti-symmetric tensor we\r
+find hi\r
+j and Bij, i, j = 1, . . . n scalars and the vectors hµi and Bµi. If 3 ≤ n ≤ 22 we do\r
+indeed find n\r
+2\r
+scalars. However, for n = 23 the vectors can be dualised to form scalars and\r
+so we get (n + 1)2scalars. The number of scalars is thus in agreement with that predicted\r
+from the Dynkin diagram of K27. The above count does not included the scalar in the\r
+original theory for n ≥ 4 and the scalar that results from the anti-symmetric tensor Bµν\r
+by dualisation in four dimensions.\r
+It is interesting to note that the algebra K27 contains the algebra E11 and one might\r
+take this as an indication that the closed bosonic string contains the known superstrings\r
+19
+
+in ten dimensions and in effect M theory. The closed bosonic string on a torus is invariant\r
+under the fake monster Lie algebra and it would be interesting to ask if K27 was contained\r
+in this algebra.\r
+Conclusion\r
+In this paper we have argued that eleven dimensional supergravity can be formulated\r
+as a non-linear realisation based on the group E11. We have proposed a new formulation of\r
+eleven dimensional supergravity that is an enlargement of the algebra of reference [15]. The\r
+simultaneous non-linear realisation of the conformal group with this algebra, when further\r
+enlarged by a suitable local subalgebra, is expected to lead to the formulation of eleven\r
+dimensional supergravity based on E11. Although much remains to be done to verify this\r
+conjecture, it has the advantage that it requires calculations, that may be lengthy, but can\r
+be carried out as a matter of principle.\r
+Such a non-linear realisation of eleven dimensional supergravity would include new\r
+symmetries that mixed the degrees of freedom described by gravity and the rank three\r
+tensor gauge field in a very non-trivial manner.\r
+We have shown that some of the necessary conditions for this conjecture to be true\r
+are satisfied. In particular, we have shown the presence of the Borel subgroups of E7 and\r
+E8. We have also found a formulation of eleven dimensional gravity based on the fields\r
+ha\r
+b and ha1...a8a as required by the presence of an E8 symmetry.\r
+The formulation of gravity presented in this paper, and its origin as a non-linear,\r
+realisation may be of interest in its own right in that it may lead to the existence of new\r
+symmetries in gravity itself. These may explain the presence of the Geroch and related\r
+symmetries [28,23] which appear so mysteriously when gravity is constrained to possess a\r
+Killing vector.\r
+The motivation for the current work was to identify some of the underlying symmetries\r
+of M theory by studying the symmetries of the corresponding supergravity theories We\r
+therefore conjecture that the E11 algebra over an appropriate discrete field is a symmetry\r
+of M theory and that the closed bosonic string has the K27 algebra as a symmetry.\r
+Acknowledgment\r
+I wish to thank Matthias Gaberdiel, Neil Lambert and Andrew Pressley for very useful\r
+discussions.\r
+References\r
+[1] E. Cremmer, B. Julia and J. Scherk, Phys. Lett. 76B (1978) 409.\r
+[2] C. Campbell and P. West, “N = 2 D = 10 nonchiral supergravity and its spontaneous\r
+compactification.” Nucl. Phys. B243 (1984) 112.\r
+[3] M. Huq and M. Namazie, “Kaluza–Klein supergravity in ten dimensions”, Class. Q.\r
+Grav. 2 (1985).\r
+[4] F. Giani and M. Pernici, “N = 2 supergravity in ten dimensions”, Phys. Rev. D30\r
+(1984) 325.\r
+[5] J, Schwarz and P. West, “Symmetries and Transformation of Chiral N = 2 D = 10\r
+Supergravity”, Phys. Lett. 126B (1983) 301.\r
+20
+
+[6] P. Howe and P. West, “The Complete N = 2 D = 10 Supergravity”, Nucl. Phys. B238\r
+(1984) 181.\r
+[7] J. Schwarz, “Covariant Field Equations of Chiral N = 2 D = 10 Supergravity”, Nucl.\r
+Phys. B226 (1983) 269.\r
+[8] L. Brink, J. Scherk and J.H. Schwarz, “Supersymmetric Yang-Mills Theories”, Nucl.\r
+Phys. B121 (1977) 77; F. Gliozzi, J. Scherk and D. Olive, “Supersymmetry, Super\u0002gravity Theories and the Dual Spinor Model”, Nucl. Phys. B122 (1977) 253, A.H.\r
+Chamseddine, “Interacting supergravity in ten dimensions: the role of the six-index\r
+gauge field”, Phys. Rev. D24 (1981) 3065; E. Bergshoeff, M. de Roo, B. de Wit\r
+and P. van Nieuwenhuizen, “Ten-dimensional Maxwell-Einstein supergravity, its cur\u0002rents, and the issue of its auxiliary fields”, Nucl. Phys. B195 (1982) 97; E. Bergshoeff,\r
+M. de Roo and B. de Wit, “Conformal supergravity in ten dimensions”, Nucl. Phys.\r
+B217 (1983) 143, G. Chapline and N.S. Manton, “Unification of Yang-Mills theory\r
+and supergravity in ten dimensions”, Phys. Lett. 120B (1983) 105.\r
+[9] S. Ferrara, J. Scherk and B. Zumino, “Algebraic Properties of Extended Supersym\u0002metry”, Nucl. Phys. B121 (1977) 393; E. Cremmer, J. Scherk and S. Ferrara, “SU(4)\r
+Invariant Supergravity Theory”, Phys. Lett. 74B (1978) 61.\r
+[10] E. Cremmer and B. Julia, “The N = 8 supergravity theory. I. The Lagrangian”, Phys.\r
+Lett. 80B (1978) 48\r
+[11] B. Julia, “Group Disintegrations”, in Superspace & Supergravity, p. 331, eds. S.W.\r
+Hawking and M. Roˇcek, Cambridge University Press (1981).\r
+[12] A. Font, L. Ibanez, D. Lust and F. Quevedo, Phys. Lett. B249 (1990) 35.\r
+[13] C.M. Hull and P.K. Townsend, “Unity of superstring dualities”, Nucl. Phys. B438\r
+(1995) 109, hep-th/9410167.\r
+[14] E. Cremmer, B. Julia, H. Lu and C. Pope, “Dualisation of dualities II: Twisted self\u0002duality of doubled fields and superdualities”, hep-th/9806106\r
+[15] P. West, “Hidden Superconformal Symmetries of M theory”, JHEP., hep-th/0005270.\r
+[16] V. Ogievetsky, “Infinite-dimensional algebra of general covariance group as the closure\r
+of the finite dimensional algebras of conformal and linear groups”. Nuovo. Cimento,\r
+8 (1973) 988.\r
+[17] A. Borisov and V. Ogievetsky, “Theory of dynamical affine and conformal symmetries\r
+as the theory of the gravitational field”, Teor. Mat. Fiz. 21 (1974) 329.\r
+[18] B. de Wit and H. Nicolai, Nucl. Phys. B274 (1986) 363; H. Nicolai Phys. Lett. 155B\r
+(1985) 47;\r
+[19] H. Nicolai, Phys. Lett. 187B (1987) 316\r
+[20] S. Melosch and H. Nicolai, “New Canonical Variables for D = 11 Supergravity”, hep\u0002th/9709227; K. Koespell, H. Nicolai and H. Samtleben, “An Exceptional Geometry\r
+for d = 11 Supergravity”, Class. Quantum Grav. 17 (2000) 3689.\r
+[21] G. Moore, “ Finite in all directions”, hep-th/9305139; P. West, “Physical States\r
+and String Symmetries”, hep-th/9411029, Int.J.Mod.Phys. A10 (1995) 761. hep\u0002th/9411029.\r
+[22] For a review see, V. Kac, “Infinite Dimensional Lie Algebras”, Birkhauser, 1983.\r
+[23] B. Julia, in Vertex Operators in Mathematics and Physics, Publications of the Math\u0002ematical Sciences Research Institute no 3, Springer Verlag 1984.\r
+21
+
+[24] H. Nicolai, “Hidden Symmetries in d = 11 Supergravity and Beyond”, hep-th/9906106.\r
+[25] E. Cremmer and B. Julia, “The SO(8) Supergravity”, Nucl. Phys. B519 (1979) 141\r
+[26] B. de Wit and H. Nicolai, “Hidden Symmetries , Central Charges and all That”,\r
+hep-th/0011239.\r
+[27] E. A. Ivanov and V. I. Ogievetsky, Teor. Mat. Fiz. 25 (1975) 164.\r
+[28] R. Geroch, J. Math. Phys. 12 (1971) 918; 13 (1972) 394; H. Nicolai, “A Hyperbolic\r
+Kac-Moody Algebra from Supergravity”, Phys. Lett. B276 (1992) 333.\r
+[29] J. Maharana and J. Schwarz, Nucl. Phys. B390 (1993) 3.\r
+[30] E. Cremmer, B. Julia, H. Lu and C. Pope, “Dualisation of Dualities. I”, hep\u0002th/9710119\r
+[31] B. Julia, ”Dualities in the Classical Supergravity Limits”, hep-th/9805083: ”Superdu\u0002alities: Below and beyond the U-duality”, hep-th/9805083.\r
+Figure 1: The Dynkin Diagram of E11.\r
+Figure 2: The Dynkin Diagram of K27.\r
+22"""
+
+[metadata]
+title = "arxiv hep th 0104081 west 2001 e11 and m theory"
+authors = ["Unknown"]
+year = 2001
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/0104081v2 23 May 2001\r
+KCL-MTH-01-08\r
+hep-th/0104081\r
+E11 and M theory.\r
+P. West\r
+Department of Mathematics\r
+King’s College, London, UK\r
+Abstract\r
+We argue that eleven dimensional supergravity can be described by a non-linear real\u0002isation based on the group E11. This requires a formulation of eleven dimensional super\u0002gravity in which the gravitational degrees of freedom are described by two fields which are\r
+related by duality. We show the existence of such a description of gravity. 1"""
+
+[[sections]]
+number = "0"
+title = "Introduction"
+text = """
+There is a widespread belief that all superstring theories are manifestations of a single\r
+theory that has been called M theory. However, little is known for sure about M theory.\r
+The conjectured existence of M theory has largely relied on the properties of the supergrav\u0002ity theories. In particular, the unique eleven dimensional supergravity [1], the maximally\r
+supersymmetric ten dimensional supergravity theory which are the IIA [2,3,4] and IIB [5]\r
+supergravity theories as well as the type I supergravity coupled to the Yang-Mills theory\r
+[6]. These theories are essentially determined by the type of supersymmetry they possess\r
+and hence they are the low energy effective actions of the string theories with the cor\u0002responding space-time supersymmetry. One intriguing feature of supergravity theories is\r
+the occurance of coset space symmetries that control the way the scalars occur in these\r
+theories. The four dimensional N = 4 supergravity theory possess a SL(2,R)/ U(1) sym\u0002metry [9], the IIA theory a SO(1,1) symmetry [2], the IIB theory a SL(2,R)/ U(1) [5] and\r
+the further reductions of the eleven dimensional supergravity theory possess cosets based\r
+on the exceptional groups [10,11,25]. These symmetries have also played an important\r
+role in string dualities in recent years [12,13]. The coset construction was extended [14] to\r
+include the gauge fields of supergravity theories. This method used generators that were\r
+inert under Lorentz transformations and, as such, it is difficult to extend to include either\r
+gravity or the fermions. However, this construction did included the gauge and scalar fields\r
+as well as their duals and as a consequence the equations of motion for these fields could\r
+be expressed as a generalised self-duality condition.\r
+Recently [15], it was shown that the entire bosonic section of eleven dimensional\r
+supergravity and the ten dimensional IIA supergravity theory could be formulated as a\r
+non-linear realisation. This work made use of two old papers [16,17] which formulated\r
+gravity as a non-linear realisation. In this way of proceeding gravity and the gauge fields\r
+appeared on an equal footing. It is very likely that this construction can be extended\r
+to the bosonic sector of all supergravity theories. Although the extension to include the\r
+fermions was not given in reference [15] it was realised that this step implied that eleven\r
+dimensional supergravity must be invariant under a group that included Osp(1/64) as a\r
+subgroup.\r
+The appearance of the above mentioned coset space symmetries in dimensional reduc\u0002tions of eleven dimensional supergravity on a torus can also be viewed as a consequence of\r
+supersymmetry in the dimensionally reduced theory. However, despite their importance,\r
+there is no really simple explanation of why these symmetries occur. It has been shown\r
+[18,19] that eleven dimensional supergravity does possess an SO(1,2)×SO(16) symmetry,\r
+although the SO(1,10) tangent space symmetry is no longer apparent in this formulation.\r
+However, it has been thought that the exceptional groups found in the dimensional reduc\u0002tions can not be symmetries of eleven dimensional supergravity. Despite this, it has been\r
+noticed that some of the objects which appear in the reductions do appear naturally in\r
+the unreduced theory [20]. A similar phenomenon occurs in the reduction of string theo\u0002ries on a torus. For example, if one takes the closed bosonic string to live on the unique\r
+self-dual twenty six dimensional Lorentzian lattice one finds that it is invariant under the\r
+fake monster algebra [21].\r
+It is indeed peculiar that symmetries should appear in a theory when they are not\r
+2
+
+present in the theory before it is restricted by the dimensional reduction procedure. In\r
+this paper we will examine the possibility that eleven dimensional supergravity when for\u0002mulated as a coset realisation, as in reference [15], does possess a large symmetry algebra\r
+that includes all the symmetries that occur when it is dimensional reduced. Indeed, we\r
+conjecture that eleven dimensional supergravity can be formulated as a non-linear reali\u0002sation based on the group E11. It is crucial that the theory is formulated as a non-linear\r
+realisation as this allows one to treat all the fields of the theory in the same way. In\r
+particular, gravity and the gauge fields are all Goldstone bosons.\r
+We will show that the formulation of eleven dimensional supergravity as a non-linear\r
+realisation given in reference [15] is invariant under the Borel subgroup of E7. We will then\r
+argue that one can extend this formulation in such a way that the full theory is invariant\r
+under a Kac-Moody algebra and show that if this were the case then this algebra must be\r
+E11. We suggest that this extension can be achived in two ways. We may take the local\r
+subgroup in the coset space construction to be much larger that the choice of the Lorentz\r
+group in reference [15]. We may also use an alternative description of eleven dimensional\r
+supergravity. In particular, we use a description of gravity that possess two fields which\r
+are related by duality. As a result, we propose an enlarged algebra that underlies eleven\r
+dimensional supergravity. We show that this algebra contains the Borel subgroup of E8\r
+and leads to the algebra of the ten dimensional IIA supergravity theory.\r
+We will also argue that the effective action for the closed bosonic string in twenty six\r
+dimensions is invariant under a Kac-Moody algebra and propose such an algebra which\r
+has rank twenty seven.\r
+It is likely that the proper formulation of M theory will involve radically new concepts.\r
+However, it is possible that these concepts may be very difficult to guess with our current\r
+knowledge. There are, for example, a number of indications that space-time may not\r
+be a fundamental concept. Although non-commutative algebras have been suggested as a\r
+replacement of space-time there does not exist any definitive and concrete way to implement\r
+this suggestion in the framework of M theory. The motivation for the present paper is that\r
+M theory may be rather algebraic in character and that the known supergravity theories\r
+have hidden within them information on what are the symmetries of M theory."""
+
+[[sections]]
+number = "1"
+title = "A Review of Kac-Moody Algebras"
+text = """
+In this paper we will need some basic facts about Kac-Moody algebras which we now\r
+summarise [22]. Associated with any Kac-Moody algebra is a generalised Cartan matrix\r
+Aab which satisfies the following properties:\r
+Aaa = 2, (1.1)\r
+Aab for a 6= b are negative integers or zero, (1.2)\r
+and\r
+Aab = 0 implies Aba = 0. (1.3)\r
+A Kac-Moody algebra can be formulated in terms of its Chevalley generators which consist\r
+of the generators of the commuting Cartan subalgebra, denoted by Ha, as well as the\r
+3
+
+generators of the positive and negative simple roots, denoted by Ea and Fa respectively.\r
+The Chevalley generators are taken to obey the Serre relations;\r
+[Ha, Hb] = 0, (1.4)\r
+[Ha, Eb] = AabEb, (1.5)\r
+[Ha, Fb] = −AabFb, (1.6)\r
+[Ea, Fb] = δabHa, (1.6)\r
+and\r
+[Ea, . . . [Ea, Eb] . . .] = 0, [Fa, . . . [Fa, Fb] . . .] = 0 (1.7)\r
+In equation (1.7) there are 1 − Aab number of Ea’s in the first equation and the same\r
+number of Fa’s in the second equation. Given the generalised Cartan matrix Aab, one\r
+can uniquely reconstruct the entire Kac-Moody algebra from the above Serre relations\r
+by taking the multiple commutators of the simple root generators. Hence a Kac-Moody\r
+algebra is uniquely specified by its generalised Cartan matrix.\r
+Any Kac-Moody algebra is invariant under the Cartan involution which acts on the\r
+generators as\r
+Eα → −Fα, Fα → −Eα, Ha → −Ha (1.8)\r
+where α is any positive root. It is straightforward to verify that this involution when\r
+applied to the Chevalley generators leaves invariant the above Serre relations. We may\r
+divide the generators of the Kac-Moody algebra into those that are even and those that are\r
+odd under the involution. The even generators are given by Eα−Fα. Being invariant under\r
+the Cartan involution they must form a subgroup of the original Kac-Moody algebra. The\r
+remaining odd generators are of the form Eα + Fα and Ha. We note that the subgroup\r
+which is invariant under the Cartan involution contains none of the generators of the\r
+Cartan sub-algebra of the original Kac-Moody algebra."""
+
+[[sections]]
+number = "2"
+title = "Identification of E11"
+text = """
+It has been known for many years that when eleven dimensional supergravity is di\u0002mensionally reduced on a torus to 11 − n dimensions, for n = 1, . . . 8, the resulting scalars\r
+can be formulated as a non-linear realisations [10,11]. Let us denote the groups so obtained\r
+by En and the corresponding local subgroups Fn. These are given the table below\r
+Table 1 Coset Spaces of the Maximal Supergravities"""
+
+[[sections]]
+number = "4"
+title = "D En Fn"
+text = """
+11 1 1\r
+10, IIB SL(2) SO(2)\r
+10, IIA SO(1, 1)/Z2 1"""
+
+[[sections]]
+number = "9"
+title = "GL(2) SO(2)"
+text = ""
+
+[[sections]]
+number = "8"
+title = "E3 ∼ SL(3) × SL(2) U(2)"
+text = ""
+
+[[sections]]
+number = "7"
+title = "E4 ∼ SL(5) USp(4)"
+text = ""
+
+[[sections]]
+number = "6"
+title = "E5 ∼ SO(5, 5) USp(4) × USp(4)"
+text = ""
+
+[[sections]]
+number = "5"
+title = "E6 USp(8)"
+text = ""
+
+[[sections]]
+number = "4"
+title = "E7 SU(8)"
+text = ""
+
+[[sections]]
+number = "3"
+title = "E8 S0(16)"
+text = """
+The local subgroups Fn are the maximal compact subgroups of En and also have\r
+the same rank as En, namely n. The local subgroup Fn can be used to choose the coset\r
+representatives of En/ Fn to belong to the Borel sub-group of En. We recall that the Borel\r
+subalgebra consists of the positive root and Cartan generators of the original algebra and\r
+hence the group elements of the Borel group can be written as a product of exponentials\r
+of these generators. Thus the number of scalar fields is just the number of generators in\r
+the Borel subalgebra. It has been shown that not only the scalar sector, but the entire\r
+dimensionally reduced theory is invariant under En.\r
+For n ≤ 8 the corresponding algebras found in the dimensional reduced theory are\r
+finite semi-simple Lie algebras. Dimensional reduction of eleven dimensional supergravity\r
+to two dimensions and one dimension is thought to result in theories that are invariant\r
+under the affine extension of E8, which is called E9 or E8\r
+(1) and the hyperbolic group E10\r
+respectively [23]. Some evidence for this assertion has been given for the two dimensional\r
+case in reference [19].\r
+It has not previously been proposed that eleven dimensional supergravity itself should\r
+be invariant under any of the groups En, however, it has been found that a number of the\r
+SO(1,2)×SO(16) covariant objects found in the dimensional reduced theories can be lifted\r
+to eleven dimensions. As a result, it has been proposed [20,26] that eleven dimensional\r
+supergravity has some kind of exceptional geometry.\r
+We note that the groups that occur in the dimensionally reduced theories, namely En\r
+and Fn, are Kac-Moody Lie groups. Furthermore, the local subgroups Fn for n = 1, . . . , 8\r
+are the subgroups which are invariant under the Cartan involution and were discussed in\r
+section one. For the cases of n = 9, 10 an involution has been introduced and used to define\r
+possible local subgroups [24]. However, in previous discussions of the dimensionally reduced\r
+theories, gravity plays a quite different role to that of the gauge fields and scalars under\r
+the appropriate En group. Indeed, the gauge fields and scalars transform non-trivially,\r
+while gravity is inert under En.\r
+When carrying out the dimensional reduction of eleven dimensional supergravity one\r
+has the choice whether to dualise certain fields or leave them as they appear in the usual\r
+dimensional reduction proceedure. The simplest example of this is provided by a rank two\r
+gauge fields in four dimensions that arise from the rank three gauge field in eleven dimen\u0002sions. These rank two gauge fields can be dualised to become scalars. In fact, the above\r
+5
+
+En symmetries only emerge if one does carry out the relavent duality transformations.\r
+The relationship between dualisations and the symmetries that emerge in dimensionally\r
+reduced theories has been extensively studied in reference [30]. One also has the option of\r
+introducing dual fields as well as the original fields for all the scalars and gauge fields and\r
+this was the path chosen in the coset formulation of this sector of the theory in reference\r
+[14]. This suggestion allows the equations of motion for the scalar and gauge fields to be\r
+written as a generalised self duality condition. This approach was further discussed in the\r
+papers of reference [31] where the analogy with the Ehlers symmetry of general relativity\r
+was explained. The first of these papers also includes a detailed discussion of how the\r
+fields that occur in dimensional reduction proceedure give rise to the Dynkin diagram of\r
+the corresponding En symmetries. It was noted that if one did this for all the fields then\r
+one would arrive at a rank eleven algebra associated with a dimensionally reduced theory.\r
+Let us now recall the formulation [15] of the bosonic sector of eleven dimensional\r
+supergravity as a non-linear realisation. This was based on the group G11 with a Lie\r
+algebra, also denoted, G11 whose commutators are given by\r
+[Ka\r
+b, Kcd] = δ\r
+c\r
+bKa\r
+d − δ\r
+a\r
+dKc\r
+b, [Kab, Pc] = −δ\r
+a\r
+c Pb, [Pa, Pb] = 0 (2.1)\r
+[Ka\r
+b, Rc1...c6\r
+] = δ\r
+c1\r
+b R\r
+ac2...c6 + . . . , [Ka\r
+b, Rc1...c3\r
+] = δ\r
+c1\r
+b R\r
+ac2c3 + . . . , (2.2)\r
+[R\r
+c1...c3\r
+, Rc4...c6] = 2R\r
+c1...c6\r
+, [R\r
+c1...c6\r
+, Rd1...d6] = 0, (2.3)\r
+[R\r
+c1...c3\r
+, Ra1...a6] = 0 (2.4)\r
+where + . . . denote the appropriate anti-symmetrisations. The generators Ka\r
+b and Pc gen\u0002erate the affine group IGL(11) while the generators Rc1...c3 and Rc1...c6\r
+form a subalgebra.\r
+The non-linear realisation is built from group elements g ∈ G11 such that it is invariant\r
+under\r
+g → g0gh−1(2.5)\r
+where g0 is a rigid element of the group G11 generated by the above Lie algebra and h is\r
+a local element of the Lorentz group. We may take the group element g to be of the form\r
+g = e\r
+x\r
+µPµ e\r
+ha\r
+bKa\r
+b exp(\r
+Ac1...c3Rc1...c3\r
+3! +\r
+Ac1...c6Rc1...c6\r
+6! ), (2.6)\r
+where the fields h\r
+a\r
+b, Ac1...c3\r
+and Ac1...c6 depend on x\r
+µ\r
+. Invariance under the rigid trans\u0002formations is gained by considering the g0 invariant forms given by\r
+V = g\r
+−1\r
+dg − w (2.7)\r
+where w ≡\r
+1\r
+2\r
+dxµwµb\r
+cJb\r
+c is the Lorentz connection and so transforms as\r
+w → hwh−1 + hdh−1(2.8)\r
+As a result\r
+V → hVh\r
+−1\r
+(2.9)\r
+6
+
+We observe the important fact that the Cartan forms are inert under the rigid transfor\u0002mations and only transform under the local subgroup. the\r
+Evaluating V we find that it is given by\r
+V = dxµ(eµ\r
+aPa + ΩabKa\r
+b +\r
+1\r
+3!D˜\r
+µAc1...c3R\r
+c1...c3 +\r
+1\r
+6!D˜\r
+µAc1...c6R\r
+c1...c6\r
+) (2.10)\r
+where\r
+eµ\r
+a ≡ (eh\r
+)µ\r
+a\r
+, D˜\r
+µAc1...c3 ≡ ∂µAc1c2c3 + ((e\r
+−1\r
+∂µe)c1\r
+bAbc2c3 + . . .),\r
+D˜\r
+µAc1...c6 ≡ ∂µAc1...c6 + ((e\r
+−1\r
+∂µe)c1\r
+bAbc2...c6 + . . .) − (A[c1...c3D˜\r
+µAc4...c6])\r
+Ωµb\r
+c ≡ (e−1\r
+∂µe)b\r
+c − wµbc\r
+, (2.11)\r
+where + . . . denotes the action of (e\r
+−1∂µe) on the other indices of Ac1...c3\r
+and Ac1...c6.\r
+Eleven dimensional supergravity is invariant under not just the group G11, but also\r
+under the infinite dimensional group which is the closure of G11 and the eleven dimensional\r
+conformal group. This infinite dimensional group is realised by also calculating the Cartan\r
+forms for the conformal group and then taking only those G11 Cartan forms that can\r
+be rewritten in terms of the Cartan forms, or other appropriate forms, of the conformal\r
+group. The forms so obtained are then simultaneously covariant under both groups and\r
+hence under the infinite dimensional group that is their closure. In fact, the Cartan forms\r
+just transform under composite Lorentz transformations. The result of this procedure for\r
+the rank three and six forms is that one should only use the simultaneously covariant forms\r
+F˜\r
+c1...c4 ≡ 4(e[c1\r
+µ\r
+∂µAc2...c4] + e[c1\r
+µ\r
+(e\r
+−1\r
+∂µe)c2\r
+bAbc3c4] + . . .) (2.12)\r
+and\r
+F˜\r
+c1...c7 ≡ 7(e[c1\r
+µ\r
+(∂µAc2...c7]) + e[c1\r
+µ\r
+(e\r
+−1\r
+∂µe)c2\r
+bAbc3...c7] + . . . + 5F˜\r
+[c1...c4 F˜c5...c7]) (2.13)\r
+The invariant equation of motion is then given by\r
+F˜c1...c4 =\r
+1\r
+7! ǫc1...c11 F˜c5...c11 (2.14)\r
+For the Goldstone field ha\r
+b\r
+, that is for gravity, the process of finding the simultaneously\r
+covariant forms is more complicate and for this we refer the reader to reference [15].\r
+Although the role of the conformal group is crucial, we will for the most part of this paper\r
+be concerned with the realisation of the group G11. It was also shown in reference [15]\r
+that the IIA supergravity theory can also be expressed as a non-linear realisation and it is\r
+very likely that all supergravity theories allow such a description.\r
+The scalars that occur in the dimensional reductions of eleven dimensional super\u0002gravity have their origin in the graviton and the rank three gauge field. Hence, if the\r
+symmetries that occur in the dimensional reductions have their origin in eleven dimen\u0002sional supergravity, it must be in a formulation of this theory in which all the bosonic\r
+fields of the theory, namely the graviton and the rank three gauge field, occur in a similar\r
+7
+
+manner. One advantage of the coset formulation of eleven dimensional supergravity is that\r
+it does treats gravity in the same way as the third rank gauge field; they are both Goldstone\r
+bosons. Indeed, general coordinate transformations and the gauge transformations of the\r
+third rank gauge field both arise in the coset formulation. Hence, in this paper we will\r
+search for hidden symmetries in the coset formulation of eleven dimensional supergravity.\r
+The non-linear realisation used in reference [15] to construct the eleven dimensional\r
+supergravity is based on a finite dimensional Lie algebra, namely G11 which is not a Kac\u0002Moody algebra. Furthermore, the local subgroup was chosen to be just the Lorentz group\r
+and, consequently, the coset representatives given in equation (2.6) are not members of\r
+a Borel subgroup of some larger group. Hence, the groups used in the coset formulation\r
+appear to be unlike those found in the dimensional reductions of eleven dimensional su\u0002pergravity. As noted above, the latter are Kac-Moody algebras with local subgroups such\r
+that the coset representatives can be written as elements of the Borel subgroups. From\r
+this view point, the coset construction of eleven dimensional supergravity would not at\r
+first sight appear to contain the Kac-Moody groups found in the dimensional reductions\r
+of this theory.\r
+This strongly suggests that, although the coset formulation of reference [15] does lead\r
+to the correct equations of motion, it can be extended to involve a larger group than G11.\r
+We will seek to achieve this in two ways. It is possible to introduce a larger group by\r
+introducing a larger local subgroup than the Lorentz group. This step will not introduce\r
+extra Goldstone bosons and only implies that the Cartan forms transform under the larger\r
+local subgroup (see equation (2.9)). For example, if we adopted a larger local subgroup for\r
+the formulation of eleven dimensional supergravity used in reference [15] it would lead to\r
+the same field content as the coset formulation of reference [15], the same group element\r
+as in equation (2.6) and the same Cartan forms as in equation (2.10). However, one\r
+must then show that the field equations are invariant under the larger local subgroup in\r
+order to ensure the invariance of the theory under the full group. A second possibility is\r
+to use a coset formulation that corresponds to an alternative form of eleven dimensional\r
+supergravity. This formulation would describe the same on-shell degrees of freedom, but\r
+the field content would be different. As we will explain later in this paper, gravity will\r
+be described by two fields in a dual formulation that is analogous to the way two fields\r
+Aa1...a3and Aa1...a6 describe the non-gravitational bosonic degrees of freedom. In fact we\r
+can carry out both possibilities, we can first adopt a new formulation of eleven dimensional\r
+supergravity and then enlarge the group by introducing a larger local subgroup.\r
+Having carried these steps, we must take the simultaneous non-linear realisation with\r
+the conformal group. It is natural to suppose that the resulting non-linear realisation,\r
+which is formed from two infinite dimensional groups, is based on a Kac-Moody algebra,\r
+G and that the local subalgebra H is the subgroup invariant under the Cartan involution,\r
+or some modification of it. The translation generator Pa will play no role in these consid\u0002erations. It would seem reasonable to suppose that the groups En and Fn found in the\r
+dimensional reductions of eleven dimensional supergravity are subgroups of the Kac-Moody\r
+Lie algebras G and H respectively.\r
+We now consider how to implement this strategy and, in particular, how to identify\r
+8
+
+the Kac-Moody algebra G. Let us decompose the generators of G11 into\r
+G\r
++\r
+11 = (Ka\r
+b, a < b, a, b = 1, . . . 11, Rc1...c3\r
+, Rc1...c6), (2.15)\r
+G\r
+0\r
+11 = (Ha = Ka\r
+a − Ka+1a+1, a = 1, . . . 10, D =\r
+X\r
+a\r
+Ka\r
+a) (2.16)\r
+and Ka\r
+b, a > b. The generators Ka\r
+b, a < b and Ha are the positive root generators and\r
+Cartan sub-algebra of SL(11) respectively. The only other generators of SL(11) are the\r
+negative root generators which are the generators Ka\r
+b, a > b. As explained above, we\r
+should demand that the new Kac-Moody Lie algebra G should contain, among its positive\r
+root generators, those in G\r
++\r
+11 and that its Cartan subalgebra should include the generators\r
+in G0"""
+
+[[sections]]
+number = "11"
+title = "We define the Lie algebra which consists of the generators of G"
+text = """
++\r
+11 and G0\r
+11 by G\r
+0+"""
+
+[[sections]]
+number = "11"
+title = "As a first step in identifying the Kac-Moody Lie algebra G we now show that G"
+text = """
+0+\r
+11\r
+contains the Borel subalgebra of E7. We identify the positive root generators of E7 to be\r
+just the generators of G\r
++\r
+11 whose indices are restricted to take values from 5 to 11. Letting\r
+this index range be denoted by i, j, . . ., these generators are Ki\r
+j for i < j , Ri1...i3 and\r
+Ri1...i6. Instead of the later generators we may equally well use\r
+Si =\r
+1\r
+6! ǫii1...i6R\r
+i1...i6\r
+, Kˆ i\r
+j = Kij −\r
+1\r
+7\r
+δ\r
+j\r
+i\r
+X\r
+11\r
+l=5\r
+Kl\r
+l\r
+. (2.17)\r
+The Cartan subalgebra generators of E7 are identified with Hi and Dˆ =\r
+P11\r
+i=5 Ki\r
+i\r
+. Using\r
+equations (2.1) to (2.4), we find that these generators, together with the generators Kˆ i\r
+j =\r
+Ki\r
+j for i > j, obey the relations\r
+[Kˆ i\r
+j , Kˆ kl\r
+] = δ\r
+k\r
+j Kˆ i\r
+l − δ\r
+i\r
+lKˆ k\r
+j , (2.18)\r
+[Kˆ i\r
+j , Rk1...k3\r
+] = 3δ\r
+[k1\r
+j R\r
+|i|k2k3] −\r
+3\r
+7\r
+δ\r
+i\r
+jR\r
+k1...k3\r
+, (2.19)\r
+[R\r
+i1...i3\r
+, Ri4...i6] = 2ǫ\r
+i1...i6jSj (2.20)\r
+[D, ˆ Kˆ i\r
+j ] = 0, [D, R ˆ k1...k3\r
+] = 3R\r
+k1...k3\r
+, (2.21)\r
+[D, S ˆ\r
+k] = 6Sk, (2.24)\r
+[R\r
+i1...i3\r
+, Sk] = 0 (2.23)\r
+and\r
+[Kˆ i\r
+j , Sk] = −δ\r
+i\r
+kSj +\r
+1\r
+7\r
+δ\r
+i\r
+jSk, (2.24)\r
+In equations (2.18) to (2.24) we do indeed recognise the correct commutators of the\r
+Borel sub-algebra of E7 when written with respect to its SL(7) subgroup. As proposed\r
+above, the positive roots generators of E7 are Kˆ i\r
+j for i < j , Ri1...i3 and Si while the\r
+Cartan sub-algebra generators of E7 are Hi = Ki\r
+i − Ki+1i+1, i = 5, . . . , 10 and Dˆ. We\r
+9
+
+note that G11 also contains all the generators of the SL(7) subgroup of E7 in the correct\r
+way.\r
+Since G11 is a symmetry of eleven dimensional supergravity it follows that the Borel\r
+subalgebra of E7 is also a symmetry as is the SL(7) subgroup of E7.\r
+Under the decomposition of the adjoint (133) of E7 into SL(7) representations we find\r
+that\r
+133 = 48(Ki\r
+j ) + 1(Dˆ) + 35(R\r
+i1...i3\r
+) + ¯7(Si) + 35( ¯ Ri1...i3) + 7(S\r
+i\r
+) (2.25)\r
+Thus the full E7 algebra is found by adding the remaining negative root generators S\r
+i and\r
+Ri1...i3. To gain a theory invariant under the full E7 we would extend the group by adding\r
+these generators to the local subgroup and then hope to show that the equations of motion\r
+were invariant under the now local SU(8) subgroup. In fact, the 63 of the SU(8) subgroup\r
+decomposes under SO(7) as 63 = 21(K(ij)) + 35( ¯ Ri1...i3) + 7(S\r
+i\r
+).\r
+The simple positive root generators of E7 are given by\r
+Ei = Ki\r
+i+1, i = 5, . . . , 10, E11 = R\r
+91011 (2.26)\r
+and an appropriate basis for the generators of the Cartan sub-algebra is given by\r
+Hi = Ki\r
+i − Ki+1\r
+i+1, i = 5, . . . , 10, H11 = K9\r
+9 + K10\r
+10 + K11\r
+11 −\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Dˆ (2.27)"
+text = """
+It is straightforward to verify that these simple root and Cartan sub-algebra generators do\r
+indeed lead, using equations (2.18) to (2.24), and (1.5), to the Cartan matrix of E7 that\r
+corresponds to its well known Dynkin diagram.\r
+Let us now return to the identification of the Kac-Moody algebra G associated with the\r
+coset formulation of eleven dimensional supergravity. As noted in section one, it is sufficient\r
+to determine its Cartan matrix. As a result, we must seek in G11 the Cartan subalgebra\r
+and the simple root generators of G. The simple positive root generators are those from\r
+which all positive root generators can be constructed by multiple commutators. It is clear\r
+that all the generators of G\r
++\r
+11 can be constructed, by taking repeated commutators, from\r
+Ea = Ka\r
+a+1, a = 1, . . . 10, and E11 = R\r
+91011\r
+. (2.28)\r
+We therefore identify these as the appropriate simple root generators of the Kac-Moody\r
+algebra G we seek. The Ea, a = 1, . . . 10 are the simple root generators of SL(11) and\r
+Ea, a = 5, . . . 11 are the simple root generators of E7.\r
+The Cartan sub-algebra generators of G are those contained in G0\r
+11 in equation (2.16).\r
+Using equation (1.5), we may read off the generalised Cartan matrix Aij of the Kac-Mooody\r
+algebra Lie algebra. However, in order to find an acceptable generalised Cartan matrix\r
+Aij , that is one that satisfies equation (1.1) to (1.5), we must adopt an appropriate basis\r
+for the Cartan sub-algebra.\r
+We observe that we have the same number of simple roots generators as we have\r
+generators in the Cartan subalgebra, namely eleven. We therefore conclude that we are\r
+searching for a Kac-Moody algebra G of rank eleven which must contain SL(11), or A10\r
+and E7 as a Lie sub-algebras. Examining their Dynkin diagrams we may suspect that the\r
+10
+
+Kac-Moody Lie algebra we are searching for is E11. The Dynkin diagram of E11 is given\r
+in figure one and we observe that by deleting points in this diagram we readily find the\r
+Dynkin diagrams of A10 and E7.\r
+Given the embedding of E7 and A10 it is straightforward to show that the only allowed\r
+basis of the Cartan subalgebra, in the sense of an acceptable Cartan matrix, is given by\r
+Ha = Ka\r
+a − Ka+1\r
+a+1, a = 1, . . . , 10, H11 = K99 + K1010 + K1111 −\r
+1"""
+
+[[sections]]
+number = "3"
+title = "D (2.29)"
+text = """
+These together with the simple roots Ea, a = 1, . . ., 11 do indeed lead to the Cartan matrix\r
+of E11. One can also verify that the Serre relations of equation (1.7) for the Ea generators\r
+are satisfied, for example\r
+[E8, [E8, E11]] = 0 (2.30)\r
+If we could be sure that there exists a non-linear realisation of eleven dimensional\r
+supergravity that is invariant under a Kac-Moody Lie algebra, we could now conclude that\r
+it is invariant under E11. This follows from the definition of a Kac-Moody algebra given\r
+in section one. Since the positive simple roots exist and obey the relevant Serre relations\r
+of E11, there must by definition exist negative simple root generators which satisfy all\r
+the remaining Serre relations. The algebra is then uniquely specified by the occurance\r
+of the Cartan matrix of E11 in these relations. However, we can not be sure that eleven\r
+dimensional supergravity is invariant under a Kac-Moody algebra. So far we have only\r
+shown the Serre relations of equations (1.4), (1.5) and the part of (1.7) which involve the\r
+Ea and Ha are satisfied. We have not shown that there exist symmetries corresponding to\r
+the generators Fa and that these obey the remaining Serre relations. Indeed, we can not\r
+be sure that the Ea and Ha generators have multiple commutators that generate the whole\r
+of the Borel subalgebra of the Kac-Moody algebra. The problem is that in the absence of\r
+the Fa generators, it can happen that a subset of the positive root generators Eα form an\r
+ideal and that this ideal may be trivially realised in eleven dimensional supergravity. As\r
+we shall see, with the coset formulation of reference [15] this is indeed the case. However,\r
+in the next section, we propose an alternative coset formulation of eleven dimensional\r
+supergravity which, we believe does realise a Borel subgroup of a Kac-Moody algebra after\r
+the full construction has been carried out.\r
+Since E11 is a very large algebra the problem is more tractable if we first consider\r
+the smaller algebras that must arise in a restriction of eleven dimensional supergravity.\r
+The restriction is obtained by keeping only those generators and fields with indices i, j, . . .\r
+that take values 11 to 11 − n + 1. The residual invariance group one would expect can\r
+be read off from the Dynkin diagram of E11 by keeping only the first n − 1 nodes on\r
+the horizontal line in the Dynkin diagram starting from the right as well as any nodes to\r
+which they are attached by vertical lines. One finds that the invariance groups are the\r
+groups En which are listed for n = 1, . . . 8 in table one. These are the groups that occur\r
+in the dimensional reductions of eleven dimensional supergravity. We would stress that\r
+the restriction discussed here is not a dimensional reduction. Indeed, the space-time is not\r
+restricted in any way and the residual groups are sub-symmetries of eleven dimensional\r
+supergravity.\r
+11
+
+To completely specify the coset formulation of the theory we must specify the local\r
+subgroup corresponding to E11. It is natural to assume that the appropriate subgroup is\r
+just that left invariant by the Cartan involution discussed in section one. It is simpler to\r
+consider the implications of this suggestion within the context of the restriction discussed\r
+above. The local subgroups that occure in the restriction must be the subgroups of En\r
+left invariant under the Cartan involution. As such, for n = 1, . . . 8, they must be the\r
+subgroups Fn that occur in table one. Clearly, Fn must contain the local subgroup in\r
+the formulation of reference [15], namely the Lorentz group SO(n) for n = 1, . . . 10 and\r
+SO(1,10) for n=11. Furthermore, Fn−1 must be contained in Fn which suggests that\r
+Fn−1 has rank one less than Fn and so Fn has rank n. For n = 1, . . . 8 these conditions\r
+are satisfied. Although the local subgroups specified by demanding invariance under the\r
+Cartan involution are also unique, for n ≥ 9, it is not so obvious what they are in practice.\r
+In fact, it could happen that a Cartan invariant subgroup of a Kac-Moody algebra is not\r
+itself a Kac-Moody algebra. However, assuming this not to be the case, the local subgroup\r
+for n = 9 is an infinite dimensional Kac-Moody algebra of rank 9. If it can be obtained\r
+by adding a node to the Dynkin diagram of F8, that is D8, and it is an affine Lie algebra\r
+there are only two possibilities D8\r
+(1) and B8(1) in the notation of reference [22]. Similarly\r
+the possible candidates for the local subgroups for n = 10 and n = 11 can be listed.\r
+As explained in section one, the subgroup invariant under the Cartan involution is\r
+of the form Eα − Fα where α is a positive root. For a finite dimensional semi-simple Lie\r
+algebras these generators are compact in the sense that if the Cartan-Killing metric is used\r
+to evaluate the scalar product of these generators it is positive definite. For these groups\r
+this definition of compactness coincides with the usual topological definition. Hence, the\r
+local subgroups Fn for n = 1, . . . 8 are compact groups. However, the real form of the local\r
+subgroup F11 that occurs in eleven dimensional supergravity must be non-compact as it\r
+contains SO(1,10) as a subgroup. Thus one might question if the subgroup F11 defined\r
+above is really correct.\r
+For an infinite dimensional Kac-Moody Lie algebra one still has an analogue of a\r
+Cartan Killing metric which when restricted to the Cartan subalgebra Ha is equal, as for\r
+the finite dimensional case, to the Cartan matrix, that is (Ha, Hb) = Aab and (Ea, Fb) =\r
+δab. These formulae hold for a simply laced algebra, but there also exists a suitable\r
+modification for the non-simply laced algebras. For finite dimensional Kac-Moody algebras\r
+the eigenvalues of the Cartan matrix are strictly positive and so the Cartan subgroup\r
+generators are compact in the above sense. However, for an infinite dimensional Kac\u0002Moody algebra the eigenvalues of the Cartan matrix are not all strictly positive and so\r
+the Cartan subalgebra generators are not compact in the above sense. Indeed, in the case\r
+of E11 the eigenvalues of the Cartan matrix have the signature (−, +, . . .+). In a similar\r
+way, the proof of the ”compactness” of the Cartan involution invariant subgroups also fails\r
+for the infinite dimensional Kac-Moody Lie algebras and there would seem no reason to\r
+suppose that F11 could not contain SO(1,10)."""
+
+[[sections]]
+number = "3"
+title = "E8 Lost"
+text = """
+In section two, we observed that if a non-linear realisation of eleven dimensional\r
+supergravity was based on a Kac-Moody algebra then this would have to be E11. However,\r
+we can not be sure that there does exist a non-linear realisation that is based on a Kac\u000212
+
+Moody algebra. As we noted above, if this is not the case, there can exist non-trivial ideals\r
+in the algebra and these can be trivially realised. Nonetheless, we showed in section two\r
+that the non-linear realisation of reference [15] did contain the Borel subalgebra of E7.\r
+We have also suggested how the non-linear realisation of eleven dimensional supergravity\r
+could be modified to possess a full E7 symmetry.\r
+In this section, we consider if the Borel subalgebra of E8 is a symmetry of the non\u0002linear realisation of reference [15] of eleven dimensional supergravity. Let us consider\r
+the restriction of the G11 algebra such that the indices on the generators take the values\r
+i, j, . . . = 11, . . . , 4. Introducing the generators\r
+Kˆ i\r
+j = Kij −\r
+1\r
+8\r
+δ\r
+j\r
+i\r
+X\r
+l\r
+Kl\r
+l\r
+, Dˆ =\r
+X\r
+11\r
+i=4\r
+Ki\r
+i\r
+, Ri1...i3, Sk1k2 =\r
+1\r
+6! ǫk1k2i1...i6R\r
+i1...i6\r
+, (3.1)\r
+we find, using the G11 algebra of equations (2.1) to (2.4), that they obey the algebra\r
+[Kˆ i\r
+j , Kˆ kl\r
+] = δ\r
+k\r
+j Kˆ i\r
+l − δ\r
+i\r
+lKˆ k\r
+j , (3.2)\r
+[Kˆ i\r
+j , Rk1...k3\r
+] = 3δ\r
+[k1\r
+j R\r
+|i| k2k3] −\r
+3\r
+8\r
+δ\r
+i\r
+jR\r
+k1...k3\r
+, (3.3)\r
+[R\r
+i1...i3\r
+, Ri4...i6] = ǫ\r
+i1...i6jkSjk (3.4)\r
+[D, ˆ Kˆ i\r
+j ] = 0, [D, R ˆ k1...k3\r
+] = 3R\r
+k1...k3\r
+, [D, S ˆ\r
+jk] = 6Sjk (3.5)\r
+[Kˆ i\r
+j , Sk1k2\r
+] = −2δ\r
+i\r
+[k1\r
+S|j|k2] +\r
+2\r
+8\r
+δ\r
+i\r
+jSk1k2\r
+, (4.6)\r
+[Sk1k2, Sj1j2] = 0 (3.7)\r
+and\r
+[Sk1k2, Rj1...j3] = 0 (3.8)\r
+Let us now compare this algebra to that of the Borel subalgebra of E8. The 248 adjoint\r
+of E8 decomposes into SL(8,R) representations as 248 = 1+63+(56+28+¯ ¯8)+(56+28+8). ¯\r
+The 63 are the generators of SL(8,R). The Cartan subalgebra of E8 consists of the Cartan\r
+subalgebra of SL(8,R) and the generator 1 in the above decomposition. The positive root\r
+generators of E8 are the positive root generators of SL(8,R) as well as the (56 + 28 + ¯ ¯8)\r
+and the negative root generators of E8 are the negative root generators of SL(8,R) as well\r
+as the (56 + 28 + 8). ¯\r
+We now wish to attempt to precisely identify the generators of the above restriction of\r
+the G11, that appear in the algebra of equations (4.2) to (4.8), with the Borel subalgebra\r
+of E8. In fact, it is just as simple to also include the whole of SL(8,R) rather than just the\r
+Borel subalgebra of SL(8,R). We can identify Ki\r
+j as the generators of SL(8,R), Dˆ as the\r
+remaining member of the Cartan subalgebra of E8, the Rk1...k3 are the 56 and the Sk1k2\r
+are the 28. Hence the only missing positive root generators in the ab ¯ ove decomposition\r
+are the ¯8. These form an ideal in the Borel subalgebra of E8. In fact, the commutation\r
+relations of equation (4.2) to (4.8) are those of the Borel subalgebra of E8 except that the\r
+13
+
+generators of the ¯8 are trivially realised. Indeed, the commutation relations of equations\r
+(4.2) to (4.7) are precisely those of the Borel subalgebra of E8, except that equation (4.8)\r
+should have a non-vanishing right-hand side that involves the missing ¯8 generators."""
+
+[[sections]]
+number = "4"
+title = "E8 Regain’d"
+text = """
+In this section, we propose an extension of the algebra G11 that is to be used in a non\u0002linear realisation of eleven dimensional supergravity. Since the algebra has been enlarged\r
+the formulation of eleven dimensional supergravity that results will also be modified com\u0002pared to that used in reference [15]. One advantage of this new algebra is that it realises\r
+non-trivially the full Borel subalgebra of E8. This new algebra contains the generators\r
+of G11 as well as the generators Ra1...a8,b which is anti-symmetric in a1 . . . a8. The new\r
+algebra obeys the commutators\r
+[Ka\r
+b, Pc] = −δ\r
+a\r
+c Pb, [Pa, Pb] = 0 (4.1)\r
+[Ka\r
+b, Kcd] = δ\r
+c\r
+bKa\r
+d − δ\r
+a\r
+dKc\r
+b, (4.2)\r
+[Ka\r
+b, Rc1...c6\r
+] = δ\r
+c1\r
+b R\r
+ac2...c6 + . . . , [Ka\r
+b, Rc1...c3\r
+] = δ\r
+c1\r
+b R\r
+ac2c3 + . . . , (4.3)\r
+[R\r
+c1...c3\r
+, Rc4...c6] = 2R\r
+c1...c6\r
+, (4.4)\r
+[R\r
+a1...a6\r
+, Rb1...b3] = 3R\r
+a1...a6[b1b2,b3]\r
+, (4.5)\r
+[R\r
+a1...a8,b, Rb1...b3\r
+] = 0, [R\r
+a1...a8,b, Rb1...b6\r
+] = 0, [R\r
+a1...a8,b, Rc1...c8,d] = 0 (4.6)\r
+[Ka\r
+b, Rc1...c8,d] = (δ\r
+c1\r
+b R\r
+ac2...c8,d + · · ·) + δd\r
+b R\r
+c1...c8,a\r
+. (4.7)\r
+Equations (2.1) to (2.3) are the same as equations (4.1) to (4.4), but equation (2.4) is\r
+replaced by equation (4.5) and it is here that the new generator makes its appearance.\r
+This algebra satisfies the Jacobi identities provided\r
+R\r
+[c1...c8,d] = 0. (4.8)\r
+The restriction of this new algebra for n = 8 gives the generators of equation (4.1) and\r
+in addition the generator Ri1...i8,j = ǫ\r
+i1...i8 S\r
+j\r
+. These generators obey the commutators of\r
+equations (4.2) to (4.7) as well as the relations\r
+[Kˆ i\r
+j , Sk\r
+] = δ\r
+k\r
+j S\r
+i −\r
+1\r
+8\r
+δ\r
+i\r
+jS\r
+k\r
+, [Sk1k2, Rj1j2j3] = 3δ\r
+[j1j2\r
+k1k2\r
+S\r
+j3]\r
+(4.9)\r
+[R\r
+ijk, Sl\r
+] = 0, [Sij , Sk] = 0 (4.10)\r
+and\r
+[D, S ˆ k] = 9S\r
+k\r
+. (4.11)\r
+These equations together with those of (4.2) to (4.7) are indeed those of the Borel subal\u0002gebra of E8 together with the remaining generators of SL(8,R).\r
+Thus we are led to propose that eleven dimensional supergravity can be described by\r
+a non-linear realisation based on the algebra of equations (4.1) to (4.7). To specify the\r
+14
+
+non-linear realisation we must state the local subgroup. The minimal choice would be to\r
+take just the Lorentz group. We would then expect the simultaneous non-linear realisation\r
+of this coset with the conformal group to describe eleven dimensional supergravity.\r
+The algebra of equations (4.2) to (4.7) is not a Kac-Moody algebra. However, as we\r
+explained in section two, the choice of local subgroup is not unique. We can further enlarge\r
+the algebra of equations (4.2) to (4.7) by adding generators that belong to a local subgroup\r
+that includes the Lorentz group and in this way hope to arrive at a formulation of eleven\r
+dimensional supergravity that is invariant under a Kac-Moody algebra. In effect one treats\r
+the generators in equations (4.2) to (4.7), with the exception of Ka\r
+b, a > b , as part of\r
+the Borel sub-algebra of the Kac-Moody algebra and adds the corresponding negative root\r
+generators. The final equations of motion are constructed from the Cartan forms which\r
+transform non-trivially under the local subgroup. Thus a very strong constraint on the\r
+local subgroup is that it leads to the correct equations of motion.\r
+At first sight, one would not appear to arrive at E11 through this procedure. However,\r
+we are required to take the closure of the resulting algebra with the conformal algebra and\r
+construct the simultaneous non-linear realisation. The closure of these two algebras will\r
+be an infinite dimensional algebra that contains a number of the important subalgebras\r
+of E11 and it is hoped that this is actually E11. In particular, it would be interesting to\r
+examine how the affine nature of E9 arises in this closure.\r
+There is also a puzzle concerning the number of Goldstone bosons that would arise\r
+in the construction of such a non-linear realisation. It is well known that a non-linear\r
+realisation can result in a theory that has fewer Goldstone bosons than one has generators\r
+in the coset. This is due to a mechanism, called the inverse Higgs effect [27], that allows\r
+one, under certain circumstances, to solve some Goldstone bosons in terms of some of the\r
+others. In fact, this is reason why the infinite dimensional group which is the closure of the\r
+conformal group and the group of affine general linear transformations leads only to the\r
+Goldstone bosons that belong to gravity. Taking the group E11 and the local subgroup that\r
+was invariant under the Cartan involution would lead to an infinite number of Goldstone\r
+bosons, however, we may expect that most of these can be eliminated by the inverse Higgs\r
+effect to leave only a finite number of Goldstone bosons. Indeed these residual Goldstone\r
+bosons may be just those correspond to the generators in the algebra of equations (4.1) to\r
+(4.7).\r
+We hope to construct this non-linear realisation and examine these conjectures in a\r
+future paper. In the rest of this section, we will examine some of the consequences of this\r
+suggestion and, as a result, demonstrate a number of detailed checks on the suitibility of\r
+the algebra of equations (4.1) to (4.7).\r
+In a non-linear realisation based on the algebra of equations (4.1) to (4.7), the cor\u0002responding Goldstone fields consist of those of the original formulation of reference [15],\r
+that is the fields ha\r
+b\r
+, Aa1...a3, Aa1...a6, but include in addition the fields Aa1...a8,b. The\r
+Goldstone bosons Aa1...a3and Aa1...a6lead to a first order formulation of the equations of\r
+motion of the bosonic non-gravitational degrees of freedom of eleven dimensional super\u0002gravity more usually described solely by a rank three anti-symmetric tensor gauge field.\r
+The field strengths of the gauge fields Aa1...a3and Aa1...a6are related by use of the epsilon\r
+symbol. Since the only other on-shell bosonic degrees of freedom are those of the graviton,\r
+15
+
+the construction implies that there must exist a formulation of gravity involving the fields\r
+ha\r
+b and ha1...a8,b. We might expect that the the field strengths of these fields are related\r
+by the epsilon symbol. Indeed, we observe that if we regard the lower index on ha\r
+b as that\r
+corresponding to the ”gauge field” and the other index as a type of internal index then\r
+the field strength would be of the form fa1a2\r
+b and the associated ”dual gauge field” would\r
+indeed have the index structure of ha1...a8,\r
+b\r
+. Hence in this construction we may expect\r
+the graviton equation of motion to have a similar structure to that of the the three rank\r
+tensor gauge field. It is to be expected that only in such a formulation would the the full\r
+symmetry of eleven dimensional supergravity be apparent.\r
+We now show that such a formulation of gravity does exist. We will carry out the\r
+construction in a space-time of arbitrary dimension, denoted D. It is well known that\r
+Einstein theory of general relativity, whose traditional action is given by\r
+Z\r
+d\r
+DxeR(eµa\r
+, wµ,a\r
+b\r
+(e)) (4.12)\r
+can be rewritten in terms of the action\r
+Z\r
+d\r
+Dxe(Cca,aC\r
+cb,\r
+b −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Cab,cC"
+text = """
+ac,b −\r
+1"""
+
+[[sections]]
+number = "4"
+title = "Cab,cC"
+text = """
+ab,c) (4.13)\r
+where\r
+Cµν\r
+a = ∂µeνa − ∂ν eµa\r
+. (4.14)\r
+It is straightforward to show that this action is equivalent to taking the action\r
+1\r
+2\r
+Z\r
+d\r
+Dxe(Yab,cCcb,c +\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Yab,cY"
+text = """
+ac,b −\r
+1\r
+2(D − 2)Yca,\r
+aYcb,\r
+b) (4.15)\r
+Introducing the field Yc1...c(D−2)\r
+d by\r
+Y\r
+ab,d =\r
+1\r
+(D − 2)! ǫ\r
+abc1...c(D−2)Yc1...c(D−2)\r
+d\r
+(4.16)\r
+The action in terms of these variables is given by\r
+1\r
+2\r
+Z\r
+d\r
+Dx(ǫµν...τD−2 Yτ1...τD−2dCµν,d + e(−\r
+1\r
+2\r
+(D − 3)\r
+(D − 2)Yτ1...τD−2,\r
+dYτ1...τD−2,\r
+d\r
++\r
+1\r
+2\r
+(D − 2)Yτ1...τD−3d,\r
+dYτ1...τD−2e,\r
+e −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Yτ1...τD−3κ,"
+text = """
+dYτ1...τD−2d,\r
+κ)) (4.17)\r
+The equations of motion for gravity in terms of the new variables become\r
+ǫ\r
+µτ1...τD−1 ∂τ1 Yτ2...τD−1d = terms of order(Yτ1...τD−2d\r
+)\r
+2\r
+(4.18)\r
+ǫµν\r
+τ1...τD−2 Yτ1...τD−2,b = −Cµν,b + Cνb,µ − Cµb,ν + 2(eνbCµcc − eµbCνc\r
+c\r
+) (4.19)"""
+
+[[sections]]
+number = "16"
+title = "At lowest order the first of these equations implies that"
+text = """
+Yτ1...τD−2,b = ∂[τ1 hτ2...τD−2],b. (4.20)\r
+Consequently, we have found a description of gravity constructed from the field e\r
+a\r
+µ\r
+and\r
+hτ1...τD−3,\r
+b\r
+. Taking D = 11, this is precisely of the required type.\r
+Taking a non-linear realisation of eleven dimensional supergravity based on the alge\u0002bra of equations (4.1) to (4.7) resolves a puzzle concerning the relationship of the coset\r
+formulation of IIA supergravity theory to that for the eleven dimensional theory given in\r
+reference [15]. Although the coset formulations of these two theories are correct in the\r
+sense that they led to equations of motion that do describe the degrees of freedom of\r
+both of these theories, the eleven dimensional algebra does not lead in an obvious way\r
+to the algebra of the IIA supergravity theory. In particular, the algebra underlying the\r
+IIA theory involves the generators, Ka\r
+b of GL(10) as well as the generators Ra1...ap\r
+for\r
+p = 0, 1, 2, 3, 5, 6, 7, 8 and it is very unclear how the generators Ra1...apfor p = 7, 8 can arise\r
+in the eleven dimensional algebra of equations (2.1) to (2.4) since this algebra involves no\r
+generators of rank bigger than six. However, we will now show that if we adopt the new\r
+eleven dimensional algebra of equations (4.1) to (4.7) then all the generators of the ten\r
+dimensional IIA algebra arise naturally and obey in detail the ten dimensional IIA algebra\r
+of reference [15].\r
+Treating the eleventh index, denoted by 11, as special, letting a, b = 1, . . . , 10 and\r
+denoting the resulting generators with a ˜ , the generators in the new algebra can be\r
+written as\r
+K˜ a\r
+b = Kab, R˜a = Ka11, R˜a1a2 = R\r
+a1a211\r
+, R˜a1a2a3 = R\r
+a1a2a3 R˜a1...a5 = Ra1...a511\r
+,\r
+R˜a1...a6 = −R\r
+a1...a6\r
+, R˜a1...a7 =\r
+1\r
+2\r
+R\r
+a1...a711,11\r
+,\r
+R˜a1...a8 =\r
+3\r
+8\r
+R\r
+a1...a8,11\r
+, R˜ =\r
+1\r
+12\r
+(−\r
+X\r
+10\r
+a=1\r
+Ka\r
+a + 8K1111). (4.21)\r
+Evaluating the algebra of equations (4.1) to (4.7) for these generators, dropping the ˜ one\r
+indeed finds the algebra used in the non-linear realisation of IIA supergravity theory of\r
+reference [15] which included the relations\r
+[R, Ra1...ap] = cpR\r
+a1...ap\r
+, [R\r
+a1...ap\r
+, Ra1...aq] = cp,qR\r
+a1...a(p+q) (4.22)\r
+where\r
+c1 = −c7 = −\r
+3\r
+4\r
+, c2 = −c6 =\r
+1\r
+2\r
+, c3 = −c5 = −\r
+1\r
+4\r
+:\r
+c1,2 = −c2,3 = −c3,3 = c2,5 = c1,5 = 2, c1,7 = 3, c2,6 = 2, c3,5 = 1 (4.23)\r
+and all other c’s vanish.\r
+In deriving the IIA algebra, we have required that the generators Ra1...a8,b are trivally\r
+realised and so do not appear in reference [15]. Use was made of equation (4.8) and, as a\r
+17
+
+result of this relation, the equation −8R11a1...a7,a8 = Ra1...a7a8,11. Clearly, this calculation\r
+provides a detailed check on the proposed eleven dimensional algebra. The result also\r
+implies that the IIA algebra contains the Borel subgroup of E7 and that the corresponding\r
+Kac-Moody algebra as outlined in section two is E11."""
+
+[[sections]]
+number = "5"
+title = "The Closed Bosonic String and K27"
+text = """
+The closed bosonic string in 26 dimensions can also be formulated as a non-linear\r
+realisation [15]. The underlying group, denoted G26, has the generators Ka\r
+b, R, Ra1a2\r
+,\r
+Ra1...a(D−4) and Ra1...a(D−2) . The generators Ka\r
+b belong to the Lie algebra GL(26) and\r
+obey equation (2.7). Their commutation relations with the other generators are the ana\u0002logues of equation (2.2). The remaining commution relations are given by\r
+[R, Ra1...ap] = cpR\r
+a1...ap\r
+, [R\r
+a1...ap\r
+, Ra1...aq] = cp,qR\r
+a1...a(p+q) (5.1)\r
+where\r
+c2 = −cD−4 =\r
+24\r
+(D − 2), c2,D−4 = 2. (5.2)\r
+We take all the other c’s to vanish and we have scaled the generator R → R\r
+6 with respect\r
+to reference [15]. The local subgroup is chosen to be the Lorentz group.\r
+The non-linear realisation of GD is built out of the group element g = ghgA where\r
+gh = exp(ha\r
+bKa\r
+b)\r
+and\r
+gA = exp(\r
+Aa1...a(D−2)Ra1...a(D−2)\r
+(D − 2)! )exp(\r
+Aa1...a(D−4)Ra1...a(D−4)\r
+(D − 4)! )exp(\r
+Aa1a2Ra1a2\r
+(2)! )exp(AR)\r
+(5.4)\r
+We refer the reader to reference [15] for the derivation of the field equations by taking the\r
+simultaneous non-linear realisation with the conformal group.\r
+Much of the discussion of eleven dimensional supergravity also applies to the non-linear\r
+realisation of the effective action for the closed bosonic string. We can hope to extend the\r
+local subgroup and the formulation of the effective action such that the resulting non\u0002linear realisation is invariant under a Kac-Moody algebra. In this section, using similar\r
+arguments as we deployed for eleven dimensional supergravity, we will find what this Kac\u0002Moody algebra is likely to be.\r
+We divide the generators of G26 into\r
+G\r
++\r
+26 = (Ka\r
+b, a < b , Ra1a2\r
+, Ra1...a(22) , Ra1...a24 ), (5.5)\r
+G\r
+0\r
+26 = (Ha = Ka\r
+a − Ka+1a+1, D =\r
+X\r
+a\r
+Ka\r
+a, R) (5.6)\r
+and the remaining generators Ka\r
+b, a > b which are the negative root generators of SL(26)."""
+
+[[sections]]
+number = "18"
+title = "We suppose that G"
+text = """
++\r
+26 are positive root generators contained in the Kac-Moody algebra\r
+and its Cartan subalgebra generators contains the generators in G0\r
+26. To identify the Kac\u0002Moody algebra we must identify the simple roots. It is straightforward to see that the\r
+whole of G\r
++\r
+26 can be found from multiple commutators of\r
+Ka\r
+a+1, R2526, R5...26\r
+. (5.7)\r
+Therefore, we identify these as the simple root generators. We observe that we have the\r
+same number of generators in the Cartan subalgebra as we have simple roots, namely 27.\r
+Thus we are seeking a Kac-Moody algebra of rank 27.\r
+Given these simple roots, we must adopt a basis for the Cartan subalgebra generators\r
+such that equation (1.5) leads to an allowed generalised Cartan matrix. It turns out that\r
+the basis\r
+Ha, a = 1, . . . 25, H26 = K25\r
+25+K2626−\r
+1"""
+
+[[sections]]
+number = "12"
+title = "D+"
+text = "1"
+
+[[sections]]
+number = "6"
+title = "R, H27 = K5"
+text = """
+5+· · ·+K2626−\r
+11"""
+
+[[sections]]
+number = "12"
+title = "D−"
+text = "1"
+
+[[sections]]
+number = "6"
+title = "R."
+text = """
+(5.8)\r
+satisfies this requirement. We call this algebra K27. The corresponding Dynkin diagram is\r
+shown in figure two. We choose the local subgroup to be the one which is invariant under\r
+the Cartan involution.\r
+The above process to find the Cartan matrix is not free from ambiguity. However, we\r
+can find further evidence for the choice K27 by considering the restriction of the theory\r
+obtained by taking the generators and fields to have indices that take values 26 to 26−n+1.\r
+The residual invariance group so obtained can be read off from the Dynkin diagram of K27\r
+by keeping only the first n−1 nodes on the horizontal line in the Dynkin diagram starting\r
+from the right as well as any nodes to which they are attached by vertical lines. The\r
+Dynkin diagram so obtained is Dn provided 3 ≤ n ≤ 22, D24 if n = 23 and affine D24 if\r
+n = 24. It is natural to take the appropriate real form to be O(n,n) for 3 ≤ n ≤ 22 and\r
+O(24,24) if n = 23. The corresponding local subgroups are taken to be those left invariant\r
+under the Cartan involution. For these groups, the local subgroups are then O(n) × O(n)\r
+for 3 ≤ n ≤ 22 and O(24) × O(24) if n = 23. We denote this series of groups by Gn\r
+and their local subgroups by Hn. For n < 23, the coset spaces agree with that found in\r
+reference [29].\r
+We would also expect the scalar fields that occur in the dimensional reduction of the\r
+effective action on an n torus to belong to the coset space Gn\r
+Kn\r
+. This coset has dimension n\r
+2\r
+for 3 ≤ n ≤ 22 and (n+1)2if n = 23. However, we can calculate the number of scalar fields\r
+that occur in the dimensional reduction. From the graviton and anti-symmetric tensor we\r
+find hi\r
+j and Bij, i, j = 1, . . . n scalars and the vectors hµi and Bµi. If 3 ≤ n ≤ 22 we do\r
+indeed find n\r
+2\r
+scalars. However, for n = 23 the vectors can be dualised to form scalars and\r
+so we get (n + 1)2scalars. The number of scalars is thus in agreement with that predicted\r
+from the Dynkin diagram of K27. The above count does not included the scalar in the\r
+original theory for n ≥ 4 and the scalar that results from the anti-symmetric tensor Bµν\r
+by dualisation in four dimensions.\r
+It is interesting to note that the algebra K27 contains the algebra E11 and one might\r
+take this as an indication that the closed bosonic string contains the known superstrings\r
+19
+
+in ten dimensions and in effect M theory. The closed bosonic string on a torus is invariant\r
+under the fake monster Lie algebra and it would be interesting to ask if K27 was contained\r
+in this algebra.\r
+Conclusion\r
+In this paper we have argued that eleven dimensional supergravity can be formulated\r
+as a non-linear realisation based on the group E11. We have proposed a new formulation of\r
+eleven dimensional supergravity that is an enlargement of the algebra of reference [15]. The\r
+simultaneous non-linear realisation of the conformal group with this algebra, when further\r
+enlarged by a suitable local subalgebra, is expected to lead to the formulation of eleven\r
+dimensional supergravity based on E11. Although much remains to be done to verify this\r
+conjecture, it has the advantage that it requires calculations, that may be lengthy, but can\r
+be carried out as a matter of principle.\r
+Such a non-linear realisation of eleven dimensional supergravity would include new\r
+symmetries that mixed the degrees of freedom described by gravity and the rank three\r
+tensor gauge field in a very non-trivial manner.\r
+We have shown that some of the necessary conditions for this conjecture to be true\r
+are satisfied. In particular, we have shown the presence of the Borel subgroups of E7 and\r
+E8. We have also found a formulation of eleven dimensional gravity based on the fields\r
+ha\r
+b and ha1...a8a as required by the presence of an E8 symmetry.\r
+The formulation of gravity presented in this paper, and its origin as a non-linear,\r
+realisation may be of interest in its own right in that it may lead to the existence of new\r
+symmetries in gravity itself. These may explain the presence of the Geroch and related\r
+symmetries [28,23] which appear so mysteriously when gravity is constrained to possess a\r
+Killing vector.\r
+The motivation for the current work was to identify some of the underlying symmetries\r
+of M theory by studying the symmetries of the corresponding supergravity theories We\r
+therefore conjecture that the E11 algebra over an appropriate discrete field is a symmetry\r
+of M theory and that the closed bosonic string has the K27 algebra as a symmetry.\r
+Acknowledgment\r
+I wish to thank Matthias Gaberdiel, Neil Lambert and Andrew Pressley for very useful\r
+discussions.\r
+References\r
+[1] E. Cremmer, B. Julia and J. Scherk, Phys. Lett. 76B (1978) 409.\r
+[2] C. Campbell and P. West, “N = 2 D = 10 nonchiral supergravity and its spontaneous\r
+compactification.” Nucl. Phys. B243 (1984) 112.\r
+[3] M. Huq and M. Namazie, “Kaluza–Klein supergravity in ten dimensions”, Class. Q.\r
+Grav. 2 (1985).\r
+[4] F. Giani and M. Pernici, “N = 2 supergravity in ten dimensions”, Phys. Rev. D30\r
+(1984) 325.\r
+[5] J, Schwarz and P. West, “Symmetries and Transformation of Chiral N = 2 D = 10\r
+Supergravity”, Phys. Lett. 126B (1983) 301.\r
+20
+
+[6] P. Howe and P. West, “The Complete N = 2 D = 10 Supergravity”, Nucl. Phys. B238\r
+(1984) 181.\r
+[7] J. Schwarz, “Covariant Field Equations of Chiral N = 2 D = 10 Supergravity”, Nucl.\r
+Phys. B226 (1983) 269.\r
+[8] L. Brink, J. Scherk and J.H. Schwarz, “Supersymmetric Yang-Mills Theories”, Nucl.\r
+Phys. B121 (1977) 77; F. Gliozzi, J. Scherk and D. Olive, “Supersymmetry, Super\u0002gravity Theories and the Dual Spinor Model”, Nucl. Phys. B122 (1977) 253, A.H.\r
+Chamseddine, “Interacting supergravity in ten dimensions: the role of the six-index\r
+gauge field”, Phys. Rev. D24 (1981) 3065; E. Bergshoeff, M. de Roo, B. de Wit\r
+and P. van Nieuwenhuizen, “Ten-dimensional Maxwell-Einstein supergravity, its cur\u0002rents, and the issue of its auxiliary fields”, Nucl. Phys. B195 (1982) 97; E. Bergshoeff,\r
+M. de Roo and B. de Wit, “Conformal supergravity in ten dimensions”, Nucl. Phys.\r
+B217 (1983) 143, G. Chapline and N.S. Manton, “Unification of Yang-Mills theory\r
+and supergravity in ten dimensions”, Phys. Lett. 120B (1983) 105.\r
+[9] S. Ferrara, J. Scherk and B. Zumino, “Algebraic Properties of Extended Supersym\u0002metry”, Nucl. Phys. B121 (1977) 393; E. Cremmer, J. Scherk and S. Ferrara, “SU(4)\r
+Invariant Supergravity Theory”, Phys. Lett. 74B (1978) 61.\r
+[10] E. Cremmer and B. Julia, “The N = 8 supergravity theory. I. The Lagrangian”, Phys.\r
+Lett. 80B (1978) 48\r
+[11] B. Julia, “Group Disintegrations”, in Superspace & Supergravity, p. 331, eds. S.W.\r
+Hawking and M. Roˇcek, Cambridge University Press (1981).\r
+[12] A. Font, L. Ibanez, D. Lust and F. Quevedo, Phys. Lett. B249 (1990) 35.\r
+[13] C.M. Hull and P.K. Townsend, “Unity of superstring dualities”, Nucl. Phys. B438\r
+(1995) 109, hep-th/9410167.\r
+[14] E. Cremmer, B. Julia, H. Lu and C. Pope, “Dualisation of dualities II: Twisted self\u0002duality of doubled fields and superdualities”, hep-th/9806106\r
+[15] P. West, “Hidden Superconformal Symmetries of M theory”, JHEP., hep-th/0005270.\r
+[16] V. Ogievetsky, “Infinite-dimensional algebra of general covariance group as the closure\r
+of the finite dimensional algebras of conformal and linear groups”. Nuovo. Cimento,\r
+8 (1973) 988.\r
+[17] A. Borisov and V. Ogievetsky, “Theory of dynamical affine and conformal symmetries\r
+as the theory of the gravitational field”, Teor. Mat. Fiz. 21 (1974) 329.\r
+[18] B. de Wit and H. Nicolai, Nucl. Phys. B274 (1986) 363; H. Nicolai Phys. Lett. 155B\r
+(1985) 47;\r
+[19] H. Nicolai, Phys. Lett. 187B (1987) 316\r
+[20] S. Melosch and H. Nicolai, “New Canonical Variables for D = 11 Supergravity”, hep\u0002th/9709227; K. Koespell, H. Nicolai and H. Samtleben, “An Exceptional Geometry\r
+for d = 11 Supergravity”, Class. Quantum Grav. 17 (2000) 3689.\r
+[21] G. Moore, “ Finite in all directions”, hep-th/9305139; P. West, “Physical States\r
+and String Symmetries”, hep-th/9411029, Int.J.Mod.Phys. A10 (1995) 761. hep\u0002th/9411029.\r
+[22] For a review see, V. Kac, “Infinite Dimensional Lie Algebras”, Birkhauser, 1983.\r
+[23] B. Julia, in Vertex Operators in Mathematics and Physics, Publications of the Math\u0002ematical Sciences Research Institute no 3, Springer Verlag 1984.\r
+21
+
+[24] H. Nicolai, “Hidden Symmetries in d = 11 Supergravity and Beyond”, hep-th/9906106.\r
+[25] E. Cremmer and B. Julia, “The SO(8) Supergravity”, Nucl. Phys. B519 (1979) 141\r
+[26] B. de Wit and H. Nicolai, “Hidden Symmetries , Central Charges and all That”,\r
+hep-th/0011239.\r
+[27] E. A. Ivanov and V. I. Ogievetsky, Teor. Mat. Fiz. 25 (1975) 164.\r
+[28] R. Geroch, J. Math. Phys. 12 (1971) 918; 13 (1972) 394; H. Nicolai, “A Hyperbolic\r
+Kac-Moody Algebra from Supergravity”, Phys. Lett. B276 (1992) 333.\r
+[29] J. Maharana and J. Schwarz, Nucl. Phys. B390 (1993) 3.\r
+[30] E. Cremmer, B. Julia, H. Lu and C. Pope, “Dualisation of Dualities. I”, hep\u0002th/9710119\r
+[31] B. Julia, ”Dualities in the Classical Supergravity Limits”, hep-th/9805083: ”Superdu\u0002alities: Below and beyond the U-duality”, hep-th/9805083.\r
+Figure 1: The Dynkin Diagram of E11.\r
+Figure 2: The Dynkin Diagram of K27.\r
+22"""
+
+[[figures]]
+label = "fig:1"
+page_num = 5
+image_path = "images/image_p5_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 5
+image_path = "images/image_p5_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 5
+image_path = "images/image_p5_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 6
+image_path = "images/image_p6_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 6
+image_path = "images/image_p6_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 6
+image_path = "images/image_p6_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 7
+image_path = "images/image_p7_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 7
+image_path = "images/image_p7_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 9
+image_path = "images/image_p9_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 9
+image_path = "images/image_p9_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 9
+image_path = "images/image_p9_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 9
+image_path = "images/image_p9_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 10
+image_path = "images/image_p10_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 11
+image_path = "images/image_p11_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 13
+image_path = "images/image_p13_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 13
+image_path = "images/image_p13_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 13
+image_path = "images/image_p13_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 13
+image_path = "images/image_p13_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 14
+image_path = "images/image_p14_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 16
+image_path = "images/image_p16_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 16
+image_path = "images/image_p16_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 16
+image_path = "images/image_p16_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 16
+image_path = "images/image_p16_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 16
+image_path = "images/image_p16_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 16
+image_path = "images/image_p16_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 16
+image_path = "images/image_p16_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 16
+image_path = "images/image_p16_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 16
+image_path = "images/image_p16_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 16
+image_path = "images/image_p16_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 16
+image_path = "images/image_p16_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 17
+image_path = "images/image_p17_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 17
+image_path = "images/image_p17_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 17
+image_path = "images/image_p17_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 17
+image_path = "images/image_p17_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 17
+image_path = "images/image_p17_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 17
+image_path = "images/image_p17_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 18
+image_path = "images/image_p18_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 18
+image_path = "images/image_p18_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 18
+image_path = "images/image_p18_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 18
+image_path = "images/image_p18_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 18
+image_path = "images/image_p18_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 19
+image_path = "images/image_p19_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 19
+image_path = "images/image_p19_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 19
+image_path = "images/image_p19_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 19
+image_path = "images/image_p19_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 19
+image_path = "images/image_p19_47.png"

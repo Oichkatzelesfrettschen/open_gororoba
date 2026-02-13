@@ -1,0 +1,3664 @@
+Published for SISSA by
+
+Springer
+
+Received: July 16, 2024
+Accepted: November 18, 2024
+Published: January 2, 2025
+
+Holographic reconstruction of black hole spacetime:
+machine learning and entanglement entropy
+a,d and Kwan Yuna
+
+a
+
+Department of Physics and Photon Science, Gwangju Institute of Science and Technology,
+123 Cheomdan-gwagiro, Gwangju 61005, Korea
+b
+Instituto de Física Teórica UAM/CSIC,
+Calle Nicolás Cabrera 13-15, 28049 Madrid, Spain
+c
+Departamento de Física Teórica, Universidad Autónoma de Madrid,
+28049 Madrid, Spain
+d
+Research Center for Photon Science Technology, Gwangju Institute of Science and Technology,
+123 Cheomdan-gwagiro, Gwangju 61005, Korea
+
+E-mail: bjahn123@gist.ac.kr, hyunsik.jeong@csic.es, fortoe@gist.ac.kr,
+ludibriphy70@gm.gist.ac.kr
+Abstract: We investigate the bulk reconstruction of AdS black hole spacetime emergent
+from quantum entanglement within a machine learning framework. Utilizing neural ordinary
+differential equations alongside Monte-Carlo integration, we develop a method tailored for
+continuous training functions to extract the general isotropic bulk metric from entanglement
+entropy data. To validate our approach, we first apply our machine learning algorithm to
+holographic entanglement entropy data derived from the Gubser-Rocha and superconductor
+models, which serve as representative models of strongly coupled matters in holography. Our
+algorithm successfully extracts the corresponding bulk metrics from these data. Additionally,
+we extend our methodology to many-body systems by employing entanglement entropy data
+from a fermionic tight-binding chain at half filling, exemplifying critical one-dimensional
+systems, and derive the associated bulk metric. We find that the metrics for a tight-binding
+chain and the Gubser-Rocha model are similar. We speculate this similarity is due to the
+metallic property of these models.
+Keywords: Gauge-Gravity Correspondence, Holography and Condensed Matter Physics
+(AdS/CMT)
+ArXiv ePrint: 2406.07395
+
+Open Access, © The Authors.
+Article funded by SCOAP3 .
+
+https://doi.org/10.1007/JHEP01(2025)025
+
+JHEP01(2025)025
+
+Byoungjoon Ahn,a Hyun-Sik Jeong,b,c Keun-Young Kim
+
+Contents
+1
+
+2 Holographic entanglement entropy: a quick review
+
+4
+
+3 Bilson’s method
+3.1 Preliminary for the Bilson’s method
+3.2 Reconstruction formula
+3.3 Example: linear-axion model
+
+6
+6
+7
+9
+
+4 Machine learning method
+4.1 Methodology: neural ODEs and Monte-Carlo integration
+4.2 Emergent spacetime from holographic entanglement entropy
+4.3 Emergent spacetime from a one-dimensional chain
+
+11
+12
+15
+20
+
+5 Conclusions
+
+25
+
+A Entanglement entropy in the small subsystem size limit
+
+28
+
+B The procedure of training the network and the error estimation
+
+28
+
+1
+
+Introduction
+
+Entanglement, a fundamental characteristic of quantum mechanics, elucidates the intriguing
+non-local correlations between quantum entities, and is at the core of quantum information
+sciences [1–3]. Especially, the notion of entanglement entropy now exerts a wide-ranging
+influence, spanning from condensed matter [4] to high-energy quantum field theory [5] and
+even extending into quantum gravity [6].
+Within condensed matter physics, for example, entanglement entropy proves its versatility
+as a tool, facilitating the characterization of quantum phases and the intricate dynamics
+of strongly correlated many-body systems [7, 8]. The scaling behavior of entanglement
+entropy [9] offers insights into phases beyond symmetry characterization, particularly useful
+for identifying exotic states like topological phases [10–12] and spin liquids [13, 14]. Additionally, entanglement entropy aids in exploring quantum criticality [15], understanding
+non-equilibrium dynamics [16, 17], and assessing numerical techniques for efficient many-body
+physics simulation [18].
+Holographic entanglement entropy. Nevertheless, the concept of entanglement entropy
+has also garnered increased attention in recent decades due to its significant role in holography
+(AdS/CFT correspondence) [19–21]. Holography entails a duality between boundary quantum
+field theories and bulk gravitational theories, offering a compelling framework for understanding the emergence of spacetime geometry from quantum entanglement. Particularly notable
+
+–1–
+
+JHEP01(2025)025
+
+1 Introduction
+
+Bulk reconstruction in holography. It is worth noting that, in most studies of holographic
+entanglement entropy, the standard approach is the bottom-up methodology. In this framework, gravitational bulk theories are employed to depict the realistic dual boundary quantum
+systems (e.g., characterized by broken translational symmetries), and the RT formula is used
+to study the associated entanglement entropy.
+Nonetheless, despite significant advancements over the past decade, which provide
+compelling evidence that the entanglement structure of the underlying quantum mechanical
+degrees of freedom plays a pivotal role in shaping the emergent holographic spacetime
+geometry and its dynamics, an open question remains. Specifically, it is still unclear which
+bulk gravity model can accurately reproduces the entanglement features of a given quantum
+system on the boundary and how to identify such models.
+One essential approach for identifying such bulk gravity theories is termed ‘bulk reconstruction’, representing a non-trivial inverse problem entailing holographic mapping from
+lower (boundary) to higher (bulk) dimensions. A captivating aspect within this endeavor is the
+reconstruction of the metric in the holographic spacetime.3 There are numerous methodologies
+for bulk metric reconstruction, leveraging diverse boundary physical quantities. These include
+the source and expectation value of the energy-momentum tensor [39], singularities in sets of
+correlation functions [40, 41], entanglement entropy of boundary intervals [42–45],4 differential
+entropy, a UV-finite combination of entanglement entropy [47–49], divergence structure of
+boundary n-point functions [50, 51], modular Hamiltonians of boundary subregions [52, 53],
+Wilson loops related to quark potential [54], four-point correlators in an excited quantum
+1
+
+The RT formula, along with its subsequent generalizations [23–26], provides a deeper elucidation of the
+pivotal role of entanglement in holographic duality. Another noteworthy entanglement measure is the reflected
+entropy, which possesses a gravity dual known as the entanglement wedge cross section [27–30].
+2
+Please refer to [34] for a comprehensive list of additional references regarding the investigation of
+entanglement in diverse holographic matters.
+3
+Additional significant branches can be found in [35–38], with particular emphasis on bulk operator reconstruction.
+4
+See also the recent work [46] where the holographic metric is constructed from the derivative of entanglement
+entropy in lattice Yang-Mills theory.
+
+–2–
+
+JHEP01(2025)025
+
+is its connection exemplified in the Ryu-Takayanagi (RT) formula [22], which establishes a
+relationship between the entanglement entropy of a subsystem in the boundary field theory
+and the area of the minimal surface in the bulk corresponding to the same region. 1
+By leveraging the RT formula and understanding gravity through the lens of quantum
+entanglement, the holographic examination of entanglement entropy not only offers a more
+manageable approach to studying and computing this measure, but also yields general
+lessons applicable other branches of physics such, as quantum field theories and strongly
+coupled many-body physics [31]. For instance, the c-theorem, established in two-dimensional
+conformal field theory, is derived from analyzing how entanglement entropy evolves under
+renormalization group flows [32]. Also, holographic entanglement entropy proves instrumental
+in the study of the aforementioned condensed matter physics by characterizing various phases
+of matter, exemplified by holographic superconductors [33].2 This elucidates phenomena such
+as phase transitions, quantum criticality, and topological order, offering valuable insights into
+the entanglement properties of strongly correlated quantum systems.
+
+state [55], and holographic complexities [56, 57], among others. It is noteworthy that much
+of the research on metric reconstruction has been motivated by the notion that spacetime
+is constructed from quantum entanglement [22, 58–62].5
+
+Motivation of this paper. In this manuscript, we investigate the reconstruction of the
+holographic bulk metric through machine learning of the boundary entanglement entropy.
+Our aim is to assess the effectiveness of machine learning in this context.
+Note that a machine learning method has been applied in related contexts [77, 78], where
+authors inferred the dual geometry from a given entanglement entropy using the RT formula
+and deep learning methods. However, due to inherent discontinuities in their algorithm, the
+reconstructed metric lacks continuity. Additionally, for simplicity, the entanglement entropy
+was assumed to have the dual geometry when only the blackening factor f (z) is unknown,
+for instance, h(z) = 1 in (2.1). We intend to enhance this work by incorporating a neural
+ODE approach and a more generic metric setup, i.e., any function of f (z) and h(z),7 making
+it more compatible with bulk reconstruction programs for continuous and generic metrics.
+It is also worth mentioning that when h(z) = 1, one may not need to resort to machine
+learning holography; instead, Bilson’s method [44] can be utilized to invert the RT formula,
+generating the metric as output and entanglement entropy as input. Nevertheless, for
+completeness, we review Bilson’s method in the main text and discuss its limitations when
+h(z) ̸= 1, motivating the use of machine learning holography to find the complete metric
+from entanglement entropy.
+5
+
+Another notable progression in investigating bulk reconstruction in holography involves a novel approach
+from quantum many-body systems, termed the multi-scale entanglement renormalization ansatz (MERA) of
+tensor networks [60, 63–65].
+6
+Other related works that extract the spacetime metric using machine learning, independent of holography,
+can be found in [87–90].
+7
+In the scenario of isotropic geometries, (2.1) represents the most general metric setup. Specifically, metrics
+where (gtt ̸= gzz ̸= gxx ) can always be expressed in the form of (2.1) through coordinate transformations. For
+detailed discussions, refer to [92].
+
+–3–
+
+JHEP01(2025)025
+
+Machine learning and holography. In recent years, machine learning has emerged as
+a promising approach to addressing bulk reconstruction by identifying the underlying bulk
+theory, such as reconstructing the bulk metric. Efficient holographic modeling has been
+successfully demonstrated through the application of machine learning techniques with various
+physical quantities, including lattice QCD data of the chiral condensate, hadron spectra,
+meson spectrum, shear viscosity, optical conductivity, and entanglement entropy, and so
+forth [66–86].6
+Machine learning holography not only facilitates the construction of data-driven holographic models but also provides insights into deeper understanding of holography itself.
+This approach is referred to as the AdS/DL correspondence, and establishes connections
+between deep learning (DL) — a form of machine learning utilizing deep neural networks —
+and holography. Here, deep learning functions as a solver for the inverse problem, enabling
+the determination of the bulk metric upon traning the neural network. Readers interested in
+grasping the essential concept of AdS/DL within a simplified framework are encouraged to
+refer [91], which illustrates this concept through a classical mechanics problem.
+
+2
+
+Holographic entanglement entropy: a quick review
+
+We consider the asymptotically AdS4 spacetime as
+"
+
+#
+
+
+
+L2
+dz 2
+ds = 2 −f (z) dt2 +
++ h(z) dx2 + dy 2 ,
+z
+f (z)
+2
+
+(2.1)
+
+where L represents the AdS radius and the functions f (z) and h(z) are expanded as f = h = 1
+near the AdS boundary (z → 0).
+For the later use, within the metric (2.1) we also read the thermodynamic quantities
+as the temperature (T ) and the thermal entropy (s) as
+T =−
+
+f ′ (z)
+4π
+
+,
+
+s=
+
+zh
+
+L2 h(z)
+4GN z 2
+
+,
+
+(2.2)
+
+zh
+
+which are evaluated at the event horizon zh , where GN is the Newton’s constant.
+8
+
+It is noteworthy that the Gubser-Rocha model [93] can be derived through a top-down approach. Specifically,
+for d = 3, it results from a consistent truncation of eleven-dimensional supergravity compactified on AdS 4 ×
+S 7 [93], while for d = 4, it is derived from ten-dimensional type IIB String Theory as the near-horizon
+limit of D3-branes [93, 96]. See also [97, 98] for discussions on top-down holographic superconductors from
+string/M-theory. Consequently, our study can also be regarded as an exploration of such top-down models
+through the lens of machine learning.
+
+–4–
+
+JHEP01(2025)025
+
+As illustrative examples for our purpose, in this study, we initially employ two representative holographic entanglement entropy models with h(z) ̸= 1: the Gubser-Rocha model [93]
+and the holographic superconductor model [94, 95], where the former has been particularly
+instrumental in examining the characteristics of strange metals.8 Moreover, in addition to
+the aforementioned holographic matter models, we incorporate entanglement entropy data
+from quantum many-body systems. Specifically, we utilize data obtained from a fermionic
+tight-binding chain at half filling in critical one-dimensional systems [99] to ascertain the
+corresponding emergent bulk metric.
+In essence, we propose applying data-driven and machine learning methodologies to unveil
+the emergent continuous metric based on boundary entanglement entropy data. Analyzing
+various entanglement entropy dataset within the generic and continuous metric configuration,
+our objective is to establish machine learning holography as both a practical and theoretical
+framework. Through our investigation, we aim to offer valuable insights into the fundamental
+aspects of quantum entanglement, thereby deepening our understanding of many-body
+quantum physics and potentially advancing the exploration of holographic duality.
+This paper is organized as follows. Section 2 presents a quick review of the RT formula
+concerning the holographic entanglement entropy. Additionally, in section 3, we discuss
+Bilson’s method for generating the metric from entanglement entropy and address its limitation
+in studying the complete metric. Section 4 introduces a machine learning method tailored
+to determine the continuous/generic metric based on provided entanglement entropy. As
+input data of machine learning method, we utilize both the holographic entanglement entropy
+and entanglement entropy from a fermionic tight-binding chain. Finally, section 5 is devoted
+to conclusions.
+
+Holographic entanglement entropy. The holographic dictionary to study the entanglement entropy (S) is the Ryu-Takayanagi formula [22, 62]. The formula allows us to
+compute the entanglement entropy of the entangling region on the boundary by examining
+the corresponding region the bulk spacetime as
+S=
+
+Area(γ)
+,
+4GN
+
+(2.3)
+
+where γ is the area if the minimal surface in the bulk, which is anchored at the AdS boundary.
+In this paper, we focus on a strip-shape entangling region. See figure 1: the minimal surface
+takes the form of a yellow surface with a width ℓ in x-direction and extends infinitely Ω in
+y-directions. z∗ represents the maximal z value of this minimal surface in the bulk.
+Within the metric (2.1), it is straightforward [22, 62] to find the geometric quantities
+for (2.3), S and ℓ, as
+L2 Ω
+S=
+2GN
+
+Z z∗
+ϵ
+
+v
+
+Z z∗
+
+1u
+h(z)
+1
+u
+t
+p
+dz ,
+4 h(z∗ )2
+2
+z
+z
+f (z)
+1− 4
+2
+
+ℓ=2
+0
+
+z∗ h(z)
+
+1
+r
+
+h(α)2 z∗4
+−1
+h(z∗ )2 α4
+
+p
+
+1
+dα ,
+h(α)f (α)
+(2.4)
+
+where ϵ is the UV cutoff. In order to isolate the UV divergence, it is convenience to split
+the integrand of S in (2.4) into two parts as
+
+
+S=
+
+L2 Ω
+2GN
+
+Z z∗
+
+
+
+ϵ
+
+1
+dz +
+z2
+
+Z z∗
+0
+
+
+v
+1 u
+u
+t
+
+z2
+
+
+
+h(z)
+2
+4
+∗)
+1 − zz 4 h(z
+2
+h(z)
+∗
+
+p
+
+
+
+1
+
+
+− 1 dz 
+f (z)
+
+
+
+
+
+v
+
+
+Z z∗
+u
+
+2
+L Ω 1
+1 u
+h(z)
+1
+1 
+
+t
+p
+=
+−
+1
+dz
+−
+ +
+
+
+
+2
+4
+2GN ϵ 
+z∗ 
+f (z)
+ 0 z2
+
+1 − z h(z∗ )
+
+
+z∗4 h(z)2
+
+L2 Ω 1
++ SFinite ,
+2GN ϵ
+
+
+:=
+
+
+
+where the UV divergence reads as 1/ϵ.
+
+–5–
+
+(2.5)
+
+JHEP01(2025)025
+
+Figure 1. A strip-shaped entangling region with its minimal surface depicted in yellow. The strip has
+a width ℓ in the x-direction and Ω in another direction. z∗ represents the maximum z value attained
+by the minimal surface.
+
+3
+
+Bilson’s method
+
+It is instructive to note that the Ryu-Takayanagi formula (2.4) establishes a relationship
+where the entanglement entropy is derived from a given metric. In other words, the metric
+serves as the input data, while the entanglement entropy emerges as the output.
+3.1 Preliminary for the Bilson’s method
+
+Z z∗
+
+1
+Y (z) dz ,
+G′ (z∗ ) > 0
+G(z∗ ) − G(z)
+ϵ
+Z z∗
+1 d
+G′ (z)
+p
+Y (z∗ ) =
+F (z) dz .
+π dz∗ ϵ
+G(z∗ ) − G(z)
+F (z∗ ) =
+
+(Solution) :
+
+p
+
+(3.1)
+
+The integral equation presented here shows how one function, F (z∗ ), can be expressed in
+terms of another, Y (z∗ ), with the roles reversed in the “Solution” part of the equation.
+Another key aspect of Bilson’s method involves the connection between the entanglement
+entropy to the metric via the following derivative relationship
+dS
+dz∗ dS
+L2 Ω h(z∗ )
+=
+=
+,
+dℓ
+dℓ dz∗
+4GN z∗2
+
+(3.2)
+
+where we used the chain rule for derivatives, including how changes in the entanglement entropy
+S with respect to the subsystem size ℓ are mediated through an intermediate variable z∗ .
+To understand (3.2), note that the chain rule splits the derivative into two parts: the
+changes of S with respect to z∗ , and the change of z∗ with respect to ℓ. These components
+are further detailed as:
+"
+
+dS
+L2 Ω q
+1
+1
+p
+=
+h(z∗ ) lim r
+z→z∗
+2
+dz∗
+2GN
+f (z∗ )
+∗)
+z∗4 − z 4 h(z
+h(z)2
+v
+Z z∗ u
+u
+t
++ z 4 h(z )2
+∗
+
+∗
+
+0
+
+4z 10 h(z)6 (2h(z∗ ) − z∗ h′ (z∗ ))2
+dz ,
+4f (z) (z 2 z∗6 h(z)3 h(z∗ ) − z 6 z∗2 h(z)h(z∗ )3 )3
+#
+
+(3.3)
+dℓ
+2z 2
+=p ∗
+dz∗
+h(z∗ )
+
+"
+
+lim r
+
+z→z∗
+
+1
+∗
+z∗4 − z 4 h(z
+h(z)2
+
+v
+Z z∗ u
+u
+t
++ z 4 h(z )2
+∗
+
+∗
+
+0
+
+)2
+
+1
+f (z∗ )
+
+p
+
+4z 10 h(z)6 (2h(z∗ ) − z∗ h′ (z∗ ))2
+dz .
+4f (z) (z 2 z∗6 h(z)3 h(z∗ ) − z 6 z∗2 h(z)h(z∗ )3 )3
+#
+
+Here, we used a general relation for differentiating integrals:
+Z z∗
+
+H(z, z∗ ) dz
+
+U(z∗ ) =
+ϵ
+
+−→
+
+dU(z∗ )
+= H(z∗ , z∗ ) +
+dz∗
+
+–6–
+
+Z z∗
+ϵ
+
+∂z∗ H(z, z∗ ) dz ,
+
+(3.4)
+
+JHEP01(2025)025
+
+On the other hands, Bilson’s method [44] attempts to invert the Ryu-Takayanagi formula (2.4),
+flipping the roles of metric and entanglement entropy. Here, the metric becomes the output,
+while the entanglement entropy becomes the input.
+Bilson’s method involves two main ingredients. Firstly, it employs the handbook of
+integral equations [100] to express:
+
+where the first term involving the limit as z approaches z∗ captures the local behavior near
+z∗ , while the integral term encodes contributions from the entire interval [0, z∗ ].
+3.2 Reconstruction formula
+To leverage Bilson’s method effectively, it is beneficial to choose the following coordinate
+(3.5)
+
+h(z) = 1 .
+
+This choice simplifies the mathematics significantly. We will address the general case where
+h(z) ̸= 1 towards the conclusion of this subsection.
+
+2GN S(z∗ )
+=
+L2 Ω z∗2
+
+Z z∗
+
+1
+p
+z∗4 − z 4
+
+ϵ
+
+p
+
+1/f (z)
+dz .
+z2
+
+(3.6)
+
+Comparing the expression (3.6) with the general formula (3.1), we identify the functions
+F (z∗ ), Y (z), and G(z) as
+2GN S(z∗ )
+F (z∗ ) := 2
+,
+L Ω z∗2
+
+p
+
+Y (z) :=
+
+1/f (z)
+,
+z2
+
+G(z) := z 4 .
+
+(3.7)
+
+Using these identification, the “Solution” in (3.1) provides the reconstruction formula for
+f (z) as
+s
+
+1
+8GN 2 d
+=
+z
+f (z)
+πL2 Ω dz
+
+Z z
+p
+
+ϵ
+
+z∗
+S(z∗ ) dz∗ ,
+4
+z − z∗4
+
+(3.8)
+
+together with (3.2) as
+dS(ℓ)
+L2 Ω 1
+=
+.
+dℓ
+4GN z∗2
+
+(3.9)
+
+The resulting expression (3.8) represents the reconstruction formula provided by Bilson [44], where S(z∗ ) is derived from the data S(ℓ), with ℓ interchangeable with z∗ through (3.9).
+Essentially, given the entanglement entropy S(ℓ), the metric component f (z) can be generated as the output.
+Reconstruction formula II. Although (3.8) presents a novel approach, the entanglement entropy data S(ℓ) predominantly hinges on the UV cutoff ϵ. Hence, from a practical
+standpoint, it proves beneficial [57] to employ an alternative reconstruction formula derived from the subsystem size in (2.4). Analogous to the entanglement entropy scenario,
+employing (3.1) yields:
+s
+
+1
+2 1 d
+=
+f (z)
+π z 2 dz
+
+Z z
+0
+
+z∗3
+ℓ(z∗ ) dz∗ ,
+z 4 − z∗4
+
+p
+
+(3.10)
+
+where ℓ(z∗ ) serves as the input and f (z) emerges as the output.
+However, it is noteworthy that the input data ℓ(z∗ ) essentially derives from (3.9), where
+the entanglement entropy S(ℓ) is provided. Thus, this second reconstruction formula (3.10)
+also represents a scenario where the input data is the entanglement entropy.
+
+–7–
+
+JHEP01(2025)025
+
+Reconstruction formula I. Subsequently, we can recast the entanglement entropy (2.4)
+into the form
+
+Example: pure AdS geometry. To better understand the application of the reconstruction
+formula, we consider an example where the analytic expression for the entanglement entropy
+is available. For the pure AdS geometry by
+(3.11)
+
+f (z) = 1 ,
+the entanglement entropy (2.4) can be analytically obtained as
+   2 
+
+
+
+3
+L2 Ω  1 2π  Γ 4  
+  .
+S = SCFT =
+ −
+2GN ϵ
+ℓ
+Γ 1
+
+(3.12)
+
+As the initial step of Bilson’s method, we can first put the given the entanglement entropy
+from (3.12) into (3.9) and find ℓ(z∗ )
+ℓ(z∗ ) =
+
+ 
+√
+2 π Γ 34
+
+Γ
+
+ 
+1
+4
+
+z∗ .
+
+(3.13)
+
+Then, by plugging this expression into the reconstruction formula (3.10), we can deduce
+(3.14)
+
+f (r) = 1 ,
+which is consistent with the expected pure AdS metric, as given in (3.11).
+
+Limitation of Bilson’s method. While Bilson’s method offers a structured approach
+to reconstructing the metric, it is not without its limitations. It is straightforward to find
+that for the generic metric where
+h(z) ̸= 1 ,
+
+(3.15)
+
+Bilson’s reformulation formulas, (3.10) and (3.2), become
+s
+
+1
+2 1 d
+=
+f (z) h(z)3
+π z 2 dz
+
+Z z
+0
+
+ℓ(z∗ )
+r
+
+4
+z4
+− h(zz∗∗ )2
+h(z)2
+
+2z∗3 h(z∗ ) − z∗4 h′ (z∗ )
+dz∗ ,
+2h(z∗ )3
+(3.16)
+
+dS
+L2 Ω h(z∗ )
+=
+.
+dℓ
+4GN z∗2
+Then, one can notice that the reconstruction program cannot proceed due to the inconsistency
+between the number of input data and output data. In other words, given a single data
+S(ℓ), one needs to determine two functions f (z) and h(z). Therefore, unless h(z) is provided,
+Bilson’s method cannot fully reconstruct the metric.
+Nevertheless, this limitation is not surprising, as previously noted [44]. An alternative
+approach that may alleviate some of these limitations involves transforming to a different
+coordinate system,
+"
+
+#
+
+
+
+L2
+dr2
+ds = 2 −g(r)e−χ(r) dt2 +
++ dx2 + dy 2 ,
+r
+g(r)
+2
+
+–8–
+
+(3.17)
+
+JHEP01(2025)025
+
+4
+
+which simplifies the reconstruction formula
+s
+
+1
+2 1 d
+=
+g(r)
+π r2 dr
+
+Z r
+0
+
+p
+
+r∗3
+ℓ(r∗ ) dr∗ ,
+r4 − r∗4
+
+(3.18)
+
+L2 Ω
+
+dS
+1
+=
+.
+dℓ
+4GN r∗2
+
+3.3 Example: linear-axion model
+Despite the limitations that Bilson’s method may entail, it remains a novel approach for
+constructing the blackening factor f (z). We conclude this section by considering an example
+where bulk reconstruction via Bilson’s method is viable: when h(z) = 1.
+In this context, we investigate the bulk reconstruction process when the entanglement
+entropy is provided numerically. To the best of our knowledge, our study represents the
+inaugural exploration of the numerical evaluation of the reconstruction formula (3.10).
+Linear-axion model. For this purpose, we consider the linear-axion model [101], characterized by the action:
+S=
+
+Z
+
+2
+1 2 1X
+4 √
+d x −g R + 6 − F −
+(∂ψI )2
+4
+2 I=1
+
+!
+
+,
+
+(3.19)
+
+where the field strength is F = dA. We set units 16πGN = L = Ω = 1 for simplicity
+hereafter. Within the metric (2.1), the equations of motion from (3.19) allows the analytic
+background solutions as
+β2
+β 2 µ2
+f (z) = 1 − z 2 − 1 −
++
+2
+2
+4
+A = µ (1 − z) dt ,
+
+!
+
+z3 +
+
+µ2 4
+z ,
+4
+
+(3.20)
+
+ψI = β(x , y) ,
+
+where the event horizon is set zh = 1, µ is the chemical potential, and β the strength of
+broken translations.
+It is noteworthy that axion theories [101–103] have proven valuable in studying strongly
+coupled condensed matter systems [104–109] through analyses involving conductivity [110–
+120], transport coefficients [121–141], and the collective dynamics of strongly coupled
+9
+
+The metric (3.17) can be derived from our ansatz (2.1) through the coordinate transformation:
+r= p
+
+z
+h(z)
+
+
+,
+
+g(r) =
+
+zh′ (z)
+1−
+2h(z)
+
+"
+
+2
+f (z) ,
+
+–9–
+
+χ(r) = log
+
+zh′ (z)
+1−
+2h(z)
+
+2
+
+#
+h(z) .
+
+JHEP01(2025)025
+
+Even though we can reconstruct g(r) from the given S(ℓ) using (3.18), the inability to
+determine χ(r) means that the full metric cannot be completely specified.9
+In light of these challenges, the next section explores how machine learning techniques
+can be used to overcome the limitations of Bilson’s method, enabling the reconstruction
+of both f (z) and h(z) from the given S(ℓ).
+
+SFinite
+
+1
+0
+1
+2
+3
+4
+5
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+2.0 2.5 3.0
+
+phases [114, 115, 142–159]. Additionally, they have been explored in quantum information
+applications [34, 160–165] and the application of the AdS/Deep learning correspondence [80].10
+It is worth noting that [80] successfully generated the metric of linear-axion models based
+on given boundary optical conductivity data using a machine learning method. Here, we
+aim to demonstrate that the reconstruction formula (3.10) can yield the same bulk metric
+obtained from the machine learning method [80]. To accomplish this, we utilize the same
+parameter set employed in [80]:
+
+(µ, β) =
+
+
+
+
+(0.5, 0.5) ,
+
+
+
+(Data 1)
+
+(0.5, 1.0) ,
+
+(Data 2)
+
+
+
+
+ (1.0, 1.5) .
+
+(Data 3)
+
+(3.21)
+
+Holographic entanglement entropy. Plugging (3.20) into (2.4), one can numerically
+evaluate the entanglement entropy. Nevertheless, due to the UV divergence, it is advantageous
+to examine its finite piece, denoted as SFinite , given in (2.5).
+Considering the parameters provided in (3.21), we illustrate SFinite in figure 2.11 Then, to
+utilize the numerically evaluated entanglement entropy SFinite as the input data for Bilson’s
+method, we employ the power-law fitting curve
+SFinite =
+
+cX
+max
+
+ci ℓi ,
+
+(3.22)
+
+i=−1
+
+where we set cmax = 5 in this paper. For instance, we find that the numerically obtained
+SFinite is matched with the fitting coefficients given in table 1. Note that the value of c−1
+originates from the finite piece of pure AdS geometry (3.12):
+   2
+
+Γ
+
+3
+4
+
+−2π     ≈ −0.71777 .
+Γ 14
+10
+
+(3.23)
+
+Therefore, in this regard, our investigation into the linear-axion model (3.19) can be viewed as the
+bulk reconstruction of toy models for holographic strongly coupled materials within Bilson’s method for the
+first time.
+11
+Strictly speaking, the corresponding entanglement entropy is SFinite zh and ℓ/zh .
+
+– 10 –
+
+JHEP01(2025)025
+
+Figure 2. The finite piece of the entanglement entropy of linear-axion models when (µ, β) = Data 1
+(red), Data 2 (green), Data 3 (blue): see (3.21). The numerically obtained SFinite is aligned with the
+fitting (3.22) with the coefficients in table 1.
+
+Data 1
+Data 2
+Data 3
+
+c−1
+
+c0
+
+c1
+
+c2
+
+c3
+
+c4
+
+c5
+
+-0.71778
+-0.71777
+-0.71775
+
+0.00109
+0.00041
+-0.00084
+
+0.03538
+0.17841
+0.41694
+
+0.15593
+0.08822
+0.00291
+
+-0.03102
+-0.01526
+-0.00039
+
+0.00320
+0.00151
+0.00032
+
+-0.00012
+-0.00063
+-0.00002
+
+Table 1. Numerical fitting coefficients for (3.22) of the linear-axion model.
+
+1.0
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+
+3
+
+0.8
+
+f(z)
+
+1
+0
+
+0.6
+0.4
+0.2
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+0.0
+
+1.0
+
+0.0
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+0.2
+0.4
+0.6
+
+z
+
+0.8
+
+1.0
+
+Figure 3. The subsystem size ℓ(z∗ ) (left panel) and the blackening factor f (z) (right panel) when
+(µ, β) = Data 1 (red), Data 2 (green), Data 3 (blue). The solid line is the one from Bilson’s
+method (3.9) or (3.10), while the dashed line is f (z) in (3.20).
+
+Additionally, c0 ≈ 0 aligns with the analytic examination of the small ℓ limit analysis of
+entanglement entropy for the linear-axion model, as provided in [34].
+Bilson’s method and bulk reconstruction. Now that we have the expression of SFinite
+from (3.22), we can determine the entanglement entropy S using (2.5). Subsequently, similar
+to the pure AdS example in (3.11), the next step for Bilson’s method entails inserting the
+numerically obtained S into the reconstruction formula (3.9) to determine ℓ(z∗ ). However, in
+this instance, we numerically evaluate ℓ(z∗ ) (as illustrated in the left panel of figure 3) and
+subsequently determine the bulk metric component f (z) numerically via the reconstruction
+formula (3.10).
+The resulting f (z) from Bilson’s method is depicted by the solid line in the right panel of
+figure 3. We confirm that this f (z) successfully reconstructs the target metric f (r) specified
+in (3.20). Therefore, our findings demonstrate that the metric of the linear-axion model can
+be constructed not only via the machine learning method utilizing optical conductivity [80],
+but also through Bilson’s method (3.10) with entanglement entropy.
+
+4
+
+Machine learning method
+
+In this section, we investigate bulk reconstruction employing the machine learning approach,
+which plays a pivotal role in revealing the complete metric described in (2.1). Our analysis
+demonstrates that by implementing machine learning techniques, we can overcome the
+constraints inherent in Bilson’s method: specifically, we achieve the reconstruction of both
+f (z) and h(z) from the provided S(ℓ).
+
+– 11 –
+
+JHEP01(2025)025
+
+2
+
+4.1 Methodology: neural ODEs and Monte-Carlo integration
+
+Neural ODEs. In this paper, we utilize the neural ODE framework within the context
+of the holographic study of quantum information, with a particular focus on entanglement
+entropy. Our machine learning methodology represents an integrated version of the neural
+ODE, which we refer to as neural integration.
+First, let us briefly review the concept of the ResNet using a simple ODE example:
+∂z F = G(z, F ; θ(z)) ,
+
+(4.1)
+
+where F is the unknown function of z, G is a given function. Here, θ(z) represents a general
+hidden function within the ODE, which serves as the trainable parameters in the neural
+network. This equation can be solved using ODE solvers by discretizing the z interval into
+small steps ∆z. For example, if we choose the Euler method as the solver, the approximate
+numerical solution FN is given by
+FN = F1 +
+
+N
+−1
+X
+
+G(zn , Fn ; θn ) · ∆z ,
+
+(4.2)
+
+n=1
+
+where the z interval is discretized into N steps, and F1 is the given initial value at z1 (for
+more details, see [80]). Due to this discretization, the training parameters are also discretized;
+for instance, θn (zn ) could be the discretized metric fn (zn ). This is the fundamental concept
+of ResNet for generating the discretized bulk metric [66, 67].
+The approximate numerical solution F can be more generally expressed as:
+Ffinal = ODE Solver [G; Finitial , (zfinal , zinitial ); θ(z)] .
+
+(4.3)
+
+For instance, for the Euler method described in (4.2), we have
+(Finitial , Ffinal ) = (F1 , FN )
+
+and
+
+(zinitial , zfinal ) = (1, N − 1) ,
+
+with the training parameter θ chosen as θn for the ResNet.
+
+– 12 –
+
+(4.4)
+
+JHEP01(2025)025
+
+As discussed in the introduction, the machine learning holography framework, also known as
+the AdS/DL correspondence, has been employed in elucidating the holographic bulk theory
+that underpins quantum systems on the boundary.
+In the pioneering studies of the AdS/DL correspondence [66, 67], significant advancements
+have primarily been achieved by discretizing the holographic bulk metric using deep learning
+techniques. For example, the ordinary differential equation (ODE) can be solved within
+the framework of a residual neural network (ResNet) [166], which is composed of residual
+blocks [167].
+In recent years, to achieve a continuous holographic bulk spacetime, a continuous version
+of ResNet, known as the neural ordinary differential equation (neural ODE) [168], has been
+developed. By employing neural ODEs in machine learning holography, the continuous bulk
+metric has been reconstructed using boundary data, as demonstrated in the contexts of
+quantum chromodynamics [72] and strongly interacting condensed matter systems [80, 81].
+
+𝑖𝑗 𝑗
+
+𝑖
+𝑖
+𝑧𝑀
+= 𝜙 Σ𝑗 𝑊𝑀 𝑧𝑀−1 + 𝑏𝑀
+
+𝑊211
+
+𝑧11
+𝑊111
+
+𝑧
+
+𝑊121
+
+𝑊231
+
+𝑊221
+
+𝑧12
+
+𝑧21
+
+𝑧31
+
+𝑧22
+
+𝑧32
+
+𝑊131
+
+𝑧33
+
+𝑧4
+∥
+𝐷(𝑧)
+
+Figure 4. A structure of a deep neural network. It consists of 3 hidden layers with 3 nodes each.
+The nodes are fully connected each other. Through the learning procedure, the continuous function
+D(z) is generated where the input is z =: z01 .
+
+To ensure that the discrete hidden function becomes a continuous function, the central
+idea of neural ODEs [168] is to replace the discrete parameter θ(z) = θn (zn ) with a continuous
+deep neural network θ(z) = D(z). This deep neural network consists of multiple layers through
+which data is processed, including an input layer, several hidden layers, and an output layer.
+The deep neural network is defined as follows
+D(z) = WM · ϕ(· · · ϕ(W2 · ϕ(W1 z + b1 ) + b2 ) · · · ) + bM ,
+
+(4.5)
+
+where ϕ is an activation function, WM is the weight matrix of M -th layer, and bM is the bias
+vector of M -th layer. The activation function is a non-linear function applied to the output of
+each layer, enabling the network to model complex patterns. In this paper, we use the rectified
+linear unit (ReLU) as the activation function: ReLU(z) = max(0, z). The other parameters
+(weights and biases) are adjusted during training to minimize errors in the loss function.
+Continuous training variables in deep neural networks, primarily weights and biases,
+are essential for the learning process. Weights determine the “strength” of connections
+between nodes, while biases provide each layer with a trainable constant value to help the
+model fit the data better. For an illustrative sketch of a deep neural network, see figure 4,
+which shows the case of 3 hidden layers with 3 nodes each. By employing iterative forward
+and backward propagation steps, along with optimization algorithms, these variables are
+continuously refined to minimize errors and enhance the model’s efficacy.
+In our deep neural network computations, we utilize the PyTorch framework [169], an
+open-source machine learning library, and deep neural networks are initialized with 3 hidden
+layers, each containing 20 nodes.
+Neural integrations. In this manuscript, drawing inspiration from solving ODEs using deep
+neural networks, we introduce a method for solving integrations through machine learning
+techniques. Termed “neural integration,” this approach aligns well with our objective:
+employing machine learning holography to analyze entanglement entropy (2.5).
+To demonstrate further, let us consider the following integration, which can be obtained
+by equation (4.1):
+F=
+
+Z zfinal
+
+G(z; D(z))dz ,
+
+zinitial
+
+– 13 –
+
+(4.6)
+
+JHEP01(2025)025
+
+𝑧23
+
+𝑧13
+
+𝑊412
+𝑊413
+
+𝑊331
+𝑊332
+𝑊333
+
+𝑊411
+
+where we substitute θ(z) with the deep neural network D(z). Subsequently, our primary
+objectives, the subsystem size ℓ (2.4), and the (finite piece) entanglement entropy SFinite (2.5),
+can be expressed in the form of (4.6) as
+Z z∗
+
+SFinite =
+0
+
+Z z∗
+
+1
+GS (z; f (z), h(z)) dz −
+,
+z∗
+
+ℓ=
+
+Gℓ (z; f (z), h(z)) dz ,
+
+(4.7)
+
+0
+
+where SFinite (and ℓ) is compared with F , and the metric components with the deep neural
+network D(z) in (4.5), i.e.,
+f (z) ←→ Df (z) ,
+
+h(z) ←→ Dh (z) .
+
+(4.8)
+
+More on the setup for machine learning holography. We further elaborate on the
+setup for our machine learning methodology. Instead of utilizing (4.8), we adopt the following
+technically convenient metric ansatz:
+h
+
+i
+
+f (z) = (1 − z) 1 + (a + 1)z − z 2 Df (z) ,
+
+h(z) = 1 + az − z 2 Dh (z) .
+
+(4.9)
+
+This choice is motivated by several reasons. Firstly, we impose the horizon condition at
+the horizon (z = 1) as f (1) = 0, and the asymptotic AdS boundary condition at the
+boundary (z = 0) as f (0) = h(0) = 1. Furthermore, from the near-boundary expansion of
+GS (z; f (z), h(z)) in (4.7) together with (2.5), it follows that
+GS (z; f (z), h(z)) ≈
+
+h′ (0) − f ′ (0)
+,
+z
+
+(4.10)
+
+which would result in a logarithmic UV divergence in SFinite , which is assumed to be absent in
+our study.13 Within our ansatz (4.9), we eliminate this UV divergence since h′ (0) = f ′ (0) = a.
+Essentially, within our ansatz (4.9), we have three training parameters in our machine learning
+method: the linear coefficient a, and the weights and biases of Df (z) and Dh (z).
+Then, substituting (4.9) into (4.7) and initializing random values for a, weights, and
+biases, SFinite (ℓ) can be computed. As an intermediate numerical step, both SFinite (z∗ ) and
+ℓ(z∗ ) are evaluated within the selected range z∗ ∈ [0.1, 0.99].
+Last but not least, we discuss the loss function L employed in our computation, which
+is defined as
+1 X (m)
+L=
+SFinite (ℓ) − SFinite (ℓ) + s(m) − s ,
+(4.11)
+Nℓ ℓ
+12
+
+It is noteworthy that while bulk holographic geometry is derived from given entanglement entropy using
+deep learning methods [77, 78], the authors in [77] adopt ResNet together with the Runge-Kutta method
+within the ODE framework (4.1), ensuring that the emergent metric remains a discrete function. Using the
+different machine learning method based on the transformer algorithm, the discrete metric is also generated
+in [78].
+13
+Within the models of interest, we have checked that such an additional UV divergence term is absent.
+
+– 14 –
+
+JHEP01(2025)025
+
+The optimization of deep neural networks conducts through the learning process to
+achieve convergence between the estimated and intended values (given the input dataset
+SFinite and ℓ). The estimated value is obtained via numerical integration in (4.7). In this
+study, Monte Carlo integration serves as the numerical integrator, with Torchquad [170], an
+extension package of PyTorch, utilized for Monte Carlo integration.12
+
+4.2 Emergent spacetime from holographic entanglement entropy
+Utilizing the aforementioned machine learning methodologies, we commence with the training
+procedure. Initially, within this section, we illustrate the emergence of full spacetime from
+holographic entanglement entropy. To achieve this, we employ two exemplary and extensively
+researched toy models of holographic matters, namely the Gubser-Rocha model [93] and
+holographic superconductor model [94, 95], where the former has been instrumental in
+examining the properties of strange metals. Our analysis here aims to demonstrate the
+machine learning’s capability in accurately discerning the metric (2.1) based on holographic
+entanglement entropy.
+4.2.1 Linear-axion model
+As a warm-up, we verify the efficacy of our machine learning approach in scenarios where
+h(z) = 1, consistent with the results obtained through Bilson’s method outlined in section 3.3:
+the linear-axion model (3.19).
+Within the same dataset (3.21), we input data derived from the holographic entanglement entropy of the linear-axion model into the machine learning framework. Recall
+the entanglement entropy depicted in figure 2, with fitting data represented by (3.22) and
+corresponding coefficients listed in table 1.
+In figure 5, we illustrate that our machine learning methodology successfully elucidates
+the black hole geometry f (z) within the holographic bulk spacetime. The emergent metric,
+as identified by the machine learning process, aligns closely with the geometry of the linearaxion model described by (3.20). In appendix B, we discuss the detailed discussion of
+the training procedure employed in our machine learning method, together with the error
+estimation analysis.
+4.2.2 Gubser-Rocha model
+Subsequently, we apply the machine learning methodology to the Gubser-Rocha model [93]
+where the metric component now h(z) ̸= 1. Its action is defined as follows
+Z
+
+S=
+
+2
+√
+1
+3
+1X
+d4 x −g R + 6 cosh ϕ − eϕ F 2 − (∂ϕ)2 −
+(∂ψI )2
+4
+2
+2 I=1
+
+– 15 –
+
+!
+
+,
+
+(4.12)
+
+JHEP01(2025)025
+
+where Nℓ denotes the number of the data points for ℓ. The first term quantifies the disparity
+(m)
+between the output entanglement entropy data SFinite (ℓ) computed by the machine learning
+and the provided input data SFinite (ℓ). The second term, referred to as the penalty term,
+corresponds to the thermal entropy (s) (2.2), where the superscript index (m) indicates that
+the thermal entropy is obtained through machine learning. This term is important for shaping
+the loss function and influencing the optimization process.
+In principle, alternative penalty terms could be chosen. However, opting for the thermal
+entropy as the penalty term offers several intriguing aspects. Firstly, it aligns structurally
+with the first term in the loss function. In other words, s(m) is obtained through machine
+learning, while s is given from the input data. It is worth recalling that thermal entropy can
+be inferred from the large subsystem size limit as SFinite ≈ s ℓ [22, 62]. Furthermore, through
+the utilization of thermal entropy, an additional horizon condition on h(1) can be introduced
+via (2.2), complementing the demonstration provided below (4.9). Thus, in aggregate, we have
+imposed two AdS boundary conditions and two horizon condition on the metric components.
+
+2.0
+
+0.8
+
+1.5
+
+0.6
+
+h(z)
+
+f(z)
+
+1.0
+
+0.4
+0.2
+0.0
+
+0.0
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+0.2
+0.4
+0.6
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+
+1.0
+0.5
+
+0.8
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+Figure 5. The emergent metric from the entanglement entropy of linear-axion model with the given
+dataset (3.21). Solid lines are the metric from machine learning method, while dotted lines denote the
+true metric (3.20).
+
+where 16πGN = L = 1. Here, ϕ represents the dilaton field, the field strength is F = dA,
+and the axion field ψI is also included. Notably, the Gubser-Rocha model (4.12) stands out
+as one of the most prominent and celebrated holographic models, pivotal in elucidating the
+properties of strange metals. Remarkably, the Gubser-Rocha model facilitates the study
+of linear-in-T resistivity, attributed to the nature of the infrared fixed point [110, 111, 113,
+117, 119, 120, 130, 139, 171–173].14
+The Gubser-Rocha model (4.12) possesses another attractive feature in that it allows for
+the analytic background solutions. Within our metric (2.1), it is described as
+
+
+f (z) = (1−z)
+
+
+
+1+(1+3Q)z+ 1+3Q(1+Q)− 12 β 2 z 2
+(1+Qz)3/2
+
+h(z) = (1+Qz)3/2 ,
+
+,
+
+(4.13)
+
+accompanied by the matter fields
+r
+
+A = (1 − z)
+
+
+
+2
+
+β
+3Q(1 + Q) 1 − 2(1+Q)
+2
+
+
+
+1 + Qz
+
+1
+ϕ = log[1 + z Q] ,
+2
+
+dt ,
+
+(4.14)
+
+ψI = β(x , y) .
+
+In these solutions, a free parameter, Q, is present. This parameter will be determined once
+the physical parameters, the chemical potential µ and the strength of momentum relaxation
+β, are given through
+s
+
+µ := At (0) =
+
+
+
+β2
+,
+2(1 + Q)2
+
+
+3Q(1 + Q) 1 −
+
+q
+
+s = 4π (1 + Q)3 ,
+
+(4.15)
+
+where we also identify the thermal entropy s in (2.2) for our machine learning approach.
+14
+
+It is pertinent to note that the model also manifests characteristics relevant to high-Tc cuprate superconductivity, such as Homes’s law in high-Tc superconductors [117, 173]. Furthermore, investigations into
+the phase diagram utilizing fermionic spectral functions [130] or conductivity [141] have been undertaken.
+Additionally, discussions on certain limitations in describing transport anomalies, such as the Hall angle, have
+also been addressed [120, 172].
+
+– 16 –
+
+JHEP01(2025)025
+
+z
+
+0.0
+
+1.0
+
+2
+
+SFinite
+
+0
+2
+4
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+2.0 2.5 3.0
+
+Data 1
+Data 2
+Data 3
+
+c−1
+
+c0
+
+c1
+
+c2
+
+c3
+
+c4
+
+c5
+
+-0.71778
+-0.71778
+-0.71776
+
+0.06566
+0.09288
+0.35355
+
+0.03271
+0.17478
+0.39487
+
+0.19084
+0.13203
+0.17682
+
+-0.04034
+-0.02557
+-0.04421
+
+0.00441
+0.00273
+0.00700
+
+-0.00018
+-0.00012
+-0.00047
+
+Table 2. Numerical fitting coefficients for (3.22) of Gubser-Rocha model.
+
+To initiate our machine learning methodology, we initially compute the holographic
+entanglement entropy. Since the Gubser-Rocha model entails two free parameters: (µ, β),
+akin to the linear-axion model (3.19), we opt for the same dataset (3.21).
+Subsequently, by substituting (4.13) into (2.5), one can compute the entanglement entropy
+numerically. Employing the parameters specified in (3.21), we depict SFinite in figure 6, where
+we find its compatibility with (3.22) when fitted, with coefficients detailed in table 2.
+It is worth noting that the value of c0 for the Gubser-Rocha model is finite, unlike
+that for the linear-axion model as shown in table 1. To elucidate this distinction, we
+analytically investigate c0 for our metric (2.1) in the limit of a small subsystems, as detailed
+in appendix A. Specifically, we examine c0 as follows
+c0 =
+
+h′ (0)
+.
+2
+
+(4.16)
+
+We observe that when h(z) = 1, c0 equals 0, consistent with the numerical findings in the
+linear-axion model. Conversely, when h(z) ̸= 1, c0 can be non-zero. This is evident in the
+case of the Gubser-Rocha model (4.13): we checked that our numerical results in table 2
+align with the analytical formula (4.16).
+Finally, we plug data obtained from the holographic entanglement entropy of the GubserRocha model into the machine learning framework, utilizing the fitting data described
+by (3.22) and the corresponding coefficients outlined in table 2. Subsequently, in figure 7,
+we demonstrate that our machine learning methodology can reveal the complete black hole
+geometry f (z) and h(z) within the holographic bulk spacetime. This validation underscores the
+
+– 17 –
+
+JHEP01(2025)025
+
+Figure 6. The finite piece of the entanglement entropy of Gubser-Rocha model when (µ, β) = Data
+1 (red), Data 2 (green), Data 3 (blue): see (3.21). The numerically obtained SFinite is aligned with
+the fitting (3.22) with the coefficients in table 2.
+
+1.8
+
+0.8
+
+1.6
+
+0.6
+
+1.4
+
+h(z)
+
+f(z)
+
+1.0
+
+0.4
+0.2
+0.0
+
+0.0
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+0.2
+0.4
+0.6
+
+1.2
+0.8
+
+1.0
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+Figure 7. The emergent metric from the entanglement entropy of Gubser-Rocha model with the
+given dataset (3.21). Solid lines are the metric from machine learning method, while dotted lines
+denote the true metric (4.13).
+
+efficacy of our machine learning approach in capturing the entire geometry, even in scenarios
+where h(z) ̸= 1. See also appendix B for the error estimation analysis of Gubser-Rocha model.
+4.2.3 Holographic superconductors
+We proceed to discuss another prominent example of spacetime within holography, characterized by h(z) ̸= 1, known as the holographic superconductor model [94, 95], often referred to as
+the HHH model after its proponents, Hartnoll, Herzog, and Horowitz. This model stands as
+one of the most widely studied frameworks in applied holography to condensed matter systems,
+garnering significant attention in the field (for comprehensive reviews, refer to [174, 175]).
+Precisely speaking, the U(1) symmetry in the dual field theory of the HHH model is global
+rather than local, characterizing it as a superfluid rather than a superconductor. While some
+aspects, such as electric conductivity, may not distinguish between the two, other features, such
+as the dynamics of vortices and collective low-energy modes, markedly differentiate between a
+superfluid and a superconductor. For instance, collective excitations in holographic superfluids
+are second sound waves (superfluid Goldstone mode) [176, 177] which are absence in the
+superconductors. Explorations of collective excitations in holographic superconductors are
+conducted in [178], incorporating dynamical boundary gauge fields and explicitly confirming
+the Anderson-Higgs mechanism. Nevertheless, for the sake of consistency in our discussion,
+we continue to refer to the HHH model as representing holographic superconductors.
+The HHH model [94, 95] is given as
+Z
+
+S=
+
+√
+1
+d4 x −g R + 6 − F 2 − |DΦ|2 − m2 |Φ|2
+4
+
+
+
+
+,
+
+(4.17)
+
+where it composes of field strength F = dA and a complex scalar field Φ with the covariant
+derivative Dµ Φ = (∇µ − iqAµ ) Φ, which is for superconducting phase. In this manuscript,
+we set m2 = −2 and q = 3 as chosen in the original paper [94, 95].
+To investigate the metric of holographic superconductors, we numerically solve the
+equations of motion derived from the action (4.17). For numerical convenience, we adopt
+
+– 18 –
+
+JHEP01(2025)025
+
+z
+
+( , )=(0.5,0.5)
+( , )=(0.5,1.0)
+( , )=(1.0,1.5)
+
+10
+
+q O2 / Tc
+
+8
+6
+4
+2
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+1.2
+
+1.4
+
+Figure 8. Condensation when m2 = −2 and q = 3 where the critical temperature is Tc /µ = 0.156.
+The dataset utilized for our machine learning analysis, (4.22), is denoted in (red, green, blue) dots.
+
+the following ansatz for the metric
+f (z) = (1 − z)U(z) ,
+
+h(z) = V (z) ,
+
+(4.18)
+
+where we impose the boundary condition U(0) = V (0) = 1 to ensure the asymptotic AdS
+geometry. Additionally, for the matter fields, we choose
+A = (1 − z)a(z) dt ,
+
+Φ = z η(z) ,
+
+(4.19)
+
+Notably, the boundary behavior of these matter fields is characterized by
+At = µ − ρz + · · · ,
+
+Φ = Φ(−) z + Φ(+) z 2 + · · · .
+
+(4.20)
+
+According to the holographic dictionary, µ represents the chemical potential, ρ stands for
+the charge density, and in the asymptotic form of Φ, Φ(−) denotes the source while Φ(+)
+represents the condensate. In our chosen ansatz (4.19), we straightforwardly derive the
+chemical potential µ as µ = a(0) and the source Φ(−) as Φ(−) = η(0).
+Next, as the boundary condition for the superconducting phase, we set the source to be
+zero, Φ(−) = 0, to describe the spontaneous symmetry breaking, expressed as
+√
+(4.21)
+Φ− = 0 ,
+and
+⟨O2 ⟩ := 2 Φ+ ,
+√
+where the factor of 2 in defining the condensate ⟨O2 ⟩ follows from [94], serving as a
+convenient normalization. Therefore, essentially, using the numerically obtained solutions,
+one can discern between the superconducting phase, characterized by Φ(+) ̸= 0, and a normal
+phase, where Φ = 0, by computing the temperatures using (2.2). We present the plot of the
+condensate in figure 8, depicting condensation when m2 = −2 and q = 3, with a critical
+temperature of Tc /µ = 0.156, consistent with findings in [95].
+Similarly to the Gubser-Rocha model, we begin our machine learning methodology by
+computing the holographic entanglement entropy. For the superconductor examples, we
+select three representative datasets characterized by
+T /Tc = (1.4 , 0.75 , 0.4) ,
+
+– 19 –
+
+(4.22)
+
+JHEP01(2025)025
+
+T / Tc
+
+SFinite
+
+1
+0
+1
+2
+3
+4
+5
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+T/Tc=1.4
+T/Tc=0.75
+T/Tc=0.4
+2.0 2.5 3.0
+
+T /Tc = 1.4
+T /Tc = 0.75
+T /Tc = 0.4
+
+c−1
+
+c0
+
+c1
+
+c2
+
+c3
+
+c4
+
+c5
+
+-0.71778
+-0.71774
+-0.71771
+
+0.00317
+-0.40853
+-0.63160
+
+-0.00981
+0.01507
+0.02676
+
+0.20193
+0.02504
+-0.01275
+
+-0.05115
+-0.00345
+0.00304
+
+0.00716
+0.00033
+-0.00026
+
+-0.000397
+-0.000013
+0.000001
+
+Table 3. Numerical fitting coefficients for (3.22) of superconductor model.
+
+illustrated as colored dots in figure 8. Subsequently, by substituting the obtained numerical
+metric solutions (4.18) into (2.5), we compute the entanglement entropy, as shown in figure 9.
+We find its agreement with (3.22) when fitted, with coefficients provided in table 3. Here,
+we also confirmed that the analytical formula (4.16) yields consistent numerical values for
+c0 in the superconductor model.
+Finally, we incorporate data derived from the holographic entanglement entropy of the
+superconductor model into the machine learning framework. This involves utilizing the
+fitting data described by (3.22) along with the corresponding coefficients outlined in table 3.
+Subsequently, in figure 10, we showcase how our machine learning methodology proficiently
+reveals the complete black hole geometry f (z) and h(z) for the holographic superconductor.
+This validation again underscores the effectiveness of our machine learning approach in
+accurately capturing the entire geometry, even in scenarios where h(z) ̸= 1. The error
+estimation analysis for the holographic superconductor model is given in appendix B.
+It is worth noting that the functional form of h(z) for superconductors differs from that
+of the Gubser-Rocha model (cfr. figure 10 vs. figure 7): h(z) monotonically decreases towards
+the horizon for superconductor models, unlike the Gubser-Rocha model. Nonetheless, we
+find that our machine learning approach can adeptly reconstruct all types of h(z).
+4.3 Emergent spacetime from a one-dimensional chain
+In this section, we demonstrate the applicability of deep learning in elucidating the emergent
+AdS spacetime from entanglement entropy data of many-body systems. For this purpose,
+
+– 20 –
+
+JHEP01(2025)025
+
+Figure 9. The finite piece of the entanglement entropy of superconductor model when T /Tc =
+1.4, 0.75, 0.4 (red, green, blue). The numerically obtained SFinite is aligned with the fitting (3.22) with
+the coefficients in table 3.
+
+1.0
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+h(z)
+
+f(z)
+
+1.0
+
+0.4
+0.2
+0.0
+
+0.0
+
+T/Tc=1.4
+T/Tc=0.75
+T/Tc=0.4
+0.2
+0.4
+
+0.4
+0.2
+
+0.8
+
+0.0
+
+1.0
+
+0.0
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+Figure 10. The emergent metric from the entanglement entropy of superconductor model. Solid
+lines are the metric from machine learning method, while dotted lines denote the true metric (4.18)
+obtained numerically solving equations of motion.
+
+we leverage data on the entanglement entropy of one-dimensional systems [99], specifically
+focusing on data from a fermionic tight-binding chain at half filling.
+It is worth noting that [99] have also investigated the entanglement entropy in higherdimensional systems, which could be relevant to our AdS4 setup (2.1). Nonetheless, unlike
+our holographic setup, the analysis in [99] does not consider strip-shaped entangling regions.
+Hence, in this section, we concentrate on the one-dimensional (1 + 1D) case.
+4.3.1 Machine learning setup
+Holographic setup. In order to study one-dimensional systems in holography, we consider
+the asymptotically AdS3 spacetime as
+"
+
+#
+
+L2
+dz 2
+ds = 2 −f (z) dt2 +
++ h(z) dx2 ,
+z
+f (z)
+2
+
+(4.23)
+
+where the corresponding temperature and thermal entropy read as
+f ′ (z)
+T =−
+4π
+
+L
+s=
+4GN
+
+,
+zh
+
+p
+
+h(z)
+z
+
+.
+
+(4.24)
+
+zh
+
+Then, within the metric (4.23), the holographic entanglement entropy S can be given [22,
+62] as
+
+Z z∗
+
+S=
+
+L 
+
+2GN
+ϵ
+
+1
+dz +
+z
+
+Z z∗
+0
+
+
+v
+1 u
+u
+t
+
+z
+
+
+
+1
+2
+∗)
+1 − zz 2 h(z
+∗ h(z)
+
+p
+
+
+
+1
+
+
+− 1 dz 
+f (z)
+
+
+
+
+
+v
+
+  
+Z z∗
+u
+
+
+L 
+1
+1 u
+1
+1
+
+
+p
+=
++
+−
+1
+dz
++
+log
+z
+log
+t
+
+
+∗
+z 2 h(z∗ )
+
+
+2GN
+ϵ
+f
+(z)
+ 0 z
+
+1 − z 2 h(z)
+∗
+
+ 
+
+
+
+:=
+
+L
+1
+log
+2GN
+ϵ
+
++ SFinite ,
+
+– 21 –
+
+(4.25)
+
+JHEP01(2025)025
+
+z
+
+0.6
+
+T/Tc=1.4
+T/Tc=0.75
+T/Tc=0.4
+0.2
+0.4
+
+together with the subsystem size ℓ
+Z z∗
+
+ℓ=2
+
+1
+r
+
+0
+
+h(α) z∗2
+h(z∗ ) α2
+
+1
+dα .
+h(α)f (α)
+
+p
+
+−1
+
+(4.26)
+
+Example: BTZ black holes and 1 + 1D CFT. One of the landmark outcomes in
+holographic entanglement entropy [22, 62] is the utilization of the Ryu-Takayanagi formula
+with BTZ black holes:
+f (z) = 1 − z 2 ,
+
+(4.27)
+
+h(z) = 1 ,
+
+L
+2
+ℓ
+log
+sinh
+2GN
+ϵ
+2
+
+
+(BTZ black holes) :
+
+S=
+
+ 
+
+,
+
+ℓ = 2 arctanh(z∗ ) .
+
+(4.28)
+
+This aligns with the CFT result
+c
+β
+πℓ
+log
+sinh
+3
+πϵ
+β
+
+
+SCFT =
+
+
+
+
+
+,
+
+(4.29)
+
+with the identification
+c=
+
+3L
+,
+2GN
+
+β=
+
+1
+= 2π .
+T
+
+(4.30)
+
+where c represents the central charge and β stands for the inverse temperature derived
+via (4.24).
+Setup for machine learning method. Building upon the holographic setup (4.25)–(4.26),
+next we discuss our machine learning setup for one-dimensional system. Especially, to leverage
+the data provided in [99], we introduce SDATA as defined in [99],
+c
+βv
+SDATA := S − log
+,
+3
+πϵ
+
+
+
+
+(4.31)
+
+where v is the group velocity, potentially varying across systems. Subsequently, comparing (4.31) with the holographic entanglement entropy S in (4.25), one can find the finite
+piece as
+3
+βv
+SFinite = SDATA + log
+c
+π
+
+
+
+
+,
+
+(4.32)
+
+employing c = 3L/(2GN ). Essentially, by substituting the data SDATA obtained from [99]
+into the right-hand side of equation (4.32), we can determine the metric on the left-hand
+side, namely the holographic formula (4.25).
+Furthermore, in order to align with the data, we adopt the fitting curve for SDATA
+as utilized in [99]:
+c
+πℓ
+log sinh
+3
+βv
+
+
+SDATA :=
+
+– 22 –
+
+
+
+
+
+,
+
+(4.33)
+
+JHEP01(2025)025
+
+where zh = 1, yielding the consistent entanglement entropy of a 1 + 1D CFT. Substituting (4.27) into (4.25)–(4.26), one derives
+
+where it is referred to as the universal scaling function.15 One comment is in order. By
+rescaling βv to β, one may eliminate the depencence on group velocity in the formula.
+However, we do not adopt this approach, as it has been reported that the group velocity
+may vary between different systems. Specifically, the group velocity can be calculated based
+on the lowest energy within the symmetry sector associated with the crystal momentum.
+For further discussion, refer to [99, 180].
+4.3.2 Emergent metric from a fermionic tight-binding chain at half filling
+
+(c, v, β) =
+
+
+ (24π, 1, 2π) ,
+
+(BTZ case)
+
+ (1, 2, 1) ,
+
+(Fermionic tight-binding chain at half filling)
+
+(4.34)
+
+where c = 3L/(2GN ) with L = 16πGN = 1 is employed for the BTZ case.17 Note that the
+data from [99], figure 11, is scaled with the inverse temperature β. This can be accommodated
+within the machine learning process by setting a fixed β,
+1
+4π
+β= =− ′
+:= 1 ,
+(4.35)
+T
+f (1)
+where (4.24) is utilized.
+15
+
+In principle, SDATA may contain a non-universal constant, which does not affect the scaling behavior
+of ℓ and, therefore, is also not explicitly specified in [99]. Similarly, we omit such a term in our analysis.
+Notably, in the study of entanglement entropy, examining the derivative of S with respect to the spatial size
+of the entalgment region ℓ can prove advantageous. This approach, as suggested by [179], offers data that are
+unaffected by the UV cutoff, thereby also avoiding the appearance of a non-universal constant.
+16
+The presence of gapless excitations can be indicative of a critical point. At this point, the system does
+not have a well-defined energy scale (gap) and exhibits critical fluctuations over all length scales. In a
+one-dimensional fermionic chain, the critical point manifests as a linear dispersion relation near the Fermi
+points k = ±π/2 as E(k) ≈ vF (k ∓ π/2), leading to low-energy excitations where vF is the Fermi velocity.
+17
+Combining (4.32) with (4.33), one can notice that c does not play any role in SFinite . Nevertheless, we set
+L = 16πGN = 1 and β = 2π in order for the metric of the BTZ black hole (4.27). It is noteworthy that the
+central charge c can appear in our machine learning method through the thermal entropy (4.36).
+
+– 23 –
+
+JHEP01(2025)025
+
+As a supplementary note, it is worth mentioning the following. Let us consider the entanglement entropy S pertaining to the bipartition of a one-dimensional quantum many-body
+system into a subsystem of length ℓ. When the system parameters and energy (temperature)
+fall within a quantum critical regime of the model under consideration, established principles
+dictate that the entanglement entropy may adhere to a universal scaling function [181–183].
+Notably, in [99], it has been demonstrated that for the typical quantum many-body
+systems complying with the eigenstate thermalization hypothesis, the entanglement entropy
+of eigenstates can be characterized by a universal scaling function. Particularly, in critical
+one-dimensional systems with linear dispersion at low energies, a universal scaling function
+follows from CFT.16
+In this paper, within machine learning framework, we focus on analyzing data obtained
+from a fermionic tight-binding chain at half filling [99], where it has been demonstrated
+to adhere to the eigenstate thermalization hypothesis and is describable by a CFT with
+c = 1. Notably, the entanglement entropy data SDATA from this chain is found to be with
+parameters (c, v) = (1, 2) in (4.33): see figure 11.
+Furthermore, in our machine learning method, for the sake of comparison, we also
+investigate the BTZ case (4.29). In essense, we have two datasets available:
+
+2
+
+SDATA
+
+1
+0
+1
+2
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+/
+
+2.0
+
+2.5
+
+3.0
+
+Last but not least, it is worth noting that in our machine learning method aimed at
+determining the complete metric, we utilize information of the thermal entropy s in (4.24).
+When dealing with data, obtaining such thermal entropy is straightforward, as it can be
+derived from the slope of the entanglement entropy in the large subsystem size limit [99]
+(ℓ ≫ 1) :
+
+S ≈ SDATA ≈ s ℓ ,
+
+−→
+
+s=
+
+cπ
+,
+3βv
+
+(4.36)
+
+where we employ (4.33), which aligns with holography [22, 62].18 Intuitively, when ℓ ≫ 1
+the subsystem effectively encompasses the entire system, implying that the minimal surface
+lies along the black hole horizon [45, 184], suggesting a potential connection between the
+Ryu-Takayanagi formula (2.3) and the thermal entropy density s.
+Finally, we utilize data obtained from the entanglement entropy of a fermionic tightbinding chain at half filling, as depicted in figure 11, into our machine learning framework.
+Subsequently, as illustrated in figure 12, we demonstrate how our machine learning methodology adeptly uncovers the complete black hole geometry f (z) and h(z), even leveraging
+entanglement entropy data from quantum many-body systems.
+Two noteworthy findings are made from our analysis. Firstly, as demonstrated in figure 12,
+our machine learning method accurately captures the dual geometry of the CFT, specifically
+in the BTZ case. This validation suggests that our approach can yield continuous geometries
+from the entanglement entropy of the CFT, representing an advancement beyond the machine
+learning analysis that produces discontinuous geometries of the BTZ black holes [77, 78].
+Secondly, the functional form of the emergent metric derived from the fermionic tightbinding chain at half filling exhibits similar aspects to that of the Gubser-Rocha model: cfr.
+figure 7 vs. figure 12. The blackening factor f (z) attains a maximum value, forming a peak
+between the AdS boundary and the horizon, while, the function h(z) increases monotonically
+towards the horizon. This resemblance may not be surprising, as both models describe
+the metallic phases. In the Gubser-Rocha model, metallic behavior is characterized by the
+linear-temperature resistivity, whereas in the fermionic tight-binding chain, it is characterized
+by the gapless excitations.
+18
+
+We also confirmed that the slop of the holographic entanglement entropy in the large ℓ limit, given in
+figure 2, 6, 9 are consistent with the thermal entropy from (2.2).
+
+– 24 –
+
+JHEP01(2025)025
+
+Figure 11. SDATA for fermionic tight-binding chain at half filling [99], where (4.33) is used
+with (c, v) = (1, 2).
+
+1.5
+
+8
+
+1.0
+
+6
+
+h(z)
+
+f(z)
+
+10
+
+4
+
+0.5
+0.0
+
+2
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+Figure 12. The emergent metric from the entanglement entropy of BTZ black holes (black data)
+and fermionic tight-binding chain at half filling (blue data). Solid lines are the metric from machine
+learning method, while dotted lines denote the true metric of BTZ black hole (4.27).
+
+We conclude this section by providing a heuristic and indicative argument for the peak
+structure of f (z) in the fermionic tight-binding chain at half-filling. According to holographic
+duality, the radial coordinate z in the bulk corresponds to the energy scale in the boundary
+theory. Thus, a peak at some z may be interpreted as indicating a significant energy scale in
+fermionic chain. This could represent the energy at which a density of states (DOS) peak,
+indicating a high DOS at a particular energy level. For q
+instance, DOS for a one-dimentional
+fermionic tight-binding model is given by D(E) ≈ 1/ 4t2h − E 2 , where th is the hopping
+parameter and E is the energy [185, 186].19 This form highlights the characteristic features
+of the DOS in such a system, indicating singularities at E = ±2th , known as Van Hove
+singularities.
+In this context, we speculate that a peak structure in the AdS bulk, as depicted in
+figure 12, may be associated with features of a fermionic tight-binding chain at half-filling,
+particularly as the reminiscent of high DOS due to Van Hove singularities: E = ±2th where
+th = 1 in our entanglement entropy data [99]. Nevertheless, the precise nature of this peak
+within the bulk direction remains insufficiently understood and is likely influenced by the
+specific properties of the tight-binding model under consideration as well. Therefore, our
+argument remains speculative and a more rigorous investigation with thorough analysis are
+required to attain a comprehensive understanding.
+
+5
+
+Conclusions
+
+We have investigated the bulk reconstruction of the AdS black hole spacetime by leveraging
+quantum entanglement measures on the boundary field theory. Notably, by incorporating a
+neural network framework for the Ryu-Takayanagi formula within the AdS/DL correspondence,
+we introduce a machine learning approach to uncover the dual holographic emergent bulk
+metric from the entanglement entropy data of quantum many-body systems.
+19
+
+Recall that the energy dispersion is E(k) = −2th cos k with k being the wavevector in the first Brillouin
+1 dk
+zone, typically k ∈ [−π, π] for a one-dimensional chain. Then, DOS can be computed via D(E) = 2π
+.
+dE
+
+– 25 –
+
+JHEP01(2025)025
+
+z
+
+– 26 –
+
+JHEP01(2025)025
+
+Our analysis of various entanglement entropy datasets within a continuous and generic
+metric configuration marks significant progress in the field of machine learning holography,
+both practically and theoretically. By employing the neural ODE methodology together
+with Monte-Carlo integration, our machine learning algorithm constructs a neural network
+from the entanglement entropy data, where the continuous network geometry represents
+the emergent holographic geometry of the quantum many-body state. Furthermore, our
+algorithm’s ability to handle a generic metric ansatz (2.1) enhances its practical applicability,
+enabling the use of potential experimental and simulated quantum information data from
+strongly coupled field theories for gravity duals.
+Before our work, the authors in [77] also applied deep learning techniques within the
+framework of holography to deduce the bulk metric from holographic entanglement entropy.
+They employed a residual neural network, composed of residual blocks, which produced a
+discretized version of the holographic bulk metric. Our research has two differences from [77].
+First, we implemented the neural ODE methodology, which utilizes a continuous function as
+the training variable, enabling the construction of neural networks that yield a continuous
+holographic bulk metric from the entanglement entropy data. Second, our machine learning
+framework is capable of generating a general metric, whereas [77] dealt with a simplified metric
+ansatz (h(z) = 1), where Bilson’s method can be advantageous. Accordingly, our method
+may be applied to more practical and realistic gravity models of strongly coupled matter.
+Additionally, the authors in [78] explored holographic entanglement entropy using a
+machine learning framework, albeit with a different approach. They employed the transformer
+algorithm, commonly used in natural language processing, to enable the machine to learn
+patterns from large datasets and predict new inputs based on trained network. Nevertheless,
+unlike [77] and our approach, which focus on generating the discrete/continuous bulk metric
+from the entanglement entropy data, the approach in [78] is centered on identifying patterns in
+the relationships between a known metric and the corresponding holographic entanglement entropy, effectively associating the constructed network with the Ryu-Takayanagi formula itself.
+In our study, we initially utilized holographic entanglement entropy as input data for
+our machine learning approach. This enabled us to accurately derive the bulk metrics for
+both the Gubser-Rocha model and holographic superconductor models, which are prominent
+holographic models of strongly coupled quantum systems characterized by a non-trivial
+metric where h(z) ̸= 1: see figure 7 for the case of Gubser-Rocha model and figure 10 for
+the superconductor model.
+Additionally, our machine learning approach successfully incorporates entanglement
+entropy data from a fermionic tight-binding chain at half filling in critical one-dimensional
+systems [99], and identifies the corresponding emergent bulk metric: see figure 12. Remarkably,
+we observed that the emergent metric exhibits a resemblance to that of the Gubser-Rocha
+model, where h(z) increases monotonically towards the horizon and f (z) reveals an anomalous
+peak structure. This resemblance may be attributed to the fact that both models can describe
+metallic phases, with the Gubser-Rocha model featuring linear-temperature resistivity and
+the fermionic tight-binding chain exhibiting gapless excitations, where electrons can move
+freely without encountering an energy gap.
+Our successful results indicate that, on a practical level, our algorithm enhances the
+efficiency of modeling the emergent metric from the entanglement structure of quantum many-
+
+Acknowledgments
+We would like to thank Yongjun Ahn, Juan F. Pedraza for valuable discussions and correspondence. This work was supported by the Basic Science Research Program through the National
+Research Foundation of Korea (NRF) funded by the Ministry of Science, ICT & Future
+Planning (NRF-2021R1A2C1006791) and the AI-based GIST Research Scientist Project grant
+funded by the GIST in 2024. This work was also supported by Creation of the Quantum Information Science R&D Ecosystem (Grant No. 2022M3H3A106307411) through the National
+Research Foundation of Korea (NRF) funded by the Korean government (Ministry of Science
+and ICT). The work was also supported by the National Research Foundation of Korea (NRF)
+grant funded by the Korea Government (MSIT) (NRF-2023K2A9A1A01095488). Hospitality
+at APCTP during the program “Holography 2024: Correlation and Entanglement in Quantum matter” is kindly acknowledged. H.-S Jeong acknowledges the support of the Spanish
+MINECO “Centro de Excelencia Severo Ochoa” Programme under grant SEV-2012-0249.
+This work is supported through the grants CEX2020-001007-S and PID2021-123017NB-I00,
+funded by MCIN/AEI/10.13039/501100011033 and by ERDF A way of making Europe.
+B. Ahn was supported by Basic Science Research Program through the National Research
+Foundation of Korea funded by the Ministry of Education (NRF-2020R1A6A3A01095962,
+NRF-2022R1I1A1A01064342). All the authors contributed equally to this paper and should
+be considered as co-first authors.
+
+– 27 –
+
+JHEP01(2025)025
+
+body systems. Furthermore, it signifies the successful completion of the bulk reconstruction
+program, thereby advancing our understanding of holographic emergent gravity derived
+from quantum entanglement.
+It is noteworthy that much of the work on metric reconstruction, including our own, has
+been motivated by the idea that spacetime is constructed through entanglement entropy.
+However, it has been argued that “entanglement is not enough” to fully encode spacetime [187],
+as the Ryu-Takayanagi surface in the gravity context only probes the exterior metrics of black
+holes. To gain insight into the full geometry even interior of a black hole, it has been proposed
+that quantum computational complexity plays a crucial role. Indeed, based on various
+holographic complexity proposals, such as complexity=volume [187, 188], complexity=volume
+2.0 [189], and complexity=anything [190], the internal metrics of black holes have been
+successfully reconstructed without employing machine learning techniques [56, 57].
+In general, understanding the internal structure of a black hole poses a captivating and
+fundamental challenge, both theoretically and experimentally. A recent and actively studied
+direction in holography involves examining the structure and dynamics of the black hole
+interior, particularly near the singularity where spacetime curvature becomes infinitely intense.
+For instance, pioneering work on the Kasner singularity in holography can be found in [191].
+As such, exploring and reconstructing the interior geometry of a black hole using machine
+learning holographic techniques is highly significant, not only from the perspective of quantum
+information theory via complexity but also for advancing the study of quantum gravity. We
+intend to pursue this line of research in future studies and plan to address it in subsequent
+investigations.
+
+A
+
+Entanglement entropy in the small subsystem size limit
+
+In this section, we derive the holographic entanglement entropy (2.5) in the limit of small
+subsystem size ℓ ≪ 1 (or small z∗ ). In this regime, the Ryu-Takayanagi surface is located
+near the AdS boundary. Consequently, we consider the asymptotic AdS behavior of the
+metric (2.1) as follows
+f (z) = 1 + f ′ (0) z + · · · ,
+
+h(z) = 1 + h′ (0) z + · · · ,
+
+(A.1)
+
+which holds for small ℓ. Similarly, utilizing (A.1) and (A.2), we can analytically compute
+the holographic entanglement entropy (2.5) in the small ℓ limit as
+   2
+
+3
+2π  Γ 4 
+h′ (0)
+ 
+SFinite = −
++
++ ··· ,
+ℓ
+2
+Γ 1
+
+(A.3)
+
+4
+
+where · · · denotes the O(ℓ) correction, which can be obtained by considering the z 2 order in
+the metric in (A.1). Comparing (3.22) with (A.3), we can determine c0 as (4.16).
+
+B
+
+The procedure of training the network and the error estimation
+
+In this section, we discuss the training procedure employed in our machine learning approach,
+along with the error estimation.
+In figure 13(a)-(c), we illustrate the representative results for the holographic models,
+namely, the linear-axion model, the Gubser-Rocha model, and the holographic superconductor
+model, using Data 2 from (3.21) and T /Tc = 0.75. The figure clearly demonstrates that
+throughout the training process, the metric functions f (z) and h(z) gradually converge
+towards the values (indicated by blue lines) obtained from the holographic models: the gray
+lines represent the metric components initialized (i.e., before training) with random values
+on weights W ij and biases bi of the deep neural networks. Additionally, in figure 13(d), we
+depict the training procedure for the tight-binding chain model.
+In the figure, we also present both the untrained and trained entanglement entropy data
+for all the models under consideration. It is evident that the entanglement entropy calculated
+with the trained metrics, represented by blue dots, closely aligns with the input entanglement
+entropy data (depicted by the black solid line).
+We also evaluate the loss function (4.11) estimated from our machine learning method.
+For all datasets, we find that the values of both the first and second terms in (4.11) consistently
+remain within the range of 10−4 to 10−2 after training: for instance, see figure 14 for the
+Gubser-Rocha model. It is expected that as these numerical values decrease further, for
+instance to the order of 10−10 , the error in our machine learning results (e.g., a small deviation
+in the blue data in figure 10) will correspondingly diminish.
+
+– 28 –
+
+JHEP01(2025)025
+
+where f ′ (0) = h′ (0) is the model-dependent constant. By substituting this expression for ℓ
+into (2.4) and expanding the integrand for small z∗ , we find
+ 
+√
+2 π Γ 74
+  ,
+ℓ = z∗
+(A.2)
+3 Γ 54
+
+0
+
+1
+
+2
+
+True values
+Before Training
+After Training
+3
+4
+
+Before Training
+After Training
+
+1.8
+
+0.8
+
+1.6
+
+0.6
+
+h(z)
+
+f(z)
+
+SFinite
+
+1.0
+
+4
+2
+0
+2
+4
+6
+
+0.4
+0.2
+0.0
+
+0.0
+
+Before Training
+After Training
+0.2 0.4 0.6
+
+z
+
+1.4
+1.2
+
+0.8
+
+1.0
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+1.0
+
+0
+
+True values
+Before Training
+After Training
+2
+3
+4
+
+1
+
+1.15
+
+h(z)
+
+0.6
+0.4
+0.2
+0.0
+
+Before Training
+After Training
+
+1.20
+
+0.8
+
+f(z)
+
+SFinite
+
+6
+4
+2
+0
+2
+4
+6
+
+0.0
+
+Before Training
+After Training
+0.2 0.4 0.6
+
+z
+
+1.10
+1.05
+1.00
+
+0.8
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+0.0
+
+Before Training
+After Training
+0.2 0.4 0.6
+
+0.8
+
+1.0
+
+0.8
+
+1.0
+
+z
+
+1.0
+
+0
+
+0.8
+
+2
+
+0.6
+
+4
+
+True values
+Before Training
+After Training
+4
+6
+
+6
+8
+
+0
+
+2
+
+1.0
+
+Before Training
+After Training
+
+0.8
+
+h(z)
+
+2
+
+f(z)
+
+SFinite
+
+(b) Gubser-Rocha model
+
+0.4
+0.2
+0.0
+
+0.6
+0.4
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+0.8
+
+1.0
+
+z
+
+(c) Holographic superconductor model
+
+f(z)
+
+10
+
+SFinite
+
+10
+
+True values
+Before Training
+After Training
+
+5
+
+1.5
+
+8
+
+1.0
+
+6
+
+h(z)
+
+15
+
+4
+
+0.5
+
+0
+0
+
+1
+
+2
+
+3
+
+0.0
+
+Before Training
+After Training
+
+0.0
+
+Before Training
+After Training
+0.2 0.4 0.6
+
+z
+
+2
+0.8
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+z
+
+0.6
+
+(d) Tight-binding chain model
+Figure 13. Machine learning data before and after training. For the holographic models (a)-(b),
+Data 2 from (3.21) is utilized, and T /Tc = 0.75 is for the model (c). In all figures, the gray data
+represents the results before training, whereas the blue data indicates the results after training. The
+black solid line in SFinite represents the input entanglement entropy data.
+
+– 29 –
+
+JHEP01(2025)025
+
+(a) Linear-axion model
+
+101
+
+First term
+Penalty
+
+Loss
+
+100
+10 1
+10 2
+
+lr=10 2
+0
+
+200
+
+400
+
+600
+
+lr=10 3
+
+800 1000 1200 1400
+
+epoch
+
+Figure 14. The first and second term of the Loss function (4.11) of Data 2 in the Gubser-Rocha
+model. The horizontal axis (epoch) denotes the number of updating the training parameters. The
+learning rate (lr) is set up by 10−2 before the 1000 epoch, and by 10−3 after that.
+
+Data Availability Statement. This article has no associated data or the data will not
+be deposited.
+Code Availability Statement. This article has no associated code or the code will not
+be deposited.
+Open Access. This article is distributed under the terms of the Creative Commons Attribution License (CC-BY4.0), which permits any use, distribution and reproduction in any
+medium, provided the original author(s) and source are credited.
+
+References
+[1] R. Horodecki, P. Horodecki, M. Horodecki and K. Horodecki, Quantum entanglement, Rev.
+Mod. Phys. 81 (2009) 865 [quant-ph/0702225] [INSPIRE].
+[2] A. Aspect, Bell’s inequality test: more ideal than ever, Nature 398 (1999) 189.
+[3] M.A. Nielsen and I.L. Chuang, Quantum Computation and Quantum Information, Cambridge
+University Press (2012) [DOI:10.1017/cbo9780511976667] [INSPIRE].
+[4] L. Amico, R. Fazio, A. Osterloh and V. Vedral, Entanglement in many-body systems, Rev. Mod.
+Phys. 80 (2008) 517 [quant-ph/0703044] [INSPIRE].
+[5] P. Calabrese and J. Cardy, Entanglement entropy and conformal field theory, J. Phys. A 42
+(2009) 504005 [arXiv:0905.4013] [INSPIRE].
+[6] T. Nishioka, S. Ryu and T. Takayanagi, Holographic Entanglement Entropy: An Overview, J.
+Phys. A 42 (2009) 504008 [arXiv:0905.0932] [INSPIRE].
+[7] R. Islam et al., Measuring entanglement entropy through the interference of quantum many-body
+twins, arXiv:1509.01160 [DOI:10.1038/nature15750] [INSPIRE].
+
+– 30 –
+
+JHEP01(2025)025
+
+10 3
+
+[8] N. Laflorencie, Quantum entanglement in condensed matter systems, Phys. Rept. 646 (2016) 1
+[arXiv:1512.03388] [INSPIRE].
+[9] J. Eisert, M. Cramer and M.B. Plenio, Area laws for the entanglement entropy — a review, Rev.
+Mod. Phys. 82 (2010) 277 [arXiv:0808.3773] [INSPIRE].
+[10] A. Kitaev and J. Preskill, Topological entanglement entropy, Phys. Rev. Lett. 96 (2006) 110404
+[hep-th/0510092] [INSPIRE].
+[11] M. Levin and X.-G. Wen, Detecting Topological Order in a Ground State Wave Function, Phys.
+Rev. Lett. 96 (2006) 110405 [cond-mat/0510613] [INSPIRE].
+
+[13] Y. Zhang, T. Grover and A. Vishwanath, Entanglement entropy of critical spin liquids, Phys.
+Rev. Lett. 107 (2011) 067202 [arXiv:1102.0350] [INSPIRE].
+[14] S.V. Isakov, M.B. Hastings and R.G. Melko, Topological entanglement entropy of a
+Bose-Hubbard spin liquid, Nature Phys. 7 (2011) 772 [arXiv:1102.1721] [INSPIRE].
+[15] G. Vidal, J.I. Latorre, E. Rico and A. Kitaev, Entanglement in quantum critical phenomena,
+Phys. Rev. Lett. 90 (2003) 227902 [quant-ph/0211074] [INSPIRE].
+[16] J.H. Bardarson, F. Pollmann and J.E. Moore, Unbounded Growth of Entanglement in Models of
+Many-Body Localization, Phys. Rev. Lett. 109 (2012) 017202 [INSPIRE].
+[17] A.J. Daley, H. Pichler, J. Schachenmayer and P. Zoller, Measuring Entanglement Growth in
+Quench Dynamics of Bosons in an Optical Lattice, Phys. Rev. Lett. 109 (2012) 020505
+[INSPIRE].
+[18] N. Schuch, M.M. Wolf, F. Verstraete and J.I. Cirac, Entropy Scaling and Simulability by Matrix
+Product States, Phys. Rev. Lett. 100 (2008) 030504 [arXiv:0705.0292] [INSPIRE].
+[19] E. Witten, Anti-de Sitter space, thermal phase transition, and confinement in gauge theories,
+Adv. Theor. Math. Phys. 2 (1998) 505 [hep-th/9803131] [INSPIRE].
+[20] S.S. Gubser, I.R. Klebanov and A.M. Polyakov, Gauge theory correlators from noncritical string
+theory, Phys. Lett. B 428 (1998) 105 [hep-th/9802109] [INSPIRE].
+[21] J.M. Maldacena, The large N limit of superconformal field theories and supergravity, Adv.
+Theor. Math. Phys. 2 (1998) 231 [hep-th/9711200] [INSPIRE].
+[22] S. Ryu and T. Takayanagi, Holographic derivation of entanglement entropy from AdS/CFT,
+Phys. Rev. Lett. 96 (2006) 181602 [hep-th/0603001] [INSPIRE].
+[23] V.E. Hubeny, M. Rangamani and T. Takayanagi, A covariant holographic entanglement entropy
+proposal, JHEP 07 (2007) 062 [arXiv:0705.0016] [INSPIRE].
+[24] T. Faulkner, A. Lewkowycz and J. Maldacena, Quantum corrections to holographic
+entanglement entropy, JHEP 11 (2013) 074 [arXiv:1307.2892] [INSPIRE].
+[25] X. Dong, Holographic Entanglement Entropy for General Higher Derivative Gravity, JHEP 01
+(2014) 044 [arXiv:1310.5713] [INSPIRE].
+[26] X. Dong, The Gravity Dual of Renyi Entropy, Nature Commun. 7 (2016) 12472
+[arXiv:1601.06788] [INSPIRE].
+[27] T. Takayanagi and K. Umemoto, Entanglement of purification through holographic duality,
+Nature Phys. 14 (2018) 573 [arXiv:1708.09393] [INSPIRE].
+
+– 31 –
+
+JHEP01(2025)025
+
+[12] H.C. Jiang, Z. Wang and L. Balents, Identifying topological order by entanglement entropy,
+Nature Phys. 8 (2012) 902 [arXiv:1205.4289] [INSPIRE].
+
+[28] P. Nguyen et al., Entanglement of purification: from spin chains to holography, JHEP 01 (2018)
+098 [arXiv:1709.07424] [INSPIRE].
+[29] S. Dutta and T. Faulkner, A canonical purification for the entanglement wedge cross-section,
+JHEP 03 (2021) 178 [arXiv:1905.00577] [INSPIRE].
+[30] H.-S. Jeong, K.-Y. Kim and M. Nishida, Reflected Entropy and Entanglement Wedge Cross
+Section with the First Order Correction, JHEP 12 (2019) 170 [arXiv:1909.02806] [INSPIRE].
+[31] M. Rangamani and T. Takayanagi, Holographic Entanglement Entropy, Springer (2017)
+[DOI:10.1007/978-3-319-52573-0] [INSPIRE].
+
+[33] T. Albash and C.V. Johnson, Holographic Studies of Entanglement Entropy in Superconductors,
+JHEP 05 (2012) 079 [arXiv:1202.2605] [INSPIRE].
+[34] H.-S. Jeong, K.-Y. Kim and Y.-W. Sun, Holographic entanglement density for spontaneous
+symmetry breaking, JHEP 06 (2022) 078 [arXiv:2203.07612] [INSPIRE].
+[35] A. Hamilton, D.N. Kabat, G. Lifschytz and D.A. Lowe, Holographic representation of local bulk
+operators, Phys. Rev. D 74 (2006) 066009 [hep-th/0606141] [INSPIRE].
+[36] T. De Jonckheere, Modave lectures on bulk reconstruction in AdS/CFT, PoS Modave2017
+(2018) 005 [arXiv:1711.07787] [INSPIRE].
+[37] D. Harlow, TASI Lectures on the Emergence of Bulk Physics in AdS/CFT, PoS TASI2017
+(2018) 002 [arXiv:1802.01040] [INSPIRE].
+[38] N. Kajuri, Lectures on Bulk Reconstruction, SciPost Phys. Lect. Notes 22 (2021) 1
+[arXiv:2003.00587] [INSPIRE].
+[39] S. de Haro, S.N. Solodukhin and K. Skenderis, Holographic reconstruction of space-time and
+renormalization in the AdS/CFT correspondence, Commun. Math. Phys. 217 (2001) 595
+[hep-th/0002230] [INSPIRE].
+[40] J. Hammersley, Extracting the bulk metric from boundary information in asymptotically AdS
+spacetimes, JHEP 12 (2006) 047 [hep-th/0609202] [INSPIRE].
+[41] V.E. Hubeny, H. Liu and M. Rangamani, Bulk-cone singularities & signatures of horizon
+formation in AdS/CFT, JHEP 01 (2007) 009 [hep-th/0610041] [INSPIRE].
+[42] J. Hammersley, Numerical metric extraction in AdS/CFT, Gen. Rel. Grav. 40 (2008) 1619
+[arXiv:0705.0159] [INSPIRE].
+[43] S. Bilson, Extracting spacetimes using the AdS/CFT conjecture, JHEP 08 (2008) 073
+[arXiv:0807.3695] [INSPIRE].
+[44] S. Bilson, Extracting Spacetimes using the AdS/CFT Conjecture: Part II, JHEP 02 (2011) 050
+[arXiv:1012.1812] [INSPIRE].
+[45] V.E. Hubeny, Extremal surfaces as bulk probes in AdS/CFT, JHEP 07 (2012) 093
+[arXiv:1203.1044] [INSPIRE].
+[46] N. Jokela et al., Progress in the lattice evaluation of entanglement entropy of three-dimensional
+Yang-Mills theories and holographic bulk reconstruction, JHEP 12 (2023) 137
+[arXiv:2304.08949] [INSPIRE].
+[47] V. Balasubramanian et al., Bulk curves from boundary data in holography, Phys. Rev. D 89
+(2014) 086004 [arXiv:1310.4204] [INSPIRE].
+
+– 32 –
+
+JHEP01(2025)025
+
+[32] A.B. Zamolodchikov, Irreversibility of the Flux of the Renormalization Group in a 2D Field
+Theory, JETP Lett. 43 (1986) 730 [INSPIRE].
+
+[48] R.C. Myers, J. Rao and S. Sugishita, Holographic Holes in Higher Dimensions, JHEP 06 (2014)
+044 [arXiv:1403.3416] [INSPIRE].
+[49] B. Czech and L. Lamprou, Holographic definition of points and distances, Phys. Rev. D 90
+(2014) 106005 [arXiv:1409.4473] [INSPIRE].
+[50] N. Engelhardt and G.T. Horowitz, Towards a Reconstruction of General Bulk Metrics, Class.
+Quant. Grav. 34 (2017) 015004 [arXiv:1605.01070] [INSPIRE].
+[51] N. Engelhardt and G.T. Horowitz, Recovering the spacetime metric from a holographic dual,
+Adv. Theor. Math. Phys. 21 (2017) 1635 [arXiv:1612.00391] [INSPIRE].
+
+[53] D. Kabat and G. Lifschytz, Emergence of spacetime from the algebra of total modular
+Hamiltonians, JHEP 05 (2019) 017 [arXiv:1812.02915] [INSPIRE].
+[54] K. Hashimoto, Building bulk from Wilson loops, PTEP 2021 (2021) 023B04
+[arXiv:2008.10883] [INSPIRE].
+[55] S. Caron-Huot, Holographic cameras: an eye for the bulk, JHEP 03 (2023) 047
+[arXiv:2211.11791] [INSPIRE].
+[56] K. Hashimoto and R. Watanabe, Bulk reconstruction of metrics inside black holes by
+complexity, JHEP 09 (2021) 165 [arXiv:2103.13186] [INSPIRE].
+[57] W.-B. Xu and S.-F. Wu, Reconstructing black hole exteriors and interiors using entanglement
+and complexity, JHEP 07 (2023) 083 [arXiv:2305.01330] [INSPIRE].
+[58] J.M. Maldacena, Eternal black holes in anti-de Sitter, JHEP 04 (2003) 021 [hep-th/0106112]
+[INSPIRE].
+[59] M. Van Raamsdonk, Building up spacetime with quantum entanglement, Gen. Rel. Grav. 42
+(2010) 2323 [arXiv:1005.3035] [INSPIRE].
+[60] B. Swingle, Entanglement Renormalization and Holography, Phys. Rev. D 86 (2012) 065007
+[arXiv:0905.1317] [INSPIRE].
+[61] J. Maldacena and L. Susskind, Cool horizons for entangled black holes, Fortsch. Phys. 61 (2013)
+781 [arXiv:1306.0533] [INSPIRE].
+[62] S. Ryu and T. Takayanagi, Aspects of Holographic Entanglement Entropy, JHEP 08 (2006) 045
+[hep-th/0605073] [INSPIRE].
+[63] G. Vidal, Class of Quantum Many-Body States That Can Be Efficiently Simulated, Phys. Rev.
+Lett. 101 (2008) 110501 [quant-ph/0610099] [INSPIRE].
+[64] G. Vidal, Entanglement Renormalization, Phys. Rev. Lett. 99 (2007) 220405
+[cond-mat/0512165] [INSPIRE].
+[65] A. Milsted and G. Vidal, Geometric interpretation of the multi-scale entanglement
+renormalization ansatz, arXiv:1812.00529 [INSPIRE].
+[66] K. Hashimoto, S. Sugishita, A. Tanaka and A. Tomiya, Deep learning and the AdS/CFT
+correspondence, Phys. Rev. D 98 (2018) 046019 [arXiv:1802.08313] [INSPIRE].
+[67] K. Hashimoto, S. Sugishita, A. Tanaka and A. Tomiya, Deep Learning and Holographic QCD,
+Phys. Rev. D 98 (2018) 106014 [arXiv:1809.10536] [INSPIRE].
+[68] K. Hashimoto, AdS/CFT correspondence as a deep Boltzmann machine, Phys. Rev. D 99
+(2019) 106017 [arXiv:1903.04951] [INSPIRE].
+
+– 33 –
+
+JHEP01(2025)025
+
+[52] S.R. Roy and D. Sarkar, Bulk metric reconstruction from boundary entanglement, Phys. Rev. D
+98 (2018) 066017 [arXiv:1801.07280] [INSPIRE].
+
+[69] J. Tan and C.-B. Chen, Deep learning the holographic black hole with charge, Int. J. Mod. Phys.
+D 28 (2019) 1950153 [arXiv:1908.01470] [INSPIRE].
+[70] T. Akutagawa, K. Hashimoto and T. Sumimoto, Deep Learning and AdS/QCD, Phys. Rev. D
+102 (2020) 026020 [arXiv:2005.02636] [INSPIRE].
+[71] Y.-K. Yan, S.-F. Wu, X.-H. Ge and Y. Tian, Deep learning black hole metrics from shear
+viscosity, Phys. Rev. D 102 (2020) 101902 [arXiv:2004.12112] [INSPIRE].
+[72] K. Hashimoto, H.-Y. Hu and Y.-Z. You, Neural ordinary differential equation and holographic
+quantum chromodynamics, Mach. Learn. Sci. Tech. 2 (2021) 035011 [arXiv:2006.00712]
+[INSPIRE].
+
+[74] R. Katsube, W.-H. Tam, M. Hotta and Y. Nambu, Deep learning metric detectors in general
+relativity, Phys. Rev. D 106 (2022) 044051 [arXiv:2206.03006] [INSPIRE].
+[75] K. Hashimoto, K. Ohashi and T. Sumimoto, Deriving the dilaton potential in improved
+holographic QCD from the chiral condensate, PTEP 2023 (2023) 033B01 [arXiv:2209.04638]
+[INSPIRE].
+[76] K. Li, Y. Ling, P. Liu and M.-H. Wu, Learning the black hole metric from holographic
+conductivity, Phys. Rev. D 107 (2023) 066021 [arXiv:2209.05203] [INSPIRE].
+[77] C. Park, C.-O. Hwang, K. Cho and S.-J. Kim, Dual geometry of entanglement entropy via deep
+learning, Phys. Rev. D 106 (2022) 106017 [arXiv:2205.04445] [INSPIRE].
+[78] C. Park, S. Kim and J.H. Lee, Holography Transformer, arXiv:2311.01724 [INSPIRE].
+[79] K. Zhou, L. Wang, L.-G. Pang and S. Shi, Exploring QCD matter in extreme conditions with
+Machine Learning, Prog. Part. Nucl. Phys. 135 (2024) 104084 [arXiv:2303.15136] [INSPIRE].
+[80] B. Ahn, H.-S. Jeong, K.-Y. Kim and K. Yun, Deep learning bulk spacetime from boundary
+optical conductivity, JHEP 03 (2024) 141 [arXiv:2401.00939] [INSPIRE].
+[81] Z.-F. Gu, Y.-K. Yan and S.-F. Wu, Neural ODEs for holographic transport models without
+translation symmetry, arXiv:2401.09946 [INSPIRE].
+[82] X. Chen and M. Huang, Machine learning holographic black hole from lattice QCD equation of
+state, Phys. Rev. D 109 (2024) L051902 [arXiv:2401.06417] [INSPIRE].
+[83] K. Hashimoto, Y. Hirono and A. Sannai, Unification of symmetries inside neural networks:
+transformer, feedforward and neural ODE, Mach. Learn. Sci. Tech. 5 (2024) 025079
+[arXiv:2402.02362] [INSPIRE].
+[84] X. Chen and M. Huang, Flavor dependent Critical endpoint from holographic QCD through
+machine learning, arXiv:2405.06179 [INSPIRE].
+[85] Y. Bea et al., Gravitational duals from equations of state, JHEP 07 (2024) 087
+[arXiv:2403.14763] [INSPIRE].
+[86] M. Mansouri, K. Bitaghsir Fadafan and X. Chen, Holographic complex potential of a
+quarkonium from deep learning, arXiv:2406.06285 [INSPIRE].
+[87] Y.-Z. You, Z. Yang and X.-L. Qi, Machine Learning Spatial Geometry from Entanglement
+Features, Phys. Rev. B 97 (2018) 045153 [arXiv:1709.01223] [INSPIRE].
+
+– 34 –
+
+JHEP01(2025)025
+
+[73] K. Hashimoto, K. Ohashi and T. Sumimoto, Deriving the dilaton potential in improved
+holographic QCD from the meson spectrum, Phys. Rev. D 105 (2022) 106008
+[arXiv:2108.08091] [INSPIRE].
+
+[88] H.-Y. Hu, S.-H. Li, L. Wang and Y.-Z. You, Machine Learning Holographic Mapping by Neural
+Network Renormalization Group, Phys. Rev. Res. 2 (2020) 023369 [arXiv:1903.00804]
+[INSPIRE].
+[89] X. Han and S.A. Hartnoll, Deep Quantum Geometry of Matrices, Phys. Rev. X 10 (2020)
+011069 [arXiv:1906.08781] [INSPIRE].
+[90] J. Lam and Y.-Z. You, Machine learning statistical gravity from multi-region entanglement
+entropy, Phys. Rev. Res. 3 (2021) 043199 [arXiv:2110.01115] [INSPIRE].
+[91] M. Song, M.S.H. Oh, Y. Ahn and K.-Y. Kima, AdS/Deep-Learning made easy: simple examples,
+Chin. Phys. C 45 (2021) 073111 [arXiv:2011.13726] [INSPIRE].
+
+[93] S.S. Gubser and F.D. Rocha, Peculiar properties of a charged dilatonic black hole in AdS5 ,
+Phys. Rev. D 81 (2010) 046001 [arXiv:0911.2898] [INSPIRE].
+[94] S.A. Hartnoll, C.P. Herzog and G.T. Horowitz, Building a Holographic Superconductor, Phys.
+Rev. Lett. 101 (2008) 031601 [arXiv:0803.3295] [INSPIRE].
+[95] S.A. Hartnoll, C.P. Herzog and G.T. Horowitz, Holographic Superconductors, JHEP 12 (2008)
+015 [arXiv:0810.1563] [INSPIRE].
+[96] M. Cvetic et al., Embedding AdS black holes in ten-dimensions and eleven-dimensions, Nucl.
+Phys. B 558 (1999) 96 [hep-th/9903214] [INSPIRE].
+[97] S.S. Gubser, C.P. Herzog, S.S. Pufu and T. Tesileanu, Superconductors from Superstrings, Phys.
+Rev. Lett. 103 (2009) 141601 [arXiv:0907.3510] [INSPIRE].
+[98] J.P. Gauntlett, J. Sonner and T. Wiseman, Holographic superconductivity in M-Theory, Phys.
+Rev. Lett. 103 (2009) 151601 [arXiv:0907.3796] [INSPIRE].
+[99] Q. Miao and T. Barthel, Eigenstate Entanglement: Crossover from the Ground State to Volume
+Laws, Phys. Rev. Lett. 127 (2021) 040603 [arXiv:1905.07760] [INSPIRE].
+[100] A. Polyanin and A. Manzhirov, Handbook of Integral Equations. Taylor & Francis (1998)
+[ISBN: 9781420050066].
+[101] T. Andrade and B. Withers, A simple holographic model of momentum relaxation, JHEP 05
+(2014) 101 [arXiv:1311.5157] [INSPIRE].
+[102] D. Vegh, Holography without translational symmetry, arXiv:1301.0537 [INSPIRE].
+[103] M. Baggioli, K.-Y. Kim, L. Li and W.-J. Li, Holographic Axion Model: a simple gravitational
+tool for quantum matter, Sci. China Phys. Mech. Astron. 64 (2021) 270001
+[arXiv:2101.01892] [INSPIRE].
+[104] J. Zaanen, Y.-W. Sun, Y. Liu and K. Schalm, Holographic Duality in Condensed Matter
+Physics, Cambridge Univ. Press (2015) [DOI:10.1017/CBO9781139942492] [INSPIRE].
+[105] S.A. Hartnoll, A. Lucas and S. Sachdev, Holographic quantum matter, arXiv:1612.07324
+[INSPIRE].
+[106] M. Baggioli, Applied Holography: A Practical Mini-Course, Other thesis, Instituto de Física
+Teórica (IFT), Madrid, Spain (2019) [DOI:10.1007/978-3-030-35184-7] [arXiv:1908.02667]
+[INSPIRE].
+[107] M. Natsuume, AdS/CFT Duality User Guide, arXiv:1409.3575
+[DOI:10.1007/978-4-431-55441-7] [INSPIRE].
+
+– 35 –
+
+JHEP01(2025)025
+
+[92] D. Areán, H.-S. Jeong, J.F. Pedraza and L.-C. Qu, Kasner interiors from analytic hairy black
+holes, JHEP 11 (2024) 138 [arXiv:2407.18430] [INSPIRE].
+
+[108] J. Zaanen, Lectures on quantum supreme matter, arXiv:2110.00961 [INSPIRE].
+[109] T. Faulkner et al., From Black Holes to Strange Metals, arXiv:1003.1728 [INSPIRE].
+[110] R.A. Davison, K. Schalm and J. Zaanen, Holographic duality and the resistivity of strange
+metals, Phys. Rev. B 89 (2014) 245116 [arXiv:1311.2451] [INSPIRE].
+[111] B. Goutéraux, Charge transport in holography with momentum dissipation, JHEP 04 (2014) 181
+[arXiv:1401.5436] [INSPIRE].
+[112] E. Blauvelt et al., Holographic model for the anomalous scalings of the cuprates, Phys. Rev. D
+97 (2018) 061901 [arXiv:1710.01326] [INSPIRE].
+
+[114] L. Alberte et al., Holographic Phonons, Phys. Rev. Lett. 120 (2018) 171602
+[arXiv:1711.03100] [INSPIRE].
+[115] M. Ammon, M. Baggioli and A. Jiménez-Alba, A Unified Description of Translational
+Symmetry Breaking in Holography, JHEP 09 (2019) 124 [arXiv:1904.05785] [INSPIRE].
+[116] Y. Ahn, H.-S. Jeong, D. Ahn and K.-Y. Kim, Linear-T resistivity from low to high temperature:
+axion-dilaton theories, JHEP 04 (2020) 153 [arXiv:1907.12168] [INSPIRE].
+[117] H.-S. Jeong and K.-Y. Kim, Homes’ law in holographic superconductor with linear-T resistivity,
+JHEP 03 (2022) 060 [arXiv:2112.01153] [INSPIRE].
+[118] M. Baggioli and B. Goutéraux, Colloquium: Hydrodynamics and holography of charge density
+wave phases, Rev. Mod. Phys. 95 (2023) 011001 [arXiv:2203.03298] [INSPIRE].
+[119] F. Balm et al., T-linear resistivity, optical conductivity, and Planckian transport for a
+holographic local quantum critical metal in a periodic potential, Phys. Rev. B 108 (2023) 125145
+[arXiv:2211.05492] [INSPIRE].
+[120] Y. Ahn, M. Baggioli, H.-S. Jeong and K.-Y. Kim, Inability of linear axion holographic
+Gubser-Rocha model to capture all the transport anomalies of strange metals, Phys. Rev. B 108
+(2023) 235104 [arXiv:2307.04433] [INSPIRE].
+[121] R.A. Davison and B. Goutéraux, Momentum dissipation and effective theories of coherent and
+incoherent transport, JHEP 01 (2015) 039 [arXiv:1411.1062] [INSPIRE].
+[122] M. Blake and A. Donos, Diffusion and Chaos from near AdS2 horizons, JHEP 02 (2017) 013
+[arXiv:1611.09380] [INSPIRE].
+[123] A. Amoretti, M. Baggioli, N. Magnoli and D. Musso, Chasing the cuprates with dilatonic dyons,
+JHEP 06 (2016) 113 [arXiv:1603.03029] [INSPIRE].
+[124] M. Blake, R.A. Davison and S. Sachdev, Thermal diffusivity and chaos in metals without
+quasiparticles, Phys. Rev. D 96 (2017) 106008 [arXiv:1705.07896] [INSPIRE].
+[125] M. Baggioli and W.-J. Li, Diffusivities bounds and chaos in holographic Horndeski theories,
+JHEP 07 (2017) 055 [arXiv:1705.01766] [INSPIRE].
+[126] H.-S. Jeong et al., Thermal diffusivity and butterfly velocity in anisotropic Q-Lattice models,
+JHEP 01 (2018) 140 [arXiv:1708.08822] [INSPIRE].
+[127] D. Giataganas, U. Gürsoy and J.F. Pedraza, Strongly-coupled anisotropic gauge theories and
+holography, Phys. Rev. Lett. 121 (2018) 121601 [arXiv:1708.05691] [INSPIRE].
+[128] R.A. Davison, S.A. Gentle and B. Goutéraux, Slow relaxation and diffusion in holographic
+quantum critical phases, Phys. Rev. Lett. 123 (2019) 141601 [arXiv:1808.05659] [INSPIRE].
+
+– 36 –
+
+JHEP01(2025)025
+
+[113] H.-S. Jeong, K.-Y. Kim and C. Niu, Linear-T resistivity at high temperature, JHEP 10 (2018)
+191 [arXiv:1806.07739] [INSPIRE].
+
+[129] M. Blake, R.A. Davison, S. Grozdanov and H. Liu, Many-body chaos and energy dynamics in
+holography, JHEP 10 (2018) 035 [arXiv:1809.01169] [INSPIRE].
+[130] H.-S. Jeong et al., Holographic Spectral Functions with Momentum Relaxation, Phys. Rev. D
+102 (2020) 026017 [arXiv:1910.11034] [INSPIRE].
+[131] D. Areán, R.A. Davison, B. Goutéraux and K. Suzuki, Hydrodynamic Diffusion and Its
+Breakdown near AdS2 Quantum Critical Points, Phys. Rev. X 11 (2021) 031024
+[arXiv:2011.12301] [INSPIRE].
+[132] Y. Liu and X.-M. Wu, Breakdown of hydrodynamics from holographic pole collision, JHEP 01
+(2022) 155 [arXiv:2111.07770] [INSPIRE].
+
+[134] N. Wu, M. Baggioli and W.-J. Li, On the universality of AdS2 diffusion bounds and the
+breakdown of linearized hydrodynamics, JHEP 05 (2021) 014 [arXiv:2102.05810] [INSPIRE].
+[135] H.-S. Jeong, K.-Y. Kim and Y.-W. Sun, The breakdown of magneto-hydrodynamics near AdS2
+fixed point and energy diffusion bound, JHEP 02 (2022) 006 [arXiv:2105.03882] [INSPIRE].
+[136] K.-B. Huh, H.-S. Jeong, K.-Y. Kim and Y.-W. Sun, Upper bound of the charge diffusion
+constant in holography, JHEP 07 (2022) 013 [arXiv:2111.07515] [INSPIRE].
+[137] H.-S. Jeong, K.-Y. Kim and Y.-W. Sun, Quasi-normal modes of dyonic black holes and
+magneto-hydrodynamics, JHEP 07 (2022) 065 [arXiv:2203.02642] [INSPIRE].
+[138] M. Baggioli, S. Grieninger, S. Grozdanov and Z. Lu, Aspects of univalence in holographic axion
+models, JHEP 11 (2022) 032 [arXiv:2205.06076] [INSPIRE].
+[139] H.-S. Jeong, Quantum chaos and pole-skipping in a semilocally critical IR fixed point,
+arXiv:2309.13412 [INSPIRE].
+[140] Y. Ahn et al., On pole-skipping with gauge-invariant variables in holographic axion theories,
+JHEP 06 (2024) 020 [arXiv:2402.12951] [INSPIRE].
+[141] Z. Zhao, W. Cai and S. Ishigaki, Doped holographic superconductors in the Gubser-Rocha model,
+Commun. Theor. Phys. 76 (2024) 045201 [arXiv:2309.14851] [INSPIRE].
+[142] M. Baggioli and O. Pujolàs, Electron-Phonon Interactions, Metal-Insulator Transitions, and
+Holographic Massive Gravity, Phys. Rev. Lett. 114 (2015) 251602 [arXiv:1411.1003] [INSPIRE].
+[143] L. Alberte, M. Baggioli, A. Khmelnitsky and O. Pujolàs, Solid Holography and Massive Gravity,
+JHEP 02 (2016) 114 [arXiv:1510.09089] [INSPIRE].
+[144] A. Amoretti et al., A holographic perspective on phonons and pseudo-phonons, JHEP 05 (2017)
+051 [arXiv:1611.09344] [INSPIRE].
+[145] A. Amoretti, D. Areán, B. Goutéraux and D. Musso, Effective holographic theory of charge
+density waves, Phys. Rev. D 97 (2018) 086017 [arXiv:1711.06610] [INSPIRE].
+[146] A. Amoretti, D. Areán, B. Goutéraux and D. Musso, DC resistivity of quantum critical, charge
+density wave states from gauge-gravity duality, Phys. Rev. Lett. 120 (2018) 171603
+[arXiv:1712.07994] [INSPIRE].
+[147] L. Alberte et al., Black hole elasticity and gapped transverse phonons in holography, JHEP 01
+(2018) 129 [arXiv:1708.08477] [INSPIRE].
+
+– 37 –
+
+JHEP01(2025)025
+
+[133] H.-S. Jeong, K.-Y. Kim and Y.-W. Sun, Bound of diffusion constants from pole-skipping points:
+spontaneous symmetry breaking and magnetic field, JHEP 07 (2021) 105 [arXiv:2104.13084]
+[INSPIRE].
+
+[148] T. Andrade, M. Baggioli, A. Krikun and N. Poovuttikul, Pinning of longitudinal phonons in
+holographic spontaneous helices, JHEP 02 (2018) 085 [arXiv:1708.08306] [INSPIRE].
+[149] A. Amoretti, D. Areán, B. Goutéraux and D. Musso, Universal relaxation in a holographic
+metallic density wave phase, Phys. Rev. Lett. 123 (2019) 211602 [arXiv:1812.08118] [INSPIRE].
+[150] A. Amoretti, D. Areán, B. Goutéraux and D. Musso, Diffusion and universal relaxation of
+holographic phonons, JHEP 10 (2019) 068 [arXiv:1904.11445] [INSPIRE].
+[151] M. Baggioli and S. Grieninger, Zoology of solid & fluid holography — Goldstone modes and
+phase relaxation, JHEP 10 (2019) 235 [arXiv:1905.09488] [INSPIRE].
+
+[153] M. Ammon, M. Baggioli, S. Gray and S. Grieninger, Longitudinal Sound and Diffusion in
+Holographic Massive Gravity, JHEP 10 (2019) 064 [arXiv:1905.09164] [INSPIRE].
+[154] M. Baggioli, S. Grieninger and L. Li, Magnetophonons & type-B Goldstones from
+Hydrodynamics to Holography, JHEP 09 (2020) 037 [arXiv:2005.01725] [INSPIRE].
+[155] A. Amoretti, D. Areán, D.K. Brattan and N. Magnoli, Hydrodynamic magneto-transport in
+charge density wave states, JHEP 05 (2021) 027 [arXiv:2101.05343] [INSPIRE].
+[156] A. Amoretti, D. Areán, D.K. Brattan and L. Martinoia, Hydrodynamic magneto-transport in
+holographic charge density wave states, JHEP 11 (2021) 011 [arXiv:2107.00519] [INSPIRE].
+[157] X.-J. Wang and W.-J. Li, Holographic phonons by gauge-axion coupling, JHEP 07 (2021) 131
+[arXiv:2105.07225] [INSPIRE].
+[158] Y.-Y. Zhong and W.-J. Li, Transverse Goldstone mode in holographic fluids with broken
+translations, Eur. Phys. J. C 82 (2022) 511 [arXiv:2202.05437] [INSPIRE].
+[159] M. Bajec, S. Grozdanov and A. Soloviev, Spectra of correlators in the relaxation time
+approximation of kinetic theory, JHEP 08 (2024) 065 [arXiv:2403.17769] [INSPIRE].
+[160] M. Reza Mohammadi Mozaffar, A. Mollabashi and F. Omidi, Non-local Probes in Holographic
+Theories with Momentum Relaxation, JHEP 10 (2016) 135 [arXiv:1608.08781] [INSPIRE].
+[161] D.M. Yekta, H. Babaei-Aghbolagh, K. Babaei Velni and H. Mohammadzadeh, Holographic
+complexity for black branes with momentum relaxation, Phys. Rev. D 104 (2021) 086025
+[arXiv:2009.01340] [INSPIRE].
+[162] Y.-Z. Li and X.-M. Kuang, Probes of holographic thermalization in a simple model with
+momentum relaxation, Nucl. Phys. B 956 (2020) 115043 [arXiv:1911.11980] [INSPIRE].
+[163] Y.-T. Zhou, X.-M. Kuang, Y.-Z. Li and J.-P. Wu, Holographic subregion complexity under a
+thermal quench in an Einstein-Maxwell-axion theory with momentum relaxation, Phys. Rev. D
+101 (2020) 106024 [arXiv:1912.03479] [INSPIRE].
+[164] Y.-F. Huang et al., Mixed State Entanglement for Holographic Axion Model, Eur. Phys. J. C
+80 (2020) 426 [arXiv:1911.10977] [INSPIRE].
+[165] S.A. Hosseini Mansoori et al., Planar black holes in holographic axion gravity: Islands, Page
+times, and scrambling times, Phys. Rev. D 106 (2022) 126018 [arXiv:2209.00253] [INSPIRE].
+[166] W. E, A Proposal on Machine Learning via Dynamical Systems, Commun. Math. Stat. 5 (2017)
+1.
+[167] K. He, X. Zhang, S. Ren and J. Sun, Deep Residual Learning for Image Recognition,
+arXiv:1512.03385 [DOI:10.1109/CVPR.2016.90] [INSPIRE].
+
+– 38 –
+
+JHEP01(2025)025
+
+[152] A. Amoretti, D. Areán, B. Goutéraux and D. Musso, Gapless and gapped holographic phonons,
+JHEP 01 (2020) 058 [arXiv:1910.11330] [INSPIRE].
+
+[168] R.T.Q. Chen, Y. Rubanova, J. Bettencourt and D. Duvenaud, Neural Ordinary Differential
+Equations, arXiv:1806.07366 [INSPIRE].
+[169] A. Paszke et al., PyTorch: An Imperative Style, High-Performance Deep Learning Library,
+arXiv:1912.01703 [INSPIRE].
+[170] P. Gómez, H.H. Toftevaag and G. Meoni, torchquad: Numerical Integration in Arbitrary
+Dimensions with PyTorch, J. Open Source Softw. 6 (2021) 3439 [INSPIRE].
+[171] R.J. Anantua, S.A. Hartnoll, V.L. Martin and D.M. Ramirez, The Pauli exclusion principle at
+strong coupling: Holographic matter and momentum space, JHEP 03 (2013) 104
+[arXiv:1210.1590] [INSPIRE].
+
+[173] Z. Wang, X.-H. Ge and S. Ishigaki, Dependence of the critical temperature and disorder in
+holographic superconductors on superfluid density, arXiv:2312.16029 [INSPIRE].
+[174] C.P. Herzog, Lectures on Holographic Superfluidity and Superconductivity, J. Phys. A 42 (2009)
+343001 [arXiv:0904.1975] [INSPIRE].
+[175] R.-G. Cai, L. Li, L.-F. Li and R.-Q. Yang, Introduction to Holographic Superconductor Models,
+Sci. China Phys. Mech. Astron. 58 (2015) 060401 [arXiv:1502.00437] [INSPIRE].
+[176] I. Amado, M. Kaminski and K. Landsteiner, Hydrodynamics of Holographic Superconductors,
+JHEP 05 (2009) 021 [arXiv:0903.2209] [INSPIRE].
+[177] D. Areán, M. Baggioli, S. Grieninger and K. Landsteiner, A holographic superfluid symphony,
+JHEP 11 (2021) 206 [arXiv:2107.08802] [INSPIRE].
+[178] H.-S. Jeong, M. Baggioli, K.-Y. Kim and Y.-W. Sun, Collective dynamics and the
+Anderson-Higgs mechanism in a bona fide holographic superconductor, JHEP 03 (2023) 206
+[arXiv:2302.02364] [INSPIRE].
+[179] N. Jokela and A. Pönni, Towards precision holography, Phys. Rev. D 103 (2021) 026010
+[arXiv:2007.00010] [INSPIRE].
+[180] Q. Miao and T. Barthel, Eigenstate entanglement scaling for critical interacting spin chains,
+Quantum 6 (2022) 642 [arXiv:2010.07265] [INSPIRE].
+[181] R. Shankar, Renormalization group approach to interacting fermions, Rev. Mod. Phys. 66
+(1994) 129 [cond-mat/9307009] [INSPIRE].
+[182] S. Sachdev, Quantum Phase Transitions, second edition, Cambridge University Press (2011)
+[DOI:10.1017/cbo9780511973765].
+[183] T. Senthil, Critical Fermi surfaces and non-Fermi liquid metals, Phys. Rev. B 78 (2008) 035103.
+[184] H. Liu and M. Mezei, Probing renormalization group flows using entanglement entropy, JHEP
+01 (2014) 098 [arXiv:1309.6935] [INSPIRE].
+[185] N.W. Ashcroft and N.D. Mermin, Solid State Physics, Holt-Saunders (1976)
+[ISBN: 9780030839931].
+[186] C. Kittel, Introduction to Solid State Physics, eighth edition, Wiley (2004)
+[ISBN: 9780471415268].
+[187] L. Susskind, Entanglement is not enough, Fortsch. Phys. 64 (2016) 49 [arXiv:1411.0690]
+[INSPIRE].
+
+– 39 –
+
+JHEP01(2025)025
+
+[172] X.-H. Ge and Z. Xu, Thermo-electric transport of dyonic Gubser-Rocha black holes, JHEP 03
+(2024) 069 [arXiv:2310.12067] [INSPIRE].
+
+[188] L. Susskind, Computational Complexity and Black Hole Horizons, Fortsch. Phys. 64 (2016) 24
+[arXiv:1403.5695] [INSPIRE].
+[189] J. Couch, W. Fischler and P.H. Nguyen, Noether charge, black hole volume, and complexity,
+JHEP 03 (2017) 119 [arXiv:1610.02038] [INSPIRE].
+[190] A. Belin et al., Does Complexity Equal Anything?, Phys. Rev. Lett. 128 (2022) 081602
+[arXiv:2111.02429] [INSPIRE].
+[191] A. Frenkel, S.A. Hartnoll, J. Kruthoff and Z.D. Shi, Holographic flows from CFT to the Kasner
+universe, JHEP 08 (2020) 003 [arXiv:2004.01192] [INSPIRE].
+
+JHEP01(2025)025
+
+– 40 –
+
+

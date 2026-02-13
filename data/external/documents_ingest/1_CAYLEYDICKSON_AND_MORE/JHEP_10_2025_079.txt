@@ -1,0 +1,2984 @@
+Published for SISSA by
+
+Springer
+
+Received: May 2, 2025
+Accepted: August 6, 2025
+Published: October 9, 2025
+
+Bulk metric reconstruction from entanglement data via
+minimal surface area variations
+,a,b Tony Liimatainen
+
+,c,d Miika Sarkkinen
+
+c and Leo Tzou
+
+e
+
+a
+
+Department of Physics, University of Helsinki,
+P.O. Box 64, Gustaf Hällströmin katu 2, FIN-00014 University of Helsinki, Helsinki, Finland
+b
+Helsinki Institute of Physics,
+P.O. Box 64, Gustaf Hällströmin katu 2, FIN-00014 University of Helsinki, Helsinki, Finland
+c
+Department of Mathematics and Statistics, University of Helsinki,
+P.O. Box 64, Vaino Auerin katu 11, FIN-00014 University of Helsinki, Helsinki, Finland
+d
+Department of Mathematics and Statistics, University of Jyväskylä,
+P.O. Box 35, FIN-40351 Jyvaskyla, Finland
+e
+School of Mathematics and Statistics, The University of Melbourne,
+VIC 3010, 3010 Parkville, Australia
+
+E-mail: niko.jokela@helsinki.fi, tony.liimatainen@helsinki.fi,
+miika.sarkkinen@helsinki.fi, leo.tzou@unimelb.edu.au
+Abstract: We investigate the reconstruction of asymptotically anti-de Sitter (AdS) bulk
+geometries from boundary entanglement entropy data for ball-shaped entangling regions.
+By deriving an explicit inversion formula, we relate variations in entanglement entropy to
+deviations of the bulk metric about a fixed background. Applying this formula, we recover
+the Schwarzschild-AdS spacetime in the low-temperature regime to first order. We further
+extend our analysis to include deformations of the bulk geometry with nontrivial dependence
+on boundary directions, and propose an iterative reconstruction scheme aimed at recovering
+the full spacetime starting close to a conformal fixed point. We do this by building on recent
+advances in the mathematics of inverse problems by introducing the higher-order linearization
+method as a new tool in the context of holographic bulk reconstruction.
+Keywords: AdS-CFT Correspondence, Gauge-Gravity Correspondence
+ArXiv ePrint: 2504.07016
+
+Open Access, © The Authors.
+Article funded by SCOAP3 .
+
+https://doi.org/10.1007/JHEP10(2025)079
+
+JHEP10(2025)079
+
+Niko Jokela
+
+Contents
+1
+3
+5
+7
+
+2 Bulk reconstruction
+2.1 Review of bulk recovery in the compact case and the higher-order linearization
+method
+2.2 References to mathematical literature
+
+7
+8
+11
+
+3 Linearized problem retaining Poincaré invariance
+3.1 Derivation of the minimal surface equation
+3.2 Scaling
+
+11
+11
+13
+
+4 Shape deformation
+
+18
+
+5 Progress in nonlinear problem
+5.1 Abstract setting
+5.2 Implementing the iterative algorithm: preliminary observations
+
+22
+23
+26
+
+6 Discussion
+
+27
+
+A Synthetic data
+
+28
+
+B Linearizations of the minimal surface equation
+
+29
+
+1
+
+Introduction
+
+The AdS/CFT correspondence is a profound duality that relates a gravitational theory in
+anti-de Sitter (AdS) spacetime to a conformal field theory (CFT) defined on its boundary.
+Within this framework, the degrees of freedom of the boundary CFT encode the dynamics
+of the bulk gravitational theory, providing a novel approach to studying strongly coupled
+quantum systems. This correspondence has had significant implications across various fields,
+including quantum chromodynamics, condensed matter physics, and quantum gravity [1, 2].
+One of the most striking features of AdS/CFT is its ability to translate complex problems
+in field theory into more tractable geometric problems in the bulk. A key example is the
+Ryu-Takayanagi (RT) [3] and Hubeny-Rangamani-Takayanagi (HRT) [4] proposals, which
+establish a connection between boundary entanglement entropy (EE) and extremal surfaces
+in the bulk. These proposals suggest that the entanglement structure of the boundary state
+plays a fundamental role in the emergence of bulk geometry. However, understanding how
+this boundary entanglement data reconstructs the full bulk spacetime remains an open
+problem in general.
+
+–1–
+
+JHEP10(2025)079
+
+1 Introduction
+1.1 Problem statement and methodology
+1.2 Summary of results
+1.3 Recovering f from A using inversion of δA
+
+–2–
+
+JHEP10(2025)079
+
+Traditionally, holographic models of field theory phenomena begin with a well-defined
+supergravity action that exhibits clear symmetries. However, the reverse problem known
+as bulk reconstruction is equally intriguing and significantly more challenging. It involves
+reconstructing the dual holographic spacetime, along with any dynamic matter fields, from
+boundary field theory data. This process raises fundamental questions about how the boundary
+is represented within the bulk geometry. While various methods for bulk reconstruction have
+been proposed [5–21], most rely on precise knowledge of boundary quantities. In realistic
+scenarios, however, handling imprecise and discrete boundary data is crucial [22, 23].
+Despite substantial progress, the question of how gravitational degrees of freedom emerge
+from a non-gravitational boundary theory remains one of the deepest mysteries in holography.
+Resolving this issue continues to drive research at the intersection of quantum field theory,
+gravity, and information theory.
+In this work, we take a step toward addressing this challenge by seeking guidance from
+mathematics. Rather than assuming a specific bulk theory from the outset, we explore what
+mathematical structures can reveal about the possible ways in which a bulk spacetime could
+emerge from boundary data. While a complete classification of holographic spacetimes is
+beyond the scope of our study, our research premise is to aim to identify key mathematical
+principles that govern the reconstruction process. By doing so, we hope to gain insights
+into how boundary information constrains the possible geometric structures in the bulk
+and what this implies for the nature of holographic dualities. For instance, in gapped field
+theories, reconstructions using slab-shaped entangling regions fail because entanglement
+entropy saturates due to the finite correlation length [24–26]. This is because of homogeneous
+boundary data; it would be interesting to attempt bulk reconstruction with more generic
+planar deformations [27]. In contrast, ball-shaped entangling regions can probe the full bulk
+geometry, making them more suitable stepping stones for reconstruction. We see this work
+as a first step, laying the groundwork for future investigations that may eventually lead to a
+deeper understanding of the mathematical foundations of holography through entanglement.
+We emphasize that key foundational questions remain unresolved. For example, AdS
+spacetime can clearly be foliated by maximally symmetric minimal surfaces, hemispheres
+of varying radii, hanging from the asymptotic boundary. Yet, it remains an open question
+whether a spacetime M with the same minimal surface areas as for AdS must necessarily
+be identified with AdS itself. From a mathematical perspective, the difficulty of the bulk
+reconstruction problem is not surprising. The problem is related to inverse boundary
+value problems for partial differential equations (PDE), a field of mathematics with many
+long-standing open questions. The inverse problem most closely related to this work is
+the anisotropic Calderón problem on Riemannian manifolds, which investigates whether a
+Riemannian manifold with boundary can be uniquely determined by the so called Dirichletto-Neumann map of the Laplace equation. The Dirichlet-to-Neumann map in general is an
+operator that sends a boundary value for a PDE to the normal derivative of the solution
+corresponding to the boundary value. The connection of the anisotropic Calderón problem
+to the bulk reconstruction in AdS/CFT, is that area data of minimal surfaces determines
+the Dirichlet-to-Neumann map of the minimal surface equation.
+Despite over four decades of active research in inverse problems, the anisotropic Calderón
+problem remains unresolved in dimensions three and higher, with only limited progress
+
+1.1 Problem statement and methodology
+Per holographic duality, the area A of a minimal surface Σ corresponds to the entanglement
+entropy of the associated boundary region A [33],
+SEE =
+
+A
+,
+4GN
+
+(1.1)
+
+where ∂Σ = ∂A and GN is the Newton constant, which can be related with QFT quantities
+in string theory settings. See figure 1 for an illustration. If one knows the metric of
+bulk spacetime, then it would be a straightforward exercise to compute the area A of the
+codimension-two minimal surface Σ. The bulk reconstruction problem arises from knowing,
+in principle, the left-hand side of (1.1), the entanglement entropy, and seeking to determine
+the corresponding bulk geometry that would reproduce the area on the right-hand side.
+This constitutes an inverse problem, where one aims to infer geometric data from boundary
+entanglement information.
+However, it is important to recognize that the quantity in (1.1) is formally divergent, and
+thus the entanglement entropy itself cannot directly serve as input data for reconstructing
+the bulk geometry. Instead, variations of the entanglement entropy relative to a reference
+configuration provide a well-defined and physically meaningful starting point. It is natural,
+then, to ask how does the entanglement entropy responds to changes in external parameters,
+or to deformations in the size or shape of the entangling region A. These variations induce
+corresponding changes δA in the areas of the associated bulk surfaces, thereby encoding
+information about the underlying geometry.
+We investigate the problem of recovering the metric of a spacelike hypersurface from
+the area data of minimal surfaces anchored at infinity of asymptotically AdS spacetime. We
+
+–3–
+
+JHEP10(2025)079
+
+achieved in these cases [28]. For example, even the fundamental question of whether a
+Riemannian manifold with the same boundary and Dirichlet-to-Neumann map as a Euclidean
+domain is Euclidean remains open.
+Nevertheless, recent advances in inverse problems for nonlinear PDEs, originating
+from [29], and subsequently for Laplace-type PDEs from [30, 31], have opened promising new research directions. For a recent survey, see [32]. These breakthroughs leverage
+nonlinearity as a powerful tool in inverse problems, with the higher-order linearization method
+emerging as a key technique. This method involves taking multiple derivatives of the nonlinear
+equation and the associated Dirichlet-to-Neumann map with respect to small parameters
+in the data, enabling the recovery of various coefficients in inverse problems. Recently,
+this approach was employed in [31] to reconstruct two-dimensional minimal surfaces from
+their areas on three-dimensional compact Riemannian manifolds. This general method is
+discussed in detail in section 2.1.
+One of the primary objectives of this work is to establish a link between recent progress in
+the mathematics of inverse problems, particularly the results in [31], and the physics of the RT
+proposal, which relates areas of minimal surfaces to entanglement entropy. Specifically, we aim
+to adapt the higher-order linearization method to the study of the duality in asymptotically
+AdS spacetimes. With natural modifications, we anticipate that these methods will also find
+applications in the context of the HRT proposal for extremal surfaces.
+
+Σs
+Σ0
+z
+
+A
+x
+∂A
+Figure 1. Minimal surfaces anchored on the same boundary disk ∂A in pure AdS (Σ0 ) and perturbed
+AdS (Σs ). This deformation could arise from dialing some external parameter in the dual field theory
+or in an attempt to capture say contribution from additional degrees of freedom to the entanglement
+entropy such as flavors [34–36]. Here z is the holographic coordinate so that the boundary is at z = 0.
+
+restrict our analysis to the recovery of the function f in the metric:
+g(z, x) =
+
+
+1 
+2
+f
+(z,
+x)
+dz
++
+e
+,
+z2
+
+(1.2)
+
+where e is the Euclidean metric and x = (x1 , x2 , . . . , xn−1 ) ∈ Rn−1 . Metrics of this form
+include, for example, time slices of AdS black holes (see section 3). While the methods of [31]
+demonstrate that f can be recovered in the compact setting (and for n = 3), they rely on
+the existence of complex geometric optics (CGO) solutions, or Faddeev’s Green’s functions.
+Unfortunately it is unclear what the corresponding solutions are in the noncompact setting.
+For this reason, we focus on recovering perturbations δf about pure AdS, i.e., f = 1 + δf ,
+utilizing known solutions to the linearized minimal surface equation in pure AdS [37].
+A perturbation δf of the metric (1.2) leads to a perturbation δA. Here, δA is considered
+a function of how minimal surfaces are anchored to infinity z = 0. For example, if minimal
+surfaces are anchored to a boundary of a ball (a sphere) of radius R, we denote the bulk
+area perturbation by δA(R). This δA(R) is supplemented to us by the entanglement entropy
+data about a ball-shaped subregion either by changes in external parameters (temperature)
+or responses to area deformations such as scaling. In the latter case, this means to have
+′ (R), δS ′′ (R), . . ., which translates to δA′ (R), δA′′ (R), . . .. Void of
+access to derivatives δSEE
+EE
+any other length or energy scale, one is bound to making a deformation of the entangling
+region, scaling of the radius being the simplest one.
+One main focus in this work is that we indeed allow general shape deformations. We
+discuss this in section 3 in the context of bulk reconstruction. See also other interesting
+
+–4–
+
+JHEP10(2025)079
+
+y
+
+δSEE = δE ,
+
+(1.3)
+
+where δE is the “hyperbolic” energy of the perturbed state. It has been shown [42] that if
+the bulk metric obeys the linearized vacuum Einstein equations, then (1.3) holds. Thus, this
+condition can be viewed as a holographic dual of the Einstein equations (at the perturbative
+level) in the vacuum. Moreover, [39] established that this condition is both necessary and
+sufficient under broad assumptions. While their work does not reconstruct the bulk metric
+under the additional constraint (1.3), they demonstrate that the bulk metric must satisfy
+the linearized Einstein equations.
+In the mathematics literature, the related Calderón problem (see the earlier discussion) has
+been studied for Einstein metrics in [43]. Although their results are not directly applicable to
+the RT proposal (particularly because the linearized minimal surface equation is a Schrödinger
+equation rather than the Laplace equation), their analysis suggests that bulk reconstruction
+from EEs should be feasible in general settings for Einstein metrics (of Euclidean signature).
+To our knowledge, the RT bulk reconstruction problem under (1.3) has not been studied in
+the mathematical literature, making it a compelling open question.
+1.2 Summary of results
+1.2.1 Recovery of δf (z)
+We first consider the case where δf = δf (z), i.e., δf depends only on z and n ≥ 3. We show
+that δf can be recovered from the area data of minimal surfaces anchored at infinity as
+spheres S n−2 of varying radii R. For n = 3, we derive the explicit inversion formula:
+δf (z) =
+
+
+12GN 
+′
+′′
+−δSEE (z) + z δSEE
+(z) + z 2 δSEE
+(z)
+π
+
+–5–
+
+(1.4)
+
+JHEP10(2025)079
+
+work for shape deformations of balls within holography [27, 38]. It is worth emphasizing
+that in this work we focus on entangling regions which are not strips nor slabs that have
+thus far been the most popular ones within bulk reconstruction. We consider entangling
+regions which are close to balls.
+At first glance, it might seem peculiar that our starting point involves hemisphere
+embeddings, the minimal surfaces in pure AdS. However, this choice is natural when
+considering small entangling regions. In asymptotically AdS spacetimes, the corresponding
+minimal surfaces for small regions remain close to those in pure AdS. Since we are perturbing
+around AdS, there is no intrinsic scale against which “small” can be measured within the
+deformed geometry itself. Therefore, it is both convenient and justified to begin with the
+pure AdS background and parametrize deviations via f (z) = 1 + δf (z). In this way, we
+reconstruct the geometry near the boundary and propose a scheme to recover the full bulk
+geometry beyond leading order.
+We do not impose any assumptions on the equations satisfied by the bulk metric (other
+than requiring it to take the form (1.2)). However, we would like to highlight a connection
+to works such as [39–41], which, as we do, study the bulk reconstruction problem on the
+perturbative level. There δSEE is assumed not only to encode perturbations in the areas
+of minimal surfaces under the RT proposal but also to satisfy
+
+holding for z > 0. This formula indicates that recovering δf (z) at “height” z = R requires
+′ (R) and δS ′′ (R). We
+knowledge of δSEE (R) and the first and second derivatives, δSEE
+EE
+validate this method for the AdS black hole metric:
+f (z) =
+
+1
+=1+
+1 − (z/zH )3
+
+
+
+z
+zH
+
+3
+
+
+
++
+
+z
+zH
+
+6
+
++ ... ,
+
+(1.5)
+
+1.2.2 Recovery of δf (z, x, y)
+Next, we study the case where δf = δf (z, x, y) for n = 2. We assume δf admits a finite-order
+spherical harmonic expansion:
+δf (ρ, θ, ϕ) ≈
+
+k X
+l
+X
+
+alm (ρ)Ylm (θ, ϕ) ,
+
+l=0 m=−l
+
+and derive a general second-order linearization integral identity for δA, schematically written as:
+d d
+δAϵ1 ,ϵ2 =
+dϵ2 dϵ1 ϵ1 =ϵ2 =0
+
+Z
+
+(H1 v1 v2 +H2 (∇v1 ,∇v2 )+H3 ·(v1 ∇v2 +v2 ∇v1 )+H4 w+H5 ·∇w) .
+
+(1.6)
+This identity corresponds to varying how the minimal surface is anchored to infinity with
+respect to two parameters ϵ1 and ϵ2 . This quantity can be considered as the linearized version
+of entanglement density ∂ϵ2 ∂ϵ1 |ϵ1 =ϵ2 =0 Aϵ1 ,ϵ2 of [44, 45]. Here, H1 , . . . , H5 are functions/tensors
+that depend on δf (z, x, y), while v1 , v2 , and w are solutions to the first and second linearized
+minimal surface equation in pure AdS. We expand the coefficients H1 , . . . , H5 in terms of
+the spherical harmonic coefficients alm of δf . Then, by plugging in a special set of solutions
+v1 , v2 , and w into (1.6), we extract information about the coefficients. This is a typical
+argument in inverse problems for PDEs.
+The special solutions we use for v1 and v2 are provided by Hubeny in [37]. These
+solutions take the form Φ(ϕ)Θ(θ), where:
+Φ(ϕ) = linear combination of sin(mϕ) and cos(mϕ)
+1 − cos θ
+Θ(θ) = (1 + m cos θ)
+1 + cos θ
+
+
+m/2
+
+,
+
+with m ∈ Z as a free parameter. By selecting specific values of m for v1 and v2 , we solve for
+the spherical harmonic coefficients up to order l = 4. Recovering coefficients for a general
+spherical harmonic expansion by this method remains an open question, but we note that
+using Hubeny’s solutions in (1.6) provides infinitely many conditions for the coefficients
+of the expansion.
+
+–6–
+
+JHEP10(2025)079
+
+recovering the leading-order perturbation δf = (z/zH )3 from δSEE (R). We derive similar
+formulas δf (z) as (1.4) for n > 3, through higher-order linearizations to order n + 1 or n,
+depending on whether n is odd or even, of δSEE (R) are required for them.
+
+1.3 Recovering f from A using inversion of δA
+Finally, we address the reconstruction of not just the perturbation δf (z), but the entire
+metric function f (z), under the assumption that f remains close to unity (|f (z) − 1| ≪ 1).
+This reconstruction is enabled by the explicit inversion formula (1.4) in dimension 3 and
+its higher-dimensional generalizations (3.33) and (3.39).
+The statement of the problem is the following: given the minimal surface area function
+r 7→ Af (r), associated with an unknown metric function f ≈ 1, we aim to reconstruct f (z)
+entirely from the boundary data Af . The key insight is the first-order approximation
+(1.7)
+
+where δA is the linearized area variation induced by the perturbation δf = 1 − f . Since
+Af − Af =1 is known from boundary measurements, the inversion formula for δf yields a
+first-order approximation of 1 − f (z) in terms of this observable difference.
+While (1.7) captures the leading-order behavior, higher-order corrections O(|f − 1|2 )
+must be incorporated for an accurate reconstruction. To achieve this, we propose an iterative
+scheme inspired by the implicit function theorem:
+1. Initialization: begin with the trivial AdS metric f0 (z) ≡ 1.
+2. Iterative Update: at each step n, refine the estimate via
+fn+1 (z) = fn (z) − (DA|f =1 )−1 (Afn − Af ) ,
+
+(1.8)
+
+where (DA|f =1 )−1 is the inverse operator provided by our explicit linearized inversion
+formula (1.4), Afn is the area data for minimal surfaces computed for fn , and Af is
+the given area data.
+3. Convergence: the iteration proceeds until fn converges, reconstructing the full nonlinear metric f (z).
+This method is particularly suited for low-temperature black hole metrics (1.5) (where
+zH ≫ 1), as they remain perturbatively close to AdS. We discuss convergence criteria,
+numerical implementation, and broader implications in section 5.
+
+2
+
+Bulk reconstruction
+
+In this work, we investigate the problem of recovering bulk geometric deformations from
+corresponding variations in boundary entanglement entropy. Specifically, we address the bulk
+reconstruction problem at the linearized (perturbative) level, working to first order around
+a fixed background geometry. In this regime, changes in entanglement entropy translate
+into variations in the areas of extremal surfaces, which in turn encode information about
+the underlying bulk geometry.
+To make this connection precise, we consider small perturbations of the bulk geometry
+around a fixed background metric g0 , typically taken to be pure AdS unless otherwise
+specified. That is, we write the full metric as
+g = g0 + δg ,
+
+–7–
+
+(2.1)
+
+JHEP10(2025)079
+
+Af − Af =1 = δA + O(|f − 1|2 ) ,
+
+where δg encodes the leading-order deviation from the background. According to the RT
+proposal, the entanglement entropy of a boundary region A in the CFT is dual to the area of
+a codimension-two minimal surface Σ in the bulk satisfying ∂Σ = ∂A. In the perturbative
+setting, this translates into a variation of the minimal surface area,
+A = A0 + δA ,
+
+(2.2)
+
+g=
+
+
+1 
+2
+f
+(z)
+dz
++
+e
+,
+z2
+
+(2.3)
+
+where f (z) depends only on the holographic coordinate z.
+In section 4, we generalize this approach by deforming spherical boundaries using
+trigonometric functions, using solutions by Hubeny [37] (see figure 4). This allows us to give
+an example of a reconstruction of perturbations δf (z, x, y) of the function f = 1 in the metric
+g=
+
+
+1 
+2
+f
+(z,
+x,
+y)
+dz
++
+e
+,
+z2
+
+(2.4)
+
+now depending on all boundary coordinates (x, y) as well as z.
+Throughout the paper, we employ the spherical coordinate system adapted to the
+symmetries of the problem, which make explicit how the radius r of the boundary region
+determines the minimal surface embedding.
+2.1 Review of bulk recovery in the compact case and the higher-order
+linearization method
+As said, we address the bulk reconstruction problem at the perturbative level. Our approach
+is however motivated by recent developments in the nonlinear problem in the compact case,
+where the spacelike hypersurface is a compact Riemannian manifold (as opposed to an
+asymptotically AdS spacetime).
+When the spacelike hypersurface is a compact Riemannian manifold, the recovery of
+the metric from the areas of minimal surfaces anchored at its boundary has been recently
+explored in [31, 46] (see also [17]). The works [31, 46] consider the full nonlinear problem
+of reconstructing the bulk metric from minimal surface area data, and mostly focus on the
+case where the Riemannian manifold is three dimensional and the minimal surfaces are
+two-dimensional. The first of these works [46] recovers the three-dimensional bulk metric
+
+–8–
+
+JHEP10(2025)079
+
+where A0 is computed in the background geometry and δA captures the leading-order change
+due to δg. A more general, nonlinear, setting is discussed in section 5.
+Given the knowledge of how entanglement entropy changes under small deformations of
+the entangling region or under variations of external parameters such as temperature, the
+RT formula allows us to relate these variations to the area corrections via δA = 4GN δSEE .
+The central inverse problem we address is to reconstruct the metric perturbation δg from
+this area data.
+In section 3, we focus on spherical boundary regions, where ∂Σ are spheres of radii r > 0
+at the boundary of AdS. It is worth emphasizing that we keep the boundary regions intact, so
+the entanglement data that induces area perturbations stem from varying external parameters.
+Using these, we reconstruct perturbations δf (z) of the function f = 1 in the metric
+
+∂A
+
+F3
+
+A
+F1
+
+F2
+
+under additional geometric and topological assumptions. The second [31] recovers individual
+two-dimensional minimal surfaces in a general setting but does not address how these surfaces
+can be “glued” together to reconstruct the full three-dimensional bulk metric.
+It remains an open question whether the methods developed in [31, 46] can be extended
+to non-compact Riemannian manifolds with asymptotic infinity. Our linearized approach
+avoids the potential complications of these methods in the non-compact setting while still
+providing physically relevant insights into the bulk reconstruction problem. The restriction
+to first-order perturbations also allows us to develop reconstruction methods that are also
+computationally tractable. To provide context and motivation for our approach, we next
+outline how metric recovery is achieved in the compact case and under what conditions. This
+discussion naturally leads into the methodology employed in the present work.
+The recovery of minimal surfaces from the area data of minimal surfaces in [31] relies
+on the higher-order linearization method, a technique recently developed in the study of
+inverse problems for nonlinear partial differential equations [29, 30, 47]. To explain the
+method in more detail, suppose that X is a manifold with boundary ∂X equipped with
+a Riemannian metric g. Consider also an embedded minimal surface Σ whose boundary
+∂Σ lies entirely in ∂X.
+Next consider nearby minimal surfaces, which can be considered as solutions u = uµ to
+the minimal surface equation (see e.g. [4, appendix B.2])
+
+
+
+
+g αβ ∂α ∂β uµ + Γµνλ ∂α uν ∂β uλ − Γγαβ ∂γ uµ = 0 ,
+
+(2.5)
+
+where α, β correspond to coordinates on the surface and the other Greek indices go from
+1, . . . , dim(X). We let the nearby solutions anchor to ∂X in a manner, which is described
+by three deformations F1 , F2 , and F3 of ∂Σ and their magnitudes ϵ1 , ϵ2 , and ϵ3 . This gives
+us a three parameter family of minimal surfaces, which we write as
+uϵ1 F1 +ϵ2 F2 +ϵ3 F3 .
+Each uϵ1 F1 +ϵ2 F2 +ϵ3 F3 is the unique solution to the minimal surface equation determined by
+the deformation ϵ1 F1 + ϵ2 F2 + ϵ3 F3 of ∂Σ, illustrated in figure 2, and ϵ1 = ϵ2 = ϵ3 = 0
+corresponds to the original minimal surface Σ with boundary ∂Σ. In [31], the minimal
+surfaces are two-dimensional, so the functions Fj are defined on one-dimensional manifolds.
+
+–9–
+
+JHEP10(2025)079
+
+Figure 2. Illustration of the boundary deformation δ(∂A) of the entangling region A enclosed by the
+black curve ∂A = ∂Σ. We will limit on deforming ∂A = S 1 , however.
+
+In the current work, the functions Fj can for example be defined on the circle S 1 , which
+corresponds to the intersection of a hemisphere with the asymptotic infinity. See section 3.2.
+(To avoid possible confusion, we mention that [31] uses Fermi-coordinates to write the
+minimal surface equation (2.5).)
+Let us use the notation ϵ = 0 to denote ϵ1 = ϵ2 = ϵ3 = 0. By taking the derivative ∂ϵj |ϵ=0
+of the minimal surface uϵ1 F1 +ϵ2 F2 +ϵ3 F3 , we have that the function
+v j :=
+
+∂
+uϵ F +ϵ F +ϵ F
+∂ϵj ϵ=0 1 1 2 2 3 3
+
+(2.6)
+
+∆g v + qv = 0
+
+(2.7)
+
+(assuming in addition that the variation in ϵj is normal, i.e., g(vj , T Σ) = 0). Above, g = gαβ
+is the induced metric on the minimal surface (which we aim to recover), and q is a certain
+geometry dependent function on the minimal surface. If the area data of two-dimensional
+minimal surfaces is known, it is possible to recover g up to a conformal transformation by
+studying solutions to the linearized equation (2.7) as was shown in [31]. In other words, the
+first linearization allows us to recover the minimal surface up to a conformal transformation.
+(In fact, this recovery corresponds to a solution [31] to a Calderón inverse problem on Riemann
+surfaces.) Due to the coordinate invariance of the problem, the recovery of g is, at best,
+possible only up to an isometry.
+To recover the remaining unknown conformal factor, the argument in the compact case
+proceeds to higher-order linearizations. By applying the area data to the second linearizations
+∂2
+uϵ F +ϵ F +ϵ F ,
+∂ϵj ∂ϵk ϵ=0 1 1 2 2 3 3
+
+(2.8)
+
+one can recover quantities such as the extrinsic curvature, i.e., the second fundamental
+form. Roughly speaking, the recovery of the quantities here relies on demonstrating that
+products of three complex geometric optics (CGO) solutions, along with their gradients,
+to the linearized equation (2.7) form a complete set. Once the coefficients of the second
+linearization of the minimal surface equation are determined, one proceed to the third
+linearization. The conformal factor can then be recovered from the third linearization and
+the area data. See [31] for these steps.
+To construct the full three-dimensional bulk metric, the recovered two-dimensional
+minimal surfaces must still be glued together. For this, one at least needs to assume that all
+of the bulk can be reached by some minimal surfaces, which are anchored on the boundary
+entangling regions.1 In [46], this gluing was achieved under specific curvature and foliation
+assumptions.
+In summary, the recovery process of the bulk metric in the compact case proceeds
+as follows:
+1
+
+We note that holographic geometries have so called entanglement shadows [48, 49], which are regions
+which cannot be probed by any minimal or extremal surfaces. The study of such geometries may require
+additional input beyond spatial entanglement data [50].
+
+– 10 –
+
+JHEP10(2025)079
+
+solves the linearized minimal surface equation
+
+1. First linearization: recover the minimal surface up to a conformal transformation.
+2. Second linearization: solve the second linearized problem to prepare for the third
+linearization.
+3. Third linearization: recover the conformal factor, completing the recovery of the minimal
+surface up to an isometry.
+4. Gluing: combine the recovered minimal surfaces to construct the full 3-dimensional
+bulk metric.
+
+2.2 References to mathematical literature
+Recent mathematical developments in bulk reconstruction include the work [51], which
+reconstructs the bulk metric from renormalized areas of minimal surfaces in asymptotically
+hyperbolic manifolds by “Taylor” expanding the metric at asymptotic boundary. In compact
+settings, inverse problems for minimal surfaces have been investigated in various geometric
+contexts [52–54], including Euclidean space Rn . The Calderón problem on hyperbolic
+manifolds was considered by [55]. In the AdS/CFT context, [56] established connections
+between renormalized areas of minimal surfaces and the Dirichlet-to-Neumann map for the
+(linearized) minimal surface equation.
+
+3
+
+Linearized problem retaining Poincaré invariance
+
+3.1 Derivation of the minimal surface equation
+In this subsection we derive the minimal surface equation on a time slice of an asymptotically
+AdS spacetime. We consider an asymptotically AdSn+1 metric of the form
+l2
+1
+−
+dt2 + f (z)dz 2 + e ,
+2
+z
+f (z)
+
+
+gAdS =
+
+
+
+(3.1)
+
+where f is an arbitrary function satisfying f (0) = 1, l is the radius of curvature, and e is
+the flat Euclidean metric in Rn−1 . Notice that we are assuming homogeneity and isotropy to
+start with. The induced metric on spacelike hypersurfaces of constant t is then given by
+g=
+
+
+l2 
+2
+f
+(z)dz
++
+e
+.
+z2
+
+– 11 –
+
+(3.2)
+
+JHEP10(2025)079
+
+We anticipate that these steps can ultimately be extended to the non-compact case as well.
+It is worth noting that the solutions to each of these steps are not very explicit.
+To the best of our knowledge, it remains unknown how any of the four steps outlined
+above can be accomplished when the spacelike hypersurface under study is non-compact
+and possesses an asymptotic infinity. In this work, we demonstrate that these steps can
+be applied at the perturbative level in certain physically motivated special cases. Due to
+the special form of the metric we study (see (3.1) below) the isometry in the recovery is in
+fact just the identity. Interestingly, at the perturbative level, we also find that the steps
+outlined above can have surprisingly explicit solutions.
+
+This is an asymptotically hyperbolic Riemannian metric on a manifold M of dimension n.
+Conjoining the conformal infinity of AdS to the bulk manifold, we can think of M as a
+manifold with a boundary separated by infinite proper distance from the points in the bulk.
+The boundary corresponds to the value of the holographic coordinate z = 0.
+Now consider an embedded hypersurface Σ ⊂ M such that ∂Σ ⊂ ∂M . Let x = (xi ), i =
+1, . . . , n − 1 be the boundary coordinates of M and parametrize the hypersurface in terms of
+x; the embedding of Σ then is F (x) = (x, z(x)). The chosen embedding works at least locally,
+points where ∇z = (∂x1 z, . . . , ∂xn−1 z) becomes singular have to be dealt with separately.
+The differential map of F is
+I
+dF (x) = (n−1)×(n−1)
+∇z(x)
+
+#
+
+(3.3)
+
+so that the coordinate basis vectors are mapped as
+dF (∂xi ) = ∂xi +
+
+∂z
+∂z .
+∂xi
+
+(3.4)
+
+The induced metric on Σ then reads
+l2
+∂z ∂z
+gΣ = F g = g(dF (∂xi ), dF (∂xj ))dx dx = 2 f (z) i j dxi dxj + e
+z
+∂x ∂x
+∗
+
+i
+
+j
+
+
+
+
+
+.
+
+(3.5)
+
+The area of Σ is obtained by integrating the induced volume form over the submanifold
+Z
+
+q
+
+det(gΣ )dx1 ∧ · · · ∧ dxn−1 ,
+
+AΣ =
+
+(3.6)
+
+x(Σ)
+
+where the induced metric determinant is given by the formula
+det(gΣ ) =
+
+
+
+l2(n−1)
+−1
+det(e)
+det
+I
++
+f
+(z)e
+(·,
+∇z)
+⊗
+∇z
+.
+(n−1)×(n−1)
+z 2(n−1)
+
+(3.7)
+
+With Sylvester’s determinant identity
+
+
+
+
+det I + ⃗v ⊗ w
+⃗T = 1 + w
+⃗ T · ⃗v ,
+
+(3.8)
+
+we simply get
+det(gΣ ) =
+
+l2(n−1)
+(1 + f (z)|∇z|2e ) det(e) ,
+z 2(n−1)
+
+(3.9)
+
+where |·|e is the norm with respect to the Euclidean metric. The hypersurface area then
+becomes
+q
+
+AΣ = ln−1
+
+Z
+x(Σ)
+
+1 + f (z(xi ))|∇z(xi )|2e q
+z(xi )n−1
+
+– 12 –
+
+det(e)dx1 ∧ · · · ∧ dxn−1 .
+
+(3.10)
+
+JHEP10(2025)079
+
+"
+
+With AdS asymptotics this is a divergent quantity, which from a physical point of view must be
+understood in a renormalized sense. The Euler-Lagrange equation for the area functional reads
+∂L
+∂
+0=
+− i
+∂z
+∂x
+
+
+=
+
+q
+
+det(e) 
+
+
+
+∂L
+∂(∂i z)
+
+
+q
+
+f ′ (z)|∇z|2e
+q
+
+2z n−1
+
+1 + f (z)|∇z|2e
+
+− (n − 1)
+
+
+
+1 + f (z)|∇z|2e
+
+
+
+zn
+
+
+
+
+
+q
+∂
+f (z)eij ∂j z
+.
+q
+− i  det(e)
+∂x
+z n−1 1 + f (z)|∇z|2
+
+(3.11)
+
+Dividing by
+
+det(e), we can write the divergence term in covariant form
+
+zf ′ (z)|∇z|2e − 2(n − 1)(1 + f (z)|∇z|2e )
+q
+
+2z n 1 + f (z)|∇z|2e
+
+
+
+− dive 
+
+f (z)e−1 (∇z, ·)
+q
+
+z n−1 1 + f (z)|∇z|2e
+
+
+ = 0.
+
+(3.12)
+
+This is the full nonlinear minimal surface equation, which is in general very difficult to
+solve. Some useful closed-form solutions are known in pure AdS where f = 1, e.g., an
+(n − 1)-dimensional hemisphere with the equator glued to an (n − 2)-dimensional sphere
+on the boundary [37].
+Ideally, we would like to recover the unknown function f (z) assuming that we know the
+associated minimal surface areas based on entanglement entropy data on the boundary. An
+explicit inversion is feasible at least when the boundary entangling region is formed by an
+infinite strip/slab [8]. However, as discussed in Introduction, there are severe limitations to
+bulk reconstruction using strip-like configurations. To bypass these complications, we shall
+consider the simplest possible smooth and bounded entangling regions, i.e., balls. In this case
+an explicit inversion of f (z) via methods of [8, 18, 22] relying on symmetry arguments seems
+to fail.2 Therefore, instead of trying to solve the full problem right away we first consider the
+linearized problem. In the end, it turns out that the solution to the linearized problem can
+be used to construct the solution to the nonlinear problem with arbitrary precision.
+3.2 Scaling
+Consider now a perturbed metric
+gs =
+
+
+l2 
+2
+f
+(z)dz
++
+e
+,
+s
+z2
+
+(3.13)
+
+where fs (z) = 1 + s δf (z) and δf is an unknown perturbation, |s| ≪ 1, and l is the radius
+of curvature. e corresponds to the line element of other directions which do not play a key
+role in what follows. Minimal surfaces Σs of the above metric have an infinite area. However,
+2
+
+Given a strip-like entangling region, the Hamiltonian associated with the bulk surface area involves a
+cyclic coordinate, thanks to which an explicit relation between the strip width and the maximum bulk reach
+of the minimal surface can be found. This then admits of explicit inversion of f (z) in terms of area data. For
+spherical regions, similar symmetry arguments do not work: although in pure AdS a choice of coordinate
+system adapted to the dilatation symmetry of the AdS metric enables identification of a first integral of the
+Hamiltonian [57], in our case this symmetry is in general spoiled by the presence of f (z).
+
+– 13 –
+
+JHEP10(2025)079
+
+e
+
+p
+
+z
+
+θ
+ρ
+
+y
+Figure 3. Our convention for the spherical coordinate system. Here θ = π/2 corresponds to the
+conformal boundary.
+
+linearization of the area with respect to s yields a finite quantity if we impose sufficiently
+strong decay conditions on the perturbation δf near the conformal boundary. From a field
+theory perspective, this corresponds to focusing on deformations of the quantum state, i.e., no
+operators have sources that would trigger a renormalization group flow. Then we can pose the
+following inverse problem: Given linearized area data associated to hemispheres that foliate
+(at least an open subset of) the interior manifold, and its first and second radial variations,
+find δf . A natural reference frame for studying this setup is the spherical coordinate system
+x = ρ sin θ cos ϕ ,
+
+y = ρ sin θ sin ϕ ,
+
+z = ρ cos θ.
+
+(3.14)
+
+Now we choose the radial coordinate ρ instead of z as the embedding function, which we
+parametrize in terms of the angles θ, ϕ. The minimal surface solution depends on s, which
+parametrizes the family of perturbed metrics, so we denote the solution by ρs = ρs (θ, ϕ).
+Moreover, the area functional itself now explicitly depends on s so we write it as
+Z
+
+As [ρs ] =
+
+Ls [ρs , ∇ρs ] ,
+
+(3.15)
+
+where Ls is the associated Lagrangian that depends on s. Linearization of the area with
+respect to s is
+d
+δA(ρ0 ) :=
+As [ρs ] =
+ds s=0
+
+Z
+
+L̇0 [ρ0 , ∇ρ0 ] ,
+
+(3.16)
+
+where ρ0 is the hemisphere solution satisfying
+ρ0 (θ =
+
+π
+, ϕ) = r > 0.
+2
+
+Notice that after differentiating the integrand and applying the chain rule, only the L̇0 term
+is non-vanishing since ρ0 is a minimizer. δA is now a function that takes in a radius r and
+
+– 14 –
+
+JHEP10(2025)079
+
+ϕ
+
+x
+
+outputs a real number. An explicit calculation then gives that
+δA(r) =
+
+l2
+2
+
+Z 2π Z π/2
+0
+
+δf (r cos θ) tan2 θ sin θ dθdϕ =
+
+0
+
+πl2
+r
+
+Z r 2
+r − s2
+0
+
+s2
+
+δf (s)ds ,
+
+(3.17)
+
+where we performed a change of variables s = r cos θ. We see that the integral is convergent
+if and only if δf (z) ∼ z a for a > 1 as z → 0. Differentiating once with respect to r, we get
+δA(r)
+δA (r) = −
++ 2πl2
+r
+
+Z r
+
+(3.18)
+
+δA(r) δA′ (r)
+δf (r)
+−
++ 2πl2 2 ,
+2
+r
+r
+r
+
+(3.19)
+
+0
+
+Differentiating a second time gives
+δA′′ (r) =
+
+from which we get the following inversion formula for δf
+
+1 
+′
+2
+′′
+−δA(r)
++
+r
+δA
+(r)
++
+r
+δA
+(r)
+2πl2
+
+4GN 
+′
+2
+′′
+=
+−δS
+(r)
++
+r
+δS
+(r)
++
+r
+δS
+(r)
+.
+EE
+EE
+EE
+2πl2
+
+δf (r) =
+
+(3.20)
+
+Hence, if the perturbed area data for hemispheres is known, corresponding to the entanglement
+entropy variations, the metric perturbation δf can be uniquely recovered. We will provide
+an explicit example below.
+Generalization to higher dimensions. Now we consider a perturbed metric on a time
+slice of AdSn+1
+g=
+
+
+l2 
+2
+(1
++
+s
+δf
+(z))dz
++
+e
+,
+z2
+
+(3.21)
+
+where e is the (n − 1)−dimensional Euclidean metric. For simplicity, let us set l = 1. Again,
+we transform into the spherical coordinate system ρ, θ, ϕ1 , . . . , ϕn−2
+x1 = ρ sin θ sin ϕ1 · · · sin ϕn−2
+x2 = ρ sin θ sin ϕ1 · · · sin ϕn−3 cos ϕn−2
+..
+.
+xn−1 = ρ sin θ cos ϕ1
+z = ρ cos θ ,
+
+(3.22)
+
+where the metric becomes
+
+1
+g= 2
+(1 + s δf (z) cos2 θ)dρ2 − 2s δf (z)ρ sin θ cos θdρdθ
+ρ cos2 θ
+
+
+ρ2 (1 + s δf (z) sin2 θ)dθ2 + ρ2 sin2 θgS n−2 ,
+
+(3.23)
+
+where gS n−2 is the unit S n−2 metric. For a fixed s, parametrize the minimal hypersurface
+Σs by ρs = ρs (θ, ϕi ). The induced metric gΣs on the hypersurface looks very complicated
+
+– 15 –
+
+JHEP10(2025)079
+
+δf (s)
+ds .
+s2
+
+′
+
+but since ρ0 corresponds to the (n − 1)-hemisphere solution with ∂θ ρ0 = ∂ϕi ρ0 = 0, the only
+nonzero component of the s-derivative of the induced metric is
+(ġΣ0 )θθ = tan2 θ δf (ρ0 cos θ) .
+
+(3.24)
+
+From the determinant formula
+det(gΣs ) = ϵa1 ...an−1 (gΣs )θa1 (gΣs )ϕ1 a2 · · · (gΣs )ϕn−2 an−1 ,
+
+(3.25)
+
+where ϵa1 ...an−1 is the Levi-Civita symbol, we get
+(3.26)
+
+Perturbation of the hypersurface volume then becomes
+δA(ρ0 ) ≡
+
+d
+As (ρs ) =
+ds s=0
+
+Z
+
+q
+d
+det(gΣs )
+n−1 ds s=0
+S+
+
+1
+=
+2
+
+Z
+S n−2
+
+!
+
+ Z π/2
+
+q
+
+δf (ρ0 cos θ) tan
+
+det(gS n−2 )
+
+n−1
+
+θ sin θdθ
+
+0
+n−1
+
+1
+1
+(1 − x2 ) 2
+= Vol(S n−2 )
+δf (ρ0 x)
+dx ,
+2
+xn−1
+0
+
+Z
+
+(3.27)
+
+n−1
+where S+
+denotes the northern hemisphere. Notice that to have a finite quantity on the
+right hand side, we need to impose the decay condition δf (z) ∼ z a with a > n − 2 when
+approaching the boundary. Denoting simply r = ρ0 and making the change of variables
+y = rx in the integral, we have
+
+1
+δA(r) = Vol(S n−2 )r−1
+2
+
+n−1
+
+(r2 − y 2 ) 2
+δf (y)
+dy .
+y n−1
+0
+
+Z r
+
+(3.28)
+
+Differentiating with respect to r gives
+n−3
+
+r
+δA(r) 1
+(r2 − y 2 ) 2
+δA (r) = −
++ Vol(S n−2 )(n − 1)
+δf (y)
+dy ,
+r
+2
+y n−1
+0
+
+Z
+
+′
+
+(3.29)
+
+which we write in an equivalent form
+n−3
+
+r
+1 d
+n−1
+(r2 − y 2 ) 2
+(r δA(r)) =
+Vol(S n−2 )
+δf (y)
+dy .
+r dr
+2
+y n−1
+0
+
+Z
+
+(3.30)
+
+We can solve this for δf by iterative differentiation. For convenience, first introduce a
+differential operator Dr ≡ r−1 (d/dr). Then acting ⌈(n − 3)/2⌉ times with Dr on both
+sides yields
+Z r
+δf (y)
+
+
+dy,
+
+
+n−1
+n−1
+(n − 1)!!
+⌈ 2 ⌉
+0 y
+n−2
+Dr
+(r δA(r)) =
+Vol(S
+)× Z r
+
+δf (y)
+2
+
+
+p
+
+n−1
+2
+0
+
+– 16 –
+
+y
+
+r −y
+
+n ≥ 3 odd
+(3.31)
+dy,
+2
+
+n ≥ 4 even .
+
+JHEP10(2025)079
+
+d
+det(gΣs ) = tan2(n−1) θ δf (ρ0 cos θ) det(gS n−2 ) .
+ds s=0
+
+Suppose now that n ≥ 3 is odd. Acting one more time with Dr , we finally get
+n+1
+
+Dr 2 (r δA(r)) =
+
+(n − 1)!!
+δf (r)
+Vol(S n−2 ) n .
+2
+r
+
+(3.32)
+
+Thus, we obtain an inversion formula
+δf (r) =
+
+n+1
+8GN rn
+2
+D
+(r δSEE (r)) ,
+r
+(n − 1)!!Vol(S n−2 )ln−1
+
+n odd ,
+
+(3.33)
+
+Z x
+a
+
+p
+
+u(y)
+dy = h(x) .
+x2 − y 2
+
+(3.34)
+
+To solve this, we first replace x by s, then multiply by 2s(x2 − s2 )−1/2 and integrate with
+respect to s
+Z x
+
+√
+
+a
+
+2s
+2
+x − s2
+
+Z s
+a
+
+p
+
+u(y)
+dyds =
+s2 − y 2
+
+Z x
+a
+
+2sh(s)
+√
+ds .
+x2 − s 2
+
+Exchanging the order of integration and making a change of variables s =
+we get on the left hand side
+Z x
+a
+
+2s
+√
+2
+x − s2
+
+Z s
+
+u(y)
+p
+dy ds =
+s2 − y 2
+a
+
+Z x
+
+(3.35)
+p
+
+y 2 + (x2 − y 2 )t,
+
+!
+
+Z x
+
+2s
+√
+p
+ds u(y)dy
+2
+x − s 2 s2 − y 2
+a
+y
+
+Z x Z 1
+1
+√ dt u(y)dy
+√
+=
+1−t t
+a
+0
+Z x
+
+u(y)dy ,
+
+= B(1/2, 1/2)
+
+(3.36)
+
+a
+
+where B is the beta function whose value at the given point is B(1/2, 1/2) = π. This then
+yields the solution
+2 d
+u(x) =
+π dx
+
+Z x
+
+√
+
+a
+
+sh(s)
+ds .
+x2 − s 2
+
+(3.37)
+
+Applying this formula to the even case in (3.31), we obtain
+(n − 1)!!
+δf (r)
+2 d
+Vol(S n−2 ) n−1 =
+2
+r
+π dr
+
+Z r
+0
+
+⌈ n−1 ⌉
+
+sDs 2 (s δA(s))
+√
+ds ,
+r 2 − s2
+
+(3.38)
+
+which yields the inversion formula
+16GN rn−1
+d
+δf (r) =
+n−2
+n
+(n − 1)!!πVol(S
+)l dr
+
+Z r
+0
+
+⌈ n−1 ⌉
+
+sDs 2 (s δSEE (s))
+√
+ds ,
+r 2 − s2
+
+where we again restored the AdS radius.
+
+– 17 –
+
+n even ,
+
+(3.39)
+
+JHEP10(2025)079
+
+where we reinstated the AdS radius l. With n = 3 this yields the formula (3.20) we obtained
+above as a special case.
+Suppose then that n ≥ 4 is even. We then have an integral equation of type [58, eq. (1.65)]
+
+Example: AdS black hole. To demonstrate our new techniques, we show how to recover
+the Schwarzschild-AdS geometry to linear order from boundary data. We focus here on the
+n = 3 case and write the asymptotically AdS4 metric in the gauge
+g=
+
+
+l2 
+−1 2
+2
+2
+2
+−f
+(z)
+dt
++
+f
+(z)dz
++
+dx
++
+dy
+.
+z2
+
+(3.40)
+
+As before, we are sticking to the field theory being homogeneous and isotropic. The induced
+metric on a time slice reads
+gind =
+
+
+l2 
+2
+2
+2
+f
+(z)dz
++
+dx
++
+dy
+,
+z2
+
+(3.41)
+
+δSEE (R) =
+
+4π 4 l2 R3
+.
+27GN
+
+(3.42)
+
+By the RT formula, this is dual to perturbation of the area of a minimal surface anchored on
+the boundary of the disk on the boundary. The inversion formula (3.20) then guarantees that
+the bulk geometry can be recovered from the data to linear order; the formula yields in this case
+δf (R) =
+
+
+
+1
+64π 3 R3
+′
+2
+′′
+4G
+−δS
+(R)
++
+R
+δS
+(R)
++
+R
+δS
+(R)
+=
+.
+EE
+N
+EE
+EE
+2πl2
+27
+
+(3.43)
+
+Identifying a parameter s = (RT )3 , we get
+f (z) = 1 + sδf + . . . = 1 +
+
+64π 3 T 3 3
+z + ... .
+27
+
+(3.44)
+
+On the other hand, for the Schwarzschild-AdS metric the factor f (z) in (3.41) can be
+expanded as a geometric series outside the black hole as
+1
+
+f (z) =
+1−
+
+
+
+z
+zH
+
+
+3 = 1 +
+
+z
+zH
+
+3
+
+
+
++
+
+z
+zH
+
+6
+
++ ... .
+
+(3.45)
+
+Recalling the relation T = 3/(4πzH ), we see that (3.44) indeed matches to first order
+with (3.45).
+
+4
+
+Shape deformation
+
+Let us now look at a perturbed metric
+gs =
+
+
+l2 
+2
+2
+2
+(1
++
+sδf
+(x,
+y,
+z))dz
++
+dx
++
+dy
+,
+z2
+
+(4.1)
+
+where the unknown perturbation δf now depends on all the Cartesian coordinates (x, y, z).
+It is again more convenient to work in spherical coordinates (ρ, θ, ϕ) so let us rename our
+unknown function as
+δ f˜(ρ, θ, ϕ) ≡ δf (ρ sin θ cos ϕ, ρ sin θ sin ϕ, ρ cos θ) = δf (x, y, z) .
+
+– 18 –
+
+(4.2)
+
+JHEP10(2025)079
+
+and our aim is to recover f (z) at the perturbative level.
+Our boundary data consists of temperature perturbation of entanglement entropy associated with a disk of radius R, which is given by (see appendix A)
+
+Since the perturbation has a more complicated dependence on the bulk coordinates, the
+simple analytic approach described in previous sections no longer works. Instead, we need to
+consider more general boundary curves for minimal surfaces and study the second linearization
+of the perturbed minimal surface equation. Let F = ϵ1 f1 + ϵ2 f2 + ϵ1 ϵ2 f12 : S 1 → R be the
+boundary curve, and let ρFs be the minimal surface in (M, gs ) with boundary curve given
+by F . First, the area perturbation reads
+d
+As (ρFs ) =
+ds s=0
+
+Z
+
+L̇0 (ρF0 , ∇ρF0 ) ,
+
+(4.3)
+
+Z
+
+L̇0 (ρF0 , ∇ρF0 )
+Z 2π Z π/2
+
+=
+0
+
+0
+
+
+
+
+
+F 2
+2
+2
+F 2
+3
+F
+F
+4
+F 2
+δ f˜ (∂ϕ ρ0 ) +sin θ cos θ(∂θ ρ0 ) −2 sin θ cos θρ0 ∂θ ρ0 +sin θ(ρ0 )
+q
+dθdϕ ,
+cos2 θ
+2ρF (∂ ρF )2 +sin2 θ(∂ ρF )2 +sin2 θ(ρF )2
+ϕ 0
+
+0
+
+θ 0
+
+0
+
+(4.4)
+where δ f˜ = δ f˜(ρF0 (θ, ϕ), θ, ϕ) and ρF0 = ρF0 (θ, ϕ). Recalling that
+δ f˜(ρF0 (θ, ϕ), θ, ϕ) = δf (ρF0 (θ, ϕ) sin θ cos ϕ, ρF0 (θ, ϕ) sin θ sin ϕ, ρF0 (θ, ϕ) cos θ)
+
+(4.5)
+
+we observe that the integral is convergent only if δf (x, y, z) = O(z 2 ) as z → 0, i.e., δf (x, y, 0) =
+∂z δf (x, y, 0) = 0 for all x, y. Then also ∂x δf (x, y, 0) = ∂y δf (x, y, 0) = 0 for all x, y.
+The first linearization of (4.3) with respect to boundary values is
+d d
+As (ρFs ) =
+dϵ1 ds s=0
+
+Z 
+
+∂ρ L̇0 (ρF0 , ∇ρF0 )
+
+d F
+d F
+ρ + ∂∇ρ L̇0 (ρF0 , ∇ρF0 ) · ∇
+ρ
+dϵ1 0
+dϵ1 0
+
+
+
+.
+
+(4.6)
+
+Denoting vi = dϵdi ρF0 |ϵi =0 , i = 1, 2, and w = dϵd2 dϵd1 ρF0 |ϵ1 =ϵ2 =0 , the second linearization is
+d d
+d
+As (ρFs ) =
+dϵ2 dϵ1 ϵ1 =ϵ2 =0 ds s=0
+
+Z
+
+( ∂ρ2 L̇0 (ρ0 , ∇ρ0 )v1 v2 + ∂∂i ρ ∂∂j ρ L̇0 (ρ0 , ∇ρ0 )∂i v1 ∂j v2
++∂ρ ∂∂i ρ L̇0 (ρ0 , ∇ρ0 )(v1 ∂i v2 + v2 ∂i v1 )
+
+
++∂ρ L̇0 (ρ0 , ∇ρ0 )w + ∂∂i ρ L̇0 (ρ0 , ∇ρ0 )∂i w ,
+
+(4.7)
+
+where ρ0 is the hemisphere solution; then, ∇ρ0 = (∂θ ρ0 , ∂ϕ ρ0 ) = 0. On the l.h.s. we have
+our boundary data: second linearized area perturbations, i.e. second order small changes
+in area perturbations when the boundary disk is slightly deformed so that the deformation
+depends on two parameters. In the r.h.s. integral we have terms containing derivatives of the
+Lagrangian and solutions to the first and second linearized minimal surface equation in pure
+AdS, vi and w respectively. The functions vi can be chosen to be Hubeny’s first-order solutions
+ul (θ, ϕ) = tanl (θ/2)(1 + l cos θ)eilϕ ,
+
+– 19 –
+
+(4.8)
+
+JHEP10(2025)079
+
+where ρF0 is the minimal surface in pure AdS given by the boundary curve F . As before,
+we assume that this is our regular data, which is the case only if δ f˜ satisfies certain fall-off
+conditions. To see this, write the above integral explicitly in spherical coordinates
+
+(b) k = 1
+
+(c) k = 2
+
+(d) k = 3
+
+(e) k = 4
+
+(f) k = 5
+
+Figure 4. Linearized solutions uk to the minimal surface equation around the exact hemisphere
+solution in pure AdS.
+
+whereas for w we do not have explicit solutions ready at hand. Therefore we need to first
+solve the second linearized minimal surface equation, which reads (see appendix B)
+∂2w ∂2w
+∂w
+2
+∂uk ∂ul ∂uk ∂ul
+sin θ 2 +
++ tan θ (sin2 θ + 1)
+=
+sin2 θ
++
+∂θ
+∂ϕ2
+∂θ
+ρ0
+∂θ ∂θ
+∂ϕ ∂ϕ
+
+
+2
+
+
+
+.
+
+(4.9)
+
+The form of the l.h.s. is identical to the first linearization of the minimal surface equation, but
+now the first-order solutions appear on the r.h.s. as a source so that the equation becomes
+inhomogeneous. Notice that if we have a solution w to the inhomogeneous equation, then also
+w + v solves the inhomogeneous equation when v is a solution to the homogeneous equation,
+i.e., a solution to the first linearized minimal surface equation (e.g., one of Hubeny’s solutions).
+Remarkably, one can verify that given two first-order solutions uk , ul on the r.h.s. as a
+source, one solution to the second linearized equation is
+w = ρ−1
+0 uk ul .
+
+(4.10)
+
+Since the first-order solutions satisfy the homogeneous equation, we are free to add any
+Hubeny’s solution uj to the second-order solution
+w = ρ−1
+0 uk ul + u j .
+
+(4.11)
+
+For simplicity, we only consider second-order solutions of the form (4.10). With these choices
+
+– 20 –
+
+JHEP10(2025)079
+
+(a) k = 0
+
+of linearized solutions, the integral identity becomes
+d d
+d
+As (ρFs ) =
+dϵ2 dϵ1 ϵ1 =ϵ2 =0 ds s=0
+
+Z
+
+( (∂ρ2 L̇0 (ρ0 , 0) + ρ0 −1 ∂ρ L̇0 (ρ0 , 0))uk ul
++∂∂i ρ ∂∂j ρ L̇0 (ρ0 , 0)∂i uk ∂j ul
+
+
++(∂ρ ∂∂i ρ L̇0 (ρ0 , 0) + ρ0 −1 ∂∂i ρ L̇0 )(uk ∂i ul + ul ∂i uk ) .
+(4.12)
+The above Lagrangian derivatives are, explicitly,
+
+
+
+∂∇ρ ∂ρ L̇0 (ρ0 , 0) = 
+
+
+
+
+sin θ tan θ δ f˜(ρ0 , θ, ϕ) − ρ ∂ρ δ f˜(ρ0 , θ, ϕ)
+ρ20
+
+δ f˜(ρ0 , θ, ϕ)
+∂∂i ρ ∂∂j ρ L̇0 (ρ0 , 0)
+=
+i,j∈{θ,ϕ}
+4ρ20 cos2 θ
+
+
+(4.13)
+(4.14)
+(4.15)
+
+
+
+
+, 0
+
+(1 + 3 cos 2θ) sin θ
+0
+0
+(3 + cos 2θ) csc θ
+
+(4.16)
+!
+
+.
+
+(4.17)
+
+Next, we expand δ f˜ in spherical harmonics as
+δ f˜(ρ, θ, ϕ) =
+
+X
+
+alm (ρ)Ylm (θ, ϕ) ,
+
+(4.18)
+
+l,m
+
+where alm = 0 whenever l − m is even; this enforces the premise that δ f˜ vanishes on the
+boundary when θ → π/2 with ρ > 0 fixed. On the other hand, the series has to vanish when
+ρ → 0 with θ ∈ (0, π/2) fixed, from which (using Dominated Convergence) we have that
+alm (0) = 0 for all l, m. Moreover, since we found above that ∇δf (x, y, 0) = 0, we have
+∂ρ δ f˜(ρ, θ, ϕ) = ∂ρ δf (x, y, z) = (sin θ cos ϕ, sin θ sin ϕ, cos θ) · ∇δf (x, y, z) → 0 ,
+
+(4.19)
+
+as ρ → 0 with θ, ϕ fixed. This implies
+lim
+
+ρ→0
+
+X
+
+a′lm (ρ)Ylm (θ, ϕ) = 0 ,
+
+∀ θ, ϕ ,
+
+(4.20)
+
+l,m
+
+which gives the initial condition a′lm (0) = 0 for all l, m. We will need the initial data
+alm (0) = a′lm (0) = 0 for an ODE system later on.
+Since the normal derivative of δ f˜ vanishes on the boundary, we get
+0=
+
+
+X
+X
+d
+alm (ρ)Ylm (θ, ϕ) =
+a′lm (ρ) cos θYlm (θ, ϕ)−ρ−1 alm (ρ) sin θ∂θ Ylm (θ, ϕ) z=0 ,
+dz z=0 l,m
+l,m
+
+(4.21)
+where we used the chain rule and the Jacobian matrix of the coordinate transformation
+(ρ, θ, ϕ) → (x, y, z). Taking θ → π/2 with other coordinates fixed, we get that
+X
+
+alm (ρ)∂θ Ylm (π/2, ϕ) = 0 ,
+
+l,m
+
+– 21 –
+
+∀ρ ≥ 0, ∀ϕ ∈ [0, 2π) .
+
+(4.22)
+
+JHEP10(2025)079
+
+1
+sin θ tan2 θ∂ρ δ f˜(ρ0 , θ, ϕ)
+2
+1
+∂ρ2 L̇0 (ρ0 , 0) = sin θ tan2 θ∂ρ2 δ f˜(ρ0 , θ, ϕ)
+2
+!
+sin θ tan θδ f˜(ρ0 , θ, ϕ)
+,0
+∂∇ρ L̇0 (ρ0 , 0) = −
+ρ0
+∂ρ L̇0 (ρ0 , 0) =
+
+Multiplying by e−inϕ and integrating over [0, 2π) with respect to ϕ, this gives
+∞
+X
+
+aln (ρ)∂θ Yln (π/2, 0) = 0 ,
+
+∀ρ ≥ 0 .
+
+(4.23)
+
+l=|n|
+
+We can approximate δ f˜ to an arbitrary precision by a finite sum,
+δ f˜(ρ, θ, ϕ) ≈
+
+n X
+l
+X
+
+alm (ρ)Ylm (θ, ϕ) ,
+
+(4.24)
+
+l=0 m=−l
+
+n
+X
+
+alm (ρ)∂θ Ylm (π/2, 0) = 0 ,
+
+∀ρ ≥ 0 , ∀m = −n, . . . , n ,
+
+(4.25)
+
+l=|m|
+
+which amounts to 2n − 1 constraints for the remaining nonzero coefficients. All in all, we have
+n(n + 7)/2 constraints, which leaves us with a total (n2 − 3n + 2)/2 unknown coefficients. This
+means that the problem of recovering the unknown coefficients is nontrivial only for n ≥ 3.
+Example case. Suppose we set the series cutoff to n = 4 and try to recover δ f˜ approximated by
+δ f˜(ρ, θ, ϕ) ≈
+
+4 X
+l
+X
+
+alm (ρ)Ylm (θ, ϕ) .
+
+(4.26)
+
+l=0 m=−l
+
+Constraints dictate that the right hand side sum only have three a priori non-zero coefficients:
+a1,0 , a2,±1 . Denote by δk,l A(r) the second linearization of the area data corresponding to
+Hubeny’s solutions uk , ul in (4.12). With suitable choices of k, l, the integral identity then
+yields a set of ODEs
+q
+
+δ−4,3 A(r) =
+
+π
+30
+
+ 
+
+
+
+r 3618a′2,1 (r) + 319ra′′2,1 (r) + 24750a2,1 (r)
+
+
+
+12r2
+
+
+r 77a′1,0 (r) + 13ra′′1,0 (r) + 1248a1,0 (r)
+
+q  
+
+5
+δ−4,4 A(r) = −
+
+q
+
+δ−3,4 A(r) = −
+
+π
+3
+
+π
+30
+
+24r2
+
+
+r 162a′2,−1 (r) + 31ra′′2,−1 (r) + 1710a2,−1 (r)
+
+ 
+
+12r2
+
+.
+
+(4.27)
+
+Given the initial conditions alm (0) = a′lm (0) = 0 and the area data, we have a unique solution
+alm , which can be obtained analytically in terms of δk,l A.
+
+5
+
+Progress in nonlinear problem
+
+Next, we consider the problem of reconstructing the full metric function f in (1.2), rather than
+just its perturbation δf . We assume the knowledge of the area data Af for minimal surfaces
+
+– 22 –
+
+JHEP10(2025)079
+
+where n > 0 since the only constant mode satisfying the boundary conditions is zero. Here
+we have (n + 1)2 unknown coefficients to begin with, but we get (n + 2)(n + 1)/2 constraints
+from the fact that alm = 0 for l − m even. Moreover, for a finite sum (4.23) becomes
+
+anchored at the boundary z = 0 in the geometry determined by f . Under the assumption that
+we are close to pure AdS, |f (z) − 1| ≪ 1, for all z, we develop a reconstruction method for f .
+The key to our approach lies in the explicit representation for δf in term of the linearized
+area functional δA, using the integral formula (3.20). Notably, our method requires only
+the boundary area data Af as input. All other quantities appearing in the reconstruction
+can be computed directly from the bulk metric (3.2).
+5.1 Abstract setting
+
+q
+
+A[f ](r) := l
+
+n−1
+
+1 + f (zf (x; r))|∇zf (x; r)|2e q
+
+Z
+
+zf (x; r)n−1
+
+B(0,r)
+
+det(e)dx1 ∧ · · · ∧ dxn−1 ,
+
+(5.1)
+
+where zf ( · ; r) is the minimal surface solution for the metric
+g(z, x) =
+
+
+l2 
+2
+f
+(z)
+dz
++
+e
+z2
+
+(5.2)
+
+with boundary condition |x|2 = r2 on the (x1 , . . . , xn−1 ) plane, and B(0, r) is a ball of radius
+r in Rn−1 . Thus, A maps a given function f and radius r to the area of the minimal surface
+anchored at infinity as a sphere of radius r.
+The linearization of A at f = f0 is the operator DA|f =f0 defined as usual by
+DA|f =f0 [w] :=
+
+d
+Af +tw .
+dt t=0 0
+
+We will consider the operator DA|f =f0 acting on various functions, but in the case w = δf ,
+we write
+δA = DA|f =f0 [δf ]
+in accordance with our earlier notation. For brevity, we also denote
+Af = A[f ] .
+With these definitions we are now ready to describe a method to recover an unknown
+function f = f (z) in the metric (5.2) from its area data Af . The approach assumes:
+(1) f is a sufficiently small perturbation of a known function f0 .
+(2) We have an explicit expression for the “inverse” (DA|f =f0 )−1 of the linearized operator
+in the sense that (DA|f =f0 )−1 (DA|f =f0 ) = Id. Though this operator need not be a
+two-sided inverse.
+We note that the latter condition in the special case when f0 = 1 is satisfied. In this case,
+the inverse operator (DA|f =f0 )−1 acting on any u = u(r) is given explicitly by
+
+
+
+
+(DA |f =f0 )−1 [u] (z) :=
+
+
+1 
+−u(z) + z u′ (z) + z 2 u′′ (z) ,
+2π
+
+– 23 –
+
+(5.3)
+
+JHEP10(2025)079
+
+We now present the method in abstract terms, generalizing the setting slightly. The area data
+can be expressed as a nonlinear operator A acting on functions f = f (z) defined as in (3.10) by
+
+as we have shown when n = 3, see (3.20) in section 3.2. The above means that if u =
+DA |f =1 [δf ], then δf (z) is given by (5.3):
+δf (z) =
+
+
+1 
+−u(z) + zu′ (z) + z 2 u′′ (z) .
+2π
+
+(5.4)
+
+|f − f0 | = δ ,
+for some δ ≪ 1. We define the operator F acting on functions v = v(z) by
+F [v] := v − (DA |f =f0 )−1 (A[v] − Af ) .
+
+(5.5)
+
+We stress that to compute F for given v, we only need to known the quantity Af . The
+other quantities (DA |f =f0 )−1 and A[ · ] can be computed using the form (3.1) of the metric.
+Especially, for any v, A[v] is obtained by solving the minimal surface equation with v in
+place of f in the metric (3.1) and substituting into (5.1).
+Our goal is to find a fixed point v ∗ for F satisfying |v ∗ − f0 | < δ. That v ∗ is a fixed
+point means
+F [v ∗ ] = v ∗ .
+We now demonstrate that such a fixed point must coincide with the unknown function f we
+seek to recover from the area data Af . To this end, assume then that v ∗ is a fixed point
+with |v ∗ − f0 | < δ. It follows that
+0 = (DA |f =f0 )−1 (A[v ∗ ] − Af ) .
+
+(5.6)
+
+We Taylor expand at v ∗ as
+A[v ∗ ] − Af = DA |f =v∗ (v ∗ − f ) + O(|v ∗ − f |2 )
+= DA |f =f0 (v ∗ − f ) + (DA |f =v∗ −DA |f =f0 ) (v ∗ − f ) + O(|v ∗ − f |2 ) ,
+
+(5.7)
+
+where | · | is some suitable norm we do not specify and the implied constant in the Onotation bounded since we assumed |v ∗ − f | ≤ |v ∗ − f0 | + |f0 − f | ≤ 2δ. Substituting the
+expansion (5.7) into (5.6) shows that
+
+
+0 = (DA |f =f0 )−1 DA |f =f0 (v ∗ −f )+(DA |f =v∗ −DA |f =f0 )(v ∗ −f )+O(|v ∗ −f |2 )
+= v ∗ −f +(DA |f =f0 )−1 (DA |f =v∗ −DA |f =f0 )(v ∗ −f )+O(|v ∗ −f |2 ).
+We may also Taylor expand at f0 as
+DA |f =v∗ −DA |f =f0 = O(|v ∗ − f0 |) ,
+
+– 24 –
+
+
+
+(5.8)
+
+JHEP10(2025)079
+
+The penultimate equality follows from (3.20). For dimensions n > 3, similar inversion
+formulas are given in (3.39) and (3.33). We see that assumption (2) above is satisfied
+when f0 = 1.
+For general f0 (and not necessarily f0 = 1) we assume the condition (2) above. Assume
+also that we are given the area data Af that corresponds to an unknown function f assumed
+to be sufficiently close to f0 ,
+
+with the implied constant in the O-notation is bounded due to |v ∗ − f0 | < δ. Substituting
+this into (5.8) gives
+v ∗ − f = O(|v ∗ − f ||v ∗ − f0 |) + O(|v ∗ − f |2 ) .
+Since |v ∗ − f0 |, |v ∗ − f | < δ, this implies
+|v ∗ − f | ≤ δK|v ∗ − f |
+for some K > 0 independent of δ. From this it follows that if δ was small enough, it must be
+
+(Otherwise one may divide by |v ∗ − f | to arrive at a contradiction.) Thus, we have shown
+that when |f − f0 | = δ with δ sufficiently small, any fixed point v ∗ of F with |v ∗ − f0 | < δ
+must coincide with the function f that we wanted to recover.
+We next argue that the iteration defined by
+vj+1 := F [vj ] ,
+
+v 0 = f0
+
+(5.9)
+
+converges to a unique fixed point of F satisfying |v ∗ −f0 | < δ provided that δ was small enough.
+Thus, by what we argued above, the iteration will then converge to v ∗ = f . Note that if v1 , v2
+are two functions with |v1 − f0 |, |v1 − f0 | < δ, we can take the expansion (5.7) with v1 and v2
+in place of v ∗ and f respectively then hit both sides of the equation with (DA |f =f0 )−1 to get
+F [v1 ] − F [v2 ] = DF |f =v2 (v1 − v2 ) + O(|v1 − v2 |2 ) ,
+where the implied constant in the O-notation is bounded due to |v1 − v2 | ≤ 2δ. Note that
+DF |v2 = (DA |f =f0 )−1 (DA |f =f0 −DA |v2 ) ,
+which implies that
+DF |v2 (v1 − v2 ) = O(|v1 − v2 ||f0 − v2 |) .
+Consequently, if δ was small enough (forcing |f0 − v2 | and |v1 − v2 | to be small), the operator
+F is a contraction in the sense that
+|F [v1 ] − F [v2 ]| ≤ C|v1 − v2 |
+for some constant C < 1 independent of δ.
+By the contraction property (5.10), we have
+|vj+1 − vj | = |F [vj ] − F [vj−1 ]| ≤ C|vj − vj−1 | .
+Iterating this estimate gives
+|vj+1 − vj | ≤ C j |v1 − f0 | .
+
+– 25 –
+
+(5.10)
+
+JHEP10(2025)079
+
+v∗ = f .
+
+Consequently, for any m > l, we have by the triangle inequality:
+|vm − vl | ≤
+
+m−1
+X
+
+|vk+1 − vk | ≤ |v1 − f0 |
+
+k=l
+
+m−1
+X
+
+Ck .
+
+k=l
+
+Summing the geometric series on the right gives
+Cl
+|v1 − f0 | .
+1−C
+Since C < 1, we thus have demonstrated the iteration vj+1 = F [vj ] converges to a fixed
+point. Moreover, the convergence is geometrical. We also remark that the fixed point is
+unique and at a distance less than δ from f0 , which follow directly from the fact that F
+was a contraction. In summary
+|vm − vl | ≤
+
+(5.11)
+
+The presentation here is, of course, not mathematically rigorous. We have not specified
+which norm ∥ · ∥ we are using on function spaces and whether the operators A, DA|f =v∗ and
+(DA |f =f0 )−1 etc. behave well on these function spaces. A rigorous mathematical study of the
+limiting behavior of the iterative procedure (5.9) is beyond the scope of this current article.
+We remark that analogous and mathematically precise arguments appear for example in [59].
+5.2 Implementing the iterative algorithm: preliminary observations
+For concreteness, let us spell out the first few steps in the iterative procedure. Denote the
+points in the iteration by fi . Our zeroth approximation to the unknown function f is given
+by f0 ≡ 1, which corresponds to the pure AdS. The next steps are
+f1 = F (f0 ) = f0 − (DA|f0 )−1 (Af0 − Af )
+f2 = F (f1 ) = f0 − (DA|f0 )
+..
+.
+
+−1
+
+(Af0 − Af ) − (DA|f0 )
+
+(5.12)
+−1
+
+(Af1 − Af )
+
+(5.13)
+
+Thus, we are in effect constructing a series representation for the unknown f . Notice the
+analogy to Newton’s method in the above algorithm; where the analogy fails is that the
+inverse of the ‘derivative’ is here always evaluated at the same point. Remarkably, for any
+function δA we have an explicit expression for δf = D−1 A |f0 δA given by (3.39) (in even
+dimension) and (3.33) (in odd dimension). This is all we need in terms of metric perturbation
+theory; we don’t need explicit formulas for higher order perturbations δ 2 f, δ 3 f etc. We remark
+here that the series representation (5.12) applies for reconstructing metrics which are near
+the Schwarzschild-AdS metric given in (3.44), at least in the low temperature regime when
+zH ≫ 1. Indeed, since
+1
+fAdS−BH (z) =
+1 − (z/zH )3
+we see that fAdS−BH ≈ 1 when zH ≫ 1. So any metric fˆ which are near fAdS−BH when
+zH ≫ 1 are also close to 1 and therefore can be represented via (5.12).
+Even though the area quantities above are in fact just the ‘finite parts’ thereof, in
+practice we take Afi and Af to be the non-regularized areas and write Adata = Af0 − Af ,
+which is actually our regular data. Then we can augment the above procedure by writing
+Afi − Af = (Afi − Af0 ) + Adata so that at each iteration we regularize the new area function
+Afi against the corresponding quantity in pure AdS (by combining two divergent integrals
+under a single integral sign so that the divergences in the integrands cancel out).
+– 26 –
+
+JHEP10(2025)079
+
+lim vj = v ∗ = f .
+
+j→∞
+
+6
+
+Discussion
+
+Our analysis has focused on reconstructing aspects of the bulk geometry from boundary
+data, but several subtleties remain. One key omission in our discussion is the divergence
+structure of the entanglement entropy and how it behaves under changes in the cutoff.
+The presence of universal terms, particularly in scenarios where the boundary deformation
+includes cusps, introduces additional log-divergences, whose coefficients are often of physical
+significance. A more detailed treatment of these divergences could provide further insight
+into the universality of our reconstruction procedure.
+Beyond leading-order corrections, a natural extension of our approach is to reconstruct
+the full function f (z) ≈ 1 rather than just its perturbation δf (z). The limit of the iterative
+formula (5.11), which is just the full f (z), suggests that, in principle, the entire black hole
+metric (3.40) could be reconstructed, particularly in the regime where zH ≫ 1 (or equivalently,
+at low temperatures). This would provide a more complete picture of the emergent bulk
+spacetime from boundary data.
+Several directions remain for future work. One important path is to understand how
+uncertainties in the boundary data propagate to the reconstructed δf [22], which is essential
+for practical applications. Another promising direction is the extension of our method to timedependent setups, such as holographic quenches [44], where the HRT prescription replaces
+the RT formula. This would allow us to explore the dynamical aspects of bulk reconstruction
+and their implications for nonequilibrium holography.
+Finally, while our work represents an early step in understanding bulk reconstruction
+from a mathematical perspective, it opens the door to further refinements and generalizations.
+By incorporating more sophisticated mathematical tools and addressing these open questions,
+we hope to move closer to a more complete picture of how spacetime emerges from field
+theory data.
+
+– 27 –
+
+JHEP10(2025)079
+
+Numerical implementation of the algorithm may be rather challenging. For this, we first
+need to numerically solve the full minimal surface equation in the metric involving fi for a
+large family of boundary disk radii. Then we evaluate numerically the integral Afi − Af0
+where we plug in the numerical approximation for the embedding function of the minimal
+surface corresponding to fi , and the hemisphere solution, and we do this for a number of
+radii. Finally, we need a finite difference approximation for the first and second derivatives of
+(Afi − Af0 ) + Adata to compute the next function fi+1 using the explicit inversion formula.
+Controlling the numerical error through all these stages might require some care. The
+computation is probably going to be quite costly unless we for some reason have very fast
+convergence towards the sought-after function.
+Our iterative scheme is reminiscent of the perturbative reconstruction method presented
+in [8, section 6.1]. One notable difference, however, is that our algorithm is not based on a
+Taylor expansion of the unknown function. Our algorithm is global in the sense that each
+new step integrates over all the values of earlier iteration. As it is well-known that Taylor
+expansion is highly unstable and sensitive to numerical errors, it is possible that our method
+leads to better stability and convergence in the reconstruction.
+
+Acknowledgments
+
+A
+
+Synthetic data
+
+In this appendix we will generate the boundary data that can be used to infer the corresponding
+metric deformation in the bulk spacetime. We will focus on three-dimensional CFTs and
+obtain the change in the entanglement entropy for disks of radii R with an infinitesimal
+temperature deformation about zero temperature.
+Consider the minimal surface in the metric (3.41) anchored on a disk of radius R on the
+boundary. In cylindrical coordinates (u, ϕ, z) related to the Cartesian coordinates by
+x = u cos ϕ ,
+
+y = u sin ϕ ,
+
+z = z,
+
+(A.1)
+
+the minimal surface area function A(R) reads
+A(R) = 2πl2
+
+Z Rs
+0
+
+1 + z ′ (u)2 − (z(u)/zH )3 u
+du ,
+1 − (z(u)/zH )3
+z(u)2
+
+(A.2)
+
+where z(u) is the minimal surface embedding with z(u = R) = 0. By the RT formula, this
+corresponds to the entanglement entropy of a disk of radius R in the boundary CFT at
+finite temperature T = 3/(4πzH ). Linearizing the entanglement entropy around T = 0 then
+corresponds to linearizing the minimal surface embedding z(u) and then the area function
+around zH = ∞, i.e., around pure AdS:
+q
+
+Z R 1 + z ′ (u)2
+0
+A(R) = 2πl2 
+udu +
+0
+
+z0 (u)2
+
+1
+3
+2zH
+
+Z R
+0
+
+z0 (u)z0′ (u)2
+q
+
+1 + z0′ (u)2
+
+
+−6 
+udu + O(zH
+)
+
+(A.3)
+
+q
+
+
+Z 1 1 + z ′ (x)2
+Z 1
+3
+3
+′
+2
+32π (RT )
+z0 (x)z0 (x)
+0
+q
+= 2πl2 
+xdx +
+xdx + O((RT )6 ) ,
+0
+
+z0 (x)2
+
+27
+
+0
+
+1 + z0′ (x)2
+
+(A.4)
+where we revealed the dimensions by substitution u = Rx, z0 (u) = Rz0 (x), and where
+√
+z0 (x) = 1 − x2 is the minimal surface embedding Σ in pure AdS — just the usual hemisphere
+embedding anchored on the boundary entangling surface ∂Σ, a disk with radius R. The first
+term corresponds to the standard UV-divergent entanglement entropy of a disk of radius R at
+
+– 28 –
+
+JHEP10(2025)079
+
+We thank Jani Kastikainen and Esko Keski-Vakkuri for useful discussions. N. J. has been
+supported in part by the Research Council of Finland grant no. 13545331. T. L. was
+partly supported by the Academy of Finland (Centre of Excellence in Inverse Modelling and
+Imaging and FAME Flagship, grant numbers 312121 and 359208). M. S. was supported
+by the European Research Council of the European Union, grant 101086697 (LoCal), and
+the Research Council of Finland, grants 347715, 353096 (Centre of Excellence of Inverse
+Modelling and Imaging) and 359182 (Flagship of Advanced Mathematics for Sensing Imaging
+and Modelling). L. T. was partially supported by Australian Research Council DP190103451
+and DP220101808. Views and opinions expressed are those of the authors only and do not
+necessarily reflect those of the European Union or the other funding organizations.
+
+T = 0, which plays no role in our analysis. The rest of the terms are dual to the entanglement
+entropy density, which are obtained upon a finite deformation by temperature [60],
+σ=
+
+SEE − SEE |T =0
+.
+Vol(∂Σ)
+
+(A.5)
+
+Here σ is a UV-finite quantity by construction and hence will be a good candidate for
+the data too.
+In what follows, we focus on only the second term, giving rise to the entanglement entropy
+deformation strictly at T = 0. By making contact with the notation in the main text,
+(A.6)
+(A.7)
+(A.8)
+
+where we identified s ∝ (RT )3 . It is useful to view the perturbation as obtained by keeping
+the radius of the disk R fixed and varying the temperature, but since this is a perturbation
+in the underlying CFT, it is equivalent to keep T = 0 and vary the radius instead. In other
+words, the entangling surface A is kept intact, in this case the disk of area πR2 , but the
+area of the dual hanging surface changes upon deformation by the temperature. We further
+note that the perturbation arises at the third order power in T as we are not deforming
+the Hamiltonian of the theory but the state.
+An explicit calculation of the integral in the second term in (A.4) gives
+δA(R) = 4GN δSEE (R) =
+
+16π 4 l2 R3
+.
+27
+
+(A.9)
+
+This is our ‘synthetic’ boundary data: it was obtained from a bulk computation but now
+we pretend that it actually came from the boundary CFT, due to lack of existing results
+produced directly in the field theory.
+
+B
+
+Linearizations of the minimal surface equation
+
+As in [37], we want to linearize the minimal surface equation in pure AdS4 around the
+hemisphere solution so we set f = 1 in (3.12). As it is easier to work in coordinates that are
+natural for this problem, we transform the minimal surface equation (3.12) into spherical
+coordinates and obtain the same equation as eq. (3.46) in [37]. To linearize the equation to
+second order with respect to two parameters ϵ1 , ϵ2 , we expand the solution ρ(θ, ϕ) as
+1
+ρ(θ, ϕ) = ρ0 +ϵ1 u1 (θ, ϕ)+ϵ2 u2 (θ, ϕ)+ (ϵ21 v1 (θ, ϕ)+ϵ22 v2 (θ, ϕ)+2ϵ1 ϵ2 w(θ, ϕ))+O(ϵ3 ) ,
+2
+
+(B.1)
+and plug it into the minimal surface equation. The first linearized minimal surface equation
+becomes
+∂2u ∂2u
+∂u
+sin2 θ 2 +
++ tan θ (sin2 θ + 1)
+= 0.
+(B.2)
+∂θ
+∂ϕ2
+∂θ
+
+– 29 –
+
+JHEP10(2025)079
+
+d
+As |s=0 + . . .
+ds
+d
+= A(R)|T =0 + T 3 3 AT |T =0 + . . .
+dT
+3
+= A(R)|T =0 + T δA(R) + . . . ,
+
+A(R) = A(R)|s=0 + s
+
+The equation is the same for both u1 and u2 so we dropped the subscript for simplicity. Using
+a separation of variables ansatz u(θ, ϕ) = Θ(θ)Φ(ϕ), we obtain
+sin2 θ Θ′′ (θ)Φ(ϕ) + Θ(θ)Φ′′ (ϕ) + tan θ (sin2 θ + 1)Θ′ (θ)Φ(ϕ) = 0 ,
+
+(B.3)
+
+which we can write as
+sin2 θ
+
+Θ′′ (θ)
+Θ′ (θ) Φ′′ (ϕ)
++ tan θ (sin2 θ + 1)
++
+= 0.
+Θ(θ)
+Θ(θ)
+Φ(ϕ)
+
+(B.4)
+
+This holds only if
+
+2
+
+′′
+
+′
+
+2
+
+(B.5)
+
+2
+
+sin θ Θ (θ) + tan θ (sin θ + 1)Θ (θ) = l Θ(θ) ,
+
+(B.6)
+
+where l is, in general, real or imaginary. However, a negative separation constant would break
+the 2π periodicity of u(θ, ·) so we can focus on the case l ∈ R. The ODEs are then solved by
+Φ(ϕ) = A1 sin lϕ + A2 cos lϕ
+
+(B.7)
+−l
+
+l
+
+Θ(θ) = B1 (1 + lc) tan (θ/2) + B2 (1 − lc) tan (θ/2) .
+
+(B.8)
+
+The second linearization of the minimal surface equation with respect to one parameter and
+a family of solutions thereof are given in eqs. (3.49) and (3.53) in [37]. Here however we
+are interested in two-parameter linearization, in which case picking the coefficient of the
+ϵ1 ϵ2 term in the minimal surface equation yields
+∂2w ∂2w
+∂w
+2
+∂u1 ∂u2 ∂u1 ∂u2
+sin θ 2 +
++ tan θ (sin2 θ + 1)
+=
+sin2 θ
++
+2
+∂θ
+∂ϕ
+∂θ
+ρ0
+∂θ ∂θ
+∂ϕ ∂ϕ
+
+
+2
+
+
+
+.
+
+(B.9)
+
+Here u1 and u2 are arbitrary first-order solutions that act as a source for the second-order
+solution. Notice that this could also be obtained from the one-parameter second linearization
+by the polarization formula. Indeed, if we denote by W [u] as the second-order linearization of
+ϵ2
+v(θ, ϕ) + O(ϵ3 ) ,
+2
+
+(B.10)
+
+1
+(W (u1 + u2 ) − W (u1 − u2 )) .
+4
+
+(B.11)
+
+ρ(θ, ϕ) = ρ0 + ϵu(θ, ϕ) +
+then the w(θ, ϕ) in (B.1) satisfies
+w(θ, ϕ) =
+
+Data Availability Statement. This article has no associated data or the data will not
+be deposited.
+Code Availability Statement. This article has no associated code or the code will not
+be deposited.
+Open Access. This article is distributed under the terms of the Creative Commons Attribution License (CC-BY4.0), which permits any use, distribution and reproduction in any
+medium, provided the original author(s) and source are credited.
+
+– 30 –
+
+JHEP10(2025)079
+
+Φ′′ (ϕ) = −l2 Φ(ϕ)
+
+References
+[1] N. Brambilla et al., QCD and Strongly Coupled Gauge Theories: Challenges and Perspectives,
+Eur. Phys. J. C 74 (2014) 2981 [arXiv:1404.3723] [INSPIRE].
+[2] A.V. Ramallo, Introduction to the AdS/CFT correspondence, Springer Proc. Phys. 161 (2015)
+411 [arXiv:1310.4319] [INSPIRE].
+[3] S. Ryu and T. Takayanagi, Holographic derivation of entanglement entropy from AdS/CFT,
+Phys. Rev. Lett. 96 (2006) 181602 [hep-th/0603001] [INSPIRE].
+
+[5] A. Hamilton, D.N. Kabat, G. Lifschytz and D.A. Lowe, Holographic representation of local bulk
+operators, Phys. Rev. D 74 (2006) 066009 [hep-th/0606141] [INSPIRE].
+[6] J. Hammersley, Numerical metric extraction in AdS/CFT, Gen. Rel. Grav. 40 (2008) 1619
+[arXiv:0705.0159] [INSPIRE].
+[7] S. Bilson, Extracting spacetimes using the AdS/CFT conjecture, JHEP 08 (2008) 073
+[arXiv:0807.3695] [INSPIRE].
+[8] S. Bilson, Extracting Spacetimes using the AdS/CFT Conjecture: Part II, JHEP 02 (2011) 050
+[arXiv:1012.1812] [INSPIRE].
+[9] D. Kabat, G. Lifschytz and D.A. Lowe, Constructing local bulk observables in interacting
+AdS/CFT, Phys. Rev. D 83 (2011) 106009 [arXiv:1102.2910] [INSPIRE].
+[10] V. Balasubramanian et al., Bulk curves from boundary data in holography, Phys. Rev. D 89
+(2014) 086004 [arXiv:1310.4204] [INSPIRE].
+[11] M. Spillane, Constructing Space From Entanglement Entropy, arXiv:1311.4516 [INSPIRE].
+[12] M. Headrick, R.C. Myers and J. Wien, Holographic Holes and Differential Entropy, JHEP 10
+(2014) 149 [arXiv:1408.4770] [INSPIRE].
+[13] B. Czech, L. Lamprou, S. McCandlish and J. Sully, Integral Geometry and Holography, JHEP 10
+(2015) 175 [arXiv:1505.05515] [INSPIRE].
+[14] N. Engelhardt and G.T. Horowitz, Towards a Reconstruction of General Bulk Metrics, Class.
+Quant. Grav. 34 (2017) 015004 [arXiv:1605.01070] [INSPIRE].
+[15] K. Hashimoto, S. Sugishita, A. Tanaka and A. Tomiya, Deep learning and the AdS/CFT
+correspondence, Phys. Rev. D 98 (2018) 046019 [arXiv:1802.08313] [INSPIRE].
+[16] S. Hernández-Cuenca and G.T. Horowitz, Bulk reconstruction of metrics with a compact space
+asymptotically, JHEP 08 (2020) 108 [arXiv:2003.08409] [INSPIRE].
+[17] N. Bao, C.J. Cao, S. Fischetti and C. Keeler, Towards Bulk Metric Reconstruction from Extremal
+Area Variations, Class. Quant. Grav. 36 (2019) 185002 [arXiv:1904.04834] [INSPIRE].
+[18] K. Hashimoto, Building bulk from Wilson loops, PTEP 2021 (2021) 023B04
+[arXiv:2008.10883] [INSPIRE].
+[19] C.J. Cao, X.-L. Qi, B. Swingle and E. Tang, Building Bulk Geometry from the Tensor Radon
+Transform, JHEP 12 (2020) 033 [arXiv:2007.00004] [INSPIRE].
+[20] K. Hashimoto and R. Watanabe, Bulk reconstruction of metrics inside black holes by complexity,
+JHEP 09 (2021) 165 [arXiv:2103.13186] [INSPIRE].
+
+– 31 –
+
+JHEP10(2025)079
+
+[4] V.E. Hubeny, M. Rangamani and T. Takayanagi, A covariant holographic entanglement entropy
+proposal, JHEP 07 (2007) 062 [arXiv:0705.0016] [INSPIRE].
+
+[21] B. Ahn, H.-S. Jeong, K.-Y. Kim and K. Yun, Holographic reconstruction of black hole spacetime:
+machine learning and entanglement entropy, JHEP 01 (2025) 025 [arXiv:2406.07395]
+[INSPIRE].
+[22] N. Jokela and A. Pönni, Towards precision holography, Phys. Rev. D 103 (2021) 026010
+[arXiv:2007.00010] [INSPIRE].
+[23] N. Jokela et al., Progress in the lattice evaluation of entanglement entropy of three-dimensional
+Yang-Mills theories and holographic bulk reconstruction, JHEP 12 (2023) 137
+[arXiv:2304.08949] [INSPIRE].
+
+[25] I.R. Klebanov, D. Kutasov and A. Murugan, Entanglement as a probe of confinement, Nucl.
+Phys. B 796 (2008) 274 [arXiv:0709.2140] [INSPIRE].
+[26] N. Jokela and J.G. Subils, Is entanglement a probe of confinement?, JHEP 02 (2021) 147
+[arXiv:2010.09392] [INSPIRE].
+[27] T. Faulkner, R.G. Leigh and O. Parrikar, Shape Dependence of Entanglement Entropy in
+Conformal Field Theories, JHEP 04 (2016) 088 [arXiv:1511.05179] [INSPIRE].
+[28] G. Uhlmann, 30 years of Calderón’s problem, in Séminaire Laurent Schwartz — EDP et
+applications (2012-2013), École polytechnique (2013), p. XIII-1.
+[29] Y. Kurylev, M. Lassas and G. Uhlmann, Inverse problems for Lorentzian manifolds and
+non-linear hyperbolic equations, Invent. Math. 212 (2018) 781.
+[30] A. Feizmohammadi and L. Oksanen, An inverse problem for a semi-linear elliptic equation in
+riemannian geometries, J. Diff. Eq. 269 (2020) 4683.
+[31] C.I. Cârstea, T. Liimatainen and L. Tzou, The Calderón problem on Riemannian surfaces and of
+minimal surfaces, arXiv:2406.16944 [INSPIRE].
+[32] M. Lassas, Introduction to inverse problems for non-linear partial differential equations,
+arXiv:2503.12448.
+[33] S. Ryu and T. Takayanagi, Aspects of Holographic Entanglement Entropy, JHEP 08 (2006) 045
+[hep-th/0605073] [INSPIRE].
+[34] A. Karch and C.F. Uhlemann, Generalized gravitational entropy of probe branes: flavor
+entanglement holographically, JHEP 05 (2014) 017 [arXiv:1402.4497] [INSPIRE].
+[35] A. Chalabi et al., Holographic entanglement entropy of the Coulomb branch, JHEP 04 (2021) 153
+[arXiv:2012.05188] [INSPIRE].
+[36] N. Jokela, J. Kastikainen, J.M. Penín and H. Ruotsalainen, Flavors of entanglement, JHEP 07
+(2024) 270 [arXiv:2401.07905] [INSPIRE].
+[37] V.E. Hubeny, Extremal surfaces as bulk probes in AdS/CFT, JHEP 07 (2012) 093
+[arXiv:1203.1044] [INSPIRE].
+[38] M. Mezei, Entanglement entropy across a deformed sphere, Phys. Rev. D 91 (2015) 045038
+[arXiv:1411.7011] [INSPIRE].
+[39] N. Lashkari, M.B. McDermott and M. Van Raamsdonk, Gravitational dynamics from
+entanglement ‘thermodynamics’, JHEP 04 (2014) 195 [arXiv:1308.3716] [INSPIRE].
+[40] T. Faulkner et al., Gravitation from Entanglement in Holographic CFTs, JHEP 03 (2014) 051
+[arXiv:1312.7856] [INSPIRE].
+
+– 32 –
+
+JHEP10(2025)079
+
+[24] T. Nishioka and T. Takayanagi, AdS Bubbles, Entropy and Closed String Tachyons, JHEP 01
+(2007) 090 [hep-th/0611035] [INSPIRE].
+
+[41] B. Swingle and M. Van Raamsdonk, Universality of Gravity from Entanglement,
+arXiv:1405.2933 [INSPIRE].
+[42] D.D. Blanco, H. Casini, L.-Y. Hung and R.C. Myers, Relative Entropy and Holography, JHEP 08
+(2013) 060 [arXiv:1305.3182] [INSPIRE].
+[43] C. Guillarmou and A.S. Barreto, Inverse problems for Einstein manifolds, arXiv:0710.1136.
+[44] M. Nozaki, T. Numasawa and T. Takayanagi, Holographic Local Quenches and Entanglement
+Density, JHEP 05 (2013) 080 [arXiv:1302.5703] [INSPIRE].
+[45] J. Bhattacharya, V.E. Hubeny, M. Rangamani and T. Takayanagi, Entanglement density and
+gravitational thermodynamics, Phys. Rev. D 91 (2015) 106009 [arXiv:1412.5472] [INSPIRE].
+
+[47] M. Lassas, T. Liimatainen, Y.-H. Lin and M. Salo, Inverse problems for elliptic equations with
+power type nonlinearities, J. Math. Pures Appl. 145 (2021) 44 [arXiv:1903.12562].
+[48] V. Balasubramanian, B.D. Chowdhury, B. Czech and J. de Boer, Entwinement and the
+emergence of spacetime, JHEP 01 (2015) 048 [arXiv:1406.5859] [INSPIRE].
+[49] B. Freivogel et al., Casting Shadows on Holographic Reconstruction, Phys. Rev. D 91 (2015)
+086013 [arXiv:1412.5175] [INSPIRE].
+[50] V. Balasubramanian, A. Lawrence, A. Rolph and S. Ross, Entanglement shadows in LLM
+geometries, JHEP 11 (2017) 159 [arXiv:1704.03448] [INSPIRE].
+[51] J. Marx-Kuo, An Inverse Problem for Renormalized Area: Determining the Bulk Metric with
+Minimal Surfaces, arXiv:2401.07394 [INSPIRE].
+[52] C.I. Cârstea, M. Lassas, T. Liimatainen and L. Oksanen, An inverse problem for the Riemannian
+minimal surface equation, J. Diff. Eq. 379 (2024) 626.
+[53] J. Nurminen, An inverse problem for the minimal surface equation, Nonlinear Analysis 227
+(2023) 113163 [arXiv:2203.09272].
+[54] J. Nurminen, An inverse problem for the minimal surface equation in the presence of a
+Riemannian metric, arXiv:2304.05808.
+[55] H. Isozaki, Inverse spectral problems on hyperbolic manifolds and their applications to inverse
+boundary value problems in Euclidean space, Am. J. MAth. 126 (2004) 1261.
+[56] S. Alexakis and R. Mazzeo, Renormalized area and properly embedded minimal surfaces in
+hyperbolic 3-manifolds, Commun. Math. Phys. 297 (2010) 621 [INSPIRE].
+[57] N. Jokela and A. Pönni, Notes on entanglement wedge cross sections, JHEP 07 (2019) 087
+[arXiv:1904.09582] [INSPIRE].
+[58] P.P. Zabreyko et al., Integral equations — a reference text, Springer Netherlands (1975)
+[DOI:10.1007/978-94-010-1909-5].
+[59] P. Stefanov and G. Uhlmann, Linearizing non-linear inverse problems and an application to
+inverse backscattering, J. Funct. Anal. 256 (2009) 2842.
+[60] N.I. Gushterov, A. O’Bannon and R. Rodgers, On Holographic Entanglement Density, JHEP 10
+(2017) 137 [arXiv:1708.09376] [INSPIRE].
+
+– 33 –
+
+JHEP10(2025)079
+
+[46] S. Alexakis, T. Balehowsky and A. Nachman, Determining a Riemannian metric from minimal
+areas, Adv. Math. 366 (2020) 107025.
+
+

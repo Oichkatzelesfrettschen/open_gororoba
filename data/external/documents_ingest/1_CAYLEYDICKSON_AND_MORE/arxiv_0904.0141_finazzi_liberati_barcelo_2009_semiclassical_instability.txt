@@ -1,0 +1,2721 @@
+Semiclassical instability of dynamical warp drives
+Stefano Finazzi,1, ∗ Stefano Liberati,1, † and Carlos Barceló2, ‡
+
+arXiv:0904.0141v2 [gr-qc] 14 Jul 2009
+
+1
+
+SISSA, via Beirut 2-4, 34151 Trieste, Italy and INFN sezione di Trieste, via Valerio 2, 34127 Trieste, Italy.
+2
+Instituto de Astrofı́sica de Andalucı́a, CSIC, Camino Bajo de Huétor 50, 18008 Granada, Spain
+(Dated: October 23, 2018)
+Warp drives are very interesting configurations in general relativity: At least theoretically, they
+provide a way to travel at superluminal speeds, albeit at the cost of requiring exotic matter to exist
+as solutions of Einstein’s equations. However, even if one succeeded in providing the necessary exotic
+matter to build them, it would still be necessary to check whether they would survive to the switching
+on of quantum effects. Semiclassical corrections to warp-drive geometries have been analyzed only
+for eternal warp-drive bubbles traveling at fixed superluminal speeds. Here, we investigate the more
+realistic case in which a superluminal warp drive is created out of an initially flat spacetime. First of
+all we analyze the causal structure of eternal and dynamical warp-drive spacetimes. Then we pass to
+the analysis of the renormalized stress-energy tensor (RSET) of a quantum field in these geometries.
+While the behavior of the RSET in these geometries has close similarities to that in the geometries
+associated with gravitational collapse, it shows dramatic differences too. On one side, an observer
+located at the center of a superluminal warp-drive bubble would generically experience a thermal
+flux of Hawking particles. On the other side, such Hawking flux will be generically extremely high
+if the exotic matter supporting the warp drive has its origin in a quantum field satisfying some form
+of quantum inequalities. Most of all, we find that the RSET will exponentially grow in time close
+to, and on, the front wall of the superluminal bubble. Consequently, one is led to conclude that the
+warp-drive geometries are unstable against semiclassical backreaction.
+PACS numbers: 04.20.Gz, 04.62.+v, 04.70.Dy
+Keywords: warp drive, Hawking radiation, horizons
+
+I.
+
+INTRODUCTION
+
+Since Alcubierre introduced them [1], warp drives have
+been certainly one of the most studied spacetime geometries among those requiring exotic matter for its existence
+(see [2] for a recent review about “exotic spacetimes”).
+They were immediately recognized as interesting configurations for two main reasons. First, they provide, at least
+theoretically, a way to travel at superluminal speeds: A
+warp drive can be described as a spheroidal bubble separating an almost flat internal region from an external
+asymptotically flat spacetime with respect to which the
+bubble moves at an arbitrary speed. The idea is that
+although on top of a spacetime nothing can move with
+speeds greater than that of light, spacetime itself has no
+a priori restriction on the speed with which it can be
+stretched. Second, they provide an exciting ground for
+testing our comprehension of general relativity (GR) and
+quantum field theory in curved spacetimes (for instance
+when investigating warp-drive implications for causality
+[3]).
+In its original form [1] the warp-drive geometries are
+described by the simple expression
+
+the center of the bubble and v0 the warp-drive velocity.
+Here and thereafter v = v0 f (r) with f a suitable smooth
+function satisfying f (0) = 1 and f (r) → 0 for r → ∞.
+After the warp-drive spacetimes were proposed, the
+most investigated aspect of them has been the amount
+of exotic matter (i.e. energy-conditions-violating matter)
+that would be required to support them.1 It was soon
+realized that this was not only related to the size of the
+warp-drive bubble but also determined by the thickness
+of the bubble walls [6]. It was found that, if the exoticity was provided by the quantum nature of a field,
+satisfying therefore the so-called quantum inequalities
+(QI),2 then the violations of the energy conditions would
+have to be confined to Planck-size regions, making the
+bubble-wall thickness ∆ to be, accordingly, of Planck
+size [∆ ≤ 102 (v0 /c) LP , where LP is the Planck length].
+However, it can be shown that very thin walls require
+very large amounts of exotic matter: e.g., in order to
+support a warp-drive bubble with a size of about 100 m
+and propagating at v0 ≈ c, one would need a total negative energy |E| ≫ 1011 M⊙ .3 Perspectives for warp-drive
+
+2
+
+ds2 = −c2 dt2 + [dx − v(r)dt] + dy 2 + dz 2 ,
+(1)
+p
+where r ≡
+(x − v0 t)2 + y 2 + z 2 is the distance from
+∗ Electronic address: finazzi@sissa.it
+† Electronic address: liberati@sissa.it
+‡ Electronic address: carlos@iaa.es
+
+1 While initially it was supposed that exotic matter was needed
+
+only for superluminal warp drives (v0 > c), it was later recognized [4, 5] that energy-conditions-violating matter is needed
+also for subluminal speeds. This points out that the need of
+exotic matter is peculiar of the warp-drive geometry itself, not
+appearing only in the superluminal regime.
+2 See [7] for a review about quantum inequalities applied to some
+exotic spacetimes.
+3 If one could somehow avoid the QI, then it would be possible to
+
+2
+engineering can be improved by resorting to a modified
+warp-drive configuration with a reduced surface area but
+the same bubble volume [8]. The total amount of negative energy required to support these warp drives becomes quite small (for example, |E− | ≈ 0.3M⊙ for a 100
+m-radius bubble, although one has to add as well some
+positive energy outside the bubble E+ ≈ 2.5M⊙ ), bringing the warp drive closer to a realistic solution albeit still
+far from foreseeable realizations.
+Regarding the feasibility of warp-drive configurations,
+a parallel line of research has focused on the study of their
+robustness against the introduction of quantum corrections to GR. In particular, in [9] it was studied what
+would be the effect of having semiclassical corrections in
+the case of an eternal superluminal warp drive. There,
+it was noticed that to an observer within the warp-drive
+bubble, the backward and forward walls (along the direction of motion) look, respectively, like the horizon of
+a black hole and of a white hole. By imposing over the
+spacetime a quantum state which is vacuum at the null
+infinities (i.e., what one may call the analog of the Boulware state for an eternal black hole) it was found that
+the renormalized stress-energy tensor (RSET) diverges
+at the horizons.4 Independently of the availability of exotic matter to build the warp drive in the first place, the
+existence of a divergence of the RSET at the horizons
+would be telling us that it is not possible to create a
+warp-drive geometry within the context of semiclassical
+GR: Semiclassical effects would destroy any superluminal warp drive. However, in a more realistic situation,
+a warp drive would have to be created at a very low velocity in a given reference frame and then accelerated
+to superluminal speeds. One may then expect that the
+quantum state globally defined on such dynamical geometry would be automatically selected by the dynamics
+once suitable boundary conditions are provided (e.g., at
+early times). This is indeed the case for a gravitational
+collapse where it can be shown that, whenever a trapping horizon forms, the globally defined quantum state
+that is vacuum on I − has to be thermal at I + (at the
+Hawking temperature) and regular at the horizon. In
+other words, the dynamics of the collapse avoids selecting a Boulware-like state, with its associated divergence
+at the horizon, ending up instead selecting the analogous for collapsing configurations of the Unruh vacuum
+state defined on eternal black holes, which leads to a perfectly regular RSET. Is the dynamics of the creation of
+a warp drive, with its associated selection of the global
+vacuum state, able to avoid the presence of divergences in
+the RSET? Indeed, in [9] it was already noticed that an
+Unruh-like state rather than a Boulware-like state should
+be expected to describe the quantum state characterizing
+
+a superluminal warp-drive creation.
+In this paper we want to settle this issue by explicitly
+considering the case of a warp drive which is created with
+zero velocity at early times and then accelerated up to
+some superluminal speed in a finite amount of time. This
+can be viewed as the warp-drive analog of a semiclassical
+black hole collapse [10]. By restricting attention to warp
+drives in 1 + 1 dimensions (since this is the only case for
+which one can carry out a complete analytic treatment),
+we have calculated the RSET in the warp-drive bubble.
+As we were expecting, we find that in the center of the
+bubble there is a thermal flux of particles at the Hawking temperature corresponding to the surface gravity of
+the black horizon. However, the surface gravity can be
+shown to be inversely proportional to the thickness of the
+bubble walls which, as said, has to be of the order of the
+Planck length if some form of QI holds. Hence, one has
+to conclude that an internal observer would soon find itself in the uncomfortable condition of being swamped by
+a thermal flux at the Planck temperature. Even worse,
+we do show that the RSET does increase exponentially
+with time on the white horizon and close to it (while
+it is regular and small on the black one). This clearly
+implies that warp drives would become rapidly unstable
+once superluminal speeds are reached.
+The plan of the paper is the following. In Sec. II we
+study the causal structure of both an eternal and a dynamic warp drive. In Sec. III we discuss the propagation
+of light rays in a dynamical warp-drive geometry in close
+analogy with the standard treatment for black holes.5
+Finally, in Sec. IV we calculate the full RSET using the
+technique adopted in [10] for black hole formation and
+look for its divergences. A summary of our results is
+given in Sec. V.
+
+II. CAUSAL STRUCTURE OF A
+SUPERLUMINAL WARP DRIVE
+
+We investigate the causal structure of a warp drive,
+following the method presented in [12], for spacetimes
+whose metrics can be written in Painlevé-Gullstrand coordinates. We begin from an eternal warp drive, moving
+at constant velocity, and then we study a dynamic situation in which a warp-drive bubble is accelerated.
+
+A.
+
+Eternal superluminal warp drive
+
+In 1+1 dimensions Alcubierre’s metric Eq. (1) reduces
+to
+2
+
+ds2 = −c2 dt2 + [dx − v(r)dt] .
+built warp drives with much larger wall thickness. For example,
+for ∆ ≃ 1 m, one would only need |E| & 1/4 M⊙ .
+4 Throughout this paper we shall work in the Heisenberg representation so that only operators, not the states, evolve in time.
+
+5 A similar result was found by González-Dı́az [11].
+
+(2)
+
+3
+Here r is defined as the signed distance from the center
+of the bubble, r ≡ x− v0 t. Again we define v(r) = v0 f (r)
+but f is now taken to be defined also for negative values of
+r. Its boundary conditions will be f (0) = 1 and f (r) → 0
+for r → ±∞. For illustrative purposes, let us choose the
+following simple bell-shaped function:
+f (r) =
+
+t
+
+4
+
+2
+
+r
+
+1
+cosh (r/a)
+
+-4
+
+-2
+
+2
+
+4
+
+(3)
+-2
+
+PSfrag replacements
+
+and v0 > c, that is, our warp drive is superluminal. We
+want to stress that all the results of this paper do not
+depends on the particular choice of the function f . They
+are still valid providing that it satisfies the above conditions. We have chosen a particular form for it just for
+simplicity. Now, by using (t, r) coordinates the metric
+Eq. (2) reads
+2
+
+ds2 = −c2 dt2 + [dr − v̄(r)dt] ,
+
+v̄(r) = v(r) − v0 .
+(4)
+Note that v̄ < 0 because the warp drive is right going
+(v > 0) but v(r) ≤ v0 .
+By definition, at any time the center of the bubble is
+located at r = 0. The causal structure of this metric can
+be analyzed following [12]. Let us define the warp-drive
+Mach number α ≡ v0 /c. The shift velocity becomes
+
+v̄(r) = αc
+
+
+
+1
+−1
+cosh (r/a)
+
+
+
+.
+
+(5)
+
+Two horizons appear when α > 1. Their positions are
+found by putting v̄ equal to −c,
+
+
+p
+r1,2 = ∓a ln β + β 2 − 1 ,
+
+β≡
+
+α
+> 1 . (6)
+α−1
+
+Because of our simple profile choice, the two horizons are
+symmetrically located with respect to r = 0. In more
+general situations r1 and r2 will be completely arbitrary
+satisfying only r1 < r2 .
+Right- and left-going null coordinates u and v can be
+defined as
+dr
+,
+c + v̄(r)
+dr
+dw ≡ dt +
+.
+c − v̄(r)
+du ≡ dt −
+
+(7)
+(8)
+
+We note that the spacetime is divided into three distinct
+regions: I (r < r1 ), II (r1 < r < r2 ), and III (r > r2 ).
+There are no u rays connecting these regions, while w rays
+cross all the regions; when r approaches the horizons, u
+diverges logarithmically. Integrating these equations we
+
+-4
+
+ρ
+
+FIG. 1: Lines of constant u (solid lines) and w (dashed lines)
+for the Alcubierre warp drive, a = c = 1, α = 2.
+
+find
+uI = t +
+
+r
+c (α − 1)
+
+
+ −(r−r1 )/a
+e
+−1
+aβ
+p
+,
+ln −(r−r )/a
+−
+2
+e
+−1
+c (α − 1) β 2 − 1
+r
+uII = t +
+c (α − 1)
+
+
+1 − e−(r−r1 )/a
+aβ
+p
+ln −(r−r )/a
+,
+−
+2
+e
+−1
+c (α − 1) β 2 − 1
+r
+uIII = t +
+c (α − 1)
+
+
+1 − e−(r−r1 )/a
+aβ
+p
+ln
+,
+−
+1 − e−(r−r2 )/a
+c (α − 1) β 2 − 1
+r
+w =t+
+c (α + 1)
+!
+er/a − γ
+2aγ
+p
+,
+arctan p
++
+c (α + 1) 1 − γ 2
+1 − γ2
+
+(9)
+
+(10)
+
+(11)
+
+(12)
+
+where β is defined in Eq. (6) and γ ≡ α/ (α + 1) < 1. In
+Fig. 1 we plot the lines of constant u and w. The horizon
+at r = r1 corresponds to uI → +∞ and to uII → +∞,
+while the horizon at r = r2 corresponds to uII → −∞
+and to uIII → −∞.
+We define a signed surface gravity on our two horizons:
+p
+c (α − 1) β 2 − 1
+dv(r)
+≡ ±κ . (13)
+=±
+κ1,2 ≡
+dr r=r1,2
+aβ
+So doing, the surface gravity associated with the first
+horizon is positive κ1 = κ > 0, while the one associated
+with the second horizon is negative κ2 = −κ < 0.6 As we
+
+6 In the definition of surface gravity,
+
+more correctly one should
+
+)
+∞ )
++
+= −∞
+,r =
+∞ r
+− ∞,
+t= =−
+− (
+t
+I R− (
+
+IL
+
+∞
+)
+−
+=
+
++
+
+∞
+,r
+
+t=
+
++ (
+
+IL
+
+st
+
+)
+∞
+
+con
+
+−
+
+r=
+
+=
+
+I +
+L
+(t
+=
+
++
+
+,r
+∞
+
+r1
+= r2
+=
+r
+i0L
+
+)
+H
+
+=
+
+st
+
+)
+r2
+
+con
+
+=
+
+,r
+∞
+
+1 +
+
+−
+
+t=
+
+,r
+∞
+
+(r
+
++
+
+t=
+
+=
+
+− (
+
+r1
+
+t=
+
++ (
+
+HC
+
+HL
+
+)
+r1
+)
+r2
+
+=
+
+2 −
+
+,r
+∞
+
+,r
+∞
+)
+r1
+
+)
+r2
+
+=
+
+H
+
++
+
+(r
+
+=
+
+t=
+
++ (
+
+onst
+
+−
+
+(14)
+(15)
+(16)
+
+HR
+
+r=c
+
+t=
+
+− (
+
+HC
+
+−
+
+(17)
+(18)
+(19)
+
+For instance, specific transformations having the required properties are the following:
+1
++ e−κuI ,
+2
+ κu 
+1
+II
+,
+UII = tanh
+2
+2
+1
+UIII = − − eκuIII .
+2
+
+UI =
+
+(20)
+(21)
+(22)
+
++
+
+−
+I −
+R
+(t
+=
+
+)
+∞
+
+UI ∈ (+∞, UBH ) ,
+UII ∈ (UBH , UWH ) ,
+UIII ∈ (UWH , −∞) .
+
++
+
+⇒
+⇒
+⇒
+
+=
+
+uI ∈ (−∞, +∞)
+uII ∈ (+∞, −∞)
+uIII ∈ (−∞, +∞)
+
+,r
+∞
+
+where UI , UII+ , UII− , and UIII are arbitrary constants
+and AI , AII+ , AII− , and AIII are positive constants. It is
+possible to choose these transformations such that they
+match on the horizons, obtaining a global U varying regularly from +∞ to −∞ as r varies from −∞ to +∞. This
+matching will become natural when dealing with dynamical configurations in which the warp drive is created by
+accelerating the bubble from an initial zero velocity. In
+order to do that we can choose UI = UII+ ≡ UBH and
+UII− = UIII ≡ UWH < UBH . In this way the three transformation have the following domains:
+
+st
+
+=
+
+con
+
+∞
+,r
+
+r=
+
+∞
+)
+
+i0R
+
+t=
+− (
+IR
+
+UI (uI → +∞) ≃ UI + AI e−κuI ,
+UII (uII → ±∞) ≃ UII± ∓ AII± e∓κuII ,
+UIII (uIII → −∞) ≃ UIII − AIII eκuIII ,
+
+i+
+
+r
+
+noticed for the positions of r1 and r2 , in a general situation in which f is not symmetric, the two surface gravities
+may have different absolute values. However, the one associated with the first horizon (respectively, second horizon) will be always positive (respectively, negative). We
+will soon show that these two horizons represent a black
+and a white horizon, respectively. Here on, we will consider the two surface gravities to have the same absolute
+value. Retaining different absolute values will not lead
+to more general results, but will just make the notation
+heavier.
+As in Sec. 6 of [12], one can find some transformation
+Ui = Ui (ui ) that close to the horizons behaves as
+
+4
+
+i−
+
+FIG. 2: Penrose diagram of an eternal warp drive. Lines
+of constant r (solid lines) and of constant t (dashed lines).
+Future and past horizons at r = r1 , r2 (heavy dashed lines).
+The geometry can be extended to the future of HC+ and HR+
+and to the past of HC− and HL− .
+
+maximal analytical extension but to a particular patch of
+the total spacetime. The dashed lines signal the locations
+at which the geometry can be extended. The two external regions r > r2 and r < r1 appear to an observer living
+inside the bubble as an eternal white hole and an eternal
+black hole, respectively. For this reason, we call H1+ and
+H2− , respectively, the black horizon and the white horizon of the warp drive. Notice however that for the inner
+observers in an eternal configuration, at r1 there is also
+a white horizon [HC− (t = −∞, r = r1 ) in the diagram]
+and at r2 a black horizon [HC+ (t = +∞, r = r2 ) in the
+diagram]. The geometry can be extended through these
+two null lines. We do not picture the extended regions
+as there are ambiguities in the prescription of the matter
+distribution in those other “universes.”7
+
+Now we can bring the right and left infinities to a finite
+distance by using a compactifying transformation like
+B.
+
+UI ≡ arctan(UI ) ,
+UIII ≡ arctan(UIII ) ,
+W ≡ arctan(w) .
+
+(23)
+(24)
+(25)
+
+The Penrose diagram for this spacetime is plotted in
+Fig. 2. Notice that the diagram does not correspond to a
+
+multiply the velocity derivative by c to get an acceleration. However we use this slightly modified definition to avoid the appearance of too many constant c factors in our formulas.
+
+Dynamic superluminal warpdrive
+
+What happens to the causal structure when we consider the creation of a superluminal warp drive starting
+from initially flat spacetime? For concreteness, we study
+a simple case in which we reach the final velocity v = v0
+at a finite time which we take to be t = 0. We modify
+
+7 In the analysis of the maximal extention of the Schwarzschild or
+
+Kerr spacetimes this problem is not present as one considers only
+vacuum solutions of the Einstein equations.
+
+)
+r1
+)
+= 1
+r
+,r =
+)
+∞ r
+∞
+− ∞,
++
+=
+t= =−
+− (
+,r
+(t
+∞
+H L−
+
+HC
+
+t=
+− (
+IR
+
+−
+
+5
+
+the metric Eq. (2) introducing a switching factor δ(t):
+
+−
+
++
+1 +
+
+t=
+
++ (
+
+H
+
+i0L
+
+t
+
+HC
+
+(27)
+
+ns
+co
+
+)
+∞
+
+v(r, t) = v0 δ(t)f (r) ,
+
+r=
+
+−
+
+where
+
+=
+
+I +
+L
+(t
+=
+
++
+
+,r
+∞
+
+)
+r2
+
+∞
+,r
+
+=
+
+t=
+
++ (
+
+=
+
+)
+r1
+
+(r
+
+(26)
+
+=
+
+2
+
+ds2 = −c2 dt2 + [dx − v(r, t)dt] ,
+
+IL
+
+(r
+
+∞
+)
+
+i+
+
++
+2 −
+
+H
+
+t=
+
+st
+
++
+
+t=
+
+− (
+
+,r
+∞
+
+−
+
+=
+
+,r
+∞
+
+Again we can change coordinates, keeping the center of
+the bubble at rest (r = 0). This can be obtained by
+defining
+
+)
+r2
+
+=
+
+∞
+)
+
+onst
+
+i0R
+
+This is an exact differential form and can be integrated
+to get
+
+h
+i
+ x − v τ et/τ − 1
+if t < 0 ,
+0
+r=
+(30)
+x − v t
+if t ≥ 0 .
+0
+
+Again, the metric becomes
+
+=
+
+I −
+R
+(t
+=
+
+−
+
+∞
+,r
+
+(29)
+
++
+
+r=c
+
+)
+∞
+
+r = r2
+
+−
+
+dr ≡ dx − v0 δ(t)dt .
+
++ (
+
+HR
+
+r = con
+
+st
+
+)
+r2
+
+r1
+
+(28)
+
+con
+
+=
+
+r=
+
+t<0,
+t≥0.
+
+,r
+∞
+
+t=
+
+IL
+
+with f (r) defined in Eq. (3) and
+(
+et/τ
+if
+δ(t) ≡
+1
+if
+
+i−
+
+FIG. 3: Penrose diagram of a dynamic warp drive. Lines
+of constant r (solid lines) and of constant t (dashed lines).
+The lines of constant r become null at the apparent horizons
+(heavy dashed lines).
+
+2
+
+ds2 = −c2 dt2 + [dr − v̂(r, t)dt] ,
+v̂(r, t) = v0 δ(t) [f (r) − 1]
+
+(31)
+
+and the apparent horizons associated with the t slicing
+are found by setting v̂ = −c. In this case a solution does
+not exist for any value of t, so that the apparent horizons are created at infinity at some finite tH . We show
+this below. Let us write the equation for the apparent
+horizons in the following form:
+f (r) = 1 −
+
+c
+.
+v0 δ(t)
+
+(32)
+
+The function f takes all the values between 0 and 1. In
+particular, f (r) → 0 for r → ±∞ and f (0) = 1. Besides,
+the right-hand side of Eq. (32) is a monotonic function
+of t, such that, for t → −∞, 1 − c/ (v0 δ(t)) → −∞
+and reaches the value 1 − c/v0 > 0 for t ≥ 0. As a
+consequence, there exists a time tH < 0 so that for t > tH
+there are always two solutions of Eq. (32), corresponding
+to a black and a white horizon. These horizons are born
+at t = tH at spatial infinity and at t = 0 they settle at
+two fixed positions r1 and r2 .
+Keeping these points in mind, we are able to build the
+Penrose diagram for the dynamic warp drive (Fig. 3).
+At early times the metric is approximately Minkowskian,
+because δ(t) → 0 for t → −∞. Therefore, the causal
+structure is initially Minkowskian. Then, it progressively
+changes till t = 0. At this time one has built a stationary
+warp drive, just as in the previous section. After this
+time, the Penrose diagram looks exactly equal to that in
+Fig. 2. The final Penrose diagram is just obtained by
+
+gluing together the two behaviors. Again, we are not
+drawing an analytically extended diagram but only the
+relevant patch for the analysis that follow in this paper.
+Given that a timelike observer can reach HC+ and HR+
+in a finite proper time, the geometry can be extended in
+the future, beyond these lines. This is actually a subtle point. In fact, HC+ and HR+ (which are linked to
+the formation of a white horizon) are on the boundary
+of the Cauchy development of I − . In this sense, they
+are Cauchy horizons given that initial data are assigned
+only on I − . Hence, as noticed in Sec. II A, an eventual
+extension would not be unique. In any case such an extension will not be relevant for what will follow, given
+that we shall limit ourselves to investigating the asymptotic behavior of the RSET associated with the onset of
+the superluminal warp drive.
+Let us highlight here that the dynamic way we have
+used here to create the warp drive is not the only possible
+way. In Appendix A, we will also use a different interpolation between Minkowski and the warp drive in which
+the horizons appear also at finite time but at finite r
+positions (similar to what happens when a homogeneous
+star collapses to form a black hole).
+
+III.
+
+LIGHT-RAY PROPAGATION
+
+The just discussed causal structure of the dynamical
+warp drive is naturally leading to the expectation that
+some sort of Hawking radiation will be produced in a su-
+
+6
+perluminal warp drive (as well as some transient particle
+emission). It is well known (see, for example, [13]) that
+all the information about particle production is encoded
+in the way in which light rays propagate in a spacetime.
+That is, it is enough to know how light rays are bended
+in order to analyze the phenomenon of particle creation.
+In the dynamical warp drive there is a single past null
+coordinate but three different future null coordinates associated with the final regions I, II and III, as described
+before. From here on, we will be dealing exclusively with
+the connection between the past null coordinate U at IL−
+and the future null coordinate uII at HC+ in the interior
+of the bubble. Therefore, we will use u to denote uII
+whenever this does not lead to confusion. As discussed
+in [14] the relation U = p(u) encodes all the relevant
+information about particle production.
+We want to study the features due to the two main
+properties of a dynamical warp-drive geometry, i.e., the
+spacetime is Minkowskian at early times and it is a warp
+drive at late times. In particular, we are not interested
+in the transient features depending on how the transition between these two regimes is performed. Namely, we
+need only the behavior close to the horizons and at late
+times inside the whole bubble. It is clear from Fig. 3 that,
+if one stays at constant r inside the bubble and moves
+forward in time one crosses u rays which pass closer and
+closer to the black horizon. Therefore, once we have determined the behavior of p(u) close to the horizons,8 we
+automatically also have the required information at late
+times in the whole bubble.
+In general, the relation U = p(u) is obtained by integrating the differential equation for the propagation of
+right-going light rays
+dr
+= c + v̂(r, t) .
+dt
+
+(33)
+
+Note that while in the previous section we considered a
+specific form of v̂(r, t) [Eq. (31)] in order to discuss the
+causal structure of the associated spacetime, here (and in
+what will follow) the discussion will hold for any v̂(r, t)
+that satisfies the requirements v̂(r, t) → 0, for t → −∞
+(sufficiently rapid for the spacetime to be asymptotically
+flat), and v̂(r, t) = v̄ after some finite time and within
+the warp-drive bubble. Given the assumption that the
+spacetime settles down to a stationary warp-drive configuration, at late times the velocity profile will depend
+only on the r coordinate. We can write, as in the stationary case Eq. (7)
+du = dt −
+
+dr
+.
+c + v̄(r)
+
+(34)
+
+To find the required asymptotic relation one has to integrate this equation in the limit r → r1,2 . There, the
+
+8 Appendix A gives a specific example for which this relation can
+
+be computed exactly in the whole spacetime.
+
+velocity can be expanded as
+
+
+2
+v̄ = −c ± κ (r − r1,2 ) + O (r − r1,2 )
+.
+
+(35)
+
+Thus, we obtain
+
+u≃t∓
+
+1
+ln |r − r1,2 | .
+κ
+
+(36)
+
+On the other hand, the coordinate U , obtained by integrating Eq. (33) at early times, reduces to the Minkowski
+null coordinate
+r
+U (t → −∞) = t − ,
+(37)
+c
+and is regular in the whole spacetime, in particular, on
+the horizons. For instance, on a fixed t slice in the stationary region, we can write U as a regular function of
+r
+U± = U± (r − r1,2 ) ,
+
+(38)
+
+where we denoted with U+ (respectively, U− ) the specific
+form of U close to the black (respectively, white) horizon,
+and U± are analytic functions. Inserting Eq. (36) in the
+above expression, at the same fixed time,
+U± = p(u → ±∞) = P± (e∓κu ) ,
+
+(39)
+
+where P± are again analytic functions. Note that the
+forms of these functions do not depend on the particular time slice chosen to perform the matching between
+Eqs. (36) and (38). In the proximity of the stationary
+horizons u → ±∞, so e∓κu → 0 and the function p can
+be expanded around the horizons. Up to the first order
+we get
+
+U = p(u → ±∞) = U BH ∓ A± e∓κu + O e∓2κu , (40)
+WH
+
+where A± are positive constants.
+This is indeed the asymptotic behavior one would expect in the presence of trapping horizons and, for the
+black hole case, it is the standard relation between u and
+U . In fact, it leads to the conclusion that an observer
+at I + will detect Hawking radiation with temperature
+κ/2π. It is important to note that the result is completely
+general. The asymptotic behavior of U = p(u) for large
+absolute values of u, which is the only feature of p(u) relevant for the analysis of this paper, does not depend on
+the specific velocity profile adopted. It is only necessary
+that it interpolates from Minkowski spacetime at early
+times to a stationary warp-drive geometry at late times.
+While Eq. (40) is exactly of the expected form, its implications for particle production are not as straightforward as in the black hole case. In fact, in the warp-drive
+geometry the late-time modes labeled by u will not be
+standard plane waves in an asymptotically flat region of
+spacetime as they will be characterized by the strange
+form given in Eq. (36). Of course, if the surface gravity
+κ is large enough so that the typical wavelength of the
+
+7
+emitted radiation is much smaller than the bubble size,
+then the plane-wave approximation is fine and in the center of the bubble, at late times, one will measure standard
+Hawking radiation at temperature T . Nonetheless, in the
+general case, even if the calculation for the Bogoliubov
+coefficient is the standard one [13], the particles created
+will not be standard plane waves. The physics associated with the particle production by the white horizon
+is even less clear. This is why, in the next section, we
+shall consider the behavior RSET to get more significant
+information.
+In order to do so, we shall also need the relation between ingoing and outgoing left-going rays. In fact, these
+modes are excited too when the warp drive forms, even
+if we do not have a thermal particle production as for
+right-going modes. Left-going rays are the solution of
+the following differential equation [see Eq. (33)]:
+dr
+= −c + v̂(r, t) .
+dt
+
+t
+
+(41)
+
+r
+
+Looking at Fig. 3, we note that left-going rays do not see
+the horizons, that is, they cross them from IR− to IL+ .
+As a consequence, both the past and the future null coordinates W and w are defined at the asymptotic region
+outside the bubble. However, after the geometry inside
+the bubble has settled down to its final stationary form,
+we can define, just for convenience, a different coordinate
+w̃ inside the bubble, as in Eq. (8):
+(42)
+
+Note that w and w̃ may or may not coincide depending on
+how fast the metric in the external region settles down to
+its final stationary form (refer to Fig. 4 and Appendix A
+for an example in which they do not coincide).
+W is obtained in the usual way, by integrating Eq. (41)
+at early times, when the spacetime is Minkowski
+W (t → −∞) = t +
+
+r
+,
+c
+
+ρ
+
+dr
+.
+c − v̄(r)
+
+PSfrag replacements
+
+dw̃ = dt +
+
+FIG. 4: Light rays propagating rightward (solid lines) and
+leftward (dashed lines) in the plane (t, r) in a warp-drive
+spacetime with velocity profile of Eq. (A2). The out region in which the geometry is a stationary warpdrive is at
+r < ±arccosh(t + 1) (heavy solid lines). At t < 0 the metric is
+Minkowskian. The horizons at r1 and r2 (heavy dashed lines)
+are formed at TH = 1. Please refer to Appendix A for details.
+
+(43)
+
+The relation W = q(w̃) can be found explicitly for specific
+cases (see Appendix A). The important point is that one
+can prove that this relation is always regular, so that
+it cannot give place to any phenomenon like Hawking
+radiation. Of course, one can choose a very unusual way
+to interpolate from Minkowski to the warp drive, such
+that a lot of particles are created in this sector, but this
+is not a general feature of dynamical warp drives. If we
+use a regular enough transition, only transient effects are
+present in this sector. In Appendix A, we shall show that
+it is possible to find such a transition.
+As an example, in Fig. 4 we plot both right-going and
+left-going light rays propagating in the particular dynamic warp-drive spacetime analyzed in Appendix A.
+
+IV.
+
+RENORMALIZED STRESS-ENERGY
+TENSOR
+
+For the calculation of the RSET inside the warp-drive
+bubble we can use the method used in [10] for a collapsing
+configuration to form a black hole. In null coordinates U
+and W , affine on I − , the metric can be written as
+ds2 = −C(U, W )dU dW .
+
+(44)
+
+As we described in the previous section, in the out region (the region in which the metric is stationary, i.e.,
+v̄ depends only on r) we can also use a different set of
+null coordinates u, w̃. The coordinate u is affine on HC+
+and w̃ is the coordinate defined in Eq. (42). In these
+
+8
+coordinates the metric is expressed as
+ds2 = −C̄(u, w̃)dudw̃ ,
+
+(45)
+
+which implies
+C(U, W ) =
+
+C̄(u, w̃)
+,
+ṗ(u)q̇(w̃)
+
+(46)
+
+and
+U = p(u),
+
+W = q(w̃) .
+
+(47)
+
+These transformations are such that the C̄ has precisely
+the form of the future stationary warp-drive geometry,
+that is, it depends only on r through u, w̃.
+For concreteness let us refer to the RSET associated
+with having a single quantum massless scalar field living
+on the spacetime. In this case the RSET components
+have the following form [13]:
+1 1/2 2 −1/2
+C ∂U C
+,
+12π
+1 1/2 2 −1/2
+TW W = −
+C ∂W C
+,
+12π
+1
+TUW = TW U =
+CR .
+96π
+TUU = −
+
+(48)
+(49)
+(50)
+
+Qualitatively, things would not change if there were other
+fields present in the theory. The only modification will
+be that the previous expressions will get multiplied by
+a specific numerical factor. It is clear that in the in region (where the spacetime is Minkowskian) the RSET is
+trivially zero.
+Now, for a metric in the form of Eq. (44), the curvature
+can be calculated as in [13]:
+h
+i
+R =  ln |C| = (−g)−1/2 ∂µ (−g)1/2 g µν ∂ν ln |C|
+=−
+
+4
+∂U ∂W ln |C| . (51)
+C
+
+Replacing this result in Eq. (50) we obtain
+TUW = TW U = −
+
+1
+∂U ∂W ln |C| .
+24π
+
+(52)
+
+Using transformations (46) and (47) in Eqs. (48), (49),
+and (52) we obtain
+i
+1 1 h 1/2 2 −1/2
+1/2 2 −1/2
+, (53)
+C̄
+∂
+C̄
+−
+ṗ
+∂
+ṗ
+TUU = −
+u
+u
+12π ṗ2
+i
+1 1 h 1/2 2 −1/2
+2 −1/2
+TW W = −
+, (54)
+C̄ ∂w̃ C̄
+− q̇ 1/2 ∂w̃
+q̇
+2
+12π q̇
+1 1
+TUW = TW U = −
+∂u ∂w̃ ln |C̄| .
+(55)
+24π ṗq̇
+We can express the derivatives with respect to u and
+w̃ in terms of derivatives with respect to r and t. Note
+that the following expressions are obtained from Eqs. (34)
+and (42), so they are valid only when the velocity profile
+
+depends only on the r coordinate. In this fashion, we can
+study the stress-energy tensor at the end of the creation
+of the warp drive (or at the end of a collapse if we are
+studying a black hole).
+  
+ 
+∂r
+ur w̃r
+∂u
+=
+∂t
+ut w̃t
+∂w̃
+ 
+
+∂u
+−1/(c + v̄) 1/(c − v̄)
+.
+=
+∂w̃
+1
+1
+
+(56)
+
+Inverting the derivative matrix we obtain the required
+result:
+c2 − v̄ 2
+c + v̄
+∂r +
+∂t ,
+2c
+2c
+c − v̄
+c2 − v̄ 2
+∂r +
+∂t .
+∂w̃ =
+2c
+2c
+∂u = −
+
+(57)
+(58)
+
+Please refer to Appendix B for more details.
+We are interested in calculating the RSET inside the
+bubble when the two horizons have been formed and
+when the configuration has settled down to a stationary warp drive. Since in this region the velocity depends
+only on r, we can replace the derivatives in Eqs. (53),
+(54) and (55) with
+1 − v̄ 2
+C̄
+∂r = − ∂r ,
+2
+2
+C̄
+1 − v̄ 2
+∂r = ∂r .
+∂w̃ →
+2
+2
+∂u → −
+
+(59)
+(60)
+
+Here, we have put c = 1, for simplicity, and we have used
+Eq. (B3), C̄ = 1 − v̄ 2 . Moreover we indicate with ′ the
+differentiation with respect to r. After some calculations
+we obtain
+i
+1 h ′ 2
+2 −1/2
+C̄ − 2C̄ C̄ ′′ ,
+C̄
+=
+C̄ 1/2 ∂u2 C̄ −1/2 = C̄ 1/2 ∂w̃
+16
+(61)
+
+
+...
+1
+(62)
+ṗ1/2 ∂u2 ṗ−1/2 = 2 3p̈2 − 2ṗ p ,
+4ṗ
+...
+1 
+2 −1/2
+q̇ 1/2 ∂w̃
+q̇
+= 2 3q̈ 2 − 2q̇ q ,
+(63)
+4q̇
+1
+∂u ∂w̃ ln |C̄| = − C̄ C̄¨ .
+(64)
+4
+Using again C̄ = 1 − v̄ 2 we get the final result:
+
+... 
+ ′′ 3p̈2 − 2ṗ p
+1 1
+′2
+2
+v̄ + 1 − v̄ v̄v̄ −
+,
+TUU = −
+48π ṗ2
+ṗ2
+(65)
+
+... 
+2
+
+3q̈ − 2q̇ q
+1 1
+TW W = −
+v̄ ′ 2 + 1 − v̄ 2 v̄v̄ ′′ −
+,
+2
+48π q̇
+q̇ 2
+(66)
+
+
+
+1 1
+TUW = TW U = −
+1 − v̄ 2 v̄ ′ 2 + v̄v̄ ′′ .
+(67)
+48π ṗq̇
+
+One can check that these quantities do not diverge at the
+horizons, just like in [10]. However we want to look at the
+
+9
+energy density inside the bubble and try to understand
+whether it remains small or not as time increases.
+In particular, it is interesting to look at the energy
+
+measured by a set of free-falling observers, whose four
+velocity is simply uµc = (1, v̄) in (t, r) components.
+
+These observers measure an energy density ρ:
+ρ = Tµν uµc uνc = Ttt + 2v̄Ttr + v̄ 2 Trr = Ut2 TUU + 2Ut Wt TUW + Wt2 TW W
+
+
++ 2v̄ [Ut Ur TUU + (Ut Wr + Wt Ur ) TUW + Wt Wr TW W ] + v̄ 2 Ur2 TUU + 2Ur Wr TUW + Wr2 TW W
+2
+
+2
+
+= (Ut + v̄Ur ) TUU + 2 (Ut + v̄Ur ) (Wt + v̄Wr ) TUW + (Wt + v̄Wr ) TW W
+=
+
+ṗ2
+
+(1 + v̄)
+
+1
+=−
+48π
+
+"
+
+2 v̄ 4 − v̄ 2 + 2
+
+where we have defined
+...
+3p̈ (u) − 2ṗ(u) p (u)
+f (u) ≡
+,
+ṗ2 (u)
+...
+3q̈ 2 (w̃) − 2q̇(w̃) q (w̃)
+g(w̃) ≡
+.
+q̇ 2 (w̃)
+2
+
+(69)
+(70)
+
+We want to study what happens to a spaceship placed
+at rest in the center of the bubble to investigate whether a
+warp drive can be used as a transportation device. Moreover we want to check whether the components of the
+RSET in a regular coordinate system are regular at the
+horizons. Freely falling observers are at rest in the center
+of the bubble but left moving otherwise.
+Looking at the above expressions for any component
+of the RSET or at the energy density ρ, we see that they
+can be split as a sum of three terms, one purely static,
+depending only on the r coordinate through the shift
+velocity v̄, and two dynamic pieces depending also on
+the u and w̃ coordinates, respectively. They correspond
+to energy traveFling on right-going and left-going light
+rays, respectively, eventually red/blue-shifted by a term
+depending on r. Being interested in studying the energy
+density measured by free-falling observers, we write
+ρ = ρst + ρdyn−u + ρdyn−w̃ ,
+
+(71)
+
+where we defined static terms (labeled by subscript st)
+and dynamic terms (labeled by subscript dyn) for each
+component. Right-going and left-going terms are respectively labeled by u and w̃.
+#
+"
+
+v̄ 4 − v̄ 2 + 2 ′ 2
+1
+2v̄
+′′
+ρst ≡ −
+v̄ +
+, (72)
+v̄
+24π
+1 − v̄ 2
+(1 − v̄ 2 )2
+1
+f (u)
+ρdyn−u ≡
+,
+48π (1 + v̄)2
+
+(73)
+
+1
+g(w̃)
+.
+48π (1 − v̄)2
+
+(74)
+
+ρdyn−w̃ ≡
+
+q̇ 2
+
+ṗq̇
+
+2 TUU + 2 1 − v̄ 2 TUW +
+
+(1 − v̄ 2 )
+
+2
+
+2 TW W
+
+(1 − v̄)
+
+v̄
+
+′2
+
+4v̄
+g(w̃)
+f (u)
++
+v̄ ′′ −
+2 −
+2
+1 − v̄ 2
+(1 + v̄)
+(1 − v̄)
+
+#
+
+,
+
+(68)
+
+Let us start with ρdyn−w̃ . Its denominator is bounded for
+each r because the shift velocity is negative, and its numerator is vanishing with time. It is easy to convince oneself that all the contributions to the RSET coming from
+the w̃ sector are not universal but depend exclusively on
+the specific interpolation between the early Minkowski
+spacetime and the final warp-drive spacetime. It is always possible to choose an interpolation so that all these
+contributions vanish at late times (see Appendix A).
+From now on, we neglect the dynamic term ρdyn−w̃
+and study
+ρ ≃ ρst + ρdyn−u .
+A.
+
+(75)
+
+RSET at the center of the warp-drive bubble
+
+We shall now study the behavior of the RSET in the
+center of the bubble at late times. In this point v̄(r =
+0) = v̄ ′ (r = 0) = 0 and the static term ρst vanishes.
+By integrating Eq. (34) in the stationary region, one can
+show that u(t, r) is linear in t so that, for fixed r, it
+will acquire arbitrarily large positive values (see Fig. 3).
+The dynamic term in Eq. (73) can be evaluated by using
+a late-time expansion of p(u) [see Eqs. (40) and (C2)],
+then plugged in Eq. (69). This is derived in Appendix C
+and it is equal to
+(
+" 
+#
+2
+A2+
+A3+ −2κu
+2
+f (u) = κ 1 + 3
+e
+−2
+A1+
+A1+
+
++O e−3κu
+. (76)
+With this expansion it is easy to see that for u → +∞
+
+κ2
+.
+(77)
+48π
+This result may be easily understood in the following way.
+The surface gravity of the black horizons is the velocity derivative evaluated at this horizon κ = (dv̄/dr)r=r1 .
+ρ≃
+
+10
+Moreover, the energy density of a scalar field at some
+finite temperature T in 1 + 1 dimensions is simply
+Z
+dk
+ω
+π 2
+
+ρT =
+=
+T .
+(78)
+12
+eω/T + 1 2π
+Defining the Hawking temperature in the usual way as
+TH ≡ κ/2π, it is easy to see that Eq. (77) can be rewritten exactly as ρ = (π/12) TH 2 . Thus, the observer inside
+the warp-drive bubble will indeed observe thermal radiation at the temperature TH .
+B.
+
+Let us move now to study ρ close to the horizons. Note
+that both ρst and ρdyn−u are divergent at the horizons
+(r → r1,2 ) because of the (1 + v̄) factors in the denominator. Just like in [10], for a black hole, these diver-
+
+lim f (u) = κ
+
+r→r±
+
+(
+
+" 
+
+A2±
+1+ 3
+A1±
+
+2
+
+"
+
+#
+σ
++O(1) .
+2 ∓ κ (r − r
+1,2 )
+(r − r1,2 )
+(80)
+Similarly one can expand the dynamic term ρdyn−u to
+the same order. This involves determining the function
+f (u) in the proximity of the horizons. Indeed it is not
+difficult to show that (see Appendix C)
+1
+
+)
+#
+
+
+A3± ∓2κt
+2
+3
+.
+e
+(r − r1,2 ) + O (r − r1,2 )
+−2
+A1±
+
+Inserting this form in Eq. (73) we obtain:
+
+C.
+
+(81)
+
+RSET at late times approaching HC+
+
+#
+In Sec. IV B we studied the RSET on the black and
+σ
++O(1) , white horizons. However, it is interesting to analyze bet2 ∓ κ (r − r
+1,2 )
+(r − r1,2 )
+ter its behavior as it approaches the Cauchy horizon HC+ .
+(82)
+As one can see from Fig. 4, every u ray reaches values of
+It is now clear that the total ρ is O(1) on the horizon and
+r very close to r2 , at sufficiently late times. This means
+does not diverge (as expected from the Fulling-Sweenythat, even for large positive values of u, some time exists
+Wald theorem [15]).
+after which the approximate behavior of all the u rays is
+However, let us look to the subleading terms
+well described by
+1
+ρdyn−u (r ≃ r1,2 ) =
+48π
+
+"
+
+
+
+1
+2
+3
+v̄± (r) = −1±κ (r − r1,2 )+ σ (r − r1,2 ) +O (r − r1,2 ) .
+2
+(79)
+where σ is a constant.
+Close to the horizons the static term of Eq. (72) then
+becomes
+1
+ρst (r ≃ r1,2 ) = −
+48π
+
+RSET at the bubble horizons
+
+2
+
+gences exactly cancel each other, but something different
+happens at the black and white horizon. Expanding the
+velocity up to the second order one gets
+
+1
+
+" 
+#
+2
+1
+A2±
+A3± ∓2κt
+ρ (r ≃ r1,2 ) =
+3
+e
+−2
+48π
+A1±
+A1±
++ C± + O (r − r1,2 ) , (83)
+
+u≃t+
+
+1
+ln (r2 − r) ,
+κ
+
+so that
+r2 − r ∝ e−κt .
+
+where C± are constants. We can easily see that the behavior close to the black horizon is completely different
+from that close to the white horizon. In the former case
+the energy density as seen by a free-falling observer is
+damped exponentially with time. In the white horizon,
+however, this energy density grows exponentially with
+time. This means that, moving along H2− , ρ is large and
+negative diverging while approaching the crossing point
+between H2− and HC+ .
+This asymptotic divergence is physical and not a matter of selection of coordinates. In a very short time after
+the white horizon is formed (of the order of 1/κ), the
+backreaction of the RSET in this region of spacetime is
+no longer negligible but rather very strong.
+
+(84)
+
+(85)
+
+Keeping in mind this point, let us study the term ρdyn−u ,
+at fixed u, when time increases. There is a time at which
+the u ray will be close enough to r2 , such that the denominator in Eq. (73) can be approximated by
+2
+
+2
+
+(1 + v̄) ≃ κ2 (r2 − r) ,
+
+(86)
+
+which becomes, thanks to the previous result,
+2
+
+(1 + v̄) ∝ e−2κt ,
+
+(87)
+
+such that, for t → +∞, ρ diverges along every single
+u ray as e+2κt , because of the blueshift factor (1 + v̄)2 .
+Hence, ρ will diverge on the whole line HC+ , which is
+
+11
+a Cauchy horizon for the geometry (so this result does
+not contradict the Fulling-Sweeny-Wald theorem [15]).
+We then deduce that the warp-drive spacetime is again
+likely to become unstable in a very short time.
+As a closing remark, it is perhaps important to stress
+that this divergence of the RSET on the Cauchy horizon is of different nature with respect to the one found
+in Sec. IV B. In fact, the divergence of Sec. IV B is intrinsically due to the inevitable transient disturbances
+produced by the formation of the horizon. In this sense
+it is a new and very effective instability present every
+time a white horizon is formed in some dynamical way.
+On the contrary, the just found divergence on HC+ can
+be seen as due to the well-known infinite blueshift suffered by light rays as they approach a Cauchy horizon, in
+this specific case as due to the accumulation of Hawking
+radiation produced by the black horizon. In this sense it
+is not very different from the often claimed instability of
+inner horizons in Kerr-Newman black holes [16, 17, 18].
+Of course the divergence and the appearance of the
+horizon HC+ would be avoided if the superluminal warp
+drive were sustained just for a finite amount of time. In
+that case, no Cauchy horizons would arise and no actual
+infinity would be reached by the RSET. However, the
+latter would still become huge in a very short time, increasing exponentially on a time scale 1/κ ≈ ∆/c, where
+∆ is the thickness of the warp-drive bubble. Note that,
+in order to get a time scale of even 1 s, one would need
+∆ ≈ 3 × 108 m.
+
+V.
+
+SUMMARY AND DISCUSSION
+
+We have described the causal structure of both eternal and dynamical warp drives. In a geometric optics
+approximation we have studied the propagation of light
+rays in dynamical geometries and found that the same exponential relation between affine coordinates on I − and
+HC+ is recovered at late times (large u) as in the case
+of black hole spacetimes. Given this relation it is unavoidable the conclusion that indeed a Hawking flux will
+be observed by any observer inside the warp-drive bubble far from the black horizon. Indeed, the calculation
+shows explicitly the onset of such a flux. This radiation
+is produced at the black horizon and soon fills the interior of the bubble, traveling rightward at the speed of
+light. The central region of the warp drive behaves like
+the asymptotic region of a black hole: In both these regions the static contribution (ρst ) to the energy density
+vanishes so that the total energy density is due solely to
+the Hawking radiation generated at the black horizon.
+When creating a warp drive one not only forms a black
+horizon but also a white one. Both are sources of rightgoing radiation. To understand better the nature of this
+radiation we have calculated the RSET in this geometry and, in particular, the energy density as measured
+by freely falling observers. In this way we recover that
+the RSET does not diverge at the horizons at any finite
+
+time. The singular behavior of the static terms (or vacuum polarization terms) in the RSET at the horizons is
+canceled by the leading contributions of the dynamical
+right-going terms, or what is equivalent, by the presence
+of Hawking radiation at both the horizons.
+It is however easy to see that the subleading terms of
+Eq. (83) behavior is rather different between the black
+and the white horizons. The subleading term in the
+RSET associated with the formation of the black horizon does not produce any significative backreaction on
+the horizon itself. In fact, this term is just a transient
+which decays exponentially.9
+The formation of a white horizon is also associated
+with a similar subleading term, but this time it accumulates onto the white horizon itself. This causes the
+energy density ρ seen by a free-falling observer to grow
+unboundedly with time on this horizon. The semiclassical backreaction of the RSET will make the superluminal
+warp drive become rapidly unstable, in a time scale of
+the order of 1/κ2 , the inverse of the surface gravity of
+the white horizon. Indeed, if one trusted the QI [6, 8],
+the wall thickness for v0 ≈ c would be ∆ . 102 LP , and
+the surface gravity κ & 10−2 tP −1 , where tP is the Planck
+time.10 This means that the time scale over which the
+backreaction of the RSET would become important is
+τ ∼ 1/κ . 102 tP . Indeed, even forgetting about the QI,
+in order to get even a time scale τ ∼ 1 s for the growing
+rate of the RSET, one would need a wall as large as 3×108
+m. Therefore, most probably one would be able to maintain a superluminal speed for just a very short interval of
+time. In addition to the above mentioned growing term
+on H2− we have shown that there is also an unbounded
+accumulation of Hawking radiation on HC+ . Also this
+contribution will very rapidly lead to a significant backreaction on the superluminal warp drive and to some sort
+of semiclassical instability of the solution (that will most
+probably prevent the formation of the Cauchy horizons
+at late times).
+Interestingly, recent investigations [19] seem to imply that the above found asymptotic divergences of the
+RSET on the white horizon might disappear if Lorentz
+symmetry gets broken at high energies. While in this
+case we still expect that the RSET will acquire large values soon after the white horizon is formed, we do not
+know if this would be enough to prevent the sustainabil-
+
+9 Furthermore, the analogy with a black hole originated by a star
+
+collapse of [10] also allows us to infer that the warp drive must
+be created very rapidly in order to avoid a huge accumulation of
+vacuum polarization at the horizon and so a huge initial value of
+the energy density.
+10 In 1 + 1 dimensions the warp-drive configuration is actually a
+vacuum solution of Einstein equations. In this case, QI will not
+impose any conditions on the size of the wall thickness. However,
+as we will show, we expect our results to be valid also in 3 + 1
+dimensions. Therefore, we use the wall thickness of 3 + 1 warp
+drives to obtain a realistic estimation for the Hawking temperature and the time scale of the exponential growing of the RSET.
+
+12
+ity of the warp drive. We think that this issue could be
+subject for future research perhaps within the context of
+analog models of gravity (see [20] for a complete review
+on analog models) where it might even be addressed experimentally.
+Even if the above described semiclassical instability
+could be avoided by some external action on the warpdrive bubble (or by some appropriate UV completion of
+the quantum field theory, like in [19]), the QI lead to
+the conclusion that the Hawking radiation in the center
+of the bubble will burn the internal observer with an
+excruciating temperature of TH ∼ κ & 10−2 TP , where
+TP is the Planck temperature, about 1032 K. This would
+prevent the use of a superluminal warp drive for any kind
+of practical purpose. If we do not trust the QI, this high
+temperature might be avoided by making thicker walls.
+For instance, with ∆ ∼ 1 m, one obtains a temperature
+of about 0.003 K (roughly the temperature of radiation
+at a wavelength of 1 m).11
+Finally we want to comment on the fact that in this
+paper a 1+1 calculation was performed. Generally in
+spherically symmetric spacetimes this could be seen as
+an s-wave approximation to the correct results. However, this is not the case for the axisymmetric warp-drive
+geometry. However, we do expect that the salient features of our results would be maintained in a full 3+1
+calculation (most probably a numerical one) given that
+they will still be valid in a suitable open set of the horizons centered around the axis aligned with the direction
+of motion.
+In conclusion, we think that this work is casting strong
+doubts about the semiclassical stability of superluminal
+warp drives. Of course, all the aforementioned problems
+disappear when the bubble remains subluminal. In that
+case no horizons form, no Hawking radiation is created,
+and neither strong temperature nor white horizon instability is found. The only remaining problem is that one
+would still need the presence of some amount of exotic
+matter to maintain the subluminal drive.
+
+APPENDIX A: AN EXAMPLE OF DYNAMICAL
+WARPDRIVE
+
+In this Appendix we want to present a model of dynamical warpdrive, which we used for numerical calculation. It is particularly useful because it allows one to
+carry out an almost complete analytical treatment. We
+adapt here the method presented in [14, 21] for stellar
+collapses to the creation of a warp drive from Minkowski
+spacetime. We can choose a simplified piecewise velocity
+profile, which has the relevant properties of a dynamical
+warp drive, i.e., it describes a flat geometry at early times
+and coincides with the metric in Eq. (4) after some finite
+time t > 0.
+Using our velocity profile defined in Eq. (5)
+v̄(r) = αc [f (r) − 1] ,
+
+(A1)
+
+we can define a dynamical profile by replacing v̂ in
+Eq. (31) by v̂kink
+
+v̄(ξ(t))
+if |r| ≥ ξ(t) ,
+v̂kink (r, t) =
+(A2)
+v̄(r)
+if |r| < ξ(t) ,
+where ξ(t) is a monotonically increasing function of t,
+such that ξ(t) → 0, for t → −∞, and ξ(tH ) = r2 = −r1 .
+One may wonder whether defining a velocity profile
+with a kink, as in Eq. (A2), may lead to unphysical phenomena. Indeed this computational trick induces some
+spurious effects, but these features are just transients and
+do not affect the results at late times.
+1.
+
+Right-going rays
+
+We apply the same procedure of [14] to calculate the
+exact relation between the past null coordinate U in IL−
+and the future null coordinate relevant at HC+ . To find
+this relation one has to find the integral curves of the ray
+differential equation (33), which becomes at early times
+dr
+=c
+dt
+
+(A3)
+
+and in a neighborhood of HC+ (t → +∞ and r → r2 , see
+Fig. 3)
+Acknowledgments
+
+The authors wish to thank S. Sonego and M. Visser for
+illuminating discussions. S.F. acknowledges the support
+provided by a INFN/MICINN collaboration. C.B. has
+been supported by the Spanish MICINN under Project
+No. FIS2008-06078-C03-01/FIS and Junta de Andalucia
+under Project No. FQM2288.
+
+
+dr
+= c + v̄(r) = κ (r2 − r) + O (r2 − r)2 . (A4)
+dt
+
+Integrating the first equation we obtain the obvious result
+r
+t=C+
+(A5)
+c
+and for the second one
+t=D−
+
+11 However, some very effective taming for the growing backreaction
+
+at the white horizon would be needed also in this case, given the
+previously estimated RSET growing rate.
+
+1
+ln (r2 − r) .
+κ
+
+(A6)
+
+Following [14] we identify initial events P ≡ (ri , ti ), with
+ri ∼ cti , final events Q ≡ (rf , tf ) with rf ∼ r2 − e−κtf ,
+and intermediate events O ≡ (r0 , t0 ).
+
+13
+Let us define
+
+Using the definition of U in Eq. (A7) we obtain
+
+
+ri 
+U = lim ti −
+,
+ti →−∞
+c
+
+
+1
+u = lim tf + ln (r2 − rf ) .
+tf →+∞
+κ
+
+(A7)
+(A8)
+
+Integrating Eq. (33) between P and an intermediate
+event O in the in region of this spacetime (where the
+velocity profile depends only on t), we find
+r0 − ri =
+
+Z t0
+
+dt [c + v̄(ξ(t))] .
+
+(A9)
+
+U = t0 −
+
+1
+r0
++
+c
+c
+
+Z t0
+
+dtv̄(ξ(t)) ,
+
+(A10)
+
+−∞
+
+Then, integrating between an intermediate event O
+now in the out region (where the velocity profile depends
+only on r) and Q we find
+Z rf
+dr
+,
+(A11)
+tf − t0 =
+r0 c + v̄(r)
+
+ti
+
+and using the definition in Eq. (A8)
+u = t0 + lim
+
+rf →r2
+
+
+
+1
+ln (r2 − rf ) +
+κ
+
+Z rf
+r0
+
+dr
+c + v̄(r)
+
+
+
+1
+1
+1
+= t0 + ln [r2 − r0 ] − ln [r0 − r1 ] + ln [r2 − r1 ] + lim
+rf →r2
+κ
+κ
+κ
+
+Z rf
+r0
+
+
+
+1
+1
+1
+−
+−
+dr
+c + v̄(r) κ (r2 − r) κ (r − r1 )
+
+
+
+. (A12)
+
+It is easy to see that the limit in the previous expression is finite for whatever r1 < r0 < r2 so that we end up with
+the relation
+
+Z r2 
+1
+1
+1
+1
+1
+1
+.
+(A13)
+dr
+−
+−
+u = t0 + ln [r2 − r0 ] − ln [r0 − r1 ] + ln [r2 − r1 ] +
+κ
+κ
+κ
+c + v̄(r) κ (r2 − r) κ (r − r1 )
+r0
+
+We now want to find the relation between U and u. It
+is possible to find a particular form for the kink function
+ξ (see Fig. 4 and its caption for an example), such that all
+the rays cross either the left kink r = −ξ(t) or the right
+kink r = +ξ(t) only once. The event ”crossing the kink”
+can be seen as belonging to both the in region and the
+out region. Therefore the relation U = p(u) can be found
+by eliminating t0 and r0 between expressions (A10) and
+(A13) taking into account that r0 will be either −ξ(t0 )
+or +ξ(t0 ). Figure 4 shows an exact numerical calculation
+of ray propagation, performed with this method.
+
+function ξ can be expanded in the following form:
+i
+h
+2
+(A14)
+ξ(t) = r2 + λ (t − tH ) + O (t − tH ) ,
+i
+h
+(A15)
+−ξ(t) = r1 − λ (t − tH ) + O (t − tH )2 ,
+
+with λ a positive constant (remember that we have chosen for simplicity r1 = −r2 ). Defining
+Z
+ξ(tH ) 1 tH
+U BH = tH ±
+dtv̄(ξ(t)) ,
+(A16)
++
+c
+c −∞
+WH
+it is easy to see that
+U± = U BH ∓
+WH
+
+However, in order to study the late-time behavior of
+both particle production and the RSET, we only need the
+previous relation (see Sec. III) for large and positive values of u (the location of the black horizon) and for large
+and negative values of u (the location of the white horizon). We want to show here that our particular example
+leads in fact to the general relation Eq. (40). In this specific case, taking the limit for |u| → ∞ corresponds to
+study the previous relation for light rays crossing the left
+kink at r0 = −ξ(t0 ), when r0 is very close to r1 [respectively, crossing the right kink at r0 = +ξ(t0 ), when r0
+is very close to r2 ]. First note that, when t → tH (the
+time of the first appearance of the trapping horizons) the
+
+i
+h
+λ
+2
+(tH − t0 ) + O (tH − t0 ) ,
+c
+
+(A17)
+
+where with U+ we denote the form of the function U (t0 )
+for rays crossing the kink close to r1 [respectively, with
+U− we denote the form of the function U (t0 ) for rays
+crossing the kink close to to r1 ]. By expanding Eq. (A13)
+in the same limit t0 → tH and retaining only the dominant term we obtain
+1
+u± ≃ ∓ ln [λ (tH − t0 )] ,
+(A18)
+κ
+where we define u± in the same fashion as U± . Putting
+together the last two results we obtain (inside the bubble)
+the general relation Eq. (40):
+U (u → ±∞) = U BH ∓ A± e∓κu .
+WH
+
+(A19)
+
+14
+2.
+
+the derivatives of w̃ and W with respect to t on the kink,
+at crossing time tc :
+
+Left-going rays
+
+In Sec. IV we stated that it is possible to find a wide
+class of transitions from a Minkowskian geometry to a
+warp-drive one such that the contributions to the RSET
+due to left-going modes are just transient, vanishing at
+late times. We show here that this is the case for our
+specific model.
+In order to do so, we shall need the relation between
+ingoing and outgoing left-going rays. Left-going rays are
+the solution of the differential equation (41) which becomes at early times
+dr
+= −c ,
+dt
+
+(A20)
+
+while inside the bubble we cannot take any limit as in
+Eq. (A4) because left-going rays are not confined inside
+the bubble, but escape through the black horizon, as we
+already noticed in Sec. III. Integrating the equation at
+early times we obtain
+t=C−
+
+r
+.
+c
+
+(A21)
+
+We identify initial events P ≡ (ri , ti ), with ri ∼ cti , final
+events Q ≡ (rf , tf ), and intermediate events O ≡ (r0 , t0 )
+either in the in region (when the velocity profile depends
+only on t) or in the out region (when the velocity profile
+depends only on r).
+Using w̃ defined as in Eq. (42), choosing arbitrarily the
+constant of integration, we obtain
+Z r0
+dr
+w̃(t0 , r0 ) ≡ t0 +
+.
+(A22)
+c
+−
+v̄(r)
+0
+For W we proceed as for U . We integrate Eq. (41)
+between P and an event O in the in region
+r0 − ri =
+
+Z t0
+
+!−1
+dw̃
+dt r=ξ(tc )
+!
+!−1
+˙ c)
+˙ c ) v̄(ξ(tc ))
+ξ(t
+ξ(t
+1+
+−
+1+
+c
+c
+c − v̄(ξ(tc ))
+
+dW
+dW
+=
+q̇ =
+dw̃
+dt r=ξ(tc )
+=
+
+=1−
+
+This is a constant value greater than 0. As a consequence, all the derivatives of q̇ go to zero as time grows
+and ρdyn−w̃ must go to zero in the same way. In conclusion, the dynamic term originated by the distortion of
+left-going rays can be different from zero when the horizon is created. However, this is only a transient term that
+is brought toward IL+ , i.e., outside the bubble. That is,
+it is possible to create a transition region such that some
+radiation traveling leftward is produced only at the onset
+of the warp drive, but there is not any phenomenon like
+Hawking radiation originated in this way.
+APPENDIX B: NULL COORDINATES
+
+In this Appendix we summarize some results concerning systems of null coordinates. In Sec. III we defined two
+sets of null coordinates (U, W ) and (u, w̃) obtained by integrating equations of light propagation, respectively, in
+the in region, in which the metric is Minkowskian, and in
+the out region, in which it depends on r (after the kink,
+in the particular example of Appendix A). Now, let us
+rewrite the metric using the set of coordinates (u, w̃). In
+the out region, using Eqs. (34) and (42):
+1
+,
+c + v̄(r)
+ut = 1 ,
+
+ur = −
+dt [−c + v̄(ξ(t))] .
+
+(A23)
+
+ti
+
+v̄(ξ(tc ))
+v̄(+∞)
+→1−
+. (A26)
+c
+c
+
+1
+,
+c − v̄(r)
+w̃t = 1 .
+
+w̃r =
+
+(B1)
+
+Now we put these expressions into Eq. (45):
+
+Defining W as
+W =
+
+lim
+
+ti →−∞
+
+
+
+ti +
+
+r 
+i
+
+c
+
+,
+
+(A24)
+
+we obtain
+r0
+1
+W = t0 +
+−
+c
+c
+
+Z t0
+
+dtv̄(ξ(t)) .
+
+(A25)
+
+−∞
+
+Now, the relation W = q(w̃) can be found eliminating
+t0 , r0 from Eqs. (42) and (A25) in the limit where (t0 , r0 )
+is on the kink.
+We can now show that indeed the term ρdyn−w̃ defined
+in Eq. (74) is just a transient for this model. We see from
+Fig. 4 that, as time grows, points inside the bubble are
+reached by w̃ rays that intersect the kink later and later.
+Using Eqs. (42) and (A25) we can estimate q̇, calculating
+
+ds2 = −C̄(u, w̃)dudw̃
+= −C̄(u, w̃) (ut dt + ur dr) (w̃t dt + w̃r dr)
+o
+C̄(u, w̃) n 2 2
+2
+. (B2)
+c
+dt
+−
+[dr
+−
+v̄(r)dt]
+= 2
+c − v̄(r)2
+By comparison with Eq. (31) we obtain
+C̄(u, w̃) = c2 − v̄(r)2 ,
+
+(B3)
+
+Note that the definition of U and W can be extended
+in the out region by following the light rays coming from
+the in region (in the model of Appendix A by matching
+on the kink the solutions of U and W with those of u
+and w̃). For instance, one can naturally define U (t, r) in
+the out region as U (t, r) = p (u(t, r)) and in analogous
+
+15
+ways for the other null coordinate. This means that it
+makes sense to take derivatives of the null coordinates
+with respect to r and t in all the spacetime. We write
+here the derivatives of U and W in the out region:
+ṗ(u)
+,
+c + v̄(r)
+Ut = ṗ(u)ut = ṗ(u) ,
+
+Ur = ṗ(u)ur = −
+
+q̇(w̃)
+,
+c − v̄(r)
+Wt = q̇(w̃)w̃t = q̇(w̃) .
+(B4)
+
+Wr = q̇(w̃)w̃r =
+
+APPENDIX C: ASYMPTOTIC EXPANSION OF
+f (u)
+
+where P± are analytic functions. We now expand it up
+to the third order:
+U = p(u → ±∞) = U BH + A1± e∓κu
+WH
+
+
+A2± ∓2κu A3± ∓3κu
+e
++
+e
++ O e∓4κu , (C2)
++
+2
+6
+where the upper (lower) signs correspond to u → +∞
+(u → −∞). For simplicity we have defined the coefficients A1+ ≡ −A+ and A1− ≡ A− . In order to calculate
+the stress-energy tensor we need to calculate the term
+Eq. (69)
+...
+3p̈2 − 2ṗ p
+f (u) =
+.
+ṗ2
+
+We know from Sec. III that U can be expanded for
+large absolute values of u in a Taylor series in e∓κu . In
+fact we found that
+U± = p(u → ±∞) = P± (e∓κu ) ,
+
+We have
+
+
+
+A3± ∓2κu
+A2± ∓κu
+∓3κu
+,
+e
++
+e
++O e
+1+
+ṗ(u) = ∓κA1± e
+A1±
+2A1±
+
+
+
+2A2± ∓κu 3A3± ∓2κu
+p̈(u) = κ2 A1± e∓κu 1 +
+,
+e
++
+e
++ O e∓3κu
+A1±
+2A1±
+
+
+
+...
+4A2± ∓κu 9A3± ∓2κu
+p (u) = ∓κ3 A1± e∓κu 1 +
+.
+e
++
+e
++ O e∓3κu
+A1±
+2A1±
+∓κu
+
+so that
+
+(C1)
+
+(C3)
+
+
+
+(C4)
+(C5)
+(C6)
+
+i
+n
+h
+o
+κ4 A21± e∓2κu 1 + 2(A2± /A1± )e∓κu + 4(A2± /A1± )2 − A3± /A1± e∓2κu + O e∓3κu
+i
+o
+n
+h
+f (u) =
+2
+κ2 A21± e∓2κu 1 + 2(A2± /A1± )e∓κu + (A2± /A1± ) + A3± /A1± e∓2κu + O (e∓3κu )
+i
+h
+i
+h
+
+ 
+
+2
+2
+
+ 
+
+4(A2± /A1± ) − A3± /A1±
+(A2± /A1± ) + A3± /A1±
+
+
+∓2κu
+∓3κu
+∓2κu
+∓3κu
+= κ2 1 +
+e
++
+O
+e
+e
++
+O
+e
+×
+1
+−
+
+ 
+
+1 + 2(A2± /A1± )e∓κu
+1 + 2(A2± /A1± )e∓κu
+)
+#
+(
+" 
+2
+
+A3± ∓2κu
+A2±
+2
+, (C7)
+e
++ O e∓3κu
+−2
+=κ 1+ 3
+A1±
+A1±
+and we can finally use the expansion of Eq. (36), valid for points close to the horizons, to obtain
+(
+" 
+)
+#
+2
+
+
+A2±
+A3± ∓2κt
+2
+3
+2
+f (u) = κ 1 + 3
+.
+e
+(r − r1,2 ) + O (r − r1,2 )
+−2
+A1±
+A1±
+
+[1] M. Alcubierre, Classical and Quantum Gravity 11, L73
+(1994), arXiv:gr-qc/0009013.
+[2] F. S. N. Lobo, ArXiv e-prints (2007), 0710.4474.
+[3] A. E. Everett, Phys. Rev. D 53, 7365 (1996).
+
+(C8)
+
+[4] F. S. N. Lobo and M. Visser, Classical and Quantum
+Gravity 21, 5871 (2004), arXiv:gr-qc/0406083.
+[5] F. S. N. Lobo and M. Visser, ArXiv General Relativity
+and Quantum Cosmology e-prints (2004), gr-qc/0412065.
+
+16
+[6] M. J. Pfenning and L. H. Ford, Classical and Quantum
+Gravity 14, 1743 (1997), arXiv:gr-qc/9702026.
+[7] T. A. Roman, in The Tenth Marcel Grossmann Meeting. On recent developments in theoretical and experimental general relativity, gravitation and relativistic field
+theories, edited by M. Novello, S. Perez Bergliaffa, and
+R. Ruffini (World Scientific Publishing, Singapore, 2005),
+p. 1909.
+[8] C. Van Den Broeck, Classical and Quantum Gravity 16,
+3973 (1999), arXiv:gr-qc/9905084.
+[9] W. A. Hiscock, Classical and Quantum Gravity 14, L183
+(1997), arXiv:gr-qc/9707024.
+[10] C. Barceló, S. Liberati, S. Sonego, and M. Visser, Phys.
+Rev. D 77, 044032 (2008).
+[11] P. F. González-Dı́az, Physics Letters B 653, 129 (2007).
+[12] C. Barceló, S. Liberati, S. Sonego, and M. Visser, New
+Journal of Physics 6, 186 (2004), arXiv:gr-qc/0408022.
+[13] N. D. Birrell and P. C. W. Davies, Quantum Fields in
+Curved Space (Cambridge University Press, 1984).
+
+[14] C. Barceló, S. Liberati, S. Sonego, and M. Visser, Classical and Quantum Gravity 23, 5341 (2006), arXiv:grqc/0604058.
+[15] S. A. Fulling, M. Sweeny, and R. M. Wald, Communications in Mathematical Physics 63, 257 (1978).
+[16] M. Simpson and R. Penrose, Int. J. Theor. Phys. 7, 183
+(1973).
+[17] E. Poisson and W. Israel, Phys. Rev. D 41, 1796 (1990).
+[18] D. Marković and E. Poisson, Physical Review Letters 74,
+1280 (1995), arXiv:gr-qc/9411002.
+[19] J. Macher and R. Parentani, to be published in Phys.
+Rev. D (2009), arXiv:hep-th/0903.2224.
+[20] C. Barceló, S. Liberati, and M. Visser, Living Reviews
+in Relativity 8 (2005), (cited on October 23, 2018), URL
+http://www.livingreviews.org/lrr-2005-12.
+[21] C. Barceló, S. Liberati, S. Sonego, and M. Visser,
+Physical Review Letters 97, 171301 (2006), arXiv:grqc/0607008.
+
+

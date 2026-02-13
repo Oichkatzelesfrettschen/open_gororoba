@@ -1,0 +1,6 @@
+where on the left we used the,J, λ, µi notation and on the right the states are
+expanded in terms the single-particle,j = 1/2, mj = ±1/2i basis using ClebschGordan coefficients. The DF qubit can now be written compactly as
+0Li = α,1/2, 0, 1/2i + β,1/2, 0, −1/2i
+1Li = α,1/2, 1, 1/2i + β,1/2, 1, −1/2i (45)
+where,α
+2+,β,2 = 1, i.e., the encoding is into the degeneracy of the two J = 1/2

@@ -1,0 +1,1419 @@
+equations = []
+tables = []
+full_text = """
+arXiv:astro-ph/9905116 v4 16 Dec 2000\r
+Distance measures in cosmology\r
+David W. Hogg\r
+Institute for Advanced Study, 1 Einstein Drive, Princeton NJ 08540\r
+hogg@ias.edu\r
+2000 December\r
+1 Introduction\r
+In cosmology (or to be more specific, cosmography, the measurement of the Universe) there\r
+are many ways to specify the distance between two points, because in the expanding Universe,\r
+the distances between comoving objects are constantly changing, and Earth-bound observers\r
+look back in time as they look out in distance. The unifying aspect is that all distance\r
+measures somehow measure the separation between events on radial null trajectories, ie,\r
+trajectories of photons which terminate at the observer.\r
+In this note, formulae for many different cosmological distance measures are provided. I\r
+treat the concept of “distance measure” very liberally, so, for instance, the lookback time\r
+and comoving volume are both considered distance measures. The bibliography of source\r
+material can be consulted for many of the derivations; this is merely a “cheat sheet.” Minimal C routines (KR) which compute all of these distance measures are available from the author\r
+upon request. Comments and corrections are highly appreciated, as are acknowledgments or\r
+citation in research that makes use of this summary or the associated code.\r
+2 Cosmographic parameters\r
+The Hubble constantH0 is the constant of proportionality between recession speedv and\r
+distanced in the expanding Universe;\r
+v=H0d (1)\r
+The subscripted “0” refers to the present epoch because in generalH changes with time.\r
+The dimensions ofH0 are inverse time, but it is usually written H0 = 100 h km s−1 Mpc−1 (2)\r
+whereh is a dimensionless number parameterizing our ignorance. (Word on the street is\r
+that 0.6 <h<0.9.) The inverse of the Hubble constant is the Hubble timet\r
+H\r
+t\r
+H\r
+≡\r
+1H0\r
+= 9.78× 10\r
+9\r
+h\r
+−1 yr = 3\r
+.09× 1017h\r
+−1 s (3)\r
+and the speed of lightc times the Hubble time is the Hubble distanceD\r
+H\r
+D\r
+H\r
+≡\r
+cH0\r
+= 3000h\r
+−1 Mpc = 9\r
+.26× 1025h\r
+−1 m (4)\r
+1
+
+These quantities set the scale of the Universe, and often cosmologists work in geometric units\r
+with c = tH = DH = 1.\r
+The mass density ρ of the Universe and the value of the cosmological constant Λ are\r
+dynamical properties of the Universe, affecting the time evolution of the metric, but in\r
+these notes we will treat them as purely kinematic parameters. They can be made into\r
+dimensionless density parameters ΩM and ΩΛ by\r
+ΩM ≡\r
+8πGρ0\r
+3 H2\r
+0\r
+(5)\r
+ΩΛ ≡\r
+Λc2\r
+3 H2\r
+0\r
+(6)\r
+(Peebles, 1993, pp 310–313), where the subscripted “0”s indicate that the quantities (which\r
+in general evolve with time) are to be evaluated at the present epoch. A third density\r
+parameter Ωk measures the “curvature of space” and can be defined by the relation\r
+ΩM + ΩΛ + Ωk = 1 (7)\r
+These parameters completely determine the geometry of the Universe if it is homogeneous,\r
+isotropic, and matter-dominated. By the way, the critical density Ω = 1 corresponds to\r
+7.5 × 1021 h−1 M\f D−3\r
+H , where M\f is the mass of the Sun.\r
+Most believe that it is in some sense “unlikely” that all three of these density parameters\r
+be of the same order, and we know that ΩM is significantly larger than zero, so many guess\r
+that (ΩM, ΩΛ, Ωk) = (1, 0, 0), with (ΩM, 1−ΩM, 0) and (ΩM, 0, 1−ΩM) tied for second place.1\r
+If ΩΛ = 0, then the deceleration parameter q0 is just half ΩM, otherwise q0 is not such a\r
+useful parameter. When I perform cosmographic calculations and I want to cover all the\r
+bases, I use the three world models\r
+name ΩM ΩΛ\r
+Einstein–de-Sitter 1 0\r
+low density 0.05 0\r
+high lambda 0.2 0.8\r
+These three models push the observational limits in different directions. Some would say\r
+that all three of these models are already ruled out, the first by mass accounting, the second\r
+by anisotropies measured in the cosmic microwave background, and the third by lensing\r
+statistics. It is fairly likely that the true world model is somewhere in-between these (unless\r
+the ΩM, ΩΛ, Ωk parameterization is itself wrong).\r
+3 Redshift\r
+The redshift z of an object is the fractional doppler shift of its emitted light resulting from\r
+radial motion\r
+z ≡\r
+νe\r
+νo\r
+− 1 =\r
+λo\r
+λe\r
+− 1 (8)\r
+1This sentence, unmodified from the first incarnation of these notes, can be used by historians of cosmology\r
+to determine, at least roughly, when they were written.\r
+2
+
+where νo and λo are the observed frequency and wavelength, and νe and λe are the emitted.\r
+In special relativity, redshift is related to radial velocity v by\r
+1 + z =\r
+vuut\r
+1 + v/c\r
+1 − v/c (9)\r
+where c is the speed of light. In general relativity, (9) is true in one particular coordinate\r
+system, but not any of the traditionally used coordinate systems. Many feel (partly for this\r
+reason) that it is wrong to view relativistic redshifts as being due to radial velocities at all\r
+(eg, Harrison, 1993). I do not agree. On the other hand, redshift is directly observable and\r
+radial velocity is not; these notes concentrate on observables.\r
+The difference between an object’s measured redshift zobs and its cosmological redshift\r
+zcos is due to its (radial) peculiar velocity vpec; ie, we define the cosmological redshift as that\r
+part of the redshift due solely to the expansion of the Universe, or Hubble flow. The peculiar\r
+velocity is related to the redshift difference by\r
+vpec = c\r
+(zobs − zcos)\r
+(1 + z) (10)\r
+where I have assumed vpec \u001C c. This can be derived from (9) by taking the derivative\r
+and using the special relativity formula for addition of velocities. From here on, we assume\r
+z = zcos.\r
+For small v/c, or small distance d, in the expanding Universe, the velocity is linearly\r
+proportional to the distance (and all the distance measures, eg, angular diameter distance,\r
+luminosity distance, etc, converge)\r
+z ≈\r
+v\r
+c = dDH\r
+(11)\r
+where DH is the Hubble distance defined in (4). But this is only true for small redshifts! It\r
+is important to note that many galaxy redshift surveys, when presenting redshifts as radial\r
+velocities, always use the non-relativistic approximation v = c z, even when it may not be\r
+physically appropriate (eg, Fairall 1992).\r
+In terms of cosmography, the cosmological redshift is directly related to the scale factor\r
+a(t), or the “size” of the Universe. For an object at redshift z\r
+1 + z = a(to)\r
+a(te) (12)\r
+where a(to) is the size of the Universe at the time the light from the object is observed, and\r
+a(te) is the size at the time it was emitted.\r
+Redshift is almost always determined with respect to us (or the frame centered on us\r
+but stationary with respect to the microwave background), but it is possible to define the\r
+redshift z12 between objects 1 and 2, both of which are cosmologically redshifted relative to\r
+us: the redshift z12 of an object at redshift z2 relative to a hypothetical observer at redshift\r
+z1 < z2 is given by\r
+1 + z12 = a(t1)\r
+a(t2) = 1 + z21 + z1\r
+(13)\r
+3
+
+4 Comoving distance (line-of-sight)\r
+A small comoving distance δDC between two nearby objects in the Universe is the distance\r
+between them which remains constant with epoch if the two objects are moving with the\r
+Hubble flow. In other words, it is the distance between them which would be measured with\r
+rulers at the time they are being observed (the proper distance) divided by the ratio of the\r
+scale factor of the Universe then to now; it is the proper distance multiplied by (1 + z).\r
+The total line-of-sight comoving distance DC from us to a distant object is computed by\r
+integrating the infinitesimal δDC contributions between nearby events along the radial ray\r
+from z = 0 to the object.\r
+Following Peebles (1993, pp 310–321) (who calls the transverse comoving distance by\r
+the confusing name “angular size distance,” which is not the same as “angular diameter\r
+distance” introduced below), we define the function\r
+E(z) ≡\r
+q\r
+ΩM (1 + z)3 + Ωk (1 + z)2 + ΩΛ (14)\r
+which is proportional to the time derivative of the logarithm of the scale factor (ie, ˙a(t)/a(t)),\r
+with z redshift and ΩM, Ωk and ΩΛ the three density parameters defined above. (For this\r
+reason, H(z) = H0 E(z) is the Hubble constant as measured by a hypothetical astronomer\r
+working at redshift z.) Since dz = da, dz/E(z) is proportional to the time-of-flight of a\r
+photon traveling across the redshift interval dz, divided by the scale factor at that time.\r
+Since the speed of light is constant, this is a proper distance divided by the scale factor,\r
+which is the definition of a comoving distance. The total line-of-sight comoving distance is\r
+then given by integrating these contributions, or\r
+DC = DH\r
+Z z\r
+0\r
+dz0\r
+E(z0) (15)\r
+where DH is the Hubble distance defined by (4).\r
+In some sense the line-of-sight comoving distance is the fundamental distance measure\r
+in cosmography since, as will be seen below, all others are quite simply derived in terms of\r
+it. The line-of-sight comoving distance between two nearby events (ie, close in redshift or\r
+distance) is the distance which we would measure locally between the events today if those\r
+two points were locked into the Hubble flow. It is the correct distance measure for measuring\r
+aspects of large-scale structure imprinted on the Hubble flow, eg, distances between “walls.”\r
+5 Comoving distance (transverse)\r
+The comoving distance between two events at the same redshift or distance but separated\r
+on the sky by some angle δθ is DM δθ and the transverse comoving distance DM (so-denoted\r
+for a reason explained below) is simply related to the line-of-sight comoving distance DC:\r
+DM =\r
+\r
+\r
+\r
+DH √\r
+1\r
+Ωk\r
+sinh h√Ωk DC/DH\r
+i\r
+for Ωk > 0\r
+DC for Ωk = 0\r
+DH √\r
+1\r
+|Ωk|\r
+sin hq|Ωk| DC/DH\r
+i\r
+for Ωk < 0\r
+(16)\r
+4
+
+where the trigonometric functions sinh and sin account for what is called “the curvature of\r
+space.” (Space curvature is not coordinate-free; a change of coordinates makes space flat; the\r
+only coordinate-free curvature is space–time curvature, which is related to the local mass–\r
+energy density or really stress–energy tensor.) For ΩΛ = 0, there is an analytic solution to\r
+the equations\r
+DM = DH\r
+2 [2 − ΩM (1 − z) − (2 − ΩM)\r
+√1+ΩM z]\r
+Ω2\r
+M (1 + z) for ΩΛ = 0 (17)\r
+(Weinberg, 1972, p. 485; Peebles, 1993, pp 320–321). Some (eg, Weedman, 1986, pp 59–60)\r
+call this distance measure “proper distance,” which, though common usage, is bad style.2\r
+(Although these notes follow the Peebles derivation, there is a qualitatively distinct\r
+method using what is known as the development angle χ, which increases as the Universe\r
+evolves. This method is generally preferred by relativists; eg, Misner, Thorne & Wheeler\r
+1973, pp 782–785).\r
+The comoving distance happens to be equivalent to the proper motion distance (hence\r
+the name DM), defined as the ratio of the actual transverse velocity (in distance over time) of\r
+an object to its proper motion (in radians per unit time) (Weinberg, 1972, pp 423–424). The\r
+proper motion distance is plotted in Figure 1. Proper motion distance is used, for example,\r
+in computing radio jet velocities from knot motion.\r
+6 Angular diameter distance\r
+The angular diameter distance DA is defined as the ratio of an object’s physical transverse\r
+size to its angular size (in radians). It is used to convert angular separations in telescope\r
+images into proper separations at the source. It is famous for not increasing indefinitely as\r
+z → ∞; it turns over at z ∼ 1 and thereafter more distant objects actually appear larger in\r
+angular size. Angular diameter distance is related to the transverse comoving distance by\r
+DA = DM\r
+1 + z (18)\r
+(Weinberg, 1972, pp 421–424; Weedman, 1986, pp 65–67; Peebles, 1993, pp 325–327). The\r
+angular diameter distance is plotted in Figure 2. At high redshift, the angular diameter\r
+distance is such that 1 arcsec is on the order of 5 kpc.\r
+There is also an angular diameter distance DA12 between two objects at redshifts z1 and\r
+z2, frequently used in gravitational lensing. It is not found by subtracting the two individual\r
+angular diameter distances! The correct formula, for Ωk ≥ 0, is\r
+DA12 = 1\r
+1 + z2\r
+\r
+DM2\r
+vuut1+Ωk\r
+D2\r
+M1\r
+D2\r
+H\r
+− DM1\r
+vuut1+Ωk\r
+D2\r
+M2\r
+D2\r
+H\r
+\r
+ (19)\r
+2The word “proper” has a specific use in relativity. The proper time between two nearby events is the\r
+time delay between the events in the frame in which they take place at the same location, and the proper\r
+distance between two nearby events is the distance between them in the frame in which they happen at the\r
+same time. In the cosmological context, it is the distance measured by a ruler at the time of observation.\r
+The transverse comoving distance DM is not a proper distance—it is a proper distance divided by a ratio of\r
+scale factors.\r
+5
+
+where DM1 and DM2 are the transverse comoving distances to z1 and z2, DH is the Hubble dis\u0002tance, and Ωk is the curvature density parameter (Peebles, 1993, pp 336–337). Unfortunately,\r
+the above formula is not correct for Ωk < 0 (Phillip Helbig, 1998, private communication).\r
+7 Luminosity distance\r
+The luminosity distance DL is defined by the relationship between bolometric (ie, integrated\r
+over all frequencies) flux S and bolometric luminosity L:\r
+DL ≡\r
+s\r
+L\r
+4π S (20)\r
+It turns out that this is related to the transverse comoving distance and angular diameter\r
+distance by\r
+DL = (1 + z) DM = (1 + z)\r
+2 DA (21)\r
+(Weinberg, 1972, pp 420–424; Weedman, 1986, pp 60–62). The latter relation follows from\r
+the fact that the surface brightness of a receding object is reduced by a factor (1 +z)−4, and\r
+the angular area goes down as D−2\r
+A . The luminosity distance is plotted in Figure 3.\r
+If the concern is not with bolometric quantities but rather with differential flux Sν and\r
+luminosity Lν , as is usually the case in astronomy, then a correction, the k-correction, must\r
+be applied to the flux or luminosity because the redshifted object is emitting flux in a different\r
+band than that in which you are observing. The k-correction depends on the spectrum of\r
+the object in question, and is unnecessary only if the object has spectrum ν Lν = constant.\r
+For any other spectrum the differential flux Sν is related to the differential luminosity Lν by\r
+Sν = (1 + z)\r
+L(1+z)ν\r
+Lν\r
+Lν\r
+4π D2\r
+L\r
+(22)\r
+where z is the redshift, the ratio of luminosities equalizes the difference in flux between the\r
+observed and emitted bands, and the factor of (1 + z) accounts for the redshifting of the\r
+bandwidth. Similarly, for differential flux per unit wavelength,\r
+Sλ = 1\r
+(1 + z)\r
+Lλ/(1+z)\r
+Lλ\r
+Lλ\r
+4π D2\r
+L\r
+(23)\r
+(Peebles, 1993, pp 330–331; Weedman, 1986, pp 60–62). In this author’s opinion, the most\r
+natural flux unit is differential flux per unit log frequency or log wavelength ν Sν = λ Sλ for\r
+which there is no redshifting of the bandpass so\r
+ν Sν = νe Lνe\r
+4π D2\r
+L\r
+(24)\r
+where νe = (1 + z)ν is the emitted frequency. These equations are straightforward to\r
+generalize to bandpasses of finite width.\r
+The apparent magnitude m of an astronomical source in a photometric bandpass is defined\r
+to be the ratio of the apparent flux of that source to the apparent flux of the bright star\r
+6
+
+Vega, through that bandpass (don’t ask me about “AB magnitudes”). The distance modulus\r
+DM is defined by\r
+DM ≡ 5 log DL\r
+10 pc!\r
+(25)\r
+because it is the magnitude difference between an object’s observed bolometric flux and\r
+what it would be if it were at 10 pc (this was once thought to be the distance to Vega).\r
+The distance modulus is plotted in Figure 4. The absolute magnitude M is the astronomer’s\r
+measure of luminosity, defined to be the apparent magnitude the object in question would\r
+have if it were at 10 pc, so\r
+m = M + DM + K (26)\r
+where K is the k-correction\r
+K = −2.5 log "(1 + z)\r
+L(1+z)ν\r
+Lν\r
+#\r
+= −2.5 log " 1\r
+(1 + z)\r
+Lλ/(1+z)\r
+Lλ\r
+#\r
+(27)\r
+(eg, Oke & Sandage, 1968).\r
+8 Parallax distance\r
+If it were possible to measure parallaxes for high redshift objects, the distance so measured\r
+would be the parallax distance DP (Weinberg, 1972, pp 418–420). It may be possible, one\r
+day, to measure parallaxes to distant galaxies using gravitational lensing, although in these\r
+cases, a modified parallax distance is used which takes into account the redshifts of both the\r
+source and the lens (Schneider, Ehlers & Falco, 1992, pp 508–509), a discussion of which is\r
+beyond the scope of these notes.\r
+9 Comoving volume\r
+The comoving volume VC is the volume measure in which number densities of non-evolving\r
+objects locked into Hubble flow are constant with redshift. It is the proper volume times\r
+three factors of the relative scale factor now to then, or (1 + z)3. Since the derivative of\r
+comoving distance with redshift is 1/E(z) defined in (14), the angular diameter distance\r
+converts a solid angle dΩ into a proper area, and two factors of (1 +z) convert a proper area\r
+into a comoving area, the comoving volume element in solid angle dΩ and redshift interval\r
+dz is\r
+dVC = DH\r
+(1 + z)2 D2\r
+A\r
+E(z) dΩ dz (28)\r
+where DA is the angular diameter distance at redshift z and E(z) is defined in (14) (Weinberg,\r
+1972, p. 486; Peebles, 1993, pp 331–333). The comoving volume element is plotted in\r
+Figure 5. The integral of the comoving volume element from the present to redshift z gives\r
+7
+
+the total comoving volume, all-sky, out to redshift z\r
+VC =\r
+\r
+\r
+\r
+\u00124π D3\r
+H\r
+2 Ωk\r
+\u0013 \u0014 DM\r
+DH\r
+r\r
+1+Ωk\r
+D2\r
+M\r
+D2\r
+H\r
+− √\r
+1\r
+|Ωk|\r
+arcsinh \u0010q|Ωk| DM\r
+DH\r
+\u0011\u0015\r
+for Ωk > 0\r
+4π\r
+3 D3\r
+M for Ωk = 0\r
+\u00124π D3\r
+H\r
+2 Ωk\r
+\u0013 \u0014 DM\r
+DH\r
+r\r
+1+Ωk\r
+D2\r
+M\r
+D2\r
+H\r
+− √\r
+1\r
+|Ωk|\r
+arcsin \u0010q|Ωk| DM\r
+DH\r
+\u0011\u0015\r
+for Ωk < 0\r
+(29)\r
+(Carrol, Press & Turner, 1992), where D3\r
+H is sometimes called the Hubble volume. The\r
+comoving volume element and its integral are both used frequently in predicting number\r
+counts or luminosity densities.\r
+10 Lookback time\r
+The lookback time tL to an object is the difference between the age to of the Universe now (at\r
+observation) and the age te of the Universe at the time the photons were emitted (according\r
+to the object). It is used to predict properties of high-redshift objects with evolutionary\r
+models, such as passive stellar evolution for galaxies. Recall that E(z) is the time derivative\r
+of the logarithm of the scale factor a(t); the scale factor is proportional to (1 + z), so the\r
+product (1 +z) E(z) is proportional to the derivative of z with respect to the lookback time,\r
+or\r
+tL = tH\r
+Z z\r
+0\r
+dz0\r
+(1 + z0) E(z0) (30)\r
+(Peebles, 1993, pp 313–315; Kolb & Turner 1990, pp 52–56, give some analytic solutions to\r
+this equation, but they are concerned with the age t(z), so they integrate from z to ∞). The\r
+lookback time and age are plotted in Figure 6.\r
+11 Probability of intersecting objects\r
+Given a population of objects with comoving number density n(z) (number per unit volume)\r
+and cross section σ(z) (area), what is the incremental probability dP that a line of sight will\r
+intersect one of the objects in redshift interval dz at redshift z? Questions of this form are\r
+asked frequently in the study of QSO absorption lines or pencil-beam redshift surveys. The\r
+answer is\r
+dP = n(z) σ(z) DH\r
+(1 + z)2\r
+E(z) dz (31)\r
+(Peebles, 1993, pp 323–325). The dimensionless differential intersection probability is plotted\r
+in Figure 7.\r
+Acknowledgments\r
+Roger Blandford, Ed Farhi, Jim Peebles and Wal Sargent all contributed generously to my\r
+understanding of this material and Kurt Adelberger, Lee Armus, Andrew Baker, Deepto\r
+8
+
+Chakrabarty, Alex Filippenko, Andrew Hamilton, Phillip Helbig, Wayne Hu, John Huchra,\r
+Daniel Mortlock, Tom Murphy, Gerry Neugebauer, Adam Riess, Paul Schechter, Douglas\r
+Scott and Ned Wright caught errors, suggested additional material, or helped me with word\u0002ing, conventions or terminology. I thank the NSF and NASA for financial support.\r
+12 References\r
+Blandford R. & Narayan R., 1992, Cosmological applications of gravitational lensing, ARA&A\r
+30 311–358\r
+Carroll S. M., Press W. H. & Turner E. L., 1992, The cosmological constant, ARA&A 30\r
+499–542\r
+Fairall A. P., 1992, A caution to those who measure galaxy redshifts, Observatory 112 286\r
+Harrison E., 1993, The redshift–distance and velocity–distance laws, ApJ 403 28–31\r
+Kayser R., Helbig P. & Schramm T., 1997, A general and practical method for calculating\r
+cosmological distances, A&A 318 680–686\r
+Kolb E. W. & Turner M. S., 1990, The Early Universe, Addison-Wesley, Redwood City\r
+Misner C. W., Thorne K. S. & Wheeler J. A., 1973, Gravitation, W. H. Freeman & Co., New\r
+York\r
+Oke J. B. & Sandage A., 1968, Energy distributions, k corrections, and the Stebbins-Whitford\r
+effect for giant elliptical galaxies, ApJ 154 21\r
+Peebles P. J. E., 1993, Principles of Physical Cosmology, Princeton University Press, Prince\u0002ton\r
+Schneider P., Ehlers J. & Falco E. E., 1992, Gravitational Lensing, Springer, Berlin\r
+Weedman D. W., 1986, Quasar Astronomy, Cambridge University, Cambridge\r
+Weinberg S., 1972, Gravitation and Cosmolgy: Principles and Applications of the General\r
+Theory of Relativity, John Wiley & Sons, New York\r
+9
+
+Figure 1: The dimensionless proper motion distance DM/DH. The three curves are for the\r
+three world models, Einstein-de Sitter (ΩM, ΩΛ) = (1, 0), solid; low-density, (0.05, 0), dotted;\r
+and high lambda, (0.2, 0.8), dashed.\r
+10
+
+Figure 2: The dimensionless angular diameter distance DA/DH. The three curves are for\r
+the three world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+11
+
+Figure 3: The dimensionless luminosity distance DL/DH. The three curves are for the three\r
+world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+12
+
+Figure 4: The distance modulus DM. The three curves are for the three world models,\r
+(ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+13
+
+Figure 5: The dimensionless comoving volume element (1/DH)3 (dVC/dz). The three curves\r
+are for the three world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8),\r
+dashed.\r
+14
+
+Figure 6: The dimensionless lookback time tL/tH and age t/tH. Curves cross at the redshift\r
+at which the Universe is half its present age. The three curves are for the three world models,\r
+(ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+15
+
+Figure 7: The dimensionless differential intersection probability dP/dz; dimensionless in the\r
+sense of n(z) σ(z) DH = 1. The three curves are for the three world models, (ΩM, ΩΛ) = (1, 0),\r
+solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+16"""
+
+[metadata]
+title = "hogg 1999 distance measures"
+authors = ["Unknown"]
+year = 1999
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:astro-ph/9905116 v4 16 Dec 2000\r
+Distance measures in cosmology\r
+David W. Hogg\r
+Institute for Advanced Study, 1 Einstein Drive, Princeton NJ 08540\r
+hogg@ias.edu"""
+
+[[sections]]
+number = "2000"
+title = "December"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+In cosmology (or to be more specific, cosmography, the measurement of the Universe) there\r
+are many ways to specify the distance between two points, because in the expanding Universe,\r
+the distances between comoving objects are constantly changing, and Earth-bound observers\r
+look back in time as they look out in distance. The unifying aspect is that all distance\r
+measures somehow measure the separation between events on radial null trajectories, ie,\r
+trajectories of photons which terminate at the observer.\r
+In this note, formulae for many different cosmological distance measures are provided. I\r
+treat the concept of “distance measure” very liberally, so, for instance, the lookback time\r
+and comoving volume are both considered distance measures. The bibliography of source\r
+material can be consulted for many of the derivations; this is merely a “cheat sheet.” Minimal C routines (KR) which compute all of these distance measures are available from the author\r
+upon request. Comments and corrections are highly appreciated, as are acknowledgments or\r
+citation in research that makes use of this summary or the associated code."""
+
+[[sections]]
+number = "2"
+title = "Cosmographic parameters"
+text = """
+The Hubble constantH0 is the constant of proportionality between recession speedv and\r
+distanced in the expanding Universe;\r
+v=H0d (1)\r
+The subscripted “0” refers to the present epoch because in generalH changes with time.\r
+The dimensions ofH0 are inverse time, but it is usually written H0 = 100 h km s−1 Mpc−1 (2)\r
+whereh is a dimensionless number parameterizing our ignorance. (Word on the street is\r
+that 0.6 <h<0.9.) The inverse of the Hubble constant is the Hubble timet\r
+H\r
+t\r
+H\r
+≡\r
+1H0\r
+= 9.78× 10\r
+9\r
+h\r
+−1 yr = 3\r
+.09× 1017h\r
+−1 s (3)\r
+and the speed of lightc times the Hubble time is the Hubble distanceD\r
+H\r
+D\r
+H\r
+≡\r
+cH0\r
+= 3000h\r
+−1 Mpc = 9\r
+.26× 1025h\r
+−1 m (4)\r
+1
+
+These quantities set the scale of the Universe, and often cosmologists work in geometric units\r
+with c = tH = DH = 1.\r
+The mass density ρ of the Universe and the value of the cosmological constant Λ are\r
+dynamical properties of the Universe, affecting the time evolution of the metric, but in\r
+these notes we will treat them as purely kinematic parameters. They can be made into\r
+dimensionless density parameters ΩM and ΩΛ by\r
+ΩM ≡\r
+8πGρ0"""
+
+[[sections]]
+number = "3"
+title = "H2"
+text = """
+0\r
+(5)\r
+ΩΛ ≡\r
+Λc2"""
+
+[[sections]]
+number = "3"
+title = "H2"
+text = """
+0\r
+(6)\r
+(Peebles, 1993, pp 310–313), where the subscripted “0”s indicate that the quantities (which\r
+in general evolve with time) are to be evaluated at the present epoch. A third density\r
+parameter Ωk measures the “curvature of space” and can be defined by the relation\r
+ΩM + ΩΛ + Ωk = 1 (7)\r
+These parameters completely determine the geometry of the Universe if it is homogeneous,\r
+isotropic, and matter-dominated. By the way, the critical density Ω = 1 corresponds to\r
+7.5 × 1021 h−1 M\f D−3\r
+H , where M\f is the mass of the Sun.\r
+Most believe that it is in some sense “unlikely” that all three of these density parameters\r
+be of the same order, and we know that ΩM is significantly larger than zero, so many guess\r
+that (ΩM, ΩΛ, Ωk) = (1, 0, 0), with (ΩM, 1−ΩM, 0) and (ΩM, 0, 1−ΩM) tied for second place.1\r
+If ΩΛ = 0, then the deceleration parameter q0 is just half ΩM, otherwise q0 is not such a\r
+useful parameter. When I perform cosmographic calculations and I want to cover all the\r
+bases, I use the three world models\r
+name ΩM ΩΛ\r
+Einstein–de-Sitter 1 0\r
+low density 0.05 0\r
+high lambda 0.2 0.8\r
+These three models push the observational limits in different directions. Some would say\r
+that all three of these models are already ruled out, the first by mass accounting, the second\r
+by anisotropies measured in the cosmic microwave background, and the third by lensing\r
+statistics. It is fairly likely that the true world model is somewhere in-between these (unless\r
+the ΩM, ΩΛ, Ωk parameterization is itself wrong)."""
+
+[[sections]]
+number = "3"
+title = "Redshift"
+text = """
+The redshift z of an object is the fractional doppler shift of its emitted light resulting from\r
+radial motion\r
+z ≡\r
+νe\r
+νo\r
+− 1 =\r
+λo\r
+λe\r
+− 1 (8)\r
+1This sentence, unmodified from the first incarnation of these notes, can be used by historians of cosmology\r
+to determine, at least roughly, when they were written.\r
+2
+
+where νo and λo are the observed frequency and wavelength, and νe and λe are the emitted.\r
+In special relativity, redshift is related to radial velocity v by\r
+1 + z =\r
+vuut\r
+1 + v/c\r
+1 − v/c (9)\r
+where c is the speed of light. In general relativity, (9) is true in one particular coordinate\r
+system, but not any of the traditionally used coordinate systems. Many feel (partly for this\r
+reason) that it is wrong to view relativistic redshifts as being due to radial velocities at all\r
+(eg, Harrison, 1993). I do not agree. On the other hand, redshift is directly observable and\r
+radial velocity is not; these notes concentrate on observables.\r
+The difference between an object’s measured redshift zobs and its cosmological redshift\r
+zcos is due to its (radial) peculiar velocity vpec; ie, we define the cosmological redshift as that\r
+part of the redshift due solely to the expansion of the Universe, or Hubble flow. The peculiar\r
+velocity is related to the redshift difference by\r
+vpec = c\r
+(zobs − zcos)\r
+(1 + z) (10)\r
+where I have assumed vpec \u001C c. This can be derived from (9) by taking the derivative\r
+and using the special relativity formula for addition of velocities. From here on, we assume\r
+z = zcos.\r
+For small v/c, or small distance d, in the expanding Universe, the velocity is linearly\r
+proportional to the distance (and all the distance measures, eg, angular diameter distance,\r
+luminosity distance, etc, converge)\r
+z ≈\r
+v\r
+c = dDH\r
+(11)\r
+where DH is the Hubble distance defined in (4). But this is only true for small redshifts! It\r
+is important to note that many galaxy redshift surveys, when presenting redshifts as radial\r
+velocities, always use the non-relativistic approximation v = c z, even when it may not be\r
+physically appropriate (eg, Fairall 1992).\r
+In terms of cosmography, the cosmological redshift is directly related to the scale factor\r
+a(t), or the “size” of the Universe. For an object at redshift z\r
+1 + z = a(to)\r
+a(te) (12)\r
+where a(to) is the size of the Universe at the time the light from the object is observed, and\r
+a(te) is the size at the time it was emitted.\r
+Redshift is almost always determined with respect to us (or the frame centered on us\r
+but stationary with respect to the microwave background), but it is possible to define the\r
+redshift z12 between objects 1 and 2, both of which are cosmologically redshifted relative to\r
+us: the redshift z12 of an object at redshift z2 relative to a hypothetical observer at redshift\r
+z1 < z2 is given by\r
+1 + z12 = a(t1)\r
+a(t2) = 1 + z21 + z1\r
+(13)\r
+3"""
+
+[[sections]]
+number = "4"
+title = "Comoving distance (line-of-sight)"
+text = """
+A small comoving distance δDC between two nearby objects in the Universe is the distance\r
+between them which remains constant with epoch if the two objects are moving with the\r
+Hubble flow. In other words, it is the distance between them which would be measured with\r
+rulers at the time they are being observed (the proper distance) divided by the ratio of the\r
+scale factor of the Universe then to now; it is the proper distance multiplied by (1 + z).\r
+The total line-of-sight comoving distance DC from us to a distant object is computed by\r
+integrating the infinitesimal δDC contributions between nearby events along the radial ray\r
+from z = 0 to the object.\r
+Following Peebles (1993, pp 310–321) (who calls the transverse comoving distance by\r
+the confusing name “angular size distance,” which is not the same as “angular diameter\r
+distance” introduced below), we define the function\r
+E(z) ≡\r
+q\r
+ΩM (1 + z)3 + Ωk (1 + z)2 + ΩΛ (14)\r
+which is proportional to the time derivative of the logarithm of the scale factor (ie, ˙a(t)/a(t)),\r
+with z redshift and ΩM, Ωk and ΩΛ the three density parameters defined above. (For this\r
+reason, H(z) = H0 E(z) is the Hubble constant as measured by a hypothetical astronomer\r
+working at redshift z.) Since dz = da, dz/E(z) is proportional to the time-of-flight of a\r
+photon traveling across the redshift interval dz, divided by the scale factor at that time.\r
+Since the speed of light is constant, this is a proper distance divided by the scale factor,\r
+which is the definition of a comoving distance. The total line-of-sight comoving distance is\r
+then given by integrating these contributions, or\r
+DC = DH\r
+Z z\r
+0\r
+dz0\r
+E(z0) (15)\r
+where DH is the Hubble distance defined by (4).\r
+In some sense the line-of-sight comoving distance is the fundamental distance measure\r
+in cosmography since, as will be seen below, all others are quite simply derived in terms of\r
+it. The line-of-sight comoving distance between two nearby events (ie, close in redshift or\r
+distance) is the distance which we would measure locally between the events today if those\r
+two points were locked into the Hubble flow. It is the correct distance measure for measuring\r
+aspects of large-scale structure imprinted on the Hubble flow, eg, distances between “walls.”"""
+
+[[sections]]
+number = "5"
+title = "Comoving distance (transverse)"
+text = """
+The comoving distance between two events at the same redshift or distance but separated\r
+on the sky by some angle δθ is DM δθ and the transverse comoving distance DM (so-denoted\r
+for a reason explained below) is simply related to the line-of-sight comoving distance DC:\r
+DM =\r
+\r
+\r
+\r
+DH √\r
+1\r
+Ωk\r
+sinh h√Ωk DC/DH\r
+i\r
+for Ωk > 0\r
+DC for Ωk = 0\r
+DH √\r
+1\r
+|Ωk|\r
+sin hq|Ωk| DC/DH\r
+i\r
+for Ωk < 0\r
+(16)\r
+4
+
+where the trigonometric functions sinh and sin account for what is called “the curvature of\r
+space.” (Space curvature is not coordinate-free; a change of coordinates makes space flat; the\r
+only coordinate-free curvature is space–time curvature, which is related to the local mass–\r
+energy density or really stress–energy tensor.) For ΩΛ = 0, there is an analytic solution to\r
+the equations\r
+DM = DH\r
+2 [2 − ΩM (1 − z) − (2 − ΩM)\r
+√1+ΩM z]\r
+Ω2\r
+M (1 + z) for ΩΛ = 0 (17)\r
+(Weinberg, 1972, p. 485; Peebles, 1993, pp 320–321). Some (eg, Weedman, 1986, pp 59–60)\r
+call this distance measure “proper distance,” which, though common usage, is bad style.2\r
+(Although these notes follow the Peebles derivation, there is a qualitatively distinct\r
+method using what is known as the development angle χ, which increases as the Universe\r
+evolves. This method is generally preferred by relativists; eg, Misner, Thorne & Wheeler\r
+1973, pp 782–785).\r
+The comoving distance happens to be equivalent to the proper motion distance (hence\r
+the name DM), defined as the ratio of the actual transverse velocity (in distance over time) of\r
+an object to its proper motion (in radians per unit time) (Weinberg, 1972, pp 423–424). The\r
+proper motion distance is plotted in Figure 1. Proper motion distance is used, for example,\r
+in computing radio jet velocities from knot motion."""
+
+[[sections]]
+number = "6"
+title = "Angular diameter distance"
+text = """
+The angular diameter distance DA is defined as the ratio of an object’s physical transverse\r
+size to its angular size (in radians). It is used to convert angular separations in telescope\r
+images into proper separations at the source. It is famous for not increasing indefinitely as\r
+z → ∞; it turns over at z ∼ 1 and thereafter more distant objects actually appear larger in\r
+angular size. Angular diameter distance is related to the transverse comoving distance by\r
+DA = DM\r
+1 + z (18)\r
+(Weinberg, 1972, pp 421–424; Weedman, 1986, pp 65–67; Peebles, 1993, pp 325–327). The\r
+angular diameter distance is plotted in Figure 2. At high redshift, the angular diameter\r
+distance is such that 1 arcsec is on the order of 5 kpc.\r
+There is also an angular diameter distance DA12 between two objects at redshifts z1 and\r
+z2, frequently used in gravitational lensing. It is not found by subtracting the two individual\r
+angular diameter distances! The correct formula, for Ωk ≥ 0, is\r
+DA12 = 1\r
+1 + z2\r
+\r
+DM2\r
+vuut1+Ωk\r
+D2\r
+M1\r
+D2\r
+H\r
+− DM1\r
+vuut1+Ωk\r
+D2\r
+M2\r
+D2\r
+H\r
+\r
+ (19)\r
+2The word “proper” has a specific use in relativity. The proper time between two nearby events is the\r
+time delay between the events in the frame in which they take place at the same location, and the proper\r
+distance between two nearby events is the distance between them in the frame in which they happen at the\r
+same time. In the cosmological context, it is the distance measured by a ruler at the time of observation.\r
+The transverse comoving distance DM is not a proper distance—it is a proper distance divided by a ratio of\r
+scale factors.\r
+5
+
+where DM1 and DM2 are the transverse comoving distances to z1 and z2, DH is the Hubble dis\u0002tance, and Ωk is the curvature density parameter (Peebles, 1993, pp 336–337). Unfortunately,\r
+the above formula is not correct for Ωk < 0 (Phillip Helbig, 1998, private communication)."""
+
+[[sections]]
+number = "7"
+title = "Luminosity distance"
+text = """
+The luminosity distance DL is defined by the relationship between bolometric (ie, integrated\r
+over all frequencies) flux S and bolometric luminosity L:\r
+DL ≡\r
+s\r
+L\r
+4π S (20)\r
+It turns out that this is related to the transverse comoving distance and angular diameter\r
+distance by\r
+DL = (1 + z) DM = (1 + z)"""
+
+[[sections]]
+number = "2"
+title = "DA (21)"
+text = """
+(Weinberg, 1972, pp 420–424; Weedman, 1986, pp 60–62). The latter relation follows from\r
+the fact that the surface brightness of a receding object is reduced by a factor (1 +z)−4, and\r
+the angular area goes down as D−2\r
+A . The luminosity distance is plotted in Figure 3.\r
+If the concern is not with bolometric quantities but rather with differential flux Sν and\r
+luminosity Lν , as is usually the case in astronomy, then a correction, the k-correction, must\r
+be applied to the flux or luminosity because the redshifted object is emitting flux in a different\r
+band than that in which you are observing. The k-correction depends on the spectrum of\r
+the object in question, and is unnecessary only if the object has spectrum ν Lν = constant.\r
+For any other spectrum the differential flux Sν is related to the differential luminosity Lν by\r
+Sν = (1 + z)\r
+L(1+z)ν\r
+Lν\r
+Lν\r
+4π D2\r
+L\r
+(22)\r
+where z is the redshift, the ratio of luminosities equalizes the difference in flux between the\r
+observed and emitted bands, and the factor of (1 + z) accounts for the redshifting of the\r
+bandwidth. Similarly, for differential flux per unit wavelength,\r
+Sλ = 1\r
+(1 + z)\r
+Lλ/(1+z)\r
+Lλ\r
+Lλ\r
+4π D2\r
+L\r
+(23)\r
+(Peebles, 1993, pp 330–331; Weedman, 1986, pp 60–62). In this author’s opinion, the most\r
+natural flux unit is differential flux per unit log frequency or log wavelength ν Sν = λ Sλ for\r
+which there is no redshifting of the bandpass so\r
+ν Sν = νe Lνe\r
+4π D2\r
+L\r
+(24)\r
+where νe = (1 + z)ν is the emitted frequency. These equations are straightforward to\r
+generalize to bandpasses of finite width.\r
+The apparent magnitude m of an astronomical source in a photometric bandpass is defined\r
+to be the ratio of the apparent flux of that source to the apparent flux of the bright star\r
+6
+
+Vega, through that bandpass (don’t ask me about “AB magnitudes”). The distance modulus\r
+DM is defined by\r
+DM ≡ 5 log DL\r
+10 pc!\r
+(25)\r
+because it is the magnitude difference between an object’s observed bolometric flux and\r
+what it would be if it were at 10 pc (this was once thought to be the distance to Vega).\r
+The distance modulus is plotted in Figure 4. The absolute magnitude M is the astronomer’s\r
+measure of luminosity, defined to be the apparent magnitude the object in question would\r
+have if it were at 10 pc, so\r
+m = M + DM + K (26)\r
+where K is the k-correction\r
+K = −2.5 log "(1 + z)\r
+L(1+z)ν\r
+Lν\r
+#\r
+= −2.5 log " 1\r
+(1 + z)\r
+Lλ/(1+z)\r
+Lλ\r
+#\r
+(27)\r
+(eg, Oke & Sandage, 1968)."""
+
+[[sections]]
+number = "8"
+title = "Parallax distance"
+text = """
+If it were possible to measure parallaxes for high redshift objects, the distance so measured\r
+would be the parallax distance DP (Weinberg, 1972, pp 418–420). It may be possible, one\r
+day, to measure parallaxes to distant galaxies using gravitational lensing, although in these\r
+cases, a modified parallax distance is used which takes into account the redshifts of both the\r
+source and the lens (Schneider, Ehlers & Falco, 1992, pp 508–509), a discussion of which is\r
+beyond the scope of these notes."""
+
+[[sections]]
+number = "9"
+title = "Comoving volume"
+text = """
+The comoving volume VC is the volume measure in which number densities of non-evolving\r
+objects locked into Hubble flow are constant with redshift. It is the proper volume times\r
+three factors of the relative scale factor now to then, or (1 + z)3. Since the derivative of\r
+comoving distance with redshift is 1/E(z) defined in (14), the angular diameter distance\r
+converts a solid angle dΩ into a proper area, and two factors of (1 +z) convert a proper area\r
+into a comoving area, the comoving volume element in solid angle dΩ and redshift interval\r
+dz is\r
+dVC = DH\r
+(1 + z)2 D2\r
+A\r
+E(z) dΩ dz (28)\r
+where DA is the angular diameter distance at redshift z and E(z) is defined in (14) (Weinberg,\r
+1972, p. 486; Peebles, 1993, pp 331–333). The comoving volume element is plotted in\r
+Figure 5. The integral of the comoving volume element from the present to redshift z gives\r
+7
+
+the total comoving volume, all-sky, out to redshift z\r
+VC =\r
+\r
+\r
+\r
+\u00124π D3\r
+H\r
+2 Ωk\r
+\u0013 \u0014 DM\r
+DH\r
+r\r
+1+Ωk\r
+D2\r
+M\r
+D2\r
+H\r
+− √\r
+1\r
+|Ωk|\r
+arcsinh \u0010q|Ωk| DM\r
+DH\r
+\u0011\u0015\r
+for Ωk > 0\r
+4π"""
+
+[[sections]]
+number = "3"
+title = "D3"
+text = """
+M for Ωk = 0\r
+\u00124π D3\r
+H\r
+2 Ωk\r
+\u0013 \u0014 DM\r
+DH\r
+r\r
+1+Ωk\r
+D2\r
+M\r
+D2\r
+H\r
+− √\r
+1\r
+|Ωk|\r
+arcsin \u0010q|Ωk| DM\r
+DH\r
+\u0011\u0015\r
+for Ωk < 0\r
+(29)\r
+(Carrol, Press & Turner, 1992), where D3\r
+H is sometimes called the Hubble volume. The\r
+comoving volume element and its integral are both used frequently in predicting number\r
+counts or luminosity densities."""
+
+[[sections]]
+number = "10"
+title = "Lookback time"
+text = """
+The lookback time tL to an object is the difference between the age to of the Universe now (at\r
+observation) and the age te of the Universe at the time the photons were emitted (according\r
+to the object). It is used to predict properties of high-redshift objects with evolutionary\r
+models, such as passive stellar evolution for galaxies. Recall that E(z) is the time derivative\r
+of the logarithm of the scale factor a(t); the scale factor is proportional to (1 + z), so the\r
+product (1 +z) E(z) is proportional to the derivative of z with respect to the lookback time,\r
+or\r
+tL = tH\r
+Z z\r
+0\r
+dz0\r
+(1 + z0) E(z0) (30)\r
+(Peebles, 1993, pp 313–315; Kolb & Turner 1990, pp 52–56, give some analytic solutions to\r
+this equation, but they are concerned with the age t(z), so they integrate from z to ∞). The\r
+lookback time and age are plotted in Figure 6."""
+
+[[sections]]
+number = "11"
+title = "Probability of intersecting objects"
+text = """
+Given a population of objects with comoving number density n(z) (number per unit volume)\r
+and cross section σ(z) (area), what is the incremental probability dP that a line of sight will\r
+intersect one of the objects in redshift interval dz at redshift z? Questions of this form are\r
+asked frequently in the study of QSO absorption lines or pencil-beam redshift surveys. The\r
+answer is\r
+dP = n(z) σ(z) DH\r
+(1 + z)2\r
+E(z) dz (31)\r
+(Peebles, 1993, pp 323–325). The dimensionless differential intersection probability is plotted\r
+in Figure 7.\r
+Acknowledgments\r
+Roger Blandford, Ed Farhi, Jim Peebles and Wal Sargent all contributed generously to my\r
+understanding of this material and Kurt Adelberger, Lee Armus, Andrew Baker, Deepto\r
+8
+
+Chakrabarty, Alex Filippenko, Andrew Hamilton, Phillip Helbig, Wayne Hu, John Huchra,\r
+Daniel Mortlock, Tom Murphy, Gerry Neugebauer, Adam Riess, Paul Schechter, Douglas\r
+Scott and Ned Wright caught errors, suggested additional material, or helped me with word\u0002ing, conventions or terminology. I thank the NSF and NASA for financial support."""
+
+[[sections]]
+number = "12"
+title = "References"
+text = """
+Blandford R. & Narayan R., 1992, Cosmological applications of gravitational lensing, ARA&A\r
+30 311–358\r
+Carroll S. M., Press W. H. & Turner E. L., 1992, The cosmological constant, ARA&A 30\r
+499–542\r
+Fairall A. P., 1992, A caution to those who measure galaxy redshifts, Observatory 112 286\r
+Harrison E., 1993, The redshift–distance and velocity–distance laws, ApJ 403 28–31\r
+Kayser R., Helbig P. & Schramm T., 1997, A general and practical method for calculating\r
+cosmological distances, A&A 318 680–686\r
+Kolb E. W. & Turner M. S., 1990, The Early Universe, Addison-Wesley, Redwood City\r
+Misner C. W., Thorne K. S. & Wheeler J. A., 1973, Gravitation, W. H. Freeman & Co., New\r
+York\r
+Oke J. B. & Sandage A., 1968, Energy distributions, k corrections, and the Stebbins-Whitford\r
+effect for giant elliptical galaxies, ApJ 154 21\r
+Peebles P. J. E., 1993, Principles of Physical Cosmology, Princeton University Press, Prince\u0002ton\r
+Schneider P., Ehlers J. & Falco E. E., 1992, Gravitational Lensing, Springer, Berlin\r
+Weedman D. W., 1986, Quasar Astronomy, Cambridge University, Cambridge\r
+Weinberg S., 1972, Gravitation and Cosmolgy: Principles and Applications of the General\r
+Theory of Relativity, John Wiley & Sons, New York\r
+9
+
+Figure 1: The dimensionless proper motion distance DM/DH. The three curves are for the\r
+three world models, Einstein-de Sitter (ΩM, ΩΛ) = (1, 0), solid; low-density, (0.05, 0), dotted;\r
+and high lambda, (0.2, 0.8), dashed.\r
+10
+
+Figure 2: The dimensionless angular diameter distance DA/DH. The three curves are for\r
+the three world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+11
+
+Figure 3: The dimensionless luminosity distance DL/DH. The three curves are for the three\r
+world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+12
+
+Figure 4: The distance modulus DM. The three curves are for the three world models,\r
+(ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+13
+
+Figure 5: The dimensionless comoving volume element (1/DH)3 (dVC/dz). The three curves\r
+are for the three world models, (ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8),\r
+dashed.\r
+14
+
+Figure 6: The dimensionless lookback time tL/tH and age t/tH. Curves cross at the redshift\r
+at which the Universe is half its present age. The three curves are for the three world models,\r
+(ΩM, ΩΛ) = (1, 0), solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+15
+
+Figure 7: The dimensionless differential intersection probability dP/dz; dimensionless in the\r
+sense of n(z) σ(z) DH = 1. The three curves are for the three world models, (ΩM, ΩΛ) = (1, 0),\r
+solid; (0.05, 0), dotted; and (0.2, 0.8), dashed.\r
+16"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 1
+image_path = "images/image_p1_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+image_path = "images/image_p2_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 2
+image_path = "images/image_p2_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 2
+image_path = "images/image_p2_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 2
+image_path = "images/image_p2_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 2
+image_path = "images/image_p2_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 2
+image_path = "images/image_p2_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 3
+image_path = "images/image_p3_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 3
+image_path = "images/image_p3_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+image_path = "images/image_p3_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 3
+image_path = "images/image_p3_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 3
+image_path = "images/image_p3_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 3
+image_path = "images/image_p3_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 3
+image_path = "images/image_p3_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 3
+image_path = "images/image_p3_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 4
+image_path = "images/image_p4_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 4
+image_path = "images/image_p4_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 4
+image_path = "images/image_p4_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 4
+image_path = "images/image_p4_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 4
+image_path = "images/image_p4_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 4
+image_path = "images/image_p4_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 4
+image_path = "images/image_p4_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 4
+image_path = "images/image_p4_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 5
+image_path = "images/image_p5_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 5
+image_path = "images/image_p5_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 5
+image_path = "images/image_p5_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 5
+image_path = "images/image_p5_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 5
+image_path = "images/image_p5_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 5
+image_path = "images/image_p5_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 5
+image_path = "images/image_p5_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 5
+image_path = "images/image_p5_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 5
+image_path = "images/image_p5_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 6
+image_path = "images/image_p6_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 6
+image_path = "images/image_p6_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 6
+image_path = "images/image_p6_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 6
+image_path = "images/image_p6_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 6
+image_path = "images/image_p6_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 6
+image_path = "images/image_p6_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 6
+image_path = "images/image_p6_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 6
+image_path = "images/image_p6_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 7
+image_path = "images/image_p7_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 7
+image_path = "images/image_p7_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 7
+image_path = "images/image_p7_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 7
+image_path = "images/image_p7_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 7
+image_path = "images/image_p7_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 8
+image_path = "images/image_p8_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 8
+image_path = "images/image_p8_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 8
+image_path = "images/image_p8_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 8
+image_path = "images/image_p8_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 8
+image_path = "images/image_p8_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 8
+image_path = "images/image_p8_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 8
+image_path = "images/image_p8_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 8
+image_path = "images/image_p8_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 8
+image_path = "images/image_p8_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 8
+image_path = "images/image_p8_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 8
+image_path = "images/image_p8_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 8
+image_path = "images/image_p8_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 8
+image_path = "images/image_p8_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 8
+image_path = "images/image_p8_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 8
+image_path = "images/image_p8_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 8
+image_path = "images/image_p8_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 8
+image_path = "images/image_p8_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 8
+image_path = "images/image_p8_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 8
+image_path = "images/image_p8_65.png"

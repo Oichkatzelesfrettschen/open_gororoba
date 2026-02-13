@@ -1,0 +1,1706 @@
+equations = []
+tables = []
+full_text = """
+MDP Homomorphic Networks:\r
+Group Symmetries in Reinforcement Learning\r
+Elise van der Pol\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+e.e.vanderpol@uva.nl\r
+Daniel E. Worrall\r
+Philips Lab\r
+University of Amsterdam\r
+d.e.worrall@uva.nl\r
+Herke van Hoof\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+h.c.vanhoof@uva.nl\r
+Frans A. Oliehoek\r
+Department of Intelligent Systems\r
+Delft University of Technology\r
+f.a.oliehoek@tudelft.nl\r
+Max Welling\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+m.welling@uva.nl\r
+Abstract\r
+This paper introduces MDP homomorphic networks for deep reinforcement learn\u0002ing. MDP homomorphic networks are neural networks that are equivariant under\r
+symmetries in the joint state-action space of an MDP. Current approaches to deep\r
+reinforcement learning do not usually exploit knowledge about such structure. By\r
+building this prior knowledge into policy and value networks using an equivariance\r
+constraint, we can reduce the size of the solution space. We specifically focus\r
+on group-structured symmetries (invertible transformations). Additionally, we\r
+introduce an easy method for constructing equivariant network layers numerically,\r
+so the system designer need not solve the constraints by hand, as is typically done.\r
+We construct MDP homomorphic MLPs and CNNs that are equivariant under either\r
+a group of reflections or rotations. We show that such networks converge faster\r
+than unstructured baselines on CartPole, a grid world and Pong.\r
+1 Introduction\r
+This paper considers learning decision-making systems that exploit symmetries in the structure of the\r
+world. Deep reinforcement learning (DRL) is concerned with learning neural function approximators\r
+for decision making strategies. While DRL algorithms have been shown to solve complex, high\u0002dimensional problems [35, 34, 26, 25], they are often used in problems with large state-action spaces,\r
+and thus require many samples before convergence. Many tasks exhibit symmetries, easily recognized\r
+by a designer of a reinforcement learning system. Consider the classic control task of balancing a\r
+pole on a cart. Balancing a pole that falls to the right requires an equivalent, but mirrored, strategy to\r
+one that falls to the left. See Figure 1. In this paper, we exploit knowledge of such symmetries in the\r
+state-action space of Markov decision processes (MDPs) to reduce the size of the solution space.\r
+We use the notion of MDP homomorphisms [32, 30] to formalize these symmetries. Intuitively, an\r
+MDP homomorphism is a map between MDPs, preserving the essential structure of the original\r
+MDP, while removing redundancies in the problem description, i.e., equivalent state-action pairs. The\r
+removal of these redundancies results in a smaller state-action space, upon which we may more easily\r
+build a policy. While earlier work has been concerned with discovering an MDP homomorphism for\r
+a given MDP [32, 30, 27, 31, 6, 39], we are instead concerned with how to construct deep policies,\r
+satisfying the MDP homomorphism. We call these models MDP homomorphic networks.\r
+34th Conference on Neural Information Processing Systems (NeurIPS 2020), Vancouver, Canada.
+
+Figure 1: Example state-action space\r
+symmetry. Pairs (s, ←) and (L[s], →)\r
+(and by extension (s, →) and (L[s], ←))\r
+are symmetric under a horizontal flip.\r
+Constraining the set of policies to those\r
+where π(s, ←) = π(L[s], →) reduces\r
+the size of the solution space.\r
+MDP homomorphic networks use experience from one\r
+state-action pair to improve the policy for all ‘equivalent’\r
+pairs. See Section 2.1 for a definition. They do this by ty\u0002ing the weights for two states if they are equivalent under a\r
+transformation chosen by the designer, such as s and L[s]\r
+in Figure 1. Such weight-tying follows a similar principle\r
+to the use of convolutional networks [18], which are equiv\u0002ariant to translations of the input [11]. In particular, when\r
+equivalent state-action pairs can be related by an invert\u0002ible transformation, which we refer to as group-structured,\r
+we show that the policy network belongs to the class of\r
+group-equivariant neural networks [11, 46].Equivariant\r
+neural networks are a class of neural network, which\r
+have built-in symmetries [11, 12, 46, 43, 41]. They are a\r
+generalization of convolutional neural networks—which\r
+exhibit translation symmetry—to transformation groups\r
+(group-structured equivariance) and transformation semi\u0002groups [47] (semigroup-structured equivariance). They\r
+have been shown to reduce sample complexity for classi\u0002fication tasks [46, 44] and also to be universal approxima\u0002tors of symmetric functions1\r
+[48]. We borrow from the\r
+literature on group equivariant networks to design policies\r
+that tie weights for state-action pairs given their equiv\u0002alence classes, with the goal of reducing the number of\r
+samples needed to find good policies. Furthermore, we\r
+can use the MDP homomorphism property to design not just policy networks, but also value networks\r
+and even environment models. MDP homomorphic networks are agnostic to the type of model-free\r
+DRL algorithm, as long as an appropriate transformation on the output is given. In this paper we\r
+focus on equivariant policy and invariant value networks. See Figure 1 for an example policy.\r
+An additional contribution of this paper is a novel numerical way of finding equivariant layers for\r
+arbitrary transformation groups. The design of equivariant networks imposes a system of linear\r
+constraint equations on the linear/convolutional layers [12, 11, 46, 43]. Solving these equations has\r
+typically been done analytically by hand, which is a time-consuming and intricate process, barring\r
+rapid prototyping. Rather than requiring analytical derivation, our method only requires that the\r
+system designer specify input and output transformation groups of the form {state transformation,\r
+policy transformation}. We provide Pytorch [29] implementations of our equivariant network layers,\r
+and implementations of the transformations used in this paper. We also experimentally demonstrate\r
+that exploiting equivalences in MDPs leads to faster learning of policies for DRL.\r
+Our contributions are two-fold:\r
+• We draw a connection between MDP homomorphisms and group equivariant networks,\r
+proposing MDP homomorphic networks to exploit symmetries in decision-making problems;\r
+• We introduce a numerical algorithm for the automated construction of equivariant layers.\r
+2 Background\r
+Here we outline the basics of the theory behind MDP homomorphisms and equivariance. We begin\r
+with a brief outline of the concepts of equivalence, invariance, and equivariance, followed by a review\r
+of the Markov decision process (MDP). We then review the MDP homomorphism, which builds a\r
+map between ‘equivalent’ MDPs.\r
+2.1 Equivalence, Invariance, and Equivariance\r
+Equivalence If a function f : X → Y maps two inputs x, x0 ∈ X to the same value, that is\r
+f(x) = f(x\r
+0\r
+), then we say that x and x\r
+0\r
+are f-equivalent. For instance, two states s, s0leading to the\r
+1\r
+Specifically group equivariant networks are universal approximators to functions symmetric under linear\r
+representations of compact groups.\r
+2
+
+same optimal value V\r
+∗\r
+(s) = V\r
+∗\r
+(s\r
+0\r
+) would be V\r
+∗\r
+-equivalent or optimal value equivalent [30]. An\r
+example of two optimal value equivalent states would be states s and L[s] in the CartPole example of\r
+Figure 1. The set of all points f-equivalent to x is called the equivalence class of x.\r
+Invariance and Symmetries Typically there exist very intuitive relationships between the points in\r
+an equivalence class. In the CartPole example of Figure 1 this relationship is a horizontal flip about\r
+the vertical axis. This is formalized with the transformation operator Lg : X → X , where g ∈ G and\r
+G is a mathematical group. If Lg satisfies\r
+f(x) = f(Lg[x]), for all g ∈ G, x ∈ X , (1)\r
+then we say that f is invariant or symmetric to Lg and that {Lg}g∈G is a set of symmetries of f . We\r
+can see that for the invariance equation to be satisfied, it must be that Lg can only map x to points\r
+in its equivalence class. Note that in abstract algebra for Lg to be a true transformation operator, G\r
+must contain an identity operation; that is Lg[x] = x for some g and all x. An interesting property\r
+of transformation operators which leave f invariant, is that they can be composed and still leave f\r
+invariant, so Lg ◦ Lh is also a symmetry of f for all g, h ∈ G. In abstract algebra, this property is\r
+known as a semigroup property. If Lg is always invertible, this is called a group property. In this\r
+work, we experiment with group-structured transformation operators. For more information, see [14].\r
+One extra helpful concept is that of orbits. If f is invariant to Lg, then it is invariant along the orbits\r
+of G. The orbit Ox of point x is the set of points reachable from x via transformation operator Lg:\r
+Ox , {Lg[x] ∈ X |g ∈ G}. (2)\r
+Equivariance A related notion to invariance is equivariance. Given a transformation operator\r
+Lg : X → X and a mapping f : X → Y, we say that f is equivariant [11, 46] to the transformation\r
+if there exists a second transformation operator Kg : Y → Y in the output space of f such that\r
+Kg[f(x)] = f(Lg[x]), for all g ∈ G, x ∈ X . (3)\r
+The operators Lg and Kg can be seen to describe the same transformation, but in different spaces. In\r
+fact, an equivariant map can be seen to map orbits to orbits. We also see that invariance is a special\r
+case of equivariance, if we set Kg to the identity operator for all g. Given Lg and Kg, we can solve\r
+for the collection of equivariant functions f satisfying the equivariance constraint. Moreover, for\r
+linear transformation operators and linear f a rich theory already exists in which f is referred to\r
+as an intertwiner [12]. In the equivariant deep learning literature, neural networks are built from\r
+interleaving intertwiners and equivariant nonlinearities. As far as we are aware, most of these methods\r
+are hand-designed per pair of transformation operators, with the exception of [13]. In this paper, we\r
+introduce a computational method to solve for intertwiners given a pair of transformation operators.\r
+2.2 Markov Decision Processes\r
+A Markov decision process (MDP) is a tuple (S, A, R, T, γ), with state space S, action space A,\r
+immediate reward function R : S × A → R, transition function T : S × A × S → R≥0, and\r
+discount factor γ ∈ [0, 1]. The goal of solving an MDP is to find a policy π ∈ Π, π : S × A → R≥0\r
+(written π(a|s)), where π normalizes to unity over the action space, that maximizes the expected\r
+return Rt = Eπ[\r
+PT\r
+k=0 γ\r
+k\r
+rt+k+1]. The expected return from a state s under a policy π is given by\r
+the value function V\r
+π\r
+. A related object is the Q-value Qπ, the expected return from a state s after\r
+taking action a under π. V\r
+π\r
+and Qπare governed by the well-known Bellman equations [5] (see\r
+Supplementary). In an MDP, optimal policies π\r
+∗\r
+attain an optimal value V\r
+∗\r
+and corresponding\r
+Q-value given by V\r
+∗\r
+(s) = max\r
+π∈Π\r
+V\r
+π\r
+(s) and Q∗(s) = max\r
+π∈Π\r
+Qπ(s).\r
+MDP with Symmetries Symmetries can appear in MDPs. For instance, in Figure 2 CartPole has a\r
+reflection symmetry about the vertical axis. Here we define an MDP with symmetries. In an MDP\r
+with symmetries there is a set of transformations on the state-action space, which leaves the reward\r
+function and transition operator invariant. We define a state transformation and a state-dependent\r
+action transformation as Lg : S → S and Ks\r
+g\r
+: A → A respectively. Invariance of the reward\r
+function and transition function is then characterized as\r
+R(s, a) = R(Lg[s], Ks\r
+g\r
+[a]) for all g ∈ G, s ∈ S, a ∈ A (4)\r
+T(s\r
+0\r
+|s, a) = T(Lg[s\r
+0\r
+]|Lg[s], Ks\r
+g\r
+[a]) for all g ∈ G, s ∈ S, a ∈ A. (5)\r
+Written like this, we see that in an MDP with symmetries the reward function and transition operator\r
+are invariant along orbits defined by the transformations (Lg, Ks\r
+g\r
+).\r
+3
+
+Figure 2: Example of a reduction in an MDP’s state-action space under an MDP homomorphism h.\r
+Here ‘equivalence’ is represented by a reflection of the dynamics in the vertical axis. This equivalence\r
+class is encoded by h by mapping all equivalent state-action pairs to the same abstract state-actions.\r
+MDP Homomorphisms MDPs with symmetries are closely related to MDP homomorphisms, as\r
+we explain below. First we define the latter. An MDP homomorphism h [32, 30] is a mapping from\r
+one MDP M = (S, A, R, T, γ) to another M¯ = (S¯, A¯, R, ¯ T , γ ¯ ) defined by a surjective map from the\r
+state-action space S × A to an abstract state-action space S ×¯ A¯. In particular, h consists of a tuple\r
+of surjective maps (σ, {αs|s ∈ S}), where we have the state map σ : S → S¯ and the state-dependent\r
+action map αs : A → A¯. These maps are built to satisfy the following conditions\r
+R¯(σ(s), αs(a)) , R(s, a) for all s ∈ S, a ∈ A, (6)\r
+T¯(σ(s\r
+0\r
+)|σ(s), αs(a)) ,\r
+X\r
+s\r
+00∈σ−1(s0)\r
+T(s\r
+00|s, a) for all s, s0 ∈ S, a ∈ A. (7)\r
+An exact MDP homomorphism provides a model equivalent abstraction [20]. Given an MDP\r
+homomorphism h, two state-action pairs (s, a) and (s\r
+0\r
+, a0) are called h-equivalent if σ(s) = σ(s\r
+0\r
+)\r
+and αs(a) = αs\r
+0 (a\r
+0\r
+). Symmetries and MDP homomorphisms are connected in a natural way: If\r
+an MDP has symmetries Lg and Kg, the above equations (4) and (5) hold. This means that we can\r
+define a corresponding MDP homomorphism, which we define next.\r
+Group-structured MDP Homomorphisms Specifically, for an MDP with symmetries, we can\r
+define an abstract state-action space, by mapping (s, a) pairs to (a representative point of) their\r
+equivalence class (σ(s), αs(a)). That is, state-action pairs and their transformed version are mapped\r
+to the same abstract state in the reduced MDP:\r
+(σ(s), αs(a)) = σ(Lg[s]), αLg[s](Ks\r
+g\r
+[a])\u0001∀g ∈ G, s ∈ S, a ∈ A (8)\r
+In this case, we call the resulting MDP homomorphism group structured. In other words, all the\r
+state-action pairs in an orbit defined by a group transformation are mapped to the same abstract state\r
+by a group-structured MDP homomorphism.\r
+Optimal Value Equivalence and Lifted Policies h-equivalent state-action pairs share the same\r
+optimal Q-value and optimal value function [30]. Furthermore, there exists an abstract optimal\r
+Q-value Q¯∗and abstract optimal value function V¯ ∗, such that Q∗(s, a) = Q¯∗(σ(s), αs(a)) and\r
+V\r
+∗\r
+(s) = V¯ ∗(σ(s)). This is known as optimal value equivalence [30]. Policies can thus be optimized\r
+in the simpler abstract MDP. The optimal abstract policy π¯(¯a|σ(s)) can then be pulled back to the\r
+original MDP using a procedure called lifting 2. The lifted policy is given in Equation 9. A lifted\r
+optimal abstract policy is also an optimal policy in the original MDP [30]. Note that while other\r
+lifted policies exist, we follow [30, 32] and choose the lifting that divides probability mass uniformly\r
+over the preimage:\r
+π\r
+↑\r
+(a|s) ,\r
+π¯(¯a|σ(s))\r
+|{a ∈ α\r
+−1\r
+s (¯a)}|\r
+, for any s ∈ S and a ∈ α\r
+−1\r
+s\r
+(¯a). (9)\r
+3 Method\r
+The focus of the next section is on the design of MDP homomorphic networks—policy networks and\r
+value networks obeying the MDP homomorphism. In the first section of the method, we show that any\r
+2Note that we use the terminology lifting to stay consistent with [30].\r
+4
+
+policy network satisfying the MDP homomorphism property must be an equivariant neural network.\r
+In the second part of the method, we introduce a novel numerical technique for constructing group\u0002equivariant networks, based on the transformation operators defining the equivalence state-action\r
+pairs under the MDP homomorphism.\r
+3.1 Lifted Policies Are Invariant\r
+Lifted policies in symmetric MDPs with group-structured symmetries are invariant under the group\r
+of symmetries. Consider the following: Take an MDP with symmetries defined by transformation\r
+operators (Lg, Ks\r
+g\r
+) for g ∈ G. Now, if we take s\r
+0 = Lg[s] and a0 = Ks\r
+g\r
+[a] for any g ∈ G, (s\r
+0\r
+, a0)\r
+and (s, a) are h-equivalent under the corresponding MDP homomorphism h = (σ, {αs|s ∈ S}). So\r
+π\r
+↑\r
+(a|s) = π¯(αs(a)|σ(s))\r
+|{a ∈ α\r
+−1\r
+s (¯a)}|\r
+=\r
+π¯(αs\r
+0 (a\r
+0\r
+)|σ(s\r
+0\r
+))\r
+|{a\r
+0 ∈ α\r
+−1\r
+s\r
+0 (¯a)}|\r
+= π\r
+↑\r
+(a\r
+0\r
+|s\r
+0\r
+), (10)\r
+for all s ∈ S, a ∈ A and g ∈ G. In the first equality we have used the definition of the lifted\r
+policy. In the second equality, we have used the definition of h-equivalent state-action pairs, where\r
+σ(s) = σ(Lg(s)) and αs(a) = αs\r
+0 (a\r
+0\r
+). In the third equality, we have reused the definition of the\r
+lifted policy. Thus we see that, written in this way, the lifted policy is invariant under state-action\r
+transformations (Lg, Ks\r
+g\r
+). This equation is very general and applies for all group-structured state\u0002action transformations. For a finite action space, this statement of invariance can be re-expressed as a\r
+statement of equivariance, by considering the vectorized policy.\r
+Invariant Policies On Finite Action Spaces Are Equivariant Vectorized Policies For convenience\r
+we introduce a vector of probabilities for each of the discrete actions under the policy\r
+π(s) , [π(a1|s), π(a2|s), ..., π(aN |s)]\r
+>\r
+, (11)\r
+where a1, ..., aN are the N possible discrete actions in action space A. The action transformation Ks\r
+g\r
+maps actions to actions invertibly. Thus applying an action transformation to the vectorized policy\r
+permutes the elements. We write the corresponding permutation matrix as Kg. Note that\r
+K\r
+−1\r
+g π(s) ,\r
+\u0002\r
+π(Ks\r
+g\r
+[a1]|s), π(Ks\r
+g\r
+[a2]|s), ..., π(Ks\r
+g\r
+[aN ]|s)\r
+\u0003>\r
+, (12)\r
+where writing the inverse K\r
+−1\r
+g\r
+instead of Kg is required to maintain the property KgKh = Kgh.\r
+The invariance of the lifted policy can then be written as π\r
+↑\r
+(s) = K\r
+−1\r
+g π\r
+↑\r
+(Lg[s]), which can be\r
+rearranged to the equivariance equation\r
+Kgπ\r
+↑\r
+(s) = π\r
+↑\r
+(Lg[s]) for all g ∈ G, s ∈ S, a ∈ A. (13)\r
+This equation shows that the lifted policy must satisfy an equivariance constraint. In deep learning,\r
+this has already been well-explored in the context of supervised learning [11, 12, 46, 47, 43]. Next,\r
+we present a novel way to construct such networks.\r
+3.2 Building MDP Homomorphic Networks\r
+Our goal is to build neural networks that follow Eq. 13; that is, we wish to find neural networks that\r
+are equivariant under a set of state and policy transformations. Equivariant networks are common\r
+in supervised learning [11, 12, 46, 47, 43, 41]. For instance, in semantic segmentation shifts and\r
+rotations of the input image result in shifts and rotations in the segmentation. A neural network\r
+consisting of only equivariant layers and non-linearities is equivariant as a whole, too3[11]. Thus,\r
+once we know how to build a single equivariant layer, we can simply stack such layers together. Note\r
+that this is true regardless of the representation of the group, i.e. this works for spatial transformations\r
+of the input, feature map permutations in intermediate layers, and policy transformations in the output\r
+layer. For the experiments presented in this paper, we use the same group representations for the\r
+intermediate layers as for the output, i.e. permutations. For finite groups, such as cyclic groups or\r
+permutations, pointwise nonlinearities preserve equivariance [11].\r
+In the past, learnable equivariant layers were designed by hand for each transformation group\r
+individually [11, 12, 46, 47, 44, 43, 41]. This is time-consuming and laborious. Here we present a\r
+novel way to build learnable linear layers that satisfy equivariance automatically.\r
+5
+
+Equivariant Layers We begin with a single linear layer z\r
+0 = Wz + b, where W ∈ RDout×Din and\r
+b ∈ R\r
+Din is a bias. To simplify the math, we merge the bias into the weights so W 7→ [W, b] and\r
+z 7→ [z, 1]>. We denote the space of the augmented weights as Wtotal. For a given pair of linear group\r
+transformation operators in matrix form (Lg, Kg), where Lg is the input transformation and Kg is\r
+the output transformation, we then have to solve the equation\r
+KgWz = WLgz, for all g ∈ G, z ∈ R\r
+Din+1\r
+. (14)\r
+Since this equation is true for all z we can in fact drop z entirely. Our task now is to find all weights\r
+W which satisfy Equation 14. We label this space of equivariant weights as W, defined as\r
+W , {W ∈ Wtotal | KgW = WLg, for all g ∈ G}, (15)\r
+again noting that we have dropped z. To find the space W notice that for each g ∈ G the constraint\r
+KgW = WLg is in fact linear in W. Thus, to find W we need to solve a set of linear equations in W.\r
+For this we introduce a construction, which we call a symmetrizer S(W). The symmetrizer is\r
+S(W) ,\r
+1\r
+|G|\r
+X\r
+g∈G\r
+K\r
+−1\r
+g WLg. (16)\r
+S has three important properties, of which proofs are provided in Appendix A. First, S(W) is\r
+symmetric (S(W) ∈ W). Second, S fixes any symmetric W: (W ∈ W =⇒ S(W) = W). These\r
+properties show that S projects arbitrary W ∈ Wtotal to the equivariant subspace W.\r
+Since W is the solution set for a set of simultaneous linear equations, W is a linear sub\u0002space of the space of all possible weights Wtotal. Thus each W ∈ W can be parametrized\r
+as a linear combination of basis weights {Vi}\r
+r\r
+i=1, where r is the rank of the subspace and\r
+span({Vi}\r
+r\r
+i=1) = W. To find as basis for W, we take a Gram-Schmidt orthogonalization ap\u0002proach. We first sample weights in the total space Wtotal and then project them into the equivariant\r
+Figure 3: Example of 4-way\r
+rotationally symmetric filters.\r
+subspace with the symmetrizer. We do this for multiple weight\r
+matrices, which we then stack and feed through a singular value de\u0002composition to find a basis for the equivariant space. This procedure\r
+is outlined in Algorithm 1. Any equivariant layer can then be written\r
+as a linear combination of bases\r
+W =\r
+Xr\r
+i=1\r
+ciVi, (17)\r
+where the ci’s are learnable scalar coefficients, r is the rank of the equivariant space, and the matrices\r
+Vi are the basis vectors, formed from the reshaped right-singular vectors in the SVD. An example is\r
+shown in Figure 3. To run this procedure, all that is needed are the transformation operators Lg and\r
+Kg. Note we do not need to know the explicit transformation matrices, but just to be able to perform\r
+the mappings W 7→ WLg and W 7→ K\r
+−1\r
+g W. For instance, some matrix Lg rotates an image patch,\r
+but we could equally implement WLg using a built-in rotation function. Code is available 4.\r
+4 Experiments\r
+We evaluated three flavors of MDP homomorphic network—an MLP, a CNN, and an equivariant\r
+feature extractor—on three RL tasks that exhibit group symmetry: CartPole, a grid world, and Pong.\r
+3\r
+See Appendix B for more details.\r
+4\r
+https://github.com/ElisevanderPol/symmetrizer/\r
+Algorithm 1 Equivariant layer construction\r
+1: Sample N weight matrices W1, W2, ..., WN ∼ N (W; 0,I) for N ≥ dim(Wtotal)\r
+2: Symmetrize samples: W¯\r
+i = S(Wi) for i = 1, ..., N\r
+3: Vectorize samples and stack as W¯ = [vec(W¯\r
+1), vec(W¯2), ...]\r
+4: Apply SVD: W¯ = UΣV\r
+>\r
+5: Keep first r = rank(W¯ ) right-singular vectors (columns of V) and unvectorize to shape of Wi\r
+6
+
+Table 1: ENVIRONMENTS AND SYMMETRIES: We showcase a visual guide of the state and action\r
+spaces for each environment along with the effect of the transformations. Note, the symbols should\r
+not be taken to be hard mathematical statements, they are merely a visual guide for communication.\r
+Environment Space Transformations\r
+CartPole S (x, θ, x,˙\r
+˙θ) (x, θ, x,˙˙θ),(−x, −θ, −x,˙ − ˙θ)\r
+A (←, →) (←, →), (→, ←)\r
+Grid World S {0, 1}\r
+21×21 Identity, y 90◦\r
+, y 180◦, y 270◦\r
+A (∅, ↑, →, ↓, ←) (∅, ↑, →, ↓, ←),(∅, →, ↓, ←, ↑),(∅, ↓, ←, ↑, →),(∅, ←, ↑, →, ↓)\r
+Pong S {0, ..., 255}\r
+4×80×80 Identity, reflect\r
+A (∅, ∅, ↑, ↓, ↑, ↓) (∅, ∅, ↑, ↓, ↑, ↓), (∅, ∅, ↓, ↑, ↓, ↑)\r
+We use RLPYT [36] for the algorithms. Hyperparameters (and the range considered), architectures,\r
+and group implementation details are in the Supplementary Material. Code is available 5.\r
+4.1 Environments\r
+For each environment we show S and A with respective representations of the group transformations.\r
+CartPole In the classic pole balancing task [3], we used a two-element group of reflections about the\r
+y-axis. We used OpenAI’s Cartpole-v1 [7] implementation, which has a 4-dimensional observation\r
+vector: (cart position x, pole angle θ, cart velocity x˙, pole velocity ˙θ). The (discrete) action space\r
+consists of applying a force left and right (←, →). We chose this example for its simple symmetries.\r
+Grid world We evaluated on a toroidal 7-by-7 predator-prey grid world with agent-centered coordi\u0002nates. The prey and predator are randomly placed at the start of each episode, lasting a maximum\r
+of 100 time steps. The agent’s goal is to catch the prey, which takes a step in a random compass\r
+direction with probability 0.15 and stands still otherwise. Upon catching the prey, the agent receives a\r
+reward of +1, and -0.1 otherwise. The observation is a 21 × 21 binary image identifying the position\r
+of the agent in the center and the prey in relative coordinates. See Figure 6a. This environment was\r
+chosen due to its four-fold rotational symmetry.\r
+Pong We evaluated on the RLPYT [36] implementation of Pong. In our experiments, the observation\r
+consisted of the 4 last observed frames, with upper and lower margins cut off and downscaled to\r
+an 80 × 80 grayscale image. In this setting, there is a flip symmetry over the horizontal axis: if\r
+we flip the observations, the up and down actions also flip. A curious artifact of Pong is that it has\r
+duplicate (up, down) actions, which means that to simplify matters, we mask out the policy values\r
+for the second pair of (up, down) actions. We chose Pong because of its higher dimensional state\r
+space. Finally, for Pong we additionally compare to two data augmentation baselines: stochastic\r
+data augmentation, where for each state, action pair we randomly transform them or not before\r
+feeding them to the network, and the second an equivariant version of [16] and similar to [35], where\r
+both state and transformed state are input to the network. The output of the transformed state is\r
+appropriately transformed, and both policies are averaged.\r
+4.2 Models\r
+We implemented MDP homomorphic networks on top of two base architectures: MLP and CNN\r
+(exact architectures in Supplementary). We further experimented with an equivariant feature extractor,\r
+appended by a non-equivariant network, to isolate where equivariance made the greatest impact.\r
+Basis Networks We call networks whose weights are linear combinations of basis weights basis\r
+networks. As an ablation study on all equivariant networks, we sought to measure the effects of the\r
+basis training dynamics. We compared an equivariant basis against a pure nullspace basis, i.e. an\r
+explicitly non-symmetric basis using the right-null vectors from the equivariant layer construction,\r
+and a random basis, where we skip the symmetrization step in the layer construction and use the\r
+full rank basis. Unless stated otherwise, we reduce the number of ‘channels’ in the basis networks\r
+compared to the regular networks by dividing by the square root of the group size, ending up with a\r
+comparable number of trainable parameters.\r
+5\r
+https://github.com/ElisevanderPol/mdp-homomorphic-networks\r
+7
+
+0 20 40 60 80 100 120 140\r
+Time steps (x 500) \r
+0\r
+100\r
+200\r
+300\r
+400\r
+500\r
+Average Return\r
+Nullspace\r
+Random\r
+Equivariant\r
+(a) Cartpole-v1: Bases\r
+0 20 40 60 80 100 120 140\r
+Time steps (x 500) \r
+0\r
+100\r
+200\r
+300\r
+400\r
+500\r
+Average Return\r
+MLP, 4 64 128 2\r
+MLP, 4 128 128 2\r
+Equivariant, 4 64 64 2\r
+(b) Cartpole-v1: MLPs\r
+0 100 200 300 400 500 600\r
+Time steps (x 25000) \r
+20\r
+15\r
+10\r
+5\r
+0\r
+5\r
+10\r
+15\r
+20\r
+Average Return\r
+Nullspace\r
+Random\r
+Convolutional\r
+Equivariant\r
+(c) Pong\r
+Figure 4: CARTPOLE: Trained with PPO, all networks fine-tuned over 7 learning rates. 25%, 50%\r
+and 75% quantiles over 25 random seeds shown. a) Equivariant, random, and nullspace bases. b)\r
+Equivariant basis, and two MLPs with different degrees of freedom. PONG: Trained with A2C, all\r
+networks tuned over 3 learning rates. 25%, 50% and 75% quantiles over 15 random seeds shown c)\r
+Equivariant, nullspace, and random bases, and regular CNN for Pong.\r
+4.3 Results and Discussion\r
+We show training curves for CartPole in 4a-4b, Pong in Figure 4c and for the grid world in Fig\u0002ure 6. Across all experiments we observed that the MDP homomorphic network outperforms both\r
+the non-equivariant basis networks and the standard architectures, in terms of convergence speed.\r
+0 100 200 300 400 500 600\r
+Time steps (x 25000) \r
+20\r
+15\r
+10\r
+5\r
+0\r
+5\r
+10\r
+15\r
+20\r
+Average Return\r
+Stoch. Data Aug.\r
+Full Data Aug.\r
+Convolutional\r
+Equivariant\r
+Figure 5: Data augmentation\r
+comparison on Pong.\r
+This confirms our motivations that building symmetry-preserving\r
+policy networks leads to faster convergence. Additionally, when\r
+compared to the data augmentation baselines in Figure 5, using\r
+equivariant networks is more beneficial. This is consistent with\r
+other results in the equivariance literature [4, 42, 44, 46]. While data\r
+augmentation can be used to create a larger dataset by exploiting\r
+symmetries, it does not directly lead to effective parameter sharing\r
+(as our approach does). Note, in Pong we only train the first 15 mil\u0002lion frames to highlight the difference in the beginning; in constrast,\r
+a typical training duration is 50-200 million frames [25, 36].\r
+For our ablation experiment, we wanted to control for the introduction of bases. It is not clear a\r
+priori that a network with a basis has the same gradient descent dynamics as an equivalent ‘basisless’\r
+network. We compared equivariant, non-equivariant, and random bases, as mentioned above. We\r
+found the equivariant basis led to the fastest convergence. Figures 4a and 4c show that for CartPole\r
+and Pong the nullspace basis converged faster than the random basis. In the grid world there was no\r
+clear winner between the two. This is a curious result, requiring deeper investigation in a follow-up.\r
+For a third experiment, we investigated what happens if we sacrifice complete equivariance of the\r
+policy. This is attractive because it removes the need to find a transformation operator for a flattened\r
+output feature map. Instead, we only maintained an equivariant feature extractor, compared against a\r
+basic CNN feature extractor. The networks built on top of these extractors were MLPs. The results,\r
+in Figure 4c, are two-fold: 1) Basis feature extractors converge faster than standard CNNs, and 2)\r
+the equivariant feature extractor has fastest convergence. We hypothesize the equivariant feature\r
+extractor is fastest as it is easiest to learn an equivariant policy from equivariant features.\r
+We have additionally compared an equivariant feature extractor to a regular convolutional network\r
+on the Atari game Breakout, where the difference between the equivariant network and the regular\r
+network is much less pronounced. For details, see Appendix C.\r
+5 Related Work\r
+Past work on MDP homomorphisms has often aimed at discovering the map itself based on knowledge\r
+of the transition and reward function, and under the assumption of enumerable state spaces [30, 31,\r
+32, 38]. Other work relies on learning the map from sampled experience from the MDP [39, 6,\r
+23]. Exactly computing symmetries in MDPs is graph isomorphism complete [27] even with full\r
+knowledge of the MDP dynamics. Rather than assuming knowledge of the transition and reward\r
+function, and small and enumerable state spaces, in this work we take the inverse view: we assume that\r
+we have an easily identifiable transformation of the joint state–action space and exploit this knowledge\r
+8
+
+(a) Symmetries\r
+0 25 50 75 100 125 150 175 200\r
+Time steps (x 10000) \r
+10\r
+1\r
+10\r
+0\r
+0\r
+Average Return\r
+Nullspace\r
+Random\r
+Equivariant\r
+(b) Grid World: Bases\r
+0 25 50 75 100 125 150 175 200\r
+Time steps (x 10000) \r
+101\r
+100\r
+0\r
+Average Return\r
+Convolutional\r
+Equivariant\r
+(c) Grid World: CNNs\r
+Figure 6: GRID WORLD: Trained with A2C, all networks fine-tuned over 6 learning rates. 25%,\r
+50% and 75% quantiles over 20 random seeds shown. a) showcase of symmetries, b) Equivariant,\r
+nullspace, and random bases c) plain CNN and equivariant CNN.\r
+to learn more efficiently. Exploiting symmetries in deep RL has been previously explored in the\r
+game of Go, in the form of symmetric filter weights [33, 8] or data augmentation [35]. Other work\r
+on data augmentation increases sample efficiency and generalization on well-known benchmarks by\r
+augmenting existing data points state transformations such as random translations, cutout, color jitter\r
+and random convolutions [16, 9, 17, 19]. In contrast, we encode symmetries into the neural network\r
+weights, leading to more parameter sharing. Additionally, such data augmentation approaches tend to\r
+take the invariance view, augmenting existing data with state transformations that leave the state’s\r
+Q-values intact [16, 9, 17, 19] (the exception being [21] and [24], who augment trajectories rather\r
+than just states). Similarly, permutation invariant networks are commonly used in approaches to\r
+multi-agent RL [37, 22, 15]. We instead take the equivariance view, which accommodates a much\r
+larger class of symmetries that includes transformations on the action space. Abdolhosseini et al. [1]\r
+have previously manually constructed an equivariant network for a single group of symmetries in\r
+a single RL problem, namely reflections in a bipedal locomotion task. Our MDP homomorphic\r
+networks allow for automated construction of networks that are equivariant under arbitrary discrete\r
+groups and are therefore applicable to a wide variety of problems.\r
+From an equivariance point-of-view, the automatic construction of equivariant layers is new. [12]\r
+comes close to specifying a procedure, outlining the system of equations to solve, but does not specify\r
+an algorithm. The basic theory of group equivariant networks was outlined in [11, 12] and [10], with\r
+notable implementations to 2D roto-translations on grids [46, 43, 41] and 3D roto-translations on\r
+grids [45, 44, 42]. All of these works have relied on hand-constructed equivariant layers.\r
+6 Conclusion\r
+This paper introduced MDP homomorphic networks, a family of deep architectures for reinforcement\r
+learning problems where symmetries have been identified. MDP homomorphic networks tie weights\r
+over symmetric state-action pairs. This weight-tying leads to fewer degrees-of-freedom and in our\r
+experiments we found that this translates into faster convergence. We used the established theory of\r
+MDP homomorphisms to motivate the use of equivariant networks, thus formalizing the connection\r
+between equivariant networks and symmetries in reinforcement learning. As an innovation, we also\r
+introduced the first method to automatically construct equivariant network layers, given a specification\r
+of the symmetries in question, thus removing a significant implementational obstacle. For future\r
+work, we want to further understand the symmetrizer and its effect on learning dynamics, as well as\r
+generalizing to problems that are not fully symmetric.\r
+7 Acknowledgments and Funding Disclosure\r
+Elise van der Pol was funded by Robert Bosch GmbH. Daniel Worrall was funded\r
+by Philips. F.A.O. received funding from the European Research Council (ERC)\r
+under the European Union’s Horizon 2020 research and innovation programme\r
+(grant agreement No. 758824 —INFLUENCE). Max Welling reports part-time\r
+employment at Qualcomm AI Research.\r
+9
+
+8 Broader Impact\r
+The goal of this paper is to make (deep) reinforcement learning techniques\r
+more efficient at solving Markov decision processes (MDPs) by making use of prior knowledge about\r
+symmetries. We do not expect the particular algorithm we develop to lead to immediate societal risks.\r
+However, Markov decision processes are very general, and can e.g. be used to model problems in\r
+autonomous driving, smart grids, and scheduling. Thus, solving such problems more efficiently can\r
+in the long run cause positive or negative societal impact.\r
+For example, making transportation or power grids more efficient, thereby making better use of\r
+scarce resources, would be a significantly positive impact. Other potential applications, such as in\r
+autonomous weapons, pose a societal risk [28]. Like many AI technologies, when used in automation,\r
+our technology can have a positive impact (increased productivity) and a negative impact (decreased\r
+demand) on labor markets.\r
+More immediately, control strategies learned using RL techniques are hard to verify and validate.\r
+Without proper precaution (e.g. [40]), employing such control strategies on physical systems thus run\r
+the risk of causing accidents involving people, e.g. due to reward misspecification, unsafe exploration,\r
+or distributional shift [2].\r
+References\r
+[1] Farzad Abdolhosseini, Hung Yu Ling, Zhaoming Xie, Xue Bin Peng, and Michiel van de Panne. On\r
+learning symmetric locomotion. In ACM SIGGRAPH Motion, Interaction, and Games. 2019.\r
+[2] Dario Amodei, Chris Olah, Jacob Steinhardt, Paul Christiano, John Schulman, and Dan Mané. Concrete\r
+problems in AI safety. arXiv:1606.06565, 2016.\r
+[3] Andrew G. Barto, Richard S. Sutton, and Charles W. Anderson. Neuronlike adaptive elements that can\r
+solve difficult learning control problems. IEEE transactions on systems, man, and cybernetics, 1983.\r
+[4] Erik J. Bekkers, Maxime W. Lafarge, Mitko Veta, Koen A.J. Eppenhof, Josien P.W. Pluim, and Remco\r
+Duits. Roto-translation covariant convolutional networks for medical image analysis. In International\r
+Conference on Medical Image Computing and Computer-Assisted Intervention, 2018.\r
+[5] Richard E. Bellman. Dynamic Programming. Princeton University Press, 1957.\r
+[6] Ondrej Biza and Robert Platt. Online abstraction with MDP homomorphisms for deep learning. In\r
+International Conference on Autonomous Agents and MultiAgent Systems, 2019.\r
+[7] Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and\r
+Wojciech Zaremba. OpenAI Gym. arXiv:1606.01540, 2016.\r
+[8] Christopher Clark and Amos Storkey. Teaching deep convolutional neural networks to play Go.\r
+arXiv:1412.3409, 2014.\r
+[9] Karl Cobbe, Oleg Klimov, Chris Hesse, Taehoon Kim, and John Schulman. Quantifying generalization in\r
+reinforcement learning. In International Conference on Machine Learning, 2019.\r
+[10] Taco S. Cohen, Mario Geiger, and Maurice Weiler. A general theory of equivariant CNNs on homogeneous\r
+spaces. In Advances in Neural Information Processing Systems. 2019.\r
+[11] Taco S. Cohen and Max Welling. Group equivariant convolutional networks. In International Conference\r
+on Machine Learning, 2016.\r
+[12] Taco S. Cohen and Max Welling. Steerable CNNs. In International Conference on Learning Representa\u0002tions, 2017.\r
+[13] Nichita Diaconu and Daniel E. Worrall. Learning to convolve: A generalized weight-tying approach. In\r
+International Conference on Machine Learning, 2019.\r
+[14] David Steven Dummit and Richard M. Foote. Abstract Algebra. Wiley, 2004.\r
+[15] Jiechuan Jiang, Chen Dun, Tiejun Huang, and Zongqing Lu. Graph convolutional reinforcement learning.\r
+In International Conference on Learning Representations, 2020.\r
+[16] Ilya Kostrikov, Denis Yarats, and Rob Fergus. Image augmentation is all you need: Regularizing deep\r
+reinforcement learning from pixels. arXiv:2004.13649, 2020.\r
+[17] Michael Laskin, Kimin Lee, Adam Stooke, Lerrel Pinto, Pieter Abbeel, and Aravind Srinivas. Reinforce\u0002ment learning with augmented data. arXiv:2004.14990, 2020.\r
+[18] Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner. Gradient-based learning applied to\r
+document recognition. Proceedings of the IEEE, 1998.\r
+10
+
+[19] Kimin Lee, Kibok Lee, Jinwoo Shin, and Honglak Lee. Network randomization: A simple technique for\r
+generalization in deep reinforcement learning. In International Conference on Learning Representations,\r
+2020.\r
+[20] Lihong Li, Thomas J. Walsh, and Michael L. Littman. Towards a unified theory of state abstraction for\r
+mdps. In International Symposium on Artificial Intelligence and Mathematics, 2006.\r
+[21] Yijiong Lin, Jiancong Huang, Matthieu Zimmer, Yisheng Guan, Juan Rojas, and Paul Weng. Invariant\r
+transform experience replay: Data augmentation for deep reinforcement learning. IEEE Robotics and\r
+Automation Letters, 2020.\r
+[22] Iou-Jen Liu, Raymond A. Yeh, and Alexander G. Schwing. PIC: Permutation invariant critic for multi-agent\r
+deep reinforcement learning. In Conference on Robot Learning, 2019.\r
+[23] Anuj Mahajan and Theja Tulabandhula. Symmetry learning for function approximation in reinforcement\r
+learning. arXiv:1706.02999, 2017.\r
+[24] Aditi Mavalankar. Goal-conditioned batch reinforcement learning for rotation invariant locomotion.\r
+arXiv:2004.08356, 2020.\r
+[25] Volodymyr Mnih, Adrià Puigdomènech Badia, Mehdi Mirza, Alex Graves, Tim Harley, Timothy P.\r
+Lillicrap, David Silver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning.\r
+In International Conference on Machine Learning, 2016.\r
+[26] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A. Rusu, Joel Veness, Marc G. Bellemare,\r
+Alex Graves, Martin Riedmiller, Andreas K. Fidjeland, Georg Ostrovski, Stig Petersen, Charles Beattie,\r
+Amir Sadik, Ioannis Antonoglou, Helen King, Dharshan Kumaran, Daan Wierstra, Shane Legg, and Demis\r
+Hassabis. Human-level control through deep reinforcement learning. In Nature, 2015.\r
+[27] Shravan Matthur Narayanamurthy and Balaraman Ravindran. On the hardness of finding symmetries in\r
+Markov decision processes. In International Conference on Machine learning, 2008.\r
+[28] Future of Life Institute. Autonomous weapons: An open letter from AI & robotics researchers, 2015.\r
+[29] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor\r
+Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas Kopf, Edward Yang,\r
+Zachary DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie\r
+Bai, and Soumith Chintala. Pytorch: An imperative style, high-performance deep learning library. In\r
+Advances in Neural Information Processing Systems, 2019.\r
+[30] Balaraman Ravindran and Andrew G. Barto. Symmetries and model minimization in Markov Decision\r
+Processes. Technical report, University of Massachusetts, 2001.\r
+[31] Balaraman Ravindran and Andrew G. Barto. SMDP homomorphisms: An algebraic approach to abstraction\r
+in Semi Markov Decision Processes. In International Joint Conference on Artificial Intelligence, 2003.\r
+[32] Balaraman Ravindran and Andrew G. Barto. Approximate homomorphisms: A framework for non-exact\r
+minimization in Markov Decision Processes. In International Conference on Knowledge Based Computer\r
+Systems, 2004.\r
+[33] Nicol N. Schraudolph, Peter Dayan, and Terrence J. Sejnowski. Temporal difference learning of position\r
+evaluation in the game of Go. In Advances in Neural Information Processing Systems, 1994.\r
+[34] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy\r
+optimization algorithms. In arXiv:1707.06347, 2017.\r
+[35] David Silver, Aja Huang, Chris J. Maddison, Arthur Guez, Laurent Sifre, George Van Den Driessche,\r
+Julian Schrittwieser, Ioannis Antonoglou, Veda Panneershelvam, Marc Lanctot, et al. Mastering the game\r
+of Go with deep neural networks and tree search. In Nature, 2016.\r
+[36] Adam Stooke and Pieter Abbeel. rlpyt: A research code base for deep reinforcement learning in Pytorch.\r
+In arXiv:1909.01500, 2019.\r
+[37] Sainbayar Sukhbaatar, Arthur Szlam, and Rob Fergus. Learning multiagent communication with backprop\u0002agation. In Advances in Neural Information Processing Systems, 2016.\r
+[38] Jonathan Taylor, Doina Precup, and Prakash Panagaden. Bounding performance loss in approximate MDP\r
+homomorphisms. In Advances in Neural Information Processing Systems, 2008.\r
+[39] Elise van der Pol, Thomas Kipf, Frans A. Oliehoek, and Max Welling. Plannable approximations to MDP\r
+homomorphisms: Equivariance under actions. In International Conference on Autonomous Agents and\r
+MultiAgent Systems, 2020.\r
+[40] K. P. Wabersich and M. N. Zeilinger. Linear model predictive safety certification for learning-based control.\r
+In IEEE Conference on Decision and Control, 2018.\r
+[41] Maurice Weiler and Gabriele Cesa. General E(2)-equivariant steerable CNNs. In Advances in Neural\r
+Information Processing Systems, 2019.\r
+11
+
+[42] Maurice Weiler, Mario Geiger, Max Welling, Wouter Boomsma, and Taco S. Cohen. 3D steerable CNNs:\r
+Learning rotationally equivariant features in volumetric data. In Advances in Neural Information Processing\r
+Systems. 2018.\r
+[43] Maurice Weiler, Fred A. Hamprecht, and Martin Storath. Learning steerable filters for rotation equivariant\r
+CNNs. In IEEE Conference on Computer Vision and Pattern Recognition, 2018.\r
+[44] Marysia Winkels and Taco S. Cohen. 3D G-CNNs for pulmonary nodule detection. In Medical Imaging\r
+with Deep Learning Conference, 2018.\r
+[45] Daniel E. Worrall and Gabriel J. Brostow. CubeNet: Equivariance to 3D rotation and translation. In\r
+European Conference on Computer Vision (ECCV).\r
+[46] Daniel E. Worrall, Stephan J. Garbin, Daniyar Turmukhambetov, and Gabriel J. Brostow. Harmonic\r
+networks: Deep translation and rotation equivariance. In IEEE Conference on Computer Vision and Pattern\r
+Recognition, 2017.\r
+[47] Daniel E. Worrall and Max Welling. Deep scale-spaces: Equivariance over scale. In Advances in Neural\r
+Information Processing Systems, 2019.\r
+[48] Dmitry Yarotsky. Universal approximations of invariant maps by neural networks. arXiv:1804.10306,\r
+2018.\r
+12"""
+
+[metadata]
+title = "vanderpol 2020 mdp homomorphic networks neurips"
+authors = ["Unknown"]
+year = 2020
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+MDP Homomorphic Networks:\r
+Group Symmetries in Reinforcement Learning\r
+Elise van der Pol\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+e.e.vanderpol@uva.nl\r
+Daniel E. Worrall\r
+Philips Lab\r
+University of Amsterdam\r
+d.e.worrall@uva.nl\r
+Herke van Hoof\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+h.c.vanhoof@uva.nl\r
+Frans A. Oliehoek\r
+Department of Intelligent Systems\r
+Delft University of Technology\r
+f.a.oliehoek@tudelft.nl\r
+Max Welling\r
+UvA-Bosch Deltalab\r
+University of Amsterdam\r
+m.welling@uva.nl\r
+Abstract\r
+This paper introduces MDP homomorphic networks for deep reinforcement learn\u0002ing. MDP homomorphic networks are neural networks that are equivariant under\r
+symmetries in the joint state-action space of an MDP. Current approaches to deep\r
+reinforcement learning do not usually exploit knowledge about such structure. By\r
+building this prior knowledge into policy and value networks using an equivariance\r
+constraint, we can reduce the size of the solution space. We specifically focus\r
+on group-structured symmetries (invertible transformations). Additionally, we\r
+introduce an easy method for constructing equivariant network layers numerically,\r
+so the system designer need not solve the constraints by hand, as is typically done.\r
+We construct MDP homomorphic MLPs and CNNs that are equivariant under either\r
+a group of reflections or rotations. We show that such networks converge faster\r
+than unstructured baselines on CartPole, a grid world and Pong."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+This paper considers learning decision-making systems that exploit symmetries in the structure of the\r
+world. Deep reinforcement learning (DRL) is concerned with learning neural function approximators\r
+for decision making strategies. While DRL algorithms have been shown to solve complex, high\u0002dimensional problems [35, 34, 26, 25], they are often used in problems with large state-action spaces,\r
+and thus require many samples before convergence. Many tasks exhibit symmetries, easily recognized\r
+by a designer of a reinforcement learning system. Consider the classic control task of balancing a\r
+pole on a cart. Balancing a pole that falls to the right requires an equivalent, but mirrored, strategy to\r
+one that falls to the left. See Figure 1. In this paper, we exploit knowledge of such symmetries in the\r
+state-action space of Markov decision processes (MDPs) to reduce the size of the solution space.\r
+We use the notion of MDP homomorphisms [32, 30] to formalize these symmetries. Intuitively, an\r
+MDP homomorphism is a map between MDPs, preserving the essential structure of the original\r
+MDP, while removing redundancies in the problem description, i.e., equivalent state-action pairs. The\r
+removal of these redundancies results in a smaller state-action space, upon which we may more easily\r
+build a policy. While earlier work has been concerned with discovering an MDP homomorphism for\r
+a given MDP [32, 30, 27, 31, 6, 39], we are instead concerned with how to construct deep policies,\r
+satisfying the MDP homomorphism. We call these models MDP homomorphic networks.\r
+34th Conference on Neural Information Processing Systems (NeurIPS 2020), Vancouver, Canada.
+
+Figure 1: Example state-action space\r
+symmetry. Pairs (s, ←) and (L[s], →)\r
+(and by extension (s, →) and (L[s], ←))\r
+are symmetric under a horizontal flip.\r
+Constraining the set of policies to those\r
+where π(s, ←) = π(L[s], →) reduces\r
+the size of the solution space.\r
+MDP homomorphic networks use experience from one\r
+state-action pair to improve the policy for all ‘equivalent’\r
+pairs. See Section 2.1 for a definition. They do this by ty\u0002ing the weights for two states if they are equivalent under a\r
+transformation chosen by the designer, such as s and L[s]\r
+in Figure 1. Such weight-tying follows a similar principle\r
+to the use of convolutional networks [18], which are equiv\u0002ariant to translations of the input [11]. In particular, when\r
+equivalent state-action pairs can be related by an invert\u0002ible transformation, which we refer to as group-structured,\r
+we show that the policy network belongs to the class of\r
+group-equivariant neural networks [11, 46].Equivariant\r
+neural networks are a class of neural network, which\r
+have built-in symmetries [11, 12, 46, 43, 41]. They are a\r
+generalization of convolutional neural networks—which\r
+exhibit translation symmetry—to transformation groups\r
+(group-structured equivariance) and transformation semi\u0002groups [47] (semigroup-structured equivariance). They\r
+have been shown to reduce sample complexity for classi\u0002fication tasks [46, 44] and also to be universal approxima\u0002tors of symmetric functions1\r
+[48]. We borrow from the\r
+literature on group equivariant networks to design policies\r
+that tie weights for state-action pairs given their equiv\u0002alence classes, with the goal of reducing the number of\r
+samples needed to find good policies. Furthermore, we\r
+can use the MDP homomorphism property to design not just policy networks, but also value networks\r
+and even environment models. MDP homomorphic networks are agnostic to the type of model-free\r
+DRL algorithm, as long as an appropriate transformation on the output is given. In this paper we\r
+focus on equivariant policy and invariant value networks. See Figure 1 for an example policy.\r
+An additional contribution of this paper is a novel numerical way of finding equivariant layers for\r
+arbitrary transformation groups. The design of equivariant networks imposes a system of linear\r
+constraint equations on the linear/convolutional layers [12, 11, 46, 43]. Solving these equations has\r
+typically been done analytically by hand, which is a time-consuming and intricate process, barring\r
+rapid prototyping. Rather than requiring analytical derivation, our method only requires that the\r
+system designer specify input and output transformation groups of the form {state transformation,\r
+policy transformation}. We provide Pytorch [29] implementations of our equivariant network layers,\r
+and implementations of the transformations used in this paper. We also experimentally demonstrate\r
+that exploiting equivalences in MDPs leads to faster learning of policies for DRL.\r
+Our contributions are two-fold:\r
+• We draw a connection between MDP homomorphisms and group equivariant networks,\r
+proposing MDP homomorphic networks to exploit symmetries in decision-making problems;\r
+• We introduce a numerical algorithm for the automated construction of equivariant layers."""
+
+[[sections]]
+number = "2"
+title = "Background"
+text = """
+Here we outline the basics of the theory behind MDP homomorphisms and equivariance. We begin\r
+with a brief outline of the concepts of equivalence, invariance, and equivariance, followed by a review\r
+of the Markov decision process (MDP). We then review the MDP homomorphism, which builds a\r
+map between ‘equivalent’ MDPs."""
+
+[[sections]]
+number = "2.1"
+title = "Equivalence, Invariance, and Equivariance"
+text = """
+Equivalence If a function f : X → Y maps two inputs x, x0 ∈ X to the same value, that is\r
+f(x) = f(x\r
+0\r
+), then we say that x and x\r
+0\r
+are f-equivalent. For instance, two states s, s0leading to the\r
+1\r
+Specifically group equivariant networks are universal approximators to functions symmetric under linear\r
+representations of compact groups.\r
+2
+
+same optimal value V\r
+∗\r
+(s) = V\r
+∗\r
+(s\r
+0\r
+) would be V\r
+∗\r
+-equivalent or optimal value equivalent [30]. An\r
+example of two optimal value equivalent states would be states s and L[s] in the CartPole example of\r
+Figure 1. The set of all points f-equivalent to x is called the equivalence class of x.\r
+Invariance and Symmetries Typically there exist very intuitive relationships between the points in\r
+an equivalence class. In the CartPole example of Figure 1 this relationship is a horizontal flip about\r
+the vertical axis. This is formalized with the transformation operator Lg : X → X , where g ∈ G and\r
+G is a mathematical group. If Lg satisfies\r
+f(x) = f(Lg[x]), for all g ∈ G, x ∈ X , (1)\r
+then we say that f is invariant or symmetric to Lg and that {Lg}g∈G is a set of symmetries of f . We\r
+can see that for the invariance equation to be satisfied, it must be that Lg can only map x to points\r
+in its equivalence class. Note that in abstract algebra for Lg to be a true transformation operator, G\r
+must contain an identity operation; that is Lg[x] = x for some g and all x. An interesting property\r
+of transformation operators which leave f invariant, is that they can be composed and still leave f\r
+invariant, so Lg ◦ Lh is also a symmetry of f for all g, h ∈ G. In abstract algebra, this property is\r
+known as a semigroup property. If Lg is always invertible, this is called a group property. In this\r
+work, we experiment with group-structured transformation operators. For more information, see [14].\r
+One extra helpful concept is that of orbits. If f is invariant to Lg, then it is invariant along the orbits\r
+of G. The orbit Ox of point x is the set of points reachable from x via transformation operator Lg:\r
+Ox , {Lg[x] ∈ X |g ∈ G}. (2)\r
+Equivariance A related notion to invariance is equivariance. Given a transformation operator\r
+Lg : X → X and a mapping f : X → Y, we say that f is equivariant [11, 46] to the transformation\r
+if there exists a second transformation operator Kg : Y → Y in the output space of f such that\r
+Kg[f(x)] = f(Lg[x]), for all g ∈ G, x ∈ X . (3)\r
+The operators Lg and Kg can be seen to describe the same transformation, but in different spaces. In\r
+fact, an equivariant map can be seen to map orbits to orbits. We also see that invariance is a special\r
+case of equivariance, if we set Kg to the identity operator for all g. Given Lg and Kg, we can solve\r
+for the collection of equivariant functions f satisfying the equivariance constraint. Moreover, for\r
+linear transformation operators and linear f a rich theory already exists in which f is referred to\r
+as an intertwiner [12]. In the equivariant deep learning literature, neural networks are built from\r
+interleaving intertwiners and equivariant nonlinearities. As far as we are aware, most of these methods\r
+are hand-designed per pair of transformation operators, with the exception of [13]. In this paper, we\r
+introduce a computational method to solve for intertwiners given a pair of transformation operators."""
+
+[[sections]]
+number = "2.2"
+title = "Markov Decision Processes"
+text = """
+A Markov decision process (MDP) is a tuple (S, A, R, T, γ), with state space S, action space A,\r
+immediate reward function R : S × A → R, transition function T : S × A × S → R≥0, and\r
+discount factor γ ∈ [0, 1]. The goal of solving an MDP is to find a policy π ∈ Π, π : S × A → R≥0\r
+(written π(a|s)), where π normalizes to unity over the action space, that maximizes the expected\r
+return Rt = Eπ[\r
+PT\r
+k=0 γ\r
+k\r
+rt+k+1]. The expected return from a state s under a policy π is given by\r
+the value function V\r
+π\r
+. A related object is the Q-value Qπ, the expected return from a state s after\r
+taking action a under π. V\r
+π\r
+and Qπare governed by the well-known Bellman equations [5] (see\r
+Supplementary). In an MDP, optimal policies π\r
+∗\r
+attain an optimal value V\r
+∗\r
+and corresponding\r
+Q-value given by V\r
+∗\r
+(s) = max\r
+π∈Π\r
+V\r
+π\r
+(s) and Q∗(s) = max\r
+π∈Π\r
+Qπ(s).\r
+MDP with Symmetries Symmetries can appear in MDPs. For instance, in Figure 2 CartPole has a\r
+reflection symmetry about the vertical axis. Here we define an MDP with symmetries. In an MDP\r
+with symmetries there is a set of transformations on the state-action space, which leaves the reward\r
+function and transition operator invariant. We define a state transformation and a state-dependent\r
+action transformation as Lg : S → S and Ks\r
+g\r
+: A → A respectively. Invariance of the reward\r
+function and transition function is then characterized as\r
+R(s, a) = R(Lg[s], Ks\r
+g\r
+[a]) for all g ∈ G, s ∈ S, a ∈ A (4)\r
+T(s\r
+0\r
+|s, a) = T(Lg[s\r
+0\r
+]|Lg[s], Ks\r
+g\r
+[a]) for all g ∈ G, s ∈ S, a ∈ A. (5)\r
+Written like this, we see that in an MDP with symmetries the reward function and transition operator\r
+are invariant along orbits defined by the transformations (Lg, Ks\r
+g\r
+).\r
+3
+
+Figure 2: Example of a reduction in an MDP’s state-action space under an MDP homomorphism h.\r
+Here ‘equivalence’ is represented by a reflection of the dynamics in the vertical axis. This equivalence\r
+class is encoded by h by mapping all equivalent state-action pairs to the same abstract state-actions.\r
+MDP Homomorphisms MDPs with symmetries are closely related to MDP homomorphisms, as\r
+we explain below. First we define the latter. An MDP homomorphism h [32, 30] is a mapping from\r
+one MDP M = (S, A, R, T, γ) to another M¯ = (S¯, A¯, R, ¯ T , γ ¯ ) defined by a surjective map from the\r
+state-action space S × A to an abstract state-action space S ×¯ A¯. In particular, h consists of a tuple\r
+of surjective maps (σ, {αs|s ∈ S}), where we have the state map σ : S → S¯ and the state-dependent\r
+action map αs : A → A¯. These maps are built to satisfy the following conditions\r
+R¯(σ(s), αs(a)) , R(s, a) for all s ∈ S, a ∈ A, (6)\r
+T¯(σ(s\r
+0\r
+)|σ(s), αs(a)) ,\r
+X\r
+s\r
+00∈σ−1(s0)\r
+T(s\r
+00|s, a) for all s, s0 ∈ S, a ∈ A. (7)\r
+An exact MDP homomorphism provides a model equivalent abstraction [20]. Given an MDP\r
+homomorphism h, two state-action pairs (s, a) and (s\r
+0\r
+, a0) are called h-equivalent if σ(s) = σ(s\r
+0\r
+)\r
+and αs(a) = αs\r
+0 (a\r
+0\r
+). Symmetries and MDP homomorphisms are connected in a natural way: If\r
+an MDP has symmetries Lg and Kg, the above equations (4) and (5) hold. This means that we can\r
+define a corresponding MDP homomorphism, which we define next.\r
+Group-structured MDP Homomorphisms Specifically, for an MDP with symmetries, we can\r
+define an abstract state-action space, by mapping (s, a) pairs to (a representative point of) their\r
+equivalence class (σ(s), αs(a)). That is, state-action pairs and their transformed version are mapped\r
+to the same abstract state in the reduced MDP:\r
+(σ(s), αs(a)) = σ(Lg[s]), αLg[s](Ks\r
+g\r
+[a])\u0001∀g ∈ G, s ∈ S, a ∈ A (8)\r
+In this case, we call the resulting MDP homomorphism group structured. In other words, all the\r
+state-action pairs in an orbit defined by a group transformation are mapped to the same abstract state\r
+by a group-structured MDP homomorphism.\r
+Optimal Value Equivalence and Lifted Policies h-equivalent state-action pairs share the same\r
+optimal Q-value and optimal value function [30]. Furthermore, there exists an abstract optimal\r
+Q-value Q¯∗and abstract optimal value function V¯ ∗, such that Q∗(s, a) = Q¯∗(σ(s), αs(a)) and\r
+V\r
+∗\r
+(s) = V¯ ∗(σ(s)). This is known as optimal value equivalence [30]. Policies can thus be optimized\r
+in the simpler abstract MDP. The optimal abstract policy π¯(¯a|σ(s)) can then be pulled back to the\r
+original MDP using a procedure called lifting 2. The lifted policy is given in Equation 9. A lifted\r
+optimal abstract policy is also an optimal policy in the original MDP [30]. Note that while other\r
+lifted policies exist, we follow [30, 32] and choose the lifting that divides probability mass uniformly\r
+over the preimage:\r
+π\r
+↑\r
+(a|s) ,\r
+π¯(¯a|σ(s))\r
+|{a ∈ α\r
+−1\r
+s (¯a)}|\r
+, for any s ∈ S and a ∈ α\r
+−1\r
+s\r
+(¯a). (9)"""
+
+[[sections]]
+number = "3"
+title = "Method"
+text = """
+The focus of the next section is on the design of MDP homomorphic networks—policy networks and\r
+value networks obeying the MDP homomorphism. In the first section of the method, we show that any\r
+2Note that we use the terminology lifting to stay consistent with [30].\r
+4
+
+policy network satisfying the MDP homomorphism property must be an equivariant neural network.\r
+In the second part of the method, we introduce a novel numerical technique for constructing group\u0002equivariant networks, based on the transformation operators defining the equivalence state-action\r
+pairs under the MDP homomorphism."""
+
+[[sections]]
+number = "3.1"
+title = "Lifted Policies Are Invariant"
+text = """
+Lifted policies in symmetric MDPs with group-structured symmetries are invariant under the group\r
+of symmetries. Consider the following: Take an MDP with symmetries defined by transformation\r
+operators (Lg, Ks\r
+g\r
+) for g ∈ G. Now, if we take s\r
+0 = Lg[s] and a0 = Ks\r
+g\r
+[a] for any g ∈ G, (s\r
+0\r
+, a0)\r
+and (s, a) are h-equivalent under the corresponding MDP homomorphism h = (σ, {αs|s ∈ S}). So\r
+π\r
+↑\r
+(a|s) = π¯(αs(a)|σ(s))\r
+|{a ∈ α\r
+−1\r
+s (¯a)}|\r
+=\r
+π¯(αs\r
+0 (a\r
+0\r
+)|σ(s\r
+0\r
+))\r
+|{a\r
+0 ∈ α\r
+−1\r
+s\r
+0 (¯a)}|\r
+= π\r
+↑\r
+(a\r
+0\r
+|s\r
+0\r
+), (10)\r
+for all s ∈ S, a ∈ A and g ∈ G. In the first equality we have used the definition of the lifted\r
+policy. In the second equality, we have used the definition of h-equivalent state-action pairs, where\r
+σ(s) = σ(Lg(s)) and αs(a) = αs\r
+0 (a\r
+0\r
+). In the third equality, we have reused the definition of the\r
+lifted policy. Thus we see that, written in this way, the lifted policy is invariant under state-action\r
+transformations (Lg, Ks\r
+g\r
+). This equation is very general and applies for all group-structured state\u0002action transformations. For a finite action space, this statement of invariance can be re-expressed as a\r
+statement of equivariance, by considering the vectorized policy.\r
+Invariant Policies On Finite Action Spaces Are Equivariant Vectorized Policies For convenience\r
+we introduce a vector of probabilities for each of the discrete actions under the policy\r
+π(s) , [π(a1|s), π(a2|s), ..., π(aN |s)]\r
+>\r
+, (11)\r
+where a1, ..., aN are the N possible discrete actions in action space A. The action transformation Ks\r
+g\r
+maps actions to actions invertibly. Thus applying an action transformation to the vectorized policy\r
+permutes the elements. We write the corresponding permutation matrix as Kg. Note that\r
+K\r
+−1\r
+g π(s) ,\r
+\u0002\r
+π(Ks\r
+g\r
+[a1]|s), π(Ks\r
+g\r
+[a2]|s), ..., π(Ks\r
+g\r
+[aN ]|s)\r
+\u0003>\r
+, (12)\r
+where writing the inverse K\r
+−1\r
+g\r
+instead of Kg is required to maintain the property KgKh = Kgh.\r
+The invariance of the lifted policy can then be written as π\r
+↑\r
+(s) = K\r
+−1\r
+g π\r
+↑\r
+(Lg[s]), which can be\r
+rearranged to the equivariance equation\r
+Kgπ\r
+↑\r
+(s) = π\r
+↑\r
+(Lg[s]) for all g ∈ G, s ∈ S, a ∈ A. (13)\r
+This equation shows that the lifted policy must satisfy an equivariance constraint. In deep learning,\r
+this has already been well-explored in the context of supervised learning [11, 12, 46, 47, 43]. Next,\r
+we present a novel way to construct such networks."""
+
+[[sections]]
+number = "3.2"
+title = "Building MDP Homomorphic Networks"
+text = """
+Our goal is to build neural networks that follow Eq. 13; that is, we wish to find neural networks that\r
+are equivariant under a set of state and policy transformations. Equivariant networks are common\r
+in supervised learning [11, 12, 46, 47, 43, 41]. For instance, in semantic segmentation shifts and\r
+rotations of the input image result in shifts and rotations in the segmentation. A neural network\r
+consisting of only equivariant layers and non-linearities is equivariant as a whole, too3[11]. Thus,\r
+once we know how to build a single equivariant layer, we can simply stack such layers together. Note\r
+that this is true regardless of the representation of the group, i.e. this works for spatial transformations\r
+of the input, feature map permutations in intermediate layers, and policy transformations in the output\r
+layer. For the experiments presented in this paper, we use the same group representations for the\r
+intermediate layers as for the output, i.e. permutations. For finite groups, such as cyclic groups or\r
+permutations, pointwise nonlinearities preserve equivariance [11].\r
+In the past, learnable equivariant layers were designed by hand for each transformation group\r
+individually [11, 12, 46, 47, 44, 43, 41]. This is time-consuming and laborious. Here we present a\r
+novel way to build learnable linear layers that satisfy equivariance automatically."""
+
+[[sections]]
+number = "5"
+title = "Equivariant Layers We begin with a single linear layer z"
+text = """
+0 = Wz + b, where W ∈ RDout×Din and\r
+b ∈ R\r
+Din is a bias. To simplify the math, we merge the bias into the weights so W 7→ [W, b] and\r
+z 7→ [z, 1]>. We denote the space of the augmented weights as Wtotal. For a given pair of linear group\r
+transformation operators in matrix form (Lg, Kg), where Lg is the input transformation and Kg is\r
+the output transformation, we then have to solve the equation\r
+KgWz = WLgz, for all g ∈ G, z ∈ R\r
+Din+1\r
+. (14)\r
+Since this equation is true for all z we can in fact drop z entirely. Our task now is to find all weights\r
+W which satisfy Equation 14. We label this space of equivariant weights as W, defined as\r
+W , {W ∈ Wtotal | KgW = WLg, for all g ∈ G}, (15)\r
+again noting that we have dropped z. To find the space W notice that for each g ∈ G the constraint\r
+KgW = WLg is in fact linear in W. Thus, to find W we need to solve a set of linear equations in W.\r
+For this we introduce a construction, which we call a symmetrizer S(W). The symmetrizer is\r
+S(W) ,\r
+1\r
+|G|\r
+X\r
+g∈G\r
+K\r
+−1\r
+g WLg. (16)\r
+S has three important properties, of which proofs are provided in Appendix A. First, S(W) is\r
+symmetric (S(W) ∈ W). Second, S fixes any symmetric W: (W ∈ W =⇒ S(W) = W). These\r
+properties show that S projects arbitrary W ∈ Wtotal to the equivariant subspace W.\r
+Since W is the solution set for a set of simultaneous linear equations, W is a linear sub\u0002space of the space of all possible weights Wtotal. Thus each W ∈ W can be parametrized\r
+as a linear combination of basis weights {Vi}\r
+r\r
+i=1, where r is the rank of the subspace and\r
+span({Vi}\r
+r\r
+i=1) = W. To find as basis for W, we take a Gram-Schmidt orthogonalization ap\u0002proach. We first sample weights in the total space Wtotal and then project them into the equivariant\r
+Figure 3: Example of 4-way\r
+rotationally symmetric filters.\r
+subspace with the symmetrizer. We do this for multiple weight\r
+matrices, which we then stack and feed through a singular value de\u0002composition to find a basis for the equivariant space. This procedure\r
+is outlined in Algorithm 1. Any equivariant layer can then be written\r
+as a linear combination of bases\r
+W =\r
+Xr\r
+i=1\r
+ciVi, (17)\r
+where the ci’s are learnable scalar coefficients, r is the rank of the equivariant space, and the matrices\r
+Vi are the basis vectors, formed from the reshaped right-singular vectors in the SVD. An example is\r
+shown in Figure 3. To run this procedure, all that is needed are the transformation operators Lg and\r
+Kg. Note we do not need to know the explicit transformation matrices, but just to be able to perform\r
+the mappings W 7→ WLg and W 7→ K\r
+−1\r
+g W. For instance, some matrix Lg rotates an image patch,\r
+but we could equally implement WLg using a built-in rotation function. Code is available 4."""
+
+[[sections]]
+number = "4"
+title = "Experiments"
+text = """
+We evaluated three flavors of MDP homomorphic network—an MLP, a CNN, and an equivariant\r
+feature extractor—on three RL tasks that exhibit group symmetry: CartPole, a grid world, and Pong."""
+
+[[sections]]
+number = "3"
+title = "See Appendix B for more details."
+text = """
+4\r
+https://github.com/ElisevanderPol/symmetrizer/\r
+Algorithm 1 Equivariant layer construction\r
+1: Sample N weight matrices W1, W2, ..., WN ∼ N (W; 0,I) for N ≥ dim(Wtotal)\r
+2: Symmetrize samples: W¯\r
+i = S(Wi) for i = 1, ..., N\r
+3: Vectorize samples and stack as W¯ = [vec(W¯\r
+1), vec(W¯2), ...]\r
+4: Apply SVD: W¯ = UΣV\r
+>\r
+5: Keep first r = rank(W¯ ) right-singular vectors (columns of V) and unvectorize to shape of Wi\r
+6
+
+Table 1: ENVIRONMENTS AND SYMMETRIES: We showcase a visual guide of the state and action\r
+spaces for each environment along with the effect of the transformations. Note, the symbols should\r
+not be taken to be hard mathematical statements, they are merely a visual guide for communication.\r
+Environment Space Transformations\r
+CartPole S (x, θ, x,˙\r
+˙θ) (x, θ, x,˙˙θ),(−x, −θ, −x,˙ − ˙θ)\r
+A (←, →) (←, →), (→, ←)\r
+Grid World S {0, 1}\r
+21×21 Identity, y 90◦\r
+, y 180◦, y 270◦\r
+A (∅, ↑, →, ↓, ←) (∅, ↑, →, ↓, ←),(∅, →, ↓, ←, ↑),(∅, ↓, ←, ↑, →),(∅, ←, ↑, →, ↓)\r
+Pong S {0, ..., 255}\r
+4×80×80 Identity, reflect\r
+A (∅, ∅, ↑, ↓, ↑, ↓) (∅, ∅, ↑, ↓, ↑, ↓), (∅, ∅, ↓, ↑, ↓, ↑)\r
+We use RLPYT [36] for the algorithms. Hyperparameters (and the range considered), architectures,\r
+and group implementation details are in the Supplementary Material. Code is available 5."""
+
+[[sections]]
+number = "4.1"
+title = "Environments"
+text = """
+For each environment we show S and A with respective representations of the group transformations.\r
+CartPole In the classic pole balancing task [3], we used a two-element group of reflections about the\r
+y-axis. We used OpenAI’s Cartpole-v1 [7] implementation, which has a 4-dimensional observation\r
+vector: (cart position x, pole angle θ, cart velocity x˙, pole velocity ˙θ). The (discrete) action space\r
+consists of applying a force left and right (←, →). We chose this example for its simple symmetries.\r
+Grid world We evaluated on a toroidal 7-by-7 predator-prey grid world with agent-centered coordi\u0002nates. The prey and predator are randomly placed at the start of each episode, lasting a maximum\r
+of 100 time steps. The agent’s goal is to catch the prey, which takes a step in a random compass\r
+direction with probability 0.15 and stands still otherwise. Upon catching the prey, the agent receives a\r
+reward of +1, and -0.1 otherwise. The observation is a 21 × 21 binary image identifying the position\r
+of the agent in the center and the prey in relative coordinates. See Figure 6a. This environment was\r
+chosen due to its four-fold rotational symmetry.\r
+Pong We evaluated on the RLPYT [36] implementation of Pong. In our experiments, the observation\r
+consisted of the 4 last observed frames, with upper and lower margins cut off and downscaled to\r
+an 80 × 80 grayscale image. In this setting, there is a flip symmetry over the horizontal axis: if\r
+we flip the observations, the up and down actions also flip. A curious artifact of Pong is that it has\r
+duplicate (up, down) actions, which means that to simplify matters, we mask out the policy values\r
+for the second pair of (up, down) actions. We chose Pong because of its higher dimensional state\r
+space. Finally, for Pong we additionally compare to two data augmentation baselines: stochastic\r
+data augmentation, where for each state, action pair we randomly transform them or not before\r
+feeding them to the network, and the second an equivariant version of [16] and similar to [35], where\r
+both state and transformed state are input to the network. The output of the transformed state is\r
+appropriately transformed, and both policies are averaged."""
+
+[[sections]]
+number = "4.2"
+title = "Models"
+text = """
+We implemented MDP homomorphic networks on top of two base architectures: MLP and CNN\r
+(exact architectures in Supplementary). We further experimented with an equivariant feature extractor,\r
+appended by a non-equivariant network, to isolate where equivariance made the greatest impact.\r
+Basis Networks We call networks whose weights are linear combinations of basis weights basis\r
+networks. As an ablation study on all equivariant networks, we sought to measure the effects of the\r
+basis training dynamics. We compared an equivariant basis against a pure nullspace basis, i.e. an\r
+explicitly non-symmetric basis using the right-null vectors from the equivariant layer construction,\r
+and a random basis, where we skip the symmetrization step in the layer construction and use the\r
+full rank basis. Unless stated otherwise, we reduce the number of ‘channels’ in the basis networks\r
+compared to the regular networks by dividing by the square root of the group size, ending up with a\r
+comparable number of trainable parameters.\r
+5\r
+https://github.com/ElisevanderPol/mdp-homomorphic-networks\r
+7
+
+0 20 40 60 80 100 120 140\r
+Time steps (x 500) \r
+0\r
+100\r
+200\r
+300\r
+400"""
+
+[[sections]]
+number = "500"
+title = "Average Return"
+text = """
+Nullspace\r
+Random\r
+Equivariant\r
+(a) Cartpole-v1: Bases\r
+0 20 40 60 80 100 120 140\r
+Time steps (x 500) \r
+0\r
+100\r
+200\r
+300\r
+400"""
+
+[[sections]]
+number = "500"
+title = "Average Return"
+text = """
+MLP, 4 64 128 2\r
+MLP, 4 128 128 2\r
+Equivariant, 4 64 64 2\r
+(b) Cartpole-v1: MLPs\r
+0 100 200 300 400 500 600\r
+Time steps (x 25000) \r
+20\r
+15\r
+10\r
+5\r
+0\r
+5\r
+10\r
+15"""
+
+[[sections]]
+number = "20"
+title = "Average Return"
+text = """
+Nullspace\r
+Random\r
+Convolutional\r
+Equivariant\r
+(c) Pong\r
+Figure 4: CARTPOLE: Trained with PPO, all networks fine-tuned over 7 learning rates. 25%, 50%\r
+and 75% quantiles over 25 random seeds shown. a) Equivariant, random, and nullspace bases. b)\r
+Equivariant basis, and two MLPs with different degrees of freedom. PONG: Trained with A2C, all\r
+networks tuned over 3 learning rates. 25%, 50% and 75% quantiles over 15 random seeds shown c)\r
+Equivariant, nullspace, and random bases, and regular CNN for Pong."""
+
+[[sections]]
+number = "4.3"
+title = "Results and Discussion"
+text = """
+We show training curves for CartPole in 4a-4b, Pong in Figure 4c and for the grid world in Fig\u0002ure 6. Across all experiments we observed that the MDP homomorphic network outperforms both\r
+the non-equivariant basis networks and the standard architectures, in terms of convergence speed.\r
+0 100 200 300 400 500 600\r
+Time steps (x 25000) \r
+20\r
+15\r
+10\r
+5\r
+0\r
+5\r
+10\r
+15"""
+
+[[sections]]
+number = "20"
+title = "Average Return"
+text = """
+Stoch. Data Aug.\r
+Full Data Aug.\r
+Convolutional\r
+Equivariant\r
+Figure 5: Data augmentation\r
+comparison on Pong.\r
+This confirms our motivations that building symmetry-preserving\r
+policy networks leads to faster convergence. Additionally, when\r
+compared to the data augmentation baselines in Figure 5, using\r
+equivariant networks is more beneficial. This is consistent with\r
+other results in the equivariance literature [4, 42, 44, 46]. While data\r
+augmentation can be used to create a larger dataset by exploiting\r
+symmetries, it does not directly lead to effective parameter sharing\r
+(as our approach does). Note, in Pong we only train the first 15 mil\u0002lion frames to highlight the difference in the beginning; in constrast,\r
+a typical training duration is 50-200 million frames [25, 36].\r
+For our ablation experiment, we wanted to control for the introduction of bases. It is not clear a\r
+priori that a network with a basis has the same gradient descent dynamics as an equivalent ‘basisless’\r
+network. We compared equivariant, non-equivariant, and random bases, as mentioned above. We\r
+found the equivariant basis led to the fastest convergence. Figures 4a and 4c show that for CartPole\r
+and Pong the nullspace basis converged faster than the random basis. In the grid world there was no\r
+clear winner between the two. This is a curious result, requiring deeper investigation in a follow-up.\r
+For a third experiment, we investigated what happens if we sacrifice complete equivariance of the\r
+policy. This is attractive because it removes the need to find a transformation operator for a flattened\r
+output feature map. Instead, we only maintained an equivariant feature extractor, compared against a\r
+basic CNN feature extractor. The networks built on top of these extractors were MLPs. The results,\r
+in Figure 4c, are two-fold: 1) Basis feature extractors converge faster than standard CNNs, and 2)\r
+the equivariant feature extractor has fastest convergence. We hypothesize the equivariant feature\r
+extractor is fastest as it is easiest to learn an equivariant policy from equivariant features.\r
+We have additionally compared an equivariant feature extractor to a regular convolutional network\r
+on the Atari game Breakout, where the difference between the equivariant network and the regular\r
+network is much less pronounced. For details, see Appendix C."""
+
+[[sections]]
+number = "5"
+title = "Related Work"
+text = """
+Past work on MDP homomorphisms has often aimed at discovering the map itself based on knowledge\r
+of the transition and reward function, and under the assumption of enumerable state spaces [30, 31,\r
+32, 38]. Other work relies on learning the map from sampled experience from the MDP [39, 6,\r
+23]. Exactly computing symmetries in MDPs is graph isomorphism complete [27] even with full\r
+knowledge of the MDP dynamics. Rather than assuming knowledge of the transition and reward\r
+function, and small and enumerable state spaces, in this work we take the inverse view: we assume that\r
+we have an easily identifiable transformation of the joint state–action space and exploit this knowledge\r
+8
+
+(a) Symmetries\r
+0 25 50 75 100 125 150 175 200\r
+Time steps (x 10000) \r
+10\r
+1\r
+10\r
+0"""
+
+[[sections]]
+number = "0"
+title = "Average Return"
+text = """
+Nullspace\r
+Random\r
+Equivariant\r
+(b) Grid World: Bases\r
+0 25 50 75 100 125 150 175 200\r
+Time steps (x 10000) \r
+101\r
+100"""
+
+[[sections]]
+number = "0"
+title = "Average Return"
+text = """
+Convolutional\r
+Equivariant\r
+(c) Grid World: CNNs\r
+Figure 6: GRID WORLD: Trained with A2C, all networks fine-tuned over 6 learning rates. 25%,\r
+50% and 75% quantiles over 20 random seeds shown. a) showcase of symmetries, b) Equivariant,\r
+nullspace, and random bases c) plain CNN and equivariant CNN.\r
+to learn more efficiently. Exploiting symmetries in deep RL has been previously explored in the\r
+game of Go, in the form of symmetric filter weights [33, 8] or data augmentation [35]. Other work\r
+on data augmentation increases sample efficiency and generalization on well-known benchmarks by\r
+augmenting existing data points state transformations such as random translations, cutout, color jitter\r
+and random convolutions [16, 9, 17, 19]. In contrast, we encode symmetries into the neural network\r
+weights, leading to more parameter sharing. Additionally, such data augmentation approaches tend to\r
+take the invariance view, augmenting existing data with state transformations that leave the state’s\r
+Q-values intact [16, 9, 17, 19] (the exception being [21] and [24], who augment trajectories rather\r
+than just states). Similarly, permutation invariant networks are commonly used in approaches to\r
+multi-agent RL [37, 22, 15]. We instead take the equivariance view, which accommodates a much\r
+larger class of symmetries that includes transformations on the action space. Abdolhosseini et al. [1]\r
+have previously manually constructed an equivariant network for a single group of symmetries in\r
+a single RL problem, namely reflections in a bipedal locomotion task. Our MDP homomorphic\r
+networks allow for automated construction of networks that are equivariant under arbitrary discrete\r
+groups and are therefore applicable to a wide variety of problems.\r
+From an equivariance point-of-view, the automatic construction of equivariant layers is new. [12]\r
+comes close to specifying a procedure, outlining the system of equations to solve, but does not specify\r
+an algorithm. The basic theory of group equivariant networks was outlined in [11, 12] and [10], with\r
+notable implementations to 2D roto-translations on grids [46, 43, 41] and 3D roto-translations on\r
+grids [45, 44, 42]. All of these works have relied on hand-constructed equivariant layers."""
+
+[[sections]]
+number = "6"
+title = "Conclusion"
+text = """
+This paper introduced MDP homomorphic networks, a family of deep architectures for reinforcement\r
+learning problems where symmetries have been identified. MDP homomorphic networks tie weights\r
+over symmetric state-action pairs. This weight-tying leads to fewer degrees-of-freedom and in our\r
+experiments we found that this translates into faster convergence. We used the established theory of\r
+MDP homomorphisms to motivate the use of equivariant networks, thus formalizing the connection\r
+between equivariant networks and symmetries in reinforcement learning. As an innovation, we also\r
+introduced the first method to automatically construct equivariant network layers, given a specification\r
+of the symmetries in question, thus removing a significant implementational obstacle. For future\r
+work, we want to further understand the symmetrizer and its effect on learning dynamics, as well as\r
+generalizing to problems that are not fully symmetric."""
+
+[[sections]]
+number = "7"
+title = "Acknowledgments and Funding Disclosure"
+text = """
+Elise van der Pol was funded by Robert Bosch GmbH. Daniel Worrall was funded\r
+by Philips. F.A.O. received funding from the European Research Council (ERC)\r
+under the European Union’s Horizon 2020 research and innovation programme\r
+(grant agreement No. 758824 —INFLUENCE). Max Welling reports part-time\r
+employment at Qualcomm AI Research.\r
+9"""
+
+[[sections]]
+number = "8"
+title = "Broader Impact"
+text = """
+The goal of this paper is to make (deep) reinforcement learning techniques\r
+more efficient at solving Markov decision processes (MDPs) by making use of prior knowledge about\r
+symmetries. We do not expect the particular algorithm we develop to lead to immediate societal risks.\r
+However, Markov decision processes are very general, and can e.g. be used to model problems in\r
+autonomous driving, smart grids, and scheduling. Thus, solving such problems more efficiently can\r
+in the long run cause positive or negative societal impact.\r
+For example, making transportation or power grids more efficient, thereby making better use of\r
+scarce resources, would be a significantly positive impact. Other potential applications, such as in\r
+autonomous weapons, pose a societal risk [28]. Like many AI technologies, when used in automation,\r
+our technology can have a positive impact (increased productivity) and a negative impact (decreased\r
+demand) on labor markets.\r
+More immediately, control strategies learned using RL techniques are hard to verify and validate.\r
+Without proper precaution (e.g. [40]), employing such control strategies on physical systems thus run\r
+the risk of causing accidents involving people, e.g. due to reward misspecification, unsafe exploration,\r
+or distributional shift [2].\r
+References\r
+[1] Farzad Abdolhosseini, Hung Yu Ling, Zhaoming Xie, Xue Bin Peng, and Michiel van de Panne. On\r
+learning symmetric locomotion. In ACM SIGGRAPH Motion, Interaction, and Games. 2019.\r
+[2] Dario Amodei, Chris Olah, Jacob Steinhardt, Paul Christiano, John Schulman, and Dan Mané. Concrete\r
+problems in AI safety. arXiv:1606.06565, 2016.\r
+[3] Andrew G. Barto, Richard S. Sutton, and Charles W. Anderson. Neuronlike adaptive elements that can\r
+solve difficult learning control problems. IEEE transactions on systems, man, and cybernetics, 1983.\r
+[4] Erik J. Bekkers, Maxime W. Lafarge, Mitko Veta, Koen A.J. Eppenhof, Josien P.W. Pluim, and Remco\r
+Duits. Roto-translation covariant convolutional networks for medical image analysis. In International\r
+Conference on Medical Image Computing and Computer-Assisted Intervention, 2018.\r
+[5] Richard E. Bellman. Dynamic Programming. Princeton University Press, 1957.\r
+[6] Ondrej Biza and Robert Platt. Online abstraction with MDP homomorphisms for deep learning. In\r
+International Conference on Autonomous Agents and MultiAgent Systems, 2019.\r
+[7] Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and\r
+Wojciech Zaremba. OpenAI Gym. arXiv:1606.01540, 2016.\r
+[8] Christopher Clark and Amos Storkey. Teaching deep convolutional neural networks to play Go.\r
+arXiv:1412.3409, 2014.\r
+[9] Karl Cobbe, Oleg Klimov, Chris Hesse, Taehoon Kim, and John Schulman. Quantifying generalization in\r
+reinforcement learning. In International Conference on Machine Learning, 2019.\r
+[10] Taco S. Cohen, Mario Geiger, and Maurice Weiler. A general theory of equivariant CNNs on homogeneous\r
+spaces. In Advances in Neural Information Processing Systems. 2019.\r
+[11] Taco S. Cohen and Max Welling. Group equivariant convolutional networks. In International Conference\r
+on Machine Learning, 2016.\r
+[12] Taco S. Cohen and Max Welling. Steerable CNNs. In International Conference on Learning Representa\u0002tions, 2017.\r
+[13] Nichita Diaconu and Daniel E. Worrall. Learning to convolve: A generalized weight-tying approach. In\r
+International Conference on Machine Learning, 2019.\r
+[14] David Steven Dummit and Richard M. Foote. Abstract Algebra. Wiley, 2004.\r
+[15] Jiechuan Jiang, Chen Dun, Tiejun Huang, and Zongqing Lu. Graph convolutional reinforcement learning.\r
+In International Conference on Learning Representations, 2020.\r
+[16] Ilya Kostrikov, Denis Yarats, and Rob Fergus. Image augmentation is all you need: Regularizing deep\r
+reinforcement learning from pixels. arXiv:2004.13649, 2020.\r
+[17] Michael Laskin, Kimin Lee, Adam Stooke, Lerrel Pinto, Pieter Abbeel, and Aravind Srinivas. Reinforce\u0002ment learning with augmented data. arXiv:2004.14990, 2020.\r
+[18] Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner. Gradient-based learning applied to\r
+document recognition. Proceedings of the IEEE, 1998.\r
+10
+
+[19] Kimin Lee, Kibok Lee, Jinwoo Shin, and Honglak Lee. Network randomization: A simple technique for\r
+generalization in deep reinforcement learning. In International Conference on Learning Representations,\r
+2020.\r
+[20] Lihong Li, Thomas J. Walsh, and Michael L. Littman. Towards a unified theory of state abstraction for\r
+mdps. In International Symposium on Artificial Intelligence and Mathematics, 2006.\r
+[21] Yijiong Lin, Jiancong Huang, Matthieu Zimmer, Yisheng Guan, Juan Rojas, and Paul Weng. Invariant\r
+transform experience replay: Data augmentation for deep reinforcement learning. IEEE Robotics and\r
+Automation Letters, 2020.\r
+[22] Iou-Jen Liu, Raymond A. Yeh, and Alexander G. Schwing. PIC: Permutation invariant critic for multi-agent\r
+deep reinforcement learning. In Conference on Robot Learning, 2019.\r
+[23] Anuj Mahajan and Theja Tulabandhula. Symmetry learning for function approximation in reinforcement\r
+learning. arXiv:1706.02999, 2017.\r
+[24] Aditi Mavalankar. Goal-conditioned batch reinforcement learning for rotation invariant locomotion.\r
+arXiv:2004.08356, 2020.\r
+[25] Volodymyr Mnih, Adrià Puigdomènech Badia, Mehdi Mirza, Alex Graves, Tim Harley, Timothy P.\r
+Lillicrap, David Silver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning.\r
+In International Conference on Machine Learning, 2016.\r
+[26] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A. Rusu, Joel Veness, Marc G. Bellemare,\r
+Alex Graves, Martin Riedmiller, Andreas K. Fidjeland, Georg Ostrovski, Stig Petersen, Charles Beattie,\r
+Amir Sadik, Ioannis Antonoglou, Helen King, Dharshan Kumaran, Daan Wierstra, Shane Legg, and Demis\r
+Hassabis. Human-level control through deep reinforcement learning. In Nature, 2015.\r
+[27] Shravan Matthur Narayanamurthy and Balaraman Ravindran. On the hardness of finding symmetries in\r
+Markov decision processes. In International Conference on Machine learning, 2008.\r
+[28] Future of Life Institute. Autonomous weapons: An open letter from AI & robotics researchers, 2015.\r
+[29] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor\r
+Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas Kopf, Edward Yang,\r
+Zachary DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie\r
+Bai, and Soumith Chintala. Pytorch: An imperative style, high-performance deep learning library. In\r
+Advances in Neural Information Processing Systems, 2019.\r
+[30] Balaraman Ravindran and Andrew G. Barto. Symmetries and model minimization in Markov Decision\r
+Processes. Technical report, University of Massachusetts, 2001.\r
+[31] Balaraman Ravindran and Andrew G. Barto. SMDP homomorphisms: An algebraic approach to abstraction\r
+in Semi Markov Decision Processes. In International Joint Conference on Artificial Intelligence, 2003.\r
+[32] Balaraman Ravindran and Andrew G. Barto. Approximate homomorphisms: A framework for non-exact\r
+minimization in Markov Decision Processes. In International Conference on Knowledge Based Computer\r
+Systems, 2004.\r
+[33] Nicol N. Schraudolph, Peter Dayan, and Terrence J. Sejnowski. Temporal difference learning of position\r
+evaluation in the game of Go. In Advances in Neural Information Processing Systems, 1994.\r
+[34] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy\r
+optimization algorithms. In arXiv:1707.06347, 2017.\r
+[35] David Silver, Aja Huang, Chris J. Maddison, Arthur Guez, Laurent Sifre, George Van Den Driessche,\r
+Julian Schrittwieser, Ioannis Antonoglou, Veda Panneershelvam, Marc Lanctot, et al. Mastering the game\r
+of Go with deep neural networks and tree search. In Nature, 2016.\r
+[36] Adam Stooke and Pieter Abbeel. rlpyt: A research code base for deep reinforcement learning in Pytorch.\r
+In arXiv:1909.01500, 2019.\r
+[37] Sainbayar Sukhbaatar, Arthur Szlam, and Rob Fergus. Learning multiagent communication with backprop\u0002agation. In Advances in Neural Information Processing Systems, 2016.\r
+[38] Jonathan Taylor, Doina Precup, and Prakash Panagaden. Bounding performance loss in approximate MDP\r
+homomorphisms. In Advances in Neural Information Processing Systems, 2008.\r
+[39] Elise van der Pol, Thomas Kipf, Frans A. Oliehoek, and Max Welling. Plannable approximations to MDP\r
+homomorphisms: Equivariance under actions. In International Conference on Autonomous Agents and\r
+MultiAgent Systems, 2020.\r
+[40] K. P. Wabersich and M. N. Zeilinger. Linear model predictive safety certification for learning-based control.\r
+In IEEE Conference on Decision and Control, 2018.\r
+[41] Maurice Weiler and Gabriele Cesa. General E(2)-equivariant steerable CNNs. In Advances in Neural\r
+Information Processing Systems, 2019.\r
+11
+
+[42] Maurice Weiler, Mario Geiger, Max Welling, Wouter Boomsma, and Taco S. Cohen. 3D steerable CNNs:\r
+Learning rotationally equivariant features in volumetric data. In Advances in Neural Information Processing\r
+Systems. 2018.\r
+[43] Maurice Weiler, Fred A. Hamprecht, and Martin Storath. Learning steerable filters for rotation equivariant\r
+CNNs. In IEEE Conference on Computer Vision and Pattern Recognition, 2018.\r
+[44] Marysia Winkels and Taco S. Cohen. 3D G-CNNs for pulmonary nodule detection. In Medical Imaging\r
+with Deep Learning Conference, 2018.\r
+[45] Daniel E. Worrall and Gabriel J. Brostow. CubeNet: Equivariance to 3D rotation and translation. In\r
+European Conference on Computer Vision (ECCV).\r
+[46] Daniel E. Worrall, Stephan J. Garbin, Daniyar Turmukhambetov, and Gabriel J. Brostow. Harmonic\r
+networks: Deep translation and rotation equivariance. In IEEE Conference on Computer Vision and Pattern\r
+Recognition, 2017.\r
+[47] Daniel E. Worrall and Max Welling. Deep scale-spaces: Equivariance over scale. In Advances in Neural\r
+Information Processing Systems, 2019.\r
+[48] Dmitry Yarotsky. Universal approximations of invariant maps by neural networks. arXiv:1804.10306,\r
+2018.\r
+12"""
+
+[[figures]]
+label = "fig:1"
+page_num = 9
+image_path = "images/image_p9_1.png"

@@ -1,0 +1,1103 @@
+                                                                 Krein spectral triples and the fermionic action
+                                                                                           Koen van den Dungen1,2,3∗
+                                                                       1
+                                                                           Mathematical Sciences Institute, Australian National University
+                                                                                         Canberra, ACT 0200, Australia
+
+
+
+
+arXiv:1505.01939v2 [math-ph] 4 Mar 2016
+                                                                 2
+                                                                     School of Mathematics and Applied Statistics, University of Wollongong
+                                                                                     Wollongong, NSW 2522, Australia
+                                                            3
+                                                                Current address: SISSA (Scuola Internazionale Superiore di Studi Avanzati)
+                                                                                 Via Bonomea, 265, 34136 Trieste, Italy
+
+
+
+                                                                                                     Abstract
+                                                 Motivated by the space of spinors on a Lorentzian manifold, we define Krein spectral triples, which
+                                                 generalise spectral triples from Hilbert spaces to Krein spaces. This Krein space approach allows for an
+                                                 improved formulation of the fermionic action for almost-commutative manifolds. We show by explicit
+                                                 calculation that this action functional recovers the correct Lagrangians for the cases of electrodynamics,
+                                                 the electro-weak theory, and the Standard Model. The description of these examples does not require
+                                                 a real structure, unless one includes Majorana masses, in which case the internal spaces also exhibit a
+                                                 Krein space structure.
+
+                                                 Keywords: Lorentzian manifolds, noncommutative geometry, gauge theories.
+                                                 Mathematics Subject Classification 2010 : 53C50, 58B34, 70S15.
+
+
+                                          1      Introduction
+                                          The framework of Connes’ noncommutative geometry [Con94], and in particular the special case of so-called
+                                          almost-commutative manifolds [ISS04], can be used to derive physical models describing both gravity and
+                                          (classical) gauge theory, thus providing a first step towards a unified theory. For a suitably chosen almost-
+                                          commutative manifold, one obtains the full Standard Model of high energy physics, including the Higgs
+                                          mechanism and neutrino mixing [Con96, CCM07]. This unified description of gauge theory and gravity
+                                          relies on two action functionals which allow to derive the Lagrangian of the theory: the spectral action
+                                          [CC97] and the fermionic action [Con06]. The spectral action yields the bosonic part of the Lagrangian,
+                                          while the fermionic action yields (of course) the fermionic part (including the interactions between fermions
+                                          and bosons).
+                                              In this article we will focus on the fermionic action. The usual fermionic action, given by Connes [Con06],
+                                          is given for a real even spectral triple (A, H, D, J, γ) of KO-dimension 2 as
+                                                                                                         1 e       e
+                                                                                                 Sf :=     hJ ξ | Dξi,
+                                                                                                         2
+
+                                          where ξe is a Grassmann variable corresponding to an even vector ξ = γξ ∈ H+ . While the Lagrangian
+                                          obtained from this action closely resembles (term by term) the physical Lagrangian, there are still two
+                                          discrepancies. First, the fermionic action is given in Riemannian signature, while physical spacetime has
+                                              ∗ Electronic mail: kdungen@sissa.it
+
+
+
+
+                                                                                                           1
+Lorentzian signature. Second, the fermionic action is defined by using the real structure (the ‘charge con-
+jugation operator’), but (except for possible Majorana mass terms) the charge conjugation operator should
+not be present in the physical Lagrangian. In addition, the presence of this real structure also means that
+the fermionic action is not automatically real-valued.
+    In this article we will consider a Lorentzian version of noncommutative geometry. The study of Lorentzian
+noncommutative geometry is still far from complete, although some progress has been made. While the
+spinors on a Riemannian manifold give rise to a Hilbert space, the spinors on a pseudo-Riemannian (e.g.
+Lorentzian) manifold naturally give rise to a Krein space instead. Thus, to obtain a physical description of
+spinor fields on spacetime, it is more natural to work with Krein spaces instead of Hilbert spaces. A Krein
+space approach to noncommutative geometry was first taken in [Str06] and studied further in [Sui04, PS06].
+Building upon these previous works, we propose a definition of Krein spectral triples, which offers a natural
+extension of the notion of spectral triples from Hilbert spaces to Krein spaces.
+    Subsequently, we will describe a Lorentzian alternative to the fermionic action, which we call the Krein
+action. As observed by Barrett [Bar07], the Krein action can be chosen to simply take the form of the usual
+Dirac action, and is given by
+                                                 SK [ψ] := hψ|Dψi,
+where h·|·i denotes the indefinite inner product on a Krein space H, and D is an unbounded Krein-self-adjoint
+operator on H. Thus, this action by construction allows for Lorentzian signatures, and it does not involve
+the charge conjugation. Unlike Barrett, however, we avoid the introduction of anti-commuting Grassmann
+variables for the fermions, which we find more natural, as an almost-commutative manifold only describes
+a classical gauge theory (not a quantum theory). Another difference is that, when Majorana masses are
+included, our finite space also exhibits a Krein space structure (see Section 6.1).
+    In [NW96], a continuous Wick rotation for spinor fields has been introduced, which could be used to turn
+the Krein action into a Euclidean action. Although a detailed study of such Wick rotations falls beyond
+the scope of this article, we would like to point out that such a Wick rotation of our Krein action cannot
+correspond to Connes’ fermionic action, due to the presence of the charge conjugation operator in the latter.
+    Lastly, let us point out that our description of gauge theories in terms of Krein spectral triples is not yet
+complete, as we have no Krein alternative for the bosonic action. It is still very much an open question how
+the spectral action should be adapted to the Lorentzian setting.
+    The layout of this article is as follows. First, we describe in Section 2 the definition of Krein spectral
+triples and the Krein action. We develop the general formalism for describing gauge theories from almost-
+commutative Lorentzian manifolds in Sections 3 and 4. Subsequently, we will calculate the Krein action
+explicitly for the cases of electrodynamics (Section 5), the electro-weak theory (Section 6), and the Standard
+Model (Section 7). In these examples we will see that (unless one wants Majorana masses) it is not necessary
+to include the ‘anti-particles’ in the finite Hilbert space. Majorana masses can be added by including these
+‘anti-particles’ (i.e. by doubling the finite Hilbert space), and by turning this doubled space into a Krein
+space (see Section 6.1).
+
+Acknowledgements
+The author wishes to thank Adam Rennie and Walter van Suijlekom for useful comments and discussions.
+The author also thanks the referee for comments and suggestions for improvement. The author acknowledges
+support from both the Australian National University and the University of Wollongong.
+
+
+2    Krein spectral triples
+A Krein space is a vector space H with a non-degenerate inner product h·|·i which admits a fundamental
+decomposition H = H+ ⊕ H− (i.e., an orthogonal direct sum decomposition into a positive-definite subspace
+H+ and a negative-definite subspace H− ) such that H+ and H− are intrinsically complete (i.e., complete
+with respect to the norms kψkH± := |hψ|ψi|1/2 ).
+
+
+
+                                                       2
+    A fundamental symmetry J is a self-adjoint unitary operator J : H → H such that (1 + J )H is positive-
+definite and (1 − J )H is negative-definite. Given a fundamental decomposition H = H+ ⊕ H− , we obtain a
+corresponding fundamental symmetry J = P + − P − , where P ± denotes the projection onto H± . Given a
+fundamental symmetry J , we denote by HJ the corresponding Hilbert space for the positive-definite inner
+product h·|·iJ := hJ · |·i.
+    For an operator T , we will denote by T + the Krein-adjoint (i.e., the adjoint operator with respect to the
+Krein inner product h·|·i). By the adjoint T ∗ we will mean the usual adjoint in the Hilbert space HJ (i.e.,
+with respect to the positive-definite inner product h·|·iJ ). These adjoints are related via T + = J T ∗ J . For
+a detailed introduction to Krein spaces, we refer to [Bog74].
+Definition 2.1. A Krein space H with fundamental symmetry J is called Z2 -graded if HJ is Z2 -graded
+and J is homogeneous.
+    The assumption that HJ is Z2 -graded means we have a decomposition H0 ⊕ H1 , and that this decom-
+position is respected by the positive-definite inner product h·|·iJ (which means that hψ0 |ψ1 iJ = 0 for all
+ψ0 ∈ H0 and ψ1 ∈ H1 ). The bounded operators B(H) then also decompose into a direct sum of even oper-
+ators B 0 (H) and odd operators B 1 (H). The assumption that the fundamental symmetry J is homogeneous
+means that J is either even or odd. If J is odd, it implements a unitary isomorphism H0 ≃ H1 . Given the
+decomposition H0 ⊕ H1 , we have a (self-adjoint, unitary) grading operator Γ which acts as (−1)j on Hj (for
+j ∈ Z2 ). If J is odd, we note that Γ is Krein-anti-self-adjoint (indeed, Γ+ = J ΓJ = −ΓJ 2 = −Γ).
+    As in [DR16, §2.1] we define the ‘combined graph inner product’ h·|·iS,T of two closed operators S and
+T as hψ|φiS,T := hψ|φiJ + hSψ|SφiJ + hT ψ|T φiJ (using the positive-definite inner product h·|·iJ ), for all
+ψ, φ ∈ Dom S ∩ Dom T . This inner product yields the corresponding ‘combined graph norm’ k · kS,T . For
+a Krein-self-adjoint operator D we have J D∗ = DJ and Dom D∗ = Dom DJ = J · Dom D. One can then
+check that h·|·iD,D∗ is identical to h·|·iDJ ,J D on Dom D ∩ Dom D∗ = Dom D ∩ J · Dom D.
+    The following definition aims to adapt the notion of spectral triple to Krein spaces. Similar approaches
+for such an adaptation have been given in [PS06, Str06]. Our definition is similar to the notion of indefinite
+spectral triple from [DR16], except for the addition of the fundamental symmetry, and the replacement of
+the conditions on Re D and Im D by the Krein-self-adjointness of D. We will focus only on the even case;
+the odd case is defined similarly by removing the Z2 -grading.
+Definition 2.2. An even Krein spectral triple (A, H, D, J ) consists of
+   • a Z2 -graded Krein space H;
+   • a trivially graded ∗-algebra A along with an even ∗-algebra representation π : A → B 0 (H);
+   • a fundamental symmetry J (satisfying J ∗ = J and J 2 = 1) which commutes with the algebra A and
+     which is either even or odd;
+   • a densely defined, closed, odd operator D : Dom D → H such that:
+       1) the linear subspace E := Dom D ∩ J · Dom D is dense in H;
+       2) the operator D is Krein-self-adjoint on E (or, equivalently, the operator J D : Dom D → HJ is
+          self-adjoint);
+       3) we have the inclusion π(A) · E ⊂ E, and the commutator [D, π(a)] is bounded on E for each a ∈ A;
+       4) the map π(a) ◦ ι : E ֒→ H → H is compact for each a ∈ A, where ι denotes the natural inclusion
+          map E ֒→ H, and E := Dom D ∩ J · Dom D is considered as a Hilbert space with the inner product
+          h·|·iDJ ,J D .
+We say an even Krein spectral triple (A, H, D, J ) is of Lorentz-type when J is odd.
+    The assumption that the fundamental symmetry commutes with the algebra need perhaps not be ne-
+cessary in the general noncommutative case, but it will be satisfied by all examples we consider. This
+assumption ensures that we have π(a)+ = π(a)∗ = π(a∗ ) for all a ∈ A.
+    We have aimed to give a ‘complete’ definition for Krein spectral triples, which can be used as a framework
+for the study of Lorentzian noncommutative geometry. However, this framework will undoubtedly undergo
+
+
+                                                       3
+further transformations, and the above definition may not be definitive. We point out that, for the description
+of the fermionic action, only conditions 2. and 3. for the operator D are relevant. Nevertheless, we will show
+that the almost-commutative manifolds constructed in Section 4 satisfy all conditions, also for non-compact
+manifolds (i.e., non-unital algebras).
+    As follows from Proposition 4.1 below, the assumption that J is odd actually just captures the fact that
+the number of time dimensions is odd; it does not necessarily imply that there is only one time dimension
+(as was noted already in [PS06, page 5]).
+    A quadratic form on a Krein space H is a sesquilinear map q : Dom q × Dom q → C (conjugate-linear in
+the first variable and linear in the second variable), where the form domain Dom q is a dense linear subspace
+of H. If q(ψ1 , ψ2 ) = q(ψ2 , ψ1 ) for all ψ1 , ψ2 ∈ H we say that q is symmetric. If H = H0 ⊕ H1 is Z2 -graded
+(and we think of C as being trivially graded), then we say that q is Z2 -graded if q(ψ0 , ψ1 ) = 0 for any
+ψ0 ∈ H0 ∩ Dom q and ψ1 ∈ H1 ∩ Dom q.
+Proposition 2.3. Let (A, H, D, J ) be an even Krein spectral triple. Then
+
+                                    F (ψ1 , ψ2 ) := hψ1 |Dψ2 i = hJ ψ1 |Dψ2 iJ
+
+defines a symmetric quadratic form F with form domain Dom F = Dom D. Moreover, if the Krein spectral
+triple is of Lorentz-type, then F is Z2 -graded.
+Proof. Sesquilinearity is immediate from the definition, and using the Krein-self-adjointness of D we also
+find symmetry: hψ1 |Dψ2 i = hDψ2 |ψ1 i = hψ2 |Dψ1 i. If the triple is of Lorentz-type, then the grading
+operator Γ is Krein-anti-self-adjoint. For ψ0 ∈ H0 ∩ Dom D and ψ1 ∈ H1 ∩ Dom D we then find that
+hψ0 |Dψ1 i = hΓψ0 |Dψ1 i = −hψ0 |ΓDψ1 i = hψ0 |DΓψ1 i = −hψ0 |Dψ1 i.
+Definition 2.4 (Krein action). Let (A, H, D, J ) be a Lorentz-type spectral triple. We define the Krein
+action SK : H0 → C to be the functional
+
+                                         SK [ψ] := F (ψ, ψ) = hψ|Dψi.
+
+Since F is a symmetric quadratic form, the Krein action SK [ψ] is automatically real-valued. Furthermore, we
+will show in Sections 5, 6 and 7 that this Krein action recovers the correct (fermionic part of the) Lagrangians
+for electrodynamics, the electro-weak theory, and the Standard Model.
+
+
+3    Gauge theory
+In this section, we develop the abstract formalism for a description of gauge theories using Krein spectral
+triples. Later, we will apply this to the special case of almost-commutative manifolds.
+    Let A be a trivially graded unital ∗-algebra. Denote by Aop := {aop | a ∈ A} the opposite algebra of
+A, which equals A as a vector space but has the opposite product aop bop = (ba)op . Let H be a Z2 -graded
+Krein space with fundamental symmetry J , and suppose we have two commuting even representations
+π : A → B 0 (H) and π op : Aop → B 0 (H). For ease of notation, we will often simply write a instead of π(a)
+and aop instead of π op (aop ). We obtain a representation of the algebraic tensor product A ⊙ Aop on H by
+setting π̃(a ⊗ bop ) := π(a)π op (bop ). Now suppose that (A ⊙ Aop , H, D, J ) is a Krein spectral triple. We say
+that this triple satisfies the order-one condition if
+                                                                    
+                                               π(a), [D, π op (bop )] = 0                                     (1)
+
+for all a, b ∈ A. In the remainder of this section we consider an even Krein spectral triple (A ⊙ Aop , H, D, J ).
+We will assume that this triple is unital, which means that A is unital and that π̃ is unital. The examples
+we describe in Sections 5-7 all satisfy the order-one condition. However, the order-one condition can fail in
+other examples, such as the Pati-Salam model [CCS13a], and therefore we will develop the abstract formalism
+below without assuming that the triple satisfies the order-one condition.
+
+
+                                                        4
+3.1     Inner perturbations
+We will now introduce fluctuations of the operator D, which will give rise to gauge fields as well as scalar
+fields (the latter being interpreted as the Higgs field in the case of electroweak theory and the Standard
+Model, see Sections 6 and 7). We adapt the approach described in [CCS13b] to our Krein spectral triples.
+     Let A be a trivially
+                  P       graded unital ∗-algebra, and consider the algebraic tensor product P  A ⊙ Aop . For
+an element A = j aj ⊗ bj ∈ A ⊙ A , we have an anti-linear involution A → A given by j aj ⊗ bop
+                            op         op
+                                                                                                         j :=
+P ∗       ∗op
+    bj ⊗ aj , with the properties (λA) = λ A, A = A, and (AA ) = A A , for all λ ∈ C and A, A ∈ A ⊙ Aop .
+                                                                  ′       ′                      ′
+                   P                                                                           P
+We say that A = j aj ⊗ bop  j ∈ A⊙ A
+                                      op
+                                         is real 1 if A = A, and we say that A is normalised if aj bj = 1 ∈ A.
+The properties of reality and normalisation are preserved by multiplication, so we can define the following.
+Definition 3.1 ([CCS13b, §III]). The perturbation semi-group Pert(A) is the set of real normalised elements
+in A ⊙ Aop , with the multiplication inherited from the algebra A ⊙ Aop .
+    Let (B, H, D, J ) be a Krein spectral triple. We consider the generalised one-forms given by
+                                                nX                         o
+                                    Ω1D (B) :=      aj [D, bj ] aj , bj ∈ B ,
+                                                        j
+
+where the sums must converge in norm. For the algebra B = A⊙Aop , we then consider a map ηD : A⊙Aop →
+Ω1D (A ⊙ Aop ) ⊂ B(H) defined by
+                           X                X                                        
+                        ηD      aj ⊗ bop
+                                      j    :=   π̃(aj ⊗ (a∗k )op ) D, π̃(bj ⊗ (b∗k )op ) .
+                                   j                  j,k
+
+As in [CCS13b, Lemma 4.(ii)], this map ηD is involutive (i.e. ηD (A) = ηD (A)+ ). In particular, ηD maps
+elements of Pert(A) to Krein-self-adjoint elements in Ω1D (A ⊙ Aop ). If we have a Krein spectral triple
+(A ⊙ Aop , H, D, J ) which satisfies the order-one condition (1), then the expression for ηD simplifies to
+                                X              X                  X ∗op
+                            ηD        aj ⊗ bop
+                                            j   =     aj [D, bj ] +  aj [D, b∗op
+                                                                              j ].
+                                       j                    j               j
+
+Definition 3.2. By the fluctuation of D by A ∈ Pert(A) we mean the map
+                                                  D 7→ DA := D + ηD (A),
+and we refer to DA as the fluctuated Dirac operator.
+   We point out that the map ηD is not multiplicative and therefore it does not yield a representation of
+the semi-group Pert(A) on H. Instead, we obtain an action of Pert(A) on the space of fluctuated Dirac
+operators.
+Proposition 3.3 ([CCS13b, Proposition 5.(ii)]). A fluctuation of a fluctuated Dirac operator is again a
+fluctuated Dirac operator. To be precise: (DA )A′ = DA′ A for all perturbations A, A′ ∈ Pert(A).
+
+3.2     Gauge action
+The unitary group U(A) maps to the perturbation semi-group Pert(A) via the semi-group homomorphism
+∆ : U(A) → Pert(A) given by u 7→ u ⊗ (u∗ )op . This then yields
+                                                           P     an obvious action of u ∈ U(A) on Pert(A)
+given by multiplication with ∆(u). To be precise, for A = j aj ⊗ bopj ∈ Pert(A), the action of u ∈ U(A) is
+given by                             X                      X
+                            ∆(u)A =      uaj ⊗ (u∗ )op bop
+                                                        j =     uaj ⊗ (bj u∗ )op .
+                                              j                         j
+
+   1 In [CCS13b], A (denoted A∗ therein) is called the adjoint of A, and real elements are called self-adjoint. However, since
+
+A 7→ A is an involution instead of an anti-involution, we prefer to think of this map as a ‘real structure’, which turns the
+complex algebra A ⊙ Aop into a “real” algebra (following terminology of Kasparov [Kas80]).
+
+
+                                                                5
+Since Pert(A) ⊂ A ⊙ Aop , we can compose ∆ with the ∗-algebra representation π̃ to obtain a group repres-
+entation
+                                      ρ := π̃ ◦ ∆ : U(A) → B(H).
+Definition 3.4. We define the gauge group as
+                                       
+                              G(A) := ρ(u) | u ∈ U(A) ≃ U(A)/ Ker ρ.
+   We also consider an action γ of the unitary group U(A) on Ω1D (A ⊙ Aop ). For T ∈ Ω1D (A ⊙ Aop ) and
+u ∈ U(A), this action is given by
+                     γu (T ) := ρ(u)T ρ(u∗ ) + ηD ◦ ∆(u) = ρ(u)T ρ(u∗ ) + ρ(u)[D, ρ(u∗ )].
+We point out that this is the usual transformation of gauge potentials under the gauge group G(A). The
+map ηD is covariant with respect to the actions by U(A) (cf. [CCS13b, Lemma 4.(iii)]). To be precise,
+γu ◦ ηD (A) = ηD (∆(u)A) for all u ∈ U(A).
+    As mentioned above, we have an action of G(A) on H. We can also define an action of G(A) on the space
+of fluctuated Dirac operators. For ρ(u) ∈ G(A), this action is given by DA 7→ D∆(u)A . If u ∈ Ker ρ, then
+ηD (∆(u)A) = ηD (A) and hence D∆(u)A = DA . Therefore this action of ρ(u) on DA is independent of the
+choice of representative u ∈ U(A) for ρ(u) ∈ G(A).
+Proposition 3.5. The Krein action SK [ψ, A] := hψ|DA ψi of the fluctuated Dirac operator DA is invariant
+under the action of the gauge group given by ψ 7→ ρ(u)ψ and A 7→ ∆(u)A.
+Proof. Since ηD is covariant under the action of the gauge group, we find
+           D∆(u)A = D + ηD (∆(u)A) = D + γu ◦ ηD (A) = D + ρ(u)ηD (A)ρ(u∗ ) + ρ(u)[D, ρ(u∗ )]
+                                   
+                  = ρ(u) D + ηD (A) ρ(u∗ ) = ρ(u)DA ρ(u∗ ).
+Since the unitary ρ(u) commutes with J (so ρ(u) is also unitary for the Krein inner product), we find
+         SK [ρ(u)ψ, ∆(u)A] = ρ(u)ψ | D∆(u)A ρ(u)ψ = ρ(u)ψ | ρ(u)DA ψ = hψ | DA ψi = SK [ψ, A].
+
+
+4    Almost-commutative manifolds
+A finite space F := (AF , HF , DF , JF ) with Z2 -grading ΓF is an even Krein spectral triple for which HF
+is finite-dimensional. An almost-commutative manifold is then constructed as the product of a finite space
+with a pseudo-Riemannian spin manifold M . Let us first have a closer look at the Krein spectral triple
+corresponding to such a manifold.
+     Let (M, g) be an n-dimensional time- and space-oriented pseudo-Riemannian spin manifold of signature
+(t, s), where t is the number of time dimensions (for which g is negative-definite) and s is the number of
+spatial dimensions (for which g is positive-definite). We consider an orthogonal decomposition of the tangent
+bundle T M = Et ⊕ Es , which always exists but is far from unique. We will consider elements of Et to be
+‘purely timelike’ and elements of Es to be ‘purely spacelike’. Given our choice of decomposition T M = Et ⊕Es ,
+we have a timelike projection T : Et ⊕ Es → Et and a spacelike reflection r := 1 − 2T which acts as (−1) ⊕ 1
+on Et ⊕ Es . Using the spacelike reflection r, we can define a ‘Wick rotated’ metric gr on M by setting
+                                             gr (v, w) := g(rv, w)
+for all v, w ∈ T M . One readily checks that gr is positive-definite, and hence (M, gr ) is a Riemannian
+manifold.
+    Let Cl(T M, g) denote the real Clifford algebra with respect to g, and denote the Clifford representation
+T M ֒→ Cl(T M, g) by γ. Our conventions are such that γ(v)γ(w) + γ(w)γ(v) = −2g(v, w). We shall denote
+by h the map T ∗ M → T M which maps α ∈ T ∗ M to its dual in T M with respect to the metric g. That is:
+                               h(α) = v ⇐⇒ α(w) = g(v, w)      for all w ∈ T M.
+
+                                                      6
+We assume that M is equipped with a spin structure. We consider the corresponding spinor bundle S → M
+and its space of compactly supported, smooth sections Γ∞    c (S). We denote by c the pseudo-Riemannian
+Clifford multiplication Γ∞c (T ∗
+                                 M ⊗ S) → Γ ∞
+                                            c (S) given by c(α ⊗ ψ) := γ h(α) ψ. Let ∇ be the Levi-Civita
+connection for the pseudo-Riemannian metric g, and let ∇S be its lift to the spinor bundle. The Dirac
+operator on Γ∞c (S) is defined as the composition
+                                                    S
+                                                ∇               c
+                                     / : Γ∞
+                                     D          −→ Γ∞
+                                          c (S) −
+                                                        ∗
+                                                                → Γ∞
+                                                    c (T M ⊗ S) −  c (S).
+
+Locally, we can choose a (pseudo-)orthonormal frame {ej }nj=1 corresponding to our choice of decomposition
+T M = Et ⊕ Es , such that ej ∈ Et for j ≤ t and ej ∈ Es for j > t. In terms of this frame, the metric can be
+written as
+                                                                 (
+                                                                   −1 j = 1, . . . , t;
+                   g(ei , ej ) = δij κ(j),                κ(j) =
+                                                                   1     j = t + 1, . . . , n.
+
+Let {θi }ni=1 be the basis of T ∗ M dual to {ej }nj=1 , so that θi (ej ) = δji . We then see that h(θj ) = κ(j)ej . In
+terms of the local frame {ej }, we can then write the Dirac operator as
+                                                           n
+                                                           X
+                                         / := c ◦ ∇S =
+                                         D                       κ(j)γ(ej )∇Sej .
+                                                           j=1
+
+Given the decomposition T M = Et ⊕ Es , there exists a positive-definite hermitian structure [Bau81, §3.3.1]
+                                    (·|·)JM : Γ∞        ∞         ∞
+                                               c (S) × Γc (S) → Cc (M ),
+                                                      R
+which gives rise to the inner product hψ1 |ψ2 iJM := M (ψ1 |ψ2 )JM dvolg , for all ψ1 , ψ2 ∈ Γ∞
+                                                                                              c (S), where dvolg
+denotes the canonical volume form of (M, g). The completion of Γ∞    c (S) with respect to this inner product
+is denoted L2 (S). We can define an operator JM on L2 (S) by setting
+                                           JM := it(t−1)/2 γ(e1 ) · · · γ(et ),
+where {ej } is a local orthonormal frame corresponding to the decomposition T M = Et ⊕ Es . This operator
+is self-adjoint and unitary, and is related to the spacelike reflection r via JM γ(v)JM = (−1)t γ(rv). The
+space L2 (S) then becomes a Krein space with the indefinite inner product h·|·i := hJM · |·iJM and with
+fundamental symmetry JM . This indefinite inner product h·|·i is independent of the choice of decomposition
+T M = Et ⊕ Es .
+Proposition 4.1. Let (M, g) be an n-dimensional time- and space-oriented pseudo-Riemannian spin man-
+ifold of signature (t, s). Let r be a spacelike reflection, such that the associated Riemannian metric gr is
+complete. Then we obtain an even Krein spectral triple
+                                                                    
+                                           Cc∞ (M ), L2 (S), it /
+                                                               D, JM ,
+with grading operator ΓM . If t is odd, the triple is a Lorentz-type spectral triple.
+Proof. We need to check that it D    / satisfies the conditions of Definition 2.2. For condition 1. we note that
+the linear subspace E := Dom D     / ∩ JM · Dom D  / contains Γ∞ c (S) and is therefore dense in H. Condition 2.
+follows from [Bau81, Satz 3.19]. Condition 3. follows because D     / is a first-order differential operator and the
+algebra is smooth.
+    To show the local compactness of the inclusion map E ֒→ L2 (S), we consider the ‘Wick rotations’ D           / ± :=
+1 /       ∗    i /      ∗
+2 (D + /
+       D    )∓ 2 (D − /
+                      D   ). We know  from (the  proof of) [DR16,  Proposition  4.2] that D/ ± are elliptic, and hence
+they have locally compact resolvents (see e.g. [HR00, Proposition 10.5.2]). The equality of the combined
+graph norms k · kD,D∗ = k · kD+ ,D− (see [DR16, Lemma 2.3]) shows that the inclusion E ֒→ Dom D                  / ± is
+bounded, and therefore the composition E ֒→ Dom D        / ± ֒→ L2 (S) is locally compact.
+    Since M is even-dimensional, we have a grading operator ΓM which satisfies the relation ΓM JM =
+(−1)t JM ΓM (see e.g. [LM89, Ch. 1]). This implies that we have a Lorentz-type spectral triple if and only if
+t is odd.
+
+                                                            7
+   Let H be a Z2 -graded Krein space. For a homogeneous element ψ ∈ Hj (j = 0, 1), we write |ψ| = j for
+the degree of ψ. Similarly, for a homogeneous operator T on H, we have |T | = 0 if T is even, and |T | = 1 if
+T is odd.
+   Given two Z2 -graded Krein spaces H1 and H2 , we define their graded tensor product H1 ⊗    ˆ H2 as the
+vector space H1 ⊗ H2 with the inner product
+
+                                      hψ1 ˆ        ˆ φ2 i := hψ1 |φ1 ihψ2 |φ2 i,
+                                          ⊗ ψ2 |φ1 ⊗
+
+for ψ1 , φ1 ∈ H1 and ψ2 , φ2 ∈ H2 , and with the grading given by (H1 ˆ               ˆ H20 ) ⊕ (H11 ⊗
+                                                                      ⊗ H2 )0 := (H10 ⊗              ˆ H21 ) and
+     ˆ      1      0 ˆ   1      1 ˆ    0
+(H1 ⊗ H2 ) := (H1 ⊗ H2 ) ⊕ (H1 ⊗ H2 ). Given homogeneous operators T1 on H1 and T2 on H2 , their tensor
+product acts on H1 ⊗ ˆ H2 as
+
+                                (T1 ⊗         ˆ ψ2 ) := (−1)|T2 ||ψ1 | T1 ψ1 ⊗
+                                    ˆ T2 )(ψ1 ⊗                              ˆ T2 ψ2 ,
+
+                                                                 ˆ T2 is given by
+for homogeneous elements ψ1 ∈ H1 and ψ2 ∈ H2 . The adjoint of T1 ⊗
+
+                                            ˆ T2 )∗ = (−1)|T1 ||T2 | T1∗ ˆ
+                                        (T1 ⊗                            ⊗ T2∗ .
+
+Definition 4.2. Let (M, g) be an even-dimensional pseudo-Riemannian spin manifold as in Proposition 4.1.
+An almost-commutative pseudo-Riemannian manifold F × M is the product of a finite space F with the
+manifold M , given by
+                                                                                                           
+    F × M := (A, H, D, J ) := Cc∞ (M, AF ), HF ⊗
+                                               ˆ L2 (S), i|JF | ⊗    / + i|JM | DF ⊗
+                                                                ˆ it D             ˆ 1, i|JF |·|JM | JF ⊗
+                                                                                                        ˆ JM ,
+
+                                           ˆ ΓM .
+equipped with the grading operator Γ := ΓF ⊗
+    As in [BD14], we construct almost-commutative manifolds as F × M instead of M × F (though the latter
+is more common in the literature). The reason is that the order F × M is more natural for the generalisation
+to the globally non-trivial case and its description as a Kasparov product (see [BD14, §III.C]). Here we have
+also written the product in terms of the graded tensor product ˆ  ⊗, thus avoiding explicit use of the grading
+operators.
+Proposition 4.3. An almost-commutative pseudo-Riemannian manifold is an even Krein spectral triple.
+Proof. The factor i|JF |·|JM | in front of JF ˆ
+                                              ⊗JM ensures that J is again self-adjoint and unitary. Furthermore,
+J commutes with the algebra A because JF and JM both commute with the algebra. Since JF and JM
+are homogeneous, J is also homogeneous with degree |J | = |JF | + |JM |. The factors i|JF | and i|JM | before
+1ˆ⊗ it D
+       / and DF ⊗ 1 (respectively) ensure that D is again Krein-symmetric. The Krein-self-adjointness of D
+then follows from Krein-self-adjointness of it D  / and boundedness of DF . The other properties of D follow
+straightforwardly from the properties of D    / and DF .
+
+   Our typical example will be an almost-commutative manifold constructed from an even-dimensional
+Lorentzian manifold, which is of course of Lorentz-type (for which JM is odd). In order to be able to apply
+the Krein action, we need this almost-commutative manifold to be of Lorentz-type as well, which means
+that the finite space should not be of Lorentz-type. Hence we impose the restriction that JF is even. The
+almost-commutative manifold is then of the form
+                                                                                      
+                    F × M := Cc∞ (M, AF ), HF ˆ  ⊗ L2 (S), 1 ⊗
+                                                             ˆ it D       ˆ 1, JF ⊗
+                                                                  / + iDF ⊗       ˆ JM .                (2)
+
+
+5      Electrodynamics
+As a first example, we will calculate the Krein action for electrodynamics. The model of electrodynamics
+was first studied in the context of noncommutative geometry in [DS13]. Here, we take a slightly different
+
+
+                                                           8
+approach, since we have no need for a real structure, and we can therefore reduce the dimension of the
+Hilbert space by a factor 2.
+   We consider the algebra AF = C ⊕ C, and the even finite space
+                                                                          
+                                       op         2          0 −im
+                        FED := AF ⊙ AF , HF = C , DF =               , JF = 1 .
+                                                            im 0
+
+We denote the standard basis of HF as {eR , eL }, where eR is odd and eL is even. Since AF is commutative,
+we have Aop                                                       op             0
+         F ≃ AF = C ⊕ C. We consider the representations π, π : C ⊕ C → B (HF ) given by
+
+                            π(λ, µ) := λ,                             π op (λ, µ) := µ,
+
+for (λ, µ) ∈ C ⊕ C, which gives the representation π̃((λ, µ) ⊗ (λ′ , µ′ )) = λµ′ of AF ⊙ Aop F on HF . We also
+note that these representations obviously satisfy the order-one condition (1). Since we have set JF = 1, this
+finite space is in fact an ordinary finite spectral triple, and hence also a Krein spectral triple which is not of
+Lorentz-type.
+Proposition 5.1. The gauge group of the finite space FED equals G(FED ) = U (1).
+Proof. We have U(AF ) = U (1) × U (1), and the kernel of the representation ρ : U(AF ) → B(HF ) equals
+Ker ρ = {(λ, λ) ∈ U(AF ) | λ ∈ U (1)} ≃ U (1), which yields for the quotient G(FED ) = U(AF )/ Ker ρ ≃
+U (1).
+    Let (M, g) be an even-dimensional pseudo-Riemannian spin manifold as in Proposition 4.1, for which t
+is odd, and consider the corresponding almost-commutative manifold as in Eq. 2:
+                                                                                       
+                FED × M := Cc∞ (M, AF ⊙ Aop          ˆ 2        ˆ t/        ˆ      ˆ
+                                             F ), HF ⊗ L (S), 1 ⊗ i D + iDF ⊗ 1, 1 ⊗ JM .
+
+     In the following, we will use local coordinates xµ (µ = 1, . . . , n = t + s) to write the Dirac operator as
+D = γ µ ∇Sµ for the ‘gamma matrices’ γ µ := γ(dxµ ) and the spin connection ∇Sµ = ∇S∂µ .
+ /
+     We consider a perturbation A ∈PPert(Cc∞ (M, AF )). Since the algebra A := Cc∞ (M, AF ) is commutative,
+   op
+A ≃ A and we can write A =             aj ⊗ bj for aj = (λj , µj ) and bj = (λ′j , µ′j ) in A. Since the order-one
+condition is satisfied, the expression for ηD simplifies and takes the form
+                                      X                    X
+                             ηD (A) =            / λ′j ] +
+                                          λj [it D,                 / µ′j ] =: Aµ ⊗
+                                                             µj [it D,            ˆ it γ µ ,
+                                       j                 j
+                                                                                                 P
+where we have used that DF commutes with the algebra elements, and we have defined Aµ := j (λj ∂µ λ′j +
+µj ∂µ µ′j ) ∈ Cc∞ (M ). Since A is real and ηD is involutive (cf. [CCS13b, Lemma 4.(ii)]), we know that ηD (A)
+is Krein-self-adjoint. Since it γ µ is Krein-anti-symmetric, Aµ must also be Krein-anti-symmetric, and hence
+Aµ ∈ Cc∞ (M, iR). We consider the corresponding fluctuated Dirac operator given by
+
+                                            ˆ it D
+                                    DA := 1 ⊗                     ˆ it γ µ .
+                                                         ˆ 1 + Aµ ⊗
+                                                 / + iDF ⊗                                                    (3)
+
+    The almost-commutative manifold FED × M is of Lorentz-type, and hence we can apply Definition 2.4
+                                                       ˆ L2 (S)0 ⊕ HF1 ⊗
+for the Krein action. An arbitrary vector ξ ∈ H0 = HF0 ⊗               ˆ L2 (S)1 can be written uniquely as
+
+                                                   ˆ ψR + eL ⊗
+                                            ξ = eR ⊗         ˆ ψL ,                                           (4)
+
+for Weyl spinors ψL ∈ L2 (S)0 and ψR ∈ L2 (S)1 . Note that the vector ξ ∈ H0 is therefore completely
+determined by one Dirac spinor ψ := ψL + ψR .
+Proposition 5.2. The Krein action for FED × M is given by
+
+                                   SED [ψ, A] = ψ | (it (D
+                                                         / + γ µ Aµ ) − m)ψ .
+
+
+                                                        9
+Proof. We need to calculate the inner product hJ ξ|DA ξiJ , where ξ is given as in Eq. 4. First, for J = 1 ˆ
+                                                                                                          ⊗JM
+we calculate
+                                    J ξ = −eR ⊗ ˆ JM ψR + eL ⊗ ˆ JM ψL .
+For the fluctuated Dirac operator DA of Eq. 3 we find
+                ˆ it Dψ
+     DA ξ = −eR ⊗             ˆ it Dψ
+                     / R + eL ⊗    / L − meL ⊗ ˆ ψR + meR ⊗            ˆ it γ µ ψR + Aµ eL ⊗
+                                                          ˆ ψL − Aµ eR ⊗                   ˆ it γ µ ψL
+                                                                                 
+          = −eR ⊗     / R − mψL + it γ µ Aµ ψR + eL ⊗
+                ˆ it Dψ                                  / L − mψR + it γ µ Aµ ψL .
+                                                    ˆ it Dψ
+
+                                     / A ξ, and using the orthogonality of L2 (S)0 and L2 (S)1 , we obtain
+Taking the inner product of J ξ with D
+
+                                                     / − mψ + it γ µ Aµ ψ
+                             hJ ξ | DA ξiJ = JM ψ it Dψ                     .
+                                                                          J         M
+
+
+Remark 5.3. Let us consider the above result for the usual case of a 4-dimensional time- and space-
+oriented Lorentzian manifold M of signature (1, 3). A choice of decomposition T M = Et ⊕ Es determines
+a unit timelike vector field e0 ∈ Γ(Et ), because Et is oriented and has rank 1. The fundamental symmetry
+then equalsRJM = γ(e0 ), and (using standard physics notation) we will write the (indefinite) inner product
+                                       †
+as hψ|φi = M ψφ R dvolg , where ψ = ψ γ(e0 ) is the Dirac adjoint of ψ. We can then rewrite the Krein action
+as SED [ψ, A] = M LED [ψ, A] dvolg , where the Lagrangian is given by
+                                                                       
+                                   LED [ψ, A] := ψ iγ µ (∇µ + Aµ ) − m ψ.
+
+This is indeed precisely the usual (fermionic part of the) Lagrangian for electrodynamics (compare, for
+instance, [PS95, §4.1]).
+
+
+6    The electro-weak theory
+In this section we will describe the electro-weak interactions between leptons (i.e., neutrinos and electrons).
+The description given here is largely an adaptation of [DS12, §5].
+    Consider the finite-dimensional Hilbert space HF := HR ⊕HL , where HR = HL = C2 . This Hilbert space
+is Z2 -graded with even part HF0 = HL and odd part HF1 = HR . We denote the basis of HF by {νR , eR , νL , eL },
+where the elements νR , νL describe the (right- and left-handed) neutrinos, and eR , eL describe the electrons.
+    We consider the (real) algebra AF = C ⊕ H, along with two even (real-linear) representations π : AF →
+B(HR ) ⊕ B(HL ) and π op : AopF → B(HR ) ⊕ B(HL ) given by
+                                                   
+                                       λ0        α β                                
+                π(λ, q) := qλ ⊕ q :=         ⊕          ,              π op (λ, q)op := λ ⊕ λ,
+                                       0λ       −β α
+
+for λ ∈ C and q = α + βj ∈ H. The representation π̃ := π ⊗ π op of AF ⊙ Aop
+                                                                         F on HR ⊕ HL is then given by
+
+                                      π̃((λ, q) ⊗ (λ′ , q ′ )op ) = λ′ qλ ⊕ λ′ q.
+
+We define the mass matrix on the basis {νR , eR , νL , eL } as
+                                                                   
+                                               0      0 −imν 0
+                                           0         0      0 −ime 
+                                  DF :=   imν 0
+                                                                    .
+                                                             0   0 
+                                               0 ime 0           0
+
+We then consider the even finite space FEW := (AF , HF , DF , JF = 1).
+Proposition 6.1. The gauge group of FEW equals
+                                                               
+                                       G(FEW ) = U (1) × SU (2) /Z2 .
+
+
+                                                          10
+Proof. We have U(AF ) = U (1) × SU (2). The kernel of ρ = π̃ ◦ ∆ : U(AF ) → B(HF ) equals Ker ρ =
+{(±1, ±1) ∈ U(AF )} ≃ Z2 . The quotient G(FED ) = U(AF )/ Ker ρ is thus given by U (1) × SU (2) /Z2 .
+    Let (M, g) again be an even-dimensional pseudo-Riemannian spin manifold as in Proposition 4.1, for
+which t is odd. The representations π and π op obviously extend to representations of Cc∞ (M, AF ) and
+Cc∞ (M, AF )op on HF ˆ
+                     ⊗ L2 (S), and it is easy to see that these representations satisfy the order-one condition
+(1). We consider the almost-commutative manifold
+                                                                                              
+                FEW × M := Cc∞ (M, AF ⊙ Aop             ˆ 2        ˆ t/          ˆ      ˆ
+                                                F ), HF ⊗ L (S), 1 ⊗ i D + iDF ⊗ 1, 1 ⊗ JM .
+
+                                           ˆ it D
+Proposition 6.2. The fluctuation of D := 1 ⊗            ˆ 1 by a perturbation A ∈ Pert(Cc∞ (M, AF )) is of
+                                                / + iDF ⊗
+the form
+
+                                                  ˆ it D
+                              DA = D + ηD (A) = 1 ⊗           ⊗ it γ µ + (iDF + φ) ⊗
+                                                       / + Aµ ˆ                    ˆ 1,
+
+where the gauge field Aµ and the Higgs field φ are given by
+                                                                                              
+                                                                    0      0    mν φ1 mν φ2
+                     0 0                                             0      0    −me φ2 me φ1 
+              Aµ =  0 −2Λµ                      ,             φ=
+                                                                   −mν φ1 me φ2
+                                                                                               ,
+                                                                                    0     0 
+                                   Qµ − Λµ
+                                                                    −mν φ2 −me φ1   0     0
+                                                          
+for the gauge fields (Λµ , Qµ ) ∈ Cc∞ M, iR ⊕ su(2) and the Higgs field (φ1 , φ2 ) ∈ Cc∞ (M, C2 ).
+                     P               P
+Proof. Write A = j aj ⊗ bop    j =
+                                                        ′    ′ op
+                                       j (λj , qj ) ⊗ (λj , qj )  ∈ Pert(Cc∞ (M, AF )). Since the order-one condition
+is satisfied, the fluctuation is of the form ηD (A) = aj [D, bj ] + a∗op         ∗op                ˆ t/         ˆ
+                                                                          j [D, bj ], where D := 1 ⊗ i D + iDF ⊗ 1.
+The below calculations are similar to those in [DS12, §5.2.2], and therefore we shall be brief. From the
+commutators with iDF , we obtain the Higgs field
+                                                                                         
+                                                               0      0     mν φ′1 mν φ′2
+                                 X                                                ′     ′
+                                                              0      0     −me φ2 me φ1 ,
+                            φ :=     aj [iDF , bj ] =  −mν φ1 me φ                      
+                                  j                                      2    0       0
+                                                          −mν φ2 −me φ1       0       0
+
+where we define
+                          X                           ′                          X        ′
+                  φ1 =        αj (λ′j − α′j ) + βj β j ,                 φ2 =        αj β j − β j (λ′j − α′j ),
+                          j                                                      j
+                          X                                                      X
+                  φ′1 =       λj (α′j − λ′j ),                           φ′2 =       λj βj′ .
+                          j                                                      j
+
+
+We also observe that DF commutes with π op , so a∗op         ∗op
+                                                   j [iDF , bj ] = 0. We note that reality of the perturbation
+A ensures Krein-self-adjointness of φ, and therefore self-adjointness of iφ (since φ anti-commutes with J ).
+Hence we must have φ′1 = φ1 and φ′2 = φ2 . Furthermore, we can write
+                                           
+            X                    Λµ 0                            X ∗op
+               aj [it D,
+                      / bj ] =  0 −Λµ      ⊗ˆ it γ µ ,                    / b∗op
+                                                                     aj [it D,              ˆ t µ
+                                                                               j ] = −Λµ ⊗ i γ ,
+             j                          Qµ                        j
+
+           P                                      P
+for Λµ := j λj ∂µ λ′j ∈ Cc∞ (M, iR) and Qµ := j qj ∂µ qj′ ∈ Cc∞ (M, su(2)). Thus the fluctuation of D =
+1⊗ˆ it D       ˆ 1 by A = aj ⊗ bop
+       / + iDF ⊗                   j ∈ Pert(A) is of the form
+
+                                                             ⊗ it γ µ + φ ⊗
+                                                 ηD (A) = Aµ ˆ            ˆ 1,
+
+
+                                                              11
+where the gauge field Aµ is given by
+                                                                       
+                                                  0 0
+                                          Aµ :=  0 −2Λµ                .
+                                                              Qµ − Λµ
+    The almost-commutative manifold FEW × M is of Lorentz-type, and hence we can apply Definition 2.4
+                                                      ˆ L2 (S)0 ⊕ HR ⊗
+for the Krein action. An arbitrary vector ξ ∈ H0 = HL ⊗              ˆ L2 (S)1 can be written uniquely as
+                                          ν         e         ν         e
+                                ξ = νR ˆ
+                                       ⊗ ψR      ˆ ψR
+                                            + eR ⊗         ˆ ψL
+                                                      + νL ⊗         ˆ ψL
+                                                                + eL ⊗    ,                                     (5)
+                   ν    e
+for Weyl spinors ψL  , ψL ∈ L2 (S)0 and ψR  ν
+                                              , ψRe
+                                                    ∈ L2 (S)1 . We observe that this vector ξ ∈ H0 is completely
+                                      ν       ν      ν
+determined by two Dirac spinors ψ := ψL + ψR           (describing the neutrino) and ψ e := ψLe    e
+                                                                                                + ψR  (describing
+the electron). We combine these spinors into the doublets of Weyl spinors
+                          ν                                              ν
+                          ψL                                                ψR
+                ΨL :=       e   ∈ L 2
+                                      (S)0
+                                           ⊗  C 2
+                                                  ,                Ψ R :=    e   ∈ L2 (S)1 ⊗ C2 ,
+                          ψL                                                ψR
+
+and the corresponding doublet of Dirac spinors Ψ := ΨL + ΨR ∈ L2 (S) ⊗ C2 .
+Proposition 6.3. The Krein action for FEW × M is given by
+
+  SEW [Ψ, A] = hΨ | it /      e
+                      DΨi + hψR | −2it γ µ Λµ ψR
+                                               e
+                                                 i + hΨL | it γ µ (Qµ − Λµ )ΨL i + hΨR | ΦΨL i + hΨL | Φ∗ ΨR i,
+where the gauge fields Λµ and Qµ and the Higgs field (φ1 , φ2 ) are given in Proposition 6.2, and the Higgs
+field (φ1 , φ2 ) acts via
+                                                                     
+                                        −mν (φ1 + 1)      −mν φ2
+                                 Φ :=                                   .
+                                           me φ2      −me (φ1 + 1)
+                                                                                                            ˆ M
+Proof. We need to calculate the inner product hJ ξ, DA ξiJ , where ξ is given as in Eq. 5. First, for J = 1 ⊗J
+we find
+                                  ˆ JM ψRν      ˆ JM ψR e      ˆ JM ψL  ν       ˆ JM ψL e
+                     J ξ = −νR ⊗           − er ⊗         + νL ⊗          + eL ⊗          .
+For the fluctuated Dirac operator DA of Proposition 6.2 we find
+                           ˆ it Dψ
+                                / Rν         ˆ it Dψ
+                                                  / R e       ˆ it Dψ
+                                                                   / Lν        ˆ it Dψ
+                                                                                     / Le
+               DA ξ = −νR ⊗            − eR ⊗           + νL ⊗          + eL ⊗
+                      + 2Λµ eR ⊗ˆ it γ µ ψR
+                                          e
+                                            + it γ µ (Qµ − Λµ )(νL ⊗ˆ ψLν      ˆ ψL
+                                                                          , eL ⊗    e t
+                                                                                      )
+                                              ν            e
+                                                                                ν                e
+                                                                                                    
+                      − νL ˆ
+                           ⊗ mν (φ1 + 1)ψR − me φ2 ψR − eL ⊗         ˆ mν φ2 ψR + me (φ1 + 1)ψR
+                                              ν            e
+                                                                                ν                e
+                                                                                                    
+                           ˆ mν (φ1 + 1)ψL
+                      + νR ⊗                     + mν φ2 ψL    − eR ⊗ˆ me φ2 ψL     − me (φ1 + 1)ψL  .
+Taking the inner product of J ξ with DA ξ, and using the notation ΨL , ΨR , and Φ, we obtain
+                                                                                                   e      e
+                     ν
+ hJ ξ | DA ξiJ = JM ψR it /
+                         DψRν
+                              J
+                                               e
+                                         + JM ψR it /
+                                                   DψRe
+                                                        J
+                                                                         ν
+                                                                   + JM ψL it /
+                                                                             DψLν
+                                                                                  J
+                                                                                             + JM ψL it /
+                                                                                                       DψL  J
+                                     M                         M                         M                    M
+                       e
+                 − JM ψR 2it γ µ Λµ ψR
+                                     e
+                                       JM
+                                          + JM ΨL it γ µ (Qµ − Λµ )ΨL JM
+                 + JM ΨR ΦΨL JM + JM ΨL Φ∗ ΨR JM ,
+
+The desired expression for SEW [Ψ, A] = hξ | DA ξi = hJ ξ | DA ξiJ then follows by using the orthogonality of
+L2 (S)0 and L2 (S)1 and the symmetry of h·|·i.
+    We observe that the Lagrangian calculated above is precisely (the fermionic part of) the usual Lagrangian
+for the lepton sector of the Glashow-Weinberg-Salam theory of electroweak interactions, including right-
+handed neutrinos (but without Majorana masses). For instance, the term hΨL |Φ∗ ΨR i can be rewritten in
+the form                      *               +          *                +
+                                       φ1 + 1    ν                    −φ2      e
+                          −mν ΨL               ψR − me ΨL                    ψR    ,
+                                         φ2                          φ1 + 1
+
+
+                                                         12
+which is of the same form as [PS95, Eq.(20.101)] (though there it is given for quarks
+                                                                                   √ instead of leptons). If
+we substitute the vacuum expectation value for the Higgs field, setting φ1 + 1 = v/ 2 and φ2 = 0, we obtain
+                                       1       ν    ν          e    e
+                                                                        
+                                     − √ v mν hψL | ψR i + me hψL | ψR i ,
+                                        2
+which are indeed the standard mass terms for the neutrino and the electron.
+
+6.1    Majorana masses
+Let us briefly discuss how one can add Majorana masses into the model as well. For this purpose, we double
+up the Hilbert space, and introduce a real structure (for the definition of a real structure, see e.g. [Con95,
+Definition 3] or [CM07, Definition 1.124]). Given the Hilbert space HF with basis {νR , eR , νL , eL }, we create
+an identical copy HF on which we denote the basis as {νR , eR , νL , eL }, and we interpret this new copy as
+describing the anti-particles. We then consider the new Hilbert space ĤF := HF ⊕ HF along with a mass
+matrix D̂F , a ‘fundamental symmetry’ JˆF , a grading Γ̂F , and the real structure JˆF given by
+                       ∗
+                                                                                                  
+                 DF −DM             ˆ       1 0                   ΓF 0                ˆ        0 c. c.
+      D̂F :=                ,      JF :=          ,      Γ̂F :=               ,      JF :=                ,
+                DM DF                       0 −1                   0 −ΓF                     c. c. 0
+
+where c. c. denotes complex conjugation (with respect to the standard basis), and DF is the complex conjugate
+of the mass matrix DF . The map DM : HF → HF is given as DM νR := imR νR , where mR ∈ R is the
+Majorana mass of the right-handed neutrino, and DM eR = DM νL = DM eL = 0. We point out that D̂F
+is Krein-self-adjoint, and that JˆF anti-commutes with both JˆF and Γ̂F . The mass matrix D̂F does not
+commute (or anti-commute) with the real structure JˆF ; instead we have the relation D̂F JˆF = JˆF D̂F∗ (where
+we used the symmetry of DM ). Thus the commutator picks out the skew-adjoint part of D̂F , which is just
+the part containing the Majorana mass. To be precise:
+                                                                
+                                                      −2DM 0
+                                      [D̂F , JˆF ] =               ◦ c. c.
+                                                        0  2DM
+
+     Recalling the representations π : AF → B(HF ) and π op : Aop
+                                                               F → B(HF ), we obtain representations
+π̂ : AF → B(HF ⊕ HF ) and π̂ op : Aop
+                                    F → B(HF ⊕ HF ) given by
+
+                     π̂(a) := π(a) ⊕ π op (at ),                    π̂ op (a) := JˆF π̂(a∗ )JˆF ,
+
+where at denotes the matrix transpose of a. With these definitions, we obtain a new finite space F̂EW :=
+(AF ⊙ Aop                 ˆ                                                       ˆ
+         F , ĤF , D̂F , JF ) with grading operator Γ̂F and with a real structure JF .
+   Now consider a 4-dimensional Lorentzian spin manifold M . We also equip the Krein spectral triple
+over M (given in Proposition 4.1) with a real structure, given by the charge conjugation operator JM on
+the spinor bundle. For even-dimensional pseudo-Riemannian manifolds, the (anti)commutation relations of
+the charge conjugation operator are given in [Bau94, Proposition 3]. In the 4-dimensional Lorentzian case,
+the charge conjugation operator commutes with the Clifford representation and with the Dirac operator /   D,
+                                                                2
+anti-commutes with the grading operator ΓM , and satisfies JM     = −1 . Since JM commutes with the Clifford
+representation, it commutes with the fundamental symmetry JM = γ(e0 ).
+   Next, we can consider the almost-commutative manifold F̂EW ×M , which we equip with the real structure
+J := JˆF ⊗
+         ˆ JM . We calculate
+
+  J 2 = (JˆF ⊗
+             ˆ JM )(JˆF ⊗
+                        ˆ JM ) = −JˆF2 ⊗   2
+                                        ˆ JM      ˆ (−1) = 1,
+                                             = −1 ⊗
+  JΓ = (JˆF ˆ                            ˆ JM ΓM = (−Γ̂F JˆF ) ⊗
+                        ⊗ ΓM ) = JˆF Γ̂F ⊗
+             ⊗ JM )(Γ̂F ˆ                                                         ˆ ΓM )(JˆF ˆ
+                                                               ˆ (−ΓM JM ) = (Γ̂F ⊗          ⊗ JM ) = ΓJ,
+  JJ = (JˆF ˆ                           ˆ JM JM = (−JˆF JˆF ) ˆ
+                       ˆ JM ) = JˆF JˆF ⊗
+            ⊗ JM )(JˆF ⊗                                      ⊗ (JM JM ) = (JˆF ⊗
+                                                                                ˆ JM )(JˆF ⊗
+                                                                                           ˆ JM ) = J J.
+
+
+
+                                                       13
+We note that to get [J, J ] = 0 (which we need below) we used that JˆF JˆF = −JˆF JˆF , and hence it is essential
+that JF is non-trivial.
+    Since we have doubled the finite-dimensional Hilbert space, we have introduced too many degrees of
+freedom. To correct this, we follow the approach of [Bar07] and consider vectors η ∈ H0 which (in addition
+to Γη = η) also satisfy Jη = η. Since J 2 = 1 and JΓ = ΓJ, this assumption makes sense, and it means we
+can write η = ξ + Jξ, where ξ is an element of (HF ˆ⊗ L2 (S))0 as given in Eq. 5. The fermionic action is then
+of the form
+
+              hJ η | DA ηiJ = hJ ξ | DA ξiJ + hJ Jξ | DA ξiJ + hJ ξ | DA JξiJ + hJ Jξ | DA JξiJ .
+
+The last term can be rewritten as
+
+                           hJ Jξ | DA JξiJ = hJ Jξ | JDA ξiJ + hJJ ξ | [DA , J]ξiJ ,
+
+The commutator [DA , J] equals i[D̂F , JˆF ] ˆ
+                                            ⊗ JM . For ξ ∈ (HF ˆ                                   ˆ L2 (S) while
+                                                                 ⊗ L2 (S))0 we have [DA , J]ξ ∈ HF ⊗
+JJ ξ ∈ HF ˆ ⊗L2 (S). The subspaces HF ˆ  ⊗L2 (S) and HF ˆ ⊗L2 (S) are orthogonal, so the term hJJ ξ | [DA , J]ξiJ
+vanishes. Since J commutes with J , we find that hJ Jξ | DA JξiJ = hJ ξ | DA ξiJ = SEW [Ψ, A].
+    Hence the only new contributions to the fermionic action come from the terms hJ Jξ | DA ξiJ and
+hJ ξ | DA JξiJ . Since the subspaces HF ˆ    ⊗ L2 (S) and HF ⊗  ˆ L2 (S) are orthogonal, we only need to con-
+sider the part of DA which mixes particles and anti-particles, which is precisely just the Majorana mass
+matrix DM . For the vector ξRν
+                               := νR ⊗ ˆ ψR ν
+                                               representing the right-handed neutrino, we calculate
+
+                          JξRν
+                               = −JˆF νR ⊗
+                                         ˆ JM ψR ν
+                                                   = −νR ˆ
+                                                         ⊗ JM ψRν
+                                                                  ,
+                             ν
+                        J JξR = −J (νR ˆ ⊗ JM ψR ) = −JˆF νR ⊗
+                                                 ν                    ν
+                                                             ˆ JM JM ψR               ν
+                                                                             ˆ JM JM ψR
+                                                                        = νR ⊗          ,
+                             ν
+                        ˆ 1)ξR = −mR νR ⊗    ν
+                                          ˆ ψR ,
+                  (iDM ⊗
+                    ∗ ˆ      ν                 ν
+               (−iDM ⊗ 1)JξR = mR νR ˆ  ⊗ JM ψR  .
+
+This gives
+                                        ν
+                                  ˆ JM ψR              ν             ν      ν
+               hJ ξ|DA JξiJ = −νR ⊗       |mR νR ˆ
+                                                 ⊗ JM ψR J
+                                                           = −mR JM ψR |JM ψR JM
+                                                                                 ,
+                                          ν            ν                ν   ν
+               hJ Jξ|DA ξiJ = νR ˆ
+                                 ⊗ JM JM ψR |−mR νR ˆ
+                                                    ⊗ ψR J
+                                                           = −mR JM JM ψR |ψR J
+                                                                                .
+                                                                                              M
+
+
+Summarising, we can extend the electro-weak theory to include Majorana masses for right-handed neutrinos,
+and we obtain the new action SEW+M given by
+                                                         ν      ν             ν   ν
+                       SEW+M [Ψ, A] = 2SEW [Ψ, A] − mR hψR |JM ψR i − mR hJM ψR |ψR i,
+
+where SEW is given in Proposition 6.3.
+Remark 6.4. In this section we have introduced the notion of real structure on a Krein spectral triple
+in a rather ad hoc manner. One might wonder how to describe the general theory of real Krein spectral
+triples. Do we for instance obtain an alternative notion for the KO-dimension of such triples? While the
+KO-dimension of real spectral triples arises from the eightfold Bott periodicity in real K-homology, there is
+no Krein version of K-homology, and hence the answer to this question is not straightforward. In any case,
+one would expect that the signs determining the (anti)commutation relations of the real structure now not
+only depend on the dimension, but also on the signature. For the even-dimensional case, these signs are
+given in [Bau94].
+
+
+7    The Standard Model
+Given the description of the electro-weak theory of the previous section, it is fairly straightforward to extend
+this theory to the full Standard Model as described in [Con06, CCM07]. This extension is basically obtained
+
+                                                       14
+by including a summand M3 (C) in the algebra AF to describe the strong interactions, and by enlarging
+the Hilbert space HF to incorporate the quarks. Moreover, the Hilbert space is then enlarged three-fold to
+include three generations of all elementary particles. Since most of the details are similar to the electro-weak
+theory, and since there is already plenty of literature available on the noncommutative description of the
+Standard Model (see e.g. [Con96, Con06, CCM07, CM07, JKSS07, CC10, DS12]), we shall be rather brief
+in this section.
+    Thus, we take the algebra AF = C ⊕ H ⊕ M3 (C), which is represented on the finite-dimensional Hilbert
+space HF := (HR ⊕HL )⊗C3 . The factor C3 describes the fact that there are three generations of elementary
+particles. The right-handed particles HR and the left-handed particles HL are both given by C2 ⊕ (C2 ⊗ C3 ).
+Here the first summand C2 describes the two leptons ν and e, and the second summand C2 ⊗ C3 describes
+the quarks uc and dc (which occur in three colours c = r, g, b).
+    We will consider the commuting representations π : AF → B((HR ⊕ HL ) ⊗ C3 ) and π op : Aop    F → B((HR ⊕
+HL ) ⊗ C3 ) given by
+                                                                                
+                                π(λ, q, b) := (qλ ⊕ (qλ ⊗ 1)) ⊕ (q ⊕ (q ⊗ 1)) ⊗ 1,
+                                                                                
+                             π op (λ, q, b) := (λ ⊕ (1 ⊗ bt )) ⊕ (λ ⊕ (1 ⊗ bt )) ⊗ 1,
+
+where bt denotes the matrix transpose of b. The representation π̃ := π ⊗ π op : AF ⊙ Aop            F → B(HF ) is then
+given by                                                                                        
+                  π̃ (λ, q, b) ⊗ (λ′ , q ′ , b′ )op = (λ′ qλ ⊕ (qλ ⊗ b′t )) ⊕ (λ′ q ⊕ (q ⊗ b′t )) ⊗ 1.
+We consider the even finite space FSM := (AF , HF , DF , JF = 1), where the mass matrix is given by
+                                                                          
+                                 0 0 −iYν 0                 0 0 −iYu 0
+                               0 0      0 −iYe         
+                                                    ⊕ 0 0         0 −iYd   ⊗ 1.
+                       DF :=  iYν 0    0     0         iYu 0    0     0 
+                                 0 iYe 0       0            0 iYd 0       0
+
+Here each Y• is a hermitian 3 × 3-matrix corresponding to the three generations of each type of particle.
+    Similarly to
+               Proposition 6.1, the gauge group of the finite space FSM is given by G(FSM ) = U (1) ×
+SU (2) × U (3) /Z2 . This gauge group does not match the gauge group of the Standard Model (even modulo
+finite groups), since we have a factor U (3) instead of SU (3). As in [CCM07, §2.5] (see also [DS12, §6.2.1]),
+we will therefore impose the unimodularity condition det |HF ρ(u) = 1, which yields the subgroup
+                                n                                               12      o
+                    SG(FSM ) = ρ(u) ∈ G(FSM ) : u = (λ, q, b) ∈ U(AF ), λ det b      =1 .
+
+The effect of the unimodularity condition is that the determinant of b ∈ U (3) is identified (modulo the
+finite group µ12 of 12th-roots of unity) to λ ∈ U (1). In other words, imposing the unimodularity condition
+provides us, modulo some finite abelian group, with the gauge group U (1) × SU (2) × SU (3) of the Standard
+Model.
+    The calculations for the inner fluctuations and the fermionic action of the Standard Model are similar to
+the case of the electro-weak theory (although somewhat more cumbersome). Below we will simply give the
+results.
+Proposition 7.1. The fluctuation of D by A ∈ Pert(Cc∞ (M, AF )) is of the form
+
+                                               ˆ it D
+                           DA = D + ηD (A) = 1 ⊗           ⊗ it γ µ + (iDF + φ) ⊗
+                                                    / + Aµ ˆ                    ˆ 1,
+
+where the gauge field Aµ and the Higgs field φ are given by
+                                         4                                          
+                       0 0                        3 Λµ   0
+              Aµ =  0 −2Λµ              ⊕  0 − 2 Λµ                        + 1 ⊗ Vµ 
+                                                         3
+                               Qµ − Λµ                      (Qµ + 31 Λµ ) ⊗ 1
+
+
+                                                         15
+                                                                                      
+                            0         0    Yν φ1 Yν φ2          0     0    Yu φ1 Yu φ2
+                       0             0   −Ye φ2 Ye φ1                   −Yd φ2 Yd φ1 
+                  φ=                                  ⊕ 0          0                   ⊗ 1,
+                       −Yν φ1 Ye φ2         0     0       −Yu φ1 Yd φ2    0       0 
+                         −Yν φ2 −Ye φ1       0     0         −Yu φ2 −Yd φ1   0       0
+                                                                
+for the gauge fields (Λµ , Qµ , Vµ ) ∈ Cc∞ M, iR ⊕ su(2) ⊕ su(3) and the Higgs field (φ1 , φ2 ) ∈ Cc∞ (M, C2 ).
+    Similarly to Eq. 5, an arbitrary vector ξ ∈ H0 = HL ⊗ L2 (S)0 ⊕ HR ⊗ L2 (S)1 is uniquely determined
+by Dirac spinors ψ ν (describing the three neutrinos), ψ e (describing the electron, muon, and tau-particle),
+ψ u (describing the up, charm, and top quarks in three colours) and ψ d (describing the down, strange,
+and bottom quarks in three colours), where we have omitted the generational index from our notation.
+We group these spinors together into the multiplets Ψl ∈ L2 (S) ⊗ C2 ⊗ C3 (describing the leptons) and
+Ψq ∈ L2 (S) ⊗ C2 ⊗ C3 ⊗ C3 (describing the quarks).
+Proposition 7.2. The Krein action for FSM × M is given by
+
+               SEW [Ψ, A] = hΨl |it /             DΨq i
+                                   DΨl i + hΨq |it /
+                                                         u 4 t µ       u       d
+                                 e
+                             + hψR |−2it γ µ Λµ ψR
+                                                 e
+                                                   i + hψR | 3 i γ Λµ ψR i + hψR |− 23 it γ µ Λµ ψR
+                                                                                                  d
+                                                                                                    i
+                             + hΨlL |it γ µ (Qµ − Λµ )ΨlL i + hΨqL |it γ µ (Qµ − Λµ )ΨqL i + hΨq |Vµ Ψq i
+                             + hΨlR |Φl ΨlL i + hΨlL |(Φl )∗ ΨlR i + hΨqR |Φq ΨqL i + hΨqL |(Φq )∗ ΨqR i,
+
+where the gauge fields Λµ , Qµ , and Vµ and the Higgs field (φ1 , φ2 ) are given in Proposition 7.1, and the
+Higgs field acts via
+                                                                                           
+              l      −Yν (φ1 + 1)   −Yν φ2                  q       −Yu (φ1 + 1)    −Yu φ2
+             Φ :=                               ,          Φ :=                                 .
+                        Ye φ2     −Ye (φ1 + 1)                           Yd φ2    −Yd (φ1 + 1)
+
+    We observe that the Lagrangian calculated above is precisely (the fermionic part of) the usual Lagrangian
+for the Standard Model, including right-handed neutrinos (but without Majorana masses). For the possible
+inclusion of Majorana masses for the right-handed neutrinos, the procedure is the same as in Section 6.1,
+and we shall not repeat it here.
+
+
+References
+   [Bar07] J. W. Barrett, A Lorentzian version of the non-commutative geometry of the standard model of
+           particle physics, J. Math. Phys. 48 (2007), 012303.
+  [Bau81] H. Baum, Spin-Strukturen und Dirac-Operatoren über pseudo-Riemannschen Mannigfaltigkeiten,
+           Teubner-Texte zur Mathematik, vol. 41, Teubner-Verlag, Leipzig, 1981.
+  [Bau94]          , A remark on the spectrum of the Dirac operator on pseudo-Riemannian spin manifolds,
+           SFB 288 preprint (1994), no. 136.
+   [BD14] J. Boeijink and K. van den Dungen, On globally non-trivial almost-commutative manifolds, J.
+           Math. Phys. 55 (2014), no. 10, 103508.
+  [Bog74] J. Bognár, Indefinite inner product spaces, Ergebnisse Mathematik und GrenzGeb., Springer, Ber-
+           lin, 1974.
+    [CC97] A. H. Chamseddine and A. Connes, The spectral action principle, Commun. Math. Phys. 186
+           (1997), 731–750.
+    [CC10]         , Noncommutative geometry as a framework for unification of all fundamental interactions
+           including gravity. Part I, Fortsch. Phys. 58 (2010), 553–600.
+[CCM07] A. Chamseddine, A. Connes, and M. Marcolli, Gravity and the standard model with neutrino
+           mixing, Adv. Theor. Math. Phys. 11 (2007), 991.
+[CCS13a] A. H. Chamseddine, A. Connes, and W. D. van Suijlekom, Beyond the Spectral Standard Model:
+           Emergence of Pati-Salam Unification, JHEP 11 (2013), 132.
+
+                                                           16
+[CCS13b]             , Inner fluctuations in noncommutative geometry without the first order condition, J. Geom.
+            Phys. 73 (2013), 222–234.
+  [CM07] A. Connes and M. Marcolli, Noncommutative Geometry, Quantum Fields and Motives, American
+            Mathematical Society, 2007.
+  [Con94] A. Connes, Noncommutative Geometry, Academic Press, San Diego, CA, 1994.
+  [Con95]           , Noncommutative geometry and reality, J. Math. Phys. 36 (1995), no. 11, 6194–6231.
+  [Con96]           , Gravity coupled with matter and the foundation of non-commutative geometry, Commun.
+            Math. Phys. 182 (1996), 155–176.
+  [Con06]           , Noncommutative geometry and the standard model with neutrino mixing, JHEP 0611
+            (2006), 081.
+   [DR16] K. van den Dungen and A. Rennie, Indefinite Kasparov modules and pseudo-Riemannian mani-
+            folds, Annales Henri Poincaré (2016), (Published online).
+    [DS12] K. van den Dungen and W. D. van Suijlekom, Particle physics from almost-commutative space-
+            times, Rev. Math. Phys. 24 (2012), 1230004.
+    [DS13]          , Electrodynamics from noncommutative geometry, J. Noncommut. Geom. 7 (2013), 433–
+            456.
+   [HR00] N. Higson and J. Roe, Analytic K-Homology, Oxford University Press, New York, 2000.
+   [ISS04] B. Iochum, T. Schücker, and C. Stephan, On a classification of irreducible almost commutative
+            geometries, J. Math. Phys. 45 (2004), 5003.
+[JKSS07] J.-H. Jureit, T. Krajewski, T. Schücker, and C. A. Stephan, On the noncommutative standard
+            model, Acta Phys. Polon. B38 (2007), 3181–3202.
+  [Kas80] G. G. Kasparov, The operator K-functor and extensions of C ∗ -algebras, Izv. Akad. Nauk SSSR 44
+            (1980), 571–636.
+   [LM89] H. Lawson and M. Michelsohn, Spin Geometry, Princeton mathematical series, Princeton Univer-
+            sity Press, 1989.
+  [NW96] P. van Nieuwenhuizen and A. Waldron, On Euclidean spinors and Wick rotations, Phys.Lett.
+            B389 (1996), 29–36.
+     [PS95] M. Peskin and D. Schroeder, An Introduction to Quantum Field Theory, Westview Press, 1995.
+     [PS06] M. Paschke and A. Sitarz, Equivariant Lorentzian Spectral Triples, ArXiv e-prints (2006), math–
+            ph/0611029.
+    [Str06] A. Strohmaier, On noncommutative and pseudo-Riemannian geometry, J. Geom. Phys. 56 (2006),
+            no. 2, 175–195.
+    [Sui04] W. D. van Suijlekom, The noncommutative Lorentzian cylinder as an isospectral deformation, J.
+            Math. Phys. 45 (2004), 537–556.
+
+
+
+
+                                                      17
+

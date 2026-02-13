@@ -1,0 +1,1542 @@
+p-ADIC MULTIDIMENSIONAL WAVELETS AND THEIR
+APPLICATION TO p-ADIC PSEUDO-DIFFERENTIAL
+OPERATORS
+
+arXiv:math-ph/0612049v1 15 Dec 2006
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+Abstract. In this paper we study some problems related with the theory
+of multidimensional p-adic wavelets in connection with the theory of multidimensional p-adic pseudo-differential operators (in the p-adic Lizorkin
+space). We introduce a new class of n-dimensional p-adic compactly supported wavelets. In one-dimensional case this class includes the Kozyrev
+p-adic wavelets. These wavelets (and their Fourier transforms) form an orthonormal complete basis in L2 (Qnp ). A criterion for a multidimensional
+p-adic wavelet to be an eigenfunction for a pseudo-differential operator is
+derived. We prove that these wavelets are eigenfunctions of the Taibleson fractional operator. Since many p-adic models use pseudo-differential
+operators (fractional operator), these results can be intensively used in applications. Moreover, p-adic wavelets are used to construct solutions of
+linear and semi-linear pseudo-differential equations.
+
+1. Introduction
+There are a lot of papers where different applications of p-adic analysis to
+physical problems, stochastics, cognitive sciences and psychology are studied [6]– [10], [13]– [19], [30]– [32] (see also the references therein).
+The field Qp of p-adic numbers is defined as the completion of the field of
+rational numbers Q with respect to the non-Archimedean p-adic norm | · |p .
+This norm is defined as follows: |0|p = 0; if an arbitrary rational number x 6= 0
+is represented as x = pγ m
+, where γ = γ(x) ∈ Z, and m and n are not divisible
+n
+by p, then |x|p = p−γ . This norm in Qp satisfies the strong triangle inequality
+|x + y|p ≤ max(|x|p , |y|p).
+It is known that for the p-adic analysis related to the mapping Qp → C,
+where C is the field of complex numbers, the operation of partial differentiation
+is not defined , and as a result, large number of models connected with p-adic
+Date:
+2000 Mathematics Subject Classification. Primary 11F85, 42C40, 47G30; Secondary
+26A33, 46F10.
+Key words and phrases. p-adic compactly supported wavelets; p-adic pseudo-differential
+operators; fractional operators; p-adic Lizorkin spaces.
+This paper was supported in part by the grant of The Swedish Royal Academy of Sciences
+on collaboration with scientists of former Soviet Union. The second author (V. S.) was also
+supported in part by DFG Project 436 RUS 113/809 and Grant 05-01-04002-NNIOa of
+Russian Foundation for Basic Research.
+1
+
+2
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+differential equations use pseudo-differential operators and the theory of padic distributions (generalized functions) (see the above mentioned papers and
+books). In particular, fractional operators D α = f−α ∗ are extensively used,
+where fα is the p-adic Riesz kernel , ∗ is a convolution. However, in general,
+D α ϕ 6∈ D(Qnp ) for ϕ ∈ D(Qnp ), where D(Qnp ) is the space of test functions.
+Consequently, the operation D α f is well defined only for some distributions
+fR ∈ D ′ (Qnp ). For example, D −1 is defined only on the test functions such that
+ϕ(x) dx = 0 [30, IX.2].
+Qp
+We recall that similar problems arise for the “C-case” fractional operators
+(where all functions and distributions are complex or real valued defined on
+spaces with real or complex coordinates): in general, the Schwartzian test
+function space S(Rn ) is not invariant under fractional operators [26], [27]. To
+solve this problem, in the excellent papers of P. I. Lizorkin [24], [25] a new type
+spaces invariant under fractional operators were introduced (see also [26], [27]).
+Taking into account the problems mentioned above, in [3], the p-adic Lizorkin spaces of test functions and distributions were introduced, and in [3], [4]
+a class of pseudo-differential operators (including the Taibleson fractional operator) defined on them was constructed. The Lizorkin spaces are invariant
+under our pseudo-differential operators, and consequently, these spaces are
+their “natural” definition domains and can play a key role in considerations
+related to the fractional operators problems.
+Recall that for the one-dimensional case the orthonormal complete basis
+of eigenfunctions (5.5) of the Vladimirov operator D α was constructed by
+S. V. Kozyrev [20]. The eigenfunctions (5.5) are p-adic compactly supported
+wavelets. Further development and generalization of the theory of such type
+wavelets can be found in the papers by S. V. Kozyrev [21], [22], A. Yu. Khrennikov, and S. V. Kozyrev [16], [17], J. J. Benedetto, and R. L. Benedetto [8],
+and R. L. Benedetto [9].
+It is typical that such type p-adic compactly supported wavelets are eigenfunctions of p-adic pseudo-differential
+operators. Moreover, these wavelets
+R
+satisfy the condition Qp ϕ(x) dx = 0 (see [20]), and, in view of Lemma 3.1,
+belong to the Lizorkin space Φ(Qp ). In [3], there waqs derived the necessary
+and sufficient condition for multidimensional p-adic pseudo-differential operators to have such type multidimensional wavelets as eigenfunctions. Thus the
+wavelets theory play a key role in p-adic analysis.
+Contents of the paper. In this paper problems related with the theory of
+multidimensional p-adic pseudo-differential operators and the theory of multidimensional p-adic wavelets are studied. Here the results of our paper [3] are
+intensively used.
+In Sec. 2, we recall some facts from the p-adic theory of distributions [12],
+[28], [29], [30]. In Sec. 3, some facts from the theory of the p-adic Lizorkin
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+3
+
+spaces [3] are recalled. In Sec. 4, we recall some facts on the multidimensional pseudo-differential operators defined in the Lizorkin space of distributions D ′ (Qnp ). The fractional Taibleson operator [28, §2], [29, III.4.] is among
+them. The Lizorkin spaces are invariant under our pseudo-differential operators. It is appropriate to mention here that the class of our operators includes
+the pseudo-differential operators studied in [19], [33], [34].
+In Sec. 5, a new type of p-adic compactly supported wavelets (in one- dimensional (5.3) and multidimensional (5.17) cases) are introduced. These
+wavelets belong to the Lizorkin space of test functions. The Kozyrev onedimensional wavelets [20] (see (5.5)) is a particular case of our one-dimensional
+wavelets (5.3). The scaling function of wavelets (5.3) is a characteristic function of the unit disc. The two-scale equation (5.7) for these wavelets is presented. However, in this paper the multiresolution analysis is not considered.
+The one-dimensional wavelets (5.3) and multidimensional wavelets (5.17) form
+orthonormal complete bases in L2 (Qp ) and L2 (Qnp ), respectively (see Theorems 5.1, 5.2). Their Fourier transforms also form orthonormal complete bases
+in L2 (Qp ) and L2 (Qnp ), respectively (see Corollary 5.1, 5.2).
+In Sec. 6, the spectral theory of our pseudo-differential operators is constructed. By Theorem 6.1 the criterion (6.1) for multidimensional p-adic
+pseudo-differential operators (3.2) to have multidimensional wavelets (5.17) as
+eigenfunctions is derived. In particular, the multidimensional wavelets (5.17)
+are eigenfunctions of the Taibleson fractional operator (see (6.6)).
+Since many p-adic models use pseudo-differential operators, in particular,
+fractional operator, these results on p-adic wavelets can be intensively used in
+applications. Moreover, p-adic wavelets can be used to construct solutions of
+linear and semi-linear pseudo-differential equations [5], [18], [23].
+2. p-Adic distributions
+Now we recall some facts from the theory of p-adic distributions (generalized
+functions). We shall systematically use the notations and results from [30]. Let
+N, Z, C be the sets of positive integers, integers, complex numbers, respectively.
+Denote by Q∗p = Qp \ {0} the multiplicative group of the field Qp . The space
+Qnp = Qp × · · · × Qp consists of points x = (x1 , . . . , xn ), where xj ∈ Qp ,
+j = 1, 2 . . . , n, n ≥ 2. The p-adic norm on Qnp is
+(2.1)
+
+|x|p = max |xj |p ,
+1≤j≤n
+
+x ∈ Qnp .
+
+Denote by Bγn (a) = {x : |x − a|p ≤ pγ } the ball of radius pγ with the center
+at a point a = (a1 , . . . , an ) ∈ Qnp and by Sγn (a) = {x : |x − a|p = pγ } =
+n
+Bγn (a) \ Bγ−1
+(a) its boundary (sphere), γ ∈ Z. For a = 0 we set Bγn (0) = Bγn
+n
+and Sγ (0) = Sγn . For the case n = 1 we will omit the upper index n. Here
+(2.2)
+
+Bγn (a) = Bγ (a1 ) × · · · × Bγ (an ),
+
+4
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+where Bγ (aj ) = {xj : |xj − aj |p ≤ pγ } is a disc of radius pγ with the center at
+a point aj ∈ Qp , j = 1, 2 . . . , n. Any two balls in Qnp either are disjoint or one
+contains the other. Every point of the ball is its center.
+According to [30, I.3,Examples 1,2.], the disc Bγ is represented by the sum
+′
+of pγ−γ disjoint discs Bγ ′ (a), γ ′ < γ:
+Bγ = Bγ ′ ∪ ∪a Bγ ′ (a),
+
+(2.3)
+
+′
+
+where a = 0 and a = a−r p−r + a−r+1 p−r+1 + · · · + a−γ ′ −1 p−γ −1 are the centers
+of the discs Bγ ′ (a), r = γ, γ − 1, γ − 2, . . . , γ ′ + 1, 0 ≤ aj ≤ p − 1, a−r 6= 0.
+In particular, the disc B0 is represented by the sum of p disjoint discs
+B0 = B−1 ∪ ∪p−1
+r=1 B−1 (r),
+
+(2.4)
+
+where B−1 (r) = {x ∈ S0 : x0 = r} = r + pZp , r = 1, . . . , p − 1; B−1 = {|x|p ≤
+p−1 } = pZp ; and S0 = {|x|p = 1} = ∪p−1
+r=1 B−1 (r). Here all the discs are disjoint.
+We call covering (2.3), (2.4) the canonical covering of the disc B0 .
+A complex-valued function f defined on Qnp is called locally-constant if for
+any x ∈ Qnp there exists an integer l(x) ∈ Z such that
+f (x + y) = f (x),
+
+n
+y ∈ Bl(x)
+.
+
+Let E(Qnp ) and D(Qnp ) be the linear spaces of locally-constant C-valued
+functions on Qnp and locally-constant C-valued functions with compact supports (so-called test functions), respectively; D(Qp ), E(Qp ) [30, VI.1.,2.]. If
+ϕ ∈ D(Qnp ), according to Lemma 1 from [30, VI.1.], there exists l ∈ Z, such
+that
+ϕ(x + y) = ϕ(x), y ∈ Bln , x ∈ Qnp .
+The largest of such numbers l = l(ϕ) is called the parameter of constancy of
+l
+the function ϕ. Let us denote by DN
+(Qnp ) the finite-dimensional space of test
+n
+functions from D(Qnp ) having supports in the ball BN
+and with parameters of
+′
+n
+constancy ≥ l [30, VI.2.]. Denote by D (Qp ) the set of all linear functionals
+on D(Qnp ) [30, VI.3.].
+Let us introduce in D(Qnp ) a canonical δ-sequence δk (x) = pnk Ω(pk |x|p ), and
+a canonical 1-sequence ∆k (x) = Ω(p−k |x|p ), k ∈ Z, x ∈ Qnp , where
+
+1,
+0 ≤ t ≤ 1,
+(2.5)
+Ω(t) =
+0,
+t > 1.
+Here ∆k (x) is the characteristic function of the ball Bkn . It is clear [30, VI.3.,
+VII.1.] that δk → δ, k → ∞ in D ′ (Qnp ) and ∆k → 1, k → ∞ in E(Qnp ).
+The Fourier transform of ϕ ∈ D(Qnp ) is defined by the formula
+Z
+F [ϕ](ξ) =
+χp (ξ · x)ϕ(x) dn x, ξ ∈ Qnp ,
+Qn
+p
+
+Pn
+
+where χp (ξ · x) = e2πi j=1 {ξj xj }p ; ξ · x is the scalar product of vectors; the
+function χp (ξj xj ) = e2πi{ξj xj }p for every fixed ξj ∈ Qp is an additive character
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+5
+
+of the field Qp , j = 1, . . . , n; {x}p is the fractional part of a number x ∈ Qp
+which is defined as follows
+
+0, if γ(x) ≥ 0 or x = 0,
+(2.6) {x}p =
+pγ (x0 + x1 p + x2 p2 + · · · + x|γ|−1 p|γ|−1), if γ(x) < 0.
+The Fourier transform is a linear isomorphism D(Qnp ) into D(Qnp ). Moreover,
+according to [28, Lemma A.], [29, III,(3.2)], [30, VII.2.],
+
+
+l
+−N
+(2.7)
+ϕ(x) ∈ DN
+(Qnp ) iff F ϕ(x) (ξ) ∈ D−l
+(Qnp ).
+
+We define the Fourier transform F [f ] of a distribution f ∈ D ′ (Qnp ) by the
+relation [30, VII.3.]:
+(2.8)
+
+hF [f ], ϕi = hf, F [ϕ]i,
+
+∀ ϕ ∈ D(Qnp ).
+
+Let A be a matrix and b ∈ Qnp . Then for a distribution f ∈ D ′ (Qnp ) the
+following relation holds [30, VII,(3.3)]:
+
+
+−1
+−1
+(2.9)
+F [f (Ax + b)](ξ) = | det A|−1
+χ
+−
+A
+b
+·
+ξ
+F
+[f
+(x)]
+A
+ξ
+,
+p
+p
+where det A 6= 0. According to [30, IV,(3.1)],
+(2.10)
+
+F [∆k ](x) = δk (x),
+
+k ∈ Z,
+
+x ∈ Qnp .
+
+In particular, F [Ω(|ξ|p )](x) = Ω(|x|p ).
+The convolution f ∗ g for distributions f, g ∈ D ′(Qnp ) is defined (see [30,
+VII.1.]) as
+(2.11)
+
+hf ∗ g, ϕi = lim hf (x) × g(y), ∆k (x)ϕ(x + y)i
+k→∞
+
+if the limit exists for all ϕ ∈ D(Qnp ), where f (x) × g(y) is the direct product
+of distributions. If for distributions f, g ∈ D ′ (Qnp ) the convolution f ∗ g exists
+then [30, VII,(5.4)]
+(2.12)
+
+F [f ∗ g] = F [f ]F [g].
+
+It is well known (see, e.g., [30, III.2.]) that any multiplicative character π of
+the field Qp can be represented as
+def
+
+π(x) = πα (x) = |x|α−1
+π1 (x),
+p
+
+x ∈ Qp ,
+
+where π(p) = p1−α and π1 (x) is a normed multiplicative character such that
+π1 (x) = π1 (|x|p x), π1 (p) = π1 (1) = 1, |π1 (x)| = 1. We denote π0 = |x|−1
+p .
+Definition 2.1. Let πα be a multiplicative character of the field Qp .
+(a) According to [1], [2], a distribution fm ∈ D ′ (Qp ) is said to be associated
+homogeneous (in the wide sense) of degree πα and order m, m ∈ N ∪ {0}, if
+m
+D
+ x E
+X
+= πα (t)|t|p hfm , ϕi +
+πα (t)|t|p logjp |t|p hfm−j , ϕi
+fm , ϕ
+t
+j=1
+
+6
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+for all ϕ ∈ D(Qp ) and t ∈ Q∗p , where fm−j ∈ D ′ (Qp ) is an associated homogeneous distribution of degree πα and order m − j, j = 1, 2, . . . , m, i.e.,
+fm (tx) = πα (t)fm (x) +
+
+m
+X
+
+πα (t) logjp |t|p fm−j (x),
+
+t ∈ Q∗p .
+
+j=1
+
+If m = 0 we set that the above sum is empty.
+(b) We say that a distribution f ∈ D ′(Qnp ) is associated homogeneous (in the
+wide sense) of degree πα and order m, m ∈ N ∪ {0}, if for all t ∈ Q∗p we have
+fm (tx) = fm (tx1 , . . . , txn ) = πα (t)fm (x) +
+
+m
+X
+
+πα (t) logjp |t|p fm−j (x),
+
+j=1
+
+where x = (x1 , . . . , xn ) ∈ Qnp , fm−j ∈ D ′ (Qnp ) is an associated homogeneous
+distribution of degree πα and order m − j, j = 1, 2, . . . , m. An associated
+homogeneous (in the wide sense) distribution of degree πα (t) = |t|α−1
+and
+p
+order m is called associated homogeneous of degree α − 1 and order m.
+(c) An associated homogeneous distribution (in the wide sense) of order
+m = 1 is called associated homogeneous distribution (see [11] and [1], [2]).
+(d) An associated homogeneous distribution of degree πα and order m = 0
+is called homogeneous distribution of degree πα , i.e.,
+f0 (tx) = f0 (tx1 , . . . , txn ) = πα (t)f0 (x),
+
+x = (x1 , . . . , xn ) ∈ Qnp .
+
+(for one-dimensional case see [12, Ch.II,§2.3.], [30, VIII.1.]).
+The multidimensional homogeneous distribution |x|α−n
+∈ D ′ (Qnp ) of degree
+p
+α − n is constructed as follows. If Re α > 0 then the function |x|α−n
+generates
+p
+a regular functional
+Z
+α−n
+(2.13)
+h|x|p , ϕi =
+|x|α−n
+ϕ(x) dn x, ∀ ϕ ∈ D(Qnp ),
+p
+Qn
+p
+
+where |x|p , x ∈ Qnp is given by (2.1). If Re α ≤ 0 this distribution is defined
+by means of analytic continuation [28, (*)], [29, III,(4.3)], [30, VIII,(4.2)]:
+Z
+
+α−n
+h|x|p , ϕi =
+|x|α−n
+ϕ(x) − ϕ(0) dn x
+p
+B0n
+
+(2.14)
+
++
+
+Z
+
+n
+Qn
+p \B0
+
+|x|α−n
+ϕ(x) dn x + ϕ(0)
+p
+
+1 − p−n
+,
+1 − p−α
+
+2πi
+j, j ∈ Z. The distribution |x|α−n
+is an entire
+for all ϕ ∈ D(Qnp ), α 6= µj = ln
+p
+p
+function of the complex variable α everywhere except the points µj , j ∈ Z,
+−n
+where it has simple poles with residues 1−p
+δ(x).
+log p
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+7
+
+Similarly to the one-dimensional case [1], [2], one can construct the distribution P ( |x|1n ) called the principal value of the function |x|1n , x ∈ Qnp :
+p
+p
+Z
+D  1  E Z ϕ(x) − ϕ(0)
+ϕ(x) n
+,ϕ =
+dn x +
+d x,
+(2.15)
+P
+n
+n
+n
+n |x|
+|x|p
+|x|p
+B0n
+Qn
+p
+p \B0
+for all ϕ ∈ D(Qnp ). It is easy to show that this distribution is associated
+homogeneous of degree −n and order 1 (see [1], [2]).
+The Fourier transform of |x|α−n
+is given by the formula from [28, Theop
+rem 2.], [29, III,Theorem (4.5)], [30, VIII,(4.3)]
+(2.16)
+
+−α
+F [|x|α−n
+] = Γ(n)
+p
+p (α)|ξ|p ,
+
+α 6= 0, n
+
+(n)
+
+where the n-dimensional Γ-function Γp (α) is given by the following formulas
+(see [28, Theorem 1.], [29, III,Theorem (4.2)], [30, VIII,(4.4)]):
+Z
+def
+(n)
+|x|α−n
+χp (u · x) dn x
+Γp (α) = lim
+p
+k→∞
+
+(2.17)
+
+=
+
+Z
+
+Qn
+p
+
+p−k ≤|x|p ≤pk
+
+|x|α−n
+χp (x1 ) dn x =
+p
+
+1 − pα−n
+1 − p−α
+
+where |u|p = 1, and the last integrals in the right-hand side of (2.17) are
+defined by means of analytic
+continuation with respect to the parameter α.
+R
+α−1
+(1)
+α−1
+.
+Here Γp (α) = Γp (α) = Qp |x|p χp (x) dx = 1−p
+1−p−α
+3. The p-adic Lizorkin spaces
+Let us introduce the p-adic Lizorkin space of test functions
+Φ(Qnp ) = {φ : φ = F [ψ], ψ ∈ Ψ(Qnp )},
+where
+Ψ(Qnp ) = {ψ(ξ) ∈ D(Qnp ) : ψ(0) = 0}.
+Here Ψ(Qnp ), Φ(Qnp ) ⊂ D(Qnp ). The space Φ(Qnp ) can be equipped with the
+topology of the space D(Qnp ) which makes Φ(Qnp ) a complete space.
+In view of (2.7), the following lemma holds.
+Lemma 3.1. ( [3], [4]) (a) φ ∈ Φ(Qnp ) iff φ ∈ D(Qnp ) and
+Z
+(3.1)
+φ(x) dn x = 0.
+Qn
+p
+
+l
+(b) φ ∈ DN
+(Qnp ) ∩ Φ(Qnp ), i.e.,
+
+R
+
+n
+BN
+
+φ(x) dn x = 0, iff
+
+ψ = F −1 [φ] ∈
+
+−N
+n
+D−l
+(Qnp ) ∩ Ψ(Qnp ), i.e., ψ(ξ) = 0, ξ ∈ B−N
+.
+
+In fact, for n = 1, this lemma was proved in [30, IX.2.]. Unlike the classical
+Lizorkin space, any function ψ(ξ) ∈ Φ(Qnp ) is equal to zero not only at ξ = 0
+but in a ball B n ∋ 0, as well.
+
+8
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+Let Φ′ (Qnp ) denote the topological dual of the space Φ(Qnp ). We call it the
+p-adic Lizorkin space of distributions.
+By Ψ⊥ and Φ⊥ we denote the subspaces of functionals in D ′ (Qnp ) orthogonal
+to Ψ(Qnp ) and Φ(Qnp ), respectively. Thus Ψ⊥ = {f ∈ D ′ (Qnp ) : f = Cδ, C ∈ C}
+and Φ⊥ = {f ∈ D ′ (Qnp ) : f = C, C ∈ C}.
+Proposition 3.1. ( [3])
+Φ′ (Qnp ) = D ′ (Qnp )/Φ⊥ ,
+
+Ψ′ (Qnp ) = D ′ (Qnp )/Ψ⊥ .
+
+The space Φ′ (Qnp ) can be obtained from D ′ (Qnp ) by “sifting out” constants.
+Thus two distributions in D ′ (Qnp ) differing by a constant are indistinguishable
+as elements of Φ′ (Qnp ).
+Similarly to (2.8), we define the Fourier transforms of distributions f ∈
+Φ′× (Qnp ) and g ∈ Ψ′× (Qnp ) by the relations:
+(3.2)
+
+hF [f ], ψi = hf, F [ψ]i,
+
+∀ ψ ∈ Ψ(Qnp ),
+
+hF [g], φi = hg, F [φ]i,
+
+∀ φ ∈ Φ(Qnp ).
+
+By definition, F [Φ(Qnp )] = Ψ(Qnp ) and F [Ψ(Qnp )] = Φ(Qnp ), i.e., (3.2) give well
+defined objects.
+4. Pseudo-differential operators in the Lizorkin space
+4.1. Pseudo-differential operators. Consider a class of pseudo-differential
+operators in the Lizorkin space of the test functions Φ(Qnp )
+
+
+(Aφ)(x) = F −1 A(ξ) F [φ](ξ) (x)
+(4.1)
+
+=
+
+Z
+
+Qn
+p
+
+Z
+
+Qn
+p
+
+
+χp (y − x) · ξ A(ξ)φ(y) dnξ dn y,
+
+φ ∈ Φ(Qnp )
+
+with symbols A(ξ) ∈ E(Qnp \ {0}).
+Lemma 4.1. The Lizorkin space Φ(Qnp ) is invariant under the pseudo- differential operators (4.1). Moreover, A(Φ(Qnp )) = Φ(Qnp ).
+Proof. In view of (2.7) and results of Sec. 3, functions F [φ](ξ) and A(ξ)F [φ](ξ)
+belong to Ψ(Qnp ), and, consequently, (Aφ)(x) ∈ Φ(Qnp ), i.e., A(Φ(Qnp )) ⊂
+Φ(Qnp ). Thus the pseudo-differential operators (4.1) are well defined, and the
+Lizorkin space Φ(Qnp ) is invariant under them. Moreover, any function from
+Ψ(Qnp ) can be represented as ψ(ξ) = A(ξ)ψ1 (ξ), ψ1 ∈ Ψ(Qnp ). This implies
+that A(Φ(Qnp )) = Φ(Qnp ).
+
+If we define a conjugate pseudo-differential operator AT as
+Z
+T
+−1
+(4.2) (A φ)(x) = F [A(−ξ)F [φ](ξ)](x) =
+χp (−x · ξ)A(−ξ)F [φ](ξ) dnξ
+Qn
+p
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+9
+
+then one can define the operator A in the Lizorkin space of distributions: for
+f ∈ Φ′ (Qnp ) we have
+(4.3)
+
+hAf, φi = hf, AT φi,
+
+∀ φ ∈ Φ(Qnp ).
+
+It is clear that
+(4.4)
+
+Af = F −1 [A F [f ]] ∈ Φ′ (Qnp ),
+
+i.e., the Lizorkin space of distributions Φ′ (Qnp ) is invariant under pseudodifferential operators A. Moreover, in view of Lemma 4.1, A(Φ′ (Qnp )) =
+Φ′ (Qnp ).
+If A, B are pseudo-differential operators with symbols A(ξ), B(ξ) ∈ E(Qnp \
+{0}), respectively, then the operator AB is well defined and represented by
+the formula
+(AB)f = F −1 [AB F [f ]] ∈ Φ′ (Qnp ).
+If A(ξ) 6= 0, ξ ∈ Qnp \{0} then we define the inverse pseudo-differential operator
+by the formula
+A−1 f = F −1 [A−1 F [f ]], f ∈ Φ′ (Qnp ).
+Thus the family of pseudo-differential operators A with symbols A(ξ) 6= 0,
+ξ ∈ Qnp \ {0} forms an Abelian group.
+If the symbol A(ξ) of the operator A is a homogeneous or an associated
+homogeneous function (see Definition 2.1) then the pseudo-differential operator
+A is called homogeneous or associated homogeneous.
+4.2. The Taibleson fractional operator. Let us consider a pseudo- differential operator Dxα with the symbol A(ξ) = |ξ|αp. Thus, according to (4.1),
+
+
+
+(4.5)
+Dxα φ (x) = F −1 |ξ|αpF [φ](ξ) (x), φ ∈ Φ(Qnp ).
+
+This multi-dimensional Taibleson fractional operator was introduced in [28,
+§2], [29, III.4.] on the space of distributions D ′ (Qnp ) for α ∈ C, α 6= −n.
+In view of formulas (2.12), (2.16), (2.17), the relation (4.5) can be rewritten
+as a convolution
+
+def
+Dxα φ (x) = κ−α (x) ∗ φ(x) = hκ−α (x), φ(x − ξ)i, x ∈ Qnp ,
+where φ ∈ Φ(Qnp ), α 6= 0, −n. Here the distribution from D ′ (Qnp )
+(4.6)
+
+κα (x) =
+
+|x|α−n
+p
+(n)
+Γp (α)
+
+,
+
+α 6= 0, n,
+
+x ∈ Qnp ,
+
+is called the multidimensional Riesz kernel [28, §2], [29, III.4.], where the
+function |x|p , x ∈ Qnp is given by (2.1). The Riesz kernel has a removable
+singularity at α = 0 and according to [28, §2], [29, III.4.], [30, VIII.2], we
+def
+obtain that hκ0 (x), ϕ(x)i = limα→0 hκα (x), ϕ(x)i = ϕ(0), for all ϕ ∈ D(Qnp ),
+i.e.,
+(4.7)
+
+def
+
+κ0 (x) = lim κα (x) = δ(x).
+α→0
+
+10
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+Using (2.13), (2.17), (4.6), and taking into account (3.1) (for details, see [3],
+[4]), we define κn (·) as a distribution from the Lizorkin space of distributions
+Φ′ (Qnp ):
+(4.8)
+
+def
+
+κn (x) = lim κα (x) = −
+α→n
+
+1 − p−n
+log |x|p .
+log p
+
+With the help of (2.16), (4.7), (4.8), it is easy to see that
+(4.9)
+
+κα (x) ∗ κβ (x) = κα+β (x),
+
+α, β ∈ C,
+
+holds in the sense of the Lizorkin space Φ′ (Qnp ).
+In view of (4.7), (4.8), the multi-dimensional Taibleson operator on the
+Lizorkin space of test functions is defined for all α ∈ C as
+
+def
+(4.10)
+Dxα φ (x) = κ−α (x) ∗ φ(x) = hκ−α (x), φ(x − ξ)i, x ∈ Qnp ,
+
+where φ ∈ Φ(Qnp ).
+If α 6= n then the Riesz kernel κα (x) is a homogeneous distribution of degree α − n, and if α = n then the Riesz kernel is an associated homogeneous
+distribution of degree 0 and order 1 (see Definitions 2.1,(b),(d)). Thus the
+Taibleson fractional operator Dxα , α 6= −n is a homogeneous pseudo-differential
+operator of degree α, and Dx−n is an associated homogeneous pseudo-differential
+operator of degree −n and order 1 with the symbol A(ξ) = P (|ξ|−n
+p ) (see
+(2.15)).
+According to Lemma 4.1, the Lizorkin space Φ(Qnp ) is invariant under the
+Taibleson fractional operator Dxα and Dxα (Φ(Qnp )) = Φ(Qnp ) [3].
+In view of (4.2), (4.3), (Dxα )T = Dxα and for f ∈ Φ′ (Qnp ) we have
+(4.11)
+
+def
+
+hDxα f, φi = hf, Dxα φi,
+
+∀ φ ∈ Φ(Qnp ).
+
+It is clear that Dxα (Φ′ (Qnp )) = Φ′ (Qnp ). Moreover, in view of (4.9), the family
+of operators Dxα , α ∈ C on the Lizorkin space forms an Abelian group: if
+f ∈ Φ′ (Qnp ) then Dxα Dxβ f = Dxβ Dxα f = Dxα+β f , Dxα Dx−α f = f , α, β ∈ C.
+5. p-Adic wavelets
+5.1. One-dimensional p-adic wavelets. Let n = 1. Consider the set
+
+Ip = {a = p−γ a0 + a1 p + · · · + aγ−1 pγ−1 :
+(5.1)
+
+γ ∈ N; aj = 0, 1, . . . , p − 1; j = 0, 1, . . . , γ − 1}.
+
+This set can be identified with the factor group Qp /Zp . Let
+
+Jp;m = {s = p−m s0 + s1 p + · · · + sm−1 pm−1 :
+(5.2)
+
+sj = 0, 1, . . . , p − 1; j = 0, 1, . . . , m − 1; s0 6= 0},
+
+where m ≥ 1 is a fixed positive integer.
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+11
+
+
+(m)
+Let us introduce the function θs (x) = χp (sx)Ω |x|p , x ∈ Qp , s ∈ Jp;m,
+and the functions generated by its dilatations and translations:
+
+
+(m)
+(5.3)
+θγsa
+(x) = p−γ/2 χp s(pγ x − a) Ω |pγ x − a|p , x ∈ Qp ,
+
+where γ ∈ Z, s ∈ Jp;m , a ∈ Ip , Ω(t) is the characteristic function (2.5) of the
+segment [0, 1].
+Making the change of variables ξ = pγ x − a and taking into account (2.10),
+we obtain
+Z
+Z
+
+
+
+(m)
+γ/2
+χp sξ Ω |ξ|p dξ = pγ/2 Ω |s|p = 0.
+θγsa (x) dx = p
+(5.4)
+Qp
+
+Qp
+
+Thus, in view of Theorem 5.1 (see below), one can see that the functions (5.3)
+are p-adic wavelets. Moreover, according to (5.4) and Lemma 3.1, the functions
+(m)
+θγsa (x) belong to the Lizorkin space Φ(Qp ).
+It is clear that for any γ ∈ Z and s ∈ Jp;m the functions (5.4) are periodical
+with the periods Tγs ∈ pm−γ Zp .
+In the case m = 1, i.e., for s = p−1 j, j = 1, 2, . . . , p − 1 these wavelets
+coincide with the Kozyrev wavelets [20]:
+
+
+(1)
+(5.5) θγsa
+(x) = θγja (x) = p−γ/2 χp p−1 j(pγ x − a) Ω |pγ x − a|p , x ∈ Qp ,
+
+γ ∈ Z, j = 1, 2, . . . , p − 1, a ∈ Ip .
+
+(1)
+In particular, θs (x) = θj (x) = χp (p−1 jx)Ω |x|p for j = 1. Since |x|p ≤ 1,
+x ∈ Qp , i.e., x = x0 + x1 p + x2 p2 + · · · , we have p−1 x = p−1 x0 + x1 + x2 p + · · · ,
+i.e., the fractional part (2.6) of a number p−1 x is equal to {p−1 x}p = p−1 x0 .
+According to (2.4),
+
+|x|p ≥ p,
+ 0, r
+
+2πi p
+−1
+(5.6) θ1 (x) = χp (p x)Ω |x|p =
+e
+,
+x ∈ B−1 (r), r = 1, . . . , p − 1,
+
+1,
+x ∈ B−1 .
+
+r
+Thus the function θ1 (x) = χp (p−1 x)Ω |x|p takes values in the set {0, e2πi p :
+r = 0, 1, . . . , p − 1} of p + 1 elements.
+
+(1)
+Now we consider θs (x) = θj (x) = χp (p−1 jx)Ω |x|p . Since |jx|p ≤ 1,
+x ∈ Qp , we have jx = y0 + y1 p + y2 p2 + · · · , p−1 jx = p−1 y0 + y1 + y2 p + · · · ,
+and {p−1 jx}p = p−1 y0 (see (2.6)). Thus,
+
+|x|p ≥ p,
+ 0,
+
+−1
+}p
+2πi{ jr
+p
+θj (x) = χp (p jx)Ω |x|p =
+,
+x ∈ B−1 (r), r = 1, . . . , p − 1,
+e
+
+1,
+x ∈ B−1 .
+It is clear that for the Kozyrev wavelets the scaling function is the characteristic function of the unit disc ∆0 (x) = Ω |x|p , x ∈ Qp , and in view of (2.4)
+it satisfies the two-scale equation:
+p−1
+1
+X
+r
+−1/2
+, x ∈ Qp ,
+(5.7)
+∆0 (x) = p
+hr ∆0 x −
+p
+p
+r=0
+
+12
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+where hr = p1/2 . Relations (5.6), (5.7) imply that
+(5.8)
+
+p−1
+1
+X
+
+r
+,
+θ1 (x) = χp (p−1 x)Ω |x|p = p−1/2
+h̃r ∆0 x −
+p
+p
+r=0
+
+x ∈ Qp ,
+
+r
+
+where h̃r = p1/2 e2πi p , r = 0, 1, . . . , p − 1. Similarly to (5.8), we have
+(5.9)
+
+−1
+
+
+
+θj (x) = χp (p jx)Ω |x|p = p
+
+−1/2
+
+p−1
+X
+r=0
+
+h̃r ∆0
+
+r
+,
+x−
+p
+p
+
+1
+
+x ∈ Qp ,
+
+jr
+
+where h̃r = p1/2 e2πi{ p }p , r = 0, 1, . . . , p − 1.
+
+(m)
+In the same way we consider the function θs (x) = χp (sx)Ω |x|p , s ∈ Jp;m.
+Let B0 = ∪a B−m (a) ∪ B−m be the canonical covering (2.3) of the disc B0 with
+pm discs, m ≥ 1, where a = 0 and a = ar pr + ar+1 pr+1 + · · · + am−1 pm−1 is
+the center of the discs B−m and B−m (a), respectively, r = 0, 1, 2, . . . , m − 1,
+0 ≤ aj ≤ p − 1, ar 6= 0.
+
+For x ∈ B−m (a), s ∈ Jp;m , we have x = a + pm y0 + y1 p + y2 p2 + · · · ,
+s = p−m s0 + s1 p + · · · + sm−1 pm−1 , s0 6= 0; sx = sa + ξ, ξ ∈ Zp ; and {sx}p =
+{sa}p = {pr−m ar + ar+1 p + · · · + am−1 pm−r−1 s0 + s1 p + · · · + sm−1 pm−1 }p ,
+r = 0, 1, 2, . . . , m − 1, (see (2.6)). Thus,
+
+θs(m) (x) = χp (sx)Ω |x|p
+
+|x|p ≥ p,
+ 0,
+P
+l
+=
+e2πi{sa}p ,
+x ∈ B−m (a), a = m−1
+l=r al p ,
+
+1,
+x ∈ B−m ,
+
+−m
+where s = p
+s0 + s1 p + · · · + sm−1 pm−1 , 0 ≤ sj ≤ p − 1, j = 0, 1, . . . , m − 1,
+s0 6= 0; a = ar pr + ar+1 pr+1 + · · · + am−1 pm−1 , 0 ≤ aj ≤ p − 1, ar 6= 0,
+
+(m)
+r = 0, 1, . . . , m − 1. Thus the function θs (x) = χp (sx)Ω |x|p takes values in
+the set {0, 1, e2πi{sa}p } of pm + 1 elements.
+In this case, using the scaling function, we obtain
+ 1
+X
+
+a 
+(5.10)
+θs(m) (x) = χp (sx)Ω |x|p = p−m/2
+h̃a ∆0 m x − m ,
+p
+p
+a
+x ∈ Qp , where h̃0 = pm/2 ; h̃a = pm/2 e2πi{sa}p , a = ar pr + ar+1 pr+1 + · · · +
+am−1 pm−1 , r = 0, 1, . . . , m − 1, 0 ≤ aj ≤ p − 1, ar 6= 0.
+Theorem 5.1. The functions (5.3) form an orthonormal complete basis in
+L2 (Qp ) (p-adic wavelet basis).
+Proof. Consider the scalar product
+
+′
+(m)
+(m)
+θγ ′ s′ a′ (x), θγsa
+(x) = p−(γ+γ )/2
+Z
+
+
+
+′
+′
+χp s′ (pγ x − a′ ) − s(pγ x − a) Ω |pγ x − a|p Ω |pγ x − a′ |p dx.
+(5.11) ×
+Qp
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+13
+
+If γ ≤ γ ′ , according to formula [30, VII.1], [20]
+
+
+
+
+′
+′
+(5.12)
+Ω |pγ x − a|p Ω |pγ x − a′ |p = Ω |pγ x − a|p Ω |pγ −γ a − a′ |p ,
+(5.11) can be rewritten as
+
+
+′
+′
+(m)
+(m)
+θγ ′ s′ a′ (x), θγsa
+(x) = p−(γ+γ )/2 Ω |pγ −γ a − a′ |p
+Z
+
+
+′
+χp s′ (pγ x − a′ ) − s(pγ x − a) Ω |pγ x − a|p dx.
+(5.13)
+×
+Qp
+
+Let γ < γ ′ . Making the change of variables ξ = pγ x − a and taking into
+account (2.10), from (5.13) we obtain
+
+
+′
+′
+(m)
+(m)
+θγ ′ s′ a′ (x), θγsa
+(x) = p−(γ+γ )/2 χp s′ (pγ −γ a − a′ )
+Z
+
+
+
+′
+γ ′ −γ
+′
+×Ω |p
+a − a |p
+χp (pγ −γ s′ − s)ξ Ω |ξ|p dξ
+Qp
+
+(5.14)
+Since
+
+
+
+
+′
+′
+′
+′
+= p−(γ+γ )/2 χp s′ (pγ −γ a − a′ ) Ω |pγ −γ a − a′ |p Ω |pγ −γ s′ − s|p .
+
+′
+′
+pγ −γ s′ = pγ −γ−m s′0 + s′1 p + · · · + s′γ−1 pm−1 ,
+
+s = p−m s0 + s1 p + · · · + sγ−1 pm−1 ,
+′
+
+where s′0 , s0 6= 0, γ ′ − γ ≤ 1, it is clear that fractional part {pγ −γ s′ − s}p 6= 0.
+
+
+′
+(m)
+(m)
+Thus Ω |pγ −γ s′ − s|p = 0 and θγ ′ s′ a′ (x), θγsa (x) = 0.
+
+(m)
+(m)
+Consequently, the scalar product θγ ′ s′ a′ (x), θγsa (x) = 0 can be nonzero
+only if γ = γ ′ . In this case (5.14) implies
+
+
+
+
+(m)
+(m)
+(5.15)
+θγs′ a′ (x), θγsa
+(x) = p−γ χp s′ (a − a′ ) Ω |a − a′ |p Ω |s′ − s|p ,
+
+
+where Ω |a − a′ |p = δa′ a , Ω |s′ − s|p = δs′ s , and δs′ s , δa′ a are the Kronecker
+symbols.R
+
+Since Qp Ω |pγ x − a|p dx = pγ [30, IV,(2.3)], formulas (5.14), (5.15) imply
+that
+
+(m)
+(m)
+(5.16)
+θγ ′ s′ a′ (x), θγsa
+(x) = δγ ′ γ δs′ s δa′ a .
+
+Thus the system of functions (5.3) is orthonormal.
+To prove the completeness of the system of functions (5.3), we repeat the
+corresponding proof [20] almost word for word. Recall that the system of the
+characteristic functions of the discs Bk is complete in L2 (Qp ). Consequently,
+(m)
+taking into account that the system of functions {θγsa (x) : γ ∈ Z, s ∈ Jp;m, a ∈
+Ip } is invariant under dilatations and translations, in order to prove that it
+is a complete system, it is sufficient to verify the Parseval identity for the
+characteristic function Ω(|x|p ).
+If 0 ≤ γ, according to (5.12), (2.10),
+Z
+
+
+
+
+(m)
+−γ/2
+χp s(pγ x − a) Ω |x|p dx
+Ω(|x|p ), θγsa (x) = p
+Ω | − a|p
+Qp
+
+14
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+
+a 6= 0,
+
+
+  0,
+0,
+a = 0, γ ≤ m − 1,
+= p−γ/2 χp −spγ a) Ω |spγ |p Ω |−a|p =
+ −γ/2
+p
+,
+a = 0, γ ≥ m.
+If 0 > γ, according to (5.12), (2.10),
+Z
+
+
+
+
+(m)
+−γ/2
+−γ
+χp s(pγ x − a) Ω |pγ x − a|p dx
+Ω(|x|p ), θγsa (x) = p
+Ω |p a|p
+= p−γ/2 Ω |p−γ a|p
+Thus,
+X
+
+
+
+Z
+
+Qp
+
+Qp
+
+
+
+
+
+χp sξ Ω |ξ|p dξ = p−γ/2 Ω |p−γ a|p Ω |s|p = 0.
+
+(m)
+Ω(|x|p ), θγsa
+(x)
+
+γ∈Z,s∈Jp;m ,a∈Ip
+
+2
+
+=
+
+∞
+X
+X
+
+p−γ
+
+γ=m s∈Jp;m
+−m
+
+p
+2
+= 1 = Ω(|x|p ), Ω(|x|p ) .
+1 − p−1
+Thus the system of functions (5.3) is an orthonormal basis in L2 (Qp ) (p-adic
+wavelet basis).
+
+= pm−1 (p − 1)
+
+Corollary 5.1. The functions
+
+
+θe(m) = F [θ(m) ](ξ) = pγ/2 χp p−γ a · ξ Ω |s + p−γ ξ|p ,
+γsa
+
+γsa
+
+ξ ∈ Qp ,
+
+form an orthonormal complete basis in L2 (Qp ), a ∈ Ip ; s ∈ Jp;m ; m ≥ 1 is a
+fixed positive integer.
+The proof follows from Theorem 5.1, formula (6.3) (see below) and the
+Parseval formula [30, VII,(4.1)]
+5.2. Multidimensional p-adic wavelets. Let us introduce n-dimensional
+functions generated by the n-direct product of the one-dimensional p-adic
+wavelets (5.3):
+
+
+(m)
+(5.17)
+Θγsa
+(x) = p−nγ/2 χp s · (pγ x − a) Ω |pγ x − a|p ,
+
+x = (x1 , . . . , xn ) ∈ Qnp , where γ ∈ Z; a = (a1 , . . . , an ) ∈ Ipn ; s = (s1 , . . . , sn ) ∈
+n
+Jp;m
+; m = (m1 , . . . , mn ), mj ≥ 1 is a fixed positive integer, j = 1, 2, . . . , n.
+n
+Here Ipn = Ip × · · · × Ip and Jp;m
+= Jp;m1 × · · · × Jp;mn are the n-direct products
+of the corresponding sets (5.1) and (5.2).
+Using (5.4), (2.2), it is easy to verify that
+Z
+(m)
+Θγsa
+(x) dn x = 0.
+(5.18)
+Qp
+
+Thus the functions (5.17) are n-dimensional p-adic wavelets. According to
+(m)
+(5.18) and Lemma 3.1, Θγsa (x) belong to the Lizorkin space ∈ Φ(Qnp ).
+n
+For any γ ∈ Z and s = (s1 , . . . , sn ) ∈ Jp;m
+the functions (5.17) are periodical
+with the vector periods Tγs = (T1|γs , . . . , Tn|γs ) ∈ pm−γ Znp .
+In view of (2.2), Theorem 5.1 implies the following statement.
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+15
+
+Theorem 5.2. The functions (5.17) form an orthonormal complete basis in
+L2 (Qnp ) (p-adic wavelet basis).
+Corollary 5.2. The functions
+
+
+e (m) = F [Θ(m) ](ξ) = pnγ/2 χp p−γ a · ξ Ω |s + p−γ ξ|p ,
+Θ
+γsa
+
+γsa
+
+ξ ∈ Qnp ,
+
+form an orthonormal complete basis in L2 (Qnp ), a = (a1 , . . . , an ) ∈ Ipn ; s =
+n
+(s1 , . . . , sn ) ∈ Jp;m
+; m = (m1 , . . . , mn ), mj ≥ 1 is a fixed positive integer,
+j = 1, 2, . . . , n.
+The proof follows from Theorem 5.2, formula (6.3) (see below) and the
+Parseval formula [30, VII,(4.1)].
+6. p-Adic wavelets as eigenfunctions of pseudo-differential
+operators
+
+6.1. Pseudo-differential operators. As mentioned above, the one- dimensional Kozyrev wavelets (5.5) introduced in [20] is a particular case of the
+wavelets (5.3) for m = 1. Moreover, in [20] S. V. Kozyrev proved that his
+wavelets (5.5) are eigenfunctions of the one-dimensional Vladimirov operator
+D α for α > 0:
+D α θγja (x) = pα(1−γ) θγja (x), x ∈ Qp ,
+where γ ∈ Z, a ∈ Ip , j = 1, 2, . . . p − 1. Later, it was proved in [3, 4.4.] that in
+fact, the Kozyrev wavelets (5.5) are eigenfunctions of the Vladimirov operator
+for any α, i.e., the above formula holds for all α ∈ C.
+Now we prove that n-dimensional wavelets (5.17) are eigenfunctions for a
+class of pseudo-differential operators (4.1), which includes the Taibleson fractional operator (4.10), (4.6).
+Theorem 6.1. Let A be a pseudo-differential operator with a symbol A(ξ) ∈
+E(Qnp \ {0}). Then the n-dimensional p-adic wavelet (5.17) is an eigenfunction
+of A if and only if
+
+
+(6.1)
+A pγ (−s + η) = A − pγ s ,
+∀ η ∈ Znp ,
+
+n
+where γ ∈ Z, j ∈ Jp;m
+, a ∈ Ipn . Here the eigenvalue λ = A − pγ s , i.e.,
+(m)
+(m)
+AΘγsa
+(x) = A(−pγ s)Θγsa
+(x).
+
+(m)
+
+n
+Proof. Let Θs (x) = χp (s · x)Ω(|x|p ); x ∈ Qnp ; s = (s1 , . . . , sn ) ∈ Jp;m
+, sk ∈
+Jp;mk , k = 1, 2, . . . , n. Using (2.2), (2.10), (2.9), we have
+n
+n
+hY
+i
+h
+i
+Y
+F [Θs(m) (x)](ξ) = F
+χp (xk sk )Ω(|xk |p ) (ξ) =
+F Ω(|xk |p ) (ξk + sk |p )
+k=1
+
+(6.2)
+
+=
+
+n
+Y
+
+k=1
+
+k=1
+
+
+
+Ω |ξk + sk |p = Ω |ξ + s|p ,
+
+ξ ∈ Qnp .
+
+
+
+
+Here, in view of (2.2), Ω |ξ + s|p = Ω |ξ1 + s1 |p × · · · × Ω |ξn + sn |p .
+
+16
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+
+According to (5.2), |sk |p = pmk , i.e., Ω |ξk + sk |p 6= 0 only if ξk = −sk + ηk ,
+where ηk ∈ Zp , sk ∈ Jp;mk , k = 1, 2, . . . , n. Thus ξ = −s + η, where η ∈ Znp ,
+n
+s ∈ Jp;m
+, and in view of (2.1), |ξ|p = pmax{m1 ,...,mn } .
+In view of formulas (5.17), (6.2), (2.9), we have
+(m)
+F [Θγsa
+(x)](ξ) = p−nγ/2 F [Θs(m) (pγ x − a)](ξ)
+
+
+
+= pnγ/2 χp p−γ a · ξ Ω |s + p−γ ξ|p .
+
+(6.3)
+
+Let condition (6.1) be satisfied. Then (4.1), (6.3) imply
+
+
+(m)
+(m)
+AΘγsa
+(x) = F −1 A(ξ)F [Θγsa
+](ξ) (x)
+
+
+
+
+= pnγ/2 F −1 A(ξ)χp p−γ a · ξ Ω |s + p−γ ξ|p (x).
+
+(6.4)
+
+Making the change of variables ξ = pγ (η − s) and using (2.10), we obtain
+Z
+
+(m)
+−nγ/2
+AΘγsa (x) = p
+χp − (pγ x − a) · (η − s) A(pγ (η − s)) Ω(|η|p) dn η
+Qn
+p
+
+=p
+
+−nγ/2
+
+γ
+
+γ
+
+A(−p s)χp s · (p x − a)
+
+
+
+Z
+
+χp (−(pγ x − a) · η) dn η
+
+B0n
+
+(m)
+= A(−pγ s)Θγsa
+(x).
+(m)
+
+(m)
+
+Consequently, AΘγsa (x) = λΘγsa (x), where λ = A(−pγ s).
+(m)
+(m)
+Conversely, if AΘγsa (x) = λΘγsa (x), λ ∈ C, then, using (4.1), (6.3), (6.4),
+we have
+
+
+A(ξ) − λ Ω |s + p−γ ξ|p = 0, ξ ∈ Qnp .
+
+The latter equation has a nontrivial solution only if s + p−γ ξ = η, η ∈ Znp , i.e.,
+
+ξ = pγ (−s + η) and λ = A pγ (−s + η) for any η ∈ Znp . Thus λ = A(−pγ s),
+and, consequently, (6.1) holds.
+The proof of the theorem is complete.
+
+The following particular statement was proved in [3].
+Corollary 6.1. ( [3]) Let A be a homogeneous pseudo-differential operator with
+a symbol A(ξ) ∈ E(Qnp \ {0}) of degree πβ . Then the n-direct product Θγja (x)
+of the one-dimensional Kozyrev p-adic wavelets (5.5), i.e., the n-dimensional
+(1)
+p-adic wavelet (5.17) Θγsa (for m = 1) is an eigenfunction of A if and only if
+(6.5)
+
+A(−p−1 j + η) = A(−p−1 j),
+
+∀ η ∈ Znp ,
+
+where γ ∈ Z; a ∈ Ipn ; j = (j1 , . . . , jn ), jk = 1, 2, . . . , p − 1, k = 1, 2, . . . , n.
+Here the eigenvalue λ = p(1−β)γ A(−p−1 j), i.e.,
+AΘγja (x) = p(1−β)γ A(−p−1 j)Θγja (x).
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+17
+
+6.2. The Taibleson fractional operator. As mentioned above, the Taibleson fractional operator Dxβ is homogeneous of degree β (see Definition 2.1) and
+has a symbol A(ξ) = |ξ|βp , which satisfies the condition (6.1)
+
+
+A pγ (−s + η) = |pγ (−s + η)|βp = p−βγ | − s|βp = pβ(max{m1 ,...,mn }−γ) = A − pγ s
+for all η ∈ Znp . Thus according to Theorem 6.1, the n-dimensional p-adic
+wavelet (5.17) is an eigenfunction of Dxβ :
+(6.6)
+
+(m)
+(m)
+Dxβ Θγsa
+(x) = pβ(max{m1 ,...,mn }−γ) Θγsa
+(x),
+
+β ∈ C,
+
+x ∈ Qnp ,
+
+n
+γ ∈ Z, a ∈ Ipn , s ∈ Jp;m
+.
+
+Acknowledgments
+The authors are greatly indebted to S. V. Kozyrev, V. I. Polischook, and
+M. A. Skopina for fruitful discussions.
+References
+[1] S. Albeverio, A.Yu. Khrennikov, V.M. Shelkovich, Associated homogeneous p-adic distributions, J. Math. An. Appl. 313 (2006) 64–83.
+[2] S. Albeverio, A.Yu. Khrennikov, V. M. Shelkovich, Associated homogeneous p-adic
+generalized functions, Dokl. Ross. Akad. Nauk 393 no. 3 (2003), 300–303. English
+transl. in Russian Doklady Mathematics. 68 no. 3 (2003) 354–357.
+[3] S. Albeverio, A.Yu. Khrennikov, V.M. Shelkovich, Harmonic analysis in the p-adic
+Lizorkin spaces: fractional operators, pseudo-differential equations, p-adic wavelets,
+Tauberian theorems, Journal of Fourier Analysis and Applications, Vol. 12, Issue 4,
+(2006), 393–425.
+[4] S. Albeverio, A.Yu. Khrennikov, V.M. Shelkovich, Pseudo-differential operators in the
+p-adic Lizorkin space, p-Adic Mathematical Physics. 2-nd International Conference,
+Belgrade, Serbia and Montenegro, 15 – 21 September 2005, Eds: Branko Dragovich,
+Zoran Rakic, Melville, New York, 2006, AIP Conference Proceedings – March 29, 2006,
+Vol. 826, Issue 1, pp. 195–205.
+[5] S. Albeverio, A.Yu. Khrennikov, V.M. Shelkovich, p-Adic wavelets and linear and semilinear evolutionary pseudo-differential equations. (In preparation)
+[6] I.Ya. Aref′ eva, B.G. Dragovic, and I.V. Volovich On the adelic string amplitudes, Phys.
+Lett. B 209 no. 4 (1998) 445–450.
+[7] V.A. Avetisov, A.H. Bikulov, S.V. Kozyrev, and V.A. Osipov, p-Adic models of ultrametric diffusion constrained by hierarchical energy landscapes, J. Phys. A: Math. Gen.
+12 (2002) 177–189.
+[8] J.J. Benedetto, and R.L. Benedetto, A wavelet theory for local fields and related groups,
+The Journal of Geometric Analysis 3 (2004) 423–456.
+[9] R.L. Benedetto, Examples of wavelets for local fields, Wavelets, Frames, and operator
+Theory, (College Park, MD, 2003), Am. Math. Soc., Providence, RI, (2004), 27–47.
+[10] A.H. Bikulov, and I.V. Volovich, p-Adic Brownian motion, Izvestia Akademii Nauk,
+Seria Math. 61 no. 3 (1997) 537–552.
+[11] I.M. Gel′ fand and G.E. Shilov, Generalized functions. vol 1: Properties and operations.
+New York, Acad. Press, 1964.
+[12] I.M. Gel′ fand, M.I. Graev and I.I. Piatetskii-Shapiro, Generalized functions. vol 6:
+Representation theory and automorphic functions. Nauka, Moscow, 1966.
+
+18
+
+A. YU. KHRENNIKOV AND V. M. SHELKOVICH
+
+[13] A. Khrennikov, p-Adic valued distributions in mathematical physics. Kluwer Academic
+Publ., Dordrecht, 1994.
+[14] A. Khrennikov, Non-archimedean analysis: quantum paradoxes, dynamical systems and
+biological models. Kluwer Academic Publ., Dordrecht, 1997.
+[15] A. Khrennikov, Information dynamics in cognitive, psychological, social and anomalous
+phenomena. Kluwer Academic Publ., Dordrecht, 2004.
+[16] A.Yu. Khrennikov, and S.V. Kozyrev, Wavelets on ultrametric spaces, Applied and
+Computational Harmonic Analysis 19 (2005) 61–76.
+[17] A.Yu. Khrennikov, and S.V. Kozyrev, Pseudodifferential operators on ultrametric
+spaces and ultrametric wavelets, Izvestia Akademii Nauk, Seria Math. 69 no. 5 (2005)
+133–148.
+[18] A. Yu. Khrennikov, and S. V. Kozyrev, Localization in space for free particle in ultrametric quantum mechanics, Dokl. Ross. Akad. Nauk 411 no. 3 (2006) 316–322. English
+transl. in Russian Doklady Mathematics. 74 no. 3 (2006) 906–911.
+[19] A.N. Kochubei, Pseudo-differential equations and stochastics over non-archimedean
+fields, Marcel Dekker. Inc. New York, Basel, 2001.
+[20] S.V. Kozyrev, Wavelet analysis as a p-adic spectral analysis, Izvestia Akademii Nauk,
+Seria Math. 66 no. 2 (2002) 149–158.
+[21] S.V. Kozyrev, p-Adic pseudodifferential operators: methods and applications, Proc.
+Steklov Inst. Math. 245, Moscow (2004) 154–165.
+[22] S.V. Kozyrev, p-Adic pseudodifferential operators and p-adic wavelets, Theor. Math.
+Physics 138, no. 3 (2004) 1–42.
+[23] S.V. Kozyrev, V.Al. Osipov, V.C. A.Avetisov, Nondegenerate ultrametric diffusion, J.
+Math. Phys. 46 no. 6 (2005) 15 pp.
+[24] P.I. Lizorkin, Generalized Liouville differentiation and the functional spaces Lp r (En ).
+Imbedding theorems, (Russian) Mat. Sb. (N.S.) 60(102) (1963) 325–353.
+[25] P.I. Lizorkin, Operators connected with fractional differentiation, and classes of differentiable functions, (Russian) Studies in the theory of differentiable functions of several
+variables and its applications, IV. Trudy Mat. Inst. Steklov. Vol. 117 (1972), 212–243.
+[26] S.G. Samko, Hypersingular integrals and their applications. Taylor & Francis, London,
+2002.
+[27] S.G. Samko, A.A. Kilbas, and O.I. Marichev, Fractional integrals and derivatives and
+some of their applications. Minsk, Nauka i Tekhnika, 1987 (in Russian); English translation: Fractional integrals and derivatives. Theory and applications, Gordon and Breach,
+London, 1993.
+[28] M.H. Taibleson, Harmonic analysis on n-dimensional vector spaces over local fields. I.
+Basic results on fractional integration, Math. Annalen 176 (1968) 191–207.
+[29] M.H. Taibleson, Fourier analysis on local fields. Princeton University Press, Princeton,
+1975.
+[30] V.S. Vladimirov, I.V. Volovich and E.I. Zelenov, p-Adic analysis and mathematical
+physics. World Scientific, Singapore, 1994.
+[31] V.S. Vladimirov, I.V. Volovich, p-Adic quantum mechanics, Commun. Math. Phys. 123
+(1989) 659–676.
+[32] I.V. Volovich, p-Adic string, Class. Quant. Grav. 4 (1987) L83–L87.
+[33] W.A. Zuniga-Galindo, Pseudo-differential equations connected with p-adic forms and
+local zeta functions, Bull. Austral. Math. Soc. 70 no. 1 (2004) 73–86.
+[34] W.A. Zuniga-Galindo, Fundamental solutions of pseudo-differential operators over padic fields, Rend. Sem. Mat. Univ. Padova 109 (2003) 241–245.
+
+p-ADIC WAVELETS AND p-ADIC PSEUDO-DIFFERENTIAL OPERATORS
+
+19
+
+International Center for Mathematical Modelling in Physics and Cognitive Sciences MSI, Växjö University, SE-351 95, Växjö, Sweden. Phone:
++046 (470) 708790 Fax: +046 (470) 84004
+E-mail address: andrei.khrennikov@msi.vxu.se
+Department of Mathematics, St.-Petersburg State Architecture and Civil
+Engineering University, 2 Krasnoarmeiskaya 4, 190005, St. Petersburg, Russia. Phone: +7 (812) 2517549 Fax: +7 (812) 3165872
+E-mail address: shelkv@vs1567.spb.edu
+
+

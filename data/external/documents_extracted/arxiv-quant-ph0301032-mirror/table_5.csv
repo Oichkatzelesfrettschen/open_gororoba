@@ -1,0 +1,5 @@
+Clearly, the DFS condition [Eq. (9)] implies that D(v),ψi =,ψi. Conversely,
+if D(v),ψi =,ψi for all v, then in particular it must hold that for each α,
+exp [(cαI − Sα) vα],ψi =,ψi. Recalling that φ(A) = exp [A] is a one-to-one continuous mapping of a small neighbourhood of the zero matrix 0 onto a small
+neighbourhood of the identity matrix I, it follows that there must be a sufficiently small vα such that (cαI − Sα),ψi = 0. Therefore the DFS condition (9)
+holds iff D(v),ψi =,ψi for all v.

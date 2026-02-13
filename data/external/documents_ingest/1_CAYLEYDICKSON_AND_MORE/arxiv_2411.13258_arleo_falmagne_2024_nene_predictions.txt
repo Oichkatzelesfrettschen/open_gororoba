@@ -1,0 +1,640 @@
+arXiv:2411.13258v1 [hep-ph] 20 Nov 2024
+
+Path-length dependence of parton and jet energy loss
+from universal scaling laws
+
+François Arleo𝑎,∗ and Guillaume Falmagne𝑏
+𝑎 SUBATECH UMR 6457 (IMT Atlantique, Université de Nantes, IN2P3/CNRS)
+
+4 rue Alfred Kastler, 44307 Nantes, France
+𝑏 High Meadows Environmental Institute, Guyot Hall, Princeton University,
+
+Princeton, NJ 08544-1003, USA
+
+E-mail: francois.arleo@cern.ch, g.falmagne@princeton.edu
+
+The universal dependence of hadron suppression, 𝑅AA ( 𝑝 ⊥ ), observed at large-𝑝 ⊥ in heavy ion
+collisions at RHIC and LHC allows for a systematic determination of the average parton energy loss
+⟨𝜖⟩ in quark-gluon plasma (QGP). A simple relation between ⟨𝜖⟩ and the soft particle multiplicity
+allows for probing the dependence of parton energy loss on the medium path-length. We find
+that all the available measurements are consistent with ⟨𝜖⟩ ∝ 𝐿 𝛽 with 𝛽 = 1.02±0.09
+, consistent
+0.06
+with the pQCD expectation of parton energy loss in a longitudinally expanding QGP. We then
+show, based on the model predictions, that the data on the azimuthal anisotropy coefficient divided
+by the collision eccentricity, 𝑣 2 /e, follows the same scaling property as 𝑅AA . Finally, a linear
+relationship between 𝑣 2 /e and the logarithmic derivative of 𝑅AA at large 𝑝 ⊥ offers a purely datadriven access to the 𝐿 dependence of parton energy loss. Quite remarkably, both hadron and jet
+measurements obey this latter relationship, moreover with consistent values of 𝛽. This points to
+the same parametric path-length dependence of parton and jet energy loss in QGP.
+
+42nd International Conference on High Energy Physics (ICHEP2024)
+18-24 July 2024
+Prague, Czech Republic
+∗ Speaker
+© Copyright owned by the author(s) under the terms of the Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0).
+
+https://pos.sissa.it/
+
+Path-length dependence of parton and jet energy loss from universal scaling laws
+
+François Arleo
+
+The theory of parton energy loss in quark-gluon plasma (QGP) and its associated jet quenching
+phenomenology in heavy ion collisions has evolved significantly over the past decade, driven by
+precise measurements from RHIC and LHC. Despite these advancements, fundamental questions
+remain, such as how parton energy loss in QGP depends on the medium path-length 𝐿. In these
+proceedings, we discuss how this question can be addressed through a data-driven strategy. More
+specifically, we will exploit the scaling properties of large-𝑝 ⊥ hadron spectra in heavy ion collisions,
+predicted by a simple analytic energy loss model and observed in experimental data. In addition, we
+show that jet measurements obey one such scaling law, offering the possibility to study jet energy
+loss in QGP within the same strategy.
+As discussed in Refs. [1, 2], the quenching of hadron spectra, 𝑅AA ( 𝑝 ⊥ ), exhibits at large 𝑝 ⊥ a
+universal shape as a function of 𝑝 ⊥ :
+ℎ
+𝑅AA
+( 𝑝 ⊥ , ¯𝜖, 𝑛) ≃ 𝑓 (𝑢 ≡ 𝑝 ⊥ / 𝑛 ¯𝜖).
+
+(1)
+
+ℎ /d𝑝 ∝ 𝑝 −𝑛 ,
+Here, 𝑛 represents the spectral index of the hadron 𝑝 ⊥ spectrum in pp collisions, d𝜎pp
+⊥
+⊥
+and 𝜖¯ denotes a characteristic energy loss scale reflecting the properties of the medium produced in
+a given collision system. Fits to the quenching of hadron spectra, measured in heavy ion collisions
+at RHIC (AuAu collisions) and LHC (XeXe, PbPb), allow for a systematic extraction of the scales
+√
+𝜖¯ across a broad range of collision energies 𝑠 and centrality classes C, as illustrated in Fig. 1 (see
+Ref. [2] for more details and for the bibliographical references therein to the data sets).
+In order to go a step further, it is instructive to relate the 𝜖¯ to the relevant physical quantities in
+heavy ion collisions. In the BDMPS formalism, 𝜖¯ should scale according to [2]
+
+𝜖¯ ∝ ⟨𝑧⟩ 𝐶 𝑘 𝑞ˆ 0 𝜏0𝛼 𝐿 2− 𝛼 ,
+
+(2)
+
+〈ε〉 [GeV]
+
+where ⟨𝑧⟩ is the momentum fraction carried by the hadron, 𝐶 𝑘 is the color charge of the parton 𝑘, 𝐿
+is the medium path-length and 𝑞ˆ 0 stands for the transport coefficient at formation time 𝜏0 (𝜏0 ≪ 𝐿).
+9
+8
+
+h± PbPb 5.02TeV
+
+h± PbPb 2.76TeV
+
+h± XeXe
+5.44TeV
+
+J/ψ
+
+D
+
+π0 AuAu
+0.20TeV
+
+7
+CMS
+ALICE
+ATLAS
+PHENIX
+
+6
+5
+4
+3
+2
+
+0
+
+0-100%
+0-5%
+5-10%
+10-20%
+10-30%
+20-30%
+30-40%
+30-50%
+40-50%
+50-60%
+50-70%
+60-70%
+70-80%
+70-90%
+0-5%
+5-10%
+10-20%
+10-30%
+20-30%
+30-40%
+30-50%
+40-50%
+50-60%
+50-70%
+60-70%
+60-80%
+70-80%
+70-90%
+0-80%
+0-5%
+5-10%
+10-30%
+30-50%
+50-70%
+70-80%
+0-100%
+0-80%
+0-10%
+10-30%
+20-40%
+40-80%
+30-100%
+0-100%
+0-10%
+30-50%
+60-80%
+0-100%
+0-10%
+10-20%
+20-30%
+30-40%
+40-50%
+50-60%
+60-70%
+70-80%
+
+1
+centrality
+
+Figure 1: Energy loss scales 𝜖¯ extracted from light (𝜋 0 , ℎ± ) and heavy (𝐽/𝜓, 𝐷 in PbPb at 5.02 TeV) hadron
+data in various collision systems and centralities.
+
+2
+
+Path-length dependence of parton and jet energy loss from universal scaling laws
+
+François Arleo
+
+Since the values of ⟨𝑧⟩ and 𝐶 𝑘 may differ for heavy hadrons, the analysis will focus on light hadrons
+from now on. The parameter 𝛼 entering (2) characterizes the dynamical expansion of the medium,
+𝑞(𝜏0 ) is proportional to the
+according to ˆ
+𝑞(𝜏) = 𝑞ˆ 0 (𝜏0 /𝜏) 𝛼 . The initial transport coefficient 𝑞ˆ 0 = ˆ
+initial parton density 𝑛0 , which in the Bjorken picture can be estimated as
+𝑛0 =
+
+3 1 d𝑁ch
+1 d𝑁 𝑘
+≃
+,
+𝐴⊥ 𝜏0 d𝑦 𝑦=0
+2 𝐴⊥ 𝜏0 d𝑦 𝑦=0
+
+(3)
+
+where 𝐴⊥ is the transverse overlap area of the two crossing nuclei. Plugging (3) in (2) leads to the
+following parametric dependence, [2]
+
+
+1 d𝑁ch 𝛽
+𝜖¯ = 𝐾 ×
+𝐿 ,
+(4)
+𝐴⊥ d𝑦
+
+8
+
+v2 / e
+
+ε [GeV]
+
+with 𝛽 = 2 − 𝛼. The geometric quantities 𝐴⊥ and 𝐿 entering Eq. (4) are determined through an
+optical Glauber model, assuming hard sphere nuclear densities. The charged particle multiplicity
+data d𝑁ch /d𝜂 at mid-rapidity is taken from PHENIX at RHIC and from ALICE and CMS at LHC
+(see [2] and references therein). The energy loss scales 𝜖¯ extracted from the quenching of light
+hadrons are fitted using Eq. (4), with 𝛽 (and 𝐾) taken as a free parameter.
+As can be seen in Figure 2, the scaling property expected from Eq. (4) holds very well for light
++0.09
+hadron production in all collision systems. The fits leads to 𝛽 = 1.02−0.06
+(𝜒2 /ndf = 0.51), where the
+uncertainties originate from the fit and from the use of alternative Glauber models [2]. The value
+of 𝛽 proves compatible with unity, that is the BDMPS expectation in QGP experiencing a purely
+longitudinal expansion (i.e. 𝛼 = 1).
+light hadrons (CMS, ALICE, ATLAS, PHENIX)
+PbPb 5.02TeV
+7
+
+PbPb 2.76TeV
+
+0.6
+
+light hadrons
+CMS PbPb
+
+0.5
+
+XeXe 5.44TeV
+6
+
+AuAu 0.20TeV
+
+0.4
+
+5
+
+0.3
+
+4
+
+β d ln RAA
+2 d ln p
+T
+
+3
+
+β = 1.02 ± 0.06
+
+0.2
+1-β
+
+2
+
+K = (0.33 ± 0.03) fm
+
+1
+
+χ2/ndf = 0.51
+
+0
+0
+
+5.02 TeV, centr. 5-10%
+5.02 TeV, centr. 10-20%
+5.02 TeV, centr. 20-30%
+5.02 TeV, centr. 30-40%
+5.02 TeV, centr. 40-50%
+5.02 TeV, centr. 50-60%
+2.76 TeV, centr. 0-10%
+2.76 TeV, centr. 10-20%
+2.76 TeV, centr. 20-30%
+2.76 TeV, centr. 30-40%
+2.76 TeV, centr. 40-50%
+2.76 TeV, centr. 50-60%
+
+20
+
+40
+
+60
+
+80
+
+100
+
+0.1
+
+120
+
+0
+
+dNch
+β
+(y=0) × L / A
+dy
+
+1
+
+10
+
+p /nε
+T
+
+Figure 2: Energy loss scales ⟨𝜖⟩ in various collision
+systems as a function of d𝑁ch /d𝑦 × 𝐿 𝛽 /𝐴⊥ .
+
+Figure 3: 𝑣 2 /e of light hadrons vs. 𝑝 ⊥ /𝑛 ¯𝜖.
+The band corresponds to 𝛽 = 1.02+0.09
+.
+−0.06
+
+Once the dependence of 𝜖¯ with 𝐿 is empirically determined, it becomes possible to investigate
+the azimuthal dependence of hadron suppression, from which the 𝑣 2 coefficient can be computed.
+Using the universal shape of 𝑅AA , its 𝜙 dependence can be modeled as
+
+
+𝑅AA (𝑢, 𝑛, 𝜙) = 𝑓 𝑢 × (𝐿/𝐿(𝜙)) 𝛽 , 𝑛 ,
+(5)
+3
+
+Path-length dependence of parton and jet energy loss from universal scaling laws
+
+François Arleo
+
+where 𝐿(𝜙) is the path-length as a function of the azimuthal angle 𝜙 (with 𝜙 = 0 being the direction
+of the impact parameter), approximated as 𝐿 (𝜙) = 𝐿 × (1 − e cos (2𝜙)), where the eccentricity is
+defined as e = (𝐿(𝜋/2) − 𝐿 (0)) /(𝐿 (𝜋/2) + 𝐿(0)). To first order in e and using Eq. (5), the elliptic
+flow coefficient can be approximated as [2]
+𝑣 2 (𝑢, 𝑛)
+e
+𝑣2 ( 𝑝⊥ )
+e
+
+≃
+≃
+
+𝛽 𝜕 ln 𝑓 (𝑢, 𝑛)
+,
+2
+𝜕 ln 𝑢
+𝑝⊥
+𝜕𝑅AA ( 𝑝 ⊥ )
+𝛽
+.
+2 𝑅AA ( 𝑝 ⊥ )
+𝜕 𝑝⊥
+
+(6)
+(7)
+
+Eq. (6) indicates that 𝑣 2 /e at large 𝑝 ⊥ should exhibit the same approximate universal dependence
+on 𝑝 ⊥ /𝑛𝜖¯ as 𝑅AA , for all collision energies and centrality classes. In order to check this prediction,
+𝑅AA ( 𝑝 ⊥ , 𝜙) has been computed in each collision system, using our full model including Glauber
+simulations; this is then fitted to extract 𝑣 2 values. The model predictions using the 𝛽 value fitted in
+Fig. 2 (grey band) and the CMS measurements of 𝑣 2 in PbPb collisions [3, 4] are plotted together
+in Fig. 3 as a function of the scaling variable 𝑝 ⊥ /𝑛 ¯𝜖, where the values of 𝜖¯ are determined from the
+fits of 𝑅AA (see Fig. 1). The predicted scaling for the different collision systems is clearly apparent
+in the data, except at the lowest values of 𝑝 ⊥ /𝑛 ¯𝜖. The simultaneous calculation of 𝑅AA and 𝑣 2 in
+the model and its agreement with measurements of both observables is thus compelling – moreover
+with a path-length dependence compatible with perturbative QCD. In addition, Eq. (7) indicates
+that 𝑣 2 and 𝑅AA at a given 𝑝 ⊥ are trivially related for measurements from the same collision system.
+In particular, this relation does not involve the knowledge of the energy loss scale 𝜖¯ nor that of the
+function 𝑓 appearing in (6). It is also worth noting that the normalization uncertainties of 𝑅AA
+vanish when computing (7). We would like to check whether it also holds when comparing solely
+𝑅AA and 𝑣 2 measurements, independently of the present energy loss model. The 𝑣 2 /e measurements
+are plotted as a function of the slope d ln 𝑅AA /d ln 𝑝 ⊥ in Fig. 4 (left). The slope is evaluated with
+an agnostic fit of CMS 𝑅AA data [5, 6]; when the centrality classes for 𝑅AA and 𝑣 2 did not match,
+values for combined classes have been interpolated with weights scaling with 𝑁coll .
+Although the present precision of the data does not allow yet for a rigorous test of Eq. (7),
+the correlation between the two measured quantities is clearly apparent (correlation coefficient
+𝜌 = 0.78). In addition, a fit with the expected function 𝑦 = 𝛽 𝑥/2 reproduces fairly the hadron
+observations, resulting in a value 𝛽 = 0.94 ± 0.04 (fit uncertainties only) consistent with the value
++0.09
+𝛽 = 1.02−0.06
+extracted from the scaling with hadron multiplicity, Eq. (4). This gives confidence
+that the relation between 𝑅AA and 𝑣 2 at large 𝑝 ⊥ indeed provides a direct experimental access to
+the path-length dependence of parton energy loss in QGP. A possible explanation for the slight
+overshoot in the 50–60% centrality class may be back-to-back jet correlations contamination in
+data [6]. In other centrality classes, disagreement may be due to the overestimation of e in the
+Glauber model presently used, which relies on hard sphere nuclear densities.
+Although related in principle, hadron and jet measurements in heavy ion collisions are likely
+to probe different aspects of medium-induced gluon radiation. The former appears as a good proxy
+of genuine parton energy loss in QGP, the latter probes instead gluon emission off a final state
+made of multiple particles acting coherently. Consequently, there is no reason a priori that parton
+and jet energy loss exhibit the same energy and path-length parametric dependence, nor the 𝑝 ⊥
+4
+
+g
+
+= β
+y
+
+jets
+ATLAS PbPb
+
+m
+
+0.3
+
+fro
+
+ρ = 0.78
+
+0.35
+
+2 x
+m nsi
+ty
+th
+s
+is
+fit cal
+in
+
+0.35
+
+ρ = 0.84
+
+fro
+
+y
+fro
+
+m
+
+0.4
+
+François Arleo
+
+de
+
+v2 / e
+
+g
+
+= β
+
+2 x
+m nsi
+ty
+th
+s
+is
+fit cal
+in
+
+light hadrons
+CMS PbPb
+
+de
+
+0.45
+
+fro
+
+v2 / e
+
+Path-length dependence of parton and jet energy loss from universal scaling laws
+
+0.25
+0.3
+0.2
+
+0.25
+0.2
+
+0.15
+
+5.02 TeV, centr. 5-10%
+5.02 TeV, centr. 10-30%
+
+0.15
+
+5.02 TeV, centr. 30-50%
+
+0.1
+
+5.02 TeV, centr. 50-60%
+
+0.1
+
+5.02 TeV, centr. 10-20%
+
+2.76 TeV, centr. 0-10%
+
+5.02 TeV, centr. 20-40%
+
+2.76 TeV, centr. 10-30%
+
+0.05
+
+0.05
+
+2.76 TeV, centr. 30-50%
+
+5.02 TeV, centr. 40-60%
+
+2.76 TeV, centr. 50-60%
+
+0
+0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0
+0
+
+0.9
+
+d ln RAA
+d ln p
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+d ln RAA
+d ln p
+
+T
+
+T
+
+Figure 4: Relation between 𝑣 2 /e and d ln 𝑅AA /d ln 𝑝 ⊥ for light hadrons in CMS [3–6] (left) and inclusive jets
+in ATLAS [7, 8] (right). The bands 𝑦 = 𝛽 𝑥/2 show the expectation from (7), with the value 𝛽 = 1.02+0.09
+−0.06
+determined from the density scaling fit of hadrons of Eq. (4) (grey band, left), and the 𝛽 values extracted
+from linear fits of the displayed hadron or jet data (blue bands).
+
+dependence of 𝑅AA of both processes to be identical.1 It is therefore worthwhile to investigate
+whether the relation (7) between 𝑅AA and 𝑣 2 , derived on rather general grounds, also applies to jet
+production – despite the different 𝑝 ⊥ -dependence of 𝑅AA – and, if so, to determine which value of
+𝛽 best matches the data.
+√
+The results, using 𝑅AA [7] and 𝑣 2 [8] ATLAS data in PbPb collisions at 𝑠 = 5.02 TeV, are
+shown in Fig. 4 (right). As for hadrons, the expected function 𝑦 = 𝛽 𝑥/2 fits well the data2, with
+a value 𝛽jets = 1.03 ± 0.06 which is consistent with the value extracted from Eq. (4) for light
+hadrons. This is a remarkable indication that parton and jet energy loss share the same parametric,
+close-to-linear, dependence on the medium path-length. It is also interesting to note that a different
+path-length dependence of jet energy loss, Δ𝐸 ∝ 𝐿 0.59 , is obtained in the data-driven approach of
+Ref. [11], while other studies point instead towards a stronger dependence on 𝐿, Δ𝐸 ∝ 𝐿 1.4 [12]
+and Δ𝐸 ∝ 𝐿 2 [10].
+In summary, relating the values of 𝜖¯ extracted from 𝑅AA to the hadron multiplicity enables the
++0.09
+determination of the 𝐿 dependence of parton energy loss, 𝜖¯ ∝ 𝐿 𝛽 with 𝛽 = 1.02−0.06
+, in agreement
+with a longitudinally expanding QGP. The 𝑣 2 /e anisotropy coefficient exhibits the same scaling
+property as 𝑅AA , in both the model and data. Finally we highlight a relation between 𝑣 2 /e and
+𝑅AA , predicted in the model and observed in data, which allows for a data-driven extraction of the
+path-length dependence of parton energy loss. We find that jet data obey the same relation, pointing
+to a similar path-length dependence of parton and jet energy loss in quark-gluon plasma. The LHC
+Runs 3 & 4 should allow for testing with unprecedented precision these scaling properties.
+1The 𝑅AA and 𝑣 2 of jets have also been discussed at this conference, see Ref. [9, 10] for details.
+2The centrality class 0–5% for hadrons and 0–10% for jets have not been included as the small eccentricity results in
+large uncertainties on 𝑣 2 /e; in addition, the eccentricity in central collisions depends on density fluctuations that cannot
+be accounted for in the optical Glauber model we use to compute it.
+
+5
+
+Path-length dependence of parton and jet energy loss from universal scaling laws
+
+François Arleo
+
+Acknowledgments
+GF acknowledges the support from William Miller. This work is funded by the “Agence
+Nationale de la Recherche” under grant ANR-18-CE31-0024-02.
+
+References
+[1] F. Arleo, Quenching of Hadron Spectra in Heavy Ion Collisions at the LHC, Phys. Rev. Lett.
+119 (2017) 062302 [1703.10852].
+[2] F. Arleo and G. Falmagne, Probing the path-length dependence of parton energy loss via
+scaling properties in heavy ion collisions, Phys. Rev. D 109 (2024) L051503 [2212.01324].
+[3] CMS collaboration, Azimuthal anisotropy of charged particles at high transverse momenta in
+√
+PbPb collisions at 𝑠 𝑁 𝑁 = 2.76 TeV, Phys. Rev. Lett. 109 (2012) 022301 [1204.1850].
+[4] CMS collaboration, Azimuthal anisotropy of charged particles with transverse momentum up
+√
+to 100 GeV/ c in PbPb collisions at 𝑠 𝑁 𝑁 =5.02 TeV, Phys. Lett. B 776 (2018) 195
+[1702.00630].
+[5] CMS collaboration, Study of high-𝑝 ⊥ charged particle suppression in PbPb compared to pp
+√
+collisions at 𝑠NN =2.76 TeV, Eur. Phys. J. C72 (2012) 1945 [1202.2554].
+[6] CMS collaboration, Charged-particle nuclear modification factors in PbPb and pPb
+√
+collisions at 𝑠N N = 5.02 TeV, JHEP 04 (2017) 039 [1611.01664].
+[7] ATLAS collaboration, Measurement of the nuclear modification factor for inclusive jets in
+√
+Pb+Pb collisions at 𝑠NN = 5.02 TeV with the ATLAS detector, Phys. Lett. B 790 (2019) 108
+[1805.05635].
+[8] ATLAS collaboration, Measurements of azimuthal anisotropies of jet production in Pb+Pb
+√
+collisions at 𝑠 𝑁 𝑁 = 5.02 TeV with the ATLAS detector, Phys. Rev. C 105 (2022) 064903
+[2111.06606].
+[9] Y. Mehtar-Tani, D. Pablos and K. Tywoniuk, Jet suppression and azimuthal anisotropy from
+RHIC to LHC, Phys. Rev. D 110 (2024) 014009 [2402.07869] and these proceedings.
+[10] A. Ogrodnik, M. Rybář and M. Spousta, Flavor and path-length dependence of jet quenching
+from inclusive jet and 𝛾-jet suppression, 2407.11234 and these proceedings.
+[11] J. Wu, W. Ke and X.-N. Wang, Bayesian inference of the path-length dependence of jet
+energy loss, Phys. Rev. C 108 (2023) 034911 [2304.06339].
+[12] M. Djordjevic, D. Zigic, M. Djordjevic and J. Auvinen, How to test path-length dependence
+in energy loss mechanisms: analysis leading to a new observable, Phys. Rev. C 99 (2019)
+061902 [1805.04030].
+
+6
+
+

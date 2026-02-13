@@ -1,0 +1,809 @@
+equations = []
+tables = []
+full_text = """
+Designing high-performance propagation-compressing\r
+spaceplates using thin-film multilayer stacks\r
+Jordan T. R. Pagé1,2, Orad Reshef1,*, Robert W. Boyd1,2,3, and Jeff S. Lundeen1\r
+1Department of Physics, University of Ottawa, 25 Templeton Street, Ottawa, ON K1N 6N5, Canada\r
+2School of Electrical Engineering and Computer Science, University of Ottawa, Ottawa, ON K1N 6N5,\r
+Canada\r
+3\r
+Institute of Optics and Department of Physics and Astronomy, University of Rochester, Rochester, NY\r
+14627, USA\r
+*Corresponding author: orad@reshef.ca\r
+Abstract\r
+The development of metasurfaces has enabled unprece\u0002dented portability and functionality in flat optical de\u0002vices. Spaceplates have recently been introduced as a\r
+complementary element to reduce the space between\r
+individual metalenses. This will further miniaturize\r
+entire imaging devices. However, a spaceplate neces\u0002sitates a non-local optical response — one which de\u0002pends on the transverse spatial frequency component\r
+of a light field — therefore making it challenging both\r
+to design them and to assess their ultimate perfor\u0002mance and potential. Here, we employ inverse-design\r
+techniques to explore the behaviour of general thin\u0002film-based spaceplates. We observe a tradeoff between\r
+the compression factor R and the numerical aperture\r
+NA of such devices; we obtained a compression fac\u0002tor of R = 5.5 for devices with an NA = 0.42 up to a\r
+record R = 340 with NA of 0.017. Our work illustrates\r
+that even simple designs consisting of realistic materi\u0002als (i.e., silicon and glass) permit capable spaceplates\r
+for monochromatic applications.\r
+Keywords: thin-film multilayer stacks; transformation optics; space-compressing optic; inverse\u0002design; gradient descent;\r
+Nanostructured surfaces known as metasurfaces\r
+have been gaining much attention for enabling\r
+the creation of flat optics [1, 2, 3]. Among the\r
+most notable devices are metalenses, optical el\u0002ements that promise to yield ultra-thin imaging\r
+systems by replacing the relatively thick glass of\r
+lenses with a much thinner optic [4, 5, 6]. Unfor\u0002tunately, these recent advances in miniaturizing\r
+1\r
+arXiv:2106.12106v1 [physics.optics] 23 Jun 2021
+
+lenses do not address the space between the nu\u0002merous optics, sources, and sensors, which make\r
+up the largest part of most imaging systems.\r
+Recently, a new optical element has been\r
+proposed that can simulate free-space propaga\u0002tion to further reduce imaging systems, called\r
+a ‘spaceplate’ [7, 8, 9]. This device consists of a\r
+plate of thickness d; however a transmitted light\u0002field will experience an effective propagation of\r
+length deff > d (Fig. 1). This expanded propa\u0002gation is accomplished through a non-local op\u0002eration [10, 11, 12, 13] that imparts an angle\u0002dependent phase onto an incident beam. By\r
+replacing free-space, spaceplates could one day\r
+lead to ultra-thin telescopes, microscopes, and\r
+cameras, for example eliminating the camera\r
+bump on the back of smartphones.\r
+Past works have experimentally demonstrated\r
+spaceplates in the form of a low-index medium\r
+or a birefringent crystal [7], and have theoret\u0002ically demonstrated spaceplates in the form of\r
+thin-film multilayer stacks [7], a two-dimensional\r
+photonic crystal slab [8], and coupled cavities [9].\r
+These devices featured compression factors R ≡\r
+(deff/d) that ranged from R = 1.1 to R =\r
+144, with other metrics of varying performance,\r
+such as numerical aperture (NA), insertion loss,\r
+spectral operating bandwidth, and total simu\u0002lated space deff. Aside from the special case of\r
+resonator-based spaceplates [9], a general design\r
+methodology and identification of the fundamen\u0002tal limitations of high-performance spaceplates\r
+has remained a challenge. This stands in con\u0002trast to other more mature devices, such as met\u0002alenses [14] or invisibility cloaks [15], for which\r
+there are established design prescriptions. As\r
+a result, it is as of yet unknown what the fun\u0002damental tradeoffs or limitations on these per\u0002formance metrics may be for this new type of\r
+device.\r
+In this Letter, we expand on previous inverse\u0002design work on a class of spaceplates based on\r
+multilayer thin-film stacks. Whereas previous\r
+work featuring this platform used a genetic al\u0002gorithm [7] and produced a maximum R = 4.9,\r
+here we develop a gradient descent optimization\r
+that produces much higher performance space\u0002plates. We use this optimization to explore the\r
+parameter space for this class of spaceplates and\r
+establish limits on their performance.\r
+Figure 1: A spaceplate compresses the propaga\u0002tion of a length deff into a region of length d.\r
+A spaceplate will replace a slab of a medium of\r
+length deff if the spaceplate acts on every possible\r
+incident planewave in the same manner as the\r
+slab. In particular, each incident planewave is\r
+transmitted without loss but receives an angle\u0002dependent phase of the form\r
+φ(θ) = |k|deff cos θ, (1)\r
+where θ is the incident angle of the light, and k\r
+is the wavevector in the background medium [7].\r
+Throughout this Letter, the background medium\r
+is air (n = 1). Equation (1) ensures that a ray\r
+exiting a spaceplate will preserve its incident an\u0002gle just as it would when travelling through air.\r
+Equation (1) also leads to a translation of the\r
+ray’s lateral position as illustrated in Fig. 1. This\r
+angle-conservation is contrary to the behaviour\r
+of a ray at a lens, where the ray angle changes\r
+due to refraction. In this way, lenses and space\u0002plates are complementary devices.\r
+In order to quantify the performance of the\r
+spaceplates that we generate through inverse de\u0002sign, we use the Strehl ratio S [16]. This quan\u0002tity is commonly used to measure the quality of\r
+2
+
+lenses. It is the ratio of the peak intensity of a\r
+focus of a Gaussian beam that travels through\r
+a real (i.e., aberrated) lens to the peak inten\u0002sity created by an ideal lens. S ranges 0 to 1.\r
+A Strehl ratio of S ≥ 0.8 is standardly diffrac\u0002tion limited [?]. Similarly, a real spaceplate will\r
+impart phase errors to a beam that is already fo\u0002cusing through it and so the Strehl ratio is also\r
+a relevant metric. The Strehl ratio is given by\r
+the formula:\r
+S = e\r
+−σ\r
+2\r
+(2)\r
+where σ is the root-mean-square-error (RMSE)\r
+between the phase of an ideal spaceplate and a\r
+designed spaceplate of the same thickness d. We\r
+found R for the latter from a fit to its the trans\u0002mission phase. A target NA for the designed\r
+spaceplate sets the range of angles over which\r
+the RMSE is calculated.\r
+In our exploration, we focus on multi\u0002layer stacks which can be easily and accu\u0002rately modeled using the transfer-matrix method\r
+(TMM) [17]. This method is used to obtain\r
+the phase and the transmission coefficients of a\r
+stack. We consider p-polarized light at an op\u0002erating wavelength of λ = 1550 nm, thus re\u0002stricting our study to monochromatic operation.\r
+Monochromatic spaceplates could be used to re\u0002duce the size of sensors, monochromatic displays\r
+or spatial multiplexing applications, where we\r
+only utilize narrow bands of frequencies. We\r
+use gradient descent as our optimization tech\u0002nique, where we define the figure of merit (FOM)\r
+that we maximize to be 1/σ. Details of the\r
+optimization procedure are given in the Meth\u0002ods section. Unlike with the Strehl ratio, the\r
+RMSE σ is taken between the phase of the can\u0002didate spaceplate and an ideal spaceplate with\r
+deff = Rtargetd. Each device optimization thus\r
+targets a Rtarget and NA. We explore two ap\u0002proaches, one that uses two materials and opti\u0002mizes the layer thicknesses, and a second that\r
+uses fixed layer thicknesses and optimizes each\r
+layer’s refractive index.\r
+Figure 2: a) A spaceplate consisting of 27 al\u0002ternating layers of Si (black) and SiO2 (grey)\r
+with a total thickness of 7.6 µm, which is sur\u0002rounded by air. The layers are drawn to scale\r
+with respect to the scale bar (2 µm). b) The\r
+transmission phase of the device fit to the ex\u0002pected output phase of an ideal spaceplate with\r
+an effective advance of deff = 2.6 mm. It be\u0002haves as a spaceplate with a compression factor\r
+of R = 340 for NA = 0.017 (up to 1° — the\r
+unshaded region). c) The normalized transmit\u0002tance and reflectance of the spaceplate. This de\u0002vice has an angle-dependent transmission profile,\r
+with a minimum insertion loss of 3.3 dB at an\r
+incident angle of 1°. d) Analytic Fourier optics\r
+propagation is used to find the intensity |E|\r
+2 of a\r
+focusing Gaussian beam (waist of 30 µm, diver\u0002gence of 0.94°) propagating in free space (FP)\r
+and after propagating through the metamaterial\r
+spaceplate (SP) from left to right. e) Beam cross\r
+section along the vertical dashed lines in d).\r
+The first approach considers a structure of al\u0002ternating layers of silicon (n = 3.48) and silica\r
+(n = 1.44). The structure is surrounded on both\r
+sides by air (n = 1). Here, we set a fixed num\u0002ber of thin-film layers and the thicknesses of the\r
+individual layers are used as the optimization pa\u0002rameters. Figure 2 illustrates a resulting device\r
+consisting of 27 layers optimized for operation\r
+3
+
+for a maximum half-angle of 1° (NA = 0.017).\r
+The device is 7.6 µm thick and replaces propa\u0002gation for 2.6 mm, corresponding to a compres\u0002sion factor of R = 340. This value is the largest\r
+observed in any study. It has a maximum inser\u0002tion loss of only 3.3 dB over its designated an\u0002gular operating bandwidth. Figure 2b gives the\r
+imparted phase of the device (blue line), which\r
+fits well to the ideal spaceplate curve (dashed\r
+line, given by Eq. 1). This device has a Strehl\r
+ratio of S = 0.9992, far above diffraction-limited\r
+performance.\r
+To further probe the potential performance\r
+of the thin-film multilayer stack platform as a\r
+spaceplate, we explored the parameter space in\r
+a thorough series of simulations. Though a di\u0002rect search of this type is not in any sense ex\u0002haustive, its results can be instructive in drawing\r
+certain conclusions, as we shall see. In our study,\r
+for a given number of layers ranging from 9 – 29,\r
+we swept over targeted compression factors from\r
+Rtarget = 2 – 60 and explored devices with five\r
+NAs: 0.087, 0.17, 0.26, 0.34, and 0.42, corre\u0002sponding to maximum half-angles of incidence\r
+of 5°, 10°, 15°, 20° and 25°, respectively.\r
+The results from this study are summarized in\r
+Fig 3. Figure 3a shows the maximum R obtained\r
+using the optimization procedure outlined above\r
+as a function of the device’s NA independent of\r
+the number of layers. As mentionned above, the\r
+largest compression factor, R = 340, is obtained\r
+for devices with the smallest NA. Conversely, for\r
+the largest NA (NA = 0.43, corresponding to an\r
+acceptance half-angle of 25°), we obtain R = 5.5\r
+in a 1.61 µm-thick device.\r
+Figure 3b contains a summary of the perfor\u0002mance of multilayer stacks comprising only 13\r
+layers as a function of Rtarget for a range of NAs.\r
+We observe a clear tradeoff between S and R\r
+of a spaceplate for a given NA. Conversely, for\r
+a given R, a higher NA results in lower device\r
+Strehl ratio. Though we do not reproduce it\r
+here, this trend holds for all optimized devices\r
+for every number of layers we explored (9, 11,\r
+..., 27, 29 layers).\r
+In Fig. 3d, we explore the impact of the total\r
+number of layers on the performance of the de\u0002vice. Here, we fix the NA to 0.17, and optimize\r
+devices for a range of Rtarget and for a number\r
+of layers ranging from 9 to 29. Increasing the\r
+number of layers enables devices with better per\u0002formance and higher compression factors, which\r
+makes intuitive sense as doing so expands the\r
+space of possible devices. Though it is not shown\r
+here, we note that this increase does not always\r
+substantially improve the Strehl ratio, which we\r
+Figure 3: a) The maximum observed compres\u0002sion factor R as a function of NA of any space\u0002plate with 9, 11, ..., 27 or 29 layers. The com\u0002pression factor decreases with increasing numer\u0002ical apertures. b) The Strehl ratio S as a func\u0002tion of Rtarget for devices with acceptance angles\r
+of 5°, 10°, 15°, 20°, and 25° (NA = 0.09, 0.17,\r
+0.26, 0.34 and 0.42, respectively). Devices with\r
+S ≥ 0.8 (dashed line) are considered diffraction\r
+limited. c) Compression factor as a function of\r
+the thickness of layer 2 of the device in Fig 2.\r
+d) R/Rtarget as a function of the targeted com\u0002pression factor Rtarget for devices formed of 9,\r
+11, ..., 27, 29 layers for NA = 0.17. Increasing\r
+the number of layers enables devices with higher\r
+compression factors. This improvement plateaus\r
+for devices with more than 17 layers.\r
+4
+
+attribute to challenges with retrieving the global\r
+maximum within the growing parameter spaces.\r
+In Fig. 3c, we show that for a spaceplate with\r
+a given compression factor R, when increasing\r
+the thickness of any one layer, the compression\r
+factor is roughly periodic. If the thickness of the\r
+layer is increased enough, the compression fac\u0002tor will return to approximately the same value\r
+it had before the layer thickness increase. This\r
+means there is wide latitude to make the space\u0002plate thicker without substantially decreasing its\r
+performance. The periodicity suggests that the\r
+optimization is non-convex and so it is not sur\u0002prising that the global maximum was not always\r
+found.\r
+Our search yielded a few other qualitative ob\u0002servations of interest. First, our optimization\r
+procedure favoured devices with an odd num\u0002ber of layers, and where the outermost layers\r
+had a higher refractive index. Additionally, de\u0002vices optimized for operation with p-polarized\r
+light tended to yield higher compression factors.\r
+In our second approach to optimizing the\r
+spaceplate structures, we fix the total number of\r
+layers and their respective thicknesses and use\r
+the refractive indices of the layers as the opti\u0002mization parameters. This approach is similar\r
+to the one explored in previous work featuring a\r
+different non-local operation in a thin-film multi\u0002layer stack [11]. Here, we set the thickness of 101\r
+individual layers to 5 nm for a total device thick\u0002ness of 505 nm, and we confine the refractive in\u0002dex to a realistic range for dielectric materials\r
+at optical frequencies (n = 1 – 4). Our search\r
+yielded a device with a maximum compression\r
+factor of R = 6.4 (Fig. 4a). We also then re\u0002peat this procedure with the same parameters\r
+but expanding the range of allowed refractive in\u0002dices to include any positive value. This range\r
+explicitly includes materials for which n < 1, so\u0002called epsilon-near-zero media [18, 19]. Though\r
+this optimization yields less feasible devices, it\r
+may provide information on the ultimate perfor\u0002mance of spaceplates. Here, our search yielded\r
+a device with a maximum compression factor of\r
+R = 80 for NA = 0.26, with refractive indices\r
+ranging from n = 0.2 to n = 14 (Fig. 4).\r
+Figure 4: a) A spaceplate device with R = 6.4\r
+designed by optimizing the refractive index of\r
+thin layers. Here, the index is bound within 1 <\r
+n < 4. b) A spaceplate with R = 80, where n\r
+is bound to positive values during optimization.\r
+Here, the resulting refractive index ranges 0.2 to\r
+14. c) The transmission phases of the devices in\r
+(a) and (b) as a function of incident angle, and\r
+their respective fits to ideal spaceplate profiles.\r
+d) The normalized transmittance of the devices.\r
+Our study of the first approach suggests that\r
+the maximum compression factor is limited by\r
+the NA of the device. For example, for devices\r
+with an identical S and number of layers, reduc\u0002ing the NA from 0.26 to 0.17 had the effect of\r
+nearly doubling R from 9.6 to 18.0. This ob\u0002servation echoes a recent finding that the total\r
+effective propagation distance deff of resonator\u0002based spaceplates is limited by the NA [9]. De\u0002spite this limit, we find that spaceplates based\r
+on this platform are shown to enable diffraction\u0002limited operation with record high compression\r
+factors for large numerical apertures.\r
+We had expected the second approach to yield\r
+devices with larger compression factors since it\r
+considered a larger parameter space with ac\u00025
+
+cess to many more degrees of freedom. How\u0002ever, the best compression factor obtained by\r
+this approach, R = 6.4 fell short of the solu\u0002tion found in the previous search for NA = 0.26,\r
+which yielded a maximum compression factor of\r
+R = 11.5. We suspect that the dramatic in\u0002crease in optimization parameters hampered lo\u0002cating the global maximum for this class of de\u0002vices. Nevertheless, increasing the range of al\u0002lowable indices further increased the compres\u0002sion factor from R = 6.4 to 80, suggesting that\r
+R may also be limited by index contrast.\r
+In summary, we have successfully inversely\r
+designed high-performing spaceplates based on\r
+multilayer thin-film stacks. We observed trade\u0002offs between the number of layers, NA, compres\u0002sion factor R, and the degree of aberration (i.e.,\r
+the Strehl ratio). While this work was focused\r
+on monochromatic spaceplates, these tradeoffs\r
+suggest there may be similar tradeoffs with the\r
+spaceplate’s spectral bandwidth. Broadband op\u0002eration and achromatic design are topics for fu\u0002ture research. We observe signs that our gra\u0002dient ascent is non-convex which suggests that\r
+other inverse-design schemes might be even more\r
+fruitful than gradient descent and, thus, may\r
+fully capitalize on the enormous design parame\u0002ter space of the thin-film platform. Finally, while\r
+previous spaceplate designs have achieved very\r
+high R [8], this work demonstrates that even\r
+higher R can be achieved in thin-film stacks, a\r
+mature commercial fabrication platform.\r
+Methods\r
+Our optimization starts by initializing a group of\r
+200 spaceplate candidate designs, each with ran\u0002domly generated layer thicknesses or refractive\r
+indices. We pre-define the number of layers, the\r
+targeted compression factor R, and the range of\r
+incident angles of light (i.e., the NA). The code\r
+then applies the gradient descent algorithm to\r
+each layer of the spaceplate, differentiating by\r
+either the layer thickness or the refractive index\r
+to find the respective gradient. For a given can\u0002didate design, the algorithm starts by simulta\u0002neously optimising the first 3 layers, and once\r
+they are fully optimised, it includes the next\r
+layer into the simultaneous optimization process.\r
+The spaceplate performance is assessed once all\r
+of the layers have been sequentially included and\r
+optimized.\r
+The FOM is the inverse RMSE σ, as calcu\u0002lated by\r
+σ\r
+2 =\r
+1\r
+N\r
+X\r
+N\r
+i=0\r
+(φ(θi)target − φ(θi))2, (3)\r
+where N is the number of points between θ0\r
+and θmax, φ(θi) is obtained from TMM for the\r
+designed spaceplate and φ(θi)target is the phase\r
+of an ideal spaceplate with deff = Rtargetd.\r
+The incident angles range from θ0 = 0° to\r
+θmax = sin−1(NA). This FOM was maximized\r
+in the first optimisation approach which focused\r
+on layer thicknesses. In the second approach,\r
+which focused on refractive index, the FOM\r
+was changed to 1/(σ(1 − h10 log10(T)i)) where\r
+h10 log10(T)i is the insertion loss in dB averaged\r
+over angle across the NA of the device. In this\r
+approach, the total number of layers is substan\u0002tially larger than in the devices explored previ\u0002ously. This optimization approach is much more\r
+numerically cumbersome and so we are forced\r
+to iterate over fewer parameters. Consequently\r
+we optimize a single candidate device at a time\r
+rather than a swarm of 200.\r
+Author contributions\r
+OR and JSL conceived the basic idea for this\r
+work. JTRP and OR performed the numerical\r
+calculations. JTRP and OR analysed the nu\u0002merical results. RWB and JSL supervised the\r
+research and the development of the manuscript.\r
+JTRP wrote the first draft of the manuscript,\r
+6
+
+and all authors subsequently took part in the\r
+revision process and approved the final copy of\r
+the manuscript. Portions of this work were pre\u0002sented at Frontiers Washington, DC in 2019 [20].\r
+Acknowledgements\r
+The authors thank Marc-André Renaud for pro\u0002gramming advice, and Víctor J. López-Pastor\r
+and Ali H. Alhulaymi for helpful discussions.\r
+The authors acknowledge support from the\r
+Transformative Quantum Technologies program\r
+of the Canada First Research Excellence Fund,\r
+the Canada Research Chairs Program, and\r
+the Natural Sciences and Engineering Research\r
+Council of Canada.\r
+References\r
+[1] Yu, N.; Genevet, P.; Kats, M. A.; Aieta, F.; Teti\u0002enne, J.-P.; Capasso, F.; Gaburro, Z. Science 2011,\r
+334, 333–337.\r
+[2] Yu, N.; Capasso, F. Nature Materials 2014, 13,\r
+139–150.\r
+[3] Chen, W. T.; Zhu, A. Y.; Capasso, F. Nature Re\u0002views Materials 2020, 5, 604–620.\r
+[4] Khorasaninejad, M.; Chen, W. T.; Devlin, R. C.;\r
+Oh, J.; Zhu, A. Y.; Capasso, F. Science 2016, 352,\r
+1190–1194.\r
+[5] Khorasaninejad, M.; Capasso, F. Science Dec.\r
+2017, 358, eaam8100.\r
+[6] Liang, H.; Lin, Q.; Xie, X.; Sun, Q.; Wang, Y.;\r
+Zhou, L.; Liu, L.; Yu, X.; Zhou, J.; Krauss, T. F.;\r
+Li, J. Nano Letters 2018, 18, 4460–4466.\r
+[7] Reshef, O.; DelMastro, M. P.; Bearne, K. K. M.;\r
+Alhulaymi, A. H.; Giner, L.; Boyd, R. W.; Lundeen,\r
+J. S. Nature Communications 2021, 12, 3512.\r
+[8] Guo, C.; Wang, H.; Fan, S. Optica 2020, 7, 1133.\r
+[9] Chen, A.; Monticone, F. ACS Photonics 2021, 8,\r
+1439–1447.\r
+[10] Castaldi, G.; Galdi, V.; Alù, A.; Engheta, N. Phys\u0002ical Review Letters 2012, 108, 063902.\r
+[11] Silva, A.; Monticone, F.; Castaldi, G.; Galdi, V.;\r
+Alu, A.; Engheta, N. Science Jan. 2014, 343,\r
+160–163.\r
+[12] Kwon, H.; Sounas, D.; Cordaro, A.; Polman, A.;\r
+Alù, A. Physical Review Letters 2018, 121, 173004.\r
+[13] Cordaro, A.; Kwon, H.; Sounas, D.; Koenderink,\r
+A. F.; Alù, A.; Polman, A. Nano Letters 2019, 19,\r
+8418–8423.\r
+[14] Presutti, F.; Monticone, F. Optica 2020, 7, 624.\r
+[15] Fleury, R.; Monticone, F.; Alù, A. Physical Review\r
+Applied 2015, 4, 037001.\r
+[16] Bos, A. V. D. Aberration and the Strehl ratio; 2000.\r
+[17] Yariv, A.; Yeh, P., Photonics: Optical electronics in\r
+modern communications, Sixth; Oxford University\r
+Press: New York, NY, 2007.\r
+[18] Alù, A.; Silveirinha, M. G.; Salandrino, A.; En\u0002gheta, N. Physical Review B 2007, 75, 155410.\r
+[19] Reshef, O.; Leon, I. D.; Alam, M. Z.; Boyd, R. W.\r
+Nature Reviews Materials 2019, 4, 535–551.\r
+[20] Pagé, J.; Reshef, O.; Alhulaymi, A. H.; Boyd, R.\r
+W.; Lundeen, J. S. In Frontiers in Optics / Laser\r
+Science, 2020, FTh5C.5.\r
+7
+
+For Table of Contents Only\r
+8"""
+
+[metadata]
+title = "arxiv 2106.12106 page et al 2021 designing spaceplates multilayer stacks"
+authors = ["Unknown"]
+arxiv = "2106.12106"
+year = 2021
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Designing high-performance propagation-compressing\r
+spaceplates using thin-film multilayer stacks\r
+Jordan T. R. Pagé1,2, Orad Reshef1,*, Robert W. Boyd1,2,3, and Jeff S. Lundeen1\r
+1Department of Physics, University of Ottawa, 25 Templeton Street, Ottawa, ON K1N 6N5, Canada\r
+2School of Electrical Engineering and Computer Science, University of Ottawa, Ottawa, ON K1N 6N5,\r
+Canada\r
+3\r
+Institute of Optics and Department of Physics and Astronomy, University of Rochester, Rochester, NY\r
+14627, USA\r
+*Corresponding author: orad@reshef.ca\r
+Abstract\r
+The development of metasurfaces has enabled unprece\u0002dented portability and functionality in flat optical de\u0002vices. Spaceplates have recently been introduced as a\r
+complementary element to reduce the space between\r
+individual metalenses. This will further miniaturize\r
+entire imaging devices. However, a spaceplate neces\u0002sitates a non-local optical response — one which de\u0002pends on the transverse spatial frequency component\r
+of a light field — therefore making it challenging both\r
+to design them and to assess their ultimate perfor\u0002mance and potential. Here, we employ inverse-design\r
+techniques to explore the behaviour of general thin\u0002film-based spaceplates. We observe a tradeoff between\r
+the compression factor R and the numerical aperture\r
+NA of such devices; we obtained a compression fac\u0002tor of R = 5.5 for devices with an NA = 0.42 up to a\r
+record R = 340 with NA of 0.017. Our work illustrates\r
+that even simple designs consisting of realistic materi\u0002als (i.e., silicon and glass) permit capable spaceplates\r
+for monochromatic applications.\r
+Keywords: thin-film multilayer stacks; transformation optics; space-compressing optic; inverse\u0002design; gradient descent;\r
+Nanostructured surfaces known as metasurfaces\r
+have been gaining much attention for enabling\r
+the creation of flat optics [1, 2, 3]. Among the\r
+most notable devices are metalenses, optical el\u0002ements that promise to yield ultra-thin imaging\r
+systems by replacing the relatively thick glass of\r
+lenses with a much thinner optic [4, 5, 6]. Unfor\u0002tunately, these recent advances in miniaturizing\r
+1\r
+arXiv:2106.12106v1 [physics.optics] 23 Jun 2021
+
+lenses do not address the space between the nu\u0002merous optics, sources, and sensors, which make\r
+up the largest part of most imaging systems.\r
+Recently, a new optical element has been\r
+proposed that can simulate free-space propaga\u0002tion to further reduce imaging systems, called\r
+a ‘spaceplate’ [7, 8, 9]. This device consists of a\r
+plate of thickness d; however a transmitted light\u0002field will experience an effective propagation of\r
+length deff > d (Fig. 1). This expanded propa\u0002gation is accomplished through a non-local op\u0002eration [10, 11, 12, 13] that imparts an angle\u0002dependent phase onto an incident beam. By\r
+replacing free-space, spaceplates could one day\r
+lead to ultra-thin telescopes, microscopes, and\r
+cameras, for example eliminating the camera\r
+bump on the back of smartphones.\r
+Past works have experimentally demonstrated\r
+spaceplates in the form of a low-index medium\r
+or a birefringent crystal [7], and have theoret\u0002ically demonstrated spaceplates in the form of\r
+thin-film multilayer stacks [7], a two-dimensional\r
+photonic crystal slab [8], and coupled cavities [9].\r
+These devices featured compression factors R ≡\r
+(deff/d) that ranged from R = 1.1 to R =\r
+144, with other metrics of varying performance,\r
+such as numerical aperture (NA), insertion loss,\r
+spectral operating bandwidth, and total simu\u0002lated space deff. Aside from the special case of\r
+resonator-based spaceplates [9], a general design\r
+methodology and identification of the fundamen\u0002tal limitations of high-performance spaceplates\r
+has remained a challenge. This stands in con\u0002trast to other more mature devices, such as met\u0002alenses [14] or invisibility cloaks [15], for which\r
+there are established design prescriptions. As\r
+a result, it is as of yet unknown what the fun\u0002damental tradeoffs or limitations on these per\u0002formance metrics may be for this new type of\r
+device.\r
+In this Letter, we expand on previous inverse\u0002design work on a class of spaceplates based on\r
+multilayer thin-film stacks. Whereas previous\r
+work featuring this platform used a genetic al\u0002gorithm [7] and produced a maximum R = 4.9,\r
+here we develop a gradient descent optimization\r
+that produces much higher performance space\u0002plates. We use this optimization to explore the\r
+parameter space for this class of spaceplates and\r
+establish limits on their performance.\r
+Figure 1: A spaceplate compresses the propaga\u0002tion of a length deff into a region of length d.\r
+A spaceplate will replace a slab of a medium of\r
+length deff if the spaceplate acts on every possible\r
+incident planewave in the same manner as the\r
+slab. In particular, each incident planewave is\r
+transmitted without loss but receives an angle\u0002dependent phase of the form\r
+φ(θ) = |k|deff cos θ, (1)\r
+where θ is the incident angle of the light, and k\r
+is the wavevector in the background medium [7].\r
+Throughout this Letter, the background medium\r
+is air (n = 1). Equation (1) ensures that a ray\r
+exiting a spaceplate will preserve its incident an\u0002gle just as it would when travelling through air.\r
+Equation (1) also leads to a translation of the\r
+ray’s lateral position as illustrated in Fig. 1. This\r
+angle-conservation is contrary to the behaviour\r
+of a ray at a lens, where the ray angle changes\r
+due to refraction. In this way, lenses and space\u0002plates are complementary devices.\r
+In order to quantify the performance of the\r
+spaceplates that we generate through inverse de\u0002sign, we use the Strehl ratio S [16]. This quan\u0002tity is commonly used to measure the quality of\r
+2
+
+lenses. It is the ratio of the peak intensity of a\r
+focus of a Gaussian beam that travels through\r
+a real (i.e., aberrated) lens to the peak inten\u0002sity created by an ideal lens. S ranges 0 to 1.\r
+A Strehl ratio of S ≥ 0.8 is standardly diffrac\u0002tion limited [?]. Similarly, a real spaceplate will\r
+impart phase errors to a beam that is already fo\u0002cusing through it and so the Strehl ratio is also\r
+a relevant metric. The Strehl ratio is given by\r
+the formula:\r
+S = e\r
+−σ\r
+2\r
+(2)\r
+where σ is the root-mean-square-error (RMSE)\r
+between the phase of an ideal spaceplate and a\r
+designed spaceplate of the same thickness d. We\r
+found R for the latter from a fit to its the trans\u0002mission phase. A target NA for the designed\r
+spaceplate sets the range of angles over which\r
+the RMSE is calculated.\r
+In our exploration, we focus on multi\u0002layer stacks which can be easily and accu\u0002rately modeled using the transfer-matrix method\r
+(TMM) [17]. This method is used to obtain\r
+the phase and the transmission coefficients of a\r
+stack. We consider p-polarized light at an op\u0002erating wavelength of λ = 1550 nm, thus re\u0002stricting our study to monochromatic operation.\r
+Monochromatic spaceplates could be used to re\u0002duce the size of sensors, monochromatic displays\r
+or spatial multiplexing applications, where we\r
+only utilize narrow bands of frequencies. We\r
+use gradient descent as our optimization tech\u0002nique, where we define the figure of merit (FOM)\r
+that we maximize to be 1/σ. Details of the\r
+optimization procedure are given in the Meth\u0002ods section. Unlike with the Strehl ratio, the\r
+RMSE σ is taken between the phase of the can\u0002didate spaceplate and an ideal spaceplate with\r
+deff = Rtargetd. Each device optimization thus\r
+targets a Rtarget and NA. We explore two ap\u0002proaches, one that uses two materials and opti\u0002mizes the layer thicknesses, and a second that\r
+uses fixed layer thicknesses and optimizes each\r
+layer’s refractive index.\r
+Figure 2: a) A spaceplate consisting of 27 al\u0002ternating layers of Si (black) and SiO2 (grey)\r
+with a total thickness of 7.6 µm, which is sur\u0002rounded by air. The layers are drawn to scale\r
+with respect to the scale bar (2 µm). b) The\r
+transmission phase of the device fit to the ex\u0002pected output phase of an ideal spaceplate with\r
+an effective advance of deff = 2.6 mm. It be\u0002haves as a spaceplate with a compression factor\r
+of R = 340 for NA = 0.017 (up to 1° — the\r
+unshaded region). c) The normalized transmit\u0002tance and reflectance of the spaceplate. This de\u0002vice has an angle-dependent transmission profile,\r
+with a minimum insertion loss of 3.3 dB at an\r
+incident angle of 1°. d) Analytic Fourier optics\r
+propagation is used to find the intensity |E|\r
+2 of a\r
+focusing Gaussian beam (waist of 30 µm, diver\u0002gence of 0.94°) propagating in free space (FP)\r
+and after propagating through the metamaterial\r
+spaceplate (SP) from left to right. e) Beam cross\r
+section along the vertical dashed lines in d).\r
+The first approach considers a structure of al\u0002ternating layers of silicon (n = 3.48) and silica\r
+(n = 1.44). The structure is surrounded on both\r
+sides by air (n = 1). Here, we set a fixed num\u0002ber of thin-film layers and the thicknesses of the\r
+individual layers are used as the optimization pa\u0002rameters. Figure 2 illustrates a resulting device\r
+consisting of 27 layers optimized for operation\r
+3
+
+for a maximum half-angle of 1° (NA = 0.017).\r
+The device is 7.6 µm thick and replaces propa\u0002gation for 2.6 mm, corresponding to a compres\u0002sion factor of R = 340. This value is the largest\r
+observed in any study. It has a maximum inser\u0002tion loss of only 3.3 dB over its designated an\u0002gular operating bandwidth. Figure 2b gives the\r
+imparted phase of the device (blue line), which\r
+fits well to the ideal spaceplate curve (dashed\r
+line, given by Eq. 1). This device has a Strehl\r
+ratio of S = 0.9992, far above diffraction-limited\r
+performance.\r
+To further probe the potential performance\r
+of the thin-film multilayer stack platform as a\r
+spaceplate, we explored the parameter space in\r
+a thorough series of simulations. Though a di\u0002rect search of this type is not in any sense ex\u0002haustive, its results can be instructive in drawing\r
+certain conclusions, as we shall see. In our study,\r
+for a given number of layers ranging from 9 – 29,\r
+we swept over targeted compression factors from\r
+Rtarget = 2 – 60 and explored devices with five\r
+NAs: 0.087, 0.17, 0.26, 0.34, and 0.42, corre\u0002sponding to maximum half-angles of incidence\r
+of 5°, 10°, 15°, 20° and 25°, respectively.\r
+The results from this study are summarized in\r
+Fig 3. Figure 3a shows the maximum R obtained\r
+using the optimization procedure outlined above\r
+as a function of the device’s NA independent of\r
+the number of layers. As mentionned above, the\r
+largest compression factor, R = 340, is obtained\r
+for devices with the smallest NA. Conversely, for\r
+the largest NA (NA = 0.43, corresponding to an\r
+acceptance half-angle of 25°), we obtain R = 5.5\r
+in a 1.61 µm-thick device.\r
+Figure 3b contains a summary of the perfor\u0002mance of multilayer stacks comprising only 13\r
+layers as a function of Rtarget for a range of NAs.\r
+We observe a clear tradeoff between S and R\r
+of a spaceplate for a given NA. Conversely, for\r
+a given R, a higher NA results in lower device\r
+Strehl ratio. Though we do not reproduce it\r
+here, this trend holds for all optimized devices\r
+for every number of layers we explored (9, 11,\r
+..., 27, 29 layers).\r
+In Fig. 3d, we explore the impact of the total\r
+number of layers on the performance of the de\u0002vice. Here, we fix the NA to 0.17, and optimize\r
+devices for a range of Rtarget and for a number\r
+of layers ranging from 9 to 29. Increasing the\r
+number of layers enables devices with better per\u0002formance and higher compression factors, which\r
+makes intuitive sense as doing so expands the\r
+space of possible devices. Though it is not shown\r
+here, we note that this increase does not always\r
+substantially improve the Strehl ratio, which we\r
+Figure 3: a) The maximum observed compres\u0002sion factor R as a function of NA of any space\u0002plate with 9, 11, ..., 27 or 29 layers. The com\u0002pression factor decreases with increasing numer\u0002ical apertures. b) The Strehl ratio S as a func\u0002tion of Rtarget for devices with acceptance angles\r
+of 5°, 10°, 15°, 20°, and 25° (NA = 0.09, 0.17,\r
+0.26, 0.34 and 0.42, respectively). Devices with\r
+S ≥ 0.8 (dashed line) are considered diffraction\r
+limited. c) Compression factor as a function of\r
+the thickness of layer 2 of the device in Fig 2.\r
+d) R/Rtarget as a function of the targeted com\u0002pression factor Rtarget for devices formed of 9,\r
+11, ..., 27, 29 layers for NA = 0.17. Increasing\r
+the number of layers enables devices with higher\r
+compression factors. This improvement plateaus\r
+for devices with more than 17 layers.\r
+4
+
+attribute to challenges with retrieving the global\r
+maximum within the growing parameter spaces.\r
+In Fig. 3c, we show that for a spaceplate with\r
+a given compression factor R, when increasing\r
+the thickness of any one layer, the compression\r
+factor is roughly periodic. If the thickness of the\r
+layer is increased enough, the compression fac\u0002tor will return to approximately the same value\r
+it had before the layer thickness increase. This\r
+means there is wide latitude to make the space\u0002plate thicker without substantially decreasing its\r
+performance. The periodicity suggests that the\r
+optimization is non-convex and so it is not sur\u0002prising that the global maximum was not always\r
+found.\r
+Our search yielded a few other qualitative ob\u0002servations of interest. First, our optimization\r
+procedure favoured devices with an odd num\u0002ber of layers, and where the outermost layers\r
+had a higher refractive index. Additionally, de\u0002vices optimized for operation with p-polarized\r
+light tended to yield higher compression factors.\r
+In our second approach to optimizing the\r
+spaceplate structures, we fix the total number of\r
+layers and their respective thicknesses and use\r
+the refractive indices of the layers as the opti\u0002mization parameters. This approach is similar\r
+to the one explored in previous work featuring a\r
+different non-local operation in a thin-film multi\u0002layer stack [11]. Here, we set the thickness of 101\r
+individual layers to 5 nm for a total device thick\u0002ness of 505 nm, and we confine the refractive in\u0002dex to a realistic range for dielectric materials\r
+at optical frequencies (n = 1 – 4). Our search\r
+yielded a device with a maximum compression\r
+factor of R = 6.4 (Fig. 4a). We also then re\u0002peat this procedure with the same parameters\r
+but expanding the range of allowed refractive in\u0002dices to include any positive value. This range\r
+explicitly includes materials for which n < 1, so\u0002called epsilon-near-zero media [18, 19]. Though\r
+this optimization yields less feasible devices, it\r
+may provide information on the ultimate perfor\u0002mance of spaceplates. Here, our search yielded\r
+a device with a maximum compression factor of\r
+R = 80 for NA = 0.26, with refractive indices\r
+ranging from n = 0.2 to n = 14 (Fig. 4).\r
+Figure 4: a) A spaceplate device with R = 6.4\r
+designed by optimizing the refractive index of\r
+thin layers. Here, the index is bound within 1 <\r
+n < 4. b) A spaceplate with R = 80, where n\r
+is bound to positive values during optimization.\r
+Here, the resulting refractive index ranges 0.2 to\r
+14. c) The transmission phases of the devices in\r
+(a) and (b) as a function of incident angle, and\r
+their respective fits to ideal spaceplate profiles.\r
+d) The normalized transmittance of the devices.\r
+Our study of the first approach suggests that\r
+the maximum compression factor is limited by\r
+the NA of the device. For example, for devices\r
+with an identical S and number of layers, reduc\u0002ing the NA from 0.26 to 0.17 had the effect of\r
+nearly doubling R from 9.6 to 18.0. This ob\u0002servation echoes a recent finding that the total\r
+effective propagation distance deff of resonator\u0002based spaceplates is limited by the NA [9]. De\u0002spite this limit, we find that spaceplates based\r
+on this platform are shown to enable diffraction\u0002limited operation with record high compression\r
+factors for large numerical apertures.\r
+We had expected the second approach to yield\r
+devices with larger compression factors since it\r
+considered a larger parameter space with ac\u00025
+
+cess to many more degrees of freedom. How\u0002ever, the best compression factor obtained by\r
+this approach, R = 6.4 fell short of the solu\u0002tion found in the previous search for NA = 0.26,\r
+which yielded a maximum compression factor of\r
+R = 11.5. We suspect that the dramatic in\u0002crease in optimization parameters hampered lo\u0002cating the global maximum for this class of de\u0002vices. Nevertheless, increasing the range of al\u0002lowable indices further increased the compres\u0002sion factor from R = 6.4 to 80, suggesting that\r
+R may also be limited by index contrast.\r
+In summary, we have successfully inversely\r
+designed high-performing spaceplates based on\r
+multilayer thin-film stacks. We observed trade\u0002offs between the number of layers, NA, compres\u0002sion factor R, and the degree of aberration (i.e.,\r
+the Strehl ratio). While this work was focused\r
+on monochromatic spaceplates, these tradeoffs\r
+suggest there may be similar tradeoffs with the\r
+spaceplate’s spectral bandwidth. Broadband op\u0002eration and achromatic design are topics for fu\u0002ture research. We observe signs that our gra\u0002dient ascent is non-convex which suggests that\r
+other inverse-design schemes might be even more\r
+fruitful than gradient descent and, thus, may\r
+fully capitalize on the enormous design parame\u0002ter space of the thin-film platform. Finally, while\r
+previous spaceplate designs have achieved very\r
+high R [8], this work demonstrates that even\r
+higher R can be achieved in thin-film stacks, a\r
+mature commercial fabrication platform.\r
+Methods\r
+Our optimization starts by initializing a group of\r
+200 spaceplate candidate designs, each with ran\u0002domly generated layer thicknesses or refractive\r
+indices. We pre-define the number of layers, the\r
+targeted compression factor R, and the range of\r
+incident angles of light (i.e., the NA). The code\r
+then applies the gradient descent algorithm to\r
+each layer of the spaceplate, differentiating by\r
+either the layer thickness or the refractive index\r
+to find the respective gradient. For a given can\u0002didate design, the algorithm starts by simulta\u0002neously optimising the first 3 layers, and once\r
+they are fully optimised, it includes the next\r
+layer into the simultaneous optimization process.\r
+The spaceplate performance is assessed once all\r
+of the layers have been sequentially included and\r
+optimized.\r
+The FOM is the inverse RMSE σ, as calcu\u0002lated by\r
+σ\r
+2 =\r
+1\r
+N\r
+X\r
+N\r
+i=0\r
+(φ(θi)target − φ(θi))2, (3)\r
+where N is the number of points between θ0\r
+and θmax, φ(θi) is obtained from TMM for the\r
+designed spaceplate and φ(θi)target is the phase\r
+of an ideal spaceplate with deff = Rtargetd.\r
+The incident angles range from θ0 = 0° to\r
+θmax = sin−1(NA). This FOM was maximized\r
+in the first optimisation approach which focused\r
+on layer thicknesses. In the second approach,\r
+which focused on refractive index, the FOM\r
+was changed to 1/(σ(1 − h10 log10(T)i)) where\r
+h10 log10(T)i is the insertion loss in dB averaged\r
+over angle across the NA of the device. In this\r
+approach, the total number of layers is substan\u0002tially larger than in the devices explored previ\u0002ously. This optimization approach is much more\r
+numerically cumbersome and so we are forced\r
+to iterate over fewer parameters. Consequently\r
+we optimize a single candidate device at a time\r
+rather than a swarm of 200.\r
+Author contributions\r
+OR and JSL conceived the basic idea for this\r
+work. JTRP and OR performed the numerical\r
+calculations. JTRP and OR analysed the nu\u0002merical results. RWB and JSL supervised the\r
+research and the development of the manuscript.\r
+JTRP wrote the first draft of the manuscript,\r
+6
+
+and all authors subsequently took part in the\r
+revision process and approved the final copy of\r
+the manuscript. Portions of this work were pre\u0002sented at Frontiers Washington, DC in 2019 [20].\r
+Acknowledgements\r
+The authors thank Marc-André Renaud for pro\u0002gramming advice, and Víctor J. López-Pastor\r
+and Ali H. Alhulaymi for helpful discussions.\r
+The authors acknowledge support from the\r
+Transformative Quantum Technologies program\r
+of the Canada First Research Excellence Fund,\r
+the Canada Research Chairs Program, and\r
+the Natural Sciences and Engineering Research\r
+Council of Canada.\r
+References\r
+[1] Yu, N.; Genevet, P.; Kats, M. A.; Aieta, F.; Teti\u0002enne, J.-P.; Capasso, F.; Gaburro, Z. Science 2011,\r
+334, 333–337.\r
+[2] Yu, N.; Capasso, F. Nature Materials 2014, 13,\r
+139–150.\r
+[3] Chen, W. T.; Zhu, A. Y.; Capasso, F. Nature Re\u0002views Materials 2020, 5, 604–620.\r
+[4] Khorasaninejad, M.; Chen, W. T.; Devlin, R. C.;\r
+Oh, J.; Zhu, A. Y.; Capasso, F. Science 2016, 352,\r
+1190–1194.\r
+[5] Khorasaninejad, M.; Capasso, F. Science Dec.\r
+2017, 358, eaam8100.\r
+[6] Liang, H.; Lin, Q.; Xie, X.; Sun, Q.; Wang, Y.;\r
+Zhou, L.; Liu, L.; Yu, X.; Zhou, J.; Krauss, T. F.;\r
+Li, J. Nano Letters 2018, 18, 4460–4466.\r
+[7] Reshef, O.; DelMastro, M. P.; Bearne, K. K. M.;\r
+Alhulaymi, A. H.; Giner, L.; Boyd, R. W.; Lundeen,\r
+J. S. Nature Communications 2021, 12, 3512.\r
+[8] Guo, C.; Wang, H.; Fan, S. Optica 2020, 7, 1133.\r
+[9] Chen, A.; Monticone, F. ACS Photonics 2021, 8,\r
+1439–1447.\r
+[10] Castaldi, G.; Galdi, V.; Alù, A.; Engheta, N. Phys\u0002ical Review Letters 2012, 108, 063902.\r
+[11] Silva, A.; Monticone, F.; Castaldi, G.; Galdi, V.;\r
+Alu, A.; Engheta, N. Science Jan. 2014, 343,\r
+160–163.\r
+[12] Kwon, H.; Sounas, D.; Cordaro, A.; Polman, A.;\r
+Alù, A. Physical Review Letters 2018, 121, 173004.\r
+[13] Cordaro, A.; Kwon, H.; Sounas, D.; Koenderink,\r
+A. F.; Alù, A.; Polman, A. Nano Letters 2019, 19,\r
+8418–8423.\r
+[14] Presutti, F.; Monticone, F. Optica 2020, 7, 624.\r
+[15] Fleury, R.; Monticone, F.; Alù, A. Physical Review\r
+Applied 2015, 4, 037001.\r
+[16] Bos, A. V. D. Aberration and the Strehl ratio; 2000.\r
+[17] Yariv, A.; Yeh, P., Photonics: Optical electronics in\r
+modern communications, Sixth; Oxford University\r
+Press: New York, NY, 2007.\r
+[18] Alù, A.; Silveirinha, M. G.; Salandrino, A.; En\u0002gheta, N. Physical Review B 2007, 75, 155410.\r
+[19] Reshef, O.; Leon, I. D.; Alam, M. Z.; Boyd, R. W.\r
+Nature Reviews Materials 2019, 4, 535–551.\r
+[20] Pagé, J.; Reshef, O.; Alhulaymi, A. H.; Boyd, R.\r
+W.; Lundeen, J. S. In Frontiers in Optics / Laser\r
+Science, 2020, FTh5C.5."""
+
+[[sections]]
+number = "7"
+title = "For Table of Contents Only"
+text = "8"
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 5
+image_path = "images/image_p5_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 8
+image_path = "images/image_p8_6.png"

@@ -1,0 +1,792 @@
+equations = []
+tables = []
+full_text = """
+arXiv:gr-qc/0009013v1 5 Sep 2000\r
+The warp drive: hyper-fast travel\r
+within general relativity.\r
+Miguel Alcubierre\r
+∗\r
+Department of Physics and Astronomy, University of Wales,\r
+College of Cardiff, P.O. Box 913, Cardiff CF1 3YB, UK.\r
+PACS numbers : 0420, 0490.\r
+Abstract\r
+It is shown how, within the framework of general relativity and without the intro\u0002duction of wormholes, it is possible to modify a spacetime in a way that allows a\r
+spaceship to travel with an arbitrarily large speed. By a purely local expansion of\r
+spacetime behind the spaceship and an opposite contraction in front of it, motion\r
+faster than the speed of light as seen by observers outside the disturbed region is\r
+possible. The resulting distortion is reminiscent of the “warp drive” of science fic\u0002tion. However, just as it happens with wormholes, exotic matter will be needed in\r
+order to generate a distortion of spacetime like the one discussed here.\r
+Published in: Class. Quantum Grav. 11-5, L73-L77 (1994).\r
+∗Present address: Max Planck Institut f¨ur Gravitationsphysik, Albert Einstein Institut, Schlaatzweg 1,\r
+D-14473 Potsdam, Germany.\r
+1
+
+2\r
+When we study special relativity we learn that nothing can travel faster than the\r
+speed of light. This fact is still true in general relativity, though in this case one must be\r
+somewhat more precise: in general relativity, nothing can travel locally faster than the\r
+speed of light.\r
+Since our everyday experience is based on an Euclidean space, it is natural to believe\r
+that if nothing can travel locally faster than light then given two places that are separated\r
+by a spatial proper distance D, it is impossible to make a round trip between them in\r
+a time less than 2D/c (where c is the speed of light), as measured by an observer\r
+that remains always at the place of departure. Of course, from our knowledge of special\r
+relativity we know that the time measured by the person making the round trip can be\r
+made arbitrarily small if his (or her) speed approaches that of light. However, the fact\r
+that within the framework of general relativity and without the need to introduce non\u0002trivial topologies (wormholes), one can actually make such a round trip in an arbitrarily\r
+short time as measured by an observer that remained at rest will probably come as a\r
+surprise to many people.\r
+Here I wish to discuss a simple example that shows how this can be done. The\r
+basic idea can be more easily understood if we think for a moment in the inflationary\r
+phase of the early Universe, and consider the relative speed of separation of two comoving\r
+observers. It is easy to convince oneself that, if we define this relative speed as the rate\r
+of change of proper spatial distance over proper time, we will obtain a value that is much\r
+larger than the speed of light. This doesn’t mean that our observers will be travelling\r
+faster than light: they always move inside their local light-cones. The enormous speed of\r
+separation comes from the expansion of spacetime itself. 1\r
+1 This superluminal speed is very often a source of confusion. It is also a very good example of how\r
+an intuition based on special relativity can be deceiving when one deals with dynamical spacetimes.
+
+3\r
+The previous example shows how one can use an expansion of spacetime to move away\r
+from some object at an arbitrarily large speed. In the same way, one can use a contraction\r
+of spacetime to approach an object at any speed. This is the basis of the model for hyper\u0002fast space travel that I wish to present here: create a local distortion of spacetime that\r
+will produce an expansion behind the spaceship, and an opposite contraction ahead of\r
+it. In this way, the spaceship will be pushed away from the Earth and pulled towards a\r
+distant star by spacetime itself. One can then invert the process to come back to Earth,\r
+taking an arbitrarily small time to complete the round trip.\r
+I will now introduce a simple metric that has precisely the characteristics mentioned\r
+above. I will do this using the language of the 3+1 formalism of general relativity [1, 2],\r
+because it will permit a clear interpretation of the results. In this formalism, spacetime\r
+is described by a foliation of spacelike hypersurfaces of constant coordinate time t. The\r
+geometry of spacetime is then given in terms of the following quantities: the 3-metric γij\r
+of the hypersurfaces, the lapse function α that gives the interval of proper time between\r
+nearby hypersurfaces as measured by the “Eulerian” observers (those whose four-velocity\r
+is normal to the hypersurfaces), and the shift vector β\r
+i\r
+that relates the spatial coordinate\r
+systems on different hypersurfaces. Using these quantities, the metric of spacetime can\r
+be written as: 2\r
+ds2 = − dτ 2 = gαβ dxαdxβ\r
+= −\r
+\u0010\r
+α\r
+2 − βi βi\r
+\u0011\r
+dt2 + 2 βi dxidt + γij dxidxj. (1)\r
+Notice that as long as the metric γij is positive definite for all values of t (as it\r
+should in order for it to be a spatial metric), the spacetime is guaranteed to be globally\r
+2\r
+In the following greek indices will take the values (0,1,2,3) and latin indices the values (1,2,3).
+
+4\r
+hyperbolic. Any spacetime that can be described in the language of the 3+1 formalism\r
+will therefore have no closed causal curves.\r
+Let us now assume that our spaceship moves along the x axis of a cartesian coordi\u0002nate system. We want to find a metric that will “push” the spaceship along a trajectory\r
+described by an arbitrary function of time xs(t) . A metric that has this property is given\r
+by ( G = c = 1 ) :\r
+α = 1 , (2)\r
+β\r
+x = − vs (t) f (rs (t)) , (3)\r
+β\r
+y = βz = 0 , (4)\r
+γij = δij , (5)\r
+where:\r
+vs (t) = dxs (t)\r
+dt , rs (t) = \u0014\u0010\r
+x − xs (t)\r
+\u00112\r
++ y\r
+2 + z2\r
+\u00151/2\r
+,\r
+and where f is the function:\r
+f (rs) =\r
+tanh \u0010σ (rs + R)\r
+\u0011\r
+− tanh \u0010σ (rs − R)\r
+\u0011\r
+2 tanh (σ R)\r
+, (6)\r
+with R > 0 and σ > 0 arbitrary parameters. Notice that for large σ the function f(r)\r
+approaches very rapidly a “top hat” function:\r
+limσ→∞f (rs) =\r
+\r
+\r
+\r
+1 for rs ∈ [−R, R] ,\r
+0 otherwise .\r
+(7)\r
+With the above definitions, the metric (1) can be rewritten as:\r
+ds2 = −dt2 +\r
+\u0010\r
+dx − vs f (rs) dt\u00112\r
++ dy2 + dz2. (8)
+
+5\r
+It is easy to understand the geometry of our spacetime from the previous expressions.\r
+First, from equation (5) we see that the 3-geometry of the hypersurfaces is always flat.\r
+Moreover, the fact that the lapse is given by α = 1 implies that the timelike curves\r
+normal to these hypersurfaces are geodesics, i.e., the Eulerian observers are in free fall.\r
+Spacetime, however, is not flat due to the presence of a non-uniform shift. Nevertheless,\r
+since the shift vector vanishes for rs ≫ R , we see that at any time t spacetime will be\r
+essentially flat everywhere except within a region with a radius of order R , centered at\r
+the point (xs(t), 0, 0) .\r
+Since the 3-geometry of the hypersurfaces is flat, the information about the curvature\r
+of spacetime will be contained in the extrinsic curvature tensor Kij . This tensor describes\r
+how the three-dimensional hypersurfaces are embedded in four-dimensional spacetime,\r
+and is defined as:\r
+Kij =\r
+1\r
+2 α\r
+ \r
+Di βj + Dj βi −\r
+∂gij\r
+∂t !\r
+, (9)\r
+where Di denotes covariant differentiation with respect to the 3-metric γij . From the\r
+form of α and γij , is not difficult to see that this expression reduces to:\r
+Kij =\r
+1\r
+2\r
+\u0012\r
+∂i βj + ∂j βi\r
+\u0013\r
+, (10)\r
+The expansion θ of the volume elements associated with the Eulerian observers is\r
+given in terms of Kij as:\r
+θ = − α Tr K . (11)\r
+From this expression it is not difficult to show that:\r
+θ = vs\r
+xs\r
+rs\r
+df\r
+drs\r
+. (12)\r
+Figure 1 shows a graph of θ as a function of x and ρ = (y\r
+2 + z2\r
+)\r
+1/2\r
+, in the particu\u0002lar case when σ = 8 and R = vs = 1 . The center of the perturbation
+
+6\r
+corresponds to the spaceship’s position xs (t). We clearly see how the volume elements\r
+are expanding behind the spaceship, and contracting in front of it.\r
+To prove that the trajectory of the spaceship is indeed a timelike curve, regardless of\r
+the value of vs(t) , we substitute x = xs(t) in the metric (8). It is then easy to see that\r
+for the spaceship’s trajectory we will have:\r
+dτ = dt . (13)\r
+This implies not only that the spaceship moves on a timelike curve, but also that its\r
+proper time is equal to coordinate time. Since coordinate time is also equal to the proper\r
+time of distant observers in the flat region, we conclude that the spaceship suffers no time\r
+dilation as it moves. It is also straightforward to prove that the spaceship moves on a\r
+geodesic. This means that even though the coordinate acceleration can be an arbitrary\r
+function of time, the proper acceleration along the spaceship’s path will always be zero.\r
+Moreover, it is not difficult to convince oneself that when the parameter σ is large, the\r
+tidal forces in the immediate vicinity of the spaceship are very small (provided that R is\r
+larger than the size of the spaceship). Of course, in the region where rs ≃ R the tidal\r
+forces can be very large indeed.\r
+To see how one can use this metric to make a round trip to a distant star in an\r
+arbitrary small time, let us consider the following situation: Two stars A and B are\r
+separated by a distance D in flat spacetime. At time t0 , a spaceship starts to move away\r
+from A at a speed v < 1 using its rocket engines. The spaceship then stops at a distance\r
+d away from A . I will assume that d is such that:\r
+R ≪ d ≪ D . (14)\r
+It is at this point that a disturbance of spacetime of the type described, centered
+
+7\r
+at the spaceship’s position, first appears. This disturbance is such that the spaceship is\r
+pushed away from A with a coordinate acceleration that changes rapidly from 0 to a\r
+constant value a . Since the spaceship is initially at rest ( vs = 0 ), the disturbance will\r
+develop smoothly from flat spacetime (see equation (8)).\r
+When the spaceship is halfway between A and B , the disturbance is modified in such\r
+a way that the coordinate acceleration changes rapidly from a to −a . If the coordinate\r
+acceleration in the second part of the trip is arranged in such a way as to be the opposite\r
+to the one we had in the first part, then the spaceship will eventually find itself at rest at a\r
+distance d away from B , at which time the disturbance of spacetime will disappear (since\r
+again vs = 0 ). The journey is now completed by moving again through flat spacetime\r
+at a speed v.\r
+3\r
+If each of the changes in acceleration are very rapid, the total coordinate time T\r
+elapsed in the one way trip will be essentially given by:\r
+T = 2\r
+\r
+\r
+d\r
+v\r
++\r
+s\r
+D − 2d\r
+a\r
+\r
+ . (15)\r
+Since both stars remain in flat space, their proper time is equal to coordinate time. The\r
+proper time measured on the spaceship, on the other hand, will be:\r
+τ = 2\r
+\r
+\r
+d\r
+γ v\r
++\r
+s\r
+D − 2d\r
+a\r
+\r
+ , (16)\r
+with γ =\r
+\u0010\r
+1 − v\r
+2\r
+\u0011−1/2\r
+. We see then that the time dilation comes only from the initial\r
+and final stages of the trip, when the spaceship moves through flat spacetime. Now, if\r
+3The two constant-velocity legs at the beginning and end of the journey are not crucial for the argument\r
+that I wish to present here. I only introduce them in order to guarantee that the two stars will remain\r
+unaffected by the disturbance of spacetime ( R ≪ d ), and can therefore be used as unperturbed “clocks”\r
+with which to compare the proper time on board the spaceship.
+
+8\r
+condition (14) holds, we will have:\r
+τ ≃ T ≃ 2\r
+s\r
+D\r
+a\r
+(17)\r
+It is now clear that T can be made as small as we want by increasing the value of a . Since\r
+a round trip will only take twice as long, we find that we can be back in star A after an\r
+arbitrarily small proper time, both from the point of view of the spaceship and from the\r
+point of view of the star. The spaceship will then be able to travel much faster than the\r
+speed of light. However, as we have seen, it will always remain on a timelike trajectory,\r
+that is, inside its local light-cone: light itself is also being pushed by the distortion of\r
+spacetime. A propulsion mechanism based on such a local distortion of spacetime just\r
+begs to be given the familiar name of the “warp drive” of science fiction.\r
+The metric I have just described has one important drawback, however: it violates\r
+all three energy conditions (weak, dominant and strong [3]). Both the weak and the\r
+dominant energy conditions require the energy density to be positive for all observers.\r
+If one calculates the Einstein tensor from the metric (8), and uses the fact that the\r
+four-velocity of the Eulerian observers is given by:\r
+n\r
+α =\r
+1\r
+α\r
+\u0010\r
+1 , −β\r
+i\r
+\u0011\r
+, nα = −\r
+\u0010\r
+α , 0\r
+\u0011\r
+, (18)\r
+then one can show that these observers will see an energy density given by:\r
+T\r
+αβ nα nβ = α2 T0 0 =\r
+1\r
+8π\r
+G\r
+0 0 = −\r
+1\r
+8π\r
+v\r
+2\r
+s ρ\r
+2\r
+4 rc\r
+2\r
+ \r
+df\r
+drs\r
+!2\r
+. (19)\r
+The fact that this expression is everywhere negative implies that the weak and dominant\r
+energy conditions are violated. In a similar way one can show that the strong energy\r
+condition is also violated.
+
+9\r
+We see then that, just as it happens with wormholes, one needs exotic matter to\r
+travel faster than the speed of light. However, even if one believes that exotic matter is\r
+forbidden classically, it is well known that quantum field theory permits the existence of\r
+regions with negative energy densities in some special circumstances (as, for example, in\r
+the Casimir effect [4]). The need of exotic matter therefore doesn’t necessarily eliminate\r
+the possibility of using a spacetime distortion like the one described above for hyper-fast\r
+interstellar travel.\r
+As a final comment, I will just mention the fact that even though the spacetime\r
+described by the metric (8) is globally hyperbolic, and hence contains no closed causal\r
+curves, it is probably not very difficult to construct a spacetime that does contain such\r
+curves using a similar idea to the one presented here.\r
+The author wishes to thank Bernard F. Schutz and Gareth S. Jones for many useful\r
+comments.\r
+References\r
+[1] C.W. Misner, K.S. Thorne and J.A. Wheeler, Gravitation, W.H. Freeman, 1973.\r
+[2] J.W. York, “Kinematics and Dynamics of General Relativity” in: Sources of Grav\u0002itational Radiation, ed. L.L. Smarr, pp. 83-126, Cambridge University Press, 1979.\r
+[3] S.W. Hawking and G.F.R. Ellis, The Large Scale Structure of Spacetime, Cambridge\r
+University Press, 1973.\r
+[4] B.S. DeWitt, in General Relativity: An Einstein Centenary Survey, edited by S.W.\r
+Hawking and W. Israel, Cambridge University Press, Cambridge, 1979.
+
+10\r
+Figure 1: Expansion of the normal volume elements."""
+
+[metadata]
+title = "arxiv gr qc0009013 alcubierre 2000 warp drive hyperfast travel"
+authors = ["Unknown"]
+year = 2000
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:gr-qc/0009013v1 5 Sep 2000\r
+The warp drive: hyper-fast travel\r
+within general relativity.\r
+Miguel Alcubierre\r
+∗\r
+Department of Physics and Astronomy, University of Wales,\r
+College of Cardiff, P.O. Box 913, Cardiff CF1 3YB, UK.\r
+PACS numbers : 0420, 0490.\r
+Abstract\r
+It is shown how, within the framework of general relativity and without the intro\u0002duction of wormholes, it is possible to modify a spacetime in a way that allows a\r
+spaceship to travel with an arbitrarily large speed. By a purely local expansion of\r
+spacetime behind the spaceship and an opposite contraction in front of it, motion\r
+faster than the speed of light as seen by observers outside the disturbed region is\r
+possible. The resulting distortion is reminiscent of the “warp drive” of science fic\u0002tion. However, just as it happens with wormholes, exotic matter will be needed in\r
+order to generate a distortion of spacetime like the one discussed here.\r
+Published in: Class. Quantum Grav. 11-5, L73-L77 (1994).\r
+∗Present address: Max Planck Institut f¨ur Gravitationsphysik, Albert Einstein Institut, Schlaatzweg 1,\r
+D-14473 Potsdam, Germany.\r
+1
+
+2\r
+When we study special relativity we learn that nothing can travel faster than the\r
+speed of light. This fact is still true in general relativity, though in this case one must be\r
+somewhat more precise: in general relativity, nothing can travel locally faster than the\r
+speed of light.\r
+Since our everyday experience is based on an Euclidean space, it is natural to believe\r
+that if nothing can travel locally faster than light then given two places that are separated\r
+by a spatial proper distance D, it is impossible to make a round trip between them in\r
+a time less than 2D/c (where c is the speed of light), as measured by an observer\r
+that remains always at the place of departure. Of course, from our knowledge of special\r
+relativity we know that the time measured by the person making the round trip can be\r
+made arbitrarily small if his (or her) speed approaches that of light. However, the fact\r
+that within the framework of general relativity and without the need to introduce non\u0002trivial topologies (wormholes), one can actually make such a round trip in an arbitrarily\r
+short time as measured by an observer that remained at rest will probably come as a\r
+surprise to many people.\r
+Here I wish to discuss a simple example that shows how this can be done. The\r
+basic idea can be more easily understood if we think for a moment in the inflationary\r
+phase of the early Universe, and consider the relative speed of separation of two comoving\r
+observers. It is easy to convince oneself that, if we define this relative speed as the rate\r
+of change of proper spatial distance over proper time, we will obtain a value that is much\r
+larger than the speed of light. This doesn’t mean that our observers will be travelling\r
+faster than light: they always move inside their local light-cones. The enormous speed of\r
+separation comes from the expansion of spacetime itself. 1\r
+1 This superluminal speed is very often a source of confusion. It is also a very good example of how\r
+an intuition based on special relativity can be deceiving when one deals with dynamical spacetimes.
+
+3\r
+The previous example shows how one can use an expansion of spacetime to move away\r
+from some object at an arbitrarily large speed. In the same way, one can use a contraction\r
+of spacetime to approach an object at any speed. This is the basis of the model for hyper\u0002fast space travel that I wish to present here: create a local distortion of spacetime that\r
+will produce an expansion behind the spaceship, and an opposite contraction ahead of\r
+it. In this way, the spaceship will be pushed away from the Earth and pulled towards a\r
+distant star by spacetime itself. One can then invert the process to come back to Earth,\r
+taking an arbitrarily small time to complete the round trip.\r
+I will now introduce a simple metric that has precisely the characteristics mentioned\r
+above. I will do this using the language of the 3+1 formalism of general relativity [1, 2],\r
+because it will permit a clear interpretation of the results. In this formalism, spacetime\r
+is described by a foliation of spacelike hypersurfaces of constant coordinate time t. The\r
+geometry of spacetime is then given in terms of the following quantities: the 3-metric γij\r
+of the hypersurfaces, the lapse function α that gives the interval of proper time between\r
+nearby hypersurfaces as measured by the “Eulerian” observers (those whose four-velocity\r
+is normal to the hypersurfaces), and the shift vector β\r
+i\r
+that relates the spatial coordinate\r
+systems on different hypersurfaces. Using these quantities, the metric of spacetime can\r
+be written as: 2\r
+ds2 = − dτ 2 = gαβ dxαdxβ\r
+= −\r
+\u0010\r
+α\r
+2 − βi βi\r
+\u0011\r
+dt2 + 2 βi dxidt + γij dxidxj. (1)\r
+Notice that as long as the metric γij is positive definite for all values of t (as it\r
+should in order for it to be a spatial metric), the spacetime is guaranteed to be globally\r
+2\r
+In the following greek indices will take the values (0,1,2,3) and latin indices the values (1,2,3).
+
+4\r
+hyperbolic. Any spacetime that can be described in the language of the 3+1 formalism\r
+will therefore have no closed causal curves.\r
+Let us now assume that our spaceship moves along the x axis of a cartesian coordi\u0002nate system. We want to find a metric that will “push” the spaceship along a trajectory\r
+described by an arbitrary function of time xs(t) . A metric that has this property is given\r
+by ( G = c = 1 ) :\r
+α = 1 , (2)\r
+β\r
+x = − vs (t) f (rs (t)) , (3)\r
+β\r
+y = βz = 0 , (4)\r
+γij = δij , (5)\r
+where:\r
+vs (t) = dxs (t)\r
+dt , rs (t) = \u0014\u0010\r
+x − xs (t)\r
+\u00112\r
++ y\r
+2 + z2\r
+\u00151/2\r
+,\r
+and where f is the function:\r
+f (rs) =\r
+tanh \u0010σ (rs + R)\r
+\u0011\r
+− tanh \u0010σ (rs − R)\r
+\u0011\r
+2 tanh (σ R)\r
+, (6)\r
+with R > 0 and σ > 0 arbitrary parameters. Notice that for large σ the function f(r)\r
+approaches very rapidly a “top hat” function:\r
+limσ→∞f (rs) =\r
+\r
+\r
+\r
+1 for rs ∈ [−R, R] ,\r
+0 otherwise .\r
+(7)\r
+With the above definitions, the metric (1) can be rewritten as:\r
+ds2 = −dt2 +\r
+\u0010\r
+dx − vs f (rs) dt\u00112\r
++ dy2 + dz2. (8)
+
+5\r
+It is easy to understand the geometry of our spacetime from the previous expressions.\r
+First, from equation (5) we see that the 3-geometry of the hypersurfaces is always flat.\r
+Moreover, the fact that the lapse is given by α = 1 implies that the timelike curves\r
+normal to these hypersurfaces are geodesics, i.e., the Eulerian observers are in free fall.\r
+Spacetime, however, is not flat due to the presence of a non-uniform shift. Nevertheless,\r
+since the shift vector vanishes for rs ≫ R , we see that at any time t spacetime will be\r
+essentially flat everywhere except within a region with a radius of order R , centered at\r
+the point (xs(t), 0, 0) .\r
+Since the 3-geometry of the hypersurfaces is flat, the information about the curvature\r
+of spacetime will be contained in the extrinsic curvature tensor Kij . This tensor describes\r
+how the three-dimensional hypersurfaces are embedded in four-dimensional spacetime,\r
+and is defined as:\r
+Kij =\r
+1\r
+2 α\r
+ \r
+Di βj + Dj βi −\r
+∂gij\r
+∂t !\r
+, (9)\r
+where Di denotes covariant differentiation with respect to the 3-metric γij . From the\r
+form of α and γij , is not difficult to see that this expression reduces to:\r
+Kij =\r
+1\r
+2\r
+\u0012\r
+∂i βj + ∂j βi\r
+\u0013\r
+, (10)\r
+The expansion θ of the volume elements associated with the Eulerian observers is\r
+given in terms of Kij as:\r
+θ = − α Tr K . (11)\r
+From this expression it is not difficult to show that:\r
+θ = vs\r
+xs\r
+rs\r
+df\r
+drs\r
+. (12)\r
+Figure 1 shows a graph of θ as a function of x and ρ = (y\r
+2 + z2\r
+)\r
+1/2\r
+, in the particu\u0002lar case when σ = 8 and R = vs = 1 . The center of the perturbation
+
+6\r
+corresponds to the spaceship’s position xs (t). We clearly see how the volume elements\r
+are expanding behind the spaceship, and contracting in front of it.\r
+To prove that the trajectory of the spaceship is indeed a timelike curve, regardless of\r
+the value of vs(t) , we substitute x = xs(t) in the metric (8). It is then easy to see that\r
+for the spaceship’s trajectory we will have:\r
+dτ = dt . (13)\r
+This implies not only that the spaceship moves on a timelike curve, but also that its\r
+proper time is equal to coordinate time. Since coordinate time is also equal to the proper\r
+time of distant observers in the flat region, we conclude that the spaceship suffers no time\r
+dilation as it moves. It is also straightforward to prove that the spaceship moves on a\r
+geodesic. This means that even though the coordinate acceleration can be an arbitrary\r
+function of time, the proper acceleration along the spaceship’s path will always be zero.\r
+Moreover, it is not difficult to convince oneself that when the parameter σ is large, the\r
+tidal forces in the immediate vicinity of the spaceship are very small (provided that R is\r
+larger than the size of the spaceship). Of course, in the region where rs ≃ R the tidal\r
+forces can be very large indeed.\r
+To see how one can use this metric to make a round trip to a distant star in an\r
+arbitrary small time, let us consider the following situation: Two stars A and B are\r
+separated by a distance D in flat spacetime. At time t0 , a spaceship starts to move away\r
+from A at a speed v < 1 using its rocket engines. The spaceship then stops at a distance\r
+d away from A . I will assume that d is such that:\r
+R ≪ d ≪ D . (14)\r
+It is at this point that a disturbance of spacetime of the type described, centered
+
+7\r
+at the spaceship’s position, first appears. This disturbance is such that the spaceship is\r
+pushed away from A with a coordinate acceleration that changes rapidly from 0 to a\r
+constant value a . Since the spaceship is initially at rest ( vs = 0 ), the disturbance will\r
+develop smoothly from flat spacetime (see equation (8)).\r
+When the spaceship is halfway between A and B , the disturbance is modified in such\r
+a way that the coordinate acceleration changes rapidly from a to −a . If the coordinate\r
+acceleration in the second part of the trip is arranged in such a way as to be the opposite\r
+to the one we had in the first part, then the spaceship will eventually find itself at rest at a\r
+distance d away from B , at which time the disturbance of spacetime will disappear (since\r
+again vs = 0 ). The journey is now completed by moving again through flat spacetime\r
+at a speed v.\r
+3\r
+If each of the changes in acceleration are very rapid, the total coordinate time T\r
+elapsed in the one way trip will be essentially given by:\r
+T = 2\r
+\r
+\r
+d\r
+v\r
++\r
+s\r
+D − 2d\r
+a\r
+\r
+ . (15)\r
+Since both stars remain in flat space, their proper time is equal to coordinate time. The\r
+proper time measured on the spaceship, on the other hand, will be:\r
+τ = 2\r
+\r
+\r
+d\r
+γ v\r
++\r
+s\r
+D − 2d\r
+a\r
+\r
+ , (16)\r
+with γ =\r
+\u0010\r
+1 − v\r
+2\r
+\u0011−1/2\r
+. We see then that the time dilation comes only from the initial\r
+and final stages of the trip, when the spaceship moves through flat spacetime. Now, if\r
+3The two constant-velocity legs at the beginning and end of the journey are not crucial for the argument\r
+that I wish to present here. I only introduce them in order to guarantee that the two stars will remain\r
+unaffected by the disturbance of spacetime ( R ≪ d ), and can therefore be used as unperturbed “clocks”\r
+with which to compare the proper time on board the spaceship.
+
+8\r
+condition (14) holds, we will have:\r
+τ ≃ T ≃ 2\r
+s\r
+D\r
+a\r
+(17)\r
+It is now clear that T can be made as small as we want by increasing the value of a . Since\r
+a round trip will only take twice as long, we find that we can be back in star A after an\r
+arbitrarily small proper time, both from the point of view of the spaceship and from the\r
+point of view of the star. The spaceship will then be able to travel much faster than the\r
+speed of light. However, as we have seen, it will always remain on a timelike trajectory,\r
+that is, inside its local light-cone: light itself is also being pushed by the distortion of\r
+spacetime. A propulsion mechanism based on such a local distortion of spacetime just\r
+begs to be given the familiar name of the “warp drive” of science fiction.\r
+The metric I have just described has one important drawback, however: it violates\r
+all three energy conditions (weak, dominant and strong [3]). Both the weak and the\r
+dominant energy conditions require the energy density to be positive for all observers.\r
+If one calculates the Einstein tensor from the metric (8), and uses the fact that the\r
+four-velocity of the Eulerian observers is given by:\r
+n\r
+α =\r
+1\r
+α\r
+\u0010\r
+1 , −β\r
+i\r
+\u0011\r
+, nα = −\r
+\u0010\r
+α , 0\r
+\u0011\r
+, (18)\r
+then one can show that these observers will see an energy density given by:\r
+T\r
+αβ nα nβ = α2 T0 0 =\r
+1\r
+8π\r
+G\r
+0 0 = −\r
+1\r
+8π\r
+v\r
+2\r
+s ρ\r
+2\r
+4 rc\r
+2\r
+ \r
+df\r
+drs\r
+!2\r
+. (19)\r
+The fact that this expression is everywhere negative implies that the weak and dominant\r
+energy conditions are violated. In a similar way one can show that the strong energy\r
+condition is also violated."""
+
+[[sections]]
+number = "9"
+title = "We see then that, just as it happens with wormholes, one needs exotic matter to"
+text = """
+travel faster than the speed of light. However, even if one believes that exotic matter is\r
+forbidden classically, it is well known that quantum field theory permits the existence of\r
+regions with negative energy densities in some special circumstances (as, for example, in\r
+the Casimir effect [4]). The need of exotic matter therefore doesn’t necessarily eliminate\r
+the possibility of using a spacetime distortion like the one described above for hyper-fast\r
+interstellar travel.\r
+As a final comment, I will just mention the fact that even though the spacetime\r
+described by the metric (8) is globally hyperbolic, and hence contains no closed causal\r
+curves, it is probably not very difficult to construct a spacetime that does contain such\r
+curves using a similar idea to the one presented here.\r
+The author wishes to thank Bernard F. Schutz and Gareth S. Jones for many useful\r
+comments.\r
+References\r
+[1] C.W. Misner, K.S. Thorne and J.A. Wheeler, Gravitation, W.H. Freeman, 1973.\r
+[2] J.W. York, “Kinematics and Dynamics of General Relativity” in: Sources of Grav\u0002itational Radiation, ed. L.L. Smarr, pp. 83-126, Cambridge University Press, 1979.\r
+[3] S.W. Hawking and G.F.R. Ellis, The Large Scale Structure of Spacetime, Cambridge\r
+University Press, 1973.\r
+[4] B.S. DeWitt, in General Relativity: An Einstein Centenary Survey, edited by S.W.\r
+Hawking and W. Israel, Cambridge University Press, Cambridge, 1979."""
+
+[[sections]]
+number = "10"
+title = "Figure 1: Expansion of the normal volume elements."
+text = ""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 5
+image_path = "images/image_p5_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 5
+image_path = "images/image_p5_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 5
+image_path = "images/image_p5_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 5
+image_path = "images/image_p5_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 5
+image_path = "images/image_p5_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 7
+image_path = "images/image_p7_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 7
+image_path = "images/image_p7_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 7
+image_path = "images/image_p7_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 7
+image_path = "images/image_p7_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 7
+image_path = "images/image_p7_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 7
+image_path = "images/image_p7_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 7
+image_path = "images/image_p7_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 8
+image_path = "images/image_p8_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 8
+image_path = "images/image_p8_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 8
+image_path = "images/image_p8_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 8
+image_path = "images/image_p8_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 8
+image_path = "images/image_p8_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 8
+image_path = "images/image_p8_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 8
+image_path = "images/image_p8_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 10
+image_path = "images/image_p10_25.png"

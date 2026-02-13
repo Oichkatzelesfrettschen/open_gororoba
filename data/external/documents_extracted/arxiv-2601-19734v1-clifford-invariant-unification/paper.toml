@@ -1,0 +1,2069 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+Towards an Action Principle Unifying the\r
+Standard Model and Gravity\r
+Pedro D. Alvarez\r
+∗1,3, Fernando Izaurieta†2\r
+, and Cristian\r
+Quinzacara\r
+‡2\r
+1Facultad de Ingenier´ıa, Universidad San Sebasti´an, General Lagos\r
+1163, Valdivia, Chile\r
+2Facultad de Ingenier´ıa, Universidad San Sebasti´an, Lientur 1457,\r
+Concepci´on, Chile\r
+3Centro de Estudios Cient´ıficos, Universidad San Sebasti´an,\r
+Avenida Arturo Prat 514, Valdivia, Chile\r
+Abstract\r
+A single geometric invariant fixes the relative normalization and struc\u0002ture of gravity, Yang–Mills theory, and fermion kinetic terms including\r
+ghost freedom in the gravitational sector without tuning. Our results es\u0002tablish a minimal geometric route to unification that does not rely on extra\r
+dimensions or symmetry breaking by hand. Unlike previous gauge–gravity\r
+constructions, the relative normalizations and ghost freedom emerge from\r
+a single Clifford–algebraic invariant, without explicit symmetry breaking.\r
+1 Introduction\r
+Two long–standing frontiers in theoretical physics aim at unifying the funda\u0002mental interactions: embedding the gauge structure of the Standard Model\r
+(SM) within a single algebraic framework, and reformulating gravity as a gauge\r
+theory. Each faces major challenges on its own, and combining them within a\r
+coherent framework has remained elusive. In this work we show that a single\r
+Clifford–algebraic invariant is sufficient to fix, simultaneously and without tun\u0002ing, the dynamics of gravity, Yang–Mills fields, and fermions, while selecting a\r
+ghost-free quadratic gravity sector.\r
+Grand unified theories (GUTs) embed the SM group SU(3)× SU(2)×U(1)\r
+into a simple symmetry such as SU(5), SO(10), orE\r
+6 [1, 2]. The chiral spinor\r
+∗E-mail pedro.alvarez@uss.cl †E-mail fernando.izaurieta@uss.cl ‡E-mail cristian.quinzacara@uss.cl\r
+1\r
+arXiv:2601.19734v1 [hep-th] 27 Jan 2026
+
+representation of SO(10) elegantly accommodates one SM family plus a right\u0002handed neutrino in a single 16-dimensional representation. Larger exceptional\r
+groups further extend this structure, linking to neutrino mass generation and\r
+charge quantization, but face persistent phenomenological issues such as pro\u0002ton decay and doublet–triplet splitting. In parallel, algebraic programs have\r
+explored whether the SM gauge and matter content could emerge naturally\r
+from deeper mathematical structures such as division algebras and Clifford\r
+modules. In particular, the octonions O, whose automorphism group is G2,\r
+connect to exceptional Lie algebras through the Freudenthal–Tits magic square\r
+and encode one SM generation’s quantum numbers within minimal ideals of\r
+C⊗H⊗O [3, 4, 5, 6, 7]. These algebraic schemes are mathematically rigid and\r
+aesthetically appealing, yet a fully predictive model encompassing dynamics,\r
+symmetry breaking, and fermion masses remains unrealized.\r
+In parallel, gauge-theoretic formulations of gravity recast Einstein’s theory\r
+in first-order form using the tetrad e\r
+a\r
+µ and spin connection ω\r
+ab\r
+µ [8]. Early\r
+works by Utiyama, Sciama, Kibble, Hayashi and Nakano, and later Hehl, es\u0002tablished that while local Lorentz symmetry can be treated as a gauge group,\r
+the resulting actions differ from Yang–Mills theories because the tetrad does\r
+not transform as a connection [9, 10, 11, 12, 13, 14]. Attempts to extend\r
+the gauge principle to the full Poincar´e or (A)dS groups face degeneracies\r
+in the algebra’s Cartan–Killing metric that render translational components\r
+non-dynamical [15, 16]. Weyl’s early generalization of the Dirac equation to\r
+curved spacetime showed that spinors intrinsically require a Lorentz gauge struc\u0002ture [17]. Later, the MacDowell–Mansouri construction framed gravity as a\r
+symmetry-breaking gauge theory with an algebraic dual operator selecting the\r
+Lorentz-invariant sector [18, 19].\r
+The repeated emergence of Clifford algebras across grand unification, alge\u0002braic models, and gauge formulations of gravity suggests a common geometric\r
+foundation. Building on this observation, previous work proposed that imple\u0002menting supersymmetry in the adjoint representation yields unified actions of\r
+the form\r
+S =\r
+Z\r
+⟨ F ⊛ F ⟩, (1)\r
+where F is the field strength and ⊛ a generalized dual operator . However, that\r
+construction defined ⊛ only for two-forms in four dimensions, limiting its scope.\r
+Notably, skewsymmetric products of Clifford-algebra–valued frames naturally\r
+reproduce the same invariant structures via the Hodge dual.\r
+Here we show that a single action built from a Clifford-algebra–valued cur\u0002vature and an induced dual operator simultaneously reproduces the canonical\r
+kinetic terms of gravity, Yang–Mills fields, and spin- 1\r
+2\r
+fermions. Remarkably,\r
+within the restricted space of quadratic invariants generated by this construc\u0002tion, a known ghost-free quadratic gravity theory with propagating torsion,\r
+originally identified by Sezgin, emerges without fine tuning. The cancellation\r
+of higher-derivative fermionic terms follows from the same algebraic structure,\r
+indicating that the framework is not a reformulation of gauge gravity but a\r
+genuinely constrained geometric unification.\r
+2
+
+2 Construction of quadratic invariants\r
+Let us begin by defining the field strength associated with the Lorentz algebra\r
+as\r
+F =\r
+1\r
+2\r
+F\r
+abJab , (2)\r
+where F\r
+ab are the Lorentz components of the curvature two-form and define the\r
+corresponding field strength as\r
+F = dA + A A , (3)\r
+where wedge product is implied between differential forms. We shall work in\r
+the spin- 1\r
+2\r
+representation of the Lorentz generators, Jab = Σab, which may be\r
+realized as elements of the Clifford algebra. Explicitly,\r
+Σab =\r
+1\r
+2\r
+γab , (4)\r
+where γab ≡\r
+1\r
+2\r
+[γa, γb] denotes the skewsymmetric product of gamma matrices.\r
+The main result of this paper is that implementing the Lorentz components\r
+of the curvature and a Clifford–valued frame to construct quadratic invariants\r
+of the form,\r
+⟨ F ∗ F ⟩, (5)\r
+⟨ /eF ∗ (F/e)⟩, (6)\r
+⟨ /e\r
+2\r
+F ∗ (F/e\r
+2\r
+)⟩. (7)\r
+we can construct theories that include ghost free models for gravity and also\r
+Yang-Mills theory and Dirac spinors if the Lorentz algebra is appropriately\r
+embedded in larger (super–)algebras. Notice that terms of order higher than\r
+two in /e in terms of the form (7) vanish identically due to the nilpotency of the\r
+form degree, in close analogy with expansions in Grassmann variables. In this\r
+paper, as a simple illustration of the method, we focus on parity-even terms\r
+of the form ⟨ X ∗ X ⟩. The same method, however, can be straightforwardly\r
+extended to the construction of parity-odd terms.\r
+Let us begin by mentioning that products of the Clifford-algebra–valued\r
+frame remain closed under the action of the standard Hodge dual operator. For\r
+instance, if\r
+/e = e\r
+a\r
+γa (8)\r
+denotes the Clifford–valued frame, γ\r
+a denotes a Dirac or Majorana gamma ma\u0002trix, and e\r
+a\r
+is the tetrad one–form, which is a Lorentz–vector–valued differential\r
+one-form e\r
+a = ea\r
+µ dxµ that defines a local orthonormal frame on spacetime, re\u0002lating the spacetime metric to the Minkowski metric via gµν = e\r
+a\r
+µe\r
+b\r
+νηab, then\r
+the Hodge dual of any homogeneous product\r
+/e\r
+p ≡ e\r
+a1 ∧ · · · ∧ eap γa1···ap\r
+(9)\r
+3
+
+is again of the same form,\r
+∗ /e\r
+p =\r
+1\r
+(d − p)! ϵ\r
+a1···ap\r
+b1···bd−p\r
+e\r
+b1 ∧ · · · ∧ ebd−p γa1···ap ∈ Span{/e\r
+d−p\r
+} , (10)\r
+so that the Clifford–exterior algebra generated by the frame is stable under\r
+the Hodge dual. Before proceeding further, let us clarify that we have chosen\r
+to keep the standard Hodge dual in (5)–(7) so that to avoid introducing extra\r
+technicalities that may obscure the main result of the paper. However it is known\r
+that the Hodge dual can in fact be written with a Clifford exterior-algebra [20]\r
+Now, let us remark that the implementation of a Clifford–algebra valued\r
+frame in (5)–(7) allows us to construct more general invariants that using the\r
+Lorentz components of the curvature. In order to see this let us consider all\r
+possible quadratic combinations of two curvatures, the Hodge dual, the fully\r
+skewsymmetric symbol and the metric,\r
+ϵabcd F\r
+ab Fcd (11)\r
+F\r
+ab ∗ Fab (12)\r
+F\r
+ab Fab (13)\r
+ϵabcd ∗ F\r
+ab Fcd\r
+, (14)\r
+∗ F\r
+ab ∗ Fab (15)\r
+ϵabcd ∗ F\r
+ab ∗ Fcd\r
+. (16)\r
+These terms produce only four independent quadratic contractions of Fab cd.\r
+Details of the calculation are provided in appendix A.1. However, in constrast\r
+to General Relativity, in the Einstein–Cartan formulation of gravity it is not\r
+natural to impose symmetry under the pairwise exchange [ab] ↔ [cd] on F[ab][cd].\r
+Consequently, the curvature contains both contributions,\r
+F[ab][cd] = A[[ab][cd]] + S([ab][cd]) , (17)\r
+where A denotes the skewsymmetric part and S the symmetric part. The pair\u0002skewsymmetric sector captures torsional degrees of freedom, while the pair\u0002symmetric sector contains the Riemannian graviton; the Clifford invariants allow\r
+these sectors to be probed independently. In other words, the terms (11)–(16)\r
+cannot isolate invariants depending purely on the A or the S parts, but using\r
+(5)–(7) we can indeed generate quadratic invariants that are linearly indepen\u0002dent of (11)–(16).\r
+Notice that contributions to Einstein-Hilbert–Gauss–Bonnet four–form (11)\r
+vanishes in (5) and (6), but one finds a nontrivial contribution to it in the /e\r
+2\r
+–\r
+term (7). Therefore a generic linear combination of the terms (5), (6), and (7)\r
+provides a natural candidate for an action principle,\r
+L = α ⟨F ∗ F⟩ + β ⟨/eF ∗ (F/e)⟩ + γ ⟨/e\r
+2\r
+F ∗ (F/e\r
+2\r
+)⟩. (18)\r
+However, allowing for a generic linear combination of the terms (5)–(7) gives\r
+rise to new contributions (which may or may not be desirable). For instance,\r
+4
+
+for arbitrary coefficients one obtains terms such as the Kretschmann invariant\r
+and the contraction of two generalized Ricci tensors for F\r
+ab, which may lead to\r
+the appearance of degrees of freedom with the wrong sign of the kinetic term\r
+(ghosts). Nevertheless, a specific choice of coefficients (β = −α, γ = −α/4)\r
+ensures that only the Gauss–Bonnet term for F\r
+ab survives.\r
+In the seminal papers [21, 22], the authors considered a six-parameter La\u0002grangian built from the most general parity even quadratic invariants in gravity\r
+with torsion. This requires both, enlarging the Lagrangian by including further\r
+terms beyond those appearing in (18), and enlarging the Lorentz algebra to an\r
+anti–de Sitter algebra.\r
+Another motivation for enlarging the basis of quadratic invariants comes\r
+from the geometric inclusion of the full field content in the gauge connection,\r
+including matter spinors. This will lead us to extra algebraic constraints to\r
+enforce first-order fermion dynamics.\r
+In order to incorporate internal gauge bosons and spinors, one may em\u0002bed the Lorentz algebra into the superalgebras osp(n, 4) or su(2, 2|n), which\r
+necessarily entails the introduction of spinorial generators associated with su\u0002percharges [23]. For simplicity, we focus on the case of Majorana supercharges,\r
+which implies an internal symmetry of so(n) type.\r
+We shall work with a block-matrix representation of the form\r
+"\r
+AdS4×4 Q4×n\r
+Qt\r
+n×4\r
+so(n)n×n\r
+#\r
+, (19)\r
+which makes explicit the Lorentz (or the Anti–de Sitter algebra), fermionic, and\r
+internal sectors.\r
+Following the ideas developed in [24, 25, 23], and in order to construct a\r
+genuinely geometric model, we collect all fields into a single gauge connection\r
+valued in the superalgebra osp(n, 4),\r
+A =\r
+1\r
+2\r
+ω\r
+ab Jab + ea\r
+Ja +\r
+1\r
+2\r
+A\r
+ij Lij + Q\r
+i\r
+α (/eψ)\r
+α\r
+i\r
+. (20)\r
+In (20), the fermionic sector involves the composite field /eψ, where spinor\r
+indices will be omitted whenever no confusion arises. Explicitly,\r
+(/eψ)\r
+α\r
+i = e\r
+a\r
+(γa)\r
+α\r
+β ψ\r
+β\r
+i\r
+. (21)\r
+The combination γ\r
+aψ, being annihilated by the spin- 3\r
+2\r
+projector, carries purely\r
+spin- 1\r
+2\r
+degrees of freedom.\r
+In the representation (19), the terms (6) and (7) vanish identically when\r
+evaluated on the so(n) internal components of the curvature, 1\r
+2\r
+F\r
+ijLij , where\r
+the full field strength decomposes as\r
+F =\r
+1\r
+2\r
+F\r
+abJab + Fa\r
+Ja +\r
+1\r
+2\r
+F\r
+ijLij + Q\r
+i\r
+αXαi\r
+. (22)\r
+Here Lij are the so(n) generators associated with the lower-right block of (19),\r
+the components F\r
+a\r
+correspond to translational generators, while Xα\r
+i denote the\r
+5
+
+fermionic components of the curvature. The only non-vanishing contribution in\r
+the internal gauge sector arises from the term ⟨ F ∗ F ⟩, which yields a standard\r
+Yang–Mills kinetic term for the so(n) curvature components F\r
+ij . Requiring\r
+canonical normalization of the internal gauge bosons fixes the corresponding\r
+coefficient to be −1/2.\r
+Before continuing with the analysis of the spinor terms, let us clarify that in\r
+the definition of the supertraces (6) and (7), the frame is implicitly slashed using\r
+the embedding of the γ\r
+a matrices in the chosen superalgebra representation.\r
+/e = e\r
+aΓa , Γa =\r
+"\r
+γa 04×n\r
+0n×4 0n×n\r
+#\r
+within the superalgebra context. (23)\r
+We now turn to the kinetic terms for the spinors. The fermionic component\r
+of the curvature is given by an adS⊗so(n)–covariant derivative of the composite\r
+field ξ = /eψ,\r
+Xα\r
+i = (Dξ)\r
+α\r
+i\r
+, (24)\r
+where\r
+Dξ ≡ Dξ +\r
+1\r
+2\r
+e\r
+a\r
+γaξ , (25)\r
+and D denotes the so(1, 3) ⊗ so(n)–covariant derivative in the spin- 1\r
+2\r
+represen\u0002tation,\r
+Dξ ≡ dξ +\r
+1\r
+2\r
+ω\r
+abΣab ξ +\r
+1\r
+2\r
+A\r
+mn(λmn)ij\r
+ξj . (26)\r
+Since ξ is a composite object, one must also take into account the action of\r
+D on /e,\r
+D(/eψ) = γaT\r
+aψ − /e Dψ , (27)\r
+where T\r
+a = Dea ≡ dea + ωa\r
+b e\r
+b\r
+is the torsion two-form, and D here denotes\r
+the so(1, 3) ⊗ so(n)–covariant derivative acting on ψ. To avoid introducing\r
+multiple symbols for covariant derivatives, we shall use D throughout to denote\r
+a so(1, 3) ⊗ so(n)–covariant derivative; the appropriate representation of the\r
+generators is understood to be chosen according to the object on which D acts.\r
+The quadratic terms in the fermionic curvature components, induced by\r
+invariants of the type (5), (6), and (7), when evaluated on\r
+X = Q\r
+i\r
+αXαi\r
+,\r
+generate two types of second derivative terms of the spinor fields through quadratic\r
+products of the second term in (27):\r
+η\r
+abCαβ∂aψα\r
+∂bψ\r
+β\r
+and (Cγab)αβ∂aψ\r
+α\r
+∂bψ\r
+β\r
+. (28)\r
+The term proportional to γ\r
+ab contributes only to a boundary term together\r
+with non-minimal couplings. Requiring, however, the cancellation of the Klein–\r
+Gordon fermionic term imposes an independent constraint on the coefficients α,\r
+β, and γ, leaving only two free parameters in the Lagrangian (see appendix A.5).\r
+6
+
+As a consequence, no further freedom remains to adjust relative coefficients so\r
+as to eliminate ghosts in the gravitational sector, which requires the satisfaction\r
+of three independent linear conditions [22].\r
+This makes the inclusion of additional terms in the Lagrangian (18) manda\u0002tory in order to properly complete the ghost-cancellation mechanism in the\r
+gravity sector. The terms we shall consider are\r
+⟨[/e, F] ∗ ([F, /e])⟩, (29)\r
+⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩. (30)\r
+With all the ingredients defined above we therefore define the Lagrangian,\r
+which is given by a linear combination of (5), (6), (7), (29) and (30),\r
+LLL = α ⟨ F ∗ F ⟩ + β ⟨ /eF ∗ (F/e)⟩ + γ ⟨ /e\r
+2\r
+F ∗ (F/e\r
+2\r
+)⟩\r
++ δ⟨[/e, F] ∗ ([F, /e])⟩ + ε⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩. (31)\r
+This model is geometric since all fields are included in the field strength via the\r
+gauge connection. The unification achieved here is restrictive since the alge\u0002bra sharply limits admissible dynamics, and it is precisely this restriction that\r
+enforces consistency. The ghost–free dynamics further restrict the parameters\r
+from five to one, since one condition is required to cancel out fermion second\r
+derivative terms and three conditions are required to choose a ghost-free gravity\r
+sector, see Table 1 of [22].\r
+The restricted set of Clifford–generated invariants in (31) is sufficient to\r
+complete a full set of parity even invariants, see Table 1. In order to facilitate\r
+comparison with the results of [22], we have followed the authors’ prescription\r
+and omitted the R2term by invoking the Gauss–Bonnet theorem for trivial\r
+topologies. Nonminimal couplings are also included in the action as a result of\r
+the computation of (31) but they are not the focus of the present paper.\r
+As an illustration, we consider three representative choices of parameters\r
+that reproduce known ghost–free quadratic gravity models. We restrict to the\u0002ories with a propagating graviton and no second–order derivatives in the spinor\r
+sector, which together impose four independent conditions. At the linearized\r
+level, these requirements truncate part of the propagating spectrum. The result\u0002ing particle content is summarized in Table 2. The analysis underlying Table 2\r
+is performed around flat space, and therefore some comments regarding the in\u0002clusion of a cosmological constant term are in order; these are discussed in the\r
+text below. The physical interpretation of the A/S splitting, and its relation to\r
+the propagating 2\r
++, 1±, and 0− modes shown in Table 2 (see appendix B).\r
+We can further fixed α = −\r
+1\r
+2\r
+so that the Yang–Mills Lagrangian density\r
+assumes its canonical normalization,\r
+LYM = −\r
+1\r
+4\r
+Fij µν Fij\r
+µν\r
+. (32)\r
+The standard kinetic terms for spinors come from the cross products of the last\r
+term in (25) and the second term in (27). Such terms require to renormalize\r
+7
+
+Invariant term Coefficient\r
+R −α − 6β + 24γ\r
+Λ −6α − 36β + 144γ\r
+RabcdRabcd −α/4 − β/2 + γ − 2δ\r
+RabcdRacbd β − 4γ + 4δ\r
+RabcdRcdab γ\r
+RabRab −β + 7γ + 16ϵ\r
+RabRba −4γ − 16ϵ\r
+Tabc T\r
+abc α/2 + β − 2γ + 2δ − 8ϵ\r
+Tabc T\r
+bca β − 4γ − 16ϵ\r
+Tb\r
+ba Tcca β − 4γ + 4δ\r
+Fij abFij\r
+ab α/2\r
+ψ\r
+α (Cγa\r
+)αβ ∂aψ\r
+β 12α + 36β − 144γ + 72δ − 288ε\r
+ψ\r
+α Cαβ ψβ\r
+(−1)× row above\r
+∂aψ\r
+αηab Cαβ ∂bψβ 6α + 12β − 36γ + 24δ − 72ε\r
+∂aψ\r
+α (Cγab)αβ ∂bψβ 2α + 8β − 36γ + 16δ − 72ε\r
+Table 1: Coefficients of curvature invariants obtained. All expressions here\r
+are wrtitten in terms of tensor components. Here we used the Gauss–Bonnet\r
+theorem to replace R2in terms of RabRba and RabcdRabcd.\r
+the spinor field in order to get the canonical Majorana normalization.“Model 5”\r
+is special because the spinor becomes irrevelant, meaning that all terms cancel\r
+out from the action, see Table 2.\r
+Table 1 displays the value of the cosmological constant, Λ = −6α − 36β +\r
+144γ, which can in principle take either sign or vanish for suitable choices of\r
+parameters. However, within the class of ghost-free models, the cosmological\r
+constant is proportional to α, although its sign depends on the specific model,\r
+as shown in Table 2. A vanishing cosmological constant can be achieved in\r
+three distinct ways. First, one may include a ⟨ /e\r
+4\r
+⟩ term in the action. Second,\r
+additional interaction terms can be introduced, either linear in the curvature\r
+or quadratic but parity-odd. The analysis of Table 2 is performed around flat\r
+space, and therefore the implications of a non-vanishing cosmological constant\r
+deserve separate investigation.\r
+3 Discussion and Outlook\r
+In this work we have shown that a single geometric action constructed from\r
+a Clifford–algebra–valued curvature, together with an induced dual operator\r
+built from the frame, reproduces simultaneously the canonical kinetic terms for\r
+Yang–Mills fields, spin- 1\r
+2\r
+fermions, and a class of quadratic gravity models with\r
+8
+
+Models [22] Gravity particle content Spinor Terms Λ\r
+“Model 1”\r
+2\r
++, 0+ and 0− ✓ −6α\r
+β → 0\r
+γ → 0\r
+δ → −α/4\r
+ε → 0\r
+“Model 3”\r
+2\r
++, 1−, and 0− ✓ 2α\r
+β → −α/3\r
+γ → −α/36\r
+δ → −α/6\r
+ε → −α/72\r
+“Model 5”\r
+2\r
++, 1+, and 0− ✗ −6α\r
+β → −α\r
+γ → −α/4\r
+δ → 0\r
+ε → α/24\r
+Table 2: Ghost free models that are contained in the action (31) for an specific\r
+choice of parameters. The particle content in the gravity sector is labeled as\r
+irreducible representations of so(3).\r
+torsion. Remarkably, for a particular choice of parameters, the gravitational\r
+sector contains known ghost-free models with propagating torsion originally\r
+identified by Sezgin. This result is structurally enforced, as it emerges without\r
+imposing a priori restrictions on the curvature invariants beyond those dictated\r
+by the Clifford-algebraic structure.\r
+A key conceptual point of the present construction is that gravity is not\r
+appended to a Yang–Mills theory, nor is the tetrad introduced as an external\r
+compensator field. Instead, both the gravitational and internal gauge sectors\r
+arise from the same underlying Clifford–valued curvature invariant. In this\r
+sense, the tetrad appears as part of the geometric data defining the dual op\u0002erator, rather than as an independent gauge field. Likewise, the Hodge dual\r
+is not assumed as a background operation [26], but is dynamically induced by\r
+the Clifford-algebra–valued frame. In contrast to MacDowell–Mansouri–type\r
+constructions, where a projection or symmetry breaking is imposed to isolate\r
+gravity, here the Lorentz sector and its dynamics are selected algebraically by\r
+the Clifford trace itself.\r
+Allowing for a generic Einstein–Cartan connection, the curvature naturally\r
+decomposes into pair-symmetric and pair-antisymmetric components. This de\u0002composition provides a transparent way to isolate Riemannian and non-Riemannian\r
+contributions prior to performing a full spin–parity analysis. Three models were\r
+found, in which, at the linearized level, the usual massless 2\r
++ graviton originates\r
+from the pair-symmetric sector, while the propagating torsion modes (1\r
+± and\r
+0\r
+− in the ghost-free case) arise from curvature components sourced by contor\u0002tion. Beyond linear order, mixing occurs through quadratic contortion terms,\r
+9
+
+but the decomposition remains a useful organizational tool for understanding\r
+the spectrum.\r
+Another notable feature is that ghost freedom in the quadratic gravity sec\u0002tor is not engineered by an ad hoc tuning of curvature invariants. Rather,\r
+the restricted set of quadratic terms generated by traces involving the Clifford\r
+frame and the induced dual operator automatically constrains the allowed com\u0002binations. Within this reduced space of invariants, the ghost-free Sezgin model\r
+appears as a consistent point in parameter space. This suggests that the absence\r
+of pathological degrees of freedom is selected by the algebraic structure of the\r
+theory itself, rather than imposed externally.\r
+The fermionic sector provides a further nontrivial consistency check. Because\r
+the spinor fields enter the connection through the composite object /eψ, naive\r
+quadratic curvature terms could potentially generate higher-derivative fermion\r
+dynamics. We have shown explicitly that, for the same class of Clifford invari\u0002ants that yield sensible gravitational dynamics, these higher-derivative terms\r
+combine so as to reproduce the standard first–order Dirac kinetic term. This\r
+cancellation is essential for the consistency of the framework and supports the\r
+view that the Clifford–algebraic construction tightly constrains the allowed dy\u0002namics of matter fields.\r
+Given the presence of quadratic curvature terms, the resulting theory should\r
+be understood as a low–energy effective field theory, valid below the characteris\u0002tic mass scale associated with propagating torsion modes. From this perspective,\r
+higher–order invariants involving additional powers of the Clifford–valued frame\r
+and curvature are naturally suppressed by the corresponding cutoff scale. The\r
+present framework therefore does not attempt to define a UV–complete theory\r
+of quantum gravity, but rather provides a controlled and geometrically moti\u0002vated effective description in which gravity, gauge fields, and fermions emerge\r
+on the same footing.\r
+Several directions merit further investigation. These include the extension to\r
+superconformal algebras with chiral fermions, the study of symmetry breaking\r
+mechanisms selecting the Lorentz subgroup dynamically, and the exploration\r
+of cosmological and phenomenological implications of massive torsion modes.\r
+More broadly, the results suggest that Clifford–algebra–based constructions may\r
+provide a natural and conceptually economical arena for unifying gravity and\r
+gauge interactions without introducing extra dimensions or enlarging the field\r
+content beyond that required by geometry itself.\r
+Acknowledgements\r
+P.A. acknowledges support from ANID-FONDECYT Regular grant No. 1230112.\r
+C.Q. acknowledges support from ANID-FONDECYT grant 11231238. P.A. and\r
+F.I. dedicate this work to their daughters Lizzie and Luc´ıa, whose lovely an\u0002tics and cheerful laugh made the long algebraic calculations and coding time\r
+bearable. The geometric Lagrangian (31) for all the interactions is named after\r
+them. F.I. is also grateful for the emotional support provided by the Nether\u000210
+
+lands Bach Society. They made freely available superb quality recordings of the\r
+music of Bach, and without them, this work would have been impossible.\r
+Appendices\r
+A Clifford-algebra contractions and quadratic cur\u0002vature invariants\r
+In this section we collect the explicit contractions of Lorentz-algebra–valued\r
+curvature two-forms used in the main text and theirrelation to the independent\r
+quadratic curvature invariants T1, . . . , T4.\r
+A.1 Contractions involving the Hodge dual\r
+Let\r
+F\r
+ab =\r
+1\r
+2\r
+F\r
+ab\r
+cd e\r
+c\r
+e\r
+d\r
+denote the Lorentz curvature two-form, and let ∗ be the spacetime Hodge dual.\r
+The following identities hold:\r
+ϵabcd F\r
+ab Fcd = T1|\r
+c1=−\r
+1\r
+4\r
+, (33)\r
+F\r
+ab ∗ Fab = T2|\r
+c2=\r
+1\r
+2\r
+, (34)\r
+F\r
+ab Fab = T3|\r
+c3=−\r
+1\r
+4\r
+, (35)\r
+ϵabcd ∗ F\r
+ab Fcd = T4|\r
+c4=\r
+1\r
+2\r
+, (36)\r
+∗F\r
+ab ∗ Fab = T3|\r
+c3=\r
+1\r
+4\r
+, (37)\r
+ϵabcd ∗ F\r
+ab ∗ Fcd = T1|\r
+c1=−\r
+1\r
+4\r
+. (38)\r
+These relations are obtained by expanding the curvature in the vielbein basis\r
+and using standard identities for contractions of Levi–Civita symbols with the\r
+Hodge dual in four dimensions.\r
+A.2 Definition of the quadratic invariants\r
+The quadratic invariants appearing above are defined as\r
+T1 = c1 ϵabcd ϵ\r
+ef gh Fab\r
+ef F\r
+cd\r
+gh v4, (39)\r
+T2 = c2 F\r
+abcdFabcd v4, (40)\r
+T3 = c3 ϵ\r
+cdef Fab\r
+cd Fabef v4, (41)\r
+T4 = c4 ϵ\r
+cdef Fcdab Fefab v4, (42)\r
+11
+
+where F\r
+ab\r
+cd are the scalar-form components of the curvature and\r
+v4 = e\r
+0\r
+e\r
+1\r
+e\r
+2\r
+e\r
+3\r
+is the spacetime volume form.\r
+The coefficients ci are fixed by matching the contractions in Eqs. (33)–(38)\r
+with the invariant basis (39)–(42), as discussed in the main text.\r
+A.3 Contractions using Clifford–algebra–valued frame\r
+By contrast, products involving traces of the Hodge dual, the Clifford-algebra–\r
+valued tetrad, and the curvature are capable of isolating linearly independent\r
+combinations of T1, . . . , T4. For instance,\r
+⟨ F ∗ F ⟩ = S|c2=−1/4, (43)\r
+⟨ /eF ∗ (F/e)⟩ = S|\r
+c5 = 1/16\r
+c6 = −3/4\r
+c7 = 1/4\r
+c8 = −1/4\r
+, (44)\r
+⟨ /e\r
+2\r
+F ∗ (F/e\r
+2\r
+)⟩ = S|\r
+c1 = −1/4\r
+c2 = −1\r
+c5 = −1/4\r
+c6 = 3\r
+c7 = −1\r
+c8 = 1\r
+. (45)\r
+where S =\r
+P8\r
+i=1 Ti and\r
+T5 = c5 ϵabcdϵ\r
+ef ghAab\r
+efA\r
+cd\r
+gh v4 , (46)\r
+T6 = c6 A\r
+abcdAabcd v4 , (47)\r
+T7 = c7 ϵ\r
+af ghϵebcdSabcdSef gh v4 , (48)\r
+T8 = c8 η\r
+[af][gh]\r
+η\r
+[eb][cd]SabcdSef gh v4 . (49)\r
+A.4 Tangent-space Gamma matrices\r
+The tangent-space gamma matrices satisfy\r
+dγa = 0 , Dγa = 0 , (50)\r
+where the Lorentz-covariant derivative acts as\r
+Dγa ≡ dγa + ω\r
+a\r
+bγ\r
+b + (1/2)Σbcωbcγa − (1/2)γaωbcΣbc . (51)\r
+12
+
+A.5 Quadratic terms of the fermionic curvature\r
+Explicitly,\r
+⟨Y ∗ Y⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=6, d2=2\r
+, (52)\r
+⟨/eY ∗ (Y/e)⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=12, d2=8\r
+, (53)\r
+⟨/e\r
+2Y ∗ (Y/e2\r
+)⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=−36, d2=−36\r
+, (54)\r
+where Y = −Q /eDψ and\r
+S\r
+(fer) = d1 Daψα Cαβ Daψβ\r
+v4 + d2 Daψ\r
+α\r
+(Cγab)αβ Dbψ\r
+β\r
+v4 . (55)\r
+A generic linear combination of the terms (52)–(54) therefore leads to higher\u0002derivative fermionic kinetic terms and may induce fermionic ghosts.\r
+A.6 More contractions using Clifford–algebra–valued frame\r
+We may add the following terms, defined using the unsymmetrized trace,\r
+⟨[/e, F] ∗ ([F, /e])⟩ =\r
+ X\r
+8\r
+i=1\r
+Ti\r
+!\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+c6 = −2\r
+c7 = 1 , (56)\r
+⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩ =\r
+ X\r
+8\r
+i=1\r
+Ti\r
+!\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+c5 = −2\r
+c6 = 8 . (57)\r
+In passing, let us note that a convenient definition of the fully symmetrized\r
+supertrace of n superalgebra-valued elements X1, . . . , Xn is\r
+⟨ X1 · · · Xn⟩FS ≡\r
+1\r
+n!\r
+X\r
+π∈Sn\r
+(−1)ε(π;X)⟨Xπ(1)Xπ(2) · · · Xπ(n)⟩, (58)\r
+where Sn is the permutation group of n elements and (−1)ε(π;X)is the graded\r
+sign picked up when permuting the homogeneous elements Xi, namely\r
+(−1)ε(π;X) =\r
+Y\r
+i<j\r
+(−1)|Xπ(i)| |Xπ(j)|\r
+for each transposition,\r
+with |Xi| = 0 for bosonic (even) elements and |Xi| = 1 for fermionic (odd) ones.\r
+This fully symmetrized trace greatly simplifies hand computations.\r
+13
+
+B From the A/S pair-exchange split to spin–\r
+parity modes\r
+B.1 Pair-exchange operator and the A/S decomposition\r
+Let F\r
+ab be the Lorentz-algebra curvature two-form of a generic (Einstein–\r
+Cartan) connection ω\r
+ab\r
+µ, with components\r
+F\r
+ab =\r
+1\r
+2\r
+F\r
+ab\r
+cd e\r
+c\r
+e\r
+d\r
+, Fab cd := ηaeηbfF\r
+ef\r
+cd. (59)\r
+The indices [ab] and [cd] label antisymmetric Lorentz pairs. Define the pair\u0002exchange operator P acting on Fab cd by swapping the two index pairs:\r
+P[Fab cd] := Fcd ab. (60)\r
+Then we define the symmetric and antisymmetric parts under pair exchange,\r
+Sab cd :=\r
+1\r
+2\r
+(Fab cd + Fcd ab), Aab cd :=\r
+1\r
+2\r
+(Fab cd − Fcd ab), (61)\r
+so that F = S + A and P[S] = S, P[A] = −A.\r
+For a torsionless Levi–Civita connection, the Riemann curvature satisfies\r
+Rab cd = Rcd ab, hence A = 0 identically. Therefore, A ̸= 0 is a purely non\u0002Riemannian signature: it measures precisely the obstruction to pair symmetry\r
+induced by torsion/contortion (or, more generally, by relaxing the usual ex\u0002change symmetry [ab] ↔ [cd]).\r
+B.2 Contortion expansion and linearized interpretation\r
+Decompose the spin connection into Levi–Civita part plus contortion,\r
+ω\r
+ab =\r
+◦\r
+ω\r
+ab(e) + κab, T a\r
+:= Dea = κ\r
+a\r
+be\r
+b\r
+, (62)\r
+where ◦ω\r
+ab(e) is determined by ea and has vanishing torsion. The Lorentz cur\u0002vature expands as\r
+R\r
+ab(ω) = Rab(\r
+◦\r
+ω) +\r
+◦\r
+Dκab + κ\r
+a\r
+cκ\r
+cb\r
+, (63)\r
+with\r
+◦\r
+D the covariant derivative built from ◦ω. Linearizing about Minkowski\r
+space,\r
+e\r
+a\r
+µ = δ\r
+a\r
+µ +\r
+1\r
+2\r
+h\r
+a\r
+µ, κabµ = O(ϵ), (64)\r
+one finds to first order in perturbations:\r
+R\r
+ab ≈ Rab(\r
+◦\r
+ω) +\r
+◦\r
+Dκab, κ ∧ κ = O(ϵ\r
+2\r
+). (65)\r
+14
+
+At linear order, Rab cd(\r
+◦\r
+ω) has the pair-exchange symmetry Rab cd = Rcd ab,\r
+hence it contributes only to S. By contrast, the term\r
+◦\r
+Dκab generically violates\r
+pair exchange and is the leading source for A. Thus, schematically,\r
+S = R(\r
+◦\r
+ω) + O(κ\r
+2\r
+), A =\r
+◦\r
+Dκ + O(κ\r
+2\r
+). (66)\r
+Equation (66) is the main reason the A/S split is useful: it cleanly separates\r
+the torsionless graviton sector from the leading torsional curvature sector, before\r
+doing a spin–parity decomposition.\r
+B.3 Spin–parity content: why 2+ is in S, and torsion\r
+modes arise from A\r
+In Poincar´e gauge theory, the propagating modes are classified by decompos\u0002ing torsion and curvature into Lorentz-irreducible pieces and then using spin\r
+projection operators. For our purposes, it is enough to recall the standard\r
+decomposition of torsion in 4D into\r
+Tλµν =\r
+1\r
+3\r
+(vµgλν − vνgλµ) + 1\r
+6\r
+ελµνρ a\r
+ρ + qλµν, (67)\r
+where vµ := T\r
+λ\r
+λµ is the trace vector (parity even), a\r
+µ := εµαβγTαβγ is the\r
+axial vector (parity odd), and qλµν is the remaining tensor piece (traceless and\r
+ε-traceless).\r
+At the linearized level, using (63)–(66), the quadratic curvature invariants\r
+that contain kinetic terms for torsion necessarily depend on\r
+◦\r
+Dκ, and hence\r
+are supported by the A sector at leading order. The spin–parity identifica\u0002tion proceeds by inserting (67) into the quadratic action and reading off which\r
+combinations obtain proper kinetic terms:\r
+• The 2\r
++ mode is the usual metric (or tetrad) graviton mode and arises from\r
+R(\r
+◦\r
+ω), hence it belongs to the pair–symmetric sector S at linear order.\r
+• The 1\r
++ torsion mode is carried by the parity-even vector vµ and is sourced\r
+by derivatives of contortion. Therefore its kinetic terms arise from the\r
+◦\r
+Dκ\r
+part of the curvature, i.e. primarily from A at linear order.\r
+• The 1\r
+− torsion mode is carried by the parity–odd axial–vector aµ and is\r
+also sourced by derivatives of contortion. Therefore its kinetic terms arise\r
+from the\r
+◦\r
+Dκ part of the curvature, i.e. primarily from A at linear order.\r
+• The 0\r
+− torsion mode is carried by the pseudoscalar/axial sector (equiv\u0002alently, the longitudinal part of aµ) and likewise obtains its kinetic term\r
+from\r
+◦\r
+Dκ, hence again from A at linear order.\r
+15
+
+References\r
+[1] H. Georgi and S. L. Glashow, “Unity of all elementary-particle forces,”\r
+Physical Review Letters, vol. 32, pp. 438–441, 1974.\r
+[2] H. Georgi, Lie algebras in particle physics, vol. 54. Reading, MA: Perseus\r
+Books, 2nd ed., 1999.\r
+[3] C. Furey, “Three generations, two unbroken gauge symmetries, and one\r
+eight-dimensional algebra,” Physics Letters B, vol. 785, pp. 84–89, 2018.\r
+[4] C. Furey, “Standard model physics from an algebra?,” Philosophical Trans\u0002actions of the Royal Society A, vol. 377, no. 2157, p. 20190043, 2019. See\r
+also arXiv:1611.09182 and subsequent papers.\r
+[5] G. M. Dixon, Division Algebras: Octonions, Quaternions, Complex Num\u0002bers and the Algebraic Design of Physics. Dordrecht, Netherlands:\r
+Springer, 1st ed., 1994.\r
+[6] F. G¨ursey and C.-H. Tze, On the Role of Division, Jordan and Related\r
+Algebras in Particle Physics. 5 Toh Tuck Link, Singapore 596224: World\r
+Scientific, 1st ed., 1996.\r
+[7] J. C. Baez, “The octonions,” Bulletin of the American Mathematical Soci\u0002ety, vol. 39, no. 2, pp. 145–205, 2002.\r
+[8] A. Palatini, “Deduzione invariantiva delle equazioni gravitazionali dal prin\u0002cipio di Hamilton,” Rend. Circ. Mat. Palermo, vol. 43, no. 1, pp. 203–212,\r
+1919.\r
+[9] R. Utiyama, “Invariant theoretical interpretation of interaction,” Phys.\r
+Rev., vol. 101, pp. 1597–1607, 1956.\r
+[10] D. W. Sciama, “The Physical structure of general relativity,” Rev. Mod.\r
+Phys., vol. 36, pp. 463–469, 1964. [Erratum: Rev.Mod.Phys. 36, 1103–1103\r
+(1964)].\r
+[11] T. W. B. Kibble, “Lorentz invariance and the gravitational field,” J. Math.\r
+Phys., vol. 2, pp. 212–221, 1961.\r
+[12] K. Hayashi and T. Nakano, “Extended translation invariance and associ\u0002ated gauge fields,” Prog. Theor. Phys., vol. 38, pp. 491–507, 1967.\r
+[13] F. W. Hehl, “Four Lectures on Poincar´e Gauge Field Theory,” in Interna\u0002tional School of Cosmology and Gravitation: Spin, Torsion, Rotation and\r
+Supergravity, 2023.\r
+[14] K. Krasnov, Formulations of General Relativity. Cambridge Monographs\r
+on Mathematical Physics, Cambridge, UK: Cambridge University Press,\r
+1st ed., 11 2020.\r
+16
+
+[15] T. Kawai and H. Yoshida, “DE SITTER GAUGE THEORY OF GRAVI\u0002TATION,” Prog. Theor. Phys., vol. 62, p. 266, 1979.\r
+[16] R. Aldrovandi and E. Stedile, “A Complete Gauge Theory for the Whole\r
+Poincare Group,” Int. J. Theor. Phys., vol. 23, p. 301, 1984.\r
+[17] H. Weyl, “Electron and Gravitation. 1. (In German),” Z. Phys., vol. 56,\r
+pp. 330–352, 1929.\r
+[18] S. W. MacDowell and F. Mansouri, “Unified Geometric Theory of Grav\u0002ity and Supergravity,” Phys. Rev. Lett., vol. 38, p. 739, 1977. [Erratum:\r
+Phys.Rev.Lett. 38, 1376 (1977)].\r
+[19] D. K. Wise, “MacDowell-Mansouri gravity and Cartan geometry,” Class.\r
+Quant. Grav., vol. 27, p. 155010, 2010.\r
+[20] H. B. Lawson and M. L. Michelsohn, Spin geometry. 1998.\r
+[21] E. Sezgin and P. van Nieuwenhuizen, “New Ghost Free Gravity Lagrangians\r
+with Propagating Torsion,” Phys. Rev. D, vol. 21, p. 3269, 1980.\r
+[22] E. Sezgin, “Class of Ghost Free Gravity Lagrangians With Massive or Mass\u0002less Propagating Torsion,” Phys. Rev. D, vol. 24, pp. 1677–1680, 1981.\r
+[23] P. D. Alvarez, R. A. Chavez, and J. Zanelli, “Embedding of the Georgi\u0002Glashow SU(5) model in the superconformal algebra,” JHEP, vol. 02,\r
+p. 050, 2023.\r
+[24] P. D. Alvarez, P. Pais, and J. Zanelli, “Unconventional supersymmetry and\r
+its breaking,” Phys. Lett. B, vol. 735, pp. 314–321, 2014.\r
+[25] P. D. Alvarez, R. A. Chavez, and J. Zanelli, “Gauging the superconformal\r
+group with a graded dual operator,” JHEP, vol. 02, p. 111, 2022.\r
+[26] H. R. Pagels, “A Gauge Theory of Gravity,” Phys. Rev. D, vol. 27, p. 2299,\r
+1983.\r
+17"""
+
+[metadata]
+title = "arxiv 2601.19734v1 clifford invariant unification"
+authors = ["Unknown"]
+arxiv = "2601.19734v1"
+year = 1973
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Towards an Action Principle Unifying the\r
+Standard Model and Gravity\r
+Pedro D. Alvarez\r
+∗1,3, Fernando Izaurieta†2\r
+, and Cristian\r
+Quinzacara\r
+‡2\r
+1Facultad de Ingenier´ıa, Universidad San Sebasti´an, General Lagos\r
+1163, Valdivia, Chile\r
+2Facultad de Ingenier´ıa, Universidad San Sebasti´an, Lientur 1457,\r
+Concepci´on, Chile\r
+3Centro de Estudios Cient´ıficos, Universidad San Sebasti´an,\r
+Avenida Arturo Prat 514, Valdivia, Chile\r
+Abstract\r
+A single geometric invariant fixes the relative normalization and struc\u0002ture of gravity, Yang–Mills theory, and fermion kinetic terms including\r
+ghost freedom in the gravitational sector without tuning. Our results es\u0002tablish a minimal geometric route to unification that does not rely on extra\r
+dimensions or symmetry breaking by hand. Unlike previous gauge–gravity\r
+constructions, the relative normalizations and ghost freedom emerge from\r
+a single Clifford–algebraic invariant, without explicit symmetry breaking."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Two long–standing frontiers in theoretical physics aim at unifying the funda\u0002mental interactions: embedding the gauge structure of the Standard Model\r
+(SM) within a single algebraic framework, and reformulating gravity as a gauge\r
+theory. Each faces major challenges on its own, and combining them within a\r
+coherent framework has remained elusive. In this work we show that a single\r
+Clifford–algebraic invariant is sufficient to fix, simultaneously and without tun\u0002ing, the dynamics of gravity, Yang–Mills fields, and fermions, while selecting a\r
+ghost-free quadratic gravity sector.\r
+Grand unified theories (GUTs) embed the SM group SU(3)× SU(2)×U(1)\r
+into a simple symmetry such as SU(5), SO(10), orE\r
+6 [1, 2]. The chiral spinor\r
+∗E-mail pedro.alvarez@uss.cl †E-mail fernando.izaurieta@uss.cl ‡E-mail cristian.quinzacara@uss.cl\r
+1\r
+arXiv:2601.19734v1 [hep-th] 27 Jan 2026
+
+representation of SO(10) elegantly accommodates one SM family plus a right\u0002handed neutrino in a single 16-dimensional representation. Larger exceptional\r
+groups further extend this structure, linking to neutrino mass generation and\r
+charge quantization, but face persistent phenomenological issues such as pro\u0002ton decay and doublet–triplet splitting. In parallel, algebraic programs have\r
+explored whether the SM gauge and matter content could emerge naturally\r
+from deeper mathematical structures such as division algebras and Clifford\r
+modules. In particular, the octonions O, whose automorphism group is G2,\r
+connect to exceptional Lie algebras through the Freudenthal–Tits magic square\r
+and encode one SM generation’s quantum numbers within minimal ideals of\r
+C⊗H⊗O [3, 4, 5, 6, 7]. These algebraic schemes are mathematically rigid and\r
+aesthetically appealing, yet a fully predictive model encompassing dynamics,\r
+symmetry breaking, and fermion masses remains unrealized.\r
+In parallel, gauge-theoretic formulations of gravity recast Einstein’s theory\r
+in first-order form using the tetrad e\r
+a\r
+µ and spin connection ω\r
+ab\r
+µ [8]. Early\r
+works by Utiyama, Sciama, Kibble, Hayashi and Nakano, and later Hehl, es\u0002tablished that while local Lorentz symmetry can be treated as a gauge group,\r
+the resulting actions differ from Yang–Mills theories because the tetrad does\r
+not transform as a connection [9, 10, 11, 12, 13, 14]. Attempts to extend\r
+the gauge principle to the full Poincar´e or (A)dS groups face degeneracies\r
+in the algebra’s Cartan–Killing metric that render translational components\r
+non-dynamical [15, 16]. Weyl’s early generalization of the Dirac equation to\r
+curved spacetime showed that spinors intrinsically require a Lorentz gauge struc\u0002ture [17]. Later, the MacDowell–Mansouri construction framed gravity as a\r
+symmetry-breaking gauge theory with an algebraic dual operator selecting the\r
+Lorentz-invariant sector [18, 19].\r
+The repeated emergence of Clifford algebras across grand unification, alge\u0002braic models, and gauge formulations of gravity suggests a common geometric\r
+foundation. Building on this observation, previous work proposed that imple\u0002menting supersymmetry in the adjoint representation yields unified actions of\r
+the form\r
+S =\r
+Z\r
+⟨ F ⊛ F ⟩, (1)\r
+where F is the field strength and ⊛ a generalized dual operator . However, that\r
+construction defined ⊛ only for two-forms in four dimensions, limiting its scope.\r
+Notably, skewsymmetric products of Clifford-algebra–valued frames naturally\r
+reproduce the same invariant structures via the Hodge dual.\r
+Here we show that a single action built from a Clifford-algebra–valued cur\u0002vature and an induced dual operator simultaneously reproduces the canonical\r
+kinetic terms of gravity, Yang–Mills fields, and spin- 1\r
+2\r
+fermions. Remarkably,\r
+within the restricted space of quadratic invariants generated by this construc\u0002tion, a known ghost-free quadratic gravity theory with propagating torsion,\r
+originally identified by Sezgin, emerges without fine tuning. The cancellation\r
+of higher-derivative fermionic terms follows from the same algebraic structure,\r
+indicating that the framework is not a reformulation of gauge gravity but a\r
+genuinely constrained geometric unification.\r
+2"""
+
+[[sections]]
+number = "2"
+title = "Construction of quadratic invariants"
+text = """
+Let us begin by defining the field strength associated with the Lorentz algebra\r
+as\r
+F =\r
+1\r
+2\r
+F\r
+abJab , (2)\r
+where F\r
+ab are the Lorentz components of the curvature two-form and define the\r
+corresponding field strength as\r
+F = dA + A A , (3)\r
+where wedge product is implied between differential forms. We shall work in\r
+the spin- 1\r
+2\r
+representation of the Lorentz generators, Jab = Σab, which may be\r
+realized as elements of the Clifford algebra. Explicitly,\r
+Σab =\r
+1\r
+2\r
+γab , (4)\r
+where γab ≡\r
+1\r
+2\r
+[γa, γb] denotes the skewsymmetric product of gamma matrices.\r
+The main result of this paper is that implementing the Lorentz components\r
+of the curvature and a Clifford–valued frame to construct quadratic invariants\r
+of the form,\r
+⟨ F ∗ F ⟩, (5)\r
+⟨ /eF ∗ (F/e)⟩, (6)\r
+⟨ /e"""
+
+[[sections]]
+number = "2"
+title = "F ∗ (F/e"
+text = """
+2\r
+)⟩. (7)\r
+we can construct theories that include ghost free models for gravity and also\r
+Yang-Mills theory and Dirac spinors if the Lorentz algebra is appropriately\r
+embedded in larger (super–)algebras. Notice that terms of order higher than\r
+two in /e in terms of the form (7) vanish identically due to the nilpotency of the\r
+form degree, in close analogy with expansions in Grassmann variables. In this\r
+paper, as a simple illustration of the method, we focus on parity-even terms\r
+of the form ⟨ X ∗ X ⟩. The same method, however, can be straightforwardly\r
+extended to the construction of parity-odd terms.\r
+Let us begin by mentioning that products of the Clifford-algebra–valued\r
+frame remain closed under the action of the standard Hodge dual operator. For\r
+instance, if\r
+/e = e\r
+a\r
+γa (8)\r
+denotes the Clifford–valued frame, γ\r
+a denotes a Dirac or Majorana gamma ma\u0002trix, and e\r
+a\r
+is the tetrad one–form, which is a Lorentz–vector–valued differential\r
+one-form e\r
+a = ea\r
+µ dxµ that defines a local orthonormal frame on spacetime, re\u0002lating the spacetime metric to the Minkowski metric via gµν = e\r
+a\r
+µe\r
+b\r
+νηab, then\r
+the Hodge dual of any homogeneous product\r
+/e\r
+p ≡ e\r
+a1 ∧ · · · ∧ eap γa1···ap\r
+(9)\r
+3
+
+is again of the same form,\r
+∗ /e\r
+p =\r
+1\r
+(d − p)! ϵ\r
+a1···ap\r
+b1···bd−p\r
+e\r
+b1 ∧ · · · ∧ ebd−p γa1···ap ∈ Span{/e\r
+d−p\r
+} , (10)\r
+so that the Clifford–exterior algebra generated by the frame is stable under\r
+the Hodge dual. Before proceeding further, let us clarify that we have chosen\r
+to keep the standard Hodge dual in (5)–(7) so that to avoid introducing extra\r
+technicalities that may obscure the main result of the paper. However it is known\r
+that the Hodge dual can in fact be written with a Clifford exterior-algebra [20]\r
+Now, let us remark that the implementation of a Clifford–algebra valued\r
+frame in (5)–(7) allows us to construct more general invariants that using the\r
+Lorentz components of the curvature. In order to see this let us consider all\r
+possible quadratic combinations of two curvatures, the Hodge dual, the fully\r
+skewsymmetric symbol and the metric,\r
+ϵabcd F\r
+ab Fcd (11)\r
+F\r
+ab ∗ Fab (12)\r
+F\r
+ab Fab (13)\r
+ϵabcd ∗ F\r
+ab Fcd\r
+, (14)\r
+∗ F\r
+ab ∗ Fab (15)\r
+ϵabcd ∗ F\r
+ab ∗ Fcd\r
+. (16)\r
+These terms produce only four independent quadratic contractions of Fab cd.\r
+Details of the calculation are provided in appendix A.1. However, in constrast\r
+to General Relativity, in the Einstein–Cartan formulation of gravity it is not\r
+natural to impose symmetry under the pairwise exchange [ab] ↔ [cd] on F[ab][cd].\r
+Consequently, the curvature contains both contributions,\r
+F[ab][cd] = A[[ab][cd]] + S([ab][cd]) , (17)\r
+where A denotes the skewsymmetric part and S the symmetric part. The pair\u0002skewsymmetric sector captures torsional degrees of freedom, while the pair\u0002symmetric sector contains the Riemannian graviton; the Clifford invariants allow\r
+these sectors to be probed independently. In other words, the terms (11)–(16)\r
+cannot isolate invariants depending purely on the A or the S parts, but using\r
+(5)–(7) we can indeed generate quadratic invariants that are linearly indepen\u0002dent of (11)–(16).\r
+Notice that contributions to Einstein-Hilbert–Gauss–Bonnet four–form (11)\r
+vanishes in (5) and (6), but one finds a nontrivial contribution to it in the /e\r
+2\r
+–\r
+term (7). Therefore a generic linear combination of the terms (5), (6), and (7)\r
+provides a natural candidate for an action principle,\r
+L = α ⟨F ∗ F⟩ + β ⟨/eF ∗ (F/e)⟩ + γ ⟨/e"""
+
+[[sections]]
+number = "2"
+title = "F ∗ (F/e"
+text = """
+2\r
+)⟩. (18)\r
+However, allowing for a generic linear combination of the terms (5)–(7) gives\r
+rise to new contributions (which may or may not be desirable). For instance,\r
+4
+
+for arbitrary coefficients one obtains terms such as the Kretschmann invariant\r
+and the contraction of two generalized Ricci tensors for F\r
+ab, which may lead to\r
+the appearance of degrees of freedom with the wrong sign of the kinetic term\r
+(ghosts). Nevertheless, a specific choice of coefficients (β = −α, γ = −α/4)\r
+ensures that only the Gauss–Bonnet term for F\r
+ab survives.\r
+In the seminal papers [21, 22], the authors considered a six-parameter La\u0002grangian built from the most general parity even quadratic invariants in gravity\r
+with torsion. This requires both, enlarging the Lagrangian by including further\r
+terms beyond those appearing in (18), and enlarging the Lorentz algebra to an\r
+anti–de Sitter algebra.\r
+Another motivation for enlarging the basis of quadratic invariants comes\r
+from the geometric inclusion of the full field content in the gauge connection,\r
+including matter spinors. This will lead us to extra algebraic constraints to\r
+enforce first-order fermion dynamics.\r
+In order to incorporate internal gauge bosons and spinors, one may em\u0002bed the Lorentz algebra into the superalgebras osp(n, 4) or su(2, 2|n), which\r
+necessarily entails the introduction of spinorial generators associated with su\u0002percharges [23]. For simplicity, we focus on the case of Majorana supercharges,\r
+which implies an internal symmetry of so(n) type.\r
+We shall work with a block-matrix representation of the form\r
+"\r
+AdS4×4 Q4×n\r
+Qt\r
+n×4\r
+so(n)n×n\r
+#\r
+, (19)\r
+which makes explicit the Lorentz (or the Anti–de Sitter algebra), fermionic, and\r
+internal sectors.\r
+Following the ideas developed in [24, 25, 23], and in order to construct a\r
+genuinely geometric model, we collect all fields into a single gauge connection\r
+valued in the superalgebra osp(n, 4),\r
+A =\r
+1\r
+2\r
+ω\r
+ab Jab + ea\r
+Ja +\r
+1\r
+2\r
+A\r
+ij Lij + Q\r
+i\r
+α (/eψ)\r
+α\r
+i\r
+. (20)\r
+In (20), the fermionic sector involves the composite field /eψ, where spinor\r
+indices will be omitted whenever no confusion arises. Explicitly,\r
+(/eψ)\r
+α\r
+i = e\r
+a\r
+(γa)\r
+α\r
+β ψ\r
+β\r
+i\r
+. (21)\r
+The combination γ\r
+aψ, being annihilated by the spin- 3\r
+2\r
+projector, carries purely\r
+spin- 1\r
+2\r
+degrees of freedom.\r
+In the representation (19), the terms (6) and (7) vanish identically when\r
+evaluated on the so(n) internal components of the curvature, 1\r
+2\r
+F\r
+ijLij , where\r
+the full field strength decomposes as\r
+F =\r
+1\r
+2\r
+F\r
+abJab + Fa\r
+Ja +\r
+1\r
+2\r
+F\r
+ijLij + Q\r
+i\r
+αXαi\r
+. (22)\r
+Here Lij are the so(n) generators associated with the lower-right block of (19),\r
+the components F\r
+a\r
+correspond to translational generators, while Xα\r
+i denote the\r
+5
+
+fermionic components of the curvature. The only non-vanishing contribution in\r
+the internal gauge sector arises from the term ⟨ F ∗ F ⟩, which yields a standard\r
+Yang–Mills kinetic term for the so(n) curvature components F\r
+ij . Requiring\r
+canonical normalization of the internal gauge bosons fixes the corresponding\r
+coefficient to be −1/2.\r
+Before continuing with the analysis of the spinor terms, let us clarify that in\r
+the definition of the supertraces (6) and (7), the frame is implicitly slashed using\r
+the embedding of the γ\r
+a matrices in the chosen superalgebra representation.\r
+/e = e\r
+aΓa , Γa =\r
+"\r
+γa 04×n\r
+0n×4 0n×n\r
+#\r
+within the superalgebra context. (23)\r
+We now turn to the kinetic terms for the spinors. The fermionic component\r
+of the curvature is given by an adS⊗so(n)–covariant derivative of the composite\r
+field ξ = /eψ,\r
+Xα\r
+i = (Dξ)\r
+α\r
+i\r
+, (24)\r
+where\r
+Dξ ≡ Dξ +\r
+1\r
+2\r
+e\r
+a\r
+γaξ , (25)\r
+and D denotes the so(1, 3) ⊗ so(n)–covariant derivative in the spin- 1\r
+2\r
+represen\u0002tation,\r
+Dξ ≡ dξ +\r
+1\r
+2\r
+ω\r
+abΣab ξ +\r
+1\r
+2\r
+A\r
+mn(λmn)ij\r
+ξj . (26)\r
+Since ξ is a composite object, one must also take into account the action of\r
+D on /e,\r
+D(/eψ) = γaT\r
+aψ − /e Dψ , (27)\r
+where T\r
+a = Dea ≡ dea + ωa\r
+b e\r
+b\r
+is the torsion two-form, and D here denotes\r
+the so(1, 3) ⊗ so(n)–covariant derivative acting on ψ. To avoid introducing\r
+multiple symbols for covariant derivatives, we shall use D throughout to denote\r
+a so(1, 3) ⊗ so(n)–covariant derivative; the appropriate representation of the\r
+generators is understood to be chosen according to the object on which D acts.\r
+The quadratic terms in the fermionic curvature components, induced by\r
+invariants of the type (5), (6), and (7), when evaluated on\r
+X = Q\r
+i\r
+αXαi\r
+,\r
+generate two types of second derivative terms of the spinor fields through quadratic\r
+products of the second term in (27):\r
+η\r
+abCαβ∂aψα\r
+∂bψ\r
+β\r
+and (Cγab)αβ∂aψ\r
+α\r
+∂bψ\r
+β\r
+. (28)\r
+The term proportional to γ\r
+ab contributes only to a boundary term together\r
+with non-minimal couplings. Requiring, however, the cancellation of the Klein–\r
+Gordon fermionic term imposes an independent constraint on the coefficients α,\r
+β, and γ, leaving only two free parameters in the Lagrangian (see appendix A.5)."""
+
+[[sections]]
+number = "6"
+title = "As a consequence, no further freedom remains to adjust relative coefficients so"
+text = """
+as to eliminate ghosts in the gravitational sector, which requires the satisfaction\r
+of three independent linear conditions [22].\r
+This makes the inclusion of additional terms in the Lagrangian (18) manda\u0002tory in order to properly complete the ghost-cancellation mechanism in the\r
+gravity sector. The terms we shall consider are\r
+⟨[/e, F] ∗ ([F, /e])⟩, (29)\r
+⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩. (30)\r
+With all the ingredients defined above we therefore define the Lagrangian,\r
+which is given by a linear combination of (5), (6), (7), (29) and (30),\r
+LLL = α ⟨ F ∗ F ⟩ + β ⟨ /eF ∗ (F/e)⟩ + γ ⟨ /e"""
+
+[[sections]]
+number = "2"
+title = "F ∗ (F/e"
+text = """
+2\r
+)⟩\r
++ δ⟨[/e, F] ∗ ([F, /e])⟩ + ε⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩. (31)\r
+This model is geometric since all fields are included in the field strength via the\r
+gauge connection. The unification achieved here is restrictive since the alge\u0002bra sharply limits admissible dynamics, and it is precisely this restriction that\r
+enforces consistency. The ghost–free dynamics further restrict the parameters\r
+from five to one, since one condition is required to cancel out fermion second\r
+derivative terms and three conditions are required to choose a ghost-free gravity\r
+sector, see Table 1 of [22].\r
+The restricted set of Clifford–generated invariants in (31) is sufficient to\r
+complete a full set of parity even invariants, see Table 1. In order to facilitate\r
+comparison with the results of [22], we have followed the authors’ prescription\r
+and omitted the R2term by invoking the Gauss–Bonnet theorem for trivial\r
+topologies. Nonminimal couplings are also included in the action as a result of\r
+the computation of (31) but they are not the focus of the present paper.\r
+As an illustration, we consider three representative choices of parameters\r
+that reproduce known ghost–free quadratic gravity models. We restrict to the\u0002ories with a propagating graviton and no second–order derivatives in the spinor\r
+sector, which together impose four independent conditions. At the linearized\r
+level, these requirements truncate part of the propagating spectrum. The result\u0002ing particle content is summarized in Table 2. The analysis underlying Table 2\r
+is performed around flat space, and therefore some comments regarding the in\u0002clusion of a cosmological constant term are in order; these are discussed in the\r
+text below. The physical interpretation of the A/S splitting, and its relation to\r
+the propagating 2\r
++, 1±, and 0− modes shown in Table 2 (see appendix B).\r
+We can further fixed α = −\r
+1\r
+2\r
+so that the Yang–Mills Lagrangian density\r
+assumes its canonical normalization,\r
+LYM = −\r
+1"""
+
+[[sections]]
+number = "4"
+title = "Fij µν Fij"
+text = """
+µν\r
+. (32)\r
+The standard kinetic terms for spinors come from the cross products of the last\r
+term in (25) and the second term in (27). Such terms require to renormalize"""
+
+[[sections]]
+number = "7"
+title = "Invariant term Coefficient"
+text = """
+R −α − 6β + 24γ\r
+Λ −6α − 36β + 144γ\r
+RabcdRabcd −α/4 − β/2 + γ − 2δ\r
+RabcdRacbd β − 4γ + 4δ\r
+RabcdRcdab γ\r
+RabRab −β + 7γ + 16ϵ\r
+RabRba −4γ − 16ϵ\r
+Tabc T\r
+abc α/2 + β − 2γ + 2δ − 8ϵ\r
+Tabc T\r
+bca β − 4γ − 16ϵ\r
+Tb\r
+ba Tcca β − 4γ + 4δ\r
+Fij abFij\r
+ab α/2\r
+ψ\r
+α (Cγa\r
+)αβ ∂aψ\r
+β 12α + 36β − 144γ + 72δ − 288ε\r
+ψ\r
+α Cαβ ψβ\r
+(−1)× row above\r
+∂aψ\r
+αηab Cαβ ∂bψβ 6α + 12β − 36γ + 24δ − 72ε\r
+∂aψ\r
+α (Cγab)αβ ∂bψβ 2α + 8β − 36γ + 16δ − 72ε\r
+Table 1: Coefficients of curvature invariants obtained. All expressions here\r
+are wrtitten in terms of tensor components. Here we used the Gauss–Bonnet\r
+theorem to replace R2in terms of RabRba and RabcdRabcd.\r
+the spinor field in order to get the canonical Majorana normalization.“Model 5”\r
+is special because the spinor becomes irrevelant, meaning that all terms cancel\r
+out from the action, see Table 2.\r
+Table 1 displays the value of the cosmological constant, Λ = −6α − 36β +\r
+144γ, which can in principle take either sign or vanish for suitable choices of\r
+parameters. However, within the class of ghost-free models, the cosmological\r
+constant is proportional to α, although its sign depends on the specific model,\r
+as shown in Table 2. A vanishing cosmological constant can be achieved in\r
+three distinct ways. First, one may include a ⟨ /e\r
+4\r
+⟩ term in the action. Second,\r
+additional interaction terms can be introduced, either linear in the curvature\r
+or quadratic but parity-odd. The analysis of Table 2 is performed around flat\r
+space, and therefore the implications of a non-vanishing cosmological constant\r
+deserve separate investigation."""
+
+[[sections]]
+number = "3"
+title = "Discussion and Outlook"
+text = """
+In this work we have shown that a single geometric action constructed from\r
+a Clifford–algebra–valued curvature, together with an induced dual operator\r
+built from the frame, reproduces simultaneously the canonical kinetic terms for\r
+Yang–Mills fields, spin- 1\r
+2\r
+fermions, and a class of quadratic gravity models with"""
+
+[[sections]]
+number = "8"
+title = "Models [22] Gravity particle content Spinor Terms Λ"
+text = """
+“Model 1”\r
+2\r
++, 0+ and 0− ✓ −6α\r
+β → 0\r
+γ → 0\r
+δ → −α/4\r
+ε → 0\r
+“Model 3”\r
+2\r
++, 1−, and 0− ✓ 2α\r
+β → −α/3\r
+γ → −α/36\r
+δ → −α/6\r
+ε → −α/72\r
+“Model 5”\r
+2\r
++, 1+, and 0− ✗ −6α\r
+β → −α\r
+γ → −α/4\r
+δ → 0\r
+ε → α/24\r
+Table 2: Ghost free models that are contained in the action (31) for an specific\r
+choice of parameters. The particle content in the gravity sector is labeled as\r
+irreducible representations of so(3).\r
+torsion. Remarkably, for a particular choice of parameters, the gravitational\r
+sector contains known ghost-free models with propagating torsion originally\r
+identified by Sezgin. This result is structurally enforced, as it emerges without\r
+imposing a priori restrictions on the curvature invariants beyond those dictated\r
+by the Clifford-algebraic structure.\r
+A key conceptual point of the present construction is that gravity is not\r
+appended to a Yang–Mills theory, nor is the tetrad introduced as an external\r
+compensator field. Instead, both the gravitational and internal gauge sectors\r
+arise from the same underlying Clifford–valued curvature invariant. In this\r
+sense, the tetrad appears as part of the geometric data defining the dual op\u0002erator, rather than as an independent gauge field. Likewise, the Hodge dual\r
+is not assumed as a background operation [26], but is dynamically induced by\r
+the Clifford-algebra–valued frame. In contrast to MacDowell–Mansouri–type\r
+constructions, where a projection or symmetry breaking is imposed to isolate\r
+gravity, here the Lorentz sector and its dynamics are selected algebraically by\r
+the Clifford trace itself.\r
+Allowing for a generic Einstein–Cartan connection, the curvature naturally\r
+decomposes into pair-symmetric and pair-antisymmetric components. This de\u0002composition provides a transparent way to isolate Riemannian and non-Riemannian\r
+contributions prior to performing a full spin–parity analysis. Three models were\r
+found, in which, at the linearized level, the usual massless 2\r
++ graviton originates\r
+from the pair-symmetric sector, while the propagating torsion modes (1\r
+± and\r
+0\r
+− in the ghost-free case) arise from curvature components sourced by contor\u0002tion. Beyond linear order, mixing occurs through quadratic contortion terms,\r
+9
+
+but the decomposition remains a useful organizational tool for understanding\r
+the spectrum.\r
+Another notable feature is that ghost freedom in the quadratic gravity sec\u0002tor is not engineered by an ad hoc tuning of curvature invariants. Rather,\r
+the restricted set of quadratic terms generated by traces involving the Clifford\r
+frame and the induced dual operator automatically constrains the allowed com\u0002binations. Within this reduced space of invariants, the ghost-free Sezgin model\r
+appears as a consistent point in parameter space. This suggests that the absence\r
+of pathological degrees of freedom is selected by the algebraic structure of the\r
+theory itself, rather than imposed externally.\r
+The fermionic sector provides a further nontrivial consistency check. Because\r
+the spinor fields enter the connection through the composite object /eψ, naive\r
+quadratic curvature terms could potentially generate higher-derivative fermion\r
+dynamics. We have shown explicitly that, for the same class of Clifford invari\u0002ants that yield sensible gravitational dynamics, these higher-derivative terms\r
+combine so as to reproduce the standard first–order Dirac kinetic term. This\r
+cancellation is essential for the consistency of the framework and supports the\r
+view that the Clifford–algebraic construction tightly constrains the allowed dy\u0002namics of matter fields.\r
+Given the presence of quadratic curvature terms, the resulting theory should\r
+be understood as a low–energy effective field theory, valid below the characteris\u0002tic mass scale associated with propagating torsion modes. From this perspective,\r
+higher–order invariants involving additional powers of the Clifford–valued frame\r
+and curvature are naturally suppressed by the corresponding cutoff scale. The\r
+present framework therefore does not attempt to define a UV–complete theory\r
+of quantum gravity, but rather provides a controlled and geometrically moti\u0002vated effective description in which gravity, gauge fields, and fermions emerge\r
+on the same footing.\r
+Several directions merit further investigation. These include the extension to\r
+superconformal algebras with chiral fermions, the study of symmetry breaking\r
+mechanisms selecting the Lorentz subgroup dynamically, and the exploration\r
+of cosmological and phenomenological implications of massive torsion modes.\r
+More broadly, the results suggest that Clifford–algebra–based constructions may\r
+provide a natural and conceptually economical arena for unifying gravity and\r
+gauge interactions without introducing extra dimensions or enlarging the field\r
+content beyond that required by geometry itself.\r
+Acknowledgements\r
+P.A. acknowledges support from ANID-FONDECYT Regular grant No. 1230112.\r
+C.Q. acknowledges support from ANID-FONDECYT grant 11231238. P.A. and\r
+F.I. dedicate this work to their daughters Lizzie and Luc´ıa, whose lovely an\u0002tics and cheerful laugh made the long algebraic calculations and coding time\r
+bearable. The geometric Lagrangian (31) for all the interactions is named after\r
+them. F.I. is also grateful for the emotional support provided by the Nether\u000210
+
+lands Bach Society. They made freely available superb quality recordings of the\r
+music of Bach, and without them, this work would have been impossible.\r
+Appendices\r
+A Clifford-algebra contractions and quadratic cur\u0002vature invariants\r
+In this section we collect the explicit contractions of Lorentz-algebra–valued\r
+curvature two-forms used in the main text and theirrelation to the independent\r
+quadratic curvature invariants T1, . . . , T4.\r
+A.1 Contractions involving the Hodge dual\r
+Let\r
+F\r
+ab =\r
+1\r
+2\r
+F\r
+ab\r
+cd e\r
+c\r
+e\r
+d\r
+denote the Lorentz curvature two-form, and let ∗ be the spacetime Hodge dual.\r
+The following identities hold:\r
+ϵabcd F\r
+ab Fcd = T1|\r
+c1=−\r
+1\r
+4\r
+, (33)\r
+F\r
+ab ∗ Fab = T2|\r
+c2=\r
+1\r
+2\r
+, (34)\r
+F\r
+ab Fab = T3|\r
+c3=−\r
+1\r
+4\r
+, (35)\r
+ϵabcd ∗ F\r
+ab Fcd = T4|\r
+c4=\r
+1\r
+2\r
+, (36)\r
+∗F\r
+ab ∗ Fab = T3|\r
+c3=\r
+1\r
+4\r
+, (37)\r
+ϵabcd ∗ F\r
+ab ∗ Fcd = T1|\r
+c1=−\r
+1\r
+4\r
+. (38)\r
+These relations are obtained by expanding the curvature in the vielbein basis\r
+and using standard identities for contractions of Levi–Civita symbols with the\r
+Hodge dual in four dimensions.\r
+A.2 Definition of the quadratic invariants\r
+The quadratic invariants appearing above are defined as\r
+T1 = c1 ϵabcd ϵ\r
+ef gh Fab\r
+ef F\r
+cd\r
+gh v4, (39)\r
+T2 = c2 F\r
+abcdFabcd v4, (40)\r
+T3 = c3 ϵ\r
+cdef Fab\r
+cd Fabef v4, (41)\r
+T4 = c4 ϵ\r
+cdef Fcdab Fefab v4, (42)\r
+11
+
+where F\r
+ab\r
+cd are the scalar-form components of the curvature and\r
+v4 = e\r
+0\r
+e\r
+1\r
+e\r
+2\r
+e\r
+3\r
+is the spacetime volume form.\r
+The coefficients ci are fixed by matching the contractions in Eqs. (33)–(38)\r
+with the invariant basis (39)–(42), as discussed in the main text.\r
+A.3 Contractions using Clifford–algebra–valued frame\r
+By contrast, products involving traces of the Hodge dual, the Clifford-algebra–\r
+valued tetrad, and the curvature are capable of isolating linearly independent\r
+combinations of T1, . . . , T4. For instance,\r
+⟨ F ∗ F ⟩ = S|c2=−1/4, (43)\r
+⟨ /eF ∗ (F/e)⟩ = S|\r
+c5 = 1/16\r
+c6 = −3/4\r
+c7 = 1/4\r
+c8 = −1/4\r
+, (44)\r
+⟨ /e"""
+
+[[sections]]
+number = "2"
+title = "F ∗ (F/e"
+text = """
+2\r
+)⟩ = S|\r
+c1 = −1/4\r
+c2 = −1\r
+c5 = −1/4\r
+c6 = 3\r
+c7 = −1\r
+c8 = 1\r
+. (45)\r
+where S =\r
+P8\r
+i=1 Ti and\r
+T5 = c5 ϵabcdϵ\r
+ef ghAab\r
+efA\r
+cd\r
+gh v4 , (46)\r
+T6 = c6 A\r
+abcdAabcd v4 , (47)\r
+T7 = c7 ϵ\r
+af ghϵebcdSabcdSef gh v4 , (48)\r
+T8 = c8 η\r
+[af][gh]\r
+η\r
+[eb][cd]SabcdSef gh v4 . (49)\r
+A.4 Tangent-space Gamma matrices\r
+The tangent-space gamma matrices satisfy\r
+dγa = 0 , Dγa = 0 , (50)\r
+where the Lorentz-covariant derivative acts as\r
+Dγa ≡ dγa + ω\r
+a\r
+bγ\r
+b + (1/2)Σbcωbcγa − (1/2)γaωbcΣbc . (51)"""
+
+[[sections]]
+number = "12"
+title = "A.5 Quadratic terms of the fermionic curvature"
+text = """
+Explicitly,\r
+⟨Y ∗ Y⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=6, d2=2\r
+, (52)\r
+⟨/eY ∗ (Y/e)⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=12, d2=8\r
+, (53)\r
+⟨/e\r
+2Y ∗ (Y/e2\r
+)⟩ = S\r
+(fer)\r
+\f\r
+\f\r
+\f\r
+d1=−36, d2=−36\r
+, (54)\r
+where Y = −Q /eDψ and\r
+S\r
+(fer) = d1 Daψα Cαβ Daψβ\r
+v4 + d2 Daψ\r
+α\r
+(Cγab)αβ Dbψ\r
+β\r
+v4 . (55)\r
+A generic linear combination of the terms (52)–(54) therefore leads to higher\u0002derivative fermionic kinetic terms and may induce fermionic ghosts.\r
+A.6 More contractions using Clifford–algebra–valued frame\r
+We may add the following terms, defined using the unsymmetrized trace,\r
+⟨[/e, F] ∗ ([F, /e])⟩ =\r
+ X\r
+8\r
+i=1\r
+Ti\r
+!\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+c6 = −2\r
+c7 = 1 , (56)\r
+⟨[/e\r
+2\r
+, F] ∗ ([F, /e\r
+2\r
+])⟩ =\r
+ X\r
+8\r
+i=1\r
+Ti\r
+!\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+c5 = −2\r
+c6 = 8 . (57)\r
+In passing, let us note that a convenient definition of the fully symmetrized\r
+supertrace of n superalgebra-valued elements X1, . . . , Xn is\r
+⟨ X1 · · · Xn⟩FS ≡\r
+1\r
+n!\r
+X\r
+π∈Sn\r
+(−1)ε(π;X)⟨Xπ(1)Xπ(2) · · · Xπ(n)⟩, (58)\r
+where Sn is the permutation group of n elements and (−1)ε(π;X)is the graded\r
+sign picked up when permuting the homogeneous elements Xi, namely\r
+(−1)ε(π;X) =\r
+Y\r
+i<j\r
+(−1)|Xπ(i)| |Xπ(j)|\r
+for each transposition,\r
+with |Xi| = 0 for bosonic (even) elements and |Xi| = 1 for fermionic (odd) ones.\r
+This fully symmetrized trace greatly simplifies hand computations."""
+
+[[sections]]
+number = "13"
+title = "B From the A/S pair-exchange split to spin–"
+text = """
+parity modes\r
+B.1 Pair-exchange operator and the A/S decomposition\r
+Let F\r
+ab be the Lorentz-algebra curvature two-form of a generic (Einstein–\r
+Cartan) connection ω\r
+ab\r
+µ, with components\r
+F\r
+ab =\r
+1\r
+2\r
+F\r
+ab\r
+cd e\r
+c\r
+e\r
+d\r
+, Fab cd := ηaeηbfF\r
+ef\r
+cd. (59)\r
+The indices [ab] and [cd] label antisymmetric Lorentz pairs. Define the pair\u0002exchange operator P acting on Fab cd by swapping the two index pairs:\r
+P[Fab cd] := Fcd ab. (60)\r
+Then we define the symmetric and antisymmetric parts under pair exchange,\r
+Sab cd :=\r
+1\r
+2\r
+(Fab cd + Fcd ab), Aab cd :=\r
+1\r
+2\r
+(Fab cd − Fcd ab), (61)\r
+so that F = S + A and P[S] = S, P[A] = −A.\r
+For a torsionless Levi–Civita connection, the Riemann curvature satisfies\r
+Rab cd = Rcd ab, hence A = 0 identically. Therefore, A ̸= 0 is a purely non\u0002Riemannian signature: it measures precisely the obstruction to pair symmetry\r
+induced by torsion/contortion (or, more generally, by relaxing the usual ex\u0002change symmetry [ab] ↔ [cd]).\r
+B.2 Contortion expansion and linearized interpretation\r
+Decompose the spin connection into Levi–Civita part plus contortion,\r
+ω\r
+ab =\r
+◦\r
+ω\r
+ab(e) + κab, T a\r
+:= Dea = κ\r
+a\r
+be\r
+b\r
+, (62)\r
+where ◦ω\r
+ab(e) is determined by ea and has vanishing torsion. The Lorentz cur\u0002vature expands as\r
+R\r
+ab(ω) = Rab(\r
+◦\r
+ω) +\r
+◦\r
+Dκab + κ\r
+a\r
+cκ\r
+cb\r
+, (63)\r
+with\r
+◦\r
+D the covariant derivative built from ◦ω. Linearizing about Minkowski\r
+space,\r
+e\r
+a\r
+µ = δ\r
+a\r
+µ +\r
+1\r
+2\r
+h\r
+a\r
+µ, κabµ = O(ϵ), (64)\r
+one finds to first order in perturbations:\r
+R\r
+ab ≈ Rab(\r
+◦\r
+ω) +\r
+◦\r
+Dκab, κ ∧ κ = O(ϵ\r
+2\r
+). (65)"""
+
+[[sections]]
+number = "14"
+title = "At linear order, Rab cd("
+text = """
+◦\r
+ω) has the pair-exchange symmetry Rab cd = Rcd ab,\r
+hence it contributes only to S. By contrast, the term\r
+◦\r
+Dκab generically violates\r
+pair exchange and is the leading source for A. Thus, schematically,\r
+S = R(\r
+◦\r
+ω) + O(κ\r
+2\r
+), A =\r
+◦\r
+Dκ + O(κ\r
+2\r
+). (66)\r
+Equation (66) is the main reason the A/S split is useful: it cleanly separates\r
+the torsionless graviton sector from the leading torsional curvature sector, before\r
+doing a spin–parity decomposition.\r
+B.3 Spin–parity content: why 2+ is in S, and torsion\r
+modes arise from A\r
+In Poincar´e gauge theory, the propagating modes are classified by decompos\u0002ing torsion and curvature into Lorentz-irreducible pieces and then using spin\r
+projection operators. For our purposes, it is enough to recall the standard\r
+decomposition of torsion in 4D into\r
+Tλµν =\r
+1\r
+3\r
+(vµgλν − vνgλµ) + 1\r
+6\r
+ελµνρ a\r
+ρ + qλµν, (67)\r
+where vµ := T\r
+λ\r
+λµ is the trace vector (parity even), a\r
+µ := εµαβγTαβγ is the\r
+axial vector (parity odd), and qλµν is the remaining tensor piece (traceless and\r
+ε-traceless).\r
+At the linearized level, using (63)–(66), the quadratic curvature invariants\r
+that contain kinetic terms for torsion necessarily depend on\r
+◦\r
+Dκ, and hence\r
+are supported by the A sector at leading order. The spin–parity identifica\u0002tion proceeds by inserting (67) into the quadratic action and reading off which\r
+combinations obtain proper kinetic terms:\r
+• The 2\r
++ mode is the usual metric (or tetrad) graviton mode and arises from\r
+R(\r
+◦\r
+ω), hence it belongs to the pair–symmetric sector S at linear order.\r
+• The 1\r
++ torsion mode is carried by the parity-even vector vµ and is sourced\r
+by derivatives of contortion. Therefore its kinetic terms arise from the\r
+◦\r
+Dκ\r
+part of the curvature, i.e. primarily from A at linear order.\r
+• The 1\r
+− torsion mode is carried by the parity–odd axial–vector aµ and is\r
+also sourced by derivatives of contortion. Therefore its kinetic terms arise\r
+from the\r
+◦\r
+Dκ part of the curvature, i.e. primarily from A at linear order.\r
+• The 0\r
+− torsion mode is carried by the pseudoscalar/axial sector (equiv\u0002alently, the longitudinal part of aµ) and likewise obtains its kinetic term\r
+from\r
+◦\r
+Dκ, hence again from A at linear order."""
+
+[[sections]]
+number = "15"
+title = "References"
+text = """
+[1] H. Georgi and S. L. Glashow, “Unity of all elementary-particle forces,”\r
+Physical Review Letters, vol. 32, pp. 438–441, 1974.\r
+[2] H. Georgi, Lie algebras in particle physics, vol. 54. Reading, MA: Perseus\r
+Books, 2nd ed., 1999.\r
+[3] C. Furey, “Three generations, two unbroken gauge symmetries, and one\r
+eight-dimensional algebra,” Physics Letters B, vol. 785, pp. 84–89, 2018.\r
+[4] C. Furey, “Standard model physics from an algebra?,” Philosophical Trans\u0002actions of the Royal Society A, vol. 377, no. 2157, p. 20190043, 2019. See\r
+also arXiv:1611.09182 and subsequent papers.\r
+[5] G. M. Dixon, Division Algebras: Octonions, Quaternions, Complex Num\u0002bers and the Algebraic Design of Physics. Dordrecht, Netherlands:\r
+Springer, 1st ed., 1994.\r
+[6] F. G¨ursey and C.-H. Tze, On the Role of Division, Jordan and Related\r
+Algebras in Particle Physics. 5 Toh Tuck Link, Singapore 596224: World\r
+Scientific, 1st ed., 1996.\r
+[7] J. C. Baez, “The octonions,” Bulletin of the American Mathematical Soci\u0002ety, vol. 39, no. 2, pp. 145–205, 2002.\r
+[8] A. Palatini, “Deduzione invariantiva delle equazioni gravitazionali dal prin\u0002cipio di Hamilton,” Rend. Circ. Mat. Palermo, vol. 43, no. 1, pp. 203–212,\r
+1919.\r
+[9] R. Utiyama, “Invariant theoretical interpretation of interaction,” Phys.\r
+Rev., vol. 101, pp. 1597–1607, 1956.\r
+[10] D. W. Sciama, “The Physical structure of general relativity,” Rev. Mod.\r
+Phys., vol. 36, pp. 463–469, 1964. [Erratum: Rev.Mod.Phys. 36, 1103–1103\r
+(1964)].\r
+[11] T. W. B. Kibble, “Lorentz invariance and the gravitational field,” J. Math.\r
+Phys., vol. 2, pp. 212–221, 1961.\r
+[12] K. Hayashi and T. Nakano, “Extended translation invariance and associ\u0002ated gauge fields,” Prog. Theor. Phys., vol. 38, pp. 491–507, 1967.\r
+[13] F. W. Hehl, “Four Lectures on Poincar´e Gauge Field Theory,” in Interna\u0002tional School of Cosmology and Gravitation: Spin, Torsion, Rotation and\r
+Supergravity, 2023.\r
+[14] K. Krasnov, Formulations of General Relativity. Cambridge Monographs\r
+on Mathematical Physics, Cambridge, UK: Cambridge University Press,\r
+1st ed., 11 2020.\r
+16
+
+[15] T. Kawai and H. Yoshida, “DE SITTER GAUGE THEORY OF GRAVI\u0002TATION,” Prog. Theor. Phys., vol. 62, p. 266, 1979.\r
+[16] R. Aldrovandi and E. Stedile, “A Complete Gauge Theory for the Whole\r
+Poincare Group,” Int. J. Theor. Phys., vol. 23, p. 301, 1984.\r
+[17] H. Weyl, “Electron and Gravitation. 1. (In German),” Z. Phys., vol. 56,\r
+pp. 330–352, 1929.\r
+[18] S. W. MacDowell and F. Mansouri, “Unified Geometric Theory of Grav\u0002ity and Supergravity,” Phys. Rev. Lett., vol. 38, p. 739, 1977. [Erratum:\r
+Phys.Rev.Lett. 38, 1376 (1977)].\r
+[19] D. K. Wise, “MacDowell-Mansouri gravity and Cartan geometry,” Class.\r
+Quant. Grav., vol. 27, p. 155010, 2010.\r
+[20] H. B. Lawson and M. L. Michelsohn, Spin geometry. 1998.\r
+[21] E. Sezgin and P. van Nieuwenhuizen, “New Ghost Free Gravity Lagrangians\r
+with Propagating Torsion,” Phys. Rev. D, vol. 21, p. 3269, 1980.\r
+[22] E. Sezgin, “Class of Ghost Free Gravity Lagrangians With Massive or Mass\u0002less Propagating Torsion,” Phys. Rev. D, vol. 24, pp. 1677–1680, 1981.\r
+[23] P. D. Alvarez, R. A. Chavez, and J. Zanelli, “Embedding of the Georgi\u0002Glashow SU(5) model in the superconformal algebra,” JHEP, vol. 02,\r
+p. 050, 2023.\r
+[24] P. D. Alvarez, P. Pais, and J. Zanelli, “Unconventional supersymmetry and\r
+its breaking,” Phys. Lett. B, vol. 735, pp. 314–321, 2014.\r
+[25] P. D. Alvarez, R. A. Chavez, and J. Zanelli, “Gauging the superconformal\r
+group with a graded dual operator,” JHEP, vol. 02, p. 111, 2022.\r
+[26] H. R. Pagels, “A Gauge Theory of Gravity,” Phys. Rev. D, vol. 27, p. 2299,\r
+1983.\r
+17"""

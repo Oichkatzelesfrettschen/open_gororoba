@@ -1,0 +1,2203 @@
+equations = []
+figures = []
+full_text = """
+Quantum Darwinism\r
+Wojciech Hubert Zurek\r
+Theory Division, MS B213, LANL Los Alamos, NM, 87545, U.S.A.\r
+Quantum Darwinism describes the proliferation, in the environment, of multiple records of selected\r
+states of a quantum system. It explains how the fragility of a state of a single quantum system can\r
+lead to the classical robustness of states of their correlated multitude; shows how effective ‘wave\u0002packet collapse’ arises as a result of proliferation throughout the environment of imprints of the\r
+states of quantum system; and provides a framework for the derivation of Born’s rule, which relates\r
+probability of detecting states to their amplitude. Taken together, these three advances mark\r
+considerable progress towards settling the quantum measurement problem.\r
+The quantum principle of superposition implies that\r
+any combination of quantum states is also a legal state.\r
+This seems to be in conflict with everyday reality: States\r
+we encounter are localized. Classical objects can be ei\u0002ther here or there, but never both here and there. Yet, the\r
+principle of superposition says that localization should be\r
+a rare exception and not a rule for quantum systems.\r
+Fragility of states is the second problem with quantum\u0002classical correspondence: Upon measurement, a general\r
+preexisting quantum state is erased – it “collapses” into\r
+an eigenstate of the measured observable. How is it then\r
+possible that objects we deal with can be safely observed,\r
+even though their basic building blocks are quantum?\r
+To bypass these obstacles Bohr [1] followed Alexander\r
+the Great’s example: Rather than try disentangling the\r
+Gordian Knot at the beginning of his conquest, he cut\r
+it. The cut separates the quantum from the classical.\r
+Bohr’s Universe consists of two realms, each governed by\r
+its own laws. Fragile superpositions were banished from\r
+the classical realm deemed more fundamental and indis\u0002pensable to interpret or even practice quantum theory.\r
+Thus, instead of trying to understand Universe (includ\u0002ing “the classical”) in quantum terms one “quantized”\r
+this and that, always starting from the classical base.\r
+This was a brilliant tactical move: Physicists could\r
+conquer the quantum realm without getting distracted by\r
+interpretational worries. In those days only gedankenex\u0002periments like the famous Schr¨odinger cat [2] were truly\r
+disturbing: Real experiments dealt with electrons, pho\u0002tons, atoms, or other microscopic systems. Bohr’s rule of\r
+thumb – that the macroscopic is classical – was enough.\r
+Moreover, many (including Einstein) believed that quan\u0002tum physics is just a step on a way to a deeper theory\r
+that will solve or bypass interpretational conundrums.\r
+That did not happen. Instead, old gedankenexperi\u0002ments were carried out. They confirmed validity of quan\u0002tum laws on scales that have, of recent, begun to infringe\r
+on “the macroscopic”. Quantum theory is here to stay.\r
+It is also increasingly clear that its weirdest predictions\r
+– superpositions and entanglement – are experimental\r
+facts, in principle relevant also for macroscopic objects.\r
+Therefore, questions about the origin of “the classical”,\r
+with its restriction to localized states that are robust, un\u0002perturbed by measurements, can no longer be dismissed.\r
+I. DECOHERENCE AND EINSELECTION\r
+Decoherence turns one of the two problems we noted\r
+above – fragility of quantum states – into a solution of the\r
+other. Environment-induced decoherence recognizes that\r
+if a measurement can put a state at risk and re-prepare\r
+it, so can accidental information transfers that happen\r
+whenever a system interacts with its environment.\r
+Decoherence is by now well understood [3, 4, 5]:\r
+Fragility of states makes quantum systems very difficult\r
+to isolate. Transfer of information (which has no effect on\r
+classical states) has dramatic consequences in the quan\u0002tum realm. So, while fundamental problems of classical\r
+physics were always solved in isolation (it sufficed to pre\u0002vent energy loss) this is not so in quantum physics (leaks\r
+of information are much harder to plug).\r
+When a quantum system gives up information, its own\r
+state becomes consistent with the information that was\r
+disseminated. “Collapse” in measurements is an extreme\r
+example, but any interaction that leads to a correlation\r
+can contribute to such re-preparation: Interactions that\r
+depend on a certain observable correlate it with the en\u0002vironment, so its eigenstates are singled out, and phase\r
+relations between such pointer states are lost [6].\r
+Negative selection due to decoherence is the essence of\r
+environment-induced superselection, or einselection [7]:\r
+Under scrutiny of the environment, only pointer states\r
+remain unchanged. Other states decohere into mixtures\r
+of stable pointer states that can persist, and, in this sense,\r
+exist: They are einselected.\r
+These ideas can be made precise. The basic tool is the\r
+reduced density matrix ρS . It represents the state of the\r
+system that obtains from the composite state ΨSE of S\r
+and E by tracing out the environment E:\r
+ρS = T rE |ΨSE ihΨSE | . (1)\r
+Evolution of ρS reveals preferred states: It is most pre\u0002dictable when the system starts in a pointer state. To\r
+quantify this one can use (von Neumann) entropy, HS =\r
+H(ρS ) = −T rρS lg ρS , as a function of time. Pointer\r
+states result in smallest entropy increase. By contrast,\r
+their superpositions produce entropy rapidly, at decoher\u0002ence rates, especially when S is macroscopic.\r
+When pure states of the system are sorted by pre\u0002dictability, according to entropy of the evolved ρS ,\r
+arXiv:0903.5082v1 [quant-ph] 29 Mar 2009
+
+2\r
+pointer states are at the top. This criterion – the pre\u0002dictability sieve [4, 8, 9] – yields a short list of candidates\r
+for effectively classical states: A cat can persist in one\r
+of the two obvious stable states, but their superposition\r
+would deteriorate into a mixture of |deadi and |alivei\r
+when initiated in a way envisaged by Schr¨odinger [2].\r
+The special role of position is traced to the nature of\r
+the SE interactions: They tend to depend on distance.\r
+Hence, information about position is most readily passed\r
+on to the environment. This is why localized states sur\u0002vive while nonlocal superpositions decay into their mix\u0002tures. For example, in a weakly damped harmonic os\u0002cillator the minimum uncertainty wavepackets – familiar\r
+coherent states, best quantum approximation of classical\r
+points in phase space – are einselected [9, 10, 11].\r
+II. ENVIRONMENT AS A WITNESS\r
+Monitoring by the environment means that informa\u0002tion about S is deposited in E. What role does it play,\r
+and what is its fate? Decoherence theory ignores it. En\u0002vironment is “traced out”. Information it contains is\r
+treated as inaccessible and irrelevant: E is a “rug to sweep\r
+under” the data that might endanger classicality.\r
+Quantum Darwinism recognizes that “tracing out” is\r
+not what we do: Observers eavesdrop on the environ\u0002ment. Vast majority of our data comes from fragments\r
+of E. Environment is a witness to the state of the system.\r
+For example, this very moment you intercept a fraction\r
+of the photon environment emitted by a screen or scat\u0002tered by a page. We never access all of E. Tiny fractions\r
+suffice to reveal the state of various “systems of interest”.\r
+This insight captures the essence of Quantum Darwin\u0002ism: Only states that produce multiple informational off\u0002spring – multiple imprints on the environment – can be\r
+found out from small fragments of E. The origin of the\r
+emergent classicality is then not just survival of the fittest\r
+states (the idea already captured by einselection), but\r
+their ability to “procreate”, to deposit multiple records\r
+– copies of themselves – throughout E.\r
+Proliferation of records allows information about S to\r
+be extracted from many fragments of E (in the example\r
+above, photon E). Thus, E acquires redundant records of\r
+S. Now, many observers can find out the state of S in\u0002dependently, and without perturbing it. This is how pre\u0002ferred states of S become objective. Objective existence\r
+– hallmark of classicality – emerges from the quantum\r
+substrate as a consequence of redundancy.\r
+Decoherence theory was focused on the system. Its aim\r
+was to determine what states survive information leaks\r
+to E. Now we ask: What information about the system\r
+can be found out from fragments of E? This change of\r
+focus calls for a more realistic model of the environment\r
+(Fig. 1): Instead of a monolithic E we recognize that envi\u0002ronments consist of subsystems that comprise fragments\r
+independently accessible to observers.\r
+The reduced density matrix ρS representing the state\r
+\u0001 \u0002 \u0003 \u0004 \u0005 \u0006 \u0007 \u0004 \b\u0004 \t \u0005 \u0004 
+ \u000B \b\u000B \f \r \u000E \u000F \u0010\r
+\u0011 \u0012 \u0013\u0014 \u0015 \u0016\u0017 \u0015 \u0018 \u0019 \u001A \u0018 \u001B \u0018 \u001A \u001C \u001A \u0018 \u001D \u001E\u001F\r
+ !\r
+\u0017 "\u0015 # $ % \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\r
+' \u0002 ( \u0004 \f ) \t \f \u000B \t \u0005 * 
+ \u000B \b\u000B \f \r \u000E \u000F \u0010\r
+% \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 " \u0018 \u0019 \u001A \u0018\u001B \u0018 \u001A \u001C \u001A\r
+\u0018 \u001D \u001E\u001F\r
+ + ,\r
+\u0015 \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\u0017\r
+- \u0002 + ,\r
+\u0015 \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\u0017 . /\u001C 0 \u001F 1 2 \u0018 \u001D \u001C \u001A\r
+\u0018 \u001D \u001E \u001F 3 \u00164 5 # \u0015 \u0012 "\u0017 \u001E6 . \u001E \u001C . 0 6 6 . \u001B \u001C\r
+\u001D \u001C . /7 8 9 0 \u001F 1 : 7 \u001C \u001E\u001C \u0018 \u001D ;\u001F /1 . \u001E\u0018 \u001F \u001D <\r
+FIG. 1: Quantum Darwinism and the structure of the envi\u0002ronment. Decoherence theory distinguishes between a system\r
+(S) and its environment (E) as in (a), but makes no further\r
+recognition of the structure of E; it could as well be mono\u0002lithic. In Quantum Darwinism the focus is on redundancy.\r
+We recognize the subdivision of E into subsystems, as in (b).\r
+The only requirement for a subsystem is that it should be\r
+individually accessible to measurements; observables of dif\u0002ferent subsystems commute. To obtain information about S\r
+from E one can then measure fragments F of the environ\u0002ment – non-overlapping collections of subsystems of E, (c).\r
+ically, there are many copies of the information about S in E\r
+– “progeny” of the “fittest observable” that survived monitor\u0002ing by E proliferates throughout E. This proliferation of the\r
+multiple informational offspring defines Quantum Darwinism.\r
+The environment becomes a witness with redundant copies of\r
+information about the preferred observable. This leads to the\r
+objective existence of pointer states: Many can find out the\r
+state of the system independently, without prior information,\r
+and they can do it indirectly, without perturbing S.\r
+of the system was the basic tool of decoherence. To study\r
+Quantum Darwinism we focus on correlations between\r
+fragments of the environment and the system. The rele\u0002vant reduced density matrix ρSF is given by:\r
+ρSF = T rE/F |ΨSE ihΨSE | . (2)\r
+Above, trace is over “E less F”, or E/F – all of E except\r
+for the fragment F. How much F knows about S can be\r
+quantified using mutual information:\r
+I(S : F) = HS + HF − HS,F , (3)\r
+defined as the difference between entropies of two sys\u0002tems (here S and F) treated separately and jointly. For\r
+example, the mutual information between an original and
+
+3\r
+FIG. 2: Information about S stored in E and its redundancy.\r
+Mutual information is monotonic in f. When global state of\r
+SE is pure, I(S : Ff ) in a typical fraction f of the environ\u0002ment is antisymmetric around f = 0.5 [13]. For pure states\r
+picked out at random from the combined Hilbert space HSE,\r
+there is little mutual information between S and a typical F\r
+smaller than half of E. However, once a threshold f =\r
+1\r
+2\r
+is\r
+attained, nearly all information is in principle at hand. Thus,\r
+such random states (green line) exhibit no redundancy. By\r
+contrast, states of SE created by decoherence (where the en\u0002vironment monitors preferred observable of S) contain almost\r
+all (all but δ) of the information about S in small fractions\r
+fδ of E. The corresponding I(S : Ff ) (red line) quickly rises\r
+to HS (entropy of S due to decoherence), which is all of the\r
+information about S available from either E or S. (More, up\r
+to 2HS , can be obtained only through global measurements\r
+on S and nearly all E). HS is therefore the classically acces\u0002sible information. As (1 − δ)HS of information is contained\r
+in fδ = 1/Rδ of E, there are Rδ such fragments in E: Rδ\r
+is the redundancy of the information about S. Large redun\u0002dancy implies objectivity: The state of the system can be\r
+found out indirectly and independently by many observers,\r
+who will agree about their conclusions. Thus, Quantum Dar\u0002winism accounts for the emergence of objective existence.\r
+a perfect copy (of, say, a book) is equal to the entropy of\r
+the original, as either contains the same text. So, every\r
+bit of information in the first copy reveals a bit of infor\u0002mation in the original. However, having extra copies does\r
+not increase the information about the original. Yet, it\r
+determines how many can independently access this in\u0002formation. The number of copies defines redundancy.\r
+Similar ideas apply to the quantum case. Initially, ev\u0002ery bit of information gained from a fraction f \u001C 1 of\r
+E that was pure before it monitored (and decohered) the\r
+system is a bit about S. The red plot in Fig. 2 starts with\r
+this steep “bit for bit” slope, but moderates as I(S : Ff )\r
+approaches redundancy plateau at HS , where additional\r
+bits only confirm what is already known.\r
+Redundancy is the number of independent fragments\r
+of the environment that supply almost all classical infor\u0002mation about S, i.e., (1 − δ)HS . In other words;\r
+Rδ = 1/fδ . (4)\r
+Rδ is the number of times one can acquire (1 − δ) of the\r
+information about S independently (from distinct F’s)\r
+and indirectly – without perturbing S.\r
+Rapid rise and gradual leveling of I(S : Ff ), Fig. 2,\r
+implies redundancy. The information in Ff allows one\r
+to determine the state of S as it reaches redundancy\r
+plateau. Observables of different F’s commute – such\r
+measurements are independent. Yet, underlying corre\u0002lations mean that their outcomes imply the same state\r
+of the system, as if S were classical: The redundancy\r
+plateau is a classical plateau. Its level HS is the classical\r
+information accessible from a small fraction of E.\r
+Redundancy allows for objective existence of the state\r
+of S: It can be found out indirectly, so there is no danger\r
+of perturbing S with a measurement. Error correction al\u0002lowed by redundancy is also important: Fragility of quan\u0002tum states means that copies in F’s are damaged by mea\u0002surements (we destroy photons!), and may be measured\r
+in a “wrong” basis. One cannot access records in E with\u0002out endangering their existence. But with many (Rδ)\r
+copies, state of S can be found out by ∼ Rδ observers\r
+who can get their information independently, and with\u0002out prior knowledge about S. Consensus between copies\r
+suggests objective existence of the state of S.\r
+The mutual information I(S : Ff ) computed in mod\u0002els of decoherence exhibits behavior illustrated by the red\r
+plot of Fig. 2. In the family of models representing spin\r
+S surrounded by environments of many spins [12, 13, 14]\r
+the same number of spins suffices to reach the plateau:\r
+Adding more spins to E only extends length of the plateau\r
+measured in “absolute units” – in the number of the en\u0002vironment spins. In this model (that can be viewed as\r
+a simplified model of a photon environment) redundancy\r
+is then proportional to the number of the environment\r
+subsystems that interact with the system of interest.\r
+Quantum Brownian motion – harmonic oscillator sur\u0002rounded by many environmental oscillators – is the other\r
+well known model of decoherence. It is exactly solvable,\r
+and the case of an underdamped oscillator yields sur\u0002prisingly simple results [15, 16]: (i) Mutual information\r
+is approximately given by I(S : F) ≈ HS +\r
+1\r
+2\r
+ln f\r
+(1−f)\r
+,\r
+and; (ii) Redundancy for an initially squeezed state of S\r
+reaches Rδ ≈ s\r
+2δ\r
+, where s, the squeeze factor, quantifies\r
+delocalization of the state. Similar equation should hold\r
+for more general “Schr¨odinger cat” states, with s quan\u0002tifying the separation of the two localized alternatives.\r
+These results confirm intuitions that originally moti\u0002vated Quantum Darwinism [4, 17]: Monitoring of the\r
+system by the environment can deposit multiple records\r
+of preferred states of S in E. States of SE that arise from\r
+decoherence are special [13, 14], as I(S : Ff ) for a typ\u0002ical pure state selected with Haar measure in the whole\r
+Hilbert space of SE (green plot in Fig. 2) shows. In\r
+such random states small fragments reveal almost noth\u0002ing about the rest of the state. Only when half of E is\r
+found out the whole state is suddenly revealed.\r
+States that arise from decoherence are then far from\r
+random. Roughly speaking, they have a branch structure.\r
+This is why the rest of such a branch including the state\r
+of the system – the “bud” from which this branch has
+
+4\r
+originated – can be deduced from its fragment. We shall\r
+see how such branches grow in the next section.\r
+Plots of I(S : Ff ) for pure SE are antisymmetric\r
+around the point {HS , f =\r
+1\r
+2\r
+} for typical fragments of\r
+E [13]. Thus, rapid rise for small f must be matched at\r
+the other end, for f ∼ 1. This is a signature of entan\u0002glement that allows state to be known “as the whole”,\r
+while states of subsystems are unknown. The joint state\r
+of SE is then pure, so that HS,F=E = 0, and I(S : Ff )\r
+must rise to HS + HE = 2HS when f approaches 1.\r
+This is a very quantum aspect of information. In clas\u0002sical physics knowing a composite object implies knowing\r
+each of its subsystems. This is not so in quantum physics,\r
+where composite states are given by tensor (rather than\r
+Cartesian) products of their constituents. Thus, one can\r
+know perfectly quantum state of the whole, but know\r
+nothing about states of parts. We shall see in Section IV\r
+how this feature can be used to derive Born’s rule [18]\r
+that relates probabilities with wavefunctions.\r
+To reveal this latent quantumness one would have to\r
+measure the right global observable on all of SE. For\r
+example, when mutual information, Eq. (3), is defined\r
+using Shannon entropy with probabilities corresponding\r
+to optimal observables in S and in E, the resulting Shan\u0002non I(S : Ff ) graph for small f would look very similar\r
+to Fig. 2. However, using Shannon entropy involves lo\u0002cal probabilities (precluding global observables), so such\r
+Shannon I(S : Ff ) never exceeds HS , antisymmetry is\r
+lost, and the plateau continues until the end at f ∼ 1.\r
+Effective unattainability of the f ∼ 1 part of the plot\r
+also shows why decoherence is so hard to undo: Correla\u0002tions that reveal coherence can be usually detected only\r
+by such global measurements of whole SE. We intercept\r
+small fractions of E, and never have the luxury of perfect\r
+global measurements needed to undo decoherence. Yet,\r
+because of redundancy, we get ∼ HS information with\r
+“sloppy” measurements of f \u001C 1.\r
+Quantum Darwinism does not require pure E. Mixed\r
+environment is a noisy communication channel: Its initial\r
+entropy of h per bit can still increase after interaction\r
+with S, reflecting mutual information buildup. However,\r
+now a bit gained from E yields only 1−h of a bit about S.\r
+So, a completely mixed E (h = 1) is useless (even though\r
+it can still induce decoherence!). For a partly mixed E\r
+mutual information will increase more slowly, pure case\r
+“bit per bit” rate tempered to ∼ 1 − h. Yet, it can still\r
+climb the same redundancy plateau at HS [19].\r
+These conclusions apply when E is initially mixed, but\r
+are also relevant when this channel is noisy for other rea\u0002sons (e.g., imperfect measurements). In all such cases one\r
+can still reach the same redundancy plateau, although\r
+now a proportionally larger fragment of the environment\r
+is needed to get the same information about S.\r
+Suitability of the environment as a channel depends\r
+on whether it provides a direct and easy access to the\r
+records of the system. This depends on the structure\r
+and evolution of E. Photons are ideal in this respect:\r
+They interact with various systems, but, in effect, do\r
+not interact with each other. This is why light deliv\u0002ers most of our information. Moreover, photons emitted\r
+by the usual sources (e.g., sun) are far from equilibrium\r
+with our surroundings. Thus, even when decoherence is\r
+dominated by other environments (e.g., air) photons are\r
+much better in passing on information they acquire while\r
+“monitoring the system of interest”: Air molecules scat\u0002ter from one another, so that whatever record they may\r
+have gathered becomes effectively undecipherable.\r
+Stability of the level of the redundancy plateau at HS ,\r
+even for mixed E’s, is a compelling reason to think of it as\r
+“classical”. The question we shall now address concerns\r
+the nature of that information – what does the environ\u0002ment know about the system, and why?\r
+III. FROM COPYING TO QUANTUM JUMPS\r
+Quantum Darwinism leads to appearance, in the en\u0002vironment, of multiple copies of the state of the system.\r
+However, the no-cloning theorem [20, 21] prohibits copy\u0002ing of unknown quantum states. If cloning is outlawed,\r
+how can redundancy seen in Fig. 2 be possible?\r
+Quick answer is that cloning refers to (unknown) quan\u0002tum states. So, copying of observables evades the theo\u0002rem. Nevertheless, the tension between the prohibition\r
+on cloning and the need for copying is revealing: It leads\r
+to breaking of unitary symmetry implied by the super\u0002position principle, accounts for quantum jumps, and sug\u0002gests origin of the “wavepacket collapse”, setting stage for\r
+the study of quantum origins of probability in Section IV.\r
+Quantum physics is based on several “textbook” pos\u0002tulates [22]. The first two; (i) States are represented by\r
+vectors in Hilbert space, and; (ii) Evolutions are unitary –\r
+give complete account of mathematics of quantum theory,\r
+but make no connection with physics. For that one needs\r
+to relate calculations made possible by the superposition\r
+principle of (i) and unitarity of (ii) to experiments.\r
+Postulate (iii) Immediate repetition of a measurement\r
+yields the same outcome starts this task. This is the only\r
+uncontroversial measurement postulate (even if it is diffi\u0002cult to approximate in the laboratory): Such repeatability\r
+or predictability is behind the very idea of “a state”.\r
+In contrast to (i)-(iii), collapse postulate (iv) Outcomes\r
+correspond to eigenstates of the measured observable, and\r
+only one of them is detected in any given run of the ex\u0002periment, is inconsistent with (i) and (ii). Conflict arises\r
+for two reasons: Restriction to a preferred set of outcome\r
+states seems at odds with with the egalitarian principle\r
+of superposition, embodied in (i). This restriction pre\u0002vents one from finding out unknown quantum states, so\r
+it is responsible for their fragility. And a single outcome\r
+per run is at odds with unitarity (and, hence, linearity)\r
+of quantum dynamics that preserves superpositions.\r
+The last axiom; (v) Probability of an outcome is given\r
+by the square of the associated amplitude, pk = |ψk|\r
+2\r
+,\r
+is known as Born’s rule [18]. It completes the relation\r
+between mathematics of (i) and (ii) and the experiments.
+
+5\r
+a\r
+µ\r
+R0.1(σ)\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+0 π/2\r
+π/4\r
+0\r
+π/4\r
+a π/8\r
+π/4\r
+µ\r
+0.6\r
+0.8\r
+π/4\r
+π/2 0\r
+π/8\r
+1.0\r
+0.4\r
+0.2\r
+0\r
+0\r
+ˆIN (σ)\r
+m\r
+0.4\r
+0.8\r
+1.0\r
+π/2 0 10 20 30 40 50\r
+µ\r
+0.6\r
+0.2\r
+0\r
+0\r
+π/4\r
+I(σ : e)\r
+µ = 0.23\r
+a) b) c)\r
+FIG. 3: Quantum Darwinism in a simple model of decoherence [12]. The spin- 1\r
+2\r
+S interacts with N = 50 spin- 1\r
+2\r
+subsystems of E\r
+with an Ising Hamiltonian HSE =\r
+PN\r
+k=1 gkσ\r
+S\r
+z ⊗σ\r
+Ek\r
+y . The initial state of S⊗E is √1\r
+2\r
+(|0i+|1i)⊗|0i\r
+E1⊗. . .⊗|0iEN . Couplings gk are\r
+distributed randomly in the interval (0,1]. All the plotted quantities are a function of the observable σ(µ) = cos(µ)σz+sin(µ)σx,\r
+where µ is the angle between its eigenstates and the pointer states of S – eigenstates of σ\r
+S\r
+z . a) Information acquired by the\r
+optimal measurement on the whole environment, IˆN (σ), as a function of the inferred observable σ(µ) and the average interaction\r
+action hgkti = a. A lot of information is accessible in the whole E about any observable σ(µ) except when a is so small that\r
+there was no decoherence. b) Redundancy of the information about S as a function of the inferred observable σ(µ) and the\r
+average action hgkti = a. Rδ=0.1(σ) counts the number of times 90% of the total information can be “read off” independently\r
+by measuring distinct fragments of E. It is sharply peaked around the pointer observable: Redundancy is a very selective\r
+criterion – the number of copies of relevant information is high only for the observables σ(µ) inside the theoretical bound (see\r
+Ref.[12]) indicated by the dashed line. c) Information about σ(µ) extracted by local random measurements on m environmental\r
+subsystems. Because of redundancy, pointer states – and only pointer states – can be found out through this far-from-optimal\r
+strategy. Information about any other observable σ(µ) is restricted to what can be inferred from the pointer observable [12].\r
+Bohr bypassed conflict of (i) and (ii) with (iv) by insist\u0002ing that apparatus is classical, so unitarity and the prin\u0002ciple of superposition need not apply to measurements.\r
+But this is an excuse, not an explanation. We are dealing\r
+with a quantum environment, and redundancy of previ\u0002ous section strengthened motivation for postulate (iii) –\r
+repeatability. Let us see where this demand takes us in\r
+a purely quantum setting of postulates (i), (ii), and (iii).\r
+Suppose there are states of S (say, |ui and |vi) that\r
+produce an imprint in a subsystem of E (which plays a\r
+role of an apparatus), but remain unperturbed (so they\r
+can produce more imprints). This repeatability implies:\r
+|ui|e0i ⇒ |ui|eui, |vi|e0i ⇒ |vi|evi in obvious notation.\r
+In a unitary process scalar product is preserved. Thus;\r
+hu|vi = hu|viheu|evi , (5)\r
+where we have set he0|e0i = 1. This simple equation\r
+can be satisfied only when; (a) either heu|evi = 1 (which\r
+means that copying was completely unsuccessful), or; (b)\r
+hu|vi = 0, i.e., they are orthogonal. In that case heu|evi\r
+is arbitrary – perfect record heu|evi = 0 is also possible.\r
+It follows that multiple (perfect or imperfect) copies\r
+of |ui and |vi can be imprinted in disjoint F’s. As a\r
+consequence of unitarity, only sets of orthogonal states\r
+(that define Hermitean observables [22]) can be so copied,\r
+explaining selection of a set of outcomes – terminal points\r
+of quantum jumps [23]. Before, they had to be postulated\r
+by the first part of axiom (iv). We emphasize that this\r
+result relies on just two values of the scalar product – 0\r
+and 1 – and, thus, does not appeal to Born’s rule.\r
+This breaking of unitary symmetry (choice of preferred\r
+states in an egalitarian Hilbert space) is induced by re\u0002peatability of the information transfer. It is a “nonlinear\r
+demand”: As in cloning, one asks for “two (or more) of\r
+the same”. Its conflict with linearity of quantum the\u0002ory can be resolved only by restricting states that can\r
+be copied. Such pointer states then act as “buds” of\r
+branches that grow by reproducing, in E, multiple copies\r
+of the original in S. Interaction Hamiltonians do not per\u0002turb observables that commute with them. So, buds of\r
+branches coincide with the einselected pointer states.\r
+Evidence of such symmetry breaking is seen in Fig.\r
+3. Mutual information and redundancy shown there are\r
+obtained using Eq. (3), but with Shannon (rather than\r
+von Neumann) entropies of specific observables of S and\r
+F, i.e., using probabilities of their eigenstates. While von\r
+Neumann-based I(S : Ff ) and Rδ characterized total\r
+information, Shannon-based counterparts are well suited\r
+to enquire: What observable is this information about?\r
+It turns out that the environment as a whole “knows”\r
+many observables of S, as is seen in Fig. 3a. By contrast,\r
+in Fig. 3b symmetry breaking is evident: The ridge of\r
+redundancy appears abruptly only when test observable\r
+σ(µ) and the preferred pointer observable σz (that re\u0002mains unperturbed by the environment) nearly coincide.\r
+Why are pointer states favored? Commonsense says\r
+that, to be reproduced, state must survive copying. This\r
+leads to a theorem [12, 24] that only pointer states can be\r
+discovered from fractions of E. Other observables (such\r
+as σ(µ) in Fig. 3) can be deduced only to the extent they\r
+are correlated with the pointer observable. So, fragments\r
+of the environment offer a very narrow, projective point\r
+of view. Redundant imprinting of some observables hap\u0002pens at the expense of their complements.\r
+Structure of branching state betrays its origin and fore-
+
+6\r
+shadows “collapse”. Starting from |ψS i =\r
+Pn\r
+k ψk|ski,\r
+|ΨSE i =\r
+Xn\r
+k\r
+ψk|ski|e\r
+(1)\r
+k\r
+i. . . |e\r
+(N)\r
+k\r
+i =\r
+Xn\r
+k\r
+ψk|ski|εki (6)\r
+branches grow to include N subsystems of E. Branch\r
+fragments can be nearly orthogonal; ΠJ\r
+j=1he\r
+(j)\r
+k\r
+|e\r
+(j)\r
+k0 i '\r
+δkk0 for large enough J. This means that a pointer state\r
+|ski of S can be determined (along with the rest of the\r
+branch) from a sufficiently long fragment (which may still\r
+be short compared to the length of the branch, J \u001C N ).\r
+In the huge Hilbert space HSE branching state is a\r
+very atypical minimally entangled superposition of only\r
+n product “branches” labelled by the pointer states of\r
+the system. This is tiny compared to the dimension of\r
+HSE that exceeds n by a factor exponential in N . This\r
+is why the two plots in Fig. 2 are so different: Branch\u0002ing state is, to a good approximation, a multi-system\r
+Schmidt decomposition, with long branch fragments con\u0002stituting “systems”. In a Schmidt decomposition, states\r
+of partners are in one-to-one correspondence. Thus, in\r
+Eq. (6), |ski implies |εki (and, vice versa), and measur\u0002ing a branch fragment F can reveal the whole branch.\r
+Initial part of I(S : Ff ), Fig. 2, represent buildup of\r
+this correlation: When f = 0, observer is ignorant of\r
+what branch he will find out, but the structure of the\r
+correlations within |ΨSE i leaves no doubt of what these\r
+branches are. Using Born’s rule one could assign to them\r
+probabilities pk = |ψk|\r
+2 and the corresponding entropy\r
+HS . Next section shows how one can deduce these prob\u0002abilities without axiom (v) – how symmetries of entan\u0002glement imply Born’s rule.\r
+When observer measures enough of E, he finds out\r
+the branch (and what the state of S is). Additional\r
+data are redundant. They only confirm what is already\r
+known. Probabilities associated with |ΨSE i are replaced\r
+with certainty of a branch. This transition from uncer\u0002tainty (initial presence of many branches – potential for\r
+multiple outcomes) to certainty (once a sufficiently long\r
+branch fragment becomes known) accounts for percep\u0002tion of “collapse”. The initial, steeply rising, part of\r
+I(S : Ff ) “resolves” it: Collapse is brief compared to\r
+the ensuing period of certainty about the outcome, as\r
+fδ \u001C 1, but, nevertheless, not instantaneous.\r
+Assumptions that lead from copying to preferred states\r
+can be relaxed. Thus, E need not be initially pure [23].\r
+Moreover, it suffices that the records (e.g., in the appara\u0002tus A) are “repeatably accessible”. Transfer of responsi\u0002bility for repeatability from a quantum S to a (still quan\u0002tum) A allows one to model non-orthogonal measurement\r
+outcomes (POVM’s): A entangles with the system, and\r
+then acts as ancilla. Its orthogonal pointer states |Aki\r
+correlate with non-orthogonal |ςki of S,\r
+P\r
+k ψ˜\r
+k|ςki|Aki.\r
+Interaction of A with the environment results in multiple\r
+copies of |Aki. The usual projective measurement imple\u0002mentation of POVM’s (see e.g. [25]) is now straightfor\u0002ward. Branches are labelled by |Aki. Indeed, we usually\r
+experience “quantum jumps” via an apparatus pointer.\r
+Selection of the set of outcomes by the proliferation of\r
+information essential for Quantum Darwinism parallels\r
+Bohr’s insistence [1] that a “classical apparatus” should\r
+determine the outcomes. However, it follows from purely\r
+quantum Eq. (5), and is caused by a unitary evolution\r
+responsible for the information transfer. Nevertheless, as\r
+classical apparatus would, preferred pointer states desig\u0002nate possible future outcomes, precluding measurements\r
+of complementary observables or determining preexist\u0002ing state of the system. Thus, information acquisition –\r
+a copying process – results in preferred states.\r
+Consensus between records deposited in fragments of\r
+E looks like “collapse”. In this sense we have accounted\r
+for postulate (iv) using only very quantum postulates (i)-\r
+(iii). In particular, in deriving and analyzing Eq. (5) we\r
+have not employed Born’s rule, axiom (v). We shall be\r
+therefore able to use our results as a starting point for\r
+such a derivation in the next section.\r
+There was nothing nonunitary above – unitarity was\r
+the crux of our argument, and orthogonality of branch\r
+seeds our main result. Relative states of Everett [26, 27,\r
+28] come to mind. One could speculate about reality of\r
+branches with other outcomes. We abstain from this –\r
+our discussion is interpretation-free, and this is a virtue.\r
+Indeed, “reality” or “existence” of universal state vector\r
+seems problematic. Quantum states acquire objective\r
+existence when reproduced in many copies. Individual\r
+states – one might say with Bohr – are mostly informa\u0002tion, too fragile for objective existence. And there is only\r
+one copy of the Universe. Treating its state as if it really\r
+existed [26, 27, 28] seems unwarranted and “classical”.\r
+IV. PROBABILITIES FROM ENTANGLEMENT\r
+Observer prepared S in a state |ψS i, but wants to mea\u0002sure observable with eigenstates {|ski}. This will lead to\r
+entangled |ΨSE i with branch structure, Eq. (6). Pointer\r
+states {|ski} define the outcomes, but, as yet, observer\r
+has not measured E, and does not know the result. Given\r
+|ΨSE i, what is the probability of, say, |s17i?\r
+To derive it we cannot use reduced density matrices,\r
+Eqs. (1,2). Tracing out is averaging [25, 29, 30] – it relies\r
+on pk = |ψk|\r
+2\r
+, Born’s rule we want to derive. We have\r
+imposed that ban while deriving and analyzing Eq. (5),\r
+but relaxed it to plot Fig. 3. Now we reimpose it again.\r
+So, Born’s rule and standard tools of decoherence are\r
+off limits – using them courts circularity. Our derivation\r
+will rest instead on certainty and symmetry, cornerstones\r
+that mark two extremal cases of probability.\r
+The case of certainty was just settled without Born’s\r
+rule using Eq. (5). When one re-measures an observable,\r
+the same outcome will be seen again. Thus, when {|ski}\r
+includes |ψS i (e.g., |ψS i = |s17i), newly added copies\r
+just extend the branch already correlated with observer’s\r
+state, and the outcome is certain; p17 = 1. Certainty of\r
+correlations between partners in Schmidt decomposition,\r
+Eq. (6) is another important example.
+
+7\r
+a)\r
+b)\r
+c)\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S\r
+= | >E\r
+~\r
+~\r
+=\r
+FIG. 4: Probabilities and symmetry: (a) Laplace used subjective ignorance to define probability. Player who does not know face\r
+values of the cards, but knows that one of them is a spade will infer probability p♠ =\r
+1\r
+2\r
+for the top card. (b) The real physical\r
+state of the system is however altered by the swap, illustrating subjective nature of Laplace’s approach, and demonstrating its\r
+unsuitability for physics. (c) Perfectly known entangled states have objective symmetries that allow one to rigorously deduce\r
+probabilities. When two systems are maximally entangled as above, probabilities of Schmidt partners are equal, p♥ = p♦, and\r
+p♠ = p♣. After a swap uS = |♠ih♥| + |♥ih♠| in S, the resulting state |♠i|♦i + |♥i|♣i must have p\r
+0\r
+♠ = p♦, and p\r
+0\r
+♥ = p♣. (We\r
+‘primed’ probabilities in S, as it was acted upon by a swap, so they might have changed.) A counterswap uE = |♦ih♣| + |♣ih♦|\r
+in E restores the original entangled state, proving that p\r
+0\r
+♥ = p♥ and p\r
+0\r
+♠ = p♠, after all (as counterswap uE leaves S untouched).\r
+This sequence of equalities implies p♠ = p♦ = p♥, so that p♠ = p♥ =\r
+1\r
+2\r
+, as probabilities in S must add up to 1.\r
+Certainty seems trivial but is important. Confirmation\r
+that a state “is what it is” – postulate (iii) – is a part of\r
+standard quantum lore [22]. We re-affirmed it, but with\r
+a key insight: Redundancy allows observers to discover\r
+(and not just confirm) that S is in a certain pointer state.\r
+We now turn to the opposite case of complete inde\u0002terminacy. Its connection with symmetry was noted by\r
+Laplace. He wrote: “The theory of chance consists in re\u0002ducing all the events ... to a certain number of cases that\r
+are equally possible... The ratio of this number to that of\r
+all the cases possible is the measure of probability” [31].\r
+Figure 4 illustrates how this classical intuition yields –\r
+far more convincingly — quantum probabilities.\r
+Symmetry is probed by invariance. Transformations\r
+that respect it take system between states that exhibit\r
+no measurable differences. For example, change of phase\r
+in the coefficients in the Schmidt decomposition\r
+P\r
+|ΨSE i =\r
+n\r
+k ψk|ski|εki cannot influence the state of S: It is in\u0002duced by uS = e\r
+iφk |skihsk|, local unitary on S, that can\r
+be “undone” by uE = e\r
+−iφk |εkihεk| on E, or;\r
+uS ⊗ 1E |ΨSE i = |ΦSE i; 1S ⊗ uE |ΦSE i = |ΨSE i (7)
+
+8\r
+So, phases of ψk cannot matter for a local state or influ\u0002ence probabilities in S. This symmetry, Eq. (7), is the\r
+entanglement-assisted invariance or envariance [32, 33].\r
+Such loss of phase significance for S entangled with E\r
+implies decoherence [33]. We arrived at its essence using\r
+envariance, without reduced density matrices, trace, etc.\r
+We now use phase envariance to show that equal ab\u0002solute values of the coefficients ψk imply equal prob\u0002abilities. For equal |ψk| any orthogonal basis of S\r
+is “Schmidt” (i.e., has an orthogonal partner in E).\r
+Thus, |ϕ¯SE i =\r
+|0iS|0iE+|1iS|1i\r
+√ E\r
+2\r
+=\r
+|+iS|+iE+|−iS|−i\r
+√ E\r
+2\r
+,\r
+where |±i =\r
+|0i±|1i\r
+√\r
+2\r
+. Sign change induced by e\r
+iπ|−ih−|\r
+acting on S produces |η¯SE i =\r
+|+iS|+iE−|−iS|−i\r
+√ E\r
+2\r
+=\r
+|1iS|0iE+|0iS|1i\r
+√ E\r
+2\r
+. In other words, one can swap |0iS with\r
+|1iSby rotating phase in a |±i basis by π. Yet, we just\r
+saw that phases of Schmidt coefficients do not matter for\r
+the state of S, so probabilities of 0 and 1 in S must have\r
+remained the same. Moreover, probabilities of paired up\r
+Schmidt states are equal, so that pS (0) = pE (0) in |ϕ¯SE i\r
+and pS (1) = pE (0) in |η¯SE i. Hence, pS (0) = pS (1) = 1\r
+2\r
+,\r
+where we assumed that probabilities add up to 1.\r
+In contrast to Laplace’s subjective “ignorance-based”\r
+approach, we obtained objective probabilities for a com\u0002pletely known entangled state. Phase envariance implied\r
+equiprobability in S. To paraphrase Beatles, “All you\r
+need is phase...”. We rotated phases of the coefficients to\r
+induce a swap in a complementary basis. Another proof\r
+(that implements swap more directly) is given in Fig. 4.\r
+This equiprobability case is the difficult part of the\r
+proof. Instead of subjectivity (that undermined appli\u0002cability of Laplace’s approach to physics) we relied on\r
+objective symmetries of entangled quantum states. This\r
+was made possible by the nature of quantum states of\r
+composite systems. Classically, pure states have struc\u0002ture of a Cartesian product – knowing the whole implies\r
+knowledge of each subsystem. In quantum theory they\r
+are tensor products – one can know state of the whole,\r
+and thus know nothing about parts, as envariance shows.\r
+This was the basis of our proof of equiprobability. We\r
+assumed unitarity. Moreover, we assumed; (1) When a\r
+system is not acted upon by a unitary transformation, its\r
+state remains unaffected. This state is a property of\r
+S alone, so; (2) Predictions regarding measurement out\u0002comes on S (including their probabilities) can be inferred\r
+from the state of S. Last not least; (3) When S is entan\u0002gled with other systems (e.g., the environment) the state\r
+of S alone is determined by the state of the whole SE.\r
+These “facts of life” are accepted properties of systems\r
+and states, but given the fundamental nature of our dis\u0002cussion it seems a good idea to make them explicit [33].\r
+For instance, to establish independence from phases of\r
+the coefficients ψk we noted that the state of S is un\u0002affected by the unitaries uS diagonal in Schmidt basis\r
+acting on S (like changes of Schmidt coefficient phases)\r
+that would normally affect isolated S: The global state\r
+ΨSE is restored by uE . Thus, by fact (3), so is local state\r
+of S. However, this is done by a unitary “countertrans\u0002formation” acting solely on E. Hence, by fact (1), state\r
+of S must have been unaffected by uS in the first place.\r
+So, by fact (2), phases of ψk cannot change outcomes of\r
+any measurement on S. Equiprobability follows.\r
+One can now derive Born’s rule, pk = |ψk|\r
+2\r
+, with\r
+straightforward algebra from the above two simple cases\r
+of complete certainty (pk = 1) and equiprobability (pk =\r
+1\r
+n\r
+): The general case can be always reduced to the case\r
+case of equal coefficients by “finegraining” (see Box).\r
+The origin of probability is a fascinating problem that\r
+is older than quantum measurement problem, and is for\u0002gotten primarily because it is so old. We have seen how\r
+quantum physics sheds a new, very fundamental, light\r
+on probability. We cannot do justice to the history of\r
+this subject here, but Ref. [34] provides a basic overview\r
+and exhaustive set of references. In particular, envariant\r
+derivation is very different from the classic proof of Glea\u0002son [35] in that it sheds light on the physical significance\r
+of the resulting measure. Moreover, it does not assume\r
+probabilities are additive (except to posit that probabil\u0002ity of an event and its complement are certain, i.e., to\r
+establish normalization; see Box and Ref. [33, 38]). By\u0002passing additivity of probabilities is essential when deal\u0002ing with a theory with another principle of additivity\r
+– the quantum superposition principle – which trumps\r
+additivity of probabilities or at least classical intuitiions\r
+about it (e.g., in the double-slit experiment). Discus\u0002sion of the implications of envariance has already started,\r
+with [36, 37], and [5] providing insightful commentary.\r
+BOX\r
+We show here how “finegraining” reduces the case of\r
+arbitrary ψk to equiprobability. To illustrate general\r
+strategy consider state in a 2D Hilbert space HS of S\r
+spanned by orthonormal {|0i, |2i} and (at least) 3D HE :\r
+|ψSE i ∝ q\r
+2\r
+3\r
+|0iS |+iE +\r
+q\r
+1\r
+3\r
+|2iS |2iE .\r
+The state |+iE =\r
+|0iE√+|1iE\r
+2\r
+exists in (at least 2D) sub\u0002space of E orthogonal to |2iE , i.e., h0|1i = h0|2i = h1|2i =\r
+h+|2i = 0. We know we can ignore phases.\r
+To reduce |ψSE i to equal coefficients case we “extend\r
+it” to a state |Ψ¯\r
+SECi by letting E act on an ancilla C.\r
+(S is not acted upon, so, by fact (1), probabilities for S\r
+cannot change.) This can be done by a generalization of\r
+controlled-not acting between E (control) and C (target),\r
+so that (in obvious notation) |ki|0\r
+0\r
+i ⇒ |ki|k\r
+0\r
+i, leading to\r
+√\r
+2|0i|+i|0\r
+0\r
+i+|2i|2i|0\r
+0\r
+i ⇒ √2|0i\r
+|0i|0\r
+0\r
+i+|1i|1\r
+0\r
+i\r
+√\r
+2\r
++|2i|2i|2\r
+0\r
+i.\r
+Above, and from now on we skip subscripts: The state of\r
+S will be listed first, and the state of C will be primed.\r
+The cancellation of √\r
+2 yields an equal coefficient state:\r
+|Ψ¯\r
+SCE i ∝ |0, 0\r
+0\r
+i|0i + |0, 1\r
+0\r
+i|1i + |2, 2\r
+0\r
+i|2i .\r
+We have combined S and C in a single ket and (below)\r
+we shall swap states of SC as if it was a single system.
+
+9\r
+Clearly, this is a Schmidt decomposition of (SC)E.\r
+Three orthonormal product states have coefficients with\r
+the same absolute value. Therefore, they can be en\u0002variantly swapped. Thus, the probabilities of states\r
+|0i|0\r
+0\r
+i, |0i|1\r
+0\r
+i, and |2i|2\r
+0\r
+i are all equal. By normalization\r
+they are 1\r
+3\r
+. So, probability of detecting state |2i of S is\r
+1\r
+3\r
+. Moreover, |0i and |2i are the only two outcome states\r
+for S. It follows that probability of |0i must be 2\r
+3\r
+;\r
+p0 =\r
+2\r
+3\r
+; p2 =\r
+1\r
+3\r
+.\r
+This is Born’s rule. We have just seen why the amplitudes\r
+in the initial |ψSE i “get squared” to yield probabilities.\r
+Note that we have avoided assuming additivity of prob\u0002abilities: p0 =\r
+2\r
+3\r
+not because it is a sum of two fine\u0002grained alternatives for SE, each with probability of 1\r
+3\r
+,\r
+but rather because there are only two (mutually exclu\u0002sive and exhaustive) alternatives for S; |0i and |2i, and\r
+p2 =\r
+1\r
+3\r
+. Therefore, by normalization, p0 = 1 −\r
+1\r
+3\r
+. Prob\u0002abilities of Schmidt states can be added because of the\r
+loss of phase coherence that follows directly from phase\r
+envariance established earlier (see also Ref. [32, 33]).\r
+Extension of this proof to the case where proba\u0002bilities are commensurate is conceptually straightfor\u0002ward but notationally cumbersome. The case of non\u0002commensurate probabilities is settled with an appeal to\r
+continuity. Frequency of the outcomes can be also de\u0002duced, allowing one to establish connection with the fa\u0002miliar relative frequency approach to probabilities [32,\r
+33, 38], but in a quantum setting probability arises as a\r
+consequence of symmetries of a single entangled state.\r
+We end by noting that the finegraining discussed above\r
+does not need to be carried out experimentally each time\r
+probabilities are discussed: Rather, it is a way to de\u0002duce a measure that is consistent with the geometry of\r
+the Hilbert spaces using entanglement as a tool. Still,\r
+given fundamental implications of envariance experimen\u0002tal tests would be most useful.\r
+V. DISCUSSION\r
+We derived the two controversial quantum postulates\r
+from the first three. We have thus seen how classical do\u0002main of the Universe arises from the superposition princi\u0002ple (postulate (i)) and unitarity (postulate (ii)) as well as\r
+rudimentary assumptions about information flows (pos\u0002tulate (iii)), and a few basic facts about states of com\u0002posite quantum systems (including their tensor nature,\r
+often cited as additional “axiom (0)”).\r
+The essence of the measurement problem – accounting\r
+for axioms (iv) and (v) – has been largely settled. It is of\r
+course likely one may be able to clarify assumptions and\r
+simplify proofs. Much work remains to be done on Quan\u0002tum Darwinism and envariance. Nevertheless, nature of\r
+the quantum-classical correspondence has been clarified.\r
+Physicists take it for granted that even hard problems\r
+are solved by a single good idea. Therefore, when a single\r
+idea does not do the whole job, often our first instinct is to\r
+dismiss it. Measurement problem does not fall into this\r
+“single idea” category. Several ideas, applied in the right\r
+order, led to advances described here. Logically, we may\r
+well have started with the derivation of Eq. (5) and the\r
+analysis of quantum jumps. Their randomness leads to\r
+probabilities. And symmetries of entangled states (that\r
+arise in decoherence and Quantum Darwinism) allow one\r
+to derive Born’s rule. As we have seen, phase envariance\r
+is (nearly) “all you need”. With probabilities at hand\r
+one has then every right to use reduced density matrices\r
+to analyze Quantum Darwinism and decoherence.\r
+Our presentation was “historical”. We started with de\u0002coherence, and used it to introduce Quantum Darwinism.\r
+Analysis of copying essential to information flows in both\r
+of these phenomena led to quantum jumps. This in turn\r
+motivated entangelment-based derivation of Born’s rule.\r
+Quantum Darwinism – upgrade of E to a communication\r
+channel from a mundane role it played in decoherence –\r
+tied together all of the other developments. This order\r
+had the advantage of making motivations clear, but it is\r
+different from more logical presentation where postulates\r
+(i)-(iii) are the starting point (strategy followed in [38]).\r
+The collection of ideas discussed here allows one to un\u0002derstand how “the classical” emerges from the quantum\r
+substrate staring from more basic assumptions than de\u0002coherence. We have bypassed a related question of why is\r
+our Universe quantum to the core. The nature of quan\u0002tum state vectors is a part of this larger mystery. Our\r
+focus was not on what quantum states are, but on what\r
+they do. Our results encourage a view one might describe\r
+(with apologies to Bohr) as “complementary”. Thus, |ψi\r
+is in part information (as, indeed, Bohr thought), but\r
+also the obvious quantum object to explain “existence”.\r
+We have seen how Quantum Darwinism accounts for the\r
+transition from quantum fragility (of information) to the\r
+effectively classical robustness. One can think of this\r
+transition as “It from bit” of John Wheeler [39].\r
+In the end one might ask: “How Darwinian is Quan\u0002tum Darwinism?”. Clearly, there is survival of the fittest,\r
+and fitness is defined as in natural selection – through\r
+the ability to procreate. The no-cloning theorem implies\r
+competition for resources – space in E – so that only\r
+pointer states can multiply (at the expense of their com\u0002plementary competition). There is also another aspect\r
+of this competition: Huge memory available in the Uni\u0002verse as a whole is nevertheless limited. So the question\r
+arises: What systems get to be “of interest”, and imprint\r
+their state on their obliging environments, and what are\r
+the environments? Moreover, as the Universe has a finite\r
+memory, old events will be eventually “overwritten” by\r
+new ones, so that some of the past will gradually cease\r
+to be reflected in the present record. And if there is no\r
+record of an event, has it really happened? These ques\u0002tions seem far more interesting than deciding closeness\r
+of the analogy with natural selection [40]. They suggest\r
+one more question: Is Quantum Darwinism (a process of\r
+multiplication of information about certain favored states\r
+that seems to be a “fact of quantum life”) in some way\r
+behind the familiar natural selection? I cannot answer
+
+10\r
+this question, but neither can I resist raising it.\r
+[1] Bohr, N. The quantum Postulate and the recent devel\u0002opment of atomic theory Nature 121, 580-590 (1928).\r
+[2] Schr¨odinger, E. Die gegenw¨artige Situation in der\r
+Quantenmechanik. Naturwissenschaften 807-812; 823-\r
+828; 844-849 (1935).\r
+[3] Joos, E., Zeh, H. D., Kiefer, C., Giulini, D., Kupsch,\r
+J., and Stamatescu, I.-O., Decoherence and the Appear\u0002ancs of a Classical World in Quantum Theory, (Springer,\r
+Berlin, 2003).\r
+[4] Zurek, W. H. Decoherence, einselection, and the quan\u0002tum origins of the classical Rev. Mod. Phys. 75, 715-775\r
+(2003).\r
+[5] Schlosshauer, M. Decoherence and the Quantum - to -\r
+Classical Transition (Springer, Berlin, 2007).\r
+[6] Zurek, W. H. Pointer basis of a quantum apparatus: Into\r
+what mixture does the wavepacket collapse? Phys. Rev.\r
+D24, 1516-1525 (1981).\r
+[7] Zurek, W. H. Environment-induced superselection rules.\r
+Phys. Rev. D26, 1862-1880 (1982).\r
+[8] Paz, J.-P., and Zurek, W. H., Environment-induced deco\u0002herence and the transition from quantum to classical. pp.\r
+533-614 in Coherent Atomic Matter Waves, Les Houches\r
+Lectures, R. Kaiser, C. Westbrook, and F. David, eds.\r
+(Springer, Berlin, 2001).\r
+[9] Zurek, W. H., Habib, S., and Paz, J.-P., Coherent states\r
+via decoherence Phys. Rev. Lett. 70, 1187-1190 (1993).\r
+[10] Tegmark, M., and Shapiro, H. S., Decoherence produces\r
+coherent states: An explicit proof for harmonic chains.\r
+Phys. Rev. E50, 2538-2547 (1994).\r
+[11] Gallis, M. R., The emergence of classicality via decoher\u0002ence described by Lindblad operators. Phys. Rev. A53,\r
+655 (1996).\r
+[12] Ollivier, H., Poulin, D, and Zurek, W. H., Objective\r
+properties from subjective quantum states: Environment\r
+as a witness. Phys. Rev. Lett. 93, 220401 (2004).\r
+[13] Blume-Kohout, R., and Zurek, W. H., A simple example\r
+of “Quantum Darwinism”: Redundant information stor\u0002age in many-spin environments Found. Phys. 35, 1857\r
+(2005).\r
+[14] Blume-Kohout, R., and Zurek, W. H., Quantum Darwin\u0002ism: Entanglement, branches, and the emergent classi\u0002cality of redundantly stored quantum information. Phys.\r
+Rev. A73, 062310 (2006).\r
+[15] Blume-Kohout, R., and Zurek, W. H., Quantum Darwin\u0002ism in quantum Brownian motion. Phys. Rev. Lett., 101,\r
+240405 (2008).\r
+[16] J. P. Paz and A. Roncaglia, in preparation.\r
+[17] Zurek, W. H., Einselection and decoherence from an in\u0002formation theory perspective. Ann. Physik (Leipzig), 9,\r
+822 (2000).\r
+[18] Born, M., Zur Quantenmechanik der Stossvorg¨ange\r
+Zeits. Phys. 37, 863-867 (1926).\r
+[19] M. Zwolak, H. T. Quan, and W. H. Zurek, in preparation.\r
+[20] Wootters, W. K., and Zurek, W. H., A single quantum\r
+cannot be cloned. Nature 299, 802-803 (1982).\r
+[21] Dieks, D., Communication by EPR devices. Phys. Lett.\r
+92A, 271 (1982).\r
+[22] Dirac, P. A. M., Quantum Mechanics (Clarendon Press,\r
+Oxford, 1958).\r
+[23] Zurek, W. H., Quantum origin of quantum jumps: Break\u0002ing of unitary symmetry induced by information transfer\r
+and the transition from quantum to classical. Phys. Rev.\r
+A 76, 052110 (2007).\r
+[24] Ollivier, H., Poulin, D., and Zurek, W. H., Environment\r
+as a Witness: Selective Proliferation of Information and\r
+Emergence of Objectivity in a Quantum Universe Phys.\r
+Rev. A72, 423113 (2005).\r
+[25] Nielsen, M. A., and I. L. Chuang, Quantum Computation\r
+and Quantum Information, (Cambridge University Press,\r
+2000).\r
+[26] Everett III, H., Relative state formulation of quantum\r
+theory. Rev. Mod. Phys. 29, 454-462 (1957).\r
+[27] Everett III, H., 1957b, Ph. D. Dissertation, Princeton\r
+University.\r
+[28] DeWitt, B. S., and Graham, N., eds., The Many - Worlds\r
+Interpretation of Quantum Mechanics (Princeton Univer\u0002sity Press, Princeton, 1973).\r
+[29] Landau. L., Das D¨ampfungsproblem in der Wellen\u0002mechanik. Zeits. Phys. 45, 430-441 (1927).\r
+[30] von Neumann, J. 1932, Mathematical Foundations of\r
+Quantum Theory, translated from German original by R.\r
+T. Beyer (Princeton University Press, Princeton, 1955).\r
+[31] Laplace, P. S,. 1820, A Philosophical Essay on Probabil\u0002ities, English translation of the French original by F. W.\r
+Truscott and F. L. Emory (Dover, New York, 1951).\r
+[32] Zurek, W. H., Environment-assisted invariance, causal\u0002ity, and probabilities in quantum physics. Phys. Rev.\r
+Lett. 90, 120404 (2003).\r
+[33] Zurek, W. H., Probabilities from entanglement, Born’s\r
+rule from envariance. Phys. Rev. A71, 052105 (2005).\r
+[34] Auletta, G., Foundations and Interpretation of Quantum\r
+Theory (World Scientific, Singapore, 2000).\r
+[35] Gleason, A. M., Measures on closed subspaces of Hilbert\r
+space, J. Math. Mech. 6, 855-893 (1957).\r
+[36] Schlosshauer, M, and Fine, A., On Zurek’s derivation of\r
+the Born rule. Found. Phys. 35(2), 197-213 (2005)\r
+[37] Barnum, H., No-signalling-based version of Zurek’s\r
+derivation of quantum probabilities: A note on\r
+“Environment-assisted invariance, entanglement,\r
+and probabilities in quantum physics”, arXiv:quant\u0002ph/0312150 (2003).\r
+[38] Zurek, W. H., Relative States and the Environment: Ein\u0002selection, Envariance, Quantum Darwinism, and the Ex\u0002istential Interpretation, arXiv:0707.2832 (2007).\r
+[39] Wheeler, J. A., It from Bit. p. 3 in Complexity, Entropy,\r
+and the Physics of Information, Zurek, W. H., ed. (Ad\u0002dison Wesley, Redwood City, 1990).\r
+[40] Darwin, C., The Origin of the Species. (1859).\r
+Acknowledgments: I am grateful to Robin Blume\u0002Kohout, Fernando Cucchietti, Juan Pablo Paz, David\r
+Poulin, Hai-Tao Quan, Michael Zwolak for stimulating\r
+discussions. This research was supported by an LDRD\r
+grant at Los Alamos and, in part, by FQXi."""
+
+[metadata]
+title = "arxiv 0903.5082 zurek 2009 quantum darwinism"
+authors = ["Unknown"]
+arxiv = "0903.5082"
+year = 2009
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Quantum Darwinism\r
+Wojciech Hubert Zurek\r
+Theory Division, MS B213, LANL Los Alamos, NM, 87545, U.S.A.\r
+Quantum Darwinism describes the proliferation, in the environment, of multiple records of selected\r
+states of a quantum system. It explains how the fragility of a state of a single quantum system can\r
+lead to the classical robustness of states of their correlated multitude; shows how effective ‘wave\u0002packet collapse’ arises as a result of proliferation throughout the environment of imprints of the\r
+states of quantum system; and provides a framework for the derivation of Born’s rule, which relates\r
+probability of detecting states to their amplitude. Taken together, these three advances mark\r
+considerable progress towards settling the quantum measurement problem.\r
+The quantum principle of superposition implies that\r
+any combination of quantum states is also a legal state.\r
+This seems to be in conflict with everyday reality: States\r
+we encounter are localized. Classical objects can be ei\u0002ther here or there, but never both here and there. Yet, the\r
+principle of superposition says that localization should be\r
+a rare exception and not a rule for quantum systems.\r
+Fragility of states is the second problem with quantum\u0002classical correspondence: Upon measurement, a general\r
+preexisting quantum state is erased – it “collapses” into\r
+an eigenstate of the measured observable. How is it then\r
+possible that objects we deal with can be safely observed,\r
+even though their basic building blocks are quantum?\r
+To bypass these obstacles Bohr [1] followed Alexander\r
+the Great’s example: Rather than try disentangling the\r
+Gordian Knot at the beginning of his conquest, he cut\r
+it. The cut separates the quantum from the classical.\r
+Bohr’s Universe consists of two realms, each governed by\r
+its own laws. Fragile superpositions were banished from\r
+the classical realm deemed more fundamental and indis\u0002pensable to interpret or even practice quantum theory.\r
+Thus, instead of trying to understand Universe (includ\u0002ing “the classical”) in quantum terms one “quantized”\r
+this and that, always starting from the classical base.\r
+This was a brilliant tactical move: Physicists could\r
+conquer the quantum realm without getting distracted by\r
+interpretational worries. In those days only gedankenex\u0002periments like the famous Schr¨odinger cat [2] were truly\r
+disturbing: Real experiments dealt with electrons, pho\u0002tons, atoms, or other microscopic systems. Bohr’s rule of\r
+thumb – that the macroscopic is classical – was enough.\r
+Moreover, many (including Einstein) believed that quan\u0002tum physics is just a step on a way to a deeper theory\r
+that will solve or bypass interpretational conundrums.\r
+That did not happen. Instead, old gedankenexperi\u0002ments were carried out. They confirmed validity of quan\u0002tum laws on scales that have, of recent, begun to infringe\r
+on “the macroscopic”. Quantum theory is here to stay.\r
+It is also increasingly clear that its weirdest predictions\r
+– superpositions and entanglement – are experimental\r
+facts, in principle relevant also for macroscopic objects.\r
+Therefore, questions about the origin of “the classical”,\r
+with its restriction to localized states that are robust, un\u0002perturbed by measurements, can no longer be dismissed.\r
+I. DECOHERENCE AND EINSELECTION\r
+Decoherence turns one of the two problems we noted\r
+above – fragility of quantum states – into a solution of the\r
+other. Environment-induced decoherence recognizes that\r
+if a measurement can put a state at risk and re-prepare\r
+it, so can accidental information transfers that happen\r
+whenever a system interacts with its environment.\r
+Decoherence is by now well understood [3, 4, 5]:\r
+Fragility of states makes quantum systems very difficult\r
+to isolate. Transfer of information (which has no effect on\r
+classical states) has dramatic consequences in the quan\u0002tum realm. So, while fundamental problems of classical\r
+physics were always solved in isolation (it sufficed to pre\u0002vent energy loss) this is not so in quantum physics (leaks\r
+of information are much harder to plug).\r
+When a quantum system gives up information, its own\r
+state becomes consistent with the information that was\r
+disseminated. “Collapse” in measurements is an extreme\r
+example, but any interaction that leads to a correlation\r
+can contribute to such re-preparation: Interactions that\r
+depend on a certain observable correlate it with the en\u0002vironment, so its eigenstates are singled out, and phase\r
+relations between such pointer states are lost [6].\r
+Negative selection due to decoherence is the essence of\r
+environment-induced superselection, or einselection [7]:\r
+Under scrutiny of the environment, only pointer states\r
+remain unchanged. Other states decohere into mixtures\r
+of stable pointer states that can persist, and, in this sense,\r
+exist: They are einselected.\r
+These ideas can be made precise. The basic tool is the\r
+reduced density matrix ρS . It represents the state of the\r
+system that obtains from the composite state ΨSE of S\r
+and E by tracing out the environment E:\r
+ρS = T rE |ΨSE ihΨSE | . (1)\r
+Evolution of ρS reveals preferred states: It is most pre\u0002dictable when the system starts in a pointer state. To\r
+quantify this one can use (von Neumann) entropy, HS =\r
+H(ρS ) = −T rρS lg ρS , as a function of time. Pointer\r
+states result in smallest entropy increase. By contrast,\r
+their superpositions produce entropy rapidly, at decoher\u0002ence rates, especially when S is macroscopic.\r
+When pure states of the system are sorted by pre\u0002dictability, according to entropy of the evolved ρS ,\r
+arXiv:0903.5082v1 [quant-ph] 29 Mar 2009
+
+2\r
+pointer states are at the top. This criterion – the pre\u0002dictability sieve [4, 8, 9] – yields a short list of candidates\r
+for effectively classical states: A cat can persist in one\r
+of the two obvious stable states, but their superposition\r
+would deteriorate into a mixture of |deadi and |alivei\r
+when initiated in a way envisaged by Schr¨odinger [2].\r
+The special role of position is traced to the nature of\r
+the SE interactions: They tend to depend on distance.\r
+Hence, information about position is most readily passed\r
+on to the environment. This is why localized states sur\u0002vive while nonlocal superpositions decay into their mix\u0002tures. For example, in a weakly damped harmonic os\u0002cillator the minimum uncertainty wavepackets – familiar\r
+coherent states, best quantum approximation of classical\r
+points in phase space – are einselected [9, 10, 11].\r
+II. ENVIRONMENT AS A WITNESS\r
+Monitoring by the environment means that informa\u0002tion about S is deposited in E. What role does it play,\r
+and what is its fate? Decoherence theory ignores it. En\u0002vironment is “traced out”. Information it contains is\r
+treated as inaccessible and irrelevant: E is a “rug to sweep\r
+under” the data that might endanger classicality.\r
+Quantum Darwinism recognizes that “tracing out” is\r
+not what we do: Observers eavesdrop on the environ\u0002ment. Vast majority of our data comes from fragments\r
+of E. Environment is a witness to the state of the system.\r
+For example, this very moment you intercept a fraction\r
+of the photon environment emitted by a screen or scat\u0002tered by a page. We never access all of E. Tiny fractions\r
+suffice to reveal the state of various “systems of interest”.\r
+This insight captures the essence of Quantum Darwin\u0002ism: Only states that produce multiple informational off\u0002spring – multiple imprints on the environment – can be\r
+found out from small fragments of E. The origin of the\r
+emergent classicality is then not just survival of the fittest\r
+states (the idea already captured by einselection), but\r
+their ability to “procreate”, to deposit multiple records\r
+– copies of themselves – throughout E.\r
+Proliferation of records allows information about S to\r
+be extracted from many fragments of E (in the example\r
+above, photon E). Thus, E acquires redundant records of\r
+S. Now, many observers can find out the state of S in\u0002dependently, and without perturbing it. This is how pre\u0002ferred states of S become objective. Objective existence\r
+– hallmark of classicality – emerges from the quantum\r
+substrate as a consequence of redundancy.\r
+Decoherence theory was focused on the system. Its aim\r
+was to determine what states survive information leaks\r
+to E. Now we ask: What information about the system\r
+can be found out from fragments of E? This change of\r
+focus calls for a more realistic model of the environment\r
+(Fig. 1): Instead of a monolithic E we recognize that envi\u0002ronments consist of subsystems that comprise fragments\r
+independently accessible to observers.\r
+The reduced density matrix ρS representing the state\r
+\u0001 \u0002 \u0003 \u0004 \u0005 \u0006 \u0007 \u0004 \b\u0004 \t \u0005 \u0004 
+ \u000B \b\u000B \f \r \u000E \u000F \u0010\r
+\u0011 \u0012 \u0013\u0014 \u0015 \u0016\u0017 \u0015 \u0018 \u0019 \u001A \u0018 \u001B \u0018 \u001A \u001C \u001A \u0018 \u001D \u001E\u001F\r
+ !\r
+\u0017 "\u0015 # $ % \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\r
+' \u0002 ( \u0004 \f ) \t \f \u000B \t \u0005 * 
+ \u000B \b\u000B \f \r \u000E \u000F \u0010\r
+% \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 " \u0018 \u0019 \u001A \u0018\u001B \u0018 \u001A \u001C \u001A\r
+\u0018 \u001D \u001E\u001F\r
+ + ,\r
+\u0015 \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\u0017\r
+- \u0002 + ,\r
+\u0015 \u0012 \u0014 \u0013\u0016& \u0012 # \u0015 \u0012 "\u0017 . /\u001C 0 \u001F 1 2 \u0018 \u001D \u001C \u001A\r
+\u0018 \u001D \u001E \u001F 3 \u00164 5 # \u0015 \u0012 "\u0017 \u001E6 . \u001E \u001C . 0 6 6 . \u001B \u001C\r
+\u001D \u001C . /7 8 9 0 \u001F 1 : 7 \u001C \u001E\u001C \u0018 \u001D ;\u001F /1 . \u001E\u0018 \u001F \u001D <\r
+FIG. 1: Quantum Darwinism and the structure of the envi\u0002ronment. Decoherence theory distinguishes between a system\r
+(S) and its environment (E) as in (a), but makes no further\r
+recognition of the structure of E; it could as well be mono\u0002lithic. In Quantum Darwinism the focus is on redundancy.\r
+We recognize the subdivision of E into subsystems, as in (b).\r
+The only requirement for a subsystem is that it should be\r
+individually accessible to measurements; observables of dif\u0002ferent subsystems commute. To obtain information about S\r
+from E one can then measure fragments F of the environ\u0002ment – non-overlapping collections of subsystems of E, (c).\r
+ically, there are many copies of the information about S in E\r
+– “progeny” of the “fittest observable” that survived monitor\u0002ing by E proliferates throughout E. This proliferation of the\r
+multiple informational offspring defines Quantum Darwinism.\r
+The environment becomes a witness with redundant copies of\r
+information about the preferred observable. This leads to the\r
+objective existence of pointer states: Many can find out the\r
+state of the system independently, without prior information,\r
+and they can do it indirectly, without perturbing S.\r
+of the system was the basic tool of decoherence. To study\r
+Quantum Darwinism we focus on correlations between\r
+fragments of the environment and the system. The rele\u0002vant reduced density matrix ρSF is given by:\r
+ρSF = T rE/F |ΨSE ihΨSE | . (2)\r
+Above, trace is over “E less F”, or E/F – all of E except\r
+for the fragment F. How much F knows about S can be\r
+quantified using mutual information:\r
+I(S : F) = HS + HF − HS,F , (3)\r
+defined as the difference between entropies of two sys\u0002tems (here S and F) treated separately and jointly. For\r
+example, the mutual information between an original and"""
+
+[[sections]]
+number = "3"
+title = "FIG. 2: Information about S stored in E and its redundancy."
+text = """
+Mutual information is monotonic in f. When global state of\r
+SE is pure, I(S : Ff ) in a typical fraction f of the environ\u0002ment is antisymmetric around f = 0.5 [13]. For pure states\r
+picked out at random from the combined Hilbert space HSE,\r
+there is little mutual information between S and a typical F\r
+smaller than half of E. However, once a threshold f =\r
+1\r
+2\r
+is\r
+attained, nearly all information is in principle at hand. Thus,\r
+such random states (green line) exhibit no redundancy. By\r
+contrast, states of SE created by decoherence (where the en\u0002vironment monitors preferred observable of S) contain almost\r
+all (all but δ) of the information about S in small fractions\r
+fδ of E. The corresponding I(S : Ff ) (red line) quickly rises\r
+to HS (entropy of S due to decoherence), which is all of the\r
+information about S available from either E or S. (More, up\r
+to 2HS , can be obtained only through global measurements\r
+on S and nearly all E). HS is therefore the classically acces\u0002sible information. As (1 − δ)HS of information is contained\r
+in fδ = 1/Rδ of E, there are Rδ such fragments in E: Rδ\r
+is the redundancy of the information about S. Large redun\u0002dancy implies objectivity: The state of the system can be\r
+found out indirectly and independently by many observers,\r
+who will agree about their conclusions. Thus, Quantum Dar\u0002winism accounts for the emergence of objective existence.\r
+a perfect copy (of, say, a book) is equal to the entropy of\r
+the original, as either contains the same text. So, every\r
+bit of information in the first copy reveals a bit of infor\u0002mation in the original. However, having extra copies does\r
+not increase the information about the original. Yet, it\r
+determines how many can independently access this in\u0002formation. The number of copies defines redundancy.\r
+Similar ideas apply to the quantum case. Initially, ev\u0002ery bit of information gained from a fraction f \u001C 1 of\r
+E that was pure before it monitored (and decohered) the\r
+system is a bit about S. The red plot in Fig. 2 starts with\r
+this steep “bit for bit” slope, but moderates as I(S : Ff )\r
+approaches redundancy plateau at HS , where additional\r
+bits only confirm what is already known.\r
+Redundancy is the number of independent fragments\r
+of the environment that supply almost all classical infor\u0002mation about S, i.e., (1 − δ)HS . In other words;\r
+Rδ = 1/fδ . (4)\r
+Rδ is the number of times one can acquire (1 − δ) of the\r
+information about S independently (from distinct F’s)\r
+and indirectly – without perturbing S.\r
+Rapid rise and gradual leveling of I(S : Ff ), Fig. 2,\r
+implies redundancy. The information in Ff allows one\r
+to determine the state of S as it reaches redundancy\r
+plateau. Observables of different F’s commute – such\r
+measurements are independent. Yet, underlying corre\u0002lations mean that their outcomes imply the same state\r
+of the system, as if S were classical: The redundancy\r
+plateau is a classical plateau. Its level HS is the classical\r
+information accessible from a small fraction of E.\r
+Redundancy allows for objective existence of the state\r
+of S: It can be found out indirectly, so there is no danger\r
+of perturbing S with a measurement. Error correction al\u0002lowed by redundancy is also important: Fragility of quan\u0002tum states means that copies in F’s are damaged by mea\u0002surements (we destroy photons!), and may be measured\r
+in a “wrong” basis. One cannot access records in E with\u0002out endangering their existence. But with many (Rδ)\r
+copies, state of S can be found out by ∼ Rδ observers\r
+who can get their information independently, and with\u0002out prior knowledge about S. Consensus between copies\r
+suggests objective existence of the state of S.\r
+The mutual information I(S : Ff ) computed in mod\u0002els of decoherence exhibits behavior illustrated by the red\r
+plot of Fig. 2. In the family of models representing spin\r
+S surrounded by environments of many spins [12, 13, 14]\r
+the same number of spins suffices to reach the plateau:\r
+Adding more spins to E only extends length of the plateau\r
+measured in “absolute units” – in the number of the en\u0002vironment spins. In this model (that can be viewed as\r
+a simplified model of a photon environment) redundancy\r
+is then proportional to the number of the environment\r
+subsystems that interact with the system of interest.\r
+Quantum Brownian motion – harmonic oscillator sur\u0002rounded by many environmental oscillators – is the other\r
+well known model of decoherence. It is exactly solvable,\r
+and the case of an underdamped oscillator yields sur\u0002prisingly simple results [15, 16]: (i) Mutual information\r
+is approximately given by I(S : F) ≈ HS +\r
+1\r
+2\r
+ln f\r
+(1−f)\r
+,\r
+and; (ii) Redundancy for an initially squeezed state of S\r
+reaches Rδ ≈ s\r
+2δ\r
+, where s, the squeeze factor, quantifies\r
+delocalization of the state. Similar equation should hold\r
+for more general “Schr¨odinger cat” states, with s quan\u0002tifying the separation of the two localized alternatives.\r
+These results confirm intuitions that originally moti\u0002vated Quantum Darwinism [4, 17]: Monitoring of the\r
+system by the environment can deposit multiple records\r
+of preferred states of S in E. States of SE that arise from\r
+decoherence are special [13, 14], as I(S : Ff ) for a typ\u0002ical pure state selected with Haar measure in the whole\r
+Hilbert space of SE (green plot in Fig. 2) shows. In\r
+such random states small fragments reveal almost noth\u0002ing about the rest of the state. Only when half of E is\r
+found out the whole state is suddenly revealed.\r
+States that arise from decoherence are then far from\r
+random. Roughly speaking, they have a branch structure.\r
+This is why the rest of such a branch including the state\r
+of the system – the “bud” from which this branch has
+
+4\r
+originated – can be deduced from its fragment. We shall\r
+see how such branches grow in the next section.\r
+Plots of I(S : Ff ) for pure SE are antisymmetric\r
+around the point {HS , f =\r
+1\r
+2\r
+} for typical fragments of\r
+E [13]. Thus, rapid rise for small f must be matched at\r
+the other end, for f ∼ 1. This is a signature of entan\u0002glement that allows state to be known “as the whole”,\r
+while states of subsystems are unknown. The joint state\r
+of SE is then pure, so that HS,F=E = 0, and I(S : Ff )\r
+must rise to HS + HE = 2HS when f approaches 1.\r
+This is a very quantum aspect of information. In clas\u0002sical physics knowing a composite object implies knowing\r
+each of its subsystems. This is not so in quantum physics,\r
+where composite states are given by tensor (rather than\r
+Cartesian) products of their constituents. Thus, one can\r
+know perfectly quantum state of the whole, but know\r
+nothing about states of parts. We shall see in Section IV\r
+how this feature can be used to derive Born’s rule [18]\r
+that relates probabilities with wavefunctions.\r
+To reveal this latent quantumness one would have to\r
+measure the right global observable on all of SE. For\r
+example, when mutual information, Eq. (3), is defined\r
+using Shannon entropy with probabilities corresponding\r
+to optimal observables in S and in E, the resulting Shan\u0002non I(S : Ff ) graph for small f would look very similar\r
+to Fig. 2. However, using Shannon entropy involves lo\u0002cal probabilities (precluding global observables), so such\r
+Shannon I(S : Ff ) never exceeds HS , antisymmetry is\r
+lost, and the plateau continues until the end at f ∼ 1.\r
+Effective unattainability of the f ∼ 1 part of the plot\r
+also shows why decoherence is so hard to undo: Correla\u0002tions that reveal coherence can be usually detected only\r
+by such global measurements of whole SE. We intercept\r
+small fractions of E, and never have the luxury of perfect\r
+global measurements needed to undo decoherence. Yet,\r
+because of redundancy, we get ∼ HS information with\r
+“sloppy” measurements of f \u001C 1.\r
+Quantum Darwinism does not require pure E. Mixed\r
+environment is a noisy communication channel: Its initial\r
+entropy of h per bit can still increase after interaction\r
+with S, reflecting mutual information buildup. However,\r
+now a bit gained from E yields only 1−h of a bit about S.\r
+So, a completely mixed E (h = 1) is useless (even though\r
+it can still induce decoherence!). For a partly mixed E\r
+mutual information will increase more slowly, pure case\r
+“bit per bit” rate tempered to ∼ 1 − h. Yet, it can still\r
+climb the same redundancy plateau at HS [19].\r
+These conclusions apply when E is initially mixed, but\r
+are also relevant when this channel is noisy for other rea\u0002sons (e.g., imperfect measurements). In all such cases one\r
+can still reach the same redundancy plateau, although\r
+now a proportionally larger fragment of the environment\r
+is needed to get the same information about S.\r
+Suitability of the environment as a channel depends\r
+on whether it provides a direct and easy access to the\r
+records of the system. This depends on the structure\r
+and evolution of E. Photons are ideal in this respect:\r
+They interact with various systems, but, in effect, do\r
+not interact with each other. This is why light deliv\u0002ers most of our information. Moreover, photons emitted\r
+by the usual sources (e.g., sun) are far from equilibrium\r
+with our surroundings. Thus, even when decoherence is\r
+dominated by other environments (e.g., air) photons are\r
+much better in passing on information they acquire while\r
+“monitoring the system of interest”: Air molecules scat\u0002ter from one another, so that whatever record they may\r
+have gathered becomes effectively undecipherable.\r
+Stability of the level of the redundancy plateau at HS ,\r
+even for mixed E’s, is a compelling reason to think of it as\r
+“classical”. The question we shall now address concerns\r
+the nature of that information – what does the environ\u0002ment know about the system, and why?\r
+III. FROM COPYING TO QUANTUM JUMPS\r
+Quantum Darwinism leads to appearance, in the en\u0002vironment, of multiple copies of the state of the system.\r
+However, the no-cloning theorem [20, 21] prohibits copy\u0002ing of unknown quantum states. If cloning is outlawed,\r
+how can redundancy seen in Fig. 2 be possible?\r
+Quick answer is that cloning refers to (unknown) quan\u0002tum states. So, copying of observables evades the theo\u0002rem. Nevertheless, the tension between the prohibition\r
+on cloning and the need for copying is revealing: It leads\r
+to breaking of unitary symmetry implied by the super\u0002position principle, accounts for quantum jumps, and sug\u0002gests origin of the “wavepacket collapse”, setting stage for\r
+the study of quantum origins of probability in Section IV.\r
+Quantum physics is based on several “textbook” pos\u0002tulates [22]. The first two; (i) States are represented by\r
+vectors in Hilbert space, and; (ii) Evolutions are unitary –\r
+give complete account of mathematics of quantum theory,\r
+but make no connection with physics. For that one needs\r
+to relate calculations made possible by the superposition\r
+principle of (i) and unitarity of (ii) to experiments.\r
+Postulate (iii) Immediate repetition of a measurement\r
+yields the same outcome starts this task. This is the only\r
+uncontroversial measurement postulate (even if it is diffi\u0002cult to approximate in the laboratory): Such repeatability\r
+or predictability is behind the very idea of “a state”.\r
+In contrast to (i)-(iii), collapse postulate (iv) Outcomes\r
+correspond to eigenstates of the measured observable, and\r
+only one of them is detected in any given run of the ex\u0002periment, is inconsistent with (i) and (ii). Conflict arises\r
+for two reasons: Restriction to a preferred set of outcome\r
+states seems at odds with with the egalitarian principle\r
+of superposition, embodied in (i). This restriction pre\u0002vents one from finding out unknown quantum states, so\r
+it is responsible for their fragility. And a single outcome\r
+per run is at odds with unitarity (and, hence, linearity)\r
+of quantum dynamics that preserves superpositions.\r
+The last axiom; (v) Probability of an outcome is given\r
+by the square of the associated amplitude, pk = |ψk|\r
+2\r
+,\r
+is known as Born’s rule [18]. It completes the relation\r
+between mathematics of (i) and (ii) and the experiments.
+
+5\r
+a\r
+µ\r
+R0.1(σ)\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+0 π/2\r
+π/4\r
+0\r
+π/4\r
+a π/8\r
+π/4\r
+µ\r
+0.6\r
+0.8\r
+π/4\r
+π/2 0\r
+π/8\r
+1.0\r
+0.4\r
+0.2\r
+0\r
+0\r
+ˆIN (σ)\r
+m\r
+0.4\r
+0.8\r
+1.0\r
+π/2 0 10 20 30 40 50\r
+µ\r
+0.6\r
+0.2\r
+0\r
+0\r
+π/4\r
+I(σ : e)\r
+µ = 0.23\r
+a) b) c)\r
+FIG. 3: Quantum Darwinism in a simple model of decoherence [12]. The spin- 1"""
+
+[[sections]]
+number = "2"
+title = "S interacts with N = 50 spin- 1"
+text = """
+2\r
+subsystems of E\r
+with an Ising Hamiltonian HSE =\r
+PN\r
+k=1 gkσ\r
+S\r
+z ⊗σ\r
+Ek\r
+y . The initial state of S⊗E is √1\r
+2\r
+(|0i+|1i)⊗|0i\r
+E1⊗. . .⊗|0iEN . Couplings gk are\r
+distributed randomly in the interval (0,1]. All the plotted quantities are a function of the observable σ(µ) = cos(µ)σz+sin(µ)σx,\r
+where µ is the angle between its eigenstates and the pointer states of S – eigenstates of σ\r
+S\r
+z . a) Information acquired by the\r
+optimal measurement on the whole environment, IˆN (σ), as a function of the inferred observable σ(µ) and the average interaction\r
+action hgkti = a. A lot of information is accessible in the whole E about any observable σ(µ) except when a is so small that\r
+there was no decoherence. b) Redundancy of the information about S as a function of the inferred observable σ(µ) and the\r
+average action hgkti = a. Rδ=0.1(σ) counts the number of times 90% of the total information can be “read off” independently\r
+by measuring distinct fragments of E. It is sharply peaked around the pointer observable: Redundancy is a very selective\r
+criterion – the number of copies of relevant information is high only for the observables σ(µ) inside the theoretical bound (see\r
+Ref.[12]) indicated by the dashed line. c) Information about σ(µ) extracted by local random measurements on m environmental\r
+subsystems. Because of redundancy, pointer states – and only pointer states – can be found out through this far-from-optimal\r
+strategy. Information about any other observable σ(µ) is restricted to what can be inferred from the pointer observable [12].\r
+Bohr bypassed conflict of (i) and (ii) with (iv) by insist\u0002ing that apparatus is classical, so unitarity and the prin\u0002ciple of superposition need not apply to measurements.\r
+But this is an excuse, not an explanation. We are dealing\r
+with a quantum environment, and redundancy of previ\u0002ous section strengthened motivation for postulate (iii) –\r
+repeatability. Let us see where this demand takes us in\r
+a purely quantum setting of postulates (i), (ii), and (iii).\r
+Suppose there are states of S (say, |ui and |vi) that\r
+produce an imprint in a subsystem of E (which plays a\r
+role of an apparatus), but remain unperturbed (so they\r
+can produce more imprints). This repeatability implies:\r
+|ui|e0i ⇒ |ui|eui, |vi|e0i ⇒ |vi|evi in obvious notation.\r
+In a unitary process scalar product is preserved. Thus;\r
+hu|vi = hu|viheu|evi , (5)\r
+where we have set he0|e0i = 1. This simple equation\r
+can be satisfied only when; (a) either heu|evi = 1 (which\r
+means that copying was completely unsuccessful), or; (b)\r
+hu|vi = 0, i.e., they are orthogonal. In that case heu|evi\r
+is arbitrary – perfect record heu|evi = 0 is also possible.\r
+It follows that multiple (perfect or imperfect) copies\r
+of |ui and |vi can be imprinted in disjoint F’s. As a\r
+consequence of unitarity, only sets of orthogonal states\r
+(that define Hermitean observables [22]) can be so copied,\r
+explaining selection of a set of outcomes – terminal points\r
+of quantum jumps [23]. Before, they had to be postulated\r
+by the first part of axiom (iv). We emphasize that this\r
+result relies on just two values of the scalar product – 0\r
+and 1 – and, thus, does not appeal to Born’s rule.\r
+This breaking of unitary symmetry (choice of preferred\r
+states in an egalitarian Hilbert space) is induced by re\u0002peatability of the information transfer. It is a “nonlinear\r
+demand”: As in cloning, one asks for “two (or more) of\r
+the same”. Its conflict with linearity of quantum the\u0002ory can be resolved only by restricting states that can\r
+be copied. Such pointer states then act as “buds” of\r
+branches that grow by reproducing, in E, multiple copies\r
+of the original in S. Interaction Hamiltonians do not per\u0002turb observables that commute with them. So, buds of\r
+branches coincide with the einselected pointer states.\r
+Evidence of such symmetry breaking is seen in Fig."""
+
+[[sections]]
+number = "3"
+title = "Mutual information and redundancy shown there are"
+text = """
+obtained using Eq. (3), but with Shannon (rather than\r
+von Neumann) entropies of specific observables of S and\r
+F, i.e., using probabilities of their eigenstates. While von\r
+Neumann-based I(S : Ff ) and Rδ characterized total\r
+information, Shannon-based counterparts are well suited\r
+to enquire: What observable is this information about?\r
+It turns out that the environment as a whole “knows”\r
+many observables of S, as is seen in Fig. 3a. By contrast,\r
+in Fig. 3b symmetry breaking is evident: The ridge of\r
+redundancy appears abruptly only when test observable\r
+σ(µ) and the preferred pointer observable σz (that re\u0002mains unperturbed by the environment) nearly coincide.\r
+Why are pointer states favored? Commonsense says\r
+that, to be reproduced, state must survive copying. This\r
+leads to a theorem [12, 24] that only pointer states can be\r
+discovered from fractions of E. Other observables (such\r
+as σ(µ) in Fig. 3) can be deduced only to the extent they\r
+are correlated with the pointer observable. So, fragments\r
+of the environment offer a very narrow, projective point\r
+of view. Redundant imprinting of some observables hap\u0002pens at the expense of their complements.\r
+Structure of branching state betrays its origin and fore-
+
+6\r
+shadows “collapse”. Starting from |ψS i =\r
+Pn\r
+k ψk|ski,\r
+|ΨSE i =\r
+Xn\r
+k\r
+ψk|ski|e\r
+(1)\r
+k\r
+i. . . |e\r
+(N)\r
+k\r
+i =\r
+Xn\r
+k\r
+ψk|ski|εki (6)\r
+branches grow to include N subsystems of E. Branch\r
+fragments can be nearly orthogonal; ΠJ\r
+j=1he\r
+(j)\r
+k\r
+|e\r
+(j)\r
+k0 i '\r
+δkk0 for large enough J. This means that a pointer state\r
+|ski of S can be determined (along with the rest of the\r
+branch) from a sufficiently long fragment (which may still\r
+be short compared to the length of the branch, J \u001C N ).\r
+In the huge Hilbert space HSE branching state is a\r
+very atypical minimally entangled superposition of only\r
+n product “branches” labelled by the pointer states of\r
+the system. This is tiny compared to the dimension of\r
+HSE that exceeds n by a factor exponential in N . This\r
+is why the two plots in Fig. 2 are so different: Branch\u0002ing state is, to a good approximation, a multi-system\r
+Schmidt decomposition, with long branch fragments con\u0002stituting “systems”. In a Schmidt decomposition, states\r
+of partners are in one-to-one correspondence. Thus, in\r
+Eq. (6), |ski implies |εki (and, vice versa), and measur\u0002ing a branch fragment F can reveal the whole branch.\r
+Initial part of I(S : Ff ), Fig. 2, represent buildup of\r
+this correlation: When f = 0, observer is ignorant of\r
+what branch he will find out, but the structure of the\r
+correlations within |ΨSE i leaves no doubt of what these\r
+branches are. Using Born’s rule one could assign to them\r
+probabilities pk = |ψk|\r
+2 and the corresponding entropy\r
+HS . Next section shows how one can deduce these prob\u0002abilities without axiom (v) – how symmetries of entan\u0002glement imply Born’s rule.\r
+When observer measures enough of E, he finds out\r
+the branch (and what the state of S is). Additional\r
+data are redundant. They only confirm what is already\r
+known. Probabilities associated with |ΨSE i are replaced\r
+with certainty of a branch. This transition from uncer\u0002tainty (initial presence of many branches – potential for\r
+multiple outcomes) to certainty (once a sufficiently long\r
+branch fragment becomes known) accounts for percep\u0002tion of “collapse”. The initial, steeply rising, part of\r
+I(S : Ff ) “resolves” it: Collapse is brief compared to\r
+the ensuing period of certainty about the outcome, as\r
+fδ \u001C 1, but, nevertheless, not instantaneous.\r
+Assumptions that lead from copying to preferred states\r
+can be relaxed. Thus, E need not be initially pure [23].\r
+Moreover, it suffices that the records (e.g., in the appara\u0002tus A) are “repeatably accessible”. Transfer of responsi\u0002bility for repeatability from a quantum S to a (still quan\u0002tum) A allows one to model non-orthogonal measurement\r
+outcomes (POVM’s): A entangles with the system, and\r
+then acts as ancilla. Its orthogonal pointer states |Aki\r
+correlate with non-orthogonal |ςki of S,\r
+P\r
+k ψ˜\r
+k|ςki|Aki.\r
+Interaction of A with the environment results in multiple\r
+copies of |Aki. The usual projective measurement imple\u0002mentation of POVM’s (see e.g. [25]) is now straightfor\u0002ward. Branches are labelled by |Aki. Indeed, we usually\r
+experience “quantum jumps” via an apparatus pointer.\r
+Selection of the set of outcomes by the proliferation of\r
+information essential for Quantum Darwinism parallels\r
+Bohr’s insistence [1] that a “classical apparatus” should\r
+determine the outcomes. However, it follows from purely\r
+quantum Eq. (5), and is caused by a unitary evolution\r
+responsible for the information transfer. Nevertheless, as\r
+classical apparatus would, preferred pointer states desig\u0002nate possible future outcomes, precluding measurements\r
+of complementary observables or determining preexist\u0002ing state of the system. Thus, information acquisition –\r
+a copying process – results in preferred states.\r
+Consensus between records deposited in fragments of\r
+E looks like “collapse”. In this sense we have accounted\r
+for postulate (iv) using only very quantum postulates (i)-\r
+(iii). In particular, in deriving and analyzing Eq. (5) we\r
+have not employed Born’s rule, axiom (v). We shall be\r
+therefore able to use our results as a starting point for\r
+such a derivation in the next section.\r
+There was nothing nonunitary above – unitarity was\r
+the crux of our argument, and orthogonality of branch\r
+seeds our main result. Relative states of Everett [26, 27,\r
+28] come to mind. One could speculate about reality of\r
+branches with other outcomes. We abstain from this –\r
+our discussion is interpretation-free, and this is a virtue.\r
+Indeed, “reality” or “existence” of universal state vector\r
+seems problematic. Quantum states acquire objective\r
+existence when reproduced in many copies. Individual\r
+states – one might say with Bohr – are mostly informa\u0002tion, too fragile for objective existence. And there is only\r
+one copy of the Universe. Treating its state as if it really\r
+existed [26, 27, 28] seems unwarranted and “classical”.\r
+IV. PROBABILITIES FROM ENTANGLEMENT\r
+Observer prepared S in a state |ψS i, but wants to mea\u0002sure observable with eigenstates {|ski}. This will lead to\r
+entangled |ΨSE i with branch structure, Eq. (6). Pointer\r
+states {|ski} define the outcomes, but, as yet, observer\r
+has not measured E, and does not know the result. Given\r
+|ΨSE i, what is the probability of, say, |s17i?\r
+To derive it we cannot use reduced density matrices,\r
+Eqs. (1,2). Tracing out is averaging [25, 29, 30] – it relies\r
+on pk = |ψk|\r
+2\r
+, Born’s rule we want to derive. We have\r
+imposed that ban while deriving and analyzing Eq. (5),\r
+but relaxed it to plot Fig. 3. Now we reimpose it again.\r
+So, Born’s rule and standard tools of decoherence are\r
+off limits – using them courts circularity. Our derivation\r
+will rest instead on certainty and symmetry, cornerstones\r
+that mark two extremal cases of probability.\r
+The case of certainty was just settled without Born’s\r
+rule using Eq. (5). When one re-measures an observable,\r
+the same outcome will be seen again. Thus, when {|ski}\r
+includes |ψS i (e.g., |ψS i = |s17i), newly added copies\r
+just extend the branch already correlated with observer’s\r
+state, and the outcome is certain; p17 = 1. Certainty of\r
+correlations between partners in Schmidt decomposition,\r
+Eq. (6) is another important example.
+
+7\r
+a)\r
+b)\r
+c)\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S| >E\r
+| >S| >E+| >S\r
+= | >E\r
+~\r
+~\r
+=\r
+FIG. 4: Probabilities and symmetry: (a) Laplace used subjective ignorance to define probability. Player who does not know face\r
+values of the cards, but knows that one of them is a spade will infer probability p♠ =\r
+1\r
+2\r
+for the top card. (b) The real physical\r
+state of the system is however altered by the swap, illustrating subjective nature of Laplace’s approach, and demonstrating its\r
+unsuitability for physics. (c) Perfectly known entangled states have objective symmetries that allow one to rigorously deduce\r
+probabilities. When two systems are maximally entangled as above, probabilities of Schmidt partners are equal, p♥ = p♦, and\r
+p♠ = p♣. After a swap uS = |♠ih♥| + |♥ih♠| in S, the resulting state |♠i|♦i + |♥i|♣i must have p\r
+0\r
+♠ = p♦, and p\r
+0\r
+♥ = p♣. (We\r
+‘primed’ probabilities in S, as it was acted upon by a swap, so they might have changed.) A counterswap uE = |♦ih♣| + |♣ih♦|\r
+in E restores the original entangled state, proving that p\r
+0\r
+♥ = p♥ and p\r
+0\r
+♠ = p♠, after all (as counterswap uE leaves S untouched).\r
+This sequence of equalities implies p♠ = p♦ = p♥, so that p♠ = p♥ =\r
+1\r
+2\r
+, as probabilities in S must add up to 1.\r
+Certainty seems trivial but is important. Confirmation\r
+that a state “is what it is” – postulate (iii) – is a part of\r
+standard quantum lore [22]. We re-affirmed it, but with\r
+a key insight: Redundancy allows observers to discover\r
+(and not just confirm) that S is in a certain pointer state.\r
+We now turn to the opposite case of complete inde\u0002terminacy. Its connection with symmetry was noted by\r
+Laplace. He wrote: “The theory of chance consists in re\u0002ducing all the events ... to a certain number of cases that\r
+are equally possible... The ratio of this number to that of\r
+all the cases possible is the measure of probability” [31].\r
+Figure 4 illustrates how this classical intuition yields –\r
+far more convincingly — quantum probabilities.\r
+Symmetry is probed by invariance. Transformations\r
+that respect it take system between states that exhibit\r
+no measurable differences. For example, change of phase\r
+in the coefficients in the Schmidt decomposition\r
+P\r
+|ΨSE i =\r
+n\r
+k ψk|ski|εki cannot influence the state of S: It is in\u0002duced by uS = e\r
+iφk |skihsk|, local unitary on S, that can\r
+be “undone” by uE = e\r
+−iφk |εkihεk| on E, or;\r
+uS ⊗ 1E |ΨSE i = |ΦSE i; 1S ⊗ uE |ΦSE i = |ΨSE i (7)
+
+8\r
+So, phases of ψk cannot matter for a local state or influ\u0002ence probabilities in S. This symmetry, Eq. (7), is the\r
+entanglement-assisted invariance or envariance [32, 33].\r
+Such loss of phase significance for S entangled with E\r
+implies decoherence [33]. We arrived at its essence using\r
+envariance, without reduced density matrices, trace, etc.\r
+We now use phase envariance to show that equal ab\u0002solute values of the coefficients ψk imply equal prob\u0002abilities. For equal |ψk| any orthogonal basis of S\r
+is “Schmidt” (i.e., has an orthogonal partner in E).\r
+Thus, |ϕ¯SE i =\r
+|0iS|0iE+|1iS|1i\r
+√ E\r
+2\r
+=\r
+|+iS|+iE+|−iS|−i\r
+√ E\r
+2\r
+,\r
+where |±i =\r
+|0i±|1i\r
+√"""
+
+[[sections]]
+number = "2"
+title = "Sign change induced by e"
+text = """
+iπ|−ih−|\r
+acting on S produces |η¯SE i =\r
+|+iS|+iE−|−iS|−i\r
+√ E\r
+2\r
+=\r
+|1iS|0iE+|0iS|1i\r
+√ E"""
+
+[[sections]]
+number = "2"
+title = "In other words, one can swap |0iS with"
+text = """
+|1iSby rotating phase in a |±i basis by π. Yet, we just\r
+saw that phases of Schmidt coefficients do not matter for\r
+the state of S, so probabilities of 0 and 1 in S must have\r
+remained the same. Moreover, probabilities of paired up\r
+Schmidt states are equal, so that pS (0) = pE (0) in |ϕ¯SE i\r
+and pS (1) = pE (0) in |η¯SE i. Hence, pS (0) = pS (1) = 1\r
+2\r
+,\r
+where we assumed that probabilities add up to 1.\r
+In contrast to Laplace’s subjective “ignorance-based”\r
+approach, we obtained objective probabilities for a com\u0002pletely known entangled state. Phase envariance implied\r
+equiprobability in S. To paraphrase Beatles, “All you\r
+need is phase...”. We rotated phases of the coefficients to\r
+induce a swap in a complementary basis. Another proof\r
+(that implements swap more directly) is given in Fig. 4.\r
+This equiprobability case is the difficult part of the\r
+proof. Instead of subjectivity (that undermined appli\u0002cability of Laplace’s approach to physics) we relied on\r
+objective symmetries of entangled quantum states. This\r
+was made possible by the nature of quantum states of\r
+composite systems. Classically, pure states have struc\u0002ture of a Cartesian product – knowing the whole implies\r
+knowledge of each subsystem. In quantum theory they\r
+are tensor products – one can know state of the whole,\r
+and thus know nothing about parts, as envariance shows.\r
+This was the basis of our proof of equiprobability. We\r
+assumed unitarity. Moreover, we assumed; (1) When a\r
+system is not acted upon by a unitary transformation, its\r
+state remains unaffected. This state is a property of\r
+S alone, so; (2) Predictions regarding measurement out\u0002comes on S (including their probabilities) can be inferred\r
+from the state of S. Last not least; (3) When S is entan\u0002gled with other systems (e.g., the environment) the state\r
+of S alone is determined by the state of the whole SE.\r
+These “facts of life” are accepted properties of systems\r
+and states, but given the fundamental nature of our dis\u0002cussion it seems a good idea to make them explicit [33].\r
+For instance, to establish independence from phases of\r
+the coefficients ψk we noted that the state of S is un\u0002affected by the unitaries uS diagonal in Schmidt basis\r
+acting on S (like changes of Schmidt coefficient phases)\r
+that would normally affect isolated S: The global state\r
+ΨSE is restored by uE . Thus, by fact (3), so is local state\r
+of S. However, this is done by a unitary “countertrans\u0002formation” acting solely on E. Hence, by fact (1), state\r
+of S must have been unaffected by uS in the first place.\r
+So, by fact (2), phases of ψk cannot change outcomes of\r
+any measurement on S. Equiprobability follows.\r
+One can now derive Born’s rule, pk = |ψk|\r
+2\r
+, with\r
+straightforward algebra from the above two simple cases\r
+of complete certainty (pk = 1) and equiprobability (pk =\r
+1\r
+n\r
+): The general case can be always reduced to the case\r
+case of equal coefficients by “finegraining” (see Box).\r
+The origin of probability is a fascinating problem that\r
+is older than quantum measurement problem, and is for\u0002gotten primarily because it is so old. We have seen how\r
+quantum physics sheds a new, very fundamental, light\r
+on probability. We cannot do justice to the history of\r
+this subject here, but Ref. [34] provides a basic overview\r
+and exhaustive set of references. In particular, envariant\r
+derivation is very different from the classic proof of Glea\u0002son [35] in that it sheds light on the physical significance\r
+of the resulting measure. Moreover, it does not assume\r
+probabilities are additive (except to posit that probabil\u0002ity of an event and its complement are certain, i.e., to\r
+establish normalization; see Box and Ref. [33, 38]). By\u0002passing additivity of probabilities is essential when deal\u0002ing with a theory with another principle of additivity\r
+– the quantum superposition principle – which trumps\r
+additivity of probabilities or at least classical intuitiions\r
+about it (e.g., in the double-slit experiment). Discus\u0002sion of the implications of envariance has already started,\r
+with [36, 37], and [5] providing insightful commentary.\r
+BOX\r
+We show here how “finegraining” reduces the case of\r
+arbitrary ψk to equiprobability. To illustrate general\r
+strategy consider state in a 2D Hilbert space HS of S\r
+spanned by orthonormal {|0i, |2i} and (at least) 3D HE :\r
+|ψSE i ∝ q\r
+2\r
+3\r
+|0iS |+iE +\r
+q\r
+1\r
+3\r
+|2iS |2iE .\r
+The state |+iE =\r
+|0iE√+|1iE\r
+2\r
+exists in (at least 2D) sub\u0002space of E orthogonal to |2iE , i.e., h0|1i = h0|2i = h1|2i =\r
+h+|2i = 0. We know we can ignore phases.\r
+To reduce |ψSE i to equal coefficients case we “extend\r
+it” to a state |Ψ¯\r
+SECi by letting E act on an ancilla C.\r
+(S is not acted upon, so, by fact (1), probabilities for S\r
+cannot change.) This can be done by a generalization of\r
+controlled-not acting between E (control) and C (target),\r
+so that (in obvious notation) |ki|0\r
+0\r
+i ⇒ |ki|k\r
+0\r
+i, leading to\r
+√\r
+2|0i|+i|0\r
+0\r
+i+|2i|2i|0\r
+0\r
+i ⇒ √2|0i\r
+|0i|0\r
+0\r
+i+|1i|1\r
+0\r
+i\r
+√\r
+2\r
++|2i|2i|2\r
+0\r
+i.\r
+Above, and from now on we skip subscripts: The state of\r
+S will be listed first, and the state of C will be primed.\r
+The cancellation of √\r
+2 yields an equal coefficient state:\r
+|Ψ¯\r
+SCE i ∝ |0, 0\r
+0\r
+i|0i + |0, 1\r
+0\r
+i|1i + |2, 2\r
+0\r
+i|2i .\r
+We have combined S and C in a single ket and (below)\r
+we shall swap states of SC as if it was a single system."""
+
+[[sections]]
+number = "9"
+title = "Clearly, this is a Schmidt decomposition of (SC)E."
+text = """
+Three orthonormal product states have coefficients with\r
+the same absolute value. Therefore, they can be en\u0002variantly swapped. Thus, the probabilities of states\r
+|0i|0\r
+0\r
+i, |0i|1\r
+0\r
+i, and |2i|2\r
+0\r
+i are all equal. By normalization\r
+they are 1"""
+
+[[sections]]
+number = "3"
+title = "So, probability of detecting state |2i of S is"
+text = "1"
+
+[[sections]]
+number = "3"
+title = "Moreover, |0i and |2i are the only two outcome states"
+text = """
+for S. It follows that probability of |0i must be 2\r
+3\r
+;\r
+p0 =\r
+2\r
+3\r
+; p2 =\r
+1"""
+
+[[sections]]
+number = "3"
+title = "This is Born’s rule. We have just seen why the amplitudes"
+text = """
+in the initial |ψSE i “get squared” to yield probabilities.\r
+Note that we have avoided assuming additivity of prob\u0002abilities: p0 =\r
+2\r
+3\r
+not because it is a sum of two fine\u0002grained alternatives for SE, each with probability of 1\r
+3\r
+,\r
+but rather because there are only two (mutually exclu\u0002sive and exhaustive) alternatives for S; |0i and |2i, and\r
+p2 =\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Therefore, by normalization, p0 = 1 −"
+text = "1"
+
+[[sections]]
+number = "3"
+title = "Prob\u0002abilities of Schmidt states can be added because of the"
+text = """
+loss of phase coherence that follows directly from phase\r
+envariance established earlier (see also Ref. [32, 33]).\r
+Extension of this proof to the case where proba\u0002bilities are commensurate is conceptually straightfor\u0002ward but notationally cumbersome. The case of non\u0002commensurate probabilities is settled with an appeal to\r
+continuity. Frequency of the outcomes can be also de\u0002duced, allowing one to establish connection with the fa\u0002miliar relative frequency approach to probabilities [32,\r
+33, 38], but in a quantum setting probability arises as a\r
+consequence of symmetries of a single entangled state.\r
+We end by noting that the finegraining discussed above\r
+does not need to be carried out experimentally each time\r
+probabilities are discussed: Rather, it is a way to de\u0002duce a measure that is consistent with the geometry of\r
+the Hilbert spaces using entanglement as a tool. Still,\r
+given fundamental implications of envariance experimen\u0002tal tests would be most useful.\r
+V. DISCUSSION\r
+We derived the two controversial quantum postulates\r
+from the first three. We have thus seen how classical do\u0002main of the Universe arises from the superposition princi\u0002ple (postulate (i)) and unitarity (postulate (ii)) as well as\r
+rudimentary assumptions about information flows (pos\u0002tulate (iii)), and a few basic facts about states of com\u0002posite quantum systems (including their tensor nature,\r
+often cited as additional “axiom (0)”).\r
+The essence of the measurement problem – accounting\r
+for axioms (iv) and (v) – has been largely settled. It is of\r
+course likely one may be able to clarify assumptions and\r
+simplify proofs. Much work remains to be done on Quan\u0002tum Darwinism and envariance. Nevertheless, nature of\r
+the quantum-classical correspondence has been clarified.\r
+Physicists take it for granted that even hard problems\r
+are solved by a single good idea. Therefore, when a single\r
+idea does not do the whole job, often our first instinct is to\r
+dismiss it. Measurement problem does not fall into this\r
+“single idea” category. Several ideas, applied in the right\r
+order, led to advances described here. Logically, we may\r
+well have started with the derivation of Eq. (5) and the\r
+analysis of quantum jumps. Their randomness leads to\r
+probabilities. And symmetries of entangled states (that\r
+arise in decoherence and Quantum Darwinism) allow one\r
+to derive Born’s rule. As we have seen, phase envariance\r
+is (nearly) “all you need”. With probabilities at hand\r
+one has then every right to use reduced density matrices\r
+to analyze Quantum Darwinism and decoherence.\r
+Our presentation was “historical”. We started with de\u0002coherence, and used it to introduce Quantum Darwinism.\r
+Analysis of copying essential to information flows in both\r
+of these phenomena led to quantum jumps. This in turn\r
+motivated entangelment-based derivation of Born’s rule.\r
+Quantum Darwinism – upgrade of E to a communication\r
+channel from a mundane role it played in decoherence –\r
+tied together all of the other developments. This order\r
+had the advantage of making motivations clear, but it is\r
+different from more logical presentation where postulates\r
+(i)-(iii) are the starting point (strategy followed in [38]).\r
+The collection of ideas discussed here allows one to un\u0002derstand how “the classical” emerges from the quantum\r
+substrate staring from more basic assumptions than de\u0002coherence. We have bypassed a related question of why is\r
+our Universe quantum to the core. The nature of quan\u0002tum state vectors is a part of this larger mystery. Our\r
+focus was not on what quantum states are, but on what\r
+they do. Our results encourage a view one might describe\r
+(with apologies to Bohr) as “complementary”. Thus, |ψi\r
+is in part information (as, indeed, Bohr thought), but\r
+also the obvious quantum object to explain “existence”.\r
+We have seen how Quantum Darwinism accounts for the\r
+transition from quantum fragility (of information) to the\r
+effectively classical robustness. One can think of this\r
+transition as “It from bit” of John Wheeler [39].\r
+In the end one might ask: “How Darwinian is Quan\u0002tum Darwinism?”. Clearly, there is survival of the fittest,\r
+and fitness is defined as in natural selection – through\r
+the ability to procreate. The no-cloning theorem implies\r
+competition for resources – space in E – so that only\r
+pointer states can multiply (at the expense of their com\u0002plementary competition). There is also another aspect\r
+of this competition: Huge memory available in the Uni\u0002verse as a whole is nevertheless limited. So the question\r
+arises: What systems get to be “of interest”, and imprint\r
+their state on their obliging environments, and what are\r
+the environments? Moreover, as the Universe has a finite\r
+memory, old events will be eventually “overwritten” by\r
+new ones, so that some of the past will gradually cease\r
+to be reflected in the present record. And if there is no\r
+record of an event, has it really happened? These ques\u0002tions seem far more interesting than deciding closeness\r
+of the analogy with natural selection [40]. They suggest\r
+one more question: Is Quantum Darwinism (a process of\r
+multiplication of information about certain favored states\r
+that seems to be a “fact of quantum life”) in some way\r
+behind the familiar natural selection? I cannot answer
+
+10\r
+this question, but neither can I resist raising it.\r
+[1] Bohr, N. The quantum Postulate and the recent devel\u0002opment of atomic theory Nature 121, 580-590 (1928).\r
+[2] Schr¨odinger, E. Die gegenw¨artige Situation in der\r
+Quantenmechanik. Naturwissenschaften 807-812; 823-\r
+828; 844-849 (1935).\r
+[3] Joos, E., Zeh, H. D., Kiefer, C., Giulini, D., Kupsch,\r
+J., and Stamatescu, I.-O., Decoherence and the Appear\u0002ancs of a Classical World in Quantum Theory, (Springer,\r
+Berlin, 2003).\r
+[4] Zurek, W. H. Decoherence, einselection, and the quan\u0002tum origins of the classical Rev. Mod. Phys. 75, 715-775\r
+(2003).\r
+[5] Schlosshauer, M. Decoherence and the Quantum - to -\r
+Classical Transition (Springer, Berlin, 2007).\r
+[6] Zurek, W. H. Pointer basis of a quantum apparatus: Into\r
+what mixture does the wavepacket collapse? Phys. Rev.\r
+D24, 1516-1525 (1981).\r
+[7] Zurek, W. H. Environment-induced superselection rules.\r
+Phys. Rev. D26, 1862-1880 (1982).\r
+[8] Paz, J.-P., and Zurek, W. H., Environment-induced deco\u0002herence and the transition from quantum to classical. pp.\r
+533-614 in Coherent Atomic Matter Waves, Les Houches\r
+Lectures, R. Kaiser, C. Westbrook, and F. David, eds.\r
+(Springer, Berlin, 2001).\r
+[9] Zurek, W. H., Habib, S., and Paz, J.-P., Coherent states\r
+via decoherence Phys. Rev. Lett. 70, 1187-1190 (1993).\r
+[10] Tegmark, M., and Shapiro, H. S., Decoherence produces\r
+coherent states: An explicit proof for harmonic chains.\r
+Phys. Rev. E50, 2538-2547 (1994).\r
+[11] Gallis, M. R., The emergence of classicality via decoher\u0002ence described by Lindblad operators. Phys. Rev. A53,\r
+655 (1996).\r
+[12] Ollivier, H., Poulin, D, and Zurek, W. H., Objective\r
+properties from subjective quantum states: Environment\r
+as a witness. Phys. Rev. Lett. 93, 220401 (2004).\r
+[13] Blume-Kohout, R., and Zurek, W. H., A simple example\r
+of “Quantum Darwinism”: Redundant information stor\u0002age in many-spin environments Found. Phys. 35, 1857\r
+(2005).\r
+[14] Blume-Kohout, R., and Zurek, W. H., Quantum Darwin\u0002ism: Entanglement, branches, and the emergent classi\u0002cality of redundantly stored quantum information. Phys.\r
+Rev. A73, 062310 (2006).\r
+[15] Blume-Kohout, R., and Zurek, W. H., Quantum Darwin\u0002ism in quantum Brownian motion. Phys. Rev. Lett., 101,\r
+240405 (2008).\r
+[16] J. P. Paz and A. Roncaglia, in preparation.\r
+[17] Zurek, W. H., Einselection and decoherence from an in\u0002formation theory perspective. Ann. Physik (Leipzig), 9,\r
+822 (2000).\r
+[18] Born, M., Zur Quantenmechanik der Stossvorg¨ange\r
+Zeits. Phys. 37, 863-867 (1926).\r
+[19] M. Zwolak, H. T. Quan, and W. H. Zurek, in preparation.\r
+[20] Wootters, W. K., and Zurek, W. H., A single quantum\r
+cannot be cloned. Nature 299, 802-803 (1982).\r
+[21] Dieks, D., Communication by EPR devices. Phys. Lett.\r
+92A, 271 (1982).\r
+[22] Dirac, P. A. M., Quantum Mechanics (Clarendon Press,\r
+Oxford, 1958).\r
+[23] Zurek, W. H., Quantum origin of quantum jumps: Break\u0002ing of unitary symmetry induced by information transfer\r
+and the transition from quantum to classical. Phys. Rev.\r
+A 76, 052110 (2007).\r
+[24] Ollivier, H., Poulin, D., and Zurek, W. H., Environment\r
+as a Witness: Selective Proliferation of Information and\r
+Emergence of Objectivity in a Quantum Universe Phys.\r
+Rev. A72, 423113 (2005).\r
+[25] Nielsen, M. A., and I. L. Chuang, Quantum Computation\r
+and Quantum Information, (Cambridge University Press,\r
+2000).\r
+[26] Everett III, H., Relative state formulation of quantum\r
+theory. Rev. Mod. Phys. 29, 454-462 (1957).\r
+[27] Everett III, H., 1957b, Ph. D. Dissertation, Princeton\r
+University.\r
+[28] DeWitt, B. S., and Graham, N., eds., The Many - Worlds\r
+Interpretation of Quantum Mechanics (Princeton Univer\u0002sity Press, Princeton, 1973).\r
+[29] Landau. L., Das D¨ampfungsproblem in der Wellen\u0002mechanik. Zeits. Phys. 45, 430-441 (1927).\r
+[30] von Neumann, J. 1932, Mathematical Foundations of\r
+Quantum Theory, translated from German original by R.\r
+T. Beyer (Princeton University Press, Princeton, 1955).\r
+[31] Laplace, P. S,. 1820, A Philosophical Essay on Probabil\u0002ities, English translation of the French original by F. W.\r
+Truscott and F. L. Emory (Dover, New York, 1951).\r
+[32] Zurek, W. H., Environment-assisted invariance, causal\u0002ity, and probabilities in quantum physics. Phys. Rev.\r
+Lett. 90, 120404 (2003).\r
+[33] Zurek, W. H., Probabilities from entanglement, Born’s\r
+rule from envariance. Phys. Rev. A71, 052105 (2005).\r
+[34] Auletta, G., Foundations and Interpretation of Quantum\r
+Theory (World Scientific, Singapore, 2000).\r
+[35] Gleason, A. M., Measures on closed subspaces of Hilbert\r
+space, J. Math. Mech. 6, 855-893 (1957).\r
+[36] Schlosshauer, M, and Fine, A., On Zurek’s derivation of\r
+the Born rule. Found. Phys. 35(2), 197-213 (2005)\r
+[37] Barnum, H., No-signalling-based version of Zurek’s\r
+derivation of quantum probabilities: A note on\r
+“Environment-assisted invariance, entanglement,\r
+and probabilities in quantum physics”, arXiv:quant\u0002ph/0312150 (2003).\r
+[38] Zurek, W. H., Relative States and the Environment: Ein\u0002selection, Envariance, Quantum Darwinism, and the Ex\u0002istential Interpretation, arXiv:0707.2832 (2007).\r
+[39] Wheeler, J. A., It from Bit. p. 3 in Complexity, Entropy,\r
+and the Physics of Information, Zurek, W. H., ed. (Ad\u0002dison Wesley, Redwood City, 1990).\r
+[40] Darwin, C., The Origin of the Species. (1859).\r
+Acknowledgments: I am grateful to Robin Blume\u0002Kohout, Fernando Cucchietti, Juan Pablo Paz, David\r
+Poulin, Hai-Tao Quan, Michael Zwolak for stimulating\r
+discussions. This research was supported by an LDRD\r
+grant at Los Alamos and, in part, by FQXi."""
+
+[[tables]]
+page_num = 6
+headers = [
+    "Observer prepared S in a state",
+    "ψS i, but wants to mea\u0002sure observable with eigenstates {",
+    "ski}. This will lead to",
+]
+rows = [
+    [
+    "entangled",
+    "ΨSE i with branch structure, Eq. (6). Pointer",
+],
+    [
+    "states {",
+    "ski} define the outcomes, but, as yet, observer",
+],
+]
+
+[[tables]]
+page_num = 7
+headers = [
+    ">S",
+    ">E+",
+    ">S",
+    ">E",
+]
+rows = [
+    [
+    ">S",
+    ">E+",
+    ">S",
+    ">E",
+],
+    [
+    ">S",
+    ">E+",
+    ">S",
+    ">E",
+],
+    [
+    ">S",
+    ">E+",
+    ">S",
+    ">E",
+],
+    [
+    ">S",
+    ">E+",
+    ">S",
+],
+]
+
+[[tables]]
+page_num = 8
+headers = [
+    "2iS",
+    "2iE .",
+]
+rows = [
+    [
+    "The state",
+    "+iE =",
+],
+    [
+    "0iE√+",
+    "1iE",
+],
+]
+
+[[tables]]
+page_num = 8
+headers = [
+    "h+",
+    "2i = 0. We know we can ignore phases.",
+]
+rows = [
+    [
+    "To reduce",
+    "ψSE i to equal coefficients case we “extend",
+],
+    [
+    "it” to a state",
+    "Ψ¯",
+],
+]

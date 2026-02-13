@@ -1,0 +1,923 @@
+equations = []
+tables = []
+full_text = """
+arXiv:hep-th/0505113v2 6 Jun 2005\r
+SPIN-05/05\r
+ITP-UU-05/07\r
+Spectral Dimension of the Universe\r
+J. Ambjørn a,c, J. Jurkiewicz\r
+b\r
+and R. Loll\r
+c\r
+a The Niels Bohr Institute, Copenhagen University\r
+Blegdamsvej 17, DK-2100 Copenhagen Ø, Denmark.\r
+email: ambjorn@nbi.dk\r
+b Mark Kac Complex Systems Research Centre,\r
+Marian Smoluchowski Institute of Physics, Jagellonian University,\r
+Reymonta 4, PL 30-059 Krakow, Poland.\r
+email: jurkiewicz@th.if.uj.edu.pl\r
+c\r
+Institute for Theoretical Physics, Utrecht University,\r
+Leuvenlaan 4, NL-3584 CE Utrecht, The Netherlands.\r
+email: j.ambjorn@phys.uu.nl, r.loll@phys.uu.nl\r
+Abstract\r
+We measure the spectral dimension of universes emerging from nonperturbative\r
+quantum gravity, defined through state sums of causal triangulated geometries.\r
+While four-dimensional on large scales, the quantum universe appears two-di\u0002mensional at short distances. We conclude that quantum gravity may be “self\u0002renormalizing” at the Planck scale, by virtue of a mechanism of dynamical dimen\u0002sional reduction. 1
+
+Quantum gravity as an ultraviolet regulator?\r
+A shared hope of researchers in otherwise disparate approaches to quantum grav\u0002ity is that the microstructure of space and time may provide a physical regulator\r
+for the ultraviolet infinities encountered in perturbative quantum field theory.\r
+The outstanding challenge is to construct a consistent quantum description of\r
+this highly nonperturbative gravitational regime that stands a chance of being\r
+physically correct.\r
+Slow progress in the quest for quantum gravity has not hindered speculation\r
+on what kind of mechanism may be responsible for resolving the short-distance\r
+singularities. A recurrent idea is the existence of a minimal length scale, often\r
+in terms of a characteristic Planck-scale unit of length in scenarios where the\r
+spacetime at short distances is fundamentally discrete. An example is that of\r
+so-called loop quantum gravity, where the discrete spectra of geometric operators\r
+measuring areas and volumes on a kinematical Hilbert space are often taken\r
+as evidence for fundamental discreteness in nature [1, 2].1 Other quantization\r
+programs for gravity, such as the ambitious causal set approach [4], postulate\r
+fundamental discreteness at the outset.\r
+The alternative we will advance here is based on new results from an anal\u0002ysis of the properties of quantum universes generated in the nonperturbative\r
+and background-independent CDT (causal dynamical triangulations) approach\r
+to quantum gravity. As shown in [5, 6], they have a number of appealing macro\u0002scopic properties: firstly, their scaling behaviour as function of the spacetime\r
+volume is that of genuine isotropic and homogeneous four-dimensional worlds.\r
+Secondly, after integrating out all dynamical variables but the scale factor a(τ )\r
+in the full quantum theory, the correlation function between scale factors at dif\u0002ferent (proper) times τ is described by the simplest minisuperspace model used\r
+in quantum cosmology.\r
+We have recently begun an analysis of the microscopic properties of these\r
+quantum spacetimes. As in previous work, their geometry can be probed in a\r
+rather direct manner through Monte Carlo simulations and measurements. At\r
+small scales, it exhibits neither fundamental discreteness nor indication of a min\u0002imal length scale. Instead, we have found evidence of a fractal structure (see [7],\r
+which also contains a detailed technical account of the numerical set-up). What\r
+we report on in this letter is a most remarkable finding concerning the universes’\r
+spectral dimension, a diffeomorphism-invariant quantity obtained from studying\r
+1Although this may be an attractive scenario, it is quite possible that the discreteness (and\r
+associated finiteness) results of loop quantum gravity will not survive the transition to the\r
+physical sector of the theory, which also solves the Hamiltonian constraint. One may also\r
+question the genericity of the “emergence” of such discreteness, which is a consequence [3] of\r
+the insistence that one-dimensional, unsmeared Wilson-line variables be represented by finite\r
+operators in the quantum theory.\r
+2
+
+diffusion on the quantum ensemble of geometries. On large scales and within\r
+measuring accuracy, it is equal to four, in agreement with earlier measurements\r
+of the large-scale dimensionality based on the scale factor. Surprisingly, the spec\u0002tral dimension turns out to be scale-dependent and decreases smoothly from four\r
+to a value of around two as the quantum spacetime is probed at ever smaller dis\u0002tances. This suggests a picture of physics at the Planck scale which is radically\r
+different from frequently invoked scenarios of fundamental discreteness: through\r
+the dynamical generation of a scale-dependent dimensionality, nonperturbative\r
+quantum gravity provides an effective ultraviolet cut-off through dynamical di\u0002mensional reduction.\r
+The spectral dimension\r
+A diffusion process on a d-dimensional Euclidean geometry with a fixed, smooth\r
+metric gab(ξ) is governed by the diffusion equation\r
+∂\r
+∂σ Kg(ξ, ξ0; σ) = ∆gKg(ξ, ξ0; σ), (1)\r
+where σ is a fictitious diffusion time, ∆g the Laplace operator corresponding to\r
+gab(ξ) and Kg(ξ, ξ0; σ) the probability density of diffusion from ξ to ξ0 in diffusion\r
+time σ. We will consider processes which are initially peaked at some point ξ0,\r
+Kg(ξ, ξ0; σ = 0) = δ\r
+d\r
+(ξ − ξ0)\r
+p\r
+det g(ξ)\r
+. (2)\r
+A quantity that is easier to measure than Kg in numerical simulations is the\r
+average return probability\r
+Pg(σ) := 1\r
+V\r
+Z\r
+d\r
+d\r
+ξ\r
+p\r
+det g(ξ) Kg(ξ, ξ; σ), (3)\r
+where V =\r
+R\r
+d\r
+d\r
+ξ\r
+p\r
+det g(ξ) is the spacetime volume.\r
+For an infinite flat space, the solution to eq. (1) is simply given by\r
+Kg(ξ, ξ0; σ) = e\r
+−d\r
+2\r
+g\r
+(ξ,ξ0)/4σ\r
+(4πσ)\r
+d/2\r
+, gab(ξ)=δab, (4)\r
+where dg(ξ, ξ0) denotes the geodesic distance between ξ and ξ0. It follows that\r
+√\r
+σ is an effective measure of the linear spread of the Gaussian at diffusion time\r
+σ. Because of Pg(σ) = 1/σd/2in the flat case, we can extract the dimension d of\r
+the manifold by taking the logarithmic derivative,\r
+− 2\r
+d log Pg(σ)\r
+d log σ\r
+= d, (5)\r
+3
+
+independent of σ.\r
+For curved spaces and/or finite volume V one can still use eq. (5) to extract the\r
+dimension, but there will be corrections for sufficiently large σ. For finite volume\r
+in particular, Pg(σ) goes to one for σ ≫ V\r
+2/d since the zero mode of the Laplacian\r
+−∆g will dominate the diffusion in this region. For a given diffusion time σ the\r
+behaviour of Pg(σ) is determined by eigenvalues λn of −∆g with λn ≤ 1/σ, and\r
+the contribution from higher eigenvalues is exponentially suppressed. Like in the\r
+flat case, large σ is related to diffusion which probes spacetime at large scales,\r
+whereas small σ probes short distances.\r
+We will use the return probability to determine an effective dimensionality\r
+of quantum spacetime, which in our nonperturbative path integral formulation\r
+amounts to studying diffusion on an entire ensemble of curved, Euclidean(ized) ge\u0002ometries. Since the return probability Pg(σ) in (3) is invariant under reparametri\u0002zations, one can define the quantum average PV (σ) of Pg(σ) over all equivalence\r
+classes [gab] of metrics with a given spacetime volume V by\r
+PV (σ) = 1\r
+ZV\r
+Z\r
+D[gab] e\r
+−SE(gab)\r
+δ(\r
+Z\r
+d\r
+4\r
+ξ\r
+p\r
+det g − V ) Pg(σ), (6)\r
+where SE(gab) is the (Euclidean) Einstein-Hilbert action of gab(ξ) and ZV the\r
+partition function (path integral) for geometries with fixed volume V .\r
+It is straightforward to generalize the diffusion process and its associated\r
+probability density to the piecewise linear geometries that appear in the path\r
+integral of CDT [7]. In analogy with the ordinary path integral for a particle,\r
+one would expect that in the continuum limit a typical geometry in the quantum\r
+ensemble is still continuous, but nowhere differentiable; for example, it could be\r
+fractal. In fact, diffusion on fractal structures is well studied in statistical physics\r
+[8], and there the return probability takes the form\r
+PN (σ) = σ\r
+−DS/2 F\r
+\u0010 σ\r
+N2/DS\r
+\u0011\r
+, (7)\r
+where N is the “volume” associated with the fractal structure and DS is the\r
+so-called spectral dimension, which is not necessarily an integer. An example\r
+of fractal structures are branched polymers, which generically have a spectral\r
+dimension DS =4/3 [9, 10].\r
+For the nonperturbative gravitational path integral defined by CDT, we expect\r
+the same functional form (7), where N now stands for the discrete four-volume,\r
+given in terms of the number of four-simplices of a triangulation. As above in\r
+(5), we can now extract the value of the fractal dimension DS by measuring the\r
+logarithmic derivative,\r
+DS(σ) = −2\r
+d log PN (σ)\r
+d log σ\r
+, (8)\r
+4
+
+as long as the diffusion time σ is not much larger than N2/DS . From previous\r
+numerical simulations of 2d quantum gravity in terms of dynamical triangulations\r
+[11, 12, 13] we already know that eq. (8) is not reliable for arbitrary diffusion\r
+times. The observed behaviour of DS(σ) for a given triangulation will typically\r
+exhibit irregularities for the smallest σ, caused by the lattice discretization2, and\r
+then enter a long and stable regime where the spectral dimension is independent\r
+of σ, before finite-size effects start to dominate and DS(σ) goes to zero.\r
+Measuring the spectral dimension\r
+In the CDT approach, quantum gravity is defined as the continuum limit of a\r
+regularized version of the nonperturbative gravitational path integral [14, 15].\r
+The set of spacetime geometries to be summed over is represented by a class of\r
+causal four-dimensional piecewise flat manifolds (“triangulations”). Every mem\u0002ber T of the ensemble of simplicial spacetimes can be wick-rotated to a unique\r
+Euclidean piecewise flat geometry, whereupon the path integral assumes the form\r
+of a partition function\r
+Z =\r
+X\r
+T\r
+1\r
+CT\r
+e\r
+−SE(T)\r
+, (9)\r
+where CT is a combinatorial symmetry factor and SE(T) the Euclidean Einstein\u0002Regge action of the triangulation T [15]. All geometries share a global, discrete\r
+version of proper time. In the continuum limit, the CDT time τ becomes propor\u0002tional to the cosmological proper time of a conventional minisuperspace model\r
+[6].3\r
+We extract information about the continuum limit of the theory by Monte\r
+Carlo simulations and a finite-size scaling analysis of (9). Further details about\r
+the updating moves for the geometry and the numerical set-up can be found in [15]\r
+and [7] respectively. For computer-technical reasons we keep the total spacetime\r
+volume N approximately fixed during simulations. All the results obtained can\r
+be related by an inverse Laplace transform to those for the geometric ensemble\r
+with the volume constraint absent.\r
+Our measurements of the spectral dimension were performed in the phase of\r
+the statistical model (9) which generates a quantum geometry extended in both\r
+2Often the behaviour of PN (σ) for odd and even numbers of diffusion steps σ will be quite\r
+different for small σ and merge only for σ ≈ 20−30. – The origin of this asymmetry is illustrated\r
+by the (extreme) example of diffusion on a one-dimensional piecewise straight space, where the\r
+return probability simply vanishes for any odd number σ of steps.\r
+3The proper time τ of CDT – although invariantly defined from a geometric point of view\r
+– does not necessarily coincide with a physical time appearing explicitly in the formulation of\r
+physical observables, for example, two-point functions.\r
+5
+
+space and time, with large-scale four-dimensional scaling properties [5, 7]. As dis\u0002cussed in [6], the quantum universe we generate is a “bounce” in the Euclidean\r
+sector of the theory. It has a characteristic shape when we plot its three-volume\r
+(equivalently, its scale factor a(τ )) as a function of proper time τ . The universe\r
+starts out with a minimal three-volume, increases to a maximum, and then de\u0002creases in a symmetric fashion back to a minimal value. As shown in [6], the\r
+underlying dynamics of the scale factor a(τ ) solves the equation of motion of a\r
+simple minisuperspace action for a(τ ), and is that of a bounce, with total Eu\u0002clidean spacetime volume determined by the volume at which the simulation is\r
+performed. It is on an ensemble of geometries of this type that we made our\r
+measurements. Since we are interested in the bulk properties of the diffusion, we\r
+always started the process from a simplex in the constant-time slice where a(τ ) is\r
+maximal. The simulations to determine the universe’s spacetime spectral dimen\u0002sion were performed for geometries of proper-time extension t=80 and a discrete\r
+volume of up to approximately N =181.000 four-simplices, and the diffusion was\r
+followed for up to σmax =400 time steps.\r
+Fig. 1 summarizes our measurements of the spectral dimension DS(σ) at the\r
+maximal spacetime volume, extracted as the logarithmic derivative (8) from a\r
+discrete implementation of the diffusion process. The (envelopes of the) error\r
+bars represent the errors coming from averaging over 400 different measurements\r
+of diffusion processes, performed for independent starting points and statistically\r
+independent configurations T generated by the Monte Carlo simulation. As ob\u0002served previously in other systems of random geometry, we have found a different\r
+behaviour of DS(σ) for odd and even (discrete) diffusion times σ for small σ (cf.\r
+footnote 2). In order to eliminate this short-distance lattice artifact, we have only\r
+included the region σ ≥ 40 for which the odd and even curves coincide, both in\r
+Fig. 1 and in determining the spectral dimension.\r
+The data points along the central curve in Fig. 1 represent our best approxima\u0002tion to DS(σ) in the limit of infinite spacetime volume. Their monotonic increase\r
+as function of σ indicates that we have not yet reached the region where finite\u0002volume effects dominate (in the form of the constant mode of the Laplacian).\r
+The remarkable feature of the behaviour of the spectral dimension illustrated in\r
+Fig. 1 is that it is qualitatively different from what has been observed in similar\r
+systems up to now, be it in two-dimensional Euclidean quantum gravity with or\r
+without matter [11] or for the spatial hypermanifolds of our present CDT set\u0002up in four dimensions [7]. In these cases, immediately following the region of\r
+even-odd asymmetry for small σ, DS(σ) stabilizes in a horizontal line, indicat\u0002ing the presence of a single value D\r
+(0)\r
+S\r
+characterizing the spectral dimension of\r
+the system, independent of the scale at which the diffusion process probes the\r
+geometry.\r
+Apparently, this is not the case for the spectral spacetime dimension in quan\u00026
+
+0 100 200 300 400\r
+2.8\r
+3\r
+3.2\r
+3.4\r
+3.6\r
+3.8\r
+σ\r
+D\r
+S\r
+Figure 1: The data points along the central curve show the spectral dimension DS(σ)\r
+of the universe as function of the diffusion time σ. Superimposed is a best fit, the\r
+continuous curve DS(σ) = 4.02−119/(54+σ). The two outer curves quantify the error\r
+bars, which increase linearly with σ, due to (8). (Measurements taken for a quantum\r
+universe with 181.000 four-simplices.)\r
+tum gravity defined by CDT. The measurements shown in Fig. 1 indicate that\r
+DS(σ) changes with the scale probed. In order to quantify this scale dependence\r
+we have attempted a variety of fits in the available data range σ ∈ [40, 400].\r
+Among curves with three free parameters of the form const.+asymptotic form4,\r
+a fit of the form\r
+− 2\r
+d log P(σ)\r
+d log σ\r
+= a −\r
+b\r
+σ + c\r
+(10)\r
+agrees best with the data. In Fig. 1, the curve\r
+DS(σ) = 4.02 −\r
+119\r
+54 + σ\r
+(11)\r
+has been superimposed on the data, where the three constants were determined\r
+from the entire data range σ ∈ [40, 400]. Although both b and c individually\r
+are slightly altered when one varies the range of σ, their ratio b/c as well as the\r
+constant a remain fairly stable. Integrating relation (10), we have\r
+P(σ) ∼\r
+1\r
+σ\r
+a/2\r
+(1 + c/σ)\r
+b/2c\r
+, (12)\r
+4The two alternatives considered were a−be−cσ and a−b/σc\r
+.\r
+7
+
+implying a behaviour\r
+P(σ) ∼\r
+\r
+\r
+\r
+σ\r
+−a/2\r
+for large σ,\r
+σ\r
+−(a−b/c)/2\r
+for small σ.\r
+(13)\r
+Our interpretation of eqs. (12) and (13) is that the quantum geometry generated\r
+by CDT does not have a self-similar structure at all distances, but instead has a\r
+scale-dependent spectral dimension which increases continuously from a−b/c to a\r
+with increasing distance.\r
+Taking into account the variation of a in eq. (10) when using various cuts\r
+[σmin, σmax] for the range of σ, as well as different weightings of the errors, we\r
+obtain the asymptotic value\r
+DS(σ=∞) = 4.02 ± 0.1, (14)\r
+which means that the spectral dimension extracted from the large-σ behaviour\r
+(which probes the long-distance structure of spacetime) is compatible with four.\r
+On the other hand, the “short-distance spectral dimension”, obtained by extrap\u0002olating eq. (12) to σ → 0 is given by\r
+DS(σ=0) = 1.80 ± 0.25, (15)\r
+and thus is compatible with the integer value two.\r
+Discussion\r
+The continuous change of spectral dimension described in this letter constitutes\r
+to our knowledge the first dynamical derivation of a scale-dependent dimension in\r
+full quantum gravity.5It is natural to conjecture it will provide an effective short\u0002distance cut-off by which the nonperturbative formulation of quantum gravity\r
+employed here, causal dynamical triangulations, evades the ultraviolet infinities\r
+of perturbative quantum gravity. Contrary to current folklore (see [17] for a\r
+review), this is done without appealing to short-scale discreteness or abandoning\r
+geometric concepts altogether.\r
+Translating our lattice results to a continuum notation requires a “dimensional\r
+transmutation” to dimensionful quantities, in accordance with the renormaliza\u0002tion of the lattice theory. Because of the perturbative nonrenormalizability of\r
+gravity, this is expected to be quite subtle. CDT provides a concrete frame\u0002work for addressing this issue and we will return to it elsewhere. However, since\r
+5\r
+In the so-called exact renormalization group approach to Euclidean quantum gravity, a\r
+similar reduction has been observed recently in an Einstein-Hilbert truncation [16].\r
+8
+
+σ from (1) can be assigned the length dimension two, and since we expect the\r
+short-distance behaviour of the theory to be governed by the continuum gravita\u0002tional coupling GN , it is tempting to write the continuum version of (10) as\r
+PV (σ) ∼\r
+1\r
+σ\r
+2\r
+1\r
+1 + const. · GN /σ, (16)\r
+where const. is a constant of order one. The relation (16) describes a universe\r
+whose spectral dimension is four on scales large compared to the Planck scale.\r
+Below this scale, the quantum-gravitational excitations of geometry lead to a\r
+nonperturbative dynamical dimensional reduction to two, a dimensionality where\r
+gravity is known to be renormalizable.\r
+References\r
+[1] L. Smolin: An invitation to loop quantum gravity, preprint Perimeter Insti\u0002tute, Aug 2004 [hep-th/0408048].\r
+[2] A. Ashtekar: Gravity and the quantum, preprint Penn State U. IGPG/04/10-\r
+3, Oct 2004 [gr-qc/0410054].\r
+[3] J. Lewandowski, A. Okolow, H. Sahlmann and T. Thiemann: Uniqueness of\r
+diffeomorphism invariant states on holonomy-flux algebras, preprint Golm\r
+AEI-2005-093 [gr-qc/0504147].\r
+[4] R.D. Sorkin: Causal sets: discrete gravity (Notes for the Valdivia summer\r
+school) [gr-qc/0309009].\r
+[5] J. Ambjørn, J. Jurkiewicz and R. Loll: Emergence of a 4D world from causal\r
+quantum gravity, Phys. Rev. Lett. 93 (2004) 131301 [hep-th/0404156].\r
+[6] J. Ambjørn, J. Jurkiewicz and R. Loll: Semiclassical universe from first\r
+principles, Phys. Lett. B 607 (2005) 205-213 [hep-th/0411152].\r
+[7] J. Ambjørn, J. Jurkiewicz and R. Loll: Reconstructing the universe, preprint\r
+Utrecht, May 2005, to appear.\r
+[8] D. ben-Avraham and S. Havlin: Diffusion and reactions in fractals and dis\u0002ordered systems, Cambridge University Press, Cambridge, UK (2000).\r
+[9] T. Jonsson and J.F. Wheater: The spectral dimension of the branched poly\u0002mer phase of two-dimensional quantum gravity, Nucl. Phys. B 515 (1998)\r
+549-574 [hep-lat/9710024].\r
+9
+
+[10] J. Ambjørn, D. Boulatov, J.L. Nielsen, J. Rolf and Y. Watabiki: The spectral\r
+dimension of 2D quantum gravity, JHEP 9802 (1998) 010 [hep-th/9801099].\r
+[11] J. Ambjørn, J. Jurkiewicz and Y. Watabiki: On the fractal structure of\r
+two-dimensional quantum gravity, Nucl. Phys. B 454 (1995) 313-342 [hep\u0002lat/9507014].\r
+[12] J. Ambjørn, K.N. Anagnostopoulos, T. Ichihara, L. Jensen and Y. Watabiki:\r
+Quantum geometry and diffusion, JHEP 9811 (1998) 022 [hep-lat/9808027].\r
+[13] J. Ambjørn and K.N. Anagnostopoulos: Quantum geometry of 2D grav\u0002ity coupled to unitary matter, Nucl. Phys. B 497 (1997) 445-478 [hep\u0002lat/9701006].\r
+[14] J. Ambjørn, J. Jurkiewicz and R. Loll: A nonperturbative Lorentzian path\r
+integral for gravity, Phys. Rev. Lett. 85 (2000) 924-927 [hep-th/0002050].\r
+[15] J. Ambjørn, J. Jurkiewicz and R. Loll: Dynamically triangulating Lorentzian\r
+quantum gravity, Nucl. Phys. B 610 (2001) 347-382 [hep-th/0105267].\r
+[16] O. Lauscher and M. Reuter: Ultraviolet fixed point and generalized flow equa\u0002tion of quantum gravity, Phys. Rev. D 65 (2002) 025013 [hep-th/0108040].\r
+[17] L.J. Garay: Quantum gravity and minimum length, Int. J. Mod. Phys. A 10,\r
+145-166 (1995) [gr-qc/9403008].\r
+10"""
+
+[metadata]
+title = "arxiv hep th0505113 ambjorn jurkiewicz loll 2005 spectral dimension universe"
+authors = ["Unknown"]
+year = 2005
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/0505113v2 6 Jun 2005\r
+SPIN-05/05\r
+ITP-UU-05/07\r
+Spectral Dimension of the Universe\r
+J. Ambjørn a,c, J. Jurkiewicz\r
+b\r
+and R. Loll\r
+c\r
+a The Niels Bohr Institute, Copenhagen University\r
+Blegdamsvej 17, DK-2100 Copenhagen Ø, Denmark.\r
+email: ambjorn@nbi.dk\r
+b Mark Kac Complex Systems Research Centre,\r
+Marian Smoluchowski Institute of Physics, Jagellonian University,\r
+Reymonta 4, PL 30-059 Krakow, Poland.\r
+email: jurkiewicz@th.if.uj.edu.pl\r
+c\r
+Institute for Theoretical Physics, Utrecht University,\r
+Leuvenlaan 4, NL-3584 CE Utrecht, The Netherlands.\r
+email: j.ambjorn@phys.uu.nl, r.loll@phys.uu.nl\r
+Abstract\r
+We measure the spectral dimension of universes emerging from nonperturbative\r
+quantum gravity, defined through state sums of causal triangulated geometries.\r
+While four-dimensional on large scales, the quantum universe appears two-di\u0002mensional at short distances. We conclude that quantum gravity may be “self\u0002renormalizing” at the Planck scale, by virtue of a mechanism of dynamical dimen\u0002sional reduction. 1
+
+Quantum gravity as an ultraviolet regulator?\r
+A shared hope of researchers in otherwise disparate approaches to quantum grav\u0002ity is that the microstructure of space and time may provide a physical regulator\r
+for the ultraviolet infinities encountered in perturbative quantum field theory.\r
+The outstanding challenge is to construct a consistent quantum description of\r
+this highly nonperturbative gravitational regime that stands a chance of being\r
+physically correct.\r
+Slow progress in the quest for quantum gravity has not hindered speculation\r
+on what kind of mechanism may be responsible for resolving the short-distance\r
+singularities. A recurrent idea is the existence of a minimal length scale, often\r
+in terms of a characteristic Planck-scale unit of length in scenarios where the\r
+spacetime at short distances is fundamentally discrete. An example is that of\r
+so-called loop quantum gravity, where the discrete spectra of geometric operators\r
+measuring areas and volumes on a kinematical Hilbert space are often taken\r
+as evidence for fundamental discreteness in nature [1, 2].1 Other quantization\r
+programs for gravity, such as the ambitious causal set approach [4], postulate\r
+fundamental discreteness at the outset.\r
+The alternative we will advance here is based on new results from an anal\u0002ysis of the properties of quantum universes generated in the nonperturbative\r
+and background-independent CDT (causal dynamical triangulations) approach\r
+to quantum gravity. As shown in [5, 6], they have a number of appealing macro\u0002scopic properties: firstly, their scaling behaviour as function of the spacetime\r
+volume is that of genuine isotropic and homogeneous four-dimensional worlds.\r
+Secondly, after integrating out all dynamical variables but the scale factor a(τ )\r
+in the full quantum theory, the correlation function between scale factors at dif\u0002ferent (proper) times τ is described by the simplest minisuperspace model used\r
+in quantum cosmology.\r
+We have recently begun an analysis of the microscopic properties of these\r
+quantum spacetimes. As in previous work, their geometry can be probed in a\r
+rather direct manner through Monte Carlo simulations and measurements. At\r
+small scales, it exhibits neither fundamental discreteness nor indication of a min\u0002imal length scale. Instead, we have found evidence of a fractal structure (see [7],\r
+which also contains a detailed technical account of the numerical set-up). What\r
+we report on in this letter is a most remarkable finding concerning the universes’\r
+spectral dimension, a diffeomorphism-invariant quantity obtained from studying\r
+1Although this may be an attractive scenario, it is quite possible that the discreteness (and\r
+associated finiteness) results of loop quantum gravity will not survive the transition to the\r
+physical sector of the theory, which also solves the Hamiltonian constraint. One may also\r
+question the genericity of the “emergence” of such discreteness, which is a consequence [3] of\r
+the insistence that one-dimensional, unsmeared Wilson-line variables be represented by finite\r
+operators in the quantum theory.\r
+2
+
+diffusion on the quantum ensemble of geometries. On large scales and within\r
+measuring accuracy, it is equal to four, in agreement with earlier measurements\r
+of the large-scale dimensionality based on the scale factor. Surprisingly, the spec\u0002tral dimension turns out to be scale-dependent and decreases smoothly from four\r
+to a value of around two as the quantum spacetime is probed at ever smaller dis\u0002tances. This suggests a picture of physics at the Planck scale which is radically\r
+different from frequently invoked scenarios of fundamental discreteness: through\r
+the dynamical generation of a scale-dependent dimensionality, nonperturbative\r
+quantum gravity provides an effective ultraviolet cut-off through dynamical di\u0002mensional reduction.\r
+The spectral dimension\r
+A diffusion process on a d-dimensional Euclidean geometry with a fixed, smooth\r
+metric gab(ξ) is governed by the diffusion equation\r
+∂\r
+∂σ Kg(ξ, ξ0; σ) = ∆gKg(ξ, ξ0; σ), (1)\r
+where σ is a fictitious diffusion time, ∆g the Laplace operator corresponding to\r
+gab(ξ) and Kg(ξ, ξ0; σ) the probability density of diffusion from ξ to ξ0 in diffusion\r
+time σ. We will consider processes which are initially peaked at some point ξ0,\r
+Kg(ξ, ξ0; σ = 0) = δ\r
+d\r
+(ξ − ξ0)\r
+p\r
+det g(ξ)\r
+. (2)\r
+A quantity that is easier to measure than Kg in numerical simulations is the\r
+average return probability\r
+Pg(σ) := 1\r
+V\r
+Z\r
+d\r
+d\r
+ξ\r
+p\r
+det g(ξ) Kg(ξ, ξ; σ), (3)\r
+where V =\r
+R\r
+d\r
+d\r
+ξ\r
+p\r
+det g(ξ) is the spacetime volume.\r
+For an infinite flat space, the solution to eq. (1) is simply given by\r
+Kg(ξ, ξ0; σ) = e\r
+−d\r
+2\r
+g\r
+(ξ,ξ0)/4σ\r
+(4πσ)\r
+d/2\r
+, gab(ξ)=δab, (4)\r
+where dg(ξ, ξ0) denotes the geodesic distance between ξ and ξ0. It follows that\r
+√\r
+σ is an effective measure of the linear spread of the Gaussian at diffusion time\r
+σ. Because of Pg(σ) = 1/σd/2in the flat case, we can extract the dimension d of\r
+the manifold by taking the logarithmic derivative,\r
+− 2\r
+d log Pg(σ)\r
+d log σ\r
+= d, (5)\r
+3
+
+independent of σ.\r
+For curved spaces and/or finite volume V one can still use eq. (5) to extract the\r
+dimension, but there will be corrections for sufficiently large σ. For finite volume\r
+in particular, Pg(σ) goes to one for σ ≫ V\r
+2/d since the zero mode of the Laplacian\r
+−∆g will dominate the diffusion in this region. For a given diffusion time σ the\r
+behaviour of Pg(σ) is determined by eigenvalues λn of −∆g with λn ≤ 1/σ, and\r
+the contribution from higher eigenvalues is exponentially suppressed. Like in the\r
+flat case, large σ is related to diffusion which probes spacetime at large scales,\r
+whereas small σ probes short distances.\r
+We will use the return probability to determine an effective dimensionality\r
+of quantum spacetime, which in our nonperturbative path integral formulation\r
+amounts to studying diffusion on an entire ensemble of curved, Euclidean(ized) ge\u0002ometries. Since the return probability Pg(σ) in (3) is invariant under reparametri\u0002zations, one can define the quantum average PV (σ) of Pg(σ) over all equivalence\r
+classes [gab] of metrics with a given spacetime volume V by\r
+PV (σ) = 1\r
+ZV\r
+Z\r
+D[gab] e\r
+−SE(gab)\r
+δ(\r
+Z\r
+d\r
+4\r
+ξ\r
+p\r
+det g − V ) Pg(σ), (6)\r
+where SE(gab) is the (Euclidean) Einstein-Hilbert action of gab(ξ) and ZV the\r
+partition function (path integral) for geometries with fixed volume V .\r
+It is straightforward to generalize the diffusion process and its associated\r
+probability density to the piecewise linear geometries that appear in the path\r
+integral of CDT [7]. In analogy with the ordinary path integral for a particle,\r
+one would expect that in the continuum limit a typical geometry in the quantum\r
+ensemble is still continuous, but nowhere differentiable; for example, it could be\r
+fractal. In fact, diffusion on fractal structures is well studied in statistical physics\r
+[8], and there the return probability takes the form\r
+PN (σ) = σ\r
+−DS/2 F\r
+\u0010 σ\r
+N2/DS\r
+\u0011\r
+, (7)\r
+where N is the “volume” associated with the fractal structure and DS is the\r
+so-called spectral dimension, which is not necessarily an integer. An example\r
+of fractal structures are branched polymers, which generically have a spectral\r
+dimension DS =4/3 [9, 10].\r
+For the nonperturbative gravitational path integral defined by CDT, we expect\r
+the same functional form (7), where N now stands for the discrete four-volume,\r
+given in terms of the number of four-simplices of a triangulation. As above in\r
+(5), we can now extract the value of the fractal dimension DS by measuring the\r
+logarithmic derivative,\r
+DS(σ) = −2\r
+d log PN (σ)\r
+d log σ\r
+, (8)\r
+4
+
+as long as the diffusion time σ is not much larger than N2/DS . From previous\r
+numerical simulations of 2d quantum gravity in terms of dynamical triangulations\r
+[11, 12, 13] we already know that eq. (8) is not reliable for arbitrary diffusion\r
+times. The observed behaviour of DS(σ) for a given triangulation will typically\r
+exhibit irregularities for the smallest σ, caused by the lattice discretization2, and\r
+then enter a long and stable regime where the spectral dimension is independent\r
+of σ, before finite-size effects start to dominate and DS(σ) goes to zero.\r
+Measuring the spectral dimension\r
+In the CDT approach, quantum gravity is defined as the continuum limit of a\r
+regularized version of the nonperturbative gravitational path integral [14, 15].\r
+The set of spacetime geometries to be summed over is represented by a class of\r
+causal four-dimensional piecewise flat manifolds (“triangulations”). Every mem\u0002ber T of the ensemble of simplicial spacetimes can be wick-rotated to a unique\r
+Euclidean piecewise flat geometry, whereupon the path integral assumes the form\r
+of a partition function\r
+Z =\r
+X\r
+T"""
+
+[[sections]]
+number = "1"
+title = "CT"
+text = """
+e\r
+−SE(T)\r
+, (9)\r
+where CT is a combinatorial symmetry factor and SE(T) the Euclidean Einstein\u0002Regge action of the triangulation T [15]. All geometries share a global, discrete\r
+version of proper time. In the continuum limit, the CDT time τ becomes propor\u0002tional to the cosmological proper time of a conventional minisuperspace model\r
+[6].3\r
+We extract information about the continuum limit of the theory by Monte\r
+Carlo simulations and a finite-size scaling analysis of (9). Further details about\r
+the updating moves for the geometry and the numerical set-up can be found in [15]\r
+and [7] respectively. For computer-technical reasons we keep the total spacetime\r
+volume N approximately fixed during simulations. All the results obtained can\r
+be related by an inverse Laplace transform to those for the geometric ensemble\r
+with the volume constraint absent.\r
+Our measurements of the spectral dimension were performed in the phase of\r
+the statistical model (9) which generates a quantum geometry extended in both\r
+2Often the behaviour of PN (σ) for odd and even numbers of diffusion steps σ will be quite\r
+different for small σ and merge only for σ ≈ 20−30. – The origin of this asymmetry is illustrated\r
+by the (extreme) example of diffusion on a one-dimensional piecewise straight space, where the\r
+return probability simply vanishes for any odd number σ of steps.\r
+3The proper time τ of CDT – although invariantly defined from a geometric point of view\r
+– does not necessarily coincide with a physical time appearing explicitly in the formulation of\r
+physical observables, for example, two-point functions.\r
+5
+
+space and time, with large-scale four-dimensional scaling properties [5, 7]. As dis\u0002cussed in [6], the quantum universe we generate is a “bounce” in the Euclidean\r
+sector of the theory. It has a characteristic shape when we plot its three-volume\r
+(equivalently, its scale factor a(τ )) as a function of proper time τ . The universe\r
+starts out with a minimal three-volume, increases to a maximum, and then de\u0002creases in a symmetric fashion back to a minimal value. As shown in [6], the\r
+underlying dynamics of the scale factor a(τ ) solves the equation of motion of a\r
+simple minisuperspace action for a(τ ), and is that of a bounce, with total Eu\u0002clidean spacetime volume determined by the volume at which the simulation is\r
+performed. It is on an ensemble of geometries of this type that we made our\r
+measurements. Since we are interested in the bulk properties of the diffusion, we\r
+always started the process from a simplex in the constant-time slice where a(τ ) is\r
+maximal. The simulations to determine the universe’s spacetime spectral dimen\u0002sion were performed for geometries of proper-time extension t=80 and a discrete\r
+volume of up to approximately N =181.000 four-simplices, and the diffusion was\r
+followed for up to σmax =400 time steps.\r
+Fig. 1 summarizes our measurements of the spectral dimension DS(σ) at the\r
+maximal spacetime volume, extracted as the logarithmic derivative (8) from a\r
+discrete implementation of the diffusion process. The (envelopes of the) error\r
+bars represent the errors coming from averaging over 400 different measurements\r
+of diffusion processes, performed for independent starting points and statistically\r
+independent configurations T generated by the Monte Carlo simulation. As ob\u0002served previously in other systems of random geometry, we have found a different\r
+behaviour of DS(σ) for odd and even (discrete) diffusion times σ for small σ (cf.\r
+footnote 2). In order to eliminate this short-distance lattice artifact, we have only\r
+included the region σ ≥ 40 for which the odd and even curves coincide, both in\r
+Fig. 1 and in determining the spectral dimension.\r
+The data points along the central curve in Fig. 1 represent our best approxima\u0002tion to DS(σ) in the limit of infinite spacetime volume. Their monotonic increase\r
+as function of σ indicates that we have not yet reached the region where finite\u0002volume effects dominate (in the form of the constant mode of the Laplacian).\r
+The remarkable feature of the behaviour of the spectral dimension illustrated in\r
+Fig. 1 is that it is qualitatively different from what has been observed in similar\r
+systems up to now, be it in two-dimensional Euclidean quantum gravity with or\r
+without matter [11] or for the spatial hypermanifolds of our present CDT set\u0002up in four dimensions [7]. In these cases, immediately following the region of\r
+even-odd asymmetry for small σ, DS(σ) stabilizes in a horizontal line, indicat\u0002ing the presence of a single value D\r
+(0)\r
+S\r
+characterizing the spectral dimension of\r
+the system, independent of the scale at which the diffusion process probes the\r
+geometry.\r
+Apparently, this is not the case for the spectral spacetime dimension in quan\u00026
+
+0 100 200 300 400\r
+2.8\r
+3\r
+3.2\r
+3.4\r
+3.6\r
+3.8\r
+σ\r
+D\r
+S\r
+Figure 1: The data points along the central curve show the spectral dimension DS(σ)\r
+of the universe as function of the diffusion time σ. Superimposed is a best fit, the\r
+continuous curve DS(σ) = 4.02−119/(54+σ). The two outer curves quantify the error\r
+bars, which increase linearly with σ, due to (8). (Measurements taken for a quantum\r
+universe with 181.000 four-simplices.)\r
+tum gravity defined by CDT. The measurements shown in Fig. 1 indicate that\r
+DS(σ) changes with the scale probed. In order to quantify this scale dependence\r
+we have attempted a variety of fits in the available data range σ ∈ [40, 400].\r
+Among curves with three free parameters of the form const.+asymptotic form4,\r
+a fit of the form\r
+− 2\r
+d log P(σ)\r
+d log σ\r
+= a −\r
+b\r
+σ + c\r
+(10)\r
+agrees best with the data. In Fig. 1, the curve\r
+DS(σ) = 4.02 −\r
+119\r
+54 + σ\r
+(11)\r
+has been superimposed on the data, where the three constants were determined\r
+from the entire data range σ ∈ [40, 400]. Although both b and c individually\r
+are slightly altered when one varies the range of σ, their ratio b/c as well as the\r
+constant a remain fairly stable. Integrating relation (10), we have\r
+P(σ) ∼\r
+1\r
+σ\r
+a/2\r
+(1 + c/σ)\r
+b/2c\r
+, (12)\r
+4The two alternatives considered were a−be−cσ and a−b/σc\r
+.\r
+7
+
+implying a behaviour\r
+P(σ) ∼\r
+\r
+\r
+\r
+σ\r
+−a/2\r
+for large σ,\r
+σ\r
+−(a−b/c)/2\r
+for small σ.\r
+(13)\r
+Our interpretation of eqs. (12) and (13) is that the quantum geometry generated\r
+by CDT does not have a self-similar structure at all distances, but instead has a\r
+scale-dependent spectral dimension which increases continuously from a−b/c to a\r
+with increasing distance.\r
+Taking into account the variation of a in eq. (10) when using various cuts\r
+[σmin, σmax] for the range of σ, as well as different weightings of the errors, we\r
+obtain the asymptotic value\r
+DS(σ=∞) = 4.02 ± 0.1, (14)\r
+which means that the spectral dimension extracted from the large-σ behaviour\r
+(which probes the long-distance structure of spacetime) is compatible with four.\r
+On the other hand, the “short-distance spectral dimension”, obtained by extrap\u0002olating eq. (12) to σ → 0 is given by\r
+DS(σ=0) = 1.80 ± 0.25, (15)\r
+and thus is compatible with the integer value two.\r
+Discussion\r
+The continuous change of spectral dimension described in this letter constitutes\r
+to our knowledge the first dynamical derivation of a scale-dependent dimension in\r
+full quantum gravity.5It is natural to conjecture it will provide an effective short\u0002distance cut-off by which the nonperturbative formulation of quantum gravity\r
+employed here, causal dynamical triangulations, evades the ultraviolet infinities\r
+of perturbative quantum gravity. Contrary to current folklore (see [17] for a\r
+review), this is done without appealing to short-scale discreteness or abandoning\r
+geometric concepts altogether.\r
+Translating our lattice results to a continuum notation requires a “dimensional\r
+transmutation” to dimensionful quantities, in accordance with the renormaliza\u0002tion of the lattice theory. Because of the perturbative nonrenormalizability of\r
+gravity, this is expected to be quite subtle. CDT provides a concrete frame\u0002work for addressing this issue and we will return to it elsewhere. However, since\r
+5\r
+In the so-called exact renormalization group approach to Euclidean quantum gravity, a\r
+similar reduction has been observed recently in an Einstein-Hilbert truncation [16].\r
+8
+
+σ from (1) can be assigned the length dimension two, and since we expect the\r
+short-distance behaviour of the theory to be governed by the continuum gravita\u0002tional coupling GN , it is tempting to write the continuum version of (10) as\r
+PV (σ) ∼\r
+1\r
+σ\r
+2\r
+1\r
+1 + const. · GN /σ, (16)\r
+where const. is a constant of order one. The relation (16) describes a universe\r
+whose spectral dimension is four on scales large compared to the Planck scale.\r
+Below this scale, the quantum-gravitational excitations of geometry lead to a\r
+nonperturbative dynamical dimensional reduction to two, a dimensionality where\r
+gravity is known to be renormalizable.\r
+References\r
+[1] L. Smolin: An invitation to loop quantum gravity, preprint Perimeter Insti\u0002tute, Aug 2004 [hep-th/0408048].\r
+[2] A. Ashtekar: Gravity and the quantum, preprint Penn State U. IGPG/04/10-\r
+3, Oct 2004 [gr-qc/0410054].\r
+[3] J. Lewandowski, A. Okolow, H. Sahlmann and T. Thiemann: Uniqueness of\r
+diffeomorphism invariant states on holonomy-flux algebras, preprint Golm\r
+AEI-2005-093 [gr-qc/0504147].\r
+[4] R.D. Sorkin: Causal sets: discrete gravity (Notes for the Valdivia summer\r
+school) [gr-qc/0309009].\r
+[5] J. Ambjørn, J. Jurkiewicz and R. Loll: Emergence of a 4D world from causal\r
+quantum gravity, Phys. Rev. Lett. 93 (2004) 131301 [hep-th/0404156].\r
+[6] J. Ambjørn, J. Jurkiewicz and R. Loll: Semiclassical universe from first\r
+principles, Phys. Lett. B 607 (2005) 205-213 [hep-th/0411152].\r
+[7] J. Ambjørn, J. Jurkiewicz and R. Loll: Reconstructing the universe, preprint\r
+Utrecht, May 2005, to appear.\r
+[8] D. ben-Avraham and S. Havlin: Diffusion and reactions in fractals and dis\u0002ordered systems, Cambridge University Press, Cambridge, UK (2000).\r
+[9] T. Jonsson and J.F. Wheater: The spectral dimension of the branched poly\u0002mer phase of two-dimensional quantum gravity, Nucl. Phys. B 515 (1998)\r
+549-574 [hep-lat/9710024].\r
+9
+
+[10] J. Ambjørn, D. Boulatov, J.L. Nielsen, J. Rolf and Y. Watabiki: The spectral\r
+dimension of 2D quantum gravity, JHEP 9802 (1998) 010 [hep-th/9801099].\r
+[11] J. Ambjørn, J. Jurkiewicz and Y. Watabiki: On the fractal structure of\r
+two-dimensional quantum gravity, Nucl. Phys. B 454 (1995) 313-342 [hep\u0002lat/9507014].\r
+[12] J. Ambjørn, K.N. Anagnostopoulos, T. Ichihara, L. Jensen and Y. Watabiki:\r
+Quantum geometry and diffusion, JHEP 9811 (1998) 022 [hep-lat/9808027].\r
+[13] J. Ambjørn and K.N. Anagnostopoulos: Quantum geometry of 2D grav\u0002ity coupled to unitary matter, Nucl. Phys. B 497 (1997) 445-478 [hep\u0002lat/9701006].\r
+[14] J. Ambjørn, J. Jurkiewicz and R. Loll: A nonperturbative Lorentzian path\r
+integral for gravity, Phys. Rev. Lett. 85 (2000) 924-927 [hep-th/0002050].\r
+[15] J. Ambjørn, J. Jurkiewicz and R. Loll: Dynamically triangulating Lorentzian\r
+quantum gravity, Nucl. Phys. B 610 (2001) 347-382 [hep-th/0105267].\r
+[16] O. Lauscher and M. Reuter: Ultraviolet fixed point and generalized flow equa\u0002tion of quantum gravity, Phys. Rev. D 65 (2002) 025013 [hep-th/0108040].\r
+[17] L.J. Garay: Quantum gravity and minimum length, Int. J. Mod. Phys. A 10,\r
+145-166 (1995) [gr-qc/9403008].\r
+10"""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 3
+image_path = "images/image_p3_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 3
+image_path = "images/image_p3_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 3
+image_path = "images/image_p3_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 3
+image_path = "images/image_p3_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 3
+image_path = "images/image_p3_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 3
+image_path = "images/image_p3_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 4
+image_path = "images/image_p4_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 4
+image_path = "images/image_p4_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 4
+image_path = "images/image_p4_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 4
+image_path = "images/image_p4_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 5
+image_path = "images/image_p5_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 5
+image_path = "images/image_p5_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 7
+image_path = "images/image_p7_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 7
+image_path = "images/image_p7_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 7
+image_path = "images/image_p7_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 7
+image_path = "images/image_p7_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 7
+image_path = "images/image_p7_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 7
+image_path = "images/image_p7_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 8
+image_path = "images/image_p8_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 9
+image_path = "images/image_p9_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 9
+image_path = "images/image_p9_25.png"

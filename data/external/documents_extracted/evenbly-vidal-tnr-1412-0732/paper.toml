@@ -1,0 +1,2453 @@
+equations = []
+tables = []
+full_text = """
+arXiv:1412.0732v3 [cond-mat.str-el] 15 Sep 2015\r
+Tensor Network Renormalization\r
+G. Evenbly1 and G. Vidal2\r
+1\r
+Institute for Quantum Information and Matter,\r
+California Institute of Technology, Pasadena CA 91125, USA∗\r
+2Perimeter Institute for Theoretical Physics, Waterloo, Ontario N2L 2Y5, Canada†\r
+(Dated: September 17, 2015)\r
+We introduce a coarse-graining transformation for tensor networks that can be applied to study\r
+both the partition function of a classical statistical system and the Euclidean path integral of a\r
+quantum many-body system. The scheme is based upon the insertion of optimized unitary and\r
+isometric tensors (disentanglers and isometries) into the tensor network and has, as its key feature,\r
+the ability to remove short-range entanglement/correlations at each coarse-graining step. Removal\r
+of short-range entanglement results in scale invariance being explicitly recovered at criticality. In this\r
+way we obtain a proper renormalization group flow (in the space of tensors), one that in particular\r
+(i) is computationally sustainable, even for critical systems, and (ii) has the correct structure of\r
+fixed points, both at criticality and away from it. We demonstrate the proposed approach in the\r
+context of the 2D classical Ising model.\r
+PACS numbers: 05.30.-d, 02.70.-c, 03.67.Mn, 75.10.Jm\r
+Understanding emergent phenomena in many-body\r
+systems remains one of the major challenges of mod\u0002ern physics. With sufficient knowledge of the micro\u0002scopic degrees of freedom and their interactions, we\r
+can write the partition function of a classical system,\r
+namely a weighted sum of all its microscopic configura\u0002tions; or the analogous Euclidean path integral of a quan\u0002tum many-body system, where the weighted sum is now\r
+over all conceivable trajectories. These objects contain\r
+complete information on the collective properties of the\r
+many-body system. However, evaluating partition func\u0002tions or Euclidean path integrals is generically very hard.\r
+Kadanoff’s spin-blocking procedure [1] opened the path\r
+to non-perturbative approaches based on coarse-graining\r
+a lattice [2, 3]. More recently, Levin and Nave proposed\r
+the tensor renormalization group (TRG) [4], a versatile\r
+real-space coarse-graining transformations for 2D classi\u0002cal partition functions —or, equivalently, Euclidean path\r
+integrals of 1D quantum systems.\r
+TRG is an extremely useful approach that has revolu\u0002tionized how we coarse-grain lattice models [4–10]. How\u0002ever, this method fails to remove part of the short-range\r
+correlations in the partition function and, as a result,\r
+the coarse-grained system still contains irrelevant micro\u0002scopic information. Conceptually, this is in conflict with\r
+the very spirit of the renormalization group (RG) and\r
+results in an RG flow with the wrong structure of non\u0002critical fixed points, as discussed in Ref. [7]. Compu\u0002tationally, the accumulation of short-range correlations\r
+over successive TRG coarse-graining transformation also\r
+has important consequences: as pointed out by Levin\r
+and Nave, it implies the breakdown of TRG at criticality\r
+[4, 11] (although universal information, such as critical\r
+exponents, can still be obtained from finite systems).\r
+An analogous problem, faced earlier in the context of\r
+ground state wave-functions, was resolved with the in\u0002troduction of entanglement renormalization techniques\r
+[12, 13]. In this Letter we will adapt those techniques to\r
+the coarse-graining of partition functions/Euclidean path\r
+integrals, and will demonstrate that the resulting scheme\r
+generates a proper RG flow, with the correct structure of\r
+critical and non-critical fixed points.\r
+A distinctive feature of our proposal, which we call ten\u0002sor network renormalization (TNR), is that it removes\r
+short-range correlations from the partition function at\r
+each coarse-graining step. In this way, the effective ten\u0002sor network description at a given length scale is free from\r
+irrelevant microscopic details belonging to shorter length\r
+scales. The upshot is a computationally sustainable RG\r
+flow in the space of tensors. At criticality, removal of\r
+short-range correlations circumvents TRG’s breakdown,\r
+while scale invariance is explicitly realized in the form of\r
+a critical fixed-point tensor [14]. This allows us to effec\u0002tively address infinitely large systems, avoiding finite-size\r
+effects. Off-criticality we also obtain the correct structure\r
+of non-critical RG fixed points. In this case, the corre\u0002sponding fixed-point tensors coincide with those previ\u0002ously obtained by Gu and Wen’s tensor-entanglement\u0002filtering renormalization (TEFR) [7, 15]. For simplicity,\r
+we demonstrate TNR with the statistical partition func\u0002tion of the 2D classical Ising model (equivalently, the Eu\u0002clidean path integral of the 1D quantum Ising model with\r
+transverse magnetic field), although the key ideas apply\r
+to general two dimensional lattice models and extend to\r
+higher dimensions.\r
+Renormalization group flow in the space of tensors.—\r
+Our starting point, also used in TRG [4–10], is the ob\u0002servation that the partition function Z of a 2D classical\r
+system (for concreteness assumed to be translation in\u0002variant on a periodic square lattice) can be re-written as\r
+a 2D tensor network made of N copies of some tensor A
+
+2\r
+(see Eq. 5 and Fig. 1(a,b) for an explicit example),\r
+Z =\r
+X\r
+ijk···\r
+AijklAmnojAkrstAopqr · · · ≡ tTr ⊗N\r
+x=1A\r
+\u0001\r
+. (1)\r
+Here each index hosts a χ-level local degree of freedom\r
+(e.g. i = 1, 2, · · · , χ), the tensor components Aijkl are\r
+local weights, and the tensor trace tTr denotes a sum\r
+over configurations of all the indices ijk · · · .\r
+Our goal is to produce an effective tensor A(1), roughly\r
+accounting for four copies of the original tensor A(0) ≡ A,\r
+such that Z can be approximately expressed as a coarser\r
+tensor network made of just N/4 copies of A(1), Z ≈\r
+tTr \u0010⊗\r
+N/4\r
+x=1A(1)\u0011\r
+. By iteration, a sequence of tensors\r
+A\r
+(0) → A(1) → A(2) → · · · (2)\r
+will be produced such that, for any length scale s,\r
+Z ≈ tTr \u0010⊗\r
+Ns\r
+x=1A(s)\r
+\u0011\r
+, Ns ≡ N/4\r
+s\r
+. (3)\r
+Thus, after ˜s ≡ log4(N) iterations [assuming N = 4s˜for\r
+some integer ˜s > 0], the partition function Z becomes\r
+the trace of a single tensor A(˜s), Z ≈\r
+P\r
+ij A\r
+(˜s)\r
+ijij , which\r
+we can finally evaluate [16]. On the other hand, in the\r
+thermodynamic limit N → ∞, we can study the flow in\r
+the space of tensors given by Eq. 2. The fixed-point\r
+tensors of this flow will capture the universal properties\r
+of the phases and phase transitions of the system.\r
+Tensor Network Renormalization.— Our coarse\u0002graining transformation for the partition function Z in\r
+Eq. 1 is based on locally inserting (exact or approxi\u0002mate) resolutions of the identity into the tensor network.\r
+The goal is to reorganize the local degrees of freedom, so\r
+as to be able to identify and remove those that are only\r
+correlated at short distances.\r
+Let us regard each index of the network as hosting a\r
+χ-dimensional complex vector space V ≡ C\r
+χ. We con\u0002sider two types of insertions, see Fig. 1(c). The first type\r
+is implemented by a pair uu† = I\r
+⊗2 of unitary transfor\u0002mations u, or disentanglers, acting on two neighboring\r
+indices, u : V ⊗ V → V ⊗ V. The disentanglers u will be\r
+used to remove short-range correlations [17]. Notice that\r
+inserting a pair of disentanglers uu† does not change the\r
+partition function Z represented by the tensor network.\r
+The second type of insertion is implemented by a pro\u0002jector vv†\r
+(or ww†), where the isometry v (or w) com\u0002bines two indices into a single one, v : V → V ⊗ V, with\r
+v\r
+†v = I. Since vv†\r
+is not the identity but a χ-dimensional\r
+projector acting on the χ\r
+2\r
+-dimensional space V ⊗ V, in\u0002serting it into the tensor network introduces a truncation\r
+error into the representation of the partition function Z.\r
+This error can be estimated by the norm kδk of the differ\u0002ence operator δ defined in Fig. 1(d). If, somehow, only a\r
+small truncation error kδk is introduced, then the result\u0002ing tensor network will still be a good approximation to\r
+the partition function Z.\r
+FIG. 1. (a) As an example, we consider a square lattice\r
+(slanted 45◦) of classical spins, where σk ∈ {+1, −1} is an\r
+Ising spin on site k. (b) Graphical representation of a part\r
+of the tensor network, where each circle denotes a tensor A,\r
+for the partition function Z of the classical spin model, see\r
+Eq. 1. Here tensor Aijkl encodes the Boltzmann weights of\r
+the spins {σi, σj , σk, σl} according to the Hamiltonian func\u0002tion H, see Eq. 5. (c) Insertion of a pair of disentanglers\r
+uu† between four tensors, where tensors A˜ are obtained from\r
+tensors A through a gauge transformation on their horizontal\r
+indices [18], followed by an insertion of four projectors of the\r
+form vv†(or ww†). These projectors introduce a truncation\r
+error. (d) Tensor δ, whose norm kδk measures the truncation\r
+error introduced by the isometries v and w. Disentanglers\r
+and isometries are chosen so as to minimize kδk.\r
+Fig. 2 shows graphically the proposed TNR transfor\u0002mation. In step (a), disentanglers and isometries are in\u0002serted between blocks of 2×2 tensors A(s)\r
+. In step (b) two\r
+types of auxiliary tensors, B(s) and C\r
+(s)\r
+, are produced\r
+by contracting indices. In step (c) tensors B and C are\r
+split using a singular value decomposition, as it is done in\r
+TRG [19]. Finally, in step (d) the coarse-grained tensor\r
+A(s+1) at scale s+ 1 is obtained by further contraction of\r
+indices. The disentanglers and isometries introduced in\r
+step (a) are chosen so as to minimize the truncation error\r
+kδk in Fig. 1(d), using well-established, iterative opti\u0002mization methods for unitary and isometric tensors [13],\r
+which are further detailed in Ref.[20]. The overall com\u0002putational cost of computing tensor A(s+1) from tensor\r
+A(s)scales as O(χ\r
+7\r
+), although this cost can be reduced\r
+to O(χ\r
+6\r
+) through introducing controlled approximations\r
+[20].
+
+3\r
+To gain some insight into how TNR operates, let us\r
+consider first an oversimplified scenario where the par\u0002tition function Z only contains short-range correlations\r
+(technically, this corresponds to a so-called CDL tensor\r
+[21]). If we set the disentanglers to be trivial, u = I\r
+⊗2\r
+,\r
+then the coarse-graining transformation reduces to TRG\r
+and fails to remove the short-range correlations. How\u0002ever, with a judicious choice of disentanglers u these cor\u0002relations are removed and an uncorrelated, trivial tensor\r
+Atriv is produced [21, 22]. Therefore the role of disentan\u0002glers is to remove short-range correlations. Their action\r
+will be particularly important at criticality, where corre\u0002lations are present at all length scales.\r
+Example: Partition function of the 2D classical Ising\r
+model.— We consider the partition function\r
+Z =\r
+X\r
+{σ}\r
+e\r
+−H({σ})/T , H ({σ}) = −\r
+X\r
+hi,ji\r
+σiσj (4)\r
+on the square lattice, where σk ∈ {+1, −1} is an Ising\r
+spin on site k and T denotes the temperature. Recall\r
+FIG. 2. Steps (a)-(d) of a TNR transformation to produce\r
+tensor A\r
+(s+1) from tensor A(s)\r
+. In step (a), the insertion of\r
+disentanglers u and isometries v and w is made according to\r
+Fig. 1(b). Insets (e)-(g) contain the definition of the auxiliary\r
+tensors B\r
+(s)\r
+and C\r
+(s)\r
+and the coarse-grained tensor A\r
+(s+1)\r
+.\r
+FIG. 3. Benchmark results for the square lattice Ising model\r
+on a lattice with 239 spins. (a) Relative error in the free energy\r
+per site δf at the critical temperature Tc, comparing TRG and\r
+TNR over a range of bond dimensions χ. The TRG errors fit\r
+δf ∝ χ\r
+−3.02 (the inset displays them using log-log axes), while\r
+TNR errors fit δf ∝ exp(−0.305χ). Extrapolation suggests\r
+that TRG would require bond dimension χ ≈ 750 to match\r
+the accuracy of the χ = 42 TNR result. (b) Spontaneous\r
+magnetization M(T ) obtained with TNR with χ = 6 [23].\r
+Even very close to the critical temperature, T = 0.9994 Tc, the\r
+magnetization M ≈ 0.48 is reproduced to within 1% accuracy.\r
+that this model has a global Z2 symmetry: it is invariant\r
+under the simultaneous flip σk → −σk of all the spins.\r
+We obtained an exact representation for the tensor A in\r
+Eq. 1 in terms of four Boltzmann weights e\r
+σiσj /T\r
+,\r
+Aijkl = e\r
+(σiσj+σjσk+σkσl+σlσi)/T\r
+, (5)\r
+which corresponds to having one tensor A for every two\r
+spins, and a tensor network with a 45 degree tilt with\r
+respect to the spin lattice, see Fig. 1(a,b). We actu\u0002ally built our starting tensor A(0), with bond dimension\r
+χ = 4, by joining a square block of four tensors A to\u0002gether. We then applied up to 18 TNR transformations\r
+to a system made of N = 218×2\r
+18 tensors A(0), or equiv\u0002alently 2 × 4 × N Ising spins.\r
+Fig. 3(a) shows the relative error δf in the free en\u0002ergy per site f ≡ log(Z)/(8N), at the critical temper\u0002ature Tc ≡ 2/ ln(1 + √\r
+2) ≈ 2.269, for both TRG and\r
+TNR as a function of the bond dimensions χ [24]. The\r
+TRG error decays polynomially, while the TNR error is\r
+reduced exponentially, showing a qualitatively different\r
+behaviour and implying that significantly more accurate\r
+results can be obtained with TNR. Figure 3(b) shows the\r
+spontaneous magnetization M(T ) as a function of tem\u0002perature T obtained with TNR for χ = 6. Even close\r
+to T = Tc, we see remarkable agreement with the exact\r
+solution.\r
+However, the most significant feature of TNR is re\u0002vealed in Fig. 4, which shows, as a function of the scale
+
+4\r
+FIG. 4. (a) Singular values λα of the matrix [A\r
+(s)\r
+](ij)(kl)\r
+obtained after s RG steps [25] using TNR (filled circles) or\r
+TRG (empty circles) for the 2D Ising model at critical tem\u0002perature TC . (b) Singular values for T = 1.1 TC. (c) Plot\r
+of the Von-Neumann entropy −\r
+P\r
+α\r
+λ˜α log(λ˜α) of the (nor\u0002malized) singular values of tensors [A\r
+(s)\r
+](ij)(kl) obtained with\r
+TRG (empty circles) or TNR (filled circles).\r
+s, the spectrum of singular values of tensor A(s) when\r
+regarded as a matrix [A(s)](ij)(kl). Fig. 4(a) considers\r
+the critical point, T = Tc, and shows that under TNR,\r
+the spectrum of A(s) quickly becomes independent of the\r
+scale s. This has two major implications. On the one\r
+hand, it is a strong evidence that A(s)itself has converged\r
+to a fixed-point tensor Acrit (up to small corrections, see\r
+[26] for detials), thus recovering the characteristic scale\r
+invariance expected at criticality. On the other hand, it\r
+implies that the bond dimension χ required to maintain\r
+a fixed, small truncation error kδk is essentially indepen\u0002dent of scale, and thus so is also the computational cost.\r
+That is, we have obtained a computationally sustainable\r
+RG transformation. In sharp contrast, the spectrum gen\u0002erated by TRG develops a growing number of large sin\u0002gular values as we increase the scale s, indicating that\r
+the tensor is not scale invariant. The bond dimension\r
+(and thus the computational cost at constant truncation\r
+error) grows rapidly with scale. This growth is caused by\r
+the accumulation of short-range correlations at each iter\u0002ation and pinpoints the breakdown of TRG at a critical\r
+point [27].\r
+Fig. 4(b) considers a slightly larger temperature,\r
+T = 1.1 Tc. Now TNR generates a flow towards the triv\u0002ial fixed-point tensor Atriv, characterized by just one non\u0002zero singular value, which represents the infinite temper\u0002ature, disordered phase. As expected of a proper RG\r
+scheme, for any T > Tc the flow is to the same trivial\r
+fixed-point tensor Atriv. In contrast, for any T > Tc,\r
+TRG generates a flows to a fixed-point tensor that de\u0002pends on the initial temperature T . In other words, fail\u0002ure to remove some of the short-range correlations implies\r
+that (RG irrelevant) microscopic information has been\r
+retained during coarse-graining, contrary to the spirit of\r
+the RG flow. For T < Tc (not shown) we obtain a similar\r
+picture as for T > Tc. However, now each eigenvalue in\r
+the spectrum has degeneracy 2, and TNR flows to a new\r
+fixed-point tensor AZ2 ≡ Atriv ⊕ Atriv corresponding to\r
+the Z2 symmetry breaking, ordered phase —the Z2 spin\r
+flip symmetry acts on AZ2 by exchanging its two copies of\r
+Atriv. Finally, Fig. 4(c) uses the entropy of the spectrum\r
+as a function of scale to visualize the RG flow towards\r
+one of the three fixed-point tensors: the ordered AZ2for\r
+T < Tc, the critical Acrit for T = Tc, and the disordered\r
+Atriv for T > Tc.\r
+Outlook.— We have proposed tensor network renor\u0002malization (TNR), a coarse-graining transformation for\r
+tensor networks that produces a proper RG flow in the\r
+space of tensors, and demonstrated its performance for\r
+2D classical partition functions –including the explicit\r
+recovery of scale invariance at the critical point. When\r
+applied to the Euclidean path integral of the 1D quantum\r
+Ising model (after suitable discretization in the imagi\u0002nary time direction), it produced results similar to the\r
+ones described above. The approach can also be used to\r
+compute the norm hΨ|Ψi of a 2D quantum many-body\r
+state encoded in a PEPS [28].\r
+TNR borrows its key idea —the use of disentanglers—\r
+from entanglement renormalization [12, 13], the coarse\u0002graining scheme for many-body wave-functions that led\r
+to the multi-scale entanglement renormalization ansatz\r
+(MERA) [29, 30]. The two approaches turn out to be\r
+deeply connected: when applied to the Euclidean path\r
+integral of a Hamiltonian H, TNR produces a MERA for\r
+the ground and thermal states of H [31].\r
+We thank Z.-C. Gu and X.-G. Wen for clarifying as\u0002pects of their TEFR approach [7]. G.E. is supported\r
+by the Sherman Fairchild Foundation. G. V. acknowl\u0002edges support by the John Templeton Foundation and\r
+NSERC. The authors also acknowledge support by the\r
+Simons Foundation (Many Electron Collaboration). Re\u0002search at Perimeter Institute is supported by the Gov\u0002ernment of Canada through Industry Canada and by the\r
+Province of Ontario through the Ministry of Research\r
+and Innovation.
+
+5\r
+∗\r
+evenbly@caltech.edu\r
+†\r
+gvidal@perimeterinstitute.ca\r
+[1] L.P. Kadanoff Physics (Long Island City, N.Y.) 2, 263\r
+(1966). E. Efrati, Z. Wang, A. Kolan, and L. P. Kadanoff,\r
+Rev. Mod. Phys. 86, 647 (2014)\r
+[2] K.G. Wilson, Adv. Math., Volume 16, Issue 2, Pages 170-\r
+186 (1975). K.G. Wilson, Rev. Mod. Phys. 47, 773 (1975).\r
+[3] S. R. White, Phys. Rev. Lett. 69, 2863 (1992). S. R.\r
+White, Phys. Rev. B 48, 10345 (1993).\r
+[4] M. Levin, C. P. Nave Phys. Rev. Lett. 99, 120601 (2007)\r
+[5] H.-H. Zhao, Z.-Y. Xie, Q.-N. Chen, Z.-C. Wei, J. W. Cai,\r
+T. Xiang, Physical Review B 81, 174411 (2010).\r
+[6] Z.-Y. Xie, H.-C. Jiang, Q.-N. Chen, Z.-Y. Weng, T. Xi\u0002ang, Phys. Rev. Lett. 103:160601 (2009).\r
+[7] Z.-C. Gu, X.-G.Wen Phys. Rev. B 80, 155131 (2009).\r
+[8] H. C. Jiang, Z. Y. Weng, T. Xiang Phys. Rev. Lett. 101,\r
+090603 (2008) Z.-C. Gu, M. Levin, X.-G. Wen, Phys.\r
+Rev. B 78, 205116 (2008) B. Dittrich, F. C. Eckert, M.\r
+Martin-Benito, New J. Phys. 14 035008 (2012)\r
+[9] Z.-Y. Xie, J. Chen, M. P. Qin, J. W. Zhu, L. P. Yang, T.\r
+Xiang, Phys. Rev. B 86, 045139 (2012).\r
+[10] A. Garcia-Saez, J. I. Latorre Phys. Rev. B 87, 085130\r
+(2013). S. Wang, Z. Y. Xie, J. Chen, B. Normand, T.\r
+Xiang Chin. Phys. Lett. 31, 070503 (2014).\r
+[11] As originally described by Levin and Nave in Ref. [4], the\r
+breakdown of TRG at criticality refers to the fact that\r
+(1) the computational cost to obtain a fixed accuracy in\r
+local expectation values increases as a critical point is ap\u0002proached, and (2) while TRG flows to some fixed-point\r
+tensor off-criticality, this is no longer the case at criti\u0002cality [4]. However, TRG is still useful to study critical\r
+systems, see e.g. Refs. [4, 7, 27].\r
+[12] G. Vidal Phys. Rev. Lett. 99, 220405 (2007).\r
+[13] G. Evenbly, G. Vidal Phys. Rev. B 79, 144108 (2009).\r
+[14] In this work (as in Levin and Nave’s TRG paper [4]) a\r
+fixed-point tensor is a tensor that is (explicitly) invariant\r
+under coarse-graining [26].\r
+[15] TEFR contains an entanglement filtering step designed\r
+to simplify CDL tensors [21] by filtering out their short\u0002range correlations [7]. The filtering step allows TEFR\r
+to recover the proper structure of non-critical RG fixed\u0002points –in contrast with TRG[4], where for a given phase\r
+one obtains a continuum of fixed-point CDL tensors that\r
+only differ in short-range correlations. However, TEFR\r
+cannot simplify tensors near a critical point [32].\r
+[16] An arbitrary n-point correlator will then be computed by\r
+first inserting n operators in the tensor network of Eq. 1,\r
+and then conveniently adjusting its coarse-graining.\r
+[17] The role disentanglers play in TNR, where they remove\r
+short-range correlations, is analogous to their role in the\r
+context of entanglement renormalization of ground state\r
+wave-functions, where they remove short-range entangle\u0002ment [12]. Hence the name.\r
+[18] The gauge transformation is made such that the block\r
+of four A tensors is manifestly invariant with respect to\r
+reflection along the horizontal axis, which is a convenient\r
+choice in order to preserve reflection symmetry in the\r
+network.\r
+[19] One should take into account the local environment, as\r
+described in Ref.[5], when decomposing an auxiliary ten\u0002sor C\r
+(s)\r
+, which may otherwise possess a slowly decaying\r
+spectrum of singular values that cannot be accurately\r
+truncated.\r
+[20] G. Evenbly, Algorithms for tensor network renormaliza\u0002tion, in preparation.\r
+[21] For details, see Appendix B.\r
+[22] For the specific case of CDL tensors, the filtering step of\r
+TEFR [7] is also capable of eliminating the local corre\u0002lations [15]. TNR removes short-range correlations both\r
+away from criticality and near or at a critical point.\r
+[23] The spontaneous magnetization is extracted from the\r
+coarse-grained spin operator, by analysing the projection\r
+onto e.g. the spin-up symmetry-breaking sector.\r
+[24] The bond dimension χ of the TNR calculation denotes\r
+the largest bond dimension used. In practice, different\r
+bond dimensions are used at different steps of the TNR\r
+coarse-graining transformation.\r
+[25] We define a single RG step as that which maps the square\r
+lattice back into a square lattice with the same orienta\u0002tion, but whose linear dimension has been reduced by a\r
+factor of 2. Note that this corresponds to two RG steps\r
+as originally proposed in [4].\r
+[26] For details, see Appendix A.\r
+[27] For details, see Appendix C.\r
+[28] F. Verstraete, J. I. Cirac, arXiv:cond-mat/0407066. F.\r
+Verstraete, J.I. Cirac, V. Murg, Adv. Phys. 57,143\r
+(2008).\r
+[29] G. Vidal Phys. Rev. Lett. 101, 110501 (2008).\r
+[30] R. N. C. Pfeifer, G. Evenbly, G. Vidal, Phys. Rev. A\r
+79(4), 040301(R) (2009). G. Evenbly, G. Vidal, Quantum\r
+Criticality with the Multi-scale Entanglement Renormal\u0002ization Ansatz, chapter 4 in the book ”Strongly Corre\u0002lated Systems. Numerical Methods”, edited by A. Avella\r
+and F. Mancini (Springer Series in Solid-State Sciences,\r
+Vol. 176 2013)\r
+[31] G. Evenbly, G. Vidal, Tensor network renormaliza\u0002tion yields the multi-scale entanglement renormalization\r
+ansatz, arXiv:1502.05385.\r
+[32] X.-G. Wen, private communication.\r
+[33] G. Evenbly et al, Phys. Rev. B 82, 161107(R) (2010). G.\r
+Evenbly, G. Vidal, J. Stat. Phys. (2014) 157:931-978.\r
+[34] B. Swingle, Phys. Rev. D 86, 065007 (2012),\r
+arXiv:0905.1317. H. Matsueda, M. Ishihara and\r
+Y. Hashizume, Phys. Rev. D 87, (2013) 066002,\r
+arXiv:1208.0206. T. Hartman and J. Maldacena, JHEP\r
+05(2013) 014. J. Molina-Vilaplana, J. Prior, Gen.\r
+Relativ. Gravit (2014)46:1823. A. Mollabashi, M.\r
+Nozaki, S. Ryu, T. Takayanagi, JHEP03(2014)098,\r
+arXiv:1311.6095. G. Evenbly, G. Vidal, J Stat Phys\r
+(2011) 145:891-918, arXiv:1106.1082. B. Swingle, Con\u0002structing holographic spacetimes using entanglement\r
+renormalization, arXiv:1209.3304. J. Haegeman, T. J.\r
+Osborne, H. Verschelde, F. Verstraete, Phys. Rev.\r
+Lett. 110, 100402 (2013), arXiv:1102.5524. F. Pastawski,\r
+B. Yoshida, D. Harlow, J. Preskill, JHEP 06 (2015)\r
+149, arXiv:1503.06237. M. Miyaji, T. Takayanagi, Prog.\r
+Theor. Exp. Phys. (2015) 073B03, arXiv:1503.03542. X.-\r
+L. Qi, Exact holographic mapping and emergent space\u0002time geometry, arXiv:1309.6282. N. Bao, C. Cao, S. M.\r
+Carroll, A. Chatwin-Davies, N. Hunter-Jones, J. Pollack\r
+and G. N. Remmen, Phys. Rev. D 91, 125036 (2015),\r
+arXiv:1504.06632.\r
+[35] Z.-C. Gu and X.-G. Wen, private communication.\r
+[36] P. Di Francesco, P. Mathieu, and D. Senechal, Conformal\r
+Field Theory (Springer, 1997).
+
+6\r
+[37] H. W. J. Bl¨ote, J. L. Cardy, M. P. Nightingale, Phys.\r
+Rev. Lett. 56, 724 (1986).\r
+Appendix A.– RG flow in the space of tensors: the\r
+2D classical Ising model.\r
+In this appendix we provide additional details on the\r
+flow that TNR generates when applied to a tensor net\u0002work representation of the partition function of the 2D\r
+classical Ising model on a square lattice, as defined in the\r
+main text.\r
+For all possible values of the temperature T in the Ising\r
+model, the flow is seen to always end in one of three pos\u0002sible fixed-point tensors: the ordered AZ2\r
+for T < Tc,\r
+the critical Acrit for T = Tc, and the disordered Atriv for\r
+T > Tc. The ordered and disorder fixed-point tensors\r
+can be expressed exactly with a finite bond dimension,\r
+namely χ = 2 and χ = 1, respectively, whereas an exact\r
+expression of the critical fixed-point tensor Acrit is sus\u0002pected to require an infinite bond dimension, and thus\r
+here we can only obtain an approximate representation.\r
+We emphasize that the non-critical fixed-point tensors\r
+AZ2 and Atriv are equivalent to those previously obtained\r
+by TEFR [7].\r
+For purposes of clarity, instead of following the flow\r
+of tensors A(s) we will display instead the flow of the\r
+auxiliary tensors B that appear in an intermediate step\r
+of the coarse-graining transformation, see Fig.2 in the\r
+main text, as these tensors have smaller bond dimension\r
+[24], that is less coefficients, and are thus more easily\r
+plotted. However, their behavior under the RG flow is\r
+seen to be essentially equivalent to that of tensors A.\r
+Starting with the partition function Z of the 2D clas\u0002sical Ising model at a temperature T , we coarse grain\r
+the corresponding tensor network iteratively using TNR.\r
+This generates a sequence of tensors B(s), for multiple\r
+RG steps s = 0, 1, 2, . . .. Let [B(s)]ijkl denote the com\u0002ponents of B(s)\r
+. Here we consider the case where each\r
+index (i, j, k, and l) has dimension 4. The elements of\r
+these tensors, reshaped as 16 × 16 matrices [B(s)](ij)(kl)\r
+and then normalized such that their singular values sum\r
+to unity, are plotted in Fig. 5.\r
+Below the critical temperature, T = 0.9 TC , we obtain\r
+a flow towards a fixed-point tensor BZ2 that has two\r
+significant elements [BZ2]1111 = [BZ2]2222 = 0.5, with\r
+all other elements zero or arbitrarily small, correspond\u0002ing to the (Z2-)symmetry-breaking phase. At critical\u0002ity, T = TC , the tensors converge to a highly non-trivial\r
+fixed point tensor after a small number of RG steps, one\r
+which appears only slightly changed from the first ten\u0002sor B(0). Note that, due to the truncation error of the\r
+TNR scheme, we do not obtain a numerically exact fixed\r
+point; nonetheless the individual elements of B(2) and\r
+B(3) all differ by less than 10−4, while the largest el\u0002ements of these tensors are of order ∼ 0.1. We thus\r
+define Bcrit ≡ B(3) as the approximate critical fixed\u0002point tensor. The precision with which scale-invariance\r
+is approximated over successive RG steps is further ex\u0002amined in Fig. 6. Finally, above the critical temperature,
+
+7\r
+FIG. 5. Plots of the elements of tensors [B\r
+(s)\r
+]ijkl , when re\u0002shaped as 16 × 16 matrices, after s iterations of the TNR\r
+coarse-graining transformation, for several values of s. Dark\r
+pixels indicate elements of small magnitude and lighter pix\u0002els indicate elements with larger magnitude. (a) Starting\r
+at a sub-critical temperature, T = 0.9 TC, the coarse\u0002grained tensors quickly converge to the Z2 fixed-point ten\u0002sor B\r
+Z2 ≡ Btriv ⊕ Btriv. (b) Starting at the critical tem\u0002perature, T = TC, the coarse-grained tensors converge to a\r
+non-trivial fixed-point tensor B\r
+crit. Notice that the difference\r
+between coarse-grained tensors, |B\r
+(s) − B(s+1)|, which is dis\u0002played with the same color intensity as the plots of |B\r
+(s)\r
+|, is\r
+already very small (as compared to the magnitude of the ele\u0002ments in the individual tensors) for s = 1. (c) Starting at the\r
+super-critical temperature, T = 1.1 TC, the coarse-grained\r
+tensors quickly converge to the disordered fixed point B\r
+triv\r
+,\r
+that has only one non-zero element.\r
+T = 1.1 TC , we obtain a trivial fixed-point tensor Btriv.\r
+that has only a single significant element [Btriv]1111 = 1\r
+with all other elements zero or arbitrarily small, which\r
+is representative of the infinite temperature, disordered\r
+phase.\r
+Appendix B.– Non-critical RG fixed points: TRG\r
+versus TNR.\r
+In this appendix we discuss certain aspects of the flow\r
+that TRG and TNR generate in the space of tensors,\r
+which emphasizes one of the main differences between\r
+FIG. 6. The precision with which TNR approximates a scale\u0002invariant fixed point tensor for the 2D classical Ising model at\r
+critical temperature Tc is examined by comparing the differ\u0002ence between tensors produced by successive TNR iterations\r
+δ\r
+(s) ≡ kA(s) − A(s−1)k, where tensors have been normalized\r
+such that kA\r
+(s)\r
+k = 1. For small s (initial RG steps), the main\r
+limitation to realizing scale-invariance exactly is physical: the\r
+lattice Hamiltonian includes RG irrelevant terms that break\r
+scale-invariance at short-distance scales, but are suppressed\r
+at larger distances. On the other hand, for large s (large\r
+number of RG steps) the main obstruction to scale invariance\r
+is the numerical truncation errors, which can be thought of as\r
+introducing RG relevant terms, effectively throwing us away\r
+from criticality and thus scale invariance. Indeed, use of a\r
+larger bond dimension χ, which reduces truncation errors, al\u0002lows TNR to not only achieve a more precise approximation\r
+to scale-invariance, but to hold it for more RG steps.\r
+FIG. 7. (a) CDL tensor A\r
+CDL of Eq. 6. (b) Tensor network\r
+made of CDL tensors, which contains correlations only within\r
+each plaquette.
+
+8\r
+the two approaches. Specifically, we describe a class of\r
+non-critical fixed-points of the flow generated by TRG,\r
+namely those represented by corner double line (CDL)\r
+tensors ACDL, and show that TNR coarse-grains such\r
+tensors into a trivial tensor Atriv. We emphasize that\r
+TEFR can also transform a CDL tensor ACDL into a\r
+trivial tensor Atriv [7].\r
+Fig. 7(a) contains a graphical representation of a CDL\r
+tensor ACDL, which has components ACDL\u0001\r
+ijkl given by\r
+\r
+A\r
+CDL\u0001\r
+(i1i2)(j1j2)(k1k2)(l1l2)\r
+= δi1j2δj1k2δk1l2δl1i2(6)\r
+where a double index notation i = (i1i2) has the meaning\r
+i = i1 + η(i2 − 1). Here the double index runs over val\u0002ues i ∈\r
+\b\r
+1, 2, . . . , η2\r
+\t\r
+for integer η, whereas each single\r
+index runs over values i1, i2 ∈ {1, 2, . . . , η}. Notice that\r
+a square network formed from such CDL tensors ACDL\r
+contains only short-ranged correlations; specifically only\r
+degrees of freedom within the same plaquette can be cor\u0002related. We now proceed to demonstrate that this net\u0002work is an exact fixed point of coarse-graining with TRG,\r
+which was already described in [7]. Note that it is pos\u0002sible to generalize this construction (and the derivation\r
+presented below) by replacing each delta in Eq. 6 (e.g.\r
+δi1j2) with a generic η × η matrix (e.g. Mi1j2) that con\u0002tains microscopic details. For instance, the fixed point\r
+CDL tensors ACDL(T ) obtained with TRG for the off\u0002critical 2D classical Ising model partition function would\r
+contain matrices Mi1j2(T ) that depend on the initial tem\u0002perature T . However, for simplicity, here we will only\r
+consider the case Mi1j2 = δi1j2.\r
+In the first step of TRG the tensor ACDL is factorized\r
+into a pair of three index tensors S,\r
+\r
+A\r
+CDL\u0001\r
+ijkl =\r
+η\r
+X2\r
+m=1\r
+SmijSmkl (7)\r
+where, through use of the double index notation intro\u0002duced in Eq. 7, tensors S may be written,\r
+S(m1m2)(l1l2)(i1i2) = δm1l2δl1i2δi1m2, (8)\r
+see also Fig. 8(a-b). The next step of TRG involves\r
+contracting four S tensors to form an effective tensor A′\r
+for the coarse grained partition function,\r
+A\r
+′\r
+ijkl =\r
+η\r
+X2\r
+m,n,o,p=1\r
+SimpSjnmSkonSlpo (9)\r
+where, through use of the explicit form of S given in Eq.\r
+8, the tensor A′is computed as,\r
+A\r
+′\r
+(i1i2)(j1j2)(k1k2)(l1l2) = ηδi1j2\r
+δj1k2\r
+δk1l2\r
+δl1i2\r
+, (10)\r
+see also Fig. 8(c-d). Notice that the effective tensor\r
+is proportionate to the original CDL tensor, A′\r
+ijkl =\r
+FIG. 8. A depiction of the two key steps of the TRG coarse\u0002graining transformation. (a) The first step factorizes the ten\u0002sor A\r
+CDL into a product of two tensors S. (b) Local detail\r
+of the factorization for CDL tensors, see also Eq. 7. (c) The\r
+second step contracts four tensors S into an effective tensor\r
+A\r
+′\r
+. (d) Local detail of the contraction step, see also Eq. 10.\r
+Notice that the effective tensor A\r
+′\r
+is also a CDL tensor (with\r
+a 45 degree tilt), indicating that CDL tensors are a fixed point\r
+of the TRG coarse-graining transformation.\r
+η\r
+\r
+ACDL\u0001\r
+ijkl, where the multiplicative factor of η arises\r
+from the contraction of a ‘loop’ of correlations down to a\r
+point,\r
+X\r
+η\r
+m1,n1,o1,p1=1\r
+δm1n1δn1o1δo1p1δp1m1 = η, (11)\r
+as depicted in Fig. 8(d). That the network of CDL ten\u0002sors is a fixed point of TRG indicates that some of the\r
+short-range correlations in the tensor network are pre\u0002served during coarse-graining, i.e. that TRG is artificially\r
+promoting short-ranged degrees to a larger length scale.\r
+As a result TRG defines a flow in the space of tensors\r
+which is not consistent with what is expected of a proper\r
+RG flow. Indeed, two tensor networks that only differ\r
+in short-range correlations, as encoded in two different\r
+ACDL and A˜CDL tensors (differing e.g. in the dimension
+
+9\r
+η of each index i1, i2, j1, · · · , or, more generally, on the\r
+matrices Mi1j2 discussed above) should flow to the same\r
+fixed point, but under TRG they will not.\r
+FIG. 9. Depiction of the explicit form of the required (a)\r
+disentangler u, see also Eq. 12, (b-c) isometries w and v, see\r
+also Eq. 13, for coarse-graining the network of CDL tensors\r
+A\r
+CDL, see Eq. 6, using TNR.\r
+We next apply the TNR approach to a network of CDL\r
+tensors, as defined in Eq. 6, demonstrating that this net\u0002work is mapped to a network of trivial tensors Atriv, with\r
+effective bond dimension χ\r
+′ = 1, thus further substanti\u0002ating our claim that the TNR approach can properly ad\u0002dress all short-ranged correlations at each RG step. Fig.\r
+9 depicts the form of disentangler u and isometries v and\r
+w that insert into the network of CDL tensors at the\r
+first step of TNR, as per Fig.2(a), which are defined as\r
+follows. Let us first regard each index of the initial net\u0002work as hosting a η\r
+2\r
+-dimensional complex vector space\r
+V ≡ C\r
+η\r
+2\r
+, and similarly define a η-dimensional complex\r
+vector space V˜ ≡ C\r
+η\r
+. Then the disentangler uijkl we use\r
+is an isometric mapping u : V˜ ⊗ V˜ → V ⊗ V, with in\u0002dices i, j ∈ {1, 2, . . . , η} and k, l ∈ {1, 2, . . . , η2}, that is\r
+defined,\r
+uij(k1k2)(l1l2) = √\r
+1\r
+η\r
+δik1δk2l2δjl1, (12)\r
+where we employ the double index notation, k = (k1, k2)\r
+and l = (l1, l2). It is easily verified that u is isometric,\r
+u\r
+†u = ˜I⊗2\r
+, with ˜I as the identity on V˜. The isometries\r
+vijk and wijk are mappings v : V˜ → V ⊗ V˜ that are\r
+defined,\r
+wij(k1k2) = vij(k1k2) = √\r
+1\r
+η\r
+δik1δk2l2\r
+δjl1\r
+, (13)\r
+where again use double index notation, k = (k1, k2).\r
+When inserted into the a 2 × 2 block of tensors from\r
+the network of CDL tensors, as depicted in Fig. 1(b),\r
+FIG. 10. A depiction of the key steps of the TNR coarse\u0002graining transformation in the presence of CDL tensors A\r
+CDL\r
+.\r
+(a) Insertion of disentanglers u and isometries v and w be\u0002tween two pairs of CDL tensors A\r
+CDL results in the elimina\u0002tion of the short-range correlations inside the plaquette that\r
+those four tensors form. (b)-(c) As a result, the auxiliary\r
+tensors B and C only propagate part of the short-range cor\u0002relations, as represented by the existence of two lines. These\r
+tensors are to be compared with the analogous tensor in TRG,\r
+namely A\r
+′\r
+in Fig. 8(d) or A\r
+CDL in Fig. 7(a), which still con\u0002tain four lines. (d) As a result, the new tensor A\r
+′\r
+, formed\r
+by factoring B according to a left-right partition of indices\r
+and C according to an up-down partition of indices, is the\r
+trivial tensor A\r
+triv, which contains no lines and therefore no\r
+correlations\r
+this choice of unitary u and isometries w and v act as ex\u0002act resolutions of the identity, see Fig. 10(a). Thus the\r
+first step of the coarse graining with TNR, as depicted\r
+in Fig. 2(a), is also exact. Following the second step of\r
+TNR, Fig. 2(b), one obtains four-index tensors B and C\r
+as depicted in Fig. 10(b-c), which are computed as,\r
+Bijkl = η\r
+4\r
+(δilδjk),\r
+Cijkl = η\r
+−1\r
+(δij δkl), (14)\r
+with indices i, j, k, l ∈ {1, 2 . . . η}. The third step of TNR,\r
+see Fig. 2(c), involves factoring the tensors B and C into\r
+a products of three index tensors according to a particu\u0002lar partition of indices: B(il)(jk) and C(ij)(kl) respectively.
+
+10\r
+However, we see from Eq. 14 that the tensors factor triv\u0002ially across these partitions, which implies that the effec\u0002tive tensor A′ obtained in the final step of the TNR iter\u0002ation is trivial (i.e. of effective bond dimension χ\r
+′ = 1),\r
+see also Fig. 10(d). Thus we have confirmed that the net\u0002work of CDL tensors, which contained only short ranged\r
+correlations, can be mapped to a trivial fixed point in a\r
+single iteration of TRG, consistent with what is expected\r
+of a proper RG flow.\r
+Appendix C.– Critical systems.\r
+In this appendix we compare the behaviour of TNR\r
+and TRG at criticality. TNR produces a critical fixed\u0002point tensor. In contrast, as first argued by Levin and\r
+Nave in Ref. [4], TRG does not. Insight into the differ\u0002ent behaviour of TRG and TNR is provided by the scal\u0002ing of an entropy attached to critical tensors, see Fig.\r
+13. As expected, this entropy is independent of scale\r
+in TNR (since TNR produces a critical fixed-point ten\u0002sor, independent of scale), while it grows roughly linearly\r
+with scale in TRG, where no critical fixed-point tensor is\r
+reached.\r
+We also examine improved versions of TRG based on\r
+computing a so-called environment, such as the second\r
+renormalization group (SRG) [5, 6, 9], and show that\r
+they also fail to produce a critical fixed-point tensor –\r
+the entropy grows linearly as in TRG, see Fig. 15. Fi\u0002nally, we point out that in spite of the fact that Ref.\r
+[7] refers to TEFR critical tensors as fixed-point tensors,\r
+Ref. [7] presents no evidence that TEFR actually pro\u0002duces a fixed-point tensor at criticality.\r
+A critical system is described by a conformal field the\u0002ory (CFT). We conclude this appendix by reviewing the\r
+computation of scaling dimensions of the CFT by diag\u0002onalizing a transfer matrix of the critical partition func\u0002tion. Any method capable of accurately coarse-graining\r
+the partition function can be used to extract accurate es\u0002timates of the scaling dimensions, regardless of whether\r
+the method produces a critical fixed-point tensor. Ac\u0002cordingly, Table I shows that TRG, an improved TRG\r
+with environment, and TEFR indeed produce excellent\r
+estimates of the scaling dimensions. Nevertheless, TNR\r
+is seen to produce significantly better estimates.\r
+Critical fixed-point tensor in TNR\r
+As discussed in the main text and in appendix A,\r
+when applied to the partition function of the critical Ising\r
+model, TNR produces a flow {A(0), A(1), · · · } in the space\r
+of tensors that quickly converges towards a fixed-point\r
+tensor Acrit. By fixed-point tensor Acrit we mean a ten\u0002sor that remains the same, component by component,\r
+under further coarse-graining transformations. This is\r
+the case up to small corrections that can be systemati\u0002cally reduced by increasing the bond dimensions χ (see\r
+appendix A for quantitative details).\r
+Thus, at criticality, TNR explicitly recovers scale in\u0002variance, as expected of a proper RG transformation.\r
+This is analogous to the explicit realization of scale in\u0002variance in critical quantum lattice models obtained pre\u0002viously with the MERA [29, 30] (and, ultimately, closely\r
+related to it [31]). In addition to making a key conceptual\r
+point, realizing scale invariance explicitly in the MERA\r
+led to a number of practical results. For instance, it led\r
+to identifying a lattice representation of the scaling op\u0002erators of the theory, and the computation of the scaling\r
+dimensions and operator product expansion coefficients\r
+of the underlying CFT [30]. Moreover, it produced an\r
+extremely compact representation of the wave-function\r
+of a critical system directly in the thermodynamic limit,\r
+avoiding finite size effects. In turn, this resulted in a\r
+new generation of approaches both for homogeneous crit\u0002ical systems [30] and for critical systems with impurities,\r
+boundaries, or interfaces [33]. Finally, the scale-invariant\r
+MERA has become a recurrent toy model as a lattice re\u0002alization of the AdS/CFT correspondence [34]. We thus\r
+expect that the explicit invariance of Acrit, as realized by\r
+TNR, will be similarly fruitful.\r
+Absence of critical fixed-point tensor in TRG\r
+In their TRG paper [4], Levin and Nave already argued\r
+that TRG should not be expected to produce a fixed\u0002point tensor at criticality. The reason is that a critical\r
+tensor in TRG should be thought of as effectively repre\u0002senting a one-dimensional quantum critical system with\r
+an amount of entanglement that scales logarithmic in the\r
+system size –that is, linearly in the number of coarse\u0002graining step. Thus at criticality the tensor manifestly\r
+changes each time that the system is coarse-grained. As\r
+a matter of fact, the authors referred to this situation as\r
+the breakdown of TRG at criticality (to account for a lin\u0002ear growth of entropy with the number of coarse-graing\r
+steps, the bond dimension χ must grow exponentially,\r
+and so the computational cost), and related it to the\r
+similar critical breakdown of the density matrix renor\u0002malization group [3].\r
+In spite of Levin and Nave’s original argument jus\u0002tifying the breakdown of TRG at criticality, one might\r
+wonder whether there is a local choice of gauge such that\r
+TRG also flows into a fixed-point tensor (up to small nu\u0002merical errors) [35]. This local gauge freedom (called\r
+field redefinition in [7]), refers to a local change of ba\u0002sis on individual indices of the tensor, implemented by\r
+invertible matrices x and y\r
+Aijkl →\r
+X\r
+i\r
+′j′k′\r
+l\r
+′\r
+(A)i\r
+′j′k′\r
+l\r
+′xii′ (x\r
+−1\r
+)k′kyll′ (y\r
+−1\r
+)j\r
+′j , (15)
+
+11\r
+under which the partition function Z represented by the\r
+tensor network remains unchanged. That is, one might\r
+wonder if after a proper choice of local gauge, the critical\r
+tensors A(s) and A(s+1) before and after the TRG coarse\u0002graining step s are (approximately) the same. [We notice\r
+that, in order to simplify the comparison with TNR, here\r
+by one TRG coarse-graining step we actually mean two\r
+TRG coarse-graining steps as originally defined in [4],\r
+so that the square lattice is mapped back into a square\r
+lattice with the same orientation].\r
+FIG. 11. Tensor network representation of matrices M(s)and\r
+Γ\r
+(s)\r
+, as well as the quantities Θ(s)\r
+2 and Θ(s)\r
+1\r
+. By construction,\r
+Θ\r
+(s)\r
+2 and Θ(s)\r
+1 are invariant under local gauge transformations,\r
+as are the eigenvalues of matrices M(s)and Γ(s).\r
+In order to definitely confirm that indeed TRG does\r
+not produce a critical fixed-point tensor even up to local\r
+gauge transformations, we will study the dependence of\r
+a matrix Γ(s)in the coarse-grainng step s. Matrix Γ(s)\r
+is defined in terms of two tensors A(s) according to Fig.\r
+11(b). Γ(s)itself is not invariant under local gauge trans\u0002formations, but one can build gauge invariant quantities\r
+out of it. Here we will focus on two such gauge invariant\r
+objects: the spectrum of eigenvalues of Γ(s), as well as a\r
+simple tensor network Θ(s)\r
+2 built from four copies of A(s)\r
+and that amounts to\r
+Θ\r
+(s)\r
+2 ≡ tr \u0010\r
+(Γ(s))\r
+2\r
+\u0011\r
+. (16)\r
+Fig. 12 shows the spectrum of eigenvalues {λα(s)} of\r
+the normalized density matrix Γ(s)/Θ\r
+(s)\r
+1\r
+as a function of\r
+the TRG step s. One can see that the spectrum be\u0002comes flatter as s increases, indicating that more eigen\u0002values become of significant size. [In contrast, the spec\u0002trum remains essentially constant as a function of the\r
+TNR step s]. Fig. 13 shows the von Neumannm en\u0002tropy S({λα}) ≡ −P\r
+α\r
+λα log(λα) and the Renyi entropy\r
+Rn({λα}) ≡ log(P\r
+α\r
+λ\r
+n\r
+α)/(1 − n) of index n = 2\r
+R2 = − log X\r
+α\r
+(λα)\r
+2\r
+!\r
+= − log \r
+Θ\r
+(s)\r
+2\r
+(Θ(s)\r
+1\r
+)\r
+2\r
+!\r
+, (17)\r
+both of which are invariant under local gauge transfor\u0002mations. These entropies grow linearly in the TRG step\r
+s.\r
+FIG. 12. Spectrum of eigenvalues of the normalized matrix\r
+Γ\r
+s\r
+/Θ\r
+(s)\r
+1 as a function of the coarse-graining step s, both for\r
+TRG (left) and TNR (right). In TRG, the spectrum becomes\r
+flatter with increasing s. In TNR, the spectrum is essentially\r
+independent of s for s ≥ 3.\r
+FIG. 13. Von Neumman entropy S({λα}) and Renyi entropy\r
+R2({λα}) of the eigenvalues of the density matrix Γ(s)/Θ\r
+(s)\r
+1\r
+.\r
+For TRG, these entropies grow linearly in the coarse-graining\r
+step s (or logarithmically in the number 2sof quantum spins).\r
+For TNR, these entropies are essentially constant for s ≥ 3.\r
+The flattening of the spectrum in Fig. 12, as well\r
+as the steady growth of the entropies S and R2 in Fig.\r
+13 constitute an unambiguous confirmation that critical\r
+TRG tensors A(s) and A(s+1) are not equal up to a local\r
+gauge transformation, not even approximately. In ad\u0002dition, these features are robust against increasing the\r
+bond dimension χ, and therefore are not an artifact of\r
+the truncation.
+
+12\r
+FIG. 14. Relative error in the free energy per site δf as a func\u0002tion of bond dimension χ for the 2D Ising model at critical\u0002ity, comparing HOTRG, HOSRG and TNR. Through use of\r
+the environment HOSRG is able to give better accuracy than\r
+HOTRG for any given χ, though the accuracy of HOSRG is\r
+still less than that of TNR.\r
+Use of environment\r
+A significant advance in renormalization methods for\r
+tensor networks since the introduction of TRG has been\r
+the use of the so-called environment to achieve a more\r
+accurate truncation step. The improved TRG method\r
+proposed in Ref. [5] under the name of “poor-man’s\r
+SRG” generates local weights that represent the local en\u0002vironment in a small neighborhood in the tensor network,\r
+while the second renormalization group (SRG) proposed\r
+in Ref. [6] takes this idea further by using a global envi\u0002ronment that represents the entir tensor network.\r
+Fig. 14 shows that, for the 2D Ising model at critical\u0002ity, the use of an environment produces a more accurate\r
+numerical estimate of the free energy per site. Specif\u0002ically, the data corresponds to the higher order tensor\r
+renormalization group (HOTRG) proposed in Ref.[9], an\r
+improvement on TRG based upon the higher order singu\u0002lar value decomposition (HOSVD) but does not take the\r
+environment into account; and to the higher order sec\u0002ond renormalization group (HOSRG), which uses both\r
+HOSVD and the global environment. It is also worth\r
+pointing out however that TNR, which in its current\r
+implementation is a purely local update that does not\r
+take into account the environment, produces more accu\u0002rate results than HOSRG for the same value of the bond\r
+dimension. [Moreover, the cost in TNR scales only as\r
+O(χ\r
+6\r
+), whereas the cost of HOTRG and HOSRG scales\r
+as O(χ\r
+7\r
+)].\r
+Based upon the improvement in free energy of HOSRG\r
+compared to HOTRG, one may wonder whether the use\r
+of the environment, as in SRG, could potentially re\u0002FIG. 15. (left) Spectrum of eigenvalues of the normalized\r
+matrix Γs/Θ\r
+(s)\r
+1 as a function of the coarse-graining step s for\r
+HOSRG, In TRG, which becomes flatter with increasing s.\r
+(right) Von Neumman entropy S({λα}) of the eigenvalues of\r
+the density matrix Γ(s)/Θ\r
+(s)\r
+1\r
+, comparing HOTRG, HOSRG\r
+and TNR. For both HOTRG and HOSRG these entropies\r
+grow linearly in the coarse-graining step s (or logarithmically\r
+in the number 2sof quantum spins), indicating that the ten\u0002sors are not flowing to a scale-invariant fixed point.\r
+solve the breakdown of TRG at criticality and even pro\u0002duce a critical fixed-point tensor. We have investigated\r
+this question numerically by analyzing the RG flow of\r
+tensors generated by HOTRG and HOSRG for the 2D\r
+Ising model at criticality, as shown in Fig.15. Under\r
+coarse-graining with HOSRG, the spectrum of the crit\u0002ical tensors grows increasingly flat with RG step, in a\r
+similar manner as was observed with standard TRG in\r
+Fig.12. The same occurs for HOTRG (not plotted). Like\u0002wise, in both HOTRG and HOSRG, the entropy of ten\u0002sors is seen to increase roughly linearly with RG step,\r
+and this growth is essentially robust under increasing\r
+the bond dimension. These results clearly demonstrate\r
+that (HO)SRG does not produce a critical fixed-point\r
+tensor. Thus we conclude that the use of environment\r
+in (HO)SRG, while leading to a more accurate coarse\u0002graining transformation for fixed bond dimension over\r
+(HO)TRG, does not prevent the computational break\u0002down experienced by TRG at criticality. In particular\r
+SRG still fails to produce a proper RG flow and critical\r
+fixed-point tensor.\r
+The TEFR algorithm\r
+Ref. [7] refers to the tensors obtained with TEFR at\r
+criticality as fixed-point tensors. Accordingly, one might\r
+be led to conclude that TEFR actually generates a fixed-
+
+13\r
+exact TRG(64) TRG+env(64) TEFR(64) TNR(24)\r
+c 0.5 0.49982 0.49988 0.49942 0.50001\r
+σ 0.125 0.12498 0.12498 0.12504 0.1250004\r
+ǫ 1 1.00055 1.00040 0.99996 1.00009\r
+1.125 1.12615 1.12659 1.12256 1.12492\r
+1.125 1.12635 1.12659 1.12403 1.12510\r
+2 2.00243 2.00549 - 1.99922\r
+2 2.00579 2.00557 - 1.99986\r
+2 2.00750 2.00566 - 2.00006\r
+2 2.01061 2.00567 - 2.00168\r
+TABLE I. Exact values and numerical estimates of the central\r
+charge c and lowest scaling dimensions of the critical Ising\r
+model. TRG results are obtained using the original Levin and\r
+Nave’s algorithm [4]. TRG+env results are obtained using an\r
+improved TRG method proposed in Ref. [5] under the name\r
+of “poor-man’s SRG”. TEFR results are taken from Ref.\r
+[7]. The first three numerical columns use bond dimension\r
+χ ≡ Dcut = 64 and 1024 spins, while the TNR data uses\r
+χ = 24 and 262,144 spins.\r
+point tensor (and thus recovers scale invariance) at crit\u0002icality. As demonstrated in Ref. [7], TEFR produces\r
+accurate estimates of the central charge c and scaling di\u0002mensions ∆α for the Ising model, and one might indeed\r
+misinterpret those as being evidence for having generated\r
+a critical fixed-point tensor. However, the estimates re\u0002ported in Ref. [7] for c and ∆α are of comparable ac\u0002curacy to those obtained with TRG and “poor-man’s\r
+SRG” using the same bond dimension (see Table I in\r
+Sect. C.5). Since the above methods demonstrably fail\r
+to produce a fixed-point tensor, the accurate TEFR es\u0002timates provided in Ref. [7] are no evidence that TEFR\r
+has produced a critical fixed-point tensor. In conclusion,\r
+Ref. [7] refers to the TEFR critical tensors as fixed-point\r
+tensors, but Ref. [7] provides no evidence that TEFR\r
+realizes a fixed-point tensor at criticality.\r
+Extraction of scaling dimensions from a transfer\r
+matrix\r
+In proposing TRG in Ref. [4], Levin and Nave refer\r
+to the significant loss of efficiency experienced by the\r
+method at criticality as TRG’s critical break-down. It is\r
+important to emphasize that, in spite of this significant\r
+loss of efficiency at criticality, TRG can still be used to\r
+extract universal information about a phase transition,\r
+by studying the partition function of a finite system.\r
+The key theoretical reason is that in a finite system\r
+one can observe a realization of the so-called operator\u0002state correspondence in conformal field theories (CFT),\r
+which asserts that there is a one-to-one map between\r
+the states of the theory and its scaling operators [36].\r
+Specifically, the finite size corrections are universal and\r
+controlled by the spectrum of scaling dimensions of the\r
+theory [37]. This is best known in the context of critical\r
+quantum spin chains, where Cardy’s formula relates the\r
+smallest scaling dimensions ∆α of the conformal theory\r
+to the lowest eigenvalues Eα of the critical Hamiltonian\r
+on a periodic chain according to\r
+Eα(L) − Eα(∞) = η\r
+2π\r
+L\r
+∆α + · · · , (18)\r
+where L is the number of spins on the chain, Eα(∞)\r
+is the energy in an infinite system, η (independent of\r
+α) depends on the normalization of the Hamiltonian,\r
+and where the sub-leading non-universal corrections are\r
+O(1/L2) in the absence of marginal operators. Thus, we\r
+can estimate scaling dimensions ∆α by diagonalizing a\r
+critical Hamiltonian on a finite periodic chain, as it is\r
+often done using exact diagonalization techniques. In a\r
+two dimensional statistical system, the analogous result\r
+is the observation that even in a finite system, a critical\r
+partition function Z is organized according to the scaling\r
+dimensions of the theory as\r
+Z = e\r
+aLxLy X\r
+α\r
+e\r
+−Ly\r
+2π\r
+Lx\r
+(∆α− c\r
+12 )+··· )\r
+, (19)\r
+where a is some non-universal constant, c is the central\r
+charge of the CFT, and we assumed isotropic couplings\r
+and a square torus made of Lx × Ly sites.\r
+FIG. 16. Calculation of the smallest non-zero scaling dimen\u0002sion of 2D classical Ising at criticality, computed using either\r
+TRG or TNR through diagonalization of the transfer operator\r
+on an effective linear system size of L spins, comparing to the\r
+exact result ∆σ = 1/8. For small system sizes, L < 2\r
+6\r
+spins,\r
+finite size effects limit the precision with which ∆σ can be\r
+computed, while for large system sizes truncation errors re\u0002duce the accuracy of the computed value of ∆σ. However, it\r
+is seen that the TNR approach maintains accuracy for much\r
+larger system sizes than does TRG: while TRG with bond\r
+dimension χ = 80 gives ∆σ within 1% accuracy up to lin\u0002ear system size L = 211 spins, a TNR with bond dimension\r
+χ = 24, which required a similar computation time as the\r
+χ = 80 TRG result, gives 1% accuracy up to L = 224 spins.\r
+As proposed by Gu and Wen [7], if the coarse-grained\r
+tensor A(s)effectively represents the whole partition
+
+14\r
+function of a system made of 2s × 2\r
+s\r
+sites (and thus\r
+Lx = Ly = 2s), then we can extract the central charge\r
+c and scaling dimensions ∆α from it by e.g. computing\r
+the spectrum of eigenvalues of the matrix M(s)(see Fig.\r
+11(a)),\r
+\u0010\r
+M(s)\r
+\u0011\r
+ik\r
+≡\r
+X\r
+j\r
+\u0010\r
+A\r
+(s)\r
+\u0011\r
+ijkj\r
+. (20)\r
+Indeed, after removing the non-universal constant a in\r
+Eq. 19 [by suitably normalizing the initial tensors A(0)],\r
+the largest eigenvalues λα of M(s) are of the form [7]\r
+λα = e\r
+−2π(∆α− c\r
+12 +O(\r
+1\r
+L )\r
+. (21)\r
+For instance, Table I shows remarkably accurate es\u0002timates of the central charge c and lowest scaling di\u0002mensions ∆α obtained by using TRG and other related\r
+methods on a finite lattice made of 1024 spins. These re\u0002sults are a strong indication that TRG accurately coarse\u0002grains the partition function of such a finite system. [The\r
+table also shows more accurate results obtained with\r
+TNR on larger systems using a smaller bond dimension.]\r
+In Fig. 16 we examine the accuracy with which TRG\r
+and TNR reproduce the dominant scaling dimension of\r
+the Ising model, ∆σ = 1/8, on finite lattices of differ\u0002ent linear size L. Here it can be seen that TRG results\r
+quickly lose accuracy for larger system sizes, a manifes\u0002tation of the breakdown of TRG at criticality, whilst the\r
+results from TNR maintain a high level of accuracy even\r
+for very large systems. For instance in comparing the\r
+χ = 80 TRG result to the χ = 24 TNR results, which\r
+both required a roughly equivalent computation time to\r
+run on a laptop computer (∼ 3 hours), the TRG calcu\u0002lation gave ∆σ to with 1% accuracy for spins systems\r
+with linear dimension large as L = 211, while the TNR\r
+calculation the same accuracy for systems with linear di\u0002mension large as L = 224: roughly 4000 times larger\r
+linear dimension than TRG.\r
+In conclusion, TRG is an excellent method to study\r
+critical partition functions on a finite system, provided\r
+that the size of the system that we want to investigate\r
+is small enough that the truncation errors are not yet\r
+significant. In the critical Ising model, sub-leading (non\u0002universal) finite size corrections to the dominant (uni\u0002versal) contributions to the partition function (that is,\r
+to the weights e\r
+−2π(∆α−c/12) for small ∆α) happen to be\r
+very small even for relatively small systems. As a re\u0002sult, one can use TRG to extract remarkably accurate\r
+estimates of the central charge c and smallest scaling di\u0002mensions ∆α. This calculation is analogous to extracting\r
+scaling dimensions by diagonalizing the Hamiltonian of a\r
+quantum critical system on a finite ring and then using\r
+Cardy’s formula (Eq. 18).\r
+However, the ability to extract accurate estimates of\r
+the central charge and scaling dimensions after applying\r
+a coarse-graining transformation such as TRG on a finite\r
+system does not imply that one has obtained a critical\r
+fixed-point tensor. Indeed, we have shown above that\r
+TRG does not produce a critical fixed-point tensor, as\r
+had already been anticipated by Levin and Nave [4]."""
+
+[metadata]
+title = "evenbly vidal tnr 1412.0732"
+authors = ["Unknown"]
+arxiv = "1412.0732"
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:1412.0732v3 [cond-mat.str-el] 15 Sep 2015\r
+Tensor Network Renormalization\r
+G. Evenbly1 and G. Vidal2"""
+
+[[sections]]
+number = "1"
+title = "Institute for Quantum Information and Matter,"
+text = """
+California Institute of Technology, Pasadena CA 91125, USA∗\r
+2Perimeter Institute for Theoretical Physics, Waterloo, Ontario N2L 2Y5, Canada†\r
+(Dated: September 17, 2015)\r
+We introduce a coarse-graining transformation for tensor networks that can be applied to study\r
+both the partition function of a classical statistical system and the Euclidean path integral of a\r
+quantum many-body system. The scheme is based upon the insertion of optimized unitary and\r
+isometric tensors (disentanglers and isometries) into the tensor network and has, as its key feature,\r
+the ability to remove short-range entanglement/correlations at each coarse-graining step. Removal\r
+of short-range entanglement results in scale invariance being explicitly recovered at criticality. In this\r
+way we obtain a proper renormalization group flow (in the space of tensors), one that in particular\r
+(i) is computationally sustainable, even for critical systems, and (ii) has the correct structure of\r
+fixed points, both at criticality and away from it. We demonstrate the proposed approach in the\r
+context of the 2D classical Ising model.\r
+PACS numbers: 05.30.-d, 02.70.-c, 03.67.Mn, 75.10.Jm\r
+Understanding emergent phenomena in many-body\r
+systems remains one of the major challenges of mod\u0002ern physics. With sufficient knowledge of the micro\u0002scopic degrees of freedom and their interactions, we\r
+can write the partition function of a classical system,\r
+namely a weighted sum of all its microscopic configura\u0002tions; or the analogous Euclidean path integral of a quan\u0002tum many-body system, where the weighted sum is now\r
+over all conceivable trajectories. These objects contain\r
+complete information on the collective properties of the\r
+many-body system. However, evaluating partition func\u0002tions or Euclidean path integrals is generically very hard.\r
+Kadanoff’s spin-blocking procedure [1] opened the path\r
+to non-perturbative approaches based on coarse-graining\r
+a lattice [2, 3]. More recently, Levin and Nave proposed\r
+the tensor renormalization group (TRG) [4], a versatile\r
+real-space coarse-graining transformations for 2D classi\u0002cal partition functions —or, equivalently, Euclidean path\r
+integrals of 1D quantum systems.\r
+TRG is an extremely useful approach that has revolu\u0002tionized how we coarse-grain lattice models [4–10]. How\u0002ever, this method fails to remove part of the short-range\r
+correlations in the partition function and, as a result,\r
+the coarse-grained system still contains irrelevant micro\u0002scopic information. Conceptually, this is in conflict with\r
+the very spirit of the renormalization group (RG) and\r
+results in an RG flow with the wrong structure of non\u0002critical fixed points, as discussed in Ref. [7]. Compu\u0002tationally, the accumulation of short-range correlations\r
+over successive TRG coarse-graining transformation also\r
+has important consequences: as pointed out by Levin\r
+and Nave, it implies the breakdown of TRG at criticality\r
+[4, 11] (although universal information, such as critical\r
+exponents, can still be obtained from finite systems).\r
+An analogous problem, faced earlier in the context of\r
+ground state wave-functions, was resolved with the in\u0002troduction of entanglement renormalization techniques\r
+[12, 13]. In this Letter we will adapt those techniques to\r
+the coarse-graining of partition functions/Euclidean path\r
+integrals, and will demonstrate that the resulting scheme\r
+generates a proper RG flow, with the correct structure of\r
+critical and non-critical fixed points.\r
+A distinctive feature of our proposal, which we call ten\u0002sor network renormalization (TNR), is that it removes\r
+short-range correlations from the partition function at\r
+each coarse-graining step. In this way, the effective ten\u0002sor network description at a given length scale is free from\r
+irrelevant microscopic details belonging to shorter length\r
+scales. The upshot is a computationally sustainable RG\r
+flow in the space of tensors. At criticality, removal of\r
+short-range correlations circumvents TRG’s breakdown,\r
+while scale invariance is explicitly realized in the form of\r
+a critical fixed-point tensor [14]. This allows us to effec\u0002tively address infinitely large systems, avoiding finite-size\r
+effects. Off-criticality we also obtain the correct structure\r
+of non-critical RG fixed points. In this case, the corre\u0002sponding fixed-point tensors coincide with those previ\u0002ously obtained by Gu and Wen’s tensor-entanglement\u0002filtering renormalization (TEFR) [7, 15]. For simplicity,\r
+we demonstrate TNR with the statistical partition func\u0002tion of the 2D classical Ising model (equivalently, the Eu\u0002clidean path integral of the 1D quantum Ising model with\r
+transverse magnetic field), although the key ideas apply\r
+to general two dimensional lattice models and extend to\r
+higher dimensions.\r
+Renormalization group flow in the space of tensors.—\r
+Our starting point, also used in TRG [4–10], is the ob\u0002servation that the partition function Z of a 2D classical\r
+system (for concreteness assumed to be translation in\u0002variant on a periodic square lattice) can be re-written as\r
+a 2D tensor network made of N copies of some tensor A
+
+2\r
+(see Eq. 5 and Fig. 1(a,b) for an explicit example),\r
+Z =\r
+X\r
+ijk···\r
+AijklAmnojAkrstAopqr · · · ≡ tTr ⊗N\r
+x=1A\r
+\u0001\r
+. (1)\r
+Here each index hosts a χ-level local degree of freedom\r
+(e.g. i = 1, 2, · · · , χ), the tensor components Aijkl are\r
+local weights, and the tensor trace tTr denotes a sum\r
+over configurations of all the indices ijk · · · .\r
+Our goal is to produce an effective tensor A(1), roughly\r
+accounting for four copies of the original tensor A(0) ≡ A,\r
+such that Z can be approximately expressed as a coarser\r
+tensor network made of just N/4 copies of A(1), Z ≈\r
+tTr \u0010⊗\r
+N/4\r
+x=1A(1)\u0011\r
+. By iteration, a sequence of tensors\r
+A\r
+(0) → A(1) → A(2) → · · · (2)\r
+will be produced such that, for any length scale s,\r
+Z ≈ tTr \u0010⊗\r
+Ns\r
+x=1A(s)\r
+\u0011\r
+, Ns ≡ N/4\r
+s\r
+. (3)\r
+Thus, after ˜s ≡ log4(N) iterations [assuming N = 4s˜for\r
+some integer ˜s > 0], the partition function Z becomes\r
+the trace of a single tensor A(˜s), Z ≈\r
+P\r
+ij A\r
+(˜s)\r
+ijij , which\r
+we can finally evaluate [16]. On the other hand, in the\r
+thermodynamic limit N → ∞, we can study the flow in\r
+the space of tensors given by Eq. 2. The fixed-point\r
+tensors of this flow will capture the universal properties\r
+of the phases and phase transitions of the system.\r
+Tensor Network Renormalization.— Our coarse\u0002graining transformation for the partition function Z in\r
+Eq. 1 is based on locally inserting (exact or approxi\u0002mate) resolutions of the identity into the tensor network.\r
+The goal is to reorganize the local degrees of freedom, so\r
+as to be able to identify and remove those that are only\r
+correlated at short distances.\r
+Let us regard each index of the network as hosting a\r
+χ-dimensional complex vector space V ≡ C\r
+χ. We con\u0002sider two types of insertions, see Fig. 1(c). The first type\r
+is implemented by a pair uu† = I\r
+⊗2 of unitary transfor\u0002mations u, or disentanglers, acting on two neighboring\r
+indices, u : V ⊗ V → V ⊗ V. The disentanglers u will be\r
+used to remove short-range correlations [17]. Notice that\r
+inserting a pair of disentanglers uu† does not change the\r
+partition function Z represented by the tensor network.\r
+The second type of insertion is implemented by a pro\u0002jector vv†\r
+(or ww†), where the isometry v (or w) com\u0002bines two indices into a single one, v : V → V ⊗ V, with\r
+v\r
+†v = I. Since vv†\r
+is not the identity but a χ-dimensional\r
+projector acting on the χ\r
+2\r
+-dimensional space V ⊗ V, in\u0002serting it into the tensor network introduces a truncation\r
+error into the representation of the partition function Z.\r
+This error can be estimated by the norm kδk of the differ\u0002ence operator δ defined in Fig. 1(d). If, somehow, only a\r
+small truncation error kδk is introduced, then the result\u0002ing tensor network will still be a good approximation to\r
+the partition function Z.\r
+FIG. 1. (a) As an example, we consider a square lattice\r
+(slanted 45◦) of classical spins, where σk ∈ {+1, −1} is an\r
+Ising spin on site k. (b) Graphical representation of a part\r
+of the tensor network, where each circle denotes a tensor A,\r
+for the partition function Z of the classical spin model, see\r
+Eq. 1. Here tensor Aijkl encodes the Boltzmann weights of\r
+the spins {σi, σj , σk, σl} according to the Hamiltonian func\u0002tion H, see Eq. 5. (c) Insertion of a pair of disentanglers\r
+uu† between four tensors, where tensors A˜ are obtained from\r
+tensors A through a gauge transformation on their horizontal\r
+indices [18], followed by an insertion of four projectors of the\r
+form vv†(or ww†). These projectors introduce a truncation\r
+error. (d) Tensor δ, whose norm kδk measures the truncation\r
+error introduced by the isometries v and w. Disentanglers\r
+and isometries are chosen so as to minimize kδk.\r
+Fig. 2 shows graphically the proposed TNR transfor\u0002mation. In step (a), disentanglers and isometries are in\u0002serted between blocks of 2×2 tensors A(s)\r
+. In step (b) two\r
+types of auxiliary tensors, B(s) and C\r
+(s)\r
+, are produced\r
+by contracting indices. In step (c) tensors B and C are\r
+split using a singular value decomposition, as it is done in\r
+TRG [19]. Finally, in step (d) the coarse-grained tensor\r
+A(s+1) at scale s+ 1 is obtained by further contraction of\r
+indices. The disentanglers and isometries introduced in\r
+step (a) are chosen so as to minimize the truncation error\r
+kδk in Fig. 1(d), using well-established, iterative opti\u0002mization methods for unitary and isometric tensors [13],\r
+which are further detailed in Ref.[20]. The overall com\u0002putational cost of computing tensor A(s+1) from tensor\r
+A(s)scales as O(χ\r
+7\r
+), although this cost can be reduced\r
+to O(χ\r
+6\r
+) through introducing controlled approximations\r
+[20]."""
+
+[[sections]]
+number = "3"
+title = "To gain some insight into how TNR operates, let us"
+text = """
+consider first an oversimplified scenario where the par\u0002tition function Z only contains short-range correlations\r
+(technically, this corresponds to a so-called CDL tensor\r
+[21]). If we set the disentanglers to be trivial, u = I\r
+⊗2\r
+,\r
+then the coarse-graining transformation reduces to TRG\r
+and fails to remove the short-range correlations. How\u0002ever, with a judicious choice of disentanglers u these cor\u0002relations are removed and an uncorrelated, trivial tensor\r
+Atriv is produced [21, 22]. Therefore the role of disentan\u0002glers is to remove short-range correlations. Their action\r
+will be particularly important at criticality, where corre\u0002lations are present at all length scales.\r
+Example: Partition function of the 2D classical Ising\r
+model.— We consider the partition function\r
+Z =\r
+X\r
+{σ}\r
+e\r
+−H({σ})/T , H ({σ}) = −\r
+X\r
+hi,ji\r
+σiσj (4)\r
+on the square lattice, where σk ∈ {+1, −1} is an Ising\r
+spin on site k and T denotes the temperature. Recall\r
+FIG. 2. Steps (a)-(d) of a TNR transformation to produce\r
+tensor A\r
+(s+1) from tensor A(s)\r
+. In step (a), the insertion of\r
+disentanglers u and isometries v and w is made according to\r
+Fig. 1(b). Insets (e)-(g) contain the definition of the auxiliary\r
+tensors B\r
+(s)\r
+and C\r
+(s)\r
+and the coarse-grained tensor A\r
+(s+1)\r
+.\r
+FIG. 3. Benchmark results for the square lattice Ising model\r
+on a lattice with 239 spins. (a) Relative error in the free energy\r
+per site δf at the critical temperature Tc, comparing TRG and\r
+TNR over a range of bond dimensions χ. The TRG errors fit\r
+δf ∝ χ\r
+−3.02 (the inset displays them using log-log axes), while\r
+TNR errors fit δf ∝ exp(−0.305χ). Extrapolation suggests\r
+that TRG would require bond dimension χ ≈ 750 to match\r
+the accuracy of the χ = 42 TNR result. (b) Spontaneous\r
+magnetization M(T ) obtained with TNR with χ = 6 [23].\r
+Even very close to the critical temperature, T = 0.9994 Tc, the\r
+magnetization M ≈ 0.48 is reproduced to within 1% accuracy.\r
+that this model has a global Z2 symmetry: it is invariant\r
+under the simultaneous flip σk → −σk of all the spins.\r
+We obtained an exact representation for the tensor A in\r
+Eq. 1 in terms of four Boltzmann weights e\r
+σiσj /T\r
+,\r
+Aijkl = e\r
+(σiσj+σjσk+σkσl+σlσi)/T\r
+, (5)\r
+which corresponds to having one tensor A for every two\r
+spins, and a tensor network with a 45 degree tilt with\r
+respect to the spin lattice, see Fig. 1(a,b). We actu\u0002ally built our starting tensor A(0), with bond dimension\r
+χ = 4, by joining a square block of four tensors A to\u0002gether. We then applied up to 18 TNR transformations\r
+to a system made of N = 218×2\r
+18 tensors A(0), or equiv\u0002alently 2 × 4 × N Ising spins.\r
+Fig. 3(a) shows the relative error δf in the free en\u0002ergy per site f ≡ log(Z)/(8N), at the critical temper\u0002ature Tc ≡ 2/ ln(1 + √\r
+2) ≈ 2.269, for both TRG and\r
+TNR as a function of the bond dimensions χ [24]. The\r
+TRG error decays polynomially, while the TNR error is\r
+reduced exponentially, showing a qualitatively different\r
+behaviour and implying that significantly more accurate\r
+results can be obtained with TNR. Figure 3(b) shows the\r
+spontaneous magnetization M(T ) as a function of tem\u0002perature T obtained with TNR for χ = 6. Even close\r
+to T = Tc, we see remarkable agreement with the exact\r
+solution.\r
+However, the most significant feature of TNR is re\u0002vealed in Fig. 4, which shows, as a function of the scale"""
+
+[[sections]]
+number = "4"
+title = "FIG. 4. (a) Singular values λα of the matrix [A"
+text = """
+(s)\r
+](ij)(kl)\r
+obtained after s RG steps [25] using TNR (filled circles) or\r
+TRG (empty circles) for the 2D Ising model at critical tem\u0002perature TC . (b) Singular values for T = 1.1 TC. (c) Plot\r
+of the Von-Neumann entropy −\r
+P\r
+α\r
+λ˜α log(λ˜α) of the (nor\u0002malized) singular values of tensors [A\r
+(s)\r
+](ij)(kl) obtained with\r
+TRG (empty circles) or TNR (filled circles).\r
+s, the spectrum of singular values of tensor A(s) when\r
+regarded as a matrix [A(s)](ij)(kl). Fig. 4(a) considers\r
+the critical point, T = Tc, and shows that under TNR,\r
+the spectrum of A(s) quickly becomes independent of the\r
+scale s. This has two major implications. On the one\r
+hand, it is a strong evidence that A(s)itself has converged\r
+to a fixed-point tensor Acrit (up to small corrections, see\r
+[26] for detials), thus recovering the characteristic scale\r
+invariance expected at criticality. On the other hand, it\r
+implies that the bond dimension χ required to maintain\r
+a fixed, small truncation error kδk is essentially indepen\u0002dent of scale, and thus so is also the computational cost.\r
+That is, we have obtained a computationally sustainable\r
+RG transformation. In sharp contrast, the spectrum gen\u0002erated by TRG develops a growing number of large sin\u0002gular values as we increase the scale s, indicating that\r
+the tensor is not scale invariant. The bond dimension\r
+(and thus the computational cost at constant truncation\r
+error) grows rapidly with scale. This growth is caused by\r
+the accumulation of short-range correlations at each iter\u0002ation and pinpoints the breakdown of TRG at a critical\r
+point [27].\r
+Fig. 4(b) considers a slightly larger temperature,\r
+T = 1.1 Tc. Now TNR generates a flow towards the triv\u0002ial fixed-point tensor Atriv, characterized by just one non\u0002zero singular value, which represents the infinite temper\u0002ature, disordered phase. As expected of a proper RG\r
+scheme, for any T > Tc the flow is to the same trivial\r
+fixed-point tensor Atriv. In contrast, for any T > Tc,\r
+TRG generates a flows to a fixed-point tensor that de\u0002pends on the initial temperature T . In other words, fail\u0002ure to remove some of the short-range correlations implies\r
+that (RG irrelevant) microscopic information has been\r
+retained during coarse-graining, contrary to the spirit of\r
+the RG flow. For T < Tc (not shown) we obtain a similar\r
+picture as for T > Tc. However, now each eigenvalue in\r
+the spectrum has degeneracy 2, and TNR flows to a new\r
+fixed-point tensor AZ2 ≡ Atriv ⊕ Atriv corresponding to\r
+the Z2 symmetry breaking, ordered phase —the Z2 spin\r
+flip symmetry acts on AZ2 by exchanging its two copies of\r
+Atriv. Finally, Fig. 4(c) uses the entropy of the spectrum\r
+as a function of scale to visualize the RG flow towards\r
+one of the three fixed-point tensors: the ordered AZ2for\r
+T < Tc, the critical Acrit for T = Tc, and the disordered\r
+Atriv for T > Tc.\r
+Outlook.— We have proposed tensor network renor\u0002malization (TNR), a coarse-graining transformation for\r
+tensor networks that produces a proper RG flow in the\r
+space of tensors, and demonstrated its performance for\r
+2D classical partition functions –including the explicit\r
+recovery of scale invariance at the critical point. When\r
+applied to the Euclidean path integral of the 1D quantum\r
+Ising model (after suitable discretization in the imagi\u0002nary time direction), it produced results similar to the\r
+ones described above. The approach can also be used to\r
+compute the norm hΨ|Ψi of a 2D quantum many-body\r
+state encoded in a PEPS [28].\r
+TNR borrows its key idea —the use of disentanglers—\r
+from entanglement renormalization [12, 13], the coarse\u0002graining scheme for many-body wave-functions that led\r
+to the multi-scale entanglement renormalization ansatz\r
+(MERA) [29, 30]. The two approaches turn out to be\r
+deeply connected: when applied to the Euclidean path\r
+integral of a Hamiltonian H, TNR produces a MERA for\r
+the ground and thermal states of H [31].\r
+We thank Z.-C. Gu and X.-G. Wen for clarifying as\u0002pects of their TEFR approach [7]. G.E. is supported\r
+by the Sherman Fairchild Foundation. G. V. acknowl\u0002edges support by the John Templeton Foundation and\r
+NSERC. The authors also acknowledge support by the\r
+Simons Foundation (Many Electron Collaboration). Re\u0002search at Perimeter Institute is supported by the Gov\u0002ernment of Canada through Industry Canada and by the\r
+Province of Ontario through the Ministry of Research\r
+and Innovation.
+
+5\r
+∗\r
+evenbly@caltech.edu\r
+†\r
+gvidal@perimeterinstitute.ca\r
+[1] L.P. Kadanoff Physics (Long Island City, N.Y.) 2, 263\r
+(1966). E. Efrati, Z. Wang, A. Kolan, and L. P. Kadanoff,\r
+Rev. Mod. Phys. 86, 647 (2014)\r
+[2] K.G. Wilson, Adv. Math., Volume 16, Issue 2, Pages 170-\r
+186 (1975). K.G. Wilson, Rev. Mod. Phys. 47, 773 (1975).\r
+[3] S. R. White, Phys. Rev. Lett. 69, 2863 (1992). S. R.\r
+White, Phys. Rev. B 48, 10345 (1993).\r
+[4] M. Levin, C. P. Nave Phys. Rev. Lett. 99, 120601 (2007)\r
+[5] H.-H. Zhao, Z.-Y. Xie, Q.-N. Chen, Z.-C. Wei, J. W. Cai,\r
+T. Xiang, Physical Review B 81, 174411 (2010).\r
+[6] Z.-Y. Xie, H.-C. Jiang, Q.-N. Chen, Z.-Y. Weng, T. Xi\u0002ang, Phys. Rev. Lett. 103:160601 (2009).\r
+[7] Z.-C. Gu, X.-G.Wen Phys. Rev. B 80, 155131 (2009).\r
+[8] H. C. Jiang, Z. Y. Weng, T. Xiang Phys. Rev. Lett. 101,\r
+090603 (2008) Z.-C. Gu, M. Levin, X.-G. Wen, Phys.\r
+Rev. B 78, 205116 (2008) B. Dittrich, F. C. Eckert, M.\r
+Martin-Benito, New J. Phys. 14 035008 (2012)\r
+[9] Z.-Y. Xie, J. Chen, M. P. Qin, J. W. Zhu, L. P. Yang, T.\r
+Xiang, Phys. Rev. B 86, 045139 (2012).\r
+[10] A. Garcia-Saez, J. I. Latorre Phys. Rev. B 87, 085130\r
+(2013). S. Wang, Z. Y. Xie, J. Chen, B. Normand, T.\r
+Xiang Chin. Phys. Lett. 31, 070503 (2014).\r
+[11] As originally described by Levin and Nave in Ref. [4], the\r
+breakdown of TRG at criticality refers to the fact that\r
+(1) the computational cost to obtain a fixed accuracy in\r
+local expectation values increases as a critical point is ap\u0002proached, and (2) while TRG flows to some fixed-point\r
+tensor off-criticality, this is no longer the case at criti\u0002cality [4]. However, TRG is still useful to study critical\r
+systems, see e.g. Refs. [4, 7, 27].\r
+[12] G. Vidal Phys. Rev. Lett. 99, 220405 (2007).\r
+[13] G. Evenbly, G. Vidal Phys. Rev. B 79, 144108 (2009).\r
+[14] In this work (as in Levin and Nave’s TRG paper [4]) a\r
+fixed-point tensor is a tensor that is (explicitly) invariant\r
+under coarse-graining [26].\r
+[15] TEFR contains an entanglement filtering step designed\r
+to simplify CDL tensors [21] by filtering out their short\u0002range correlations [7]. The filtering step allows TEFR\r
+to recover the proper structure of non-critical RG fixed\u0002points –in contrast with TRG[4], where for a given phase\r
+one obtains a continuum of fixed-point CDL tensors that\r
+only differ in short-range correlations. However, TEFR\r
+cannot simplify tensors near a critical point [32].\r
+[16] An arbitrary n-point correlator will then be computed by\r
+first inserting n operators in the tensor network of Eq. 1,\r
+and then conveniently adjusting its coarse-graining.\r
+[17] The role disentanglers play in TNR, where they remove\r
+short-range correlations, is analogous to their role in the\r
+context of entanglement renormalization of ground state\r
+wave-functions, where they remove short-range entangle\u0002ment [12]. Hence the name.\r
+[18] The gauge transformation is made such that the block\r
+of four A tensors is manifestly invariant with respect to\r
+reflection along the horizontal axis, which is a convenient\r
+choice in order to preserve reflection symmetry in the\r
+network.\r
+[19] One should take into account the local environment, as\r
+described in Ref.[5], when decomposing an auxiliary ten\u0002sor C\r
+(s)\r
+, which may otherwise possess a slowly decaying\r
+spectrum of singular values that cannot be accurately\r
+truncated.\r
+[20] G. Evenbly, Algorithms for tensor network renormaliza\u0002tion, in preparation.\r
+[21] For details, see Appendix B.\r
+[22] For the specific case of CDL tensors, the filtering step of\r
+TEFR [7] is also capable of eliminating the local corre\u0002lations [15]. TNR removes short-range correlations both\r
+away from criticality and near or at a critical point.\r
+[23] The spontaneous magnetization is extracted from the\r
+coarse-grained spin operator, by analysing the projection\r
+onto e.g. the spin-up symmetry-breaking sector.\r
+[24] The bond dimension χ of the TNR calculation denotes\r
+the largest bond dimension used. In practice, different\r
+bond dimensions are used at different steps of the TNR\r
+coarse-graining transformation.\r
+[25] We define a single RG step as that which maps the square\r
+lattice back into a square lattice with the same orienta\u0002tion, but whose linear dimension has been reduced by a\r
+factor of 2. Note that this corresponds to two RG steps\r
+as originally proposed in [4].\r
+[26] For details, see Appendix A.\r
+[27] For details, see Appendix C.\r
+[28] F. Verstraete, J. I. Cirac, arXiv:cond-mat/0407066. F.\r
+Verstraete, J.I. Cirac, V. Murg, Adv. Phys. 57,143\r
+(2008).\r
+[29] G. Vidal Phys. Rev. Lett. 101, 110501 (2008).\r
+[30] R. N. C. Pfeifer, G. Evenbly, G. Vidal, Phys. Rev. A\r
+79(4), 040301(R) (2009). G. Evenbly, G. Vidal, Quantum\r
+Criticality with the Multi-scale Entanglement Renormal\u0002ization Ansatz, chapter 4 in the book ”Strongly Corre\u0002lated Systems. Numerical Methods”, edited by A. Avella\r
+and F. Mancini (Springer Series in Solid-State Sciences,\r
+Vol. 176 2013)\r
+[31] G. Evenbly, G. Vidal, Tensor network renormaliza\u0002tion yields the multi-scale entanglement renormalization\r
+ansatz, arXiv:1502.05385.\r
+[32] X.-G. Wen, private communication.\r
+[33] G. Evenbly et al, Phys. Rev. B 82, 161107(R) (2010). G.\r
+Evenbly, G. Vidal, J. Stat. Phys. (2014) 157:931-978.\r
+[34] B. Swingle, Phys. Rev. D 86, 065007 (2012),\r
+arXiv:0905.1317. H. Matsueda, M. Ishihara and\r
+Y. Hashizume, Phys. Rev. D 87, (2013) 066002,\r
+arXiv:1208.0206. T. Hartman and J. Maldacena, JHEP\r
+05(2013) 014. J. Molina-Vilaplana, J. Prior, Gen.\r
+Relativ. Gravit (2014)46:1823. A. Mollabashi, M.\r
+Nozaki, S. Ryu, T. Takayanagi, JHEP03(2014)098,\r
+arXiv:1311.6095. G. Evenbly, G. Vidal, J Stat Phys\r
+(2011) 145:891-918, arXiv:1106.1082. B. Swingle, Con\u0002structing holographic spacetimes using entanglement\r
+renormalization, arXiv:1209.3304. J. Haegeman, T. J.\r
+Osborne, H. Verschelde, F. Verstraete, Phys. Rev.\r
+Lett. 110, 100402 (2013), arXiv:1102.5524. F. Pastawski,\r
+B. Yoshida, D. Harlow, J. Preskill, JHEP 06 (2015)\r
+149, arXiv:1503.06237. M. Miyaji, T. Takayanagi, Prog.\r
+Theor. Exp. Phys. (2015) 073B03, arXiv:1503.03542. X.-\r
+L. Qi, Exact holographic mapping and emergent space\u0002time geometry, arXiv:1309.6282. N. Bao, C. Cao, S. M.\r
+Carroll, A. Chatwin-Davies, N. Hunter-Jones, J. Pollack\r
+and G. N. Remmen, Phys. Rev. D 91, 125036 (2015),\r
+arXiv:1504.06632.\r
+[35] Z.-C. Gu and X.-G. Wen, private communication.\r
+[36] P. Di Francesco, P. Mathieu, and D. Senechal, Conformal\r
+Field Theory (Springer, 1997).
+
+6\r
+[37] H. W. J. Bl¨ote, J. L. Cardy, M. P. Nightingale, Phys.\r
+Rev. Lett. 56, 724 (1986).\r
+Appendix A.– RG flow in the space of tensors: the\r
+2D classical Ising model.\r
+In this appendix we provide additional details on the\r
+flow that TNR generates when applied to a tensor net\u0002work representation of the partition function of the 2D\r
+classical Ising model on a square lattice, as defined in the\r
+main text.\r
+For all possible values of the temperature T in the Ising\r
+model, the flow is seen to always end in one of three pos\u0002sible fixed-point tensors: the ordered AZ2\r
+for T < Tc,\r
+the critical Acrit for T = Tc, and the disordered Atriv for\r
+T > Tc. The ordered and disorder fixed-point tensors\r
+can be expressed exactly with a finite bond dimension,\r
+namely χ = 2 and χ = 1, respectively, whereas an exact\r
+expression of the critical fixed-point tensor Acrit is sus\u0002pected to require an infinite bond dimension, and thus\r
+here we can only obtain an approximate representation.\r
+We emphasize that the non-critical fixed-point tensors\r
+AZ2 and Atriv are equivalent to those previously obtained\r
+by TEFR [7].\r
+For purposes of clarity, instead of following the flow\r
+of tensors A(s) we will display instead the flow of the\r
+auxiliary tensors B that appear in an intermediate step\r
+of the coarse-graining transformation, see Fig.2 in the\r
+main text, as these tensors have smaller bond dimension\r
+[24], that is less coefficients, and are thus more easily\r
+plotted. However, their behavior under the RG flow is\r
+seen to be essentially equivalent to that of tensors A.\r
+Starting with the partition function Z of the 2D clas\u0002sical Ising model at a temperature T , we coarse grain\r
+the corresponding tensor network iteratively using TNR.\r
+This generates a sequence of tensors B(s), for multiple\r
+RG steps s = 0, 1, 2, . . .. Let [B(s)]ijkl denote the com\u0002ponents of B(s)\r
+. Here we consider the case where each\r
+index (i, j, k, and l) has dimension 4. The elements of\r
+these tensors, reshaped as 16 × 16 matrices [B(s)](ij)(kl)\r
+and then normalized such that their singular values sum\r
+to unity, are plotted in Fig. 5.\r
+Below the critical temperature, T = 0.9 TC , we obtain\r
+a flow towards a fixed-point tensor BZ2 that has two\r
+significant elements [BZ2]1111 = [BZ2]2222 = 0.5, with\r
+all other elements zero or arbitrarily small, correspond\u0002ing to the (Z2-)symmetry-breaking phase. At critical\u0002ity, T = TC , the tensors converge to a highly non-trivial\r
+fixed point tensor after a small number of RG steps, one\r
+which appears only slightly changed from the first ten\u0002sor B(0). Note that, due to the truncation error of the\r
+TNR scheme, we do not obtain a numerically exact fixed\r
+point; nonetheless the individual elements of B(2) and\r
+B(3) all differ by less than 10−4, while the largest el\u0002ements of these tensors are of order ∼ 0.1. We thus\r
+define Bcrit ≡ B(3) as the approximate critical fixed\u0002point tensor. The precision with which scale-invariance\r
+is approximated over successive RG steps is further ex\u0002amined in Fig. 6. Finally, above the critical temperature,"""
+
+[[sections]]
+number = "7"
+title = "FIG. 5. Plots of the elements of tensors [B"
+text = """
+(s)\r
+]ijkl , when re\u0002shaped as 16 × 16 matrices, after s iterations of the TNR\r
+coarse-graining transformation, for several values of s. Dark\r
+pixels indicate elements of small magnitude and lighter pix\u0002els indicate elements with larger magnitude. (a) Starting\r
+at a sub-critical temperature, T = 0.9 TC, the coarse\u0002grained tensors quickly converge to the Z2 fixed-point ten\u0002sor B\r
+Z2 ≡ Btriv ⊕ Btriv. (b) Starting at the critical tem\u0002perature, T = TC, the coarse-grained tensors converge to a\r
+non-trivial fixed-point tensor B\r
+crit. Notice that the difference\r
+between coarse-grained tensors, |B\r
+(s) − B(s+1)|, which is dis\u0002played with the same color intensity as the plots of |B\r
+(s)\r
+|, is\r
+already very small (as compared to the magnitude of the ele\u0002ments in the individual tensors) for s = 1. (c) Starting at the\r
+super-critical temperature, T = 1.1 TC, the coarse-grained\r
+tensors quickly converge to the disordered fixed point B\r
+triv\r
+,\r
+that has only one non-zero element.\r
+T = 1.1 TC , we obtain a trivial fixed-point tensor Btriv.\r
+that has only a single significant element [Btriv]1111 = 1\r
+with all other elements zero or arbitrarily small, which\r
+is representative of the infinite temperature, disordered\r
+phase.\r
+Appendix B.– Non-critical RG fixed points: TRG\r
+versus TNR.\r
+In this appendix we discuss certain aspects of the flow\r
+that TRG and TNR generate in the space of tensors,\r
+which emphasizes one of the main differences between\r
+FIG. 6. The precision with which TNR approximates a scale\u0002invariant fixed point tensor for the 2D classical Ising model at\r
+critical temperature Tc is examined by comparing the differ\u0002ence between tensors produced by successive TNR iterations\r
+δ\r
+(s) ≡ kA(s) − A(s−1)k, where tensors have been normalized\r
+such that kA\r
+(s)\r
+k = 1. For small s (initial RG steps), the main\r
+limitation to realizing scale-invariance exactly is physical: the\r
+lattice Hamiltonian includes RG irrelevant terms that break\r
+scale-invariance at short-distance scales, but are suppressed\r
+at larger distances. On the other hand, for large s (large\r
+number of RG steps) the main obstruction to scale invariance\r
+is the numerical truncation errors, which can be thought of as\r
+introducing RG relevant terms, effectively throwing us away\r
+from criticality and thus scale invariance. Indeed, use of a\r
+larger bond dimension χ, which reduces truncation errors, al\u0002lows TNR to not only achieve a more precise approximation\r
+to scale-invariance, but to hold it for more RG steps.\r
+FIG. 7. (a) CDL tensor A\r
+CDL of Eq. 6. (b) Tensor network\r
+made of CDL tensors, which contains correlations only within\r
+each plaquette.
+
+8\r
+the two approaches. Specifically, we describe a class of\r
+non-critical fixed-points of the flow generated by TRG,\r
+namely those represented by corner double line (CDL)\r
+tensors ACDL, and show that TNR coarse-grains such\r
+tensors into a trivial tensor Atriv. We emphasize that\r
+TEFR can also transform a CDL tensor ACDL into a\r
+trivial tensor Atriv [7].\r
+Fig. 7(a) contains a graphical representation of a CDL\r
+tensor ACDL, which has components ACDL\u0001\r
+ijkl given by\r
+\r
+A\r
+CDL\u0001\r
+(i1i2)(j1j2)(k1k2)(l1l2)\r
+= δi1j2δj1k2δk1l2δl1i2(6)\r
+where a double index notation i = (i1i2) has the meaning\r
+i = i1 + η(i2 − 1). Here the double index runs over val\u0002ues i ∈\r
+\b\r
+1, 2, . . . , η2\r
+\t\r
+for integer η, whereas each single\r
+index runs over values i1, i2 ∈ {1, 2, . . . , η}. Notice that\r
+a square network formed from such CDL tensors ACDL\r
+contains only short-ranged correlations; specifically only\r
+degrees of freedom within the same plaquette can be cor\u0002related. We now proceed to demonstrate that this net\u0002work is an exact fixed point of coarse-graining with TRG,\r
+which was already described in [7]. Note that it is pos\u0002sible to generalize this construction (and the derivation\r
+presented below) by replacing each delta in Eq. 6 (e.g.\r
+δi1j2) with a generic η × η matrix (e.g. Mi1j2) that con\u0002tains microscopic details. For instance, the fixed point\r
+CDL tensors ACDL(T ) obtained with TRG for the off\u0002critical 2D classical Ising model partition function would\r
+contain matrices Mi1j2(T ) that depend on the initial tem\u0002perature T . However, for simplicity, here we will only\r
+consider the case Mi1j2 = δi1j2.\r
+In the first step of TRG the tensor ACDL is factorized\r
+into a pair of three index tensors S,\r
+\r
+A\r
+CDL\u0001\r
+ijkl =\r
+η\r
+X2\r
+m=1\r
+SmijSmkl (7)\r
+where, through use of the double index notation intro\u0002duced in Eq. 7, tensors S may be written,\r
+S(m1m2)(l1l2)(i1i2) = δm1l2δl1i2δi1m2, (8)\r
+see also Fig. 8(a-b). The next step of TRG involves\r
+contracting four S tensors to form an effective tensor A′\r
+for the coarse grained partition function,\r
+A\r
+′\r
+ijkl =\r
+η\r
+X2\r
+m,n,o,p=1\r
+SimpSjnmSkonSlpo (9)\r
+where, through use of the explicit form of S given in Eq.\r
+8, the tensor A′is computed as,\r
+A\r
+′\r
+(i1i2)(j1j2)(k1k2)(l1l2) = ηδi1j2\r
+δj1k2\r
+δk1l2\r
+δl1i2\r
+, (10)\r
+see also Fig. 8(c-d). Notice that the effective tensor\r
+is proportionate to the original CDL tensor, A′\r
+ijkl =\r
+FIG. 8. A depiction of the two key steps of the TRG coarse\u0002graining transformation. (a) The first step factorizes the ten\u0002sor A\r
+CDL into a product of two tensors S. (b) Local detail\r
+of the factorization for CDL tensors, see also Eq. 7. (c) The\r
+second step contracts four tensors S into an effective tensor\r
+A\r
+′\r
+. (d) Local detail of the contraction step, see also Eq. 10.\r
+Notice that the effective tensor A\r
+′\r
+is also a CDL tensor (with\r
+a 45 degree tilt), indicating that CDL tensors are a fixed point\r
+of the TRG coarse-graining transformation.\r
+η\r
+\r
+ACDL\u0001\r
+ijkl, where the multiplicative factor of η arises\r
+from the contraction of a ‘loop’ of correlations down to a\r
+point,\r
+X\r
+η\r
+m1,n1,o1,p1=1\r
+δm1n1δn1o1δo1p1δp1m1 = η, (11)\r
+as depicted in Fig. 8(d). That the network of CDL ten\u0002sors is a fixed point of TRG indicates that some of the\r
+short-range correlations in the tensor network are pre\u0002served during coarse-graining, i.e. that TRG is artificially\r
+promoting short-ranged degrees to a larger length scale.\r
+As a result TRG defines a flow in the space of tensors\r
+which is not consistent with what is expected of a proper\r
+RG flow. Indeed, two tensor networks that only differ\r
+in short-range correlations, as encoded in two different\r
+ACDL and A˜CDL tensors (differing e.g. in the dimension
+
+9\r
+η of each index i1, i2, j1, · · · , or, more generally, on the\r
+matrices Mi1j2 discussed above) should flow to the same\r
+fixed point, but under TRG they will not.\r
+FIG. 9. Depiction of the explicit form of the required (a)\r
+disentangler u, see also Eq. 12, (b-c) isometries w and v, see\r
+also Eq. 13, for coarse-graining the network of CDL tensors\r
+A\r
+CDL, see Eq. 6, using TNR.\r
+We next apply the TNR approach to a network of CDL\r
+tensors, as defined in Eq. 6, demonstrating that this net\u0002work is mapped to a network of trivial tensors Atriv, with\r
+effective bond dimension χ\r
+′ = 1, thus further substanti\u0002ating our claim that the TNR approach can properly ad\u0002dress all short-ranged correlations at each RG step. Fig.\r
+9 depicts the form of disentangler u and isometries v and\r
+w that insert into the network of CDL tensors at the\r
+first step of TNR, as per Fig.2(a), which are defined as\r
+follows. Let us first regard each index of the initial net\u0002work as hosting a η\r
+2\r
+-dimensional complex vector space\r
+V ≡ C\r
+η\r
+2\r
+, and similarly define a η-dimensional complex\r
+vector space V˜ ≡ C\r
+η\r
+. Then the disentangler uijkl we use\r
+is an isometric mapping u : V˜ ⊗ V˜ → V ⊗ V, with in\u0002dices i, j ∈ {1, 2, . . . , η} and k, l ∈ {1, 2, . . . , η2}, that is\r
+defined,\r
+uij(k1k2)(l1l2) = √\r
+1\r
+η\r
+δik1δk2l2δjl1, (12)\r
+where we employ the double index notation, k = (k1, k2)\r
+and l = (l1, l2). It is easily verified that u is isometric,\r
+u\r
+†u = ˜I⊗2\r
+, with ˜I as the identity on V˜. The isometries\r
+vijk and wijk are mappings v : V˜ → V ⊗ V˜ that are\r
+defined,\r
+wij(k1k2) = vij(k1k2) = √\r
+1\r
+η\r
+δik1δk2l2\r
+δjl1\r
+, (13)\r
+where again use double index notation, k = (k1, k2).\r
+When inserted into the a 2 × 2 block of tensors from\r
+the network of CDL tensors, as depicted in Fig. 1(b),\r
+FIG. 10. A depiction of the key steps of the TNR coarse\u0002graining transformation in the presence of CDL tensors A\r
+CDL\r
+.\r
+(a) Insertion of disentanglers u and isometries v and w be\u0002tween two pairs of CDL tensors A\r
+CDL results in the elimina\u0002tion of the short-range correlations inside the plaquette that\r
+those four tensors form. (b)-(c) As a result, the auxiliary\r
+tensors B and C only propagate part of the short-range cor\u0002relations, as represented by the existence of two lines. These\r
+tensors are to be compared with the analogous tensor in TRG,\r
+namely A\r
+′\r
+in Fig. 8(d) or A\r
+CDL in Fig. 7(a), which still con\u0002tain four lines. (d) As a result, the new tensor A\r
+′\r
+, formed\r
+by factoring B according to a left-right partition of indices\r
+and C according to an up-down partition of indices, is the\r
+trivial tensor A\r
+triv, which contains no lines and therefore no\r
+correlations\r
+this choice of unitary u and isometries w and v act as ex\u0002act resolutions of the identity, see Fig. 10(a). Thus the\r
+first step of the coarse graining with TNR, as depicted\r
+in Fig. 2(a), is also exact. Following the second step of\r
+TNR, Fig. 2(b), one obtains four-index tensors B and C\r
+as depicted in Fig. 10(b-c), which are computed as,\r
+Bijkl = η\r
+4\r
+(δilδjk),\r
+Cijkl = η\r
+−1\r
+(δij δkl), (14)\r
+with indices i, j, k, l ∈ {1, 2 . . . η}. The third step of TNR,\r
+see Fig. 2(c), involves factoring the tensors B and C into\r
+a products of three index tensors according to a particu\u0002lar partition of indices: B(il)(jk) and C(ij)(kl) respectively.
+
+10\r
+However, we see from Eq. 14 that the tensors factor triv\u0002ially across these partitions, which implies that the effec\u0002tive tensor A′ obtained in the final step of the TNR iter\u0002ation is trivial (i.e. of effective bond dimension χ\r
+′ = 1),\r
+see also Fig. 10(d). Thus we have confirmed that the net\u0002work of CDL tensors, which contained only short ranged\r
+correlations, can be mapped to a trivial fixed point in a\r
+single iteration of TRG, consistent with what is expected\r
+of a proper RG flow.\r
+Appendix C.– Critical systems.\r
+In this appendix we compare the behaviour of TNR\r
+and TRG at criticality. TNR produces a critical fixed\u0002point tensor. In contrast, as first argued by Levin and\r
+Nave in Ref. [4], TRG does not. Insight into the differ\u0002ent behaviour of TRG and TNR is provided by the scal\u0002ing of an entropy attached to critical tensors, see Fig."""
+
+[[sections]]
+number = "13"
+title = "As expected, this entropy is independent of scale"
+text = """
+in TNR (since TNR produces a critical fixed-point ten\u0002sor, independent of scale), while it grows roughly linearly\r
+with scale in TRG, where no critical fixed-point tensor is\r
+reached.\r
+We also examine improved versions of TRG based on\r
+computing a so-called environment, such as the second\r
+renormalization group (SRG) [5, 6, 9], and show that\r
+they also fail to produce a critical fixed-point tensor –\r
+the entropy grows linearly as in TRG, see Fig. 15. Fi\u0002nally, we point out that in spite of the fact that Ref.\r
+[7] refers to TEFR critical tensors as fixed-point tensors,\r
+Ref. [7] presents no evidence that TEFR actually pro\u0002duces a fixed-point tensor at criticality.\r
+A critical system is described by a conformal field the\u0002ory (CFT). We conclude this appendix by reviewing the\r
+computation of scaling dimensions of the CFT by diag\u0002onalizing a transfer matrix of the critical partition func\u0002tion. Any method capable of accurately coarse-graining\r
+the partition function can be used to extract accurate es\u0002timates of the scaling dimensions, regardless of whether\r
+the method produces a critical fixed-point tensor. Ac\u0002cordingly, Table I shows that TRG, an improved TRG\r
+with environment, and TEFR indeed produce excellent\r
+estimates of the scaling dimensions. Nevertheless, TNR\r
+is seen to produce significantly better estimates.\r
+Critical fixed-point tensor in TNR\r
+As discussed in the main text and in appendix A,\r
+when applied to the partition function of the critical Ising\r
+model, TNR produces a flow {A(0), A(1), · · · } in the space\r
+of tensors that quickly converges towards a fixed-point\r
+tensor Acrit. By fixed-point tensor Acrit we mean a ten\u0002sor that remains the same, component by component,\r
+under further coarse-graining transformations. This is\r
+the case up to small corrections that can be systemati\u0002cally reduced by increasing the bond dimensions χ (see\r
+appendix A for quantitative details).\r
+Thus, at criticality, TNR explicitly recovers scale in\u0002variance, as expected of a proper RG transformation.\r
+This is analogous to the explicit realization of scale in\u0002variance in critical quantum lattice models obtained pre\u0002viously with the MERA [29, 30] (and, ultimately, closely\r
+related to it [31]). In addition to making a key conceptual\r
+point, realizing scale invariance explicitly in the MERA\r
+led to a number of practical results. For instance, it led\r
+to identifying a lattice representation of the scaling op\u0002erators of the theory, and the computation of the scaling\r
+dimensions and operator product expansion coefficients\r
+of the underlying CFT [30]. Moreover, it produced an\r
+extremely compact representation of the wave-function\r
+of a critical system directly in the thermodynamic limit,\r
+avoiding finite size effects. In turn, this resulted in a\r
+new generation of approaches both for homogeneous crit\u0002ical systems [30] and for critical systems with impurities,\r
+boundaries, or interfaces [33]. Finally, the scale-invariant\r
+MERA has become a recurrent toy model as a lattice re\u0002alization of the AdS/CFT correspondence [34]. We thus\r
+expect that the explicit invariance of Acrit, as realized by\r
+TNR, will be similarly fruitful.\r
+Absence of critical fixed-point tensor in TRG\r
+In their TRG paper [4], Levin and Nave already argued\r
+that TRG should not be expected to produce a fixed\u0002point tensor at criticality. The reason is that a critical\r
+tensor in TRG should be thought of as effectively repre\u0002senting a one-dimensional quantum critical system with\r
+an amount of entanglement that scales logarithmic in the\r
+system size –that is, linearly in the number of coarse\u0002graining step. Thus at criticality the tensor manifestly\r
+changes each time that the system is coarse-grained. As\r
+a matter of fact, the authors referred to this situation as\r
+the breakdown of TRG at criticality (to account for a lin\u0002ear growth of entropy with the number of coarse-graing\r
+steps, the bond dimension χ must grow exponentially,\r
+and so the computational cost), and related it to the\r
+similar critical breakdown of the density matrix renor\u0002malization group [3].\r
+In spite of Levin and Nave’s original argument jus\u0002tifying the breakdown of TRG at criticality, one might\r
+wonder whether there is a local choice of gauge such that\r
+TRG also flows into a fixed-point tensor (up to small nu\u0002merical errors) [35]. This local gauge freedom (called\r
+field redefinition in [7]), refers to a local change of ba\u0002sis on individual indices of the tensor, implemented by\r
+invertible matrices x and y\r
+Aijkl →\r
+X\r
+i\r
+′j′k′\r
+l\r
+′\r
+(A)i\r
+′j′k′\r
+l\r
+′xii′ (x\r
+−1\r
+)k′kyll′ (y\r
+−1\r
+)j\r
+′j , (15)
+
+11\r
+under which the partition function Z represented by the\r
+tensor network remains unchanged. That is, one might\r
+wonder if after a proper choice of local gauge, the critical\r
+tensors A(s) and A(s+1) before and after the TRG coarse\u0002graining step s are (approximately) the same. [We notice\r
+that, in order to simplify the comparison with TNR, here\r
+by one TRG coarse-graining step we actually mean two\r
+TRG coarse-graining steps as originally defined in [4],\r
+so that the square lattice is mapped back into a square\r
+lattice with the same orientation].\r
+FIG. 11. Tensor network representation of matrices M(s)and\r
+Γ\r
+(s)\r
+, as well as the quantities Θ(s)\r
+2 and Θ(s)"""
+
+[[sections]]
+number = "1"
+title = "By construction,"
+text = """
+Θ\r
+(s)\r
+2 and Θ(s)\r
+1 are invariant under local gauge transformations,\r
+as are the eigenvalues of matrices M(s)and Γ(s).\r
+In order to definitely confirm that indeed TRG does\r
+not produce a critical fixed-point tensor even up to local\r
+gauge transformations, we will study the dependence of\r
+a matrix Γ(s)in the coarse-grainng step s. Matrix Γ(s)\r
+is defined in terms of two tensors A(s) according to Fig.\r
+11(b). Γ(s)itself is not invariant under local gauge trans\u0002formations, but one can build gauge invariant quantities\r
+out of it. Here we will focus on two such gauge invariant\r
+objects: the spectrum of eigenvalues of Γ(s), as well as a\r
+simple tensor network Θ(s)\r
+2 built from four copies of A(s)\r
+and that amounts to\r
+Θ\r
+(s)\r
+2 ≡ tr \u0010\r
+(Γ(s))\r
+2\r
+\u0011\r
+. (16)\r
+Fig. 12 shows the spectrum of eigenvalues {λα(s)} of\r
+the normalized density matrix Γ(s)/Θ\r
+(s)\r
+1\r
+as a function of\r
+the TRG step s. One can see that the spectrum be\u0002comes flatter as s increases, indicating that more eigen\u0002values become of significant size. [In contrast, the spec\u0002trum remains essentially constant as a function of the\r
+TNR step s]. Fig. 13 shows the von Neumannm en\u0002tropy S({λα}) ≡ −P\r
+α\r
+λα log(λα) and the Renyi entropy\r
+Rn({λα}) ≡ log(P\r
+α\r
+λ\r
+n\r
+α)/(1 − n) of index n = 2\r
+R2 = − log X\r
+α\r
+(λα)\r
+2\r
+!\r
+= − log \r
+Θ\r
+(s)\r
+2\r
+(Θ(s)\r
+1\r
+)\r
+2\r
+!\r
+, (17)\r
+both of which are invariant under local gauge transfor\u0002mations. These entropies grow linearly in the TRG step\r
+s.\r
+FIG. 12. Spectrum of eigenvalues of the normalized matrix\r
+Γ\r
+s\r
+/Θ\r
+(s)\r
+1 as a function of the coarse-graining step s, both for\r
+TRG (left) and TNR (right). In TRG, the spectrum becomes\r
+flatter with increasing s. In TNR, the spectrum is essentially\r
+independent of s for s ≥ 3.\r
+FIG. 13. Von Neumman entropy S({λα}) and Renyi entropy\r
+R2({λα}) of the eigenvalues of the density matrix Γ(s)/Θ\r
+(s)"""
+
+[[sections]]
+number = "1"
+title = "For TRG, these entropies grow linearly in the coarse-graining"
+text = """
+step s (or logarithmically in the number 2sof quantum spins).\r
+For TNR, these entropies are essentially constant for s ≥ 3.\r
+The flattening of the spectrum in Fig. 12, as well\r
+as the steady growth of the entropies S and R2 in Fig.\r
+13 constitute an unambiguous confirmation that critical\r
+TRG tensors A(s) and A(s+1) are not equal up to a local\r
+gauge transformation, not even approximately. In ad\u0002dition, these features are robust against increasing the\r
+bond dimension χ, and therefore are not an artifact of\r
+the truncation.
+
+12\r
+FIG. 14. Relative error in the free energy per site δf as a func\u0002tion of bond dimension χ for the 2D Ising model at critical\u0002ity, comparing HOTRG, HOSRG and TNR. Through use of\r
+the environment HOSRG is able to give better accuracy than\r
+HOTRG for any given χ, though the accuracy of HOSRG is\r
+still less than that of TNR.\r
+Use of environment\r
+A significant advance in renormalization methods for\r
+tensor networks since the introduction of TRG has been\r
+the use of the so-called environment to achieve a more\r
+accurate truncation step. The improved TRG method\r
+proposed in Ref. [5] under the name of “poor-man’s\r
+SRG” generates local weights that represent the local en\u0002vironment in a small neighborhood in the tensor network,\r
+while the second renormalization group (SRG) proposed\r
+in Ref. [6] takes this idea further by using a global envi\u0002ronment that represents the entir tensor network.\r
+Fig. 14 shows that, for the 2D Ising model at critical\u0002ity, the use of an environment produces a more accurate\r
+numerical estimate of the free energy per site. Specif\u0002ically, the data corresponds to the higher order tensor\r
+renormalization group (HOTRG) proposed in Ref.[9], an\r
+improvement on TRG based upon the higher order singu\u0002lar value decomposition (HOSVD) but does not take the\r
+environment into account; and to the higher order sec\u0002ond renormalization group (HOSRG), which uses both\r
+HOSVD and the global environment. It is also worth\r
+pointing out however that TNR, which in its current\r
+implementation is a purely local update that does not\r
+take into account the environment, produces more accu\u0002rate results than HOSRG for the same value of the bond\r
+dimension. [Moreover, the cost in TNR scales only as\r
+O(χ\r
+6\r
+), whereas the cost of HOTRG and HOSRG scales\r
+as O(χ\r
+7\r
+)].\r
+Based upon the improvement in free energy of HOSRG\r
+compared to HOTRG, one may wonder whether the use\r
+of the environment, as in SRG, could potentially re\u0002FIG. 15. (left) Spectrum of eigenvalues of the normalized\r
+matrix Γs/Θ\r
+(s)\r
+1 as a function of the coarse-graining step s for\r
+HOSRG, In TRG, which becomes flatter with increasing s.\r
+(right) Von Neumman entropy S({λα}) of the eigenvalues of\r
+the density matrix Γ(s)/Θ\r
+(s)\r
+1\r
+, comparing HOTRG, HOSRG\r
+and TNR. For both HOTRG and HOSRG these entropies\r
+grow linearly in the coarse-graining step s (or logarithmically\r
+in the number 2sof quantum spins), indicating that the ten\u0002sors are not flowing to a scale-invariant fixed point.\r
+solve the breakdown of TRG at criticality and even pro\u0002duce a critical fixed-point tensor. We have investigated\r
+this question numerically by analyzing the RG flow of\r
+tensors generated by HOTRG and HOSRG for the 2D\r
+Ising model at criticality, as shown in Fig.15. Under\r
+coarse-graining with HOSRG, the spectrum of the crit\u0002ical tensors grows increasingly flat with RG step, in a\r
+similar manner as was observed with standard TRG in\r
+Fig.12. The same occurs for HOTRG (not plotted). Like\u0002wise, in both HOTRG and HOSRG, the entropy of ten\u0002sors is seen to increase roughly linearly with RG step,\r
+and this growth is essentially robust under increasing\r
+the bond dimension. These results clearly demonstrate\r
+that (HO)SRG does not produce a critical fixed-point\r
+tensor. Thus we conclude that the use of environment\r
+in (HO)SRG, while leading to a more accurate coarse\u0002graining transformation for fixed bond dimension over\r
+(HO)TRG, does not prevent the computational break\u0002down experienced by TRG at criticality. In particular\r
+SRG still fails to produce a proper RG flow and critical\r
+fixed-point tensor.\r
+The TEFR algorithm\r
+Ref. [7] refers to the tensors obtained with TEFR at\r
+criticality as fixed-point tensors. Accordingly, one might\r
+be led to conclude that TEFR actually generates a fixed-
+
+13\r
+exact TRG(64) TRG+env(64) TEFR(64) TNR(24)\r
+c 0.5 0.49982 0.49988 0.49942 0.50001\r
+σ 0.125 0.12498 0.12498 0.12504 0.1250004\r
+ǫ 1 1.00055 1.00040 0.99996 1.00009\r
+1.125 1.12615 1.12659 1.12256 1.12492\r
+1.125 1.12635 1.12659 1.12403 1.12510\r
+2 2.00243 2.00549 - 1.99922\r
+2 2.00579 2.00557 - 1.99986\r
+2 2.00750 2.00566 - 2.00006\r
+2 2.01061 2.00567 - 2.00168\r
+TABLE I. Exact values and numerical estimates of the central\r
+charge c and lowest scaling dimensions of the critical Ising\r
+model. TRG results are obtained using the original Levin and\r
+Nave’s algorithm [4]. TRG+env results are obtained using an\r
+improved TRG method proposed in Ref. [5] under the name\r
+of “poor-man’s SRG”. TEFR results are taken from Ref.\r
+[7]. The first three numerical columns use bond dimension\r
+χ ≡ Dcut = 64 and 1024 spins, while the TNR data uses\r
+χ = 24 and 262,144 spins.\r
+point tensor (and thus recovers scale invariance) at crit\u0002icality. As demonstrated in Ref. [7], TEFR produces\r
+accurate estimates of the central charge c and scaling di\u0002mensions ∆α for the Ising model, and one might indeed\r
+misinterpret those as being evidence for having generated\r
+a critical fixed-point tensor. However, the estimates re\u0002ported in Ref. [7] for c and ∆α are of comparable ac\u0002curacy to those obtained with TRG and “poor-man’s\r
+SRG” using the same bond dimension (see Table I in\r
+Sect. C.5). Since the above methods demonstrably fail\r
+to produce a fixed-point tensor, the accurate TEFR es\u0002timates provided in Ref. [7] are no evidence that TEFR\r
+has produced a critical fixed-point tensor. In conclusion,\r
+Ref. [7] refers to the TEFR critical tensors as fixed-point\r
+tensors, but Ref. [7] provides no evidence that TEFR\r
+realizes a fixed-point tensor at criticality.\r
+Extraction of scaling dimensions from a transfer\r
+matrix\r
+In proposing TRG in Ref. [4], Levin and Nave refer\r
+to the significant loss of efficiency experienced by the\r
+method at criticality as TRG’s critical break-down. It is\r
+important to emphasize that, in spite of this significant\r
+loss of efficiency at criticality, TRG can still be used to\r
+extract universal information about a phase transition,\r
+by studying the partition function of a finite system.\r
+The key theoretical reason is that in a finite system\r
+one can observe a realization of the so-called operator\u0002state correspondence in conformal field theories (CFT),\r
+which asserts that there is a one-to-one map between\r
+the states of the theory and its scaling operators [36].\r
+Specifically, the finite size corrections are universal and\r
+controlled by the spectrum of scaling dimensions of the\r
+theory [37]. This is best known in the context of critical\r
+quantum spin chains, where Cardy’s formula relates the\r
+smallest scaling dimensions ∆α of the conformal theory\r
+to the lowest eigenvalues Eα of the critical Hamiltonian\r
+on a periodic chain according to\r
+Eα(L) − Eα(∞) = η\r
+2π\r
+L\r
+∆α + · · · , (18)\r
+where L is the number of spins on the chain, Eα(∞)\r
+is the energy in an infinite system, η (independent of\r
+α) depends on the normalization of the Hamiltonian,\r
+and where the sub-leading non-universal corrections are\r
+O(1/L2) in the absence of marginal operators. Thus, we\r
+can estimate scaling dimensions ∆α by diagonalizing a\r
+critical Hamiltonian on a finite periodic chain, as it is\r
+often done using exact diagonalization techniques. In a\r
+two dimensional statistical system, the analogous result\r
+is the observation that even in a finite system, a critical\r
+partition function Z is organized according to the scaling\r
+dimensions of the theory as\r
+Z = e\r
+aLxLy X\r
+α\r
+e\r
+−Ly\r
+2π\r
+Lx\r
+(∆α− c\r
+12 )+··· )\r
+, (19)\r
+where a is some non-universal constant, c is the central\r
+charge of the CFT, and we assumed isotropic couplings\r
+and a square torus made of Lx × Ly sites.\r
+FIG. 16. Calculation of the smallest non-zero scaling dimen\u0002sion of 2D classical Ising at criticality, computed using either\r
+TRG or TNR through diagonalization of the transfer operator\r
+on an effective linear system size of L spins, comparing to the\r
+exact result ∆σ = 1/8. For small system sizes, L < 2\r
+6\r
+spins,\r
+finite size effects limit the precision with which ∆σ can be\r
+computed, while for large system sizes truncation errors re\u0002duce the accuracy of the computed value of ∆σ. However, it\r
+is seen that the TNR approach maintains accuracy for much\r
+larger system sizes than does TRG: while TRG with bond\r
+dimension χ = 80 gives ∆σ within 1% accuracy up to lin\u0002ear system size L = 211 spins, a TNR with bond dimension\r
+χ = 24, which required a similar computation time as the\r
+χ = 80 TRG result, gives 1% accuracy up to L = 224 spins.\r
+As proposed by Gu and Wen [7], if the coarse-grained\r
+tensor A(s)effectively represents the whole partition
+
+14\r
+function of a system made of 2s × 2\r
+s\r
+sites (and thus\r
+Lx = Ly = 2s), then we can extract the central charge\r
+c and scaling dimensions ∆α from it by e.g. computing\r
+the spectrum of eigenvalues of the matrix M(s)(see Fig.\r
+11(a)),\r
+\u0010\r
+M(s)\r
+\u0011\r
+ik\r
+≡\r
+X\r
+j\r
+\u0010\r
+A\r
+(s)\r
+\u0011\r
+ijkj\r
+. (20)\r
+Indeed, after removing the non-universal constant a in\r
+Eq. 19 [by suitably normalizing the initial tensors A(0)],\r
+the largest eigenvalues λα of M(s) are of the form [7]\r
+λα = e\r
+−2π(∆α− c\r
+12 +O("""
+
+[[sections]]
+number = "1"
+title = "L )"
+text = """
+. (21)\r
+For instance, Table I shows remarkably accurate es\u0002timates of the central charge c and lowest scaling di\u0002mensions ∆α obtained by using TRG and other related\r
+methods on a finite lattice made of 1024 spins. These re\u0002sults are a strong indication that TRG accurately coarse\u0002grains the partition function of such a finite system. [The\r
+table also shows more accurate results obtained with\r
+TNR on larger systems using a smaller bond dimension.]\r
+In Fig. 16 we examine the accuracy with which TRG\r
+and TNR reproduce the dominant scaling dimension of\r
+the Ising model, ∆σ = 1/8, on finite lattices of differ\u0002ent linear size L. Here it can be seen that TRG results\r
+quickly lose accuracy for larger system sizes, a manifes\u0002tation of the breakdown of TRG at criticality, whilst the\r
+results from TNR maintain a high level of accuracy even\r
+for very large systems. For instance in comparing the\r
+χ = 80 TRG result to the χ = 24 TNR results, which\r
+both required a roughly equivalent computation time to\r
+run on a laptop computer (∼ 3 hours), the TRG calcu\u0002lation gave ∆σ to with 1% accuracy for spins systems\r
+with linear dimension large as L = 211, while the TNR\r
+calculation the same accuracy for systems with linear di\u0002mension large as L = 224: roughly 4000 times larger\r
+linear dimension than TRG.\r
+In conclusion, TRG is an excellent method to study\r
+critical partition functions on a finite system, provided\r
+that the size of the system that we want to investigate\r
+is small enough that the truncation errors are not yet\r
+significant. In the critical Ising model, sub-leading (non\u0002universal) finite size corrections to the dominant (uni\u0002versal) contributions to the partition function (that is,\r
+to the weights e\r
+−2π(∆α−c/12) for small ∆α) happen to be\r
+very small even for relatively small systems. As a re\u0002sult, one can use TRG to extract remarkably accurate\r
+estimates of the central charge c and smallest scaling di\u0002mensions ∆α. This calculation is analogous to extracting\r
+scaling dimensions by diagonalizing the Hamiltonian of a\r
+quantum critical system on a finite ring and then using\r
+Cardy’s formula (Eq. 18).\r
+However, the ability to extract accurate estimates of\r
+the central charge and scaling dimensions after applying\r
+a coarse-graining transformation such as TRG on a finite\r
+system does not imply that one has obtained a critical\r
+fixed-point tensor. Indeed, we have shown above that\r
+TRG does not produce a critical fixed-point tensor, as\r
+had already been anticipated by Levin and Nave [4]."""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 5
+image_path = "images/image_p5_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 5
+image_path = "images/image_p5_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 5
+image_path = "images/image_p5_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 5
+image_path = "images/image_p5_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 7
+image_path = "images/image_p7_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 7
+image_path = "images/image_p7_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 7
+image_path = "images/image_p7_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 8
+image_path = "images/image_p8_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 9
+image_path = "images/image_p9_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 9
+image_path = "images/image_p9_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 9
+image_path = "images/image_p9_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 9
+image_path = "images/image_p9_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 9
+image_path = "images/image_p9_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 9
+image_path = "images/image_p9_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 11
+image_path = "images/image_p11_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 11
+image_path = "images/image_p11_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 11
+image_path = "images/image_p11_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 11
+image_path = "images/image_p11_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 12
+image_path = "images/image_p12_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 12
+image_path = "images/image_p12_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 13
+image_path = "images/image_p13_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 13
+image_path = "images/image_p13_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 13
+image_path = "images/image_p13_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 13
+image_path = "images/image_p13_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 13
+image_path = "images/image_p13_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 13
+image_path = "images/image_p13_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 14
+image_path = "images/image_p14_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 14
+image_path = "images/image_p14_33.png"

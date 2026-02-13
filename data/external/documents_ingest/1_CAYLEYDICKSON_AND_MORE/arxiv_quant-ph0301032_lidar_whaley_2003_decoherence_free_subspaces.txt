@@ -1,0 +1,1915 @@
+                                      Decoherence-Free Subspaces and Subsystems
+
+                                      Daniel A. Lidar1 and K. Birgitta Whaley2
+                                      1
+                                        Chemical Physics Theory Group, Chemistry Department, University of Toronto, 80
+                                        St. George St., Toronto, Ontario M5S 3H6, Canada
+                                      2
+                                        Department of Chemistry and Kenneth Pitzer Center for Theoretical Chemistry,
+                                        University of California, Berkeley, California 94720, USA
+
+
+
+
+arXiv:quant-ph/0301032v1 9 Jan 2003
+                                      Abstract. Decoherence is the phenomenon of non-unitary dynamics that arises as
+                                      a consequence of coupling between a system and its environment. It has important
+                                      harmful implications for quantum information processing, and various solutions to the
+                                      problem have been proposed. Here we provide a detailed a review of the theory of
+                                      decoherence-free subspaces and subsystems, focusing on their usefulness for preserva-
+                                      tion of quantum information.
+
+
+                                      1   Introduction
+                                      Recent results indicating that quantum information processing (QIP) is inher-
+                                      ently more powerful than its classical counterpart [1–3] have motivated a resur-
+                                      gence of interest in the problem of decoherence [4]. Decoherence is a consequence
+                                      of the inevitable coupling of any quantum system to its environment (or bath),
+                                      causing information loss from the system to this environment. It was recognized
+                                      early on that decoherence poses a serious obstacle to physical realization of quan-
+                                      tum information processors [5, 6]. Here we define decoherence as non-unitary
+                                      dynamics that is a consequence of system-environment coupling. This includes
+                                      (but is not limited to) both dissipative and dephasing contributions, tradition-
+                                      ally known as T1 and T2 processes, respectively. Dissipation refers to processes in
+                                      which the populations of the quantum states are modified by interactions with
+                                      the environment, while dephasing refers to processes that randomize the relative
+                                      phases of the quantum states. Both are caused by entanglement of the system
+                                      with environmental degrees of freedom, leading to non-unitary system dynam-
+                                      ics [7]. For QIP and other forms of quantum control, any such interaction that
+                                      degrades the unitary nature of the quantum evolution is undesirable, since it
+                                      causes loss of coherence of the quantum states and hence an inevitable decay of
+                                      their interference and entanglement. Interference is crucial for coherent control
+                                      schemes [8, 9], while entanglement is believed to be as important an ingredient
+                                      of the quantum computational speed-up [10]. In fact, a sufficiently decohered
+                                      quantum computer can be efficiently simulated on a classical computer [11]. In
+                                      this review we provide a detailed introduction to the theory of decoherence-free
+                                      subspaces and subsystems (DFSs), which have been conceived as one of the
+                                      possible solutions to decoherence in QIP. Space limitations prevent us from dis-
+                                      cussing in detail the interesting problem of performing computation using DFSs.
+                                      Instead we focus here on the use of DFSs as a way to preserve delicate quantum
+                                      information.
+2      Lidar & Whaley
+
+2   Historical Background
+Environment-induced decoherence is a very extensively studied phenomenon in
+the quantum theory of measurement, and of the transition from quantum to
+classical behavior. Zurek has shown that environmental superselection results
+in the establishment of certain special states that show redundancies in their
+correlations with the environment, and that may consequently be essentially un-
+perturbed by this [12]. These states, referred to as “pointer states” , are defined
+by a “predictability sieve” [13]. While analysis of measurements are compli-
+cated by the presence of a measurement apparatus in addition to the system
+and environment, the notion of a special set of states that are defined by some
+underlying symmetry in the global physical description is a common element.
+Another noteworthy early study employing symmetries in order to reduce the
+coupling of subsets of system states to the environment is Alicki’s work on lim-
+ited thermalization [14]. Identifying the power of such symmetries in the physical
+Hamiltonian, and systematizing the way to find such symmetries has been one
+of the major innovative features of the recent development of DFS theory and
+its applications for quantum computation.
+    Early discussions of the effects of decoherence on quantum computation fo-
+cused on putting conditions on the strength of coupling of the system-environment
+coupling and on the duration of quantum gates [5, 6]. The search for systematic
+ways to bypass decoherence in the context of QIP, based on identification of
+states that might be immune to certain decohering interactions, started with
+observations of Palma, Suominen, and Ekert [15] in a study of the effects of
+pure dephasing, that two qubits possessing identical interactions with the en-
+vironment do not decohere. Palma et al. used the term “subdecoherence” to
+describe this phenomenon, suggested using the corresponding states to form a
+“noiseless” encoding into logical qubits, and noted that the set of states ro-
+bust against dephasing will depend on the specific form of qubit-environment
+coupling. This model was subsequently studied using a different method by
+Duan and Guo [16], with similar conclusions and a change of terminology to
+“coherence preserving states”. The idea of pairing qubits as a means for pre-
+serving coherence was further generalized by Duan and Guo in [17], where it
+was shown that both collective dephasing and dissipation could be prevented.
+However this assumed knowledge of the system-environment coupling strength.
+These early studies were subsequently cast into a general mathematical frame-
+work for DFSs of more general system/environment interactions by Zanardi and
+Rasetti, first for the spin-boson model in [18], where the important “collective
+decoherence” model was introduced (where several qubits couple identically to
+the same environment, while undergoing both dephasing and dissipation), then
+for general Hamiltonians [19]. Their elegant algebraic analysis established the
+importance of identifying the dynamical symmetries in the system-environment
+interaction, and provided the first general formal condition for decoherence-free
+(DF) states, that did not require knowledge of the system-environment coupling
+strength. In the work of Zanardi and Rasetti these are referred to as “error
+avoiding codes”. Several papers focusing on collective dissipation appeared sub-
+                                Decoherence-Free Subspaces and Subsystems          3
+
+sequently [20–22], as well as applications to encoding information in quantum
+dots [23, 24]. Zanardi [25] and independently Lidar, Chuang, and Whaley [26]
+showed that DF states could also be derived from very general considerations
+of Markovian master equations. Lidar et al. introduced the term “decoherence-
+free subspace”, analyzed their robustness against perturbations, and pointed out
+that the absence of decoherence for DF states can be spoiled by evolution under
+the system Hamiltonian, identifying a second major requirement for viable use
+of the DF states for either quantum memory or quantum computation [26]. A
+completely general condition for the existence of DF states was subsequently
+provided in terms of the Kraus operator sum representation (OSR) by Lidar,
+Bacon and Whaley [27]. All these studies share essentially the same canonical
+example of system-environment symmetry: A qubit-permutation symmetry in
+the system-environment coupling, that gives rise to collective dephasing, dissi-
+pation, or decoherence. The other main example of a symmetry giving rise to
+large DFSs was provided by Lidar et al. in [28]. This is a much weaker form of
+spatial symmetry than permutation-invariance, termed “multiple-qubit errors”,
+which we describe in detail in Section 6.4.
+    Several papers reported various generalizations of DFSs, e.g., by extending
+DFSs to quantum groups [29], using the rigged Hilbert space formalism [30], and
+deriving DFSs from a scattering S-matrix approach [31]. However, the next ma-
+jor step forward in generalizing the DFS concept was taken by Knill, Laflamme,
+and Viola [32], who introduced the notion of a “noiseless subsystem”. Whereas
+previous DFS work had characterized DF states as singlets (one dimensional ir-
+reducible representations) of the algebra generating the dynamical symmetry in
+the system-bath interaction, the work by Knill et al. showed that higher dimen-
+sional irreducible representations can support DF states as well. An important
+consequence was the reduction of the number of qubits needed to construct a
+DFS under collective decoherence from four to three. This was noted indepen-
+dently by De Filippo [33] and by Yang and Gea-Banacloche [34]. The generaliza-
+tion from subspaces to subsystems has provided a powerful and elegant tool on
+which the full theory of universal, fault tolerant quantum computation on DF
+states has now been established [35, 36]. It has also provided a basis for unify-
+ing essentially all known decoherence-suppression/avoidance strategies [37, 38].
+In the remainder of this chapter we shall follow our usual convention to refer
+to both subsystems and subspaces interchangeably with the acronym DFS, the
+distinction being made explicit when necessary.
+     Following the initial studies establishing the conditions for DFSs, Bacon,Lidar,
+and Whaley made a thorough investigation of the robustness of DF states to
+symmetry breaking perturbations [39]. These authors also showed that the pas-
+sive error correction (“error avoidance”) properties of a DFS can be combined
+with the active error correction protocols provided by quantum error correc-
+tion by concatenation of a DFS inside a quantum error correcting code (QECC)
+[2, 40], resulting in an encoding capable of protecting against both collective and
+independent errors [27]. A combined DFS-QECC method was shown to be neces-
+sary in order to be enable universal, fault tolerant quantum computation in the
+4      Lidar & Whaley
+
+multiple-qubit errors model [41]. Interestingly, the DFS for collective decoher-
+ence offers a natural energy barrier against other decoherence processes, a phe-
+nomenon termed “supercoherence” by Bacon, Brown and Whaley [42]. Several
+more recent studies, by Alber et al. and Khodjasteh and Lidar, have considered
+other hybrid DFS-QECC schemes, focusing in particular on protection against
+spontaneous emission [43–45]. DFSs have also been combined with the quantum
+Zeno effect by Beige et al. [46, 47]. Most recently, a combination of DFSs and the
+method of dynamical decoupling [48] was shown to offer a complete alternative
+to QECC [49, 50].
+    These explicit theoretical demonstrations that, firstly, DF states exist and
+can provide stable quantum memory, and second, that fault tolerant universal
+computation can be performed on states encoded into a DFS, while initially su-
+perficially surprising to many, have generated several experimental searches for
+verification of DFSs. The first experimental verification came with a demonstra-
+tion by Kwiat et al. of a 2-qubit DFS protecting photon states against collective
+dephasing [51]. The same 2-qubit DFS was subsequently constructed and veri-
+fied to reduce decoherence in ion trap experiments by Kielpinski et al. [52]. In
+the latter experiment an atomic state of one ion was combined with that of a
+spectator ion to form a 2-ion DF state that was shown to be protected against
+dephasing deriving from long wavelength ambient magnetic field fluctuations.
+This experiment is significant in showing the potential of DFS states to protect
+fragile quantum state information against decoherence operative in current ex-
+perimental schemes. More recently, universal control on the same 2-qubit DFS
+for collective dephasing has been demonstrated in the context of liquid state nu-
+clear magnetic resonance by Fortunato et al. [53]. Nuclear magnetic resonance
+has also led to the first experimental demonstration, by Viola et al., of a 3-qubit
+DF subsystem, providing immunity against full collective decoherence deriving
+from a combination of collective spin flips and collective dephasing [54]. With
+these first experimental demonstrations, further experimental efforts towards
+implementation of DFSs in active quantum computation, or merely as quantum
+memory encodings to transport single qubits from one position to another with-
+out incurring dephasing, seems assured. For example, the use of a DFS has been
+identified as a major component in the construction of a scalable trapped ion
+quantum computer [50, 55, 56].
+    A common criticism of the theory of DFSs has been that the conditions re-
+quired for a DFS to exist are very stringent and the assumptions underlying the
+theory may be too unrealistic. It is important to emphasize that the DFS concept
+was never meant to provide a full and independent solution to all decoherence
+problems. Instead, the central idea has been to make use of the dynamical sym-
+metries in the system-environment interaction first (if they exist), and then to
+consider the next level of protection against decoherence. The robustness prop-
+erties of DFSs ensure that this is a reasonable approach. In addition, while the
+experimental evidence to date [51–54, 57, 58], is a reason for cautious optimism,
+there have also been a number of theoretical studies showing that the condi-
+tions for DFSs may be created via the use of the dynamical decoupling method,
+                                Decoherence-Free Subspaces and Subsystems          5
+
+by symmetrizing the system-bath interaction [59–62]. This holds true for a wide
+range of system-bath interaction Hamiltonians. It seems quite plausible that such
+active “environment engineering” methods will be necessary for DFSs to become
+truly comprehensive tools in the quest to protect fragile quantum information.
+    In the remainder of this review we will now leave the historical perspective
+and provide instead a summary of the theory of DF subspaces and their gener-
+alizations, DF subsystems. We shall start, in Section 3 with a simple example
+of DFSs in physical systems that is then used as a basis for a rigorous analysis
+of decoherence and the conditions for lack of this in an open quantum system
+(Section 4). We then provide, in Section 5, a series of complementary charac-
+terizations of what a DFS is, using both exact and approximate formulations
+of open systems dynamics. A number of examples of DFSs in different physical
+systems follow in Section 6, some of them new. The later sections of the review
+deal with the generalization to DF Subsystems (Section 7), and the robustness
+of DFSs (Section 8). We conclude in Section 9.
+
+
+3   A Simple Example of Decoherence-Free Subspaces:
+    Collective Dephasing
+
+Let us begin by analyzing in detail the operation of the simplest DFS. This
+example, first analyzed by Palma et al. in [15] and generalized by Duan & Guo
+[16], will serve to illustrate what is meant by a DFS. Suppose that a system
+of K qubits (two-level systems) is coupled to a bath in a symmetric way, and
+undergoes a dephasing process. Namely, qubit j undergoes the transformation
+
+                          |0ij → |0ij      |1ij → eiφ |1ij ,                     (1)
+
+which puts a random phase φ between the basis states |0i and |1i (eigenstates
+of σz with respective eigenvalues +1 and −1). This can also be described by
+the matrix Rz (φ) = diag 1, eiφ acting on the {|0i, |1i} basis. We assume that
+the phase has no space (j) dependence, i.e., the dephasing process is invariant
+under qubit permutations. This symmetry is an example of the more general
+situation known as “collective decoherence” . Since the errors can be expressed
+in terms of the single Pauli spin matrix σz of the two-level system, we refer
+to this example as “weak collective decoherence” . The more general situation
+when errors involving all three Pauli matrices are present, i.e., dissipation and
+dephasing, is referred to as “strong collective decoherence” . Without encoding
+a qubit initially in an arbitrary pure state |ψij = a|0ij + b|1ij will decohere.
+This can be seen by calculating its density matrix as an average over all possible
+values of φ,               Z  ∞
+                      ρj =        Rz (φ)|ψij hψ|Rz† (φ) p(φ)dφ,
+                             −∞
+
+where p(φ) is a probability density, and we assume the initial state of all qubits to
+                                                                −1/2
+be a product state. For a Gaussian distribution, p(φ) = (4πα)        exp(−φ2 /4α),
+6        Lidar & Whaley
+
+it is simple to check that
+
+                                            |a|2 ab∗ e−α
+                                                          
+                               ρj =                            .
+                                           ∗ −α
+                                          a be     |b|2
+
+The decay of the off-diagonal elements in the computational basis is a signature
+of decoherence.
+    Let us now consider what happens in the two-qubit Hilbert space. The four
+basis states undergo the transformation
+
+                             |0i1 ⊗ |0i2 → |0i1 ⊗ |0i2
+                             |0i1 ⊗ |1i2 → eiφ |0i1 ⊗ |1i2
+                             |1i1 ⊗ |0i2 → eiφ |1i1 ⊗ |0i2
+                             |1i1 ⊗ |1i2 → e2iφ |1i1 ⊗ |1i2 i.
+
+Observe that the basis states |0i1 ⊗ |1i2 and |1i1 ⊗ |0i2 acquire the same phase.
+This suggests that a simple encoding trick can solve the problem. Let us define
+encoded states by |0L i = |0i1 ⊗ |1i2 ≡ |01i and |1L i = |10i. Then the state
+|ψL i = a|0L i + b|1L i evolves under the dephasing process as
+
+                 |ψL i → a|0i1 ⊗ eiφ |1i2 + beiφ |1i1 ⊗ |0i2 = eiφ |ψL i,
+
+and the overall phase thus acquired is clearly unimportant. This means that
+the 2-dimensional subspace DF S2 (0) = Span{|01i, |10i} of the 4-dimensional
+Hilbert space of two qubits is decoherence-free. The subspaces DF S2 (2) = Span{|00i}
+and DF S2 (−2) = Span{|11i} are also (trivially) DF, since they each acquire a
+global phase as well, 1 and e2iφ respectively. Since the phases acquired by the
+different subspaces differ, there is decoherence between the subspaces.1
+    For K = 3 qubits a similar calculation reveals that the subspaces DF S3 (1) =
+Span{|001i, |010i, |100i} and DF S3 (−1) = Span{|011i, |101i, |110i} are DF, as
+well the (trivial) subspaces DF S3 (3) = Span{|000i} and DF S3 (3) = Span{|111i}.
+    More generally, let
+
+                    λK = number of 0′ s minus the number of 1′ s
+
+in a computational basis state (i.e., a bitstring) over K qubits. Then it is easy to
+check that any subspace spanned by states with constant λK is DF, and can be
+denoted DF SK (λK ) in accordance with the notation above. The dimensions of
+these
+     subspaces are given by the binomial coefficients: d ≡ dim[DF SK (λK )] =
+  K
+ λK and they each encode log2 d qubits.
+    The encoding for the “collective phase damping” model discussed here has
+been tested experimentally. The first-ever experimental implementation of DFSs
+used the DF S2 (0) subspace to protect against artifially induced decoherence in
+1
+    This conclusion is actually somewhat too strict: for a non-equilibrium environment,
+    superpositions of different DFSs can be coherent in the collective dephasing model
+    [63].
+                                Decoherence-Free Subspaces and Subsystems     7
+
+a linear optics setting [51]. The same encoding was subsequently used to allevi-
+ate the problem of external fluctuating magnetic fields in an ion trap quantum
+computing experiment [52], and figures prominently in theoretical constructions
+of encoded, universal quantum computation [49, 50, 64].
+
+
+4   Formal Treatment of Decoherence
+Let us now present a more formal treatment of decoherence. Consider a closed
+quantum system, composed of a system S of interest defined on a Hilbert space
+H (e.g., a quantum computer) and a bath B. The full Hamiltonian is
+
+                       H = HS ⊗ IB + IS ⊗ HB + HI ,                          (2)
+
+where HS , HB and HI are, respectively, the system, bath and system-bath
+interaction Hamiltonians, and I is the identity operator. The evolution of the
+closed system is given by ρSB (t) = UρSB (0)U† , where ρSB is the combined
+system-bath density matrix and the unitary evolution operator is
+
+                                 U = exp(−iHt)                               (3)
+
+(we set h̄ = 1). Assuming initial decoupling between system and bath, the evo-
+lution of the closed system is given by: ρSB (t) = U(t)[ρS (0) ⊗ ρB (0)]U† (t).
+Without loss of generality the interaction Hamiltonian can be written as
+                                    X
+                              HI =      Sα ⊗ Bα ,                          (4)
+                                       α
+
+where Sα and Bα are, respectively, system and bath operators. It is this cou-
+pling between system and bath that causes decoherence in the system, through
+entanglement with the bath. To see this more clearly it is useful to arrive at a
+description of the system alone by averaging out the uncontrollable bath degrees
+of freedom, a procedure formally implemented by performing a partial trace over
+the bath:
+                       ρ(t) = TrB [U(t)ρ(0) ⊗ ρB (0)U† (t)].
+The reduced density matrix ρ(t) now describesP    the system alone. By diagonal-
+izing the initial bath density matrix, ρB (0) = ν λν |νihν|, and evaluating the
+partial trace in the same basis one finds:
+                                                        !
+                       X                   X
+                ρ(t) =    hµ|U(t) ρ(0) ⊗       λν |νihν| U† (t)|µi
+                       µ                    ν
+                       X
+                   =       Aa ρ(0) A†a ,                                     (5)
+                       a
+
+where the “Kraus operators” are given by:
+                          p
+                    Aa = λν hµ|U|νi ;           a = (µ, ν).                  (6)
+8      Lidar & Whaley
+
+The expression (5) is known as the Operator Sum Representation (OSR) and
+can be derived from an axiomatic approach to quantum mechanics, without
+reference to Hamiltonians [65]. Since Trρ(t) = 1 the Kraus operators satisfy the
+normalization constraint        X
+                                    A†a Aa = IS .                            (7)
+                                     a
+
+Because of this constraint it follows that when the sum in Eq. (5) includes only
+one term the dynamics is unitary. Thus a simple criterion for decoherence in the
+OSR is the presence of multiple independent terms in the sum in Eq. (5).
+    While the OSR is a formally exact description of the dynamics of the system
+density matrix, its utility is somewhat limited because the explicit calculation of
+the Kraus operators is equivalent to a full diagonalization of the high-dimensional
+Hamiltonian H. Furthermore, the OSR is in a sense too strict. This is because
+as a closed-system formulation it incorporates the possibility that information
+which is put into the bath will back-react on the system and cause a recurrence.
+Such interactions will always occur in the closed-system formulation (due to the
+the Hamiltonian being Hermitian). However, in many practical situations the
+likelihood of such an event is extremely small. Thus, for example, an excited
+atom which is in a “cold” bath will radiate a photon and decohere, but the
+bath will not in turn return the atom back to its excited state, except via the
+(extremely long) recurrence time of the emission process. In these situations a
+more appropriate way to describe the evolution of the system is via a quantum
+dynamical semigroup master equation [66, 67]. By assuming that (i) the evolu-
+tion of the system density matrix is governed by a one-parameter semigroup
+(Markovian dynamics), (ii) the evolution is futher “completely positive” [67],
+and (iii) the system and bath density matrices are initially decoupled, Lindblad
+[66] has shown that the most general evolution of the system density matrix
+ρS (t) is governed by the master equation
+
+              dρ(t)
+                       = −i[H̃S , ρ(t)] + LD [ρ(t)]
+               dt
+                              M
+                            1 X                                     
+              LD [ρ(t)] =       aαβ [Fα , ρ(t)F†β ] + [Fα ρ(t), F†β ]          (8)
+                            2
+                             α,β=1
+
+
+where H̃S = HS + ∆ is the system Hamiltonian HS including a possible unitary
+contribution from the bath ∆ (“Lamb shift” ), the operators Fα constitute a ba-
+sis for the M -dimensional space of all bounded operators acting on H, and aαβ
+are the elements of a positive semi-definite Hermitian matrix. The commutator
+involving H̃S is the ordinary, unitary, Heisenberg term. All the non-unitary, de-
+cohering dynamics is accounted for by LD , and this is one of the advantages of
+the Lindblad equation: unlike the OSR, it clearly separates unitary from deco-
+hering dynamics. For a derivation of the Lindblad equation from the OSR, using
+a coarse graining procedure, including an explicit calculation of the coefficients
+aαβ and the Lamb shift ∆, see [68]. Note that the Fα can often be identified
+with the Sα of the interaction Hamiltonian in Eq. (4) [68].
+                                Decoherence-Free Subspaces and Subsystems          9
+
+5     The DFS Conditions
+
+With the above statement of the conditions for decoherence let us now show
+how to formally eliminate decoherence. It is convenient to do so by reference
+to the Hamiltonian, OSR, and semigroup formulations. This leads to a number
+of essentially equivalent formulations of the conditions for DF dynamics, whose
+utility is determined by the approach one would like to employ to study a specific
+problem. In addition, it is useful to give formulations which make contact with
+the theory of quantum error correcting codes (QECC). First, let us give a formal
+definition of a DFS:
+
+Definition 1. A system with Hilbert space H is said to have a decoherence-free
+subspace H̃ if the evolution inside H̃ ⊂ H is purely unitary.
+
+   Note that because of the possibility of a bath-induced Lamb shift [∆ in
+Eq. (8)] this definition of a DFS does not entirely rule out adverse effects a
+bath may have on a system. Also, we are not excluding unitary errors that
+may be the result of inaccurate implementation of quantum logic gates. Both of
+these problems, which in practice are inseparable, must be dealt with by other
+methods, such as concatenated codes [27].
+
+
+5.1   Hamiltonian Formulation
+
+As remarked above, in terms of the Hamiltonian H of Eq. (2), decoherence is the
+result of the entanglement between system and bath caused by the interaction
+term HI . In other words, if HI = 0 then system and bath are decoupled and
+evolve independently and unitarily under their respective Hamiltonians HS and
+HB . Clearly, then, a sufficient condition for decoherence free (DF) dynamics
+is that HI = 0. However, since one cannot simply switch off the system-bath
+interaction, in order to satisfy this condition it is necessary to look for special
+subspaces of the full system Hilbert space H. As shown first by Zanardi and
+Rasetti [19], such a subspace is found by assuming that there exists a set {|k̃i}
+of eigenvectors of the Sα ’s with the property that:
+
+                            Sα |k̃i = cα |k̃i   ∀α, |k̃i.                        (9)
+Note that these eigenvectors are degenerate, i.e., the eigenvalue cα depends only
+on the index α of the system operators, but not on the state index k. If HS leaves
+the Hilbert subspace H̃ = Span[{|k̃i}] invariant, and if we start within H̃, then
+the evolution of the system will be DF. To show this we follow the derivation in
+[27]: First expand the initial
+                           P density matrices of theP  system and the bath in their
+respective bases: ρS (0) = ij sij |ı̃ihj̃| and ρB (0) = µν bµν |µihν|. Using Eq. (9),
+one can write the combined operation of the bath and interaction Hamiltonians
+over H̃ as:
+                                                           X
+               IS ⊗ HB + HI = IS ⊗ Hc ≡ IS ⊗ [HB +            aα Bα ].
+                                                            α
+10      Lidar & Whaley
+
+This clearly commutes with HS over H̃. Thus since neither HS (by our own
+stipulation) nor the combined Hamiltonian Hc takes states out of the subspace:
+
+                          U[|ı̃i ⊗ |µi] = US |ı̃i ⊗ Uc |µi,                    (10)
+where US = exp(−iHS t) and Uc = exp(−iHc t). Hence it is clear, given the
+initially decoupled state ofP  the density matrix, that
+                                                    P the evolution of the closed
+system will be: ρSB (t) = ij sij US |ı̃ihj̃|U†S ⊗ µν bµν Uc |µihν|U†c . It follows
+using simple algebra that after tracing over the bath: ρS (t) = TrB [ρSB (t)] =
+US ρS (0)U†S , i.e., that the system evolves in a completely unitary fashion on H̃:
+under the condition of Eq. (9) the subspace is DF. As shown in Ref. [19] by
+performing a short-time expansion, Eq. (10) is also a necessary condition for a
+DFS. Let us summarize this:
+
+Theorem 1. Let the interaction between a system and a bath be given by the
+Hamiltonian of Eq. (2). If HS leaves the Hilbert subspace H̃ = Span[{|k̃i}] in-
+variant, and if we start within H̃, then H̃ is a DFS if and only if it satisfies
+Eq. (9).
+
+    The condition of Eq. (9) is very useful for checking whether a given interaction
+supports a DFS: The operators Sα often form a Lie algebra, and the condition
+(9) then translates into the problem of finding the one-dimensional irreducible
+representations (irreps) of this Lie algebra, a problem with a textbook solution
+[69]. We will consider this in detail through examples below.
+
+
+5.2   Operator-Sum Representation Formulation
+
+Let H̃ be an N -dimensional DFS. As first observed in [27], in this case it fol-
+lows immediately from Eqs. (10) and (6) that the Kraus operators all have the
+following representation (in the basis where the first N states span H̃):
+
+                                                       √
+                                       
+                              ga Ũ 0
+                   Aa =                     ;   ga =       νhµ|Uc |νi.         (11)
+                               0 Āa
+
+Here Āa is an arbitrary matrix that acts on H̃⊥ (H = H̃ ⊕ H̃⊥ ) and may cause
+decoherence there; Ũ is restricted to H̃. This simple condition can be summarized
+as follows:
+
+Theorem 2. A subspace H̃ is a DFS if and only if all Kraus operators have
+an identical unitary representation upon restriction to it, up to a multiplicative
+constant.
+
+    An explicit calculation will help to illustrate this condition for a DFS. Con-
+sider the set of system states {|k̃i} satisfying:
+
+                              Aa |k̃i = ga Ũ|k̃i      ∀a,                     (12)
+                                  Decoherence-Free Subspaces and Subsystems               11
+
+where Ũ is an arbitrary, a-independent but possibly time-dependent unitary
+transformation, and ga a complex constant. Under this condition, an initially
+pure state belonging to Span[{|k̃i}],
+                                        X
+                               |ψin i =   γk |k̃i,
+                                                k
+
+will be DF, since:
+                                           X
+                     |φa i = Aa |ψin i =        γk ga Ũ|k̃i = ga Ũ|ψin i
+                                            k
+
+so               X                   X
+        ρout =       Aa ρ̃in A†a =       ga Ũ|ψin ihψin |Ũ† c∗a = Ũ|ψin ihψin |Ũ† ,
+                 a                   a
+
+where we used the normalization of the Kraus operators [Eq. (7)] to set a |ga |2 =
+                                                                          P
+1. This means that the time-evolved state ρout is pure, and its evolution is
+governed
+       P by Ũ. This argument is easily generalized to an initial mixed state
+ρ̃in = kj ρkj |k̃ihj̃|, in which case ρout = Ũρ̃in Ũ† . The unitary transformation
+Ũ can be exploited in choosing a driving system Hamiltonian which implements
+a useful evolution on the DFS. The calculation above shows that Eq. (9) is a
+sufficient condition for a DFS. It follows from the results of Refs. [19, 70] that
+it is also a necessary condition for a DFS (under “generic” conditions – to be
+explained below).
+     A useful alternative formulation of the DFS condition using Kraus operators
+can be given, that is slightly less general. Consider a group G = {Gn } and
+expandPthe Kraus operators as a linear combination over the group elements:
+          N
+Aa = n=1 ba,n Gn (i.e., the Kraus operators belong to the group algebra of G).
+Then the following theorem gives an alternative DFS characterization [28]:
+
+Theorem 3. If a set of states {|j̃i} belong to a given one-dimensional irrep Γ k
+of G, then the DFS condition Aa |j̃i = ca |j̃i holds. If no assumptions are made
+on the bath coefficients {ba,n }, then the DFS condition Aa |j̃i = ca |j̃i implies
+that |j̃i belongs to a one-dimensional irrep Γ k of G.
+
+    It is not always possible to expand the Kraus operators over a group. How-
+ever, when this is possible, the last theorem can be used to find a class of DFSs
+under much relaxed symmetry assumptions. This “multiple qubit-errors” model,
+introduced in [28] and analyzed for its ability to support universal quantum com-
+putation in [41], is discussed in more detail in Section 6.4 below.
+
+5.3   Lindblad-Semigroup Formulation
+Let us now consider the conditions for the existence of a DFS in terms of the
+Lindblad semigroup master equation (8). The Lindblad equation nicely separates
+the unitary and decohering dynamics. It is clear that the DFS condition should
+amount to the vanishing of the LD [ρ] term. Let us derive necessary and sufficient
+12      Lidar & Whaley
+
+conditions for this to happen, following [26]. Let {|k̃i}N
+                                                         k=1 be a basis for an N -
+dimensional subspace H̃ ⊆ H. In this basis, we may express states as the density
+matrix
+                                    XN
+                              ρ̃ =      ρkj |k̃ihj̃| .                        (13)
+                                          k,j=1
+
+Consider the action of the Lindblad operators on the basis states: Fα |k̃i =
+PN α
+  j=1 ckj |j̃i. Substituting into Eq. (8) we find
+
+
+                       M
+                    1 X
+      LD [ρ(t)] =       aαβ ×
+                    2
+                      α,β=1
+         N                                                                
+                ρkj 2cβ∗                                    β∗ α
+         X
+                          α              β∗ α
+                      jm ckn |ñihm̃| − cmn ckn |m̃ihj̃| − cjm cnm |k̃ihñ| = 0.   (14)
+      kj,mn=1
+
+The coefficients aαβ represent information about the bath, which we assume
+is uncontrollable. Hence we must require that each term in the sum over α, β
+vanishes separately. Furthermore, we wish to avoid a dependence on initial con-
+ditions, i.e., there should be no dependence on ρkj . This implies that each of the
+terms in parentheses must vanish separately. This can only be achieved if there
+is just one projection operator |ñihm̃| in each term. The least restrictive choice
+leading to this is: cαkn = cαk δkn . Eq. (14) then becomes:
+
+                    N                                               
+                            ρkj |k̃ihj̃| 2cβ∗         β∗ α     β∗ α
+                    X
+                                                α
+                                           j kc   − c   c
+                                                      k k  − c j c j   = 0.        (15)
+                    k,j=1
+
+                                αj    c      c∗
+Assuming cαk 6= 0 then yields: cαk + cβk
+                                      ∗  = 2. This has to hold in particular for
+                                              βj
+α = β. With z = cαj /cαk , we then obtain z + 1/z ∗ = 2, which has the unique
+solution z = 1. This implies that cαk must be independent of k and therefore
+that Fα |k̃i = cα |k̃i, ∀α. We have thus proved (see also [25]):
+
+Theorem 4. If no special assumptions are made on the coefficient matrix aαβ
+[Eq. (8)] and on the initial conditions ρij [Eq. (13)] then a necessary and suffi-
+cient condition for a subspace H̃ = Span[{|k̃i}N  k=1 ] to be decoherence-free is that
+all basis states |k̃i are degenerate eigenstates of all the Lindblad operators {Fα }
+
+                                   Fα |k̃i = cα |k̃i   ∀α, k.                      (16)
+
+     The Lindblad operators can always be closed as a Lie algebra L. We can make
+the DFS condition somewhat more explicit in the case of semisimple Lie algebras,
+i.e., those which have no Abelian invariant subalgebra [69]. Using Eq. (16) we
+have [Fα , Fβ ]|k̃i = 0. If L is semisimple then the commutator can be expressed
+                                                  γ
+in terms of non-vanishing structure constants fα,β    of the Lie algebra: [Fα , Fβ ] =
+PM       γ
+   γ=1 fα,β Fγ . We then arrive at the condition on the structure constants
+                                   Decoherence-Free Subspaces and Subsystems    13
+
+
+                                  M
+                                         γ
+                                  X
+                                        fα,β cγ = 0       ∀α, β.               (17)
+                                  γ=1
+
+The structure constants themselves
+                         h        i define the M -dimensional adjoint matrix
+                                          γ
+representation of L [69]: ad(F̂α )   = fα,β  . Since the generators of the Lie
+                                            γ,β
+algebra are linearly independent, so must be the matrices of the adjoint repre-
+sentation. One can readily show that this is inconsistent with Eq. (17) unless all
+cγ = 0. Thus the DFS condition in the case of semisimple Lie algebras is simply
+
+                                       Fα |k̃i = 0 ∀α, k.                      (18)
+
+We will consider examples of this below.
+
+5.4   Quantum Error Correction Formulation
+Information encoded in a DFS is immune to errors. In QECC information is
+encoded into states which can be perturbed by the environment, but can be re-
+covered. Thus DFSs can be viewed as a special type of “degenerate” QECC,
+where both the perturbation and recovery are trivial. To formalize this ob-
+servation [27, 71], note that quantum error correction can be regarded as the
+theory of reversal of quantum operations on a subspace [72]. This subspace,
+C = Span[{|iL i}], is interpreted as a “code” (with codewords {|iLi}) which can
+be used to protect part of the system Hilbert space against decoherence (or
+“errors”) caused by the interaction between system and bath. The errors are
+represented by the Kraus operators {Aa } [73]. To decode the quantum informa-
+tion after the action of the bath, one introduces “recovery” operators {Rr }. A
+QECC is a subspace C and a set of recovery operators {Rr }. Ref. [73] gives two
+equivalent criteria for the general condition for QECC. It is possible to correct
+the errors induced by a given set of Kraus operators {Aa }, (i) iff
+                                             
+                                    λra IC 0
+                         Rr Aa =                    ∀r, a,                   (19)
+                                      0 Bra
+or equivalently, (ii) iff
+                                                         
+                                           γab IC 0
+                            A†a Ab =                               ∀a, b.      (20)
+                                             0 Ā†a Āb
+In both conditions the first block acts on C; Bra and Āa are arbitrary matrices
+acting on C ⊥ (H = C ⊕ C ⊥ ). Let us now explore the relation between DFSs and
+QECCs. First of all, it is immediate that DFSs are indeed a valid QECC. For,
+given the (DFS-) representation of Aa as in Eq. (11), it follows that Eq. (20)
+is satisfied with γab = ga∗ gb . Note, however, that unlike the general QECC case
+which has a full-rank matrix γab , in the DFS case this matrix has rank 1 (since
+the ath row equals row 1 upon multiplication by g1∗ /ga∗ ). A QECC is said to
+be non-degenerate if it has full rank [73, 74]. A DFS, therefore, is a completely
+14        Lidar & Whaley
+
+degenerate QECC [27, 71]. A related characterization of DFSs is in terms of
+distance [75]: a DFS is a QECC with infinite distance [32], meaning essentially
+that the errors it is stable against can have arbitrary strength.
+    A DFS is an unusual QECC in another way: as we saw above, decoherence
+does not affect a perfect DFS at all. Since they are based on a perturbative treat-
+ment, other active QECCs (e.g., stabilizer codes [74]) are specifically constructed
+to improve the fidelity to a given order in the error rate, which therefore always
+allows for some residual decoherence to take place. The absence of decoherence
+to any order for a perfect DFS is due to the existence of symmetries in the
+system-bath coupling which allow for an exact treatment. These symmetries are
+ignored by perturbative QECCs either for the sake of generality, or because they
+simply do not exist, as in the case of independent couplings. Given a DFS, the
+only errors that can take place involve undesired unitary rotations of codewords
+(basis states {|k̃i} of H̃) inside the DFS, due to imprecisions or a bath-induced
+Lamb shift. Thus, the complete characterization of DFSs as a QECC is given by
+the following [27]:
+Theorem 5. Let C be a QECC for error operators {Aa }, with recovery operators
+{Rr }. Then C is a DFS iff upon restriction to C, Rr ∝ Ũ†S for all r.
+
+      Proof. First suppose C is a DFS. Then by Eqs. (11) and (19),
+                                                     
+                              ga ŨS 0       λra IC 0
+                        Rr               =                .
+                                 0 Āa         0 Bra
+
+To satisfy this equation, it must be true that
+                                     λra †      
+                                       g  ŨS Cr
+                              Rr =      a          ,
+                                         Dr Er
+
+where Cr , Dr and Er are arbitrary. Multiplying, the condition ga Dr ŨS = 0
+implies Dr = 0 by unitarity of ŨS . Also, since Āa is arbitrary, generically the
+condition Cr Āa = 0 implies Cr = 0. Thus upon restriction to C = H̃, indeed
+Rr ∝ Ũ†S (by unitarity of ŨS , |λra /ga | = 1). Now suppose Rr ∝ Ũ†S . The very
+same argument applied to Aa in Eq. (19) yields Aa ∝ ŨS upon restriction to
+C. Since this is exactly the condition defining a DFS in Eq. (11), the theorem is
+proved.
+    Thus in the sense of reversal of quantum operations on a subspace, DFSs
+are a particularly simple instance of general QECCs, where upon restriction to
+the code subspace, all recovery operators are proportional to the inverse of the
+system evolution operator. Of course, underlying this simplicity is an important
+assumption of dynamical symmetry.
+
+5.5     Stabilizer Formulation
+A most useful tool in the theory of QECC is the stabilizer formalism [74]. The
+stabilizer in QECC is an Abelian subgroup S of the Pauli group (the group
+                                 Decoherence-Free Subspaces and Subsystems           15
+
+formed by tensor products of Pauli matrices on the qubits). It allows identifica-
+tion of the errors the code can correct: The Kraus-operators Aa of Eq. (6) can
+be expanded in a basis Ei of “errors”. Two types of errors can be dealt with by
+stabilizer codes: (i) errors E†i Ej that anticommute with some S ∈ S, and (ii)
+errors that are part of the stabilizer (Ei ∈ S). The first class are errors that
+require active correction; the second class (ii) are “degenerate” errors that do
+not affect the code at all. A duality between QECCs and DFSs can be stated
+as follows: QECCs were designed primarily to deal with type (i) errors, but can
+also be regarded as DFSs for the errors in their stabilizer [28, 41]. Conversely,
+DFSs were designed primarily to deal with type (ii) errors, but can in principle
+be used as a QECC against errors that are type (i) with respect to S. A further
+use of the stabilizer is that it allows one to identify sets of fault-tolerant universal
+gates for quantum computation [76]. To this end, and to make a more explicit
+connection to QECCs, it is useful to recast the DFS condition Eq. (9) into the
+stabilizer formalism. By analogy to QECC, we define the DFS stabilizer S as a
+set of operators Dβ which act as identity on the DFS states:
+
+                    Dβ |ψi = |ψi ∀Dβ ∈ S         iff    |ψi ∈ DFS.                 (21)
+
+Here β can be a discrete or continuous index; S can form a finite set or group.
+This S is therefore a generalization of the QECC stabilizers. While some DFSs
+can also be specified by a stabilizer in the Pauli-group [28], many DFSs are
+specified by non-Abelian groups, and hence are nonadditive codes [77].
+   Consider now the following continuous index stabilizer:
+                                                 " A                #
+                                                  X
+              D(v0 , v1 , ..., vA ) = D(v) = exp     (cα I − Sα ) vα .     (22)
+                                                  α=1
+
+Clearly, the DFS condition [Eq. (9)] implies that D(v)|ψi = |ψi. Conversely,
+if D(v)|ψi = |ψi for all v, then in particular it must hold that for each α,
+exp [(cα I − Sα ) vα ] |ψi = |ψi. Recalling that φ(A) = exp [A] is a one-to-one con-
+tinuous mapping of a small neighbourhood of the zero matrix 0 onto a small
+neighbourhood of the identity matrix I, it follows that there must be a suffi-
+ciently small vα such that (cα I − Sα ) |ψi = 0. Therefore the DFS condition (9)
+holds iff D(v)|ψi = |ψi for all v.
+
+5.6   Relative Merits of the Various Formulations
+We have given five different formulations of the conditions for a DFS. The OSR
+formulation is the most general. The QECC and stabilizer formulations are par-
+ticularly useful for constructing logical operations that correspond to quantum
+computation inside a DFS. The unifying theme is dynamical symmetry. A DFS
+exists if and only if there is a symmetry in the system-bath coupling. This is
+made explicit in the Hamiltonian and semigroup formulations, where the error
+operators Sα and Fα span a Lie algebra. The DFS condition then reduces to a
+search for the one-dimensional irreps of this algebra.
+16         Lidar & Whaley
+
+    One may wonder whether the Hamiltonian and semigroup formulations are
+equivalent. There is in fact an important difference between the Sα ’s and the Fα ’s
+which makes the two decoherence-freeness conditions different. In the Hamilto-
+nian formulation of DFSs, the Hamiltonian is Hermitian. Thus the expansion for
+the interaction Hamiltonian Eq. (4) can always be written such that the Sα are
+also Hermitian. On the other hand, the Fα ’s in the master equation, Eq. (8),
+need not be Hermitian. Because of this difference, Eq. (16) allows for a broader
+range of subspaces than Eq. (9). For example, consider the situation where there
+are only two nonzero terms in a master equation for a two-level system, corre-
+sponding to F1 = σ− and F2 = σz where σ− = |0ih1| and σz = |0ih0| − |1ih1|
+(e.g., cooling with phase damping). In this case there is a DFS corresponding
+to the single state |0i. In the Hamiltonian formulation, inclusion of S1 = σ− in
+the interaction Hamiltonian expansion Eq. (4) would necessitate a second term
+                                  †
+in the Hamiltonian with S2 = σ−     = σ+ , along with the Sz = σz as above. For
+this set of operators, however, Eq. (9) allows for no DFS.
+
+
+6      Further Examples of Decoherence-Free Subspaces
+
+6.1      Electromagnetically Induced Transparency2
+
+A simple, previously unpublished example of a situation in which a DFS can
+arise is the phenomenon of electromagnetically induced transparency (EIT) [78].
+The aspect of EIT that is of interest to us here is the formation of a state that
+is immune to spontaneous emission. A concrete physical model is provided by a
+tenuous vapor of 3-level atoms in the Λ configuration, e.g., Strontium, contained
+in an optical resonator. It is convenient to choose a ring-resonator geometry in
+which there are travelling, as opposed to standing, modes. These modes will be
+strongly confined, while modes propagating in directions transverse to the ring
+path will be essentially unconfined. The atomic levels are denoted by |1i , |2i , |3i,
+with energies ε1 ≤ ε2 < ε3 . The transitions (3 ↔ 1) and (3 ↔ 2) are (electric)-
+dipole allowed, so (1 ↔ 2) is strongly forbidden (by parity: levels 1 and 2
+must have equal parity, opposite to that of level 3). We assume that collisional
+broadening can be neglected. In this limit, the only dissipative (decohering)
+mechanism is spontaneous emission into the transverse modes. The atoms are
+exposed to two laser fields (treated classically). The coupling-laser, with Rabi
+frequency ΩC , is slightly detuned from the (3 ↔ 2) transition, and the probe-
+laser with Rabi frequency ΩP is slightly detuned from the (3 ↔ 1) transition.
+See Fig. 1. However, rather than restricting ourselves to the 3-level atoms case,
+suppose that we have an atom with N + 1 levels, denoted by |1i , |2i , ..., |N + 1i,
+with energies ε1 ≤ ε2 < ... < εN +1 , such that the transitions (N + 1 ↔ i), with
+i = 1..N are allowed, but (i ↔ j), with i, j ∈ {1, ..., N }, are strongly forbidden.
+This is an artificial model whose purpose is to illustrate the appearance of a
+large DFS. The standard EIT case is recovered by letting N = 2.
+2
+      We are indebted to Dr. J.C. Garrison for first suggesting the 3-level version of this
+     example in Dec. 1998.
+                                   Decoherence-Free Subspaces and Subsystems        17
+
+
+
+
+    Fig. 1. Level diagram for EIT. A DFS can be formed from levels |1i and |2i.
+
+
+    The effective system Hamiltonian is found by (a) transforming to the interac-
+tion picture, (b) imposing the rotating-wave approximation, (c) a further trans-
+formation to remove the remaining explicit time dependence from the Hamilto-
+nian. In this rotating-wave picture [79, 80] the result in the ordered basis {|ii}N +1
+                                                                                  i=1
+is:
+                                                             
+                        ∆ + δ1     0    ···     0    −Ω1 /2
+                       0       ∆ + δ2               −Ω2 /2 
+                       ..                                ..
+                                                             
+                HS =  .                 ..                   
+                                           .              .  
+                                                              
+                       0                      ∆     −ΩN /2 
+                        −Ω1 /2 −Ω2 /2 · · · −ΩN /2       0
+                       N                        N
+                       X                      1X
+                   =         (∆ + δi )Tii −         Ωi Ti,N +1 + Ωi TN +1,i       (23)
+                       i=1
+                                              2 i=1
+
+where the transition operators {Tab } are defined by
+
+                       Tab = |ai hb| ,    (a, b ∈ {1, ..., N + 1}),
+
+Ωi is the Rabi frequency of a laser field coupling levels |ii and |N + 1i, ∆ =
+Ωi − ωN +1,i is the coupling laser detuning (assumed independent of i), and
+δi = Ωi+1 − Ωi − ωi+1,i is the Raman detuning. In standard EIT Ω1 = ΩP and
+Ω 2 = ΩC .
+    Decoherence is described in this model by spontaneous emission from the
+excited state |N + 1i to any of the lower lying states |ii, where i = 1..N . It is this
+decoherence process that we wish to avoid. Thus the relevant Lindblad operators
+{Fα } are {Ti,N +1 } and the aαβ matrix of Eq. (8) is diagonal: aii = AN +1,i , where
+AN +1,i is the Einstein A -coefficient for the spontaneous transition from |N + 1i
+to |ii. The DFS condition, Eq. (16), now tells us that if |ψi ∈H̃, then
+
+                                   Ti,N +1 |ψi = ci |ψi .                         (24)
+18        Lidar & Whaley
+
+However, note that while the operators {Tij } (i, j = 1..N + 1) generate the full
+semisimple Lie algebra su (N + 1), the N operators {Ti,N +1 } appearing in the
+decoherence term of the Lindblad equation, commute. They span the Abelian
+Cartan subalgebra [generally su (N + 1) has an N -dimensional Cartan subalge-
+bra, defined as the maximal set of commuting generators] [69]. This algebra is
+not semisimple (since it is an Abelian invariant subalgebra of itself) and the DFS
+theorem does not tell us what the {ci } are. However, a direct way to see this is
+to calculate the scalar product of (24) with itself (i 6= j ):
+
+             c∗j ci = hψ|T†j,N +1 Ti,N +1 |ψi =hψ|N + 1ihj|iihN + 1|ψi = 0,           (25)
+
+so that either ci = 0, or cj = 0, or both. Suppose cj = 0; then by Eq. (24) the
+most general form |ψi can have is:
+                                                   N
+                                                   X
+                                           |ψi =         aj |ji,                      (26)
+                                                   j=1
+
+i.e., |ψi cannot have a component |N + 1i: hN + 1|ψi = 0. Thus ci = 0 for all i.
+This result for the allowed DFS states is intuitively obvious: since spontaneous
+emission takes place only from level N + 1, the DF states are those which do not
+contain an |N + 1i component.
+     Let us now take into account the requirement that the DFS be invariant
+under the system Hamiltonian. Invariance implies Tk,N +1 (HS |ψi) = 0, so that
+by Eq. (24), a necessary condition is
+
+                                       [Tk,N +1 , HS ]|ψi = 0.                        (27)
+
+Noting that [Tk,N +1 , Tij ] = δi,N +1 |kihj| − δjk |iihN + 1|, we can evaluate the
+commutator in Eq. (27) as follows:
+                         N
+                         X
+     [Tk,N +1 , HS ] =         (∆ + δi )[Tk,N +1 , Tii ]
+                         i=1
+                            N
+                         1X
+                    −          Ωi [Tk,N +1 , Ti,N +1 ] + Ωi [Tk,N +1 , TN +1,i ]
+                         2 i=1
+                           N
+                           X
+                    =−           (∆ + δi )δik |iihN + 1|
+                           i=1
+                            N
+                         1X
+                    +          Ωi δN +1,k |iihN + 1| + Ωi (δik |N + 1ihN + 1| − |kihi|) .
+                         2 i=1
+
+Using hN + 1|ψi = 0, we obtain:
+                                             "N           #
+                                            1 X
+                     [Tk,N +1 , HS ]|ψi = −       Ωi hi|ψi |ki = 0.                   (28)
+                                            2 i=1
+                                   Decoherence-Free Subspaces and Subsystems           19
+
+This leads to a generalized EIT condition:
+                                    N
+                                    X
+                                           Ωi hψ|ii = 0,                             (29)
+                                     i=1
+
+which expresses a destructive interference between all N lower lying levels. The
+corresponding superposition suffers no spontaneous emission, and is preserved
+under its system Hamiltonian. The standard EIT condition, for N = 2, is
+
+                               ΩP hψ |1i + ΩC hψ |2i = 0                             (30)
+
+also known as the dark-state-condition [78].
+     The N − 2 dimensional DFS defined by Eqs. (26),(29) may be useful for
+quantum memory applications. However, it is not clear how to make use of
+this DFS for quantum computing applications, since all states in this DFS are
+degenerate eigenvectors of HS , so that the evolution inside the DFS is trivial,
+i.e., a global phase.3 This further implies that the Raman detunings δj must all
+vanish in order for the DFS to be preserved under HS . Finally, the symmetry that
+characterizes this EIT-DFS is the coupling of all spontaneous emission operators
+to a common excited state. A DFS would not exist if all levels were radiatively
+coupled to each other.
+
+6.2    Spin Boson Model with Strong Collective Decoherence
+A beautiful example of a DFS with applications to quantum computing comes
+from the spin-boson model [82]. This DFS example was proposed by Zanardi
+and Rasetti in the influential paper [18]. Consider N spins interacting with a
+bosonic field via the Hamiltonian
+                 N X
+                 X                                                              
+          HI =              + +
+                           gi,k            − −
+                                σi ⊗ bk + gi,k σi ⊗ b†k + gi,k
+                                                           z
+                                                               σiz ⊗ (bk + b†k ) .   (31)
+                 i=1   k
+
+Here {σi+ , σi− , σiz } are Pauli operators acting on the ith spin, bk (b†k ) is an an-
+nihilation (creation) operator for the k th bosonic mode, and gi,k   α
+                                                                          are coupling
+constants. The Hamiltonian HI describes a rather general interaction between
+a system of qubits (the spins) and a bath of bosons, exchanging energy through
+the σi+ ⊗ bk and σi− ⊗ b†k terms, and changing phase through the σiz ⊗ (bk + b†k )
+term. As it stands HI does not support a DFS: there are 3N Sα operators when
+comparing to Eq. (4), i.e., the N triples of local sl(2) algebras {σi+ , σi− , σiz }; each
+such algebra acts on a single qubit, and therefore
+                                                LN     has a two-dimensional irrep.
+The overall action of the total Lie algebra i=1 sli (2) is represented by the ir-
+reducible N -fold tensor product of all local two-dimensional irreps. This implies
+that there are no one-dimensional irreps as required by Eq. (9), and hence no
+DFS.
+3
+    This issue has been studied in detail and further generalized by Bacon to other
+    multi-level atom spectra [81].
+20      Lidar & Whaley
+
+   The situation changes dramatically when a permutation symmetry is imposed
+on the system-bath interaction, in the form
+                                      α
+                                     gi,k ≡ gkα .                                (32)
+
+This “collective decoherence” situation is relevant in a number of solid-state
+quantum computing proposals, in particular those where decoherence due to
+interaction with a cold phonon bath is dominant. At low temperatures only
+long-wavelength phonons survive (since there is an energy gap for excitation of
+high-energy/short-wavelength phonons), and the model of collective decoherence
+becomes relevant provided the qubit spacing is small compared to the phonon
+wavelength. Another prototypical situation is the Dicke model in quantum optics
+[83], discussed in more detail below.
+    Given the collective
+                      PNdecoherence assumption, one can define three collective
+spin operators Sα = i=1 σiα so that the Hamiltonian becomes
+                                      X
+                             HI =         Sα ⊗ Bα ,
+                                     α=+,−,z
+
+
+where B+ = k gk+ σi+ ⊗ bk , B− = B†+ and Bz = k gi,k         σi ⊗ (bk + b†k ). In fact
+              P                                       P z z
+the specific form of the bath operators Bα is irrelevant. The important point
+is that the system operators Sα now form a global sl(2) angular momentum
+algebra, i.e., [S+ , S− ] = Sz and [Sz , S± ] = 2S± , with a highly reducible 2N ×
+2N representation formed by its action on all N qubits at once. We refer to
+the case of a global sl(2) algebra as “strong collective decoherence”; the case
+of collective phase damping discussed in Section 3 corresponds to having just
+a single global angular momentum operator (Sz ) and is referred to as “weak
+collective decoherence” [36]. Since sl(2) is semisimple Eq. (9) now tells us that
+the DFS is made up of those states |ψi satisfying
+
+                                 Sα |ψi = 0         ∀α.
+
+These are the states with vanishing total (fictitious) angular momentum J, i.e.,
+the “singlets” of sl(2). Their explicit form is well known for the case N = 2, in
+which case there is only one singlet:
+                                1
+              |ψiN =2 ≡ |si12 = √ (|01i − |10i) = |J = 0, mJ = 0i
+                                 2
+where the notation |si12 should be read as “singlet state of qubits 1 and 2”.
+This is also known as a Bell state or EPR pair [3]. The final form uses the total
+angular momentum J and its projection mJ . It is easy to check that the state
+                                       N/2
+                                       O
+                              |ψiN =         |si2m−1,2m
+                                       m=1
+
+is in the N -qubit DFS (since adding pairwise |J = 0, mJ = 0i states again
+produced a state with total J = 0), and that there are no DFS states for N
+                                 Decoherence-Free Subspaces and Subsystems           21
+
+odd (since such a state always has half-integer total J). The method of Young
+tableaux can be used to derive a dimensionality formula [18, 84]:
+
+                                                 N!
+                         dim[DFS(N )] =                                            (33)
+                                           (N/2 + 1)!(N/2)!
+
+is the number of singlet states for N qubits. An interesting consequence is that
+the encoding efficiency ǫ of the DFS, defined as the number of logical qubits
+log2 dim[DFS(N )] per number of physical qubits N , tends asymptotically to
+unity [18]:
+                                N →∞     3 log2 N
+                              ǫ −→ 1 −            .
+                                         2 N
+There are several methods for calculating the singlet states for arbitrary N ,
+e.g., by solving the problem using linear algebra, using group representation
+theory, or by using angular momentum addition rules. To illustrate the latter,
+consider the case of N = 4. The dimensionality formula yields dim[DFS(4)] = 2,
+meaning that this DFS encodes one logical qubit. One of the states is |0L i ≡
+|ψi4 = |si12 ⊗ |si34 . The second, orthogonal, state must be a combination of the
+triplet states |t− i ≡ |00i = |J = 1, mJ = −1i, |t+ i ≡ |11i = |J = 1, mJ = 1i,
+|t0 i ≡ √12 (|01i + |10i) = |J = 1, mJ = 0i. Indeed, the combination |1L i =
+√1 (|t− i12 ⊗ |t+ i34 − |t0 i12 ⊗ |t0 i34 + |t+ i12 ⊗ |t− i34 ) clearly has total J = 0,
+  3
+and has the correct Clebsch-Gordan coefficients. In this manner one can con-
+struct total J = 0 states for progressively higher N .
+     The encoding which we just discussed, of logical qubits into blocks of four
+spins each, was used to provide the first constructive procedure for universal,
+fault tolerant quantum computation using DFSs. As shown by Bacon et al. [85],
+universality can be achieved by switching on/off only Heisenberg exchange in-
+teractions between pairs of spins. This established for the first time that the
+Heisenberg interaction is all by itself universal for quantum computation. This
+observation is very important for a class of solid-state quantum computing pro-
+posals, such as electron spins in quantum dots [86] and donor atom spins in Si
+[87], where it is technically preferable to have to control only a single interaction.
+The universality of the Heisenberg interaction was further proved for encodings
+into any number N ≥ 3 of spins in [36]. Explicit pulse sequences for the N = 3
+case were derived in [88]. Furthermore, the collective decoherence conditions
+can be created from arbitrary linear system-bath interaction Hamiltonians, us-
+ing strong and fast pulses of the Heisenberg interaction [61], and leakage from
+a DFS can be detected using a Heisenberg-only circuit [89], or prevented using
+Heisenberg-only pulses [62].
+
+
+6.3   DFS and Dicke subradiance
+
+A different physical situation in which DFSs arise as a consequence of a collective
+coupling to the environment appears in the context of the Jaynes-Cummings
+Hamiltonian for N identical two-level atoms coupled to a single mode radiation
+22         Lidar & Whaley
+
+field. The Hamiltonian is very similar to that of Eq. (31), namely
+                                  N
+                                  X
+                                         gi+ σi+ ⊗ b + gi− σi− ⊗ b†
+                                                                      
+                           HI =                                                         (34)
+                                   i=1
+
+When the atoms are closer together than the wavelength of the radiation field,
+then the coupling parameter gi becomes independent of the atom index       P i, and
+one can write Eq. (34) in terms of the collective spin operators S+ = N            +
+                                                                              i=1 σi
+            PN −
+and S− = i=1 σi . The DFS condition may be applied directly in the Hamilto-
+nian formulation. Together, these two conditions on the N -particle atomic states
+are equivalent to the single condition S|ψi = 0 that we derived above for the
+collective decoherence of the spin-boson model in the strong coupling situation
+(i.e., α = 1, 2, and 3). With the atomic states alone, we therefore similarly arrive
+at a set of DF states that are identified with the N -atom singlet states. This
+model was also treated extensively in [20–22, 25].
+    The Jaynes-Cummings Hamiltonian is important also in the context of the
+Dicke states of quantum optics [83], where the motivation is very different from
+ours. The Dicke states are collective atomic states that are useful in consideration
+of the treatment of radiation by a collection of N two-level atoms. Let m ≡
+1
+2 [(number of atoms in the excited state) − (number in the ground state)]. The
+Dicke states are defined as eigenstates of the collective angular momentum, itself
+defined by S2 = S2x + S2y + S2z , with eigenvalues |m| ≤ J ≤ N/2, where the
+effective total angular momentum J is referred to by Dicke as the “cooperation
+number” [83, 90]. Dicke showed that the rate of photon emission is given by
+Γ = A(J + m)(J − m + 1), where A is the single-atom Einstein coefficient.
+Dicke’s interest was primarily in the “superradiant” states with J = N/2 and
+m = 0. In this case the rate of emission is proportional to N 2 , which is unusual
+since it implies that the radiation from a partially excited atomic system (m = 0)
+can be much higher than that from a fully excited system (m = N/2). It also
+follows that there are “anti-superradiant”, or “subradiant” states, with Γ = 0,
+corresponding to the situations m = −J and J = m = 0 [83, 90].4 Evidence of
+this behavior has been obtained experimentally for trapped ions [91]. The case
+J = m = 0 coincides with that of a DFS spanned by singlet states. However, one
+should not conclude that DFSs are nothing but Dicke’s subradiant states. First
+of all, there is a major conceptual difference, since in DFS theory we consider the
+radiation field as an external environment, while in Dicke’s analysis the notion of
+4
+      It is important to distinguish subradiant states from “dark” states, which are also
+     well known in quantum optics [79, p.824]. A dark state is a special dressed super-
+     position state of the excited states of a single atom that is not dipole coupled to
+     the ground state of the atom even if the undressed excited states themselves are. A
+     dark state is usually defined in terms of stationary light fields coupled to separate
+     transitions with a common ground state. It is created if the detunings δi = ǫi − ωi of
+     the two light fields with frequencies ωi from their respective transition frequencies ǫi
+     in a V or Λ configuration are equal. Note the similarity to the “dark-state condition”
+     of EIT, Eq. (30), where equal detunings were also assumed, albeit at the level of Rabi
+     frequencies.
+                                Decoherence-Free Subspaces and Subsystems        23
+
+an environment did not play a central role. In fact the explanation of subradiance
+is straightforward: the atomic dipoles are oppositely phased in pairs, so that the
+field radiated by one atom is absorbed by another [90]. This effect was already
+observed in 1970 with atoms close to a metallic mirror [92]: the mirror image of
+one atom behaves as a second radiator in antiphase with the first. Secondly, the
+DFS conditions given in Section 5 are far more general than the Dicke states.
+This will become even more apparent in our discussion on DF subsystems, in
+Section 7. Within the formal analysis provided by the DFS conditions the Dicke
+states appear naturally as those states that are isolated against any interactions
+with the radiation field.
+    To further emphasize the distinction between Dicke states and DFS theory,
+we consider an interesting extension of these collective atomic states, that results
+when one incorporates the single field mode into the system, and distinguishes
+this from an external environment of other radiation modes. This is the situation
+relevant to a set of N atoms interacting with a single mode in a high-finesse
+optical cavity, where this single cavity mode couples to a free radiation field: the
+prototypical situation in cavity-QED [80]. The Hamiltonian is now
+                N
+                X                                X −              †
+                                                                        
+          H=          gi+ σi+ ⊗ b + gi− σi− ⊗ b† +  sλ aλ b † + s+
+                                                                 λ aλ b        (35)
+                i=1                               λ
+
+and the system-environment interaction consists only of the second sum, since
+the atom-cavity mode interaction is now within the expanded system of atom
+plus cavity mode. In this case we find a single DFS condition, b|ψi|ni ∝ |ψi|ni
+where |ψi is the collective atomic state |ni is the cavity number state. This
+condition implies that b|ni = 0, i.e., the cavity mode must be empty, but does
+not otherwise place any restrictions on the atomic component of the system state.
+It is only when one imposes a further requirement that the system Hamiltonian
+not cause system states to evolve outside the DFS that one arrives at specific
+atomic states. In particular, this requirement tells us that both S+ b and S− b†
+act on |ψi|0i to produce at most another state |ψ ′ i|0i. Since b|0i = 0, the first
+condition is trivially satisfied, while the second condition reduces to S− |ψi = 0
+because b† |0i = |1i which would take the joint state outside the DFS. Thus the
+requirement for a DFS of the coupled N atom/cavity system is simply S− |ψi = 0,
+with a zero cavity occupation number. The atomic component of this DFS state
+is equal to the lowest Dicke state |J, −Ji, which constitute the ground state
+for a given cooperation number J [90]. For N = 2 we find a two-dimensional
+DFS given √ by the atomic states |J = 1, m = −1i = |00i and |J = 0, m =
+0i = (1/ 2)[|10i − |01i] (combined of course with the zero cavity mode state
+|n = 0i). The corresponding DFS for higher values of N may be readily generated
+using angular momentum algebra, as described in [90]. The dimensionality of
+these atom/cavity DFS differ from that of collective decoherence given above
+[Eq. (33)], being given by the expression
+
+                                            (2J + 1)N !
+                   dim[DFS(NJ )] =                                             (36)
+                                      (N/2 + J + 1)!(N/2 − J)!
+24      Lidar & Whaley
+
+which reduces to Eq. (33) when J = 0. Proposals for employing qubits encoded
+into these atom/cavity DFSs have been made recently by Beige et al., including
+discussion of performing quantum computation on the states using the quantum
+Zeno effect [46, 47].
+
+
+6.4   Multiple Qubit Errors
+
+The collective decoherence example assumes that all qubits couple to the bath
+in a symmetric manner, which is the consequence of full permutational symme-
+try. However, the symmetry that gives rise to a DFS can be less strict. Con-
+sider the case of N = 4 qubits which can undergo bit flips σjx : |0ij ←→ |1ij .
+Suppose that the qubits are arranged in pairs, such that the bit flip error af-
+fects at least two at a time. Specifically, let the allowed errors be QX (4) =
+{I, σ1x σ2x , σ3x σ4x , σ1x σ2x σ3x σ4x }, where I is the identity operator (no error). Note
+that the error σ2x σ3x is assumed not to happen. A general error in this model is
+a Kraus operator formed by an arbitrary linear combination of the elements of
+(the Abelian group) QX (4). It is then simple to verify that the encoding
+
+                            1
+                  |0L 0L i =  (|0000i + |1100i + |0011i + |1111i)
+                            2
+                            1
+                  |0L 1L i = (|0001i + |1101i + |0010i + |1110i)
+                            2
+                            1
+                  |1L 0L i = (|0100i + |1000i + |0111i + |1011i)
+                            2
+                            1
+                  |1L 1L i = (|1001i + |0101i + |1010i + |0110i)
+                            2
+is a 4-dimensional DFS (denoted DF SQX (4) ), thus encoding two logical qubits.
+To see this, check that all states in DF SQX (4) are eigenstates with the same
+eigenvalue +1 of any linear combination of operators over QX (4). This means
+that the action of the errors in QX (4) is to leave the subspace DF SQX (4) in-
+variant, so that this subspace is DF, in accordance with Theorem 3 and the
+more general Theorem 2. The latter theorem, however, only requires that the
+Kraus operators have an identical unitary representation on the DFS, which
+means that eigenvalues other than +1 are possible in principle. Indeed, it is
+simple to check that the state (|0000i − |1100i + |0011i − |1111i)/2 belongs to
+another 4 -dimensional DFS, characterized by the eigenvalue −1. In fact the
+entire 16-dimensional Hilbert space splits up into four 4-dimensional DFSs, two
+with eigenvalue +1, two with eigenvalue −1.
+    In order to generalize this result, note that the group QX (4) is generated
+(under multiplication) by σ1x σ2x and σ3x σ4x ; clearly the group QX (N ) generated
+      x     x N/2
+by {σ2j−1 σ2j }j=1 also supports a DFS with the same defining property, namely
+that the DF states are simultaneous eigenstates of all QX (N ) generators.
+    Even more generally, the type of DFS considered here is an example of a
+DFS for multiple qubit errors. The general theory is worked out in [28]. The er-
+ror model can be stated abstractly as follows: Starting from the Pauli group on N
+                                 Decoherence-Free Subspaces and Subsystems           25
+
+qubits (the group of N -fold tensor products of the Pauli matrices {σx , σy , σz }),
+look for Abelian subgroups. Every such subgroup defines an error model, in the
+sense that linear combinations of elements of the subgroup form Kraus opera-
+tors. The physical motivation for such subgroups is: (i) The case in which either
+only higher order (multiple qubit) errors occur, such that first-order terms of the
+form I ⊗ · · · ⊗ I ⊗ σiα ⊗ I ⊗ · · · ⊗ I are absent in the Pauli-group expansion of the
+Kraus operators, or (ii) only errors of one kind, either σ x , σ y , or σ z take place.
+Case (i) would imply that there are certain cancellations involving bath matrix
+element terms such that first-order system operators are absent in the expansion
+of Eq. (6). While this would be a rather non-generic situation, involving a very
+special “friendly” bath, it turns out that such conditions can be actively gen-
+erated from arbitrary baths using fast and strong, dynamical decoupling pulses
+[61]. Alternatively, in case (i) the system-bath Hamiltonian does not have the
+general form of Eq. (4), but rather involves only second order terms such as
+σiα ⊗ σjβ (identity on all the rest). Case (ii) is applicable in, e.g., the case of pure
+phase damping (relevant to NMR [93]) and optical lattices using cold controlled
+collisions [94]), where σ z errors are dominant. When either condition (i) or (ii)
+above is satisfied, the subgroup is Abelian, which is a necessary condition for it to
+have one-dimensional irreps. This, in turn, is a necessary and sufficient condition
+for a DFS by Theorem 2. Thus, to every such multiple qubit error model there
+corresponds a DFS, which is found by studying the one-dimensional irreps of
+the subgroup over N qubits. The DFS basis states are states that transform ac-
+cording to a one-dimensional irrep with fixed eigenvalue. The dimension of such
+a DFS therefore turns out to be the multiplicity of the one-dimensional irreps
+of the subgroup. The result seen above for QX (4) is general: the entire Hilbert
+space splits up into equi-dimensional, independent DFSs [28]. It is also possible
+to perform universal, fault tolerant quantum computation on these DFSs, by
+using a hybrid DFS-QECC method [41]. An experimental magnetic resonance
+realization of DF quantum computation, implementing Grover’s algorithm in
+the presence of multiple-qubit errors, has recently been completed [58].
+
+
+7    Decoherence-Free (Noiseless) Subsystems
+
+As long as we restrict our attention to encoding quantum information in a DF
+manner over a subspace then Eqs. (9),(16) provide necessary and sufficient con-
+ditions for the existence of such DFSs. The notion of a subspace which remains
+DF throughout the evolution of a system is not, however, the most general
+method for providing DF encoding of information in a quantum system. Knill,
+Laflamme, and Viola [32] discovered a method for DF encoding into subsystems
+instead of into subspaces. Zanardi soon thereafter realized that this opened the
+door to a unification of many of the previously seemingly unrelated ideas for
+reducing decoherence [37]. Related, less general results were independently de-
+rived in [33, 34]. Kempe et al. developed a general theory of universal quantum
+computation based on the DF subsystems concept [36].
+26     Lidar & Whaley
+
+7.1   Formal Theory
+
+We first introduce a formal characterization of DF subsystems. This is most
+easily done in the Hamiltonian formulation of decoherence. Let A denote the
+associative algebra (i.e., the algebra of all polynomials) generated by the system
+Hamiltonian HS and the system components of the interaction Hamiltonian,
+the Sα ’s of Eq. (4). We assume that HS is expressed in terms of the Sα ’s as
+well (if needed we can always enlarge this set), and that the identity operator
+is included as S0 = IS and B0 = IB . This will have no observable consequence
+but allows for the use of an important representation theorem. Because the
+Hamiltonian is Hermitian the Sα ’s must be closed under Hermitian conjugation:
+A is a “†-closed” operator algebra. A basic theorem of such operator algebras
+which include the identity operator states that, in general, A will be a reducible
+subalgebra of the full algebra of operators on the system Hilbert space HS [95].
+This means that the algebra is isomorphic to a direct sum of dJ × dJ complex
+matrix algebras M(dJ ), each with multiplicity nJ :
+
+                             A∼
+                                  M
+                              =         InJ ⊗ M(dJ ).                        (37)
+                                  J∈J
+
+Here J is a finite set labeling the irreducible components of A.
+   The structure implied by Eq. (37) is illustrated schematically as follows, for
+some system operator Sα :
+                                                       
+                                J =1
+                                      J =2             
+                        Sα =                                               (38)
+                                                       
+                                            . ..       
+                                                        
+                                                J = |J |
+
+In this block diagonal matrix representation, a typical block with given J, may
+have a further block diagonal structure,
+                                                          
+                  Mα                                      λ=0
+                                                          
+                 
+                                            µ             
+                                                           
+                                            0             
+                                              ..
+                                                          
+                                                          
+                            Mα                .           
+                                                           λ=1
+                                                                            (39)
+                 
+                                         dJ   −1          
+                                                           
+                                           . ..
+                                                           
+                 
+                     µ′ : 0 · · · dJ − 1                  
+                                                           
+                                                          
+                                                          
+                                                 Mα       
+
+
+Here λ labels the different degenerate sub-blocks, and µ labels the states in-
+side each sub-block. Associated with this decomposition of the algebra A is the
+                               Decoherence-Free Subspaces and Subsystems       27
+
+decomposition over the system Hilbert space:
+                                    X
+                             HS =           CnJ ⊗ CdJ .                      (40)
+                                    J∈J
+
+
+DF subsystems are defined as the situation in which information is encoded in
+a single component CnJ of Eq. (40) (thus the dimension of the DF subsystem
+is nJ ). The decomposition in Eq. (37) reveals that information encoded in such
+a subsystem will always be affected as identity on the component CnJ , and thus
+this information will not decohere. This deep fact is the basis for the theory of
+DF subsystems.
+    Several general observations are in order: (i) The tensor product structure
+which gives rise to the name subsystem in Eq. (37) is a tensor product over a
+direct sum, and therefore will not in general correspond to the natural tensor
+product of (spatially distinguishable) qubits; (ii) The subsystem nature of the
+decoherence implies that the information should be encoded in a separable way:
+over the tensor structure of Eq. (40) the density matrix should split into two
+valid density matrices: ρS (0) = ρ ⊗ γ where ρ is the DF subsystem and γ is the
+corresponding component of the density matrix which does decohere; (iii) Not
+all of the subsystems in the different irreducible representations can be simul-
+taneously used: (phase) decoherence will occur between the different irreducible
+components of the Hilbert space labeled by J ∈ J . For this reason, from now
+on we restrict our attention to the subsystem defined by a given J.
+    DF subspaces are now easily connected to DF subsystems. DF subspaces cor-
+respond to those DF subsystems possessing one-dimensional irreducible matrix
+algebras: M(1). The multiplicity of these one-dimensional irreducible algebras is
+the dimension of the DF subspaces. In fact it is easy to see how the DF subsys-
+tems arise out of a non-commuting generalization of the DF subspace conditions.
+Let {|λµ i}, 1 ≤ λ ≤ nJ and 1 ≤ µ ≤ dJ , denote a subsystem of HS with given
+J. Then the condition for the existence of an irreducible decomposition as in
+Eq. (37) is
+                                        dJ
+                                        X
+                           Sα |λµ i =           Mµµ′ ,α |λµ′ i,              (41)
+                                        µ′ =1
+
+for all Sα , λ and µ. Note that Mµµ′ ,α is not dependent on λ, in the same way
+that cα in Eq. (9) is the same for all states |k̃i (there µ = 1 and fixed). Thus
+for a fixed λ, the subsystem spanned by |λµ i is acted upon in some nontrivial
+way. However, because Mµµ′ ,α is not dependent on λ, each subsystem defined
+by a fixed µ and running over λ is acted upon in an identical manner by the
+decoherence process.
+    The generalization of the Lindblad semigroup formulation of the DF sub-
+space condition to the corresponding master equation for a DF subsystem is not
+trivial. This is because the Fα operators in Eq. (8) are not required to be closed
+under conjugation. The representation theorem Eq. (37) is hence not directly ap-
+plicable. It can be shown, however, that the master equation analog of Eq. (41)
+28        Lidar & Whaley
+              Pd
+is: Fα |λµ i = µJ′ =1 Mµµ′ ,α |λµ′ i, and provides a necessary and sufficient condi-
+tion for the preservation of DF subsystems. For details the reader is referred to
+[36, p.5].
+     As noted before, the subsystems concept is crucial in establishing a general
+theory of universal, fault tolerant quantum computation over DFSs. To this end
+it is necessary to introduce the commutant A′ of A. This is the set of operators
+which commutes with the algebra A, A′ = {X : [X, A] = 0, ∀A ∈ A}. They also
+form a †-closed algebra, which is reducible to
+                                       M
+                               A′ =       M(nJ ) ⊗ IdJ                          (42)
+                                        J∈J
+
+over the same basis as A in Eq. (37). Comparing to Eq. (37) it is clear that
+non-trivial operators in A′ are exactly the transformations that preserve the
+DFS [35]. As shown in detail in [36], this allows for a constructive proof that the
+Heisenberg exchange interaction is universal over all DFS encodings for collective
+decoherence.
+
+7.2     Examples
+To illustrate the DF states that emerge from the subsystems formulation it is
+convenient to use once more the collective decoherence model. As will be recalled
+from Section 6.2, “strong” collective decoherence on N qubits is characterized by
+the three system operators S+ , S− and Sz . These operators form a representation
+of the semisimple Lie algebra sl(2). The algebra A generated by these operators
+can be decomposed as5
+                                      N/2
+                              A∼
+                                      M
+                               =               InJ ⊗ gl(2J + 1)                          (43)
+                                   J=0(1/2)
+
+where J labels the total angular momentum of the corresponding Hilbert space
+decomposition (and hence the 0 or 1/2 depending on whether N is even or odd
+respectively) and gl(2J + 1) is the general linear algebra acting on a space of
+size 2J + 1. The resulting decomposition of the system Hilbert space
+                                         N/2
+                               HS ∼
+                                         M
+                                  =              CnJ ⊗ C2J+1                             (44)
+                                      J=0(1/2)
+
+is exactly the reduction of the Hilbert states into different Dicke states [83, 90].
+The degeneracy for each J is therefore given by Eq. (36). Eq. (43) shows that
+given J, a state |J, λ, µi is acted upon as identity on its λ component. Thus a
+DFS is defined by fixing J and µ, where µ can now be naturally interpreted as
+the z-component of the projection of the total angular momentum. As we will
+show shortly, λ corresponds to the degeneracy of paths leading to a given node
+5
+     Note that as a complex algebra {S+ , S− , Sz } span all of gl(2), not just sl(2).
+                                  Decoherence-Free Subspaces and Subsystems       29
+
+(N, J) on the diagram of Fig. (2). In the strong collective decoherence case, we
+shall denote the N -qubit DFS labeled by a particular angular momentum J, by
+DF SN (J).
+    The DFSs corresponding to the different J values for a given N can be
+computed using standard methods for the addition of angular momentum. We
+use the convention that |1i represents a |j = 1/2, mj = 1/2i particle and |0i
+represents a |j = 1/2, mj = −1/2i particle in this decomposition although, of
+course, one should be careful to treat this labeling as strictly symbolic and not
+related to the physical angular momentum of the particles.
+    The smallest N which supports a DFS and encodes at least a qubit of in-
+formation is N = 3 [32–34]. In this case there are two possible values of the
+total angular momentum: J = 3/2 or J = 1/2. The four J = 3/2 states
+|J, λ, µi = |3/2, 0, µi (µ = mJ = ±3/2, ±1/2) are singly degenerate; the J = 1/2
+states have degeneracy 2. They can be constructed by either adding a J12 = 1
+(triplet) or a J12 = 0 (singlet) state to a J3 = 1/2 state. These two possible
+methods of adding the angular momentum to obtain a J = 1/2 state are exactly
+the degeneracy of the algebra. The four J = 1/2 states are:
+
+                       | 12 , 0, 21 i = √12 (|010i − |100i)
+                       | 21 , 0, − 21 i = √12 (|011i − |101i)
+                       | 12 , 1, 0i = √16 (−2|001i + |010i + |100i)
+                       | 12 , 1, 1i = √16 (2|110i − |101i − |011i)
+
+where on the left we used the |J, λ, µi notation and on the right the states are
+expanded in terms the single-particle |j = 1/2, mj = ±1/2i basis using Clebsch-
+Gordan coefficients. The DF qubit can now be written compactly as
+
+                       |0L i = α|1/2, 0, 1/2i + β|1/2, 0, −1/2i
+                       |1L i = α|1/2, 1, 1/2i + β|1/2, 1, −1/2i                 (45)
+
+where |α|2 + |β|2 = 1, i.e., the encoding is into the degeneracy of the two J = 1/2
+subsystems. By the the decomposition of Eqs. (43),(44) it is clear that collective
+errors can change the α, β coefficients, but have the same effect on the |0L i, |1L i
+states, which is why this encoding is a DFS.
+    The smallest DF subspace (as opposed to subsystem) supporting a full en-
+coded qubit comes about for n = 4. Subspaces for the strong collective decoher-
+ence mechanism correspond to the degeneracy of the zero total angular momen-
+tum eigenstates (there are also two DF subsystems with degeneracy 1 and 3).
+As we already noted in Section 6.2 this subspace is spanned by the states:
+                                             1
+     |0L i = |0, 0, 0i = |0, 0i ⊗ |0, 0i =     |(|01i − |10i)(|01i − |10i)
+                                             2
+                          1
+     |1L i = |0, 1, 0i = √ (|1, 1i ⊗ |1, −1i − |1, 0i ⊗ |1, 0i + |1, −1i ⊗ |1, 1i)
+                           3
+               1
+           = √ (2|0011i + 2|1100i − |0101i − |1010i − |0110i − |1001i). (46)
+                12
+30      Lidar & Whaley
+
+The notation is the same as in Eq. (45), except that in the third equality we
+have used the notation |J12 , mJ12 i ⊗ |J34 , mJ34 i which makes it easy to see how
+the angular momentum is added.
+
+
+
+
+Fig. 2. Partitioning of the Hilbert space of N spin-1/2 particles into DF subspaces
+(nodes on the N -axis) and subsystems (nodes above the N -axis). Integer above a node
+represents the number of paths leading from the origin to that node, i.e., the degeneracy
+quantum number λ. See text for full details.
+
+
+    There is a simple graphical interpretation of these results, shown in Fig. (2).
+Starting from the origin (no spins) one starts adding spin-1/2 particles. The
+first particle (N = 1) has total angular momentum J = 1/2. This single particle
+has the trivial DF S1 (1/2). When the second particle is added one can form
+either a singlet (J = 0) by subtracting 1/2 or form a triplet by adding 1/2.
+In this manner the subspace DF S2 (0) and subsystem DF S2 (1) are formed,
+containing a single state (µ = mJ = 0) and three states (µ = mJ = −1, 0, 1),
+respectively. The first interesting DFS is formed when N = 3, since now there
+are two paths, λ = 0, 1, in Fig. (2) leading to the same total J = 1/2. These
+two paths correspond exactly to the |0L i and |1L i states of Eq. (45), and define
+the subsystem DF S3 (1/2), that encodes a single DF qubit. For N = 4 spins
+there is the DF subspace DF S4 (0) and also a three-dimensional DF subsystem
+DF S4 (1). Clearly, the DF subspaces are simply all the nodes that lie on the
+N -axis in Fig. (2), while the DF subsystems are all the nodes above this axis.
+Interpreted in this manner, Fig. (2) is a partitioning of the entire system Hilbert
+space into disjoint DFSs. The examples presented here have been worked out
+in far greater detail in [36, 81, 96], where it is further shown how to construct
+universal quantum computation operations using the same formalism.
+                                 Decoherence-Free Subspaces and Subsystems          31
+
+8    Protection against additional decoherence sources
+
+It is clear from the above summary of DF subspaces and subsystems that they
+will afford complete protection against the specific errors that they are designed
+to eliminate. However, in general it is not possible to protect agains all kinds of
+errors and one is motivated to then consider how to add protection of DFS en-
+codings agains additional sources of decoherence. Several approaches have been
+taken to address this issue. It was shown early on that DFSs are remarkably
+stable to additional sources of decoherence, providing a useful point of depar-
+ture for more general schemes to protect fragile quantum information. The first
+study to consider the effects of perturbations breaking the symmetry giving rise
+to a DFS was Ref. [26], within the Markovian semigroup formulation. It was
+shown that if an additional set of Lindblad operators are added to the Lind-
+blad equation (8), parametrized by a coupling strength ǫ, then the “mixed state
+fidelity” fǫ (t) ≡ Tr[ρid (t)ρǫ (t)], i.e., the overlap between the ideal (decoherence-
+free) evolution ρid (t) and the perturbed evolution ρǫ (t), decays as 1−O(ǫt2 ). This
+conclusion was significantly strengthened in Ref. [39], where a stability analysis
+was made within both the semigroup and OSR formulations. It was shown that
+in both formulations states in DFSs are stable to symmetry-breaking perturba-
+tions to second order in the strength of the perturbation: fǫ (t) = 1 − O(ǫ2 t2 ), so
+the entire O(ǫ) contribution vanishes to all orders in time. This indicates that
+the DFSs are well-suited for applications to quantum memory, a result that has
+been recently been taken advantage of in ion traps [50, 52, 55, 56]. Errors that
+do occur can be dealt with by a number of methods: (i) Additional encoding
+[27, 43–45, 84], (ii) Implementing error-detection circuits [89]; (iii) Hamiltonian
+engineering to suppress or eliminate further errors [42]; (iv) Combination with
+the dynamical decoupling technique [49, 50, 61, 62, 97, 98]. We briefly summarize
+instances of these four approaches here.
+    In the collective decoherence DFS, independent single qubit errors can be
+shown to cause either independent errors acting on the encoded qubit states, or
+leakage of the DFS encoded qubit states to states lying outside the DFS [27].
+Both of these types of errors may be corrected by concatenating the DFS en-
+coding with a standard quantum error-correcting code that corrects independent
+single qubit errors. Thus, the four qubit DFS encoding for collective decoherence
+was concatenated with the five-qubit QECC in Ref. [27] to produce a 20-qubit
+encoding that provides protection against both collective and independent errors
+on the physical qubits. Concatenation thus provides one way to correct leakage
+errors that take the encoded quantum information out of the DFS.
+    Another approach is to implement a leakage-correction circuit [99]. An ex-
+ample of this for the three-qubit encoding into a subsystem protected against
+collective decoherence is given in Ref. [89]. Such circuits may be readily incor-
+porated into schemes for implementing fault-tolerant computation such as in
+Refs. [36, 85]. This particular leakage-correction circuit allows correction with-
+out any measurement, providing a simpler approach than usual in protocols for
+fault tolerance.
+32     Lidar & Whaley
+
+    The third approach to dealing with errors not specifically protected against
+by the DFS encoding, namely by Hamiltonian engineering to eliminate addi-
+tional errors, is very different from the first two. The idea here is to supplement
+the qubit Hamiltonian by additional interactions that impose an energy spec-
+trum on the DFS states. The additional Hamiltonian terms are specifically engi-
+neered to result in an energy spectrum that eliminates or thermally suppresses
+additional errors. This approach has been demonstrated in Ref. [42], using the
+four-qubit DFS encoding against collective decoherence. Addition of a specifi-
+cally designed set of exchange interactions between the physical qubits causes
+the qubit tensor product states in the DFS representation (Section 6.2) to split
+into a spectrum of higher angular momentum states that are separated from the
+degenerate ground state that provides the zero angular momentum DFS encod-
+ing. The effect of this additional Hamiltonian is to transform all independent
+single-qubit errors into non-energy conserving errors that cause excitation out
+of the ground state encoding. Thus all local phase errors on the encoded qubit
+states have been removed, while maintaining their protection against collective
+decoherence, leading to their designation as “coherence-preserving” or “super-
+coherent”. The energy-nonconserving errors can be suppressed by going to low
+temperatures, or alternatively, used as an error-detecting code.
+    The fourth approach to dealing with additional errors combines DFS encod-
+ing with the method of strong and fast dynamical decoupling pulses proposed
+by Viola and Lloyd in Ref. [48]. The first concrete example of this approach was
+given by Wu and Lidar in Ref. [61], where it was shown that dynamical decou-
+pling pulses can create the conditions for both the multiple-qubit and collec-
+tive decoherence error models, starting from arbitrary system-bath interactions.
+In the latter error model, this can be done by rapidly pulsing the Heisenberg
+exchange interaction, so the scheme is fully compatible with universal quan-
+tum computation on the resulting DFS. However, even after the creation of
+the appropriate symmetry, leakage from the DFS is still possible. To this end
+Refs. [49, 62, 97] showed explicitly how leakage errors too can be eliminated using
+dynamical decoupling, and in the case of collective decoherence, these can again
+be generated using Heisenberg interactions. Integration of all these components
+(DFS protection, generation of symmetric system-bath interaction, and leakage
+elimination), has been discussed in Ref. [50].
+    These studies of effects of errors beyond the specific error models defining
+the DFS and its protection show that there are a number of viable approaches
+to incorporate DFS encodings into stronger schemes that provide protection of
+quantum states at multiple levels. They can be used both to further improve the
+performance of DFS encoded qubits for quantum memory applications, and also
+in implementations of quantum computation with DFS encodings [36]. Concate-
+nation and leakage-detection circuits provide a direct route to the established
+framework of fault-tolerance. Similarly, the use of Hamiltonian engineering as
+a design tool to suppress or remove additional errors relates to the very dif-
+ferent approach advocated by topological quantum computing, where one seeks
+to optimize the Hamiltonian structure to eliminate or automatically correct er-
+                               Decoherence-Free Subspaces and Subsystems         33
+
+rors [2, 100]. The DFS-dynamical decoupling combination ties in naturally with
+several solid state and atomic physics proposals for quantum computing. These
+relations deserve further exploration in the future.
+
+
+9   Conclusions
+
+This review is an introduction to the now well-developed theory of decoherence-
+free subspaces and subsystems (DFSs). The central idea behind DFSs is that
+decoherence can be avoided by encoding quantum information into special sub-
+spaces that are protected from the interaction with the environment by virtue of
+a dynamical symmetry. This idea has roots that can be traced to work in quan-
+tum optics, the measurement problem, and the general theory of open quantum
+systems. However, the appreciation of its importance to quantum information
+theory, the development of a rigorous underlying mathematical framework, and
+experimental verification, are all very recent. We have provided here a survey
+of these developments, emphasizing the theoretical contributions to the problem
+of preservation of quantum information, as opposed to the rich and fascinating
+subject of its manipulation. This was illustrated with examples from quantum
+optics and general models of interacting quantum systems. It is important to
+emphasize that DFSs are only one of several ideas for the preservation of quan-
+tum information, and that full protection of quantum information is likely to
+involve a combination at different levels of several methods. The most notable
+alternatives are quantum error correcting codes, geometric and topological en-
+codings of quantum information, and dynamical suppression of decoherence via
+the application of fast and strong pulses. It is now increasingly apparent that
+there are strong unifying features to all of these ideas, in the sense that there is
+an underlying algebraic structure from which all the different methods seem to
+emerge. Future investigations will no doubt further clarify this unity, and it is
+our hope that new experiments will confirm the usefulness of the DFS concept,
+in particular for quantum information processing.
+
+
+Acknowledgements
+
+This material is based on research sponsored by the Defense Advanced Re-
+search Projects Agency under the QuIST program and managed by the Air
+Force Research Laboratory (AFOSR), under agreements F49620-01-1-0468 and
+F30602-01-2-0524. The authors’ effort was also supported by the National Se-
+curity Agency (NSA) and the Advanced Research and Development Activity
+(ARDA) under Army Research Office (ARO) contracts DAAG55-98-1-0371 and
+DAAD19-00-1-0380. D.A.L. further gratefully acknowledges financial support
+from the Premier’s Research Excellence Award (Ontario), Photonics Research
+Ontario, NSERC, and the Connaught Fund. K.B.W. thanks the Miller Institute
+for Basic Research in Science for a Miller Research Professorship for 2002-2003.
+34     Lidar & Whaley
+
+References
+ 1. J. Gruska. Quantum Computing. Mc Graw-Hill, London, 1999.
+ 2. A.Yu. Kitaev, A.H. Shen, M.N. Vyalyi. Classical and Quantum Computation,
+    volume 47 of Graduate Studies in Mathematics. American Mathematical Society,
+    Providence, RI, 2000.
+ 3. M.A. Nielsen and I.L. Chuang. Quantum Computation and Quantum Information.
+    Cambridge University Press, Cambridge, UK, 2000.
+ 4. D. Giulini, E. Joos, C. Kiefer, J. Kupsch, I.-O. Stamatescu, and H.D. Zeh, edi-
+    tors. Decoherence and the Appearance of a Classical World in Quantum Theory.
+    Springer-Verlag, Berlin, 1996.
+ 5. R. Landauer. Is quantum mechanics useful? Proc. Roy. Soc. London Ser. A,
+    353:367, 1995.
+ 6. W.G. Unruh. Maintaining coherence in quantum computers. Phys. Rev. A, 51:992,
+    1995.
+ 7. The mathematical and physical relations between these two contributions to
+    non-unitary evolution of the system have been the subject of many studies in
+    quantum relaxation theory over the last 20 years. In the energy eigenbasis de-
+    phasing causes decay of off-diagonal elements of the density matrix, while dissi-
+    pation causes decay of both diagonal and off-diagonal elements. In the context
+    of quantum computation and error correction it has become customary to refer
+    to both types of processes generically as ‘decoherence’. While the original mean-
+    ing of decoherence was specifically designated to describe loss of coherences in
+    the off-diagonal elements of the density operator in the energy eigenbasis, there
+    are several reasons why one may wish to be less specific for general study of the
+    effects of environmental interactions on quantum information processing. First,
+    there is the undesirable fact that such decay of coherences in the off-diagonal
+    elements of the density operator is basis set dependent. Second, at the physical
+    level, both dissipative and dephasing interactions contribute to this loss of coher-
+    ence in off-diagonal elements. These two factors render it more preferable in the
+    context of a general consideration of quantum errors to adopt the now common
+    usage of ‘decoherence’ to refer quite generally to loss of unitary evolution and to
+    all underlying physical mechanisms for this.
+ 8. M. Shapiro and P. Brumer. Coherent Control of Atomic, Molecular and Electronic
+    Processes. Adv. Atomic, Mol. & Opt. Phys., 42:287, 2000.
+ 9. H. Rabitz, R. de Vivie-Riedle, M. Motzkus, and Karl Kompa. Whither the Future
+    of Controlling Quantum Phenomena? Science, 288:824, 2000.
+10. A. Ekert and R. Jozsa. Quantum algorithms: Entanglement Enhanced Informa-
+    tion Processing. Phil. Trans. Roy. Soc. (Lond.), 356:1769, 1998.
+11. D. Aharonov and M. Ben-Or. Polynomial Simulations of Decohered Quantum
+    Computers. In Proceedings of 37th Conference on Foundations of Computer Sci-
+    ence (FOCS), page 46, Los Alamitos, CA, 1996. IEEE Comput. Soc. Press.
+12. W.H. Zurek. Pointer basis of a quantum apparatus: Into what mixture does the
+    wave packet collapse? Phys. Rev. D, 24:1516, 1981.
+13. W.H. Zurek. Preferred states, predictability, classicality and the environment-
+    induced decoherence. Prog. Theor. Phys., 89:281, 1993.
+14. R. Alicki. Limited thermalization for the Markov mean-field model of N atoms
+    in thermal field. Physica A, 150:455, 1988.
+15. G.M. Palma, K.-A. Suominen and A.K. Ekert. Quantum Computers and Dissi-
+    pation. Proc. Roy. Soc. London Ser. A, 452:567, 1996.
+                               Decoherence-Free Subspaces and Subsystems         35
+
+16. L.-M Duan and G.-C. Guo. Reducing decoherence in quantum-computer memory
+    with all quantum bits coupling to the same environment. Phys. Rev. A, 57:737,
+    1998.
+17. L.-M Duan and G.-C. Guo. Preserving Coherence in Quantum Computation by
+    Pairing Quantum Bits. Phys. Rev. Lett., 79:1953, 1997.
+18. P. Zanardi and M. Rasetti. Noiseless Quantum Codes. Phys. Rev. Lett., 79:3306,
+    1997.
+19. P. Zanardi and M. Rasetti. Error Avoiding Quantum Codes. Mod. Phys. Lett. B,
+    11:1085, 1997.
+20. P. Zanardi. Dissipative dynamics in a quantum register. Phys. Rev. A, 56:4445,
+    1997.
+21. L.-M Duan and G.-C. Guo. Prevention of dissipation with two particles. Phys.
+    Rev. A, 57:2399, 1998.
+22. L.-M. Duan and G.-C. Guo. Optimal quantum codes for preventing collective
+    amplitude damping. Phys. Rev. A, 58:3491, 1998.
+23. P. Zanardi and F. Rossi. Quantum Information in Semiconductors: Noiseless
+    Encoding in a Quantum-Dot Array. Phys. Rev. Lett., 81:4752, 1998.
+24. P. Zanardi and F. Rossi. Subdecoherent Information Encoding in a Quantum-Dot
+    Array. Phys. Rev. B, 59:8170, 1999.
+25. P. Zanardi. Dissipation and decoherence in a quantum register. Phys. Rev. A,
+    57:3276, 1998.
+26. D.A. Lidar, I.L. Chuang and K.B. Whaley. Decoherence free subspaces for quan-
+    tum computation. Phys. Rev. Lett., 81:2594, 1998.
+27. D.A. Lidar, D. Bacon and K.B. Whaley. Concatenating Decoherence Free Sub-
+    spaces with Quantum Error Correcting Codes. Phys. Rev. Lett., 82:4556, 1999.
+28. D.A. Lidar, D. Bacon, J. Kempe, and K.B. Whaley. Decoherence-free subspaces
+    for multiple-qubit errors: (i) characterization. Phys. Rev. A, 63:022306, 2001.
+29. M. Durdevich, H.E. Makaruk, R.Owczarek. Generalized Noiseless Quantum Codes
+    utilizing Quantum Enveloping Algebras.
+30. B. Qiao, H.E. Ruda, and M.S. Zhan. Two-qubit quantum computing in a pro-
+    jected subspace. Phys. Rev. A, 65:042325, 2002.
+31. M. Shapiro and P. Brumer. S-matrix approach to the construction of decoherence-
+    free subspaces. Phys. Rev. A, 66:052308, 2002.
+32. E. Knill, R. Laflamme and L. Viola. Theory of Quantum Error Correction for
+    General Noise. Phys. Rev. Lett., 84:2525, 2000.
+33. S. De Filippo. Quantum Computation using Decoherence-Free States of the Phys-
+    ical Operator Algebra. Phys. Rev. A, 62:052307, 2000.
+34. C.-P. Yang and J. Gea-Banacloche. Three-qubit quantum error-correction scheme
+    for collective decoherence. Phys. Rev. A, 63:022311, 2001.
+35. P. Zanardi. Computation on an error-avoiding quantum code and symmetrization.
+    Phys. Rev. A, 60:R729, 1999.
+36. J. Kempe, D. Bacon, D.A. Lidar, and K.B. Whaley. Theory of Decoherence-Free,
+    Fault-Tolerant, Universal Quantum Computation. Phys. Rev. A, 63:042307, 2001.
+37. P. Zanardi. Stabilizing quantum information. Phys. Rev. A, 63:012301, 2001.
+38. P. Zanardi and S. Lloyd. Topological protection and noiseless subsystems. Eprint
+    quant-ph/0208132.
+39. D. Bacon, D.A. Lidar and K.B. Whaley. Robustness of Decoherence-Free Sub-
+    spaces for Quantum Computation. Phys. Rev. A, 60:1944, 1999.
+40. A.M. Steane. Quantum Error Correction. In H.K. Lo, S. Popescu and T.P. Spiller,
+    editor, Introduction to Quantum Computation and Information, page 184. World
+    Scientific, Singapore, 1999.
+36    Lidar & Whaley
+
+41. D.A. Lidar, D. Bacon, J. Kempe, and K.B. Whaley. Dcoherence-free subspaces for
+    multiple-qubit errors: (ii) universal, fault-tolerant quantum computation. Phys.
+    Rev. A, 63:022307, 2001.
+42. D. Bacon, K.R. Brown, K.B. Whaley. Coherence-Preserving Quantum Bits. Phys.
+    Rev. Lett., 87:247902, 2001.
+43. G. Alber, Th. Beth, Ch. Charnes, A. Delgado, M. Grassl, and M. Mussinger.
+    Stabilizing Distinguishable Qubits Against Spontaneous Decay by Detected-Jump
+    Correcting Quantum Codes. Phys. Rev. Lett., 86:4402, 2001.
+44. G. Alber, A. Delgado, and M. Mussinger. Quantum Error Correction and Quan-
+    tum Computation with Detected-Jump Correcting Quantum Codes. Fortschr.
+    Phys., 49:901, 2001.
+45. K. Khodjasteh and D.A. Lidar. Universal Fault-Tolerant Quantum Computation
+    in the Presence of Spontaneous Emission and Collective Dephasing. Phys. Rev.
+    Lett., 89:197904, 2002.
+46. A. Beige, D. Braun, and P.L. Knight. Driving Atoms Into Decoherence-Free
+    States. New J. Phys., 2:22, 2000.
+47. A. Beige, D. Braun, B.Tregenna, and P.L. Knight. Quantum Computing Using
+    Dissipation. Phys. Rev. Lett., 85:1762, 2000.
+48. L. Viola and S. Lloyd. Dynamical suppression of decoherence in two-state quan-
+    tum systems. Phys. Rev. A, 58:2733, 1998.
+49. M.S. Byrd and D.A. Lidar. Comprehensive Encoding and Decoupling Solution to
+    Problems of Decoherence and Design in Solid-State Quantum Computing. Phys.
+    Rev. Lett., 89:047901, 2002.
+50. D.A. Lidar and L.-A Wu. Encoded recoupling and decoupling: An alternative to
+    quantum error correcting codes, applied to trapped ion quantum computation.
+    Eprint quant-ph/0211088.
+51. P.G. Kwiat, A.J. Berglund, J.B. Altepeter, and A.G. White. Experimental Veri-
+    fication of Decoherence-Free Subspaces. Science, 290:498, 2000.
+52. D. Kielpinski, V. Meyer, M.A. Rowe, C.A. Sackett, W.M. Itano, C. Monroe,
+    and D.J. Wineland. A Decoherence-Free Quantum Memory Using Trapped Ions.
+    Science, 291:1013, 2001.
+53. E.M. Fortunato, L. Viola, J. Hodges, G. Teklemariam, and D.G. Cory. Imple-
+    mentation of Universal Control on a Decoherence-Free Qubit. New J. Phys., 4:5,
+    2002.
+54. L. Viola, E.M. Fortunato, M.A. Pravia, E. Knill, R. Laflamme, D.G. Cory. Exper-
+    imental Realization of Noiseless Subsystems for Quantum Information Processing.
+    Science, 293:2059, 2001.
+55. D. Kielpinski, C. Monroe and D.J. Wineland. Architecture for a large-scale ion-
+    trap quantum computer. Nature, 417:709, 2002.
+56. K.R. Brown, J. Vala and K.B. Whaley. Scalable Ion Trap Quantum Computation
+    in Decoherence-Free Subspaces with Pairwise Interactions Only, Phys. Rev. A,
+    67:0123XX (2003); eprint quant-ph/0207155.
+57. E.M. Fortunato, L. Viola, M.A. Pravia, E. Knill, R. Laflamme, T.F. Havel, and
+    D.G. Cory. Exploring Noiseless Subsystems via Nuclear Magnetic Resonance,
+    Eprint quant-ph/0210057.
+58. J. Ollerenshaw, D.A. Lidar, and L.E. Kay. submitted.
+59. P. Zanardi. Symmetrizing evolutions. Phys. Lett. A, 258:77, 1999.
+60. L. Viola, E. Knill, and S. Lloyd. Dynamical Generation of Noiseless Quantum
+    Subsystems. Phys. Rev. Lett., 85:3520, 2000.
+61. L.-A. Wu and D.A. Lidar. Creating Decoherence-Free Subspaces Using Strong
+    and Fast Pulses. Phys. Rev. Lett., 88:207902, 2002.
+                               Decoherence-Free Subspaces and Subsystems          37
+
+62. L.-A. Wu, M.S. Byrd, D.A. Lidar. Efficient Universal Leakage Elimination for
+    Physical and Encoded Qubits. Phys. Rev. Lett., 89:127901, 2002.
+63. S. Gheorghiu-Svirschevski. Suppression of decoherence in quantum registers by
+    entanglement with a nonequilibrium environment. Phys. Rev. A, 66:032101, 2002.
+64. D.A. Lidar and L.-A. Wu. Reducing Constraints on Quantum Computer Design
+    by Encoded Selective Recoupling. Phys. Rev. Lett., 88:017905, 2002.
+65. K. Kraus. States, Effects and Operations. Fundamental Notions of Quantum
+    Theory. Academic, Berlin, 1983.
+66. G. Lindblad. On the Generators of Quantum Dynamical Semigroups. Commun.
+    Math. Phys., 48:119, 1976.
+67. R. Alicki and K. Lendi. Quantum Dynamical Semigroups and Applications. Num-
+    ber 286 in Lecture Notes in Physics. Springer-Verlag, Berlin, 1987.
+68. D.A. Lidar, Z. Bihary, and K.B. Whaley. From Completely Positive Maps to the
+    Quantum Markovian Semigroup Master Equation. Chem. Phys., 268:35, 2001.
+69. J.F. Cornwell. Group Theory in Physics: An Introduction. Academic Press, San
+    Diego, 1997.
+70. M.A. Nielsen and C.M. Caves. Reversible quantum operations and their applica-
+    tion to teleportation. Phys. Rev. A, 55:2547, 1997.
+71. L.-M. Duan and G.-C. Guo. Quantum error avoiding codes versus quantum error
+    correcting codes. Phys. Lett. A, 255:209, 1999.
+72. M.A. Nielsen, C.M. Caves, B. Schumacher and H. Barnum. Information-theoretic
+    approach to quantum error correction and reversible measurement. Proc. Roy.
+    Soc. London Ser. A, 454:277, 1998.
+73. E. Knill and R. Laflamme. Theory of quantum error-correcting codes. Phys. Rev.
+    A, 55:900, 1997.
+74. D. Gottesman. Class of quantum error-correcting codes saturating the quantum
+    Hamming bound. Phys. Rev. A, 54:1862, 1996.
+75. A.M. Steane. Error correcting codes in quantum theory. Phys. Rev. Lett., 77:793,
+    1996.
+76. D. Gottesman. Theory of fault-tolerant quantum computation. Phys. Rev. A,
+    57:127, 1997.
+77. E.M. Rains, R.H. Hardin, P.W. Shor and N.J.A. Sloane. A nonadditive quantum
+    code. Phys. Rev. Lett., 79:953, 1997.
+78. S.E. Harris. Electromagnetically Induced Transparency. Physics Today, 50:36,
+    July 1997.
+79. B.W. Shore. The Theory of Coherent Atomic Excitation. Wiley, New York, 1990.
+80. P.R. Berman. Cavity Quantum Electrodynamics. Academic, San Diego, 1994.
+81. D.M. Bacon. Decoherence, Control and Symmetry in Quantum Computers. Ph.D.
+    thesis, Univ. of California, Berkeley, 2001.
+82. A.J. Leggett, S. Chakravarty, A.T. Dorsey, M.A.P. Fisher, A. Garg and W. Zw-
+    erger. Dynamics of the dissipative two-state system. Rev. Mod. Phys., 59:1, 1987.
+83. R.H. Dicke. Coherence in spontaneous radiation processes. Phys. Rev., 93:99,
+    1954.
+84. D.A. Lidar, D. Bacon, J. Kempe and K.B. Whaley. Protecting Quantum Infor-
+    mation Against Exchange Errors Using Decoherence Free States. Phys. Rev. A,
+    61:052307, 2000.
+85. D. Bacon, J. Kempe, D.A. Lidar and K.B. Whaley. Universal Fault-Tolerant
+    Computation on Decoherence-Free Subspaces. Phys. Rev. Lett., 85:1758, 2000.
+86. D. Loss and D.P. DiVincenzo. Quantum Computation with Quantum Dots. Phys.
+    Rev. A, 57:120, 1998.
+38      Lidar & Whaley
+
+ 87. B.E. Kane. A silicon-based nuclear spin quantum computer. Nature, 393:133,
+     1998.
+ 88. D.P. DiVincenzo, D. Bacon, J. Kempe, G. Burkard, and K.B. Whaley. Universal
+     Quantum Computation with the Exchange Interaction. Nature, 408:339, 2000.
+ 89. J. Kempe, D. Bacon, D.P. DiVincenzo and K.B. Whaley. Encoded Universality
+     from a Single Physical Interaction. Quant. Inf. Comp., 1:33, 2001.
+ 90. L. Mandel and E. Wolf. Optical Coherence and Quantum Optics. Cambridge
+     University Press, New York, 1995.
+ 91. R.G. DeVoe and R.G. Brewer. Observation of superradiant and subradiant spon-
+     taneous emission of two trapped ions. Phys. Rev. Lett., 76:2049, 1996.
+ 92. K.H. Drexhage. J. Luminescence, 1:693, 1970.
+ 93. C.P. Slichter. Principles of Magnetic Resonance. Number 1 in Springer Series in
+     Solid-State Sciences. Springer, Berlin, 1996.
+ 94. D. Jaksch, H.-J. Briegel, J.I. Cirac, C.W. Gardiner and P. Zoller. Entanglement
+     of Atoms via Cold Controlled Collisions. Phys. Rev. Lett., 82:1975, 1999.
+ 95. N.P. Landsman. Lecture Notes on C∗ -algebras, Hilbert C∗ -modules and Quantum
+     Mechanics. Eprint math-ph/9807030.
+ 96. J. Kempe. Universal Noiseless Quantum Computation - Mathematical Theory
+     and Applications. Ph.D. thesis, Univ. of California, Berkeley, 2001.
+ 97. M.S. Byrd and D.A. Lidar. Combined Error Correction Techniques for Quantum
+     Computing Architectures. J. Mod. Optics, in press. Eprint quant-ph/0210072.
+ 98. L. Viola. Quantum Control via Encoded Dynamical Decoupling. Phys. Rev. A,
+     66:012307, 2002.
+ 99. J. Preskill. Reliable quantum computers. Proc. Roy. Soc. London Ser. A, 454:385,
+     1998.
+100. A.Yu. Kitaev. Fault-tolerant quantum computation by anyons. Eprint quant-
+     ph/9707021
+

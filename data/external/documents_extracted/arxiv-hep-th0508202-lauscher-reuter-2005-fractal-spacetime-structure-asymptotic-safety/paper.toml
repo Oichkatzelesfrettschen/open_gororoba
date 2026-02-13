@@ -1,0 +1,1783 @@
+equations = []
+tables = []
+full_text = """
+arXiv:hep-th/0508202v1 26 Aug 2005\r
+hep-th/0508202\r
+MZ-TH/05-09\r
+Fractal Spacetime Structure in\r
+Asymptotically Safe Gravity\r
+O. Lauscher(a) and M. Reuter(b)\r
+(a)Institute of Theoretical Physics, University of Leipzig\r
+Augustusplatz 10-11, D-04109 Leipzig, Germany\r
+(b)Institute of Physics, University of Mainz\r
+Staudingerweg 7, D-55099 Mainz, Germany\r
+Abstract\r
+Four-dimensional Quantum Einstein Gravity (QEG) is likely to be an asymp\u0002totically safe theory which is applicable at arbitrarily small distance scales. On\r
+sub-Planckian distances it predicts that spacetime is a fractal with an effective di\u0002mensionality of 2. The original argument leading to this result was based upon\r
+the anomalous dimension of Newton’s constant. In the present paper we demon\u0002strate that also the spectral dimension equals 2 microscopically, while it is equal to\r
+4 on macroscopic scales. This result is an exact consequence of asymptotic safety\r
+and does not rely on any truncation. Contact is made with recent Monte Carlo\r
+simulations.
+
+1 Introduction\r
+Soon after the detailed investigation of Quantum Einstein Gravity [1]-[17] had begun and\r
+it had become clear that the theory is likely to be nonperturbatively renormalizable or\r
+“asymptotically safe” [8, 3, 5, 6] it was observed [3, 5] that it predicts a fractal space\u0002time structure at sub-Planckian distances whose effective dimensionality equals 2. On\r
+the technical side, a key tool in the nonperturbative investigation of Quantum Einstein\r
+Gravity (QEG) was the effective average action and its associated exact renormalization\r
+group (RG) equation which had been developed in [18, 19] and was first applied to gravity\r
+in [1]. (For general reviews see [20],[21].)\r
+In QEG, the effective average action Γk[gµν] defines an infinite set of effective field\r
+theories, valid near a variable mass scale k which is introduced as an infrared (IR) cutoff\r
+and varies between k = 0 and k = ∞ [1]. Intuitively speaking, the solution hgµνikof the\r
+scale dependent field equation\r
+δΓk\r
+δgµν(x)\r
+[hgi\r
+k\r
+] = 0 (1.1)\r
+can be interpreted as the metric averaged over (Euclidean) spacetime volumes of a linear\r
+extension ℓ which typically is of the order of 1/k. Knowing the scale dependence of Γk,\r
+i.e. the renormalization group trajectory k 7→ Γk, we can in principle follow the solution\r
+hgµνikfrom the ultraviolet (k → ∞) to the infrared (k → 0).\r
+It is an important feature of this approach that the infinitely many equations of (1.1),\r
+one for each scale k, are valid simultaneously. They all refer to the same physical system,\r
+the “quantum spacetime”, but describe its effective metric structure on different scales.\r
+An observer using a “microscope” with a resolution ≈ k\r
+−1 will perceive the universe to be\r
+a Riemannian manifold with metric hgµνik. At every fixed k, hgµνikis a smooth classical\r
+metric. But since the quantum spacetime is characterized by the infinity of equations\r
+(1.1) with k = 0, · · · , ∞ it can acquire very nonclassical and in particular fractal features.\r
+Let us describe more precisely what it means to “average” over Euclidean spacetime\r
+volumes. The quantity we can freely tune is the IR cutoff scale k, and the “resolving\r
+1
+
+power” of the microscope, henceforth denoted ℓ, is in general a complicated function of\r
+k. (In flat space, ℓ ≈ 1/k.) In order to understand the relationship between ℓ and k we\r
+must recall some steps from the construction of Γk[gµν] in ref. [1].\r
+The effective average action is obtained by introducing an IR cutoff into the path\u0002integral over all metrics, gauge fixed by means of a background gauge fixing condition.\r
+Even without a cutoff the resulting effective action Γ[gµν; ¯gµν] depends on two metrics,\r
+the expectation value of the quantum field, gµν, and the background field ¯gµν . This is a\r
+standard technique, and it is well known [23] that the functional Γ[gµν] ≡ Γ[gµν ; ¯gµν = gµν]\r
+obtained by equating the two metrics can be used to generate the 1PI Green’s functions\r
+of the theory.\r
+The IR cutoff of the average action is implemented by first expressing the functional\r
+integral over all metrics in terms of eigenmodes of D¯ 2, the covariant Laplacian formed with\r
+the aid of the background metric ¯gµν. Then a suppression term is introduced which damps\r
+the contribution of all −D¯ 2-modes with eigenvalues smaller than k\r
+2\r
+. Following the usual\r
+steps [20] this leads to the scale dependent functional Γk[gµν ; ¯gµν], and the action with\r
+one argument again obtains by equating the two metrics: Γk[gµν ] ≡ Γk[gµν; ¯gµν = gµν].\r
+It is this action which appears in (1.1). Because of the identification of the two metrics\r
+we see that it is basically the eigenmodes of D¯ 2 = D2, constructed from the argument of\r
+Γk[g], which are cut off at k\r
+2\r
+. Since hgµνi\r
+k\r
+is the corresponding stationary point, we can\r
+say that the metric hgµνikapplies to the situation where only the quantum fluctuations\r
+of −D2(hgµν ik) with eigenvalues larger than k\r
+2\r
+are integrated out. Therefore there is a\r
+complicated interrelation between the metric and the scale at which it provides an effective\r
+description: The covariant Laplacian which ultimately decides about which modes are\r
+integrated out is constructed from the “on shell” configuration hgµνik, so it is k-dependent\r
+by itself already.\r
+From these remarks it is clear now how to obtain the “resolving power” ℓ for a given\r
+k, at least in principle. We take the Laplacian −D2(hgµνik), solve its eigenvalue problem,\r
+and then analyze in particular the properties of the eigenfunction(s) with eigenvalue k\r
+2\r
+2
+
+(or near k\r
+2\r
+in the case of a discrete spectrum). Loosely speaking, this eigenfunction is the\r
+last one integrated out. As a consequence, the “averaging” scale is crucially determined\r
+by “how fast” this eigenfunction varies over spacetime. Let us assume, for instance, this\r
+eigenfunction is oscillatory with a coordinate period ∆x. Then, again by using hgµνik,\r
+we compute the physical proper length this period corresponds to, and this is then what\r
+determines the resolution ℓ.\r
+In general the eigenfunction at k\r
+2 will have a complicated x-dependence, and therefore\r
+also the typical scales on which it varies are position dependent. Moreover, at a given\r
+point, the scale of significant variation will be direction dependent (anisotropic). There\u0002fore the resolving power ℓ = ℓ(k; x, n) is a complicated function in general, depending\r
+parametrically on points (x\r
+µ\r
+) and directions (n\r
+µ\r
+) on spacetime. It is clear that these\r
+notions can be made precise only in concrete examples and must be defined on a case by\r
+case basis.\r
+We emphasize, however, that using the averaged metric itself to define the scale it is\r
+averaged over is not a vicious circle, but rather is exactly as it must be in a background\r
+independent approach to the quantization of gravity.\r
+In a somewhat simplified form, the construction of a quantum spacetime within QEG\r
+can be summarized as follows. We start from a fixed RG trajectory k 7→ Γk, derive its\r
+effective field equations at each k, and solve them. The resulting quantum mechanical\r
+counterpart of a classical spacetime is specified by the infinity of Riemannian metrics\r
+{hgµνik|k = 0, · · · , ∞}. While the totality of these metrics contains all physical infor\u0002mation, the parameter k is only a book keeping device a priori. In a second step, it\r
+can be given a physical interpretation by relating it to the (proper) length scale of the\r
+averaging procedure: One constructs the Laplacian −D2(hgµνik), diagonalizes it, looks\r
+how rapidly its k\r
+2\r
+-eigenfunction varies, and “measures” the length of typical variations\r
+with the metric hgµν ikitself. By solving the resulting ℓ = ℓ(k) for k = k(ℓ) we can in\r
+principle reinterprete the metric hgµν ikas referring to a microscope with a known position\r
+and direction dependent resolving power. The price we have to pay for the background\r
+3
+
+independence is that we cannot freely choose ℓ directly but rather k only.\r
+The first difficult step in this construction program consists in finding the RG trajec\u0002tories. The running action Γk[gµν ] is given by an exact functional RG equation [1]. In\r
+practice it is usually solved on a truncated theory space. In the Einstein-Hilbert trunca\u0002tion, for instance, Γk is approximated by a functional of the form\r
+Γk[g] = (16πGk)\r
+−1\r
+Z\r
+d\r
+4x\r
+√\r
+g\r
+\b\r
+−R(g) + 2λ¯\r
+k\r
+\t\r
+(1.2)\r
+involving a running Newton constant Gk and cosmological constant λ¯\r
+k. Their k-dependence\r
+can be obtained from the RG equation projected onto the truncation subspace. The β\u0002functions for the dimensionless couplings gk ≡ k\r
+2 Gk and λk ≡ λ¯\r
+k/k2 were first obtained in\r
+[1]. Remarkably, they turned out to possess a simultaneous zero at a non-Gaussian fixed\r
+point (NGFP) (g∗, λ∗) which has just the right properties needed for the nonperturbative\r
+renormalizability of QEG along the lines of Weinberg’s [22] ideas on “asymptotic safety”\r
+[8]. It was argued [3, 5, 6] that the NGFP is likely to exist also in the un-truncated, full\r
+theory and allows for the construction of a consistent and predictive microscopic theory\r
+of quantum gravity valid at arbitrarily small distances even.\r
+One of the highly intriguing conclusions we reached in refs. [3, 5] was that the effective\r
+dimensionality of spacetime is scale dependent. It equals 4 at macroscopic distances\r
+(ℓ ≫ ℓPl) but, near ℓ ≈ ℓPl, it gets dynamically reduced to the value 2. For ℓ ≪ ℓPl\r
+spacetime is, in a precise sense [3], a 2-dimensional fractal.\r
+In ref. [24] the specific form of the graviton propagator on this fractal was applied in a\r
+cosmological context. It was argued that it gives rise to a Harrison-Zeldovich spectrum of\r
+primordial geometry fluctuations, perhaps responsible for the CMBR spectrum observed\r
+today.\r
+In refs. [24]-[32] various types of “RG improvements” were used to explore possible\r
+manifestations of the scale dependence of the gravitational parameters.\r
+Along a quite different line of investigation, considerable progress has been made\r
+recently towards defining a quantum theory of gravity as the continuum limit of a discrete\r
+4
+
+model of statistical mechanics. Performing comprehensive Monte Carlo simulations within\r
+the framework of causal (Lorentzian) triangulated geometries [33], Ambjørn, Jurkiewicz\r
+and Loll [34]-[36] collected strong evidence indicating that these models can describe\r
+universes which are extended both in space and time and are 4-dimensional on large\r
+scales. In particular the above authors “measured” numerically the spectral and Hausdorff\r
+dimensions of the spacetimes and their time slices, respectively. Remarkably, they, too,\r
+find that the (spectral) dimension Ds of the spacetime reduces dynamically from Ds ≈ 4\r
+at large distances to Ds ≈ 2 on small length scales.\r
+While until recently it has been difficult to compare the continuum theory to the\r
+discrete causal triangulation approach, the new Monte Carlo results suggest that they\r
+might be closely related, possibly representing the same “universality class”.\r
+In our original argument [3] we determined the effective dimensionality of the fractal\r
+realized at sub-Planckian distances (in the asymptotic scaling regime of the NGFP) from\r
+the anomalous dimension ηN at the NGFP. A priori this definition of an effective dimen\u0002sionality is different from the one used in the Monte Carlo simulations. It is the main\r
+purpose of the present paper to apply the reasoning from [3, 5] to the definition of the\r
+effective dimension which was employed by Ambjørn, Jurkiewicz and Loll [36], namely\r
+the spectral dimension Ds.\r
+We shall demonstrate that asymptotically safe QEG does indeed predict Ds = 4\r
+at ℓ ≫ ℓPl and Ds = 2 for ℓ ≪ ℓPl. (The Planck length and mass are defined as\r
+ℓPl ≡ m−1\r
+Pl ≡ G(k = 0)1/2\r
+.)\r
+As a preparation we review and extend the discussion of refs. [3, 5] in Section 2, and\r
+in Section 3 we compute the spectral dimension of the QEG spacetimes.\r
+2 QEG spacetimes under the microscope\r
+For simplicity we use the Einstein-Hilbert truncation to start with, and we consider space\u0002times with classical dimensionality d = 4. The corresponding RG trajectories were com\u00025
+
+pletely classified and determined numerically in [4]. The physically relevant ones, for\r
+k → ∞, all approach the NGFP at (g∗, λ∗) so that the dimensionful quantities run ac\u0002cording to\r
+Gk ≈ g∗/k2, λ¯\r
+k ≈ λ∗ k\r
+2\r
+(2.1)\r
+The behavior (2.1) is realized in the asymptotic scaling regime k ≫ mPl. Near k = mPl\r
+the trajectories cross over towards the Gaussian fixed point at g = λ = 0, and then run\r
+towards negative, vanishing, and positive values of λ, respectively.\r
+Since in this paper we are interested only in the limiting cases of very small and\r
+very large distances the following caricature of a RG trajectory will be sufficient. We\r
+assume that Gk and λ¯\r
+k behave as in (2.1) for k ≫ mPl, and that they assume constant\r
+values for k ≪ mPl. The precise interpolation between the two regimes could be obtained\r
+numerically [4] but will not be needed here.\r
+The argument of ref. [5] concerning the fractal nature of the QEG spacetimes was\r
+as follows. Within the Einstein-Hilbert truncation of theory space, the effective field\r
+equations (1.1) happen to coincide with the ordinary Einstein equation, but with Gk and\r
+λ¯\r
+k replacing the classical constants. Without matter,\r
+Rµν (hgik) = λ¯\r
+k hgµν ik\r
+(2.2)\r
+Since in absence of dimensionful constants of integration λ¯\r
+k is the only quantity in this\r
+equation which sets a scale, every solution to (2.2) has a typical radius of curvature\r
+rc(k) ∝ 1/\r
+p\r
+λ¯\r
+k. (For instance, the maximally symmetric S\r
+4\r
+-solution has the radius\r
+rc = r =\r
+p\r
+3/λ¯\r
+k.) If we want to explore the spacetime structure at a fixed length scale\r
+ℓ we should use the action Γk[gµν ] at k = 1/ℓ because with this functional a tree level\r
+analysis is sufficient to describe the essential physics at this scale, including the relevant\r
+quantum effects. Hence, when we observe the spacetime with a microscope of resolution\r
+ℓ, we will see an average radius of curvature given by rc(ℓ) ≡ rc(k = 1/ℓ). Once ℓ is\r
+smaller than the Planck length ℓPl ≡ m−1\r
+Pl we are in the fixed point regime where λ¯\r
+k ∝ k\r
+2\r
+6
+
+so that rc(k) ∝ 1/k, or\r
+rc(ℓ) ∝ ℓ (2.3)\r
+Thus, when we look at the structure of spacetime with a microscope of resolution ℓ ≪ ℓPl,\r
+the average radius of curvature which we measure is proportional to the resolution itself.\r
+If we want to probe finer details and decrease ℓ we automatically decrease rc and hence\r
+increase the average curvature. Spacetime seems to be more strongly curved at small\r
+distances than at larger ones. The scale-free relation (2.3) suggests that at distances\r
+below the Planck length the QEG spacetime is a special kind of fractal with a self-similar\r
+structure. It has no intrinsic scale because in the fractal regime, i.e. when the RG\r
+trajectory is still close to the NGFP, the parameters which usually set the scales of the\r
+gravitational interaction, G and λ¯, are not yet “frozen out”. This happens only later on,\r
+somewhere half way between the non-Gaussian and the Gaussian fixed point, at a scale\r
+of the order of mPl.\r
+Below this scale, Gk and λ¯\r
+k stop running and, as a result, rc(k) becomes independent\r
+of k so that rc(ℓ) = const for ℓ ≫ ℓPl. In this regime hgµνikis k-independent, indicating\r
+that the macroscopic spacetime is describable by a single smooth, classical Riemannian\r
+manifold.\r
+The above argument made essential use of the proportionality ℓ ∝ 1/k. In the fixed\r
+point regime it follows trivially from the fact that there exist no relevant dimensionful\r
+parameters so that 1/k is the only length scale one can form. The algorithm for the\r
+determination of ℓ(k) described in the Introduction yields the same answer.\r
+It is easy to make the k-dependence of hgµν ikexplicit. Picking an arbitrary reference\r
+scale k0 we may rewrite (2.2) as [λ¯\r
+k0/λ¯k] Rµ\r
+ν\r
+(hgik) = λ¯\r
+k0\r
+δ\r
+µ\r
+ν\r
+. Since Rµ\r
+ν\r
+(c g) = c\r
+−1 Rµ\r
+ν\r
+(g)\r
+for any constant c > 0, this relation implies that the average metric scales as\r
+hgµν(x)ik = [λ¯\r
+k0/λ¯k]hgµν(x)ik0\r
+(2.4)\r
+and its inverse according to\r
+hg\r
+µν(x)ik = [λ¯\r
+k/λ¯k0\r
+]hg\r
+µν(x)ik0\r
+(2.5)\r
+7
+
+These relations are valid provided the family of solutions considered exists for all scales\r
+between k0 and k, and λ¯\r
+k has the same sign always.\r
+As we discussed in ref. [3] the QEG spacetime has an effective dimensionality which\r
+is k-dependent and hence noninteger in general. Our discussion in [3] was based upon\r
+the anomalous dimension ηN of the operator R √g R. It is defined as ηN ≡ −k ∂k ln ZNk\r
+where ZNk ∝ 1/Gk is the wavefunction renormalization of the metric [1]. In a sense\r
+which we shall make more precise in a moment, the effective dimensionality of spacetime\r
+equals 4 + ηN . The RG trajectories of the Einstein-Hilbert truncation (within its domain\r
+of validity) have ηN ≈ 0 for k → 0\r
+1 and ηN ≈ −2 for k → ∞, the smooth change by\r
+two units occuring near k ≈ mPl. As a consequence, the effective dimensionality is 4 for\r
+ℓ ≫ ℓPl and 2 for ℓ ≪ ℓPl.\r
+In fact, the UV fixed point has an anomalous dimension η ≡ ηN (g∗, λ∗) = −2. We\r
+can use this information in order to determine the momentum dependence of the dressed\r
+graviton propagator for momenta p\r
+2 ≫ m2\r
+Pl. Expanding the Γk of (1.2) about flat space\r
+and omitting the standard tensor structures we find the inverse propagator Gek(p)\r
+−1 ∝\r
+ZN (k) p\r
+2\r
+. The conventional dressed propagator Ge(p) contained in Γ ≡ Γk=0 obtains from\r
+the exact Gek in the limit k → 0. For p\r
+2 > k2 ≫ m2\r
+Pl the actual cutoff scale is the physical\r
+momentum p\r
+2\r
+itself2so that the k-evolution of Gek(p) stops at the threshold k =\r
+p\r
+p\r
+2\r
+.\r
+Therefore\r
+Ge(p)\r
+−1 ∝ ZN\r
+\u0010\r
+k =\r
+p\r
+p\r
+2\r
+\u0011\r
+p\r
+2 ∝ (p2\r
+)\r
+1−\r
+η\r
+2 (2.6)\r
+because ZN (k) ∝ k\r
+−η when η ≡ −∂t\r
+lnZN is (approximately) constant. In d dimensions,\r
+and for η 6= 2 − d, the Fourier transform of Ge(p) ∝ 1/(p\r
+2\r
+)\r
+1−η/2 yields the following\r
+propagator in position space:\r
+G(x; y) ∝\r
+1\r
+|x − y|\r
+d−2+η\r
+. (2.7)\r
+1\r
+In the case of type IIIa trajectories [4, 31] the macroscopic k-value is still far above kterm, i.e. in the\r
+“GR regime” described in [31].\r
+2See Section 1 of ref. [29] for a detailed discussion of “decoupling” phenomena of this kind.\r
+8
+
+This form of the propagator is well known from the theory of critical phenomena, for\r
+instance. (In the latter case it applies to large distances.) Eq. (2.7) is not valid directly\r
+at the NGFP. For d = 4 and η = −2 the dressed propagator is Ge(p) = 1/p4 which has the\r
+following representation in position space:\r
+G(x; y) = −\r
+1\r
+8π\r
+2\r
+ln (µ |x − y|) . (2.8)\r
+Here µ is an arbitrary constant with the dimension of a mass. Obviously (2.8) has the\r
+same form as a 1/p2-propagator in 2 dimensions.\r
+Slightly away from the NGFP, before other physical scales intervene, the propagator is\r
+of the familiar type (2.7) which shows that the quantity ηN has the standard interpretation\r
+of an anomalous dimension in the sense that fluctuation effects modify the decay properties\r
+of G so as to correspond to a spacetime of effective dimensionality 4 + ηN .\r
+Thus the properties of the RG trajectories imply a remarkable dimensional reduction:\r
+Spacetime, probed by a “graviton” with p\r
+2 ≪ m2\r
+Pl is 4-dimensional, but it appears to be\r
+2-dimensional for a graviton with p\r
+2 ≫ m2\r
+Pl [3].\r
+It is interesting to note that in d classical dimensions, where the macroscopic spacetime\r
+is d-dimensional, the anomalous dimension at the fixed point is η = 2 − d. Therefore, for\r
+any d, the dimensionality of the fractal as implied by ηN is d + η = 2 [3, 5].\r
+3 The spectral dimension\r
+In this section we determine the spectral dimension Ds of the QEG spacetimes. This\r
+particular definition of a fractal dimension is borrowed from the theory of diffusion pro\u0002cesses on fractals [37] and is easily adapted to the quantum gravity context [38, 36]. In\r
+particular it has been used in the Monte Carlo studies mentioned in the Introduction.\r
+Let us study the diffusion of a scalar test particle on a d-dimensional classical Euclidean\r
+manifold with a fixed smooth metric gµν(x). The corresponding heat-kernel Kg(x, x′; T)\r
+giving the probability for the particle to diffuse from x\r
+′\r
+to x during the fictitious diffusion\r
+9
+
+time T satisfies the heat equation\r
+∂T Kg(x, x′; T) = ∆gKg(x, x′; T) (3.1)\r
+where ∆g ≡ D2 denotes the scalar Laplacian: ∆gφ ≡ g\r
+−1/2 ∂µ(g1/2\r
+g\r
+µν ∂νφ). The heat\u0002kernel is a matrix element of the operator exp(T ∆g). In the random walk picture its\r
+trace per unit volume,\r
+Pg(T) ≡ V\r
+−1\r
+Z\r
+d\r
+dx\r
+p\r
+g(x) Kg(x, x; T) ≡ V\r
+−1 Tr exp(T ∆g) , (3.2)\r
+has the interpretation of an average return probability. (Here V ≡\r
+R\r
+d\r
+dx\r
+√g denotes the\r
+total volume.) It is well known that Pg possesses an asymptotic expansion (for T → 0)\r
+of the form Pg(T) = (4πT)\r
+−d/2 P∞\r
+n=0 An T\r
+n\r
+. For an infinite flat space, for instance, it\r
+reads Pg(T) = (4πT)\r
+−d/2\r
+for all T. Thus, knowing the function Pg, one can recover the\r
+dimensionality of the target manifold as the T-independent logarithmic derivative\r
+d = −2\r
+d ln Pg(T)\r
+d ln T\r
+(3.3)\r
+This formula can also be used for curved spaces and spaces with finite volume V provided\r
+T is not taken too large [36].\r
+In QEG where we functionally integrate over all metrics it is natural to replace Pg(T)\r
+by its expectation value. Symbolically,\r
+P(T) ≡ hPγ(T)i ≡ ZDγ DC DC P ¯\r
+γ(T) e\r
+−Sbare[γ,C,C¯]\r
+(3.4)\r
+Here γµν denotes the microscopic metric and Sbare is the bare action with the gauge fixing\r
+terms and the pieces containing the ghosts C and C¯ included. Note that (3.4) does\r
+not contain any IR cutoff; it is the ordinary (k = 0) expectation value with all modes\r
+integrated out. In QEG the functional Sbare is given by the fixed point action. Given\r
+P(T), the spectral dimension of the quantum spacetime is defined in analogy with (3.3):\r
+Ds = −2\r
+d ln P(T)\r
+d ln T\r
+(3.5)\r
+10
+
+Let us now evaluate the expectation value (3.4) using the average action method.\r
+The fictitious diffusion process takes place on a “manifold” which, at every fixed scale,\r
+is described by a smooth Riemannian metric hgµν ik. While the situation appears to be\r
+classical at fixed k, nonclassical features emerge in the regime with nontrivial RG running\r
+since there the metric depends on the scale at which the spacetime structure is probed.\r
+The nonclassical features are encoded in the properties of the diffusion operator. De\u0002noting the covariant Laplacians corresponding to the metrics hgµνik\r
+and hgµν ik0by ∆(k)\r
+and ∆(k0), respectively, eqs. (2.4) and (2.5) imply that they are related by\r
+∆(k) = [λ¯\r
+k/λ¯k0\r
+] ∆(k0) (3.6)\r
+When k, k0 ≫ mPl we have, for example,\r
+∆(k) = (k/k0)\r
+2 ∆(k0) (3.7)\r
+Recalling that the average action Γk defines an effective field theory at the scale k we\r
+have that hO(γµν)i ≈ O(hgµν ik) if the operator O involves typical covariant momenta of\r
+the order k and hgµνiksolves eq. (1.1). In the following we exploit this relationship for\r
+the RHS of the diffusion equation, O = ∆γ Kγ(x, x′; T). It is crucial here to correctly\r
+identify the relevant scale k.\r
+If the diffusion process involves (approximately) only a small interval of scales near k\r
+over which λ¯\r
+k does not change much the corresponding heat equation contains the ∆(k)\r
+for this specific, fixed value of k:\r
+∂T K(x, x′; T) = ∆(k)K(x, x′; T) (3.8)\r
+Denoting the eigenvalues of −∆(k0) by En and the corresponding eigenfunctions by φn,\r
+this equation is solved by\r
+K(x, x′; T) = X\r
+n\r
+φn(x) φn(x\r
+′\r
+) exp \u0010− F(k\r
+2\r
+) En T\r
+\u0011\r
+(3.9)\r
+Here we introduced the convenient notation F(k\r
+2\r
+) ≡ λ¯\r
+k/λ¯k0\r
+. Knowing this propaga\u0002tion kernel we can time-evolve any initial probability distribution p(x; 0) according to\r
+11
+
+p(x; T) = R\r
+d\r
+4x′ p\r
+g0(x\r
+′\r
+) K(x, x′; T) p(x\r
+′\r
+; 0) with g0 the determinant of hgµνik0. If the\r
+initial distribution has an eigenfunction expansion of the form p(x; 0) = P\r
+n Cn φn(x) we\r
+obtain\r
+p(x; T) = X\r
+n\r
+Cn φn(x) exp \u0010− F(k\r
+2\r
+) En T\r
+\u0011\r
+(3.10)\r
+If the Cn’s are significantly different from zero only for a single eigenvalue EN , we are\r
+dealing with a single-scale problem. In the usual spirit of effective field theories we would\r
+then identify k\r
+2 = EN as the relevant scale at which the running couplings are to be\r
+evaluated.\r
+However, in general the Cn’s are different from zero over a wide range of eigenvalues.\r
+In this case we face a multiscale problem where different modes φn probe the spacetime\r
+on different length scales.\r
+If ∆(k0) corresponds to flat space, say, the eigenfunctions φn ≡ φp are plane waves\r
+with momentum p\r
+µ\r
+, and they resolve structures on a length scale ℓ of order 1/|p|. Hence,\r
+in terms of the eigenvalue En ≡ Ep = p\r
+2\r
+the resolution is ℓ ≈ 1/\r
+√\r
+En. This suggests that\r
+when the manifold is probed by a mode with eigenvalue En it “sees” the metric hgµνikfor\r
+the scale k =\r
+√\r
+En. Actually the identification k =\r
+√\r
+En is correct also for curved space\r
+since, in the construction of Γk, the parameter k is introduced precisely as a cutoff in the\r
+spectrum of the covariant Laplacian.\r
+Therefore we conclude that under the spectral sum of (3.10) we must use the scale\r
+k\r
+2 = En which depends explicitly on the resolving power of the corresponding mode.\r
+Likewise, in eq. (3.9), F(k\r
+2\r
+) is to be interpreted as F(En). Thus we obtain the traced\r
+propagation kernel\r
+P(T) = V\r
+−1 X\r
+n\r
+exp h− F(En) En T\r
+i\r
+= V\r
+−1 Tr exp h\r
+F\r
+\u0010\r
+− ∆(k0)\r
+\u0011\r
+∆(k0) T\r
+i\r
+(3.11)\r
+It is convenient to choose k0 as a macroscopic scale in a regime where there are no\r
+strong RG effects any more.\r
+12
+
+Furthermore, let us assume for a moment that at k0 the cosmological constant is tiny,\r
+λ¯\r
+k0 ≈ 0, so that hgµνik0\r
+is an approximately flat metric. In this case the trace in eq. (3.11)\r
+is easily evaluated in a plane wave basis:\r
+P(T) = Z\r
+d\r
+4p\r
+(2π)\r
+4\r
+exp \u0002−p\r
+2 F(p2\r
+) T\r
+\u0003\r
+(3.12)\r
+The T-dependence of (3.12) determines the fractal dimensionality of spacetime via (3.5).\r
+In the limits T → ∞ and T → 0 where the random walks probe very large and small\r
+distances, respectively, we obtain the dimensionalities corresponding to the largest and\r
+smallest length scales possible. The limits T → ∞ and T → 0 of P(T) are determined by\r
+the behavior of F(p\r
+2\r
+) ≡ λ¯(k =\r
+p\r
+p\r
+2\r
+)/λ¯\r
+k0\r
+for p\r
+2 → 0 and p2 → ∞, respectively.\r
+For a RG trajectory where the renormalization effects stop below some threshold we\r
+have F(p\r
+2 → 0) = 1. In this case (3.12) yields P(T) ∝ 1/T2\r
+, and we conclude that the\r
+macroscopic spectral dimension is Ds = 4.\r
+In the fixed point regime we have λ¯\r
+k ∝ k\r
+2\r
+, and therefore F(p\r
+2\r
+) ∝ p\r
+2\r
+. As a result,\r
+the exponent in (3.12) is proportional to p\r
+4 now. This implies the T → 0−behavior\r
+P(T) ∝ 1/T. It corresponds to the spectral dimension Ds = 2.\r
+This result holds for all RG trajectories since only the fixed point properties were\r
+used. In particular it is independent of λ¯\r
+k0 on macroscopic scales. In fact, the above\r
+assumption that hgµνik0is flat was not necessary for obtaining Ds = 2. This follows from\r
+the fact that even for a curved metric the spectral sum (3.11) can be represented by an\r
+Euler-Mac Laurin series which always implies (3.12) as the leading term for T → 0.\r
+Thus we may conclude that on very small and very large length scales the spectral\r
+dimensions of the QEG spacetimes are\r
+Ds(T → ∞) = 4\r
+Ds(T → 0) = 2 (3.13)\r
+The dimensionality of the fractal realized at sub-Planckian distances is found to be\r
+2 again. It is by no means trivial that Ds coincides with the value of 4 + η. While the\r
+13
+
+replacement of the classical p\r
+2 F(p2\r
+) = p\r
+2 by p2 F(p2\r
+) ∝ p\r
+4\r
+is reminiscent of the graviton\r
+propagator argument of Section 2, it is important to emphasize that the value of 4 + η is\r
+entirely determined by the running of Gk, while the spectral dimension was derived from\r
+the k-dependence of the cosmological constant.\r
+In fact, it is remarkable that the equality of 4 + η and Dsis a special feature of\r
+4 classical dimensions. Generalizing for d classical dimensions, the fixed point running\r
+of Newton’s constant becomes Gk ∝ k\r
+2−d with a dimension-dependent exponent, while\r
+λ¯\r
+k ∝ k\r
+2\r
+continues to have a quadratic k-dependence. As a result, the Ge(k) of eq. (2.6)\r
+is proportional to 1/pdin general so that, for any d, the 2-dimensional looking graviton\r
+propagator (2.8) is obtained. (This is equivalent to saying that η = 2 − d, or d + η = 2,\r
+for arbitrary d.)\r
+On the other hand, the impact of the RG effects on the diffusion process is to replace\r
+the operator ∆ by ∆2, for any d, since the cosmological constant always runs quadratically.\r
+Hence, in the fixed point regime, eq. (3.12) becomes\r
+P(T) ∝\r
+Z\r
+d\r
+d\r
+p exp \u0002−p\r
+4 T\r
+\u0003\r
+∝ T\r
+− d\r
+4 (3.14)\r
+This T-dependence implies the spectral dimension\r
+Ds(d) = d\r
+2\r
+(3.15)\r
+This value coincides with d + η if, and only if, d = 4. It is an intriguing speculation\r
+that this could have something to do with the observed macroscopic dimensionality of\r
+spacetime.\r
+Up to this point, to be as concrete as possible, we formulated our argument within\r
+the Einstein-Hilbert truncation. To complete the discussion we show that the exact (un\u0002truncated) theory if it has a NGFP implies the dynamical dimensional reduction from 4\r
+to 2 dimensions (in d = 4) in exactly the same way as the truncated one.\r
+The complete effective average action has the structure Γk[gµν ] = P\r
+n\r
+¯gn(k) In[gµν]\r
+with infinitely many running couplings ¯gn(k) and diffeomorphism invariant functionals\r
+14
+
+In. If ¯gn(k) has the canonical dimension dn the corresponding dimensionless couplings are\r
+gn(k) ≡ k\r
+−dn ¯gn(k) and we have\r
+Γk[gµν ] = X\r
+n\r
+gn(k) k\r
+dn\r
+In[gµν ] = X\r
+n\r
+gn(k) In[k\r
+2\r
+gµν ] (3.16)\r
+In the second equality we used that In[c\r
+2\r
+gµν] = c\r
+dn In[gµν] for any c > 0 since In has\r
+dimension −dn.\r
+If the theory is asymptotically safe at the exact level, all gn(k) approach constant\r
+values gn∗ for k → ∞:\r
+Γk→∞[gµν] = X\r
+n\r
+gn∗ In[k\r
+2\r
+gµν ] (3.17)\r
+Obviously this functional depends on k\r
+2 and gµν only via the combination k2\r
+gµν . There\u0002fore the solutions of the corresponding field equation, hgµνik\r
+, scale proportional to k\r
+−2\r
+.\r
+Hence ∆(k) ∝ k\r
+2\r
+in the fixed point regime, and this is exactly the scaling behavior (3.7)\r
+our above derivation of Ds(T → 0) = 2 was based upon.\r
+This completes the demonstration that if a NGFP does exist in the full theory, its\r
+exact spacetimes are fractals with Ds = 2 on sub-Planckian distances.\r
+At this point it is tempting to compare the result (3.13) to the spectral dimensions\r
+of the spacetime which were recently obtained by Monte Carlo simulations of the causal\r
+dynamical triangulation model [36]:\r
+Ds(T → ∞) = 4.02 ± 0.1\r
+Ds(T → 0) = 1.80 ± 0.25 (3.18)\r
+These figures, too, suggest that the long-distance and short-distance spectral dimension\r
+should be 4 and 2, respectively.\r
+The dimensional reduction from 4 to 2 dimensions is a highly nontrivial dynamical\r
+phenomenon which seems to occur in both QEG and the discrete triangulation model. We\r
+find it quite remarkable that the discrete and the continuum approach lead to essentially\r
+15
+
+identical conclusions in this respect. We consider this agreement a first hint indicating that\r
+(at least in 4 dimensions) the discrete model and QEG in the average action formulation\r
+might describe the same physics. But clearly much more work is needed in order to\r
+understand how the two approaches are related precisely.\r
+4 Summary\r
+The general picture of the spacetime structure in QEG which has emerged so far is\r
+as follows. At sub-Planckian distances spacetime is a fractal of dimensionality Ds =\r
+4 + η = 2. It can be thought of as a self-similar hierarchy of superimposed Riemannian\r
+manifolds of any curvature. As one considers larger length scales where the RG running\r
+of the gravitational parameters comes to a halt, the “ripples” in the spacetime gradually\r
+disappear and the structure of a classical 4-dimensional manifold is recovered.\r
+Within the Einstein-Hilbert approximation of QEG there are two natural ways of\r
+defining an effective dimensionality of the fractal spacetime. We can either define it\r
+as 4 + ηN as derived from the running of Newton’s constant, or we use the spectral\r
+dimension implied by the k-dependence of the cosmological constant. We have seen\r
+that both definitions lead to identical results on very large and very small distances.\r
+We also showed that the microscopic dimensionality Ds = 2 is a rather direct and exact\r
+consequence of asymptotic safety which does not rely on any approximation or truncation.\r
+It is therefore not unlikely that the mechanism of a dynamical dimensional reduction\r
+from 4 to 2 dimensions which occurs in QEG is the same phenomenon as the dimensional\r
+reduction observed in the Monte Carlo studies of causal dynamical triangulations.\r
+Acknowledgments: We would like to thank J. Schwindt for helpful discussions.\r
+16
+
+References\r
+[1] M. Reuter, Phys. Rev. D 57 (1998) 971 and hep-th/9605030.\r
+[2] D. Dou and R. Percacci, Class. Quant. Grav. 15 (1998) 3449.\r
+[3] O. Lauscher and M. Reuter, Phys. Rev. D 65 (2002) 025013 and\r
+hep-th/0108040.\r
+[4] M. Reuter and F. Saueressig, Phys. Rev. D 65 (2002) 065016 and\r
+hep-th/0110054.\r
+[5] O. Lauscher and M. Reuter, Phys. Rev. D 66 (2002) 025026 and\r
+hep-th/0205062.\r
+[6] O. Lauscher and M. Reuter, Class. Quant. Grav. 19 (2002) 483 and\r
+hep-th/0110021.\r
+[7] O. Lauscher and M. Reuter, Int. J. Mod. Phys. A 17 (2002) 993 and\r
+hep-th/0112089.\r
+[8] W. Souma, Prog. Theor. Phys. 102 (1999) 181.\r
+[9] R. Percacci and D. Perini, Phys. Rev. D 67 (2003) 081503.\r
+[10] R. Percacci and D. Perini, Phys. Rev. D 68 (2003) 044018.\r
+[11] D. Perini, Nucl. Phys. Proc. Suppl. 127 C (2004) 185.\r
+[12] M. Reuter and F. Saueressig, Phys. Rev. D 66 (2002) 125001 and\r
+hep-th/0206145; Fortschr. Phys. 52 (2004) 650 and hep-th/0311056.\r
+[13] D. Litim, Phys. Rev. Lett. 92 (2004) 201301.\r
+[14] A. Bonanno, M. Reuter, JHEP 02 (2005) 035 and hep-th/0410191.\r
+17
+
+[15] R. Percacci and D. Perini, hep-th/0401071.\r
+[16] R. Percacci, hep-th/0409199.\r
+[17] P. Forg´acs and M. Niedermaier, hep-th/0207028;\r
+M. Niedermaier, JHEP 12 (2002) 066; Nucl. Phys. B 673 (2003) 131.\r
+[18] C. Wetterich, Phys. Lett. B 301 (1993) 90.\r
+[19] M. Reuter and C. Wetterich, Nucl. Phys. B 417 (1994) 181, Nucl. Phys. B 427\r
+(1994) 291, Nucl. Phys. B 391 (1993) 147, Nucl. Phys. B 408 (1993) 91;\r
+M. Reuter, Phys. Rev. D 53 (1996) 4430, Mod. Phys. Lett. A 12 (1997) 2777.\r
+[20] For a review see: J. Berges, N. Tetradis and C. Wetterich, Phys. Rep. 363\r
+(2002) 223; C. Wetterich, Int. J. Mod. Phys. A 16 (2001) 1951.\r
+[21] For a review see: C. Bagnuls and C. Bervillier, Phys. Rep. 348 (2001) 91;\r
+T.R. Morris, Prog. Theor. Phys. Suppl. 131 (1998) 395;\r
+J. Polonyi, Central Eur. J. Phys. 1 (2004) 1.\r
+[22] S. Weinberg in General Relativity, an Einstein Centenary Survey, S.W. Hawk\u0002ing and W. Israel (Eds.), Cambridge University Press (1979); S. Weinberg,\r
+hep-th/9702027.\r
+[23] L.F. Abbott, Nucl. Phys. B 185 (1981) 189; B.S. DeWitt, Phys. Rev. 162\r
+(1967) 1195; M.T. Grisaru, P. van Nieuwenhuizen and C.C. Wu, Phys. Rev.\r
+D 12 (1975) 3203; D.M. Capper, J.J. Dulwich and M. Ramon Medrano, Nucl.\r
+Phys. B 254 (1985) 737; S.L. Adler, Rev. Mod. Phys. 54 (1982) 729.\r
+[24] A. Bonanno and M. Reuter, Phys. Rev. D 65 (2002) 043508 and\r
+hep-th/0106133; M. Reuter and F. Saueressig, hep-th/0507167.\r
+[25] A. Bonanno and M. Reuter, Phys. Lett. B 527 (2002) 9 and astro-ph/0106468;\r
+Int. J. Mod. Phys. D 13 (2004) 107 and astro-ph/0210472.\r
+18
+
+[26] E. Bentivegna, A. Bonanno and M. Reuter, JCAP 01 (2004) 001,\r
+and astro-ph/0303150.\r
+[27] A. Bonanno, G. Esposito and C. Rubano, Gen. Rel. Grav. 35 (2003) 1899;\r
+Class. Quant. Grav. 21 (2004) 5005.\r
+[28] A. Bonanno and M. Reuter, Phys. Rev. D 62 (2000) 043008 and\r
+hep-th/0002196; Phys. Rev. D 60 (1999) 084011 and gr-qc/9811026.\r
+[29] M. Reuter and H. Weyer, Phys. Rev. D 69 (2004) 104022 and hep-th/0311196.\r
+[30] M. Reuter and H. Weyer, Phys. Rev. D 70 (2004) 124028 and hep-th/0410117.\r
+[31] M. Reuter and H. Weyer, JCAP 12 (2004) 001 and hep-th/0410119.\r
+[32] J. Moffat, JCAP 05 (2005) 003 and astro-ph/0412195; J.R. Brownstein and\r
+J. Moffat, astro-ph/0506370 and astro-ph/0507222.\r
+[33] A. Dasgupta and R. Loll, Nucl. Phys. B 606 (2001) 357; J. Ambjørn, J. Jur\u0002kiewicz and R. Loll, Nucl. Phys. B 610 (2001) 347; Phys. Rev. Lett. 85\r
+(2000) 924; R. Loll, Nucl. Phys. Proc. Suppl. 94 (2001) 96; J. Ambjørn, gr\u0002qc/0201028.\r
+[34] J. Ambjørn, J. Jurkiewicz and R. Loll, Phys. Rev. Lett. 93 (2004) 131301.\r
+[35] J. Ambjørn, J. Jurkiewicz and R. Loll, Phys. Lett. B 607 (2005) 205.\r
+[36] J. Ambjørn, J. Jurkiewicz and R. Loll, preprints hep-th/0505113 and\r
+hep-th/0505154.\r
+[37] D. ben-Avraham and S. Havlin, Diffusion and reactions in fractals and disor\u0002dered systems, Cambridge University Press, Cambridge (2004).\r
+[38] H. Kawai, M. Ninomiya, Nucl. Phys. B 336 (1990) 115;\r
+I. Antoniadis, P.O. Mazur and E. Mottola, Phys. Lett. B 444 (1998) 284.\r
+19"""
+
+[metadata]
+title = "arxiv hep th0508202 lauscher reuter 2005 fractal spacetime structure asymptotic safety"
+authors = ["Unknown"]
+year = 2005
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/0508202v1 26 Aug 2005\r
+hep-th/0508202\r
+MZ-TH/05-09\r
+Fractal Spacetime Structure in\r
+Asymptotically Safe Gravity\r
+O. Lauscher(a) and M. Reuter(b)\r
+(a)Institute of Theoretical Physics, University of Leipzig\r
+Augustusplatz 10-11, D-04109 Leipzig, Germany\r
+(b)Institute of Physics, University of Mainz\r
+Staudingerweg 7, D-55099 Mainz, Germany\r
+Abstract\r
+Four-dimensional Quantum Einstein Gravity (QEG) is likely to be an asymp\u0002totically safe theory which is applicable at arbitrarily small distance scales. On\r
+sub-Planckian distances it predicts that spacetime is a fractal with an effective di\u0002mensionality of 2. The original argument leading to this result was based upon\r
+the anomalous dimension of Newton’s constant. In the present paper we demon\u0002strate that also the spectral dimension equals 2 microscopically, while it is equal to\r
+4 on macroscopic scales. This result is an exact consequence of asymptotic safety\r
+and does not rely on any truncation. Contact is made with recent Monte Carlo\r
+simulations."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Soon after the detailed investigation of Quantum Einstein Gravity [1]-[17] had begun and\r
+it had become clear that the theory is likely to be nonperturbatively renormalizable or\r
+“asymptotically safe” [8, 3, 5, 6] it was observed [3, 5] that it predicts a fractal space\u0002time structure at sub-Planckian distances whose effective dimensionality equals 2. On\r
+the technical side, a key tool in the nonperturbative investigation of Quantum Einstein\r
+Gravity (QEG) was the effective average action and its associated exact renormalization\r
+group (RG) equation which had been developed in [18, 19] and was first applied to gravity\r
+in [1]. (For general reviews see [20],[21].)\r
+In QEG, the effective average action Γk[gµν] defines an infinite set of effective field\r
+theories, valid near a variable mass scale k which is introduced as an infrared (IR) cutoff\r
+and varies between k = 0 and k = ∞ [1]. Intuitively speaking, the solution hgµνikof the\r
+scale dependent field equation\r
+δΓk\r
+δgµν(x)\r
+[hgi\r
+k\r
+] = 0 (1.1)\r
+can be interpreted as the metric averaged over (Euclidean) spacetime volumes of a linear\r
+extension ℓ which typically is of the order of 1/k. Knowing the scale dependence of Γk,\r
+i.e. the renormalization group trajectory k 7→ Γk, we can in principle follow the solution\r
+hgµνikfrom the ultraviolet (k → ∞) to the infrared (k → 0).\r
+It is an important feature of this approach that the infinitely many equations of (1.1),\r
+one for each scale k, are valid simultaneously. They all refer to the same physical system,\r
+the “quantum spacetime”, but describe its effective metric structure on different scales.\r
+An observer using a “microscope” with a resolution ≈ k\r
+−1 will perceive the universe to be\r
+a Riemannian manifold with metric hgµνik. At every fixed k, hgµνikis a smooth classical\r
+metric. But since the quantum spacetime is characterized by the infinity of equations\r
+(1.1) with k = 0, · · · , ∞ it can acquire very nonclassical and in particular fractal features.\r
+Let us describe more precisely what it means to “average” over Euclidean spacetime\r
+volumes. The quantity we can freely tune is the IR cutoff scale k, and the “resolving\r
+1
+
+power” of the microscope, henceforth denoted ℓ, is in general a complicated function of\r
+k. (In flat space, ℓ ≈ 1/k.) In order to understand the relationship between ℓ and k we\r
+must recall some steps from the construction of Γk[gµν] in ref. [1].\r
+The effective average action is obtained by introducing an IR cutoff into the path\u0002integral over all metrics, gauge fixed by means of a background gauge fixing condition.\r
+Even without a cutoff the resulting effective action Γ[gµν; ¯gµν] depends on two metrics,\r
+the expectation value of the quantum field, gµν, and the background field ¯gµν . This is a\r
+standard technique, and it is well known [23] that the functional Γ[gµν] ≡ Γ[gµν ; ¯gµν = gµν]\r
+obtained by equating the two metrics can be used to generate the 1PI Green’s functions\r
+of the theory.\r
+The IR cutoff of the average action is implemented by first expressing the functional\r
+integral over all metrics in terms of eigenmodes of D¯ 2, the covariant Laplacian formed with\r
+the aid of the background metric ¯gµν. Then a suppression term is introduced which damps\r
+the contribution of all −D¯ 2-modes with eigenvalues smaller than k"""
+
+[[sections]]
+number = "2"
+title = "Following the usual"
+text = """
+steps [20] this leads to the scale dependent functional Γk[gµν ; ¯gµν], and the action with\r
+one argument again obtains by equating the two metrics: Γk[gµν ] ≡ Γk[gµν; ¯gµν = gµν].\r
+It is this action which appears in (1.1). Because of the identification of the two metrics\r
+we see that it is basically the eigenmodes of D¯ 2 = D2, constructed from the argument of\r
+Γk[g], which are cut off at k"""
+
+[[sections]]
+number = "2"
+title = "Since hgµνi"
+text = """
+k\r
+is the corresponding stationary point, we can\r
+say that the metric hgµνikapplies to the situation where only the quantum fluctuations\r
+of −D2(hgµν ik) with eigenvalues larger than k\r
+2\r
+are integrated out. Therefore there is a\r
+complicated interrelation between the metric and the scale at which it provides an effective\r
+description: The covariant Laplacian which ultimately decides about which modes are\r
+integrated out is constructed from the “on shell” configuration hgµνik, so it is k-dependent\r
+by itself already.\r
+From these remarks it is clear now how to obtain the “resolving power” ℓ for a given\r
+k, at least in principle. We take the Laplacian −D2(hgµνik), solve its eigenvalue problem,\r
+and then analyze in particular the properties of the eigenfunction(s) with eigenvalue k\r
+2\r
+2
+
+(or near k\r
+2\r
+in the case of a discrete spectrum). Loosely speaking, this eigenfunction is the\r
+last one integrated out. As a consequence, the “averaging” scale is crucially determined\r
+by “how fast” this eigenfunction varies over spacetime. Let us assume, for instance, this\r
+eigenfunction is oscillatory with a coordinate period ∆x. Then, again by using hgµνik,\r
+we compute the physical proper length this period corresponds to, and this is then what\r
+determines the resolution ℓ.\r
+In general the eigenfunction at k\r
+2 will have a complicated x-dependence, and therefore\r
+also the typical scales on which it varies are position dependent. Moreover, at a given\r
+point, the scale of significant variation will be direction dependent (anisotropic). There\u0002fore the resolving power ℓ = ℓ(k; x, n) is a complicated function in general, depending\r
+parametrically on points (x\r
+µ\r
+) and directions (n\r
+µ\r
+) on spacetime. It is clear that these\r
+notions can be made precise only in concrete examples and must be defined on a case by\r
+case basis.\r
+We emphasize, however, that using the averaged metric itself to define the scale it is\r
+averaged over is not a vicious circle, but rather is exactly as it must be in a background\r
+independent approach to the quantization of gravity.\r
+In a somewhat simplified form, the construction of a quantum spacetime within QEG\r
+can be summarized as follows. We start from a fixed RG trajectory k 7→ Γk, derive its\r
+effective field equations at each k, and solve them. The resulting quantum mechanical\r
+counterpart of a classical spacetime is specified by the infinity of Riemannian metrics\r
+{hgµνik|k = 0, · · · , ∞}. While the totality of these metrics contains all physical infor\u0002mation, the parameter k is only a book keeping device a priori. In a second step, it\r
+can be given a physical interpretation by relating it to the (proper) length scale of the\r
+averaging procedure: One constructs the Laplacian −D2(hgµνik), diagonalizes it, looks\r
+how rapidly its k\r
+2\r
+-eigenfunction varies, and “measures” the length of typical variations\r
+with the metric hgµν ikitself. By solving the resulting ℓ = ℓ(k) for k = k(ℓ) we can in\r
+principle reinterprete the metric hgµν ikas referring to a microscope with a known position\r
+and direction dependent resolving power. The price we have to pay for the background\r
+3
+
+independence is that we cannot freely choose ℓ directly but rather k only.\r
+The first difficult step in this construction program consists in finding the RG trajec\u0002tories. The running action Γk[gµν ] is given by an exact functional RG equation [1]. In\r
+practice it is usually solved on a truncated theory space. In the Einstein-Hilbert trunca\u0002tion, for instance, Γk is approximated by a functional of the form\r
+Γk[g] = (16πGk)\r
+−1\r
+Z\r
+d\r
+4x\r
+√\r
+g\r
+\b\r
+−R(g) + 2λ¯\r
+k\r
+\t\r
+(1.2)\r
+involving a running Newton constant Gk and cosmological constant λ¯\r
+k. Their k-dependence\r
+can be obtained from the RG equation projected onto the truncation subspace. The β\u0002functions for the dimensionless couplings gk ≡ k"""
+
+[[sections]]
+number = "2"
+title = "Gk and λk ≡ λ¯"
+text = """
+k/k2 were first obtained in\r
+[1]. Remarkably, they turned out to possess a simultaneous zero at a non-Gaussian fixed\r
+point (NGFP) (g∗, λ∗) which has just the right properties needed for the nonperturbative\r
+renormalizability of QEG along the lines of Weinberg’s [22] ideas on “asymptotic safety”\r
+[8]. It was argued [3, 5, 6] that the NGFP is likely to exist also in the un-truncated, full\r
+theory and allows for the construction of a consistent and predictive microscopic theory\r
+of quantum gravity valid at arbitrarily small distances even.\r
+One of the highly intriguing conclusions we reached in refs. [3, 5] was that the effective\r
+dimensionality of spacetime is scale dependent. It equals 4 at macroscopic distances\r
+(ℓ ≫ ℓPl) but, near ℓ ≈ ℓPl, it gets dynamically reduced to the value 2. For ℓ ≪ ℓPl\r
+spacetime is, in a precise sense [3], a 2-dimensional fractal.\r
+In ref. [24] the specific form of the graviton propagator on this fractal was applied in a\r
+cosmological context. It was argued that it gives rise to a Harrison-Zeldovich spectrum of\r
+primordial geometry fluctuations, perhaps responsible for the CMBR spectrum observed\r
+today.\r
+In refs. [24]-[32] various types of “RG improvements” were used to explore possible\r
+manifestations of the scale dependence of the gravitational parameters.\r
+Along a quite different line of investigation, considerable progress has been made\r
+recently towards defining a quantum theory of gravity as the continuum limit of a discrete\r
+4
+
+model of statistical mechanics. Performing comprehensive Monte Carlo simulations within\r
+the framework of causal (Lorentzian) triangulated geometries [33], Ambjørn, Jurkiewicz\r
+and Loll [34]-[36] collected strong evidence indicating that these models can describe\r
+universes which are extended both in space and time and are 4-dimensional on large\r
+scales. In particular the above authors “measured” numerically the spectral and Hausdorff\r
+dimensions of the spacetimes and their time slices, respectively. Remarkably, they, too,\r
+find that the (spectral) dimension Ds of the spacetime reduces dynamically from Ds ≈ 4\r
+at large distances to Ds ≈ 2 on small length scales.\r
+While until recently it has been difficult to compare the continuum theory to the\r
+discrete causal triangulation approach, the new Monte Carlo results suggest that they\r
+might be closely related, possibly representing the same “universality class”.\r
+In our original argument [3] we determined the effective dimensionality of the fractal\r
+realized at sub-Planckian distances (in the asymptotic scaling regime of the NGFP) from\r
+the anomalous dimension ηN at the NGFP. A priori this definition of an effective dimen\u0002sionality is different from the one used in the Monte Carlo simulations. It is the main\r
+purpose of the present paper to apply the reasoning from [3, 5] to the definition of the\r
+effective dimension which was employed by Ambjørn, Jurkiewicz and Loll [36], namely\r
+the spectral dimension Ds.\r
+We shall demonstrate that asymptotically safe QEG does indeed predict Ds = 4\r
+at ℓ ≫ ℓPl and Ds = 2 for ℓ ≪ ℓPl. (The Planck length and mass are defined as\r
+ℓPl ≡ m−1\r
+Pl ≡ G(k = 0)1/2\r
+.)\r
+As a preparation we review and extend the discussion of refs. [3, 5] in Section 2, and\r
+in Section 3 we compute the spectral dimension of the QEG spacetimes."""
+
+[[sections]]
+number = "2"
+title = "QEG spacetimes under the microscope"
+text = """
+For simplicity we use the Einstein-Hilbert truncation to start with, and we consider space\u0002times with classical dimensionality d = 4. The corresponding RG trajectories were com\u00025
+
+pletely classified and determined numerically in [4]. The physically relevant ones, for\r
+k → ∞, all approach the NGFP at (g∗, λ∗) so that the dimensionful quantities run ac\u0002cording to\r
+Gk ≈ g∗/k2, λ¯\r
+k ≈ λ∗ k\r
+2\r
+(2.1)\r
+The behavior (2.1) is realized in the asymptotic scaling regime k ≫ mPl. Near k = mPl\r
+the trajectories cross over towards the Gaussian fixed point at g = λ = 0, and then run\r
+towards negative, vanishing, and positive values of λ, respectively.\r
+Since in this paper we are interested only in the limiting cases of very small and\r
+very large distances the following caricature of a RG trajectory will be sufficient. We\r
+assume that Gk and λ¯\r
+k behave as in (2.1) for k ≫ mPl, and that they assume constant\r
+values for k ≪ mPl. The precise interpolation between the two regimes could be obtained\r
+numerically [4] but will not be needed here.\r
+The argument of ref. [5] concerning the fractal nature of the QEG spacetimes was\r
+as follows. Within the Einstein-Hilbert truncation of theory space, the effective field\r
+equations (1.1) happen to coincide with the ordinary Einstein equation, but with Gk and\r
+λ¯\r
+k replacing the classical constants. Without matter,\r
+Rµν (hgik) = λ¯\r
+k hgµν ik\r
+(2.2)\r
+Since in absence of dimensionful constants of integration λ¯\r
+k is the only quantity in this\r
+equation which sets a scale, every solution to (2.2) has a typical radius of curvature\r
+rc(k) ∝ 1/\r
+p\r
+λ¯\r
+k. (For instance, the maximally symmetric S\r
+4\r
+-solution has the radius\r
+rc = r =\r
+p\r
+3/λ¯\r
+k.) If we want to explore the spacetime structure at a fixed length scale\r
+ℓ we should use the action Γk[gµν ] at k = 1/ℓ because with this functional a tree level\r
+analysis is sufficient to describe the essential physics at this scale, including the relevant\r
+quantum effects. Hence, when we observe the spacetime with a microscope of resolution\r
+ℓ, we will see an average radius of curvature given by rc(ℓ) ≡ rc(k = 1/ℓ). Once ℓ is\r
+smaller than the Planck length ℓPl ≡ m−1\r
+Pl we are in the fixed point regime where λ¯\r
+k ∝ k\r
+2\r
+6
+
+so that rc(k) ∝ 1/k, or\r
+rc(ℓ) ∝ ℓ (2.3)\r
+Thus, when we look at the structure of spacetime with a microscope of resolution ℓ ≪ ℓPl,\r
+the average radius of curvature which we measure is proportional to the resolution itself.\r
+If we want to probe finer details and decrease ℓ we automatically decrease rc and hence\r
+increase the average curvature. Spacetime seems to be more strongly curved at small\r
+distances than at larger ones. The scale-free relation (2.3) suggests that at distances\r
+below the Planck length the QEG spacetime is a special kind of fractal with a self-similar\r
+structure. It has no intrinsic scale because in the fractal regime, i.e. when the RG\r
+trajectory is still close to the NGFP, the parameters which usually set the scales of the\r
+gravitational interaction, G and λ¯, are not yet “frozen out”. This happens only later on,\r
+somewhere half way between the non-Gaussian and the Gaussian fixed point, at a scale\r
+of the order of mPl.\r
+Below this scale, Gk and λ¯\r
+k stop running and, as a result, rc(k) becomes independent\r
+of k so that rc(ℓ) = const for ℓ ≫ ℓPl. In this regime hgµνikis k-independent, indicating\r
+that the macroscopic spacetime is describable by a single smooth, classical Riemannian\r
+manifold.\r
+The above argument made essential use of the proportionality ℓ ∝ 1/k. In the fixed\r
+point regime it follows trivially from the fact that there exist no relevant dimensionful\r
+parameters so that 1/k is the only length scale one can form. The algorithm for the\r
+determination of ℓ(k) described in the Introduction yields the same answer.\r
+It is easy to make the k-dependence of hgµν ikexplicit. Picking an arbitrary reference\r
+scale k0 we may rewrite (2.2) as [λ¯\r
+k0/λ¯k] Rµ\r
+ν\r
+(hgik) = λ¯\r
+k0\r
+δ\r
+µ\r
+ν\r
+. Since Rµ\r
+ν\r
+(c g) = c\r
+−1 Rµ\r
+ν\r
+(g)\r
+for any constant c > 0, this relation implies that the average metric scales as\r
+hgµν(x)ik = [λ¯\r
+k0/λ¯k]hgµν(x)ik0\r
+(2.4)\r
+and its inverse according to\r
+hg\r
+µν(x)ik = [λ¯\r
+k/λ¯k0\r
+]hg\r
+µν(x)ik0\r
+(2.5)\r
+7
+
+These relations are valid provided the family of solutions considered exists for all scales\r
+between k0 and k, and λ¯\r
+k has the same sign always.\r
+As we discussed in ref. [3] the QEG spacetime has an effective dimensionality which\r
+is k-dependent and hence noninteger in general. Our discussion in [3] was based upon\r
+the anomalous dimension ηN of the operator R √g R. It is defined as ηN ≡ −k ∂k ln ZNk\r
+where ZNk ∝ 1/Gk is the wavefunction renormalization of the metric [1]. In a sense\r
+which we shall make more precise in a moment, the effective dimensionality of spacetime\r
+equals 4 + ηN . The RG trajectories of the Einstein-Hilbert truncation (within its domain\r
+of validity) have ηN ≈ 0 for k → 0\r
+1 and ηN ≈ −2 for k → ∞, the smooth change by\r
+two units occuring near k ≈ mPl. As a consequence, the effective dimensionality is 4 for\r
+ℓ ≫ ℓPl and 2 for ℓ ≪ ℓPl.\r
+In fact, the UV fixed point has an anomalous dimension η ≡ ηN (g∗, λ∗) = −2. We\r
+can use this information in order to determine the momentum dependence of the dressed\r
+graviton propagator for momenta p\r
+2 ≫ m2\r
+Pl. Expanding the Γk of (1.2) about flat space\r
+and omitting the standard tensor structures we find the inverse propagator Gek(p)\r
+−1 ∝\r
+ZN (k) p"""
+
+[[sections]]
+number = "2"
+title = "The conventional dressed propagator Ge(p) contained in Γ ≡ Γk=0 obtains from"
+text = """
+the exact Gek in the limit k → 0. For p\r
+2 > k2 ≫ m2\r
+Pl the actual cutoff scale is the physical\r
+momentum p\r
+2\r
+itself2so that the k-evolution of Gek(p) stops at the threshold k =\r
+p\r
+p"""
+
+[[sections]]
+number = "2"
+title = "Therefore"
+text = """
+Ge(p)\r
+−1 ∝ ZN\r
+\u0010\r
+k =\r
+p\r
+p\r
+2\r
+\u0011\r
+p\r
+2 ∝ (p2\r
+)\r
+1−\r
+η\r
+2 (2.6)\r
+because ZN (k) ∝ k\r
+−η when η ≡ −∂t\r
+lnZN is (approximately) constant. In d dimensions,\r
+and for η 6= 2 − d, the Fourier transform of Ge(p) ∝ 1/(p\r
+2\r
+)\r
+1−η/2 yields the following\r
+propagator in position space:\r
+G(x; y) ∝\r
+1\r
+|x − y|\r
+d−2+η\r
+. (2.7)\r
+1\r
+In the case of type IIIa trajectories [4, 31] the macroscopic k-value is still far above kterm, i.e. in the\r
+“GR regime” described in [31].\r
+2See Section 1 of ref. [29] for a detailed discussion of “decoupling” phenomena of this kind.\r
+8
+
+This form of the propagator is well known from the theory of critical phenomena, for\r
+instance. (In the latter case it applies to large distances.) Eq. (2.7) is not valid directly\r
+at the NGFP. For d = 4 and η = −2 the dressed propagator is Ge(p) = 1/p4 which has the\r
+following representation in position space:\r
+G(x; y) = −\r
+1\r
+8π\r
+2\r
+ln (µ |x − y|) . (2.8)\r
+Here µ is an arbitrary constant with the dimension of a mass. Obviously (2.8) has the\r
+same form as a 1/p2-propagator in 2 dimensions.\r
+Slightly away from the NGFP, before other physical scales intervene, the propagator is\r
+of the familiar type (2.7) which shows that the quantity ηN has the standard interpretation\r
+of an anomalous dimension in the sense that fluctuation effects modify the decay properties\r
+of G so as to correspond to a spacetime of effective dimensionality 4 + ηN .\r
+Thus the properties of the RG trajectories imply a remarkable dimensional reduction:\r
+Spacetime, probed by a “graviton” with p\r
+2 ≪ m2\r
+Pl is 4-dimensional, but it appears to be\r
+2-dimensional for a graviton with p\r
+2 ≫ m2\r
+Pl [3].\r
+It is interesting to note that in d classical dimensions, where the macroscopic spacetime\r
+is d-dimensional, the anomalous dimension at the fixed point is η = 2 − d. Therefore, for\r
+any d, the dimensionality of the fractal as implied by ηN is d + η = 2 [3, 5]."""
+
+[[sections]]
+number = "3"
+title = "The spectral dimension"
+text = """
+In this section we determine the spectral dimension Ds of the QEG spacetimes. This\r
+particular definition of a fractal dimension is borrowed from the theory of diffusion pro\u0002cesses on fractals [37] and is easily adapted to the quantum gravity context [38, 36]. In\r
+particular it has been used in the Monte Carlo studies mentioned in the Introduction.\r
+Let us study the diffusion of a scalar test particle on a d-dimensional classical Euclidean\r
+manifold with a fixed smooth metric gµν(x). The corresponding heat-kernel Kg(x, x′; T)\r
+giving the probability for the particle to diffuse from x\r
+′\r
+to x during the fictitious diffusion\r
+9
+
+time T satisfies the heat equation\r
+∂T Kg(x, x′; T) = ∆gKg(x, x′; T) (3.1)\r
+where ∆g ≡ D2 denotes the scalar Laplacian: ∆gφ ≡ g\r
+−1/2 ∂µ(g1/2\r
+g\r
+µν ∂νφ). The heat\u0002kernel is a matrix element of the operator exp(T ∆g). In the random walk picture its\r
+trace per unit volume,\r
+Pg(T) ≡ V\r
+−1\r
+Z\r
+d\r
+dx\r
+p\r
+g(x) Kg(x, x; T) ≡ V\r
+−1 Tr exp(T ∆g) , (3.2)\r
+has the interpretation of an average return probability. (Here V ≡\r
+R\r
+d\r
+dx\r
+√g denotes the\r
+total volume.) It is well known that Pg possesses an asymptotic expansion (for T → 0)\r
+of the form Pg(T) = (4πT)\r
+−d/2 P∞\r
+n=0 An T\r
+n\r
+. For an infinite flat space, for instance, it\r
+reads Pg(T) = (4πT)\r
+−d/2\r
+for all T. Thus, knowing the function Pg, one can recover the\r
+dimensionality of the target manifold as the T-independent logarithmic derivative\r
+d = −2\r
+d ln Pg(T)\r
+d ln T\r
+(3.3)\r
+This formula can also be used for curved spaces and spaces with finite volume V provided\r
+T is not taken too large [36].\r
+In QEG where we functionally integrate over all metrics it is natural to replace Pg(T)\r
+by its expectation value. Symbolically,\r
+P(T) ≡ hPγ(T)i ≡ ZDγ DC DC P ¯\r
+γ(T) e\r
+−Sbare[γ,C,C¯]\r
+(3.4)\r
+Here γµν denotes the microscopic metric and Sbare is the bare action with the gauge fixing\r
+terms and the pieces containing the ghosts C and C¯ included. Note that (3.4) does\r
+not contain any IR cutoff; it is the ordinary (k = 0) expectation value with all modes\r
+integrated out. In QEG the functional Sbare is given by the fixed point action. Given\r
+P(T), the spectral dimension of the quantum spacetime is defined in analogy with (3.3):\r
+Ds = −2\r
+d ln P(T)\r
+d ln T\r
+(3.5)"""
+
+[[sections]]
+number = "10"
+title = "Let us now evaluate the expectation value (3.4) using the average action method."
+text = """
+The fictitious diffusion process takes place on a “manifold” which, at every fixed scale,\r
+is described by a smooth Riemannian metric hgµν ik. While the situation appears to be\r
+classical at fixed k, nonclassical features emerge in the regime with nontrivial RG running\r
+since there the metric depends on the scale at which the spacetime structure is probed.\r
+The nonclassical features are encoded in the properties of the diffusion operator. De\u0002noting the covariant Laplacians corresponding to the metrics hgµνik\r
+and hgµν ik0by ∆(k)\r
+and ∆(k0), respectively, eqs. (2.4) and (2.5) imply that they are related by\r
+∆(k) = [λ¯\r
+k/λ¯k0\r
+] ∆(k0) (3.6)\r
+When k, k0 ≫ mPl we have, for example,\r
+∆(k) = (k/k0)\r
+2 ∆(k0) (3.7)\r
+Recalling that the average action Γk defines an effective field theory at the scale k we\r
+have that hO(γµν)i ≈ O(hgµν ik) if the operator O involves typical covariant momenta of\r
+the order k and hgµνiksolves eq. (1.1). In the following we exploit this relationship for\r
+the RHS of the diffusion equation, O = ∆γ Kγ(x, x′; T). It is crucial here to correctly\r
+identify the relevant scale k.\r
+If the diffusion process involves (approximately) only a small interval of scales near k\r
+over which λ¯\r
+k does not change much the corresponding heat equation contains the ∆(k)\r
+for this specific, fixed value of k:\r
+∂T K(x, x′; T) = ∆(k)K(x, x′; T) (3.8)\r
+Denoting the eigenvalues of −∆(k0) by En and the corresponding eigenfunctions by φn,\r
+this equation is solved by\r
+K(x, x′; T) = X\r
+n\r
+φn(x) φn(x\r
+′\r
+) exp \u0010− F(k\r
+2\r
+) En T\r
+\u0011\r
+(3.9)\r
+Here we introduced the convenient notation F(k\r
+2\r
+) ≡ λ¯\r
+k/λ¯k0\r
+. Knowing this propaga\u0002tion kernel we can time-evolve any initial probability distribution p(x; 0) according to\r
+11
+
+p(x; T) = R\r
+d\r
+4x′ p\r
+g0(x\r
+′\r
+) K(x, x′; T) p(x\r
+′\r
+; 0) with g0 the determinant of hgµνik0. If the\r
+initial distribution has an eigenfunction expansion of the form p(x; 0) = P\r
+n Cn φn(x) we\r
+obtain\r
+p(x; T) = X\r
+n\r
+Cn φn(x) exp \u0010− F(k\r
+2\r
+) En T\r
+\u0011\r
+(3.10)\r
+If the Cn’s are significantly different from zero only for a single eigenvalue EN , we are\r
+dealing with a single-scale problem. In the usual spirit of effective field theories we would\r
+then identify k\r
+2 = EN as the relevant scale at which the running couplings are to be\r
+evaluated.\r
+However, in general the Cn’s are different from zero over a wide range of eigenvalues.\r
+In this case we face a multiscale problem where different modes φn probe the spacetime\r
+on different length scales.\r
+If ∆(k0) corresponds to flat space, say, the eigenfunctions φn ≡ φp are plane waves\r
+with momentum p\r
+µ\r
+, and they resolve structures on a length scale ℓ of order 1/|p|. Hence,\r
+in terms of the eigenvalue En ≡ Ep = p\r
+2\r
+the resolution is ℓ ≈ 1/\r
+√\r
+En. This suggests that\r
+when the manifold is probed by a mode with eigenvalue En it “sees” the metric hgµνikfor\r
+the scale k =\r
+√\r
+En. Actually the identification k =\r
+√\r
+En is correct also for curved space\r
+since, in the construction of Γk, the parameter k is introduced precisely as a cutoff in the\r
+spectrum of the covariant Laplacian.\r
+Therefore we conclude that under the spectral sum of (3.10) we must use the scale\r
+k\r
+2 = En which depends explicitly on the resolving power of the corresponding mode.\r
+Likewise, in eq. (3.9), F(k\r
+2\r
+) is to be interpreted as F(En). Thus we obtain the traced\r
+propagation kernel\r
+P(T) = V\r
+−1 X\r
+n\r
+exp h− F(En) En T\r
+i\r
+= V\r
+−1 Tr exp h\r
+F\r
+\u0010\r
+− ∆(k0)\r
+\u0011\r
+∆(k0) T\r
+i\r
+(3.11)\r
+It is convenient to choose k0 as a macroscopic scale in a regime where there are no\r
+strong RG effects any more.\r
+12
+
+Furthermore, let us assume for a moment that at k0 the cosmological constant is tiny,\r
+λ¯\r
+k0 ≈ 0, so that hgµνik0\r
+is an approximately flat metric. In this case the trace in eq. (3.11)\r
+is easily evaluated in a plane wave basis:\r
+P(T) = Z\r
+d\r
+4p\r
+(2π)\r
+4\r
+exp \u0002−p"""
+
+[[sections]]
+number = "2"
+title = "F(p2"
+text = """
+) T\r
+\u0003\r
+(3.12)\r
+The T-dependence of (3.12) determines the fractal dimensionality of spacetime via (3.5).\r
+In the limits T → ∞ and T → 0 where the random walks probe very large and small\r
+distances, respectively, we obtain the dimensionalities corresponding to the largest and\r
+smallest length scales possible. The limits T → ∞ and T → 0 of P(T) are determined by\r
+the behavior of F(p\r
+2\r
+) ≡ λ¯(k =\r
+p\r
+p\r
+2\r
+)/λ¯\r
+k0\r
+for p\r
+2 → 0 and p2 → ∞, respectively.\r
+For a RG trajectory where the renormalization effects stop below some threshold we\r
+have F(p\r
+2 → 0) = 1. In this case (3.12) yields P(T) ∝ 1/T2\r
+, and we conclude that the\r
+macroscopic spectral dimension is Ds = 4.\r
+In the fixed point regime we have λ¯\r
+k ∝ k\r
+2\r
+, and therefore F(p\r
+2\r
+) ∝ p"""
+
+[[sections]]
+number = "2"
+title = "As a result,"
+text = """
+the exponent in (3.12) is proportional to p\r
+4 now. This implies the T → 0−behavior\r
+P(T) ∝ 1/T. It corresponds to the spectral dimension Ds = 2.\r
+This result holds for all RG trajectories since only the fixed point properties were\r
+used. In particular it is independent of λ¯\r
+k0 on macroscopic scales. In fact, the above\r
+assumption that hgµνik0is flat was not necessary for obtaining Ds = 2. This follows from\r
+the fact that even for a curved metric the spectral sum (3.11) can be represented by an\r
+Euler-Mac Laurin series which always implies (3.12) as the leading term for T → 0.\r
+Thus we may conclude that on very small and very large length scales the spectral\r
+dimensions of the QEG spacetimes are\r
+Ds(T → ∞) = 4\r
+Ds(T → 0) = 2 (3.13)\r
+The dimensionality of the fractal realized at sub-Planckian distances is found to be\r
+2 again. It is by no means trivial that Ds coincides with the value of 4 + η. While the\r
+13
+
+replacement of the classical p"""
+
+[[sections]]
+number = "2"
+title = "F(p2"
+text = """
+) = p\r
+2 by p2 F(p2\r
+) ∝ p\r
+4\r
+is reminiscent of the graviton\r
+propagator argument of Section 2, it is important to emphasize that the value of 4 + η is\r
+entirely determined by the running of Gk, while the spectral dimension was derived from\r
+the k-dependence of the cosmological constant.\r
+In fact, it is remarkable that the equality of 4 + η and Dsis a special feature of\r
+4 classical dimensions. Generalizing for d classical dimensions, the fixed point running\r
+of Newton’s constant becomes Gk ∝ k\r
+2−d with a dimension-dependent exponent, while\r
+λ¯\r
+k ∝ k\r
+2\r
+continues to have a quadratic k-dependence. As a result, the Ge(k) of eq. (2.6)\r
+is proportional to 1/pdin general so that, for any d, the 2-dimensional looking graviton\r
+propagator (2.8) is obtained. (This is equivalent to saying that η = 2 − d, or d + η = 2,\r
+for arbitrary d.)\r
+On the other hand, the impact of the RG effects on the diffusion process is to replace\r
+the operator ∆ by ∆2, for any d, since the cosmological constant always runs quadratically.\r
+Hence, in the fixed point regime, eq. (3.12) becomes\r
+P(T) ∝\r
+Z\r
+d\r
+d\r
+p exp \u0002−p\r
+4 T\r
+\u0003\r
+∝ T\r
+− d\r
+4 (3.14)\r
+This T-dependence implies the spectral dimension\r
+Ds(d) = d\r
+2\r
+(3.15)\r
+This value coincides with d + η if, and only if, d = 4. It is an intriguing speculation\r
+that this could have something to do with the observed macroscopic dimensionality of\r
+spacetime.\r
+Up to this point, to be as concrete as possible, we formulated our argument within\r
+the Einstein-Hilbert truncation. To complete the discussion we show that the exact (un\u0002truncated) theory if it has a NGFP implies the dynamical dimensional reduction from 4\r
+to 2 dimensions (in d = 4) in exactly the same way as the truncated one.\r
+The complete effective average action has the structure Γk[gµν ] = P\r
+n\r
+¯gn(k) In[gµν]\r
+with infinitely many running couplings ¯gn(k) and diffeomorphism invariant functionals\r
+14
+
+In. If ¯gn(k) has the canonical dimension dn the corresponding dimensionless couplings are\r
+gn(k) ≡ k\r
+−dn ¯gn(k) and we have\r
+Γk[gµν ] = X\r
+n\r
+gn(k) k\r
+dn\r
+In[gµν ] = X\r
+n\r
+gn(k) In[k\r
+2\r
+gµν ] (3.16)\r
+In the second equality we used that In[c\r
+2\r
+gµν] = c\r
+dn In[gµν] for any c > 0 since In has\r
+dimension −dn.\r
+If the theory is asymptotically safe at the exact level, all gn(k) approach constant\r
+values gn∗ for k → ∞:\r
+Γk→∞[gµν] = X\r
+n\r
+gn∗ In[k\r
+2\r
+gµν ] (3.17)\r
+Obviously this functional depends on k\r
+2 and gµν only via the combination k2\r
+gµν . There\u0002fore the solutions of the corresponding field equation, hgµνik\r
+, scale proportional to k\r
+−2\r
+.\r
+Hence ∆(k) ∝ k\r
+2\r
+in the fixed point regime, and this is exactly the scaling behavior (3.7)\r
+our above derivation of Ds(T → 0) = 2 was based upon.\r
+This completes the demonstration that if a NGFP does exist in the full theory, its\r
+exact spacetimes are fractals with Ds = 2 on sub-Planckian distances.\r
+At this point it is tempting to compare the result (3.13) to the spectral dimensions\r
+of the spacetime which were recently obtained by Monte Carlo simulations of the causal\r
+dynamical triangulation model [36]:\r
+Ds(T → ∞) = 4.02 ± 0.1\r
+Ds(T → 0) = 1.80 ± 0.25 (3.18)\r
+These figures, too, suggest that the long-distance and short-distance spectral dimension\r
+should be 4 and 2, respectively.\r
+The dimensional reduction from 4 to 2 dimensions is a highly nontrivial dynamical\r
+phenomenon which seems to occur in both QEG and the discrete triangulation model. We\r
+find it quite remarkable that the discrete and the continuum approach lead to essentially\r
+15
+
+identical conclusions in this respect. We consider this agreement a first hint indicating that\r
+(at least in 4 dimensions) the discrete model and QEG in the average action formulation\r
+might describe the same physics. But clearly much more work is needed in order to\r
+understand how the two approaches are related precisely."""
+
+[[sections]]
+number = "4"
+title = "Summary"
+text = """
+The general picture of the spacetime structure in QEG which has emerged so far is\r
+as follows. At sub-Planckian distances spacetime is a fractal of dimensionality Ds =\r
+4 + η = 2. It can be thought of as a self-similar hierarchy of superimposed Riemannian\r
+manifolds of any curvature. As one considers larger length scales where the RG running\r
+of the gravitational parameters comes to a halt, the “ripples” in the spacetime gradually\r
+disappear and the structure of a classical 4-dimensional manifold is recovered.\r
+Within the Einstein-Hilbert approximation of QEG there are two natural ways of\r
+defining an effective dimensionality of the fractal spacetime. We can either define it\r
+as 4 + ηN as derived from the running of Newton’s constant, or we use the spectral\r
+dimension implied by the k-dependence of the cosmological constant. We have seen\r
+that both definitions lead to identical results on very large and very small distances.\r
+We also showed that the microscopic dimensionality Ds = 2 is a rather direct and exact\r
+consequence of asymptotic safety which does not rely on any approximation or truncation.\r
+It is therefore not unlikely that the mechanism of a dynamical dimensional reduction\r
+from 4 to 2 dimensions which occurs in QEG is the same phenomenon as the dimensional\r
+reduction observed in the Monte Carlo studies of causal dynamical triangulations.\r
+Acknowledgments: We would like to thank J. Schwindt for helpful discussions."""
+
+[[sections]]
+number = "16"
+title = "References"
+text = """
+[1] M. Reuter, Phys. Rev. D 57 (1998) 971 and hep-th/9605030.\r
+[2] D. Dou and R. Percacci, Class. Quant. Grav. 15 (1998) 3449.\r
+[3] O. Lauscher and M. Reuter, Phys. Rev. D 65 (2002) 025013 and\r
+hep-th/0108040.\r
+[4] M. Reuter and F. Saueressig, Phys. Rev. D 65 (2002) 065016 and\r
+hep-th/0110054.\r
+[5] O. Lauscher and M. Reuter, Phys. Rev. D 66 (2002) 025026 and\r
+hep-th/0205062.\r
+[6] O. Lauscher and M. Reuter, Class. Quant. Grav. 19 (2002) 483 and\r
+hep-th/0110021.\r
+[7] O. Lauscher and M. Reuter, Int. J. Mod. Phys. A 17 (2002) 993 and\r
+hep-th/0112089.\r
+[8] W. Souma, Prog. Theor. Phys. 102 (1999) 181.\r
+[9] R. Percacci and D. Perini, Phys. Rev. D 67 (2003) 081503.\r
+[10] R. Percacci and D. Perini, Phys. Rev. D 68 (2003) 044018.\r
+[11] D. Perini, Nucl. Phys. Proc. Suppl. 127 C (2004) 185.\r
+[12] M. Reuter and F. Saueressig, Phys. Rev. D 66 (2002) 125001 and\r
+hep-th/0206145; Fortschr. Phys. 52 (2004) 650 and hep-th/0311056.\r
+[13] D. Litim, Phys. Rev. Lett. 92 (2004) 201301.\r
+[14] A. Bonanno, M. Reuter, JHEP 02 (2005) 035 and hep-th/0410191.\r
+17
+
+[15] R. Percacci and D. Perini, hep-th/0401071.\r
+[16] R. Percacci, hep-th/0409199.\r
+[17] P. Forg´acs and M. Niedermaier, hep-th/0207028;\r
+M. Niedermaier, JHEP 12 (2002) 066; Nucl. Phys. B 673 (2003) 131.\r
+[18] C. Wetterich, Phys. Lett. B 301 (1993) 90.\r
+[19] M. Reuter and C. Wetterich, Nucl. Phys. B 417 (1994) 181, Nucl. Phys. B 427\r
+(1994) 291, Nucl. Phys. B 391 (1993) 147, Nucl. Phys. B 408 (1993) 91;\r
+M. Reuter, Phys. Rev. D 53 (1996) 4430, Mod. Phys. Lett. A 12 (1997) 2777.\r
+[20] For a review see: J. Berges, N. Tetradis and C. Wetterich, Phys. Rep. 363\r
+(2002) 223; C. Wetterich, Int. J. Mod. Phys. A 16 (2001) 1951.\r
+[21] For a review see: C. Bagnuls and C. Bervillier, Phys. Rep. 348 (2001) 91;\r
+T.R. Morris, Prog. Theor. Phys. Suppl. 131 (1998) 395;\r
+J. Polonyi, Central Eur. J. Phys. 1 (2004) 1.\r
+[22] S. Weinberg in General Relativity, an Einstein Centenary Survey, S.W. Hawk\u0002ing and W. Israel (Eds.), Cambridge University Press (1979); S. Weinberg,\r
+hep-th/9702027.\r
+[23] L.F. Abbott, Nucl. Phys. B 185 (1981) 189; B.S. DeWitt, Phys. Rev. 162\r
+(1967) 1195; M.T. Grisaru, P. van Nieuwenhuizen and C.C. Wu, Phys. Rev.\r
+D 12 (1975) 3203; D.M. Capper, J.J. Dulwich and M. Ramon Medrano, Nucl.\r
+Phys. B 254 (1985) 737; S.L. Adler, Rev. Mod. Phys. 54 (1982) 729.\r
+[24] A. Bonanno and M. Reuter, Phys. Rev. D 65 (2002) 043508 and\r
+hep-th/0106133; M. Reuter and F. Saueressig, hep-th/0507167.\r
+[25] A. Bonanno and M. Reuter, Phys. Lett. B 527 (2002) 9 and astro-ph/0106468;\r
+Int. J. Mod. Phys. D 13 (2004) 107 and astro-ph/0210472.\r
+18
+
+[26] E. Bentivegna, A. Bonanno and M. Reuter, JCAP 01 (2004) 001,\r
+and astro-ph/0303150.\r
+[27] A. Bonanno, G. Esposito and C. Rubano, Gen. Rel. Grav. 35 (2003) 1899;\r
+Class. Quant. Grav. 21 (2004) 5005.\r
+[28] A. Bonanno and M. Reuter, Phys. Rev. D 62 (2000) 043008 and\r
+hep-th/0002196; Phys. Rev. D 60 (1999) 084011 and gr-qc/9811026.\r
+[29] M. Reuter and H. Weyer, Phys. Rev. D 69 (2004) 104022 and hep-th/0311196.\r
+[30] M. Reuter and H. Weyer, Phys. Rev. D 70 (2004) 124028 and hep-th/0410117.\r
+[31] M. Reuter and H. Weyer, JCAP 12 (2004) 001 and hep-th/0410119.\r
+[32] J. Moffat, JCAP 05 (2005) 003 and astro-ph/0412195; J.R. Brownstein and\r
+J. Moffat, astro-ph/0506370 and astro-ph/0507222.\r
+[33] A. Dasgupta and R. Loll, Nucl. Phys. B 606 (2001) 357; J. Ambjørn, J. Jur\u0002kiewicz and R. Loll, Nucl. Phys. B 610 (2001) 347; Phys. Rev. Lett. 85\r
+(2000) 924; R. Loll, Nucl. Phys. Proc. Suppl. 94 (2001) 96; J. Ambjørn, gr\u0002qc/0201028.\r
+[34] J. Ambjørn, J. Jurkiewicz and R. Loll, Phys. Rev. Lett. 93 (2004) 131301.\r
+[35] J. Ambjørn, J. Jurkiewicz and R. Loll, Phys. Lett. B 607 (2005) 205.\r
+[36] J. Ambjørn, J. Jurkiewicz and R. Loll, preprints hep-th/0505113 and\r
+hep-th/0505154.\r
+[37] D. ben-Avraham and S. Havlin, Diffusion and reactions in fractals and disor\u0002dered systems, Cambridge University Press, Cambridge (2004).\r
+[38] H. Kawai, M. Ninomiya, Nucl. Phys. B 336 (1990) 115;\r
+I. Antoniadis, P.O. Mazur and E. Mottola, Phys. Lett. B 444 (1998) 284.\r
+19"""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 5
+image_path = "images/image_p5_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 7
+image_path = "images/image_p7_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 7
+image_path = "images/image_p7_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 9
+image_path = "images/image_p9_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 9
+image_path = "images/image_p9_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 9
+image_path = "images/image_p9_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 9
+image_path = "images/image_p9_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 9
+image_path = "images/image_p9_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 9
+image_path = "images/image_p9_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 10
+image_path = "images/image_p10_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 11
+image_path = "images/image_p11_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 11
+image_path = "images/image_p11_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 11
+image_path = "images/image_p11_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 11
+image_path = "images/image_p11_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 13
+image_path = "images/image_p13_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 13
+image_path = "images/image_p13_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 13
+image_path = "images/image_p13_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 13
+image_path = "images/image_p13_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 14
+image_path = "images/image_p14_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 14
+image_path = "images/image_p14_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 15
+image_path = "images/image_p15_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 15
+image_path = "images/image_p15_23.png"

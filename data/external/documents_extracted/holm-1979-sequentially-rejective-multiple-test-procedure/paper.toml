@@ -1,0 +1,1152 @@
+equations = []
+tables = []
+full_text = """
+Board of the Foundation of the Scandinavian Journal of Statistics\r
+A Simple Sequentially Rejective Multiple Test Procedure\r
+Author(s): Sture Holm\r
+Source: Scandinavian Journal of Statistics, Vol. 6, No. 2 (1979), pp. 65-70\r
+Published by: Wiley on behalf of Board of the Foundation of the Scandinavian Journal of Statistics\r
+Stable URL: http://www.jstor.org/stable/4615733 .\r
+Accessed: 09/10/2013 08:15\r
+Your use of the JSTOR archive indicates your acceptance of the Terms & Conditions of Use, available at .\r
+http://www.jstor.org/page/info/about/policies/terms.jsp\r
+ .\r
+JSTOR is a not-for-profit service that helps scholars, researchers, and students discover, use, and build upon a wide range of\r
+content in a trusted digital archive. We use information technology and tools to increase productivity and facilitate new forms\r
+of scholarship. For more information about JSTOR, please contact support@jstor.org.\r
+ .\r
+Wiley and Board of the Foundation of the Scandinavian Journal of Statistics are collaborating with JSTOR to\r
+digitize, preserve and extend access to Scandinavian Journal of Statistics.\r
+http://www.jstor.org 
+
+Scand J Statist 6: 65-70, 1979 \r
+A Simple Sequentially Rejective Multiple Test Procedure \r
+STURE HOLM \r
+Chalmers University of Technology, Goteborg \r
+Received December 1977, revised September 1978 \r
+ABSTRACT. This paper presents a simple and widely ap\u0002plicable multiple test procedure of the sequentially rejective \r
+type, i.e. hypotheses are rejected one at a tine until no further \r
+rejections can be done. It is shown that the test has a prescribed \r
+level of significance protection against error of the first kind \r
+for any combination of true hypotheses. The power properties \r
+of the test and a number of possible applications are also \r
+discussed. \r
+Key words: multiple test, simultaneous test \r
+1. Introduction \r
+The statistical problems arising in applications often \r
+involve a number of detail problems, i.e. there are \r
+often a number of interesting parameters to be esti\u0002mated and/or a number of interesting hypotheses to \r
+be tested. In some cases these detail problems may \r
+be treated separately without any connection to each \r
+other. But in most cases the detail problems are con\u0002nected to each other and the totality of solutions to \r
+the detail problems are used to get a general picture. \r
+In this latter case the statistician is faced with a \r
+multiple statistical inference problem, where he has \r
+to take into consideration that the different detail \r
+problems should be treated simultaneously. \r
+Multiple statistical inference has been a vital re\u0002search area within statistical inference theory the \r
+past 50 years, and methods have been proposed for \r
+several situations of practical interest. A good presen\u0002tation of the earlier main results is given by Miller \r
+(1966). The multiple statistical inference methods are \r
+separated into two main types, multiple confidence \r
+interval methods and multiple test methods. \r
+For multiple test procedures there has been sug\u0002gested several types of properties, which the tests \r
+should have in order to give satisfactory protection \r
+against wrong decisions. Some of those are based on \r
+decision theoretic conceptions, while others are based \r
+on probabilities of making wrong decisions. In this \r
+paper we will study multiple test procedures and we \r
+will use the most common type of protection against \r
+error of the first kind by requiring the tests to have a \r
+small probability of rejecting any true hypotheses. \r
+The methodological motivation and exact definition \r
+is the following. \r
+Let the (detail) hypotheses in a multiple test prob\u0002lem be denoted by H1, H12, ..., Hn and the alternatives \r
+to those by K., K2, ..., K,. A (non-randomized) mul\u0002tiple test procedure is a rule assigning to each out\u0002come a set of rejected hypotheses (which might be \r
+empty). This means that there are also n critical \r
+regions C1, C2, ..., Cn consisting of those outcomes \r
+for which the corresponding hypotheses are rejected. \r
+In a test of a single null hypothesis H1 against an \r
+alternative K1 the size of the test is defined as the \r
+supremum of the probability of the critical region C1 \r
+when the hypothesis H11 is true. This probability of \r
+error of the first kind is always kept at (or below) a \r
+small predetermined level a. The philosophical rea\u0002son for this is that when we have made a 'discovery' \r
+by rejecting the null hypothesis we can quite safely \r
+claim that the null hypothesis is not true, because if \r
+it was true, we should have accepted it with a \r
+probability of at least 1 -oc. This also implies that \r
+we do not make any 'discovery' by accepting the null \r
+hypotheses, because we do not have such a protec\u0002tion against errors of the second kind. \r
+In a multiple test of a number of hypotheses \r
+H,, H12, ..., Hn there are a lot of possible combina\u0002tions of null hypotheses. If we want to make our \r
+'discoveries' in form of rejected null hypotheses to \r
+be safely claimed, we must keep the probability of \r
+rejecting any true null hypotheses small, how many \r
+and which the true hypotheses may be. Thus we are \r
+led to the following definition \r
+Definition. A multiple test procedure with critical \r
+regions C1, C2, ..., Cn for testing hypotheses Hi, \r
+H2, ..., H,, is said to have a multiple level of signifi\u0002cance a (for free combinations) if for any non-empty \r
+index set I' {1, 2, 3, ..., n} the supremum of the \r
+probability P( u iE C2) when Hi are true for all i eI \r
+is smaller than or equal to a. \r
+The words 'for free combinations' are put into the \r
+definition in order to underline that all subsets of \r
+5 - 791923 Scand J Statist 6 
+
+66 S. Holm \r
+null hypotheses could appear as the set of true hypo\u0002theses. There might be situations in which all sub\u0002sets are not allowed for some reason, for instance \r
+situations where the truth of two hypotheses implies \r
+the truth or falseness of a third hypothesis. It is to \r
+be observed that a multiple level of significance ac for \r
+some restricted combinations imposes fewer condi\u0002tions on the test procedure than a multiple level of \r
+significance a for free combinations, i.e. a test proce\u0002dure with multiple level of significance x for free \r
+combinations has a multiple level of significance a \r
+for any type of restricted combinations. \r
+In our setting the basic hypotheses H1, H2, ..., H. \r
+are minimal in the sense of Gabriel (1969). This \r
+means that if o,, con, ..., on are the parameter sets \r
+where the hypotheses H1, H2, ..., Hn are true than \r
+the only (secondary) hypotheses to be tested are the \r
+hypotheses that the parameter belongs to intersec\u0002tions nf EI co, of sets coi for different index sets \r
+Ic- {1, 2, ..., n}. \r
+We will exclusively discuss a type of multiple test \r
+procedures, which may be called sequentially rejec\u0002tive because basic hypotheses are rejected one at a \r
+time according to certain rules. Thus we do not make \r
+separate tests of all the (secondary) hypotheses that \r
+the parameter belongs to intersections nflI wi for \r
+different Ic {1, 2, ..., n}. We always consider such \r
+(secondary) hypotheses to be rejected as soon as any \r
+of the included basic hypotheses are rejected. \r
+A test procedure is called coherent if it prevents \r
+the contradiction of rejecting a hypothesis without \r
+also rejecting all other hypotheses implying it. It is \r
+called consonant if it avoids dissonances consisting \r
+in rejecting a hypothesis and not rejecting any other \r
+hypotheses implied by it. (See Gabriel, 1969, pp. 229 \r
+and 231.) The sequentially rejective tests are coherent \r
+and consonant by their very definition. \r
+In many applications there are logical implica\u0002tions among the basic hypotheses i.e. some combina\u0002tions of falseness of different basic hypotheses are \r
+not allowed because there are no possible parameter \r
+points corresponding to those combinations. Then \r
+we do not want the multiple test procedure to end \r
+up with a statement that the parameter belongs to \r
+such an empty set. This requirement has to be \r
+studied separately for each kind of logical implica\u0002tion. We will consider only the type of logical im\u0002plications arising when we have two-sided alterna\u0002tives for some parameters, and want to make one\u0002sided statements. \r
+The sequentially rejective multiple tests are not \r
+completely new. Tests of the same type are discussed \r
+by Naik (1975, p. 522), and the consonant closed \r
+procedures discussed by Marcus et al. (1976, p. 656) \r
+are equivalent to sequentially rejective tests. Marcus \r
+et al. (1976) give one particular example of such a \r
+test in an analysis of variance situation, and indicate \r
+that others can be constructed. But they do not seem \r
+to have thought of the simple and general procedure \r
+we present in the next section, because that procedure \r
+can easily be used to make one-sided rejections, \r
+which they have posed as a difficult problem. Our \r
+test is based on the simple Boole inequality and can \r
+be applied to any parametric or non-parametric \r
+model, but yet it has good power properties. It will \r
+be shown by examples that it may have considerably \r
+higher power than classical multiple test procedures. \r
+It also has surprisingly small loss of power compared \r
+to the special sequentially rejective tests (or equi\u0002valent consonant closed tests) that can be constructed \r
+in different parametric models, for instance analysis \r
+of variance models. \r
+2. A simple sequentially rejective test \r
+In this section we will present a simple sequentially \r
+rejective test, which is based on the Boole inequality. \r
+The use of the Boole inequality within multiple in\u0002ference theory is usually called the Bonferroni tech\u0002nique, and for this reason we will call our test the \r
+sequentially rejective Bonferroni test. \r
+When the n hypotheses H,, H2, ..., Hn are tested \r
+separately by using tests with the level ac/n it follows \r
+immediately from the Boole inequality that the prob\u0002ability of rejecting any true hypotheses is smaller \r
+then or equal to ac. This constitutes then a multiple \r
+test procedure with the multiple level of significance \r
+a for free combination, the classical Bonferroni \r
+multiple test procedure. \r
+The separate tests in the classical Bonferroni \r
+multiple test are usually performed by using some test \r
+statistics, which we will denote here by Y,, Y2, ..., Yn. \r
+We suppose now that this is the case, and also that \r
+these test statistics have a tendency of obtaining \r
+greater values when the corresponding hypothesis is \r
+not true. The critical level Sk(Y) for the outcome y of \r
+the test statistic Yk is then equal to the supremum of \r
+the probability P(Yk >y) when the hypothesis Hk is \r
+true. Defining now the obtained levels Rl, R2, ..., Rn \r
+by \r
+Rk = dk(Yk) \r
+the classical Bonferroni test can be performed by \r
+comparing all the obtained levels R&, R2, ..., Rn with \r
+a/n. \r
+The sequentially rejective Bonferroni test will also \r
+be defined by the obtained levels. Denoting by R('1 < \r
+R'2' 6 ... <R(n, the ordered obtained levels and by \r
+H"), H , ..., H'() the corresponding hypotheses, \r
+the procedure can most easily be described by scheme \r
+1, where ac, 0 <La < 1, is a fixed number. \r
+Scand J Statist 6 
+
+Start \r
+Is R(1 <-? \r
+n \r
+Yes No Accept H(l) H(2), Hn \r
+Stop \r
+Reject H()1 \r
+I IsR (2) <; a ; n-l - \r
+Yes No Accept 2 H \r
+Reject H(2) Stop \r
+Is R(3) < ? \r
+n-2 \r
+es Accept H(3), H(), H(.). \r
+i \r
+t \r
+Stop \r
+Reject H'9 \r
+Is Rkn) <? - \r
+Yes No Accept H(n) \r
+Reject H(n| Stop \r
+Stop \r
+Scheme I \r
+The test is performed by starting at the top of the \r
+scheme and going down step by step until no further \r
+rejection can be done. This can happen either by \r
+accepting all remaining hypotheses or rejecting the \r
+last hypothesis H(n). \r
+Theorem 1. The sequentially rejective Bonferroni test \r
+described by scheme I has the multiple level of sig\u0002nificance a for free combinations. \r
+Proof. Let I be the set of indexes of the true hypo\u0002theses. By the Boole inequality we then have \r
+P Rf >- for all i e \r
+m \r
+=1-P(R<- for some iEl) \r
+where m is the number of elements in I. But if the \r
+event \r
+{Ri >- for all i e I} \r
+m \r
+occurs then \r
+.R(n + i-M)> ?:,. \r
+m \r
+and the sequentially rejective test stops in the step \r
+n +1 - m or earlier. This implies however that all \r
+hypotheses corresponding to obtained levels Ri > \r
+ac/m will be accepted and this set of hypotheses in\u0002cludes the set of true hypotheses. O \r
+In the sequentially rejective Bonferroni test the \r
+obtained levels are compared to the numbers \r
+ac ac ac \r
+n' n-I' ' \r
+whereas in the classical Bonferroni test they are \r
+compared to a/n. This means that the probability of \r
+rejecting any set of (false) hypotheses using the classi\u0002cal Bonferroni test is smaller than or equal to the \r
+same probability using the sequentially rejective \r
+Bonferroni test based on the same test statistics. The \r
+classical Bonferroni test has been used mainly in \r
+situations where no other (more special) multiple test \r
+procedure is available. It can always be replaced by \r
+the corresponding sequentially rejective Bonferroni \r
+test without loosing any probability of rejecting false \r
+hypotheses. Except in trivial non-interesting cases \r
+the sequentially rejective Bonferroni test has strictly \r
+larger probability of rejecting false hypotheses and \r
+thus it ought to replace the classical Bonferroni test \r
+at all instants where the latter usually is applied. \r
+The power gain obtained by using a sequentially \r
+rejective Bonferroni test instead of a classical Bon\u0002ferroni test depends very much upon the alternative. \r
+It is small if all the hypotheses are 'almost true', but \r
+it may be considerable if a number of hypotheses are \r
+'completely wrong'. If m of the n basic hypotheses \r
+are 'completely wrong' the corresponding levels at\u0002tain small values, and these hypotheses are rejected \r
+in the first m steps with a big probability. The \r
+other levels are then compared to ac/k for k = n -m, \r
+n-rm-l, n-rm -2, ..., 2, 1, which is equivalent to \r
+performing a sequentially rejective Bonferroni test \r
+only on those hypotheses that are not 'completely \r
+wrong'. \r
+A very simple example will indicate how big the \r
+power gain may be. Suppose that Yk, k = 1, 2, ..., 10 \r
+are independent and normally distributed with para\u0002meters Ilk and 1 for k = 1, 2, ..., 10 and that we want \r
+to test the hypotheses Hk: k = 0 against the alterna\u0002tives Ilk >0 for k = 1, 2, ..., 10 at a multiple level of \r
+significance 0.05. If four of the Puk's are equal to 0.0, \r
+four of them are equal to 6.0 and the remaining two \r
+are equal to 3.0, the classical Bonferroni test rejects \r
+Sequentially rejective multiple test 67 \r
+Scand J Statist 6 
+
+68 S. Holm \r
+both the latter hypotheses with probability 0.439, \r
+while the sequentially rejective Bonferroni procedure \r
+rejects both with probability 0.565. \r
+The great advantage with the sequentially rejective \r
+Bonferroni test (as well as with the classical Bon\u0002ferroni test) is its flexibility. There are no restrictions \r
+on the type of tests, the only requirement being that \r
+it should be possible to calculate the obtained level \r
+for each separate test. Further there are no problems \r
+in including in the analysis only the a priori interest\u0002ing hypotheses, while more special multiple tests \r
+usually include all hypotheses of a certain kind. But \r
+when there exist logical implications among the \r
+hypotheses problems arise which we have to take in\u0002to consideration. \r
+Let as before wl, w02, Ct3, ..., on denote the para\u0002meter sets where the hypotheses H1, H2, H3, ..., Hn \r
+are true. Then there exists a logical implication as \r
+soon as there is some index set Isuch that nieiC Oi = \r
+b. In words this means that some combination of \r
+falseness of the different hypotheses is not possible, \r
+and the natural condition is of course that we should \r
+not end up the multiple test with a statement that the \r
+true parameter point is in an empty set. Each type of \r
+logical implication requires a special analysis of the \r
+properties of the test statistics in order to ensure that \r
+the test can not end up with such statements. The \r
+only type of logical implication we will consider is \r
+the one arising in connection with two-sided rejec\u0002tions. \r
+Let y be a (one-dimensional) parameter and sup\u0002pose that H1: y < yO and H2: y > y2o are basic hypo\u0002theses in a multiple test problem. Then C a,l n C co2 = \r
+b and both these hypotheses should not be rejected \r
+in the multiple test procedure. It is natural to use the \r
+same test statistic to test both hypotheses and since \r
+we have the convention of rejecting the hypotheses \r
+for high values of the test statistics we should have \r
+Y2= - Y1. Now for the outcomes Yi of Y1 and y= \r
+-Yl for Y2 the obtained levels ail(yi) and A2(Y2) satisfy \r
+Y2)UP P(Y2 > Y2) \r
+V>Yo \r
+> sup P(Y2 > Y2) = sup (1 -P(Y2 < Y2)) \r
+V=YO Y=Yo \r
+= sup (1 - P(Y1 > y1)) \r
+Y=Yo \r
+= 1 - inf P(Y1 < y1) \r
+Y='Yo \r
+> 1 - inf P(Y1 > y1) \r
+Y=VYo \r
+> 1 -sup P(Y1 > y1) \r
+V=Yo \r
+> 1-sup P(Y1 > Ay1)1 l(y) \r
+V?Yo \r
+This means that for any outcomes Yi and Y2 `Y1 \r
+of Y1 and Y2 at least one of the obtained levels \r
+Mi(Y,) and d2(Y2) is >, and thus both hypotheses \r
+H1 and H2 can not be rejected in a sequentially rejec\u0002tive Bonferroni test (or a classical Bonferroni test) \r
+for any multiple level of significance cx 6 i. \r
+If there are a number of pairs of one-sided hypo\u0002theses and no logical implications beside those with\u0002in the pairs all illogical statements will still be avoided \r
+if the same statistics with opposite signs are used \r
+within the pairs and the multiple level of significance \r
+oc is smaller than or equal to 1. These tests are also \r
+coherent and consonant. \r
+3. Applications and extensions \r
+The sequentially rejective Bonferroni test can be ap\u0002plied in all situations where the classical Bonferroni \r
+test is usually applied. And it ought to replace the \r
+classical Bonferroni test in these cases because it \r
+gives only slightly more complicated computations \r
+and a non-negligable increase of power. It should \r
+however be noted that the sequentially rejective Bon\u0002ferroni test can not be used to construct smaller con\u0002fidence sets than those constructed by the classical \r
+Bonferroni test. This is so because the confidence \r
+set consists of the parameter points that would not \r
+be rejected as true parameter points in separate single \r
+tests. And when a confidence set is constructed from \r
+multiple tests it consists of the parameter points for \r
+which none of the detail hypotheses are rejected, \r
+which is in fact a special construction of a single test \r
+from a multiple test. If the sequentially rejective Bon\u0002ferroni test is used in this way it is equivalent to the \r
+classical Bonferroni test. \r
+The great advantage of the sequentially rejective \r
+Bonferroni test (as well as the classical Bonferroni \r
+test) is its computational simplicity, which arises \r
+from the reduction of the distributional problems to \r
+one dimension when the Boole inequality is used. The \r
+same computational simplicity is obtained when the \r
+test statistics are independent. It is easily seen that \r
+a sequentially rejective procedure with multiple level \r
+of significance a can be constructed by replacing the \r
+comparison constants c/n, cx/(n -1), ..., c/1 in the \r
+sequentially rejective Bonferroni test by 1 - (1 - c)11', \r
+1 - (1 - c)1/(nl1)' ..., 1 - (1 - cc)1, which are greater. \r
+This means that we get a more powerful test, but the \r
+increase in power is not very big. Among the \r
+numerous possible applications of the sequentially \r
+rejective Bonferroni test we will next mention a few. \r
+The problem of comparing several treatments with \r
+one control have been studied by several authors. \r
+For the case of normally distributed observations the \r
+multiple test procedure suggested by Dunnett (1955) \r
+is commonly used. It requires the same number of \r
+Scand J Statist 6 
+
+Sequentially rejective multiple test 69 \r
+observations for all treatments, and it is based on \r
+the assumption that the variance is the same for the \r
+control and all treatments. Marcus et al. (1976) have \r
+proposed a closed test procedure, which is a refine\u0002ment of the Dunnett procedure and which is more \r
+powerful. Their procedure is equivalent to a sequenti\u0002ally rejective procedure presented in Holm (1977). \r
+The sequentially rejective Bonferroni test can also \r
+be used in this situation although it is of course less \r
+powerful than the refined Dunnett test. In most cases \r
+the difference is however not very big. In order to \r
+illustrate this we consider the case of comparing 9 \r
+treatments with one control based on four observa\u0002tions for the control and for each treatment. The re\u0002fined Dunnett test then consists in successively com\u0002paring the ordered individual t-statistics for com\u0002paring one treatment with the control with the \r
+numbers \r
+1.70, 1.99, 2.15, 2.25, 2.33, 2.40, 2.45, 2.50, 2.54, \r
+while the sequentially rejective Bonferroni test con\u0002sists in successively comparing the same statistics \r
+with the numbers \r
+1.70, 2.04, 2.23, 2.36, 2.46, 2.54, 2.60, 2.66, 2.71. \r
+In the classical Dunnett test they are all compared \r
+to 2.54. \r
+There are two different variations of this problem, \r
+where the sequentially rejective Bonferroni test can \r
+easily be applied, whereas the classical and the re\u0002fined Dunnett test can not so easily be applied. One \r
+is the case of non-equal sample sizes. Then the classi\u0002cal Dunnett type of test requires much computation, \r
+because tables are not available. The corresponding \r
+closed procedure requires even more computation, \r
+since a number of critical values of classical Dunnett \r
+test statistics are needed. The sequentially rejective \r
+Bonferroni test requires only a number of critical \r
+values of ordinary t statistics. \r
+The other variation is the case where one-sided \r
+rejections are wanted. This is easily obtained by using \r
+a sequentially rejective Bonferroni test and introduc\u0002ing two one-sided hypotheses for each comparison of \r
+a treatment with the control. \r
+For comparison of a number of treatments with \r
+one control in the case of non-normal distribution a \r
+many-one-rank test can be used. Such a test can be \r
+refined to a corresponding sequentially rejective test \r
+(equivalent to a corresponding closed test) with a \r
+higher power. See Holm (1977). If the number of \r
+observations are not the same for all treatments and \r
+the control, computational problems arise since \r
+tables are not available. These difficulties are avoided \r
+if a sequentially rejective Bonferroni test is used, \r
+since a table for the ordinary two-sample Wilcoxon \r
+test statistic is the only table needed for this test. \r
+In the analysis of contingency tables the distribu\u0002tional problems connected with the construction of \r
+simultaneous tests are so big that the only possibility \r
+in practice is to use the Bonferroni technique. See \r
+e.g. Haberman (1974) chapter four. In such cases the \r
+power would be higher if the sequentially rejective \r
+Bonferroni test was used instead of a classical Bon\u0002ferroni test. Other fields where big computational \r
+problems call for the use of Bonferroni technique are \r
+time series analysis and analysis of multidimensional \r
+distributions. \r
+In all these cases as well as in others it may happen \r
+that some hypotheses are more important than the \r
+others, which may imply the use of higher levels of \r
+significance for the most important hypotheses and \r
+smaller levels of significance for the less important \r
+hypotheses when the Bonferroni technique is ap\u0002plied. At a first glance it seems to be impossible to \r
+obtain such an arrangement with the sequentially \r
+rejective Bonferroni test. But this is not true, since \r
+it is possible to generalise Theorem 1 to the case of \r
+different weights by slightly changing the procedure. \r
+Let as before H1, H2, ..., Hn, be the hypotheses to \r
+be tested and R1, R2, ..., Rn be the obtained levels of \r
+some suitable test statistics for those hypotheses. \r
+Further let cl, c2, ..., cn be positive constants in\u0002dicating the importance of the hypotheses in the \r
+sense that the constants corresponding to more im\u0002portant hypotheses are greater then those corre\u0002sponding to less important hypotheses. The precise \r
+meaning of these constants will be made clear later. \r
+Now introduce the statistics Sk = Rklck for k = 1, 2, \r
+n, let S S') 1SS21 < ... <S(') be the ordered statistics \r
+in this series, let H(l), H', ..., H'n) be the corre\u0002sponding hypotheses and let C c'2, ..., c (n) be the \r
+corresponding constants. Then a generalized sequen\u0002tially rejective Bonferroni test can be described by \r
+scheme 2 on the next page. \r
+Theorem 2. The generalized sequentially rejective Bon\u0002ferroni test described by scheme 2 has the multiple \r
+level of significance oc for free combinations. \r
+Proof. Let I be the set of indexes for the true \r
+hypotheses. By the Boole inequality we have \r
+P(Si >- \r
+M for all i e I) \r
+JCI \r
+= 1 - P(Si < E for some i E I) \r
+j6I \r
+ciac \r
+=1-P(RA i for some iEI) \r
+jeI \r
+ci-c \r
+>l_2Ei \r
+= \r
+1-a. \r
+{eI *~c \r
+jeI \r
+Scand J Statist 6 
+
+70 S. Holm \r
+Is s n \r
+Ec(k) \r
+k=l Accept H('), H(2), H (n) \r
+Yes No \r
+t ' I Stop \r
+Reject H"' \r
+. \r
+Is ,,(2) a \r
+E c (k)@ \r
+k-2 Accept Hf'), Hff H)(n) \r
+Yes No \r
+f I ~~~~~Stop \r
+Reject H(2) \r
+Is . S(3) < a ? \r
+E c(k) \r
+k=3 N Accept H'3', H(4) H(n)- \r
+s , ' y ~~~Stop \r
+Reject 11" \r
+Yes No Accept l \r
+t \r
+I \r
+> LStop \r
+Reject H"3 \r
+Stop \r
+Scheme 2 \r
+Now suppose that the event \r
+St > - for all i e I} \r
+JEI \r
+occurs, and let v be the smallest order number in the \r
+series S(1)< (2)<... <S (n) attained by the variables \r
+{St: iE I}. Then \r
+S(y) > -x - \r
+c \r
+fI na c(l \r
+J=v \r
+which implies that the procedure will stop in step v \r
+or earlier and that all true hypotheses will be ac\u0002cepted. E \r
+From the definition of the generalized sequentially \r
+rejective Bonferroni test and the proof of Theorem 2 \r
+it can easily be seen what role is played by the \r
+constants cl, c2, ..., cn. At each step in the procedure \r
+the obtained levels for the not yet rejected hypotheses \r
+are compared to parts of a, which are proportional \r
+to the corresponding constants. Compared to the \r
+'ordinary' sequentially rejective Bonferroni test this \r
+implies an increase of power for alternative to hypo\u0002theses with high values of ck at the cost of decrease \r
+of power for alternatives to hypotheses with small \r
+values of Ck, which is the reason of introducing the \r
+generalized test. When all Ck are equal the generalized \r
+test reduces to the ordinary test. \r
+The previous discussion indicates a good way of \r
+handling multiple test problems in complicated ap\u0002plications. One can start by choosing a number of \r
+relevant hypotheses, then assign to every hypothesis \r
+a suitable test statistic, whose one-dimensional distri\u0002bution is known exactly or approximately, and finally \r
+direct the power towards the most important hypo\u0002theses by choosing proper constants in a generalized \r
+sequentially rejective Bonferroni test. Of course it is \r
+also a desire to have the different test statistics exactly \r
+or approximately independent not for computational \r
+reasons but because a good experimental design \r
+requires the different hypotheses to be tested by \r
+variables 'not related to each others'. \r
+Acknowledgement \r
+The referee's suggestions for improving the presentation are \r
+gratefully acknowledged. \r
+References \r
+Dunnett, C. W. (1955). A multiple comparison procedure for \r
+comparing several treatments with a control. J. Amer. \r
+Statist. Assoc. 50, 1096-1121. \r
+Gabriel, K. R. (1969). Simultaneous test procedures-some \r
+theory of multiple comparisons. Ann. Math. Statist. 40, \r
+224-250. \r
+Haberman, S. J. (1974). The analysis of frequency data. The \r
+University of Chicago Press. \r
+Holm, S. A. (1977). Sequentially rejective multiple test proce\u0002dures. Statistical research report 1977-1, University of \r
+UmeA, Sweden. \r
+Marcus, R., Peritz, E. & Gabriel, K. R. (1976). On closed \r
+testing procedures with special reference to ordered ana\u0002lysis of variance. Biometrika 63, 655-660. \r
+Miller, R. G., Jr. (1966). Simultaneous statistical inference. \r
+McGraw-Hill, New York. \r
+Naik, U. D. (1975). Some selection rules for comparing p \r
+processes with a standard. Communications in Statistics \r
+4, 519-535. \r
+Sture Holm \r
+Department of Mathematics \r
+Chalmers University of Technology \r
+S-412 96 Goteborg \r
+Sweden \r
+Scand J Statist 6 """
+
+[metadata]
+title = "holm 1979 sequentially rejective multiple test procedure"
+authors = ["Unknown"]
+year = 1979
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Board of the Foundation of the Scandinavian Journal of Statistics\r
+A Simple Sequentially Rejective Multiple Test Procedure\r
+Author(s): Sture Holm\r
+Source: Scandinavian Journal of Statistics, Vol. 6, No. 2 (1979), pp. 65-70\r
+Published by: Wiley on behalf of Board of the Foundation of the Scandinavian Journal of Statistics\r
+Stable URL: http://www.jstor.org/stable/4615733 .\r
+Accessed: 09/10/2013 08:15\r
+Your use of the JSTOR archive indicates your acceptance of the Terms & Conditions of Use, available at .\r
+http://www.jstor.org/page/info/about/policies/terms.jsp\r
+ .\r
+JSTOR is a not-for-profit service that helps scholars, researchers, and students discover, use, and build upon a wide range of\r
+content in a trusted digital archive. We use information technology and tools to increase productivity and facilitate new forms\r
+of scholarship. For more information about JSTOR, please contact support@jstor.org.\r
+ .\r
+Wiley and Board of the Foundation of the Scandinavian Journal of Statistics are collaborating with JSTOR to\r
+digitize, preserve and extend access to Scandinavian Journal of Statistics.\r
+http://www.jstor.org 
+
+Scand J Statist 6: 65-70, 1979 \r
+A Simple Sequentially Rejective Multiple Test Procedure \r
+STURE HOLM \r
+Chalmers University of Technology, Goteborg \r
+Received December 1977, revised September 1978 \r
+ABSTRACT. This paper presents a simple and widely ap\u0002plicable multiple test procedure of the sequentially rejective \r
+type, i.e. hypotheses are rejected one at a tine until no further \r
+rejections can be done. It is shown that the test has a prescribed \r
+level of significance protection against error of the first kind \r
+for any combination of true hypotheses. The power properties \r
+of the test and a number of possible applications are also \r
+discussed. \r
+Key words: multiple test, simultaneous test"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The statistical problems arising in applications often \r
+involve a number of detail problems, i.e. there are \r
+often a number of interesting parameters to be esti\u0002mated and/or a number of interesting hypotheses to \r
+be tested. In some cases these detail problems may \r
+be treated separately without any connection to each \r
+other. But in most cases the detail problems are con\u0002nected to each other and the totality of solutions to \r
+the detail problems are used to get a general picture. \r
+In this latter case the statistician is faced with a \r
+multiple statistical inference problem, where he has \r
+to take into consideration that the different detail \r
+problems should be treated simultaneously. \r
+Multiple statistical inference has been a vital re\u0002search area within statistical inference theory the \r
+past 50 years, and methods have been proposed for \r
+several situations of practical interest. A good presen\u0002tation of the earlier main results is given by Miller \r
+(1966). The multiple statistical inference methods are \r
+separated into two main types, multiple confidence \r
+interval methods and multiple test methods. \r
+For multiple test procedures there has been sug\u0002gested several types of properties, which the tests \r
+should have in order to give satisfactory protection \r
+against wrong decisions. Some of those are based on \r
+decision theoretic conceptions, while others are based \r
+on probabilities of making wrong decisions. In this \r
+paper we will study multiple test procedures and we \r
+will use the most common type of protection against \r
+error of the first kind by requiring the tests to have a \r
+small probability of rejecting any true hypotheses. \r
+The methodological motivation and exact definition \r
+is the following. \r
+Let the (detail) hypotheses in a multiple test prob\u0002lem be denoted by H1, H12, ..., Hn and the alternatives \r
+to those by K., K2, ..., K,. A (non-randomized) mul\u0002tiple test procedure is a rule assigning to each out\u0002come a set of rejected hypotheses (which might be \r
+empty). This means that there are also n critical \r
+regions C1, C2, ..., Cn consisting of those outcomes \r
+for which the corresponding hypotheses are rejected. \r
+In a test of a single null hypothesis H1 against an \r
+alternative K1 the size of the test is defined as the \r
+supremum of the probability of the critical region C1 \r
+when the hypothesis H11 is true. This probability of \r
+error of the first kind is always kept at (or below) a \r
+small predetermined level a. The philosophical rea\u0002son for this is that when we have made a 'discovery' \r
+by rejecting the null hypothesis we can quite safely \r
+claim that the null hypothesis is not true, because if \r
+it was true, we should have accepted it with a \r
+probability of at least 1 -oc. This also implies that \r
+we do not make any 'discovery' by accepting the null \r
+hypotheses, because we do not have such a protec\u0002tion against errors of the second kind. \r
+In a multiple test of a number of hypotheses \r
+H,, H12, ..., Hn there are a lot of possible combina\u0002tions of null hypotheses. If we want to make our \r
+'discoveries' in form of rejected null hypotheses to \r
+be safely claimed, we must keep the probability of \r
+rejecting any true null hypotheses small, how many \r
+and which the true hypotheses may be. Thus we are \r
+led to the following definition \r
+Definition. A multiple test procedure with critical \r
+regions C1, C2, ..., Cn for testing hypotheses Hi, \r
+H2, ..., H,, is said to have a multiple level of signifi\u0002cance a (for free combinations) if for any non-empty \r
+index set I' {1, 2, 3, ..., n} the supremum of the \r
+probability P( u iE C2) when Hi are true for all i eI \r
+is smaller than or equal to a. \r
+The words 'for free combinations' are put into the \r
+definition in order to underline that all subsets of \r
+5 - 791923 Scand J Statist 6"""
+
+[[sections]]
+number = "66"
+title = "S. Holm"
+text = """
+null hypotheses could appear as the set of true hypo\u0002theses. There might be situations in which all sub\u0002sets are not allowed for some reason, for instance \r
+situations where the truth of two hypotheses implies \r
+the truth or falseness of a third hypothesis. It is to \r
+be observed that a multiple level of significance ac for \r
+some restricted combinations imposes fewer condi\u0002tions on the test procedure than a multiple level of \r
+significance a for free combinations, i.e. a test proce\u0002dure with multiple level of significance x for free \r
+combinations has a multiple level of significance a \r
+for any type of restricted combinations. \r
+In our setting the basic hypotheses H1, H2, ..., H. \r
+are minimal in the sense of Gabriel (1969). This \r
+means that if o,, con, ..., on are the parameter sets \r
+where the hypotheses H1, H2, ..., Hn are true than \r
+the only (secondary) hypotheses to be tested are the \r
+hypotheses that the parameter belongs to intersec\u0002tions nf EI co, of sets coi for different index sets \r
+Ic- {1, 2, ..., n}. \r
+We will exclusively discuss a type of multiple test \r
+procedures, which may be called sequentially rejec\u0002tive because basic hypotheses are rejected one at a \r
+time according to certain rules. Thus we do not make \r
+separate tests of all the (secondary) hypotheses that \r
+the parameter belongs to intersections nflI wi for \r
+different Ic {1, 2, ..., n}. We always consider such \r
+(secondary) hypotheses to be rejected as soon as any \r
+of the included basic hypotheses are rejected. \r
+A test procedure is called coherent if it prevents \r
+the contradiction of rejecting a hypothesis without \r
+also rejecting all other hypotheses implying it. It is \r
+called consonant if it avoids dissonances consisting \r
+in rejecting a hypothesis and not rejecting any other \r
+hypotheses implied by it. (See Gabriel, 1969, pp. 229 \r
+and 231.) The sequentially rejective tests are coherent \r
+and consonant by their very definition. \r
+In many applications there are logical implica\u0002tions among the basic hypotheses i.e. some combina\u0002tions of falseness of different basic hypotheses are \r
+not allowed because there are no possible parameter \r
+points corresponding to those combinations. Then \r
+we do not want the multiple test procedure to end \r
+up with a statement that the parameter belongs to \r
+such an empty set. This requirement has to be \r
+studied separately for each kind of logical implica\u0002tion. We will consider only the type of logical im\u0002plications arising when we have two-sided alterna\u0002tives for some parameters, and want to make one\u0002sided statements. \r
+The sequentially rejective multiple tests are not \r
+completely new. Tests of the same type are discussed \r
+by Naik (1975, p. 522), and the consonant closed \r
+procedures discussed by Marcus et al. (1976, p. 656) \r
+are equivalent to sequentially rejective tests. Marcus \r
+et al. (1976) give one particular example of such a \r
+test in an analysis of variance situation, and indicate \r
+that others can be constructed. But they do not seem \r
+to have thought of the simple and general procedure \r
+we present in the next section, because that procedure \r
+can easily be used to make one-sided rejections, \r
+which they have posed as a difficult problem. Our \r
+test is based on the simple Boole inequality and can \r
+be applied to any parametric or non-parametric \r
+model, but yet it has good power properties. It will \r
+be shown by examples that it may have considerably \r
+higher power than classical multiple test procedures. \r
+It also has surprisingly small loss of power compared \r
+to the special sequentially rejective tests (or equi\u0002valent consonant closed tests) that can be constructed \r
+in different parametric models, for instance analysis \r
+of variance models."""
+
+[[sections]]
+number = "2"
+title = "A simple sequentially rejective test"
+text = """
+In this section we will present a simple sequentially \r
+rejective test, which is based on the Boole inequality. \r
+The use of the Boole inequality within multiple in\u0002ference theory is usually called the Bonferroni tech\u0002nique, and for this reason we will call our test the \r
+sequentially rejective Bonferroni test. \r
+When the n hypotheses H,, H2, ..., Hn are tested \r
+separately by using tests with the level ac/n it follows \r
+immediately from the Boole inequality that the prob\u0002ability of rejecting any true hypotheses is smaller \r
+then or equal to ac. This constitutes then a multiple \r
+test procedure with the multiple level of significance \r
+a for free combination, the classical Bonferroni \r
+multiple test procedure. \r
+The separate tests in the classical Bonferroni \r
+multiple test are usually performed by using some test \r
+statistics, which we will denote here by Y,, Y2, ..., Yn. \r
+We suppose now that this is the case, and also that \r
+these test statistics have a tendency of obtaining \r
+greater values when the corresponding hypothesis is \r
+not true. The critical level Sk(Y) for the outcome y of \r
+the test statistic Yk is then equal to the supremum of \r
+the probability P(Yk >y) when the hypothesis Hk is \r
+true. Defining now the obtained levels Rl, R2, ..., Rn \r
+by \r
+Rk = dk(Yk) \r
+the classical Bonferroni test can be performed by \r
+comparing all the obtained levels R&, R2, ..., Rn with \r
+a/n. \r
+The sequentially rejective Bonferroni test will also \r
+be defined by the obtained levels. Denoting by R('1 < \r
+R'2' 6 ... <R(n, the ordered obtained levels and by \r
+H"), H , ..., H'() the corresponding hypotheses, \r
+the procedure can most easily be described by scheme \r
+1, where ac, 0 <La < 1, is a fixed number. \r
+Scand J Statist 6 
+
+Start \r
+Is R(1 <-? \r
+n \r
+Yes No Accept H(l) H(2), Hn \r
+Stop \r
+Reject H()1 \r
+I IsR (2) <; a ; n-l - \r
+Yes No Accept 2 H \r
+Reject H(2) Stop \r
+Is R(3) < ? \r
+n-2 \r
+es Accept H(3), H(), H(.). \r
+i \r
+t \r
+Stop \r
+Reject H'9 \r
+Is Rkn) <? - \r
+Yes No Accept H(n) \r
+Reject H(n| Stop \r
+Stop \r
+Scheme I \r
+The test is performed by starting at the top of the \r
+scheme and going down step by step until no further \r
+rejection can be done. This can happen either by \r
+accepting all remaining hypotheses or rejecting the \r
+last hypothesis H(n). \r
+Theorem 1. The sequentially rejective Bonferroni test \r
+described by scheme I has the multiple level of sig\u0002nificance a for free combinations. \r
+Proof. Let I be the set of indexes of the true hypo\u0002theses. By the Boole inequality we then have \r
+P Rf >- for all i e \r
+m \r
+=1-P(R<- for some iEl) \r
+where m is the number of elements in I. But if the \r
+event \r
+{Ri >- for all i e I} \r
+m \r
+occurs then \r
+.R(n + i-M)> ?:,. \r
+m \r
+and the sequentially rejective test stops in the step \r
+n +1 - m or earlier. This implies however that all \r
+hypotheses corresponding to obtained levels Ri > \r
+ac/m will be accepted and this set of hypotheses in\u0002cludes the set of true hypotheses. O \r
+In the sequentially rejective Bonferroni test the \r
+obtained levels are compared to the numbers \r
+ac ac ac \r
+n' n-I' ' \r
+whereas in the classical Bonferroni test they are \r
+compared to a/n. This means that the probability of \r
+rejecting any set of (false) hypotheses using the classi\u0002cal Bonferroni test is smaller than or equal to the \r
+same probability using the sequentially rejective \r
+Bonferroni test based on the same test statistics. The \r
+classical Bonferroni test has been used mainly in \r
+situations where no other (more special) multiple test \r
+procedure is available. It can always be replaced by \r
+the corresponding sequentially rejective Bonferroni \r
+test without loosing any probability of rejecting false \r
+hypotheses. Except in trivial non-interesting cases \r
+the sequentially rejective Bonferroni test has strictly \r
+larger probability of rejecting false hypotheses and \r
+thus it ought to replace the classical Bonferroni test \r
+at all instants where the latter usually is applied. \r
+The power gain obtained by using a sequentially \r
+rejective Bonferroni test instead of a classical Bon\u0002ferroni test depends very much upon the alternative. \r
+It is small if all the hypotheses are 'almost true', but \r
+it may be considerable if a number of hypotheses are \r
+'completely wrong'. If m of the n basic hypotheses \r
+are 'completely wrong' the corresponding levels at\u0002tain small values, and these hypotheses are rejected \r
+in the first m steps with a big probability. The \r
+other levels are then compared to ac/k for k = n -m, \r
+n-rm-l, n-rm -2, ..., 2, 1, which is equivalent to \r
+performing a sequentially rejective Bonferroni test \r
+only on those hypotheses that are not 'completely \r
+wrong'. \r
+A very simple example will indicate how big the \r
+power gain may be. Suppose that Yk, k = 1, 2, ..., 10 \r
+are independent and normally distributed with para\u0002meters Ilk and 1 for k = 1, 2, ..., 10 and that we want \r
+to test the hypotheses Hk: k = 0 against the alterna\u0002tives Ilk >0 for k = 1, 2, ..., 10 at a multiple level of \r
+significance 0.05. If four of the Puk's are equal to 0.0, \r
+four of them are equal to 6.0 and the remaining two \r
+are equal to 3.0, the classical Bonferroni test rejects \r
+Sequentially rejective multiple test 67 \r
+Scand J Statist 6"""
+
+[[sections]]
+number = "68"
+title = "S. Holm"
+text = """
+both the latter hypotheses with probability 0.439, \r
+while the sequentially rejective Bonferroni procedure \r
+rejects both with probability 0.565. \r
+The great advantage with the sequentially rejective \r
+Bonferroni test (as well as with the classical Bon\u0002ferroni test) is its flexibility. There are no restrictions \r
+on the type of tests, the only requirement being that \r
+it should be possible to calculate the obtained level \r
+for each separate test. Further there are no problems \r
+in including in the analysis only the a priori interest\u0002ing hypotheses, while more special multiple tests \r
+usually include all hypotheses of a certain kind. But \r
+when there exist logical implications among the \r
+hypotheses problems arise which we have to take in\u0002to consideration. \r
+Let as before wl, w02, Ct3, ..., on denote the para\u0002meter sets where the hypotheses H1, H2, H3, ..., Hn \r
+are true. Then there exists a logical implication as \r
+soon as there is some index set Isuch that nieiC Oi = \r
+b. In words this means that some combination of \r
+falseness of the different hypotheses is not possible, \r
+and the natural condition is of course that we should \r
+not end up the multiple test with a statement that the \r
+true parameter point is in an empty set. Each type of \r
+logical implication requires a special analysis of the \r
+properties of the test statistics in order to ensure that \r
+the test can not end up with such statements. The \r
+only type of logical implication we will consider is \r
+the one arising in connection with two-sided rejec\u0002tions. \r
+Let y be a (one-dimensional) parameter and sup\u0002pose that H1: y < yO and H2: y > y2o are basic hypo\u0002theses in a multiple test problem. Then C a,l n C co2 = \r
+b and both these hypotheses should not be rejected \r
+in the multiple test procedure. It is natural to use the \r
+same test statistic to test both hypotheses and since \r
+we have the convention of rejecting the hypotheses \r
+for high values of the test statistics we should have \r
+Y2= - Y1. Now for the outcomes Yi of Y1 and y= \r
+-Yl for Y2 the obtained levels ail(yi) and A2(Y2) satisfy \r
+Y2)UP P(Y2 > Y2) \r
+V>Yo \r
+> sup P(Y2 > Y2) = sup (1 -P(Y2 < Y2)) \r
+V=YO Y=Yo \r
+= sup (1 - P(Y1 > y1)) \r
+Y=Yo \r
+= 1 - inf P(Y1 < y1) \r
+Y='Yo \r
+> 1 - inf P(Y1 > y1) \r
+Y=VYo \r
+> 1 -sup P(Y1 > y1) \r
+V=Yo \r
+> 1-sup P(Y1 > Ay1)1 l(y) \r
+V?Yo \r
+This means that for any outcomes Yi and Y2 `Y1 \r
+of Y1 and Y2 at least one of the obtained levels \r
+Mi(Y,) and d2(Y2) is >, and thus both hypotheses \r
+H1 and H2 can not be rejected in a sequentially rejec\u0002tive Bonferroni test (or a classical Bonferroni test) \r
+for any multiple level of significance cx 6 i. \r
+If there are a number of pairs of one-sided hypo\u0002theses and no logical implications beside those with\u0002in the pairs all illogical statements will still be avoided \r
+if the same statistics with opposite signs are used \r
+within the pairs and the multiple level of significance \r
+oc is smaller than or equal to 1. These tests are also \r
+coherent and consonant."""
+
+[[sections]]
+number = "3"
+title = "Applications and extensions"
+text = """
+The sequentially rejective Bonferroni test can be ap\u0002plied in all situations where the classical Bonferroni \r
+test is usually applied. And it ought to replace the \r
+classical Bonferroni test in these cases because it \r
+gives only slightly more complicated computations \r
+and a non-negligable increase of power. It should \r
+however be noted that the sequentially rejective Bon\u0002ferroni test can not be used to construct smaller con\u0002fidence sets than those constructed by the classical \r
+Bonferroni test. This is so because the confidence \r
+set consists of the parameter points that would not \r
+be rejected as true parameter points in separate single \r
+tests. And when a confidence set is constructed from \r
+multiple tests it consists of the parameter points for \r
+which none of the detail hypotheses are rejected, \r
+which is in fact a special construction of a single test \r
+from a multiple test. If the sequentially rejective Bon\u0002ferroni test is used in this way it is equivalent to the \r
+classical Bonferroni test. \r
+The great advantage of the sequentially rejective \r
+Bonferroni test (as well as the classical Bonferroni \r
+test) is its computational simplicity, which arises \r
+from the reduction of the distributional problems to \r
+one dimension when the Boole inequality is used. The \r
+same computational simplicity is obtained when the \r
+test statistics are independent. It is easily seen that \r
+a sequentially rejective procedure with multiple level \r
+of significance a can be constructed by replacing the \r
+comparison constants c/n, cx/(n -1), ..., c/1 in the \r
+sequentially rejective Bonferroni test by 1 - (1 - c)11', \r
+1 - (1 - c)1/(nl1)' ..., 1 - (1 - cc)1, which are greater. \r
+This means that we get a more powerful test, but the \r
+increase in power is not very big. Among the \r
+numerous possible applications of the sequentially \r
+rejective Bonferroni test we will next mention a few. \r
+The problem of comparing several treatments with \r
+one control have been studied by several authors. \r
+For the case of normally distributed observations the \r
+multiple test procedure suggested by Dunnett (1955) \r
+is commonly used. It requires the same number of \r
+Scand J Statist 6 
+
+Sequentially rejective multiple test 69 \r
+observations for all treatments, and it is based on \r
+the assumption that the variance is the same for the \r
+control and all treatments. Marcus et al. (1976) have \r
+proposed a closed test procedure, which is a refine\u0002ment of the Dunnett procedure and which is more \r
+powerful. Their procedure is equivalent to a sequenti\u0002ally rejective procedure presented in Holm (1977). \r
+The sequentially rejective Bonferroni test can also \r
+be used in this situation although it is of course less \r
+powerful than the refined Dunnett test. In most cases \r
+the difference is however not very big. In order to \r
+illustrate this we consider the case of comparing 9 \r
+treatments with one control based on four observa\u0002tions for the control and for each treatment. The re\u0002fined Dunnett test then consists in successively com\u0002paring the ordered individual t-statistics for com\u0002paring one treatment with the control with the \r
+numbers \r
+1.70, 1.99, 2.15, 2.25, 2.33, 2.40, 2.45, 2.50, 2.54, \r
+while the sequentially rejective Bonferroni test con\u0002sists in successively comparing the same statistics \r
+with the numbers \r
+1.70, 2.04, 2.23, 2.36, 2.46, 2.54, 2.60, 2.66, 2.71. \r
+In the classical Dunnett test they are all compared \r
+to 2.54. \r
+There are two different variations of this problem, \r
+where the sequentially rejective Bonferroni test can \r
+easily be applied, whereas the classical and the re\u0002fined Dunnett test can not so easily be applied. One \r
+is the case of non-equal sample sizes. Then the classi\u0002cal Dunnett type of test requires much computation, \r
+because tables are not available. The corresponding \r
+closed procedure requires even more computation, \r
+since a number of critical values of classical Dunnett \r
+test statistics are needed. The sequentially rejective \r
+Bonferroni test requires only a number of critical \r
+values of ordinary t statistics. \r
+The other variation is the case where one-sided \r
+rejections are wanted. This is easily obtained by using \r
+a sequentially rejective Bonferroni test and introduc\u0002ing two one-sided hypotheses for each comparison of \r
+a treatment with the control. \r
+For comparison of a number of treatments with \r
+one control in the case of non-normal distribution a \r
+many-one-rank test can be used. Such a test can be \r
+refined to a corresponding sequentially rejective test \r
+(equivalent to a corresponding closed test) with a \r
+higher power. See Holm (1977). If the number of \r
+observations are not the same for all treatments and \r
+the control, computational problems arise since \r
+tables are not available. These difficulties are avoided \r
+if a sequentially rejective Bonferroni test is used, \r
+since a table for the ordinary two-sample Wilcoxon \r
+test statistic is the only table needed for this test. \r
+In the analysis of contingency tables the distribu\u0002tional problems connected with the construction of \r
+simultaneous tests are so big that the only possibility \r
+in practice is to use the Bonferroni technique. See \r
+e.g. Haberman (1974) chapter four. In such cases the \r
+power would be higher if the sequentially rejective \r
+Bonferroni test was used instead of a classical Bon\u0002ferroni test. Other fields where big computational \r
+problems call for the use of Bonferroni technique are \r
+time series analysis and analysis of multidimensional \r
+distributions. \r
+In all these cases as well as in others it may happen \r
+that some hypotheses are more important than the \r
+others, which may imply the use of higher levels of \r
+significance for the most important hypotheses and \r
+smaller levels of significance for the less important \r
+hypotheses when the Bonferroni technique is ap\u0002plied. At a first glance it seems to be impossible to \r
+obtain such an arrangement with the sequentially \r
+rejective Bonferroni test. But this is not true, since \r
+it is possible to generalise Theorem 1 to the case of \r
+different weights by slightly changing the procedure. \r
+Let as before H1, H2, ..., Hn, be the hypotheses to \r
+be tested and R1, R2, ..., Rn be the obtained levels of \r
+some suitable test statistics for those hypotheses. \r
+Further let cl, c2, ..., cn be positive constants in\u0002dicating the importance of the hypotheses in the \r
+sense that the constants corresponding to more im\u0002portant hypotheses are greater then those corre\u0002sponding to less important hypotheses. The precise \r
+meaning of these constants will be made clear later. \r
+Now introduce the statistics Sk = Rklck for k = 1, 2, \r
+n, let S S') 1SS21 < ... <S(') be the ordered statistics \r
+in this series, let H(l), H', ..., H'n) be the corre\u0002sponding hypotheses and let C c'2, ..., c (n) be the \r
+corresponding constants. Then a generalized sequen\u0002tially rejective Bonferroni test can be described by \r
+scheme 2 on the next page. \r
+Theorem 2. The generalized sequentially rejective Bon\u0002ferroni test described by scheme 2 has the multiple \r
+level of significance oc for free combinations. \r
+Proof. Let I be the set of indexes for the true \r
+hypotheses. By the Boole inequality we have \r
+P(Si >- \r
+M for all i e I) \r
+JCI \r
+= 1 - P(Si < E for some i E I) \r
+j6I \r
+ciac \r
+=1-P(RA i for some iEI) \r
+jeI \r
+ci-c \r
+>l_2Ei \r
+= \r
+1-a. \r
+{eI *~c \r
+jeI \r
+Scand J Statist 6"""
+
+[[sections]]
+number = "70"
+title = "S. Holm"
+text = """
+Is s n \r
+Ec(k) \r
+k=l Accept H('), H(2), H (n) \r
+Yes No \r
+t ' I Stop \r
+Reject H"' \r
+. \r
+Is ,,(2) a \r
+E c (k)@ \r
+k-2 Accept Hf'), Hff H)(n) \r
+Yes No \r
+f I ~~~~~Stop \r
+Reject H(2) \r
+Is . S(3) < a ? \r
+E c(k) \r
+k=3 N Accept H'3', H(4) H(n)- \r
+s , ' y ~~~Stop \r
+Reject 11" \r
+Yes No Accept l \r
+t \r
+I \r
+> LStop \r
+Reject H"3 \r
+Stop \r
+Scheme 2 \r
+Now suppose that the event \r
+St > - for all i e I} \r
+JEI \r
+occurs, and let v be the smallest order number in the \r
+series S(1)< (2)<... <S (n) attained by the variables \r
+{St: iE I}. Then \r
+S(y) > -x - \r
+c \r
+fI na c(l \r
+J=v \r
+which implies that the procedure will stop in step v \r
+or earlier and that all true hypotheses will be ac\u0002cepted. E \r
+From the definition of the generalized sequentially \r
+rejective Bonferroni test and the proof of Theorem 2 \r
+it can easily be seen what role is played by the \r
+constants cl, c2, ..., cn. At each step in the procedure \r
+the obtained levels for the not yet rejected hypotheses \r
+are compared to parts of a, which are proportional \r
+to the corresponding constants. Compared to the \r
+'ordinary' sequentially rejective Bonferroni test this \r
+implies an increase of power for alternative to hypo\u0002theses with high values of ck at the cost of decrease \r
+of power for alternatives to hypotheses with small \r
+values of Ck, which is the reason of introducing the \r
+generalized test. When all Ck are equal the generalized \r
+test reduces to the ordinary test. \r
+The previous discussion indicates a good way of \r
+handling multiple test problems in complicated ap\u0002plications. One can start by choosing a number of \r
+relevant hypotheses, then assign to every hypothesis \r
+a suitable test statistic, whose one-dimensional distri\u0002bution is known exactly or approximately, and finally \r
+direct the power towards the most important hypo\u0002theses by choosing proper constants in a generalized \r
+sequentially rejective Bonferroni test. Of course it is \r
+also a desire to have the different test statistics exactly \r
+or approximately independent not for computational \r
+reasons but because a good experimental design \r
+requires the different hypotheses to be tested by \r
+variables 'not related to each others'. \r
+Acknowledgement \r
+The referee's suggestions for improving the presentation are \r
+gratefully acknowledged. \r
+References \r
+Dunnett, C. W. (1955). A multiple comparison procedure for \r
+comparing several treatments with a control. J. Amer. \r
+Statist. Assoc. 50, 1096-1121. \r
+Gabriel, K. R. (1969). Simultaneous test procedures-some \r
+theory of multiple comparisons. Ann. Math. Statist. 40, \r
+224-250. \r
+Haberman, S. J. (1974). The analysis of frequency data. The \r
+University of Chicago Press. \r
+Holm, S. A. (1977). Sequentially rejective multiple test proce\u0002dures. Statistical research report 1977-1, University of \r
+UmeA, Sweden. \r
+Marcus, R., Peritz, E. & Gabriel, K. R. (1976). On closed \r
+testing procedures with special reference to ordered ana\u0002lysis of variance. Biometrika 63, 655-660. \r
+Miller, R. G., Jr. (1966). Simultaneous statistical inference. \r
+McGraw-Hill, New York. \r
+Naik, U. D. (1975). Some selection rules for comparing p \r
+processes with a standard. Communications in Statistics \r
+4, 519-535. \r
+Sture Holm \r
+Department of Mathematics \r
+Chalmers University of Technology \r
+S-412 96 Goteborg \r
+Sweden \r
+Scand J Statist 6"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 1
+image_path = "images/image_p1_2.png"

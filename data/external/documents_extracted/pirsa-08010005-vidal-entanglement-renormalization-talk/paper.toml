@@ -1,0 +1,1565 @@
+equations = []
+tables = []
+full_text = """
+Title: Entanglement Renormalization, Quantum Criticality and Topological Order\r
+Date: Jan 23, 2008 04:00 PM\r
+URL: http://pirsa.org/08010005\r
+Abstract: The renormalization group (RG) is one of the conceptual pillars of statistical mechanics and quantum field theory, and a key theoretical\r
+element in the modern formulation of critical phenomena and phase transitions. RG transformations are also the basis of numerical approaches to the\r
+study of low energy properties and emergent phenomena in quantum many-body systems. In this colloquium I will introduce the notion of\r
+\\\\\\"entanglement renormalization\\\\\\" and use it to define a coarse-graining transformation for quantum systems on a lattice [G.Vidal, Phys. Rev. Lett.\r
+99, 220405 (2007)]. The resulting real-space RG approach is able to numerically address 1D and 2D lattice systems with thousands of quantum\r
+spins using only very modest computational resources. From the theoretical point of view, entanglement renormalization sheds new light into the\r
+structure of correlations in the ground state of extended quantum systems.\r
+I will discuss how it leads to a novel, efficient representation for the ground state of a system at a quantum critical point or with topological order.\r
+Pirsa: 08010005 Page 1/171
+
+Pirsa: 08010005 Page 2/171
+
+Pirsa: 08010005 Page 3/171
+
+Pirsa: 08010005 Page 4/171
+
+Pirsa: 08010005 Page 5/171
+
+Pirsa: 08010005 Page 6/171
+
+Pirsa: 08010005 Page 7/171
+
+Pirsa: 08010005 Page 8/171
+
+Pirsa: 08010005 Page 9/171
+
+Pirsa: 08010005 Page 10/171
+
+Pirsa: 08010005 Page 11/171
+
+Pirsa: 08010005 Page 12/171
+
+Pirsa: 08010005 Page 13/171
+
+Pirsa: 08010005 Page 14/171
+
+Pirsa: 08010005 Page 15/171
+
+Pirsa: 08010005 Page 16/171
+
+Pirsa: 08010005 Page 17/171
+
+Pirsa: 08010005 Page 18/171
+
+Pirsa: 08010005 Page 19/171
+
+Pirsa: 08010005 Page 20/171
+
+Pirsa: 08010005 Page 21/171
+
+Pirsa: 08010005 Page 22/171
+
+Pirsa: 08010005 Page 23/171
+
+Pirsa: 08010005 Page 24/171
+
+Pirsa: 08010005 Page 25/171
+
+Pirsa: 08010005 Page 26/171
+
+Pirsa: 08010005 Page 27/171
+
+Pirsa: 08010005 Page 28/171
+
+Pirsa: 08010005 Page 29/171
+
+Pirsa: 08010005 Page 30/171
+
+Pirsa: 08010005 Page 31/171
+
+Pirsa: 08010005 Page 32/171
+
+Pirsa: 08010005 Page 33/171
+
+Pirsa: 08010005 Page 34/171
+
+Pirsa: 08010005 Page 35/171
+
+Pirsa: 08010005 Page 36/171
+
+Pirsa: 08010005 Page 37/171
+
+Pirsa: 08010005 Page 38/171
+
+Pirsa: 08010005 Page 39/171
+
+Pirsa: 08010005 Page 40/171
+
+Pirsa: 08010005 Page 41/171
+
+Pirsa: 08010005 Page 42/171
+
+Pirsa: 08010005 Page 43/171
+
+Pirsa: 08010005 Page 44/171
+
+Pirsa: 08010005 Page 45/171
+
+Pirsa: 08010005 Page 46/171
+
+Pirsa: 08010005 Page 47/171
+
+Pirsa: 08010005 Page 48/171
+
+Pirsa: 08010005 Page 49/171
+
+Pirsa: 08010005 Page 50/171
+
+Pirsa: 08010005 Page 51/171
+
+Pirsa: 08010005 Page 52/171
+
+Pirsa: 08010005 Page 53/171
+
+Pirsa: 08010005 Page 54/171
+
+Pirsa: 08010005 Page 55/171
+
+Pirsa: 08010005 Page 56/171
+
+Pirsa: 08010005 Page 57/171
+
+Pirsa: 08010005 Page 58/171
+
+Pirsa: 08010005 Page 59/171
+
+Pirsa: 08010005 Page 60/171
+
+Pirsa: 08010005 Page 61/171
+
+Pirsa: 08010005 Page 62/171
+
+Pirsa: 08010005 Page 63/171
+
+Pirsa: 08010005 Page 64/171
+
+Pirsa: 08010005 Page 65/171
+
+Pirsa: 08010005 Page 66/171
+
+Pirsa: 08010005 Page 67/171
+
+Pirsa: 08010005 Page 68/171
+
+Pirsa: 08010005 Page 69/171
+
+Pirsa: 08010005 Page 70/171
+
+Pirsa: 08010005 Page 71/171
+
+Pirsa: 08010005 Page 72/171
+
+Pirsa: 08010005 Page 73/171
+
+Pirsa: 08010005 Page 74/171
+
+Pirsa: 08010005 Page 75/171
+
+Pirsa: 08010005 Page 76/171
+
+Pirsa: 08010005 Page 77/171
+
+Pirsa: 08010005 Page 78/171
+
+Pirsa: 08010005 Page 79/171
+
+Pirsa: 08010005 Page 80/171
+
+Pirsa: 08010005 Page 81/171
+
+Pirsa: 08010005 Page 82/171
+
+Pirsa: 08010005 Page 83/171
+
+Pirsa: 08010005 Page 84/171
+
+Pirsa: 08010005 Page 85/171
+
+Pirsa: 08010005 Page 86/171
+
+Pirsa: 08010005 Page 87/171
+
+Pirsa: 08010005 Page 88/171
+
+Pirsa: 08010005 Page 89/171
+
+Pirsa: 08010005 Page 90/171
+
+Pirsa: 08010005 Page 91/171
+
+Pirsa: 08010005 Page 92/171
+
+Pirsa: 08010005 Page 93/171
+
+Pirsa: 08010005 Page 94/171
+
+Pirsa: 08010005 Page 95/171
+
+Pirsa: 08010005 Page 96/171
+
+Pirsa: 08010005 Page 97/171
+
+Pirsa: 08010005 Page 98/171
+
+Pirsa: 08010005 Page 99/171
+
+Pirsa: 08010005 Page 100/171
+
+Pirsa: 08010005 Page 101/171
+
+Pirsa: 08010005 Page 102/171
+
+Pirsa: 08010005 Page 103/171
+
+Pirsa: 08010005 Page 104/171
+
+Pirsa: 08010005 Page 105/171
+
+Pirsa: 08010005 Page 106/171
+
+Pirsa: 08010005 Page 107/171
+
+Pirsa: 08010005 Page 108/171
+
+Pirsa: 08010005 Page 109/171
+
+Pirsa: 08010005 Page 110/171
+
+Pirsa: 08010005 Page 111/171
+
+Pirsa: 08010005 Page 112/171
+
+Pirsa: 08010005 Page 113/171
+
+Pirsa: 08010005 Page 114/171
+
+Pirsa: 08010005 Page 115/171
+
+Pirsa: 08010005 Page 116/171
+
+Pirsa: 08010005 Page 117/171
+
+Pirsa: 08010005 Page 118/171
+
+Pirsa: 08010005 Page 119/171
+
+Pirsa: 08010005 Page 120/171
+
+Pirsa: 08010005 Page 121/171
+
+Pirsa: 08010005 Page 122/171
+
+Pirsa: 08010005 Page 123/171
+
+Pirsa: 08010005 Page 124/171
+
+Pirsa: 08010005 Page 125/171
+
+Pirsa: 08010005 Page 126/171
+
+Pirsa: 08010005 Page 127/171
+
+Pirsa: 08010005 Page 128/171
+
+Pirsa: 08010005 Page 129/171
+
+Pirsa: 08010005 Page 130/171
+
+Pirsa: 08010005 Page 131/171
+
+Pirsa: 08010005 Page 132/171
+
+Pirsa: 08010005 Page 133/171
+
+Pirsa: 08010005 Page 134/171
+
+Pirsa: 08010005 Page 135/171
+
+Pirsa: 08010005 Page 136/171
+
+Pirsa: 08010005 Page 137/171
+
+Pirsa: 08010005 Page 138/171
+
+Pirsa: 08010005 Page 139/171
+
+Pirsa: 08010005 Page 140/171
+
+Pirsa: 08010005 Page 141/171
+
+Pirsa: 08010005 Page 142/171
+
+Pirsa: 08010005 Page 143/171
+
+Pirsa: 08010005 Page 144/171
+
+Pirsa: 08010005 Page 145/171
+
+Pirsa: 08010005 Page 146/171
+
+Pirsa: 08010005 Page 147/171
+
+Pirsa: 08010005 Page 148/171
+
+Pirsa: 08010005 Page 149/171
+
+Pirsa: 08010005 Page 150/171
+
+Pirsa: 08010005 Page 151/171
+
+Pirsa: 08010005 Page 152/171
+
+Pirsa: 08010005 Page 153/171
+
+Pirsa: 08010005 Page 154/171
+
+Pirsa: 08010005 Page 155/171
+
+Pirsa: 08010005 Page 156/171
+
+Pirsa: 08010005 Page 157/171
+
+Pirsa: 08010005 Page 158/171
+
+Pirsa: 08010005 Page 159/171
+
+Pirsa: 08010005 Page 160/171
+
+Pirsa: 08010005 Page 161/171
+
+Pirsa: 08010005 Page 162/171
+
+Pirsa: 08010005 Page 163/171
+
+Pirsa: 08010005 Page 164/171
+
+Pirsa: 08010005 Page 165/171
+
+Pirsa: 08010005 Page 166/171
+
+Pirsa: 08010005 Page 167/171
+
+Pirsa: 08010005 Page 168/171
+
+Pirsa: 08010005 Page 169/171
+
+Pirsa: 08010005 Page 170/171
+
+Pirsa: 08010005 Page 171/171"""
+
+[metadata]
+title = "pirsa 08010005 vidal entanglement renormalization talk"
+authors = ["Unknown"]
+
+[[sections]]
+title = "Full Text"
+text = """
+Title: Entanglement Renormalization, Quantum Criticality and Topological Order\r
+Date: Jan 23, 2008 04:00 PM\r
+URL: http://pirsa.org/08010005\r
+Abstract: The renormalization group (RG) is one of the conceptual pillars of statistical mechanics and quantum field theory, and a key theoretical\r
+element in the modern formulation of critical phenomena and phase transitions. RG transformations are also the basis of numerical approaches to the\r
+study of low energy properties and emergent phenomena in quantum many-body systems. In this colloquium I will introduce the notion of\r
+\\\\\\"entanglement renormalization\\\\\\" and use it to define a coarse-graining transformation for quantum systems on a lattice [G.Vidal, Phys. Rev. Lett.\r
+99, 220405 (2007)]. The resulting real-space RG approach is able to numerically address 1D and 2D lattice systems with thousands of quantum\r
+spins using only very modest computational resources. From the theoretical point of view, entanglement renormalization sheds new light into the\r
+structure of correlations in the ground state of extended quantum systems.\r
+I will discuss how it leads to a novel, efficient representation for the ground state of a system at a quantum critical point or with topological order.\r
+Pirsa: 08010005 Page 1/171
+
+Pirsa: 08010005 Page 2/171
+
+Pirsa: 08010005 Page 3/171
+
+Pirsa: 08010005 Page 4/171
+
+Pirsa: 08010005 Page 5/171
+
+Pirsa: 08010005 Page 6/171
+
+Pirsa: 08010005 Page 7/171
+
+Pirsa: 08010005 Page 8/171
+
+Pirsa: 08010005 Page 9/171
+
+Pirsa: 08010005 Page 10/171
+
+Pirsa: 08010005 Page 11/171
+
+Pirsa: 08010005 Page 12/171
+
+Pirsa: 08010005 Page 13/171
+
+Pirsa: 08010005 Page 14/171
+
+Pirsa: 08010005 Page 15/171
+
+Pirsa: 08010005 Page 16/171
+
+Pirsa: 08010005 Page 17/171
+
+Pirsa: 08010005 Page 18/171
+
+Pirsa: 08010005 Page 19/171
+
+Pirsa: 08010005 Page 20/171
+
+Pirsa: 08010005 Page 21/171
+
+Pirsa: 08010005 Page 22/171
+
+Pirsa: 08010005 Page 23/171
+
+Pirsa: 08010005 Page 24/171
+
+Pirsa: 08010005 Page 25/171
+
+Pirsa: 08010005 Page 26/171
+
+Pirsa: 08010005 Page 27/171
+
+Pirsa: 08010005 Page 28/171
+
+Pirsa: 08010005 Page 29/171
+
+Pirsa: 08010005 Page 30/171
+
+Pirsa: 08010005 Page 31/171
+
+Pirsa: 08010005 Page 32/171
+
+Pirsa: 08010005 Page 33/171
+
+Pirsa: 08010005 Page 34/171
+
+Pirsa: 08010005 Page 35/171
+
+Pirsa: 08010005 Page 36/171
+
+Pirsa: 08010005 Page 37/171
+
+Pirsa: 08010005 Page 38/171
+
+Pirsa: 08010005 Page 39/171
+
+Pirsa: 08010005 Page 40/171
+
+Pirsa: 08010005 Page 41/171
+
+Pirsa: 08010005 Page 42/171
+
+Pirsa: 08010005 Page 43/171
+
+Pirsa: 08010005 Page 44/171
+
+Pirsa: 08010005 Page 45/171
+
+Pirsa: 08010005 Page 46/171
+
+Pirsa: 08010005 Page 47/171
+
+Pirsa: 08010005 Page 48/171
+
+Pirsa: 08010005 Page 49/171
+
+Pirsa: 08010005 Page 50/171
+
+Pirsa: 08010005 Page 51/171
+
+Pirsa: 08010005 Page 52/171
+
+Pirsa: 08010005 Page 53/171
+
+Pirsa: 08010005 Page 54/171
+
+Pirsa: 08010005 Page 55/171
+
+Pirsa: 08010005 Page 56/171
+
+Pirsa: 08010005 Page 57/171
+
+Pirsa: 08010005 Page 58/171
+
+Pirsa: 08010005 Page 59/171
+
+Pirsa: 08010005 Page 60/171
+
+Pirsa: 08010005 Page 61/171
+
+Pirsa: 08010005 Page 62/171
+
+Pirsa: 08010005 Page 63/171
+
+Pirsa: 08010005 Page 64/171
+
+Pirsa: 08010005 Page 65/171
+
+Pirsa: 08010005 Page 66/171
+
+Pirsa: 08010005 Page 67/171
+
+Pirsa: 08010005 Page 68/171
+
+Pirsa: 08010005 Page 69/171
+
+Pirsa: 08010005 Page 70/171
+
+Pirsa: 08010005 Page 71/171
+
+Pirsa: 08010005 Page 72/171
+
+Pirsa: 08010005 Page 73/171
+
+Pirsa: 08010005 Page 74/171
+
+Pirsa: 08010005 Page 75/171
+
+Pirsa: 08010005 Page 76/171
+
+Pirsa: 08010005 Page 77/171
+
+Pirsa: 08010005 Page 78/171
+
+Pirsa: 08010005 Page 79/171
+
+Pirsa: 08010005 Page 80/171
+
+Pirsa: 08010005 Page 81/171
+
+Pirsa: 08010005 Page 82/171
+
+Pirsa: 08010005 Page 83/171
+
+Pirsa: 08010005 Page 84/171
+
+Pirsa: 08010005 Page 85/171
+
+Pirsa: 08010005 Page 86/171
+
+Pirsa: 08010005 Page 87/171
+
+Pirsa: 08010005 Page 88/171
+
+Pirsa: 08010005 Page 89/171
+
+Pirsa: 08010005 Page 90/171
+
+Pirsa: 08010005 Page 91/171
+
+Pirsa: 08010005 Page 92/171
+
+Pirsa: 08010005 Page 93/171
+
+Pirsa: 08010005 Page 94/171
+
+Pirsa: 08010005 Page 95/171
+
+Pirsa: 08010005 Page 96/171
+
+Pirsa: 08010005 Page 97/171
+
+Pirsa: 08010005 Page 98/171
+
+Pirsa: 08010005 Page 99/171
+
+Pirsa: 08010005 Page 100/171
+
+Pirsa: 08010005 Page 101/171
+
+Pirsa: 08010005 Page 102/171
+
+Pirsa: 08010005 Page 103/171
+
+Pirsa: 08010005 Page 104/171
+
+Pirsa: 08010005 Page 105/171
+
+Pirsa: 08010005 Page 106/171
+
+Pirsa: 08010005 Page 107/171
+
+Pirsa: 08010005 Page 108/171
+
+Pirsa: 08010005 Page 109/171
+
+Pirsa: 08010005 Page 110/171
+
+Pirsa: 08010005 Page 111/171
+
+Pirsa: 08010005 Page 112/171
+
+Pirsa: 08010005 Page 113/171
+
+Pirsa: 08010005 Page 114/171
+
+Pirsa: 08010005 Page 115/171
+
+Pirsa: 08010005 Page 116/171
+
+Pirsa: 08010005 Page 117/171
+
+Pirsa: 08010005 Page 118/171
+
+Pirsa: 08010005 Page 119/171
+
+Pirsa: 08010005 Page 120/171
+
+Pirsa: 08010005 Page 121/171
+
+Pirsa: 08010005 Page 122/171
+
+Pirsa: 08010005 Page 123/171
+
+Pirsa: 08010005 Page 124/171
+
+Pirsa: 08010005 Page 125/171
+
+Pirsa: 08010005 Page 126/171
+
+Pirsa: 08010005 Page 127/171
+
+Pirsa: 08010005 Page 128/171
+
+Pirsa: 08010005 Page 129/171
+
+Pirsa: 08010005 Page 130/171
+
+Pirsa: 08010005 Page 131/171
+
+Pirsa: 08010005 Page 132/171
+
+Pirsa: 08010005 Page 133/171
+
+Pirsa: 08010005 Page 134/171
+
+Pirsa: 08010005 Page 135/171
+
+Pirsa: 08010005 Page 136/171
+
+Pirsa: 08010005 Page 137/171
+
+Pirsa: 08010005 Page 138/171
+
+Pirsa: 08010005 Page 139/171
+
+Pirsa: 08010005 Page 140/171
+
+Pirsa: 08010005 Page 141/171
+
+Pirsa: 08010005 Page 142/171
+
+Pirsa: 08010005 Page 143/171
+
+Pirsa: 08010005 Page 144/171
+
+Pirsa: 08010005 Page 145/171
+
+Pirsa: 08010005 Page 146/171
+
+Pirsa: 08010005 Page 147/171
+
+Pirsa: 08010005 Page 148/171
+
+Pirsa: 08010005 Page 149/171
+
+Pirsa: 08010005 Page 150/171
+
+Pirsa: 08010005 Page 151/171
+
+Pirsa: 08010005 Page 152/171
+
+Pirsa: 08010005 Page 153/171
+
+Pirsa: 08010005 Page 154/171
+
+Pirsa: 08010005 Page 155/171
+
+Pirsa: 08010005 Page 156/171
+
+Pirsa: 08010005 Page 157/171
+
+Pirsa: 08010005 Page 158/171
+
+Pirsa: 08010005 Page 159/171
+
+Pirsa: 08010005 Page 160/171
+
+Pirsa: 08010005 Page 161/171
+
+Pirsa: 08010005 Page 162/171
+
+Pirsa: 08010005 Page 163/171
+
+Pirsa: 08010005 Page 164/171
+
+Pirsa: 08010005 Page 165/171
+
+Pirsa: 08010005 Page 166/171
+
+Pirsa: 08010005 Page 167/171
+
+Pirsa: 08010005 Page 168/171
+
+Pirsa: 08010005 Page 169/171
+
+Pirsa: 08010005 Page 170/171
+
+Pirsa: 08010005 Page 171/171"""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 4
+image_path = "images/image_p4_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 5
+image_path = "images/image_p5_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 6
+image_path = "images/image_p6_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 7
+image_path = "images/image_p7_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 8
+image_path = "images/image_p8_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 9
+image_path = "images/image_p9_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 10
+image_path = "images/image_p10_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 11
+image_path = "images/image_p11_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 12
+image_path = "images/image_p12_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 13
+image_path = "images/image_p13_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 14
+image_path = "images/image_p14_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 15
+image_path = "images/image_p15_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 16
+image_path = "images/image_p16_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 17
+image_path = "images/image_p17_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 18
+image_path = "images/image_p18_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 19
+image_path = "images/image_p19_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 20
+image_path = "images/image_p20_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 21
+image_path = "images/image_p21_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 22
+image_path = "images/image_p22_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 23
+image_path = "images/image_p23_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 24
+image_path = "images/image_p24_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 25
+image_path = "images/image_p25_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 26
+image_path = "images/image_p26_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 27
+image_path = "images/image_p27_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 28
+image_path = "images/image_p28_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 29
+image_path = "images/image_p29_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 30
+image_path = "images/image_p30_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 31
+image_path = "images/image_p31_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 32
+image_path = "images/image_p32_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 33
+image_path = "images/image_p33_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 34
+image_path = "images/image_p34_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 35
+image_path = "images/image_p35_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 36
+image_path = "images/image_p36_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 37
+image_path = "images/image_p37_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 38
+image_path = "images/image_p38_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 39
+image_path = "images/image_p39_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 40
+image_path = "images/image_p40_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 41
+image_path = "images/image_p41_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 42
+image_path = "images/image_p42_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 43
+image_path = "images/image_p43_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 44
+image_path = "images/image_p44_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 45
+image_path = "images/image_p45_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 46
+image_path = "images/image_p46_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 47
+image_path = "images/image_p47_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 48
+image_path = "images/image_p48_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 49
+image_path = "images/image_p49_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 50
+image_path = "images/image_p50_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 51
+image_path = "images/image_p51_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 52
+image_path = "images/image_p52_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 53
+image_path = "images/image_p53_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 54
+image_path = "images/image_p54_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 55
+image_path = "images/image_p55_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 56
+image_path = "images/image_p56_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 57
+image_path = "images/image_p57_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 58
+image_path = "images/image_p58_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 59
+image_path = "images/image_p59_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 60
+image_path = "images/image_p60_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 61
+image_path = "images/image_p61_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 62
+image_path = "images/image_p62_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 63
+image_path = "images/image_p63_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 64
+image_path = "images/image_p64_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 65
+image_path = "images/image_p65_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 66
+image_path = "images/image_p66_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 67
+image_path = "images/image_p67_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 68
+image_path = "images/image_p68_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 69
+image_path = "images/image_p69_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 70
+image_path = "images/image_p70_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 71
+image_path = "images/image_p71_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 72
+image_path = "images/image_p72_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 73
+image_path = "images/image_p73_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 74
+image_path = "images/image_p74_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 75
+image_path = "images/image_p75_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 76
+image_path = "images/image_p76_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 77
+image_path = "images/image_p77_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 78
+image_path = "images/image_p78_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 79
+image_path = "images/image_p79_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 80
+image_path = "images/image_p80_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 81
+image_path = "images/image_p81_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 82
+image_path = "images/image_p82_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 83
+image_path = "images/image_p83_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 84
+image_path = "images/image_p84_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 85
+image_path = "images/image_p85_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 86
+image_path = "images/image_p86_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 87
+image_path = "images/image_p87_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 88
+image_path = "images/image_p88_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 89
+image_path = "images/image_p89_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 90
+image_path = "images/image_p90_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 91
+image_path = "images/image_p91_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 92
+image_path = "images/image_p92_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 93
+image_path = "images/image_p93_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 94
+image_path = "images/image_p94_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 95
+image_path = "images/image_p95_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 96
+image_path = "images/image_p96_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 97
+image_path = "images/image_p97_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 98
+image_path = "images/image_p98_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 99
+image_path = "images/image_p99_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 100
+image_path = "images/image_p100_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 101
+image_path = "images/image_p101_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 102
+image_path = "images/image_p102_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 103
+image_path = "images/image_p103_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 104
+image_path = "images/image_p104_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 105
+image_path = "images/image_p105_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 106
+image_path = "images/image_p106_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 107
+image_path = "images/image_p107_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 108
+image_path = "images/image_p108_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 109
+image_path = "images/image_p109_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 110
+image_path = "images/image_p110_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 111
+image_path = "images/image_p111_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 112
+image_path = "images/image_p112_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 113
+image_path = "images/image_p113_112.png"
+
+[[figures]]
+label = "fig:113"
+page_num = 114
+image_path = "images/image_p114_113.png"
+
+[[figures]]
+label = "fig:114"
+page_num = 115
+image_path = "images/image_p115_114.png"
+
+[[figures]]
+label = "fig:115"
+page_num = 116
+image_path = "images/image_p116_115.png"
+
+[[figures]]
+label = "fig:116"
+page_num = 117
+image_path = "images/image_p117_116.png"
+
+[[figures]]
+label = "fig:117"
+page_num = 118
+image_path = "images/image_p118_117.png"
+
+[[figures]]
+label = "fig:118"
+page_num = 119
+image_path = "images/image_p119_118.png"
+
+[[figures]]
+label = "fig:119"
+page_num = 120
+image_path = "images/image_p120_119.png"
+
+[[figures]]
+label = "fig:120"
+page_num = 121
+image_path = "images/image_p121_120.png"
+
+[[figures]]
+label = "fig:121"
+page_num = 122
+image_path = "images/image_p122_121.png"
+
+[[figures]]
+label = "fig:122"
+page_num = 123
+image_path = "images/image_p123_122.png"
+
+[[figures]]
+label = "fig:123"
+page_num = 124
+image_path = "images/image_p124_123.png"
+
+[[figures]]
+label = "fig:124"
+page_num = 125
+image_path = "images/image_p125_124.png"
+
+[[figures]]
+label = "fig:125"
+page_num = 126
+image_path = "images/image_p126_125.png"
+
+[[figures]]
+label = "fig:126"
+page_num = 127
+image_path = "images/image_p127_126.png"
+
+[[figures]]
+label = "fig:127"
+page_num = 128
+image_path = "images/image_p128_127.png"
+
+[[figures]]
+label = "fig:128"
+page_num = 129
+image_path = "images/image_p129_128.png"
+
+[[figures]]
+label = "fig:129"
+page_num = 130
+image_path = "images/image_p130_129.png"
+
+[[figures]]
+label = "fig:130"
+page_num = 131
+image_path = "images/image_p131_130.png"
+
+[[figures]]
+label = "fig:131"
+page_num = 132
+image_path = "images/image_p132_131.png"
+
+[[figures]]
+label = "fig:132"
+page_num = 133
+image_path = "images/image_p133_132.png"
+
+[[figures]]
+label = "fig:133"
+page_num = 134
+image_path = "images/image_p134_133.png"
+
+[[figures]]
+label = "fig:134"
+page_num = 135
+image_path = "images/image_p135_134.png"
+
+[[figures]]
+label = "fig:135"
+page_num = 136
+image_path = "images/image_p136_135.png"
+
+[[figures]]
+label = "fig:136"
+page_num = 137
+image_path = "images/image_p137_136.png"
+
+[[figures]]
+label = "fig:137"
+page_num = 138
+image_path = "images/image_p138_137.png"
+
+[[figures]]
+label = "fig:138"
+page_num = 139
+image_path = "images/image_p139_138.png"
+
+[[figures]]
+label = "fig:139"
+page_num = 140
+image_path = "images/image_p140_139.png"
+
+[[figures]]
+label = "fig:140"
+page_num = 141
+image_path = "images/image_p141_140.png"
+
+[[figures]]
+label = "fig:141"
+page_num = 142
+image_path = "images/image_p142_141.png"
+
+[[figures]]
+label = "fig:142"
+page_num = 143
+image_path = "images/image_p143_142.png"
+
+[[figures]]
+label = "fig:143"
+page_num = 144
+image_path = "images/image_p144_143.png"
+
+[[figures]]
+label = "fig:144"
+page_num = 145
+image_path = "images/image_p145_144.png"
+
+[[figures]]
+label = "fig:145"
+page_num = 146
+image_path = "images/image_p146_145.png"
+
+[[figures]]
+label = "fig:146"
+page_num = 147
+image_path = "images/image_p147_146.png"
+
+[[figures]]
+label = "fig:147"
+page_num = 148
+image_path = "images/image_p148_147.png"
+
+[[figures]]
+label = "fig:148"
+page_num = 149
+image_path = "images/image_p149_148.png"
+
+[[figures]]
+label = "fig:149"
+page_num = 150
+image_path = "images/image_p150_149.png"
+
+[[figures]]
+label = "fig:150"
+page_num = 151
+image_path = "images/image_p151_150.png"
+
+[[figures]]
+label = "fig:151"
+page_num = 152
+image_path = "images/image_p152_151.png"
+
+[[figures]]
+label = "fig:152"
+page_num = 153
+image_path = "images/image_p153_152.png"
+
+[[figures]]
+label = "fig:153"
+page_num = 154
+image_path = "images/image_p154_153.png"
+
+[[figures]]
+label = "fig:154"
+page_num = 155
+image_path = "images/image_p155_154.png"
+
+[[figures]]
+label = "fig:155"
+page_num = 156
+image_path = "images/image_p156_155.png"
+
+[[figures]]
+label = "fig:156"
+page_num = 157
+image_path = "images/image_p157_156.png"
+
+[[figures]]
+label = "fig:157"
+page_num = 158
+image_path = "images/image_p158_157.png"
+
+[[figures]]
+label = "fig:158"
+page_num = 159
+image_path = "images/image_p159_158.png"
+
+[[figures]]
+label = "fig:159"
+page_num = 160
+image_path = "images/image_p160_159.png"
+
+[[figures]]
+label = "fig:160"
+page_num = 161
+image_path = "images/image_p161_160.png"
+
+[[figures]]
+label = "fig:161"
+page_num = 162
+image_path = "images/image_p162_161.png"
+
+[[figures]]
+label = "fig:162"
+page_num = 163
+image_path = "images/image_p163_162.png"
+
+[[figures]]
+label = "fig:163"
+page_num = 164
+image_path = "images/image_p164_163.png"
+
+[[figures]]
+label = "fig:164"
+page_num = 165
+image_path = "images/image_p165_164.png"
+
+[[figures]]
+label = "fig:165"
+page_num = 166
+image_path = "images/image_p166_165.png"
+
+[[figures]]
+label = "fig:166"
+page_num = 167
+image_path = "images/image_p167_166.png"
+
+[[figures]]
+label = "fig:167"
+page_num = 168
+image_path = "images/image_p168_167.png"
+
+[[figures]]
+label = "fig:168"
+page_num = 169
+image_path = "images/image_p169_168.png"
+
+[[figures]]
+label = "fig:169"
+page_num = 170
+image_path = "images/image_p170_169.png"
+
+[[figures]]
+label = "fig:170"
+page_num = 171
+image_path = "images/image_p171_170.png"

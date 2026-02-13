@@ -1,0 +1,1057 @@
+p–Adic pseudodifferential operators
+and p–adic wavelets
+arXiv:math-ph/0303045v2 21 Sep 2003
+
+S.V.Kozyrev
+November 10, 2018
+Abstract
+We introduce a new wide class of p–adic pseudodifferential operators. We
+show that the basis of p–adic wavelets is the basis of eigenvectors for the
+introduced operators.
+
+1
+
+Introduction
+
+In the present paper we introduce the family of pseudodifferential operators, which
+generate p–adic diffusions. The constructed operators, unlike the Vladimirov operator of p–adic fractional derivation [1], will not be diagonalizable by the Fourier
+transform. These operators will be diagonal in the basis of p–adic wavelets, introduced in [2]. Therefore we will call these operators non translationally invariant
+(i.e., non commutative with the operators of shift).
+In the present paper we consider only the problem of existence of the mentioned
+operators. To show that the introduced operators T generate diffusions, one has
+to show that the corresponding evolutions e−tT exist, conserve the cone of positive
+functions and the total number of particles. Formally these conditions are satisfied,
+the rigorous proof will be considered elsewhere.
+Ultrametric diffusions were considered in [1], [3], [4], [5], [6]. In [7], [8], [9]
+ultrametric diffusions were applied for description of the relaxation processes in
+disordered systems, for instance, in spin glasses and proteins. In the present paper
+we describe diffusions with more general generators, compared to the considered in
+the mentioned above literature.
+The field of p–adic numbers is the simplest example of an ultrametric space. p–
+Adic mathematical physics, see [1]–[16], studies the models of mathematical physics
+with the help of p–adic analysis.
+The results of the present paper have the following physical applications.
+In the works [7], [14] p–adic analysis was applied to describe the replica symmetry breaking, for discussion of the replica approach see [19]. It was shown that
+the Parisi matrix describing the replica symmetry breaking (before the n → 0 limit)
+is a discrete analogue of a p–adic pseudofifferential operator. In the present paper
+
+1
+
+we introduce a new family of p–adic pseudodifferential operators. The discrete analogues of the introduced operators will be the new examples of the replica matrices.
+The application of these replica matrices to disordered models (for which the n → 0
+limit for the introduced operators have to be developed) would be an interesting
+problem.
+Another possible application of the approach of the present paper is the application to random walk on hierarchical landscapes of energy, relaxation phenomena
+in complex systems and basin to basin kinetics, see [22] – [25], [26].
+The structure of the present paper is as follows.
+In Section 2 we remind some results from p–adic analysis and describe the basis
+of p–adic wavelets.
+In Section 3 we introduce the family of pseudodifferential operators and prove
+that these operators are diagonal in the basis of p–adic wavelets.
+In Section 4 we discuss in more details some particular examples of pseudodifferential operators and compute the asymptotics of population of unit disk for the
+corresponding ultrametric diffusion.
+In Section 5 we in more details discuss the possible physical applications of the
+results of the present paper.
+
+2
+
+p–Adic analysis
+
+Remind some notations used in p–adic analysis, see [1] for details.
+An ultrametric space is a metric space with the metrics k · k satisfying the strong
+triangle inequality
+kxyk ≤ max(kxzk, kyzk),
+∀z
+The simplest example of ultrametric space is the field Qp of p–adic numbers.
+The field Qp of p–adic numbers is the completion of the field of rational numbers
+Q with respect to p–adic norm on Q. This norm is defined in the following way.
+An arbitrary rational number x can be written in the form x = pγ m
+with m and
+n
+γm
+n not divisible by p. The p–adic norm of the rational number x = p n is equal to
+|x|p = p−γ . The strong triangle inequality for p–adic numbers takes the form
+|x + y|p ≤ max(|x|p , |y|p).
+p–Adic numbers are in one to one correspondence with the (convergent in p–adic
+norm) series of the form
+x=
+
+∞
+X
+
+xi pi ,
+
+xi = 0, . . . , p − 1
+
+γ=γ0
+
+The ring Zp of p–adic integers contains p–adic numbers of the form
+x=
+
+∞
+X
+
+xi pi ,
+
+xi = 0, . . . , p − 1
+
+γ=0
+
+2
+
+(1)
+
+and the group Qp /Zp we identify with the set containing fractions
+x=
+
+−1
+X
+
+xi pi ,
+
+xi = 0, . . . , p − 1
+
+γ=γ0
+
+The Vladimirov operator of p–adic fractional derivation is defined as follows [1]
+1
+D f (x) =
+Γp (−α)
+α
+
+f (x) − f (y)
+dy
+Qp |x − y|1+α
+p
+
+Z
+
+(2)
+
+where dy is the Haar measure on Qp and Γp (−α) is a constant. This operator is
+diagonalizable by the p–adic Fourier transform F :
+D α f (x) = F −1 ◦ |k|αp ◦ F f (x)
+p–Adic wavelets were introduced in [2], where the following theorem was proven.
+Theorem. The set of functions {ψγjn }:
+γ
+
+ψγjn (x) = p− 2 χ(pγ−1 jx)Ω(|pγ x−n|p ),
+
+γ ∈ Z,
+
+n ∈ Qp /Zp ,
+
+j = 1, . . . , p−1 (3)
+
+is an orthonormal basis in L2 (Qp ) of eigenvectors of the operator D α :
+D α ψγjn = pα(1−γ) ψγjn
+
+(4)
+
+Here Ω(x) is the indicator of the interval [0, 1], which implies for the characteristic
+function of p–adic disk the expression
+Ω(|x|p ) =
+
+(
+
+1, |x|p ≤ 1 ,
+0, |x|p > 1 .
+
+The function χ(x) is the complex valued character of the p–adic argument which for
+x given by (1) is defined as
+χ(x) = exp 2πi
+
+−1
+X
+
+γ=γ0
+
+xi p
+
+i
+
+!
+
+The theorem above shows that the p–adic wavelets are the basis of eigenvectors
+for the operator (2). The operator (2), see [1], was considered as the generator of
+the ultrametric diffusion. In the present paper we introduce a more general class
+of p–adic pseudodifferential operators. These operators can not be diagonalized by
+the p–adic Fourier transform, but we will show, that the introduced operators are
+still diagonalizable by the p–adic wavelet transform (i.e. the p–adic wavelets are
+eigenvectors of the introduced operators).
+p–Adic numbers are related to the Bruhat–Tits trees, see [27]. The Bruhat–Tits
+tree is the infinite tree (with the infinite number of edges and vertices) where each
+vertex is connected with exactly p + 1 over vertices. p–Adic projective line, which
+3
+
+contains the field of p–adic numbers plus one infinite point, is equivalent to the
+space of classes of equivalence of semiinfinite paths in the Bruhat–Tits tree. Two
+(semiinfinite) paths are equivalent if they coincide, starting from some vertex. For
+instance, the set of semiinfinite paths going through the fixed vertex and through p
+edges incident to the vertex is homeomorphic to a p–adic disk.
+This construction is the analogue of the Poincare model of the Lobachevskii
+plane, where the Bruhat–Tits tree is the analogue of the Lobachevskii plane, the
+p–adic (projective) line is the analogue of the absolute, and the (unique) path in
+the Bruhat–Tits tree connecting x and y in Qp is the analogue of the geodesic line
+connecting the points at the absolute.
+We introduce the level, or height of the vertex, in the following way. We put in
+correspondence to every vertex in the Bruhat–Tits tree the p–adic disk, corresponding to the following set of semiinfinite paths in the tree which begin in the vertex.
+This set contains all the paths going through the p of p + 1 edges incident to the
+vertex (excluding one edge incident to the path going through the infinite point of
+the absolute). We call the level of the vertex the logp of the radius of this disk.
+For two points x, y in Qp there exists the unique path in the Bruhat–Tits tree
+connecting these two points. This path contains the unique point A(x, y) with the
+highest level.
+
+3
+
+Construction of the pseudodifferential operators
+
+In [28], [29] examples of ultrametric diffusions on a discrete set were considered. In
+[1], [3], [4]–[6], [8]–[9] examples of p–adic diffusions were investigated.
+In the present section we introduce a family of p–adic pseudodifferential operators, which generate ultrametric diffusions on the field Qp of p–adic numbers. The
+existence of corresponding diffusions (possibility to take the exponent of the generator) will not be discussed in the present paper. The introduced pseudodifferential
+operators will be the generalizations of the Vladimirov operator.
+Consider the operator
+T f (x) =
+
+Z
+
+T (x, y)(f (x) − f (y))dy
+
+(5)
+
+Here we take x, y lying in the field Qp of p–adic numbers. We consider the operator
+T as the operator in the space L2 (Qp ) of complex valued square integrable functions
+of p–adic argument.
+In the following we will introduce some conditions for the kernel T (x, y). Operator of the form (5) satisfying these conditions we call the generator of the ultrametric
+diffusion. We show that under these conditions the operator (5) will be diagonal in
+the basis of p–adic wavelets, introduced in [2]. This means that the assumption of
+ultrametricity of the diffusion makes the problem of investigation of the diffusion
+exactly solvable.
+
+4
+
+Definition 1.
+We call the transition probability (and the corresponding diffusion with the generator given by (5)) ultrametric, if the transition probability T (x, y)
+depends only on the highest point A(x, y) lying at the path between x and y in the
+Bruhat–Tits tree.
+Notice that the transition probability T (x, y) is symmetric with respect to x, y
+and satisfies the following property:
+Lemma 2.
+The function T (x, y) is symmetric and positive with respect to y,
+and, for fixed x, is locally constant with respect to y outside any vicinity of x.
+Moreover, for fixed x, the following condition is satisfied:
+T (x, y) = const ,
+
+if
+
+|x − y|p = const
+
+(6)
+
+Vice versa, when the condition (6) is satisfied, the function T (x, y) satisfies the
+conditions of Definition 1.
+It is easy to see that the Vladimirov operator and similar operators with translationally invariant kernels T (x, y) (which depend only on the diference x − y and
+therefore, under the corresponding conditions of integrability of the kernel, can be
+diagonalized by the Fourier transform), satisfy the conditions of lemma 2. In the
+present paper we introduce the examples of the generators with non translationally
+invariant kernels.
+The following theorem gives the general form of the kernel for the operator (5).
+Theorem 3.
+
+The function of the form
+T (x, y) =
+
+X
+
+T (γn) δ1,|pγ x−pγ y|p Ω(|pγ x − n|p )
+
+(7)
+
+γn
+
+where T (γn) ≥ 0, γ ∈ Z, n ∈ Qp /Zp satisfies the conditions of lemma 2.
+Moreover, an arbitrary function satisfying (6) can be represented in the form
+(7).
+Proof
+Positivity of T (x, y) is obvious.
+Let us prove the symmetricity of T (x, y). We have
+T (x, y) − T (y, x) =
+
+X
+
+T (γn) δ1,|pγ x−pγ y|p (Ω(|pγ x − n|p ) − Ω(|pγ y − n|p ))
+
+(8)
+
+γn
+
+Let us prove that this expression is equal identically to zero. Consider the case when
+x is such that the following characteristic function is non–zero:
+Ω(|pγ x − n|p ) = 1
+This implies
+|x − p−γ n|p ≤ pγ
+If
+δ1,|pγ x−pγ y|p 6= 0
+5
+
+(9)
+
+then
+|x − y|p = pγ
+
+(10)
+
+Formulas (9), (10) and ultrametricity imply that
+Ω(|pγ y − n|p ) = 1
+Therefore the corresponding terms in (8) cancel. This proves that T (x, y) given by
+(7) is symmetric.
+Prove that T (x, y) given by (7) satisfies (6). Fix x ∈ Qp . Then for y lying at the
+sphere with the center in x and the radius pγ we have
+δ1,|pγ x−pγ y|p = 1
+and
+Ω(|pγ x − n|p )
+will be equal to 0 or 1 depending on whether p−γ n lies in the disk
+{y : |x − y|p ≤ pγ }
+or no. Therefore T (x, y) will be a constant on the considered sphere and (6) will be
+satisfied.
+This proves that T (x, y) satisfying the conditions of the present lemma will satisfy
+lemma 2.
+Vice versa, it is easy to see that the kernel (7) for x, y lying in the disk with the
+center in p−γ n and the radius pγ , and satisfying |x − y|p = pγ , takes the value T (γn) .
+Since all the space x, y ∈ Qp × Qp is the disjoint union of such a subsets, therefore, taking an arbitrary positive T (γn) we are able to construct an arbitrary kernel
+satisfying (6). This finishes the proof of the theorem.
+In the next theorem we compute the eigenvalues of the generator of ultrametric
+diffusion.
+Theorem 4.
+Let the kernel (6) satisfy the condition of convergence of all the
+integrals in (12) for any γ, n. Then the operator (5) is a well defined operator in
+L2 (Qp ) with the dense domain and the p–adic wavelets ψγjn are eigenvectors for the
+ultrametric diffusion:
+T ψγjn = λγn ψγjn
+(11)
+with the eigenvalues
+λγn =
+
+Proof
+Then
+
+Z
+
+|n−pγ y|p >1
+
+T (p−γ n, y)dy + pγ T (p−γ n, p−γ (n + 1))
+
+(12)
+
+To prove the present theorem we use Lemma 2. Consider the wavelet ψγjn .
+T ψγjn (x) =
+
+Z
+
+T (x, y) (ψγjn (x) − ψγjn (y)) dy
+6
+
+Consider the following cases.
+1) Let |pγ x − n|p > 1. Then Lemma 2 implies
+Z
+
+T ψγjn (x) =
+
+T (x, y)ψγjn (x)dy − T (x, n)
+
+Z
+
+ψγjn (y)dy = 0
+
+!
+
+T (x, y)(ψγjn (x)−ψγjn (y))dy =
+
+2) Let |pγ x − n|p ≤ 1. Then again by Lemma 2
+T ψγjn (x) =
+
+Z
+
+=
+
+Z
+
+= ψγjn (x)
+
+|pγ x−pγ y|p >1
+
+|pγ x−pγ y|p >1
+
+Z
+
+|pγ x−pγ y|p >1
+
++
+
+Z
+
++
+
+Z
+
+Z
+
+!
+
+T (x, y)(ψγjn (x) − ψγjn (y))dy =
+
++
+
+|pγ x−pγ y|p =1
+
+|pγ x−pγ y|p =1
+
+T (x, y)dy +
+
+Z
+
+|pγ x−pγ y|p =1
+
+p−1 Z
+X
+
+= ψγjn (x)
+
+Z
+
+T (p n, y)dy+
+
+= ψγjn (x)
+
+Z
+
+T (p−γ n, y)dy + pγ−1
+
+−γ
+
+|n−pγ y|p >1
+
+|n−pγ y|p >1
+
+|pγ x−pγ y|p <1
+
+l=0
+
+|z|p <pγ
+p−1
+X
+
+T (x, y)(ψγjn (x) − ψγjn (y))dy =
+
+T (x, x + p−γ l + z)(ψγjn (x)−ψγjn (x+p−γ l+z))dz =
+
+T (x, x + p−γ l)(ψγjn (x) −ψγjn (x+ p−γ l))
+
+l=1
+
+The last equality follows from Lemma 2 and the local constance of ψγjn .
+Using the identity
+γ
+
+ψγjn (x + p−γ l) = p− 2 χ(pγ−1 j(x + p−γ l))Ω(|pγ (x + p−γ l) − n|p ) = χ(p−1 jl)ψγjn (x)
+and Lemma 2, we obtain
+
+
+T ψγjn (x) = ψγjn (x) 
+
+Z
+
+|n−pγ y|p >1
+
+Since
+
+T (p−γ n, y)dy + pγ−1 T (p−γ n, p−γ (n + 1))
+
+
+
+p−1
+X
+l=1
+
+(1 − χ(p−1 jl))
+
+p−1
+X
+
+(1 − χ(p−1 jl)) = p
+
+l=1
+
+we obtain
+T ψγjn (x) = ψγjn (x)
+
+Z
+
+|n−pγ y|p >1
+
+−γ
+
+γ
+
+−γ
+
+−γ
+
+T (p n, y)dy + p T (p n, p (n + 1))
+
+!
+
+which gives (12).
+Therefore the operator T is well defined on the basis in L2 (Qp ) that finishes the
+proof of the theorem. Note that convergence of all the integrals used in the proof is
+guaranteed by convergence of (12).
+The next corollary gives a simple representation for the eigenvalues of the generator with the kernel (7).
+7
+
+Let the following series converge for any n:
+
+Corollary 5.
+
+∞
+X
+
+pγ T (γ0) < ∞
+
+(13)
+
+γ=0
+
+Then the operator (5) corresponding to the kernel (7) is well defined in L2 (Qp ),
+diagonal in the basis of p–adic wavelets and have the eigenvalues
+γ
+
+λγn = p T
+
+(γn)
+
+−1
+
++ (1 − p )
+
+∞
+X
+
+γ′
+
+p T
+
+γ ′ =γ+1
+
+
+
+′
+
+γ ′ ,pγ −γ n
+
+
+
+(14)
+
+Note that condition of convergence of the series (13) is equivalent to convergence
+of the integral (12).
+Substituting (7) into (12) we get
+
+Proof
+
+λγn =
+
+Z
+
+|n−pγ y|
+
++pγ
+
+X
+
+X
+
+p >1 γ ′ n′
+
+′
+
+′ ′
+
+T (γ n ) δ1,|pγ′ p−γ n−pγ′ y|p Ω(|pγ p−γ n − n′ |p )dy+
+′
+
+′ ′
+
+T (γ n ) δ1,|pγ′ p−γ n−pγ′ p−γ (n+1)|p Ω(|pγ p−γ n − n′ |p ) =
+
+γ ′ n′
+
+=
+
+X
+
+′ ′
+
+′
+
+′
+
+T (γ n ) pγ (1 − p−1 )θ(γ ′ − γ)Ω(|pγ p−γ n − n′ |p ) + pγ
+
+γ ′ n′
+
+′
+
+X
+
+T (γn ) Ω(|n − n′ |p ) =
+
+′
+
+
+
+n′
+
+γ
+
+=p T
+
+(γn)
+
+−1
+
++ (1 − p )
+
+∞
+X
+
+γ′
+
+p T
+
+γ ′ =γ+1
+
+
+
+γ ′ ,pγ −γ n
+
+Here we use the properties
+Z
+
+|n−pγ y|p >1
+
+′
+
+δ1,|pγ′ p−γ n−pγ′ y|p dy = pγ (1−p−1 )θ(γ ′ −γ),
+
+θ(γ) = 0, γ ≤ 0, θ(γ) = 1, γ > 0
+
+δ1,|pγ′ p−γ n−pγ′ p−γ (n+1)|p = δγγ ′
+Ω(|m − n|p ) = δmn ,
+
+m, n ∈ Qp /Zp
+
+This finishes the proof of the corollary.
+Remark.
+
+This corollary implies the recurrent formulas
+λγ−1,p−1 n − λγn = pγ−1 T (γ−1,p
+T (γn) = T (γ−1,p
+
+−1 n)
+
+−1 n)
+
+− pγ−1 T (γn)
+
++ p1−γ (λγn − λγ−1,p−1 n )
+
+(15)
+
+For instance the sequence {λγn } for fixed n is non–negative and non–increasing with
+the increase of γ.
+
+8
+
+4
+
+Examples of the pseudodifferential operators and
+properties of the diffusions
+
+Calculate particular examples of the kernels of the kind (7).
+
+Example 1.
+
+Let us consider the translationally invariant case. In this case
+T (γn) = T (γ)
+
+and the summation over n in (7) gives
+X
+
+Ω(|pγ x − n|p ) = 1
+
+n
+
+Denoting
+T (γ) = f (pγ )
+we obtain for the kernel
+T (x, y) =
+
+X
+
+T (γ) δ1,|pγ x−pγ y|p = f (|x − y|p )
+
+γ
+
+Therefore the choice
+T (γ) = p−γ(1+α)
+
+(16)
+
+corresponds to the Vladimirov operator, when the kernel is given by
+1
+|x − y|1+α
+p
+
+T (x, y) =
+
+Formula (14) in the considered case (16) takes the form
+λγn = pγ T (γ) + (1 − p−1 )
+
+∞
+X
+
+′
+
+′
+
+pγ T (γ ) =
+
+γ ′ =γ+1
+
+= pγ p−γ(1+α) + (1 − p−1 )
+
+∞
+X
+
+′
+
+′
+
+pγ p−γ (1+α) = p−γα
+
+γ ′ =γ+1
+
+Example 2.
+
+1 − p−α−1
+1 − p−α
+
+(17)
+
+Consider the case when
+T (γn) = f (pγ )g(|p−γ n − n0 |p )
+
+This implies for the kernel
+T (x, y) =
+
+X
+
+f (pγ )δ1,|pγ x−pγ y|p
+
+γ
+
+= f (|x − y|p)
+
+X
+
+g(|p−γ n − n0 |p )Ω(|pγ x − n|p ) =
+
+n
+
+X
+γ
+
+δpγ ,|x−y|p
+
+X
+
+g(|p−γ n − n0 |p )Ω(|pγ x − n|p )
+
+n
+
+9
+
+(18)
+
+One can check that the series
+X
+
+g (|n − n0 |p ) Ω (|x − n|p )
+
+n∈Qp /Zp
+
+equals to g (|x − n0 |p ) for |x − n0 |p > 1 and to g(0) for |x − n0 |p ≤ 1:
+X
+
+g (|n − n0 |p ) Ω (|x − n|p ) = g (|x − n0 |p ) (1−Ω (|x − n0 |p ))+g(0)Ω (|x − n0 |p )
+
+n∈Qp /Zp
+
+This implies
+X
+
+
+
+
+
+g |p−γ n − n0 |p Ω (|pγ x − n|p ) =
+
+n∈Qp /Zp
+
+= g (|x − n0 |p ) (1 − Ω (|pγ x − n0 |p )) + g(0)Ω (|pγ x − n0 |p )
+For the kernel this will give
+T (x, y) = f (|x−y|p ) (g (|x − n0 |p ) (1 − Ω (||x − y|px − n0 |p )) + g(0)Ω (||x − y|px − n0 |p ))
+(19)
+Corollary 5 and (18) imply for the eigenvalues corresponding to diffusion operator
+with the kernel (19) the following:
+λγn = pγ f (pγ )g(|p−γ n − n0 |p ) + (1 − p−1 )g(|p−γ n − n0 |p )
+
+∞
+X
+
+′
+
+′
+
+pγ f (pγ )
+
+γ ′ =γ+1
+
+In the present section we investigate the relaxation of the indicator function of
+the unit disk:
+φ = Ω(|x|p )
+for the ultrametric diffusion with the kernel (7).
+The indicator function has the following decomposition over p–adic wavelets, see
+[2]
+γ
+θ(γ) = 0, γ ≤ 0, θ(γ) = 1, γ ≥ 1
+hΩ(|x|p ), ψγjn i = p− 2 θ(γ)δn0 ,
+Ω(|x|p ) =
+
+p−1
+∞
+XX
+
+γ
+
+p− 2 ψγj0 (x)
+
+j=1 γ=1
+
+Therefore the operator T acts on Ω(|x|p ) as follows
+T Ω(|x|p ) =
+
+p−1
+∞
+XX
+
+γ
+
+p− 2 λγ0 ψγj0
+
+j=1 γ=1
+
+By (14) for the survival probability of the unit disk with the center in zero we obtain
+S(t) = hΩ(|x|p ), e−tT Ω(|x|p )i = (p − 1)
+
+∞
+X
+
+p−γ e−tλγ0 =
+
+γ=1
+
+= (p − 1)
+
+∞
+X
+
+γ=1
+
+
+
+p−γ exp(−t pγ T (γ0) + (1 − p−1 )
+10
+
+∞
+X
+
+γ ′ =γ+1
+
+γ′
+
+p T
+
+(γ ′ 0)
+
+
+
+)
+
+(20)
+
+Analogously
+γ′
+
+′
+
+′
+
+hΩ(|pγ x − n|p ), ψγ ′ jn′ i = hΩ(|pγ x − n|p ), p− 2 χ(pγ −1 jx)Ω(|pγ x − n′ |p )i =
+γ′
+
+′
+
+′
+
+= p− 2 θ(γ ′ − γ)χ(pγ −γ−1 jn)pγ Ω(|pγ −γ n − n′ |p )
+which implies
+Ω(|pγ x − n|p ) = pγ
+
+p−1 X
+∞
+X
+
+γ′
+
+′
+
+p− 2 χ(pγ −γ−1 jn)ψγ ′ jpγ′ −γ n (x)
+
+(21)
+
+j=1 γ ′ =γ+1
+
+where we use the formula
+′
+
+Ω(|pγ −γ n − n′ |p ) = δpγ′ −γ n,n′
+Formula (21) allows to compute the analogues of (20) for displaced disks.
+′
+Note that pγ −γ n = 0 in Qp /Zp when γ ′ is large enough. Thus the series over the
+wavelets in (21) contains only the finite sum of the wavelets with the third index
+not equal to zero. Therefore the asymptotic dependence on time of
+′
+
+hΩ(|pγ x − n|p ), e−tT Ω(|pγ x − n′ |p )i
+coincides with the asymptotics of (20).
+
+5
+
+Conclusion
+
+In the present paper we construct the new family of p–adic pseudodifferential operators T and show that these operators are diagonal in the basis of p–adic wavelets.
+This allows to compute analytically the corresponding evolutions e−tT .
+The approach of the present paper may be applied to the problem of investigation of the diffusion on hierarchical energy landscapes. The concept of hierarchical
+energy landscape attracts a lot of interest in connection with investigation of complex systems, in particular, glasses, clusters, and proteins [17]-[26]. Discuss this
+concept using the language of basis to basis kinetics [26]. In the framework of this
+concept a complex system is assumed to have a large number of metastable configurations, corresponding to local minima of energy. The local minima are clustered in
+hierarchically nested basins of minima, namely, each large basin consists of smaller
+basins, each of these consisting of even smaller ones, and so on. In the other words,
+the hierarchy of basins possesses ultrametric geometry. Finally, the basins of minima are separated from one another by a hierarchically arranged set of barriers, i.e.,
+high barriers separate large basins, and smaller basins within each larger one are
+separated by lower barriers.
+The concept of hierarchical energy landscape may be considered as a kind of
+approximation of a complex energy landscape by a hierarchical energy landscape.
+The dynamics of the system with hierarchical energy landscape it is natural to
+describe by the models of ultrametric diffusion.
+11
+
+It is commonly recognized that relevant analytical tools should be developed for
+applying the concept of hierarchical energy landscape to the description of relaxation
+phenomena in complex systems [22] – [25], [26] (the concept of “basin–to–basin
+kinetics”).
+The present paper is devoted to the development of these analytical tools. We
+show, that for some wide class of ultrametric diffusions the corresponding generators
+(p–adic pseudodifferential operators) may be diagonalized in the basis of p–adic
+wavlets, introduced in [2]. This means that the random walk on the corresponding
+energy landscape may be investigated analytically.
+Acknowledgements
+The author would like to thank V.S.Vladimirov, V.A.Avetisov, I.V. Volovich,
+A.Yu.Khrennikov, A.H.Bikulov and V.A.Osipov for discussions and valuable comments. This work has been partly supported by INTAS YSF 2002–160 F2, CRDF
+(grant UM1–2421–KV–02), The Russian Foundation for Basic Research (projects
+02–01–01084), and by the grant for the support of scientific schools NSh 1542.2003.1.
+
+References
+[1] V.S.Vladimirov, I.V.Volovich, Ye.I.Zelenov, p–Adic analysis and mathematical
+physics, Moscow, Nauka, 1994; V.S.Vladimirov, I.V.Volovich, Ye.I.Zelenov, p–
+Adic analysis and mathematical physics, Singapore, World Scientific, 1994
+[2] S.V.Kozyrev, Wavelet analysis as a p–adic spectral analysis, Izvestia Akademii
+Nauk Seria Math., 2002, 66, N2, http://xxx.lanl.gov/abs/math-ph/0012019
+[3] S.Albeverio, W.Karwowosky, A random walk on p–adic numbers, pp.61–74 in
+”Stochastic Process–Physics and Geometry II ”, Proc. Locarno (1991), edited
+by S.Albeverio, U.Cattaneo, D.Merlini, Singapore, World Scientific, 1995
+[4] A.N.Kochubei, On p–adic Green functions, Teoreticheskaya i Matematicheskaya
+Fizika, 1993, 96 N1, pp.123–138
+[5] A.N.Kochubei, Parabolic equations over the field of p–adic numbers, Izvestia Academii Nauk Seria Math., 1991, 55 N6, pp.1312–1330; A.N.Kochubei,
+Math.USSR Izv., 1992, 39, pp.1263–1280
+[6] A.N.Kochubei, Pseudodifferential equations and stochastics over non–
+archimedean fields, New York, Marcel Dekker, 2001
+[7] V.A.Avetisov, A.H.Bikulov, S.V.Kozyrev, Application of p–adic analysis to
+models of spontaneous breaking of the replica symmetry, J. Phys. A: Math.
+Gen., 1999, 32, pp.8785–8791, http://xxx.lanl.gov/abs/cond-mat/9904360
+[8] V.A.Avetisov, A.H.Bikulov, S.V.Kozyrev, V.A.Osipov, p–Adic Models of Ultrametric Diffusion Constrained by Hierarchical Energy Landscapes, J. Phys. A:
+Math. Gen., 2002, 35, pp.177–189, http://xxx.lanl.gov/abs/cond-mat/0106506
+12
+
+[9] V.A.Avetisov,
+A.Kh.Bikulov,
+V.A.Osipov,
+p–Adic
+description of characteristic relaxation in complex systems, submitted to J.Phys.A,
+http://xxx.lanl.gov/abs/cond-mat/0210447
+[10] I.V.Volovich, p–Adic String, Class. Quantum Gravity, 1987, 4, L83–L87
+[11] A.Khrennikov, p–Adic valued distributions in mathematical physics, Dordrecht,
+Kluwer Academic Publ., 1994
+[12] A.Khrennikov, Non–Archimedean Analysis: Quantum Paradoxes, Dynamical
+Systems and Biological Models, Dordrecht, Kluwer Academic Publishers, 1997
+[13] G.S.Djordjevic, B.Dragovich, Mod.Phys.Lett.A, 1997, 12, p.1455
+[14] G.Parisi, N.Sourlas, p–Adic numbers and replica symmetry breaking, European
+Phys. J. B, 2000, 14, p.535, http://xxx.lanl.gov/abs/cond-mat/9906095
+[15] D.M.Carlucci,
+C.De
+http://xxx.lanl.gov/abs/cond-mat/9709200
+
+Dominicis,
+
+1997,
+
+[16] C.De Dominicis, D.M.Carlucci, T.Temesvari, J. Phys. I France, 1997, 7, p.105
+C.De
+Dominicis,
+D.M.Carlucci,
+T.Temesvari,
+1997,
+http://xxx.lanl.gov/abs/cond-mat/9703132
+[17] M.Mezard, G.Parisi, N.Sourlas, G.Toulouse, M.Virasoro 1984 Phys. Rev. Lett.
+52 1156
+[18] K.Binder, A.P.Young 1986 Rev. Mod. Phys. 58 801
+[19] M.Mezard, G.Parisi, M.Virasoro, Spin-Glass Theory and Beyond, Singapore,
+World Scientific, 1987
+[20] A.Ansary, J.Berendzen, S.F.Bowne, H.Frauenfelder, I.E.T.Iben, T.B.Sauke,
+E.Shyamsunder and R.D.Young 1985 Proc. Natl. Acad. Sci. USA 82 5000
+[21] H.Frauenfelder, S.G.Sligar, P.G.Wolynes 1991 Science 254 1598
+[22] H.Frauenfelder 1995 Nature Struct. Biol. 2 821
+[23] D.Th.Leeson, D.A.Wiersma 1995 Nature Struct. Biol. 2 848
+[24] D.Sherrington 1997 Physica D 107 117
+[25] H.Frauenfelder, D.Th.Leeson 1998 Nature Struct. Biol. 5 757
+[26] O.M.Becker, M.Karplus 1997 J. Chem. Phys. 106 1495
+[27] J.P.Serre, Trees, New York, Berlin, Springer Verlag, 1980
+[28] A.T.Ogielski, D.L.Stein, Phys.Rev.Lett., 1985, 55 N15, pp.1634-1637
+[29] Hajime Yoshino, Hierarchical diffusion, aging and multifractality, 1996,
+http://xxx.lanl.gov/abs/cond-mat/9604033
+13
+
+

@@ -1,0 +1,610 @@
+Black hole entropy in Loop Quantum Gravity
+
+arXiv:gr-qc/0407052v1 14 Jul 2004
+
+Krzysztof A. Meissner
+Institute of Theoretical Physics, Warsaw University
+Hoża 69, 00-681 Warsaw, Poland,
+Abstract
+We calculate the black hole entropy in Loop Quantum Gravity as a
+function of the horizon area and provide the exact formula for the
+leading and sub-leading terms. By comparison with the Bekenstein–
+Hawking formula we uniquely fix the value of the ’quantum of area’
+in the theory.
+
+The Bekenstein–Hawking formula gives the leading term in the entropy
+of the black hole in the form
+1 A
+(1)
+S=
+4 lP2
+where lP is the Planck length and A is the black hole horizon area. According
+to the common belief, the entropy is always connected with the logarithm of
+the number of microscopic states realizing a given macroscopic state. The
+fact that the entropy in (1) is proportional to the area (and not as is usual to
+the volume) has led to the formulation of the so called holographic principle.
+It was however diﬃcult to ﬁnd the microscopic states that could account for
+such an entropy.
+The problem was attacked in two diﬀerent approaches – in string theory
+[1]-[5] and in Loop Quantum Gravity [6]-[10] (see also the review [11]). The
+latter approach is based on a quantum theory of geometry. The basic geometric operators were introduced in [12, 13] and a detailed description of
+the quantum horizon geometry was introduced using the U(1) Chern-Simons
+theory in [10] where one can ﬁnd the detailed discussion of the states on the
+horizon of the black hole (see also [14]). However, the procedure introduced
+in [10] for state counting contained a spurious constraint on admissible sequences and the number of the relevant horizon states is underestimated.
+The correct method of counting was proposed in [14] but that analysis provides only lower and upper bounds on the number of states. The purpose
+of this paper is to rectify this situation. We will provide the correct value
+1
+
+of the Barbero-Immirzi parameter that is needed to obtain agreement with
+the Hawking-Bekenstein formula for large black holes. Furthermore, since we
+are able to calculate the number of states to suﬃcient accuracy, we also rigorously obtain the precise sub-leading quantum correction to the HawkingBekenstein formula. The physical aspects of this result will be discussed
+elsewhere [15].
+As it was shown in [14] the proper counting of states is given by all
+sequences (of arbitrary length) of mi ∈ Z/2, mi 6= 0 such that
+Xp
+|mi |(|mi | + 1) < a
+(2)
+i
+
+where
+a=
+
+A
+8πγlP2
+
+(3)
+
+and γ is a parameter introduced in [16]. Addditionally we have to impose
+the condition
+X
+mi = 0.
+(4)
+i
+
+It is our task to calculate the number of sequences satisfying (2) and (4).
+We start with the sequences without (4) imposed. If we denote by N(a)
+the number of sequences satisfying (2) then we can split the counting into
+the ﬁrst number m1 and the rest and write the recurrence relation
+
+√
+√
+√
+N(a) = θ(a − 3/2) 2N(a − 3/2) + 2N(a − 2) + . . .
+h√
+i
+p
+2
++2N(a − |mi |(|mi | + 1) + . . . + 2 4a + 1 − 1
+(5)
+
+where the symbol [. . .] denotes the integer part. The ﬁrst term on the RHS
+corresponds to sequences with at least two elements and m1 = ±1/2, the
+second to sequences with at least two elements and m1 = ±1 and so on and
+the last term to sequences consisting of just m1 and nothing else.
+We now assume (we will later prove that it is indeed the case) that the
+leading part of the solution of the recurrence relation (5) is for large a given
+by
+N(a) = Ce2πγM a
+(6)
+where γM is a constant to be determined.
+2
+
+Plugging the form (6) into (5) we get
+1=
+
+∞
+X
+
+−2πγM
+
+2e
+
+√
+
+k(k+2)/4
+
+(7)
+
+k=1
+
+where we neglected terms vanishing in the limit a → ∞. The solution to this
+equation can be found numerically and reads
+γM = 0.23753295796592 . . .
+
+(8)
+
+We see that the coeﬃcient of growth γM is between the lower and upper
+bounds given in [14] i.e. lnπ2 < γM < lnπ3 . It seems that γM deﬁned by
+(7) cannot be calculated analytically or given as a solution of any “simpler”
+equation. In the present paper we will also use γ̃ where
+γ̃M := 2πγ = 1.492463591462379 . . .
+
+(9)
+
+Since the condition (4) (as we will later prove) gives only power-like corrections to N(a) therefore for large a we have from (6)
+S = lnN(a) =
+
+γM A
++ O(lnA).
+4γ lP2
+
+(10)
+
+The comparison with the Bekenstein–Hawking formula (1) gives therefore
+the unambiguous result
+γ = γM
+(11)
+so this physical requirement uniquely ﬁxes the value of γ and hence the
+’quantum of area’ in the theory.
+One may note that the exponential ansatz (6) works in many other cases
+for example if the number of states for a given spin j was (2j + 1) instead of
+2 one would have in (7) (k + 1) instead of 2 in front of the exponential and
+the appropriate γM would be equal to 0.273985635 . . ..
+We now prove that the assumption (6) is actually correct and at the end
+we add the condition (4) – the ﬁnal result will not modify (11) and will enable
+us to ﬁnd the sub–leading (logarithmic) correction to the formula for entropy
+(10).
+We introduce the Laplace transform of N(a):
+Z ∞
+P (s) :=
+da N(a) e−sa .
+(12)
+0
+
+3
+
+The transform is well deﬁned since we know that N(a) is piecewise continuous
+and of exponential order i.e. it is bounded by Ke−βa for some K and β ([14]).
+Integrating the relation (5) over a from 0 to ∞ we get an exact result
+√
+P
+−s k(k+2)/4
+2 ∞
+e
+k=1
+.
+√
+P (s) = 
+(13)
+P
+−s k(k+2)/4
+e
+s 1−2 ∞
+k=1
+If all the poles of the Laplace transform are distinct and of ﬁnite order then
+we can make analytical continuation to the complex half-plane Re(s) > 0,
+excluding positions of the poles, i.e. beyond the region allowed by the definition (12). We now use the well known fact that the growth of N(a) is
+determined by the poles of P (s) i.e.
+X
+N(a) =
+ressi esi a + O(an )
+(14)
+si , Re(si )>0
+
+(we assumed here that all the poles are simple – otherwise we would have to
+add some powers of a in front of the exponentials). Therefore our problem
+boils down to determination of such complex si that satisfy
+G(si ) −
+where we deﬁned
+G(s) :=
+
+∞
+X
+
+1
+=0
+2
+
+e−s
+
+√
+
+(15)
+
+k(k+1)/4
+
+.
+
+(16)
+
+k=1
+
+It is important to analyze the distribution of zeroes of (G(s) − 21 ) in more
+detail. Since G(s) is complex analytic in the open domain Re(s) > 0 all the
+zeroes are distinct, of ﬁnite order and there is no point of accumulation of
+zeroes inside this domain. Therefore we have to analyze the domain’s border
+i.e. the imaginary line Re(s) = 0. To analyze the limit when Re(s) ց 0
+deﬁne a new function Gr (s) by subtracting two analytic (for Re(s) > 0)
+functions
+∞
+∞
+X
+s X e−s(k+1)/2
+−s(k+1)/2
+e
+−
+Gr (s) := G(s) −
+(17)
+4
+k
+k=1
+
+k=1
+
+The function Gr (s) is well deﬁned in the whole domain Re(s) ≥ 0, continuous
+and doesn’t have any singularities in this domain. On the other hand two
+4
+
+subtracted functions have a well deﬁned limit when Re(s) ց 0 so we can
+write
+
+e−s/2
+se−s/2
+G(s) = Gr (s) + s/2
+−
+ln 1 − e−s/2 .
+(18)
+e −1
+4
+We see that apart from singularities at s = 4πin, the function G(s) has
+a well deﬁned limit when Re(s) ց 0 and in the domain Re(s) > 0 it is
+complex analytic so in the whole domain Re(s) ≥ 0 there can be no points
+of accumulation of zeroes – therefore all zeroes of the function G(s) − 21 in
+the whole domain Re(s) ≥ 0 must be distinct and of ﬁnite order.
+The only real zero is given by (9):
+s = γ̃M .
+
+(19)
+
+Close to this zero the function P (s) behaves as
+CM
+s − γ̃M
+
+(20)
+
+1
+= 0.509202564 . . .
+2γ̃M G′ (γ̃M )
+
+(21)
+
+P (s) ∼
+where
+CM = −
+
+Therefore the leading behaviour for large a is given by
+N(a) = CM eγ̃M a
+
+(22)
+
+as was to be shown.
+The complex zeroes of the function G(s) − 21 for Re(s) > 1. and |Im(s)| <
+100 are listed below:
+Re(s)
+1.49246359. . .
+1.22393017. . .
+1.41016352. . .
+1.30363023. . .
+1.18587535. . .
+1.17654302. . .
+1.07191106. . .
+1.21660746. . .
+
+Im(s)
+0
+± 22.1530069. . .
+± 35.9362749. . .
+± 58.0472739. . .
+± 71.8281531. . .
+± 79.9673974. . .
+± 87.4120423. . .
+± 93.9713059. . .
+5
+
+It is easy to prove that all the complex zeroes (i.e. poles of P (s)) with nonvanishing imaginary part must have smaller real part than γ̃M so in comparison
+to the leading behaviour (22) they give exponentially small (and rapidly oscillating) contribution to N(a).
+To illustrate the method in the cases where the number of sequences is
+explicitly known letPus give two examples. For sequences of half-integers
+with the condition
+|mi | < a the number of sequences is 3[2a] − 1 and by
+the method described above we get
+2
+P (s) =
+(23)
+s/2
+s (e − 3)
+
+and indeed thePreal pole is equal to 2 ln 3. For sequences of half-integers with
+the condition (|mi | + 1/2) < a the number of sequences is 13 (2[2a]+1 ± 1) − 1
+(where + is for even and − for odd [2a]) and
+2
+(24)
+P (s) =
+s
+s (e − es/2 − 2)
+and indeed the positive real pole is equal to 2 ln 2. The actual numbers
+of sequences in both cases indeed show that the leading behaviour is given
+precisely by the largest positive real pole of P (s).
+It can be useful to discuss how diﬀerent ways of deﬁning the sequences
+are reﬂected in the properties of P (s). We have essentially three diﬀerent
+“statistics”.
+
+• Boltzmann statistics (used in this paper): all sequences satisfying the
+condition are allowed and are treated as diﬀerent. Therefore P (s) is
+given by eq. (13):
+√
+P
+−s k(k+2)/4
+e
+2 ∞
+k=1
+
+√
+P (s) = 
+(25)
+P
+−s k(k+2)/4
+s 1−2 ∞
+e
+k=1
+which has the largest positive real pole equal to γM .
+
+• the intermediate statistics (between Boltzmann and Bose): it requires
+that |mi+1 | ≥ |mi | but treats for example (+ 12 , − 12 , + 12 , . . .) as diﬀerent
+from (− 21 , + 21 , + 12 , . . .) – then we have
+P (s) =
+
+∞
+Y
+
+1
+
+
+√
+−s k(k+2)/4
+1
+−
+2e
+k=1
+6
+
+(26)
+
+√ 2.
+which has the largest positive real pole given by k = 1: s = 2ln
+3
+
+• Bose statistics: it requires not only that |mi+1 | ≥ |mi | but treats for
+example (+ 21 , − 12 , + 12 , . . .) as the same as (− 12 , + 12 , + 21 , . . .) i.e. the
+allowed sequences have the form ( 21 , . . . , − 12 , . . . , +1, . . . , −1, . . .). Then
+we have
+∞
+Y
+1
+P (s) =
+(27)
+
+2
+√
+−s k(k+2)/4
+k=1 1 − e
+
+and this P (s) does not have a pole with Re(s) > 0 at all so N(a) must
+′
+have milder growth than ec a . However when s → 0 the function P (s)
+2ζ(2)
+behaves as P (s) ∼ e s where ζ(s) is the Riemann’s zeta function.
+Hence we have accumulation of zeroes at s = 0√and the inverse Laplace
+transform gives the exponential growth with a:
+√
+(28)
+N(a) ∼ ac e 8ζ(2)a
+
+(this type of statistics and therefore similar formula gives for example
+the degeneracy of states in string theory).
+P
+At the end we impose the condition (4) i.e.
+mi = 0. We introduce
+N(a, p) as the number of sequences satisfying
+Xp
+|mi |(|mi + 1) < a
+(29)
+i
+
+and
+
+X
+
+mi = p
+
+(30)
+
+i
+
+where p ∈ Z/2 and a ≥
+as
+
+p
+|p|(|p| + 1). We can write the recurrence relation
+
+p
+√
+N(a, p) = θ(a − 3/2)θ(a − |p|(|p| + 1)) ×
+
+√
+√
+N(a − 3/2, p − 1/2) + (N(a − 3/2, p + 1/2)+
+
+√
+√
++N(a − 2, p − 1) + N(a − 2, p + 1) + . . . + 1 . (31)
+
+where the ﬁrst term inside the brackets on the RHS corresponds to sequences
+with at least two elements and m1 = + 21 , the second to sequences with at
+7
+
+least two elements and m1 = − 12 and so on and the last term to sequences
+consisting of just m1 (which must be equal to p).
+Next we deﬁne P (s, ω) as the Fourier transform with respect to p and
+Laplace transform with respect to a of N(a, p):
+X Z ∞
+P (s, ω) :=
+da N(a, p) eiωp e−sa .
+(32)
+p∈Z/2
+
+0
+
+Then summing and integrating eq. (31) we get
+2 X −s√k(k+2)/4
+P (s, ω) =
+e
+s k=1
+∞
+
+1−2
+
+∞
+X
+
+e−s
+
+√
+
+k(k+2)/4
+
+!−1
+
+cos(kω/2)
+
+k=1
+
+(33)
+
+where we neglected some contributions from the endpoints (p ∼ a) what will
+be justiﬁed a posteriori. Therefore we have to ﬁnd the zeroes of the function
+inside the bracket on the RHS of (33). With ω = 0 we know that the only
+real zero (i.e. the one that gives the leading behaviour) is equal to s = γ̃M .
+Expanding around s = γ̃M we get
+1−2
+
+∞
+X
+
+e−γ̃M
+
+√
+
+k(k+2)/4
+
+k=1
+
+
+
+
+p
+1 − (s − γ̃M ) k(k + 2)/4 − k 2 ω 2 /8 + O(ω 4) = 0.
+
+(34)
+
+Hence the pole of P (s, ω) is given by
+
+where
+βM = −
+
+s = γ̃M − βM ω 2 + O(ω 4)
+
+(35)
+
+√
+2 −γ̃M k(k+2)/4
+k
+e
+k=1
+= 0.475841255 . . .
+8G′ (γ̃M )
+
+(36)
+
+P∞
+
+Therefore the leading behaviour of N(a, p) is given by
+Z
+CM
+CM
+2
+2
+N(a, p) =
+e2πγM a e−p /(4βM a) . (37)
+dω e−iωp eγ̃M a−βM ω a = √
+2π
+4πβM a
+As we see the endpoints p ∼ a are exponentially small justifying (33). Also we
+see a posteriori that the terms O(ω 4) from (35) would give in (37) corrections
+of relative size 1/a so for large a we can neglect them.
+8
+
+Note that the gaussian distribution√with respect to p in (37) with the
+mean square deviation of the order of a can be expected by the analogy
+with the random walk where the average distance is zero and the mean square
+deviation is of the order of square root of the number of steps.
+Imposing the condition p = 0 we get the ﬁnal result
+N(a, 0) = √
+
+CM
+e2πγM a .
+4πβM a
+
+(38)
+
+Therefore the entropy is given by
+S = lnN(a, 0) =
+
+γM A ln(A/lP2 )
+−
++ O(1)
+4γ lP2
+2
+
+(39)
+
+so for large A/lP2 we conﬁrm (10) as the leading behaviour and we can unambiguously both get the physical value of γ equal to γM (given in (8))
+and resolve the controversy (summarized in [17]) about the coeﬃcient of the
+logarithmic term ﬁxing it to − 21 .
+
+Acknowledgement The author would like to acknowledge valuable discussions with Abhay Ashtekar and Jerzy Lewandowski and thank Hermann
+Nicolai for the invitation to the Albert Einstein Institute in Golm where part
+of this work was done. The work partially supported by the Polish KBN grant
+2P03B 001 25 and the European Programme HPRN–CT–2000–00152.
+
+References
+[1] G. t’Hooft, Nucl. Phys. B335 (1990) 138.
+[2] L. Susskind, Some Speculations about Black Hole Entropy in String
+Theory, hep-th/9309145.
+[3] E. Halyo, A. Rajaraman, L. Susskind, Phys.Lett. B392 (1997) 319.
+[4] G.T. Horowitz, J. Polchinski, Phys.Rev. D55 (1997) 6189.
+[5] T. Damour, G. Veneziano, Nucl.Phys. B568 (2000) 93.
+[6] L. Smolin, J.Math.Phys. 36 (1995) 6417.
+9
+
+[7] C. Rovelli, Phys.Rev.Lett. 77 (1996) 3288.
+[8] K. Krasnov, Phys.Rev. D55 (1997) 3505.
+[9] A. Ashtekar, J. Baez, A. Corichi, K. Krasnov, Phys.Rev.Lett. 80 (1998)
+904.
+[10] A. Ashtekar, J. Baez, K. Krasnov, Adv.Theor.Math.Phys. 4 (2000) 1.
+[11] T. Thiemann, gr-qc/0110034.
+[12] C. Rovelli, L. Smolin, Nucl.Phys. B442 (1995) 593; Erratum: ibid.
+B456 (1995) 753.
+[13] A. Ashtekar, J. Lewandowski, Class.Quant.Grav. 14 (1997) A55.
+[14] M. Domagala, J. Lewandowski, Black hole entropy from Quantum Geometry, gr-qc/040751.
+[15] , A. Ashtekar, M. Domagala, J. Lewandowski, K.A. Meissner, in preparation.
+[16] G. Immirzi, Nucl.Phys.Proc.Suppl. 57 (1997) 65.
+[17] Amit Ghosh, P. Mitra, A bound on the log correction to the black hole
+area law, gr-qc/0401070
+
+E-mail address: Krzysztof.Meissner@fuw.edu.pl
+
+10
+
+

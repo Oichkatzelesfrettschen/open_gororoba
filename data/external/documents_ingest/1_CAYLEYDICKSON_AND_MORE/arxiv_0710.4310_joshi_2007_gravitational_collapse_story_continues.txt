@@ -1,0 +1,2567 @@
+                                                        On Two-Dimensional Holonomy
+
+
+
+
+arXiv:0710.4310v2 [math.DG] 20 Jul 2008
+                                                                        João Faria Martins
+                                                           Centro de Matemática da Universidade do Porto
+                                                         Rua do Campo Alegre, 687, 4169-007 Porto, Portugal
+                                                                        jmartins@math.ist.utl.pt
+
+
+                                                                            Roger Picken
+                                                                     Departamento de Matemática,
+                                                                Instituto Superior Técnico, TU Lisbon
+                                                             Av. Rovisco Pais, 1049-001 Lisboa, Portugal
+                                                                         rpicken@math.ist.utl.pt
+
+                                                                         November 8, 2018
+
+
+                                                                               Abstract
+                                                   We define the thin fundamental categorical group P2 (M, ∗) of a based
+                                               smooth manifold (M, ∗) as the categorical group whose objects are rank-1
+                                               homotopy classes of based loops on M , and whose morphisms are rank-
+                                               2 homotopy classes of homotopies between based loops on M . Here two
+                                               maps are rank-n homotopic, when the rank of the differential of the homo-
+                                               topy between them equals n. Let C(G) be a Lie categorical group coming
+                                               from a Lie crossed module G = (∂ : E → G, ⊲). We construct categorical
+                                               holonomies, defined to be smooth morphisms P2 (M, ∗) → C(G), by using
+                                               a notion of categorical connections, being a pair (ω, m), where ω is a con-
+                                               nection 1-form on P , a principal G bundle over M , and m is a 2-form on
+                                               P with values in the Lie algebra of E, with the pair (ω, m) satisfying suit-
+                                               able conditions. As a further result, we are able to define Wilson spheres
+                                               in this context.
+                                          Key words and phrases non-abelian gerbe; 2-bundle, two-dimensional holon-
+                                          omy; crossed module; categorical group; Wilson sphere
+                                          2000 Mathematics Subject Classification 53C29 (primary); 18D05 (sec-
+                                          ondary)
+
+
+
+
+                                                                                    1
+Contents
+1 Preliminaries                                                                4
+  1.1 Resumé of results and notation from the theory of principal fibre
+       bundles . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+       1.1.1 Connections on principal fibre bundles . . . . . . . . . . .      4
+       1.1.2 Curvature . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+       1.1.3 Parallel transport . . . . . . . . . . . . . . . . . . . . . . .  6
+       1.1.4 The dependence of the parallel transport on a smooth
+              family of curves - the Ambrose-Singer theorem . . . . . .        6
+  1.2 Crossed modules . . . . . . . . . . . . . . . . . . . . . . . . . . .    9
+       1.2.1 Crossed modules and categorical groups . . . . . . . . . . 11
+  1.3 The thin fundamental categorical group of a manifold . . . . . . 12
+       1.3.1 1-Tracks . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+       1.3.2 2-Tracks . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+       1.3.3 Horizontal and vertical compositions of 2-tracks . . . . . . 14
+       1.3.4 Definition of the thin fundamental categorical group of a
+              smooth manifold . . . . . . . . . . . . . . . . . . . . . . . 15
+       1.3.5 The thin fundamental crossed module of a smooth manifold 15
+       1.3.6 Two exact sequences . . . . . . . . . . . . . . . . . . . . . 16
+
+2 Two-dimensional holonomies                                                  17
+  2.1 Categorical connections . . . . . . . . . . . . . . . . . . . . . . . 17
+  2.2 The 2-curvature 3-form of a G-categorical connection . . . . . . . 18
+      2.2.1 Algebraic preliminaries . . . . . . . . . . . . . . . . . . . . 18
+      2.2.2 The 2-structure equation . . . . . . . . . . . . . . . . . . 19
+      2.2.3 The 2-Bianchi identity . . . . . . . . . . . . . . . . . . . . 20
+      2.2.4 Local form of a categorical connection . . . . . . . . . . . 20
+  2.3 Categorical holonomy . . . . . . . . . . . . . . . . . . . . . . . . 22
+      2.3.1 Definition of a holonomy. . . . . . . . . . . . . . . . . . . 22
+      2.3.2 Definition of a categorical holonomy . . . . . . . . . . . . 23
+  2.4 Categorical connections and categorical connection holonomies . 25
+      2.4.1 Defining a categorical holonomy from a categorical con-
+             nection . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+      2.4.2 A well-known lemma . . . . . . . . . . . . . . . . . . . . . 27
+      2.4.3 The dependence of the surface holonomy on a smooth
+             family of surfaces . . . . . . . . . . . . . . . . . . . . . . . 27
+      2.4.4 Re-scaling . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+      2.4.5 Verification of the axioms for a categorical holonomy . . . 34
+      2.4.6 2-Bundles . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+  2.5 Wilson Spheres . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+      2.5.1 The dependence of a categorical connection holonomy on
+             the elements of the fibre . . . . . . . . . . . . . . . . . . 39
+      2.5.2 The dependence of a categorical connection holonomy on
+             the point in the principal bundle . . . . . . . . . . . . . . 40
+      2.5.3 Associating 2-holonomies to embedded spheres . . . . . . 41
+
+
+                                       2
+3 Appendix: Technical Lemmas                                                     43
+
+
+Introduction
+Categorification is an influential idea in many areas of mathematics, and in
+geometry it is natural to try and think about categorifying the notions of holon-
+omy and parallel transport in terms of higher categorical generalisations of the
+notions of loop, Lie group and connection on a principal bundle, in the spirit
+of Baez and Schreiber [B, BS]. In this article we construct a framework for
+2-dimensional, or surface, holonomy along such lines. The based loops on a
+manifold M are replaced by what we call the (strict) thin fundamental cate-
+gorical group of M , P2 (M, ∗), a monoidal category whose objects are rank-1
+homotopy classes of based loops on M and whose morphisms are rank-2 ho-
+motopy classes of homotopies between based loops (or 1-parameter families of
+loops). Here, rank-1 homotopy, at the level of loops, means that the loops are
+homotopic in such a way that the rank of the differential of the homotopy be-
+tween them is less than or equal to 1, i.e. the homotopies between loops do not
+sweep out area. Similarly, at the level of morphisms, two homotopies between
+based loops are rank-2 homotopic, if they themselves are homotopic in such
+a way that the rank of the differential of the homotopy between them is less
+than or equal to 2, i.e. the homotopy between homotopies does not sweep out
+volume. For precise definitions, we refer to subsections 1.3.1 and 1.3.2. The Lie
+group is replaced by a categorical Lie group, C(G), naturally obtained from a
+crossed module of Lie groups G = (∂ : E → G, ⊲). The connection on a princi-
+pal G-bundle P over M is replaced by what we call a categorical connection,
+consisting of a connection 1-form on P with values in g, the Lie algebra of G,
+together with a 2-form on P with values in e, the Lie algebra of E, satisfying
+some conditions including the well-known “vanishing of the fake curvature”.
+Locally these conditions correspond to Baez and Schreiber’s [BS] local formu-
+lation for a 2-connection. The Maurer-Cartan structure equation and Bianchi
+identity for the curvature of an ordinary connection are shown to have natural
+analogues for the curvature 3-form of the categorical connection. Also a variant
+of the Ambrose-Singer theorem (which plays a crucial role in our construction
+of categorical holonomy) generalises to a higher-order version.
+    A categorical holonomy is defined to be a (strict monoidal) smooth functor
+from P2 (M, ∗) to C(G). The main result that we prove (Thm. 39) is how a
+categorical connection gives rise to a categorical holonomy. The underlying
+geometrical idea is to lift the 1-parameter family of loops into P , horizontally in
+one direction, namely the direction along the loops, and to use this lift to pull
+back the forms of the categorical connection, which are then integrated suitably.
+    Note that the appearance of a principal G-bundle P with a connection is
+natural in the context of categorical holonomies. This is because, at the level of
+the set of objects of P2 (M, ∗), i.e. π11 (M, ∗), the thin homotopy classes of based
+loops on M , any smooth functor P2 (M, ∗) → G gives rise to a smooth group
+morphism π11 (M, ∗) → G, and therefore it defines a principal G-bundle over M
+
+
+                                         3
+with a connection [CP, MP].
+    The whole construction is carried out using the language and methods of dif-
+ferential geometry and principal bundles, thereby avoiding working with infinite-
+dimensional path spaces, which was an approach taken in [BS]. The construction
+is coordinate-free from the outset, since we use forms defined on P . We remark
+that the construction of P2 (M, ∗) is of interest in its own right in defining a
+strict thin fundamental categorical group of a manifold (previously only a weak
+version was known). This part of our construction is very similar to that of
+[BHKP, HKK].
+    We study the relation between our construction and non-abelian gerbes, as in
+[BrMe], and 2-bundles, as in [BS], in 2.4.6. Note that each 2-bundle with struc-
+ture 2-group coming from a crossed module of the form (Ad : G → Aut(G), ⊲),
+where ⊲ denotes the obvious left action of Aut(G) in G, is naturally a non-abelian
+gerbe. Let G = (∂ : E → G, ⊲) be a Lie crossed module. Our construction cor-
+responds to a particular case of G-2-bundles, for which the E-valued transition
+functions are trivial, and therefore the G-valued transition functions satisfy the
+usual cocycle condition for a principal G-bundle. Although G-2-bundles are
+a natural way to approach two-dimensional holonomy, we emphasise that our
+main goal is the definition of categorical group maps P2 (M, ∗) → C(G). This is
+a very strong condition, and we argue that it should force the G-2-bundle with
+connection to be of the special form considered here - see 2.4.6 where this point
+is elaborated.
+    At the end of this article we define the notion of Wilson sphere, which means
+that a categorical holonomy, taking values in the kernel of ∂ : E → G, can be
+associated to embedded spheres in a manifold, up to acting by an element of
+the group G.
+
+
+1       Preliminaries
+1.1     Resumé of results and notation from the theory of
+        principal fibre bundles
+1.1.1    Connections on principal fibre bundles
+For full details on connections on principal fibre bundles see [KN, P].
+    Let M be a paracompact smooth manifold. Let G be a Lie group with Lie
+algebra g. Consider a principal G-bundle P over M , with canonical projection
+π : P → M . For each x ∈ M , let Px = π −1 (x) be the fibre at x. Let also X(P )
+denote the Lie algebra of smooth vector fields on P . Recall that there exists a Lie
+                                                              d
+algebra morphism A ∈ g 7→ A# ∈ X(P ), such that A#      u = dt u exp(tA)t=0 , ∀u ∈
+P, ∀A ∈ g. Here if X ∈ X(P ) is a vector field then Xu ∈ Tu P (the tangent space
+of P at u ∈ P ) denotes the value of X at the point u.
+    Denote the right action of G on P as g ∈ G 7→ Rg ∈ diff(P ), where diff(P )
+denotes the diffeomorphism group of P . Recall the following very useful formula:
+                                                     #
+                            (Rg )∗ (A# ) = g −1 Ag        ,
+
+
+                                         4
+where g ∈ G and A ∈ g. Given an element u ∈ P , recall that a vector Xu ∈ Tu P
+is said to be vertical if π∗ (Xu ) = 0. Let TuV P denote the subspace of vertical
+vectors in Tu P . Notice that any Xu ∈ TuV P is of the form A# u for some A ∈ g,
+and this correspondence is one-to-one.
+    Let ω ∈ A1 (P, g) be a connection on P . In other words ω is a smooth 1-form
+on P with values in g such that:
+  1. Rg∗ (ω) = g −1 ωg, ∀g ∈ G,
+
+  2. ω(A# ) = A, ∀A ∈ g.
+Given an element u ∈ P , let TuH P = {Xu ∈ Tu P : ω(Xu ) = 0}, the horizontal
+subspace at u ∈ P . Then TuH is a complementary subspace of TuV P in Tu P for
+each u ∈ P . Moreover, the following identity holds for each g ∈ G and u ∈ P :
+                                     
+                                TuH P g = TugH
+                                               P.
+
+    The natural projection maps X ∈ T P 7→ X H and X ∈ T P 7→ X V are
+smooth. Here T P denotes the tangent bundle of P . There exists also a unique
+map X ∈ X(M ) 7→ X    e ∈ X(P ), called the horizontal lift of X ∈ X(M ), such
+      e       H
+that Xu ∈ Tu P, ∀u ∈ P and π∗ (X) e = X, for any X ∈ X(M ), the Lie algebra
+of smooth vector fields on M . Note that this horizontal lift gives rise to linear
+maps Tx M → Tu P , if π(u) = x, where x ∈ M and u ∈ P . The horizontal lift of
+a vector field X ∈ X(M ) is always G-invariant. In other words:
+
+                                  e = X,
+                                  Xg  e ∀g ∈ G.
+
+1.1.2   Curvature
+Let P be a principal G-bundle over M . Let ω ∈ A1 (P, g) be a connection 1-form
+on P . Given an n-form a on P , the exterior covariant derivative of a is given by
+
+                          Da = da ◦ (H
+                                     | × H{z. . . × H}).
+                                        (n+1)-times
+
+
+    Let Ω ∈ A2 (P, g) be the curvature 2-form of the connection ω. It can be
+defined as the exterior covariant derivative Dω of the connection 1-form ω, in
+other words:
+                           Ω(X, Y ) = dω(X H , Y H ),
+where X, Y ∈ X(P ). The curvature 2-form Ω is G-equivariant, which means:
+
+                            Rg∗ (Ω) = g −1 Ωg, ∀g ∈ G.
+
+Recall also Cartan’s structure equation:
+
+                     dω(X, Y ) + [ω(X), ω(Y )] = Ω(X, Y ),                    (1)
+
+
+
+                                        5
+valid for any vector fields X, Y ∈ X(P ). The Bianchi identity can be stated by
+saying that the exterior covariant derivative DΩ of the curvature form is zero,
+in other words:
+                          DΩ = dΩ ◦ (H × H × H) = 0.                        (2)
+The Bianchi identity can also be written as:
+
+    dΩ(X, Y, Z) + [ω(X), Ω(Y, Z)] + [ω(Y ), Ω(Z, X)] + [ω(Z), Ω(X, Y )] = 0,
+
+for any smooth vector fields X, Y, Z ∈ X(P ).
+
+1.1.3   Parallel transport
+Let P be a principal G-bundle over the manifold M . Let ω ∈ A1 (P, g) be a
+connection on P . Recall that ω determines a parallel transport along smooth
+curves. Specifically, given x ∈ M and a smooth curve γ : [0, 1] → M , with
+γ(0) = x, then there exists a smooth map:
+
+                      (t, u) ∈ [0, 1] × Px 7→ Hω (γ, t, u) ∈ P,
+
+uniquely defined by the conditions:
+                             
+      d                 ^
+                        d
+  1. dt Hω (γ, t, u) = dt γ(t)                  ; ∀t ∈ [0, 1], ∀u ∈ Px ,
+                                   Hω (γ,t,u)
+
+  2. Hω (γ, 0, u) = u; ∀u ∈ Px .
+
+In particular this implies that Hω (γ, t), given by u 7→ Hω (γ, t, u), maps Px
+bijectively into Pγ(t) , for any t ∈ [0, 1]. Recall that the parallel transport is
+G-equivariant, in other words:
+
+                  Hω (γ, t, ug) = Hω (γ, t, u)g, ∀g ∈ G, ∀u ∈ Px .
+
+1.1.4    The dependence of the parallel transport on a smooth family
+         of curves - the Ambrose-Singer theorem
+                                        .
+Let M be a smooth manifold. Let Dn = [0, 1]n be the n-cube, where n ∈ N. A
+map f : Dn → M is said to be smooth if its partial derivatives of any order exist
+and are continuous as maps Dn → M . Let G be a Lie group with Lie algebra
+g. Consider a smooth principal G-bundle π : P → M with a connection 1-form
+ω ∈ A1 (P, g).
+     Now let s ∈ [0, 1] 7→ γs be a smooth 1-parameter family of smooth curves
+[0, 1] → M . Here smooth means that the map Γ : (t, s) ∈ [0, 1]2 7→ γs (t) ∈ M
+is smooth. Define the initial point map q : [0, 1] → M by q(s) = γs (0) for each
+s ∈ [0, 1]. Choose u ∈ Pq(0) and set us = Hω (q, s, u) ∈ Pq(s) , where s ∈ [0, 1].
+Our purpose is to analyse the s-dependence of Hω (γs , t, us ), where s, t ∈ [0, 1],
+by calculating:
+                                    ∂
+                                       Hω (γs , t, us ).
+                                    ∂s
+
+                                             6
+This analysis is of course classical.
+   For convenience of notation, define
+                             f (s, t) = Hω (γs , t, us ); s, t ∈ [0, 1].
+                                                    ∂      ∂
+Let the coordinate vector fields of [0, 1]2 be ∂t     and ∂s . We have:
+                                             
+            ∂      ∂               ∂             ∂
+               ω      f (s, t) = f ∗ (ω)
+            ∂t     ∂s             ∂t            ∂s
+                                                                   
+                                               ∂ ∂         ∂ ∗       ∂
+                                = f ∗ (dω)        ,      +    f (ω)
+                                              ∂t ∂s        ∂s        ∂t
+                                                              
+                                         ∂            ∂
+                                = dω        f (s, t), f (s, t) .
+                                         ∂t           ∂s
+Note that the second equation follows from the well-known formula
+                       dφ(X, Y ) = Xφ(Y ) − Y φ(X) − φ([X, Y ]),                           (3)
+valid for any 2-form φ on a manifold M and any X, Y ∈ X(M ). The last
+                                       ∂
+equation follows from the fact that ∂t   f (s, t) is horizontal, by definition of parallel
+transport.
+                                                                              ∂
+    Therefore by Cartan’s structure equation (1) and the fact that ∂t           f (s, t) is
+horizontal it follows that:
+                                                                 
+                   ∂      ∂                     ∂          ∂
+                      ω      f (s, t) = Ω         f (s, t), f (s, t) .                 (4)
+                   ∂t     ∂s                   ∂t          ∂s
+Since Ω(X, Y ) = 0 if either of the vectors X or Y is vertical we can conclude:
+                                               H             H !
+           ∂      ∂                    ∂               ∂
+              ω      f (s, t) = Ω         f (s, t)  ,     f (s, t)     .
+           ∂t     ∂s                   ∂t              ∂s
+
+   Note that, by definition of parallel transport, we have
+                         H                           !
+                ∂               ∂             ∂^
+                  f (s, t)   = f (s, t) =        γs (t)                                .
+               ∂t               ∂t            ∂t
+                                                                      Hω (γs ,t,us )
+
+                 ∂
+                            H
+Given that       ∂s f (s, t)   is horizontal and the fact that:
+                           H !                  
+                 ∂                      ∂             ∂              ∂
+       π∗           f (s, t)     = π∗      f (s, t) =    π f (s, t) =    γs (t),
+                 ∂s                     ∂s            ∂s              ∂s
+
+it follows                            H                 !
+                            ∂                    ∂^
+                               f (s, t)   =         γs (t)                     .
+                            ∂s                   ∂s
+                                                              Hω (γs ,t,us )
+                                                                        ∂
+                                                                                  
+     Going back to equation (4), we have that, for each s ∈ [0, 1], ω ∂s  f (s, 0) =
+                                              ∂
+0, since f (s, 0) = us = Hω (q, s, u), hence ∂s f (s, 0) is horizontal for each s ∈
+[0, 1]. We thus arrive at the following well known result:
+
+                                                 7
+Lemma 1 Let G be a Lie group with Lie algebra g. Let P be a smooth principal
+G-bundle over the manifold M . Let s ∈ [0, 1] 7→ γs be a smooth 1-parameter
+family of curves [0, 1] → M . Here smooth means that the map (s, t) ∈ [0, 1]2 7→
+γs (t) ∈ M is smooth. Consider a connection ω ∈ A1 (P, g). Let q : [0, 1] → M
+be the curve such that q(s) = γs (0), ∀s ∈ [0, 1]. Choose u ∈ Pq(0) , and let us =
+Hω (q, s, u) ∈ Pq(s) , where s ∈ [0, 1]. The following holds for each s, t′ ∈ [0, 1]:
+                                 Z t′                       !
+              ∂           ′                  ∂^ ∂^
+         ω      Hω (γs , t , us ) =      Ω     γs (t), γs (t)             dt.       (5)
+             ∂s                       0     ∂t        ∂s
+                                                                         Hω (γs ,t,us )
+
+    Consider the case when all curves γs : [0, 1] → M , where s ∈ [0, 1], are closed,
+though possibly with varying initial points. (This flexibility will be important
+to define Wilson spheres in 2.5.3). Then we can define a family of holonomies
+gγs ∈ G, where s ∈ [0, 1], by:
+                             us gγs = Hω (γs , 1, us ), ∀s ∈ [0, 1].
+We will use the preceding lemma to obtain a differential equation satisfied by
+g γs .
+                d
+      Because ds  us is horizontal it follows that:
+                                    Z 1                           !
+         d                      d                   ∂^ ∂^
+    ω       (us gγs ) = ω us gγs =             Ω       γs (t), γs (t)    dt.
+         ds                    ds           0       ∂t        ∂s
+                                                                                   Hω (γs ,t,us )
+                                           d
+Since, for each s ∈ [0, 1], the vector us ds gγs is vertical, this means, by the second
+condition of the definition of a connection 1-form ω (see 1.1.1):
+                                                  !               #
+                      Z 1        ^ ∂^
+            d                    ∂
+        u s g γs =         Ω      γs (t), γs (t)                dt           ,     (6)
+           ds           0       ∂t        ∂s
+                                                        Hω (γs ,t,us )       Hω (γs ,1,us )
+or
+                  
+   d
+      u  g
+        s γ(s+t′ )
+  dt′                t′ =0
+                                                                    !                   
+                                          Z 1        ^         ^
+               d                                     ∂        ∂
+             = ′ Hω (γs , 1, us ) exp t′      Ω       γs (t), γs (t)                 dt
+              dt                            0       ∂t        ∂s
+                                                                       Hω (γs ,t,us )      t′ =0
+                                                             !              
+                                  Z 1
+               d                           ∂^ ∂^
+             = ′ us gγs exp t′       Ω       γs (t), γs (t)              dt          ,
+              dt                    0     ∂t          ∂s
+                                                                    Hω (γs ,t,us )        t′ =0
+which, given the fact that the right action of G on P is free, is equivalent to:
+Lemma 2
+                                  Z 1                        !
+                   d                        ∂^ ∂^
+                     g γ = g γs         Ω      γs (t), γs (t)                     dt.               (7)
+                   ds s            0        ∂t        ∂s
+                                                                 Hω (γs ,t,us )
+
+This fact will be of major importance later.
+
+                                                8
+1.2      Crossed modules
+All Lie groups and Lie algebras are taken to be finite-dimensional.
+
+Definition 3 (Lie crossed module) A crossed module G = (∂ : E → G, ⊲) is
+given by a group morphism ∂ : E → G together with a left action ⊲ of G on E
+by automorphisms, such that:
+
+     1. ∂(X ⊲ e) = X∂(e)X −1; ∀X ∈ G, ∀e ∈ E,
+     2. ∂(e) ⊲ f = ef e−1 ; ∀e, f ∈ E.
+
+If both G and E are Lie groups, ∂ : E → G is a smooth morphism, and the left
+action of G on E is smooth then G will be called a Lie crossed module.
+
+  A morphism G → G ′ between the crossed modules G = (∂ : E → G, ⊲) and
+G = (∂ ′ : E ′ → G′ , ⊲′ ) is given by a pair of maps φ : G → G′ and ψ : E → E ′
+ ′
+
+making the diagram:
+                                              ∂
+                                          E −−−−→ G
+                                                 
+                                          
+                                         ψy
+                                                  φ
+                                                  y
+                                             ∂′
+                                 E ′ −−−−→ G′
+commutative. In addition we must have ψ(X ⊲ e) = φ(X) ⊲′ ψ(e) for each e ∈ E
+and each X ∈ G.
+    Given a Lie crossed module G = (∂ : E → G, ⊲), then the induced Lie algebra
+map ∂ : e → g, together with the derived action of g on e (also denoted by ⊲)
+is a differential crossed module, in the sense of the following definition - see
+[BS, B, BC].
+
+Definition 4 (Differential crossed module) A differential crossed module,
+say G = (∂ : e → g, ⊲), is given by a Lie algebra morphism ∂ : e → g together
+with a left action of g on the underlying vector space of e, such that:
+     1. For any X ∈ g the map e ∈ e 7→ X ⊲ e ∈ e is a derivation of e, in other
+        words
+                 X ⊲ [e, f ] = [X ⊲ e, f ] + [e, X ⊲ f ]; ∀X ∈ g, ∀e, f ∈ e.
+
+     2. The map g → Der(e) from g into the derivation algebra of e induced by
+        the action of g on e is a Lie algebra morphism. In other words:
+
+                  [X, Y ] ⊲ e = X ⊲ (Y ⊲ e) − Y ⊲ (X ⊲ e); ∀X, Y ∈ g, ∀e ∈ e.
+
+     3. ∂(X ⊲ e) = [X, ∂(e)]; ∀X ∈ g, ∀e ∈ e.
+     4. ∂(e) ⊲ f = [e, f ]; ∀e, f ∈ e.
+
+
+
+
+                                              9
+Note that the map (X, e) ∈ g × e 7→ X ⊲ e ∈ e is necessarily bilinear.
+   Therefore, given a differential crossed module, G = (∂ : e → g, ⊲) there exists
+a unique crossed module of simply connected Lie groups G = (∂ : E → G, ⊲)
+whose differential form is G, up to isomorphism. The proof of this result is
+standard Lie theory, together with the lift of the Lie algebra action to a Lie
+group action, which can be found in [K], Thm 1.102.
+
+Example 5 Let G be a Lie group with a left action ⊲ on an abelian group V by
+automorphisms, for example take V to be any representation of G on a vector
+space. If we put ∂ = 1G then (∂ : V → G, ⊲) is a Lie crossed module. Its
+differential form is given by the derived action of g on V and the zero map
+V → g.
+
+Example 6 Let G be any Lie group. Let Ad denote the adjoint action of G on
+G. Then (id : G → G, Ad) is a Lie crossed module.
+
+Example 7 Let G and E be Lie groups, and let ∂ : E → G be a surjective map
+such that ker(∂) is central in E. Define a left action of G on E as g ⊲e = g0 eg0−1 ,
+where g0 ∈ E is such that ∂(g0 ) = g ∈ G, and e ∈ E. Then G = (∂ : E → G, ⊲)
+is a Lie crossed module.
+
+Example 8 In the previous example, we can take the universal covering map
+SU(2) → SO(3), whose kernel is {±1}. The differential form of this crossed
+module is given by the adjoint action of su(2) on su(2) and the identity map.
+
+Example 9 More generally, take the universal cover ∂ : E → G of the Lie
+group G. Then the construction in example 7 can be applied since the kernel of
+∂ is necessarily central in E.
+
+Example 10 Let H be the group of upper triangular matrices in R which only
+have 1’s in the main diagonal. Define a Lie group map ∂ : H → R2 as
+                                      
+                                1 a b
+                           ∂ 0 1 c  = (a, c),
+                                0 0 1
+
+where a, b, c ∈ R. Then the kernel of ∂ : H → R2 is central in H, and therefore
+the construction in example 7 can be applied.
+
+Example 11 Let E be any Lie group. Let Aut(E) be the group of automor-
+phisms of E. Then Aut(E) is a Lie group, in fact it is a Lie subgroup of GL(e) if
+E is simply connected. Consider the map Ad : E → Aut(E) that sends e ∈ E to
+the automorphism Ad(e) : E → E. The group Aut(E) acts on E as φ ⊲ e = φ(e)
+where φ ∈ Aut(E) and e ∈ E. Then (Ad : E → Aut(E), ⊲) is a Lie crossed
+module.
+
+The previous construction yields several examples of Lie crossed modules. For
+instance, example 8 is obtained this way since Aut(SU(2)) = SO(3). To get new
+examples, however, we need to consider non-semisimple Lie groups.
+
+                                         10
+Example 12 In example 11, take E = H, the group of upper triangular 3 × 3
+matrices in R, which only have 1’s in the main diagonal. Then the crossed
+module (Ad : H → Aut(H), ⊲) is highly non-trivial. In fact, Ad(E) is isomorphic
+to R2 , whereas the cokernel Out(E) of Ad is isomorphic to GL(2, R), see [KH].
+The kernel of Ad is a central subgroup of H isomorphic to R; see example 10.
+
+1.2.1    Crossed modules and categorical groups
+Definition 13 (Categorical groups and Lie categorical groups) A cate-
+                                                                            ⊗
+gorical group C is a groupoid provided with a strict monoidal structure C×C −
+                                                                            → C,
+as well as a “group inversion” functor −1 : C → C such that both the set of ob-
+jects C0 of C and the set of morphisms C1 of C are groups under the tensor
+product, and both the source and target maps σ, τ : C1 → C0 are group mor-
+phisms. A Lie categorical group is defined analogously by replacing groups by
+Lie groups and group morphisms by Lie group morphisms.
+
+     See [BM, BL] for more details.
+
+Definition 14 (Morphism of categorical groups) A morphism of categor-
+ical groups is given by a strict monoidal functor; see [ML].
+
+    It is well-known that the category of crossed modules and the category of
+categorical groups are equivalent; see for example [BL, BM, BHS]. Let us ex-
+plain how to define a categorical group C(G) from a crossed module G. This
+construction is an old one.
+    Let G = (∂ : E → G, ⊲) be a crossed module. The set of objects C0 of C(G)
+is given by all elements of G. The set of morphisms C1 of C(G) is given by the
+set of all pairs (X, e) where X ∈ G and e ∈ E. The source and the target of
+(X, e) ∈ C1 are given by σ(X, e) = X and τ (X, e) = ∂(e)−1 X, respectively.
+                                                         (X,e)
+In other words, a morphism in C(G) “looks like” X −−−→ ∂(e)−1 X, which we
+                               e
+                               → ∂(e)−1 X. Given X ∈ G and e, f ∈ E the
+will sometimes abbreviate as X −
+composition
+                         e         f
+                     X− → ∂(e)−1 X −
+                                   → ∂(f )−1 ∂(e)−1 X
+is
+                                      ef
+                               X −→ ∂(ef )−1 X.
+     The tensor product has the form:
+
+                 ∂(e)−1 X ∂(f )−1 Y             ∂(e)−1 X∂(f )−1 Y
+                    x         x                         x
+                    e ⊗      f            =           (X⊲f )e ,           (8)
+                                                      
+                  X          Y                  XY
+where X, Y ∈ G and e, f ∈ E. Therefore, the set of morphisms of C(G) is a
+group under the tensor product. This group is isomorphic to the semidirect
+product G ⋉ E of G and E.
+
+
+                                           11
+    From the definition of a crossed module, it is easy to see that we have indeed
+defined a strict monoidal category which, furthermore, is a categorical group.
+    We will recall in 1.3.4 how to define a crossed module from a categorical
+group.
+
+1.3     The thin fundamental categorical group of a manifold
+Let M be a smooth manifold.
+
+1.3.1   1-Tracks
+Definition 15 (1-path) A 1-path is given by a smooth map γ : [0, 1] → M
+such that there exists an ǫ > 0 such that γ is constant in [0, ǫ] ∪ [1 − ǫ, 1]; in
+the terminology of [CP], this can be abbreviated by saying that each end point of
+γ has a sitting instant. Given a 1-path γ, define the source and target of γ as
+σ(γ) = γ(0) and τ (γ) = γ(1), respectively.
+
+    Given two 1-paths γ and φ with τ (γ) = σ(φ), their concatenation γφ is
+defined in the usual way:
+                                (
+                                    γ(2t), if t ∈ [0, 1/2]
+                      (γφ)(t) =
+                                  φ(2t − 1), if t ∈ [1/2, 1]
+
+Note that the concatenation of two 1-paths is also a 1-path. The fact that any
+1-path has sitting instants at its end points needs to be used to prove this.
+
+Definition 16 (2-paths) A 2-path Γ is given by a smooth map Γ : [0, 1]2 → M
+such that there exists an ǫ > 0 for which:
+  1. Γ(t, s) = Γ(0, 0) if 0 ≤ t ≤ ǫ and s ∈ [0, 1],
+  2. Γ(t, s) = Γ(1, 0) if 1 − ǫ ≤ t ≤ 1 and s ∈ [0, 1],
+  3. Γ(t, s) = Γ(t, 0) if 0 ≤ s ≤ ǫ and t ∈ [0, 1],
+  4. Γ(t, s) = Γ(t, 1) if 1 − ǫ ≤ s ≤ 1 and t ∈ [0, 1].
+
+   Given a 2-path Γ, define the following 1-paths:
+
+        ∂l (Γ)(s) = Γ(0, s), s ∈ [0, 1],        ∂r (Γ)(s) = Γ(1, s), s ∈ [0, 1],
+        ∂d (Γ)(t) = Γ(t, 0), t ∈ [0, 1],        ∂u (Γ)(t) = Γ(t, 1), t ∈ [0, 1].
+
+Note that the paths ∂l (Γ) and ∂r (Γ) are necessarily constant, thus each of them
+can be identified with a point of M . In addition, given a 2-path Γ then the
+1-paths ∂u (Γ) and ∂d (Γ) have the same initial and end points. If x is a point of
+M the constant 1- and 2-paths with value x are both denoted by x.
+    If Γ and Γ′ are 2-paths such that ∂r (Γ) = ∂l (Γ′ ) their horizontal concatena-
+tion Γ ◦h Γ′ is defined in the obvious way, in other words:
+
+
+                                           12
+                             (
+                                  Γ(2t, s), if t ∈ [0, 1/2] and s ∈ [0, 1]
+                  ′
+           Γ ◦h Γ (t, s) =
+                                 Γ′ (2t − 1, s), if t ∈ [1/2, 1] and s ∈ [0, 1]
+Similarly, if ∂u (Γ) = ∂d (Γ′ ) we can define a vertical concatenation Γ ◦v Γ′ as:
+                               (
+                                   Γ(t, 2s), if s ∈ [0, 1/2] and t ∈ [0, 1]
+                   ′
+             Γ ◦v Γ (t, s) =
+                                 Γ′ (t, 2s − 1), if s ∈ [1/2, 1] and t ∈ [0, 1]
+
+   We will also represent the 2-paths Γ of M in the following suggestive way:
+
+                                          ∂u (Γ)
+                                            x
+                                            
+                                       Γ = Γ
+                                            ∂d (Γ)
+
+In this notation, the vertical concatenation of two 2-paths Γ and Γ′ with ∂d (Γ′ ) =
+∂u (Γ) can be represented as:
+
+                                                            ∂u (Γ′ )
+                                                               x
+                                                                ′
+                                  ∂u (Γ ◦v Γ′ )                Γ
+                                       x
+                                       
+                Γ ◦ v Γ′   =           Γ◦v Γ′    =    ∂d (Γ′ ) = ∂u (Γ)
+                                                                x
+                                                                
+                                  ∂d (Γ ◦v Γ′ )                 Γ
+                                                             ∂d (Γ)
+
+Definition 17 Two 1-paths φ and γ are said to be rank-1 homotopic (and we
+write φ ∼
+        =1 γ) if there exists a 2-path Γ such that:
+  1. ∂u (Γ) = γ and ∂d (Γ) = φ.
+  2. Rank(Dv Γ) ≤ 1, ∀v ∈ [0, 1]2 .
+Here D denotes derivative.
+
+In particular, if γ and φ are rank-1 homotopic, then they have the same ini-
+tial and end-points. Note also that rank-1 homotopy is an equivalence rela-
+tion. Given a 1-path γ, the equivalence class to which it belongs is denoted
+by [γ]. Rank-1 homotopy is one of a number of notions of “thin” equivalence
+between paths or loops, and was introduced in [CP], following a suggestion by
+A. Machado.
+    We denote the set of 1-paths of M by S1 (M ). The quotient of S1 (M ) by the
+relation of thin homotopy is denoted by S1 (M ). We call the elements of S1 (M )
+1-tracks. The concatenation of 1-tracks together with the source and target
+maps σ, τ : S1 (M ) → M , defines a groupoid S1 (M ) whose set of morphisms is
+S1 (M ) and whose set of objects is M .
+
+
+                                            13
+Definition 18 Let ∗ ∈ M be a base point. The group π11 (M, ∗) is defined as
+being the set of 1-tracks [γ] ∈ S1 (M ) starting and ending at ∗, with the group
+operation being the concatenation of paths.
+
+It is easy to see directly that π11 (M, ∗), a thin analogue of π1 (M ), is indeed a
+group. See [CP, MP] for details.
+
+1.3.2   2-Tracks
+Definition 19 Two 2-paths Γ and Γ′ are said to be rank-2 homotopic (and we
+write Γ ∼
+        =2 Γ′ ) if there exists a smooth map J : [0, 1]2 × [0, 1] → M such that:
+
+  1. J(t, s, 0) = Γ(t, s), J(t, s, 1) = Γ′ (t, s) for s, t ∈ [0, 1].
+  2. J is constant over {0} × [0, 1]2 and {1} × [0, 1]2 .
+  3. Over [0, 1]×{0}×[0, 1] the map J : [0, 1]2 ×[0, 1] → M restricts to a rank-1
+     homotopy ∂d (Γ) → ∂d (Γ′ ).
+  4. J restricts to a rank-1 homotopy ∂u (Γ) → ∂u (Γ′ ) over [0, 1] × {1} × [0, 1].
+  5. There exists an ǫ > 0 such that J(t, s, x) = J(t, s, 0) if x ≤ ǫ and s, t ∈
+     [0, 1], and analogously for all the other faces of [0, 1]3 . We will denote this
+     condition as saying that J has a product structure close to the boundary
+     of [0, 1]3 .
+                                            3
+  6. Rank(Dv J) ≤ 2 for any v ∈ [0, 1] .
+
+     Note that rank-2 homotopy is an equivalence relation. To prove transitivity
+we need to use the penultimate condition of the previous definition. We denote
+by S2 (M ) the set of all 2-paths of M . The quotient of S2 (M ) by the relation of
+rank-2 homotopy is denoted by S2 (M ). We call the elements of S2 (M ) 2-tracks.
+If Γ ∈ S2 (M ), we denote the equivalence class in S2 (M ) to which Γ belongs by
+[Γ].
+
+1.3.3   Horizontal and vertical compositions of 2-tracks
+Note that the horizontal composition of 2-paths descends immediately to a
+horizontal composition in S2 (M ). Suppose that Γ and Γ′ are 2-paths with
+∂u (Γ) ∼
+       =1 ∂d (Γ′ ). Choose a rank-1 homotopy J connecting ∂u (Γ) and ∂d (Γ′ ).
+Then [Γ] ◦v [Γ′ ] is defined as [(Γ ◦v J) ◦v Γ′ ]. The fact that this composition is
+well defined in S2 (M ) follows immediately from lemma 52 in the appendix.
+    Therefore both the vertical and horizontal compositions of 2-paths descend
+to S2 (M ). These compositions are obviously associative, and admit units and
+inverses. Since the interchange law is trivially verified the following theorem
+holds:
+
+
+
+
+                                            14
+Theorem 20 Let M be a smooth manifold. The horizontal and vertical com-
+positions in S2 (M ) together with the boundary maps ∂u , ∂d , ∂l , ∂r : S2 (M ) →
+S1 (M ) define a 2-groupoid S2 (M ), whose set of objects is given by all points of
+M , the set of 1-morphisms by the set S1 (M ) of 1-tracks on M , and given two
+1-tracks [γ] and [γ ′ ], the set of 2-morphisms [γ] → [γ ′ ] is given by all 2-tracks
+[Γ] with ∂d ([Γ]) = [γ] and ∂u ([Γ]) = [γ ′ ].
+The definition of a 2-groupoid can be found in [HKK]. This construction should
+be compared with [HKK, BHKP], where the thin strict 2-groupoid of a Hausdorff
+space was defined, using a different notion of thin equivalence (factoring through
+a graph) - see also [BH] for the construction of the fundamental double groupoid
+of a triple of spaces. For analogous non-strict constructions see [M, BS, MP].
+
+1.3.4   Definition of the thin fundamental categorical group of a smooth
+        manifold
+Since S2 (M ) is a 2-category, given a base point ∗ of M (in other words an
+object of S2 (M )) we can define a monoidal category P2 (M, ∗). The objects of
+P2 (M, ∗) are given by all 1-tracks of M starting and ending at ∗, and therefore
+by all elements of π11 (M, ∗). On the other hand, the set P2 (M, ∗) of morphisms
+of P2 (M, ∗) is given by the set of all 2-tracks [Γ] ∈ S2 (M ) such that ∂l ([Γ]) =
+∂r ([Γ]) = ∗. Therefore, given [γ], [γ ′ ] ∈ π11 (M, ∗), the set of morphisms [γ] →
+[γ ′ ] is given by all 2-tracks [Γ] connecting [γ] and [γ ′ ], in other words with
+∂d ([Γ]) = [γ] and ∂u ([Γ]) = [γ ′ ]. The composition in P2 (M, ∗) is given by the
+vertical composition in S2 (M ). On the other hand the horizontal composition
+of 2-tracks will give the tensor product in P2 (M, ∗).
+      Given that S2 (M ) is a 2-groupoid, the monoidal category P2 (M, ∗) is a
+categorical group. We therefore call P2 (M, ∗) the thin fundamental categorical
+group of M .
+
+1.3.5   The thin fundamental crossed module of a smooth manifold
+Since P2 (M, ∗) is a categorical group, it defines a crossed module Π22,1 (M, ∗),
+which we call the thin fundamental crossed module of M . Let us explain how
+to construct Π2,1                                  2,1
+              2 (M, ∗) directly. Define a group π2 (M, ∗) as being given by
+
+                  π22,1 (M, ∗) = {[Γ] ∈ P2 (M, ∗) : ∂d ([Γ]) = [∗]}
+
+with the product law being the horizontal composition. Note that the map
+    .
+∂ = ∂u : π22,1 (M, ∗) → π11 (M, ∗) is therefore a group morphism. In addition
+π1 (M, ∗) acts on π22,1 (M, ∗) on the left as follows:
+ 1
+
+
+                         [γ] ⊲ [Γ] = id[γ] ◦h [Γ] ◦h id[γ −1 ] ,
+
+where [Γ] ∈ π22,1 (M, ∗) and [γ] ∈ π11 (M, ∗). Here if [γ] is a 1-track then id[γ]
+denotes the 2-track such that id[γ] (s, t) = γ(t), where s, t ∈ [0, 1].
+   The following theorem follows from the well-known equivalence between the
+category of categorical groups and the category of crossed modules which was
+
+                                           15
+referred to in 1.2.1; see [BM, BL, BMo, P]. For a graphical proof see [BHS, 6.2].
+
+
+Theorem 21 The boundary map ∂ : π22,1 (M, ∗) → π11 (M, ∗), together with the
+left action of π11 (M, ∗) on π22,1 (M, ∗), defines a crossed module, which we denote
+by Π2,1
+      2 (M, ∗).
+
+   In 1.2.1 we showed how to construct a categorical group from any crossed
+module. The way we defined Π2,1 2 (M, ∗) from the categorical group P2 (M, ∗)
+shows how to go in the reverse direction.
+
+1.3.6   Two exact sequences
+This subsection is not necessary to understand the rest of the article.
+
+Definition 22 Let M be a smooth manifold. Let ∗ ∈ M . The group π22 (M, ∗)
+is given by all 2-paths Γ ∈ S2 (M ) such that Γ(∂([0, 1]2 )) = {∗}, up to the equiva-
+lence relation given by Γ ∼
+                          = Γ′ if there exists a rank-2 homotopy             2
+                                                                  J : [0, 1] × [0, 1] → M ,
+                     ′                                     2
+connecting Γ and Γ , such that, in addition, J (∂([0, 1] ) × I = {∗}. The group
+law is taken to be the horizontal composition.
+
+For more details see [MP].
+
+Theorem 23 Let M be a smooth manifold with a base point ∗. The crossed
+module Π2,1
+        2 (M, ∗) can be embedded into the exact sequence:
+
+                           i              ∂             p
+                          → π22,1 (M, ∗) −
+         {0} → π22 (M, ∗) −              → π11 (M, ∗) −
+                                                      → π1 (M, ∗) → {1}.
+
+Proof. The only non-trivial part is the proof that the natural map i : π22 (M, ∗) →
+π22,1 (M, ∗) is injective. This follows from Lemma 52.
+
+Definition 24 The thin k-invariant of M is defined as being the cohomol-
+ogy class kt (M, ∗) ∈ H 3 π1 (M, ∗), π22 (M, ∗) determined by the exact sequence
+above. See [EML, Br] for the construction of these group cohomology classes.
+
+    We can define a 2-category Q2 (M ), with objects given by the points of M and
+morphisms given by the arrows of the groupoid S1 (M ). The set of 2-morphisms
+Q2 (M ) of Q2 (M ) is given by the set of 2-paths of M up to homotopy. Here
+the notion of homotopic 2-paths is defined in the same way as the notion of
+rank-2 homotopic 2-paths (Definition 19), but omitting the final condition on
+the rank of the derivative of the map defining the homotopy; see the remarks
+after definition 36. If Γ and Γ′ are 2-paths, we write Γ ∼ =∞ Γ′ to denote that
+they are homotopic. Applying the construction that defined the crossed module
+Π2,1
+  2 (M, ∗) to Q2 (M, ∗) yields a crossed module
+                                                             
+                                               ∂
+                  Π∞,1
+                    2   (M, ∗) = π2∞,1 (M, ∗) −→ π11 (M, ∗), ⊲ .
+
+
+
+
+                                         16
+Here the group π2∞,1 (M, ∗) is given by
+
+                   π2∞,1 (M, ∗) = {[Γ] ∈ Q2 (M, ∗) : ∂d ([Γ]) = [∗]}
+
+with the product law being the horizontal composition. Therefore the map
+  .
+∂ = ∂u : π2∞,1 (M, ∗) → π11 (M, ∗) is a group morphism.
+    As before we have:
+
+Theorem 25 The crossed module Π∞,1
+                               2   (M, ∗) can be embedded into the exact
+sequence:
+                           i               ∂             p
+                         → π2∞,1 (M, ∗) −
+         {0} → π2 (M, ∗) −              → π11 (M, ∗) −
+                                                     → π1 (M, ∗) → {1}.
+
+It is easy to show that the cohomology class k(M, ∗) ∈ H 3 (π1 (M, ∗), π2 (M, ∗))
+given by this exact sequence coincides with the k-invariant of M . This follows
+from the explicit construction of it in [EML], and also from the no-free-lunch
+principle.
+
+
+2      Two-dimensional holonomies
+2.1     Categorical connections
+Definition 26 Let G be a Lie group. Let M be a smooth manifold. Let P → M
+be a smooth principal bundle with structure group G. Denote the right action of
+G on P as g ∈ G 7→ Rg ∈ diff(M ). Let also G = (∂ : E → G, ⊲) be a Lie crossed
+module, where ⊲ is a Lie group left action of G on E by automorphisms. Let also
+G = (∂ : e → g, ⊲) be the associated differential crossed module. A G-categorical
+connection on P is a pair (ω, m), where ω is a connection 1-form on P , i.e.
+ω ∈ A1 (P, g) is a 1-form on P with values in g such that:
+    1. Rg∗ (ω) = g −1 ωg, ∀g ∈ G,
+
+    2. ω(A# ) = A, ∀A ∈ g;
+and m ∈ A2 (P, e) is a 2-form on P with values in e, the Lie algebra of E, such
+that:
+    1. The 2-form m is G-equivariant. In other words we have Rg∗ (m) = g −1 ⊲ m
+       for each g ∈ G.
+    2. The 2-form m is horizontal, in other words:
+
+                    m(X, Y ) = m(X H , Y H ), for each X, Y ∈ X(P ).
+
+       In particular m(Xu , Yu ) = 0 if either of the vectors Xu , Yu ∈ Tu P is
+       vertical, where u ∈ P . Here the map X ∈ X(P ) 7→ X H ∈ X(P ) denotes
+       the horizontal projection of vector fields on P with respect to the connection
+       1-form ω.
+
+
+                                          17
+Finally we require that
+                                           ∂(m) = Ω                                             (9)
+where Ω ∈ A2 (P, g) is the curvature 2-form of ω.
+
+This last condition is of course equivalent to the vanishing of the fake curvature
+of [BS, BrMe]; see 2.2.4.
+Example 27 Let P be any principal G-bundle with a connection 1-form ω.
+Let Ω be the curvature 2-form of ω. If G = (id : G → G, ⊲), where ⊲ is the
+adjoint action of G on G, then (ω, Ω) is a G-categorical connection on P . More
+generally we can take G to be given by the universal covering map E → G of G;
+see example 9.
+
+2.2     The 2-curvature 3-form of a G-categorical connection
+Recall the definition of the curvature 2-form Ω of a connection 1-form ω as the
+covariant exterior derivative of the 1-form ω.
+
+Definition 28 (2-Curvature) Let G = (∂ : E → G, ⊲) be a Lie crossed mod-
+ule, and let P → M be a smooth principal G-bundle. The 2-curvature 3-form
+of a G-categorical connection (ω, m) on P is defined as
+
+                                  M = dm ◦ (H × H × H).
+
+In other words:
+                             M(A, B, C) = dm(AH , B H , C H ),
+where A, B, C ∈ X(P ) are smooth vector fields on P .
+
+2.2.1     Algebraic preliminaries
+Let M be a smooth manifold. Consider a differential crossed module G = (∂ : e → g, ⊲).
+In particular the map (X, e) ∈ g × e 7→ X ⊲ e ∈ e is bilinear.
+   Let a ∈ An (M, g) and b ∈ Am (M, e) be g- and e-valued (respectively) differ-
+ential forms on M . We define a ⊗⊲ b as being the e-valued covariant tensor field
+on M such that
+
+(a⊗⊲ b)(A1 , . . . , An , B1 , . . . Bm ) = a(A1 , . . . , An )⊲b(B1 , . . . , Bm ); Ai , Bj ∈ X(M ).
+
+We also define an alternating tensor field a ∧⊲ b ∈ An+m (M, e), being given by
+                                          (n + m)!
+                               a ∧⊲ b =            Alt(a ⊗⊲ b).
+                                            n!m!
+Here Alt denotes the natural projection from the vector space of e-valued co-
+variant tensor fields on M onto the vector space of e-valued differential forms
+on M .
+   For example, if a ∈ A1 (M, g) and b ∈ A2 (M, e), then a ∧⊲ b satisfies:
+
+   (a ∧⊲ b)(X, Y, Z) = a(X) ⊲ b(Y, Z) + a(Y ) ⊲ b(Z, X) + a(Z) ⊲ b(X, Y ),                     (10)
+
+                                                18
+where X, Y, Z ∈ X(M ).
+  Note that the formula:
+
+                        d(a ∧⊲ b) = da ∧⊲ b + (−1)n a ∧⊲ db,
+
+where a ∈ An (M, g) and b ∈ Am (M, e), holds trivially.
+    As as example of this notation, let P → M be a principal G-bundle over
+the manifold M . Let ω ∈ A1 (P, g) be a connection 1-form on M . Then the
+structure equation for the curvature form Ω = Dω of ω can be written as:
+                                         1
+                                 Ω = dω + ω ∧ad ω,
+                                         2
+where ad denotes the adjoint action of g on g. Furthermore the Bianchi identity
+can be written as:
+                              dΩ + ω ∧ad Ω = 0;
+see 1.1.2.
+
+2.2.2    The 2-structure equation
+The following equation is an analogue of Cartan’s structure equation. It will be
+of prime importance later.
+Proposition 29 (2-Structure Equation) Let G = (∂ : E → G, ⊲) be a Lie crossed
+module. Let P be a principal G-bundle over the manifold M . Let also (ω, m) be
+a categorical G-connection on P . We have: M = dm+ω ∧⊲ m, where M = Dm
+is the 2-curvature 3-form of (ω, m). In particular the 2-curvature 3-form M is
+G-equivariant, in other words: Rg∗ (M) = g −1 ⊲ M, for each g ∈ G.
+   The proof of the 2-structure equation follows directly from the following
+lemma.
+
+Lemma 30 Let a be a G-equivariant horizontal (n − 1)-form in P . Then Da =
+da + ω ∧⊲ a.
+Proof. Let X 1 , . . . , X n ∈ Tu P , extended to a neighbourhood of u ∈ P .
+If all vectors are horizontal it follows that Da(X 1 , . . . , X n ) = (da + ω ∧⊲
+a)(X 1 , . . . , X n ), since ω is vertical. Suppose that one of the vectors, which
+we can suppose to be X 1 , is vertical. We need to prove that (da + ω ∧⊲
+a)(X 1 , . . . , X n ) = 0. Choose A ∈ g such that A#                    1
+                                                                 u = Xu . By using Car-
+tan’s magic formula together with the fact that a is horizontal it follows that
+da(A# , X 2 , . . . , X n ) = (LA# a)(X 2 , . . . X n ), where L denotes Lie derivative.
+Since a is G-equivariant it follows that LA# a = −A ⊲ a. However, (ω ∧⊲
+a)(A# , X 2 , . . . , X n ) = ω(A# ) ⊲ a(X 2 , . . . , X n ), since a is horizontal. Note
+ω(A# ) = A.
+
+
+
+
+                                           19
+2.2.3   The 2-Bianchi identity
+Fix a Lie crossed module G = (∂ : E → G, ⊲). Let P be a smooth principal G-
+bundle over M with a connection ω. Choose a G-categorical connection (ω, m)
+on P .
+
+Proposition 31 (2-Bianchi identity) Let M ∈ A3 (P, e) be the 2-curvature
+3-form of (ω, m). Then the exterior covariant derivative DM of M vanishes.
+In other words:
+                       dM ◦ (H × H × H × H) = 0,
+which by lemma 30 is the same as:
+
+                               dM + ω ∧⊲ M = 0.
+
+    Proof. Let us prove the second form of the 2-Bianchi identity. By the
+2-structure equation it follows that:
+
+dM = ddm+d(ω ∧⊲ m) = dω ∧⊲ m−ω ∧⊲ dm = dω ∧⊲ m−ω ∧⊲ M + ω ∧⊲ (ω ∧⊲ m) .
+
+Given that ω ∧⊲ (ω ∧⊲ m) = 21 (ω ∧ad ω) ∧⊲ m we can conclude:
+          1
+dM = (dω + ω ∧ad ω) ∧⊲ m−ω ∧⊲ M = Ω ∧⊲ m−ω ∧⊲ M = ∂(m) ∧⊲ m−ω ∧⊲ M.
+          2
+We now prove that ∂(m) ∧⊲ m = 0. Since G = (∂ : e → g, ⊲) is a differential
+crossed module we have, for any vector fields X, Y, Z, W ∈ X(P ):
+                                       
+   ∂(m)(X, Y ) ⊲ m(Z, W ) = ∂ m(X, Y ) ⊲ m(Z, W ) = [m(X, Y ), m(Z, W )].
+
+Let us see that Alt[m, m] = 0, which implies that ∂(m) ∧⊲ m = 0. The
+permutation r such that r(X, Y, Z, W ) = (Z, W, X, Y ) is even. In particular
+Alt([m, m]) = Alt([m, m] ◦ r). However, [m, m] ◦ r = −[m, m].
+
+2.2.4   Local form of a categorical connection
+Let G = (∂ : E → G, ⊲) be some Lie crossed module, and let G = (∂ : e → g, ⊲)
+be the associated differential crossed module. Fix a smooth manifold M and
+a smooth principal G-bundle P → M , with a categorical G-connection (ω, m),
+where, as usual, ω ∈ A1 (P, g) and m ∈ A2 (P, e).
+   The local form of the categorical G-connection (ω, m) is similar to the local
+form of a connection. Let {Uα } be an open covering of the manifold M . We can
+suppose that each Uα is contractible and that, for each α and β, the intersection
+Uα ∩ Uβ is contractible; see [BT]. Therefore, for each α, the restriction Pα of
+P to Uα is trivial, and, in particular, it admits a section fα : Uα → Pα . The
+local form of a categorical G-connection is therefore given by the family of forms
+ωa = fα∗ (ω) and mα = fα∗ (m).
+   For each α, by the structure equation, the local curvature form Ωα = fα∗ (Ω)
+takes the form
+                                         1
+                             Ωα = dωα + ωα ∧ad ωα .
+                                         2
+
+                                       20
+Locally, the Bianchi identity reads:
+                             dΩα + ωα ∧ad Ωα = 0.
+Analogously, from the 2-structure equation, locally in each Uα , the 2-curvature
+3-form Mα = fα∗ (M) takes the form:
+                            Mα = dmα + ωα ∧⊲ mα ,
+and the 2-Bianchi identity reads:
+                             dMα + ωα ∧⊲ Mα = 0.
+These local expressions correspond to the formulae in [B] when the fake curva-
+ture vanishes.
+   Let φα,β : Ua ∩ Uβ → G be defined as fα (x)φα,β (x) = fβ (x), for each x ∈
+Uα ∩ Uβ . We have:
+                       ωβ (X) = φ−1              −1
+                                 α,β ω(X)φα,β + φα,β dφα,β ,                (11)
+                    Ωβ (X, Y ) = φ−1
+                                  α,β Ω(X, Y )φα,β ,                        (12)
+for each X, Y ∈ X(M ). Since both m and M are G-equivariant and horizontal,
+it follows that for each α, β:
+                                       −1
+                         mβ (X, Y ) = φα,β ⊲ mα (X, Y ),                    (13)
+                      Mβ (X, Y, Z) = φ−1
+                                      α,β ⊲ Mα (X, Y, Z),                   (14)
+for each X, Y, Z ∈ X(M ).
+Lemma 32 Let M be a smooth manifold. Let also G = (∂ : E → G, ⊲) be a Lie
+crossed module, and let G = (∂ : e → g, ⊲) be the associated differential crossed
+module. Suppose π : P → M is the trivial bundle M × G. Given m0 ∈ A2 (M, e)
+and ω0 ∈ A1 (M, g), such that ∂(m0 ) = Ω0 = dω0 + 12 ω0 ∧ad ω0 , there exists a
+categorical G-connection (ω, m) on P such that its local form is (ω0 , m0 ).
+Proof. Let θ be the canonical g-valued left-invariant 1-form on G; see 2.4.2.
+Then ω = g −1 π ∗ (ω0 )g + θ is a connection 1-form on M × G, and its local form,
+considering the section f : M → P such that, for each x ∈ M , f (x) = (x, 1G ),
+is ω0 . The 2-form π ∗ (m0 ) ∈ A2 (P, e) is horizontal. However, it is not G-
+equivariant. Therefore we define m ∈ A2 (M × G, e) as being such that, given
+X, Y ∈ T(x,g) P , we have:
+                        m(X, Y ) = g −1 ⊲ π ∗ (m0 )(X, Y ),
+where g ∈ G, x ∈ M and X, Y ∈ T(x,g) M × G. This 2-form is obviously smooth
+and horizontal. Moreover, given X, Y ∈ T(x,g) P it follows that:
+                   (Rh∗ m)(X, Y ) = m(Xh, Y h)
+                                 = (gh)−1 ⊲ π ∗ (m0 )(Xh, Y h)
+                                 = h−1 g −1 ⊲ π ∗ (m0 )(X, Y )
+                                 = h−1 ⊲ m(X, Y ).
+
+
+                                        21
+Therefore m is G-equivariant. Let Ω be the curvature of ω. Then Ω(X, Y ) =
+g −1 π ∗ (Ω0 )(X, Y )g, where as before X, Y ∈ T(x,g) P . In particular it follows that
+Ω = ∂(m).
+    The following follows from the previous discussion.
+Corollary 33 Let M be a smooth manifold. Let also G = (∂ : E → G, ⊲) be
+a Lie crossed module, and let G = (∂ : e → g, ⊲) be the associated differential
+crossed module. Let {Uα } be an open cover of M , such that the restriction Pα
+of P to Uα is the trivial bundle. Let also fα : Uα → Pα be local sections of
+P . Define φα,β : Uα ∩ Uβ → G as fα (x)φα,β (x) = fβ (x). Suppose that for
+each α we are given forms ωα ∈ A1 (Uα , g) and mα ∈ A2 (Uα , e), satisfying
+∂(mα ) = Ωα = dωα + 12 ωα ∧ad ωα . Moreover, suppose that for each α, β with
+Uα ∩ Uβ 6= ∅ equations (11) and (13) are satisfied. There exists a unique cat-
+egorical connection (ω, m) on P such that the forms ωα and mα are its local
+form.
+    The trivial bundle M × G → M always admits the trivial categorical con-
+nection, whose local form is given by the forms ω0 = 0 and m0 = 0. However,
+there exist several other examples for the trivial bundle. Let A = ∂(E), and let
+a be its Lie algebra. There exists a linear map r : a → e such that ∂ ◦ r = ida .
+Let ω0 be any a-valued 1-form on M . Let Ω0 be the curvature of ω0 and define
+m0 = r(Ω0 ). Then (ω0 , m0 ) is the local form of a categorical G-connection on
+M × G. In fact, let B = ker ∂ ⊂ E. Therefore B is closed under the action of G
+on E, by the first condition of the definition of crossed modules; see definition
+3. Let b be the Lie algebra of B. Given any b-valued 2-form ρ0 on M then
+ρ0 + m0 is the local form of a categorical G-connection on M × G.
+    It is not a trivial problem whether there always exists a categorical G-
+connection on any principal G-bundle. This issue is very likely to depend on the
+topology of the manifold. The strategy of combining locally defined connection
+1-forms ω using a partition of unity cannot be carried through for the 2-forms
+m, since ∂(m) = Ω, which is not C∞ -linear in ω.
+
+2.3     Categorical holonomy
+2.3.1   Definition of a holonomy.
+The following definition appears in [CP].
+Definition 34 (Holonomy) Let M and N be smooth manifolds. Suppose that
+M has a chosen base point ∗. A map F : π11 (M, ∗) → N is said to be smooth if,
+for any 2-path Γ : [0, 1]2 → M, with ∂l (Γ) = ∂r (Γ) = ∗, the map
+
+                              s ∈ [0, 1] 7→ F ([γs ]) ∈ N
+
+is smooth. Here Γ(t, s) = γs (t), where s, t ∈ [0, 1].
+     Let G be a Lie group. A holonomy is, by definition, a smooth group morphism
+π11 (M, ∗) → G.
+   The following result appears in [CP].
+
+                                          22
+Theorem 35 Let M be a smooth manifold with a base point ∗. Let also G
+be a Lie group. Let P → M be a smooth principal G-bundle over M with a
+connection ω. Let u ∈ P∗ , the fibre of P at ∗. Then the parallel transport of ω
+                         1
+determines a holonomy F(ω,u)  : π11 (M, ∗) → G.
+
+Proof. Recall the notation of 1.1.3. Given a 1-path γ : [0, 1] → M , with
+                          1
+γ(0), γ(1) = ∗, define F(ω,u)  (γ) to be the unique element of G such that u =
+             1
+Hω (γ, 1, u)F(ω,u) (γ). Then, if Γ is a 2-path, with ∂l (Γ) = ∂r (Γ) = ∗, it follows
+that the map
+                                           1
+                            s ∈ [0, 1] 7→ F(ω,u) (γs ) ∈ G,
+where Γ(t, s) = γs (t); s, t ∈ [0, 1], is smooth. This follows from the fact that the
+map t ∈ [0, 1] 7→ Hω (γs , t, u) is a solution of a differential equation in t. This
+differential equation depends smoothly on s if Γ is smooth. For details see [KN,
+page 74].
+                     1
+    The fact that F(ω,u)   descends to a map π11 (M, ∗) → G follows from lemma 2
+and the fact that the horizontal lift of vectors defines a linear map. Finally the
+            1
+fact that F(ω,u) is a group morphism follows from the fact that Hω γ 2 γ 1 , 1, u =
+                        
+Hω γ , 1, Hω (γ , 1, u) , for any smooth curves γ 1 and γ 2 in M starting and
+       1         2
+
+ending at ∗.
+    It is proved in [CP] that any holonomy π11 (M, ∗) → G arises from a bundle
+with connection in this way.
+
+2.3.2    Definition of a categorical holonomy
+Definition 36 (3-path) Let M be a manifold. A smooth map J : [0, 1]3 → M ,
+say J(t, s, x) = Γx (t, s) = γsx (t), where t, s, x ∈ [0, 1], is said to be a 3-path if:
+   1. J is constant over {0} × [0, 1]2 and over {1} × [0, 1]2 .
+   2. J restricts to a rank-1 homotopy (connecting γ00 with γ01 ) over [0, 1]×{0}×
+      [0, 1] and over [0, 1] × {1} × [0, 1] (connecting γ10 with γ11 ).
+   3. J has a product structure close to the boundary of [0, 1]3 ; see definition
+      19.
+
+In particular J defines a homotopy connecting the 2-paths Γ0 and Γ1 ; see 1.3.6.
+Note that it is not necessarily a rank-2 homotopy.
+Definition 37 Let M and N be smooth manifolds. Consider the projection
+map S2 (M ) → S2 (M ). A map F : S2 (M ) → N is said to be smooth if, for any
+3-path J, the map
+                         x ∈ [0, 1] 7→ F ([Γx ]) ∈ N
+is smooth. Here J(t, s, x) = Γx (t, s), for each (t, s, x) ∈ [0, 1]3 .
+   Let G = (∂ : E → G, ⊲) be a Lie crossed module. Consider the categorical
+group C(G) constructed from G, see 1.2.1. Its set of objects is G and its set
+of morphisms is the semidirect product G ⋉ E of G and E; all of these are
+
+                                           23
+smooth manifolds. The following definition extends the definition of holonomy
+for principal G-bundles of [CP] and should be compared with analogous non-
+strict constructions in [BS, MP, M].
+Definition 38 (Categorical holonomy) Let M be a smooth manifold. Choose
+an element ∗ ∈ M . A categorical holonomy is, by definition, a strict monoidal
+functor (in other words a categorical group morphism) F : P2 (M, ∗) → C(G),
+such that the associated maps F1 : π11 (M ) → G and F2 : P2 (M, ∗) → G ⋉ E on
+the sets of objects and morphisms of P2 (M, ∗) are smooth. Here P2 (M, ∗) is the
+thin fundamental categorical group of M ; see 1.3.4.
+    If we use the notation
+                     ∂u ([Γ])                                       ∂(e)−1 X
+                        x                                              x
+                                                                      e ,
+               [Γ] = [Γ]                  and             (X, e) =    
+                        ∂d ([Γ])                            X
+to denote the morphisms of P2 (M, ∗) and of C(G), then the tensor product of
+two elements [Γ] and [Γ′ ] of P2 (M, ∗) can be presented in the suggestive form:
+                    ∂u ([Γ])           ∂u ([Γ′ ])           ∂u ([Γ])∂u ([Γ′ ])
+                       x                   x                        x
+                       [Γ]                 ′                      
+                                  ⊗       [Γ ]      =             [Γ]◦h [Γ′ ]           (15)
+                    ∂d ([Γ])           ∂d ([Γ′ ])           ∂d ([Γ])∂d ([Γ′ ])
+In this notation, the condition that a functor F = (F1 , F2 ) : P2 (M, ∗) → C(G)
+be a strict monoidal functor means that:
+                                       
+               ∂u ([Γ])      ∂u ([Γ′ ])    F1 (∂u ([Γ]))   F1 (∂u ([Γ′ ]))
+                  x              x              x                x
+                               [Γ′ ] 
+                                        =      F ([Γ])         F ([Γ′ ])
+           F     [Γ] ⊗                        2    ⊗        2        (16)
+                ∂d ([Γ])           ∂d ([Γ′ ])        F1 (∂d ([Γ]))       F1 (∂d ([Γ′ ]))
+for each [Γ], [Γ′ ] ∈ P2 (M, ∗). In other words:
+                            
+      F1 ∂u ([Γ])∂u ([Γ′ ])           F1 ∂u ([Γ]))F1 (∂u ([Γ′ ]))
+                x                                  x                      
+                F [Γ]◦ [Γ′ ]                      
+                 2( h ) =                          F1 (∂d [Γ])⊲F2 ([Γ′ ]) F2 ([Γ])       (17)
+                           
+      F1 ∂d ([Γ])∂d ([Γ′ ])           F1 (∂d ([Γ])) F1 (∂d ([Γ′ ]))
+                                                                                   (g,e)
+for each [Γ], [Γ′ ] ∈ P2 (M, ∗); see 1.2.1. Recall that an arrow g −−−→ ∂(e−1 )g in
+                                             e
+C(G) is sometimes simply denoted by g −     → ∂(e−1 )g, where g ∈ G and e ∈ E.
+    Since the category of crossed modules and the category of categorical groups
+are equivalent, we can give an alternative definition of a categorical holonomy,
+and define it as being a smooth crossed module map
+                                       Π2,1
+                                        2 (M, ∗) → G,
+
+where the notion of a smooth crossed module map is the obvious one. Here
+Π2,1
+  2 (M, ∗) is the thin fundamental crossed module of the smooth manifold M ;
+see 1.3.5.
+
+                                                24
+2.4     Categorical connections and categorical connection holonomies
+The aim of this subsection is to prove the following main theorem.
+
+Theorem 39 Let G be a Lie group. Let M be a smooth manifold. Let also P →
+M be a smooth principal fibre bundle with structure group G. Let G = (∂ : E → G, ⊲)
+be a Lie crossed module. A G-categorical connection (ω, m) on P together with
+an element u ∈ P∗ , the fibre of P over ∗ ∈ M , determines a categorical holonomy
+F(ω,m,u) : P2 (M, ∗) → C(G), which we call a categorical connection holonomy,
+since it arises from a categorical connection.
+
+    For the rest of this subsection, fix a Lie crossed module G = (∂ : E → G, ⊲),
+and let G = (∂ : e → g, ⊲) be the associated differential crossed module. Consider
+also a smooth manifold M and a principal G-bundle P over M , as well as a G-
+categorical connection (ω, m) on P .
+
+2.4.1   Defining a categorical holonomy from a categorical connection
+Consider a base point ∗ ∈ M . Choose also u ∈ P∗ , the fibre of P at ∗. To
+describe F(ω,m,u) on the set π11 (M, ∗) of objects of P2 (M, ∗), we use theorem 35.
+Therefore we define:
+                 1                1
+                F(ω,m,u) ([γ]) = F(ω,u) ([γ]), where [γ] ∈ π11 (M, ∗).           (18)
+
+     Let now Γ be a 2-path in M with ∂l (Γ) = ∂r (Γ) = ∗. Let γs (t) = Γ(t, s); s, t ∈
+                     2
+[0, 1]. To define F(ω,m,u) , consider the smooth function s ∈ [0, 1] 7→ eΓ (s) ∈ E,
+which solves the following differential equation in E:
+                                 Z 1                     !
+              d                         ∂^ ∂^
+                 eΓ (s) = eΓ (s)     m     γs (t), γs (t)            dt,         (19)
+              ds                  0     ∂t        ∂s
+                                                           Hω (γs ,t,u)
+
+with initial condition eΓ (0) = 1E . Set eΓ = eΓ (1) to be the element of E assigned
+to the 2-path Γ. Then we define:
+                         2
+                                       
+                                           1
+                                                         
+                       F(ω,m,u) (Γ) = F(ω,u)   [∂d (Γ)] , eΓ .                   (20)
+
+    Recall the elements gγs ∈ G, where s ∈ [0, 1], which are given by the
+                                                      1
+condition: ugγs = Hω (γs , 1, u); see 1.1.4. Thus F(ω,m,u)   ([γs ]) = gγ−1
+                                                                          s
+                                                                            , where
+  −1 .
+            −1
+g γs = g γs     . In local coordinates, our definition of a categorical holonomy
+coming from a categorical connectioncoincides with definition
+                                                                  2.32 of [BS].
+                                       1        2
+   We will prove that F(ω,m,u) = F(ω,m,u)    , F(ω,m,u) defines a categorical
+holonomy P2 (M, ∗) → C(G). Explicitly, we need to prove that the assignment:
+
+                                 ∂u (Γ) gγ−1
+                                           1
+                                   x     x
+                                        e
+                                   Γ 7→  Γ        ,
+                                 ∂d (Γ)    gγ−1
+                                              0
+
+
+
+
+                                          25
+where Γ is a 2-path in M such that ∂l (Γ) = ∂r (Γ) = ∗, and Γ(t, s) = γs (t); ∀s, t ∈
+[0, 1], depends only on the rank-2 homotopy class to which Γ belongs, and defines
+a monoidal functor P2 (M, ∗) → C(G), such that the induced maps on the set of
+objects and morphisms of P2 (M, ∗) are smooth.
+     First of all:
+Lemma 40 Let Γ be a 2-path in M with ∂l (Γ) = ∂r (Γ) = ∗. Then for each
+s ∈ [0, 1] we have: gγ0 ∂(eΓ (s)) = gγs . Here Γ(t, s) = γs (t); ∀s, t ∈ [0, 1].
+Proof. The previous equation holds for s = 0, by definition of eΓ (s). We have:
+                                                               
+           d                    d                      d
+              gγ0 ∂(eΓ (s)) = gγ0 ∂ (eΓ (s)) = gγ0 ∂      eΓ (s) ,
+           ds                    ds                    ds
+
+therefore:
+                                          Z 1                             !
+     d                                            ∂^ ∂^                                         
+        gγ0 ∂(eΓ (s)) = gγ0 ∂ eΓ (s)            m      γs (t), γs (t)                        dt
+     ds                                    0        ∂t        ∂s
+                                                                              Hω (γs ,t,u)
+                                          Z 1                             !
+                                                    ∂^ ∂^
+                       = gγ0 ∂(eΓ (s))          Ω      γs (t), γs (t)                        dt,
+                                           0        ∂t        ∂s
+                                                                              Hω (γs ,t,u)
+
+since ∂(m) = Ω. By equation (7) we also have:
+                                Z 1                           !
+                 d                        ∂^ ∂^
+                   g γ = g γs         Ω      γs (t), γs (t)                      .
+                 ds s            0        ∂t        ∂s
+                                                                  Hω (γs ,t,u)
+
+Thus both sides of the equation are solutions of the same differential equation
+in G, and have the same initial condition.
+     We remark that, using the terminology of [BS], this result corresponds to
+the condition that a local pre-2-holonomy gives rise to a local true 2-holonomy,
+which there also follows from the vanishing of the fake curvature.
+     Let Γ : [0, 1]2 → M be a 2-path in M with ∂l (Γ) = ∂r (Γ) = ∗. We need
+                    2
+to prove that F(ω,m,u)     (Γ) depends only on the 2-track defined by Γ, in other
+words on the rank-2 homotopy class of 2-paths to which Γ belongs. This will
+be shown shortly in Corollary 43 of Theorem 42. For now, consider a 3-path J,
+where J(t, s, x) = Γx (t, s); ∀t, s, x ∈ [0, 1], defining a homotopy (not necessarily
+rank-2) connecting the 2-paths Γ0 and Γ1 . Suppose that ∂l (Γ0 ), ∂r (Γ0 ) = ∗,
+                                                       ∂
+thus ∂l (Γ1 ), ∂r (Γ1 ) = ∗. We want to calculate ∂x     eΓx (s), where s, x ∈ [0, 1].
+     In fact, for later applications, we will consider the more general case when,
+for each x ∈ [0, 1], we have that ∂l (Γx ) = q(x) and ∂r (Γx ) = q(x), where
+q : [0, 1] → M is a smooth map. This generality will be important to define
+Wilson spheres in 2.5.3. The lemma in the following subsection will be useful
+for our purpose.
+
+
+
+
+                                               26
+2.4.2    A well-known lemma
+Let G be a Lie group. Consider a g-valued smooth function V (s, x) defined on
+[0, 1]2 . Consider the following differential equation in G:
+                              ∂
+                                 a(s, x) = a(s, x)V (s, x),
+                              ∂s
+                                                                   ∂
+with initial condition a(0, x) = 1G , ∀x ∈ [0, 1]. We want to know ∂x a(s, x).
+    Let θ be the canonical g-valued 1-form on G. Thus θ is left invariant and
+satisfies θ(A) = A, ∀A ∈ g, being defined uniquely by these properties. Also
+
+                               dθ(A, B) = −θ([A, B]),                           (21)
+
+where A, B ∈ g. We have:
+                            
+            ∂      ∂            ∂                     ∂
+               θ      a(s, x) =    θ a(s, x)V (s, x) =    V (s, x).
+            ∂x     ∂s           ∂x                     ∂x
+On the other hand:
+                                                                 
+  ∂     ∂                       ∂ ∂      ∂          ∂               ∂ ∂
+    θ      a(s, x) = da∗ (θ)       ,    + a∗ (θ)        +a∗ (θ)      ,
+ ∂x     ∂s                     ∂x ∂s     ∂s        ∂x              ∂x ∂s
+                                                               
+                           ∂          ∂           ∂     ∂
+                    = dθ      a(s, x), a(s, x) + θ         a(s, x) .
+                           ∂x         ∂s         ∂s     ∂x
+Therefore:
+               
+      ∂
+  θ      a(s, x)
+      ∂x
+     Z s                                                            
+                  ∂     ′      ∂    ′      ∂    ′       ′      ∂
+  =        −dθ       a(s , x), ′ a(s , x) + V (s , x) ds + θ      a(0, x) .
+       0          ∂x          ∂s           ∂x                  ∂x
+      ∂
+Since ∂x a(0, x) = 0 (due to the initial conditions) we have the following:
+
+Lemma 41
+                          Z s                                       
+   ∂                                ∂            ∂    ′      ∂
+      a(s, x) = a(s, x)       −dθ      a(s , x), ′ a(s , x) + V (s , x) ds′ ,
+                                          ′                       ′
+   ∂x                      0        ∂x          ∂s           ∂x
+
+for each x, s ∈ [0, 1].
+
+2.4.3    The dependence of the surface holonomy on a smooth family
+         of surfaces
+The discussion in this subsection will be very similar to that of 1.1.4. We want
+to prove an analogue of lemma 2 for the surface holonomy of a family of 2-paths
+Γx .
+     Consider a smooth map J : [0, 1]3 → M , where J(t, s, x) = Γx (t, s); ∀t, s, x ∈
+[0, 1]. Given x, s ∈ [0, 1], a smooth curve γsx : [0, 1] → M is defined as γsx (t) =
+
+                                           27
+J(t, s, x), where t, s, x ∈ [0, 1]. Suppose that, for each x ∈ [0, 1], there exists
+q(x) ∈ M such that J(0, s, x) = J(1, s, x) = q(x) for each s ∈ [0, 1]. In other
+words ∂l (Γx ) = ∂r (Γx ) = q(x). Note that the map x ∈ [0, 1] 7→ q(x) ∈ M is
+necessarily smooth. Let q(0) = ∗ ∈ M . Choose u ∈ P∗ , the fibre of P at ∗. Let
+also ux = Hω (q, x, u), where x ∈ [0, 1]. In particular u0 = u.
+    Note that the conditions above imply that:
+
+         Rank(D(s,x) J)(t,s,x) ≤ 1 if t = 0 or t = 1, for each s, x ∈ [0, 1].      (22)
+
+Suppose that we also have:
+
+         Rank(D(t,x) J)(t,s,x) ≤ 1 if s = 0 or s = 1, for each t, x ∈ [0, 1].      (23)
+
+    For each x ∈ [0, 1], let s ∈ [0, 1] 7→ eΓx (s) ∈ E be the solution of the
+differential equation in E:
+                                 Z 1                      !
+            d                          ∂^        ∂^
+               eΓx (s) = eΓx (s)     m   γ x (t), γsx (t)       dt,      (24)
+            ds                    0    ∂t s      ∂s         xHω (γs ,t,ux )
+
+with initial condition:
+                              eΓx (0) = 1E , ∀x ∈ [0, 1].                          (25)
+See equation (19). Our purpose is to calculate the x-dependence of eΓx =
+                                                           d
+eΓx (1), the element of E assigned to Γx , by calculating dx eΓx . The result of this
+calculation, Theorem 42, is entirely analogous to Lemma 2, with the 2-curvature
+3-form M replacing the curvature 2-form Ω.
+    Lemma (41) leads to:
+                                                      !                
+                 Z 1Z 1
+   d                      ∂        ∂^          ^
+                                                ∂                        dtds
+     eΓx = eΓx                m       γ x (t), γsx (t)
+  dx              0   0   ∂x        ∂t s      ∂s
+                                                        Hω (γsx ,t,ux )
+                                             Z 1                            
+                                                      ∂             ∂
+                                     −eΓx         dθ     eΓx (s), eΓx (s) ds. (26)
+                                              0      ∂x            ∂s
+
+Let
+                                                  !                
+               Z 1Z 1                      ^
+                    ∂          ∂^        ∂                          dtds ∈ e
+         Ax =             m       γ x (t), γsx (t)
+               0  0 ∂x         ∂t s       ∂s
+                                                    Hω (γsx ,t,ux )
+              Z 1                         
+                     ∂           ∂
+         Bx =    dθ     eΓx (s), eΓx (s) ds ∈ e.
+               0     ∂x          ∂s
+
+Thus
+                                  d
+                                     eΓx = eΓx (Ax − Bx ).                          (27)
+                                 dx
+   Let us analyse Ax and Bx separately. Consider the map f : [0, 1]3 → P such
+that f (x, s, t) = Hω (γsx , t, ux ), for each x, s, t ∈ [0, 1]. This map is smooth; see
+
+                                          28
+                                         ∂                   ∂^
+[KN, page 74]. By definition we have ∂t    f (x, s, t) = ∂t    γsx (t)Hω (γ x ,t,ux ) . Also,
+                                                                           s
+
+                  ∂
+                                H   ∂^                                ∂
+                                                                                       H
+we trivially get: ∂s f (x, s, t)         x
+                                   = ∂s γs (t)Hω (γ x ,t,ux ) and ∂x f (x, s, t)           =
+                                                             s
+
+∂^  x
+∂x γs (t)Hω (γsx ,t,ux ) ; see 1.1.4.
+                                  Therefore, since m(X, Y ) vanishes if either X or
+Y is vertical, it follows that:
+               Z 1Z 1                                        
+                        ∂       ∂               ∂
+       Ax =                m       f (x, s, t), f (x, s, t) dtds
+                0    0 ∂x       ∂t              ∂s
+               Z 1Z 1                                                     
+                              ∂               ∂               ∂
+           =           dm        f (x, s, t), f (x, s, t), f (x, s, t) dtds
+                0    0       ∂x               ∂t             ∂s
+                             Z 1Z 1                                          
+                                       ∂         ∂              ∂
+                           −               m       f (x, s, t),    f (x, s, t) dtds
+                              0     0 ∂t        ∂s              ∂x
+                             Z 1Z 1                                          
+                                        ∂        ∂               ∂
+                           −               m       f (x, s, t), f (x, s, t) dtds.
+                              0     0 ∂s        ∂x              ∂t
+
+We have used the well known equation:
+
+  dα(X, Y, Z) = Xα(Y, Z) + Y α(Z, X) + Zα(X, Y )
+                              + α(X, [Y, Z]) + α(Y, [Z, X]) + α(Z, [X, Y ]),
+
+valid for any smooth 2-form α in a manifold. Therefore:
+       Z 1Z 1                                                  
+                      ∂                ∂           ∂
+ Ax =          dm        f (x, s, t), f (x, s, t), f (x, s, t) dtds
+         0  0         ∂x              ∂t          ∂s
+      Z 1                                                                        
+                ∂               ∂                      ∂                ∂
+    −      m       f (x, s, 1),     f (x, s, 1) − m       f (x, s, 0),    f (x, s, 0) ds
+        0       ∂s              ∂x                     ∂s              ∂x
+      Z 1                                                                      
+                ∂               ∂                      ∂               ∂
+    −      m       f (x, 1, t), f (x, 1, t) − m          f (x, 0, t), f (x, 0, t) dt.
+        0       ∂x              ∂t                    ∂x              ∂t
+
+We analyse each term separately. Since m(X, Y ) = 0 if either X or Y is vertical
+we have:
+                                                         !
+         ∂             ∂                ∂^        ∂^
+    m      f (x, 1, t), f (x, 1, t) = m   γ x (t), γ1x (t)             = 0,
+        ∂x             ∂t               ∂x 1      ∂t            x       Hω (γ1 ,t,ux )
+
+by equation (23). Analogously from          equation (22) or equation (23)       it follows
+            ∂               ∂                       ∂              ∂
+that: m ∂x     f (x, 0, t), ∂t f (x, 0, t) = 0, m ∂s  f (x, s, 0), ∂x f (x, s, 0) = 0, and
+    ∂               ∂
+                                  
+m ∂s  f (x, s, 1), ∂x f (x, s, 1) = 0. Therefore we have:
+                  Z 1Z 1                                                     
+                                      ∂              ∂            ∂
+          Ax =               dm          f (x, s, t), f (x, s, t), f (x, s, t) dtds,     (28)
+                    0    0            ∂x             ∂t           ∂s
+
+for each x ∈ [0, 1].
+
+
+                                                 29
+   We now analyse Bx , for each x ∈ [0, 1]. We have:
+          ∂                 ∂         
+    dθ         eΓx (s),         eΓx (s)
+          ∂x                 ∂s                                 !
+         Z 1         ∂                                                               
+                                                 ∂^ x
+                                                         ∂^ x
+     =         dθ            eΓx (s), eΓx (s)m     γ (t), γs (t)                          dt,
+          0             ∂x                       ∂t s    ∂s
+                                                                    Hω (γsx ,t,ux )
+         Z 1                                            !
+                                    ∂^          ∂^                       
+                                −1 ∂
+     =   dθ eΓx (s)      eΓx (s), m     γsx (t), γsx (t)                    dt
+       0              ∂x             ∂t         ∂s              x
+                                                          Hω (γs ,t,ux )
+        Z 1h                                            !
+                      ∂              ^
+                                    ∂ x         ∂^                        i
+     =−     eΓx (s)−1 eΓx (s), m       γs (t), γsx (t)                     dt
+         0           ∂x             ∂t          ∂s
+                                                          Hω (γsx ,t,ux )
+        Z 1                                                 !
+                     −1 ∂                   ∂^  x
+                                                     ∂^  x
+     =−    ∂ eΓx (s)       eΓx (s) ⊲ m         γ (t), γs (t)                   dt.
+         0              ∂x                 ∂t s      ∂s                 x     Hω (γs ,t,ux )
+
+The first equation follows by definition of eΓx (s), the second since the e-valued
+2-form dθ on E is left invariant (since θ is left invariant) and the third by the
+well-known formula (21). Finally, the last equation follows since (∂ : e → g, ⊲)
+is a differential crossed module.
+    By lemma 40, we also have that gγ0x ∂(eΓx (s)) = gγsx , for each s, x ∈ [0, 1].
+Therefore:
+                    ∂                       ∂             
+          ∂ e−1
+             Γx (s)    eΓx (s) = ∂ e−1 Γx (s) ∂        eΓx (s)
+                    ∂x                             ∂x
+                                                        
+                                   −1 x ∂        −1
+                                = gγsx gγ0     gγ0x gγsx
+                                           ∂x                     !
+                                  Z 1
+                                            ∂^          ^
+                                                        ∂
+                                =      Ω      γ x (t),    γ x (t)      dt,
+                                   0        ∂t s       ∂x s         x   Hω (γs ,t,ux )
+
+                                                                             ∂
+where the last equation follows by lemma 2. We also use the fact that ∂x        gγ0x = 0.
+This follows from lemma 2 and equation 23. Putting everything together, we
+obtain:
+                                Z 1                          !
+        ∂         ∂                       ∂^         ∂^
+  dθ      eΓx (s), eΓx (s) = −        Ω     γ x (t),   γ x (t)                 dt ⊲
+       ∂x         ∂s                0     ∂t s       ∂x s            x
+                                                                Hω (γs ,t,ux )
+                                      Z 1                        !
+                                                ^
+                                               ∂ x        ^
+                                                         ∂ x
+                                          m       γ (t), γs (t)                     dt.
+                                       0      ∂t s      ∂s                 x     Hω (γs ,t,ux )
+
+Due to the fact that (∂ : e → g, ⊲) is a differential crossed module, given e, f ∈ e
+we have: ∂(e) ⊲ f = [e, f ] = −[f, e] = −∂(f ) ⊲ e. If we use this together with the
+fact that Ω(X, Y ) and m(X, Y ) vanish if either of the vectors X or Y is vertical
+
+
+
+                                                   30
+it thus follows that (since ∂(m) = Ω):
+         Z 1 Z 1                                         
+                              ∂               ∂
+  Bx =                Ω          f (x, s, t), f (x, s, t)dt ⊲
+           0      0           ∂t             ∂s
+                                            Z 1                                  
+                                                    ∂              ∂
+                                                m     f (x, s, t),    f (x, s, t) dt ds. (29)
+                                             0     ∂t              ∂x
+
+    The following is a 2-dimensional version of Lemma 2.
+Theorem 42 Let M be a smooth manifold. Let G = (∂ : E → G, ⊲) be a Lie
+crossed module. Let P → M be a principal G-bundle over M . Consider a G-
+categorical connection (ω, m) on P . Let J : [0, 1]3 → M be a smooth map. Let
+J(t, s, x) = Γx (t, s) = γsx (t); ∀t, s, x ∈ [0, 1]. Suppose that ∂l (Γx ) = ∂r (Γx ) =
+q(x), ∀x ∈ [0, 1], where q : [0, 1] → M is a smooth curve. Choose u ∈ Pq(0) , the
+fibre of P at q(0). Let also ux = Hω (q, x, u), where x ∈ [0, 1]. In particular
+u0 = u.
+    Consider the map (s, x) ∈ [0, 1]2 7→ eΓx (s) ∈ E defined by equations (24)
+and (25). Let eΓx = eΓx (1). For each x ∈ [0, 1], we have:
+
+                      Z 1Z 1                                 !
+       d                        ∂^          ∂^ ∂^
+         eΓx = eΓx          dm     γ x (t), γsx (t), γsx (t)                  dtds
+      dx              0  0      ∂x s        ∂t       ∂s              x
+                                                               Hω (γs ,t,ux )
+                     Z 1Z 1                                !
+                                ^
+                               ∂ x         ∂^       ∂^
+               = eΓx        M     γs (t), γsx (t), γsx (t)                  dtds.
+                      0  0     ∂x          ∂t       ∂s             x  Hω (γs ,t,ux )
+
+Proof. By the 2-structure equation, see 2.2.2, and equation (10) it follows that:
+ Z 1Z 1                                          !
+               ∂^   x
+                           ∂^   x
+                                       ∂^   x
+        dm        γ (t), γs (t), γs (t)                          dtds
+  0   0       ∂x s         ∂t         ∂s
+                                                   Hω (γsx ,t,u)
+           Z 1Z 1                                                         
+                            ∂               ∂                ∂
+         =           M         f (x, s, t), f (x, s, t), f (x, s, t) dtds
+            0    0         ∂x               ∂t              ∂s
+           Z 1Z 1                                                          
+                             ∂                ∂                ∂
+         =           dm         f (x, s, t), f (x, s, t), f (x, s, t) dtds
+            0    0          ∂x               ∂t               ∂s
+                Z 1Z 1                                                               
+                                 ∂                        ∂                ∂
+             +            ω        f (x, s, t) ⊲ m            f (x, s, t), f (x, s, t) dtds
+                  0    0        ∂x                       ∂t               ∂s
+                Z 1Z 1                                                               
+                                ∂                        ∂                ∂
+             −            ω        f (x, s, t) ⊲ m           f (x, s, t),    f (x, s, t) dtds.
+                  0    0        ∂s                       ∂t               ∂x
+             ∂
+                                   ∂
+                                                       
+Note that ω ∂t  f (x, t, s = ω ∂t     Hω (γsx , t, ux ) = 0.
+
+
+
+
+                                                31
+   Also by lemma 1 and the fact that Ω is horizontal:
+Z 1                                                         
+        ∂                       ∂               ∂
+    ω     f (x, s, t) ⊲ m          f (x, s, t),     f (x, s, t) dt
+ 0     ∂s                       ∂t              ∂x
+   Z 1Z t                                                                                     
+                ∂            ′   ∂            ′      ′         ∂                 ∂
+=         Ω        f (x, s, t ), f (x, s, t ) dt ⊲ m              f (x, s, t),       f (x, s, t) dt
+    0  0       ∂t′              ∂s                             ∂t                ∂x
+   Z 1                                            Z 1                                           
+           ∂            ′    ∂           ′      ′               ∂              ′    ∂
+=     Ω       f (x, s, t ), f (x, s, t ) dt ⊲            m         f (x, s, t ),       f (x, s, t ) dt′
+                                                                                                 ′
+    0     ∂t′               ∂s                         0       ∂t′                 ∂x
+   Z 1                                  Z t                                                  
+          ∂               ∂                                ∂             ′    ∂              ′
+−     Ω      f (x, s, t), f (x, s, t) ⊲             m         f (x, s, t   ),     f (x, s, t   ) dt′ dt.
+    0     ∂t              ∂s                      0       ∂t′                 ∂x
+
+The last equation follows from integrating by parts. Indeed, given a smooth
+g-valued function V (t) and a smooth e-valued function W (t), each defined on
+[0, 1], we have:
+  Z 1Z t
+              V (t′ )dt′ ⊲ W (t)dt
+      0     0
+            Z t              Z t                         Z 1             Z t             
+          =         V (t′ )dt′ ⊲     W (t′ )dt′            −         V (t) ⊲          W (t′ )dt′ dt.
+                    0                0               t=1        0                0
+
+Let us analyse the very last term. Applying the fact that (∂ : e → g, ⊲) is a
+differential crossed module together with ∂(m) = Ω, part of the definition of a
+categorical connection (ω, m), we have, since ∂(e) ⊲ f = −∂(f ) ⊲ e; ∀e, f ∈ e:
+Z 1                                 Z t                                                  
+       ∂               ∂                              ∂               ′    ∂             ′
+      Ω  f (x, s, t), f (x, s, t) ⊲             m        ′
+                                                           f (x, s, t   ),    f (x, s, t   ) dt′ dt
+0     ∂t              ∂s                     0       ∂t                    ∂x
+   Z 1Z t                                                                                     
+                  ∂            ′   ∂            ′      ′          ∂                 ∂
+=−          Ω        f (x, s, t ),    f (x, s, t ) dt ⊲ m             f (x, s, t), f (x, s, t) dt
+    0    0       ∂t′               ∂x                             ∂t               ∂s
+   Z 1                                                                  
+             ∂                            ∂                ∂
+=−     ω        f (x, s, t) dt′ ⊲ m         f (x, s, t), f (x, s, t) dt.
+    0       ∂x                           ∂t                ∂s
+
+Therefore:
+          Z 1Z 1                                   !
+                            ∂^ x
+                                    ∂^ x
+                                            ∂^ x
+                        M     γ (t), γs (t), γs (t)                          dtds = Ax − Bx ,
+            0   0           ∂x s    ∂t      ∂s
+                                                           Hω (γsx ,t,ux )
+
+by equations (28) and (29). Comparing with equation (27), yields theorem 42.
+
+    From this theorem and the fact that the horizontal lift X 7→ Xe of vector
+fields on M defines a linear map X(M ) → X(P ) we obtain the following:
+Corollary 43 Let M be a smooth manifold with a base point ∗. Let also
+G = (∂ : E → G, ⊲) be a Lie crossed module. Let P → M be a principal G-
+bundle over M , and let u ∈ P∗ , the fibre at ∗ ∈ M . Consider a G-categorical
+
+
+                                                32
+connection (ω, m) on P . Let Γ be a 2-path in M with ∂l (Γ) = ∂r (Γ) = ∗. Let
+                                                2
+Γ(t, s) = γs (t), for each t, s ∈ [0, 1]. Then F(ω,m,u) (Γ) = (gγ−1
+                                                                  0
+                                                                    , eΓ ) depends only
+on the rank-2 homotopy class of 2-tracks [Γ] to which Γ belongs.
+    Consider a crossed module G = (∂ : E → G, ⊲). Let the categorical group it
+defines be C(G); see 1.2.1. Let also be given a smooth manifold M with a base
+point ∗, a principal G-bundle P over M and G-categorical connection (ω, m) on
+                         1
+P . We defined maps F(ω,m,u)    : π11 (M, ∗) → G (the sets of objects of P(M, ∗) and
+of C(G), respectively) and F(ω,m,u) : P2 (M, ∗) → G ⋉ E (the sets of morphisms
+                               2
+
+of P(M, ∗) and C(G), respectively). We now prove that this assignment, defined
+in 2.4.1, is a categorical holonomy. This will complete the proof of theorem 39.
+
+2.4.4   Re-scaling
+Let Γ be a 2-path in M such that ∂l (Γ) = ∂r (Γ) = ∗. As usual put Γ(t, s) =
+γs (t); s, t ∈ [0, 1]. Consider a smooth map f : [a, b] → [0, 1], where −∞ < a <
+b < +∞. We suppose that f (a) = 0 and f (b) = 1. Let Γ′ (s, t) = γs′ (t) be such
+that γs′ (t) = γf (s) (t), where s ∈ [a, b] and t ∈ [0, 1]. Even though Γ′ is not a
+2-path, for its domain is [0, 1] × [a, b], the elements gγs′ ∈ E and eΓ′ (s) ∈ E,
+where s ∈ [a, b], defined in 2.4.1, still make sense.
+Lemma 44 We have
+
+                       gγs′ = gγf (s)       and    eΓ′ (s) = eΓ (f (s)),
+
+for each s ∈ [a, b].
+Proof. The first equation follows since γs′ = γf (s) , as curves [0, 1] → M , for
+each s ∈ [a, b]. As for the second one we have:
+                         Z 1                             !
+    d                             ∂^ ′
+                                              ∂^   ′
+       eΓ′ (s) = eΓ′ (s)     m      Γ (t, s), Γ (t, s)                   dt
+    ds                     0     ∂t          ∂s
+                                                           Hω (γs′ ,t,u)
+                               Z 1                                     !
+                         d              ∂Γ^             ∂Γ^
+              = eΓ′ (s) f (s)      m        (t, f (s)),    (t, f (s))       dt.
+                        ds      0        ∂t             ∂s
+                                                                            Hω (γf (s) ,t,u)
+
+Whereas:
+                                    Z 1                                          !
+ d                         d                      ∂Γ^            ∂Γ^
+    eΓ (f (s)) = eΓ (f (s)) f (s)           m        (t, f (s)),    (t, f (s))                          dt.
+ ds                        ds           0         ∂t             ∂s
+                                                                                     Hω (γf (s) ,t,u)
+
+
+Therefore s 7→ eΓ′ (s) and s 7→ eΓ (f (s)) are both solutions of the same differential
+equation and they have the same initial conditions.
+
+
+
+
+                                                  33
+2.4.5    Verification of the axioms for a categorical holonomy
+Let G = (∂ : E → G, ⊲) be a Lie crossed module and let G = (∂ : e → g, ⊲) be the
+associated differential crossed module. Fix a smooth manifold M with a base
+point ∗, a principal G-bundle P over M and an element u ∈ P∗ , the fibre of P
+over ∗. Consider a categorical connection (ω, m) on P . Let us prove that the
+assignments
+                         [γ] ∈ π11 (M, ∗) 7→ F(ω,u)
+                                              1
+                                                    ([γ]) ∈ G
+and
+                                            2
+                        [Γ] ∈ P2 (M, ∗) 7→ F(ω,m,u) ([Γ]) ∈ G ⋉ E,
+defined in 2.4.1, yield a categorical holonomy F(ω,m,u) : P(M, ∗) → C(G). To
+begin with, let us see that F(ω,m,u) defines a monoidal functor P2 (M, ∗) → C(G).
+Here C(G) is the categorical group constructed from G; see 1.2.1.
+    Claim: F(ω,m,u) is a functor.
+    Proof. Recall that the source and target maps in a category are denoted
+by σ and τ , respectively. Let Γ be a 2-path in M such that ∂l (Γ), ∂r (Γ) = ∗.
+As usual put Γ(t, s) = γs (t); t, s ∈ [0, 1]. We have:
+                                                 
+                   2
+              σ F(ω,m,u)  ([Γ]) = σ gγ−1   0
+                                             , e[Γ] = gγ−1
+                                                         0
+                                                           = F1 (σ([Γ])) .
+
+On the other hand by lemma 40:
+                                    
+          2
+      τ F(ω,m,u) ([Γ]) = τ gγ−1
+                              0
+                                , e[Γ] = ∂(e−1  −1    −1
+                                            Γ )gγ0 = gγ1 = F1 (τ ([Γ])).
+
+
+Therefore we can represent F(ω,m,u) as:
+
+             ∂u ([Γ])                         gγ−1
+                                                 1
+                                                   = ∂(eΓ )−1 gγ−1
+                                                                 0
+                x                                     x
+                [Γ]                                  e
+                 ∈ P2 (M, ∗)          7−→            Γ           ∈ C(G),
+             ∂d ([Γ])                                gγ−1
+                                                        0
+
+
+where, as usual, Γ(t, s) = γs (t); s, t ∈ [0, 1].
+    Let Γ1 and Γ2 be 2-paths in M with ∂l (Γ1 ), ∂r (Γ1 ) = ∗ and ∂l (Γ2 ), ∂r (Γ2 ) =
+∗. Suppose also that ∂u (Γ1 ) = ∂d (Γ2 ). For each s, t ∈ [0, 1], put Γ1 (t, s) = γs1 (t)
+and Γ2 (t, s) = γs2 (t). Let Γ = Γ1 ◦v Γ2 . Put Γ(t, s) = γs (t); s, t ∈ [0, 1]. Suppose
+s ∈ [0, 1/2]. We have:
+                                 Z 1                      !
+              d                           ∂^ ∂^
+                 eΓ (s) = eΓ (s)     m      γs (t), γs (t)              dt.
+              ds                  0      ∂t        ∂s
+                                                             Hω (γs ,t,u)
+
+By lemma 44, eΓ (1/2) = eΓ1 . Let e′Γ (s) = eΓ (1/2)−1 eΓ (s), where s ∈ [1/2, 1].
+Then:                                                 !
+                            Z 1
+           d ′         ′             ∂^ ∂^
+             e (s) = eΓ (s)     m       γs (t), γs (t)            dt.
+          ds Γ               0       ∂t        ∂s
+                                                             Hω (γs ,t,u)
+
+
+
+                                             34
+Since e′Γ (1/2) = 1E , it follows, by lemma 44, that e′Γ = eΓ2 . Putting everything
+together yields eΓ = eΓ1 eΓ2 . Therefore we have:
+                                                                   
+                               ∂u ([Γ2 ])        1
+                                               F(ω,m,u)   ∂u ([Γ2 ])
+                             x                         x               
+                                     2 
+                                                          2
+                             [Γ ]                     F(ω,m,u) [Γ2 ]
+                                                                   
+                   2                           1
+                                                          ∂u ([Γ1 ])
+                  F(ω,m,u)  ∂d ([Γ2 ]) = F(ω,m,u)
+                             x                         x               
+                              1                        2
+                             [Γ ]                     F(ω,m,u) [Γ1 ]
+                                        
+                                                                    
+                                     1
+                               ∂d ([Γ ])         1
+                                               F(ω,m,u)   ∂d ([Γ1 ])
+
+given any two elements [Γ1 ] and [Γ2 ] of P2 (M, ∗), with ∂d (Γ2 ) = ∂u (Γ1 ).
+    If we are given elements [Γ1 ] and [Γ2 ] of P2 (M, ∗), such that ∂d ([Γ2 ]) =
+∂u ([Γ1 ]), then, for some representatives Γ11 ∈ [Γ1 ] and Γ21 ∈ [Γ2 ]) we have
+∂d (Γ21 ) = ∂u (Γ11 ). For example, take a rank-1 homotopy H connecting ∂u (Γ1 )
+with ∂d (Γ2 ), and put Γ11 = Γ1 ◦v H and Γ21 = Γ2 . Hence F(ω,m,u) : P2 (M, ∗) →
+C(G) is a functor.
+    Claim: F(ω,m,u) is a monoidal functor.
+    Proof. Let Γ1 and Γ2 be 2-paths in P2 (M, ∗). Let also Γ = Γ1 ◦h Γ2 . Put
+Γ1 (s, t) = γs1 (t), Γ2 (s, t)= γs2 (t) andΓ(s, t) = γs (t). Here s, t ∈ [0, 1]. We want
+to prove that eΓ (s) = gγ−11 ⊲ eΓ2 (s) eΓ1 (s) for any s ∈ [0, 1]; see 1.2.1. Note
+                           0
+that this equation holds for s = 0. Furthermore we have:
+   d  −1                    
+        gγ 1 ⊲ eΓ2 (s) eΓ1 (s)
+   ds     0
+                 d                                   d
+      = gγ−1 1 ⊲    eΓ2 (s) eΓ1 (s) + gγ−1  1 ⊲ eΓ2 (s)     eΓ1 (s)
+             0   ds                         0
+                                                      !  ds
+                        Z 1                                            
+          −1                      ∂^          ∂^
+      = gγ 1 ⊲ eΓ2 (s)       m       γs2 (t), γs2 (t)                 dt eΓ1 (s)
+           0
+                          0       ∂t          ∂s
+                                                        Hω (γs2 ,t,u)
+                                             Z 1                           !
+                                                    ∂^           ∂^
+                     −1                                   1            1
+                + gγ 1 ⊲ eΓ2 (s) eΓ1 (s)         m      γ (t), γs (t)                     dt
+                      0
+                                               0      ∂t s        ∂s             1
+                                                                           Hω (γs ,t,u)
+
+      = Cs + Ds .
+
+
+
+
+                                            35
+Let us analyse each of the terms above separately:
+                                              Z 1                               !
+                                                       ∂^         ∂^                               
+  Cs =       gγ−1
+                1 ⊲ eΓ2 (s)          gγ−1
+                                        1 ⊲         m        γs2 (t), γs2 (t)                       dt eΓ1 (s)
+                0                       0
+                                               0          ∂t         ∂s
+                                                                                    Hω (γs2 ,t,u)
+                     
+      = gγ−1
+           1 ⊲ eΓ2 (s)  eΓ1 (s)
+               0
+                                                          Z 1        !
+                                               ∂^          ∂^                         
+                              ∂(eΓ1 (s))−1 gγ−1
+                                              m
+                                              1   ⊲ γs2 (t), γs2 (t)                 dt
+                                   0
+                                           0     ∂t          ∂s
+                                                                       Hω (γs2 ,t,u)
+                                       Z                            !
+                                        1
+                                                ∂^          ∂^                        
+      = gγ−1
+           1 ⊲ eΓ2 (s)  eΓ1 (s) gγ−1
+                                   1 ⊲       m     γs2 (t), γs2 (t)                dt .
+           0                       s
+                                         0      ∂t         ∂s              2                 Hω (γs ,t,u)
+
+Given that m is G-equivariant, given X, Y ∈ X(M ) we have:
+
+                                   e Ye )v = m(Xg,
+                          g −1 ⊲ m(X,          e Ye g)vg = m(X,
+                                                             e Ye )vg .                                          (30)
+
+Here v ∈ P and g ∈ G. Therefore (recall γs = γs1 γs2 ):
+                                                   Z 1                            !
+                                                              ∂^        ∂^
+      Cs =         gγ−1
+                      1 ⊲ eΓ2 (s)        eΓ1 (s)         m        γ 2 (t), γs2 (t)                          dt
+                      0
+                                                    0           ∂t s      ∂s
+                                                                                       Hω (γs2 ,t,u)gγ 1
+                                                                                                      s
+                                                   Z 1                         !
+                                                              ∂^      ∂^
+         =         gγ−1
+                      1 ⊲ eΓ2 (s)        eΓ1 (s)         m         2       2
+                                                                  γ (t), γs (t)                             dt
+                      0
+                                                    0           ∂t s    ∂s
+                                                                                       Hω (γs2 ,t,ugγ 1 )
+                                                                                                       s
+                                   Z 1                                               !
+                                                               ∂^ ∂^
+         = gγ−1
+              1 ⊲ eΓ2 (s)  eΓ1 (s)     m                            γs (t), γs (t)                     dt.
+                     0
+                                                    1/2          ∂t        ∂s
+                                                                                        Hω (γs ,t,u)
+
+On the other hand
+                                     Z 1/2                                             !
+                                                                ∂^ ∂^
+      Ds = gγ−1
+              1 ⊲ e Γ2 (s)  e Γ1 (s)       m                         γs (t), γs (t)                        dt.
+                      0
+                                                    0             ∂t        ∂s
+                                                                                           Hω (γs ,t,u)
+
+Putting everything together it follows that:
+
+  d  −1                  
+      gγ 1 ⊲ eΓ2 (s) eΓ1 (s)
+  ds    0
+                                                                                       !
+                                         Z 1
+                                                                      ∂^ ∂^
+              = gγ−1 1 ⊲ eΓ2 (s)   eΓ1 (s)     m                         γs (t), γs (t)                          dt.
+                                0
+                                                             0        ∂t        ∂s
+                                                                                               Hω (γs ,t,u)
+                                      
+Therefore s ∈ [0, 1] 7→ gγ−1
+                           1 ⊲ eΓ2 (s)   eΓ1 (s) ∈ E and s ∈ [0, 1] 7→ eΓ (s) ∈ E are
+                           0
+both solutions of the same differential equation in E and have the same initial
+condition.
+
+
+                                                          36
+                            
+    In particular gγ−1
+                     1 ⊲ eΓ2   eΓ1 = eΓ . Therefore:
+                        0
+
+
+                         g −1 g −1                                           
+   ∂u ([Γ1 ]) ∂u ([Γ2 ])     γ11 γ12          F1 ∂u ([Γ1 ])       F1 ∂u ([Γ2 ])
+  x              x            x„                 x                   x          
+        1         2           g−1 ⊲e e                            
+                                         «
+F
+       [Γ ] ⊗    
+                    [Γ ]  =      γ 1 Γ2 Γ1 =
+                                      0
+                                                    F2 ([Γ1 ]) ⊗       F2 [Γ2 ] .
+
+                                   −1                                         
+   ∂d ([Γ1 ]) ∂d ([Γ2 ])    gγ−1
+                               1 g γ2         F1 ∂d ([Γ1 ])       F1 ∂d ([Γ2 ])
+                                    0   0
+
+
+     We have therefore proven that F(ω,m,u) : P2 (M, ∗) → C(G) is a monoidal
+functor, and therefore a categorical group map.
+     Claim: The functor F(ω,m,u) : P2 (M, ∗) → C(G) is smooth both on the sets
+π11 (M, ∗) and P2 (M, ∗) of objects and morphisms of P2 (M, ∗).
+     Proof. This follows directly from the definition of F(ω,m,u) , and from the
+lemma on page 74 of [KN].
+     The proof of theorem 39 is complete.
+
+2.4.6    2-Bundles
+Let G = (∂ : E → G, ⊲) be a Lie crossed module. Let the associated differential
+crossed module be G = (∂ : e → g, ⊲). Fix a smooth manifold M and a smooth
+principal G-bundle π : P → M .
+      A natural weakening of the notion of a categorical connection (ω, m) in P is
+to consider m to be only locally defined on P , but so that ∂(mi ) = Ω, for any
+i. Here mi ∈ A2 (Pi , e), where Pi = π −1 (Ui ) and {Ui } is an open cover of P .
+This can be done by using the general theory of 2-bundles [BS], or non-abelian
+gerbes [BrMe], which correspond to 2-bundles with structure crossed modules
+of the form G = Aut(E) of example 11.
+      To this end, let {Ui } be an open cover of M . We can suppose that, for any
+                                                      .
+i1 , . . . , in , the n-fold intersection Ui1 ,...,in = Ui1 ∩ . . . ∩ Uin is contractible. A G-
+2-bundle can be described by using smooth maps gij : Uij → G and hijk : Uijk →
+E. These have to satisfy the cocycle conditions: ∂(h−1          ijk )gij gjk = gik and hijk hikl =
+(gij ⊲ hjkl ) hijl for any i, j, k, l. Therefore a G-2-bundle does not necessarily de-
+fine a G-principal bundle, unless ∂(hijk ) = 1 for each i, j, k. If this condition is
+satisfied, a G-2-bundle will be called a special G-2-bundle.
+      The main purpose of this article was the construction of categorical holonomies,
+in other words of smooth categorical group maps P2 (M, ∗) → C(G), or, equiva-
+lently of smooth crossed module maps Π2,1           2 (M, ∗) → G; see 1.3 for this notation.
+From the point of view of 2-dimensional holonomy, G-2-bundles are natural ob-
+jects; see [BS]. However, our notion of categorical holonomy requires the exis-
+tence of a smooth group morphism π11 (M, ∗) → G, and therefore of a principal
+G-bundle with connection; see [CP]. This makes it natural to work with special
+G-2-bundles.
+      A special G-2-bundle with connection can be specified by the following data:
+(Here A = ker(∂) ⊂ E, and a is its Lie algebra; note that A is central in E).
+   1. A principal G-bundle π : P → M with a connection ω.
+
+
+
+                                              37
+   2. An open cover {Ui } of M such that for any i1 , . . . , in the n-fold intersection
+      Ui1 ,...,in is contractible. Let Pi1 ,...,in = π −1 (Ui1 ,...,in ).
+   3. G-equivariant A-valued functions eijk : Pijk → A. These are required to
+      satisfy: eijk eikl = ejkl eijl .
+   4. G-equivariant horizontal 2-forms mi ∈ A2 (Pi , e). These are required to
+      satisfy ∂(mi ) = Ω, the curvature 2-form of ω.
+   5. G-equivariant horizontal 1-forms ηij ∈ A1 (Pij , a). These are required to
+      satisfy:
+                                              
+               mi − mj = Dηij and         De−1
+                                            ijk eijk = ηij + ηjk − ηik ,
+
+      where D denotes the exterior covariant derivative with respect to ω, in
+      other words, by using lemma 30,
+                                                       
+      mi −mj = dηij +ω∧⊲ ηij and        de−1       ⊲ −1
+                                          ijk + ω ∧ eijk eijk = ηij +ηjk −ηik .
+
+
+One passes from this setting to the setting in [BS] by choosing local sections fi
+of Pi , and defining the functions gij : Uij → G in the usual way: fi gij = fj . Next
+define hijk = fi∗ (eijk ), Ai = fi∗ (ω), Bi = fi∗ (mi ) and aij = fi∗ (ηij ). Then this
+data defines the local differential forms of Baez and Schreiber [BS], satisfying
+equations corresponding to our special G-2-bundles with connection, in partic-
+ular with the transition functions gij satisfying the usual cocycle condition for
+a principal G-bundle. Note that the Baez-Schreiber local differential forms can
+be seen as a generalisation to arbitrary G of the local description of non-abelian
+gerbes, with G = Aut(E), of Breen and Messing [BrMe].
+    Special G-2-bundles with connection define group morphisms π11 (M, ∗) → G.
+However, the definition of the categorical holonomy on a 2-track [Γ] ∈ P2 (M, ∗)
+is tricky if one is to deal with the fact that m is not globally defined. This can be
+done (and will appear in a future work), however, it will only be, a priori, defined
+up to multiplication by central elements of E, and thus it should not define
+holonomies P2 (M, ∗) → C(G), unless we restrict to elements of π22 (M, ∗), as in
+[MP]. For instance, it is easy to see that given two categorical G-connections
+(ω, m) and (ω, m′ ) in P then given a 2-path Γ ∈ P2 (M, ∗) we have
+                               !                                       !
+           Z 1       d^                         Z 1        d^                    
+e′Γ = exp        η       γ1 (t)          dt exp −         η      γ2 (t)           dt eΓ
+               0      dt                                0     dt
+                              Hω (γ1 ,t,u)                              Hω (γ2 ,t,u)
+
+where m − m′ = Dη = dη + ω ∧⊲ η, moreover η ∈ A1 (P, a) is G-equivariant and
+horizontal. We have put γ1 = ∂u (Γ) and γ2 = ∂d (Γ). Also eΓ and e′Γ denote
+2-dimensional holonomy with respect to (ω, m) and (ω, m′ ), respectively.
+    For this reason we feel that it is likely that the construction in this article,
+with a globally defined m, will describe all categorical holonomies P2 (M, ∗) →
+C(G), especially if we consider a generalised unbased setting. We will investigate
+this issue in a future publication.
+
+                                             38
+2.5     Wilson Spheres
+Let G = (∂ : E → G, ⊲) be a Lie crossed module, and let G = (∂ : e → g, ⊲) be
+the associated differential crossed module. Fix a smooth manifold M and a
+smooth principal G-bundle P → M , with a connection ω ∈ A1 (P, g), as well as
+a G-categorical connection (ω, m). The aim of this subsection is to define the
+categorical holonomy of a 2-sphere Σ embedded in M .
+
+2.5.1   The dependence of a categorical connection holonomy on the
+        elements of the fibre
+Choose u, v ∈ P . We want to relate F(ω,m,u) with F(ω,m,v) . Suppose first that
+u, v each belong to the fibre Px of P at a certain point x ∈ M . Let g ∈ G be
+the unique element such that u = vg. Let γ be a 1-path of M starting and
+ending at x. Then Hω (γ, 1, u) = Hω (γ, 1, vg) = Hω (γ, 1, v)g. Therefore since
+             1                               1
+Hω (γ, 1, u)F(ω,u) (γ) = u and Hω (γ, 1, v)F(ω,v) (γ) = v we have the well-known
+formula:
+                             1             1
+                            F(ω,v) (γ) = gF(ω,u) (γ)g −1 ,                   (31)
+for γ a smooth curve starting and ending at x and u = vg, where u, v ∈ Px and
+g ∈ G.
+                         2                     2
+    Let us now see how F(m,ω,u) is related to F(m,ω,v) .
+
+Lemma 45 For any 2-path Γ in M , with ∂l (Γ) = ∂r (Γ) = x, we have:
+                           2                  2
+                          F(ω,m,v) (Γ) = g ⊲ F(ω,m,u) (Γ),                            (32)
+where u, v belong to the fibre Px of P , and g ∈ G is such that u = vg.
+Proof. As usual, put Γ(t, s) = γs (t); s, t ∈ [0, 1]. Let eΓ (s) and fΓ (s) be defined
+by the differential equations:
+                                Z 1                       !
+              d                        ∂^ ∂^
+                eΓ (s) = eΓ (s)     m     γs (t), γs (t)              dt,
+             ds                  0     ∂t         ∂s
+                                                             Hω (γs ,t,u)
+
+and                                                          !
+                                  Z 1
+             d                              ∂^ ∂^
+                fΓ (s) = fΓ (s)         m      γs (t), γs (t)                   dt;
+             ds                    0        ∂t        ∂s
+                                                                 Hω (γs ,t,v)
+
+
+
+
+                                             39
+with initial conditions eΓ (0), fΓ (0) = 1E ; see equation 19. Then:
+  d −1                    d
+     g ⊲ fΓ (s) = g −1 ⊲ fΓ (s)
+  ds                     ds                                  !
+                              Z 1                                                   
+                                            ∂^ ∂^
+               = g −1 ⊲ fΓ (s)     m           γs (t), γs (t)                   dt
+                                    0       ∂t        ∂s
+                                                                 Hω (γs ,t,v)
+                                        Z 1                        !
+                                                ∂^ ∂^                                
+                 = g −1 ⊲ fΓ (s) g −1 ⊲     m       γs (t), γs (t)                  dt
+                                         0       ∂t        ∂s
+                                                                       Hω (γs ,t,v)
+                                   Z 1                      !
+                                         ∂^ ∂^
+                  = g −1 ⊲ fΓ (s)      m    γs (t), γs (t)                       dt
+                                    0    ∂t        ∂s
+                                                              Hω (γs ,t,ug )g
+                                                                          −1
+
+                                   Z 1                      !
+                                         ∂^        ^
+                                                    ∂
+                  = g −1 ⊲ fΓ (s)      m    γs (t), γs (t)                dt.
+                                    0    ∂t        ∂s
+                                                                  Hω (γs ,t,u)
+
+The fourth equation follows from (30). Therefore g −1 ⊲ fΓ (s) = eΓ (s), for each
+                                  2                  2
+s ∈ [0, 1], thus, in particular, F(ω,m,v) (Γ) = g ⊲ F(ω,m,u) (Γ).
+   There is a natural left action of G on G⋉E, given by g⊲(h, e) = (ghg −1 , g⊲e).
+Using this, we can summarise the results of this subsection, equations (31) and
+(32), in the following:
+Theorem 46 If v ∈ Px then
+
+                              F(ω,m,vg) = g −1 ⊲ F(ω,m,v)                                (33)
+
+for any g ∈ G.
+
+2.5.2    The dependence of a categorical connection holonomy on the
+         point in the principal bundle
+Let G = (∂ : E → G, ⊲) be a Lie crossed module. Fix a smooth manifold M ,
+and a smooth principal G-bundle P → M with a connection ω ∈ A1 (P, g). Let
+(ω, m) be a G-categorical connection on P . Let x, y ∈ M . Choose v ∈ Py .
+Let µ be a 1-path connecting y with x. This curve µ defines a categorical
+group isomorphism Tµ : P2 (M, y) → P2 (M, x) in the obvious way, by considering
+horizontal compositions. More precisely let Γµ be the 2-path such that Γµ (t, s) =
+                                                                                    .
+µ(t); ∀s, t ∈ [0, 1]. Let also Γµ−1 (t, s) = µ−1 (t); ∀s, t ∈ [0, 1]. Then Tµ ([Γ]) =
+[Γµ−1 ] ◦h [Γ] ◦h [Γµ ] ∈ P2 (M, x) for each [Γ] ∈ P2 (M, y), and Tµ ([γ]) = [µ−1 γµ]
+for [µ] ∈ π11 (M, y).
+
+Theorem 47 Let u = Hω (µ, 1, v). We have:
+
+                              F(ω,m,v) = F(ω,m,u) ◦ Tµ .                                 (34)
+
+Proof. Let [Γ] ∈ P2 (M, y). Then [Γ] = [Γµ ] ◦h Tµ ([Γ]) ◦h [Γµ−1 ]. Let Γ1 =
+Γµ ◦h Γµ−1 ◦h Γ ◦h Γµ ◦h Γµ−1 , thus [Γ1 ] = [Γ]. Put γs (t) = Γ1 (t, s); ∀s, t ∈ [0, 1].
+
+                                           40
+Let also Γ′ = Γµ−1 ◦h Γ◦h Γµ , thus [Γ′ ] = Tµ [Γ]. Put γs′ (t) = Γ′ (t, s); ∀s, t ∈ [0, 1].
+We have
+                              Z 1                       !
+         d                            ∂^ ∂^
+            eΓ1 (s) = eΓ1 (s)     m      γs (t), γs (t)                dt
+         ds                     0     ∂t        ∂s
+                                                          Hω (γs ,t,v)
+                              Z 1                       !
+                                       ^
+                                      ∂ ′        ^
+                                                 ∂
+                    = eΓ1 (s)     m      γs (t), γs′ (t)                         dt
+                                0     ∂t        ∂s
+                                                          Hω (γs′ ,t,Hω (µ,1,v))
+                             Z 1                       !
+                                     ∂^   ′
+                                                ∂^ ′
+                   = eΓ1 (s)      m     γ (t), γs (t)                 dt
+                               0    ∂t s        ∂s
+                                                            Hω (γs ,t,u)
+                                                                ′
+
+
+
+The second equation follows since Γµ (s, t) does not depend on s. Comparing
+with equation 19 it follows that eΓ1 (s) = eΓ′ (s), for each s ∈ [0, 1]. Therefore:
+                                                                    2
+ 2
+F(ω,m,v)          2
+         ([Γ]) = F(ω,m,v) ([Γ1 ]) = eΓ1 = eΓ′ = F(ω,m,u)
+                                                 2
+                                                         ([Γ′ ]) = F(ω,m,u) (Tµ ([Γ])).
+
+This finishes the proof of the result at the level of the elements of P2 (M, y).
+The proof at the level of the elements of π11 (M, y) is similar.
+
+2.5.3    Associating 2-holonomies to embedded spheres
+Let G = (∂ : E → G, ⊲) be a Lie crossed module. Let M be a smooth mani-
+fold. Consider a principal G-bundle P over M with a G-categorical connection
+(ω, m). Consider an embedded oriented 2-sphere Σ ⊂ M . We want to define
+the categorical holonomy of Σ, which we call a Wilson Sphere, by analogy with
+Wilson loops, familiar in gauge theory.
+
+Definition 48 Choose an orientation preserving parametrisation
+                                                 φ
+                               S 2 = D2 /∂D2 −
+                                             →Σ⊂M
+
+of Σ. Let ∗ = φ(∂D2 ) ∈ Σ ⊂ M . Choose u ∈ P∗ , the fibre of P at ∗. The
+categorical holonomy of Σ is defined as:
+                                        2
+                    W(ω,m) (Σ, φ, u) = F(ω,m,u) (φ) ∈ ker(∂) ⊂ E.
+
+The fact that the categorical holonomy W(ω,m) (Σ, φ, u) lives in ker(∂) ⊂ E
+follows from the fact that ∂d (φ) = ∂u (φ) = ∗, and lemma 40.
+
+Theorem 49 The categorical holonomy W(ω,m) (Σ, φ, u) does not depend on φ
+and u, up to acting by an element of G. Therefore, we can define a categorical
+holonomy W(ω,m) (Σ) of embedded 2-spheres Σ in M (the Wilson Sphere), tak-
+ing values in E/G. If Σ∗ is obtained from Σ by reversing its orientation then
+                          −1
+W(ω,m) (Σ∗ ) = W(ω,m) (Σ)     .
+
+
+
+
+                                            41
+Example 50 Consider the U (1)-bundle P n over S 2 with Chern class n, where
+n ∈ Z. Define a crossed module G given by the exponential map exp : iR → U (1),
+considering the trivial action of U (1) on iR. Consider some connection 1-form
+ω on Pn , thus (ω, Ω) is a categorical G-connection on P n . We will then have
+that W(ω,Ω) (S 2 ) = n.
+
+    Proof. (Theorem 49) The independence of W(ω,m) (Σ, φ, u) on the choice
+of u ∈ P∗ , up to acting by an element of G, follows from theorem 46.
+                                                                                                  φ′
+     Choose a different orientation preserving parametrisation D2 /∂D2 −→ Σ
+of Σ. Since both φ and φ′ are orientation preserving, there exists a smooth 1-
+parameter family of embeddings x ∈ [0, 1] 7→ φx connecting φ and φ′ . Here φx is
+an orientation preserving parametrisation φx : D2 /∂D2 → Σ, for each x ∈ [0, 1].
+     Let q : [0, 1] → M be the map such that q(x) = φx (∂([0, 1]2 )), ∀x ∈ [0, 1];
+                                     .
+therefore ∗ = q(0). Put Γx (t, s) = φx (t, s), where t, s, x ∈ [0, 1]. Therefore
+                                                                   .
+∂l (Γ ) = ∂r (Γ ) = q(x), for each x ∈ [0, 1]. Let also J(t, s, x) = Γx (t, s), where
+      x           x
+
+t, s, x ∈ [0, 1].
+     The map J : [0, 1]3 → Σ ⊂ M satisfies the conditions of theorem 42. In
+particular
+
+             W(ω,m) (Σ, φ0 , u) = eΓ0 = eΓ1 = W(ω,m) (Σ, φ1 , Hω (q, 1, u)),
+
+since certainly Rank(Dz J) ≤ 2, ∀z ∈ [0, 1]3 .
+    Finally, let φ−1 (x, y) = φ(1 − x, y); ∀x, y ∈ [0, 1]. It does not follow that
+  −1
+φ ◦h φ is rank-2 homotopic to ∗ in a strict sense, since a homotopy connecting
+φ−1 ◦h φ with ∗ will have some singular points, as φ and φ−1 are not 2-paths,
+because they fail the sitting instant conditions.
+    Let γs (t) = φ(t, s) and γs′ (t) = φ−1 (t, s), where t, s ∈ [0, 1]. Let us analyse
+eφ−1 (s) directly. We have:
+                                Z 1                       !
+          d                              ∂^  ′
+                                                    ∂^ ′
+            e −1 (s) = eφ−1 (s)      m      γ (t), γs (t)                  dt
+         ds φ                     0      ∂t s      ∂s
+                                                             Hω (γs′ ,t,u)
+                                   Z 1                       !
+                                           ∂^ ∂^
+                     = −eφ−1 (s)       m      γs (t), γs (t)                  dt
+                                    0      ∂t        ∂s
+                                                                        Hω (γs ,t,ugγ ′ )
+                                                                                         s
+
+
+Therefore:
+                               Z 1                                    !
+ d                                        ∂^ ∂^                                              
+                         −1
+   e −1 (s) = −eφ−1 (s) gγs′ ⊲     m          γs (t), γs (t)                             dt
+ ds φ                           0          ∂t        ∂s
+                                                                          Hω (γs ,t,u)
+                                                                           !
+                                   Z 1                 ∂^ ∂^                                         
+                             −1
+              = −eφ−1 (s) ∂ eφ−1 (s) ⊲    m                  γs (t), γs (t)                        dt
+                                             0            ∂t        ∂s
+                                                                                    Hω (γs ,t,u)
+                                                  !
+                   Z 1       ∂^ ∂^                                    
+              =−          m      γs (t), γs (t)                      dt eφ−1 (s).
+                      0       ∂t        ∂s
+                                                      Hω (γs ,t,u)
+
+
+
+                                           42
+The result follows from the fact that if A(t) is a smooth function [0, 1] → E and if
+                       d                                                    .
+w(s) is a solution of ds w(s) = w(s)A(s) then the smooth function v(s) = w(s)−1
+                 d                                                  −1
+is a solution of ds v(s) = −A(s)v(s). In particular eφ−1 (1) = eφ (1).
+    Note that the previous proof uses, in an essential way, the fact that the
+mapping class group of S 2 is {±1}. Therefore, it is likely that the previous
+theorem does not extend to an embedded surface of genus greater than zero.
+However, it is probable that this can be fixed if any embedded surface Σ ⊂ M
+is assigned an equivalence class of embedding S → Σ, where two embeddings
+φ, φ′ : S → Σ are equivalent if φ−1 ◦ φ′ is isotopic to the identity diffeomorphism.
+We will analyse this issue in a subsequent publication.
+
+
+3     Appendix: Technical Lemmas
+The following lemmas provide the foundation for the construction of the 2-
+category S2 (M ), defined for any smooth manifold M . Specifically, lemma 52 is
+used to prove that the vertical composition of 2-tracks is well defined; see 1.3.3.
+
+Lemma 51 Let M be a smooth manifold. Let f : S 2 → M be a smooth map.
+Consider a handle decomposition H of M . Let H i be the i-skeleton of H; in
+other words H i is the handlebody made from the handles of H of index less than
+or equal to i, where i = 0, 1, . . . , dim(M ). There exists an ambient isotopy of
+M , sending H to a handle decomposition I of M , such that f (S 2 ) ⊂ I 2 , the
+2-skeleton of the handle decomposition I.
+
+     Proof. Let m = dim(M ).
+     Let J be the handle decomposition of M which is dual to H. If m = 2 there
+is nothing to prove. Otherwise f (S 2 ) is a compact set with zero measure in M ,
+by Sard’s theorem; see [H]. Therefore, there exists an ambient isotopy of M ,
+sending J to a handle decomposition J0 of M , such that the 0-handles of J0
+are contained in M \ f (S 2 ), a non-empty open set of M . If m = 3, taking the
+dual handle decomposition of J0 , yields a handle decomposition I of M with
+f (S 2 ) ⊂ I 2 .
+     Suppose that m > 3. Let {h1i } be the set of handles of J0 of index 1. Then
+each 1-handle h1i is of the form h1i = D1i × Dm−1     i     , and attaches to the 0-skeleton
+J00 of J0 along Si0 × Dm−1      i    .  For each  i, let p 1    1
+                                                           i : hi → Di
+                                                                       m−1
+                                                                              be the obvious
+                           m                             1
+projection. Here D is the m-disk. Then pi can be extended to a smooth
+map qi1 : Vi1 → Rm−1 , where Vi1 is an open neighbourhood of h1i in M . For
+each i, let A1i = f −1 (Vi1 ) ⊂ S 2 . It is an open set in S 2 . Since m − 1 > 2,
+the set (qi1 ◦ f )(A1i ) ⊂ Rm−1 has measure zero, for qi1 is smooth. Therefore
+p1i (f (S 2 )) ⊂ (qi1 ◦ f )(A1i ) has measure zero in Dm−1  i    .
+     Choose an (m − 1)-ball cm−1      i    ⊂ Dm−1
+                                               i   , not intersecting p1i (f (S 2 )); note that
+p1i (f (S 2 )) is compact. There exists an ambient isotopy of M , which restricts
+to an ambient isotopy of J00 (the 0-skeleton of J0 ), whilst sending each h1i =
+D1i × Dm−1i     to D1i × cm−1
+                           i      . Let J1 be the handle decomposition of M to which J0
+is sent by the ambient isotopy. By construction J11 ∩ f (S 2 ) = ∅. If dim(M ) = 4,
+
+
+                                              43
+taking the dual handle decomposition to J1 , yields the handle decomposition I
+of M , and by construction f (S 2 ) ⊂ I 2 .
+    Suppose m > 4. The argument is the same. As above, let {h2i } be the set
+of 2-handles of J1 . Then, for any i, h2i = D2i × Dm−2i    , and h2i attaches to J11
+         1     m−2                    2     2      m−2
+along Si × Di . For each i, let pi : hi → Di            be the obvious projection.
+As before, since m − 2 > 2, the set p2i (f (S 2 )), which is compact, has zero
+measure in Dm−2i   . Therefore, there exists an (m − 2)-ball cm−2
+                                                                i     ⊂ Dm−2
+                                                                          i    such
+       2     2      m−2
+that pi (f (S )) ∩ ci   = ∅. There exists an ambient isotopy of M , restricting
+to an ambient isotopy of J11 , and sending h2i = D2i × Dm−2 i    to D2i × cm−2
+                                                                            i  , for
+each i. Let the handle decomposition J2 be the image of J1 under the ambient
+isotopy. As before, by construction, J22 ∩ f (S 2 ) = ∅. If m = 5, letting I be the
+handle decomposition of M dual to J2 , then we have that f (S 2 ) ⊂ J 2 .
+    An obvious inductive argument will finish the proof for any m ∈ N.
+
+Lemma 52 Let f : ∂(D3 ) → M be a smooth map such that Rank(Dv f ) ≤
+1, ∀v ∈ ∂(D3 ). Here D3 = [0, 1]3 . Suppose that f is constant in a neighbourhood
+of each vertex of ∂(D3 ). In addition, suppose also that in a neighbourhood
+I × [−ǫ, ǫ] of each edge I of ∂(D3 ), f (x, t) = φ(x), where (x, t) ∈ I × [−ǫ, ǫ] and
+φ : I → M is smooth. Then f can be extended to a smooth map F : D3 → M
+such that Rank(Dw F ) ≤ 2, ∀w ∈ D3 . Moreover we can choose F so that it has
+a product structure close to the boundary of D3 .
+
+    Proof. The conditions of the statement imply that f is of the form f ′ ◦ r,
+where f ′ : S 2 → M is a smooth map and r : ∂(D3 ) → S 2 is some smooth
+homeomorphism.
+    By using the previous lemma, we can see that there exists a handle decom-
+position of M such that f (∂(D3 )) is contained in the 2-skeleton M 2 of M (the
+handlebody made from the 0-,1- and 2-handles of M ). Let us prove that we can
+suppose further that f (∂(D3 )) is contained in the 1-skeleton M 1 of M . This
+will be completely analogous (though dual) to the proof of the previous lemma.
+    Let n = dim(M ). Suppose that n ≥ 2. Let {hi } be the set of 2-handles
+of M . Therefore, for each i, hi = D2i × Din−2 , and hi attaches to M 1 along
+Si1 × Din−2 = (∂D2i ) × Din−2 . It suffices to prove that for each i there exists an
+xi ∈ D2i (thus an open 2-ball) such that f (∂D3 ) does not intersect {xi } × Din−2 .
+    Let pi : hi = D2i × Din−2 → D2 × {0} be the obvious projection. Given that
+Rank(Dv f ) ≤ 1, ∀v ∈ ∂D3 , it follows that Zi = pi (hi ∩f (∂D3 )) has zero measure
+in D2 , thus that we can choose an xi in the interior of D2 not intersecting Zi .
+Therefore, some open ball in D2 containing xi does not intersect Zi . This proves
+that there exists a handle decomposition of M such that f (∂D3 ) is contained in
+the interior of the 1-skeleton M 1 of M , analogously to the proof of the previous
+lemma.
+                                        p
+    Consider the universal cover N −    → M 1 of M 1 . It is a contractible smooth
+manifold. We can lift f as f = p ◦ g ′ , where g ′ : ∂D3 → N is a smooth map,
+such that Rank(Dv g ′ ) ≤ 1, ∀v ∈ ∂D3 , since p is a local diffeomorphism. Let
+c : N × [0, 1] → N be a smooth contraction of N to a point of it. We can suppose
+that there exists an ǫ > 0 such that c does not depend on t for t ∈ [0, ǫ]∪[1−ǫ, 1].
+
+
+                                         44
+The smooth homotopy g(v, t) = p(c(g ′ (v), t)) where t ∈ [0, 1] and v ∈ ∂(D3 ) will
+permit us to extend f : ∂(D3 ) → M to a smooth map F : D3 → M , with a
+product structure close to the boundary of D3 . By construction we also have
+that Rank(Dw F ) ≤ 2, ∀w ∈ D3 .
+
+
+References
+[B]   Baez J.C.: Higher Yang-Mills Theory, arXiv:hep-th/0206130.
+[BC] Baez J.C.; Crans A.S.: Higher-dimensional algebra. VI. Lie 2-algebras.
+     Theory Appl. Categ. 12 (2004), 492–538 (electronic)
+[BL] Baez J.C.; Lauda A.D.: Higher-dimensional algebra. V. 2-groups. Theory
+     Appl. Categ. 12 (2004), 423–491 (electronic)
+[BS] Baez J.C.; Schreiber U.: Higher Gauge Theory: 2-Connections on
+     2-Bundles. arXiv:hep-th/0412325; see also: Higher Gauge Theory,
+     arXiv:math/0511710; Categories in algebra, geometry and mathematical
+     physics, 7–30, Contemp. Math., 431, Amer. Math. Soc., Providence, RI,
+     2007
+[BM] Barrett J.W.; Mackaay M.: Categorical representations of categorical
+     groups. Theory Appl. Categ. 16 (2006), No. 20, 529–557 (electronic).
+[BT] Bott R.; Tu L.: Differential forms in algebraic topology. Graduate Texts
+     in Mathematics, 82. Springer-Verlag, New York-Berlin, 1982.
+[BrMe] Breen L.; Messing W.: Differential geometry of gerbes. Adv. Math. 198
+     (2005), no. 2, 732–846.
+[Br] Brown K.S.: Cohomology of groups. Corrected reprint of the 1982 original.
+     Graduate Texts in Mathematics, 87. Springer-Verlag, New York, 1994.
+[BHKP] Brown R.; Hardie K. A.; Kamps K. H.; Porter T.: A homotopy double
+    groupoid of a Hausdorff space. Theory Appl. Categ. 10 (2002), 71–93
+    (electronic).
+[BH] Brown R., Higgins P.J.: On the connection between the second relative
+     homotopy groups of some related spaces. Proc. London Math. Soc. (3) 36
+     (1978), no. 2, 193–212.
+[BHS] Brown R., Higgins P.J., Sivera R.: Nonabelian algebraic topology, (in
+     preparation). Part I downloadable.
+[BMo] Brown R.; Mosa G.H.: Double Categories, 2-Categories, Thin Struc-
+     tures and Connections. Theory Appl. Categ. 5 (1999), No. 7, 161-275
+     (electronic).
+[CP] Caetano A.; Picken R. F.: An axiomatic definition of holonomy. Internat.
+     J. Math. 5 (1994), no. 6, 815–848.
+
+                                        45
+[EML] Eilenberg S, MacLane S.: Determination of the Second Homology and
+    Cohomology Groups of a Space by Means of Homotopy Invariants, Proc.
+    Nat. Acad. Sci. U. S. A. 12, (1946). 277–280.
+[HKK] Hardie K. A.; Kamps K. H.; Kieboom R. W.: A Homotopy 2-Groupoid
+    of a Hausdorff Space. Papers in honour of Bernhard Banaschewski (Cape
+    Town, 1996). Appl. Categ. Structures 8 (2000), no. 1-2, 209–214.
+[H]   Hirsch M.W.: Differential topology. Graduate Texts in Mathematics, No.
+      33. Springer-Verlag, New York-Heidelberg, 1976
+[K]   Knapp A.W.: Lie groups beyond an introduction. Progress in Mathemat-
+      ics, 140. Birkhuser Boston, Inc., Boston, MA, 1996.
+[KH] Khokhlov Yu. S.: Stable distributions on the Heisenberg group. Stability
+     problems for stochastic models. J. Soviet Math. 47 (1989), no. 5, 2796–
+     2798.
+[KN] Kobayashi S.; Nomizu K.: Foundations of differential geometry. Vol I. In-
+     terscience Publishers, a division of John Wiley & Sons, New York-London
+     1961.
+[ML] Mac Lane S.: Categories for the working mathematician. Second edition.
+     Graduate Texts in Mathematics, 5. Springer-Verlag, New York, 1998.
+[MP] Mackaay M.; Picken R.F.: Holonomy and parallel transport for abelian
+     gerbes. Adv. Math. 170 (2002), no. 2, 287-219.
+[M]   Mackaay M.: A note on the holonomy of connections in twisted bundles.
+      Cah. Topol. Géom. Différ. Catég. 44 (2003), no. 1, 39–62.
+[P]   Porter T.: Crossed modules in Cat and a Brown-Spencer theorem for 2-
+      categories. Cahiers Topologie Géom. Différentielle Catég. 26 (1985), no.
+      4, 381–388.
+[Po] Postnikov, M.: Leçons de Géometrie. (French) [Lectures in geometry]
+     Géométrie Différentielle. [Differential geometry] Translated from the Rus-
+     sian by Irina Petrova. Traduit du Russe: Mathématiques. [Translations of
+     Russian Works: Mathematics] Éditions Mir, Moscow, 1990.
+
+
+
+
+                                       46
+

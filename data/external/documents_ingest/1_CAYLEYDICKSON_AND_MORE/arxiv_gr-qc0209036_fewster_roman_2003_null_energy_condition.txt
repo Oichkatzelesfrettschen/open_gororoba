@@ -1,0 +1,1256 @@
+ESI 1205 (2002)
+
+Null energy conditions in quantum field theory
+Christopher J. Fewster∗ and Thomas A. Roman†‡
+
+arXiv:gr-qc/0209036v2 26 Nov 2002
+
+Department of Mathematics, University of York, Heslington, York, YO10 5DD, UK
+(Dated: September 10, 2002. Revised November 25, 2002)
+For the quantised, massless, minimally coupled real scalar field in four-dimensional Minkowski
+space, we show (by an explicit construction) that weighted averages of the null-contracted stressenergy tensor along null geodesics are unbounded from below on the class of Hadamard states. Thus
+there are no quantum inequalities along null geodesics in four-dimensional Minkowski spacetime.
+This is in contrast to the case for two-dimensional flat spacetime, where such inequalities do exist.
+We discuss in detail the properties of the quantum states used in our analysis, and also show that
+the renormalized expectation value of the stress energy tensor evaluated in these states satisfies the
+averaged null energy condition (as expected), despite the nonexistence of a null-averaged quantum
+inequality. However, we also show that in any globally hyperbolic spacetime the null-contracted
+stress energy averaged over a timelike worldline does satisfy a quantum inequality bound (for both
+massive and massless fields). We comment briefly on the implications of our results for singularity
+theorems.
+PACS numbers: 03.70, 04.62.+v
+Keywords: Energy conditions, Quantum inequalities, Singularity theorems
+
+I.
+
+INTRODUCTION
+
+The field equations of general relativity have little or no predictive power in the absence of some notion of what
+metrics or stress-energy tensors are to be regarded as physically reasonable. In classical general relativity it has
+proved profitable to require the stress-energy tensor to satisfy one or more of the so-called energy conditions: in
+particular, the Hawking–Penrose singularity theorems [1, 2] and the positive mass theorem [3, 4] are proved under
+such assumptions.
+The present paper addresses the status of the null energy condition (NEC) in quantum field theory. The classical
+NEC is the requirement that the stress-energy tensor Tab should obey Tab ℓa ℓb ≥ 0 for all null vectors ℓa and at
+every spacetime point. Although this condition is satisfied by many classical matter models, including the minimally
+coupled scalar field and the electromagnetic field [34], it is known, however, that this condition is violated by quantum
+ren a b
+ℓ ℓ iω of the renormalised null-contracted stress-energy is unbounded from below
+fields. In fact, the expectation hTab
+as a function of the quantum state ω. Exactly the same phenomenon afflicts the weak energy condition (WEC) which,
+classically, requires that Tab v a v b ≥ 0 for all timelike vectors v a . In this case, it is known that the renormalised energy
+density is still subject to constraints on its averages along timelike curves. For example, the massless real scalar field
+in n-dimensional Minkowski space obeys [5, 6]
+Z
+Z
+dt h: T00 :iω (t, 0)g(t)2 ≥ −cn du un |b
+g(u)|2
+(I.1)
+for all Hadamard states [35] ω and any smooth, real-valued compactly supported function g, where gb is the Fourier
+transform of g (see Eq. (II.3)), and the cn are explicitly known constants independent of ω and g. Such constraints
+are known as quantum weak energy inequalities (QWEIs) and appear to be the vestiges of the weak energy condition
+in quantum field theory [36]. Over the past decade, QWEIs have been developed in a variety of circumstances
+[5, 6, 7, 8, 9, 10, 11, 12, 13] and are known to hold for the minimally coupled scalar field, the Dirac field and the
+electromagnetic and Proca fields in great generality [14, 15, 16]. The QWEIs also imply that the averaged weak
+energy condition (AWEC)
+Z
+dt h: T00 :iω (t, 0) ≥ 0
+(I.2)
+
+† Permanent address: Department of Physics and Earth Sciences, Central Connecticut State University, New Britain, CT 06050, U.S.A.
+∗ Electronic address: cjf3@york.ac.uk
+‡ Electronic address: roman@ccsu.edu
+
+2
+holds at least for Hadamard states ω for which the integral converges absolutely [37].
+It is natural to enquire whether similar vestiges of the NEC persist in quantum field theory. This is particularly
+relevant to attempts to generalise the singularity theorems to quantised matter fields as it is the NEC which is
+assumed in the Penrose theorem [1]. While the final stages of gravitational collapse presumably require a full theory
+of quantum gravitation for their description, the early stages can certainly be treated within quantum field theory
+on a fixed curved spacetime. The question to be addressed is whether an initially contracting matter distribution
+will continue to do so and it is here that the NEC (or its variants) appears in the classical arguments. Accordingly,
+it is important to understand whether the NEC has an analogue in quantum field theory. For massless fields in
+two-dimensional Minkowski space, this question was answered affirmatively in Ref. [7], using a Lorentzian sampling
+function. The bound has the form
+Z
+λ0 ∞
+1
+h: Tab : la lb iω (γ(λ))
+≥−
+,
+(I.3)
+dλ
+π −∞
+λ2 + λ0 2
+16πλ0 2
+for all λ0 > 0 and a large class of states [38] ω, where γ is an affinely parametrized null geodesic with tangent vector
+ℓa = (dγ/dλ)a . It can be easily seen that this bound is invariant under a rescaling of the affine parameter. If we now
+take the limit of Eq. (I.3) as λ0 → ∞, which corresponds to sampling the entire null geodesic, we get the ANEC [39]:
+Z ∞
+dλ h: Tab : la lb iω ≥ 0 .
+(I.4)
+−∞
+
+Reference [7] left open the question of whether an analogous QNEI exists in spacetime dimensions other than
+two. The techniques used there to obtain a timelike worldline QI in four dimensions could not be employed to
+derive a similar QNEI, starting with null geodesics ab initio, because the former derivation was based upon a mode
+expansion in the timelike observer’s rest frame. There are also technical problems which obstruct the adaptation of
+the arguments of Ref. [14] to null worldlines (see the remark following Theorem III.1). In addition, Ref. [7] noted a
+potential problem: any such inequality involving an average along a null geodesic would have to be invariant under
+rescaling of the affine parameter (amounting to the replacements λ 7→ λ/σ, λ0 7→ λ0 /σ and ℓa 7→ σℓa in Eq. (I.3))
+to be physically meaningful. While the left-hand side of Eq. (I.3) scales as σ 2 , one might expect (on dimensional
+grounds) that the right-hand side of such a bound would behave like λ−d
+0 , where d is the spacetime dimension, and
+therefore scale as σ d . This hints that the extension of QNEIs to spacetime dimensions d > 2 might be problematic.
+(Of course, these arguments would not apply in the presence of a mass or some other geometrical length scale — see
+Ref. [18].)
+In this paper, we consider worldline averages of the null-contracted stress-energy tensor of the form
+Z
+hρ(f )iω = dλ h: Tab : la lb iω (γ(λ))
+(I.5)
+where γ(λ) is a smooth causal curve and ℓa is a smooth null vector field defined on γ. First, in Sect. II we study
+the case in which γ is an affinely parametrised null geodesic in four-dimensional Minkowski space with tangent vector
+ℓa = (dγ/dλ)a . By an explicit construction, we show that hρ(f )iω is unbounded from below as ω varies among the class
+of Hadamard states of the massless minimally coupled scalar field. Thus there are no null-worldline QNEIs in fourdimensional Minkowski space. Although we consider only the massless field, we comment that our results generalise
+directly to the massive case. Our construction involves a sequence of states, each of which is a superposition of the
+vacuum with a multimode two-particle state. A closely related construction has recently been used in Ref. [19] to
+prove the nonexistence of spatially averaged quantum inequalities in four-dimensional Minkowski space.
+It would be incorrect, however, to conclude from the above result that the null-contracted stress-energy tensor is
+completely unconstrained in quantum field theory. In Sect. III we consider the averages hρ(f )iω for smooth timelike γ
+in an arbitrary globally hyperbolic spacetime and for any smooth null vector field ℓa . For both massive and massless
+fields, these quantities do obey lower bounds — which we call timelike worldline QNEIs — as a direct consequence
+of the arguments used in Ref. [14]. We evaluate our bound explicitly for the case of four-dimensional Minkowski
+space. Taken together with the results of Sec. II, we see that large negative values of the null-contracted stress-energy
+tensor on one null geodesic must be compensated by positive values on neighbouring geodesics, because the transverse
+extent of the negative values is constrained by timelike worldline QNEIs. In the conclusion, we briefly speculate on
+the significance of these results for attempts to derive singularity theorems for quantised matter.
+
+3
+II.
+
+NONEXISTENCE OF NULL-WORLDLINE QNEIS
+A.
+
+Nonexistence result
+
+We consider a massless minimally coupled real scalar field in 1+3-dimensional Minkowski space, with signature
++−−−. We employ units with ~ = c = 1. The quantum field is given by
+Z
+
+
+d3 k
+−ika xa
+†
+ika xa
+Φ(x) =
+,
+(II.1)
+a(k)e
++
+a
+(k)e
+(2π)3 (2ω)1/2
+in which k a = (ω, k) with ω = kkk, the magnitude of k. The canonical commutation relations are
+[a(k), a(k′ )] = 0
+[a(k), a† (k′ )] = (2π)3 δ(k − k′ ) ,
+
+(II.2)
+
+and our convention for Fourier transformation is
+fb(u) =
+
+Z
+
+dt e−iut f (t) .
+
+Now let f be any smooth nonnegative function of compact support, normalised so that
+Z
+dλf (λ) = 1 ,
+
+(II.3)
+
+(II.4)
+
+and, for some fixed future-pointing null vector ℓa , let γ(λ) be the null geodesic γ(λ)a = λℓa . For simplicity, we will
+assume that the three-vector part of ℓa has unit length (in our frame of reference), so ℓa = (1, ℓ) with kℓk = 1. We
+will consider the averaged quantity
+Z
+hρ(f )iω = dλf (λ)h: Tab : ℓa ℓb iω (γ(λ)) ,
+(II.5)
+which corresponds to a weighted average of the null-contracted stress energy tensor along γ. If ω is a Hadamard
+state, the renormalised contracted stress tensor is a smooth function on spacetime, so the above integral will certainly
+converge. In order to establish a quantum null energy inequality, one would need to bound hρ(f )iω from below as ω
+ranges over the class of Hadamard states; however, this is not possible, as we now show.
+Theorem II.1 The quantity hρ(f )iω is unbounded from below as ω varies over the class of Hadamard states.
+Proof: We will construct a family of vector Hadamard states ωα (α ∈ (0, 1)) with the property that hρ(f )iωα → −∞
+as α → 0. We begin by choosing a fixed Λ0 > 0 such that Re fb is nonnegative on the interval [−2Λ0 , 2Λ0 ]. To see
+that this is possible, we observe that
+Z
+fb(0) = dλf (λ) = 1 ,
+(II.6)
+
+which, by continuity, implies that Re fb is positive in some neighbourhood of the origin.
+Next, let σ and ν be fixed positive numbers with 2ν + 3/2 < σ < 2ν + 2. For each α ∈ (0, 1), we define a
+‘vacuum-plus-two-particle’ vector
+
+
+Z
+d3 k d3 k′
+′
+′
+ψα = Nα |0i +
+b
+(k,
+k
+)|k,
+k
+i
+,
+(II.7)
+α
+(2π)3 (2π)3
+where Nα is a normalisation constant ensuring kψα k = 1 and
+bα (k, k′ ) = ασ ϑ(Λ − k)ϑ(Λ − k ′ )χα (θ)χα (θ′ )B(ka ℓa , ka′ ℓa )(kk ′ )ν−1/2 .
+Here, ϑ is the usual Heaviside step function, Λ = Λ0 /α will be called the momentum cut-off and
+
+1 , cos θ > 1 − α
+χα (θ) =
+0 , otherwise,
+
+(II.8)
+
+(II.9)
+
+4
+
+l
+
+l
+
+k
+
+Λ
+θmax
+k
+
+(a)
+
+(b)
+
+FIG. 1: (a) Only modes lying “inside the cone”, [i.e., those whose three-momenta make an angle less than θmax = cos−1 (1 − α)
+with ℓ] are excited; (b) The cones lengthen and tighten around ℓ as α → 0.
+
+where θ (respectively, θ′ ) is the angle between k (resp., k′ ) and ℓ. We choose B : R+ × R+ → R to be (a) symmetric
+(i.e., B(u, u′ ) = B(u′ , u)); (b) jointly continuous in u and u′ ; (c) everywhere nonnegative [40] and strictly positive
+near u = u′ = 0; and (d) normalised so that
+Z ∞ Z ∞
+Λ4ν+2
+du
+du′ |B(u, u′ )|2 = 1 .
+(II.10)
+0
+0
+
+0
+
+(The prefactor ensures dimensional consistency.) An example of a function meeting these requirements is B(u, u′ ) =
+−(2ν+1) −(u+u′ )/2
+Λ0
+e
+. We wish to emphasise, however, that there are many functions (and hence many vectors ψα )
+with the properties we require. We will use ωα to denote the state induced by ψα so that hAiωα = hψα | Aψα i.
+Let us note various features of this family of states. First, the momentum cut-off ensures that no modes of
+momentum greater than Λ = Λ0 /α are excited. Second, the effect of the χα factors is to ensure that modes can
+only be excited if their three-momenta make an angle less than cos−1 (1 − α) with the direction ℓ. The excited mode
+three-momenta therefore lie in the solid sector formed by the intersection of a ball of radius Λ0 /α (centre the origin)
+with a cone of opening angle cos−1 (1 − α) about ℓ (with apex at the origin). As α → 0, this solid sector lengthens
+and tightens up along the direction ℓ, so the four-momenta of excited modes become more and more parallel to ℓa ,
+the tangent vector to the null line along which we are averaging. See Fig. 1.
+The third feature of interest concerns the amplitude of the two-particle contribution. Choosing the normalisation
+constant to be
+
+−1/2
+Z
+d3 k d3 k′
+′ 2
+Nα = 1 + 2
+,
+(II.11)
+|bα (k, k )|
+(2π)3 (2π)3
+we note that, for a null vector k a = (k, k), the quantity ℓa ka appearing in Eq. (II.8) is equal to k(1 − cos θ), where θ
+is the angle between ℓ and k. We therefore perform the k and k′ integrals in Eq. (II.11) by adopting spherical polar
+coordinates about ℓ, integrating out the trivial azimuthal dependence and then changing variables to β = 1 − cos θ,
+
+5
+β ′ = 1 − cos θ′ . This yields
+Z Λ Z Λ
+Z α
+Z α
+Z
+α2σ
+d3 k d3 k′
+′ 2
+′
+′ 2ν+1
+|b
+(k,
+k
+)|
+=
+dk
+dk
+(kk
+)
+dβ
+dβ ′ |B(kβ, k ′ β ′ )|2
+α
+(2π)3 (2π)3
+(2π)4 0
+0
+0
+0
+Z v
+Z v′
+Z Λ0
+Z
+α2σ−2−4ν Λ0
+′
+′ 2ν
+=
+dv (vv )
+du
+du′ |B(u, u′ )|2
+dv
+(2π)4
+0
+0
+0
+0
+≤
+
+α2(σ−2ν−1)
+,
+(2π)4 (2ν + 1)2
+
+(II.12)
+
+where we have made the further changes of variable u = kβ, u′ = k ′ β ′ , v = kα, v ′ = k ′ α and used the normalisation
+property Eq. (II.10) of B. Because σ > 2ν + 3/2 > 2ν + 1, we see that the right-hand side of Eq. (II.12) tends to
+zero as α → 0. By Eq. (II.11) we now have Nα → 1 as α → 0; since the left-hand side of Eq. (II.12) is equal to
+kNα−1 ψα − |0ik2 , we also see that the states ψα are in fact converging to the vacuum vector |0i. As we shall see, this
+does not entail that the normal-ordered energy density is converging to zero. (See also the discussion in Sect. II C.)
+The remaining properties of our family of states concern the corresponding normal ordered two-point functions,
+given by
+Z
+a
+′a ′
+d3 k d3 k′ 1 h
+2
+′
+√
+cα (k, k′ )ei(x ka −x ka )
+h: Φ(x)Φ(x ) :iωα = 2Nα Re
+(2π)3 (2π)3 ωω ′
+i
+a
+′a ′
+(II.13)
++bα (k, k′ )e−i(x ka +x ka ) ,
+where
+cα (k, k′ ) = 2
+
+Z
+
+d3 k1
+bα (k1 , k)bα (k1 , k′ ) .
+(2π)3
+
+(II.14)
+
+Using the same changes of variable as above, we find
+cα (k, k′ ) = α2σ−(2ν+1) ϑ(Λ − k)ϑ(Λ − k ′ )χα (θ)χα (θ′ )C(ka ℓa , ka′ ℓa )(kk ′ )ν−1/2 ,
+
+(II.15)
+
+where C(u, u′ ) = C(u′ , u) is given by
+Z
+
+d3 k1
+ϑ(Λ − k1 )χα (θ1 )(k12 )ν−1/2 B(k1a ℓa , u)B(k1a ℓa , u′ )
+(2π)3
+Z
+Z α
+α2ν+1 Λ
+2ν+1
+=
+dk1 k1
+dβ B(k1 β1 , u)B(k1 β1 , u′ )
+2π 2 0
+0
+Z v
+Z Λ0
+1
+=
+dv v 2ν
+du1 B(u1 , u)B(u1 , u′ ) .
+2π 2 0
+0
+
+C(u, u′ ) = 2α2ν+1
+
+(II.16)
+
+Rearranging the order of integration, this becomes
+C(u, u′ ) =
+
+1
+2π 2 (2ν + 1)
+
+Z Λ0
+0
+
+B(u1 , u)B(u1 , u′ )
+du1 u2ν+1
+1
+
+(II.17)
+
+and we may conclude that (i) C is jointly continuous in u and u′ by joint continuity of B and compactness of [0, Λ0 ];
+(ii) C has the same engineering dimension as B; (iii) C(u, u′ ) ≥ 0 for all u, u′ and, crucially, (iv) that the exponent of
+α in cα (k, k′ ) differs from that in the corresponding expression for bα (k, k′ ). Furthermore, since both bα and cα have
+momentum cut-offs, it is evident that the normal ordered two-point function is smooth (because one may differentiate
+under the integral sign as often as required to obtain finite derivatives). Accordingly, each ωα is a Hadamard state.
+The null-contracted normal ordered energy density hρ(f )iωα is obtained by differentiating the normal ordered
+two-point function
+h: Tab (x) : ℓa ℓb iωα = h: ℓa ∇a Φ(x)ℓb ∇b Φ(x) :iωα
+Z
+a
+′
+d3 k d3 k′ ℓa ka ℓb kb′ h
+√
+= 2Nα2 Re
+cα (k, k′ )eix (ka −ka )
+3
+3
+′
+(2π) (2π)
+ωω
+i
+a
+′
+−bα (k, k′ )e−ix (ka +ka ) ,
+
+(II.18)
+
+6
+and substituting into Eq. (II.5). Noting, for any Ka , that
+Z
+a
+dλ f (λ)e−iγ(λ) Ka = fb(ℓa Ka ) ,
+
+(II.19)
+
+we may write hρ(f )iωα = ρ1 (f ) + ρ2 (f ), where
+Z
+d3 k d3 k′ ℓa ka ℓb kb′ b a ′
+2
+√
+f (ℓ ka − ℓa ka )cα (k, k′ )
+ρ1 (f ) = 2Nα Re
+(2π)3 (2π)3
+ωω ′
+
+(II.20)
+
+Z
+
+d3 k d3 k′ ℓa ka ℓb kb′ b a
+√
+f (ℓ ka + ℓa ka′ )bα (k, k′ ) .
+′
+(2π)3 (2π)3
+ωω
+
+(II.21)
+
+Z v
+
+du′ uu′ B(u, u′ )fb(u + u′ ) .
+
+(II.23)
+
+du′ uu′ C(u, u′ )fb(u′ − u) .
+
+(II.25)
+
+and
+
+ρ2 (f ) = −2Nα2 Re
+
+Our aim is now to show that ρ1 (f ) → 0 and ρ2 (f ) → −∞ in the limit α → 0. Taking the dominant contribution
+ρ2 (f ) first, and making the same changes of variable as before we may calculate
+Z Λ Z Λ
+Z α
+Z α
+N 2 ασ
+ρ2 (f ) = − α 4 Re
+dk
+dk ′ (kk ′ )ν+2
+dβ
+dβ ′ ββ ′ B(kβ, k ′ β ′ )fb(kβ + k ′ β ′ )
+(2π)
+0
+0
+0
+0
+Z Λ
+Z
+N 2 ασ Λ
+= − α 4
+dk ′ (kk ′ )ν ϕ(kα, k ′ α)
+dk
+(2π) 0
+0
+Z Λ0
+Z
+Nα2 ασ−2(ν+1) Λ0
+dv ′ (vv ′ )ν ϕ(v, v ′ ) ,
+(II.22)
+dv
+= −
+(2π)4
+0
+0
+where
+′
+
+ϕ(v, v ) = Re
+
+du
+
+0
+
+Z v′
+0
+
+Recalling that Re fb is strictly positive on the interval [−2Λ0 , 2Λ0 ], and that B(u, u′ ) is nonnegative and strictly
+positive for small u, u′ , it follows that ϕ(v, v ′ ) is nonnegative for v, v ′ ∈ [0, Λ0 ] and that the right-hand side of (II.22)
+is strictly negative. We therefore have ρ2 (f ) → −∞ in the limit α → 0, because σ < 2ν + 2 and Nα → 1.
+Turning to the remaining contribution ρ1 (f ), we may use a similar analysis to obtain
+Z Λ0
+Z
+Nα2 α2σ−(4ν+3) Λ0
+dv ′ (vv ′ )ν ψ(v, v ′ ) ,
+(II.24)
+ρ1 (f ) =
+dv
+(2π)4
+0
+0
+where
+′
+
+ψ(v, v ) = Re
+
+Z v
+0
+
+du
+
+Z v′
+0
+
+Since C is jointly continuous, the double integrals in Eqs. (II.24) and (II.25) exist and are finite; we may now conclude
+that ρ1 (f ) → 0 in the limit α → 0, because σ > 2ν + 3/2 and Nα → 1.
+Summarising, we have shown that hρ(f )iωα → −∞ as α → 0.
+At this point it is worth considering the difference between the present situation and that studied in Ref. [7], in
+which a QNEI was obtained for massless fields in two-dimensional Minkowski space. The crucial difference is that, in
+two-dimensional spacetime, the one-momenta of any two field modes are either parallel or anti-parallel. The modes
+which propagate in the same direction as the chosen null geodesic contribute nothing to the integral (due to factors
+of the form ℓa ka ). The only contribution comes from modes moving in the opposite direction, and turns out to be
+bounded. By contrast, the proof of Theorem II.1 makes essential use of field modes which are almost, but not exactly,
+parallel to ℓa .
+B.
+
+An explicit calculation
+
+To make the foregoing result more explicit, we consider a simple example: setting ν = 1, we define
+′
+B(u, u′ ) = Λ−4
+0 ϑ(Λ0 − u)ϑ(Λ0 − u ) ,
+
+(II.26)
+
+7
+which satisfies properties (a), (c) and (d) required in the proof of Theorem II.1, but not the joint continuity property
+(b). Inspection of the proof reveals, however, that this property was only used to establish the existence of certain
+integrals arising in the derivation, all of which may easily be seen to exist in this case.
+The calculations are simplified by the fact that B(u, u′ ) factorises into functions of u and u′ . In particular, one may
+calculate
+1
+C(u, u′ ) =
+ϑ(Λ0 − u)ϑ(Λ0 − u′ ) ,
+(II.27)
+24π 2 Λ40
+and
+−1/2
+
+α2σ−6
+Nα = 1 +
+.
+128π 4
+
+(II.28)
+
+Furthermore, because B is also real-valued,
+hρ(x)iωα =
+
+2Nα2
+Re
+Λ40
+
+
+
+|Fα (x)|2
+
+α2σ−3
+− Fα (x)2 ασ
+24π 2
+
+
+
+,
+
+where here ρ(x) represents the unsampled energy density at position x, and
+Z
+a
+d3 k ℓa ka
+ϑ(Λ − k)χα (θ)k ν−1/2 e−ika x .
+Fα (x) =
+3
+1/2
+(2π) k
+In Fig. 2, we plot hρ(t, 0, 0, z)iωα for the case ℓa = (1, 0, 0, 1), in which (II.29) simplifies to
+
+
+2σ−7
+2Nα2
+2α
+2 σ−4
+,
+Re |ξα (t, z)|
+− ξα (t, z) α
+hρ(t, 0, 0, z)iωα =
+16π 4 Λ40
+24π 2
+
+(II.29)
+
+(II.30)
+
+(II.31)
+
+where
+ξα (t, z) =
+
+Z Λ0
+0
+
+dv e
+
+−iv(t−z)/α
+
+
+
+
+iv 2 −ivz
+v −ivz
+− 1) .
+e
++ 2 (e
+z
+z
+
+(II.32)
+
+These plots share the common feature of an oscillatory fringe pattern, with dark regions representing negative
+values for hρ(t, 0, 0, z)iωα and light regions representing positive values. It is no coincidence that these plots resemble
+interference patterns: the dominant contribution arises precisely from interference between the vacuum and twoparticle components of ψα . The fringes are centred near the null ray parallel to ℓa running from the lower left to
+upper right corners of the figures, and in fact point along spacelike directions which become more parallel to ℓa as α
+is decreased (moving from the left-hand to right-hand figure in each row). That these directions cannot be timelike
+follows from the existence of the timelike worldline QNEIs discussed in Sec. III—an observer cannot ‘surf’ along
+a negative energy trough for an indefinite length of time. See Ref. [20] for similar examples and discussion. The
+decreasing fringe separation (as either α decreases or Λ0 increases) indicates a more highly oscilliatory energy density.
+Further insight may be gained from Fig. 3, in which we plot h: Tab ℓa ℓb :iωα along (a) the null line (λ, 0, 0, λ) and
+(b) the timelike line (t, 0, 0, 0). Along the null line, the effect of decreasing α is essentially to modify the amplitude of the
+curve while leaving its shape substantially unaltered. For a sampling function f supported within the central trough,
+it is clear that hρ(f )iωα → −∞ as α → 0, in accordance with Theorem II.1. Along the timelike curve, however,
+decreasing α increases both the amplitude and frequency of the oscillations. Averaged against
+R a fixed sampling
+function, one might expect that the rapid oscillations would tend to cancel, so that the averages f (t)hρ(t, 0, 0, 0)iωα
+could be bounded below. This is borne out by the results of Sec. III below.
+The behavior of the energy density in the vicinity of our chosen null geodesic, e.g., as exhibited in Fig. 2, is almost
+exactly analogous to that found in the analysis of Ref. [19] for spatially averaged QIs, in the following sense. There, it
+was shown that the sampled energy density could be unboundedly negative in a spatially compact region on a t=const
+surface, in four-dimensional Minkowski spacetime. However, for the ordinary worldline QIs to hold, the energy density
+must fluctuate wildly as one moves off the t=const surface. In the present paper, we find a similar result for null
+rays. For example, the central trough in Fig. 3(a) is a compactly supported region of the null geodesic, analogous
+to the compactly supported spatially sampled region considered in Ref. [19], where the energy density can be made
+unboundedly negative. (Of course, in the null case we are considering a one-dimensional average along a line, as
+opposed to a three-dimensional spatial average). As we move off the null geodesic, as shown in Fig. 3(b) and Fig. 2,
+the energy density oscillates rapidly in sign, which must happen if the worldline QIs are to be satisfied. We speculate
+that a rotation of the plots in Fig. 2, which makes the white and dark lines horizontal, would yield a representative
+picture of the behavior in the spatial case. The null and spatial cases seem intuitively to be very similar.
+
+8
+
+FIG. 2: Density plots of hρ(t, 0, 0, z)iωα for four different parameter choices. The top row corresponds to Λ0 = 1 while the
+lower row has Λ0 = 2; the left-hand column has α = 0.2, while the right-hand column has α = 0.05. In all four plots, σ = 3.75.
+Dark and light areas represent negative and positive values respectively.
+
+C.
+
+Convergence to the vacuum state
+
+We have seen that the massless scalar field in four-dimensional Minkowski spacetime does not satisfy nontrivial null
+worldline quantum inequalities. As described above, this was shown by considering a sequence of vacuum-plus-twoparticle states in which the three-momenta of excited modes become more and more parallel to the spatial part ℓ of
+the null vector ℓa as we take the momentum cut-off to infinity. A perhaps puzzling feature of our sequence is that it
+converges in Fock space to the vacuum vector. How, then, can the energy density diverge?
+The answer to this question resides in the fact that the averaged energy density is an unbounded quadratic form, so
+the convergence of a sequence of states in the Hilbert space norm does not imply the convergence of the corresponding
+expectation values. As a more familiar example, consider the quantum mechanics of a single harmonic oscillator with
+angular frequency ω. Let
+φn = |0i + n−1/4 |ni ,
+
+(II.33)
+
+9
+8e–05
+
+ρ
+
+4e–05
+
+6e–05
+
+3e–05
+
+4e–05
+
+2e–05
+
+2e–05
+
+1e–05
+
+–10 –8 –6 –4 –2 0
+–2e–05
+
+2
+
+4
+
+6
+
+8
+
+10
+λ
+
+–4
+
+–3
+
+–2
+
+ρ
+
+–1
+–1e–05
+
+–4e–05
+
+–2e–05
+
+–6e–05
+
+–3e–05
+
+1
+
+2
+
+3
+
+4
+t
+
+–4e–05
+(a)
+
+(b)
+
+FIG. 3: Plots of the null-contracted stress-energy along (a) the null geodesic λ 7→ hρ(λ, 0, 0, λ)iωα for α = 0.2 (dotted) and
+α = 0.005 (solid); (b) the timelike curve t 7→ hρ(t, 0, 0, 0)iωα for α = 0.2 (dotted) and α = 0.05 (solid). In all cases, Λ0 = 1,
+σ = 3.75.
+
+where n = 1, 2, 3, . . . and |ni is a normalised eigenstate of energy ~ω(n + 21 ). Noting that kφn k2 = 1 + n−1/2 , the
+expected energy is
+
+
+1
+1 1 + n−1/2 (2n + 1)
+1/2
+−1/2
+= n − + O(n
+hHiφn = ~ω
+) ~ω
+(II.34)
+2
+2
+1 + n−1/2
+and therefore diverges as n → ∞, while φn manifestly converges to the ground state |0i, because kφn −|0ik = n−1/4 →
+0.
+D.
+
+Consistency with the ANEC
+
+Although, as we have seen, null worldline QNEIs do not exist, there is nonetheless a nontrivial restriction on the
+null-contracted stress energy, namely the averaged null energy condition (ANEC)
+Z
+dλ h: Tab : ℓa ℓb iω (γ(λ)) ≥ 0
+(II.35)
+established by Klinkhammer [21] at least for a dense set of states in the Fock space of the Minkowski vacuum, and by
+Wald and Yurtsever [22] for a large subclass of Hadamard states [41]. As a consistency check, we now show explicitly
+that each state ωα obeys the ANEC, regarded as the requirement that
+Z
+1
+lim inf
+(II.36)
+dλ f (λ/λ0 )h: Tab : ℓa ℓb iωα (γ(λ)) ≥ 0
+λ0 →+∞ f (0)
+for any f satisfying the hypotheses stated above Theorem II.1, and f (0) 6= 0. Now λ 7→ f (λ/λ0 ) has Fourier transform
+v 7→ λ0 fb(λ0 v), which converges to 2πf (0)δ(v) as λ0 → ∞. Replacing fb by this distribution in Eqs. (II.23) and (II.25),
+we see that, in the limit λ0 → ∞,
+′
+
+ϕ(v, v ) → 2πf (0)Re
+
+Z v
+0
+
+du
+
+Z v′
+0
+
+du′ uu′ B(u, u′ )δ(u + u′ ) = 0 ,
+
+(II.37)
+
+10
+while
+ψ(v, v ′ ) → 2πf (0)Re
+= 2πf (0)
+
+Z v
+0
+
+du
+
+Z v′
+
+Z min{v,v′ }
+
+0
+
+du′ uu′ C(u, u′ )δ(u − u′ )
+
+du u2 C(u, u)
+
+0
+
+≥ 0,
+
+(II.38)
+
+from which Eq. (II.36) follows. This may also be confirmed by a more careful analysis.
+At this point, we take the opportunity to clarify an issue relating to the derivation of the ANEC given in Ref. [7],
+in which it was suggested that (in Minkowski space) the ANEC could be derived by first taking the infinite sampling
+time limit of the QWEI to obtain the AWEC, and then taking the null limit to conclude that the ANEC holds.
+However, the following example shows that the second step cannot be accomplished without further assumptions:
+define a function h(z) such that h(z) equals +1 for |z| > 2, and −1 for |z| < 1 with h(z) otherwise smooth and
+bounded between ±1. Setting ta = (1, 0),
+Tab (x) = ta tb h(xc xc )
+
+(II.39)
+
+is a symmetric tensor which satisfies the AWEC along any timelike geodesic, but fails to satisfy the ANEC along any
+null generator of the lightcone at the origin. See Fig. 4. Although it is not clear to us whether a conserved tensor field
+could display this behaviour, our example shows — even in Minkowski space — that the ANEC cannot be obtained
+from the AWEC without more assumptions than used in Ref. [7].
+III.
+
+TIMELIKE WORLDLINE QNEIS
+
+Theorem II.1 may appear to suggest that null-contracted stress energy tensors are not subject to any constraints
+in quantum field theory. This is by no means the case. Let (M, g) be any globally hyperbolic spacetime and ℓa a
+smooth null vector field defined on a tubular neighbourhood of a smooth timelike curve γ, parametrized by its proper
+time τ . Let ω0 be any Hadamard state of the Klein–Gordon field Φ of mass m ≥ 0.
+Theorem III.1 For any smooth, real-valued, compactly supported function g, the inequality [42]
+Z
+Z ∞
+dα b
+a b
+2
+dτ h: Tab : ℓ ℓ iω (γ(τ ))g(τ ) ≥ −
+F (α, −α)
+π
+0
+
+(III.1)
+
+holds for all Hadamard states ω of the Klein–Gordon field of mass m, where normal ordering is performed relative to
+the state ω0 and
+′
+
+F (τ, τ ′ ) = g(τ )g(τ ′ )h(ℓa ∇a Φ)(γ(τ ))(ℓb ∇b′ Φ)(γ(τ ′ ))iω0 .
+
+(III.2)
+
+Remark: Because the differentiated two-point function
+′
+
+H(x, x′ ) = h(ℓa ∇a Φ)(x)(ℓb ∇b′ Φ)(x′ )iω0
+
+(III.3)
+
+is a distribution it is not clear a priori that one can restrict it to the curve γ as we have done in Eq. (III.2) [43].
+Techniques drawn from microlocal analysis provide sufficient conditions for this to be accomplished, which are satisfied
+for timelike γ owing to the singularity properties of Hadamard states — see Ref. [14] for more details on this point.
+However, the sufficient conditions would not be satisfied if γ was null, which explains why one cannot derive null
+worldline QNEIs using the arguments of Ref. [14] (although this does not in itself demonstrate the nonexistence of
+such bounds).
+Proof: The argument is identical to that used for the QWEI derived in Ref. [14], in which the averaged quantity was
+h: Tab : v a v b iω (where v a is the tangent vector to γ). We refer to Ref. [14] for the details.
+The above bound can be made more quantitative if we return to four-dimensional Minkowski space, with ω0 chosen
+to be the Poincaré invariant vacuum, γ chosen to be the worldline of an inertial observer with four-velocity v a and with
+ℓa some constant null vector field. By Poincaré invariance we may write γ(τ ) = (τ, 0, 0, 0) without loss of generality;
+in this frame of reference, we write ℓa = (ℓ0 , ℓ), with ℓ0 = v a ℓa . We have
+Z
+d3 k (ℓa ka )2 −ika (xa −x′a )
+′
+,
+(III.4)
+e
+H(x, x ) =
+(2π)3 2ω
+
+11
+
+t
+
+x
+
+FIG. 4: An example to illustrate the distinction between the AWEC and the ANEC. The shaded region consists of spacetime
+points x with h(xa xa ) < 0. (Only one spatial dimension is shown). The tensor Tab obeys the AWEC along any timelike geodesic
+(e.g. the dotted line) but fails to obey the ANEC on any null geodesic through the origin (e.g., the solid line).
+
+from which it follows that
+F (τ, τ ′ ) = g(τ )g(τ ′ )
+
+Z
+
+d3 k (ℓa ka )2 −iω(τ −τ ′ )
+e
+(2π)3 2ω
+
+(III.5)
+
+and
+Z
+
+Z
+
+d3 k (ℓa ka )2 −i(ω+α)(τ −τ ′ )
+e
+g(τ )g(τ ′ )
+(2π)3 2ω
+Z
+d3 k (ℓa ka )2
+=
+gb(ω + α)b
+g (−ω − α)
+(2π)3 2ω
+Z
+d3 k (ℓa ka )2
+|b
+g (α + ω)|2 ,
+=
+(2π)3 2ω
+
+Fb(α, −α) =
+
+dτ dτ ′
+
+(III.6)
+
+12
+where we have used the √
+fact that gb(−u) = gb(u) since g is real. Introducing polar coordinates about ℓ and changing
+variables from k to ω = k 2 + m2 , we have
+Z 1
+Z
+(ℓ0 )2 ∞
+k2
+2
+Fb(α, −α) =
+|b
+g
+(α
++
+ω)|
+d(cos θ) (ω − k cos θ)2
+dk
+8π 2 0
+ω
+−1
+Z
+k2
+(ℓ0 )2 ∞
+2
+|b
+g(α + ω)| (3ω 2 + k 2 )
+dk
+=
+12π 2 0
+ω
+Z
+(ℓ0 )2 ∞
+dω (ω 2 − m2 )1/2 (4ω 2 − m2 ) |b
+g(α + ω)|2 .
+(III.7)
+=
+12π 2 m
+The right-hand side of the bound (III.1) is thus
+Z ∞
+Z
+Z u
+dα b
+(v a ℓa )2 ∞
+2
+−
+F (α, −α) = −
+du
+|b
+g
+(u)|
+dω (ω 2 − m2 )1/2 (4ω 2 − m2 ) ,
+3
+π
+12π
+0
+m
+m
+
+so the quantum inequality is
+Z
+Z
+(v a ℓa )2 ∞
+du |b
+g (u)|2 u(u2 − m2 )3/2 .
+dτ h: Tab : ℓa ℓb iω (γ(τ ))g(τ )2 ≥ −
+12π 3 m
+In the massless case, we have the simpler expression
+Z
+Z
+(v a ℓa )2 ∞
+2
+a b
+2
+dτ h: Tab : ℓ ℓ iω (γ(τ ))g(τ ) ≥ −
+du u4 |b
+g(u)|
+12π 3 0
+Z
+(v a ℓa )2 ∞
+= −
+dτ g ′′ (τ )2 ,
+12π 2 −∞
+
+(III.8)
+
+(III.9)
+
+(III.10)
+
+where we have used Parseval’s theorem and the fact that |b
+g (u)| is even. This takes the same form as the corresponding
+QWEI derived in [6] which reads
+Z ∞
+Z
+1
+a b
+2
+dτ g ′′ (τ )2
+(III.11)
+dτ h: Tab v v :iω (γ(τ ))g(τ ) ≥ −
+16π 2 −∞
+in our present notation. For nonzero mass, the two bounds differ by more than just an overall factor.
+To give a specific example, suppose that
+g(τ ) = 2πτ02
+
+−1/4 − 1 (τ /τ0 )2
+e 4
+,
+
+so that g(τ )2 is a normalised Gaussian with mean zero and variance τ0 > 0. For massless fields, we obtain
+Z
+(v a ℓa )2
+,
+dτ h: Tab : ℓa ℓb iω (γ(τ ))g(τ )2 ≥ −
+64π 2 τ04
+
+(III.12)
+
+(III.13)
+
+at least for Hadamard states for which the integral on the left-hand side converges absolutely [44]. We note that both
+sides of this expression scale by a factor of σ 2 under ℓa 7→ σℓa .
+IV.
+
+CONCLUSION
+
+We have shown, by explicitly constructing a counterexample, that quantum inequalities along null geodesics do
+not exist in four-dimensional Minkowski spacetime, for the massless minimally coupled scalar field. By contrast, it
+was shown in Ref. [7] that such bounds do exist in two-dimensional flat spacetime. The quantum states used in our
+analysis are superpositions of the vacuum and multimode two-particle states in which the excited modes are those
+whose three-momenta lie in a cone centered around our chosen null vector. We considered the limit of a sequence of
+such states in which the three-momenta become arbitrarily large while the radius of the cone shrinks to zero. Because
+the dominant contribution arises from modes with large three-momenta, we expect this result to hold for massive
+fields as well.
+
+13
+An interesting feature of our example is that the sampled energy density along the null geodesic becomes unbounded
+from below while the sequence of quantum states converges to the vacuum state. We demonstrated how such behavior is possible by considering an analogous example involving the simple harmonic oscillator in ordinary quantum
+mechanics. It was also shown that, as expected, the renormalized stress energy in our class of states satisfies the
+ANEC.
+As we have learned from Verch (private communication, based on a remark of Buchholz) our result may be understood as a consequence of the fact that, in any algebraic quantum field theory in Minkowski space of dimension
+d > 2 obeying a minimal set of reasonable conditions [45] there are no nontrivial observables localised on any bounded
+null line segment [46]. Given further reasonable conditions (cf. [23]) this could provide a general argument for the
+nonexistence of null worldline QNEIs even for interacting field theories.
+Our results imply that it is not possible to prove a singularity theorem, such as Penrose’s theorem [1], by using
+a null worldline QNEI instead of, say, the NEC or the ANEC. Although our results have been proven only for flat
+spacetime, we have no reason to believe that a null worldline QNEI is any more likely to exist in curved spacetime.
+Singularity theorems such as Penrose’s theorem involve the focussing of null geodesics which generate the boundary
+of the future of a closed trapped surface. The latter initiates convergence of a bundle of null rays, and then some
+bound on the stress-tensor, such as the NEC, is required to maintain the focussing. Various sufficient conditions for
+focussing have been suggested in the literature [24, 25, 26, 27, 28, 29]. However, it should be pointed out that no
+bound on the stress energy tensor which is strong enough to ensure sufficient focussing to guarantee the existence of
+conjugate points on half-complete null geodesics (as required in the Penrose theorem) could hold everywhere in an
+evaporating black hole spacetime. Such a bound would be inconsistent with the existence of Hawking evaporation
+[30]. (See Sec. IV of Ref. [18] for a more detailed discussion of this point.) To obtain a singularity, however, it is only
+necessary that the required focussing condition hold for at least one trapped surface. It is somewhat difficult to see
+how one would prove that such a trapped surface would always exist. As suggested in Refs. [18, 31], in regions of
+evaporating black hole spacetimes where the ANEC is violated, it may be possible to get a (more limited) QI-type
+bound that measures the degree of ANEC violation and which is also invariant under rescaling of the affine parameter.
+Alternatively, one might argue that on dimensional grounds, the curvature which promotes focussing scales as lc −2 ,
+where lc is the local proper radius of curvature, while the energy densities produced by quantum fields typically scale
+only like lc −4 . If this line of reasoning is correct, then one might expect the breakdown of the energy conditions to
+only affect the validity of the singularity theorems when lc = lP lanck [30].
+In this paper, we also showed that—in general globally hyperbolic spacetimes—averages of null-contracted stressenergy of massive and massless fields along timelike curves are constrained by quantum inequalities. Large negative
+energy densities concentrated along a null geodesic must therefore be compensated by large positive energy densities
+on neighbouring null geodesics. This is reminiscent of the transverse smearing employed by Flanagan and Wald
+[32] in their study of the ANEC in semiclassical quantum gravity. Such transversely smeared observables also evade
+the Buchholz–Verch argument mentioned above. Whether physically interesting global results, such as singularity
+theorems, can be proved using inequalities such as (III.1) is an open question, which is currently under investigation.
+Acknowledgments
+
+The authors thank Rainer Verch for raising the issue mentioned in the conclusion and Detlev Buchholz for further
+discussions on this point and help in locating Ref. [33]. Thanks are also due to Klaus Fredenhagen for useful conversations and Mitch Pfenning for help in preparing some of the figures. This research was partly conducted at the
+Erwin Schrödinger Institute in Vienna during the programme on Quantum Field Theory in Curved Spacetime; we
+are grateful to the ESI for support and hospitality. TAR is also grateful to the Mathematical Physics group at the
+University of York for hospitality during the early phases of the work. This research was supported in part by EPSRC
+grant GR/R25019/01 to the University of York (CJF) and NSF grant No. Phy-9988464 (TAR).
+
+[1] R. Penrose, Phys. Rev. Lett. 14, 57 (1965).
+[2] S.W. Hawking and R. Penrose, Proc. Roy. Soc. (Lond.) A314, 529 (1970).
+[3] R. Schoen and S.-T. Yau, Commun. Math. Phys. 79, 231 (1981).
+[4] R. Schoen and S.-T. Yau, Phys. Rev. Lett. 48, 369 (1982).
+[5] É.É. Flanagan, Phys. Rev. D 56, 4922 (1997), gr-qc/9706006.
+[6] C.J. Fewster and S.P. Eveson, Phys. Rev. D 58, 084010 (1998), gr-qc/9805024.
+[7] L.H. Ford and T.A. Roman, Phys. Rev. D 51, 4277 (1995), gr-qc/9410043.
+[8] L.H. Ford and T.A. Roman, Phys. Rev. D 55, 2082 (1997), gr-qc/9607003.
+
+14
+[9] M.J. Pfenning and L.H. Ford, Phys. Rev. D 57, 3489 (1998), gr-qc/9710055.
+[10] M.J. Pfenning, Phys. Rev. D 65, 024009 (2002), gr-qc/0107075.
+[11] C.J. Fewster, E. Teo, Phys. Rev. D 59, 104016 (1999), gr-qc/9812032.
+[12] D.N. Vollick, Phys. Rev. D 61, 084022 (2000), gr-qc/0001009.
+[13] É.É. Flanagan, Phys. Rev. D 66, 104007 (2002), gr-qc/0208066.
+[14] C.J. Fewster, Class. Quantum Grav. 17, 1897 (2000), gr-qc/9910060.
+[15] C.J. Fewster and R. Verch, Commun. Math. Phys. 225, 331 (2002), math-ph/0105027.
+[16] C.J. Fewster and M.J. Pfenning, in preparation.
+[17] C. Barcelo and M. Visser, Phys. Lett. B 466, 127 (1999), gr-qc/9908029; Class. Quant. Grav. 17, 3843 (2000), grqc/0003025.
+[18] L.H. Ford and T.A. Roman, Phys. Rev. D 53, 1988 (1996), gr-qc/9506052.
+[19] L.H. Ford, A. Helfer, T.A. Roman, ‘Spatially Averaged Quantum Inequalities Do Not Exist in Four-Dimensional Spacetime’,
+gr-qc/0208045.
+[20] A. Borde, L.H. Ford, T.A. Roman, Phys. Rev. D 65, 084002 (2002), gr-qc/0109061.
+[21] G. Klinkhammer, Phys. Rev. D 43, 2542 (1991).
+[22] R. Wald and U. Yurtsever, Phys. Rev. D 44, 403 (1991).
+[23] R. Verch, J. Math. Phys. 41, 206 (2000), math-ph/9904036.
+[24] F.J. Tipler, Phys. Rev. D 17, 2521 (1978).
+[25] C. Chicone and P. Ehrlich, Manuscr. Math. 31, 297 (1980).
+[26] G.J. Galloway, Manuscr. Math. 35, 209 (1981).
+[27] A. Borde, Class. Quantum Grav. 4, 343 (1987).
+[28] T.A. Roman, Phys. Rev. D 37, 546 (1988).
+[29] U. Yurtsever, Phys. Rev. D 52, R564 (1995).
+[30] S. W. Hawking, Commun. Math. Phys. 43, 199 (1975).
+[31] H. Yu, Phys. Rev. D 58, 064017 (1998), gr-qc/9806049.
+[32] É. É. Flanagan and R.M. Wald, Phys. Rev. D 54, 6233 (1996), gr-qc/9602052.
+[33] S. Woronowicz, Commun. Math. Phys. 9, 142 (1968).
+[34] A matter model violating the NEC is the nonminimally coupled scalar field [17].
+[35] In Minkowski space, a state is Hadamard if and only if its normal ordered two-point function h: Φ(x)Φ(x′ ) :iω is smooth
+in x and x′ .
+[36] It would be interesting to understand whether, conversely, the weak energy condition can be regarded as a classical limit
+of the QWEIs.
+R
+[37] For general Hadamard states one has the weaker result lim inf t0 →+∞ dt h: T00 :iω (t, 0)g(t/t0 )2 ≥ 0.
+[38] Although this class was not precisely delineated in Ref. [7], one expects the bound to hold for all Hadamard states for
+which the left-hand side exists.
+[39] At least for those states in which the integral in Eq. (I.4) converges absolutely.
+[40] Although B is real-valued, we shall write complex conjugations where they would be appropriate for complex B.
+[41] Had QNEIs existed, one could have derived the ANEC as a consequence, just as the AWEC may be derived from the
+QWEIs (see Ref. [7]). However, the reverse implication is not valid, so there is no contradiction between nonexistence of
+QNEIs and the validity of the ANEC.
+[42] Note that Ref. [14] used a different convention for the Fourier transform in which Eq. (III.1) would involve Fb (−α, α) rather
+than Fb (α, −α).
+[43] As an example, consider the distribution u(x, y) = δ(x), which has a sensible restriction u(x, y0 ) = δ(x) to lines of the
+form y = y0 , but no well-defined restriction to the line x = 0.
+[44] This qualification is required in order to extend the result of Thm. III.1 to noncompactly supported g. To
+R obtain a
+statement valid for all Hadamard states, one could alternatively replace the left-hand side by lim inf λ→+∞ dτ h: Tab :
+ℓa ℓb iω (γ(τ )) [g(τ )ϕ(τ /λ)]2 where ϕ(s) is smooth, equal to 1 for |s| < 1, vanishing for |s| > 2 and monotone decreasing as
+|s| increases.
+[45] In more detail, we consider theories described by von Neumann algebras R(O), indexed by open sets O of Minkowski space
+and consisting of bounded operators on a Hilbert space H . The assignment O 7→ R(O) is assumed to be isotonous (i.e.,
+O1 ⊂ O2 implies that R(O1 ) is a subalgebra of R(O2 )) and local (i.e., if O1 and O2 are spacelike separated then any element
+of R(O1 ) commutes with every element of R(O2 )). In addition, the group of translations is implemented on
+R H by unitary
+operators U (a) such that U (a)R(O)U (a)−1 = R(O + a) and which obey the spectral condition: U (a) = Rd dE(p) e−ia·p
+where the spectral measure dE(·) is supported in the forward light cone {p : p · p ≥ 0, p0 ≥ 0}. It is also assumed that
+there is a unique translationally invariant vacuum state Ω ∈ H and that Ω is cyclic (i.e., R(O)Ω is dense in H for each
+O).
+[46] Under the assumptions in the previous endnote, let K be a compact subset of Minkowski space such that (p −q)·(p −q) ≤ 0
+for all pa , q a ∈ K. Suppose that there exist vectors w1a andpw2a such that w1 ·w1 = w2 ·w2 = −1, (w1 −w2 )·(w1 −w2 ) ≥ 0 and
+a
+a
+with the property that, for
+T all p , q ∈ K, |(p − q) · wi| ≤ −(p − q) · (p − q) (i = 1, 2). Then a theorem of Woronowicz [33]
+entails that the algebra O⊃K R(O) of observables localised on K consists only of scalar multiples of the identity. In the
+case of a bounded null line segment K = {λℓa : λ ∈ [α, β]} where ℓa is null, it is readily verified that w1a = ℓa + sa ,
+w2a = −ℓa + sa satisfy these conditions for any spacelike vector sa with s · s = −1 and ℓ · s = 0. Such vectors sa exist in
+dimensions d > 2, thus justifying the claim made in the text.
+
+

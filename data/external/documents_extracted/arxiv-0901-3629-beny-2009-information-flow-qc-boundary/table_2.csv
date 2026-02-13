@@ -1,0 +1,4 @@
+i. The ket,ψi is the adjoint of hψ,(a matrix of just one column). It maps
+a complex number z to the ket z,ψi. Hence, for instance, 1 ⊗,ψi maps a state
+φi of the system to the composite state,φi ⊗,ψi. To see this, we interpret,φi as
+φi ⊗ 1, where 1 is the complex number one. The point is that,φi ⊗ z = z,φi ⊗ 1

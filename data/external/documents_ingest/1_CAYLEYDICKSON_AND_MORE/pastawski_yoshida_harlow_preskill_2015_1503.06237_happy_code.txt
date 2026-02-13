@@ -1,0 +1,2887 @@
+                                          Prepared for submission to JHEP
+
+
+
+
+                                          Holographic quantum error-correcting codes:
+                                          Toy models for the bulk/boundary
+                                          correspondence
+
+
+
+
+arXiv:1503.06237v2 [hep-th] 22 Jul 2015
+                                          Fernando Pastawski,*a Beni Yoshida*a Daniel Harlow,b John Preskill,a
+                                          a Institute for Quantum Information & Matter and Walter Burke Institute for Theoretical
+
+                                           Physics, California Institute of Technology, Pasadena, California 91125, USA
+                                          b Princeton Center for Theoretical Science, Princeton University, Princeton NJ 08540 USA
+
+                                           *These authors contributed equally to this work.
+                                           E-mail: fernando.pastawski@gmail.com, rouge@caltech.edu,
+                                           dharlow@princeton.edu, preskill@caltech.edu
+
+                                          Abstract: We propose a family of exactly solvable toy models for the AdS/CFT
+                                          correspondence based on a novel construction of quantum error-correcting codes with a
+                                          tensor network structure. Our building block is a special type of tensor with maximal
+                                          entanglement along any bipartition, which gives rise to an isometry from the bulk
+                                          Hilbert space to the boundary Hilbert space. The entire tensor network is an encoder
+                                          for a quantum error-correcting code, where the bulk and boundary degrees of freedom
+                                          may be identified as logical and physical degrees of freedom respectively. These models
+                                          capture key features of entanglement in the AdS/CFT correspondence; in particular,
+                                          the Ryu-Takayanagi formula and the negativity of tripartite information are obeyed
+                                          exactly in many cases. That bulk logical operators can be represented on multiple
+                                          boundary regions mimics the Rindler-wedge reconstruction of boundary operators from
+                                          bulk operators, realizing explicitly the quantum error-correcting features of AdS/CFT
+                                          recently proposed in [1].
+Contents
+1 Introduction                                                  1
+
+2 Isometries and perfect tensors                                3
+
+3 Construction of holographic quantum states and codes          6
+
+4 Entanglement structure of holographic states                  9
+  4.1 Ryu-Takayanagi formula                                    9
+  4.2 Bipartite entanglement of disconnected regions           11
+  4.3 A map of multipartite entanglement                       14
+  4.4 Negative tripartite information                          19
+
+5 Quantum error correction in holographic codes                21
+  5.1 AdS-Rindler reconstruction as error correction           21
+  5.2 The physical interpretation of holographic codes         23
+  5.3 Bulk reconstruction from tensor pushing                  23
+  5.4 Connected reconstruction and the causal wedge            25
+  5.5 Disconnected reconstruction and the entanglement wedge   26
+  5.6 Erasure threshold                                        30
+  5.7 Holographic stabilizer codes                             34
+  5.8 Are local gauge constraints enough?                      37
+
+6 Black holes and holography                                   38
+
+7 Open problems and outlook                                    39
+
+A Perfect tensor examples                                      41
+  A.1 5-qubit code and 6-qubit state                           41
+  A.2 3 -qutrit code and 4-qutrit state                        43
+  A.3 Large n                                                  44
+
+B Proof of RT for negatively curved planar graphs              45
+
+C Counting tensors in the pentagon code                        48
+  C.1 Counting tensors                                         48
+  C.2 Connected reconstruction                                 49
+
+
+
+
+                                      –i–
+D Estimating greedy erasure thresholds                                               51
+  D.1 Analytic bounds                                                                52
+  D.2 Numerical evaluation                                                           56
+
+E Reconstructing beyond the greedy algorithm                                         56
+  E.1 Reconstruction from symmetry guarantees                                        56
+  E.2 Approximate reconstruction for typical tensors                                 59
+
+
+
+
+1   Introduction
+The AdS/CFT correspondence, an exact duality between quantum gravity on a (d+1)-
+dimensional asymptotically-AdS space and a d-dimensional CFT defined on its bound-
+ary, has significantly advanced our understanding of quantum gravity, as well as pro-
+vided a powerful framework for studying strongly-coupled quantum field theories. One
+aspect of this duality is a remarkable relationship between geometry and entanglement.
+This notion first appeared in the proposal [2] that two entangled CFT’s have a bulk dual
+connecting them through a wormhole, and was later quantified by Ryu and Takayanagi
+via their proposal that entanglement entropy in the CFT is computed by the area of
+a certain minimal surface in the bulk geometry [3, 4]. This latter proposal, known as
+the Ryu-Takayanagi (RT) formula, has led to much further work on sharpening the
+connection between geometry and entanglement [5–12]
+    In the condensed matter physics community, improved understanding of quantum
+entanglement has led to significant progress in the numerical simulation of emergent
+phenomena in strongly-interacting systems. A key ingredient of such algorithms is
+the use of tensor networks to efficiently represent quantum many-body states [13–
+15]. Vidal combined this idea with entanglement renormalization to formulate the
+Multiscale Entanglement Renormalization Ansatz (MERA) [16, 17], a family of tensor
+networks that efficiently approximate wave functions with long-range entanglement
+of the type exhibited by ground states of local scale-invariant Hamiltonians [18–20].
+The key idea is to represent entanglement at different length scales using tensors in a
+hierarchical array.
+    In the AdS/CFT correspondence, the emergent radial direction can be regarded
+as a renormalization scale [21], and spatial slices have a hyperbolic geometry resem-
+bling the exponentially growing tensor networks of MERA. This similarity between
+AdS/CFT and MERA was pointed out by Swingle, who argued that some physics of
+the AdS/CFT correspondence can be modeled by a MERA-like tensor network where
+
+
+
+                                         –1–
+quantum entanglement in the boundary theory is regarded as a building block for the
+emergent bulk geometry [22, 23].
+     Recently it has been argued in [1] that the emergence of bulk locality in AdS/CFT
+can be usefully characterized in the language of quantum error-correcting codes. Cer-
+tain paradoxical features of the correspondence arise naturally by interpreting bulk
+local operators as logical operators on certain subspaces of states in the CFT, whose
+entanglement structure protects these operators from boundary erasures. Moreover,
+inspired by [22, 23], it was suggested that there should be tensor network models that
+concretely implement these ideas.
+     In this paper, we propose such a family of exactly solvable toy models of the
+bulk/boundary correspondence based on a novel tensor-network construction of quan-
+tum error-correcting codes. Other authors have recently used holographic ideas [24, 25]
+and related tensor network constructions [26, 27] to build quantum codes with inter-
+esting properties or toy models of the bulk/boundary correspondence [28], but our
+approach differs from previous work by combining the following properties, all of which
+are desirable for a model of AdS/CFT:
+
+   • Exactly solvable: Many of the properties of our models can be shown explic-
+     itly. In particular, an exact prescription for mapping bulk operators to boundary
+     operators can be obtained, and we can give examples where the Ryu-Takayanagi
+     formula holds exactly for all connected boundary regions.
+
+   • QECC: Our models are quantum error-correcting codes, where the bulk/boundary
+     legs of the tensor network correspond to input/outputs of an encoding quantum
+     circuit. In this sense they realize explicitly the proposal of [1].
+
+   • Bulk uniformity: The tensor network is supported on a uniform tiling of a
+     hyperbolic space, known as a hyperbolic tessellation. If the tiling is extended to
+     an infinite system, the tensor network has no inherent directionality and all the
+     locations in the bulk can be treated on an equal footing (see Fig. 4b).
+
+     The rest of this paper is organized as follows: In section 2, we introduce a class of
+tensors called perfect tensors, which are associated with pure quantum states of many
+spins such that the entanglement is maximal across any partition of the spins into two
+sets of equal size. In section 3, we construct holographic states and codes by building
+networks of perfect tensors. These codes have properties reminiscent of the AdS/CFT
+correspondence, elucidated in the rest of the paper, where the code’s logical/physical
+degrees of freedom are interpreted as the bulk/boundary degrees of freedom of a CFT
+with a gravitational dual.
+
+
+
+                                          –2–
+     In section 4, we study the entanglement structure of holographic states, showing
+that the Ryu-Takayanagi formula is exactly satisfied for any connected boundary region,
+developing a graphical representation of multipartite entanglement, and confirming the
+negativity of tripartite information [9]. In section 5, we investigate the dictionary
+relating bulk and boundary observables, define a lattice version of the causal wedge,
+and explain how bulk local operators in the causal wedge can be reconstructed on
+the boundary; we also define a lattice version of the entanglement wedge, and offer
+evidence supporting the entanglement wedge hypothesis proposed in [40–42], see also
+[67]. We briefly discuss how to describe black holes using holographic codes in section 6.
+Section 7 contains our conclusions, and many details appear in the appendices.
+
+
+2   Isometries and perfect tensors
+In this section we review some tools which will be used in our constructions of holo-
+graphic states and codes. We begin with a standard definition:
+
+Definition 1. Say HA and HB are two Hilbert spaces, not necessarily of the same
+dimensionality. An isometry from HA to HB is a linear map T : HA 7→ HB with the
+property that it preserves the inner product.
+
+     If HA and HB have finite dimensionality, as we will assume throughout this paper,
+then it immediately follows that such a T can exist only if their dimensionalities dim(A)
+and dim(B) obey dim(A) ≤ dim(B). In the special case where dim(A) = dim(B), T
+is just a unitary transformation. Clearly the composition of two isometries is also an
+isometry.
+     If T : HA 7→ HB is an isometry, then T † T is the identity on HA and T T † is a
+projector mapping HB to the range of T . We may represent the map T as a two-index
+tensor acting as                             X
+                                  T : |ai 7→    |biTba ,                             (2.1)
+                                              b
+
+where {|ai} denotes a complete orthonormal basis for HA and {|bi} for HB . Then T
+is an isometry if and only if    X †
+                                    Ta0 b Tba = δa0 a .                      (2.2)
+                                     b
+
+We represent this graphically in figure 1, following the convention that operators are
+ordered from left to right, so that in the figure T † is applied after T . We will call a
+tensor obeying (2.2) an isometric tensor.
+
+
+
+
+                                          –3–
+      Figure 1. Diagrammatic tensor notation, here showing that T is an isometry.
+
+
+     Isometric tensors have the property that any operator O acting on its “incoming”
+leg, can be replaced by an equal norm operator O0 acting on its “outgoing” leg, because
+
+                          T O = T OT † T = (T OT † )T ≡ O0 T ;                      (2.3)
+
+we illustrate this property in figure 2. This operation is essential for what follows,
+
+
+
+
+                Figure 2. Operator pushing through an isometric tensor.
+
+and we will often describe it as “pushing an operator through a tensor”. It is also
+easy to check a useful converse of operator pushing: If the two-index tensor T has the
+property that any unitary transformation U contracted with its incoming index can
+be replaced by a corresponding unitary transformation U 0 contracted with its outgoing
+index (i.e., T U = U 0 T ), then T obeys (2.2) up to a scalar factor, and therefore must
+be proportional to an isometric tensor.
+
+
+
+
+Figure 3. If HA = HA2 ⊗ HA1 , then we can move one of the factors to the output while
+preserving the isometric structure.
+
+    Another important property of isometric tensors is that if the input Hilbert space
+factorizes, we may reinterpret an input factor as an output factor while preserving
+(2.2), up to an overall rescaling. That is, if T : HA2 ⊗ HA1 7→ HB is an isometric map,
+
+
+
+
+                                         –4–
+acting on a basis according to
+                                                       X
+                                    T : |a2 a1 i 7→             |biTba2 a1 ,         (2.4)
+                                                            b
+
+
+then T̃ : HA1 7→ HB ⊗ HA2 acting as
+                                                      X
+                                    T̃ : |a1 i 7→           |ba2 iTba2 a1            (2.5)
+                                                      ba2
+
+
+obeys T̃ † T̃ = dim(A2 )IA1 . We illustrate this property in figure 3.
+     In this paper we will be interested in a special class of isometric tensors, which we
+will call perfect tensors. To formulate the concept of a perfect tensor, first note that
+we may divide the m indices of a tensor Ta1 a2 ...am into a set A and a complementary
+set Ac . We use |A| to denote the cardinality of the set A; hence |A| + |Ac | = m. Then
+T may be regarded as a linear map from the span of the indices in A to the span of
+the indices in Ac . We will usually assume that each index ranges over v values, and
+we will use A to denote both the set of |A| indices and the corresponding vector space
+with dimension v |A| ; thus we say T maps A to Ac .
+
+Definition 2. A 2n-index tensor Ta1 a2 ...a2n is a perfect tensor if, for any bipartition
+of its indices into a set A and complementary set Ac with |A| ≤ |Ac |, T is proportional
+to an isometric tensor from A to Ac .
+
+    It is not obvious that nontrivial perfect tensors exist, but they do! Note that for
+T to be perfect it suffices for T to be a unitary transformation when |A| = |Ac | = n;
+in that case the property illustrated in figure 3 ensures that T is proportional to an
+isometric tensor for |A| < n. In Appendix A we describe perfect tensors explicitly for
+the case n = 3, v = 2 and for the case n = 2, v = 3; other cases with larger n and v
+are also discussed there. To keep our discussion concrete, we will focus especially on
+the six-index tensor for qubits (v = 2)1 , but much of what we say applies to arbitrary
+2n-index perfect tensors.
+    Perfect tensors are related to other notable ideas in quantum information theory.
+In general, a tensor T with m indices, each ranging over v values, describes a pure
+quantum state |ψi of m v-dimensional spins, where, up to a normalization factor,
+                                   X
+                          |ψi =           Ta1 a2 ...am |a1 a2 . . . am i.         (2.6)
+                                     a1 ,a2 ,...,am
+
+  1
+      This can be obtained from the encoding map of the 5-qubit code.
+
+
+
+
+                                                      –5–
+A perfect tensor describes a pure state of 2n spins with a special property — any set
+of n spins is maximally entangled with the complementary set of n spins. Such states
+have been called absolutely maximally entangled (AME) states [29, 30]. Conversely any
+AM E state defines a perfect tensor. Regarded as a linear map from one spin to 2n − 1
+spins, a perfect tensor is the isometric encoding map of a quantum error-correcting code
+which encodes a single logical spin in a block of 2n − 1 physical spins, where the logical
+spin is protected against the erasure of any n−1 physical spins. Because n is more than
+half of all the physical spins, this is the best possible protection against erasure errors
+compatible with the no-cloning principle. In coding terminology this code has distance
+n and is denoted [[m, k, d]]v = [[2n − 1, 1, n]]v , where m is the number of physical spins
+in the code block, k is the number of protected logical spins, and d is the code distance.
+This code is also the basis for a quantum-secret-sharing scheme called a ((n, 2n − 1))
+threshold scheme [31]; code states have the property that a party holding any n − 1
+spins has no information about the logical spin, while a party holding any n spins has
+complete information about the logical spin (because erasure of the remaining n − 1
+spins is correctable).
+
+
+3       Construction of holographic quantum states and codes
+We have seen how tensors can be interpreted as quantum states or quantum codes. In
+this section we construct tensor networks in which the fundamental building blocks are
+perfect tensors. Our tensor networks describe states which we call holographic states,
+and codes which we call holographic codes.
+     We shall focus on examples based on tilings of two-dimensional hyperbolic space,
+which are specific realizations of uniform hyperbolic tilings known as hyperbolic tes-
+sellations. These tilings have desirable symmetries for constructing a toy model of
+the AdS/CFT correspondence. In particular they are discretely scale-invariant, and
+there exist graph isomorphisms that bring any point in the graph to the center while
+preserving the local structure of the tiling.2 The machinery we develop may also be
+straightforwardly applied to non-uniform and higher-dimensional graphs.
+     Let’s first consider a uniform tiling of a two-dimensional hyperbolic space by
+hexagons, with four hexagons adjacent at each vertex, as depicted in Fig 4a. A perfect
+tensor with six legs is placed at each hexagon, and legs of perfect tensors are contracted
+with neighboring tensors at shared edges of the hexagons. We associate physical spins
+with the uncontracted open tensor legs on the boundary of the hyperbolic tiling; the
+    2
+    Such transformations can be directly visualized using Kaleidotile software [32], which is freely
+available and has been of great aid in developing geometric intuition and producing figures of uniform
+hyperbolic tilings in this paper.
+
+
+
+
+                                                –6–
+         (a) Holographic hexagon state              (b) Holographic pentagon code
+
+Figure 4. White dots represent physical legs on the boundary. Red dots represent logical
+input legs associated to each perfect tensor.
+
+
+tensor network corresponds to a pure state of these boundary spins, which we call a
+holographic state. Note that perfect tensors are not necessarily symmetric under all the
+possible permutations of tensor legs, and thus we specify some particular ordering of
+tensor legs in the construction.
+    We may similarly attach a state interpretation to more general networks con-
+structed by contracting perfect tensors:
+
+Definition 3. Consider a tensor network composed of perfect tensors which cover some
+geometric manifold with boundary, where all the interior tensor legs are contracted. A
+holographic state is a state interpretation of such a tensor network, where physical
+degrees of freedom are associated with all uncontracted legs at the boundary of the
+manifold.
+
+    We now provide an example of a holographic quantum code. As in a holographic
+state, we consider a uniform tiling of the hyperbolic disc, this time by pentagons, with
+four pentagons adjacent at each vertex. A perfect tensor with six legs is placed at each
+pentagon, so that each tensor has one additional uncontracted open leg. This additional
+tensor leg is interpreted as a bulk index or logical input for the tensor network (see
+Fig. 4b). The entire system can be viewed as a big tensor with logical legs in the bulk
+and physical legs on the boundary. We then have the following theorem:
+
+Theorem 1. The pentagon-tiling tensor network is an isometric tensor from the bulk
+to the boundary. We call it the holographic pentagon code.
+
+
+
+                                         –7–
+     We can prove this theorem by noting that if we order the tensors into layers la-
+beled by increasing graph distance from the center, each tensor has at most two legs
+contracted with the tensors at the previous layer (this property is a consequence of
+the “negative curvature” of the graph). Therefore, even if we regard the pentagon’s
+bulk logical index as an input leg, the total number of input legs is at most three, and
+we may therefore regard each tensor as an isometry from input legs to output legs.
+Applying the perfect tensors layer by layer, and recalling that the product of isometries
+is an isometry, we obtain an isometry mapping all the logical indices in the bulk to the
+physical indices on the boundary.
+     We can view this isometry as the encoding transformation of a quantum error-
+correcting code, which we call a holographic code. The number of logical v-dimensional
+spins is the number Nbulk of pentagons in the tiling, and the number of physical v-
+dimensional spins in the code block is the number Nboundary of uncontracted boundary
+indices in the tensor network. We show in Appendix C that the rate of the code,
+meaning the ratio of the number of logical spins to the number of physical spins,
+approaches
+
+                                  Nbulk      1
+                                          → √ ≈ .447                                 (3.1)
+                                Nboundary     5
+
+in the limit of a large number of layers.
+     This pentagon code was constructed by successively adding layers of tensors start-
+ing from the center and stopping after repeating this procedure a certain number of
+times (two layers in figure 4b). Alternatively, we may fill the bulk using a non-uniform
+cutoff, so that the graph distance between the “center” and the boundary varies from
+one portion of the boundary to another (as occurs in figure 4a). By exerting this free-
+dom, we may change the corresponding value 3.1 for the rate of the code and even
+slightly increase it. By varying the choice of perfect tensor and the shape of the cutoff,
+a large family of holographic codes can be constructed:
+Definition 4. Consider a tensor network composed of perfect tensors which cover
+some geometric manifold with boundaries. The tensor network is called a holographic
+code if it gives rise to an isometric map from uncontracted bulk legs to uncontracted
+boundary legs.
+    Tensor networks with open legs in the bulk were first proposed by Vidal [17]. More
+recently, Qi [28] constructed a tensor-tree model with an exact unitary mapping between
+the bulk and the boundary. The most important difference between their models and
+ours is that their states are not protected against erasure of physical spins because the
+code rate is asymptotically unity. In addition our models are more symmetric; since
+
+
+
+                                          –8–
+perfect tensors can be interpreted as isometries along any direction, our models have no
+preferred direction in the bulk and all bulk sites are treated equally. In particular, the
+pentagon code has the nice feature that, because the 6-leg perfect tensor we construct
+in appendix A is symmetric under cyclic permutations of five of the legs, which we take
+to be the contracted legs, the symmetry of the network is just the full symmetry of the
+graph.
+
+
+4     Entanglement structure of holographic states
+In this section we explore to what extent holographic states reproduce key properties
+of the AdS/CFT correspondence, such as the Ryu-Takayanagi formula for entropy of a
+boundary region [3] and the negativity of tripartite information [9].
+
+4.1   Ryu-Takayanagi formula
+The Ryu-Takayanagi (RT) formula says that for a CFT whose gravitational dual is well-
+approximated by Einstein gravity at low energies, in any static state with a geometric
+bulk description the entropy SA of a boundary subregion A at fixed time obeys
+
+                                            Area(γA )
+                                     SA =             ;                               (4.1)
+                                              4G
+here G is Newton’s constant and γA is the minimal-area codimension-two bulk surface
+whose boundary matches the boundary ∂A of A. In our examples the bulk theory is
+2 + 1 dimensional, so γA will be a spacelike bulk geodesic whose “area” is just defined
+as its length.
+     In our discrete setting, we will define γA as a certain cut through the tensor network
+which partitions it into two disjoint sets of perfect tensors. Associated with a cut c is
+a decomposition of the tensor network as a contraction of two tensors P and Q, where
+the contracted legs lie along the cut; the number of contracted legs is called the length
+of c, denoted |c|. If A is a set of boundary legs and Ac is the complementary set of
+boundary legs, then we say that the boundary of the cut c matches the boundary of A
+if the uncontracted legs of P are the legs of A, and the uncontracted legs of Q are the
+legs of Ac . The minimal bulk geodesic bounded by A, γA , is then defined as the cut c
+of shortest length whose boundary matches the boundary of A. We use P to denote,
+not just the tensor associated with one side of the cut, but also the set of bulk lattice
+sites corresponding to the perfect tensors which are contracted to construct P ; likewise
+for Q. We note that P or Q might have more than one connected component, and so
+might γA when regarded as a path in the dual graph.
+
+
+
+
+                                            –9–
+    A standard argument for tensor network representations of quantum states shows
+that |γA | provides an upper bound on SA . If P and Q are the tensors associated with a
+cut c whose boundary matches the boundary of A, then the holographic state |ψi may
+be expressed (up to normalization) as
+                              X                X
+                        |ψi =    |abiPai Qbi ≡    |Pi iA ⊗ |Qi iAc .              (4.2)
+                              a,b,i                       i
+
+
+Here a and b run over complete bases for A and Ac respectively, and i runs over all
+possible values of the indices contracted along c; the vectors {|Pi i} in HA and the
+vectors {|Qi i} in HAc are not necessarily orthogonal or normalized. (See figure 5.)
+Tracing out Ac we obtain (up to normalization) the density operator on A:
+                                                                          c
+                                                                      i                       b
+           a                  P                                           i               b
+            a                                                 i
+                                                      i                       Q
+              a                                                                      b
+                                                      i
+                                                                                      c
+                A a                                                               b A
+                          a                                           b
+                                      a
+Figure 5. A cut through a holographic tensor network by a curve c bounded by ∂A. Bound-
+ary indices a and b are uncontracted in A and its complement Ac respectively; tensors P and
+Q are contracted by summing over the index i which is cut by c.
+
+                                          X
+                                ρA =             hQi0 |Qi i|Pi ihPi0 |.                           (4.3)
+                                          i,i0
+
+
+Evidently the rank of ρA is at most the number of terms in the sum over i, namely
+v |c| . The density operator of a given rank with maximal Von Neumann entropy is
+proportional to the identity on its support, and has entropy equal to log of the rank.
+We obtain the best bound by choosing the cut c = γA with the shortest length:
+
+                                      SA ≤ |γA | · log v.                                         (4.4)
+
+In most of what follows, we will define entropy by taking logs with base v, and so
+
+
+
+                                                 – 10 –
+suppress the log v factor.
+     If the tensors P and Q are actually isometries from i to a and b respectively, then
+{|Pi i} and {|Qi i} are sets of orthonormal vectors; in that case (4.4) is saturated and a
+discrete analogue of the RT formula holds exactly. Under what conditions will P and
+Q be isometries? We can prove the following theorem:
+
+Theorem 2. Suppose that we have a holographic state associated to a simply-connected
+planar tensor network of perfect tensors, whose graph has “non-positive curvature”.3
+Then for any connected region A on the boundary, we have SA = |γA |; in other words,
+the lattice RT formula holds.
+
+     The strategy of the proof is to show that P and Q can in fact be interpreted as
+unitary transformations, from the cut together with some subregion of A or Ac to the
+rest of A or Ac respectively. We can then use the identity depicted in figure 3 to re-
+interpret these transformations as isometries from the cut to A and from the cut to Ac
+respectively; the RT formula follows. The key to the argument, explained in appendix
+B, is using a strengthened version of the max-flow min-cut theorem (which is standard
+in graph theory [33]) to establish that the tensor network representations of P and Q
+can be interpreted as unitary quantum circuits.
+
+4.2    Bipartite entanglement of disconnected regions
+Unfortunately the proof of Theorem 2 does not directly generalize to a disconnected
+region A, nor even to connected regions for states, such as our holographic code states,
+where not all perfect tensor indices are contracted in the bulk. We do not consider
+this to be a serious problem for our models. However, we still find it worthwhile to
+introduce some machinery that allows us to quantify this presumption somewhat.
+     The first technique we will introduce is an algorithmic procedure for constructing,
+given a boundary region A, a bulk curve γA? bounded by ∂A such that the corresponding
+tensor P is guaranteed to be an isometry. For a holographic state the isometry P maps
+γA? to A, and for a holographic code P maps γA? and all incoming bulk indices of P to
+A. Furthermore, γA? is a local minimum of the length, in the sense that no single tensor
+can be added to or removed from P which reduces the length of the cut.
+     The algorithm makes essential use of the properties of perfect tensors and is quite
+simple. We consider a sequence of cuts {cα } each bounded by ∂A, and a corresponding
+sequence of isometries {Pα }, such that each cut in the sequence is obtained from the
+previous one by a local move on the bulk lattice. The sequence begins with the trivial
+   3
+    The scalar curvature of a graph is somewhat tricky to define in general; the condition we really
+need here is that the distance functional from one point on the dual network to another does not have
+interior local maxima.
+
+
+
+
+                                              – 11 –
+cut, A itself; in each step we identify one perfect tensor which has at least half of its
+legs contracted with Pα and construct Pα+1 by adding this perfect tensor to Pα . Thus
+Pα+1 is obtained by composing Pα with an isometry defined by a perfect tensor, and
+therefore Pα+1 is an isometry if Pα is. The procedure halts when the cut reaches γA? and
+no further local moves are possible. Though many different sequences of local moves
+are allowed, γA? is well defined; tensors eligible for inclusion in Pα+1 remain so as other
+tensors are included, so the output of the algorithm does not depend on the order of
+inclusion. Following standard computer science terminology, we call this procedure the
+greedy algorithm and call γA? the greedy geodesic. A step of the greedy algorithm is
+illustrated in figure 6.
+
+
+
+
+Figure 6. A step in the greedy algorithm. The upper node has at least three legs contracted
+with the region P , which we have shaded red, so we include it into P .
+
+
+
+
+Figure 7. Three examples where the greedy algorithm fails to find the matching minimal
+geodesics from complementary regions. The first example involves disconnected regions in
+the holographic state. The second example involves a positive curvature obstruction at the
+center of the tiling which blocks the greedy geodesic from reaching the global minimal surface.
+The third example involves a connected region for the holographic code. In both the first and
+the third figure the greedy algorithm finds minimal geodesics from both sides but they do
+not match. In both cases, it is possible for the entropy to be slightly smaller than the length
+of the geodesic. This depends on tensors which were not absorbed by either of the greedy
+geodesics which we call the bipartite residual regions.
+
+    When the assumptions of Theorem 2 are satisfied, the argument in appendix B
+ensures that the greedy algorithm will find a true minimal geodesic γA . If there is
+
+
+
+                                            – 12 –
+more than one minimal geodesic, as is sometimes the case, then the greedy algorithm
+might continue past a minimal geodesic and proceed through minimal geodesics of
+equal length. In that case, the tensors in between the successive geodesics define a
+unitary transformation from one cut to the other. If A has more than one connected
+component, if there is positive curvature, or if there are uncontracted bulk indices as
+for a holographic code, the greedy algorithm does not necessarily succeed in finding
+matching minimal geodesics, as we illustrate in figure 7.
+      In cases where the greedy algorithm fails to find a minimal geodesic, we can still
+use it to prove an interesting lower bound on the entropy SA . Suppose that γA? and
+γA? c are two greedy geodesics, produced by applying the greedy algorithm to A and its
+complement Ac respectively, where P and Q are the corresponding tensors. Further-
+more, suppose that γA? ∩ γA? c is non-empty, in the sense that some links are cut by both
+geodesics. We can represent that state as4
+                         X                           X
+                  |ψi =        |abiPa,ij Qb,ik Sjk ≡   Sjk |Pij iA ⊗ |Qik iAc .      (4.5)
+                          a,b,i,j,k                             i,j,k
+
+
+Here i denotes the index shared between γA? and γA? c , j is the index unique to γA? , k is
+the index unique to γA? c , and S denotes the tensor that sits “in between” γA? and γA? c .
+We call the set of lattice sites in S the bipartite residual region (where the modifier
+“bipartite” draws a distinction with the multipartite residual region to be discussed
+in section 4.3.) Because P and Q are isometries, both {|Pij i} and {|Qik i} are sets of
+orthonormal vectors. Therefore, the marginal density operator for A is
+                                     X
+                               ρA =      Sjk Sj∗0 k |Pij ihPij 0 |.                  (4.6)
+                                          i,j,j 0 ,k
+
+
+This density operator has support on the subspace of A spanned by {|Pij i}, which has
+              ?
+dimension v |γA | , and this subspace has a decomposition into subsystems A1 ⊗ A2 such
+that the basis element |Pij i may be expressed as |iiA1 ⊗ |jiA2 , where {|ii} and {|ji}
+are orthonormal bases for A1 and A2 respectively. We may then write
+                                          !                             !
+                               X               X
+                       ρA =       |iihi|A1 ⊗      Sjk Sj∗0 k |jihj 0 |A2 ,        (4.7)
+                                      i                    j,j 0 ,k
+
+    4
+      For holographic codes with dangling bulk legs, we assume for now that a product state is fed into
+all bulk legs. If the input bulk state were entangled instead, there would be additional contributions
+to the boundary entanglement which we are not including. This same proviso also applies to the
+discussion in the following subsection.
+
+
+
+
+                                                       – 13 –
+                                                                          ?   ?
+and from the additivity of the entropy, using dim(A1 ) = v |A1 | = v |γA ∩γAc | , we obtain
+the following theorem.
+Theorem 3. For a holographic state or code, if A is a (not necessarily connected)
+boundary region and Ac is its complement, then the entropy of A satisfies
+
+                                      SA ≥ |γA? ∩ γA? c |,                             (4.8)
+
+where γA? is the greedy geodesic obtained by applying the greedy algorithm to A and γA? c
+is the greedy geodesic obtained by applying the greedy algorithm to Ac .
+     We see from Theorem 3 that violations of the Ryu-Takayanagi formula are closely
+related to the size of the bipartite residual region. In particular, if there is no bipartite
+residual region then SA = |γA? |; the upper bound (4.4) and the lower bound (4.8)
+together imply that γA? is in fact a minimal geodesic, and RT holds. We will argue in
+section 4.3 that the bipartite residual region has size O(1) when the regions A and Ac
+on the boundary have O(1) connected components. In this sense, the corrections to
+the RT formula are typically small.
+
+4.3   A map of multipartite entanglement
+So far we have emphasized the bipartite entanglement between a boundary region A and
+its complement Ac in a holographic state or code. But we may also divide the boundary
+into three or more regions and investigate the structure of the entanglement among
+these regions. The entanglement structure can be elucidated via an entanglement
+“distillation” procedure which we will now describe.
+     To explain this procedure we begin by revisiting the case of bipartite entanglement.
+We have seen that if the conditions of Theorem 2 are satisfied, then a holographic
+                                                                                     ?
+state can be expressed in the form (4.2), where a subsystem of A of dimension v |γA | is
+maximally entangled with a corresponding subsystem of Ac . This entanglement shared
+between two systems is generally diluted, since each party may contain many more
+than SA spins. The entanglement would be more useful in a more concentrated form.
+     The procedure for transforming dilute entanglement into concentrated entangle-
+ment, called entanglement distillation, is particularly simple for a bipartite pure state
+like |ψi in (4.2). We choose |γA? | specified spins in A (the subsystem A1 of A) and we
+choose |γA? | spins in Ac (the subsystem Ac1 of Ac ). Then we apply a unitary transfor-
+mation UA acting on A that transforms the basis states {|Pi iA } to the standard basis
+states of A1 , and a unitary transformation UAc acting on Ac that transforms the basis
+states {|Qi iAc } to the standard basis states of Ac1 , thus obtaining the state
+                                         ? 
+                          |ψ 0 i = |Φi⊗|γA | A1 Ac ⊗ |χ̃iA2 ⊗ |φ̃iAc2 ,                (4.9)
+                                                 1
+
+
+
+
+                                            – 14 –
+in which the entanglement of A with Ac now resides entirely in the system A1 Ac1 . Here
+A2 denotes the complement of A1 in A, Ac2 denotes the complement of Ac1 in Ac , and
+                                                 v
+                                          1 X
+                                   |Φi = √       |αi ⊗ |αi                                (4.10)
+                                           v α=1
+
+is a maximally entangled EPR pair of two spins.
+     There is a method for constructing the unitary transformations UA and UAc ex-
+plicitly, which has a pleasing geometrical interpretation. The method uses the greedy
+algorithm for constructing γA? , but where now each local move, in which the cut through
+the tensor network advances into the bulk by moving past one additional tensor, is ac-
+companied by a local unitary transformation that decouples spins from the network.
+This local unitary transformation is depicted in figure 8, where entanglement distilla-
+tion is performed on a pair of contracted six-leg tensors.
+
+           (a)   Ac                      Ac                        Ac
+
+
+
+
+             A                       A                         A
+
+           (b)   Ac
+
+
+
+
+             A
+
+
+Figure 8.       The correspondence between local moves and distillation of EPR pairs. (a)
+Distillation of two EPR pairs. (b) The corresponding local moves. Before the first move, the
+tensor on the left has four legs crossed by the cut. Because the tensor is perfect, its remaining
+two legs are maximally entangled with a subsystem of these four. The first local unitary
+transformation acts on the four spins below the cut, transforming the basis to decouple the
+second and third spin, while the first and fourth spins remain contracted across the cut; in
+the corresponding local move, the cut advances upward past the tensor on the left. After
+the first move, the tensor on the right has five legs crossed by the cut. The second unitary
+transformation changes the basis of these five spins, decoupling the first four, while the fifth
+remains contracted across the cut; now the corresponding local move advances the cut upward
+past the tensor on the right. The product of the two local unitaries has distilled two EPR
+pairs which cross the cut, while decoupling six spins below the cut.
+
+    Since each local move of the greedy algorithm moves the cut past a tensor which
+
+
+
+
+                                              – 15 –
+initially has at least three legs crossed by the cut, the legs above the cut are always
+maximally entangled with the legs below, and the corresponding local unitary trans-
+formation exists. For purposes of visualization, we may imagine that the spins which
+remain contracted across the cut advance further into the bulk in each step, remaining
+adjacent to the cut, while the spins which decouple are left behind. When the greedy
+algorithm applied to A terminates, then, all the decoupled spins of A are distributed
+throughout the bulk region in between the greedy geodesic and the boundary, while
+|γA? | spins of A, lined up along the greedy geodesic, are contracted with tensors on
+the other side of the greedy geodesic. If we also apply the greedy algorithm to Ac ,
+then under the conditions of Theorem 2, the algorithm terminates at the same greedy
+geodesic. Acting together, then, the unitary transformations associated with the two
+greedy algorithms have decoupled all the boundary spins, except for |γA? | EPR pairs,
+one for each of the legs crossed by the greedy geodesic, thus executing the entanglement
+distillation protocol.
+      Run backwards, the sequence of local unitary transformations associated with the
+greedy algorithm constitutes a holographic quantum circuit, which prepares the bound-
+ary state. The input to this circuit is |γA? | EPR pairs, plus a suitable number of addi-
+tional spins in a product state, distributed throughout the bulk. The circuit builds the
+state step by step, gradually incorporating the bulk spins as the cut advances outward
+from the greedy geodesic toward the boundary. The input state, envisioned as a set
+of EPR pairs lined up along γA? , provides a map of entanglement, a picture character-
+izing the structure of the entanglement between A and Ac . (See figure 9.) The initial
+EPR pairs along the greedy geodesic which are deep inside the bulk encode long-range
+entanglement between A and Ac , while the EPR pairs closer to the boundary encode
+shorter-range entanglement.
+
+
+                           Ac                           Ac
+
+
+
+
+                                     A                             A
+
+
+Figure 9. A geometric map of bipartite entanglement. White dots represent physical spins
+distilled by applying local unitary transformations to A and Ac .
+
+    We can likewise use the greedy algorithm to create a map of multipartite entangle-
+
+
+
+                                         – 16 –
+ment, whether or not the conditions of Theorem 2 are satisfied. Suppose, for example,
+that we divide the boundary into four regions A, B, C, D, each of which is connected, as
+in figure 10. We may apply the greedy algorithm separately to each of the four regions,
+obtaining greedy geodesics γA? , γB? , γC? , γD
+                                              ?
+                                                . The bulk region in between A and its greedy
+           ?
+geodesic γA is called the causal wedge of A, denoted C[A]. (The significance of the
+causal wedge in holographic codes will be discussed at length in section 5.) As figure
+10 indicates, the union C[A] ∪ C[B] ∪ C[C] ∪ C[D] of the four causal wedges need not
+cover the entire bulk lattice — there may be a multipartite residual region in the bulk,
+which the greedy algorithm fails to reach when applied to the boundary regions one at
+a time. As we explain below, the size of the multipartite residual region is expected to
+be O(1), independent of the total system size.
+
+
+              D                        C             D                        C
+                  RD
+
+
+                                                                  R
+
+                                RB
+
+              A                        B             A                        B
+
+                  |A||C|      |B||D|                      |A||C| ⇡ |B||D|
+
+Figure 10. The “map of entanglement” and multipartite residual regions in a holographic
+state. For |A||C|  |B||D| it is possible for the residual region to pinch off so much that EPR
+pairs can be directly distilled between A and C. In other words, due to the discretization
+of the lattice, the causal wedges C[A] and C[C] may be adjacent in the bulk. In this case
+the residual region may be composed of two disconnected components, RB and RC which
+can contribute tripartite correlations. A similar analysis holds for |A||C|  |B||D|. For
+|A||C| ≈ |B||D|, a single connected residual region R contiguous to the four causal wedges is
+expected and may contribute four-party correlations.
+
+    Multipartite residual regions in the bulk can indicate multipartite entanglement
+among the four regions on the boundary. As discussed above for the case of bipartite
+entanglement, suppose we decouple spins in each of A, B, C, D by performing suitable
+local unitary transformations associated with each step of the greedy algorithm. Where
+the greedy geodesics of adjacent regions meet, EPR pairs are distilled, in keeping with
+
+
+
+
+                                            – 17 –
+our observation in section 4.2 that the bipartite entanglement of two boundary regions
+is no less than the length of the greedy geodesic shared by the two regions. The tensors
+trapped inside a multipartite residual region however, do not necessarily have a decom-
+position into EPR pairs. Instead it describes a state with multipartite entanglement,
+which cannot be expressed as a product of states with only bipartite entanglement.
+     Just as for a partition of the boundary into connected regions A and Ac , we can
+reverse the order in which tensors are incorporated by the greedy algorithm to obtain
+a holographic quantum circuit of isometries which prepares the boundary state. When
+we partition the boundary into four connected regions, however, the input to the cir-
+cuit includes more than just EPR pairs distributed along shared greedy geodesics and
+decoupled spins in the bulk; additional multipartite states associated with each con-
+nected component of the bulk multipartite residual region are also part of the input.
+The circuit factorizes into a product UA ⊗ UB ⊗ UC ⊗ UD , with each of the four unitary
+transformations acting within its own causal wedge to build the corresponding con-
+nected component of the boundary. Again, the greedy geodesics encode a “map” of the
+entanglement among A, B, C, D, now including a description of multipartite entangle-
+ment among all the regions as well as bipartite entanglement among pairs of regions.
+Two such maps are shown in figure 10; in these cases a single six-leg tensor is trapped in
+each connected component of the bulk multipartite residual region, though in general
+a more complex tensor network could be trapped inside as indicated in figure 7.
+     We may also argue that if the bulk has constant negative curvature, then for any
+partition of the boundary into O(1) connected components, the multipartite residual
+region is always O(1) in size. This statement is true for the Riemannian geometry of the
+hyperbolic plane, but is merely heuristic because it disregards subtleties arising from
+the discrete lattice structure of the bulk. For a two-dimensional Riemannian manifold,
+the Gauss-Bonnet theorem applied to the residual region R states that
+                             Z           Z
+                                K dA +       kg ds = 2πχ(R).                        (4.11)
+                             R           ∂R
+
+here K is the Gaussian curvature, kg is the geodesic curvature, and χ(R) is the Euler
+characteristic of the residual region, which is χ = 1 when R has the topology of a
+disk. If R is the interior of an m-gon whose sides are geodesics, (4.11) says that the
+integral of K over R is the deviation of the sum of interior angles of the m-gon from
+the corresponding sum for an m-gon in flat space; the latter sum is (m − 2)π because
+the m-gon can be covered by m − 2 triangles. For the AdS space, the interior angles
+approach zero as the space becomes large compared to its curvature radius; therefore
+assuming uniform negative curvature K = −1/α2 (where α is the AdS radius), we
+
+
+
+
+                                         – 18 –
+conclude that the volume of the residual region is
+
+                                  V (R) = π(m − 2)α2 .                             (4.12)
+
+In our tensor networks α is of order the length of a link; therefore V (R) is O(1) in
+lattice units if m is O(1), which establishes our claim.
+     Likewise, the bipartite residual region arising from a partition of the boundary into
+two regions A and Ac , discussed in section 4.2, has size O(1) if A and Ac both have
+O(1) connected components. Indeed, the bipartite residual region is contained in the
+multipartite residual region found by applying the greedy algorithm separately to each
+connected component of A and of Ac .
+
+4.4   Negative tripartite information
+A useful characterization of multipartite entanglement is the tripartite information,
+defined as
+
+              I3 (A, B, C) ≡ SA + SB + SC − SAB − SAC − SBC + SABC .               (4.13)
+
+For a general (mixed) tripartite quantum state, I3 can take any real value. It is zero,
+though, for any tripartite pure state of ABC, since in that case SABC = 0 and e.g.
+regions A and BC, being complementary, have the same entropy and therefore make
+cancelling contributions to I3 . Nor is there a contribution to I3 from EPR pairs shared
+between a pair of the three regions (because e.g. a pair shared by AB yields positive
+contributions to SA and SB which are cancelled by negative contributions from −SAC
+and −SBC ) or from entanglement shared between one of the three regions and a fourth
+disjoint region. Thus, for a holographic state and for any partition of the boundary
+into four regions A, B, C, D, nonzero contributions to I3 (A, B, C) can arise only from
+the distilled multipartite states trapped in residual regions.
+     In the holographic setting, it has been shown that I3 ≤ 0 follows from the RT
+formula [9]. For holographic states and codes, the non-positivity of I3 is not ensured in
+general, because of the potential (small) violations of the RT formula. In some special
+cases, though, RT holds exactly, and the non-positivity of I3 then follows. For example,
+suppose that we partition the boundary into four connected regions A, B, C, D, and that
+each connected component of the multipartite residual region traps just one perfect
+tensor. In that case there is no bipartite residual region, so Theorem 3 implies that RT
+is exact and therefore I3 ≤ 0. To see that there is no bipartite residual region in this
+case, consider the bipartite partition of the boundary into the two disconnected regions
+AC and BD, and consider an isolated 2n-index perfect tensor surrounded by three or
+
+
+
+
+                                         – 19 –
+all four of the greedy geodesics γA? , γB? , γC? , γD
+                                                    ?
+                                                      . This tensor must have at least n legs
+                  ?     ?     ?    ?
+crossing either γA ∪ γC or γB ∪ γD . Therefore, when we apply the greedy algorithm to
+the boundary regions AC and BD, one cut or the other will advance past this isolated
+tensor, excluding it from the bipartite residual region.
+     Under suitable conditions we can actually prove a stronger result — that I3 is
+strictly negative. Let us say that a connected component of the multipartite residual
+region is three sided if surrounded by three of the four greedy geodesics, and four
+sided if surrounded by all four greedy geodesics. Three-sided components make no
+contribution to I3 ; if the three surrounding greedy geodesics are those of X, Y, Z, the
+symmetry of I3 implies I3 (A, B, C) = I3 (X, Y, Z), which vanishes for any pure state of
+XY Z. But an isolated 2n-index perfect tensor which crosses all four greedy geodesics
+makes a negative contribution to I3 :
+Theorem 4. Suppose the 2n indices of a perfect tensor state are partitioned into four
+disjoint nonempty sets A, B, C, D such that 0 < |A|, |B|, |C|, |D| < n. Then the tripar-
+tite information I3 is strictly negative: I3 (A, B, C) < 0.
+Proof. First we notice that for a four-part pure state ABCD, the tripartite information
+I(A, B, C) is actually completely symmetric under permutations of the four subsystems,
+which we can see by using the property that complementary regions have the same
+entropy in a pure state:
+
+   I3 (A, B, C) = SA + SB + SC − SAB − SBC − SAC + SABC                (4.14)
+                                      1
+                = SA + SB + SC + SD − (SAB + SCD + SBC + SAD + SAC + SBD ).
+                                      2
+                                                                       (4.15)
+
+We may therefore assume without loss of generality that |A| ≤ |B| ≤ |C| ≤ |D| which
+implies |AB| ≤ |CD| and |AC| ≤ |BD|. Now we use the defining property of 2n-
+index perfect tensors, that a set of n or fewer indices is maximally entangled with
+its complement, which implies SX = min(|X|, 2n − |X|), with entropy expressed in
+units of log v. Therefore SA = |A|, SB = |B|, SC = |C|, SD = |D|, and furthermore
+SAB = |AB| and SAC = |AC|. Now we distinguish two cases. If |AD| ≤ |BC|, then
+SBC = SAD = |AD| and we have
+
+    I3 (A, B, C) = |A| + |B| + |C| + |D| − |AB| − |AC| − |AD| = −2|A| < 0.            (4.16)
+
+If on the other hand |BC| ≤ |AD|, then SAD = SBC = |BC| and we have
+
+  I3 (A, B, C) = |A| + |B| + |C| + |D| − |AB| − |AC| − |BC| = 2|D| − 2n < 0, (4.17)
+
+
+
+
+                                           – 20 –
+where to obtain the second equality we use |AB| + |AC| + |BC| = 2(|A| + |B| + |C|) =
+2(2n − |D|). This completes the proof.
+
+     For a holographic state with boundary partitioned into sets A, B, C, D, the condi-
+tions of Theorem 4 are satisfied by an isolated perfect tensor trapped inside a four-sided
+component of the multipartite residual region; fewer than n of the tensor’s legs cross
+any greedy geodesic, because otherwise the greedy algorithm would have moved the
+cut forward past this perfect tensor, which therefore would not be in the multipartite
+residual region. Furthermore, since entropy is additive for a product state, I3 is also
+strictly negative for any product of perfect tensor states shared by A, B, C, D, provided
+that at least one factor has support on all four sets. Since only the four-sided regions
+contribute to I3 , we conclude that I3 is strictly negative if the multipartite residual
+region contains at least one four-sided connected component, and if each four-sided
+connected component contains only one perfect tensor.
+
+
+5     Quantum error correction in holographic codes
+In this section we study the error correction properties of our holographic codes in more
+detail. The idea that a CFT with a gravity dual must have error correcting properties
+was recently proposed in [1], and in this section we will see that our holographic codes
+illustrate many aspects of the proposal of [1] quite explicitly.
+
+5.1   AdS-Rindler reconstruction as error correction
+We begin by briefly recalling the main point emphasized in [1], which is that in
+AdS/CFT a bulk local observable can be realized by many different operators in the
+CFT. In fact, if x is any point in the bulk, and Y is any point on the boundary, the
+AdS/CFT dictionary can be chosen so that it maps the bulk local field φ(x) to a CFT
+operator O[φ(x)] which has no support in an open set containing Y , and therefore
+commutes with any local field of the CFT supported near Y . Since Y is an arbitrary
+boundary point, if the CFT operator corresponding to φ(x) were actually unique, we
+would conclude that O commutes with all local fields in the CFT, and therefore is a
+multiple of the identity because the local field algebra is irreducible. This paradox is
+evaded once we recognize that the correspondence is not unique. If Y, Z are two distinct
+boundary points, the CFT operator corresponding to φ(x) can be chosen to be either O,
+which commutes with CFT local fields supported near Y , or O0 , which commutes with
+CFT local fields supported near Z, where O and O0 are inequivalent CFT operators
+even though they can be used interchangeably for describing bulk physics.
+
+
+
+
+                                         – 21 –
+Figure 11. Bulk field reconstruction in the causal wedge. On the left is a spacetime diagram,
+showing the full spacetime extent of the causal wedge C[A] associated with a boundary sub-
+region A that lies within a boundary time slice Σ. The point x lies within C[A] and thus any
+operator at x can be reconstructed on A. On the right is a bulk time slice containing x and Σ,
+which has a geometry similar to that of our tensor networks. The point x can simultaneously
+lie in distinct causal wedges, so φ(x) has multiple representations in the CFT.
+
+
+     This novel feature of AdS/CFT, that a bulk local observable can be represented
+by boundary CFT operators in multiple ways, is illustrated in figure 11. The idea
+is that any fixed-time CFT subregion A defines a subregion in the bulk, the causal
+wedge C[A]. For any point x ∈ C[A], bulk quantum field theory ensures that any bulk
+local operator φ(x) can be represented in the CFT as some nonlocal operator on A.
+This representation is called the AdS-Rindler reconstruction of the operator [34, 35].
+Because a given bulk point x can lie within distinct causal wedges associated with
+different boundary regions, the bulk operator φ(x) can have distinct representations in
+the CFT with different spatial support.
+     In [1] the non-uniqueness of the CFT operator corresponding to the bulk operator
+φ(x) was interpreted as indicating that φ(x) is a logical operator preserving a code
+subspace of the Hilbert space of the CFT. This code subspace is protected against
+“errors” in which parts of the boundary are “erased.” If the boundary operator corre-
+sponding to φ(x) acts on a subsystem of the CFT which is protected against erasure
+of the boundary region Ac , then this operator can be represented in the CFT as an
+operator supported on A, the complement of the erased region. Thus we may inter-
+pret the AdS-Rindler reconstruction of φ(x) on boundary region A as correcting for
+the erasure of Ac ; choosing the erased portion of the boundary in different ways leads
+
+
+
+
+                                           – 22 –
+to different reconstructions of φ(x). Moreover, operators near the center of the bulk
+are “well protected” in the sense that a large region needs to be erased to prevent
+their reconstruction, while operators near the boundary can be erased more easily by
+removing a smaller part of the boundary [1].
+     We may think of this code subspace as the low-energy sector of the CFT correspond-
+ing to a relatively smooth dual classical geometry. All CFT operators are physical, and
+thus have some bulk interpretation, but the “logical” operators are special ones which
+map low-energy states to other low-energy states. The same logical action can be re-
+alized by distinct CFT operators, as these distinct operators act on high-energy CFT
+states (those outside the code subspace) differently even though they act on low-energy
+states in the same way.
+
+5.2   The physical interpretation of holographic codes
+The error-correcting properties of the AdS/CFT correspondence were motivated in [1]
+by bulk calculations, together with plausibility arguments regarding the CFT. Our
+central observation in this paper is that analogous statements are provably true in
+holographic codes.
+    We emphasize that in holographic codes the uncontracted bulk legs hanging from
+each tensor should not be thought of as tensor factors in addition to the boundary legs.
+Rather the entire physical Hilbert space is spanned by states of the boundary legs only.
+The bulk legs just provide a way of conveniently describing states in a certain code
+subspace of this boundary Hilbert space, obtained by feeding states of the bulk legs
+through the isometry defined by the entire tensor network; this code subspace can be
+regarded as a simplified model of the low-energy states in a CFT.
+    Likewise, operators acting on the dangling bulk indices correspond to nonlocal
+operators in the boundary theory whose algebra and action on the code subspace re-
+sembles what we would expect for the CFT description of how bulk local operators act
+on low-energy CFT states. When we speak of a “bulk local operator” we really mean
+the nonlocal boundary operator obtained by pushing an operator acting on a dangling
+bulk index out to the boundary using the isometry defined by the network.
+
+5.3   Bulk reconstruction from tensor pushing
+We now explain how holographic codes realize the AdS-Rindler reconstruction of figure
+11. The basic idea is that, instead of using the full isometry of the entire network
+to push a local bulk operator to the boundary, we can instead successively push it
+through individual perfect tensors in a manner of our choosing by using the operation of
+figure 2. We illustrate the reconstruction for two different bulk points of the pentagon
+code in figure 12. Here we use the defining property of perfect tensors — that the
+
+
+
+                                        – 23 –
+tensor provides a unitary transformation which maps any three legs of the tensor to
+the complementary set of three legs, and therefore also an isometry mapping any set
+of three or fewer “incoming” legs to any disjoint set of three “outgoing” legs. In figure
+12, each bulk vertex with arrows showing incoming and outgoing directions indicates
+such an isometry, and the complete set of blue legs is a product of such isometries, and
+hence also an isometry. The blue operator on the boundary is obtained by conjugating
+the blue bulk operator by the blue isometry, and the same applies to the green bulk
+and boundary operators. In the construction of the isometry, we regard the dangling
+bulk index on each tensor as an incoming index, and therefore require that no more
+than two contracted indices are incoming for each blue (or green) tensor. The same
+blue isometry, then, can be used to push not just the central blue bulk index to the
+boundary, but also any of the other incoming bulk indices (which are not shown in the
+figure) on blue tensors.
+
+
+
+
+Figure 12. Boundary reconstruction of bulk operators. The blue operator on the central
+bulk leg is pushed to an operator supported on a fairly large boundary region, while the
+green bulk operator further from the center is pushed to an operator supported on a smaller
+boundary region. Bulk legs for the other tensors are not shown.
+
+    The boundary operation corresponding to a given bulk local operator manifestly has
+the non-uniqueness we described in our discussion of the AdS-Rindler reconstruction.
+For example, we could move one of the three blue arrows directed outward from the
+central blue vertex to a different edge, thus reconstructing the central bulk operator
+on a different boundary region, or we could have sent the green arrows in the opposite
+
+
+
+                                          – 24 –
+direction and reconstructed the green bulk operator on a considerably larger boundary
+region on the opposite side. No matter which reconstruction we use, the boundary
+operator is obtained from the isometric embedding of the bulk indices into the code
+subspace of the boundary Hilbert space, and therefore each reconstructed operator
+corresponding to a given bulk operator acts on the code subspace in the same way.
+     In the theory of quantum error-correcting codes, we say that an error is an erasure
+(or equivalently a located error ) if the set of spins damaged by the error is known,
+so this information can be used in recovering from the error. Holographic codes also
+provide protection against errors which act at unknown locations on the boundary,
+but for the purpose of developing the analogy with the AdS/CFT correspondence we
+will focus on protecting against erasure. A logical system can be protected against
+erasure of a set of spins in the code block if the full algebra of logical operations has
+a realization supported on the complementary set of unerased spins. In AdS/CFT we
+might only require reconstruction of a subalgebra of the full logical algebra; for example,
+the pentagon code provides better protection for the degrees of freedom deep within the
+bulk than for those closer to the boundary. The framework in which a quantum code
+protects only a subalgebra of the code’s full logical algebra has been called operator
+algebra quantum error correction [36–39].
+
+5.4   Connected reconstruction and the causal wedge
+Given a subregion A of the boundary, which bulk local operators can be reconstructed
+on A? This is not an easy question to answer in general, but at least we can give
+a simple description of a large logical subsystem reconstructable on A, namely those
+logical operators acting on bulk sites which are reachable using the greedy algorithm
+explained in section 4.
+     Recall that the greedy algorithm associates with any boundary region A a greedy
+geodesic γA? whose boundary matches the boundary of A, such that A and γA? enclose
+a tensor PA which defines an isometry mapping free bulk legs in PA together with the
+legs cut by γA? to A. Using this isometry applied to any operator acting on a bulk leg
+in PA (tensored with the identity acting on all the rest of the isometry’s input indices),
+we may push that logical operator through the isometry to obtain its reconstruction on
+A. Let’s call the position of a perfect tensor in the network a bulk point and say that
+the greedy algorithm reaches a bulk point if it moves the cut past that tensor, hence
+using it in the construction of PA
+     This operator reconstruction procedure can be applied to any boundary region
+A. In the special case where A is connected, it provides a precise analog of the AdS-
+Rindler reconstruction in holographic codes, which we can formalize with a definition
+and theorem:
+
+
+
+                                          – 25 –
+Definition 5. Suppose that A is a connected boundary region. The causal wedge
+of A, denoted C[A], is the set of bulk points reached by applying the greedy algorithm
+to A.
+
+We then have:
+
+Theorem 5. Suppose A is a connected boundary region. Then any bulk local operator
+in the causal wedge C[A] can be reconstructed as a boundary operator supported on A.
+
+We could have formulated a geometric notion of the causal wedge, defining it as the set
+of bulk points enclosed between A and the actual minimal geodesic γA , rather than the
+greedy geodesic. This geometrical definition is closer in spirit to how the term “causal
+wedge” has been used in the context of AdS/CFT. But we prefer this greedy notion of
+causal wedge instead, so that Theorem 5 is correct as stated.
+     As figure 12 illustrates, bulk operators near the boundary can be reconstructed on
+smaller connected regions than bulk operators near the center, just as for the AdS-
+Rindler reconstruction in AdS/CFT. It is natural to wonder how large the connected
+region A should be for the operator at the center of the bulk to be reconstructable
+on A. This question is studied for the pentagon code in appendix C by investigating
+whether the greedy algorithm applied to A reaches the central tensor in the network.
+We find that a connected region of NA boundary spins necessarily allows reconstruction
+of all operators acting on the center provided that A covers a sufficiently large fraction
+of the boundary, namely
+                                                 √
+                                   NA        5+ 5
+                          fA ≡            >          ≡ fc ≈ .724.                    (5.1)
+                                Nboundary      10
+
+The analogous result for the AdS-Rindler reconstruction is fc = 1/2, but the dis-
+creteness of our lattice introduces some additional overhead. It turns out, though, that
+because the tensor network is not invariant under translations of the boundary, whether
+the connected region A allows reconstruction of the center depends not just on the size
+of A but also on its location. In appendix C we show that, while the condition (5.1) is
+needed to guarantee reconstruction of the central operator on an√ arbitrary connected
+                                                        NA
+region, there are some connected regions with fA = Nboundary = 3+10 5 ≈ .524 that suffice
+for the reconstruction.
+
+5.5   Disconnected reconstruction and the entanglement wedge
+Now let’s consider what bulk operators can be constructed on boundary regions with
+more than one connected component. First we extend the definition of the causal wedge
+to disconnected regions:
+
+
+
+                                         – 26 –
+Definition 6. Suppose that A is a boundary region, which is a union of connected
+components A1 , A2 , . . .. The causal wedge of A, denoted C[A], is defined as the union
+                                                      S
+of the causal wedges of the components of A, C[A] = i C[Ai ].
+
+Since we have already established that any bulk operator in C[Ai ] is reconstructable
+on Ai if Ai is connected, it follows immediately from this definition that even for
+disconnected regions any bulk operator in C[A] is reconstructable on A.
+    The causal wedge contains bulk operators which can be reconstructed when we
+apply the greedy algorithm to the connected components of A one at a time. But the
+greedy algorithm might advance further into the bulk, beyond the causal wedge, when
+applied to A instead. Specifically, there could be a 2n-index tensor just beyond the
+causal wedge of A with n or more legs crossing the union of greedy geodesics γA? i ∪ γA? j ,
+even though fewer than n legs cross γA? i or γA? j individually. Then applying the greedy
+algorithm to Ai ∪ Aj moves the cut past this tensor. This step may then render further
+tensors eligible for inclusion, and in fact we will see that sometimes the greedy algorithm
+can move far beyond the causal wedge C[A]
+
+
+
+
+Figure 13. Disconnected reconstruction of a central operator beyond the causal wedge. Each
+of two separate connected boundary regions is too small for reconstruction of the central
+operator, yet the reconstruction is possible on the union of the two regions. In this example
+the greedy algorithm reaches the central tensor when applied to both connected components
+at once, but not when applied to either component by itself.
+
+    A concrete first example illustrating reconstruction of a bulk operator outside the
+causal wedge is shown in figure 13. In this example, A is the union of two connected
+components A1 and A2 , and the full operator algebra of the central tensor can be pushed
+
+
+
+                                           – 27 –
+to either Ac1 or Ac2 . This implies that no nontrivial operator acting on the central tensor
+can be pushed to either A1 or A2 . For every nontrivial operator φ in the algebra there
+is another operator φ0 which does not commute with φ. If φ0 can be pushed to Ac1 ,
+then surely φ cannot be pushed to A1 , because operators supported on complementary
+regions must commute. The same argument applies to A2 . Yet the greedy algorithm
+applied to A reaches the central tensor, showing that its full operator algebra can be
+pushed to the union of A1 and A2 .
+     That operators beyond the causal wedge of A can be reconstructed on A has deep
+potential implications for AdS/CFT. Perturbative gravity techniques like the AdS-
+Rindler reconstruction can be used to construct bulk operators in the causal wedge
+but not beyond. Yet there has been speculation in the literature that reconstruction
+should be possible in a larger region, the entanglement wedge [40], see also [41, 42, 67].
+In AdS/CFT, the entanglement wedge E[A] is defined by first finding the minimal area
+surface γA used in the RT formula, and then drawing a codimension one (i.e., two-
+dimensional for AdS3 ) spatial slice in the bulk whose only boundaries are γA and A.
+The bulk domain of dependence of this slice is then defined as the entanglement wedge
+E[A]. The entanglement wedge contains the causal wedge, but can be much larger in
+some cases. Figure 14 illustrates a simple example highlighting the distinction between
+the causal and entanglement wedges.5
+     We would like to investigate whether bulk operators in the entanglement wedge
+are reconstructable for holographic codes, but how should the entanglement wedge be
+defined? A definition of E[A] close to that used in AdS/CFT is:
+Definition 7. Suppose A is a (not necessarily connected) boundary region. The ge-
+ometric entanglement wedge of A is the set of bulk points in the bulk region
+bounded by A and γA , where γA is the minimal bulk geodesic whose boundary matches
+the boundary of A. If there is more than one minimal bulk geodesic, γA is chosen to
+make the geometric entanglement wedge as large as possible.
+    The main motivation for the conjecture that operators in the entanglement wedge
+are reconstructable in AdS/CFT comes from the validity of the RT formula for discon-
+nected regions. (Additional evidence was given in [1] based on a typicality argument.)
+But we have already seen above that the RT formula does not hold exactly in holo-
+graphic codes, so we should not necessarily expect the entanglement wedge conjecture
+   5
+     In excited states where the geometry deviates from pure AdS, there are differences between the
+entanglement wedge and the causal wedge even for connected boundary regions. We will not try to
+capture this in our toy models, since without a theory of dynamics we cannot capture the full spacetime
+definitions of these regions. Our discussion is limited to the case where we stick with states near the
+vacuum, in which case A needs to be disconnected for its causal wedge and entanglement wedge to
+differ.
+
+
+
+
+                                               – 28 –
+                                      A                                      A
+
+
+
+
+                                       A                                     A
+
+
+ Figure 14.
+Figure   6. AThereconstruction   phase
+                   intersection of   the transition?
+                                         entanglement Aswedge
+                                                         we increase   the aregion
+                                                               E[A] with            A, the extremal-
+                                                                              bulk time-slice,   in the
+ area where
+case  codimension
+            A has two
+                    two surface  of smallest
+                         connected           area whose
+                                      components.        boundary
+                                                    Minimal         is @A,
+                                                             geodesics      shown
+                                                                         in the     as are
+                                                                                 bulk             lines,
+                                                                                            solid lines.
+                                                                                       the solid
+ changes
+When     discontinuously.
+       A is smaller   than ADoes
+                             c , wethis mean
+                                     have  thethat we canonnow
+                                               situation       reconstruct
+                                                            the left  and the      point in
+                                                                              thecausal     the agrees
+                                                                                        wedge    center
+ as an operator  on  A?
+with the entanglement wedge. When A is bigger, however, the minimal geodesics switch and
+the entanglement wedge becomes larger. In particular the point in the center lies in the E[A]
+but not C[A].
+ operator algebra quantum error correction requires sub-AdS scale bulk locality. This
+to     special
+ is ahold      property
+           in detail for of
+                         thethose  CFTs that
+                             geometric         have localwedge.
+                                          entanglement     holographic duals,
+                                                                 Instead,      which
+                                                                           as in     we have
+                                                                                 defining the
+ here   reformulated
+causal wedge,    we in   thealanguage
+                     prefer   definitionofthat
+                                           quantum  information
+                                               makes the          theory.
+                                                          reconstructability manifest:
+
+Definition 8.
+ 4.3      DisconnectedSuppose A
+                              regions  is aand(notquantum
+                                                     necessarily       connected)
+                                                                  secret      sharingboundary region. The
+greedy entanglement wedge of A, denoted E[A], is the set of bulk points reached
+ So far we have only discussed the erasure of connected regions of the boundary. More
+by applying the greedy algorithm to all connected components of A simultaneously.
+ general erasures are also interesting. Consider for example the AdS3 situation depicted
+ in figure
+With     this6.definition,
+                 Here we consider
+                            bulk local   a region
+                                            operatorsA which
+                                                          in E[A] is the
+                                                                     are union      of two disjoint
+                                                                           automatically               intervals; in
+                                                                                               reconstructable     in
+ other   words   we  have   erased    two   disjoint  intervals.     Can    we
+A, using the isometry defined by PA to push these operators to the boundary. The choose   a  code  subspace    where
+greedy     realize thealso
+ we canalgorithm         bulk    operator
+                              ensures     thatinthe
+                                                  theinterior
+                                                       center as     an operator
+                                                                 boundary             acting
+                                                                                of E[A]         ongreedy
+                                                                                           is the   A or A?    If the
+                                                                                                            geodesic
+ AdS-Rindler
+γA? , though not  reconstruction
+                     necessarily the   is the  last word
+                                           minimal           on bulk
+                                                       geodesic     γA .reconstruction [7], then the answer
+ is clearly   no; thisof point
+      A drawback                  lies neither
+                          this definition       is in
+                                                   thatWCE[A]
+                                                            [A] nor     in Wonly
+                                                                   includes              This
+                                                                                C [A]. the      is possible
+                                                                                             bulk             within
+                                                                                                   local operators
+ the context
+which     can beofreconstructed
+                     quantum error     on correction,
+                                           A using thebut       only algorithm;
+                                                            greedy      if both A and        A canmiss
+                                                                                       it might      access   partial
+                                                                                                          additional
+ information
+bulk   operators  about
+                    whichthe cancode     subspace. For
+                                  be reconstructed         byexample,
+                                                               other methods.say that In Afacthad   caninformation
+                                                                                                we no    find exam-
+ whatsoever      about    which     state   of   the  code    subspace       we   are   in.
+ples of codes such that some bulk local operators lying outside E[A] can be reconstructed     Then    by   definition
+ (3.12)
+on   A, aswould    hold,insoappendix
+            discussed         we couldE.recoverThese the
+                                                       codesinformation
+                                                                typically have fromspecial
+                                                                                      A. Weproperties,
+                                                                                                 are not, however,
+                                                                                                             such as
+ able   to  determine   whether       or  not  such   partial    information
+symmetries, which make the reconstruction possible. If we know nothing more about  is really   present.
+       In fact tensors
+the perfect     there have
+                         usedbeen       recent conjectures
+                                 to construct      the code, asidein thefromliterature    that this operator
+                                                                                  their perfection,     we havecan no
+ still be  reconstructed     in  A  as  long  as  A is bigger    than    A;   more   generally,
+general reason to expect that bulk operators far outside the greedy entanglement wedge            the  claim  is that
+ one be
+will   canreconstructable.
+             do reconstruction   Thatthroughout
+                                          said, we the     entanglement
+                                                      confess    that we lack   wedge,   which is understanding
+                                                                                     a complete      defined as the
+ bulk
+of  whendomain     of dependence
+            reconstruction             of any and
+                                is possible,     bulkhope
+                                                        spacelike
+                                                              that surface
+                                                                      further whose
+                                                                                 progress boundary     is thecan
+                                                                                              on this issue    union
+                                                                                                                   be
+ of  A  and   the  codimension
+achieved in future work.             two   extremal-area       surface     of  minimal      area  whose    boundary
+ is @A [8, 25, 26]. In the figure, the intersection of the entanglement wedge with a
+
+
+
+                                                      –– 29
+                                                         20 ––
+5.6   Erasure threshold
+If the entanglement wedge conjecture is true for AdS/CFT, if holographic codes faith-
+fully model the entanglement structure of boundary theories with classical gravitational
+duals, and if the greedy entanglement wedge is a reasonable stand-in for the entangle-
+ment wedge, then we should be able to find holographic codes and boundary regions
+such that the greedy entanglement wedge reaches far outside the causal wedge. In this
+section we provide examples which confirm this expectation. One way to formalize this
+is to choose A to be a randomly chosen set of boundary spins, whose size is a specified
+fraction of the total boundary. The geometry of the hyperbolic plane suggests that, if
+A is large enough, the causal wedge C[A] will stick close to the boundary, yet the entan-
+glement wedge E[A] reaches the center of the bulk with high probability; we illustrate
+this in figure 15. We will see that not all holographic codes have this property, but we
+are able to provide concrete examples that do.
+
+
+           C[A7 ]            C[A1 ]
+
+
+
+
+            C[A6 ]                         C[A2 ]
+                                                                        E[A]
+
+
+
+                                          C[A3 ]
+                    C[A5 ]
+
+                                 C[A4 ]
+                      (a) Shallow causal wedge               (b) Deep entanglement wedge
+
+Figure 15. (a) When a boundary region A is partitioned into many connected components
+it may have a very shallow causal wedge C[A] if each connected component is small. (b) In
+contrast, if A comprises a sufficiently large fraction of the boundary, its entanglement wedge
+E[A] will extend deep into the bulk.
+
+      Another, perhaps better, way to formulate this case is to imagine a probabilistic
+noise model which acts independently (without any noise correlations) on each of the
+physical boundary spins, where each spin is either erased with probability p or left
+untouched with probability 1 − p. If p is small, the set A of unerased boundary spins
+breaks into many connected islands, where a typical island contains O(1/p) spins and
+has a causal wedge which reaches into the bulk by only a constant distance. We can
+show, though, that if the holographic code is properly chosen and the erasure probability
+p is less than a threshold value pc , then E[A] contains the central bulk spin with a success
+
+
+
+                                                    – 30 –
+probability deviating from one by an amount which becomes doubly exponentially small
+as the radius of the bulk increases.
+     Which codes have an erasure threshold? One necessary requirement is that the
+code must have a distance that increases with the system size. For the purpose of
+reconstructing the central tensor in the bulk, this means that there should not be any
+logical operator supported on a constant number of boundary spins which acts non-
+trivially on the central bulk index. That’s because erasure of any constant number of
+spins occurs with a nonzero constant probability, and recovery from the erasure error
+is not possible if a nontrivial logical operator has support on the erased qubits.
+     The pentagon code fails to fulfill this necessary condition. To illustrate the prob-
+lem, it is helpful to consider first a simpler code, the “triangle code” constructed by
+contracting four-index perfect tensors, where each leg is a 3-level spin, a qutrit. Each
+triangle in the bulk has a dangling bulk index, and the code is constructed as a tensor
+network forming a tree, the Bethe lattice; each triangle is contracted with one triangle
+closer to the center and two triangles further from the center, as shown on the left side
+of figure 16a. (Qi’s model [28] is based on a tensor network with a similar structure.)
+One way to describe the greedy algorithm is to say that it propagates erasures from
+the boundary toward the center of the bulk — the inward directed leg of a triangle is
+erased if either of its outward directed legs is erased, and the central triangle can be
+reconstructed only if at least two of that triangle’s legs are unerased.
+
+
+
+
+                   (a) Triangle code                      (b) Pentagon code
+
+Figure 16. Dangerous small erasures for the triangle (a) and pentagon codes (b). In the
+triangle code erasing two boundary spins, boxed in blue, can prevent reconstruction of the
+central tensor. In the pentagon code erasing four spins can prevent the reconstruction.
+
+    It is easy, then, to prevent the greedy algorithm from reaching the center — only
+
+
+
+                                         – 31 –
+two spins need to be erased. A single erasure on the boundary propagates all the way up
+to the center of the network, erasing one of the central triangle’s legs. A single erasure
+on a different branch of the tree propagates up to another of the central triangle’s legs,
+blocking the reconstruction of the central tensor on the remaining unerased spins.
+     The greedy algorithm fails for a good reason. As described in appendix A.2, The
+logical algebra for the three-qutrit code represented by a single triangle is generated by
+logical operators of the form X̄ = X ⊗X −1 ⊗I, where X is a generalized Pauli operator;
+in fact the code is symmetric under permutation of the three qutrits, so we can choose
+X and X −1 to act on any two of the three qutrits without changing the operator’s
+action on the code space. Now choose a path through the Bethe lattice which begins
+on one leaf, travels to the center, exits the center on a different branch, and finally
+reaches another leaf on that branch. Apply the operator X̄ to each of the logical bulk
+indices visited by this path. Then for each leg along the path the X from the triangle
+on one side cancels the X −1 coming from the triangle on the other side, except for one
+uncanceled X on one leaf and one X −1 on the other. We conclude that the code admits
+a logical operator acting nontrivially on the central triangle which has support on only
+two boundary spins. That is why the central bulk spin can be damaged by erasing only
+two boundary spins.
+     For the pentagon code the situation is only slightly better. If we pick just four
+spins at the positions shown on the right side of figure 16b, then the greedy algorithm
+applied to the complement of these four spins never absorbs any of the tensors adjacent
+to the dashed line. This failure is just a property of the graph defining the holographic
+code, but once again we can understand the failure by noting that there is a logical
+operator acting on the central pentagon supported on these four boundary spins, so
+erasing these four spins prevents central bulk operators from being reconstructed on
+their complement. Now we may consider a product of bulk logical operators acting on
+the pentagons just above and just below the dashed line. We use the logical operator of
+the five-qubit code X̄ = −Z ⊗ X ⊗ Z ⊗ I ⊗ I described in appendix A.1, where X and
+Z are Pauli operators (which square to one), and the operator’s action is unchanged
+by cyclic permutations of the five qubits. Now X’s applied from either side of the cut
+cancel on the legs crossed by the cut, and Z’s applied from either side cancel for the legs
+just above and below the cut, leaving only four uncanceled Z’s acting on the boundary
+qubits.
+     Of course, uncorrectable damage deep inside the bulk caused by erasing just a
+few boundary spins is not at all what we expect in AdS/CFT, where according to
+the entanglement wedge conjecture we should always be able to reconstruct the center
+of the bulk from a sufficiently large fraction of the boundary, whatever its shape or
+location. To obtain a better model for AdS/CFT we should modify the holographic
+
+
+
+                                          – 32 –
+code, thinning out the algebra of bulk logical operators, and hence reducing the rate
+of the code.
+     A code that works better can be obtained by a simple modification of the pentagon
+code — the modified tensor network is constructed by starting with a pentagon at the
+center and adding alternating layers of hexagons (with no dangling bulk indices) and
+pentagons (each with one bulk index) as the network grows radially outward. The
+associated network is depicted in figure 17. This change suffices to remove all the
+constant-weight logical operators acting nontrivally on the center and in fact we can
+prove that this pentagon/hexagon code has an erasure threshold. Numerical studies
+show that erasure can be corrected by the greedy algorithm with high success proba-
+bility for p ≤ pgreedy
+                c      ≈ 0.26; the erasure threshold pc achieved by the optimal recovery
+method might be higher than pgreedy
+                                  c    if the tensors have further special properties aside
+from just being perfect.
+
+
+
+
+              (a) Pentagon/Hexagon code                      (b) One qubit code
+
+Figure 17. Tensor networks for holographic pentagon/hexagon codes with erasure thresh-
+olds, where neighboring polygons share contracted indices. In the network shown on the left,
+pentagons and hexagons alternate on the lattice; each pentagon carries one dangling bulk
+index, and hexagons carry no bulk degrees of freedom. The logical qubit residing on the
+central pentagon is well protected against erasure if the erasure probability on the boundary
+is below the threshold value pc . In the network on the right, there is just a single bulk qubit
+located at the center; the rest of the network is similar to the holographic state constructed
+from hexagons only.
+
+     Since our main interest is in the reconstruction of the center of the bulk, in appendix
+D we study a code for which the only logical index resides at the center, also shown in
+figure 17. This code is almost the same as the holographic state obtained by contracting
+six-leg perfect tensors (hexagons), except that the tensor network contains one pentagon
+
+
+
+                                            – 33 –
+at the center; we therefore call it the single-qubit hexagon code. We prove the existence
+of an erasure threshold for this code, and also derive an analytic lower bound on the
+threshold erasure rate pc ≥ 1/12. Numerical evidence indicates that the threshold is
+actually quite close to pc = 1/2.
+    The lower bound on the threshold is derived using a simplified and less powerful
+version of the greedy algorithm, the hierarchical recovery method, which begins at the
+boundary and proceeds inward toward the center of the bulk. A tensor at level j + 1
+of this hierarchy is connected to at least four tensors at level j, and the level-(j + 1)
+tensor is erased if two or more of its level-j neighbors are erased. The proof proceeds
+by recursively deriving an upper bound on the erasure probability pj at level j, finding
+                                                      λj
+                                                  p
+                                    pj ≤ pc                  ,                      (5.2)
+                                                  pc
+                              √
+where pc = 1/12 and λ = 1+2 5 . Thus the erasure probability for the central tensor
+drops doubly exponentially with the radius of the bulk if p < pc , which means that the
+central tensor can be reconstructed on the set of unerased boundary qubits with very
+high probability.
+    A tricky aspect of the proof is that, because a single level-j tensor couples to two
+level-(j + 1) tensors, there are noise correlations which propagate from level to level.
+Fortunately, the hyperbolic geometry controls the spread of correlations, making the
+analysis manageable. In fact, correlations beyond nearest neighbors never arise. This
+is one advantage of using the hierarchical recovery method rather than the greedy
+algorithm. A similar proof strategy may also be applied to other holographic codes.
+
+5.7   Holographic stabilizer codes
+Stabilizer codes have been extensively studied in quantum coding theory, and are often
+used in applications to fault-tolerant quantum computing [43]. Here we describe how to
+construct a family of holographic codes which are also stabilizer codes. We introduce the
+stabilizer formalism to pave the way for section 5.8, where we study some geometrical
+properties of holographic stabilizer codes.
+     Stabilizer codes can be defined for higher-dimensional spins as well, but here we
+will assume the spins are qubits for simplicity. A Pauli operator acting on n qubits is
+a tensor product of Pauli matrices, that is, one of the 4n operators contained in the set
+
+                                     {I, X, Y, Z}⊗n                                 (5.3)
+
+where I is the 2 × 2 identity matrix and X, Y, Z are the 2 × 2 Pauli matrices (often
+
+
+
+
+                                         – 34 –
+denoted σx , σy , σz ). We use [[n, k]] to denote a quantum code with k logical qubits
+embedded in a block of n physical qubits. We say that an [[n, k]] code is a stabilizer
+code (also called an additive quantum code), if the code space can be completely char-
+acterized as the simultaneous eigenspace of n − k commuting Pauli operators. These
+commuting Pauli operators are called the code’s stabilizer generators because they gen-
+erate an abelian group called the code’s stabilizer group. The special case of a k = 0
+stabilizer code is called a stabilizer state. We say that an n-index tensor is a stabilizer
+tensor if the corresponding n-qubit state is a stabilizer state.
+    For example, the six-index perfect tensor is a perfect stabilizer tensor, and holo-
+graphic codes defined by tiling a hyperbolic geometry with pentagons are stabilizer
+codes. More generally, we may formulate the following theorem:
+
+Theorem 6. Consider a holographic code defined by a contracted network of perfect
+stabilizer tensors, and suppose that the greedy algorithm starting at the boundary reaches
+the entire network. Then the code is a stabilizer code.
+
+To understand why Theorem 6 is true we need to see how to construct the code’s stabi-
+lizer generators. To be concrete, consider holographic codes constructed from tilings by
+hexagons and pentagons. The six-index perfect tensor defines a [[6,0]] stabilizer code,
+whose stabilizers are enumerated in appendix A.1. As we have already noted, it also
+defines isometries from any set of 1, 2, or 3 indices to the complementary set of indices;
+these isometries may be regarded as the encoding maps for [[5, 1]], [[4, 2]], and [[3, 3]]
+stabilizer codes respectively.
+     To be specific, consider the [[5, 1]] code, and let M denote its isometric encoding
+map taking a one-qubit input to the corresponding encoded state in the code block of
+five qubits. We can characterize M by specifying how it acts on Pauli operators, which
+(together with the identity) span the space of operators acting on a single qubit. Since
+the Pauli group is generated by X and Z it suffices to specify
+
+                               M : X 7→ X̄,    M : Z 7→ Z̄,                           (5.4)
+
+where X̄ and Z̄ are the code’s logical Pauli operators, given explicitly in appendix A.
+Similarly, the action on Pauli operators defines isometric encoders for the [[4, 2]] and
+[[3, 3]] stabilizer codes, except that for e.g. the [[4, 2]] code we specify the action on
+the four independent Pauli operators X1 , X2 , Z1 , Z2 , where the subscript 1, 2 labels the
+code’s two logical qubits. For stabilizer codes the encoding isometry is always a Clifford
+isometry, meaning its action by conjugation maps k-qubit Pauli operators to n-qubit
+Pauli operators.
+
+
+
+
+                                          – 35 –
+     We already explained in section 3 that when the condition of Theorem 6 is satisfied
+then the encoding isometry for the holographic code can be obtained by composing the
+isometries associated with each perfect tensor in the network. A given tensor may
+have 0, 1, 2, or 3 incoming legs, including the dangling bulk leg (if the tensor is a
+pentagon) and all the incoming contracted legs, which are output legs from previously
+applied isometries. To prove Theorem 6 then, it is enough to know that composing the
+encoding isometries of two stabilizer codes yields the encoding isometry of a stabilizer
+code.
+     To see how this works, it is helpful to think about the simple special case of a con-
+catenated quantum code, for which the tensor network is a tree. Consider in particular
+a code with just one logical qubit — the central pentagon has one incoming logical leg
+and five outgoing legs, while every other tensor is a hexagon with one incoming leg and
+five outgoing legs. If the [[5, 1]] code is concatenated just once, the tensor network has
+five hexagons and describes a [[25, 1]] stabilizer code. To obtain this code’s isometric
+map, we first apply the encoding isometry M of the [[5, 1]] to the logical qubit, and
+then apply M again to each one of the five outgoing qubits. If S denotes the stabilizer
+group of the [[5, 1]] code, then the stabilizer of the [[25, 1]] code will include S acting on
+each one of the five subblocks corresponding to the five hexagons in the tensor network.
+But it also includes elements which act collectively on four of the five hexagons. For
+example, as described in appendix A.1, one of the stabilizer generators for the [[5, 1]]
+code is the Pauli operator X ⊗ Z ⊗ Z ⊗ X ⊗ I. The isometries associated with the five
+hexagons map this operator to X̄ ⊗ Z̄ ⊗ Z̄ ⊗ X̄ ⊗ I, where now X̄, Z̄ are the logical
+Pauli operators acting on the five outgoing qubits emanating from a single hexagon.
+     The same idea applies to more general compositions of code isometries. Suppose
+that S1 , M1 are the stabilizer group and encoding isometry for an [[n1 , k1 ]] stabilizer
+code and that S2 , M2 are the stabilizer group and encoding isometry for an [[n2 , k2 ]]
+stabilizer code. We may apply M2 to m of the n1 output qubits from M1 along with
+k2 − m additional input qubits (where m ≤ n1 and m ≤ k2 ), thus obtaining an [[n1 −
+m + n2 , k1 + k2 − m]] code. In fact this code is a stabilizer code, whose stabilizer
+group is generated by S2 and M2 (S1 ); here we use a streamlined notation, in which
+it is understood that operators and maps are extended by identity operators where
+necessary, and we note that the elements of M2 (S1 ) are Pauli operators because M2 is
+a Clifford isometry. Thus we have proven Theorem 6. It is also worthwhile to note that
+the stabilizer group and encoding isometry for the holographic code can be efficiently
+computed by composing the isometries arising from the perfect tensors in the network.
+
+
+
+
+                                           – 36 –
+5.8    Are local gauge constraints enough?
+It has recently been argued that in AdS/CFT gauge constraints in the boundary CFT
+may pick out a small enough subspace of states to explain the error correcting properties
+of AdS/CFT [44]. The idea is that any gauge-invariant state already possess some non-
+local entanglement via the imposition of the gauge constraints, and that this might be
+enough to resolve the various paradoxes of [1].6
+     We can try to test this idea for the holographic stabilizer codes discussed in section
+5.7. Since gauge constraints are spatially local, the argument of Ref. [44] suggests
+that the code’s stabilizer group should be locally generated, in the sense that it has
+a complete set of generators, each with support on a constant number of neighboring
+boundary qubits. In fact, though, holographic stabilizer codes do not have this property
+in cases where the greedy entanglement wedge reaches outside the causal wedge. This
+property poses no problem for the proposal of [1] however, as those authors argued that
+energetic constraints should also be included in defining the code subspace.
+     Consider for example the disconnected boundary region A = A1 ∪ A2 in the pen-
+tagon code, depicted in figure 13. We have already seen that the full logical algebra of
+the central pentagon can be reconstructed on the disconnected region A1 ∪ A2 , but that
+no nontrivial logical operator acting on the central pentagon is supported on either
+one of the connected components A1 , A2 . In a stabilizer code, a logical Pauli operator
+supported on A1 ∪ A2 is a tensor product O = OA1 ⊗ OA2 of Pauli operators supported
+on A1 and A2 separately. In order to preserve the code space, this logical Pauli operator
+must commute with all of the code’s stabilizer generators. But if the two components
+A1 and A2 are distantly separated and the stabilizer generators are geometrically local,
+then no stabilizer generator has nontrivial support on both A1 and A2 . Any stabilizer
+generator with no support on A2 trivially commutes with OA2 , and if it commutes with
+O then it must commute with OA1 as well. Likewise, a stabilizer generator with no
+support on A1 must commute with OA2 if it commutes with O. Therefore OA1 and OA2
+are logical operators, and at least one is nontrivial if their product is, contradicting the
+hypothesis that no nontrivial logical operator is supported on either connected com-
+ponent of A. The conclusion is that the stabilizer generators cannot be geometrically
+local.
+     The above argument applies even to higher-dimensional holographic stabilizer codes.
+In the case were the boundary is one dimensional, we may simply appeal to a known
+   6
+    The word “gauge” is sometimes used in quantum information theory in a way that is non-standard
+from the point of view of quantum field theorists. In quantum field theory, states that are not gauge-
+invariant have no physical interpretation, and are not really part of the Hilbert space of the theory;
+they appear only as a mathematical convenience. This is what the authors of [44] meant by gauge
+constraints, and it is what we mean here.
+
+
+
+
+                                               – 37 –
+result in quantum coding theory, that a stabilizer code in one dimension with geometri-
+cally local generators has constant distance [45, 46]. Therefore, a one-dimensional code
+with a local stabilizer cannot have a positive erasure threshold.
+
+
+6    Black holes and holography
+In holographic codes, bulk operators are reconstructed only on a subspace of the bound-
+ary Hilbert space. This may seem troubling, since the holographic correspondence is
+supposed to assign a bulk interpretation to all possible states on the boundary. A
+resolution of this confusion was proposed in [1] — a particular bulk operator might not
+always be reconstructable because it lies deep inside a black hole for most boundary
+states.7 In fact we can see this directly in our models if we incorporate black holes in
+a manner that we now describe.
+     To illustrate the idea, consider the pentagon code, but with the central tensor
+removed. The central tensor’s one free bulk index has been replaced by five bulk
+indices, those which had previously been contracted with legs of the missing pentagon;
+the tensor network now provides an isometry mapping these five indices, together with
+the bulk legs on the remaining pentagons, to the boundary. Thus the code subspace
+of the boundary Hilbert space is larger than for the pure pentagon code. We interpret
+this enlarged code space as describing configurations of the bulk with a black hole in
+the center, whose microstate is determined by the input to the new bulk legs. The
+entropy of the black hole is the logarithm of the dimension of the Hilbert space of black
+hole microstates, or
+                                                   
+                               SBH = log2 25 − 2 ≈ 4.9,                             (6.1)
+since only four of the bulk spins are new and we shouldn’t count states that were part
+of the original pentagon code subspace. We depict this construction in figure 18a.
+     We can construct larger black holes by removing more central layers of the network;
+it is clear that their entropy scales with their horizon area, as predicted by Bekenstein
+and Hawking [49, 50]. As the black hole grows, the number of bulk legs outside the
+black hole decreases, so we can reconstruct fewer and fewer bulk local operators. Even-
+tually the black hole eats up the entire network, and our isometry becomes trivial (and
+unitary). Thus our model really does assign a bulk interpretations to all boundary
+states, as demanded by AdS/CFT — most boundary states correspond to large black
+holes in the bulk.
+  7
+    We are currently agnostic about the reconstruction of bulk operators just inside the horizon, which
+must be needed in some form to describe the experience of an infalling observer. This is a topic of
+much recent controversy [47, 48], but we will not take sides here.
+
+
+
+
+                                               – 38 –
+      (a)                                  (b)
+
+
+                                                 A
+                       horizon
+
+
+                      black hole                                        wormhole
+                                                 B
+
+
+
+                (a) Black hole                           (b) Wormhole
+
+Figure 18. A black hole in a holographic code, and the corresponding wormhole geometry.
+
+
+    It is amusing to note that we can also describe configurations corresponding to
+the two-sided wormhole of [2]; we just prepare two networks with central black holes
+of equal size, and maximally entangle the bulk legs at their horizons, as shown in
+figure 18b. It would be interesting to make contact with recent speculations about how
+the length of the wormhole relates to the complexity of the tensor network describing
+the state [51–53], although for that purpose we would probably need to incorporate
+dynamics into our model.
+
+
+7   Open problems and outlook
+A remarkable convergence of quantum information science and quantum gravity has
+accelerated recently, propelled in particular by a vision of quantum entanglement as the
+foundation of emergent geometry. We expect this interface area to continue to grow
+in importance, as practitioners in both communities struggle to develop a common
+language and toolset. This paper was spurred by the connection between AdS/CFT
+and quantum error correction proposed in [1]. We have strived to make this connection
+more concrete and accessible by formulating toy models which capture the key ideas,
+and we hope our account will equip a broader community of scientists to contribute to
+further progress. Indeed, much remains to be done.
+    First of all, the entanglement structure of holographic codes is not yet completely
+understood. We would like a more precise characterization of the violations of the
+Ryu-Takayanagi formula which can occur, and of the relationship between bulk residual
+regions and the multipartite entanglement of the boundary state. How is the greedy
+
+
+
+
+                                        – 39 –
+entanglement wedge different from the geometric entanglement wedge, and to what
+extent does the greedy entanglement wedge reach beyond the causal wedge?
+     We have not yet discussed the correlation functions of boundary observables in
+holographic codes because we do not have much to say. In a stabilizer state |ψi, where
+P and Q are Pauli operators, the expectation value hψ|P Q|ψi is either zero (if P Q
+anticommutes with an element of the stabilizer) or a phase (if P Q commutes with the
+stabilizer); the same conclusion applies to a stabilizer code unless P Q is a nontriv-
+ial logical operator preserving the code subspace. In contrast, two-point correlations
+in a CFT decay algebraically with distance; how might we recover this behavior in
+holographic codes? Perhaps algebraic decay is recovered for non-stabilizer holographic
+states, by defining suitable coarse-grained observables, or by injecting an encoded state
+such that bulk correlation functions decay exponentially as in Ref. [28]. Or we might
+replace perfect tensors by tensors which are nearly perfect.
+     The behavior of two-point correlators highlights one way our toy models differ from
+full-blown AdS/CFT, but there are other ways as well; for one, there is no obvious
+analog of diffeomorphism invariance in a lattice model. What features in our lattice
+model correspond to the 1/N corrections in the continuum theory? In AdS/CFT the
+AdS radius is large compared to the Planck scale when the bulk theory is weakly
+coupled, yet in the pentagon model for example the curvature scale is comparable to
+the lattice cutoff. To approximate flatter bulk geometries we should study more general
+tessellations, including higher dimensional ones. A particularly serious drawback of our
+toy models so far is that we have not introduced any bulk or boundary dynamics. Can
+holographic codes illuminate dynamical processes like the formation and evaporation
+of a black hole?
+     Finally, we have emphasized that holographic states and codes provide a concrete
+realization of some aspects of AdS/CFT, but they may also be interesting for other
+reasons, for example as models of topological matter. Furthermore, holographic codes
+generalize the concatenated quantum codes that have been extensively used in discus-
+sions of fault-tolerant quantum computing [43], and might likewise be applied for the
+purpose of protecting quantum computers against noise. For this application it would
+be valuable to develop the theory of holographic codes in a variety of directions, such
+as studying tradeoffs between rate and distance, formulating efficient schemes for cor-
+recting more general errors than erasure errors, and finding ways to realize a universal
+set of logical operations acting on the code space.
+
+
+
+
+                                         – 40 –
+Acknowledgment
+We thank Ning Bao, Oliver Buerschaper, Glen Evenbly, Daniel Gottesman, Aram Har-
+row, Isaac Kim, Seth Lloyd, Nima Lashkari, Hirosi Ooguri, Grant Salton, Kristan
+Temme, Guifre Vidal and Xiaoliang Qi for useful comments and discussions. We also
+have enjoyed discussions with Ahmed Almheiri, Xi Dong, and Brian Swingle, and with
+Matthew Headrick, about their independent and upcoming related work. FP, BY,
+and JP acknowledge funding provided by the Institute for Quantum Information and
+Matter, a NSF Physics Frontiers Center with support of the Gordon and Betty Moore
+Foundation (Grants No. PHY-0803371 and PHY-1125565). BY is supported by the
+David and Ellen Lee Postdoctoral fellowship. DH is supported by the Princeton Center
+for Theoretical Science.
+
+
+A     Perfect tensor examples
+In this section we will present the 5-qubit code, the 3-qutrit code and discuss possibil-
+ities of constructing perfect tensors with a larger number of legs. The 5-qubit code is
+a qubit stabilizer code of the form introduced in section 5.7 whereas the 3-qutrit code
+can be described through a natural generalization of the stabilizer formalism to higher
+spin dimensions.
+
+A.1   5-qubit code and 6-qubit state
+The five-qubit code is a [[5, 1, 3]]2 perfect code with distance 3 encoding one logical
+qubit in five physical qubits. It is a stabilizer code with a stabilizer subgroup given by
+S = hS1 , S2 , S3 , S4 i, where
+
+                               S1 = X ⊗ Z ⊗ Z ⊗ X ⊗ I
+                               S2 = I ⊗ X ⊗ Z ⊗ Z ⊗ X
+                                                                                    (A.1)
+                               S3 = X ⊗ I ⊗ X ⊗ Z ⊗ Z
+                               S4 = Z ⊗ X ⊗ I ⊗ X ⊗ Z.
+
+Note that S1 S2 S3 S4 = Z ⊗ Z ⊗ X ⊗ I ⊗ X and hence the group is manifestly invariant
+under cyclic permutations. As is the case in the stabilizer formalism, codes are char-
+acterized by an abelian stabilizer subgroup ([Si , Sj ] = 0) and codespace is the joint +1
+eigenspace for this group, code states satisfy
+
+                              Sj |ψi = |ψi     j = 1, . . . 4.                      (A.2)
+
+
+
+
+                                         – 41 –
+In this case, there are two orthogonal codeword states.
+    Logical operators are unitary operators which preserve the codeword space, but
+may act non-trivially on it. They are given by
+
+               X =X ⊗X ⊗X ⊗X ⊗X                     Z = Z ⊗ Z ⊗ Z ⊗ Z ⊗ Z.              (A.3)
+
+One may see that both X and Z commute with all the stabilizer generators, so they
+indeed preserves the codeword space. Yet, they anti-commute with each other, so they
+characterize one logical qubit, and X and Z behave as logical Pauli-X and -Z operators
+for a logical qubit. Namely, one can denote two codeword states by |0̃i and |1̃i such that
+Z|0̃i = |0̃i, Z|1̃i = −|1̃i, X|0̃i = |1̃i, X|1̃i = |0̃i. Applications of stabilizer generators
+to logical operators do not change the action on the codeword space, so representations
+of logical operators are not unique. Then one can introduce the following equivalence
+relations among logical operators
+
+                        Z ∼ ZU        X ∼ XU          where U ∈ S                       (A.4)
+
+as equivalent logical operators act in the same way on the codeword space. In particular,
+one can conclude that on the codespace, X̄ ∼ −Z ⊗ X ⊗ Z ⊗ I ⊗ I or any cyclic
+permutation thereof by multiplying eq. A.3 by stabilizer generators in eq. A.1. In the
+five-qubit code, one can show that logical operators must act non-trivially on at least
+three physical qubits (weight 3) and the reduced density matrices on any two physical
+qubits is always maximally mixed.
+     One can convert the five-qubit code into a six-qubit perfect state. Imagine that we
+add one extra qubit to the five-qubit code such that the new qubit is entangled with a
+logical state of the five-qubit code. To be specific, we consider a six-qubit state whose
+stabilized by S 0 = hS10 , S20 , S30 , S40 , S50 , S60 i, with generators are given by
+
+                       S10 = X ⊗ Z ⊗ Z ⊗ X ⊗ I ⊗ I
+                       S20 = I ⊗ X ⊗ Z ⊗ Z ⊗ X ⊗ I
+                       S30 = X ⊗ I ⊗ X ⊗ Z ⊗ Z ⊗ I
+                                                                                        (A.5)
+                       S40 = Z ⊗ X ⊗ I ⊗ X ⊗ Z ⊗ I
+                       S50 = X ⊗ X ⊗ X ⊗ X ⊗ X ⊗ X = X ⊗ X
+                       S60 = Z ⊗ Z ⊗ Z ⊗ Z ⊗ Z ⊗ Z = Z ⊗ Z.
+
+Here we have “recycled” stabilizer generators S1 , . . . , S4 from the five-qubit code:
+
+                            Sj0 = Sj ⊗ I      for j = 1, . . . , 4.                     (A.6)
+
+
+
+
+                                           – 42 –
+We then constructed new stabilizer generators S50 and S60 from logical operators of the
+five-qubit code as follows:
+
+                               S50 = X ⊗ X         S60 = Z ⊗ Z                      (A.7)
+
+where X and Z act on five qubits. One may easily check that stabilizer generators
+commute with each other. The wavefunction is specified by
+
+                                Sj0 |ψi = |ψi      j = 1, . . . , 6,                (A.8)
+
+and the six-qubit state is given by |ψi = |0̃i ⊗ |0i + |1̃i ⊗ |1i. From the construction,
+one can see that ρA ∝ IA if |A| ≤ 3. It turns out that this conversion is generic. That
+is, one can always convert a perfect code with 2n − 1 spins into a perfect state with 2n
+spins.
+
+A.2     3 -qutrit code and 4-qutrit state
+One of the simplest examples of perfect tensors is given by the three qutrit code. This
+stabilizer code allows encoding one logical qutrit onto three physical qutrits in a way
+that it may be recovered even after erasure of any single physical qutrit. The reason
+for providing this additional example at this point is that we believe that this family of
+perfect tensors may naturally be suited to generalizations leading to a continuum type
+limit.
+     The code states for this code can be given as follows.
+                               √
+                                   3|0̃i = |000i + |111i + |222i
+                               √
+                                   3|1̃i = |012i + |120i + |201i
+                               √
+                                   3|2̃i = |021i + |102i + |210i.
+
+Correspondingly, the perfect state can be given explicitly as
+
+                          3|[[4, 0, 3]]3 i =|0000i + |1110i + |2220i
+                                         +|0121i + |1201i + |2011i
+                                         +|0212i + |1022i + |2102i.
+
+      The [[4, 0, 3]]3 state is determined by the following stabilizer group
+
+                        S = hZZZI, ZZ −1 IZ, XXXI, XX −1 IXi,                       (A.9)
+
+
+
+
+                                             – 43 –
+where we have omitted the three tensor product operator ⊗ between the qutrit Pauli
+operators
+                                                       
+               100               010                 1 0 0
+          I = 0 1 0       X = 0 0 1         Z = 0 ω 0          ω = e2iπ/3 .        (A.10)
+               001               100                 0 0 ω2
+
+From this presentation of the stabilizer group, it becomes clear that this perfect state
+corresponds to a self dual CSS code. 8 This separation of X and Z type operators,
+and treating them on similar footing may potentially allow generalization to continuum
+variable where position and momentum conjugate variables play a similar role.
+    Like any other maximally entangled stabilizer state, given a bipartition, the [[4, 0, 3]]3
+perfect state may be interpreted as a unitary gate belonging to the generalized Clifford
+group. A second reason for presenting this code is that we can provide a simple and
+explicit presentation of the corresponding Clifford circuit. In the case of the [[4, 0, 3]]3 ,
+the corresponding Clifford is composed to two controlled adder gates which are run in
+opposite directions one after the other.
+
+                       U[[4,0,3]]3 = |x1 , x2 i → |2x1 + x2 , x1 + x2 i =                (A.11)
+
+A.3    Large n
+In order to obtain perfect tensors for large n, one needs to increase v as well, with the
+                                                                                 √
+first known construction [54] having v ∝ O(n). A construction with v ∝ O( n) was
+later proposed [55].
+     While perfect tensors are essential in guaranteeing the isometric properties used in
+the analysis of holographic codes, they do require a large degree of fine tuning for their
+construction. An interesting observation is that according to canonical typicality, most
+pure states are almost maximally entangled along any balanced bi-partition [56, 57].
+Hence Haar random states may in some sense provide a good approximation to perfect
+states. This is not meant in the sense of trace distance. The observation is that random
+states will except for a measure zero subset have full rank along any bipartition. This
+allows operators to be pushed from lower dimensional side to higher dimensional side
+in a way similar to figure 2. The only difference being that in this case normalization
+is not preserved (if it was there to begin with). Furthermore, the average bipartite
+entanglement of random states is very close to maximal. For this reason, we might
+expect that they typically do not change normalization too drastically.
+  8
+    For CSS codes, the stabilizer group can be decomposed into X part and Z part. Self-dual means
+that the stabilizer subgroups for the X and the Z part have exactly the same form.
+
+
+
+
+                                             – 44 –
+B    Proof of RT for negatively curved planar graphs
+As we have presented in eq. 4.4, there is an upper bound on the amount of entanglement
+a tensor network state can have based on the minimal cut γA dividing the network into
+two tensors P and Q. In this section, we will explain how to guarantee that this
+upper bound is saturated for connected regions in a certain class of holographic states.
+Namely, we shall focus on holographic states associated to planar graphs with non-
+positive curvature.
+    We argued that proving the RT formula amounts to showing that the tensors P
+and Q can be interpreted as unitary transformations, from the minimal geodesic cut
+γA together with some subregion of A or Ac to the rest of A or Ac respectively. We will
+show that this is indeed the case by giving unitary circuit interpretations to the tensor
+networks for each of them.
+    Indeed, the following are necessary and sufficient conditions for a circuit interpre-
+tation of a network of perfect tensors:
+
+    • Covering: Each edge (contracted or uncontracted index) is assigned a direction-
+      ality.
+
+    • Flow: Each tensor has an equal number of incoming and outgoing indices.
+
+    • Acyclic: The resulting directionality has no closed cycles (no loops).
+
+The covering condition is necessary to interpret the direction in which each tensor in
+the network processes information by having well defined inputs and outputs. The flow
+condition is necessary for the interpretation of every tensor to be that of a unitary
+gate. The acyclic condition is non-local and guarantees that the order of application of
+the operations in the network is consistent, where an inconsistency may be thought of
+as the presence of closed time-like curves in the circuit picture. These conditions are
+enough to show that the interpretation is that of a unitary quantum circuit.
+    One additional condition is required in order to prove the saturation of the RT
+entanglement entropy, for a simply connected boundary region A.
+
+    • Equal time interpretation: The minimal cut γA is crossed in the same direction
+      by the directed interpretation of each link that it cuts.
+
+This condition allows viewing the geodesic as an “equal time” curve in the unitary
+circuit interpretation of the tensor network.
+    Let us first describe the construction for the circuit interpretation. The steps may
+be readily visualized in figure 19a.
+
+
+
+
+                                         – 45 –
+     In a planar graph we can associate a minimal cut γA to a path through the dual
+graph, and since we are taking A to be connected, this path will also be connected. We
+may associate two nodes in the dual lattice at the end points of a simply connected
+boundary region A, which will also be the endpoints of γA in the dual lattice. We will
+take one of these nodes to be the starting node and label it 0. We may then label all
+other nodes in the dual lattice according to the distance (number of steps/cuts) from
+the starting node. Since γA is a minimal geodesic, this labeling monotonically increases
+along the nodes it traverses.
+     We may now assign an orientation to edges (contracted indices) in the tensor net-
+work. The orientation is chosen such that, from the two adjacent nodes of the dual
+lattice, the node with higher label is always found to the right. This orientation may
+be interpreted as the direction of “flow of information” through the circuit.
+     We now argue that this orientation gives a unitary circuit interpretation for P (and
+thus for Q by exchanging A and Ac ). We emphasize that the argument rests on the
+following assumptions about the graph:
+
+   • Planar embedding: The tensor network may be laid out in a planar fashion
+     with the boundary of the network corresponding to a simple boundary on the
+     embedding.
+
+   • Perfect tensors: Tensors in the network have an even number of legs and are
+     unitary along any balanced distribution of the legs.
+
+   • Curvature: The network is expected to represent an AdS bulk and thus is
+     expected to have the discrete analogue of negative curvature. We have not tried
+     to define this idea in general, but the aspect of it we need here is that the distance
+     function between two nodes of the network has no local maxima away from the
+     boundary.
+
+     We have already used the planar embedding assumption implicitly by constructing
+the dual lattice and referring to right and left. It is however less obvious that we
+have also made a restricted use of the perfect tensor assumption. Namely, we have
+used the fact that each tensor has an even number of legs. Because of this, the dual
+lattice is bipartite. In other words, nodes may be labeled with two “colors” which
+we shall conveniently call ‘even’ and ‘odd’ such that two nodes of the same color are
+never adjacent. In particular, the parity of the distance labeling coincides with the
+“color”. Hence, two neighboring nodes can not have the same value label making the
+directionality of the tensor index between them always be well defined (i.e. satisfies
+covering condition).
+
+
+
+
+                                         – 46 –
+     To ensure the flow condition, it suffices to count the number of incoming indices
+minus the number of outgoing indices and verify that this value is zero. Due to the
+triangle inequality, and the bipartite nature, labels for neighboring nodes can only differ
+by one. Hence, the difference between the number of outgoing and incoming indices
+                                            P
+for any tensor in the network is given by 2n   j=1 (fj+1 − fj ) = 0, where fj are the labels
+associated to the 2n nodes immediately surrounding the tensor taken in cyclic order.
+     The acyclic condition is a bit more subtle since it is a non-local property. We
+will prove that the presence of a cycle in this context implies the existence of an
+interior local maximum for the labeling. Let us assume that our construction produces
+some cycle C in the tensor network. Depending on the orientation of C (clockwise or
+counterclockwise), the the node label values immediately to the interior of the loop will
+be larger or smaller than those immediately to the exteriors. In the counterclockwise
+case, we may chose a node in the interior of C with lowest possible label. The label for
+this node is smaller than those of all its neighbors, including those in the exterior of C,
+
+
+
+
+       (a) Circuit interpretation construction            (b) Bulk operator reconstruction circuit
+
+Figure 19. Here we illustrate how to construct a unitary circuit interpretation of a holo-
+graphic state which witnesses the RT entanglement for a simply connected boundary region.
+(a) The following steps for the construction are illustrated: i) Label the node located at one
+end of the boundary as 0. ii) Label all other nodes according to the distance from this node.
+iii) Direct all tensor indices such that the larger label lies to the right. (b) In the example,
+the circuit interpretation for the network has depth 12. For this reason we provide a full se-
+quential presentation of the circuit interpretation along one side of the geodesic, condensing
+the remaining 7 gates into UAc . Note that there are outputs that are produced directly by
+UA , without going through UAc as well as inputs that are fed directly to UAc without going
+through UA .
+
+
+
+
+                                                 – 47 –
+Figure 20. The first few levels of the unwrapped pentagon code. The dangling logical legs
+are not shown, and the “hollow” lines and dots are identified with the solid ones on the other
+side. The tensors in the top row have all remaining non-logical legs extended outwards and
+treated as physical qubits.
+
+
+
+which contradicts the assumption that it is defined based on a graph distance function.
+In the clockwise case, we may choose a node in the interior of C with the largest possible
+label. In this case the label for this node is larger than that of all its neighbors, including
+those outside of C. In other words, we have found an interior maximum for the distance
+function. This is in contradiction with our stand-in assumption associated to negatively
+curved surface homeomorphic to the disc, which leads us to the conclusion that our
+construction produces no loops.
+    Finally, it is straightforward to show that the geodesic γA can be provided an equal
+time interpretation in the circuit. Firstly, it completely splits the circuits in two parts.
+Secondly, the direction associated to all contracted indices crossed by γA is uniform
+since the nodes it transverses are by definition labeled in strict ascending order.
+
+
+C     Counting tensors in the pentagon code
+C.1    Counting tensors
+In this appendix we compute some basic properties of the pentagon code that we quoted
+in the text. In these computations it is useful to “unwrap” the code, as in figure 20.
+The central tensor is placed at the bottom, which we will refer to as the zeroth layer, the
+first five tensors as the first layer, and so on, with the layer number n being equivalent
+to the graph distance to the central tensor.
+     At each layer, it is clear that there are two kinds of tensors: those with one leg
+connected to the previous layer and those with two. We will denote the numbers of
+these at layer n as fn and gn , so for example f1 = 5 and g1 = 0. Moreover if we group
+these together as a two component vector, we have the recursive equation
+                                           
+                                   fn+1     21 fn
+                                          =       .                                      (C.1)
+                                    gn+1    11 gn
+
+
+
+
+                                            – 48 –
+Applying this equation repeatedly we can compute the number of tensors of either type
+at any n via
+                                 n−1  
+                                fn       21        5
+                                     =               .                          (C.2)
+                                gn       11        0
+                                                         
+                                                         21
+This is easily computed by diagonalizing the matrix M ≡       , at large n we have
+                                                         11
+                         √    √ !n "                           √ !n !#
+                      5− 5 3+ 5                             3− 5
+                 fn =                1+O                       √
+                        2    2                              3+ 5
+                       √       √ !n "                           √ !n !#
+                      3 5−5 3+ 5                             3− 5
+                 gn =                 1+O                       √       .          (C.3)
+                         2    2                              3+ 5
+
+If we truncate at layer n, the total number of boundary qubits is
+
+                               Nboundary = 4f (n) + 3f (n)                         (C.4)
+
+and the total number of bulk tensors is
+                                             n
+                                             X
+                               Nbulk = 1 +         (fk + gk ).                     (C.5)
+                                             k=1
+
+Asymptotically we have
+                                   Nbulk    1
+                                          → √ ≈ .447,                              (C.6)
+                                Nboundary    5
+which reproduces equation (3.1).
+
+C.2   Connected reconstruction
+We’ll now compute the size of connected boundary region that we need to reconstruct
+operators on the logical leg of the central (n = 0) tensor. This is complicated by the
+fact that our network is not translationally invariant; whether or not we can reconstruct
+the center depends not only on the size of the boundary region we have access to but
+also where it is. The “best case” situation is illustrated in figure 21.
+     We can compute the number of physical qubits in the best-case region by growing
+the tree it bounds: we start with f1 = 3 and g1 = 0, and then proceed as before by
+applying M repeatedly, being careful to remove two tensors at the ends at each layer.
+
+
+
+
+                                           – 49 –
+Figure 21. The best-case reconstruction of the center; we need to use only three “branches”
+of the tree, and in the outer branches we can choose to push “inwards” every time.
+
+
+
+
+Figure 22. The worst-case reconstruction of the center; we are just barely not able to use
+the second branch, so we need to use the third, fourth, and fifth.
+
+
+
+This tree thus obeys the modifed recursion relation
+                                       
+                             fn+1     21 fn   0
+                                    =       −   ,                                    (C.7)
+                              gn+1    11 gn   1
+
+which has solution
+                         n−1   Xn−2     k  
+                       fn   21    3        21      0
+                          =         −                 .                              (C.8)
+                       gn   11    0   k=0
+                                           1 1     1
+
+After cutting off the tree at level n the number of physical qubits in the best-case region
+will be Nbest = 4fn + 3gn − 3, and by diagonalizing M we see that asymptotically
+                                                √
+                                  Nbest      3+ 5
+                                           →         ≈ .524.                          (C.9)
+                                Nboundary      10
+
+    We can also study the “worst case” location of the region, which is shown in figure
+22. To compute its size in the large n limit we only need to replace the initial condition
+f1 = 3, g1 = 0 by f1 = 4, g1 = 0, and we find
+                                                √
+                                Nworst      5+ 5
+                                         →          ≈ .724,                         (C.10)
+                              Nboundary       10
+
+which reproduces (5.1).
+    We can connect this worst-case result to the “bad” sets of points from figure 16b
+that prevent a general threshold for this code: these points are shown in figure 23.
+
+
+
+                                          – 50 –
+Figure 23. Locations of the “bad” points from figure 16b. If the worst-case region were
+just a little smaller on the right it wouldn’t contain any of them so, it wouldn’t be able to
+reconstruct the center.
+
+
+    Similar calculations are possible in the pentagon-hexagon code we introduced to
+restore the threshold, we find
+                                          ( √
+                                           3 6−4
+                            Nbulk                ≈ .088   n odd
+                                      →     √38                    ,                  (C.11)
+                          Nboundary        3 6+4
+                                                 ≈ .299   n even
+                                             38
+
+
+with the two cases being whether the last layer is taken to be pentagons (n even) or
+hexagons (n odd). The rate is thus relatively small compared to (C.6), which suggests
+that this code should be better protected against erasures, as indeed we find. The
+rate when n is odd is smaller since it throws in an extra level of hexagons without any
+new logical legs. We can also compute the sizes of the best and worst case connected
+reconstructions of the center, we find
+                                              √
+                                Nbest     6+ 6
+                                      →           ≈ .422
+                                Ntot        20
+                                               √
+                               Nworst     10 + 6
+                                      →            ≈ .622.                       (C.12)
+                                Ntot         20
+
+These are smaller than the pentagon results, as expected since the code is denser, and
+are closer to the AdS/CFT value of 1/2.
+
+
+D     Estimating greedy erasure thresholds
+Noise models which are independent and identically distributed (i.i.d.) are usually
+analytically tractable while providing reasonable predictive capability based on the few
+parameters defining the individual noise model. In the case of erasure noise, this is
+particularly simple since the only parameter is , the erasure probability per qubit. In
+addition to randomized bench-marking it is sometimes instructive to provide analytic
+bounds on how small the error/erasure probability needs to be in order to guarantee
+a recovery probability for the encoded data which approaches unit. This can give us
+information about the scaling of the logical error probability with other parameters of
+
+
+
+                                            – 51 –
+the code. A complementary approach consists of providing precise numerical estimates
+of the threshold value pc based on numerical simulations.
+
+D.1    Analytic bounds
+In this section, we derive such an analytic upper bound on the probability of logi-
+cal error. The goal of the section is to provide an example of how such a bound is
+derived illustrating a proof technique and obtaining a functional form for the logical
+error probability. We do not strive to derive a tight bound or address a particularly
+relevant holographic code scenario. In fact, the recovery procedure we model is strictly
+weaker than the one provided by the greedy algorithm which is itself weaker than an
+optimal erasure recovery algorithm. The model we analyze is essentially identical to
+the holographic hexagon state except that instead of starting from a single [[6, 0, 4]]
+tensor at the center, we start with a single [[5, 1, 3]] and build up n layers of [[6, 0, 4]]
+tensors from there. We shall call this the single qubit hexagon code and its analysis is
+essentially identical to that of a holographic hexagon state.
+     For this code we obtain the following conclusion.
+
+Theorem 7. Consider a single qubit hexagon code with n layers and an i.i.d. erasure
+probability for physical qubit given by  ≤ ? . Then it is possible to recover the central
+logical qubit with probability p greater than
+                                                    λn
+                                    p ≥ 1 − ?              .                          (D.1)
+                                                  ?
+                             √
+Here, ? = 1/12 and λ = 1+2 5 .
+
+     This is the same functional form associated to concatenated error correcting codes.
+Namely, the loss probability for the logical data decays doubly exponentially with the
+“depth” n of the code or exponentially with the number of physical spins. We would
+expect to get a result of the same form for any such code with an erasure threshold. The
+only expected difference being the value of the threshold ? and the scaling dimension
+λ. We will now prove the theorem as an illustration to obtaining these values. Since
+we will use a simplified hierarchical recovery procedure, the proof technique will be
+essentially equivalent to that of concatenated codes. An interesting open problem is
+to provide an analytic threshold analysis fully respecting the greedy algorithm which
+corresponds to the problem of bootstrap percolation [58]. We have numerically analyzed
+this problem or the qubit hexagon code and found ? ≈ 0.48(2) whereas independent
+analytic arguments particular to this model predict an erasure threshold of ? = 1/2
+for an optimal recovery protocol.
+
+
+
+
+                                           – 52 –
+Proof. We will consider a hierarchical recovery model which is even simpler and can
+not perform better than the greedy algorithm. Namely, we may provide a coupling
+[59] between the probability distributions over recovered tensors such that the set of
+recovered tensors by the greedy algorithm always includes the set of tensors recovered
+by the hierarchical recovery. The reason for this is that the hierarchical algorithm can
+be interpreted as n iterations of the greedy algorithm where tensors a distance j from
+the boundary may be incorporated only during iteration j. The difference with the
+greedy algorithm, is that once the greedy algorithm recovers a tensor at distance j + 1
+from the boundary, it allows itself to reinspect its neighboring tensors at distance j
+and incorporate those. This may in general lead to highly non-trivial sequences for
+incorporating tensors in the bulk. The sequential nature of the hierarchical recovery
+model allows establishing a clear dependence between the tensors.
+     In the hierarchical recovery model, each level consists of a ring of tensors, which
+are only connected with the next level and the previous. In order to adequately model
+the errors at each level, we will need to inductively provide bounds for different error
+configurations. Assuming we are dealing with the hexagon lattice with four hexagons
+adjacent per vertex, it will be sufficient to deal with two types of bounds, one for single
+errors (single missing tensor) and the second for pairs of neighboring missing tensors.
+We will call these bounds s and d for single and double and we will use a subindex j
+to label the layer to which these bounds apply.
+     Initially, we have s0 =  and d0 = 2 which corresponds to assuming an i.i.d. erasure
+model with each physical index being erased with probability . The core of the proof
+is simply to recursively bound sj+1 and dj+1 in terms of sj and dj .
+     A non-trivial observation, is that we do not need to consider erasure correlations
+beyond nearest neighbors. Due to the hierarchical structure which is contracting, cor-
+related erasures beyond nearest neighbors of a chain can not exist (see figure 24). This
+is an artifact of having chosen a privileged “re-normalization” direction and is an effect
+analogous to having all scaling operators be three body in MERA. In fact, long range
+correlations between tensors do arise in the recovery model dictated by the greedy al-
+gorithm. Here e indicates where a reconstruction index is missing or erased whereas ?
+indicates that the index could be missing or available.
+     Considering all error configuration at layer j which could lead to errors at layer
+j + 1, we may bound
+
+                                 sj+1 ≤ 3dj + 3s2j                                   (D.2)
+                                 dj+1 ≤ 3sj (3dn + 3s2j ).                           (D.3)
+
+Here, we have aimed for simplicity instead of tightness of the bound. Let us give a
+
+
+
+                                          – 53 –
+           e e                         e e                            e
+         ? e e ?                     ? e e ?                  ? e e ?
+                 e                            e                       e
+Figure 24. We illustrate how correlated erasures can not grow beyond nearest neighbor in
+the hierarchical recovery model.
+
+
+brief explanation for the RHS of equations D.2 and D.3.
+    Since each hexagon has at least 4 legs connected to lower layers, two of its neighbor-
+ing tensors (within four legs) need to be missing such that tensor fails to be recovered
+from the lower layer. For this to happen, there must either be two neighboring indices
+missing from the lower chain or two non-neighboring indices missing. There are three
+ways for this to happen illustrated by the following minimal error strings
+
+                                   {ee ? ?, ?ee?, ? ? ee,                           (D.4)
+                                  e ? e?, e ? ?e, ?e ? e}.                          (D.5)
+
+These scenarios cover all possible situations leading to the failure of hierarchical re-
+construction (some of the, more unlikely ones such as eeee are being covered multiple
+times).
+     Similarly, we may account for all possible scenarios that lead to a double erasure ee
+at level j +1 Two consecutive tensors at chain j +1 always share exactly one descendant
+which may provide a source of correlated errors. Furthermore, at least one of the two
+tensors at layer j + 1 will have a total of five descendants. As an overestimate of dj we
+may disregard the value of the joint descendant. Regardless, we know that there should
+be two erasures in the remaining four descendants of the tensor with five descendants
+and at least one erasure among the outermost three descendants of the other tensor
+(see figure 25).
+     Assuming sj ≥ dj ≥ s2j which must hold for such a model, we may extract the
+dominant (smallest) exponent for  associated to the sj and dj bounds given by the
+recursion relation
+                                                              
+                            deg(sn+1 , )       01     deg(sn , )
+                                           =                                        (D.6)
+                            deg(dn+1 , )       11     deg(dn , )
+
+Here, by deg(p(x), x) denotes the lowest degree exponent of x present in the polynomial
+
+
+
+
+                                          – 54 –
+                                             e          e
+                               |? {z
+                                  ? ?} ? |? ?{z? ?}
+                                  1 erasure.                  2 erasures.
+
+Figure 25. We illustrate the prerequisite for two erasures to be propagated one layer higher.
+The most fragile case corresponds to one of the sites having only four descendants since at least
+one of them needs to have five. Irrespective of the availability of a shared descendant there
+is a minimum number of erasures that need to occur in order to propagate two contiguous
+erasures.
+                                                                             √
+p(x). The recursion matrix has the eigenvalues φ± = 1±2 5 and the φ+ eigenvector being
+(1, φ+ ). This means that the  exponent for sn increases exponentially as φn+ .
+     We may now calculate the fix-point solution of inequalities D.2 and D.3, taking
+them as equations and find (s? , d? ) = (1/12, 1/48). Assume that s0 ≤ rs? for some
+                                                                                   j
+r ≤ 1 and consequently, d0 = s20 ≤ rφ+ d? . We may prove inductively that sj ≤ rφ+ s?
+             j+1
+and dj ≤ rφ+ d? . In order to do so, one need only verify
+                               j+1               j                                        j+1
+               sj+1 ≤ 3d? rφ         + 3s? r2φ                                    ≤ r φ+ s ?           (D.7)
+                             φj          φj+1              2φj                          φj+2
+               dj+1 ≤ 3(s? r )3(d? r             + 3s? r         )                ≤r     +     d? .    (D.8)
+                                                                                  j+1
+Where we may divide by an appropriate power of r such as rφ+                            and obtain
+                                                                     n−2
+                                             3d? + 3s? rφ                  ≤ s?                        (D.9)
+                                                           √
+                                                         3− 5 n
+                                                             φ
+                                  3(s? )3(d? + 3s? r       2           ) ≤ d? .                       (D.10)
+
+This allows us to reach the conclusion of the theorem with ? = s? and λ = φ+ .
+
+     A bounding procedure similar to this one may also be applied to the code involving
+alternating layers of pentagons and hexagons as for many other holographic codes with
+certain regularity structure. We have only restricted to consider the hexagon lattice
+to exemplify the kind of reasoning involved. In the case of the holographic pentagon
+code, there is no way to make such an argument work and there is a good reason for
+this. Namely there are constant weight 4 logical operators affecting the central qubit
+in the holographic pentagon code. The way this becomes manifest when attempting a
+similar proof approach is by obtaining a scaling dimension λ = 1.
+
+
+
+
+                                                     – 55 –
+D.2   Numerical evaluation
+We may numerically evaluate the probability for the greedy algorithm to absorb the
+central tensor given a boundary region constructed by erasing a random set of physical
+indices according to an i.i.d. distribution. This gives us a conservative estimate of how
+well protected the central qubit is from i.i.d. erasure since an optimal recovery method
+can only do better. We perform such estimates for different values of the lattice radius
+in order to identify the value pc associated to a correctability phase transition. For
+the regular pentagon lattice tensor network we find that there is no indication of the
+central qubit being well protected.
+     Given that the pentagon code does not have a threshold, we introduce the pen-
+tagon/hexagon code as a similar example that does have an erasure threshold in this
+context. It is the regular lattice composed of pentagons and hexagons, with two pen-
+tagons and two hexagons adjacent at each vertex. Such a lattice might employ [[6, 0, 4]]2
+and [[5, 1, 3]]2 tensors. Intuitively, we expect that by diluting the number of logical
+legs, we may obtain better protection for the encoded logical qubits. Indeed, for such
+a lattice, we find that there is a threshold value p∗ such that if the i.i.d. probability
+of boundary erasure is smaller than p∗ , then the central logical qubit may be recon-
+structed with a probability which approaches one as the cutoff radius of the lattice is
+increased. Such a statement can be proven using techniques very similar to the thresh-
+old proof of section D.1. We have numerically tested the performance of the greedy
+recovery algorithm for recovering the central qubit in three possible lattices (see figure
+26) supporting our claim that a lower density of logical legs leads to a higher tolerable
+erasure threshold.
+
+
+E     Reconstructing beyond the greedy algorithm
+The greedy algorithm provides an explicit prescription for representing bulk logical
+operators on a specified region of the boundary. A key virtue is that the region obtained
+does not depend in any way on the specific perfect tensors used to construct the network.
+In this sense, it is analogous to the AdS/Rindler reconstruction, which is explicit and
+applicable to a large family of models satisfying a holographic correspondence.
+
+E.1   Reconstruction from symmetry guarantees
+The greedy entanglement wedge falls short of the expectations for a geometric entan-
+glement wedge in certain ways. For instance, in the scenario where the minimal surface
+separating A from Ac is well defined, we expect E[A] ∪ E[Ac ] to contain the full lattice.
+
+
+
+
+                                         – 56 –
+                                                                                                                                                1                                                                                         1
+
+
+
+
+                                                                                                          Central qubit recovery probability                                                        Central qubit recovery probability
+                                     1                                                                                                         0.9                                                                                       0.9
+
+
+
+
+Central qubit recovery probability
+                                 0.9                                                                                                                                                                                                     0.8
+                                                                                                                                               0.8
+                                 0.8                                                                                                                                                                                                     0.7
+                                                                                                                                               0.7
+                                 0.7
+                                                                                                                                               0.6                                                                                       0.6
+                                 0.6
+                                                                                                                                               0.5                                                                                       0.5
+                                 0.5
+                                                                                                                                               0.4       n=1                                                                             0.4        n=1
+                                 0.4
+                                                                                                                                               0.3       n=3                                                                             0.3        n=3
+                                 0.3                                                                                                                     n=5                                                                                        n=5
+                                             n=1
+                                                                                                                                               0.2                                                                                       0.2
+                                 0.2         n=3                                                                                                         n=7                                                                                        n=7
+                                             n=5                                                                                                                                                                                         0.1
+                                 0.1         n=7
+                                                                                                                                               0.1       n=9                                                                                        n=9
+                                     0
+                                             n=9                                                                                                0                                                                                         0
+                                         0    0.1   0.2   0.3    0.4   0.5   0.6   0.7   0.8   0.9   1                                               0     0.2      0.4      0.6       0.8   1                                                 0   0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9   1
+                                                                Erasure probability                                                                              Erasure probability                                                                        Erasure probability
+
+    (a) Holographic pentagon code                                                                                                              (b) Pentagon/hexagon code                                            (c) Single qubit hexagon code
+
+Figure 26. Here we present Monte Carlo simulation for the probability of the central tensor
+being incorporated by the greedy algorithm applied to a holographic code. The greedy algo-
+rithm is applied to a region A constructed by randomly taking each boundary physical index
+to belong to A with probability p. We plot the central tensor containment probability in the
+greedy wedge according to the lattice radius (i.e. the distance from the central tensor at which
+the a priory infinite network is truncated). (a) We consider the holographic pentagon code
+of figure 4b. Numerical results remains consistent with the existence of five possible weight 4
+representations of the string-like logical operators acting on the central qubit. (b) We focus
+on the pentagon/hexagon code of figure 17a which has an erasure threshold in terms of the
+recoverabilty. We observe some oscillatory behavior due to the fact that tensor ‘layers’ added
+alternate between pentagons and hexagons. (c) We present numerical data for the greedy
+algorithm applied to the 1 qubit hexagon code of figure 17b which corresponds to a tensor
+network identical to the holographic hexagon state except for having a single pentagon at its
+center.
+
+Our first example of reconstruction beyond the greedy wedge involves a family of holo-
+graphic stabilizer codes with a single logical qudit. In this case, perfect reconstruction
+on either A or its complement Ac can be guaranteed by exploiting a symmetry.
+     Particularly, the three qutrit stabilizer code of section A.2 is of CSS [60] type, a
+property which we can show is inherited by any derived holographic code by following
+the arguments of section 5.7. Furthermore, the qutrit Hadamard operator H is a
+symmetry of the qutrit code meaning that applying H to all tensor indices preserves
+the tensor. The Hadamard operator is symmetric, unitary but generally not Hermitian
+9
+  . and is specified by its action on the generators X and Z
+
+                                                                                                         HXH † = Z †                                                        HZH † = X.                                                                                           (E.1)
+
+                                             The local symmetry of the tensors gives rise to a global symmetry on the full
+                                                                                                                                                                                             P
+                                     9
+                                         For general qudits, the Hadamard gate is given by H = √1d                                                                                               i,j ω
+                                                                                                                                                                                                                                 ij
+                                                                                                                                                                                                                                           |iihj|, where ω = e2πi/d .
+
+
+
+
+                                                                                                                                                                 – 57 –
+                  (a) From local to global symme-        (b) Empty greedy wedge
+                  try
+
+Figure 27. In (a) we represent a bipartite network composed of tensors with a symmetry
+H and H ∗ . We alternate applying H (solid squares) and H ∗ (hollow squares) to all legs of
+tensors in the bipartite tensor network. In (b) we represent the same tensor network where a
+portion A of the boundary was marked with hollow dots and its complement Ac was marked
+with full dots. The regions A and Ac have been chosen such that the greedy algorithm does
+not progress on either. The greedy algorithm will recover the full network when initiated
+from the full boundary showing that the network indeed corresponds to a holographic code.
+
+
+tensor network10 . To see this, we multiply each tensor leg either by H or its inverse
+H † = H ∗ . Since each individual tensor is invariant under such an action, the full
+tensor network should be invariant. Furthermore, if we assume that the tensor network
+graph is bipartite we may alternate multiplication by H and H † such that these may
+locally cancel on all contracted indices, as depicted in figure 27a. We are then left
+with a symmetry acting exclusively on the free bulk and boundary legs of the tensor
+network. This symmetry guarantees a form of duality between X-type logical operator
+and Z-type logical operators where dual operators have exactly the same support.
+    Theorem 1 in of Ref. [64] precisely relates the number of independent logical
+operators supported on complementary subsets of qudits. Their result applies to general
+subsystem codes and includes a sharper claim for CSS codes [65]. In particular, for any
+subset A of qudits, one may define `(A) to be the number of independent Pauli logical
+operators supported exclusively on A.
+
+Lemma 1. Given a stabilizer code with k logical qubits, `(A)+`(Ac ) = 2k. Furthermore
+if the code is of CSS type, we have `Z (A) + `X (Ac ) = k = `Z (Ac ) + `X (A), where `X
+and `Z denote the number of X-type and Z-type generators respectively.
+  10
+    Here we limit ourselves to provide the simplest example which conveys the general spirit of deriving
+global symmetries from local tensor symmetries [61]. The state of the art for this line of reasoning in
+tensor networks can be found in [62, 63].
+
+
+
+
+                                                – 58 –
+    This is called the cleaning lemma for stabilizer codes and applies to prime dimension
+qudits11 .
+    Assume that we are dealing with a CSS code with a single logical qudit, k = 1
+and a Hadamard type symmetry which guarantees `X (A) = `Z (A). From this we may
+exclude the case `(A) = `(Ac ) = 1 and conclude that the full logical algebra may
+be reconstructed either on A or on Ac . This conclusion is analogous to E[A] ∪ E[Ac ]
+covering the full bulk, which is expected from the usual geometric entanglement wedge.
+In contrast, the greedy algorithm does not provide such a guarantee for the greedy
+entanglement wedge. Figure 27b illustrates a partition of the boundary of a tensor
+network into two regions such that the greedy algorithm does not make progress in
+either region. The same tensor network may be associated to a CSS type stabilizer
+code with self-duality properties where all the previously exposed arguments apply.
+    The same cleaning lemma may be used to guarantee that when |Ac | = 4 qubits are
+deleted, at least 2k − 8 independent logical Pauli operators can be reconstructed on A,
+where k is the number of logical qubits in the code12 . In the context of the example of
+figure 16b, even though the greedy entanglement wedge of A lacks a large number of
+tensors, the number of missing generators to reconstructed the full algebra is small.
+
+E.2    Approximate reconstruction for typical tensors
+Consider a connected residual region R obtained after removing the greedy entangle-
+ment wedge associated to boundary region A and the one associated to its complement
+Ac . A “typical” residual region will be composed of randomly chosen perfect tensors
+without any specific symmetry imposed. In this case, we may average the entanglement
+entropy associated to boundaries γA? and γA? c . We expect that for |γA? | ≥ |γA? c | + nR the
+map from the bulk logical indices and the smaller boundary onto the larger one will
+generically be full rank. Furthermore, we conjecture that for random perfect tensors,
+the average value of SA will approach |γA? c | + nR exponentially with |γA? | − |γA? c | − nR .
+We expect an argument analogous to that of Ref. [66] to allow us to reach such a
+conclusion. In turn this would imply that the logical operators in the residual region
+can be reconstructed on γA? (and in turn on A) to a good approximation.
+
+
+References
+ [1] A. Almheiri, X. Dong, and D. Harlow, “Bulk locality and quantum error correction in
+     ads/cft.” arXiv:1411.7041.
+  11
+    Let us clarify that the operators representable on A and on Ac need not be mutually independent.
+  12
+    In fact, a slightly more careful analysis allows us to conclude that at least 2k − 2 independent
+generators may be represented on A.
+
+
+
+
+                                              – 59 –
+ [2] J. Maldacena, Eternal black holes in anti-de sitter, JHEP 04 (2003) 021.
+ [3] S. Ryu and T. Takayanagi, Holographic derivation of entanglement entropy from the
+     anti–de sitter space/conformal field theory correspondence, Phys. Rev. Lett. 96 (2006)
+     181602.
+ [4] S. Ryu and T. Takayanagi, Aspects of holographic entanglement entropy, JHEP 08
+     (2006) 045.
+ [5] V. E. Hubeny, M. Rangamani, and T. Takayanagi, A covariant holographic
+     entanglement entropy proposal, JHEP 07 (2007) 062.
+ [6] M. Headrick and T. Takayanagi, Holographic proof of the strong subadditivity of
+     entanglement entropy, Phys. Rev. D 76 (2007) 106013.
+ [7] M. V. Raamsdonk, “Comments on quantum gravity and entanglement.”
+     arXiv:0907.2939.
+ [8] M. Van Raamsdonk, Building up spacetime with quantum entanglement, Gen. Rel.
+     Grav. 42 (2010) 2323–2329.
+ [9] P. Hayden, M. Headrick, and A. Maloney, Holographic mutual information is
+     monogamous, Phys. Rev. D 87 (2013) 046003.
+[10] A. Lewkowycz and J. Maldacena, Generalized gravitational entropy, JHEP 08 (2013)
+     090.
+[11] J. Maldacena and L. Susskind, Cool horizons for entangled black holes, Fortsch. Phys.
+     61 (2013) 781–811.
+[12] N. Lashkari, M. McDermott, and M. Van Raamsdonk, Gravitational dynamics from
+     entanglement “thermodynamics”, JHEP 4 (2014) 195.
+[13] G. Vidal, Efficient classical simulation of slightly entangled quantum computations,
+     Phys. Rev. Lett. 91 (2003) 147902.
+[14] F. Verstraete and J. I. Cirac, “Renormalization algorithms for quantum-many body
+     systems in two and higher dimensions.” cond-mat/0407066.
+[15] F. Verstraete, J. Cirac, and V. Murg, Matrix product states, projected entangled pair
+     states, and variational renormalization group methods for quantum spin systems, Adv.
+     Phys. 57 (2008) 143.
+[16] G. Vidal, Entanglement renormalization, Phys. Rev. Lett. 99 (2007) 220405.
+[17] G. Vidal, Class of quantum many-body states that can be efficiently simulated, Phys.
+     Rev. Lett. 101 (2008) 110501.
+[18] G. Evenbly and G. Vidal, Entanglement renormalization in two spatial dimensions,
+     Phys. Rev. Lett. 102 (2009) 180406.
+
+
+
+
+                                           – 60 –
+[19] G. Evenbly and G. Vidal, Algorithms for entanglement renormalization, Phys. Rev. B
+     79 (2009) 144108.
+[20] G. Evenbly and G. Vidal, Frustrated antiferromagnets with entanglement
+     renormalization: Ground state of the spin-1/2 heisenberg model on a kagome lattice,
+     Phys. Rev. Lett. 104 (2010) 187203.
+[21] L. Susskind and E. Witten, The Holographic bound in anti-de Sitter space,
+     hep-th/9805114.
+[22] B. Swingle, Entanglement renormalization and holography, Phys. Rev. D 86 (2012)
+     065007.
+[23] B. Swingle, “Constructing holographic spacetimes using entanglement
+     renormalization.” arXiv:1209.3304.
+[24] B. Yoshida, Information storage capacity of discrete spin systems, Ann. Phys. 338
+     (2013) 134–166.
+[25] J. I. Latorre and G. Sierra, Holographic codes, arxiv:1502.06618.
+[26] A. J. Ferris and D. Poulin, Tensor networks and quantum error correction, Phys. Rev.
+     Lett. 113 (2014) 030501.
+[27] D. Bacon, S. T. Flammia, A. W. Harrow, and J. Shi, “Sparse quantum codes from
+     quantum circuits.” arXiv:1411.3334.
+[28] X.-L. Qi, “Exact holographic mapping and emergent space-time geometry.”
+     arXiv:1309.6282.
+[29] W. Helwig, W. Cui, J. I. Latorre, A. Riera, and H.-K. Lo, Absolute maximal
+     entanglement and quantum secret sharing, Phys. Rev. A 86 (2012) 052335.
+[30] W. Helwig, Absolutely Maximally Entangled Qudit Graph States, arXiv:1306.2879.
+[31] R. Cleve, D. Gottesman, and H.-K. Lo, How to Share a Quantum Secret, Phys. Rev.
+     Lett. 83 (1999) 648–651.
+[32] J. Weeks, KaleidoTile, . A computer program for creating spherical, Euclidean and
+     hyperbolic tilings.
+[33] C. H. Papadimitriou and K. Steiglitz, Combinatorial Optimization: Algorithms and
+     Complexity. Courier Corporation, 1998.
+[34] A. Hamilton, D. Kabat, G. Lifschytz, and D. Lowe, Holographic representation of local
+     bulk operators, Phys. Rev. D 74 (2006) 066009.
+[35] I. A. Morrison, Boundary-to-bulk maps for AdS causal wedges and the Reeh-Schlieder
+     property in holography, JHEP 05 (2014) 53.
+[36] D. Kribs, R. Laflamme, and D. Poulin, Unified and Generalized Approach to Quantum
+
+
+
+
+                                          – 61 –
+    Error Correction, Physical Review Letters 94 (2005), no. 18 180501.
+[37] D. W. Kribs, R. Laflamme, D. Poulin, and M. Lesosky, Operator quantum error
+     correction, Quant. Inf. Comp. 6 (2006) 383.
+[38] C. Bény, A. Kempf, and D. Kribs, Quantum error correction of observables, Physical
+     Review A 76 (2007), no. 4 042303.
+[39] C. Bény, A. Kempf, and D. Kribs, Generalization of Quantum Error Correction via the
+     Heisenberg Picture, Physical Review Letters 98 (2007), no. 10 100502.
+[40] M. Headrick, V. E. Hubeny, A. Lawrence, and M. Rangamani, Causality & holographic
+     entanglement entropy, JHEP 12 (2014) 162.
+[41] A. C. Wall, Maximin Surfaces, and the Strong Subadditivity of the Covariant
+     Holographic Entanglement Entropy, Class.Quant.Grav. 31 (2014), no. 22 225007,
+     [arXiv:1211.3494].
+[42] B. Czech, J. L. Karczmarek, F. Nogueira, and M. Van Raamsdonk, The Gravity Dual
+     of a Density Matrix, Class.Quant.Grav. 29 (2012) 155009, [arXiv:1204.1330].
+[43] D. Gottesman, An Introduction to Quantum Error Correction and Fault-Tolerant
+     Quantum Computation, arXiv:0904.2557.
+[44] E. Mintun, J. Polchinski, and V. Rosenhaus, Bulk-Boundary Duality, Gauge
+     Invariance, and Quantum Error Correction, arxiv:1501.06577.
+[45] S. Bravyi and B. Terhal, A no-go theorem for a two-dimensional self-correcting
+     quantum memory based on stabilizer codes, New. J. Phys. 11 (2009) 043029.
+[46] F. Pastawski and B. Yoshida, Fault-tolerant logical gates in quantum error-correcting
+     codes, Phys. Rev. A 91 (2015) 012305.
+[47] A. Almheiri, D. Marolf, J. Polchinski, and J. Sully, Black holes: complementarity or
+     firewalls?, JHEP 02 (2013) 062.
+[48] D. Harlow, Jerusalem Lectures on Black Holes and Quantum Information,
+     arXiv:1409.1231.
+[49] J. D. Bekenstein, Black holes and entropy, Phys. Rev. D 7 (1973) 2333.
+[50] S. Hawking, Particle creation by black holes, Commun. Math. Phys. 43 (1975) 199–220.
+[51] T. Hartman and J. Maldacena, Time Evolution of Entanglement Entropy from Black
+     Hole Interiors, JHEP 1305 (2013) 014, [arXiv:1303.1080].
+[52] L. Susskind, Computational Complexity and Black Hole Horizons, arXiv:1402.5674.
+[53] D. A. Roberts, D. Stanford, and L. Susskind, Localized shocks, JHEP 1503 (2015) 051,
+     [arXiv:1409.8180].
+[54] D. Aharonov and M. Ben-Or, Fault-tolerant quantum computation with constant error,
+
+
+
+
+                                          – 62 –
+    in Proceedings of the 29th Annual ACM Symposium on Theory of Computing, p. 176,
+    1997.
+[55] M. Grassl, T. Beth, and M. Roetteler, On optimal quantum codes, Int. J. Quantum
+     Inf. 2 (2004) 55.
+[56] D. N. Page, Average entropy of a subsystem, Phys. Rev. Lett. 71 (1993) 1291–1294.
+[57] S. Goldstein, J. L. Lebowitz, R. Tumulka, and N. Zanghı̀, Canonical typicality, Phys.
+     Rev. Lett. 96 (2006) 050403.
+[58] J. Adler, Bootstrap percolation, Physica A: Statistical Mechanics and its Applications
+     171 (1991) 453–470.
+[59] D. A. Levin, Y. Peres, and E. L. Wilmer, Markov Chains and Mixing Times. American
+     Mathematical Society, 2008.
+[60] M. A. Nielsen and I. L. Chuang, Quantum Computation and Quantum Information.
+     Cambridge University Press, Cambridge, 2000.
+[61] N. Schuch, I. Cirac, and D. Perez-Garcia, Peps as ground states: Degeneracy and
+     topology, Ann. Phys. 325 (2010) 2153 – 2192.
+[62] M. B. Şahinoğlu, D. Williamson, N. Bultinck, M. Mariën, J. Haegeman, N. Schuch,
+     and F. Verstraete, Characterizing Topological Order with Matrix Product Operators,
+     arXiv:1409.2150.
+[63] O. Buerschaper, Twisted injectivity in projected entangled pair states and the
+     classification of quantum phases, Ann. Phys. 351 (2014) 447–476.
+[64] B. Yoshida and I. L. Chuang, Framework for classifying logical operators in stabilizer
+     codes, Phys. Rev. A 81 (2010) 052302.
+[65] J. Haah and J. Preskill, Logical-operator tradeoff for local quantum codes, Phys. Rev. A
+     86 (2012) 032308.
+[66] P. Hayden and J. Preskill, Black holes as mirrors: quantum information in random
+     subsystems, JHEP 09 (2007) 120.
+[67] D. L. Jafferis and S. J. Suh, The Gravity Duals of Modular Hamiltonians,
+     arXiv:1412.8465.
+
+
+
+
+                                           – 63 –
+

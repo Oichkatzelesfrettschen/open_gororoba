@@ -1,0 +1,3914 @@
+equations = []
+tables = []
+full_text = """
+arXiv:0809.4791v1 [math.AT] 27 Sep 2008\r
+On the construction of A∞-structures\r
+J. Huebschmann\r
+USTL, UFR de Math´ematiques\r
+CNRS-UMR 8524\r
+59655 Villeneuve d’Ascq C´edex, France\r
+Johannes.Huebschmann@math.univ-lille1.fr\r
+October 29, 2018\r
+To Tornike Kadeishvili\r
+Abstract\r
+We relate a construction of Kadeishvili’s establishing an A∞-structure on the\r
+homology of a differential graded algebra or more generally of an A∞ algebra with\r
+certain constructions of Chen and Gugenheim. Thereafter we establish the links of\r
+these constructions with subsequent developments.\r
+Subject classification: 16E45, 16W30, 17B55, 17B56, 17B65, 17B70, 18G55, 55P62\r
+Keywords: A∞-algebra, C∞-algebra, L∞-algebra, twisting cochain, iterated integral, ho\u0002mological perturbation, minimality theorem, minimal model, perturbation lemma, (co)algebra\r
+perturbation lemma, Lie algebra perturbation lemma, differential graded Lie (co)algebra\r
+Contents\r
+1 Introduction 2\r
+2 Preliminaries 4\r
+3 A∞-algebras 7\r
+4 Kadeishvili’s minimality theorem for algebras 9\r
+5 The Chen perturbation 12\r
+6 Perturbations for coalgebras 14\r
+1
+
+7 Perturbations for algebras 17\r
+8 A proof of Chen’s theorem 19\r
+9 Homological perturbations and algebraic structure 20\r
+10 General A∞-algebras and A∞-coalgebras 23\r
+11 Summation over oriented rooted planar trees 24\r
+12 Perturbations for Lie algebras and L∞-algebras, and the master equa\u0002tion 29\r
+13 More about the relationship with deformations 31\r
+1 Introduction\r
+We will relate a construction of Kadeishvili’s establishing an A∞-structure on the ho\u0002mology of a differential graded algebra or more generally of an A∞ algebra with certain\r
+constructions of Chen and Gugenheim. We will then establish the links of these construc\u0002tions with subsequent developments.\r
+Let R be a commutative ring and A a differential graded algebra over R. Suppose that,\r
+as a graded R-module, the homology H(A) of A is free. Then H(A) acquires an A∞-algebra\r
+structure that is equivalent to A. Over a field, so that the freeness hypothesis relative to\r
+H(A) is automatically satisfied, this fact is nowadays quoted as the “minimality theorem”\r
+for differential graded algebras— we will discuss the issue of “minimality theorem” below.\r
+Such a result was published by Kadeishvili in 1980 [41]. Over a general ground ring R, a\r
+related result involving HPT was published by V. Gugenheim in 1982 [13]. More precisely,\r
+starting from a simply connected coaugmented differential graded coalgebra C over the\r
+ground ring R that is homology split (e. g. free as a module over the ground ring), the\r
+homology H(C) acquires a coaugmented graded coalgebra structure, and a perturbation\r
+of the ordinary cobar construction relative to the coalgebra structure on H(C) yields an\r
+A∞-coalgebra structure on H(C) that is equivalent to the original coalgebra C. This is a\r
+version of the “minimality theorem” in the realm of coalgebras. Gugenheim’s approach\r
+relies on a perturbation argument developed over the reals by Chen [7], published in 1977\r
+and, furthermore, in a sense, Theorem 3.1.1 in Chen’s paper [6] establishes a version of the\r
+“minimality theorem”. In 1982, Kadeishvili published a result which extends his original\r
+approach to a more general “minimality theorem” saying that, over a field, the homology\r
+H(A) of a general A∞-algebra A acquires an A∞-algebra structure that is equivalent to\r
+A [42].\r
+Because of the present renewed interest in the “minimality theorem”, and to help\r
+the presently young avoid loss of contact with the past, it seems worthwhile explaining\r
+the original insight into the “minimality theorem”. This will place the original results\r
+properly in the literature. The contributions of Gugenheim and in particular those of\r
+Chen seem to have been largely forgotten. Also there has been a debate in the literature\r
+2
+
+to what extent the various constructions of A∞-structures were explicit; the constructions\r
+by Chen, Gugenheim and Kadeishvili are perfectly explicit. In fact, we hope to convince\r
+the reader that these constructions essentially boil down to the very same basic idea. We\r
+will then relate the old approaches to subsequent ones and show that the recent ones [48]\r
+(6.4), [50] essentially still come down to the same basic idea. In particular we will illustrate\r
+how the constructions in terms of labelled oriented rooted trees [48] (6.4) are instances of\r
+ordinary HPT constructions. This will, perhaps, demystify the labelled oriented rooted\r
+trees method and make it accessible to a wider audience. We will also explain the Lie\r
+algebra case. It turns out that the various constructions establishing the corresponding\r
+statement of the “minimality theorem” in the algebra, coalgebra, Lie algebra situation,\r
+etc. all boil down to essentially the same kind of construction, as comparison of (6.1)–\r
+(6.7), (7.1)–(7.7), and (12.1)–(12.7) below shows.\r
+It is a pleasure to dedicate this paper to Tornike Kadeishvili. I am indebted to him\r
+for collaboration and for discussion much beyond that collaboration. Our collaboration\r
+[37] led to a number of results related with the perturbation lemma; in particular we have\r
+elaborated on the compatibility of the perturbation lemma with suitable algebraic struc\u0002ture. The perturbation lemma is lurking behind the formulas in Chapter II of Section\r
+1 of [59] and seems to have first been made explicit by M. Barrat (unpublished). The\r
+first instance known to us where it appeared in print is [3]. By means of that lemma,\r
+in [12], V. Gugenheim developed a lucid proof of the twisted Eilenberg-Zilber theorem\r
+which, in turn, was established by E. H. Brown [2] originally via acyclic models. We\r
+have already mentioned Chen’s construction of a perturbation given in [6], extended and\r
+clarified by V. Gugenheim in [13]. These constructions of Chen’s and Gugenheim’s are\r
+somewhat by hand and do not involve the perturbation lemma. In [19], Gugenheim and\r
+Stasheff extended that construction of a perturbation to the case where the contracted\r
+object is admitted to have non-zero differential. In [24], I had developed the tensor trick,\r
+see Section 9 below, and the idea of iterative perturbation. My collaboration with T.\r
+Kadeishvili involved the tensor trick and iterative perturbations and produced in par\u0002ticular the (co)algebra perturbation lemma. This lemma then enabled us to recover the\r
+perturbations of the kind constructed by Chen, Gugenheim, and Gugenheim-Stasheff in\r
+a conceptual way. It led as well to a lucid proof of the minimality theorem. We also\r
+developed a perturbation theory for a general homotopy equivalence, not necessarily a\r
+contraction. It is, furthermore, worthwhile noting that the labelled rooted trees are lurk\u0002ing behind the (co)algebra perturbation lemma but at the time there was no need to spell\r
+them out explicitly in [37]. We will explain all these and more issues in this paper. At\r
+these days the perturbation lemma and variants thereof are, perhaps, more vivid than\r
+ever, see e. g. [1], [31], [34], [49] and the references there; in particular, the perturbation\r
+theory for a general homotopy equivalence developed in [37] has been taken up again and\r
+pushed further in [49].\r
+I owe some special thanks to Jim Stasheff for a number of comments on a draft of\r
+this paper.\r
+3
+
+2 Preliminaries\r
+The ground ring is a commutative ring with 1 and will be denoted by R. Later some\r
+condition has, perhaps, to be imposed upon R so that the symmetric coalgebra on the\r
+R-module under discussion exists but R is not necessarily a field.\r
+Indeed, to avoid confusion, recall that, given the graded R-module Y , for j ≥ 0, the\r
+notation Sc\r
+j\r
+[Y ] ⊆ T\r
+c\r
+j\r
+[Y ] refers to the submodule of invariants in the j’th tensor power\r
+T\r
+c\r
+j\r
+[Y ] relative to the obvious action on Tc\r
+j\r
+[Y ] of the symmetric group Sj on j letters, and\r
+S\r
+c\r
+[Y ] refers to the direct sum\r
+S\r
+c\r
+[Y ] = ⊕\r
+∞\r
+j=0S\r
+c\r
+j\r
+[Y ]\r
+of graded R-modules. Some hypothesis is, in general, necessary in order for the homoge\u0002neous constituents\r
+T\r
+c\r
+j+k\r
+[Y ] −→ T\r
+c\r
+j\r
+[Y ] ⊗ T\r
+c\r
+k\r
+[Y ] (j, k ≥ 0)\r
+of the diagonal map ∆: Tc[Y ] → T\r
+c\r
+[Y ] ⊗ T\r
+c\r
+[Y ] of the graded tensor coalgebra Tc[Y ] to\r
+induce a graded diagonal map on Sc[Y ], so that Sc[Y ] is then the symmetric coalgebra on Y .\r
+See Section 3 of [31]. In particular, let V be a projective graded R-module, concentrated\r
+in odd degrees, and consider the graded exterior algebra Λ[V ] on V . The diagonal map\r
+V → V ⊕ V is well known to induce a diagonal map for Λ[V ] turning the latter into a\r
+graded Hopf algebra. We then denote the resulting graded coalgebra by Λ′[V ] and, as\r
+usual, refer to it as the exterior coalgebra. Whenever a graded exterior coalgebra of the\r
+kind Λ′[V ] is under discussion, we will suppose throughout that the resulting coalgebra\r
+is the graded symmetric coalgebra Sc[V ] on V , that is, that the canonical morphism of\r
+coalgebras from Λ′[V ] to Sc[V ] (induced by the canonical projection from Λ′[V ] to V ) is\r
+an isomorphism of graded coalgebras. This excludes the prime 2 being a zero divisor in\r
+the ground ring R. In particular, a field of characteristic 2 is not admitted as ground ring.\r
+Indeed in characteristic 2 the entire theory requires special treatment.\r
+We will take chain complex to mean differential graded R-module. A chain complex\r
+will not necessarily be concentrated in non-negative or non-positive degrees. The differ\u0002ential of a chain complex will always be supposed to be of degree −1. For a filtered chain\r
+complex X, a perturbation of the differential d of X is a (homogeneous) morphism ∂ of\r
+the same degree as d such that ∂ lowers the filtration and (d + ∂)\r
+2 = 0 or, equivalently,\r
+[d, ∂] + ∂∂ = 0. (2.1)\r
+Thus, when ∂ is a perturbation on X, the sum d + ∂, referred to as the perturbed dif\u0002ferential, endows X with a new differential. When X has a graded coalgebra structure\r
+such that (X, d) is a differential graded coalgebra, and when the perturbed differential\r
+d + ∂ is compatible with the graded coalgebra structure, we refer to ∂ as a coalgebra\r
+perturbation; the notion of algebra perturbation is defined similarly. Given a differential\r
+graded coalgebra C and a coalgebra perturbation ∂ of the differential d on C, we will\r
+occasionally denote the new or perturbed differential graded coalgebra by C∂. Likewise\r
+given a differential graded algebra A and an algebra perturbation ∂ of the differential d\r
+on A, we will occasionally denote the new or perturbed differential graded algebra by A∂.\r
+A contraction\r
+(N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h) (2.2)\r
+4
+
+of chain complexes [9] consists of\r
+– chain complexes N and M,\r
+– chain maps π : N → M and ∇: M → N,\r
+– a morphism h: N → N of the underlying graded modules of degree 1;\r
+these data are required to satisfy\r
+π∇ = Id, (2.3)\r
+Dh = Id − ∇π, (2.4)\r
+πh = 0, h∇ = 0, hh = 0. (2.5)\r
+The requirements (2.5) are referred to as annihilation properties or side conditions.\r
+Let C be a coaugmented differential graded coalgebra with coaugmentation map\r
+η : R → C and coaugmentation coideal JC = coker(η), the diagonal map being writ\u0002ten as ∆: C → C ⊗C as usual. Recall that the counit ε: C → R and the coaugmentation\r
+map determine a direct sum decomposition C = R ⊕ JC. The coaugmentation filtration\r
+{FnC}n≥0 is as usual given by\r
+FnC = ker(C −→ (JC)\r
+⊗(n+1)) (n ≥ 0)\r
+where the unlabelled arrow is induced by some iterate of the diagonal ∆ of C. This\r
+filtration is well known to turn C into a filtered coaugmented differential graded coalgebra;\r
+thus, in particular, F0C = R. We recall that C is said to be cocomplete when C = ∪FnC.\r
+Write s for the suspension operator as usual and accordingly s\r
+−1\r
+for the desuspension\r
+operator. Thus, given the chain complex X, (sX)j = Xj−1, etc., and the differential\r
+d: sX → sX on the suspended object sX is defined in the standard manner so that\r
+ds + sd = 0.\r
+Given two chain complexes X and Y , recall that Hom(X, Y ) inherits the structure of\r
+a chain complex by the operator D defined by\r
+Dφ = dφ − (−1)|φ|φd (2.6)\r
+where φ is a homogeneous homomorphism from X to Y and where |φ| refers to the degree\r
+of φ.\r
+Let g be a chain complex having the property that the cofree coaugmented differential\r
+graded cocommutative coalgebra Sc[sg] on the suspension sg of g exists. This happens to\r
+be the case, e.g., when g is projective as a graded R-module. Let\r
+τg : Sc[sg] −→ g\r
+be the composite of the canonical projection to Sc\r
+1\r
+[sg] = sg with the desuspension map.\r
+Suppose that g is endowed with a graded skew-symmetric bracket [ · , · ] that is compatible\r
+with the differential but not necessarily a graded Lie bracket, i. e. does not necessarily\r
+satisfy the graded Jacobi identity. Let C be a coaugmented differential graded cocommu\u0002tative coalgebra. Given homogeneous morphisms a, b : C → g, with a slight abuse of the\r
+bracket notation [ · , · ], the cup bracket [a, b] is given by the composite\r
+C\r
+∆\r
+−−−→ C ⊗ C\r
+a⊗b\r
+−−−→ g ⊗ g\r
+[·,·]\r
+−−−→ g.\r
+5
+
+The cup bracket [ · , · ] is well known to be a graded skew-symmetric bracket on Hom(C, g)\r
+which is compatible with the differential on Hom(C, g). Define the coderivation\r
+∂ : Sc[sg] −→ S\r
+c\r
+[sg]\r
+on Sc[sg] by the requirement\r
+τg∂ =\r
+1\r
+2\r
+[τg, τg]: Sc\r
+2\r
+[sg] → g. (2.7)\r
+Then D∂ (= d∂ + ∂d) = 0 since the bracket on g is supposed to be compatible with the\r
+differential d. Moreover, the bracket on g satisfies the graded Jacobi identity if and only if\r
+∂∂ = 0, that is, if and only if ∂ is a coalgebra perturbation of the differential d on S\r
+c\r
+[sg],\r
+cf. e. g. [38].\r
+We now suppose that the graded bracket [ · , · ] on g turns g into a differential graded\r
+Lie algebra and continue to denote the resulting coalgebra perturbation by ∂, so that Sc\r
+∂\r
+[sg]\r
+is a coaugmented differential graded cocommutative coalgebra; in fact, Sc\r
+∂\r
+[sg] is then\r
+precisely the ordinary C(artan-)C(hevalley-)E(ilenberg) or classifying coalgebra\r
+for g and, following [57] (p. 291), we denote it by C[g] (but the construction given above is\r
+different from that in [57] which, in turn, is carried out only over a field of characteristic\r
+zero). Furthermore, given a coaugmented differential graded cocommutative coalgebra\r
+C, the cup bracket turns Hom(C, g) into a differential graded Lie algebra. In particular,\r
+Hom(Sc, g) and Hom(FnS\r
+c\r
+, g) (n ≥ 0) acquire differential graded Lie algebra structures.\r
+Given a coaugmented differential graded cocommutative coalgebra C and a differential\r
+graded Lie algebra h, a Lie algebra twisting cochain t: C → h is a homogeneous morphism\r
+of degree −1 whose composite with the coaugmentation map is zero and which satisfies\r
+Dt =\r
+1\r
+2\r
+[t, t], (2.8)\r
+cf. [53], [57]. In particular, relative to the graded Lie bracket D on g, the morphism\r
+τg: C[g] → g is a Lie algebra twisting cochain, the C(artan-)C(hevalley-)E(ilenberg)\r
+or universal Lie algebra twisting cochain for g. It is, perhaps, worth noting that, when g\r
+is viewed as an abelian differential graded Lie algebra relative to the zero bracket, Sc[sg]\r
+is the corresponding CCE or classifying coalgebra and τg: Sc[sg] → g is still the universal\r
+Lie algebra twisting cochain.\r
+Remark 2.1. The terms master equation, Maurer-Cartan equation, Lie algebra twisting\r
+cochain, and integrability condition all refer to the same mathematical object. Historically\r
+the Maurer-Cartan equation came first.\r
+At the risk of making a mountain out of a molehill, we note that, in (2.7) and (2.8)\r
+above, the factor 1\r
+2\r
+is a mere matter of convenience. The correct way of phrasing graded Lie\r
+algebras when the prime 2 is not invertible in the ground ring is in terms of an additional\r
+operation, the squaring operation Sq: godd → geven and, by means of this operation, the\r
+factor 1\r
+2\r
+can be avoided. Indeed, in terms of this operation, the equation (2.8) takes the\r
+form\r
+Dt = Sq(t).\r
+6
+
+For intelligibility, we will follow the standard convention, avoid spelling out the squar\u0002ing operation explicitly, and keep the factor 1\r
+2\r
+. A detailed description of the requisite\r
+modifications when the prime 2 is not invertible in the ground ring is given in [34].\r
+Finally we comment on the usage of the terminology “minimal”: Given an augmented\r
+differential graded algebra A over a field k, with augmentation map ε: A → k and aug\u0002mentation ideal IA, its graded vector space of indecomposables Q(A) is the cokernel of the\r
+canonical map IA ⊗ IA → IA induced by the multiplication map of A; since A is a differ\u0002ential graded algebra, this cokernel inherits a differential, and the augmented differential\r
+graded algebra A is said to be minimal when it is cofibrant and when the differential\r
+on the indecomposables Q(A) is zero. Any connected differential graded algebra has a\r
+canonical augmentation. In rational homotopy theory, a minimal model of a connected\r
+differential graded commutative algebra A is a minimal differential graded commutative\r
+algebra mA together with a morphism mA → A of differential graded algebras which is\r
+an isomorphism on homology. Likewise, the differential graded Lie algebra L is said to\r
+be minimal when it is cofibrant and when the differential on the abelianization Q(L) is\r
+zero. A minimal model of a connected differential graded Lie algebra L is a minimal dif\u0002ferential graded Lie algebra mL together with a morphism mL → L of differential graded\r
+Lie algebras which is an isomorphism on homology. There are also corresponding notions\r
+of minimal differential graded coalgebra and of minimal model for a differential graded\r
+coalgebra. See e. g. [55] (Section 5) for details and more references. Over a local ring R,\r
+with maximal ideal m ⊆ R, a free resolution\r
+0 ←−−− M\r
+ε ←−−− F0\r
+d\r
+←−−− F1\r
+d\r
+←−−−\r
+is said to be minimal when d(Fj ) ⊆ mFj−1 for j ≥ 1. The meaning of the term “minimal”\r
+in the present paper refers to A∞-algebras, see Section 3 below. While in rational homo\u0002topy theory, a homology algebra is not necessarily a Sullivan algebra, suitably interpreted,\r
+the notion of minimality of A∞-algebras is consistent with the usage of the concept of\r
+minimality in rational homotopy theory. See Remarks 4.2 and 5.2 below.\r
+3 A∞-algebras\r
+To introduce language and notation we reproduce a precise definition of an A∞-algebra\r
+and of a morphism of A∞-algebras, cf. [60]. Our convention is that a differential lowers\r
+degree by 1.\r
+An A∞-algebra over the ground ring R is a graded R-module A equipped with a\r
+family {mn}\r
+∞\r
+n=1 of R-multilinear maps\r
+mn : A\r
+⊗n −→ A\r
+of degree n − 2 that satisfy the identities\r
+X\r
+r+s+t=n\r
+(−1)r+stmr+1+t(Idr ⊗ ms ⊗ Idt) = 0 (3.1)\r
+A morphism f : A → B of A∞-algebras is a family {fn}\r
+∞\r
+n=1 of R-multilinear maps\r
+fn : A\r
+⊗n −→ B\r
+7
+
+of degree n − 1 that satisfy the identities\r
+X\r
+r+s+t=n\r
+(−1)r+stfr+1+t(Idr ⊗ ms ⊗ Idt) = X(−1)wmq(fi1 ⊗ · · · ⊗ fiq) (3.2)\r
+where i1 + · · · + iq = n and w = (q − 1)(i1 − 1) + · · · + 2(iq−2 − 1) + (iq−1 − 1).\r
+We now reproduce the familiar equivalent description of an A∞-algebra structure as\r
+a coalgebra perturbation. To save trouble, we will do this only for the supplemented case.\r
+Thus let M be a graded R-module which comes with a direct sum decomposition M =\r
+IM ⊕ R of graded R-modules. We view M as a graded algebra with zero multiplication\r
+on IM, so that IM can then be interpreted as the augmentation ideal of M. The graded\r
+tensor coalgebra Tc[sIM] (with zero differential) is then the corresponding reduced bar\r
+construction for M; let τM : Tc[sIM] → M be the universal bar construction twisting\r
+cochain, that is, the canonical projection to sIM, followed by the desuspension mapping.\r
+For j ≥ 1, let\r
+mj: (IM)\r
+⊗j −→ IM\r
+be a homogeneous degree j − 2 operation and define the coderivation\r
+D\r
+j−1\r
+: Tc[sIM] −→ T\r
+c\r
+[sIM]\r
+by the identity\r
+mj = s\r
+−1\r
+◦ Dj−1◦ s\r
+⊗j\r
+: (IM)\r
+⊗j −→ IM.\r
+For convenience, we write d = D0. Then\r
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIM] −→ T\r
+c\r
+[sIM]\r
+is a coderivation, and so is the sum\r
+d + D = d + D\r
+1 + D2 + . . . : Tc\r
+[sIM] −→ T\r
+c\r
+[sIM].\r
+Proposition 3.1. (i) The family {mj}j turns M into an (augmented) A∞-algebra if and\r
+only if d + D is a differential, that is, if and only if\r
+dD + Dd + DD = 0.\r
+(ii) Given the augmented A∞-algebras A and B, a family {fj}j of R-multilinear maps\r
+fj: (IA)\r
+⊗n −→ IB\r
+of degree j − 1 is a morphism of (augmented) A∞-algebras if and only if the constituents\r
+of the family combine to a morphism\r
+(Tc[sIA], d + D) −→ (Tc[sIB], d + D)\r
+of differential graded coalgebras.\r
+8
+
+Thus, when {mj}j turns M into an (augmented) A∞-algebra, in particular, m1 is a\r
+differential on M and on IM, and d is a differential on Tc[sIM], in fact, the differential\r
+induced by that on IM. The special case where only m1 and m2 are non-zero is that of an\r
+ordinary differential graded algebra structure, and (Tc[sIM], d + D) is then the ordinary\r
+reduced bar construction BM.\r
+Kadeishvili introduced the terminology minimal for an A∞-algebra (M, {mi}) having\r
+m1 zero, i.e. trivial differential. Minimal A∞-algebras behave similar to Sullivan’s min\u0002imal differential graded algebras: each weak equivalence of minimal A∞-algebras is an\r
+isomorphism. See also Remark 5.2 below.\r
+We will henceforth consider IM as a chain complex, use the notation\r
+BDM = (Tc[sIM], d + D), (3.3)\r
+and occasionally refer to BDM as the standard construction. It is also customary to write\r
+BeM and to refer to the bar tilde construction. Apart from Section 4 below, we will hence\u0002forth exclusively use the description of an A∞-algebra structures on the chain complex\r
+M in terms of the coalgebra perturbation D on the associated differential graded coal\u0002gebra (Tc\r
+[sIM], d). Likewise we will exclusively use the description of an A∞-coalgebra\r
+structure in terms of the corresponding algebra perturbation on the associated differen\u0002tial graded algebra and we will use the description of an L∞-algebra structure merely in\r
+terms of the corresponding coalgebra perturbation on the associated differential graded\r
+coalgebra.\r
+4 Kadeishvili’s minimality theorem for algebras\r
+In [40], Kadeishvili studied the homology of a fiber bundle with structure group G and\r
+fiber F. He noticed that the Pontrjagin ring structure of the homology H∗(G) and the\r
+action of H∗(G) on H∗(F) in general fail to recover the geometry of the action. To fix this\r
+failure, he then constructed certain higher operations\r
+f\r
+i\r
+: H∗(G) ⊗ ...(i times)... ⊗ H∗(G) → H∗(G), i = 3, 4, . . . ,\r
+and homomorphisms\r
+A\r
+i\r
+: H∗(G) ⊗ ...(i times)... ⊗ H∗(G) → C∗(G), i = 1, 2, 3, 4, . . . .\r
+which are solutions of certain equations. For example, f = f\r
+3 + f4 + . . ., interpreted as\r
+a Hochschild cochain in C\r
+∗\r
+(H∗(G), H∗(G)), satisfies the condition\r
+δf = f ∪1 f\r
+where the operation\r
+∪1 : (a, b) 7→ a ∪1 b\r
+refers to the operation in the Hochschild (cochain) complex introduced by Gerstenhaber.\r
+Kadeishvili referred to this operation as a “cup-one” product since it has the same proper\u0002ties as Steenrod’s ∪1-product, and he called such an f Hochschild twisting cochain (page\r
+3 of [40]).\r
+9
+
+With hindsight we see that Kadeishvili’s construction just explained yields an A∞-\r
+algebra structure (H∗(G), {f\r
+i}) and a morphism (weak equivalence) of A∞-algebras {Ai} :\r
+(H∗(G), {f\r
+i}) → C∗(G). While, at the time of writing [40], Kadeishvili did not know about\r
+Stasheff’s notion of A∞-algebra he realized thereafter that the condition δf = f ∪1 f is\r
+exactly Stasheff’s defining condition for an A∞-algebra (M, {mi}) with m1 = 0. This led\r
+to the paper [41]. Here is the main result thereof, valid for a general differential graded\r
+algebra, not necessarily of the kind C∗(G) for a group G.\r
+Theorem 4.1 (Minimality theorem). Let A be a differential graded algebra over a field.\r
+There is an A∞-algebra structure on H(A) and an A∞-algebra quasi-isomorphism f : H(A) →\r
+A such that f1 is a cycle-choosing quasi-isomorphism of chain complexes where the dif\u0002ferential m1 on H(A) is zero and m2 is a strictly associative multiplication induced by the\r
+multiplication in A. The resulting structure is unique up to quasi-isomorphism. When A\r
+has a unit, then the structure and quasi-isomorphism can be chosen to be strictly unital.\r
+In particular, the A∞-algebra structure on homology resulting from the minimality\r
+theorem is minimal and this structure, which is of course not uniquely determined, is\r
+unique up to isomorphism in the category of A∞-algebras.\r
+To compare the original approach with other developments, we partly reproduce the\r
+proof in [41].\r
+Proof. Since A is a differential graded algebra, its associated A∞-structure is encapsulated\r
+in the operations m1 and m2, the higher operations being zero. We shall denote m1 by d\r
+and refer to m2 by the notation · or simply by juxtaposition.\r
+To start an inductive construction of an A∞-structure on H(A), we pick m1 = 0 and\r
+take m2 to be the induced strictly associative multiplication on H(A). Furthermore, we\r
+take f1 to be some linear map H(A) → A that picks a cycle in each homology class.\r
+Given a1, a2 ∈ A, let\r
+Ψ2(a1, a2) = f1(a1a2) − f1(a1)f1(a2).\r
+This yields a boundary, since f1(a1a2) is defined to be a representative cycle of the ho\u0002mology class containing f1(a1)f1(a2). Hence, Ψ2(a1, a2) = dw for some w. Abstracting\r
+from the particular elements a1 and a2, since we are over a field, we find a morphism f2\r
+such that df2 = Ψ2.\r
+Now, let n > 2. Given a1, . . . , an ∈ A, let\r
+Ψn(a1, . . . , an) = Xn−1\r
+s=1\r
+(−1)ε1(a1,...,an,s)fs(a1, . . . , as) · fn−s(as+1, . . . , an)+\r
+Xn−1\r
+j=2\r
+Xn−j\r
+k=0\r
+(−1)ε2(a1,...,an,k,j)fn−j+1(a1, . . . , ak, mj (ak+1, . . . , ak+j ), . . . , an)\r
+where the expressions\r
+ε1(a1, . . . , an, s) = s + (n − s + 1)(|a1| + · · · + |as|)\r
+ε2(a1, . . . , an, k, j) = k + j(n − k − j + |a1| + · · · + |ak|)\r
+10
+
+are the signs in (3.2), adjusted according to the Eilenberg-Koszul convention. The term Ψn\r
+arises from the identity (3.2), with the two terms f1mn and m1fn removed. To complete\r
+the inductive step we must exhibit suitable terms mn and fn in such a way that the\r
+identity (3.2) holds.\r
+Tedious but straightforward calculation shows that the element Ψn(a1, . . . , an) is a\r
+d-cycle, and we take\r
+mn(a1, . . . , an) = [Ψn(a1, . . . , an)] ∈ H(A).\r
+This yields the operation mn on H(A). Since now f1(mn(a1, . . . , an)) and Ψn(a1, . . . , an)\r
+are in the same class, there is some w ∈ A such that\r
+f1(mn(a1, . . . , an)) − Ψn(a1, . . . , an) = dw.\r
+Abstracting from the particular elements a1, . . . , an, since we are over a field, we find a\r
+morphism fn such that\r
+dfn = Ψn.\r
+Thus mn and fn match the definitions of the corresponding constituents of an A∞-algebra\r
+and of a morphism of A∞-algebras, respectively.\r
+M. Vejdemo-Johansson has observed that this proof can be translated into an algo\u0002rithm for the computation of the A∞-structure maps [62]. This justifies the claim made\r
+earlier that Kadeishvili’s construction can be made explicit (by means of a choice of\r
+contracting homotopy, see Remark 7.2 below).\r
+Remark 4.2. Let A be a connected minimal differential graded commutative algebra over\r
+the rationals. Theorem 4.1 applies to it and yields a “minimal” A∞-structure on H(A),\r
+associated with A. However the two notions of minimality clearly differ unless A is formal.\r
+In 1982, Kadeishvili extended this construction and arrived at a more general “mini\u0002mality theorem” saying that, over a field, the homology H(A) of a general A∞-algebra A\r
+acquires an A∞-algebra structure that is equivalent to A [42].\r
+Remark 4.3. Kadeishvili’s original problem, that is, that of constructing a small model\r
+for the chains on the total space of a fiber bundle, has received much attention in the\r
+literature, as has the problem, given a group G, to isolate, under suitable circumstances,\r
+a suitable structure on the homology H(X) of a G-space X such that X and H(X) are\r
+equivalent in the A∞-sense. In the de Rham setting, this problem was studied, e.g., in\r
+[11], where the corresponding A∞-structure on de Rham cohomology is encoded in terms\r
+of what are referred to there as cohomology operations. In [36], we have explained how\r
+equivariant de Rham theory can be subsumed under relative homological algebra. This\r
+includes an explanation of those A∞-structures on de Rham cohomology.\r
+In the situation of the minimality theorem, Theorem 4.1 above, when the differential\r
+graded algebra A is graded commutative, the resulting A∞-algebra structure on H(A) has\r
+peculiar features encoded by Kadeishvili in the notion of CA∞-algebra, meaning that, in\r
+this case, the bar tilde construction is not only a differential graded coalgebra but also\r
+11
+
+an algebra with respect to the shuffle product, and the two structures combine to that\r
+of a differential graded bialgebra. Later this kind of structure has been christened C∞-\r
+structure. In the special situation where A is the algebra of rational cochains on a space\r
+X, the resulting C∞-algebra structure on H∗(X, Q) determines the rational homotopy\r
+type of X. Kadeishvili has worked this out in [44]; an extended version can be found in\r
+[46].\r
+The general situation is this: Given an augmented C∞-algebra A, the structure being\r
+given in terms of its standard construction B∂A, by the very definition of C∞-structure,\r
+the shuffle multiplication turns B∂A into a graded commutative differential graded Hopf\r
+algebra, the space of indecomposables relative to the algebra structure is a differential\r
+graded Lie coalgebra L\r
+c\r
+, in fact, a perturbation of the cofree differential graded Lie coal\u0002gebra L\r
+c\r
+(sIA) cogenerated by sIA, and the projection B∂A → L\r
+c actually spells out the\r
+differential graded coalgebra B∂A as the universal coalgebra Uc[Lc] cogenerated by L\r
+c\r
+, the\r
+space Lc necessarily being that of indecomposables relative to the graded commutative al\u0002gebra structure. More formally, the standard construction for the augmented C∞-algebra\r
+A boils down a perturbation of the cofree differential graded Lie coalgebra L\r
+c\r
+(sIA) cogen\u0002erated by sIA. In other words, the C∞-structure on A is given by a perturbation of the\r
+differential on the cofree differential graded Lie coalgebra L\r
+c\r
+(sIA) cogenerated by sIA.\r
+In the situation of Kadeishvili’s observation explained above, the differential graded\r
+Lie coalgebra Lcis the dual of the familiar minimal Lie algebra model in rational homotopy\r
+theory. Indeed, the structure dual to that of a C∞-structure has been explored in the\r
+literature in the context of rational homotopy theory. We will explain this in Remark 5.2\r
+below.\r
+Lie coalgebras are still not widely known objects. See e. g. [51] for a thorough\r
+approach to ordinary (ungraded) Lie coalgebras.\r
+5 The Chen perturbation\r
+Let X be a (connected) smooth manifold, and let A(X) be its ordinary de Rham algebra.\r
+Our convention is that A(X) is graded by negative degrees, that is, A(X)j = A−j(X)\r
+for j ≤ 0. Let V be a graded vector space which, to avoid unnecessary complications, we\r
+suppose to be of finite type (that is, finite-dimensional in each degree), and let T[ b V ] denote\r
+the graded completion of the graded tensor algebra T[V ] relative to the augmentation\r
+filtration. Let TbA(X)[V ] be the de algebra of formal power series in a basis of V with\r
+coefficients in the de Rham algebra A(X) of X. More formally, let V\r
+∗ be the graded dual\r
+of V —still of finite type—, consider the graded tensor coalgebra Tc[V\r
+∗\r
+], and let\r
+TbA(X)[V ] = Hom(Tc[V\r
+∗\r
+], A(X)).\r
+Thus, the algebra TbA(X)[V ] is the appropriate completion\r
+A(X)⊗bT[V ]\r
+of the tensor product A(X) ⊗ T[V ]. In his paper [7], Chen referred to TbA(X)[V ] as the\r
+algebra of T[ b V ]-valued differential forms on X and defined a T[ b V ]-valued formal power\r
+series connection on X to be a degree −1 element of TbA(X)[V ].\r
+12
+
+Let H be the de Rham cohomology of X, and let\r
+(H\r
+∇\r
+−−−→ ←−−−\r
+π\r
+A(X), h) (5.1)\r
+be a contraction of chain complexes. Thus, any α ∈ A(X) can be written as\r
+α = (dh + hd + ∇π)α = dhα + ∇πα + hdα\r
+in a unique fashion. The resulting decomposition\r
+A(X) = dA(X) ⊕ ker(h) = dA(X) ⊕ H ⊕ hA(X) (5.2)\r
+where H = ∇H(A(X)) plays the role of the Hodge decomposition in Kodaira-Spencer\r
+deformation theory. On p. 19 of [56], a decomposition of the kind (5.2) (not phrased in\r
+the language of contractions) is indeed referred to as a “Hodge decomposition”, and on\r
+p. 187 of [7] it is remarked that a Hodge decomposition of the de Rham complex of a\r
+Riemannian manifold is a special case of a decomposition of the kind (5.2), H being the\r
+space of harmonic forms.\r
+Let H be the reduced real e homology of X, let V = s\r
+−1H, and consider the algebra e\r
+TbA(X)[s\r
+−1H] of e T[ b s\r
+−1H]-valued differential forms on e X. We now recall, in the language of\r
+the present paper, Chen’s Theorem 1.3.1 in [7].\r
+Theorem 5.1. The contraction (5.1) determines a T[ b s\r
+−1H] e -valued formal power series\r
+connection τ ∈ TbA(X)[s\r
+−1H] e and an algebra differential ∂ on T[ b s\r
+−1H] e such that, when d\r
+refers to the ordinary de Rham differential, relative to the total differential\r
+d\r
+⊗ = d⊗bId + Id⊗b∂\r
+on TbA(X)[s\r
+−1H] = e A(X)⊗bT[s−1H] e , the following master equation is satisfied:\r
+d\r
+⊗τ = τ τ. (5.3)\r
+We will show below how this theorem is a consequence of a somewhat more general\r
+result. For intelligibility, at the present stage, we note the following: Suppose that X\r
+is simply connected. Then the algebra T[s\r
+−1H] is already complete, that is, coincides e\r
+with T[ b s\r
+−1H], and the algebra e TbA(X)\r
+[s\r
+−1H] comes down to the ordinary tensor product e\r
+A(X)⊗T[s\r
+−1H]. The differential e ∂ can be written as an infinite series\r
+∂ = ∂\r
+1 + ∂2 + . . .\r
+where ∂\r
+1\r
+is the ordinary cobar construction differential relative to the coalgebra structure\r
+on the real homology H∗(X) of X, the resulting differential graded algebra (T[s\r
+−1H] e , ∂) is\r
+then a kind of perturbed reduced cobar construction, and this perturbed reduced cobar\r
+construction is a model for the real chain algebra of the based loop space of X; we therefore\r
+write this differential graded algebra as Ω∂[H∗(X)]. In particular, when the higher terms\r
+∂\r
+j\r
+for j ≥ 2 are zero, the manifold X is formal over the reals.\r
+13
+
+Chen already established a version of the “minimality theorem”, though not in the\r
+language of A∞-structures. Indeed, Theorem 5.1, together with Theorem 3.1.1 in [6],\r
+include the statement that, for simply connected X, the real homology H∗(X) of the\r
+manifold X acquires an A∞-coalgebra structure such that the chains on X and H∗(X),\r
+endowed with the A∞-coalgebra structure, are equivalent. Dualized, this is precisely the\r
+statement of the “minimality theorem” over the reals.\r
+Remark 5.2. Suitably interpreted, Chen’s construction makes perfect sense over the ra\u0002tionals. Let X be a simply connected space and take A(X) to be the graded commutative\r
+algebra of rational forms on X. We continue to denote the resulting differential graded\r
+algebra, now over the rationals, Q, by Ω∂[H∗(X)]. The rational homology H∗(X) ac\u0002quires a graded cocommutative coalgebra structure whence the shuffle diagonal map turns\r
+Ω∂[H∗(X)] into a graded cocommutative Hopf algebra. Thus, by the Milnor-Moore theo\u0002rem, Ω∂[H∗(X)] is the universal enveloping algebra U[L] of a differential graded Lie algebra\r
+L. This differential graded Lie algebra L is in fact the familiar minimal Lie algebra model\r
+for the based loop space on X nowadays widely used in rational homotopy theory. This has\r
+been worked out in [20], [21], [61]; indeed, in the latter reference, the differential graded\r
+Lie algebra L, together with the formal power series connnection, is referred to as the\r
+Chen model for (the rational homotopy type of ) the space X. It is in this sense that the\r
+usage of the term “minimal” in the present paper is compatible with its usage in rational\r
+homotopy theory.\r
+The notion of C∞-coalgebra is lurking behind these observations. We shall elucidate\r
+this kind of structure in Remark 6.3 below.\r
+6 Perturbations for coalgebras\r
+Abstracting from the perturbation argument for Chen’s theorem quoted above, V. Gu\u0002genheim developed a general perturbation theory for differential graded coalgebras which\r
+includes and explains Chen’s theorem [13]. Gugenheim made it entirely clear that his per\u0002turbation argument is formally exactly the same as that of Chen, but placed in a much\r
+more general context. We will now explain a version of Gugenheim’s result, somewhat\r
+more general than the original one in [13]. The proofs of all the claims in this section will\r
+be given in Section 9 below.\r
+Let C be a coaugmented differential graded coalgebra and let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+C, h) (6.1)\r
+be a contraction of chain complexes. The situation considered by Gugenheim in [13] is\r
+the special case where M has zero differential, so that M then amounts to the homology\r
+of C. In the general case, the counit ε: C → R and coaugmentation η : R → C induce a\r
+“counit” ε: M → R and “coaugmentation” η : R → M for M in such a way that (6.1) is\r
+a contraction of augmented and coaugmented chain complexes. Thus M admits a direct\r
+sum decomposition M = R⊕JM; indeed we can view M as a differential graded coalgebra\r
+with zero diagonal on JM, and JM can then be interpreted as the coaugmentation coideal\r
+of M. The differential graded tensor algebra T[s\r
+−1JM] is then the corresponding reduced\r
+14
+
+cobar construction for M; let τM : M → T[s\r
+−1JM] be the universal cobar construction\r
+twisting cochain, that is, the desuspension mapping, followed by the canonical injection.\r
+Let\r
+τ\r
+1 = τM π : C → s−1\r
+JM ⊆ T[s\r
+−1\r
+JM] (6.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: C −→ (s\r
+−1\r
+JM)\r
+⊗j ⊆ T[s−1\r
+JM]\r
+be the degree −1 morphism defined recursively by\r
+τ\r
+j = (τ1 ∪ τj−1 + · · · + τj−1 ∪ τ1\r
+)h: C → (s\r
+−1\r
+JM)\r
+⊗j\r
+. (6.3)\r
+Thereafter, for j ≥ 1, define the degree −1 derivation Dj on T[s\r
+−1JM] by\r
+D\r
+j\r
+τM = (τ\r
+1 ∪ τj + · · · + τj ∪ τ1\r
+)∇: M → (s\r
+−1\r
+JM)\r
+⊗(j+1) ⊆ T[s−1\r
+JM]. (6.4)\r
+Let T[ b s\r
+−1JM] denote the graded completion of the graded tensor algebra T[s−1JM],\r
+the term completion being taken relative to the augmentation filtration.\r
+Theorem 6.1. The infinite series\r
+D = D\r
+1 + D2 + . . . : T[ b s−1\r
+JM] → T[ b s\r
+−1\r
+JM] (6.5)\r
+is an algebra perturbation of the differential d on T[ b s\r
+−1JM] induced from the differential\r
+on M, and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : C → T[ b s−1\r
+JM] (6.6)\r
+is a twisting cochain\r
+C −→ (T[ b s\r
+−1\r
+JM], d + D).\r
+For the special case where M has zero differential so that M then coincides with\r
+the homology H(C) of C, this theorem is essentially Proposition 2.1 in [13]. We will\r
+henceforth write\r
+ΩbDM = (T[ b s\r
+−1\r
+JM], d + D). (6.7)\r
+Complement 1. Suppose that, in addition, M is a coaugmented differential graded\r
+coalgebra and that ∇ is a morphism of differential graded coalgebras. Then Djis zero for\r
+j ≥ 2 and D1is the algebra perturbation determined by the coalgebra structure of M.\r
+Under suitable circumstances, the graded tensor algebra T[s\r
+−1JM] is already com\u0002plete. This happens to be the case when M is simply connected in the sense that it is\r
+concentrated in non-negative degrees and that JM1 is zero, or when JM is concentrated\r
+in non-positive degrees. In this case, the series\r
+τ = τ\r
+1 + τ2 + . . . : C → T[s−1\r
+JM], (6.8)\r
+D = D\r
+1 + D2 + . . . : T[s−1\r
+JM] → T[s\r
+−1\r
+JM] (6.9)\r
+converge naively in the sense that, applied to a specific element, only finitely many terms\r
+are non-zero. Furthermore, D is then an algebra perturbation of the differential on\r
+T[s\r
+−1JM], and\r
+τ = τ\r
+1 + τ2 + . . . : C −→ ΩDM\r
+15
+
+is a twisting cochain where we use the notation\r
+ΩDM = (T[s\r
+−1\r
+JM], d + D). (6.10)\r
+At the risk of being, perhaps, repetitive, we point out explicitly that the piece of structure\r
+D in ΩDM is precisely an A∞-coalgebra structure on M.\r
+Complement 2 to Theorem 6.1. When C is simply connected or when C is concen\u0002trated in non-positive degrees, the adjoint\r
+τ : ΩC −→ ΩDM\r
+of the twisting cochain τ , necessarily a morphism of differential graded algebras, is a\r
+chain equivalence. If, furthermore, M is a coaugmented differential graded coalgebra and\r
+∇ is a morphism of differential graded coalgebras, ΩDM is the ordinary reduced cobar\r
+construction on M.\r
+Indeed, in the situation of the “Furthermore” statement of Complement 2, the vanish\u0002ing of the higher terms Dj\r
+for j ≥ 2 is a consequence of the annihilation property h∇ = 0\r
+and the construction of the twisting cochain τ comes essentially down to [18] (4.1)∗. A\r
+result somewhat weaker than the above Complement 2 is Theorem 3.2 in [13] which says\r
+that τ is a homology isomorphism.\r
+Complement 2 to Theorem 6.1 includes the statement that, in the simply connected\r
+case, M, endowed with the A∞-coalgebra structure D, and C, endowed with the A∞-\r
+coalgebra structure associated with the differential graded coalgebra structure, are, via τ ,\r
+equivalent as A∞-coalgebras.\r
+Remark 6.2 (Lemma 2.2.1 in [13]). Suppose that the differential of M is zero. Then\r
+M amounts to the homology H(C) of C and acquires the structure of a coaugmented\r
+graded coalgebra. In this case, even though neither the morphism ∇ nor the morphism π\r
+in the contraction (6.1) are supposed to be compatible with the coalgebra structures, the\r
+operator D1is the ordinary cobar construction differential on the graded tensor algebra\r
+T[s\r
+−1JH(C)] determined by the diagonal map ∆H(C) of H(C). Indeed, write the diagonal\r
+map of C as ∆ as usual. By construction, the diagonal map ∆M of M coincides with the\r
+composite\r
+M\r
+∇\r
+−−−→ C\r
+∆\r
+−−−→ C ⊗ C\r
+π⊗π −−−→ M ⊗ M.\r
+Consequently\r
+D\r
+1\r
+τM = (τ\r
+1 ∪ τ1\r
+)∇\r
+= ((τMπ) ∪ (τM π))∇\r
+= (τM ⊗ τM)(π ⊗ π)∆∇\r
+= (τM ⊗ τM)∆M.\r
+However the identity\r
+D\r
+1\r
+τM = (τM ⊗ τM )∆M\r
+says that D1is the ordinary cobar construction differential. Thus, in this case, ΩDH(C)\r
+is a perturbation of the ordinary reduced cobar construction ΩH(C) over H(C) and thence\r
+endows H(C) with an A∞-coalgebra structure equivalent to C.\r
+16
+
+Remark 6.3. The concept dual to that of a C∞-algebra is that of a C∞-coalgebra: Let\r
+C be a coaugmented differential graded A∞-coalgebra, with standard construction Ω∂(C).\r
+Then this A∞-coalgebra structure on C is a C∞-coalgebra structure provided the shuffle\r
+diagonal turns Ω∂(C) into a differential graded Hopf algebra, necessarily graded cocom\u0002mutative. Exactly the same reasoning as that in Remark 5.2 reveals that the standard\r
+construction Ω∂(C) of a coaugmented C∞-coalgebra C is the universal enveloping algebra\r
+U[L] of a differential graded Lie algebra L which, in turn, is a perturbation of the free\r
+differential graded Lie algebra generated by s\r
+−1\r
+(JC). Thus the standard construction of\r
+a (coaugmented) C∞-coalgebra comes down to a perturbation of the free differential Lie\r
+algebra generated by s\r
+−1\r
+(JC).\r
+In the special case where, as a differential graded coalgebra, C is an ordinary (coaug\u0002mented) cocommutative differential graded coalgebra, the shuffle diagonal plainly turns the\r
+ordinary cobar construction Ω(C) into a differential graded Hopf algebra; this situation\r
+has been explored by J. Moore in [52] and [53].\r
+7 Perturbations for algebras\r
+We now spell out the situation dual to that in the previous section. Again the proofs of\r
+all the claims in this section will be given in Section 9 below.\r
+Thus, let A be an augmented differential graded algebra and let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+A, h) (7.1)\r
+be a contraction of chain complexes. The unit η : R → A and augmentation ε: A → R\r
+induce a “unit” η : R → M and “augmentation” ε: M → R for M in such a way that (7.1)\r
+is a contraction of augmented and coaugmented chain complexes. Thus M admits a direct\r
+sum decomposition M = R ⊕ IM; indeed we can view M as a differential graded algebra\r
+with zero multiplication on IM, and IM can then be interpreted as the augmentation\r
+ideal of M. The differential graded tensor coalgebra Tc[sIM] is then the corresponding\r
+reduced bar construction for M; let τM : Tc[sIM] → M be the universal bar construction\r
+twisting cochain, that is, the canonical projection to sIM, followed by the desuspension\r
+mapping.\r
+Let\r
+τ\r
+1 = ∇τM : Tc\r
+[sIM] → sIM → A (7.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: Tc[sIM] → (sIM)\r
+⊗j → A\r
+be the degree −1 morphism defined recursively by\r
+τ\r
+j = h(τ1 ∪ τj−1 + · · · + τj−1 ∪ τ1\r
+): (sIM)\r
+⊗j → A. (7.3)\r
+Thereafter, for j ≥ 1, define the degree −1 coderivation Djon Tc[sIM] by\r
+τMD\r
+j = π(τ1 ∪ τj + · · · + τj ∪ τ1\r
+): Tc[sIM]\r
+c\r
+j+1 = (sIM)\r
+⊗(j+1) → M. (7.4)\r
+In particular, for j ≥ 1, the coderivation Djis zero on FjT\r
+c\r
+[sIM] and lowers coaugmen\u0002tation filtration by j.\r
+17
+
+Theorem 7.1. The infinite series\r
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIM] → T\r
+c\r
+[sIM] (7.5)\r
+is a coalgebra perturbation of the differential d on T\r
+c\r
+[sIM] induced from the differential\r
+on M, and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : Tc\r
+[sIM] → A (7.6)\r
+is a twisting cochain\r
+(Tc[sIM], d + D) −→ A.\r
+Furthermore, the adjoint\r
+τ : BDM −→ BA\r
+of the twisting cochain τ , necessarily a morphism of differential graded coalgebras, is a\r
+chain equivalence.\r
+To our knowledge, such a result for a general chain complex M appears in the literature\r
+for the first time in [19]—the special case where the ground ring is a field and where\r
+M has zero homology is due to Chen, as noted earlier. The sums (7.5) and (7.6) are in\r
+general infinite. However, applied to a specific element which, since Tc[sIM] is cocomplete,\r
+necessarily lies in some finite filtration degree subspace, since the operators Dj(j ≥ 1)\r
+lower coaugmentation filtration by j, only finitely many terms will be non-zero, whence\r
+the convergence is naive. We will henceforth write\r
+BDM = (Tc[sIM], d + D). (7.7)\r
+The piece of structure D in BDM is precisely an A∞-algebra structure on M and Theorem\r
+7.1 includes the statement that M, endowed with the A∞-algebra structure D, and A,\r
+endowed with the A∞-algebra structure associated with the differential graded algebra\r
+structure, are, via τ , equivalent as A∞-algebras. This recovers, in particular, Kadeishvili’s\r
+result, Theorem 4.1.\r
+Complement to Theorem 7.1. Suppose that, in addition, M is an augmented differ\u0002ential graded algebra and that π is a morphism of differential graded algebras. Then Dj\r
+is zero for j ≥ 2, the operator D1is the coalgebra perturbation determined by the algebra\r
+structure of M, and BDM is the ordinary reduced bar construction for M.\r
+Indeed, in the situation of the Complement, the vanishing of the higher terms Djfor\r
+j ≥ 2 is a consequence of the annihilation property πh = 0 and the construction of the\r
+twisting cochain comes essentially down to [18] (4.1)∗.\r
+In the special case where A has zero differential and the original contraction (7.1) is\r
+the trivial contraction of the kind\r
+(A\r
+Id\r
+−−−→ ←−−−\r
+Id\r
+A, 0), (7.8)\r
+M and A coincide, the perturbation D coincides with the perturbation ∂ determined\r
+by the algebra structure on A, and Tc\r
+D[sM] coincides with the ordinary reduced bar\r
+18
+
+construction for A; the twisting cochain τ then comes down to the bar construction\r
+twisting cochain and in fact coincides with τ\r
+1\r
+. In this case, the higher terms τ\r
+j and\r
+Dj(j ≥ 2) are obviously zero, and the operator D1 manifestly coincides with the bar\r
+construction operator.\r
+Likewise, suppose that the differential of M is zero. Then M amounts to the homology\r
+H(A) of A and acquires the structure of an augmented graded algebra. In this case,\r
+even though neither the morphism ∇ nor the morphism π in the contraction (7.1) are\r
+supposed to be compatible with the algebra structures, the operator D1is the ordinary\r
+bar construction differential on the graded tensor coalgebra Tc[sIH(A)] determined by the\r
+multiplication map of H(A), and BDH(A) is a perturbation of the ordinary reduced bar\r
+construction BH(A).\r
+Remark 7.2. [Relationship with Kadeishvili’s minimality theorem for algebras] Com\u0002parison of the proof of Theorem 4.1 with that of Theorem 7.1 reveals the following: The\r
+terms τ\r
+j\r
+in the proof of Theorem 7.1 exhibit precisely terms of the kind fjin the proof of\r
+Theorem 4.1, and the operators Djin the proof of Theorem 7.1 yield terms of the kind mj\r
+in the proof of Theorem 4.1. The coalgebra structure of T\r
+c\r
+[sM] exploited in the proof of\r
+Theorem 7.1 organizes the otherwise tedious calculations in the original proof of Theorem\r
+4.1, and the usage, in the proof of Theorem 7.1, of the chain homotopy h in the contrac\u0002tion (7.1) removes the ambiguities related with the choices of the bounding chains in the\r
+proof of Theorem 4.1 and thus leads to an algorithm, cf. [62].\r
+8 A proof of Chen’s theorem\r
+We will now briefly explain how Theorem 7.1 includes Theorem 5.1; this will make it clear\r
+that the basic perturbation argument goes back to Chen: Given the smooth manifold X,\r
+let A = A(X) and pick a contraction of the kind (5.1). Thus H is then the de Rham\r
+cohomology algebra of X. The recursive construction (7.3) yields the twisting cochain\r
+τ = τ\r
+1 + τ2 + . . . : BDH −→ A(X)\r
+and the formulas (7.4) yield the coalgebra differential\r
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIH] → T\r
+c\r
+[sIH].\r
+To simplify the exposition we will suppose that the homology of X is of finite type. Then\r
+the differential graded algebra which is the real dual of BDH is precisely a differential\r
+graded algebra of the kind\r
+Ωb∂[H∗(X)]\r
+where ∂ is the algebra differential dual to the coalgebra differential D. Thus the twisting\r
+cochain τ then appears as an element of the differential graded algebra\r
+Hom(BDH, A(X)) ∼= TbA(X)[s\r
+−1H] = e A(X)⊗bT[s−1H] e ,\r
+endowed with the total differential\r
+d\r
+⊗ = d⊗bId + Id⊗b∂.\r
+19
+
+The twisting cochain property says that τ satisfies the master equation (5.3). The formulas\r
+(7.3) and (7.4) are then essentially the same as those used by Chen to establish the\r
+existence of the formal power series connection and of the differential ∂ in the proof of\r
+his Theorem 1.3.1 in [7].\r
+9 Homological perturbations and algebraic structure\r
+In the 1980’s, I noticed that various standard HPT-constructions are compatible with\r
+algebraic structure, and I used this observation to exploit A∞-structures arising in group\r
+cohomology via HPT-constructions of suitable small free resolutions. These small free\r
+resolutions enabled me to do explicit numerical calculations in group cohomology which\r
+until today are still not doable by other methods. In particular, spectral sequences show\r
+up which do not collapse from E2. This illustrates a typical phenomenon: Whenever a\r
+spectral sequence arises from a certain mathematical structure, a certain strong homotopy\r
+structure is lurking behind and the spectral sequence is an invariant thereof. The higher\r
+homotopy structure is actually finer than the spectral sequence itself. The results have\r
+been published in the papers [25]–[30].\r
+The observation that compatibility with algebraic structure is hidden in various stan\u0002dard HPT-constructions led to an alternate approach to Theorem 6.1 and Theorem 7.1\r
+and, indeed, leads to considerable generalization, cf. Remark 10.3 below. In the academic\r
+year 1987/88, lifting of the restrictions in the USSR enabled T. Kadeishvili to accept an\r
+invitation to the mathematics department of the University of Heidelberg. During that\r
+period, in collaboration, T. Kadeishvili and I developed HPT for general chain equiva\u0002lences and, within this research collaboration, we worked out in particular the alternate\r
+approach. This kind of approach was also worked out in [14]–[16].\r
+We will now explain the outcome of this alternate approach and how it actually leads\r
+to proofs of these theorems and to additional insight. To this end, let\r
+\u0012\r
+M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+N, h\u0013(9.1)\r
+be a filtered contraction. For intelligibility, we recall the following.\r
+Lemma 9.1 (Ordinary perturbation lemma). Let ∂ be a perturbation of the differential\r
+on N, and let\r
+D =\r
+X\r
+n≥0\r
+π∂(−h∂)\r
+n∇ =\r
+X\r
+n≥0\r
+π(−∂h)\r
+n\r
+∂∇ (9.2)\r
+∇∂ =\r
+X\r
+n≥0\r
+(−h∂)\r
+n∇ (9.3)\r
+π∂ =\r
+X\r
+n≥0\r
+π(−∂h)\r
+n\r
+(9.4)\r
+h∂ = −\r
+X\r
+n≥0\r
+(−h∂)\r
+nh = −\r
+X\r
+n≥0\r
+h(−∂h)\r
+n\r
+. (9.5)\r
+20
+
+When the filtrations on M and N are complete, these infinite series converge, D is a\r
+perturbation of the differential on M and, when N∂ and MD refer to the new chain com\u0002plexes,\r
+\u0012\r
+MD\r
+∇∂ −−−→ ←−−−\r
+π∂\r
+N∂, h∂\r
+\u0013\r
+(9.6)\r
+constitute a new filtered contraction that is natural in terms of the given data.\r
+Proof. See [3] or [12].\r
+The issue addressed in the perturbation lemma has been described in the literature\r
+as a transference problem. The ordinary perturbation lemma solves this transference\r
+problem relative merely to a perturbation of the differential on the larger object N. We\r
+will now explore the transference problem relative to additional structure.\r
+Let T[N] and T[M] be the differential graded tensor algebras on N and M respectively,\r
+denote the multiplication map of T[N] by m, let Tπ and T∇ be the induced morphisms\r
+of differential graded algebras, and define an operator Th: T[N] → T[N] by means of\r
+(Th|N\r
+⊗k\r
+) = h ⊗ (∇π)\r
+⊗(k−1) + Id ⊗ h ⊗ (∇π)⊗(k−2) + · · · + Id⊗(k−1) ⊗ h, k ≥ 1.\r
+This is an instance of what is referred to as the tensor trick, developed in [24] and exploited\r
+in [16], [24], [25], [26], [37] and elsewhere; cf. also §3 of [15]. We will come back to the\r
+tensor trick in Section 11 below.\r
+With the above preparations out of the way, the morphisms m, Tπ, Th, etc. are\r
+related by the identities\r
+m(Id ⊗ Th + Th ⊗ (T∇)(Tπ)) = (Th) m,\r
+and\r
+D(Th)(= d(Th) + (Th)d) = (T∇)(Tπ) − Id,\r
+that is, Th is a homotopy Id ≃ (T∇)(Tπ) of morphisms of differential graded algebras,\r
+whence the data\r
+\u0012\r
+T[M]\r
+T∇\r
+−−−→ ←−−−\r
+Tπ\r
+T[N], Th\r
+\u0013\r
+(9.7)\r
+constitute a contraction of augmented algebras. Further, with respect to the augmenta\u0002tion filtrations on T[N] and T[M], these data constitute in fact a contraction of filtered\r
+algebras. This idea goes back to Theorem 12.1 in Eilenberg and Mac Lane I [9]\r
+where it is spelled out in the dual situation as a contraction of bar constructions. The\r
+contraction of coalgebras that corresponds to (9.7) is also spelled out in [14] (3.2), in [15]\r
+(§3), and in [16] (2.2).\r
+Given a chain complex X and a multiplicative perturbation ∂ of the algebra differential\r
+on T[X], we shall denote the new differential graded algebra by T∂[X]. Maintaining\r
+terminology introduced in [37], we shall refer to a chain complex X (without any additional\r
+structure) as being connected in the reduced sense provided it is zero in degree zero and,\r
+furthermore, either non-negative or non-positive; the reader will note that “connected in\r
+the reduced sense” does not coincide with the standard usage of the term “connected”.\r
+On the other hand, an augmented differential graded algebra is connected in the usual\r
+21
+
+sense if and only its augmentation ideal is, as a chain complex, connected in the reduced\r
+sense.\r
+Henceforth a tensor algebra T[W] on a graded R-module W will always be viewed\r
+as a filtered algebra with respect to the augmentation filtration. Here is Theorem 2.2∗of\r
+[37].\r
+Theorem 9.2. Suppose that T[N] and T[M] are connected and let ∂ be a multiplicative\r
+perturbation of the differential on T[N] with respect to the augmentation filtration. Then\r
+the perturbation D given by (9.2) together with the morphisms given by (9.3) – (9.5) yield\r
+a contraction\r
+\u0012\r
+TD[M]\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+T∂[N], T∂h\r
+\u0013\r
+(9.8)\r
+of filtered differential graded algebras which is natural in terms of the given data.\r
+Plainly the perturbation D on T[M] and the morphisms T∂∇, T∂π, T∂h are deter\u0002mined by their restrictions to N ⊆ T[N] and M ⊆ T[M] as appropriate.\r
+The proof of Theorem 9.2 given in [37] relies on the Algebra Perturbation Lemma\r
+([37] Lemma 2.1∗) and involves the “tensor trick”.\r
+We will now sketch a proof of Theorem 6.1. Let C be a coaugmented differential\r
+graded coalgebra, with structure maps ∆ and η, and let\r
+ΩC = T∂[s\r
+−1\r
+(JC)]\r
+be its cobar construction, ∂ being the derivation on the differential graded tensor algebra\r
+T[s\r
+−1\r
+(JC)] induced by the diagonal map of C. Thus with respect to the augmentation\r
+filtration, T[s\r
+−1\r
+(JC)] is a filtered differential graded algebra, ∂ is a multiplicative pertur\u0002bation, and the cobar construction ΩC appears as a “perturbation” of T[s\r
+−1\r
+(JC)].\r
+Suppose momentarily that C is simply connected or concentrated in non-positive\r
+degrees. Then N = s\r
+−1\r
+(JC) is connected in the reduced sense, and the algebra T[s\r
+−1\r
+(JC)]\r
+is complete. The contraction (6.1) determines a contraction\r
+(s\r
+−1\r
+JM\r
+π −−−→ ←−−−\r
+∇\r
+N, h)\r
+of the kind used in Theorem 9.2, where now s\r
+−1JM plays the role of M in Theorem 9.2.\r
+Theorem 9.2 then yields a multiplicative perturbation D of the differential on T[s\r
+−1JM]\r
+and a contraction\r
+\u0012\r
+TD[s\r
+−1\r
+JM]\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+ΩC, T∂h\r
+\u0013\r
+(9.9)\r
+of filtered differential graded algebras. The naturality of the constructions implies that\r
+T∂π is the adjoint of a twisting cochain\r
+τ : C −→ TD[s\r
+−1\r
+JM].\r
+A closer look reveals that τ and D actually coincide with (6.8) and (6.9), respectively.\r
+This establishes the statement of Complement 2 to Theorem 6.1 and yields, furthermore,\r
+22
+
+explicit morphisms which then can be extended, by suitable HPT-constructions, to A∞-\r
+morphisms between C and M (with its A∞-coalgebra structure) and thus establish an\r
+A∞-equivalence between C and M.\r
+To establish Theorem 6.1 for a general coaugmented differential graded coalgebra C,\r
+we note that the contraction (9.7) of filtered algebras induces a contraction\r
+ \r
+T[ b M]\r
+Tb∇\r
+−−−→ ←−−−\r
+Tbπ\r
+T[ b N], Tbh\r
+!\r
+(9.10)\r
+of complete algebras. The statement of Theorem 9.2 extends to that situation and a proof\r
+of Theorem 6.1 for a general coaugmented differential graded coalgebra C can then be\r
+concocted, just as for the particular case handled first.\r
+Finally we will indicate the necessary modifications to arrive at a proof of Theorem\r
+7.1. Instead of the contraction (9.7), we now consider the corresponding contraction\r
+\u0012\r
+T\r
+c\r
+[M]\r
+Tc∇\r
+−−−→ ←−−−\r
+Tcπ\r
+T\r
+c\r
+[N], T\r
+ch\r
+\u0013\r
+(9.11)\r
+of coaugmented coalgebras. Relative to the coaugmentation filtrations, the coalgebra\r
+version of Theorem 9.2 is true without any connectivity assumption and takes the following\r
+form; actually this is Theorem 2.2∗ of [37], not spelled out explicitly there.\r
+Theorem 9.3. Let ∂ be a coalgebra perturbation of the differential on T\r
+c\r
+[N] with respect\r
+to the coaugmentation filtration. Then the perturbation D given by (9.2) together with the\r
+morphisms given by (9.3) – (9.5) yield a contraction\r
+ \r
+T\r
+c\r
+D[M]\r
+Tc\r
+∂∇\r
+−−−→ ←−−−\r
+Tc\r
+∂\r
+π\r
+T\r
+c\r
+∂\r
+[N], T\r
+c\r
+∂h\r
+!\r
+(9.12)\r
+of filtered differential graded coalgebras which is natural in terms of the given data.\r
+The proof of Theorem 9.3 relies on the Coalgebra Perturbation Lemma ([37] Lemma\r
+2.1∗) and involves likewise the “tensor trick”.\r
+Dualizing the above reasoning which leads to a proof of Theorem 6.1, the reader is\r
+now invited to concoct a proof of Theorem 7.1. We refrain from spelling out details.\r
+10 General A∞-algebras and A∞-coalgebras\r
+The reasoning in the previous section extends immediately to general A∞-algebras and\r
+A∞-coalgebras and thus yields solutions of the corresponding transference problems:\r
+Let A be an augmented A∞-algebra, the A∞-algebra structure being given by a coalge\u0002bra perturbation ∂ of the differential on Tc\r
+[sIA] relative to the coaugmentation filtration\r
+and, as before, write B∂A for the perturbed differential graded coalgebra. Moreover, let\r
+(sIM\r
+∇\r
+−−−→ ←−−−\r
+π\r
+sIA, h) (10.1)\r
+be a contraction of chain complexes. Such a contraction arises plainly from a contraction\r
+of augmented chain complexes from A onto M.\r
+23
+
+Theorem 10.1. The perturbation D given by (9.2) yields an augmented A∞-algebra struc\u0002ture on M, and the morphisms given by (9.3) – (9.5) yield a contraction\r
+ \r
+BDM\r
+Tc\r
+∂∇\r
+−−−→ ←−−−\r
+Tc\r
+∂\r
+π\r
+B∂A, T\r
+c\r
+∂h\r
+!\r
+(10.2)\r
+of filtered differential graded coalgebras which is natural in terms of the given data.\r
+Proof. This is an immediate consequence of Theorem 9.3.\r
+For the special case where M is the homology of A, Theorem 10.1 yields the “mini\u0002mality theorem” for general augmented A∞-algebras.\r
+Likewise let C be a coaugmented A∞-coalgebra that is simply connected or concen\u0002trated in non-positive degrees, the A∞-coalgebra structure being given by an algebra\r
+perturbation ∂ of the differential on T[s\r
+−1JC] relative to the augmentation filtration and,\r
+as before, write Ω∂C for the perturbed differential graded coalgebra. Moreover, let\r
+(sJM\r
+∇\r
+−−−→ ←−−−\r
+π\r
+sJC, h) (10.3)\r
+be a contraction of chain complexes. Such a contraction arises plainly from a contraction\r
+of coaugmented chain complexes from C onto M.\r
+Theorem 10.2. The perturbation D given by (9.2) yields a coaugmented A∞-coalgebra\r
+structure on M, and the morphisms given by (9.3) – (9.5) yield a contraction\r
+\u0012\r
+ΩDM\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+Ω∂C, T∂h\r
+\u0013\r
+(10.4)\r
+of filtered differential graded algebras which is natural in terms of the given data.\r
+Proof. This is an immediate consequence of Theorem 9.2.\r
+For the special case where M is the homology of C, Theorem 10.2 yields the “mini\u0002mality theorem” for general coaugmented A∞-coalgebras.\r
+Remark 10.3. At the risk of making a mountain out of a molehill we point out that\r
+Theorem 10.1 is more general than Theorem 7.1 since, in Theorem 10.1, A is a general\r
+(augmented) A∞-algebra; likewise, Theorem 10.2 is more general than Theorem 6.1 since,\r
+in Theorem 10.2, C is a general (coaugmented) A∞-coalgebra. In other words, Theo\u0002rem 10.1 provides a solution of the transference problem for A∞-algebra structures and\r
+Theorem 10.2 provides a solution of the transference problem for A∞-coalgebra structures.\r
+11 Summation over oriented rooted planar trees\r
+In [48] it has been observed that A∞-algebra structures of the kind reproduced in previous\r
+sections can be described in terms of sums over oriented rooted planar trees endowed with\r
+suitable labels. Indeed the authors of [48] bravely acknowledged that the oriented rooted\r
+24
+
+planar trees description is essentially a reworking of the earlier HPT-constructions. We\r
+will now explain how these sums over oriented rooted planar trees come out of the HPT\u0002constructions.\r
+We return to the circumstances of Theorem 7.1 above. We denote the multiplication\r
+map of A by µ: A ⊗ A → A.\r
+By construction, the operation m2 : M ⊗ M → M is the composite\r
+M ⊗ M\r
+∇⊗∇ −−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M.\r
+This is interpreted as an oriented rooted planar tree with three edges and four vertices,\r
+one vertex where the three edges meet and an end point vertex for each edge. The vertex\r
+where three edges meet is labelled µ, the root vertex is labelled π, and the two remaining\r
+vertices are labelled ∇. The two edges having a vertex labelled ∇ are oriented from ∇ to\r
+µ whereas the edge having µ and π as vertices is oriented from µ to π.\r
+For j ≥ 1, simply by construction, the homogeneous degree j − 1 operation\r
+mj+1 = s\r
+−1\r
+◦ Dj◦ s\r
+⊗(j+1) : (IM)⊗(j+1) −→ IM\r
+is given by\r
+π ◦ (τ\r
+1 ∪ τj + · · · + τj ∪ τ1\r
+) ◦ s\r
+⊗(j+1)\r
+and is thus the sum of the j terms π ◦ (τ\r
+ℓ ∪ τj+1−ℓ\r
+) ◦ s\r
+⊗(j+1) where 1 ≤ ℓ ≤ j. Each of\r
+these j terms can be represented by an oriented rooted planar tree with suitable labels,\r
+in the following way:\r
+The operation m2 has already been dealt with. The operation m3 : M⊗3 → M is the\r
+sum of the two composite morphisms\r
+M ⊗ M ⊗ M\r
+∇⊗3\r
+−−−→ A ⊗ A ⊗ A\r
+A⊗µ\r
+−−−→ A ⊗ A\r
+A⊗h\r
+−−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M\r
+and\r
+M ⊗ M ⊗ M\r
+∇⊗3\r
+−−−→ A ⊗ A ⊗ A\r
+µ⊗A\r
+−−−→ A ⊗ A\r
+h⊗A\r
+−−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M.\r
+Each of them is interpreted as an oriented rooted planar tree with four external edges, one\r
+internal edge, four external vertices, and two internal vertices in the following manner:\r
+(i) Three external vertices are labelled ∇; these correspond to the three tensor factors ∇\r
+in the above constituent\r
+∇⊗3: M ⊗ M ⊗ M −→ A ⊗ A ⊗ A;\r
+(ii) one external vertex—the root vertex—is labelled π; this corresponds to the right-most\r
+arrow π : A → M;\r
+(iii) the two internal vertices are labelled µ; in the upper morphism, these correspond to\r
+the arrows labelled µ: A⊗A → A and A⊗µ: A⊗A⊗A → A⊗A; in the lower morphism,\r
+they correspond to the arrows labelled µ: A ⊗ A → A and µ ⊗ A: A ⊗ A ⊗ A → A ⊗ A;\r
+(iv) the single internal edge is labelled h; this corresponds to the arrow labelled\r
+A ⊗ h: A ⊗ A −→ A ⊗ A\r
+25
+
+in the upper morphism and labelled\r
+h ⊗ A: A ⊗ A −→ A ⊗ A\r
+in the lower morphism;\r
+(v) the three external edges having ∇ as a vertex are oriented from the vertices labelled\r
+∇ to the vertices labelled µ;\r
+(vi) the remaining external edge is oriented from a vertex labelled µ to the root vertex\r
+labelled π;\r
+(vii) two edges having a vertex labelled ∇ as starting point meet at a vertex labelled µ,\r
+this vertex is joined to the other vertex labelled µ, oriented in that manner, and it meets\r
+the third edge having a vertex labelled ∇ as starting point at its end point.\r
+There are two such oriented rooted planar trees, one being the mirror image of the other,\r
+and the two composite morphisms spelled out above correspond to these two labelled\r
+oriented rooted planar trees.\r
+Likewise the operation m4 : M⊗4 → M is the sum of three composite morphisms\r
+of a similar nature which, in the language of twisting cochains, arise from the three\r
+constituents τ\r
+1 ∪τ3\r
+, τ\r
+2 ∪τ2\r
+, and τ\r
+3 ∪τ1\r
+, cf. (7.4) above; each such composite morphisms\r
+can be encoded in the appropriate labelled oriented rooted planar tree.\r
+Formalizing this procedure one arrives at the description of the operations mjin terms\r
+of sums over labelled oriented rooted planar trees worked out in detail in [48].\r
+The requisite combinatorics for the construction in Theorem 7.1 is provided by the\r
+concept of cofree coalgebra; likewise in Theorem 6.1 the necessary combinatorics is pro\u0002vided by the concept of free algebra. The machinery of labelled oriented rooted planar\r
+trees yield an alternate description of the requisite combinatorial tool.\r
+This discussion so far refers to ordinary strict algebra (or coalgebra) structures on the\r
+larger object coming into play in the corresponding contraction. Instead of the original\r
+contraction (7.1) where the constituent A is an ordinary augmented differential graded\r
+algebra, consider now a contraction of the kind (10.1) where A is merely an A∞-algebra,\r
+with structure maps\r
+µj: A\r
+⊗j −→ A (j ≥ 1).\r
+The construction in [48] in terms of labelled oriented rooted planar trees extends to that\r
+situation. Indeed, define the arity of a vertex to be the number of incoming edges. To\r
+the trees described above having only vertices of arity 2, one simply adds trees where\r
+internal vertices v have general arities j > 2, a vertex of arity j > 2 being labelled by the\r
+operation µj; one then takes the sum over all labelled oriented rooted planar trees. This\r
+kind of construction yields an A∞-algebra structure on M and, extended suitably, it also\r
+yields an A∞-equivalence between A and M.\r
+However, unravelling the perturbation D on Tc[sIM] spelled out in Theorem 10.1, we\r
+find precisely that very same A∞-structure as that given by the labelled oriented rooted\r
+planar trees. Indeed, the infinite series (9.2), evaluated relative to the contraction (9.11),\r
+takes the form\r
+D = (Tcπ)∂(Tc∇) − (Tcπ)∂(Tch)∂(Tc∇) + (Tcπ)∂(Tch)∂(Tch)∂(Tc∇) + . . . . (11.1)\r
+Now, when ∂ arises from an ordinary associative differential graded algebra structure on\r
+A, the first term in the development (11.1) yields, on M, the A∞-constituent m2, the\r
+26
+
+second term yields the A∞-constituent m3, and so forth, precisely in the form given by\r
+the labelled oriented rooted planar trees construction. More general, when ∂ arises from\r
+a general A∞-algebra structure {µj}j on A, the perturbation ∂ on Tc[sIA] has the form\r
+∂ = ∂\r
+1 + ∂2 + . . .\r
+in such a way that, for j ≥ 1, the constituent ∂\r
+j\r
+corresponds to µj+1. Consequently each\r
+term in the development (11.1) involves all the constituents µj, and reordering the terms\r
+that show up in (11.1), we obtain precisely the A∞-constituent mjin the form given by\r
+the labelled oriented rooted planar trees construction for the transference of a general\r
+A∞-algebra structure. Likewise, exploiting the series (9.3), (9.4), and (9.5) to unravel\r
+the other terms, respectively, Tc\r
+∂∇, Tc∂π, and Tc∂h that are spelled out in Theorem 10.1,\r
+we obtain the requisite remaining data that establish the necessary chain equivalence,\r
+precisely in the form given by the corresponding labelled oriented rooted planar trees\r
+constructions for the transference of a general A∞-algebra structure.\r
+The same kind of remark applies to the dual situation encapsulated in Theorem 10.2.\r
+The construction of these perturbations D on the tensor algebra or tensor coalgebra relies\r
+on the tensor trick mentioned above, which we developed in [24].\r
+Thus we see that the more recent constructions of an A∞-structure in [48] (6.4) and\r
+[50] still come down to the earlier constructions.\r
+Remark 11.1. The construction in [50] is slightly more general in the sense that the\r
+initial data considered there are required to satisfy requirements somewhat weaker than\r
+those which characterize an ordinary contraction. Indeed, in [50], a system\r
+\u0012\r
+N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h\u0013(11.2)\r
+of chain complexes is explored satisfying the requirements (2.4) and (2.5) but not neces\u0002sarily (2.3), that is, it is not required that π∇ = Id; indeed, no condition is imposed upon\r
+π∇. We will now show that application of the constructions in the perturbation lemma\r
+without the requirement that π∇ = Id does not lead to a more general theory.\r
+Indeed, a system of the kind (11.2) can arise by the following specific construction\r
+from an ordinary contraction and in fact every system of the kind (11.2) arises in this\r
+way: Consider an ordinary contraction\r
+\u0012\r
+N1\r
+∇1 −−−→ ←−−−\r
+π1\r
+M, h\u0013(11.3)\r
+of chain complexes, let N2 be an arbitrary chain complex, let N = N1⊕N2, let π : M → N\r
+be the composite of π1 with the canonical injection into N, let\r
+∇2 : N2 → ker(π) = ker(π1) ⊆ M\r
+be a chain map, and let ∇ = (∇1, ∇2): N1 ⊕ N2 → M. Then\r
+\u0012\r
+N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h\u0013(11.4)\r
+27
+
+is a system of the kind (11.2). We will now show that every system of the kind (11.2) arises\r
+in this way. Given a perturbation of the differential on M, application of the perturbation\r
+lemma involves only the summand N1 of N and leaves N2 unchanged in the sense that\r
+this application yields a new system of the kind (11.4) where the new contraction of the\r
+kind (11.3) arises by an application of the perturbation lemma to the contraction of the\r
+kind (11.3) before application of the perturbation and where the summand N2 remains\r
+unchanged. Hence application of the constructions in the perturbation lemma without the\r
+requirement that π∇ = Id does not lead to a more general theory.\r
+Thus consider a system of the kind (11.2). The requirement (2.4), viz.\r
+Dh = Id − ∇π,\r
+implies\r
+D(πh∇) = π∇ − π∇π∇\r
+which, in view of the annihilation properties (2.5), comes down to π∇ = π∇π∇. Hence\r
+the endomorphism π∇ of N is a projector. Let N1 = π∇(N) and N2 = (Id − π∇)(N).\r
+Then N = N1 ⊕N2. Let π1 : M → N1 be the composite of π with the canonical projection\r
+to N1, and let ∇1 : N1 → M be the injection of N1 into N, followed by ∇. The resulting\r
+data\r
+\u0012\r
+N1\r
+∇1 −−−→ ←−−−\r
+π1\r
+M, h\u0013(11.5)\r
+constitute a contraction of chain complexes.\r
+Indeed, to understand the situation, suppose momentarily that N1 is zero, that is,\r
+the composite π∇ is zero. Then ∇π = ∇π∇π = 0 whence Dh = Id, that is, M is\r
+contractible, the homotopy h being a conical contracting homotopy. In the general case\r
+where N1 is not necessarily zero, let M1 = ∇(N1) and M2 = ker(π). The requirement\r
+(2.4), viz. Dh = Id − ∇π, together with the annihilation properties (2.5), implies that\r
+M = ker(π) + ∇π(M) = ker(π) + ∇(N) = ker(π) + ∇(N1) + ∇(N2).\r
+But π∇(N2) is zero whence ∇(N2) ⊆ ker(π) and thence\r
+M = ker(π) + ∇(N1) = M1 + ker(π) = M1 + M2.\r
+By construction, π restricted to M2 is zero and π restricted to M1 amounts to the restric\u0002tion of π1 to M1 which, in turn is an isomorphism having ∇1 as its inverse. Moreover,\r
+exploiting once more the fact that π∇(N2) is zero we conclude that ∇ restricted to N2\r
+is a morphism of the kind ∇2 : N2 → M2. Hence the decomposition M = M1 + M2 is\r
+a direct sum decomposition; the obvious inclusion ker(π1) ⊆ ker(π) is the identity; the\r
+original system (11.2) can be written as\r
+\u0012\r
+N1 ⊕ N2\r
+(∇1,∇2)\r
+−−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2, h\u0013; (11.6)\r
+and the annihilation properties (2.5) imply that h(M1) is zero and that h(M2) ⊆ M2.\r
+Indeed, since h∇ is zero, h vanishes on M1 and, likewise, since πh is zero, h(M2) ⊆ M2.\r
+28
+
+Hence (11.6) actually takes the form\r
+\u0012\r
+N1 ⊕ N2\r
+(∇1,∇2)\r
+−−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2,(0, h2)\r
+\u0013\r
+(11.7)\r
+and the system\r
+\u0012\r
+N2\r
+∇2 −−−→ ←−−−\r
+0\r
+M2,(0, h2)\r
+\u0013\r
+(11.8)\r
+is of the kind of the special case where N1 is zero—indeed, the corresponding morphism\r
+π1 is now even zero—whence, in particular, h2 is a conical contracting homotopy for M2.\r
+Consequently\r
+\u0012\r
+N1\r
+(∇1,0)\r
+−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2,(0, h2)\r
+\u0013\r
+, (11.9)\r
+is an ordinary contraction as asserted and the original system (11.2) is indeed of the\r
+special kind (11.4).\r
+12 Perturbations for Lie algebras and L∞-algebras,\r
+and the master equation\r
+Let g be a differential graded R-Lie algebra that is projective as a graded R-module and\r
+let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+g, h) (12.1)\r
+be a contraction of chain complexes. Suppose that the cofree coaugmented differential\r
+graded cocommutative coalgebra Sc[sg] on the suspension sg of g and, likewise, the cofree\r
+coaugmented differential graded cocommutative coalgebra Sc = Sc[sM] on the suspension\r
+sM of M exist. This kind of coalgebra is well known to be cocomplete. Further, let\r
+d\r
+0\r
+: Sc −→ S\r
+c denote the coalgebra differential on Sc = Sc\r
+[sM] induced by the differential\r
+on M. For b ≥ 0, we will henceforth denote the homogeneous degree b component of\r
+S\r
+c\r
+[sM] by Sc\r
+b\r
+; thus, as a chain complex, FbS\r
+c = R ⊕ Sc\r
+1 ⊕ · · · ⊕ S\r
+c\r
+b\r
+. Likewise, as a chain\r
+complex, Sc = ⊕∞\r
+j=0S\r
+c\r
+j\r
+. We denote by\r
+τM : Sc −→ M\r
+the composite of the canonical projection proj: Sc → sM from Sc = Sc[sM] to its homo\u0002geneous degree 1 constituent sM with the desuspension map s\r
+−1\r
+from sM to M. When\r
+M is viewed as an abelian differential graded Lie algebra, Sc = Sc[sM] may be viewed\r
+as the CCE or classifying coalgebra C[M] for M, and τM : Sc → M is then the universal\r
+differential graded Lie algebra twisting cochain for M.\r
+Let\r
+τ\r
+1 = ∇τM : Sc → g (12.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: Sc → g\r
+29
+
+be the degree −1 morphism defined recursively by\r
+τ\r
+j =\r
+1\r
+2\r
+h([τ\r
+1\r
+, τ j−1] + · · · + [τ\r
+j−1\r
+, τ 1]): Sc → g. (12.3)\r
+Thereafter, for j ≥ 1, define the degree −1 coderivation Dj on Sc by\r
+τMD\r
+j =\r
+1\r
+2\r
+π([τ\r
+1\r
+, τ j] + · · · + [τ\r
+j\r
+, τ 1]): Sc\r
+j+1 → M. (12.4)\r
+In particular, for j ≥ 1, the coderivation Djis zero on FjS\r
+c and lowers coaugmentation\r
+filtration by j.\r
+We now spell out the main result of [31].\r
+Theorem 12.1. The infinite series\r
+D = D\r
+1 + D2 + . . . : Sc → Sc\r
+(12.5)\r
+is a coalgebra perturbation of the differential d on S\r
+c\r
+induced from the differential on M,\r
+and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : Sc → g (12.6)\r
+is a Lie algebra twisting cochain\r
+(Sc, d + D) −→ g.\r
+Furthermore, the adjoint\r
+τ : (Sc, d + D) −→ Cg\r
+of the twisting cochain τ , necessarily a morphism of differential graded coalgebras, is a\r
+chain equivalence. More precisely, the data determine a contraction\r
+\u0012\r
+(Sc[sM], d + D)\r
+τ −−−→ ←−−−\r
+Π\r
+C[g], H\u0013\r
+of chain complexes which is natural in terms of the data.\r
+This is precisely Theorem 2.1 in [31] where also a complete proof can be found. For\r
+the special case where M is the homology of g, this result yields the “minimality theorem”\r
+for ordinary differential graded Lie algebras.\r
+Remark 12.2. The attempt to treat, as for the cases explained in Section 9 above, the\r
+requisite higher homotopies by means of a suitable version of the perturbation lemma rela\u0002tive to the additional algebraic structure, that is, to develop a version of the perturbation\r
+lemma compatible with Lie brackets or more generally with sh-Lie structures, led to the\r
+paper [38], but technical complications arise since the tensor trick breaks down for co\u0002commutative coalgebras; indeed, the notion of homotopy of morphisms of cocommutative\r
+coalgebras is a subtle concept [58], and only a special case was handled in [38], with some\r
+of the technical details merely sketched. The article [31] provides a complete solution with\r
+all the necessary details and handles the case of a general contraction whereas in [38] only\r
+the case of a contraction of a differential graded Lie algebra onto its homology was treated.\r
+Also in [38], the proof is only sketched, and a detailed proof is given in [31]. The twisting\r
+cochain τ is the most general solution of the master equation, under the circumstances of\r
+[31].\r
+30
+
+We will write\r
+CDM = (Sc, d + D). (12.7)\r
+The piece of structure D in CDM is precisely an L∞-algebra structure on M, Theorem\r
+12.1 includes the statement that M, endowed with the L∞-algebra structure D, and g,\r
+endowed with the L∞-algebra structure associated with the differential graded Lie algebra\r
+structure, are, via τ , equivalent as L∞-algebras.\r
+The general sh-Lie algebra perturbation lemma, Theorem 2.5 in [34], extends Theorem\r
+12.1 to the more general case where the constituent g in the contraction (12.1) is merely\r
+an sh-Lie algebra. This sh-Lie algebra perturbation lemma yields, in particular, the\r
+“minimality theorem” for general L∞-algebras.\r
+13 More about the relationship with deformations\r
+We have pointed out above that the idea of combining the Gerstenhaber operation in the\r
+Hochschild complex mentioned in Section 4.1 with Stasheff’s notion of A∞-algebra let\r
+Kadeishvili to the minimality theorem. There is an obvious formal relationship between\r
+homological perturbations and deformation theory but the relationship is actually much\r
+more profound: In [23], S. Halperin and J. Stasheff developed a procedure by means of\r
+which the classification of rational homotopy equivalences inducing a fixed cohomology\r
+algebra isomorphism can be achieved. Moreover, one can explore the rational homotopy\r
+types with a fixed cohomology algebra by studying perturbations of a free differential\r
+graded commutative model by means of techniques from deformation theory. This was\r
+initiated by M. Schlessinger and J. Stasheff [58]. A related and independent develop\u0002ment, phrased in terms of what is called the functor D, is due to N. Berikashvili and his\r
+students at Georgia, notably T. Kadeishvili and S. Saneblidze; see [29] for some details\r
+and references. A third approach in which only the underlying graded vector space was\r
+fixed is due to Y. Felix [10]. More remarks about the relationship between homological\r
+perturbations and deformation theory can be found in [32].\r
+Kadeishvili contributed once more to the relationship between deformations and\r
+higher homotopies: He observed an interpretation of A∞-operations in terms of a suitable\r
+notion of twisting cochain, with respect to the Gerstenhaber operation in the Hochschild\r
+(cochain) complex [43]. An expanded version of that approach will appear as [45].\r
+References\r
+[1] V. Alvarez, J. A. Armario, M. D. Frau and P. Real, ´ Algebra structures on the com\u0002parison of the reduced bar construction and the reduced W-construction. Comm. in\r
+Algebra 35 (2007), 3273–3291.\r
+[2] E. H. Brown: Twisted tensor products.I. Ann. of Math.69 (1959), 223–246.\r
+[3] R. Brown: The twisted Eilenberg–Zilber theorem. Celebrazioni Archimedee del Secolo\r
+XX, Simposio di topologia, pp. 33–37 (1964).\r
+31
+
+[4] H. Cartan: Alg`ebres d’Eilenberg–Mac Lane et homotopie. Expos´es 2–11. S´eminaire\r
+H. Cartan 1954/55. Ecole Normale Sup´erieure, Paris, 1956. ´\r
+[5] K. T. Chen: Iterated integrals of differential forms and loop space homology. Ann. of\r
+Math. 97 (1973), 217–246.\r
+[6] K. T. Chen: Iterated path integrals. Bull. Amer. Math. Soc. 83 (1977), 831–879.\r
+[7] K. T. Chen: Extension of C\r
+∞ Function Algebra by Integrals and Malcev Completion\r
+of π1. Advances in Mathematics 23 (1977), 181–210.\r
+[8] A. Dold: Zur Homotopietheorie der Kettenkomplexe. Math. Ann. 140 (1960), 278–\r
+298.\r
+[9] S. Eilenberg and S. Mac Lane: On the groups H(π, n). I. Ann. of Math. 58 (1953),\r
+55–106. II. Methods of computation. Ann. of Math. 60 (1954), 49–139.\r
+[10] Felix, Y.: Classification homotopique des espaces rationnels de cohomologie donn´ee.\r
+(French). Bull. Soc. Math. Belg. S´er. B 31 (1979), 75–86.\r
+[11] M. Goresky, R. Kottwitz, and R. Mac Pherson: Equivariant cohomology, Koszul\r
+duality and the localization theorem. Invent. Math. 131 (1998), 25–83.\r
+[12] V.K.A.M. Gugenheim: On the chain complex of a fibration. Illinois J. of Math. 16\r
+(1972), 398–414.\r
+[13] V.K.A.M. Gugenheim: On a perturbation theory for the homology of the loop space.\r
+J. of Pure and Applied Algebra 25 (1982), 197–205.\r
+[14] V.K.A.M. Gugenheim and L. Lambe: Perturbation in differential homological alge\u0002bra. Illinois J. of Mathematics 33 (1989), 566–582.\r
+[15] V.K.A.M. Gugenheim, L. Lambe, and J.D. Stasheff: Algebraic aspects of Chen’s\r
+twisting cochains. Illinois J. of Math. 34 (1990), 485–502.\r
+[16] V.K.A.M. Gugenheim, L. Lambe, and J. D. Stasheff: Perturbation theory in differ\u0002ential homological algebra. II. Illinois J. of Math. 35 (1991), 357–373.\r
+[17] V.K.A.M. Gugenheim and J.P. May: On the theory and applications of differential\r
+torsion products. Memoirs of the Amer. Math. Soc. 142 (1974).\r
+[18] V.K.A.M. Gugenheim and H. J. Munkholm: On the extended functoriality of Tor\r
+and Cotor . J. of Pure and Applied Algebra 4 (1974), 9–29.\r
+[19] V.K.A.M. Gugenheim and J.D. Stasheff: On perturbations and A∞-structures.\r
+Festschrift in honor of G. Hirsch’s 60’th birthday, ed. L. Lemaire. Bull. Soc. Math.\r
+Belgique A 38 (1986), 237–245 (1987).\r
+[20] R. Hain: Twisting cochains and duality between minimal algebras and minimal Lie\r
+algebras. Trans. Amer. Math. Soc. 277 (1983), 397–411.\r
+32
+
+[21] R. Hain: Iterated integrals and homotopy periods. Mem. Am. Math. Soc. 291 (1984).\r
+[22] S. Halperin and J. D. Stasheff: Differential algebra in its own rite. In: Proc. Adv.\r
+Study Inst. Alg. Top., August 10–23, 1970, Aarhus, Denmark, 567–577.\r
+[23] S. Halperin and J. D. Stasheff: Obstructions to homotopy equivalences. Advances in\r
+Math. 32, 233–278 (1979).\r
+[24] J. Huebschmann: The homotopy type of FΨq. The complex and symplectic cases. In:\r
+Applications of Algebraic K-Theory to Algebraic Geometry and Number Theory,\r
+Part II, Proc. of a conf. at Boulder, Colorado, June 12 – 18, 1983. Cont. Math. 55\r
+(1986), 487–518.\r
+[25] J. Huebschmann: Perturbation theory and free resolutions for nilpotent groups of\r
+class 2. J. Algebra 126 (1989), 348–399.\r
+[26] J. Huebschmann: Cohomology of nilpotent groups of class 2. J. Algebra 126 (1989),\r
+400–450.\r
+[27] J. Huebschmann: The mod p cohomology rings of metacyclic groups. J. Pure\r
+Appl. Algebra 60 (1989), 53–105.\r
+[28] J. Huebschmann: Cohomology of metacyclic groups, Trans. Amer. Math. Soc. 328\r
+(1991), 1–72.\r
+[29] J. Huebschmann: Berikashvili’s functor D and the deformation equation. In:\r
+Festschrift in honor of N. Berikashvili’s 70th birthday, Proceedings of A. Razmadze\r
+Institute 119, 59–72 (1999), math.AT/9906032.\r
+[30] J. Huebschmann: On the cohomology of the holomorph of a finite cyclic group. J. of\r
+Algebra 279 (2004), 79–90, math.GR/0303015.\r
+[31] J. Huebschmann: The Lie algebra perturbation lemma. Festschrift in honor of M. Ger\u0002stenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in Math. (to appear),\r
+arXiv:0708.3977.\r
+[32] J. Huebschmann: Origins and breadth of the theory of higher homotopies. Festschrift\r
+in honor of M. Gerstenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in\r
+Math. (to appear), arXiv:0710.2645 [math.AT].\r
+[33] J. Huebschmann: Minimal free multi models for chain algebras. Festschrift to the\r
+memory of G. Chogoshvili, Georgian Math. J. 11 (2004), 733–752, math.AT/0405172.\r
+[34] J. Huebschmann: The sh-Lie algebra perturbation lemma. Forum Math. (to appear),\r
+arXiv:0710.2070.\r
+[35] J. Huebschmann: Homological perturbations, equivariant cohomology, and Koszul\r
+duality, math.AT/0401160.\r
+33
+
+[36] J. Huebschmann: Relative homological algebra, euivariant de Rham theory, and\r
+Koszul duality, math.AT/0401161.\r
+[37] J. Huebschmann and T. Kadeishvili: Small models for chain algebras. Math. Z. 207\r
+(1991), 245–280.\r
+[38] J. Huebschmann and J. D. Stasheff: Formal solution of the master equation via HPT\r
+and deformation theory. Forum Math. 14 (2002), 847–868, math.AG/9906036.\r
+[39] D. Husemoller, J. C. Moore, and J. D. Stasheff: Differential homological algebra and\r
+homogeneous spaces. J. of Pure and Applied Algebra 5 (1974), 113–185.\r
+[40] T. Kadeishvili: On the Differentials of the Spectral Sequence of a Fibre Bundle.\r
+(Russian). Bulletin of the Academy of Sciences of the Georgian SSR 82 N 2 (1976),\r
+285–288, English version: arXiv:math/0609747.\r
+[41] T. Kadeishvili: On the homology theory of fibre spaces. (Russian). Uspekhi Mat.\r
+Nauk. 35:3 (1980), 183–188, Russian Math. Surveys 35:3 (1980), 231–238, English\r
+version: arXiv:math/0504437.\r
+[42] T. Kadeishvili: The algebraic structure in the homology of an A(∞)-algebra. (Rus\u0002sian). Soobshch Akad. Nauk. Gruzin SSR 108 (1982), 249–252.\r
+[43] T. Kadeishvili: The A(∞)-algebra Structure and Hochschild and Harrison Coho\u0002mology. (Russian). Proc. of Tbil. Math. Inst. 91 (1988), 19-27, English version:\r
+arXiv:math/0210331.\r
+[44] T. Kadeishvili: A(∞)-algebra Structure in Cohomology and Rational Homotopy Type.\r
+(Russian). Proc. of Tbil. Mat. Inst. 107 (1993), 1-94.\r
+[45] T. Kadeishvili: Twisting Elements in Homotopy G-algebras. Festschrift in honor of\r
+M. Gerstenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in Math. (to\r
+appear), arXiv:math/0709.3130.\r
+[46] T. Kadeishvili: Cohomology C∞-algebra and rational homotopy type. Banach Center\r
+Publications (to appear).\r
+[47] M. Kontsevich: Deformation quantization of Poisson manifolds, math.QA/9709040.\r
+[48] M. Kontsevich and Y. Soibelman: Homological mirror symmetry and torus fibrations,\r
+math.QA/0011041.\r
+[49] M. Markl: Ideal perturbation lemma. Comm. Algebra 29:11 (2001), 5209–5232.\r
+[50] S. A. Merkulov: Strongly homotopy algebras of a K¨ahler manifold. IMRN 3 (1999),\r
+153–164, math.AG/9809172.\r
+[51] W. Michaelis: Lie coalgebras. Advances in Math. 38 (1980), 1–54.\r
+34
+
+[52] J. C. Moore: Some properties of the loop homology of commutative coalgebras. The\r
+Steenrod Algebra and its Applications (Proc. Conf. to Celebrate N. E. Steenrod’s\r
+Sixtieth Birthday, Battelle Memorial Inst., Columbus, Ohio, 1970), Lecture Notes in\r
+Mathematics 168, 232–245, Springer, Berlin.\r
+[53] J. C. Moore: Differential homological algebra. Actes, Congr`es intern. math. Nice\r
+(1970), Gauthiers-Villars, Paris (1971), 335–339.\r
+[54] H. J. Munkholm: The Eilenberg–Moore spectral sequence and strongly homotopy mul\u0002tiplicative maps. J. of Pure and Applied Algebra 9 (1976), 1–50.\r
+[55] J. Neisendorfer: Lie algebras, coalgebras, and rational homotopy theory for nilpotent\r
+spaces. Pac. J. of Math. 74 (1978), 429–460.\r
+[56] A. Nijenhuis and R. W. Richardson: Cohomology and deformations in graded Lie\r
+algebras. Bull. Amer. Math. Soc. 72 (1966), 1–29.\r
+[57] D. Quillen: Rational homotopy theory. Ann. of Math. 90 (1969), 205–295.\r
+[58] M. Schlessinger and J. D. Stasheff: Deformation theory and rational homotopy type.\r
+Pub. Math. Sci. IHES. To appear; new version July 13, 1998.\r
+[59] W. Shih: Homologie des espaces fibr´es. Pub. Math. Sci. IHES 13 (1962).\r
+[60] Stasheff, J. D.: Homotopy associativity of H-spaces. I. II. Trans. Amer. Math. Soc.\r
+108, 275–292; 293–312 (1963).\r
+[61] D. Tanre: Homotopie rationnelle: Mod`eles de Chen, Quillen, Sullivan. Lecture Notes\r
+in Mathematics 1025, Springer-Verlag, Berlin · Heidelberg · New York (1983).\r
+[62] M. Vejdemo-Johansson: Blackbox computation of A∞-algebras, arXiv:0807.3869.\r
+35"""
+
+[metadata]
+title = "huebschmann 2008 0809.4791v1 construction ainfty structures"
+authors = ["Unknown"]
+arxiv = "0809.4791v1"
+year = 2008
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:0809.4791v1 [math.AT] 27 Sep 2008\r
+On the construction of A∞-structures\r
+J. Huebschmann\r
+USTL, UFR de Math´ematiques\r
+CNRS-UMR 8524"""
+
+[[sections]]
+number = "59655"
+title = "Villeneuve d’Ascq C´edex, France"
+text = """
+Johannes.Huebschmann@math.univ-lille1.fr\r
+October 29, 2018\r
+To Tornike Kadeishvili\r
+Abstract\r
+We relate a construction of Kadeishvili’s establishing an A∞-structure on the\r
+homology of a differential graded algebra or more generally of an A∞ algebra with\r
+certain constructions of Chen and Gugenheim. Thereafter we establish the links of\r
+these constructions with subsequent developments.\r
+Subject classification: 16E45, 16W30, 17B55, 17B56, 17B65, 17B70, 18G55, 55P62\r
+Keywords: A∞-algebra, C∞-algebra, L∞-algebra, twisting cochain, iterated integral, ho\u0002mological perturbation, minimality theorem, minimal model, perturbation lemma, (co)algebra\r
+perturbation lemma, Lie algebra perturbation lemma, differential graded Lie (co)algebra\r
+Contents"""
+
+[[sections]]
+number = "1"
+title = "Introduction 2"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Preliminaries 4"
+text = ""
+
+[[sections]]
+number = "3"
+title = "A∞-algebras 7"
+text = ""
+
+[[sections]]
+number = "4"
+title = "Kadeishvili’s minimality theorem for algebras 9"
+text = ""
+
+[[sections]]
+number = "5"
+title = "The Chen perturbation 12"
+text = ""
+
+[[sections]]
+number = "6"
+title = "Perturbations for coalgebras 14"
+text = "1"
+
+[[sections]]
+number = "7"
+title = "Perturbations for algebras 17"
+text = ""
+
+[[sections]]
+number = "8"
+title = "A proof of Chen’s theorem 19"
+text = ""
+
+[[sections]]
+number = "9"
+title = "Homological perturbations and algebraic structure 20"
+text = ""
+
+[[sections]]
+number = "10"
+title = "General A∞-algebras and A∞-coalgebras 23"
+text = ""
+
+[[sections]]
+number = "11"
+title = "Summation over oriented rooted planar trees 24"
+text = ""
+
+[[sections]]
+number = "12"
+title = "Perturbations for Lie algebras and L∞-algebras, and the master equa\u0002tion 29"
+text = ""
+
+[[sections]]
+number = "13"
+title = "More about the relationship with deformations 31"
+text = ""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+We will relate a construction of Kadeishvili’s establishing an A∞-structure on the ho\u0002mology of a differential graded algebra or more generally of an A∞ algebra with certain\r
+constructions of Chen and Gugenheim. We will then establish the links of these construc\u0002tions with subsequent developments.\r
+Let R be a commutative ring and A a differential graded algebra over R. Suppose that,\r
+as a graded R-module, the homology H(A) of A is free. Then H(A) acquires an A∞-algebra\r
+structure that is equivalent to A. Over a field, so that the freeness hypothesis relative to\r
+H(A) is automatically satisfied, this fact is nowadays quoted as the “minimality theorem”\r
+for differential graded algebras— we will discuss the issue of “minimality theorem” below.\r
+Such a result was published by Kadeishvili in 1980 [41]. Over a general ground ring R, a\r
+related result involving HPT was published by V. Gugenheim in 1982 [13]. More precisely,\r
+starting from a simply connected coaugmented differential graded coalgebra C over the\r
+ground ring R that is homology split (e. g. free as a module over the ground ring), the\r
+homology H(C) acquires a coaugmented graded coalgebra structure, and a perturbation\r
+of the ordinary cobar construction relative to the coalgebra structure on H(C) yields an\r
+A∞-coalgebra structure on H(C) that is equivalent to the original coalgebra C. This is a\r
+version of the “minimality theorem” in the realm of coalgebras. Gugenheim’s approach\r
+relies on a perturbation argument developed over the reals by Chen [7], published in 1977\r
+and, furthermore, in a sense, Theorem 3.1.1 in Chen’s paper [6] establishes a version of the\r
+“minimality theorem”. In 1982, Kadeishvili published a result which extends his original\r
+approach to a more general “minimality theorem” saying that, over a field, the homology\r
+H(A) of a general A∞-algebra A acquires an A∞-algebra structure that is equivalent to\r
+A [42].\r
+Because of the present renewed interest in the “minimality theorem”, and to help\r
+the presently young avoid loss of contact with the past, it seems worthwhile explaining\r
+the original insight into the “minimality theorem”. This will place the original results\r
+properly in the literature. The contributions of Gugenheim and in particular those of\r
+Chen seem to have been largely forgotten. Also there has been a debate in the literature\r
+2
+
+to what extent the various constructions of A∞-structures were explicit; the constructions\r
+by Chen, Gugenheim and Kadeishvili are perfectly explicit. In fact, we hope to convince\r
+the reader that these constructions essentially boil down to the very same basic idea. We\r
+will then relate the old approaches to subsequent ones and show that the recent ones [48]\r
+(6.4), [50] essentially still come down to the same basic idea. In particular we will illustrate\r
+how the constructions in terms of labelled oriented rooted trees [48] (6.4) are instances of\r
+ordinary HPT constructions. This will, perhaps, demystify the labelled oriented rooted\r
+trees method and make it accessible to a wider audience. We will also explain the Lie\r
+algebra case. It turns out that the various constructions establishing the corresponding\r
+statement of the “minimality theorem” in the algebra, coalgebra, Lie algebra situation,\r
+etc. all boil down to essentially the same kind of construction, as comparison of (6.1)–\r
+(6.7), (7.1)–(7.7), and (12.1)–(12.7) below shows.\r
+It is a pleasure to dedicate this paper to Tornike Kadeishvili. I am indebted to him\r
+for collaboration and for discussion much beyond that collaboration. Our collaboration\r
+[37] led to a number of results related with the perturbation lemma; in particular we have\r
+elaborated on the compatibility of the perturbation lemma with suitable algebraic struc\u0002ture. The perturbation lemma is lurking behind the formulas in Chapter II of Section\r
+1 of [59] and seems to have first been made explicit by M. Barrat (unpublished). The\r
+first instance known to us where it appeared in print is [3]. By means of that lemma,\r
+in [12], V. Gugenheim developed a lucid proof of the twisted Eilenberg-Zilber theorem\r
+which, in turn, was established by E. H. Brown [2] originally via acyclic models. We\r
+have already mentioned Chen’s construction of a perturbation given in [6], extended and\r
+clarified by V. Gugenheim in [13]. These constructions of Chen’s and Gugenheim’s are\r
+somewhat by hand and do not involve the perturbation lemma. In [19], Gugenheim and\r
+Stasheff extended that construction of a perturbation to the case where the contracted\r
+object is admitted to have non-zero differential. In [24], I had developed the tensor trick,\r
+see Section 9 below, and the idea of iterative perturbation. My collaboration with T.\r
+Kadeishvili involved the tensor trick and iterative perturbations and produced in par\u0002ticular the (co)algebra perturbation lemma. This lemma then enabled us to recover the\r
+perturbations of the kind constructed by Chen, Gugenheim, and Gugenheim-Stasheff in\r
+a conceptual way. It led as well to a lucid proof of the minimality theorem. We also\r
+developed a perturbation theory for a general homotopy equivalence, not necessarily a\r
+contraction. It is, furthermore, worthwhile noting that the labelled rooted trees are lurk\u0002ing behind the (co)algebra perturbation lemma but at the time there was no need to spell\r
+them out explicitly in [37]. We will explain all these and more issues in this paper. At\r
+these days the perturbation lemma and variants thereof are, perhaps, more vivid than\r
+ever, see e. g. [1], [31], [34], [49] and the references there; in particular, the perturbation\r
+theory for a general homotopy equivalence developed in [37] has been taken up again and\r
+pushed further in [49].\r
+I owe some special thanks to Jim Stasheff for a number of comments on a draft of\r
+this paper.\r
+3"""
+
+[[sections]]
+number = "2"
+title = "Preliminaries"
+text = """
+The ground ring is a commutative ring with 1 and will be denoted by R. Later some\r
+condition has, perhaps, to be imposed upon R so that the symmetric coalgebra on the\r
+R-module under discussion exists but R is not necessarily a field.\r
+Indeed, to avoid confusion, recall that, given the graded R-module Y , for j ≥ 0, the\r
+notation Sc\r
+j\r
+[Y ] ⊆ T\r
+c\r
+j\r
+[Y ] refers to the submodule of invariants in the j’th tensor power\r
+T\r
+c\r
+j\r
+[Y ] relative to the obvious action on Tc\r
+j\r
+[Y ] of the symmetric group Sj on j letters, and\r
+S\r
+c\r
+[Y ] refers to the direct sum\r
+S\r
+c\r
+[Y ] = ⊕\r
+∞\r
+j=0S\r
+c\r
+j\r
+[Y ]\r
+of graded R-modules. Some hypothesis is, in general, necessary in order for the homoge\u0002neous constituents\r
+T\r
+c\r
+j+k\r
+[Y ] −→ T\r
+c\r
+j\r
+[Y ] ⊗ T\r
+c\r
+k\r
+[Y ] (j, k ≥ 0)\r
+of the diagonal map ∆: Tc[Y ] → T\r
+c\r
+[Y ] ⊗ T\r
+c\r
+[Y ] of the graded tensor coalgebra Tc[Y ] to\r
+induce a graded diagonal map on Sc[Y ], so that Sc[Y ] is then the symmetric coalgebra on Y .\r
+See Section 3 of [31]. In particular, let V be a projective graded R-module, concentrated\r
+in odd degrees, and consider the graded exterior algebra Λ[V ] on V . The diagonal map\r
+V → V ⊕ V is well known to induce a diagonal map for Λ[V ] turning the latter into a\r
+graded Hopf algebra. We then denote the resulting graded coalgebra by Λ′[V ] and, as\r
+usual, refer to it as the exterior coalgebra. Whenever a graded exterior coalgebra of the\r
+kind Λ′[V ] is under discussion, we will suppose throughout that the resulting coalgebra\r
+is the graded symmetric coalgebra Sc[V ] on V , that is, that the canonical morphism of\r
+coalgebras from Λ′[V ] to Sc[V ] (induced by the canonical projection from Λ′[V ] to V ) is\r
+an isomorphism of graded coalgebras. This excludes the prime 2 being a zero divisor in\r
+the ground ring R. In particular, a field of characteristic 2 is not admitted as ground ring.\r
+Indeed in characteristic 2 the entire theory requires special treatment.\r
+We will take chain complex to mean differential graded R-module. A chain complex\r
+will not necessarily be concentrated in non-negative or non-positive degrees. The differ\u0002ential of a chain complex will always be supposed to be of degree −1. For a filtered chain\r
+complex X, a perturbation of the differential d of X is a (homogeneous) morphism ∂ of\r
+the same degree as d such that ∂ lowers the filtration and (d + ∂)\r
+2 = 0 or, equivalently,\r
+[d, ∂] + ∂∂ = 0. (2.1)\r
+Thus, when ∂ is a perturbation on X, the sum d + ∂, referred to as the perturbed dif\u0002ferential, endows X with a new differential. When X has a graded coalgebra structure\r
+such that (X, d) is a differential graded coalgebra, and when the perturbed differential\r
+d + ∂ is compatible with the graded coalgebra structure, we refer to ∂ as a coalgebra\r
+perturbation; the notion of algebra perturbation is defined similarly. Given a differential\r
+graded coalgebra C and a coalgebra perturbation ∂ of the differential d on C, we will\r
+occasionally denote the new or perturbed differential graded coalgebra by C∂. Likewise\r
+given a differential graded algebra A and an algebra perturbation ∂ of the differential d\r
+on A, we will occasionally denote the new or perturbed differential graded algebra by A∂.\r
+A contraction\r
+(N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h) (2.2)\r
+4
+
+of chain complexes [9] consists of\r
+– chain complexes N and M,\r
+– chain maps π : N → M and ∇: M → N,\r
+– a morphism h: N → N of the underlying graded modules of degree 1;\r
+these data are required to satisfy\r
+π∇ = Id, (2.3)\r
+Dh = Id − ∇π, (2.4)\r
+πh = 0, h∇ = 0, hh = 0. (2.5)\r
+The requirements (2.5) are referred to as annihilation properties or side conditions.\r
+Let C be a coaugmented differential graded coalgebra with coaugmentation map\r
+η : R → C and coaugmentation coideal JC = coker(η), the diagonal map being writ\u0002ten as ∆: C → C ⊗C as usual. Recall that the counit ε: C → R and the coaugmentation\r
+map determine a direct sum decomposition C = R ⊕ JC. The coaugmentation filtration\r
+{FnC}n≥0 is as usual given by\r
+FnC = ker(C −→ (JC)\r
+⊗(n+1)) (n ≥ 0)\r
+where the unlabelled arrow is induced by some iterate of the diagonal ∆ of C. This\r
+filtration is well known to turn C into a filtered coaugmented differential graded coalgebra;\r
+thus, in particular, F0C = R. We recall that C is said to be cocomplete when C = ∪FnC.\r
+Write s for the suspension operator as usual and accordingly s\r
+−1\r
+for the desuspension\r
+operator. Thus, given the chain complex X, (sX)j = Xj−1, etc., and the differential\r
+d: sX → sX on the suspended object sX is defined in the standard manner so that\r
+ds + sd = 0.\r
+Given two chain complexes X and Y , recall that Hom(X, Y ) inherits the structure of\r
+a chain complex by the operator D defined by\r
+Dφ = dφ − (−1)|φ|φd (2.6)\r
+where φ is a homogeneous homomorphism from X to Y and where |φ| refers to the degree\r
+of φ.\r
+Let g be a chain complex having the property that the cofree coaugmented differential\r
+graded cocommutative coalgebra Sc[sg] on the suspension sg of g exists. This happens to\r
+be the case, e.g., when g is projective as a graded R-module. Let\r
+τg : Sc[sg] −→ g\r
+be the composite of the canonical projection to Sc\r
+1\r
+[sg] = sg with the desuspension map.\r
+Suppose that g is endowed with a graded skew-symmetric bracket [ · , · ] that is compatible\r
+with the differential but not necessarily a graded Lie bracket, i. e. does not necessarily\r
+satisfy the graded Jacobi identity. Let C be a coaugmented differential graded cocommu\u0002tative coalgebra. Given homogeneous morphisms a, b : C → g, with a slight abuse of the\r
+bracket notation [ · , · ], the cup bracket [a, b] is given by the composite\r
+C\r
+∆\r
+−−−→ C ⊗ C\r
+a⊗b\r
+−−−→ g ⊗ g\r
+[·,·]\r
+−−−→ g.\r
+5
+
+The cup bracket [ · , · ] is well known to be a graded skew-symmetric bracket on Hom(C, g)\r
+which is compatible with the differential on Hom(C, g). Define the coderivation\r
+∂ : Sc[sg] −→ S\r
+c\r
+[sg]\r
+on Sc[sg] by the requirement\r
+τg∂ =\r
+1\r
+2\r
+[τg, τg]: Sc\r
+2\r
+[sg] → g. (2.7)\r
+Then D∂ (= d∂ + ∂d) = 0 since the bracket on g is supposed to be compatible with the\r
+differential d. Moreover, the bracket on g satisfies the graded Jacobi identity if and only if\r
+∂∂ = 0, that is, if and only if ∂ is a coalgebra perturbation of the differential d on S\r
+c\r
+[sg],\r
+cf. e. g. [38].\r
+We now suppose that the graded bracket [ · , · ] on g turns g into a differential graded\r
+Lie algebra and continue to denote the resulting coalgebra perturbation by ∂, so that Sc\r
+∂\r
+[sg]\r
+is a coaugmented differential graded cocommutative coalgebra; in fact, Sc\r
+∂\r
+[sg] is then\r
+precisely the ordinary C(artan-)C(hevalley-)E(ilenberg) or classifying coalgebra\r
+for g and, following [57] (p. 291), we denote it by C[g] (but the construction given above is\r
+different from that in [57] which, in turn, is carried out only over a field of characteristic\r
+zero). Furthermore, given a coaugmented differential graded cocommutative coalgebra\r
+C, the cup bracket turns Hom(C, g) into a differential graded Lie algebra. In particular,\r
+Hom(Sc, g) and Hom(FnS\r
+c\r
+, g) (n ≥ 0) acquire differential graded Lie algebra structures.\r
+Given a coaugmented differential graded cocommutative coalgebra C and a differential\r
+graded Lie algebra h, a Lie algebra twisting cochain t: C → h is a homogeneous morphism\r
+of degree −1 whose composite with the coaugmentation map is zero and which satisfies\r
+Dt =\r
+1\r
+2\r
+[t, t], (2.8)\r
+cf. [53], [57]. In particular, relative to the graded Lie bracket D on g, the morphism\r
+τg: C[g] → g is a Lie algebra twisting cochain, the C(artan-)C(hevalley-)E(ilenberg)\r
+or universal Lie algebra twisting cochain for g. It is, perhaps, worth noting that, when g\r
+is viewed as an abelian differential graded Lie algebra relative to the zero bracket, Sc[sg]\r
+is the corresponding CCE or classifying coalgebra and τg: Sc[sg] → g is still the universal\r
+Lie algebra twisting cochain.\r
+Remark 2.1. The terms master equation, Maurer-Cartan equation, Lie algebra twisting\r
+cochain, and integrability condition all refer to the same mathematical object. Historically\r
+the Maurer-Cartan equation came first.\r
+At the risk of making a mountain out of a molehill, we note that, in (2.7) and (2.8)\r
+above, the factor 1\r
+2\r
+is a mere matter of convenience. The correct way of phrasing graded Lie\r
+algebras when the prime 2 is not invertible in the ground ring is in terms of an additional\r
+operation, the squaring operation Sq: godd → geven and, by means of this operation, the\r
+factor 1\r
+2\r
+can be avoided. Indeed, in terms of this operation, the equation (2.8) takes the\r
+form\r
+Dt = Sq(t).\r
+6
+
+For intelligibility, we will follow the standard convention, avoid spelling out the squar\u0002ing operation explicitly, and keep the factor 1"""
+
+[[sections]]
+number = "2"
+title = "A detailed description of the requisite"
+text = """
+modifications when the prime 2 is not invertible in the ground ring is given in [34].\r
+Finally we comment on the usage of the terminology “minimal”: Given an augmented\r
+differential graded algebra A over a field k, with augmentation map ε: A → k and aug\u0002mentation ideal IA, its graded vector space of indecomposables Q(A) is the cokernel of the\r
+canonical map IA ⊗ IA → IA induced by the multiplication map of A; since A is a differ\u0002ential graded algebra, this cokernel inherits a differential, and the augmented differential\r
+graded algebra A is said to be minimal when it is cofibrant and when the differential\r
+on the indecomposables Q(A) is zero. Any connected differential graded algebra has a\r
+canonical augmentation. In rational homotopy theory, a minimal model of a connected\r
+differential graded commutative algebra A is a minimal differential graded commutative\r
+algebra mA together with a morphism mA → A of differential graded algebras which is\r
+an isomorphism on homology. Likewise, the differential graded Lie algebra L is said to\r
+be minimal when it is cofibrant and when the differential on the abelianization Q(L) is\r
+zero. A minimal model of a connected differential graded Lie algebra L is a minimal dif\u0002ferential graded Lie algebra mL together with a morphism mL → L of differential graded\r
+Lie algebras which is an isomorphism on homology. There are also corresponding notions\r
+of minimal differential graded coalgebra and of minimal model for a differential graded\r
+coalgebra. See e. g. [55] (Section 5) for details and more references. Over a local ring R,\r
+with maximal ideal m ⊆ R, a free resolution\r
+0 ←−−− M\r
+ε ←−−− F0\r
+d\r
+←−−− F1\r
+d\r
+←−−−\r
+is said to be minimal when d(Fj ) ⊆ mFj−1 for j ≥ 1. The meaning of the term “minimal”\r
+in the present paper refers to A∞-algebras, see Section 3 below. While in rational homo\u0002topy theory, a homology algebra is not necessarily a Sullivan algebra, suitably interpreted,\r
+the notion of minimality of A∞-algebras is consistent with the usage of the concept of\r
+minimality in rational homotopy theory. See Remarks 4.2 and 5.2 below."""
+
+[[sections]]
+number = "3"
+title = "A∞-algebras"
+text = """
+To introduce language and notation we reproduce a precise definition of an A∞-algebra\r
+and of a morphism of A∞-algebras, cf. [60]. Our convention is that a differential lowers\r
+degree by 1.\r
+An A∞-algebra over the ground ring R is a graded R-module A equipped with a\r
+family {mn}\r
+∞\r
+n=1 of R-multilinear maps\r
+mn : A\r
+⊗n −→ A\r
+of degree n − 2 that satisfy the identities\r
+X\r
+r+s+t=n\r
+(−1)r+stmr+1+t(Idr ⊗ ms ⊗ Idt) = 0 (3.1)\r
+A morphism f : A → B of A∞-algebras is a family {fn}\r
+∞\r
+n=1 of R-multilinear maps\r
+fn : A\r
+⊗n −→ B\r
+7
+
+of degree n − 1 that satisfy the identities\r
+X\r
+r+s+t=n\r
+(−1)r+stfr+1+t(Idr ⊗ ms ⊗ Idt) = X(−1)wmq(fi1 ⊗ · · · ⊗ fiq) (3.2)\r
+where i1 + · · · + iq = n and w = (q − 1)(i1 − 1) + · · · + 2(iq−2 − 1) + (iq−1 − 1).\r
+We now reproduce the familiar equivalent description of an A∞-algebra structure as\r
+a coalgebra perturbation. To save trouble, we will do this only for the supplemented case.\r
+Thus let M be a graded R-module which comes with a direct sum decomposition M =\r
+IM ⊕ R of graded R-modules. We view M as a graded algebra with zero multiplication\r
+on IM, so that IM can then be interpreted as the augmentation ideal of M. The graded\r
+tensor coalgebra Tc[sIM] (with zero differential) is then the corresponding reduced bar\r
+construction for M; let τM : Tc[sIM] → M be the universal bar construction twisting\r
+cochain, that is, the canonical projection to sIM, followed by the desuspension mapping.\r
+For j ≥ 1, let\r
+mj: (IM)\r
+⊗j −→ IM\r
+be a homogeneous degree j − 2 operation and define the coderivation\r
+D\r
+j−1\r
+: Tc[sIM] −→ T\r
+c\r
+[sIM]\r
+by the identity\r
+mj = s\r
+−1\r
+◦ Dj−1◦ s\r
+⊗j\r
+: (IM)\r
+⊗j −→ IM.\r
+For convenience, we write d = D0. Then\r
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIM] −→ T\r
+c\r
+[sIM]\r
+is a coderivation, and so is the sum\r
+d + D = d + D\r
+1 + D2 + . . . : Tc\r
+[sIM] −→ T\r
+c\r
+[sIM].\r
+Proposition 3.1. (i) The family {mj}j turns M into an (augmented) A∞-algebra if and\r
+only if d + D is a differential, that is, if and only if\r
+dD + Dd + DD = 0.\r
+(ii) Given the augmented A∞-algebras A and B, a family {fj}j of R-multilinear maps\r
+fj: (IA)\r
+⊗n −→ IB\r
+of degree j − 1 is a morphism of (augmented) A∞-algebras if and only if the constituents\r
+of the family combine to a morphism\r
+(Tc[sIA], d + D) −→ (Tc[sIB], d + D)\r
+of differential graded coalgebras."""
+
+[[sections]]
+number = "8"
+title = "Thus, when {mj}j turns M into an (augmented) A∞-algebra, in particular, m1 is a"
+text = """
+differential on M and on IM, and d is a differential on Tc[sIM], in fact, the differential\r
+induced by that on IM. The special case where only m1 and m2 are non-zero is that of an\r
+ordinary differential graded algebra structure, and (Tc[sIM], d + D) is then the ordinary\r
+reduced bar construction BM.\r
+Kadeishvili introduced the terminology minimal for an A∞-algebra (M, {mi}) having\r
+m1 zero, i.e. trivial differential. Minimal A∞-algebras behave similar to Sullivan’s min\u0002imal differential graded algebras: each weak equivalence of minimal A∞-algebras is an\r
+isomorphism. See also Remark 5.2 below.\r
+We will henceforth consider IM as a chain complex, use the notation\r
+BDM = (Tc[sIM], d + D), (3.3)\r
+and occasionally refer to BDM as the standard construction. It is also customary to write\r
+BeM and to refer to the bar tilde construction. Apart from Section 4 below, we will hence\u0002forth exclusively use the description of an A∞-algebra structures on the chain complex\r
+M in terms of the coalgebra perturbation D on the associated differential graded coal\u0002gebra (Tc\r
+[sIM], d). Likewise we will exclusively use the description of an A∞-coalgebra\r
+structure in terms of the corresponding algebra perturbation on the associated differen\u0002tial graded algebra and we will use the description of an L∞-algebra structure merely in\r
+terms of the corresponding coalgebra perturbation on the associated differential graded\r
+coalgebra."""
+
+[[sections]]
+number = "4"
+title = "Kadeishvili’s minimality theorem for algebras"
+text = """
+In [40], Kadeishvili studied the homology of a fiber bundle with structure group G and\r
+fiber F. He noticed that the Pontrjagin ring structure of the homology H∗(G) and the\r
+action of H∗(G) on H∗(F) in general fail to recover the geometry of the action. To fix this\r
+failure, he then constructed certain higher operations\r
+f\r
+i\r
+: H∗(G) ⊗ ...(i times)... ⊗ H∗(G) → H∗(G), i = 3, 4, . . . ,\r
+and homomorphisms\r
+A\r
+i\r
+: H∗(G) ⊗ ...(i times)... ⊗ H∗(G) → C∗(G), i = 1, 2, 3, 4, . . . .\r
+which are solutions of certain equations. For example, f = f\r
+3 + f4 + . . ., interpreted as\r
+a Hochschild cochain in C\r
+∗\r
+(H∗(G), H∗(G)), satisfies the condition\r
+δf = f ∪1 f\r
+where the operation\r
+∪1 : (a, b) 7→ a ∪1 b\r
+refers to the operation in the Hochschild (cochain) complex introduced by Gerstenhaber.\r
+Kadeishvili referred to this operation as a “cup-one” product since it has the same proper\u0002ties as Steenrod’s ∪1-product, and he called such an f Hochschild twisting cochain (page\r
+3 of [40]).\r
+9
+
+With hindsight we see that Kadeishvili’s construction just explained yields an A∞-\r
+algebra structure (H∗(G), {f\r
+i}) and a morphism (weak equivalence) of A∞-algebras {Ai} :\r
+(H∗(G), {f\r
+i}) → C∗(G). While, at the time of writing [40], Kadeishvili did not know about\r
+Stasheff’s notion of A∞-algebra he realized thereafter that the condition δf = f ∪1 f is\r
+exactly Stasheff’s defining condition for an A∞-algebra (M, {mi}) with m1 = 0. This led\r
+to the paper [41]. Here is the main result thereof, valid for a general differential graded\r
+algebra, not necessarily of the kind C∗(G) for a group G.\r
+Theorem 4.1 (Minimality theorem). Let A be a differential graded algebra over a field.\r
+There is an A∞-algebra structure on H(A) and an A∞-algebra quasi-isomorphism f : H(A) →\r
+A such that f1 is a cycle-choosing quasi-isomorphism of chain complexes where the dif\u0002ferential m1 on H(A) is zero and m2 is a strictly associative multiplication induced by the\r
+multiplication in A. The resulting structure is unique up to quasi-isomorphism. When A\r
+has a unit, then the structure and quasi-isomorphism can be chosen to be strictly unital.\r
+In particular, the A∞-algebra structure on homology resulting from the minimality\r
+theorem is minimal and this structure, which is of course not uniquely determined, is\r
+unique up to isomorphism in the category of A∞-algebras.\r
+To compare the original approach with other developments, we partly reproduce the\r
+proof in [41].\r
+Proof. Since A is a differential graded algebra, its associated A∞-structure is encapsulated\r
+in the operations m1 and m2, the higher operations being zero. We shall denote m1 by d\r
+and refer to m2 by the notation · or simply by juxtaposition.\r
+To start an inductive construction of an A∞-structure on H(A), we pick m1 = 0 and\r
+take m2 to be the induced strictly associative multiplication on H(A). Furthermore, we\r
+take f1 to be some linear map H(A) → A that picks a cycle in each homology class.\r
+Given a1, a2 ∈ A, let\r
+Ψ2(a1, a2) = f1(a1a2) − f1(a1)f1(a2).\r
+This yields a boundary, since f1(a1a2) is defined to be a representative cycle of the ho\u0002mology class containing f1(a1)f1(a2). Hence, Ψ2(a1, a2) = dw for some w. Abstracting\r
+from the particular elements a1 and a2, since we are over a field, we find a morphism f2\r
+such that df2 = Ψ2.\r
+Now, let n > 2. Given a1, . . . , an ∈ A, let\r
+Ψn(a1, . . . , an) = Xn−1\r
+s=1\r
+(−1)ε1(a1,...,an,s)fs(a1, . . . , as) · fn−s(as+1, . . . , an)+\r
+Xn−1\r
+j=2\r
+Xn−j\r
+k=0\r
+(−1)ε2(a1,...,an,k,j)fn−j+1(a1, . . . , ak, mj (ak+1, . . . , ak+j ), . . . , an)\r
+where the expressions\r
+ε1(a1, . . . , an, s) = s + (n − s + 1)(|a1| + · · · + |as|)\r
+ε2(a1, . . . , an, k, j) = k + j(n − k − j + |a1| + · · · + |ak|)\r
+10
+
+are the signs in (3.2), adjusted according to the Eilenberg-Koszul convention. The term Ψn\r
+arises from the identity (3.2), with the two terms f1mn and m1fn removed. To complete\r
+the inductive step we must exhibit suitable terms mn and fn in such a way that the\r
+identity (3.2) holds.\r
+Tedious but straightforward calculation shows that the element Ψn(a1, . . . , an) is a\r
+d-cycle, and we take\r
+mn(a1, . . . , an) = [Ψn(a1, . . . , an)] ∈ H(A).\r
+This yields the operation mn on H(A). Since now f1(mn(a1, . . . , an)) and Ψn(a1, . . . , an)\r
+are in the same class, there is some w ∈ A such that\r
+f1(mn(a1, . . . , an)) − Ψn(a1, . . . , an) = dw.\r
+Abstracting from the particular elements a1, . . . , an, since we are over a field, we find a\r
+morphism fn such that\r
+dfn = Ψn.\r
+Thus mn and fn match the definitions of the corresponding constituents of an A∞-algebra\r
+and of a morphism of A∞-algebras, respectively.\r
+M. Vejdemo-Johansson has observed that this proof can be translated into an algo\u0002rithm for the computation of the A∞-structure maps [62]. This justifies the claim made\r
+earlier that Kadeishvili’s construction can be made explicit (by means of a choice of\r
+contracting homotopy, see Remark 7.2 below).\r
+Remark 4.2. Let A be a connected minimal differential graded commutative algebra over\r
+the rationals. Theorem 4.1 applies to it and yields a “minimal” A∞-structure on H(A),\r
+associated with A. However the two notions of minimality clearly differ unless A is formal.\r
+In 1982, Kadeishvili extended this construction and arrived at a more general “mini\u0002mality theorem” saying that, over a field, the homology H(A) of a general A∞-algebra A\r
+acquires an A∞-algebra structure that is equivalent to A [42].\r
+Remark 4.3. Kadeishvili’s original problem, that is, that of constructing a small model\r
+for the chains on the total space of a fiber bundle, has received much attention in the\r
+literature, as has the problem, given a group G, to isolate, under suitable circumstances,\r
+a suitable structure on the homology H(X) of a G-space X such that X and H(X) are\r
+equivalent in the A∞-sense. In the de Rham setting, this problem was studied, e.g., in\r
+[11], where the corresponding A∞-structure on de Rham cohomology is encoded in terms\r
+of what are referred to there as cohomology operations. In [36], we have explained how\r
+equivariant de Rham theory can be subsumed under relative homological algebra. This\r
+includes an explanation of those A∞-structures on de Rham cohomology.\r
+In the situation of the minimality theorem, Theorem 4.1 above, when the differential\r
+graded algebra A is graded commutative, the resulting A∞-algebra structure on H(A) has\r
+peculiar features encoded by Kadeishvili in the notion of CA∞-algebra, meaning that, in\r
+this case, the bar tilde construction is not only a differential graded coalgebra but also\r
+11
+
+an algebra with respect to the shuffle product, and the two structures combine to that\r
+of a differential graded bialgebra. Later this kind of structure has been christened C∞-\r
+structure. In the special situation where A is the algebra of rational cochains on a space\r
+X, the resulting C∞-algebra structure on H∗(X, Q) determines the rational homotopy\r
+type of X. Kadeishvili has worked this out in [44]; an extended version can be found in\r
+[46].\r
+The general situation is this: Given an augmented C∞-algebra A, the structure being\r
+given in terms of its standard construction B∂A, by the very definition of C∞-structure,\r
+the shuffle multiplication turns B∂A into a graded commutative differential graded Hopf\r
+algebra, the space of indecomposables relative to the algebra structure is a differential\r
+graded Lie coalgebra L\r
+c\r
+, in fact, a perturbation of the cofree differential graded Lie coal\u0002gebra L\r
+c\r
+(sIA) cogenerated by sIA, and the projection B∂A → L\r
+c actually spells out the\r
+differential graded coalgebra B∂A as the universal coalgebra Uc[Lc] cogenerated by L\r
+c\r
+, the\r
+space Lc necessarily being that of indecomposables relative to the graded commutative al\u0002gebra structure. More formally, the standard construction for the augmented C∞-algebra\r
+A boils down a perturbation of the cofree differential graded Lie coalgebra L\r
+c\r
+(sIA) cogen\u0002erated by sIA. In other words, the C∞-structure on A is given by a perturbation of the\r
+differential on the cofree differential graded Lie coalgebra L\r
+c\r
+(sIA) cogenerated by sIA.\r
+In the situation of Kadeishvili’s observation explained above, the differential graded\r
+Lie coalgebra Lcis the dual of the familiar minimal Lie algebra model in rational homotopy\r
+theory. Indeed, the structure dual to that of a C∞-structure has been explored in the\r
+literature in the context of rational homotopy theory. We will explain this in Remark 5.2\r
+below.\r
+Lie coalgebras are still not widely known objects. See e. g. [51] for a thorough\r
+approach to ordinary (ungraded) Lie coalgebras."""
+
+[[sections]]
+number = "5"
+title = "The Chen perturbation"
+text = """
+Let X be a (connected) smooth manifold, and let A(X) be its ordinary de Rham algebra.\r
+Our convention is that A(X) is graded by negative degrees, that is, A(X)j = A−j(X)\r
+for j ≤ 0. Let V be a graded vector space which, to avoid unnecessary complications, we\r
+suppose to be of finite type (that is, finite-dimensional in each degree), and let T[ b V ] denote\r
+the graded completion of the graded tensor algebra T[V ] relative to the augmentation\r
+filtration. Let TbA(X)[V ] be the de algebra of formal power series in a basis of V with\r
+coefficients in the de Rham algebra A(X) of X. More formally, let V\r
+∗ be the graded dual\r
+of V —still of finite type—, consider the graded tensor coalgebra Tc[V\r
+∗\r
+], and let\r
+TbA(X)[V ] = Hom(Tc[V\r
+∗\r
+], A(X)).\r
+Thus, the algebra TbA(X)[V ] is the appropriate completion\r
+A(X)⊗bT[V ]\r
+of the tensor product A(X) ⊗ T[V ]. In his paper [7], Chen referred to TbA(X)[V ] as the\r
+algebra of T[ b V ]-valued differential forms on X and defined a T[ b V ]-valued formal power\r
+series connection on X to be a degree −1 element of TbA(X)[V ]."""
+
+[[sections]]
+number = "12"
+title = "Let H be the de Rham cohomology of X, and let"
+text = """
+(H\r
+∇\r
+−−−→ ←−−−\r
+π\r
+A(X), h) (5.1)\r
+be a contraction of chain complexes. Thus, any α ∈ A(X) can be written as\r
+α = (dh + hd + ∇π)α = dhα + ∇πα + hdα\r
+in a unique fashion. The resulting decomposition\r
+A(X) = dA(X) ⊕ ker(h) = dA(X) ⊕ H ⊕ hA(X) (5.2)\r
+where H = ∇H(A(X)) plays the role of the Hodge decomposition in Kodaira-Spencer\r
+deformation theory. On p. 19 of [56], a decomposition of the kind (5.2) (not phrased in\r
+the language of contractions) is indeed referred to as a “Hodge decomposition”, and on\r
+p. 187 of [7] it is remarked that a Hodge decomposition of the de Rham complex of a\r
+Riemannian manifold is a special case of a decomposition of the kind (5.2), H being the\r
+space of harmonic forms.\r
+Let H be the reduced real e homology of X, let V = s\r
+−1H, and consider the algebra e\r
+TbA(X)[s\r
+−1H] of e T[ b s\r
+−1H]-valued differential forms on e X. We now recall, in the language of\r
+the present paper, Chen’s Theorem 1.3.1 in [7].\r
+Theorem 5.1. The contraction (5.1) determines a T[ b s\r
+−1H] e -valued formal power series\r
+connection τ ∈ TbA(X)[s\r
+−1H] e and an algebra differential ∂ on T[ b s\r
+−1H] e such that, when d\r
+refers to the ordinary de Rham differential, relative to the total differential\r
+d\r
+⊗ = d⊗bId + Id⊗b∂\r
+on TbA(X)[s\r
+−1H] = e A(X)⊗bT[s−1H] e , the following master equation is satisfied:\r
+d\r
+⊗τ = τ τ. (5.3)\r
+We will show below how this theorem is a consequence of a somewhat more general\r
+result. For intelligibility, at the present stage, we note the following: Suppose that X\r
+is simply connected. Then the algebra T[s\r
+−1H] is already complete, that is, coincides e\r
+with T[ b s\r
+−1H], and the algebra e TbA(X)\r
+[s\r
+−1H] comes down to the ordinary tensor product e\r
+A(X)⊗T[s\r
+−1H]. The differential e ∂ can be written as an infinite series\r
+∂ = ∂\r
+1 + ∂2 + . . .\r
+where ∂\r
+1\r
+is the ordinary cobar construction differential relative to the coalgebra structure\r
+on the real homology H∗(X) of X, the resulting differential graded algebra (T[s\r
+−1H] e , ∂) is\r
+then a kind of perturbed reduced cobar construction, and this perturbed reduced cobar\r
+construction is a model for the real chain algebra of the based loop space of X; we therefore\r
+write this differential graded algebra as Ω∂[H∗(X)]. In particular, when the higher terms\r
+∂\r
+j\r
+for j ≥ 2 are zero, the manifold X is formal over the reals.\r
+13
+
+Chen already established a version of the “minimality theorem”, though not in the\r
+language of A∞-structures. Indeed, Theorem 5.1, together with Theorem 3.1.1 in [6],\r
+include the statement that, for simply connected X, the real homology H∗(X) of the\r
+manifold X acquires an A∞-coalgebra structure such that the chains on X and H∗(X),\r
+endowed with the A∞-coalgebra structure, are equivalent. Dualized, this is precisely the\r
+statement of the “minimality theorem” over the reals.\r
+Remark 5.2. Suitably interpreted, Chen’s construction makes perfect sense over the ra\u0002tionals. Let X be a simply connected space and take A(X) to be the graded commutative\r
+algebra of rational forms on X. We continue to denote the resulting differential graded\r
+algebra, now over the rationals, Q, by Ω∂[H∗(X)]. The rational homology H∗(X) ac\u0002quires a graded cocommutative coalgebra structure whence the shuffle diagonal map turns\r
+Ω∂[H∗(X)] into a graded cocommutative Hopf algebra. Thus, by the Milnor-Moore theo\u0002rem, Ω∂[H∗(X)] is the universal enveloping algebra U[L] of a differential graded Lie algebra\r
+L. This differential graded Lie algebra L is in fact the familiar minimal Lie algebra model\r
+for the based loop space on X nowadays widely used in rational homotopy theory. This has\r
+been worked out in [20], [21], [61]; indeed, in the latter reference, the differential graded\r
+Lie algebra L, together with the formal power series connnection, is referred to as the\r
+Chen model for (the rational homotopy type of ) the space X. It is in this sense that the\r
+usage of the term “minimal” in the present paper is compatible with its usage in rational\r
+homotopy theory.\r
+The notion of C∞-coalgebra is lurking behind these observations. We shall elucidate\r
+this kind of structure in Remark 6.3 below."""
+
+[[sections]]
+number = "6"
+title = "Perturbations for coalgebras"
+text = """
+Abstracting from the perturbation argument for Chen’s theorem quoted above, V. Gu\u0002genheim developed a general perturbation theory for differential graded coalgebras which\r
+includes and explains Chen’s theorem [13]. Gugenheim made it entirely clear that his per\u0002turbation argument is formally exactly the same as that of Chen, but placed in a much\r
+more general context. We will now explain a version of Gugenheim’s result, somewhat\r
+more general than the original one in [13]. The proofs of all the claims in this section will\r
+be given in Section 9 below.\r
+Let C be a coaugmented differential graded coalgebra and let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+C, h) (6.1)\r
+be a contraction of chain complexes. The situation considered by Gugenheim in [13] is\r
+the special case where M has zero differential, so that M then amounts to the homology\r
+of C. In the general case, the counit ε: C → R and coaugmentation η : R → C induce a\r
+“counit” ε: M → R and “coaugmentation” η : R → M for M in such a way that (6.1) is\r
+a contraction of augmented and coaugmented chain complexes. Thus M admits a direct\r
+sum decomposition M = R⊕JM; indeed we can view M as a differential graded coalgebra\r
+with zero diagonal on JM, and JM can then be interpreted as the coaugmentation coideal\r
+of M. The differential graded tensor algebra T[s\r
+−1JM] is then the corresponding reduced\r
+14
+
+cobar construction for M; let τM : M → T[s\r
+−1JM] be the universal cobar construction\r
+twisting cochain, that is, the desuspension mapping, followed by the canonical injection.\r
+Let\r
+τ\r
+1 = τM π : C → s−1\r
+JM ⊆ T[s\r
+−1\r
+JM] (6.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: C −→ (s\r
+−1\r
+JM)\r
+⊗j ⊆ T[s−1\r
+JM]\r
+be the degree −1 morphism defined recursively by\r
+τ\r
+j = (τ1 ∪ τj−1 + · · · + τj−1 ∪ τ1\r
+)h: C → (s\r
+−1\r
+JM)\r
+⊗j\r
+. (6.3)\r
+Thereafter, for j ≥ 1, define the degree −1 derivation Dj on T[s\r
+−1JM] by\r
+D\r
+j\r
+τM = (τ\r
+1 ∪ τj + · · · + τj ∪ τ1\r
+)∇: M → (s\r
+−1\r
+JM)\r
+⊗(j+1) ⊆ T[s−1\r
+JM]. (6.4)\r
+Let T[ b s\r
+−1JM] denote the graded completion of the graded tensor algebra T[s−1JM],\r
+the term completion being taken relative to the augmentation filtration.\r
+Theorem 6.1. The infinite series\r
+D = D\r
+1 + D2 + . . . : T[ b s−1\r
+JM] → T[ b s\r
+−1\r
+JM] (6.5)\r
+is an algebra perturbation of the differential d on T[ b s\r
+−1JM] induced from the differential\r
+on M, and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : C → T[ b s−1\r
+JM] (6.6)\r
+is a twisting cochain\r
+C −→ (T[ b s\r
+−1\r
+JM], d + D).\r
+For the special case where M has zero differential so that M then coincides with\r
+the homology H(C) of C, this theorem is essentially Proposition 2.1 in [13]. We will\r
+henceforth write\r
+ΩbDM = (T[ b s\r
+−1\r
+JM], d + D). (6.7)\r
+Complement 1. Suppose that, in addition, M is a coaugmented differential graded\r
+coalgebra and that ∇ is a morphism of differential graded coalgebras. Then Djis zero for\r
+j ≥ 2 and D1is the algebra perturbation determined by the coalgebra structure of M.\r
+Under suitable circumstances, the graded tensor algebra T[s\r
+−1JM] is already com\u0002plete. This happens to be the case when M is simply connected in the sense that it is\r
+concentrated in non-negative degrees and that JM1 is zero, or when JM is concentrated\r
+in non-positive degrees. In this case, the series\r
+τ = τ\r
+1 + τ2 + . . . : C → T[s−1\r
+JM], (6.8)\r
+D = D\r
+1 + D2 + . . . : T[s−1\r
+JM] → T[s\r
+−1\r
+JM] (6.9)\r
+converge naively in the sense that, applied to a specific element, only finitely many terms\r
+are non-zero. Furthermore, D is then an algebra perturbation of the differential on\r
+T[s\r
+−1JM], and\r
+τ = τ\r
+1 + τ2 + . . . : C −→ ΩDM\r
+15
+
+is a twisting cochain where we use the notation\r
+ΩDM = (T[s\r
+−1\r
+JM], d + D). (6.10)\r
+At the risk of being, perhaps, repetitive, we point out explicitly that the piece of structure\r
+D in ΩDM is precisely an A∞-coalgebra structure on M.\r
+Complement 2 to Theorem 6.1. When C is simply connected or when C is concen\u0002trated in non-positive degrees, the adjoint\r
+τ : ΩC −→ ΩDM\r
+of the twisting cochain τ , necessarily a morphism of differential graded algebras, is a\r
+chain equivalence. If, furthermore, M is a coaugmented differential graded coalgebra and\r
+∇ is a morphism of differential graded coalgebras, ΩDM is the ordinary reduced cobar\r
+construction on M.\r
+Indeed, in the situation of the “Furthermore” statement of Complement 2, the vanish\u0002ing of the higher terms Dj\r
+for j ≥ 2 is a consequence of the annihilation property h∇ = 0\r
+and the construction of the twisting cochain τ comes essentially down to [18] (4.1)∗. A\r
+result somewhat weaker than the above Complement 2 is Theorem 3.2 in [13] which says\r
+that τ is a homology isomorphism.\r
+Complement 2 to Theorem 6.1 includes the statement that, in the simply connected\r
+case, M, endowed with the A∞-coalgebra structure D, and C, endowed with the A∞-\r
+coalgebra structure associated with the differential graded coalgebra structure, are, via τ ,\r
+equivalent as A∞-coalgebras.\r
+Remark 6.2 (Lemma 2.2.1 in [13]). Suppose that the differential of M is zero. Then\r
+M amounts to the homology H(C) of C and acquires the structure of a coaugmented\r
+graded coalgebra. In this case, even though neither the morphism ∇ nor the morphism π\r
+in the contraction (6.1) are supposed to be compatible with the coalgebra structures, the\r
+operator D1is the ordinary cobar construction differential on the graded tensor algebra\r
+T[s\r
+−1JH(C)] determined by the diagonal map ∆H(C) of H(C). Indeed, write the diagonal\r
+map of C as ∆ as usual. By construction, the diagonal map ∆M of M coincides with the\r
+composite\r
+M\r
+∇\r
+−−−→ C\r
+∆\r
+−−−→ C ⊗ C\r
+π⊗π −−−→ M ⊗ M.\r
+Consequently\r
+D\r
+1\r
+τM = (τ\r
+1 ∪ τ1\r
+)∇\r
+= ((τMπ) ∪ (τM π))∇\r
+= (τM ⊗ τM)(π ⊗ π)∆∇\r
+= (τM ⊗ τM)∆M.\r
+However the identity\r
+D\r
+1\r
+τM = (τM ⊗ τM )∆M\r
+says that D1is the ordinary cobar construction differential. Thus, in this case, ΩDH(C)\r
+is a perturbation of the ordinary reduced cobar construction ΩH(C) over H(C) and thence\r
+endows H(C) with an A∞-coalgebra structure equivalent to C.\r
+16
+
+Remark 6.3. The concept dual to that of a C∞-algebra is that of a C∞-coalgebra: Let\r
+C be a coaugmented differential graded A∞-coalgebra, with standard construction Ω∂(C).\r
+Then this A∞-coalgebra structure on C is a C∞-coalgebra structure provided the shuffle\r
+diagonal turns Ω∂(C) into a differential graded Hopf algebra, necessarily graded cocom\u0002mutative. Exactly the same reasoning as that in Remark 5.2 reveals that the standard\r
+construction Ω∂(C) of a coaugmented C∞-coalgebra C is the universal enveloping algebra\r
+U[L] of a differential graded Lie algebra L which, in turn, is a perturbation of the free\r
+differential graded Lie algebra generated by s\r
+−1\r
+(JC). Thus the standard construction of\r
+a (coaugmented) C∞-coalgebra comes down to a perturbation of the free differential Lie\r
+algebra generated by s\r
+−1\r
+(JC).\r
+In the special case where, as a differential graded coalgebra, C is an ordinary (coaug\u0002mented) cocommutative differential graded coalgebra, the shuffle diagonal plainly turns the\r
+ordinary cobar construction Ω(C) into a differential graded Hopf algebra; this situation\r
+has been explored by J. Moore in [52] and [53]."""
+
+[[sections]]
+number = "7"
+title = "Perturbations for algebras"
+text = """
+We now spell out the situation dual to that in the previous section. Again the proofs of\r
+all the claims in this section will be given in Section 9 below.\r
+Thus, let A be an augmented differential graded algebra and let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+A, h) (7.1)\r
+be a contraction of chain complexes. The unit η : R → A and augmentation ε: A → R\r
+induce a “unit” η : R → M and “augmentation” ε: M → R for M in such a way that (7.1)\r
+is a contraction of augmented and coaugmented chain complexes. Thus M admits a direct\r
+sum decomposition M = R ⊕ IM; indeed we can view M as a differential graded algebra\r
+with zero multiplication on IM, and IM can then be interpreted as the augmentation\r
+ideal of M. The differential graded tensor coalgebra Tc[sIM] is then the corresponding\r
+reduced bar construction for M; let τM : Tc[sIM] → M be the universal bar construction\r
+twisting cochain, that is, the canonical projection to sIM, followed by the desuspension\r
+mapping.\r
+Let\r
+τ\r
+1 = ∇τM : Tc\r
+[sIM] → sIM → A (7.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: Tc[sIM] → (sIM)\r
+⊗j → A\r
+be the degree −1 morphism defined recursively by\r
+τ\r
+j = h(τ1 ∪ τj−1 + · · · + τj−1 ∪ τ1\r
+): (sIM)\r
+⊗j → A. (7.3)\r
+Thereafter, for j ≥ 1, define the degree −1 coderivation Djon Tc[sIM] by\r
+τMD\r
+j = π(τ1 ∪ τj + · · · + τj ∪ τ1\r
+): Tc[sIM]\r
+c\r
+j+1 = (sIM)\r
+⊗(j+1) → M. (7.4)\r
+In particular, for j ≥ 1, the coderivation Djis zero on FjT\r
+c\r
+[sIM] and lowers coaugmen\u0002tation filtration by j."""
+
+[[sections]]
+number = "17"
+title = "Theorem 7.1. The infinite series"
+text = """
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIM] → T\r
+c\r
+[sIM] (7.5)\r
+is a coalgebra perturbation of the differential d on T\r
+c\r
+[sIM] induced from the differential\r
+on M, and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : Tc\r
+[sIM] → A (7.6)\r
+is a twisting cochain\r
+(Tc[sIM], d + D) −→ A.\r
+Furthermore, the adjoint\r
+τ : BDM −→ BA\r
+of the twisting cochain τ , necessarily a morphism of differential graded coalgebras, is a\r
+chain equivalence.\r
+To our knowledge, such a result for a general chain complex M appears in the literature\r
+for the first time in [19]—the special case where the ground ring is a field and where\r
+M has zero homology is due to Chen, as noted earlier. The sums (7.5) and (7.6) are in\r
+general infinite. However, applied to a specific element which, since Tc[sIM] is cocomplete,\r
+necessarily lies in some finite filtration degree subspace, since the operators Dj(j ≥ 1)\r
+lower coaugmentation filtration by j, only finitely many terms will be non-zero, whence\r
+the convergence is naive. We will henceforth write\r
+BDM = (Tc[sIM], d + D). (7.7)\r
+The piece of structure D in BDM is precisely an A∞-algebra structure on M and Theorem\r
+7.1 includes the statement that M, endowed with the A∞-algebra structure D, and A,\r
+endowed with the A∞-algebra structure associated with the differential graded algebra\r
+structure, are, via τ , equivalent as A∞-algebras. This recovers, in particular, Kadeishvili’s\r
+result, Theorem 4.1.\r
+Complement to Theorem 7.1. Suppose that, in addition, M is an augmented differ\u0002ential graded algebra and that π is a morphism of differential graded algebras. Then Dj\r
+is zero for j ≥ 2, the operator D1is the coalgebra perturbation determined by the algebra\r
+structure of M, and BDM is the ordinary reduced bar construction for M.\r
+Indeed, in the situation of the Complement, the vanishing of the higher terms Djfor\r
+j ≥ 2 is a consequence of the annihilation property πh = 0 and the construction of the\r
+twisting cochain comes essentially down to [18] (4.1)∗.\r
+In the special case where A has zero differential and the original contraction (7.1) is\r
+the trivial contraction of the kind\r
+(A\r
+Id\r
+−−−→ ←−−−\r
+Id\r
+A, 0), (7.8)\r
+M and A coincide, the perturbation D coincides with the perturbation ∂ determined\r
+by the algebra structure on A, and Tc\r
+D[sM] coincides with the ordinary reduced bar\r
+18
+
+construction for A; the twisting cochain τ then comes down to the bar construction\r
+twisting cochain and in fact coincides with τ"""
+
+[[sections]]
+number = "1"
+title = "In this case, the higher terms τ"
+text = """
+j and\r
+Dj(j ≥ 2) are obviously zero, and the operator D1 manifestly coincides with the bar\r
+construction operator.\r
+Likewise, suppose that the differential of M is zero. Then M amounts to the homology\r
+H(A) of A and acquires the structure of an augmented graded algebra. In this case,\r
+even though neither the morphism ∇ nor the morphism π in the contraction (7.1) are\r
+supposed to be compatible with the algebra structures, the operator D1is the ordinary\r
+bar construction differential on the graded tensor coalgebra Tc[sIH(A)] determined by the\r
+multiplication map of H(A), and BDH(A) is a perturbation of the ordinary reduced bar\r
+construction BH(A).\r
+Remark 7.2. [Relationship with Kadeishvili’s minimality theorem for algebras] Com\u0002parison of the proof of Theorem 4.1 with that of Theorem 7.1 reveals the following: The\r
+terms τ\r
+j\r
+in the proof of Theorem 7.1 exhibit precisely terms of the kind fjin the proof of\r
+Theorem 4.1, and the operators Djin the proof of Theorem 7.1 yield terms of the kind mj\r
+in the proof of Theorem 4.1. The coalgebra structure of T\r
+c\r
+[sM] exploited in the proof of\r
+Theorem 7.1 organizes the otherwise tedious calculations in the original proof of Theorem\r
+4.1, and the usage, in the proof of Theorem 7.1, of the chain homotopy h in the contrac\u0002tion (7.1) removes the ambiguities related with the choices of the bounding chains in the\r
+proof of Theorem 4.1 and thus leads to an algorithm, cf. [62]."""
+
+[[sections]]
+number = "8"
+title = "A proof of Chen’s theorem"
+text = """
+We will now briefly explain how Theorem 7.1 includes Theorem 5.1; this will make it clear\r
+that the basic perturbation argument goes back to Chen: Given the smooth manifold X,\r
+let A = A(X) and pick a contraction of the kind (5.1). Thus H is then the de Rham\r
+cohomology algebra of X. The recursive construction (7.3) yields the twisting cochain\r
+τ = τ\r
+1 + τ2 + . . . : BDH −→ A(X)\r
+and the formulas (7.4) yield the coalgebra differential\r
+D = D\r
+1 + D2 + . . . : Tc\r
+[sIH] → T\r
+c\r
+[sIH].\r
+To simplify the exposition we will suppose that the homology of X is of finite type. Then\r
+the differential graded algebra which is the real dual of BDH is precisely a differential\r
+graded algebra of the kind\r
+Ωb∂[H∗(X)]\r
+where ∂ is the algebra differential dual to the coalgebra differential D. Thus the twisting\r
+cochain τ then appears as an element of the differential graded algebra\r
+Hom(BDH, A(X)) ∼= TbA(X)[s\r
+−1H] = e A(X)⊗bT[s−1H] e ,\r
+endowed with the total differential\r
+d\r
+⊗ = d⊗bId + Id⊗b∂.\r
+19
+
+The twisting cochain property says that τ satisfies the master equation (5.3). The formulas\r
+(7.3) and (7.4) are then essentially the same as those used by Chen to establish the\r
+existence of the formal power series connection and of the differential ∂ in the proof of\r
+his Theorem 1.3.1 in [7]."""
+
+[[sections]]
+number = "9"
+title = "Homological perturbations and algebraic structure"
+text = """
+In the 1980’s, I noticed that various standard HPT-constructions are compatible with\r
+algebraic structure, and I used this observation to exploit A∞-structures arising in group\r
+cohomology via HPT-constructions of suitable small free resolutions. These small free\r
+resolutions enabled me to do explicit numerical calculations in group cohomology which\r
+until today are still not doable by other methods. In particular, spectral sequences show\r
+up which do not collapse from E2. This illustrates a typical phenomenon: Whenever a\r
+spectral sequence arises from a certain mathematical structure, a certain strong homotopy\r
+structure is lurking behind and the spectral sequence is an invariant thereof. The higher\r
+homotopy structure is actually finer than the spectral sequence itself. The results have\r
+been published in the papers [25]–[30].\r
+The observation that compatibility with algebraic structure is hidden in various stan\u0002dard HPT-constructions led to an alternate approach to Theorem 6.1 and Theorem 7.1\r
+and, indeed, leads to considerable generalization, cf. Remark 10.3 below. In the academic\r
+year 1987/88, lifting of the restrictions in the USSR enabled T. Kadeishvili to accept an\r
+invitation to the mathematics department of the University of Heidelberg. During that\r
+period, in collaboration, T. Kadeishvili and I developed HPT for general chain equiva\u0002lences and, within this research collaboration, we worked out in particular the alternate\r
+approach. This kind of approach was also worked out in [14]–[16].\r
+We will now explain the outcome of this alternate approach and how it actually leads\r
+to proofs of these theorems and to additional insight. To this end, let\r
+\u0012\r
+M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+N, h\u0013(9.1)\r
+be a filtered contraction. For intelligibility, we recall the following.\r
+Lemma 9.1 (Ordinary perturbation lemma). Let ∂ be a perturbation of the differential\r
+on N, and let\r
+D =\r
+X\r
+n≥0\r
+π∂(−h∂)\r
+n∇ =\r
+X\r
+n≥0\r
+π(−∂h)\r
+n\r
+∂∇ (9.2)\r
+∇∂ =\r
+X\r
+n≥0\r
+(−h∂)\r
+n∇ (9.3)\r
+π∂ =\r
+X\r
+n≥0\r
+π(−∂h)\r
+n\r
+(9.4)\r
+h∂ = −\r
+X\r
+n≥0\r
+(−h∂)\r
+nh = −\r
+X\r
+n≥0\r
+h(−∂h)\r
+n\r
+. (9.5)\r
+20
+
+When the filtrations on M and N are complete, these infinite series converge, D is a\r
+perturbation of the differential on M and, when N∂ and MD refer to the new chain com\u0002plexes,\r
+\u0012\r
+MD\r
+∇∂ −−−→ ←−−−\r
+π∂\r
+N∂, h∂\r
+\u0013\r
+(9.6)\r
+constitute a new filtered contraction that is natural in terms of the given data.\r
+Proof. See [3] or [12].\r
+The issue addressed in the perturbation lemma has been described in the literature\r
+as a transference problem. The ordinary perturbation lemma solves this transference\r
+problem relative merely to a perturbation of the differential on the larger object N. We\r
+will now explore the transference problem relative to additional structure.\r
+Let T[N] and T[M] be the differential graded tensor algebras on N and M respectively,\r
+denote the multiplication map of T[N] by m, let Tπ and T∇ be the induced morphisms\r
+of differential graded algebras, and define an operator Th: T[N] → T[N] by means of\r
+(Th|N\r
+⊗k\r
+) = h ⊗ (∇π)\r
+⊗(k−1) + Id ⊗ h ⊗ (∇π)⊗(k−2) + · · · + Id⊗(k−1) ⊗ h, k ≥ 1.\r
+This is an instance of what is referred to as the tensor trick, developed in [24] and exploited\r
+in [16], [24], [25], [26], [37] and elsewhere; cf. also §3 of [15]. We will come back to the\r
+tensor trick in Section 11 below.\r
+With the above preparations out of the way, the morphisms m, Tπ, Th, etc. are\r
+related by the identities\r
+m(Id ⊗ Th + Th ⊗ (T∇)(Tπ)) = (Th) m,\r
+and\r
+D(Th)(= d(Th) + (Th)d) = (T∇)(Tπ) − Id,\r
+that is, Th is a homotopy Id ≃ (T∇)(Tπ) of morphisms of differential graded algebras,\r
+whence the data\r
+\u0012\r
+T[M]\r
+T∇\r
+−−−→ ←−−−\r
+Tπ\r
+T[N], Th\r
+\u0013\r
+(9.7)\r
+constitute a contraction of augmented algebras. Further, with respect to the augmenta\u0002tion filtrations on T[N] and T[M], these data constitute in fact a contraction of filtered\r
+algebras. This idea goes back to Theorem 12.1 in Eilenberg and Mac Lane I [9]\r
+where it is spelled out in the dual situation as a contraction of bar constructions. The\r
+contraction of coalgebras that corresponds to (9.7) is also spelled out in [14] (3.2), in [15]\r
+(§3), and in [16] (2.2).\r
+Given a chain complex X and a multiplicative perturbation ∂ of the algebra differential\r
+on T[X], we shall denote the new differential graded algebra by T∂[X]. Maintaining\r
+terminology introduced in [37], we shall refer to a chain complex X (without any additional\r
+structure) as being connected in the reduced sense provided it is zero in degree zero and,\r
+furthermore, either non-negative or non-positive; the reader will note that “connected in\r
+the reduced sense” does not coincide with the standard usage of the term “connected”.\r
+On the other hand, an augmented differential graded algebra is connected in the usual\r
+21
+
+sense if and only its augmentation ideal is, as a chain complex, connected in the reduced\r
+sense.\r
+Henceforth a tensor algebra T[W] on a graded R-module W will always be viewed\r
+as a filtered algebra with respect to the augmentation filtration. Here is Theorem 2.2∗of\r
+[37].\r
+Theorem 9.2. Suppose that T[N] and T[M] are connected and let ∂ be a multiplicative\r
+perturbation of the differential on T[N] with respect to the augmentation filtration. Then\r
+the perturbation D given by (9.2) together with the morphisms given by (9.3) – (9.5) yield\r
+a contraction\r
+\u0012\r
+TD[M]\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+T∂[N], T∂h\r
+\u0013\r
+(9.8)\r
+of filtered differential graded algebras which is natural in terms of the given data.\r
+Plainly the perturbation D on T[M] and the morphisms T∂∇, T∂π, T∂h are deter\u0002mined by their restrictions to N ⊆ T[N] and M ⊆ T[M] as appropriate.\r
+The proof of Theorem 9.2 given in [37] relies on the Algebra Perturbation Lemma\r
+([37] Lemma 2.1∗) and involves the “tensor trick”.\r
+We will now sketch a proof of Theorem 6.1. Let C be a coaugmented differential\r
+graded coalgebra, with structure maps ∆ and η, and let\r
+ΩC = T∂[s\r
+−1\r
+(JC)]\r
+be its cobar construction, ∂ being the derivation on the differential graded tensor algebra\r
+T[s\r
+−1\r
+(JC)] induced by the diagonal map of C. Thus with respect to the augmentation\r
+filtration, T[s\r
+−1\r
+(JC)] is a filtered differential graded algebra, ∂ is a multiplicative pertur\u0002bation, and the cobar construction ΩC appears as a “perturbation” of T[s\r
+−1\r
+(JC)].\r
+Suppose momentarily that C is simply connected or concentrated in non-positive\r
+degrees. Then N = s\r
+−1\r
+(JC) is connected in the reduced sense, and the algebra T[s\r
+−1\r
+(JC)]\r
+is complete. The contraction (6.1) determines a contraction\r
+(s\r
+−1\r
+JM\r
+π −−−→ ←−−−\r
+∇\r
+N, h)\r
+of the kind used in Theorem 9.2, where now s\r
+−1JM plays the role of M in Theorem 9.2.\r
+Theorem 9.2 then yields a multiplicative perturbation D of the differential on T[s\r
+−1JM]\r
+and a contraction\r
+\u0012\r
+TD[s\r
+−1\r
+JM]\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+ΩC, T∂h\r
+\u0013\r
+(9.9)\r
+of filtered differential graded algebras. The naturality of the constructions implies that\r
+T∂π is the adjoint of a twisting cochain\r
+τ : C −→ TD[s\r
+−1\r
+JM].\r
+A closer look reveals that τ and D actually coincide with (6.8) and (6.9), respectively.\r
+This establishes the statement of Complement 2 to Theorem 6.1 and yields, furthermore,\r
+22
+
+explicit morphisms which then can be extended, by suitable HPT-constructions, to A∞-\r
+morphisms between C and M (with its A∞-coalgebra structure) and thus establish an\r
+A∞-equivalence between C and M.\r
+To establish Theorem 6.1 for a general coaugmented differential graded coalgebra C,\r
+we note that the contraction (9.7) of filtered algebras induces a contraction\r
+ \r
+T[ b M]\r
+Tb∇\r
+−−−→ ←−−−\r
+Tbπ\r
+T[ b N], Tbh\r
+!\r
+(9.10)\r
+of complete algebras. The statement of Theorem 9.2 extends to that situation and a proof\r
+of Theorem 6.1 for a general coaugmented differential graded coalgebra C can then be\r
+concocted, just as for the particular case handled first.\r
+Finally we will indicate the necessary modifications to arrive at a proof of Theorem"""
+
+[[sections]]
+number = "7.1"
+title = "Instead of the contraction (9.7), we now consider the corresponding contraction"
+text = """
+\u0012\r
+T\r
+c\r
+[M]\r
+Tc∇\r
+−−−→ ←−−−\r
+Tcπ\r
+T\r
+c\r
+[N], T\r
+ch\r
+\u0013\r
+(9.11)\r
+of coaugmented coalgebras. Relative to the coaugmentation filtrations, the coalgebra\r
+version of Theorem 9.2 is true without any connectivity assumption and takes the following\r
+form; actually this is Theorem 2.2∗ of [37], not spelled out explicitly there.\r
+Theorem 9.3. Let ∂ be a coalgebra perturbation of the differential on T\r
+c\r
+[N] with respect\r
+to the coaugmentation filtration. Then the perturbation D given by (9.2) together with the\r
+morphisms given by (9.3) – (9.5) yield a contraction\r
+ \r
+T\r
+c\r
+D[M]\r
+Tc\r
+∂∇\r
+−−−→ ←−−−\r
+Tc\r
+∂\r
+π\r
+T\r
+c\r
+∂\r
+[N], T\r
+c\r
+∂h\r
+!\r
+(9.12)\r
+of filtered differential graded coalgebras which is natural in terms of the given data.\r
+The proof of Theorem 9.3 relies on the Coalgebra Perturbation Lemma ([37] Lemma\r
+2.1∗) and involves likewise the “tensor trick”.\r
+Dualizing the above reasoning which leads to a proof of Theorem 6.1, the reader is\r
+now invited to concoct a proof of Theorem 7.1. We refrain from spelling out details."""
+
+[[sections]]
+number = "10"
+title = "General A∞-algebras and A∞-coalgebras"
+text = """
+The reasoning in the previous section extends immediately to general A∞-algebras and\r
+A∞-coalgebras and thus yields solutions of the corresponding transference problems:\r
+Let A be an augmented A∞-algebra, the A∞-algebra structure being given by a coalge\u0002bra perturbation ∂ of the differential on Tc\r
+[sIA] relative to the coaugmentation filtration\r
+and, as before, write B∂A for the perturbed differential graded coalgebra. Moreover, let\r
+(sIM\r
+∇\r
+−−−→ ←−−−\r
+π\r
+sIA, h) (10.1)\r
+be a contraction of chain complexes. Such a contraction arises plainly from a contraction\r
+of augmented chain complexes from A onto M.\r
+23
+
+Theorem 10.1. The perturbation D given by (9.2) yields an augmented A∞-algebra struc\u0002ture on M, and the morphisms given by (9.3) – (9.5) yield a contraction\r
+ \r
+BDM\r
+Tc\r
+∂∇\r
+−−−→ ←−−−\r
+Tc\r
+∂\r
+π\r
+B∂A, T\r
+c\r
+∂h\r
+!\r
+(10.2)\r
+of filtered differential graded coalgebras which is natural in terms of the given data.\r
+Proof. This is an immediate consequence of Theorem 9.3.\r
+For the special case where M is the homology of A, Theorem 10.1 yields the “mini\u0002mality theorem” for general augmented A∞-algebras.\r
+Likewise let C be a coaugmented A∞-coalgebra that is simply connected or concen\u0002trated in non-positive degrees, the A∞-coalgebra structure being given by an algebra\r
+perturbation ∂ of the differential on T[s\r
+−1JC] relative to the augmentation filtration and,\r
+as before, write Ω∂C for the perturbed differential graded coalgebra. Moreover, let\r
+(sJM\r
+∇\r
+−−−→ ←−−−\r
+π\r
+sJC, h) (10.3)\r
+be a contraction of chain complexes. Such a contraction arises plainly from a contraction\r
+of coaugmented chain complexes from C onto M.\r
+Theorem 10.2. The perturbation D given by (9.2) yields a coaugmented A∞-coalgebra\r
+structure on M, and the morphisms given by (9.3) – (9.5) yield a contraction\r
+\u0012\r
+ΩDM\r
+T∂∇\r
+−−−→ ←−−−\r
+T∂π\r
+Ω∂C, T∂h\r
+\u0013\r
+(10.4)\r
+of filtered differential graded algebras which is natural in terms of the given data.\r
+Proof. This is an immediate consequence of Theorem 9.2.\r
+For the special case where M is the homology of C, Theorem 10.2 yields the “mini\u0002mality theorem” for general coaugmented A∞-coalgebras.\r
+Remark 10.3. At the risk of making a mountain out of a molehill we point out that\r
+Theorem 10.1 is more general than Theorem 7.1 since, in Theorem 10.1, A is a general\r
+(augmented) A∞-algebra; likewise, Theorem 10.2 is more general than Theorem 6.1 since,\r
+in Theorem 10.2, C is a general (coaugmented) A∞-coalgebra. In other words, Theo\u0002rem 10.1 provides a solution of the transference problem for A∞-algebra structures and\r
+Theorem 10.2 provides a solution of the transference problem for A∞-coalgebra structures."""
+
+[[sections]]
+number = "11"
+title = "Summation over oriented rooted planar trees"
+text = """
+In [48] it has been observed that A∞-algebra structures of the kind reproduced in previous\r
+sections can be described in terms of sums over oriented rooted planar trees endowed with\r
+suitable labels. Indeed the authors of [48] bravely acknowledged that the oriented rooted\r
+24
+
+planar trees description is essentially a reworking of the earlier HPT-constructions. We\r
+will now explain how these sums over oriented rooted planar trees come out of the HPT\u0002constructions.\r
+We return to the circumstances of Theorem 7.1 above. We denote the multiplication\r
+map of A by µ: A ⊗ A → A.\r
+By construction, the operation m2 : M ⊗ M → M is the composite\r
+M ⊗ M\r
+∇⊗∇ −−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M.\r
+This is interpreted as an oriented rooted planar tree with three edges and four vertices,\r
+one vertex where the three edges meet and an end point vertex for each edge. The vertex\r
+where three edges meet is labelled µ, the root vertex is labelled π, and the two remaining\r
+vertices are labelled ∇. The two edges having a vertex labelled ∇ are oriented from ∇ to\r
+µ whereas the edge having µ and π as vertices is oriented from µ to π.\r
+For j ≥ 1, simply by construction, the homogeneous degree j − 1 operation\r
+mj+1 = s\r
+−1\r
+◦ Dj◦ s\r
+⊗(j+1) : (IM)⊗(j+1) −→ IM\r
+is given by\r
+π ◦ (τ\r
+1 ∪ τj + · · · + τj ∪ τ1\r
+) ◦ s\r
+⊗(j+1)\r
+and is thus the sum of the j terms π ◦ (τ\r
+ℓ ∪ τj+1−ℓ\r
+) ◦ s\r
+⊗(j+1) where 1 ≤ ℓ ≤ j. Each of\r
+these j terms can be represented by an oriented rooted planar tree with suitable labels,\r
+in the following way:\r
+The operation m2 has already been dealt with. The operation m3 : M⊗3 → M is the\r
+sum of the two composite morphisms\r
+M ⊗ M ⊗ M\r
+∇⊗3\r
+−−−→ A ⊗ A ⊗ A\r
+A⊗µ\r
+−−−→ A ⊗ A\r
+A⊗h\r
+−−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M\r
+and\r
+M ⊗ M ⊗ M\r
+∇⊗3\r
+−−−→ A ⊗ A ⊗ A\r
+µ⊗A\r
+−−−→ A ⊗ A\r
+h⊗A\r
+−−−→ A ⊗ A\r
+µ\r
+−−−→ A\r
+π −−−→ M.\r
+Each of them is interpreted as an oriented rooted planar tree with four external edges, one\r
+internal edge, four external vertices, and two internal vertices in the following manner:\r
+(i) Three external vertices are labelled ∇; these correspond to the three tensor factors ∇\r
+in the above constituent\r
+∇⊗3: M ⊗ M ⊗ M −→ A ⊗ A ⊗ A;\r
+(ii) one external vertex—the root vertex—is labelled π; this corresponds to the right-most\r
+arrow π : A → M;\r
+(iii) the two internal vertices are labelled µ; in the upper morphism, these correspond to\r
+the arrows labelled µ: A⊗A → A and A⊗µ: A⊗A⊗A → A⊗A; in the lower morphism,\r
+they correspond to the arrows labelled µ: A ⊗ A → A and µ ⊗ A: A ⊗ A ⊗ A → A ⊗ A;\r
+(iv) the single internal edge is labelled h; this corresponds to the arrow labelled\r
+A ⊗ h: A ⊗ A −→ A ⊗ A\r
+25
+
+in the upper morphism and labelled\r
+h ⊗ A: A ⊗ A −→ A ⊗ A\r
+in the lower morphism;\r
+(v) the three external edges having ∇ as a vertex are oriented from the vertices labelled\r
+∇ to the vertices labelled µ;\r
+(vi) the remaining external edge is oriented from a vertex labelled µ to the root vertex\r
+labelled π;\r
+(vii) two edges having a vertex labelled ∇ as starting point meet at a vertex labelled µ,\r
+this vertex is joined to the other vertex labelled µ, oriented in that manner, and it meets\r
+the third edge having a vertex labelled ∇ as starting point at its end point.\r
+There are two such oriented rooted planar trees, one being the mirror image of the other,\r
+and the two composite morphisms spelled out above correspond to these two labelled\r
+oriented rooted planar trees.\r
+Likewise the operation m4 : M⊗4 → M is the sum of three composite morphisms\r
+of a similar nature which, in the language of twisting cochains, arise from the three\r
+constituents τ\r
+1 ∪τ3\r
+, τ\r
+2 ∪τ2\r
+, and τ\r
+3 ∪τ1\r
+, cf. (7.4) above; each such composite morphisms\r
+can be encoded in the appropriate labelled oriented rooted planar tree.\r
+Formalizing this procedure one arrives at the description of the operations mjin terms\r
+of sums over labelled oriented rooted planar trees worked out in detail in [48].\r
+The requisite combinatorics for the construction in Theorem 7.1 is provided by the\r
+concept of cofree coalgebra; likewise in Theorem 6.1 the necessary combinatorics is pro\u0002vided by the concept of free algebra. The machinery of labelled oriented rooted planar\r
+trees yield an alternate description of the requisite combinatorial tool.\r
+This discussion so far refers to ordinary strict algebra (or coalgebra) structures on the\r
+larger object coming into play in the corresponding contraction. Instead of the original\r
+contraction (7.1) where the constituent A is an ordinary augmented differential graded\r
+algebra, consider now a contraction of the kind (10.1) where A is merely an A∞-algebra,\r
+with structure maps\r
+µj: A\r
+⊗j −→ A (j ≥ 1).\r
+The construction in [48] in terms of labelled oriented rooted planar trees extends to that\r
+situation. Indeed, define the arity of a vertex to be the number of incoming edges. To\r
+the trees described above having only vertices of arity 2, one simply adds trees where\r
+internal vertices v have general arities j > 2, a vertex of arity j > 2 being labelled by the\r
+operation µj; one then takes the sum over all labelled oriented rooted planar trees. This\r
+kind of construction yields an A∞-algebra structure on M and, extended suitably, it also\r
+yields an A∞-equivalence between A and M.\r
+However, unravelling the perturbation D on Tc[sIM] spelled out in Theorem 10.1, we\r
+find precisely that very same A∞-structure as that given by the labelled oriented rooted\r
+planar trees. Indeed, the infinite series (9.2), evaluated relative to the contraction (9.11),\r
+takes the form\r
+D = (Tcπ)∂(Tc∇) − (Tcπ)∂(Tch)∂(Tc∇) + (Tcπ)∂(Tch)∂(Tch)∂(Tc∇) + . . . . (11.1)\r
+Now, when ∂ arises from an ordinary associative differential graded algebra structure on\r
+A, the first term in the development (11.1) yields, on M, the A∞-constituent m2, the\r
+26
+
+second term yields the A∞-constituent m3, and so forth, precisely in the form given by\r
+the labelled oriented rooted planar trees construction. More general, when ∂ arises from\r
+a general A∞-algebra structure {µj}j on A, the perturbation ∂ on Tc[sIA] has the form\r
+∂ = ∂\r
+1 + ∂2 + . . .\r
+in such a way that, for j ≥ 1, the constituent ∂\r
+j\r
+corresponds to µj+1. Consequently each\r
+term in the development (11.1) involves all the constituents µj, and reordering the terms\r
+that show up in (11.1), we obtain precisely the A∞-constituent mjin the form given by\r
+the labelled oriented rooted planar trees construction for the transference of a general\r
+A∞-algebra structure. Likewise, exploiting the series (9.3), (9.4), and (9.5) to unravel\r
+the other terms, respectively, Tc\r
+∂∇, Tc∂π, and Tc∂h that are spelled out in Theorem 10.1,\r
+we obtain the requisite remaining data that establish the necessary chain equivalence,\r
+precisely in the form given by the corresponding labelled oriented rooted planar trees\r
+constructions for the transference of a general A∞-algebra structure.\r
+The same kind of remark applies to the dual situation encapsulated in Theorem 10.2.\r
+The construction of these perturbations D on the tensor algebra or tensor coalgebra relies\r
+on the tensor trick mentioned above, which we developed in [24].\r
+Thus we see that the more recent constructions of an A∞-structure in [48] (6.4) and\r
+[50] still come down to the earlier constructions.\r
+Remark 11.1. The construction in [50] is slightly more general in the sense that the\r
+initial data considered there are required to satisfy requirements somewhat weaker than\r
+those which characterize an ordinary contraction. Indeed, in [50], a system\r
+\u0012\r
+N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h\u0013(11.2)\r
+of chain complexes is explored satisfying the requirements (2.4) and (2.5) but not neces\u0002sarily (2.3), that is, it is not required that π∇ = Id; indeed, no condition is imposed upon\r
+π∇. We will now show that application of the constructions in the perturbation lemma\r
+without the requirement that π∇ = Id does not lead to a more general theory.\r
+Indeed, a system of the kind (11.2) can arise by the following specific construction\r
+from an ordinary contraction and in fact every system of the kind (11.2) arises in this\r
+way: Consider an ordinary contraction\r
+\u0012\r
+N1\r
+∇1 −−−→ ←−−−\r
+π1\r
+M, h\u0013(11.3)\r
+of chain complexes, let N2 be an arbitrary chain complex, let N = N1⊕N2, let π : M → N\r
+be the composite of π1 with the canonical injection into N, let\r
+∇2 : N2 → ker(π) = ker(π1) ⊆ M\r
+be a chain map, and let ∇ = (∇1, ∇2): N1 ⊕ N2 → M. Then\r
+\u0012\r
+N\r
+∇\r
+−−−→ ←−−−\r
+π\r
+M, h\u0013(11.4)\r
+27
+
+is a system of the kind (11.2). We will now show that every system of the kind (11.2) arises\r
+in this way. Given a perturbation of the differential on M, application of the perturbation\r
+lemma involves only the summand N1 of N and leaves N2 unchanged in the sense that\r
+this application yields a new system of the kind (11.4) where the new contraction of the\r
+kind (11.3) arises by an application of the perturbation lemma to the contraction of the\r
+kind (11.3) before application of the perturbation and where the summand N2 remains\r
+unchanged. Hence application of the constructions in the perturbation lemma without the\r
+requirement that π∇ = Id does not lead to a more general theory.\r
+Thus consider a system of the kind (11.2). The requirement (2.4), viz.\r
+Dh = Id − ∇π,\r
+implies\r
+D(πh∇) = π∇ − π∇π∇\r
+which, in view of the annihilation properties (2.5), comes down to π∇ = π∇π∇. Hence\r
+the endomorphism π∇ of N is a projector. Let N1 = π∇(N) and N2 = (Id − π∇)(N).\r
+Then N = N1 ⊕N2. Let π1 : M → N1 be the composite of π with the canonical projection\r
+to N1, and let ∇1 : N1 → M be the injection of N1 into N, followed by ∇. The resulting\r
+data\r
+\u0012\r
+N1\r
+∇1 −−−→ ←−−−\r
+π1\r
+M, h\u0013(11.5)\r
+constitute a contraction of chain complexes.\r
+Indeed, to understand the situation, suppose momentarily that N1 is zero, that is,\r
+the composite π∇ is zero. Then ∇π = ∇π∇π = 0 whence Dh = Id, that is, M is\r
+contractible, the homotopy h being a conical contracting homotopy. In the general case\r
+where N1 is not necessarily zero, let M1 = ∇(N1) and M2 = ker(π). The requirement\r
+(2.4), viz. Dh = Id − ∇π, together with the annihilation properties (2.5), implies that\r
+M = ker(π) + ∇π(M) = ker(π) + ∇(N) = ker(π) + ∇(N1) + ∇(N2).\r
+But π∇(N2) is zero whence ∇(N2) ⊆ ker(π) and thence\r
+M = ker(π) + ∇(N1) = M1 + ker(π) = M1 + M2.\r
+By construction, π restricted to M2 is zero and π restricted to M1 amounts to the restric\u0002tion of π1 to M1 which, in turn is an isomorphism having ∇1 as its inverse. Moreover,\r
+exploiting once more the fact that π∇(N2) is zero we conclude that ∇ restricted to N2\r
+is a morphism of the kind ∇2 : N2 → M2. Hence the decomposition M = M1 + M2 is\r
+a direct sum decomposition; the obvious inclusion ker(π1) ⊆ ker(π) is the identity; the\r
+original system (11.2) can be written as\r
+\u0012\r
+N1 ⊕ N2\r
+(∇1,∇2)\r
+−−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2, h\u0013; (11.6)\r
+and the annihilation properties (2.5) imply that h(M1) is zero and that h(M2) ⊆ M2.\r
+Indeed, since h∇ is zero, h vanishes on M1 and, likewise, since πh is zero, h(M2) ⊆ M2."""
+
+[[sections]]
+number = "28"
+title = "Hence (11.6) actually takes the form"
+text = """
+\u0012\r
+N1 ⊕ N2\r
+(∇1,∇2)\r
+−−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2,(0, h2)\r
+\u0013\r
+(11.7)\r
+and the system\r
+\u0012\r
+N2\r
+∇2 −−−→ ←−−−"""
+
+[[sections]]
+number = "0"
+title = "M2,(0, h2)"
+text = """
+\u0013\r
+(11.8)\r
+is of the kind of the special case where N1 is zero—indeed, the corresponding morphism\r
+π1 is now even zero—whence, in particular, h2 is a conical contracting homotopy for M2.\r
+Consequently\r
+\u0012\r
+N1\r
+(∇1,0)\r
+−−−→ ←−−−\r
+(π1,0)\r
+M1 ⊕ M2,(0, h2)\r
+\u0013\r
+, (11.9)\r
+is an ordinary contraction as asserted and the original system (11.2) is indeed of the\r
+special kind (11.4)."""
+
+[[sections]]
+number = "12"
+title = "Perturbations for Lie algebras and L∞-algebras,"
+text = """
+and the master equation\r
+Let g be a differential graded R-Lie algebra that is projective as a graded R-module and\r
+let\r
+(M\r
+∇\r
+−−−→ ←−−−\r
+π\r
+g, h) (12.1)\r
+be a contraction of chain complexes. Suppose that the cofree coaugmented differential\r
+graded cocommutative coalgebra Sc[sg] on the suspension sg of g and, likewise, the cofree\r
+coaugmented differential graded cocommutative coalgebra Sc = Sc[sM] on the suspension\r
+sM of M exist. This kind of coalgebra is well known to be cocomplete. Further, let\r
+d\r
+0\r
+: Sc −→ S\r
+c denote the coalgebra differential on Sc = Sc\r
+[sM] induced by the differential\r
+on M. For b ≥ 0, we will henceforth denote the homogeneous degree b component of\r
+S\r
+c\r
+[sM] by Sc\r
+b\r
+; thus, as a chain complex, FbS\r
+c = R ⊕ Sc\r
+1 ⊕ · · · ⊕ S\r
+c\r
+b\r
+. Likewise, as a chain\r
+complex, Sc = ⊕∞\r
+j=0S\r
+c\r
+j\r
+. We denote by\r
+τM : Sc −→ M\r
+the composite of the canonical projection proj: Sc → sM from Sc = Sc[sM] to its homo\u0002geneous degree 1 constituent sM with the desuspension map s\r
+−1\r
+from sM to M. When\r
+M is viewed as an abelian differential graded Lie algebra, Sc = Sc[sM] may be viewed\r
+as the CCE or classifying coalgebra C[M] for M, and τM : Sc → M is then the universal\r
+differential graded Lie algebra twisting cochain for M.\r
+Let\r
+τ\r
+1 = ∇τM : Sc → g (12.2)\r
+and, for j ≥ 2, let\r
+τ\r
+j\r
+: Sc → g\r
+29
+
+be the degree −1 morphism defined recursively by\r
+τ\r
+j =\r
+1\r
+2\r
+h([τ\r
+1\r
+, τ j−1] + · · · + [τ\r
+j−1\r
+, τ 1]): Sc → g. (12.3)\r
+Thereafter, for j ≥ 1, define the degree −1 coderivation Dj on Sc by\r
+τMD\r
+j =\r
+1\r
+2\r
+π([τ\r
+1\r
+, τ j] + · · · + [τ\r
+j\r
+, τ 1]): Sc\r
+j+1 → M. (12.4)\r
+In particular, for j ≥ 1, the coderivation Djis zero on FjS\r
+c and lowers coaugmentation\r
+filtration by j.\r
+We now spell out the main result of [31].\r
+Theorem 12.1. The infinite series\r
+D = D\r
+1 + D2 + . . . : Sc → Sc\r
+(12.5)\r
+is a coalgebra perturbation of the differential d on S\r
+c\r
+induced from the differential on M,\r
+and the infinite series\r
+τ = τ\r
+1 + τ2 + . . . : Sc → g (12.6)\r
+is a Lie algebra twisting cochain\r
+(Sc, d + D) −→ g.\r
+Furthermore, the adjoint\r
+τ : (Sc, d + D) −→ Cg\r
+of the twisting cochain τ , necessarily a morphism of differential graded coalgebras, is a\r
+chain equivalence. More precisely, the data determine a contraction\r
+\u0012\r
+(Sc[sM], d + D)\r
+τ −−−→ ←−−−\r
+Π\r
+C[g], H\u0013\r
+of chain complexes which is natural in terms of the data.\r
+This is precisely Theorem 2.1 in [31] where also a complete proof can be found. For\r
+the special case where M is the homology of g, this result yields the “minimality theorem”\r
+for ordinary differential graded Lie algebras.\r
+Remark 12.2. The attempt to treat, as for the cases explained in Section 9 above, the\r
+requisite higher homotopies by means of a suitable version of the perturbation lemma rela\u0002tive to the additional algebraic structure, that is, to develop a version of the perturbation\r
+lemma compatible with Lie brackets or more generally with sh-Lie structures, led to the\r
+paper [38], but technical complications arise since the tensor trick breaks down for co\u0002commutative coalgebras; indeed, the notion of homotopy of morphisms of cocommutative\r
+coalgebras is a subtle concept [58], and only a special case was handled in [38], with some\r
+of the technical details merely sketched. The article [31] provides a complete solution with\r
+all the necessary details and handles the case of a general contraction whereas in [38] only\r
+the case of a contraction of a differential graded Lie algebra onto its homology was treated.\r
+Also in [38], the proof is only sketched, and a detailed proof is given in [31]. The twisting\r
+cochain τ is the most general solution of the master equation, under the circumstances of\r
+[31]."""
+
+[[sections]]
+number = "30"
+title = "We will write"
+text = """
+CDM = (Sc, d + D). (12.7)\r
+The piece of structure D in CDM is precisely an L∞-algebra structure on M, Theorem\r
+12.1 includes the statement that M, endowed with the L∞-algebra structure D, and g,\r
+endowed with the L∞-algebra structure associated with the differential graded Lie algebra\r
+structure, are, via τ , equivalent as L∞-algebras.\r
+The general sh-Lie algebra perturbation lemma, Theorem 2.5 in [34], extends Theorem\r
+12.1 to the more general case where the constituent g in the contraction (12.1) is merely\r
+an sh-Lie algebra. This sh-Lie algebra perturbation lemma yields, in particular, the\r
+“minimality theorem” for general L∞-algebras."""
+
+[[sections]]
+number = "13"
+title = "More about the relationship with deformations"
+text = """
+We have pointed out above that the idea of combining the Gerstenhaber operation in the\r
+Hochschild complex mentioned in Section 4.1 with Stasheff’s notion of A∞-algebra let\r
+Kadeishvili to the minimality theorem. There is an obvious formal relationship between\r
+homological perturbations and deformation theory but the relationship is actually much\r
+more profound: In [23], S. Halperin and J. Stasheff developed a procedure by means of\r
+which the classification of rational homotopy equivalences inducing a fixed cohomology\r
+algebra isomorphism can be achieved. Moreover, one can explore the rational homotopy\r
+types with a fixed cohomology algebra by studying perturbations of a free differential\r
+graded commutative model by means of techniques from deformation theory. This was\r
+initiated by M. Schlessinger and J. Stasheff [58]. A related and independent develop\u0002ment, phrased in terms of what is called the functor D, is due to N. Berikashvili and his\r
+students at Georgia, notably T. Kadeishvili and S. Saneblidze; see [29] for some details\r
+and references. A third approach in which only the underlying graded vector space was\r
+fixed is due to Y. Felix [10]. More remarks about the relationship between homological\r
+perturbations and deformation theory can be found in [32].\r
+Kadeishvili contributed once more to the relationship between deformations and\r
+higher homotopies: He observed an interpretation of A∞-operations in terms of a suitable\r
+notion of twisting cochain, with respect to the Gerstenhaber operation in the Hochschild\r
+(cochain) complex [43]. An expanded version of that approach will appear as [45].\r
+References\r
+[1] V. Alvarez, J. A. Armario, M. D. Frau and P. Real, ´ Algebra structures on the com\u0002parison of the reduced bar construction and the reduced W-construction. Comm. in\r
+Algebra 35 (2007), 3273–3291.\r
+[2] E. H. Brown: Twisted tensor products.I. Ann. of Math.69 (1959), 223–246.\r
+[3] R. Brown: The twisted Eilenberg–Zilber theorem. Celebrazioni Archimedee del Secolo\r
+XX, Simposio di topologia, pp. 33–37 (1964).\r
+31
+
+[4] H. Cartan: Alg`ebres d’Eilenberg–Mac Lane et homotopie. Expos´es 2–11. S´eminaire\r
+H. Cartan 1954/55. Ecole Normale Sup´erieure, Paris, 1956. ´\r
+[5] K. T. Chen: Iterated integrals of differential forms and loop space homology. Ann. of\r
+Math. 97 (1973), 217–246.\r
+[6] K. T. Chen: Iterated path integrals. Bull. Amer. Math. Soc. 83 (1977), 831–879.\r
+[7] K. T. Chen: Extension of C\r
+∞ Function Algebra by Integrals and Malcev Completion\r
+of π1. Advances in Mathematics 23 (1977), 181–210.\r
+[8] A. Dold: Zur Homotopietheorie der Kettenkomplexe. Math. Ann. 140 (1960), 278–\r
+298.\r
+[9] S. Eilenberg and S. Mac Lane: On the groups H(π, n). I. Ann. of Math. 58 (1953),\r
+55–106. II. Methods of computation. Ann. of Math. 60 (1954), 49–139.\r
+[10] Felix, Y.: Classification homotopique des espaces rationnels de cohomologie donn´ee.\r
+(French). Bull. Soc. Math. Belg. S´er. B 31 (1979), 75–86.\r
+[11] M. Goresky, R. Kottwitz, and R. Mac Pherson: Equivariant cohomology, Koszul\r
+duality and the localization theorem. Invent. Math. 131 (1998), 25–83.\r
+[12] V.K.A.M. Gugenheim: On the chain complex of a fibration. Illinois J. of Math. 16\r
+(1972), 398–414.\r
+[13] V.K.A.M. Gugenheim: On a perturbation theory for the homology of the loop space.\r
+J. of Pure and Applied Algebra 25 (1982), 197–205.\r
+[14] V.K.A.M. Gugenheim and L. Lambe: Perturbation in differential homological alge\u0002bra. Illinois J. of Mathematics 33 (1989), 566–582.\r
+[15] V.K.A.M. Gugenheim, L. Lambe, and J.D. Stasheff: Algebraic aspects of Chen’s\r
+twisting cochains. Illinois J. of Math. 34 (1990), 485–502.\r
+[16] V.K.A.M. Gugenheim, L. Lambe, and J. D. Stasheff: Perturbation theory in differ\u0002ential homological algebra. II. Illinois J. of Math. 35 (1991), 357–373.\r
+[17] V.K.A.M. Gugenheim and J.P. May: On the theory and applications of differential\r
+torsion products. Memoirs of the Amer. Math. Soc. 142 (1974).\r
+[18] V.K.A.M. Gugenheim and H. J. Munkholm: On the extended functoriality of Tor\r
+and Cotor . J. of Pure and Applied Algebra 4 (1974), 9–29.\r
+[19] V.K.A.M. Gugenheim and J.D. Stasheff: On perturbations and A∞-structures.\r
+Festschrift in honor of G. Hirsch’s 60’th birthday, ed. L. Lemaire. Bull. Soc. Math.\r
+Belgique A 38 (1986), 237–245 (1987).\r
+[20] R. Hain: Twisting cochains and duality between minimal algebras and minimal Lie\r
+algebras. Trans. Amer. Math. Soc. 277 (1983), 397–411.\r
+32
+
+[21] R. Hain: Iterated integrals and homotopy periods. Mem. Am. Math. Soc. 291 (1984).\r
+[22] S. Halperin and J. D. Stasheff: Differential algebra in its own rite. In: Proc. Adv.\r
+Study Inst. Alg. Top., August 10–23, 1970, Aarhus, Denmark, 567–577.\r
+[23] S. Halperin and J. D. Stasheff: Obstructions to homotopy equivalences. Advances in\r
+Math. 32, 233–278 (1979).\r
+[24] J. Huebschmann: The homotopy type of FΨq. The complex and symplectic cases. In:\r
+Applications of Algebraic K-Theory to Algebraic Geometry and Number Theory,\r
+Part II, Proc. of a conf. at Boulder, Colorado, June 12 – 18, 1983. Cont. Math. 55\r
+(1986), 487–518.\r
+[25] J. Huebschmann: Perturbation theory and free resolutions for nilpotent groups of\r
+class 2. J. Algebra 126 (1989), 348–399.\r
+[26] J. Huebschmann: Cohomology of nilpotent groups of class 2. J. Algebra 126 (1989),\r
+400–450.\r
+[27] J. Huebschmann: The mod p cohomology rings of metacyclic groups. J. Pure\r
+Appl. Algebra 60 (1989), 53–105.\r
+[28] J. Huebschmann: Cohomology of metacyclic groups, Trans. Amer. Math. Soc. 328\r
+(1991), 1–72.\r
+[29] J. Huebschmann: Berikashvili’s functor D and the deformation equation. In:\r
+Festschrift in honor of N. Berikashvili’s 70th birthday, Proceedings of A. Razmadze\r
+Institute 119, 59–72 (1999), math.AT/9906032.\r
+[30] J. Huebschmann: On the cohomology of the holomorph of a finite cyclic group. J. of\r
+Algebra 279 (2004), 79–90, math.GR/0303015.\r
+[31] J. Huebschmann: The Lie algebra perturbation lemma. Festschrift in honor of M. Ger\u0002stenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in Math. (to appear),\r
+arXiv:0708.3977.\r
+[32] J. Huebschmann: Origins and breadth of the theory of higher homotopies. Festschrift\r
+in honor of M. Gerstenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in\r
+Math. (to appear), arXiv:0710.2645 [math.AT].\r
+[33] J. Huebschmann: Minimal free multi models for chain algebras. Festschrift to the\r
+memory of G. Chogoshvili, Georgian Math. J. 11 (2004), 733–752, math.AT/0405172.\r
+[34] J. Huebschmann: The sh-Lie algebra perturbation lemma. Forum Math. (to appear),\r
+arXiv:0710.2070.\r
+[35] J. Huebschmann: Homological perturbations, equivariant cohomology, and Koszul\r
+duality, math.AT/0401160.\r
+33
+
+[36] J. Huebschmann: Relative homological algebra, euivariant de Rham theory, and\r
+Koszul duality, math.AT/0401161.\r
+[37] J. Huebschmann and T. Kadeishvili: Small models for chain algebras. Math. Z. 207\r
+(1991), 245–280.\r
+[38] J. Huebschmann and J. D. Stasheff: Formal solution of the master equation via HPT\r
+and deformation theory. Forum Math. 14 (2002), 847–868, math.AG/9906036.\r
+[39] D. Husemoller, J. C. Moore, and J. D. Stasheff: Differential homological algebra and\r
+homogeneous spaces. J. of Pure and Applied Algebra 5 (1974), 113–185.\r
+[40] T. Kadeishvili: On the Differentials of the Spectral Sequence of a Fibre Bundle.\r
+(Russian). Bulletin of the Academy of Sciences of the Georgian SSR 82 N 2 (1976),\r
+285–288, English version: arXiv:math/0609747.\r
+[41] T. Kadeishvili: On the homology theory of fibre spaces. (Russian). Uspekhi Mat.\r
+Nauk. 35:3 (1980), 183–188, Russian Math. Surveys 35:3 (1980), 231–238, English\r
+version: arXiv:math/0504437.\r
+[42] T. Kadeishvili: The algebraic structure in the homology of an A(∞)-algebra. (Rus\u0002sian). Soobshch Akad. Nauk. Gruzin SSR 108 (1982), 249–252.\r
+[43] T. Kadeishvili: The A(∞)-algebra Structure and Hochschild and Harrison Coho\u0002mology. (Russian). Proc. of Tbil. Math. Inst. 91 (1988), 19-27, English version:\r
+arXiv:math/0210331.\r
+[44] T. Kadeishvili: A(∞)-algebra Structure in Cohomology and Rational Homotopy Type.\r
+(Russian). Proc. of Tbil. Mat. Inst. 107 (1993), 1-94.\r
+[45] T. Kadeishvili: Twisting Elements in Homotopy G-algebras. Festschrift in honor of\r
+M. Gerstenhaber’s 80-th and Jim Stasheff’s 70-th birthday, Progress in Math. (to\r
+appear), arXiv:math/0709.3130.\r
+[46] T. Kadeishvili: Cohomology C∞-algebra and rational homotopy type. Banach Center\r
+Publications (to appear).\r
+[47] M. Kontsevich: Deformation quantization of Poisson manifolds, math.QA/9709040.\r
+[48] M. Kontsevich and Y. Soibelman: Homological mirror symmetry and torus fibrations,\r
+math.QA/0011041.\r
+[49] M. Markl: Ideal perturbation lemma. Comm. Algebra 29:11 (2001), 5209–5232.\r
+[50] S. A. Merkulov: Strongly homotopy algebras of a K¨ahler manifold. IMRN 3 (1999),\r
+153–164, math.AG/9809172.\r
+[51] W. Michaelis: Lie coalgebras. Advances in Math. 38 (1980), 1–54.\r
+34
+
+[52] J. C. Moore: Some properties of the loop homology of commutative coalgebras. The\r
+Steenrod Algebra and its Applications (Proc. Conf. to Celebrate N. E. Steenrod’s\r
+Sixtieth Birthday, Battelle Memorial Inst., Columbus, Ohio, 1970), Lecture Notes in\r
+Mathematics 168, 232–245, Springer, Berlin.\r
+[53] J. C. Moore: Differential homological algebra. Actes, Congr`es intern. math. Nice\r
+(1970), Gauthiers-Villars, Paris (1971), 335–339.\r
+[54] H. J. Munkholm: The Eilenberg–Moore spectral sequence and strongly homotopy mul\u0002tiplicative maps. J. of Pure and Applied Algebra 9 (1976), 1–50.\r
+[55] J. Neisendorfer: Lie algebras, coalgebras, and rational homotopy theory for nilpotent\r
+spaces. Pac. J. of Math. 74 (1978), 429–460.\r
+[56] A. Nijenhuis and R. W. Richardson: Cohomology and deformations in graded Lie\r
+algebras. Bull. Amer. Math. Soc. 72 (1966), 1–29.\r
+[57] D. Quillen: Rational homotopy theory. Ann. of Math. 90 (1969), 205–295.\r
+[58] M. Schlessinger and J. D. Stasheff: Deformation theory and rational homotopy type.\r
+Pub. Math. Sci. IHES. To appear; new version July 13, 1998.\r
+[59] W. Shih: Homologie des espaces fibr´es. Pub. Math. Sci. IHES 13 (1962).\r
+[60] Stasheff, J. D.: Homotopy associativity of H-spaces. I. II. Trans. Amer. Math. Soc.\r
+108, 275–292; 293–312 (1963).\r
+[61] D. Tanre: Homotopie rationnelle: Mod`eles de Chen, Quillen, Sullivan. Lecture Notes\r
+in Mathematics 1025, Springer-Verlag, Berlin · Heidelberg · New York (1983).\r
+[62] M. Vejdemo-Johansson: Blackbox computation of A∞-algebras, arXiv:0807.3869.\r
+35"""
+
+[[figures]]
+label = "fig:1"
+page_num = 6
+image_path = "images/image_p6_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 6
+image_path = "images/image_p6_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 6
+image_path = "images/image_p6_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 6
+image_path = "images/image_p6_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 7
+image_path = "images/image_p7_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 11
+image_path = "images/image_p11_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 11
+image_path = "images/image_p11_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 11
+image_path = "images/image_p11_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 11
+image_path = "images/image_p11_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 16
+image_path = "images/image_p16_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 16
+image_path = "images/image_p16_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 18
+image_path = "images/image_p18_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 21
+image_path = "images/image_p21_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 21
+image_path = "images/image_p21_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 21
+image_path = "images/image_p21_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 21
+image_path = "images/image_p21_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 24
+image_path = "images/image_p24_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 24
+image_path = "images/image_p24_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 24
+image_path = "images/image_p24_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 24
+image_path = "images/image_p24_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 24
+image_path = "images/image_p24_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 24
+image_path = "images/image_p24_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 24
+image_path = "images/image_p24_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 24
+image_path = "images/image_p24_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 30
+image_path = "images/image_p30_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 30
+image_path = "images/image_p30_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 30
+image_path = "images/image_p30_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 30
+image_path = "images/image_p30_28.png"

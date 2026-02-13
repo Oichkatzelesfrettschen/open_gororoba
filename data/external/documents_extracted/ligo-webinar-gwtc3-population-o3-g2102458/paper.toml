@@ -1,0 +1,2683 @@
+equations = []
+tables = []
+full_text = """
+LIGO–Virgo–KAGRA webinar\r
+The population of merging compact \r
+binaries inferred using gravitational \r
+waves through GWTC-3\r
+10 December 2021\r
+Webinar streaming live from 15:00 UTC\r
+Image credit: LIGO/Caltech/MIT/Sonoma State/Aurore Simonnet
+
+The population of merging \r
+compact binaries inferred \r
+using gravitational waves \r
+through GWTC-3\r
+arXiv:2111.03634 • \r
+15:00 UTC • 10 December 2021 • dcc.ligo.org/G2102458/public\r
+2
+
+GWTC-3 \r
+webinars\r
+https://www.youtube.com/ligovirgo\r
+6 December 2021: Compact binary \r
+coalescences observed by LIGO and Virgo \r
+during the second part of the third \r
+observing run\r
+9 December 2021: Constraints on the \r
+cosmic expansion history from GWTC-3\r
+Today: The population of merging compact \r
+binaries inferred using gravitational waves \r
+through GWTC-3\r
+January 2022: Tests of general relativity \r
+with GWTC-3\r
+3
+
+Speakers\r
+4\r
+Amanda Farah\r
+U Chicago\r
+The Binary Merger \r
+Population\r
+Philippe Landry\r
+CITA\r
+Neutron Star \r
+Mergers\r
+Vaibhav Tiwari\r
+Cardiff\r
+Black Hole Masses\r
+Tom Callister\r
+CCA\r
+Black Hole \r
+Redshifts and Spins\r
+Richard O’Shaughnessy\r
+RIT\r
+Moderator\r
+Q&A
+
+Panelists\r
+5\r
+Fabio Antonini\r
+Cardiff University\r
+Astro interpretation\r
+Bruce Edelman\r
+University of Oregon\r
+Black Hole Masses\r
+Stephen Fairhurst\r
+Cardiff University\r
+Additional events\r
+Adrian Helmling-Cornell\r
+University of Oregon\r
+Event selection\r
+Jacob Golomb\r
+Caltech\r
+Populations\r
+Dan Wysocki\r
+UWM\r
+Populations\r
+Shanika Galaudage\r
+OzGrav/Monash University\r
+Populations
+
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+6\r
+Full \r
+Spectrum of \r
+Mergers
+
+7\r
+A Growing Catalog : GWTC-1\r
+O1 + O2\r
+Mass\r
+Order of detection
+
+8\r
+A Growing Catalog : GWTC-2.1\r
+O1 + O2 O3a
+
+9\r
+A Growing Catalog : GWTC-3\r
+O1 + O2 O3a O3b
+
+10\r
+GWTC-3 adds 35 A Growing Catalog : GWTC-3\r
+events with more \r
+than 50% probability\r
+of an astrophysical\r
+source\r
+Total number of \r
+events is now 90\r
+We analyze the 67\r
+events with false \r
+alarm rate (FAR) \r
+below ¼ yr-1\r
+Most are binary black \r
+holes (BBH)\r
+Some are neutron \r
+star - black hole \r
+binaries (NSBH)\r
+Two are binary \r
+neutron stars (BNS)
+
+Population of GW Sources\r
+● Population analysis to understand \r
+individual events\r
+● Features found in the population \r
+shed light on the astrophysical \r
+origins of the systems we observe\r
+11\r
+GWTC-2 population \r
+study: link
+
+Methods and Inputs\r
+● 67 events with false alarm rate (FAR) below ¼ yr-1\r
+● masses, spins, and distances of all these events inferred from the gravitational wave \r
+signal\r
+● Use a hierarchical Bayesian analysis to get an astrophysical distribution of sources\r
+● Take selection effects into account\r
+● several mass models, 3 spin models, and one distance model for the astrophysical \r
+population of sources\r
+12\r
+Details of how we infer \r
+the masses, spins, and \r
+other source \r
+parameters are in the\r
+catalog paper\r
+Sensitivity estimates \r
+for modeling selection \r
+effects are on Zenodo\r
+m1\r
+m2\r
+χ2\r
+χ1\r
+mass ratio q= m2 / m1\r
+DL\r
+Interferometer
+
+13\r
+Merger rates of all sources\r
+Subpopulations \r
+Lower Mass Gap\r
+Introduction\r
+Inputs\r
+Methods\r
+Full \r
+Spectrum of \r
+Mergers\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin
+
+Full Spectrum of Compact Objects\r
+14\r
+We are sensitive to two\r
+types of compact \r
+objects: neutron stars \r
+and black holes\r
+Three types of mergers: \r
+binary neutron star, \r
+binary black hole, \r
+neutron star - black hole\r
+Fundamental Questions:\r
+● Which types of \r
+mergers are we \r
+seeing?\r
+● How many are \r
+happening in the \r
+Universe?
+
+Full Spectrum of Compact Objects\r
+15\r
+● Models spanning the full spectrum of compact objects allow us to\r
+○ Search for a feature between neutron stars and black holes\r
+○ Find relative rates of mergers in different parts of the spectrum\r
+○ Include ambiguously classified events\r
+1
+
+Features and Merger Rates\r
+16\r
+PDB: Power Law + Dip \r
++ Break\r
+MS: Multi-Source\r
+BGP: Binned Gaussian \r
+Process\r
+● Multiple models consistent \r
+with same results\r
+● Steep drop-off in the merger \r
+rate after neutron star-like \r
+masses\r
+● Potential but yet-unresolved\r
+upper edge of mass gap
+
+NS mass distribution\r
+17\r
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers
+
+Neutron star candidates\r
+18\r
+Five events with a \r
+low-mass component (m \r
+< 3 M☉)\r
+We infer the \r
+distribution of NS \r
+masses in merging \r
+compact binaries from a \r
+subset of these events
+
+● Treat low-mass components as NSs if P(m ≤ MTOV) > 50%\r
+● Obtain same classifications relative to Mgap instead of MTOV\r
+Classifying objects as neutron stars\r
+19\r
+MTOV is the non\u0002rotating maximum NS \r
+mass estimated from \r
+current NS equation \r
+of state knowledge\r
+Mgap is the inferred \r
+lower edge of the \r
+mass gap between \r
+NSs and BHs\r
+GW190814 is a BBH\r
+according to this \r
+classification\r
+Six NSs in total\r
+Com\r
+GW170817 x 2\r
+GW190425 x 2\r
+GW200105 x 1\r
+GW200115 x 1\r
+MTOV from Legred et al. 2106.05313\r
+low\r
+low
+
+Neutron star mass distribution\r
+20\r
+Recover broad mass \r
+distribution with more \r
+support for heavy NSs \r
+than Galactic population\r
+Gaussian Peak model \r
+does not recover sharp \r
+peak at 1.35 M☉\r
+observed in Galactic BNS \r
+population\r
+Power model’s exponent \r
+α = -2+5 weakly \r
+constrained, but \r
+consistent with uniform \r
+distribution\r
+Difference relative to \r
+Galactic population \r
+could result from \r
+distinct formation \r
+channels, strong \r
+selection effects, or \r
+overlap of NS and BH \r
+mass distributions\r
+-7\r
+Galactic\r
+Galactic BNS\r
+Peak\r
+Power\r
+Galactic fit from Farr & Chatziioannou 2005.00032, Galactic BNS fit from Ozel & Freire 1603.02698
+
+Maximum neutron star mass\r
+21\r
+Maximum mass observed \r
+in the NS population is\r
+mmax= 2.0+0.3 M☉\r
+Observed maximum mass \r
+is consistent with MTOV= \r
+2.2+0.3 M☉ from the \r
+equation of state\r
+Also consistent with \r
+observed mmax= 2.2+0.8 M☉\r
+for Galactic pulsars\r
+MTOV from Legred et al. 2106.05313, Galactic mmax from Farr & Chatziioannou 2005.00032\r
+-0.2\r
+-0.2\r
+-0.2
+
+22\r
+Binary properties (I)\r
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers
+
+Mass distribution\r
+23\r
+Results from our coarse \r
+grained model consistent \r
+between GWTC-2 and \r
+GWTC-3.\r
+A higher fraction of low mass \r
+and unequal mass binaries \r
+observed in GWTC-3.\r
+Steeper decline at lower \r
+masses and a broader mass \r
+ratio distribution\r
+PowerLaw + Peak
+
+Mass distribution\r
+24\r
+Overdensity between 8M⦿\r
+and 10M⦿, and around 26M⦿.\r
+One-eighth of the \r
+observations in the first \r
+overdensity.\r
+Absence of mergers with chirp \r
+masses between 10M⦿ and \r
+12M⦿.\r
+A weaker feature present at \r
+around 14M⦿\r
+FM: Flexible Mixture
+
+Mass distribution\r
+25\r
+Addition of more flexible \r
+models for the mass \r
+distribution.\r
+Overdensity at 10M\r
+⦿\r
+and 35M\r
+⦿\r
+ at a credibility \r
+greater than 99%.\r
+Overdensity at \r
+10M\r
+⦿\r
+contributes \r
+biggest fraction to the \r
+merger rate.\r
+Overdensity at 35M\r
+⦿\r
+contributes biggest \r
+fraction to the observed \r
+mergers.
+
+Mass distribution\r
+26\r
+Analysis dedicated to \r
+upper mass gap\r
+No evidence for an \r
+upper mass gap\r
+Mass gap higher than \r
+expected or heavier \r
+binaries formed in a \r
+way that avoids \r
+pair-instability.
+
+Mass distribution\r
+27\r
+GW190917 and GW190814 \r
+are outliers in binary black hole \r
+population.\r
+Could suggest a separate \r
+subpopulation.
+
+28\r
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers\r
+Binary properties (II)
+
+Redshift evolution\r
+29\r
+Analysis\r
+Previous analyses were \r
+agnostic about evolution \r
+of the BBH merger rate\r
+We now confidently \r
+conclude that the merger \r
+rate rises into the past\r
+Result driven by new data \r
+and improved estimates \r
+of search sensitivities\r
+No evidence that mass \r
+varies with redshift
+
+dominant spin \r
+perpendicular to L\r
+BBH spins explored via two \r
+complementary approaches:\r
+Measurement of component \r
+spin magnitudes and tilts\r
+Measurement of effective \r
+spin parameters :\r
+average \r
+spin parallel to L\r
+Spin distribution\r
+30\r
+Background\r
+Talbot & Thrane 1704.08370; Miller et al. 2001.06051; LIGO-Virgo-Kagra Collaborations 2010.14533
+
+Spin distribution\r
+31\r
+Background\r
+BBH spin orientations \r
+probe binary formation\r
+Isolated field binaries:\r
+preferentially aligned \r
+spins\r
+Dynamical assembly in \r
+clusters: isotropically \r
+aligned spins\r
+e.g. Mandel & Farmer 1806.05820
+
+Spin distribution\r
+32\r
+Spin magnitudes due to \r
+non-zero natal spins, or \r
+spin-up via binary tides \r
+& mass transfer?\r
+Despite misalignment, \r
+spin orientations are not \r
+isotropic; challenge to \r
+purely-dynamical origin\r
+Effective spins reveal \r
+non-vanishing and \r
+asymmetric \r
+distributions\r
+Analysis\r
+Spin magnitudes generally small \r
+but non-vanishing. Significant spin-orbit misalignment\r
+Ask us about this!
+
+Correlations between spin and mass ratio\r
+33\r
+Allow mean and \r
+standard deviation of\r
+ to depend linearly \r
+on mass ratio q\r
+On average, BBHs with \r
+more unequal masses \r
+have larger effective \r
+spins\r
+Could signify \r
+preferentially larger or \r
+more aligned spins with \r
+unequal mass ratios\r
+Analysis\r
+0.0\r
+Callister et al. 2106.00521
+
+Correlations between spin and mass\r
+34\r
+Analysis\r
+A relationship between \r
+BH spins and masses \r
+might signify e.g. \r
+repeated “hierarchical” \r
+mergers\r
+Sought to identify mass \r
+& spin correlations \r
+using the Flexible \r
+Mixtures approach\r
+No evidence for a \r
+mass-dependent spin \r
+distribution
+
+Summary\r
+35\r
+Maximum mass \r
+consistent with \r
+TOV expectation\r
+Systematically \r
+broader mass \r
+distribution than \r
+Galactic population\r
+Improved NS-BH \r
+rate estimates\r
+Global maximum at \r
+10\r
+Overdensity at 35\r
+Merger rate increases \r
+with redshift\r
+Misaligned spins\r
+Correlations between \r
+spin and mass ratios\r
+Look out for: Neutron stars NS-BH binaries BH-BH binaries\r
+O4 observing run in \r
+December 2022\r
+Upcoming webinar: \r
+Testing general \r
+relativity with \r
+GWTC-3 (20 Jan)\r
+What we’ve learned\r
+All sources\r
+First self-consistent \r
+measurement of the \r
+merger rate across all \r
+masses
+
+Data release\r
+36
+
+Data\r
+Data products\r
+Analysis results available from www.gw-openscience.org/GWTC-3/ at \r
+https://doi.org/10.5281/zenodo.5650061\r
+● Full posteriors for all analyses\r
+● Python tutorials\r
+● Search sensitivity (O3, and O1+O2+O3)\r
+● Data for all tables\r
+● Data behind the figures (soon: all figure generation scripts)\r
+37\r
+Data products include \r
+full analyses used in \r
+paper\r
+Notebooks and \r
+example scripts\r
+included with data \r
+products\r
+Gravitational Wave \r
+Open Data \r
+Workshops provide \r
+more resources to \r
+understand data \r
+analysis
+
+This material is based upon work supported by NSF’s LIGO Laboratory which is a major facility fully funded by the National Science Foundation. The authors also \r
+gratefully acknowledge the support of the Science and Technology Facilities Council (STFC) of the United Kingdom, the Max-Planck-Society (MPS), and the State of \r
+Niedersachsen/Germany for support of the construction of Advanced LIGO and construction and operation of the GEO 600 detector. Additional support for Advanced \r
+LIGO was provided by the Australian Research Council. The authors gratefully acknowledge the Italian Istituto Nazionale di Fisica Nucleare (INFN), the French Centre \r
+National de la Recherche Scientifique (CNRS) and the Netherlands Organization for Scientific Research, for the construction and operation of the Virgo detector and \r
+the creation and support of the EGO consortium. The authors also gratefully acknowledge research support from these agencies as well as by the Council of Scientific \r
+and Industrial Research of India, the Department of Science and Technology, India, the Science & Engineering Research Board (SERB), India, the Ministry of Human \r
+Resource Development, India, the Spanish Agencia Estatal de Investigación, the Vicepresidència i Conselleria d'Innovació, Recerca i Turisme and the Conselleria \r
+d'Educació i Universitat del Govern de les Illes Balears, the Conselleria d'Innovació, Universitats, Ciència i Societat Digital de la Generalitat Valenciana and the CERCA \r
+Programme Generalitat de Catalunya, Spain, the National Science Centre of Poland and the Foundation for Polish Science (FNP), the Swiss National Science \r
+Foundation (SNSF), the Russian Foundation for Basic Research, the Russian Science Foundation, the European Commission, the European Regional Development \r
+Funds (ERDF), the Royal Society, the Scottish Funding Council, the Scottish Universities Physics Alliance, the Hungarian Scientific Research Fund (OTKA), the French \r
+Lyon Institute of Origins (LIO), the Belgian Fonds de la Recherche Scientifique (FRS-FNRS), Actions de Recherche Concertées (ARC) and Fonds Wetenschappelijk \r
+Onderzoek – Vlaanderen (FWO), Belgium, the Paris Île-de-France Region, the National Research, Development and Innovation Office Hungary (NKFIH), the National \r
+Research Foundation of Korea, the Natural Science and Engineering Research Council Canada, Canadian Foundation for Innovation (CFI), the Brazilian Ministry of \r
+Science, Technology, and Innovations, the International Center for Theoretical Physics South American Institute for Fundamental Research (ICTP-SAIFR), the \r
+Research Grants Council of Hong Kong, the National Natural Science Foundation of China (NSFC), the Leverhulme Trust, the Research Corporation, the Ministry of \r
+Science and Technology (MOST), Taiwan, the United States Department of Energy, and the Kavli Foundation. The authors gratefully acknowledge the support of the \r
+NSF, STFC, INFN and CNRS for provision of computational resources. Computing was performed on the OzSTAR Australian national facility at Swinburne University \r
+of Technology, which receives funding in part from the Astronomy National Collaborative Research Infrastructure Strategy (NCRIS) allocation provided by the \r
+Australian Government. We thankfully acknowledge the computer resources at MareNostrum and the technical support provided by Barcelona Supercomputing \r
+Center (RES-AECT-2021-2-0021). This work was supported by MEXT, JSPS Leading-edge Research Infrastructure Program, JSPS Grant-in- Aid for Specially Promoted \r
+Research 26000005, JSPS Grant-in-Aid for Scientific Research on Innovative Areas 2905: JP17H06358, JP17H06361 and JP17H06364, JSPS Core-to-Core Program \r
+A. Advanced Research Networks, JSPS Grant-in-Aid for Scientific Research (S) 17H06133, the joint research program of the Institute for Cosmic Ray Research, \r
+University of Tokyo, National Research Foundation (NRF) and Computing Infrastructure Project of KISTI-GSDC in Korea, Academia Sinica (AS), AS Grid Center (ASGC) \r
+and the Ministry of Science and Technology (MoST) in Taiwan under grants including AS-CDA-105-M06, Advanced Technology Center (ATC) of NAOJ, and Mechanical \r
+Engineering Center of KEK.\r
+We would like to thank all of the essential workers who put their health at risk during the COVID-19 pandemic, without whom we would not have been able to \r
+complete this work.\r
+38
+
+Questions\r
+39
+
+Panelists\r
+40\r
+Fabio Antonini\r
+Cardiff University\r
+Astro interpretation\r
+Bruce Edelman\r
+University of Oregon\r
+Black Hole Masses\r
+Stephen Fairhurst\r
+Cardiff University\r
+Additional events\r
+Adrian Helmling-Cornell\r
+University of Oregon\r
+Event selection\r
+Jacob Golomb\r
+Caltech\r
+Populations\r
+Dan Wysocki\r
+UWM\r
+Populations\r
+Shanika Galaudage\r
+OzGrav/Monash University\r
+Populations
+
+41\r
+Extra: GWTC-3
+
+Extra: Merger rate versus all mass\r
+42\r
+Details of models in \r
+these links:\r
+BGP, MSo, PDB\r
+m1\r
+m2\r
+● Multiple methods to \r
+corroborate results
+
+Takeaways so far\r
+43\r
+● Growing catalog gives us deeper insight into each event\r
+● Features in the population can teach us astrophysical lessons\r
+● We make the first self-consistent measurement of the merger rate of \r
+compact binaries across all masses\r
+● Starting to resolve transition between neutron stars and black holes, \r
+which allows us to classify the two types of objects
+
+Source properties\r
+44\r
+Each signal we have \r
+detected so far has \r
+come from the merger \r
+of two compact \r
+objects- neutron stars\r
+and black holes\r
+Using Bayesian \r
+inference, we analyse \r
+data to infer source \r
+properties like \r
+masses, spins, \r
+distance, and sky \r
+location\r
+We use waveform \r
+models (see the \r
+GWTC-2.1 webinar)\r
+--\r
+Strain / 10-21
+
+Extras: Effective spin parameters\r
+45\r
+Effective spins fit as a \r
+multivariate Gaussian\r
+Quite consistent with \r
+effective spin \r
+distributions implied by \r
+“Default’’ spin \r
+magnitude and tilt \r
+model\r
+Analysis\r
+Asymmetric distribution of \r
+effective inspiral spins\r
+Non-vanishing distribution of \r
+effective precessing spins
+
+Extras: Negative effective spins?\r
+46\r
+Negative effective spins\r
+would indicate spins \r
+misaligned by more than \r
+90 degrees\r
+Previously investigated by \r
+introducing a variable \r
+lower truncation bound\r
+Updated analysis allows for \r
+additional overdensity at \r
+to avoid possible \r
+systematics \r
+Analysis\r
+Previous method Updated method
+
+Extras: Negative effective spins?\r
+47\r
+When assuming no \r
+overdensity, we find \r
+negative effective spins \r
+at 99.8% credibility\r
+When allowing for \r
+overdensity, conclude \r
+that at \r
+88.4% credibility\r
+Data do not require\r
+overdensity to exist\r
+Analysis
+
+Extras: Other Events\r
+48\r
+Additional events not \r
+used in this analysis are \r
+broadly consistent with \r
+the observed population\r
+Events from IAS \r
+searches: Venumadhav \r
+et al 1904.07214, \r
+Zackay et al \r
+1910.09528\r
+Events from OGC \r
+searches: Nitz et al \r
+2105.09151\r
+Events from GWTC-3 \r
+below threshold used in \r
+this analysis
+
+Modeled searches\r
+49\r
+Model signals as \r
+Compact Binary \r
+Coalescence (CBC)\r
+Waveforms depend \r
+on intrinsic source \r
+parameters: \r
+component masses \r
+and the dimensionless \r
+component spins\r
+Template bank total masses\r
+● MBTA: 2 - 200 Msun \r
+● GstLAL: 2 - 758 Msun \r
+● PyCBC: 2 - 500 Msun \r
+Mass ratio\r
+● MBTA: \r
+● GstLAL: 0.02 - 1 (depends on parameter \r
+space region)\r
+● PyCBC: ⅓ - 1\r
+Spins\r
+● MBTA: aligned spins up to 0.997\r
+● GstLAL: anti- or aligned spins up to \r
+0.999\r
+● PyCBC: anti- or aligned spins up to 0.998
+
+NSBH \r
+masses\r
+50\r
+Mass ratio q is ratio of \r
+secondary to primary\r
+mass:\r
+Coloured contours in\r
+this plot are confident\r
+neutron star - black\r
+hole pairs\r
+Grey contours in this\r
+plot are ambiguous,\r
+with secondary that\r
+may be a black hole or\r
+a neutron star\r
+q = \r
+m\r
+1\r
+m\r
+2
+
+GW190814\r
+51\r
+GW190814’s m2 is an \r
+outlier relative to the \r
+population of BNS and \r
+NSBH secondaries\r
+The GWTC-2\r
+population study found \r
+that it is also an outlier \r
+from the BBH \r
+population\r
+Peak model predicts \r
+largest m2 observed \r
+after 2 BNSs and 3 \r
+NSBHs to be smaller \r
+than GW190814’s m2\r
+99.9% of the time
+
+Masses and spins\r
+Most effective \r
+inspiral spins\r
+consistent with zero\r
+Some events with \r
+significant support for \r
+negative effective \r
+inspiral spins\r
+More events have \r
+significant support for \r
+positive effective \r
+inspiral spins\r
+Consistent with \r
+GWTC-2.1\r
+52
+
+NSBH spins \r
+Primary spin better \r
+measured as more \r
+important for \r
+dynamics\r
+Spin components in \r
+the orbital plane \r
+better measured for \r
+more extreme mass \r
+ratios\r
+Spins approximately \r
+aligned with orbital \r
+angular momentum \r
+expected for binaries \r
+formed in isolation\r
+53
+
+BBH spins: small / positive \r
+Spins expected to be \r
+small if angular \r
+moment transfer is \r
+efficient in stars\r
+Spins in X-ray binaries \r
+extend close to the \r
+Kerr limit of 1\r
+54
+
+BBH spins: misaligned / negative \r
+Misaligned spins \r
+expected for binaries \r
+formed dynamically\r
+Equal-mass mergers \r
+produce spins around \r
+0.7\r
+GW200129 shows \r
+best evidence for \r
+misaligned spins\r
+55
+
+Highlighted events O3b catalog\r
+56\r
+NSBH\r
+NSBH\r
+NSBH?\r
+negative spin\r
+lightest BBH in O3b\r
+positive spin\r
+negative spin\r
+misaligned spin
+
+Tables\r
+57
+
+Tables\r
+58
+
+Search methods\r
+59\r
+Modeled searches\r
+● GstLAL, MBTA, PyCBC Broad, \r
+PyCBC BBH\r
+● Assume the source is CBC. \r
+● Uses matched filtering and \r
+banks of template waveforms \r
+with varying parameters to \r
+find signals in the data.\r
+● HL, HV, LV, HLV coincidences.\r
+● GstLAL allows for single \r
+detector candidates.\r
+Minimally modeled search\r
+● CWB\r
+● Can potentially identify \r
+non-CBC sources. \r
+● Does not use matched \r
+filtering or waveforms. \r
+● Identifies excess power in \r
+coincident strain data to \r
+find signals.\r
+● HL, HV, LV coincidences.\r
+Same methods as \r
+GWTC-2.1 (GstLAL, \r
+MBTA, PyCBC) and \r
+GWTC-2 (cWB).\r
+Descriptions of \r
+pipelines are given \r
+with more details in \r
+Section IV and \r
+Appendix D of the \r
+paper. 
+
+Population-weighted posteriors\r
+60\r
+With growing \r
+catalog we can use \r
+the population as \r
+the prior for our \r
+event posteriors.\r
+More details in \r
+Appendix E of the \r
+paper. \r
+Original, PP, FM\r
+● Event posteriors reweighted with Power law + Peak (PP), Flexible Mixtures (FM)\r
+● For some events: q~1 preferred, PP and FM models disagree (with PP model \r
+pulling distribution towards ) 
+
+Event selection criterion\r
+● This work and GWTC-3 use different \r
+criteria for what constitutes a GW \r
+event\r
+○ GWTC-3 uses the probability that a \r
+trigger is astrophysical (pastro)\r
+○ We use the false alarm rate (FAR) as \r
+the metric for inclusion\r
+● Relaxed criteria means we can analyze \r
+events like GW200105\r
+○ Neutron star-black hole event\r
+○ FAR of ~⅕ years, but pastro of .36\r
+● What’s the difference?\r
+○ Potential GW events are assigned a \r
+signal-to-noise ratio (SNR) based on \r
+their “loudness”\r
+○ FAR describes how frequently \r
+background noise should make a \r
+signal with an SNR greater than the \r
+event’s SNR\r
+○ Using a population model, we can \r
+estimate how frequently binaries \r
+with a given combination of masses \r
+and spins are observed\r
+○ Using this event rate and FAR, we \r
+compute pastro for a given GW event\r
+61\r
+We use the false alarm \r
+rate (FAR) to \r
+determine which \r
+triggers we should \r
+analyze\r
+Events with a FAR<1/1 \r
+year are studied in this \r
+work\r
+Some analyses \r
+restricted to the subset \r
+of these events with \r
+FAR<¼ years\r
+From our analyses, we \r
+can estimate the \r
+probability of \r
+astrophysical origin of \r
+any given event in \r
+future observing runs"""
+
+[metadata]
+title = "ligo webinar gwtc3 population o3 G2102458"
+authors = ["Unknown"]
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+LIGO–Virgo–KAGRA webinar\r
+The population of merging compact \r
+binaries inferred using gravitational \r
+waves through GWTC-3"""
+
+[[sections]]
+number = "10"
+title = "December 2021"
+text = """
+Webinar streaming live from 15:00 UTC\r
+Image credit: LIGO/Caltech/MIT/Sonoma State/Aurore Simonnet
+
+The population of merging \r
+compact binaries inferred \r
+using gravitational waves \r
+through GWTC-3\r
+arXiv:2111.03634 • \r
+15:00 UTC • 10 December 2021 • dcc.ligo.org/G2102458/public"""
+
+[[sections]]
+number = "2"
+title = "GWTC-3"
+text = """
+webinars\r
+https://www.youtube.com/ligovirgo"""
+
+[[sections]]
+number = "6"
+title = "December 2021: Compact binary"
+text = """
+coalescences observed by LIGO and Virgo \r
+during the second part of the third \r
+observing run"""
+
+[[sections]]
+number = "9"
+title = "December 2021: Constraints on the"
+text = """
+cosmic expansion history from GWTC-3\r
+Today: The population of merging compact \r
+binaries inferred using gravitational waves \r
+through GWTC-3\r
+January 2022: Tests of general relativity \r
+with GWTC-3"""
+
+[[sections]]
+number = "3"
+title = "Speakers"
+text = ""
+
+[[sections]]
+number = "4"
+title = "Amanda Farah"
+text = """
+U Chicago\r
+The Binary Merger \r
+Population\r
+Philippe Landry\r
+CITA\r
+Neutron Star \r
+Mergers\r
+Vaibhav Tiwari\r
+Cardiff\r
+Black Hole Masses\r
+Tom Callister\r
+CCA\r
+Black Hole \r
+Redshifts and Spins\r
+Richard O’Shaughnessy\r
+RIT\r
+Moderator\r
+Q&A
+
+Panelists"""
+
+[[sections]]
+number = "5"
+title = "Fabio Antonini"
+text = """
+Cardiff University\r
+Astro interpretation\r
+Bruce Edelman\r
+University of Oregon\r
+Black Hole Masses\r
+Stephen Fairhurst\r
+Cardiff University\r
+Additional events\r
+Adrian Helmling-Cornell\r
+University of Oregon\r
+Event selection\r
+Jacob Golomb\r
+Caltech\r
+Populations\r
+Dan Wysocki\r
+UWM\r
+Populations\r
+Shanika Galaudage\r
+OzGrav/Monash University\r
+Populations
+
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin"""
+
+[[sections]]
+number = "6"
+title = "Full"
+text = """
+Spectrum of \r
+Mergers"""
+
+[[sections]]
+number = "7"
+title = "A Growing Catalog : GWTC-1"
+text = """
+O1 + O2\r
+Mass\r
+Order of detection"""
+
+[[sections]]
+number = "8"
+title = "A Growing Catalog : GWTC-2.1"
+text = "O1 + O2 O3a"
+
+[[sections]]
+number = "9"
+title = "A Growing Catalog : GWTC-3"
+text = "O1 + O2 O3a O3b"
+
+[[sections]]
+number = "10"
+title = "GWTC-3 adds 35 A Growing Catalog : GWTC-3"
+text = """
+events with more \r
+than 50% probability\r
+of an astrophysical\r
+source\r
+Total number of \r
+events is now 90\r
+We analyze the 67\r
+events with false \r
+alarm rate (FAR) \r
+below ¼ yr-1\r
+Most are binary black \r
+holes (BBH)\r
+Some are neutron \r
+star - black hole \r
+binaries (NSBH)\r
+Two are binary \r
+neutron stars (BNS)
+
+Population of GW Sources\r
+● Population analysis to understand \r
+individual events\r
+● Features found in the population \r
+shed light on the astrophysical \r
+origins of the systems we observe"""
+
+[[sections]]
+number = "11"
+title = "GWTC-2 population"
+text = """
+study: link
+
+Methods and Inputs\r
+● 67 events with false alarm rate (FAR) below ¼ yr-1\r
+● masses, spins, and distances of all these events inferred from the gravitational wave \r
+signal\r
+● Use a hierarchical Bayesian analysis to get an astrophysical distribution of sources\r
+● Take selection effects into account\r
+● several mass models, 3 spin models, and one distance model for the astrophysical \r
+population of sources"""
+
+[[sections]]
+number = "12"
+title = "Details of how we infer"
+text = """
+the masses, spins, and \r
+other source \r
+parameters are in the\r
+catalog paper\r
+Sensitivity estimates \r
+for modeling selection \r
+effects are on Zenodo\r
+m1\r
+m2\r
+χ2\r
+χ1\r
+mass ratio q= m2 / m1\r
+DL\r
+Interferometer"""
+
+[[sections]]
+number = "13"
+title = "Merger rates of all sources"
+text = """
+Subpopulations \r
+Lower Mass Gap\r
+Introduction\r
+Inputs\r
+Methods\r
+Full \r
+Spectrum of \r
+Mergers\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin
+
+Full Spectrum of Compact Objects"""
+
+[[sections]]
+number = "14"
+title = "We are sensitive to two"
+text = """
+types of compact \r
+objects: neutron stars \r
+and black holes\r
+Three types of mergers: \r
+binary neutron star, \r
+binary black hole, \r
+neutron star - black hole\r
+Fundamental Questions:\r
+● Which types of \r
+mergers are we \r
+seeing?\r
+● How many are \r
+happening in the \r
+Universe?
+
+Full Spectrum of Compact Objects\r
+15\r
+● Models spanning the full spectrum of compact objects allow us to\r
+○ Search for a feature between neutron stars and black holes\r
+○ Find relative rates of mergers in different parts of the spectrum\r
+○ Include ambiguously classified events"""
+
+[[sections]]
+number = "1"
+title = "Features and Merger Rates"
+text = ""
+
+[[sections]]
+number = "16"
+title = "PDB: Power Law + Dip"
+text = """
++ Break\r
+MS: Multi-Source\r
+BGP: Binned Gaussian \r
+Process\r
+● Multiple models consistent \r
+with same results\r
+● Steep drop-off in the merger \r
+rate after neutron star-like \r
+masses\r
+● Potential but yet-unresolved\r
+upper edge of mass gap
+
+NS mass distribution"""
+
+[[sections]]
+number = "17"
+title = "Introduction"
+text = """
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers
+
+Neutron star candidates"""
+
+[[sections]]
+number = "18"
+title = "Five events with a"
+text = """
+low-mass component (m \r
+< 3 M☉)\r
+We infer the \r
+distribution of NS \r
+masses in merging \r
+compact binaries from a \r
+subset of these events
+
+● Treat low-mass components as NSs if P(m ≤ MTOV) > 50%\r
+● Obtain same classifications relative to Mgap instead of MTOV\r
+Classifying objects as neutron stars"""
+
+[[sections]]
+number = "19"
+title = "MTOV is the non\u0002rotating maximum NS"
+text = """
+mass estimated from \r
+current NS equation \r
+of state knowledge\r
+Mgap is the inferred \r
+lower edge of the \r
+mass gap between \r
+NSs and BHs\r
+GW190814 is a BBH\r
+according to this \r
+classification\r
+Six NSs in total\r
+Com\r
+GW170817 x 2\r
+GW190425 x 2\r
+GW200105 x 1\r
+GW200115 x 1\r
+MTOV from Legred et al. 2106.05313\r
+low\r
+low
+
+Neutron star mass distribution"""
+
+[[sections]]
+number = "20"
+title = "Recover broad mass"
+text = """
+distribution with more \r
+support for heavy NSs \r
+than Galactic population\r
+Gaussian Peak model \r
+does not recover sharp \r
+peak at 1.35 M☉\r
+observed in Galactic BNS \r
+population\r
+Power model’s exponent \r
+α = -2+5 weakly \r
+constrained, but \r
+consistent with uniform \r
+distribution\r
+Difference relative to \r
+Galactic population \r
+could result from \r
+distinct formation \r
+channels, strong \r
+selection effects, or \r
+overlap of NS and BH \r
+mass distributions\r
+-7\r
+Galactic\r
+Galactic BNS\r
+Peak\r
+Power\r
+Galactic fit from Farr & Chatziioannou 2005.00032, Galactic BNS fit from Ozel & Freire 1603.02698
+
+Maximum neutron star mass"""
+
+[[sections]]
+number = "21"
+title = "Maximum mass observed"
+text = """
+in the NS population is\r
+mmax= 2.0+0.3 M☉\r
+Observed maximum mass \r
+is consistent with MTOV= \r
+2.2+0.3 M☉ from the \r
+equation of state\r
+Also consistent with \r
+observed mmax= 2.2+0.8 M☉\r
+for Galactic pulsars\r
+MTOV from Legred et al. 2106.05313, Galactic mmax from Farr & Chatziioannou 2005.00032\r
+-0.2\r
+-0.2\r
+-0.2"""
+
+[[sections]]
+number = "22"
+title = "Binary properties (I)"
+text = """
+Introduction\r
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers
+
+Mass distribution"""
+
+[[sections]]
+number = "23"
+title = "Results from our coarse"
+text = """
+grained model consistent \r
+between GWTC-2 and \r
+GWTC-3.\r
+A higher fraction of low mass \r
+and unequal mass binaries \r
+observed in GWTC-3.\r
+Steeper decline at lower \r
+masses and a broader mass \r
+ratio distribution\r
+PowerLaw + Peak
+
+Mass distribution"""
+
+[[sections]]
+number = "24"
+title = "Overdensity between 8M⦿"
+text = """
+and 10M⦿, and around 26M⦿.\r
+One-eighth of the \r
+observations in the first \r
+overdensity.\r
+Absence of mergers with chirp \r
+masses between 10M⦿ and \r
+12M⦿.\r
+A weaker feature present at \r
+around 14M⦿\r
+FM: Flexible Mixture
+
+Mass distribution"""
+
+[[sections]]
+number = "25"
+title = "Addition of more flexible"
+text = """
+models for the mass \r
+distribution.\r
+Overdensity at 10M\r
+⦿\r
+and 35M\r
+⦿\r
+ at a credibility \r
+greater than 99%.\r
+Overdensity at \r
+10M\r
+⦿\r
+contributes \r
+biggest fraction to the \r
+merger rate.\r
+Overdensity at 35M\r
+⦿\r
+contributes biggest \r
+fraction to the observed \r
+mergers.
+
+Mass distribution"""
+
+[[sections]]
+number = "26"
+title = "Analysis dedicated to"
+text = """
+upper mass gap\r
+No evidence for an \r
+upper mass gap\r
+Mass gap higher than \r
+expected or heavier \r
+binaries formed in a \r
+way that avoids \r
+pair-instability.
+
+Mass distribution"""
+
+[[sections]]
+number = "27"
+title = "GW190917 and GW190814"
+text = """
+are outliers in binary black hole \r
+population.\r
+Could suggest a separate \r
+subpopulation."""
+
+[[sections]]
+number = "28"
+title = "Introduction"
+text = """
+Inputs\r
+Methods\r
+BNS and \r
+NSBH BBH Mass\r
+BBH \r
+Redshift and \r
+Spin\r
+Full \r
+Spectrum of \r
+Mergers\r
+Binary properties (II)
+
+Redshift evolution"""
+
+[[sections]]
+number = "29"
+title = "Analysis"
+text = """
+Previous analyses were \r
+agnostic about evolution \r
+of the BBH merger rate\r
+We now confidently \r
+conclude that the merger \r
+rate rises into the past\r
+Result driven by new data \r
+and improved estimates \r
+of search sensitivities\r
+No evidence that mass \r
+varies with redshift
+
+dominant spin \r
+perpendicular to L\r
+BBH spins explored via two \r
+complementary approaches:\r
+Measurement of component \r
+spin magnitudes and tilts\r
+Measurement of effective \r
+spin parameters :\r
+average \r
+spin parallel to L\r
+Spin distribution"""
+
+[[sections]]
+number = "30"
+title = "Background"
+text = """
+Talbot & Thrane 1704.08370; Miller et al. 2001.06051; LIGO-Virgo-Kagra Collaborations 2010.14533
+
+Spin distribution"""
+
+[[sections]]
+number = "31"
+title = "Background"
+text = """
+BBH spin orientations \r
+probe binary formation\r
+Isolated field binaries:\r
+preferentially aligned \r
+spins\r
+Dynamical assembly in \r
+clusters: isotropically \r
+aligned spins\r
+e.g. Mandel & Farmer 1806.05820
+
+Spin distribution"""
+
+[[sections]]
+number = "32"
+title = "Spin magnitudes due to"
+text = """
+non-zero natal spins, or \r
+spin-up via binary tides \r
+& mass transfer?\r
+Despite misalignment, \r
+spin orientations are not \r
+isotropic; challenge to \r
+purely-dynamical origin\r
+Effective spins reveal \r
+non-vanishing and \r
+asymmetric \r
+distributions\r
+Analysis\r
+Spin magnitudes generally small \r
+but non-vanishing. Significant spin-orbit misalignment\r
+Ask us about this!
+
+Correlations between spin and mass ratio"""
+
+[[sections]]
+number = "33"
+title = "Allow mean and"
+text = """
+standard deviation of\r
+ to depend linearly \r
+on mass ratio q\r
+On average, BBHs with \r
+more unequal masses \r
+have larger effective \r
+spins\r
+Could signify \r
+preferentially larger or \r
+more aligned spins with \r
+unequal mass ratios\r
+Analysis"""
+
+[[sections]]
+number = "0.0"
+title = "Callister et al. 2106.00521"
+text = "Correlations between spin and mass"
+
+[[sections]]
+number = "34"
+title = "Analysis"
+text = """
+A relationship between \r
+BH spins and masses \r
+might signify e.g. \r
+repeated “hierarchical” \r
+mergers\r
+Sought to identify mass \r
+& spin correlations \r
+using the Flexible \r
+Mixtures approach\r
+No evidence for a \r
+mass-dependent spin \r
+distribution
+
+Summary"""
+
+[[sections]]
+number = "35"
+title = "Maximum mass"
+text = """
+consistent with \r
+TOV expectation\r
+Systematically \r
+broader mass \r
+distribution than \r
+Galactic population\r
+Improved NS-BH \r
+rate estimates\r
+Global maximum at"""
+
+[[sections]]
+number = "10"
+title = "Overdensity at 35"
+text = """
+Merger rate increases \r
+with redshift\r
+Misaligned spins\r
+Correlations between \r
+spin and mass ratios\r
+Look out for: Neutron stars NS-BH binaries BH-BH binaries\r
+O4 observing run in \r
+December 2022\r
+Upcoming webinar: \r
+Testing general \r
+relativity with \r
+GWTC-3 (20 Jan)\r
+What we’ve learned\r
+All sources\r
+First self-consistent \r
+measurement of the \r
+merger rate across all \r
+masses
+
+Data release"""
+
+[[sections]]
+number = "36"
+title = "Data"
+text = """
+Data products\r
+Analysis results available from www.gw-openscience.org/GWTC-3/ at \r
+https://doi.org/10.5281/zenodo.5650061\r
+● Full posteriors for all analyses\r
+● Python tutorials\r
+● Search sensitivity (O3, and O1+O2+O3)\r
+● Data for all tables\r
+● Data behind the figures (soon: all figure generation scripts)"""
+
+[[sections]]
+number = "37"
+title = "Data products include"
+text = """
+full analyses used in \r
+paper\r
+Notebooks and \r
+example scripts\r
+included with data \r
+products\r
+Gravitational Wave \r
+Open Data \r
+Workshops provide \r
+more resources to \r
+understand data \r
+analysis
+
+This material is based upon work supported by NSF’s LIGO Laboratory which is a major facility fully funded by the National Science Foundation. The authors also \r
+gratefully acknowledge the support of the Science and Technology Facilities Council (STFC) of the United Kingdom, the Max-Planck-Society (MPS), and the State of \r
+Niedersachsen/Germany for support of the construction of Advanced LIGO and construction and operation of the GEO 600 detector. Additional support for Advanced \r
+LIGO was provided by the Australian Research Council. The authors gratefully acknowledge the Italian Istituto Nazionale di Fisica Nucleare (INFN), the French Centre \r
+National de la Recherche Scientifique (CNRS) and the Netherlands Organization for Scientific Research, for the construction and operation of the Virgo detector and \r
+the creation and support of the EGO consortium. The authors also gratefully acknowledge research support from these agencies as well as by the Council of Scientific \r
+and Industrial Research of India, the Department of Science and Technology, India, the Science & Engineering Research Board (SERB), India, the Ministry of Human \r
+Resource Development, India, the Spanish Agencia Estatal de Investigación, the Vicepresidència i Conselleria d'Innovació, Recerca i Turisme and the Conselleria \r
+d'Educació i Universitat del Govern de les Illes Balears, the Conselleria d'Innovació, Universitats, Ciència i Societat Digital de la Generalitat Valenciana and the CERCA \r
+Programme Generalitat de Catalunya, Spain, the National Science Centre of Poland and the Foundation for Polish Science (FNP), the Swiss National Science \r
+Foundation (SNSF), the Russian Foundation for Basic Research, the Russian Science Foundation, the European Commission, the European Regional Development \r
+Funds (ERDF), the Royal Society, the Scottish Funding Council, the Scottish Universities Physics Alliance, the Hungarian Scientific Research Fund (OTKA), the French \r
+Lyon Institute of Origins (LIO), the Belgian Fonds de la Recherche Scientifique (FRS-FNRS), Actions de Recherche Concertées (ARC) and Fonds Wetenschappelijk \r
+Onderzoek – Vlaanderen (FWO), Belgium, the Paris Île-de-France Region, the National Research, Development and Innovation Office Hungary (NKFIH), the National \r
+Research Foundation of Korea, the Natural Science and Engineering Research Council Canada, Canadian Foundation for Innovation (CFI), the Brazilian Ministry of \r
+Science, Technology, and Innovations, the International Center for Theoretical Physics South American Institute for Fundamental Research (ICTP-SAIFR), the \r
+Research Grants Council of Hong Kong, the National Natural Science Foundation of China (NSFC), the Leverhulme Trust, the Research Corporation, the Ministry of \r
+Science and Technology (MOST), Taiwan, the United States Department of Energy, and the Kavli Foundation. The authors gratefully acknowledge the support of the \r
+NSF, STFC, INFN and CNRS for provision of computational resources. Computing was performed on the OzSTAR Australian national facility at Swinburne University \r
+of Technology, which receives funding in part from the Astronomy National Collaborative Research Infrastructure Strategy (NCRIS) allocation provided by the \r
+Australian Government. We thankfully acknowledge the computer resources at MareNostrum and the technical support provided by Barcelona Supercomputing \r
+Center (RES-AECT-2021-2-0021). This work was supported by MEXT, JSPS Leading-edge Research Infrastructure Program, JSPS Grant-in- Aid for Specially Promoted \r
+Research 26000005, JSPS Grant-in-Aid for Scientific Research on Innovative Areas 2905: JP17H06358, JP17H06361 and JP17H06364, JSPS Core-to-Core Program \r
+A. Advanced Research Networks, JSPS Grant-in-Aid for Scientific Research (S) 17H06133, the joint research program of the Institute for Cosmic Ray Research, \r
+University of Tokyo, National Research Foundation (NRF) and Computing Infrastructure Project of KISTI-GSDC in Korea, Academia Sinica (AS), AS Grid Center (ASGC) \r
+and the Ministry of Science and Technology (MoST) in Taiwan under grants including AS-CDA-105-M06, Advanced Technology Center (ATC) of NAOJ, and Mechanical \r
+Engineering Center of KEK.\r
+We would like to thank all of the essential workers who put their health at risk during the COVID-19 pandemic, without whom we would not have been able to \r
+complete this work."""
+
+[[sections]]
+number = "38"
+title = "Questions"
+text = ""
+
+[[sections]]
+number = "39"
+title = "Panelists"
+text = ""
+
+[[sections]]
+number = "40"
+title = "Fabio Antonini"
+text = """
+Cardiff University\r
+Astro interpretation\r
+Bruce Edelman\r
+University of Oregon\r
+Black Hole Masses\r
+Stephen Fairhurst\r
+Cardiff University\r
+Additional events\r
+Adrian Helmling-Cornell\r
+University of Oregon\r
+Event selection\r
+Jacob Golomb\r
+Caltech\r
+Populations\r
+Dan Wysocki\r
+UWM\r
+Populations\r
+Shanika Galaudage\r
+OzGrav/Monash University\r
+Populations"""
+
+[[sections]]
+number = "41"
+title = "Extra: GWTC-3"
+text = "Extra: Merger rate versus all mass"
+
+[[sections]]
+number = "42"
+title = "Details of models in"
+text = """
+these links:\r
+BGP, MSo, PDB\r
+m1\r
+m2\r
+● Multiple methods to \r
+corroborate results
+
+Takeaways so far\r
+43\r
+● Growing catalog gives us deeper insight into each event\r
+● Features in the population can teach us astrophysical lessons\r
+● We make the first self-consistent measurement of the merger rate of \r
+compact binaries across all masses\r
+● Starting to resolve transition between neutron stars and black holes, \r
+which allows us to classify the two types of objects
+
+Source properties"""
+
+[[sections]]
+number = "44"
+title = "Each signal we have"
+text = """
+detected so far has \r
+come from the merger \r
+of two compact \r
+objects- neutron stars\r
+and black holes\r
+Using Bayesian \r
+inference, we analyse \r
+data to infer source \r
+properties like \r
+masses, spins, \r
+distance, and sky \r
+location\r
+We use waveform \r
+models (see the \r
+GWTC-2.1 webinar)\r
+--\r
+Strain / 10-21
+
+Extras: Effective spin parameters"""
+
+[[sections]]
+number = "45"
+title = "Effective spins fit as a"
+text = """
+multivariate Gaussian\r
+Quite consistent with \r
+effective spin \r
+distributions implied by \r
+“Default’’ spin \r
+magnitude and tilt \r
+model\r
+Analysis\r
+Asymmetric distribution of \r
+effective inspiral spins\r
+Non-vanishing distribution of \r
+effective precessing spins
+
+Extras: Negative effective spins?"""
+
+[[sections]]
+number = "46"
+title = "Negative effective spins"
+text = """
+would indicate spins \r
+misaligned by more than \r
+90 degrees\r
+Previously investigated by \r
+introducing a variable \r
+lower truncation bound\r
+Updated analysis allows for \r
+additional overdensity at \r
+to avoid possible \r
+systematics \r
+Analysis\r
+Previous method Updated method
+
+Extras: Negative effective spins?"""
+
+[[sections]]
+number = "47"
+title = "When assuming no"
+text = """
+overdensity, we find \r
+negative effective spins \r
+at 99.8% credibility\r
+When allowing for \r
+overdensity, conclude \r
+that at \r
+88.4% credibility\r
+Data do not require\r
+overdensity to exist\r
+Analysis
+
+Extras: Other Events"""
+
+[[sections]]
+number = "48"
+title = "Additional events not"
+text = """
+used in this analysis are \r
+broadly consistent with \r
+the observed population\r
+Events from IAS \r
+searches: Venumadhav \r
+et al 1904.07214, \r
+Zackay et al"""
+
+[[sections]]
+number = "1910.09528"
+title = "Events from OGC"
+text = "searches: Nitz et al"
+
+[[sections]]
+number = "2105.09151"
+title = "Events from GWTC-3"
+text = """
+below threshold used in \r
+this analysis
+
+Modeled searches"""
+
+[[sections]]
+number = "49"
+title = "Model signals as"
+text = """
+Compact Binary \r
+Coalescence (CBC)\r
+Waveforms depend \r
+on intrinsic source \r
+parameters: \r
+component masses \r
+and the dimensionless \r
+component spins\r
+Template bank total masses\r
+● MBTA: 2 - 200 Msun \r
+● GstLAL: 2 - 758 Msun \r
+● PyCBC: 2 - 500 Msun \r
+Mass ratio\r
+● MBTA: \r
+● GstLAL: 0.02 - 1 (depends on parameter \r
+space region)\r
+● PyCBC: ⅓ - 1\r
+Spins\r
+● MBTA: aligned spins up to 0.997\r
+● GstLAL: anti- or aligned spins up to \r
+0.999\r
+● PyCBC: anti- or aligned spins up to 0.998
+
+NSBH \r
+masses"""
+
+[[sections]]
+number = "50"
+title = "Mass ratio q is ratio of"
+text = """
+secondary to primary\r
+mass:\r
+Coloured contours in\r
+this plot are confident\r
+neutron star - black\r
+hole pairs\r
+Grey contours in this\r
+plot are ambiguous,\r
+with secondary that\r
+may be a black hole or\r
+a neutron star\r
+q = \r
+m\r
+1\r
+m"""
+
+[[sections]]
+number = "2"
+title = "GW190814"
+text = ""
+
+[[sections]]
+number = "51"
+title = "GW190814’s m2 is an"
+text = """
+outlier relative to the \r
+population of BNS and \r
+NSBH secondaries\r
+The GWTC-2\r
+population study found \r
+that it is also an outlier \r
+from the BBH \r
+population\r
+Peak model predicts \r
+largest m2 observed \r
+after 2 BNSs and 3 \r
+NSBHs to be smaller \r
+than GW190814’s m2\r
+99.9% of the time
+
+Masses and spins\r
+Most effective \r
+inspiral spins\r
+consistent with zero\r
+Some events with \r
+significant support for \r
+negative effective \r
+inspiral spins\r
+More events have \r
+significant support for \r
+positive effective \r
+inspiral spins\r
+Consistent with \r
+GWTC-2.1"""
+
+[[sections]]
+number = "52"
+title = "NSBH spins"
+text = """
+Primary spin better \r
+measured as more \r
+important for \r
+dynamics\r
+Spin components in \r
+the orbital plane \r
+better measured for \r
+more extreme mass \r
+ratios\r
+Spins approximately \r
+aligned with orbital \r
+angular momentum \r
+expected for binaries \r
+formed in isolation"""
+
+[[sections]]
+number = "53"
+title = "BBH spins: small / positive"
+text = """
+Spins expected to be \r
+small if angular \r
+moment transfer is \r
+efficient in stars\r
+Spins in X-ray binaries \r
+extend close to the \r
+Kerr limit of 1"""
+
+[[sections]]
+number = "54"
+title = "BBH spins: misaligned / negative"
+text = """
+Misaligned spins \r
+expected for binaries \r
+formed dynamically\r
+Equal-mass mergers \r
+produce spins around"""
+
+[[sections]]
+number = "0.7"
+title = "GW200129 shows"
+text = """
+best evidence for \r
+misaligned spins"""
+
+[[sections]]
+number = "55"
+title = "Highlighted events O3b catalog"
+text = ""
+
+[[sections]]
+number = "56"
+title = "NSBH"
+text = """
+NSBH\r
+NSBH?\r
+negative spin\r
+lightest BBH in O3b\r
+positive spin\r
+negative spin\r
+misaligned spin
+
+Tables"""
+
+[[sections]]
+number = "57"
+title = "Tables"
+text = ""
+
+[[sections]]
+number = "58"
+title = "Search methods"
+text = ""
+
+[[sections]]
+number = "59"
+title = "Modeled searches"
+text = """
+● GstLAL, MBTA, PyCBC Broad, \r
+PyCBC BBH\r
+● Assume the source is CBC. \r
+● Uses matched filtering and \r
+banks of template waveforms \r
+with varying parameters to \r
+find signals in the data.\r
+● HL, HV, LV, HLV coincidences.\r
+● GstLAL allows for single \r
+detector candidates.\r
+Minimally modeled search\r
+● CWB\r
+● Can potentially identify \r
+non-CBC sources. \r
+● Does not use matched \r
+filtering or waveforms. \r
+● Identifies excess power in \r
+coincident strain data to \r
+find signals.\r
+● HL, HV, LV coincidences.\r
+Same methods as \r
+GWTC-2.1 (GstLAL, \r
+MBTA, PyCBC) and \r
+GWTC-2 (cWB).\r
+Descriptions of \r
+pipelines are given \r
+with more details in \r
+Section IV and \r
+Appendix D of the \r
+paper. 
+
+Population-weighted posteriors"""
+
+[[sections]]
+number = "60"
+title = "With growing"
+text = """
+catalog we can use \r
+the population as \r
+the prior for our \r
+event posteriors.\r
+More details in \r
+Appendix E of the \r
+paper. \r
+Original, PP, FM\r
+● Event posteriors reweighted with Power law + Peak (PP), Flexible Mixtures (FM)\r
+● For some events: q~1 preferred, PP and FM models disagree (with PP model \r
+pulling distribution towards ) 
+
+Event selection criterion\r
+● This work and GWTC-3 use different \r
+criteria for what constitutes a GW \r
+event\r
+○ GWTC-3 uses the probability that a \r
+trigger is astrophysical (pastro)\r
+○ We use the false alarm rate (FAR) as \r
+the metric for inclusion\r
+● Relaxed criteria means we can analyze \r
+events like GW200105\r
+○ Neutron star-black hole event\r
+○ FAR of ~⅕ years, but pastro of .36\r
+● What’s the difference?\r
+○ Potential GW events are assigned a \r
+signal-to-noise ratio (SNR) based on \r
+their “loudness”\r
+○ FAR describes how frequently \r
+background noise should make a \r
+signal with an SNR greater than the \r
+event’s SNR\r
+○ Using a population model, we can \r
+estimate how frequently binaries \r
+with a given combination of masses \r
+and spins are observed\r
+○ Using this event rate and FAR, we \r
+compute pastro for a given GW event"""
+
+[[sections]]
+number = "61"
+title = "We use the false alarm"
+text = """
+rate (FAR) to \r
+determine which \r
+triggers we should \r
+analyze\r
+Events with a FAR<1/1 \r
+year are studied in this \r
+work\r
+Some analyses \r
+restricted to the subset \r
+of these events with \r
+FAR<¼ years\r
+From our analyses, we \r
+can estimate the \r
+probability of \r
+astrophysical origin of \r
+any given event in \r
+future observing runs"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 1
+image_path = "images/image_p1_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+image_path = "images/image_p2_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 5
+image_path = "images/image_p5_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 8
+image_path = "images/image_p8_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 9
+image_path = "images/image_p9_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 10
+image_path = "images/image_p10_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 11
+image_path = "images/image_p11_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 14
+image_path = "images/image_p14_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 15
+image_path = "images/image_p15_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 15
+image_path = "images/image_p15_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 16
+image_path = "images/image_p16_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 16
+image_path = "images/image_p16_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 18
+image_path = "images/image_p18_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 19
+image_path = "images/image_p19_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 20
+image_path = "images/image_p20_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 21
+image_path = "images/image_p21_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 23
+image_path = "images/image_p23_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 23
+image_path = "images/image_p23_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 24
+image_path = "images/image_p24_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 24
+image_path = "images/image_p24_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 25
+image_path = "images/image_p25_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 26
+image_path = "images/image_p26_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 27
+image_path = "images/image_p27_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 29
+image_path = "images/image_p29_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 29
+image_path = "images/image_p29_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 29
+image_path = "images/image_p29_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 30
+image_path = "images/image_p30_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 30
+image_path = "images/image_p30_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 30
+image_path = "images/image_p30_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 31
+image_path = "images/image_p31_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 31
+image_path = "images/image_p31_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 31
+image_path = "images/image_p31_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 31
+image_path = "images/image_p31_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 31
+image_path = "images/image_p31_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 31
+image_path = "images/image_p31_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 31
+image_path = "images/image_p31_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 31
+image_path = "images/image_p31_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 32
+image_path = "images/image_p32_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 32
+image_path = "images/image_p32_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 32
+image_path = "images/image_p32_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 32
+image_path = "images/image_p32_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 33
+image_path = "images/image_p33_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 33
+image_path = "images/image_p33_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 33
+image_path = "images/image_p33_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 33
+image_path = "images/image_p33_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 33
+image_path = "images/image_p33_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 34
+image_path = "images/image_p34_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 34
+image_path = "images/image_p34_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 34
+image_path = "images/image_p34_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 35
+image_path = "images/image_p35_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 35
+image_path = "images/image_p35_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 40
+image_path = "images/image_p40_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 41
+image_path = "images/image_p41_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 42
+image_path = "images/image_p42_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 43
+image_path = "images/image_p43_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 44
+image_path = "images/image_p44_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 44
+image_path = "images/image_p44_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 44
+image_path = "images/image_p44_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 45
+image_path = "images/image_p45_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 45
+image_path = "images/image_p45_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 46
+image_path = "images/image_p46_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 46
+image_path = "images/image_p46_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 46
+image_path = "images/image_p46_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 47
+image_path = "images/image_p47_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 47
+image_path = "images/image_p47_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 48
+image_path = "images/image_p48_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 49
+image_path = "images/image_p49_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 49
+image_path = "images/image_p49_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 49
+image_path = "images/image_p49_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 49
+image_path = "images/image_p49_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 49
+image_path = "images/image_p49_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 49
+image_path = "images/image_p49_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 49
+image_path = "images/image_p49_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 49
+image_path = "images/image_p49_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 50
+image_path = "images/image_p50_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 50
+image_path = "images/image_p50_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 50
+image_path = "images/image_p50_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 51
+image_path = "images/image_p51_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 52
+image_path = "images/image_p52_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 52
+image_path = "images/image_p52_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 52
+image_path = "images/image_p52_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 52
+image_path = "images/image_p52_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 52
+image_path = "images/image_p52_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 52
+image_path = "images/image_p52_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 52
+image_path = "images/image_p52_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 52
+image_path = "images/image_p52_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 53
+image_path = "images/image_p53_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 53
+image_path = "images/image_p53_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 53
+image_path = "images/image_p53_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 54
+image_path = "images/image_p54_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 54
+image_path = "images/image_p54_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 54
+image_path = "images/image_p54_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 55
+image_path = "images/image_p55_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 55
+image_path = "images/image_p55_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 55
+image_path = "images/image_p55_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 56
+image_path = "images/image_p56_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 56
+image_path = "images/image_p56_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 56
+image_path = "images/image_p56_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 57
+image_path = "images/image_p57_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 58
+image_path = "images/image_p58_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 60
+image_path = "images/image_p60_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 60
+image_path = "images/image_p60_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 60
+image_path = "images/image_p60_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 60
+image_path = "images/image_p60_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 60
+image_path = "images/image_p60_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 60
+image_path = "images/image_p60_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 60
+image_path = "images/image_p60_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 60
+image_path = "images/image_p60_112.png"
