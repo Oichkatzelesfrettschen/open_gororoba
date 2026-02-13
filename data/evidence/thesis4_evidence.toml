@@ -1,0 +1,14 @@
+[evidence]
+thesis_id = 4
+label = "T4 latency law (50000 steps, 40 shells)"
+metric_value = 0.99520813
+threshold = 0.60000000
+passes_gate = true
+
+[messages]
+m0 = "Shell power-law R^2 = 0.9910, gamma = -2.4133"
+m1 = "Shell inverse-square R^2 = 0.9952"
+m2 = "Latency law: InverseSquare"
+m3 = "Shells populated: 8/40"
+m4 = "Unique keys: 3370 (93.3% reuse)"
+m5 = "Shell return-time range: 2.0 - 2531.2"

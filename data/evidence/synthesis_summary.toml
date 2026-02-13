@@ -1,0 +1,37 @@
+[metadata]
+experiment = "thesis_synthesis"
+timestamp = "2026-02-27"
+theses = [1, 2, 3, 4]
+
+[[thesis]]
+id = 1
+label = "T1 spatial corr (16^3, lambda=1)"
+metric = -1.00000000
+threshold = 0.50000000
+pass = true
+
+[[thesis]]
+id = 2
+label = "T2 power-law (alpha=0.5, n=1.5)"
+metric = 1.25438551
+threshold = 1.05000000
+pass = true
+
+[[thesis]]
+id = 3
+label = "T3 plateau+pentagon (64 epochs, 500 opt steps)"
+metric = 0.00000000
+threshold = 1.00000000
+pass = true
+
+[[thesis]]
+id = 4
+label = "T4 latency law (50000 steps, 40 shells)"
+metric = 0.99520813
+threshold = 0.60000000
+pass = true
+
+[summary]
+total = 4
+pass = 4
+fail = 0

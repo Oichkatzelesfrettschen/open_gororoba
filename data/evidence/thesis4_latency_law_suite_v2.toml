@@ -1,0 +1,126 @@
+[artifact]
+id = "STPT-009-v2"
+updated = "2026-02-12"
+latency_metric = "return_time"
+key_streams = ["fibonacci", "sedenion"]
+
+# Fibonacci key stream (Pisano-limited, 32 distinct keys)
+
+[[fibonacci_run]]
+steps = 2000
+buckets = 61
+total_collisions = 33371
+peak_bucket_occupancy = 64
+mean_latency = 10.95400000
+r2_inverse_square = 0.00004024
+r2_power_law = 0.00189223
+power_law_exponent = 0.087706
+r2_linear = 0.01325227
+r2_exponential = 0.00625560
+latency_law = "undetermined"
+
+[[fibonacci_run]]
+steps = 5000
+buckets = 127
+total_collisions = 98890
+peak_bucket_occupancy = 57
+mean_latency = 10.98160000
+r2_inverse_square = 0.00005136
+r2_power_law = 0.00182254
+power_law_exponent = 0.086023
+r2_linear = 0.01328081
+r2_exponential = 0.00607959
+latency_law = "undetermined"
+
+[[fibonacci_run]]
+steps = 10000
+buckets = 251
+total_collisions = 198723
+peak_bucket_occupancy = 66
+mean_latency = 10.99160000
+r2_inverse_square = 0.00005557
+r2_power_law = 0.00178182
+power_law_exponent = 0.085045
+r2_linear = 0.01329389
+r2_exponential = 0.00598455
+latency_law = "undetermined"
+
+[[fibonacci_run]]
+steps = 50000
+buckets = 1021
+total_collisions = 1224534
+peak_bucket_occupancy = 70
+mean_latency = 10.99816000
+r2_inverse_square = 0.00005868
+r2_power_law = 0.00178138
+power_law_exponent = 0.085015
+r2_linear = 0.01329779
+r2_exponential = 0.00597512
+latency_law = "undetermined"
+
+# Sedenion key stream (high-dimensional, rich key space)
+
+[[sedenion_run]]
+steps = 2000
+seed = 42
+total_collisions = 44419
+peak_bucket_occupancy = 72
+mean_latency = 1000.50000000
+r2_inverse_square = 0.00016672
+r2_power_law = 0.00001853
+power_law_exponent = -0.016399
+r2_linear = 0.00000018
+r2_exponential = 0.00000103
+latency_law = "undetermined"
+
+[[sedenion_run]]
+steps = 5000
+seed = 42
+total_collisions = 279752
+peak_bucket_occupancy = 173
+mean_latency = 2500.50000000
+r2_inverse_square = 0.00005659
+r2_power_law = 0.00010098
+power_law_exponent = -0.038874
+r2_linear = 0.00018901
+r2_exponential = 0.00008256
+latency_law = "undetermined"
+
+[[sedenion_run]]
+steps = 10000
+seed = 42
+total_collisions = 1130048
+peak_bucket_occupancy = 327
+mean_latency = 5000.50000000
+r2_inverse_square = 0.00004638
+r2_power_law = 0.00000402
+power_law_exponent = -0.007839
+r2_linear = 0.00000057
+r2_exponential = 0.00001106
+latency_law = "undetermined"
+
+[[sedenion_run]]
+steps = 50000
+seed = 42
+total_collisions = 28007717
+peak_bucket_occupancy = 1637
+mean_latency = 25000.50000000
+r2_inverse_square = 0.00000002
+r2_power_law = 0.00000317
+power_law_exponent = 0.006961
+r2_linear = 0.00001242
+r2_exponential = 0.00000668
+latency_law = "undetermined"
+
+[convergence]
+fibonacci_r2_history = [0.00004024, 0.00005136, 0.00005557, 0.00005868]
+sedenion_r2_history = [0.00016672, 0.00005659, 0.00004638, 0.00000002]
+fibonacci_converging = true
+sedenion_converging = true
+
+[summary]
+run_count = 8
+fibonacci_inverse_square_hits = 0
+sedenion_inverse_square_hits = 0
+total_inverse_square_hits = 0
+verdict = "refuted"

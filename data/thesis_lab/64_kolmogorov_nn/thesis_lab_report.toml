@@ -1,0 +1,151 @@
+[metadata]
+experiment = "thesis_lab"
+lambda = 2.000
+nu_base = 0.100000
+force = 1.00e-5
+lbm_steps = 500
+n_sub = 4
+max_points = 100
+grid_sizes = [64]
+kolmogorov = true
+power_index = 1.50
+coupling = 10.00
+
+[[grid_resolution]]
+grid_size = 64
+lambda = 2.000
+nu_base = 0.100000
+vacuum_attractor = 0.375000
+n_models = 5
+
+[[grid_resolution.model]]
+label = "exponential"
+description = "Exponential: nu=0.1000*exp(-2.00*(F-3/8)^2)"
+viscosity_mean = 0.09354356
+viscosity_std = 0.00338330
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00144562
+lbm_max_cfl = 0.002504
+mass_conserved = true
+spearman_r = -0.999130
+pearson_r = -0.998161
+n_regions = 64
+betti_0 = 2
+betti_1 = 0
+persistence_entropy_h0 = 2.95371410
+persistence_entropy_h1 = 3.91202301
+total_persistence_h0 = 1.51562500
+total_persistence_h1 = 0.32360435
+n_vr_points = 100
+
+[[grid_resolution.model]]
+label = "linear"
+description = "Linear: nu=0.1000*(1+1.00*(F-3/8))"
+viscosity_mean = 0.11765747
+viscosity_std = 0.00502823
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00157785
+lbm_max_cfl = 0.002733
+mass_conserved = true
+spearman_r = 1.000000
+pearson_r = 1.000000
+n_regions = 64
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 2.69311919
+persistence_entropy_h1 = 3.91202301
+total_persistence_h0 = 2.12500000
+total_persistence_h1 = 0.32360435
+n_vr_points = 100
+
+[[grid_resolution.model]]
+label = "power_law"
+description = "PowerLaw: nu=0.1000*|F-3/8|^1.50"
+viscosity_mean = 0.00764924
+viscosity_std = 0.00317248
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00021756
+lbm_max_cfl = 0.000377
+mass_conserved = true
+spearman_r = 0.999451
+pearson_r = 0.999295
+n_regions = 64
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 2.71789303
+persistence_entropy_h1 = 3.91202301
+total_persistence_h0 = 2.07842537
+total_persistence_h1 = 0.32360435
+n_vr_points = 100
+
+[[grid_resolution.model]]
+label = "sigmoid"
+description = "Sigmoid: nu=[0.0500,0.1500], k=50.0, F_crit=0.3800"
+viscosity_mean = 0.14962684
+viscosity_std = 0.00270980
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00168380
+lbm_max_cfl = 0.002916
+mass_conserved = true
+spearman_r = 0.735852
+pearson_r = 0.696471
+n_regions = 64
+betti_0 = 1
+betti_1 = 3
+persistence_entropy_h0 = 2.76612734
+persistence_entropy_h1 = 3.76820485
+total_persistence_h0 = 2.93750000
+total_persistence_h1 = 0.27378030
+n_vr_points = 100
+
+[[grid_resolution.model]]
+label = "constant"
+description = "Constant: nu=0.1000"
+viscosity_mean = 0.10000000
+viscosity_std = 0.00000000
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00148639
+lbm_max_cfl = 0.002575
+mass_conserved = true
+spearman_r = 0.000000
+pearson_r = -0.000000
+n_regions = 64
+betti_0 = 2
+betti_1 = 1
+persistence_entropy_h0 = 2.65160280
+persistence_entropy_h1 = 3.91202301
+total_persistence_h0 = 3.06250000
+total_persistence_h1 = 0.32360435
+n_vr_points = 100
+
+[[grid_resolution.wasserstein_h0]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.25934676, 0.23927176, 0.36958988, 0.42990052]
+linear = [0.25934676, 0.00000000, 0.03467016, 0.23696486, 0.32012189]
+power_law = [0.23927176, 0.03467016, 0.00000000, 0.24548987, 0.32722965]
+sigmoid = [0.36958988, 0.23696486, 0.24548987, 0.00000000, 0.24816219]
+constant = [0.42990052, 0.32012189, 0.32722965, 0.24816219, 0.00000000]
+
+[[grid_resolution.wasserstein_h1]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.00000000, 0.00000000, 0.00915942, 0.00000000]
+linear = [0.00000000, 0.00000000, 0.00000000, 0.00915942, 0.00000000]
+power_law = [0.00000000, 0.00000000, 0.00000000, 0.00915942, 0.00000000]
+sigmoid = [0.00915942, 0.00915942, 0.00915942, 0.00000000, 0.00915942]
+constant = [0.00000000, 0.00000000, 0.00000000, 0.00915942, 0.00000000]
+
+[[grid_resolution.bottleneck_vs_null]]
+exponential_h0 = 0.45312500
+exponential_h1 = 0.00000000
+linear_h0 = 0.43750000
+linear_h1 = 0.00000000
+power_law_h0 = 0.43750000
+power_law_h1 = 0.00000000
+sigmoid_h0 = 0.20312500
+sigmoid_h1 = 0.48437500
+

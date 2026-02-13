@@ -1,0 +1,63 @@
+[metadata]
+experiment = "E-027"
+phase = 2
+grid_size = 8
+max_points = 50
+epsilon_range = [0.100, 2.000]
+epsilon_steps = 5
+lambda = 2.000
+n_permutations = 50
+
+[frustration]
+mean = 0.481815
+variance = 0.000909
+vacuum_attractor = 0.375
+
+[correlation]
+r_b0_epsilon = -0.707107
+r_b0_frustration = 0.707107
+
+[null_model]
+p_value = 0.333333
+null_mean = -0.007071
+null_std = 0.521967
+significant = false
+
+[decision]
+verdict = "NOT SIGNIFICANT: No topology-frustration correlation (p=0.3333)"
+
+[[topology_timeseries]]
+step = 0
+epsilon = 0.100000
+b_0 = 50
+b_1 = 0
+b_2 = 0
+
+[[topology_timeseries]]
+step = 1
+epsilon = 0.575000
+b_0 = 1
+b_1 = 0
+b_2 = 7195
+
+[[topology_timeseries]]
+step = 2
+epsilon = 1.050000
+b_0 = 1
+b_1 = 0
+b_2 = 18424
+
+[[topology_timeseries]]
+step = 3
+epsilon = 1.525000
+b_0 = 1
+b_1 = 0
+b_2 = 18424
+
+[[topology_timeseries]]
+step = 4
+epsilon = 2.000000
+b_0 = 1
+b_1 = 0
+b_2 = 18424
+

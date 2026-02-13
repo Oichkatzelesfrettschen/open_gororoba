@@ -1,0 +1,265 @@
+[artifact]
+id = "STPT-006"
+updated = "2026-02-12"
+run_tov = false
+cassini_lower_bound = 40000.0
+lambda_values = [0.5, 1.0, 2.0, 4.0]
+frustration_values = [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.125000
+mean_phi = 0.939413
+omega_eff = 44124.845129
+cassini_verdict = "pass"
+obstruction_norm = 0.605869
+coupling = 0.000606
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.250000
+mean_phi = 0.882497
+omega_eff = 38940.039154
+cassini_verdict = "fail"
+obstruction_norm = 1.175031
+coupling = 0.001175
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.375000
+mean_phi = 0.829029
+omega_eff = 34364.463940
+cassini_verdict = "fail"
+obstruction_norm = 1.709709
+coupling = 0.001710
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.500000
+mean_phi = 0.778801
+omega_eff = 30326.532986
+cassini_verdict = "fail"
+obstruction_norm = 2.211992
+coupling = 0.002212
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.625000
+mean_phi = 0.731616
+omega_eff = 26763.071426
+cassini_verdict = "fail"
+obstruction_norm = 2.683844
+coupling = 0.002684
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.750000
+mean_phi = 0.687289
+omega_eff = 23618.327637
+cassini_verdict = "fail"
+obstruction_norm = 3.127107
+coupling = 0.003127
+
+[[sample]]
+lambda = 0.500
+mean_frustration = 0.875000
+mean_phi = 0.645649
+omega_eff = 20843.100984
+cassini_verdict = "fail"
+obstruction_norm = 3.543515
+coupling = 0.003544
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.125000
+mean_phi = 0.882497
+omega_eff = 38940.039154
+cassini_verdict = "fail"
+obstruction_norm = 1.175031
+coupling = 0.001175
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.250000
+mean_phi = 0.778801
+omega_eff = 30326.532986
+cassini_verdict = "fail"
+obstruction_norm = 2.211992
+coupling = 0.002212
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.375000
+mean_phi = 0.687289
+omega_eff = 23618.327637
+cassini_verdict = "fail"
+obstruction_norm = 3.127107
+coupling = 0.003127
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.500000
+mean_phi = 0.606531
+omega_eff = 18393.972059
+cassini_verdict = "fail"
+obstruction_norm = 3.934693
+coupling = 0.003935
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.625000
+mean_phi = 0.535261
+omega_eff = 14325.239843
+cassini_verdict = "fail"
+obstruction_norm = 4.647386
+coupling = 0.004647
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.750000
+mean_phi = 0.472367
+omega_eff = 11156.508007
+cassini_verdict = "fail"
+obstruction_norm = 5.276334
+coupling = 0.005276
+
+[[sample]]
+lambda = 1.000
+mean_frustration = 0.875000
+mean_phi = 0.416862
+omega_eff = 8688.697173
+cassini_verdict = "fail"
+obstruction_norm = 5.831380
+coupling = 0.005831
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.125000
+mean_phi = 0.778801
+omega_eff = 30326.532986
+cassini_verdict = "fail"
+obstruction_norm = 2.211992
+coupling = 0.002212
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.250000
+mean_phi = 0.606531
+omega_eff = 18393.972059
+cassini_verdict = "fail"
+obstruction_norm = 3.934693
+coupling = 0.003935
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.375000
+mean_phi = 0.472367
+omega_eff = 11156.508007
+cassini_verdict = "fail"
+obstruction_norm = 5.276334
+coupling = 0.005276
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.500000
+mean_phi = 0.367879
+omega_eff = 6766.764162
+cassini_verdict = "fail"
+obstruction_norm = 6.321206
+coupling = 0.006321
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.625000
+mean_phi = 0.286505
+omega_eff = 4104.249931
+cassini_verdict = "fail"
+obstruction_norm = 7.134952
+coupling = 0.007135
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.750000
+mean_phi = 0.223130
+omega_eff = 2489.353418
+cassini_verdict = "fail"
+obstruction_norm = 7.768698
+coupling = 0.007769
+
+[[sample]]
+lambda = 2.000
+mean_frustration = 0.875000
+mean_phi = 0.173774
+omega_eff = 1509.869171
+cassini_verdict = "fail"
+obstruction_norm = 8.262261
+coupling = 0.008262
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.125000
+mean_phi = 0.606531
+omega_eff = 18393.972059
+cassini_verdict = "fail"
+obstruction_norm = 3.934693
+coupling = 0.003935
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.250000
+mean_phi = 0.367879
+omega_eff = 6766.764162
+cassini_verdict = "fail"
+obstruction_norm = 6.321206
+coupling = 0.006321
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.375000
+mean_phi = 0.223130
+omega_eff = 2489.353418
+cassini_verdict = "fail"
+obstruction_norm = 7.768698
+coupling = 0.007769
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.500000
+mean_phi = 0.135335
+omega_eff = 915.781944
+cassini_verdict = "fail"
+obstruction_norm = 8.646647
+coupling = 0.008647
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.625000
+mean_phi = 0.082085
+omega_eff = 336.897350
+cassini_verdict = "fail"
+obstruction_norm = 9.179150
+coupling = 0.009179
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.750000
+mean_phi = 0.049787
+omega_eff = 123.937609
+cassini_verdict = "fail"
+obstruction_norm = 9.502129
+coupling = 0.009502
+
+[[sample]]
+lambda = 4.000
+mean_frustration = 0.875000
+mean_phi = 0.030197
+omega_eff = 45.594098
+cassini_verdict = "fail"
+obstruction_norm = 9.698026
+coupling = 0.009698
+
+[summary]
+sample_count = 28
+pass_count = 1
+fail_count = 27
+pass_ratio = 0.035714

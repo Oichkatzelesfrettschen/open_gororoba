@@ -1,0 +1,11 @@
+[evidence]
+thesis_id = 1
+label = "T1 spatial corr (16^3, lambda=1)"
+metric_value = -1.00000000
+threshold = 0.50000000
+passes_gate = true
+
+[messages]
+m0 = "Spearman r = -1.0000"
+m1 = "Pearson r = -1.0000"
+m2 = "Regions: 8"

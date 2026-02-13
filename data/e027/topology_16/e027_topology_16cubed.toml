@@ -1,0 +1,168 @@
+[metadata]
+experiment = "E-027"
+phase = 2
+grid_size = 16
+max_points = 100
+epsilon_range = [0.0471, 0.8667]
+epsilon_steps = 20
+lambda = 2.000
+n_permutations = 200
+
+[frustration]
+mean = 0.482727
+variance = 0.000927
+vacuum_attractor = 0.375
+
+[correlation]
+r_b0_epsilon = -0.377964
+r_b0_frustration = 0.377964
+
+[null_model]
+p_value = 0.074627
+null_mean = -0.002785
+null_std = 0.239724
+significant = false
+
+[decision]
+verdict = "NOT SIGNIFICANT: No topology-frustration correlation (p=0.0746)"
+
+[[topology_timeseries]]
+step = 0
+epsilon = 0.047140
+b_0 = 100
+b_1 = 0
+b_2 = 0
+
+[[topology_timeseries]]
+step = 1
+epsilon = 0.090273
+b_0 = 1
+b_1 = 110
+b_2 = 0
+
+[[topology_timeseries]]
+step = 2
+epsilon = 0.133406
+b_0 = 1
+b_1 = 0
+b_2 = 1579
+
+[[topology_timeseries]]
+step = 3
+epsilon = 0.176539
+b_0 = 1
+b_1 = 0
+b_2 = 6510
+
+[[topology_timeseries]]
+step = 4
+epsilon = 0.219672
+b_0 = 1
+b_1 = 0
+b_2 = 12104
+
+[[topology_timeseries]]
+step = 5
+epsilon = 0.262805
+b_0 = 1
+b_1 = 0
+b_2 = 16743
+
+[[topology_timeseries]]
+step = 6
+epsilon = 0.305938
+b_0 = 1
+b_1 = 0
+b_2 = 27111
+
+[[topology_timeseries]]
+step = 7
+epsilon = 0.349071
+b_0 = 1
+b_1 = 0
+b_2 = 35913
+
+[[topology_timeseries]]
+step = 8
+epsilon = 0.392204
+b_0 = 1
+b_1 = 0
+b_2 = 39207
+
+[[topology_timeseries]]
+step = 9
+epsilon = 0.435337
+b_0 = 1
+b_1 = 0
+b_2 = 52599
+
+[[topology_timeseries]]
+step = 10
+epsilon = 0.478470
+b_0 = 1
+b_1 = 0
+b_2 = 63065
+
+[[topology_timeseries]]
+step = 11
+epsilon = 0.521603
+b_0 = 1
+b_1 = 0
+b_2 = 66855
+
+[[topology_timeseries]]
+step = 12
+epsilon = 0.564736
+b_0 = 1
+b_1 = 0
+b_2 = 81543
+
+[[topology_timeseries]]
+step = 13
+epsilon = 0.607869
+b_0 = 1
+b_1 = 0
+b_2 = 92329
+
+[[topology_timeseries]]
+step = 14
+epsilon = 0.651002
+b_0 = 1
+b_1 = 0
+b_2 = 96231
+
+[[topology_timeseries]]
+step = 15
+epsilon = 0.694135
+b_0 = 1
+b_1 = 0
+b_2 = 110487
+
+[[topology_timeseries]]
+step = 16
+epsilon = 0.737268
+b_0 = 1
+b_1 = 0
+b_2 = 117005
+
+[[topology_timeseries]]
+step = 17
+epsilon = 0.780401
+b_0 = 1
+b_1 = 0
+b_2 = 123879
+
+[[topology_timeseries]]
+step = 18
+epsilon = 0.823534
+b_0 = 1
+b_1 = 0
+b_2 = 135975
+
+[[topology_timeseries]]
+step = 19
+epsilon = 0.866667
+b_0 = 1
+b_1 = 0
+b_2 = 137289
+
