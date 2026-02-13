@@ -10,6 +10,7 @@ algebra_core = { path = "../algebra_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 lattice_filtration = { path = "../lattice_filtration" }
 neural_homotopy = { path = "../neural_homotopy" }
+lbm_core = { path = "../lbm_core" }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
 quantum_core = { path = "../quantum_core" }
