@@ -9,7 +9,9 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 algebra_core = { path = "../algebra_core" }
 quantum_core = { path = "../quantum_core" }
 cosmology_core = { path = "../cosmology_core" }
-burn = { version = "0.16", features = ["train", "autodiff"] }
+burn = { version = "0.16", features = ["train", "autodiff", "ndarray", "openblas"] }
+blas-src = { version = "0.10", features = ["openblas"] }
+openblas-src = { version = "0.10", features = ["cache", "cblas", "static"] }
 burn-wgpu = { version = "0.16", optional = true }
 burn-cuda = { version = "0.16", optional = true }
 ndarray = { workspace = true }

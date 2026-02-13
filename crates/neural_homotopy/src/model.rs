@@ -151,6 +151,119 @@ pub fn train_homotopy_surrogate(cfg: HomotopyTrainingConfig) -> TrainingTrace {
     }
 }
 
+/// Plateau detection result from curvature analysis.
+#[derive(Debug, Clone)]
+pub struct PlateauDetection {
+    /// Epochs where plateaus begin (curvature drops below threshold)
+    pub plateau_starts: Vec<usize>,
+    /// Epochs where plateaus end (curvature rises above threshold)
+    pub plateau_ends: Vec<usize>,
+    /// Curvature values at each epoch (second derivative of loss)
+    pub curvatures: Vec<f64>,
+    /// Number of distinct plateaus detected
+    pub n_plateaus: usize,
+}
+
+/// Detect plateaus in a loss curve using curvature analysis.
+///
+/// Computes the discrete second derivative (curvature) of the loss sequence
+/// and identifies regions where the curvature magnitude is below a threshold,
+/// indicating flat regions in the loss landscape.
+///
+/// # Arguments
+/// * `losses` - Loss values at each epoch
+/// * `curvature_threshold` - Maximum |curvature| to qualify as plateau (typical: 1e-4)
+/// * `min_plateau_length` - Minimum consecutive epochs to count as plateau (typical: 3)
+pub fn detect_plateaus(
+    losses: &[f64],
+    curvature_threshold: f64,
+    min_plateau_length: usize,
+) -> PlateauDetection {
+    if losses.len() < 3 {
+        return PlateauDetection {
+            plateau_starts: Vec::new(),
+            plateau_ends: Vec::new(),
+            curvatures: Vec::new(),
+            n_plateaus: 0,
+        };
+    }
+
+    // Compute discrete second derivative: d2L/dt2 ~ L[i+1] - 2*L[i] + L[i-1]
+    let n = losses.len();
+    let mut curvatures = Vec::with_capacity(n);
+    curvatures.push(0.0); // No curvature at first point
+    for i in 1..n - 1 {
+        let curv = losses[i + 1] - 2.0 * losses[i] + losses[i - 1];
+        curvatures.push(curv);
+    }
+    curvatures.push(0.0); // No curvature at last point
+
+    // Identify plateau regions: consecutive epochs with |curvature| < threshold
+    let mut plateau_starts = Vec::new();
+    let mut plateau_ends = Vec::new();
+    let mut in_plateau = false;
+    let mut start = 0;
+
+    for (i, &curv) in curvatures.iter().enumerate() {
+        let is_flat = curv.abs() < curvature_threshold;
+
+        if is_flat && !in_plateau {
+            start = i;
+            in_plateau = true;
+        } else if !is_flat && in_plateau {
+            let length = i - start;
+            if length >= min_plateau_length {
+                plateau_starts.push(start);
+                plateau_ends.push(i);
+            }
+            in_plateau = false;
+        }
+    }
+
+    // Handle plateau that extends to end
+    if in_plateau {
+        let length = n - start;
+        if length >= min_plateau_length {
+            plateau_starts.push(start);
+            plateau_ends.push(n);
+        }
+    }
+
+    let n_plateaus = plateau_starts.len();
+
+    PlateauDetection {
+        plateau_starts,
+        plateau_ends,
+        curvatures,
+        n_plateaus,
+    }
+}
+
+/// Compute Wasserstein-1 distance between two 1D distributions.
+///
+/// Uses the sorted quantile representation: W_1 = mean |F^{-1}(u) - G^{-1}(u)|
+/// over uniform samples. For comparing plateau locations against cosmological epochs.
+pub fn wasserstein_1d(a: &[f64], b: &[f64]) -> f64 {
+    if a.is_empty() || b.is_empty() {
+        return 0.0;
+    }
+
+    let mut a_sorted = a.to_vec();
+    let mut b_sorted = b.to_vec();
+    a_sorted.sort_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal));
+    b_sorted.sort_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal));
+
+    // Interpolate to common grid
+    let n = a_sorted.len().max(b_sorted.len());
+    let mut total = 0.0;
+    for i in 0..n {
+        let qa = a_sorted[(i * a_sorted.len() / n).min(a_sorted.len() - 1)];
+        let qb = b_sorted[(i * b_sorted.len() / n).min(b_sorted.len() - 1)];
+        total += (qa - qb).abs();
+    }
+    total / n as f64
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -169,5 +282,86 @@ mod tests {
         assert!(!trace.losses.is_empty());
         assert!((0.0..=1.0).contains(&trace.hubble_alignment));
         assert!((0.0..=1.0).contains(&trace.pentagon_residual));
+    }
+
+    #[test]
+    fn test_detect_plateaus_synthetic_step() {
+        // Loss curve: steep descent, flat plateau, steep descent, flat plateau
+        let mut losses = Vec::new();
+        for i in 0..10 {
+            losses.push(1.0 - 0.05 * i as f64); // Descent
+        }
+        for _ in 0..15 {
+            losses.push(0.5); // Plateau 1
+        }
+        for i in 0..10 {
+            losses.push(0.5 - 0.03 * i as f64); // Descent
+        }
+        for _ in 0..15 {
+            losses.push(0.2); // Plateau 2
+        }
+
+        let result = detect_plateaus(&losses, 1e-4, 3);
+        assert!(
+            result.n_plateaus >= 2,
+            "Should detect at least 2 plateaus: got {}",
+            result.n_plateaus
+        );
+    }
+
+    #[test]
+    fn test_detect_plateaus_monotone_descent() {
+        // Smoothly decaying loss with no plateaus
+        let losses: Vec<f64> = (0..50).map(|i| (-0.05 * i as f64).exp()).collect();
+        let result = detect_plateaus(&losses, 1e-6, 5);
+        // Exponential decay has nonzero curvature everywhere, so few or no plateaus
+        assert!(
+            result.n_plateaus <= 1,
+            "Smooth decay should have few plateaus: got {}",
+            result.n_plateaus
+        );
+    }
+
+    #[test]
+    fn test_detect_plateaus_empty_input() {
+        let result = detect_plateaus(&[], 1e-4, 3);
+        assert_eq!(result.n_plateaus, 0);
+        assert!(result.curvatures.is_empty());
+    }
+
+    #[test]
+    fn test_detect_plateaus_curvature_values() {
+        // Parabolic loss: L(t) = (t-25)^2 / 625 => constant positive curvature
+        let losses: Vec<f64> = (0..50)
+            .map(|i| (i as f64 - 25.0).powi(2) / 625.0)
+            .collect();
+        let result = detect_plateaus(&losses, 1e-10, 3);
+        // Curvature should be approximately constant (2/625 = 0.0032)
+        for &c in &result.curvatures[1..result.curvatures.len() - 1] {
+            assert!(
+                (c - 2.0 / 625.0).abs() < 1e-10,
+                "Parabolic curvature should be constant: {}",
+                c
+            );
+        }
+    }
+
+    #[test]
+    fn test_wasserstein_identical() {
+        let a = vec![1.0, 2.0, 3.0, 4.0];
+        let w = wasserstein_1d(&a, &a);
+        assert!(w.abs() < 1e-14, "Wasserstein of identical should be 0");
+    }
+
+    #[test]
+    fn test_wasserstein_shifted() {
+        let a = vec![1.0, 2.0, 3.0, 4.0];
+        let b = vec![2.0, 3.0, 4.0, 5.0];
+        let w = wasserstein_1d(&a, &b);
+        assert!(
+            (w - 1.0).abs() < 1e-14,
+            "Shift by 1 should give W=1: {}",
+            w
+        );
     }
 }
