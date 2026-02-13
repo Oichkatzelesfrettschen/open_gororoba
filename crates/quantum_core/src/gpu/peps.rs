@@ -140,7 +140,7 @@ impl PepsGpuContext {
 
         // Configure kernel launch: aim for ~256 threads per block, adaptive grid
         let threads_per_block = 256u32;
-        let blocks = ((n as u32 + threads_per_block - 1) / threads_per_block) as u32;
+        let blocks = (n as u32).div_ceil(threads_per_block);
         let cfg = LaunchConfig {
             grid_dim: (blocks, 1, 1),
             block_dim: (threads_per_block, 1, 1),
@@ -172,7 +172,7 @@ impl PepsGpuContext {
         // Reconstruct complex numbers
         let result = result_re
             .into_iter()
-            .zip(result_im.into_iter())
+            .zip(result_im)
             .map(|(re, im)| c64::new(re, im))
             .collect();
 
@@ -200,13 +200,11 @@ pub fn gpu_contract_rows_peps(upper: &[c64], lower: &[c64]) -> Vec<c64> {
     }
 
     // Try GPU path first
-    if let Ok(ctx_result) =
-        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| PepsGpuContext::init()))
+    if let Ok(Some(ctx)) =
+        std::panic::catch_unwind(std::panic::AssertUnwindSafe(PepsGpuContext::init))
     {
-        if let Some(ctx) = ctx_result {
-            if let Some(result) = ctx.contract_rows(upper, lower) {
-                return result;
-            }
+        if let Some(result) = ctx.contract_rows(upper, lower) {
+            return result;
         }
     }
 

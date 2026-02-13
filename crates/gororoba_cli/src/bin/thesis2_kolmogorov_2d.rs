@@ -10,9 +10,7 @@
 //! from 1.0 by more than 5% for at least one parameter combination.
 
 use clap::Parser;
-use lbm_core::{
-    equilibrium, macroscopic, stream, viscosity_with_power_law_associator, CX, W,
-};
+use lbm_core::{equilibrium, macroscopic, stream, viscosity_with_power_law_associator, CX, W};
 use ndarray::Array2;
 use std::f64::consts::PI;
 use std::fmt::Write as _;
@@ -78,8 +76,7 @@ fn compute_strain_rate_2d(ux: &Array2<f64>, uy: &Array2<f64>) -> Array2<f64> {
             let e_yy = duy_dy;
             let e_xy = (dux_dy + duy_dx) / 2.0;
 
-            gamma_dot[[x, y]] =
-                (2.0 * (e_xx * e_xx + e_yy * e_yy + 2.0 * e_xy * e_xy)).sqrt();
+            gamma_dot[[x, y]] = (2.0 * (e_xx * e_xx + e_yy * e_yy + 2.0 * e_xy * e_xy)).sqrt();
         }
     }
     gamma_dot
@@ -133,7 +130,14 @@ struct KolmogorovConfig {
 ///   tau_eff = 3 * nu_eff + 0.5
 fn simulate_kolmogorov_power_law(cfg: &KolmogorovConfig) -> RunResult {
     let KolmogorovConfig {
-        nx, ny, tau, force_amp, force_mode, n_steps, coupling, power_index,
+        nx,
+        ny,
+        tau,
+        force_amp,
+        force_mode,
+        n_steps,
+        coupling,
+        power_index,
     } = *cfg;
     let nu_base = (tau - 0.5) / 3.0;
 
@@ -161,7 +165,12 @@ fn simulate_kolmogorov_power_law(cfg: &KolmogorovConfig) -> RunResult {
                 for y in 0..ny {
                     let sr = gamma_dot[[x, y]];
                     let nu_eff = viscosity_with_power_law_associator(
-                        nu_base, coupling, 1.0, 1.0, sr, power_index,
+                        nu_base,
+                        coupling,
+                        1.0,
+                        1.0,
+                        sr,
+                        power_index,
                     );
                     tau_field[[x, y]] = (3.0 * nu_eff + 0.5).clamp(0.505, 3.0);
                 }
@@ -266,11 +275,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &tau in &taus {
         let re = (nx as f64) * args.force_amp / ((tau - 0.5) / 3.0).powi(2);
-        println!("--- tau={:.2} (nu={:.4}, Re~{:.1}) ---", tau, (tau - 0.5) / 3.0, re);
+        println!(
+            "--- tau={:.2} (nu={:.4}, Re~{:.1}) ---",
+            tau,
+            (tau - 0.5) / 3.0,
+            re
+        );
 
         for &coupling in &couplings {
             let kcfg = KolmogorovConfig {
-                nx, ny, tau,
+                nx,
+                ny,
+                tau,
                 force_amp: args.force_amp,
                 force_mode: args.force_mode,
                 n_steps: args.steps,
@@ -279,7 +295,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             let result = simulate_kolmogorov_power_law(&kcfg);
 
-            let label = if coupling == 0.0 { "Newtonian" } else { "PowerLaw" };
+            let label = if coupling == 0.0 {
+                "Newtonian"
+            } else {
+                "PowerLaw"
+            };
             println!(
                 "  coupling={:6.1}: enstrophy={:.6e}, v_max={:.6}, <gamma_dot>={:.6}, <tau_eff>={:.4}, mass_drift={:.2e} [{}]",
                 coupling, result.enstrophy, result.max_velocity,
@@ -305,7 +325,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Enstrophy ratio analysis: for each tau, compute ratio non-Newtonian / Newtonian
     let n_couplings = couplings.len();
     let _ = writeln!(report, "[enstrophy_ratios]");
-    let _ = writeln!(report, "note = \"ratio = enstrophy(coupling) / enstrophy(coupling=0)\"");
+    let _ = writeln!(
+        report,
+        "note = \"ratio = enstrophy(coupling) / enstrophy(coupling=0)\""
+    );
     let mut max_deviation = 0.0_f64;
     let mut max_deviation_params = String::new();
 
@@ -343,11 +366,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     let success = max_deviation > 0.05;
-    println!("Max enstrophy deviation: {:.4} ({:.1}%) at {}", max_deviation, max_deviation * 100.0, max_deviation_params);
-    println!("Thesis 2 validation: {}", if success { "PASS (>5% deviation)" } else { "FAIL (<5% deviation)" });
+    println!(
+        "Max enstrophy deviation: {:.4} ({:.1}%) at {}",
+        max_deviation,
+        max_deviation * 100.0,
+        max_deviation_params
+    );
+    println!(
+        "Thesis 2 validation: {}",
+        if success {
+            "PASS (>5% deviation)"
+        } else {
+            "FAIL (<5% deviation)"
+        }
+    );
 
     let _ = writeln!(report, "max_deviation = {:.6}", max_deviation);
-    let _ = writeln!(report, "max_deviation_params = \"{}\"", max_deviation_params);
+    let _ = writeln!(
+        report,
+        "max_deviation_params = \"{}\"",
+        max_deviation_params
+    );
     let _ = writeln!(report, "validation_pass = {}", success);
 
     if let Some(parent) = std::path::Path::new(&args.output).parent() {

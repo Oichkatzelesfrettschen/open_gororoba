@@ -133,7 +133,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Thesis 2: 3D Associator-Coupled Shear Thickening");
     println!("=================================================");
     println!("Grid: {}^3 ({} cells)", nx, n_cells);
-    println!("LBM steps: {}, nu_base: {:.4}", args.lbm_steps, args.nu_base);
+    println!(
+        "LBM steps: {}, nu_base: {:.4}",
+        args.lbm_steps, args.nu_base
+    );
     println!("Force amplitude: {:.2e}", args.force_amp);
     println!("Alphas: {:?}", alphas);
     println!("Power indices: {:?}", power_indices);
@@ -284,26 +287,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Summary
-    let best = results
-        .iter()
-        .filter(|r| r.alpha > 0.0)
-        .max_by(|a, b| {
-            a.vel_reduction
-                .abs()
-                .partial_cmp(&b.vel_reduction.abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+    let best = results.iter().filter(|r| r.alpha > 0.0).max_by(|a, b| {
+        a.vel_reduction
+            .abs()
+            .partial_cmp(&b.vel_reduction.abs())
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     let _ = writeln!(report, "[summary]");
     let _ = writeln!(report, "n_pairs = {}", results.len());
     if let Some(best) = best {
         let _ = writeln!(report, "best_alpha = {:.3}", best.alpha);
         let _ = writeln!(report, "best_power_index = {:.3}", best.power_index);
         let _ = writeln!(report, "best_vel_reduction = {:.6}", best.vel_reduction);
-        let _ = writeln!(
-            report,
-            "significant = {}",
-            best.vel_reduction.abs() > 0.05
-        );
+        let _ = writeln!(report, "significant = {}", best.vel_reduction.abs() > 0.05);
         println!(
             "\nBest: alpha={:.1}, n={:.1}, vel_reduction={:.4} (significant={})",
             best.alpha,

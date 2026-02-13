@@ -142,7 +142,10 @@ fn thesis2_thickening_report() -> String {
     let _ = writeln!(out, "updated = \"2026-02-12\"");
     let _ = writeln!(out, "model = \"power_law_associator\"");
     let _ = writeln!(out, "nu_base = {:.6}", nu_base);
-    let _ = writeln!(out, "formula = \"nu_base * (1 + alpha * norm^beta * |gamma_dot|^(n-1))\"");
+    let _ = writeln!(
+        out,
+        "formula = \"nu_base * (1 + alpha * norm^beta * |gamma_dot|^(n-1))\""
+    );
     let _ = writeln!(out);
 
     let mut crossing_count = 0usize;
@@ -192,20 +195,19 @@ fn thesis2_thickening_report() -> String {
                 let _ = writeln!(out, "associator_norm = {:.3}", assoc_norm);
                 let _ = writeln!(out, "pre_slope = {:.8}", pre_slope);
                 let _ = writeln!(out, "post_slope = {:.8}", post_slope);
-                let _ = writeln!(out, "slope_ratio = {:.6}",
-                    if pre_slope.abs() > 1e-12 { post_slope / pre_slope } else { 0.0 });
+                let _ = writeln!(
+                    out,
+                    "slope_ratio = {:.6}",
+                    if pre_slope.abs() > 1e-12 {
+                        post_slope / pre_slope
+                    } else {
+                        0.0
+                    }
+                );
                 let _ = writeln!(out, "non_newtonian = {}", non_newtonian);
                 let _ = writeln!(out, "convex = {}", convex);
-                let _ = writeln!(
-                    out,
-                    "strain_rates = [{}]",
-                    join_f64(&strain_rates)
-                );
-                let _ = writeln!(
-                    out,
-                    "nu_eff = [{}]",
-                    join_f64(&values)
-                );
+                let _ = writeln!(out, "strain_rates = [{}]", join_f64(&strain_rates));
+                let _ = writeln!(out, "nu_eff = [{}]", join_f64(&values));
                 let _ = writeln!(out);
 
                 // Also sweep across associator norms at fixed strain rate
@@ -214,7 +216,12 @@ fn thesis2_thickening_report() -> String {
                     .iter()
                     .map(|&anorm| {
                         viscosity_with_power_law_associator(
-                            nu_base, alpha, beta, anorm, gamma_dot_ref, n,
+                            nu_base,
+                            alpha,
+                            beta,
+                            anorm,
+                            gamma_dot_ref,
+                            n,
                         )
                     })
                     .collect();
@@ -336,7 +343,10 @@ fn thesis4_latency_law_report() -> String {
     let mut sed_r2_history: Vec<f64> = Vec::new();
 
     // -- Fibonacci stream runs --
-    let _ = writeln!(out, "# Fibonacci key stream (Pisano-limited, 32 distinct keys)");
+    let _ = writeln!(
+        out,
+        "# Fibonacci key stream (Pisano-limited, 32 distinct keys)"
+    );
     let _ = writeln!(out);
 
     for &(steps, buckets) in &settings {
@@ -353,7 +363,11 @@ fn thesis4_latency_law_report() -> String {
         let _ = writeln!(out, "steps = {}", steps);
         let _ = writeln!(out, "buckets = {}", buckets);
         let _ = writeln!(out, "total_collisions = {}", stats.total_collisions);
-        let _ = writeln!(out, "peak_bucket_occupancy = {}", stats.peak_bucket_occupancy);
+        let _ = writeln!(
+            out,
+            "peak_bucket_occupancy = {}",
+            stats.peak_bucket_occupancy
+        );
         let _ = writeln!(out, "mean_latency = {:.8}", stats.mean_latency);
         let _ = writeln!(out, "r2_inverse_square = {:.8}", detail.r2_inverse_square);
         let _ = writeln!(out, "r2_power_law = {:.8}", detail.r2_power_law);
@@ -365,7 +379,10 @@ fn thesis4_latency_law_report() -> String {
     }
 
     // -- Sedenion stream runs --
-    let _ = writeln!(out, "# Sedenion key stream (high-dimensional, rich key space)");
+    let _ = writeln!(
+        out,
+        "# Sedenion key stream (high-dimensional, rich key space)"
+    );
     let _ = writeln!(out);
     let seed = 42_u64;
 
@@ -383,7 +400,11 @@ fn thesis4_latency_law_report() -> String {
         let _ = writeln!(out, "steps = {}", steps);
         let _ = writeln!(out, "seed = {}", seed);
         let _ = writeln!(out, "total_collisions = {}", stats.total_collisions);
-        let _ = writeln!(out, "peak_bucket_occupancy = {}", stats.peak_bucket_occupancy);
+        let _ = writeln!(
+            out,
+            "peak_bucket_occupancy = {}",
+            stats.peak_bucket_occupancy
+        );
         let _ = writeln!(out, "mean_latency = {:.8}", stats.mean_latency);
         let _ = writeln!(out, "r2_inverse_square = {:.8}", detail.r2_inverse_square);
         let _ = writeln!(out, "r2_power_law = {:.8}", detail.r2_power_law);
@@ -409,7 +430,11 @@ fn thesis4_latency_law_report() -> String {
     };
 
     let _ = writeln!(out, "[convergence]");
-    let _ = writeln!(out, "fibonacci_r2_history = [{}]", join_f64(&fib_r2_history));
+    let _ = writeln!(
+        out,
+        "fibonacci_r2_history = [{}]",
+        join_f64(&fib_r2_history)
+    );
     let _ = writeln!(out, "sedenion_r2_history = [{}]", join_f64(&sed_r2_history));
     let _ = writeln!(out, "fibonacci_converging = {}", fib_converging);
     let _ = writeln!(out, "sedenion_converging = {}", sed_converging);
@@ -417,8 +442,16 @@ fn thesis4_latency_law_report() -> String {
 
     let _ = writeln!(out, "[summary]");
     let _ = writeln!(out, "run_count = {}", total_runs);
-    let _ = writeln!(out, "fibonacci_inverse_square_hits = {}", fib_inverse_square_hits);
-    let _ = writeln!(out, "sedenion_inverse_square_hits = {}", sed_inverse_square_hits);
+    let _ = writeln!(
+        out,
+        "fibonacci_inverse_square_hits = {}",
+        fib_inverse_square_hits
+    );
+    let _ = writeln!(
+        out,
+        "sedenion_inverse_square_hits = {}",
+        sed_inverse_square_hits
+    );
     let _ = writeln!(out, "total_inverse_square_hits = {}", total_hits);
     let _ = writeln!(out, "verdict = \"{}\"", verdict);
     out

@@ -23,8 +23,7 @@ use std::fmt::Write as _;
 use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
 use vacuum_frustration::spatial_correlation::{spatial_correlation, SpatialCorrelationResult};
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix,
-    VietorisRipsComplex,
+    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, VietorisRipsComplex,
 };
 
 #[derive(Parser, Debug)]
@@ -148,11 +147,7 @@ fn generate_sedenion_field(nx: usize, ny: usize, nz: usize) -> SedenionField {
 }
 
 /// Run the corrected E-027 pipeline for a single lambda value.
-fn run_single_lambda(
-    frustration: &[f64],
-    lambda: f64,
-    cfg: &SweepConfig,
-) -> LambdaSweepResult {
+fn run_single_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     let (nx, ny, nz) = (cfg.nx, cfg.ny, cfg.nz);
     let bridge = FrustrationViscosityBridge::new(16);
 
@@ -262,11 +257,7 @@ fn run_single_lambda(
 }
 
 /// Dispatch to CPU or GPU path based on sweep configuration.
-fn dispatch_lambda(
-    frustration: &[f64],
-    lambda: f64,
-    cfg: &SweepConfig,
-) -> LambdaSweepResult {
+fn dispatch_lambda(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     #[cfg(feature = "gpu")]
     if cfg.gpu {
         return run_single_lambda_gpu(frustration, lambda, cfg);
@@ -285,11 +276,7 @@ fn dispatch_lambda(
 /// The viscous dissipation under spatially-varying tau produces a velocity
 /// landscape for topology analysis.
 #[cfg(feature = "gpu")]
-fn run_single_lambda_gpu(
-    frustration: &[f64],
-    lambda: f64,
-    cfg: &SweepConfig,
-) -> LambdaSweepResult {
+fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) -> LambdaSweepResult {
     let (nx, ny, nz) = (cfg.nx, cfg.ny, cfg.nz);
     let bridge = FrustrationViscosityBridge::new(16);
     let n_cells = nx * ny * nz;
@@ -326,9 +313,7 @@ fn run_single_lambda_gpu(
         .expect("Failed to initialize custom fields");
 
     // Evolve and sync to host
-    solver
-        .evolve(cfg.lbm_steps)
-        .expect("GPU evolution failed");
+    solver.evolve(cfg.lbm_steps).expect("GPU evolution failed");
 
     // Extract velocity from host-side data
     let mut lbm_velocity = Vec::with_capacity(n_cells);
@@ -427,9 +412,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Auto-scale parameters if not explicitly set
     let (auto_max_points, auto_n_sub, auto_lbm_steps) = auto_scale(nx);
-    let max_points = if args.max_points == 0 { auto_max_points } else { args.max_points };
-    let n_sub = if args.n_sub == 0 { auto_n_sub } else { args.n_sub };
-    let lbm_steps = if args.lbm_steps == 0 { auto_lbm_steps } else { args.lbm_steps };
+    let max_points = if args.max_points == 0 {
+        auto_max_points
+    } else {
+        args.max_points
+    };
+    let n_sub = if args.n_sub == 0 {
+        auto_n_sub
+    } else {
+        args.n_sub
+    };
+    let lbm_steps = if args.lbm_steps == 0 {
+        auto_lbm_steps
+    } else {
+        args.lbm_steps
+    };
 
     let lambdas: Vec<f64> = args
         .lambdas
@@ -464,7 +461,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let frustration = field.local_frustration_density(16);
     drop(field); // Release large field data after extracting frustration
     let mean_f = frustration.iter().sum::<f64>() / frustration.len() as f64;
-    println!("  Mean frustration: {:.4}, cells: {}", mean_f, frustration.len());
+    println!(
+        "  Mean frustration: {:.4}, cells: {}",
+        mean_f,
+        frustration.len()
+    );
 
     // Lambda sweep
     println!("[2/3] Lambda sweep ({} values)...", lambdas.len());
@@ -504,15 +505,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=============================================================");
     println!("E-027 v2 Results Summary ({}^3)", nx);
     println!("=============================================================");
-    let best = results
-        .iter()
-        .max_by(|a, b| {
-            a.correlation
-                .spearman_r
-                .abs()
-                .partial_cmp(&b.correlation.spearman_r.abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+    let best = results.iter().max_by(|a, b| {
+        a.correlation
+            .spearman_r
+            .abs()
+            .partial_cmp(&b.correlation.spearman_r.abs())
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     if let Some(best) = best {
         println!(
             "Best lambda: {:.1} (Spearman r={:.4}, Pearson r={:.4})",
@@ -564,20 +563,13 @@ fn write_toml(
     let _ = writeln!(out, "[summary]");
     let _ = writeln!(out, "n_lambdas = {}", results.len());
     let _ = writeln!(out, "best_abs_spearman = {:.6}", best_r);
-    let _ = writeln!(
-        out,
-        "significant = {}",
-        best_r > 0.5
-    );
+    let _ = writeln!(out, "significant = {}", best_r > 0.5);
 
     std::fs::write(path, &out)?;
     Ok(())
 }
 
-fn write_csv(
-    path: &str,
-    results: &[LambdaSweepResult],
-) -> Result<(), Box<dyn std::error::Error>> {
+fn write_csv(path: &str, results: &[LambdaSweepResult]) -> Result<(), Box<dyn std::error::Error>> {
     let mut wtr = csv::Writer::from_path(path)?;
     wtr.write_record([
         "lambda",

@@ -195,7 +195,7 @@ impl GraphConstructorGpu {
             .map_err(|e| format!("Alloc count: {}", e))?;
 
         let block_size = 256u32;
-        let grid_size = ((tri_total_u32 + block_size - 1) / block_size) as u32;
+        let grid_size = tri_total_u32.div_ceil(block_size);
 
         let cfg = LaunchConfig {
             grid_dim: (grid_size, 1, 1),

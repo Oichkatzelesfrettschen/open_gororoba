@@ -111,8 +111,14 @@ fn test_normalize_closed_variants_preserved() {
     ];
     for &status in &closed_statuses {
         let (canonical, note) = schema::normalize_status(status);
-        assert_eq!(canonical, status, "Closed status should be preserved: {status}");
-        assert!(note.is_none(), "Closed status should produce no note: {status}");
+        assert_eq!(
+            canonical, status,
+            "Closed status should be preserved: {status}"
+        );
+        assert!(
+            note.is_none(),
+            "Closed status should produce no note: {status}"
+        );
     }
 }
 
@@ -159,7 +165,9 @@ fn test_similarity_finds_near_duplicates() {
     assert!(pairs[0].score >= 0.85);
     // C-003 should not be similar to either
     assert!(
-        pairs.iter().all(|p| p.claim_a != "C-003" && p.claim_b != "C-003"),
+        pairs
+            .iter()
+            .all(|p| p.claim_a != "C-003" && p.claim_b != "C-003"),
         "C-003 should not match"
     );
 }
@@ -198,8 +206,7 @@ fn test_similarity_ignores_short_statements() {
 #[test]
 fn test_enrich_phase_from_where_stated() {
     let mut claims = vec![make_claim("C-001", "Test claim", "Verified")];
-    claims[0].where_stated =
-        Some("crates/vacuum_frustration/src/frustration.rs".to_string());
+    claims[0].where_stated = Some("crates/vacuum_frustration/src/frustration.rs".to_string());
     enrich_metadata(&mut claims, &[], &[]);
     assert_eq!(claims[0].phase.as_deref(), Some("Phase 1"));
 }
@@ -207,8 +214,7 @@ fn test_enrich_phase_from_where_stated() {
 #[test]
 fn test_enrich_confidence_verified_with_test() {
     let mut claims = vec![make_claim("C-001", "Test claim", "Verified")];
-    claims[0].where_stated =
-        Some("crates/algebra_core/src/test_boxkites.rs".to_string());
+    claims[0].where_stated = Some("crates/algebra_core/src/test_boxkites.rs".to_string());
     enrich_metadata(&mut claims, &[], &[]);
     assert_eq!(claims[0].confidence.as_deref(), Some("high"));
 }
@@ -302,15 +308,24 @@ fn test_crossref_bidirectional() {
 
 #[test]
 fn test_crossref_no_self_refs() {
-    let mut claims = vec![make_claim(
-        "C-001",
-        "Self-referencing: see C-001 for details about C-002.",
-        "Verified",
-    ), make_claim("C-002", "Another claim.", "Verified")];
+    let mut claims = vec![
+        make_claim(
+            "C-001",
+            "Self-referencing: see C-001 for details about C-002.",
+            "Verified",
+        ),
+        make_claim("C-002", "Another claim.", "Verified"),
+    ];
     build_crossref_graph(&mut claims, &[], &[]);
     let refs = claims[0].claims.as_ref().unwrap();
-    assert!(!refs.contains(&"C-001".to_string()), "Should not self-reference");
-    assert!(refs.contains(&"C-002".to_string()), "Should reference C-002");
+    assert!(
+        !refs.contains(&"C-001".to_string()),
+        "Should not self-reference"
+    );
+    assert!(
+        refs.contains(&"C-002".to_string()),
+        "Should reference C-002"
+    );
 }
 
 #[test]
@@ -413,7 +428,10 @@ fn test_conflict_resolution_refuted_claim() {
     )];
     let mut markers = vec![make_marker("CM-0001", &["C-020"], "high")];
     let resolved = resolve_conflict_markers(&claims, &mut markers);
-    assert!(resolved > 0, "Refuted claim with positive statement should resolve");
+    assert!(
+        resolved > 0,
+        "Refuted claim with positive statement should resolve"
+    );
     assert_ne!(
         markers[0].status.as_deref(),
         Some("open"),

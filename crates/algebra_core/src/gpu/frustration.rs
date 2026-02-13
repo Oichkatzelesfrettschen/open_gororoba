@@ -169,7 +169,7 @@ impl FrustrationGpu {
 
         // Launch kernel
         let block_size = 256u32;
-        let grid_size = ((n_edges as u32 + block_size - 1) / block_size) as u32;
+        let grid_size = (n_edges as u32).div_ceil(block_size);
         let cfg = LaunchConfig {
             grid_dim: (grid_size, 1, 1),
             block_dim: (block_size, 1, 1),

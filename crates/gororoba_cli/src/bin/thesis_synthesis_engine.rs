@@ -9,8 +9,8 @@
 //!   thesis-synthesis-engine --thesis 2 --alpha 1.0 --power-index 2.0
 
 use clap::Parser;
-use gororoba_engine::{Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline};
 use gororoba_engine::traits::ThesisPipeline;
+use gororoba_engine::{Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline};
 use std::fmt::Write as _;
 
 #[derive(Parser, Debug)]
@@ -80,11 +80,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut summary = String::new();
     let _ = writeln!(summary, "[metadata]");
     let _ = writeln!(summary, "experiment = \"thesis_synthesis\"");
-    let _ = writeln!(
-        summary,
-        "timestamp = \"{}\"",
-        chrono_free_timestamp()
-    );
+    let _ = writeln!(summary, "timestamp = \"{}\"", chrono_free_timestamp());
     let _ = writeln!(summary, "theses = {:?}", theses_to_run);
     let _ = writeln!(summary);
 

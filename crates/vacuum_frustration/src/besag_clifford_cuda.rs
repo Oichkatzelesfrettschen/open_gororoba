@@ -246,7 +246,7 @@ impl GpuBesagCliffordTester {
     fn shuffle_frustration_batch(&mut self, batch_size: usize, seed: u64) -> Result<()> {
         // Launch configuration: 1 thread per batch item (each thread does full shuffle)
         let block_size = 256;
-        let grid_size = (batch_size + block_size - 1) / block_size;
+        let grid_size = batch_size.div_ceil(block_size);
 
         let config = LaunchConfig {
             grid_dim: (grid_size as u32, 1, 1),
@@ -289,7 +289,7 @@ impl GpuBesagCliffordTester {
         // Launch configuration: parallel over all elements (batch_size * n_cells)
         let total_elements = batch_size * self.n_cells;
         let block_size = 256;
-        let grid_size = (total_elements + block_size - 1) / block_size;
+        let grid_size = total_elements.div_ceil(block_size);
 
         let config = LaunchConfig {
             grid_dim: (grid_size as u32, 1, 1),
@@ -333,7 +333,7 @@ impl GpuBesagCliffordTester {
 
         // Launch configuration: parallel over batch_size
         let block_size = 256;
-        let grid_size = (batch_size + block_size - 1) / block_size;
+        let grid_size = batch_size.div_ceil(block_size);
 
         let config = LaunchConfig {
             grid_dim: (grid_size as u32, 1, 1),

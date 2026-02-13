@@ -20,8 +20,8 @@ use vacuum_frustration::spatial_correlation::{
     pearson_correlation, point_cloud_overlap, regional_means, spearman_correlation,
 };
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix,
-    PersistenceDiagram, VietorisRipsComplex,
+    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, PersistenceDiagram,
+    VietorisRipsComplex,
 };
 
 #[derive(Parser, Debug)]
@@ -218,7 +218,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     drop(field);
 
     let mean_f = frustration.iter().sum::<f64>() / n_cells as f64;
-    println!("  Mean frustration: {:.6} (attractor = {:.6})", mean_f, VACUUM_ATTRACTOR);
+    println!(
+        "  Mean frustration: {:.6} (attractor = {:.6})",
+        mean_f, VACUUM_ATTRACTOR
+    );
 
     // Compute viscosity via multiple coupling models
     let models = ViscosityCouplingModel::standard_suite(args.nu_base);
@@ -233,7 +236,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Step 3: Extract point clouds from high-frustration and high-viscosity regions
     println!("[3/5] Extracting point clouds...");
     let frustration_points = extract_top_k_points(
-        &frustration, nx, nx, nx, args.max_points, 0.2, // Top 20%
+        &frustration,
+        nx,
+        nx,
+        nx,
+        args.max_points,
+        0.2, // Top 20%
     );
 
     // Step 4: Compute VR topology on frustration point cloud
@@ -267,7 +275,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut report = String::new();
     let _ = writeln!(report, "[metadata]");
     let _ = writeln!(report, "experiment = \"TX-3\"");
-    let _ = writeln!(report, "description = \"Topological persistence of viscosity landscape\"");
+    let _ = writeln!(
+        report,
+        "description = \"Topological persistence of viscosity landscape\""
+    );
     let _ = writeln!(report, "grid_size = {}", nx);
     let _ = writeln!(report, "n_cells = {}", n_cells);
     let _ = writeln!(report, "max_points = {}", args.max_points);
@@ -282,10 +293,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ = writeln!(report, "n_points = {}", frustration_points.len());
     let _ = writeln!(report, "betti_0 = {}", frust_b0);
     let _ = writeln!(report, "betti_1 = {}", frust_b1);
-    let _ = writeln!(report, "persistence_entropy_h0 = {:.8}", frust_d0.persistence_entropy());
-    let _ = writeln!(report, "persistence_entropy_h1 = {:.8}", frust_d1.persistence_entropy());
-    let _ = writeln!(report, "total_persistence_h0 = {:.8}", frust_d0.total_persistence());
-    let _ = writeln!(report, "total_persistence_h1 = {:.8}", frust_d1.total_persistence());
+    let _ = writeln!(
+        report,
+        "persistence_entropy_h0 = {:.8}",
+        frust_d0.persistence_entropy()
+    );
+    let _ = writeln!(
+        report,
+        "persistence_entropy_h1 = {:.8}",
+        frust_d1.persistence_entropy()
+    );
+    let _ = writeln!(
+        report,
+        "total_persistence_h0 = {:.8}",
+        frust_d0.total_persistence()
+    );
+    let _ = writeln!(
+        report,
+        "total_persistence_h1 = {:.8}",
+        frust_d1.total_persistence()
+    );
     let _ = writeln!(report);
 
     // Compute CV of frustration regional means as baseline
@@ -323,7 +350,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             sp_r,
             pe_r,
             overlap,
-            if frust_cv > 1e-10 { vis_cv / frust_cv } else { 0.0 },
+            if frust_cv > 1e-10 {
+                vis_cv / frust_cv
+            } else {
+                0.0
+            },
             nli,
         );
 
