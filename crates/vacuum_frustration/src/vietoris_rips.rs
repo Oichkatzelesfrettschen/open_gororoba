@@ -462,6 +462,404 @@ pub fn compute_betti_numbers_at_time(
     betti
 }
 
+/// A persistence diagram: a multiset of (birth, death) pairs for a given dimension.
+///
+/// Provides distance metrics between diagrams for quantitative topological comparison.
+/// Two key distances:
+/// - Wasserstein (W_p): optimal transport cost between diagrams (aggregate measure)
+/// - Bottleneck (W_inf): maximum matching cost (worst-case measure)
+///
+/// Points at infinity are excluded from distance computations (they represent
+/// essential homology classes that never die).
+#[derive(Debug, Clone)]
+pub struct PersistenceDiagram {
+    /// Dimension of the features in this diagram
+    pub dim: usize,
+    /// Finite persistence pairs as (birth, death) points
+    pub points: Vec<(f64, f64)>,
+}
+
+impl PersistenceDiagram {
+    /// Build diagram for a given dimension from persistence pairs.
+    ///
+    /// Filters to the specified dimension and excludes infinite-death features.
+    pub fn from_pairs(pairs: &[PersistencePair], dim: usize) -> Self {
+        let points: Vec<(f64, f64)> = pairs
+            .iter()
+            .filter(|p| p.dim == dim && p.death.is_finite())
+            .map(|p| (p.birth, p.death))
+            .collect();
+        Self { dim, points }
+    }
+
+    /// Build separate diagrams for each dimension present.
+    pub fn from_pairs_all(pairs: &[PersistencePair]) -> Vec<Self> {
+        let max_dim = pairs.iter().map(|p| p.dim).max().unwrap_or(0);
+        (0..=max_dim)
+            .map(|d| Self::from_pairs(pairs, d))
+            .collect()
+    }
+
+    /// Number of finite persistence points in this diagram.
+    pub fn len(&self) -> usize {
+        self.points.len()
+    }
+
+    /// Whether the diagram has no finite persistence points.
+    pub fn is_empty(&self) -> bool {
+        self.points.is_empty()
+    }
+
+    /// Total persistence: sum of (death - birth) for all finite features.
+    pub fn total_persistence(&self) -> f64 {
+        self.points.iter().map(|(b, d)| d - b).sum()
+    }
+
+    /// Maximum persistence among all finite features.
+    pub fn max_persistence(&self) -> f64 {
+        self.points
+            .iter()
+            .map(|(b, d)| d - b)
+            .fold(0.0_f64, f64::max)
+    }
+
+    /// Truncate to the k most persistent features.
+    ///
+    /// Sorts by persistence (death - birth) descending and keeps only the top k.
+    /// This dramatically speeds up Wasserstein/bottleneck distance computations
+    /// which are O(n^3) in the number of persistence points.
+    pub fn truncate_to_top_k(&mut self, k: usize) {
+        if self.points.len() <= k {
+            return;
+        }
+        self.points
+            .sort_by(|a, b| {
+                let pa = a.1 - a.0;
+                let pb = b.1 - b.0;
+                pb.partial_cmp(&pa).unwrap_or(std::cmp::Ordering::Equal)
+            });
+        self.points.truncate(k);
+    }
+
+    /// Persistence entropy (Shannon entropy of normalized persistence values).
+    ///
+    /// H = -sum_i (p_i / P) * ln(p_i / P)
+    ///
+    /// where p_i = death_i - birth_i and P = sum(p_i).
+    /// Measures topological complexity: high entropy means many features
+    /// of similar persistence; low entropy means dominated by few features.
+    /// Returns 0.0 for empty diagrams.
+    pub fn persistence_entropy(&self) -> f64 {
+        if self.points.is_empty() {
+            return 0.0;
+        }
+        let persistences: Vec<f64> = self
+            .points
+            .iter()
+            .map(|(b, d)| d - b)
+            .filter(|&p| p > 0.0)
+            .collect();
+        if persistences.is_empty() {
+            return 0.0;
+        }
+        let total: f64 = persistences.iter().sum();
+        if total <= 0.0 {
+            return 0.0;
+        }
+        let mut entropy = 0.0;
+        for &p in &persistences {
+            let w = p / total;
+            if w > 0.0 {
+                entropy -= w * w.ln();
+            }
+        }
+        entropy
+    }
+
+    /// Wasserstein distance (W_p) between two persistence diagrams.
+    ///
+    /// The p-Wasserstein distance is the p-th root of the minimum cost matching
+    /// between the two diagrams, where:
+    /// - Off-diagonal points can match to each other at cost d(a,b)^p
+    /// - Off-diagonal points can match to the diagonal at cost (pers/2)^p
+    ///   (projecting to the nearest point on the diagonal y=x)
+    ///
+    /// Uses the Hungarian algorithm for exact optimal matching.
+    /// For p=2 (default): captures aggregate topological difference.
+    /// For p=infinity: use bottleneck_distance() instead.
+    pub fn wasserstein_distance(&self, other: &PersistenceDiagram, p: f64) -> f64 {
+        if self.is_empty() && other.is_empty() {
+            return 0.0;
+        }
+
+        let n = self.points.len();
+        let m = other.points.len();
+        let total = n + m;
+
+        if total == 0 {
+            return 0.0;
+        }
+
+        // Build cost matrix for the augmented matching problem.
+        // Rows 0..n: points from self
+        // Rows n..n+m: diagonal partners for other.points
+        // Cols 0..m: points from other
+        // Cols m..m+n: diagonal partners for self.points
+        let mut cost = vec![vec![0.0_f64; total]; total];
+
+        for (i, &(b1, d1)) in self.points.iter().enumerate() {
+            for (j, &(b2, d2)) in other.points.iter().enumerate() {
+                let db = (b1 - b2).abs();
+                let dd = (d1 - d2).abs();
+                cost[i][j] = db.max(dd).powf(p);
+            }
+            let pers_cost = ((d1 - b1) / 2.0).abs().powf(p);
+            for slot in &mut cost[i][m..total] {
+                *slot = pers_cost;
+            }
+        }
+
+        for (idx, &(b2, d2)) in other.points.iter().enumerate() {
+            let row = n + idx;
+            let pers = ((d2 - b2) / 2.0).abs();
+            let pers_p = pers.powf(p);
+            for (j, &(b2j, d2j)) in other.points.iter().enumerate() {
+                cost[row][j] = if j == idx {
+                    pers_p
+                } else {
+                    let pers_j = ((d2j - b2j) / 2.0).abs().powf(p);
+                    pers_p + pers_j
+                };
+            }
+            // Diagonal to diagonal: zero cost (already initialized)
+        }
+
+        let assignment = hungarian_algorithm(&cost);
+        let total_cost: f64 = assignment
+            .iter()
+            .enumerate()
+            .map(|(i, &j)| cost[i][j])
+            .sum();
+
+        total_cost.powf(1.0 / p)
+    }
+
+    /// Bottleneck distance (W_infinity) between two persistence diagrams.
+    ///
+    /// The bottleneck distance is the minimum over all matchings of the
+    /// maximum matching cost. Equivalent to W_p as p -> infinity.
+    ///
+    /// Uses the fact that bottleneck = min over matchings of max cost,
+    /// computed via the Hungarian algorithm on a binary cost matrix at
+    /// each candidate threshold (bisection search).
+    pub fn bottleneck_distance(&self, other: &PersistenceDiagram) -> f64 {
+        if self.is_empty() && other.is_empty() {
+            return 0.0;
+        }
+
+        // Collect all candidate distances (between points and to diagonal)
+        let mut candidates = Vec::new();
+        for &(b1, d1) in &self.points {
+            for &(b2, d2) in &other.points {
+                let db = (b1 - b2).abs();
+                let dd = (d1 - d2).abs();
+                candidates.push(db.max(dd));
+            }
+            candidates.push((d1 - b1) / 2.0);
+        }
+        for &(b2, d2) in &other.points {
+            candidates.push((d2 - b2) / 2.0);
+        }
+
+        candidates.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        candidates.dedup();
+
+        if candidates.is_empty() {
+            return 0.0;
+        }
+
+        // Binary search: find minimum threshold where a perfect matching exists
+        let mut lo = 0;
+        let mut hi = candidates.len() - 1;
+
+        while lo < hi {
+            let mid = lo + (hi - lo) / 2;
+            let threshold = candidates[mid];
+
+            // Build bipartite graph: edge exists if cost <= threshold
+            if can_match_within_threshold(self, other, threshold) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        candidates[lo]
+    }
+}
+
+/// Check if a perfect matching exists with all costs <= threshold.
+///
+/// Uses Hopcroft-Karp-style augmenting paths for bipartite matching.
+fn can_match_within_threshold(
+    dgm1: &PersistenceDiagram,
+    dgm2: &PersistenceDiagram,
+    threshold: f64,
+) -> bool {
+    let n = dgm1.points.len();
+    let m = dgm2.points.len();
+    let total = n + m;
+    let eps = 1e-12;
+
+    // Build adjacency: row i can match to col j if cost <= threshold
+    let mut adj = vec![Vec::new(); total];
+
+    for (i, &(b1, d1)) in dgm1.points.iter().enumerate() {
+        for (j, &(b2, d2)) in dgm2.points.iter().enumerate() {
+            let db = (b1 - b2).abs();
+            let dd = (d1 - d2).abs();
+            if db.max(dd) <= threshold + eps {
+                adj[i].push(j);
+            }
+        }
+        // Match to diagonal if persistence/2 <= threshold
+        let pers = (d1 - b1) / 2.0;
+        if pers <= threshold + eps {
+            adj[i].extend(m..total);
+        }
+    }
+
+    for (idx, &(b2, d2)) in dgm2.points.iter().enumerate() {
+        let row = n + idx;
+        let pers = (d2 - b2) / 2.0;
+        if pers <= threshold + eps {
+            adj[row].extend(m..total);
+        }
+        // Diagonal-to-diagonal always allowed
+        for j in m..total {
+            if !adj[row].contains(&j) {
+                adj[row].push(j);
+            }
+        }
+    }
+
+    // Find maximum matching via augmenting paths
+    let mut match_col: Vec<Option<usize>> = vec![None; total];
+    let mut matched = 0;
+
+    for i in 0..total {
+        let mut visited = vec![false; total];
+        if augment(i, &adj, &mut match_col, &mut visited) {
+            matched += 1;
+        }
+    }
+
+    matched == total
+}
+
+/// DFS augmenting path for bipartite matching.
+fn augment(
+    u: usize,
+    adj: &[Vec<usize>],
+    match_col: &mut [Option<usize>],
+    visited: &mut [bool],
+) -> bool {
+    for &v in &adj[u] {
+        if !visited[v] {
+            visited[v] = true;
+            if match_col[v].is_none()
+                || augment(match_col[v].unwrap(), adj, match_col, visited)
+            {
+                match_col[v] = Some(u);
+                return true;
+            }
+        }
+    }
+    false
+}
+
+/// Hungarian algorithm for minimum-cost perfect matching on a square cost matrix.
+///
+/// Returns assignment[i] = column matched to row i.
+/// O(n^3) time, sufficient for our diagram sizes (typically < 500 points).
+fn hungarian_algorithm(cost: &[Vec<f64>]) -> Vec<usize> {
+    let n = cost.len();
+    if n == 0 {
+        return Vec::new();
+    }
+
+    // Use 1-indexed to simplify boundary conditions
+    let mut u = vec![0.0_f64; n + 1]; // row potentials
+    let mut v = vec![0.0_f64; n + 1]; // column potentials
+    let mut assignment = vec![0_usize; n + 1]; // assignment[j] = row assigned to col j
+
+    for i in 1..=n {
+        let mut links = vec![0_usize; n + 1]; // links[j] = previous col in augmenting path
+        let mut mins = vec![f64::INFINITY; n + 1]; // mins[j] = minimum reduced cost to col j
+        let mut visited = vec![false; n + 1];
+
+        // Start augmenting path from virtual column 0
+        assignment[0] = i;
+        let mut j0 = 0_usize;
+
+        loop {
+            visited[j0] = true;
+            let i0 = assignment[j0];
+            let mut delta = f64::INFINITY;
+            let mut j1 = 0_usize;
+
+            for j in 1..=n {
+                if !visited[j] {
+                    let reduced = cost[i0 - 1][j - 1] - u[i0] - v[j];
+                    if reduced < mins[j] {
+                        mins[j] = reduced;
+                        links[j] = j0;
+                    }
+                    if mins[j] < delta {
+                        delta = mins[j];
+                        j1 = j;
+                    }
+                }
+            }
+
+            // Update potentials
+            for j in 0..=n {
+                if visited[j] {
+                    u[assignment[j]] += delta;
+                    v[j] -= delta;
+                } else {
+                    mins[j] -= delta;
+                }
+            }
+
+            j0 = j1;
+
+            if assignment[j0] == 0 {
+                break;
+            }
+        }
+
+        // Trace back augmenting path
+        loop {
+            let prev = links[j0];
+            assignment[j0] = assignment[prev];
+            j0 = prev;
+            if j0 == 0 {
+                break;
+            }
+        }
+    }
+
+    // Convert to 0-indexed: result[row] = col
+    let mut result = vec![0_usize; n];
+    for j in 1..=n {
+        if assignment[j] > 0 {
+            result[assignment[j] - 1] = j - 1;
+        }
+    }
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -623,5 +1021,249 @@ mod tests {
         assert_eq!(betti[1], 0, "Sphere should have 0 loops at t=2.0");
         // Note: Detecting b_2 requires careful threshold tuning and dense sampling
         // With 12 points (icosahedron), we might not detect the 2D void reliably
+    }
+
+    // -- Persistence diagram tests --
+
+    #[test]
+    fn test_persistence_diagram_from_pairs() {
+        let pairs = vec![
+            PersistencePair { dim: 0, birth: 0.0, death: 1.0 },
+            PersistencePair { dim: 0, birth: 0.0, death: f64::INFINITY },
+            PersistencePair { dim: 1, birth: 0.5, death: 2.0 },
+        ];
+        let dgm0 = PersistenceDiagram::from_pairs(&pairs, 0);
+        assert_eq!(dgm0.len(), 1); // only finite pair
+        assert_eq!(dgm0.dim, 0);
+        assert!((dgm0.points[0].0 - 0.0).abs() < 1e-12);
+        assert!((dgm0.points[0].1 - 1.0).abs() < 1e-12);
+
+        let dgm1 = PersistenceDiagram::from_pairs(&pairs, 1);
+        assert_eq!(dgm1.len(), 1);
+        assert!((dgm1.points[0].0 - 0.5).abs() < 1e-12);
+        assert!((dgm1.points[0].1 - 2.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_persistence_diagram_all_dimensions() {
+        let pairs = vec![
+            PersistencePair { dim: 0, birth: 0.0, death: 1.0 },
+            PersistencePair { dim: 1, birth: 0.3, death: 1.5 },
+            PersistencePair { dim: 2, birth: 0.7, death: 2.0 },
+        ];
+        let diagrams = PersistenceDiagram::from_pairs_all(&pairs);
+        assert_eq!(diagrams.len(), 3);
+        assert_eq!(diagrams[0].len(), 1);
+        assert_eq!(diagrams[1].len(), 1);
+        assert_eq!(diagrams[2].len(), 1);
+    }
+
+    #[test]
+    fn test_total_and_max_persistence() {
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0), (0.5, 2.0), (1.0, 1.5)],
+        };
+        assert!((dgm.total_persistence() - 3.0).abs() < 1e-12); // 1.0 + 1.5 + 0.5
+        assert!((dgm.max_persistence() - 1.5).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_persistence_entropy_uniform() {
+        // Two features with equal persistence -> maximum entropy = ln(2)
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0), (0.0, 1.0)],
+        };
+        let h = dgm.persistence_entropy();
+        assert!((h - 2.0_f64.ln()).abs() < 1e-12, "Uniform entropy should be ln(2)");
+    }
+
+    #[test]
+    fn test_persistence_entropy_single() {
+        // Single feature -> entropy = 0 (probability 1, ln(1) = 0)
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 5.0)],
+        };
+        assert!((dgm.persistence_entropy() - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_persistence_entropy_empty() {
+        let dgm = PersistenceDiagram { dim: 0, points: vec![] };
+        assert!((dgm.persistence_entropy() - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_wasserstein_identical_diagrams() {
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0), (0.5, 2.0)],
+        };
+        let d = dgm.wasserstein_distance(&dgm, 2.0);
+        assert!(d < 1e-10, "Distance between identical diagrams should be ~0, got {d}");
+    }
+
+    #[test]
+    fn test_wasserstein_empty_vs_nonempty() {
+        let empty = PersistenceDiagram { dim: 0, points: vec![] };
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 2.0)],
+        };
+        // Cost = projecting (0,2) to diagonal = persistence/2 = 1.0
+        let d = dgm.wasserstein_distance(&empty, 2.0);
+        assert!((d - 1.0).abs() < 1e-6, "W2 to empty should be 1.0, got {d}");
+    }
+
+    #[test]
+    fn test_wasserstein_symmetry() {
+        let dgm1 = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0), (0.5, 3.0)],
+        };
+        let dgm2 = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.1, 1.2), (0.4, 2.8)],
+        };
+        let d12 = dgm1.wasserstein_distance(&dgm2, 2.0);
+        let d21 = dgm2.wasserstein_distance(&dgm1, 2.0);
+        assert!(
+            (d12 - d21).abs() < 1e-10,
+            "Wasserstein should be symmetric: {d12} vs {d21}"
+        );
+    }
+
+    #[test]
+    fn test_wasserstein_triangle_inequality() {
+        let a = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0)],
+        };
+        let b = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 2.0)],
+        };
+        let c = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 3.0)],
+        };
+        let dab = a.wasserstein_distance(&b, 1.0);
+        let dbc = b.wasserstein_distance(&c, 1.0);
+        let dac = a.wasserstein_distance(&c, 1.0);
+        assert!(
+            dac <= dab + dbc + 1e-10,
+            "Triangle inequality violated: d(a,c)={dac} > d(a,b)+d(b,c)={}", dab + dbc
+        );
+    }
+
+    #[test]
+    fn test_bottleneck_identical_diagrams() {
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0), (0.5, 2.0)],
+        };
+        let d = dgm.bottleneck_distance(&dgm);
+        assert!(d < 1e-10, "Bottleneck between identical diagrams should be ~0, got {d}");
+    }
+
+    #[test]
+    fn test_bottleneck_single_point_shift() {
+        // One point shifted by delta in death coordinate
+        let dgm1 = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.0)],
+        };
+        let dgm2 = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 1.5)],
+        };
+        let d = dgm1.bottleneck_distance(&dgm2);
+        assert!(
+            (d - 0.5).abs() < 1e-10,
+            "Bottleneck should be 0.5 (death shift), got {d}"
+        );
+    }
+
+    #[test]
+    fn test_bottleneck_empty_vs_nonempty() {
+        let empty = PersistenceDiagram { dim: 0, points: vec![] };
+        let dgm = PersistenceDiagram {
+            dim: 0,
+            points: vec![(0.0, 4.0)],
+        };
+        // Bottleneck = persistence/2 = 2.0 (projecting to diagonal)
+        let d = dgm.bottleneck_distance(&empty);
+        assert!(
+            (d - 2.0).abs() < 1e-10,
+            "Bottleneck to empty should be 2.0, got {d}"
+        );
+    }
+
+    #[test]
+    fn test_hungarian_algorithm_basic() {
+        // 2x2 cost matrix with obvious assignment
+        let cost = vec![
+            vec![1.0, 100.0],
+            vec![100.0, 1.0],
+        ];
+        let result = hungarian_algorithm(&cost);
+        assert_eq!(result[0], 0); // row 0 -> col 0
+        assert_eq!(result[1], 1); // row 1 -> col 1
+    }
+
+    #[test]
+    fn test_hungarian_algorithm_3x3() {
+        // Classic assignment problem
+        let cost = vec![
+            vec![10.0, 5.0, 13.0],
+            vec![3.0, 7.0, 15.0],
+            vec![20.0, 11.0, 9.0],
+        ];
+        let result = hungarian_algorithm(&cost);
+        // Optimal: row 0->col 1 (5), row 1->col 0 (3), row 2->col 2 (9) = 17
+        let total: f64 = result.iter().enumerate().map(|(i, &j)| cost[i][j]).sum();
+        assert!((total - 17.0).abs() < 1e-10, "Optimal cost should be 17, got {total}");
+    }
+
+    #[test]
+    fn test_wasserstein_on_circle_vs_line() {
+        // Circle (8 points) vs line (8 points) should have different H1 topology
+        use std::f64::consts::PI;
+        let n = 8;
+
+        // Circle
+        let mut circle_pts = Vec::with_capacity(n * 3);
+        for i in 0..n {
+            let theta = 2.0 * PI * (i as f64) / (n as f64);
+            circle_pts.push(theta.cos());
+            circle_pts.push(theta.sin());
+            circle_pts.push(0.0);
+        }
+        let dist_circle = DistanceMatrix::from_points_3d(&circle_pts);
+        let complex_circle = VietorisRipsComplex::build(&dist_circle, 2.5, 2);
+        let pairs_circle = compute_persistent_homology(&complex_circle);
+        let dgm_circle_h1 = PersistenceDiagram::from_pairs(&pairs_circle, 1);
+
+        // Line segment
+        let mut line_pts = Vec::with_capacity(n * 3);
+        for i in 0..n {
+            line_pts.push(i as f64 / (n as f64 - 1.0));
+            line_pts.push(0.0);
+            line_pts.push(0.0);
+        }
+        let dist_line = DistanceMatrix::from_points_3d(&line_pts);
+        let complex_line = VietorisRipsComplex::build(&dist_line, 2.5, 2);
+        let pairs_line = compute_persistent_homology(&complex_line);
+        let dgm_line_h1 = PersistenceDiagram::from_pairs(&pairs_line, 1);
+
+        let w2 = dgm_circle_h1.wasserstein_distance(&dgm_line_h1, 2.0);
+        // Circle has a persistent H1 loop; line does not
+        // So the Wasserstein distance should be positive
+        assert!(
+            w2 > 0.1,
+            "Circle vs line H1 Wasserstein should be positive, got {w2}"
+        );
     }
 }
