@@ -254,6 +254,22 @@ path = "src/bin/thesis_synthesis_engine.rs"
 name = "thesis-cross-tx3"
 path = "src/bin/thesis_cross_tx3.rs"
 
+[[bin]]
+name = "thesis2-3d-thickening"
+path = "src/bin/thesis2_3d_thickening.rs"
+
+[[bin]]
+name = "thesis-cross-tx1"
+path = "src/bin/thesis_cross_tx1.rs"
+
+[[bin]]
+name = "thesis-cross-tx2"
+path = "src/bin/thesis_cross_tx2.rs"
+
+[[bin]]
+name = "claims-consolidate"
+path = "src/bin/claims_consolidate.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -293,10 +309,14 @@ sha2 = { workspace = true }
 rayon = { workspace = true }
 regex = { workspace = true }
 toml = { workspace = true }
+strsim = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }
 log = { workspace = true }
 env_logger = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
 
 [features]
 default = []

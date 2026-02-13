@@ -317,6 +317,31 @@ crate = "gororoba_cli"
 description = "Orchestrate all four thesis pipelines (T1-T4), apply falsification gates, produce TOML evidence artifacts"
 
 [[binary]]
+name = "e027-topology-v2"
+crate = "gororoba_cli"
+description = "E-027 v2: Frustration-topology spatial correlation with VR persistent homology, multi-grid sweep, and GPU dispatch"
+
+[[binary]]
 name = "thesis-cross-tx3"
 crate = "gororoba_cli"
 description = "TX-3: VR persistent homology on frustration and viscosity fields with sigmoid paradox diagnostics (overlap, CV, NLI, dynamic range)"
+
+[[binary]]
+name = "thesis2-3d-thickening"
+crate = "gororoba_cli"
+description = "Thesis 2: 3D associator-coupled shear thickening sweep over alpha and power-law index with Kolmogorov forcing"
+
+[[binary]]
+name = "thesis-cross-tx1"
+crate = "gororoba_cli"
+description = "TX-1: Frustration-modulated collision dynamics (T1 x T4), sweeps alpha to measure delta-gamma vs uniform reference"
+
+[[binary]]
+name = "thesis-cross-tx2"
+crate = "gororoba_cli"
+description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether frustration-derived LBM flow produces coherent latency law"
+
+[[binary]]
+name = "claims-consolidate"
+crate = "gororoba_cli"
+description = "Claims registry consolidation pipeline: normalize statuses, enrich metadata, build cross-reference graph, merge duplicates, resolve conflict markers"

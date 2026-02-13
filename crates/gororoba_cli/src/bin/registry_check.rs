@@ -14,6 +14,7 @@ use std::collections::{BTreeSet, HashSet};
 use std::path::PathBuf;
 
 use clap::Parser;
+use gororoba_cli::claims::schema::TOML_CLAIM_STATUSES;
 
 /// Validate the open_gororoba TOML registry for consistency.
 #[derive(Parser)]
@@ -33,18 +34,56 @@ struct ClaimsRegistry {
     claim: Vec<ClaimEntry>,
 }
 
+/// Claim entry struct -- uses #[serde(default)] on all fields except id/status
+/// so that new optional fields added by the consolidation pipeline do not break
+/// deserialization.
 #[derive(serde::Deserialize)]
 struct ClaimEntry {
     id: String,
     #[allow(dead_code)]
+    #[serde(default)]
     statement: String,
     status: String,
     #[allow(dead_code)]
+    #[serde(default)]
     where_stated: String,
     #[allow(dead_code)]
+    #[serde(default)]
     last_verified: String,
     #[allow(dead_code)]
+    #[serde(default)]
     what_would_verify_refute: String,
+    // New optional fields added by consolidation pipeline
+    #[allow(dead_code)]
+    #[serde(default)]
+    description: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    confidence: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    phase: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    sprint: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    dependencies: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    claims: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    insights: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    supporting_evidence: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    verification_method: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    status_note: Option<String>,
 }
 
 #[derive(serde::Deserialize)]
@@ -56,27 +95,142 @@ struct InsightsRegistry {
 struct InsightEntry {
     id: String,
     #[allow(dead_code)]
-    title: String,
+    #[serde(default)]
+    title: Option<String>,
     #[allow(dead_code)]
+    #[serde(default)]
+    insight: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
     date: Option<String>,
     status: Option<String>,
+    #[serde(default)]
     claims: Vec<String>,
     #[allow(dead_code)]
+    #[serde(default)]
+    related_claims: Vec<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
     sprint: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    summary: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    supporting_evidence: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    confidence: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    verified_date: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    phase: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    experimental_support: Option<Vec<String>>,
 }
 
 #[derive(serde::Deserialize)]
 struct ExperimentsRegistry {
+    #[allow(dead_code)]
+    #[serde(default)]
+    experiments: Option<ExperimentsHeader>,
     experiment: Vec<ExperimentEntry>,
+}
+
+/// Header section [experiments] in experiments.toml.
+#[derive(serde::Deserialize)]
+struct ExperimentsHeader {
+    #[allow(dead_code)]
+    #[serde(default)]
+    updated: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    authoritative: Option<bool>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    experiment_count: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    deterministic_count: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    gpu_count: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    seeded_count: Option<u32>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    status_allowlist: Option<Vec<String>>,
 }
 
 #[derive(serde::Deserialize)]
 struct ExperimentEntry {
     id: String,
     #[allow(dead_code)]
-    title: String,
+    #[serde(default)]
+    title: Option<String>,
+    #[serde(default)]
     binary: Option<String>,
+    #[serde(default)]
     claims: Vec<String>,
+    // Extra fields present in the rich schema
+    #[allow(dead_code)]
+    #[serde(default)]
+    binary_registered: Option<bool>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    binary_experiment_declared: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    method: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    input: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    output: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    run: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    run_command_sha256: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    claim_refs: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    deterministic: Option<bool>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    gpu: Option<bool>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    seed: Option<u64>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    status: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    status_token: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    lineage_id: Option<String>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    input_path_refs: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    output_path_refs: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    dataset_refs: Option<Vec<String>>,
+    #[allow(dead_code)]
+    #[serde(default)]
+    reproducibility_class: Option<String>,
 }
 
 #[derive(serde::Deserialize)]
@@ -108,12 +262,10 @@ struct ProjectMeta {
     binary_count: Option<u32>,
 }
 
-const VALID_CLAIM_STATUSES: &[&str] = &[
-    "Verified",
-    "Refuted",
-    "Open",
-    "Partial",
-    "Pending",
+/// Valid claim statuses: canonical TOML tokens from schema.rs plus legacy
+/// parenthetical variants still found in the registry.
+const VALID_CLAIM_STATUSES_LEGACY: &[&str] = &[
+    // Legacy parenthetical variants (pre-consolidation)
     "Verified (algebraic)",
     "Verified (numerical)",
     "Verified (parsing)",
@@ -131,18 +283,9 @@ const VALID_CLAIM_STATUSES: &[&str] = &[
     "Verified (unit test)",
     "Refuted (E8 connection absent)",
     "Refuted (CSV wrong)",
-    "Superseded",
-    "Established",
-    "Inconclusive",
-    "Theoretical",
-    "Closed/Toy",
-    "Closed/Negative-Result",
-    "Closed/Obstructed",
-    "Closed/Analogy",
-    "Closed/Research-Program",
-    "Closed/Source-Insufficient",
-    "Closed/Methodology-Insufficient",
-    "Closed/Refuted",
+    // Legacy open statuses
+    "Open",
+    "Pending",
 ];
 
 const VALID_INSIGHT_STATUSES: &[&str] = &[
@@ -209,17 +352,28 @@ fn main() {
             warnings += 1;
         }
 
-        // Validate status tokens
+        // Validate status tokens against canonical + legacy sets
         for claim in &registry.claim {
             if claim.status.is_empty() {
                 eprintln!("ERROR: claim {} has empty status", claim.id);
                 errors += 1;
             } else {
-                // Check against known statuses (case-sensitive prefix match)
-                let status_ok = VALID_CLAIM_STATUSES
+                // Check against canonical TOML statuses (from schema.rs)
+                let is_canonical = TOML_CLAIM_STATUSES
                     .iter()
-                    .any(|valid| claim.status == *valid || claim.status.starts_with(valid));
-                if !status_ok {
+                    .any(|valid| claim.status == *valid);
+                // Also accept legacy parenthetical variants
+                let is_legacy = VALID_CLAIM_STATUSES_LEGACY
+                    .iter()
+                    .any(|valid| claim.status == *valid);
+                // Also accept case variants (e.g., "verified" -> "Verified")
+                let is_case_variant = {
+                    let lower = claim.status.to_lowercase();
+                    TOML_CLAIM_STATUSES
+                        .iter()
+                        .any(|valid| valid.to_lowercase() == lower)
+                };
+                if !is_canonical && !is_legacy && !is_case_variant {
                     eprintln!(
                         "WARNING: claim {} has unusual status: \"{}\"",
                         claim.id, claim.status
@@ -293,7 +447,13 @@ fn main() {
 
         // Check cross-references and status
         for insight in &registry.insight {
-            for claim_ref in &insight.claims {
+            // Check both `claims` and `related_claims` fields
+            let all_claim_refs: Vec<&String> = insight
+                .claims
+                .iter()
+                .chain(insight.related_claims.iter())
+                .collect();
+            for claim_ref in all_claim_refs {
                 if !claim_ids.contains(claim_ref) {
                     eprintln!(
                         "ERROR: insight {} references non-existent claim {}",
