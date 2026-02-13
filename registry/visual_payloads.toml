@@ -115,7 +115,7 @@ graph TD
 
     REGISTRY -->|docs-publish| MARKDOWN["Markdown Mirrors<br/>(Generated Display)"]
 
-    REGISTRY -->|wave6-gate| VALIDATE["Validation Pipeline"]
+    REGISTRY -->|governance-gate| VALIDATE["Validation Pipeline"]
     VALIDATE -->|[done] Pass| CI["CI/CD Success"]
     VALIDATE -->|[fail] Fail| BLOCK["Block Merge"]
 """

@@ -9,6 +9,7 @@ test_count = 3442
 claim_count = 674
 insight_count = 63
 experiment_count = 31
+complete_experiment_count = 5
 paper_count = 19
 binary_count = 66
 

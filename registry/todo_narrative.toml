@@ -20,11 +20,11 @@ Note:
 - 3442 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
 - Claims: C-001..C-674 (674 total, enriched). Insights: I-001..I-066.
 - Experiments: E-001..E-033 (31 total). Binaries: 66.
-- All governance gates pass (wave6-gate, schema signatures, ASCII-only).
+- All governance gates pass (governance-gate, schema signatures, ASCII-only).
 
 ## Current sprint: Sprint 41 -- Phase 5 Publication Preparation (PLANNED)
 
-- [ ] T-014: LaTeX main paper scaffold (docs/latex/main_paper.tex, make latex)
+- [ ] T-014: LaTeX scaffold (docs/latex/llm_scaffold_paper.tex, make latex)
 - [ ] T-015: Anti-Diagonal Parity Theorem paper section (I-018 exposition)
 - [ ] T-016: Synthesis engine results tables (auto-generated from TOML evidence)
 - [ ] T-017: Reproducibility appendix (exact commands, checksums, hardware specs)
