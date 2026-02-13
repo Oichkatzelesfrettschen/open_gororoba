@@ -6,7 +6,7 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+algebra_core = { path = "../algebra_core", version = "0.1" }
 num-bigint = { workspace = true }
 rayon = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
