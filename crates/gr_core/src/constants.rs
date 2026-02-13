@@ -82,6 +82,44 @@ pub const T_HAWKING_PER_MSUN: f64 =
 pub const L_EDDINGTON_PER_MSUN: f64 =
     4.0 * std::f64::consts::PI * G_CGS * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
 
+// -- Planck units (derived from fundamental constants) --
+// In the CD lattice interpretation, 1 lattice spacing = 1 l_P,
+// 1 simulation step = 1 t_P, establishing dimensional consistency
+// for the latency law: T [t_P] ~ r [l_P]^gamma.
+
+/// Planck length [cm]: l_P = sqrt(hbar * G / c^3)
+pub const L_PLANCK_CGS: f64 = 1.616_255e-33;
+
+/// Planck time [s]: t_P = l_P / c = sqrt(hbar * G / c^5)
+pub const T_PLANCK_CGS: f64 = 5.391_247e-44;
+
+/// Planck mass [g]: m_P = sqrt(hbar * c / G)
+pub const M_PLANCK_CGS: f64 = 2.176_434e-5;
+
+/// Planck energy [erg]: E_P = m_P * c^2
+pub const E_PLANCK_CGS: f64 = 1.956_1e16;
+
+/// Planck temperature [K]: Theta_P = E_P / k_B
+pub const THETA_PLANCK_CGS: f64 = 1.416_784e32;
+
+/// Planck charge [esu]: q_P = sqrt(4 * pi * epsilon_0 * hbar * c) ~ e / sqrt(alpha)
+pub const Q_PLANCK_CGS: f64 = 1.875_546e-18;
+
+/// Convert a length in cm to Planck lengths.
+pub fn cm_to_planck_length(cm: f64) -> f64 {
+    cm / L_PLANCK_CGS
+}
+
+/// Convert a time in seconds to Planck times.
+pub fn s_to_planck_time(s: f64) -> f64 {
+    s / T_PLANCK_CGS
+}
+
+/// Convert a mass in grams to Planck masses.
+pub fn g_to_planck_mass(g: f64) -> f64 {
+    g / M_PLANCK_CGS
+}
+
 // -- Conversion utilities --
 
 /// Convert mass in solar masses to gravitational radius [cm].
@@ -217,6 +255,52 @@ mod tests {
         // Dust: P = 0 -> c_s^2 = 0
         let cs2 = relativistic_sound_speed_sq(0.0, 1e15, 5.0 / 3.0);
         assert!(cs2.abs() < 1e-30, "dust should have zero sound speed");
+    }
+
+    // -- Planck units --
+
+    #[test]
+    fn test_planck_length_order_of_magnitude() {
+        // l_P ~ 1.616e-33 cm
+        assert!(L_PLANCK_CGS > 1e-34 && L_PLANCK_CGS < 1e-32);
+    }
+
+    #[test]
+    fn test_planck_time_order_of_magnitude() {
+        // t_P ~ 5.39e-44 s
+        assert!(T_PLANCK_CGS > 1e-45 && T_PLANCK_CGS < 1e-43);
+    }
+
+    #[test]
+    fn test_planck_mass_order_of_magnitude() {
+        // m_P ~ 2.18e-5 g (about 22 micrograms)
+        assert!(M_PLANCK_CGS > 1e-6 && M_PLANCK_CGS < 1e-4);
+    }
+
+    #[test]
+    fn test_planck_self_consistency() {
+        // l_P = c * t_P to within 0.1%
+        let l_from_t = C_CGS * T_PLANCK_CGS;
+        assert!(
+            (l_from_t / L_PLANCK_CGS - 1.0).abs() < 0.001,
+            "l_P = c * t_P inconsistency: {l_from_t} vs {L_PLANCK_CGS}"
+        );
+        // E_P = m_P * c^2 to within 0.1%
+        let e_from_m = M_PLANCK_CGS * C_CGS * C_CGS;
+        assert!(
+            (e_from_m / E_PLANCK_CGS - 1.0).abs() < 0.001,
+            "E_P = m_P c^2 inconsistency: {e_from_m} vs {E_PLANCK_CGS}"
+        );
+    }
+
+    #[test]
+    fn test_planck_conversions() {
+        // 1 cm = 1/l_P Planck lengths
+        let n_lp = cm_to_planck_length(1.0);
+        assert!((n_lp - 1.0 / L_PLANCK_CGS).abs() / n_lp < 1e-10);
+        // 1 s = 1/t_P Planck times
+        let n_tp = s_to_planck_time(1.0);
+        assert!((n_tp - 1.0 / T_PLANCK_CGS).abs() / n_tp < 1e-10);
     }
 
     #[test]

@@ -1,0 +1,71 @@
+# Front-end strategy validation report.
+# Scope: targeted hypothesis checks for platform strategy and dependency claims.
+
+[report]
+id = "RPT-frontend-strategy-2026-02-12"
+updated = "2026-02-12"
+authoritative = false
+method = "targeted online primary-source validation"
+note = "This report validates selected high-impact assertions, not the full claims corpus."
+
+[[hypothesis]]
+id = "HYP-FE-001"
+statement = "Tauri v2 provides cross-platform desktop + mobile (Android/iOS) support suitable for a Rust-centric app shell."
+status = "supported"
+evidence_urls = [
+  "https://v2.tauri.app/blog/tauri-2-0-0-beta/",
+  "https://v2.tauri.app/start/prerequisites/",
+]
+summary = "Official Tauri v2 docs/blog explicitly describe Android and iOS support alongside desktop workflows."
+
+[[hypothesis]]
+id = "HYP-FE-002"
+statement = "Flutter is officially positioned for a single codebase across Android, iOS, web, Windows, macOS, and Linux."
+status = "supported"
+evidence_urls = [
+  "https://docs.flutter.dev/platform-integration",
+  "https://docs.flutter.dev/",
+]
+summary = "Official Flutter docs list platform integration guides for all six major targets."
+
+[[hypothesis]]
+id = "HYP-FE-003"
+statement = "Dioxus can target web/desktop/mobile from Rust, but platform maturity differs by target."
+status = "supported_with_scope_limits"
+evidence_urls = [
+  "https://dioxuslabs.com/learn/0.7/guides/platforms/web/",
+  "https://dioxuslabs.com/learn/0.7/guides/platforms/mobile",
+  "https://dioxuslabs.com/learn/0.7/essentials/fullstack/native/",
+]
+summary = "Official docs show cross-platform coverage; web is described as best-supported and mobile has caveats."
+
+[[hypothesis]]
+id = "HYP-FE-004"
+statement = "Compose Multiplatform can cover Android, iOS, desktop, and web, with web currently less stable than the others."
+status = "supported"
+evidence_urls = [
+  "https://kotlinlang.org/docs/multiplatform/compose-compatibility-and-versioning.html",
+  "https://kotlinlang.org/docs/multiplatform/faq.html",
+]
+summary = "JetBrains/Kotlin docs list all targets and describe Android/iOS/desktop as stable with web in beta."
+
+[[hypothesis]]
+id = "HYP-FE-005"
+statement = "A PWA lane can provide installable desktop/mobile app UX without native packaging in many scenarios."
+status = "supported_with_browser_conditions"
+evidence_urls = [
+  "https://web.dev/articles/install-criteria",
+  "https://web.dev/learn/pwa/installation",
+]
+summary = "Installability depends on browser criteria (manifest + HTTPS + engagement), but can provide launcher/start-menu presence."
+
+[[hypothesis]]
+id = "HYP-FE-006"
+statement = "Repository commentary that hdf5-metno is explicitly the path for HDF5 2.0 compatibility is fully documented upstream."
+status = "partially_supported"
+evidence_urls = [
+  "https://docs.rs/hdf5-metno",
+  "https://docs.rs/crate/hdf5-metno/0.12.1",
+  "https://docs.rs/hdf5-metno-sys",
+]
+summary = "Upstream docs guarantee HDF5 >= 1.8.4 and mention conditional feature support for newer versions. Explicit blanket 2.0 compatibility claims are not clearly stated in high-level crate docs."

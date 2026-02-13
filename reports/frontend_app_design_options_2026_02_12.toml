@@ -1,0 +1,86 @@
+[report]
+id = "RPT-FRONTEND-OPTIONS-2026-02-12"
+updated = "2026-02-12"
+scope = "cross-platform app concepts + first implementation lane"
+authoritative = false
+
+[[design_option]]
+id = "APP-OPT-001"
+name = "Gororoba Studio (Current First App)"
+targets = ["web", "linux", "bsd", "windows", "macos", "android_webview", "ios_webview"]
+category = "experiment_lab_control_plane"
+ux = "mission-control dashboard, quick/full profiles, live gate telemetry, benchmark lab, reproducibility checks"
+stack = "Rust axum + static web assets"
+status = "implemented_phase2"
+
+[[design_option]]
+id = "APP-OPT-002"
+name = "Experiment Atlas"
+targets = ["web", "desktop"]
+category = "knowledge_navigation"
+ux = "graph navigation from claims to tickets, scripts, and artifacts"
+stack = "Rust API + graph UI lane"
+status = "planned"
+
+[[design_option]]
+id = "APP-OPT-003"
+name = "Research Flight Deck"
+targets = ["web", "desktop", "android", "ios"]
+category = "operator_workflow"
+ux = "queue-based orchestration with profile presets and baseline diff panels"
+stack = "Rust API + Tauri or Flutter shell"
+status = "planned"
+
+[[design_option]]
+id = "APP-OPT-004"
+name = "Topology Lens"
+targets = ["web", "desktop"]
+category = "visual_analytics"
+ux = "persistent-homology explorer with filtration sliders and anomaly highlighting"
+stack = "Rust TDA backend + WebGL/Canvas front-end"
+status = "planned"
+
+[[design_option]]
+id = "APP-OPT-005"
+name = "Frustration Flow Lab"
+targets = ["web", "desktop", "gaming_mode"]
+category = "physics_simulator"
+ux = "interactive field tuning with percolation overlays and score-like challenge runs"
+stack = "Rust simulation core + game-like rendering layer"
+status = "planned"
+
+[[implementation_phase]]
+id = "STUDIO-PHASE-1"
+goal = "Baseline full-featured web app for thesis pipelines"
+status = "complete"
+deliverables = [
+  "crates/gororoba_cli/src/bin/gororoba_studio.rs",
+  "apps/gororoba_studio/ui/index.html",
+  "apps/gororoba_studio/ui/app.js",
+  "apps/gororoba_studio/ui/styles.css",
+]
+
+[[implementation_phase]]
+id = "STUDIO-PHASE-2"
+goal = "Operator-grade benchmarking, reproducibility checks, and run-history telemetry"
+status = "complete"
+deliverables = [
+  "GET /api/history endpoint and timeline wiring",
+  "POST /api/benchmark/{experiment_id} endpoint with aggregate stats",
+  "POST /api/reproducibility/{experiment_id} endpoint with tolerance checks",
+  "UI benchmark panel and reproducibility panel",
+  "run-level config snapshots for reproducibility",
+]
+
+[[implementation_phase]]
+id = "STUDIO-PHASE-3"
+goal = "Registry-backed pipeline metadata, artifact links, and native packaging"
+status = "planned"
+deliverables = [
+  "api endpoint uses registry experiment metadata",
+  "result cards link to TOML/CSV artifact outputs",
+  "run baseline diff lane",
+  "Tauri desktop shell",
+  "Android/iOS webview packaging",
+  "offline mode and local cache controls",
+]

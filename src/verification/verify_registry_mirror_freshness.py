@@ -15,10 +15,6 @@ from pathlib import Path
 
 
 def main() -> int:
-    if os.environ.get("MARKDOWN_EXPORT") != "1":
-        print("SKIP: mirror freshness check disabled (set MARKDOWN_EXPORT=1)")
-        return 0
-
     repo_root = Path(__file__).resolve().parents[2]
     out_dir = os.environ.get("MARKDOWN_EXPORT_OUT_DIR", "docs/generated")
     emit_legacy = os.environ.get("MARKDOWN_EXPORT_EMIT_LEGACY", "0") == "1"

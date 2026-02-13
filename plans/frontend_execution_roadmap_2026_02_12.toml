@@ -1,0 +1,221 @@
+[roadmap]
+id = "FRONTEND-ROADMAP-2026-02-12"
+updated = "2026-02-12"
+status = "in_progress"
+scope = "cross-platform app strategy + first full-featured app implementation + repo harmonization"
+
+[[task]]
+id = "FR-001"
+title = "Capture repo state and in-flight changes"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-002"
+title = "Map workspace, registry, scripts, docs topology"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-003"
+title = "Extract quality gates and warnings-as-errors contracts"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-004"
+title = "Parallel audit: code architecture coherence"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-005"
+title = "Parallel audit: docs/registry integrity"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-006"
+title = "Parallel audit: scripts/reproducibility"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-007"
+title = "Assemble defect hypothesis matrix"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-008"
+title = "Validate platform strategy via primary sources online"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-009"
+title = "Define multi-platform app concept portfolio"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-010"
+title = "Select first app to implement"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-011"
+title = "Scaffold apps/gororoba_studio UI asset tree"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-012"
+title = "Implement Rust web server binary gororoba-studio"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-013"
+title = "Wire thesis pipeline execution APIs"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-014"
+title = "Implement benchmark timeline UX"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-015"
+title = "Implement responsive visual design system"
+status = "done"
+priority = "medium"
+
+[[task]]
+id = "FR-016"
+title = "Add studio make targets and strict checks"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-017"
+title = "Fix mirror-gate skip behavior in Makefile"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-018"
+title = "Harden MCP smoke verifier for missing local configs"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-019"
+title = "Add studio requirements module in registry"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-020"
+title = "Update requirements narratives and regenerate mirrors"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-021"
+title = "Update roadmap/todo/next-action narrative header drift"
+status = "done"
+priority = "medium"
+
+[[task]]
+id = "FR-022"
+title = "Restore AGENTS contract after overlay drift"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-023"
+title = "Refresh CLAUDE/GEMINI overlay docs"
+status = "done"
+priority = "medium"
+
+[[task]]
+id = "FR-024"
+title = "Refresh root README entrypoint"
+status = "done"
+priority = "medium"
+
+[[task]]
+id = "FR-025"
+title = "Run cargo check for gororoba-studio binary"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-026"
+title = "Run studio unit tests and clippy -D warnings"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-027"
+title = "Run wave5 registry verifier for touched registries"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-028"
+title = "Resolve compile or verifier regressions"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-029"
+title = "Summarize unresolved risks and remaining roadmap items"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-030"
+title = "Produce final implementation + design walkthrough"
+status = "in_progress"
+priority = "high"
+
+[[task]]
+id = "FR-031"
+title = "Refactor studio backend to async-safe execution with timeout controls"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-032"
+title = "Add run history, benchmark, and reproducibility API endpoints"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-033"
+title = "Add reproducibility config snapshots and batch-failure aggregation"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-034"
+title = "Upgrade studio UI with accessibility notices and telemetry cards"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-035"
+title = "Upgrade studio UI with benchmark and reproducibility control panels"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-036"
+title = "Refresh requirements narratives with explicit studio-check integration"
+status = "done"
+priority = "high"
