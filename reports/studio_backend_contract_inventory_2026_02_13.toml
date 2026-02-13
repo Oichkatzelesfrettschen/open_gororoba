@@ -1,0 +1,84 @@
+[report]
+id = "RPT-STUDIO-BACKEND-CONTRACT-INVENTORY-2026-02-13"
+updated = "2026-02-13"
+scope = "Backend contract inventory exported for gororoba_app integration."
+
+[contract]
+api_version = "studio.v1"
+service = "gororoba-studio"
+catalog_source_mode = "registry-first with fallback"
+registry_default = "registry/experiments.toml"
+registry_override_env = "GOROROBA_EXPERIMENTS_REGISTRY"
+
+[[endpoint]]
+path = "/api/health"
+method = "GET"
+response = "HealthResponse"
+notes = "Includes api_version, service status, and unix_seconds."
+
+[[endpoint]]
+path = "/api/version"
+method = "GET"
+response = "VersionResponse"
+notes = "Includes package_version, catalog_source, pipeline_count, warnings, registry_path."
+
+[[endpoint]]
+path = "/api/pipelines"
+method = "GET"
+response = "Vec<PipelineDescriptor>"
+notes = "Registry-backed catalog metadata for thesis-1..thesis-4."
+
+[[endpoint]]
+path = "/api/history"
+method = "GET"
+response = "Vec<RunResponse>"
+notes = "Most recent-first timeline with run IDs and artifact links."
+
+[[endpoint]]
+path = "/api/run/{experiment_id}"
+method = "POST"
+response = "RunResponse | ApiErrorResponse"
+notes = "Single pipeline execution with config snapshot and catalog metadata."
+
+[[endpoint]]
+path = "/api/run-suite"
+method = "POST"
+response = "SuiteResponse"
+notes = "Batch execution across known pipeline IDs."
+
+[[endpoint]]
+path = "/api/benchmark/{experiment_id}"
+method = "POST"
+response = "BenchmarkResponse | ApiErrorResponse"
+notes = "Repeated execution with aggregate timing and metric stats."
+
+[[endpoint]]
+path = "/api/reproducibility/{experiment_id}"
+method = "POST"
+response = "ReproducibilityResponse | ApiErrorResponse"
+notes = "Tolerance-based stability check and gate consistency."
+
+[[pipeline_mapping]]
+id = "thesis-1"
+registry_experiment = "E-027"
+registry_title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
+artifact_paths = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
+
+[[pipeline_mapping]]
+id = "thesis-2"
+registry_experiment = "E-032"
+registry_title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
+artifact_paths = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
+
+[[pipeline_mapping]]
+id = "thesis-3"
+registry_experiment = "E-029"
+registry_title = "A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Validation)"
+artifact_paths = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
+
+[[pipeline_mapping]]
+id = "thesis-4"
+registry_experiment = "E-030"
+registry_title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+artifact_paths = ["data/thesis_lab/tx1/tx1_report.toml"]
+fallback_notes = "If dedicated mapping is unavailable, synthesis references in E-033 include thesis4 evidence files."
