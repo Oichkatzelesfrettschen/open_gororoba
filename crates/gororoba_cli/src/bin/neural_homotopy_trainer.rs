@@ -12,8 +12,8 @@
 
 use clap::Parser;
 use neural_homotopy::{
-    optimize_with_restarts, train_burn_correction, CorrectionTensor,
-    CorrectionTensorModelConfig, PentagonOptimizationConfig, PerturbationDataset,
+    optimize_with_restarts, train_burn_correction, CorrectionTensor, CorrectionTensorModelConfig,
+    PentagonOptimizationConfig, PerturbationDataset,
 };
 use std::io::Write;
 
@@ -273,11 +273,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             writeln!(f, "sparsity = {:.6}", nt.sparsity())?;
         }
         if !neural_loss_trace.is_empty() {
-            writeln!(
-                f,
-                "mse_initial = {:.6}",
-                neural_loss_trace.first().unwrap()
-            )?;
+            writeln!(f, "mse_initial = {:.6}", neural_loss_trace.first().unwrap())?;
             writeln!(f, "mse_final = {:.6}", neural_loss_trace.last().unwrap())?;
             writeln!(f, "training_epochs = {}", neural_loss_trace.len())?;
         }

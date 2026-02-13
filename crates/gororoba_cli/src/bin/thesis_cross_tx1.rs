@@ -95,9 +95,7 @@ fn generate_sedenion_field(nx: usize) -> SedenionField {
 }
 
 /// Build (radius, return_time) samples from ShellReturnBins.
-fn bins_to_samples(
-    bins: &[lattice_filtration::ShellReturnBin],
-) -> Vec<(f64, f64)> {
+fn bins_to_samples(bins: &[lattice_filtration::ShellReturnBin]) -> Vec<(f64, f64)> {
     bins.iter()
         .filter(|b| b.n_returns > 0)
         .map(|b| (b.radius, b.mean_return_time))
@@ -130,7 +128,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)");
     println!("========================================================");
     println!("Grid: {}^3 ({} cells)", nx, n_cells);
-    println!("Walk steps: {}, shells: {}, seed: {}", args.n_steps, args.n_shells, args.seed);
+    println!(
+        "Walk steps: {}, shells: {}, seed: {}",
+        args.n_steps, args.n_shells, args.seed
+    );
     println!("Alpha sweep: {:?}", alphas);
     println!();
 
@@ -142,17 +143,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mean_f = frustration.iter().sum::<f64>() / n_cells as f64;
     let f_min = frustration.iter().cloned().fold(f64::INFINITY, f64::min);
-    let f_max = frustration.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+    let f_max = frustration
+        .iter()
+        .cloned()
+        .fold(f64::NEG_INFINITY, f64::max);
     println!(
         "  Frustration: mean={:.6}, min={:.6}, max={:.6}, range={:.6}",
-        mean_f, f_min, f_max, f_max - f_min,
+        mean_f,
+        f_min,
+        f_max,
+        f_max - f_min,
     );
 
     // Step 2: Uniform reference (no frustration modulation)
     println!("[2/4] Uniform reference walk...");
-    let (ref_stats, ref_bins) = simulate_shell_return_storm(
-        args.n_steps, 16, args.seed, args.n_shells,
-    );
+    let (ref_stats, ref_bins) =
+        simulate_shell_return_storm(args.n_steps, 16, args.seed, args.n_shells);
     let ref_samples = bins_to_samples(&ref_bins);
     let ref_detail = classify_latency_law_detailed(&ref_samples);
     let ref_gamma = ref_stats.power_law_gamma;
@@ -263,7 +269,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _ = writeln!(report, "n_shells_populated = {}", r.n_shells_populated);
         let _ = writeln!(report, "n_unique_keys = {}", r.n_unique_keys);
         let _ = writeln!(report, "key_reuse_fraction = {:.6}", r.key_reuse_fraction);
-        let _ = writeln!(report, "r2_inverse_square = {:.6}", r.detail.r2_inverse_square);
+        let _ = writeln!(
+            report,
+            "r2_inverse_square = {:.6}",
+            r.detail.r2_inverse_square
+        );
         let _ = writeln!(report, "r2_power_law = {:.6}", r.detail.r2_power_law);
         let _ = writeln!(report, "r2_linear = {:.6}", r.detail.r2_linear);
         let _ = writeln!(report, "r2_exponential = {:.6}", r.detail.r2_exponential);

@@ -310,7 +310,11 @@ pub fn find_similar_pairs(claims: &[FullClaimEntry], threshold: f64) -> Vec<Simi
         }
     }
 
-    pairs.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap_or(std::cmp::Ordering::Equal));
+    pairs.sort_by(|a, b| {
+        b.score
+            .partial_cmp(&a.score)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     pairs
 }
 
@@ -484,13 +488,7 @@ pub fn enrich_metadata(
                     let desc = stmt
                         .find(". ")
                         .map(|i| &stmt[..=i])
-                        .unwrap_or_else(|| {
-                            if stmt.len() > 200 {
-                                &stmt[..200]
-                            } else {
-                                stmt
-                            }
-                        })
+                        .unwrap_or_else(|| if stmt.len() > 200 { &stmt[..200] } else { stmt })
                         .to_string();
                     claim.description = Some(desc);
                     enriched += 1;
@@ -578,12 +576,14 @@ pub fn build_crossref_graph(
     // Make adjacency bidirectional
     let keys: Vec<String> = adjacency.keys().cloned().collect();
     for id in &keys {
-        let targets: Vec<String> = adjacency.get(id).cloned().unwrap_or_default().into_iter().collect();
+        let targets: Vec<String> = adjacency
+            .get(id)
+            .cloned()
+            .unwrap_or_default()
+            .into_iter()
+            .collect();
         for target in targets {
-            adjacency
-                .entry(target)
-                .or_default()
-                .insert(id.clone());
+            adjacency.entry(target).or_default().insert(id.clone());
         }
     }
 
@@ -657,7 +657,9 @@ pub const MERGE_TARGETS: &[(&str, &[&str])] = &[
     // Mass-spectrum-refuted cluster
     (
         "C-068",
-        &["C-072", "C-073", "C-078", "C-079", "C-083", "C-085", "C-091"],
+        &[
+            "C-072", "C-073", "C-078", "C-079", "C-083", "C-085", "C-091",
+        ],
     ),
     // Superseded by C-071
     ("C-071", &["C-080"]),
@@ -798,8 +800,7 @@ pub fn resolve_conflict_markers(
                 // tension, the tension is expected (the statement describes what was
                 // originally claimed, not what was concluded)
                 if (claim.status == "Refuted" || claim.status.starts_with("Closed/"))
-                    && marker.marker_kind.as_deref()
-                        == Some("claim_status_statement_tension")
+                    && marker.marker_kind.as_deref() == Some("claim_status_statement_tension")
                     && marker.status.as_deref() == Some("open")
                 {
                     marker.status = Some("resolved-expected-tension".to_string());
@@ -815,8 +816,7 @@ pub fn resolve_conflict_markers(
                 // If claim is Verified and marker says negative language but the
                 // what_would_verify_refute explains it, mark resolved
                 if claim.status == "Verified"
-                    && marker.marker_kind.as_deref()
-                        == Some("claim_status_statement_tension")
+                    && marker.marker_kind.as_deref() == Some("claim_status_statement_tension")
                     && claim
                         .what_would_verify_refute
                         .as_ref()
@@ -902,8 +902,11 @@ pub fn analyze(
     };
 
     for claim in claims {
-        let would_gain_phase =
-            claim.phase.is_none() && claim.where_stated.as_ref().is_some_and(|ws| infer_phase(ws).is_some());
+        let would_gain_phase = claim.phase.is_none()
+            && claim
+                .where_stated
+                .as_ref()
+                .is_some_and(|ws| infer_phase(ws).is_some());
         let would_gain_confidence = claim.confidence.is_none();
         let would_gain_insight = (claim.insights.is_none()
             || claim.insights.as_ref().is_some_and(|v| v.is_empty()))
@@ -952,8 +955,8 @@ pub fn analyze(
 pub fn load_claims(path: &Path) -> Result<Vec<FullClaimEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
-    let file: ClaimsFile = toml::from_str(&content)
-        .map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+    let file: ClaimsFile =
+        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
     Ok(file.claim)
 }
 
@@ -961,8 +964,8 @@ pub fn load_claims(path: &Path) -> Result<Vec<FullClaimEntry>, String> {
 pub fn load_insights(path: &Path) -> Result<Vec<InsightEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
-    let file: InsightsFile = toml::from_str(&content)
-        .map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+    let file: InsightsFile =
+        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
     Ok(file.insight)
 }
 
@@ -970,17 +973,19 @@ pub fn load_insights(path: &Path) -> Result<Vec<InsightEntry>, String> {
 pub fn load_experiments(path: &Path) -> Result<Vec<ExperimentEntry>, String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
-    let file: ExperimentsFile = toml::from_str(&content)
-        .map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+    let file: ExperimentsFile =
+        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
     Ok(file.experiment)
 }
 
 /// Load conflict markers from a TOML file.
-pub fn load_conflict_markers(path: &Path) -> Result<(Option<ConflictMarkersHeader>, Vec<ConflictMarker>), String> {
+pub fn load_conflict_markers(
+    path: &Path,
+) -> Result<(Option<ConflictMarkersHeader>, Vec<ConflictMarker>), String> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
-    let file: ConflictMarkersFile = toml::from_str(&content)
-        .map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
+    let file: ConflictMarkersFile =
+        toml::from_str(&content).map_err(|e| format!("Failed to parse {}: {e}", path.display()))?;
     Ok((file.conflict_markers, file.marker))
 }
 
@@ -989,10 +994,9 @@ pub fn write_claims(path: &Path, claims: &[FullClaimEntry]) -> Result<(), String
     let file = ClaimsFile {
         claim: claims.to_vec(),
     };
-    let content = toml::to_string_pretty(&file)
-        .map_err(|e| format!("Failed to serialize claims: {e}"))?;
-    std::fs::write(path, content)
-        .map_err(|e| format!("Failed to write {}: {e}", path.display()))
+    let content =
+        toml::to_string_pretty(&file).map_err(|e| format!("Failed to serialize claims: {e}"))?;
+    std::fs::write(path, content).map_err(|e| format!("Failed to write {}: {e}", path.display()))
 }
 
 /// Write conflict markers to a TOML file.
@@ -1013,8 +1017,7 @@ pub fn write_conflict_markers(
         "# Conflict marker registry (Wave 5 strict schema).\n\
          # Updated by claims-consolidate pipeline.\n\n{content}"
     );
-    std::fs::write(path, output)
-        .map_err(|e| format!("Failed to write {}: {e}", path.display()))
+    std::fs::write(path, output).map_err(|e| format!("Failed to write {}: {e}", path.display()))
 }
 
 // ---------------------------------------------------------------------------
@@ -1222,11 +1225,7 @@ mod tests {
     #[test]
     fn test_build_crossref_bidirectional() {
         let mut claims = vec![
-            make_claim(
-                "C-001",
-                "This claim relates to C-002 findings.",
-                "Verified",
-            ),
+            make_claim("C-001", "This claim relates to C-002 findings.", "Verified"),
             make_claim("C-002", "Standalone claim.", "Verified"),
         ];
         let added = build_crossref_graph(&mut claims, &[], &[]);

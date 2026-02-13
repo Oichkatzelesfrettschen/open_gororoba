@@ -149,22 +149,30 @@ struct RunConfig {
 }
 
 /// Run one coupling model through the full pipeline.
-fn run_model(
-    model: &ViscosityCouplingModel,
-    frustration: &[f64],
-    cfg: &RunConfig,
-) -> ModelResult {
+fn run_model(model: &ViscosityCouplingModel, frustration: &[f64], cfg: &RunConfig) -> ModelResult {
     let RunConfig {
-        nx, ny, nz, lbm_steps, n_sub, max_points, force_mag,
-        kolmogorov, power_index, coupling, ref associator_norms,
+        nx,
+        ny,
+        nz,
+        lbm_steps,
+        n_sub,
+        max_points,
+        force_mag,
+        kolmogorov,
+        power_index,
+        coupling,
+        ref associator_norms,
     } = *cfg;
     let n_cells = nx * ny * nz;
 
     // Frustration -> viscosity via coupling model
     let viscosity: Vec<f64> = frustration.iter().map(|&f| model.compute(f)).collect();
     let viscosity_mean = viscosity.iter().sum::<f64>() / n_cells as f64;
-    let viscosity_var =
-        viscosity.iter().map(|&v| (v - viscosity_mean).powi(2)).sum::<f64>() / n_cells as f64;
+    let viscosity_var = viscosity
+        .iter()
+        .map(|&v| (v - viscosity_mean).powi(2))
+        .sum::<f64>()
+        / n_cells as f64;
     let viscosity_std = viscosity_var.sqrt();
 
     // Viscosity -> tau field: tau = 3*nu + 0.5, clamped to [0.505, 2.0] for stability
@@ -208,7 +216,14 @@ fn run_model(
         } else {
             vec![coupling; n_cells]
         };
-        solver.evolve_non_newtonian(lbm_steps, &coupling_field, viscosity_mean, power_index, 0.505, 2.0);
+        solver.evolve_non_newtonian(
+            lbm_steps,
+            &coupling_field,
+            viscosity_mean,
+            power_index,
+            0.505,
+            2.0,
+        );
         solver.compute_macroscopic();
         let mass_final = solver.total_mass();
         lbm_3d::solver::ConvergenceReport {
@@ -293,8 +308,14 @@ fn run_model(
         d1.truncate_to_top_k(50);
         (b0, b1, d0, d1)
     } else {
-        let empty0 = PersistenceDiagram { dim: 0, points: vec![] };
-        let empty1 = PersistenceDiagram { dim: 1, points: vec![] };
+        let empty0 = PersistenceDiagram {
+            dim: 0,
+            points: vec![],
+        };
+        let empty1 = PersistenceDiagram {
+            dim: 1,
+            points: vec![],
+        };
         (n_vr_points, 0, empty0, empty1)
     };
 
@@ -338,13 +359,7 @@ fn auto_epsilon(dist: &DistanceMatrix) -> f64 {
 }
 
 /// Write full TOML report for one grid resolution.
-fn write_report(
-    out: &mut String,
-    nx: usize,
-    results: &[ModelResult],
-    lambda: f64,
-    nu_base: f64,
-) {
+fn write_report(out: &mut String, nx: usize, results: &[ModelResult], lambda: f64, nu_base: f64) {
     let _ = writeln!(out, "[[grid_resolution]]");
     let _ = writeln!(out, "grid_size = {}", nx);
     let _ = writeln!(out, "lambda = {:.3}", lambda);
@@ -370,8 +385,16 @@ fn write_report(
         let _ = writeln!(out, "n_regions = {}", r.correlation.n_regions);
         let _ = writeln!(out, "betti_0 = {}", r.betti_0);
         let _ = writeln!(out, "betti_1 = {}", r.betti_1);
-        let _ = writeln!(out, "persistence_entropy_h0 = {:.8}", r.persistence_entropy_h0);
-        let _ = writeln!(out, "persistence_entropy_h1 = {:.8}", r.persistence_entropy_h1);
+        let _ = writeln!(
+            out,
+            "persistence_entropy_h0 = {:.8}",
+            r.persistence_entropy_h0
+        );
+        let _ = writeln!(
+            out,
+            "persistence_entropy_h1 = {:.8}",
+            r.persistence_entropy_h1
+        );
         let _ = writeln!(out, "total_persistence_h0 = {:.8}", r.total_persistence_h0);
         let _ = writeln!(out, "total_persistence_h1 = {:.8}", r.total_persistence_h1);
         let _ = writeln!(out, "n_vr_points = {}", r.n_vr_points);
@@ -380,32 +403,60 @@ fn write_report(
 
     // Pairwise Wasserstein distance matrix (H0)
     let _ = writeln!(out, "[[grid_resolution.wasserstein_h0]]");
-    let _ = writeln!(out, "models = [{}]",
-        results.iter().map(|r| format!("\"{}\"", r.label)).collect::<Vec<_>>().join(", "));
+    let _ = writeln!(
+        out,
+        "models = [{}]",
+        results
+            .iter()
+            .map(|r| format!("\"{}\"", r.label))
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
     for (i, ri) in results.iter().enumerate() {
-        let dists: Vec<String> = results.iter().enumerate().map(|(j, rj)| {
-            if i == j {
-                "0.00000000".to_string()
-            } else {
-                format!("{:.8}", ri.diagram_h0.wasserstein_distance(&rj.diagram_h0, 2.0))
-            }
-        }).collect();
+        let dists: Vec<String> = results
+            .iter()
+            .enumerate()
+            .map(|(j, rj)| {
+                if i == j {
+                    "0.00000000".to_string()
+                } else {
+                    format!(
+                        "{:.8}",
+                        ri.diagram_h0.wasserstein_distance(&rj.diagram_h0, 2.0)
+                    )
+                }
+            })
+            .collect();
         let _ = writeln!(out, "{} = [{}]", ri.label, dists.join(", "));
     }
     let _ = writeln!(out);
 
     // Pairwise Wasserstein distance matrix (H1)
     let _ = writeln!(out, "[[grid_resolution.wasserstein_h1]]");
-    let _ = writeln!(out, "models = [{}]",
-        results.iter().map(|r| format!("\"{}\"", r.label)).collect::<Vec<_>>().join(", "));
+    let _ = writeln!(
+        out,
+        "models = [{}]",
+        results
+            .iter()
+            .map(|r| format!("\"{}\"", r.label))
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
     for (i, ri) in results.iter().enumerate() {
-        let dists: Vec<String> = results.iter().enumerate().map(|(j, rj)| {
-            if i == j {
-                "0.00000000".to_string()
-            } else {
-                format!("{:.8}", ri.diagram_h1.wasserstein_distance(&rj.diagram_h1, 2.0))
-            }
-        }).collect();
+        let dists: Vec<String> = results
+            .iter()
+            .enumerate()
+            .map(|(j, rj)| {
+                if i == j {
+                    "0.00000000".to_string()
+                } else {
+                    format!(
+                        "{:.8}",
+                        ri.diagram_h1.wasserstein_distance(&rj.diagram_h1, 2.0)
+                    )
+                }
+            })
+            .collect();
         let _ = writeln!(out, "{} = [{}]", ri.label, dists.join(", "));
     }
     let _ = writeln!(out);
@@ -415,8 +466,12 @@ fn write_report(
         let _ = writeln!(out, "[[grid_resolution.bottleneck_vs_null]]");
         for (i, r) in results.iter().enumerate() {
             if i != null_idx {
-                let bn_h0 = r.diagram_h0.bottleneck_distance(&results[null_idx].diagram_h0);
-                let bn_h1 = r.diagram_h1.bottleneck_distance(&results[null_idx].diagram_h1);
+                let bn_h0 = r
+                    .diagram_h0
+                    .bottleneck_distance(&results[null_idx].diagram_h0);
+                let bn_h1 = r
+                    .diagram_h1
+                    .bottleneck_distance(&results[null_idx].diagram_h1);
                 let _ = writeln!(out, "{}_h0 = {:.8}", r.label, bn_h0);
                 let _ = writeln!(out, "{}_h1 = {:.8}", r.label, bn_h1);
             }
@@ -443,12 +498,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Lambda: {:.3}", args.lambda);
     println!("Nu base: {:.6}", args.nu_base);
     println!("Force: {:.2e}", args.force);
-    println!("Models: {}", models.iter().map(|m| m.label()).collect::<Vec<_>>().join(", "));
+    println!(
+        "Models: {}",
+        models
+            .iter()
+            .map(|m| m.label())
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
     if args.kolmogorov {
         println!("Forcing: Kolmogorov sinusoidal");
     }
     if args.coupling > 0.0 && args.power_index > 1.0 {
-        println!("Non-Newtonian: power_index={:.2}, coupling={:.1}", args.power_index, args.coupling);
+        println!(
+            "Non-Newtonian: power_index={:.2}, coupling={:.1}",
+            args.power_index, args.coupling
+        );
     }
     println!();
 
@@ -462,8 +527,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ = writeln!(full_report, "lbm_steps = {}", args.lbm_steps);
     let _ = writeln!(full_report, "n_sub = {}", args.n_sub);
     let _ = writeln!(full_report, "max_points = {}", args.max_points);
-    let _ = writeln!(full_report, "grid_sizes = [{}]",
-        grid_sizes.iter().map(|g| g.to_string()).collect::<Vec<_>>().join(", "));
+    let _ = writeln!(
+        full_report,
+        "grid_sizes = [{}]",
+        grid_sizes
+            .iter()
+            .map(|g| g.to_string())
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
     let _ = writeln!(full_report, "kolmogorov = {}", args.kolmogorov);
     let _ = writeln!(full_report, "power_index = {:.2}", args.power_index);
     let _ = writeln!(full_report, "coupling = {:.2}", args.coupling);
@@ -483,7 +555,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         drop(field);
 
         let cfg = RunConfig {
-            nx, ny: nx, nz: nx,
+            nx,
+            ny: nx,
+            nz: nx,
             lbm_steps: args.lbm_steps,
             n_sub: args.n_sub,
             max_points: args.max_points,
@@ -494,7 +568,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             associator_norms,
         };
         let mean_f = frustration.iter().sum::<f64>() / frustration.len() as f64;
-        println!("    Mean frustration: {:.6} (vacuum attractor = {:.6})", mean_f, VACUUM_ATTRACTOR);
+        println!(
+            "    Mean frustration: {:.6} (vacuum attractor = {:.6})",
+            mean_f, VACUUM_ATTRACTOR
+        );
 
         println!("  [2/3] Running {} models...", models.len());
         let mut results = Vec::with_capacity(models.len());
@@ -523,7 +600,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(null_idx) = results.iter().position(|r| r.label == "constant") {
             for (i, r) in results.iter().enumerate() {
                 if i != null_idx {
-                    let w = r.diagram_h0.wasserstein_distance(&results[null_idx].diagram_h0, 2.0);
+                    let w = r
+                        .diagram_h0
+                        .wasserstein_distance(&results[null_idx].diagram_h0, 2.0);
                     println!("      {}: W2 = {:.6}", r.label, w);
                 }
             }
@@ -534,9 +613,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Grid convergence analysis (if multiple grid sizes)
     if grid_sizes.len() > 1 {
         let _ = writeln!(full_report, "[grid_convergence]");
-        let _ = writeln!(full_report, "grid_sizes = [{}]",
-            grid_sizes.iter().map(|g| g.to_string()).collect::<Vec<_>>().join(", "));
-        let _ = writeln!(full_report, "note = \"Compare Betti numbers and Wasserstein distances across resolutions\"");
+        let _ = writeln!(
+            full_report,
+            "grid_sizes = [{}]",
+            grid_sizes
+                .iter()
+                .map(|g| g.to_string())
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+        let _ = writeln!(
+            full_report,
+            "note = \"Compare Betti numbers and Wasserstein distances across resolutions\""
+        );
         let _ = writeln!(full_report);
     }
 

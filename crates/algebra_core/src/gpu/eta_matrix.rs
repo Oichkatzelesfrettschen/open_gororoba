@@ -166,7 +166,7 @@ impl EtaMatrixGpu {
         // Launch kernel
         // Use 256 threads per block (common choice)
         let block_size = 256u32;
-        let num_blocks = ((total as u32 + block_size - 1) / block_size) as u32;
+        let num_blocks = (total as u32).div_ceil(block_size);
 
         let cfg = LaunchConfig {
             grid_dim: (num_blocks, 1, 1),

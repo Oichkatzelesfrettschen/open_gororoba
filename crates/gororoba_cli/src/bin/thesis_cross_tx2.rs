@@ -130,7 +130,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("TX-2: Viscosity-to-Filtration Loop (T2 x T4)");
     println!("=============================================");
     println!("Grid: {}^3 ({} cells)", nx, n_cells);
-    println!("LBM steps: {}, nu_base: {:.4}", args.lbm_steps, args.nu_base);
+    println!(
+        "LBM steps: {}, nu_base: {:.4}",
+        args.lbm_steps, args.nu_base
+    );
     println!("Force amplitude: {:.2e}", args.force_amp);
     println!("Lambda sweep: {:?}", lambdas);
     println!();
@@ -215,11 +218,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!(
             "max_vel={:.6}, active={}/{}, law={}, gamma={:.4}",
-            max_vel,
-            filt.n_active_cells,
-            filt.n_total_cells,
-            law_label,
-            detail.power_law_exponent,
+            max_vel, filt.n_active_cells, filt.n_total_cells, law_label, detail.power_law_exponent,
         );
 
         results.push(Tx2Result {

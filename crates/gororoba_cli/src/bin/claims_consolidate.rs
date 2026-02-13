@@ -18,7 +18,10 @@ use clap::{Parser, Subcommand};
 use gororoba_cli::claims::consolidate;
 
 #[derive(Parser)]
-#[command(name = "claims-consolidate", about = "Claims registry consolidation pipeline")]
+#[command(
+    name = "claims-consolidate",
+    about = "Claims registry consolidation pipeline"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -135,9 +138,11 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(&cli, &claims_path, &claims);
                 // Also write updated conflict markers
-                if let Err(e) =
-                    consolidate::write_conflict_markers(&conflict_markers_path, &cm_header, &markers)
-                {
+                if let Err(e) = consolidate::write_conflict_markers(
+                    &conflict_markers_path,
+                    &cm_header,
+                    &markers,
+                ) {
                     eprintln!("ERROR writing conflict markers: {e}");
                 } else {
                     println!("Updated: {}", conflict_markers_path.display());
