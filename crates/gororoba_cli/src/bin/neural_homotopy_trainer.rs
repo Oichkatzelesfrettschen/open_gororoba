@@ -12,8 +12,8 @@
 
 use clap::Parser;
 use neural_homotopy::{
-    assemble_neural_correction, optimize_with_restarts, CorrectionTensor,
-    PentagonOptimizationConfig, PerturbationDataset,
+    optimize_with_restarts, train_burn_correction, CorrectionTensor,
+    CorrectionTensorModelConfig, PentagonOptimizationConfig, PerturbationDataset,
 };
 use std::io::Write;
 
@@ -57,6 +57,10 @@ struct Args {
     #[arg(long, default_value = "128")]
     hidden_size: usize,
 
+    /// Batch size for coordinate descent (1 = single coordinate)
+    #[arg(long, default_value = "8")]
+    batch_size: usize,
+
     /// Output directory for results
     #[arg(long, default_value = "data/evidence")]
     output_dir: String,
@@ -88,27 +92,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  L2 norm: {:.4}", assoc_l2);
     println!("  Pentagon violation: {:.6}", assoc_violation);
 
-    // Phase 2: Neural network prediction (optional)
+    // Phase 2: Neural network training + prediction (optional)
     let mut neural_tensor = None;
     let mut neural_violation = f64::NAN;
     let mut neural_params = 0usize;
+    let mut neural_loss_trace = Vec::new();
 
     if !args.skip_neural {
         println!();
-        println!("[2/5] Predicting corrections via neural network (Burn NdArray)...");
-        let (nt, n_params) = assemble_neural_correction(args.hidden_size);
-        neural_params = n_params;
+        println!("[2/5] Training neural correction model (Burn NdArray + Adam)...");
+        let model_config = CorrectionTensorModelConfig {
+            hidden_size: args.hidden_size,
+            learning_rate: 0.005,
+            epochs: 50,
+            batch_size: 64,
+        };
+        let result = train_burn_correction(&model_config);
+        neural_params = result.n_params;
+        neural_loss_trace = result.loss_trace.clone();
         println!("  Model params: {}", neural_params);
         println!(
             "  Architecture: 256 -> {} -> {} -> 16",
             args.hidden_size,
             args.hidden_size / 2
         );
+        println!("  Training epochs: {}", model_config.epochs);
+        println!(
+            "  MSE: {:.6} -> {:.6} (trained)",
+            result.loss_trace.first().copied().unwrap_or(0.0),
+            result.final_mse
+        );
 
-        neural_violation = nt.pentagon_violation(args.n_violation_samples);
+        neural_violation = result.pentagon_violation;
         println!("  Neural pentagon violation: {:.6}", neural_violation);
-        println!("  Neural NNZ: {}", nt.nnz());
-        neural_tensor = Some(nt);
+        println!("  Neural NNZ: {}", result.tensor.nnz());
+        neural_tensor = Some(result.tensor);
     } else {
         println!();
         println!("[2/5] Skipping neural prediction (--skip-neural)");
@@ -155,7 +173,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         n_violation_samples: args.n_violation_samples,
         seed: args.seed,
     };
-    let result = optimize_with_restarts(&initial, &config, args.n_restarts);
+    println!("  Batch size: {} coordinates/step", args.batch_size);
+
+    // Use compare_ansatz_vs_optimized for batch > 1 (handles restarts internally)
+    let result = if args.batch_size > 1 {
+        use neural_homotopy::optimize_batch_coordinate_descent;
+        let mut best: Option<neural_homotopy::PentagonOptimizationResult> = None;
+        for restart in 0..args.n_restarts.max(1) {
+            let mut cfg = config;
+            cfg.seed = config.seed.wrapping_add(restart as u64 * 1000);
+            let r = optimize_batch_coordinate_descent(&initial, &cfg, args.batch_size);
+            let is_better = best
+                .as_ref()
+                .is_none_or(|b| r.final_violation < b.final_violation);
+            if is_better {
+                best = Some(r);
+            }
+        }
+        best.expect("at least one restart should run")
+    } else {
+        optimize_with_restarts(&initial, &config, args.n_restarts)
+    };
 
     let improvement_pct = if initial_violation > 0.0 {
         (1.0 - result.final_violation / initial_violation) * 100.0
@@ -233,6 +271,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(ref nt) = neural_tensor {
             writeln!(f, "nnz = {}", nt.nnz())?;
             writeln!(f, "sparsity = {:.6}", nt.sparsity())?;
+        }
+        if !neural_loss_trace.is_empty() {
+            writeln!(
+                f,
+                "mse_initial = {:.6}",
+                neural_loss_trace.first().unwrap()
+            )?;
+            writeln!(f, "mse_final = {:.6}", neural_loss_trace.last().unwrap())?;
+            writeln!(f, "training_epochs = {}", neural_loss_trace.len())?;
         }
         writeln!(f)?;
     }

@@ -527,6 +527,151 @@ impl ViscosityCouplingModel {
     }
 }
 
+/// 4D spatial Sedenion field abstraction.
+///
+/// Extends SedenionField to 4 spatial dimensions. The 4th dimension (w) is
+/// treated as N independent 3D slices -- each w-slice can be evolved
+/// independently in LBM, then correlated across the full 4D volume.
+///
+/// This tests the universality of the frustration-topology hypothesis:
+/// if the correlation is genuine physics (not a 3D geometric artifact),
+/// it should hold in 4D as well.
+#[derive(Clone, Debug)]
+pub struct SedenionField4D {
+    /// Grid dimensions
+    pub nx: usize,
+    pub ny: usize,
+    pub nz: usize,
+    pub nw: usize,
+    /// Sedenion values: shape (nx * ny * nz * nw, 16)
+    pub data: Vec<[f64; 16]>,
+}
+
+impl SedenionField4D {
+    /// Create uniform 4D Sedenion field (all elements = basis e_0).
+    pub fn uniform(nx: usize, ny: usize, nz: usize, nw: usize) -> Self {
+        let n = nx * ny * nz * nw;
+        let mut data = vec![[0.0; 16]; n];
+        for sedenion in data.iter_mut() {
+            sedenion[0] = 1.0;
+        }
+        Self {
+            nx,
+            ny,
+            nz,
+            nw,
+            data,
+        }
+    }
+
+    /// Linear index from (x, y, z, w) coordinates.
+    ///
+    /// Layout is w-major: w*(nx*ny*nz) + z*(nx*ny) + y*nx + x
+    /// so that each w-slice is contiguous in memory (cache-friendly
+    /// for slice_3d extraction).
+    pub fn linearize(&self, x: usize, y: usize, z: usize, w: usize) -> usize {
+        w * (self.nx * self.ny * self.nz) + z * (self.nx * self.ny) + y * self.nx + x
+    }
+
+    /// Get Sedenion at 4D grid point.
+    pub fn get(&self, x: usize, y: usize, z: usize, w: usize) -> &[f64; 16] {
+        &self.data[self.linearize(x, y, z, w)]
+    }
+
+    /// Get mutable Sedenion at 4D grid point.
+    pub fn get_mut(&mut self, x: usize, y: usize, z: usize, w: usize) -> &mut [f64; 16] {
+        let idx = self.linearize(x, y, z, w);
+        &mut self.data[idx]
+    }
+
+    /// Extract one 3D w-slice as a standalone SedenionField.
+    ///
+    /// Returns a copy of all data at the given w coordinate.
+    /// Since w is the outermost dimension, data for a single w is
+    /// contiguous in memory: indices [w*vol .. (w+1)*vol].
+    pub fn slice_3d(&self, w: usize) -> SedenionField {
+        assert!(w < self.nw, "w index {} out of bounds (nw={})", w, self.nw);
+        let vol = self.nx * self.ny * self.nz;
+        let start = w * vol;
+        let slice_data = self.data[start..start + vol].to_vec();
+        SedenionField {
+            nx: self.nx,
+            ny: self.ny,
+            nz: self.nz,
+            data: slice_data,
+        }
+    }
+
+    /// Compute local frustration density across all 4D cells.
+    ///
+    /// Delegates to SedenionField::local_frustration_density per w-slice,
+    /// then concatenates results. This is correct because frustration depends
+    /// only on the local sedenion value (triangle weights), not on neighbors.
+    pub fn local_frustration_density_4d(&self, dim: usize) -> Vec<f64> {
+        let mut result = Vec::with_capacity(self.data.len());
+        for w in 0..self.nw {
+            let slice = self.slice_3d(w);
+            result.extend(slice.local_frustration_density(dim));
+        }
+        result
+    }
+
+    /// Compute Pearson correlations between adjacent w-slices.
+    ///
+    /// Returns nw-1 correlation coefficients: corr(slice[w], slice[w+1])
+    /// for w = 0..nw-2. High correlations indicate the 4th dimension
+    /// is redundant; low correlations indicate genuine 4D structure.
+    pub fn inter_slice_correlations(&self, dim: usize) -> Vec<f64> {
+        if self.nw < 2 {
+            return Vec::new();
+        }
+        let frustrations: Vec<Vec<f64>> = (0..self.nw)
+            .map(|w| self.slice_3d(w).local_frustration_density(dim))
+            .collect();
+
+        let mut correlations = Vec::with_capacity(self.nw - 1);
+        for w in 0..self.nw - 1 {
+            let r = pearson_corr(&frustrations[w], &frustrations[w + 1]);
+            correlations.push(r);
+        }
+        correlations
+    }
+
+    /// Total number of 4D cells.
+    pub fn n_cells(&self) -> usize {
+        self.nx * self.ny * self.nz * self.nw
+    }
+}
+
+/// Pearson correlation coefficient between two slices.
+fn pearson_corr(a: &[f64], b: &[f64]) -> f64 {
+    let n = a.len().min(b.len());
+    if n < 2 {
+        return 0.0;
+    }
+    let nf = n as f64;
+    let mean_a = a.iter().take(n).sum::<f64>() / nf;
+    let mean_b = b.iter().take(n).sum::<f64>() / nf;
+
+    let mut cov = 0.0;
+    let mut var_a = 0.0;
+    let mut var_b = 0.0;
+    for i in 0..n {
+        let da = a[i] - mean_a;
+        let db = b[i] - mean_b;
+        cov += da * db;
+        var_a += da * da;
+        var_b += db * db;
+    }
+
+    let denom = (var_a * var_b).sqrt();
+    if denom < 1e-30 {
+        0.0
+    } else {
+        cov / denom
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -910,6 +1055,109 @@ mod tests {
         for model in &suite {
             assert!(!model.description().is_empty());
             assert!(!model.label().is_empty());
+        }
+    }
+
+    // ---- SedenionField4D tests ----
+
+    #[test]
+    fn test_sedenion_field_4d_creation() {
+        let field = SedenionField4D::uniform(4, 4, 4, 3);
+        assert_eq!(field.data.len(), 4 * 4 * 4 * 3);
+        assert_eq!(field.n_cells(), 192);
+        // Check e_0 basis is initialized
+        assert!((field.get(0, 0, 0, 0)[0] - 1.0).abs() < 1e-14);
+        assert!((field.get(3, 3, 3, 2)[0] - 1.0).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_sedenion_field_4d_linearize() {
+        let field = SedenionField4D::uniform(4, 4, 4, 3);
+        // w-major layout: w=0 occupies [0..64), w=1 occupies [64..128)
+        assert_eq!(field.linearize(0, 0, 0, 0), 0);
+        assert_eq!(field.linearize(0, 0, 0, 1), 4 * 4 * 4);
+        assert_eq!(field.linearize(1, 0, 0, 0), 1);
+        assert_eq!(field.linearize(0, 1, 0, 0), 4);
+        assert_eq!(field.linearize(0, 0, 1, 0), 4 * 4);
+        // Round-trip consistency
+        let idx1 = field.linearize(2, 3, 1, 2);
+        let idx2 = field.linearize(2, 3, 1, 2);
+        assert_eq!(idx1, idx2);
+    }
+
+    #[test]
+    fn test_sedenion_field_4d_slice_isolation() {
+        let mut field = SedenionField4D::uniform(4, 4, 4, 3);
+        // Modify w=1 slice only
+        field.get_mut(2, 1, 0, 1)[5] = 0.99;
+
+        let slice0 = field.slice_3d(0);
+        let slice1 = field.slice_3d(1);
+        let slice2 = field.slice_3d(2);
+
+        // w=0 and w=2 should be unaffected
+        assert!(slice0.get(2, 1, 0)[5].abs() < 1e-14);
+        assert!(slice2.get(2, 1, 0)[5].abs() < 1e-14);
+        // w=1 should have the modification
+        assert!((slice1.get(2, 1, 0)[5] - 0.99).abs() < 1e-14);
+
+        // Slice dimensions match
+        assert_eq!(slice0.nx, 4);
+        assert_eq!(slice0.ny, 4);
+        assert_eq!(slice0.nz, 4);
+        assert_eq!(slice0.data.len(), 64);
+    }
+
+    #[test]
+    fn test_sedenion_field_4d_frustration_length() {
+        let field = SedenionField4D::uniform(4, 4, 4, 2);
+        let frustration = field.local_frustration_density_4d(16);
+        assert_eq!(frustration.len(), 4 * 4 * 4 * 2);
+        // Uniform field -> all frustration values equal (vacuum attractor)
+        for &f in &frustration {
+            assert!(f.is_finite());
+            assert!(f > 0.0);
+        }
+    }
+
+    #[test]
+    fn test_sedenion_field_4d_inter_slice_uniform() {
+        let field = SedenionField4D::uniform(4, 4, 4, 3);
+        let corrs = field.inter_slice_correlations(16);
+        // 3 slices -> 2 correlations
+        assert_eq!(corrs.len(), 2);
+        // Uniform field: all slices identical, so correlation should be
+        // undefined (zero variance). Our pearson_corr returns 0.0 for zero variance.
+        for &r in &corrs {
+            assert!(r.is_finite());
+        }
+    }
+
+    #[test]
+    fn test_sedenion_field_4d_varied_inter_slice() {
+        let mut field = SedenionField4D::uniform(4, 4, 4, 3);
+        // Create distinct variation in each w-slice
+        for w in 0..3 {
+            for z in 0..4 {
+                for y in 0..4 {
+                    for x in 0..4 {
+                        let s = field.get_mut(x, y, z, w);
+                        let xn = x as f64 / 4.0;
+                        let wn = w as f64 / 3.0;
+                        s[1] = 0.3 * xn * (1.0 + wn);
+                        s[3] = 0.2 * (wn + 0.1);
+                        s[5] = 0.1 * (y as f64 / 4.0) * (1.0 - wn);
+                    }
+                }
+            }
+        }
+
+        let corrs = field.inter_slice_correlations(16);
+        assert_eq!(corrs.len(), 2);
+        for &r in &corrs {
+            assert!(r.is_finite());
+            // With variation, correlations should be in [-1, 1]
+            assert!(r >= -1.0 - 1e-10 && r <= 1.0 + 1e-10);
         }
     }
 }

@@ -1,0 +1,213 @@
+[metadata]
+experiment = "Thesis2-3D-Thickening"
+grid_size = 16
+lbm_steps = 500
+nu_base = 0.050000
+force_amplitude = 5.00e-4
+mean_associator_norm = 0.01476328
+max_associator_norm = 0.02992398
+
+[[sweep]]
+alpha = 0.000
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426368
+vel_reduction = 0.000000
+tau_min = 0.650000
+tau_max = 0.650000
+tau_range = 0.000000
+mean_strain_rate = 0.00343020
+
+[[sweep]]
+alpha = 0.000
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426368
+vel_reduction = 0.000000
+tau_min = 0.650000
+tau_max = 0.650000
+tau_range = 0.000000
+mean_strain_rate = 0.00343020
+
+[[sweep]]
+alpha = 0.000
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426368
+vel_reduction = 0.000000
+tau_min = 0.650000
+tau_max = 0.650000
+tau_range = 0.000000
+mean_strain_rate = 0.00343020
+
+[[sweep]]
+alpha = 0.500
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01425252
+vel_reduction = 0.000782
+tau_min = 0.650034
+tau_max = 0.650690
+tau_range = 0.000657
+mean_strain_rate = 0.00342722
+
+[[sweep]]
+alpha = 0.500
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426089
+vel_reduction = 0.000195
+tau_min = 0.650000
+tau_max = 0.650141
+tau_range = 0.000141
+mean_strain_rate = 0.00342946
+
+[[sweep]]
+alpha = 0.500
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426346
+vel_reduction = 0.000015
+tau_min = 0.650000
+tau_max = 0.650010
+tau_range = 0.000010
+mean_strain_rate = 0.00343014
+
+[[sweep]]
+alpha = 1.000
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01424178
+vel_reduction = 0.001535
+tau_min = 0.650077
+tau_max = 0.651381
+tau_range = 0.001303
+mean_strain_rate = 0.00342434
+
+[[sweep]]
+alpha = 1.000
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01425811
+vel_reduction = 0.000390
+tau_min = 0.650000
+tau_max = 0.650282
+tau_range = 0.000282
+mean_strain_rate = 0.00342873
+
+[[sweep]]
+alpha = 1.000
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426325
+vel_reduction = 0.000030
+tau_min = 0.650000
+tau_max = 0.650020
+tau_range = 0.000020
+mean_strain_rate = 0.00343009
+
+[[sweep]]
+alpha = 5.000
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01416068
+vel_reduction = 0.007221
+tau_min = 0.650532
+tau_max = 0.656891
+tau_range = 0.006359
+mean_strain_rate = 0.00340249
+
+[[sweep]]
+alpha = 5.000
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01423609
+vel_reduction = 0.001934
+tau_min = 0.650004
+tau_max = 0.651411
+tau_range = 0.001407
+mean_strain_rate = 0.00342292
+
+[[sweep]]
+alpha = 5.000
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01426152
+vel_reduction = 0.000151
+tau_min = 0.650000
+tau_max = 0.650100
+tau_range = 0.000100
+mean_strain_rate = 0.00342963
+
+[[sweep]]
+alpha = 20.000
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01388604
+vel_reduction = 0.026475
+tau_min = 0.652770
+tau_max = 0.677390
+tau_range = 0.024620
+mean_strain_rate = 0.00332818
+
+[[sweep]]
+alpha = 20.000
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01415551
+vel_reduction = 0.007583
+tau_min = 0.650031
+tau_max = 0.655618
+tau_range = 0.005587
+mean_strain_rate = 0.00340164
+
+[[sweep]]
+alpha = 20.000
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01425506
+vel_reduction = 0.000604
+tau_min = 0.650000
+tau_max = 0.650401
+tau_range = 0.000401
+mean_strain_rate = 0.00342792
+
+[[sweep]]
+alpha = 100.000
+power_index = 1.200
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01271202
+vel_reduction = 0.108784
+tau_min = 0.667825
+tau_max = 0.783350
+tau_range = 0.115525
+mean_strain_rate = 0.00301517
+
+[[sweep]]
+alpha = 100.000
+power_index = 1.500
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01376203
+vel_reduction = 0.035169
+tau_min = 0.650324
+tau_max = 0.677502
+tau_range = 0.027178
+mean_strain_rate = 0.00329792
+
+[[sweep]]
+alpha = 100.000
+power_index = 2.000
+newton_max_vel = 0.01426368
+non_newton_max_vel = 0.01422087
+vel_reduction = 0.003001
+tau_min = 0.650000
+tau_max = 0.651997
+tau_range = 0.001997
+mean_strain_rate = 0.00341887
+
+[summary]
+n_pairs = 18
+best_alpha = 100.000
+best_power_index = 1.200
+best_vel_reduction = 0.108784
+significant = true

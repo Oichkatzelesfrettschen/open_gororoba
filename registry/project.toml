@@ -2,15 +2,23 @@
 
 [project]
 name = "open_gororoba"
-version = "0.12.0"
+version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2475
-claim_count = 589
-insight_count = 40
-experiment_count = 14
+test_count = 3442
+claim_count = 674
+insight_count = 63
+experiment_count = 31
 paper_count = 19
-binary_count = 46
+binary_count = 66
+
+[sprints.s40]
+number = 40
+date = "2026-02-12"
+test_count = 3442
+claim_count = 674
+insight_count = 63
+summary = "Phase 3: Burn neural correction tensor training (train_burn_correction, MLP 256->128->64->16, Adam optimizer, MSE on associator-derived targets). Pentagon violation reduced 78% (2.50->0.547). Phase 4: Engine integration -- T3 pipeline with neural stream, use_neural flag, production() config. E-029 evidence: neural (0.547), algebraic-only (2.494), perturbed (0.589). Synthesis engine: 4/4 theses pass gate simultaneously (T1 r=-1.0, T2 ratio=1.254, T3 opt improved, T4 R2=0.995). Claims C-671..C-674, I-066, E-029 complete, E-033 added. 3442 tests, 0 clippy warnings."
 
 [sprints.s27]
 number = 27

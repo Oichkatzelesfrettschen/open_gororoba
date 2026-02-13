@@ -21,12 +21,14 @@ pub mod training_data;
 
 pub use burn_backend::{selected_backend, BackendKind};
 pub use burn_model::{
-    assemble_neural_correction, CorrectionTensorModel, CorrectionTensorModelConfig,
+    assemble_neural_correction, train_burn_correction, BurnTrainingResult,
+    CorrectionTensorModel, CorrectionTensorModelConfig,
 };
 pub use m4_tensor::CorrectionTensor;
 pub use model::{
-    canonical_words, detect_plateaus, reference_hubble_curve, train_homotopy_surrogate,
-    wasserstein_1d, HomotopyTrainingConfig, PairTransitionModel, PlateauDetection, TrainingTrace,
+    canonical_words, detect_plateaus, detect_plateaus_robust, gaussian_smooth,
+    reference_hubble_curve, train_homotopy_surrogate, wasserstein_1d, HomotopyTrainingConfig,
+    PairTransitionModel, PlateauConfig, PlateauDetection, TrainingTrace,
 };
 pub use optimizer::{
     compare_ansatz_vs_optimized, optimize_batch_coordinate_descent, optimize_correction_tensor,

@@ -26,7 +26,10 @@ pub mod besag_clifford_cuda;
 // Re-export key types for ergonomics
 pub use apt_sedenion::{AptSedenionField, FrustrationStats};
 pub use balance::{compute_frustration_index, FrustrationResult, SolverMethod};
-pub use bridge::{FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel, VACUUM_ATTRACTOR};
+pub use bridge::{
+    FrustrationViscosityBridge, SedenionField, SedenionField4D, ViscosityCouplingModel,
+    VACUUM_ATTRACTOR,
+};
 pub use vietoris_rips::PersistenceDiagram;
 pub use frustration::{
     evaluate_frustration_star, frustration_density_from_edges, omega_eff_from_phi,
