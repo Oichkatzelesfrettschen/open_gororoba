@@ -24,5 +24,6 @@ pub use mass_spectrum::{depth_clusters, depth_histogram, SurvivalDepthMap, Survi
 pub use patricia_trie::PatriciaIndex;
 pub use survival_spectrum::{
     classify_latency_law, classify_latency_law_detailed, exponential_r2, inverse_square_r2,
-    power_law_r2, radial_bins, LatencyLaw, LatencyLawDetail, SpectrumBin,
+    power_law_gamma_ci, power_law_r2, radial_bins, GammaCI, LatencyLaw, LatencyLawDetail,
+    SpectrumBin,
 };

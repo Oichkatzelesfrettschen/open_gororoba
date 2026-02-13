@@ -1,0 +1,51 @@
+[metadata]
+experiment = "E-029"
+title = "A-infinity Correction Tensor via Neural Homotopy Search"
+n_steps = 500
+n_restarts = 5
+n_violation_samples = 256
+seed = 42
+lambda = 0.0001
+step_size = 0.1
+perturb = 0
+skip_neural = false
+
+[associator]
+nnz = 1848
+sparsity = 0.971802
+l2_norm = 85.976741
+pentagon_violation = 2.500000
+
+[neural_model]
+hidden_size = 128
+n_params = 42432
+pentagon_violation = 0.547180
+nnz = 65536
+sparsity = 0.000000
+mse_initial = 0.012093
+mse_final = 0.002107
+training_epochs = 50
+
+[optimization]
+initial_violation = 0.547180
+final_violation = 0.530554
+improvement_pct = 3.0384
+n_accepted = 126
+converged = true
+final_l2_norm = 17.287367
+final_nnz = 65536
+
+[optimization.trace]
+initial_loss = 0.577109
+midpoint_loss = 0.566621
+final_loss = 0.560439
+
+[correction_tensor]
+dim = 16
+total_entries = 65536
+nnz = 65536
+sparsity = 0.000000
+l2_norm_sq = 298.853042
+l2_norm = 17.287367
+pentagon_violation = 0.530554
+

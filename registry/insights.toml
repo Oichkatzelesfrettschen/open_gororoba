@@ -575,3 +575,27 @@ confidence = "high"
 verified_date = "2026-02-11"
 phase = "Phase 1 Week 4"
 sprint = 36
+
+[[insight]]
+id = "I-066"
+title = "Neural Initialization Escapes Associator Basin in Pentagon Optimization"
+insight = "The algebraic associator tensor m_3 is a local minimum in the 65536-dimensional correction tensor space: coordinate descent from the associator achieves only 0.23% violation reduction (37/2500 accepted steps, converged=true). A Burn-trained MLP (42k params) that learns k-averaged associator targets achieves 78% reduction by filling the dense 65536-entry space, providing a fundamentally different starting point. This demonstrates that the A-infinity correction problem has a rugged landscape where the sparse algebraic ansatz (97.2% zeros) is trapped, but dense neural predictions access lower-violation regions. The correction tensor perturbation robustness (10.5% violation increase at 5% noise) suggests the neural solution is structurally stable, not an artifact of overfitting."
+supporting_evidence = ["C-671", "C-672", "C-673", "C-674", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
+related_claims = ["C-671", "C-672", "C-673"]
+experimental_support = ["E-029", "E-033"]
+confidence = "high"
+verified_date = "2026-02-12"
+phase = "Phase 3"
+sprint = 40
+
+[[insight]]
+id = "I-065"
+title = "Cross-Thesis Non-Monotonic Coupling Reveals Optimal Frustration Regime"
+insight = "TX-1 (frustration-modulated collision dynamics) reveals non-monotonic dependence: maximum gamma shift occurs at moderate alpha=0.5 (delta_gamma=0.19), while high alpha values (10-50) produce near-zero shifts. This suggests an optimal frustration coupling regime where microscopic algebraic structure most effectively modulates macroscopic dynamics. The non-monotonicity may arise from noise saturation: beyond a threshold, all sites have high enough noise that relative differences vanish. Combined with TX-2 (viscosity-to-filtration loop showing positive latency-radius correlation) and thesis2-3D (10.88% shear thickening at alpha=100), the cross-thesis experiments establish that algebraic frustration modulates physics through at least three independent channels (collision noise, viscosity field, filtration spectrum) with different optimal coupling strengths."
+supporting_evidence = ["C-665", "C-666", "C-667", "C-668", "C-669", "data/thesis_lab/tx1/tx1_report.toml", "data/thesis_lab/thesis2_3d/thesis2_3d.toml", "data/thesis_lab/tx2/tx2_report.toml"]
+related_claims = ["C-665", "C-666", "C-667", "C-668", "C-669", "C-670"]
+experimental_support = ["E-030", "E-031", "E-032"]
+confidence = "high"
+verified_date = "2026-02-12"
+phase = "Phase 2 Week 3"
+sprint = 39

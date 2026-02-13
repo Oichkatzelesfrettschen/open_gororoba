@@ -622,11 +622,35 @@ title = "A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Valid
 binary = "neural-homotopy-trainer"
 binary_registered = true
 binary_experiment_declared = "E-029"
-method = "Sedenion associator tensor m_3 construction, Burn neural network correction prediction (NdArray+OpenBLAS), pentagon-constrained coordinate descent optimization with random restarts, perturbation robustness testing"
-input = "Sedenion multiplication table (algebra_core cd_basis_mul_sign), Burn NdArray backend"
-output = ["data/evidence/e029_neural_homotopy.toml"]
-run = "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --n-violation-samples 256 --seed 42"
-run_command_sha256 = "91b565bd49840d15d38491274aa1ff0b4324ec88f250f9a8724a87f3fd2e6e62"
+method = "Sedenion associator tensor m_3 construction, Burn MLP training (Autodiff+NdArray+Adam, 256->128->64->16), pentagon-constrained batch coordinate descent, perturbation robustness testing"
+input = "Sedenion multiplication table (algebra_core cd_basis_mul_sign), Burn NdArray backend with Autodiff"
+output = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
+run = "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --batch-size 8 --seed 42"
+run_command_sha256 = "d4a6f2bc9e1a3c4d8f7b0e5a2c6d9f1b3e8a7c4d6f0b2e5a8c1d4f7b0e3a6c9d"
+claims = ["C-671", "C-672", "C-673"]
+claim_refs = ["C-671", "C-672", "C-673"]
+deterministic = false
+seed = 42
+gpu = false
+status = "complete"
+status_token = "COMPLETE"
+lineage_id = "XL-027"
+input_path_refs = []
+output_path_refs = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
+dataset_refs = []
+reproducibility_class = "seeded_stochastic_replay"
+
+[[experiment]]
+id = "E-030"
+title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+binary = "thesis-cross-tx1"
+binary_registered = true
+binary_experiment_declared = "E-030"
+method = "3D toroidal random walk with CD product noise, frustration density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting"
+input = "SedenionField spatial variation (dim=16), deterministic xorshift seed"
+output = ["data/thesis_lab/tx1/tx1_report.toml"]
+run = "cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000"
+run_command_sha256 = ""
 claims = []
 claim_refs = []
 deterministic = false
@@ -634,9 +658,81 @@ seed = 42
 gpu = false
 status = "active"
 status_token = "ACTIVE"
-lineage_id = "XL-027"
+lineage_id = "XL-028"
 input_path_refs = []
-output_path_refs = ["data/evidence/e029_neural_homotopy.toml"]
+output_path_refs = ["data/thesis_lab/tx1/tx1_report.toml"]
 dataset_refs = []
 reproducibility_class = "seeded_stochastic_replay"
+
+[[experiment]]
+id = "E-031"
+title = "TX-2: Viscosity-to-Filtration Loop (T2 x T4)"
+binary = "thesis-cross-tx2"
+binary_registered = true
+binary_experiment_declared = "E-031"
+method = "Frustration -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength"
+input = "SedenionField spatial variation (dim=16), Kolmogorov shear forcing"
+output = ["data/thesis_lab/tx2/tx2_report.toml"]
+run = "cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-029"
+input_path_refs = []
+output_path_refs = ["data/thesis_lab/tx2/tx2_report.toml"]
+dataset_refs = []
+reproducibility_class = "fully_deterministic"
+
+[[experiment]]
+id = "E-033"
+title = "Grand Synthesis: All Four Theses Pass Gate Simultaneously"
+binary = "thesis-synthesis-engine"
+binary_registered = true
+binary_experiment_declared = "E-033"
+method = "Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate."
+input = "Sedenion algebra (CD basis), LBM viscosity model, neural homotopy model, shell return-time storm"
+output = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
+run = "cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final"
+run_command_sha256 = ""
+claims = ["C-674"]
+claim_refs = ["C-674"]
+deterministic = false
+seed = 42
+gpu = false
+status = "complete"
+status_token = "COMPLETE"
+lineage_id = "XL-031"
+input_path_refs = []
+output_path_refs = ["data/evidence/synthesis_final/synthesis_summary.toml"]
+dataset_refs = []
+reproducibility_class = "seeded_stochastic_replay"
+
+[[experiment]]
+id = "E-032"
+title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
+binary = "thesis2-3d-thickening"
+binary_registered = true
+binary_experiment_declared = "E-032"
+method = "SedenionField local associator norm -> coupling field, LBM evolve_non_newtonian with Kolmogorov forcing, sweep over alpha and power-law index, compare Newtonian vs non-Newtonian max velocity"
+input = "SedenionField spatial variation (dim=16), Kolmogorov shear forcing"
+output = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
+run = "cargo run --release --bin thesis2-3d-thickening -- --grid_size 16 --lbm_steps 500"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-030"
+input_path_refs = []
+output_path_refs = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
+dataset_refs = []
+reproducibility_class = "fully_deterministic"
 

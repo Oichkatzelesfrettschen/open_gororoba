@@ -1,0 +1,11 @@
+[evidence]
+thesis_id = 2
+label = "T2 power-law (alpha=0.5, n=1.5)"
+metric_value = 1.25438551
+threshold = 1.05000000
+passes_gate = true
+
+[messages]
+m0 = "Viscosity ratio (high/low) = 1.2544"
+m1 = "Monotonically increasing: true"
+m2 = "Nu range: [0.107906, 0.135355]"

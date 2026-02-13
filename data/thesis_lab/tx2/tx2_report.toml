@@ -1,0 +1,86 @@
+[metadata]
+experiment = "TX-2"
+description = "Viscosity-to-filtration loop (T2 x T4)"
+grid_size = 16
+lbm_steps = 500
+nu_base = 0.100000
+force_amplitude = 5.00e-4
+projection_scale = 10.00
+n_bins = 12
+mean_frustration = 0.55166336
+
+[[lambda_sweep]]
+lambda = 0.500
+mean_viscosity = 0.09831918
+lbm_max_velocity = 0.01193692
+n_active_cells = 4096
+n_total_cells = 4096
+latency_law = "Undetermined"
+power_law_exponent = 0.387660
+r2_power_law = 0.613177
+r2_inverse_square = 0.901851
+r2_linear = 0.433143
+r2_exponential = 0.351293
+n_spectrum_bins = 12
+
+[[lambda_sweep]]
+lambda = 1.000
+mean_viscosity = 0.09667552
+lbm_max_velocity = 0.01201283
+n_active_cells = 4096
+n_total_cells = 4096
+latency_law = "Undetermined"
+power_law_exponent = 0.385833
+r2_power_law = 0.613271
+r2_inverse_square = 0.902017
+r2_linear = 0.433248
+r2_exponential = 0.351546
+n_spectrum_bins = 12
+
+[[lambda_sweep]]
+lambda = 2.000
+mean_viscosity = 0.09349569
+lbm_max_velocity = 0.01216550
+n_active_cells = 4096
+n_total_cells = 4096
+latency_law = "Undetermined"
+power_law_exponent = 0.381866
+r2_power_law = 0.612752
+r2_inverse_square = 0.903097
+r2_linear = 0.431701
+r2_exponential = 0.351074
+n_spectrum_bins = 12
+
+[[lambda_sweep]]
+lambda = 5.000
+mean_viscosity = 0.08474953
+lbm_max_velocity = 0.01263206
+n_active_cells = 4096
+n_total_cells = 4096
+latency_law = "Undetermined"
+power_law_exponent = 0.372980
+r2_power_law = 0.615898
+r2_inverse_square = 0.899697
+r2_linear = 0.429699
+r2_exponential = 0.353573
+n_spectrum_bins = 12
+
+[[lambda_sweep]]
+lambda = 10.000
+mean_viscosity = 0.07243436
+lbm_max_velocity = 0.01342725
+n_active_cells = 4096
+n_total_cells = 4096
+latency_law = "Undetermined"
+power_law_exponent = 0.355249
+r2_power_law = 0.609583
+r2_inverse_square = 0.896386
+r2_linear = 0.417793
+r2_exponential = 0.349366
+n_spectrum_bins = 12
+
+[summary]
+n_lambdas = 5
+n_determined = 0
+significant = false
+coupling_changes_law = false

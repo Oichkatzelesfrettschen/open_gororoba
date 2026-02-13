@@ -239,6 +239,142 @@ pub fn detect_plateaus(
     }
 }
 
+/// Configuration for robust plateau detection.
+#[derive(Debug, Clone, Copy)]
+pub struct PlateauConfig {
+    /// Maximum |curvature| to qualify as plateau.
+    pub curvature_threshold: f64,
+    /// Minimum consecutive epochs to count as plateau.
+    pub min_plateau_length: usize,
+    /// Gaussian smoothing window radius (0 = no smoothing).
+    pub smoothing_radius: usize,
+    /// Whether to use adaptive threshold (fraction of max |curvature|).
+    pub adaptive: bool,
+    /// Fraction of max curvature for adaptive threshold (typical: 0.05).
+    pub adaptive_fraction: f64,
+}
+
+impl Default for PlateauConfig {
+    fn default() -> Self {
+        Self {
+            curvature_threshold: 1e-4,
+            min_plateau_length: 3,
+            smoothing_radius: 2,
+            adaptive: false,
+            adaptive_fraction: 0.05,
+        }
+    }
+}
+
+/// Gaussian-smooth a signal with given radius.
+pub fn gaussian_smooth(signal: &[f64], radius: usize) -> Vec<f64> {
+    if radius == 0 || signal.len() < 3 {
+        return signal.to_vec();
+    }
+    let sigma = radius as f64 / 2.0;
+    let window_size = 2 * radius + 1;
+    let kernel: Vec<f64> = (0..window_size)
+        .map(|i| {
+            let x = i as f64 - radius as f64;
+            (-x * x / (2.0 * sigma * sigma)).exp()
+        })
+        .collect();
+    let kernel_sum: f64 = kernel.iter().sum();
+    let kernel: Vec<f64> = kernel.iter().map(|k| k / kernel_sum).collect();
+
+    let n = signal.len();
+    let mut out = Vec::with_capacity(n);
+    for i in 0..n {
+        let mut val = 0.0;
+        for (j, &k) in kernel.iter().enumerate() {
+            let idx = i as isize + j as isize - radius as isize;
+            let idx = idx.clamp(0, n as isize - 1) as usize;
+            val += k * signal[idx];
+        }
+        out.push(val);
+    }
+    out
+}
+
+/// Robust plateau detection with optional smoothing and adaptive threshold.
+///
+/// Extends `detect_plateaus` with Gaussian pre-smoothing to filter noise
+/// and an adaptive threshold mode that sets the cutoff as a fraction of
+/// the maximum curvature magnitude.
+pub fn detect_plateaus_robust(losses: &[f64], config: &PlateauConfig) -> PlateauDetection {
+    if losses.len() < 3 {
+        return PlateauDetection {
+            plateau_starts: Vec::new(),
+            plateau_ends: Vec::new(),
+            curvatures: Vec::new(),
+            n_plateaus: 0,
+        };
+    }
+
+    // Optional Gaussian smoothing
+    let smoothed = gaussian_smooth(losses, config.smoothing_radius);
+
+    // Compute discrete second derivative
+    let n = smoothed.len();
+    let mut curvatures = Vec::with_capacity(n);
+    curvatures.push(0.0);
+    for i in 1..n - 1 {
+        let curv = smoothed[i + 1] - 2.0 * smoothed[i] + smoothed[i - 1];
+        curvatures.push(curv);
+    }
+    curvatures.push(0.0);
+
+    // Determine threshold
+    let threshold = if config.adaptive {
+        let max_curv = curvatures
+            .iter()
+            .map(|c| c.abs())
+            .fold(0.0_f64, f64::max);
+        (config.adaptive_fraction * max_curv).max(1e-15)
+    } else {
+        config.curvature_threshold
+    };
+
+    // Identify plateau regions
+    let mut plateau_starts = Vec::new();
+    let mut plateau_ends = Vec::new();
+    let mut in_plateau = false;
+    let mut start = 0;
+
+    for (i, &curv) in curvatures.iter().enumerate() {
+        let is_flat = curv.abs() < threshold;
+
+        if is_flat && !in_plateau {
+            start = i;
+            in_plateau = true;
+        } else if !is_flat && in_plateau {
+            let length = i - start;
+            if length >= config.min_plateau_length {
+                plateau_starts.push(start);
+                plateau_ends.push(i);
+            }
+            in_plateau = false;
+        }
+    }
+
+    if in_plateau {
+        let length = n - start;
+        if length >= config.min_plateau_length {
+            plateau_starts.push(start);
+            plateau_ends.push(n);
+        }
+    }
+
+    let n_plateaus = plateau_starts.len();
+
+    PlateauDetection {
+        plateau_starts,
+        plateau_ends,
+        curvatures,
+        n_plateaus,
+    }
+}
+
 /// Compute Wasserstein-1 distance between two 1D distributions.
 ///
 /// Uses the sorted quantile representation: W_1 = mean |F^{-1}(u) - G^{-1}(u)|
@@ -344,6 +480,118 @@ mod tests {
                 c
             );
         }
+    }
+
+    #[test]
+    fn test_gaussian_smooth_identity() {
+        let signal = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+        let result = gaussian_smooth(&signal, 0);
+        assert_eq!(result, signal, "radius=0 should return identity");
+    }
+
+    #[test]
+    fn test_gaussian_smooth_constant() {
+        let signal = vec![5.0; 20];
+        let result = gaussian_smooth(&signal, 3);
+        for v in &result {
+            assert!(
+                (v - 5.0).abs() < 1e-10,
+                "Smoothing a constant should return constant"
+            );
+        }
+    }
+
+    #[test]
+    fn test_gaussian_smooth_reduces_noise() {
+        // Noisy step function
+        let mut signal = Vec::new();
+        for i in 0..40 {
+            let base = if i < 20 { 1.0 } else { 0.0 };
+            let noise = ((i * 7 + 3) % 11) as f64 / 100.0 - 0.05;
+            signal.push(base + noise);
+        }
+        let smoothed = gaussian_smooth(&signal, 3);
+        // Smoothed variance should be lower than original
+        let mean = |s: &[f64]| s.iter().sum::<f64>() / s.len() as f64;
+        let var = |s: &[f64]| {
+            let m = mean(s);
+            s.iter().map(|v| (v - m).powi(2)).sum::<f64>() / s.len() as f64
+        };
+        // Focus on the first half (constant region) -- variance should decrease
+        let orig_var = var(&signal[2..18]);
+        let smooth_var = var(&smoothed[2..18]);
+        assert!(
+            smooth_var <= orig_var,
+            "Smoothing should reduce variance: orig={}, smooth={}",
+            orig_var,
+            smooth_var
+        );
+    }
+
+    #[test]
+    fn test_detect_plateaus_robust_with_smoothing() {
+        // Noisy two-plateau curve
+        let mut losses = Vec::new();
+        let mut state = 17_u64;
+        let mut noise = || -> f64 {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            (state as f64 / u64::MAX as f64) * 0.002 - 0.001
+        };
+        for i in 0..10 {
+            losses.push(1.0 - 0.05 * i as f64 + noise());
+        }
+        for _ in 0..15 {
+            losses.push(0.5 + noise());
+        }
+        for i in 0..10 {
+            losses.push(0.5 - 0.03 * i as f64 + noise());
+        }
+        for _ in 0..15 {
+            losses.push(0.2 + noise());
+        }
+
+        let config = PlateauConfig {
+            smoothing_radius: 2,
+            adaptive: true,
+            adaptive_fraction: 0.05,
+            min_plateau_length: 3,
+            ..Default::default()
+        };
+        let result = detect_plateaus_robust(&losses, &config);
+        assert!(
+            result.n_plateaus >= 2,
+            "Robust detection should find at least 2 plateaus: got {}",
+            result.n_plateaus
+        );
+    }
+
+    #[test]
+    fn test_detect_plateaus_robust_adaptive_threshold() {
+        // Loss with fast decay: curvature ~ 0.0025*exp(-0.05*i), drops below
+        // 10% of max by i~47, giving ~53 points of near-flat tail.
+        let losses: Vec<f64> = (0..100).map(|i| (-0.05 * i as f64).exp()).collect();
+        let config = PlateauConfig {
+            adaptive: true,
+            adaptive_fraction: 0.1,
+            min_plateau_length: 5,
+            smoothing_radius: 0,
+            ..Default::default()
+        };
+        let result = detect_plateaus_robust(&losses, &config);
+        assert!(
+            result.n_plateaus >= 1,
+            "Exponential tail should be detected as plateau: got {}",
+            result.n_plateaus
+        );
+    }
+
+    #[test]
+    fn test_detect_plateaus_robust_empty() {
+        let config = PlateauConfig::default();
+        let result = detect_plateaus_robust(&[], &config);
+        assert_eq!(result.n_plateaus, 0);
     }
 
     #[test]

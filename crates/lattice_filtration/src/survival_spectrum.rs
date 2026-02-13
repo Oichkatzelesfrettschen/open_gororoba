@@ -235,6 +235,87 @@ pub fn classify_latency_law_detailed(samples: &[(f64, f64)]) -> LatencyLawDetail
     }
 }
 
+/// Power-law gamma confidence interval from bootstrap resampling.
+#[derive(Debug, Clone, Copy)]
+pub struct GammaCI {
+    /// Point estimate of gamma
+    pub gamma: f64,
+    /// R^2 of the power-law fit
+    pub r2: f64,
+    /// Lower bound of 95% CI
+    pub ci_lower: f64,
+    /// Upper bound of 95% CI
+    pub ci_upper: f64,
+    /// Standard error of gamma
+    pub se: f64,
+    /// Number of bootstrap resamples used
+    pub n_bootstrap: usize,
+}
+
+/// Estimate power-law exponent gamma with bootstrap confidence intervals.
+///
+/// Performs `n_bootstrap` resamples of the (radius, latency) data, fits
+/// log-log regression each time, and computes the 2.5th/97.5th percentile
+/// of the gamma distribution.
+pub fn power_law_gamma_ci(samples: &[(f64, f64)], n_bootstrap: usize, seed: u64) -> GammaCI {
+    let (r2, gamma) = power_law_r2(samples);
+    if samples.len() < 4 || n_bootstrap == 0 {
+        return GammaCI {
+            gamma,
+            r2,
+            ci_lower: gamma,
+            ci_upper: gamma,
+            se: 0.0,
+            n_bootstrap: 0,
+        };
+    }
+
+    let n = samples.len();
+    let mut gammas = Vec::with_capacity(n_bootstrap);
+    let mut state = seed;
+    let mut next_rand = || -> usize {
+        state ^= state << 13;
+        state ^= state >> 7;
+        state ^= state << 17;
+        (state as usize) % n
+    };
+
+    for _ in 0..n_bootstrap {
+        let resampled: Vec<(f64, f64)> = (0..n).map(|_| samples[next_rand()]).collect();
+        let (_, g) = power_law_r2(&resampled);
+        if g.is_finite() {
+            gammas.push(g);
+        }
+    }
+
+    if gammas.is_empty() {
+        return GammaCI {
+            gamma,
+            r2,
+            ci_lower: gamma,
+            ci_upper: gamma,
+            se: 0.0,
+            n_bootstrap: 0,
+        };
+    }
+
+    gammas.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    let lower_idx = (gammas.len() as f64 * 0.025).floor() as usize;
+    let upper_idx = ((gammas.len() as f64 * 0.975).ceil() as usize).min(gammas.len() - 1);
+
+    let mean_g = gammas.iter().sum::<f64>() / gammas.len() as f64;
+    let var_g = gammas.iter().map(|g| (g - mean_g).powi(2)).sum::<f64>() / gammas.len() as f64;
+
+    GammaCI {
+        gamma,
+        r2,
+        ci_lower: gammas[lower_idx],
+        ci_upper: gammas[upper_idx],
+        se: var_g.sqrt(),
+        n_bootstrap: gammas.len(),
+    }
+}
+
 fn linear_r2_xy(x: &[f64], y: &[f64]) -> f64 {
     let n = x.len().min(y.len());
     if n < 3 {
@@ -392,5 +473,71 @@ mod tests {
         let detail = classify_latency_law_detailed(&samples);
         assert_eq!(detail.law, LatencyLaw::Undetermined);
         assert_eq!(detail.r2_inverse_square, 0.0);
+    }
+
+    #[test]
+    fn test_gamma_ci_pure_power_law() {
+        // y = r^(-1.5), exact power law should give tight CI around -1.5
+        let samples: Vec<(f64, f64)> = (1..60)
+            .map(|r| {
+                let rf = r as f64;
+                (rf, rf.powf(-1.5))
+            })
+            .collect();
+        let ci = power_law_gamma_ci(&samples, 200, 42);
+        assert!(
+            (ci.gamma + 1.5).abs() < 0.05,
+            "gamma should be near -1.5: {}",
+            ci.gamma
+        );
+        assert!(ci.r2 > 0.99, "R^2 should be high: {}", ci.r2);
+        // Exact power-law data: bootstrap CI width is at machine epsilon
+        let ci_width = ci.ci_upper - ci.ci_lower;
+        assert!(
+            ci_width < 0.01,
+            "CI width should be negligible for noiseless data: {}",
+            ci_width
+        );
+        assert!(ci.se < 0.01, "SE should be tiny for clean data: {}", ci.se);
+        assert_eq!(ci.n_bootstrap, 200);
+    }
+
+    #[test]
+    fn test_gamma_ci_short_data_fallback() {
+        // Less than 4 samples: should return degenerate CI
+        let samples = [(1.0, 1.0), (2.0, 0.5), (3.0, 0.33)];
+        let ci = power_law_gamma_ci(&samples, 100, 42);
+        assert_eq!(ci.ci_lower, ci.gamma);
+        assert_eq!(ci.ci_upper, ci.gamma);
+        assert_eq!(ci.se, 0.0);
+        assert_eq!(ci.n_bootstrap, 0);
+    }
+
+    #[test]
+    fn test_gamma_ci_inverse_square() {
+        // y = 1/r^2 should give gamma near -2 with CI containing -2
+        let samples: Vec<(f64, f64)> = (1..50)
+            .map(|r| {
+                let rf = r as f64;
+                (rf, 1.0 / (rf * rf))
+            })
+            .collect();
+        let ci = power_law_gamma_ci(&samples, 500, 12345);
+        assert!(
+            ci.ci_lower < -2.0 && ci.ci_upper > -2.0,
+            "CI [{}, {}] should contain -2.0",
+            ci.ci_lower,
+            ci.ci_upper
+        );
+    }
+
+    #[test]
+    fn test_gamma_ci_zero_bootstrap() {
+        let samples: Vec<(f64, f64)> = (1..20)
+            .map(|r| (r as f64, (r as f64).powf(-1.0)))
+            .collect();
+        let ci = power_law_gamma_ci(&samples, 0, 0);
+        assert_eq!(ci.n_bootstrap, 0);
+        assert_eq!(ci.ci_lower, ci.gamma);
     }
 }

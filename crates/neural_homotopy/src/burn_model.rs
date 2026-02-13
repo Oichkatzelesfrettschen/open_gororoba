@@ -4,6 +4,7 @@
 //! to correction coefficients (16-dim output per pair). The full m_3
 //! correction tensor is assembled by querying the model for all 256 pairs.
 
+use burn::module::AutodiffModule;
 use burn::nn::{Linear, LinearConfig, Relu};
 use burn::prelude::*;
 
@@ -165,6 +166,120 @@ pub fn assemble_neural_correction(hidden_size: usize) -> (crate::m4_tensor::Corr
     (tensor, n_params)
 }
 
+/// Result of training the Burn correction model.
+#[derive(Debug, Clone)]
+pub struct BurnTrainingResult {
+    /// Per-epoch MSE loss values
+    pub loss_trace: Vec<f64>,
+    /// Pentagon violation of the assembled correction tensor
+    pub pentagon_violation: f64,
+    /// Number of model parameters
+    pub n_params: usize,
+    /// Final MSE training loss
+    pub final_mse: f64,
+    /// The assembled correction tensor
+    pub tensor: crate::m4_tensor::CorrectionTensor,
+}
+
+/// Train the Burn correction model on associator-derived targets, then
+/// assemble a correction tensor and measure pentagon violation.
+///
+/// Training targets: for each (i,j) pair, the target 16-vector is the
+/// mean of m3[i][j][k][:] across all k. This compresses the 4D associator
+/// tensor into a learnable 2D mapping.
+///
+/// Returns the trained tensor plus training diagnostics.
+pub fn train_burn_correction(config: &CorrectionTensorModelConfig) -> BurnTrainingResult {
+    use burn::backend::Autodiff;
+    use burn::backend::NdArray;
+    use burn::optim::{AdamConfig, GradientsParams, Optimizer};
+
+    type InnerB = NdArray<f32>;
+    type AutoB = Autodiff<InnerB>;
+
+    let device = <InnerB as Backend>::Device::default();
+
+    // Build training targets from associator tensor
+    let associator = crate::m4_tensor::CorrectionTensor::from_associator();
+    let n_pairs = SEDENION_DIM * SEDENION_DIM; // 256
+
+    // For each (i,j), compute mean correction across k
+    let mut targets = vec![vec![0.0f32; OUTPUT_DIM]; n_pairs];
+    for i in 0..SEDENION_DIM {
+        for j in 0..SEDENION_DIM {
+            let pair_idx = i * SEDENION_DIM + j;
+            for k in 0..SEDENION_DIM {
+                let slice = associator.slice(i, j, k);
+                for (l, &val) in slice.iter().enumerate() {
+                    targets[pair_idx][l] += val as f32;
+                }
+            }
+            // Average across k
+            for val in &mut targets[pair_idx] {
+                *val /= SEDENION_DIM as f32;
+            }
+        }
+    }
+
+    // Build one-hot input matrix [256, 256]
+    let mut input_data = vec![0.0f32; n_pairs * INPUT_DIM];
+    for p in 0..n_pairs {
+        input_data[p * INPUT_DIM + p] = 1.0;
+    }
+
+    // Flatten targets to [256, 16]
+    let target_data: Vec<f32> = targets.into_iter().flatten().collect();
+
+    // Initialize model and optimizer
+    let model: CorrectionTensorModel<AutoB> = config.init(&device);
+    let n_params = {
+        let e = model.encoder.weight.dims();
+        let h = model.hidden.weight.dims();
+        let d = model.decoder.weight.dims();
+        (e[0] * e[1] + e[0]) + (h[0] * h[1] + h[0]) + (d[0] * d[1] + d[0])
+    };
+
+    let mut optim = AdamConfig::new().init();
+    let mut model = model;
+    let mut loss_trace = Vec::with_capacity(config.epochs);
+
+    // Convert to tensors
+    let input_td = burn::tensor::TensorData::from(input_data.as_slice());
+    let target_td = burn::tensor::TensorData::from(target_data.as_slice());
+
+    for _epoch in 0..config.epochs {
+        let input = Tensor::<AutoB, 1>::from_data(input_td.clone(), &device)
+            .reshape([n_pairs, INPUT_DIM]);
+        let target = Tensor::<AutoB, 1>::from_data(target_td.clone(), &device)
+            .reshape([n_pairs, OUTPUT_DIM]);
+
+        let output = model.forward(input);
+        let diff = output - target;
+        let mse = diff.clone().mul(diff).mean();
+
+        let mse_val: f32 = mse.clone().into_scalar();
+        loss_trace.push(mse_val as f64);
+
+        let grads = mse.backward();
+        let grads = GradientsParams::from_grads(grads, &model);
+        model = optim.step(config.learning_rate, model, grads);
+    }
+
+    // Assemble correction tensor from trained model (use inner backend)
+    let inner_model = model.valid();
+    let tensor = inner_model.assemble_correction_tensor(&device);
+    let pentagon_violation = tensor.pentagon_violation(256);
+    let final_mse = loss_trace.last().copied().unwrap_or(f64::NAN);
+
+    BurnTrainingResult {
+        loss_trace,
+        pentagon_violation,
+        n_params,
+        final_mse,
+        tensor,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -237,5 +352,53 @@ mod tests {
         let output = model.forward(input);
 
         assert_eq!(output.dims(), [8, OUTPUT_DIM]);
+    }
+
+    #[test]
+    fn test_train_burn_correction_loss_decreases() {
+        let config = CorrectionTensorModelConfig {
+            hidden_size: 64,
+            learning_rate: 0.005,
+            epochs: 20,
+            batch_size: 64,
+        };
+        let result = train_burn_correction(&config);
+
+        assert_eq!(result.loss_trace.len(), 20);
+        assert!(result.n_params > 0);
+        assert!(result.final_mse.is_finite());
+        assert!(result.pentagon_violation.is_finite());
+
+        // Loss should decrease over training
+        let first = result.loss_trace[0];
+        let last = result.loss_trace[result.loss_trace.len() - 1];
+        assert!(
+            last < first,
+            "Loss should decrease: first={:.6}, last={:.6}",
+            first,
+            last
+        );
+    }
+
+    #[test]
+    fn test_train_burn_correction_produces_tensor() {
+        let config = CorrectionTensorModelConfig {
+            hidden_size: 32,
+            learning_rate: 0.01,
+            epochs: 5,
+            batch_size: 64,
+        };
+        let result = train_burn_correction(&config);
+
+        // Tensor should have nonzero entries
+        assert!(
+            result.tensor.nnz() > 0,
+            "Trained tensor should have nonzero entries"
+        );
+        // Pentagon violation should be finite
+        assert!(
+            result.pentagon_violation.is_finite(),
+            "Pentagon violation must be finite"
+        );
     }
 }

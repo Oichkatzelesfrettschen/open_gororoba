@@ -1,0 +1,118 @@
+[metadata]
+experiment = "TX-1"
+description = "Frustration-modulated collision dynamics (T1 x T4)"
+grid_size = 16
+n_steps = 50000
+n_shells = 16
+seed = 42
+mean_frustration = 0.55166336
+frustration_range = 0.42750597
+
+[reference]
+gamma = -2.413303
+power_law_r2 = 0.990972
+latency_law = "InverseSquare"
+
+[[alpha_sweep]]
+alpha = 0.000
+gamma = -2.413303
+power_law_r2 = 0.990972
+delta_gamma = 0.000000
+latency_law = "InverseSquare"
+n_shells_populated = 8
+n_unique_keys = 3370
+key_reuse_fraction = 0.932600
+r2_inverse_square = 0.995208
+r2_power_law = 0.990972
+r2_linear = 0.326219
+r2_exponential = 0.822157
+
+[[alpha_sweep]]
+alpha = 0.500
+gamma = -2.603376
+power_law_r2 = 0.974660
+delta_gamma = 0.190072
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4897
+key_reuse_fraction = 0.902060
+r2_inverse_square = 0.989725
+r2_power_law = 0.974660
+r2_linear = 0.276873
+r2_exponential = 0.774587
+
+[[alpha_sweep]]
+alpha = 1.000
+gamma = -2.320223
+power_law_r2 = 0.989428
+delta_gamma = 0.093080
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4898
+key_reuse_fraction = 0.902040
+r2_inverse_square = 0.995131
+r2_power_law = 0.989428
+r2_linear = 0.296999
+r2_exponential = 0.825068
+
+[[alpha_sweep]]
+alpha = 2.000
+gamma = -2.288973
+power_law_r2 = 0.989900
+delta_gamma = 0.124331
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4901
+key_reuse_fraction = 0.901980
+r2_inverse_square = 0.995287
+r2_power_law = 0.989900
+r2_linear = 0.299638
+r2_exponential = 0.831019
+
+[[alpha_sweep]]
+alpha = 5.000
+gamma = -2.466493
+power_law_r2 = 0.983983
+delta_gamma = 0.053189
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4896
+key_reuse_fraction = 0.902080
+r2_inverse_square = 0.991437
+r2_power_law = 0.983983
+r2_linear = 0.284436
+r2_exponential = 0.806520
+
+[[alpha_sweep]]
+alpha = 10.000
+gamma = -2.414816
+power_law_r2 = 0.990145
+delta_gamma = 0.001513
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4899
+key_reuse_fraction = 0.902020
+r2_inverse_square = 0.994316
+r2_power_law = 0.990145
+r2_linear = 0.292487
+r2_exponential = 0.821601
+
+[[alpha_sweep]]
+alpha = 50.000
+gamma = -2.419729
+power_law_r2 = 0.983121
+delta_gamma = 0.006426
+latency_law = "InverseSquare"
+n_shells_populated = 9
+n_unique_keys = 4902
+key_reuse_fraction = 0.901960
+r2_inverse_square = 0.992324
+r2_power_law = 0.983121
+r2_linear = 0.285731
+r2_exponential = 0.802979
+
+[summary]
+n_alphas = 7
+reference_gamma = -2.413303
+max_delta_gamma = 0.190072
+significant = true

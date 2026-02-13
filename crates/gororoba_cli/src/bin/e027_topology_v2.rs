@@ -35,16 +35,16 @@ struct Args {
     #[arg(long, default_value = "16")]
     grid_size: usize,
 
-    /// Number of LBM evolution steps
-    #[arg(long, default_value = "500")]
+    /// Number of LBM evolution steps (0 = auto from grid_size)
+    #[arg(long, default_value = "0")]
     lbm_steps: usize,
 
-    /// Subregion subdivisions per axis (n_sub^3 total subregions)
-    #[arg(long, default_value = "2")]
+    /// Subregion subdivisions per axis (0 = auto from grid_size)
+    #[arg(long, default_value = "0")]
     n_sub: usize,
 
-    /// Maximum points for VR topology (controls O(n^2) distance matrix)
-    #[arg(long, default_value = "200")]
+    /// Maximum points for VR topology (0 = auto from grid_size)
+    #[arg(long, default_value = "0")]
     max_points: usize,
 
     /// Epsilon threshold for VR complex (0 = auto from distance matrix)
@@ -58,6 +58,10 @@ struct Args {
     /// Output directory
     #[arg(long, default_value = "data/e027/v2")]
     output_dir: String,
+
+    /// Use GPU solver (requires --features gpu)
+    #[arg(long, default_value = "false")]
+    gpu: bool,
 }
 
 /// Configuration shared across the lambda sweep.
@@ -69,6 +73,21 @@ struct SweepConfig {
     n_sub: usize,
     max_points: usize,
     epsilon: f64,
+    gpu: bool,
+}
+
+/// Auto-scale parameters based on grid size for robust statistics.
+///
+/// Larger grids have more cells for spatial statistics, so we can use
+/// more VR points, more subregions, and more LBM steps.
+fn auto_scale(grid_size: usize) -> (usize, usize, usize) {
+    // (max_points, n_sub, lbm_steps)
+    match grid_size {
+        0..=16 => (200, 2, 500),
+        17..=32 => (500, 3, 1000),
+        33..=64 => (1000, 4, 1500),
+        _ => (2000, 5, 2000),
+    }
 }
 
 /// Result for one lambda value in the sweep.
@@ -242,6 +261,147 @@ fn run_single_lambda(
     }
 }
 
+/// Dispatch to CPU or GPU path based on sweep configuration.
+fn dispatch_lambda(
+    frustration: &[f64],
+    lambda: f64,
+    cfg: &SweepConfig,
+) -> LambdaSweepResult {
+    #[cfg(feature = "gpu")]
+    if cfg.gpu {
+        return run_single_lambda_gpu(frustration, lambda, cfg);
+    }
+    #[cfg(not(feature = "gpu"))]
+    if cfg.gpu {
+        eprintln!("WARNING: --gpu requested but binary compiled without gpu feature. Falling back to CPU.");
+    }
+    run_single_lambda(frustration, lambda, cfg)
+}
+
+/// Run the E-027 pipeline for a single lambda using GPU solver.
+///
+/// The GPU solver lacks Guo forcing, so we initialize with a Kolmogorov
+/// velocity profile u_x = A * sin(2*pi*y/ny) to create shear gradients.
+/// The viscous dissipation under spatially-varying tau produces a velocity
+/// landscape for topology analysis.
+#[cfg(feature = "gpu")]
+fn run_single_lambda_gpu(
+    frustration: &[f64],
+    lambda: f64,
+    cfg: &SweepConfig,
+) -> LambdaSweepResult {
+    let (nx, ny, nz) = (cfg.nx, cfg.ny, cfg.nz);
+    let bridge = FrustrationViscosityBridge::new(16);
+    let n_cells = nx * ny * nz;
+
+    // Frustration -> viscosity -> tau
+    let viscosity = bridge.frustration_to_viscosity(frustration, 1.0 / 3.0, lambda);
+    let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
+    let tau_field: Vec<f64> = viscosity.iter().map(|&nu| 3.0 * nu + 0.5).collect();
+
+    // Initialize GPU solver
+    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(nx, ny, nz, 1.0)
+        .expect("Failed to initialize GPU solver");
+
+    solver
+        .set_viscosity_field(&tau_field)
+        .expect("viscosity field length should match grid");
+
+    // Initialize with Kolmogorov shear profile (GPU lacks Guo forcing)
+    let rho_init = vec![1.0; n_cells];
+    let force_amp = 5e-4;
+    let pi2 = std::f64::consts::PI * 2.0;
+    let mut u_init = vec![[0.0; 3]; n_cells];
+    for z in 0..nz {
+        for y in 0..ny {
+            for x in 0..nx {
+                let idx = z * (nx * ny) + y * nx + x;
+                let yn = y as f64 / ny as f64;
+                u_init[idx] = [force_amp * (pi2 * yn).sin(), 0.0, 0.0];
+            }
+        }
+    }
+    solver
+        .initialize_custom(&rho_init, &u_init)
+        .expect("Failed to initialize custom fields");
+
+    // Evolve and sync to host
+    solver
+        .evolve(cfg.lbm_steps)
+        .expect("GPU evolution failed");
+
+    // Extract velocity from host-side data
+    let mut lbm_velocity = Vec::with_capacity(n_cells);
+    let mut lbm_max_velocity = 0.0_f64;
+    for i in 0..n_cells {
+        let u = solver.u[i];
+        let mag = (u[0] * u[0] + u[1] * u[1] + u[2] * u[2]).sqrt();
+        lbm_max_velocity = lbm_max_velocity.max(mag);
+        lbm_velocity.push(u);
+    }
+
+    // Spatial correlation
+    let correlation = spatial_correlation(frustration, &viscosity, nx, ny, nz, cfg.n_sub);
+
+    // VR topology (identical to CPU path)
+    let mut candidates: Vec<(f64, [f64; 3])> = Vec::new();
+    for z in 0..nz {
+        for y in 0..ny {
+            for x in 0..nx {
+                let idx = x + nx * (y + ny * z);
+                let u = lbm_velocity[idx];
+                let mag = (u[0] * u[0] + u[1] * u[1] + u[2] * u[2]).sqrt();
+                if mag > 1e-10 {
+                    candidates.push((
+                        mag,
+                        [
+                            x as f64 / nx.max(2) as f64,
+                            y as f64 / ny.max(2) as f64,
+                            z as f64 / nz.max(2) as f64,
+                        ],
+                    ));
+                }
+            }
+        }
+    }
+
+    candidates.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+    candidates.truncate(cfg.max_points);
+    let n_vr_points = candidates.len();
+
+    let (betti_0, betti_1) = if n_vr_points >= 3 {
+        let mut flat = Vec::with_capacity(n_vr_points * 3);
+        for (_, p) in &candidates {
+            flat.extend_from_slice(p);
+        }
+        let dist = DistanceMatrix::from_points_3d(&flat);
+        let eps = if cfg.epsilon > 0.0 {
+            cfg.epsilon
+        } else {
+            auto_epsilon(&dist)
+        };
+        let complex = VietorisRipsComplex::build(&dist, eps, 2);
+        let pairs = compute_persistent_homology(&complex);
+        let betti = compute_betti_numbers_at_time(&pairs, eps);
+        (*betti.first().unwrap_or(&0), *betti.get(1).unwrap_or(&0))
+    } else {
+        (n_vr_points, 0)
+    };
+
+    let mean_frustration = frustration.iter().sum::<f64>() / frustration.len() as f64;
+
+    LambdaSweepResult {
+        lambda,
+        correlation,
+        mean_frustration,
+        mean_viscosity,
+        lbm_max_velocity,
+        n_vr_points,
+        betti_0,
+        betti_1,
+    }
+}
+
 /// Compute auto epsilon as median of pairwise distances.
 fn auto_epsilon(dist: &DistanceMatrix) -> f64 {
     let n = dist.size();
@@ -265,6 +425,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ny = args.grid_size;
     let nz = args.grid_size;
 
+    // Auto-scale parameters if not explicitly set
+    let (auto_max_points, auto_n_sub, auto_lbm_steps) = auto_scale(nx);
+    let max_points = if args.max_points == 0 { auto_max_points } else { args.max_points };
+    let n_sub = if args.n_sub == 0 { auto_n_sub } else { args.n_sub };
+    let lbm_steps = if args.lbm_steps == 0 { auto_lbm_steps } else { args.lbm_steps };
+
     let lambdas: Vec<f64> = args
         .lambdas
         .split(',')
@@ -274,9 +440,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("E-027 v2: Corrected Topology-Frustration Spatial Correlation");
     println!("=============================================================");
     println!(
-        "Grid: {}^3, LBM steps: {}, Subregions: {}^3",
-        nx, args.lbm_steps, args.n_sub
+        "Grid: {}^3, LBM steps: {}, Subregions: {}^3, GPU: {}",
+        nx, lbm_steps, n_sub, args.gpu,
     );
+    println!("Max VR points: {}", max_points);
     println!("Lambda sweep: {:?}", lambdas);
     println!();
 
@@ -284,10 +451,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         nx,
         ny,
         nz,
-        lbm_steps: args.lbm_steps,
-        n_sub: args.n_sub,
-        max_points: args.max_points,
+        lbm_steps,
+        n_sub,
+        max_points,
         epsilon: args.epsilon,
+        gpu: args.gpu,
     };
 
     // Generate field and frustration (shared across lambda sweep)
@@ -304,7 +472,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for (i, &lambda) in lambdas.iter().enumerate() {
         println!("  [{}/{}] lambda={:.1}...", i + 1, lambdas.len(), lambda);
-        let result = run_single_lambda(&frustration, lambda, &sweep_cfg);
+        let result = dispatch_lambda(&frustration, lambda, &sweep_cfg);
         println!(
             "    Spearman r={:.4}, Pearson r={:.4}, regions={}, max_vel={:.6}",
             result.correlation.spearman_r,
@@ -324,7 +492,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     std::fs::create_dir_all(&args.output_dir)?;
 
     let toml_path = format!("{}/e027_v2_{}cubed.toml", args.output_dir, nx);
-    write_toml(&toml_path, &args, &results)?;
+    write_toml(&toml_path, &args, &sweep_cfg, &results)?;
     println!("  TOML: {}", toml_path);
 
     let csv_path = format!("{}/e027_v2_{}cubed.csv", args.output_dir, nx);
@@ -358,6 +526,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn write_toml(
     path: &str,
     args: &Args,
+    cfg: &SweepConfig,
     results: &[LambdaSweepResult],
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut out = String::new();
@@ -365,10 +534,11 @@ fn write_toml(
     let _ = writeln!(out, "experiment = \"E-027\"");
     let _ = writeln!(out, "version = 2");
     let _ = writeln!(out, "grid_size = {}", args.grid_size);
-    let _ = writeln!(out, "lbm_steps = {}", args.lbm_steps);
-    let _ = writeln!(out, "n_sub = {}", args.n_sub);
-    let _ = writeln!(out, "max_points = {}", args.max_points);
+    let _ = writeln!(out, "lbm_steps = {}", cfg.lbm_steps);
+    let _ = writeln!(out, "n_sub = {}", cfg.n_sub);
+    let _ = writeln!(out, "max_points = {}", cfg.max_points);
     let _ = writeln!(out, "epsilon = {:.6}", args.epsilon);
+    let _ = writeln!(out, "gpu = {}", cfg.gpu);
     let _ = writeln!(out);
 
     for r in results {

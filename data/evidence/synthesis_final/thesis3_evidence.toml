@@ -1,0 +1,15 @@
+[evidence]
+thesis_id = 3
+label = "T3 plateau+pentagon (64 epochs, 500 opt steps)"
+metric_value = 0.00000000
+threshold = 1.00000000
+passes_gate = true
+
+[messages]
+m0 = "Plateaus detected: 0"
+m1 = "Hubble alignment: 0.5793"
+m2 = "Pentagon residual: 0.375000"
+m3 = "Plateau starts: []"
+m4 = "Associator violation: 2.5000 (sparsity 97.2%)"
+m5 = "Optimized violation: 2.4942 (sparsity 96.8%)"
+m6 = "Reduction ratio: 0.9977 (accepted 37 steps)"
