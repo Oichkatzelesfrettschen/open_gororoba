@@ -40,3 +40,44 @@ pub trait CorrectionLayer {
 pub trait VerificationLayer {
     fn verify(&self, state: &PipelineState) -> VerificationReport;
 }
+
+// ---------------------------------------------------------------------------
+// Thesis-specific pipeline orchestration
+// ---------------------------------------------------------------------------
+
+/// Evidence produced by a thesis pipeline run.
+#[derive(Debug, Clone)]
+pub struct ThesisEvidence {
+    /// Which thesis (1-4)
+    pub thesis_id: usize,
+    /// Short label for the evidence
+    pub label: String,
+    /// Key numeric result (e.g., correlation, R^2, slope ratio)
+    pub metric_value: f64,
+    /// Threshold for pass/fail
+    pub threshold: f64,
+    /// Whether the evidence passes the falsification gate
+    pub passes_gate: bool,
+    /// Human-readable messages
+    pub messages: Vec<String>,
+}
+
+/// Trait for thesis-specific pipeline execution.
+///
+/// Each thesis implements this to define its falsification pipeline:
+/// 1. Setup: initialize simulation parameters
+/// 2. Execute: run the simulation/analysis
+/// 3. Gate: check falsification criterion
+/// 4. Report: produce structured evidence
+pub trait ThesisPipeline {
+    /// Short name of the thesis (e.g., "T1: Viscous Vacuum")
+    fn name(&self) -> &str;
+
+    /// Execute the full pipeline and produce evidence.
+    fn execute(&self) -> ThesisEvidence;
+
+    /// Check if the evidence passes the falsification gate.
+    fn passes_gate(&self, evidence: &ThesisEvidence) -> bool {
+        evidence.passes_gate
+    }
+}
