@@ -1,0 +1,379 @@
+[metadata]
+experiment = "thesis2_kolmogorov_2d"
+grid_size = 64
+steps = 5000
+force_amp = 1.00e-4
+force_mode = 1
+power_index = 1.50
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 0.00
+enstrophy = 5.66127220e-4
+max_velocity = 0.34329698
+mean_strain_rate = 0.00000000
+mean_tau_eff = 0.550000
+mass_drift = 3.82e-13
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 1.00
+enstrophy = 5.13569390e-4
+max_velocity = 0.32879462
+mean_strain_rate = 0.02049347
+mean_tau_eff = 0.556825
+mass_drift = 3.76e-13
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 5.00
+enstrophy = 3.64297600e-4
+max_velocity = 0.28015773
+mean_strain_rate = 0.01745295
+mean_tau_eff = 0.581646
+mass_drift = 3.60e-13
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 20.00
+enstrophy = 1.49909237e-4
+max_velocity = 0.18168552
+mean_strain_rate = 0.01131113
+mean_tau_eff = 0.652355
+mass_drift = 3.11e-13
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 50.00
+enstrophy = 5.76623951e-5
+max_velocity = 0.11316171
+mean_strain_rate = 0.00704302
+mean_tau_eff = 0.752257
+mass_drift = 2.46e-13
+
+[[result]]
+tau = 0.5500
+nu_base = 0.016667
+coupling = 100.00
+enstrophy = 2.52829142e-5
+max_velocity = 0.07506701
+mean_strain_rate = 0.00467171
+mean_tau_eff = 0.879687
+mass_drift = 1.87e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 0.00
+enstrophy = 2.96566313e-4
+max_velocity = 0.24846995
+mean_strain_rate = 0.00000000
+mean_tau_eff = 0.600000
+mass_drift = 3.53e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 1.00
+enstrophy = 2.56050102e-4
+max_velocity = 0.23205842
+mean_strain_rate = 0.01446509
+mean_tau_eff = 0.611466
+mass_drift = 3.27e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 5.00
+enstrophy = 1.58708206e-4
+max_velocity = 0.18463822
+mean_strain_rate = 0.01150411
+mean_tau_eff = 0.651353
+mass_drift = 3.22e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 20.00
+enstrophy = 5.63610343e-5
+max_velocity = 0.11118386
+mean_strain_rate = 0.00692337
+mean_tau_eff = 0.760032
+mass_drift = 2.43e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 50.00
+enstrophy = 2.15365746e-5
+max_velocity = 0.06903944
+mean_strain_rate = 0.00429799
+mean_tau_eff = 0.915793
+mass_drift = 1.71e-13
+
+[[result]]
+tau = 0.6000
+nu_base = 0.033333
+coupling = 100.00
+enstrophy = 9.62979572e-6
+max_velocity = 0.04624573
+mean_strain_rate = 0.00287919
+mean_tau_eff = 1.117303
+mass_drift = 9.55e-14
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 0.00
+enstrophy = 1.06832751e-4
+max_velocity = 0.14913005
+mean_strain_rate = 0.00000000
+mean_tau_eff = 0.700000
+mass_drift = 2.61e-13
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 1.00
+enstrophy = 8.99578880e-5
+max_velocity = 0.13741529
+mean_strain_rate = 0.00856639
+mean_tau_eff = 0.717640
+mass_drift = 2.57e-13
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 5.00
+enstrophy = 5.36386565e-5
+max_velocity = 0.10708232
+mean_strain_rate = 0.00667304
+mean_tau_eff = 0.778143
+mass_drift = 2.35e-13
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 20.00
+enstrophy = 1.96583034e-5
+max_velocity = 0.06549266
+mean_strain_rate = 0.00407931
+mean_tau_eff = 0.945423
+mass_drift = 1.81e-13
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 50.00
+enstrophy = 7.90141654e-6
+max_velocity = 0.04171121
+mean_strain_rate = 0.00259788
+mean_tau_eff = 1.190548
+mass_drift = 8.63e-14
+
+[[result]]
+tau = 0.7000
+nu_base = 0.066667
+coupling = 100.00
+enstrophy = 3.64041726e-6
+max_velocity = 0.02834069
+mean_strain_rate = 0.00176593
+mean_tau_eff = 1.509260
+mass_drift = 6.73e-14
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 0.00
+enstrophy = 5.07269290e-5
+max_velocity = 0.10276193
+mean_strain_rate = 0.00000000
+mean_tau_eff = 0.800000
+mass_drift = 2.14e-13
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 1.00
+enstrophy = 4.31544307e-5
+max_velocity = 0.09511535
+mean_strain_rate = 0.00592969
+mean_tau_eff = 0.822008
+mass_drift = 1.72e-13
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 5.00
+enstrophy = 2.67165991e-5
+max_velocity = 0.07545614
+mean_strain_rate = 0.00470267
+mean_tau_eff = 0.898335
+mass_drift = 1.68e-13
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 20.00
+enstrophy = 1.04632763e-5
+max_velocity = 0.04769239
+mean_strain_rate = 0.00297126
+mean_tau_eff = 1.113947
+mass_drift = 1.16e-13
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 50.00
+enstrophy = 4.36661467e-6
+max_velocity = 0.03093939
+mean_strain_rate = 0.00192787
+mean_tau_eff = 1.433319
+mass_drift = 7.08e-14
+
+[[result]]
+tau = 0.8000
+nu_base = 0.100000
+coupling = 100.00
+enstrophy = 2.05602284e-6
+max_velocity = 0.02122744
+mean_strain_rate = 0.00132385
+mean_tau_eff = 1.849613
+mass_drift = 1.99e-14
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 0.00
+enstrophy = 1.85736442e-5
+max_velocity = 0.06218155
+mean_strain_rate = 0.00000000
+mean_tau_eff = 1.000000
+mass_drift = 1.36e-13
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 1.00
+enstrophy = 1.62630164e-5
+max_velocity = 0.05834614
+mean_strain_rate = 0.00363757
+mean_tau_eff = 1.028720
+mass_drift = 1.30e-13
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 5.00
+enstrophy = 1.08373040e-5
+max_velocity = 0.04796243
+mean_strain_rate = 0.00298960
+mean_tau_eff = 1.130565
+mass_drift = 9.18e-14
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 20.00
+enstrophy = 4.67221059e-6
+max_velocity = 0.03177746
+mean_strain_rate = 0.00198057
+mean_tau_eff = 1.426687
+mass_drift = 6.68e-14
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 50.00
+enstrophy = 2.05736610e-6
+max_velocity = 0.02114776
+mean_strain_rate = 0.00131896
+mean_tau_eff = 1.871542
+mass_drift = 1.84e-14
+
+[[result]]
+tau = 1.0000
+nu_base = 0.166667
+coupling = 100.00
+enstrophy = 1.00216981e-6
+max_velocity = 0.01471642
+mean_strain_rate = 0.00091928
+mean_tau_eff = 2.453107
+mass_drift = 1.89e-14
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 0.00
+enstrophy = 4.68385377e-6
+max_velocity = 0.03122588
+mean_strain_rate = 0.00000000
+mean_tau_eff = 1.500000
+mass_drift = 6.62e-14
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 1.00
+enstrophy = 4.25725178e-6
+max_velocity = 0.02982502
+mean_strain_rate = 0.00185955
+mean_tau_eff = 1.541053
+mass_drift = 6.28e-14
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 5.00
+enstrophy = 3.12154966e-6
+max_velocity = 0.02566654
+mean_strain_rate = 0.00160031
+mean_tau_eff = 1.690813
+mass_drift = 5.07e-14
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 20.00
+enstrophy = 1.54127985e-6
+max_velocity = 0.01814418
+mean_strain_rate = 0.00113201
+mean_tau_eff = 2.143487
+mass_drift = 6.33e-15
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 50.00
+enstrophy = 8.10004795e-7
+max_velocity = 0.01303642
+mean_strain_rate = 0.00081476
+mean_tau_eff = 2.767998
+mass_drift = 4.23e-14
+
+[[result]]
+tau = 1.5000
+nu_base = 0.333333
+coupling = 100.00
+enstrophy = 7.93716397e-7
+max_velocity = 0.01268298
+mean_strain_rate = 0.00079229
+mean_tau_eff = 2.883739
+mass_drift = 1.81e-14
+
+[enstrophy_ratios]
+note = "ratio = enstrophy(coupling) / enstrophy(coupling=0)"
+tau_0_55 = [1.000000, 0.907163, 0.643491, 0.264798, 0.101854, 0.044659]
+tau_0_60 = [1.000000, 0.863382, 0.535153, 0.190045, 0.072620, 0.032471]
+tau_0_70 = [1.000000, 0.842044, 0.502081, 0.184010, 0.073961, 0.034076]
+tau_0_80 = [1.000000, 0.850720, 0.526675, 0.206267, 0.086081, 0.040531]
+tau_1_00 = [1.000000, 0.875596, 0.583478, 0.251551, 0.110768, 0.053957]
+tau_1_50 = [1.000000, 0.908921, 0.666449, 0.329062, 0.172936, 0.169458]
+max_deviation = 0.967529
+max_deviation_params = "tau=0.60, coupling=100.0"
+validation_pass = true

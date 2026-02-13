@@ -1,0 +1,431 @@
+[metadata]
+experiment = "thesis_lab"
+lambda = 2.000
+nu_base = 0.100000
+force = 1.00e-5
+lbm_steps = 500
+n_sub = 2
+max_points = 80
+grid_sizes = [16, 32, 64]
+kolmogorov = true
+power_index = 1.50
+coupling = 10.00
+
+[[grid_resolution]]
+grid_size = 16
+lambda = 2.000
+nu_base = 0.100000
+vacuum_attractor = 0.375000
+n_models = 5
+
+[[grid_resolution.model]]
+label = "exponential"
+description = "Exponential: nu=0.1000*exp(-2.00*(F-3/8)^2)"
+viscosity_mean = 0.09349569
+viscosity_std = 0.00353885
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00024275
+lbm_max_cfl = 0.000420
+mass_conserved = true
+spearman_r = -0.952381
+pearson_r = -0.999163
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 3.63548895
+persistence_entropy_h1 = 3.75981255
+total_persistence_h0 = 4.18750000
+total_persistence_h1 = 0.99542689
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "linear"
+description = "Linear: nu=0.1000*(1+1.00*(F-3/8))"
+viscosity_mean = 0.11766634
+viscosity_std = 0.00527730
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00022289
+lbm_max_cfl = 0.000386
+mass_conserved = true
+spearman_r = 1.000000
+pearson_r = 1.000000
+n_regions = 8
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.86566592
+persistence_entropy_h1 = 3.87093284
+total_persistence_h0 = 3.31250000
+total_persistence_h1 = 1.23856674
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "power_law"
+description = "PowerLaw: nu=0.1000*|F-3/8|^1.50"
+viscosity_mean = 0.00767865
+viscosity_std = 0.00332193
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00016360
+lbm_max_cfl = 0.000283
+mass_conserved = true
+spearman_r = 0.952381
+pearson_r = 0.999635
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 3.64119713
+persistence_entropy_h1 = 3.84048927
+total_persistence_h0 = 4.06250000
+total_persistence_h1 = 1.15129985
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "sigmoid"
+description = "Sigmoid: nu=[0.0500,0.1500], k=50.0, F_crit=0.3800"
+viscosity_mean = 0.14955624
+viscosity_std = 0.00291582
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00020155
+lbm_max_cfl = 0.000349
+mass_conserved = true
+spearman_r = 0.642857
+pearson_r = 0.491923
+n_regions = 8
+betti_0 = 2
+betti_1 = 0
+persistence_entropy_h0 = 3.86566592
+persistence_entropy_h1 = 3.85695911
+total_persistence_h0 = 3.31250000
+total_persistence_h1 = 1.20625220
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "constant"
+description = "Constant: nu=0.1000"
+viscosity_mean = 0.10000000
+viscosity_std = 0.00000000
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00023705
+lbm_max_cfl = 0.000411
+mass_conserved = true
+spearman_r = 0.000000
+pearson_r = 0.000000
+n_regions = 8
+betti_0 = 3
+betti_1 = 0
+persistence_entropy_h0 = 3.86566592
+persistence_entropy_h1 = 3.79906220
+total_persistence_h0 = 3.31250000
+total_persistence_h1 = 1.14678140
+n_vr_points = 80
+
+[[grid_resolution.wasserstein_h0]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.33946189, 0.23385359, 0.33946189, 0.33946189]
+linear = [0.33946189, 0.00000000, 0.36039258, 0.00000000, 0.00000000]
+power_law = [0.23385359, 0.36039258, 0.00000000, 0.36039258, 0.36039258]
+sigmoid = [0.33946189, 0.00000000, 0.36039258, 0.00000000, 0.00000000]
+constant = [0.33946189, 0.00000000, 0.36039258, 0.00000000, 0.00000000]
+
+[[grid_resolution.wasserstein_h1]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.04511491, 0.03574762, 0.04217151, 0.03779594]
+linear = [0.04511491, 0.00000000, 0.02943309, 0.01777971, 0.02522740]
+power_law = [0.03574762, 0.02943309, 0.00000000, 0.02468578, 0.01610852]
+sigmoid = [0.04217151, 0.01777971, 0.02468578, 0.00000000, 0.01870570]
+constant = [0.03779594, 0.02522740, 0.01610852, 0.01870570, 0.00000000]
+
+[[grid_resolution.bottleneck_vs_null]]
+exponential_h0 = 0.31250000
+exponential_h1 = 0.43750000
+linear_h0 = 0.00000000
+linear_h1 = 0.02588835
+power_law_h0 = 0.43750000
+power_law_h1 = 0.41550276
+sigmoid_h0 = 0.00000000
+sigmoid_h1 = 0.16930575
+
+[[grid_resolution]]
+grid_size = 32
+lambda = 2.000
+nu_base = 0.100000
+vacuum_attractor = 0.375000
+n_models = 5
+
+[[grid_resolution.model]]
+label = "exponential"
+description = "Exponential: nu=0.1000*exp(-2.00*(F-3/8)^2)"
+viscosity_mean = 0.09351236
+viscosity_std = 0.00342125
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00082785
+lbm_max_cfl = 0.001434
+mass_conserved = true
+spearman_r = -0.952381
+pearson_r = -0.999968
+n_regions = 8
+betti_0 = 1
+betti_1 = 2
+persistence_entropy_h0 = 3.19928777
+persistence_entropy_h1 = 3.46362235
+total_persistence_h0 = 3.31250000
+total_persistence_h1 = 0.34979678
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "linear"
+description = "Linear: nu=0.1000*(1+1.00*(F-3/8))"
+viscosity_mean = 0.11769426
+viscosity_std = 0.00507234
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00081334
+lbm_max_cfl = 0.001409
+mass_conserved = true
+spearman_r = 1.000000
+pearson_r = 1.000000
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 3.20925804
+persistence_entropy_h1 = 3.62545537
+total_persistence_h0 = 2.84819174
+total_persistence_h1 = 0.43537972
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "power_law"
+description = "PowerLaw: nu=0.1000*|F-3/8|^1.50"
+viscosity_mean = 0.00767592
+viscosity_std = 0.00320593
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00020476
+lbm_max_cfl = 0.000355
+mass_conserved = true
+spearman_r = 0.952381
+pearson_r = 0.999988
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 3.28507814
+persistence_entropy_h1 = 3.82342836
+total_persistence_h0 = 2.68750000
+total_persistence_h1 = 0.57604575
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "sigmoid"
+description = "Sigmoid: nu=[0.0500,0.1500], k=50.0, F_crit=0.3800"
+viscosity_mean = 0.14963701
+viscosity_std = 0.00249601
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00077069
+lbm_max_cfl = 0.001335
+mass_conserved = true
+spearman_r = 0.690476
+pearson_r = 0.863885
+n_regions = 8
+betti_0 = 3
+betti_1 = 0
+persistence_entropy_h0 = 3.55526974
+persistence_entropy_h1 = 3.79351003
+total_persistence_h0 = 2.03125000
+total_persistence_h1 = 0.55257251
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "constant"
+description = "Constant: nu=0.1000"
+viscosity_mean = 0.10000000
+viscosity_std = 0.00000000
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00082647
+lbm_max_cfl = 0.001431
+mass_conserved = true
+spearman_r = 0.000000
+pearson_r = -0.000000
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 3.18203040
+persistence_entropy_h1 = 3.51821738
+total_persistence_h0 = 2.90625000
+total_persistence_h1 = 0.37258075
+n_vr_points = 80
+
+[[grid_resolution.wasserstein_h0]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.18015816, 0.22207298, 0.37532538, 0.18087245]
+linear = [0.18015816, 0.00000000, 0.11519661, 0.32097873, 0.04117336]
+power_law = [0.22207298, 0.11519661, 0.00000000, 0.26654253, 0.15625000]
+sigmoid = [0.37532538, 0.32097873, 0.26654253, 0.00000000, 0.34089725]
+constant = [0.18087245, 0.04117336, 0.15625000, 0.34089725, 0.00000000]
+
+[[grid_resolution.wasserstein_h1]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.02002495, 0.03004550, 0.02865182, 0.01373804]
+linear = [0.02002495, 0.00000000, 0.02261853, 0.02073145, 0.01476831]
+power_law = [0.03004550, 0.02261853, 0.00000000, 0.00938389, 0.02679156]
+sigmoid = [0.02865182, 0.02073145, 0.00938389, 0.00000000, 0.02523100]
+constant = [0.01373804, 0.01476831, 0.02679156, 0.02523100, 0.00000000]
+
+[[grid_resolution.bottleneck_vs_null]]
+exponential_h0 = 0.21875000
+exponential_h1 = 0.43750000
+linear_h0 = 0.03125000
+linear_h1 = 0.43750000
+power_law_h0 = 0.12500000
+power_law_h1 = 0.46875000
+sigmoid_h0 = 0.43750000
+sigmoid_h1 = 0.46875000
+
+[[grid_resolution]]
+grid_size = 64
+lambda = 2.000
+nu_base = 0.100000
+vacuum_attractor = 0.375000
+n_models = 5
+
+[[grid_resolution.model]]
+label = "exponential"
+description = "Exponential: nu=0.1000*exp(-2.00*(F-3/8)^2)"
+viscosity_mean = 0.09354356
+viscosity_std = 0.00338330
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00144562
+lbm_max_cfl = 0.002504
+mass_conserved = true
+spearman_r = -0.952381
+pearson_r = -0.999994
+n_regions = 8
+betti_0 = 3
+betti_1 = 0
+persistence_entropy_h0 = 3.33513851
+persistence_entropy_h1 = 3.80666249
+total_persistence_h0 = 1.09375000
+total_persistence_h1 = 0.29124391
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "linear"
+description = "Linear: nu=0.1000*(1+1.00*(F-3/8))"
+viscosity_mean = 0.11765747
+viscosity_std = 0.00502823
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00157785
+lbm_max_cfl = 0.002733
+mass_conserved = true
+spearman_r = 1.000000
+pearson_r = 1.000000
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 2.69311919
+persistence_entropy_h1 = 3.74974637
+total_persistence_h0 = 2.12500000
+total_persistence_h1 = 0.26763761
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "power_law"
+description = "PowerLaw: nu=0.1000*|F-3/8|^1.50"
+viscosity_mean = 0.00764924
+viscosity_std = 0.00317248
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00021756
+lbm_max_cfl = 0.000377
+mass_conserved = true
+spearman_r = 0.952381
+pearson_r = 0.999998
+n_regions = 8
+betti_0 = 1
+betti_1 = 1
+persistence_entropy_h0 = 2.70983330
+persistence_entropy_h1 = 3.76872732
+total_persistence_h0 = 2.09375000
+total_persistence_h1 = 0.27382547
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "sigmoid"
+description = "Sigmoid: nu=[0.0500,0.1500], k=50.0, F_crit=0.3800"
+viscosity_mean = 0.14962684
+viscosity_std = 0.00270980
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00168380
+lbm_max_cfl = 0.002916
+mass_conserved = true
+spearman_r = 0.952381
+pearson_r = 0.972516
+n_regions = 8
+betti_0 = 1
+betti_1 = 2
+persistence_entropy_h0 = 2.77560776
+persistence_entropy_h1 = 3.55529102
+total_persistence_h0 = 2.54687500
+total_persistence_h1 = 0.21153172
+n_vr_points = 80
+
+[[grid_resolution.model]]
+label = "constant"
+description = "Constant: nu=0.1000"
+viscosity_mean = 0.10000000
+viscosity_std = 0.00000000
+lbm_converged = true
+lbm_steps_taken = 500
+lbm_max_velocity = 0.00148639
+lbm_max_cfl = 0.002575
+mass_conserved = true
+spearman_r = 0.000000
+pearson_r = 0.000000
+n_regions = 8
+betti_0 = 2
+betti_1 = 0
+persistence_entropy_h0 = 2.63544648
+persistence_entropy_h1 = 3.76829793
+total_persistence_h0 = 2.64062500
+total_persistence_h1 = 0.27378817
+n_vr_points = 80
+
+[[grid_resolution.wasserstein_h0]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.35484578, 0.34507911, 0.38709341, 0.44249382]
+linear = [0.35484578, 0.00000000, 0.02209709, 0.22097087, 0.22870752]
+power_law = [0.34507911, 0.02209709, 0.00000000, 0.21650635, 0.23606164]
+sigmoid = [0.38709341, 0.22097087, 0.21650635, 0.00000000, 0.24130383]
+constant = [0.44249382, 0.22870752, 0.23606164, 0.24130383, 0.00000000]
+
+[[grid_resolution.wasserstein_h1]]
+models = ["exponential", "linear", "power_law", "sigmoid", "constant"]
+exponential = [0.00000000, 0.00648329, 0.00561615, 0.01167937, 0.00561570]
+linear = [0.00648329, 0.00000000, 0.00325015, 0.00972040, 0.00324938]
+power_law = [0.00561615, 0.00325015, 0.00000000, 0.01024248, 0.00019180]
+sigmoid = [0.01167937, 0.00972040, 0.01024248, 0.00000000, 0.01024069]
+constant = [0.00561570, 0.00324938, 0.00019180, 0.01024069, 0.00000000]
+
+[[grid_resolution.bottleneck_vs_null]]
+exponential_h0 = 0.48437500
+exponential_h1 = 0.48437500
+linear_h0 = 0.42187500
+linear_h1 = 0.42187500
+power_law_h0 = 0.42187500
+power_law_h1 = 0.06250000
+sigmoid_h0 = 0.21875000
+sigmoid_h1 = 0.48437500
+
+[grid_convergence]
+grid_sizes = [16, 32, 64]
+note = "Compare Betti numbers and Wasserstein distances across resolutions"
+

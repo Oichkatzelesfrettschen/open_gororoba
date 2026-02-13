@@ -1,0 +1,42 @@
+[artifact]
+id = "STPT-007"
+updated = "2026-02-12"
+nu_base = 0.050000
+threshold_radians = 1.200000
+
+[[series]]
+alpha = 0.100
+pre_slope = 0.005000
+post_slope = 0.005000
+non_newtonian = false
+norms = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+nu_eff = [0.050000, 0.051000, 0.052000, 0.053000, 0.054000, 0.055000, 0.056000]
+
+[[series]]
+alpha = 0.300
+pre_slope = 0.015000
+post_slope = 0.015000
+non_newtonian = false
+norms = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+nu_eff = [0.050000, 0.053000, 0.056000, 0.059000, 0.062000, 0.065000, 0.068000]
+
+[[series]]
+alpha = 0.600
+pre_slope = 0.030000
+post_slope = 0.030000
+non_newtonian = false
+norms = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+nu_eff = [0.050000, 0.056000, 0.062000, 0.068000, 0.074000, 0.080000, 0.086000]
+
+[[series]]
+alpha = 1.000
+pre_slope = 0.050000
+post_slope = 0.050000
+non_newtonian = false
+norms = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+nu_eff = [0.050000, 0.060000, 0.070000, 0.080000, 0.090000, 0.100000, 0.110000]
+
+[summary]
+series_count = 4
+threshold_crossing_count = 0
+verdict = "refuted"

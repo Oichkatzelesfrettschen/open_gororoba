@@ -1,0 +1,124 @@
+[metadata]
+experiment = "TX-3"
+description = "Topological persistence of viscosity landscape"
+grid_size = 32
+n_cells = 32768
+max_points = 80
+n_sub = 3
+lambda = 2.000
+nu_base = 0.100000
+vacuum_attractor = 0.375000
+mean_frustration = 0.551943
+
+[frustration_topology]
+n_points = 80
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.83965212
+persistence_entropy_h1 = 2.35928613
+total_persistence_h0 = 6.96482328
+total_persistence_h1 = 0.45106586
+
+[[viscosity_model]]
+label = "exponential"
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.87005538
+persistence_entropy_h1 = 3.19365493
+total_persistence_h0 = 9.61298110
+total_persistence_h1 = 1.55405927
+wasserstein_h0_vs_frustration = 0.38551045
+wasserstein_h1_vs_frustration = 0.15581265
+bottleneck_h0_vs_frustration = 0.08121662
+bottleneck_h1_vs_frustration = 0.26878139
+spearman_r = -0.997558
+pearson_r = -0.997849
+n_regions = 27
+point_cloud_overlap = 0.000000
+cv_regional_means = 0.01074561
+nonlinearity_index = -0.000291
+dynamic_range_ratio = 0.070385
+
+[[viscosity_model]]
+label = "linear"
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.83965212
+persistence_entropy_h1 = 2.35928613
+total_persistence_h0 = 6.96482328
+total_persistence_h1 = 0.45106586
+wasserstein_h0_vs_frustration = 0.00000000
+wasserstein_h1_vs_frustration = 0.00000000
+bottleneck_h0_vs_frustration = 0.00000000
+bottleneck_h1_vs_frustration = 0.00000000
+spearman_r = 1.000000
+pearson_r = 1.000000
+n_regions = 27
+point_cloud_overlap = 1.000000
+cv_regional_means = 0.01213607
+nonlinearity_index = 0.000000
+dynamic_range_ratio = 0.100000
+
+[[viscosity_model]]
+label = "power_law"
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.83965212
+persistence_entropy_h1 = 2.35928613
+total_persistence_h0 = 6.96482328
+total_persistence_h1 = 0.45106586
+wasserstein_h0_vs_frustration = 0.00000000
+wasserstein_h1_vs_frustration = 0.00000000
+bottleneck_h0_vs_frustration = 0.00000000
+bottleneck_h1_vs_frustration = 0.00000000
+spearman_r = 0.998779
+pearson_r = 0.999186
+n_regions = 27
+point_cloud_overlap = 1.000000
+cv_regional_means = 0.12147682
+nonlinearity_index = -0.000407
+dynamic_range_ratio = 0.065127
+
+[[viscosity_model]]
+label = "sigmoid"
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.83965212
+persistence_entropy_h1 = 2.35928613
+total_persistence_h0 = 6.96482328
+total_persistence_h1 = 0.45106586
+wasserstein_h0_vs_frustration = 0.00000000
+wasserstein_h1_vs_frustration = 0.00000000
+bottleneck_h0_vs_frustration = 0.00000000
+bottleneck_h1_vs_frustration = 0.00000000
+spearman_r = 0.664225
+pearson_r = 0.675092
+n_regions = 27
+point_cloud_overlap = 1.000000
+cv_regional_means = 0.00098588
+nonlinearity_index = -0.010867
+dynamic_range_ratio = 0.010331
+
+[[viscosity_model]]
+label = "constant"
+betti_0 = 1
+betti_1 = 0
+persistence_entropy_h0 = 3.91202301
+persistence_entropy_h1 = 3.82864140
+total_persistence_h0 = 1.56250000
+total_persistence_h1 = 0.59543200
+wasserstein_h0_vs_frustration = 0.53991102
+wasserstein_h1_vs_frustration = 0.09036120
+bottleneck_h0_vs_frustration = 0.25173079
+bottleneck_h1_vs_frustration = 0.42663455
+spearman_r = -0.125895
+pearson_r = -0.276805
+n_regions = 27
+point_cloud_overlap = 0.006289
+cv_regional_means = 0.00000000
+nonlinearity_index = -0.150910
+dynamic_range_ratio = 0.000000
+
+[summary]
+frustration_cv = 0.02588594
+closest_model_h0 = "linear"
