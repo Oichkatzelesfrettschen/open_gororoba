@@ -11,6 +11,7 @@
 //! - `verify` -- Verification checks that return pass/fail with failure messages
 
 pub mod audit;
+pub mod consolidate;
 pub mod parser;
 pub mod schema;
 pub mod verify;
