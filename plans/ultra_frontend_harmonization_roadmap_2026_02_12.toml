@@ -1,0 +1,285 @@
+[roadmap]
+id = "ULTRA-FRONTEND-HARMONIZATION-2026-02-12"
+updated = "2026-02-12"
+objective = "Audit, reconcile, and expand front-end and governance lanes with warning-clean reproducible execution."
+status = "in_progress"
+
+[[task]]
+id = "UFH-001"
+title = "Establish repo baseline and branch state"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-002"
+title = "Map top-level structure, app lanes, and registry surfaces"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-003"
+title = "Extract build and verification entry points from Makefile"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-004"
+title = "Parallel architecture audit"
+owner = "agent_architecture"
+estimate_hours = 1.0
+status = "done"
+
+[[task]]
+id = "UFH-005"
+title = "Parallel docs and roadmap coherence audit"
+owner = "agent_docs"
+estimate_hours = 1.0
+status = "done"
+
+[[task]]
+id = "UFH-006"
+title = "Parallel quality-gates and reproducibility audit"
+owner = "agent_quality"
+estimate_hours = 1.0
+status = "done"
+
+[[task]]
+id = "UFH-007"
+title = "Consolidate defects and opportunities into hypothesis matrix"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-008"
+title = "Validate platform strategy hypotheses against primary sources"
+owner = "codex"
+estimate_hours = 1.25
+status = "done"
+
+[[task]]
+id = "UFH-009"
+title = "Build first full-featured app lane in apps/gororoba_studio"
+owner = "codex"
+estimate_hours = 3.0
+status = "done"
+
+[[task]]
+id = "UFH-010"
+title = "Wire Rust binary and API for thesis run control"
+owner = "codex"
+estimate_hours = 2.0
+status = "done"
+
+[[task]]
+id = "UFH-011"
+title = "Add app-specific make targets and strict checks"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-012"
+title = "Harden mirror freshness enforcement (no silent skip)"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-013"
+title = "Harden MCP smoke verifier defaults for multi-host use"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-014"
+title = "Add REQ-STUDIO requirement module and command refs"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-015"
+title = "Synchronize requirements narrative and generated mirrors"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-016"
+title = "Reconcile README quickstart with requirements policy"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-017"
+title = "Detect and resolve binary registry drift vs Cargo bins"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-018"
+title = "Patch registry/binaries.toml missing executable entries"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-019"
+title = "Refresh todo/roadmap/next-actions narrative drifted counts"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-020"
+title = "Regenerate markdown mirrors from TOML-first sources"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-021"
+title = "Resolve markdown governance conflict for new front-end doc lane"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-022"
+title = "Recover entrypoint docs from accidental legacy-stub regression"
+owner = "codex"
+estimate_hours = 0.75
+status = "done"
+
+[[task]]
+id = "UFH-023"
+title = "Run studio test + clippy warnings-as-errors"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-024"
+title = "Run registry crossref verifier with PYTHONWARNINGS=error"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-025"
+title = "Run mirror governance verifier lane"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-026"
+title = "Run ASCII policy verifier"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-027"
+title = "Runtime smoke-test studio API endpoints"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-028"
+title = "Publish front-end concept catalog in structured report format"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-029"
+title = "Create unresolved-risk register from audit output"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-030"
+title = "Document remaining roadmap backlog with dependency hints"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+[[task]]
+id = "UFH-031"
+title = "Design registry-backed dynamic pipeline catalog for studio"
+owner = "codex"
+estimate_hours = 2.0
+status = "todo"
+
+[[task]]
+id = "UFH-032"
+title = "Add run-artifact links (TOML/CSV) in studio result UI"
+owner = "codex"
+estimate_hours = 1.5
+status = "todo"
+
+[[task]]
+id = "UFH-033"
+title = "Implement baseline-vs-current run diff mode"
+owner = "codex"
+estimate_hours = 2.0
+status = "todo"
+
+[[task]]
+id = "UFH-034"
+title = "Add preset management and local persistence in UI"
+owner = "codex"
+estimate_hours = 1.0
+status = "todo"
+
+[[task]]
+id = "UFH-035"
+title = "Package desktop shell proof-of-concept for studio"
+owner = "codex"
+estimate_hours = 3.0
+status = "todo"
+
+[[task]]
+id = "UFH-036"
+title = "Author release note and migration note for contributors"
+owner = "codex"
+estimate_hours = 0.75
+status = "todo"
+
+[[task]]
+id = "UFH-037"
+title = "Move studio execution to timeout-guarded spawn_blocking for runtime health"
+owner = "codex"
+estimate_hours = 1.0
+status = "done"
+
+[[task]]
+id = "UFH-038"
+title = "Implement benchmark and reproducibility endpoints with statistical summaries"
+owner = "codex"
+estimate_hours = 1.5
+status = "done"
+
+[[task]]
+id = "UFH-039"
+title = "Implement studio UI operator panels for benchmark and reproducibility"
+owner = "codex"
+estimate_hours = 1.5
+status = "done"
+
+[[task]]
+id = "UFH-040"
+title = "Add run-history endpoint and timeline telemetry enhancements"
+owner = "codex"
+estimate_hours = 1.0
+status = "done"

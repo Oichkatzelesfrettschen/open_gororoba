@@ -1,0 +1,71 @@
+[report]
+id = "RPT-FRONTEND-PRIMARY-SOURCES-2026-02-12"
+updated = "2026-02-12"
+scope = "Cross-platform front-end strategy claims validation for open_gororoba app lanes."
+method = "Claim -> testable hypothesis -> primary source verification"
+
+[[hypothesis]]
+id = "FR-HYP-001"
+claim = "Tauri v2 can target both desktop and mobile from one Rust/webview app lane."
+test = "Verify official docs include Android and iOS development commands in addition to desktop development."
+verdict = "confirmed"
+notes = "Official Tauri develop docs show `tauri android dev` and `tauri ios dev`; prerequisites include mobile target setup."
+sources = [
+  "https://v2.tauri.app/develop/",
+  "https://v2.tauri.app/start/prerequisites/",
+]
+
+[[hypothesis]]
+id = "FR-HYP-002"
+claim = "Flutter currently supports mobile + web + desktop deployment targets."
+test = "Verify official Flutter platform matrix and desktop integration docs."
+verdict = "confirmed"
+notes = "Flutter supported deployment platforms doc lists Android/iOS and desktop/web targets."
+sources = [
+  "https://docs.flutter.dev/reference/supported-platforms",
+  "https://docs.flutter.dev/platform-integration",
+]
+
+[[hypothesis]]
+id = "FR-HYP-003"
+claim = "Kotlin Multiplatform + Compose Multiplatform are production-usable across mobile/desktop, with web still less mature."
+test = "Check Kotlin official platform-stability and Compose platform status pages."
+verdict = "confirmed_with_scope"
+notes = "KMP is stable across core targets; Compose Multiplatform is stable for Android/iOS/desktop while web remains beta."
+sources = [
+  "https://kotlinlang.org/docs/multiplatform/supported-platforms.html",
+  "https://kotlinlang.org/docs/multiplatform/faq.html",
+  "https://kotlinlang.org/docs/multiplatform/compose-compatibility-and-versioning.html",
+]
+
+[[hypothesis]]
+id = "FR-HYP-004"
+claim = "React Native Windows and macOS are available but not part of core React Native targets."
+test = "Confirm React Native official docs classify these platforms as out-of-tree/partner maintained."
+verdict = "confirmed"
+notes = "React Native docs list Windows and macOS under out-of-tree platforms maintained by partners/community."
+sources = [
+  "https://reactnative.dev/docs/next/out-of-tree-platforms",
+  "https://microsoft.github.io/react-native-windows/docs/0.76/win10-compat",
+]
+
+[[hypothesis]]
+id = "FR-HYP-005"
+claim = "PWA installation UX depends on concrete installability criteria, not only a manifest."
+test = "Check Chrome/Web.dev install criteria requirements."
+verdict = "confirmed"
+notes = "Install promotion requires HTTPS, manifest fields, user engagement heuristics, and app-not-already-installed conditions."
+sources = [
+  "https://web.dev/articles/install-criteria",
+]
+
+[[hypothesis]]
+id = "FR-HYP-006"
+claim = "BSD should be treated as a secondary target lane for Studio until explicit native packaging proof exists."
+test = "Check framework docs for explicit BSD guarantee vs. major-platform-first support language."
+verdict = "partially_confirmed"
+notes = "Primary framework docs emphasize Windows/macOS/Linux/mobile; BSD references exist in ecosystem type surfaces but not as clear end-to-end packaging guarantees. For now, browser/PWA access is the robust BSD path."
+sources = [
+  "https://v2.tauri.app/start/prerequisites/",
+  "https://tauri.app/it/reference/javascript/os/",
+]

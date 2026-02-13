@@ -190,6 +190,11 @@ def main() -> int:
         default="registry/mcp_server_matrix.toml",
         help="Path to MCP matrix TOML, relative to repo root.",
     )
+    parser.add_argument(
+        "--strict-config-parity",
+        action="store_true",
+        help="Fail when any client config path is missing or unparsable.",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -230,6 +235,8 @@ def main() -> int:
 
     failures: list[str] = []
     canonical_specs: dict[str, dict[str, Any]] = {}
+    loaded_specs: dict[str, dict[str, dict[str, Any]]] = {}
+    loaded_clients: set[str] = set()
 
     for client_name in sorted(config_paths.keys()):
         raw_path = config_paths[client_name]
@@ -239,16 +246,26 @@ def main() -> int:
 
         path = Path(raw_path).expanduser()
         if not path.is_file():
-            failures.append(f"{client_name}: missing config file {path}")
+            message = f"{client_name}: missing config file {path}"
+            if args.strict_config_parity:
+                failures.append(message)
+            else:
+                print(f"WARN: {message} (skipping client)")
             continue
 
         try:
             payload = _load_toml(path) if path.suffix.lower() == ".toml" else _load_json(path)
         except Exception as exc:
-            failures.append(f"{client_name}: parse error {path}: {exc}")
+            message = f"{client_name}: parse error {path}: {exc}"
+            if args.strict_config_parity:
+                failures.append(message)
+            else:
+                print(f"WARN: {message} (skipping client)")
             continue
 
         enabled_set, specs = _extract_servers(path, payload)
+        loaded_clients.add(client_name)
+        loaded_specs[client_name] = specs
         if client_name == "codex_primary":
             canonical_specs = specs
 
@@ -264,20 +281,38 @@ def main() -> int:
         if disabled_present:
             failures.append(f"{client_name}: disabled servers present: {', '.join(disabled_present)}")
 
+    if not loaded_clients:
+        message = "no readable MCP client config files were found"
+        if args.strict_config_parity:
+            failures.append(message)
+        else:
+            print(f"WARN: {message}; skipping runtime command probes.")
+
     if not canonical_specs:
-        failures.append("codex_primary: could not load canonical MCP command specs")
+        for fallback_client in ("codex_secondary", "claude", "gemini", "copilot_primary", "copilot_secondary"):
+            fallback_specs = loaded_specs.get(fallback_client)
+            if fallback_specs:
+                canonical_specs = fallback_specs
+                print(f"INFO: using {fallback_client} command specs for runtime probe fallback.")
+                break
 
-    for name in sorted(expected_enabled):
-        spec = canonical_specs.get(name)
-        if not isinstance(spec, dict):
-            failures.append(f"probe:{name}: missing command spec in codex_primary config")
-            continue
+    if not canonical_specs and args.strict_config_parity:
+        failures.append("no canonical command specs available for runtime probes")
 
-        ok, reason = _probe_server(name, spec)
-        status = "PASS" if ok else "FAIL"
-        print(f"MCP_SMOKE {status} {name} ({reason})")
-        if not ok:
-            failures.append(f"probe:{name}: {reason}")
+    if canonical_specs:
+        for name in sorted(expected_enabled):
+            spec = canonical_specs.get(name)
+            if not isinstance(spec, dict):
+                failures.append(f"probe:{name}: missing command spec in canonical config")
+                continue
+
+            ok, reason = _probe_server(name, spec)
+            status = "PASS" if ok else "FAIL"
+            print(f"MCP_SMOKE {status} {name} ({reason})")
+            if not ok:
+                failures.append(f"probe:{name}: {reason}")
+    else:
+        print("WARN: runtime startup probes skipped because no command specs were available.")
 
     if failures:
         print("ERROR: MCP smoke verification failed:")

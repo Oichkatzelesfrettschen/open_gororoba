@@ -2,7 +2,7 @@
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
-.PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate
+.PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -185,6 +185,14 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+studio-run:
+	cargo run -p gororoba_cli --bin gororoba-studio -- --host 127.0.0.1 --port 8088
+
+studio-check:
+	cargo test -p gororoba_cli --bin gororoba-studio
+	cargo clippy -p gororoba_cli --bin gororoba-studio -- -D warnings
+	@echo "OK: gororoba-studio checks passed."
 
 dep-audit:
 	@echo "== dependency audit: duplicate versions =="
@@ -558,10 +566,6 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
-	@if [ "$(MARKDOWN_EXPORT)" != "1" ]; then \
-		echo "SKIP: markdown export disabled (set MARKDOWN_EXPORT=1)"; \
-		exit 0; \
-	fi
 	@legacy_flag="--no-emit-legacy"; \
 	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then legacy_flag="--emit-legacy"; fi; \
 	claims_flag="--legacy-claims-sync"; \
@@ -570,10 +574,6 @@ registry-export-markdown: registry-refresh
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag $$claims_flag
 
 registry-verify-mirrors: registry-export-markdown
-	@if [ "$(MARKDOWN_EXPORT)" != "1" ]; then \
-		echo "SKIP: mirror verification disabled (set MARKDOWN_EXPORT=1)"; \
-		exit 0; \
-	fi
 	MARKDOWN_EXPORT_OUT_DIR="$(MARKDOWN_EXPORT_OUT_DIR)" \
 	MARKDOWN_EXPORT_EMIT_LEGACY="$(MARKDOWN_EXPORT_EMIT_LEGACY)" \
 	MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC="$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" \

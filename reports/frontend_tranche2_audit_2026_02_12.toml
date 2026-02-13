@@ -1,0 +1,73 @@
+[report]
+id = "RPT-FRONTEND-TRANCHE2-AUDIT-2026-02-12"
+updated = "2026-02-12"
+scope = "gororoba_studio full-feature increment + governance synchronization"
+
+[[finding]]
+id = "FTA-001"
+severity = "high"
+area = "backend_runtime"
+statement = "CPU-bound thesis execution was previously performed directly in async handlers, risking runtime starvation."
+status = "resolved"
+resolution = "Implemented timeout-guarded `spawn_blocking` execution and batch runner for single/suite/benchmark/repro endpoints."
+evidence_paths = ["crates/gororoba_cli/src/bin/gororoba_studio.rs"]
+
+[[finding]]
+id = "FTA-002"
+severity = "high"
+area = "reproducibility_metadata"
+statement = "Run payloads previously lacked parameter snapshots and history metadata."
+status = "resolved"
+resolution = "Added run IDs, unix timestamps, config snapshots, and `/api/history` endpoint."
+evidence_paths = ["crates/gororoba_cli/src/bin/gororoba_studio.rs", "apps/gororoba_studio/ui/app.js"]
+
+[[finding]]
+id = "FTA-003"
+severity = "medium"
+area = "operator_ux"
+statement = "UI lacked benchmark/repro controls, inline notifications, and accessible feedback."
+status = "resolved"
+resolution = "Added Benchmark Lab, Reproducibility Check panel, live notifications, focus-visible states, and pipeline status indicators."
+evidence_paths = ["apps/gororoba_studio/ui/index.html", "apps/gororoba_studio/ui/styles.css", "apps/gororoba_studio/ui/app.js"]
+
+[[finding]]
+id = "FTA-004"
+severity = "medium"
+area = "requirements_drift"
+statement = "Core requirements guidance did not consistently surface Studio verification lane."
+status = "resolved"
+resolution = "Integrated `make studio-check` guidance into operational requirements overlays and requirement registry verify targets."
+evidence_paths = ["docs/REQUIREMENTS.md", "REQUIREMENTS.md", "registry/requirements.toml", "registry/requirements_narrative.toml"]
+
+[[finding]]
+id = "FTA-005"
+severity = "medium"
+area = "roadmap_traceability"
+statement = "Canonical next-actions registry did not include current studio backlog tasks."
+status = "resolved"
+resolution = "Added NA-025..NA-027 for dynamic catalog, artifact linking, and native packaging pilot."
+evidence_paths = ["registry/next_actions.toml", "plans/frontend_execution_roadmap_2026_02_12.toml", "plans/ultra_frontend_harmonization_roadmap_2026_02_12.toml"]
+
+[[residual_risk]]
+id = "FTA-RISK-001"
+severity = "high"
+statement = "Studio catalog remains hard-coded; registry-backed dynamic catalog is still pending."
+next_action = "NA-025"
+
+[[residual_risk]]
+id = "FTA-RISK-002"
+severity = "medium"
+statement = "Artifact deep-linking from run records to TOML/CSV evidence is not yet implemented."
+next_action = "NA-026"
+
+[[residual_risk]]
+id = "FTA-RISK-003"
+severity = "medium"
+statement = "Native shell packaging (desktop/mobile) is not yet implemented."
+next_action = "NA-027"
+
+[validation]
+studio_check = "pass"
+mirror_verify = "pass"
+ascii_check = "pass"
+runtime_smoke = "pass"

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gororoba Studio</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__left">
+        <p class="eyebrow">open_gororoba</p>
+        <h1>Gororoba Studio</h1>
+        <p class="lede">
+          Interactive thesis lab for experiment orchestration, benchmark snapshots, and
+          evidence-first verification.
+        </p>
+        <div class="controls">
+          <label for="profile">Run profile</label>
+          <select id="profile" aria-label="Run profile">
+            <option value="quick">quick</option>
+            <option value="full">full</option>
+          </select>
+          <button id="run-suite" type="button">Run Full Suite</button>
+          <p class="helper" id="profile-helper">
+            Quick = smoke confidence, Full = gate-grade verification.
+          </p>
+        </div>
+      </div>
+      <div class="hero__right" role="status" aria-live="polite" aria-atomic="true">
+        <div class="status-card" id="health-card">
+          <h2>Service status</h2>
+          <p id="health-status">Checking...</p>
+          <p id="health-clock" class="mono">Last refresh: -</p>
+          <p id="health-summary" class="helper">No pipeline activity yet.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="notifications" class="notifications" aria-live="polite" aria-atomic="true"></section>
+
+      <section>
+        <h2>Pipeline Controls</h2>
+        <div id="pipeline-grid" class="pipeline-grid"></div>
+      </section>
+
+      <section class="split-panels">
+        <article class="panel">
+          <h2>Benchmark Lab</h2>
+          <div class="panel-grid">
+            <label for="benchmark-pipeline">Pipeline</label>
+            <select id="benchmark-pipeline" aria-label="Benchmark pipeline"></select>
+            <label for="benchmark-iterations">Iterations</label>
+            <input id="benchmark-iterations" type="number" min="1" max="25" value="5" />
+            <button id="run-benchmark" type="button">Run Benchmark</button>
+          </div>
+          <div id="benchmark-output" class="panel-output mono">No benchmark data yet.</div>
+        </article>
+
+        <article class="panel">
+          <h2>Reproducibility Check</h2>
+          <div class="panel-grid">
+            <label for="repro-pipeline">Pipeline</label>
+            <select id="repro-pipeline" aria-label="Reproducibility pipeline"></select>
+            <label for="repro-iterations">Iterations</label>
+            <input id="repro-iterations" type="number" min="2" max="20" value="3" />
+            <label for="repro-tolerance">Tolerance</label>
+            <input id="repro-tolerance" type="number" min="0" step="0.000000001" value="0.000000001" />
+            <button id="run-repro" type="button">Run Repro Check</button>
+          </div>
+          <div id="repro-output" class="panel-output mono">No reproducibility checks yet.</div>
+        </article>
+      </section>
+
+      <section>
+        <h2>Run Timeline</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Run ID</th>
+                <th>UTC</th>
+                <th>Pipeline</th>
+                <th>Profile</th>
+                <th>Metric</th>
+                <th>Threshold</th>
+                <th>Gate</th>
+                <th>Duration ms</th>
+              </tr>
+            </thead>
+            <tbody id="timeline-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <template id="pipeline-template">
+      <article class="pipeline-card">
+        <div class="pipeline-card__head">
+          <h3></h3>
+          <span class="badge"></span>
+        </div>
+        <p class="pipeline-hypothesis"></p>
+        <ul class="pipeline-meta">
+          <li class="metric"></li>
+          <li class="quick"></li>
+          <li class="full"></li>
+        </ul>
+        <p class="pipeline-status mono">Idle</p>
+        <button class="run-pipeline" type="button">Run</button>
+      </article>
+    </template>
+
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>

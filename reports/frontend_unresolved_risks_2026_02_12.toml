@@ -1,0 +1,45 @@
+[report]
+id = "RPT-FRONTEND-RISKS-2026-02-12"
+updated = "2026-02-12"
+scope = "remaining risks after front-end harmonization tranche"
+
+[[risk]]
+id = "RISK-001"
+severity = "high"
+area = "studio_catalog"
+statement = "Studio pipeline catalog is hard-coded to four thesis ids and not yet registry-backed."
+impact = "UI can drift from experiment registry and hide executable lanes."
+mitigation = "Implement registry-driven catalog ingestion and dynamic API responses."
+
+[[risk]]
+id = "RISK-002"
+severity = "medium"
+area = "gpu_registry_coverage"
+statement = "GPU lane binary source exists (`warp_gpu_experiment.rs`) but is not yet fully integrated in Cargo/registry checks."
+impact = "GPU workflow may drift from governed executable inventory."
+mitigation = "Decide canonical GPU bin contract and register it with feature-gated verification."
+
+[[risk]]
+id = "RISK-003"
+severity = "medium"
+area = "entrypoint_docs_export"
+statement = "Legacy markdown export can emit stub entrypoint docs when body_markdown is absent in entrypoint registry."
+impact = "Root docs may regress unexpectedly during legacy export workflows."
+mitigation = "Avoid legacy emit in strict lanes or enrich entrypoint registry with explicit body payloads."
+
+[[risk]]
+id = "RISK-004"
+severity = "medium"
+area = "governance_gate_default"
+statement = "Default `make check` lane still does not include full governance-gate verifier bundle."
+impact = "Registry/schema drift can evade early detection in casual local runs."
+mitigation = "Promote governance-gate (or its components) into default check profile."
+
+[[risk]]
+id = "RISK-005"
+severity = "low"
+area = "todo_narrative_depth"
+statement = "TODO narrative still carries mixed historical sprint sections that can confuse current operational focus."
+impact = "Reader comprehension cost; potential planning ambiguity."
+mitigation = "Split archival sprint narratives into dedicated historical appendix and keep TODO focused on active tranche."
+

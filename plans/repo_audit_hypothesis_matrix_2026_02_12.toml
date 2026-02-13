@@ -1,0 +1,86 @@
+# Repo audit hypothesis matrix for current execution tranche.
+
+[meta]
+updated = "2026-02-12"
+scope = "open_gororoba core repo + docs/registry/build gates + new app lane"
+status = "active"
+
+[[hypothesis]]
+id = "HYP-AUD-001"
+statement = "Mirror verification could be skipped silently in default make flow."
+validation = "Inspect Makefile registry-export-markdown and registry-verify-mirrors targets."
+result = "confirmed"
+resolution = "Removed skip guards; mirror export + verification now execute deterministically."
+evidence_paths = ["Makefile"]
+
+[[hypothesis]]
+id = "HYP-AUD-002"
+statement = "MCP smoke gate fails on machines missing local per-user MCP config files."
+validation = "Review verify_mcp_smoke.py handling for missing config paths."
+result = "confirmed"
+resolution = "Added non-strict fallback mode that warns/skips missing configs while preserving strict option."
+evidence_paths = ["src/verification/verify_mcp_smoke.py", "registry/mcp_server_matrix.toml"]
+
+[[hypothesis]]
+id = "HYP-AUD-003"
+statement = "Requirements coverage lacks a front-end app module and drifts from real build targets."
+validation = "Cross-check requirements TOML modules against Makefile and new app lane."
+result = "confirmed"
+resolution = "Added REQ-STUDIO module and synchronized requirements narrative overlays."
+evidence_paths = ["registry/requirements.toml", "registry/module_requirements.toml", "registry/requirements_narrative.toml"]
+
+[[hypothesis]]
+id = "HYP-AUD-004"
+statement = "Generated docs headers can drift from TOML source dates and stale references."
+validation = "Compare roadmap/todo/next-actions generated markdown against narrative TOML."
+result = "confirmed"
+resolution = "Updated narrative source metadata and regenerated markdown mirrors."
+evidence_paths = ["registry/roadmap_narrative.toml", "registry/todo_narrative.toml", "registry/next_actions_narrative.toml", "docs/ROADMAP.md", "docs/TODO.md", "docs/NEXT_ACTIONS.md"]
+
+[[hypothesis]]
+id = "HYP-AUD-005"
+statement = "Repo lacked an integrated interactive front-end for thesis pipeline execution."
+validation = "Inspect Cargo bin inventory and existing app directories."
+result = "confirmed"
+resolution = "Implemented gororoba-studio web app binary + UI assets + make targets."
+evidence_paths = ["crates/gororoba_cli/src/bin/gororoba_studio.rs", "apps/gororoba_studio/ui/index.html", "apps/gororoba_studio/ui/app.js", "apps/gororoba_studio/ui/styles.css", "apps/gororoba_studio/README.md", "Makefile"]
+
+[[hypothesis]]
+id = "HYP-AUD-006"
+statement = "CLI binary registry drifted from actual gororoba_cli bin declarations."
+validation = "Diff `crates/gororoba_cli/Cargo.toml` bin names against `registry/binaries.toml`."
+result = "confirmed"
+resolution = "Added missing binary entries (including `gororoba-studio`, `percolation-experiment`, and thesis support bins)."
+evidence_paths = ["crates/gororoba_cli/Cargo.toml", "registry/binaries.toml"]
+
+[[hypothesis]]
+id = "HYP-AUD-007"
+statement = "Legacy markdown export can regress entrypoint docs to body-less stubs when entrypoint registry lacks body_markdown fields."
+validation = "Run legacy export and inspect generated root docs for fallback placeholder text."
+result = "confirmed"
+resolution = "Restored root entrypoint docs manually and kept strict publish lane on non-legacy mirror emission for verification runs."
+evidence_paths = ["README.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "registry/entrypoint_docs.toml", "src/scripts/analysis/export_registry_markdown_mirrors.py"]
+
+[[hypothesis]]
+id = "HYP-AUD-008"
+statement = "Studio async handlers block Tokio worker threads because thesis pipelines execute CPU-bound workloads inline."
+validation = "Inspect `run_experiment` and `run_suite` flow for direct `execute_thesis` calls; verify no blocking offload."
+result = "confirmed"
+resolution = "Added timeout-guarded `spawn_blocking` execution helper and routed single/batch APIs through async-safe batch runner."
+evidence_paths = ["crates/gororoba_cli/src/bin/gororoba_studio.rs"]
+
+[[hypothesis]]
+id = "HYP-AUD-009"
+statement = "Studio run payloads lacked enough metadata to support deterministic reproducibility and benchmark comparisons."
+validation = "Inspect `RunResponse` fields for run IDs, timestamps, and parameter snapshots."
+result = "confirmed"
+resolution = "Added run IDs, unix timestamps, config snapshots, history endpoint, benchmark endpoint, and reproducibility endpoint."
+evidence_paths = ["crates/gororoba_cli/src/bin/gororoba_studio.rs", "apps/gororoba_studio/ui/app.js"]
+
+[[hypothesis]]
+id = "HYP-AUD-010"
+statement = "Core requirements quickstart does not explicitly include Studio front-end verification lane."
+validation = "Cross-check docs requirements quickstart and requirements registries against `make studio-check` target."
+result = "confirmed"
+resolution = "Updated requirements narratives and requirement registry verify targets to include explicit Studio verification guidance."
+evidence_paths = ["registry/requirements_narrative.toml", "registry/requirements.toml", "docs/REQUIREMENTS.md", "REQUIREMENTS.md", "Makefile"]
