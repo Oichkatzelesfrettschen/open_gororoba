@@ -123,6 +123,153 @@ impl SedenionField {
     }
 }
 
+impl SedenionField {
+    /// Compute local frustration density in parallel using rayon.
+    ///
+    /// Identical results to `local_frustration_density` but uses rayon's
+    /// par_iter() for ~Nx speedup on multi-core machines.
+    pub fn local_frustration_density_par(&self, dim: usize) -> Vec<f64> {
+        use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+        use rayon::prelude::*;
+
+        // Precompute psi sign matrix
+        let mut psi_flat = vec![0i32; dim * dim];
+        for i in 0..dim {
+            for j in (i + 1)..dim {
+                let sign = cd_basis_mul_sign(dim, i, j);
+                psi_flat[i * dim + j] = sign;
+                psi_flat[j * dim + i] = sign;
+            }
+        }
+
+        // Precompute frustrated triangles
+        let triangles: Vec<(usize, usize, usize, bool)> = {
+            let mut tris = Vec::new();
+            for i in 0..dim {
+                for j in (i + 1)..dim {
+                    for k in (j + 1)..dim {
+                        let product = psi_flat[i * dim + j]
+                            * psi_flat[j * dim + k]
+                            * psi_flat[i * dim + k];
+                        tris.push((i, j, k, product == -1));
+                    }
+                }
+            }
+            tris
+        };
+
+        self.data
+            .par_iter()
+            .map(|sedenion| {
+                let magnitude_sum: f64 = sedenion[0..dim].iter().map(|x| x.abs()).sum();
+
+                if magnitude_sum < 1e-10 {
+                    return 0.375;
+                }
+
+                let weights: Vec<f64> =
+                    sedenion[0..dim].iter().map(|x| x.abs()).collect();
+
+                let mut weighted_frustrated = 0.0f64;
+                let mut weighted_total = 0.0f64;
+
+                for &(i, j, k, is_frustrated) in &triangles {
+                    let w = weights[i] * weights[j] * weights[k];
+                    weighted_total += w;
+                    if is_frustrated {
+                        weighted_frustrated += w;
+                    }
+                }
+
+                if weighted_total < 1e-30 {
+                    0.375
+                } else {
+                    weighted_frustrated / weighted_total
+                }
+            })
+            .collect()
+    }
+
+    /// Compute the local associator norm field.
+    ///
+    /// At each grid point, computes the mean associator norm from a representative
+    /// sample of sedenion triples (a, b, c) formed by the local element and its
+    /// neighbors. The associator is:
+    ///
+    ///   [a, b, c] = (a * b) * c - a * (b * c)
+    ///
+    /// For sedenions (dim=16), the associator is generically nonzero. The norm
+    /// `||[a,b,c]||` measures the local non-associativity strength.
+    ///
+    /// Uses CD basis multiplication from `algebra_core` for genuine associators.
+    pub fn local_associator_norm_field(&self, dim: usize) -> Vec<f64> {
+        use algebra_core::construction::cayley_dickson::cd_multiply;
+
+        let nx = self.nx;
+        let ny = self.ny;
+        let nz = self.nz;
+        let n_nodes = nx * ny * nz;
+        let mut norms = vec![0.0; n_nodes];
+
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * (nx * ny) + y * nx + x;
+                    let a = &self.data[idx][..dim];
+
+                    // Use 6 face-neighbors as triple partners (b, c)
+                    let neighbors = [
+                        ((x + 1) % nx, y, z),
+                        ((x + nx - 1) % nx, y, z),
+                        (x, (y + 1) % ny, z),
+                        (x, (y + ny - 1) % ny, z),
+                        (x, y, (z + 1) % nz),
+                        (x, y, (z + nz - 1) % nz),
+                    ];
+
+                    let mut norm_sum = 0.0;
+                    let mut count = 0;
+
+                    // For each pair of distinct neighbors, compute associator
+                    for i in 0..neighbors.len() {
+                        let (bx, by, bz) = neighbors[i];
+                        let b_idx = bz * (nx * ny) + by * nx + bx;
+                        let b = &self.data[b_idx][..dim];
+
+                        let j = (i + 1) % neighbors.len();
+                        let (cx, cy, cz) = neighbors[j];
+                        let c_idx = cz * (nx * ny) + cy * nx + cx;
+                        let c = &self.data[c_idx][..dim];
+
+                        // Associator [a, b, c] = (a*b)*c - a*(b*c)
+                        let ab = cd_multiply(a, b);
+                        let bc = cd_multiply(b, c);
+                        let ab_c = cd_multiply(&ab, c);
+                        let a_bc = cd_multiply(a, &bc);
+
+                        let assoc_norm_sq: f64 = ab_c
+                            .iter()
+                            .zip(a_bc.iter())
+                            .map(|(x, y)| (x - y).powi(2))
+                            .sum();
+
+                        norm_sum += assoc_norm_sq.sqrt();
+                        count += 1;
+                    }
+
+                    norms[idx] = if count > 0 {
+                        norm_sum / count as f64
+                    } else {
+                        0.0
+                    };
+                }
+            }
+        }
+
+        norms
+    }
+}
+
 /// Frustration-Viscosity coupling bridge.
 ///
 /// Transforms signed-graph frustration density into spatially-varying
@@ -182,6 +329,201 @@ impl FrustrationViscosityBridge {
     ) -> Vec<f64> {
         let frustration = sedenion_field.local_frustration_density(self.dim);
         self.frustration_to_viscosity(&frustration, nu_base, lambda)
+    }
+
+    /// Convert frustration field to viscosity using a specified coupling model.
+    ///
+    /// This is the multi-model generalization of `frustration_to_viscosity`.
+    /// Different models make different physical assumptions about how algebraic
+    /// frustration modulates fluid viscosity:
+    ///
+    /// - **Exponential**: Gaussian decay from vacuum attractor (original model)
+    /// - **Linear**: First-order perturbation theory around vacuum
+    /// - **PowerLaw**: Scale-free coupling (fractal-like)
+    /// - **Sigmoid**: Phase-transition model with sharp crossover
+    /// - **Constant**: Control model (frustration has no effect)
+    pub fn frustration_to_viscosity_model(
+        &self,
+        frustration_field: &[f64],
+        model: &ViscosityCouplingModel,
+    ) -> Vec<f64> {
+        frustration_field
+            .iter()
+            .map(|&f| model.compute(f))
+            .collect()
+    }
+}
+
+/// Vacuum attractor frustration index for sedenions (~3/8 = 0.375).
+///
+/// This is the equilibrium frustration for uniform-weight sedenion fields.
+/// All coupling models are centered on this value.
+pub const VACUUM_ATTRACTOR: f64 = 3.0 / 8.0;
+
+/// Coupling model for converting frustration density to kinematic viscosity.
+///
+/// Each model represents a different physical hypothesis about how algebraic
+/// frustration in Cayley-Dickson signed graphs modulates fluid viscosity.
+/// The experiment-lab runs all models in parallel to discriminate between
+/// hypotheses using correlation strength.
+#[derive(Debug, Clone)]
+pub enum ViscosityCouplingModel {
+    /// Gaussian decay: nu = nu_base * exp(-lambda * (F - F0)^2)
+    ///
+    /// Physical interpretation: viscosity peaks at vacuum attractor and
+    /// decays symmetrically for deviations. Quadratic sensitivity means
+    /// small deviations have little effect, large deviations strongly reduce
+    /// viscosity. This is the natural "perturbative" model.
+    Exponential {
+        nu_base: f64,
+        lambda: f64,
+    },
+
+    /// Linear coupling: nu = nu_base * (1 + alpha * (F - F0))
+    ///
+    /// Physical interpretation: first-order Taylor expansion around vacuum.
+    /// Positive alpha means frustrated regions are more viscous (dissipative).
+    /// Negative alpha means frustrated regions flow more freely.
+    /// Simplest possible coupling; serves as baseline.
+    Linear {
+        nu_base: f64,
+        alpha: f64,
+    },
+
+    /// Power-law coupling: nu = nu_base * (|F - F0| + eps)^n
+    ///
+    /// Physical interpretation: scale-free (fractal) relationship between
+    /// frustration deviation and viscosity. No preferred scale means the
+    /// coupling has self-similar structure across frustration magnitudes.
+    /// n > 1 = superlinear sensitivity; n < 1 = sublinear (saturating).
+    PowerLaw {
+        nu_base: f64,
+        n: f64,
+    },
+
+    /// Sigmoid (logistic) coupling: nu = nu_low + (nu_high - nu_low) / (1 + exp(-k*(F - F_crit)))
+    ///
+    /// Physical interpretation: sharp phase transition at critical frustration.
+    /// Below F_crit, viscosity is nu_low; above, it jumps to nu_high.
+    /// Steepness k controls how sharp the transition is.
+    /// Models a frustration-driven "phase boundary" in the fluid.
+    Sigmoid {
+        nu_low: f64,
+        nu_high: f64,
+        k: f64,
+        f_crit: f64,
+    },
+
+    /// Constant viscosity (control): nu = nu_base everywhere.
+    ///
+    /// The null hypothesis: frustration has no effect on viscosity.
+    /// Any correlation found with this model is spurious (from geometry
+    /// alone, not physics). Essential for discriminating real signal
+    /// from noise.
+    Constant {
+        nu_base: f64,
+    },
+}
+
+impl ViscosityCouplingModel {
+    /// Compute viscosity at a given frustration value.
+    pub fn compute(&self, frustration: f64) -> f64 {
+        match self {
+            Self::Exponential { nu_base, lambda } => {
+                let dev = (frustration - VACUUM_ATTRACTOR).powi(2);
+                nu_base * (-lambda * dev).exp()
+            }
+            Self::Linear { nu_base, alpha } => {
+                let dev = frustration - VACUUM_ATTRACTOR;
+                (nu_base * (1.0 + alpha * dev)).max(1e-6)
+            }
+            Self::PowerLaw { nu_base, n } => {
+                let dev = (frustration - VACUUM_ATTRACTOR).abs() + 1e-10;
+                nu_base * dev.powf(*n)
+            }
+            Self::Sigmoid {
+                nu_low,
+                nu_high,
+                k,
+                f_crit,
+            } => {
+                let exponent = -k * (frustration - f_crit);
+                nu_low + (nu_high - nu_low) / (1.0 + exponent.exp())
+            }
+            Self::Constant { nu_base } => *nu_base,
+        }
+    }
+
+    /// Short label for output files and TOML keys.
+    pub fn label(&self) -> &'static str {
+        match self {
+            Self::Exponential { .. } => "exponential",
+            Self::Linear { .. } => "linear",
+            Self::PowerLaw { .. } => "power_law",
+            Self::Sigmoid { .. } => "sigmoid",
+            Self::Constant { .. } => "constant",
+        }
+    }
+
+    /// Human-readable description for reports.
+    pub fn description(&self) -> String {
+        match self {
+            Self::Exponential { nu_base, lambda } => {
+                format!("Exponential: nu={:.4}*exp(-{:.2}*(F-3/8)^2)", nu_base, lambda)
+            }
+            Self::Linear { nu_base, alpha } => {
+                format!("Linear: nu={:.4}*(1+{:.2}*(F-3/8))", nu_base, alpha)
+            }
+            Self::PowerLaw { nu_base, n } => {
+                format!("PowerLaw: nu={:.4}*|F-3/8|^{:.2}", nu_base, n)
+            }
+            Self::Sigmoid {
+                nu_low,
+                nu_high,
+                k,
+                f_crit,
+            } => {
+                format!(
+                    "Sigmoid: nu=[{:.4},{:.4}], k={:.1}, F_crit={:.4}",
+                    nu_low, nu_high, k, f_crit
+                )
+            }
+            Self::Constant { nu_base } => {
+                format!("Constant: nu={:.4}", nu_base)
+            }
+        }
+    }
+
+    /// Standard set of competing models for experiment-lab comparison.
+    ///
+    /// Returns 5 models with reasonable default parameters:
+    /// 1. Exponential (original model, lambda=2.0)
+    /// 2. Linear (alpha=1.0)
+    /// 3. PowerLaw (n=1.5, superlinear)
+    /// 4. Sigmoid (sharp transition at F=0.38)
+    /// 5. Constant (null hypothesis)
+    pub fn standard_suite(nu_base: f64) -> Vec<Self> {
+        vec![
+            Self::Exponential {
+                nu_base,
+                lambda: 2.0,
+            },
+            Self::Linear {
+                nu_base,
+                alpha: 1.0,
+            },
+            Self::PowerLaw {
+                nu_base,
+                n: 1.5,
+            },
+            Self::Sigmoid {
+                nu_low: nu_base * 0.5,
+                nu_high: nu_base * 1.5,
+                k: 50.0,
+                f_crit: VACUUM_ATTRACTOR + 0.005,
+            },
+            Self::Constant { nu_base },
+        ]
     }
 }
 
@@ -323,5 +665,251 @@ mod tests {
         field.get_mut(0, 0, 0)[5] = 0.5;
         assert!((field.get(0, 0, 0)[5] - 0.5).abs() < 1e-14);
         assert!((field.get(0, 0, 1)[5]).abs() < 1e-14); // Other points unchanged
+    }
+
+    #[test]
+    fn test_frustration_density_par_matches_sequential() {
+        let mut field = SedenionField::uniform(4, 4, 4);
+        // Add some variation
+        for z in 0..4 {
+            for y in 0..4 {
+                for x in 0..4 {
+                    let s = field.get_mut(x, y, z);
+                    s[1] = 0.3 * (x as f64) / 4.0;
+                    s[5] = 0.2 * (y as f64) / 4.0;
+                }
+            }
+        }
+
+        let sequential = field.local_frustration_density(16);
+        let parallel = field.local_frustration_density_par(16);
+
+        assert_eq!(sequential.len(), parallel.len());
+        for (s, p) in sequential.iter().zip(parallel.iter()) {
+            assert!(
+                (s - p).abs() < 1e-14,
+                "Parallel result differs: {} vs {}",
+                s,
+                p
+            );
+        }
+    }
+
+    #[test]
+    fn test_frustration_density_par_uniform() {
+        let field = SedenionField::uniform(8, 8, 4);
+        let par_result = field.local_frustration_density_par(16);
+        let seq_result = field.local_frustration_density(16);
+        for (s, p) in seq_result.iter().zip(par_result.iter()) {
+            assert!((s - p).abs() < 1e-14);
+        }
+    }
+
+    #[test]
+    fn test_associator_norm_uniform_field() {
+        // Uniform e_0 field: all products are (1)(1)(1)=1 (real),
+        // so associator is zero (reals are associative).
+        let field = SedenionField::uniform(4, 4, 4);
+        let norms = field.local_associator_norm_field(16);
+        assert_eq!(norms.len(), 4 * 4 * 4);
+        for &n in &norms {
+            assert!(n.abs() < 1e-10, "Uniform e_0 should have zero associator");
+        }
+    }
+
+    #[test]
+    fn test_associator_norm_varied_field() {
+        // Create a field with multiple nonzero basis elements to trigger
+        // non-associativity
+        let mut field = SedenionField::uniform(4, 4, 4);
+        for z in 0..4 {
+            for y in 0..4 {
+                for x in 0..4 {
+                    let s = field.get_mut(x, y, z);
+                    let i = (x + y + z) % 16;
+                    s[i] = 0.8;
+                    s[(i + 3) % 16] = 0.5;
+                    s[(i + 7) % 16] = 0.3;
+                }
+            }
+        }
+
+        let norms = field.local_associator_norm_field(16);
+
+        // At least some points should have nonzero associator norm
+        let max_norm = norms.iter().cloned().fold(0.0_f64, f64::max);
+        assert!(
+            max_norm > 1e-4,
+            "Varied sedenion field should have nonzero associators: max={}",
+            max_norm
+        );
+
+        // All norms should be finite and non-negative
+        for &n in &norms {
+            assert!(n.is_finite());
+            assert!(n >= 0.0);
+        }
+    }
+
+    #[test]
+    fn test_associator_norm_field_length() {
+        let field = SedenionField::uniform(8, 6, 4);
+        let norms = field.local_associator_norm_field(16);
+        assert_eq!(norms.len(), 8 * 6 * 4);
+    }
+
+    // ---- ViscosityCouplingModel tests ----
+
+    #[test]
+    fn test_exponential_model_at_vacuum() {
+        let model = ViscosityCouplingModel::Exponential {
+            nu_base: 1.0 / 3.0,
+            lambda: 2.0,
+        };
+        let nu = model.compute(VACUUM_ATTRACTOR);
+        assert!(
+            (nu - 1.0 / 3.0).abs() < 1e-10,
+            "At vacuum attractor, exponential model should return nu_base"
+        );
+    }
+
+    #[test]
+    fn test_exponential_model_away_from_vacuum() {
+        let model = ViscosityCouplingModel::Exponential {
+            nu_base: 1.0 / 3.0,
+            lambda: 2.0,
+        };
+        let nu_low = model.compute(0.1);
+        let nu_vac = model.compute(VACUUM_ATTRACTOR);
+        assert!(
+            nu_low < nu_vac,
+            "Away from attractor, viscosity should decrease"
+        );
+    }
+
+    #[test]
+    fn test_linear_model_positive_alpha() {
+        let model = ViscosityCouplingModel::Linear {
+            nu_base: 0.1,
+            alpha: 1.0,
+        };
+        let nu_low = model.compute(0.2); // F < 3/8
+        let nu_high = model.compute(0.5); // F > 3/8
+        assert!(
+            nu_high > nu_low,
+            "Positive alpha: higher frustration -> higher viscosity"
+        );
+    }
+
+    #[test]
+    fn test_power_law_model_superlinear() {
+        let model = ViscosityCouplingModel::PowerLaw {
+            nu_base: 0.1,
+            n: 2.0,
+        };
+        let nu_close = model.compute(VACUUM_ATTRACTOR + 0.01);
+        let nu_far = model.compute(VACUUM_ATTRACTOR + 0.1);
+        // Superlinear: far deviation grows faster than linearly
+        let ratio_dev = 0.1 / 0.01;
+        let ratio_nu = nu_far / nu_close;
+        assert!(
+            ratio_nu > ratio_dev,
+            "Superlinear (n=2): nu ratio ({:.2}) should exceed deviation ratio ({:.2})",
+            ratio_nu,
+            ratio_dev
+        );
+    }
+
+    #[test]
+    fn test_sigmoid_model_transition() {
+        let model = ViscosityCouplingModel::Sigmoid {
+            nu_low: 0.05,
+            nu_high: 0.5,
+            k: 100.0,
+            f_crit: 0.38,
+        };
+        let nu_below = model.compute(0.30);
+        let nu_above = model.compute(0.45);
+        assert!(
+            (nu_below - 0.05).abs() < 0.01,
+            "Below F_crit, sigmoid should approach nu_low: got {}",
+            nu_below
+        );
+        assert!(
+            (nu_above - 0.5).abs() < 0.01,
+            "Above F_crit, sigmoid should approach nu_high: got {}",
+            nu_above
+        );
+    }
+
+    #[test]
+    fn test_constant_model_invariance() {
+        let model = ViscosityCouplingModel::Constant { nu_base: 0.1 };
+        for f in [0.0, 0.2, VACUUM_ATTRACTOR, 0.5, 1.0] {
+            assert!(
+                (model.compute(f) - 0.1).abs() < 1e-14,
+                "Constant model should return nu_base at all frustrations"
+            );
+        }
+    }
+
+    #[test]
+    fn test_all_models_finite_positive() {
+        let suite = ViscosityCouplingModel::standard_suite(1.0 / 3.0);
+        for model in &suite {
+            for &f in &[0.0, 0.1, 0.2, VACUUM_ATTRACTOR, 0.5, 0.8, 1.0] {
+                let nu = model.compute(f);
+                assert!(
+                    nu.is_finite(),
+                    "{}: nu not finite at F={}",
+                    model.label(),
+                    f
+                );
+                assert!(
+                    nu > 0.0,
+                    "{}: nu not positive at F={}: got {}",
+                    model.label(),
+                    f,
+                    nu
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_standard_suite_has_five_models() {
+        let suite = ViscosityCouplingModel::standard_suite(0.1);
+        assert_eq!(suite.len(), 5);
+
+        let labels: Vec<&str> = suite.iter().map(|m| m.label()).collect();
+        assert!(labels.contains(&"exponential"));
+        assert!(labels.contains(&"linear"));
+        assert!(labels.contains(&"power_law"));
+        assert!(labels.contains(&"sigmoid"));
+        assert!(labels.contains(&"constant"));
+    }
+
+    #[test]
+    fn test_bridge_multi_model_integration() {
+        let bridge = FrustrationViscosityBridge::new(16);
+        let frustration = vec![0.3, VACUUM_ATTRACTOR, 0.45];
+        let model = ViscosityCouplingModel::Exponential {
+            nu_base: 1.0 / 3.0,
+            lambda: 1.0,
+        };
+        let viscosity = bridge.frustration_to_viscosity_model(&frustration, &model);
+        assert_eq!(viscosity.len(), 3);
+        for &nu in &viscosity {
+            assert!(nu.is_finite() && nu > 0.0);
+        }
+    }
+
+    #[test]
+    fn test_model_descriptions_non_empty() {
+        let suite = ViscosityCouplingModel::standard_suite(0.1);
+        for model in &suite {
+            assert!(!model.description().is_empty());
+            assert!(!model.label().is_empty());
+        }
     }
 }

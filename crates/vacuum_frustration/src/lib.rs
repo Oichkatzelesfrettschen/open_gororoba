@@ -16,6 +16,7 @@ pub mod frustration;
 pub mod frustration_energy;
 pub mod percolation;
 pub mod signed_graph;
+pub mod spatial_correlation;
 pub mod vietoris_rips;
 
 // GPU-accelerated null model testing (optional feature)
@@ -25,7 +26,8 @@ pub mod besag_clifford_cuda;
 // Re-export key types for ergonomics
 pub use apt_sedenion::{AptSedenionField, FrustrationStats};
 pub use balance::{compute_frustration_index, FrustrationResult, SolverMethod};
-pub use bridge::{FrustrationViscosityBridge, SedenionField};
+pub use bridge::{FrustrationViscosityBridge, SedenionField, ViscosityCouplingModel, VACUUM_ATTRACTOR};
+pub use vietoris_rips::PersistenceDiagram;
 pub use frustration::{
     evaluate_frustration_star, frustration_density_from_edges, omega_eff_from_phi,
     violates_cassini, FrustrationStarConfig, FrustrationStarResult, ScalarFrustrationMap,
@@ -40,3 +42,8 @@ pub use percolation::{
     PercolationDetector,
 };
 pub use signed_graph::SignedGraph;
+pub use spatial_correlation::{
+    coefficient_of_variation, dynamic_range_ratio, grid_partition_3d, nonlinearity_index,
+    pearson_correlation, point_cloud_overlap, regional_means, spatial_correlation,
+    spearman_correlation, velocity_magnitude_field, SpatialCorrelationResult,
+};
