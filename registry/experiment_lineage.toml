@@ -6,7 +6,7 @@ updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
 lineage_count = 27
-edge_count = 165
+edge_count = 169
 
 [[lineage]]
 id = "XL-001"
@@ -377,47 +377,49 @@ acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Bin
 [[lineage]]
 id = "XL-025"
 experiment_id = "E-027"
-binary = "percolation-experiment"
+binary = "e027-topology-analyzer"
 deterministic = false
 seed = 42
 gpu = false
-run_command = ""
-run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+run_command = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
+run_command_sha256 = "1617ab44c55daf1fcca751119a46a33df1682dfe8c4972a30b0b9aa896e49ee0"
 claim_refs = ["C-657", "C-658", "C-659"]
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
 dataset_refs = []
-replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
 id = "XL-026"
 experiment_id = "E-028"
-binary = ""
+binary = "lattice-filtration-analyzer"
 deterministic = false
+seed = 42
 gpu = false
-run_command = ""
-run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+run_command = "cargo run --release --bin lattice-filtration-analyzer -- --n-steps 5000 --seed 42"
+run_command_sha256 = "46afd89413f92eeb158d27f92ff5a8630ca7f7958bceb23aff861f8914acb75a"
 claim_refs = []
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/evidence/e028_filtration_analysis.toml"]
 dataset_refs = []
-replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lattice-filtration-analyzer -- --n-steps 5000 --seed 42", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
 id = "XL-027"
 experiment_id = "E-029"
-binary = ""
+binary = "neural-homotopy-trainer"
 deterministic = false
+seed = 42
 gpu = false
-run_command = ""
-run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+run_command = "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --n-violation-samples 256 --seed 42"
+run_command_sha256 = "91b565bd49840d15d38491274aa1ff0b4324ec88f250f9a8724a87f3fd2e6e62"
 claim_refs = []
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/evidence/e029_neural_homotopy.toml"]
 dataset_refs = []
-replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --n-violation-samples 256 --seed 42", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -1855,10 +1857,10 @@ verified = false
 id = "XLE-00160"
 lineage_id = "XL-025"
 from_id = "E-027"
-to_ref = "percolation-experiment"
+to_ref = "e027-topology-analyzer"
 to_kind = "binary"
 edge_kind = "implemented_by_binary"
-verified = false
+verified = true
 
 [[edge]]
 id = "XLE-00161"
@@ -1889,19 +1891,55 @@ verified = true
 
 [[edge]]
 id = "XLE-00164"
-lineage_id = "XL-026"
-from_id = "E-028"
-to_ref = ""
-to_kind = "binary"
-edge_kind = "implemented_by_binary"
-verified = false
+lineage_id = "XL-025"
+from_id = "E-027"
+to_ref = "data/e027/e027_topology_NNNcubed.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
 
 [[edge]]
 id = "XLE-00165"
-lineage_id = "XL-027"
-from_id = "E-029"
-to_ref = ""
+lineage_id = "XL-025"
+from_id = "E-027"
+to_ref = "data/e027/betti_timeseries_NNNcubed.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00166"
+lineage_id = "XL-026"
+from_id = "E-028"
+to_ref = "lattice-filtration-analyzer"
 to_kind = "binary"
 edge_kind = "implemented_by_binary"
-verified = false
+verified = true
+
+[[edge]]
+id = "XLE-00167"
+lineage_id = "XL-026"
+from_id = "E-028"
+to_ref = "data/evidence/e028_filtration_analysis.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00168"
+lineage_id = "XL-027"
+from_id = "E-029"
+to_ref = "neural-homotopy-trainer"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00169"
+lineage_id = "XL-027"
+from_id = "E-029"
+to_ref = "data/evidence/e029_neural_homotopy.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
 

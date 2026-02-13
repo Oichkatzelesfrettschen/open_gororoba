@@ -5414,3 +5414,69 @@ last_verified = "2026-02-13"
 what_would_verify_refute = "VERIFIED by E-027 (Phase 2): Null p-value < 0.05, frustration-derived distinct from random. REFUTATION: null p >= 0.05."
 phase = "Phase 1 Week 4"
 sprint = 36
+
+[[claim]]
+id = "C-660"
+statement = "TX-3 Topological Overlap Principle: Monotonic viscosity-frustration transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against frustration topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0."
+where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/vacuum_frustration/src/spatial_correlation.rs (point_cloud_overlap)"
+status = "Established"
+status_note = "Verified at 16^3 and 32^3 with all 5 standard suite models."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: overlap=1.0 for all monotonic models, W2=0 confirmed. REFUTATION: non-monotonic transform with overlap=1.0 would violate."
+phase = "Phase 2 Week 2"
+sprint = 38
+
+[[claim]]
+id = "C-661"
+statement = "Sigmoid Dynamic Range Collapse: When sigmoid F_crit (0.38) is far below the actual frustration distribution (mean=0.55), the coefficient of variation ratio drops to ~0.04, compressing per-region viscosity variation to 4% of frustration variability. This explains moderate Spearman correlation (0.64-0.67) despite identical point cloud topology (W2=0, overlap=1.0)."
+where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/vacuum_frustration/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)"
+status = "Established"
+status_note = "Verified at 16^3 (CV_ratio=0.057) and 32^3 (CV_ratio=0.038). Mechanism: sigmoid saturation collapses dynamic range while preserving extrema ordering."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: CV_ratio << 1 and moderate Spearman despite W2=0. REFUTATION: sigmoid with F_crit near distribution mean shows high CV_ratio AND high Spearman."
+phase = "Phase 2 Week 2"
+sprint = 38
+
+[[claim]]
+id = "C-662"
+statement = "Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces CV_ratio ~ 4.7, amplifying spatial variation by nearly 5x compared to frustration. This tail-stretching preserves strong spatial correlation (Spearman > 0.95) while generating a distinct CV fingerprint from linear coupling (CV_ratio ~ 0.47)."
+where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs"
+status = "Established"
+status_note = "Verified at 16^3 (CV_ratio=4.74) and 32^3 (CV_ratio=4.69). Consistent across grid resolutions."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: CV_ratio > 1 for power exponent > 1. REFUTATION: power-law with exponent > 1 showing CV_ratio < 1."
+phase = "Phase 2 Week 2"
+sprint = 38
+
+[[claim]]
+id = "C-663"
+statement = "Grid Convergence of Frustration-Viscosity Spatial Correlation: Spearman and Pearson correlations between frustration density and viscosity fields are stable or monotonically improving across 16^3, 32^3, and 64^3 grid resolutions for all coupling models. Linear model: Spearman=1.0 at all resolutions. Sigmoid model: 0.64->0.69->0.95 (improving with resolution)."
+where_stated = "crates/gororoba_cli/src/bin/thesis_lab.rs, data/thesis_lab/convergence_study/thesis_lab_report.toml"
+status = "Established"
+status_note = "Verified in convergence study with Kolmogorov forcing and non-Newtonian coupling."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: monotonic Spearman improvement 16->32->64. REFUTATION: degradation with increasing resolution for any coupling model."
+phase = "Phase 2 Week 2"
+sprint = 38
+
+[[claim]]
+id = "C-664"
+statement = "Non-Newtonian Shear Thickening Confirmation: Power-law viscosity coupling (power_index=1.5, coupling=10.0) reduces maximum velocity by 15-22% compared to Newtonian baseline at matched grid resolution. At 64^3: power_law v_max=0.000218 vs constant v_max=0.001486 (ratio 0.147), confirming genuine strain-rate-dependent viscosity enhancement."
+where_stated = "crates/gororoba_cli/src/bin/thesis_lab.rs, crates/lbm_3d/src/solver.rs (evolve_non_newtonian)"
+status = "Established"
+status_note = "Verified across 16^3, 32^3, 64^3 with Kolmogorov forcing. The 5-7x velocity reduction for power-law vs constant is the strongest evidence for Thesis 2."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: v_max ratio < 0.5 across resolutions. REFUTATION: power-law v_max >= constant v_max at any resolution."
+phase = "Phase 2 Week 2"
+sprint = 38
+
+[[claim]]
+id = "C-665"
+statement = "TX-1 Frustration-Modulated Collision Dynamics: Local frustration density modulates effective diffusion in lattice collision storms via noise_scale = noise_base * (1 + alpha * F(x,y,z)). Higher frustration regions produce broader diffusion, increasing effective dimensionality of return-time dynamics. Alpha > 0 shifts latency law exponent gamma compared to uniform alpha=0 baseline."
+where_stated = "crates/lattice_filtration/src/filtration.rs (simulate_frustration_modulated_storm, FrustrationStormConfig)"
+status = "Provisional"
+status_note = "Function implemented with 4 tests passing. Full evidence generation pending cross-thesis sweep."
+last_verified = "2026-02-12"
+what_would_verify_refute = "VERIFIED: gamma shift with alpha sweep, convergent with steps. REFUTATION: gamma invariant to alpha across full sweep range."
+phase = "Phase 2 Week 2"
+sprint = 38

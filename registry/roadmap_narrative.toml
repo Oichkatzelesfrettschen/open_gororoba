@@ -2,12 +2,12 @@
 
 [roadmap_narrative]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-12"
 source_markdown = "docs/ROADMAP.md"
 body_markdown = """
 # open_gororoba Roadmap
 
-**Consolidated**: 2026-02-06
+**Consolidated**: 2026-02-10
 **Supersedes**: `RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md` (all deleted)
 **Companions**: `docs/TODO.md` (sprint), `docs/NEXT_ACTIONS.md` (priority queue)
 
@@ -72,7 +72,7 @@ Ported 15 Python modules to Rust domain crates in priority order:
 4. Fluid dynamics, fractional Laplacian, metamaterials, optics, GR
 
 **Phase D: CLI Binaries**
-Created `gororoba_cli` with 25 analysis binaries covering algebra, cosmology,
+Created `gororoba_cli` with 57 binaries covering algebra, cosmology,
 optics, quantum, statistics, and data fetching.
 
 ### 1.3 Where We Are Now
@@ -87,11 +87,11 @@ replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
 **Test count**: 2312 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
-**Claims**: 527 (C-001..C-527). **Insights**: I-001..I-018. **Experiments**: E-001..E-013. **Binaries**: 40.
+**Claims**: 527 (C-001..C-527). **Insights**: I-001..I-018. **Experiments**: E-001..E-013. **Binaries**: 57.
 
 ```
 open_gororoba/
-  Cargo.toml                  # Workspace root (15 members)
+  Cargo.toml                  # Workspace root (23 members)
   crates/
     algebra_core/             # Cayley-Dickson, Clifford, E8, box-kites, Reggiani, annihilator, M3
     cosmology_core/           # TOV, spectral dimensions, bounce, dimensional geometry, observational
@@ -106,7 +106,7 @@ open_gororoba/
     data_core/                # 18 dataset providers + provenance + parsers
     gororoba_py/              # PyO3 bindings (thin wrappers -> domain crates)
     docpipe/                  # PDF/document extraction pipeline
-    gororoba_cli/             # 40 analysis binaries + fetch-datasets
+    gororoba_cli/             # 57 binaries including app, validation, and fetch lanes
   src/gemini_physics/         # Remaining Python (visualization, notebooks)
   data/external/              # Cached datasets + PROVENANCE.local.json
   docs/                       # Claims, bibliography, insights, roadmaps
@@ -379,7 +379,7 @@ Remaining:
   - 22/30 providers tested, all pass. 3 broken URLs fixed (WMM, GGM05S, GRACE-FO).
   - 8 large providers (multi-GB) are on-demand only.
 
-See `docs/ULTRA_ROADMAP.md` Section H for the full granular checklist (21/21 complete).
+See `registry/roadmap.toml` Section H for the full granular checklist (21/21 complete).
 
 ### 4.4 New Concept Sources (CX-026..028, Sprint 6)
 
@@ -534,7 +534,7 @@ pub mod constants;         // Physical constants (NEW from #63)
 
 ## 7. Remaining Workstreams from ULTRA_ROADMAP.md
 
-These sections are tracked in detail in `docs/ULTRA_ROADMAP.md` and summarized
+These sections are tracked in detail in `registry/roadmap.toml` and summarized
 here for completeness.
 
 ### 7.1 Reproducibility & Quality Gates (Section A)
@@ -562,7 +562,7 @@ here for completeness.
 - [ ] Structured \"hypotheses + tests + results\" format
 
 ### 7.6 Dataset Pillars (Section H) -- COMPLETE
-Full granular checklist in `docs/ULTRA_ROADMAP.md` Section H (21/21 done).
+Full granular checklist in `registry/roadmap.toml` Section H (21/21 done).
 30 dataset providers, 6 EHT multi-format bundles (UVFITS+CSV+TXT), 3 URL fixes applied.
 
 ### 7.7 Finite Projective Geometry Integration (Sprint 7)
@@ -764,10 +764,10 @@ This document synthesizes and supersedes:
 | `RUST_REFACTOR_PLAN.md` | 293 | Sprint history, benchmarks, proptest/criterion patterns | **Deleted** (absorbed into Sections 1, 3) |
 | `docs/RESEARCH_ROADMAP.md` | 41 | Research workstreams, future directions | **Deleted** (absorbed into Section 6) |
 | `docs/engineering/GEMINI_FUNCTION_MIGRATION_LEDGER.md` | 130 | Codex migration audit (inaccurate) | **Deleted** (wrapper anti-pattern throughout) |
-| `docs/ULTRA_ROADMAP.md` | 112 | Granular claim-to-evidence checklists | Active companion (Section 7 detail) |
+| `registry/roadmap.toml` | 112 | Granular claim-to-evidence checklists | Active companion (Section 7 detail) |
 | `docs/TODO.md` | 41 | Current sprint tracker | Active companion (sprint-level) |
 | `docs/NEXT_ACTIONS.md` | 60 | Priority queue | Active companion (top-5) |
 
-`docs/ULTRA_ROADMAP.md`, `docs/TODO.md`, and `docs/NEXT_ACTIONS.md` continue
+`registry/roadmap.toml`, `docs/TODO.md`, and `docs/NEXT_ACTIONS.md` continue
 as active companions for granular tracking.
 """

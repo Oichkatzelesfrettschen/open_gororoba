@@ -252,3 +252,71 @@ description = "SN Ia delayed-detonation scaffold runner with reproducible snapsh
 name = "e027-topology-analyzer"
 crate = "gororoba_cli"
 description = "E-027 Phase 2: Vietoris-Rips persistent homology topology-frustration correlation analyzer for Thesis 1 validation"
+
+[[binary]]
+name = "lattice-filtration-analyzer"
+crate = "gororoba_cli"
+description = "E-028: Patricia trie survival depth spectrum, lepton mass ratio prediction, and latency law analysis for Thesis 2 validation"
+experiment = "E-028"
+
+[[binary]]
+name = "neural-homotopy-trainer"
+crate = "gororoba_cli"
+description = "E-029: A-infinity correction tensor search via Burn neural network and pentagon-constrained optimization for Thesis 3 validation"
+experiment = "E-029"
+
+[[binary]]
+name = "percolation-experiment"
+crate = "gororoba_cli"
+description = "E-027: Percolation threshold vs frustration correlation experiment for Thesis 1 validation"
+experiment = "E-027"
+
+[[binary]]
+name = "e027-equivalence-adapter"
+crate = "gororoba_cli"
+description = "Extract E-027 TOML artifacts into proxy curves for homotopy-viscosity equivalence analysis"
+
+[[binary]]
+name = "homotopy-viscosity-equivalence"
+crate = "gororoba_cli"
+description = "Compare homotopy loss and viscosity dynamics via lagged correlation + DTW metrics"
+
+[[binary]]
+name = "thesis-program-sweep"
+crate = "gororoba_cli"
+description = "Generate deterministic STPT-006..009 thesis evidence artifacts across core validation lanes"
+
+[[binary]]
+name = "c590_attractor_sweep"
+crate = "gororoba_cli"
+description = "Compute C-590 attractor frustration ratios across CD dimensions and emit regression CSV"
+
+[[binary]]
+name = "test-tda-api"
+crate = "gororoba_cli"
+description = "Validate TDA Vietoris-Rips persistent homology API on a known 2D circle topology"
+
+[[binary]]
+name = "gororoba-studio"
+crate = "gororoba_cli"
+description = "Rust-native web app control plane for thesis pipelines, live gates, and benchmark snapshots"
+
+[[binary]]
+name = "thesis-lab"
+crate = "gororoba_cli"
+description = "Multi-model comparison: 5 viscosity coupling models through LBM -> VR topology pipeline with Wasserstein distance analysis"
+
+[[binary]]
+name = "thesis2-kolmogorov-2d"
+crate = "gororoba_cli"
+description = "2D Kolmogorov flow validation for non-Newtonian power-law viscosity coupling across tau and coupling sweep"
+
+[[binary]]
+name = "thesis-synthesis-engine"
+crate = "gororoba_cli"
+description = "Orchestrate all four thesis pipelines (T1-T4), apply falsification gates, produce TOML evidence artifacts"
+
+[[binary]]
+name = "thesis-cross-tx3"
+crate = "gororoba_cli"
+description = "TX-3: VR persistent homology on frustration and viscosity fields with sigmoid paradox diagnostics (overlap, CV, NLI, dynamic range)"

@@ -5,11 +5,11 @@
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-updated = "2026-02-10"
+updated = "2026-02-12"
 python_recommended = "3.11-3.12"
 python_allowed = "3.13+ (with optional extras caveats)"
 primary_markdown = "docs/REQUIREMENTS.md"
-module_count = 11
+module_count = 12
 coverage_gap_count = 2
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "coq", "latex", "cpp"]
@@ -72,10 +72,10 @@ name = "core"
 markdown = "docs/REQUIREMENTS.md"
 status = "active"
 status_token = "ACTIVE"
-runtime_stack = "mixed"
+runtime_stack = "rust"
 requires_modules = []
 install_targets = ["make install", "PYTHONWARNINGS=error make check"]
-verify_targets = ["PYTHONWARNINGS=error make check", "make install"]
+verify_targets = ["PYTHONWARNINGS=error make check", "make studio-check", "make install"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]
@@ -150,6 +150,18 @@ install_targets = ["make install-quantum", "docker-quantum-build", "docker-quant
 verify_targets = ["docker-quantum-build", "docker-quantum-run", "make install-quantum"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
+[[module]]
+id = "REQ-STUDIO"
+name = "gororoba_studio"
+markdown = "apps/gororoba_studio/README.md"
+status = "active"
+status_token = "ACTIVE"
+runtime_stack = "mixed"
+requires_modules = ["REQ-CORE"]
+install_targets = ["make studio-run"]
+verify_targets = ["make studio-check"]
+acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+
 [[coverage_gap]]
 id = "REQ-GAP-001"
 area = "crate_specific_docs"
@@ -162,9 +174,8 @@ related_module_ids = []
 [[coverage_gap]]
 id = "REQ-GAP-002"
 area = "operational_sync"
-status = "open"
-status_token = "OPEN"
-description = "No generator currently syncs requirements markdown from this TOML registry."
-proposed_resolution = "Add TOML -> markdown exporter and include in make registry."
-related_module_ids = []
-
+status = "resolved"
+status_token = "RESOLVED"
+description = "Requirements markdown export is implemented via export_registry_markdown_mirrors.py and wired through Makefile registry-export-markdown."
+proposed_resolution = "Keep mirror freshness verifiers active in docs publish and governance lanes."
+related_module_ids = ["REQ-CORE", "REQ-STUDIO"]
