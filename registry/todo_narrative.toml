@@ -2,23 +2,23 @@
 
 [todo_narrative]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-12"
 source_markdown = "docs/TODO.md"
 body_markdown = """
-# TODO (updated 2026-02-08): executable, test-driven tracker
+# TODO (updated 2026-02-12): executable, test-driven tracker
 
 Primary trackers:
 - `docs/ROADMAP.md` (consolidated roadmap: architecture, crates, migration history, GR port plan)
-- `docs/ULTRA_ROADMAP.md` (test-driven, claim->evidence oriented)
+- `registry/roadmap.toml` (authoritative roadmap registry)
 - `registry/claims_tasks.toml` (claim-specific implementation backlog, authoritative)
 - `docs/CLAIMS_TASKS.md` (generated mirror)
 - `docs/NEXT_ACTIONS.md` (short priority queue)
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1806 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
+- 2312 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
-- Claims: C-001..C-475 (475 total). Insights: I-001..I-016.
+- Claims: C-001..C-527 (527 total). Insights: I-001..I-018.
 
 ## Current sprint: Sprint 13 -- TOML Centralization and Markdown Governance (IN PROGRESS)
 
@@ -127,7 +127,7 @@ Note:
   - [x] Fractional Laplacian sources: Riesz vs spectral vs extension (CX-004). Audit complete: periodic=Riesz, Dirichlet=spectral correctly labeled. C-S doc clarified. All 5 sources cited.
   - [x] p-adic operator sources (Vladimirov/Kozyrev) (CX-006). Audit complete: foundations correct (14 tests), Vladimirov/Kozyrev correctly deferred, sources cited in BIBLIOGRAPHY.md.
   - [x] Exceptional/Jordan/Albert references to correct overclaims (CX-007). Audit complete: no overclaims found. nilpotent_orbits.rs is generic (no exceptional claims), magic square verified, H3(O) correctly deferred.
-- [x] Execute missing dataset pillars roadmap from `docs/ULTRA_ROADMAP.md` Section H (21/21 done, 1464 tests).
+- [x] Execute missing dataset pillars roadmap from `registry/roadmap.toml` Section H (21/21 done, 1464 tests).
 - [x] Implementation (keep every warning as an error):
   - [x] Wheels axioms checker + unit tests (CX-017). Already in wheels.rs (WheelQ, 8 axioms, 10 tests).
   - [x] XOR-balanced search extension + tests (CX-003). 10 new tests.

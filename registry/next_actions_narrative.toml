@@ -2,18 +2,18 @@
 
 [next_actions_narrative]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-12"
 source_markdown = "docs/NEXT_ACTIONS.md"
 body_markdown = """
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 25 completion.
+Updated 2026-02-10 from `registry/next_actions.toml`.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
 ## Current State (Sprint 25, 2026-02-09)
 
 **Test count**: 2312 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-527 (527 total). **Insights**: I-001..I-018. **Binaries**: 40.
+**Claims**: C-001..C-527 (527 total). **Insights**: I-001..I-018. **Binaries**: 57.
 
 ## Recent Sprint Summaries
 

@@ -5,7 +5,7 @@
 updated = "2026-02-12"
 status = "active"
 status_token = "ACTIVE"
-action_count = 24
+action_count = 27
 status_allowlist = ["todo", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -275,7 +275,7 @@ status = "in_progress"
 status_token = "IN_PROGRESS"
 dependencies = []
 acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
-evidence_refs = ["reports/documents_recursive_inventory_2026_02_12.toml", "reports/documents_recursive_import_manifest_2026_02_12.toml", "reports/documents_pdf_extraction_batch_2026_02_12.toml", "data/external/documents_ingest/MANIFEST.toml", "data/external/documents_extracted/equation_catalog.toml", "reports/clean_room_port_math_spec_2026_02_12.toml", "DOCSRC-001", "DOCSRC-002", "DOCSRC-005", "DOCSRC-009", "DOCSRC-016"]
+evidence_refs = []
 
 [[action]]
 id = "NA-023"
@@ -300,3 +300,39 @@ status_token = "IN_PROGRESS"
 dependencies = []
 acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
+
+[[action]]
+id = "NA-025"
+area = "frontend"
+title = "Studio Dynamic Registry Catalog"
+description = "Replace hard-coded thesis pipeline descriptors in gororoba-studio with registry-backed metadata to keep UI/API inventory synchronized."
+priority = "high"
+status = "todo"
+status_token = "TODO"
+dependencies = ["NA-014", "REQ-STUDIO"]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/gororoba_cli/src/bin/gororoba_studio.rs", "registry/experiments.toml", "plans/ultra_frontend_harmonization_roadmap_2026_02_12.toml"]
+
+[[action]]
+id = "NA-026"
+area = "frontend"
+title = "Studio Artifact Linking"
+description = "Expose links from studio run records to TOML/CSV artifact outputs so operators can jump directly from UI telemetry to evidence files."
+priority = "high"
+status = "todo"
+status_token = "TODO"
+dependencies = ["NA-025"]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["apps/gororoba_studio/ui/app.js", "registry/markdown_inventory.toml", "registry/experiments.toml"]
+
+[[action]]
+id = "NA-027"
+area = "frontend"
+title = "Studio Native Packaging Pilot"
+description = "Package gororoba-studio as a native shell pilot (desktop first, then Android/iOS webview wrappers) with reproducible build notes."
+priority = "medium"
+status = "todo"
+status_token = "TODO"
+dependencies = ["REQ-STUDIO", "NA-025"]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["reports/frontend_app_design_options_2026_02_12.toml", "plans/frontend_execution_roadmap_2026_02_12.toml"]

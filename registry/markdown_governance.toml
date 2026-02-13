@@ -4,8 +4,8 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 5
-toml_generated_mirror_count = 4
+document_count = 6
+toml_generated_mirror_count = 5
 toml_manual_source_count = 1
 
 [[document]]
@@ -47,8 +47,17 @@ notes = "Generated from TOML registries and overlays."
 [[document]]
 path = "crates/lbm_3d_cuda/README.md"
 id = "MDG-0005"
-kind = "manual_source"
+kind = "generated_markdown"
 mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
 notes = "Manual source consumed by TOML normalizers."
+
+[[document]]
+path = "docs/convos/README.md"
+id = "MDG-0006"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml", "registry/markdown_owner_map.toml"]
+notes = "Generated from TOML registries and overlays."

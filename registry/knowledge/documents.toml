@@ -5,25 +5,25 @@
 [knowledge_documents]
 generated_at = "deterministic"
 raw_capture_count = 1
-skipped_generated_count = 4
+skipped_generated_count = 5
 authoritative = false
 normalization_required = true
 
 [[document]]
-id = "DOC-0005"
-source_path = "crates/lbm_3d_cuda/README.md"
-title = "lbm_3d_cuda"
-kind = "manual_source"
-migration_priority = "medium"
+id = "DOC-0006"
+source_path = "docs/convos/README.md"
+title = "Convos audit workspace"
+kind = "markdown_mirror"
+migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0005.toml"
+document_toml = "registry/knowledge/docs/DOC-0006.toml"
 
 [[document]]
 id = "DOC-0001"
 source_path = "AGENTS.md"
-title = "AGENTS"
+title = "Agent and Contributor Operating Manual"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
@@ -32,7 +32,7 @@ skip_reason = "generated_markdown_or_artifact"
 [[document]]
 id = "DOC-0002"
 source_path = "CLAUDE.md"
-title = "CLAUDE"
+title = "Claude Overlay for open_gororoba"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
@@ -41,7 +41,7 @@ skip_reason = "generated_markdown_or_artifact"
 [[document]]
 id = "DOC-0003"
 source_path = "GEMINI.md"
-title = "GEMINI"
+title = "Gemini Overlay for open_gororoba"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
@@ -50,8 +50,17 @@ skip_reason = "generated_markdown_or_artifact"
 [[document]]
 id = "DOC-0004"
 source_path = "README.md"
-title = "open_gororoba"
+title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
 kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0005"
+source_path = "crates/lbm_3d_cuda/README.md"
+title = "Readme"
+kind = "generated_markdown"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
