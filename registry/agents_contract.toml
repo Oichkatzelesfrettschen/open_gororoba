@@ -227,7 +227,7 @@ registry = [
   "registry-verify-crossrefs",
   "registry-verify-mirrors",
 ]
-aliases = ["wave6-gate -> governance-gate"]
+aliases = []
 artifacts = [
   "artifacts",
   "artifacts-motifs",

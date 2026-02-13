@@ -1,6 +1,6 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -102,7 +102,7 @@ check: registry-verify-markdown-owner test lint smoke
 registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
-# Governance acceptance gate (standardized; replaces wave6-gate naming)
+# Governance acceptance gate (5 TOML registry checks)
 governance-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs registry-verify-markdown-governance
 	@echo ""
 	@echo "=========================================="
@@ -119,10 +119,6 @@ governance-gate: registry-verify-markdown-inventory registry-verify-markdown-own
 	@echo ""
 	@echo "To run full validation pipeline including ASCII check:"
 	@echo "  make check && make ascii-check"
-
-# Backward-compatibility alias (deprecated naming)
-wave6-gate: governance-gate
-	@echo "NOTE: 'wave6-gate' is deprecated; use 'governance-gate'."
 
 # Pre-push review lane (recommended before push/sync to origin)
 pre-push-gate: rust-smoke governance-gate ascii-check
@@ -688,6 +684,7 @@ latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
 	cargo run --release --bin generate-latex
 	@mkdir -p docs/latex/out
+	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out llm_scaffold_paper.tex
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
 	cd docs/latex && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
 
@@ -798,6 +795,11 @@ help:
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo "    make registry-verify-markdown-toml-first Verify markdown owner/inventory TOML-first hard gate"
 	@echo "    MARKDOWN_EXPORT=1 make docs-publish Export mirrors in strict mode (out-of-tree, no legacy writes)"
+	@echo ""
+	@echo "  Gates (tiered):"
+	@echo "    make governance-gate      5 TOML registry checks (inventory, owner, schema, crossrefs, governance)"
+	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check"
+	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"
