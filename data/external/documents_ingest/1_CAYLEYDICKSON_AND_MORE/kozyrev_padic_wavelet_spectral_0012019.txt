@@ -1,0 +1,755 @@
+arXiv:math-ph/0012019v3 23 Feb 2001
+
+Wavelet analysis as a p–adic spectral analysis
+S.V.Kozyrev
+November 3, 2018
+Institute of Chemical Physics, Russian Academy of Science
+Abstract
+New orthonormal basis of eigenfunctions for the Vladimirov operator of p–adic fractional derivation is constructed. The map of p–adic
+numbers onto real numbers (p–adic change of variable) is considered.
+p–Adic change of variable maps the Haar measure on p–adic numbers
+onto the Lebesgue measure on the positive semiline. p–Adic change of
+variable (for p = 2) provides an equivalence between the constructed
+basis of eigenfunctions of the Vladimirov operator and the wavelet
+basis in L2 (R+ ) generated from the Haar wavelet. This means that
+the wavelet analysis can be considered as a p–adic spectral analysis.
+
+1
+
+Introduction
+
+In the present paper we construct a new orthonormal basis of eigenfunctions
+of the Vladimirov operator of p–adic fractional derivation. The example
+of such a basis one can find in [1]. Different basises of eigenvectors of the
+Vladimirov operator were built in [2], [3], [4]. The basis constructed in the
+present paper consists of locally constant functions with support on p–adic
+discs.
+We also check that the constructed basis of eigenfunctions of the Vladimirov
+operator (for p = 2) is equivalent to the wavelet basis in L2 (R+ ) generated
+from the Haar wavelet. This equivalence is given by p–adic change of variables: the map of p–adic numbers onto real numbers that conserves the
+measure. This means that the wavelet analysis can be considered as a p–adic
+1
+
+harmonic analysis (decomposition of functions over the eigenfunctions of the
+Vladimirov operator of p–adic fractional derivation).
+For introduction to p-adic analysis see [1]. p-Adic analysis and p-adic
+mathematical physics attract great interest, see [1], [5], [6]. For instance, padic models in string theory were introduced, see [7], [8], and p-adic quantum
+mechanics [9] and p–adic quantum gravity [10] were investigated. p–Adic
+analysis was applied to investigate the spontaneous breaking of the replica
+symmetry, cf. [11], [12], [13], [14].
+Let us make here a brief review of p-adic analysis. The field Qp of p-adic
+numbers is the completion of the field of rational numbers Q with respect
+to the p-adic norm on Q. This norm is defined in the following way. An
+arbitrary rational number x can be written in the form x = pγ m
+with m and
+n
+n not divisible by p. The p-adic norm of the rational number x = pγ m
+is
+n
+equal to |x|p = p−γ .
+The most interesting property of the field of p-adic numbers is ultrametricity. This means that Qp obeys the strong triangle inequality
+|x + y|p ≤ max(|x|p , |y|p).
+We will consider disks in Qp of the form {x ∈ Qp : |x − x0 |p ≤ p−k }. For
+example, the ring Zp of integer p-adic numbers is the disk {x ∈ Qp : |x|p ≤ 1}
+which is the completion of integers with the p-adic norm. The main properties
+of disks in arbitrary ultrametric space are the following:
+1.
+Every point of a disk is the center of this disk.
+2.
+Two disks either do not intersect or one of these disks contains the
+other.
+The p-adic Fourier transform F of the function f (x) is defined as follows
+F [f ](ξ) = fe(ξ) =
+
+Z
+
+χ(ξx)f (x)dµ(x)
+
+Qp
+
+Here dµ(x) is the Haar measure. The inverse Fourier transform have the
+form
+Z
+−1
+F [ge](x) =
+χ(−ξx)ge(ξ)dµ(ξ)
+Qp
+
+Here χ(ξx) = exp(2πiξx) is the character of the field of p-adic numbers. For
+example, the Fourier transform of the indicator function Ω(x) of the disk of
+
+2
+
+radius 1 with center in zero (this is a function that equals to 1 on the disk
+and to 0 outside the disk) is the function of the same type:
+e
+Ω(ξ)
+= Ω(ξ)
+
+In the present paper we use the following Vladimirov operator Dxα of the
+fractional p-adic differentiation, that is defined [1] as
+Dxα f (x) = F −1 ◦ |ξ|αp ◦ F [f ](x) =
+
+pα − 1 Z f (x) − f (y)
+dµ(y)
+1 − p−1−α Qp |x − y|1+α
+p
+
+(1)
+
+Here F is the (p-adic) Fourier transform, the second equality holds for α > 0.
+For further reading on the subject of p-adic analysis see [1].
+
+2
+
+p–Adic spectral analysis
+
+Let us construct an orthonormal basis of eigenvectors of the Vladimirov operator. The following lemma gives the basic technical result.
+Lemma 1. The function
+ψ(x) = χ(p−1 x)Ω (|x|p )
+
+(2)
+
+is an eigenvector of the Vladimirov operator:
+D α ψ(x) = pα ψ(x)
+
+Remark. The eigenvalue for ψ(x) is the same as for the character χ(p−1 x):
+D α χ(p−1 x) = pα χ(p−1 x)
+Proof
+We get
+
+Let us check that ψ(x) is an eigenvector of the Vladimirov operator.
+D α ψ(x) =
+
+pα − 1 Z ψ(x) − ψ(y)
+dµ(y) =
+1 − p−1−α
+|x − y|1+α
+p
+3
+
+pα − 1 Z χ(p−1 x)Ω (|x|p ) − χ(p−1 y)Ω (|y|p )
+=
+dµ(y) =
+1 − p−1−α
+|x − y|1+α
+p
+= χ(p−1 x)
+
+Z
+
+pα − 1
+1 − p−1−α
+
+Ω (|x|p ) − χ(p−1 (y − x))Ω (|y|p)
+dµ(y)
+|x − y|1+α
+p
+
+(3)
+
+Let us calculate the integral over y in (3) in two cases.
+1) Let |x|p ≤ 1. In this case the integral in (3) is given by
+Z
+
+1 − χ(p−1 (y − x))Ω (|y|p )
+dµ(y)
+|x − y|1+α
+p
+
+Using that every point of p–adic disk is its center we get that for |x|p ≤ 1 we
+have Ω (|y|p) = Ω (|x − y|p ) and therefore the integral is equal to
+Z
+
+Z
+1 − χ(p−1 (y − x))Ω (|y − x|p )
+1 − χ(p−1 z)Ω (|z|p )
+dµ(y)
+=
+dµ(z)
+|x − y|1+α
+|z|1+α
+p
+p
+
+2) Let |x|p > 1. For the integral in (3) we get
+1
+− 1+α
+|x|p
+
+Z
+
+|y|p ≤1
+
+χ(p−1 (y − x))dµ(y) = 0
+
+This proves that ψ(x) is an eigenvector of the Vladimirov operator with
+the following eigenvalue
+pα − 1
+D ψ(x) = ψ(x)
+1 − p−1−α
+α
+
+α
+
+= ψ(x)
+
+
+
+Z
+
+1 − χ(p−1 z)Ω (|z|p )
+dµ(z) =
+|z|1+α
+p
+
+p−1
+X
+
+∞
+X
+
+
+
+p − 1  −1
+pγ p−(1+α)γ  = pα ψ(x)
+(1 − χ(p−1 i)) + (1 − p−1 )
+p
+−1−α
+1−p
+γ=1
+i=0
+
+that finishes the proof of the lemma.
+The lemma implies
+D α ψ(ax + b) = |a|αp pα ψ(ax + b)
+
+(4)
+
+One can check that the set of (integrable) functions ψ(ax + b) (for different
+a, b) is a complete system in a Hilbert space L2 (Qp ). Moreover,
+4
+
+Theorem 2. The set of functions {ψγjn }:
+γ
+
+ψγjn (x) = p− 2 χ(pγ−1 jx)Ω(|pγ x−n|p ),
+
+γ ∈ Z,
+
+n ∈ Qp /Zp,
+
+j = 1, . . . , p−1
+(5)
+2
+α
+is an orthonormal basis in L (Qp ) of eigenvectors of the operator D :
+D α ψγjn = pα(1−γ) ψγjn
+
+(6)
+
+The group Qp /Zp in (5) is parameterized by
+n=
+
+m
+X
+
+ni p−i ,
+
+ni = 0, . . . , p − 1
+
+i=1
+
+Consider the scalar product
+
+Proof
+
+hψγjn , ψγ ′ j ′ n′ i =
+Z
+
+=
+
+γ′
+
+γ
+
+Qp
+
+′
+
+′
+
+p− 2 χ(−pγ−1 jx)Ω(|pγ x − n|p )p− 2 χ(pγ −1 j ′ x)Ω(|pγ x − n′ |p )dµ(x) (7)
+
+Consider γ ≤ γ ′ . We have that the product of indicators is equal to the
+indicator or zero:
+′
+
+′
+
+Ω(|pγ x − n|p )Ω(|pγ x − n′ |p ) = Ω(|pγ x − n|p )Ω(|pγ −γ n − n′ |p )
+′
+
+Since n′ ∈ Qp /Zp the function Ω(|pγ −γ n − n′ |p ) is non–zero (and equal to
+one) for
+′
+n′ = pγ −γ n
+We get for (7)
+Z
+
+γ′
+
+γ
+
+Qp
+
+′
+
+′
+
+p− 2 χ(−pγ−1 jx)Ω(|pγ x−n|p )p− 2 χ(pγ −1 j ′ x)Ω(|pγ x−n|p )Ω(|pγ −γ n−n′ |p )dµ(x)
+(8)
+′
+
+Consider γ < γ . Then for the integral (8) we get
+Z
+
+Qp
+
+γ
+
+γ′
+
+′
+
+′
+
+p− 2 p− 2 χ(−pγ−1 jx)χ(pγ −γ−1 j ′ n)Ω(|pγ x − n|p )Ω(|pγ −γ n − n′ |p )dµ(x) = 0
+
+5
+
+Therefore the scalar product (7) can be non–zero only for γ = γ ′ . For γ = γ ′
+the integral (8) is equal to
+Z
+
+Qp
+
+p−γ χ(−pγ−1 jx)χ(pγ−1 j ′ x)Ω(|pγ x − n|p )Ω(|n − n′ |p )dµ(x)
+
+Since n, n′ ∈ Qp /Zp
+Ω(|n − n′ |p ) = δnn′
+we get for (7)
+hψγjn , ψγ ′ j ′ n′ i = δγγ ′ δnn′
+
+Z
+
+Qp
+
+p−γ χ(pγ−1 (j ′ − j)x)Ω(|pγ x − n|p )dµ(x) =
+= δγγ ′ δnn′ δjj ′
+
+that proves that the vectors ψγjn are orthonormal.
+To prove that the set of vectors {ψγjn } is an orthonormal basis (is total
+in L2 (Qp )) we use the Parsevale identity.
+Since the set of indicators (characteristic functions) of p–adic discs is
+total in L2 (Qp ) and the set of vectors {ψγjn } is translationally invariant and
+invariant under dilations x 7→ pn x, x ∈ Qp , to prove that {ψγjn } is a complete
+system it is enough to check the Parsevale identity for the indicator Ω(|x|p ).
+We have
+γ
+
+hΩ(|x|p ), ψγjn i = p− 2 θ(γ)δn0 ,
+
+θ(γ) = 0, γ ≤ 0,
+
+θ(γ) = 1, γ ≥ 1
+
+(9)
+
+Formula (9) implies the Parsevale identity for Ω(|x|p ):
+X
+γjn
+
+|hΩ(|x|p ), ψγjn i|2 =
+
+∞
+X
+
+(p − 1)p−γ = 1 = |hΩ(|x|p ), Ω(|x|p )i|2
+
+γ=1
+
+that proves that {ψγjn } is an orthonormal basis in L2 (Qp ).
+Formula (4) implies that the basis {ψγjn } is an orhtonormal basis of
+eigenvectors of the operator D α with eigenvalues (6). This finishes the proof
+of the theorem.
+
+6
+
+3
+
+Wavelet interpretation
+
+Let us discuss the connection between the constructed basis {ψγjn } and the
+basis of wavelets in the space of quadratically integrable functions L2 (R+ )
+on positive semiline. The wavelet basis in L2 (R+ ) is a basis given by shifts
+and dilations of the so called mother wavelet function, cf. [15]. The simplest
+example of such a function is the Haar wavelet
+Ψ(x) = χ[0, 1 ] (x) − χ[ 1 ,1] (x)
+2
+
+(10)
+
+2
+
+(difference of two characteristic functions).
+The wavelet basis in L2 (R) (or basis of multiresolution wavelets) is the
+basis
+γ
+(11)
+Ψγn (x) = 2− 2 Ψ(2−γ x − n), γ ∈ Z, n ∈ Z
+Consider the p–adic change of variables, i.e. the onto map
+ρ : Qp → R+
+ρ:
+
+∞
+X
+
+ai pi 7→
+
+i=γ
+
+∞
+X
+
+ai p−i−1 ,
+
+ai = 0, . . . , p − 1,
+
+γ∈Z
+
+(12)
+
+i=γ
+
+This map is not a one–to–one map. The map ρ is continuous and moreover
+Lemma 3.
+
+The map ρ satisfies the Holder inequality
+|ρ(x) − ρ(y)| ≤ |x − y|p
+
+Proof
+
+Consider
+x=
+
+∞
+X
+
+xi pi ,
+
+y=
+
+i=α
+
+∞
+X
+
+y i pi ,
+
+i=β
+
+where α ≤ β. Then
+ρ(x) − ρ(y) =
+
+β−1
+X
+
+xi pi +
+
+i=α
+
+∞
+X
+
+i=β
+
+Consider the following two cases:
+7
+
+(xi − yi )pi
+
+(13)
+
+1) Let α < β. Then
+|ρ(x) − ρ(y)| ≤ (p − 1)
+
+∞
+X
+
+p−i−1 = |x − y|p
+
+i=α
+
+2) Let α = β. Then |x − y|p = p−γ , γ > α.
+∞
+X
+
+(xi − yi )p−i−1
+
+∞
+X
+
+p−i−1 = p−γ = |x − y|p
+
+ρ(x) − ρ(y) =
+
+i=γ
+
+|ρ(x) − ρ(y)| ≤ (p − 1)
+
+i=γ
+
+that finishes the proof of the lemma.
+The following map is a one–to–one map:
+ρ : Qp /Zp → N
+where N is a set of natural numbers including zero.
+Here Qp /Zp is a group (with respect to addition modulo 1) of numbers of
+the form
+x=
+
+−1
+X
+
+xi pi
+
+i=γ
+
+Lemma 4.
+tions
+
+For n ∈ Qp /Zp and m, k ∈ Z the map ρ satisfies the condiρ : pm n + pk Zp → p−m ρ(n) + [0, p−k ]
+
+(14)
+
+ρ : Qp \{pm n + pk Zp } → R+ \{p−m ρ(n) + [0, p−k ]}
+
+(15)
+
+up to a finite number of points.
+Proof
+We consider for simplicity the case ρ0 = ρ and k = 0. Consider
+n ∈ Qp /Zp :
+n=
+
+−1
+X
+
+ni pi
+
+i=γ
+
+n−1=
+
+−1
+X
+
+ni pi +
+
+i=γ
+
+∞
+X
+i=0
+
+8
+
+(p − 1)pi
+
+Then
+ρ(n) =
+
+−1
+X
+
+ni p−i−1
+
+i=γ
+
+
+
+∞
+−1
+∞
+−1
+X
+X
+X
+X
+ni p−i−1 + (p−1)p−i−1 = ρ(n)+1
+ρ(n−1) = ρ  ni pi + (p − 1)pi  =
+i=γ
+
+i=γ
+
+i=0
+
+i=0
+
+Application of (13) for y = n, y = n − 1 proves that n + Zp maps into
+ρ(n) + [0, 1]. Since the map Qp /Zp → N is one–to–one this proves the
+lemma.
+Lemma 5.
+The map ρ maps the Haar measure µ on Qp onto the Lebesgue
+measure l on R+ : for measurable subspace X ⊂ Qp
+µ(X) = l(ρ(X))
+or in symbolic notations
+ρ : dµ(x) 7→ dx
+Proof
+Lemma 4 implies that balls in Qp map onto closed intervals in
+R+ with conservation of measure. The map ρ : Qp → R+ is surjective and
+moreover nonintersecting balls map onto intervals thaat do not intersect or
+have intersection of the measure zero (by lemma 4). This proves the lemma.
+Therefore the corresponding map
+ρ∗ : L2 (R+ ) → L2 (Qp )
+ρ∗ f (x) = f (ρ(x))
+
+(16)
+
+is an unitary operator.
+Lemma 4 implies the following:
+Lemma 6.
+(for p = 2):
+
+The map ρ maps the Haar wavelet (10) onto the function (2)
+ρ∗ : Ψ(x) 7→ ψ(x)
+
+(17)
+
+(17) is an equality in L2 : on the set of zero measure (17) may not be true.
+Moreover, we have the following theorem:
+9
+
+Theorem 7. For p = 2 the map ρ maps the orthonormal basis of wavelets
+in L2 (R+ ) (11) (generated from the Haar wavelet) onto the basis (5) of
+eigenvectors of the Vladimirov operator:
+
+Proof
+
+ρ∗ : Ψγρ(n) (x) 7→ (−1)n ψγ1n (x)
+
+(18)
+
+2−γ ρ(x) = ρ(2γ x)
+
+(19)
+
+We have
+
+Lemma 4 implies for ρ(n) ∈ N
+χ[0,1] (ρ(2γ x) − ρ(n)) = χ[0,1] (ρ(2γ x − n))
+
+(20)
+
+(20) is true almost everywhere. Analogously
+χ[0, 1 ] (ρ(2γ x) − ρ(n)) = χ[0, 1 ] (ρ(2γ x − n))
+2
+
+2
+
+(21)
+
+Formulas (11), (19), (20), (21) imply
+γ
+
+Ψγρ(n) (ρ(x)) = 2− 2 Ψ(2−γ ρ(x) − ρ(n)) =
+γ
+
+γ
+
+= 2− 2 Ψ(ρ(2γ x − n)) = 2− 2 ψ(2γ x − n)
+The last equality follows from (16).
+Formula (5) implies that for p = 2
+γ
+
+γ
+
+ψγ1n (x) = 2− 2 χ(2γ−1 x)Ω(|2γ x − n|2 ) = (−1)n 2− 2 ψ(2γ x − n)
+that proves (18) and finishes the proof of the theorem.
+We get that after the p–adic change of variables (12) the wavelet analysis becomes the p–adic spectral analysis (expansion of a function over the
+eigenfunctions of the Vladimirov operator of p–adic derivation).
+Using this interpretation we will call the basis (5) the wavelet basis (or
+p–adic wavelet basis).
+Using map (16) it is possible to define the action of the Vladimirov operator in L2 (R+ ) by the formula
+∂pα f (x) = ρ∗−1 D α ρ∗ f (x)
+10
+
+(let us note that D α and ρ∗ depend on p).
+Ne can see that
+∂pα f (x) =
+
+pα − 1 Z ∞
+f (x) − f (y)
+dy
+1 − p−1−α 0 |ρ−1 (x) − ρ−1 (y)|1+α
+p
+
+(22)
+
+where ρ−1 is the inverse map to ρ. Since ρ is not one–to–one map the map
+ρ−1 is ambiguous but ambiguity is concentrated on the set of zero measure
+that makes definition (22) correct.
+Acknowledgements
+The author is grateful to V.S.Vladimirov, I.V.Volovich, V.A.Avetisov,
+A.H.Bikulov, V.P.Mikhailov and A.K.Guschin for discussion. This work was
+partially supported by INTAS 9900545 and RFFI 990100866 grants.
+
+References
+[1] V.S.Vladimirov, I.V.Volovich, Ye.I.Zelenov, p-Adic analysis and mathematical physics. World Scientific, Singapore, 1994. Russian Edition:
+Moscow, Nauka, 1994
+[2] V.S.Vladimirov, On the spectra of of certain pseudodifferential operators over the field of p–adic numbers, Algebra i Analiz, vol.2(1990),
+pp.107–124
+[3] A.N.Kochubei, Additive and multiplicative fractional differentiations
+over the field of p–adic numbers, in ”p–Adic Functional Analysis”, Lect.
+Notes Pure Appl. Math., vol. 192, New York: Dekker, 1997, pp.275–280
+[4]
+
+V.S.Vladimirov, Ramified characters of Idele groups of one–class
+quadratic fields, Proc. of the Steklov Institute of Mathematics,
+vol.224(1999), pp.107–114
+
+[5] V.S.Vladimirov, Generalized functions over the field of p–adic numbers,
+Usp. Mat. Nauk, vol.43(1989), No.5 pp.17–53
+[6] A.Khrennikov, p–Adic valued distributions in mathematical physics,
+Kluwer Academic Publ., Dordrecht, 1994
+11
+
+[7] I.V.Volovich, p–Adic String, Class. Quantum Gravity, 4(1987)L83-L87
+[8] Freund P.G.O., Olson M., Nonarchimedean strings, Phys. Lett. B, 1987,
+Vol.199, p.186
+[9] Vladimirov V.S., Volovich I.V., p–Adic quantum mechanics, Commun.
+Math. Phys., 1989, Vol.123, pp.659–676
+[10] Aref’eva I.Ya., Dragovic B., Frampton P., Volovich I.V., Wave function
+of the universe and p–adic gravity, Mod. Phys. Lett. A, 1991, Vol.6,
+pp.4341–4358
+[11] Avetisov V.A., Bikulov A.H., Kozyrev S.V., Application of p–adic analysis to models of spontaneous breaking of replica symmetry, Journal of
+Physics A, 1999, Vol.32, pp.8785–8791, http://xxx.lanl.gov/abs/condmat/9904360
+[12] Parisi G., Sourlas N., p–Adic numbers and replica symmetry breaking,
+http://xxx.lanl.gov/abs/cond-mat/9906095
+[13] Carlucci D.M., De Dominicis C., On the replica Fourier transform,
+http://xxx.lanl.gov/abs/cond-mat/9709200
+[14]
+
+De Dominicis C., Carlucci D.M., Temesvari T., Replica Fourier
+transform on ultrametric trees and block diagonalizing of multireplica matrices, J. Phys. I France, 1997, Vol.7, pp.105-115,
+http://xxx.lanl.gov/abs/cond-mat/9703132
+
+[15] Daubechies I., Orthonormal bases of compactly supported wavelets,
+Comm. Pure Appl. Math. Vol.41 (1988) p.906; The wavelet transform,
+time frequency localization and signal analysis, IEEE Trans. Inform.
+Theory Vol.36 (1990) p.961; Ten Lectures on Wavelets, CBMS Lecture
+Notes Series, Philadelphia: SIAM, 1991
+
+12
+
+

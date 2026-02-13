@@ -1,0 +1,1220 @@
+Gravitational Condensate Stars: An Alternative to Black Holes
+Emil Mottola∗
+Department of Physics and Astronomy,
+University of New Mexico
+Albuquerque NM 87131
+
+arXiv:gr-qc/0109035v6 15 Feb 2023
+
+Pawel O. Mazur†
+Department of Physics and Astronomy,
+University of South Carolina
+Columbia, SC 29208, USA
+A new final endpoint of complete gravitational collapse is proposed. By extending the
+concept of Bose–Einstein condensation to gravitational systems, a static, spherically symmetric solution to Einstein’s equations is obtained, characterized by an interior de Sitter
+region of p = −ρ gravitational vacuum condensate and an exterior Schwarzschild geometry
+of arbitrary total mass M. These are separated by a phase boundary with a small but finite
+thickness ℓ, replacing both the Schwarzschild and de Sitter classical horizons. The resulting collapsed cold, compact object has no singularities, no event horizons, and a globally
+defined Killing time. Its entropy is maximized under small fluctuations and is given by the
+standard hydrodynamic entropy of the thin shell, which is of order kB ℓMc/~, instead of the
+Bekenstein–Hawking entropy, S BH = 4πkBG N M 2 /~c. Unlike black holes, a collapsed star
+of this kind is consistent with quantum theory, thermodynamically stable, and suffers from
+no information paradox.
+
+∗
+†
+
+mottola.emil@gmail.com, emottola@unm.edu
+pomazur@mailbox.sc.edu
+
+I. Introduction
+The vacuum Einstein equations of classical general relativity (GR) possess a well-known solution
+for an isolated mass M, with the static, spherically symmetric line element
+ds2 = − f (r) dt2 +
+
+
+dr2
++ r2 dθ2 + sin2 θ dφ2
+h(r)
+
+(1.1)
+
+where the functions f (r) and h(r) in this case are equal and given by
+f (r) = h(r) = 1 −
+
+r
+2G N M
+=1− M
+r
+r
+
+(1.2)
+
+in units where c = 1. The dynamical singularity of the Schwarzschild metric (1.1) at r = 0 with its
+infinite tidal forces clearly signals a breakdown of the vacuum Einstein equations. The kinematical
+singularity at the Schwarzschild radius rM ≡ 2G N M is of a different sort, corresponding to an infinite
+blue shift of the frequency of an infalling light wave with respect to its frequency far from the black
+hole (BH). Since the local curvature tensor is finite at r = rM , the singularity of the metric (1.1)–
+(1.2) there can be removed by a suitable (and singular) change of coordinates in the classical theory.
+A classical point test particle freely falling through the event horizon is said to experience nothing
+special at r = rM . Whether or not a true event horizon of this kind where light itself becomes trapped
+can be realized in a physical collapse process remains open to question.
+This question becomes much more acute in quantum theory. For when ~ , 0, a photon of finite
+1
+
+asymptotic frequency ω (even if arbitrarily small) acquires a local energy E = ~ω [ f (r)]− 2 , which
+1
+
+diverges at r = rM . Since the effective coupling in gravity is (G N /~) 2 E, proportional to energy,
+the kinematical singularity at rM may be responsible for strong gravitational interactions between
+1
+
+elementary quanta as their energy approaches the Planck energy MPl = (~/G N ) 2 , by which point it can
+no longer be taken for granted that quantum effects on the classical geometry can be safely neglected.
+In the semi-classical approximation, when a massless field, such as that of the photon, is quantized
+in the fixed Schwarzschild background, with certain boundary conditions corresponding to a regular
+future horizon, one finds that the BH radiates these quanta with a thermal spectrum at the asymptotic
+Hawking temperature, T H = ~/8πkBG N M [1]. It is usually assumed that the backreaction effect of
+this radiation on the classical geometry must be quite small. However, detailed calculations of the
+energy-momentum of the radiation show that its hT tt i and hT rr i components have an f −2 infinite blue
+shift factor at the horizon which divergences are arranged to exactly cancel in free-falling coordi-
+
+1
+
+nates [2, 3]. Anything other than this exact cancellation of the separately diverging energy density
+and pressure in the semi-classical Einstein equations would significantly change the geometry near
+r = rM from the classical Schwarzschild solution (1.2). The wavelengths contributing to these quantum stresses are of order rM and, hence, quite non-local on the scale of the BH. Unlike the classical
+kinematic singularity in (1.2), such non-local semi-classical backreaction effects near rM depending
+on the quantum state of the field theory, cannot be removed by a local coordinate transformation.
+Furthermore, energy conservation plus a thermal radiation spectrum imply that a BH has an enormous entropy, S BH ≃ 1077 kB (M/M⊙)2 [4], far in excess of a typical stellar progenitor. The application
+of thermodynamic arguments to BHs is itself put into doubt by the the inverse dependence of T H on
+M implying that a BH in thermal equilibrium with its own Hawking radiation has negative specific
+heat and, therefore, is unstable to thermodynamic fluctuations [5]. On the other hand, requiring
+that basic thermodynamic principles apply to self-gravitating systems as well implies that their heat
+capacity must be proportional to their energy fluctuations, ∝ h(∆E)2 i, and hence must be positive.
+The assumption of a thermal mixed state of Hawking radiation emerging from a BH also leads to an
+‘information paradox’ so severe that resolving it has been conjectured to require an alteration in the
+principles of relativity, or quantum mechanics, or both.
+In light of the challenges BHs pose to quantum theory, and in lieu of revision to otherwise wellestablished fundamental laws of physics, it is reasonable to examine alternatives to the strictly classical view of the event horizon as a harmless kinematic singularity, when ~ , 0 and the quantum
+wavelike properties of matter are taken into account. In earlier investigations which attempted to include the backreaction of the Hawking radiation in a self-consistent way, the entropy arises entirely
+from the radiation fluid [6, 7]. In fact, S = 4 [(κ + 1)/(7κ + 1)] S BH , for a fluid with the equation
+of state, p = κρ, becoming equal to the Bekenstein–Hawking entropy S BH for κ = 1. Despite this
+suggestive feature, these fluid models have huge (Planckian) energy densities near rM and a negative
+mass singularity at r = 0, so that the Einstein equations are not reliable in either region.
+A quite different proposal for incorporating quantum effects has been made in [8], viz. that the
+horizon becomes instead a critical surface of a phase transition in the quantum theory, supported by
+an interior region with equation of state, p = −ρ < 0. Such a vacuum equation of state, first proposed
+by Gliner [9] for the endpoint of gravitational collapse, is equivalent to a positive cosmological term
+in Einstein’s equations, and does not satisfy the energy condition ρ + 3p ≥ 0 needed to prove the
+most general form of the classical singularity theorems [10].
+
+2
+
+In this paper [11], we show that an explicit static solution of Einstein’s equations taking quantum
+considerations into account exists, with the critical surface of ref. [8] replaced by a thin shell of
+ultra-relativistic fluid of soft quanta obeying ρ = p. Such a solution, lacking a singularity and an
+horizon is significant because it provides a stable alternative to BHs as the endpoint of gravitational
+collapse, with potentially different observational signatures.
+The principal assumption required for this solution to exist is that gravity undergoes a vacuum
+rearrangement phase transition in the vicinity of r = rM , in which the vacuum energy density changes
+abruptly. Since a spatially homogeneous Bose-Einstein condensate (BEC) couples to Einstein’s
+equations in exactly the same way as an effective cosmological term Λeff , with equation of state
+p = −ρ, the existence of the interior region requires that general considerations of low temperature
+quantum BEC phase transitions can be extended to gravitation. It has been suggested that a phase
+transition could be induced by the equation of state of the compressed matter attaining the most
+extreme one allowed by causality, namely p = +ρ. The effective theory incorporating the low energy
+effects of quantum anomalies that could give rise to the interior p = −ρ Gravitational Bose–Einstein
+condensate (GBEC) phase has been presented elsewhere [12–14]. In this paper, we forego any
+discussion of the details of the quantum phase transition and present only the solution of Einstein’s
+equations with the specified equations of state of the de Sitter (dS) interior and phase boundary layer,
+which is the model proposed in the original arXiv paper [11]. Developments since that original article
+are discussed in the Appendix under seven subheadings.
+
+II. Solution of Einstein Equations for Static, Spherical Symmetry
+The general form of the stress-energy tensor in the static, spherically symmetric geometry of (1.1)
+
+
+is
+−ρ 0 0 0 
+
+
+
+
+ 0 p 0 0 
+ν
+
+T µ = 
+(2.1)
+ 0 0 p 0 
+⊥
+
+
+
+
+0 0 0 p⊥
+so that the Einstein equations in the static spherical coordinates of (1.1) are
+−Gt t =
+Grr =
+
+
+1 d 
+r (1 − h) = −8πG N T tt = 8πG N ρ ,
+2
+r dr
+
+
+1
+h df
++ 2 h − 1 = 8πG N T rr = 8πG N p
+r f dr
+r
+
+3
+
+(2.2a)
+(2.2b)
+
+together with the conservation equation
+∇λ T λr =
+
+dp ρ + p d f 2
++
++ (p − p⊥ ) = 0
+dr
+2 f dr r
+
+(2.3)
+
+which ensures that the other components of Einstein’s equations are satisfied. In (2.3) the transverse
+pressure p⊥ ≡ T θθ = T φφ is allowed to be different from the radial pressure p ≡ T rr . For a perfect fluid
+p⊥ = p and the last term of (2.3) vanishes. In that case, (2.2)–(2.3) are three first order equations
+for the four functions, f, h, ρ, and p, which become closed when an equation of state for the fluid
+relating p and ρ is specified.
+Because of the considerations in the Introduction, as a first phenomenological model we allow
+for three different regions with the three different equations of state
+I.
+
+0 ≤ r < r1 , ρ = −p ,
+
+de Sitter Interior :
+
+II. Thin Shell :
+
+r1 < r < r2 , ρ = +p ,
+
+III. Schwarzschild Exterior :
+
+(2.4)
+
+ρ = p = 0.
+
+r2 < r ,
+
+At the interfaces r = r1 and r = r2 , the metric functions f and h are required to be continuous,
+although the first derivatives of f , h and p must be discontinuous from the first order equations (2.2)
+and (2.3). In the interior region ρ = −p is a constant from (2.3). Let us call this constant ρV =
+
+3H 2 /8πG N . If we require that the origin is free of any mass singularity then the interior is determined
+to be a region of dS spacetime in static coordinates, i.e.
+I.
+
+
+f (r) = C h(r) = C 1 − H 2 r2 ,
+
+0 ≤ r ≤ r1
+
+(2.5)
+
+where C and H are constants, which at this point are arbitrary.
+The unique solution in the exterior vacuum region which approaches flat space as r → ∞ is a
+region of Schwarzschild spacetime (1.2), viz.
+III.
+
+f (r) = h(r) = 1 −
+
+r
+2G N M
+=1− M ,
+r
+r
+
+r2 ≤ r
+
+(2.6)
+
+where the mass M can take on any (positive) value.
+The only non-vacuum region is region II. Defining the dimensionless variable w by
+w ≡ 8πG N r2 p
+equations (2.2) and (2.3) with ρ = p may be recast in the form
+
+4
+
+(2.7)
+
+dr
+dh
+=
+,
+r
+1−w−h
+1 − w − h dw
+dh
+.
+=−
+h
+1 + w − 3h w
+
+(2.8a)
+(2.8b)
+
+together with p f ∝ w f /r2 a constant. The first equation (2.8a) is equivalent to the definition of
+the (rescaled) Tolman–Misner–Sharp mass function µ(r) = 2G N m(r), with h = 1 − µ/r and dµ(r) =
+
+8πG N ρr2 dr = w dr within the shell. The second equation (2.8b) can be solved only numerically in
+
+general. However, it is possible to obtain an analytic solution in the thin shell limit, 0 < h ≪ 1, for in
+this limit we can set h to zero on the right side of (2.8b) to leading order, and integrate it immediately
+to obtain
+h≡1−
+
+(1 + w)2
+µ
+≃ε
+≪1
+r
+w
+
+(2.9)
+
+in region II, where ε is an integration constant. Because of the condition h ≪ 1 we require ε ≪ 1,
+if w is of order unity. Making use of equations (2.8) and (2.9) we have
+dr
+(1 + w)
+≃ −ε dw
+r
+w2
+
+(2.10)
+
+so that because ε ≪ 1 the radius r hardly changes within region II, and dr is of order ε dw. The final
+
+unknown function f is given by (2.3) to be f = (r/r1 )2 (w1 /w) f (r1 ) ≃ (w1 /w) f (r1 ) to leading order
+in ε for ε ≪ 1.
+Now requiring continuity of the metric coefficients f and h at both r1 and r2 gives the conditions
+(1 + w1 )2
+w1
+2
+2GM
+(1 + w2 )
+f (r2) = h(r2 ) = 1 −
+≃ε
+r2
+w2
+
+f (r1) = Ch(r1 ) = C(1 − H 2 r12 ) ≃ Cε
+
+(2.11a)
+(2.11b)
+
+which together with the solution for f evaluated at r = r2 , w = w2 gives
+C(1 + w1 )2 = (1 + w2 )2
+
+(2.12)
+
+and three independent relations among the eight integration constants (r1 , r2 , w1 , w2 , H, M, C, ε). Assuming that (r1 , r2, w1 , w2 , H, M, C) all remain finite as ε → 0, i.e. they are all of order ε0 , we obtain
+from (2.10) and (2.11) that
+"
+#
+(1 + w1 )2
+1
+1−ε
+r1 =
+H
+2w1
+
+5
+
+(2.13a)
+
+#
+"
+(1 + w2 )2
+r2 = rM 1 + ε
+w2
+
+(2.13b)
+
+for two of the three relations, so that r1 → r = H −1 and r2 → rM with r2 − r1 = ∆r of order ε,
+H
+
+and r ≃ rM to leading order in ε. Thus, the boundary layer II straddles the location of the classical
+H
+
+Schwarzschild and dS horizons, and r1 → r2 coincide at r = rM , becoming no longer independent in
+H
+
+the limit ε → 0. Since the mass M is a free parameter there remain three undetermined integration
+constants C, w1 , w2 which satisfy the one relation (2.12) if ε , 0, and lastly 0 < ε ≪ 1 itself.
+The important feature of this solution is that for any ε > 0 both f and h are of order ε but nowhere
+vanishing. Hence there is no event horizon, and t is a global Killing time. A photon experiences a
+1
+
+very large, O(ε− 2 ) but finite blue shift in falling into the shell from infinity.
+The proper thickness of the shell in the metric (1.1) is
+Z r2
+
+√
+dr
+ℓ=
+√ = rM ε
+r1
+h
+
+Z w1
+w2
+
+
+√  −1
+3
+−1
+dw w− 2 = 2rM ε w2 2 − w1 2
+
+(2.14)
+
+1
+
+to leading order in ε, and, hence ℓ is O(ε 2 ) and small compared to rM .
+The magnitude of ε and hence of ℓ can be fixed only by consideration of the quantum effects
+that give rise to the phase transition boundary layer. A subsequent analysis of the stress tensor
+of the conformal anomaly [13, 14], shows that these quantum vacuum polarization effects become
+1
+
+significant when r2 − rM is of order of the Planck length LPl = (~G N ) 2 ≃ 1.6 × 10−33 cm, so that
+p
+ε ∼ LPl /rM , and ℓ ∼ LPl rM ≫ LPl , making a a semi-classical mean field treatment of the boundary
+layer feasible.
+
+The entropy of the thin shell is obtained from the equation of state, p = ρ = (a2 /8πG N )(kB T/~)2 ,
+where we have introduced G N for dimensional reasons so that a2 is a dimensionless constant. By
+the standard thermodynamic Gibbs relation, T s = p + ρ for a relativistic fluid with zero chemical
+potential, and, hence, the local specific entropy density is
+!1
+a2 k2B T (r) akB
+akB
+p 2
+1
+s(r) =
+=
+=
+w2
+2
+4π~ G N
+~ 2πG N
+4π~G N r
+for local temperature T (r). The entropy of the fluid within the shell is thus
+Z r2 2
+ w1 
+Mℓ
+s r dr akB rM2 √
+=
+ε ln
+∼ a kB
+S = 4π
+√
+~G N
+w2
+~
+r1
+h
+
+6
+
+(2.15)
+
+(2.16)
+
+and of order kB Mℓ/~ to leading order in ε, assuming a, w1 , w2 are O(1). Since the interior region I has
+ρV = −pV , (T s)V = pV + ρV vanishes there. This is in accord with a GBEC having equation of state
+ρV = −pV being a single coherent macroscopic quantum state with zero entropy. Thus, the entropy
+of the entire compact quasi-black hole (QBH) is given by the entropy of the shell alone. By (2.16)
+p
+√
+3
+this is of order kB (rM /LPl ) 2 for ℓ ∼ LPl rM , or S ∼ ε S BH ≪ S BH , far smaller than the Bekenstein–
+
+Hawking entropy. Its M 3/2 scaling, furthermore, makes it comparable to the entropy of typical stellar
+
+progenitors of mass M, in the range of 1057 kB to 1059 kB for a solar mass and M⊙ /mN ∼ 1057 nucleons.
+Thus there is no information paradox arising from an enormous entropy unaccountably associated
+with a BH horizon, if the horizon is replaced by a thin boundary layer of this kind.
+Since w is of order unity in the shell, the local temperature of the fluid within the shell is of
+order T H ∼ ~/kB rM , so that the typical quanta are soft with wavelengths of order rM , and there is no
+transplanckian problem. Because of the global timelike Killing field t and absence of either an event
+horizon or an interior singularity, there is no loss of unitarity or conflict with quantum theory. As a
+static solution, neither the interior nor the shell emit Hawking radiation. A gravitational condensate
+star is both cold and dark, and, hence, in its external geometry and its appearance to distant observers
+indistinguishable from a BH.
+The cold radiation fluid in the shell is confined to region II by the surface tensions at the timelike
+interfaces r1 and r2 . These arise from the pressure discontinuities, ∆p1 ≃ H 2 (3+w1 )/8πG and ∆p2 ≃
+−w2 /32πG3 M 2 , and are calculable by the Lanczos–Israel junction conditions [15–17]. The non-zero
+
+angular components of the surface tension are 1
+
+ 1
+1
+(3 + w1 ) w1 2
+1
+1
+32πG2 M (1 + w1 ) ε
+1
+w2  w2  2
+1
+φ
+θ
+Sθ r=r = Sφ r=r ≡ −σ2 = −
+2
+2
+32πG2 M (1 + w2 ) ε
+Sθθ r=r = Sφφ r=r ≡ −σ1 =
+
+(2.17a)
+(2.17b)
+
+to leading order in ε, at r1 and r2 , respectively. The signs correspond to the inner surface at r1
+exerting an outward force and the outer surface at r2 exerting an inward force, i.e. both surface tensions exert a confining pressure on the shell region II. Clearly these large transverse surface tensions
+1
+
+1
+
+violate the perfect fluid ansatz at the interfacial boundaries. Nevertheless, since ε− 2 ∼ (M/Mpl ) 2 ,
+1
+
+the surface tensions (2.17) are of order M − 2 and far from Planckian, so that the matching of the
+metric at the phase interfaces r1 and r2 , analogous to that across stationary shocks in hydrodynam1
+
+The sign conventions in [11, 18] are such that σ1,2 there are the negative of the surface stress tensors Sθθ = Sφφ
+properly defined here. Equations (C5) and (C7) of [19] also have an overall sign change from the Lanczos–Israel
+formula (C5) for Sab , such that η, σ of (C7) in [19] have the same values as η, σ in [11, 18].
+
+7
+
+ics, should be reliable. The time component of the surface stress tensor at r1 and r2 vanishes and
+makes no contribution to the Tolman–Misner–Sharp mass function µ(r) = 2Gm(r) at either of the
+two interfaces.
+The Misner–Sharp energy within the shell
+Z r2
+Z w1
+
+  
+dw
+w
+2
+(1 + w) = εM ln 1 + w1 − w2
+E II = 4π
+ρ r dr = εM
+w2
+w
+r1
+w2
+
+(2.18)
+
+to leading order in ε, is of order MPl and also extremely small. Hence essentially all the Misner–
+Sharp mass of the object comes from the energy density of the vacuum condensate in the interior,
+even though the shell is responsible for all of its entropy.
+
+III. Stability
+In order to be a physically realizable endpoint of gravitational collapse, any QBH candidate must
+be stable [20]. Since only region II is non-vacuum, with a ‘normal’ fluid and a positive heat capacity,
+it is clear that the solution is thermodynamically stable. The most direct way to demonstrate this
+stability is to work in the microcanonical ensemble with fixed total M, and show that the entropy
+!1
+!− 1
+Z r2
+functional
+akB
+µ(r) 2
+dµ 2
+(3.1)
+1−
+r dr
+S =
+~G N r1
+dr
+r
+for the p = ρ fluid in region II is maximized under all variations of µ(r) with the endpoints (r1 , r2 ),
+equivalently (w1 , w2 ) fixed.
+The first variation of this functional with the endpoints r1 and r2 fixed vanishes, i.e. δS = 0 by the
+Einstein equation (2.2) for a static, spherically symmetric star. Thus, any solution of equations (2.2)
+and (2.3) is guaranteed to be an extremum of S [21]. This is also consistent with regarding Einstein’s
+equations as a form of hydrodynamics, strictly valid only for the long wavelength, gapless excitations
+in gravity. The second variation of (3.1) is
+akB
+δ2 S =
+4~G N
+
+Z r2
+
+dµ
+r dr
+dr
+r1
+
+!− 23
+
+ "
+#2
+!
+
+
+
+(δµ)2 dµ
+dµ 
+
+ d(δµ)
+h 
++ 2 2
+1+
+−
+
+
+
+
+dr
+r h dr
+dr 
+− 21
+
+(3.2)
+
+when evaluated on the solution. Associated with this quadratic form in δµ is a second order linear
+differential operator L of the Sturm–Liouville type, viz.
+
+
+!− 3
+!1
+!
+5
+
+
+dµ
+d 
+ dµ 2 − 12 dχ 
+ h− 2 dµ 2
+h
+1+
+χ.
+Lχ =
+r
++
+
+
+ dr
+
+dr 
+dr 
+r dr
+dr
+
+(3.3)
+
+This operator possesses two solutions satisfying Lχ0 = 0, obtained by variation of the classical
+8
+
+solution, µ(r; r1 , r2) with respect to the parameters (r1 , r2). Indeed by changing variables from r to w
+and using the explicit solution (2.9) and (2.10) it is readily verified that one solution to Lχ0 = 0 is
+χ0 = 1 − w, from which the second linearly independent solution (1 − w) ln w + 4 may be obtained.
+Since these correspond to varying the positions of the r1 , r2 interfaces, neither χ0 vanishes at (r1 , r2 )
+and neither is a true zero mode. However, we may set δµ = χ0 ψ, where ψ does vanish at the
+endpoints and insert this into the second variation (3.2). Integrating by parts, using the vanishing of
+δµ at the endpoints and Lχ0 = 0 one obtains
+!− 3
+!2
+Z r2
+akB
+dµ 2 − 1 2 dψ
+2
+δ S =−
+<0
+h 2 χ0
+r dr
+4~G N r1
+dr
+dr
+
+(3.4)
+
+which is negative definite.
+Thus, the entropy of the solution is maximized with respect to radial variations that vanish at the
+endpoints, i.e. those with fixed total energy. Since deformations with non-zero angular momentum
+decrease the entropy even further, stability under radial variations is sufficient to demonstrate that
+the solution is stable to all small perturbations. In the context of a hydrodynamic treatment, thermodynamic stability is also a necessary and sufficient condition for the dynamical stability of a static,
+spherically symmetric solution of Einstein’s equations [21].
+
+IV. Conclusions
+A compact, non-singular solution of Einstein’s equations has been presented here as a possible
+stable alternative to BHs for the endpoint of gravitational collapse [11]. Realizing this alternative requires that a quantum gravitational vacuum phase transition intervene and allow the vacuum energy
+ρV = −pV to change before the classical event horizon or a trapped surface can form. Although only
+the static spherically symmetric case has been considered, it is clear on physical grounds that axisymmetric rotating solutions should exist as well. Since the entropy of these objects is of the order
+of magnitude of a typical stellar progenitor, or less, there is no huge BH entropy to be explained
+and instead a process of entropy shedding, as in a supernova, is needed to produce a cold GBEC or
+‘grava(c)star’ remnant.
+In this paper we have assumed that the thin boundary layer where the quantum phase transition occurs can be described as a relativistic fluid with maximally stiff equation of state p = +ρ,
+where the speed of light is equal to the speed of sound. Although this is a phenomenological model,
+the possibility that such a boundary layer could be expected to produce excitations bearing the imprint of its fundamental normal mode vibration frequencies when struck should be robust and serve
+9
+
+to distinguish gravastars from black holes observationally. These surface excitations may also provide a more efficient central engine for astrophysical sources to impart energy to accreting matter,
+producing ultra-high energy particles, gamma rays and gravitational radiation. Finally, the interior
+dS region with pV = −ρV may be interpreted also as a cosmological spacetime, with the horizon of
+the expanding universe replaced by a quantum phase interface.
+
+[1] S. W. Hawking, Nature 248, 30 (1974).
+[2] N. D. Birrell and P. C. W. Davies, Quantum Fields in Curved Space (Cambridge Univ. Press, 1984).
+[3] S. M. Christensen and S. A. Fulling, Phys. Rev. D 15, 2088 (1977).
+[4] J. D. Bekenstein, Phys. Rev. D 7, 2333 (1973).
+[5] S. W. Hawking, Phys. Rev. D 13, 191 (1976).
+[6] W. H. Zurek and D. N. Page, Phys. Rev. D 29, 628 (1984).
+[7] G. ’t Hooft, Nucl. Phys. B - Proc. Suppl. 68, 174 (1998).
+[8] G. Chapline, E. Hohlfeld, R. B. Laughlin, and D. I. Santiago, Phil. Mag. B 81, 235 (2001).
+[9] E.
+
+B.
+
+Gliner,
+
+Sov.
+
+Jour.
+
+Exptl.
+
+Theor.
+
+Phys.
+
+(JETP)
+
+22,
+
+378
+
+(1966),
+
+http://jetp.ras.ru/cgi-bin/dn/e_022_02_0378.pdf.
+[10] S. W. Hawking and G. F. R. Ellis, The Large Scale Structure of Space-Time (Cambridge Univ. Press,
+1973).
+[11] P. O. Mazur and E. Mottola, “Gravitational condensate stars: An alternative to black holes,” (2001), the
+present paper is the minimally corrected and updated version of the original arXiv:gr-qc/0109035.
+[12] P. O. Mazur and E. Mottola, Phys. Rev. D 64, 104022 (2001).
+[13] E. Mottola and R. Vaulin, Phys. Rev. D 74, 064004 (2006).
+[14] E. Mottola, Acta Phys. Polon. B 41, 2031 (2010), https://www.actaphys.uj.edu.pl/R/41/9/2031/pdf.
+[15] W. Israel, N. Cimento B 44, 1 (1966).
+[16] W. Israel, N. Cimento B 48, 463 (1967).
+[17] V. A. Berezin, V. A. Kuzmin, and I. I. Tkachev, Phys. Rev. D 36, 2919 (1987).
+[18] P. O. Mazur and E. Mottola, Proc. Nat. Acad. Sci. (U.S.) 101, 9545 (2004).
+[19] P. O. Mazur and E. Mottola, Class. Quant. Grav. 32, 215024 (2015).
+[20] P. O. Mazur, Acta Phys. Polon. B 27, 1849 (1996), https://www.actaphys.uj.edu.pl/R/27/8/1849/pdf.
+
+10
+
+[21] W.
+
+J.
+
+Cocke,
+
+Ann.
+
+Inst.
+
+H.
+
+Poincaré,
+
+Sec.
+
+A,
+
+Phys.
+
+Théor.
+
+2,
+
+283
+
+(1965),
+
+Ser.
+
+A
+
+9
+
+(1952),
+
+http://www.numdam.org/item/AIHPA_1965__2_4_283_0/.
+[22] I. Dymnikova, Gen. Rel. Grav. 24, 235 (1992).
+[23] E. Poisson and W. Israel, Class. Quant. Grav. 5, L201 (1988).
+[24] K. Lanczos, Ann. Physik 379, 518 (1924).
+[25] S.
+
+O’Brien
+
+and
+
+J.
+
+Synge,
+
+Dublin
+
+Inst.
+
+Adv.
+
+Stud.
+
+https://dair.dias.ie/id/eprint/23/1/DIAS-STP-Communications-009-OBrienandSynge.pdf.
+[26] C. Barrabès and W. Israel, Phys. Rev. D 43, 1129 (1991).
+[27] C. Cattoen, T. Faber, and M. Visser, Class. Quant. Grav. 22, 4189 (2005).
+[28] E. Mottola, Jour. High Ener. Phys. 2022, 37 (2022).
+[29] I. Antoniadis, P. O. Mazur, and E. Mottola, Jour. Cosmo. Astropart, Phys. 2012, 024 (2012).
+[30] M. Giannotti and E. Mottola, Phys. Rev. D 79, 045014 (2009).
+[31] E. Mottola, Jour. High Ener. Phys. 2017, 43 (2017).
+[32] E.
+
+Mottola,
+
+“Gravitational
+
+condensate
+
+stars:
+
+An
+
+alternative
+
+to
+
+black
+
+holes,”
+
+https://online.kitp.ucsb.edu/online/joint98/mottola/ (2002), seminar given at the
+Institute for Theoretical Physics, Univ. of Calif., Santa Barbara, CA, May 9, 2002.
+[33] A. Almheiri, D. Marolf, J. Polchinski, and J. Sully, Jour. High Ener. Phys. 2013, 62 (2013).
+[34] E. Mottola and R. Vaulin, Phys. Today 66 no. 11, 9 (2013).
+[35] K. Schwarzschild, Sitz. Preuss. Akad. der Wiss. , 424 (1916), link to English translation:
+https://arxiv.org/abs/physics/9912033.
+[36] H. A. Buchdahl, Phys. Rev. 116, 1027 (1959).
+[37] L. Smarr, Phys. Rev. Lett. 30, 71 (1973).
+[38] C. Posada and C. Chirenti, Class. Quant. Grav. 36, 065004 (2019).
+[39] C. Chirenti, C. Posada, and V. Guedes, Class. Quan. Grav. 37, 195017 (2020).
+[40] P. Beltracchi, P. Gondolo, and E. Mottola, Phys. Rev. D 105, 024001 (2022).
+[41] J. B. Hartle, Astrophys. Jour. 150, 1005 (1967).
+[42] S. Chandrasekhar and J. C. Miller, Mon. Not. Roy. Astron. Soc. 167, 63 (1974).
+[43] P. O. Mazur, “Unique regular interior solution for the slowly rotating kerr black hole,”
+https://indico.cern.ch/event/948828/contributions/4025466/ (2020).
+[44] C. Posada, Mon. Not. Roy. Astron. Soc. 468, 2128 (2017).
+
+11
+
+[45] P. Beltracchi, P. Gondolo, and E. Mottola, Phys. Rev. D 105, 024002 (2022).
+[46] C. Barceló, R. Carballo-Rubio, and S. Liberati, Class. Quan. Grav. 36, 13LT01 (2019).
+[47] M. Visser and D. Wiltshire, Class. Quant. Grav. 21, 1135 (2004).
+[48] I. Dymnikova and E. Galaktionov, Class. Quant. Grav. 22, 2331 (2005).
+[49] F. S. N. Lobo, Class. Quant. Grav. 23, 1525 (2006).
+[50] A.
+
+DeBenedictis,
+
+D.
+
+Horvat,
+
+S.
+
+Ilijić,
+
+S.
+
+Kloster,
+
+and
+
+K.
+
+S.
+
+Viswanathan,
+
+Class. Quant. Grav. 23, 2303 (2006).
+[51] C. B. M. H. Chirenti and L. Rezzolla, Class. Quant. Grav. 24, 4191 (2007).
+[52] D. Horvat and S. Ilijić, Class. Quant. Grav. 24, 5637 (2007).
+[53] P. Pani, E. Berti, V. Cardoso, Y. Chen, and R. Norte, Phys. Rev. D 80, 124047 (2009).
+[54] P. Pani, E. Berti, V. Cardoso, Y. Chen, and R. Norte, Jour. Phys. Conf. Series 222, 012032 (2010).
+[55] P.
+
+Martin-Moruno,
+
+N.
+
+M.
+
+Garcia,
+
+F.
+
+S.
+
+Lobo,
+
+and
+
+M.
+
+Visser,
+
+Jour. Cosmo. Astropart. Phys. 2012, 034 (2012).
+[56] N. Sakai, H. Saida, and T. Tamaki, Phys. Rev. D 90, 104013 (2014).
+[57] P. Pani, Phys. Rev. D 92, 124030 (2015).
+[58] N. Uchikata and S. Yoshida, Class. Quant. Grav. 33, 025005 (2016).
+[59] C. Chirenti and L. Rezzolla, Phys. Rev. D 94, 084016 (2016).
+[60] N. Uchikata, S. Yoshida, and P. Pani, Phys. Rev. D 94, 064015 (2016).
+[61] S. H. Völkel and K. D. Kokkotas, Class. Quant. Grav. 34, 125006 (2017).
+[62] S. Ray, R. Sengupta, and H. Nimesh, Int. Jour. Mod. Phys. D 29, 2030004 (2020).
+[63] R. Sengupta, S. Ghosh, S. Ray, B. Mishra, and S. K. Tripathy, Phys. Rev. D 102, 024037 (2020).
+[64] C. B. M. H. Chirenti and L. Rezzolla, Phys. Rev. D78, 084011 (2008), arXiv:0808.4080 [gr-qc].
+[65] V. Cardoso, P. Pani, M. Cadoni, and M. Cavaglià, Phys. Rev. D 77, 124044 (2008).
+[66] V. Cardoso, P. Pani, M. Cadoni, and M. Cavaglià, Class. Quant. Grav. 25, 195010 (2008).
+[67] Abramowicz, M. A., Kluźniak, W., and Lasota, J.-P., Astron. & Astrophys. 396, L31 (2002).
+[68] A. E. Broderick and R. Narayan, Class. Quant. Grav. 24, 659 (2007).
+[69] G. Chapline, Int. Jour. Mod. Phys. A 18, 3587 (2003).
+[70] G. Chapline, “Dark energy stars,” arxiv.astro-ph/0503200 (2005).
+[71] R. Narayan and J. E. McClintock, New Astron. Rev. 51, 733 (2008).
+[72] A. E. Broderick, R. Narayan, J. Kormendy, E. S. Perlman, M. J. Rieke,
+
+12
+
+and S. S. Doeleman,
+
+Astrophys. Jour. 805, 179 (2015).
+[73] V. Cardoso and P. Pani, Nat. Astron. 1, 586 (2017).
+[74] R. Carballo-Rubio, F. Di Filippo, S. Liberati, and M. Visser, Phys. Rev. D 98, 124009 (2018).
+[75] V. Cardoso and P. Pani, Living Rev. Rel. 22, 4 (2019).
+[76] R.
+
+Carballo-Rubio,
+
+F.
+
+D.
+
+Filippo,
+
+S.
+
+Liberati,
+
+and
+
+M.
+
+Visser,
+
+Jour. Cosmo. Astropart. Phys. 2022, 055 (2022).
+[77] R. Carballo-Rubio, P. Kumar, and W. Lu, Phys. Rev. D 97, 123012 (2018).
+[78] B. P. Abbott et al. (LIGO and Virgo Scientific Collaboration), Phys. Rev. Lett. 116, 061102 (2016).
+[79] V. Cardoso, E. Franzin, and P. Pani, Phys. Rev. Lett. 116, 171101 (2016).
+[80] V. Cardoso, S. Hopper, C. F. B. Macedo, C. Palenzuela, and P. Pani, Phys. Rev. D 94, 084031 (2016).
+[81] J. Abedi, H. Dykaar, and N. Afshordi, Phys. Rev. D 96, 082004 (2017).
+
+[82] “Quantum black holes in the sky,” https://www2.perimeterinstitute.ca/conferences/quantum-black-hole
+(2017), nov. 8 to Nov. 10, 2017.
+[83] J. Westerweck, A. B. Nielsen, O. Fischer-Birnholtz, M. Cabero, C. Capano, T. Dent, B. Krishnan,
+G. Meadors, and A. H. Nitz, Phys. Rev. D 97, 124037 (2018).
+[84] C. Barceló, R. Carballo-Rubio, and L. J. Garay, Jour. High Ener. Phys. 2017, 54 (2017).
+[85] A. Maselli, S. H. Völkel, and K. D. Kokkotas, Phys. Rev. D 96, 064045 (2017).
+[86] Q. Wang, N. Oshita, and N. Afshordi, Phys. Rev. D 101, 024031 (2020).
+
+A.
+
+Gravitational Condensate Stars: Further Developments
+The main text of this paper is a minimally corrected version of the previously unpublished arXiv
+
+submission [11], in which the original proposal that the final state of complete gravitational collapse is a non-singular gravitational vacuum condensate star (‘gravastar’) was made. A somewhat
+expanded version of this paper appeared in [18]. The authors take this opportunity to provide an
+extended Appendix, updating the status of the gravastar proposal, collecting under seven subtitles
+the most significant developments over the past two decades relating to this proposal, with additional
+explanation and annotations for each of the following appendices.
+1. Background: Preliminary Description the Boundary Layer
+Discussions of matching the exterior Schwarzschild exterior solution to a non-singular de Sitter
+(dS) interior had a long history. Continuous transitions between the two were studied, e.g. in [22],
+while it was recognized that joining the exact Schwarzschild and dS geometries directly at their
+13
+
+mutual horizons H −1 and 2GM, requires some discontinuity or interposition of ‘non-inflationary
+material’ [23]. In addition to uncertainties of the physics involved, the earlier GR formalism [15,
+16, 24, 25] for dealing with singular hypersurfaces when the normal to hypersurface becomes null,
+as it does at a BH horizon, were recognized to be inadequate [26]. The necessity of some anisotropic
+matter at the joining of the interior to exterior geometries was made explicit in [27].
+Partly for the reason of avoiding the technical difficulties associated with singular null hypersurfaces, the proposal in the original gravastar paper [11] here makes use of two timelike hypersurfaces
+at r1 and r2 with an interposed fluid boundary layer of ‘non-inflationary material’ obeying the equation of state p = ρ. The choice of this equation of state at the causal limit where the speed of
+sound coincides with the speed of light, was motivated by physical considerations of a quantum
+phase transition produced by the infrared effects of dimensional reduction from D = 4 to D = 2
+dimensions.
+This choice was also motivated in part by the observation of ‘t Hooft that a self-screening Hawking atmosphere of a fluid with p = κρ near to the horizon could produce the 1/4 area law of the
+Bekenstein–Hawking entropy S BH when κ = 1 [7], however at the price of an interior negative mass
+singularity, suggesting a repulsive core. Further physical considerations of quantum phase transitions
+in condensed matter analogs in [8] also suggested that an equation of state at the extreme causal limit
+should play a role. Nevertheless, the choice of p = ρ in [11] is certainly a phenomenological ansatz,
+illustrating a proof of principle, but without a rigorous basis in fundamental physics. It is therefore subject to modification as that fundamental physics came more clearly into view by subsequent
+developments [13, 14, 28].
+2. The Macroscopic Effects of the Conformal Anomaly and Value of ε
+A major step in providing a rigorous basis from quantum theory of large effects at horizons came
+in 2006, with the observation that the energy–momentum tensor derived from the effective action of
+the conformal trace anomaly of massless fields in curved space becomes large (indeed formally infinite) for generic quantum states at both the Schwarzschild BH and dS static horizons [13]. The conformal anomaly becomes relevant at horizons because of the conformal behavior of the near horizon
+geometry, typified by the extreme blueshifting of local frequencies and energies there, making all
+finite mass scales negligible as r → rM from outside, or r → r from inside [14, 29]. The effective
+H
+
+action of the conformal anomaly and T µν derived from it provides a clear basis in quantum field the-
+
+ory (QFT) for large semi-classical backreaction effects on BH and dS horizons [30, 31], consistent
+14
+
+with general covariance and the weak equivalence principle.
+These semi-classical vacuum polarization effects occur in zero temperature QFT and, thus obviate any need to invoke an ultra-relativistic fluid ansatz with the p = ρ equation of state, or any ‘fluid’
+temperature at all as in (2.15) in the thin shell region. A gravastar relying on quantum vacuum polarization can be at precisely zero temperature and a true quantum endpoint for complete gravitational
+collapse. The implication that the GBEC must be at a very low (if not identically zero temperature)
+was inherent in the original arXiv article [11], and presented in seminars at the time, including at the
+Inst. for Theoretical Physics (Univ. Calif. Santa Barbara) on 9 May 2002 [32]. Although the gravastar surface at r = rM is a ‘wall’ of large vacuum stresses, in some ways similar to the ‘firewall’ later
+discussed in [33], the boundary layer of a GBEC is at low temperature, and hence not a ‘firewall.’
+Nor does it imply or require a catastrophic breakdown of semi-classical gravity or causality in order
+to eliminate the various BH information paradoxes [34].
+The anomaly stress tensor T µν of the mean field description of semi-classical gravity becomes
+large enough to affect the classical geometry when ∆r ∼ LPl . This determines the small parameter ε
+of the main text and original [11] to be of order LPl /rM (or LPl /r ), where the quantum effects of the
+H
+
+anomaly must be taken into account. The physical proper thickness of the thin shell is,therefore [14]
+ℓ∼
+
+p
+
+p
+LPl rM = 2.2 × 10−14 M/M⊙ cm.
+
+(A1)
+
+It is significant that LPl ≪ ℓ ≪ rM so that the shell is very thin on macroscopic scales, making
+it challenging to detect in astronomical observations, but nevertheless very much larger than the
+microscopic Planck scale at which the semi-classical approximation breaks down. For a solar mass
+QBH ε ∼ 10−38 [18], which well justifies the ε ≪ 1 approximation (2.9) of the text.
+3. The Schwarzschild Interior Solution and Determination of C
+An independent but equally significant development came in 2015 with the realization that an
+infinitely thin shell gravastar solution to Einstein’s equations actually results from the 1916 interior
+solution of a constant density star by Schwarzschild [35], provided the limit is taken in which the surface of the star rstar is at the horizon rM itself [19]. Remarkably, in that limit, the 1916 Schwarzschild
+constant density solution produces a p = −ρ interior, which is just the gravitational condensate star
+of the main text and original [11]. This dS interior ‘fluid’ has no ordinary sound modes, and, therefore, removes Einstein’s original objection to the Schwarzschild constant density interior, in this
+limiting case.
+15
+
+This limiting case of the Schwarzschild interior solution also unambiguously determines the constant C which was undetermined in [11] to be [19]
+C=
+
+1
+4
+
+(A2)
+
+by the matching of the interior dS time to the exterior Schwarzschild time. This turns out to be
+exactly the value necessary to make the surface gravity
+r
+1 h df
+κ=
+2
+
+(A3)
+
+f dr
+
+of the two geometries, κ− and κ+ , to be equal and opposite, a necessary condition for the forces on
+each side of the membrane to balance (and the corresponding periodicities and Hawking temperatures to be equal in the Euclidean continuation). The discontinuity in the surface gravities
+∆κ = κ+ − κ− = 2κ+ =
+
+1
+>0
+4GM
+
+(A4)
+
+also unambiguously determines the physical surface tension τS = ∆κ/8πG of the membrane boundary. The presence of the δ-function in the transverse pressure p⊥ , p at the membrane interface
+this implies provides the loophole in the Buchdahl bound, which had assumed isotropic fluid pressure p⊥ = p throughout [36], and is consistent with the general results of [23, 27] requiring ‘noninflationary’ anisotropic stresses at the joining. The surface tension of the membrane also shows that
+the First Law of spherical gravastars
+dM = dE V + τS dA
+
+(A5)
+
+expressing energy conservation, is a purely mechanical classical relation at zero temperature and
+zero entropy, in which neither ~ nor kB appear. This makes sense of the original BH Smarr relation [37], by correcting it by the factor of 2 in (A4) to account for the difference in surface gravities,
+rather than just κ+ . The positivity of τS further shows that deforming the surface by increasing the
+area requires energy, indicating its stability to perturbations, without reliance on the thermodynamic
+stability argument of Section III [38, 39]. Note that both the value and the sign of τS obtained in
+the classical fully GR analysis of [19] differ from what was conjectured in the flat space condensed
+matter analog model of [8].
+An additional serendipitous consequence of this reanalysis of the 1916 interior solution is that it
+provides an explicit example of ‘gluing’ of two different geometries at their mutual null horizons,
+
+16
+
+in which the surface stresses can be unambiguously determined, providing a clear interpretation of
+the surface tension of the null surface at r = rM . This shows that gluing the exterior Schwarschild
+to interior dS geometries directly is indeed possible in classical GR, with (A2), and has served
+to provide the general matching conditions for null surfaces with non-zero angular momentum as
+well [40]. This improved understanding and generalization of the junction conditions to null hypersurfaces and, in particular, rotating null horizons appropriate for the Kerr geometry opens the way to
+finding rotating gravastar solutions, the study of which in the case of slow rotation following methods of [41, 42] has begun [43–45]. These results already indicate that the moment of inertia I of a
+slowly rotating gravastar, defined as the ratio of its angular momentum J to angular velocity ωH of
+its thin shell located at the Kerr horizon, is
+I=
+
+J
+= MrM2 = 4G2 M 3
+ωH
+
+(A6)
+
+consistent with the BH “no hair” theorems being extended to rotating gravastars as well [43, 46], at
+least in the strictly classical limit of ε → 0. Gravastar “hair” for a surface layer of finite thickness ℓ
+(A1) would be limited to that quantum phase transition boundary layer of a thin shell thickness (A1)
+only.
+For the original spherically symmetric gravastar solution, the proper matching at the null horizon
+and the condition (A2) completely eliminates the two independent spacelike boundaries at r1 and r2
+and intermediate region II p = ρ layer (2.11)–(2.13). This is the universal thin shell limit of a nonrotating gravastar in the classical limit ε → 0, in the sense of being independent of any assumptions
+of an equation of state of the surface layer or any other matching conditions. The solution of [19]
+has a surface layer of infinitesimally small thickness, with a stress tensor that is precisely a Dirac
+δ-function on the horizon in this limit.
+4. Thin Shell vs. Thick Shell
+The distinguishing feature of the original gravitational condensate star proposal of [11] of the
+main text is the abrupt change in ground state vacuum energy at the horizon, characteristic of a
+quantum phase transition there. This should be clear from the essential role of the horizon as a
+infinite red shift surface in both [8, 11], the assumption of ε ≪ 1 and the estimate of ε and ℓ in
+Appendix A 2 from the conformal anomaly. The proper length ℓ determined by the stress tensor of
+the conformal anomaly takes the place of the ‘healing length’ introduced, but left undetermined in
+the analogy of the horizon in GR to the non-relativistic quantum critical surface of a sound horizon
+17
+
+in [8]. Thus, the term ‘gravastar’ should apply only to the gravitational condensate star model of [11]
+in the text, described also in [18], and further refined in [19], where the lightlike null horizon clearly
+plays a privileged role as the locus of joining of interior and exterior classical geometries, with equal
+and opposite surface gravities, and where the conformal anomaly stress tensor also grows large,
+and a quantum phase transition can occur.
+Despite this physically privileged role of the horizon in the original gravastar proposal [11],
+a number of papers appeared subsequently that discussed what may be called ‘generalized gravastars’, or regular solutions with macroscopically large or ‘thick’ shells, comparable to the gravitational
+radius rM itself, with compactness GM/r differing from the maximal value of 1/2, by order unity,
+some time varying, or with timelike surfaces displaced from the Schwarzschild or dS horizons by
+finite amounts [47–63]. Several authors proceeded to discuss both ergoregion instabilities and observational bounds on such hypothetical objects, with various assumptions about boundary conditions
+and surface matchings [64–66]. It should be clear that these instabilities or observational bounds do
+not apply to gravastars, which by definition are static configurations with an infinitesimally thin shell
+located at the horizon, for ε = 0, or straddling and replacing the would-be classical Schwarzschild
+and dS horizons for very small finite ε, with metric functions f ∼ h = O(ε) there. Any other regular
+QBH is not a gravastar.
+5. The Status of Constraints from Astronomical Observations
+Because the exterior geometry of a gravastar is identical to that of a classical BH down to the
+scales of its very thin shell surface boundary layer at ℓ given by (A1) above the would-be classical
+horizon, it should be clear that a gravastar will be cold, dark and indistinguishable from a BH by
+almost all traditional astronomical observations. Any radiation from such a deeply redshifted surface
+can escape to infinity only if emitted from a tiny ’pinhole’ solid angle less than of order ε from the
+perpendicular, or it will fall back onto the surface. Attempts to ‘prove’ the existence of a BH horizon
+or absence of a surface from the absence of thermal radiation and/or absence of X-ray bursts which
+would be expected if the surface is composed of conventional matter, and if any advected matter
+deposited onto the surface is re-radiated rather than absorbed, are therefore bound to fail. This point
+was succinctly made in [67], soon after the gravastar proposal of [11].
+The authors of [67] also recognized that any surface of an ultracompact QBH was bound not
+to be composed of conventional matter, such as a neutron star crust, needed for the thermonuclear
+reactions that give rise to X-ray bursts. Moreover, in order for the gravastar proposal to be a viable
+18
+
+alternative for a BH of any mass, a gravastar must be able to absorb accreting baryonic matter and
+convert it to the interior condensate, thereby growing its mass to any larger value. Any substantial
+efficiency of absorption and conversion of energy to interior condensate would reduce the energy
+re-radiated and make the object dark in most if not all the observable electromagnetic spectrum.
+The authors of [68] argued for quite stringent limits on what they called ‘gravastar’ models, assuming thermalization of accreting matter in a steady state emission. Aside from: (i) an unjustified
+and rather ad hoc assumption of the form for internal energy and heat capacity of the ‘matter’ supposed to be composing the QBH, (ii) not accounting for the relativistic pinhole effect suppressing
+all emission from a deeply redshifted surface, and (iii) ignoring the possibility of near total absorption of accreting matter without any heating of the QBH, which would all but eliminate any
+thermal re-emission with sufficiently gentle accretion, the arguments of [68] were attempts to constrain the condensed matter analog model of [69, 70]. This in any case, is not the gravastar described
+in [11, 18], this article, or the later [19].
+Similar arguments based on thermalization and steady state re-emission of radiation, again ignoring the possibility of absorption by the QBH surface, with claims of strong observational bounds
+were made in [71, 72]. These unjustifiably strong claims of ‘proof’ of BH horizons and the assumptions upon which they are based have been critically examined by several authors [73–76], and shown
+to be flawed. These authors showed first that the assumption that thermodynamic equilibrium can
+be established between an accretion disk and the QBH on a reasonably short timescale is incorrect
+for a deeply redshifted surface for ε → 0, due to the gravitational lensing pinhole effect, already
+pointed out in [67]. The best limits one can obtain from the observations of M87 or Sag A* when
+this classical GR effect is taken into account is in the range of ε < 10−15 to 10−17 [76], impressive,
+but still many orders of magnitude short of 10−38 expected for a gravastar. Secondly, the energy
+emitted was assumed to be electromagnetic in observable wavelengths, whereas a sizable fraction of
+any re-emitted energy could be in the form of neutrinos or in unobserved radiation [73, 75]. Thirdly,
+and most importantly, a sizable fraction even approaching unity of the accreting matter may be absorbed by the gravastar, with virtual no re-emission whatsoever. As a result, there are no useful
+bounds from the non-observation of electromagnetic emission from any astrophysical QBH, and the
+possibility that they may all be gravastars with ε ≪ 10−17 remains open.
+
+The converse claim of a lower bound of ε & 10−24 in [77] is based on a strong assumption of the
+
+restrictive form of the Vaidya metric and stress tensor in the vicinity of the QBH surface, setting to
+
+19
+
+zero all of its components except T vv in advanced null coordinates. This bound also disappears if the
+assumption upon which it is based is relaxed, which it almost certainly should be.
+6. Gravitational Waves and Echoes
+The observation of gravitational waves (GWs) by LIGO [78] has opened up a new window on
+the universe that among many other interesting possibilities provides perhaps the best opportunity
+for observational test of the gravastar proposal. The GW data are not yet accurate enough to test the
+prediction of a discrete spectrum of ringdown modes from a non-singular gravastar with a surface
+made in [19]. Indeed it was quickly realized that sensitivity to the nature of a very compact QBH
+with ε ≪ 1 is obtained only with some delay time after the initial GW merger signal, in the ringdown
+phase [79], where the signal/noise ratio is very much lower. Nevertheless a regular QBH such as a
+gravastar could produce a GW ‘echo’ at multiples of the characteristic time
+∆t ∼ 2GM ln(1/ε)
+
+(A7)
+
+after the compact object merger event [80]. These may be observable with the improved sensitivities
+of Advanced LIGO, Virgo, and future detectors.
+The basis for such echoes is the expectation that GWs produced in the merger could reflect from
+the internal centrifugal barrier of a gravastar and re-emerge with a logarithmically long time delay
+for ε ≪ 1, thus, in principle, opening up the possibility of testing GR and the nature of QBH’s on
+scales very close to the would-be horizon.
+A somewhat different scenario was considered in [81], with a claim of tentative evidence for
+an echo signal in the LIGO/LSC data [82]. However, an analysis of the same data by members of
+the LIGO/LSC collaboration concluded that the echo signal was just 1.5σ above the noise level [83].
+The subject of GW echoes from QBH’s such as gravastars continues as an area of active research [61,
+84–86], requiring substantially more data from Advanced LIGO, Virgo, and successor detectors to
+settle this question [75].
+7. The EFT of Gravity and Dynamical Vacuum Energy
+A complete dynamical model of gravitational condensate stars has been lacking for the two
+decades since [11], and, in particular, the mechanism by which pV = −ρV vacuum energy can change
+at a would-be BH horizon. In this past year, just such an effective field theory (EFT) of gravity in
+which Λeff is described by a dynamical four-form gauge field coupled to the Euler–Gauss–Bonnet
+
+20
+
+term of the conformal anomaly in the presence of torsion has been proposed [28]. This EFT promises
+to provide the theoretical Lagrangian basis for development of the gravastar proposal first made in
+2001, by explicit gravastar solutions in which the classical, coherent four-form field strength is the
+explicit realization of the gravitational condensate hypothesized in [11, 18] and the text. In this fully
+dynamical EFT of vacuum energy, Λeff couples to the conformalon field of the conformal anomaly,
+and both change rapidly near the horizon worldtube of R × S2 topology.
+The EFT of [28] provides the Euler–Lagrange equations which should exhibit a static, gravastar solution. Linearization about this solution will then enable a definitive study of the dynamical
+stability of the gravastar and determine its normal modes and frequencies of vibration, relevant for
+GW observations. This EFT also paves the way for studying rapidly rotating gravastars and their
+dynamical collapse formation process as well, and is expected to provide the basis for quantitative
+predictions to be compared to the increasing amount of GW and other astrophysical data expected
+to be provide by aLIGO, VIRGO, and other observations in the next two decades.
+
+21
+
+

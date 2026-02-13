@@ -1,0 +1,1089 @@
+                                                 Draft version March 16, 2021
+                                                 Preprint typeset using LATEX style emulateapj v. 12/16/11
+
+
+
+
+                                                                               THE PAIR-INSTABILITY MASS GAP FOR BLACK HOLES
+                                                                                           S. E. Woosley1 and Alexander Heger2-5
+                                                                                                      Draft version March 16, 2021
+
+                                                                                                      ABSTRACT
+                                                          Stellar evolution theory predicts a “gap” in the black hole birth function caused by the pair in-
+                                                        stability. Presupernova stars that have a core mass below some limiting value, Mlow , after all pul-
+                                                        sational activity is finished, collapse to black holes, while more massive ones, up to some limiting
+
+
+
+
+arXiv:2103.07933v1 [astro-ph.SR] 14 Mar 2021
+                                                        value, Mhigh , explode, promptly and completely, as pair-instability supernovae. Previous work has
+                                                        suggested Mlow ≈ 50 M and Mhigh ≈ 130 M . These calculations have been challenged by recent
+                                                        LIGO observations that show many black holes merging with individual masses, Mlow >       ∼ 65 M . Here
+
+                                                        we explore four factors affecting the theoretical estimates for the boundaries of this mass gap: nuclear
+                                                        reaction rates, evolution in detached binaries, rotation, and hyper-Eddington accretion after black
+                                                        hole birth. Current uncertainties in reaction rates by themselves allow Mlow to rise to 64 M and
+                                                        Mhigh as large as 161 M . Rapid rotation could further increase Mlow to ∼ 70 M , depending on the
+                                                        treatment of magnetic torques. Evolution in detached binaries and super-Eddington accretion can,
+                                                        with great uncertainty, increase Mlow still further. Dimensionless Kerr parameters close to unity are
+                                                        allowed for the more massive black holes produced in close binaries, though they are generally smaller.
+                                                        Subject headings: stars: supernovae, evolution, black holes
+
+                                                                     1. INTRODUCTION                                  one was in preparation, and now take precedence. It re-
+                                                 Pulsational pair-instability supernovae (PPISN) and                  mains, useful, however to examine the role of this physics
+                                               pair-instability supernovae (PISN) are of interest because             using different sets of assumptions in a single code and to
+                                               of their potential roles in early stellar nucleosynthesis              attempt an evaluation of which of the causes is dominant.
+                                               (Heger & Woosley 2002), in explaining unusual types of                    Specifically we consider four possibilities for produc-
+                                               supernovae (Woosley et al. 2007), and as the progenitors               ing black hole remnants in close binaries with individual
+                                               of massive black hole systems that can merge and pro-                  masses substantially heavier than 50 M : 1) A decrease
+                                               duce detectable gravitational radiation signals (Woosley               in the rate for the 12 C(α, γ)16 O and/or an increase in the
+                                               2016). Of particular current interest is the prediction                rate for the triple-alpha (3α) reaction (§2). The range
+                                               of a “mass gap” between about 50 M (henceforth Mlow ;                  of rates considered is only what is currently favored by
+                                               Woosley et al. 2007; Belczynski et al. 2016; Woosley 2017,             experiment. Our choices might thus be regarded as con-
+                                               2019) and 130 M (Mhigh ; Heger & Woosley 2002) where                   servative, but are influenced both by experiment and nu-
+                                               very few black holes should exist in close binaries that               cleosynthetic considerations (§2.2). These changes alone
+                                               merge in a Hubble time.                                                can potentially raise Mlow to 64 M , but are unlikely, by
+                                                 The existence, or at least the boundaries of such a gap              themselves, to increase Mlow to 85 M . 2) Making the
+                                               have been challenged by the discovery of a single merging              black hole in a detached binary (§3). Using the variation
+                                               black hole pair in which the more massive component had                in rates discussed in §2, it is possible to produce black
+                                               a mass near 85 M (Abbott et al. 2020a,b), and, more re-                holes of 100 M or more if the star’s hydrogen envelope is
+                                               cently, by the publication of a catalog of sources (Abbott             retained at the time of core collapse. The obvious prob-
+                                               et al. 2020) in which numerous black holes merging by                  lems here are the low mass loss rate required and the
+                                               gravitational radiation have masses in the 60 to 70 M                  difficulty getting the two black holes together at the end,
+                                               range. Other recent theoretical papers have pointed out                if one of them was made in a supernova that was a giant
+                                               the sensitivity of the boundaries of the putative mass                 star when it exploded. 3) The effects of rapid rotation
+                                               gap to uncertainties in reaction rates (Farmer et al. 2020;            (§4). The dynamical effects of rotation alone can only
+                                               Costa et al. 2020), the effects of rotation (Marchant &                increase Mlow modestly (Marchant & Moriya 2020), but
+                                               Moriya 2020), and super-Eddington accretion (van Son et                rotation coupled with uncertain reaction rates can raise
+                                               al. 2020). These papers were submitted while the present               Mlow to ∼ 70 M . In the most extreme cases, the angu-
+                                                                                                                      lar momentum in the presupernova star is too great to
+                                                    1 Department of Astronomy and Astrophysics, University of
+                                                                                                                      form a black hole without the loss of angular momentum
+                                                 California, Santa Cruz, CA 95064, woosley@ucolick.org                and an uncertain amount of mass. 4) Super-Eddington
+                                                    2 School of Physics and Astronomy, Monash University, Vic         accretion after the first black hole has formed (§5). As
+                                                 3800, Australia                                                      the secondary expands just following hydrogen depletion,
+                                                    3 Australian Research Council Centre of Excellence for Grav-
+                                                                                                                      a stable phase of frictionally-driven mass loss (Podsiad-
+                                                 itational Wave Discovery (OzGrav), Clayton, VIC 3800, Aus-
+                                                 tralia                                                               lowski 2001) might substantially increase the mass of the
+                                                    4 Center of Excellence for Astrophysics in Three Dimensions       black hole produced by the primary. This involves some
+                                                 (ASTRO-3D), Australia                                                very uncertain physics, but is the most likely way to pro-
+                                                    5 Joint Institute for Nuclear Astrophysics, 1 Cyclotron Labora-
+                                                                                                                      duce black holes well over 70 M in a single close binary.
+                                                 tory, National Superconducting Cyclotron Laboratory, Michigan
+                                                 State University, East Lansing, MI 48824-1321, USA
+                                                                                                                         Our computational approach is the same as in Woosley
+2
+
+(2017), except with the addition of centrifugal force          usually with larger error bars. In particular, Buchmann
+to the structure equations (§4). All models are calcu-         (1996), which serves as a reference point in the present
+lated using the Kepler code (Weaver, Zimmerman, &              study, gave a best value of S300 = 146 keV b with a pos-
+Woosley 1978; Woosley et al. 2002) and the physics de-         sible range from 62 to 270 kev,b (see also Buchmann &
+scribed in those papers. In particular, the previous stan-     Barnes 2006). In the same time frame Buchmann et al.
+dard values for the reaction rates that are varied are         (1996) found a best value of S300 =165 ± 75 keV b. Here
+taken from deBoer et al. (2017) and Buchmann (1996)            we shall consider a possible range of S-factors from 110
+for 12 C(α, γ)16 O and Caughlan & Fowler (1988) for 3α.        to 205 keV b with a standard value 146 keV b. The lower
+Unless otherwise noted, mass loss rates for giant stars,       bound is that of deBoer et al. (2017). The upper bound is
+which are relevant for §3, are taken from Nieuwenhui-          a bit larger than theirs, and more consistent with Buch-
+jzen & de Jager (1990) and Yoon (2017), the latter being       mann et al. (1996). Past studies of nucleosynthesis (§2.2)
+an amalgamation of Hanich et al. (2014) and Tramper,           have favored such large values. Computationally these
+Sana, and de Koter (2016).                                     variations were effected by multiplying the standard fit-
+                                                               ted rate of Buchmann (1996) by factors, fBuch , ranging
+          2. VARIABLE CARBON PRODUCTION                        from 0.75 to 1.4 (Table 1). As will be shown, Mlow is
+   The pair-instability begins mildly, following the central   more sensitive to the rate for 12 C(α, γ)16 O when it is
+depletion of helium. As the star contracts towards car-        small than when it is large, which justifies, for now, not
+bon and, ultimately, oxygen ignition, more pairs are pro-      exploring larger multipliers than 1.4.
+duced at the higher temperature required for burning and          Shen et al. (2020) have given a recent reevaluation of
+the instability becomes stronger. Central carbon burning       the electric quadrupole part of the reaction rate SE2 = 80
+is net endoergic in stars of this large mass, with the en-     ±40 keV b which is larger than the 45 keV b adopted by
+ergy generation rate never exceeding neutrino losses, and      deBoer et al. (2017) and more consistent with Buchmann
+hence proceeding in a radiative fashion. Far enough out,       et al. (1996). They recommend that the error bar on the
+however, carbon shell burning becomes exoergic, even           deBoer et al. rate be raised from +18 to +39 keV b,
+in the face of neutrino losses, and can power convective       i.e., the total S-factor is more likely to be larger than
+shells whose strength and extent affects the subsequent        146 keV b than smaller.
+dynamics of the implosion. Helium shell burning in the            The rate for the 3α reaction depends on the radiative
+outer layers of the star can have a similar, though usually    width for the “Hoyle state”, a 0+ resonance at an exci-
+smaller effect.                                                tation energy of 7.65 MeV in 12 C. A small correction is
+   After central carbon depletion, infalling matter gath-      generally added to the radiative width for pair emission.
+ers momentum that often, but not always results in dy-         Summarizing previous work, Freer & Fynbo (2014) gave
+namical overshoot and explosive oxygen burning. A vari-        what might be considered the previous standard value
+able carbon abundance in the outer layers of the star can      for this width, Γrad = 3.78 meV (i.e., 3.78 × 10−3 eV).
+provide varying degrees of support as the core becomes         This is close to the value used in Caughlan & Fowler
+unstable. This can dramatically influence the strength         (1988), Γrad+pair = 3.70 meV (Hale in Wallerstein et al.
+of the instability and the energy, or even the possibility     1997). New recent measurements (Kibédi et al. 2020;
+of a subsequent explosion (Farmer et al. 2020). Basi-          Eriksen et al. 2020), though by no means the final word,
+cally a strong carbon burning shell provides an energy         give Γrad = 5.1(6) meV, implying an upward revision of
+source that increases as the star contracts. Sufficient off-   about 35 %. This large increase is substantially outside
+center burning results in oxygen burning igniting stably       the error bar of previous measurements and has major
+rather that catastrophically, and the subsequent evolu-        implications for stellar nucleosynthesis (§2.2), but is con-
+tion is very different. Oxygen burning in a shell can still    sidered here, for now, as a limiting case. Traditionally
+become unstable later, even during silicon burning, but        this reaction rate was assumed to be known to 15 % ac-
+there is less fuel to burn then, and the instability usually   curacy (e.g., Rolfs & Rodney 1988). In the present study,
+results in less matter being ejected.                          we define f3α as the multiplier on the Caughlan & Fowler
+                                                               (1988) rate for 3α. This is f3α = 1.35 corresponds ap-
+                   2.1. Reaction Rates                         proximately to the new rate of Kibédi et al. (2020).
+   Substantial adjustments to the carbon abundance af-                        2.2. Nucleosynthetic limits
+ter helium burning are possible because of uncertainties         In our past works, including Woosley (2017), the mul-
+in the critical reaction rates for 3α and 12 C(α, γ)16 O       tiplying factor in Kepler for the Buchmann (1996) rec-
+and the treatment of convective mixing (Farmer et al.          ommended value (146 keV b) was fBuch = 1.2. Within
+2019, 2020; Renzo et al. 2020). Historically, the rate         the context of a then very large range of possible val-
+for 12 C(α, γ)16 O during helium burning has been a ma-        ues for the S-factor, Weaver & Woosley (1993) carried
+jor source of uncertainty for studies of stellar evolution     out a survey of nucleosynthesis in massive stars to deter-
+and nucleosynthesis (Weaver & Woosley 1993; Tur et al.         mine what value worked best for nucleosynthesis, finding
+2010; West et al. 2013). This rate is characterized by an      S300 = 170 ± 20 keV b. That value was used in Kepler
+“S-factor” evaluated at a typical Gamow energy for re-         prior to 1996. After 1996, this was refined to be 1.2 times
+actions during helium burning, which is taken to be 300        the rate given by Buchmann (1996), or S300 = 175 keV b.
+keV. deBoer et al. (2017) have reviewed the experimental       This value has remained constant ever since, in part, to
+situation and offered their own analysis, concluding that      facilitate comparison among various calculations carried
+this critical S-factor is most likely 140 ± 21 +18
+                                                −11 keV b.     out with the Kepler code, but has always remained
+This is smaller than some other recent publications (see       within the experimental error bar and close to its cen-
+their Table IV) which gave a value near 165 keV b, but         troid.
+                                                                                                                           3
+
+   Tur et al. (2007) and Tur et al. (2010) studied the         helium and carbon to deeper depths in the star where it
+influence of uncertainties in the 3α and 12 C(α, γ)16 O re-    affects the strength of the next pulse. All models con-
+actions on nucleosynthesis and found that an increase in       tained in excess of 2,400 mass shells, with finer zoning
+the 3α rate of 10 % had about the same effect as an 8 %        near the center and surface. Typical simulations took
+decrease in 12 C(α, γ)16 O. Hence, for small variations, it    about 20,000 time steps, though sometimes much more,
+is the the ratio of the reaction rates, λαγ (12 C)/λ3α (or     to reach core collapse. Nuclear energy generation was
+f3α /fBuch ), that matters most. West et al. (2013) and        generally treated using the 19 isotope approximation net-
+Austin et al. (2014) considered constraints on the ratio       work in Kepler and the 128 isotope quasiequilibrium
+of these two rates required to fit nucleosynthesis in mas-     network once the central oxygen mass fraction fell be-
+sive stars. They found that multipliers that gave a best       low 0.05. About 20 models were also calculated using
+fit obeyed the relation fBuch = 1.0 f3α + (0.35 ± 0.2),        an adaptable network (Rauscher et al. 2002) with typi-
+including the effect on the s-process (their Rα,12 and         cally 250 isotopes from hydrogen to germanium coupled
+R3α are equivalent to our fBuch and f3α ). The best fit        directly to the structure calculation. Changing networks
+using only the intermediate-mass isotopes was fBuch =          caused final remnant masses to vary by at most 1 M ex-
+1.0f3α + (0.25 ± 0.3). That is, nucleosynthesis favored a      cept near the critical mass where the star fully exploded
+relatively large rate for 12 C(α, γ)16 O, fBuch ∼ 1.3, and     after the first pulse (§2.3.2). Small differences made a
+any increase in 3α required a commensurate increase in         large difference in outcome for these cases, but the value
+the rate for 12 C(α, γ)16 O.                                   of Mlow for a given choice of nuclear physics was not
+   We will be exploring values outside this recommended        greatly affected.
+range, including values of fBuch as low as 0.75 and f3α as       2.3.1. Lower Boundary to the Pair-Instability Mass Gap
+large as 1.35. This large decrease in the ratio of the rates
+is necessary to appreciably raise the black hole mass, but        Results for Mlow are given in Table 1. As dis-
+may have negative implications for nucleosynthesis that        cussed by Farmer et al. (2019), decreasing the rate for
+                                                               12
+will need to be explored in the future. See Fig. 4 of West        C(α, γ)16 O, or raising the rate for 3α results in a larger
+et al. (2013).                                                 amount of carbon being present in the outer part of the
+                                                               star when the pair-instability is first encountered after
+                                                               central carbon depletion. The energy generated in these
+   2.3. Non-rotating Helium Stars of Constant Mass
+                                                               shells inhibits the collapse to oxygen ignition and thus
+   In a very close binary, where little or no extended hy-     makes the explosion milder. In cases with large carbon
+drogen envelope can be tolerated, the evolution of pure        abundance, i.e., low 12 C(α, γ)16 O or high 3α, the energy
+helium stars can be used to approximate the final pre-         from carbon shell burning can even trigger its own series
+supernova state (e.g., Woosley 2017). Helium stars or          of weak pair-instability pulsations. This affects the final
+carbon-oxygen stars will also be the end state of evo-         remnant mass very little, but might provide a low mass
+lution where the metallicity is sufficiently high that the     shell around the star when it finally dies.
+envelope is lost to a wind or the rotation so rapid as to         A key point is that if the carbon abundance is large
+induce chemically homogeneous evolution (Maeder 1987)          enough, central oxygen burning can ignite stably with en-
+on the main sequence. Once revealed the helium star            ergy transported by convection. If a substantial amount
+will also experience mass loss by winds, especially if the     of oxygen burns stably, then the reservoir of fuel for fu-
+metallicity is large. During the post-helium burning evo-      ture explosive events is reduced, even if they occur. The
+lution, the evolution is so fast that mass loss by winds is    pulsational pair instability is thus weakened. Less mat-
+negligible. As will be shown (§2.4), helium cores evolved      ter is ejected with lower energy. This trend of weaker
+at constant mass are a good approximation to the evo-          pulsations when the carbon abundance is high is appar-
+lution of heavier helium cores that include mass loss. It      ent in Table 1. Though the focus here is on remnant
+is the final mass that matters.                                masses, this behavior also has important implications for
+   This simplification motivates a study of reaction-rate      the properties of any supernovae resulting from the pul-
+sensitivity in helium stars stars of constant mass. Similar    sational pair instability. The energies are still sufficient
+studies have been carried out by Farmer et al. (2019) and      to power a bright Type II supernova in stars where a
+Farmer et al. (2020). We consider here the variation of        hydrogen envelope is retained. The light curves of these
+just the rates for 12 C(α, γ)16 O and 3α because of their      supernova will lack radioactive tails and eject almost no
+key role in determining the carbon abundance when the          new heavy elements, but the energy and brightness of su-
+star becomes unstable. It is assumed that once an iron         pernovae resulting from colliding shells will be less. For
+core is formed, typically around 2 M , that iron core and      unfavorable values of reaction rates, this makes PPISN
+all the remaining star collapses to a black hole. This will    even less likely to produce superluminous supernovae
+not necessarily be the case if the star is very rapidly        (Woosley 2017).
+rotating (§4).                                                    For models with small carbon abundances, i.e., large
+                                                               12
+   Models are calculated using the Kepler code and the            C(α, γ)16 O or small 3α rates, the characteristics of
+same physics and zoning as in Woosley (2017). Convec-          PPISN are not very sensitive to the rates. Focusing on
+tion is left on during interpulse periods, but only in the     just those models where only 12 C(α, γ)16 O is varied, the
+core where where hydrostatic equilibrium prevails. Con-        maximum black hole mass is 46, 46, 48, and 56 M for
+vection speeds are always limited to 20 % sonic, and con-      rate multipliers fBuch = 1.4, 1.2, 1.0, and 0.8. For the
+vective velocities do not adjust instantaneously, but with     larger multipliers, the carbon burning shells are weak and
+a growth rate that is limited to the (inverse of the) con-     the pair instability is strong. These were the cases ex-
+vective time scale. Interpulse convection can sometime         plored by Woosley (2017). For central carbon mass frac-
+play an important role in mixing combustible fuel, i.e.,       tions at helium burning greater than about 0.15 though,
+4
+
+the nature of the solution changes dramatically. For the
+most extreme cases considered here, the pair instability                        TABLE 1
+                                                                  Non-Rotating Helium Stars of Constant
+is essentially absent. Only some weak pulses occur near                           Mass
+the end of the stars life when the core is already well
+into silicon burning. For intermediate values, the pair          MHe      X(12 C)    fBuch      MBH       KEexp
+instability is still present, but suppressed to a varying        [M ]                           [M ]    [1051 erg]
+extent.                                                           50      0.0677       1.4      42.5      1.10
+   Increasing the 3α rate can further raise Mlow . For            51      0.0666       1.4      42.7      1.03
+fBuch = 0.75 and f3α = 1.35, the maximum black hole               52      0.0656       1.4      45.4      0.90
+mass is near 64 M . Larger values could be obtained by            53      0.0646       1,4      45.3      1.43
+                                                                  54      0.0636       1.4      46.1      0.77
+further manipulation of the rates (Farmer et al. 2019,            56      0.0617       1.4      44.7      1.23
+2020), and by including rotation (§4), but pending fur-           58      0.0600       1.4      43.5      2.25
+ther experimental studies, we regard such variations of           60      0.0583       1.4      40.6      2.41
+reaction rates as unlikely, especially given the potential        62      0.0568       1.4      20.1      2.97
+                                                                  64      0.0554       1.4       0        4.58
+problems with nucleosynthesis.
+                                                                  50      0.0986       1.2      42.9      0.93
+                                                                  51      0.0972       1.2      43.8      0.81
+  2.3.2. Upper Boundary to the Pair-Instability Mass Gap          52      0.0959       1.2      43.8      0.86
+                                                                  53      0.0947       1.2      45.0      0.76
+   Uncertainties in the reaction rates can also have an           54      0.0935       1.2      45.6      0.74
+important effect on the upper boundary of the pair-               56      0.0909       1.2      45.4      1.05
+instability gap (Table 2). The least massive black hole           58      0.0887       1.2      46.0      1.78
+above the gap, Mhigh , now ranges from 136 to 161 M for           60      0.0869       1.2      42.5      2.27
+                                                                  62      0.0850       1.2      32.0      2.53
+the same choices of reaction rates as in Table 1. There           64      9.0831       1.2       0        3.77
+is a notable shift for fBuch = 1.2 from the value given
+by Heger & Woosley (2002), Mhigh = 133.3 M , to the               50       0.140        1       44.9      0.41
+                                                                  51       0.138        1       45.5      0.48
+new value, Mhigh = 139 M , a change of 4.3 % resulting            52       0.137        1       46.1      0.47
+solely from different code physics.                               53       0.135        1       45.8      0.53
+   About half of this change comes from directly coupling         54       0.134        1       46.5      0.46
+a large reaction network of about 200 isotopes to the stel-       56       0.131        1       47.8      0.67
+                                                                  58       0.129        1       46.5      1.31
+lar structure calculation, taking smaller time steps, and         60       0.126        1       46.2      1.75
+other minor changes to the Kepler code in the last 20             62       0.124        1       41.9      1.96
+years. The calculations of Heger & Woosley (2002) only            64       0.122        1       24.1      2.70
+used a 19 isotope approximation network for energy gen-           66       0.120        1        0        4.07
+eration and “coprocessed” with a much larger network to           50       0.187       0.8      49.0       0.05
+obtain nucleosynthesis. The quasiequilibrium network in           51       0.186       0.8      49.5      0.096
+Kepler was not used due to problems at that time with             52       0.184       0.8      49.9       0.14
+convectively coupled zones containing a varying amount            53       0.183       0.8      50.4       0.14
+                                                                  54       0.181       0.8      51.0       0.15
+of oxygen at explosive temperatures.                              56       0.179       0.8      53.1       0.19
+   The other half comes from different assumptions re-            58       0.176       0.8      56.5       0.13
+garding convection during the implosion. In Heger &               60       0.173       0.8      53.4       0.90
+Woosley (2002), it was assumed that convection did not            62       0.171       0.8      54.2       1.11
+                                                                  64       0.169       0.8      47.0       1.74
+occur during the implosion once carbon was depleted in            66       0.166       0.8      45.7       2.19
+the central zone. Here, for the standard cases, time-             68       0.164       0.8      31.0       2.71
+dependent mixing-length convection is allowed to pro-             70       0.164       0.8       0        4.51
+ceed in zones that are not supersonically collapsing, i.e.,       54       0.190     1/1.35     50.9      0.21
+vcol < cs , but the convective speed used in the mixing           56       0.187     1/1.35     52.7      0.24
+length calculation is limited, in all zones, to vconv <           58       0.184     1/1.35     56.6      0.11
+0.2 cs . Here cs is the local sound speed. Additional stud-       60       0.181     1/1.35     52.9      0.67
+ies in which the zonal collapse speed limiter was reduced         62       0.178     1/1.35     52.1      1.10
+                                                                  64       0.176     1/1.35     52.3      2.16
+to vcol < 0.3 cs while retaining vconv < 0.2 cs showed little     66       0.173     1/1.35     41.7      1.97
+deviation from Table 2. If those limiters were further de-        68       0.171     1/1.35     13.0      3.37
+creased though, to vcol < 0.1 cs and vconv < 0.1 cs , Mhigh       70       0.169     1/1.35      0        4.91
+was reduced. More efficient mixing of oxygen downwards            56       0.261    0.75/1.35   55.9      0.001
+during the implosion leads to greater burning and in-             58       0.258    0.75/1.35   57.8      0.007
+creases Mhigh . The values in Table 2 are thus probably           60       0.254    0.75/1.35   59.6      0.020
+upper limits for non-rotating models and the actual val-          62       0.252    0.75/1.35   60.7       0.10
+ues could be 2 % smaller. As noted previously, small              64       0.249    0.75/1.35   63.1      0.042
+                                                                  66       0.246    0.75/1.35   63.5       0.17
+changes in physics can have an large effect near the cusp         68       0.244    0.75/1.35   64.1       0.32
+of a transition from full collapse to full explosion. These       70       0.241    0.75/1.35   51.4       1.39
+changes thus had a much greater effect on Mhigh than              72       0.239    0.75/1.35   25.5       2.85
+Mlow .                                                            74       0.236    0.75/1.35   11.6       3.95
+                                                                  76       0.234    0.75/1.35    0         4.53
+   Rotation could also substantially decrease Mhigh by
+weakening the pair instability, but that was not explored         Note.       — The S-factor used for the
+                                                                12 C(α, γ)16 O reaction rate in these calculations
+here. See §4 for the effect of rotation on Mlow .               was 146 keV b multiplied the indicated multipli-
+                                                                cation factor, fBuch . In some runs the 3α rate
+                                                                was also multiplied by 1.35. X(12 C) is the central
+                                                                carbon mass fraction just before central carbon
+                                                                burning ignites.
+                                                                                                                         5
+
+                     TABLE 2                                                          TABLE 3
+      Upper Bound on Pair-Instability Supernovae                                 Effect of Mass Loss
+
+       MHe      fBuch      X(12 C)   MBH      KEexp                     Minit   Mfin   X(12 C)   MBH      KEexp
+       [M ]                          [M ]   [1051 erg]                  [M ]    [M ]             [M ]   [1051 erg]
+        135       1.4      0.0311     0       99.4                        68    50.2   0.0931    42.7     1.27
+        136       1.4      0.0309    136       0                          70    51.6   0.0913    45.2     0.66
+                                                                          72    53.0   0.0895    44.8     0.62
+        138       1.2      0.0487     0        103                        74    54.4   0.0878    45.7     0.58
+        139       1.2      0.0485    139        0                         76    55.9   0.0862    45.5     0.86
+                                                                          78    57.2   0.0846    45.0     1.41
+        143       1.0      0.0758     0        109                        80    58.7   0.0831    41.0     1.47
+        144       1.0      0.0755    144        0
+
+        150       0.8       0.116     0        116             stars contained appreciable helium.
+        151       0.8       0.116    151        0                Table 3 shows that the effect of this residual helium,
+                                                               and mass loss on the remnant mass is generally small
+        151    1.0/1.35     0.115     0        120
+        152    1.0/1.35     0.114    152        0              for the reaction rates considered. Comparing the re-
+                                                               sults including mass loss to the corresponding stars with
+        160    0.75/1.35    0.176     0        131             fBuch = 1.2 and f3α = 1 in Table 1, Mlow is reduced by
+        161    0.75/1.35    0.176    161        0              less than 1 M . This is comparable to variations intro-
+                                                               duced by zoning, network, and time step criteria. The
+                                                               small effect of the helium shell also suggests that the
+            2.4. Helium Stars With Mass Loss                   essential conclusions of Table 1 might be obtained ignor-
+   Stellar winds reduce the mass of the star and alter         ing the helium altogether and just modeling stars of just
+the thickness of the helium burning shell relative to the      carbon and oxygen.
+carbon-oxygen core. Being farther out in the star, the
+influence of the residual helium is reduced relative to car-                2.5. Pure Carbon-Oxygen Stars
+bon, but helium burns at a lower temperature and gen-             Many factors affect the carbon abundance in the core
+erates more energy, and so can still have a minor effect.      of a massive star following helium burning: the reaction
+Stars with the large masses considered here have con-          rates for 3α and 12 C(α, γ)16 O; the treatment of semi-
+vective helium burning cores that extend through more          convection and convective overshoot mixing; rotationally
+90 % of their mass when helium is half burned, so most         induced mixing; radiative mass loss (§2.4); and whether
+of the post-helium burning star is carbon and oxygen.          the star is in a mass exchanging binary (Woosley 2019).
+Some helium always remains in the outer layers of the          Fortunately, the structure of a very massive star during
+star though, no matter what the mass loss rate (see, e.g.,     its final stages of helium burning is quite simple. Be-
+Table 4 of Woosley 2019). The convective core recedes          cause the luminosity is nearly Eddington and the struc-
+as mass is lost from the surface leaving a gradient of he-     ture near that of an n = 3 polytrope, helium stars of the
+lium outside. Typically at carbon ignition helium still        mass considered are almost fully convective throughout
+has an appreciable abundance in the outer 15 % of the          most of their helium-burning evolution. Their compo-
+star. Burning at the base of this shell during implosion       sitions and entropies, except for a small mass near the
+drives convection that mixes additional helium down, in-       surface, are nearly constant. The helium exhausted ma-
+creasing the strength of the shell burning.                    terial includes most of the matter that participates in
+   To illustrate the effect, we consider here a single set     burning during a PPISN or PISN. The remainder, near
+of reaction rates, fBuch = 1.2 and f3α = 1.0, and ex-          the surface, while composed of a mixture of helium and
+plore some initial mass and mass loss combinations that        carbon, has an electron mole number near Ye = 0.50.
+produce presupernova stars in the same mass range as           The star’s structure, which is most sensitive to the elec-
+Table 1. The mass loss rate is taken from Yoon (2017)          tron density, is thus not very much affected by the ratio
+for 10 % solar metallicity with fWR = 1. Vink (2017)           of helium to carbon.
+and Sander et al. (2019) predict a smaller mass loss rate         These characteristics and a desire to better understand
+for such stars. Table 3 shows some results. For a typ-         the star’s composition affects Mlow motivate an explo-
+ical case, a helium core with an initial mass of 76 M          ration of stars consisting initially of just carbon and oxy-
+ends up with a final mass of 55.9 M , mostly composed          gen in a ratio that does not vary with location in the star.
+of carbon and oxygen, with a central carbon fraction of        The composition reflects what exists at the end of helium
+0.0862. This is very similar to the 56 M helium star           burning and condenses many of the uncertainties men-
+which, when evolved at constant mass in Table 1, had           tioned above into a single parameter, the carbon mass
+a carbon mass fraction of 0.0909. The small difference         fraction. Once a grid of explosions has been calculated
+is because the shrinking helium convective core mixes in       for a suitable range of carbon mass fractions, the future
+less helium to the center in the mass-losing star towards      properties of the supernova can determined for any model
+the end of helium burning. A more important difference         by comparing its actual carbon mass fraction at helium
+though is the amount of helium in the outer regions of         depletion to the grid. Since the carbon mass fraction is
+the star. The model with mass loss had 0.94 M of 4 He          bounded, so too is the maximum mass black hole that
+prior to pair pulsations, while the constant mass model        can be produced following the pulsational-pair instabil-
+had 1.94 M . Both helium shells had their bases at about       ity.
+47 M though, i.e., the outer 9 M of both presupernova             Unfortunately, such a simple approach suffers from two
+6
+
+complications. First, as discussed in §2.4, helium shell       ble 1 for helium stars that have similar carbon mass frac-
+burning can weaken the pair instability. Whether the           tions at helium depletion, one sees that discrepancy is
+outer layers of the star are carbon or helium makes lit-       never great, but is least when the carbon-mass fraction
+tle difference to their structure, but the burning of he-      is large. Not only is the neon abundance smaller in such
+lium during the implosion can weaken the first pulse.          cases, but the effects of carbon shell burning dominate
+As a consequence, the remnant masses coming out of             those of helium shell burning. Conversely, when the car-
+pure carbon-oxygen cores could underestimate the ac-           bon abundance is small, neon and helium have a big-
+tual value of Mlow . The other complication is that he-        ger effect. For For X(12 C) = 0.05, Mlow is 41 M for
+lium burning in such massive stars produces not just 12 C      carbon-oxygen stars, but 46 M for helium stars with
+and 16 O, but appreciable 20 Ne and even some 24 Mg as         fBuch = 1.4. About half the difference is due to the large
+well. The abundances of these heavier nuclei can become        neon mass fraction and the other half is due to the helium
+comparable to the carbon abundance itself for those cases      shell (columns “0.05/He” and “0.05/Ne”). For X(12 C)
+where the 12 C(α, γ)16 O reaction rate is large and the 3α     = 0.125, on the other hand, Mlow is 47 M for carbon-
+rate small. For the converse cases, perhaps of greater         oxygen stars and 48 M for helium stars with fBuch = 1.
+interest here, where the carbon abundance after helium         For X(12 C) = 0.25, Mlow is 64 M for carbon-oxygen
+burning is large, the carbon shell dominates and both          stars and 64 M for helium stars with fBuch = 0.75 and
+the burning of helium and the abundance of neon have           A 3α rate 1.35 times standard. Variations of 1 - 2 M
+little effect. The effects of neon are also mitigated by the   are expected in any survey due to zoning, time step, net-
+fact that neon burning never becomes an exoergic phase         work, number of pulses, etc. Thus unless the carbon
+in such massive stars. Neutrino losses dominate and the        abundance is less than about 0.1, the simpler carbon-
+products of neon burning are oxygen and magnesium, so          oxygen cores can be substituted for helium stars in our
+half the 20 Ne ends up in 16 O anyway. The bulk energy         search for Mlow .
+yields of the neon-rich and neon-poor compositions also           As with the helium stars, the maximum black hole
+differ very little. Burning the “0.05/Ne” composition in       mass in Table 4 is not very sensitive to the exact value
+Table 4 to 28 Si gives 4.63 × 1017 erg g−1 whereas burning     of the initial fraction of carbon so long as that frac-
+the “0.05” composition to 28 Si gives 4.69 × 1017 erg g−1 .    tion is small. For carbon fractions from 0.05 to 0.15,
+Nevertheless, having a substantial abundance of neon can       Mlow varies only between 41 and 48 M (and 41 M is
+sometimes affect the strength of carbon shell burning and      an underestimate as we have just discussed). For larger
+it will be necessary to demonstrate the sensitivity of the     values though, as would occur for small values of the
+                                                               12
+answer to the neglect of neon and magnesium in the ini-           C(α, γ)16 O reaction cross section or a large value for
+tial composition and of helium in the outer layers.            triple-alpha, Mlow increases dramatically.
+   Table 4 gives the results. Carbon-oxygen stars of con-         To summarize, for a S-factor greater than 110 keV b
+stant mass with the initial carbon mass fractions indi-        (deBoer et al. 2017) and a triple-alpha rate no greater
+cated were evolved until the star either completely dis-       than 1.35 times the traditional value, the carbon mass
+perses as a PISN or its iron core collapses. Except for        fraction in our models is no greater than 0.25 at helium
+the three columns noted, the remainder of the initial star     depletion. This robustly implies a most massive black
+was all 16 O. The range of carbon mass fractions span          hole below the pair instability gap of Mlow = 64 M with
+what we consider to be reasonable values for current re-       an expected error of about 2 M . Pending further exper-
+action rates and convective treatments. No helium star         iments, we regard this as the upper limit to the black hole
+in §2.3 gave a central carbon mass fraction less than 0.05     mass one can obtain in a close mass exchanging binary
+or greater than 0.25. In two of the exceptional series of      by adjusting only the nuclear reaction rates. Additional
+models, those marked “0.05/Ne” and “0.1/Ne”, more re-          corrections for mass loss are small (Table 3 vs. Table 1).
+alistic neon-rich compositions were considered. Helium
+                                                                                    3. SINGLE STARS
+star models in Table 1 show that when the carbon mass
+fraction after helium burning is 0.05, the mass fractions         More massive black holes can result from presupernova
+of 20 Ne and 24 Mg are 0.07 and 0.01 respectively. When        stars that retain their hydrogen envelope. It is assumed
+carbon is 0.1, 20 Ne and 24 Mg are 0.05 and 0.005. Surveys     that the envelope participates, along with the helium
+using these “neon-rich” compositions are also shown for        core in the collapse to a black hole. Very massive sin-
+comparison in Table 4.                                         gle stars could die with most of their envelope intact
+   The effects of a helium shell were also considered in a     if their metallicity is small enough that their mass loss
+series of models labeled “0.05/He”. In the inner 85 % of       is negligible. The envelope might also be retained in a
+their mass, these stars had compositions of 5 % carbon         wide detached binary systems. Both assumptions have
+and 95 % oxygen by mass. In their outer 15 % though            their problems. Even if radiative driven winds retain
+the composition was 5 % carbon, 90 % oxygen and 5 %            their proposed scalings for the very high masses and low
+helium. This typically amounted to about 0.4 M of he-          metallicities where they have not been tested experimen-
+lium, small even for mass losing stars (§2.4). As expected     tally, stars near the Eddington limit may find other ways
+the presence of helium generally led to larger black hole      of losing mass. The mass loss rates for luminous blue
+masses. The effects of both neon and helium in the “0.05”      variables and stars as massive as Eta Carina are very
+case was an increase of about 2 M (5 %) each in Mlow .         uncertain, and might not diminish greatly just because
+The “0.05” case should give an upper bound on these ef-        the radiative opacity is less (Smith & Owocki 2006). Bi-
+fects because the carbon plays an increasingly dominant        nary systems so wide as to contain supergiants may also
+role in the others.                                            have difficulty merging by gravitational radiation in a
+   Comparing Table 4 for carbon-oxygen stars with Ta-          Hubble time.
+                                                                  Still, it is interesting that the larger carbon abundances
+                                                                                                                                           7
+
+                                                     TABLE 4
+                        Remnant Mass in Carbon-Oxygen Stars as a Function of 12 C Mass Fraction
+
+               MCO     0.05     0.05/He    0.05/Ne    0.075    0.10   0.10/Ne      0.125    0.15       0.175     0.20       0.225   0.25
+               [M ]
+                44     37.1       37.3       37.4      -         -        -         -        -          -         -          -       -
+                46     38.7       39.4       39.2     39.5       -        -         -        -          -         -          -       -
+                48     40.1       41.7       41.0     41.9     41.5      41.6       -        -          -         -          -       -
+                50     40.5       42.4       43.2     43.5     43.8      43.3      43.5      -          -         -          -       -
+                52     40.6       43.1       41.7     43.3     45.5      44.8      44.9     47.4        -         -          -       -
+                54     37.2       42.0       40.7     35.8     44.0      44.4      46.0     47.9       50.2      51.8        -       -
+                56     24.7       38.2       35.1     35.4     42.3      45.1      47.2     48.2       50.4      53.0       55.1     -
+                58      0          0          0       16.7     38.6      26.0      43.1     47.7       51.3      53.1       55.0    57.6
+                60      -          -          -        0       19.5      22.5      37.5     46.9       49.9      56.7       58.9    58.7
+                62      -          -          -        -        0.0      0.0       19.2     33.4       48.8      55.2       57.3    59.2
+                64      -          -          -        -         -        -         0       23.6       44.2      51.6       61.5    62.3
+                66      -          -          -        -         -        -         -        0         31.9      43.9       57.7    62.4
+                68      -          -          -        -         -        -         -        -          0        33.1       52.3    63.7
+                70      -          -          -        -         -        -         -        -          -         0         38.3    56.0
+                72      -          -          -        -         -        -         -        -          -         -         18.9    39.9
+                74      -          -          -        -         -        -         -        -          -         -          0.     20.2
+                76      -          -          -        -         -        -         -        -          -         -          -       0
+                78      -          -          -        -         -        -         -        -          -         -          -       -
+
+               Mlow     41         43         43       44       46       45         47          48      51        57         61     64
+                 Note. — Remnant masses are given for carbon-oxygen stars of initially constant composition with the
+              mass fraction of carbon indicated. Models 0.05/Ne had an initial composition of 5 % 12 C, 87 % 16 O, 7 %
+              20 Ne and 1 % 24 Mg. Models 0.1/Ne had an initial composition of 10 % 12 C, 84.5 % 16 O, 5 % 20 Ne and
+
+              0.5 % 24 Mg. Models 0.05/He had a initial mass fraction of helium of 0.05 in the outer 15 % of their mass.
+              The 16 O mass fraction was reduced there by 0.05 to compensate. For all other models the mass that was
+              not 12 C was 16 O. The maximum value for each carbon mass fraction is Mlow .
+
+
+
+                                                                  TABLE 5
+                                                             Single Star Models
+
+                                Model     fα,γ /f3α   MpreSN     MHe      X(12 C)     MSCZ           MBH         KEexp
+                                                       [M ]      [M ]                 [M ]           [M ]      [1051 erg]
+                               T90Ca       0.8/1.0    80.92      41.13     0.202         55.2        80.9      < 0.0001
+                               T100Ca     0.8/1.0     88.50      46.53     0.198         65.3        49.9       0.151
+                               T100Cb     0.8/1.35    88.79      46.53     0.262         65.3        88.7      < 0.0001
+                               T110Cb     0.8/1.35    97.13      50.57     0.254         71.5        ∼ 73       0.021
+                               T120Cb     0.8/1.35    104.76     55.17     0.249         77.3        ∼ 67       0.077
+                               T130Cb     0.8/1.35    112.27     60.37     0.239         77.6        63.5       0.173
+                               T140Cb     0.8/1.35    119.31     66.59     0.232         78.8        65.0        0.65
+                                Note. — The model name gives the zero age main sequence mass of the
+                              star. MSCZ is the mass of the presupernova star that is inside the base of the
+                              surface convection zone. The external binding energy there is close to 1048 erg.
+                              MHe is the helium core mass and MpreSN , the total presupernova mass. All
+                              quantities except the remnant mass, MBH , and final kinetic energy, KEexp , are
+                              evaluated at carbon ignition.
+
+allowed by altered reaction rates also imply that single                   as main sequence stars and red supergiants was further
+stars with larger total mass could collapse. Belczynski                    reduced by an additional factor of 8 compared to the
+et al. (2010) estimated a maximum black hole mass of                       standard value for that metallicity. This would require
+80 M for a metallicity 1 % of solar, but did not include                   a still lower value of metallicity or mass loss rates much
+the effect of the pair instability. Woosley (2017) found                   less than standard values for 10 % solar metallicity.
+that a black hole of 65 M resulted from the evolution                        Final presupernova masses, helium core masses, and
+of a 70 M star with a a very low mass loss rate (Model                     remnant masses are given in Table 5 along with the vari-
+T70C). That calculation was for a relatively large rate for                ations in reaction rates and resulting carbon mass frac-
+12
+   C(α, γ)16 O (fBuch = 1.2) and a standard value for 3α.                  tion at helium depletion. The behavior of these full star
+Whereas not attempting a full survey, we consider here                     explosions generally follows from Table 1 and Table 4,
+the evolution of six metal-deficient massive stars, Mod-                   but due to the non-negligible boundary pressure of the
+els T90C, T100C, T110C, T120C, T130C, and T140C                            hydrogen shell, the equivalent helium core mass in Ta-
+(see Table 2 Woosley 2017), using variations on the reac-                  ble 5 is smaller than for the bare helium star models.
+tion rates chosen to produce large central carbon abun-                    Given their large carbon mass fractions, the pair insta-
+dances at helium depletion. These models did not rotate                    bility in Models T90Ca and T100Cb is mild and launches
+and had zero age main sequence masses of 90 to 140 M .                     weak shocks having initial speeds of only 100’s of km s−1 .
+Their metallicity was 10% solar, but their mass loss rate                  These shocks appear late in the evolution after stable
+8
+
+central oxygen burning and most of silicon core burning        (e.g., Heger & Woosley 2010).
+have already transpired. Typical explosion energies were          Another possibility is kicks during the explosion (Tu-
+1047 erg or less. This only suffices to eject a small amount   tukov & Cherepashchuk 2017). The difficulty here is that
+of material near the surface, even in a red supergiant, so     if no mass is ejected in a jet, the kick must be a conse-
+the remnant mass very nearly equals the presupernova           quence of asymmetric neutrino emission, but neutrino
+mass.                                                          losses are a small fraction of the stellar mass. Once a
+   Other models experienced stronger pulsations, though        black hole forms, without rapid rotation, the infalling
+still late in their evolution. The presupernova models         material does not radiate neutrinos effectively. If neu-
+                                              14
+were all characterized by large radii, >  ∼10    cm, but had   trino emission is restricted to just the phase of proto-
+surface convection zones that had not dredged up the           neutron star evolution, then the losses are probably no
+entire envelope. The net binding energy of the dredged         more than 0.5 M c2 . Given a 5 % asymmetry, which
+up material for all six stars was, to within about a fac-      seems liberal, the kick for an 80 M black hole would
+tor of two, ∼ 1048 erg, while the binding of all matter        then be (0.5)(0.05)/80 c ∼ 100 km s−1 . These neutrinos
+external to the helium core, including the part that was       would need to be coincidentally radiated largely in the
+not convective, was greater that ∼ 1050 erg. Thus when         direction of orbital motion. This could cancel the or-
+explosions developed with energy of order 1049 erg, typ-       bital momentum for a wide enough separation, but the
+ical mass separations lay beneath, but not far beneath         balance would need to be nearly precise to result in a
+the base of the convective part of the envelope (Models        plunging highly eccentric orbit that might later be circu-
+110Cb and 120Cb). These mass separations were difficult        larized if it passed close enough to the secondary. This
+to determine because shock speeds were so slow that fall-      seems feasible but unlikely.
+back continued for decades following the initial collapse.
+The location of the base of the convective zone is also                              4. ROTATION
+model dependent since it is sensitive to the convection                      4.1. Formalism and Physics
+model, the opacity and metallicity, and mass loss. The
+depth of this zone was also slightly different at helium de-      Rotation weakens the pair instability (Fowler & Hoyle
+pletion, carbon ignition (where the evaluations in Table 5     1964), but the effect on the dynamics of the explosion
+were made), and carbon depletion. Had the model been           is not great unless the star maintains a large degree of
+a luminous blue variable or blue supergiant, the binding       differential rotation. Marchant & Moriya (2020) give the
+of the envelope might have been greater and so would           modification to the structural adiabatic index, Γ1 , re-
+the remnant mass, but then mass loss for the luminous          quired for instability,
+blue variable could have been large. For larger explosion                            4  2
+energies (Models 100Ca, 130Cb and 140Cb) the mass                             Γ1 <     − ωk2 + O(ωk4 ),              (1)
+                                                                                     3  9
+cut is more precisely determined. For all models except                        p
+T140Cb, the pulses occurred so late that the iron core         where ωk = Ω/ Gm/re3 is the ratio of the actual angu-
+collapsed while the outgoing shock from the pulses was         lar rotation rate, Ω, to the Keplerian rotation rate for
+still inside the star.                                         a given mass shell; re is its equatorial radius, here just
+   For the small values of 12 C(α, γ)16 O rate and large 3α,   taken to be the radius; and m is the mass inside that
+black holes of 85 M and more are possible. These are           radius. Since a real star has neither constant Γ1 or ωk ,
+cases where the advanced stages of evolution are essen-        this criterion may or may not be satisfied in different
+tially stable and pulsational mass loss is negligible (Mod-    regions of the star at different times. Whether there is
+els T90Ca and 100Cb). Since the helium core properties         a global instability depends upon the integrated average
+are largely independent of the mass loss rate, unless the      (Marchant & Moriya 2020).
+whole envelope is lost, somewhat larger black hole masses         The strength of the pair instability also depends sen-
+could be achieved given ones tolerance for reducing the        sitively upon the temperature and is weaker when the
+mass loss rate, but probably not much beyond 100 M .           star first begins to contract and gain momentum, and
+It is interesting that black holes of such high mass can       greater at the end when oxygen burns explosively. The
+form, even in isolation. If they were to some day be cap-      accumulated momentum during the collapse plays an im-
+tured in another system, one would not need to resort to       portant dynamical role. Typical maximum decrements
+multiple mergers to build up a black hole of 85 M .            in Γ1 from the pair instability for the masses being stud-
+   As noted before, there might be problems with mak-          ied, once the central temperature exceeds 2 × 109 K, are
+ing a LIGO source directly this way. Given the large           a few percent locally (relative to a fiducial 1.33), and
+radii of the stars, bringing the resulting black hole from     ∼1 % globally (Fig. 1). This implies that differential
+the first explosion close enough to the secondary in order     rotation in the deep interior with ωk > ∼ 10 % will be re-
+
+to merge in a Hubble time requires additional assump-          quired to alleviate the instability. Smaller amounts of
+tions. One possibility is that the primary (which makes        rotation can still affect the outcome though by leverag-
+the more massive black hole) was a blue supergiant or lu-      ing the evolution early on when the instability is weak.
+minous blue variable and the secondary a red supergiant        Marchant & Moriya (2020) found a typical increase in
+when they died. The larger radius for the secondary            black hole mass of ∼4 % when magnetic torques (Spruit
+might provoke mass exchange that was avoided for the           2002) were included in the models, and ∼15 % when they
+primary. This might happen e.g., if the secondary was          were not. Since ignoring magnetic torques would give a
+a low metallicity star that made primary nitrogen when         very rapid rotation rate for pulsars and possibly over-
+its helium convective core encroached on the hydrogen          produce gamma-ray bursts (Woosley & Heger 2006), the
+envelope while the primary did not. Such evolution is          inclusion of magnetic torques is probably more realistic.
+often seen for stars of this large mass and low metallicity       Unfortunately, rapid rotation affects the evolution of
+                                                                                                                           9
+
+massive stars in many ways, and disentangling them com-         where j is the average specific angular momentum of the
+plicates any conclusion regarding the black hole birth          shell, r is the radius of the shell, and Ω is the angular
+function. Rotation leads to mixing that results, at a           velocity of the shell. Shells are assumed to be spherical
+minimum, in larger helium cores for a given main se-            and rigidly rotating (solid body rotation for each shells).
+quence mass. At a maximum, the star may become fully            Different shells may rotate at different angular velocity.
+mixed on the main sequence and experience chemically-           The factor 9/4 is because, for a spherical shell in solid ro-
+homogeneous evolution (Maeder 1987). Rotationally-              tation, the average angular momentum at the equator is
+induced mixing can transport additional helium into the         3/2 times the average. The factor f accounts for averag-
+convective helium burning core at late times, thus de-          ing the centrifugal force over the surface, and should be
+creasing the carbon yield and lowering the remnant mass         2/3. Our approximation does not take into account any
+(Table 4). Rotation reduces the central density mak-            deformation of the shell or that the centrifugal forces
+ing the star evolve like one of lower mass (Marchant &          would be larger at the equator than at the pole.
+Moriya 2020). Rapid rotation can lead to mass shedding            The helium stars studied here are assumed to initially
+at the equator, especially in stars that are already near       rotate rigidly and are characterized by a total angular
+the Eddington limit - as these are. Rotation can mix he-        momentum, Jinit = 0.15, 0.3, 0.6, and 1.2 × 1053 erg s.
+lium or carbon down during the implosion so that shell          Several choices of reaction rates are explored. Except for
+burning has a greater effect during the first pulse. Ro-        rotation, the physics and computational procedure here
+tation can alter the way the collapsing iron core behaves       are the same as for non-rotating helium stars in §2.3.
+and allow explosions to develop where the star would              Rotational mass shedding is included and is important
+                                                                                                        52
+have collapsed if neutrino transport were the only mech-        for many models with Jinit >  ∼ 6 × 10     erg s. A surface
+anism. If the rotation of the remnant is too rapid, not         zone is assumed to be lost when its angular velocity ex-
+all of the star can immediately collapse to a black hole        ceeds 50 % of Keplerian (i.e., ωk > 0.5). This value,
+without making a disk. The formation of a “collapsar”           corresponding to a ratio of centrifugal force to gravity
+may produce a jet that explodes the remaining star or,          of 25 %, is an upper bound since the luminosity of the
+at the least, inhibits its full collapse.                       stars considered here is typically ∼ 90 % Eddington. In
+   The amount and distribution of angular momentum              any case, a larger value would make the approximation
+also depends critically upon uncertain mechanisms for           of spherical stars highly questionable. Values of ωk this
+its transport and the rates for mass loss. Transport con-       large only exist in layers near the surface. The central
+centrates angular momentum in the outer layers of the           density rises from around 1,000 g cm−3 prior to carbon
+star where mass loss removes it. To neglect mass loss           ignition (T9,c = 0.5) to 107 g cm−3 during silicon burn-
+is to overestimate the role of rotation in the evolution,       ing. As the star attempts to maintain rigid rotation, the
+but to include it adds another uncertain parameter to the       surface of the star is spun up, resulting in mass loss. This
+outcome, a parameter that will itself vary in an uncertain      loss continues all the way through the evolution.
+way with metallicity.                                             In addition to their angular momentum and mass, the
+   For all these reasons, the results in this section are       models in Table 6 are characterized by several choices of
+less precise than those in the previous ones. A one-            nuclear reaction rates chosen to span most of the range
+dimensional code is used to calculate the effects of a          for the non-rotating stars in §2.3 and Table 1. Three
+two-dimensional phenomenon - rotation. Angle averag-            choices typify a central carbon mass fraction at carbon
+ing and a semi-empirical formulation is necessary. Mass         ignition, X(12 C), that is either “small”, fBuch = 1.2,
+loss by winds is neglected, though see §4.3. What is            f3α = 1; “medium”, fBuch = 1.0, f3α = 1.35; or “large”,
+most important is the angular momentum distribution             fBuch = 0.75, f3α = 1.35. Magnetic torques are included
+the star has at carbon ignition since radiation-driven          all the time in all models except 64b, 66b, 68b, and 80b.
+mass loss can presumably can be neglected after that.             The rotating models in Table 6 will be denoted by their
+Though we follow all stars through helium burning, they         mass and the choice of reaction rates and angular mo-
+approach carbon ignition with essentially the same an-          mentum used in their calculation. Model 601.2,12 thus
+gular momentum distribution they started with - nearly          refers to the 60 M model that used fBuch = 1.2, f3α = 1,
+rigid rotation characterized by a single parameter, Jinit ,     and an initial angular momentum Jinit = 12 × 1052 erg s.
+the initial total angular momentum of the star.
+   Rotational mixing and angular momentum transport                      4.2. Results for Rotating Helium Stars
+by the usual dynamical processes (Heger et al. 2000) were
+included in all stages of the evolution, including the inter-      Model stars (Table 6) were generated by allowing an
+pulse periods. Time-dependent convection is also left on        extended configuration of pure helium with an initial
+during inter-pulse periods in that portion of the star that     central density of 0.1 g cm−3 to relax to thermal and
+remains in hydrostatic equilibrium, i.e., is not moving su-     hydrostatic equilibrium with a central density of about
+personically. Except where specified, angular momentum          200 g cm−3 and central temperature ∼ 2.2 × 108 K where
+transport by magnetic torques is included (Spruit 2002;         helium burning ignited. The initial angular momen-
+Heger et al. 2005).                                             tum, Jinit , characterizes that state. Helium burning lasts
+   Unlike our past studies of pair instability, an approx-      about 300,000 years in all models and produces the cen-
+imate centrifugal support term has been added to the            tral carbon mass fractions given in the table. Typical
+momentum equation as                                            radii at central helium depletion (helium mass fraction
+                                                                is 1%) are near 1.5 × 1011 cm and the luminosities are
+                                                                ∼ 1.05 × 1040 erg s−1 (M / 60 M ).
+                          9 j2     Ω2                              After helium depletion, carbon burns away at the cen-
+                      f       3
+                                ≈f                       (2)    ters of all models without the nuclear energy genera-
+                          4 r      r
+10
+
+
+
+
+  Fig. 1.— Distribution of angular velocity and adiabatic index            Fig. 2.— The effect of magnetic torques on the angular momen-
+inside two 62 M models, Model 621.2,3 and Model 621.2,12 at              tum distribution in Model 661.2,12 (Table 6). Top: The angular
+four epochs in their evolution. The epochs are characterized by          rotational speed in rad s−1 and the ratio of angular velocity to
+the first time a central temperature of T9 = 0.5 (dotted line), 1.2      Keplerian are given at two different times in the evolution when
+(dashed line), 2.0 (dash-dotted line), or 2.5 (solid line) is encoun-    the central temperature is T9 = 0.5 (just prior to carbon ignition;
+tered. These four temperatures correspond approximately to just          dashed lines) and 2.5 (during the first pulse; solid lines). Blue lines
+prior to carbon ignition (0.5); after central carbon depletion (1.2);    are the rotational velocity for cases where magnetic torques are in-
+near oxygen ignition (2.0) and during the first pulse (2.5). The         cluded in the calculation; green lines are for an equivalent model
+adiabatic index, Γ1 , is the blue lines and values less than 4/3 are     without magnetic torques. Red lines give the ratio of angular speed
+locally unstable. The red lines are the ratios of the angular velocity   to Keplerian for the model with magnetic torques; gold lines are for
+in rad s−1 to the local Keplerian equivalent, (GM/r3 )1/2 . The top      the model without torques. Bottom: The continued evolution of
+panel is for a moderately rotating Model 661.2,3 and the bottom on       the star leads to even greater disparity between the magnetic and
+for the more rapidly rotating Model 661,2,12 . The inflection point      non-magnetic cases as is shown here for the presupernova star. The
+at 47 M for the solid red line in the lower panel is at the base         total angular momentum interior to the given mass and the ratio
+of the helium burning shell. Global averages of these quantities         of the local rotation rate to Keplerian are given as dashed and solid
+determine the instability of the star at a given point (Eq. 1).          lines respectively. The iron core of the non-magnetic case would
+                                                                         experience triaxial deformation in a multi-dimensional study.
+tion ever exceeding neutrino losses and generating con-
+vection. Due to efficient magnetic torques, the star ro-                 perience rotational mass shedding. This begins late in
+tates nearly rigidly up until carbon ignition except for a               helium burning, but mostly happens near and just after
+small mass at the surface. The angular velocity for most                 carbon ignition. The mass lost is <∼2 M , which is a small
+of the interior is Ω ≈ 5 × 10−4 (60 M /M )2 (Jinit,52 /3)                fraction of the total mass, but often contains a substan-
+radians s−1 when the central temperature is 5 × 108 K                    tial fraction of the total angular momentum. For exam-
+and density, 2,500 g cm−3 . The ratio of angular veloc-                  ple, Model 601.2,12 shrank to 59.04 M at carbon ignition
+ity to its Keplerian value, ωk , varies with radius, but                 and, in the process, its angular momentum, J52 , declined
+for a point midway in mass in the star is typically                      to from 12 to 7.84. By oxygen ignition, these values
+ωk ≈ 0.029(60 M /M )2 (J52,0 /3) at that time (Fig. 1).                  had further decreased to 58.05 M and 6.35, respectively.
+These values are reduced in cases where there has been                   Even before pulsations began, the initial angular momen-
+appreciable rotational mass shedding.                                    tum for Model 601.2,12 had almost halved, making Model
+   Prior to any pulsational mass loss, all models with Jinit             581.2,6 and Model 601.2,12 similar in outcome. The two
+= 1.2 × 1053 erg s and many with Jinit = 6 × 1052 erg s ex-              stars had masses of 57.6 and 58.0 M after rotational
+                                                                                                                 11
+
+                                             TABLE 6
+                           Helium Stars with Constant Mass and Rotation
+
+ MHe       fBuch        Jinit       X(12 C)   Mshed   Mpulse1    KEpulse1     MBH      KEexp         Jfinal
+ [M ]                [1052 erg s]             [M ]     [M ]      [1051 erg]   [M ]   [1051 erg]   [1052 erg s]
+   54       1.2          1.5        0.0936      0       53.3        0.12      45.9      0.89         0.79
+   56       1.2          1.5        0.0913      0       51.6        0.44      46.8      0.72         0.43
+   58       1.2          1.5        0.0891      0       49.2        0.96      46.6      1.41         0.72
+   60       1.2          1.5        0.0871      0       49.9        1.56      45.4      2.34         0.32
+   62       1.2          1.5        0.0851      0       43.6        2.26      41.1      2.64         0.35
+   54       1.2           3         0.0932     0        53.3       0.041      46.2      1.33         1.30
+   56       1.2           3         0.0910     0        53.6        0.19      48.5      0.82         1.18
+   58       1.2           3         0.0889     0        50.6        0.62      48.1      0.92         0.41
+   60       1.2           3         0.0868     0        50.5        1.13      47.2      1.78         0.67
+   62       1.2           3         0.0849     0        49.4        1.77      44.2      2.68         0.59
+   56       1.2           6         0.0892    0.42      54.0        0.25      46.8      1.17         1.73
+   58       1.2           6         0.0874    0.37      57.0       0.036      48.6      1.12         1.51
+   60       1.2           6         0.0856    0.26      57.7        0.18      52.4      0.87         0.96
+   62       1.2           6         0.0839    0.02      54.2        0.59      49.1      1.04         0.38
+   64       1.2           6         0.0797    0.01      53.9        0.11      49.5      1.64         0.27
+  64b       1.2           6         0.0822      0       54.1       1.01       50.2      1.49         2.85
+   66       1.2           6         0.0786     0        50.4        1.75      43.6      3.05         0.15
+  66b       1.2           6         0.0805      0       50.2       1.78       44.5      2.81         1.75
+   68       1.2           6         0.0770     0        25.1        3.08      25.1      3.08         0.47
+  68b       1.2           6         0.0790      0       30.5       2.90       30.5      2.90         0.87
+   58       1.2          12         0.0844    2.11      55.4       0.018      47.2      0.81         0.92
+   60       1.2          12         0.0817    1.95      57.2       0.019      48.5      0.84         0.44
+   62       1.2          12         0.0805    1.73      58.2        0.42      51.4      1.69         1.84
+   64       1.2          12         0.0797    1.67      59.1        0.19      46.7      1.11         0.46
+  64b       1.2          12         0.0792    0.28      63.5       0.015      54.8      1.24         6.74
+   66       1.2          12         0.0786    1.56      60.7        0.28      55.5      0.97         0.53
+  66b       1.2          12         0.0778    0.23      64.5       0.14       56.5      1.17         6.86
+   68       1.2          12         0.0770    1.50      60.4        0.45      53.8      1.20         0.42
+  68b       1.2          12         0.0766    0.21      67.0       0.043      59.1      1.40         7.20
+   70       1.2          12         0.0759    1.32      51.7        1.54      45.1      3.12         0.14
+   72       1.2          12         0.0745    1.21      48.6        1.87      43.4      3.10         0.16
+   74       1.2          12         0.0730    1.04      28.6        2.83      28.6      2.83         0.89
+
+  62     1.0/1.35         6          0.177     0        60.6       0.058      58.2      0.28         2.93
+  64     1.0/1.35         6          0.175     0        63.1       0.054      59.2      1.09         1.85
+  66     1.0/1.35         6          0.173     0        58.6        0.56      54.5      1.04         0.82
+  68     1.0/1.35         6          0.170     0        58.3        0.95      55.0      1.48         1.60
+  70     1.0/1.35         6          0.168     0        54.5        1.35      50.7      1.99         1.47
+  72     1.0/1.35         6          0.166     0        46.6        1.98      43.8      2.47         1.09
+  74     1.0/1.35         6          0.164     0         0         4.84        0        4.84          0
+  66     1.0/1.35        12          0.169    1.56      61.7        0.14      61.7      0.14         4.32
+  68     1.0/1.35        12          0.167    1.66      64.2       0.074      61.3      0.98         2.19
+  70     1.0/1.35        12          0.165    1.43      65.2        0.14      61.8      0.48         1.44
+  72     1.0/1.35        12          0.163    1.36      64.8        0.29      61.2      0.87         0.74
+  74     1.0/1.35        12          0.161    1.35      66.7        0.27      61.3      1.03         0.72
+  76     1.0/1.35        12          0.159    0.97      64.5        0.93      58.0      2.33         1.68
+  78     1.0/1.35        12          0.158    0.94      59.5        1.44      56.4      2.02         2.58
+
+   68    0.75/1.35        3          0.244     0        68.0         0        67.9     0.001         2.97
+   70    0.75/1.35        3          0.241     0        67.2       0.10       67.2      0.10         2.41
+   72    0.75/1.35        3          0.239     0        61.6       0.88       61.6      0.88         1.68
+   74    0.75/1.35        3          0.237     0        33.7       2.89       33.7      2.89         0.36
+   68    0.75/1.35        6          0.243     0        68.0         0        67.9     0.004         5.87
+   70    0.75/1.35        6          0.240     0        70.0         0        69.9     0.007         5.92
+   72    0.75/1.35        6          0.238     0        69.0       0.096      69.0     0.096         4.74
+   74    0.75/1.35        6          0.236     0        66.4       0.63       66.4      0.63         3.80
+   76    0.75/1.35        6          0.234     0        44.1       2.35       44.1      2.35         1.19
+   78    0.75/1.35        6          0.232     0         0         5.12        0        5.12           0
+   68    0.75/1.35       12          0.239    1.39      66.6         0        66.3        0          8.32
+   70    0.75/1.35       12          0.237    1.43      68.6         0        68.3        0          8.92
+   72    0.75/1.35       12          0.235    1.16      70.8         0        69.9     0.033         7.90
+   74    0.75/1.35       12          0.233    1.19      70.4       0.12       70.4      0.12         6.40
+   76    0.75/1.35       12          0.231    0.87      73.4       0.051      73.3     0.051         8.62
+   78    0.75/1.35       12          0.229    0.75      73.0       0.015      73.0     0.015         7.60
+   80    0.75/1.35       12          0.227    0.28      69.9       0.85       69.9      0.85         6.33
+  80b    0.75/1.35       12          0.227    0.03      74.9       0.29       74.9      0.29         9.11
+   Note. — See Table 1 for the definition of fBuch . Jinit is the initial total angular of the helium star. It
+can only decrease due to mass loss, though angular momentum can be transported within the star. X(12 C)
+is the central carbon mass fraction just before central carbon burning ignites. Mshed is the mass shed by
+rotation up to the point when oxygen burning ignites. Mpulse1 and KEpulse1 are the mass following the
+first pulse and the kinetic energy of the initial ejecta. A zero value for KEpulse1 indicates stable oxygen
+ignition with no explosive mass loss. MBH and KEfin are the mass of the black hole remnant and the
+total kinetic energy of all ejecta including the first pulse. Jfin is the angular momentum of the black
+hole remnant. Models 64b, 66b, 68b, and 80b were calculated without including the transport of angular
+momentum by magnetic torques and are of questionable validity. Otherwise, the most massive black hole
+for each choice of reaction rates and angular momentum is given in boldface. Black hole masses for models
+with Jfinal >                2
+            ∼(MBH /33.5M ) are upper bounds. The Kerr parameter is the ratio of these two quantities.
+12
+
+mass shedding and produced black holes of 48.6 M and          mass of the star is constant during this interval so the
+48.5 M . Other pairs, like 621.2,6 and 641.2,12 did not       excess angular momentum piles up in a mass of just a few
+yield such similar results because of the stochastic na-      M near the surface. This is later ejected in a final third
+ture of multiple pulses and sensitivity to slight changes     pulse so that the star that included magnetic fields ends
+in the angular momentum distribution and composition.         up making a black hole with spin J52 = 0.53 whereas the
+The agreement was especially poor for models near the         one without magnetic fields makes a black hole of nearly
+threshold of full explosion like 661.2,6 and 681.2,12 , and   the same mass, but with J52 = 6.86.
+for models with little rotational mass shedding.                 It would not be realistic to ignore magnetic torques
+   Still, the implication is that it would not be fruitful    during these long Kelvin-Helmholtz episodes while cores
+to consider models with much larger rotation rates than       recover from prior explosive expansion. The composi-
+Jinit,52 = 12. The excess momentum would simply be            tions, densities. temperatures and rotation rates are sim-
+shed early in the evolution and the maximum black hole        ilar to those in stable carbon burning. On the other hand,
+mass would not be greatly increased. This is particularly     experimental validation of the simple prescription used
+true since the criterion for rotational mass loss, ωk = 0.5   is lacking. The correct solution might lie between the
+at the surface, is already too large for stars so near the    two extremes. This means that any estimate of the Kerr
+Eddington limit.                                              parameter for the black holes coming from these rapidly
+   Also shown in Table 6 is the energy of the first pulse     rotating models, especially those with large carbon abun-
+and the mass of the star after that pulse (including the      dance is not reliable.
+effects of rotational mass shedding prior to the pulse).         The dimensionless Kerr Parameter is a/M =
+These characteristics follow expectations more consis-        cJ/GM 2 = J52 (33.5 M /M )2 . For a 70 M black
+tently than final properies. For a given angular momen-       hole with a/M = 1, the critical angular momentum is
+tum, the mass ejected and the kinetic energy of that          4.40×1052 erg s. Compact remnants in Table 6 with much
+mass, KEpulse1 increase with initial mass. For a given        more angular momentum than this cannot form black
+initial mass, Mpulse1 increases with initial angular mo-      holes without losing mass and shedding the excess. This
+mentum, while KEpulse1 decreases. In cases where the          includes many of the more massive models with large
+central carbon mass fraction and initial angular momen-       carbon mass fractions in Table 6. Only a small fraction
+tum are high, the stars often ignite central oxygen burn-     of this angular momentum is in the collapsing iron core
+ing stably. Such stas may also experience a long phase of     itself. Most is in the outer layers. The most likely fate
+numerous, weak pulsations due to the burning of carbon        of such cores is to form a black hole surrounded by an
+in a shell. The mass lost prior to oxygen burning in such     accretion disk. This probably leads to the production
+models is small though.                                       of jets (Woosley 1993; MacFadyen & Woosley 1999) and
+   A strong first pulse on the other hand implies a long      mass ejection. That is, these are excellent candidates for
+wait before the next pulse while the star relaxes from a      making long soft gamma-ray bursts, and GRBs may be
+highly extended, weakly bound state. During this time,        intimately related to the formation of the most massive
+angular momentum can be transported out of the core by        LIGO sources (see also Marchant & Moriya 2020). The
+shear, magnetic torques, and convection. For these cases,     bursts, of course, happened long ago when the black holes
+subsequent pulses are not so influenced by rotation as the    formed, not when they merged. They are probably not
+first one and can also be quite strong.                       the most common form of GRBs since they involve quite
+   Indeed, the transport of angular momentum by mag-          massive black holes and the surface layers of the star.
+netic torques prior to oxygen ignition and during the         Given the large angular momentum, the disk might form
+long interpulse periods, when they exist, is a major un-      at large radius and thus have a long characteristic time
+certainty in these calculations. Eliminating them re-         scale. A time scale of minutes is implied by the free fall
+duces rotational mass shedding. Angular momentum              time for the outer layers and not an unreasonable esti-
+that might have been transported to the surface and           mate for the burst duration.
+lost remains concentrated in the central core where it           How much mass is ejected? Most of the final angular
+influences the subsequent evolution. Fig. 2 shows the         momentum is in the outer part of the remnant (Fig. 2).
+evolution of the angular velocity and the ratio of the an-    Consider the case of 760.75/1.35,12 . This model leaves a
+gular velocity to Keplerian, ωk , for Model 661.2,12 with     73.3 M remnant with Jfinal,52 = 8.62, too much angular
+and without magnetic torques (models in Table 6 that          momentum for a black hole with this mass. But J52 = 4.2
+end in b, like “66b” did not include magnetic torques).       exists at 69 M corresponding to a/M = 1. A probable
+Early on, near carbon ignition at T9 = 0.5, the rota-         outcome then is that a black hole with an initial mass
+tional profiles are similar for the two models, though        ∼69 M forms with an accretion disk of about 4 M .
+rotational mass shedding has already reduced the angu-        Jet formation will eject some, but not all of this 4 M .
+lar momentum in the model without magnetic fields. As         Based on calculations by Zhang et al. (2004), the frac-
+time passes, the divergence increases and by the time the     tion ejected might not be large. It depends on the effi-
+iron core collapses, there is more than an order of magni-    ciency with which lateral shocks induced by the jet eject
+tude difference in the angular momenta of the remnants.       matter in the equatorial plane. The impication is that
+   The chief cause of divergence in this case is magnetic     some of the large black hole masses in Table 6 should
+braking during the thousand year long interval following      be treated as upper bounds, but are perhaps not too far
+the second pulse in the model that includes magnetic          from correct. The final black hole of all models with
+fields. During that time, the angular momentum in the         J52 >                2
+                                                                   ∼(M/33.5 M ) would have a dimensionless Kerr pa-
+inner 55.5 M of the star (the part destined to be a black     rameter near a/M = 1.
+hole) declines from 4.2×1052 erg s to 5.4×1051 erg s. The        The maximum mass black hole for a given choice of
+                                                                                                                        13
+
+reaction rates and angular momentum is given in bold-          Jager (1990) and was small. Continued evolution used
+face in Table 6. Models without magnetic torques are           the Yoon rates with a multiplicative factor 0.5. The star
+ignored. These limits range from little modification to        finished hydrogen burning with a mass of 63.7 M and
+the those derived for non-rotating stars in Table 1 if         a residual angular momentum of 2.3 × 1053 erg s. The
+Jinit,52 <
+         ∼3, to increases as great as 11 % for maximal ro-     model of Szécsi et al. (2015) had a luminosity at hydro-
+tation. Our heaviest black hole is 73 M (though, as            gen depletion of 106.34 L and an effective temperature
+previously noted, that model has too much spin to fully        of 80,600 K. Our values were 106.37 L and 86,800 K. The
+collapse to a black hole). This is a larger increase than      slight mismatch in starting mass and rotation rate is in-
+estimated by Marchant & Moriya (2020) for stars with           consequential compared with uncertainties in the mass
+magnetic torques included. The difference probably in-         loss rate.
+volves the consideration here of more rapid rotation and,         It is necessary to follow the continued evolution
+especially, choices of reaction rates that produce more        through helium burning. Published mass loss rates for
+carbon. Without magnetic fields the increase could po-         metal-poor helium stars span a wide range (Vink 2017;
+tentially be greater, though probably not much larger as       Yoon 2017; Sander et al. 2019; Sander & Vink 2020;
+Model 80b illustrates.                                         Woosley et al. 2020). Here we continued to use the rate of
+                                                               Yoon (2017) scaled, for the given metallicity (2 % solar),
+                  4.3. Progenitor Evolution
+                                                               by factors of 1, 0.5, and 0.25. All runs were started from
+  The rotation rates assumed here are similar to those         the model with central hydrogen mass fraction 0.3. These
+used to model GRB progenitors (Woosley & Heger 2006;           multipliers gave a range of average mass loss rates during
+Yoon & Langer 2005; Yoon et al. 2006; Cantiello et al.         helium burning from 4×10−5 M y−1 to 1×10−5 M y−1 .
+2007). Chemically homogeneous evolution is common for          The instantaneous rate was about a factor of two smaller
+these stars, and is consistent with the need to keep LIGO      early in helium burning when the star was still a WNE
+progenitors compact inside close binaries (Mandel & de         star and larger later on when it is a WC star. These
+Mink 2016).                                                    rates are consistent with what Sander & Vink (2020)
+  Consider a 70 M main sequence star with initial angu-        have recently published for a metallicity of 2 % to 5 %
+lar momentum J = 4×1053 erg s. This corresponds to an          solar. With these three rates, the final mass of the WC
+equatorial rotational speed at the surface of 390 km s−1       stars at carbon ignition were 47.2, 56.7, and 62.7 M and
+and an angular velocity there that is 32 % Keplerian.          their angular momenta were 2.7, 9.7, and 19 × 1052 erg s.
+With this rotation rate, the star evolves chemically ho-       This spans most of the range of angular momenta sam-
+mogeneously (Mandel & de Mink 2016). It never be-              pled in Table 6. Other choices of initial mass and angular
+comes a giant and consumes all the hydrogen within its         momentum could have filled the grid.
+mass, except for a small fraction near the surface, while                 5. SUPER-EDDINGTON ACCRETION
+still on the main sequence. It thus evolves directly into a
+helium star similar to the ones considered in this section.       Another source of uncertainty affecting black hole
+  If mass loss were negligible, this initial angular mo-       masses in a close binary system is the subsequent interac-
+mentum would be preserved and the star would die with          tion of the first black hole born with the other star (van
+values in excess of the largest ones in Table 6, but that is   Son et al. 2020). It is well known that a black hole can ac-
+not realistic. On the other hand, with solar metallicity       crete at a rate well above the Eddington limit. Accretion
+and conventional mass loss rates, the star would end up        rates of solar masses per second are not uncommon dur-
+with too small a mass to encounter the pair instability        ing core collapse simulations in failed supernovae. The
+and would have a negligible amount of angular momen-           excess energy that might have inhibited infall or pow-
+tum.                                                           ered mass outflow is either radiated away as neutrinos
+  Consider then the results of substantially decreasing        or advected into the event horizon and lost (Popham et
+the star’s mass loss rate, perhaps due to a small ini-         al. 1999). A less extreme and more relevant example
+tial metallicity. Following Szécsi et al. (2015), we con-     is Model r003 of Sadowski & Narayan (2016). In their
+sider a metallicity of 2 % solar, more specifically an         3D general relativistic MHD simulation, a 10 M black
+iron mass fraction of 2.92 × 10−5 . Their 67 M model           hole accretes at 176 times the Eddington value, that is
+had a rotational velocity of 400 km s−1 , comparable to        at at rate 6.7 × 10−6 M y−1 . The authors note that the
+the 390 km s−1 for our 70 M model. Their model also            calculations should scale for larger mass black holes and
+evolved chemically homogeneously. For the mass loss            that greater super-Eddington factors are allowed. For
+prescription they employed, their star had a mass at the       an 80 M black hole, Model r003 would correspond to
+end of hydrogen burning of 62.2 M . Most of their mass         an accretion rate of about 5 × 10−5 M y−1 . We specu-
+loss occurred after the star became a Wolf-Rayet star          late that similar flows and characteristics would charac-
+with a surface hydrogen mass fraction less than 0.3.           terize accretion rates on up to 0.001 M y−1 . Sadowski
+  Szécsi et al. (2015) used a complicated prescription for    & Narayan (2016) note that a portion of the accreted
+mass loss involving multiple sources and interpolation.        energy, about 3 % Ṁ c2 , would go into powering semi-
+Here we just use the rates of Nieuwenhuijzen & de Jager        relativistic polar outflows. Black holes undergoing this
+(1990) and Yoon (2017) with a multiplicative factor less       sort of accretion might thus appear as ultra-luminous
+than one for the Yoon rate. Given the uncertain weak           x-ray sources or SS433 analogues. Indeed, an accre-
+dependence of Yoon’s mass loss rate on metallicity, these      tion rate of 10−4 M y−1 has been inferred for SS 433
+reductions are reasonable. With this prescription, our         (Cherepashchuk et al. 2020). Hyper-Eddington accretion
+70 M metal-poor star reaches a central hydrogen mass           factors of up to 1,000 have been computed for supermas-
+fraction of 0.3 with a mass of 69.4 M . Up to that             sive black holes including the effects of the outgoing jet
+point mass loss was taken from Nieuwenhuijzen & de             on the disk (Takeo et al. 2020).
+14
+
+   It is beyond the scope of this paper to consider the full   ulated and determined by the rate at which convection
+complexity of a mass exchanging binary, especially those       moves into the envelope. We followed our toy model for
+that might experience common envelope evolution, but           100 years (about 10,000 steps) , during which the mass
+our single star models offer some insights. The progen-        loss and convective shell properties remained in steady
+itors of the more massive LIGO sources were probably           state. The inferred mass loss rate was 0.0018 M y−1 .
+stars of ∼ 150 M or more and possibly formed in metal            This is a common envelope evolution of sorts, but one
+deficient regions. One or more stages of common enve-          that proceeds on a thermal time scale, not a dynamical
+lope evolution are frequently invoked. The accretion by        one (Podsiadlowski 2001). The efficiency for the black
+a black hole during a dynamic common envelope phase            hole to retain the mass that is lost by the secondary is
+is currently thought to be small (De et al. 2020), but the     unknown, but a total envelope mass of 60 M could be
+evolution leading up to that common envelope is poorly         lost this way. Growth of the hole by 15 M or more
+explored for stars of such great masses.                       (half of the envelope lost to a wind and half that ac-
+   We consider here a 130 M star finishing its hydrogen        creted) does not seem unreasonable (see also van Son et
+burning evolution in a close binary with a black hole of       al. 2020). Over time, the black hole gains mass and, ini-
+∼ 60 M with an initial orbital separation of 300 R , or        tially at least, moves closer to the secondary. It could be
+about 2 × 1013 cm. Such a configuration is reasonable          that eventually the interaction becomes stronger as the
+for the progenitors of LIGO sources (Bogomazov et al.          orbit is narrowed and a more dynamical sort of common
+2018). The initial black hole mass is reasonable for the       envelope evolution occurs. The 60 M helium core of the
+range of reaction rates and rotation rates considered in       secondary eventually experiences its own pair instability,
+this paper. We further assume that the star has 10 %           making a black hole not much smaller than 60 M and, if
+solar metallicity. Its mass after hydrogen burning is thus     the black holes have become close enough, owing to the
+about 116 M (Woosley 2017; Model T130). In the ini-            action of common envelope evolution jets, or kicks, they
+tial configuration the period of the binary is 40 days.        merge on a Hubble time. This is clearly a very uncertain
+The radius of the main sequence star is ∼ 1.5 − 2 R            and possibly quite rare model.
+throughout hydrogen burning. The main sequence star                                  6. DISCUSSION
+does not yet fill its Roche lobe.
+   The situation changes as the star completes hydrogen           Four modifications to the assumptions previously used
+burning, contracts in its center to ignite helium burning,     to calculate the “pair-gap” in the black hole birth func-
+and attempts to become a supergiant. The star devel-           tion have been explored. Each has been suggested pre-
+ops a surface convective zone that gradually eats into         viously and has the potential to substantially alter the
+its hydrogen envelope. The rate at which the convec-           boundaries, but each also has its problems. In general, it
+tive zone moves into the envelope, which is also the time      is not too difficult to raise the lower bound of the cut off,
+to transition to a supergiant, depends on the theory of        Mlow , from 46 M (Woosley 2019) to about 60 or even
+semi-convection, but is of order a nuclear time scale, or      70 M , but raising it to 85 M and more is difficult and
+∼ 105 yr for helium burning. The Kelvin-Helmholtz time         might require either that the very massive black hole
+scale for the envelope is smaller, a few thousand years. If    was captured, i.e., not born in the binary that subse-
+the envelope were to be lost on either time scale, the loss    quently merged, or other special circumstances. That is,
+rate would thus correspond to 0.0002 to 0.002 M y−1 .          pending better determination of uncertain reaction rates,
+Until close to the end, most of the envelope, by mass, re-     the events in the GWTC-2 catalog (Abbott et al. 2020)
+mains dense transports radiation by diffusion except for       might be accounted for with rather standard physics in
+a region just above the hydrogen burning shell.                which there is still a pair gap with Mlow ∼ 60 M , but
+   We explored the effect of imposing a limit on the ra-       GW190251 requires an alternate explanation. Two pos-
+dius of this 116 M secondary at 2 × 1013 cm, i.e., man-        sible explanations were discussed here - birth in a de-
+ually removing all mass beyond this radius as the star         tached binary (§3) and super-Eddington accretion after
+attempted to become a giant. A steady state was found          black hole birth (§5). See also Tutukov & Cherepashchuk
+with a surface convective zone that had an outer bound-        (2017) and van Son et al. (2020).
+ary that extended nearly to the cut-off radius. The base          The combination of 12 C(α, γ)16 O and 3α rates used
+of this convective shell remained fixed at ∼ 7 × 1012 cm       in our previous studies may have conspired to produce
+as mass was removed from the top and new matter con-           a small value for Mlow . Using the favored value for
+                                                               12
+vectively dredged up from the bottom. At any time, this           C(α, γ)16 O from deBoer et al. (2017), 140 keV b for the
+convective shell contained only a few hundredths of a so-      S-factor, gives 48 M (Table 1 with fBuch = 1.0 corre-
+lar mass with density ranging from 10−11 g cm−3 at the         sponds to S = 146 keV b). If one accepts a major revision
+surface to 10−8 g cm−1 at its base. The binding energy         to the 3α rate (Kibédi et al. 2020; Eriksen et al. 2020)
+of this convective shell, ∼ 1046 erg, was very small com-      but does not change 12 C(α, γ)16 O, Mlow rises to 57 M .
+pared with the orbital kinetic energy of the black hole,       Using the one-sigma lower bound from deBoer et al.
+∼ 1050 erg. The Roche radius was inside of this convec-        (2017) for the 12 C(α, γ)16 O S-factor (i.e., S = 110 keV b)
+tive envelope, close to its base, but the angular velocity     and the revised 3α rate from Kibédi et al. (2020) gives
+of the black hole within this envelope was supersonic, so      Mlow = 64 M , which we presently regard as an upper
+stable Roche lobe overflow seems unlikely.                     limit on the likely effects of rate modification alone. This
+   Rather we speculate that the friction resulting from        could be augmented by the effects of rotation and future
+the black holes motion drives mass loss from the sec-          accretion by the black hole, but the direct collapse of an
+ondary. Podsiadlowski (2001) has discussed such “fric-         85 M Wolf-Rayet star to a black hole (Belczynski 2020)
+tionally driven winds”. If the convective layer is removed,    seems unlikely. Rate determinations are best left to the
+the friction is reduced so the mass loss might be self reg-    nuclear laboratory, but using this large value of 3α and a
+                                                                                                                      15
+
+reduced value for 12 C(α, γ)16 O may lead to difficulties in        This is reasonable for rapidly rotating stars experi-
+stellar nucleosynthesis that have yet to be fully explored          encing chemically homogeneous evolution with low
+(§2.2).                                                             mass loss rates(§4.3). Using current estimates in
+   A larger range of reaction rates was considered by               the literature for mass loss rates, the maximum
+Farmer et al. (2020), but within the range mutually con-            metallicity would be between about 1 % and 5 %
+sidered, our results agree reasonably well with Farmer et           solar.
+al. (2019) who gave an upper bound on Mlow of 56 M .
+Due to sparse sampling and the cumulative effects of mul-         • Rotational mass shedding. For an angular mo-
+tiple pulses and burning shells, and based on examining             menta in excess of 6 × 1052 erg s, much of the excess
+hundreds of models (not all included in the tables), all            can be shed before the pair instability is encoun-
+values given here for Mlow probably have an uncertainty             tered.
+of about ±2 M . A value of Mlow = 45 − 65 M is rea-
+                                                                  • Magnetic torques. These are particularly impor-
+sonable for now given our current understanding of the
+                                                                    tant and uncertain during the long interpulse peri-
+nuclear physics.
+                                                                    ods for events that have a strong first pulse. Too
+   Similar rate modifications also imply a significant shift
+                                                                    many GRBs and rapidly rotating pulsars would ex-
+in the upper boundary for the pair gap, Mhigh with values
+                                                                    ist if they were left out altogether, but their mag-
+ranging from 136 to 161 M . Even for our standard rates,
+                                                                    nitude is uncertain.
+fBuch = 1.2 and f3α = 1, there is a significant shift of
+Mhigh from 133.3 M (Heger & Woosley 2002) to 139 M                • Disk formation during the collapse. For those mod-
+because of a better treatment of the nuclear burning and            els with high carbon abundance, rapid initial ro-
+a different treatment of convection during the implosion            tation, or weak magnetic torques, there may be
+(§2.3.2).                                                           too much angular momentum for the entire pre-
+   As has been known for some time, single stars that               supernova star to collapse to a black hole. Disk
+retain part of their hydrogen envelopes when they die               formation and the accompanying disk winds and
+can produce more massive black holes. The previous ap-              jet-induced explosions may shed the excess angu-
+proximate limit for this mass was 65 M (Woosley 2017).              lar momentum, but the amount of mass ejected is
+Here we have shown that the same adjustments to reac-               uncertain. It might be small. If rotation is respon-
+tion rates that raise Mlow and Mhigh for close binaries             sible for the most massive black holes, the final
+will also raise the limit for single stars. Our estimate            dimensionless Kerr parameter could be close to 1.
+for the maximum mass allowed by variation of reaction
+rates within their current errors is about 90 M (Ta-              The effects of rotation on Mhigh were not explored but
+ble 5). This has several implications. If one can make         might be smaller owing both to the stronger pair instabil-
+an 85 M black hole in an isolated star and later capture       ity in such massive stars and the likelihood of rotational
+it ina binary, then there only needs to be one stage of        mass shedding in stars so near the Eddington limit.
+capture, not two as would be required if the limit were           Perhaps the most uncertain aspect of Mlow is the ac-
+65 M (one to make the 85 M black hole and another              cretion the black hole experiences after it is born. This
+to make the final system). Second, the 85 M black hole         might occur either during the common envelope phase
+might be made in a detached binary, especially in a blue       that is frequently invoked to bring the stars together or
+supergiant or luminous blue variable. If the secondary         during frictionally-induced mass loss by the secondary
+later became a red supergiant because of primary nitro-        after it finishes hydrogen burning. Here we focused on
+gen production, the black hole and secondary might still       the latter. As the secondary first expands beyond about
+experience a common envelope phase and draw closer.            1013 cm the surface convective zone contains little mass.
+This might be a rare event.                                    Most of the envelope is radiative. If that small mass
+   Depending a number of uncertainties, rotation could         spills over onto the black hole, it will be replenished on
+cause moderate to major modifications to Mlow (§4).            a thermal time scale by the envelope. Envelope masses
+The maximum effect for our models that include mag-            may be ∼ 50 M and thermal time scales are thousands
+netic torques are larger, by about a factor of two, than       of years so accretion rates of 10−3 − 10−2 M y−1 might
+those of Marchant & Moriya (2020), probably because we         occur. At such grossly super-Eddington rates the black
+considered a larger range of reaction rates and angular        hole will accrete most of the matter, but also produce
+momenta. Rapidly rotating stars that experience chem-          strong bipolar outflows (Sadowski & Narayan 2016).
+ically homogeneous evolution and lose less than 30 % of
+their mass during hydrogen and helium burning can end                          7. ACKNOWLEDGMENTS
+their lives with total angular momenta like those in Ta-          This work has been partly supported by NASA
+ble 6. The resulting black hole masses will be apprecia-       NNX14AH34G and by the Australian Research Coun-
+bly increased beyond those of non-rotating stars and the       cil (ARC) Centre of Excellence (CoE) for Gravita-
+lower bound on the pair-instability mass gap could be as       tional Wave Discovery (OzGrav), through project num-
+large as ∼ 70 M . Uncertainties include:                       ber CE170100004. AH has been supported, in part,
+                                                               by the National Science Foundation under Grant No.
+   • The carbon abundance at the end of helium burn-           PHY-1430152 (JINA Center for the Evolution of the El-
+     ing, hence the rates for 12 C(α, γ)16 O and 3α.           ements); and by the Australian Research Council Centre
+                                                               of Excellence for All Sky Astrophysics in 3 Dimensions
+   • The initial angular momentum and the mass loss.           (ASTRO 3D), through project number CE170100013.
+     The initial angular momentum for the helium star
+                          52
+     needs to be >∼3 × 10    erg s to have a major effect.
+16
+
+                                                               REFERENCES
+Abbott, R., Abbott, T. D., Abraham, S., et al. 2020b,                  Marchant, P. & Moriya, T. J. 2020, A&A, 640, L18
+  Phys. Rev. Lett., 125, 101102                                        Nieuwenhuijzen, H., & de Jager, C. 1990, A&A, 231, 134
+Abbott, R., Abbott, T. D., Abraham, S., et al. 2020b, ApJ, 900,        Podsiadlowski, P. 2001, Evolution of Binary and Multiple Star
+  L13                                                                    Systems, 229, 239
+Abbott, R., Abbott, T. D., Abraham, S., et al. 2020,                   Popham, R., Woosley, S. E., & Fryer, C. 1999, ApJ, 518, 356.
+  arXiv:2010.14527                                                     Rauscher, T., Heger, A., Hoffman, R. D., & Woosley, S. E. 2002,
+Austin, S. M., West, C., & Heger, A. 2014, Phys. Rev. Lett., 112,        ApJ, 576, 323
+  111101                                                               Renzo, M., Farmer, R. J., Justham, S., et al. 2020, MNRAS, 493,
+Belczynski, K., Bulik, T., Fryer, C. L., et al. 2010, ApJ, 714, 1217     4333
+Belczynski, K., Heger, A., Gladysz, W., et al. 2016, A&A, 594,         Rolfs, C. E., & Rodney, W. S. 1988, Cauldrons in the Cosmos,
+  A97                                                                    Chicago Univ. Press, p. 394
+Belczynski, K. 2020, ApJ, 905, L15.                                    Sadowski, A., & Narayan, R. 2016, MNRAS, 456, 392
+Bogomazov, A. I., Cherepashchuk, A. M., Lipunov, V. M., et al.         Sander, A. A. C., Vink, J. S., & Hamann, W.-R. 2019, MNRAS,
+  2018, New Astronomy, 58, 33                                            2641
+Buchmann, L. 1996, ApJ, 468, L127                                      Sander, A. A. C. & Vink, J. S. 2020, MNRAS, 499, 873
+Buchmann, L., Azuma, R. E., Barnes, C. A., Humblet, J., &              Shen, Y. P., Guo, B., deBoer, R. J., et al. 2020, Phys. Rev. Lett.,
+  Langanke, K. 1996, Phys. Rev. C, 54, 393                               124, 162701
+Buchmann, L., & Barnes, C. A. 2006, Nuclear Phys. A, 777, 254          Smith, N. & Owocki, S. P. 2006, ApJ, 645, L45.
+Cantiello, M., Yoon, S.-C., Langer, N., et al. 2007, A&A, 465,         Spruit, H. C. 2002, A&A, 381, 923.
+  L29.                                                                 Szécsi, D., Langer, N., Yoon, S.-C., et al. 2015, A&A, 581, A15.
+Caughlan, G. R. & Fowler, W. A. 1988, Atomic Data and Nuclear          Takeo, E., Inayoshi, K., & Mineshige, S. 2020, MNRAS, 497, 302.
+  Data Tables, 40, 283.                                                Tramper, F., Sana, H., & de Koter, A. 2016, ApJ, 833, 133
+Cherepashchuk, A., Postnov, K., Molkov, S., et al. 2020, New           Tur, C., Heger, A., & Austin, S. M. 2007, ApJ, 671, 821
+  Astron. Rev., 89, 101542                                             Tur, C., Heger, A., & Austin, S. M. 2010, ApJ, 718, 357
+Costa, G., Bressan, A., Mapelli, M., et al. 2020, MNRAS,               Tutukov, A. V. & Cherepashchuk, A. M. 2017, Astronomy
+  arXiv:2010.02242                                                       Reports, 61, 833.
+deBoer, R. J., Görres, J., Wiescher, M., et al. 2017, Reviews of      van Son, L. A. C., De Mink, S. E., Broekgaarden, F. S., et al.
+  Modern Physics, 89, 035007                                             2020, ApJ, 897, 100.
+De, S., MacLeod, M., Everson, R. W., et al. 2020, ApJ, 897, 130.       Vink, J. S. 2017, A&A, 607, L8
+Eriksen, T. K., Kibédi, T., Reed, M. W., et al. 2020,                 Wallerstein, G., Iben, I., Parker, P., et al. 1997, Reviews of
+  Phys. Rev. C, 102, 024320                                              Modern Physics, 69, 995.
+Farmer, R., Renzo, M., de Mink, S. E., et al. 2019, ApJ, 887, 53       Weaver, T. A., Zimmerman, G. B., & Woosley 1978, ApJ, 225,
+Farmer, R., Renzo, M., de Mink, S., et al. 2020,                         1021
+Fowler, W. A. & Hoyle, F. 1964, ApJS, 9, 201.                          Weaver, T. A. & Woosley, S. E. 1993, Phys. Rep., 227, 65.
+Freer, M. & Fynbo, H. O. U. 2014, Progress in Particle and             West, C., Heger, A., & Austin, S. M. 2013, ApJ, 769, 2
+  Nuclear Physics, 78, 1.                                              Woosley, S. E. 1993, ApJ, 405, 273.
+Hainich, R., Rühling, U., Todt, H., Oskinova, L.M., Liermann,         Woosley, S. E. 2016, ApJ, 824, L10.
+  A., Gräfener, G., Foellmi, C., Schnurr, O., & Hamann, W.-R.         Woosley, S. E. 2017, ApJ, 836, 244
+  2014, A&A565, A27                                                    Woosley, S. E. 2019, ApJ, 878, 49
+Heger, A., Langer, N., & Woosley, S. E. 2000, ApJ, 528, 368            Woosley, S. E., Heger, A., & Weaver, T. A. 2002, Reviews of
+Heger, A. & Woosley, S. E. 2002, ApJ, 567, 532.                          Modern Physics, 74, 1015
+Heger, A., Woosley, S. E., & Spruit, H. C. 2005, ApJ, 626, 350.        Woosley, S. E., & Heger, A. 2006, ApJ, 637, 914
+Heger, A. & Woosley, S. E. 2010, ApJ, 724, 341                         Woosley, S. E., Blinnikov, S., & Heger, A. 2007, Nature, 450, 390
+Kibédi, T., Alshahrani, B., Stuchbery, A. E., et al. 2020,            Woosley, S. E., Sukhbold, T., & Janka, H.-T. 2020, ApJ, 896, 56.
+  arXiv:2009.10915                                                     Yoon, S.-C. 2017, MNRAS, 470, 3970
+MacFadyen, A. I. & Woosley, S. E. 1999, ApJ, 524, 262.                 Yoon, S.-C. & Langer, N. 2005, A&A, 443, 643.
+Maeder, A. 1987, A&A, 178, 159                                         Yoon, S.-C., Langer, N., & Norman, C. 2006, A&A, 460, 199.
+Mandel, I., & de Mink, S. E. 2016, MNRAS, 458, 2634                    Zhang, W., Woosley, S. E., & Heger, A. 2004, ApJ, 608, 365
+

@@ -1,0 +1,2668 @@
+WI-42-2025, IFT-UAM/CSIC-25-156
+
+Lorentzian threads and nonlocal computation in holography
+Elena Cáceres,1 Rafael Carrasco2 and Juan F. Pedraza2
+1
+
+arXiv:2512.07963v1 [hep-th] 8 Dec 2025
+
+2
+
+Theory Group, Department of Physics, The University of Texas at Austin, Austin, Texas 78712, USA
+Instituto de Fı́sica Teórica UAM/CSIC, Calle Nicolás Cabrera 13-15, Cantoblanco, 28049 Madrid, Spain
+Recent advances in holography and quantum gravity have shown that CFTs with classical gravity
+duals can implement nonlocal quantum computation protocols that appear local from the bulk
+perspective. We examine the extent to which current prescriptions for holographic complexity
+support this claim, focusing on the Complexity=Volume (CV) proposal. The reformulation of
+CV in terms of Lorentzian threads suggests that bulk computations are performed with local gates.
+However, we find that the original formalism is insufficient when it comes to analyzing the complexity
+of subsystems and their inequalities. Specifically, standard Lorentzian threads cannot account for the
+negativity of ‘mutual complexity’ and its higher-partite generalizations. To address this deficiency,
+we modify the Lorentzian threads program by introducing multiple flavors of threads. Our analysis
+reveals that an optimal solution for this new program implies the existence of additional types of
+gates that enable nonlocal computations in the dual CFT. We give a tentative interpretation of the
+multiflavor program in terms of Lorentzian ‘hyperthreads,’ in analogy with the Riemannian case.
+
+I.
+
+INTRODUCTION
+
+A major conceptual shift in our understanding of
+holography has come from viewing gravitational dynamics through the lens of quantum information. The
+Ryu–Takayanagi (RT) formula [1, 2], which relates the
+entanglement entropy in a CFT to the area of an extremal
+codimension-2 bulk surface, has revealed deep connections between geometry and entanglement. This insight
+has driven significant progress on the black hole information paradox [3–6], bulk reconstruction [7–13] and the
+emergence of spacetime itself [14–17].
+Entanglement entropy alone, however, does not capture all aspects of holographic spacetimes. In particular, entanglement fails to encode the dynamical behavior
+of black hole interiors, notably the late-time growth of
+the Einstein–Rosen bridge [18]. This limitation points
+to the need for a holographic observable capable of probing interior dynamics. A natural candidate is complexity,
+a quantity that captures the computational structure of
+quantum states [19]. Our understanding of complexity in
+quantum field theory, and of its holographic realization,
+remains far less complete than that of entanglement, and
+numerous questions are still open. In this work we investigate the subsystem complexity of holographic systems
+through the framework of Lorentzian threads [20, 21].
+A common notion of complexity in quantum mechanical systems is circuit complexity, defined as the minimal
+number of elementary operations (or gates) in a quantum
+circuit that takes a chosen reference state into a given target state. In quantum field theories, however, a precise
+and universally accepted definition of complexity is still
+elusive [22, 23], owing to various scheme-dependent ambiguities in its formulation. On the gravitational side, several holographic proposals have been put forward to capture the salient features of complexity [24–27]. Among
+them, the Complexity=Volume (CV) proposal [24] bears
+a close resemblance to the RT prescription for entangle-
+
+ment entropy, providing a complexity-based counterpart
+to entanglement-based notions of spacetime emergence
+[28, 29]. According to CV, the complexity of a CFT
+state defined on a Cauchy slice σ = ∂A (with A ⊂ ∂M
+and M the bulk manifold) is given by the volume of the
+maximal bulk codimension-1 surface homologous to A,
+C(σ) =
+
+1
+max Vol(Σ) ,
+GN ℓ Σ∼A
+
+(1)
+
+where GN is Newton’s constant and ℓ a length scale.
+Beyond their geometric formulations, both entanglement entropy and the CV proposal admit alternative
+descriptions as convex optimization problems [30]. For
+instance, the RT formula [1, 2], which gives the entanglement entropy of a boundary region A on a (timereflection-symmetric) Cauchy slice as the minimal area
+of a codimension-2 surface homologous to A,
+S(A) =
+
+1
+min Area(Γ) ,
+4GN Γ∼A
+
+(2)
+
+can be cast as the maximal flux of a divergenceless vector
+field v through A, subject to the norm bound |v| ≤ 1 [31]:
+Z
+
+1
+S(A) =
+max v, F ≡ v ∇ · v = 0 , |v| ≤ 1 . (3)
+4GN v∈F A
+For any optimal solution v, the integral curves of this
+vector field define the so-called bit threads [31]: Planckthickness flow lines connecting the region A to its complement Ac . Intuitively, one may think of each thread as
+representing a pair of maximally entangled qubits shared
+between A and Ac . In this language, the RT prescription becomes a maximization problem that counts the
+maximal number of Bell pairs that may be distilled between A and Ac while respecting the local density bound
+[32]. Thus, the bit-thread reformulation provides a more
+microscopic account of holographic entanglement while
+remaining formally equivalent to the RT prescription.
+
+2
+An important feature of entanglement entropy is the
+existence of the so-called entropy inequalities, which constrain the entropies of multipartite systems. The simplest
+ones are subadditivity and strong subadditivity, given by
+S(A1 ) + S(A2 ) ≥ S(A1 ∪ A2 ) ,
+
+(4)
+
+S(A1 ∪A2 )+S(A2 ∪A3 ) ≥ S(A2 )+S(A1 ∪A2 ∪A3 ) , (5)
+and are valid for arbitrary quantum systems. In holography, the RT prescription implies an infinite set of additional inequalities, which can be used to characterize
+and discriminate theories with possible gravity duals. A
+notable example is the monogamy of mutual information
+[33], which for a tripartite system imposes the constraint
+S(A1 ∪ A2 ) + S(A1 ∪ A3 ) + S(A2 ∪ A3 ) ≥
+S(A1 ) + S(A2 ) + S(A3 ) + S(A1 ∪ A2 ∪ A3 ) .
+
+(6)
+
+More generally, for a system partitioned into N components, the complete set of entropy inequalities
+P N  defines an
+M -dimensional space, where M =
+counts the
+k k
+possible nonempty unions of subsystems. This region of
+allowed entropy configurations is called the holographic
+entropy cone [34], and its intricate structure has been
+the subject of an extensive body of work in the literature,
+with far too many contributions to cite individually here.
+While these inequalities have a clear geometric counterpart from the RT perspective, proving them in the
+language of bit threads appears to encounter serious obstructions and may well be impossible in general. For
+instance, the bit-thread picture is insufficient to simultaneously reproduce the entropies of all individual regions and of all their arbitrary unions, which would be
+a necessary step in such a proof. A notable exception
+is the monogamy of mutual information [35–37], whose
+validity is guaranteed by the multicommodity theorem
+for Riemannian flows [35]. This theorem states that it
+is possible to construct a flow that simultaneously reproduces the entropies of all individual regions and the full
+system, which, in the tripartite case, provides all the required ingredients. An alternative route is to generalize
+the bit-thread prescription to allow for hyperthreads (or
+k-threads) [38, 39]. In this case, flow lines are allowed to
+split into branches that terminate on k distinct boundary
+subregions, enabling the encoding of genuine multipartite correlations. From this perspective, a k-thread can
+be interpreted as a fundamental unit of k-party entanglement, which is particularly useful for describing situations where the mostly-bipartite conjecture fails [40–44].
+Given the central role of entropy inequalities and the
+entropy cone in constraining holographic entanglement,
+it is natural to ask whether there exist analogous inequalities for subregion complexities that define a complexity cone. Any such inequalities are expected to be
+non-universal, with each set characterizing a distinct
+bulk prescription for holographic complexity; see [45–47]
+
+for some preliminary ideas. Despite this expected nonuniversality, they could still be extremely useful, providing criteria to map the broad landscape of complexity
+measures from both the bulk and boundary perspectives
+[27] (see also [48–50]). Closely related is the question of
+whether such inequalities encode a statement about complexity analogous to the mostly-bipartite conjecture for
+entanglement, or whether no such analogue exists.
+Motivated by these questions, we work within the CV
+proposal and use its reformulation as an optimization
+problem involving flows in the bulk. In this language,
+the relevant objects are collections of timelike curves,
+known as Lorentzian threads. These curves play a role
+analogous to that of bit threads for entanglement, but
+are now interpreted as gatelines representing the elementary operations (or gates) needed to construct a target
+state from a reference state [20, 21]. When applied to the
+complexity of the full boundary state (in analogy with
+the entanglement of a bipartite system), the Lorentzianthread reformulation naturally suggests that holographic
+states can be prepared using mostly local gates; this may
+be regarded as the complexity analogue of the mostlybipartite conjecture. However, there is robust evidence
+that this expectation should not hold in general [51–55].
+Notably, the connected wedge theorem implies the existence of intrinsically nonlocal quantum computation protocols implemented through bulk dynamics.
+To probe this tension more systematically, we first
+ask whether Lorentzian threads can be used to define
+and compute subsystem complexity for a partition of the
+boundary Cauchy slice σ. In Section II, we review the
+Lorentzian-thread formulation of CV and identify important shortcomings: in particular, we show that even
+for bipartite configurations the naive prescription fails
+to reproduce the expected superadditivity of subregion
+complexities. We trace this failure to the absence of a
+multicommodity theorem in Lorentzian settings. In Section III, we then propose a new program for an arbitrary
+number of subregions based on families of Lorentzian
+threads with distinct flavors, each associated with a specific subregion, and we show that this multi-flavor framework can simultaneously compute the complexity of individual subregions and of the full state. In Section IV,
+we analyze a discretized version of this program in order to clarify its microscopic interpretation. While the
+threads of the multi-flavor construction still appear to
+represent local gates, these basic operations are found to
+violate superadditivity at the microscopic level. We resolve this issue by a simple change of basis: suitable linear
+combinations of the basic operations can be made consistent with micro-superadditivity while remaining formally
+equivalent to CV. These combinations are interpreted as
+generalized Lorentzian hyperthreads, a new type of elementary operation that enables nonlocal computations
+in the dual CFT. We conclude in Section V with a summary of our findings and a discussion of future directions.
+
+3
+II.
+
+LORENTZIAN THREADS: A PRIMER
+
+In this section, we review the reformulation of the
+Complexity=Volume (CV) prescription using flows, as
+proposed in [20, 21]. This approach stems from the continuous version of the Lorentzian min flow-max cut theorem introduced in [30]. According to this framework,
+the holographic complexity C(σ) of a state on a boundary Cauchy slice σ is determined by the minimum flux
+of a divergenceless, norm-bounded vector field v through
+a boundary surface A anchored to σ. This formulation
+offers a more intuitive, microscopic interpretation of CV.
+Specifically, discretized flows correspond to Lorentzian
+threads —timelike worldlines of microscopic thickness
+that represent unitary operations within a tensor network
+discretizing spacetime. These Lorentzian threads are essential for constructing bulk analogs of quantum circuits,
+facilitating the time evolution of dual CFT states [20, 21].
+After addressing certain subtleties of this reformulation, we will rewrite the flow prescription in terms of
+measure theory, following [32]. This measure-based approach avoids reliance on vector fields and proves particularly useful in later sections when extending the formalism to accommodate multiple thread flavors. We will
+conclude this section by discussing the application of this
+formalism and highlighting some limitations thereof.
+
+A.
+
+Flow prescription & interpretation
+
+Let us begin by establishing some notation and conventions. Let M be a d-dimensional, compact, oriented,
+time-oriented Lorentzian manifold with boundary ∂M.
+We consider a boundary region A ⊂ ∂M, such that its
+causal future coincides with itself, J + (A) ∩ ∂M = A.
+Such a region is delimited by a boundary Cauchy slice
+σ(A) = ∂A. We then consider the set of all bulk Cauchy
+slices Σ(A) that are homologous to A and, thus, anchored
+to σ(A). Each of these surfaces is a compact, orientable
+codimension-1 hypersurface-with-boundary, that is everywhere either spacelike or lightlike. Together, these
+surfaces foliate a bulk causal diamond D(A), anchored to
+σ(A), also known as its Wheeler–DeWitt (WdW) patch
+—see Fig. 1 for an illustration.
+Next, we define a flow v. A flow is a timelike vector
+field on M that is (i) future directed, (ii) divergenceless
+and (iii) norm bounded from below. Mathematically, we
+state these conditions by defining the set F such that
+
+F ≡ v v 0 > 0 , ∇ · v = 0 , |v| ≥ 1 .
+(7)
+Following [20, 21], we can now express holographic complexity as the minimum flux through the region A, in
+
+FIG. 1. Boundary region A, boundary Cauchy slice σ(A), and
+bulk Cauchy slice Σ(A). The WdW patch associated with this
+Cauchy slice, depicted in blue, is a bulk causal diamond D(A)
+anchored to σ(A).
+
+units of the arbitrary scale GN ℓ,
+Z
+1
+min
+v,
+(8)
+GN ℓ v∈F A
+p
+R
+R
+with A v = A dd−1 x |h|nµ v µ . Here, h is the determinant of the induced metric on ∂M and nµ its future
+directed unit normal vector. The min flow-max cut theorem [30] implies that the optimal solution to this optimization program is equal to the maximal volume of
+a surface homologous to the region A, and thus, (8) is
+formally equivalent to the CV proposal (1).
+C(σ) =
+
+As discussed in [20, 21], it is useful to discretize the flow
+program and interpret it in terms of a collection of microscopic Lorentzian threads. This approach parallels the
+Riemannian ‘bit threads’ program for holographic entanglement entropy [31], which has been extensively used to
+understand entropy inequalities [35–37] and many other
+properties of holographic entanglement [56–72]. These
+Lorentzian threads correspond to the integral lines of the
+flow that optimizes (8), and are characterized by transverse density ρ = |v|/GN ℓ. In this discrete version, complexity is determined by the minimal number of threads
+ending in A, NA , which equals the volume of the maximal
+bulk slice Σ(A) homologous to A:
+C(σ) = min NA =
+
+1
+max[Vol(Σ(A))] .
+GN ℓ
+
+(9)
+
+From a more physical perspective, Lorentzian threads
+can be interpreted as a set of unitary operators (gates)
+that prepare a state on Σ(A), starting from a CFT state
+in the infinite past of M. In this picture, complexity is
+given by the minimal number of operations required to go
+from the reference state to the target state, closely mir-
+
+4
+Let P be the family of subsets of a set Ω.1 A measure
+is a function µ : P → [−∞, ∞] that acts trivially
+P on the
+empty set, µ(∅) = 0 and satisfies µ(∪n Pn ) = n µ(Pn )
+for any sequence of disjoint sets Pn ∈ P [73]. In our
+context, P consists of all timelike, future-directed curves
+within M that start in ∂M\A and end in A —referred
+to as Lorentzian threads or simply threads. We will focus
+on measures µ that assign each thread a value in {0, 1}.
+k=1
+
+k=5
+
+FIG. 2. Discretization of the bulk slice Σ(A) using a physical tensor network. On the right, two threads of different
+thicknesses are illustrated. The number of degrees of freedom
+these threads act upon represents the level of k-locality in the
+bulk quantum circuit.
+
+roring the concept of computational (circuit) complexity
+in quantum information theory.
+It is important to clarify a subtlety regarding the above
+interpretation. The proposal in [20, 21] assumed that
+the characteristic thickness of Lorentzian threads is ℓd−1
+P ,
+where ℓP is the Planck length and d is the number of
+spacetime dimensions. This requires that the arbitrary
+length in the CV proposal should be identified with the
+Planck length, ℓ ∼ ℓP . Consequently, the number of
+gates required to implement bulk evolution aligns with
+the number of physical degrees of freedom in the smallest
+tensor network anchored to σ, as suggested in [24].
+However, here we argue that the scale ℓ must necessarily be larger than ℓP , and should therefore be interpreted as a coarse-graining scale. To see this, notice that
+each thread should be capable of connecting multiple degrees of freedom simultaneously. This is necessary because time evolution in a general quantum system must
+enable the generation of entanglement among different
+degrees of freedom, and this is only possible if the universal set of gates contains elementary operations that
+act upon multiple degrees of freedom at once. We define the ratio ⌊ℓ/ℓP ⌋ = k as the level of k-locality of the
+quantum circuit, as illustrated in Fig. 2.
+
+B.
+
+Prescription in terms of measures
+
+While the flow prescription is valid and useful in scenarios requiring numerical results, for the purposes of
+this work, it is more practical to focus on the discretized
+Lorentzian threads approach. Following [32], we will now
+formulate the program in the language of measure theory. We refer the reader to Appendix A, where we review
+the Riemannian threads program in this language.
+
+To write the program in terms of measures, we need
+to express the flow conditions using the function µ [38].
+The divergenceless condition is naturally satisfied, as the
+threads terminate on the boundary rather than in the
+bulk. To incorporate the norm bound, we introduce a
+delta function ∆(x, p) defined as:
+Z
+∆(x, p) = dsδ(x − y(s)) ,
+(10)
+p
+
+where s is an affine parameter, and y(s) represents the
+trajectory of the thread p. This function counts the number of times a thread passes through a point x, enabling
+the introduction of a local thread density ρ(x):
+Z
+ρ(x) =
+dµ∆(x, p) .
+(11)
+P
+
+Note that the integral over the measure offers a new way
+to express the sum of the weights Rof all threads
+in P.
+P
+Mathematically, this is written as P dµ ≡ p∈P µ(p).
+In this representation, the norm bound is expressed as:2
+ρ(x) ≥ 1 , ∀x ∈ M .
+
+(12)
+
+Finally, we require that any macroscopically small region
+on the boundary contains a non-zero number of threads.
+Viewing threads as the integral curves of a bulk vector
+field, this condition ensures a non-vanishing flux through
+the boundary and hence that the solution remains homologous to A, as we will clarify in more detail below.
+Having established all the essential definitions, we now
+propose the following objective function in the space of
+measures that yields complexity through minimization:
+Z
+C(σ) = min
+dµ , s.t. ρ(x) ≥ 1 ∀x ∈ M .
+(13)
+P
+
+To tackle this optimization problem, we formulate a Lagrangian based on the objective function, incorporating
+a Lagrange multiplier λ to enforce the norm bound. As
+discussed in [74], the Lagrange multiplier associated with
+an inequality must always be non-negative, which in our
+case implies that λ(x) ≥ 0 ∀x ∈ M. Consequently, the
+
+1 For P to be well-defined, it must include the empty set ∅ and Ω
+
+itself, and be closed under union and difference of subsets.
+2 To streamline the notation, we will use units where G ℓ = 1
+N
+
+from this point forward, unless otherwise specified.
+
+5
+primal Lagrangian can be expressed as follows:
+
+
+Z
+Z
+Z
+L(µ, λ) =
+dµ +
+λ(x) 1 −
+dµ∆(x, p)
+P
+M
+P
+
+
+Z
+Z
+Z
+=
+λ(x) +
+dµ 1 − dsλ(x) .
+M
+
+P
+
+(14)
+
+p
+
+Note that√in the integrals over M, we omit the volume
+form dd x −g for simplicity. The second line introduces
+a new program that is dual to the original one:
+Z
+Z
+√
+max
+dd x −gλ(x) , s.t. dsλ(x) ≤ 1 ∀p ∈ P , (15)
+M
+
+∃ψ : M → [−1/2, 1/2] s.t. ψ|B = −1/2 ,
+ψ|A = 1/2 , |dψ| ≥ λ , dψ timelike & FD ,
+
+Let us continue our search for the optimal solution to
+the program, beginning with a heuristic approach followed by a more rigorous analysis. In [38], it was suggested that λ(x) can be better understood through its
+collection of level sets. Each thread crosses a certain
+number of these surfaces, and the sum of the values of
+the level sets crossed by each thread must be less than
+or equal to 1. An optimal solution may be achieved
+when these level sets are densely packed in a hypersurface of maximal volume Σ̃(A) homologous to A relative
+to the boundary.3 However, if this is true, none of the
+threads originating in J + (Σ̃(A)) ∩ ∂M would cross such
+a surface. Consequently, due to complementary slackness, their weight would be zero, as they do not satisfy
+the constraint. Unless the surface is homologous to A,
+there would be no flux through part of the boundary,
+(J + (Σ̃(A)) ∩ ∂M)\A, contradicting our initial assumption. This ensures that every thread in P crosses the
+barrier and, therefore, contributes to the flux through
+region A. Furthermore, it is clear that a λ with support
+only on the maximal surface Σ ∼ A maximizes the objective; any variation that adheres to the density bound
+would decrease the objective value.
+From a mathematical standpoint, we can provide a rigorous solution to the problem instead of relying solely on
+a pictorial argument. The proof is based on the following
+theorem (proved in [76] and revisited in Appendix B):
+
+3 See [30] for a discussion on the distinction between homology
+
+(16)
+
+and
+Z
+∀p ∈ P,
+
+p
+
+where integration over p entails computing the integral
+along the path traced by the thread p. Before computing the optimal value of the dual program, it is essential
+to confirm that its solution matches that of the primal
+program, a requirement known as strong duality. This
+is satisfied if Slater’s condition holds, which stipulates
+the existence of a solution (not necessarily optimal) that
+strictly meets the inequality constraints [75]. While identifying this solution for the primal program is difficult,
+for
+R the dual program, setting λ = 0 ∀x ∈ M yields
+dsλ = 0 ∀ p ∈ P. This verifies strong duality, allowp
+ing us to confidently proceed with the dual program.
+
+and relative homology.
+
+Theorem 1. Let M be a Lorentzian manifold, and let
+A and B be complementary subsets of the boundary such
+that J + (A) ∩ ∂M = A and J − (B) ∩ ∂M = B. Define P
+as the set of timelike, future-directed (FD) curves from
+B to A, and let λ(x) be a non-negative function on M.
+The following two statements are then equivalent:
+
+dsλ ≤ 1 .
+
+(17)
+
+p
+
+From the conditions in (16), we can assert that
+Z
+Z
+max
+λ≤
+|dψ| .
+M
+
+(18)
+
+M
+
+Following [30], we now define the following set of regions:
+r(p) = {x ∈ M|ψ(x) ≥ p} ,
+
+(19)
+
+and its closure in the bulk, denoted by Σ(p) = ∂r(p)\∂M .
+Since dψ is timelike and future-directed, each Σ(p) represents a Cauchy slice. Furthermore, since ψ|B = −1/2 and
+ψ|A = 1/2, these slices are homologous to A. Applying
+the ‘co-area formula’ in [77] one finds
+Z 1/2
+
+Z
+|dψ| =
+M
+
+dpVol(Σ(p)) ≤ max Vol(Σ(p)) . (20)
+Σ(p)∼A
+
+−1/2
+
+This inequality indicates that the optimal solution is
+bounded above by the volume of the maximal hypersurface homologous to A. Demonstrating the equality
+of this bound is straightforward: the volume of this surface can be represented mathematically as the integral
+of a delta function over M, with support on Σ. It is
+clearRthat the inequality in (15) is satisfied, leading to
+max M λ ≥ maxΣ(p)∼A Vol(Σ(p)). Therefore,
+Z
+C = min
+dµ = max Vol(Σ(p)) .
+(21)
+µ
+
+P
+
+Σ(p)∼A
+
+This completes our reformulation of Lorentzian threads
+in the language of measure theory.
+
+C.
+
+Shortcomings
+
+In the previous subsection, we showed that, under the
+CV prescription, the complexity of holographic states can
+be determined by solving an optimization problem that
+minimizes the number of threads satisfying the density
+bound ρ(x) ≥ 1. This raises a natural question: can this
+formalism also be applied to compute subregion complexity? Specifically, if the boundary slice σ(A) = ∂A is di-
+
+6
+Assuming that a version of the ‘multicommodity’ theorem extends to the Lorentzian case, one could hypothesize the existence of a global solution where C(σi (A)) is
+determined by counting the threads passing through the
+corresponding domains of dependence Di (A). Following
+this reasoning, the program for calculating the subregion
+complexities of both σ1 (A) and σ2 (A) would be:
+Z
+
+Z
+min
+dµ +
+dµ , s.t. ρ(x) ≥ 1 ∀x ∈ M , (23)
+P1
+
+P2
+
+whose Lagrangian is:
+Z
+Z
+Z
+L=
+dµ +
+dµ +
+λ(x) (1 − ρ(x))
+P1
+P2
+M
+
+
+Z
+Z
+Z
+=
+dµ +
+λ(x) 1 −
+dµ∆(x, p) .
+P
+
+FIG. 3. Illustration of a bipartite system: the boundary
+Cauchy slice σ(A) is divided into two regions, σ1 (A) and
+σ2 (A), which share a common HRT surface, γ. The surfaces
+Σ1 (A) and Σ2 (A) are bounded by σ1 (A)∪γ and σ2 (A)∪γ, respectively, with their corresponding domains of dependence,
+D1 (A) and D2 (A), depicted in red and green.
+
+vided into several subregions σi (A), i ∈ {1, . . . , N }, can
+the complexity of each subregion be determined simply
+by counting the number of threads in a given configuration? In the Riemannian case, the bit thread program effectively computes the entanglement entropy of arbitrary
+subregions, a result guaranteed by the ‘multicommodity’
+theorem [35]. Specifically, this theorem guarantees an
+optimal solution represented by the sum of the entropies
+of all subregions. However, as we will show below, this
+approach is insufficient in the Lorentzian case.
+To illustrate the point, we will focus on a bipartite system with two boundary regions, σ(A) = σ1 (A) ∪ σ2 (A),
+and using the same methodology, we will attempt to compute C(σ1 (A)) and C(σ2 (A)) simultaneously. According
+to the CV proposal, the complexity of a subregion σi (A)
+is given by the volume of the maximal Cauchy surface
+Σi (A), which is bounded by σi (A) and the associated
+HRT surface γi [45, 46]. For a pure overall state in the
+bipartite case, we find that γ1 = γ2 = γ. Additionally, it is crucial to construct the entanglement wedges
+of the corresponding subregions, defined as the domains
+of dependence Di (A) of generic slices Σi (A) such that
+∂Σi (A) = σi (A) ∪ γi . See Fig. 3 for an illustration.
+We will now introduce the following subsets of P:
+P = {All threads} ,
+P1 = {Threads crossing D1 (A)} ,
+P2 = {Threads crossing D2 (A)} .
+
+(22)
+
+M
+
+(24)
+
+P
+
+As we can see, this program matches with that presented in (13), leading to the conclusion that C(σ1 (A)) +
+C(σ2 (A)) = C(σ(A)). However, this results in a contradiction: the CV proposal asserts that subregion complexity is superadditive [45, 46], implying that the ‘mutual
+complexity’ ∆C must satisfy [47]
+∆C ≡ C(σ1 (A)) + C(σ2 (A)) − C(σ(A)) ≤ 0 ,
+
+(25)
+
+though it does not necessarily vanish in general. This
+contradiction reveals a flaw in the current formulation
+of Lorentzian threads while offering valuable insights for
+developing a more general approach. Specifically, the
+new framework should be robust enough to allow for the
+simultaneous calculation of the complexities of all subregions and their union. The development of this formulation will be the primary focus of the next section.
+
+III.
+
+MULTIPLE THREAD FLAVORS
+
+As outlined in the previous section, our focus now
+shifts to developing a more general formalism capable of
+calculating both subregion complexities and the complexity of their union. In the Riemannian case, this is achievable due to the multicommodity theorem. For instance,
+in a tripartite system where the boundary is divided into
+three regions —A, B, and C = (A∪B)c , analogous to the
+scenario considered in Sec. II C— threads can connect A
+to B, A to C, and B to C. However, in the Lorentzian
+case, the timelike nature of Lorentzian threads prevents
+any threads from connecting Di (A) to Dj (A) for i ̸= j.
+To resolve this issue, we will introduce a generalized
+measure that distinguishes between these regions while
+adhering to the previously established conditions. We
+will begin by applying this approach to a bipartite system
+for simplicity, and then extend it to an N -partite system,
+thereby enabling the calculation of complexities across
+systems with an arbitrary number of subregions.
+
+7
+macroscopic but small area on ∂M, a set of threads of
+both types is attached. The resulting Lagrangian is then:
+Z
+Z
+Z
+1
+L=
+(dµ1 + dµ2 )
+dµ1 +
+dµ2 +
+2 P
+P1
+P2
+ 
+
+Z
+Z
+d √
++
+d x −g λ1 1 −
+dµA ∆(x, p)
+M
+P
+
+
+Z
++λ2 1 −
+dµ2 ∆(x, p)
+(27)
+P
+
+
+Z
+Z
+Z
+√
+dµ1 3/2 − dsλ1
+=
+dd x −gλ1 +
+P1
+p
+M
+
+
+Z
+Z
++
+dµ1 1/2 − dsλ1 + (1 ↔ 2) .
+P2
+
+FIG. 4. Threads in the manifold M with measures µ1 or µ2 ,
+depicted in orange and blue, respectively. In this scenario,
+the complexity of σ1 (A) is determined by the number of orange threads traversing D1 (A), while the complexity of σ2 (A)
+corresponds to the number of blue threads passing through
+D2 (A). The complexity of σ(A) is calculated as half of the
+total number of threads present, regardless of their color.
+
+A.
+
+Bipartite system
+
+In this section, we build on the setup described in
+Sec. II C. We will start with a brief recap of its key elements for clarity. We consider a Cauchy slice σ(A) in
+the boundary CFT, which is divided into two disjoint
+subregions, σ1 (A) and σ2 (A), which share a common
+boundary, ∂σ1 (A) = ∂σ2 (A). We also introduce the HRT
+surface γ, shared by both subregions, and construct the
+corresponding entanglement wedges, or domains of dependence, D1 (A) and D2 (A).
+At this point, we introduce two distinct measures,
+µ1 and µ2 , corresponding to two different ‘flavors’ of
+Lorentzian threads. The first measure, µ1 , will be used
+exclusively for computing complexities related to σ1 (A),
+such as C(σ1 (A)) and C(σ(A)), but not C(σ2 (A)). Similarly, µ2 will be employed for computations involving
+σ2 (A). A visual representation of this setup is shown in
+Fig. 4. The program we propose for simultaneously calculating C(σ1 (A)), C(σ2 (A)), and C(σ(A)) is as follows:
+Z
+
+Z
+Z
+1
+min
+dµ1 +
+dµ2 +
+(dµ1 + dµ2 )
+2 P
+(26)
+P1
+P2
+s.t. ρ1 ≥ 1, ρ2 ≥ 1 ∀x ∈ M ,
+R
+R
+with ρ1 = P dµ1 ∆(x, p) and ρ2 = P dµ2 ∆(x, p). The
+presence of the 1/2 factor in the last term will become
+clear in the discussion below.
+As in the previous section, we require that for any
+
+p
+
+We observe that the program can be decomposed into
+the sum of two simpler programs: one dependent solely
+on λ1 and µ1 , and the other on λ2 and µ2 . Consequently,
+the dual program,
+Z
+√
+max
+dd x −g(λ1 + λ2 ) s.t.
+ZM
+dsλ1 ≤ 3/2 ∀ p ∈ P1 & p ∈ dom(µ1 ) ,
+p
+Z
+dsλ1 ≤ 1/2 ∀ p ∈ P2 & p ∈ dom(µ1 ) ,
+(28)
+p
+Z
+dsλ2 ≤ 3/2 ∀ p ∈ P2 & p ∈ dom(µ2 ) ,
+p
+Z
+dsλ2 ≤ 1/2 ∀ p ∈ P1 & p ∈ dom(µ2 ) ,
+p
+
+can likewise be expressed as the sum of two simpler ones:
+Z
+√
+max
+dd x −gλ1 s.t.
+ZM
+dsλ1 ≤ 3/2 ∀ p ∈ P1 & p ∈ dom(µ1 ) ,
+(29)
+p
+Z
+dsλ1 ≤ 1/2 ∀ p ∈ P2 & p ∈ dom(µ1 ) ,
+p
+
+and
+Z
+max
+
+√
+dd x −gλ2 s.t.
+
+ZM
+dsλ2 ≤ 3/2 ∀ p ∈ P2 & p ∈ dom(µ2 ) ,
+p
+Z
+dsλ2 ≤ 1/2 ∀ p ∈ P1 & p ∈ dom(µ2 ) .
+
+(30)
+
+p
+
+Following a similar reasoning as in Sec. II B, as long as
+the flux condition through the boundary is satisfied, the
+solution to the first program is the sum of the maximal
+volume of a surface anchored to σ1 (A) ∪ γ and half the
+maximal volume of a surface anchored to σ(A). Similarly,
+the solution to the second program is the sum of the
+
+8
+maximal volume of a surface anchored to σ2 (A) ∪ γ and
+half the maximal volume of a surface anchored to σ(A).
+Therefore, the solution to the complete program (28) is:
+C(σ1 (A)) + C(σ2 (A)) + C(σ(A)) =
+max [Vol(Σ1 (A))] + max [Vol(Σ2 (A))]
++ max [Vol(Σ(A))] .
+
+M
+
+(31)
+
+Theorem 2. Let M be a Lorentzian manifold and σ(A)
+a boundary Cauchy slice divided into two complementary regions, σ1 (A) and σ2 (A). Let D1 (A) and D2 (A)
+denote the domains of dependence of any bulk Cauchy
+slices anchored to σ1 (A) ∪ γ and σ2 (A) ∪ γ, respectively,
+where γ is the HRT surface associated with σ1 (A) and
+σ2 (A). Define M− as the union of D1 (A), D2 (A) and
+J − (D1 (A)∪D2 (A)). Let ∂D1+ represent the future boundary of D1 (A), and ∂D2+ that of D2 (A), and denote the intersection of the boundary and the causal past of σA ∪ σB
+by C. Finally, let P1 be the set of all threads crossing D1 (A) and P2 the set of all threads passing through
+D2 (A). The following two statements are equivalent:
+
+2
+
+(32)
+
+|dψ| ≥ λ, dψ timelike & FD ,
+and
+Z
+∀p1 ∈ P1 ,
+
+dsλ ≤ 3/2 ,
+p1
+
+(33)
+
+Z
+∀p2 ∈ P2 ,
+
+≤
+
+|dψ| =
+
+dpVol(m(p))
+−∞
+
+dsλ ≤ 1/2 ,
+p2
+
+where s is the proper distance along p.
+The above theorem guarantees the existence of a function defined on M− that is everywhere greater than λi .
+
+(34)
+
+Z 5/4
+dpVol(m(p)) .
+
+dpVol(m(p)) +
+−1/4
+
+We have just provided a heuristic explanation for (31),
+and we will now present a more formal proof. To do
+so, we assume that for each program, λi (i = 1, 2) has
+support either in M− = D1 (A) ∪ D2 (A) ∪ J − (D1 (A) ∪
+D2 (A)) or in M+ = D1 (A)∪D2 (A)∪J + (D1 (A)∪D2 (A)).
+This assumption is physically sensible, as any violation
+would imply that the optimal solution is not spacelike
+everywhere. We will now first consider the case where
+the support of such a function is contained within M−
+and then move to the second case. To do so, we will use
+the following theorem, proved in Appendix B:
+
+1
+
+M
+
+Z ∞
+
+Z 1/4
+
+This result clarifies the inclusion of the 1/2 factor in the
+multi-flavor program (26); without this factor, the optimal solution would yield C(σ1 (A))+C(σ2 (A))+2C(σ(A)).
+To conclude this section, it is important to emphasize
+that since Σ(A) is not constrained to cross the HRT surface, its volume will always be bounded from below by
+the sum of the volumes of Σ1 (A) and Σ2 (A), thereby
+ensuring that superadditivity [45] is maintained.
+
+∃ψ : M− → [−1/4, 5/4] s.t. ψ|C = −1/4 ,
+ψ|∂D+ = 5/4, ψ|∂D+ = 1/4 ,
+
+This implies,
+Z
+Z
+λ≤
+
+1/4
+
+Since ψ is constant over C and takes different values over
+∂D1+ and ∂D2+ , all level sets m(p) with p ∈ (−1/4, 1/4)
+have σ(A) as their boundary, while those with p ∈
+(1/4, 5/4) are anchored to σ1 (A) ∪ γ. It is straightforward to see that the first term on the right-hand side of
+(34) is bounded above by half the volume of the maximal volume slice fully contained in M− homologous to
+σ(A), while the second term is bounded by the volume
+of the maximal slice anchored to σ1 (A) ∪ γ. A similar
+procedure can be applied when assuming that the optimal solution is found within M+ , yielding an analogous
+result. One would then select the maximal solution between these two cases. Consequently, we conclude that,
+under our assumptions, the solution to (29) is bounded
+above by max [Vol(Σ1 (A))] + 21 max [Vol(Σ(A))].
+On the other hand, provided that half a delta function supported on the maximal surface homologous to
+σ(A) plus another delta with a non-vanishing value on the
+maximal surface bounded by σ1 (A)∪γ satisfies the conditions of the program, we can guarantee that this solution
+is bounded below by the same value. Combining both
+bounds, we can conclude that the optimal solution to the
+program is exactly max [Vol(Σ1 (A))]+ 21 max [Vol(Σ(A))].
+Applying the same reasoning to (30) leads us to a full solution to (28), which, as expected, matches (31).
+Before finishing this subsection, let us briefly justify
+the central assumption around which our proof is constructed. As the reader may have noticed, the derivation
+provided here closely resembles the one in [30] used to
+prove the nesting property for entanglement entropy. A
+key point in that derivation is the fact that the value of
+the function ψ on the boundary is known. In our case,
+this is not true: there is no natural division of the boundary region J + (σ(A)) into two pieces where ψ = 5/4 and
+ψ = 1/4 respectively such that their boundaries are just
+σ1 (A) and σ2 (A). This prevents the existence of a globally defined function ψ as described in Theorem 2. For
+this reason, it is convenient to restrict the domain of this
+function to either M− or M+ . Nonetheless, all known
+solutions to problems of this kind (for instance, the flowcut theorems or the nesting property [30]) are compatible
+with a function λ whose kernel is given by either M\M−
+or M \ M+ . Accordingly, the assumption about the support of the function λ is well justified.
+
+9
+B.
+
+dent subprograms, which can be written as:
+
+Multipartite generalization
+
+N
+
+√ X
+dd x −g
+λi
+
+Z
+Let us now consider the case of N boundary regions
+σi (A) with i = 1, ..., N . We assume that ∪N
+i=1 σi (A) =
+σ(A) and σi (A) ∩ σj (A) = ∅ for i ̸= j. We note that,
+for N ≥ 3, an arbitrary bulk Cauchy slice Σ, such that
+∂Σ = σ(A) and which contains all the HRT surfaces associated with each σi (A), will not be fully contained within
+the union of domains of dependence ∪N
+i=1 Di (A). The
+complement defines a central region, dubbed the hole,
+which plays a crucial role in quantum error-correction
+studies of AdS/CFT [78]. This region is the bulk locus
+whose information is encoded non-locally on the boundary; in short, it embodies the secret-sharing (or errorcorrecting) feature of AdS/CFT by storing logical qubits
+that can survive the erasure of any single boundary region while remaining inaccessible to that region alone.
+Because of the hole, we must now introduce a new set
+of threads that was not needed previously:
+P = {All threads} ,
+Pi = {Threads passing through Di (A)} ,
+PN +1 = {Threads passing through the hole} .
+
+(35)
+
+Following the logic of the previous subsection, we now
+propose a program that computes the complexity of each
+subregion σi (A) and the complexity of their union,
+
+max
+M
+
+s.t.
+
+i=1
+
+Z
+
+N +1
+, ∀p ∈ Pi & p ∈ dom(µi ) ,
+N
+p
+Z
+1
+dsλi ≤ , ∀p ∈ Pj & p ∈ dom(µi ) ,
+N
+p
+Z
+1
+dsλi ≤ , ∀p ∈ PN +1 & p ∈ dom(µi ) ,
+N
+p
+dsλi ≤
+
+(38)
+
+for j ̸= i. The optimal value for the total equals
+the sum of the volumes of the maximal slices anchored
+on each σi (A) ∪ γi , plus the volume of the maximal
+slice anchored on the union σ(A) = ∪ni=1 σi (A); that is
+PN
+i=1 max[Vol(Σi (A))] + max[Vol(Σ(A))].
+As in the bipartite case, Σ(A) is not required to contain
+any of the individual HRT surfaces, so the volume of
+Σ(A) is always greater than or equal to the sum of the
+volumes of the Σi (A). However, even if all the individual
+HRT surfaces lie within Σ(A), the presence of the ‘hole’
+guarantees that the inequality is strict whenever N > 2.
+We refer to this property as soft superadditivity:
+max [Vol Σ(A)] >
+
+N
+X
+
+max [Vol Σi (A)] .
+
+(39)
+
+i=1
+
+min
+
+N Z
+X
+
+dµi +
+
+Pi
+
+i=1
+
+1
+N
+
+
+
+Z
+dµi
+
+(36)
+
+P
+
+This leads to a weaker inequality for the corresponding
+complexities, compared with the bipartite case,
+
+s.t. ρi ≥ 1 ∀i = 1, ..., N .
+We keep implicit the boundary condition on thread flux,
+namely, that for any macroscopic, yet small area element
+of ∂M, a set of threads of each type attaches to the
+boundary. The corresponding Lagrangian is given by:
+L=
+
+N Z
+X
+
+dµi +
+
+Pi
+
+i=1
+
+Z
++
+
+N
+X
+
+1
+N
+
+dµi
+
+P i=1
+
+Z
+λi −
+
+M i=1
+N Z
+X
+
+Z X
+N
+
+
+dµi λi ∆(x, p)
+
+P
+
+Z
+
+
+
+N +1
+=
+λi +
+dµi
+−
+N
+M
+Pi
+i=1
+
+
+Z
+XZ
+1
++
+dµi
+− dsλi
+N
+p
+j̸=i Pj
+
+#
+Z
+Z
+1
++
+dµi
+− dsλi
+.
+N
+PN +1
+p
+
+
+
+Z
+dsλi
+
+(37)
+
+p
+
+Similarly, the dual program decomposes into N indepen-
+
+∆C (N ) ≡
+
+N
+X
+
+C(σi (A)) − C(σ(A)) < 0 .
+
+(40)
+
+i=1
+
+We will call ∆C (N ) the N -partite complexity, thereby generalizing the notion of mutual complexity, given in (25).
+To finish this section, we note that the above program
+can be naturally extended to compute the maximal volume of the surface anchored on the union of all HRT
+surfaces, that is, the surface defining the hole. Specifically, consider an arbitrary bulk spacelike surface Σ̃N +1
+anchored on ∪N
+i=1 γi and define its domain of dependence
+DN +1 . We introduce a new measure µN +1 to compute
+quantities involving the latter bulk region, and denote the
+set of threads passing through it as PN +1 . The program
+in this case would be given by
+
+min
+
+N
++1 Z
+X
+i=1
+
+Pi
+
+dµi +
+
+1
+N +1
+
+
+
+Z
+dµi
+P
+
+(41)
+
+s.t. ρi ≥ 1 ∀i = 1, ..., N + 1 .
+Following the same steps as before, we find in this situation a tighter version of superadditivity, which now
+
+10
+allows for possible saturation:
+
+A.
+
+Discretization & elementary gates
+
+max [Vol(Σ(A))] ≥
+N
+X
+
+max[Vol(Σi (A))] + max [Vol(ΣN +1 )] .
+
+(42)
+
+i=1
+
+This inequality will generally not be saturated unless all
+the HRT surfaces lie within Σ(A). Even so, it will be
+closer to saturation than its soft version, Eq. (39), because the volume of the hole, Vol(ΣN +1 ), always contributes positively to the right-hand side. We refer to
+this new inequality as tight superadditivity.
+It is interesting to ask what Vol(ΣN +1 ) would mean
+in terms of complexity. Very recently, Balasubramanian
+et al. introduced the notion of binding complexity [79]:
+the minimum number of inter-party gates required to
+generate a multipartite entangled state. Geometrically,
+those inter-party gates must run through the entanglement shadow, so a natural identification would be:
+Cbinding = max [Vol(ΣN +1 )] .
+
+(43)
+
+That is, up to an overall normalization fixed by the CV
+dictionary (recall that we are working in units where
+GN ℓ = 1), the hole’s maximal volume counts precisely
+the non-local gates that ‘bind’ the separate subregions
+into a single code subspace. Assuming this interpretation is correct, tight superadditivity then implies
+f
+∆C
+
+(N )
+
+≡ ∆C (N ) + Cbinding ≤ 0 ,
+
+(44)
+
+(N )
+
+f
+where ∆C (N ) is given in (40), and ∆C
+is a generalized N -partite complexity that includes the binding term.
+This inequality is valid for N ≥ 3. Together with (25),
+which applies to the bipartite case, these relations form
+part of what we dub the complexity cone, i.e., a set of
+inequalities characterizing holographic CV complexity.
+
+IV. INTERPRETATION OF THE
+MULTI-FLAVOR PROGRAM
+
+We have succeeded in constructing a program that
+computes both the holographic complexity of the full
+state and the subsystem complexities of arbitrary subregions. However, the microscopic interpretation of the
+multiple flavors remains unclear. Here, we argue that
+this program naturally implements the nonlocal bulk operations required to satisfy superadditivity and, possibly,
+all other inequalities of the complexity cone.
+
+In the previous sections, we have formulated a continuous program of Lorentzian threads with multiple flavors,
+satisfying certain density bounds. It is now instructive
+to think about the discretized version of such a program.
+For concreteness, we will focus our discussion below on
+the bipartite case, but our analysis can be easily generalized to include an arbitrary number of partitions.
+After solving the optimization problem, one may characterize the solution by four numbers Nij , representing
+threads of type i ∈ {1, 2} (that is, those on which the
+measure µi acts non-trivially) crossing the domain of dependence Dj , with j ∈ {1, 2}. One then finds that the
+subregion complexity of σk is given by C(σk ) = Nkk (no
+sum over k), while the complexity of the full state is
+P
+C(σ) = 12 i,j Nij . The left panel of Fig. 5 depicts the
+four basic threads that can appear in this program. The
+two subregions A and B are shown in blue and red, respectively, while threads of type A and B also follow the
+same color code. Threads of one kind that end in the
+‘wrong’ region (red threads that end in region A, or blue
+threads that end in region B) do not contribute to subregion complexities; only to the complexity of the full
+state. In the same figure, we have also written down the
+relative weights, 1, 0, or 1/2, representing the individual contributions of each type of thread to the subregion
+complexities and to the complexity of the full system.
+These four types of threads are sufficient to compute
+both the subsystem complexities and the complexity of
+the full state for a holographic system under arbitrary
+bipartitions. Thus, in analogy with [20, 21], one can
+think of them as representing the set of elementary gates
+that enter into the definition of circuit complexity for a
+discretized bulk state. However, there are some aspects
+of this interpretation that are not completely satisfactory.
+First, while these threads naively represent quasi-local
+operations that couple degrees of freedom confined to infinitesimal regions, the crossed threads do not seem to
+admit such a simple microscopic interpretation. In particular, they do not count towards any of the subregion
+complexities, so it is not clear whether they must attach
+to physical degrees of freedom in a tensor network discretizing the bulk state. More importantly, there is a
+fundamental issue with superadditivity. To see this, note
+that, for a given solution of the optimization problem,
+the four numbers must be nonnegative, Nij ≥ 0. Other
+than that, they can generally be quite arbitrary, subject
+to the constraint imposed by superadditivity, i.e.,
+C(σ1 )+C(σ2 )−C(σ) =
+
+
+1 1
+N1 +N22 −N12 −N21 ≤ 0 . (45)
+2
+
+Whenever superadditivity is saturated, the number of
+‘crossed’ threads (N12 + N21 ) must be equal to the number of non-crossed ones (N11 + N22 ); more generally, the
+crossed ones must dominate in the solution. The problem
+
+11
+here arises from micro-superadditivity. Namely, some of
+the individual gates (the non-crossed ones) contribute in
+the ‘wrong’ way to the inequality, violating it in a microscopic sense. Macroscopically, this violation is masked by
+the fact that crossed threads dominate in a given solution, so that the total contribution satisfies superadditivity, thanks to delicate cancellations. From the perspective of a microscopic gate set, this is conceptually unsatisfactory: one would like the elementary operations themselves to respect the basic complexity inequalities, rather
+than relying on combinations of gates that would individually drive the system outside the complexity cone.
+Indeed, in the following subsections, we will show that
+the multi-flavor program can be recast in a way that satisfies superadditivity at the microscopic level. The price
+to pay, however, is that such a reformulation must explicitly include non-local gates that enable intrinsically
+non-local computation from the bulk perspective.
+
+B.
+
+Hyperthreads as a combination of gates?
+
+As a first conceptual exercise, we note that the program (41) can be naturally extended by introducing a
+new type of object: a Lorentzian analogue of hyperthreads, originally defined in the Riemannian setting in
+[38] (see Appendix A for a brief review). Riemannian
+hyperthreads were devised to capture fundamental multipartite entanglement links, which are essential for holographic states in which the mostly-bipartite conjecture
+fails [40]. In the same spirit, we now postulate the existence of Lorentzian hyperthreads, encoding additional
+elementary non-local gates that act simultaneously on
+several spatially separated degrees of freedom.
+A Lorentzian k-thread, or simply a k-thread, is an
+everywhere timelike curve in M, that has k legs, or
+branches. We may visualize one of such objects as a
+thread anchored somewhere on ∂M− which splits k − 1
+times, with each branch crossing a distinct domain of dependence {D1 (A), . . . , DN (A), DN +1 } before terminating somewhere on ∂M+ . For an N -partite system, the
+maximal number of branches is then kmax = N + 2. We
+denote by Hk the set of all k-threads with fixed k, and
+by H the union of all Hk . For convenience, we also define
+HDi ...Dj as sets of k-threads which have branches passing
+through specific domains Di , ..., Dj . These can contain
+threads with values of k strictly larger than the number of indices in their label. To make these definitions
+concrete, we now present a simple example:
+Example: Suppose that the boundary Cauchy slice
+σ(A) is divided in three regions σ1 (A), σ2 (A) and σ3 (A).
+Since N > 2 we have 4 domains of dependence Di , with
+i = 1, . . . 4, the last one corresponding to the central hole.
+In HD1 one finds those 2-threads going through D1 (A)
+and those 3-, 4- and 5-threads with one branch crossing
+D1 (A). In HD1 ,D2 we find only those 3-, 4- and 5-threads
+
+FIG. 5. Left: elementary threads of the multi-flavor program.
+Right: A Lorentzian hyperthread obtained by combining two
+of these elementary threads. The resulting weights, +1, +1
+and +1, signaling the contributions to subregion complexities
+and the complexity of the full state, are analogous to those in
+Riemannian hyperthreads. However, in the Lorentzian case,
+they lead to violations of micro-superadditivity.
+
+with branches going through D1 (A) and D2 (A). The rest
+of the sets can be constructed in a similar manner.
+Let us focus on the bipartite case, in which only 2- and
+3-threads can appear. In this setting, there is only one
+RT surface, γ1 = γ2 = γ, so the central hole is absent.
+To account for 3-threads, we introduce a measure µ1,2
+that acts solely on H3 . The only way to incorporate this
+measure without changing the objective is as follows:
+Z
+Z
+min
+(dµ1 + dµ1,2 ) +
+(dµ2 + dµ1,2 )
+HD1
+
+s.t.
+
+HD
+
+2
+
+Z
+1
+(dµ1 + dµ2 + 2dµ1,2 )
++
+2 H
+ρ1 + ρ1,2 ≥ 1 , ρ2 + ρ1,2 ≥ 1 ∀x ∈ M ,
+
+(46)
+
+where ρ1 and ρ2 are defined as in (26), and ρ1,2 is given
+by an analogous expression. The factor of 2 in front of
+the measure µ1,2 is not arbitrary: complementary slackness [74] fixes this coefficient, as any other choice would
+prevent the 3-threads from contributing to the objective.
+The constraints, on the other hand, can be written as
+ρ1 + ρ1,2 ≥ 1 ,
+
+ρ2 + ρ1,2 ≥ 1 ,
+
+(47)
+
+rather than imposing ρ1 ≥ 1, ρ2 ≥ 1, and ρ1,2 ≥ 1 separately. Doing so would introduce an additional Lagrange
+multiplier, and ultimately modify the objective function.
+With the formulation of the program justified, we now
+
+12
+proceed to derive its dual. We begin with the Lagrangian:
+Z
+Z
+L=
+(dµ1 + dµ1,2 ) +
+(dµ2 + dµ1,2 )
+HD1
+
+HD
+
+2
+Z
+1
+(dµ1 + dµ2 + 2dµ1,2 )
++
+2
+
+Z H 
+Z
++
+λ1 1 −
+(dµ1 + dµ1,2 )
+M
+H
+
+
+Z
+Z
++
+λ2 1 −
+(dµ2 + dµ1,2 ) ,
+M
+H
+
+
+Z
+Z
+Z
+3
+− dsλ1
+=
+λ1 +
+dµ1
+2
+h
+M
+HD1
+
+
+Z
+Z
+1
+− dsλ1 + (1 ↔ 2)
++
+dµ1
+2
+h
+HD2
+
+
+Z
+Z
++
+dµ1,2 3 − ds(λ1 + λ2 ) ,
+
+H
+
+(48)
+
+h
+
+where the integral over h denotes integration along an
+entire k-thread. The dual program is:
+Z
+√
+max
+dd x −g(λ1 + λ2 ) s.t.
+M
+Z
+dsλi ≤ 3/2 ∀ h ∈ Pi & h ∈ dom(µi ) ,
+Zh
+(49)
+dsλi ≤ 1/2 ∀ h ∈ Pj & h ∈ dom(µi ) ,
+Zh
+ds(λ1 + λ2 ) ≤ 3 ∀h ∈ H3 & h ∈ dom(µ1,2 ) .
+h
+
+In the second and third lines, i, j = 1, 2, with the implicit understanding that i ̸= j. A detailed examination of this dual program shows that, if a solution includes hyperthreads, it fails to reproduce the expected
+subregion complexities. To see this, note that any hyperthread that does not split in the region enclosed by
+Σ1 (A) ∪ Σ2 (A) ∪ Σ(A) will cross a barrier of value four,
+so that the last constraint in (49) is violated (see Fig. 6).
+Therefore, in the bipartite case, an optimal solution, if it
+exists, must either (i) contain only 2-threads or (ii) contain 3-threads, however, it would not yield a result equal
+to the sum of the subregion complexities, as in eq. (31).
+This analysis can be generalized to an N -partite system, but the results are not particularly illuminating,
+since the solution suffers from the same issues as in the
+bipartite case. Hence, we will not repeat this analysis
+here. Nevertheless, we can offer some intuition as to why
+the inclusion of hyperthreads seems to yield inconsistent
+results in the Lorentzian case. The first observation is
+that, at the microscopic level, each hyperthread can be
+thought of as a combination of gates in the multi-flavor
+program. This is illustrated in Fig. 5, right panel. The
+composite operation represented by a hyperthread has
+weights +1, +1, and +1 that contribute to the complexities C(σ1 ), C(σ2 ), and C(σ), respectively, analogous to the
+
+FIG. 6. Visual representation of a hyperthread that violates
+the last constraint of (49). In this example, the hyperthread
+crosses level sets of total value of four.
+
+Riemannian case. However, a close inspection of such operations reveals that they are fundamentally incompatible with basic complexity inequalities that follow from
+the CV proposal. In the Riemannian case, subadditivity
+of entanglement entropies requires
+S(A1 ) + S(A2 ) − S(A1 ∪ A2 ) ≥ 0 ,
+
+(50)
+
+and each hyperthread contributes positively to the lefthand side of the inequality. However, for CV complexity,
+the relevant inequality is superadditivity, e.q. (25),
+C(σ1 ) + C(σ2 ) − C(σ1 ∪ σ2 ) ≤ 0 .
+
+(51)
+
+As each Lorentzian hyperthread also contributes positively to the left-hand side, we conclude that they inevitably violate superadditivity at the microscopic level.
+The above observation does not fully rule out
+Lorentzian hyperthreads, as the non-crossed 2-threads
+also suffer from the same issue described above. One can
+imagine, for instance, that there are other elements in
+the elementary gate set that may contribute negatively
+to superadditivity and compensate for the existence of
+hyperthreads. If this is not the case, then the number of
+hyperthreads in an optimal solution would be negative,
+which would be in contradiction with the density bound.
+More importantly, hyperthreads are also unnatural from
+the perspective of an elementary gate basis, since they
+represent operations that violate micro-superadditivity.
+In the next subsection, we will argue that the elementary
+gates of the multi-flavor program can still be combined, in
+a suitable way, to resemble the structure of hyperthreads,
+while forming a good set of operations that respect superadditivity (25), or its N -partite generalization (44).
+
+13
+C.
+
+Change of basis & generalized hyperthreads
+
+The question we would like to address now is whether
+it is possible to construct a ‘good’ gate set by combining
+the elementary gates of the multi-flavor program into a
+new physical basis. Such a basis should satisfy a few
+conditions: (i) it must be invertible, (ii) it must respect superadditivity at the microscopic level, and (iii)
+it should yield four non-negative numbers Ñi ≥ 0 for
+Ñ = {Ñ1 , Ñ2 , Ñ3 , Ñ4 }, as a solution of the optimization
+problem. Some of these conditions go hand in hand. For
+example, hyperthreads cannot be elements of a physical
+basis because they violate superadditivity: if we force
+them to be part of the basis, an optimal solution would
+necessarily involve a negative number of hyperthreads.
+Aside from these requirements, we still have some freedom in choosing the new basis, as we will see below.
+As a further constraint, we would like ‘standard’ 2threads to be part of the new basis. These can be obtained by combining one thread of each type that crosses
+the same domain of dependence. Such combinations generate the more common operations with the weights +1
+and 0 for the subregion complexities C(σi ) and +1 for
+the complexity of the full state C(σ). See Fig. 7, top
+panels. Note that these threads saturate superadditivity:
+individually, their contribution to the mutual complexity
+vanishes. In fact, this is the reason why the original program of Lorentzian threads [20, 21] cannot yield a negative mutual complexity, as explained around eq. (25).
+As for the remaining two elements, we would like to
+have a combination that resembles a hyperthread (see
+Fig. 5, left panel), but has more weight for the complexity of the full state C(σ). A weight of +2 would saturate
+the inequality, as do the standard 2-threads. The minimal weight that yields a negative mutual complexity is
+therefore +3. In Fig. 7, bottom panels, we show examples of such combinations, obtained by combining one of
+each non-crossed thread type and four crossed ones. We
+call these objects generalized hyperthreads. Mathematically, we can express this change of basis by an algebraic equation of the form N = M · Ñ , for some appropriate transformation matrix M, where we have defined
+N ≡ {N1 , N2 , N3 , N4 } = {N11 , N21 , N12 , N22 }. For example, for the basis depicted in Fig. 7, we have:
+  
+ Ñ 
+N1
+1 0 1 1
+1
+Ñ2 
+N2  1 0 4 0 
+
+.
+(52)
+N  = 0 1 0 4  
+Ñ3 
+3
+N4
+0 1 1 1
+Ñ4
+One can check that det M ̸= 0, so the transformation
+is invertible.4 Moreover, all elements in this new basis
+
+4 Since the matrix is invertible, we can use M−1 to read off the
+
+number of generalized hyperthreads corresponding to an optimal
+configuration expressed in the original 2-thread basis.
+
+FIG. 7. A possible change to a ‘good’ basis. The new elementary operations include ordinary Lorentzian 2-threads
+(top two) and ‘generalized’ hyperthreads (bottom two), with
+weights adjusted to respect superaditivity.
+
+respect superadditivity at the microscopic level, and one
+can convince oneself that, for any triad C(σ1 ), C(σ2 ) and
+C(σ) that respects superadditivity, one could find solutions of the program such that Ni ≥ 0 ∀i, where
+C(σ1 ) = Ñ1 + Ñ3 + Ñ4 ,
+C(σ2 ) = Ñ2 + Ñ3 + Ñ4 ,
+
+(53)
+
+C(σ) = Ñ1 + Ñ2 + 3(Ñ3 + Ñ4 ) .
+A few comments are in order. First, we emphasize that
+the choice of physical basis is non-unique. The one above
+is reasonable from a physical standpoint, but there are
+also many other good choices. For example, the matrix
+
+1 0 1 1
+ 1 0 3 1
+M=
+0 1 1 3
+0 1 1 1
+
+
+(54)
+
+also yields generalized hyperthreads with the same
+weights. More generally, we can increase the weight for
+C(σ) by an amount of order O(N 0 ) and still have a good
+
+14
+basis, for example, one might consider
+
+
+1 0 1 1
+1 0 6 0
+.
+M=
+0 1 0 6
+0 1 1 1
+
+V.
+
+(55)
+
+In this last case one can only increase the mutual complexity by multiples of 2; however, since our system has a
+large-N number of degrees of freedom, this will not affect
+the result at leading order in 1/N . Thus, all of these are
+good transformations leading to a good basis, and are
+formally equivalent to the multi-flavor program
+Second, it is important to emphasize the differences
+between generalized hyperthreads and normal hyperthreads. In particular, not only are the relative weights
+of the legs different, but so is the nature of the bulk interactions. For ease of visualization, we have depicted
+the generalized hyperthreads in Fig. 7 as normal hyperthreads. While it is true that they have k external legs
+attached to the AdS boundary, the corresponding bulk
+configurations can be more general and flexible, and need
+not split locally at a single point in spacetime. Instead,
+one should think of them as extended, possibly nonlocal,
+networks of threads with k boundary-anchored legs.
+Finally, while we have only analyzed the bipartite case
+in detail, it is straightforward to see that the construction
+of a good basis for the N -partite case is always feasible.
+The key point is that the number of elementary gates
+in a basis increases with N , giving us more freedom to
+find suitable combinations. In the bipartite case we have
+four elements in a given basis, whereas for N ≥ 3 we
+have 2(N + 1) basic elements, due to the existence of the
+hole. A simple construction is to include N + 1 standard 2-threads, each going through a single domain of
+dependence, and N + 1 (N + 1)-threads, with weights
++1, . . . , +1 for C(σi ) (∀i) and Cbinding , and +(N + 2) for
+C(σ). For example, in the tripartite case one such transformation that leads to a good basis is given by
+
+
+1 0 0 0 1 1 1 1
+1 0 0 0 6 0 0 0
+
+
+0 1 0 0 1 1 1 1
+
+
+0 1 0 0 0 6 0 0
+M=
+(56)
+,
+0 0 1 0 1 1 1 1
+0 0 1 0 0 0 6 0
+
+
+0 0 0 1 1 1 1 1
+0 0 0 1 0 0 0 6
+which directly generalizes (52). This construction is always possible for arbitrary N , as can be shown by simple
+induction. More generally, for N ≥ 3 one could consider
+more general bases, including hyperthreads with different
+k. We leave such generalizations to the interested reader.
+
+DISCUSSION
+
+In this work, we have revisited the Lorentzian thread
+formulation of holographic complexity and extended it
+to multipartite settings, with the goal of defining subregion complexity and exploring its structural constraints.
+Starting from the CV proposal, we showed that the original Lorentzian thread program [20, 21] cannot consistently reproduce the superadditivity of subregion complexity, even in simple bipartite configurations. The obstruction can be traced to the absence of a Lorentzian
+analogue of the multicommodity theorem: a single family of timelike flows is not flexible enough to compute, in
+one shot, the complexities of all subregions and of their
+union. To overcome this, we reformulated the problem
+in terms of measures and introduced a multi-flavor program, in which each boundary subregion is associated
+with its own family of Lorentzian threads. This enlarged
+framework yields a well-posed optimization problem that
+simultaneously computes the complexity of each subregion and of the full state. For general N ≥ 3 partitions,
+it leads to a set of inequalities, which we dub soft and
+tight superadditivity, the latter one including a binding
+contribution. All these inequalities represent (a part of)
+what we call the complexity cone for CV.
+A natural question is how this multi-flavor construction should be understood microscopically. To answer
+this, we analyzed the discretized version of the program
+and identified the corresponding set of elementary gates.
+For the bipartite case, the four basic thread types of
+the multi-flavor program can be viewed as quasi-local
+gatelines that couple degrees of freedom in a bulk tensor
+network representation of the subsystems and full CFT
+state. Taken at face value, these threads provide a complete gate set capable of generating both the subregion
+complexities and the complexity of the full state. However, we found that some of these elementary operations
+violate superadditivity at the microscopic level: individually, they contribute with the wrong sign to the mutual
+complexity, and only delicate cancellations among different gate types ensure that the macroscopic inequalities
+are satisfied. From the perspective of a microscopic description of complexity, this is conceptually unsatisfactory, as it would mean that the basic operations themselves drive the system outside the complexity cone.
+We resolved this tension by exhibiting an explicit
+change of basis in the space of elementary operations.
+By taking appropriate linear combinations of the multiflavor gatelines, one can construct a new physical basis in which each element respects micro-superadditivity
+while still reproducing the same macroscopic complexities. In this new basis, two of the elements are ordinary Lorentzian 2-threads, which saturate superadditivity and contribute only to the individual subregion complexities and to the full complexity in a balanced way.
+The remaining elements are generalized Lorentzian hyperthreads: bulk objects with k external legs whose weights
+
+15
+are chosen so that they contribute positively to the complexity of the full state while inducing a negative mutual
+complexity. These generalized hyperthreads are intrinsically nonlocal operations, acting simultaneously on several spatially separated degrees of freedom in the dual
+CFT. Thus, the multi-flavor program can be recast as an
+optimization over a gate set that is manifestly compatible with the complexity cone, at the price of explicitly
+incorporating nonlocal gates. In this sense, our analysis refines the naive expectation that holographic states
+can be prepared using mostly local gates: once subregion
+complexities and their inequalities are imposed, nonlocal gates of generalized-hyperthread type appear to be
+an unavoidable part of the microscopic description, in
+line with the nonlocal computation protocols suggested
+by the connected wedge theorem [51–55].
+Our results open up several directions for future work.
+A first, and conceptually close, avenue is to revisit the
+bit thread formulation of entanglement entropy in light
+of the multi-flavor structure uncovered here. In the Riemannian setting, the nesting property and the multicommodity theorem already underlie proofs of basic inequalities such as (strong) subadditivity and monogamy of mutual information, and they provide partial access to the
+holographic entropy cone. However, it is not clear to
+what extent the full set of holographic entropy inequalities can be realized by a single species of bit threads.
+The present work suggests introducing multiple kinds of
+threads—or a suitable generalization of hyperthreads—
+already at the level of entanglement entropy. It would be
+very interesting to understand whether a multi-flavor or
+hyperthread-enhanced bit-thread formalism can probe a
+larger portion of the entropy cone, or perhaps furnish a
+more direct geometric characterization of its facets.
+A second natural direction is to extend our analysis of
+subregion complexity beyond the CV proposal. Recently,
+the Lorentzian thread framework has been generalized in
+[76] to a broad class of gravitational functionals collectively referred to as Complexity=Anything [27]. In that
+setting, different choices of bulk functional correspond
+to different candidate measures of complexity, all admitting a Lorentzian flow representation. Our multi-flavor
+construction can, in principle, be transplanted to these
+more general proposals, leading to a family of subregion
+complexity functionals and associated complexity cones.
+Comparing the resulting inequalities, and their degree
+of saturation, across different bulk prescriptions could
+provide a powerful diagnostic of how sensitive subregion
+complexity is to the detailed choice of bulk functional,
+and might help isolate robustness properties that any
+sensible holographic complexity measure should satisfy.
+A third, more microscopic, line of investigation is to
+sharpen the connection between generalized Lorentzian
+hyperthreads and explicit models of quantum computation or quantum error correction [80–84]. The
+multi-flavor program suggests a concrete gate set—
+consisting of standard local gatelines and genuinely non-
+
+local hyperthread-like operations—that prepares holographic states while obeying the inequalities of the complexity cone. It would be valuable to construct tensornetwork or circuit models in which these gates can be
+realized explicitly, and to compare the resulting circuit
+complexity with our geometric subregion complexities.
+Such models could clarify the role of binding-type contributions (associated to the hole), and might lead to
+a direct CFT definition of generalized hyperthreads as
+nonlocal logical gates acting on a code subspace.
+More broadly, we expect the notion of a complexity
+cone to play a role analogous to that of the entropy cone,
+as a set of universal inequalities constraining which patterns of subregion complexity are compatible with a semiclassical bulk dual. In this paper we have taken a first
+step in this direction for CV, showing how a multi-flavor
+Lorentzian thread program and its generalized hyperthread interpretation naturally encode these constraints.
+It would be fascinating to see whether a more complete
+understanding of complexity cones, across different holographic prescriptions, can help map bulk observables to
+boundary observables and eventually provide a unifying
+organizing principle for holographic complexity measures
+and their field-theory duals. We hope to return to some
+of these questions in the near future.
+Acknowledgments. We are grateful to J. Gambı́n Egea,
+M. Headrick, V. Patil, A. Russo, A. Svesko and Z. WellerDavies for many enlightening discussions and correspondence on related subjects throughout the last years.
+The work of EC was supported by the National Science Foundation under grant No. PHY–2210562 and
+by UT-CNS through a Spark 2025-2029 grant. RC
+and JFP are supported by the ‘Atracción de Talento’
+program grant 2020-T1/TIC-20495 and by the Spanish
+Research Agency through the grants CEX2020-001007S, PID2021-123017NB-I00 and PID2024-156043NB-I00,
+funded by MCIN/AEI/10.13039/501100011033, and by
+ERDF ‘A way of making Europe.’ RC also acknowledges
+the additional support of the Spanish grant FPU with
+reference FPU22/01262.
+
+Appendix A: Riemannian threads & hyperthreads
+
+In this appendix, we review the reformulation of Riemannian bit threads in terms of measure theory, commonly employed in the study of entanglement entropy.
+In doing so, we follow closely [32, 38]. Let Σ be a Riemannian manifold with boundary. As a first step, we
+consider a bipartition of the boundary into two regions
+A and B. According to the RT prescription [1, 2], the
+entanglement entropy of region A is given by the minimal
+area among all codimension-1 surfaces m(A) homologous
+to A, that is (in units where 4GN = 1)
+S(A) = min[Area(m(A))] .
+
+(A1)
+
+16
+To employ the measure approach for computing the
+entanglement entropy, we define P as the set of curves
+with one endpoint in A and the other in B. As in the
+Lorentzian case, it is necessary to use the delta function
+∆(x, p) and the density function ρ(x), both of which were
+defined earlier in (10) and (11), respectively. For the
+reader’s convenience, we recall their expressions here:
+Z
+∆(x, p) = dsδ(x − y(s)) ,
+p
+(A2)
+Z
+ρ(x) =
+dµ∆(x, p) .
+P
+
+The optimization program that computes the entropy is
+Z
+S(A) = max
+dµ s.t. ρ(x) ≤ 1, ∀x ∈ Σ .
+(A3)
+P
+
+We now introduce a Lagrange multiplier λ(x) to impose
+the density constraint:
+
+
+Z
+Z
+Z
+L(µ, λ) =
+dµ +
+λ(x) 1 −
+dµ∆(x, p)
+P
+Σ
+P
+
+
+Z
+Z
+Z
+(A4)
+=
+λ(x) +
+dµ 1 − dsλ(x) .
+P
+
+Σ
+
+The program that simultaneously computes all the entropies in terms of threads is
+N
+X
+
+From the second line, we can derive a dual optimization
+program, namely
+Z
+Z
+√
+min
+dd x gλ(x) s.t.
+dsλ ≥ 1 ∀, p ∈ P .
+(A5)
+
+i,j=1
+
+dµ ,
+
+Pij
+
+We can now generalize the notion of a thread in order
+to study multipartite entanglement. Consider a partition
+of the boundary into N regions. In addition to the usual
+threads that join two different regions, we introduce a kthread (or hyperthread) as a curve that splits at several
+points and has a total of k endpoints (with k ≤ N ). It is
+important to emphasize that each endpoint must lie in a
+different region and cannot end in the bulk. The set of all
+such threads, denoted by H, can be decomposed as the
+union of k-threads joining the k regions Ai , Aj , . . . , Ak ,
+which we denote by HAi Aj ...Ak . Similarly, the set of kthreads with one endpoint in Ai will be written as Hi .
+Finally, Hk denotes the set of all k-threads.
+The program that allows for the computation of the
+entropies of all regions is then given by
+S(Ai ) = max
+
+i=1
+
+= max
+
+N Z
+X
+
+dµ s.t. ρ(x) ≤ 1 ∀x ∈ Σ ,
+
+i=1
+
+Hσi
+
+N
+X
+
+Z
+dµ s.t. ρ(x) ≤ 1 ∀x ∈ Σ .
+
+k
+Hk
+
+i=2
+
+p
+
+Σ
+
+(A8)
+
+s.t. ρ(x) ≤ 1, ∀x ∈ Σ .
+
+N
+X
+
+p
+
+S(Ai ) = max
+
+i=1
+
+N
+XZ
+
+(A9)
+
+Before proceeding further, it is necessary to ensure that
+both the primal and dual programs yield the same value.
+To this end, we have to verify that Slater’s condition
+is satisfied. In particular, one possible solution to the
+primal problem consists of setting µ(p) = 0 ∀p ∈ P.
+Although this is not the optimal solution, the density
+bound is strictly satisfied, showing that Slater’s condition
+(and consequently strong duality) holds.
+
+The Lagrangian corresponding to this program is
+
+The optimal solution corresponds to the configuration
+in which all level sets are located on the minimal-area
+surface homologous to A [38]. Any other configuration
+will either increase the objective or violate the density
+bound. Therefore,
+Z
+S(A) = max
+dµ = min[Area(m(A))] .
+(A6)
+
+The second line provides a new dual program:
+Z
+Z
+√
+min
+dd x gλ(x) s.t.
+dsλ(x) ≥ k ∀h ∈ Hk . (A11)
+
+P
+
+Up to this point, we have focused solely on region A.
+However, since A and B are complementary, they have
+exactly the same entanglement entropy.
+If instead of partitioning the boundary of Σ into two
+regions we partition it into N regions, it is convenient to
+introduce the following sets:
+Pij = {Threads joining Ai and Aj } ,
+P = {All threads} .
+
+(A7)
+
+L=
+
+Z
+N
+X
+k
+
+λ(1 − ρ(x))
+
+i=2
+
+Hk
+
+Σ
+
+Z
+
+XZ
+
+
+
+=
+
+λ+
+Σ
+
+Σ
+
+Z
+dµ +
+
+k=2
+
+Z
+k−
+
+Hk
+
+
+dsλ .
+
+(A10)
+
+h
+
+h
+
+This is just a generalization of the program with 2threads only, so the optimal solution is exactly the same
+and equal to the sum of the areas of the surfaces homologous to each region. One can show that, although the
+objective is not modified with respect to the original program, these hyperthreads have a maximal contribution
+which is non-trivial. In particular, this contribution has
+been computed in the case where only 2- and N -threads
+are present. The contribution of each N -thread is
+1
+area(tn ) ,
+α
+
+(A12)
+
+where tn is the maximal area that can only be crossed
+
+17
+by N -threads but not by 2-threads and α is the number
+of times this surface is crossed. In this case, the contribution of each element in H2 is reduced to
+
+n
+1
+area(m2 ) − area(tn ) .
+(A13)
+2
+α
+
+Appendix B: Proofs of theorems
+
+We now show the converse implication. Suppose (17)
+holds.
+WeR can express the integral over the thread as
+R
+dsλ
+=
+dt| − ẋ|λ, where −ẋ is the covector associp
+p
+ated with the tangent to the curve p. The minus sign
+is included because the tangent vector is future directed.
+We define
+Z
+ψ− (y) :=
+sup
+dt| − ẋ|λ ,
+p timelike
+from A to y
+
+p
+
+(B4)
+
+Z
+The objective of this appendix is to provide a proof of
+Theorems 1 and 2, used in the main text. To this end,
+we follow an approach similar to that presented in [32].
+For the sake of clarity, we restate the theorems here:
+Theorem 1. Let M be a Lorentzian manifold, and let
+A and B be complementary subsets of the boundary such
+that J + (A) ∩ ∂M = A and J − (B) ∩ ∂M = B. Define P
+as the set of timelike, future-directed (FD) curves from
+B to A, and let λ(x) be a non-negative function on M.
+The following two statements are then equivalent:
+∃ψ : M → [−1/2, 1/2] s.t. ψ|B = −1/2 ,
+ψ|A = 1/2 , |dψ| ≥ λ , dψ timelike & FD ,
+
+(16)
+
+and
+Z
+∀p ∈ P,
+
+dsλ ≤ 1 .
+
+(17)
+
+p
+
+Proof. Assume that condition (16) holds. Consequently,
+we have:
+Z
+Z
+Z
+dy µ
+dψ
+B
+= ds
+∂µ ψ
+1 =ψ|A = dψ = ds
+ds
+ds
+p
+p
+p
+Z
+(B1)
+dy µ ν
+= ds
+∂ ψgµν ,
+ds
+p
+where y µ represents the trajectory of the thread. Before
+proceeding further, it is important to note that dψ is
+timelike and future directed. The vector field dual to
+this one (∂ µ ψ∂µ ) will also be timelike but past directed.
+µ
+Since the thread is future directed, the vector field dy
+ds ∂µ
+will likewise be future directed. It can be shown that,
+under these conditions, gµν uµ v ν ≥ |u||v| for u timelike,
+future directed, and v timelike, past directed. Hence,
+Z
+dy µ
+1 ≥ ds
+|dψ| .
+(B2)
+ds
+p
+Given that, by the definition of proper distance,
+1, it follows that
+Z
+Z
+1 ≥ ds|dψ| ≥ dsλ .
+p
+
+dy µ
+ds
+
+ψ+ (y) :=
+
+dt| − ẋ|λ .
+
+sup
+p timelike
+from y to B
+
+p
+
+where the supremum is taken over all curves going from
+A to y and from y to B, respectively. By assumption,
+ψ− (y) + ψ+ ≤ 1 ,
+
+(B5)
+
+and
+lim ψ− (y) = 0,
+
+lim ψ+ (y) = 0 .
+
+y→A
+
+y→B
+
+(B6)
+
+Let us now calculate the gradient of ψ− . Provided that
+the integrand is a differentiable function of ẋ for timelike, future-directed curves, the Hamilton–Jacobi formula5 can be applied [32]. Although the optimal thread
+may be lightlike at some points, these issues can be resolved by extending the domain to the entire tangent
+space and constraining the integrand to be −∞ whenever the velocity −ẋ lies outside the future light cone.
+
+Z
+| − ẋ|λ −ẋ ∈ j+
+dt
+,
+ψ− (y) =
+sup
+−∞
+otherwise
+q timelike
+q
+from A to y
+
+
+
+Z
+ψ+ (y) =
+
+dt
+
+sup
+q timelike
+from y to B
+
+q
+
+| − ẋ|λ −ẋ ∈ j+
+,
+−∞
+otherwise
+
+where j+ denotes the set of timelike and future-directed
+covectors. When −ẋ is timelike (which is the case of
+interest for us), we find that π±µ = ∂ẋµ (| − ẋ|λ) =
+−λẋµ /| − ẋ|. Therefore,
+|dψ± |2 =
+
+λ2 ẋµ ẋµ
+≥ λ2 .
+| − ẋ|2
+
+(B7)
+
+Thus |dψ± | ≥ λ. We choose the following combination
+of these two functions to define ψ(x):
+
+=
+ψ(x) =
+
+ψ− (x) − ψ+ (x)
+,
+2(ψ− (x) + ψ+ (x))
+
+(B8)
+
+(B3)
+
+p
+5 Hamilton–Jacobi formula asserts that the variation of the on-
+
+In other words,
+
+R
+
+dsλ ≤ 1, leading to (17).
+p
+
+shell action with respect to changes in the final position is given
+by the canonical momentum at that point.
+
+18
+whose exterior derivative is
+dψ =
+
+ψ−
+ψ+
+dψ− +
+(−dψ+ ) .
+2
+(ψ− + ψ+ )
+(ψ− + ψ+ )2
+
+(B9)
+
+Since ψ− increases along a timelike curve, dψ− will be
+future directed, while, as ψ+ decreases along it, dψ+ must
+be past directed. Taking into account the reverse triangle
+inequality [85], we find
+ψ+
+ψ−
+|dψ− | +
+|dψ+ |
+(ψ− + ψ+ )2
+(ψ− + ψ+ )2
+1
+≥
+λ ≥ λ.
+(ψ− + ψ+ )
+
+|dψ| ≥
+
+(B10)
+
+In the second inequality we used that |dψ± | ≥ λ, and in
+the last one that ψ− +ψ+ ≤ 1. Therefore, we have shown
+that (17) implies (16).
+
+Proof. The proof of this theorem closely follows that of
+the previous one. We begin by assuming that condition
+(32) holds. For any thread pB ∈ PB , one has
+Z
+Z
+Z
+dy µ ν
+dψ
+∂D2+
+1/2 = ψ|C =
+dψ =
+=
+∂ ψgµν
+ds
+ds
+ds
+ds
+p2
+p2
+p2
+Z
+Z
+dy µ
+|dψ| ≥
+dsλ .
+≥
+ds
+ds
+p2
+p2
+(B11)
+R
+A similar calculation shows that p1 dsλ ≤ 3/2, ∀p1 ∈ P1 .
+To show the converse, we define the functions
+Z
+ψ− (y) :=
+sup
+dt| − ẋ|λ ,
+p timelike
+from C to y
+
+p
+
+Z
+ψ1 (y) :=
+
+dt| − ẋ|λ ,
+
+sup
+p1 ∈P1
+from y to ∂D1+
+
+(B12)
+
+p
+
+Z
+Theorem 2. Let M be a Lorentzian manifold and σ(A)
+a boundary Cauchy slice divided into two complementary regions, σ1 (A) and σ2 (A). Let D1 (A) and D2 (A)
+denote the domains of dependence of any bulk Cauchy
+slices anchored to σ1 (A) ∪ γ and σ2 (A) ∪ γ, respectively,
+where γ is the HRT surface associated with σ1 (A) and
+σ2 (A). Define M− as the union of D1 (A), D2 (A) and
+J − (D1 (A)∪D2 (A)). Let ∂D1+ represent the future boundary of D1 (A), and ∂D2+ that of D2 (A), and denote the intersection of the boundary and the causal past of σA ∪ σB
+by C. Finally, let P1 be the set of all threads crossing D1 (A) and P2 the set of all threads passing through
+D2 (A). The following two statements are equivalent:
+∃ψ : M− → [−1/4, 5/4] s.t. ψ|C = −1/4 ,
+ψ|∂D+ = 5/4, ψ|∂D+ = 1/4 ,
+1
+
+2
+
+(32)
+
+|dψ| ≥ λ, dψ timelike & FD ,
+
+ψ2 (y) :=
+
+dt| − ẋ|λ .
+
+sup
+p2 ∈P2
+from y to ∂D2+
+
+p
+
+The first function ψ− (y) is well defined for the whole
+region M− , in contrast to ψ1 and ψ2 , whose domains are
+J − (D1 (A)) and J + (D2 (A)), respectively. From (33), it
+follows that
+ψ− (y) + ψ1 (y) ≤ 3/2,
+
+∀y ∈ J − (D1 (A)) ,
+
+ψ− (y) + ψ2 (y) ≤ 1/2,
+
+∀y ∈ J − (D2 (A)) ,
+
+(B13)
+
+and limy→C ψ− (y) = 0, limy→D1,2 ψ1,2 (y) = 0. Again, to
+apply the Hamilton–Jacobi formula, we enlarge the domain of these functions to allow the existence of lightlike
+threads.
+
+Z
+| − ẋ|λ −ẋ ∈ j+
+dt
+,
+ψ− (y) =
+sup
+−∞
+otherwise
+q timelike
+q
+from C to y
+
+and
+ψ1,2 (y) =
+
+dsλ ≤ 3/2 ,
+p
+
+Z 1
+∀p2 ∈ P2 ,
+
+
+
+Z
+
+Z
+∀p1 ∈ P1 ,
+
+(33)
+
+sup
+p1,2 ∈P1,2
++
+from y to ∂D1,2
+
+dt
+q
+
+| − ẋ|λ −ẋ ∈ j+
+.
+−∞
+otherwise
+
+dsλ ≤ 1/2 ,
+p2
+
+It is immediate to check that |dψ− | and |dψ1,2 | are
+greater than λ, so one can define the function ψ as follows
+
+where s is the proper distance along p.
+
+ψ(y) =
+
+ ψ −ψ
+−
+2
+
+
+ 4(ψ− +ψ2 )
+
+∀y ∈ J − (D2 (A))\J − (D1 (A))
+
+5ψ− −ψ1
+∀y ∈ J − (D1 (A))\J − (D2 (A)) .
+4(ψ−
++ψ1 )
+
+
+
+ min ψ− −ψ2 , 5ψ− −ψ1
+otherwise
+4(ψ− +ψ2 ) 4(ψ− +ψ1 )
+
+This function is continuous and satisfies all the require-
+
+ments in (32).
+
+(B14)
+
+19
+
+[1] S. Ryu and T. Takayanagi, Phys. Rev. Lett. 96, 181602
+(2006), arXiv:hep-th/0603001.
+[2] S. Ryu and T. Takayanagi, JHEP 08, 045, arXiv:hepth/0605073.
+[3] G. Penington, JHEP 09, 002, arXiv:1905.08255 [hep-th].
+[4] H. Z. Chen, R. C. Myers, D. Neuenfeld, I. A. Reyes, and
+J. Sandor, JHEP 12, 025, arXiv:2010.00018 [hep-th].
+[5] K. Ghosh and C. Krishnan, JHEP 08, 119,
+arXiv:2103.17253 [hep-th].
+[6] A. Almheiri, R. Mahajan, J. Maldacena, and Y. Zhao,
+JHEP 03, 149, arXiv:1908.10996 [hep-th].
+[7] B. Czech, J. L. Karczmarek, F. Nogueira, and
+M. Van Raamsdonk, Class. Quant. Grav. 29, 155009
+(2012), arXiv:1204.1330 [hep-th].
+[8] X. Dong, D. Harlow, and A. C. Wall, Phys. Rev. Lett.
+117, 021601 (2016), arXiv:1601.05416 [hep-th].
+[9] B. Czech, L. Lamprou, S. McCandlish, B. Mosk, and
+J. Sully, JHEP 07, 129, arXiv:1604.03110 [hep-th].
+[10] R. Espı́ndola, A. Guijosa, and J. F. Pedraza, Eur. Phys.
+J. C 78, 646 (2018), arXiv:1804.05855 [hep-th].
+[11] N. Bao, C. Cao, S. Fischetti, and C. Keeler, Class. Quant.
+Grav. 36, 185002 (2019), arXiv:1904.04834 [hep-th].
+[12] A. Guijosa, Y. D. Olivas, and J. F. Pedraza, JHEP 08,
+118, arXiv:2201.01786 [hep-th].
+[13] S. Leutheusser and H. Liu, Phys. Rev. D 111, 066021
+(2025), arXiv:2212.13266 [hep-th].
+[14] M. Van Raamsdonk, Gen. Rel. Grav. 42, 2323 (2010),
+arXiv:1005.3035 [hep-th].
+[15] B. Swingle, Phys. Rev. D 86, 065007 (2012),
+arXiv:0905.1317 [cond-mat.str-el].
+[16] N. Lashkari, M. B. McDermott, and M. Van Raamsdonk,
+JHEP 04, 195, arXiv:1308.3716 [hep-th].
+[17] T. Faulkner, M. Guica, T. Hartman, R. C. Myers, and
+M. Van Raamsdonk, JHEP 03, 051, arXiv:1312.7856
+[hep-th].
+[18] L. Susskind, Fortsch. Phys. 64, 49 (2016),
+arXiv:1411.0690 [hep-th].
+[19] L. Susskind, Fortsch. Phys. 64, 24 (2016), [Addendum:
+Fortsch.Phys. 64, 44–48 (2016)], arXiv:1403.5695 [hepth].
+[20] J. F. Pedraza, A. Russo, A. Svesko, and Z. Weller-Davies,
+Phys. Rev. Lett. 127, 271602 (2021), arXiv:2105.12735
+[hep-th].
+[21] J. F. Pedraza, A. Russo, A. Svesko, and Z. Weller-Davies,
+JHEP 02, 093, arXiv:2106.12585 [hep-th].
+[22] S. Chapman, M. P. Heller, H. Marrochio, and
+F. Pastawski, Phys. Rev. Lett. 120, 121602 (2018),
+arXiv:1707.08582 [hep-th].
+[23] R. Jefferson and R. C. Myers, JHEP 10, 107,
+arXiv:1707.08570 [hep-th].
+[24] D. Stanford and L. Susskind, Phys. Rev. D 90, 126007
+(2014), arXiv:1406.2678 [hep-th].
+[25] A. R. Brown, D. A. Roberts, L. Susskind, B. Swingle,
+and Y. Zhao, Phys. Rev. Lett. 116, 191301 (2016),
+arXiv:1509.07876 [hep-th].
+[26] J. Couch, W. Fischler, and P. H. Nguyen, JHEP 03, 119,
+arXiv:1610.02038 [hep-th].
+[27] A. Belin, R. C. Myers, S.-M. Ruan, G. Sárosi, and
+A. J. Speranza, Phys. Rev. Lett. 128, 081602 (2022),
+arXiv:2111.02429 [hep-th].
+
+[28] J. F. Pedraza, A. Russo, A. Svesko, and Z. WellerDavies, Int. J. Mod. Phys. D 31, 2242010 (2022),
+arXiv:2205.05705 [hep-th].
+[29] R. Carrasco, J. F. Pedraza, A. Svesko, and Z. WellerDavies, JHEP 09, 167, arXiv:2306.08503 [hep-th].
+[30] M. Headrick and V. E. Hubeny, Class. Quant. Grav. 35,
+10 (2018), arXiv:1710.09516 [hep-th].
+[31] M. Freedman and M. Headrick, Commun. Math. Phys.
+352, 407 (2017), arXiv:1604.00354 [hep-th].
+[32] M. Headrick and V. E. Hubeny, JHEP 07, 180,
+arXiv:2208.10507 [hep-th].
+[33] P. Hayden, M. Headrick, and A. Maloney, Phys. Rev. D
+87, 046003 (2013), arXiv:1107.2940 [hep-th].
+[34] N. Bao, S. Nezami, H. Ooguri, B. Stoica, J. Sully, and
+M. Walter, JHEP 09, 130, arXiv:1505.07839 [hep-th].
+[35] S. X. Cui, P. Hayden, T. He, M. Headrick, B. Stoica,
+and M. Walter, Commun. Math. Phys. 376, 609 (2019),
+arXiv:1808.05234 [hep-th].
+[36] V. E. Hubeny, JHEP 12, 068, arXiv:1808.05313 [hep-th].
+[37] C. A. Agón, J. De Boer, and J. F. Pedraza, JHEP 05,
+075, arXiv:1811.08879 [hep-th].
+[38] J. Harper, JHEP 09, 118, arXiv:2107.10276 [hep-th].
+[39] J. Harper, JHEP 09, 239, arXiv:2205.01140 [hep-th].
+[40] C. Akers and P. Rath, JHEP 04, 208, arXiv:1911.07852
+[hep-th].
+[41] V. Balasubramanian, M. J. Kang, C. Murdia, and S. F.
+Ross, JHEP 06, 068, arXiv:2411.03422 [hep-th].
+[42] N. Iizuka and M. Nishida, Phys. Rev. D 112, 026011
+(2025), arXiv:2502.07995 [hep-th].
+[43] N. Iizuka, S. Lin, and M. Nishida,
+(2025),
+arXiv:2504.01625 [hep-th].
+[44] N. Iizuka, S. Lin, and M. Nishida, Phys. Rev. D 112,
+066014 (2025), arXiv:2504.16589 [hep-th].
+[45] C. A. Agón, M. Headrick, and B. Swingle, JHEP 02, 145,
+arXiv:1804.01561 [hep-th].
+[46] E. Cáceres, J. Couch, S. Eccles, and W. Fischler, Phys.
+Rev. D 99, 086016 (2019), arXiv:1811.10650 [hep-th].
+[47] E. Caceres, S. Chapman, J. D. Couch, J. P. Hernandez, R. C. Myers, and S.-M. Ruan, JHEP 03, 012,
+arXiv:1909.10557 [hep-th].
+[48] A. Belin, R. C. Myers, S.-M. Ruan, G. Sárosi, and A. J.
+Speranza, JHEP 01, 154, arXiv:2210.09647 [hep-th].
+[49] R. C. Myers and S.-M. Ruan (2024) arXiv:2403.17475
+[hep-th].
+[50] E. Cáceres, R. Carrasco, V. Patil, J. F. Pedraza, and
+A. Svesko, JHEP 10, 218, arXiv:2503.20943 [hep-th].
+[51] A. May, G. Penington, and J. Sorce, JHEP 08, 132,
+arXiv:1912.05649 [hep-th].
+[52] A. May, Quantum 6, 864 (2022), arXiv:2204.00908
+[quant-ph].
+[53] A. May, J. Sorce, and B. Yoshida, JHEP 11, 153,
+arXiv:2210.00018 [hep-th].
+[54] K. Dolev and S. Cree, (2022), arXiv:2210.13500 [quantph].
+[55] A. May and M. Xu, JHEP 02, 079, arXiv:2304.11184
+[hep-th].
+[56] J. Harper, M. Headrick, and A. Rolph, JHEP 11, 168,
+arXiv:1807.04294 [hep-th].
+[57] J. Harper and M. Headrick, JHEP 08, 101,
+arXiv:1906.05970 [hep-th].
+
+20
+[58] D.-H. Du, C.-B. Chen, and F.-W. Shu, JHEP 08, 140,
+arXiv:1904.06871 [hep-th].
+[59] N. Bao, A. Chatwin-Davies, J. Pollack, and G. N. Remmen, JHEP 07, 152, arXiv:1905.04317 [hep-th].
+[60] C. A. Agón and M. Mezei, JHEP 11, 167,
+arXiv:1910.12909 [hep-th].
+[61] C. A. Agón, E. Cáceres, and J. F. Pedraza, JHEP 01,
+193, arXiv:2007.07907 [hep-th].
+[62] Y.-Y. Lin, J.-R. Sun, and Y. Sun, Phys. Rev. D 103,
+126002 (2021), arXiv:2012.05737 [hep-th].
+[63] M. Headrick, J. Held, and J. Herman, Commun. Math.
+Phys. 396, 265 (2022), arXiv:2008.03197 [hep-th].
+[64] C. A. Agón and J. F. Pedraza, JHEP 02, 180,
+arXiv:2105.08063 [hep-th].
+[65] A. Rolph, SciPost Phys. 14, 097 (2023), arXiv:2105.08072
+[hep-th].
+[66] M. Mintchev and E. Tonni, JHEP 12, 149,
+arXiv:2209.03242 [hep-th].
+[67] U. Gürsoy, J. F. Pedraza, and G. P. Planas, JHEP 09,
+091, arXiv:2303.05529 [hep-th].
+[68] S. Caggioli, F. Gentile, D. Seminara, and E. Tonni, JHEP
+07, 088, arXiv:2403.03930 [hep-th].
+[69] D.-H. Du and J.-R. Sun, JHEP 08, 016, arXiv:2406.04092
+[hep-th].
+[70] M. Headrick, S. R. Kasireddy, and A. Rolph, (2025),
+arXiv:2510.22601 [hep-th].
+[71] H. Wu and S. Ying, (2025), arXiv:2511.16586 [hep-th].
+[72] P. K. Das and M. Mahato, (2025), arXiv:2508.18941
+[hep-th].
+
+[73] K. B. Rao and M. B. Rao, Theory of charges: a study of
+finitely additive measures (Academic Press, 1983).
+[74] S. Boyd, S. P. Boyd, and L. Vandenberghe, Convex optimization (Cambridge University Press, 2004).
+[75] M. Slater, Lagrange multipliers revisited, in Traces
+and Emergence of Nonlinear Programming, edited by
+G. Giorgi and T. H. Kjeldsen (Springer Basel, Basel,
+2014) pp. 293–306.
+[76] E. Caceres, R. Carrasco, and V. Patil, JHEP 04, 010,
+arXiv:2312.10606 [hep-th].
+[77] J.-H. Treude and J. D. E. Grant, Annals of Global Analysis and Geometry 43, 233 (2013).
+[78] A. Almheiri, X. Dong, and D. Harlow, JHEP 04, 163,
+arXiv:1411.7041 [hep-th].
+[79] V. Balasubramanian, M. DeCross, A. Kar, and O. Parrikar, JHEP 02, 069, arXiv:1811.04085 [hep-th].
+[80] F. Speelman, Leibniz Int. Proc. Inf. 61, 9:1 (2016),
+arXiv:1511.02839 [quant-ph].
+[81] K. Dolev and S. Cree, (2022), arXiv:2203.10106 [quantph].
+[82] R. Allerstorfer, H. Buhrman, A. May, F. Speelman, and
+P. V. Lunel, Quantum 8, 1387 (2024), arXiv:2306.16462
+[quant-ph].
+[83] V. R. Asadi, E. Culf, and A. May, Leibniz Int. Proc. Inf.
+325, 11:1 (2025), arXiv:2402.18647 [quant-ph].
+[84] A. Bluhm, S. Höfer, A. May, M. Stasiuk, P. V. Lunel,
+and H. Yuen, (2025), arXiv:2505.23893 [quant-ph].
+[85] E. Minguzzi, Living Reviews in Relativity 22, 1 (2019).
+
+

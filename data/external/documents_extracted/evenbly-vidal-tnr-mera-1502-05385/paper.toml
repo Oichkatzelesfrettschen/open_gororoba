@@ -1,0 +1,2012 @@
+equations = []
+tables = []
+full_text = """
+arXiv:1502.05385v2 [cond-mat.str-el] 12 Sep 2015\r
+Tensor network renormalization yields\r
+the multi-scale entanglement renormalization ansatz\r
+G. Evenbly1 and G. Vidal2\r
+1Department of Physics and Astronomy, University of California, Irvine, CA 92697-4575 USA∗\r
+2Perimeter Institute for Theoretical Physics, Waterloo, Ontario N2L 2Y5, Canada†\r
+(Dated: September 15, 2015)\r
+We show how to build a multi-scale entanglement renormalization ansatz (MERA) representa\u0002tion of the ground state of a many-body Hamiltonian H by applying the recently proposed tensor\r
+network renormalization (TNR) [G. Evenbly and G. Vidal, arXiv:1412.0732] to the Euclidean time\r
+evolution operator e\r
+−βH for infinite β. This approach bypasses the costly energy minimization of\r
+previous MERA algorithms and, when applied to finite inverse temperature β, produces a MERA\r
+representation of a thermal Gibbs state. Our construction endows TNR with a renormalization\r
+group flow in the space of wave-functions and Hamiltonians (and not merely in the more abstract\r
+space of tensors) and extends the MERA formalism to classical statistical systems.\r
+PACS numbers: 05.30.-d, 02.70.-c, 03.67.Mn, 75.10.Jm\r
+Consider a strongly interacting quantum many-body\r
+system in D spatial dimensions described by a micro\u0002scopic Hamiltonian H. Understanding its collective, low\r
+energy behavior is a main goal in condensed matter and\r
+high energy physics, one that poses a formidable theoret\u0002ical challenge. To tackle this problem, plenty of methods\r
+have been proposed based on the renormalization group\r
+(RG) [1–3], that is, on studying how the physics depends\r
+on the scale of observation. Weakly interacting systems\r
+can be addressed perturbatively using momentum space\r
+RG [2]. Instead, strongly interacting systems often re\u0002quire non-perturbative, real space RG methods, as pio\u0002neered by Kadanoff [1] and Wilson [2].\r
+Improving on Kadanoff and Wilson’s proposals,\r
+White’s density matrix renormalization group (DMRG)\r
+for quantum spin chains [4] established how to systemati\u0002cally preserve the ground state wave-function during real\u0002space coarse-graining – namely, by preserving the sup\u0002port of its reduced density matrix. Similarly, Levin and\r
+Nave’s tensor renormalization group (TRG) [5] taught\r
+us how to coarse-grain Euclidean path integrals of one\u0002dimensional quantum systems (also partition functions\r
+of two-dimensional classical systems). Both DMRG and\r
+TRG are very successful, versatile approaches. However,\r
+they depart significantly from the spirit of the RG, in\r
+that they produce a coarse-grained, effective description\r
+of the system that still retains some irrelevant micro\u0002scopic details. As a result, these methods (i) fail to define\r
+a proper RG flow, one with e.g. the correct structure of\r
+fixed points; and (ii) struggle to deal with critical systems\r
+or systems in D ≥ 2 dimensions, where the accumulation\r
+of irrelevant microscopic degrees of freedom is more sig\u0002nificant and harmful.\r
+These difficulties have been solved with two closely re\u0002lated proposals. First, entanglement renormalization was\r
+put forward to address the above two problems in the\r
+context of ground state wave-functions [6, 7]. By intro\u0002ducing disentanglers, which remove short-range entangle\u0002ment, a proper RG flow is generated, as well as an RG\r
+transformation that is computationally sustainable even\r
+at criticality. In addition, entanglement renormalization\r
+leads to an efficient tensor network description of ground\r
+states for critical systems, the multi-scale entanglement\r
+renormalization ansatz (MERA) [7], of interest not only\r
+as a many-body variational state [7–14] but also as a lat\u0002tice realization of the holographic principle [15, 16].\r
+Tensor network renormalization (TNR), on the other\r
+hand, was more recently proposed to tackle the same\r
+problems in the context of Euclidean path integrals (and\r
+classical statistical systems) [17]. The Euclidean path\r
+integral Z ≡ tr e\r
+−βH\u0001\r
+is represented by a tensor net\u0002work, consisting of copies of a single tensor A [18], which\r
+extends both in space and Euclidean time directions.\r
+Through local manipulation of this tensor network, TNR\r
+produces a sequence of tensors,\r
+A → A\r
+′ → A′′ → · · · → Afp, (1)\r
+corresponding to increasing length scales, which flow to\u0002wards some infrared fixed-point tensor Afp. The later\r
+retains only the universal features of the phase or phase\r
+transition [17]. Once again, the key of the approach is\r
+the removal of short-range correlations by disentanglers.\r
+In this Letter we establish a close connection between\r
+the two approaches. We show that, when applied to the\r
+Euclidean path integral restricted to the upper half plane,\r
+TNR generates a MERA for the ground state of Hamilto\u0002nian H. More generally, TNR also produces a MERA for\r
+the thermal Gibbs state ρβ ≡ e\r
+−βH/Z at finite inverse\r
+temperature β, as well as for the low energy eigenstates\r
+of H on a finite periodic chain. Our result provides an\r
+alternative route to the MERA, one that bypasses the\r
+costly energy minimization of previous algorithms [8, 9]\r
+and has several other significant advantages, both con\u0002ceptual and computational, that we also discuss. Among\r
+those, we emphasize that (i) we obtain the first correct\r
+MERA representation of the thermal state ρβ [19], to-
+
+2\r
+gether with an algorithm to find it; (ii) the connection\r
+implies that TNR produces an RG flow in the space of\r
+wave-functions and Hamiltonians, and not just in the ab\u0002stract space of tensors, Eq. 1; (iii) the MERA formalism\r
+can be applied now also to classical statistical systems.\r
+For simplicity, we consider a translation invariant system\r
+in D = 1 dimensions, although the key results generalize\r
+to inhomogeneous systems in dimension D ≥ 1.\r
+Tensor network for Euclidean time evolution.— Given\r
+a translation invariant Hamiltonian H in one dimen\u0002sion, we use a standard procedure [20] to produce a\r
+two-dimensional tensor network representation of the Eu\u0002clidean time operator e\r
+−βH or Euclidean path integral\r
+tr e\r
+−βH\u0001\r
+. This tensor network is made of copies of a\r
+single tensor A. If both the system size L and the in\u0002verse temperature β are infinite, then the network spans\r
+the entire (x, τ)-plane, where x and τ label space and Eu\u0002clidean time, respectively. Here we will consider tensor\r
+networks for e\r
+−βH on three different geometries, obtained\r
+by introducing a horizontal cut at τ = 0 and by choosing\r
+L and β to be either finite or infinite [21].\r
+TNR yields MERA.— Let us start with the upper half\r
+plane, Fig. 1, which corresponds to the ground state |Ψi\r
+of H on an infinite lattice. The network has an open\r
+boundary at τ = 0, with an infinite row of open indices,\r
+one for each site of the one-dimensional lattice on which\r
+H acts. We first apply TNR everywhere on the upper half\r
+plane except near τ = 0, where we keep the open indices\r
+of the tensor network untouched. TNR acts through an\r
+intrincate sequence of local replacements [17]. Here we\r
+skip the technical details [22] and focus instead on de\u0002scribing the final result: a coarse-grained tensor network\r
+with effective tensor A′for most of the upper half plane,\r
+in accordance with Eq. 1, together with a double row\r
+of special tensors, so-called disentanglers and isometries,\r
+which correspond to one layer of the MERA [23]. These\r
+tensors connect the microscopic degrees of freedom at\r
+length scale s = 0 (represented by the original open in\u0002dices of the network) with the coarse-grained degrees of\r
+freedom at length scale s = 1 (represented by the lower\r
+indices of the lowest row of tensors A′). We can now re\u0002peat the process on tensors A′\r
+, to obtain coarse-grained\r
+tensors A′′ and a second row of disentanglers and isome\u0002tries, i.e. a second layer of the MERA, connecting scales\r
+s = 1 and 2. Iteration then produces a full MERA ap\u0002proximation for the ground state |Ψi of H, encompassing\r
+all length scales s = 0, 1, 2, · · · .\r
+Thermal MERA.— Let us now consider a horizontal\r
+strip of finite width β, Fig. 2(a), which is proportional\r
+to the thermal state ρβ ≡ e\r
+−βH/Z. This time we have\r
+two boundaries, each with an infinite row of open in\u0002dices: the incoming and outgoing indices of the Euclidean\r
+time evolution operator e\r
+−βH. As before, we use TNR\r
+to coarse-grain the tensor network, except near its open\r
+boundaries, where we do not touch the open indices. Fig.\r
+2(b) shows the net result: a coarse-grained tensor net\u0002FIG. 1. (a) Tensor network the ground state |Ψi of H on an\r
+infinite lattice. It is made of copies of tensor A and restricted\r
+to the upper half plane (x, τ +), with a row of open indices\r
+at τ = 0. (b) By coarse-graining the tensor network while\r
+leaving the open indices untouched, we obtain a new tensor\r
+network with tensors A\r
+′\r
+together with one row of disenta\u0002glers and isometries. (c) Further coarse-graining of the tensor\r
+network produces new coarse-grained tensors A\r
+′′ and a sec\u0002ond layer of disentanglers and isometries. (d) By iteration we\r
+obtain a full MERA approximation for state |Ψi.\r
+work, with effective tensor A′, together with a double\r
+row of disentanglers and isometries both for the incoming\r
+and outgoing indices. After O(log2(β)) iterations of the\r
+coarse-graining procedure, we obtain a MERA represen\u0002tation of the thermal state, Fig. 2(c) made of O(log2\r
+(β))\r
+double layers of disentanglers and isometries for both the\r
+incoming and outgoing indices, together with a central\r
+row of tensors. Disentanglers and isometries are isomet\u0002ric tensors and thus do not affect the spectrum of eigen\u0002values of the thermal MERA, which therefore depends\r
+exclusively on the central row of tensors [24].\r
+The thermal MERA obtained from TNR resembles the\r
+form first suggested by Swingle in the context of holog\u0002raphy [15], where a 1+1 conformal field theory is dual\r
+to a gravity theory in 3 space-time dimensions. In this\r
+context, the thermal MERA is interpreted as describing a\r
+space-like cross-section of a black hole space-time geome\u0002try. A significant difference in our construction is the cen\u0002tral row of tensors, which is absent in Swingle’s proposal\r
+[15] and provides ρβ with the correct thermal spectrum\r
+of eigenvalues {e\r
+−βEi /Z}, where {Ei} are the eigenval\u0002ues of H. This central row of tensors can be thought of\r
+as representing the Einstein-Rosen bridge connecting the\r
+two asymptotic AdS regions [25], which seems to provide\r
+a manifestation of the ER=EPR conjecture [26].\r
+Periodic chain of size L.— In our third construction,\r
+we use TNR to coarse-grain a tensor network for the\r
+ground state of Hamiltonian H on a periodic chain of size\r
+L, see Fig. 3(a). The network consists of a semi-infinite,
+
+3\r
+FIG. 2. (a) Tensor network on an infinite strip of finite\r
+width β, with two rows of open indices. It is proportional to\r
+the thermal state e\r
+−βH/Z. (b) By coarse-graining the tensor\r
+network while leaving the open indices untouched, we obtain\r
+a new tensor network with tensors A\r
+′\r
+together with an up\u0002per and lower row of disentaglers and isometries. (c) Futher\r
+coarse-graining produces a thermal MERA.\r
+vertical cylinder of width L, with a row of open indices.\r
+After about O(log2(L)) coarse-graining steps the size of\r
+the system has effectively become O(1), see Fig. 3(c), and\r
+we have O(log2(L)) layers of the MERA connected to a\r
+semi-infinite cylinder of O(1) width. This semi-infinite\r
+cylinder can be understood as the infinite product of a\r
+transfer matrix T . The dominant eigenvector of T leads\r
+to the ground state of H, whereas subdominant eigen\u0002vectors describe low energy eigenstates.\r
+To illustrate the computational possibilities offered\r
+by the new algorithm, we consider the one-dimensional\r
+quantum Ising model with transverse magnetic field both\r
+at finite β for an infinite chain, and at zero temperature\r
+for a finite periodic chain of length L [27]. The calcu\u0002lation required less than 5 minutes on a 2.5Ghz dual\r
+core laptop with 4Gb of memory (MERA bond dimension\r
+χ = 10). First, for L = ∞, Fig. 4(a) shows the expecta\u0002tion value of the energy density Ethermal ≡ tr(ρβH)/L as\r
+a function of the inverse temperature β, while Fig. 4(b)\r
+displays, at critical magnetic field, the crossover between\r
+polynomial decay of correlations at short distances (due\r
+to quantum fluctuations at criticality) and their exponen\u0002tial decay at longer distances (due to finite temperature\r
+statistical fluctuations). Then, for β = ∞, Figs. 4(c)-\r
+(d) show, respectively, the low energy spectra of H as a\r
+function of the inverse system size 1/L, and the energy\r
+and momentum of low energy states for L = 1024. In all\r
+cases, an accurate approximation to the exact result is\r
+obtained.\r
+Discussion.— Since its proposal a decade ago [7], the\r
+FIG. 3. (a) Tensor network on a semi-infinite vertical cylin\u0002der of finite width L and with a row of open indices, propor\u0002tional to the ground state of H on a periodic chain made of L\r
+sites. (b) Result of coarse-graining the initial tensor network\r
+while not touching its open indices. (c) MERA connected to\r
+a semi-infinite vertical cylinder of O(1) width. Inset: transfer\r
+matrix T of this cylinder. The eigenvectors of T with largest\r
+eigenvalues correspond to the low energy eigenstates of H. (d)\r
+MERA for the ground state/low energy excited states of H,\r
+where the top tensor is an eigenvector of the transfer matrix\r
+T .\r
+MERA has been regarded as a variational class of states.\r
+Accordingly, one attempts to approximate the ground\r
+state |Ψi of H by optimizing the variational parame\u0002ters contained in the disentanglers and isometries of the\r
+MERA, for instance by iteratively minimizing the ex\u0002pectation value of H [8, 9]. Such energy optimization is\r
+costly (it may require thousands of sweeps over scale) and\r
+prone to becoming trapped in local minima. Moreover,\r
+there is no guarantee that the end result is an approx\u0002imation to the ground state |Ψi – one just has a wave\u0002function with, hopefully, reasonably low energy. Here\r
+we have argued that, instead, an approximate MERA\r
+representation of the ground state |Ψi can be obtained\r
+with TNR by coarse-graining an initial, quasi-exact ten\u0002sor network representation of |Ψi [29]. This only requires\r
+one sweep over scale, and it is therefore computationally\r
+much more efficient [30]. In addition, at each coarse\u0002graining step TNR introduces a truncation error [17] that\r
+can be explicitly computed. If this truncation error is\r
+sufficiently small, then one can certify that the resulting\r
+MERA approximates the true ground state |Ψi within\r
+that small error [31].\r
+Importantly, TNR acts locally: the coarse-graining of\r
+the tensor network at point (x, τ) only depends on the\r
+tensors in an immediate neighborhood [17]. Let us men\u0002tion three consequences for the resulting MERA. (i) Since
+
+4\r
+FIG. 4. (a) Thermal energy per site (above the ground\r
+state energy) as a function of the inverse temperature β, for\r
+the quantum Ising model H =\r
+P\r
+i XiXi+1 + λ\r
+P\r
+i Zi in an\r
+infinite chain, for different values of magnetic field λ. Con\u0002tinuous lines correspond to the exact solution. (b) Connected\r
+two-point correlators at the critical magnetic field λ = 1, as a\r
+function of the distance d, for several values of β. Continuous\r
+lines correspond again to the exact solution. (c) Low energy\r
+eigenvalues of H for critical λ = 1 as a function of 1/L. (d)\r
+Low energy spectrum of H for critical λ = 1 and correspond\u0002ing momentum (in unites of 2π/L) for L = 1024 sites, which\r
+appear organized according to the conformal towers of the\r
+identity I (red), spin σ (green), and energy density ǫ (blue)\r
+primary fields of the Ising CFT, [28]. Discontinuous lines\r
+in (c) and (d) correspond to the finite-size CFT prediction,\r
+which ignores corrections of order L\r
+−2\r
+.\r
+TNR is not aware of the system size L or inverse temper\u0002ature β, it produces the same tensors A, A′\r
+, A′′, · · · and\r
+disentanglers and isometries for the ground state |Ψi in\r
+the thermodynamic limit (L = β = ∞) as it does for the\r
+states ρβ and |Ψ(L)i at finite β or L. Thus, a single TNR\r
+calculation produces an accurate MERA approximation\r
+for all these states. (ii) In the absence of translation in\u0002variance, where a different tensor Ai may be required for\r
+each site i of the lattice, the coarse-graining of different\r
+parts of the system can be conducted in parallel, leading\r
+to a massive reduction in computational time. (iii) At a\r
+conceptual level, locality of TNR implies the validity of\r
+the theory of minimal updates [33]. This theory, which\r
+asserts that only certain parts of the MERA need to be\r
+changed in order to account for a localized change in the\r
+Hamiltonian H [33], is particularly useful in the study of\r
+systems with boundaries, defects, or interfaces [9, 14].\r
+In Summary, in this Letter we have shown that, when\r
+applied to the Euclidean path integral restricted to sev\u0002eral geometries, TNR [17] produces a MERA for the\r
+ground state and thermal states of a quantum Hamil\u0002tonian, and have explored a number of consequences of\r
+this result. We conclude by briefly mentioning two more\r
+implications. First, thanks to this connection, TNR in\u0002herits from the MERA its ability to define an RG flow\r
+in the space of wave-functions and Hamiltonians [6–8].\r
+Notice that extracting the emergent physics from these\r
+RG flows should be easier (both conceptually and com\u0002putationally) than extracting it from the RG flow in the\r
+more abstract space of tensors, Eq. 1. Second, although\r
+we have focused on quantum systems, TNR can also be\r
+applied to statistical partition functions [17]. Therefore\r
+the present construction extends the MERA formalism\r
+(including strategies to extract universal critical proper\u0002ties [10–14]) to classical statistical systems.\r
+The authors thank Rob Myers for insightful comments.\r
+G. V. acknowledges support by the John Templeton\r
+Foundation and thanks the Australian Research Council\r
+Centre of Excellence for Engineered Quantum Systems.\r
+The authors also acknowledge support by the Simons\r
+Foundation (Many Electron Collaboration). Research at\r
+Perimeter Institute is supported by the Government of\r
+Canada through Industry Canada and by the Province\r
+of Ontario through the Ministry of Research and Innova\u0002tion.\r
+∗\r
+gevenbly@uci.edu\r
+†\r
+gvidal@perimeterinstitute.ca\r
+[1] L.P. Kadanoff, Physics (Long Island City, N.Y.) 2, 263\r
+(1966).\r
+[2] K.G. Wilson, Phys. Rev. B, 4, 3174 (1971). K.G. Wilson,\r
+Phys. Rev. B, 4, 3184 (1971). K.G. Wilson, Rev. Mod.\r
+Phys. 47, 773 (1975).\r
+[3] M.E. Fisher, Rev. Mod. Phys. 70, 653 (1998).\r
+[4] S.R. White, Phys. Rev. Lett. 69, 2863 (1992). S.R. White,\r
+Phys. Rev. B, 48, 10345 (1993).\r
+[5] M. Levin, C. P. Nave, Phys. Rev. Lett. 99, 120601 (2007)\r
+[6] G. Vidal, Phys. Rev. Lett. 99, 220405 (2007),\r
+arXiv:cond-mat/0512165.\r
+[7] G. Vidal, Phys. Rev. Lett., 101, 110501 (2008),\r
+arXiv:quant-ph/0610099.\r
+[8] G. Evenbly and G. Vidal, Phys. Rev. B, 79, 144108\r
+(2009).\r
+[9] G. Evenbly and G. Vidal, J Stat Phys (2014) 157:931-\r
+978.\r
+[10] V. Giovannetti, S. Montangero, and R. Fazio, Phys. Rev.\r
+Lett., 101, 180503 (2008).\r
+[11] R.N.C. Pfeifer, G. Evenbly, and G. Vidal, Phys. Rev. A,\r
+79, 040301(R) (2009).\r
+[12] G. Evenbly and G. Vidal, Quantum Criticality with\r
+the Multi-scale Entanglement Renormalization Ansatz,\r
+chapter 4 in the book Strongly Correlated Systems. Nu\u0002merical Methods, edited by A. Avella and F. Mancini\r
+(Springer Series in Solid-State Sciences, Vol. 176 2013),\r
+arXiv:1109.5334.\r
+[13] J. C. Bridgeman, A. O’Brien, S. D. Bartlett, A. C. Do-
+
+5\r
+herty, Phys. Rev. B 91, 165129 (2015), arXiv:1501.02817.\r
+[14] G. Evenbly, R. N. C. Pfeifer, V. Pico, S. Iblisdir, L.\r
+Tagliacozzo, I. P. McCulloch, G. Vidal, Phys. Rev. B\r
+82, 161107(R) (2010), arXiv:0912.1642 P. Silvi, V. Gio\u0002vannetti, P. Calabrese, G. E. Santoro, R. Fazio J. Stat.\r
+Mech. (2010) L03001, arXiv:0912.2893. Y.-L. Lo, Y.-D.\r
+Hsieh, C.-Y. Hou, P. Chen, Y.-J. Kao, Phys. Rev. B 90,\r
+235124 (2014), arXiv:1402.5229\r
+[15] B. Swingle, Phys. Rev. D 86, 065007 (2012),\r
+arXiv:0905.1317. H. Matsueda, M. Ishihara and\r
+Y. Hashizume, Phys. Rev. D 87, (2013) 066002,\r
+arXiv:1208.0206. T. Hartman and J. Maldacena, JHEP\r
+05(2013) 014. J. Molina-Vilaplana, J. Prior, Gen. Rela\u0002tiv. Gravit (2014)46:1823. A. Mollabashi, M. Nozaki, S.\r
+Ryu, T. Takayanagi, JHEP03(2014)098, arXiv:1311.6095\r
+[16] G. Evenbly, G. Vidal, J Stat Phys (2011) 145:891-\r
+918, arXiv:1106.1082. B. Swingle, Constructing holo\u0002graphic spacetimes using entanglement renormaliza\u0002tion, arXiv:1209.3304 J. Haegeman, T. J. Osborne,\r
+H. Verschelde, F. Verstraete, Phys. Rev. Lett. 110,\r
+100402 (2013), arXiv:1102.5524. F. Pastawski, B.\r
+Yoshida, D. Harlow, J. Preskill, JHEP 06 (2015) 149,\r
+arXiv:1503.06237. M. Miyaji, T. Takayanagi, Prog.\r
+Theor. Exp. Phys. (2015) 073B03, arXiv:1503.03542. X.-\r
+L. Qi, Exact holographic mapping and emergent space\u0002time geometry, arXiv:1309.6282 N. Bao, C. Cao, S. M.\r
+Carroll, A. Chatwin-Davies, N. Hunter-Jones, J. Pollack\r
+and G. N. Remmen, Phys. Rev. D 91, 125036 (2015),\r
+arXiv:1504.06632.\r
+[17] G. Evenbly, G. Vidal, pre-print arXiv:1412.0732\r
+[18] We assume translation invariance. For a system that is\r
+not invariant under translations, a different tensor Ai\r
+may be needed for each site i of the lattice.\r
+[19] Previous proposals for a thermal MERA discussed in\r
+Refs. [15] in the context of holography have a flat spec\u0002trum of eigenvalues and therefore do not reproduce the\r
+correct, finite temperature spectrum of ρβ.\r
+[20] For details, see Appendix A.\r
+[21] For details, see Appendix B.\r
+[22] For details, see Appendix C.\r
+[23] On the plane, the double row of disentanglers and isome\u0002tries will annihilate with a double row of conjugate disen\u0002tanglers and isometries corresponding to τ < 0. Instead,\r
+on the half upper plane, these tensors remain.\r
+[24] The normalization factor Z corresponds to the trace of\r
+the thermal MERA. Since the conjugate layers of disen\u0002tanglers and isometries do not change this trace, Z is also\r
+the trace of the central row of tensors A\r
+max, or an infinite\r
+power of some (transfer) matrix M obtained from tensor\r
+A\r
+max by contracting its vertical indices. A normalized\r
+thermal MERA is then obtained by replacing A\r
+max with\r
+A\r
+max/λ, where λ is the dominant eigenvalue of M.\r
+[25] J.M. Maldacena, JHEP 0304 (2003) 021.\r
+[26] J.M. Maldacena, L. Susskind, Cool horizons for entangled\r
+black holes, arXiv:1306.0533.\r
+[27] The numerical results for finite/infinite values of β and\r
+L were all actually extracted from a single calculation,\r
+where TNR was applied to an infinite system at zero\r
+temperature (β = L = ∞).\r
+[28] See e.g. Chapter 10 of M. Henkel, Conformal invariance\r
+and critical phenomena, Springer-Verlag (1999).\r
+[29] The initial tensor network representation of |Ψi is quasi\u0002exact, in that the Suzuki-Trotter decomposition used to\r
+produce it (Appendices A and B) introduces only small\r
+errors, which can be systematically reduced.\r
+[30] For details, see Appendix D.\r
+[31] We emphasize, however, that TNR is not committed to\r
+exclusively producing a MERA. For instance, if at some\r
+scale s the ground state approximately decomposes as\r
+the product of two ground states, then the corresponding\r
+tensor A\r
+(s) will approximately factorize as A\r
+(s)\r
+1 ⊗ A\r
+(s)\r
+2\r
+,\r
+and TNR will give rise instead to a branching MERA\r
+[32], which was proposed to describe e.g. highly entangled\r
+phases of matter in D ≥ 2 dimensions.\r
+[32] G. Evenbly, G. Vidal, Phys. Rev. Lett. 112, 220502\r
+(2014). G. Evenbly, G. Vidal, Phys. Rev. Lett. 112,\r
+240502 (2014).\r
+[33] G. Evenbly, G. Vidal, Phys. Rev. B 91, 205119 (2015),\r
+arXiv:1307.0831.\r
+[34] Suzuki, Phys. Lett. A 146, 6, (1990) 319-323; J. Math.\r
+Phys. 32, 2 (1991) 400-407.\r
+[35] A. T. Sornborger and E. D. Stewart, Phys.Rev. A60\r
+(1999) 156-1965\r
+[36] G. Evenbly et al., Local scale transformations with tensor\r
+network renormalization, in preparation.\r
+[37] Y. Shi, L. Duan, and G. Vidal, Phys. Rev. A 74, 022320\r
+(2006). L. Tagliacozzo, G. Evenbly, and G. Vidal, Phys.\r
+Rev. B 80, 235127 (2009).\r
+[38] Z.-Y. Xie, J. Chen, M. P. Qin, J. W. Zhu, L. P. Yang, T.\r
+Xiang, Phys. Rev. B 86, 045139 (2012).\r
+[39] Z.-Y. Xie, H.-C. Jiang, Q.-N. Chen, Z.-Y. Weng, T. Xi\u0002ang, Phys. Rev. Lett. 103:160601 (2009).
+
+6\r
+Appendix A.– A tensor network for the Euclidean\r
+path integral\r
+In this section we describe how to obtain a conve\u0002nient, quasi-exact tensor network representation of the\r
+partition function/Euclidean time path integral Z ≡\r
+tr E−βH\u0001(or Euclidean time evolution operator e\r
+−βH),\r
+starting from the short-ranged Hamiltonian H of a 1D\r
+quantum system on the lattice. This tensor network is\r
+used in the main text as the starting point to obtain\r
+MERA representations for the ground state and thermal\r
+states of H in infinite and finite systems, see also Ap\u0002pendix B. It is also used in Appendix C.\r
+For simplicity, we assume that H is a sum of nearest\r
+neighbor terms only,\r
+H =\r
+X\r
+i\r
+hi,i+1 (2)\r
+[Longer- (but finite-) range terms can be treated with a\r
+slightly more complicated scheme.] The first step is to\r
+split H into two contributions, H = Heven + Hodd\r
+Heven ≡\r
+X\r
+even i\r
+hi,i+1, Hodd ≡\r
+X\r
+odd i\r
+hi,i+1, (3)\r
+and use a Suzuki-Trotter decomposition [34] to approx\u0002imately express e\r
+βH as the P-fold product of operators\r
+e\r
+ǫHeven and eǫHodd ,\r
+e\r
+βH ≈\r
+\r
+e\r
+−ǫHeven e\r
+−ǫHodd \u0001P\r
+, ǫ ≡ β/P ≪ 1. (4)\r
+This introduces an error of order O(βǫ), which therefore\r
+vanishes in the limit of small ǫ/large P. [One can ob\u0002tain an error O(β(ǫ)\r
+n), n > 1, by using a higher order\r
+Suzuki-Trotter decomposition [35]]. Since Heven is a sum\r
+of terms that act on different sites and therefore com\u0002mute, e\r
+ǫHeven is simply a product of two-site gates, and\r
+similarly for e\r
+βHodd ,\r
+e\r
+−ǫHeven =\r
+Y\r
+even i\r
+e\r
+−ǫhi,i+1 , e−ǫHodd =\r
+Y\r
+odd i\r
+e\r
+−ǫhi,i+1\r
+.\r
+(5)\r
+Each two-site gate e\r
+−ǫhi,i+1 is a tensor made of four in\u0002dices. Therefore we have obtained a tensor network rep\u0002resentation of e\r
+−βH, see Fig. 5(a). Using singular value\r
+decompositions (in the vertical and horizontal direction,\r
+as indicated in the inset of Fig. 5) we can then transform\r
+this tensor network into a new tensor network made of\r
+four-legged tensors A connected according to a square\r
+lattice pattern.\r
+However, by construction e\r
+−ǫhi,i+1 is very close to the\r
+identity, e\r
+−ǫhi,i+1 = I + O(ǫ), which implies that the\r
+square tensor network is highly anisotropic. It is then\r
+convenient to coarse-grain in the Euclidean time direc\u0002tion, until space and time direction have become qualita\u0002tively equivalent, in the sense e.g. that the ordered sin\u0002gular values of a tensor in both directions decay roughly\r
+in the same way. This is illustrated in Fig. 6.\r
+FIG. 5. (a) Tensor network for the Euclidean path integral\r
+obtain by multiplying small (Euclidean time) two-site gates of\r
+the form e\r
+−ǫhi,i+1 . (b) Same tensor network after decompos\u0002ing each two-site gate using a singular value decomposition,\r
+according to the inset. (c) Final tensor network for the Eu\u0002clidean path integral in terms of copies of a single tensor A.\r
+FIG. 6. (a) Tensor network for the Euclidean path integral\r
+produced in Fig. 5, made of copies of a single tensor A. (b)\r
+We can introduce isometries (obtained e.g. from the singular\r
+value decomposition of a vertical pair of tensors A) to define a\r
+new tensor A˜. (c) In the new tensor network, each row of ten\u0002sors A˜ accounts for two rows of tensors A, in such a way that\r
+the anisotropy between space and Euclidean time directions\r
+has been reduced. The initial square tensor network discussed\r
+in the main text is the result of applying this compression in\r
+the Euclidean time directions a few times.
+
+7\r
+Appendix B.— Four geometries for an Euclidean\r
+time evolution\r
+In this section we review the well-known fact that\r
+the Euclidean time evolution operator e\r
+−βH(L)\r
+is pro\u0002portional to the thermal state ρ\r
+(L)\r
+β\r
+,\r
+ρ\r
+(L)\r
+β ≡\r
+e\r
+−βH(L)\r
+Z\r
+(L)\r
+β\r
+, Z(L)\r
+β ≡ tr \u0010\r
+e\r
+−βH(L)\r
+\u0011\r
+, (6)\r
+where L denotes the length of a periodic chain and β\r
+is the inverse temperature. Here we use H(L) and H ≡\r
+H(L→∞)to denote a Hamiltonian on a periodic lattice of\r
+size L and on an infinite lattice, respectively.\r
+We consider four geometries, obtained from combina\u0002tions of infinite and finite L and β. These geometries are\r
+represented in Fig. 7. The partition function Z\r
+(L)\r
+β\r
+corre\u0002sponds to a torus of size L and β in the horizontal and\r
+vertical directions, respectively, which are parameterized\r
+by space and Euclidean time coordinates (x, τ). Then\r
+e\r
+−βH(L)\r
+corresponds to the vertical cylinder obtained by\r
+cutting the torus at τ = 0, as represented in Fig. 7(d).\r
+At infinite length L, this cylinder is replaced by an\r
+infinite strip of finite width β, representing e\r
+−βH, which\r
+is proportional to the thermal state ρβ of Fig. 7(b), with\r
+ρβ ≡ lim\r
+L→∞\r
+ρ\r
+(L)\r
+β\r
+. (7)\r
+At infinite inverse temperature β (or zero temperature)\r
+we obtain a projector\r
+|Ψ(L)ihΨ(L)| = lim\r
+β→∞\r
+e\r
+−βH(L)\r
+Z\r
+(L)\r
+β\r
+, (8)\r
+onto the ground state |Ψ(L)i of H(L). In other words, for\r
+any state |φ0i such that hΨ(L)|φ0i 6= 0,\r
+|Ψ(L)i ∝ lim\r
+β→∞\r
+e\r
+βH(L)\r
+|φ0i. (9)\r
+Therefore, for finite L, the Euclidean time evolution op\u0002erator on a semi-infinite vertical cylinder is proportional\r
+to the ground state |Ψ(L)i of H(L), Fig. 7(c).\r
+Finally, for infinite β and L, the semi-infinite cylinder\r
+above is replaced with the upper half plane and produces\r
+the ground state |Ψi of H, Fig. 7(a).\r
+We have therefore attached a geometry to each of the\r
+ground states and thermal states |Ψi, ρβ, |Ψ(L)i, and\r
+ρ\r
+(L)\r
+β\r
+. In the main text we consider explicitly the coarse\u0002graining of the tensor network for the first three geome\u0002tries in Fig. 7, that is (a) - (c), and the fourth one [the\r
+finite cylinder (d)] is left as an exercise that follows from\r
+the previous cases.\r
+FIG. 7. Four geometries on which we define the tensor net\u0002work for e\r
+−βH. (a) Upper half plane (x, τ +), corresponding\r
+to the ground state |Ψi of H on an infinite lattice. (b) Hor\u0002izontal strip of finite width β, corresponding to the thermal\r
+state e\r
+−βH. (c) Semi-infinite vertical cylinder of finite width\r
+L, corresponding to the ground state |Ψ\r
+(L)\r
+i of H on a peri\u0002odic chain of length L. (d) Vertical cylinder of finite width L\r
+and finite height β, corresponding to a thermal state ρ\r
+(L)\r
+β\r
+on\r
+a finite periodic chain.\r
+Appendix C.— Tensor Network Renormalization,\r
+step by step\r
+In this section we review the detailed sequence of local\r
+replacements that define the coarse-graining transforma\u0002tion of TNR. For convenience, we have introduced some\r
+cosmetic changes compared to Ref. [17].\r
+The actual sequence is shown in Fig. 8. It\r
+involves a number of intermediate tensors (namely\r
+B, u, vL, vR, x, y, w) in addition to the final coarse\u0002grained tensor A′\r
+. When applied to an infinite square\r
+tensor network made of copies of tensor A, Fig. 9, these\r
+local replacements produce a coarse-grained tensor net\u0002work made of copies of a new tensor A′\r
+, where there is a\r
+copy of A′for every four initial tensors A. None of the\r
+intermediate tensors appear in the coarse-grained tensor\r
+network. We can think of TNR as implementing a global\r
+change of scale, from (x, τ) to (x\r
+′\r
+, τ′) where\r
+x → x\r
+′ = x/2, τ → τ′ = τ /2. (10)\r
+Let us now consider instead applying TNR to coarse\u0002grain the restriction of the initial square tensor network\r
+on the upper half plane, as represented in Fig. 10. Recall\r
+that this restriction defines a projector onto the ground\r
+state of H. By applying the sequence as local replace\u0002ments of Fig. 8, we see that most of the upper half plane\r
+ends up in a coarse-grained square tensor network again\r
+made of tensors A′. However, near the open boundary of
+
+8\r
+the tensor network first a row of disentanglers u, and then\r
+a row of isometries w, accumulate. These disentanglers\r
+and isometries cannot annihilate with Hermitian conju\u0002gates u\r
+† and w† because those would belong to the lower\r
+half plane, which is not available.\r
+As discussed in the main text and Fig.1 of the main\r
+text, iteration of the coarse-graining produces a full\r
+MERA for the ground state |Ψi of H. Let us now give a\r
+geometrical interpretation of this construction. It turns\r
+out that TNR allows to implement local scale transfor\u0002mations on the lattice [36], that is, a discrete version\r
+of certain conformal transformations in the continuum.\r
+From this perspective, the MERA results from (the dis\u0002crete version) of the conformal trasformation that maps\r
+the upper half plane into the hyperbolic plane H2.\r
+If in the continuum we start with a flat metric in the\r
+upper half plane (x, τ), the infinitesimal square line el\u0002ement is given by dx2 + dτ 2\r
+, which we can rewrite as\r
+τ\r
+2\r
+(dx2/τ 2 +dτ 2/τ 2). Then a local change of scale (Weyl\r
+re-scaling) by τ\r
+−1\r
+(that is, by an amount that depends on\r
+the Euclidean time coordinate τ) produces a new metric\r
+dx2 + dτ 2 → (dx2/τ 2 + dτ 2/τ 2) (11)\r
+which corresponds to H2. Finally, we have also replaced\r
+the Euclidean time coordinate τ with the scale coordi\u0002FIG. 8. Sequence of elementary steps involved in TNR. (a)\r
+Each block of four tensors A is approximately replaced with\r
+an auxiliary tensor B, as well as disentanglers u and isometries\r
+vL and vR. The last three are determined through a local\r
+optimization [17], that is, one that only knows about the four\r
+tensors A and is therefore insensitive to the rest of the tensor\r
+network. (b) Definition of the auxiliary tensor B in terms of\r
+A, u,vL, and vR. (c) Tensor B is approximately replaced by\r
+the product yx−1. (d) Tensors x and y are such that y\r
+−1Bx is\r
+equal to the identity, and are therefore also determined locally.\r
+(e) A combination of tensors is approximately replaced with\r
+tensor A\r
+′\r
+and isometries w, w†. The isometry w is determined\r
+through a local optimization. (f) Definition of tensor A\r
+′\r
+.\r
+FIG. 9. (a) Square tensor network made of infinitely many\r
+copies of tensor A. (b) Plaquettes of four tensors A are re\u0002placed by a tensor B and other tensors according to Fig. 8(a).\r
+(c) Pairs of disentanglers u and u\r
+†\r
+annihilate according to\r
+uu† = I. (d) We decompose each tensor B according to Fig.\r
+8(c). (e) Tensor A\r
+′\r
+and isometries w are introduced accord\u0002ing to Fig. 8(e). (f) Pairs of isometries w and w\r
+†\r
+annihilate\r
+according to ww† = I, producing the final tensor network,\r
+which contains only copies of the tensor A\r
+′\r
+.\r
+nate s ≡ log2(τ), which labels the different layers of the\r
+MERA.\r
+Returning to the discrete geometry of the square ten\u0002sor network, notice that the net effect of iterating TNR\r
+on the (discrete) upper half plane as discussed above is\r
+that we are introducing a change of scale where locally\r
+the metric is changed by an amount proportional to the\r
+distance τ = 2sto the boundary, that is exponential in\r
+the scale variable s, as in the above conformal transfor\u0002mation.\r
+Appendix D.– TNR versus energy minimization\r
+In this section we compare the accuracy and efficiency\r
+of two methods that allow us to obtain a MERA approxi\u0002mation to the ground state |Ψi of a many-body Hamilto\u0002nian H: (i) TNR and (ii) energy minimization [8, 11, 12].\r
+We use the 1D quantum Ising model, with Hamiltonian\r
+H =\r
+X\r
+i\r
+XiXi+1 + λ\r
+X\r
+i\r
+Zi, (12)\r
+where X and Z are Pauli matrices, as a benchmark model\r
+for comparison. The ground state of the Ising Hamilto\u0002nian H at critical magnetic field strength, λ = 1, is rep\u0002resented using a scale-invariant MERA obtained in these\r
+two ways. The scale invariant MERA considered here\r
+consists of three transitional layers followed by infinitely\r
+many copies of a scale-invariant layer [8, 11, 12].\r
+TNR.— In the first approach, we start by generating\r
+the Euclidean path integral for H, as described in sec-
+
+9\r
+FIG. 10. (a) Ground state |Ψi of H, represented by a tensor\r
+network on the upper half plane made of copies of tensor A.\r
+(b) Approximately equivalent tensor network obtained by re\u0002placing blocks of four tensors A with the auxiliary tensor B\r
+and disentanglers and isometries, according to Fig. 8(a). (c)\r
+The disentanglers annihilate pairwise according to uu† = I,\r
+everywhere except at the open boundary. (d) We approxi\u0002mately replace tensor B by the product yx−1\r
+according to\r
+Fig. 8(c). (e) An approximately equivalent tensor network\r
+is obtained by introducing tensor A\r
+′\r
+and the isometry w,\r
+according to Fig. 8(e). (f) The isometries annihilate pair\u0002wise according to ww† = I, everywhere except near the open\r
+boundary. The net result is thus a coarse-grained tensor net\u0002work on the upper half plane with tensors A\r
+′\r
+and a row of\r
+disentanglers u and isometries w at the open boundary, which\r
+define a layer of the MERA.\r
+FIG. 11. (a) Relative error in the ground energy (per-spin) for\r
+the ground state of the 1D quantum Ising model at criticality,\r
+comparing MERA of bond dimension χ optimized either using\r
+TNR or variational energy minimization. (b) Relative error\r
+in the ground energy from (a), now plotted as a function\r
+of the leading order computational cost of the optimization\r
+method, which scales as O(χ\r
+6\r
+) for TNR and O(χ\r
+9\r
+) for energy\r
+minimization.\r
+tion A. Then we apply four coarse-graining iterations of\r
+TNR, after which the flow in the space of tensors has\r
+reached an approximate scale-invariant fixed-point Afp,\r
+see Eq. 1 in the main text. A scale-invariant MERA\r
+is then built from tensors (disentanglers and isometries)\r
+produced while implementing TNR, as described in the\r
+main text. Here the first three iterations of TNR generate\r
+the three transitional layers, while the fourth iteration of\r
+TNR is used to build the scale-invariant layer.\r
+Energy minimization.— In the second approach, we\r
+use the energy minimization algorithm of Ref. [8, 11, 12]\r
+to directly optimize a scale-invariant MERA (with three\r
+transitional layers preceding the scale-invariant layers) by\r
+iteratively minimizing the expectation value of the H.\r
+The comparison between the ground energy error δE\r
+obtained by the two methods is presented in Fig. 11.\r
+For an equivalent bond dimension χ, energy minimiza\u0002tion produces a MERA with smaller error δE than TNR,\r
+by a factor k ≈ 10 that is roughly independent of χ. That\r
+energy minimization would produce a more accurate es\u0002timate of the ground state energy than TNR was to be\r
+expected, for two reasons. First, the energy minimization\r
+algorithm directly targets the ground energy as its figure\r
+of merits, whereas TNR does not. Second, the energy\r
+minimization algorithm optimizes the MERA by sweep\u0002ing back and forth over length scales/layers many times,\r
+whereas TNR considers each length scale only once, with\u0002out returning back to optimize shorter length scales after\r
+coarse-graining larger length scales.\r
+However the cost of optimization also differs between\r
+the approaches: the leading order cost of energy mini\u0002mization scales as O(χ\r
+9\r
+), whereas the cost of TNR scales\r
+as O(χ\r
+6\r
+). There is also a significant difference in the\r
+number of optimization steps required to reach a con\u0002verged result. The energy minimization algorithm re\u0002quires many more steps to converge, as the algorithm\r
+sweeps over scales thousands of times, compared to TNR,\r
+which treats each scale only once. The difference between\r
+the two approaches in terms of the number of optimiza\u0002tion steps required is difficult to quantify as it depends on\r
+many factors, but here we find that energy minimization\r
+requires roughly an order of magnitude more steps than\r
+TNR. Fig. 11(b) compares the energy error δE between\r
+energy minimization and TNR as a function of the lead\u0002ing order computational costs of the approaches. Even\r
+though this comparison does not take into account the\r
+difference in the number of optimization steps between\r
+the approaches, TNR is already seen to be more compu\u0002tationally efficient in producing a MERA approximation\r
+to the ground state within some specified accuracy δE\r
+than the energy minimization algorithm.\r
+Appendix E.– TRG yields a tree tensor network\r
+(TTN)\r
+The main result of this paper is to show that when\r
+TNR is applied to a tensor network representing the Eu\u0002clidean path integral of a quantum Hamiltonian H (re-
+
+10\r
+stricted to the upper-half plane), it generates a MERA\r
+approximation for the ground state of H. In this sec\u0002tion we show an analogous result for TRG: we show that\r
+when applied to the same tensor network, it generates\r
+instead a tree tensor network (TTN) approximation for\r
+the ground state of H.\r
+This result, which extends to several generalizations of\r
+TRG, offers an alternative perspective to understand the\r
+qualitative differences between TRG and TNR, and pro\u0002vides a robust theoretical argument for why TRG can\u0002not realize a critical fixed-point tensor while TNR can\r
+[17]. Indeed, the failure of TRG to produce a critical\r
+fixed-point tensor can be understood to follow from the\r
+well-known fact that the TTN ansatz (with fixed bond\r
+dimension) cannot reproduce the logarithmic scaling of\r
+entanglement entropy, SL ∼ log(L), found in the ground\r
+states of 1D quantum systems at a critical point.\r
+For simplicity, we will derive this result not for the\r
+original TRG, but for an improved version known as\r
+higher order tensor renormalization group (HOTRG),\r
+which was proposed in Ref.[38]. However, the same con\u0002clusions can also be shown to hold for the square-lattice\r
+form of the original TRG algorithm proposed in Ref.[5].\r
+We begin with brief summary of HOTRG, see Fig. 12.\r
+Consider a square lattice tensor network made of copies\r
+of a tensor A with components Aijkl and bond dimension\r
+χ. In HOTRG, one coarse-grains the tensor network first\r
+in one direction and then in the other. We shall begin\r
+with the horizontal axis. In the first step, left-right pairs\r
+of tensors A are multiplied together, obtaining the six\u0002index tensor A˜,\r
+A˜\r
+i,j1,j2,k,l1,l2 ≡\r
+X\r
+p\r
+Ai,j1,p,l1Ap,j2,k,l2, (13)\r
+as shown in Fig.12(a). We now should truncate the dou\u0002ble indices j ≡ (j1j2) and l ≡ (l1l2) of A˜, which are of\r
+dimension χ\r
+2\r
+, down to dimension χ. In HOTRG this\r
+truncation is performed using a generalized form of the\r
+SVD called the higher order singular value decomposition\r
+(HOSVD), a method of decomposing an N rank tensor\r
+into the product of a core tensor and a set of isometric\r
+tensors. Using the HOSVD, the tensor A˜ is approxi\u0002mately decomposed into a core tensor B (with all four\r
+indices of dimension χ), and a pair of isometries w and\r
+w\r
+†\r
+(with their three indices also of dimension χ),\r
+A˜\r
+i,j1,j2,k,l1,l2 ≈\r
+Xχ\r
+j,l=1\r
+wl,l1,l2Bi,j,k,l(wj,j1,j2)\r
+∗\r
+, (14)\r
+see also Fig. 12(a). [Note that we are assuming, for\r
+simplicity, that the network is invariant under spatial re\u0002flection along the horizontal axis such that the top and\r
+bottom isometries w are conjugates of one another, al\u0002though the same result could also be reached without\r
+this simplifying assumption.] Isometries w satisfy the\r
+FIG. 12. (a) A left-right pair of tensors A is multiplied\r
+to form a new tensor A˜, which is then decomposed using a\r
+truncated HOSVD into the product of a core tensor B and a\r
+pair of isometries w, see also Eqs. 13 and 14. (b) The prod\u0002uct of an isometry w and its conjugate produces the identity,\r
+see Eq. 16. (c) A up-down pair of tensors B is multiplied\r
+to form a new tensor B˜, which is then decomposed using a\r
+truncated HOSVD into the product of a core tensor A\r
+′\r
+and a\r
+pair of isometries v. (d) The product of an isometry v and its\r
+conjugate produces the identity. (e) The sequence of trans\u0002formations from (a-d) above is used to coarse grain a 4 × 4\r
+network of tensors A, yielding a 2 × 2 network of tensors A\r
+′\r
+surrounded by isometries w and v.\r
+following relation,\r
+Xχ\r
+j1,j2=1\r
+wl,j1,j2(wj,j1,j2)\r
+∗ = δl,j , (15)\r
+as depicted in Fig.12(b). After the HOSVD, we obtain\r
+a new square lattice tensor network composed of tensors\r
+B and rescaled by a factor of 2 in the horizontal direc\u0002tion. Following the same steps but now in the vertical\r
+direction, up-down pairs of tensors B are multiplied to\u0002gether to form a six-index tensor B˜, which can then be\r
+decomposed using the HOSVD into a product of a core\r
+tensor A′ and a pair of isometries v and v\r
+†\r
+, see Fig.12(c).\r
+[Again, for simplicity, we have assumed that the network\r
+is invariant under appropriate spatial reflection.] The\r
+combination of horizontal and vertical contraction steps\r
+has taken the initial square lattice network of tensors A\r
+to a new network of tensors A′, one which is rescaled by\r
+a factor of 2 on both axes. This constitutes a single itera\u0002tion of the HOTRG approach. By iteration, we generate\r
+a sequence of increasingly coarse-grained lattices defined
+
+11\r
+FIG. 13. (a) Square lattice tensor network representing\r
+the ground state of a quantum Hamiltonian H on a ring of\r
+L sites through an infinite Euclidean time evolution. The\r
+tensor network describes a semi-infinite vertical cylinder of\r
+width L and with a row of open indices. (b) The result of\r
+coarse-graining the initial tensor network with one iteration\r
+of HOTRG, see Fig. 12(e), while not touching the L open\r
+indices at the bottom. (c) After coarse-graining with a sec\u0002ond iteration of HOTRG, a TTN connected to a semi-infinite\r
+vertical cylinder of O(1) width is produced. Inset: transfer\r
+matrix T of this cylinder. The eigenvectors of T with largest\r
+eigenvalues correspond to the low energy eigenstates of H.\r
+(d) TTN for the ground state/low energy excited states of H,\r
+where the top tensor is an eigenvector of the transfer matrix\r
+T .\r
+in terms of tensors,\r
+A\r
+(w,v) → A\r
+′\r
+(w\r
+′\r
+,v′\r
+) → A\r
+′′ (w\r
+′′,v′′ ) → A\r
+′′′ → · · · . (16)\r
+Let us now apply HOTRG to a square lattice tensor\r
+network representation of the ground state of a Hamilto\u0002nian H on a periodic chain of size L, as we did in the main\r
+text for TNR. The network consists of a semi-infinite, ver\u0002tical cylinder of width L, with a row of open indices at the\r
+bottom, see Fig. 13(a). Each coarse-graining iteration\r
+rescales the bulk of the network by a linear factor of 2,\r
+while leaving a row of isometries w along the open bound\u0002ary, see Fig.13. After about log2\r
+(L) coarse-graining steps\r
+the size of the system has effectively become O(1), and\r
+we have O(log2(L)) layers of the TTN connected to a\r
+semi-infinite cylinder of O(1) width. This semi-infinite\r
+cylinder can be understood as the infinite product of a\r
+transfer matrix T ; taking the dominant eigenvector of T\r
+as the top tensor of the TTN leads to the ground state\r
+of H. Thus the HOTRG approach, applied to the Eu\u0002clidean path integral of a quantum system H, has been\r
+shown to generate a TTN approximation for its ground\r
+state.\r
+Since the introduction of TRG, a significant improve\u0002ment in renormalization schemes for tensor networks has\r
+been the use of the so-called environment to achieve a\r
+more accurate truncation. The second renormalization\r
+group (SRG) proposed in Ref.[39] uses to knowledge from\r
+the environment, obtained approximately by iteratively\r
+sweeping over all length scales, to allow the tensor trun\u0002cations to be performed so as to minimize the global er\u0002ror, as opposed to the local error minimized in TRG and\r
+HOTRG. Ref. [38] introduced a version of SRG based\r
+upon HOSVD, called the HOSRG, which we will now\r
+consider. The use of the environment allows HOSRG\r
+to more accurately discern which degrees of freedom can\r
+be truncated, and which should be retained, at each RG\r
+step. This allows for a smarter choice of isometries. How\u0002ever, HOSRG is structurally still based upon the same\r
+blocking scheme as HOTRG, Fig.12(e). It follows that\r
+HOSRG also leads to a TTN representation of ground\r
+and excited states as depicted in Fig.13. The only dif\u0002ference being that the isometries w that compose the\r
+TTN have been better chosen with HOSRG than with\r
+HOTRG, as they minimize the global error. In particu\u0002lar, for the same bond dimension χ, HOSRG may pro\u0002duce a more accurate TTN approximation to the ground\r
+state than HOTRG.\r
+However, as it happens with HOTRG (and TRG),\r
+HOSRG cannot generate a proper RG flow in the space\r
+of tensors – that is, one that at criticality flows to a criti\u0002cal fixed-point tensor. Indeed, HOSRG produces a TTN,\r
+which is known to only be able to accurately describe a\r
+critical system if the bond dimension grows with increas\u0002ing scale. But a bond dimension that grows with scale is\r
+incompatible with having a fixed-point tensor."""
+
+[metadata]
+title = "evenbly vidal tnr mera 1502.05385"
+authors = ["Unknown"]
+arxiv = "1502.05385"
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:1502.05385v2 [cond-mat.str-el] 12 Sep 2015\r
+Tensor network renormalization yields\r
+the multi-scale entanglement renormalization ansatz\r
+G. Evenbly1 and G. Vidal2\r
+1Department of Physics and Astronomy, University of California, Irvine, CA 92697-4575 USA∗\r
+2Perimeter Institute for Theoretical Physics, Waterloo, Ontario N2L 2Y5, Canada†\r
+(Dated: September 15, 2015)\r
+We show how to build a multi-scale entanglement renormalization ansatz (MERA) representa\u0002tion of the ground state of a many-body Hamiltonian H by applying the recently proposed tensor\r
+network renormalization (TNR) [G. Evenbly and G. Vidal, arXiv:1412.0732] to the Euclidean time\r
+evolution operator e\r
+−βH for infinite β. This approach bypasses the costly energy minimization of\r
+previous MERA algorithms and, when applied to finite inverse temperature β, produces a MERA\r
+representation of a thermal Gibbs state. Our construction endows TNR with a renormalization\r
+group flow in the space of wave-functions and Hamiltonians (and not merely in the more abstract\r
+space of tensors) and extends the MERA formalism to classical statistical systems.\r
+PACS numbers: 05.30.-d, 02.70.-c, 03.67.Mn, 75.10.Jm\r
+Consider a strongly interacting quantum many-body\r
+system in D spatial dimensions described by a micro\u0002scopic Hamiltonian H. Understanding its collective, low\r
+energy behavior is a main goal in condensed matter and\r
+high energy physics, one that poses a formidable theoret\u0002ical challenge. To tackle this problem, plenty of methods\r
+have been proposed based on the renormalization group\r
+(RG) [1–3], that is, on studying how the physics depends\r
+on the scale of observation. Weakly interacting systems\r
+can be addressed perturbatively using momentum space\r
+RG [2]. Instead, strongly interacting systems often re\u0002quire non-perturbative, real space RG methods, as pio\u0002neered by Kadanoff [1] and Wilson [2].\r
+Improving on Kadanoff and Wilson’s proposals,\r
+White’s density matrix renormalization group (DMRG)\r
+for quantum spin chains [4] established how to systemati\u0002cally preserve the ground state wave-function during real\u0002space coarse-graining – namely, by preserving the sup\u0002port of its reduced density matrix. Similarly, Levin and\r
+Nave’s tensor renormalization group (TRG) [5] taught\r
+us how to coarse-grain Euclidean path integrals of one\u0002dimensional quantum systems (also partition functions\r
+of two-dimensional classical systems). Both DMRG and\r
+TRG are very successful, versatile approaches. However,\r
+they depart significantly from the spirit of the RG, in\r
+that they produce a coarse-grained, effective description\r
+of the system that still retains some irrelevant micro\u0002scopic details. As a result, these methods (i) fail to define\r
+a proper RG flow, one with e.g. the correct structure of\r
+fixed points; and (ii) struggle to deal with critical systems\r
+or systems in D ≥ 2 dimensions, where the accumulation\r
+of irrelevant microscopic degrees of freedom is more sig\u0002nificant and harmful.\r
+These difficulties have been solved with two closely re\u0002lated proposals. First, entanglement renormalization was\r
+put forward to address the above two problems in the\r
+context of ground state wave-functions [6, 7]. By intro\u0002ducing disentanglers, which remove short-range entangle\u0002ment, a proper RG flow is generated, as well as an RG\r
+transformation that is computationally sustainable even\r
+at criticality. In addition, entanglement renormalization\r
+leads to an efficient tensor network description of ground\r
+states for critical systems, the multi-scale entanglement\r
+renormalization ansatz (MERA) [7], of interest not only\r
+as a many-body variational state [7–14] but also as a lat\u0002tice realization of the holographic principle [15, 16].\r
+Tensor network renormalization (TNR), on the other\r
+hand, was more recently proposed to tackle the same\r
+problems in the context of Euclidean path integrals (and\r
+classical statistical systems) [17]. The Euclidean path\r
+integral Z ≡ tr e\r
+−βH\u0001\r
+is represented by a tensor net\u0002work, consisting of copies of a single tensor A [18], which\r
+extends both in space and Euclidean time directions.\r
+Through local manipulation of this tensor network, TNR\r
+produces a sequence of tensors,\r
+A → A\r
+′ → A′′ → · · · → Afp, (1)\r
+corresponding to increasing length scales, which flow to\u0002wards some infrared fixed-point tensor Afp. The later\r
+retains only the universal features of the phase or phase\r
+transition [17]. Once again, the key of the approach is\r
+the removal of short-range correlations by disentanglers.\r
+In this Letter we establish a close connection between\r
+the two approaches. We show that, when applied to the\r
+Euclidean path integral restricted to the upper half plane,\r
+TNR generates a MERA for the ground state of Hamilto\u0002nian H. More generally, TNR also produces a MERA for\r
+the thermal Gibbs state ρβ ≡ e\r
+−βH/Z at finite inverse\r
+temperature β, as well as for the low energy eigenstates\r
+of H on a finite periodic chain. Our result provides an\r
+alternative route to the MERA, one that bypasses the\r
+costly energy minimization of previous algorithms [8, 9]\r
+and has several other significant advantages, both con\u0002ceptual and computational, that we also discuss. Among\r
+those, we emphasize that (i) we obtain the first correct\r
+MERA representation of the thermal state ρβ [19], to-
+
+2\r
+gether with an algorithm to find it; (ii) the connection\r
+implies that TNR produces an RG flow in the space of\r
+wave-functions and Hamiltonians, and not just in the ab\u0002stract space of tensors, Eq. 1; (iii) the MERA formalism\r
+can be applied now also to classical statistical systems.\r
+For simplicity, we consider a translation invariant system\r
+in D = 1 dimensions, although the key results generalize\r
+to inhomogeneous systems in dimension D ≥ 1.\r
+Tensor network for Euclidean time evolution.— Given\r
+a translation invariant Hamiltonian H in one dimen\u0002sion, we use a standard procedure [20] to produce a\r
+two-dimensional tensor network representation of the Eu\u0002clidean time operator e\r
+−βH or Euclidean path integral\r
+tr e\r
+−βH\u0001\r
+. This tensor network is made of copies of a\r
+single tensor A. If both the system size L and the in\u0002verse temperature β are infinite, then the network spans\r
+the entire (x, τ)-plane, where x and τ label space and Eu\u0002clidean time, respectively. Here we will consider tensor\r
+networks for e\r
+−βH on three different geometries, obtained\r
+by introducing a horizontal cut at τ = 0 and by choosing\r
+L and β to be either finite or infinite [21].\r
+TNR yields MERA.— Let us start with the upper half\r
+plane, Fig. 1, which corresponds to the ground state |Ψi\r
+of H on an infinite lattice. The network has an open\r
+boundary at τ = 0, with an infinite row of open indices,\r
+one for each site of the one-dimensional lattice on which\r
+H acts. We first apply TNR everywhere on the upper half\r
+plane except near τ = 0, where we keep the open indices\r
+of the tensor network untouched. TNR acts through an\r
+intrincate sequence of local replacements [17]. Here we\r
+skip the technical details [22] and focus instead on de\u0002scribing the final result: a coarse-grained tensor network\r
+with effective tensor A′for most of the upper half plane,\r
+in accordance with Eq. 1, together with a double row\r
+of special tensors, so-called disentanglers and isometries,\r
+which correspond to one layer of the MERA [23]. These\r
+tensors connect the microscopic degrees of freedom at\r
+length scale s = 0 (represented by the original open in\u0002dices of the network) with the coarse-grained degrees of\r
+freedom at length scale s = 1 (represented by the lower\r
+indices of the lowest row of tensors A′). We can now re\u0002peat the process on tensors A′\r
+, to obtain coarse-grained\r
+tensors A′′ and a second row of disentanglers and isome\u0002tries, i.e. a second layer of the MERA, connecting scales\r
+s = 1 and 2. Iteration then produces a full MERA ap\u0002proximation for the ground state |Ψi of H, encompassing\r
+all length scales s = 0, 1, 2, · · · .\r
+Thermal MERA.— Let us now consider a horizontal\r
+strip of finite width β, Fig. 2(a), which is proportional\r
+to the thermal state ρβ ≡ e\r
+−βH/Z. This time we have\r
+two boundaries, each with an infinite row of open in\u0002dices: the incoming and outgoing indices of the Euclidean\r
+time evolution operator e\r
+−βH. As before, we use TNR\r
+to coarse-grain the tensor network, except near its open\r
+boundaries, where we do not touch the open indices. Fig.\r
+2(b) shows the net result: a coarse-grained tensor net\u0002FIG. 1. (a) Tensor network the ground state |Ψi of H on an\r
+infinite lattice. It is made of copies of tensor A and restricted\r
+to the upper half plane (x, τ +), with a row of open indices\r
+at τ = 0. (b) By coarse-graining the tensor network while\r
+leaving the open indices untouched, we obtain a new tensor\r
+network with tensors A\r
+′\r
+together with one row of disenta\u0002glers and isometries. (c) Further coarse-graining of the tensor\r
+network produces new coarse-grained tensors A\r
+′′ and a sec\u0002ond layer of disentanglers and isometries. (d) By iteration we\r
+obtain a full MERA approximation for state |Ψi.\r
+work, with effective tensor A′, together with a double\r
+row of disentanglers and isometries both for the incoming\r
+and outgoing indices. After O(log2(β)) iterations of the\r
+coarse-graining procedure, we obtain a MERA represen\u0002tation of the thermal state, Fig. 2(c) made of O(log2\r
+(β))\r
+double layers of disentanglers and isometries for both the\r
+incoming and outgoing indices, together with a central\r
+row of tensors. Disentanglers and isometries are isomet\u0002ric tensors and thus do not affect the spectrum of eigen\u0002values of the thermal MERA, which therefore depends\r
+exclusively on the central row of tensors [24].\r
+The thermal MERA obtained from TNR resembles the\r
+form first suggested by Swingle in the context of holog\u0002raphy [15], where a 1+1 conformal field theory is dual\r
+to a gravity theory in 3 space-time dimensions. In this\r
+context, the thermal MERA is interpreted as describing a\r
+space-like cross-section of a black hole space-time geome\u0002try. A significant difference in our construction is the cen\u0002tral row of tensors, which is absent in Swingle’s proposal\r
+[15] and provides ρβ with the correct thermal spectrum\r
+of eigenvalues {e\r
+−βEi /Z}, where {Ei} are the eigenval\u0002ues of H. This central row of tensors can be thought of\r
+as representing the Einstein-Rosen bridge connecting the\r
+two asymptotic AdS regions [25], which seems to provide\r
+a manifestation of the ER=EPR conjecture [26].\r
+Periodic chain of size L.— In our third construction,\r
+we use TNR to coarse-grain a tensor network for the\r
+ground state of Hamiltonian H on a periodic chain of size\r
+L, see Fig. 3(a). The network consists of a semi-infinite,"""
+
+[[sections]]
+number = "3"
+title = "FIG. 2. (a) Tensor network on an infinite strip of finite"
+text = """
+width β, with two rows of open indices. It is proportional to\r
+the thermal state e\r
+−βH/Z. (b) By coarse-graining the tensor\r
+network while leaving the open indices untouched, we obtain\r
+a new tensor network with tensors A\r
+′\r
+together with an up\u0002per and lower row of disentaglers and isometries. (c) Futher\r
+coarse-graining produces a thermal MERA.\r
+vertical cylinder of width L, with a row of open indices.\r
+After about O(log2(L)) coarse-graining steps the size of\r
+the system has effectively become O(1), see Fig. 3(c), and\r
+we have O(log2(L)) layers of the MERA connected to a\r
+semi-infinite cylinder of O(1) width. This semi-infinite\r
+cylinder can be understood as the infinite product of a\r
+transfer matrix T . The dominant eigenvector of T leads\r
+to the ground state of H, whereas subdominant eigen\u0002vectors describe low energy eigenstates.\r
+To illustrate the computational possibilities offered\r
+by the new algorithm, we consider the one-dimensional\r
+quantum Ising model with transverse magnetic field both\r
+at finite β for an infinite chain, and at zero temperature\r
+for a finite periodic chain of length L [27]. The calcu\u0002lation required less than 5 minutes on a 2.5Ghz dual\r
+core laptop with 4Gb of memory (MERA bond dimension\r
+χ = 10). First, for L = ∞, Fig. 4(a) shows the expecta\u0002tion value of the energy density Ethermal ≡ tr(ρβH)/L as\r
+a function of the inverse temperature β, while Fig. 4(b)\r
+displays, at critical magnetic field, the crossover between\r
+polynomial decay of correlations at short distances (due\r
+to quantum fluctuations at criticality) and their exponen\u0002tial decay at longer distances (due to finite temperature\r
+statistical fluctuations). Then, for β = ∞, Figs. 4(c)-\r
+(d) show, respectively, the low energy spectra of H as a\r
+function of the inverse system size 1/L, and the energy\r
+and momentum of low energy states for L = 1024. In all\r
+cases, an accurate approximation to the exact result is\r
+obtained.\r
+Discussion.— Since its proposal a decade ago [7], the\r
+FIG. 3. (a) Tensor network on a semi-infinite vertical cylin\u0002der of finite width L and with a row of open indices, propor\u0002tional to the ground state of H on a periodic chain made of L\r
+sites. (b) Result of coarse-graining the initial tensor network\r
+while not touching its open indices. (c) MERA connected to\r
+a semi-infinite vertical cylinder of O(1) width. Inset: transfer\r
+matrix T of this cylinder. The eigenvectors of T with largest\r
+eigenvalues correspond to the low energy eigenstates of H. (d)\r
+MERA for the ground state/low energy excited states of H,\r
+where the top tensor is an eigenvector of the transfer matrix\r
+T .\r
+MERA has been regarded as a variational class of states.\r
+Accordingly, one attempts to approximate the ground\r
+state |Ψi of H by optimizing the variational parame\u0002ters contained in the disentanglers and isometries of the\r
+MERA, for instance by iteratively minimizing the ex\u0002pectation value of H [8, 9]. Such energy optimization is\r
+costly (it may require thousands of sweeps over scale) and\r
+prone to becoming trapped in local minima. Moreover,\r
+there is no guarantee that the end result is an approx\u0002imation to the ground state |Ψi – one just has a wave\u0002function with, hopefully, reasonably low energy. Here\r
+we have argued that, instead, an approximate MERA\r
+representation of the ground state |Ψi can be obtained\r
+with TNR by coarse-graining an initial, quasi-exact ten\u0002sor network representation of |Ψi [29]. This only requires\r
+one sweep over scale, and it is therefore computationally\r
+much more efficient [30]. In addition, at each coarse\u0002graining step TNR introduces a truncation error [17] that\r
+can be explicitly computed. If this truncation error is\r
+sufficiently small, then one can certify that the resulting\r
+MERA approximates the true ground state |Ψi within\r
+that small error [31].\r
+Importantly, TNR acts locally: the coarse-graining of\r
+the tensor network at point (x, τ) only depends on the\r
+tensors in an immediate neighborhood [17]. Let us men\u0002tion three consequences for the resulting MERA. (i) Since"""
+
+[[sections]]
+number = "4"
+title = "FIG. 4. (a) Thermal energy per site (above the ground"
+text = """
+state energy) as a function of the inverse temperature β, for\r
+the quantum Ising model H =\r
+P\r
+i XiXi+1 + λ\r
+P\r
+i Zi in an\r
+infinite chain, for different values of magnetic field λ. Con\u0002tinuous lines correspond to the exact solution. (b) Connected\r
+two-point correlators at the critical magnetic field λ = 1, as a\r
+function of the distance d, for several values of β. Continuous\r
+lines correspond again to the exact solution. (c) Low energy\r
+eigenvalues of H for critical λ = 1 as a function of 1/L. (d)\r
+Low energy spectrum of H for critical λ = 1 and correspond\u0002ing momentum (in unites of 2π/L) for L = 1024 sites, which\r
+appear organized according to the conformal towers of the\r
+identity I (red), spin σ (green), and energy density ǫ (blue)\r
+primary fields of the Ising CFT, [28]. Discontinuous lines\r
+in (c) and (d) correspond to the finite-size CFT prediction,\r
+which ignores corrections of order L\r
+−2\r
+.\r
+TNR is not aware of the system size L or inverse temper\u0002ature β, it produces the same tensors A, A′\r
+, A′′, · · · and\r
+disentanglers and isometries for the ground state |Ψi in\r
+the thermodynamic limit (L = β = ∞) as it does for the\r
+states ρβ and |Ψ(L)i at finite β or L. Thus, a single TNR\r
+calculation produces an accurate MERA approximation\r
+for all these states. (ii) In the absence of translation in\u0002variance, where a different tensor Ai may be required for\r
+each site i of the lattice, the coarse-graining of different\r
+parts of the system can be conducted in parallel, leading\r
+to a massive reduction in computational time. (iii) At a\r
+conceptual level, locality of TNR implies the validity of\r
+the theory of minimal updates [33]. This theory, which\r
+asserts that only certain parts of the MERA need to be\r
+changed in order to account for a localized change in the\r
+Hamiltonian H [33], is particularly useful in the study of\r
+systems with boundaries, defects, or interfaces [9, 14].\r
+In Summary, in this Letter we have shown that, when\r
+applied to the Euclidean path integral restricted to sev\u0002eral geometries, TNR [17] produces a MERA for the\r
+ground state and thermal states of a quantum Hamil\u0002tonian, and have explored a number of consequences of\r
+this result. We conclude by briefly mentioning two more\r
+implications. First, thanks to this connection, TNR in\u0002herits from the MERA its ability to define an RG flow\r
+in the space of wave-functions and Hamiltonians [6–8].\r
+Notice that extracting the emergent physics from these\r
+RG flows should be easier (both conceptually and com\u0002putationally) than extracting it from the RG flow in the\r
+more abstract space of tensors, Eq. 1. Second, although\r
+we have focused on quantum systems, TNR can also be\r
+applied to statistical partition functions [17]. Therefore\r
+the present construction extends the MERA formalism\r
+(including strategies to extract universal critical proper\u0002ties [10–14]) to classical statistical systems.\r
+The authors thank Rob Myers for insightful comments.\r
+G. V. acknowledges support by the John Templeton\r
+Foundation and thanks the Australian Research Council\r
+Centre of Excellence for Engineered Quantum Systems.\r
+The authors also acknowledge support by the Simons\r
+Foundation (Many Electron Collaboration). Research at\r
+Perimeter Institute is supported by the Government of\r
+Canada through Industry Canada and by the Province\r
+of Ontario through the Ministry of Research and Innova\u0002tion.\r
+∗\r
+gevenbly@uci.edu\r
+†\r
+gvidal@perimeterinstitute.ca\r
+[1] L.P. Kadanoff, Physics (Long Island City, N.Y.) 2, 263\r
+(1966).\r
+[2] K.G. Wilson, Phys. Rev. B, 4, 3174 (1971). K.G. Wilson,\r
+Phys. Rev. B, 4, 3184 (1971). K.G. Wilson, Rev. Mod.\r
+Phys. 47, 773 (1975).\r
+[3] M.E. Fisher, Rev. Mod. Phys. 70, 653 (1998).\r
+[4] S.R. White, Phys. Rev. Lett. 69, 2863 (1992). S.R. White,\r
+Phys. Rev. B, 48, 10345 (1993).\r
+[5] M. Levin, C. P. Nave, Phys. Rev. Lett. 99, 120601 (2007)\r
+[6] G. Vidal, Phys. Rev. Lett. 99, 220405 (2007),\r
+arXiv:cond-mat/0512165.\r
+[7] G. Vidal, Phys. Rev. Lett., 101, 110501 (2008),\r
+arXiv:quant-ph/0610099.\r
+[8] G. Evenbly and G. Vidal, Phys. Rev. B, 79, 144108\r
+(2009).\r
+[9] G. Evenbly and G. Vidal, J Stat Phys (2014) 157:931-\r
+978.\r
+[10] V. Giovannetti, S. Montangero, and R. Fazio, Phys. Rev.\r
+Lett., 101, 180503 (2008).\r
+[11] R.N.C. Pfeifer, G. Evenbly, and G. Vidal, Phys. Rev. A,\r
+79, 040301(R) (2009).\r
+[12] G. Evenbly and G. Vidal, Quantum Criticality with\r
+the Multi-scale Entanglement Renormalization Ansatz,\r
+chapter 4 in the book Strongly Correlated Systems. Nu\u0002merical Methods, edited by A. Avella and F. Mancini\r
+(Springer Series in Solid-State Sciences, Vol. 176 2013),\r
+arXiv:1109.5334.\r
+[13] J. C. Bridgeman, A. O’Brien, S. D. Bartlett, A. C. Do-
+
+5\r
+herty, Phys. Rev. B 91, 165129 (2015), arXiv:1501.02817.\r
+[14] G. Evenbly, R. N. C. Pfeifer, V. Pico, S. Iblisdir, L.\r
+Tagliacozzo, I. P. McCulloch, G. Vidal, Phys. Rev. B\r
+82, 161107(R) (2010), arXiv:0912.1642 P. Silvi, V. Gio\u0002vannetti, P. Calabrese, G. E. Santoro, R. Fazio J. Stat.\r
+Mech. (2010) L03001, arXiv:0912.2893. Y.-L. Lo, Y.-D.\r
+Hsieh, C.-Y. Hou, P. Chen, Y.-J. Kao, Phys. Rev. B 90,\r
+235124 (2014), arXiv:1402.5229\r
+[15] B. Swingle, Phys. Rev. D 86, 065007 (2012),\r
+arXiv:0905.1317. H. Matsueda, M. Ishihara and\r
+Y. Hashizume, Phys. Rev. D 87, (2013) 066002,\r
+arXiv:1208.0206. T. Hartman and J. Maldacena, JHEP\r
+05(2013) 014. J. Molina-Vilaplana, J. Prior, Gen. Rela\u0002tiv. Gravit (2014)46:1823. A. Mollabashi, M. Nozaki, S.\r
+Ryu, T. Takayanagi, JHEP03(2014)098, arXiv:1311.6095\r
+[16] G. Evenbly, G. Vidal, J Stat Phys (2011) 145:891-\r
+918, arXiv:1106.1082. B. Swingle, Constructing holo\u0002graphic spacetimes using entanglement renormaliza\u0002tion, arXiv:1209.3304 J. Haegeman, T. J. Osborne,\r
+H. Verschelde, F. Verstraete, Phys. Rev. Lett. 110,\r
+100402 (2013), arXiv:1102.5524. F. Pastawski, B.\r
+Yoshida, D. Harlow, J. Preskill, JHEP 06 (2015) 149,\r
+arXiv:1503.06237. M. Miyaji, T. Takayanagi, Prog.\r
+Theor. Exp. Phys. (2015) 073B03, arXiv:1503.03542. X.-\r
+L. Qi, Exact holographic mapping and emergent space\u0002time geometry, arXiv:1309.6282 N. Bao, C. Cao, S. M.\r
+Carroll, A. Chatwin-Davies, N. Hunter-Jones, J. Pollack\r
+and G. N. Remmen, Phys. Rev. D 91, 125036 (2015),\r
+arXiv:1504.06632.\r
+[17] G. Evenbly, G. Vidal, pre-print arXiv:1412.0732\r
+[18] We assume translation invariance. For a system that is\r
+not invariant under translations, a different tensor Ai\r
+may be needed for each site i of the lattice.\r
+[19] Previous proposals for a thermal MERA discussed in\r
+Refs. [15] in the context of holography have a flat spec\u0002trum of eigenvalues and therefore do not reproduce the\r
+correct, finite temperature spectrum of ρβ.\r
+[20] For details, see Appendix A.\r
+[21] For details, see Appendix B.\r
+[22] For details, see Appendix C.\r
+[23] On the plane, the double row of disentanglers and isome\u0002tries will annihilate with a double row of conjugate disen\u0002tanglers and isometries corresponding to τ < 0. Instead,\r
+on the half upper plane, these tensors remain.\r
+[24] The normalization factor Z corresponds to the trace of\r
+the thermal MERA. Since the conjugate layers of disen\u0002tanglers and isometries do not change this trace, Z is also\r
+the trace of the central row of tensors A\r
+max, or an infinite\r
+power of some (transfer) matrix M obtained from tensor\r
+A\r
+max by contracting its vertical indices. A normalized\r
+thermal MERA is then obtained by replacing A\r
+max with\r
+A\r
+max/λ, where λ is the dominant eigenvalue of M.\r
+[25] J.M. Maldacena, JHEP 0304 (2003) 021.\r
+[26] J.M. Maldacena, L. Susskind, Cool horizons for entangled\r
+black holes, arXiv:1306.0533.\r
+[27] The numerical results for finite/infinite values of β and\r
+L were all actually extracted from a single calculation,\r
+where TNR was applied to an infinite system at zero\r
+temperature (β = L = ∞).\r
+[28] See e.g. Chapter 10 of M. Henkel, Conformal invariance\r
+and critical phenomena, Springer-Verlag (1999).\r
+[29] The initial tensor network representation of |Ψi is quasi\u0002exact, in that the Suzuki-Trotter decomposition used to\r
+produce it (Appendices A and B) introduces only small\r
+errors, which can be systematically reduced.\r
+[30] For details, see Appendix D.\r
+[31] We emphasize, however, that TNR is not committed to\r
+exclusively producing a MERA. For instance, if at some\r
+scale s the ground state approximately decomposes as\r
+the product of two ground states, then the corresponding\r
+tensor A\r
+(s) will approximately factorize as A\r
+(s)\r
+1 ⊗ A\r
+(s)\r
+2\r
+,\r
+and TNR will give rise instead to a branching MERA\r
+[32], which was proposed to describe e.g. highly entangled\r
+phases of matter in D ≥ 2 dimensions.\r
+[32] G. Evenbly, G. Vidal, Phys. Rev. Lett. 112, 220502\r
+(2014). G. Evenbly, G. Vidal, Phys. Rev. Lett. 112,\r
+240502 (2014).\r
+[33] G. Evenbly, G. Vidal, Phys. Rev. B 91, 205119 (2015),\r
+arXiv:1307.0831.\r
+[34] Suzuki, Phys. Lett. A 146, 6, (1990) 319-323; J. Math.\r
+Phys. 32, 2 (1991) 400-407.\r
+[35] A. T. Sornborger and E. D. Stewart, Phys.Rev. A60\r
+(1999) 156-1965\r
+[36] G. Evenbly et al., Local scale transformations with tensor\r
+network renormalization, in preparation.\r
+[37] Y. Shi, L. Duan, and G. Vidal, Phys. Rev. A 74, 022320\r
+(2006). L. Tagliacozzo, G. Evenbly, and G. Vidal, Phys.\r
+Rev. B 80, 235127 (2009).\r
+[38] Z.-Y. Xie, J. Chen, M. P. Qin, J. W. Zhu, L. P. Yang, T.\r
+Xiang, Phys. Rev. B 86, 045139 (2012).\r
+[39] Z.-Y. Xie, H.-C. Jiang, Q.-N. Chen, Z.-Y. Weng, T. Xi\u0002ang, Phys. Rev. Lett. 103:160601 (2009)."""
+
+[[sections]]
+number = "6"
+title = "Appendix A.– A tensor network for the Euclidean"
+text = """
+path integral\r
+In this section we describe how to obtain a conve\u0002nient, quasi-exact tensor network representation of the\r
+partition function/Euclidean time path integral Z ≡\r
+tr E−βH\u0001(or Euclidean time evolution operator e\r
+−βH),\r
+starting from the short-ranged Hamiltonian H of a 1D\r
+quantum system on the lattice. This tensor network is\r
+used in the main text as the starting point to obtain\r
+MERA representations for the ground state and thermal\r
+states of H in infinite and finite systems, see also Ap\u0002pendix B. It is also used in Appendix C.\r
+For simplicity, we assume that H is a sum of nearest\r
+neighbor terms only,\r
+H =\r
+X\r
+i\r
+hi,i+1 (2)\r
+[Longer- (but finite-) range terms can be treated with a\r
+slightly more complicated scheme.] The first step is to\r
+split H into two contributions, H = Heven + Hodd\r
+Heven ≡\r
+X\r
+even i\r
+hi,i+1, Hodd ≡\r
+X\r
+odd i\r
+hi,i+1, (3)\r
+and use a Suzuki-Trotter decomposition [34] to approx\u0002imately express e\r
+βH as the P-fold product of operators\r
+e\r
+ǫHeven and eǫHodd ,\r
+e\r
+βH ≈\r
+\r
+e\r
+−ǫHeven e\r
+−ǫHodd \u0001P\r
+, ǫ ≡ β/P ≪ 1. (4)\r
+This introduces an error of order O(βǫ), which therefore\r
+vanishes in the limit of small ǫ/large P. [One can ob\u0002tain an error O(β(ǫ)\r
+n), n > 1, by using a higher order\r
+Suzuki-Trotter decomposition [35]]. Since Heven is a sum\r
+of terms that act on different sites and therefore com\u0002mute, e\r
+ǫHeven is simply a product of two-site gates, and\r
+similarly for e\r
+βHodd ,\r
+e\r
+−ǫHeven =\r
+Y\r
+even i\r
+e\r
+−ǫhi,i+1 , e−ǫHodd =\r
+Y\r
+odd i\r
+e\r
+−ǫhi,i+1\r
+.\r
+(5)\r
+Each two-site gate e\r
+−ǫhi,i+1 is a tensor made of four in\u0002dices. Therefore we have obtained a tensor network rep\u0002resentation of e\r
+−βH, see Fig. 5(a). Using singular value\r
+decompositions (in the vertical and horizontal direction,\r
+as indicated in the inset of Fig. 5) we can then transform\r
+this tensor network into a new tensor network made of\r
+four-legged tensors A connected according to a square\r
+lattice pattern.\r
+However, by construction e\r
+−ǫhi,i+1 is very close to the\r
+identity, e\r
+−ǫhi,i+1 = I + O(ǫ), which implies that the\r
+square tensor network is highly anisotropic. It is then\r
+convenient to coarse-grain in the Euclidean time direc\u0002tion, until space and time direction have become qualita\u0002tively equivalent, in the sense e.g. that the ordered sin\u0002gular values of a tensor in both directions decay roughly\r
+in the same way. This is illustrated in Fig. 6.\r
+FIG. 5. (a) Tensor network for the Euclidean path integral\r
+obtain by multiplying small (Euclidean time) two-site gates of\r
+the form e\r
+−ǫhi,i+1 . (b) Same tensor network after decompos\u0002ing each two-site gate using a singular value decomposition,\r
+according to the inset. (c) Final tensor network for the Eu\u0002clidean path integral in terms of copies of a single tensor A.\r
+FIG. 6. (a) Tensor network for the Euclidean path integral\r
+produced in Fig. 5, made of copies of a single tensor A. (b)\r
+We can introduce isometries (obtained e.g. from the singular\r
+value decomposition of a vertical pair of tensors A) to define a\r
+new tensor A˜. (c) In the new tensor network, each row of ten\u0002sors A˜ accounts for two rows of tensors A, in such a way that\r
+the anisotropy between space and Euclidean time directions\r
+has been reduced. The initial square tensor network discussed\r
+in the main text is the result of applying this compression in\r
+the Euclidean time directions a few times."""
+
+[[sections]]
+number = "7"
+title = "Appendix B.— Four geometries for an Euclidean"
+text = """
+time evolution\r
+In this section we review the well-known fact that\r
+the Euclidean time evolution operator e\r
+−βH(L)\r
+is pro\u0002portional to the thermal state ρ\r
+(L)\r
+β\r
+,\r
+ρ\r
+(L)\r
+β ≡\r
+e\r
+−βH(L)\r
+Z\r
+(L)\r
+β\r
+, Z(L)\r
+β ≡ tr \u0010\r
+e\r
+−βH(L)\r
+\u0011\r
+, (6)\r
+where L denotes the length of a periodic chain and β\r
+is the inverse temperature. Here we use H(L) and H ≡\r
+H(L→∞)to denote a Hamiltonian on a periodic lattice of\r
+size L and on an infinite lattice, respectively.\r
+We consider four geometries, obtained from combina\u0002tions of infinite and finite L and β. These geometries are\r
+represented in Fig. 7. The partition function Z\r
+(L)\r
+β\r
+corre\u0002sponds to a torus of size L and β in the horizontal and\r
+vertical directions, respectively, which are parameterized\r
+by space and Euclidean time coordinates (x, τ). Then\r
+e\r
+−βH(L)\r
+corresponds to the vertical cylinder obtained by\r
+cutting the torus at τ = 0, as represented in Fig. 7(d).\r
+At infinite length L, this cylinder is replaced by an\r
+infinite strip of finite width β, representing e\r
+−βH, which\r
+is proportional to the thermal state ρβ of Fig. 7(b), with\r
+ρβ ≡ lim\r
+L→∞\r
+ρ\r
+(L)\r
+β\r
+. (7)\r
+At infinite inverse temperature β (or zero temperature)\r
+we obtain a projector\r
+|Ψ(L)ihΨ(L)| = lim\r
+β→∞\r
+e\r
+−βH(L)\r
+Z\r
+(L)\r
+β\r
+, (8)\r
+onto the ground state |Ψ(L)i of H(L). In other words, for\r
+any state |φ0i such that hΨ(L)|φ0i 6= 0,\r
+|Ψ(L)i ∝ lim\r
+β→∞\r
+e\r
+βH(L)\r
+|φ0i. (9)\r
+Therefore, for finite L, the Euclidean time evolution op\u0002erator on a semi-infinite vertical cylinder is proportional\r
+to the ground state |Ψ(L)i of H(L), Fig. 7(c).\r
+Finally, for infinite β and L, the semi-infinite cylinder\r
+above is replaced with the upper half plane and produces\r
+the ground state |Ψi of H, Fig. 7(a).\r
+We have therefore attached a geometry to each of the\r
+ground states and thermal states |Ψi, ρβ, |Ψ(L)i, and\r
+ρ\r
+(L)\r
+β\r
+. In the main text we consider explicitly the coarse\u0002graining of the tensor network for the first three geome\u0002tries in Fig. 7, that is (a) - (c), and the fourth one [the\r
+finite cylinder (d)] is left as an exercise that follows from\r
+the previous cases.\r
+FIG. 7. Four geometries on which we define the tensor net\u0002work for e\r
+−βH. (a) Upper half plane (x, τ +), corresponding\r
+to the ground state |Ψi of H on an infinite lattice. (b) Hor\u0002izontal strip of finite width β, corresponding to the thermal\r
+state e\r
+−βH. (c) Semi-infinite vertical cylinder of finite width\r
+L, corresponding to the ground state |Ψ\r
+(L)\r
+i of H on a peri\u0002odic chain of length L. (d) Vertical cylinder of finite width L\r
+and finite height β, corresponding to a thermal state ρ\r
+(L)\r
+β\r
+on\r
+a finite periodic chain.\r
+Appendix C.— Tensor Network Renormalization,\r
+step by step\r
+In this section we review the detailed sequence of local\r
+replacements that define the coarse-graining transforma\u0002tion of TNR. For convenience, we have introduced some\r
+cosmetic changes compared to Ref. [17].\r
+The actual sequence is shown in Fig. 8. It\r
+involves a number of intermediate tensors (namely\r
+B, u, vL, vR, x, y, w) in addition to the final coarse\u0002grained tensor A′\r
+. When applied to an infinite square\r
+tensor network made of copies of tensor A, Fig. 9, these\r
+local replacements produce a coarse-grained tensor net\u0002work made of copies of a new tensor A′\r
+, where there is a\r
+copy of A′for every four initial tensors A. None of the\r
+intermediate tensors appear in the coarse-grained tensor\r
+network. We can think of TNR as implementing a global\r
+change of scale, from (x, τ) to (x\r
+′\r
+, τ′) where\r
+x → x\r
+′ = x/2, τ → τ′ = τ /2. (10)\r
+Let us now consider instead applying TNR to coarse\u0002grain the restriction of the initial square tensor network\r
+on the upper half plane, as represented in Fig. 10. Recall\r
+that this restriction defines a projector onto the ground\r
+state of H. By applying the sequence as local replace\u0002ments of Fig. 8, we see that most of the upper half plane\r
+ends up in a coarse-grained square tensor network again\r
+made of tensors A′. However, near the open boundary of
+
+8\r
+the tensor network first a row of disentanglers u, and then\r
+a row of isometries w, accumulate. These disentanglers\r
+and isometries cannot annihilate with Hermitian conju\u0002gates u\r
+† and w† because those would belong to the lower\r
+half plane, which is not available.\r
+As discussed in the main text and Fig.1 of the main\r
+text, iteration of the coarse-graining produces a full\r
+MERA for the ground state |Ψi of H. Let us now give a\r
+geometrical interpretation of this construction. It turns\r
+out that TNR allows to implement local scale transfor\u0002mations on the lattice [36], that is, a discrete version\r
+of certain conformal transformations in the continuum.\r
+From this perspective, the MERA results from (the dis\u0002crete version) of the conformal trasformation that maps\r
+the upper half plane into the hyperbolic plane H2.\r
+If in the continuum we start with a flat metric in the\r
+upper half plane (x, τ), the infinitesimal square line el\u0002ement is given by dx2 + dτ 2\r
+, which we can rewrite as\r
+τ\r
+2\r
+(dx2/τ 2 +dτ 2/τ 2). Then a local change of scale (Weyl\r
+re-scaling) by τ\r
+−1\r
+(that is, by an amount that depends on\r
+the Euclidean time coordinate τ) produces a new metric\r
+dx2 + dτ 2 → (dx2/τ 2 + dτ 2/τ 2) (11)\r
+which corresponds to H2. Finally, we have also replaced\r
+the Euclidean time coordinate τ with the scale coordi\u0002FIG. 8. Sequence of elementary steps involved in TNR. (a)\r
+Each block of four tensors A is approximately replaced with\r
+an auxiliary tensor B, as well as disentanglers u and isometries\r
+vL and vR. The last three are determined through a local\r
+optimization [17], that is, one that only knows about the four\r
+tensors A and is therefore insensitive to the rest of the tensor\r
+network. (b) Definition of the auxiliary tensor B in terms of\r
+A, u,vL, and vR. (c) Tensor B is approximately replaced by\r
+the product yx−1. (d) Tensors x and y are such that y\r
+−1Bx is\r
+equal to the identity, and are therefore also determined locally.\r
+(e) A combination of tensors is approximately replaced with\r
+tensor A\r
+′\r
+and isometries w, w†. The isometry w is determined\r
+through a local optimization. (f) Definition of tensor A\r
+′\r
+.\r
+FIG. 9. (a) Square tensor network made of infinitely many\r
+copies of tensor A. (b) Plaquettes of four tensors A are re\u0002placed by a tensor B and other tensors according to Fig. 8(a).\r
+(c) Pairs of disentanglers u and u\r
+†\r
+annihilate according to\r
+uu† = I. (d) We decompose each tensor B according to Fig.\r
+8(c). (e) Tensor A\r
+′\r
+and isometries w are introduced accord\u0002ing to Fig. 8(e). (f) Pairs of isometries w and w\r
+†\r
+annihilate\r
+according to ww† = I, producing the final tensor network,\r
+which contains only copies of the tensor A\r
+′\r
+.\r
+nate s ≡ log2(τ), which labels the different layers of the\r
+MERA.\r
+Returning to the discrete geometry of the square ten\u0002sor network, notice that the net effect of iterating TNR\r
+on the (discrete) upper half plane as discussed above is\r
+that we are introducing a change of scale where locally\r
+the metric is changed by an amount proportional to the\r
+distance τ = 2sto the boundary, that is exponential in\r
+the scale variable s, as in the above conformal transfor\u0002mation.\r
+Appendix D.– TNR versus energy minimization\r
+In this section we compare the accuracy and efficiency\r
+of two methods that allow us to obtain a MERA approxi\u0002mation to the ground state |Ψi of a many-body Hamilto\u0002nian H: (i) TNR and (ii) energy minimization [8, 11, 12].\r
+We use the 1D quantum Ising model, with Hamiltonian\r
+H =\r
+X\r
+i\r
+XiXi+1 + λ\r
+X\r
+i\r
+Zi, (12)\r
+where X and Z are Pauli matrices, as a benchmark model\r
+for comparison. The ground state of the Ising Hamilto\u0002nian H at critical magnetic field strength, λ = 1, is rep\u0002resented using a scale-invariant MERA obtained in these\r
+two ways. The scale invariant MERA considered here\r
+consists of three transitional layers followed by infinitely\r
+many copies of a scale-invariant layer [8, 11, 12].\r
+TNR.— In the first approach, we start by generating\r
+the Euclidean path integral for H, as described in sec-"""
+
+[[sections]]
+number = "9"
+title = "FIG. 10. (a) Ground state |Ψi of H, represented by a tensor"
+text = """
+network on the upper half plane made of copies of tensor A.\r
+(b) Approximately equivalent tensor network obtained by re\u0002placing blocks of four tensors A with the auxiliary tensor B\r
+and disentanglers and isometries, according to Fig. 8(a). (c)\r
+The disentanglers annihilate pairwise according to uu† = I,\r
+everywhere except at the open boundary. (d) We approxi\u0002mately replace tensor B by the product yx−1\r
+according to\r
+Fig. 8(c). (e) An approximately equivalent tensor network\r
+is obtained by introducing tensor A\r
+′\r
+and the isometry w,\r
+according to Fig. 8(e). (f) The isometries annihilate pair\u0002wise according to ww† = I, everywhere except near the open\r
+boundary. The net result is thus a coarse-grained tensor net\u0002work on the upper half plane with tensors A\r
+′\r
+and a row of\r
+disentanglers u and isometries w at the open boundary, which\r
+define a layer of the MERA.\r
+FIG. 11. (a) Relative error in the ground energy (per-spin) for\r
+the ground state of the 1D quantum Ising model at criticality,\r
+comparing MERA of bond dimension χ optimized either using\r
+TNR or variational energy minimization. (b) Relative error\r
+in the ground energy from (a), now plotted as a function\r
+of the leading order computational cost of the optimization\r
+method, which scales as O(χ\r
+6\r
+) for TNR and O(χ\r
+9\r
+) for energy\r
+minimization.\r
+tion A. Then we apply four coarse-graining iterations of\r
+TNR, after which the flow in the space of tensors has\r
+reached an approximate scale-invariant fixed-point Afp,\r
+see Eq. 1 in the main text. A scale-invariant MERA\r
+is then built from tensors (disentanglers and isometries)\r
+produced while implementing TNR, as described in the\r
+main text. Here the first three iterations of TNR generate\r
+the three transitional layers, while the fourth iteration of\r
+TNR is used to build the scale-invariant layer.\r
+Energy minimization.— In the second approach, we\r
+use the energy minimization algorithm of Ref. [8, 11, 12]\r
+to directly optimize a scale-invariant MERA (with three\r
+transitional layers preceding the scale-invariant layers) by\r
+iteratively minimizing the expectation value of the H.\r
+The comparison between the ground energy error δE\r
+obtained by the two methods is presented in Fig. 11.\r
+For an equivalent bond dimension χ, energy minimiza\u0002tion produces a MERA with smaller error δE than TNR,\r
+by a factor k ≈ 10 that is roughly independent of χ. That\r
+energy minimization would produce a more accurate es\u0002timate of the ground state energy than TNR was to be\r
+expected, for two reasons. First, the energy minimization\r
+algorithm directly targets the ground energy as its figure\r
+of merits, whereas TNR does not. Second, the energy\r
+minimization algorithm optimizes the MERA by sweep\u0002ing back and forth over length scales/layers many times,\r
+whereas TNR considers each length scale only once, with\u0002out returning back to optimize shorter length scales after\r
+coarse-graining larger length scales.\r
+However the cost of optimization also differs between\r
+the approaches: the leading order cost of energy mini\u0002mization scales as O(χ\r
+9\r
+), whereas the cost of TNR scales\r
+as O(χ\r
+6\r
+). There is also a significant difference in the\r
+number of optimization steps required to reach a con\u0002verged result. The energy minimization algorithm re\u0002quires many more steps to converge, as the algorithm\r
+sweeps over scales thousands of times, compared to TNR,\r
+which treats each scale only once. The difference between\r
+the two approaches in terms of the number of optimiza\u0002tion steps required is difficult to quantify as it depends on\r
+many factors, but here we find that energy minimization\r
+requires roughly an order of magnitude more steps than\r
+TNR. Fig. 11(b) compares the energy error δE between\r
+energy minimization and TNR as a function of the lead\u0002ing order computational costs of the approaches. Even\r
+though this comparison does not take into account the\r
+difference in the number of optimization steps between\r
+the approaches, TNR is already seen to be more compu\u0002tationally efficient in producing a MERA approximation\r
+to the ground state within some specified accuracy δE\r
+than the energy minimization algorithm.\r
+Appendix E.– TRG yields a tree tensor network\r
+(TTN)\r
+The main result of this paper is to show that when\r
+TNR is applied to a tensor network representing the Eu\u0002clidean path integral of a quantum Hamiltonian H (re-
+
+10\r
+stricted to the upper-half plane), it generates a MERA\r
+approximation for the ground state of H. In this sec\u0002tion we show an analogous result for TRG: we show that\r
+when applied to the same tensor network, it generates\r
+instead a tree tensor network (TTN) approximation for\r
+the ground state of H.\r
+This result, which extends to several generalizations of\r
+TRG, offers an alternative perspective to understand the\r
+qualitative differences between TRG and TNR, and pro\u0002vides a robust theoretical argument for why TRG can\u0002not realize a critical fixed-point tensor while TNR can\r
+[17]. Indeed, the failure of TRG to produce a critical\r
+fixed-point tensor can be understood to follow from the\r
+well-known fact that the TTN ansatz (with fixed bond\r
+dimension) cannot reproduce the logarithmic scaling of\r
+entanglement entropy, SL ∼ log(L), found in the ground\r
+states of 1D quantum systems at a critical point.\r
+For simplicity, we will derive this result not for the\r
+original TRG, but for an improved version known as\r
+higher order tensor renormalization group (HOTRG),\r
+which was proposed in Ref.[38]. However, the same con\u0002clusions can also be shown to hold for the square-lattice\r
+form of the original TRG algorithm proposed in Ref.[5].\r
+We begin with brief summary of HOTRG, see Fig. 12.\r
+Consider a square lattice tensor network made of copies\r
+of a tensor A with components Aijkl and bond dimension\r
+χ. In HOTRG, one coarse-grains the tensor network first\r
+in one direction and then in the other. We shall begin\r
+with the horizontal axis. In the first step, left-right pairs\r
+of tensors A are multiplied together, obtaining the six\u0002index tensor A˜,\r
+A˜\r
+i,j1,j2,k,l1,l2 ≡\r
+X\r
+p\r
+Ai,j1,p,l1Ap,j2,k,l2, (13)\r
+as shown in Fig.12(a). We now should truncate the dou\u0002ble indices j ≡ (j1j2) and l ≡ (l1l2) of A˜, which are of\r
+dimension χ\r
+2\r
+, down to dimension χ. In HOTRG this\r
+truncation is performed using a generalized form of the\r
+SVD called the higher order singular value decomposition\r
+(HOSVD), a method of decomposing an N rank tensor\r
+into the product of a core tensor and a set of isometric\r
+tensors. Using the HOSVD, the tensor A˜ is approxi\u0002mately decomposed into a core tensor B (with all four\r
+indices of dimension χ), and a pair of isometries w and\r
+w\r
+†\r
+(with their three indices also of dimension χ),\r
+A˜\r
+i,j1,j2,k,l1,l2 ≈\r
+Xχ\r
+j,l=1\r
+wl,l1,l2Bi,j,k,l(wj,j1,j2)\r
+∗\r
+, (14)\r
+see also Fig. 12(a). [Note that we are assuming, for\r
+simplicity, that the network is invariant under spatial re\u0002flection along the horizontal axis such that the top and\r
+bottom isometries w are conjugates of one another, al\u0002though the same result could also be reached without\r
+this simplifying assumption.] Isometries w satisfy the\r
+FIG. 12. (a) A left-right pair of tensors A is multiplied\r
+to form a new tensor A˜, which is then decomposed using a\r
+truncated HOSVD into the product of a core tensor B and a\r
+pair of isometries w, see also Eqs. 13 and 14. (b) The prod\u0002uct of an isometry w and its conjugate produces the identity,\r
+see Eq. 16. (c) A up-down pair of tensors B is multiplied\r
+to form a new tensor B˜, which is then decomposed using a\r
+truncated HOSVD into the product of a core tensor A\r
+′\r
+and a\r
+pair of isometries v. (d) The product of an isometry v and its\r
+conjugate produces the identity. (e) The sequence of trans\u0002formations from (a-d) above is used to coarse grain a 4 × 4\r
+network of tensors A, yielding a 2 × 2 network of tensors A\r
+′\r
+surrounded by isometries w and v.\r
+following relation,\r
+Xχ\r
+j1,j2=1\r
+wl,j1,j2(wj,j1,j2)\r
+∗ = δl,j , (15)\r
+as depicted in Fig.12(b). After the HOSVD, we obtain\r
+a new square lattice tensor network composed of tensors\r
+B and rescaled by a factor of 2 in the horizontal direc\u0002tion. Following the same steps but now in the vertical\r
+direction, up-down pairs of tensors B are multiplied to\u0002gether to form a six-index tensor B˜, which can then be\r
+decomposed using the HOSVD into a product of a core\r
+tensor A′ and a pair of isometries v and v\r
+†\r
+, see Fig.12(c).\r
+[Again, for simplicity, we have assumed that the network\r
+is invariant under appropriate spatial reflection.] The\r
+combination of horizontal and vertical contraction steps\r
+has taken the initial square lattice network of tensors A\r
+to a new network of tensors A′, one which is rescaled by\r
+a factor of 2 on both axes. This constitutes a single itera\u0002tion of the HOTRG approach. By iteration, we generate\r
+a sequence of increasingly coarse-grained lattices defined"""
+
+[[sections]]
+number = "11"
+title = "FIG. 13. (a) Square lattice tensor network representing"
+text = """
+the ground state of a quantum Hamiltonian H on a ring of\r
+L sites through an infinite Euclidean time evolution. The\r
+tensor network describes a semi-infinite vertical cylinder of\r
+width L and with a row of open indices. (b) The result of\r
+coarse-graining the initial tensor network with one iteration\r
+of HOTRG, see Fig. 12(e), while not touching the L open\r
+indices at the bottom. (c) After coarse-graining with a sec\u0002ond iteration of HOTRG, a TTN connected to a semi-infinite\r
+vertical cylinder of O(1) width is produced. Inset: transfer\r
+matrix T of this cylinder. The eigenvectors of T with largest\r
+eigenvalues correspond to the low energy eigenstates of H.\r
+(d) TTN for the ground state/low energy excited states of H,\r
+where the top tensor is an eigenvector of the transfer matrix\r
+T .\r
+in terms of tensors,\r
+A\r
+(w,v) → A\r
+′\r
+(w\r
+′\r
+,v′\r
+) → A\r
+′′ (w\r
+′′,v′′ ) → A\r
+′′′ → · · · . (16)\r
+Let us now apply HOTRG to a square lattice tensor\r
+network representation of the ground state of a Hamilto\u0002nian H on a periodic chain of size L, as we did in the main\r
+text for TNR. The network consists of a semi-infinite, ver\u0002tical cylinder of width L, with a row of open indices at the\r
+bottom, see Fig. 13(a). Each coarse-graining iteration\r
+rescales the bulk of the network by a linear factor of 2,\r
+while leaving a row of isometries w along the open bound\u0002ary, see Fig.13. After about log2\r
+(L) coarse-graining steps\r
+the size of the system has effectively become O(1), and\r
+we have O(log2(L)) layers of the TTN connected to a\r
+semi-infinite cylinder of O(1) width. This semi-infinite\r
+cylinder can be understood as the infinite product of a\r
+transfer matrix T ; taking the dominant eigenvector of T\r
+as the top tensor of the TTN leads to the ground state\r
+of H. Thus the HOTRG approach, applied to the Eu\u0002clidean path integral of a quantum system H, has been\r
+shown to generate a TTN approximation for its ground\r
+state.\r
+Since the introduction of TRG, a significant improve\u0002ment in renormalization schemes for tensor networks has\r
+been the use of the so-called environment to achieve a\r
+more accurate truncation. The second renormalization\r
+group (SRG) proposed in Ref.[39] uses to knowledge from\r
+the environment, obtained approximately by iteratively\r
+sweeping over all length scales, to allow the tensor trun\u0002cations to be performed so as to minimize the global er\u0002ror, as opposed to the local error minimized in TRG and\r
+HOTRG. Ref. [38] introduced a version of SRG based\r
+upon HOSVD, called the HOSRG, which we will now\r
+consider. The use of the environment allows HOSRG\r
+to more accurately discern which degrees of freedom can\r
+be truncated, and which should be retained, at each RG\r
+step. This allows for a smarter choice of isometries. How\u0002ever, HOSRG is structurally still based upon the same\r
+blocking scheme as HOTRG, Fig.12(e). It follows that\r
+HOSRG also leads to a TTN representation of ground\r
+and excited states as depicted in Fig.13. The only dif\u0002ference being that the isometries w that compose the\r
+TTN have been better chosen with HOSRG than with\r
+HOTRG, as they minimize the global error. In particu\u0002lar, for the same bond dimension χ, HOSRG may pro\u0002duce a more accurate TTN approximation to the ground\r
+state than HOTRG.\r
+However, as it happens with HOTRG (and TRG),\r
+HOSRG cannot generate a proper RG flow in the space\r
+of tensors – that is, one that at criticality flows to a criti\u0002cal fixed-point tensor. Indeed, HOSRG produces a TTN,\r
+which is known to only be able to accurately describe a\r
+critical system if the bond dimension grows with increas\u0002ing scale. But a bond dimension that grows with scale is\r
+incompatible with having a fixed-point tensor."""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 4
+image_path = "images/image_p4_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 4
+image_path = "images/image_p4_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 4
+image_path = "images/image_p4_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 6
+image_path = "images/image_p6_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 6
+image_path = "images/image_p6_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 7
+image_path = "images/image_p7_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 7
+image_path = "images/image_p7_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 7
+image_path = "images/image_p7_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 8
+image_path = "images/image_p8_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 8
+image_path = "images/image_p8_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 9
+image_path = "images/image_p9_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 9
+image_path = "images/image_p9_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 10
+image_path = "images/image_p10_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 11
+image_path = "images/image_p11_19.png"

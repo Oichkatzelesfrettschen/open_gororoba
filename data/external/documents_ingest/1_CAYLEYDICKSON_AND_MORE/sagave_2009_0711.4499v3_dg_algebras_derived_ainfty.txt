@@ -1,0 +1,3114 @@
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+arXiv:0711.4499v3 [math.KT] 21 Jul 2009
+
+STEFFEN SAGAVE
+
+Abstract. A differential graded algebra can be viewed as an A∞ -algebra. By
+a theorem of Kadeishvili, a dga over a field admits a quasi-isomorphism from
+a minimal A∞ -algebra. We introduce the notion of a derived A∞ -algebra and
+show that any dga A over an arbitrary commutative ground ring k is equivalent
+to a minimal derived A∞ -algebra. Such a minimal derived A∞ -algebra model
+for A is a k-projective resolution of the homology algebra of A together with
+a family of maps satisfying appropriate relations.
+As in the case of A∞ -algebras, it is possible to recover the dga up to quasiisomorphism from a minimal derived A∞ -algebra model. Hence the structure
+we are describing provides a complete description of the quasi-isomorphism
+type of the dga.
+
+1. Introduction
+An A∞ -algebra over a commutative ring k is a Z-graded k-module A with structure maps mj : A⊗j → A[2 − j] satisfying certain relations. A∞ -algebras were
+introduced by Stasheff in the 1960’s [21]. We refer to Keller’s survey [13] for background and for references to the various applications A∞ -algebras have found in
+different fields of mathematics.
+A differential graded algebra over k is an A∞ -algebra with m1 the differential,
+m2 the multiplication, and mj = 0 for j ≥ 3. If k is a field, a theorem of Kadeishvili
+[11] asserts that every k-dga A admits a quasi-isomorphism of A∞ -algebras from
+a minimal A∞ -algebra, where minimal means m1 = 0. The underlying graded
+k-algebra of such a minimal model for A is the homology algebra H∗ (A). The
+quasi-isomorphism type of A can be recovered from its minimal model. Therefore, minimal A∞ -algebras provide an alternative description for quasi-isomorphism
+classes of dgas [13, §3.3], and the minimal A∞ -structure on H∗ (A) specifies precisely the additional information needed to reconstruct the quasi-isomorphism type
+of a dga from its homology [13, §2.1].
+From now on let k be a commutative ring. Then the conclusion of Kadeishvili’s
+theorem will in general not hold if the homology H∗ (A) is not k-projective since
+for example a k-linear cycle selection morphism may not exist.
+The aim of the present paper is to generalize the notion of an A∞ -algebra to
+a context in which a dga A admits a minimal model without restrictions on k or
+H∗ (A), and thereby to provide a different description of the quasi-isomorphism type
+of A.
+Our approach is motivated by the following two observations. On the one hand,
+A∞ -algebras are closely related to Hochschild cohomology. For example, the m3
+of the minimal A∞ -structure on H∗ (A) is a cocycle in the Hochschild complex of
+H∗ (A) whose cohomology class encodes relevant information about A; see [2]. On
+the other hand, Hochschild cohomology is for many purposes the ‘wrong’ cohomology theory if we apply it to k-algebras which are not k-projective. In this case,
+Date: July 21, 2009.
+2000 Mathematics Subject Classification. Primary 16E45; Secondary 16E40, 18G10, 18G55,
+55S30.
+1
+
+2
+
+STEFFEN SAGAVE
+
+one should rather consider the derived Hochschild cohomology, which is also known
+as Shukla cohomology. Following Baues and Pirashvili [1], the latter cohomology
+theory can be defined as the Hochschild cohomology of a k-projective dga resolving
+the algebra.
+Our strategy for finding minimal models in the general context is therefore to
+first take a k-projective resolution of H∗ (A) in the direction of a new grading, and
+then to look for the analog to the minimal A∞ -structure on this bigraded k-module.
+To take the additional grading into account, we introduce the notion of a derived
+A∞ -algebra (dA∞ -algebra for short). A dA∞ -algebra is a (N, Z)-bigraded k-module
+⊗j
+E with structure maps mE
+→ E[i, 2 − (i + j)] for i ≥ 0 and j ≥ 1 satisfying
+ij : E
+appropriate relations. It is minimal if mE
+01 = 0. Both dgas and A∞ -algebras can
+be considered as dA∞ -algebras concentrated in degree 0 of the N-grading. The
+notion of equivalence suitable for our purposes is that of an E2 -equivalence of
+dA∞ -algebras, which is detected on the iterated homology with respect to mE
+01 and
+mE
+.
+11
+Theorem 1.1. Let A be a differential graded algebra over a commutative ring k.
+There exists a k-projective minimal dA∞ -algebra E together with an E2 -equivalence
+E → A of dA∞ -algebras. This minimal dA∞ -algebra model E of A is well defined
+up to E2 -equivalences between k-projective minimal dA∞ -algebras. Particularly, the
+E
+bigraded k-module E together with the differential mE
+11 and the multiplication m02
+is a k-projective resolution of the graded k-algebra H∗ (A).
+The first step in the proof of the theorem is to construct a dA∞ -algebra B with
+mB
+ij = 0 if i + j ≥ 3 together with a map B → A of dA∞ -algebras such that the
+induced map H∗ (B, mB
+01 ) → H∗ (A) is a k-projective resolution. To find such a
+B, we employ the cofibrant replacement in a resolution model category structure
+on the category of simplicial dgas. The second step is to replace B by a minimal
+dA∞ -algebra, which is now possible since H∗ (B, mB
+01 ) is k-projective.
+E
+E
+If E is a minimal dA∞ -algebra model of the dga A, the sum mE
+03 + m12 + m21 is a
+cocycle in a complex computing the derived Hochschild cohomology of H∗ (A). Its
+cohomology class does not depend on the choice of the minimal model. This derived
+Hochschild cohomology class γA ∈ dHH3,−1 (H∗ (A)) associated with A generalizes
+the Hochschild cohomology class of a dga over a field studied by Benson, Krause,
+and Schwede in [2]. For example, γA determines all triple matric Massey products
+in H∗ (A).
+Let k = Z/p2 with p an odd prime, and let A be the dga which has a copy of
+k in degrees 0 and 1 and multiplication by p as the differential A1 → A0 . Then
+H∗ (A) is an exterior algebra over Fp on a class in degree one. In Example 5.1, we
+describe a minimal dA∞ -algebra model of A. The derived Hochschild cohomology
+class γA defined by means of this minimal model is non-zero.
+The information encoded in a minimal dA∞ -algebra model is not restricted to
+the resolution of H∗ (A) and the triple Massey products. In fact, we can recover the
+dga from a minimal dA∞ -algebra model:
+Theorem 1.2. For a dA∞ -algebra E, there is an associated differential graded
+algebra Tot HomE (E, E). If E is a minimal dA∞ -algebra model of a dga A, the dga
+Tot HomE (E, E) is quasi-isomorphic to A.
+Therefore, we have given an answer to the question of which additional structure
+is needed to reconstruct the quasi-isomorphism type of a dga over a commutative
+ground ring from its homology algebra: A k-projective resolution of its homology
+equipped with a minimal dA∞ -algebra structure provides the necessary information.
+A different approach to describe quasi-isomorphism types of dgas is to use Postnikov systems and k-invariants. This approach is used by Dugger and Shipley in
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+3
+
+[4, §4] for their study of topological equivalences of dgas. One advantage of the
+minimal dA∞ -algebra structures introduced in the present paper is that they also
+exist for dgas with homology in negative degrees.
+One may apply our results to Ext-algebras. If M is a k-module, the Yonedaalgebra Ext∗k (M, M ) is the homology of the endomorphism dga Homk (P, P ) of a kprojective resolution P of M . Hence a minimal dA∞ -algebra model for Homk (P, P )
+provides a k-projective resolution of Ext∗k (M, M ) with structure maps mij . This
+structure is well defined up to E2 -equivalence, and it reflects the quasi-isomorphism
+type of Homk (P, P ). We calculate it for Ext∗Z (Z/p, Z/p). This generalizes the
+existence of a minimal A∞ -structure on the extension algebra of a module over an
+algebra over a field [13, §3.3].
+Organization. In the second section, we define dA∞ -algebras and explain how
+they generalize A∞ -algebras. We introduce bidgas and twisted dgas and define the
+notion of E2 -equivalence. In the third section, we explain how dgas can be resolved
+by bidgas. This makes use of Bousfield’s theory of resolution model categories.
+The fourth section features the proof of Theorem 1.1. In Section 5, we define
+the derived Hochschild cohomology class associated with a dga and describe the
+examples mentioned in the Introduction. In the sixth section, we introduce modules
+over dA∞ -algebras and use the enrichment of module categories in twisted chain
+complexes to prove Theorem 1.2. The last section contains four lemmas needed in
+Section 4.
+Notation and conventions. Throughout the paper, k is a commutative ground
+ring, and all tensor products are taken over k. We consider (N, Z)-bigraded kmodules E = (Est )s∈N,t∈Z . Their shift is defined by E[i, j]st = Es−i,t−j . We
+sometimes refer to the N-grading as the horizontal direction and to the Z-grading
+as the vertical direction.
+The tensor product of two bigraded k-modules E and F is the bigraded k-module
+E ⊗ F with
+M
+(1.3)
+(E ⊗ F )uv =
+Eij ⊗ Epq .
+i+p=u, j+q=v
+
+We follow the Kozul sign convention. For maps f : W → X[i, j], g : Y → Z[p, q]
+and elements w ∈ Wst , y ∈ Yuv this means (f ⊗ g)(w ⊗ y) = (−1)hw,gi f (w) ⊗ g(y)
+0
+with hw, gi = sp + tq. Similarly, we get (f ⊗ g)(f 0 ⊗ g 0 ) = (−1)hf ,gi f f 0 ⊗ gg 0 for
+tensor products of composable maps. Tensor product, shift, and sign convention
+for k-modules with a single Z-grading are given accordingly.
+We assume familiarity with the basics about A∞ -algebras, as for example described in Section 3 of Keller’s survey [13]. In our sign convention for A∞ -algebras,
+we follow Lefèvre [14] and ask the structure maps mj of an A∞ -algebra to satisfy
+P
+(−1)rq+t mj (1⊗r ⊗ mq ⊗ 1⊗t ) = 0. Remark 4.4 explains our choice of signs.
+2. dA∞ -algebras and twisted chain complexes
+Our main object of study is the following generalization of an A∞ -algebra whose
+definition was already outlined in the Introduction.
+Definition 2.1. A derived A∞ -algebra (dA∞ -algebra for short) is a (N, Z)-bigraded
+k-module E with k-module maps mij : E ⊗j → E[i, 2 − (i + j)] and a unit map
+ηE : k → E for i ≥ 0, j ≥ 1 satisfying
+X
+⊗r
+⊗t
+(2.2)uv
+(−1)rq+t+pj mE
+⊗ mE
+ij (1
+pq ⊗ 1 ) = 0
+i+p=u, j+q=v+1
+r+1+t=j
+j,q≥1, i,r,p,t≥0
+
+4
+
+STEFFEN SAGAVE
+
+for all u ≥ 0, v ≥ 1 and the unit condition:
+(2.3)
+
+mE
+01 ηE = 0,
+
+E
+mE
+02 (ηE ⊗ 1) = 1 = m02 (1 ⊗ ηE ),
+
+and
+
+⊗r−1
+mE
+⊗ ηE ⊗ 1⊗j−r ) = 0 if i + j ≥ 3 with 1 ≤ r ≤ j
+ij (1
+
+Example 2.4. A derived A∞ -algebra concentrated in horizontal degree 0 is the
+same as a (strictly unital) A∞ -algebra with the m0j as structure maps: the equations (2.2)uv for u = 0 are the A∞ -relations. Since a k-dga A is a special instance
+of an A∞ -algebra, it is a dA∞ -algebra concentrated in horizontal degree 0 for which
+A
+only mA
+01 and m02 may be non-zero.
+Definition 2.5. A map of dA∞ -algebras from E to F consists of a family of kmodule maps fpq : E ⊗q → F [p, 1 − (p + q)] with p ≥ 0 and q ≥ 1 satisfying
+X
+⊗t
+(−1)rq+t+pj fij (1⊗r ⊗ mE
+pq ⊗ 1 )
+(2.6)uv
+
+i+p=v, j+q=v+1
+r+1+t=j
+j,q≥1,i,r,p,t≥0
+
+X
+
+=
+
+(−1)σ mF
+ij (fp1 q1 ⊗ . . . ⊗ fpj qj )
+
+i+p1 +···+pj =u
+q1 +···+qj =v
+1≤j≤v, ps ≥0, qs ≥1
+
+for u ≥ 0, v ≥ 1 and the unit condition
+(2.7) f01 ηE = ηF and fpq (1⊗r−1 ⊗ ηE ⊗ 1⊗q−r ) = 0 if p + q ≥ 2 with 1 ≤ r ≤ q.
+The σ governing the sign in (2.6)uv is
+
+
+j−1
+X
+jpw + w(qj−w − pw ) + qj−w 
+(2.8)
+σ =u+
+w=1
+
+j
+X
+
+
+ps + qs  .
+
+s=j−w+1
+
+Example 2.9. Maps between dA∞ -algebras concentrated in horizontal degree 0
+are maps of A∞ -algebras.
+In Section 4, we will give an equivalent but more economic description of dA∞ algebras and their maps in terms of a structure on the reduced tensor algebra of
+E[0, 1]. Amongst others, we employ it to define the composition of dA∞ -algebra
+maps and the notion of a module over a dA∞ -algebra, and it will also help to
+explain the signs. We use the less streamlined Definition 2.1 here since both our
+examples and our notion of equivalence fit in more naturally.
+We single out an interesting special case of a dA∞ -algebra:
+Definition 2.10. A bidga is a dA∞ -algebra B with mB
+ij = 0 if i + j ≥ 3. A map
+f : A → B of bidgas is a map of dA∞ -algebras with fpq = 0 for p + q ≥ 2. We write
+bidgak for the resulting category.
+Of course, dgas give rise to bidgas concentrated in horizontal degree 0.
+Remark 2.11. The category bidgak admits a different description. Let biChk
+be the category of (N, Z)-graded bicomplexes of k-modules. Objects are bigraded
+k-modules E with differentials d0 : E → E[0, 1] and d1 : E → E[1, 0] satisfying
+d0 d0 = 0, d1 d1 = 0, and d0 d1 = d1 d0 . The tensor product of bigraded k-modules
+induces a symmetric monoidal product on biChk . A monoid in biChk is a bicomplex
+B with a multiplication µ : B ⊗ B → B satisfying associativity, two Leibniz rules,
+B
+B
+and a unit condition. Setting mB
+01 = d0 , m11 = d1 and m02 = µ, we observe that
+the six non-trivial formulas (2.2)uv for u + v ≤ 3 are the associativity law, the two
+Leibniz rules, and the three identities for the differentials. After comparing the unit
+conditions, we see that bidgak is the category of monoids in biChk . This is similar
+to the characterization of dgas as the monoids in the category of chain complexes
+with respect to the tensor product of chain complexes.
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+5
+
+Definition 2.12. A twisted dga (tdga for short) is a dA∞ -algebra T for which only
+mT02 and mTi1 with i ≥ 0 may be non-zero. A map f : T → S of tdgas is a map of
+dA∞ -algebras with fpq = 0 if q ≥ 2. We write tdgak for the resulting category.
+Every bidga is a tdga. The name twisted dga is chosen in view of
+Definition 2.13. [6] A twisted chain complex E is an (N, Z)-graded k-module with
+differentials dE
+i : E → E[i, 1 − i] for i ≥ 0 satisfying
+X
+(2.14)u
+(−1)i di dp = 0
+i+p=u
+
+for u ≥ 0. A map of twisted complexes E → F is a family of maps fi : E → F [i, −i]
+satisfying
+X
+X
+(2.15)u
+(−1)i fi dE
+dF
+p =
+i fp .
+i+p=u
+
+i+p=u
+
+The
+P composition of two maps f : E → F and g : F → G is defined by (gf )u =
+i+p=u gi fp . We write tChk for the resulting category.
+A class of examples arises from the fact that biChk is a subcategory of tChk . The
+signs in Definition 2.13 differ from those in [6]. We explain our choice in Remark
+4.4. Some authors use the term ‘multicomplex’ instead of ‘twisted chain complex’.
+Remark 2.16. Similarly as in Remark 2.11, the tensor product of graded modules
+defines a symmetric monoidal product on tChk . Monoids in tChk are tgas. The
+resulting composition tdga maps is of course a special case of the composition of
+dA∞ -algebra maps to be given in Definition 4.5.
+Let E be a dA∞ -algebra. Identifying (2.2)uv for v = 1 with (2.14)u , we see that
+the mE
+i1 with i ≥ 0 specify the underlying twisted chain complex of E. For a map
+f : E → F of dA∞ -algebras, the fi1 form a map of the underlying twisted chain
+complexes. We thus occasionally write di for mE
+i1 when we refer to the underlying
+twisted chain complex of a dA∞ -algebra E.
+Remark 2.17. The underlying twisted chain complex is one instance in which
+twisted chain complexes behave to dA∞ -algebras as unbounded chain complexes
+behave to A∞ -algebras. This analogy turns out to be fruitful, and we frequently
+exploit it in Sections 4 and 6.
+Next we study the passage from twisted chain complexes to chain complexes.
+There is a total complex functor
+M
+Tot : tChk → Chk ,
+Totn X =
+Xst ,
+s+t=n
+
+where the differential d : Totn X → Totn−1 X is i≥0 dX
+i . A map of twisted comP
+plexes f : X → Y induces a map i≥0 fi of total complexes. This is well defined
+since only finitely many dX
+i or fi leave a fixed Xst .
+If we consider the total complex as a twisted chain complex concentrated in
+horizontal degree 0, there is a map ρX : X → Tot X of twisted chain complexes. Its
+component (ρX )i : X → (Tot X)[i, −i] is the inclusion of Xi∗ into (Tot X)[i, −i]i∗ .
+We can interpret ρ as a natural transformation from the identity on tChk to Tot.
+The presence of this natural transformation is one advantage of the category of
+twisted chain complexes over the category of bicomplexes.
+P
+
+Lemma 2.18. The functor Tot : tChk → Chk is strongly monoidal, and ρ is a
+strong monoidal transformation. In particular, if E is a tdga, then Tot E is a dga,
+and ρE : E → Tot E is a map of tdgas.
+
+6
+
+STEFFEN SAGAVE
+
+L
+The total complex has a filtration defined by F p (Tot X)n = s≤p Xs,n−s . The
+2 ∼
+E2 -term of the resulting spectral sequence is Epq
+= Hph Hqv (X). Here we write
+v
+H∗ (E) for the ‘vertical’ homology of E with respect to the differential d0 . By
+(2.14)u for u = 2, d1 induces a differential on H∗v (E), and we write H∗h (H∗v (E)) for
+the resulting ‘horizontal’ homology group.
+Maps of twisted complexes induce maps of spectral sequences: given f : E → F
+in tChk , f0 is a d0 -chain map on E → F , and formula (2.15)u for u = 1 ensures
+that H∗v (f0 ) induces chain map with respect to the d1 -differential H∗v (d1 ). Hence
+we obtain H∗h (H∗v (f0 )) on the E2 -term, and so on.
+Definition 2.19. A map f : E → F of twisted complexes is an E2 -equivalence if
+Hsh (Htv (f0 )) is an isomorphism for s ∈ N, t ∈ Z. A map of bicomplexes, bidgas,
+twisted dgas or derived A∞ -algebras is an E2 -equivalence if the underlying map of
+twisted chain complexes is.
+Accordingly, f is an E1 -equivalence if it induces an isomorphism on H∗v , and
+every E1 -equivalence is an E2 -equivalence.
+The following lemma is immediate.
+Lemma 2.20. If X is a twisted chain complex with E2 -homology concentrated in
+horizontal degree 0, then ρX : X → Tot X is an E2 -equivalence.
+3. Resolving dgas by bidgas
+The aim of this section is to construct resolutions of dgas that induce resolutions
+of their graded homology algebras. We saw that a dga can be considered as a bidga
+concentrated in horizontal degree 0. Particularly, a graded k-algebra is a bidga
+concentrated in horizontal degree 0 with both differentials trivial.
+Definition 3.1. A termwise k-projective resolution of a graded algebra Λ is a
+termwise k-projective bidga E with trivial vertical differential together with an
+E2 -equivalence E → Λ of bidgas.
+Here we think of a bidga with trivial vertical differential as a differential graded
+algebra in graded algebras. If E → Λ is a termwise k-projective resolution, E∗,0 is
+a dga which is k-projective and whose homology is isomorphic to Λ0 concentrated
+in degree 0. In other words, a termwise k-projective resolution is the graded analog
+of the resolution of a k-algebra by a degreewise k-projective dga.
+If the graded algebra is the homology of a differential graded algebra, we can ask
+even more:
+Definition 3.2. Let A be a k-dga. A k-projective E1 -resolution of A is a bidga B
+v
+together with an E2 -equivalence B → A of bidgas such that Hst
+(B) is k-projective
+v
+and the map k → H00 (B) induced by the unit k → B splits as a k-module map.
+A termwise k-projective E1 -resolution of a dga A is a termwise k-projective
+resolution of the graded algebra H∗v (A) which is induced from a resolution of the
+dga and satisfies an additional unit condition.
+Example 3.3. Let p be an odd prime and k = Z/p2 . The k-dga A = Λ∗Z/p2 (w)
+with |w| = 1 and d(w) = p is non-formal and has homology Λ∗Fp (w) with |w| = 1.
+It is also considered in [1, §5.2]. We will give a k-projective E1 -resolution of A.
+Consider the (N, Z)-bigraded k-algebra
+V = k[a, b, u, v]/(a2 , b2 , au − bv, auv, buv, u2 , v 2 ),
+with |a| = |b| = (0, 0) and |u| = |v| = (0, 1). We set dV0 (u) = a and dV0 (v) = b. This
+extends uniquely to a differential on V . We think of V as a dga concentrated in
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+7
+
+horizontal degree 0. Its homology is Λ∗k (z) with z is represented by au. Let H be
+the (N, Z)-bigraded k-algebra
+Λ∗k (x) ⊗ Γ∗k (y)
+
+with
+
+|x| = (1, 0), |y| = (2, 0),
+
+concentrated in vertical degree 0. We define B = V ⊗ H, so that Bst = Vs0 ⊗ H0t .
+The multiplications on V and H turn B into a bigraded k-algebra. Since dH
+0 = 0
+for degree reasons, the dV0 on V induces a vertical differential dB
+satisfying
+the
+0
+B
+Leibniz rule. We define dB
+(xy
+)
+=
+(p
+−
+pa
++
+b)y
+and
+d
+(y
+)
+=
+(p
+−
+b
+−
+ab)xy
+i
+i
+i
+i−1 ,
+1
+1
+where yi is the divided power algebra generator in degree 2i. The dB
+is
+linear
+with
+1
+B
+respect to a, b, u, and v, and dB
+0 and d1 commute.
+It is easy to see H∗v (B) = Λ∗k (x, z) ⊗ Γ∗k (y) as well as d1 (y i ) = p x y i−1 and
+d1 (x y i ) = py i . Hence B is a bidga for which H∗v (B) is bidegreewise k-projective.
+A map of bidgas α : B → A is defined by setting
+α(y0 ) = 1, α(a) = p, α(b) = −p, α(u) = w, and α(v) = −w.
+This is multiplicative and compatible with the relations among a, b, u, and v. Since
+B
+α(dB
+1 (x)) = 0, the α is also compatible with d1 . Therefore, it is a bidga map. On
+v
+v
+vertical homology α induces H∗ (α) : H∗ (B) → H∗v (A) sending y 0 to 1 and z to w.
+This is easily seen to be a resolution of H∗v (A).
+Returning to the general case, a map of k-projective E1 -resolutions from B → A
+to B 0 → A is a bidga map f : B → B 0 making the obvious triangle commutative.
+It is defined to be an E2 -equivalence if f is one.
+Theorem 3.4. Every k-dga A admits a k-projective E1 -resolution B → A. Two
+such resolutions can be related by a zig-zag of E2 -equivalences between k-projective
+E1 -resolutions.
+The proof of the theorem occupies the rest of the section. It uses Quillen’s
+language of model categories [15, 9]. The point is to use the cofibrant replacement
+in an appropriate model structure on the category sdgak of simplicial dgas.
+We start by briefly recalling Bousfield’s general setup for resolution model structures [3], or rather the dual version of [10]. Let C be a pointed model category.
+Let P be a class of group-objects in Ho(C). A morphism p : X → Y in Ho(C) is a
+P-epi if p∗ : [P, X]n → [P, Y ]n is onto for every P ∈ P and n ≥ 0, where [X, Y ]n =
+Ho(C)(Σn X, Y ). An object A ∈ Ho(C) is P-projective if p∗ : [A, X]n → [A, Y ]n is
+onto for all P-epis p and n ≥ 0. Maps in C (resp. objects in C) are P-epis (resp.
+P-projective) if they are in Ho(C). A map in C is a P-projective cofibration if it
+has the left lifting property with respect to all P-epi fibrations.
+A map X → Y in
+`
+C is P-free if it is a composition of an inclusion
+X
+→
+X
+P
+with
+P cofibrant and
+`
+P-projective and an acyclic cofibration X P → Y . We say that Ho(C) has enough
+P-projectives if every object X ∈ Ho(C) admits a P-epi Y → X with P-projective
+source. In this case, we call P a class of projective models in Ho(C).
+The next definition makes use of the standard model structure on the category
+of simplicial groups ([15, II.3.7]), the Reedy model structure on sC [7, VII.2.12],
+and the notion of the latching object Ln X and its structure map Ln X → Xn for
+X ∈ sC [7, VII.1.5].
+Definition 3.5. Let f : X → Y be a map in sC.
+(i) f is a P-equivalence if f∗ : [P, X]n → [P, Y ]n is a weak equivalence in simplicial
+groups for all P ∈ P and n ≥ 0.
+(ii) f is a P-fibration if it is a Reedy-fibration and f∗ : [P, X]n → [P, Y ]n is a
+fibration of simplicial groups for all P ∈ P `
+and n ≥ 0.
+(iii) f is a P-cofibration if the induced maps Xn Ln X Ln Y → Yn are P-projective
+cofibrations for all n ≥ 0.
+
+8
+
+STEFFEN SAGAVE
+
+Theorem 3.6. [3, Theorem 3.3] Let C be a right proper pointed model category
+and let P be a class of projective models for Ho(C). With the above P-equivalences,
+P-fibrations, and P-cofibrations, sC becomes a right proper model category. It is
+simplicial with respect to the external simplicial structure.
+We frequently use the following feature of this model structure:
+Lemma 3.7. A P-cofibration in sC is termwise a P-projective cofibration in C.
+Proof. This is a consequence of [8, Lemma 15.3.9], compare [3, Lemma 5.3].
+
+
+
+Our main example is the category Chk with the projective model structure [9,
+Theorem 2.3.11]. Since Chk is stable, all objects in Ho(Chk ) are cogroup objects.
+Let P be the set of objects {S n (k)|n ∈ Z} in Ho(Chk ) = D(k), where S n (k)i = k
+if i = n and 0 otherwise. The P-epis are the maps which induce surjections in
+homology.
+Lemma 3.8. With this P, the category Ho(Chk ) has enough P-projectives. An
+object in Ho(Chk ) is P-projective if and only if it has degreewise k-projective homology.
+Proof. Since every object is the codomain of a P-epi mapping out of a sum of
+objects in P, there are enough P-projectives. Applying this to a P-projective object
+X shows that X is a retract of a sum of objects in P. Hence X has degreewise
+k-projective homology. On the other hand, an object with degreewise k-projective
+homology is a retract of a sum of objects of P, and therefore P-projective.
+
+All objects in Chk are fibrant, so Chk is right proper. Theorem 3.6 yields the
+P-model structure on sChk .
+Analogous to the classical case of simplicial abelian groups and simplicial rings,
+simplicial dgas can be considered as the monoids in the category sChk of simplicial
+chain complexes with respect to the termwise tensor product.
+Proposition 3.9. The forgetful functor U : sdgak → sChk creates a cofibrantly
+generated model structure on sdgak in which a map f is a P-fibration or a Pequivalence if U (f ) is. Cofibrant objects in sdgak are termwise P-projective cofibrant in Chk . The unit map of a cofibrant replacement in sdgak splits in homology.
+Proof. First notice that the P-model structure on sChk is cofibrantly generated.
+To obtain the generating cofibrations I and generating acyclic cofibrations J, one
+has to add the generating acyclic cofibrations of the Reedy model structure [8,
+Proposition 15.6.24] to the two sets of maps described in [10, Lemma 2.7].
+The projective model structure on Chk creates a model structure on dgak [18,
+§5], which gives rise to a Reedy model structure on sdgak . As the matching object
+functor is defined as a limit and the forgetful functor U commutes with limits, a
+map f in sdgak is a Reedy fibration or a Reedy weak equivalence if and only if
+U (f ) is.
+Since all objects in simplicial abelian groups are fibrant, the P-fibrant objects in
+sChk coincide with the Reedy fibrant objects. Therefore, the Reedy fibrant replacement functor in sdgak is a fibrant replacement functor for the P-model structure
+to be constructed.
+The cotensor of the external simplicial structure on sChk is defined as a limit [7,
+p. 371] and therefore extends to a functor
+homsdgak : S op × sdgak → sdgak .
+As the P-model structure on sChk is simplicial, homsdgak (−, Y ) maps weak equivalences to P-equivalences and cofibrations to P-fibrations provided Y is P-fibrant.
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+9
+
+Hence the simplicial path object for a fibrant object qualifies as a path object for
+the P-model structure on sdgak we are heading for.
+Since the P-model structure on sChk is cofibrantly generated, the verification
+of the axioms for the P-model structure on sdgak now follows from applying [18,
+Lemma 2.3(2)] to the left adjoint of U . As in Quillen’s original argument [15,
+II.4.9], one can reduce the assumptions to presence of a path object and the fibrant
+replacement functor as established above.
+The generating cofibrations T (I) of the P-model structure on sdgak are obtained
+by applying the free associative algebra functor T to I. If X is P-projective and
+cofibrant, − ⊗ X preserves P-free maps. Cobase change also preserves P-free maps.
+The maps in I are either termwise acyclic cofibrations
+in the projective model
+`
+structure on Chk , or termwise of the form X → X P with P ∈ P. By the careful
+analysis of the free associative algebra functor carried out in [18, Lemma 6.2], it
+follows that for a termwise P-projective cofibrant X in sdgak , the map X → Y
+obtained from attaching a generating cofibration f ∈ T (I) to X is is isomorphic
+to the inclusion of X into the colimit of a countable sequence of termwise P-free
+maps: inspecting the proof the second statement of the cited lemma, we see that
+it is enough to provide the last four statements and Lemma 3.10.
+The initial object of sdgak is itself termwise P-projective. Hence the map from
+the initial object k to a cofibrant replacement constructed by means of the small
+object argument applied to T (I) is termwise a transfinite composition of P-free
+maps. Therefore, it splits in homology. In particular, any cofibrant replacement is
+termwise P-projective cofibrant. By the retract argument, all cofibrant objects are
+termwise P-projective cofibrant.
+
+Let f : X → Y and g : X 0 → Y 0 be maps in Chk`
+or sChk . We define the pushout
+product map f g to be the induced map Y ⊗ X 0 X⊗X 0 X ⊗ Y 0 → Y ⊗ Y 0 .
+Lemma 3.10. Let K be the class of termwise acyclic cofibrations in sChk`, and let
+L be the class of maps in sChk which are termwise of the form X → X P with
+P a P-projective cofibrant object. Then (K ∪ L)(K ∪ L) ⊂ (K ∪ L).
+Proof. The pushout product axiom [19, Definition 3.1] holds in Chk . It states
+that if f and g are cofibrations in Chk , then the pushout product map f g is a
+cofibration which is acyclic if f or g is. The axiom immediately implies KK ⊂ K.
+Since objects in P are cofibrant, it also shows that for P ∈ P and f ∈ K, the map
+P ⊗ f is again in K. This argument implies KL ∪ LK ⊂ K. If both maps are
+in L, it is enough to show that for two P-projective cofibrant objects P, P 0 ∈ P,
+their product P ⊗ P 0 is P-projective cofibrant. Cofibrancy is clear. Since both have
+k-projective homology, the E2 -term of the bicomplex spectral sequence computing
+the homology of P ⊗ P 0 consists only of a single non-trivial line in which all entries
+are k-projective. By Lemma 3.8, P ⊗ P 0 is P-cofibrant.
+
+We need an instance of the Dold-Kan correspondence to go back and forth between simplicial chain complexes and bicomplexes. The version in [7, III Theorem
+2.5] is sufficiently general to apply to our context.
+The associated chain complex and normalized chain complex are functors
+C : sChk → biChk
+
+and
+
+N : sChk → biChk .
+
+The first is defined by C(X)s∗ = Xs with horizontal differential given by the alternating sum of the simplicial face maps, and N (X) is the quotient of C(X) by
+the subobject generated by the image of the degeneracies. The functor N is an
+equivalence of categories. Its inverse Γ : biChk → sChk can be defined by
+M
+Γ(E)n =
+Ep∗
+[n][p]
+
+10
+
+STEFFEN SAGAVE
+
+with the simplicial structure maps described on [7, p. 148].
+The monoidal properties of these functors are as in the classical case discussed
+in [19, §2.3,§2.4]. We have a shuffle map ∇ and the Alexander-Whitney map AW ,
+∇ : CX ⊗ CY → C(X ⊗ Y )
+
+and
+
+AW : C(X ⊗ Y ) → CX ⊗ CY,
+
+∇ is a lax monoidal transformation, AW is a lax comonoidal transformation, and
+both maps preserve the subcomplexes of degenerate simplicies and induce
+∇ : N X ⊗ N Y → N (X ⊗ Y )
+
+and
+
+AW : N (X ⊗ Y ) → N X ⊗ N Y.
+
+For a simplicial dga X, the associated chain complex of the underlying simplicial
+chain complex is a bidga with multiplication defined by
+∇
+
+CX ⊗ CX −→ C(X ⊗ X) → C(X).
+Similarly, N X is a bidga. For a bidga B, the Alexander-Whitney map induces the
+structure of a simplicial dga on Γ(B) [19, (2.9)]. As explained in [19, Remark 2.14],
+the functors Γ and N do not induce an equivalence between sdgak and bidgak , due
+to the failure of the unit of the adjunction to be monoidal. However, the adjunction
+counit isomorphism N Γ ∼
+= idbiChk is monoidal on the level of complexes [19, Lemma
+2.11], which is sufficient for our purposes.
+Lemma 3.11. (i) The functor C maps P-equivalences of simplicial dgas to E2 equivalences of bidgas.
+(ii) For a k-bidga B, there is a canonical E2 -equivalence C(Γ(B)) → B of bidgas
+which is natural in B.
+Proof. It is enough to check (i) additively. Since C commutes with taking vertical homology, the assertion follows from the definition of P-equivalences and E2 equivalences.
+The map in (ii) is the one inducing the counit N (Γ(B)) → B. It is a map of
+bidgas since the counit is monoidal and the shuffle map is compatible with the
+degeneracies. Both C and Γ (but not N ) commute with taking vertical homology,
+so the Dold-Kan correspondence for simplicial k-modules and Ch+
+k applied in each
+vertical degree shows that C(Γ(B)) → B is an E2 -equivalence.
+
+Proof of Theorem 3.4. We consider Γ(A), the constant simplicial dga A, and its
+cofibrant replacement Γ(A)cof . Lemma 3.8 and Proposition 3.9 show that Γ(A)cof
+has k-projective vertical homology. The unit is the composite k → C(Γ(k)) →
+C(Γ(A)cof ), which splits in vertical homology by the last part of Proposition 3.9.
+Lemma 3.11 then shows that the composite
+C(Γ(A)cof ) → C(Γ(A)) → A
+is a k-projective E1 -resolution. The second statement is the A = A0 case of the
+next lemma.
+
+Lemma 3.12. Given a map A → A0 of k-dgas and k-projective E1 -resolutions
+B1 → A1 and B10 → A0 , there is a commutative diagram
+B2
+
+/ B3
+
+/ B30 o
+
+B20
+
+
+B1
+
+
+/A
+
+
+/ A0 o
+
+
+B10
+
+of bidgas in which all maps Bi → A and Bi0 → A0 are k-projective E1 -resolutions.
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+11
+
+Proof. We apply the cofibrant replacement functor in the P-model structure on
+sdgak to Γ(B1 ) → Γ(A) → Γ(A0 ) ← Γ(B10 ) and obtain
+C(Γ(B1 )cof )
+
+/ C(Γ(A)cof )
+
+/ C(Γ(A0 )cof ) o
+
+C(Γ(B10 )cof )
+
+
+C(Γ(B1 ))
+
+
+/ C(Γ(A))
+
+
+/ C(Γ(A0 )) o
+
+
+C(Γ(B10 ))
+
+
+B1
+
+
+/A
+
+
+/ A0 o
+
+
+B10 .
+
+By Lemma 3.11, the upper and the lower row assemble to the desired diagram. 
+4. Minimal dA∞ -algebras
+We start by giving an alternative description of dA∞ -algebras and their maps.
+Disregarding unit conditions, an A∞ -algebra structure on a Z-graded k-module
+M can be encoded by giving a differential on the reduced tensor algebra of the
+suspension of A [13, 21]. Next we explain how the structure of a twisted chain
+complex on the reduced tensor algebra (in bigraded k-modules) describes a dA∞ algebra.
+Let S be the shift [0, 1] of bigraded k-modules. There is a canonical isomorphism
+σ : S → id[0, 1] of degree (0, 1). It induces an isomorphism
+⊗j
+Ψj : Homk (E ⊗j , F ) → Hom((SE)⊗j , SF ) with σF (Ψj (f )) = (−1)hΨj (f ),σi f σE
+.
+⊗j
+⊗j
+For a k-linear map mE
+→ E[i, 2−(i+j)], we define m
+e E,1
+→ SE[i, 1−i]
+ij : E
+ij : SE
+E
+to be Ψj (mij ).
+be the reduced tensor algebra functor of bigraded
+Let T : biMod-k → biMod-k
+L
+⊗j
+⊗j
+k-modules, i.e., T E =
+E
+. Let mE
+→ E[i, 2 − (i + j)] be a family
+ij : E
+j≥1
+of k-linear maps with i ≥ 0 and j ≥ 1. For fixed i, the m
+e E,1
+assemble to a map
+ij
+E,1
+m
+e i : T SE → SE[i, 1 − i]. More generally, we define
+X
+⊗t
+m
+e E,q
+1⊗r ⊗ m
+e E,1
+: SE ⊗j → SE ⊗q [i, 1 − i]
+ij :=
+is ⊗ 1
+r+1+t=q
+r+s+t=j
+
+for q ≤ j and write m
+eE
+i : T SE → T SE[i, 1 − i] for the map whose component
+mapping SE ⊗j to SE ⊗q [i, 1 − i] is m
+e E,q
+eE
+i from the
+ij . The process of building the m
+E,1
+m
+e i may also be described using the universal property of T SE as a (cocomplete)
+tensor coalgebra.
+⊗j
+Lemma 4.1. Let E be a bigraded k-module and let mE
+→ E[i, 2 − (i + j)] be
+ij : E
+a family of k-linear maps with i ≥ 0 and j ≥ 1 satisfying the unit condition (2.3).
+The following are equivalent:
+
+(i) The mE
+ij specify a dA∞ -algebra structure on E.
+P
+(ii)
+(−1)i m
+eE
+eE
+p = 0 for all u ≥ 0.
+i m
+Pi+p=u
+i E,1 E
+(iii)
+ei m
+e p = 0 for all u ≥ 0.
+i+p=u (−1) m
+(iv) T SE is a twisted chain complex with di = m
+eE
+i .
+Proof. The signs in (2.2)uv arise from interchanging σ with the m
+e E,1
+pq :
+(−1)i m
+e 1ij (1⊗r ⊗ m
+e 1pq ⊗ 1⊗t ) =(−1)p+t(1+p) σ −1 mij (σ ⊗r ⊗ mpq σ ⊗q ⊗ σ ⊗t )
+=(−1)rq+t+pj σ −1 mij (1⊗r ⊗ mpq ⊗ 1⊗t )σ ⊗r+q+t
+
+
+12
+
+STEFFEN SAGAVE
+
+In terms of the m
+e E,1
+ij , the unit condition (2.3) may be rephrased as
+(4.2)
+
+E,1 −1
+−1
+−1
+m
+e E,1
+e E,1
+01 (σE ηE ) = 0, −m02 (σE ηE ⊗ 1) = 1 = m
+02 (1 ⊗ σE ηE ), and
+−1
+⊗r−1
+m
+e E,1
+⊗ σE
+ηE ⊗ 1⊗j−r ) = 0 if i + j ≥ 3 with 1 ≤ r ≤ j
+ij (1
+
+A similar description applies to maps. Given bigraded k-modules E and F and
+k-linear maps fpq : E ⊗q → F [p, 1 − (p + q)] with p ≥ 0, q ≥ 1, we define the map
+1
+1
+fepq
+to be Ψq (f ) : SE ⊗q → SF [p, −p]. The fepq
+assemble to fep1 : T SE → SF [p, −p].
+We define
+X
+fej :=
+fe1 ⊗ . . . ⊗ fe1 : SE ⊗q → SE ⊗j [p, −p]
+pq
+
+p1 q1
+
+pj q j
+
+p1 +···+pj =p
+q1 +···+qj =q
+
+and write fep : T SE → T SF [p, −p], p ≥ 0, for the morphism mapping SE ⊗q to
+j
+SE ⊗j [p, −p] by fepq
+.
+Lemma 4.3. Let E and F be dA∞ -algebras and let fpq : E ⊗q → F [p, 1 − (p + q)]
+a family of k-linear maps with p ≥ 0 and q ≥ 1 satisfying the unit condition (2.7).
+The following are equivalent:
+(i) The fpq form a dA∞ -algebra map from E to F .
+P
+P
+ie E
+e
+(ii)
+e p = i+p=u m
+eF
+i fp for all u ≥ 0.
+i+p=u (−1) fi m
+P
+P
+(iii)
+(−1)i fe1 m
+eE =
+m
+e F,1 fep for all u ≥ 0.
+i+p=u
+
+i
+
+p
+
+i+p=u
+
+i
+
+(iv) The fei form a map of twisted chain complexes.
+e1
+Remark 4.4. One advantage of using the m
+eE
+ij and the fij is that their bidegrees
+e1
+|m
+eE
+ij | = (i, 1 − i) and |fij | = (i, −i) do not depend on j. As one can already see
+by comparing the last lemma with Definition 2.5, this reduces the complexity of
+signs considerably. Because of this, we will frequently switch to the m
+e ij for explicit
+calculations.
+However, there is still a choice behind our sign convention. For example, one
+may omit the sign in the definition of twisted chain complexes. This would change
+the sign in the definition of dA∞ -algebras and, in turn, the sign in the Leibniz rule
+for bidgas. This would be in conflict with the signs resulting from the Dold-Kan
+correspondence relating biChk and sdgak . In other words, our sign convention is
+chosen to ensure that the chain complex associated to a simplicial dga is a dA∞ algebra.
+At this point we can also make up the promised definition of the composition of
+dA∞ -algebra maps.
+Definition 4.5. Given two maps g : D → E and g : E → F , the component (ffg)u
+P
+of f g is i+p=u fei gep .
+An A∞ -algebra is minimal if mA
+1 = 0. This motivates
+Definition 4.6. A dA∞ -algebra E is minimal if mE
+01 = 0.
+The device to produce minimal dA∞ -algebras is the following proposition. It
+promotes both the statement and the proof of [11, Theorem 1] about A∞ -algebras
+to the context of dA∞ -algebras.
+Proposition 4.7. Let B be a bidga, let E be its homology with respect to mB
+01 ,
+and let d1 and µ be the differential and the multiplication induced on E. If E is
+k-projective in every bidegree and the unit map ηE : k → E induced by ηB : k → B
+splits as a k-module map, then there exists
+E
+(i) a minimal dA∞ -structure on E with mE
+11 = d1 and m02 = µ and
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+13
+
+(ii) an E2 -equivalence of dA∞ -algebras f : E → B.
+To construct the structure inductively, we define
+X
+e2
+e1
+(4.8)ln
+zeln = m
+e B,1
+e B,1
+02 fln + m
+11 fl−1,n −
+
+1
+(−1)i feij
+m
+e E,j
+pn .
+
+i+p=l
+i+j≥2; j<n
+
+e1
+e1 e E,1 − zeuv by Lemma 4.3.
+The identity (2.6)uv can be rewritten as m
+e B,1
+uv
+01 fuv = f01 m
+Proof of Proposition 4.7. Since E is k-projective, we can choose a k-linear cycle
+selection homomorphism f01 : E → B in the diagram
+E UN U U
+NN U
+N NU Uf01
+U U
+=
+U U
+N&
+
+U U*
+B oo
+B
+/B
+H∗ (B, m01 )
+ker m01
+We may adjust f01 to ensure f01 ηE = ηB . Setting mE
+01 = 0, we observe that (2.6)uv
+holds for u + v = 1.
+e1
+For the definition of m
+e E,1
+e E,1
+ij
+ln and fln we assume that we have constructed the m
+and fe1 for i + j ≤ l + n such that (2.2)uv holds for u + v ≤ l + n, (2.6)uv holds for
+ij
+
+u + v < l + n, and the two unit conditions (2.3) and (2.7) are satisfied. Then the
+zeln of (4.8)ln is defined.
+By Lemma 7.1, zeln has values in ker m
+eB
+e E,1
+01 . We define m
+ln to be the composition
+B,1
+of zeln with the quotient map ker m
+e 01 → SE. By Lemma 7.5, the m
+e E,1
+ln together
+E,1
+with the m
+e ij for i + j < l + n satisfy (2.2)uv for u + v ≤ l + n + 1. Checking (2.3)
+for mE
+ln is easy.
+1
+We need to define the feln
+. In each bidegree, SE ⊗n is k-projective as a tensor
+1
+product of k-projective modules. Since fe01
+m
+eE
+eln both have values in ker m
+eB
+01
+ln and z
+and coincide when composed with the quotient map to SE, their difference lies in
+e1
+the image of m
+eB
+01 , and we can find lifts fln in
+(SE)⊗n T
+
+T T
+
+1
+T feTln
+
+T T
+T)
+
+m
+e B,1
+01
+B
+o
+B[u,
+1 − (u + v)]
+(im m
+e 01 )[u, 2 − (u + v)]
+1
+fe01
+mE,1
+zln
+ln −e
+
+The fln satisfy (2.6)uv for u + v = l + n by construction. By assumption, the
+inclusions of the submodules on which the unit condition (2.7) requires fln to be
+zero splits. Hence we may assume fln to be zero there.
+
+The input for the last proposition will be a k-projective E1 -resolution arising
+form Theorem 3.4. Since these are only well defined up to E2 -equivalence, we need
+to check that such an E2 -equivalence of bidgas induces a map of the associated
+minimal dA∞ -algebras. This issue does not come up when constructing minimal
+models in the world of A∞ -algebras, since the underlying graded algebra of a minimal A∞ -model is unique up to isomorphism [13, §8.7].
+To formulate the next proposition, we need to introduce the notion of a homotopy
+of dA∞ -algebra maps. We only define it in a special case.
+Definition 4.9. Let f and g be dA∞ -algebra maps from a minimal dA∞ -algebra E
+to a bidga C. A homotopy from g to f is a family of maps e
+hi : T SE → SC[i, −1 − i]
+
+14
+
+STEFFEN SAGAVE
+
+for i ≥ 0 satisfying
+(4.10)uv
+geuv − feuv =
+
+
+
+X
+
+
+1
+1
+i C,1 e 1
+e
+e1 )
+(−1)u m
+e C,1
+(e
+g
+⊗
+h
+)
++
+(−1)
+m
+e
+(
+h
+⊗
+f
+ij
+pq
+ij
+pq
+02
+02
+
+i+p=u; j+q=v
+
+X
+
+u C,1 e 1
+e1
++ (−1)u m
+e C,1
+e 11 hu−1,v +
+01 huv + (−1) m
+
+e
+h1ij m
+e E,j
+pv
+
+i+p=u; 1≤j≤n
+
+for u ≥ 0 and v ≥ 1 and the unit condition
+e
+(4.11)
+h1 (1⊗r−1 ⊗ σ −1 ηE ⊗ 1⊗j−r ) = 0 with 1 ≤ r ≤ j for all i, j.
+ij
+
+E
+
+Proposition 4.12. Let α : B → C be a map of bidgas with k-projective vertical
+homology algebras E and F . Let E and F be equipped with dA∞ -algebra structures
+and dA∞ -algebra maps f : E → B and g : F → C arising from Proposition 4.7.
+Then there exist dA∞ -algebra map β : E → F with β01 = H∗v (g) and a homotopy
+from gβ to αf .
+The strategy for the proof is the same as for the last proposition. We define
+X
+X
+l f 1
+l
+1 ej
+e1
+e
+yeln =m
+e C,1
+geij
+βpn + (−1)l
+h1ij m
+e E,j
+pn
+11 hl−1,n + (−1) (αf )ln − (−1)
+i+j≥2; i+p=l
+
++
+
+X
+
+
+
+i+p=l; 1≤j≤n
+
+
+
+p C,1 e 1
+f 1
+e1
+f )1 )
+m
+e C,1
+e 02 (hij ⊗ (αf
+pq
+02 ((gβ)ij ⊗ hpq ) + (−1) m
+
+i+p=l; j+q=n
+
+and observe that the identity (4.10)uv can be rewritten as
+h1 = (−1)u ge1 βe1 − yeuv .
+m
+eC e
+01 uv
+
+01 uv
+
+Proof of Proposition 4.12. We set β01 = H∗v (g01 ). Since E is k-projective, there
+1 e1
+1 e1
+e
+exists e
+h01 with m
+e C,1
+e01
+f01 − ge01
+β01 . The β01 satisfies (2.6)uv for u + v ≤ 2
+01 h01 = α
+e
+and (2.7), and h01 satisfies (4.10)uv for u + v = 1 and can be chosen to satisfy
+(4.11).
+Assume that we have constructed βeij and hij for i + j < l + n such that (2.6)uv
+holds for u + v ≤ l + n and (4.10)uv holds for u + v < l + n. Then yln is defined,
+1
+and Lemma 7.10 provides m
+e C,1
+eln = 0. So we define βeln
+to be represented by yeln .
+01 y
+Lemma 7.17 shows that (2.6)uv holds for u + v = l + n + 1, and the unit condition
+(2.7) can be checked readily. Since E is k-projective we can find e
+hln such that
+(4.10)uv holds for u + v = l + n. The splitting of the unit of E enables us to change
+e
+hln such that (4.11) holds.
+
+We can now give the proof of the first main theorem from the introduction.
+Proof of Theorem 1.1. Given a k-dga A, we apply Theorem 3.4 to obtain a kprojective E1 -resolution B → A. Then B satisfies the assumptions of Proposition
+4.7, which provides an E2 -equivalence E → B. The composition E → A is the
+desired minimal dA∞ -algebra model.
+The resolution B → A is well defined up to E2 -equivalence of k-projective E1 resolutions. Given such an E2 -equivalence B → C, Proposition 4.12 provides an
+E2 -equivalence E → F between the associated minimal dA∞ -algebras.
+
+Lemma 3.12 and Proposition 4.12 imply
+Corollary 4.13. Minimal dA∞ -algebra models of quasi-isomorphic dgas may be
+related by a zig-zag of E2 -equivalences between minimal dA∞ -algebras.
+Remark 4.14. We do not claim that every termwise k-projective resolution E of
+H∗ (A) may be extended to a minimal dA∞ -algebra model for A. We only show
+that this happens if E is the vertical homology of a bidga resolving A.
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+15
+
+Remark 4.15. The underlying twisted chain complex of a minimal dA∞ -algebra
+model of A is a ‘homological multicomplex resolution’ of the underlying chain complex of A; compare [17].
+5. Examples and an application
+In this section, we give two examples for minimal dA∞ -algebra structures and
+apply our theory to define the derived Hochschild cohomology class associated with
+a dga.
+·p
+
+Example 5.1. Let p be an odd prime, k = Z/p2 , and A the dga (k −→ k). In
+Example 3.3, we gave a k-projective E1 -resolution B → A with E := H∗v (B) =
+Λ∗k (x, z) ⊗ Γ∗k (y). Following the proof of Proposition 4.7, we now extend the multiplication and dE
+1 to a dA∞ -algebra structure on E. A cycle selection map f01 can
+be defined by extending
+f01 (z) = au, f01 (x) = x, and f01 (y i ) = yi
+B
+E
+multiplicatively. Then f01 mE
+02 − m02 (f01 ⊗ f01 ) = 0. Consequently, m03 = 0, and
+E
+E
+we can set f02 = 0 and f03 = 0. Since m11 = d1 , we define f11 : E → B[1, −1] by
+
+f11 (yi ) = (v + av)xyi−1 and f11 (x y i ) = (pu − v)yi .
+The mE
+12 is represented by
+B
+z12 = f11 mE
+02 − m02 (f01 ⊗ f11 + f11 ⊗ f01 ).
+E
+One calculates z12 = 0, hence mE
+12 = 0 and we can set f12 = 0. The m21 is
+E
+B
+represented by z21 = f11 m11 + m11 f11 . One checks
+E
+mE
+21 (y i ) = z y i−1 and m21 (x y i ) = z x y i−1 .
+
+Furthermore, we set f21 (x y i ) = puvxyi−1 and f21 (y i ) = 0. The mE
+ij and fij for
+i + j ≥ 4 vanish for degree reasons.
+Example 5.7 below provides one way to detect that this E encodes non-trivial
+information about A, for example the fact that A is not quasi-isomorphic to the
+formal dga H∗ (A) with trivial differential. Of course, Theorem 1.2 provides a
+different reason this.
+The example indicates the general procedure for finding a minimal dA∞ -algebra
+model of a given dga A. Since the resolutions provided by Theorem 3.4 are too
+large to write down in terms of generators and relations, one has to first guess a kprojective E1 -resolution, for example by lifting a k-projective resolution of H∗ (A)
+to a bidga B coming with an E2 -equivalence B → A. Then one can use the
+constructive procedure of Proposition 4.7 to build E from B.
+Remark 5.2. If k happens to be a field or, more generally, H∗ (A) is k-projective
+and the unit k → H0 (A) splits, the minimal model of A as an A∞ -algebra arising
+from [11, Theorem 1] is one possible choice for the minimal dA∞ -algebra model of
+Theorem 1.1.
+Let M be a k-module and let P be a k-projective resolution of M . The endomorphism dga Homk (P, P ) is defined by Homk (P, P )j = Homk (P [j], P ), where the latter denotes maps of graded k-modules. Its differential is dHom
+(f ) = dP f −(−1)j f dP .
+j
+The quasi-isomorphism type of Homk (P, P ) does not depend on the choice of the
+resolution P . Its homology algebra is the Yoneda Ext-algebra of M with a sign
+shift in the degree, i.e., H∗ Homk (P, P ) = Ext−∗
+k (M, M ).
+A minimal dA∞ -model for Homk (P, P ) is a resolution E of Ext∗k (M, M ) with
+structure maps mE
+ij . By Theorem 1.2, this structure enables us to recover the
+quasi-isomorphism type of Homk (P, P ).
+
+16
+
+STEFFEN SAGAVE
+
+Example 5.3. Let k = Z, p a prime, and M = Z/p. We will see that the resolution
+·p
+of Ext∗Z (Z/p, Z/p) given by Z ←− Z in every degree of the Ext-grading is part of a
+minimal dA∞ -algebra.
+·p
+Let P be the two step resolution Z ←− Z of Z/p. The dga A = HomZ (P, P )
+may be described as follows (compare [5, §3.1]): Its underlying ungraded algebra
+is Mat2 (Z), the algebra of 2 × 2-matrices with entries in Z. Viewing elements of P
+as column vectors with top entry the degree 0 part, Mat2 (Z) operates on P . The
+resulting grading of A is
+
+
+
+
+
+
+A1 = ∗0 00 , A0 = ∗0 ∗0 , and A−1 = 00 ∗0 .
+On the standard basis, the differential has values
+
+
+
+
+
+
+
+d 01 00 = p0 p0 , d 10 00 = − 00 p0 , d 00 01 = 00 p0 , and d 00 10 = 0.
+
+
+Indeed, H∗ (A) is an exterior algebra generated by 00 10 in degree −1.
+We give a k-projective E1 -resolution α : B → A. Let B = Mat2 (Z[t] ⊗ Λ∗Z (λ))
+with |t| = (0, 0) and |λ| = (1, 0). The horizontal grading is specified through the
+generators, and the vertical grading comes from the matrix algebra as above.
+The vertical differential dB
+0 is defined by setting
+
+
+
+
+
+
+
+B 01
+B 10
+B 00
+0 t
+00
+t
+0
+d0 1 0 = 0 t , d0 0 0 = − 00 0t , dB
+0 0 1 = 0 0 , and d0 0 0 = 0,
+B
+and requiring dB
+0 to be t- and λ-linear. The horizontal differential d1 is t-linear
+and maps λ to p − t. The map α is determined by asking t 7→ p.
+One can check that B → A has the required properties. The vertical homology
+H∗v (B) = E is Λ∗Z (a, b) with |a| = (0, −1) and |b| = (1, 0). Here
+
+
+
+
+
+
+
+
+ι = 10 01 , a = 00 10 , b = λ0 λ0 , and ab = 00 λ0 ,
+
+and f01 can be chosen to pick the displayed generators. The mE
+02 provides the
+multiplicative structure encoded in the exterior algebra. Since f01 is multiplicative,
+B
+we may choose f02 = 0 (and f0j = 0, mE
+0j = 0 for j ≥ 3). Now z11 = m11 f01 , hence
+E
+B
+E
+mE
+11 (b) = pι and m11 (ab) = pa. Since m01 f11 = f01 m11 − z11 , we may choose
+
+
+f11 (b) = 01 00
+and f11 (ab) = 00 01
+B
+B
+The m12 is represented by z12 = f11 mE
+02 − m02 (f01 ⊗ f11 ) − m02 (f11 ⊗ f01 ). One
+checks that
+
+mE
+12 (a ⊗ b) = ι,
+
+mE
+12 (a ⊗ ab) = a,
+
+E
+mE
+12 (ab ⊗ b) = −b, and m12 (ab ⊗ ab) = −ab,
+
+and that mE
+12 is trivial elsewhere. One calculates that, mostly for degree reasons,
+all other mE
+of mE
+12 comes from the choice of the value of
+ij vanish. The asymmetry
+
+f11 (ab). Changing it to − 10 00 changes mE
+12 .
+Our next aim is to define a variant of derived Hochschild cohomology for graded
+k-algebras. It will generalize the Hochschild cohomology of graded k-algebras which
+is for example used in [2].
+We briefly recall from [1, §4] one way to define the derived Hochschild cohomology
+dHH for ungraded k-algebras. (In [1], this theory is called Shukla cohomology.)
+Considering an ungraded k-algebra Λ as a N-graded dga concentrated in degree
+0, one can find a quasi-isomorphism A → Λ from a degreewise k-projective dga
+A. The Hochschild complex of A is the bicomplex C st (A) := Homk (A⊗s , A[t])
+with s, t ≥ 0. It has the usual Hochschild differential dHH : C st → C s+1,t and a
+differential dHom : C st → C s,t+1 induced from that of A by considering C s∗ as the
+Hom-complex with source A⊗s and target A. Letting HH∗ (A) be the cohomology
+of the total complex of C st , we define dHH∗ (Λ) := HH∗ (A). This is well defined
+since a quasi-isomorphism of k-projective dgas A → A0 over Λ induces a chain of
+∼
+∼
+=
+=
+isomorphisms HH∗ (A) −
+→ HH∗ (A, A0 ) ←
+− HH∗ (A0 ); compare [1, 4.1.1 Lemma].
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+17
+
+Let E be a k-bidga with dE
+0 = 0, and let F be an E-bimodule in the category
+F
+biChk with dF
+=
+0.
+On
+E
+and
+F we have differentials dE
+0
+1 and d1 and multiplication
+maps E ⊗ E → E, E ⊗ F → F , and F ⊗ E → F satisfying appropriate relations.
+We define an (N, N, Z)-trigraded k-module C rst (E, F ) = Homk (E ⊗r , F [s, t]). It
+has a Hochschild differential
+drHH : C rst (E, F ) → C r+1,st (E, F )
+X
+
+c 7→ µ(1 ⊗ c) + (−1)r+1 µ(c ⊗ 1) +
+
+(−1)j c(1⊗j−1 ⊗ µ ⊗ 1⊗r−j )
+
+1≤j≤r
+
+and a differential
+dsHom : C rst → C r,s+1,t
+E
+
+hd1 ,ci
+c 7→ dF
+1 c − (−1)
+
+X
+
+⊗w−j
+c(1⊗j−1 ⊗ dE
+)
+1 ⊗1
+
+1≤j≤r
+
+induced by the horizontal differentials of E and F . It is easy to check dHH dHH = 0,
+dHom dHH = dHH dHom and dHom
+dHom = 0.
+L
+We define Totqt C(E, F ) = r+s=q C rst (E, F ) and
+dqTot : Totqt C(E, F ) → Totq+1 C(E, F ),
+
+c 7→ dHom (c) − (−1)q dHH (c)
+
+The relations of dHH and dHom imply dTot dTot = 0. The graded Hochschild cohomology of E with coefficients in F is the homology of this total complex, i.e.,
+HHqt (E, F ) = H q (Tot∗t C(E, F )).
+Now let Λ be a graded k-algebra. We view Λ as a k-dga with trivial differential.
+Applying vertical homology to the resolution provided by Theorem 3.4, we obtain
+a termwise k-projective resolution E → Λ. The resolution is well defined up to
+E2 -equivalence between such E. We define the derived Hochschild cohomology of Λ
+by
+dHHqt (Λ) = HHqt (E, E).
+An E2 -equivalence α : E → F of termwise k-projective resolutions induces a chain
+α∗
+α∗
+of isomorphisms HHqt (E, E) −−→
+HHqt (E, F ) ←−− HHqt (F, F ). This ensures that
+dHHqt (Λ) is well defined.
+Proposition 5.4. Let A be a k-dga, and let E → A be a minimal dA∞ -algebra
+E
+E
+model of A. Then the sum mE
+03 + m12 + m21 is a cocycle in the complex computing
+3,−1
+3,−1
+HH
+(E, E) = dHH
+(H∗ (A)). Its cohomology class γA ∈ dHH3,−1 (H∗ A) does
+not depend on the choice of E.
+Proof. The four formulas (2.2)uv with u + v = 4 for the mE
+ij can be expressed
+E
+E
+E
+E
+as dHH (m03 ) = 0, dHH (m12 ) + dHom (m03 ) = 0, dHH (m21 ) + dHom (mE
+12 ) = 0, and
+E
+E
+E
+dHom (mE
+21 ) = 0. Hence dTot (m03 + m12 + m21 ) = 0.
+Let f : E → F be an E2 -equivalence of minimal dA∞ -algebras. We check that the
+3,−1
+E
+E
+∗
+F
+F
+F
+elements (f01 )∗ (mE
+C(E, F )
+03 + m12 + m21 ) and (f01 ) (m03 + m12 + m21 ) of Tot
+represent the same cohomology class. Since f is map of dA∞ -algebras , it satisfies
+the relations (2.6)uv for u + v = 3, and these can be rewritten as
+E
+E
+∗
+F
+F
+F
+(f01 )∗ (mE
+03 + m12 + m21 ) − (f01 ) (m03 + m12 + m21 ) = dTot (f02 + f11 ).
+
+
+If a dga A is formal, i.e., quasi-isomorphic to H∗ (A) with trivial differential,
+then γA = 0 since a termwise k-projective resolution of H∗ (A) provides a minimal
+dA∞ -algebra model for A with mij = for i + j ≥ 3. Hence a non-vanishing γA
+shows that A is not formal, and that a given minimal dA∞ -algebra model of A is
+not equivalent to one with trivial higher mij .
+
+18
+
+STEFFEN SAGAVE
+
+Remark 5.5. For a dga over a field, there is a characteristic Hochschild cohomology
+class γA ∈ HH3,−1 (H∗ (A)) which is studied in [2]. It is represented by the m3 of
+a minimal A∞ -algebra structure on H∗ (A) and determines by evaluation all triple
+matric Massey products in H∗ (A). The characteristic dHH-class of a dga over a
+commutative ring k given by the previous proposition is the natural generalization.
+If k happens to be a field, the γA introduced here coincides with the one from [2],
+as one can easily see from Remark 5.2 and [2, Remark 5.8].
+If B is a bidga and B → A an E2 -equivalence, B0∗ is a dga, and B → A restricts
+to a map B0∗ → A of dgas which induces an surjection in homology. If E is the
+minimal dA∞ -algebra structure on H∗v (B), the restriction of mE
+03 to H∗ (B0∗ ) is
+part of an A∞ -structure on H∗ (B0∗ ). By evaluation, it determines triple Massey
+products of B0∗ . Moreover, if λ1 , λ2 , λ3 ∈ H∗ (A) satisfy λ1 λ2 = 0 = λ2 λ3 , we
+may lift them to elements of H∗ (B0∗ ), evaluate mE
+03 on the lifts, and observe that
+the image of the evaluation under the map to H∗ (A) is an element of the Massey
+product hλ1 , λ2 , λ3 i. Hence the dHH-class determines all triple (matric) Massey
+products in H∗ (A). The difference to the HH-class of [2] is that the dHH-class does
+not determine the Massey products in a k-linear fashion, since lifts of elements
+along a surjection into a not necessarily projective k-module are involved.
+We expect the dHH-class γA of a dga to share more properties with the HH-class
+of [2], like the connection to realizability obstructions. We are not going to elaborate
+those here. The dHH-class should also be compared to the universal Toda bracket
+of a ring spectrum studied in [16]. The latter class is an even further generalization
+of the (derived) Hochschild class and arises when one allows the sphere spectrum
+of stable homotopy theory as ground ring. This class is an element in a Mac Lane
+cohomology group and determines triple Toda brackets.
+Remark 5.6. Derived Hochschild cohomology classes associated to dgas also appear in [1] and [4]: a dga A with only A0 and A1 possibly non-zero gives rise
+to a crossed extension of H0 (A) by H1 (A) and hence to a cohomology class in
+dHH3k (H0 (A), H1 (A)) [1, 4.4.1. Theorem]. More generally, for a dga A with nonnegative homology, its first k-invariant lies in dHH3k (H0 (A), H1 (A)) [4, §4].
+If E → A is a minimal dA∞ -algebra model of A, E∗0 is a k-projective resolution
+of H0 (A), and there is a restriction map dHHk3,−1 (H∗ (A)) → dHH3k (H0 (A), H1 (A)).
+One can check that the image of γA under this map recovers the cohomology classes
+described above.
+Example 5.7. We continue Example 5.1 by applying Proposition 5.4 to the minimal dA∞ -algebra E described there. In this case, the sum representing γA conE
+sists only of mE
+21 . The m21 cannot be a boundary in the complex computing the
+E
+derived Hochschild cohomology: p · mE
+11 = 0, while p · m21 is non-zero. Hence
+3,−1
+γA ∈ dHHZ/p2 (H∗ A) is non-trivial.
+This illustrates that the non-triviality of E is a consequence of the information
+encoded in the higher degrees of the horizontal grading.
+6. Anti-minimal models
+The aim of this section is to prove Theorem 1.2, which provides an ‘anti-minimal’
+model of a dA∞ -algebra. To this end, we introduce modules over dA∞ -algebras
+and show that the module category is enriched in twisted chain complexes. For a
+dA∞ -algebra E, we thus have an endomorphism tga of the E-module E. Its total
+complex is a dga. If E is the minimal dA∞ -algebra model of a dga A, this dga
+associated with E recovers the quasi-isomorphism type of A. These constructions
+are motivated by the Hom-complex of maps between modules over A∞ -algebras
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+19
+
+described in Keller’s survey [13, §6.3] and studied in more detail in Lefèvre’s thesis
+[14, §4].
+Let E be a dA∞ -algebra. We write T SE for the unreduced tensor algebra on
+L
+SE, i.e., T SE = j≥0 SE ⊗j . Let M be a bigraded k-module. Let m
+e M,1
+ij : SM ⊗
+⊗j−1
+SE
+→ SM [i, 1 − i] be a family of maps with i ≥ 0 and j ≥ 1. These maps
+: SM ⊗ T SE → SM [i, 1 − i]. More generally, we define
+assemble to a map m
+e M,1
+i
+⊗q−1
+m
+e M,q
+:= m
+e M,1
++1⊗m
+e E,q−1
+ij
+i,j−q+1 ⊗ 1
+i,j−1
+
+where the second summand is understood to be zero if q = 1. We obtain a map
+⊗j−1
+m
+eM
+i : SM ⊗ T SE → SM ⊗ T SE[i, 1 − i] whose component mapping SM ⊗ SE
+M,q
+⊗q−1
+to SM ⊗ SE
+[i, 1 − i] is m
+e ij .
+Lemma 6.1. Given maps m
+e M,1
+as above, the following are equivalent:
+ij
+P
+i M M
+(i)
+(−1) m
+ei m
+e p = 0 for all u ≥ 0.
+Pi+p=u
+i M,1 M
+e p = 0 for all u ≥ 0.
+(ii)
+ei m
+i+p=u (−1) m
+M
+(iii) The m
+e i turn SM ⊗ T SE into a twisted chain complex.
+Definition 6.2. A module over a dA∞ -algebra E is a bigraded k-module M to⊗j−1
+gether with maps m
+e M,1
+→ SM [i, 1−i] for i ≥ 0 and j ≥ 1 satisfying
+ij : SM ⊗SE
+the equivalent conditions of the last lemma and the unit condition
+(6.3)
+
+−1
+m
+e M,1
+02 (1 ⊗ σE ηE ) = 1
+
+and
+
+−1
+⊗r−1
+m
+e M,j
+⊗ σE
+ηE ⊗ 1⊗j−1−r ) = 0 if i + j ≥ 3 with 1 ≤ r ≤ j − 1.
+ij (1 ⊗ 1
+
+Example 6.4. The free module of rank 1 is an E-module. For this, the isomorphism T SE ∼
+= SE ⊗ T SE is used to interpret the structure maps of E as an
+dA∞ -algebra as those of E as an E-module.
+Let f : E → F be a dA∞ -algebra map and let M be an F -module. Writing
+m
+e M,F
+for the F -module structure maps of M , we define
+i
+X
+j−1
+M,E,1
+m
+e uv
+=
+m
+e M,F,1
+(1 ⊗ fep,v−1
+) : SM ⊗ (SE)⊗v−1 → SM [u, 1 − u]
+ij
+i+p=u; 1≤j≤v
+
+define an E-module structure on M .
+Lemma 6.5. The m
+e M,E
+u
+Example 6.6. If f : E → F is a map of dA∞ -algebras, F is an E-module.
+Let E be a dA∞ -algebra and let M and N be E-modules. Given a family of
+1
+k-linear maps feij
+: SM ⊗ SE ⊗j−1 → SN [i, −i] with i ≥ 0 and j ≥ 1, they induce a
+q
+1
+1
+map fei : SM ⊗ T SE → SM [i, −i]. Setting feij
+= fei,j−q+1
+⊗ 1⊗q−1 for 1 ≤ q ≤ j,
+we obtain maps fei : SM ⊗ T SE → SN ⊗ T SE[i, −i] whose component mapping
+SM ⊗ SE ⊗j−1 to SN ⊗ SE ⊗q−1 [i, −i] is feq .
+ij
+
+1
+Given maps feij
+as above, the following are equivalent:
+
+Lemma 6.7.
+P
+P
+e
+(i)
+(−1)i fei m
+eM
+m
+eN
+p =
+i fp for all u ≥ 0.
+Pi+p=u
+Pi+p=u N,1 e
+i e1 M
+(ii)
+(−1) f m
+e =
+m
+e
+fp for all u ≥ 0.
+i+p=u
+
+i
+
+p
+
+i+p=u
+
+i
+
+(iii) The fei form a map of twisted chain complexes.
+Definition 6.8. Let E be a dA∞ -algebra, and let M and N be E-modules. An
+1
+E-module map from E to F is a family of maps feij
+: SM ⊗ SE ⊗j−1 → SN [i, −i]
+for i ≥ 0 and j ≥ 1 satisfying the equivalent conditions of the last lemma and
+fe1 (1 ⊗ 1⊗r−1 ⊗ σ −1 ηE ⊗ 1⊗j−1−r ) = 0 if j ≥ 2 with 1 ≤ r ≤ j − 1
+ij
+
+E
+
+Composition of module maps is given by the composition of the fei as maps of
+twisted chain complexes.
+
+20
+
+STEFFEN SAGAVE
+
+A map f : M → N of E-modules induces a map of twisted chain complexes
+between the underlying twisted chain complexes of M and N . The map f is an
+E2 -equivalence if this underlying map is.
+Example 6.9. If f : E → F is a map of dA∞ -algebras, both E and F are Emodules, and one can check that f is an E-module map. The underlying twisted
+chain complexes of E and F as dA∞ -algebras and modules coincide. Hence f is an
+E2 -equivalence of modules if and only if it is an E2 -equivalence of dA∞ -algebras.
+Let E be a dA∞ -algebra and let M and N be E-modules. Let X be the bigraded
+k-module Homk (SM ⊗ T SE, SN ). For s ∈ N, t ∈ Z, an element of Xst is a kmodule map ge1 : SM ⊗ T SE[s, t] → SN . We shift X by shifting the second entry
+SN . As in the definition of module maps, the ge1 has components gej1 which provide
+1
+⊗ 1⊗q−1 and ge : SM ⊗ T SE[s, t] → SN ⊗ T SE, and giving ge1 is
+gejq = gej−q+1
+equivalent to giving the ge.
+mi i 1 M
+ge − (−1)heg, e
+ge m
+ei .
+For i ≥ 0, we define di : X → X[i, 1 − i] by di (e
+g1 ) = m
+e N,1
+i
+Since
+X
+(−1)p di dp (e
+g1 ) = 0
+i+p=u
+
+for u ≥ 0, we may state
+Definition 6.10. Let E be a dA∞ -algebra and let M and N be E-modules. We
+define HomE (M, N ) to be the twisted chain complex with underlying bigraded
+k-module Homk (SM ⊗ T SE, SN ) and differentials di as defined above.
+Let L, M and N are E-modules. For fe ∈ HomE (M, N )st and ge ∈ HomE (L, M )pq ,
+its composite fege ∈ HomE (L, M )p+s,q+t is defined. The unit k → HomE (M, M )
+sends 1k to the ge ∈ HomE (M, M ) with ge11 = idSM and gej1 = 0 for j ≥ 2.
+Proposition 6.11. The composition induces a pairing of twisted chain complexes
+HomE (M, N ) ⊗ HomE (L, M ) → HomE (L, N )
+which is associative and unital. In particular, HomE (M, M ) is a tdga.
+Proof. Let µ be the composition. The only possibly non-trivial part is to verify the
+Leibniz-rules. If i ≥ 0, fe ∈ HomE (M, N )st and ge ∈ HomE (L, M )pq , we have
+µ(1 ⊗ di + di ⊗ 1)(fe ⊗ ge)
+e
+e
+e ii e
+mi i e M
+ee − (−1)hfe, e
+=(−1)hdi ,f i fem
+eM
+e − (−1)hdi ,f i+heg,m
+f gem
+eL
+eN
+fm
+e i ge
+i g
+i +m
+i fg
+
+=di µ(fe ⊗ ge).
+
+Remark 6.12. The last proposition says that the category of modules over a
+dA∞ -algebra is enriched in twisted chain complexes. The morphisms of the ordinary
+category underlying this tChk -category are not the dA∞ -algebra module morphisms
+of Definition 6.8. Unlike the case of modules over A∞ -algebras and their enrichment
+in chain complexes, not even all components fij of an E-module map f are 0-cycles
+in the HomE (M, N ). The reason is that for i ≥ 1, the fij would have to lie in
+a negative degree with respect to the first grading. We resist from allowing a
+negative grading there, since this would for example cause problems when forming
+total complexes. Therefore, the notation Hom might be slightly misleading, but we
+keep it in lack of a better alternative. Moreover, the induced maps on HomE (M, N )
+to be defined next are not a consequence of the enrichment.
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+21
+
+Given E-module maps f : M → M 0 and h : N → N 0 , we define
+X
+e
+j
+fi∗ : HomE (M 0 , N ) → HomE (M, N )[i, −i], (fi∗ (e
+g 1 ))1v =
+(−1)hfi ,egi gej1 feiv
+1≤j≤v
+
+and
+(h∗ )i : HomE (M, N 0 ) → HomE (M, N )[i, −i],
+
+X
+
+((h∗ )i (e
+g 1 ))1v =
+
+e
+h1ij gevj .
+
+1≤j≤v
+
+For degree reasons, fi∗ and (h∗ )i are only defined on ge in horizontal degree ≥ i.
+Lemma 6.13. Both f ∗ and h∗ are maps of twisted chain complexes. If M 0 =
+N , then f ∗ is a left HomE (N, N )-module map. If N 0 = M , then h∗ is a right
+HomE (M, M )-module map.
+Proof.
+Treating f ∗P
+first, we have to compare the image of ge1 ∈ HomE (M 0 , N ) under
+P
+i ∗
+(−1) fi dp and
+dp fi∗ . Restricted to SM ⊗ (SE)⊗w−1 , the image of ge1 under
+both maps is
+
+
+X
+e
+q ej
+he
+mp ,e
+g i+hfei ,e
+g i 1 M 0 ,j eq
++
+(−1)
+(−1)hfi ,egi m
+e N,1
+g
+e
+f
+g
+e
+m
+e
+f
+pq j iw
+j pq
+iw .
+i+p=u; 1≤j≤q≤w
+
+For h∗ we calculate
+X
+
+(dp ((h∗ )i (e
+g 1 )))1w =
+
+i+p=u
+
+X
+
+(−1)i ((h∗ )i (dp (e
+g 1 )))1w .
+
+i+p=u
+
+The statement about the tdga-module structures follows from the associativity of
+the composition.
+
+For F -modules M and N , a dA∞ -algebra map f : E → F induces a k-linear
+map resf : HomF (M, N ) → HomE (M, N ). On ge1 : SM ⊗ T SE[s, t] → SN , the
+restriction of (resf )u (e
+g 1 ) to SM ⊗ (SE)⊗v−1 is defined as follows: for v = 1 and
+1
+u = 0, it is ge , for v = 1 and u 6= 0, it is 0, and for v ≥ 2 it is
+X
+e
+j−1
+(resf ge1 )1uv =
+(−1)heg,fu i gej1 (1 ⊗ feu,v−1
+) : SM ⊗ (SE)⊗v−1 [s, t] → SN [u, −u].
+2≤j≤v
+
+Lemma 6.14. The resf is a map of twisted chain complexes and respects the composition pairing. Particularly, it is a tdga map if M = N .
+Proof. Both
+X
+X
+dp (resf )i =
+(−1)i (resf )i dp and
+i+p=u
+
+i+p=u
+
+X
+
+µ((resf )i ⊗ (resf )p ) = (resf )u µ
+
+i+p=u
+
+can be checked directly.
+
+
+
+Let E be a dA∞ -algebra. Viewing E as an E-module, HomE (E, E) is an tdga by
+Proposition 6.11. We want to define a dA∞ -algebra map ψ E : E → HomE (E, E).
+E,1
+By Lemma 4.3, it is enough to give maps ψeiv
+: (SE)⊗v → S HomE (E, E)[i, −i].
+E,1
+For i ≥ 0 and v ≥ 1, let ρeiv be the map with source SE ⊗v being adjoint to the
+E,1
+−1 E,1
+restriction of m
+e iE,1 to SE ⊗v ⊗ SE ⊗ T SE, and let ψeiv
+= σE
+ρeij .
+The analogs in the world of A∞ -algebras to the next three lemmas are [14,
+Lemme 4.1.1.6.b and Lemme 5.3.0.1].
+E,1
+Lemma 6.15. The ψeij
+constitute a dA∞ -algebra map ψeE : E → HomE (E, E).
+
+Proof. It is by Lemma 4.3 sufficient to show
+X
+X
+E,1
+dep ψeiv
++
+µ
+e(ψeiE,1
+⊗ ψeiE,1
+)=
+1 j1
+2 j2
+i+p=u
+
+i1 +i2 =u; j1 +j2 =v
+
+X
+
+E,1 E,j
+(−1)i ψeij
+m
+e pv
+
+1≤j≤v; i+p=u
+
+22
+
+STEFFEN SAGAVE
+
+for v ≥ 1. This is equivalent to
+X
+−1
+(−1)p+1 σE
+dp ρeE,1
+iv +
+i+p=u
+
+X
+
+−1
+(−1)i1 +1 σE
+eE,1
+µ(e
+ρE,1
+i2 j2 )
+i1 j 1 ⊗ ρ
+
+i1 +i2 =u; j1 +j2 =v
+
+X
+
+−1 E,1 E,j
+=
+(−1)i σE
+e pv .
+ρeij m
+1≤j≤v; i+p=u
+−1
+We cancel the σE
+out, restrict along the injection (SE)⊗w → SE ⊗ T SE, and
+consider the adjoint maps (SE)⊗v ⊗ (SE)⊗w → SE[u, 2 − u] to get the following
+equation for v, w ≥ 1 which is equivalent to the last one.
+X
+⊗j−1
+(−1)p+1 m
+e E,1
+e E,1
+)
+p,j (m
+i,v+w+1−j ⊗ 1
+1≤j≤w; i+p=u
+
+X
+
++
+
+E,1
+(−1)i+1 m
+e i,v+j
+(1⊗v ⊗ m
+e E,w
+p,j )
+
+1≤j≤w; i+p=u
+
+X
+
++
+
+⊗w1
+⊗j1
+)
+(−1)i1 +1 m
+⊗m
+e E,1
+e E,1
+i2 ,j2 +1+w2 ⊗ 1
+i1 ,j1 +1+w1 (1
+
+i1 +i2 =u
+j1 +j2 =v, js ≥1
+w1 +w2 =w, ws ≥0
+
+=
+
+X
+
+E,1
+⊗w
+(−1)i m
+e i,j+w
+(m
+e E,j
+)
+p,v ⊗ 1
+
+1≤j≤v; i+p=u
+
+This holds since E is an dA∞ -algebra.
+
+
+
+If M is an E-module, there is a map ψ M,E : M → HomE (M, E) of twisted chain
+complexes: we define ψiM,E to be the adjoint of the map
+−1
+(−1)i m
+e M,1
+(σM
+⊗ 1 ⊗ 1) : M ⊗ SE ⊗ T SE → SM [i, −i].
+i
+
+When forming the associated map ψeM,E , the (−1)i cancels, and for M = E we
+E,1
+observe that ψeiE,E = ψei1
+. In particular, the underlying map of twisted chain
+E
+complexes of the ψ is ψ E,E .
+The proof of the last lemma is easily adopted to provide
+Lemma 6.16. The ψ M,E : M → HomE (E, M ) is a map of twisted chain complexes.
+Lemma 6.17. The map ψ M,E of Lemma 6.16 is an E1 -equivalence.
+Proof. We show that ψ0M,E is a chain equivalence. For ge1 ∈ HomE (E, M ),
+Ψ−1
+
+Ψ1 (η)∗
+
+Homk (SE ⊗ T SE, SM ) −−−−→ Homk (Sk, Sm) −−1−→ Homk (k, M ) ∼
+=M
+1
+
+can be used to define τ (e
+g 1 ) = (−1)heg ,ψi Ψ−1
+g 1 Ψ1 (η)). The τ is a chain map with
+1 (e
+M,E
+respect to d0 and τ ψ0
+= id.
+Next we define a chain homotopy between ψ0M,E τ and id on HomE (E, M ). Let
+h be the composite SE ⊗ T SE[0, 1] ∼
+= Sk ⊗ SE ⊗ T SE → SE ⊗ T SE given by
+Sη on Sk and the inclusion SE ⊗ T SE → T SE. We define H : HomE (E, M ) →
+1
+HomE (E, M )[0, −1] by H(e
+g 1 ) = (−1)heg ,hi ge1 h and calculate
+(d0 H + Hd0 )(e
+g 1 ) = ge1 − ψ M,E τ (e
+g 1 ).
+Therefore, ψ M,E induces an isomorphism on homology with respect to d0 .
+The maps (f∗ )0 ψ0E
+
+Lemma 6.18.
+maps from E to HomE (E, F ).
+
+and ψ0F,E f0
+
+
+
+are chain homotopic as d0 -chain
+
+Proof. The chain homotopy is
+H : E → HomE (E, F ),
+
+−1
+1
+(H(x))1j = fe0,j+1
+(σE
+x ⊗ 1⊗j ).
+
+
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+23
+
+Corollary 6.19. Let f : E → F be a map of dA∞ -algebras. The induced map
+f∗ : HomE (E, E) → HomE (E, F ) is an E2 -equivalence of twisted chain complexes
+if and only if f is an E2 -equivalence.
+Proof. By Lemma 6.18, the maps induced by f∗ ψ E and ψ E,F f on H∗h H∗v coincide.
+Both ψ E and ψ E,F are E1 -equivalences by Lemma 6.17, and hence E2 -equivalences.
+
+Lemma 6.20. Let f : E → F be a dA∞ -algebra map. Then ψ F,E and f ∗ resf ψ F,F
+coincide as maps of twisted chain complexes from F to HomE (E, F ).
+Proof. One can check that
+X
+
+((f ∗ resf )i (e
+g 1 ))1j =
+
+q
+(−1)heg,fi i geq1 feij
+e
+
+1≤q≤j
+
+holds for j ≥ 1. This easily implies the assertion.
+
+
+
+∗
+
+Corollary 6.21. The map f resf is an E2 -equivalence of twisted chain complexes.
+Proposition 6.22. Let f : E → F be an E2 -equivalence of dA∞ -algebras with E2 homology concentrated in horizontal degree 0. Then the dgas Tot HomE (E, E) and
+Tot HomF (F, F ) are quasi-isomorphic.
+Proof. By the Corollaries 6.19 and 6.21, there is a diagram
+f∗
+
+f ∗ resf
+
+HomE (E, E) −→ HomE (E, F ) ←−−−− HomF (F, F )
+with both maps E2 -equivalences. Setting
+R = Tot HomE (E, E),
+
+S = Tot HomF (F, F ), and
+
+X = Tot HomE (E, F ),
+
+we obtain dgas R and S, an S-R-bimodule X, a quasi-isomorphism α : R → X of
+right R-modules and an quasi-isomorphism β : S → X of left S-modules. This data
+is compatible with the unit maps in that the square obtained from composing the
+unit maps of R and S with α and β commutes.
+The described data is almost a ‘quasi-equivalence’ of dgas as described in [12,
+p.31] and generalized in [20, Definition A.2.1]. The missing part is an element of X
+such that left and right multiplication with the element equals α and β, respectively
+(compare Remark 6.12). However, we can follow closely the strategy of the proof of
+[20, Lemma A.2.3], exploiting the (projective) model structures on Chk and Mod-R.
+We factor α in the model category of right R-modules as a composition of an
+∼
+/ Y and an acyclic fibration α00 : Y ∼ / / X . We conacyclic cofibration α0 : R /
+sider the dga T = HomR (Y, Y ), the T -R-bimodule V = HomR (R, Y ), and the S-T bimodule W = HomR (Y, X). The map α0 induces an acyclic fibration (α0 )∗ : T → V
+and a quasi-isomorphism (α0 )∗ : R ∼
+= HomR (R, R) → V . The multiplications on R
+and T induce an associative and unital multiplication on the pullback P (α0 ) of (α0 )∗
+and (α0 )∗ . Hence the induced maps from R → P (α0 ) ← T are maps of dgas. They
+are quasi-isomorphisms since (α0 )∗ is an acyclic fibration.
+The α00 induces an acyclic fibration (α00 )∗ : T → W since Y is cofibrant as an
+R-module. Right multiplication with α00 induces a map S → W . It is a quasi-isomorphism since its composition with the quasi-isomorphism W = HomR (Y, X) →
+HomR (R, X) ∼
+= X induced by α0 equals β. The latter statement exploits the
+compatibility of α and β with the units of R and S. As above, we form the pullback
+to get a chain T → P (α00 ) ← S of quasi-isomorphisms.
+
+Proof of Theorem 1.2. Let E be a dA∞ -algebra. Lemma 2.18 and Proposition
+6.11 show that Tot HomE (E, E) is a dga. If A is a dga and E → A an E2 equivalence, Proposition 6.22 implies that Tot HomA (A, A) is quasi-isomorphic to
+
+24
+
+STEFFEN SAGAVE
+
+Tot HomE (E, E). Applying Tot to the E1 -equivalence A → HomA (A, A) and observing A ∼
+
+= Tot A completes the proof.
+Over a field, every A∞ -algebra is quasi-isomorphic to a dga. However, not
+every dA∞ -algebra E is E2 -equivalent to a dga, since E may have E2 -homology in
+horizontal degrees other than 0. From this perspective, the relation of dgas and
+dA∞ -algebras is more like viewing ordinary modules as (positive) chain complexes
+concentrated in degree 0.
+
+7. Four lemmas
+Lemma 7.1. In the situation of the proof of Proposition 4.7 we have m
+e B,1
+eln = 0.
+01 z
+Proof. We start with calculating
+e2
+e2
+m
+e B,1
+e B,1
+e B,1
+e B,1
+e B,1
+01 m
+02 fln = −m
+02 (1 ⊗ m
+01 + m
+01 ⊗ 1)fln
+X
+e2
+e2 e E,j .
+=m
+e B,1
+e B,1
+(−1)i m
+e B,1
+pn
+11 m
+02 fl−1,n −
+02 fij m
+
+(7.2)
+
+i+p=l; 2≤j<n
+
+The second summand of zeln contributes
+e1
+e1
+m
+eB
+e B,1
+e B,1
+e B,1
+01 m
+11 fl−1,n =m
+11 m
+01 fl−1,n
+(7.3)
+
+e2
+=−m
+e B,1
+e B,1
+11 m
+02 fl−1,n +
+
+X
+
+e1 e E,j .
+(−1)i m
+e B,1
+pn
+11 fij m
+
+i+p=l−1; 2≤j<n
+
+Applying m
+eB
+eln gives
+01 to the last summand of z
+−
+
+X
+
+e1 e E,j
+(−1)i m
+eB
+01 fij m
+pn
+
+i+p=l; 2≤j<n
+
+(7.4)
+=
+
+X
+
+e2 e E,j −
+(−1)i m
+e B,1
+pn
+02 fij m
+
+i+p=l; 2≤j<n
+
+X
+
+e1 e E,j .
+(−1)i m
+e B,1
+pn
+11 fij m
+
+i+p=l−1; 2≤j<n
+
+Forming the sum of (7.2), (7.3), and (7.4) shows the assertion.
+
+
+
+Lemma 7.5. In the situation of the proof of Proposition 4.7, the m
+e E,1
+ln together
+with the m
+e E,1
+for
+i
++
+j
+<
+l
++
+n
+satisfy
+(2.2)
+for
+u
++
+v
+≤
+l
++
+n
++
+1.
+uv
+ij
+E,1
+Proof. Since m
+e 01
+= 0, we have to verify
+
+(7.6)
+
+X
+
+(−1)i m
+e E,1
+e E,j
+pv = 0
+ij m
+
+i+p=u
+i+j≥2; j<v
+
+for u + v = l + n + 1. The term m
+e E,1
+e E,j
+eij m
+e E,j
+pv is represented by z
+pw if i + j > 2,
+ij m
+B,1
+B,1 e1
+1
+e
+e 02 (e
+zu,v−1 ⊗ f01 ) if i = 0 and j = 2, and by m
+e B,1
+eu−1,v
+by m
+e 02 (f01 ⊗ zeu,v−1 ) + m
+11 z
+if i = 1 and j = 1. We evaluate these expressions using the already established
+E
+relations of the m
+e pqj and the definition of zeij . First we observe
+(7.7)
+
+e2
+−m
+e B,1
+eu−1,v = −m
+e B,1
+e B,1
+11 z
+11 m
+02 fu−1,v +
+
+X
+
+e1 e E,j .
+(−1)i m
+e B,1
+pv
+11 fij m
+
+i+p=u−1; i+j≥2
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+25
+
+Next we deduce
+1
+e1
+zu,v−1 ⊗ fe01
+eu,v−1 ) + m
+e B,1
+)
+m
+e B,1
+02 (e
+02 (f01 ⊗ z
+
+
+X
+i B,1 e1
+1
+E,1
+e1 e E,1 ⊗ fe1 )
++
+(−1) m
+e 02 (fij ⊗ fe01 m
+e pq ) + m
+e B,1
+pq
+ij
+02 (f01 m
+i+p=u; j+q=v
+i+j≥2
+
+X
+
+=
+
+⊗j1
+2
+e1
+e1
+(−1)i1 +i2 +1 m
+⊗m
+e E,j
+e B,1
+pq )
+02 (fi1 j1 ⊗ fi2 j2 )(1
+
+i1 +i2 +p=u; j1 +q=v
+i2 +j2 ≥2
+
+(7.8)
+
+X
+
++
+
+1
+e1
+e1
+(−1)i1 +i2 +1 m
+e E,j
+e B,1
+⊗ 1⊗j2 )
+pq
+02 (fi1 j1 ⊗ fi2 j2 )(m
+
+i1 +i2 +p=u; j2 +q=v
+i1 +j1 ≥2
+
+X
+
+e2
++m
+e B,1
+e B,1
+11 m
+02 fu−1,v +
+
+e1
+e1
+m
+e B,1
+e B,1
+01 m
+02 (fi1 j1 ⊗ fi2 j2 ).
+
+i1 +i2 =u; j1 +j2 =v
+is +js ≥2
+
+The last step is to calculate
+X
+(−1)i zeij m
+e E,j
+pv
+i+p=u; i+j>2
+
+
+
+X
+
+=
+
+
+e1
+e1 e E,1 ) + m
+e1 e E,1 ⊗ fe1 )
+(−1)i m
+e B,1
+e B,1
+pq
+pq
+ij
+02 (fij ⊗ f01 m
+02 (f01 m
+
+i+p=u; j+q=v
+i+j≥2
+
+X
+
++
+
+(7.9)
+
+⊗j1
+2
+e1
+e1
+(−1)i1 +i2 m
+e B,1
+⊗m
+e E,j
+pq )
+02 (fi1 j1 ⊗ fi2 j2 )(1
+
+i1 +i2 +p=u; j1 +q=v
+i2 +j2 ≥2
+
+X
+
++
+
+1
+e1
+e1
+(−1)i1 +i2 m
+e B,1
+⊗ 1⊗j2 )
+e E,j
+pq
+02 (fi1 j1 ⊗ fi2 j2 )(m
+
+i1 +i2 +p=u; j2 +q=v
+i1 +j1 ≥2
+
+X
+
+−
+
+e1 e E,j .
+(−1)i m
+e B,1
+pv
+11 fij m
+
+i+p=u; i+j≥2
+
+Adding up (7.7), (7.8), and (7.9) shows that the sum the representatives for the
+terms in the desired formula has values in coboundaries.
+
+Lemma 7.10. In the situation of the proof of Proposition 4.12, mC,1
+eln = 0 holds.
+01 y
+Proof. We apply m
+e C,1
+eln . The first gives
+01 to the six terms of y
+(7.11)
+e1
+m
+e C,1
+e C,1
+01 m
+11 hl−1,n
+l C,1 f 1
+f 1
+e 11 (αf )l−1,n + (−1)l
+= − (−1)l m
+e C,1
+11 (gβ)l−1,n + (−1) m
+
+X
+
+e 1 e E,j
+m
+e C,1
+pn
+11 hij m
+
+i+p=l−1
+
+−
+
+X
+
+f 1
+e1
+m
+e C,1
+e C,1
+11 m
+02 ((gβ)ij ⊗ hpq ) −
+
+i+p=l−1
+j+q=n
+
+X
+
+e1
+f 1
+e C,1
+(−1) m
+e C,1
+11 m
+02 (hij ⊗ (αf )pq )
+p
+
+i+p=l−1
+j+q=n
+
+The second gives
+f 1
+(−1)l m
+e C,1
+01 (αf )ln
+(7.12)
+
+l C,1 f 2
+f 1
+= − (−1)l m
+e C,1
+e 02 (αf )ln +
+11 (αf )l−1,n − (−1) m
+
+X
+i+p=l
+
+E,j
+f )1 m
+(−1)p (αf
+ij e pn
+
+26
+
+STEFFEN SAGAVE
+
+The third gives
+(−1)l+1
+
+X
+
+1 ej
+m
+e C,1
+eij
+βpn
+01 g
+
+i+p=l
+i+j≥2
+
+(7.13)
+
+X
+
+l C,1 f 2
+f 1
+=(−1)l m
+e C,1
+e 02 (gβ)ln −
+11 (gβ)l−1,n + (−1) m
+
+f ij m
+(−1)p (gβ)
+e E,j
+pn
+
+i+p=l
+
+The fourth gives
+(7.14)
+X
+
+(−1)l
+
+e 1 e E,1
+(−1)i m
+e C,1
+pn
+01 hij m
+
+i+p=l
+
+=
+
+X
+
+X
+
+E,j
+f 1m
+(−1)p (gβ)
+ij e pn −
+
+i+p=l
+
+E,j
+l
+f )1 m
+(−1)p (αf
+ij e pn − (−1)
+
+i+p=l
+
+− (−1)
+
+l
+
+− (−1)
+
+l
+
+X
+
+X
+
+e 1 e E,j
+m
+e C,1
+pn
+11 hij m
+
+i+p=l−1
+
+E,j1 +j2
+f 1
+e1
+m
+e C,1
+e pn
+02 ((gβ)i1 j1 ⊗ hi2 j2 )m
+
+i1 +i2 +p=l
+
+X
+
+E,j1 +j2
+e1
+f 1
+e C,1
+(−1)i2 m
+e pn
+02 (hi1 j1 ⊗ (αf )i2 j2 )m
+
+i1 +i2 +p=l
+
+The fifth gives
+X
+
+f 1
+e1
+m
+e C,1
+e C,1
+01 m
+02 ((gβ)ij ⊗ hpq )
+
+i+p=l
+j+q=n
+
+X
+
+=
+
+l
+f 1
+e1
+m
+e C,1
+e C,1
+11 m
+02 ((gβ)ij ⊗ hpq ) + (−1)
+
+i+p=l−1
+j+q=n
+
+(7.15)
+
+X
+
+f 1
+f 1
+m
+e C,1
+02 ((gβ)ij ⊗ (αf )pq )
+
+i+p=l
+j+q=n
+
+l
+f 2
+− (−1)l m
+e C,1
+02 (gβ)ln + (−1)
+
+X
+
+E,j1 +j2
+f 1
+e1
+m
+e C,1
+e pn
+02 ((gβ)i1 j1 ⊗ hi2 j2 )m
+
+i1 +i2 +p=l
+
+X
+
++
+
+p2
+
+(−1)
+
+f 1
+e1
+f 1
+m
+e C,1
+e C,1
+02 (1 ⊗ m
+02 )((gβ)ij ⊗ hp1 q1 ⊗ (αf )p2 q2 )
+
+i+p1 +p2 =l
+j+q1 +q2 =n
+
+The sixth gives
+X
+e1
+f 1
+(−1)p m
+e C,1
+e C,1
+01 m
+02 (hij ⊗ (αf )pq )
+i+p=l
+j+q=n
+
+X
+
+=
+(7.16)
+
+l
+e1
+f 1
+(−1)p m
+e C,1
+e C,1
+11 m
+02 (hij ⊗ (αf )pq ) − (−1)
+
+i+p=l−1
+j+q=n
+
+X
+
+f 1
+f 1
+m
+e C,1
+02 ((gβ)ij ⊗ (αf )pq )
+
+i+p=l
+j+q=n
+
+f 2
++ (−1)l m
+e C,1
+02 (αf )ln +
+
+X
+
+E,j1 +j2
+e1
+f 1
+e pn
+(−1)i1 +p m
+e C,1
+02 (hi1 j1 ⊗ (αf )i2 j2 )m
+
+i1 +i2 +p=l
+
++
+
+X
+
+f 1
+e1
+f 1
+(−1) m
+e C,1
+e C,1
+02 (m
+02 ⊗ 1)((gβ)i1 j1 ⊗ hi2 j2 ⊗ (αf )pq )
+p
+
+i1 +i2 +p=j
+j1 +j2 +q=n
+
+Indeed, the sum of (7.11), . . . , (7.16) is zero.
+
+
+
+1
+Lemma 7.17. In the situation of the proof of Proposition 4.12, the βeln
+represented
+by yln satisfies (2.6)uv for u + v = l + n + 1.
+
+Proof. We have to show that β is an dA∞ -map, that is,
+X
+X
+1
+ej
+(−1)i βeij
+m
+e E,j
+m
+e F,1
+pv =
+ij βpv .
+i+p=u
+
+i+p=u
+
+DG-ALGEBRAS AND DERIVED A∞ -ALGEBRAS
+
+27
+
+We use the representing cocycles (−1)i yeij and zeij . A direct calculation shows
+X
+X
+X
+j
+f 1
+e 1 e E,j
+(−1)i yeij m
+e E,j
+zeij βepv
+=m
+e C,1
+(−1)i m
+e C,1
+pv −
+pv
+01 (gβ)uv −
+01 hij m
+i+p=u
+
+i+p=u
+
+i+p=u
+
+
+References
+[1] H.-J. Baues and T. Pirashvili. Comparison of Mac Lane, Shukla and Hochschild cohomologies.
+J. Reine Angew. Math., 598:25–69, 2006.
+[2] D. Benson, H. Krause, and S. Schwede. Realizability of modules over Tate cohomology. Trans.
+Amer. Math. Soc., 356(9):3621–3668 (electronic), 2004.
+[3] A. K. Bousfield. Cosimplicial resolutions and homotopy spectral sequences in model categories. Geom. Topol., 7:1001–1053 (electronic), 2003.
+[4] D. Dugger and B. E. Shipley. Topological equivalences for differential graded algebras. Adv.
+Math., 212(1):37–61, 2007.
+[5] W. G. Dwyer and J. P. C. Greenlees. Complete modules and torsion modules. Amer. J.
+Math., 124(1):199–220, 2002.
+[6] S. I. Gelfand and Y. I. Manin. Methods of homological algebra. Springer-Verlag, Berlin, 1996.
+Translated from the 1988 Russian original.
+[7] P. G. Goerss and J. F. Jardine. Simplicial homotopy theory, volume 174 of Progress in
+Mathematics. Birkhäuser Verlag, Basel, 1999.
+[8] P. S. Hirschhorn. Model categories and their localizations, volume 99 of Mathematical Surveys
+and Monographs. American Mathematical Society, Providence, RI, 2003.
+[9] M. Hovey. Model categories, volume 63 of Mathematical Surveys and Monographs. American
+Mathematical Society, Providence, RI, 1999.
+[10] J. F. Jardine. Bousfield’s E2 model theory for simplicial objects. In Homotopy theory: relations with algebraic geometry, group cohomology, and algebraic K-theory, volume 346 of
+Contemp. Math., pages 305–319. Amer. Math. Soc., Providence, RI, 2004.
+[11] T. V. Kadeishvili. On the theory of homology of fiber spaces. Uspekhi Mat. Nauk,
+35(3(213)):183–188, 1980. Translated in Russ. Math. Surv., 35(3):231–238, 1980.
+[12] B. Keller. Deriving DG categories. Ann. Sci. École Norm. Sup. (4), 27(1):63–102, 1994.
+[13] B. Keller. Introduction to A-infinity algebras and modules. Homology Homotopy Appl.,
+3(1):1–35 (electronic), 2001.
+[14] K. Lefèvre-Hasegawa. Sur les A∞ -catégories. Thèse de doctorat, Université Denis Diderot –
+Paris 7, November 2003, arXiv:math/0310337.
+[15] D. G. Quillen. Homotopical algebra. Lecture Notes in Mathematics, No. 43. Springer-Verlag,
+Berlin, 1967.
+[16] S. Sagave. Universal Toda brackets of ring spectra. Trans. Amer. Math. Soc., 360(5):2767–
+2808 (electronic), 2008.
+[17] S. Saneblidze. On derived categories and derived functors. Extracta Math., 22(3):315–324,
+2007.
+[18] S. Schwede and B. E. Shipley. Algebras and modules in monoidal model categories. Proc.
+London Math. Soc. (3), 80(2):491–511, 2000.
+[19] S. Schwede and B. E. Shipley. Equivalences of monoidal model categories. Algebr. Geom.
+Topol., 3:287–334 (electronic), 2003.
+[20] S. Schwede and B. E. Shipley. Stable model categories are categories of modules. Topology,
+42(1):103–153, 2003.
+[21] J. D. Stasheff. Homotopy associativity of H-spaces. I, II. Trans. Amer. Math. Soc. 108 (1963),
+275-292; ibid., 108:293–312, 1963.
+Department of Mathematics, University of Oslo, Box 1053, N-0316 Oslo, Norway
+E-mail address: sagave@math.uio.no
+
+

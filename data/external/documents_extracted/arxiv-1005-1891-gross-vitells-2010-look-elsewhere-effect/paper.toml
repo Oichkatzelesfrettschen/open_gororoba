@@ -1,0 +1,1279 @@
+equations = []
+tables = []
+full_text = """
+arXiv:1005.1891v3 [physics.data-an] 7 Oct 2010\r
+EPJ manuscript No.\r
+(will be inserted by the editor)\r
+Trial factors for the look elsewhere effect in high\r
+energy physics\r
+Eilam Gross and Ofer Vitells\r
+Weizmann Institute of Science, Rehovot 76100, Israel\r
+the date of receipt and acceptance should be inserted later\r
+Abstract. When searching for a new resonance somewhere in a possible mass range,\r
+the significance of observing a local excess of events must take into account the prob\u0002ability of observing such an excess anywhere in the range. This is the so called “look\r
+elsewhere effect”. The effect can be quantified in terms of a trial factor, which is the\r
+ratio between the probability of observing the excess at some fixed mass point, to\r
+the probability of observing it anywhere in the range. We propose a simple and fast\r
+procedure for estimating the trial factor, based on earlier results by Davies. We show\r
+that asymptotically, the trial factor grows linearly with the (fixed mass) significance.\r
+1 Introduction\r
+The statistical significance that is associated to\r
+the observation of new phenomena is usually ex\u0002pressed using a p-value, that is, the probability\r
+that a similar or more extreme effect would be\r
+seen when the signal does not exist (a situation\r
+usually referred to as the null or background\u0002only hypothesis). It is often the case that one\r
+does not a priori know where the signal will ap\u0002pear within some possible range. In that case,\r
+the significance calculation must take into ac\u0002count the fact that an excess of events anywhere\r
+in the range could equally be considered as a sig\u0002nal. This is known as the “look elsewhere effect”\r
+[1][2]. In the statistical literature this situation is\r
+usually referred to as an hypothesis test when a\r
+nuisance parameter is present only under the al\u0002ternative, for which the standard regularity con\u0002ditions do not apply. The problem is however\r
+closely related to that of a level crossings of a\r
+stochastic process, which has been studied exten\u0002sively and for which many relevant results exist\r
+Correspondence to: ofer.vitells@weizmann.ac.il\r
+[3],[4]. In particular [4] provides an upper bound\r
+on the tail probability of the maximum of a chi\u0002squared process, which can therefore be applied\r
+to cases when the test statistic is the profile like\u0002lihood ratio and the large-sample distribution at\r
+a fixed point given by Wilks’ theorem [5] holds.\r
+Of course, a straightforward way of quanti\u0002fying the look-elsewhere effect may be simply\r
+running many Monte-Carlo simulations of back\u0002ground only experiments, and finding for each\r
+one the largest fluctuation that resembles a sig\u0002nal1\r
+. Examples for such an approach can be found\r
+e.g. in [6]. While this procedure is simple and\r
+gives the correct answer, it is also time and CPU\r
+consuming, as one would have to repeat it O(107)\r
+times to get the p-value corresponding to a 5σ\r
+significance. Approximations based on large sam\u0002ple limits such as [4] can therefore be valuable.\r
+To make the discussion concrete, let us first\r
+describe a typical example of a ‘mass bump’ search.\r
+1\r
+It is assumed that the signal can appear only in\r
+one location, therefore when a search is conducted,\r
+one will look for the largest excess of events and\r
+regard all others as background fluctuations.
+
+2 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+The statistical model in this case consists of a\r
+background distribution b, and a signal distri\u0002bution s(m) with an unknown location param\u0002eter m (corresponding to the mass of a reso\u0002nance). We introduce a signal strength parame\u0002ter µ, such that the model is given by µs(m) +b,\r
+and we test H0 : µ = 0 against the alternative,\r
+µ > 0\r
+2\r
+. Both s and b may depend on addi\u0002tional nuisance parameters which are omitted\r
+from the notation. The mass m is another nui\u0002sance parameter, but it does not exist under H0\r
+since b does not depend on m. The testing prob\u0002lem has therefore a nuisance parameter that is\r
+present only under the alternative. When search\u0002ing for a resonance that can appear anywhere in\r
+the range, one will look for the largest excess of\r
+events above the background. More precisely, if\r
+q(m) is a test statistic for a fixed mass, and large\r
+values of q(m) indicate decreasing compatibility\r
+with the null hypothesis, then the test statistic\r
+of the entire range would be q( ˆm) = max\r
+m\r
+[q(m)].\r
+The problem is therefore in assessing the tail\r
+probability (p-value) of the maximum of q(m)\r
+over the search range.\r
+In section 2 we review the main result of\r
+[4] and its application to the present case. We\r
+propose a practical procedure for estimating the\r
+p-value, which we then demonstrate with a toy\r
+model simulation in section 3.\r
+2 Tail probabilities of the likelihood\r
+ratio test statistic\r
+Suppose that a signal hypothesis depends on a\r
+nuisance parameter θ that does not exist under\r
+the null. We denote by q(θ) the profile likelihood\r
+test statistic for some fixed θ and we assume that\r
+it follows a χ\r
+2 distribution with s degrees of free\u0002dom, as would be the case in the large sample\r
+limit when Wilks’ theorem holds. We are inter\u0002ested in the tail probability of the maximum of\r
+2\r
+Strictly speaking, Wilks’ theorem does not apply\r
+here since the tested value of µ is on the boundary\r
+of the allowed region. This difficulty however can be\r
+easily alleviated by extending the allowed region of µ\r
+to negative values and then reducing the p-value by\r
+half. A formal generalization of this nature is given\r
+in [7].\r
+q(θ) over θ, which we denote by q(\r
+ˆθ). As shown\r
+in [4], this is bounded by:\r
+P(q(\r
+ˆθ) > c) 6 P(χ\r
+2\r
+s > c) + hN(c)i (1)\r
+where N(c) is the number of ‘upcrossings’ of\r
+the level c by the process q(θ), with an expecta\u0002tion that is given by [4]:\r
+hN(c)i =\r
+c\r
+(s−1)/2\r
+e\r
+−c/2\r
+√\r
+π2\r
+s/2Γ(s/2 + 1/2) Z U\r
+L\r
+C(θ)dθ (2)\r
+Where [L, U] is the range of possible values\r
+of θ, and C(θ) is some function that depends on\r
+the details of the statistical model. To have the\r
+maximum of q(θ) above the level c means that\r
+either the value at the lower threshold q(L) is\r
+larger than c, or that there is at least one up\u0002crossing, hence the two terms in (1). Note that\r
+the bound is expected to become an equality for\r
+large values of c, as the expected number of up\u0002crossings will be dominated by the probability of\r
+one upcrossing, that is when hN(c)i ≪ 1.\r
+The function C(θ) can in general be diffi\u0002cult to calculate. Instead, we propose to estimate\r
+hN(c0)i at some low reference level c0 by simply\r
+counting the number of upcrossings in a small\r
+set of background-only Monte Carlo simulations.\r
+Eq. (1) then becomes\r
+P(q(\r
+ˆθ) > c) 6 P(χ\r
+2\r
+s > c)+hN(c0)i(\r
+c\r
+c0\r
+)\r
+(s−1)/2\r
+e\r
+−(c−c0)/2\r
+(3)\r
+and so once hN(c0)i is determined, the p-value\r
+of a given observation and the corresponding sig\u0002nificance are readily obtained.\r
+Naturally, one would like to choose the ref\u0002erence level c0 in a way that will minimize the\r
+resulting uncertainty on the bound. From (3),\r
+it can be seen that the statistical uncertainty is\r
+proportional to σN /hNi where σN is the stan\u0002dard deviation of N. As long as the the distri\u0002bution of N is ‘well behaved’ in the sense that\r
+the relative uncertainty decreases with increas\u0002ing hNi, then the optimal choice of c0 would be\r
+that which maximizes the expected number of\r
+upcrossings (2), that is c0 = s − 1. Note that in\r
+the case s = 1, the maximal number of upcross\u0002ings occurs at c0 → 0, however the ability to
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 3\r
+reliably estimate hN(c0)i at very low levels de\u0002pends on the numerical resolution at which q(θ)\r
+is calculated. In this case, one should therefore\r
+aim at having c0 as low as possible but still sig\u0002nificantly larger than the numerical resolution of\r
+q(θ), and the typical distance between upcross\u0002ings should be kept significantly larger than the\r
+θ resolution. In the example considered in the\r
+following section c0 = 0.5 satisfies those condi\u0002tions and proves to be a good choice.\r
+It is further interesting to note that the de\u0002pendence of hN(c)i on c in (2), is the same as the\r
+asymptotic form of the cumulative distribution\r
+of a χ\r
+2 variable with s + 1 degrees of freedom,\r
+P(χ\r
+2\r
+s+1 > c) −−−→ c→∞\r
+c\r
+1\r
+2\r
+(s+1)−1\r
+e\r
+−c/2\r
+2\r
+1\r
+2\r
+(s+1)−1Γ((s + 1)/2)\r
+(4)\r
+allowing us to write, for large c (c ≫ s),\r
+P(q(\r
+ˆθ) > c) ≈ P(χ\r
+2\r
+s > c) + N P(χ\r
+2\r
+s+1 > c) (5)\r
+where\r
+N =\r
+1\r
+√\r
+2π\r
+Z U\r
+L\r
+C(θ)dθ (6)\r
+And the bound has been replaced by a ‘≈’\r
+sign since we are dealing with the large c limit.\r
+The probability described by eq. (5) has a nat\u0002ural interpretation. It is the same as one would\r
+have for a random variable that is the maximal\r
+of n independent χ\r
+2\r
+s+1 variates and one χ\r
+2\r
+s vari\u0002ate, with E[n] = N . That is, if\r
+y = max[x0, x1...xn] (7)\r
+and\r
+x0 ∼ χ\r
+2\r
+s\r
+, xi ∼ χ\r
+2\r
+s+1 i = 1...n, E[n] = N\r
+then the tail probability P(y > c) for large c\r
+is given by the right hand side of (5).\r
+Intuitively, this suggests that we can view the\r
+range of θ as being composed of several (on aver\u0002age N ) independent regions , where in each one\r
+the likelihood fit involves an extra degree of free\u0002dom due to the variable mass, leading to a χ\r
+2\r
+s+1\r
+distribution. The χ\r
+2\r
+s\r
+term accounts for the pos\u0002sibility of having a local maximum on the edge\r
+of the allowed region (assuming, from symme\u0002try reasons, that each edge has a probability 1/2\r
+of being a local maximum). The number N can\r
+therefore be interpreted as an ‘effective number’\r
+of independent search regions.\r
+We remark that exactly such an intuitive rea\u0002soning was employed by Quayle [8] as a conjec\u0002ture for the distribution of q(\r
+ˆθ). It was found\r
+that the distribution of a random variable de\u0002fined according to (7) reproduces, to a good ap\u0002proximation, that of q(\r
+ˆθ), and that the agree\u0002ment is better at the tail. As shown above, this\r
+behavior is expected and the conjecture is in fact\r
+a limiting case of Davies’ formula (1).\r
+2.1 Trial factors\r
+It is sometimes useful to describe the look-elsewhere\r
+effect in terms of a trial factor, which is the ratio\r
+between the probability of observing the excess\r
+at some fixed mass point, to the probability of\r
+observing it anywhere in the range. From (5), we\r
+have\r
+trial# = P(q(\r
+ˆθ) > c)\r
+P(q(θ) > c)\r
+(8)\r
+≈ 1 + N\r
+P(χ\r
+2\r
+s+1 > c)\r
+P(χ2\r
+s > c)\r
+(9)\r
+≈ 1 + N\r
+r\r
+c\r
+2\r
+Γ(s/2)\r
+Γ((s + 1)/2) (10)\r
+For the case s = 1, √\r
+c is just the ‘fixed’\r
+significance, that is the quantile of a standard\r
+gaussian corresponding to a p-value of chi-square\r
+with s degrees of freedom. This also holds asymp\u0002totically for s > 1, as Zf ix =\r
+√\r
+c + O(s\r
+log(c)\r
+√\r
+c\r
+).\r
+We therefore have, for c ≫ s,\r
+trial# ≈ 1 +\r
+1\r
+√\r
+2\r
+N Zf ix\r
+Γ(s/2)\r
+Γ((s + 1)/2) (11)\r
+which, for the common case of s = 1, is\r
+trial#s=1 ≈ 1 + r\r
+π\r
+2\r
+N Zf ix (12)
+
+4 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+The trial factor is thus asymptotically linear\r
+with both the effective number of independent\r
+regions, and with the fixed-mass significance.\r
+3 Toy model simulations\r
+We shall now illustrate the procedure described\r
+above with a simple example. Our toy model\r
+consists of a gaussian signal (‘mass bump’) on\r
+top of a continuous background that follows a\r
+Rayleigh distribution, in a mass range [0,120].\r
+The width of the gaussian increases linearly with\r
+the mass, representing a case where the mass res\u0002olution changes with the mass.\r
+We assume that the background shape is known\r
+but its normalization is not, so that it is a free\r
+parameter in the fit (i.e. a nuisance parameter),\r
+together with the signal location and normaliza\u0002tion. We use a binned profile likelihood ratio as\r
+our test statistic, where the number of events in\r
+each bin is assumed to be Poisson distributed\r
+with an expected value\r
+E(ni) = µsi(m) + βbi (13)\r
+where µ is the signal strength parameter, si(m)\r
+corresponds to a gaussian located at a mass m, β\r
+is the background normalization and bi are fixed\r
+and given by the Rayleigh distribution. For sim\u0002plicity of notation we will use in the following\r
+s = {si} and b = {βbi}. The hypothesis that no\r
+signal exists, or equivalently that µ = 0, will be\r
+referred to as the null hypothesis, H0. ˆµ and bˆ\r
+will denote maximum likelihood estimators while\r
+ˆ\r
+bˆ will denote the conditional maximum likeli\u0002hood estimator of the background normalization\r
+under the null hypothesis.\r
+The test statistic q(m) is defined as:\r
+q(m) = −2ln L(b\r
+ˆˆ)\r
+L(ˆµs(m) + bˆ)\r
+. (14)\r
+where L is the likelihood function. An example\r
+background-only pseudo-experiment is shown in\r
+Fig.1, together with q(m).\r
+We choose a reference level of c0 = 0.5 and\r
+estimate the expected number of upcrossings, as\r
+demonstrated in Fig.1, from a set of 100 Monte\r
+Carlo simulations of background experiments. This\r
+gives hN(c0)i = 4.34 ± 0.11, which corresponds\r
+to N = 5.58 ± 0.14. The distribution of q( ˆm)\r
+is then estimated from a sample of ∼1 million\r
+background simulations and we compare the tail\r
+probabilities to the prediction of (3). The results\r
+are shown in Fig.2. The bound of (3) gives an ex\u0002cellent approximation to the observed p-values\r
+for large c.\r
+0 5 10 15 20 25\r
+100\r
+101\r
+102\r
+103\r
+104\r
+105\r
+q( ˆm)\r
+0 5 10 15 20 25 30\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+c\r
+P(q( ˆm) > c)\r
+Fig. 2. (top) Distribution of q( ˆm). (bottom) Tail\r
+probability of q( ˆm). The solid line shows the result\r
+of the Monte Carlo simulation, the dotted red line\r
+is the predicted bound (eq. 3) with the estimated\r
+hN(c0)i (see text). The yellow band represents the\r
+statistical uncertainty due to the limited sample size.
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 5\r
+0 20 40 60 80 100 120\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+Events / unit mass\r
+0 20 40 60 80 100 120\r
+0\r
+5\r
+m\r
+q(m)\r
+Fig. 1. (top) An example pseudo-experiment with background only. The solid line shows the best signal\r
+fit, while the dotted line shows the background fit. (bottom) The likelihood ratio test statistic q(m). The\r
+dotted line marks the reference level c0 with the upcrossings marked by the dark dots. Note the broadening\r
+of the fluctuations as m increases, reflecting the increase in the signal gaussian width.\r
+Figure 3 shows the corresponding trial factor,\r
+compared to the bound calculated from eq.(3)\r
+and the asymptotic approximation of eq.(12).\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+Z\r
+fix\r
+trial#\r
+Fig. 3. The trial factor estimated from toy Monte\r
+Carlo simulations (solid line), with the upper bound\r
+of eq.(3) (dotted black line) and the asymptotic ap\u0002proximation of eq.(12) (dotted red line). The yellow\r
+band represents the statistical uncertainty due to the\r
+limited sample size.\r
+We consider in addition a case where the\r
+number of degrees of freedom is more than one.\r
+For this purpose, we assume several indepen\u0002dent channels, each identical to the one described\r
+above, and where the signal normalizations (µ1, ..., µs)\r
+are free parameters. (This could represent, for\r
+example, a case where one is searching for a res\u0002onance in several decay channels, with unknown\r
+branching ratios). The reference level is chosen\r
+to be c0 = s−1 as discussed in the previous sec\u0002tion. The resulting distributions and trial factors\r
+for s = 2, 3 are shown in figures 4 and 5. As be\u0002fore, the the bound (3) agrees with the observed\r
+p-value, within statistical variation. The rate at\r
+which the asymptotic approximation (11) con\u0002verges to the bound becomes slower when the\r
+number of degrees of freedom increases, mak\u0002ing it less accurate, however the trend of linear\r
+growth is evident.\r
+4 Conclusions\r
+The look-elsewhere effect presents a case when\r
+the standard regularity conditions of Wilks’ the-
+
+6 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+0 10 20 30 40\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+q( ˆm)\r
+s=2\r
+s=3\r
+0 5 10 15 20 25 30\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+c\r
+P(q( ˆm) > c)\r
+s=3\r
+s=2\r
+Fig. 4. (top) Distribution of q( ˆm) for s = 2, 3. (bot\u0002tom)Tail probability of q( ˆm). The solid lines shows\r
+the result of the Monte Carlo simulation, the dotted\r
+red lines are the predicted bound (eq. 3) with the\r
+estimated hN(c0)i (see text).\r
+orem do not apply, and so specialized methods\r
+are required for estimating tail probabilities in\r
+the large sample limit. Such methods however\r
+exist, and as we have demonstrated, can provide\r
+accurate results under fairly general conditions.\r
+The procedure described in this paper consists of\r
+estimating the expected number of upcrossings\r
+of the likelihood ratio at a low reference level us\u0002ing a small set of Monte Carlo simulations. This\r
+can then be related to the expected number of\r
+upcrossings at a higher level using Davies’ result\r
+(2), providing a bound on the probability of the\r
+likelihood ratio exceeding this level, given by (3).\r
+The method is easy to implement in practical sit\u0002uations, and the bound converges to the actual\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+Z\r
+fix\r
+trial#\r
+s=2\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+Z\r
+fix\r
+trial#\r
+s=3\r
+Fig. 5. The trial factors estimated from toy Monte\r
+Carlo simulations (solid line), with the upper bound\r
+of eq.(3) (dotted black line) and the asymptotic ap\u0002proximation of eq.(11) (dotted red line). The yellow\r
+band represents the statistical uncertainty due to the\r
+limited sample size.\r
+tail probability when this probability becomes\r
+small. It has further been shown that the trial\r
+factor is asymptotically proportional to the effec\u0002tive number of independent search regions and\r
+to the fixed-mass significance, allowing for a sim\u0002ple interpretation of the effect as being the result\r
+of two factors: the first one is the mere fact that\r
+there are more available distinct regions wherein\r
+fluctuations can occur, represented by the effec\u0002tive number of independent regions; the second\r
+effect is that within each region we further max\u0002imize the likelihood by fitting the mass in the\r
+neighborhood of the fluctuation, which can be\r
+described by adding a degree of freedom to the\r
+fit.
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 7\r
+5 Acknowledgments\r
+We are indebted to Michael Woodroofe, Luc De\u0002mortier and the referee of this paper, for pointing\r
+us to the work of Davies [4] which became the\r
+leading thread of this work. We are grateful for\r
+the valuable comments made by Luc Demortier\r
+in his summary talk in the 2010 Banff workshop\r
+[9], and to Michael Woodroofe who spent valu\u0002able time in writing to us his impressions on the\r
+look elsewhere effect. We also thank Bob Cousins\r
+for useful comments and suggestions, BIRS and\r
+the organizers of the Banff workshop. One of\r
+us (E. G.) is obliged to the Benoziyo center for\r
+High Energy Physics, to the Israeli Science Foun\u0002dation (ISF), the Minerva Gesellschaft, and the\r
+German Israeli Foundation (GIF) for supporting\r
+this work.\r
+References\r
+1. For a general discussion see for example L.\r
+Lyons, Open statistical issues in particle physics,\r
+The Annals of Applied Statistics 2008, Vol. 2,\r
+No. 3, 887-915.\r
+2. L. Demortier, P Values and Nuisance Parame\u0002ters, Proceedings of PHYSTAT-LHC Workshop,\r
+2007, CERN-2008-001.\r
+3. R. B. Davies,Hypothesis testing when a nuisance\r
+parameter is present only under the alternative,\r
+Biometrika 64 (1977), 247-54.\r
+4. R. B. Davies, Hypothesis testing when a nuisance\r
+parameter is present only under the alternative,\r
+Biometrika 74 (1987), 33-43.\r
+5. S.S. Wilks, The large-sample distribution of the\r
+likelihood ratio for testing composite hypotheses,\r
+Ann. Math. Statist. 9 (1938) 60-62.\r
+6. CMS Physics TDR: Volume II, Appendix A.2, J.\r
+Phys. G: Nucl. Part. Phys. 34 (2007) 995-1579.\r
+7. H. Chernoff, On the distribution of the likelihood\r
+ratio, Ann. Math. Statist. 25 (1954) 573-578.\r
+8. W. Quayle, Combining chanels with\r
+fits, talk given at the PHYSTAT\u0002LHC Workshop, 2007, available at\r
+http://phystat-lhc.web.cern.ch/phystat-lhc/program.html.\r
+9. Banff International Research Station Workshop\r
+on Statistical issues relevant to significance\r
+of discovery claims (2010). Workshop site:\r
+http://www.birs.ca/events/2010/5-day-workshops/10w5068.\r
+Luc Demortier summary talk:\r
+http://www.stat.sfu.ca/∼lockhart/richard/banff2010/demortier.pdf"""
+
+[metadata]
+title = "arxiv 1005.1891 gross vitells 2010 look elsewhere effect"
+authors = ["Unknown"]
+arxiv = "1005.1891"
+year = 2010
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:1005.1891v3 [physics.data-an] 7 Oct 2010\r
+EPJ manuscript No.\r
+(will be inserted by the editor)\r
+Trial factors for the look elsewhere effect in high\r
+energy physics\r
+Eilam Gross and Ofer Vitells\r
+Weizmann Institute of Science, Rehovot 76100, Israel\r
+the date of receipt and acceptance should be inserted later\r
+Abstract. When searching for a new resonance somewhere in a possible mass range,\r
+the significance of observing a local excess of events must take into account the prob\u0002ability of observing such an excess anywhere in the range. This is the so called “look\r
+elsewhere effect”. The effect can be quantified in terms of a trial factor, which is the\r
+ratio between the probability of observing the excess at some fixed mass point, to\r
+the probability of observing it anywhere in the range. We propose a simple and fast\r
+procedure for estimating the trial factor, based on earlier results by Davies. We show\r
+that asymptotically, the trial factor grows linearly with the (fixed mass) significance."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The statistical significance that is associated to\r
+the observation of new phenomena is usually ex\u0002pressed using a p-value, that is, the probability\r
+that a similar or more extreme effect would be\r
+seen when the signal does not exist (a situation\r
+usually referred to as the null or background\u0002only hypothesis). It is often the case that one\r
+does not a priori know where the signal will ap\u0002pear within some possible range. In that case,\r
+the significance calculation must take into ac\u0002count the fact that an excess of events anywhere\r
+in the range could equally be considered as a sig\u0002nal. This is known as the “look elsewhere effect”\r
+[1][2]. In the statistical literature this situation is\r
+usually referred to as an hypothesis test when a\r
+nuisance parameter is present only under the al\u0002ternative, for which the standard regularity con\u0002ditions do not apply. The problem is however\r
+closely related to that of a level crossings of a\r
+stochastic process, which has been studied exten\u0002sively and for which many relevant results exist\r
+Correspondence to: ofer.vitells@weizmann.ac.il\r
+[3],[4]. In particular [4] provides an upper bound\r
+on the tail probability of the maximum of a chi\u0002squared process, which can therefore be applied\r
+to cases when the test statistic is the profile like\u0002lihood ratio and the large-sample distribution at\r
+a fixed point given by Wilks’ theorem [5] holds.\r
+Of course, a straightforward way of quanti\u0002fying the look-elsewhere effect may be simply\r
+running many Monte-Carlo simulations of back\u0002ground only experiments, and finding for each\r
+one the largest fluctuation that resembles a sig\u0002nal1\r
+. Examples for such an approach can be found\r
+e.g. in [6]. While this procedure is simple and\r
+gives the correct answer, it is also time and CPU\r
+consuming, as one would have to repeat it O(107)\r
+times to get the p-value corresponding to a 5σ\r
+significance. Approximations based on large sam\u0002ple limits such as [4] can therefore be valuable.\r
+To make the discussion concrete, let us first\r
+describe a typical example of a ‘mass bump’ search."""
+
+[[sections]]
+number = "1"
+title = "It is assumed that the signal can appear only in"
+text = """
+one location, therefore when a search is conducted,\r
+one will look for the largest excess of events and\r
+regard all others as background fluctuations.
+
+2 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+The statistical model in this case consists of a\r
+background distribution b, and a signal distri\u0002bution s(m) with an unknown location param\u0002eter m (corresponding to the mass of a reso\u0002nance). We introduce a signal strength parame\u0002ter µ, such that the model is given by µs(m) +b,\r
+and we test H0 : µ = 0 against the alternative,\r
+µ > 0"""
+
+[[sections]]
+number = "2"
+title = "Both s and b may depend on addi\u0002tional nuisance parameters which are omitted"
+text = """
+from the notation. The mass m is another nui\u0002sance parameter, but it does not exist under H0\r
+since b does not depend on m. The testing prob\u0002lem has therefore a nuisance parameter that is\r
+present only under the alternative. When search\u0002ing for a resonance that can appear anywhere in\r
+the range, one will look for the largest excess of\r
+events above the background. More precisely, if\r
+q(m) is a test statistic for a fixed mass, and large\r
+values of q(m) indicate decreasing compatibility\r
+with the null hypothesis, then the test statistic\r
+of the entire range would be q( ˆm) = max\r
+m\r
+[q(m)].\r
+The problem is therefore in assessing the tail\r
+probability (p-value) of the maximum of q(m)\r
+over the search range.\r
+In section 2 we review the main result of\r
+[4] and its application to the present case. We\r
+propose a practical procedure for estimating the\r
+p-value, which we then demonstrate with a toy\r
+model simulation in section 3."""
+
+[[sections]]
+number = "2"
+title = "Tail probabilities of the likelihood"
+text = """
+ratio test statistic\r
+Suppose that a signal hypothesis depends on a\r
+nuisance parameter θ that does not exist under\r
+the null. We denote by q(θ) the profile likelihood\r
+test statistic for some fixed θ and we assume that\r
+it follows a χ\r
+2 distribution with s degrees of free\u0002dom, as would be the case in the large sample\r
+limit when Wilks’ theorem holds. We are inter\u0002ested in the tail probability of the maximum of"""
+
+[[sections]]
+number = "2"
+title = "Strictly speaking, Wilks’ theorem does not apply"
+text = """
+here since the tested value of µ is on the boundary\r
+of the allowed region. This difficulty however can be\r
+easily alleviated by extending the allowed region of µ\r
+to negative values and then reducing the p-value by\r
+half. A formal generalization of this nature is given\r
+in [7].\r
+q(θ) over θ, which we denote by q(\r
+ˆθ). As shown\r
+in [4], this is bounded by:\r
+P(q(\r
+ˆθ) > c) 6 P(χ\r
+2\r
+s > c) + hN(c)i (1)\r
+where N(c) is the number of ‘upcrossings’ of\r
+the level c by the process q(θ), with an expecta\u0002tion that is given by [4]:\r
+hN(c)i =\r
+c\r
+(s−1)/2\r
+e\r
+−c/2\r
+√\r
+π2\r
+s/2Γ(s/2 + 1/2) Z U\r
+L\r
+C(θ)dθ (2)\r
+Where [L, U] is the range of possible values\r
+of θ, and C(θ) is some function that depends on\r
+the details of the statistical model. To have the\r
+maximum of q(θ) above the level c means that\r
+either the value at the lower threshold q(L) is\r
+larger than c, or that there is at least one up\u0002crossing, hence the two terms in (1). Note that\r
+the bound is expected to become an equality for\r
+large values of c, as the expected number of up\u0002crossings will be dominated by the probability of\r
+one upcrossing, that is when hN(c)i ≪ 1.\r
+The function C(θ) can in general be diffi\u0002cult to calculate. Instead, we propose to estimate\r
+hN(c0)i at some low reference level c0 by simply\r
+counting the number of upcrossings in a small\r
+set of background-only Monte Carlo simulations.\r
+Eq. (1) then becomes\r
+P(q(\r
+ˆθ) > c) 6 P(χ\r
+2\r
+s > c)+hN(c0)i(\r
+c\r
+c0\r
+)\r
+(s−1)/2\r
+e\r
+−(c−c0)/2\r
+(3)\r
+and so once hN(c0)i is determined, the p-value\r
+of a given observation and the corresponding sig\u0002nificance are readily obtained.\r
+Naturally, one would like to choose the ref\u0002erence level c0 in a way that will minimize the\r
+resulting uncertainty on the bound. From (3),\r
+it can be seen that the statistical uncertainty is\r
+proportional to σN /hNi where σN is the stan\u0002dard deviation of N. As long as the the distri\u0002bution of N is ‘well behaved’ in the sense that\r
+the relative uncertainty decreases with increas\u0002ing hNi, then the optimal choice of c0 would be\r
+that which maximizes the expected number of\r
+upcrossings (2), that is c0 = s − 1. Note that in\r
+the case s = 1, the maximal number of upcross\u0002ings occurs at c0 → 0, however the ability to
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 3\r
+reliably estimate hN(c0)i at very low levels de\u0002pends on the numerical resolution at which q(θ)\r
+is calculated. In this case, one should therefore\r
+aim at having c0 as low as possible but still sig\u0002nificantly larger than the numerical resolution of\r
+q(θ), and the typical distance between upcross\u0002ings should be kept significantly larger than the\r
+θ resolution. In the example considered in the\r
+following section c0 = 0.5 satisfies those condi\u0002tions and proves to be a good choice.\r
+It is further interesting to note that the de\u0002pendence of hN(c)i on c in (2), is the same as the\r
+asymptotic form of the cumulative distribution\r
+of a χ\r
+2 variable with s + 1 degrees of freedom,\r
+P(χ\r
+2\r
+s+1 > c) −−−→ c→∞\r
+c\r
+1\r
+2\r
+(s+1)−1\r
+e\r
+−c/2\r
+2\r
+1\r
+2\r
+(s+1)−1Γ((s + 1)/2)\r
+(4)\r
+allowing us to write, for large c (c ≫ s),\r
+P(q(\r
+ˆθ) > c) ≈ P(χ\r
+2\r
+s > c) + N P(χ\r
+2\r
+s+1 > c) (5)\r
+where\r
+N =\r
+1\r
+√\r
+2π\r
+Z U\r
+L\r
+C(θ)dθ (6)\r
+And the bound has been replaced by a ‘≈’\r
+sign since we are dealing with the large c limit.\r
+The probability described by eq. (5) has a nat\u0002ural interpretation. It is the same as one would\r
+have for a random variable that is the maximal\r
+of n independent χ\r
+2\r
+s+1 variates and one χ\r
+2\r
+s vari\u0002ate, with E[n] = N . That is, if\r
+y = max[x0, x1...xn] (7)\r
+and\r
+x0 ∼ χ\r
+2\r
+s\r
+, xi ∼ χ\r
+2\r
+s+1 i = 1...n, E[n] = N\r
+then the tail probability P(y > c) for large c\r
+is given by the right hand side of (5).\r
+Intuitively, this suggests that we can view the\r
+range of θ as being composed of several (on aver\u0002age N ) independent regions , where in each one\r
+the likelihood fit involves an extra degree of free\u0002dom due to the variable mass, leading to a χ\r
+2\r
+s+1\r
+distribution. The χ\r
+2\r
+s\r
+term accounts for the pos\u0002sibility of having a local maximum on the edge\r
+of the allowed region (assuming, from symme\u0002try reasons, that each edge has a probability 1/2\r
+of being a local maximum). The number N can\r
+therefore be interpreted as an ‘effective number’\r
+of independent search regions.\r
+We remark that exactly such an intuitive rea\u0002soning was employed by Quayle [8] as a conjec\u0002ture for the distribution of q(\r
+ˆθ). It was found\r
+that the distribution of a random variable de\u0002fined according to (7) reproduces, to a good ap\u0002proximation, that of q(\r
+ˆθ), and that the agree\u0002ment is better at the tail. As shown above, this\r
+behavior is expected and the conjecture is in fact\r
+a limiting case of Davies’ formula (1)."""
+
+[[sections]]
+number = "2.1"
+title = "Trial factors"
+text = """
+It is sometimes useful to describe the look-elsewhere\r
+effect in terms of a trial factor, which is the ratio\r
+between the probability of observing the excess\r
+at some fixed mass point, to the probability of\r
+observing it anywhere in the range. From (5), we\r
+have\r
+trial# = P(q(\r
+ˆθ) > c)\r
+P(q(θ) > c)\r
+(8)\r
+≈ 1 + N\r
+P(χ\r
+2\r
+s+1 > c)\r
+P(χ2\r
+s > c)\r
+(9)\r
+≈ 1 + N\r
+r\r
+c\r
+2\r
+Γ(s/2)\r
+Γ((s + 1)/2) (10)\r
+For the case s = 1, √\r
+c is just the ‘fixed’\r
+significance, that is the quantile of a standard\r
+gaussian corresponding to a p-value of chi-square\r
+with s degrees of freedom. This also holds asymp\u0002totically for s > 1, as Zf ix =\r
+√\r
+c + O(s\r
+log(c)\r
+√\r
+c\r
+).\r
+We therefore have, for c ≫ s,\r
+trial# ≈ 1 +\r
+1\r
+√"""
+
+[[sections]]
+number = "2"
+title = "N Zf ix"
+text = """
+Γ(s/2)\r
+Γ((s + 1)/2) (11)\r
+which, for the common case of s = 1, is\r
+trial#s=1 ≈ 1 + r\r
+π"""
+
+[[sections]]
+number = "2"
+title = "N Zf ix (12)"
+text = """
+4 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+The trial factor is thus asymptotically linear\r
+with both the effective number of independent\r
+regions, and with the fixed-mass significance."""
+
+[[sections]]
+number = "3"
+title = "Toy model simulations"
+text = """
+We shall now illustrate the procedure described\r
+above with a simple example. Our toy model\r
+consists of a gaussian signal (‘mass bump’) on\r
+top of a continuous background that follows a\r
+Rayleigh distribution, in a mass range [0,120].\r
+The width of the gaussian increases linearly with\r
+the mass, representing a case where the mass res\u0002olution changes with the mass.\r
+We assume that the background shape is known\r
+but its normalization is not, so that it is a free\r
+parameter in the fit (i.e. a nuisance parameter),\r
+together with the signal location and normaliza\u0002tion. We use a binned profile likelihood ratio as\r
+our test statistic, where the number of events in\r
+each bin is assumed to be Poisson distributed\r
+with an expected value\r
+E(ni) = µsi(m) + βbi (13)\r
+where µ is the signal strength parameter, si(m)\r
+corresponds to a gaussian located at a mass m, β\r
+is the background normalization and bi are fixed\r
+and given by the Rayleigh distribution. For sim\u0002plicity of notation we will use in the following\r
+s = {si} and b = {βbi}. The hypothesis that no\r
+signal exists, or equivalently that µ = 0, will be\r
+referred to as the null hypothesis, H0. ˆµ and bˆ\r
+will denote maximum likelihood estimators while\r
+ˆ\r
+bˆ will denote the conditional maximum likeli\u0002hood estimator of the background normalization\r
+under the null hypothesis.\r
+The test statistic q(m) is defined as:\r
+q(m) = −2ln L(b\r
+ˆˆ)\r
+L(ˆµs(m) + bˆ)\r
+. (14)\r
+where L is the likelihood function. An example\r
+background-only pseudo-experiment is shown in\r
+Fig.1, together with q(m).\r
+We choose a reference level of c0 = 0.5 and\r
+estimate the expected number of upcrossings, as\r
+demonstrated in Fig.1, from a set of 100 Monte\r
+Carlo simulations of background experiments. This\r
+gives hN(c0)i = 4.34 ± 0.11, which corresponds\r
+to N = 5.58 ± 0.14. The distribution of q( ˆm)\r
+is then estimated from a sample of ∼1 million\r
+background simulations and we compare the tail\r
+probabilities to the prediction of (3). The results\r
+are shown in Fig.2. The bound of (3) gives an ex\u0002cellent approximation to the observed p-values\r
+for large c.\r
+0 5 10 15 20 25\r
+100\r
+101\r
+102\r
+103\r
+104\r
+105\r
+q( ˆm)\r
+0 5 10 15 20 25 30\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+c\r
+P(q( ˆm) > c)\r
+Fig. 2. (top) Distribution of q( ˆm). (bottom) Tail\r
+probability of q( ˆm). The solid line shows the result\r
+of the Monte Carlo simulation, the dotted red line\r
+is the predicted bound (eq. 3) with the estimated\r
+hN(c0)i (see text). The yellow band represents the\r
+statistical uncertainty due to the limited sample size.
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 5\r
+0 20 40 60 80 100 120\r
+0\r
+10\r
+20\r
+30\r
+40"""
+
+[[sections]]
+number = "50"
+title = "Events / unit mass"
+text = """
+0 20 40 60 80 100 120\r
+0\r
+5\r
+m\r
+q(m)\r
+Fig. 1. (top) An example pseudo-experiment with background only. The solid line shows the best signal\r
+fit, while the dotted line shows the background fit. (bottom) The likelihood ratio test statistic q(m). The\r
+dotted line marks the reference level c0 with the upcrossings marked by the dark dots. Note the broadening\r
+of the fluctuations as m increases, reflecting the increase in the signal gaussian width.\r
+Figure 3 shows the corresponding trial factor,\r
+compared to the bound calculated from eq.(3)\r
+and the asymptotic approximation of eq.(12).\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+Z\r
+fix\r
+trial#\r
+Fig. 3. The trial factor estimated from toy Monte\r
+Carlo simulations (solid line), with the upper bound\r
+of eq.(3) (dotted black line) and the asymptotic ap\u0002proximation of eq.(12) (dotted red line). The yellow\r
+band represents the statistical uncertainty due to the\r
+limited sample size.\r
+We consider in addition a case where the\r
+number of degrees of freedom is more than one.\r
+For this purpose, we assume several indepen\u0002dent channels, each identical to the one described\r
+above, and where the signal normalizations (µ1, ..., µs)\r
+are free parameters. (This could represent, for\r
+example, a case where one is searching for a res\u0002onance in several decay channels, with unknown\r
+branching ratios). The reference level is chosen\r
+to be c0 = s−1 as discussed in the previous sec\u0002tion. The resulting distributions and trial factors\r
+for s = 2, 3 are shown in figures 4 and 5. As be\u0002fore, the the bound (3) agrees with the observed\r
+p-value, within statistical variation. The rate at\r
+which the asymptotic approximation (11) con\u0002verges to the bound becomes slower when the\r
+number of degrees of freedom increases, mak\u0002ing it less accurate, however the trend of linear\r
+growth is evident."""
+
+[[sections]]
+number = "4"
+title = "Conclusions"
+text = """
+The look-elsewhere effect presents a case when\r
+the standard regularity conditions of Wilks’ the-
+
+6 Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics\r
+0 10 20 30 40\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+q( ˆm)\r
+s=2\r
+s=3\r
+0 5 10 15 20 25 30\r
+10−5\r
+10−4\r
+10−3\r
+10−2\r
+10−1\r
+100\r
+c\r
+P(q( ˆm) > c)\r
+s=3\r
+s=2\r
+Fig. 4. (top) Distribution of q( ˆm) for s = 2, 3. (bot\u0002tom)Tail probability of q( ˆm). The solid lines shows\r
+the result of the Monte Carlo simulation, the dotted\r
+red lines are the predicted bound (eq. 3) with the\r
+estimated hN(c0)i (see text).\r
+orem do not apply, and so specialized methods\r
+are required for estimating tail probabilities in\r
+the large sample limit. Such methods however\r
+exist, and as we have demonstrated, can provide\r
+accurate results under fairly general conditions.\r
+The procedure described in this paper consists of\r
+estimating the expected number of upcrossings\r
+of the likelihood ratio at a low reference level us\u0002ing a small set of Monte Carlo simulations. This\r
+can then be related to the expected number of\r
+upcrossings at a higher level using Davies’ result\r
+(2), providing a bound on the probability of the\r
+likelihood ratio exceeding this level, given by (3).\r
+The method is easy to implement in practical sit\u0002uations, and the bound converges to the actual\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+Z\r
+fix\r
+trial#\r
+s=2\r
+0 1 2 3 4 5\r
+0\r
+10\r
+20\r
+30\r
+40\r
+50\r
+Z\r
+fix\r
+trial#\r
+s=3\r
+Fig. 5. The trial factors estimated from toy Monte\r
+Carlo simulations (solid line), with the upper bound\r
+of eq.(3) (dotted black line) and the asymptotic ap\u0002proximation of eq.(11) (dotted red line). The yellow\r
+band represents the statistical uncertainty due to the\r
+limited sample size.\r
+tail probability when this probability becomes\r
+small. It has further been shown that the trial\r
+factor is asymptotically proportional to the effec\u0002tive number of independent search regions and\r
+to the fixed-mass significance, allowing for a sim\u0002ple interpretation of the effect as being the result\r
+of two factors: the first one is the mere fact that\r
+there are more available distinct regions wherein\r
+fluctuations can occur, represented by the effec\u0002tive number of independent regions; the second\r
+effect is that within each region we further max\u0002imize the likelihood by fitting the mass in the\r
+neighborhood of the fluctuation, which can be\r
+described by adding a degree of freedom to the\r
+fit.
+
+Eilam Gross, Ofer Vitells: Trial factors for the look elsewhere effect in high energy physics 7"""
+
+[[sections]]
+number = "5"
+title = "Acknowledgments"
+text = """
+We are indebted to Michael Woodroofe, Luc De\u0002mortier and the referee of this paper, for pointing\r
+us to the work of Davies [4] which became the\r
+leading thread of this work. We are grateful for\r
+the valuable comments made by Luc Demortier\r
+in his summary talk in the 2010 Banff workshop\r
+[9], and to Michael Woodroofe who spent valu\u0002able time in writing to us his impressions on the\r
+look elsewhere effect. We also thank Bob Cousins\r
+for useful comments and suggestions, BIRS and\r
+the organizers of the Banff workshop. One of\r
+us (E. G.) is obliged to the Benoziyo center for\r
+High Energy Physics, to the Israeli Science Foun\u0002dation (ISF), the Minerva Gesellschaft, and the\r
+German Israeli Foundation (GIF) for supporting\r
+this work.\r
+References"""
+
+[[sections]]
+number = "1"
+title = "For a general discussion see for example L."
+text = """
+Lyons, Open statistical issues in particle physics,\r
+The Annals of Applied Statistics 2008, Vol. 2,\r
+No. 3, 887-915.\r
+2. L. Demortier, P Values and Nuisance Parame\u0002ters, Proceedings of PHYSTAT-LHC Workshop,\r
+2007, CERN-2008-001."""
+
+[[sections]]
+number = "3"
+title = "R. B. Davies,Hypothesis testing when a nuisance"
+text = """
+parameter is present only under the alternative,\r
+Biometrika 64 (1977), 247-54."""
+
+[[sections]]
+number = "4"
+title = "R. B. Davies, Hypothesis testing when a nuisance"
+text = """
+parameter is present only under the alternative,\r
+Biometrika 74 (1987), 33-43."""
+
+[[sections]]
+number = "5"
+title = "S.S. Wilks, The large-sample distribution of the"
+text = """
+likelihood ratio for testing composite hypotheses,\r
+Ann. Math. Statist. 9 (1938) 60-62."""
+
+[[sections]]
+number = "6"
+title = "CMS Physics TDR: Volume II, Appendix A.2, J."
+text = "Phys. G: Nucl. Part. Phys. 34 (2007) 995-1579."
+
+[[sections]]
+number = "7"
+title = "H. Chernoff, On the distribution of the likelihood"
+text = "ratio, Ann. Math. Statist. 25 (1954) 573-578."
+
+[[sections]]
+number = "8"
+title = "W. Quayle, Combining chanels with"
+text = """
+fits, talk given at the PHYSTAT\u0002LHC Workshop, 2007, available at\r
+http://phystat-lhc.web.cern.ch/phystat-lhc/program.html."""
+
+[[sections]]
+number = "9"
+title = "Banff International Research Station Workshop"
+text = """
+on Statistical issues relevant to significance\r
+of discovery claims (2010). Workshop site:\r
+http://www.birs.ca/events/2010/5-day-workshops/10w5068.\r
+Luc Demortier summary talk:\r
+http://www.stat.sfu.ca/∼lockhart/richard/banff2010/demortier.pdf"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 1
+image_path = "images/image_p1_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 1
+image_path = "images/image_p1_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 1
+image_path = "images/image_p1_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 1
+image_path = "images/image_p1_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 1
+image_path = "images/image_p1_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 2
+image_path = "images/image_p2_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 2
+image_path = "images/image_p2_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 2
+image_path = "images/image_p2_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 2
+image_path = "images/image_p2_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+image_path = "images/image_p3_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 3
+image_path = "images/image_p3_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 3
+image_path = "images/image_p3_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 3
+image_path = "images/image_p3_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 3
+image_path = "images/image_p3_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 3
+image_path = "images/image_p3_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 3
+image_path = "images/image_p3_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 3
+image_path = "images/image_p3_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 3
+image_path = "images/image_p3_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 3
+image_path = "images/image_p3_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 3
+image_path = "images/image_p3_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 3
+image_path = "images/image_p3_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 3
+image_path = "images/image_p3_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 3
+image_path = "images/image_p3_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 3
+image_path = "images/image_p3_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 3
+image_path = "images/image_p3_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 3
+image_path = "images/image_p3_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 3
+image_path = "images/image_p3_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 3
+image_path = "images/image_p3_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 4
+image_path = "images/image_p4_30.png"

@@ -1,0 +1,307 @@
+                                        Building up spacetime with quantum entanglement
+
+
+                                                                      Mark Van Raamsdonk
+
+
+
+
+arXiv:1005.3035v2 [hep-th] 7 Jul 2025
+                                           Department of Physics and Astronomy, University of British Columbia
+                                               6224 Agricultural Road, Vancouver, B.C., V6T 1W9, Canada
+                                                                    mav@phas.ubc.ca
+
+
+
+                                                                             Abstract
+                                              In this essay based on 0907.2939 [1], we argue that the emergence of classi-
+                                          cally connected spacetimes is intimately related to the quantum entanglement of
+                                          degrees of freedom in a non-perturbative description of quantum gravity. Disen-
+                                          tangling the degrees of freedom associated with two regions of spacetime results
+                                          in these regions pulling apart and pinching off from each other in a way that can
+                                          be quantified by standard measures of entanglement.
+
+
+
+
+                                                      Essay written for the Gravity Research Foundation
+                                                            2010 Awards for Essays on Gravitation
+
+
+                                                                          March 31, 2010
+Introduction
+The gravity / gauge theory correspondence [2, 3, 4] in string theory represents exciting
+progress towards finding a general non-perturbative description of quantum gravity.
+It posits that certain quantum gravitational theories with fixed spacetime asymptotic
+behavior are exactly equivalent to ordinary quantum field theories. We can view this
+correspondence as providing a complete non-perturbative definition of the quantum
+gravity theory via a quantum field theory. However, despite a great deal of evidence
+for the validity of this correspondence, we do not have a deep understanding of why or
+how spacetime/gravity emerges from the degrees of freedom of the field theory.
+    In this essay, we will argue, based on widely accepted examples of gauge theory /
+gravity duality, that the emergence of spacetime in the gravity picture is intimately
+related to the quantum entanglement of degrees of freedom in the corresponding con-
+ventional quantum system. We will begin by showing that certain quantum superpo-
+sitions of states corresponding to disconnected spacetimes give rise to states that are
+interpreted as classically connected spacetimes. More quantitatively, we will see in a
+simple example that decreasing the entanglement between two sets of degrees of free-
+dom (e.g. by continuously varying the quantum state in the field theory description)
+effectively increases the proper distance between the corresponding spacetime regions,
+while decreasing the area separating the two regions.
+Classical connectivity from quantum superposition
+The most familiar example of gauge-theory / gravity duality involves an equivalence
+between conformal field theories (CFTs) and asymptotically anti-de Sitter (AdS) space-
+times. For specific CFTs, each state of the field theory on a sphere (× time) corresponds
+to a spacetime in some specific theory of quantum gravity where the asymptotics of
+the spacetime are the same as global AdS spacetime.
+     Let us now consider a slightly more complicated example, where we build a larger
+quantum system by taking two (non-interacting) copies of our conformal field theory on
+S d . As usual, the Hilbert space for this system will be the tensor product H = H1 ⊗H2
+of the Hilbert spaces for the component systems.
+     In our new system, the simplest quantum states to consider are product states (i.e.
+states with no entanglement between the two subsystems)
+
+                                  |Ψi = |Ψ1 i ⊗ |Ψ2 i .
+
+It is easy to provide a gravity interpretation for such a state. Since the degrees of
+freedom of the two CFTs do not interact in any way, and since there is no entanglement
+between the degrees of freedom for this state, the interpretation must be that we have
+two completely separate physical systems. If |Ψ1 i is dual to one asymptotically AdS
+spacetime and |Ψ2 i is dual to some other spacetime, the product state is dual to the
+disconnected pair of spacetimes.
+    We next consider a state in which the two subsystems are entangled. If |Ei i repre-
+
+
+
+                                           1
+Σe   −β E i                                                 =
+               Ei                             Ei
+
+
+
+Figure 1: Gravity interpretations for the entangled state |ψ(β)i in a quantum system
+defined by a pair of noninteracting CFTs on S d times time. The diagram on the right
+is the Penrose diagram for the maximally extended AdS-Schwarzschild black hole.
+
+sents the ith energy eigenstate for a single CFT on S d , let us define the state
+                                          X       −βEi
+                             |ψ(β)i =         e    2     |Ei i ⊗ |Ei i               (1)
+                                          i
+
+This state is a sum of product states |Ei i ⊗ |Ei i. Since we just argued that each of
+these product states should be interpreted on the gravity side as a spacetime with
+two disconnected components, the literal interpretation of the state |ψ(β)i is that it
+is a quantum superposition of disconnected spacetimes. However, it has been argued
+[5, 6, 7] that precisely this state |ψ(β)i corresponds to the (connected) eternal AdS
+black hole spacetime, whose Penrose diagram is sketched in figure 1.
+    The motivation for this statement is as follows. This is a spacetime with two equiv-
+alent asymptotically AdS regions, suggesting that the dual description should involve
+two copies of the CFT. An observer in either asymptotic region sees the Schwarzschild
+AdS black hole spacetime, which is understood [8] to correspond to the thermal state
+of a conformal field theory. On the other hand, starting from the state (1), and tracing
+over the degrees of freedom of one of the CFTs, we find that the density matrix for the
+remaining CFT is exactly the thermal density matrix:
+                                          X
+                         Tr2 (|ψihψ|) =        e−βEi |Ei ihEi | = ρT .
+                                          i
+
+Furthermore, the presence of horizons in the black hole spacetime which forbid com-
+munication between the two asymptotic regions may be naturally associated with the
+absence of interactions between the two CFTs. Thus, the state |ψ(β)i has properties
+which are completely consistent with its interpretation as the eternal AdS black hole.
+   If this identification is correct, we have a remarkable conclusion: the state |ψ(β)i
+which clearly represents a quantum superposition of disconnected spacetimes may also
+be identified with a classically connected spacetime. In this example, classical con-
+nectivity arises by entangling the degrees of freedom in the two components. In the
+next section, we will try to test the idea that emergent spacetimes in gauge-theory /
+
+                                                  2
+                                   A                 B
+                                            ~
+                                            A
+
+
+Figure 2: According to [10], the entanglement entropy S(A) between regions A and B in
+the field theory is related to the area of the minimal surface Ã in the dual geometry such
+that the boundary of Ã coincides with the boundary of A: S(A) = Area(Ã)/(4GN ).
+In the diagram, spatial geometry in the gravity picture is represented by the interior
+of the ball, while the geometry on which the field theory lives is identified with the
+boundary sphere.
+
+gravity duality are built up by entangling degrees of freedom in the non-perturbative
+description.
+A disentangling experiment
+Let us return to the simpler case of a single CFT on S d . We would like to do a thought
+experiment in which we start with the vacuum state of the field theory, dual to gravity
+on pure global AdS spacetime, and see what happens to the dual geometry when we
+gradually change the state to disentangle some of the degrees of freedom. To be specific,
+we divide the sphere into two parts (e.g. hemispheres) which we label A and B.
+   Since the CFT is a local quantum field theory, there are specific degrees of freedom
+associated with specific spatial regions, so we can decompose the Hilbert space H =
+HA ⊗ HB . A simple quantitative measure of the entanglement between A and B is the
+entanglement entropy [9], defined to be the von Neumann entropy
+
+                                 S(A) = −Tr(ρA log ρA )
+
+of the density matrix for the subsystem A,
+
+                                   ρA = TrB (|ΨihΨ|) .
+
+This is typically a divergent quantity, but we can consider a field theory defined with
+a cutoff (e.g. on a lattice), such that the entanglement entropy is finite. Now, starting
+with the vacuum state, we can ask what happens to the dual spacetime when we
+vary the quantum state in such a way that the entanglement entropy S(A) decreases.
+Using the recent proposal of Ryu and Takayanagi [10], we can make a very precise
+statement about what happens: the area of the minimal surface Ã in the dual spacetime
+which separates the spherical boundary into its two components A and B decreases, in
+direct proportionality to the decrease in entanglement entropy (see figure 2). Since the
+surface Ã is a dividing surface between two regions of the dual space, we see that as
+
+                                            3
+                                     C
+                                                           D
+
+
+
+
+Figure 3: Length L of geodesic (dashed line) connecting boundary points in C and D
+must go to infinity if mutual information between C and D decreases to zero.
+
+entanglement is decreased to zero, the two regions of space are pinching off from each
+other.1
+   Another insight into the behavior of the dual geometry as we decrease entanglement
+comes from considering the mutual information [9] between any two subsystems C ⊂ A
+and D ⊂ B, defined to be
+
+                           I(C, D) = S(C) + S(D) − S(C ∪ D) .
+
+It can be shown that I(C, D) is always non-negative, and zero if and only if the density
+matrix for C ∪ D is the tensor product of the density matrices for C and D. As the
+entanglement between A and B decreases to zero, the mutual information between any
+two regions C and D goes to zero also.
+    From the geometrical point of view, we will now argue that this decrease in mutual
+information between C and D implies an increase the proper distance between the
+corresponding regions near the boundary of spacetime. First, we note that mutual
+information provides an upper bound on correlations in a system. It is straightforward
+to prove [11] that for any operators OC and OD , acting only on the subsystems C and
+D, we have
+                                     (hOC OD i − hOC ihOD i)2
+                          I(C, D) ≥                           .                      (2)
+                                           2|OC |2 |OD |2
+Thus, if we continuously vary a state such that the mutual information between C
+and D go to zero, then all correlations must decrease to zero also. In the context of
+AdS/CFT, certain two-point correlators of local operators (those dual to very mas-
+sive particles in the dual spacetime) provide a direct measure of the proper distance
+through the spacetime between the boundary points at which the operators are in-
+serted. Specifically, we have:
+
+                                  hOC (xC )OD (xD )i ∼ e−mL                                    (3)
+
+where m is the mass and L is the length of the shortest geodesic connecting xC and
+xD (again, we can work in a field theory with explicit cutoff so everything is finite).
+   1
+   Here and below, we should keep in mind that the spacetime will likely cease to have a completely
+geometrical description before the entanglement is strictly zero.
+
+                                                4
+                                      A         B
+
+
+
+
+                                  A                  B
+
+
+
+Figure 4: Effect on geometry of decreasing entanglement between holographic degrees
+of freedom corresponding to A and B: area separating corresponding spatial regions
+decreases while distance between points increases. The boundary geometry remains
+fixed (despite appearances in the diagram).
+
+
+
+
+                                            larger
+                                               β
+
+
+
+
+Figure 5: Spatial section of eternal black hole for two different temperatures (corre-
+sponding to a horizontal line through the middle of the Penrose diagram of figure 1).
+For low temperature (large β), where entanglement between the two CFTs is smaller,
+the asymptotic regions are further apart and separated by a surface of smaller area.
+
+Combining (3) and (2), we see that as the entanglement between degrees of freedom
+in region A and region B (and therefore the mutual information I(C, D)) drops to
+zero, the length of the shortest bulk path between the points xC and xD must go
+to infinity (figure 3). Together with the result of the previous subsection, we obtain
+the following picture. As the entanglement between two sets of degrees of freedom in
+a nonperturbative description of quantum gravity drops to zero, the proper distance
+between the corresponding spacetime regions goes to infinity, while the area of the
+minimal surface separating the regions decreases to zero. Roughly speaking, the two
+regions of spacetime pull apart and pinch off from each other, as shown in figure 4. As
+seen in figure 5, these quantitative features can be seen explicitly in the example of
+the eternal AdS black hole, where we can decrease the entanglement between the two
+CFTs by increasing the inverse temperature parameter β.
+Conclusions
+We have seen that we can connect up spacetimes by entangling degrees of freedom and
+
+                                          5
+tear them apart by disentangling. It is fascinating that the intrinsically quantum phe-
+nomenon of entanglement appears to be crucial for the emergence of classical spacetime
+geometry.
+
+
+Acknowledgements
+This work has been supported in part by the Natural Sciences and Engineering Research
+Council of Canada, the Alfred P. Sloan Foundation, and the Canada Research Chairs
+programme.
+
+
+References
+  [1] M. Van Raamsdonk, “Comments on quantum gravity and entanglement,”
+      [arXiv:0907.2939 [hep-th]].
+
+  [2] T. Banks, W. Fischler, S. H. Shenker and L. Susskind, “M theory as a matrix
+      model: A conjecture,” Phys. Rev. D 55, 5112 (1997) [arXiv:hep-th/9610043].
+
+  [3] J. M. Maldacena, “The large N limit of superconformal field theories and super-
+      gravity,” Adv. Theor. Math. Phys. 2, 231 (1998) [Int. J. Theor. Phys. 38, 1113
+      (1999)] [arXiv:hep-th/9711200].
+
+  [4] O. Aharony, S. S. Gubser, J. M. Maldacena, H. Ooguri and Y. Oz, “Large N field
+      theories, string theory and gravity,” Phys. Rept. 323, 183 (2000) [arXiv:hep-
+      th/9905111].
+
+  [5] J. M. Maldacena, “Eternal black holes in Anti-de-Sitter,” JHEP 0304, 021 (2003)
+      [arXiv:hep-th/0106112].
+
+  [6] G. T. Horowitz and D. Marolf, “A new approach to string cosmology,” JHEP
+      9807, 014 (1998) [arXiv:hep-th/9805207].
+
+  [7] V. Balasubramanian, P. Kraus, A. E. Lawrence and S. P. Trivedi, “Holographic
+      probes of anti-de Sitter space-times,” Phys. Rev. D 59, 104021 (1999) [arXiv:hep-
+      th/9808017].
+
+  [8] E. Witten, “Anti-de Sitter space, thermal phase transition, and confinement in
+      gauge theories,” Adv. Theor. Math. Phys. 2, 505 (1998) [arXiv:hep-th/9803131].
+
+  [9] see, for example: Nielsen, Michael A. and Chuang, Isaac L., “Quantum compu-
+      tation and quantum information,” Cambridge University Press (2000)
+
+ [10] S. Ryu and T. Takayanagi, “Holographic derivation of entanglement entropy from
+      AdS/CFT,” Phys. Rev. Lett. 96, 181602 (2006) [arXiv:hep-th/0603001].
+
+
+
+                                          6
+[11] M.M. Wolf, F. Verstraete, M.B. Hastings, J.I. Cirac, “Area laws in quantum
+     systems: mutual information and correlations,” Phys. Rev. Lett. 100, 070502
+     (2008), [arXiv:0704.3906[quant-ph]]
+
+
+
+
+                                      7
+

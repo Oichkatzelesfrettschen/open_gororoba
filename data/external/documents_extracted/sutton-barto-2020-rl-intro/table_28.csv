@@ -1,0 +1,3 @@
+| Q(S⌧ , A⌧ ) Q(S⌧ , A⌧ ) + ↵ [G,Q(S⌧ , A⌧ )]
+If ⇡ is being learned, then ensure that ⇡(·,S⌧ ) is greedy wrt Q
+Until ⌧ = T,1

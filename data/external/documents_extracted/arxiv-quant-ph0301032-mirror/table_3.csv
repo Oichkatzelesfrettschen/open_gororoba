@@ -1,0 +1,3 @@
+the 2-dimensional subspace DFS2(0) = Span{,01i,,10i} of the 4-dimensional
+Hilbert space of two qubits is decoherence-free. The subspaces DFS2(2) = Span{,00i}
+and DFS2(−2) = Span{,11i} are also (trivially) DF, since they each acquire a

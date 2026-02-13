@@ -1,0 +1,800 @@
+equations = []
+tables = []
+full_text = """
+A Perfect Metamaterial Absorber\r
+N. I. Landy\r
+Boston College, Department of Physics, 140 Commonwealth Ave., Chestnut Hill, MA 02467.\r
+S. Sajuyigbe, J. J. Mock, D. R. Smith\r
+Department of Electrical and Computer Engineering, Duke University, Durham, NC 27708 USA.\r
+W. J. Padilla\r
+Boston College, Department of Physics, 140 Commonwealth Ave., Chestnut Hill, MA 02467.\r
+(Dated: November 26, 2024)\r
+We present the design for an absorbing metamaterial element with near unity absorbance. Our\r
+structure consists of two metamaterial resonators that couple separately to electric and magnetic\r
+fields so as to absorb all incident radiation within a single unit cell layer. We fabricate, charac\u0002terize, and analyze a metamaterial absorber with a slightly lower predicted absorbance of 96%.\r
+This achieves a simulated full width at half maximum (FWHM) absorbance of 4% thus making\r
+this material ideal for imaging purposes. Unlike conventional absorbers, our metamaterial consists\r
+solely of metallic elements. The underlying substrate can therefore be chosen independently of the\r
+substrate’s absorptive qualities and optimized for other parameters of interest. We detail the de\u0002sign and simulation process that led to our metamaterial, and our experiments demonstrate a peak\r
+absorbance greater than 88% at 11.5 GHz.\r
+The nascent field of electromagnetic metamaterials has\r
+produced exotic effects such as negative index of re\u0002fraction [1, 2], and devices such as an electromagnetic\r
+cloak [3]. The realization of such properties lies in the\r
+ability of metamaterials to create independent tailored\r
+electric [4] and magnetic [5] responses to incident radia\u0002tion. Electromagnetic metamaterials are also geometri\u0002cally scalable which translates into operability over a sig\u0002nificant portion of the electromagnetic spectrum. To date\r
+metamaterials have been demonstrated in every tech\u0002nologically relevant spectral range, from radio [6], mi\u0002crowave [7], mm-Wave [8], THz [9], MIR [10], NIR [11],\r
+to the near optical [12]. These designer electromagnetic\r
+materials are an ideal platform for the investigation of\r
+novel emergent physical phenomena while also holding\r
+great promise for future applications.\r
+As an effective medium [13], metamaterials can be\r
+characterized by a complex electric permittivity ˜\u000F(ω) =\r
+\u000F1 + i\u000F2 and magnetic permeability ˜µ(ω) = µ1 + iµ2.\r
+Much of the work in metamaterials has been focussed\r
+on the real part of \u000F and µ to enable the creation of a\r
+negative refractive material. However, the oft-overlooked\r
+loss components of the optical constants (\u000F2 and µ2) have\r
+much potential for the creation of exotic and useful ma\u0002terials as well. For example, they can be manipulated\r
+to create a high absorber. By manipulating electric and\r
+magnetic resonances independently, it is possible to ab\u0002sorb both the incident electric and magnetic field. Ad\u0002ditionally, by matching \u000F and µ, a metamaterial can be\r
+impedance-matched to free space, minimizing reflectiv\u0002ity. In this paper, we show that metamaterials can be\r
+fashioned to create narrow-band perfect absorbers, with\r
+the potential to be used in devices such as in bolometers.\r
+A single unit cell of the absorber consisted of two dis\u0002FIG. 1: Electric resonator (a) and cut wire (b). Dimension\r
+notations are listed in (a) and (b). The unit cell is shown\r
+in (c) with axes indicating the direction of propagation of a\r
+TEM wave.\r
+tinct metallic elements as shown in Fig. 1 (a) and (b).\r
+Electric coupling was supplied by the electric ring res\u0002onator (ERR), similar to the design presented by Padilla\r
+et al. [14], and is shown in Fig. 1 (a). This element con\u0002sisted of two standard split ring resonators connected by\r
+the inductive ring parallel to the split-wire. We used this\r
+design instead of a conventional split-wire design because\r
+of the limitations of straight wire media [15], i.e. a split\u0002wire design has limited tunability beyond the addition of\r
+more wires per unit cell to increase inductance [16]. The\r
+magnetic coupling required a more complicated arrange\u0002ment, and thus in order to couple to the incident H-field,\r
+arXiv:0803.1670v1 [cond-mat.mes-hall] 11 Mar 2008
+
+2\r
+FIG. 2: Simulated perfect metamaterial absorber. Re\u0002flectance (green curve) and absorbance (red curve) are plotted\r
+from zero to 100% (left axis). The transmission is plotted on\r
+the right axis as the blue curve on a scale from zero to 5%.\r
+we needed flux created by circulating charges perpendic\u0002ular to the propagation vector. We created this response\r
+by combining the center wire of the electric resonator\r
+with a cut wire (Fig. 1(b)) in a parallel plane separated\r
+by a substrate (Fig. 1(c)). This design is similar to the\r
+so-called “fishnet” and paired nanorod structures[11, 12],\r
+in the sense that they derive a magnetic response from\r
+driving two antiparallel currents in conducting segments.\r
+We were then able to tune the magnetic response by\r
+changing the geometry of the cut wire and the separa\u0002tion between the cut wire and electric resonator. By ma\u0002nipulating the magnetic coupling without changing the\r
+geometry of the electric resonator, we able to decouple \u000F\r
+and µ, and therefore individually tune each resonance.\r
+We performed computer simulations of an ideal – but\r
+realizable – metamaterial absorber using the commercial\r
+finite-difference time domain (FDTD) solver Microwave\r
+Studio by CST.[17] The program simulated a single unit\r
+cell as shown in Fig. 1 (c) with appropriate bound\u0002ary conditions, i.e. perfect electric (ˆyzˆ-plane) and per\u0002fect magnetic (ˆxzˆ-plane). Waveguide ports on the other\r
+boundaries simulated a TEM plane wave propagating\r
+through the medium. Simulation produced the complex\r
+frequency dependent S-parameters, Se11 and Se21, where\r
+T(ω) = |S21|\r
+2 and R(ω) = |S11|2 are the transmission\r
+and reflectance, respectively. From the S-parameter data\r
+we inverted the fresnel equations to extract the complex\r
+optical constants[18]. We then examined the behavior of\r
+the surface current density, magnetic and electric fields\r
+at ω0 to verify that we were coupling to the correct res\u0002onant mode of each metamaterial element. By tuning\r
+ω0 of the \u000F and µ resonances (not shown), due to the\r
+two metamaterial elements, we achieved \u000F = µ and thus\r
+an impedance near the free space value. While 100%\r
+asborbance is theoretically possible, it can only occur\r
+when the metamaterial layer is impedance-matched to\r
+free space such that the reflectance is zero.[19] One may\r
+then minimize transmission such that the addition of\r
+multiple layers ensures T(ω) → 0. The simulated meta\u0002material had the dimensions, in millimeters, of: a1=4.2,\r
+a2=12, W=3.9, G=0.606, t=0.6, L=1.7, H=11.8, and the\r
+metamaterials elements were separated by 0.65 in the ˆz\r
+direction. In Fig. 2 we show the simulation results for\r
+the metamaterial perfect absorber. Reflectance and ab\u0002sorbance are plotted from zero to 100% (left axis) and\r
+the transmission is plotted on the right axis from zero\r
+to 5%. The reflectance is large ∼ 97% near the bounds\r
+of the plot, 9GHz and 14GHz, but there is a minimum\r
+of 0.01% at ω0 ≡ 11.65GHz. The simulated transmis\u0002sion also undergoes a minimum near ω0 and yields a\r
+value of ∼ 0.9%. Thus we achieve a best simulated ab\u0002sorbance A(ω) = 1−T(ω)−R(ω) slightly less than unity\r
+A(ω) = 99% with a FWHM of 4% compared to ω0.\r
+While our simulated absorber achieves narrow-band\r
+high absorbance, we were restricted by the minimum line\r
+widths available to us (250 µm) and other various fab\u0002rication tolerances. These limitations were incorporated\r
+into the design process and we fabricated a metamate\u0002rial which deviated slightly from the ideal absorber and\r
+had the dimensions, in millimeters, of: a1=4.2, a2=12,\r
+W=4, G=0.6, t=0.6, L=1.7, H=11.8. Each metalliza\u0002tion was fabricated on a FR4 substrate with a thickness\r
+of 0.2mm. Metamaterials were fabricated using standard\r
+optical lithography. Photosensitized half-ounce copper\u0002clad FR-4 circuit board formed the substrate material\r
+with an 17 µm copper thickness. A mask was designed\r
+and printed in high resolution on a transparency. The\r
+photosensitized copper clad FR-4 was covered by the\r
+mask and exposed to ultraviolet light then developed in\r
+a sodium carbonate solution and etched in ferric chlo\u0002ride. Finally, the board was placed in a stripper so\u0002lution to remove the remaining photoresist. Both the\r
+ERR layer (Fig. 1(a)) and the cut-wire layer (Fig. 1(b))\r
+were fabricated in such a fashion, see inset to Fig. 3 (b).\r
+These boards where then sandwiched (using an adhesive\r
+with 0.06mm thickness) about another 0.2mm thick FR4\r
+blank substrate to obtain the correct spacing. The end\r
+results was that the metamaterials elements were sepa\u0002rated by 0.72mm in the ˆz direction. This design allowed\r
+us to couple to both magnetic and electric resonances\r
+without using out-of-plane elements typical with “wine\u0002crate” designs,[2] thus greatly simplifying construction of\r
+the absorber.\r
+We experimentally verified the behavior of the ab\u0002sorber by measuring the complex S-parameters of a large\r
+planar array of pixels (outer dimensions of 15 × 15 cm).\r
+We used an Agilent vector network analyzer that pro\u0002duced microwaves in the range of 8-12 GHz. One mi\u0002crowave horn (Rozendal and Associates) focused the GHz
+
+3\r
+FIG. 3: Simulated (red curves) and measured (blue curves)\r
+T(ω) and R(ω) for the microwave absorber. (a) displays the\r
+simulated and measured reflectance from zero to 100%. A\r
+schematic of the reflection experiment is shown as the inset\r
+to (a) where BS is the beam splitter. The simulated and\r
+measured transmission, shown in (b), are displayed from zero\r
+to 10%. Both reach a minimum of approximately 0.6% near\r
+11.5 GHz. Inset to (b) shows photographs of the individual\r
+components which make up the metamaterial absorber. The\r
+sample consists of the electric ring resonator (left) and the\r
+split wire (right) and is joined with an FR4 spacer of 0.72mm\r
+thickness.\r
+beam on the sample and another horn served as a detec\u0002tor. Both horns coupled to linearly polarized light and\r
+had parallel polarization directions. To measure trans\u0002mission, we set the horns in a normal incidence confocal\r
+configuration. We performed reflectance measurements\r
+at normal incidence. However, in order to eliminate large\r
+voltage standing wave ratio (VSWR) which would over\u0002whelm the data, we used a beam splitter configuration,\r
+shown as the inset to Fig. 3 (a). Radiation first traveled\r
+from the transmitting horn through the beam splitter,\r
+reflected from the sample and returned to the beam split\u0002ter where it was reflected at 45% to the receiving horn.\r
+We set the normalization and phase in the transmission\r
+configuration by simply removing the sample. For re\u0002flection, we replaced the sample with a perfect reflector\r
+for normalized measurements. Transmission characteri\u0002zation techniques utilized here have been described else\u0002where in detail[20].\r
+Computer simulations were performed for this meta\u0002material structure and are presented for comparison to\r
+experimental data. The simulated R(ω) is shown as the\r
+FIG. 4: Main panel shows the simulated (red) and measured\r
+(blue) absorbance curves. Significant broadening in the reflec\u0002tion curve contributes to the deviation of the experimental ab\u0002sorbance curve from simulation. The dashed gray absorbance\r
+curve is a Gaussian weighted average which approximates as\u0002sembly error of the metamaterials absorber, described in the\r
+text. Inset shows the simulated angular dependence of the\r
+absorbance at at ωmax.\r
+red curve in Fig. 3 (a). At low frequencies the reflectivity\r
+is high and yields values near 95%. A large feature oc\u0002curs in R(ω) and has a minimum of ∼ 3% near 11.5 GHz.\r
+Likewise the simulated transmissivity, shown as the red\r
+curve in Fig. 3 (b), has 4% T(ω) at low frequencies and\r
+then undergoes a minimum near 11.25 GHz. The simu\u0002lated absorbance of our metamaterial unit cell thus has\r
+a maximum near where both R(ω) and T(ω) have their\r
+minima. We plot A(ω) as the red curve in Fig. 4 from 8\r
+to 12 GHz. The simulated A(ω) peaks at 96% at 11.48\r
+GHz and has a FWHM of 4% with respect to its center\r
+frequency.\r
+By performing simulations for transmissivity and re\u0002flectivity, we are able to account for the form of the ex\u0002perimental data. The measured R(ω) and T(ω) are plot\u0002ted as the blue curves in Fig. 3 (a) and (b) respectively.\r
+We find excellent agreement between simulated and mea\u0002sured T(ω) over all frequencies characterized. The mea\u0002sured reflectance is consistently 8% lower than the sim\u0002ulated R(ω) at low frequencies. Both the simulated and\r
+experimental R(ω) reach a minimum at approximately\r
+11.5 GHz, but experimentally the minimum is 11%, as\r
+opposed to the simulated value of 3%. There is also sig\u0002nificant broadening in the experimental reflectivity curve\r
+with respect to simulation. This is most likely due to\r
+tolerances in the fabrication and assembly.\r
+The experimental absorbance calculated from T(ω)\r
+and R(ω) is shown as the blue curve in Fig. 4. The\r
+simulated and experimental curves have maximum ab\u0002sorbance at the same frequency, ωmax=11.5 GHz. How-
+
+4\r
+FIG. 5: Simulated absorbance with increasing metamaterial\r
+layers, red curve is a guide to the eye. Insets show the simu\u0002lated losses at resonance. The Ohmic loss (surface) is shown\r
+in the left inset panel and the dielectric (volume) loss is on\r
+the right.\r
+ever, the simulated curve reaches a maximum of 96% and\r
+the experimental curve only reaches 88%. The differ\u0002ence between the simulated and measured curves is due\r
+primarily to deviations in R(ω). Better fabrication and\r
+assembly tolerances will permit absorbances and band\u0002widths similar to that shown as the red curve in Fig.\r
+4. We performed computer simulations to verify the ori\u0002gin of the broadening of A(ω). From a theoretical view\u0002point it is expected that the frequency location of the\r
+absorbance peak depends significantly upon the separa\u0002tion between the electric ring resonator and the cut-wire,\r
+since this distance determines the frequency location of\r
+the magnetic resonance. Computer simulations verified\r
+this conjecture. We simulated various spacings centered\r
+about the designed value of 0.72mm, and computed a\r
+Gaussian weighted average A(ω) with a standard devi\u0002ation of σ =20 µm. The absorbance calculated in this\r
+manner agrees very well with the experimental curve and\r
+is plotted as the grey dashed curve in the main panel of\r
+Fig. 4. Thus assembly errors in the metamaterial spac\u0002ing of only 5% can easily account for the disagreement\r
+between the simulation and experiment shown in Fig. 4\r
+as the red and blue curves, respectively.\r
+An investigation into the effect of adding multiple\r
+metamaterial absorbing layers is shown in the main panel\r
+of Fig. 5. As can be observed the absorbance rises\r
+sharply with additional layers and is asymptotic to unity,\r
+within computational noise. Two layers of the metama\u0002terial absorber achieve a value of ∼99.9972%. At this\r
+thickness the entire metamaterial is only ∼ λ0/2 at res\u0002onance. For the structure shown in Fig. 1, A(ω0) can\r
+never reach unity since the metamaterial is not perfectly\r
+matched to free space. However, it is important to note\r
+that although an impedance matched structure may yield\r
+zero R(ω0), this does not necessarily mean the trans\u0002mission will be small. In this study we are interested\r
+in achieving R(ω0)=T(ω0)=0 in a single unit cell in the\r
+propagation direction. Thus our metamaterial structure\r
+was optimized to maximize the absorbance with the re\u0002striction of minimizing the thickness. If this constraint is\r
+relaxed, however, an impedance matched condition can\r
+be obtained and with multiple layers a perfect absorbance\r
+can be achieved.\r
+We further investigated the origin of the loss in our\r
+metamaterial structure, as indicated in the inset to Fig.\r
+5. The Ohmic “surface” loss originates mainly from the\r
+center conducting region of the electric ring resonator,\r
+and dielectric losses primarily occur in-between the two\r
+metamaterial elements where the electric field is large.\r
+The major component responsible for the absorbance in\r
+our metamaterial structure is the dielectric loss and simu\u0002lation indicates this is an order of magnitude greater than\r
+Ohmic losses. This is consistent with previous studies of\r
+frequency selective surfaces (FSSs) where it was found\r
+that metallic absorption was relatively insignificant in\r
+comparison to dielectric losses.[21]\r
+We now discuss the potential application of a perfect\r
+metamaterial absorber as a bolometer. An ideal bolo\u0002metric detector is one in which all photons that fall upon\r
+its surface are absorbed, converted to heat, and thus\r
+sensed.[22] A prominent feature of commercially avail\u0002able bolometers is their extreme bandwidth making them\r
+ideal candidates as detectors, especially in the far in\u0002frared frequency regime where other efficient detection\r
+methods are largely unavailable. However, bolometers\r
+which achieve a narrowband response also have signifi\u0002cant application as focal plane array detectors for imag\u0002ing. The metamaterial design presented here achieves\r
+simulated absorbtivities near unity making them ideal\r
+candidates for bolometric pixel elements. The natu\u0002ral narrowband metamaterial resonance is a salient fea\u0002ture for focal plane array detectors as it is naturally\r
+apodizing and operates at room temperature. Since\r
+the elements which constitute our bolometer are sub\u0002wavelength, metamaterials can inherently image at the\r
+diffraction limit. Further, here we have used only a sin\u0002gle unit cell in the propagation direction, (with a thick\u0002ness significantly smaller than the wavelength λ0/35), yet\r
+achieved an experimental absorbance of 88%. By adding\r
+multiple layers one can achieve narrowband absorptivi\u0002ties of unity. Although the design is planar and A(ω)\r
+should fall off relatively rapidly, we investigated the an\u0002gular dependence (inset to Fig. 4) and found the meta\u0002material still achieved 50% absorbance at an incident\r
+full-angle of 16◦. Finally, the scalability of metamateri\u0002als permits the usage of these perfect absorbers at other\r
+wavelengths of interest such as the possibility of room\r
+temperature high resolution imaging at mm-Wave and\r
+THz frequencies. This is particularly interesting owing to
+
+5\r
+the many possible applications. We have designed simi\u0002lar metamaterials (not shown) as in Fig. 1 that achieved\r
+comparable A(ω) to that shown in Fig. 2 operating at\r
+94 GHz and 1 THz.\r
+While the creation of a metamaterial absorber is novel,\r
+the technology to create highly absorptive materials in\r
+the microwave frequency range is well-established. The\r
+material “chiroshield” is capable of very high absorption,\r
+and reduces backscatter by 15 to 25 dB [23]. Chiroshield,\r
+however, has geometries on the order of one wavelength,\r
+which is 35 times larger than our design at a given center\r
+frequency. Some ferrites show reflection loss of -30 dB\r
+[24]. These ferrites, however, lack the inherent and pre\u0002cise tunability of metamaterials. Other work has been\r
+done on the application of frequency-selective materials\r
+to bolometric devices. These bolometric designs, how\u0002ever, require cryogenic temperatures to operate and only\r
+achieve absorbances of about 50%[25]. At optical wave\u0002lengths, metal colloides are known to have large absorp\u0002tive properties,[26] due to the geometric specific surface\r
+modes[27]. This suggests and interesting possible appli\u0002cation of artificial plasmonic wire media[4] shaped into\r
+particular geometries to function as perfect absorbers[16]\r
+operating at microwave frequencies.\r
+In conclusion, we have demonstrated that metamate\u0002rials can be highly absorptive over a narrow frequency\r
+range. This stems from the ability to design metamate\u0002rial elements which can individually absorb the electric\r
+and magnetic components of an incident electromagnetic\r
+wave. In contrast previous experimental results at THz\r
+frequencies using a single type of metamaterial element\r
+(electric) yielded values of only A(ω)=∼ 20%.[28] The\r
+resonant frequency of the metamaterial elements may\r
+be tuned throughout some range of frequencies [29, 30]\r
+thus enabling hyperspectral imaging. A further benefit\r
+afforded by metamaterials is the ability to construct a\r
+single unit cell with µ(ω) = \u000F(ω) over an extended fre\u0002quency range. Thus this unit cell can achieve zero re\u0002flectance since it can have an impedance equal to the\r
+free space value Z =\r
+p\r
+µ/\u000F = 1. This is similar to the\r
+well known theoretical construct, the Perfectly Matched\r
+Layer (PML) Absorbing Boundary Condition (ABC),[31]\r
+which splits waves incident upon a boundary into electric\r
+and magnetic components to obtain near perfect absorb\u0002tion. The PML, however, requires gain and additionally\r
+is on the order of λ0/2 in thickness[32].\r
+The design presented here can still be improved. By\r
+incorporating a substrate with a highly consistent dielec\u0002tric constant, we will be able to optimize the design at\r
+the correct resonant frequency. Similarly, tighter fabri\u0002cation tolerances would allow us to bring the impedance\r
+closer to unity and therefore closer to 100% absorption.\r
+More progress could also be made on the design itself.\r
+Currently, the absorber is polarization sensitive, which\r
+is not ideal for some applications. Additionally, the as\u0002sembly is complicated due the restrictions placed on the\r
+direction of the incident wave to couple to the magnetic\r
+resonator. This resulted in variations between unit cells\r
+and less distinct absorbance peak.\r
+NIL and WJP acknowledge support from the Los\r
+Alamos National Laboratory LDRD program, DRS ac\u0002knowledges support MDA Contract W9113M-07-C-0078,\r
+and DRS, SS, and JJM acknowledge support from a Mul\u0002tiple University Research Initiative sponsored by the Air\r
+Force Office of Scientific Research Contract No. FA9550-\r
+06-1-0279.\r
+[1] V. G. Vesalago, Sov. Phys. Usp. 10, 509 (1968).\r
+[2] R. A. Shelby, D. Smith, and S. Schultz, Science 292, 77\r
+(2001).\r
+[3] D. Schurig, J. J. Mock, B. J. Justice, S. A. Cummer, J. B.\r
+Pendry, A. F. Starr, and D. R. Smith, Science 314, 977\r
+(2006).\r
+[4] J. B. Pendry, A. J. Holden, W. J. Stewart, and I. Youngs,\r
+Phys. Rev. Lett. 76, 4773 (1996).\r
+[5] J. B. Pendry, A. J. Holden, D. J. Robbins, and W. J.\r
+Stewart, IEEE Trans. Microwave Theory Tech. 47, 2075\r
+(1999).\r
+[6] M. C. K. Wiltshire, J. B. Pendry, I. R. Young, D. J.\r
+Larkman, D. J. Gilderdale, and J. V. Hajnal, Science\r
+291, 849 (2001).\r
+[7] D. R. Smith, W. J. Padilla, D. C. Vier, S. C. Nemat\u0002Nasser, and S. Schultz, Phys. Rev. Lett. 84, 4184 (2000).\r
+[8] M. Gokkavas, K. Guven, I. Bulu, K. Aydin, R. S. Penciu,\r
+M. Kafesaki, C. M. Soukoulis, and E. Ozbay, Phys. Rev.\r
+B 73, 193103 (2006).\r
+[9] T. J. Yen, W. J. Padilla, N. Fang, D. C. Vier, D. R.\r
+Smith, J. B. Pendry, D. N. Basov, and X. Zhang, Science\r
+303, 1494 (2004).\r
+[10] S. Linden, C. Enkrich, M. Wegener, J. Zhou, T. Koschny,\r
+and C. M. Soukoulis, Science 306, 1351 (2004).\r
+[11] S. Zhang, W. Fan, N. C. Panoiu, K. J. Malloy, R. M.\r
+Osgood, and S. R. J. Brueck, Phys. Rev. Lett. 95, 137404\r
+(2005).\r
+[12] G. Dolling, M. Wegener, C. M. Soukoulis, and S. Linden,\r
+Opt. Lett. 32, 53 (2007).\r
+[13] D. R. Smith and J. B. Pendry, J. Opt. Soc. Am. B 23,\r
+391 (2006).\r
+[14] W. J. Padilla, M. T. Aronsson, C. Highstrete, M. Lee,\r
+A. J. Taylor, and R. D. Averitt, Phys. Rev. B 75, 041102\r
+(2007).\r
+[15] D. Schurig, J. J. Mock, and D. R. Smith, Appl. Phys.\r
+Lett. 88, 041109 (2006).\r
+[16] D. R. Smith, D. C. Vier, W. Padilla, S. C. Nemat-Nasser,\r
+and S. Schultz, App. Phys. Lett. 75, 1425 (1999).\r
+[17] CST Studio Suite 2008, CST of America.\r
+http://www.cst.com (2008).\r
+[18] D. R. Smith, S. Schultz, P. Markoˇs, and C. M. Soukoulis,\r
+Phys. Rev. B 65, 195104 (2002).\r
+[19] S. G. Johnson, P. Bienstman, M. Skorobogatiy,\r
+M. Ibanescu, E. Lidorikis, and J. D. Joannopoulos, Phys.\r
+Rev. E 66, 066608 (2002).\r
+[20] A. F. Starr, P. M. Rye, D. R. Smith, and S. Nemat\u0002Nasser, Phys. Rev. B 70, 113102 (2004).\r
+[21] J. E. Raynolds, B. A. Munk, J. B. Pryor, and R. J.
+
+6\r
+Marhefka, J. Appl. Phys. 93, 5346 (2003).\r
+[22] P. L. Richards, J. App. Phys. 76, 1 (1994).\r
+[23] I. V. Lindell, A. H. Sihvola, S. A. Tretykov, and A. J. Vi\u0002itanen, Electromagnetic waves in Chiral and Bi-Isotropic\r
+Media (Artech House, 1994).\r
+[24] P. Singh, V. K. Babbar, A. Razdan, S. L. Srivastava, and\r
+T. C. Goel, Materials Science and Engineering B 78, 70\r
+(2000).\r
+[25] T. A. Perera and et al., App. Opt. 45, 7643 (2006).\r
+[26] W. Lamb, D. M. Wood, and N. W. Ashcroft, Phys. Rev.\r
+B 21, 2248 (1980).\r
+[27] J. B. Pendry, J. Mod. Opt. 41, 209 (1994).\r
+[28] J. F. O’Hara, E. Smirnova, H.-T. Chen, A. J. Taylor,\r
+R. D. Averitt, M. L. C. Highstrete, and W. J. Padilla, J.\r
+Nanoelectron. Optoelectron. 2, 90 (2007).\r
+[29] W. J. Padilla, D. R. Smith, and D. N. Basov., J. Opt.\r
+Soc. Am. B 23, 404 (2006).\r
+[30] H.-T. Chen, J. F. O’Hara, A. K. Azad, A. J. Taylor,\r
+R. D. Averitt, D. Shrekenhamer, and W. J. Padilla, Na\u0002ture Photonics – To appear (2008).\r
+[31] J.-P. Berenger, J. Comp. Phys. 114, 185 (1994).\r
+[32] A. Taflove and S. C. Hagness, Computational Electro\u0002dynamics: The Finite-Difference Time-Domain Method,\r
+Third Edition (Artech House, 2000)."""
+
+[metadata]
+title = "Landy 2008 Thermal Metamaterials"
+authors = ["Unknown"]
+year = 2008
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+A Perfect Metamaterial Absorber\r
+N. I. Landy\r
+Boston College, Department of Physics, 140 Commonwealth Ave., Chestnut Hill, MA 02467.\r
+S. Sajuyigbe, J. J. Mock, D. R. Smith\r
+Department of Electrical and Computer Engineering, Duke University, Durham, NC 27708 USA.\r
+W. J. Padilla\r
+Boston College, Department of Physics, 140 Commonwealth Ave., Chestnut Hill, MA 02467.\r
+(Dated: November 26, 2024)\r
+We present the design for an absorbing metamaterial element with near unity absorbance. Our\r
+structure consists of two metamaterial resonators that couple separately to electric and magnetic\r
+fields so as to absorb all incident radiation within a single unit cell layer. We fabricate, charac\u0002terize, and analyze a metamaterial absorber with a slightly lower predicted absorbance of 96%.\r
+This achieves a simulated full width at half maximum (FWHM) absorbance of 4% thus making\r
+this material ideal for imaging purposes. Unlike conventional absorbers, our metamaterial consists\r
+solely of metallic elements. The underlying substrate can therefore be chosen independently of the\r
+substrate’s absorptive qualities and optimized for other parameters of interest. We detail the de\u0002sign and simulation process that led to our metamaterial, and our experiments demonstrate a peak\r
+absorbance greater than 88% at 11.5 GHz.\r
+The nascent field of electromagnetic metamaterials has\r
+produced exotic effects such as negative index of re\u0002fraction [1, 2], and devices such as an electromagnetic\r
+cloak [3]. The realization of such properties lies in the\r
+ability of metamaterials to create independent tailored\r
+electric [4] and magnetic [5] responses to incident radia\u0002tion. Electromagnetic metamaterials are also geometri\u0002cally scalable which translates into operability over a sig\u0002nificant portion of the electromagnetic spectrum. To date\r
+metamaterials have been demonstrated in every tech\u0002nologically relevant spectral range, from radio [6], mi\u0002crowave [7], mm-Wave [8], THz [9], MIR [10], NIR [11],\r
+to the near optical [12]. These designer electromagnetic\r
+materials are an ideal platform for the investigation of\r
+novel emergent physical phenomena while also holding\r
+great promise for future applications.\r
+As an effective medium [13], metamaterials can be\r
+characterized by a complex electric permittivity ˜\u000F(ω) =\r
+\u000F1 + i\u000F2 and magnetic permeability ˜µ(ω) = µ1 + iµ2.\r
+Much of the work in metamaterials has been focussed\r
+on the real part of \u000F and µ to enable the creation of a\r
+negative refractive material. However, the oft-overlooked\r
+loss components of the optical constants (\u000F2 and µ2) have\r
+much potential for the creation of exotic and useful ma\u0002terials as well. For example, they can be manipulated\r
+to create a high absorber. By manipulating electric and\r
+magnetic resonances independently, it is possible to ab\u0002sorb both the incident electric and magnetic field. Ad\u0002ditionally, by matching \u000F and µ, a metamaterial can be\r
+impedance-matched to free space, minimizing reflectiv\u0002ity. In this paper, we show that metamaterials can be\r
+fashioned to create narrow-band perfect absorbers, with\r
+the potential to be used in devices such as in bolometers.\r
+A single unit cell of the absorber consisted of two dis\u0002FIG. 1: Electric resonator (a) and cut wire (b). Dimension\r
+notations are listed in (a) and (b). The unit cell is shown\r
+in (c) with axes indicating the direction of propagation of a\r
+TEM wave.\r
+tinct metallic elements as shown in Fig. 1 (a) and (b).\r
+Electric coupling was supplied by the electric ring res\u0002onator (ERR), similar to the design presented by Padilla\r
+et al. [14], and is shown in Fig. 1 (a). This element con\u0002sisted of two standard split ring resonators connected by\r
+the inductive ring parallel to the split-wire. We used this\r
+design instead of a conventional split-wire design because\r
+of the limitations of straight wire media [15], i.e. a split\u0002wire design has limited tunability beyond the addition of\r
+more wires per unit cell to increase inductance [16]. The\r
+magnetic coupling required a more complicated arrange\u0002ment, and thus in order to couple to the incident H-field,\r
+arXiv:0803.1670v1 [cond-mat.mes-hall] 11 Mar 2008
+
+2\r
+FIG. 2: Simulated perfect metamaterial absorber. Re\u0002flectance (green curve) and absorbance (red curve) are plotted\r
+from zero to 100% (left axis). The transmission is plotted on\r
+the right axis as the blue curve on a scale from zero to 5%.\r
+we needed flux created by circulating charges perpendic\u0002ular to the propagation vector. We created this response\r
+by combining the center wire of the electric resonator\r
+with a cut wire (Fig. 1(b)) in a parallel plane separated\r
+by a substrate (Fig. 1(c)). This design is similar to the\r
+so-called “fishnet” and paired nanorod structures[11, 12],\r
+in the sense that they derive a magnetic response from\r
+driving two antiparallel currents in conducting segments.\r
+We were then able to tune the magnetic response by\r
+changing the geometry of the cut wire and the separa\u0002tion between the cut wire and electric resonator. By ma\u0002nipulating the magnetic coupling without changing the\r
+geometry of the electric resonator, we able to decouple \u000F\r
+and µ, and therefore individually tune each resonance.\r
+We performed computer simulations of an ideal – but\r
+realizable – metamaterial absorber using the commercial\r
+finite-difference time domain (FDTD) solver Microwave\r
+Studio by CST.[17] The program simulated a single unit\r
+cell as shown in Fig. 1 (c) with appropriate bound\u0002ary conditions, i.e. perfect electric (ˆyzˆ-plane) and per\u0002fect magnetic (ˆxzˆ-plane). Waveguide ports on the other\r
+boundaries simulated a TEM plane wave propagating\r
+through the medium. Simulation produced the complex\r
+frequency dependent S-parameters, Se11 and Se21, where\r
+T(ω) = |S21|\r
+2 and R(ω) = |S11|2 are the transmission\r
+and reflectance, respectively. From the S-parameter data\r
+we inverted the fresnel equations to extract the complex\r
+optical constants[18]. We then examined the behavior of\r
+the surface current density, magnetic and electric fields\r
+at ω0 to verify that we were coupling to the correct res\u0002onant mode of each metamaterial element. By tuning\r
+ω0 of the \u000F and µ resonances (not shown), due to the\r
+two metamaterial elements, we achieved \u000F = µ and thus\r
+an impedance near the free space value. While 100%\r
+asborbance is theoretically possible, it can only occur\r
+when the metamaterial layer is impedance-matched to\r
+free space such that the reflectance is zero.[19] One may\r
+then minimize transmission such that the addition of\r
+multiple layers ensures T(ω) → 0. The simulated meta\u0002material had the dimensions, in millimeters, of: a1=4.2,\r
+a2=12, W=3.9, G=0.606, t=0.6, L=1.7, H=11.8, and the\r
+metamaterials elements were separated by 0.65 in the ˆz\r
+direction. In Fig. 2 we show the simulation results for\r
+the metamaterial perfect absorber. Reflectance and ab\u0002sorbance are plotted from zero to 100% (left axis) and\r
+the transmission is plotted on the right axis from zero\r
+to 5%. The reflectance is large ∼ 97% near the bounds\r
+of the plot, 9GHz and 14GHz, but there is a minimum\r
+of 0.01% at ω0 ≡ 11.65GHz. The simulated transmis\u0002sion also undergoes a minimum near ω0 and yields a\r
+value of ∼ 0.9%. Thus we achieve a best simulated ab\u0002sorbance A(ω) = 1−T(ω)−R(ω) slightly less than unity\r
+A(ω) = 99% with a FWHM of 4% compared to ω0.\r
+While our simulated absorber achieves narrow-band\r
+high absorbance, we were restricted by the minimum line\r
+widths available to us (250 µm) and other various fab\u0002rication tolerances. These limitations were incorporated\r
+into the design process and we fabricated a metamate\u0002rial which deviated slightly from the ideal absorber and\r
+had the dimensions, in millimeters, of: a1=4.2, a2=12,\r
+W=4, G=0.6, t=0.6, L=1.7, H=11.8. Each metalliza\u0002tion was fabricated on a FR4 substrate with a thickness\r
+of 0.2mm. Metamaterials were fabricated using standard\r
+optical lithography. Photosensitized half-ounce copper\u0002clad FR-4 circuit board formed the substrate material\r
+with an 17 µm copper thickness. A mask was designed\r
+and printed in high resolution on a transparency. The\r
+photosensitized copper clad FR-4 was covered by the\r
+mask and exposed to ultraviolet light then developed in\r
+a sodium carbonate solution and etched in ferric chlo\u0002ride. Finally, the board was placed in a stripper so\u0002lution to remove the remaining photoresist. Both the\r
+ERR layer (Fig. 1(a)) and the cut-wire layer (Fig. 1(b))\r
+were fabricated in such a fashion, see inset to Fig. 3 (b).\r
+These boards where then sandwiched (using an adhesive\r
+with 0.06mm thickness) about another 0.2mm thick FR4\r
+blank substrate to obtain the correct spacing. The end\r
+results was that the metamaterials elements were sepa\u0002rated by 0.72mm in the ˆz direction. This design allowed\r
+us to couple to both magnetic and electric resonances\r
+without using out-of-plane elements typical with “wine\u0002crate” designs,[2] thus greatly simplifying construction of\r
+the absorber.\r
+We experimentally verified the behavior of the ab\u0002sorber by measuring the complex S-parameters of a large\r
+planar array of pixels (outer dimensions of 15 × 15 cm).\r
+We used an Agilent vector network analyzer that pro\u0002duced microwaves in the range of 8-12 GHz. One mi\u0002crowave horn (Rozendal and Associates) focused the GHz"""
+
+[[sections]]
+number = "3"
+title = "FIG. 3: Simulated (red curves) and measured (blue curves)"
+text = """
+T(ω) and R(ω) for the microwave absorber. (a) displays the\r
+simulated and measured reflectance from zero to 100%. A\r
+schematic of the reflection experiment is shown as the inset\r
+to (a) where BS is the beam splitter. The simulated and\r
+measured transmission, shown in (b), are displayed from zero\r
+to 10%. Both reach a minimum of approximately 0.6% near"""
+
+[[sections]]
+number = "11.5"
+title = "GHz. Inset to (b) shows photographs of the individual"
+text = """
+components which make up the metamaterial absorber. The\r
+sample consists of the electric ring resonator (left) and the\r
+split wire (right) and is joined with an FR4 spacer of 0.72mm\r
+thickness.\r
+beam on the sample and another horn served as a detec\u0002tor. Both horns coupled to linearly polarized light and\r
+had parallel polarization directions. To measure trans\u0002mission, we set the horns in a normal incidence confocal\r
+configuration. We performed reflectance measurements\r
+at normal incidence. However, in order to eliminate large\r
+voltage standing wave ratio (VSWR) which would over\u0002whelm the data, we used a beam splitter configuration,\r
+shown as the inset to Fig. 3 (a). Radiation first traveled\r
+from the transmitting horn through the beam splitter,\r
+reflected from the sample and returned to the beam split\u0002ter where it was reflected at 45% to the receiving horn.\r
+We set the normalization and phase in the transmission\r
+configuration by simply removing the sample. For re\u0002flection, we replaced the sample with a perfect reflector\r
+for normalized measurements. Transmission characteri\u0002zation techniques utilized here have been described else\u0002where in detail[20].\r
+Computer simulations were performed for this meta\u0002material structure and are presented for comparison to\r
+experimental data. The simulated R(ω) is shown as the\r
+FIG. 4: Main panel shows the simulated (red) and measured\r
+(blue) absorbance curves. Significant broadening in the reflec\u0002tion curve contributes to the deviation of the experimental ab\u0002sorbance curve from simulation. The dashed gray absorbance\r
+curve is a Gaussian weighted average which approximates as\u0002sembly error of the metamaterials absorber, described in the\r
+text. Inset shows the simulated angular dependence of the\r
+absorbance at at ωmax.\r
+red curve in Fig. 3 (a). At low frequencies the reflectivity\r
+is high and yields values near 95%. A large feature oc\u0002curs in R(ω) and has a minimum of ∼ 3% near 11.5 GHz.\r
+Likewise the simulated transmissivity, shown as the red\r
+curve in Fig. 3 (b), has 4% T(ω) at low frequencies and\r
+then undergoes a minimum near 11.25 GHz. The simu\u0002lated absorbance of our metamaterial unit cell thus has\r
+a maximum near where both R(ω) and T(ω) have their\r
+minima. We plot A(ω) as the red curve in Fig. 4 from 8\r
+to 12 GHz. The simulated A(ω) peaks at 96% at 11.48\r
+GHz and has a FWHM of 4% with respect to its center\r
+frequency.\r
+By performing simulations for transmissivity and re\u0002flectivity, we are able to account for the form of the ex\u0002perimental data. The measured R(ω) and T(ω) are plot\u0002ted as the blue curves in Fig. 3 (a) and (b) respectively.\r
+We find excellent agreement between simulated and mea\u0002sured T(ω) over all frequencies characterized. The mea\u0002sured reflectance is consistently 8% lower than the sim\u0002ulated R(ω) at low frequencies. Both the simulated and\r
+experimental R(ω) reach a minimum at approximately"""
+
+[[sections]]
+number = "11.5"
+title = "GHz, but experimentally the minimum is 11%, as"
+text = """
+opposed to the simulated value of 3%. There is also sig\u0002nificant broadening in the experimental reflectivity curve\r
+with respect to simulation. This is most likely due to\r
+tolerances in the fabrication and assembly.\r
+The experimental absorbance calculated from T(ω)\r
+and R(ω) is shown as the blue curve in Fig. 4. The\r
+simulated and experimental curves have maximum ab\u0002sorbance at the same frequency, ωmax=11.5 GHz. How-"""
+
+[[sections]]
+number = "4"
+title = "FIG. 5: Simulated absorbance with increasing metamaterial"
+text = """
+layers, red curve is a guide to the eye. Insets show the simu\u0002lated losses at resonance. The Ohmic loss (surface) is shown\r
+in the left inset panel and the dielectric (volume) loss is on\r
+the right.\r
+ever, the simulated curve reaches a maximum of 96% and\r
+the experimental curve only reaches 88%. The differ\u0002ence between the simulated and measured curves is due\r
+primarily to deviations in R(ω). Better fabrication and\r
+assembly tolerances will permit absorbances and band\u0002widths similar to that shown as the red curve in Fig.\r
+4. We performed computer simulations to verify the ori\u0002gin of the broadening of A(ω). From a theoretical view\u0002point it is expected that the frequency location of the\r
+absorbance peak depends significantly upon the separa\u0002tion between the electric ring resonator and the cut-wire,\r
+since this distance determines the frequency location of\r
+the magnetic resonance. Computer simulations verified\r
+this conjecture. We simulated various spacings centered\r
+about the designed value of 0.72mm, and computed a\r
+Gaussian weighted average A(ω) with a standard devi\u0002ation of σ =20 µm. The absorbance calculated in this\r
+manner agrees very well with the experimental curve and\r
+is plotted as the grey dashed curve in the main panel of\r
+Fig. 4. Thus assembly errors in the metamaterial spac\u0002ing of only 5% can easily account for the disagreement\r
+between the simulation and experiment shown in Fig. 4\r
+as the red and blue curves, respectively.\r
+An investigation into the effect of adding multiple\r
+metamaterial absorbing layers is shown in the main panel\r
+of Fig. 5. As can be observed the absorbance rises\r
+sharply with additional layers and is asymptotic to unity,\r
+within computational noise. Two layers of the metama\u0002terial absorber achieve a value of ∼99.9972%. At this\r
+thickness the entire metamaterial is only ∼ λ0/2 at res\u0002onance. For the structure shown in Fig. 1, A(ω0) can\r
+never reach unity since the metamaterial is not perfectly\r
+matched to free space. However, it is important to note\r
+that although an impedance matched structure may yield\r
+zero R(ω0), this does not necessarily mean the trans\u0002mission will be small. In this study we are interested\r
+in achieving R(ω0)=T(ω0)=0 in a single unit cell in the\r
+propagation direction. Thus our metamaterial structure\r
+was optimized to maximize the absorbance with the re\u0002striction of minimizing the thickness. If this constraint is\r
+relaxed, however, an impedance matched condition can\r
+be obtained and with multiple layers a perfect absorbance\r
+can be achieved.\r
+We further investigated the origin of the loss in our\r
+metamaterial structure, as indicated in the inset to Fig."""
+
+[[sections]]
+number = "5"
+title = "The Ohmic “surface” loss originates mainly from the"
+text = """
+center conducting region of the electric ring resonator,\r
+and dielectric losses primarily occur in-between the two\r
+metamaterial elements where the electric field is large.\r
+The major component responsible for the absorbance in\r
+our metamaterial structure is the dielectric loss and simu\u0002lation indicates this is an order of magnitude greater than\r
+Ohmic losses. This is consistent with previous studies of\r
+frequency selective surfaces (FSSs) where it was found\r
+that metallic absorption was relatively insignificant in\r
+comparison to dielectric losses.[21]\r
+We now discuss the potential application of a perfect\r
+metamaterial absorber as a bolometer. An ideal bolo\u0002metric detector is one in which all photons that fall upon\r
+its surface are absorbed, converted to heat, and thus\r
+sensed.[22] A prominent feature of commercially avail\u0002able bolometers is their extreme bandwidth making them\r
+ideal candidates as detectors, especially in the far in\u0002frared frequency regime where other efficient detection\r
+methods are largely unavailable. However, bolometers\r
+which achieve a narrowband response also have signifi\u0002cant application as focal plane array detectors for imag\u0002ing. The metamaterial design presented here achieves\r
+simulated absorbtivities near unity making them ideal\r
+candidates for bolometric pixel elements. The natu\u0002ral narrowband metamaterial resonance is a salient fea\u0002ture for focal plane array detectors as it is naturally\r
+apodizing and operates at room temperature. Since\r
+the elements which constitute our bolometer are sub\u0002wavelength, metamaterials can inherently image at the\r
+diffraction limit. Further, here we have used only a sin\u0002gle unit cell in the propagation direction, (with a thick\u0002ness significantly smaller than the wavelength λ0/35), yet\r
+achieved an experimental absorbance of 88%. By adding\r
+multiple layers one can achieve narrowband absorptivi\u0002ties of unity. Although the design is planar and A(ω)\r
+should fall off relatively rapidly, we investigated the an\u0002gular dependence (inset to Fig. 4) and found the meta\u0002material still achieved 50% absorbance at an incident\r
+full-angle of 16◦. Finally, the scalability of metamateri\u0002als permits the usage of these perfect absorbers at other\r
+wavelengths of interest such as the possibility of room\r
+temperature high resolution imaging at mm-Wave and\r
+THz frequencies. This is particularly interesting owing to
+
+5\r
+the many possible applications. We have designed simi\u0002lar metamaterials (not shown) as in Fig. 1 that achieved\r
+comparable A(ω) to that shown in Fig. 2 operating at"""
+
+[[sections]]
+number = "94"
+title = "GHz and 1 THz."
+text = """
+While the creation of a metamaterial absorber is novel,\r
+the technology to create highly absorptive materials in\r
+the microwave frequency range is well-established. The\r
+material “chiroshield” is capable of very high absorption,\r
+and reduces backscatter by 15 to 25 dB [23]. Chiroshield,\r
+however, has geometries on the order of one wavelength,\r
+which is 35 times larger than our design at a given center\r
+frequency. Some ferrites show reflection loss of -30 dB\r
+[24]. These ferrites, however, lack the inherent and pre\u0002cise tunability of metamaterials. Other work has been\r
+done on the application of frequency-selective materials\r
+to bolometric devices. These bolometric designs, how\u0002ever, require cryogenic temperatures to operate and only\r
+achieve absorbances of about 50%[25]. At optical wave\u0002lengths, metal colloides are known to have large absorp\u0002tive properties,[26] due to the geometric specific surface\r
+modes[27]. This suggests and interesting possible appli\u0002cation of artificial plasmonic wire media[4] shaped into\r
+particular geometries to function as perfect absorbers[16]\r
+operating at microwave frequencies.\r
+In conclusion, we have demonstrated that metamate\u0002rials can be highly absorptive over a narrow frequency\r
+range. This stems from the ability to design metamate\u0002rial elements which can individually absorb the electric\r
+and magnetic components of an incident electromagnetic\r
+wave. In contrast previous experimental results at THz\r
+frequencies using a single type of metamaterial element\r
+(electric) yielded values of only A(ω)=∼ 20%.[28] The\r
+resonant frequency of the metamaterial elements may\r
+be tuned throughout some range of frequencies [29, 30]\r
+thus enabling hyperspectral imaging. A further benefit\r
+afforded by metamaterials is the ability to construct a\r
+single unit cell with µ(ω) = \u000F(ω) over an extended fre\u0002quency range. Thus this unit cell can achieve zero re\u0002flectance since it can have an impedance equal to the\r
+free space value Z =\r
+p\r
+µ/\u000F = 1. This is similar to the\r
+well known theoretical construct, the Perfectly Matched\r
+Layer (PML) Absorbing Boundary Condition (ABC),[31]\r
+which splits waves incident upon a boundary into electric\r
+and magnetic components to obtain near perfect absorb\u0002tion. The PML, however, requires gain and additionally\r
+is on the order of λ0/2 in thickness[32].\r
+The design presented here can still be improved. By\r
+incorporating a substrate with a highly consistent dielec\u0002tric constant, we will be able to optimize the design at\r
+the correct resonant frequency. Similarly, tighter fabri\u0002cation tolerances would allow us to bring the impedance\r
+closer to unity and therefore closer to 100% absorption.\r
+More progress could also be made on the design itself.\r
+Currently, the absorber is polarization sensitive, which\r
+is not ideal for some applications. Additionally, the as\u0002sembly is complicated due the restrictions placed on the\r
+direction of the incident wave to couple to the magnetic\r
+resonator. This resulted in variations between unit cells\r
+and less distinct absorbance peak.\r
+NIL and WJP acknowledge support from the Los\r
+Alamos National Laboratory LDRD program, DRS ac\u0002knowledges support MDA Contract W9113M-07-C-0078,\r
+and DRS, SS, and JJM acknowledge support from a Mul\u0002tiple University Research Initiative sponsored by the Air\r
+Force Office of Scientific Research Contract No. FA9550-\r
+06-1-0279.\r
+[1] V. G. Vesalago, Sov. Phys. Usp. 10, 509 (1968).\r
+[2] R. A. Shelby, D. Smith, and S. Schultz, Science 292, 77\r
+(2001).\r
+[3] D. Schurig, J. J. Mock, B. J. Justice, S. A. Cummer, J. B.\r
+Pendry, A. F. Starr, and D. R. Smith, Science 314, 977\r
+(2006).\r
+[4] J. B. Pendry, A. J. Holden, W. J. Stewart, and I. Youngs,\r
+Phys. Rev. Lett. 76, 4773 (1996).\r
+[5] J. B. Pendry, A. J. Holden, D. J. Robbins, and W. J.\r
+Stewart, IEEE Trans. Microwave Theory Tech. 47, 2075\r
+(1999).\r
+[6] M. C. K. Wiltshire, J. B. Pendry, I. R. Young, D. J.\r
+Larkman, D. J. Gilderdale, and J. V. Hajnal, Science\r
+291, 849 (2001).\r
+[7] D. R. Smith, W. J. Padilla, D. C. Vier, S. C. Nemat\u0002Nasser, and S. Schultz, Phys. Rev. Lett. 84, 4184 (2000).\r
+[8] M. Gokkavas, K. Guven, I. Bulu, K. Aydin, R. S. Penciu,\r
+M. Kafesaki, C. M. Soukoulis, and E. Ozbay, Phys. Rev.\r
+B 73, 193103 (2006).\r
+[9] T. J. Yen, W. J. Padilla, N. Fang, D. C. Vier, D. R.\r
+Smith, J. B. Pendry, D. N. Basov, and X. Zhang, Science\r
+303, 1494 (2004).\r
+[10] S. Linden, C. Enkrich, M. Wegener, J. Zhou, T. Koschny,\r
+and C. M. Soukoulis, Science 306, 1351 (2004).\r
+[11] S. Zhang, W. Fan, N. C. Panoiu, K. J. Malloy, R. M.\r
+Osgood, and S. R. J. Brueck, Phys. Rev. Lett. 95, 137404\r
+(2005).\r
+[12] G. Dolling, M. Wegener, C. M. Soukoulis, and S. Linden,\r
+Opt. Lett. 32, 53 (2007).\r
+[13] D. R. Smith and J. B. Pendry, J. Opt. Soc. Am. B 23,\r
+391 (2006).\r
+[14] W. J. Padilla, M. T. Aronsson, C. Highstrete, M. Lee,\r
+A. J. Taylor, and R. D. Averitt, Phys. Rev. B 75, 041102\r
+(2007).\r
+[15] D. Schurig, J. J. Mock, and D. R. Smith, Appl. Phys.\r
+Lett. 88, 041109 (2006).\r
+[16] D. R. Smith, D. C. Vier, W. Padilla, S. C. Nemat-Nasser,\r
+and S. Schultz, App. Phys. Lett. 75, 1425 (1999).\r
+[17] CST Studio Suite 2008, CST of America.\r
+http://www.cst.com (2008).\r
+[18] D. R. Smith, S. Schultz, P. Markoˇs, and C. M. Soukoulis,\r
+Phys. Rev. B 65, 195104 (2002).\r
+[19] S. G. Johnson, P. Bienstman, M. Skorobogatiy,\r
+M. Ibanescu, E. Lidorikis, and J. D. Joannopoulos, Phys.\r
+Rev. E 66, 066608 (2002).\r
+[20] A. F. Starr, P. M. Rye, D. R. Smith, and S. Nemat\u0002Nasser, Phys. Rev. B 70, 113102 (2004).\r
+[21] J. E. Raynolds, B. A. Munk, J. B. Pryor, and R. J."""
+
+[[sections]]
+number = "6"
+title = "Marhefka, J. Appl. Phys. 93, 5346 (2003)."
+text = """
+[22] P. L. Richards, J. App. Phys. 76, 1 (1994).\r
+[23] I. V. Lindell, A. H. Sihvola, S. A. Tretykov, and A. J. Vi\u0002itanen, Electromagnetic waves in Chiral and Bi-Isotropic\r
+Media (Artech House, 1994).\r
+[24] P. Singh, V. K. Babbar, A. Razdan, S. L. Srivastava, and\r
+T. C. Goel, Materials Science and Engineering B 78, 70\r
+(2000).\r
+[25] T. A. Perera and et al., App. Opt. 45, 7643 (2006).\r
+[26] W. Lamb, D. M. Wood, and N. W. Ashcroft, Phys. Rev.\r
+B 21, 2248 (1980).\r
+[27] J. B. Pendry, J. Mod. Opt. 41, 209 (1994).\r
+[28] J. F. O’Hara, E. Smirnova, H.-T. Chen, A. J. Taylor,\r
+R. D. Averitt, M. L. C. Highstrete, and W. J. Padilla, J.\r
+Nanoelectron. Optoelectron. 2, 90 (2007).\r
+[29] W. J. Padilla, D. R. Smith, and D. N. Basov., J. Opt.\r
+Soc. Am. B 23, 404 (2006).\r
+[30] H.-T. Chen, J. F. O’Hara, A. K. Azad, A. J. Taylor,\r
+R. D. Averitt, D. Shrekenhamer, and W. J. Padilla, Na\u0002ture Photonics – To appear (2008).\r
+[31] J.-P. Berenger, J. Comp. Phys. 114, 185 (1994).\r
+[32] A. Taflove and S. C. Hagness, Computational Electro\u0002dynamics: The Finite-Difference Time-Domain Method,\r
+Third Edition (Artech House, 2000)."""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"

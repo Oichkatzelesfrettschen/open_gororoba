@@ -1,0 +1,6967 @@
+equations = []
+full_text = """
+arXiv:gr-qc/0306060v2 16 Jul 2007\r
+Introduction to Bosonic String Theory\r
+Eduard Alexis Larra˜naga Rubio\r
+Bogot´a, D.C. November 2002
+
+ii
+
+Contents\r
+Introduction v\r
+1 Classical String Theory 1\r
+1.1 World-Line of a Point Particle . . . . . . . . . . . . . . . . . . . 1\r
+1.1.1 Alternative Action for a point particle . . . . . . . . . . . 3\r
+1.2 World-Volume Action . . . . . . . . . . . . . . . . . . . . . . . . 5\r
+1.3 Nambu-Goto Action . . . . . . . . . . . . . . . . . . . . . . . . . 5\r
+1.4 Polyakov Action . . . . . . . . . . . . . . . . . . . . . . . . . . . 6\r
+1.5 Symmetries of the Polyakov Action . . . . . . . . . . . . . . . . . 7\r
+1.6 Light-cone coordinates . . . . . . . . . . . . . . . . . . . . . . . . 9\r
+1.7 Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . 10\r
+1.8 Oscillator expansions . . . . . . . . . . . . . . . . . . . . . . . . . 11\r
+1.9 Center of mass Position and Momentum . . . . . . . . . . . . . . 13\r
+1.10 Classical Visaroro Algebra . . . . . . . . . . . . . . . . . . . . . . 14\r
+2 Bosonic String Quantization 19\r
+2.1 Covariant Canonical Quantization . . . . . . . . . . . . . . . . . 19\r
+2.1.1 Visaroro Operators . . . . . . . . . . . . . . . . . . . . . . 21\r
+2.1.2 Bosonic String Spectrum . . . . . . . . . . . . . . . . . . 22\r
+Conclusion 27\r
+iii
+
+iv CONTENTS
+
+Introduction\r
+The development of fundamental physics in the past century arose from the\r
+identification and the overcoming of contradictions between the existing ideas.\r
+Fro example, the incompatibility of Maxwell’s equations and Galilean invariance\r
+led Einstein to create the Special Theory of Relativity, and the inconsistency\r
+of this ones with Newtonian gravity produced the General Theory of Relativ\u0002ity. Same thing happend with the conciliation between special relativity and\r
+quantum mechanics, wich led to the development of Quantum Field Theory.\r
+Now, there is another incompatibility: General Relativity and Quantum\r
+Field theory. The quantization of gravity seems to be a non-renormalizable\r
+theory.\r
+In the past year, String Theory has been the leading candidate for a theory\r
+that unifies all fundamental forces in nature in a consistent scheme. The way\r
+that string theory does this is to give up one of the basic assumptions of quantum\r
+field theory, that elementary particles are mathematical points, and instead\r
+to develop aquantum field theory of one-dimensional extended objects, called\r
+strings.\r
+Ths string theory is still in progress, and there is not yet a complete descrip\u0002tion of the standard model of elementary particles based on it. However, there\r
+are some important features that seems to be gnereic in every kind of string\r
+theory: The first, and most important, is that general relativity is already in\u0002corporated in the theory. Although ordinary quantum field theory does not\r
+allow gravity, string theory requires it. The second fact is that the Yang-Mills\r
+gauge theories of the sort that comprise the standard model naturally arise in\r
+string theory, but there is not yet a fully understanding of why should we prefer\r
+the specific SU (3) ⊗ SU (2) ⊗ U (1) gauge theory.\r
+Here is given a little introduction to the most basic string theory: th bosonic\r
+string. First there is given the basics of the classical string theory as a gener\u0002alization of the concept of world-line of a particle. Then the bosonic string is\r
+constructed and the oscillation modes are described. The covariant canonical\r
+quantization procedure is used and the bosonic spectra is shown.\r
+v
+
+vi INTRODUCTION
+
+Chapter 1\r
+Classical String Theory\r
+1.1 World-Line of a Point Particle\r
+Classically, a point particle follow a trajectory in space time that is called ’world\u0002line’. The world line can be expressed as functions x\r
+µ (τ) with a parameter τ.\r
+The path is an extremal of the action, that for a point particle of mass m is\r
+proportional to the length of the world line:\r
+S = m\r
+Z\r
+ds = m\r
+Z q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+dτ (1.1)\r
+where ηµν is the flat Minkowski space-time metric. The momentum conju\u0002gate to x\r
+µ\r
+(τ) is:\r
+pµ = −\r
+∂L\r
+∂\r
+.\r
+x\r
+µ = −\r
+∂\r
+\u0012\r
+m\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+\u0013\r
+∂\r
+.\r
+x\r
+µ = m\r
+.\r
+q\r
+xµ\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+(1.2)\r
+pµ = m\r
+.\r
+p\r
+xµ\r
+−\r
+.\r
+x\r
+2\r
+(1.3)\r
+This equation gives the constrain of mass-shell:\r
+p\r
+2 = −m2\r
+(1.4)\r
+The Lagrange equation from varying S with respect to x (τ) is:\r
+∂L\r
+∂xµ\r
+−\r
+∂\r
+∂τ \u0012\r
+∂L\r
+∂\r
+.\r
+x\r
+µ\r
+\u0013\r
+= 0 (1.5)\r
+1
+
+2 CHAPTER 1. CLASSICAL STRING THEORY\r
+∂\r
+∂τ \r
+m\r
+.\r
+xµ\r
+p\r
+−\r
+.\r
+x\r
+2\r
+!\r
+= 0 (1.6)\r
+The canonical Hamiltonian is:\r
+Hcan =\r
+∂L\r
+∂\r
+.\r
+x\r
+µ\r
+.\r
+x\r
+µ − L =\r
+m\r
+.\r
+xµ\r
+.\r
+x\r
+µ\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+− m\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ (1.7)\r
+Hcan = 0 (1.8)\r
+So, Hcan vanishes identically. This means that the constrain given in (1.4)\r
+governs the dynamics of the system completly. This constrain can be added to\r
+the Hamiltonian by using a Lagrange multiplier. This gives:\r
+H =\r
+N\r
+2m\r
+\r
+p\r
+2 + m2\r
+\u0001\r
+(1.9)\r
+The equation of motion in Poisson bracket notation is:\r
+.\r
+x\r
+µ = {x\r
+µ\r
+, H} =\r
+∂H\r
+∂pµ\r
+=\r
+N\r
+2m\r
+∂\r
+\r
+p\r
+2 + m2\r
+\u0001\r
+∂pµ\r
+(1.10)\r
+.\r
+x\r
+µ =\r
+N\r
+m\r
+p\r
+µ = N\r
+.\r
+x\r
+µ\r
+p\r
+−\r
+.\r
+x\r
+2\r
+(1.11)\r
+So, it gives:\r
+.\r
+x\r
+2 = −N\r
+2\r
+(1.12)\r
+i.e. we are describing time-like trajectories.\r
+The action in (1.1) is invariant under local reparametrizations. This kind of\r
+gauge invariance is represented by a change τ −→ τ (τe). This reparametrization\r
+invariance is a one-dimensional analog of the four dimensional general coordinate\r
+invariance. The choice N = 1 corresponds to the called ”static gauge”:\r
+x\r
+0 = τ (1.13)\r
+And in this gauge the action becomes:\r
+S = m\r
+Z p\r
+1 − v\r
+2dt (1.14)\r
+where the parameter is renamed t and:
+
+1.1. WORLD-LINE OF A POINT PARTICLE 3\r
+−→v =\r
+d\r
+−→x\r
+dt (1.15)\r
+The equation of motion becomes:\r
+d\r
+−→p\r
+dt = 0 (1.16)\r
+with:\r
+−→p =\r
+m−→v\r
+√\r
+1 − v\r
+2\r
+(1.17)\r
+1.1.1 Alternative Action for a point particle\r
+An alternative action for the point particle is:\r
+S = −\r
+1\r
+2\r
+Z\r
+\u0002\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−1\r
+(τ) − m2e (τ)\r
+\u0003\r
+dτ (1.18)\r
+where e (τ) (called the ’einbein’) is a new independient function. This action\r
+allows to make the generalization to the massless case, and doesn’t have square\r
+roots like in (1.1) that makes the treatment of the quantum theory complicated.\r
+In order to prove that the action are equivalent, lets make the variation of e (τ):\r
+δS =\r
+1\r
+2\r
+Z\r
+\u0002\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−2\r
+(τ) + m2\r
+\u0003\r
+δe (τ) dτ (1.19)\r
+Then, setting δS = 0 we obtain:\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−2\r
+(τ) + m2 = 0 (1.20)\r
+e (τ) = 1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+(1.21)\r
+If we substitute (1.21) in (1.18) we get:\r
+S = −\r
+1\r
+2\r
+Z\r
+"\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013−1\r
+− m2\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013#\r
+dτ (1.22)\r
+S = −\r
+1\r
+2\r
+Z \u0014\r
+−m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v − m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0015\r
+dτ (1.23)
+
+4 CHAPTER 1. CLASSICAL STRING THEORY\r
+S =\r
+Z\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+dτ (1.24)\r
+Hence, the actions are equivalent. Varying x\r
+µ in (1.18) we get:\r
+δS = −\r
+1\r
+2\r
+Z\r
+\u0002\r
+2\r
+.\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δ\r
+ .\r
+x\r
+µ\u0001\r
+dτ (1.25)\r
+δS = −\r
+Z\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+∂τ δxµdτ (1.26)\r
+Integrating by parts we obtain:\r
+δS = −\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµ +\r
+Z\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµdτ (1.27)\r
+since at the extremes the variation is zero, then:\r
+δS =\r
+Z\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµdτ (1.28)\r
+Then, setting δS = 0 gives:\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+= 0 (1.29)\r
+Substituing (1.21) we get:\r
+∂τ\r
+"\r
+.\r
+x\r
+µ\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013−1\r
+#\r
+= 0 (1.30)\r
+∂τ\r
+\r
+\r
+m\r
+.\r
+x\r
+µ\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\r
+ = 0 (1.31)\r
+and this is the same equation of motion as (1.6).
+
+1.2. WORLD-VOLUME ACTION 5\r
+1.2 World-Volume Action\r
+As we have seen, the action for a point particle was proportional to the lenght\r
+of its world-line. For strings, the action will be prportional to the surface\r
+area of its world-sheet, and in general for a p−brane the action involves the\r
+(p + 1) −dimensional volume:\r
+S = −Tp\r
+Z\r
+dµp+1 (1.32)\r
+where the constant Tp makes the action dimensionless, so it has dimensions\r
+of [mass](p+1) or [lenght]−(p+1) . This factor is asociated with the tension of\r
+the p−brane. For a 0− brane, (i.e. a point particle) it is just the mass.\r
+Suppose that ξ\r
+α (α = 0, 1, 2, ..., p + 1) are the coordinates in the world\u0002volume of the p−brane, and gµν (µ, ν = 0, 1, 2, ...., d − 1) is the metric of the\r
+d−dimensional space-time in which the p−brane propagates. Then, gµν induces\r
+a metric in the world-volume given by:\r
+ds2 = −gµνdxµdxν = −gµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+dξαdξβ = Gαβdξαdξβ(1.33)\r
+where the induced metric is:\r
+Gαβ = −gµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+(1.34)\r
+Then, the invariant volume element is given by:\r
+dµp+1 =\r
+p\r
+− det Gαβd\r
+p+1ξ (1.35)\r
+1.3 Nambu-Goto Action\r
+In the case of 1−branes, i.e. strings, the world-volume action (1.32) becomes:\r
+S = −T\r
+Z p\r
+− det Gαβd\r
+2\r
+ξ (1.36)\r
+If the space-time is flat Minkowski gµν = ηµν we have:\r
+p\r
+− det Gαβ =\r
+s\r
+− det \u0012−ηµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+\u0013\r
+(1.37)\r
+Defining ξ\r
+0 = τ and ξ1 = σ, then:
+
+6 CHAPTER 1. CLASSICAL STRING THEORY\r
+p\r
+− detGαβ =\r
+q .\r
+x · x\r
+′\r
+\u00012\r
+−\r
+.\r
+x\r
+2\r
+x\r
+′2 (1.38)\r
+where:\r
+.\r
+x =\r
+∂x\r
+∂τ x\r
+′ =\r
+∂x\r
+∂σ (1.39)\r
+and the action for the string, called Nambu-Goto action becomes:\r
+SNG = −T\r
+Z q .\r
+x · x\r
+′\r
+\u00012\r
+−\r
+.\r
+x\r
+2\r
+x\r
+′2dσdτ (1.40)\r
+1.4 Polyakov Action\r
+Again, as in the point particle case, the square root in the Nambu-Goto ac\u0002tion make the quantum treatment complicated. So, we introduce an equivalent\r
+action:\r
+SP = −\r
+T\r
+2\r
+Z p\r
+− det hαβh\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.41)\r
+where hαβ (σ, τ) is the world-sheet metric and ∂αx\r
+µ =\r
+∂xµ\r
+∂ξα . The stress-tensor\r
+is defined as the variation of the action with respect to the metric:\r
+Tαβ ≡ −\r
+2\r
+T\r
+1\r
+p\r
+− det hαβ\r
+δS\r
+δhαβ (1.42)\r
+Tαβ = ηµν∂αx\r
+µ\r
+∂βx\r
+ν −\r
+1\r
+2\r
+hαβh\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν\r
+(1.43)\r
+Hence, the Euler-Lagrange equation is:\r
+∂αx · ∂βx −\r
+1\r
+2\r
+hαβh\r
+γδ∂γx · ∂δx = 0 (1.44)\r
+Solving for hαβ we obtain:\r
+hαβ = ∂αx · ∂βx = ηµν ∂αx\r
+µ\r
+∂βx\r
+ν\r
+(1.45)\r
+Substituing this in (1.44) gives:\r
+hαβ −\r
+1\r
+2\r
+hαβh\r
+γδhγδ = hαβ −\r
+1\r
+2\r
+hαβδ\r
+γ\r
+γ = hαβ − hαβ = 0 (1.46)
+
+1.5. SYMMETRIES OF THE POLYAKOV ACTION 7\r
+So, (1.45) means that the metric in the world-sheet hαβ is equal (at least\r
+classically) to the induced metric. Substituing this in the Polyakov action we\r
+obtain:\r
+SP = −\r
+T\r
+2\r
+Z q\r
+− det (ηµν ∂αx\r
+µ∂βxν )h\r
+αβhαβd2\r
+ξ (1.47)\r
+SP = −\r
+T\r
+2\r
+Z q\r
+− det (ηµν ∂αx\r
+µ∂βxν )δ\r
+α\r
+αd\r
+2\r
+ξ (1.48)\r
+SP = −T\r
+Z q\r
+− det (ηµν ∂αx\r
+µ∂βxν )d\r
+2\r
+ξ = SNG (1.49)\r
+Hence the Polyakov and the Nambu-Goto actions are equivalent, at least\r
+classically, since in the quantum treatment it is not in general.\r
+1.5 Symmetries of the Polyakov Action\r
+Polyakov action has the symmetries:\r
+1. Poincar´e invariance:\r
+x\r
+µ\r
+7−→ ω\r
+µ\r
+νx\r
+ν + aµ\r
+, hαβ 7−→ hαβ (1.50)\r
+with ωµν = −ωνµ.\r
+2. Local 2-dimensional reparametrization invariance\r
+ξ\r
+α\r
+7−→ ξ\r
+′α\r
+\r
+ξ\r
+β\r
+\u0001\r
+(1.51)\r
+3. Conformal or Weyl invariance\r
+hαβ 7−→ Λ (ξ\r
+γ\r
+) hαβ , x\r
+µ = xµ\r
+(1.52)\r
+The two reparametrization invariance symmetries of S allow us to choose a\r
+gauge in which the three independient components of hαβ are expressed with\r
+just one function. The usual choose is th conformal flat gauge:\r
+hαβ = e\r
+Λ(ξ)\r
+ηαβ (1.53)\r
+where ηαβ =\r
+\u0012\r
+−1 0\r
+0 1 \u0013\r
+is the 2-dimensional Minkowski metric for a flat\r
+world-sheet. Substituing this in the action que obtain:
+
+8 CHAPTER 1. CLASSICAL STRING THEORY\r
+S = −\r
+T\r
+2\r
+Z q\r
+− det e\r
+Λ(ξ)ηαβ\u0001\r
+e\r
+−Λ(ξ)\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.54)\r
+S = −\r
+T\r
+2\r
+Z p\r
+e\r
+2Λ(ξ)e\r
+−Λ(ξ)\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.55)\r
+S = −\r
+T\r
+2\r
+Z\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.56)\r
+As can be seen, the gauge fixed action is quadratic in the x’s. Thus, math\u0002ematically it is the same as a theory of d free scalar fields in two dimensions.\r
+Varying x\r
+µ we obtain the equation of motion:\r
+..\r
+x\r
+µ − x\r
+′′µ = 0 (1.57)\r
+This is simply a free two dimensional wave equation. Also, we have to take\r
+account of the constraints Tαβ = 0. In the conformal gauge this constrain is:\r
+Tαβ = ηµν∂αx\r
+µ\r
+∂βx\r
+ν −\r
+1\r
+2\r
+ηαβη\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν = 0 (1.58)\r
+This can be writen as:\r
+T00 = ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν +\r
+1\r
+2\r
+η\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν = 0 (1.59)\r
+T00 = ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν −\r
+1\r
+2\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν +\r
+1\r
+2\r
+ηµν x\r
+′µx′ν = 0 (1.60)\r
+T00 = T11 =\r
+1\r
+2\r
+\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν + ηµν x\r
+′µx′ν\r
+\u0001\r
+= 0 (1.61)\r
+T01 = T10 = ηµν\r
+.\r
+x\r
+µ\r
+x\r
+′ν = 0 (1.62)\r
+Adding and substracting (1.61) and (1.62) gives the condition:\r
+ .\r
+x ± x\r
+′\r
+\u00012\r
+= 0 (1.63)\r
+Known as the Visaroro constraints, and they are the analog of the Gauss\r
+law in the string case.
+
+1.6. LIGHT-CONE COORDINATES 9\r
+1.6 Light-cone coordinates\r
+Define the light-cone coordinates as:\r
+ξ± = τ ± σ (1.64)\r
+The flat metric becomes:\r
+ds2 = −dτ 2 + dσ2 = − (dτ + dσ) (dτ − dσ) = −dξ+dξ− (1.65)\r
+Thus, the metric components are:\r
+g++ = g−− = 0 , g+− = g−+ = −\r
+1\r
+2\r
+(1.66)\r
+and we have:\r
+∂± =\r
+1\r
+2\r
+(∂τ ± ∂σ) (1.67)\r
+Then, the Polyakov action in the conformal gauge (1.56) may be writen as:\r
+S = 2T\r
+Z\r
+ηµν ∂+x\r
+µ\r
+∂−x\r
+ν\r
+d\r
+2\r
+ξ (1.68)\r
+The equations of motion from the Polyakov action (1.57) becomes:\r
+..\r
+x\r
+µ − x\r
+′′µ = ∂τ∂τxµ − ∂σ∂σxµ = 0 (1.69)\r
+(∂τ + ∂σ) (∂τx\r
+µ − ∂σxµ\r
+) = 0 (1.70)\r
+(∂τ + ∂σ) (∂τ − ∂σ) x\r
+µ = 0 (1.71)\r
+∂+∂−x\r
+µ = 0 (1.72)\r
+The stress-tensor in light-coordinates is:\r
+T++ =\r
+1\r
+2\r
+ηµν ∂+x\r
+µ\r
+∂+x\r
+ν =\r
+1\r
+2\r
+ηµν  .x\r
+µ + x\r
+′µ\r
+\u0001  .\r
+x\r
+ν + x\r
+′ν\r
+\u0001\r
+= T00 + 2T10 (1.73)\r
+T−− =\r
+1\r
+2\r
+ηµν ∂−x\r
+µ\r
+∂−x\r
+ν =\r
+1\r
+2\r
+ηµν  .\r
+x\r
+µ − x\r
+′µ\r
+\u0001  .\r
+x\r
+ν − x\r
+′ν\r
+\u0001\r
+= T00 − 2T10 (1.74)
+
+10 CHAPTER 1. CLASSICAL STRING THEORY\r
+T+− = T−+ = 0 (1.75)\r
+In these coordinates, the Energy-momentum conservation is given by:\r
+∇\r
+αTαβ = −\r
+1\r
+2\r
+(∂−T++ + ∂+T−+) = −\r
+1\r
+2\r
+(∂+T−− + ∂−T+−) = 0 (1.76)\r
+but using (1.75) we obtain:\r
+∂−T++ = ∂+T−− = 0 (1.77)\r
+And finally, the Visaroro constraints (1.63) can be written as:\r
+T−− =\r
+1\r
+2\r
+ηµν ∂−x\r
+µ\r
+∂−x\r
+ν = 0 , T++ =\r
+1\r
+2\r
+ηµν ∂+x\r
+µ\r
+∂+x\r
+ν = 0 (1.78)\r
+1.7 Boundary Conditions\r
+In string theory there are three important types:\r
+In the case of closed strings the world-sheet is a tube, and one should impose\r
+periodicity in the spacial parameter σ. Usually the period is choosen to be π:\r
+x\r
+µ\r
+(σ + π, τ) = x\r
+µ\r
+(σ, τ) (1.79)\r
+For open strings the world-sheet is a strip. The conditions used are:\r
+Neumann: ∂xµ\r
+∂σ = 0 at σ = 0 or π (1.80)\r
+Dirichlet: ∂xµ\r
+∂τ = 0 at σ = 0 or π (1.81)\r
+Neumann condition imply that no momentum flows off the ends of the string.\r
+Dirichlet condition implies that the end points of the string are fixed in space\u0002time, and that they ends on a physical object called D−brane ( D stands for\r
+Dirichlet).
+
+1.8. OSCILLATOR EXPANSIONS 11\r
+1.8 Oscillator expansions\r
+As we have seen the equation of motion for the string is (1.57):\r
+..\r
+x\r
+µ − x\r
+′′µ = 0 (1.82)\r
+but we must treat each case of boundary condition separately:\r
+1. Closed Strings\r
+For closed strings the general solution of the two-dimensional wave equa\u0002tion is a sum of ’right’ movers and ’left’ movers:\r
+x\r
+µ\r
+(σ, τ) = x\r
+µ\r
+R\r
+(τ − σ) + x\r
+µ\r
+L\r
+(τ + σ) (1.83)\r
+This solution must satisfy the conditions:\r
+• x\r
+µ (σ, τ) is real\r
+• x\r
+µ (σ + π, τ) = xµ (σ, τ)\r
+This condition can be solved in terms of Fourier series as:\r
+x\r
+µ\r
+R\r
+(τ − σ) = 1\r
+2\r
+x\r
+µ\r
+o +\r
+1\r
+2πT\r
+p\r
+µ\r
+(τ − σ) + i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ−σ)\r
+(1.84)\r
+x\r
+µ\r
+L\r
+(τ + σ) = 1\r
+2\r
+x\r
+µ\r
+o +\r
+1\r
+2πT\r
+p\r
+µ\r
+(τ + σ) + i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+αe\r
+µ\r
+n\r
+e\r
+−in(τ+σ)\r
+(1.85)\r
+where α\r
+µ\r
+n and αe\r
+µ\r
+n are Fourier modes that must satisfy (in order to x\r
+µ (σ, τ)\r
+to be real):\r
+(α\r
+µ\r
+n\r
+)\r
+† = α\r
+µ\r
+−n\r
+and (αe\r
+µ\r
+n\r
+)\r
+† = αe\r
+µ\r
+−n\r
+(1.86)\r
+The center of mass coordinate x\r
+µ and the momentum pµ are real too, and\r
+the factor :\r
+ℓs =\r
+1\r
+√\r
+2πT\r
+(1.87)\r
+is called the fundamental string lenght scale. So, the solution is:\r
+x\r
+µ\r
+(σ, τ) = x\r
+µ\r
+o +\r
+1\r
+πT p\r
+µ\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+\r
+α\r
+µ\r
+ne\r
+inσ + αeµ\r
+ne\r
+−inσ\u0001\r
+e\r
+−inτ (1.88)
+
+12 CHAPTER 1. CLASSICAL STRING THEORY\r
+Now, defining\r
+α\r
+µ\r
+0 = αe\r
+µ\r
+0 =\r
+1\r
+√\r
+πT\r
+p\r
+µ\r
+(1.89)\r
+we can write in light-cone coordinates:\r
+∂−x\r
+µ\r
+(σ, τ) = ∂−x\r
+µ\r
+R =\r
+1\r
+√\r
+4πT\r
+X\r
+n\r
+α\r
+µ\r
+ne\r
+−in(τ−σ)\r
+(1.90)\r
+∂+x\r
+µ\r
+(σ, τ) = ∂+x\r
+µ\r
+L =\r
+1\r
+√\r
+4πT\r
+X\r
+n\r
+αe\r
+µ\r
+ne\r
+−in(τ+σ)\r
+(1.91)\r
+2. Open Strings\r
+In the case of open strings we will use the Neumann boundary conditions:\r
+∂xµ\r
+∂σ = 0 at σ = 0 or π (1.92)\r
+Using the solution (1.83) with the expresion for right and left movers (1.84)\r
+and (1.85) and substituing in the Neumann condition we get:\r
+∂xµ\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
+=\r
+∂xµ\r
+R\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
++\r
+∂xµ\r
+L\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
+= 0 (1.93)\r
+−\r
+1\r
+2πT\r
+p\r
+µ −\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−inτ +\r
+1\r
+2πT\r
+pe\r
+µ +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+αe\r
+µ\r
+n\r
+e\r
+−inτ = 0 (1.94)\r
+1\r
+2πT\r
+(pe\r
+µ − pµ\r
+) + 1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+(αe\r
+µ\r
+n − α\r
+µ\r
+n) e\r
+−inτ = 0 (1.95)\r
+Then we obtain:\r
+pe\r
+µ = pµ\r
+(1.96)\r
+αe\r
+µ\r
+n = α\r
+µ\r
+n (1.97)\r
+This means that the right and left movers get mixed in the solution for\r
+the open string. Now, using the boundary condition at σ = π we get:\r
+∂xµ\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
+=\r
+∂xµ\r
+R\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
++\r
+∂xµ\r
+L\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
+= 0 (1.98)\r
+−\r
+1\r
+2πT\r
+p\r
+µπ−\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ−π)+\r
+1\r
+2πT\r
+p\r
+µπ+\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ+π) = 0\r
+(1.99)
+
+1.9. CENTER OF MASS POSITION AND MOMENTUM 13\r
+−\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ−π) +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ+π) = 0 (1.100)\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+\r
+e\r
+−inπ − einπ\u0001\r
+= 0 (1.101)\r
+Then, we get the condition:\r
+e\r
+−inπ − einπ = 0 (1.102)\r
+− 2isin (nπ) = 0 (1.103)\r
+So, n must be an integer. The solution now becomes:\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ \r
+e\r
+inσ + e−inσ\u0001\r
+(1.104)\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ 2 cos (nσ) (1.105)\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ) (1.106)\r
+Defining again α\r
+µ\r
+0 = √\r
+1\r
+πT p\r
+µ we get:\r
+∂±x\r
+µ\r
+(τ, σ) = 1\r
+2πT\r
+p\r
+µ +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ±σ)\r
+(1.107)\r
+∂±x\r
+µ\r
+(τ, σ) = 1\r
+√\r
+4πT\r
+X\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ±σ)\r
+(1.108)\r
+1.9 Center of mass Position and Momentum\r
+The position and momentum of the center of mass for the open and closed\r
+strings can be calculated, and they are given by:\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+Z π\r
+0\r
+x\r
+µ\r
+(τ, σ) dσ (1.109)\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+Z π\r
+0\r
+x\r
+µ\r
+o +\r
+1\r
+πT\r
+p\r
+µ\r
+τ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ) dσ (1.110)\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+\r
+x\r
+µ\r
+o π +\r
+p\r
+µ\r
+πT\r
+τπ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ sin (nσ)|\r
+π\r
+o\r
+\r
+ (1.111)
+
+14 CHAPTER 1. CLASSICAL STRING THEORY\r
+X\r
+µ\r
+CM = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ (1.112)\r
+p\r
+µ\r
+CM =\r
+Z π\r
+0\r
+Π\r
+µ\r
+dσ = T\r
+Z π\r
+0\r
+.\r
+x\r
+µ\r
+dσ (1.113)\r
+p\r
+µ\r
+CM = T\r
+Z π\r
+0\r
+\r
+\r
+1\r
+πT\r
+p\r
+µ +\r
+1\r
+√\r
+πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ)\r
+\r
+dσ (1.114)\r
+p\r
+µ\r
+CM = p\r
+µ\r
+(1.115)\r
+We can see that x\r
+µ\r
+o\r
+is the position of the center of mass at τ = 0 and it\r
+moves as a free particle. The variables that describe the motion of the string\r
+are x\r
+µ\r
+o\r
+and p\r
+µ plus the collection of αµ\r
+n\r
+. This means that the string moves as a\r
+whole (center of mass) and vibrate in various modes.\r
+1.10 Classical Visaroro Algebra\r
+The equal-τ Poison Brackets for the x\r
+µ and their conjugate momenta Πµ =\r
+T\r
+.\r
+x\r
+µ\r
+are:\r
+\b\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+x\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+\t\r
+P B =\r
+1\r
+T\r
+η\r
+µν δ (σ − σ′\r
+) (1.116)\r
+{x\r
+µ\r
+(σ, τ), xν(σ\r
+′\r
+, τ)}P B = 0 (1.117)\r
+\b .\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+x\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+\t\r
+P B = 0 (1.118)\r
+Using the expresion for x\r
+µ (σ, τ) we get:\r
+{α\r
+µ\r
+m, ανn} = {αe\r
+µ\r
+m, αe\r
+ν\r
+n} = −imηµνδm+n,0 (1.119)\r
+{αe\r
+µ\r
+m, αν\r
+n\r
+} = 0 (1.120)\r
+{x\r
+µ\r
+0\r
+, pν} = η\r
+µν (1.121)\r
+The Hamiltonian is give by:\r
+H =\r
+Z\r
+ .\r
+x\r
+µ\r
+Πµ − L\r
+\u0001\r
+dσ = T\r
+Z\r
+ .\r
+x\r
+µ .\r
+xµ − L\r
+\u0001\r
+dσ (1.122)\r
+H =\r
+Z \u0012\r
+T\r
+.\r
+x\r
+µ .\r
+xµ +\r
+T\r
+2\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+\u0013\r
+dσ (1.123)
+
+1.10. CLASSICAL VISARORO ALGEBRA 15\r
+H =\r
+Z \u0014\r
+T\r
+.\r
+x\r
+µ .\r
+xµ +\r
+T\r
+2\r
+\r
+−\r
+.\r
+x\r
+µ .\r
+xµ + x\r
+′µx′\r
+µ\r
+\u0001\r
+\u0015\r
+dσ (1.124)\r
+H =\r
+T\r
+2\r
+Z\r
+\u0002 .\r
+x\r
+µ .\r
+xµ + x\r
+′µx′\r
+µ\r
+\u0003\r
+dσ (1.125)\r
+This hamiltonian can be expresed in terms of the oscillators in the closed\r
+string case, using α\r
+µ\r
+0 = √\r
+1\r
+πT p\r
+µ ,as:\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+\u0010\r
+(α\r
+µ\r
+m)\r
+†\r
+e\r
+−imσ + (αeµ\r
+m)\r
+†\r
+e\r
+imσ\u0011\r
+e\r
+imτ! X\r
+n\r
+\u0010\r
+(αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+\u0010\r
+− (α\r
+µ\r
+m)\r
+†\r
+e\r
+−imσ + (αeµ\r
+m)\r
+†\r
+e\r
+imσ\u0011\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+\u0010\r
+− (αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ\r
+ dσ\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+\r
+α\r
+µ\r
+−me\r
+−imσ + αe\r
+µ\r
+−me\r
+imσ\u0001\r
+e\r
+imτ! X\r
+n\r
+\u0010\r
+(αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+\r
+−α\r
+µ\r
+−me\r
+−imσ + αe\r
+µ\r
+−me\r
+imσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+\u0010\r
+− (αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ\r
+ dσ\r
+Since:\r
+Z\r
+e\r
+−imσeinσdσ = 2πδ (m − n) (1.126)\r
+Z\r
+e\r
+imσeinσdσ = 2πδ (m + n) (1.127)\r
+we obtain:\r
+H =\r
+T\r
+2\r
+1\r
+4πT "\r
+2π\r
+X\r
+n\r
+\r
+α−n · αn + αen · αne\r
+−2inτ + αn · αene−2inτ + αe−n · αen\r
+\u0001\r
++2π\r
+X\r
+n6=0\r
+\r
+α−n · αn − αen · αne\r
+−2inτ − αn · αene−2inτ + αe−n · αen\r
+\u0001\r
+\r
+ (1.128)\r
+H =\r
+T\r
+2\r
+2π\r
+4πT\r
+\r
+α0 · αe0 + αe0 · α0 +\r
+X\r
+n\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.129)
+
+16 CHAPTER 1. CLASSICAL STRING THEORY\r
+H =\r
+1\r
+4\r
+\r
+2 (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.130)\r
+H =\r
+1\r
+4\r
+\r
+2 (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.131)\r
+H =\r
+1\r
+4\r
+\r
+ 2 (α0 · α0 + αe0 · αe0) + 2X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+ (1.132)\r
+H =\r
+1\r
+2\r
+\r
+ (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+ (1.133)\r
+H =\r
+1\r
+2\r
+X\r
+n\r
+(α−n · αn + αe−n · αen) (1.134)\r
+For the open string using again α\r
+µ\r
+o =\r
+p\r
+µ\r
+√\r
+πT , we have:\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+(α\r
+µ\r
+m)\r
+†\r
+\r
+e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ! X\r
+n\r
+(αn)µ\r
+\r
+e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+(α\r
+µ\r
+m)\r
+†\r
+\r
+−e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+(αn)µ\r
+\r
+−e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ\r
+ dσ\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+α\r
+µ\r
+−m\r
+\r
+e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ! X\r
+n\r
+(αn)µ\r
+\r
+e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+α\r
+µ\r
+−m\r
+\r
+−e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+(αn)µ\r
+\r
+−e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ\r
+ dσ
+
+1.10. CLASSICAL VISARORO ALGEBRA 17\r
+H =\r
+T\r
+2\r
+1\r
+4πT "\r
+π\r
+X\r
+n\r
+\r
+α−n · αn + αn · αne\r
+−2inτ + αn · αne−2inτ + α−n · αn\r
+\u0001\r
++π\r
+X\r
+n6=0\r
+\r
+α−n · αn − αn · αne\r
+−2inτ − αn · αne−2inτ + α−n · αn\r
+\u0001\r
+\r
+ (1.135)\r
+H =\r
+T\r
+2\r
+π\r
+4πT\r
+\r
+α0 · α0 + α0 · α0 +\r
+X\r
+n\r
+(α−n · αn + α−n · αn) + X\r
+n6=0\r
+(α−n · αn + α−n · αn)\r
+\r
+\r
+(1.136)\r
+H =\r
+1\r
+8\r
+\r
+2 (α0 · α0 + α0 · α0) + X\r
+n6=0\r
+2α−n · αn +\r
+X\r
+n6=0\r
+2α−n · αn\r
+\r
+ (1.137)\r
+H =\r
+1\r
+8\r
+\r
+4 (α0 · α0) + 4X\r
+n6=0\r
+α−n · αn\r
+\r
+ (1.138)\r
+H =\r
+1\r
+2\r
+\r
+(α0 · α0) + X\r
+n6=0\r
+α−n · αn\r
+\r
+ (1.139)\r
+H =\r
+1\r
+2\r
+X\r
+n\r
+α−n · αn (1.140)\r
+TheVisaroro operators are defined as the Fourier modes of the Stress tensor.\r
+For the closed string they are:\r
+Lm =\r
+1\r
+2\r
+Z 2π\r
+0\r
+T−−e\r
+im(τ−σ)\r
+dσ , Lem =\r
+1\r
+2\r
+Z 2π\r
+0\r
+T++e\r
+im(τ+σ)\r
+dσ (1.141)\r
+Expressed in oscillators these operators are:\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+αm−n · αn , Lem =\r
+1\r
+2\r
+X\r
+n\r
+αem−n · αen (1.142)\r
+Because of the properties of the α’s, the operators satisfy:
+
+18 CHAPTER 1. CLASSICAL STRING THEORY\r
+L\r
+†\r
+m =\r
+1\r
+2\r
+X\r
+n\r
+α\r
+†\r
+m−n\r
+· α\r
+†\r
+n =\r
+1\r
+2\r
+X\r
+n\r
+α−m+n · α−n = L−m (1.143)\r
+Le†\r
+m =\r
+1\r
+2\r
+X\r
+n\r
+αe\r
+†\r
+m−n\r
+· αe\r
+†\r
+n =\r
+1\r
+2\r
+X\r
+n\r
+αe−m+n · αe−n = Le−m (1.144)\r
+In terms of the Visaroro operators, the Hamiltonian (1.134) can be expresed\r
+as:\r
+H = L0 + Le0 (1.145)\r
+For the open string the αe’s are equal to the α’s, then the Visaroro operators\r
+are definied as:\r
+Lm =\r
+1\r
+2\r
+Z π\r
+0\r
+h\r
+T−−e\r
+im(τ−σ) + T++eim(τ+σ)\r
+i\r
+dσ (1.146)\r
+or in terms of the oscillators:\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+αm−n · αn (1.147)\r
+In this case, the Hamiltonian (1.140) can be written as:\r
+H = L0 (1.148)\r
+Using (1.119),(1.120) and (1.121) is easy to derive the Poison brackets for\r
+the Visaroro operators:\r
+{Lm, Ln}P B = −i(m − n)Lm+n (1.149)\r
+n\r
+Lem,Len\r
+o\r
+P B\r
+= −i(m − n)Lem+n (1.150)\r
+n\r
+Lm,Len\r
+o\r
+P B\r
+= 0 (1.151)\r
+For the open string the Le’s operators are absent.
+
+Chapter 2\r
+Bosonic String Quantization\r
+There exist three aproaches to quantize classical strings:\r
+1. Canonical Quantization:\r
+In this aproach the classical variables become operators. Because of the\r
+constraints there are two options:\r
+(a) Covariant Quantization\r
+This procedure quantize first and then impose the constraints as con\u0002ditions on states in Hilbert space. Is named covariant because it\r
+preserves the Lorentz invariace.\r
+(b) Light-Cone Quantization\r
+Here, the constraints are solved in the classical system, so it leaves\r
+a smaller number of classical variables. Then they are quantized. In\r
+this aproach the manifest Lorentz invariance is lost.\r
+2. Path Integral Quantization\r
+This way preserves the manifest Lorentz invarinace, but contains ghost\r
+fields.\r
+2.1 Covariant Canonical Quantization\r
+In the canonical quantization the fields are replaced by operators, and the Pois\u0002son brackets are reemplazed by commutators following the rule:\r
+{ , }P B −→ −i [ , ] (2.1)\r
+Following this rule, the relations (1.116)-(1.118) become:\r
+19
+
+20 CHAPTER 2. BOSONIC STRING QUANTIZATION\r
+h\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+Π\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+i\r
+= iηµν δ (σ − σ\r
+′\r
+) (2.2)\r
+[x\r
+µ\r
+(σ, τ), xν(σ\r
+′\r
+, τ)] = 0 (2.3)\r
+h .\r
+Π\r
+µ\r
+(σ, τ),\r
+.\r
+Π\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+i\r
+= 0 (2.4)\r
+Or in terms of the oscillator we can write:\r
+[α\r
+µ\r
+m, ανn\r
+] = [αe\r
+µ\r
+m, αe\r
+ν\r
+n\r
+] = mηµν δm+n,0 (2.5)\r
+[αe\r
+µ\r
+m, αν\r
+n\r
+] = 0 (2.6)\r
+[x\r
+µ\r
+0\r
+, pν] = iηµν (2.7)\r
+The first of this conditions can be written, absorbing the factor m as:\r
+h\r
+α\r
+µ\r
+m,(α\r
+ν\r
+n\r
+)\r
+†\r
+i\r
+=\r
+h\r
+αe\r
+µ\r
+m,(αe\r
+ν\r
+n\r
+)\r
+†\r
+i\r
+= η\r
+µν δm,n (2.8)\r
+In Quantum Mechanics the harmonic oscillator can be described using raising\r
+and lowering operatos that satisfy the condition:\r
+\u0002\r
+α, α†\r
+\u0003\r
+= 1 (2.9)\r
+Then, we see that the expansion coefficients α\r
+µ\r
+−n = (α\r
+µ\r
+n\r
+)\r
+†\r
+and α\r
+µ\r
+n\r
+are raising\r
+and lowering operators respectively. But there are one problem. Because of the\r
+metric tensor sign: η\r
+00 = −1 the time component of the oscillators has a minus\r
+sign. this means that they create states of negative norm, and it makes the\r
+quantum theory inconsistent. However, as we will see the classical condition\r
+Tαβ = 0 will eliminate the negative-norm states from physical spectrum.\r
+Since the system is now an infinite set of harmonic oscillators, we may define\r
+the Hilbert space in a simple way. The ground-state is the one that is anihilated\r
+by all the lowering operators, but since this state is not completly determined\r
+by this, we use the center-of-mass momentum operator. Diagonalizing p\r
+µ the\r
+states are caracterized by its momentum. So, the ground state may be written\r
+as:\r
+αm |0, pi = 0 ∀m > 0 (2.10)\r
+Other states are obtained by aplying the raising operators:\r
+α\r
+µ\r
+−1\r
+|0, pi , α\r
+µ\r
+−2\r
+|pi,\r
+Y\r
+m\r
+α\r
+µ\r
+m |0, pi (2.11)
+
+2.1. COVARIANT CANONICAL QUANTIZATION 21\r
+2.1.1 Visaroro Operators\r
+In order to define the Visaroro operators in the quantum system we have to\r
+introduce the normal ordering operation that puts all positive frequency modes\r
+(lowering operators) to the right of the negative frequency modes (raising oper\u0002ators).\r
+With this definition the Visaroro operators are defined as :\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+: αm−n · αn : (2.12)\r
+and similarly for the closed string:\r
+Lem =\r
+1\r
+2\r
+X\r
+n\r
+: αem−n · αen : (2.13)\r
+From now on, for the closed string there are similar relations for the operators\r
+Lem.\r
+The only operator affected by the normal ordering is L0:\r
+L0 =\r
+1\r
+2\r
+α0 · α0 +\r
+1\r
+2\r
+X\r
+n\r
+: α−n · αn : (2.14)\r
+L0 =\r
+1\r
+2\r
+α0 · α0 +\r
+X∞\r
+n=1\r
+α−n · αn (2.15)\r
+Now, because of the arbitrariness in definig the normal ordering we have to\r
+include a normal-ordering constant q in the expresion for L0.\r
+L0 −→ L0 − q (2.16)\r
+The visaroro algebra can be calculated using the definition of the operators,\r
+and it gives ( for a detailed calculation see [4]):\r
+[Lm, Ln] = (m − n)Lm+n +\r
+c\r
+12\r
+m\r
+\r
+m2 − 1\r
+\u0001\r
+δm+n,0 (2.17)\r
+Its important to note that there exist a difference between the operator\r
+and the Poisson algebra. this diference is a c-number which depends on the\r
+dimension of space-time, since in the case we have c = d. This term is called\r
+the ”conformal anomaly term” and the cnstant c is in general called the ”central\r
+charge”. This term is an inescapable consequence of the quantization, and is\r
+because of this that the string theory depends so much on the dimension of\r
+space-time.\r
+The classical Visaroro constraints (1.63) cannot be imposed as operators\r
+constraints Lm |ψi = 0, because (2.17) gives:
+
+22 CHAPTER 2. BOSONIC STRING QUANTIZATION\r
+hψ| [Lm, L−m] |ψi = 2m hψ|L0 |ψi +\r
+d\r
+12\r
+m\r
+\r
+m2 − 1\r
+\u0001\r
+hψ| ψi 6= 0 (2.18)\r
+Thus, the constraints are imposed as:\r
+(L0 − q)|φi = 0 (2.19)\r
+Lm |φi = 0 m > 0 (2.20)\r
+where |φi denotes a physical state. This is consistent with the classical\r
+constraints because:\r
+hφ\r
+′\r
+|(Lm − qδm,0)|φi = 0 for all m (2.21)\r
+As we will see, the constraint for L0 is a generalization of the Klein-Gordon\r
+equation since it contains a term with p\r
+2 = −∂ · ∂ and a term that determines\r
+the mass of the state.\r
+2.1.2 Bosonic String Spectrum\r
+Open String.\r
+Using the form of L0 given by (2.15), the constraint (2.19) gives:\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn = q (2.22)\r
+1\r
+2\r
+α0 · α0 = −\r
+X\r
+n\r
+α−n · αn + q (2.23)\r
+1\r
+2πT\r
+p\r
+µ\r
+pµ = −\r
+X\r
+n\r
+α−n · αn + q (2.24)\r
+And using the mass-shell condition p\r
+µpµ = −m2\r
+, we have:\r
+1\r
+2πT\r
+m2 = N − q (2.25)\r
+where is defined the level-number operator as:\r
+N =\r
+X\r
+n\r
+α−n · αn (2.26)\r
+Now, we will set q = 1 since this value is necessary for a consistent theory\r
+(as we will se later). Since each α−n · αn has eiegnvalues 0, 1, 2, 3, ... etc. then
+
+2.1. COVARIANT CANONICAL QUANTIZATION 23\r
+the number operator also has values 0, 1, 2, .... The ground state, |0, pi is given\r
+by N = 0 . So we have:\r
+1\r
+2πT\r
+m2 = −1 (2.27)\r
+This state corresponds to a Tachyon (since p\r
+µ is space-like). This particle\r
+may cause a vacuum unstability, then it is not possible in a consisten quantum\r
+theory. Anyway, we will not worry about it now and will continue with the\r
+spectum analisis.\r
+The first excited state has N = 1 and (2.25) gives m = 0. To obtain this\r
+sate we need:\r
+|φi = ξµα\r
+µ\r
+−1\r
+|0, pi (2.28)\r
+where ξ\r
+µ is the polarization vector for a massless spin-1 particle. Now, the\r
+Visaroro constraint gives:\r
+L1 |φi = 0 (2.29)\r
+ξµL1α\r
+µ\r
+−1\r
+|0, pi = 0 (2.30)\r
+Since the operators αm (m > 0) anihilates the ground-state, L1 has just the\r
+contributions:\r
+ξµ\r
+ \r
+1\r
+2\r
+X\r
+n\r
+: α1−n · αn :\r
+!\r
+α\r
+µ\r
+−1\r
+|0, pi = 0 (2.31)\r
+1\r
+2\r
+ξµ (α0 · α1 + α1 · α0) α\r
+µ\r
+−1\r
+|0, pi = 0 (2.32)\r
+ξµ (α0)\r
+ν α\r
+ν\r
+1α\r
+µ\r
+−1\r
+|0, pi = 0 (2.33)\r
+ξµ (α0)\r
+ν\r
+\u0002\r
+α\r
+µ\r
+−1α\r
+ν\r
+1 + η\r
+µν\u0003\r
+|0, pi = 0 (2.34)\r
+ξµ (α0)\r
+ν α\r
+µ\r
+−1α\r
+ν\r
+1\r
+|0, pi + ξµ (α0)\r
+ν\r
+η\r
+µν |0, pi = 0 (2.35)\r
+ξµ (α0)\r
+µ\r
+|0, pi = 0 (2.36)\r
+ξµ\r
+1\r
+√\r
+πT\r
+p\r
+µ\r
+|0, pi = 0 (2.37)\r
+ξµp\r
+µ\r
+|0, pi = 0 (2.38)
+
+24 CHAPTER 2. BOSONIC STRING QUANTIZATION\r
+Then , the Visaroro constraint implies that ξµ must satisfy:\r
+p\r
+µ\r
+ξµ = 0 (2.39)\r
+This condition ensures that the spin is transversely polarized, so there are\r
+just d − 2 independient polarization states.\r
+The second excited state, with N = 2 , has:\r
+1\r
+2πT\r
+m2 = 1 (2.40)\r
+The most general state is a superposition :\r
+|φi =\r
+\r
+ξµα\r
+µ\r
+−2 + λµνα\r
+µ\r
+−1α\r
+ν\r
+−1\r
+\u0001\r
+|0, pi (2.41)\r
+And again, the Visaroro constraints\r
+L1 |φi = L2 |φi = 0 (2.42)\r
+restrict the values of ξµ and λµν .\r
+Closed String.\r
+For the closed string we have the conditions:\r
+(L0 − q)|φi = 0 (2.43)\r
+\u0010\r
+Le0 − q\r
+\u0011\r
+|φi = 0 (2.44)\r
+the sum of this conditions gives:\r
+\u0010\r
+L0 + Le0 − 2q\r
+\u0011\r
+|φi = 0 (2.45)\r
+So;\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn +\r
+1\r
+2\r
+αe0 · αe0 +\r
+X\r
+n\r
+αe−n · αen = 2q (2.46)\r
+α0 · α0 = −\r
+X\r
+n\r
+α−n · αn −\r
+X\r
+n\r
+αe−n · αen + 2q (2.47)\r
+1\r
+πT\r
+p\r
+µ\r
+pµ = −\r
+X\r
+n\r
+α−n · αn −\r
+X\r
+n\r
+αe−n · αen + 2q (2.48)\r
+Using the mass-shell condition p\r
+µpµ = −m2\r
+, we have:\r
+1\r
+πT\r
+m2 = N + Ne − 2q (2.49)
+
+2.1. COVARIANT CANONICAL QUANTIZATION 25\r
+where the level-number operators are:\r
+N =\r
+X\r
+n\r
+α−n · αn (2.50)\r
+Ne =\r
+X\r
+n\r
+αe−n · αen (2.51)\r
+The difference between (2.43) and (2.44) gives:\r
+\u0010\r
+L0 − Le0\r
+\u0011\r
+|φi = 0 (2.52)\r
+Then we have the level-matching condition:\r
+L0 = Le0 (2.53)\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn =\r
+1\r
+2\r
+αe0 · αe0 +\r
+X\r
+n\r
+αe−n · αen (2.54)\r
+X\r
+n\r
+α−n · αn =\r
+X\r
+n\r
+αe−n · αen (2.55)\r
+N = Ne (2.56)\r
+The closed string states are then the tensor product of left moving and right\r
+moving states subject to the level matching condition. Then, the ground state\r
+for the closed string is (without displaying the momuentum of the state):\r
+|0i ⊗ |0i (2.57)\r
+Since in the ground state has N = Ne = 0, then, setting q = 1 we obtain:\r
+1\r
+2πT\r
+m2 = −2 (2.58)\r
+Again we obtain a spin 0 tachyon that makes the theory unststable.\r
+The first excited state is:\r
+|φi = ξµν \r
+α\r
+µ\r
+−1\r
+|0i ⊗ αe\r
+ν\r
+−1\r
+|0i\r
+\u0001\r
+(2.59)\r
+This state has m2 = 0. Again the Visaroro constraints\r
+L1 |φi = Le1 |φi = 0 (2.60)\r
+restricts the possible values of the polarization to:\r
+p\r
+µ\r
+ξµν = 0 (2.61)
+
+26 CHAPTER 2. BOSONIC STRING QUANTIZATION\r
+This kind of tensor gives three distinct spin states: the symmetric part\r
+encodes a massless spin-2 particle (gµν), the antisymmetric part is a massless\r
+antisymmetric tensor gauge field Bµν = −Bνµ ; and finally there is encoded also\r
+an scalar field Φ.
+
+Conclusion\r
+We have described some of the basic ideas of the 26-dimensional bosonic string\r
+theory. There exist different kinds of bosonic strings, but all of them are sick,\r
+because in each case the spectra contains a tachyon. This means that the\r
+vacuum state is unstable, and it is still an open problem.The most remarkable\r
+feature of string theories is their dimensionality. Here we have seen that 26\r
+dimensions are needed and there is no consistent explication of why this number\r
+is prefered.\r
+Anyway the study of this toy model give a better understanding of the\r
+different process and features that the final theory should or should not have,\r
+and its a necesary step for the study of more elaborated models, sucha as the\r
+Superstings.\r
+27
+
+28 CONCLUSION
+
+Bibliography\r
+[1] Berkovits, N. An Introduction to Superstring Theory and its Duality Sym\u0002metries. Proceedings for the First School on Field Theory and Gravitation.\r
+Vit´oria, Brasil. 1997.\r
+[2] Green, M. Schwarz J. and Witten, E. Superstring Theory. (2 Volumes) Cam\u0002bridge University Press.U.K. 1987.\r
+[3] Kiritsis, E. Introduction to Superstring Theory. Lectures presented at the\r
+Catholic University of Leuven and at the University of Padova. 1996-1997.\r
+[4] Scherk, J. An Intorduction to the Theory of Dual Models and Strings. Rev.\r
+Mod. Phys. 47-1. (1975)\r
+[5] Schwarz, J. Introduction to Superstring Theory. Lectures presented at the\r
+NATO Advanced Study Institue on Techniques and Concepts of High Energy\r
+Physics. St. Croix, Virgin Islands. June 2000.\r
+29"""
+
+[metadata]
+title = "arxiv gr qc0306060 larranaga 2003 introduction to bosonic string theory"
+authors = ["Unknown"]
+year = 2003
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:gr-qc/0306060v2 16 Jul 2007\r
+Introduction to Bosonic String Theory\r
+Eduard Alexis Larra˜naga Rubio\r
+Bogot´a, D.C. November 2002
+
+ii
+
+Contents\r
+Introduction v"""
+
+[[sections]]
+number = "1"
+title = "Classical String Theory 1"
+text = ""
+
+[[sections]]
+number = "1.1"
+title = "World-Line of a Point Particle . . . . . . . . . . . . . . . . . . . 1"
+text = ""
+
+[[sections]]
+number = "1.1.1"
+title = "Alternative Action for a point particle . . . . . . . . . . . 3"
+text = ""
+
+[[sections]]
+number = "1.2"
+title = "World-Volume Action . . . . . . . . . . . . . . . . . . . . . . . . 5"
+text = ""
+
+[[sections]]
+number = "1.3"
+title = "Nambu-Goto Action . . . . . . . . . . . . . . . . . . . . . . . . . 5"
+text = ""
+
+[[sections]]
+number = "1.4"
+title = "Polyakov Action . . . . . . . . . . . . . . . . . . . . . . . . . . . 6"
+text = ""
+
+[[sections]]
+number = "1.5"
+title = "Symmetries of the Polyakov Action . . . . . . . . . . . . . . . . . 7"
+text = ""
+
+[[sections]]
+number = "1.6"
+title = "Light-cone coordinates . . . . . . . . . . . . . . . . . . . . . . . . 9"
+text = ""
+
+[[sections]]
+number = "1.7"
+title = "Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . 10"
+text = ""
+
+[[sections]]
+number = "1.8"
+title = "Oscillator expansions . . . . . . . . . . . . . . . . . . . . . . . . . 11"
+text = ""
+
+[[sections]]
+number = "1.9"
+title = "Center of mass Position and Momentum . . . . . . . . . . . . . . 13"
+text = ""
+
+[[sections]]
+number = "1.10"
+title = "Classical Visaroro Algebra . . . . . . . . . . . . . . . . . . . . . . 14"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Bosonic String Quantization 19"
+text = ""
+
+[[sections]]
+number = "2.1"
+title = "Covariant Canonical Quantization . . . . . . . . . . . . . . . . . 19"
+text = ""
+
+[[sections]]
+number = "2.1.1"
+title = "Visaroro Operators . . . . . . . . . . . . . . . . . . . . . . 21"
+text = ""
+
+[[sections]]
+number = "2.1.2"
+title = "Bosonic String Spectrum . . . . . . . . . . . . . . . . . . 22"
+text = """
+Conclusion 27\r
+iii
+
+iv CONTENTS
+
+Introduction\r
+The development of fundamental physics in the past century arose from the\r
+identification and the overcoming of contradictions between the existing ideas.\r
+Fro example, the incompatibility of Maxwell’s equations and Galilean invariance\r
+led Einstein to create the Special Theory of Relativity, and the inconsistency\r
+of this ones with Newtonian gravity produced the General Theory of Relativ\u0002ity. Same thing happend with the conciliation between special relativity and\r
+quantum mechanics, wich led to the development of Quantum Field Theory.\r
+Now, there is another incompatibility: General Relativity and Quantum\r
+Field theory. The quantization of gravity seems to be a non-renormalizable\r
+theory.\r
+In the past year, String Theory has been the leading candidate for a theory\r
+that unifies all fundamental forces in nature in a consistent scheme. The way\r
+that string theory does this is to give up one of the basic assumptions of quantum\r
+field theory, that elementary particles are mathematical points, and instead\r
+to develop aquantum field theory of one-dimensional extended objects, called\r
+strings.\r
+Ths string theory is still in progress, and there is not yet a complete descrip\u0002tion of the standard model of elementary particles based on it. However, there\r
+are some important features that seems to be gnereic in every kind of string\r
+theory: The first, and most important, is that general relativity is already in\u0002corporated in the theory. Although ordinary quantum field theory does not\r
+allow gravity, string theory requires it. The second fact is that the Yang-Mills\r
+gauge theories of the sort that comprise the standard model naturally arise in\r
+string theory, but there is not yet a fully understanding of why should we prefer\r
+the specific SU (3) ⊗ SU (2) ⊗ U (1) gauge theory.\r
+Here is given a little introduction to the most basic string theory: th bosonic\r
+string. First there is given the basics of the classical string theory as a gener\u0002alization of the concept of world-line of a particle. Then the bosonic string is\r
+constructed and the oscillation modes are described. The covariant canonical\r
+quantization procedure is used and the bosonic spectra is shown.\r
+v
+
+vi INTRODUCTION
+
+Chapter 1\r
+Classical String Theory"""
+
+[[sections]]
+number = "1.1"
+title = "World-Line of a Point Particle"
+text = """
+Classically, a point particle follow a trajectory in space time that is called ’world\u0002line’. The world line can be expressed as functions x\r
+µ (τ) with a parameter τ.\r
+The path is an extremal of the action, that for a point particle of mass m is\r
+proportional to the length of the world line:\r
+S = m\r
+Z\r
+ds = m\r
+Z q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+dτ (1.1)\r
+where ηµν is the flat Minkowski space-time metric. The momentum conju\u0002gate to x\r
+µ\r
+(τ) is:\r
+pµ = −\r
+∂L\r
+∂\r
+.\r
+x\r
+µ = −\r
+∂\r
+\u0012\r
+m\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+\u0013\r
+∂\r
+.\r
+x\r
+µ = m\r
+.\r
+q\r
+xµ\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+(1.2)\r
+pµ = m\r
+.\r
+p\r
+xµ\r
+−\r
+.\r
+x\r
+2\r
+(1.3)\r
+This equation gives the constrain of mass-shell:\r
+p\r
+2 = −m2\r
+(1.4)\r
+The Lagrange equation from varying S with respect to x (τ) is:\r
+∂L\r
+∂xµ\r
+−\r
+∂\r
+∂τ \u0012\r
+∂L\r
+∂\r
+.\r
+x\r
+µ\r
+\u0013\r
+= 0 (1.5)\r
+1"""
+
+[[sections]]
+number = "2"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+∂\r
+∂τ \r
+m\r
+.\r
+xµ\r
+p\r
+−\r
+.\r
+x\r
+2\r
+!\r
+= 0 (1.6)\r
+The canonical Hamiltonian is:\r
+Hcan =\r
+∂L\r
+∂\r
+.\r
+x\r
+µ\r
+.\r
+x\r
+µ − L =\r
+m\r
+.\r
+xµ\r
+.\r
+x\r
+µ\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ\r
+− m\r
+q\r
+−\r
+.\r
+x\r
+µ .\r
+xµ (1.7)\r
+Hcan = 0 (1.8)\r
+So, Hcan vanishes identically. This means that the constrain given in (1.4)\r
+governs the dynamics of the system completly. This constrain can be added to\r
+the Hamiltonian by using a Lagrange multiplier. This gives:\r
+H =\r
+N\r
+2m\r
+\r
+p\r
+2 + m2\r
+\u0001\r
+(1.9)\r
+The equation of motion in Poisson bracket notation is:\r
+.\r
+x\r
+µ = {x\r
+µ\r
+, H} =\r
+∂H\r
+∂pµ\r
+=\r
+N\r
+2m\r
+∂\r
+\r
+p\r
+2 + m2\r
+\u0001\r
+∂pµ\r
+(1.10)\r
+.\r
+x\r
+µ =\r
+N\r
+m\r
+p\r
+µ = N\r
+.\r
+x\r
+µ\r
+p\r
+−\r
+.\r
+x\r
+2\r
+(1.11)\r
+So, it gives:\r
+.\r
+x\r
+2 = −N\r
+2\r
+(1.12)\r
+i.e. we are describing time-like trajectories.\r
+The action in (1.1) is invariant under local reparametrizations. This kind of\r
+gauge invariance is represented by a change τ −→ τ (τe). This reparametrization\r
+invariance is a one-dimensional analog of the four dimensional general coordinate\r
+invariance. The choice N = 1 corresponds to the called ”static gauge”:\r
+x\r
+0 = τ (1.13)\r
+And in this gauge the action becomes:\r
+S = m\r
+Z p\r
+1 − v\r
+2dt (1.14)\r
+where the parameter is renamed t and:"""
+
+[[sections]]
+number = "1.1"
+title = "WORLD-LINE OF A POINT PARTICLE 3"
+text = """
+−→v =\r
+d\r
+−→x\r
+dt (1.15)\r
+The equation of motion becomes:\r
+d\r
+−→p\r
+dt = 0 (1.16)\r
+with:\r
+−→p =\r
+m−→v\r
+√\r
+1 − v\r
+2\r
+(1.17)"""
+
+[[sections]]
+number = "1.1.1"
+title = "Alternative Action for a point particle"
+text = """
+An alternative action for the point particle is:\r
+S = −\r
+1\r
+2\r
+Z\r
+\u0002\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−1\r
+(τ) − m2e (τ)\r
+\u0003\r
+dτ (1.18)\r
+where e (τ) (called the ’einbein’) is a new independient function. This action\r
+allows to make the generalization to the massless case, and doesn’t have square\r
+roots like in (1.1) that makes the treatment of the quantum theory complicated.\r
+In order to prove that the action are equivalent, lets make the variation of e (τ):\r
+δS =\r
+1\r
+2\r
+Z\r
+\u0002\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−2\r
+(τ) + m2\r
+\u0003\r
+δe (τ) dτ (1.19)\r
+Then, setting δS = 0 we obtain:\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+e\r
+−2\r
+(τ) + m2 = 0 (1.20)\r
+e (τ) = 1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+(1.21)\r
+If we substitute (1.21) in (1.18) we get:\r
+S = −\r
+1\r
+2\r
+Z\r
+"\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013−1\r
+− m2\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013#\r
+dτ (1.22)\r
+S = −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z \u0014"
+text = """
+−m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v − m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0015\r
+dτ (1.23)"""
+
+[[sections]]
+number = "4"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+S =\r
+Z\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+dτ (1.24)\r
+Hence, the actions are equivalent. Varying x\r
+µ in (1.18) we get:\r
+δS = −\r
+1\r
+2\r
+Z\r
+\u0002\r
+2\r
+.\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δ\r
+ .\r
+x\r
+µ\u0001\r
+dτ (1.25)\r
+δS = −\r
+Z\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+∂τ δxµdτ (1.26)\r
+Integrating by parts we obtain:\r
+δS = −\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµ +\r
+Z\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµdτ (1.27)\r
+since at the extremes the variation is zero, then:\r
+δS =\r
+Z\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+δxµdτ (1.28)\r
+Then, setting δS = 0 gives:\r
+∂τ\r
+\u0002 .\r
+x\r
+µ\r
+e\r
+−1\r
+(τ)\r
+\u0003\r
+= 0 (1.29)\r
+Substituing (1.21) we get:\r
+∂τ\r
+"\r
+.\r
+x\r
+µ\r
+\u0012\r
+1\r
+m\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\u0013−1\r
+#\r
+= 0 (1.30)\r
+∂τ\r
+\r
+\r
+m\r
+.\r
+x\r
+µ\r
+q\r
+−ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+v\r
+\r
+ = 0 (1.31)\r
+and this is the same equation of motion as (1.6)."""
+
+[[sections]]
+number = "1.2"
+title = "WORLD-VOLUME ACTION 5"
+text = ""
+
+[[sections]]
+number = "1.2"
+title = "World-Volume Action"
+text = """
+As we have seen, the action for a point particle was proportional to the lenght\r
+of its world-line. For strings, the action will be prportional to the surface\r
+area of its world-sheet, and in general for a p−brane the action involves the\r
+(p + 1) −dimensional volume:\r
+S = −Tp\r
+Z\r
+dµp+1 (1.32)\r
+where the constant Tp makes the action dimensionless, so it has dimensions\r
+of [mass](p+1) or [lenght]−(p+1) . This factor is asociated with the tension of\r
+the p−brane. For a 0− brane, (i.e. a point particle) it is just the mass.\r
+Suppose that ξ\r
+α (α = 0, 1, 2, ..., p + 1) are the coordinates in the world\u0002volume of the p−brane, and gµν (µ, ν = 0, 1, 2, ...., d − 1) is the metric of the\r
+d−dimensional space-time in which the p−brane propagates. Then, gµν induces\r
+a metric in the world-volume given by:\r
+ds2 = −gµνdxµdxν = −gµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+dξαdξβ = Gαβdξαdξβ(1.33)\r
+where the induced metric is:\r
+Gαβ = −gµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+(1.34)\r
+Then, the invariant volume element is given by:\r
+dµp+1 =\r
+p\r
+− det Gαβd\r
+p+1ξ (1.35)"""
+
+[[sections]]
+number = "1.3"
+title = "Nambu-Goto Action"
+text = """
+In the case of 1−branes, i.e. strings, the world-volume action (1.32) becomes:\r
+S = −T\r
+Z p\r
+− det Gαβd\r
+2\r
+ξ (1.36)\r
+If the space-time is flat Minkowski gµν = ηµν we have:\r
+p\r
+− det Gαβ =\r
+s\r
+− det \u0012−ηµν\r
+∂xµ\r
+∂ξα\r
+∂xν\r
+∂ξβ\r
+\u0013\r
+(1.37)\r
+Defining ξ\r
+0 = τ and ξ1 = σ, then:"""
+
+[[sections]]
+number = "6"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+p\r
+− detGαβ =\r
+q .\r
+x · x\r
+′\r
+\u00012\r
+−\r
+.\r
+x\r
+2\r
+x\r
+′2 (1.38)\r
+where:\r
+.\r
+x =\r
+∂x\r
+∂τ x\r
+′ =\r
+∂x\r
+∂σ (1.39)\r
+and the action for the string, called Nambu-Goto action becomes:\r
+SNG = −T\r
+Z q .\r
+x · x\r
+′\r
+\u00012\r
+−\r
+.\r
+x\r
+2\r
+x\r
+′2dσdτ (1.40)"""
+
+[[sections]]
+number = "1.4"
+title = "Polyakov Action"
+text = """
+Again, as in the point particle case, the square root in the Nambu-Goto ac\u0002tion make the quantum treatment complicated. So, we introduce an equivalent\r
+action:\r
+SP = −\r
+T"""
+
+[[sections]]
+number = "2"
+title = "Z p"
+text = """
+− det hαβh\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.41)\r
+where hαβ (σ, τ) is the world-sheet metric and ∂αx\r
+µ =\r
+∂xµ\r
+∂ξα . The stress-tensor\r
+is defined as the variation of the action with respect to the metric:\r
+Tαβ ≡ −\r
+2\r
+T\r
+1\r
+p\r
+− det hαβ\r
+δS\r
+δhαβ (1.42)\r
+Tαβ = ηµν∂αx\r
+µ\r
+∂βx\r
+ν −\r
+1\r
+2\r
+hαβh\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν\r
+(1.43)\r
+Hence, the Euler-Lagrange equation is:\r
+∂αx · ∂βx −\r
+1\r
+2\r
+hαβh\r
+γδ∂γx · ∂δx = 0 (1.44)\r
+Solving for hαβ we obtain:\r
+hαβ = ∂αx · ∂βx = ηµν ∂αx\r
+µ\r
+∂βx\r
+ν\r
+(1.45)\r
+Substituing this in (1.44) gives:\r
+hαβ −\r
+1\r
+2\r
+hαβh\r
+γδhγδ = hαβ −\r
+1\r
+2\r
+hαβδ\r
+γ\r
+γ = hαβ − hαβ = 0 (1.46)"""
+
+[[sections]]
+number = "1.5"
+title = "SYMMETRIES OF THE POLYAKOV ACTION 7"
+text = """
+So, (1.45) means that the metric in the world-sheet hαβ is equal (at least\r
+classically) to the induced metric. Substituing this in the Polyakov action we\r
+obtain:\r
+SP = −\r
+T"""
+
+[[sections]]
+number = "2"
+title = "Z q"
+text = """
+− det (ηµν ∂αx\r
+µ∂βxν )h\r
+αβhαβd2\r
+ξ (1.47)\r
+SP = −\r
+T"""
+
+[[sections]]
+number = "2"
+title = "Z q"
+text = """
+− det (ηµν ∂αx\r
+µ∂βxν )δ\r
+α\r
+αd\r
+2\r
+ξ (1.48)\r
+SP = −T\r
+Z q\r
+− det (ηµν ∂αx\r
+µ∂βxν )d\r
+2\r
+ξ = SNG (1.49)\r
+Hence the Polyakov and the Nambu-Goto actions are equivalent, at least\r
+classically, since in the quantum treatment it is not in general."""
+
+[[sections]]
+number = "1.5"
+title = "Symmetries of the Polyakov Action"
+text = "Polyakov action has the symmetries:"
+
+[[sections]]
+number = "1"
+title = "Poincar´e invariance:"
+text = """
+x\r
+µ\r
+7−→ ω\r
+µ\r
+νx\r
+ν + aµ\r
+, hαβ 7−→ hαβ (1.50)\r
+with ωµν = −ωνµ."""
+
+[[sections]]
+number = "2"
+title = "Local 2-dimensional reparametrization invariance"
+text = """
+ξ\r
+α\r
+7−→ ξ\r
+′α\r
+\r
+ξ\r
+β\r
+\u0001\r
+(1.51)"""
+
+[[sections]]
+number = "3"
+title = "Conformal or Weyl invariance"
+text = """
+hαβ 7−→ Λ (ξ\r
+γ\r
+) hαβ , x\r
+µ = xµ\r
+(1.52)\r
+The two reparametrization invariance symmetries of S allow us to choose a\r
+gauge in which the three independient components of hαβ are expressed with\r
+just one function. The usual choose is th conformal flat gauge:\r
+hαβ = e\r
+Λ(ξ)\r
+ηαβ (1.53)\r
+where ηαβ =\r
+\u0012\r
+−1 0\r
+0 1 \u0013\r
+is the 2-dimensional Minkowski metric for a flat\r
+world-sheet. Substituing this in the action que obtain:"""
+
+[[sections]]
+number = "8"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+S = −\r
+T"""
+
+[[sections]]
+number = "2"
+title = "Z q"
+text = """
+− det e\r
+Λ(ξ)ηαβ\u0001\r
+e\r
+−Λ(ξ)\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.54)\r
+S = −\r
+T"""
+
+[[sections]]
+number = "2"
+title = "Z p"
+text = """
+e\r
+2Λ(ξ)e\r
+−Λ(ξ)\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.55)\r
+S = −\r
+T\r
+2\r
+Z\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+d\r
+2\r
+ξ (1.56)\r
+As can be seen, the gauge fixed action is quadratic in the x’s. Thus, math\u0002ematically it is the same as a theory of d free scalar fields in two dimensions.\r
+Varying x\r
+µ we obtain the equation of motion:\r
+..\r
+x\r
+µ − x\r
+′′µ = 0 (1.57)\r
+This is simply a free two dimensional wave equation. Also, we have to take\r
+account of the constraints Tαβ = 0. In the conformal gauge this constrain is:\r
+Tαβ = ηµν∂αx\r
+µ\r
+∂βx\r
+ν −\r
+1\r
+2\r
+ηαβη\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν = 0 (1.58)\r
+This can be writen as:\r
+T00 = ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν +\r
+1\r
+2\r
+η\r
+γδηµν ∂γxµ\r
+∂δx\r
+ν = 0 (1.59)\r
+T00 = ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν −\r
+1\r
+2\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν +\r
+1\r
+2\r
+ηµν x\r
+′µx′ν = 0 (1.60)\r
+T00 = T11 =\r
+1\r
+2\r
+\r
+ηµν\r
+.\r
+x\r
+µ .\r
+x\r
+ν + ηµν x\r
+′µx′ν\r
+\u0001\r
+= 0 (1.61)\r
+T01 = T10 = ηµν\r
+.\r
+x\r
+µ\r
+x\r
+′ν = 0 (1.62)\r
+Adding and substracting (1.61) and (1.62) gives the condition:\r
+ .\r
+x ± x\r
+′\r
+\u00012\r
+= 0 (1.63)\r
+Known as the Visaroro constraints, and they are the analog of the Gauss\r
+law in the string case."""
+
+[[sections]]
+number = "1.6"
+title = "LIGHT-CONE COORDINATES 9"
+text = ""
+
+[[sections]]
+number = "1.6"
+title = "Light-cone coordinates"
+text = """
+Define the light-cone coordinates as:\r
+ξ± = τ ± σ (1.64)\r
+The flat metric becomes:\r
+ds2 = −dτ 2 + dσ2 = − (dτ + dσ) (dτ − dσ) = −dξ+dξ− (1.65)\r
+Thus, the metric components are:\r
+g++ = g−− = 0 , g+− = g−+ = −\r
+1\r
+2\r
+(1.66)\r
+and we have:\r
+∂± =\r
+1\r
+2\r
+(∂τ ± ∂σ) (1.67)\r
+Then, the Polyakov action in the conformal gauge (1.56) may be writen as:\r
+S = 2T\r
+Z\r
+ηµν ∂+x\r
+µ\r
+∂−x\r
+ν\r
+d\r
+2\r
+ξ (1.68)\r
+The equations of motion from the Polyakov action (1.57) becomes:\r
+..\r
+x\r
+µ − x\r
+′′µ = ∂τ∂τxµ − ∂σ∂σxµ = 0 (1.69)\r
+(∂τ + ∂σ) (∂τx\r
+µ − ∂σxµ\r
+) = 0 (1.70)\r
+(∂τ + ∂σ) (∂τ − ∂σ) x\r
+µ = 0 (1.71)\r
+∂+∂−x\r
+µ = 0 (1.72)\r
+The stress-tensor in light-coordinates is:\r
+T++ =\r
+1\r
+2\r
+ηµν ∂+x\r
+µ\r
+∂+x\r
+ν =\r
+1\r
+2\r
+ηµν  .x\r
+µ + x\r
+′µ\r
+\u0001  .\r
+x\r
+ν + x\r
+′ν\r
+\u0001\r
+= T00 + 2T10 (1.73)\r
+T−− =\r
+1\r
+2\r
+ηµν ∂−x\r
+µ\r
+∂−x\r
+ν =\r
+1\r
+2\r
+ηµν  .\r
+x\r
+µ − x\r
+′µ\r
+\u0001  .\r
+x\r
+ν − x\r
+′ν\r
+\u0001\r
+= T00 − 2T10 (1.74)"""
+
+[[sections]]
+number = "10"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+T+− = T−+ = 0 (1.75)\r
+In these coordinates, the Energy-momentum conservation is given by:\r
+∇\r
+αTαβ = −\r
+1\r
+2\r
+(∂−T++ + ∂+T−+) = −\r
+1\r
+2\r
+(∂+T−− + ∂−T+−) = 0 (1.76)\r
+but using (1.75) we obtain:\r
+∂−T++ = ∂+T−− = 0 (1.77)\r
+And finally, the Visaroro constraints (1.63) can be written as:\r
+T−− =\r
+1\r
+2\r
+ηµν ∂−x\r
+µ\r
+∂−x\r
+ν = 0 , T++ =\r
+1\r
+2\r
+ηµν ∂+x\r
+µ\r
+∂+x\r
+ν = 0 (1.78)"""
+
+[[sections]]
+number = "1.7"
+title = "Boundary Conditions"
+text = """
+In string theory there are three important types:\r
+In the case of closed strings the world-sheet is a tube, and one should impose\r
+periodicity in the spacial parameter σ. Usually the period is choosen to be π:\r
+x\r
+µ\r
+(σ + π, τ) = x\r
+µ\r
+(σ, τ) (1.79)\r
+For open strings the world-sheet is a strip. The conditions used are:\r
+Neumann: ∂xµ\r
+∂σ = 0 at σ = 0 or π (1.80)\r
+Dirichlet: ∂xµ\r
+∂τ = 0 at σ = 0 or π (1.81)\r
+Neumann condition imply that no momentum flows off the ends of the string.\r
+Dirichlet condition implies that the end points of the string are fixed in space\u0002time, and that they ends on a physical object called D−brane ( D stands for\r
+Dirichlet)."""
+
+[[sections]]
+number = "1.8"
+title = "OSCILLATOR EXPANSIONS 11"
+text = ""
+
+[[sections]]
+number = "1.8"
+title = "Oscillator expansions"
+text = """
+As we have seen the equation of motion for the string is (1.57):\r
+..\r
+x\r
+µ − x\r
+′′µ = 0 (1.82)\r
+but we must treat each case of boundary condition separately:"""
+
+[[sections]]
+number = "1"
+title = "Closed Strings"
+text = """
+For closed strings the general solution of the two-dimensional wave equa\u0002tion is a sum of ’right’ movers and ’left’ movers:\r
+x\r
+µ\r
+(σ, τ) = x\r
+µ\r
+R\r
+(τ − σ) + x\r
+µ\r
+L\r
+(τ + σ) (1.83)\r
+This solution must satisfy the conditions:\r
+• x\r
+µ (σ, τ) is real\r
+• x\r
+µ (σ + π, τ) = xµ (σ, τ)\r
+This condition can be solved in terms of Fourier series as:\r
+x\r
+µ\r
+R\r
+(τ − σ) = 1\r
+2\r
+x\r
+µ\r
+o +\r
+1\r
+2πT\r
+p\r
+µ\r
+(τ − σ) + i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ−σ)\r
+(1.84)\r
+x\r
+µ\r
+L\r
+(τ + σ) = 1\r
+2\r
+x\r
+µ\r
+o +\r
+1\r
+2πT\r
+p\r
+µ\r
+(τ + σ) + i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+αe\r
+µ\r
+n\r
+e\r
+−in(τ+σ)\r
+(1.85)\r
+where α\r
+µ\r
+n and αe\r
+µ\r
+n are Fourier modes that must satisfy (in order to x\r
+µ (σ, τ)\r
+to be real):\r
+(α\r
+µ\r
+n\r
+)\r
+† = α\r
+µ\r
+−n\r
+and (αe\r
+µ\r
+n\r
+)\r
+† = αe\r
+µ\r
+−n\r
+(1.86)\r
+The center of mass coordinate x\r
+µ and the momentum pµ are real too, and\r
+the factor :\r
+ℓs =\r
+1\r
+√\r
+2πT\r
+(1.87)\r
+is called the fundamental string lenght scale. So, the solution is:\r
+x\r
+µ\r
+(σ, τ) = x\r
+µ\r
+o +\r
+1\r
+πT p\r
+µ\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+\r
+α\r
+µ\r
+ne\r
+inσ + αeµ\r
+ne\r
+−inσ\u0001\r
+e\r
+−inτ (1.88)"""
+
+[[sections]]
+number = "12"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+Now, defining\r
+α\r
+µ\r
+0 = αe\r
+µ\r
+0 =\r
+1\r
+√\r
+πT\r
+p\r
+µ\r
+(1.89)\r
+we can write in light-cone coordinates:\r
+∂−x\r
+µ\r
+(σ, τ) = ∂−x\r
+µ\r
+R =\r
+1\r
+√\r
+4πT\r
+X\r
+n\r
+α\r
+µ\r
+ne\r
+−in(τ−σ)\r
+(1.90)\r
+∂+x\r
+µ\r
+(σ, τ) = ∂+x\r
+µ\r
+L =\r
+1\r
+√\r
+4πT\r
+X\r
+n\r
+αe\r
+µ\r
+ne\r
+−in(τ+σ)\r
+(1.91)"""
+
+[[sections]]
+number = "2"
+title = "Open Strings"
+text = """
+In the case of open strings we will use the Neumann boundary conditions:\r
+∂xµ\r
+∂σ = 0 at σ = 0 or π (1.92)\r
+Using the solution (1.83) with the expresion for right and left movers (1.84)\r
+and (1.85) and substituing in the Neumann condition we get:\r
+∂xµ\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
+=\r
+∂xµ\r
+R\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
++\r
+∂xµ\r
+L\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=0\r
+= 0 (1.93)\r
+−\r
+1\r
+2πT\r
+p\r
+µ −\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−inτ +\r
+1\r
+2πT\r
+pe\r
+µ +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+αe\r
+µ\r
+n\r
+e\r
+−inτ = 0 (1.94)\r
+1\r
+2πT\r
+(pe\r
+µ − pµ\r
+) + 1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+(αe\r
+µ\r
+n − α\r
+µ\r
+n) e\r
+−inτ = 0 (1.95)\r
+Then we obtain:\r
+pe\r
+µ = pµ\r
+(1.96)\r
+αe\r
+µ\r
+n = α\r
+µ\r
+n (1.97)\r
+This means that the right and left movers get mixed in the solution for\r
+the open string. Now, using the boundary condition at σ = π we get:\r
+∂xµ\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
+=\r
+∂xµ\r
+R\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
++\r
+∂xµ\r
+L\r
+∂σ\r
+\f\r
+\f\r
+\f\r
+\f\r
+σ=π\r
+= 0 (1.98)\r
+−\r
+1\r
+2πT\r
+p\r
+µπ−\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ−π)+\r
+1\r
+2πT\r
+p\r
+µπ+\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ+π) = 0\r
+(1.99)"""
+
+[[sections]]
+number = "1.9"
+title = "CENTER OF MASS POSITION AND MOMENTUM 13"
+text = """
+−\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ−π) +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ+π) = 0 (1.100)\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+\r
+e\r
+−inπ − einπ\u0001\r
+= 0 (1.101)\r
+Then, we get the condition:\r
+e\r
+−inπ − einπ = 0 (1.102)\r
+− 2isin (nπ) = 0 (1.103)\r
+So, n must be an integer. The solution now becomes:\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ \r
+e\r
+inσ + e−inσ\u0001\r
+(1.104)\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+4πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ 2 cos (nσ) (1.105)\r
+x\r
+µ\r
+(τ, σ) = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ) (1.106)\r
+Defining again α\r
+µ\r
+0 = √\r
+1\r
+πT p\r
+µ we get:\r
+∂±x\r
+µ\r
+(τ, σ) = 1\r
+2πT\r
+p\r
+µ +\r
+1\r
+√\r
+4πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+ne\r
+−in(τ±σ)\r
+(1.107)\r
+∂±x\r
+µ\r
+(τ, σ) = 1\r
+√\r
+4πT\r
+X\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−in(τ±σ)\r
+(1.108)"""
+
+[[sections]]
+number = "1.9"
+title = "Center of mass Position and Momentum"
+text = """
+The position and momentum of the center of mass for the open and closed\r
+strings can be calculated, and they are given by:\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+Z π\r
+0\r
+x\r
+µ\r
+(τ, σ) dσ (1.109)\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+Z π\r
+0\r
+x\r
+µ\r
+o +\r
+1\r
+πT\r
+p\r
+µ\r
+τ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ) dσ (1.110)\r
+X\r
+µ\r
+CM =\r
+1\r
+π\r
+\r
+x\r
+µ\r
+o π +\r
+p\r
+µ\r
+πT\r
+τπ +\r
+i\r
+√\r
+πT\r
+X\r
+n6=0\r
+1\r
+n\r
+α\r
+µ\r
+n\r
+e\r
+−inτ sin (nσ)|\r
+π\r
+o\r
+\r
+ (1.111)"""
+
+[[sections]]
+number = "14"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+X\r
+µ\r
+CM = x\r
+µ\r
+o +\r
+p\r
+µ\r
+πT\r
+τ (1.112)\r
+p\r
+µ\r
+CM =\r
+Z π\r
+0\r
+Π\r
+µ\r
+dσ = T\r
+Z π\r
+0\r
+.\r
+x\r
+µ\r
+dσ (1.113)\r
+p\r
+µ\r
+CM = T\r
+Z π\r
+0\r
+\r
+\r
+1\r
+πT\r
+p\r
+µ +\r
+1\r
+√\r
+πT\r
+X\r
+n6=0\r
+α\r
+µ\r
+n\r
+e\r
+−inτ cos (nσ)\r
+\r
+dσ (1.114)\r
+p\r
+µ\r
+CM = p\r
+µ\r
+(1.115)\r
+We can see that x\r
+µ\r
+o\r
+is the position of the center of mass at τ = 0 and it\r
+moves as a free particle. The variables that describe the motion of the string\r
+are x\r
+µ\r
+o\r
+and p\r
+µ plus the collection of αµ\r
+n\r
+. This means that the string moves as a\r
+whole (center of mass) and vibrate in various modes."""
+
+[[sections]]
+number = "1.10"
+title = "Classical Visaroro Algebra"
+text = """
+The equal-τ Poison Brackets for the x\r
+µ and their conjugate momenta Πµ =\r
+T\r
+.\r
+x\r
+µ\r
+are:\r
+\b\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+x\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+\t\r
+P B =\r
+1\r
+T\r
+η\r
+µν δ (σ − σ′\r
+) (1.116)\r
+{x\r
+µ\r
+(σ, τ), xν(σ\r
+′\r
+, τ)}P B = 0 (1.117)\r
+\b .\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+x\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+\t\r
+P B = 0 (1.118)\r
+Using the expresion for x\r
+µ (σ, τ) we get:\r
+{α\r
+µ\r
+m, ανn} = {αe\r
+µ\r
+m, αe\r
+ν\r
+n} = −imηµνδm+n,0 (1.119)\r
+{αe\r
+µ\r
+m, αν\r
+n\r
+} = 0 (1.120)\r
+{x\r
+µ\r
+0\r
+, pν} = η\r
+µν (1.121)\r
+The Hamiltonian is give by:\r
+H =\r
+Z\r
+ .\r
+x\r
+µ\r
+Πµ − L\r
+\u0001\r
+dσ = T\r
+Z\r
+ .\r
+x\r
+µ .\r
+xµ − L\r
+\u0001\r
+dσ (1.122)\r
+H =\r
+Z \u0012\r
+T\r
+.\r
+x\r
+µ .\r
+xµ +\r
+T\r
+2\r
+η\r
+αβηµν ∂αxµ\r
+∂βx\r
+ν\r
+\u0013\r
+dσ (1.123)"""
+
+[[sections]]
+number = "1.10"
+title = "CLASSICAL VISARORO ALGEBRA 15"
+text = """
+H =\r
+Z \u0014\r
+T\r
+.\r
+x\r
+µ .\r
+xµ +\r
+T\r
+2\r
+\r
+−\r
+.\r
+x\r
+µ .\r
+xµ + x\r
+′µx′\r
+µ\r
+\u0001\r
+\u0015\r
+dσ (1.124)\r
+H =\r
+T\r
+2\r
+Z\r
+\u0002 .\r
+x\r
+µ .\r
+xµ + x\r
+′µx′\r
+µ\r
+\u0003\r
+dσ (1.125)\r
+This hamiltonian can be expresed in terms of the oscillators in the closed\r
+string case, using α\r
+µ\r
+0 = √\r
+1\r
+πT p\r
+µ ,as:\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+\u0010\r
+(α\r
+µ\r
+m)\r
+†\r
+e\r
+−imσ + (αeµ\r
+m)\r
+†\r
+e\r
+imσ\u0011\r
+e\r
+imτ! X\r
+n\r
+\u0010\r
+(αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+\u0010\r
+− (α\r
+µ\r
+m)\r
+†\r
+e\r
+−imσ + (αeµ\r
+m)\r
+†\r
+e\r
+imσ\u0011\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+\u0010\r
+− (αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ\r
+ dσ\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+\r
+α\r
+µ\r
+−me\r
+−imσ + αe\r
+µ\r
+−me\r
+imσ\u0001\r
+e\r
+imτ! X\r
+n\r
+\u0010\r
+(αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+\r
+−α\r
+µ\r
+−me\r
+−imσ + αe\r
+µ\r
+−me\r
+imσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+\u0010\r
+− (αn)µe\r
+inσ + (αen)µ\r
+e\r
+−inσ\u0011\r
+e\r
+−inτ\r
+ dσ\r
+Since:\r
+Z\r
+e\r
+−imσeinσdσ = 2πδ (m − n) (1.126)\r
+Z\r
+e\r
+imσeinσdσ = 2πδ (m + n) (1.127)\r
+we obtain:\r
+H =\r
+T\r
+2\r
+1\r
+4πT "\r
+2π\r
+X\r
+n\r
+\r
+α−n · αn + αen · αne\r
+−2inτ + αn · αene−2inτ + αe−n · αen\r
+\u0001\r
++2π\r
+X\r
+n6=0\r
+\r
+α−n · αn − αen · αne\r
+−2inτ − αn · αene−2inτ + αe−n · αen\r
+\u0001\r
+\r
+ (1.128)\r
+H =\r
+T\r
+2\r
+2π\r
+4πT\r
+\r
+α0 · αe0 + αe0 · α0 +\r
+X\r
+n\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.129)"""
+
+[[sections]]
+number = "16"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+H =\r
+1\r
+4\r
+\r
+2 (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.130)\r
+H =\r
+1\r
+4\r
+\r
+2 (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+\r
+(1.131)\r
+H =\r
+1\r
+4\r
+\r
+ 2 (α0 · α0 + αe0 · αe0) + 2X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+ (1.132)\r
+H =\r
+1\r
+2\r
+\r
+ (α0 · α0 + αe0 · αe0) + X\r
+n6=0\r
+(α−n · αn + αe−n · αen)\r
+\r
+ (1.133)\r
+H =\r
+1\r
+2\r
+X\r
+n\r
+(α−n · αn + αe−n · αen) (1.134)\r
+For the open string using again α\r
+µ\r
+o =\r
+p\r
+µ\r
+√\r
+πT , we have:\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+(α\r
+µ\r
+m)\r
+†\r
+\r
+e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ! X\r
+n\r
+(αn)µ\r
+\r
+e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+(α\r
+µ\r
+m)\r
+†\r
+\r
+−e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+(αn)µ\r
+\r
+−e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ\r
+ dσ\r
+H =\r
+T\r
+2\r
+Z\r
+1\r
+4πT X\r
+m\r
+α\r
+µ\r
+−m\r
+\r
+e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ! X\r
+n\r
+(αn)µ\r
+\r
+e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ!\r
++\r
+1\r
+4πT\r
+\r
+\r
+X\r
+m6=0\r
+α\r
+µ\r
+−m\r
+\r
+−e\r
+−imσ + eimσ\u0001\r
+e\r
+imτ\r
+\r
+\r
+\r
+X\r
+n6=0\r
+(αn)µ\r
+\r
+−e\r
+inσ + e−inσ\u0001\r
+e\r
+−inτ\r
+ dσ"""
+
+[[sections]]
+number = "1.10"
+title = "CLASSICAL VISARORO ALGEBRA 17"
+text = """
+H =\r
+T\r
+2\r
+1\r
+4πT "\r
+π\r
+X\r
+n\r
+\r
+α−n · αn + αn · αne\r
+−2inτ + αn · αne−2inτ + α−n · αn\r
+\u0001\r
++π\r
+X\r
+n6=0\r
+\r
+α−n · αn − αn · αne\r
+−2inτ − αn · αne−2inτ + α−n · αn\r
+\u0001\r
+\r
+ (1.135)\r
+H =\r
+T\r
+2\r
+π\r
+4πT\r
+\r
+α0 · α0 + α0 · α0 +\r
+X\r
+n\r
+(α−n · αn + α−n · αn) + X\r
+n6=0\r
+(α−n · αn + α−n · αn)\r
+\r
+\r
+(1.136)\r
+H =\r
+1\r
+8\r
+\r
+2 (α0 · α0 + α0 · α0) + X\r
+n6=0\r
+2α−n · αn +\r
+X\r
+n6=0\r
+2α−n · αn\r
+\r
+ (1.137)\r
+H =\r
+1\r
+8\r
+\r
+4 (α0 · α0) + 4X\r
+n6=0\r
+α−n · αn\r
+\r
+ (1.138)\r
+H =\r
+1\r
+2\r
+\r
+(α0 · α0) + X\r
+n6=0\r
+α−n · αn\r
+\r
+ (1.139)\r
+H =\r
+1\r
+2\r
+X\r
+n\r
+α−n · αn (1.140)\r
+TheVisaroro operators are defined as the Fourier modes of the Stress tensor.\r
+For the closed string they are:\r
+Lm =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z 2π"
+text = ""
+
+[[sections]]
+number = "0"
+title = "T−−e"
+text = """
+im(τ−σ)\r
+dσ , Lem =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z 2π"
+text = ""
+
+[[sections]]
+number = "0"
+title = "T++e"
+text = """
+im(τ+σ)\r
+dσ (1.141)\r
+Expressed in oscillators these operators are:\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+αm−n · αn , Lem =\r
+1\r
+2\r
+X\r
+n\r
+αem−n · αen (1.142)\r
+Because of the properties of the α’s, the operators satisfy:"""
+
+[[sections]]
+number = "18"
+title = "CHAPTER 1. CLASSICAL STRING THEORY"
+text = """
+L\r
+†\r
+m =\r
+1\r
+2\r
+X\r
+n\r
+α\r
+†\r
+m−n\r
+· α\r
+†\r
+n =\r
+1\r
+2\r
+X\r
+n\r
+α−m+n · α−n = L−m (1.143)\r
+Le†\r
+m =\r
+1\r
+2\r
+X\r
+n\r
+αe\r
+†\r
+m−n\r
+· αe\r
+†\r
+n =\r
+1\r
+2\r
+X\r
+n\r
+αe−m+n · αe−n = Le−m (1.144)\r
+In terms of the Visaroro operators, the Hamiltonian (1.134) can be expresed\r
+as:\r
+H = L0 + Le0 (1.145)\r
+For the open string the αe’s are equal to the α’s, then the Visaroro operators\r
+are definied as:\r
+Lm =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z π"
+text = """
+0\r
+h\r
+T−−e\r
+im(τ−σ) + T++eim(τ+σ)\r
+i\r
+dσ (1.146)\r
+or in terms of the oscillators:\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+αm−n · αn (1.147)\r
+In this case, the Hamiltonian (1.140) can be written as:\r
+H = L0 (1.148)\r
+Using (1.119),(1.120) and (1.121) is easy to derive the Poison brackets for\r
+the Visaroro operators:\r
+{Lm, Ln}P B = −i(m − n)Lm+n (1.149)\r
+n\r
+Lem,Len\r
+o\r
+P B\r
+= −i(m − n)Lem+n (1.150)\r
+n\r
+Lm,Len\r
+o\r
+P B\r
+= 0 (1.151)\r
+For the open string the Le’s operators are absent.
+
+Chapter 2\r
+Bosonic String Quantization\r
+There exist three aproaches to quantize classical strings:"""
+
+[[sections]]
+number = "1"
+title = "Canonical Quantization:"
+text = """
+In this aproach the classical variables become operators. Because of the\r
+constraints there are two options:\r
+(a) Covariant Quantization\r
+This procedure quantize first and then impose the constraints as con\u0002ditions on states in Hilbert space. Is named covariant because it\r
+preserves the Lorentz invariace.\r
+(b) Light-Cone Quantization\r
+Here, the constraints are solved in the classical system, so it leaves\r
+a smaller number of classical variables. Then they are quantized. In\r
+this aproach the manifest Lorentz invariance is lost."""
+
+[[sections]]
+number = "2"
+title = "Path Integral Quantization"
+text = """
+This way preserves the manifest Lorentz invarinace, but contains ghost\r
+fields."""
+
+[[sections]]
+number = "2.1"
+title = "Covariant Canonical Quantization"
+text = """
+In the canonical quantization the fields are replaced by operators, and the Pois\u0002son brackets are reemplazed by commutators following the rule:\r
+{ , }P B −→ −i [ , ] (2.1)\r
+Following this rule, the relations (1.116)-(1.118) become:\r
+19"""
+
+[[sections]]
+number = "20"
+title = "CHAPTER 2. BOSONIC STRING QUANTIZATION"
+text = """
+h\r
+x\r
+µ\r
+(σ, τ),\r
+.\r
+Π\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+i\r
+= iηµν δ (σ − σ\r
+′\r
+) (2.2)\r
+[x\r
+µ\r
+(σ, τ), xν(σ\r
+′\r
+, τ)] = 0 (2.3)\r
+h .\r
+Π\r
+µ\r
+(σ, τ),\r
+.\r
+Π\r
+ν\r
+(σ\r
+′\r
+, τ)\r
+i\r
+= 0 (2.4)\r
+Or in terms of the oscillator we can write:\r
+[α\r
+µ\r
+m, ανn\r
+] = [αe\r
+µ\r
+m, αe\r
+ν\r
+n\r
+] = mηµν δm+n,0 (2.5)\r
+[αe\r
+µ\r
+m, αν\r
+n\r
+] = 0 (2.6)\r
+[x\r
+µ\r
+0\r
+, pν] = iηµν (2.7)\r
+The first of this conditions can be written, absorbing the factor m as:\r
+h\r
+α\r
+µ\r
+m,(α\r
+ν\r
+n\r
+)\r
+†\r
+i\r
+=\r
+h\r
+αe\r
+µ\r
+m,(αe\r
+ν\r
+n\r
+)\r
+†\r
+i\r
+= η\r
+µν δm,n (2.8)\r
+In Quantum Mechanics the harmonic oscillator can be described using raising\r
+and lowering operatos that satisfy the condition:\r
+\u0002\r
+α, α†\r
+\u0003\r
+= 1 (2.9)\r
+Then, we see that the expansion coefficients α\r
+µ\r
+−n = (α\r
+µ\r
+n\r
+)\r
+†\r
+and α\r
+µ\r
+n\r
+are raising\r
+and lowering operators respectively. But there are one problem. Because of the\r
+metric tensor sign: η\r
+00 = −1 the time component of the oscillators has a minus\r
+sign. this means that they create states of negative norm, and it makes the\r
+quantum theory inconsistent. However, as we will see the classical condition\r
+Tαβ = 0 will eliminate the negative-norm states from physical spectrum.\r
+Since the system is now an infinite set of harmonic oscillators, we may define\r
+the Hilbert space in a simple way. The ground-state is the one that is anihilated\r
+by all the lowering operators, but since this state is not completly determined\r
+by this, we use the center-of-mass momentum operator. Diagonalizing p\r
+µ the\r
+states are caracterized by its momentum. So, the ground state may be written\r
+as:\r
+αm |0, pi = 0 ∀m > 0 (2.10)\r
+Other states are obtained by aplying the raising operators:\r
+α\r
+µ\r
+−1\r
+|0, pi , α\r
+µ\r
+−2\r
+|pi,\r
+Y\r
+m\r
+α\r
+µ\r
+m |0, pi (2.11)"""
+
+[[sections]]
+number = "2.1"
+title = "COVARIANT CANONICAL QUANTIZATION 21"
+text = ""
+
+[[sections]]
+number = "2.1.1"
+title = "Visaroro Operators"
+text = """
+In order to define the Visaroro operators in the quantum system we have to\r
+introduce the normal ordering operation that puts all positive frequency modes\r
+(lowering operators) to the right of the negative frequency modes (raising oper\u0002ators).\r
+With this definition the Visaroro operators are defined as :\r
+Lm =\r
+1\r
+2\r
+X\r
+n\r
+: αm−n · αn : (2.12)\r
+and similarly for the closed string:\r
+Lem =\r
+1\r
+2\r
+X\r
+n\r
+: αem−n · αen : (2.13)\r
+From now on, for the closed string there are similar relations for the operators\r
+Lem.\r
+The only operator affected by the normal ordering is L0:\r
+L0 =\r
+1\r
+2\r
+α0 · α0 +\r
+1\r
+2\r
+X\r
+n\r
+: α−n · αn : (2.14)\r
+L0 =\r
+1\r
+2\r
+α0 · α0 +\r
+X∞\r
+n=1\r
+α−n · αn (2.15)\r
+Now, because of the arbitrariness in definig the normal ordering we have to\r
+include a normal-ordering constant q in the expresion for L0.\r
+L0 −→ L0 − q (2.16)\r
+The visaroro algebra can be calculated using the definition of the operators,\r
+and it gives ( for a detailed calculation see [4]):\r
+[Lm, Ln] = (m − n)Lm+n +\r
+c\r
+12\r
+m\r
+\r
+m2 − 1\r
+\u0001\r
+δm+n,0 (2.17)\r
+Its important to note that there exist a difference between the operator\r
+and the Poisson algebra. this diference is a c-number which depends on the\r
+dimension of space-time, since in the case we have c = d. This term is called\r
+the ”conformal anomaly term” and the cnstant c is in general called the ”central\r
+charge”. This term is an inescapable consequence of the quantization, and is\r
+because of this that the string theory depends so much on the dimension of\r
+space-time.\r
+The classical Visaroro constraints (1.63) cannot be imposed as operators\r
+constraints Lm |ψi = 0, because (2.17) gives:"""
+
+[[sections]]
+number = "22"
+title = "CHAPTER 2. BOSONIC STRING QUANTIZATION"
+text = """
+hψ| [Lm, L−m] |ψi = 2m hψ|L0 |ψi +\r
+d\r
+12\r
+m\r
+\r
+m2 − 1\r
+\u0001\r
+hψ| ψi 6= 0 (2.18)\r
+Thus, the constraints are imposed as:\r
+(L0 − q)|φi = 0 (2.19)\r
+Lm |φi = 0 m > 0 (2.20)\r
+where |φi denotes a physical state. This is consistent with the classical\r
+constraints because:\r
+hφ\r
+′\r
+|(Lm − qδm,0)|φi = 0 for all m (2.21)\r
+As we will see, the constraint for L0 is a generalization of the Klein-Gordon\r
+equation since it contains a term with p\r
+2 = −∂ · ∂ and a term that determines\r
+the mass of the state."""
+
+[[sections]]
+number = "2.1.2"
+title = "Bosonic String Spectrum"
+text = """
+Open String.\r
+Using the form of L0 given by (2.15), the constraint (2.19) gives:\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn = q (2.22)\r
+1\r
+2\r
+α0 · α0 = −\r
+X\r
+n\r
+α−n · αn + q (2.23)\r
+1\r
+2πT\r
+p\r
+µ\r
+pµ = −\r
+X\r
+n\r
+α−n · αn + q (2.24)\r
+And using the mass-shell condition p\r
+µpµ = −m2\r
+, we have:\r
+1\r
+2πT\r
+m2 = N − q (2.25)\r
+where is defined the level-number operator as:\r
+N =\r
+X\r
+n\r
+α−n · αn (2.26)\r
+Now, we will set q = 1 since this value is necessary for a consistent theory\r
+(as we will se later). Since each α−n · αn has eiegnvalues 0, 1, 2, 3, ... etc. then"""
+
+[[sections]]
+number = "2.1"
+title = "COVARIANT CANONICAL QUANTIZATION 23"
+text = """
+the number operator also has values 0, 1, 2, .... The ground state, |0, pi is given\r
+by N = 0 . So we have:\r
+1\r
+2πT\r
+m2 = −1 (2.27)\r
+This state corresponds to a Tachyon (since p\r
+µ is space-like). This particle\r
+may cause a vacuum unstability, then it is not possible in a consisten quantum\r
+theory. Anyway, we will not worry about it now and will continue with the\r
+spectum analisis.\r
+The first excited state has N = 1 and (2.25) gives m = 0. To obtain this\r
+sate we need:\r
+|φi = ξµα\r
+µ\r
+−1\r
+|0, pi (2.28)\r
+where ξ\r
+µ is the polarization vector for a massless spin-1 particle. Now, the\r
+Visaroro constraint gives:\r
+L1 |φi = 0 (2.29)\r
+ξµL1α\r
+µ\r
+−1\r
+|0, pi = 0 (2.30)\r
+Since the operators αm (m > 0) anihilates the ground-state, L1 has just the\r
+contributions:\r
+ξµ\r
+ \r
+1\r
+2\r
+X\r
+n\r
+: α1−n · αn :\r
+!\r
+α\r
+µ\r
+−1\r
+|0, pi = 0 (2.31)\r
+1\r
+2\r
+ξµ (α0 · α1 + α1 · α0) α\r
+µ\r
+−1\r
+|0, pi = 0 (2.32)\r
+ξµ (α0)\r
+ν α\r
+ν\r
+1α\r
+µ\r
+−1\r
+|0, pi = 0 (2.33)\r
+ξµ (α0)\r
+ν\r
+\u0002\r
+α\r
+µ\r
+−1α\r
+ν\r
+1 + η\r
+µν\u0003\r
+|0, pi = 0 (2.34)\r
+ξµ (α0)\r
+ν α\r
+µ\r
+−1α\r
+ν\r
+1\r
+|0, pi + ξµ (α0)\r
+ν\r
+η\r
+µν |0, pi = 0 (2.35)\r
+ξµ (α0)\r
+µ\r
+|0, pi = 0 (2.36)\r
+ξµ\r
+1\r
+√\r
+πT\r
+p\r
+µ\r
+|0, pi = 0 (2.37)\r
+ξµp\r
+µ\r
+|0, pi = 0 (2.38)"""
+
+[[sections]]
+number = "24"
+title = "CHAPTER 2. BOSONIC STRING QUANTIZATION"
+text = """
+Then , the Visaroro constraint implies that ξµ must satisfy:\r
+p\r
+µ\r
+ξµ = 0 (2.39)\r
+This condition ensures that the spin is transversely polarized, so there are\r
+just d − 2 independient polarization states.\r
+The second excited state, with N = 2 , has:\r
+1\r
+2πT\r
+m2 = 1 (2.40)\r
+The most general state is a superposition :\r
+|φi =\r
+\r
+ξµα\r
+µ\r
+−2 + λµνα\r
+µ\r
+−1α\r
+ν\r
+−1\r
+\u0001\r
+|0, pi (2.41)\r
+And again, the Visaroro constraints\r
+L1 |φi = L2 |φi = 0 (2.42)\r
+restrict the values of ξµ and λµν .\r
+Closed String.\r
+For the closed string we have the conditions:\r
+(L0 − q)|φi = 0 (2.43)\r
+\u0010\r
+Le0 − q\r
+\u0011\r
+|φi = 0 (2.44)\r
+the sum of this conditions gives:\r
+\u0010\r
+L0 + Le0 − 2q\r
+\u0011\r
+|φi = 0 (2.45)\r
+So;\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn +\r
+1\r
+2\r
+αe0 · αe0 +\r
+X\r
+n\r
+αe−n · αen = 2q (2.46)\r
+α0 · α0 = −\r
+X\r
+n\r
+α−n · αn −\r
+X\r
+n\r
+αe−n · αen + 2q (2.47)\r
+1\r
+πT\r
+p\r
+µ\r
+pµ = −\r
+X\r
+n\r
+α−n · αn −\r
+X\r
+n\r
+αe−n · αen + 2q (2.48)\r
+Using the mass-shell condition p\r
+µpµ = −m2\r
+, we have:\r
+1\r
+πT\r
+m2 = N + Ne − 2q (2.49)"""
+
+[[sections]]
+number = "2.1"
+title = "COVARIANT CANONICAL QUANTIZATION 25"
+text = """
+where the level-number operators are:\r
+N =\r
+X\r
+n\r
+α−n · αn (2.50)\r
+Ne =\r
+X\r
+n\r
+αe−n · αen (2.51)\r
+The difference between (2.43) and (2.44) gives:\r
+\u0010\r
+L0 − Le0\r
+\u0011\r
+|φi = 0 (2.52)\r
+Then we have the level-matching condition:\r
+L0 = Le0 (2.53)\r
+1\r
+2\r
+α0 · α0 +\r
+X\r
+n\r
+α−n · αn =\r
+1\r
+2\r
+αe0 · αe0 +\r
+X\r
+n\r
+αe−n · αen (2.54)\r
+X\r
+n\r
+α−n · αn =\r
+X\r
+n\r
+αe−n · αen (2.55)\r
+N = Ne (2.56)\r
+The closed string states are then the tensor product of left moving and right\r
+moving states subject to the level matching condition. Then, the ground state\r
+for the closed string is (without displaying the momuentum of the state):\r
+|0i ⊗ |0i (2.57)\r
+Since in the ground state has N = Ne = 0, then, setting q = 1 we obtain:\r
+1\r
+2πT\r
+m2 = −2 (2.58)\r
+Again we obtain a spin 0 tachyon that makes the theory unststable.\r
+The first excited state is:\r
+|φi = ξµν \r
+α\r
+µ\r
+−1\r
+|0i ⊗ αe\r
+ν\r
+−1\r
+|0i\r
+\u0001\r
+(2.59)\r
+This state has m2 = 0. Again the Visaroro constraints\r
+L1 |φi = Le1 |φi = 0 (2.60)\r
+restricts the possible values of the polarization to:\r
+p\r
+µ\r
+ξµν = 0 (2.61)"""
+
+[[sections]]
+number = "26"
+title = "CHAPTER 2. BOSONIC STRING QUANTIZATION"
+text = """
+This kind of tensor gives three distinct spin states: the symmetric part\r
+encodes a massless spin-2 particle (gµν), the antisymmetric part is a massless\r
+antisymmetric tensor gauge field Bµν = −Bνµ ; and finally there is encoded also\r
+an scalar field Φ.
+
+Conclusion\r
+We have described some of the basic ideas of the 26-dimensional bosonic string\r
+theory. There exist different kinds of bosonic strings, but all of them are sick,\r
+because in each case the spectra contains a tachyon. This means that the\r
+vacuum state is unstable, and it is still an open problem.The most remarkable\r
+feature of string theories is their dimensionality. Here we have seen that 26\r
+dimensions are needed and there is no consistent explication of why this number\r
+is prefered.\r
+Anyway the study of this toy model give a better understanding of the\r
+different process and features that the final theory should or should not have,\r
+and its a necesary step for the study of more elaborated models, sucha as the\r
+Superstings.\r
+27"""
+
+[[sections]]
+number = "28"
+title = "CONCLUSION"
+text = """
+Bibliography\r
+[1] Berkovits, N. An Introduction to Superstring Theory and its Duality Sym\u0002metries. Proceedings for the First School on Field Theory and Gravitation.\r
+Vit´oria, Brasil. 1997.\r
+[2] Green, M. Schwarz J. and Witten, E. Superstring Theory. (2 Volumes) Cam\u0002bridge University Press.U.K. 1987.\r
+[3] Kiritsis, E. Introduction to Superstring Theory. Lectures presented at the\r
+Catholic University of Leuven and at the University of Padova. 1996-1997.\r
+[4] Scherk, J. An Intorduction to the Theory of Dual Models and Strings. Rev.\r
+Mod. Phys. 47-1. (1975)\r
+[5] Schwarz, J. Introduction to Superstring Theory. Lectures presented at the\r
+NATO Advanced Study Institue on Techniques and Concepts of High Energy\r
+Physics. St. Croix, Virgin Islands. June 2000.\r
+29"""
+
+[[tables]]
+page_num = 28
+headers = [
+    "(L0 − q)",
+    "φi = 0 (2.19)",
+]
+rows = [
+    [
+    "Lm",
+    "φi = 0 m > 0 (2.20)",
+],
+    [
+    "where",
+    "φi denotes a physical state. This is consistent with the classical",
+],
+]
+
+[[figures]]
+label = "fig:1"
+page_num = 7
+image_path = "images/image_p7_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 7
+image_path = "images/image_p7_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 7
+image_path = "images/image_p7_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 7
+image_path = "images/image_p7_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 7
+image_path = "images/image_p7_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 7
+image_path = "images/image_p7_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 7
+image_path = "images/image_p7_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 7
+image_path = "images/image_p7_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 7
+image_path = "images/image_p7_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 7
+image_path = "images/image_p7_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 8
+image_path = "images/image_p8_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 8
+image_path = "images/image_p8_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 8
+image_path = "images/image_p8_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 8
+image_path = "images/image_p8_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 8
+image_path = "images/image_p8_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 8
+image_path = "images/image_p8_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 8
+image_path = "images/image_p8_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 8
+image_path = "images/image_p8_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 8
+image_path = "images/image_p8_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 8
+image_path = "images/image_p8_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 8
+image_path = "images/image_p8_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 8
+image_path = "images/image_p8_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 8
+image_path = "images/image_p8_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 8
+image_path = "images/image_p8_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 8
+image_path = "images/image_p8_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 9
+image_path = "images/image_p9_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 9
+image_path = "images/image_p9_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 9
+image_path = "images/image_p9_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 9
+image_path = "images/image_p9_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 9
+image_path = "images/image_p9_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 9
+image_path = "images/image_p9_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 9
+image_path = "images/image_p9_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 9
+image_path = "images/image_p9_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 9
+image_path = "images/image_p9_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 9
+image_path = "images/image_p9_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 9
+image_path = "images/image_p9_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 9
+image_path = "images/image_p9_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 9
+image_path = "images/image_p9_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 9
+image_path = "images/image_p9_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 9
+image_path = "images/image_p9_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 9
+image_path = "images/image_p9_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 10
+image_path = "images/image_p10_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 10
+image_path = "images/image_p10_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 10
+image_path = "images/image_p10_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 10
+image_path = "images/image_p10_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 10
+image_path = "images/image_p10_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 10
+image_path = "images/image_p10_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 11
+image_path = "images/image_p11_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 11
+image_path = "images/image_p11_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 11
+image_path = "images/image_p11_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 11
+image_path = "images/image_p11_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 11
+image_path = "images/image_p11_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 11
+image_path = "images/image_p11_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 11
+image_path = "images/image_p11_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 11
+image_path = "images/image_p11_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 11
+image_path = "images/image_p11_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 11
+image_path = "images/image_p11_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 12
+image_path = "images/image_p12_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 12
+image_path = "images/image_p12_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 12
+image_path = "images/image_p12_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 12
+image_path = "images/image_p12_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 12
+image_path = "images/image_p12_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 12
+image_path = "images/image_p12_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 12
+image_path = "images/image_p12_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 12
+image_path = "images/image_p12_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 12
+image_path = "images/image_p12_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 12
+image_path = "images/image_p12_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 12
+image_path = "images/image_p12_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 12
+image_path = "images/image_p12_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 12
+image_path = "images/image_p12_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 12
+image_path = "images/image_p12_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 12
+image_path = "images/image_p12_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 12
+image_path = "images/image_p12_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 13
+image_path = "images/image_p13_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 13
+image_path = "images/image_p13_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 13
+image_path = "images/image_p13_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 13
+image_path = "images/image_p13_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 13
+image_path = "images/image_p13_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 14
+image_path = "images/image_p14_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 14
+image_path = "images/image_p14_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 14
+image_path = "images/image_p14_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 14
+image_path = "images/image_p14_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 14
+image_path = "images/image_p14_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 14
+image_path = "images/image_p14_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 14
+image_path = "images/image_p14_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 14
+image_path = "images/image_p14_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 14
+image_path = "images/image_p14_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 14
+image_path = "images/image_p14_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 15
+image_path = "images/image_p15_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 15
+image_path = "images/image_p15_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 15
+image_path = "images/image_p15_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 15
+image_path = "images/image_p15_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 15
+image_path = "images/image_p15_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 15
+image_path = "images/image_p15_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 16
+image_path = "images/image_p16_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 16
+image_path = "images/image_p16_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 16
+image_path = "images/image_p16_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 16
+image_path = "images/image_p16_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 16
+image_path = "images/image_p16_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 16
+image_path = "images/image_p16_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 17
+image_path = "images/image_p17_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 17
+image_path = "images/image_p17_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 17
+image_path = "images/image_p17_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 17
+image_path = "images/image_p17_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 17
+image_path = "images/image_p17_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 17
+image_path = "images/image_p17_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 17
+image_path = "images/image_p17_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 17
+image_path = "images/image_p17_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 17
+image_path = "images/image_p17_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 17
+image_path = "images/image_p17_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 17
+image_path = "images/image_p17_112.png"
+
+[[figures]]
+label = "fig:113"
+page_num = 17
+image_path = "images/image_p17_113.png"
+
+[[figures]]
+label = "fig:114"
+page_num = 17
+image_path = "images/image_p17_114.png"
+
+[[figures]]
+label = "fig:115"
+page_num = 17
+image_path = "images/image_p17_115.png"
+
+[[figures]]
+label = "fig:116"
+page_num = 17
+image_path = "images/image_p17_116.png"
+
+[[figures]]
+label = "fig:117"
+page_num = 17
+image_path = "images/image_p17_117.png"
+
+[[figures]]
+label = "fig:118"
+page_num = 18
+image_path = "images/image_p18_118.png"
+
+[[figures]]
+label = "fig:119"
+page_num = 18
+image_path = "images/image_p18_119.png"
+
+[[figures]]
+label = "fig:120"
+page_num = 18
+image_path = "images/image_p18_120.png"
+
+[[figures]]
+label = "fig:121"
+page_num = 18
+image_path = "images/image_p18_121.png"
+
+[[figures]]
+label = "fig:122"
+page_num = 18
+image_path = "images/image_p18_122.png"
+
+[[figures]]
+label = "fig:123"
+page_num = 18
+image_path = "images/image_p18_123.png"
+
+[[figures]]
+label = "fig:124"
+page_num = 18
+image_path = "images/image_p18_124.png"
+
+[[figures]]
+label = "fig:125"
+page_num = 18
+image_path = "images/image_p18_125.png"
+
+[[figures]]
+label = "fig:126"
+page_num = 18
+image_path = "images/image_p18_126.png"
+
+[[figures]]
+label = "fig:127"
+page_num = 18
+image_path = "images/image_p18_127.png"
+
+[[figures]]
+label = "fig:128"
+page_num = 18
+image_path = "images/image_p18_128.png"
+
+[[figures]]
+label = "fig:129"
+page_num = 18
+image_path = "images/image_p18_129.png"
+
+[[figures]]
+label = "fig:130"
+page_num = 18
+image_path = "images/image_p18_130.png"
+
+[[figures]]
+label = "fig:131"
+page_num = 18
+image_path = "images/image_p18_131.png"
+
+[[figures]]
+label = "fig:132"
+page_num = 18
+image_path = "images/image_p18_132.png"
+
+[[figures]]
+label = "fig:133"
+page_num = 18
+image_path = "images/image_p18_133.png"
+
+[[figures]]
+label = "fig:134"
+page_num = 18
+image_path = "images/image_p18_134.png"
+
+[[figures]]
+label = "fig:135"
+page_num = 18
+image_path = "images/image_p18_135.png"
+
+[[figures]]
+label = "fig:136"
+page_num = 18
+image_path = "images/image_p18_136.png"
+
+[[figures]]
+label = "fig:137"
+page_num = 18
+image_path = "images/image_p18_137.png"
+
+[[figures]]
+label = "fig:138"
+page_num = 18
+image_path = "images/image_p18_138.png"
+
+[[figures]]
+label = "fig:139"
+page_num = 18
+image_path = "images/image_p18_139.png"
+
+[[figures]]
+label = "fig:140"
+page_num = 18
+image_path = "images/image_p18_140.png"
+
+[[figures]]
+label = "fig:141"
+page_num = 18
+image_path = "images/image_p18_141.png"
+
+[[figures]]
+label = "fig:142"
+page_num = 18
+image_path = "images/image_p18_142.png"
+
+[[figures]]
+label = "fig:143"
+page_num = 18
+image_path = "images/image_p18_143.png"
+
+[[figures]]
+label = "fig:144"
+page_num = 18
+image_path = "images/image_p18_144.png"
+
+[[figures]]
+label = "fig:145"
+page_num = 18
+image_path = "images/image_p18_145.png"
+
+[[figures]]
+label = "fig:146"
+page_num = 19
+image_path = "images/image_p19_146.png"
+
+[[figures]]
+label = "fig:147"
+page_num = 19
+image_path = "images/image_p19_147.png"
+
+[[figures]]
+label = "fig:148"
+page_num = 19
+image_path = "images/image_p19_148.png"
+
+[[figures]]
+label = "fig:149"
+page_num = 19
+image_path = "images/image_p19_149.png"
+
+[[figures]]
+label = "fig:150"
+page_num = 19
+image_path = "images/image_p19_150.png"
+
+[[figures]]
+label = "fig:151"
+page_num = 19
+image_path = "images/image_p19_151.png"
+
+[[figures]]
+label = "fig:152"
+page_num = 19
+image_path = "images/image_p19_152.png"
+
+[[figures]]
+label = "fig:153"
+page_num = 19
+image_path = "images/image_p19_153.png"
+
+[[figures]]
+label = "fig:154"
+page_num = 19
+image_path = "images/image_p19_154.png"
+
+[[figures]]
+label = "fig:155"
+page_num = 19
+image_path = "images/image_p19_155.png"
+
+[[figures]]
+label = "fig:156"
+page_num = 19
+image_path = "images/image_p19_156.png"
+
+[[figures]]
+label = "fig:157"
+page_num = 19
+image_path = "images/image_p19_157.png"
+
+[[figures]]
+label = "fig:158"
+page_num = 19
+image_path = "images/image_p19_158.png"
+
+[[figures]]
+label = "fig:159"
+page_num = 19
+image_path = "images/image_p19_159.png"
+
+[[figures]]
+label = "fig:160"
+page_num = 19
+image_path = "images/image_p19_160.png"
+
+[[figures]]
+label = "fig:161"
+page_num = 19
+image_path = "images/image_p19_161.png"
+
+[[figures]]
+label = "fig:162"
+page_num = 19
+image_path = "images/image_p19_162.png"
+
+[[figures]]
+label = "fig:163"
+page_num = 19
+image_path = "images/image_p19_163.png"
+
+[[figures]]
+label = "fig:164"
+page_num = 19
+image_path = "images/image_p19_164.png"
+
+[[figures]]
+label = "fig:165"
+page_num = 19
+image_path = "images/image_p19_165.png"
+
+[[figures]]
+label = "fig:166"
+page_num = 19
+image_path = "images/image_p19_166.png"
+
+[[figures]]
+label = "fig:167"
+page_num = 19
+image_path = "images/image_p19_167.png"
+
+[[figures]]
+label = "fig:168"
+page_num = 19
+image_path = "images/image_p19_168.png"
+
+[[figures]]
+label = "fig:169"
+page_num = 19
+image_path = "images/image_p19_169.png"
+
+[[figures]]
+label = "fig:170"
+page_num = 19
+image_path = "images/image_p19_170.png"
+
+[[figures]]
+label = "fig:171"
+page_num = 19
+image_path = "images/image_p19_171.png"
+
+[[figures]]
+label = "fig:172"
+page_num = 19
+image_path = "images/image_p19_172.png"
+
+[[figures]]
+label = "fig:173"
+page_num = 19
+image_path = "images/image_p19_173.png"
+
+[[figures]]
+label = "fig:174"
+page_num = 19
+image_path = "images/image_p19_174.png"
+
+[[figures]]
+label = "fig:175"
+page_num = 19
+image_path = "images/image_p19_175.png"
+
+[[figures]]
+label = "fig:176"
+page_num = 19
+image_path = "images/image_p19_176.png"
+
+[[figures]]
+label = "fig:177"
+page_num = 19
+image_path = "images/image_p19_177.png"
+
+[[figures]]
+label = "fig:178"
+page_num = 19
+image_path = "images/image_p19_178.png"
+
+[[figures]]
+label = "fig:179"
+page_num = 19
+image_path = "images/image_p19_179.png"
+
+[[figures]]
+label = "fig:180"
+page_num = 19
+image_path = "images/image_p19_180.png"
+
+[[figures]]
+label = "fig:181"
+page_num = 19
+image_path = "images/image_p19_181.png"
+
+[[figures]]
+label = "fig:182"
+page_num = 20
+image_path = "images/image_p20_182.png"
+
+[[figures]]
+label = "fig:183"
+page_num = 20
+image_path = "images/image_p20_183.png"
+
+[[figures]]
+label = "fig:184"
+page_num = 20
+image_path = "images/image_p20_184.png"
+
+[[figures]]
+label = "fig:185"
+page_num = 20
+image_path = "images/image_p20_185.png"
+
+[[figures]]
+label = "fig:186"
+page_num = 20
+image_path = "images/image_p20_186.png"
+
+[[figures]]
+label = "fig:187"
+page_num = 20
+image_path = "images/image_p20_187.png"
+
+[[figures]]
+label = "fig:188"
+page_num = 21
+image_path = "images/image_p21_188.png"
+
+[[figures]]
+label = "fig:189"
+page_num = 21
+image_path = "images/image_p21_189.png"
+
+[[figures]]
+label = "fig:190"
+page_num = 21
+image_path = "images/image_p21_190.png"
+
+[[figures]]
+label = "fig:191"
+page_num = 21
+image_path = "images/image_p21_191.png"
+
+[[figures]]
+label = "fig:192"
+page_num = 21
+image_path = "images/image_p21_192.png"
+
+[[figures]]
+label = "fig:193"
+page_num = 21
+image_path = "images/image_p21_193.png"
+
+[[figures]]
+label = "fig:194"
+page_num = 21
+image_path = "images/image_p21_194.png"
+
+[[figures]]
+label = "fig:195"
+page_num = 21
+image_path = "images/image_p21_195.png"
+
+[[figures]]
+label = "fig:196"
+page_num = 21
+image_path = "images/image_p21_196.png"
+
+[[figures]]
+label = "fig:197"
+page_num = 21
+image_path = "images/image_p21_197.png"
+
+[[figures]]
+label = "fig:198"
+page_num = 21
+image_path = "images/image_p21_198.png"
+
+[[figures]]
+label = "fig:199"
+page_num = 21
+image_path = "images/image_p21_199.png"
+
+[[figures]]
+label = "fig:200"
+page_num = 21
+image_path = "images/image_p21_200.png"
+
+[[figures]]
+label = "fig:201"
+page_num = 21
+image_path = "images/image_p21_201.png"
+
+[[figures]]
+label = "fig:202"
+page_num = 22
+image_path = "images/image_p22_202.png"
+
+[[figures]]
+label = "fig:203"
+page_num = 22
+image_path = "images/image_p22_203.png"
+
+[[figures]]
+label = "fig:204"
+page_num = 22
+image_path = "images/image_p22_204.png"
+
+[[figures]]
+label = "fig:205"
+page_num = 22
+image_path = "images/image_p22_205.png"
+
+[[figures]]
+label = "fig:206"
+page_num = 22
+image_path = "images/image_p22_206.png"
+
+[[figures]]
+label = "fig:207"
+page_num = 22
+image_path = "images/image_p22_207.png"
+
+[[figures]]
+label = "fig:208"
+page_num = 22
+image_path = "images/image_p22_208.png"
+
+[[figures]]
+label = "fig:209"
+page_num = 22
+image_path = "images/image_p22_209.png"
+
+[[figures]]
+label = "fig:210"
+page_num = 22
+image_path = "images/image_p22_210.png"
+
+[[figures]]
+label = "fig:211"
+page_num = 22
+image_path = "images/image_p22_211.png"
+
+[[figures]]
+label = "fig:212"
+page_num = 22
+image_path = "images/image_p22_212.png"
+
+[[figures]]
+label = "fig:213"
+page_num = 22
+image_path = "images/image_p22_213.png"
+
+[[figures]]
+label = "fig:214"
+page_num = 22
+image_path = "images/image_p22_214.png"
+
+[[figures]]
+label = "fig:215"
+page_num = 23
+image_path = "images/image_p23_215.png"
+
+[[figures]]
+label = "fig:216"
+page_num = 23
+image_path = "images/image_p23_216.png"
+
+[[figures]]
+label = "fig:217"
+page_num = 23
+image_path = "images/image_p23_217.png"
+
+[[figures]]
+label = "fig:218"
+page_num = 23
+image_path = "images/image_p23_218.png"
+
+[[figures]]
+label = "fig:219"
+page_num = 23
+image_path = "images/image_p23_219.png"
+
+[[figures]]
+label = "fig:220"
+page_num = 23
+image_path = "images/image_p23_220.png"
+
+[[figures]]
+label = "fig:221"
+page_num = 23
+image_path = "images/image_p23_221.png"
+
+[[figures]]
+label = "fig:222"
+page_num = 23
+image_path = "images/image_p23_222.png"
+
+[[figures]]
+label = "fig:223"
+page_num = 23
+image_path = "images/image_p23_223.png"
+
+[[figures]]
+label = "fig:224"
+page_num = 23
+image_path = "images/image_p23_224.png"
+
+[[figures]]
+label = "fig:225"
+page_num = 23
+image_path = "images/image_p23_225.png"
+
+[[figures]]
+label = "fig:226"
+page_num = 23
+image_path = "images/image_p23_226.png"
+
+[[figures]]
+label = "fig:227"
+page_num = 24
+image_path = "images/image_p24_227.png"
+
+[[figures]]
+label = "fig:228"
+page_num = 24
+image_path = "images/image_p24_228.png"
+
+[[figures]]
+label = "fig:229"
+page_num = 24
+image_path = "images/image_p24_229.png"
+
+[[figures]]
+label = "fig:230"
+page_num = 24
+image_path = "images/image_p24_230.png"
+
+[[figures]]
+label = "fig:231"
+page_num = 24
+image_path = "images/image_p24_231.png"
+
+[[figures]]
+label = "fig:232"
+page_num = 24
+image_path = "images/image_p24_232.png"
+
+[[figures]]
+label = "fig:233"
+page_num = 27
+image_path = "images/image_p27_233.png"
+
+[[figures]]
+label = "fig:234"
+page_num = 27
+image_path = "images/image_p27_234.png"
+
+[[figures]]
+label = "fig:235"
+page_num = 27
+image_path = "images/image_p27_235.png"
+
+[[figures]]
+label = "fig:236"
+page_num = 27
+image_path = "images/image_p27_236.png"
+
+[[figures]]
+label = "fig:237"
+page_num = 27
+image_path = "images/image_p27_237.png"
+
+[[figures]]
+label = "fig:238"
+page_num = 27
+image_path = "images/image_p27_238.png"
+
+[[figures]]
+label = "fig:239"
+page_num = 28
+image_path = "images/image_p28_239.png"
+
+[[figures]]
+label = "fig:240"
+page_num = 28
+image_path = "images/image_p28_240.png"
+
+[[figures]]
+label = "fig:241"
+page_num = 28
+image_path = "images/image_p28_241.png"
+
+[[figures]]
+label = "fig:242"
+page_num = 28
+image_path = "images/image_p28_242.png"
+
+[[figures]]
+label = "fig:243"
+page_num = 28
+image_path = "images/image_p28_243.png"
+
+[[figures]]
+label = "fig:244"
+page_num = 29
+image_path = "images/image_p29_244.png"
+
+[[figures]]
+label = "fig:245"
+page_num = 29
+image_path = "images/image_p29_245.png"
+
+[[figures]]
+label = "fig:246"
+page_num = 29
+image_path = "images/image_p29_246.png"
+
+[[figures]]
+label = "fig:247"
+page_num = 29
+image_path = "images/image_p29_247.png"
+
+[[figures]]
+label = "fig:248"
+page_num = 29
+image_path = "images/image_p29_248.png"
+
+[[figures]]
+label = "fig:249"
+page_num = 30
+image_path = "images/image_p30_249.png"
+
+[[figures]]
+label = "fig:250"
+page_num = 30
+image_path = "images/image_p30_250.png"
+
+[[figures]]
+label = "fig:251"
+page_num = 30
+image_path = "images/image_p30_251.png"
+
+[[figures]]
+label = "fig:252"
+page_num = 30
+image_path = "images/image_p30_252.png"
+
+[[figures]]
+label = "fig:253"
+page_num = 30
+image_path = "images/image_p30_253.png"
+
+[[figures]]
+label = "fig:254"
+page_num = 31
+image_path = "images/image_p31_254.png"
+
+[[figures]]
+label = "fig:255"
+page_num = 31
+image_path = "images/image_p31_255.png"
+
+[[figures]]
+label = "fig:256"
+page_num = 31
+image_path = "images/image_p31_256.png"

@@ -1,0 +1,2532 @@
+equations = []
+tables = []
+full_text = """
+Effecting Semantic Network Bricolage via \r
+Infinite-Dimensional Zero-Divisor \r
+Ensembles\r
+Robert P. C. de Marrais \r
+Thothic Technology Partners\r
+P.O. Box 3083, Plymouth, MA 02361\r
+rdemarrais@alum.mit.edu\r
+Continuing arguments presented [1] or announced [2, 3] here, zero\u0002divisor (ZD) foundations for scale-free networks (evinced, in particular,\r
+in the “fractality” of the Internet) are decentralized. Spandrels, quartets\r
+of ZD-free or “hidden” box-kite-like structures (HBKs) in the 2N+1-\r
+ions, are “exploded” from (and uniquely linked to) each standard box\u0002kite in the 2N-ions, N ¥ 4. Any HBK houses, in a cowbird’s nest,\r
+exactly one copy of the (ZD-free) octonions, the recursive basis for all\r
+ZD ensembles. Each is a potential way-station for alien-ensemble\r
+infiltration in the large, or metaphor-like jumps, in the small. Cowbird\u0002ing models what evolutionary biologists [4], and structural mythologist\r
+Claude Lévi-Strauss before them [5], term bricolage: the opportunistic\r
+co-opting of objects designed for one purpose to serve others unrelated\r
+to it. Such arguments entail a switch of focus, from the octahedral box\u0002kite’s four triangular sails, to its trio of square catamarans and their\r
+box-kite-switching twist products. \r
+1. From Box-Kites to Brocades via Catamaran Twists\r
+This work had its beginnings in [6], where an abstract result of\r
+Guillermo Moreno [7] was employed to explicitly delineate the zero\u0002divisor (ZD) structure of the 16-dimensional (16D) sedenions. These\r
+hypercomplex numbers are reached via the Cayley|Dickson process\r
+(CDP), a dimension-doubling algorithm which begins with the linear\r
+real numbers, moves to the complex plane, generates the quaternions’\r
+noncommutative four-space, then the eight-dimensional (8D) non-asso\u0002ciative octonions: all so many way-stations en route to the\r
+“pathology” of ZDs, found in all 2N-ions, N ¥ 4. \r
+The key to the early results was found in simplifying CDP itself,\r
+reducing it to a set of two bit-twiddling rules, exploiting one conven\u0002tion. The quaternions’ imaginary units can be represented in two differ\u0002ent ways with the subscripts 1, 2, 3. (The way chosen depends upon\r
+which order of multiplying two of them yields a positively signed\r
+instance of the third.) The octonions’ seven imaginary units, though,\r
+can be indexed in 480 distinct ways, perhaps a dozen of which are in\r
+number in the billions. Yet only one scheme can work for all 2N-ions:\r
+first, index their units with the integers 1 through 2N - 1, with 0 denot\u0002ing the real unit; then, assume that the index of a unit produced by\r
+multiplying two others is the XOR of their indices. \r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+actual use among various specialists. The sedenions’ indexing schemes\r
+number in the billions. Yet only one scheme can work for all 2N-ions:\r
+first, index their units with the integers 1 through 2N - 1, with 0 denot\u0002ing the real unit; then, assume that the index of a unit produced by\r
+multiplying two others is the XOR of their indices.\r
+Note down only the indices, suppressing the writing of a lowercase\r
+i with a hard-to-read subscript, and list XOR sets in parenthesized trip\u0002lets, with the first two units ordered so that their product, in the third\r
+slot, has a positive sign. By such cyclical positive ordering (CPO), the\r
+two possible quaternion multiplication rules are written H1, 2, 3L and\r
+H1, 3, 2L, with the former taken here as the basis for all CDP recur\u0002sion. The 480 octonion rulesets collapse to one set of seven CPO trip\u0002lets, trips for short, corresponding precisely and only to the seven asso\u0002ciative triplets in this otherwise non-associative number space: \r
+H1, 2, 3L; H1, 4, 5L; H1, 7, 6L;\r
+H2, 4, 6L; H2, 5, 7L; H3, 4, 7L; H3, 6, 5L.\r
+All of these remain associative triplets in all higher 2N-ions, a fact we\r
+call Rule 0. Additionally, with the index-0 real unit appended to the\r
+set, each also provides a true copy of the quaternions. \r
+The next crucial step is to understand how and why some trips\r
+thus derived are not in counting order. Assume, as standard CDP\r
+does, that the 2N - 1 units of a given set of 2N-ions can be multiplied\r
+on the right by a new unit whose index exceeds all of theirs, called the\r
+generator G of the 2N+1-ions, to yield resultant units with new and\r
+higher indices, all with a positive sign. G is just the unique unit of\r
+index 2N, and for each unit with index L < G, the CPO trip can be\r
+written as HL, G, G + LL. (Note that the product’s index is identical to\r
+the XOR G  L, since G, by definition, can be represented by a bit to\r
+the left of any L’s bitstring expression.) This is Rule 1. It completely\r
+explains the indexing of the quaternions: if the usual imaginary unit\r
+has index 1, then G  2 and Rule 1 yields H1, 2, 3L. For the octonions,\r
+we inherit the quaternion’s singleton trip, and generate three more\r
+with Rule 1: H1, 4, 5L; H2, 4, 6L; H3, 4, 7L. But how do we get the three\r
+that remain? We get them by invoking Rule 2.\r
+The quaternions do not need Rule 2, so start an induction by assum\u0002ing that it works only on Rule 0 trips from prior CDP generations.\r
+For any such trip, hold one index fixed, then add G to each of the\r
+other two and switch their positions. Since the octonions have only\r
+one Rule 0 trip to manipulate, we get the three Rule 2 trips needed by\r
+this tactic: fixing 1, 2, and 3 in that order, we get H1, 3 + 4, 2 + 4L;\r
+H3 + 4, 2, 1 + 4L; H2 + 4, 1 + 4, 3L. Using cyclical rotation brings the\r
+smallest index to the left and yields the three extra trips: H1, 7, 6L;\r
+H2, 5, 7L; H3, 6, 5L. All applications of CDP to the standard real and\r
+imaginary units, for N as large as desired, are completely covered by\r
+these rules. Also, the total number of trips, which simple combinato\u0002rics tell us we can generate in a given set of 2N-ions, is just\r
+I2N - 1M I2N - 2M ë 3!~hence, 1 for the quaternions (where N  2); 7\r
+for the N  3 octonions; 35 for the sedenions where ZDs are first in\r
+evidence; and 155 for the 32-dimensional (32D) pathions, where the\r
+signature of scale-free behavior, as evidenced in the World Wide\r
+Web’s implicit “fractality” (Sir Tim Berners-Lee’s term for it [8]), is\r
+first revealed\r
+76 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+smallest index to the left and yields the three extra trips: H1, 7, 6L;\r
+H2, 5, 7L; H3, 6, 5L. All applications of CDP to the standard real and\r
+imaginary units, for N as large as desired, are completely covered by\r
+these rules. Also, the total number of trips, which simple combinato\u0002N\r
+I2N - 1M I2N - 2M ë 3!~hence, 1 for the quaternions (where N  2); 7\r
+for the N  3 octonions; 35 for the sedenions where ZDs are first in\r
+evidence; and 155 for the 32-dimensional (32D) pathions, where the\r
+signature of scale-free behavior, as evidenced in the World Wide\r
+Web’s implicit “fractality” (Sir Tim Berners-Lee’s term for it [8]), is\r
+first revealed.\r
+A fine point is that fractality has two related but distinct senses.\r
+The sense of ZD structures concerns the one-to-one mapping that can\r
+be made between points in a classic two-dimensional (2D) fractal and\r
+the empty cells in our emanation tables (ETs). As derived in [2] and\r
+illustrated in [9], ETs are spreadsheet-like multiplication tables of\r
+ZDs whose unfilled cells indicate row and column ZD entries that do\r
+not mutually zero-divide each other. The Web’s fractality, though, con\u0002cerns statistical distributions~of links, say, between web pages or rout\u0002ers~which have much higher densities at some nodes than others.\r
+The density distributions are far less Gaussian and normal than they\r
+tend toward being Mandelbrot-set self-similar. Our ET cell entries\r
+(pairs of which sharing symmetric row and column labels map\r
+directly to pairs of ZD-saturated diagonals, in some plane associated\r
+with some one of some box-kite’s six vertices) do not remain pure\r
+number theory entities. They become heuristically placed statistical\r
+markers when dynamic models of actual networks are simulated\r
+and/or searched by means of ZD ensembles. As constructing the meth\u0002odology for such model building is our ultimate aim (only partially\r
+realized in these pages), we feel justified in assuming the applicability\r
+of fractality, in both of its senses, to the agenda being sketched here.\r
+Further elaboration on this point must be deferred to future studies. \r
+Now, to understand what happens in 32D, we first explain the\r
+workings of ZDs in the sedenions. Moreno’s abstract treatment of\r
+their interrelationship was framed in the physicist’s favored language\r
+of semi-simple Lie groups: the largest exceptional group E8 has 240\r
+roots that form a loop (the non-associative equivalent of a group) iso\u0002morphic to the unit octonions. The automorphism group of E8, which\r
+is the smallest exceptional group G2, is homomorphic to the symme\u0002try patterns displayed by ZDs in the sedenions. And, since this same\r
+G2 is also the basis of the derivation algebra that recursively creates\r
+(via CDP) the 2N+1-ions from the 2N-ions, for all N > 4, he would\r
+argue this same homomorphism obtains for all such N. But homo- (as\r
+opposed to iso-) morphism is a rather imprecise tool for obtaining any\u0002thing like concrete results. The approach taken in [6] is to use mini\u0002mal assumptions and bit-twiddling rules. \r
+Since i\r
+n ≠ 0 for any imaginary unit i of any index, raised to any\r
+finite power n, the simplest ZD must entail the sum or difference of a\r
+pair of imaginaries, and zero will only result from the product of at\r
+least two such pairings. Rather simple by-hand calculations quickly\r
+showed that one such unit must have index L < G, and its partner\r
+have index U > G, not the XOR of L with G. This meant that any octo\u0002six suitable sedenions with index greater than eight, making for 42\r
+planes or assessors whose diagonal line-pairs contain only (and all\r
+the) ZDs. But these 84 lines do not all mutually zero-divide with each\r
+other; those that do have their behavior summarized in seven geometri\u0002\r
+Effecting Semantic Network Bricolage 77\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+finite power n, the simplest ZD must entail the sum or difference of a\r
+pair of imaginaries, and zero will only result from the product of at\r
+least two such pairings. Rather simple by-hand calculations quickly\r
+showed that one such unit must have index L < G, and its partner\r
+nion (of seven choices) could be picked and matched with any of the\r
+six suitable sedenions with index greater than eight, making for 42\r
+planes or assessors whose diagonal line-pairs contain only (and all\r
+the) ZDs. But these 84 lines do not all mutually zero-divide with each\r
+other; those that do have their behavior summarized in seven geometri\u0002cally identical diagrams, the octahedral wireframe figures called box\u0002kites. Their manner of assembly was determined by three simple pro\u0002duction rules. \r
+Label the three vertices of some triangle among the octahedral\r
+grid’s eight with the letters A, B, C, and those of the opposite face F,\r
+E, D, so that these are at opposite ends of lines through the center S~\r
+AF, BE, CD~which we call struts. Assume each vertex represents a\r
+plane whose two units are indicated by the same letter, in uppercase\r
+or lowercase, depending on whether the index is greater or less than\r
+G - U and L indices respectively. Call S, the seventh octonion index\r
+not found on a vertex, the strut constant, and use it to distinguish the\r
+seven box-kites, each of which contains but six of the 42 sedenion\r
+assessors. For any chosen S, there will be three pairs of octonions form\u0002ing trips with it, and the indices forming such pairs are placed on\r
+strut-opposite vertices (i.e., at ends of the same strut, not an edge). Nei\u0002ther diagonal at one end of a strut will mutually zero-divide with\r
+either at the other: some k ÿ HA ± aL will not yield zero when multiplied\r
+by any q ÿ HF ± fL, k and q arbitrary real scalars. But either diagonal, at\r
+any assessor, produces zero when multiplied by exactly one of the\r
+assessor diagonals at the other end of a shared edge. Half the edges\r
+have “@+D” edge-currents (the diagonals slope the same way, as with\r
+HA + aL ÿ HD + dL  HA - aL ÿ HD - dL  0), while the other six have edges\r
+marked “@-D” (e.g., HA + aL ÿ HB - bL  HA - aL ÿ HB + bL  0). With\r
+these conventions, we can assert the production rules. \r
+First, if diagonals at A and B mutually zero-divide, each also does\r
+so with a diagonal of C (oppositely signed copies of whose unit pair\u0002ings embody the zero produced when A and B diagonal unit-pairings\r
+are multiplied): A and B emanate C, from whence the ETs we will see\r
+presently (where A and B display as row and column labels, designat\u0002ing a spreadsheet cell with content C). Corollarily, their L-indices\r
+Ha, b, cL form a trip only if their assessors’ diagonals each mutually\r
+zero-divide one of those at each of the other two. A sail is such a triad\r
+of assessors, representable by a triangle on the box-kite. As shown in\r
+[1], there is exactly one sail per box-kite with all three edges marked\r
+“@-D”: the zigzag, so called because its six-cycle of zero-divisions, deter\u0002mined by tracing its edges twice, shows an alternation of / and \\ slop\u0002ings among the diagonals sequentially engaged in product forming. By\r
+convention, its assessors are A, B, and C, with Ha, b, cL in CPO order,\r
+rotated to make a the smallest integer. \r
+Third, any assessor belongs to two sails, implying four in all, touch\u0002ing only at vertices, like same-color checkerboard squares. The pair of\r
+imaginary units forming any assessor always split so that one has\r
+index greater than G (the U-unit, U for upper). An assessor’s L-unit\r
+is written with the same letter as the assessor proper, but in lowercase\r
+italics, while the U-unit is written in uppercase italics: the pair of\r
+units designated “assessor A” is thus equivalent to Ha, AL. The L\u0002units of each sail form associative triplets, hence L-trips. The trefoil L\u0002\r
+78 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Third, any assessor belongs to two sails, implying four in all, touch\u0002ing only at vertices, like same-color checkerboard squares. The pair of\r
+ that one has\r
+index less than the generator G (the L-unit, L for lower), and one has\r
+index greater than G (the U-unit, U for upper). An assessor’s L-unit\r
+is written with the same letter as the assessor proper, but in lowercase\r
+italics, while the U-unit is written in uppercase italics: the pair of\r
+units designated “assessor A” is thus equivalent to Ha, AL. The L\u0002units of each sail form associative triplets, hence L-trips. The trefoil L\u0002trips are Ha, d, eL; Hd, b, fL; He, f, cL~with leftmost terms not necessar\u0002ily the smallest in their trios, and each derived from the zigzag L-trip\r
+(Z-trip) by flipping L-indices along two struts with a Rule 2 position\u0002swap, holding a, b, c each fixed in turn. (We will also have occasion\r
+to speak of U-trips: for any sail, any of its L-units forms an associa\u0002tive triplet with the other two U-units, making for three such U-trips\r
+for each L-trip.) The remaining four triangles are vents, with the face\r
+opposite the zigzag, DEF, understood as meant when written with a\r
+capital “V”. The alternation of sails (made of colored paper, maybe)\r
+with empty spaces where the wind blows, and the kite-like structural\r
+stability implied by the three ZD-free, orthogonal struts (made of\r
+wooden or plastic doweling, perhaps) motivates the conceit of calling\r
+these “box-kites” in the first place. As vent and zigzag use up all six\r
+negative edge-currents, the edge-currents joining trefoil-based asses\u0002sors D, E, F to the zigzag’s A, B, C are positive. \r
+Previous work focused on sails, whose algebraic closure and capac\u0002ity for recursive construction for growing N, make them exceedingly\r
+rich sources of structural information. But the second production rule\r
+is where our interest will focus here: L- (or U-) indices can be\r
+swapped (with a sign flip) between assessors sharing an edge, yielding\r
+assessor pairs in other box-kites with different S. Hence, since\r
+HA + aL ÿ HB - bL  0, then so will HA + bL ÿ HB + aL~with caveats for\r
+N > 4 if the box-kite is Type II, which we will soon get to. Opposite\r
+edges of the same square (one of three mutually orthogonal ones)\r
+twist to the same box-kite and have the same edge-sign. Quandrangu\u0002lar catamarans, like triangular sails, have a richness all their own (Fig\u0002ure 1). \r
+In the sedenions, all box-kites are Type I: for any zigzag assessor Z\r
+and its vent strut-opposite V, Hz, S, vL and HZ, S, VL are CPO. (For\r
+Type II, two of the strut’s trips have reversed orientations.) For all\r
+Type I of any N, all three catamarans share an invariant feature: the\r
+orientation of L-trip products along each edge is counterclockwise\r
+along three successive sides, with the fourth (with negative edge-sign)\r
+showing a clockwise reversal.\r
+Catamarans orthogonal to struts AF, BE, CD have reversed edges\r
+DE, FD, EF, respectively. Rotate their frames to put the reversed edge\r
+on top, and shade or color such edges to specify their catamaran.\r
+Then draw two more catamaran boxes, to the right and just below\r
+this. The top and bottom edges on the right display L- and U-index\r
+twists from the starting box respectively; the left and right edges\r
+below show L and U twists from their vertical counterparts above. Fig\u0002ure 2 is an instance of such a Royal Hunt Diagram, after the fifth mov\u0002ing-line text of I Ching Hexagram 8, Holding Together: “In the hunt,\r
+the king uses beaters on three sides only and foregoes game that runs\r
+off the front.” \r
+Effecting Semantic Network Bricolage 79\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+on top, and shade or color such edges to specify their catamaran.\r
+Then draw two more catamaran boxes, to the right and just below\r
+this. The top and bottom edges on the right display L- and U-index\r
+twists from the starting box respectively; the left and right edges\r
+below show L and U twists from their vertical counterparts above. Fig\u0002ure 2 is an instance of such a Royal Hunt Diagram, after the fifth mov\u0002ing-line text of I Ching Hexagram 8, Holding Together: “In the hunt,\r
+the king uses beaters on three sides only and foregoes game that runs\r
+off the front.” \r
+Figure 1. Parallel edges of catamarans (one perpendicular to each strut in an\r
+octahedral box-kite) twist into assessor pairs with oppositely signed edge\u0002currents, in a box-kite with different strut constant: BC and DE, both in sails\r
+completed by A, have twist products with S = f; for DB and CE, completed\r
+by F, twistings have S = a. The fifth and sixth (necessarily strut-opposite)\r
+assessors in each are found by twisting HA, aL and IF, fM with HX, SL~assumed\r
+at the center, where struts intersect~double-covering mast and keel\r
+respectively.\r
+Beyond the sedenions, twists no longer always take ZD edges to\r
+ZD edges. Type I always twist to Type I; but Type II, first found in\r
+the pathions, either twist to other Type II, or to box-kite-like struc\u0002tures none of whose edges act as ZD pathways. \r
+Per the Roundabout Theorem of [2], box-kites are “all or nothing”\r
+structures: all edges support ZD-currents, or none do. These latter hid\u0002den box-kites (HBKs, or “residents of Hoboken”) were the sources of\r
+the off-diagonal empty cells in the 2N-1 - 2 cells-per-edge square ETs\r
+for fixed-S 2N-ions, studied in [2, 3], and presented as color-coded\r
+spreadsheet displays in our NKS 2006 Powerpoint slide show [9].\r
+These showed what [2] and [3] proved: that, as N grew indefinitely\r
+large for fixed S, such tables’ empty space approached a fractal limit. \r
+80 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Figure 2. Royal Hunt Diagram. The three catamaran Ss form an associative\r
+triple: the bottom-left box, twisted a second time along its other set of\r
+parallels, yields the same resultant as the second twist of the top-right. (The\r
+two bottom boxes differ only by a 90° rotation.) Twists involving HBKs and\r
+Type II box-kites also show a double twist of another kind: the proper tracing\r
+order along the perimeter of the box twisted to will be reversed along one of\r
+the edges being twisted.\r
+For N  4, each of the seven ETs is a 6 µ 6 table, one label per\r
+each possible L-index excluding S; for N  5, S takes all integer val\u0002ues less than G  16, with edge-length in each ET being 14 (the num\u0002ber of indices less than G, with S excluded). Consider N  4, and\r
+ignore the 2 µ 6 cells along long diagonals: these are tautologically\r
+empty, since ZDs in the same assessor do not mutually zero-divide,\r
+nor do those of assessors which are strut-opposites. Twenty-four\r
+filled cells remain: two for each edge, hence one for each distinct ZD\u0002pairing defined on it. This shows the ET is fundamentally a multiplica\u0002tion table, with only L-indices indicated on the row and column head\u0002ers, in nested-parentheses order (i.e., the leftmost assessor label A is\r
+strut-opposite to the rightmost label F, then B to E, and so on by mir\u0002ror symmetry). This is because U-indices are forced, hence can be\r
+ignored, for given S and N. \r
+For any assessor HM, mL and its strut opposite IMopp, moppM, it is\r
+easy to see that m  HG + SL  G + mopp  M. Twist products along\r
+an edge are hence linked with a box-kite whose S is the L-index of the\r
+assessor, which is the strut opposite of the third assessor in the given\r
+edge’s sail. Both HA + bL and HB + aL then have S  d, since A and B\r
+are in a sail with C, whose strut-opposite is D. And by the third pro\u0002duction rule, we know the edge opposite that joining A and B also\r
+has its sail completed by C: that is, the square formed by HA, B, E, FL\r
+and orthogonal to the strut HC, DL will have four of the six assessors\r
+defining the box-kite with S  d residing along one set of parallel\r
+sides, while four of the six defining the S  c box-kite will reside\r
+along the other parallels in the same square. (Corollary: for any box\u0002kite\r
+each L-index is also the S of another box-kite reached by twist\u0002\r
+Effecting Semantic Network Bricolage 81\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+an edge are hence linked with a box-kite whose S is the L-index of the\r
+assessor, which is the strut opposite of the third assessor in the given\r
+edge’s sail. Both HA + bL and HB + aL then have S  d, since A and B\r
+are in a sail with C, whose strut-opposite is D. And by the third pro\u0002has its sail completed by C: that is, the square formed by HA, B, E, FL\r
+and orthogonal to the strut HC, DL will have four of the six assessors\r
+defining the box-kite with S  d residing along one set of parallel\r
+sides, while four of the six defining the S  c box-kite will reside\r
+along the other parallels in the same square. (Corollary: for any box\u0002kite, each L-index is also the S of another box-kite reached by twist\u0002ing.) \r
+With three such catamarans per box-kite, each with edges whose\r
+sails are completed by assessors of a different strut, all seven sedenion\r
+box-kites can be seen as collected on the frame of just one. The miss\u0002ing pairs of assessors are derived by twisting the HS, G + SL ª HS, XL\r
+pair, imagined in the center, with each of the legitimate assessors, yield\u0002ing assessor-pairs defined along each catamaran’s mast and keel (strut\u0002halves (a, A) to (S, X), then (S, X) to (f, F), in that order, in Figure 1.)\r
+Such a 7-in-1 representation is called a brocade. \r
+In Table 1, the singleton sedenion brocade shows all possible L\u0002indices as column heads, U-indices as row labels, and a long diagonal\r
+of empty cells signifying the (S, X) non-assessor pairs. Each cell gives\r
+S and the vertex letter for all 42 assessors specified by U- and L-indi\u0002ces. The zigzag for S  1, say, is H3, 10L; H6, 15L; H5, 12L, with twists\r
+Hb, AL  H6, 10L and Ha, BL  H3, 15L yielding assessors E and C of the\r
+S  4 box-kite. For N > 4, seven pairs of row and column labels still\r
+fix one brocade, but indices will no longer be consecutive, and cellu\u0002lar information will need to indicate which of the numerous box-kites\r
+is being twisted to among those of all types with the same S, a num\u0002ber equal to the trip count in the 2N-2-ions given earlier. This surpris\u0002ing result was derived as a corollary of the Roundabout Theorem\r
+in [2]. \r
+Our prior work showed that an ET’s empty cells~emerging in any\r
+and all ETs for N > 4, and S > 8 and not a power of 2~mapped to\r
+pixels in a planar fractal. Here, catamaran twisting will let us see how\r
+these emptinesses have their own subtle structure, coming in quartets\r
+of two distinct classes, exactly akin to zigzags and trefoils among\r
+sails. Moreover, any box-kite is uniquely linked to four HBKs, with\r
+each such quartet or spandrel housing its own ZD-free copy of the\r
+octonions~hence the basis for the recursive CDP spawning of indepen\u0002dently generated 2N-ion index sets, or context-definition platforms\r
+(whose acronym’s meaning is, of course, itself context-dependent). \r
+82 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+1 2 3 4 5 6 7\r
+09 3 A 2 F 5 B 4 F 7 F 6 C\r
+10 3 F 1 A 6 B 7 C 4 E 5 F\r
+11 2 A 1 F 7 B 6 F 5 C 4 D\r
+12 5 E 6 E 7 E 1 C 2 C 3 C\r
+13 4 A 7 D 6 A 1 D 3 E 2 B\r
+14 7 A 4 B 5 D 2 D 3 B 1 E\r
+15 6 D 5 A 4 C 3 D 2 E 1 B\r
+Table 1. The sedenion brocade.\r
+2. Box-Kite Explosions in 32 Dimensions: Two Types, Triptych \r
+Triples, Four-Fold Spandrels\r
+Historically, a famous proof from the late 1890s by Adolf Hurwitz\r
+[10] dissuaded researchers from investigating any 2N-ions beyond the\r
+sedenions: once Hurwitz showed that they, and all higher hypercom\u0002plex numbers, unavoidably contained ZDs, the entire line of study\r
+was deemed pathological~hence, our calling those in 32D (the small\u0002est-N 2N-ions to not have a name) the pathions. But, as with their con\u0002temporary “monstrosities” of analysis, whose taming by Benoit Man\u0002delbrot led to fractals, the pathions in fact mark the beginning of a\r
+new agenda, at least as much as they signal the demise an older one.\r
+The work just prior to this paper shows that the connection to\r
+Mandelbrot’s discoveries is not just by analogy: as a side-effect of\r
+what we might think of as carry-bit overflow, ETs in high-N 2N-ions,\r
+beginning with the pathions, have surprising patterns of empty cells\r
+when S is not a power of 2, and its binary representation contains one\r
+or more bits to the left of the four-bit. \r
+In the pathions, there are 15 L-indices less than G, hence candidate\r
+S values, times seven (the octonion trip count) per ET, meaning 105\r
+box-kites. Seven are the equivalent of those found in the sedenions,\r
+but for the zero-padding of G (via left-shifting its singleton bit), and\r
+hence of X: all L-trips are identical, but U-indices at each assessor are\r
+augmented by the difference of the old and new G values, or eight.\r
+The seven box-kites for S  8 (the sedenions’ G) are Type I, but are\r
+special in other regards. First, the Z-trip of each is the same as one of\r
+the sedenions’; hence, these seven Rule 0 trips, once S is downshifted\r
+to its sedenion twin’s value, can map directly to one of the zero-pad\u0002ded box-kites. Similarly, each strut is a Rule 1 trip, serving as the\r
+Ha, d, eL L-trip of a pathion box-kite, with the same downshifted S. \r
+Finally, the three trefoil L-trips are just Rule 2 transforms of the Z\u0002trip (since this S  8 acts on it as a minimal G). Z-trips in their own\r
+right also produce box-kites with downshifted S values of the new\r
+Type II. We thus have at least 7 ÿ 3  21 of these in the pathions. In\r
+fact, we have only these 21, derived from trefoil L-trips of S  8 box\u0002kites; hence, the add-and-switch logic of Rule 2 should be central to\r
+their new typology. As is the case: exactly two of the three struts in a\r
+Type II have their orientations reversed, as mentioned previously.\r
+Each Z-trip index of a Type I gives its strut-opposite assessor’s L\u0002index when multiplied on the right by S\r
+but two of the three Type II\r
+Effecting Semantic Network Bricolage 83\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Finally, the three trefoil L-trips are just Rule 2 transforms of the Z\u0002trip (since this S  8 acts on it as a minimal G). Z-trips in their own\r
+right also produce box-kites with downshifted S values of the new\r
+Type II. We thus have at least 7 ÿ 3  21 of these in the pathions. In\r
+fact, we have only these 21, derived from trefoil L-trips of S  8 box\u0002kites; hence, the add-and-switch logic of Rule 2 should be central to\r
+their new typology. As is the case: exactly two of the three struts in a\r
+Type II have their orientations reversed, as mentioned previously.\r
+Each Z-trip index of a Type I gives its strut-opposite assessor’s L\u0002index when multiplied on the right by S, but two of the three Type II\r
+zigzag’s L-units form CPO struts when multiplied by S on the left.\r
+As shown in Figures 3 and 4, we can visualize all this by adapting\r
+the commonplace Fano plane rendering of our XOR-based octonion\r
+labeling scheme to different ends, a.k.a. the PSL(2,7) triangle (for\r
+“projective special linear group of seven lines in the plane”), which\r
+cross in seven places. This simplest nontrivial finite projective geome\u0002try has each line projectively equivalent to a circle, which, adapting\r
+standard convention, is how only the Rule 0 Z-trip is drawn. The\r
+three lines through the central node join angles to midpoints, making\r
+Rule 1 trips when the label in the center is a power of 2. The three\r
+sides then become the Rule 2 trips, in the manner just discussed: the\r
+center is the sedenion G, converted to a pathion S. \r
+HaL HbL\r
+Figure 3. (a) The seven-point, seven-line finite projective group, a.k.a the Fano\r
+plane, hosts the labels for octonion units, and shows their triplets’ orienta\u0002tions. (b) The same layout can be used to shorthand box-kite structures: the\r
+zigzag and trefoil L-trips sit at Ha, b, cL, and Ha, d, eL; Id, b, fM; Ie, f, cM. The\r
+strut constant S, meanwhile, sits in the middle.\r
+Figure 3(a) can be read as displaying the L-trips of the sedenion\r
+box-kite with S  4: one inflates the diagram by assuming the attach\u0002ing of U-indices, by the L  X rule, to get a full box-kite, each side\r
+now turned into a bona fide trefoil sail, and the Rule 0 L-trip con\u0002verted to a zigzag. Figure 3(b) abstracts this via assessor L-index lower\u0002case coding conventions. The approach just sketched works for short\u0002handing box-kite structures for any 2N-ions, N ¥ 4. \r
+Note the CPO flow along all lines: the triangle’s perimeter is natu\u0002rally traversed clockwise, as is the central Rule 0 circle, while strut\u0002flows move from midpoints, through S, to the angles. In Figures 4(a)\r
+for one of the seven S  8 box-kites; then, one of its Rule 2 sides is\r
+inflated on the right, to yield a pathion S  1 box-kite of Type II.\r
+Note its flow reversals along the Z-trip’s b- and c-based struts. \r
+84 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Note the CPO flow along all lines: the triangle’s perimeter is natu\u0002rally traversed clockwise, as is the central Rule 0 circle, while strut\u0002flows move from 4(a)\r
+and 4(b), the sedenion Z-trip for S  1 doubles as the pathion Z-trip\r
+for one of the seven S  8 box-kites; then, one of its Rule 2 sides is\r
+inflated on the right, to yield a pathion S  1 box-kite of Type II.\r
+Note its flow reversals along the Z-trip’s b- and c-based struts. \r
+HaL HbL\r
+Figure 4. Pathion box-kites. (a) A normal (Type I) with S  8, and Rule 0 Z\u0002trip H3, 6, 5L at Ha, b, cL, itself the Z-trip for the S  1 sedenion box-kite. (b)\r
+A Type II with S  1, with Z-trip the Rule 2 left side of the S  8 Type I.\r
+In Theorem 7 of [1], the parallel flows around the triangle’s perime\u0002ter and central circle provided the implicit basis for proving that the\r
+PSL(2,7) in question was a Type I box-kite. What we now call the sede\u0002nion brocade compactly expresses the fact that, provided the node-to\u0002node connections and flow patterns are not changed, any node can be\r
+moved into the center to act as the strut constant, with the only sub\u0002stantive side-effect being the broad-based swapping of U-indices associ\u0002ated with each node. \r
+Direct hand calculation makes it clear that Theorem 7 still holds\r
+for a Type II box-kite, as the flows remain parallel around the\r
+triangle’s perimeter and inscribed circle. A Type I twists to another\r
+Type I. A Type II, though, only twists to another Type II when the sin\u0002gle strut with proper orientation (all of whose L-indices, in the pathi\u0002ons, are octonions) has one of its nodes swapped into the center (or,\r
+equivalently, provides the strut for the catamaran being twisted). For\r
+all other twistings, S > 8, and we have HBKs, which is tantamount to\r
+saying (albeit not in an obvious way) that the perimeter and circular\r
+flows no longer stay parallel. \r
+In Theorem 15 of [3], we proved that two L- and U-unit pairings\r
+which mutually zero-divide (i.e., share an edge as assessors on a box\u0002kite) no longer do so once S is augmented by a new high-bit. This was\r
+the general case inspired by the empirical for-instances provided by\r
+the pathions’ ETs (for 8 < S < 16). Here, only three of the seven box\u0002kites for any such S prove to be Type I; the remaining four reside in\r
+Hoboken. \r
+Using the theorem just cited, each such S is just that of a sedenion\r
+box-kite with the minimal new high-bit appended to it. This makes\r
+strut-opposite L-indices, whose XOR is S, have their difference aug\u0002mented by eight, which means the larger ones are U-indices of the sede\u0002nion case. We can then take each assessor in a sedenion box-kite and\r
+treat it as a pathion pair of L-index strut-opposites, effectively explod\u0002ing one assessor into t\r
+o\r
+Effecting Semantic Network Bricolage 85\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Using the theorem just cited, each such S is just that of a sedenion\r
+box-kite with the minimal new high-bit appended to it. This makes\r
+strut-opposite L-indices, whose XOR is S, have their difference aug\u0002mented by eight, which means the larger ones are U-indices of the sede\u0002nion case. We can then take each assessor in a sedenion box-kite and\r
+treat it as a pathion pair of L-index strut-opposites, effectively explod\u0002ing one assessor into two. \r
+This implies each sail can be inflated into its own box-kite, sharing\r
+one strut with each box-kite built, by the same logic, from each other\r
+sedenion sail. And, as the theorem will apply similarly to each and\r
+every sedenion edge-current, and hence all four of the L-trips, we can\r
+say each of the sedenion L-trips does service as a Z-trip for an HBK.\r
+We call such quartets of Hoboken residents spandrels, after a term\r
+made famous by evolutionary theorists Steven J. Gould and Richard\r
+Lewontin [11]. \r
+The deep appropriateness of this term will become apparent in the\r
+final remarks of this paper, when we consider the epistemological\r
+issues it was coined to address. But a superficial aptness is easily\r
+grasped. Consider one of the secondary meanings of the term (which\r
+Gould and Lewontin did not have in mind): among philatelists, the\r
+four curved wedges between a perforated border and an inner oval\r
+containing, say, a president’s face, comprise a postage stamp’s\r
+“spandrel”. Pinch diagonally opposite corners of such a stamp\r
+together, so that two meet above, and two below, the center of the\r
+stamp proper. The spandrel’s wedges become sails in a box-kite (the\r
+kind of corner-to-corner mapping of flows on a plane, from which the\r
+projective plane derives). \r
+Each of the seven sedenion box-kites explodes into one pathion\r
+spandrel, making 28 HBKs in all. Simple arithmetic shows how this\r
+count dovetails with what was said earlier about Type II: one can\r
+only twist to two other Type IIs from a given one, their strut con\u0002stants forming an octonion trip that we are starting with. All four\r
+other twists take one to Hoboken, where each box-kite has one all\u0002octonion L-trip inherited from its sedenion box-kite of origin. Its own\r
+S being larger than the prior G, it can be twisted to three different\r
+Type IIs, hence three other HBKs. Ergo, there will be three Type IIs\r
+for every four HBKs, or 21 for the 28 HBKs in the pathions, as\r
+already calculated. \r
+But there will also be three Type Is, each of whose BE strut com\u0002prises the assessors whose L-indices are the former G and S of the sede\u0002nion box-kite they exploded from. Further, each former strut now has\r
+its vent and zigzag L- (and U-) indices appearing at a and d (and f\r
+and c), respectively (forming trefoil L-trips thereby with the old S and\r
+G at e and b), in one of the three new pathion box-kites. These trios\r
+are the “sand mandalas” first reported on (and graphically rendered)\r
+in [12], which we generalize to the general 2N-ion case by redubbing\r
+them the lowest-N examples of triptychs. \r
+In the general case, however, while three box-kites are exploded\r
+from each Type I we start with, they are not unique in derivation.\r
+Each corresponds to a 2N-ion strut that has been inflated into a 2N+1-\r
+ion box-kite. But the 2N+1-ions have 2N - 2 distinct assessors (hence,\r
+a strut count half that number) shared among all same-S box-kites\r
+(including Hoboken residents)Hencewe do indeed get three for\r
+86 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+In the general case, however, while three box-kites are exploded\r
+from each Type I we start with, they are not unique in derivation.\r
+Each corresponds to a 2N-ion strut that has been inflated into a 2N+1-\r
+ion box-kite. But the 2N+1-ions have 2N - 2 distinct assessors (hence,\r
+a strut count half that number) shared among all same-S box-kites\r
+(including Hoboken residents). Hence, we do indeed get three for\r
+each pathion ET with S > 8. But, for any zero-padded sedenion\r
+(hence, pathion) box-kite (i.e., G is left-shifted to be 16 instead of 8),\r
+although we might start with the S  1 case, it now houses seven dis\u0002tinct box-kites, not one, for all of which X is 17 instead of nine. The\r
+results of explosion thereby reside in the chingons, not pathions,\r
+where the ET for S  17 has 15 struts shared among seven distinct\r
+box-kites (one of which struts, with L-indices b  16 and e  1, is\r
+shared by all seven box-kites), not (as in the pathion case of the septet\r
+of “sand mandalas” with 8 < S < 16) seven struts shared among three\r
+box-kites (with, e.g., the BE strut b = 8 and e = 1 held in common\r
+when S = 9). As with the pathion S  9 case, though, these are the\r
+ETs only nonempty box-kites: the remaining 4 µ 7  28 are all con\u0002tained in pathion-generated spandrels. \r
+The Greek etymology of “triptych” indicates three (tri-) plates or\r
+panels (ptyche). The “tri” indicates the count of BE-sharing distinct\r
+box-kites in the pathion case only; more generally, the “panels” are\r
+box-kites associated with the (pre-explosion ETs) distinct strut triplets\r
+instead. The count of these “trips” in a triptych is typically much\r
+higher than three. In this sense, they are akin to what a Java program\u0002mer might call “static variables”: unlike the spandrel quartets, their\r
+generation is tied to the ET “class” of origin, rather than to a particu\u0002lar source box-kite. \r
+Described in this manner, triptychs may seem more concocted than\r
+natural. This is not so when viewed from a purely bit-twiddling van\u0002tage: when, as shown in Figure 5, their ETs are examined, the flip\u0002book sequence generated by integer increments of S between 8 and 16\r
+shows animation logic: four lines just off the picture frame, spanning\r
+the long diagonals’ empty corners, form the 12-cell-long sides of a\r
+square including the corners, hence taking up the maximum 14µ 14\r
+size that a pathion ET allows. (Similar descriptions are obtained for\r
+the 30µ 30-sized chingon flip-books for 16 < S § 24.) \r
+As S grows, these orthogonal pairs of parallels move one cell in\r
+from the perimeter with each increment, until, when S  15, they\r
+form two-ply crosshairs partitioning the ET into quarters. The remain\u0002ing 24 filled-in cells form six-cell-long diagonal spans, connecting the\r
+cross’s vertical and horizontal ends. \r
+This abstract cartoon or flip-book is drawn by a simple formula,\r
+the gist of Theorem 14 in [3], using the vertical pipe for logical OR,\r
+and shorthanding the G of the 2N-1-ions as g, \r
+R » C » P = g » S mod g.\r
+Effecting Semantic Network Bricolage 87\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Figure 5. Eight pathion ETs with ascending S values, from the maximally full\r
+S  8 to 15 on the second row’s far right. For all S > 8, the 24 cells filled with\r
+the sedenion G and S are painted darker than the 48 forming the parallels.\r
+Two shades of gray highlight the 4 µ 24 long- and off-diagonal unfilled cells\r
+of the spandrel’s HBKs.\r
+Only if row label R, column label C, or their XOR product P, equal\r
+g or s (the pre-explosion S), will the cell be filled (and assessors with\r
+L-indices R and C mutually zero-divide). Via the Recipe Theory [3],\r
+this formula can be generalized by a simple analysis of S’s bitstring.\r
+For any S > 8 not a power of 2, the ETs’ empty spaces for each succes\u0002sive N approach a fractal, overlaying each other’s values. Row and col\u0002umn labels of the 2N-1 ET become actual cell values of the 2N, with\r
+the same values filling in the label-lines’ empty parallels in reverse\r
+(strut-opposite) order, in a never-ending balloon ride sequence (see Fig\u0002ure 6) of nested skyboxes. \r
+Figure 6. ETs for S  15, N  5, 6, 7 (nested skyboxes bordered in darker\r
+shading) and fractal limit: the Cesàro double sweep [13, p. 65].\r
+In this sense, Recipe Theory is a pure Wolfram-style number the\u0002ory, focused on the binary representations of integers rather than\r
+their quantities, hence according special status to the placeholding\r
+power of singleton bits (G values)~as opposed to traditional number\r
+theory, which concerns itself, above all else, with size~and hence,\r
+with primes.\r
+88 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+In this sense, Recipe Theory is a pure Wolfram-style number the\u0002ory, focused on the binary representations of integers rather than\r
+their quantities, hence according special status to the placeholding\r
+ to traditional number\r
+theory, which concerns itself, above all else, with size~and hence,\r
+with primes.\r
+Complementary to Theorem 15 of [3], just cited, is Theorem 16\r
+which immediately follows: while a box-kite’s edges are turned off by\r
+augmenting its S with a new leftmost bit (and necessarily left-shifting\r
+its G-bit if this new S exceeds it), performing a second such augment\u0002ing results in a box-kite which is once again turned on. \r
+In addition to the Hs, gL modularity first seen in our sand mandala\r
+formula, we thus have a process of hide/fill involution: repeated, it pro\u0002duces spandrels from proper (Type I or Type II) box-kites; quartets of\r
+higher-N proper box-kites from each such HBK; quartets of higher-N\r
+spandrels from each of these; and so on, ad infinitum. This is a result\r
+sufficiently powerful as to call for a proof. \r
+For the HBK deriving from a Type I’s zigzag, the trips along all\r
+three struts are reversed: if Hz, S, vL is CPO, then Rule 2 says replacing\r
+S with X by exploding the Type I’s assessors will reverse orientations.\r
+Similarly, the flows along the edges will also reverse, since each edge’s\r
+two terminal nodes are reversed. So if an appropriate power of 2, g,\r
+be added to the central node, this same g must be added to the three\r
+nodes at the Fano plane’s angles as well, to keep all lines trips. Only\r
+one among the seven Fano lines will have no, instead of two, nodes\r
+with g appended to its indices: the Z-trip itself. Hence, if the Z-trip\r
+flows clockwise, perimeter tracings now run counterclockwise. \r
+Such a fourfold g insertion is equivalent to exploding a 2N-ion box\u0002kite’s zigzag, since g appended to the strut-opposite v of any Z-trip L\u0002index z yields its pre-explosion U-index partner: for arbitrary Type I\r
+zigzag assessor (z,Z), z ÿ S  v, but v ÿ HS + gL  v ÿ X  Z. The resulting\r
+Fano’s edge trips, in terms of pre-explosion indices, now read (B, a,\r
+C); (C, b, A); (A, c, B), all with orientations reversed. We now recall a\r
+crucial fact from earlier work, which we termed “trip-sync”: in the zig\u0002zag only, the four quaternion copies Ha, b, cL; Ha, B, CL; HA, b, CL;\r
+HA, B, cL~the L-trip and its three allied U-trips~all flow similarly, so\r
+that one can effectively allow “slippage” between high- and low\u0002index units at any of the zigzag’s assessors and not notice any differ\u0002ence. Repeating this process with fourfold insertion of G  2 ÿ g re\u0002reverses all six flipped lines, again leaves the Z-trip unchanged, again\r
+giving a Type I box-kite. \r
+For the three HBKs derived from making a Z-trip out of a Type I’s\r
+trefoil L-trip, the three trefoil-derived HBKs in any Type I box-kite’s\r
+spandrel will have just one strut-and-edge pairing reversed, and a dif\u0002ferent one in each case. This is the complement to the zigzag\r
+“slippage” effect: among the four quaternion copies associated, say,\r
+with Ha, d, eL, only Ha, D, EL will share its orientation. The other two\r
+U-trips, whose singleton L-index is not shared with the zigzag, have\r
+CPO forms HA, E, dL and HA, e, DL. Each of the trefoil HBKs, then,\r
+has flow structure like that of a Type I save for a “T”: the reversed\r
+strut flows from an angle to the midpoint of the likewise flow-flipped\r
+side-trip. Doing the fourfold g-appending to the nodes not included in\r
+the only reversed line (containing the only L-index from the pre\u0002exploded box-kite’s zigzag) will also result, as direct symbolic calcula\u0002tion shows, in a Type I box-kite. \r
+Effecting Semantic Network Bricolage 89\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+“slippage” effect: among the four quaternion copies associated, say,\r
+with Ha, d, eL, only Ha, D, EL will share its orientation. The other two\r
+U-trips, whose singleton L-index is not shared with the zigzag, have\r
+CPO forms HA, E, dL and HA, e, DL. Each of the trefoil HBKs, then,\r
+has flow structure like that of a for a “T”: the reversed\r
+strut flows from an angle to the midpoint of the likewise flow-flipped\r
+side-trip. Doing the fourfold g-appending to the nodes not included in\r
+the only reversed line (containing the only L-index from the pre\u0002exploded box-kite’s zigzag) will also result, as direct symbolic calcula\u0002tion shows, in a Type I box-kite. \r
+All told, then, if none or two of the struts are reversed, we have\r
+proper box-kites, of Types I and II respectively. If all or one of the\r
+struts are reversed, we have zigzag or trefoil HBKs in that order for\r
+Type I spandrels. Type II spandrels appear, at first, to have their own\r
+distinct Fano plane flow patterns. However, by swapping sides with\r
+zigzags, the HBK reversal patterns take on very different appear\u0002ances~and the full set of 16 sail-based presentations are the same in\r
+both spandrels, but in different orders. The display with central circle\r
+housing the default Ha, b, cL line, and that with Ha, d, eL, reverse places\r
+in Type I and Type II spandrels. This shuffling is crucial: because of\r
+it, both types will be found to facilitate “cowbirding”, a process of par\u0002amount interest. \r
+Successive explosions of the sedenions’ S  1 box-kite take us to\r
+the S  9 and S  25 ETs of the pathions and chingons, respectively.\r
+Such instantiating is readily generalized, since each spectral band of\r
+eight consecutive S values (powers of 2 excluded) obeys the same\r
+hide/fill logic: like the seven sand mandala ETs in the pathions, there\r
+is an animation-like impetus connecting each to each, all with the\r
+same counts of proper and hidden box-kites. For those who like to\r
+read the libretto at the opera, the graphics corresponding to the cases\r
+just mentioned, in the order just given, are on Slides 16, 25, and 48\r
+of [9]. \r
+Our sedenion starter kit has Z-trip H3, 6, 5L. For this and its L\u0002trips, we get the four HBKs, all with S  9, X  25, G  16, as\r
+shown in Table 2. (The original assessor L- and U-indices, all with\r
+S  1, X  9, G  8, are shown on the first and third lines; as\r
+pathion L-indices, their corresponding U-indices appear in the second\r
+and fourth.) \r
+Ha, b, cL Ha, d, eL Id, b, fM Ie, f, cM\r
+H03, 06, 05L\r
+H26, 31, 28L\r
+H03, 04, 07L\r
+H26, 29, 30L\r
+H04, 06, 02L\r
+H29, 31, 27L\r
+H07, 02, 05L\r
+H30, 27, 28L\r
+H10, 15, 12L\r
+H19, 22, 21L\r
+H10, 13, 14L\r
+H19, 20, 23L\r
+H13, 15, 11L\r
+H20, 22, 18L\r
+H14, 11, 12L\r
+H23, 18, 21L\r
+Table 2. Sedenion sails and their pathion explosions (S, X, G = 1, 9, 8) Ø\r
+HS, X, GL = 9, 15, 16L.\r
+The zigzags of the pathion HBKs share a special feature: when all\r
+six L- and U-indices are treated as a set, to which X and the real unit\r
+are appended, we find that not only are the HBKs edges bereft of ZD\r
+currents; this 8D ensemble shows no ZD currents anywhere within it,\r
+no matter how you twist it. No two pairings of one element each\r
+from Ha, b, cL and HA, B, C, XL will mutually zero-divide. We have,\r
+then, a pure octonion copy. \r
+90 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+The zigzags of the pathion HBKs share a special feature: when all\r
+six L- and U-indices are treated as a set, to which X and the real unit\r
+are of ZD\r
+currents; this 8D ensemble shows no ZD currents anywhere within it,\r
+no matter how you twist it. No two pairings of one element each\r
+from Ha, b, cL and HA, B, C, XL will mutually zero-divide. We have,\r
+then, a pure octonion copy. \r
+Clearly, the four Q-copies involving L- and U-units along the\r
+zigzag’s edges are ZD-free, as are the three trips involving the\r
+spandrel’s X with the U- and L-indices of each zigzag assessor in turn.\r
+Such an ensemble, whose indices can be relabeled to be identified\r
+with standard octonions, are called an egg; its habitat, a cowbird’s\r
+nest. Such nidi exist in all spandrels, one per each of the four HBK zig\u0002zags, in their zigzag (ADE) sails for Type I (Type II). Implied in this\r
+are three claims, comprising the…\r
+Cowbird Theorem. Each HBK in a spandrel contains a ZD-free octonion\r
+egg O, consisting of the reals, the L-indexed units of one of the source\r
+box-kite’s sails, their U-index partners in the HBK exploded from it,\r
+plus another imaginary indexed by the spandrel’s X. O-containment\r
+is universal among HBKs found in either Type I or Type II spandrels,\r
+and is also habitat-specific: for Type I, an O is always and only to be\r
+found in an HBK’s zigzag sail, whose L-index set is identically that of\r
+the source box-kite’s sail from which the HBK was exploded. Type II\r
+spandrels, meanwhile, harbor eggs in their HBK’s ADE sails, in pat\u0002terns that are flowmorphic~that is, have identically connected and ori\u0002ented lines in their Fano presentations~to the Type I eggs’ nests. \r
+We introduce and exemplify seven lemmas that pave the way to\r
+our proof. These highlight and customize familiar aspects of PSL(2,7),\r
+the 168-element simple group governing manipulation of the Fano\r
+diagram’s labeling. (This is not to be confused with the 480 distinct\r
+labeling schemes for octonions mentioned earlier: only a small subset\r
+of these entail the XOR relations defining triplets upon which our appa\u0002ratus depends.) We also want to indicate certain correspondences\r
+between the fourfold G loading~at the corners, and in the center~\r
+which effects the explosion process taking one from 2N to 2N+1 levels,\r
+and the same-level fourfold label-exchange process which underwrites\r
+the basic PSL(2,7) symmetries. \r
+Lemma 1. Explosion fixes one of the seven Fano plane lines (the zigzag\r
+circle, in our arguments’ context), with the other six having their\r
+orientations reversed: all six contain exactly two of the four high-bit\u0002augmented nodes, so Rule 2 applies to each. By Fano symmetry, the\r
+same holds true whatever four nodes are sites for G loading, provided\r
+no three reside in one line (occurring only if exactly one line has no\r
+nodes selected). \r
+Lemma 2. If the fixed line is one of the three sides, the G-loading nodes\r
+will form a kite containing S and the angle opposite the fixed side,\r
+and the two midpoint nodes joined to both. If a strut, G-loading sites\r
+are the node-pairs perpendicular to it, residing in midpoints and\r
+vertices. But all three cases are projectively equivalent, and any four\u0002node loading can be uniquely specified writing PLHm, n, pL, triplet\r
+Hm, n, pL the fixed line, each line choice uniquely corresponding to the\r
+explosion of one of the seven (possibly hidden) box-kites in a single\r
+brocade.\r
+Effecting Semantic Network Bricolage 91\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Lemma 2. If the fixed line is one of the three sides, the G-loading nodes\r
+will form a kite containing S and the angle opposite the fixed side,\r
+and the two midpoint nodes joined to both. If a strut, G-loading sites\r
+are the node-pairs perpendicular to it, residing in midpoints and\r
+vertices. But all three -\r
+node loading can be uniquely specified writing PLHm, n, pL, triplet\r
+Hm, n, pL the fixed line, each line choice uniquely corresponding to the\r
+explosion of one of the seven (possibly hidden) box-kites in a single\r
+brocade.\r
+Lemma 3. Consider two distinct lines l1 and l2 among a Fano\r
+presentation’s seven. If N HPL lines œ P, the set whose orientations are\r
+preserved (i.e., oriented identically to those placed in the same posi\u0002tions in a standard Type I box-kite, per Figure 3), and\r
+N HRL  H7 - N HPLL lines œ R, where orientations are reversed, per\u0002form PL(l1). For l1 only, orientation stays unchanged. If l1 œ P, then\r
+after the performance, N HRL  HN HPL - 1L; if œ R, then\r
+N HRL  HN HPL + 1L. If we start with standard presentations of either\r
+Type I (N HRL  0), Type II (N HRL  2), Type I’s explosion\r
+(N HRL  6), or Type II’s (N HRL  6 if the fixed line l1, which pro\u0002duced it begins in R, else N HRL  4), then any followup performance\r
+of PLHl2L will have N HRL an even number. \r
+Lemma 4. The four-point sites for G-loading are the necessary and\r
+sufficient bases for double exchange (DX) of labels, the minimal\r
+nontrivial label exchanges possible which preserve the mutual connec\u0002tions among the seven lines. For a fixed line Hm, n, pL, the expression\r
+DXHm, n, p; O pL, O p either H, V, D, or the identity operator I,\r
+defines a Klein group. Taking the fixed line to be the vertical strut\r
+(d, S, c) on the standard Type I layout for ease of visualizing, the\r
+horizontal DX operator H (instantiated here via a F b, e F f) pro\u0002duces a dihedral flip of the Fano triangle along Hd, S, cL. The vertical\r
+DX V (realized here as e F a, f F b) makes the trefoil He, c, fL and\r
+zigzag Ha, b, cL trade places while preserving their (and the vertical\r
+strut’s) orientations. The composite D = H ÿ V  V ÿ H is commuta\u0002tive, and exchanges diagonally opposite members of the four-point\r
+site. All three operators being involutions, their Klein group can be\r
+written by supplementing the D composition just given with the\r
+relations H2  V2  D2  I. (As 168  4 ÿ 7 ÿ 6, with seven lines of\r
+triplets each permutable in 3!  6 ways, the structure of the Fano\r
+plane’s group qua brocade presentation is hereby given.) \r
+Lemma 5. Define counts N HRL, N HPL of lines in sets R and P as in\r
+Lemma 3. Assume a given Fano presentation is derived from standard\r
+Type I or Type II presentations by PL operations, as in Lemma 4.\r
+Then N HRL is even. Consider the before and after counts for the\r
+dihedral flip along the vertical strut, DX(aSf; V). Orientations of all\r
+three struts are unaffected; hence, if their contribution to N HRL before\r
+DX is odd, it will be so after DX, and ditto for DX even. Orientations\r
+for all three sides plus the center, meanwhile, are all reversed: hence,\r
+if their contribution to N HRL before DX is k, it will be H4 - kL after\r
+DX, hence its odd or even status will remain unchanged. If we start,\r
+then, with Type I, Type II, or any HBK derived from either by multi\u0002ple applications of PL, N HRL will be even before DX, and remain so,\r
+since odd plus odd and even plus even are both even. As all DX\r
+operations, per Lemma 4, are equivalent in all senses relevant, all DX\r
+operations preserve evenness of the reversed-flow count. \r
+92 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+DX is odd, it will be so after DX, and ditto for DX even. Orientations\r
+for all three sides plus the center, meanwhile, are all reversed: hence,\r
+if their contribution to N HRL before DX is k, it will be H4 - kL after\r
+DX, hence its odd or even status will remain unchanged. If we start,\r
+-\r
+ple applications of PL, N HRL will be even before DX, and remain so,\r
+since odd plus odd and even plus even are both even. As all DX\r
+operations, per Lemma 4, are equivalent in all senses relevant, all DX\r
+operations preserve evenness of the reversed-flow count. \r
+Lemma 6. Any standard-form Type I can be converted into any of\r
+three different standard-form Type IIs by performing, in either order,\r
+a DX and a PL on a strut mSn. For the zigzag H3, 6, 5L of the S  1,\r
+N  4 (hence, Type I) box-kite, DX(aSf; VL and PL(aSfL, performed\r
+in either order, gives two easy ways to generate the Type II shown in\r
+Figure 4(b). \r
+Lemma 7. By Lemmas 3 and 5, any combination of PL and DX opera\u0002tions (mutually commuting where orientation-preservation is con\u0002cerned), will always reverse an even number of lines; further, the\r
+number of reversed lines with respect to the standard Type I presenta\u0002tion will likewise always be even after performing any number of such\r
+operations. Ergo, standard-presentation Type III and Type IV box\u0002kites (Type I with one or three struts reversed, respectively) can never\r
+be derived from Types I and II. But G-loading and catamaran twisting\r
+within a brocade are the bases for all possible creations of standard\r
+box-kites. Hence, Types III and IV are impossible. \r
+Now let us tackle the cowbirding theorem, give reasons for so nam\u0002ing it, then spell out our claims for its potential to underwrite models\r
+of semantic networks. \r
+Proof. We consider only Type I for most of our argument, then find a\r
+simple way to carry over everything shown therein to the Type II\r
+situation. Label a standard-form Type I box-kite in the 2N-ions in\r
+conformity with that shown in Figure 3(b): strut constant S appears in\r
+the center, the zigzag’s a, b, c are arrayed about it at 10, 2, and 6\r
+o’clock, respectively, with their strut-opposite nodes f, e, d appearing\r
+in the lower-right and lower-left corners and apex, in that order.\r
+Explode by G-loading the corners and center with g (the pre-explo\u0002sion G), synonymous with saying perform the operation PL(a, b, c).\r
+The result is the Ha, b, cL-based HBK, with the new S now equal to the\r
+pre-exploded X = s + g, and the new G  2 g  2N. To prevent\r
+ambiguity when pre- and post-explosion nodes are referenced, the\r
+subscript “H” designates nodes in the HBK, not the source box-kite. \r
+For arbitrary zigzag assessor HZ, zL and its strut-opposite vent asses\u0002sor HV, vL in the HBK, U-indices Z = G + v; but PL(a, b, c) having\r
+loaded each pre-exploded v with g, this means Hz, ZL  Hz, G + g + vL,\r
+and Hv, VL  Hv, G + g + zL. Our initial claim: in this HBK, the six zig\u0002zag units, X H  G + g + sL, and the real unit (index  0) are isomor\u0002phic to the standard octonions, hence ZD-free. Call this octet egg O\r
+in the Ha, b, cL cowbird’s nest, associated with Type I box-kite, having\r
+S  s and zigzag L-index set Ha, b, cL in the 2N-ions, shorthanded\r
+Ha, b, c; s; NL. \r
+The multiplication table of O is clearly isomorphic to that for the\r
+usual octonions: for each Hz, ZL choice, z ÿ X  Z, and HBK trips\r
+Ha, b, cL, Ha, BH, CHL, HAH, b, CHL, and HAH, BH, cL provide the remain\u0002ing four quaternion copies that complete the septet found in standard\r
+octonions. And, as this is an HBK, we already know that the products\r
+d bhHBK’idWk\r
+Effecting Semantic Network Bricolage 93\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+The multiplication table of O is clearly isomorphic to that for the\r
+usual octonions: for each Hz, ZL choice, z ÿ X  Z, and HBK trips\r
+Ha, b, cL, Ha, BH, CHL, HAH, b, CHL, and HAH, BH, cL provide the remain\u0002ing four quaternion copies that complete the septet found in standard\r
+octonions. And, as this is an HBK, we already know that the products\r
+represented by the HBK’s zigzag edges are not zero. We now take a\r
+“voyage by catamaran”, showing, by twist-product logic, how the\r
+other L- and U-index pairings contained in O also make no zeros. \r
+For each pairing among zigzag L-indices, the Fano triangle presenta\u0002tion makes it clear that the arrow sweeping out 120 ± between them\r
+forms an arc beneath the corner L-index which represents the strut\r
+constant of the box-kite the assessors containing said L-indices twist\r
+to. For an Ha, b, cL Type I HBK, all three exceed g, equalling Hg + dL,\r
+Hg + fL, and Hg + eL, for twists between HAH, BHL, HBH, CHL and\r
+HCH, AHL, respectively. For the first such twisting, switch the L-indi\u0002ces while retaining the U-indices, and consider the product of\r
+Hb, G + g + fL and Ha, G + g + eL. Write these index pairs in left-to\u0002right order, with the pair starting with a on the bottom, and further\r
+mark the right-hand term on the top with a “+” (since the unit with\r
+this index will have the opposite sign from that of the other zigzag’s\r
+corresponding term; hence, their twist product will have the same sign\r
+in the same location). Symbolic multiplication shows combining the\r
+four term-by-term products cannot sum to zero, as follows: \r
++HbL + HG + g + fL\r
++HaL + HG + g + eL\r
+-HG + g + sL + HcL\r
++HcL + HG + g + sL\r
+2 c : not zero.\r
+Since He, f, cL is CPO for the L-index trip along the bottom side of\r
+the triangle, and Ha, b, cL is likewise the Z-trip in CPO, the upper\u0002right and lower-left results are clearly same-signed copies of c. (Since\r
+the top-right product entails two Rule 2 eliminations, there is no result\u0002ing sign change affecting e f.) The other two results, meanwhile, both\r
+prepend HG + gL with no effect on sign; signs on s are opposite, how\u0002ever, because one results from multiplying terms in v ÿ z order, while\r
+the other multiplication has the form z ÿ v. \r
+By symmetry, parallel results (of 2 a and 2 b) are obtained for the\r
+twists of BH CH and CH AH respectively. As these exhaust the nontriv\u0002ial possibilities for products between L- and U-index pairings in O,\r
+our initial claim proves true. \r
+A similar symmetry argument lets us prove our case for all Type I\r
+trefoil HBKs by proving it for any one: recall that each of these differs\r
+from Type I by having reversed flows along the strut and side contain\u0002ing the single L-index shared with the zigzag in the pre-exploded box\u0002kite. It will suffice, then, to consider the case of the Ha, d, eL HBK\r
+derived from the same pre-explosion box-kite. Its zigzag assessors AH,\r
+BH, CH then read Ha, G + g + fL; Hd, G + g + cL; He, G + g + bL. Twists\r
+among these three all result in box-kites with strut constants exceed\u0002ing g, with similar effect. Since edge-signs are not all the same (two\r
+are positiveone negative)twistproduct signs will also lack unifor\r
+94 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+A similar symmetry argument lets us prove our case for all Type I\r
+trefoil HBKs by proving it for any one: recall that each of these differs\r
+from Type I by having reversed flows along the strut and side contain-\r
+ box\u0002kite. It will suffice, then, to consider the case of the Ha, d, eL HBK\r
+derived from the same pre-explosion box-kite. Its zigzag assessors AH,\r
+BH, CH then read Ha, G + g + fL; Hd, G + g + cL; He, G + g + bL. Twists\r
+among these three all result in box-kites with strut constants exceed\u0002ing g, with similar effect. Since edge-signs are not all the same (two\r
+are positive, one negative), twist-product signs will also lack unifor\u0002mity, so we append the binary variable s to the top-right term in the\r
+multiplication’s setup, and test that neither possible value for it can\r
+lead to a final summation of zero. \r
+Twisting AH and BH (with a Fano plane arrow curving between\r
+their L-indices in the zigzag’s circle and beneath dH  g + b) yields the\r
+following symbolic arithmetic: \r
++HdL + s ÿ HG + g + aL\r
++HaL + HG + g + cL\r
+-HG + g + sL + s ÿ e\r
+-HeL - s ÿ HG + g + sL\r
+2 e or 2 HG + g + sL : not zero.\r
+By symmetry once more, we assert a “not zero” result for a twist\u0002product ZD testing for BH CH and CH AH. This completes the proof\r
+of universality: all zigzags of all Type I HBKs have cowbird’s nests,\r
+and thereby can “hold eggs”. \r
+Only the zigzags, however, in such spandrels can do so. For while\r
+the strut constants of box-kites being twisted to all exceed g in the\r
+above treatments, the zigzag’s L-indices all are less than g, and two of\r
+these will be strut constants for box-kites being twisted to for the tre\u0002foil HBKs. When the source box-kite resides in the sedenions, this\r
+clearly means that these two S values are being twisted to designate\r
+ETs with no empty spaces save the long diagonals; hence, all products\r
+of ZDs within them that are not trivially excluded (self-products and\r
+strut constants) will be zero. But symbolic calculations like those just\r
+considered make it clear that this low-N situation generalizes com\u0002pletely. \r
+Consider, for instance, the Ha, b, cL HBK’s own Ha, d, eL sail,\r
+HaH, dH, eHL  a, g + d, g + e. By Rule 2, the last two terms must be\r
+placed in reverse order when their trip is written CPO, so we have\r
+Ha, g + e, g + dL  HaH, eH, dHL: the side and strut containing a are\r
+both reversed in this HBK. U-indices are HG + g + fL, HG + cL, and\r
+HG + bL. (Note the lack of a “g” term in both DH and EH.) The aH dH\r
+twist implies a box-kite with strut constant a < g, leading to this sym\u0002bolic arithmetic: \r
+Effecting Semantic Network Bricolage 95\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
++HaL + s ÿ HG + cL\r
++Hg + dL + HG + g + fL\r
++HG + g + sL + s ÿ Hg + eL\r
++Hg + eL + s ÿ HG + g + sL\r
+Hs  -1L ñ 0 \\ no egg.\r
+The obvious symmetry argument holds for the other two trefoils’\r
+twist products involving the assessor the reversed side shares with the\r
+zigzag. Our claim of “no egg” must hold, then, for all trefoil sails\r
+within the Ha, b, cL HDK. But as the trefoil-based HDKs also have\r
+(two of three) zigzag twist products in box-kites with strut constants\r
+less than g, mutually zero-dividing ZDs must be contained in these;\r
+hence, “no egg”. Hence, the Type I HBK eggs are all to be found nes\u0002tled in zigzag sails only, proving our claim of habitat locality. \r
+Finally, what of Type II box-kites, which (aside, of course, from\r
+HBKs) we know by Lemma 7 are the only other kind that exist?\r
+Recall from Lemma 6 how they derive from Type I: to test their\r
+HBK’s, we will need to consider three, not two, high-bit appendings,\r
+which we will label, by increasing size, g, G, and G. This makes the\r
+bookkeeping more convoluted, but the proofs are not more difficult\r
+in principle. This is where the notion of oriented lines in two different\r
+Fano presentations being “flowmorphic”, introduced toward the end\r
+of the Cowbird Theorem’s statement, must be made concrete. \r
+As Type I spandrels require only one explosion, symbolic expres\u0002sions describing oriented triplets of nodes within them entail only the\r
+use of g in addition to the standard seven letters. Type II spandrels,\r
+however, require two PL operations, the first to convert the Type I\r
+into a Type II. Hence, symbolic expressions within them entail G as\r
+well as g, and so will frequently require applying Rule 2 twice. This is\r
+best explained through examples. For Type I, we stick with our run\u0002ning for-instance, exemplified in Table 2: the explosion of the S  1\r
+sedenion box-kite with zigzag L-indices H3, 6, 5L. By XOR with S, we\r
+know that, for the latter source, the strut-opposite f, e, d L-indices\r
+are 2, 7, 4 in that order, with corresponding U-indices found by add\u0002ing G to the strut-opposites: hence, A  G + f  10, B  G + e  15,\r
+C  G + d  12, and so on. Now, explode the (A, B, C) sail into its\r
+own HBK by PL, and we get the leftmost “ABC” column entry in the\r
+top row: the old Ha, AL  H3, 10L is split into the new strut-opposite\r
+Ha, fL pairing, and their U-indices are now the new\r
+G + f  16 + 10  26, with the rest filled out as shown in the table.\r
+The next three columns do the same for the trefoil sails’ assessors as\r
+indicated. The row immediately below then spells out the contents of\r
+the F, E, D assessors associated with the A, B, C above. \r
+Now, let us first rewrite the HA, B, CL HBK with Ha, b, cL sail in the\r
+zigzag, both literally and symbolically. (Rewrite, since this is what is\r
+given by default upon completing the usual G-loading by corners-and\u0002center PL.) Then, use DX(a d e; DL~D, not H, since all three trefoil L\u0002index sets are reversed in this HBK~to swap zigzag and a-sharing tre\u0002foil while preserving both their orientations, so that we can compare\r
+these two different Fano presentations for this same HBK. \r
+96 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Now, let us first rewrite the HA, B, CL HBK with Ha, b, cL sail in the\r
+zigzag, both literally and symbolically. (Rewrite, since this is what is\r
+-and\u0002center PL.) Then, use DX(a d e; DL~D, not H, since all three trefoil L\u0002index sets are reversed in this HBK~to swap zigzag and a-sharing tre\u0002foil while preserving both their orientations, so that we can compare\r
+these two different Fano presentations for this same HBK. \r
+Next, do the same for the Type II built by G-loading (then swap\u0002ping, to retain original orientations) d and e, and b and c, per the\r
+move from the left to right diagrams in Figure 4. Use g in the sym\u0002bolic expressions of this first step, then explode into an HBK with\r
+2 g  G, eventually deriving associated U-indices via adding of\r
+4 g  2 G  G to L-index strut-opposites. Likewise, write the Type II\r
+HA, B, CL HBK in two different Fano presentations, with Ha, b, cL and\r
+Ha, d, eL in their respective zigzags. \r
+Shorthand the Ha, b, cL~then Hd, e, fL~as zigzag presentations of\r
+the Type I HA, B, CL HBK as I:ABC ↬ a b c and I:ABC ↬ d e f in that\r
+order, and write the analogous Type II’s identically, but with II preced\u0002ing the colon. If one converts all symbolic expressions at nodes into\r
+pure graphical elements (oriented arrows), two deep surprises are\r
+revealed: \r
+I:ABC ↬ a b c ^ II:ABC ↬ a d e\r
+I:ABC ↬ a d e ^ II:ABC ↬ a b c. \r
+Here, we use ^ to mean is flowmorphic to: their oriented Fano\r
+graphs, with nodes labeled only with the minimal symbolic elements\r
+of the set Ha, b, c, d, e, f, sL, are identical. \r
+Proceed in the same fashion, employing all four columns of literal\r
+indices in Table 2: taking care to match letters and positions (so that\r
+the b L-index of the third Hf, d, bL trefoil is written in the second posi\u0002tion of the zigzag, the c L-index of the fourth Hf, c, eL is put in the\r
+third zigzag slot, etc.), the flowmorphic correspondences continue, in\r
+the same exact manner. \r
+Consider the three T-bar graphs mentioned earlier, which present\r
+as successive rotations clockwise through 120 ±: two reversed lines,\r
+the T’s crossbar and stem, share the a node in I:ADE ↬ a b c, the b\r
+node in I:DBF ↬ a b c, and c in I:EFC ↬ a b c. These correspond to\r
+Type II’s analogous graphs in the Ha, d, eL presentations of the ADE,\r
+DBF, and EFC HBKs respectively (with the Ha, d, eL in the Type II\r
+ABC being flowmorphic to the Type I HBK’s all-lines-reversed-but\u0002the-zigzag explosion graph). \r
+Ditto, for the Ha, d, eL row of presentations in Type I’s HBKs and\r
+the Ha, b, cL row in Type II’s. For all, the zigzag circular line is always\r
+clockwise (guaranteed by judicious choice of H or D in the DX).\r
+Viewed left (the ABC HBK) to right (the EFC), we first encounter the\r
+pup-tent graph, so-called because it has all three sides reversed, and\r
+only the strut not reversed in the pathion Type II box-kite source\r
+being reversed here, suggesting the vertical zipper in a pup-tent’s trian\u0002gular entryway. Then comes the swallow’s tail, with all nonzigzag\r
+lines reversed, except the two sides with midpoints not a. Third is the\r
+two-tined shrimp fork, where the only reversals are the line pair point\u0002ing out and away from e and not including the third ray from e’s\r
+angle containing a. Finally, in the EFC HBK, the two reversals of the\r
+switchblade comprise the side on the right leading into, and the strut\r
+leading out fromthe node d at the top\r
+Effecting Semantic Network Bricolage 97\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Viewed left (the ABC HBK) to right (the EFC), we first encounter the\r
+pup-tent graph, so-called because it has all three sides reversed, and\r
+only the strut not reversed in the pathion Type II box-kite source\r
+being reversed here, suggesting the vertical zipper in a pup-tent’s trian\u0002lines reversed, except the two sides with midpoints not a. Third is the\r
+two-tined shrimp fork, where the only reversals are the line pair point\u0002ing out and away from e and not including the third ray from e’s\r
+angle containing a. Finally, in the EFC HBK, the two reversals of the\r
+switchblade comprise the side on the right leading into, and the strut\r
+leading out from, the node d at the top. \r
+For the third and fourth rows we can construct beneath these same\r
+column heads, DX’s bringing properly oriented Hd, b, fL and He, f, cL\r
+L-trips into the zigzag, display T-bar-style rotations of only these four\r
+graphs (pup-tents always and only in the ABC column, the others shuf\u0002fled around in the other columns). This exact correspondence\r
+between Type I and Type II HBK graphs makes it clear that Type II’s\r
+second row of graphs, and Type I’s first, comprise the complete set of\r
+cowbird’s nests, thereby completing our proof. ‡\r
+3. Cowbirding, Bricolage, and Future Directions\r
+Cowbirds famously lay their eggs in other birds’ nests. As a verb,\r
+“cowbirding” was how some object-oriented programmers at the old\r
+Lotus Development Corporation described stuffing methods or struc\u0002tures in abandoned object slots, when creating new ones was inconve\u0002nient or disallowed. Our cowbird’s nests permit infiltration from out\u0002side the current index-system context, directly from another such:\r
+indefinitely many octonion copies, one per spandrel hidden box-kite\r
+(HBK), mean innumerable sites from which to restart the Cayley|Dick\u0002son process (CDP). Map indices of units in a given nest\r
+H3, 6, 5, 26, 31, 28, plus X  25 and 0 for reals in our running exam\u0002ple) to the usual “starter kit” (of 0 through 7, with X mapping most\r
+readily to 4 in the center, per the L-index Fano of the sedenions’\r
+S  4 box-kite). Or map them to any other “kit” that seemed conve\u0002nient, then back again after “digressing”. Chomsky’s context-sensitive\r
+grammars (as opposed to the context-free typical of programming lan\u0002guages) are clearly implicated, suggesting algorithmic opportunities\r
+exceeding the built-in givens of our “new kind of number theory”. \r
+“Cowbirding” as described here is synonymous with a term made\r
+famous by Lévi-Strauss in The Savage Mind, then disseminated by his\r
+colleague François Jacob [15] among evolutionary biologists. Brico\u0002lage, per the anthropologist, is what a rural jack-of-all-trades or “Mr.\r
+Fixit” (translated as a “tinkerer” in Jacob’s piece) performs. Like “the\r
+significant images of myth”, \r
+the materials of the bricoleur are elements which can be defined\r
+by two criteria: they have had a use, as words in a piece of\r
+discourse which mythical thought “detaches” in the same way\r
+as a bricoleur, in the course of repairing them, detaches the\r
+cogwheels of an old alarm clock; and they can be used again\r
+either for the same purpose or for a different one if they are at\r
+all diverted from their previous function. [16, p. 35] \r
+98 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+the materials of the bricoleur are elements which can be defined\r
+by two criteria: they have had a use, as words in a piece of\r
+discourse which mythical thought “detaches” in the same way\r
+as a bricoleur, in the course of repairing them, detaches the\r
+either for the same purpose or for a different one if they are at\r
+all diverted from their previous function. [16, p. 35] \r
+Like MacGyver, the Swiss-army-knife and duct-tape-toting protago\u0002nist of the eponymous television series, the bricoleur, bereft of a spe\u0002cialized collection of high-tech tools, employs odds and ends that are\r
+found at hand, solving seemingly unrelated problems of the moment\r
+in unconventional ways. In the words of the authors of a highly influ\u0002ential tract on cognitive science, this is one among many ways of\r
+describing evolution as driven by suboptimal solution-finding, or\r
+“satisficing”, wherein selection \r
+operates as a broad survival filter that admits any structure that\r
+has sufficient integrity to persist. Given this point of view, the\r
+focus of analysis is no longer on traits but rather on organismic\r
+patterns via their life history. [This] is evolution as bricolage, the\r
+putting together of parts and items in complicated arrays, not\r
+because they fulfill some ideal design but simply because they\r
+are possible. Here the evolutionary problem is no longer how to\r
+force a precise trajectory by the requirements of optimal fitness;\r
+it is, rather, how to prune the multiplicity of viable trajectories\r
+that exist at any given point. [17, p. 196] \r
+What we need is a grasp of dynamic processes that drive or enable\r
+our flip-books, balloon rides, explosions, and so forth. Elsewhere (see\r
+pp. 139|140 of [1], and Sections 2 and 3 of [14]), we have deployed\r
+zero-divisor (ZD) tools to represent key objects of semiotics. For exam\u0002ple, we used the correspondence between the four-unit pattern of\r
+strut-opposite assessors and Jean Petitot’s four-control butterfly catas\u0002trophe rendering of Algirdas Greimas’ “semiotic square” [15]. But Peti\u0002tot also provides a more complex, double cusp catastrophe model of\r
+the primary tool used by Lévi-Strauss: the “canonical law of myths”\r
+[16]. As the third section of this monograph’s first draft sketches out\r
+at length [18], sequel studies [19] will deploy a sort of catastrophic rep\u0002resentation theory based on ZDs. Beginning with the correspondence\r
+between the “local” level of our strut-opposite quartets of assessor\r
+indices and the semiotic square, we proceed into more rarefied air,\r
+where explosion necessitates connecting with the “global” network\r
+trafficking the canonical law would regulate. (Leading question: Will\r
+the future architecture of the Web-replacing grid recapitulate that of\r
+Lévi-Strauss’s “web that knows no weaver” made of myths?) \r
+To briefly review our earlier work relating ZD patterns to\r
+Greimas’ square, place A and a, say, on a square’s top corners, and\r
+strut-opposite units F and f on the corners diagonally opposite. The\r
+two ends of each line are connected by XOR with X, the diagonals by\r
+G, and the verticals by S. Instantiations of this “atom of meaningful\u0002ness” abound in Greimas’ and Petitot’s works, but one telling exam\u0002ple implicitly demonstrates its difference from Boolean binary logic. \r
+Across the horizontals at the top and bottom of the box, write\r
+“True” and “False”; along left and right verticals, put “Secret” and\r
+“Lie”. Label the nodes at top-left and bottom-right “Being” and “Non\u0002being”, and refer to the diagonal as the schema for immanence; those\r
+at top and bottom of the other diagonal, regulating manifestation, are\r
+labeled “Seeming” and “Nonseeming”, respectively. (For a detailed dis\u0002\r
+iSi37 f [15]) Thiidfk f\r
+Effecting Semantic Network Bricolage 99\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Across the horizontals at the top and bottom of the box, write\r
+“True” and “False”; along left and right verticals, put “Secret” and\r
+“Lie”. Label the nodes at top-left and bottom-right “Being” and “Non\u0002being”, and refer to the diagonal as the schema for immanence; those\r
+at top and bottom of the other diagonal, regulating manifestation, are\r
+labeled “Seeming” and “Nonseeming”, respectively. (For a detailed dis\u0002cussion, see Section 3.7 of [15].) This provides a framework for con\u0002templating verediction, which plays a key role in the contractual com\u0002ponent of narratives. The exposure of the villain transforms “Lie”\r
+into “False” at the turning point in countless fairy tales, where the\r
+threat to the true order of things is finally rejected (typically, at the\r
+last possible moment). In stories like Cinderella, the narrative is pro\u0002pelled by the inevitability of transforming the “Secret” into the\r
+“True”: it is the possessor of the secret of the glass slipper, not one of\r
+her evil step-sisters, who rightly wins Prince Charming’s heart. \r
+The three kinds of lines relate to Roman Jakobson’s three kinds of\r
+“binary opposition” in his groundbreaking studies of phonemics, at\r
+the basis of all later structuralist set-ups, including that of Lévi\u0002Strauss. The diagonals indicate Jakobson’s “privation”: for example,\r
+the plosive “p” differs from “b” solely by its absence of voicing~and\r
+indicate, for us, where the singleton high-bit indicated by G is XOR’d\r
+with the index of a lowercase or uppercase letter, thereby connecting\r
+L- to U-units in strut-opposite assessors. The horizontals are sites of\r
+contrariety~a two-control competition between two warring parties\r
+in catastrophe terms (or a pair of “sememes” forced into relationship\r
+from the semiotician’s vantage). They generate the synchronous (/)\r
+and antisynchronous (\\) diagonals in the assessor planes in our model.\r
+Verticals are linked with implication. Per the previous paragraph’s\r
+examples, transforming competitive dynamics on horizontals, into\r
+orders of implication along verticals, opens the door to higher-order\r
+models: conversion of horizontals into verticals in this sense is exactly\r
+what our explosion process effects. \r
+Here we can underwrite the full workings of “spandrel thinking”,\r
+as Gould and Lewontin explain it. For spandrels exist not only on post\u0002age stamps, but in the quartet of curved triangles formed where dome\u0002supporting arches cross in front of cathedral naves. Spandrels became\r
+favorite sites for mosaic and painterly expression~so much so that\r
+one who was architecturally naïve might think archways’ intersection\r
+patterns were concocted to facilitate their production. But in fact,\r
+they are the happy side-effect of the architecture~the evolution of\r
+architectural design selected for crossed arches, not the spandrels that\r
+rode on their coattails. Gould and Lewontin’s point: many evolution\u0002ary arguments assume selection pressures are at work evolving span\u0002drel-like attributes~or, in Greimas’ argot, that presuppositions (the\r
+square’s verticals) must sometimes fight for survival (along horizon\u0002tals). \r
+Such cart-before-horse flip-flops are endemic in any explanatory\r
+enterprise. What we claim here is that our toolkit suffices to model\r
+cowbird logic, become sites for future adaptations (hence, selection\r
+pressures) in their own right [20]. \r
+100 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Such cart-before-horse flip-flops are endemic in any explanatory\r
+ What we claim here is that our toolkit suffices to model\r
+conundra of this sort and allow for contexts wherein spandrels, by\r
+cowbird logic, become sites for future adaptations (hence, selection\r
+pressures) in their own right [20]. \r
+References\r
+[1] R. P. C. de Marrais, “Placeholder Substructures I: The Road from NKS\r
+to Scale-Free Networks Is Paved with Zero-Divisors,” Complex Systems,\r
+17, 2007 pp. 125|142. (Nov 22, 2007) arXiv:math.RA/0703745v3\r
+[math.RA]. \r
+[2] R. P. C. de Marrais. “Placeholder Substructures II: Meta-Fractals, Made\r
+of Box-Kites, Fill Infinite-Dimensional Skies.” (Nov 22, 2007)\r
+arXiv:0704.0026v3 [math.RA]. \r
+[3] R. P. C. de Marrais. “Placeholder Substructures III: A Bit-String-Driven\r
+‘Recipe Theory’ for Infinite-Dimensional Zero-Divisor Spaces.” (Nov\r
+22, 2007) arXiv:0704.0112v3 [math.RA]. \r
+[4] F. Jacob, “Evolution and Tinkering,” Science, 196(4295), 1977\r
+pp. 1161|1166. \r
+[5] C. Lévi-Strauss, The Savage Mind (Nature of Human Society Series),\r
+Chicago: The University of Chicago Press, 1966; Le Pensée sauvage\r
+(French original), 1962. \r
+[6] R. P. C. de Marrais. “The 42 Assessors and the Box-Kites They Fly.”\r
+(Nov 30, 2000) arXiv:math.GM/0011260v1 [math.GM]. \r
+[7] R. G. Moreno, “The Zero Divisors of the Cayley|Dickson Algebras over\r
+the Real Numbers,” Boletín Sociedad Matemática Mexicana, 3(4, 1),\r
+1998 pp. 13|28. (Oct 8, 1997) arXiv:q-alg/9710013v1 [math.QA]. \r
+[8] Sir T. Berners-Lee, “The Two Magics of Web Science,” (keynote\r
+address, Sixteen International World Wide Web Conference\r
+(WWW2007), Banff, 2007); video available online at www.w3.org/2007/-\r
+Talks/0509-www-keynote-tbl. \r
+[9] R. P. C. de Marrais. “Placeholder Substructures: The Road from NKS to\r
+Small-World, Scale-Free Networks Is Paved with Zero-Divisors,” (2006).\r
+www.wolframscience.com/conference/2006/presentations/\r
+materials/demarrais.ppt. \r
+[10] I. L. Kantor, A. S. Solodovnikov, and A. Shenitzer, Hypercomplex\r
+Numbers: An Elementary Introduction to Algebras, New York: Springer\u0002Verlag, 1989. \r
+[11] S. J. Gould and R. C. Lewontin, “The Spandrels of San Marco and the\r
+Panglossian Paradigm: A Critique of the Adaptationist Programme,”\r
+Proceedings of the Royal Society of London, Series B, 205(1161), 1979\r
+pp. 581|598. \r
+[12] R. P. C. de Marrais. “Flying Higher than a Box-Kite: Kite-Chain\r
+Middens, Sand Mandala, and Zero-Divisor Patterns in the 2n-ions\r
+beyond the Sedenions.” (Dec 18, 2002) arxiv.org/abs/math/0207003v2\r
+[math.RA]. \r
+[13] B. B. Mandelbrot, The Fractal Geometry of Nature, San Francisco:\r
+W. H. Freeman and Company, 1983. \r
+Effecting Semantic Network Bricolage 101\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+[14] R. P. C. de Marrais. “Presto! Digitization: Part I: From NKS Number\r
+Theory to ‘XORbitant’ Semantics, by way of Cayley|Dickson Process\r
+and Zero-Divisor-Based ‘Representations’.” (Mar 13, 2006)\r
+arXiv:math.RA/0603281v1 [math.RA]. \r
+[15] J. Petitot, Morphogenesis of Meaning (European Semiotics Series), New\r
+York: Peter Lang Publishing, 2004; Morphogenèse du sens (French\r
+original), 1985. \r
+[16] J. Petitot, “A Morphodynamical Schematization of the Canonical\r
+Formula for Myths,” The Double Twist: From Ethnography to Morpho\u0002dynamics (P. Maranda, ed.), Toronto: University of Toronto Press, 2001\r
+pp. 267|311. \r
+[17] F. Varela, E. T. Thompson, and E. Rosch, The Embodied Mind:\r
+Cognitive Science and Human Experience, Cambridge, MA: The MIT\r
+Press, 1991. \r
+[18] R. P. C. de Marrais. “Voyage By Catamaran: Long-Distance Network\r
+Navigation, from Myth Logic to the Semantic Web, Can Be Effected by\r
+Infinite-Dimensional Zero-Divisor Ensembles.” (Apr 21, 2008)\r
+arXiv:math.GM/0804.3416v1 [math.GM]. \r
+[19] R. P. C. de Marrais, “Natural Numbers, Natural Language: Architecting\r
+the Semantic Web,” in Proceedings of the Fourth International Confer\u0002ence on Natural Computation (ICNC’08), Jilin, China (M. Guo,\r
+L. Zhao, and L. Wang, eds.), Los Alamitos, CA: IEEE Press, 2008. \r
+[20] A. S. Wilkins, “Colloquium Papers: Between ‘Design’ and ‘Bricolage’:\r
+Genetic Networks, Levels of Selection, and Adaptive Evolution,”\r
+Proceedings of the National Academy of Sciences (PNAS), 104(1), 2007\r
+pp. 8590|8596. www.pnas.org/content/104/suppl.1/8590.\r
+102 R. P. C. de Marrais\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75"""
+
+[metadata]
+title = "Pathions3"
+authors = ["Unknown"]
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Effecting Semantic Network Bricolage via \r
+Infinite-Dimensional Zero-Divisor \r
+Ensembles\r
+Robert P. C. de Marrais \r
+Thothic Technology Partners\r
+P.O. Box 3083, Plymouth, MA 02361\r
+rdemarrais@alum.mit.edu\r
+Continuing arguments presented [1] or announced [2, 3] here, zero\u0002divisor (ZD) foundations for scale-free networks (evinced, in particular,\r
+in the “fractality” of the Internet) are decentralized. Spandrels, quartets\r
+of ZD-free or “hidden” box-kite-like structures (HBKs) in the 2N+1-\r
+ions, are “exploded” from (and uniquely linked to) each standard box\u0002kite in the 2N-ions, N ¥ 4. Any HBK houses, in a cowbird’s nest,\r
+exactly one copy of the (ZD-free) octonions, the recursive basis for all\r
+ZD ensembles. Each is a potential way-station for alien-ensemble\r
+infiltration in the large, or metaphor-like jumps, in the small. Cowbird\u0002ing models what evolutionary biologists [4], and structural mythologist\r
+Claude Lévi-Strauss before them [5], term bricolage: the opportunistic\r
+co-opting of objects designed for one purpose to serve others unrelated\r
+to it. Such arguments entail a switch of focus, from the octahedral box\u0002kite’s four triangular sails, to its trio of square catamarans and their\r
+box-kite-switching twist products."""
+
+[[sections]]
+number = "1"
+title = "From Box-Kites to Brocades via Catamaran Twists"
+text = """
+This work had its beginnings in [6], where an abstract result of\r
+Guillermo Moreno [7] was employed to explicitly delineate the zero\u0002divisor (ZD) structure of the 16-dimensional (16D) sedenions. These\r
+hypercomplex numbers are reached via the Cayley|Dickson process\r
+(CDP), a dimension-doubling algorithm which begins with the linear\r
+real numbers, moves to the complex plane, generates the quaternions’\r
+noncommutative four-space, then the eight-dimensional (8D) non-asso\u0002ciative octonions: all so many way-stations en route to the\r
+“pathology” of ZDs, found in all 2N-ions, N ¥ 4. \r
+The key to the early results was found in simplifying CDP itself,\r
+reducing it to a set of two bit-twiddling rules, exploiting one conven\u0002tion. The quaternions’ imaginary units can be represented in two differ\u0002ent ways with the subscripts 1, 2, 3. (The way chosen depends upon\r
+which order of multiplying two of them yields a positively signed\r
+instance of the third.) The octonions’ seven imaginary units, though,\r
+can be indexed in 480 distinct ways, perhaps a dozen of which are in\r
+number in the billions. Yet only one scheme can work for all 2N-ions:\r
+first, index their units with the integers 1 through 2N - 1, with 0 denot\u0002ing the real unit; then, assume that the index of a unit produced by\r
+multiplying two others is the XOR of their indices. \r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+actual use among various specialists. The sedenions’ indexing schemes\r
+number in the billions. Yet only one scheme can work for all 2N-ions:\r
+first, index their units with the integers 1 through 2N - 1, with 0 denot\u0002ing the real unit; then, assume that the index of a unit produced by\r
+multiplying two others is the XOR of their indices.\r
+Note down only the indices, suppressing the writing of a lowercase\r
+i with a hard-to-read subscript, and list XOR sets in parenthesized trip\u0002lets, with the first two units ordered so that their product, in the third\r
+slot, has a positive sign. By such cyclical positive ordering (CPO), the\r
+two possible quaternion multiplication rules are written H1, 2, 3L and\r
+H1, 3, 2L, with the former taken here as the basis for all CDP recur\u0002sion. The 480 octonion rulesets collapse to one set of seven CPO trip\u0002lets, trips for short, corresponding precisely and only to the seven asso\u0002ciative triplets in this otherwise non-associative number space: \r
+H1, 2, 3L; H1, 4, 5L; H1, 7, 6L;\r
+H2, 4, 6L; H2, 5, 7L; H3, 4, 7L; H3, 6, 5L.\r
+All of these remain associative triplets in all higher 2N-ions, a fact we\r
+call Rule 0. Additionally, with the index-0 real unit appended to the\r
+set, each also provides a true copy of the quaternions. \r
+The next crucial step is to understand how and why some trips\r
+thus derived are not in counting order. Assume, as standard CDP\r
+does, that the 2N - 1 units of a given set of 2N-ions can be multiplied\r
+on the right by a new unit whose index exceeds all of theirs, called the\r
+generator G of the 2N+1-ions, to yield resultant units with new and\r
+higher indices, all with a positive sign. G is just the unique unit of\r
+index 2N, and for each unit with index L < G, the CPO trip can be\r
+written as HL, G, G + LL. (Note that the product’s index is identical to\r
+the XOR G  L, since G, by definition, can be represented by a bit to\r
+the left of any L’s bitstring expression.) This is Rule 1. It completely\r
+explains the indexing of the quaternions: if the usual imaginary unit\r
+has index 1, then G  2 and Rule 1 yields H1, 2, 3L. For the octonions,\r
+we inherit the quaternion’s singleton trip, and generate three more\r
+with Rule 1: H1, 4, 5L; H2, 4, 6L; H3, 4, 7L. But how do we get the three\r
+that remain? We get them by invoking Rule 2.\r
+The quaternions do not need Rule 2, so start an induction by assum\u0002ing that it works only on Rule 0 trips from prior CDP generations.\r
+For any such trip, hold one index fixed, then add G to each of the\r
+other two and switch their positions. Since the octonions have only\r
+one Rule 0 trip to manipulate, we get the three Rule 2 trips needed by\r
+this tactic: fixing 1, 2, and 3 in that order, we get H1, 3 + 4, 2 + 4L;\r
+H3 + 4, 2, 1 + 4L; H2 + 4, 1 + 4, 3L. Using cyclical rotation brings the\r
+smallest index to the left and yields the three extra trips: H1, 7, 6L;\r
+H2, 5, 7L; H3, 6, 5L. All applications of CDP to the standard real and\r
+imaginary units, for N as large as desired, are completely covered by\r
+these rules. Also, the total number of trips, which simple combinato\u0002rics tell us we can generate in a given set of 2N-ions, is just\r
+I2N - 1M I2N - 2M ë 3!~hence, 1 for the quaternions (where N  2); 7\r
+for the N  3 octonions; 35 for the sedenions where ZDs are first in\r
+evidence; and 155 for the 32-dimensional (32D) pathions, where the\r
+signature of scale-free behavior, as evidenced in the World Wide\r
+Web’s implicit “fractality” (Sir Tim Berners-Lee’s term for it [8]), is\r
+first revealed"""
+
+[[sections]]
+number = "76"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+smallest index to the left and yields the three extra trips: H1, 7, 6L;\r
+H2, 5, 7L; H3, 6, 5L. All applications of CDP to the standard real and\r
+imaginary units, for N as large as desired, are completely covered by\r
+these rules. Also, the total number of trips, which simple combinato\u0002N\r
+I2N - 1M I2N - 2M ë 3!~hence, 1 for the quaternions (where N  2); 7\r
+for the N  3 octonions; 35 for the sedenions where ZDs are first in\r
+evidence; and 155 for the 32-dimensional (32D) pathions, where the\r
+signature of scale-free behavior, as evidenced in the World Wide\r
+Web’s implicit “fractality” (Sir Tim Berners-Lee’s term for it [8]), is\r
+first revealed.\r
+A fine point is that fractality has two related but distinct senses.\r
+The sense of ZD structures concerns the one-to-one mapping that can\r
+be made between points in a classic two-dimensional (2D) fractal and\r
+the empty cells in our emanation tables (ETs). As derived in [2] and\r
+illustrated in [9], ETs are spreadsheet-like multiplication tables of\r
+ZDs whose unfilled cells indicate row and column ZD entries that do\r
+not mutually zero-divide each other. The Web’s fractality, though, con\u0002cerns statistical distributions~of links, say, between web pages or rout\u0002ers~which have much higher densities at some nodes than others.\r
+The density distributions are far less Gaussian and normal than they\r
+tend toward being Mandelbrot-set self-similar. Our ET cell entries\r
+(pairs of which sharing symmetric row and column labels map\r
+directly to pairs of ZD-saturated diagonals, in some plane associated\r
+with some one of some box-kite’s six vertices) do not remain pure\r
+number theory entities. They become heuristically placed statistical\r
+markers when dynamic models of actual networks are simulated\r
+and/or searched by means of ZD ensembles. As constructing the meth\u0002odology for such model building is our ultimate aim (only partially\r
+realized in these pages), we feel justified in assuming the applicability\r
+of fractality, in both of its senses, to the agenda being sketched here.\r
+Further elaboration on this point must be deferred to future studies. \r
+Now, to understand what happens in 32D, we first explain the\r
+workings of ZDs in the sedenions. Moreno’s abstract treatment of\r
+their interrelationship was framed in the physicist’s favored language\r
+of semi-simple Lie groups: the largest exceptional group E8 has 240\r
+roots that form a loop (the non-associative equivalent of a group) iso\u0002morphic to the unit octonions. The automorphism group of E8, which\r
+is the smallest exceptional group G2, is homomorphic to the symme\u0002try patterns displayed by ZDs in the sedenions. And, since this same\r
+G2 is also the basis of the derivation algebra that recursively creates\r
+(via CDP) the 2N+1-ions from the 2N-ions, for all N > 4, he would\r
+argue this same homomorphism obtains for all such N. But homo- (as\r
+opposed to iso-) morphism is a rather imprecise tool for obtaining any\u0002thing like concrete results. The approach taken in [6] is to use mini\u0002mal assumptions and bit-twiddling rules. \r
+Since i\r
+n ≠ 0 for any imaginary unit i of any index, raised to any\r
+finite power n, the simplest ZD must entail the sum or difference of a\r
+pair of imaginaries, and zero will only result from the product of at\r
+least two such pairings. Rather simple by-hand calculations quickly\r
+showed that one such unit must have index L < G, and its partner\r
+have index U > G, not the XOR of L with G. This meant that any octo\u0002six suitable sedenions with index greater than eight, making for 42\r
+planes or assessors whose diagonal line-pairs contain only (and all\r
+the) ZDs. But these 84 lines do not all mutually zero-divide with each\r
+other; those that do have their behavior summarized in seven geometri\u0002\r
+Effecting Semantic Network Bricolage 77\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+finite power n, the simplest ZD must entail the sum or difference of a\r
+pair of imaginaries, and zero will only result from the product of at\r
+least two such pairings. Rather simple by-hand calculations quickly\r
+showed that one such unit must have index L < G, and its partner\r
+nion (of seven choices) could be picked and matched with any of the\r
+six suitable sedenions with index greater than eight, making for 42\r
+planes or assessors whose diagonal line-pairs contain only (and all\r
+the) ZDs. But these 84 lines do not all mutually zero-divide with each\r
+other; those that do have their behavior summarized in seven geometri\u0002cally identical diagrams, the octahedral wireframe figures called box\u0002kites. Their manner of assembly was determined by three simple pro\u0002duction rules. \r
+Label the three vertices of some triangle among the octahedral\r
+grid’s eight with the letters A, B, C, and those of the opposite face F,\r
+E, D, so that these are at opposite ends of lines through the center S~\r
+AF, BE, CD~which we call struts. Assume each vertex represents a\r
+plane whose two units are indicated by the same letter, in uppercase\r
+or lowercase, depending on whether the index is greater or less than\r
+G - U and L indices respectively. Call S, the seventh octonion index\r
+not found on a vertex, the strut constant, and use it to distinguish the\r
+seven box-kites, each of which contains but six of the 42 sedenion\r
+assessors. For any chosen S, there will be three pairs of octonions form\u0002ing trips with it, and the indices forming such pairs are placed on\r
+strut-opposite vertices (i.e., at ends of the same strut, not an edge). Nei\u0002ther diagonal at one end of a strut will mutually zero-divide with\r
+either at the other: some k ÿ HA ± aL will not yield zero when multiplied\r
+by any q ÿ HF ± fL, k and q arbitrary real scalars. But either diagonal, at\r
+any assessor, produces zero when multiplied by exactly one of the\r
+assessor diagonals at the other end of a shared edge. Half the edges\r
+have “@+D” edge-currents (the diagonals slope the same way, as with\r
+HA + aL ÿ HD + dL  HA - aL ÿ HD - dL  0), while the other six have edges\r
+marked “@-D” (e.g., HA + aL ÿ HB - bL  HA - aL ÿ HB + bL  0). With\r
+these conventions, we can assert the production rules. \r
+First, if diagonals at A and B mutually zero-divide, each also does\r
+so with a diagonal of C (oppositely signed copies of whose unit pair\u0002ings embody the zero produced when A and B diagonal unit-pairings\r
+are multiplied): A and B emanate C, from whence the ETs we will see\r
+presently (where A and B display as row and column labels, designat\u0002ing a spreadsheet cell with content C). Corollarily, their L-indices\r
+Ha, b, cL form a trip only if their assessors’ diagonals each mutually\r
+zero-divide one of those at each of the other two. A sail is such a triad\r
+of assessors, representable by a triangle on the box-kite. As shown in\r
+[1], there is exactly one sail per box-kite with all three edges marked\r
+“@-D”: the zigzag, so called because its six-cycle of zero-divisions, deter\u0002mined by tracing its edges twice, shows an alternation of / and \\ slop\u0002ings among the diagonals sequentially engaged in product forming. By\r
+convention, its assessors are A, B, and C, with Ha, b, cL in CPO order,\r
+rotated to make a the smallest integer. \r
+Third, any assessor belongs to two sails, implying four in all, touch\u0002ing only at vertices, like same-color checkerboard squares. The pair of\r
+imaginary units forming any assessor always split so that one has\r
+index greater than G (the U-unit, U for upper). An assessor’s L-unit\r
+is written with the same letter as the assessor proper, but in lowercase\r
+italics, while the U-unit is written in uppercase italics: the pair of\r
+units designated “assessor A” is thus equivalent to Ha, AL. The L\u0002units of each sail form associative triplets, hence L-trips. The trefoil L\u0002"""
+
+[[sections]]
+number = "78"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Third, any assessor belongs to two sails, implying four in all, touch\u0002ing only at vertices, like same-color checkerboard squares. The pair of\r
+ that one has\r
+index less than the generator G (the L-unit, L for lower), and one has\r
+index greater than G (the U-unit, U for upper). An assessor’s L-unit\r
+is written with the same letter as the assessor proper, but in lowercase\r
+italics, while the U-unit is written in uppercase italics: the pair of\r
+units designated “assessor A” is thus equivalent to Ha, AL. The L\u0002units of each sail form associative triplets, hence L-trips. The trefoil L\u0002trips are Ha, d, eL; Hd, b, fL; He, f, cL~with leftmost terms not necessar\u0002ily the smallest in their trios, and each derived from the zigzag L-trip\r
+(Z-trip) by flipping L-indices along two struts with a Rule 2 position\u0002swap, holding a, b, c each fixed in turn. (We will also have occasion\r
+to speak of U-trips: for any sail, any of its L-units forms an associa\u0002tive triplet with the other two U-units, making for three such U-trips\r
+for each L-trip.) The remaining four triangles are vents, with the face\r
+opposite the zigzag, DEF, understood as meant when written with a\r
+capital “V”. The alternation of sails (made of colored paper, maybe)\r
+with empty spaces where the wind blows, and the kite-like structural\r
+stability implied by the three ZD-free, orthogonal struts (made of\r
+wooden or plastic doweling, perhaps) motivates the conceit of calling\r
+these “box-kites” in the first place. As vent and zigzag use up all six\r
+negative edge-currents, the edge-currents joining trefoil-based asses\u0002sors D, E, F to the zigzag’s A, B, C are positive. \r
+Previous work focused on sails, whose algebraic closure and capac\u0002ity for recursive construction for growing N, make them exceedingly\r
+rich sources of structural information. But the second production rule\r
+is where our interest will focus here: L- (or U-) indices can be\r
+swapped (with a sign flip) between assessors sharing an edge, yielding\r
+assessor pairs in other box-kites with different S. Hence, since\r
+HA + aL ÿ HB - bL  0, then so will HA + bL ÿ HB + aL~with caveats for\r
+N > 4 if the box-kite is Type II, which we will soon get to. Opposite\r
+edges of the same square (one of three mutually orthogonal ones)\r
+twist to the same box-kite and have the same edge-sign. Quandrangu\u0002lar catamarans, like triangular sails, have a richness all their own (Fig\u0002ure 1). \r
+In the sedenions, all box-kites are Type I: for any zigzag assessor Z\r
+and its vent strut-opposite V, Hz, S, vL and HZ, S, VL are CPO. (For\r
+Type II, two of the strut’s trips have reversed orientations.) For all\r
+Type I of any N, all three catamarans share an invariant feature: the\r
+orientation of L-trip products along each edge is counterclockwise\r
+along three successive sides, with the fourth (with negative edge-sign)\r
+showing a clockwise reversal.\r
+Catamarans orthogonal to struts AF, BE, CD have reversed edges\r
+DE, FD, EF, respectively. Rotate their frames to put the reversed edge\r
+on top, and shade or color such edges to specify their catamaran.\r
+Then draw two more catamaran boxes, to the right and just below\r
+this. The top and bottom edges on the right display L- and U-index\r
+twists from the starting box respectively; the left and right edges\r
+below show L and U twists from their vertical counterparts above. Fig\u0002ure 2 is an instance of such a Royal Hunt Diagram, after the fifth mov\u0002ing-line text of I Ching Hexagram 8, Holding Together: “In the hunt,\r
+the king uses beaters on three sides only and foregoes game that runs\r
+off the front.” \r
+Effecting Semantic Network Bricolage 79\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+on top, and shade or color such edges to specify their catamaran.\r
+Then draw two more catamaran boxes, to the right and just below\r
+this. The top and bottom edges on the right display L- and U-index\r
+twists from the starting box respectively; the left and right edges\r
+below show L and U twists from their vertical counterparts above. Fig\u0002ure 2 is an instance of such a Royal Hunt Diagram, after the fifth mov\u0002ing-line text of I Ching Hexagram 8, Holding Together: “In the hunt,\r
+the king uses beaters on three sides only and foregoes game that runs\r
+off the front.” \r
+Figure 1. Parallel edges of catamarans (one perpendicular to each strut in an\r
+octahedral box-kite) twist into assessor pairs with oppositely signed edge\u0002currents, in a box-kite with different strut constant: BC and DE, both in sails\r
+completed by A, have twist products with S = f; for DB and CE, completed\r
+by F, twistings have S = a. The fifth and sixth (necessarily strut-opposite)\r
+assessors in each are found by twisting HA, aL and IF, fM with HX, SL~assumed\r
+at the center, where struts intersect~double-covering mast and keel\r
+respectively.\r
+Beyond the sedenions, twists no longer always take ZD edges to\r
+ZD edges. Type I always twist to Type I; but Type II, first found in\r
+the pathions, either twist to other Type II, or to box-kite-like struc\u0002tures none of whose edges act as ZD pathways. \r
+Per the Roundabout Theorem of [2], box-kites are “all or nothing”\r
+structures: all edges support ZD-currents, or none do. These latter hid\u0002den box-kites (HBKs, or “residents of Hoboken”) were the sources of\r
+the off-diagonal empty cells in the 2N-1 - 2 cells-per-edge square ETs\r
+for fixed-S 2N-ions, studied in [2, 3], and presented as color-coded\r
+spreadsheet displays in our NKS 2006 Powerpoint slide show [9].\r
+These showed what [2] and [3] proved: that, as N grew indefinitely\r
+large for fixed S, such tables’ empty space approached a fractal limit."""
+
+[[sections]]
+number = "80"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Figure 2. Royal Hunt Diagram. The three catamaran Ss form an associative\r
+triple: the bottom-left box, twisted a second time along its other set of\r
+parallels, yields the same resultant as the second twist of the top-right. (The\r
+two bottom boxes differ only by a 90° rotation.) Twists involving HBKs and\r
+Type II box-kites also show a double twist of another kind: the proper tracing\r
+order along the perimeter of the box twisted to will be reversed along one of\r
+the edges being twisted.\r
+For N  4, each of the seven ETs is a 6 µ 6 table, one label per\r
+each possible L-index excluding S; for N  5, S takes all integer val\u0002ues less than G  16, with edge-length in each ET being 14 (the num\u0002ber of indices less than G, with S excluded). Consider N  4, and\r
+ignore the 2 µ 6 cells along long diagonals: these are tautologically\r
+empty, since ZDs in the same assessor do not mutually zero-divide,\r
+nor do those of assessors which are strut-opposites. Twenty-four\r
+filled cells remain: two for each edge, hence one for each distinct ZD\u0002pairing defined on it. This shows the ET is fundamentally a multiplica\u0002tion table, with only L-indices indicated on the row and column head\u0002ers, in nested-parentheses order (i.e., the leftmost assessor label A is\r
+strut-opposite to the rightmost label F, then B to E, and so on by mir\u0002ror symmetry). This is because U-indices are forced, hence can be\r
+ignored, for given S and N. \r
+For any assessor HM, mL and its strut opposite IMopp, moppM, it is\r
+easy to see that m  HG + SL  G + mopp  M. Twist products along\r
+an edge are hence linked with a box-kite whose S is the L-index of the\r
+assessor, which is the strut opposite of the third assessor in the given\r
+edge’s sail. Both HA + bL and HB + aL then have S  d, since A and B\r
+are in a sail with C, whose strut-opposite is D. And by the third pro\u0002duction rule, we know the edge opposite that joining A and B also\r
+has its sail completed by C: that is, the square formed by HA, B, E, FL\r
+and orthogonal to the strut HC, DL will have four of the six assessors\r
+defining the box-kite with S  d residing along one set of parallel\r
+sides, while four of the six defining the S  c box-kite will reside\r
+along the other parallels in the same square. (Corollary: for any box\u0002kite\r
+each L-index is also the S of another box-kite reached by twist\u0002\r
+Effecting Semantic Network Bricolage 81\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+an edge are hence linked with a box-kite whose S is the L-index of the\r
+assessor, which is the strut opposite of the third assessor in the given\r
+edge’s sail. Both HA + bL and HB + aL then have S  d, since A and B\r
+are in a sail with C, whose strut-opposite is D. And by the third pro\u0002has its sail completed by C: that is, the square formed by HA, B, E, FL\r
+and orthogonal to the strut HC, DL will have four of the six assessors\r
+defining the box-kite with S  d residing along one set of parallel\r
+sides, while four of the six defining the S  c box-kite will reside\r
+along the other parallels in the same square. (Corollary: for any box\u0002kite, each L-index is also the S of another box-kite reached by twist\u0002ing.) \r
+With three such catamarans per box-kite, each with edges whose\r
+sails are completed by assessors of a different strut, all seven sedenion\r
+box-kites can be seen as collected on the frame of just one. The miss\u0002ing pairs of assessors are derived by twisting the HS, G + SL ª HS, XL\r
+pair, imagined in the center, with each of the legitimate assessors, yield\u0002ing assessor-pairs defined along each catamaran’s mast and keel (strut\u0002halves (a, A) to (S, X), then (S, X) to (f, F), in that order, in Figure 1.)\r
+Such a 7-in-1 representation is called a brocade. \r
+In Table 1, the singleton sedenion brocade shows all possible L\u0002indices as column heads, U-indices as row labels, and a long diagonal\r
+of empty cells signifying the (S, X) non-assessor pairs. Each cell gives\r
+S and the vertex letter for all 42 assessors specified by U- and L-indi\u0002ces. The zigzag for S  1, say, is H3, 10L; H6, 15L; H5, 12L, with twists\r
+Hb, AL  H6, 10L and Ha, BL  H3, 15L yielding assessors E and C of the\r
+S  4 box-kite. For N > 4, seven pairs of row and column labels still\r
+fix one brocade, but indices will no longer be consecutive, and cellu\u0002lar information will need to indicate which of the numerous box-kites\r
+is being twisted to among those of all types with the same S, a num\u0002ber equal to the trip count in the 2N-2-ions given earlier. This surpris\u0002ing result was derived as a corollary of the Roundabout Theorem\r
+in [2]. \r
+Our prior work showed that an ET’s empty cells~emerging in any\r
+and all ETs for N > 4, and S > 8 and not a power of 2~mapped to\r
+pixels in a planar fractal. Here, catamaran twisting will let us see how\r
+these emptinesses have their own subtle structure, coming in quartets\r
+of two distinct classes, exactly akin to zigzags and trefoils among\r
+sails. Moreover, any box-kite is uniquely linked to four HBKs, with\r
+each such quartet or spandrel housing its own ZD-free copy of the\r
+octonions~hence the basis for the recursive CDP spawning of indepen\u0002dently generated 2N-ion index sets, or context-definition platforms\r
+(whose acronym’s meaning is, of course, itself context-dependent)."""
+
+[[sections]]
+number = "82"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+1 2 3 4 5 6 7\r
+09 3 A 2 F 5 B 4 F 7 F 6 C\r
+10 3 F 1 A 6 B 7 C 4 E 5 F\r
+11 2 A 1 F 7 B 6 F 5 C 4 D\r
+12 5 E 6 E 7 E 1 C 2 C 3 C\r
+13 4 A 7 D 6 A 1 D 3 E 2 B\r
+14 7 A 4 B 5 D 2 D 3 B 1 E\r
+15 6 D 5 A 4 C 3 D 2 E 1 B\r
+Table 1. The sedenion brocade."""
+
+[[sections]]
+number = "2"
+title = "Box-Kite Explosions in 32 Dimensions: Two Types, Triptych"
+text = """
+Triples, Four-Fold Spandrels\r
+Historically, a famous proof from the late 1890s by Adolf Hurwitz\r
+[10] dissuaded researchers from investigating any 2N-ions beyond the\r
+sedenions: once Hurwitz showed that they, and all higher hypercom\u0002plex numbers, unavoidably contained ZDs, the entire line of study\r
+was deemed pathological~hence, our calling those in 32D (the small\u0002est-N 2N-ions to not have a name) the pathions. But, as with their con\u0002temporary “monstrosities” of analysis, whose taming by Benoit Man\u0002delbrot led to fractals, the pathions in fact mark the beginning of a\r
+new agenda, at least as much as they signal the demise an older one.\r
+The work just prior to this paper shows that the connection to\r
+Mandelbrot’s discoveries is not just by analogy: as a side-effect of\r
+what we might think of as carry-bit overflow, ETs in high-N 2N-ions,\r
+beginning with the pathions, have surprising patterns of empty cells\r
+when S is not a power of 2, and its binary representation contains one\r
+or more bits to the left of the four-bit. \r
+In the pathions, there are 15 L-indices less than G, hence candidate\r
+S values, times seven (the octonion trip count) per ET, meaning 105\r
+box-kites. Seven are the equivalent of those found in the sedenions,\r
+but for the zero-padding of G (via left-shifting its singleton bit), and\r
+hence of X: all L-trips are identical, but U-indices at each assessor are\r
+augmented by the difference of the old and new G values, or eight.\r
+The seven box-kites for S  8 (the sedenions’ G) are Type I, but are\r
+special in other regards. First, the Z-trip of each is the same as one of\r
+the sedenions’; hence, these seven Rule 0 trips, once S is downshifted\r
+to its sedenion twin’s value, can map directly to one of the zero-pad\u0002ded box-kites. Similarly, each strut is a Rule 1 trip, serving as the\r
+Ha, d, eL L-trip of a pathion box-kite, with the same downshifted S. \r
+Finally, the three trefoil L-trips are just Rule 2 transforms of the Z\u0002trip (since this S  8 acts on it as a minimal G). Z-trips in their own\r
+right also produce box-kites with downshifted S values of the new\r
+Type II. We thus have at least 7 ÿ 3  21 of these in the pathions. In\r
+fact, we have only these 21, derived from trefoil L-trips of S  8 box\u0002kites; hence, the add-and-switch logic of Rule 2 should be central to\r
+their new typology. As is the case: exactly two of the three struts in a\r
+Type II have their orientations reversed, as mentioned previously.\r
+Each Z-trip index of a Type I gives its strut-opposite assessor’s L\u0002index when multiplied on the right by S\r
+but two of the three Type II\r
+Effecting Semantic Network Bricolage 83\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Finally, the three trefoil L-trips are just Rule 2 transforms of the Z\u0002trip (since this S  8 acts on it as a minimal G). Z-trips in their own\r
+right also produce box-kites with downshifted S values of the new\r
+Type II. We thus have at least 7 ÿ 3  21 of these in the pathions. In\r
+fact, we have only these 21, derived from trefoil L-trips of S  8 box\u0002kites; hence, the add-and-switch logic of Rule 2 should be central to\r
+their new typology. As is the case: exactly two of the three struts in a\r
+Type II have their orientations reversed, as mentioned previously.\r
+Each Z-trip index of a Type I gives its strut-opposite assessor’s L\u0002index when multiplied on the right by S, but two of the three Type II\r
+zigzag’s L-units form CPO struts when multiplied by S on the left.\r
+As shown in Figures 3 and 4, we can visualize all this by adapting\r
+the commonplace Fano plane rendering of our XOR-based octonion\r
+labeling scheme to different ends, a.k.a. the PSL(2,7) triangle (for\r
+“projective special linear group of seven lines in the plane”), which\r
+cross in seven places. This simplest nontrivial finite projective geome\u0002try has each line projectively equivalent to a circle, which, adapting\r
+standard convention, is how only the Rule 0 Z-trip is drawn. The\r
+three lines through the central node join angles to midpoints, making\r
+Rule 1 trips when the label in the center is a power of 2. The three\r
+sides then become the Rule 2 trips, in the manner just discussed: the\r
+center is the sedenion G, converted to a pathion S. \r
+HaL HbL\r
+Figure 3. (a) The seven-point, seven-line finite projective group, a.k.a the Fano\r
+plane, hosts the labels for octonion units, and shows their triplets’ orienta\u0002tions. (b) The same layout can be used to shorthand box-kite structures: the\r
+zigzag and trefoil L-trips sit at Ha, b, cL, and Ha, d, eL; Id, b, fM; Ie, f, cM. The\r
+strut constant S, meanwhile, sits in the middle.\r
+Figure 3(a) can be read as displaying the L-trips of the sedenion\r
+box-kite with S  4: one inflates the diagram by assuming the attach\u0002ing of U-indices, by the L  X rule, to get a full box-kite, each side\r
+now turned into a bona fide trefoil sail, and the Rule 0 L-trip con\u0002verted to a zigzag. Figure 3(b) abstracts this via assessor L-index lower\u0002case coding conventions. The approach just sketched works for short\u0002handing box-kite structures for any 2N-ions, N ¥ 4. \r
+Note the CPO flow along all lines: the triangle’s perimeter is natu\u0002rally traversed clockwise, as is the central Rule 0 circle, while strut\u0002flows move from midpoints, through S, to the angles. In Figures 4(a)\r
+for one of the seven S  8 box-kites; then, one of its Rule 2 sides is\r
+inflated on the right, to yield a pathion S  1 box-kite of Type II.\r
+Note its flow reversals along the Z-trip’s b- and c-based struts."""
+
+[[sections]]
+number = "84"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Note the CPO flow along all lines: the triangle’s perimeter is natu\u0002rally traversed clockwise, as is the central Rule 0 circle, while strut\u0002flows move from 4(a)\r
+and 4(b), the sedenion Z-trip for S  1 doubles as the pathion Z-trip\r
+for one of the seven S  8 box-kites; then, one of its Rule 2 sides is\r
+inflated on the right, to yield a pathion S  1 box-kite of Type II.\r
+Note its flow reversals along the Z-trip’s b- and c-based struts. \r
+HaL HbL\r
+Figure 4. Pathion box-kites. (a) A normal (Type I) with S  8, and Rule 0 Z\u0002trip H3, 6, 5L at Ha, b, cL, itself the Z-trip for the S  1 sedenion box-kite. (b)\r
+A Type II with S  1, with Z-trip the Rule 2 left side of the S  8 Type I.\r
+In Theorem 7 of [1], the parallel flows around the triangle’s perime\u0002ter and central circle provided the implicit basis for proving that the\r
+PSL(2,7) in question was a Type I box-kite. What we now call the sede\u0002nion brocade compactly expresses the fact that, provided the node-to\u0002node connections and flow patterns are not changed, any node can be\r
+moved into the center to act as the strut constant, with the only sub\u0002stantive side-effect being the broad-based swapping of U-indices associ\u0002ated with each node. \r
+Direct hand calculation makes it clear that Theorem 7 still holds\r
+for a Type II box-kite, as the flows remain parallel around the\r
+triangle’s perimeter and inscribed circle. A Type I twists to another\r
+Type I. A Type II, though, only twists to another Type II when the sin\u0002gle strut with proper orientation (all of whose L-indices, in the pathi\u0002ons, are octonions) has one of its nodes swapped into the center (or,\r
+equivalently, provides the strut for the catamaran being twisted). For\r
+all other twistings, S > 8, and we have HBKs, which is tantamount to\r
+saying (albeit not in an obvious way) that the perimeter and circular\r
+flows no longer stay parallel. \r
+In Theorem 15 of [3], we proved that two L- and U-unit pairings\r
+which mutually zero-divide (i.e., share an edge as assessors on a box\u0002kite) no longer do so once S is augmented by a new high-bit. This was\r
+the general case inspired by the empirical for-instances provided by\r
+the pathions’ ETs (for 8 < S < 16). Here, only three of the seven box\u0002kites for any such S prove to be Type I; the remaining four reside in\r
+Hoboken. \r
+Using the theorem just cited, each such S is just that of a sedenion\r
+box-kite with the minimal new high-bit appended to it. This makes\r
+strut-opposite L-indices, whose XOR is S, have their difference aug\u0002mented by eight, which means the larger ones are U-indices of the sede\u0002nion case. We can then take each assessor in a sedenion box-kite and\r
+treat it as a pathion pair of L-index strut-opposites, effectively explod\u0002ing one assessor into t\r
+o\r
+Effecting Semantic Network Bricolage 85\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Using the theorem just cited, each such S is just that of a sedenion\r
+box-kite with the minimal new high-bit appended to it. This makes\r
+strut-opposite L-indices, whose XOR is S, have their difference aug\u0002mented by eight, which means the larger ones are U-indices of the sede\u0002nion case. We can then take each assessor in a sedenion box-kite and\r
+treat it as a pathion pair of L-index strut-opposites, effectively explod\u0002ing one assessor into two. \r
+This implies each sail can be inflated into its own box-kite, sharing\r
+one strut with each box-kite built, by the same logic, from each other\r
+sedenion sail. And, as the theorem will apply similarly to each and\r
+every sedenion edge-current, and hence all four of the L-trips, we can\r
+say each of the sedenion L-trips does service as a Z-trip for an HBK.\r
+We call such quartets of Hoboken residents spandrels, after a term\r
+made famous by evolutionary theorists Steven J. Gould and Richard\r
+Lewontin [11]. \r
+The deep appropriateness of this term will become apparent in the\r
+final remarks of this paper, when we consider the epistemological\r
+issues it was coined to address. But a superficial aptness is easily\r
+grasped. Consider one of the secondary meanings of the term (which\r
+Gould and Lewontin did not have in mind): among philatelists, the\r
+four curved wedges between a perforated border and an inner oval\r
+containing, say, a president’s face, comprise a postage stamp’s\r
+“spandrel”. Pinch diagonally opposite corners of such a stamp\r
+together, so that two meet above, and two below, the center of the\r
+stamp proper. The spandrel’s wedges become sails in a box-kite (the\r
+kind of corner-to-corner mapping of flows on a plane, from which the\r
+projective plane derives). \r
+Each of the seven sedenion box-kites explodes into one pathion\r
+spandrel, making 28 HBKs in all. Simple arithmetic shows how this\r
+count dovetails with what was said earlier about Type II: one can\r
+only twist to two other Type IIs from a given one, their strut con\u0002stants forming an octonion trip that we are starting with. All four\r
+other twists take one to Hoboken, where each box-kite has one all\u0002octonion L-trip inherited from its sedenion box-kite of origin. Its own\r
+S being larger than the prior G, it can be twisted to three different\r
+Type IIs, hence three other HBKs. Ergo, there will be three Type IIs\r
+for every four HBKs, or 21 for the 28 HBKs in the pathions, as\r
+already calculated. \r
+But there will also be three Type Is, each of whose BE strut com\u0002prises the assessors whose L-indices are the former G and S of the sede\u0002nion box-kite they exploded from. Further, each former strut now has\r
+its vent and zigzag L- (and U-) indices appearing at a and d (and f\r
+and c), respectively (forming trefoil L-trips thereby with the old S and\r
+G at e and b), in one of the three new pathion box-kites. These trios\r
+are the “sand mandalas” first reported on (and graphically rendered)\r
+in [12], which we generalize to the general 2N-ion case by redubbing\r
+them the lowest-N examples of triptychs. \r
+In the general case, however, while three box-kites are exploded\r
+from each Type I we start with, they are not unique in derivation.\r
+Each corresponds to a 2N-ion strut that has been inflated into a 2N+1-\r
+ion box-kite. But the 2N+1-ions have 2N - 2 distinct assessors (hence,\r
+a strut count half that number) shared among all same-S box-kites\r
+(including Hoboken residents)Hencewe do indeed get three for"""
+
+[[sections]]
+number = "86"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+In the general case, however, while three box-kites are exploded\r
+from each Type I we start with, they are not unique in derivation.\r
+Each corresponds to a 2N-ion strut that has been inflated into a 2N+1-\r
+ion box-kite. But the 2N+1-ions have 2N - 2 distinct assessors (hence,\r
+a strut count half that number) shared among all same-S box-kites\r
+(including Hoboken residents). Hence, we do indeed get three for\r
+each pathion ET with S > 8. But, for any zero-padded sedenion\r
+(hence, pathion) box-kite (i.e., G is left-shifted to be 16 instead of 8),\r
+although we might start with the S  1 case, it now houses seven dis\u0002tinct box-kites, not one, for all of which X is 17 instead of nine. The\r
+results of explosion thereby reside in the chingons, not pathions,\r
+where the ET for S  17 has 15 struts shared among seven distinct\r
+box-kites (one of which struts, with L-indices b  16 and e  1, is\r
+shared by all seven box-kites), not (as in the pathion case of the septet\r
+of “sand mandalas” with 8 < S < 16) seven struts shared among three\r
+box-kites (with, e.g., the BE strut b = 8 and e = 1 held in common\r
+when S = 9). As with the pathion S  9 case, though, these are the\r
+ETs only nonempty box-kites: the remaining 4 µ 7  28 are all con\u0002tained in pathion-generated spandrels. \r
+The Greek etymology of “triptych” indicates three (tri-) plates or\r
+panels (ptyche). The “tri” indicates the count of BE-sharing distinct\r
+box-kites in the pathion case only; more generally, the “panels” are\r
+box-kites associated with the (pre-explosion ETs) distinct strut triplets\r
+instead. The count of these “trips” in a triptych is typically much\r
+higher than three. In this sense, they are akin to what a Java program\u0002mer might call “static variables”: unlike the spandrel quartets, their\r
+generation is tied to the ET “class” of origin, rather than to a particu\u0002lar source box-kite. \r
+Described in this manner, triptychs may seem more concocted than\r
+natural. This is not so when viewed from a purely bit-twiddling van\u0002tage: when, as shown in Figure 5, their ETs are examined, the flip\u0002book sequence generated by integer increments of S between 8 and 16\r
+shows animation logic: four lines just off the picture frame, spanning\r
+the long diagonals’ empty corners, form the 12-cell-long sides of a\r
+square including the corners, hence taking up the maximum 14µ 14\r
+size that a pathion ET allows. (Similar descriptions are obtained for\r
+the 30µ 30-sized chingon flip-books for 16 < S § 24.) \r
+As S grows, these orthogonal pairs of parallels move one cell in\r
+from the perimeter with each increment, until, when S  15, they\r
+form two-ply crosshairs partitioning the ET into quarters. The remain\u0002ing 24 filled-in cells form six-cell-long diagonal spans, connecting the\r
+cross’s vertical and horizontal ends. \r
+This abstract cartoon or flip-book is drawn by a simple formula,\r
+the gist of Theorem 14 in [3], using the vertical pipe for logical OR,\r
+and shorthanding the G of the 2N-1-ions as g, \r
+R » C » P = g » S mod g.\r
+Effecting Semantic Network Bricolage 87\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Figure 5. Eight pathion ETs with ascending S values, from the maximally full\r
+S  8 to 15 on the second row’s far right. For all S > 8, the 24 cells filled with\r
+the sedenion G and S are painted darker than the 48 forming the parallels.\r
+Two shades of gray highlight the 4 µ 24 long- and off-diagonal unfilled cells\r
+of the spandrel’s HBKs.\r
+Only if row label R, column label C, or their XOR product P, equal\r
+g or s (the pre-explosion S), will the cell be filled (and assessors with\r
+L-indices R and C mutually zero-divide). Via the Recipe Theory [3],\r
+this formula can be generalized by a simple analysis of S’s bitstring.\r
+For any S > 8 not a power of 2, the ETs’ empty spaces for each succes\u0002sive N approach a fractal, overlaying each other’s values. Row and col\u0002umn labels of the 2N-1 ET become actual cell values of the 2N, with\r
+the same values filling in the label-lines’ empty parallels in reverse\r
+(strut-opposite) order, in a never-ending balloon ride sequence (see Fig\u0002ure 6) of nested skyboxes. \r
+Figure 6. ETs for S  15, N  5, 6, 7 (nested skyboxes bordered in darker\r
+shading) and fractal limit: the Cesàro double sweep [13, p. 65].\r
+In this sense, Recipe Theory is a pure Wolfram-style number the\u0002ory, focused on the binary representations of integers rather than\r
+their quantities, hence according special status to the placeholding\r
+power of singleton bits (G values)~as opposed to traditional number\r
+theory, which concerns itself, above all else, with size~and hence,\r
+with primes."""
+
+[[sections]]
+number = "88"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+In this sense, Recipe Theory is a pure Wolfram-style number the\u0002ory, focused on the binary representations of integers rather than\r
+their quantities, hence according special status to the placeholding\r
+ to traditional number\r
+theory, which concerns itself, above all else, with size~and hence,\r
+with primes.\r
+Complementary to Theorem 15 of [3], just cited, is Theorem 16\r
+which immediately follows: while a box-kite’s edges are turned off by\r
+augmenting its S with a new leftmost bit (and necessarily left-shifting\r
+its G-bit if this new S exceeds it), performing a second such augment\u0002ing results in a box-kite which is once again turned on. \r
+In addition to the Hs, gL modularity first seen in our sand mandala\r
+formula, we thus have a process of hide/fill involution: repeated, it pro\u0002duces spandrels from proper (Type I or Type II) box-kites; quartets of\r
+higher-N proper box-kites from each such HBK; quartets of higher-N\r
+spandrels from each of these; and so on, ad infinitum. This is a result\r
+sufficiently powerful as to call for a proof. \r
+For the HBK deriving from a Type I’s zigzag, the trips along all\r
+three struts are reversed: if Hz, S, vL is CPO, then Rule 2 says replacing\r
+S with X by exploding the Type I’s assessors will reverse orientations.\r
+Similarly, the flows along the edges will also reverse, since each edge’s\r
+two terminal nodes are reversed. So if an appropriate power of 2, g,\r
+be added to the central node, this same g must be added to the three\r
+nodes at the Fano plane’s angles as well, to keep all lines trips. Only\r
+one among the seven Fano lines will have no, instead of two, nodes\r
+with g appended to its indices: the Z-trip itself. Hence, if the Z-trip\r
+flows clockwise, perimeter tracings now run counterclockwise. \r
+Such a fourfold g insertion is equivalent to exploding a 2N-ion box\u0002kite’s zigzag, since g appended to the strut-opposite v of any Z-trip L\u0002index z yields its pre-explosion U-index partner: for arbitrary Type I\r
+zigzag assessor (z,Z), z ÿ S  v, but v ÿ HS + gL  v ÿ X  Z. The resulting\r
+Fano’s edge trips, in terms of pre-explosion indices, now read (B, a,\r
+C); (C, b, A); (A, c, B), all with orientations reversed. We now recall a\r
+crucial fact from earlier work, which we termed “trip-sync”: in the zig\u0002zag only, the four quaternion copies Ha, b, cL; Ha, B, CL; HA, b, CL;\r
+HA, B, cL~the L-trip and its three allied U-trips~all flow similarly, so\r
+that one can effectively allow “slippage” between high- and low\u0002index units at any of the zigzag’s assessors and not notice any differ\u0002ence. Repeating this process with fourfold insertion of G  2 ÿ g re\u0002reverses all six flipped lines, again leaves the Z-trip unchanged, again\r
+giving a Type I box-kite. \r
+For the three HBKs derived from making a Z-trip out of a Type I’s\r
+trefoil L-trip, the three trefoil-derived HBKs in any Type I box-kite’s\r
+spandrel will have just one strut-and-edge pairing reversed, and a dif\u0002ferent one in each case. This is the complement to the zigzag\r
+“slippage” effect: among the four quaternion copies associated, say,\r
+with Ha, d, eL, only Ha, D, EL will share its orientation. The other two\r
+U-trips, whose singleton L-index is not shared with the zigzag, have\r
+CPO forms HA, E, dL and HA, e, DL. Each of the trefoil HBKs, then,\r
+has flow structure like that of a Type I save for a “T”: the reversed\r
+strut flows from an angle to the midpoint of the likewise flow-flipped\r
+side-trip. Doing the fourfold g-appending to the nodes not included in\r
+the only reversed line (containing the only L-index from the pre\u0002exploded box-kite’s zigzag) will also result, as direct symbolic calcula\u0002tion shows, in a Type I box-kite. \r
+Effecting Semantic Network Bricolage 89\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+“slippage” effect: among the four quaternion copies associated, say,\r
+with Ha, d, eL, only Ha, D, EL will share its orientation. The other two\r
+U-trips, whose singleton L-index is not shared with the zigzag, have\r
+CPO forms HA, E, dL and HA, e, DL. Each of the trefoil HBKs, then,\r
+has flow structure like that of a for a “T”: the reversed\r
+strut flows from an angle to the midpoint of the likewise flow-flipped\r
+side-trip. Doing the fourfold g-appending to the nodes not included in\r
+the only reversed line (containing the only L-index from the pre\u0002exploded box-kite’s zigzag) will also result, as direct symbolic calcula\u0002tion shows, in a Type I box-kite. \r
+All told, then, if none or two of the struts are reversed, we have\r
+proper box-kites, of Types I and II respectively. If all or one of the\r
+struts are reversed, we have zigzag or trefoil HBKs in that order for\r
+Type I spandrels. Type II spandrels appear, at first, to have their own\r
+distinct Fano plane flow patterns. However, by swapping sides with\r
+zigzags, the HBK reversal patterns take on very different appear\u0002ances~and the full set of 16 sail-based presentations are the same in\r
+both spandrels, but in different orders. The display with central circle\r
+housing the default Ha, b, cL line, and that with Ha, d, eL, reverse places\r
+in Type I and Type II spandrels. This shuffling is crucial: because of\r
+it, both types will be found to facilitate “cowbirding”, a process of par\u0002amount interest. \r
+Successive explosions of the sedenions’ S  1 box-kite take us to\r
+the S  9 and S  25 ETs of the pathions and chingons, respectively.\r
+Such instantiating is readily generalized, since each spectral band of\r
+eight consecutive S values (powers of 2 excluded) obeys the same\r
+hide/fill logic: like the seven sand mandala ETs in the pathions, there\r
+is an animation-like impetus connecting each to each, all with the\r
+same counts of proper and hidden box-kites. For those who like to\r
+read the libretto at the opera, the graphics corresponding to the cases\r
+just mentioned, in the order just given, are on Slides 16, 25, and 48\r
+of [9]. \r
+Our sedenion starter kit has Z-trip H3, 6, 5L. For this and its L\u0002trips, we get the four HBKs, all with S  9, X  25, G  16, as\r
+shown in Table 2. (The original assessor L- and U-indices, all with\r
+S  1, X  9, G  8, are shown on the first and third lines; as\r
+pathion L-indices, their corresponding U-indices appear in the second\r
+and fourth.) \r
+Ha, b, cL Ha, d, eL Id, b, fM Ie, f, cM\r
+H03, 06, 05L\r
+H26, 31, 28L\r
+H03, 04, 07L\r
+H26, 29, 30L\r
+H04, 06, 02L\r
+H29, 31, 27L\r
+H07, 02, 05L\r
+H30, 27, 28L\r
+H10, 15, 12L\r
+H19, 22, 21L\r
+H10, 13, 14L\r
+H19, 20, 23L\r
+H13, 15, 11L\r
+H20, 22, 18L\r
+H14, 11, 12L\r
+H23, 18, 21L\r
+Table 2. Sedenion sails and their pathion explosions (S, X, G = 1, 9, 8) Ø\r
+HS, X, GL = 9, 15, 16L.\r
+The zigzags of the pathion HBKs share a special feature: when all\r
+six L- and U-indices are treated as a set, to which X and the real unit\r
+are appended, we find that not only are the HBKs edges bereft of ZD\r
+currents; this 8D ensemble shows no ZD currents anywhere within it,\r
+no matter how you twist it. No two pairings of one element each\r
+from Ha, b, cL and HA, B, C, XL will mutually zero-divide. We have,\r
+then, a pure octonion copy."""
+
+[[sections]]
+number = "90"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+The zigzags of the pathion HBKs share a special feature: when all\r
+six L- and U-indices are treated as a set, to which X and the real unit\r
+are of ZD\r
+currents; this 8D ensemble shows no ZD currents anywhere within it,\r
+no matter how you twist it. No two pairings of one element each\r
+from Ha, b, cL and HA, B, C, XL will mutually zero-divide. We have,\r
+then, a pure octonion copy. \r
+Clearly, the four Q-copies involving L- and U-units along the\r
+zigzag’s edges are ZD-free, as are the three trips involving the\r
+spandrel’s X with the U- and L-indices of each zigzag assessor in turn.\r
+Such an ensemble, whose indices can be relabeled to be identified\r
+with standard octonions, are called an egg; its habitat, a cowbird’s\r
+nest. Such nidi exist in all spandrels, one per each of the four HBK zig\u0002zags, in their zigzag (ADE) sails for Type I (Type II). Implied in this\r
+are three claims, comprising the…\r
+Cowbird Theorem. Each HBK in a spandrel contains a ZD-free octonion\r
+egg O, consisting of the reals, the L-indexed units of one of the source\r
+box-kite’s sails, their U-index partners in the HBK exploded from it,\r
+plus another imaginary indexed by the spandrel’s X. O-containment\r
+is universal among HBKs found in either Type I or Type II spandrels,\r
+and is also habitat-specific: for Type I, an O is always and only to be\r
+found in an HBK’s zigzag sail, whose L-index set is identically that of\r
+the source box-kite’s sail from which the HBK was exploded. Type II\r
+spandrels, meanwhile, harbor eggs in their HBK’s ADE sails, in pat\u0002terns that are flowmorphic~that is, have identically connected and ori\u0002ented lines in their Fano presentations~to the Type I eggs’ nests. \r
+We introduce and exemplify seven lemmas that pave the way to\r
+our proof. These highlight and customize familiar aspects of PSL(2,7),\r
+the 168-element simple group governing manipulation of the Fano\r
+diagram’s labeling. (This is not to be confused with the 480 distinct\r
+labeling schemes for octonions mentioned earlier: only a small subset\r
+of these entail the XOR relations defining triplets upon which our appa\u0002ratus depends.) We also want to indicate certain correspondences\r
+between the fourfold G loading~at the corners, and in the center~\r
+which effects the explosion process taking one from 2N to 2N+1 levels,\r
+and the same-level fourfold label-exchange process which underwrites\r
+the basic PSL(2,7) symmetries. \r
+Lemma 1. Explosion fixes one of the seven Fano plane lines (the zigzag\r
+circle, in our arguments’ context), with the other six having their\r
+orientations reversed: all six contain exactly two of the four high-bit\u0002augmented nodes, so Rule 2 applies to each. By Fano symmetry, the\r
+same holds true whatever four nodes are sites for G loading, provided\r
+no three reside in one line (occurring only if exactly one line has no\r
+nodes selected). \r
+Lemma 2. If the fixed line is one of the three sides, the G-loading nodes\r
+will form a kite containing S and the angle opposite the fixed side,\r
+and the two midpoint nodes joined to both. If a strut, G-loading sites\r
+are the node-pairs perpendicular to it, residing in midpoints and\r
+vertices. But all three cases are projectively equivalent, and any four\u0002node loading can be uniquely specified writing PLHm, n, pL, triplet\r
+Hm, n, pL the fixed line, each line choice uniquely corresponding to the\r
+explosion of one of the seven (possibly hidden) box-kites in a single\r
+brocade.\r
+Effecting Semantic Network Bricolage 91\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Lemma 2. If the fixed line is one of the three sides, the G-loading nodes\r
+will form a kite containing S and the angle opposite the fixed side,\r
+and the two midpoint nodes joined to both. If a strut, G-loading sites\r
+are the node-pairs perpendicular to it, residing in midpoints and\r
+vertices. But all three -\r
+node loading can be uniquely specified writing PLHm, n, pL, triplet\r
+Hm, n, pL the fixed line, each line choice uniquely corresponding to the\r
+explosion of one of the seven (possibly hidden) box-kites in a single\r
+brocade.\r
+Lemma 3. Consider two distinct lines l1 and l2 among a Fano\r
+presentation’s seven. If N HPL lines œ P, the set whose orientations are\r
+preserved (i.e., oriented identically to those placed in the same posi\u0002tions in a standard Type I box-kite, per Figure 3), and\r
+N HRL  H7 - N HPLL lines œ R, where orientations are reversed, per\u0002form PL(l1). For l1 only, orientation stays unchanged. If l1 œ P, then\r
+after the performance, N HRL  HN HPL - 1L; if œ R, then\r
+N HRL  HN HPL + 1L. If we start with standard presentations of either\r
+Type I (N HRL  0), Type II (N HRL  2), Type I’s explosion\r
+(N HRL  6), or Type II’s (N HRL  6 if the fixed line l1, which pro\u0002duced it begins in R, else N HRL  4), then any followup performance\r
+of PLHl2L will have N HRL an even number. \r
+Lemma 4. The four-point sites for G-loading are the necessary and\r
+sufficient bases for double exchange (DX) of labels, the minimal\r
+nontrivial label exchanges possible which preserve the mutual connec\u0002tions among the seven lines. For a fixed line Hm, n, pL, the expression\r
+DXHm, n, p; O pL, O p either H, V, D, or the identity operator I,\r
+defines a Klein group. Taking the fixed line to be the vertical strut\r
+(d, S, c) on the standard Type I layout for ease of visualizing, the\r
+horizontal DX operator H (instantiated here via a F b, e F f) pro\u0002duces a dihedral flip of the Fano triangle along Hd, S, cL. The vertical\r
+DX V (realized here as e F a, f F b) makes the trefoil He, c, fL and\r
+zigzag Ha, b, cL trade places while preserving their (and the vertical\r
+strut’s) orientations. The composite D = H ÿ V  V ÿ H is commuta\u0002tive, and exchanges diagonally opposite members of the four-point\r
+site. All three operators being involutions, their Klein group can be\r
+written by supplementing the D composition just given with the\r
+relations H2  V2  D2  I. (As 168  4 ÿ 7 ÿ 6, with seven lines of\r
+triplets each permutable in 3!  6 ways, the structure of the Fano\r
+plane’s group qua brocade presentation is hereby given.) \r
+Lemma 5. Define counts N HRL, N HPL of lines in sets R and P as in\r
+Lemma 3. Assume a given Fano presentation is derived from standard\r
+Type I or Type II presentations by PL operations, as in Lemma 4.\r
+Then N HRL is even. Consider the before and after counts for the\r
+dihedral flip along the vertical strut, DX(aSf; V). Orientations of all\r
+three struts are unaffected; hence, if their contribution to N HRL before\r
+DX is odd, it will be so after DX, and ditto for DX even. Orientations\r
+for all three sides plus the center, meanwhile, are all reversed: hence,\r
+if their contribution to N HRL before DX is k, it will be H4 - kL after\r
+DX, hence its odd or even status will remain unchanged. If we start,\r
+then, with Type I, Type II, or any HBK derived from either by multi\u0002ple applications of PL, N HRL will be even before DX, and remain so,\r
+since odd plus odd and even plus even are both even. As all DX\r
+operations, per Lemma 4, are equivalent in all senses relevant, all DX\r
+operations preserve evenness of the reversed-flow count."""
+
+[[sections]]
+number = "92"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+DX is odd, it will be so after DX, and ditto for DX even. Orientations\r
+for all three sides plus the center, meanwhile, are all reversed: hence,\r
+if their contribution to N HRL before DX is k, it will be H4 - kL after\r
+DX, hence its odd or even status will remain unchanged. If we start,\r
+-\r
+ple applications of PL, N HRL will be even before DX, and remain so,\r
+since odd plus odd and even plus even are both even. As all DX\r
+operations, per Lemma 4, are equivalent in all senses relevant, all DX\r
+operations preserve evenness of the reversed-flow count. \r
+Lemma 6. Any standard-form Type I can be converted into any of\r
+three different standard-form Type IIs by performing, in either order,\r
+a DX and a PL on a strut mSn. For the zigzag H3, 6, 5L of the S  1,\r
+N  4 (hence, Type I) box-kite, DX(aSf; VL and PL(aSfL, performed\r
+in either order, gives two easy ways to generate the Type II shown in\r
+Figure 4(b). \r
+Lemma 7. By Lemmas 3 and 5, any combination of PL and DX opera\u0002tions (mutually commuting where orientation-preservation is con\u0002cerned), will always reverse an even number of lines; further, the\r
+number of reversed lines with respect to the standard Type I presenta\u0002tion will likewise always be even after performing any number of such\r
+operations. Ergo, standard-presentation Type III and Type IV box\u0002kites (Type I with one or three struts reversed, respectively) can never\r
+be derived from Types I and II. But G-loading and catamaran twisting\r
+within a brocade are the bases for all possible creations of standard\r
+box-kites. Hence, Types III and IV are impossible. \r
+Now let us tackle the cowbirding theorem, give reasons for so nam\u0002ing it, then spell out our claims for its potential to underwrite models\r
+of semantic networks. \r
+Proof. We consider only Type I for most of our argument, then find a\r
+simple way to carry over everything shown therein to the Type II\r
+situation. Label a standard-form Type I box-kite in the 2N-ions in\r
+conformity with that shown in Figure 3(b): strut constant S appears in\r
+the center, the zigzag’s a, b, c are arrayed about it at 10, 2, and 6\r
+o’clock, respectively, with their strut-opposite nodes f, e, d appearing\r
+in the lower-right and lower-left corners and apex, in that order.\r
+Explode by G-loading the corners and center with g (the pre-explo\u0002sion G), synonymous with saying perform the operation PL(a, b, c).\r
+The result is the Ha, b, cL-based HBK, with the new S now equal to the\r
+pre-exploded X = s + g, and the new G  2 g  2N. To prevent\r
+ambiguity when pre- and post-explosion nodes are referenced, the\r
+subscript “H” designates nodes in the HBK, not the source box-kite. \r
+For arbitrary zigzag assessor HZ, zL and its strut-opposite vent asses\u0002sor HV, vL in the HBK, U-indices Z = G + v; but PL(a, b, c) having\r
+loaded each pre-exploded v with g, this means Hz, ZL  Hz, G + g + vL,\r
+and Hv, VL  Hv, G + g + zL. Our initial claim: in this HBK, the six zig\u0002zag units, X H  G + g + sL, and the real unit (index  0) are isomor\u0002phic to the standard octonions, hence ZD-free. Call this octet egg O\r
+in the Ha, b, cL cowbird’s nest, associated with Type I box-kite, having\r
+S  s and zigzag L-index set Ha, b, cL in the 2N-ions, shorthanded\r
+Ha, b, c; s; NL. \r
+The multiplication table of O is clearly isomorphic to that for the\r
+usual octonions: for each Hz, ZL choice, z ÿ X  Z, and HBK trips\r
+Ha, b, cL, Ha, BH, CHL, HAH, b, CHL, and HAH, BH, cL provide the remain\u0002ing four quaternion copies that complete the septet found in standard\r
+octonions. And, as this is an HBK, we already know that the products\r
+d bhHBK’idWk\r
+Effecting Semantic Network Bricolage 93\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+The multiplication table of O is clearly isomorphic to that for the\r
+usual octonions: for each Hz, ZL choice, z ÿ X  Z, and HBK trips\r
+Ha, b, cL, Ha, BH, CHL, HAH, b, CHL, and HAH, BH, cL provide the remain\u0002ing four quaternion copies that complete the septet found in standard\r
+octonions. And, as this is an HBK, we already know that the products\r
+represented by the HBK’s zigzag edges are not zero. We now take a\r
+“voyage by catamaran”, showing, by twist-product logic, how the\r
+other L- and U-index pairings contained in O also make no zeros. \r
+For each pairing among zigzag L-indices, the Fano triangle presenta\u0002tion makes it clear that the arrow sweeping out 120 ± between them\r
+forms an arc beneath the corner L-index which represents the strut\r
+constant of the box-kite the assessors containing said L-indices twist\r
+to. For an Ha, b, cL Type I HBK, all three exceed g, equalling Hg + dL,\r
+Hg + fL, and Hg + eL, for twists between HAH, BHL, HBH, CHL and\r
+HCH, AHL, respectively. For the first such twisting, switch the L-indi\u0002ces while retaining the U-indices, and consider the product of\r
+Hb, G + g + fL and Ha, G + g + eL. Write these index pairs in left-to\u0002right order, with the pair starting with a on the bottom, and further\r
+mark the right-hand term on the top with a “+” (since the unit with\r
+this index will have the opposite sign from that of the other zigzag’s\r
+corresponding term; hence, their twist product will have the same sign\r
+in the same location). Symbolic multiplication shows combining the\r
+four term-by-term products cannot sum to zero, as follows: \r
++HbL + HG + g + fL\r
++HaL + HG + g + eL\r
+-HG + g + sL + HcL\r
++HcL + HG + g + sL\r
+2 c : not zero.\r
+Since He, f, cL is CPO for the L-index trip along the bottom side of\r
+the triangle, and Ha, b, cL is likewise the Z-trip in CPO, the upper\u0002right and lower-left results are clearly same-signed copies of c. (Since\r
+the top-right product entails two Rule 2 eliminations, there is no result\u0002ing sign change affecting e f.) The other two results, meanwhile, both\r
+prepend HG + gL with no effect on sign; signs on s are opposite, how\u0002ever, because one results from multiplying terms in v ÿ z order, while\r
+the other multiplication has the form z ÿ v. \r
+By symmetry, parallel results (of 2 a and 2 b) are obtained for the\r
+twists of BH CH and CH AH respectively. As these exhaust the nontriv\u0002ial possibilities for products between L- and U-index pairings in O,\r
+our initial claim proves true. \r
+A similar symmetry argument lets us prove our case for all Type I\r
+trefoil HBKs by proving it for any one: recall that each of these differs\r
+from Type I by having reversed flows along the strut and side contain\u0002ing the single L-index shared with the zigzag in the pre-exploded box\u0002kite. It will suffice, then, to consider the case of the Ha, d, eL HBK\r
+derived from the same pre-explosion box-kite. Its zigzag assessors AH,\r
+BH, CH then read Ha, G + g + fL; Hd, G + g + cL; He, G + g + bL. Twists\r
+among these three all result in box-kites with strut constants exceed\u0002ing g, with similar effect. Since edge-signs are not all the same (two\r
+are positiveone negative)twistproduct signs will also lack unifor"""
+
+[[sections]]
+number = "94"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+A similar symmetry argument lets us prove our case for all Type I\r
+trefoil HBKs by proving it for any one: recall that each of these differs\r
+from Type I by having reversed flows along the strut and side contain-\r
+ box\u0002kite. It will suffice, then, to consider the case of the Ha, d, eL HBK\r
+derived from the same pre-explosion box-kite. Its zigzag assessors AH,\r
+BH, CH then read Ha, G + g + fL; Hd, G + g + cL; He, G + g + bL. Twists\r
+among these three all result in box-kites with strut constants exceed\u0002ing g, with similar effect. Since edge-signs are not all the same (two\r
+are positive, one negative), twist-product signs will also lack unifor\u0002mity, so we append the binary variable s to the top-right term in the\r
+multiplication’s setup, and test that neither possible value for it can\r
+lead to a final summation of zero. \r
+Twisting AH and BH (with a Fano plane arrow curving between\r
+their L-indices in the zigzag’s circle and beneath dH  g + b) yields the\r
+following symbolic arithmetic: \r
++HdL + s ÿ HG + g + aL\r
++HaL + HG + g + cL\r
+-HG + g + sL + s ÿ e\r
+-HeL - s ÿ HG + g + sL\r
+2 e or 2 HG + g + sL : not zero.\r
+By symmetry once more, we assert a “not zero” result for a twist\u0002product ZD testing for BH CH and CH AH. This completes the proof\r
+of universality: all zigzags of all Type I HBKs have cowbird’s nests,\r
+and thereby can “hold eggs”. \r
+Only the zigzags, however, in such spandrels can do so. For while\r
+the strut constants of box-kites being twisted to all exceed g in the\r
+above treatments, the zigzag’s L-indices all are less than g, and two of\r
+these will be strut constants for box-kites being twisted to for the tre\u0002foil HBKs. When the source box-kite resides in the sedenions, this\r
+clearly means that these two S values are being twisted to designate\r
+ETs with no empty spaces save the long diagonals; hence, all products\r
+of ZDs within them that are not trivially excluded (self-products and\r
+strut constants) will be zero. But symbolic calculations like those just\r
+considered make it clear that this low-N situation generalizes com\u0002pletely. \r
+Consider, for instance, the Ha, b, cL HBK’s own Ha, d, eL sail,\r
+HaH, dH, eHL  a, g + d, g + e. By Rule 2, the last two terms must be\r
+placed in reverse order when their trip is written CPO, so we have\r
+Ha, g + e, g + dL  HaH, eH, dHL: the side and strut containing a are\r
+both reversed in this HBK. U-indices are HG + g + fL, HG + cL, and\r
+HG + bL. (Note the lack of a “g” term in both DH and EH.) The aH dH\r
+twist implies a box-kite with strut constant a < g, leading to this sym\u0002bolic arithmetic: \r
+Effecting Semantic Network Bricolage 95\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
++HaL + s ÿ HG + cL\r
++Hg + dL + HG + g + fL\r
++HG + g + sL + s ÿ Hg + eL\r
++Hg + eL + s ÿ HG + g + sL\r
+Hs  -1L ñ 0 \\ no egg.\r
+The obvious symmetry argument holds for the other two trefoils’\r
+twist products involving the assessor the reversed side shares with the\r
+zigzag. Our claim of “no egg” must hold, then, for all trefoil sails\r
+within the Ha, b, cL HDK. But as the trefoil-based HDKs also have\r
+(two of three) zigzag twist products in box-kites with strut constants\r
+less than g, mutually zero-dividing ZDs must be contained in these;\r
+hence, “no egg”. Hence, the Type I HBK eggs are all to be found nes\u0002tled in zigzag sails only, proving our claim of habitat locality. \r
+Finally, what of Type II box-kites, which (aside, of course, from\r
+HBKs) we know by Lemma 7 are the only other kind that exist?\r
+Recall from Lemma 6 how they derive from Type I: to test their\r
+HBK’s, we will need to consider three, not two, high-bit appendings,\r
+which we will label, by increasing size, g, G, and G. This makes the\r
+bookkeeping more convoluted, but the proofs are not more difficult\r
+in principle. This is where the notion of oriented lines in two different\r
+Fano presentations being “flowmorphic”, introduced toward the end\r
+of the Cowbird Theorem’s statement, must be made concrete. \r
+As Type I spandrels require only one explosion, symbolic expres\u0002sions describing oriented triplets of nodes within them entail only the\r
+use of g in addition to the standard seven letters. Type II spandrels,\r
+however, require two PL operations, the first to convert the Type I\r
+into a Type II. Hence, symbolic expressions within them entail G as\r
+well as g, and so will frequently require applying Rule 2 twice. This is\r
+best explained through examples. For Type I, we stick with our run\u0002ning for-instance, exemplified in Table 2: the explosion of the S  1\r
+sedenion box-kite with zigzag L-indices H3, 6, 5L. By XOR with S, we\r
+know that, for the latter source, the strut-opposite f, e, d L-indices\r
+are 2, 7, 4 in that order, with corresponding U-indices found by add\u0002ing G to the strut-opposites: hence, A  G + f  10, B  G + e  15,\r
+C  G + d  12, and so on. Now, explode the (A, B, C) sail into its\r
+own HBK by PL, and we get the leftmost “ABC” column entry in the\r
+top row: the old Ha, AL  H3, 10L is split into the new strut-opposite\r
+Ha, fL pairing, and their U-indices are now the new\r
+G + f  16 + 10  26, with the rest filled out as shown in the table.\r
+The next three columns do the same for the trefoil sails’ assessors as\r
+indicated. The row immediately below then spells out the contents of\r
+the F, E, D assessors associated with the A, B, C above. \r
+Now, let us first rewrite the HA, B, CL HBK with Ha, b, cL sail in the\r
+zigzag, both literally and symbolically. (Rewrite, since this is what is\r
+given by default upon completing the usual G-loading by corners-and\u0002center PL.) Then, use DX(a d e; DL~D, not H, since all three trefoil L\u0002index sets are reversed in this HBK~to swap zigzag and a-sharing tre\u0002foil while preserving both their orientations, so that we can compare\r
+these two different Fano presentations for this same HBK."""
+
+[[sections]]
+number = "96"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Now, let us first rewrite the HA, B, CL HBK with Ha, b, cL sail in the\r
+zigzag, both literally and symbolically. (Rewrite, since this is what is\r
+-and\u0002center PL.) Then, use DX(a d e; DL~D, not H, since all three trefoil L\u0002index sets are reversed in this HBK~to swap zigzag and a-sharing tre\u0002foil while preserving both their orientations, so that we can compare\r
+these two different Fano presentations for this same HBK. \r
+Next, do the same for the Type II built by G-loading (then swap\u0002ping, to retain original orientations) d and e, and b and c, per the\r
+move from the left to right diagrams in Figure 4. Use g in the sym\u0002bolic expressions of this first step, then explode into an HBK with\r
+2 g  G, eventually deriving associated U-indices via adding of\r
+4 g  2 G  G to L-index strut-opposites. Likewise, write the Type II\r
+HA, B, CL HBK in two different Fano presentations, with Ha, b, cL and\r
+Ha, d, eL in their respective zigzags. \r
+Shorthand the Ha, b, cL~then Hd, e, fL~as zigzag presentations of\r
+the Type I HA, B, CL HBK as I:ABC ↬ a b c and I:ABC ↬ d e f in that\r
+order, and write the analogous Type II’s identically, but with II preced\u0002ing the colon. If one converts all symbolic expressions at nodes into\r
+pure graphical elements (oriented arrows), two deep surprises are\r
+revealed: \r
+I:ABC ↬ a b c ^ II:ABC ↬ a d e\r
+I:ABC ↬ a d e ^ II:ABC ↬ a b c. \r
+Here, we use ^ to mean is flowmorphic to: their oriented Fano\r
+graphs, with nodes labeled only with the minimal symbolic elements\r
+of the set Ha, b, c, d, e, f, sL, are identical. \r
+Proceed in the same fashion, employing all four columns of literal\r
+indices in Table 2: taking care to match letters and positions (so that\r
+the b L-index of the third Hf, d, bL trefoil is written in the second posi\u0002tion of the zigzag, the c L-index of the fourth Hf, c, eL is put in the\r
+third zigzag slot, etc.), the flowmorphic correspondences continue, in\r
+the same exact manner. \r
+Consider the three T-bar graphs mentioned earlier, which present\r
+as successive rotations clockwise through 120 ±: two reversed lines,\r
+the T’s crossbar and stem, share the a node in I:ADE ↬ a b c, the b\r
+node in I:DBF ↬ a b c, and c in I:EFC ↬ a b c. These correspond to\r
+Type II’s analogous graphs in the Ha, d, eL presentations of the ADE,\r
+DBF, and EFC HBKs respectively (with the Ha, d, eL in the Type II\r
+ABC being flowmorphic to the Type I HBK’s all-lines-reversed-but\u0002the-zigzag explosion graph). \r
+Ditto, for the Ha, d, eL row of presentations in Type I’s HBKs and\r
+the Ha, b, cL row in Type II’s. For all, the zigzag circular line is always\r
+clockwise (guaranteed by judicious choice of H or D in the DX).\r
+Viewed left (the ABC HBK) to right (the EFC), we first encounter the\r
+pup-tent graph, so-called because it has all three sides reversed, and\r
+only the strut not reversed in the pathion Type II box-kite source\r
+being reversed here, suggesting the vertical zipper in a pup-tent’s trian\u0002gular entryway. Then comes the swallow’s tail, with all nonzigzag\r
+lines reversed, except the two sides with midpoints not a. Third is the\r
+two-tined shrimp fork, where the only reversals are the line pair point\u0002ing out and away from e and not including the third ray from e’s\r
+angle containing a. Finally, in the EFC HBK, the two reversals of the\r
+switchblade comprise the side on the right leading into, and the strut\r
+leading out fromthe node d at the top\r
+Effecting Semantic Network Bricolage 97\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Viewed left (the ABC HBK) to right (the EFC), we first encounter the\r
+pup-tent graph, so-called because it has all three sides reversed, and\r
+only the strut not reversed in the pathion Type II box-kite source\r
+being reversed here, suggesting the vertical zipper in a pup-tent’s trian\u0002lines reversed, except the two sides with midpoints not a. Third is the\r
+two-tined shrimp fork, where the only reversals are the line pair point\u0002ing out and away from e and not including the third ray from e’s\r
+angle containing a. Finally, in the EFC HBK, the two reversals of the\r
+switchblade comprise the side on the right leading into, and the strut\r
+leading out from, the node d at the top. \r
+For the third and fourth rows we can construct beneath these same\r
+column heads, DX’s bringing properly oriented Hd, b, fL and He, f, cL\r
+L-trips into the zigzag, display T-bar-style rotations of only these four\r
+graphs (pup-tents always and only in the ABC column, the others shuf\u0002fled around in the other columns). This exact correspondence\r
+between Type I and Type II HBK graphs makes it clear that Type II’s\r
+second row of graphs, and Type I’s first, comprise the complete set of\r
+cowbird’s nests, thereby completing our proof. ‡"""
+
+[[sections]]
+number = "3"
+title = "Cowbirding, Bricolage, and Future Directions"
+text = """
+Cowbirds famously lay their eggs in other birds’ nests. As a verb,\r
+“cowbirding” was how some object-oriented programmers at the old\r
+Lotus Development Corporation described stuffing methods or struc\u0002tures in abandoned object slots, when creating new ones was inconve\u0002nient or disallowed. Our cowbird’s nests permit infiltration from out\u0002side the current index-system context, directly from another such:\r
+indefinitely many octonion copies, one per spandrel hidden box-kite\r
+(HBK), mean innumerable sites from which to restart the Cayley|Dick\u0002son process (CDP). Map indices of units in a given nest\r
+H3, 6, 5, 26, 31, 28, plus X  25 and 0 for reals in our running exam\u0002ple) to the usual “starter kit” (of 0 through 7, with X mapping most\r
+readily to 4 in the center, per the L-index Fano of the sedenions’\r
+S  4 box-kite). Or map them to any other “kit” that seemed conve\u0002nient, then back again after “digressing”. Chomsky’s context-sensitive\r
+grammars (as opposed to the context-free typical of programming lan\u0002guages) are clearly implicated, suggesting algorithmic opportunities\r
+exceeding the built-in givens of our “new kind of number theory”. \r
+“Cowbirding” as described here is synonymous with a term made\r
+famous by Lévi-Strauss in The Savage Mind, then disseminated by his\r
+colleague François Jacob [15] among evolutionary biologists. Brico\u0002lage, per the anthropologist, is what a rural jack-of-all-trades or “Mr.\r
+Fixit” (translated as a “tinkerer” in Jacob’s piece) performs. Like “the\r
+significant images of myth”, \r
+the materials of the bricoleur are elements which can be defined\r
+by two criteria: they have had a use, as words in a piece of\r
+discourse which mythical thought “detaches” in the same way\r
+as a bricoleur, in the course of repairing them, detaches the\r
+cogwheels of an old alarm clock; and they can be used again\r
+either for the same purpose or for a different one if they are at\r
+all diverted from their previous function. [16, p. 35]"""
+
+[[sections]]
+number = "98"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+the materials of the bricoleur are elements which can be defined\r
+by two criteria: they have had a use, as words in a piece of\r
+discourse which mythical thought “detaches” in the same way\r
+as a bricoleur, in the course of repairing them, detaches the\r
+either for the same purpose or for a different one if they are at\r
+all diverted from their previous function. [16, p. 35] \r
+Like MacGyver, the Swiss-army-knife and duct-tape-toting protago\u0002nist of the eponymous television series, the bricoleur, bereft of a spe\u0002cialized collection of high-tech tools, employs odds and ends that are\r
+found at hand, solving seemingly unrelated problems of the moment\r
+in unconventional ways. In the words of the authors of a highly influ\u0002ential tract on cognitive science, this is one among many ways of\r
+describing evolution as driven by suboptimal solution-finding, or\r
+“satisficing”, wherein selection \r
+operates as a broad survival filter that admits any structure that\r
+has sufficient integrity to persist. Given this point of view, the\r
+focus of analysis is no longer on traits but rather on organismic\r
+patterns via their life history. [This] is evolution as bricolage, the\r
+putting together of parts and items in complicated arrays, not\r
+because they fulfill some ideal design but simply because they\r
+are possible. Here the evolutionary problem is no longer how to\r
+force a precise trajectory by the requirements of optimal fitness;\r
+it is, rather, how to prune the multiplicity of viable trajectories\r
+that exist at any given point. [17, p. 196] \r
+What we need is a grasp of dynamic processes that drive or enable\r
+our flip-books, balloon rides, explosions, and so forth. Elsewhere (see\r
+pp. 139|140 of [1], and Sections 2 and 3 of [14]), we have deployed\r
+zero-divisor (ZD) tools to represent key objects of semiotics. For exam\u0002ple, we used the correspondence between the four-unit pattern of\r
+strut-opposite assessors and Jean Petitot’s four-control butterfly catas\u0002trophe rendering of Algirdas Greimas’ “semiotic square” [15]. But Peti\u0002tot also provides a more complex, double cusp catastrophe model of\r
+the primary tool used by Lévi-Strauss: the “canonical law of myths”\r
+[16]. As the third section of this monograph’s first draft sketches out\r
+at length [18], sequel studies [19] will deploy a sort of catastrophic rep\u0002resentation theory based on ZDs. Beginning with the correspondence\r
+between the “local” level of our strut-opposite quartets of assessor\r
+indices and the semiotic square, we proceed into more rarefied air,\r
+where explosion necessitates connecting with the “global” network\r
+trafficking the canonical law would regulate. (Leading question: Will\r
+the future architecture of the Web-replacing grid recapitulate that of\r
+Lévi-Strauss’s “web that knows no weaver” made of myths?) \r
+To briefly review our earlier work relating ZD patterns to\r
+Greimas’ square, place A and a, say, on a square’s top corners, and\r
+strut-opposite units F and f on the corners diagonally opposite. The\r
+two ends of each line are connected by XOR with X, the diagonals by\r
+G, and the verticals by S. Instantiations of this “atom of meaningful\u0002ness” abound in Greimas’ and Petitot’s works, but one telling exam\u0002ple implicitly demonstrates its difference from Boolean binary logic. \r
+Across the horizontals at the top and bottom of the box, write\r
+“True” and “False”; along left and right verticals, put “Secret” and\r
+“Lie”. Label the nodes at top-left and bottom-right “Being” and “Non\u0002being”, and refer to the diagonal as the schema for immanence; those\r
+at top and bottom of the other diagonal, regulating manifestation, are\r
+labeled “Seeming” and “Nonseeming”, respectively. (For a detailed dis\u0002\r
+iSi37 f [15]) Thiidfk f\r
+Effecting Semantic Network Bricolage 99\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Across the horizontals at the top and bottom of the box, write\r
+“True” and “False”; along left and right verticals, put “Secret” and\r
+“Lie”. Label the nodes at top-left and bottom-right “Being” and “Non\u0002being”, and refer to the diagonal as the schema for immanence; those\r
+at top and bottom of the other diagonal, regulating manifestation, are\r
+labeled “Seeming” and “Nonseeming”, respectively. (For a detailed dis\u0002cussion, see Section 3.7 of [15].) This provides a framework for con\u0002templating verediction, which plays a key role in the contractual com\u0002ponent of narratives. The exposure of the villain transforms “Lie”\r
+into “False” at the turning point in countless fairy tales, where the\r
+threat to the true order of things is finally rejected (typically, at the\r
+last possible moment). In stories like Cinderella, the narrative is pro\u0002pelled by the inevitability of transforming the “Secret” into the\r
+“True”: it is the possessor of the secret of the glass slipper, not one of\r
+her evil step-sisters, who rightly wins Prince Charming’s heart. \r
+The three kinds of lines relate to Roman Jakobson’s three kinds of\r
+“binary opposition” in his groundbreaking studies of phonemics, at\r
+the basis of all later structuralist set-ups, including that of Lévi\u0002Strauss. The diagonals indicate Jakobson’s “privation”: for example,\r
+the plosive “p” differs from “b” solely by its absence of voicing~and\r
+indicate, for us, where the singleton high-bit indicated by G is XOR’d\r
+with the index of a lowercase or uppercase letter, thereby connecting\r
+L- to U-units in strut-opposite assessors. The horizontals are sites of\r
+contrariety~a two-control competition between two warring parties\r
+in catastrophe terms (or a pair of “sememes” forced into relationship\r
+from the semiotician’s vantage). They generate the synchronous (/)\r
+and antisynchronous (\\) diagonals in the assessor planes in our model.\r
+Verticals are linked with implication. Per the previous paragraph’s\r
+examples, transforming competitive dynamics on horizontals, into\r
+orders of implication along verticals, opens the door to higher-order\r
+models: conversion of horizontals into verticals in this sense is exactly\r
+what our explosion process effects. \r
+Here we can underwrite the full workings of “spandrel thinking”,\r
+as Gould and Lewontin explain it. For spandrels exist not only on post\u0002age stamps, but in the quartet of curved triangles formed where dome\u0002supporting arches cross in front of cathedral naves. Spandrels became\r
+favorite sites for mosaic and painterly expression~so much so that\r
+one who was architecturally naïve might think archways’ intersection\r
+patterns were concocted to facilitate their production. But in fact,\r
+they are the happy side-effect of the architecture~the evolution of\r
+architectural design selected for crossed arches, not the spandrels that\r
+rode on their coattails. Gould and Lewontin’s point: many evolution\u0002ary arguments assume selection pressures are at work evolving span\u0002drel-like attributes~or, in Greimas’ argot, that presuppositions (the\r
+square’s verticals) must sometimes fight for survival (along horizon\u0002tals). \r
+Such cart-before-horse flip-flops are endemic in any explanatory\r
+enterprise. What we claim here is that our toolkit suffices to model\r
+cowbird logic, become sites for future adaptations (hence, selection\r
+pressures) in their own right [20]."""
+
+[[sections]]
+number = "100"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+Such cart-before-horse flip-flops are endemic in any explanatory\r
+ What we claim here is that our toolkit suffices to model\r
+conundra of this sort and allow for contexts wherein spandrels, by\r
+cowbird logic, become sites for future adaptations (hence, selection\r
+pressures) in their own right [20]. \r
+References\r
+[1] R. P. C. de Marrais, “Placeholder Substructures I: The Road from NKS\r
+to Scale-Free Networks Is Paved with Zero-Divisors,” Complex Systems,\r
+17, 2007 pp. 125|142. (Nov 22, 2007) arXiv:math.RA/0703745v3\r
+[math.RA]. \r
+[2] R. P. C. de Marrais. “Placeholder Substructures II: Meta-Fractals, Made\r
+of Box-Kites, Fill Infinite-Dimensional Skies.” (Nov 22, 2007)\r
+arXiv:0704.0026v3 [math.RA]. \r
+[3] R. P. C. de Marrais. “Placeholder Substructures III: A Bit-String-Driven\r
+‘Recipe Theory’ for Infinite-Dimensional Zero-Divisor Spaces.” (Nov\r
+22, 2007) arXiv:0704.0112v3 [math.RA]. \r
+[4] F. Jacob, “Evolution and Tinkering,” Science, 196(4295), 1977\r
+pp. 1161|1166. \r
+[5] C. Lévi-Strauss, The Savage Mind (Nature of Human Society Series),\r
+Chicago: The University of Chicago Press, 1966; Le Pensée sauvage\r
+(French original), 1962. \r
+[6] R. P. C. de Marrais. “The 42 Assessors and the Box-Kites They Fly.”\r
+(Nov 30, 2000) arXiv:math.GM/0011260v1 [math.GM]. \r
+[7] R. G. Moreno, “The Zero Divisors of the Cayley|Dickson Algebras over\r
+the Real Numbers,” Boletín Sociedad Matemática Mexicana, 3(4, 1),\r
+1998 pp. 13|28. (Oct 8, 1997) arXiv:q-alg/9710013v1 [math.QA]. \r
+[8] Sir T. Berners-Lee, “The Two Magics of Web Science,” (keynote\r
+address, Sixteen International World Wide Web Conference\r
+(WWW2007), Banff, 2007); video available online at www.w3.org/2007/-\r
+Talks/0509-www-keynote-tbl. \r
+[9] R. P. C. de Marrais. “Placeholder Substructures: The Road from NKS to\r
+Small-World, Scale-Free Networks Is Paved with Zero-Divisors,” (2006).\r
+www.wolframscience.com/conference/2006/presentations/\r
+materials/demarrais.ppt. \r
+[10] I. L. Kantor, A. S. Solodovnikov, and A. Shenitzer, Hypercomplex\r
+Numbers: An Elementary Introduction to Algebras, New York: Springer\u0002Verlag, 1989. \r
+[11] S. J. Gould and R. C. Lewontin, “The Spandrels of San Marco and the\r
+Panglossian Paradigm: A Critique of the Adaptationist Programme,”\r
+Proceedings of the Royal Society of London, Series B, 205(1161), 1979\r
+pp. 581|598. \r
+[12] R. P. C. de Marrais. “Flying Higher than a Box-Kite: Kite-Chain\r
+Middens, Sand Mandala, and Zero-Divisor Patterns in the 2n-ions\r
+beyond the Sedenions.” (Dec 18, 2002) arxiv.org/abs/math/0207003v2\r
+[math.RA]. \r
+[13] B. B. Mandelbrot, The Fractal Geometry of Nature, San Francisco:\r
+W. H. Freeman and Company, 1983. \r
+Effecting Semantic Network Bricolage 101\r
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75
+
+[14] R. P. C. de Marrais. “Presto! Digitization: Part I: From NKS Number\r
+Theory to ‘XORbitant’ Semantics, by way of Cayley|Dickson Process\r
+and Zero-Divisor-Based ‘Representations’.” (Mar 13, 2006)\r
+arXiv:math.RA/0603281v1 [math.RA]. \r
+[15] J. Petitot, Morphogenesis of Meaning (European Semiotics Series), New\r
+York: Peter Lang Publishing, 2004; Morphogenèse du sens (French\r
+original), 1985. \r
+[16] J. Petitot, “A Morphodynamical Schematization of the Canonical\r
+Formula for Myths,” The Double Twist: From Ethnography to Morpho\u0002dynamics (P. Maranda, ed.), Toronto: University of Toronto Press, 2001\r
+pp. 267|311. \r
+[17] F. Varela, E. T. Thompson, and E. Rosch, The Embodied Mind:\r
+Cognitive Science and Human Experience, Cambridge, MA: The MIT\r
+Press, 1991. \r
+[18] R. P. C. de Marrais. “Voyage By Catamaran: Long-Distance Network\r
+Navigation, from Myth Logic to the Semantic Web, Can Be Effected by\r
+Infinite-Dimensional Zero-Divisor Ensembles.” (Apr 21, 2008)\r
+arXiv:math.GM/0804.3416v1 [math.GM]. \r
+[19] R. P. C. de Marrais, “Natural Numbers, Natural Language: Architecting\r
+the Semantic Web,” in Proceedings of the Fourth International Confer\u0002ence on Natural Computation (ICNC’08), Jilin, China (M. Guo,\r
+L. Zhao, and L. Wang, eds.), Los Alamitos, CA: IEEE Press, 2008. \r
+[20] A. S. Wilkins, “Colloquium Papers: Between ‘Design’ and ‘Bricolage’:\r
+Genetic Networks, Levels of Selection, and Adaptive Evolution,”\r
+Proceedings of the National Academy of Sciences (PNAS), 104(1), 2007\r
+pp. 8590|8596. www.pnas.org/content/104/suppl.1/8590."""
+
+[[sections]]
+number = "102"
+title = "R. P. C. de Marrais"
+text = """
+Complex Systems, 18 © 2008 Complex Systems Publications, Inc.\r
+https://doi.org/10.25088/ComplexSystems.18.1.75"""
+
+[[figures]]
+label = "fig:1"
+page_num = 6
+image_path = "images/image_p6_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 7
+image_path = "images/image_p7_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 10
+image_path = "images/image_p10_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 10
+image_path = "images/image_p10_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 11
+image_path = "images/image_p11_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 11
+image_path = "images/image_p11_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 14
+image_path = "images/image_p14_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 14
+image_path = "images/image_p14_8.png"

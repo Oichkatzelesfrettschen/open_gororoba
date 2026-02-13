@@ -1,0 +1,1106 @@
+LIGO–Virgo–KAGRA webinar
+
+
+The population of merging compact
+binaries inferred using gravitational
+waves through GWTC-3
+10 December 2021
+
+
+
+
+Webinar streaming live from 15:00 UTC
+                        Image credit: LIGO/Caltech/MIT/Sonoma State/Aurore Simonnet
+The population of merging
+compact binaries inferred
+using gravitational waves
+through GWTC-3
+arXiv:2111.03634 •
+
+
+
+
+15:00 UTC • 10 December 2021 • dcc.ligo.org/G2102458/public
+                                                              2
+           https://www.youtube.com/ligovirgo
+
+           6 December 2021: Compact binary
+           coalescences observed by LIGO and Virgo
+           during the second part of the third
+           observing run
+
+           9 December 2021: Constraints on the
+GWTC-3     cosmic expansion history from GWTC-3
+
+webinars   Today: The population of merging compact
+           binaries inferred using gravitational waves
+           through GWTC-3
+
+           January 2022: Tests of general relativity
+           with GWTC-3
+
+                                                         3
+           Amanda Farah         The Binary Merger
+           U Chicago            Population
+
+
+           Philippe Landry      Neutron Star
+           CITA                 Mergers
+
+
+
+Speakers
+           Vaibhav Tiwari       Black Hole Masses
+           Cardiff
+
+
+           Tom Callister        Black Hole
+           CCA                  Redshifts and Spins
+
+
+           Richard O’Shaughnessy Moderator
+           RIT                   Q&A
+
+                                                      4
+            Fabio Antonini             Astro interpretation
+            Cardiff University
+
+
+            Bruce Edelman              Black Hole Masses
+            University of Oregon
+
+
+            Stephen Fairhurst          Additional events
+            Cardiff University
+
+
+
+Panelists   Adrian Helmling-Cornell
+            University of Oregon
+                                       Event selection
+
+
+            Jacob Golomb               Populations
+            Caltech
+
+
+            Dan Wysocki                Populations
+            UWM
+
+
+            Shanika Galaudage          Populations
+            OzGrav/Monash University
+
+                                                              5
+Introduction       Full                              BBH
+                             BNS and
+   Inputs      Spectrum of             BBH Mass   Redshift and
+                              NSBH
+  Methods        Mergers                             Spin
+
+
+
+
+                                                                 6
+              A Growing Catalog : GWTC-1
+          O1 + O2
+
+
+
+
+Mass
+
+
+
+
+       Order of detection
+                                           7
+   A Growing Catalog : GWTC-2.1
+O1 + O2      O3a
+
+
+
+
+                                  8
+   A Growing Catalog : GWTC-3
+O1 + O2     O3a            O3b
+
+
+
+
+                                 9
+GWTC-3 adds 35
+events with more
+                        A Growing Catalog : GWTC-3
+than 50% probability
+of an astrophysical
+source
+
+Total number of
+events is now 90
+
+We analyze the 67
+events with false
+alarm rate (FAR)
+below ¼ yr-1
+
+Most are binary black
+holes (BBH)
+
+Some are neutron
+star - black hole
+binaries (NSBH)
+
+Two are binary
+neutron stars (BNS)                                  10
+                    Population of GW Sources
+                    ●   Population analysis to understand
+                        individual events
+
+                    ●   Features found in the population
+                        shed light on the astrophysical
+                        origins of the systems we observe
+
+
+
+
+GWTC-2 population
+study: link
+
+
+
+
+                                                            11
+                          Methods and Inputs
+                          ●          67 events with false alarm rate (FAR) below ¼ yr-1
+
+Details of how we infer   ●          masses, spins, and distances of all these events inferred from the gravitational wave
+the masses, spins, and               signal
+other source                                                                                χ2
+parameters are in the                                                             m2
+catalog paper
+                                      r
+                                     ete
+                                                       mass ratio q= m2 / m1
+                                 om
+                                                                                                               χ1
+                               rfer
+                              Inte
+                                                                  DL
+                                                                                                          m1
+Sensitivity estimates     ●          Use a hierarchical Bayesian analysis to get an astrophysical distribution of sources
+for modeling selection    ●          Take selection effects into account
+effects are on Zenodo
+                          ●          several mass models, 3 spin models, and one distance model for the astrophysical
+                                     population of sources
+
+                                                                                                                             12
+           Merger rates of all sources
+
+           Subpopulations
+
+           Lower Mass Gap
+
+
+
+Introduction         Full                                        BBH
+                                         BNS and
+   Inputs        Spectrum of                       BBH Mass   Redshift and
+                                          NSBH
+  Methods          Mergers                                       Spin
+
+
+
+
+                                                                             13
+                            Full Spectrum of Compact Objects
+We are sensitive to two
+types of compact
+objects: neutron stars
+and black holes
+
+Three types of mergers:
+binary neutron star,
+binary black hole,
+neutron star - black hole
+
+Fundamental Questions:
+  ●  Which types of
+     mergers are we
+     seeing?
+  ●  How many are
+     happening in the
+     Universe?
+
+
+                                                               14
+Full Spectrum of Compact Objects
+●   Models spanning the full spectrum of compact objects allow us to
+     ○   Search for a feature between neutron stars and black holes
+     ○   Find relative rates of mergers in different parts of the spectrum
+     ○   Include ambiguously classiﬁed events
+
+
+
+
+          1
+
+
+                                                                             15
+                       Features and Merger Rates
+                       ●   Multiple models consistent
+PDB: Power Law + Dip       with same results
++ Break
+
+MS: Multi-Source
+
+BGP: Binned Gaussian
+Process
+
+
+
+                       ●   Steep drop-off in the merger
+                           rate after neutron star-like
+                           masses
+                       ●   Potential but yet-unresolved
+                           upper edge of mass gap
+
+                                                          16
+                             NS mass distribution
+
+
+
+Introduction       Full                                           BBH
+                                  BNS and
+   Inputs      Spectrum of                          BBH Mass   Redshift and
+                                   NSBH
+  Methods        Mergers                                          Spin
+
+
+
+
+                                                                              17
+                          Neutron star candidates
+
+Five events with a
+low-mass component (m
+< 3 M☉)
+
+We infer the
+distribution of NS
+masses in merging
+compact binaries from a
+subset of these events
+
+
+
+
+                                                    18
+                       Classifying objects as neutron stars
+                        ●    Treat low-mass components as NSs if P(m ≤ MTOV) > 50%
+
+MTOV is the non-        ●    Obtain same classiﬁcations relative to Mgap
+                                                                     low instead of MTOV
+rotating maximum NS
+mass estimated from
+current NS equation                                                                        Six NSs in total
+of state knowledge
+                                                                                           Com
+ gap
+Mlow is the inferred
+lower edge of the                                                                          GW170817 x 2
+mass gap between                                                                           GW190425 x 2
+NSs and BHs
+                                                                                           GW200105 x 1
+GW190814 is a BBH                                                                          GW200115 x 1
+according to this
+classiﬁcation
+
+
+
+                       MTOV from Legred et al. 2106.05313                                                     19
+                           Neutron star mass distribution
+Recover broad mass                                                                    Galactic
+distribution with more                                                                Galactic BNS
+                                                                                      Peak
+support for heavy NSs
+                                                                                      Power                Difference relative to
+than Galactic population
+                                                                                                           Galactic population
+                                                                                                           could result from
+Gaussian Peak model
+                                                                                                           distinct formation
+does not recover sharp
+                                                                                                           channels, strong
+peak at 1.35 M☉
+                                                                                                           selection effects, or
+observed in Galactic BNS
+                                                                                                           overlap of NS and BH
+population
+                                                                                                           mass distributions
+Power model’s exponent
+α = -2+5
+       -7 weakly
+constrained, but
+consistent with uniform
+distribution
+
+
+
+                           Galactic ﬁt from Farr & Chatziioannou 2005.00032, Galactic BNS ﬁt from Ozel & Freire 1603.02698          20
+                               Maximum neutron star mass
+
+Maximum mass observed
+in the NS population is
+mmax= 2.0+0.3
+          -0.2 M☉
+
+
+Observed maximum mass
+is consistent with MTOV=
+2.2+0.3 M☉ -0.2
+            from the
+equation of state
+
+Also consistent with
+observed mmax= 2.2+0.8
+                     -0.2 M☉
+for Galactic pulsars
+
+
+
+
+                               MTOV from Legred et al. 2106.05313, Galactic mmax from Farr & Chatziioannou 2005.00032   21
+                                       Binary properties (I)
+
+
+
+Introduction       Full                                           BBH
+                             BNS and
+   Inputs      Spectrum of                BBH Mass             Redshift and
+                              NSBH
+  Methods        Mergers                                          Spin
+
+
+
+
+                                                                              22
+                                Mass distribution
+Results from our coarse
+grained model consistent
+between GWTC-2 and
+GWTC-3.
+
+A higher fraction of low mass
+and unequal mass binaries
+observed in GWTC-3.
+
+Steeper decline at lower
+masses and a broader mass
+ratio distribution
+
+PowerLaw + Peak
+
+
+
+
+                                                    23
+                              Mass distribution
+Overdensity between 8M⦿
+and 10M⦿, and around 26M⦿.
+
+One-eighth of the
+observations in the ﬁrst
+overdensity.
+
+Absence of mergers with chirp
+masses between 10M⦿ and
+12M⦿.
+
+A weaker feature present at
+around 14M⦿
+
+
+FM: Flexible Mixture
+
+                                                  24
+                            Mass distribution
+Addition of more ﬂexible
+models for the mass
+distribution.
+
+Overdensity at 10M⦿
+and 35M⦿ at a credibility
+greater than 99%.
+
+Overdensity at
+10M⦿contributes
+biggest fraction to the
+merger rate.
+
+Overdensity at 35M⦿
+contributes biggest
+fraction to the observed
+mergers.
+
+                                                25
+                        Mass distribution
+
+Analysis dedicated to
+upper mass gap
+
+No evidence for an
+upper mass gap
+
+Mass gap higher than
+expected or heavier
+binaries formed in a
+way that avoids
+pair-instability.
+
+
+
+
+                                            26
+                               Mass distribution
+
+GW190917 and GW190814
+are outliers in binary black hole
+population.
+
+Could suggest a separate
+subpopulation.
+
+
+
+
+                                                   27
+                                                  Binary properties (II)
+
+
+
+Introduction       Full                                  BBH
+                             BNS and
+   Inputs      Spectrum of             BBH Mass       Redshift and
+                              NSBH
+  Methods        Mergers                                 Spin
+
+
+
+
+                                                                           28
+                            Redshift evolution
+                            Analysis
+
+Previous analyses were
+agnostic about evolution
+of the BBH merger rate
+
+We now conﬁdently
+conclude that the merger
+rate rises into the past
+
+Result driven by new data
+and improved estimates
+of search sensitivities
+
+No evidence that mass
+varies with redshift
+
+
+
+                                                 29
+                             Spin distribution
+                             Background
+
+BBH spins explored via two
+complementary approaches:
+
+Measurement of component
+spin magnitudes and tilts
+
+Measurement of effective
+spin parameters :
+
+          average
+  spin parallel to L
+       dominant spin
+  perpendicular to L
+
+
+
+
+                             Talbot & Thrane 1704.08370; Miller et al. 2001.06051; LIGO-Virgo-Kagra Collaborations 2010.14533   30
+                          Spin distribution
+                          Background
+
+BBH spin orientations
+probe binary formation
+
+
+Isolated ﬁeld binaries:
+preferentially aligned
+spins
+
+
+Dynamical assembly in
+clusters: isotropically
+aligned spins
+
+
+
+
+                          e.g. Mandel & Farmer 1806.05820   31
+                                    Spin distribution
+                                    Analysis
+
+Spin magnitudes due to                Spin magnitudes generally small
+non-zero natal spins, or              but non-vanishing.                Signiﬁcant spin-orbit misalignment
+spin-up via binary tides
+& mass transfer?
+
+Despite misalignment,
+spin orientations are not
+isotropic; challenge to
+purely-dynamical origin
+
+Effective spins reveal
+non-vanishing      and
+asymmetric
+distributions
+                              is!
+                   a b o ut th
+                us
+          Ask
+
+                                                                                                             32
+                           Correlations between spin and mass ratio
+                           Analysis
+Allow mean and
+standard deviation of
+    to depend linearly
+on mass ratio q
+
+On average, BBHs with
+more unequal masses
+have larger effective
+spins
+
+Could signify
+preferentially larger or
+more aligned spins with
+unequal mass ratios
+                                                 0.0
+
+
+
+                           Callister et al. 2106.00521                33
+                          Correlations between spin and mass
+                          Analysis
+A relationship between
+BH spins and masses
+might signify e.g.
+repeated “hierarchical”
+mergers
+
+Sought to identify mass
+& spin correlations
+using the Flexible
+Mixtures approach
+
+No evidence for a
+mass-dependent spin
+distribution
+
+
+
+
+                                                               34
+                      Summary
+                      What we’ve learned
+
+Look out for:         Neutron stars         NS-BH binaries   BH-BH binaries           All sources
+O4 observing run in   Maximum mass          Improved NS-BH   Global maximum at       First self-consistent
+December 2022         consistent with       rate estimates   10                      measurement of the
+                      TOV expectation                                                merger rate across all
+                                                             Overdensity at 35
+Upcoming webinar:                                                                    masses
+                      Systematically
+Testing general       broader mass                           Merger rate increases
+relativity with       distribution than                      with redshift
+GWTC-3 (20 Jan)       Galactic population
+                                                             Misaligned spins
+                                                             Correlations between
+                                                             spin and mass ratios
+
+
+
+
+                                                                                                          35
+Data release
+
+
+
+
+               36
+                        Data
+                        Data products
+Data products include
+full analyses used in   Analysis results available from www.gw-openscience.org/GWTC-3/ at
+paper                   https://doi.org/10.5281/zenodo.5650061
+Notebooks and            ●   Full posteriors for all analyses
+example scripts
+included with data       ●   Python tutorials
+products                 ●   Search sensitivity (O3, and O1+O2+O3)
+                         ●   Data for all tables
+Gravitational Wave
+Open Data                ●   Data behind the ﬁgures (soon: all ﬁgure generation scripts)
+Workshops provide
+more resources to
+understand data
+analysis
+
+
+                                                                                            37
+This material is based upon work supported by NSF’s LIGO Laboratory which is a major facility fully funded by the National Science Foundation. The authors also
+gratefully acknowledge the support of the Science and Technology Facilities Council (STFC) of the United Kingdom, the Max-Planck-Society (MPS), and the State of
+Niedersachsen/Germany for support of the construction of Advanced LIGO and construction and operation of the GEO 600 detector. Additional support for Advanced
+LIGO was provided by the Australian Research Council. The authors gratefully acknowledge the Italian Istituto Nazionale di Fisica Nucleare (INFN), the French Centre
+National de la Recherche Scientiﬁque (CNRS) and the Netherlands Organization for Scientiﬁc Research, for the construction and operation of the Virgo detector and
+the creation and support of the EGO consortium. The authors also gratefully acknowledge research support from these agencies as well as by the Council of Scientiﬁc
+and Industrial Research of India, the Department of Science and Technology, India, the Science & Engineering Research Board (SERB), India, the Ministry of Human
+Resource Development, India, the Spanish Agencia Estatal de Investigación, the Vicepresidència i Conselleria d'Innovació, Recerca i Turisme and the Conselleria
+d'Educació i Universitat del Govern de les Illes Balears, the Conselleria d'Innovació, Universitats, Ciència i Societat Digital de la Generalitat Valenciana and the CERCA
+Programme Generalitat de Catalunya, Spain, the National Science Centre of Poland and the Foundation for Polish Science (FNP), the Swiss National Science
+Foundation (SNSF), the Russian Foundation for Basic Research, the Russian Science Foundation, the European Commission, the European Regional Development
+Funds (ERDF), the Royal Society, the Scottish Funding Council, the Scottish Universities Physics Alliance, the Hungarian Scientiﬁc Research Fund (OTKA), the French
+Lyon Institute of Origins (LIO), the Belgian Fonds de la Recherche Scientiﬁque (FRS-FNRS), Actions de Recherche Concertées (ARC) and Fonds Wetenschappelijk
+Onderzoek – Vlaanderen (FWO), Belgium, the Paris Île-de-France Region, the National Research, Development and Innovation Ofﬁce Hungary (NKFIH), the National
+Research Foundation of Korea, the Natural Science and Engineering Research Council Canada, Canadian Foundation for Innovation (CFI), the Brazilian Ministry of
+Science, Technology, and Innovations, the International Center for Theoretical Physics South American Institute for Fundamental Research (ICTP-SAIFR), the
+Research Grants Council of Hong Kong, the National Natural Science Foundation of China (NSFC), the Leverhulme Trust, the Research Corporation, the Ministry of
+Science and Technology (MOST), Taiwan, the United States Department of Energy, and the Kavli Foundation. The authors gratefully acknowledge the support of the
+NSF, STFC, INFN and CNRS for provision of computational resources. Computing was performed on the OzSTAR Australian national facility at Swinburne University
+of Technology, which receives funding in part from the Astronomy National Collaborative Research Infrastructure Strategy (NCRIS) allocation provided by the
+Australian Government. We thankfully acknowledge the computer resources at MareNostrum and the technical support provided by Barcelona Supercomputing
+Center (RES-AECT-2021-2-0021). This work was supported by MEXT, JSPS Leading-edge Research Infrastructure Program, JSPS Grant-in- Aid for Specially Promoted
+Research 26000005, JSPS Grant-in-Aid for Scientiﬁc Research on Innovative Areas 2905: JP17H06358, JP17H06361 and JP17H06364, JSPS Core-to-Core Program
+A. Advanced Research Networks, JSPS Grant-in-Aid for Scientiﬁc Research (S) 17H06133, the joint research program of the Institute for Cosmic Ray Research,
+University of Tokyo, National Research Foundation (NRF) and Computing Infrastructure Project of KISTI-GSDC in Korea, Academia Sinica (AS), AS Grid Center (ASGC)
+and the Ministry of Science and Technology (MoST) in Taiwan under grants including AS-CDA-105-M06, Advanced Technology Center (ATC) of NAOJ, and Mechanical
+Engineering Center of KEK.
+
+We would like to thank all of the essential workers who put their health at risk during the COVID-19 pandemic, without whom we would not have been able to
+complete this work.
+
+                                                                                                                                                                             38
+Questions
+
+
+
+
+            39
+            Fabio Antonini             Astro interpretation
+            Cardiff University
+
+
+            Bruce Edelman              Black Hole Masses
+            University of Oregon
+
+
+            Stephen Fairhurst          Additional events
+            Cardiff University
+
+
+
+Panelists   Adrian Helmling-Cornell
+            University of Oregon
+                                       Event selection
+
+
+            Jacob Golomb               Populations
+            Caltech
+
+
+            Dan Wysocki                Populations
+            UWM
+
+
+            Shanika Galaudage          Populations
+            OzGrav/Monash University
+
+                                                              40
+Extra: GWTC-3
+
+
+
+
+                41
+                       Extra: Merger rate versus all mass
+                                                 m2
+                       ●   Multiple methods to
+Details of models in       corroborate results
+these links:
+
+BGP, MSo, PDB
+                                                      m1
+
+
+
+
+                                                            42
+Takeaways so far
+●   Growing catalog gives us deeper insight into each event
+
+●   Features in the population can teach us astrophysical lessons
+
+●   We make the ﬁrst self-consistent measurement of the merger rate of
+    compact binaries across all masses
+
+●   Starting to resolve transition between neutron stars and black holes,
+    which allows us to classify the two types of objects
+
+
+
+
+                                                                            43
+Each signal we have
+                                              Source properties
+detected so far has
+come from the merger
+of two compact
+objects- neutron stars
+and black holes
+
+Using Bayesian
+inference, we analyse
+
+
+                         Strain / 10-21
+data to infer source
+properties like
+masses, spins,
+distance, and sky                         -
+location
+                                          -
+We use waveform
+models (see the
+GWTC-2.1 webinar)
+
+
+
+
+                                                                  44
+                           Extras: Effective spin parameters
+                           Analysis
+
+Effective spins ﬁt as a      Asymmetric distribution of   Non-vanishing distribution of
+multivariate Gaussian        effective inspiral spins     effective precessing spins
+
+Quite consistent with
+effective spin
+distributions implied by
+“Default’’ spin
+magnitude and tilt
+model
+
+
+
+
+                                                                                          45
+                              Extras: Negative effective spins?
+                              Analysis
+
+Negative effective spins
+would indicate spins                     Previous method   Updated method
+misaligned by more than
+90 degrees
+
+Previously investigated by
+introducing a variable
+lower truncation bound
+
+Updated analysis allows for
+additional overdensity at
+to avoid possible
+systematics
+
+
+
+
+                                                                            46
+                           Extras: Negative effective spins?
+                           Analysis
+
+When assuming no
+overdensity, we ﬁnd
+negative effective spins
+at 99.8% credibility
+
+When allowing for
+overdensity, conclude
+that             at
+88.4% credibility
+
+Data do not require
+overdensity to exist
+
+
+
+
+                                                               47
+Additional events not
+                            Extras: Other Events
+used in this analysis are
+broadly consistent with
+the observed population
+
+Events from IAS
+searches: Venumadhav
+et al 1904.07214,
+Zackay et al
+1910.09528
+
+Events from OGC
+searches: Nitz et al
+2105.09151
+
+Events from GWTC-3
+below threshold used in
+this analysis
+
+
+
+                                                   48
+                        Modeled searches
+Model signals as                      Template bank total masses
+Compact Binary                          ●   MBTA: 2 - 200 Msun
+Coalescence (CBC)                       ●   GstLAL: 2 - 758 Msun
+                                        ●   PyCBC: 2 - 500 Msun
+Waveforms depend                      Mass ratio
+on intrinsic source                     ●   MBTA:
+parameters:                             ●   GstLAL: 0.02 - 1 (depends on parameter
+component masses                            space region)
+and the dimensionless                   ●   PyCBC: ⅓ - 1
+component spins                       Spins
+                                        ●   MBTA: aligned spins up to 0.997
+                                        ●   GstLAL: anti- or aligned spins up to
+                                            0.999
+                                        ●   PyCBC: anti- or aligned spins up to 0.998
+
+
+
+
+                                                                                        49
+                           NSBH
+Mass ratio q is ratio of
+                           masses
+secondary to primary
+mass:
+         m2
+    q=
+         m1
+
+Coloured contours in
+this plot are conﬁdent
+neutron star - black
+hole pairs
+
+Grey contours in this
+plot are ambiguous,
+with secondary that
+may be a black hole or
+a neutron star
+
+
+
+
+                                    50
+                             GW190814
+
+GW190814’s m2 is an                     Peak model predicts
+outlier relative to the                 largest m2 observed
+population of BNS and                   after 2 BNSs and 3
+NSBH secondaries                        NSBHs to be smaller
+                                        than GW190814’s m2
+The GWTC-2                              99.9% of the time
+population study found
+that it is also an outlier
+from the BBH
+population
+
+
+
+
+                                                              51
+                         Masses and spins
+Most effective
+inspiral spins
+consistent with zero
+
+Some events with
+signiﬁcant support for
+negative effective
+inspiral spins
+
+More events have
+signiﬁcant support for
+positive effective
+inspiral spins
+
+Consistent with
+GWTC-2.1
+
+
+
+                                            52
+                        NSBH spins
+Primary spin better
+measured as more
+important for
+dynamics
+
+Spin components in
+the orbital plane
+better measured for
+more extreme mass
+ratios
+
+Spins approximately
+aligned with orbital
+angular momentum
+expected for binaries
+formed in isolation
+
+
+                                     53
+                          BBH spins: small / positive
+
+Spins expected to be
+small if angular
+moment transfer is
+efﬁcient in stars
+
+Spins in X-ray binaries
+extend close to the
+Kerr limit of 1
+
+
+
+
+                                                        54
+                        BBH spins: misaligned / negative
+Misaligned spins
+expected for binaries
+formed dynamically
+
+Equal-mass mergers
+produce spins around
+0.7
+
+GW200129 shows
+best evidence for
+misaligned spins
+
+
+
+
+                                                           55
+Highlighted events O3b catalog
+
+                                 negative spin
+
+                                 lightest BBH in O3b
+
+                                 positive spin
+
+                                 NSBH
+
+                                 NSBH
+                                 misaligned spin
+
+                                 NSBH?
+
+                                 negative spin
+
+
+
+
+                                                 56
+Tables
+
+
+
+
+         57
+Tables
+
+
+
+
+         58
+                       Search methods
+Same methods as
+GWTC-2.1 (GstLAL,      Modeled searches                    Minimally modeled search
+MBTA, PyCBC) and
+GWTC-2 (cWB).
+                       ●   GstLAL, MBTA, PyCBC Broad,      ●   CWB
+Descriptions of            PyCBC BBH                       ●   Can potentially identify
+pipelines are given
+with more details in   ●   Assume the source is CBC.           non-CBC sources.
+Section IV and         ●   Uses matched ﬁltering and
+                                                           ●   Does not use matched
+Appendix D of the          banks of template waveforms
+paper.                     with varying parameters to          ﬁltering or waveforms.
+                           ﬁnd signals in the data.        ●   Identiﬁes excess power in
+                       ●   HL, HV, LV, HLV coincidences.       coincident strain data to
+                       ●   GstLAL allows for single            ﬁnd signals.
+                           detector candidates.            ●   HL, HV, LV coincidences.
+
+                                                                                           59
+                     Population-weighted posteriors
+With growing         ●   Event posteriors reweighted with Power law + Peak (PP), Flexible Mixtures (FM)
+catalog we can use
+the population as    ●   For some events: q~1 preferred, PP and FM models disagree (with PP model
+the prior for our        pulling distribution towards       )
+event posteriors.                                                                            Original, PP, FM
+
+More details in
+Appendix E of the
+paper.
+
+
+
+
+                                                                                                                60
+We use the false alarm
+rate (FAR) to
+determine which
+                           Event selection criterion
+triggers we should
+analyze
+                           ●   This work and GWTC-3 use different             ●   What’s the difference?
+Events with a FAR<1/1          criteria for what constitutes a GW
+year are studied in this       event                                                ○   Potential GW events are assigned a
+work                                                                                    signal-to-noise ratio (SNR) based on
+                                 ○     GWTC-3 uses the probability that a               their “loudness”
+Some analyses                          trigger is astrophysical (pastro)
+restricted to the subset                                                            ○   FAR describes how frequently
+of these events with             ○     We use the false alarm rate (FAR) as             background noise should make a
+                                                                                        signal with an SNR greater than the
+FAR<¼ years                            the metric for inclusion
+                                                                                        event’s SNR
+
+From our analyses, we      ●   Relaxed criteria means we can analyze
+                               events like GW200105                                 ○   Using a population model, we can
+can estimate the                                                                        estimate how frequently binaries
+probability of                                                                          with a given combination of masses
+                                 ○     Neutron star-black hole event                    and spins are observed
+astrophysical origin of
+any given event in
+future observing runs            ○     FAR of ~⅕ years, but pastro of .36           ○   Using this event rate and FAR, we
+                                                                                        compute pastro for a given GW event
+
+
+                                                                                                                               61
+

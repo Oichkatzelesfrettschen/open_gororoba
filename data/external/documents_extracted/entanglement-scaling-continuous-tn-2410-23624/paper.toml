@@ -1,0 +1,2190 @@
+equations = []
+tables = []
+full_text = """
+arXiv:2410.23624v2 [quant-ph] 14 Jun 2025\r
+Entanglement scaling and criticality of infinite-size quantum many-body systems in continuous\r
+space addressed by a tensor network approach\r
+Rui Hong,1 Hao-Wei Cui,1 An-Chun Ji,1and Shi-Ju Ran1, ∗\r
+1Center for Quantum Physics and Intelligent Sciences,\r
+Department of Physics, Capital Normal University, Beijing 10048, China\r
+(Dated: June 17, 2025)\r
+Simulating strongly-correlated quantum systems in continuous space belongs to the most challenging and\r
+long-concerned issues in quantum physics. This work investigates the quantum entanglement and criticality of\r
+the ground-state wave-functions of infinitely-many coupled quantum oscillators (iCQOs). The essential task\r
+involves solving a set of partial differential equations (Schrodinger equations in the canonical quantization ¨\r
+picture) with infinitely-many variables, which currently lacks valid methods. By extending the imaginary-time\r
+evolution algorithm with translationally-invariant functional tensor network, we simulate the ground state of\r
+iCQOs with the presence of two- and three-body couplings. We determine the range of coupling strengths\r
+where there exists a real ground-state energy (dubbed as physical region). With two-body couplings, we reveal\r
+the logarithmic scaling law of entanglement entropy (EE) and the polynomial scaling law of correlation length\r
+against the virtual bond dimension χ at the dividing point of physical and non-physical regions. These two\r
+scaling behaviors are signatures of criticality, according to the previous results in quantum lattice models, but\r
+were not reported in continuous-space quantum systems. The scaling coefficients result in a central charge\r
+c = 1, indicating the presence of free boson conformal field theory (CFT). We further show that the presence of\r
+three-body couplings, for which there are no analytical or numerical results, breaks down the CFT description at\r
+the dividing point. Our work uncovers the scaling behaviors of EE in the continuous-space quantum many-body\r
+systems. These results provide solid numerical evidence supporting the high efficiency of TN in representing\r
+the continuous-space quantum many-body wave-functions in the thermodynamic limit, and meanwhile suggest\r
+an efficient approach to study the entanglement properties and criticality in continuous space.\r
+I. INTRODUCTION\r
+Developing efficient approaches for simulating strongly\u0002correlated quantum systems is a long-standing topic of inter\u0002est. A well-established treatment is lattice approximation that\r
+leads to quantum lattice models such as Heisenberg and Hub\u0002bard models, where tensor network (TN) methods [1–4] have\r
+been successfully adopted to reveal fruitful exotic phenom\u0002ena such as quantum criticality and quantum topological or\u0002ders [5–10]. The success of TN methods in simulating quan\u0002tum lattice models is solidly supported by the scaling theo\u0002ries of entanglement entropy (EE) [11–17]. For instance, ma\u0002trix product state (MPS) [18, 19] can faithfully represent the\r
+states satisfying one-dimensional (1D) area law of EE, which\r
+include the ground states of gapped 1D Hamiltonians with lo\u0002cal couplings [12, 20, 21]. For 1D critical quantum lattice\r
+models, the criticality (such as central charge) can be accu\u0002rately accessed by the scaling behaviors of MPS [11–13, 17].\r
+Without lattice approximation, the main challenge lies in\r
+solving the many-body Schrodinger equations, which are ¨\r
+multi-variable partial differential equations (PDE’s). Analyt\u0002ical solutions are nearly infeasible. Numerical methods, such\r
+as Monte Carlo [22–25] and neural-network schemes [26–\r
+30], are severely hindered by the so-called “exponential wall”,\r
+namely the complexity (say the dimension of sampling space)\r
+scales exponentially with the system size. Meanwhile, theo\u0002ries and methods established for quantum lattice models, such\r
+as EE and its scaling laws, can hardly be applied to the quan-\r
+∗ Corresponding author. Email: sjran@cnu.edu.cn\r
+FIG. 1. (Color online) (a) The illustration of iTEBD algorithm incor\u0002porated with the two-tensor translationally-invariant function MPS\r
+that represents the coefficients of a quantum wave-function expanded\r
+in a set of orthonormal functional bases {ϕs(x)}. (b) The illustration\r
+of the imaginary-time evolution in the iTEBD algorithm, where Uˆ\r
+denotes the local evolution gate. Note the MPS and its time evolution\r
+can be readily generalized to the K-tensor translationally-invariant\r
+cases for K > 2.\r
+tum models in continuous space. These severely hinder the in\u0002vestigation of the realistic quantum systems such as the quan\u0002tum materials with strong correlations.\r
+In this work, we extend the TN-based imaginary-time evo\u0002lution algorithms for quantum lattice models [31, 32] to the\r
+simulation of continuous-space quantum many-body systems\r
+by incorporating the continuous-space TN method [33, 34]
+
+2\r
+(see Fig. 1). We here adopt the translationally-invariant\r
+MPS to solve the time-independent Schrodinger equation (in ¨\r
+the canonical quantization form) of infinitely-many coupled\r
+quantum oscillators (iCQOs). This Schrodinger equation con- ¨\r
+sists of a set of PDE’s with infinitely-many variables. No nu\u0002merical results of solving these PDE’s were reported to our\r
+best knowledge, due to the infinite number of variables in\u0002volved. One may refer to Refs. [35–37] on solving PDE’s with\r
+finite variables by MPS. The translationally-invariant MPS is\r
+used to represent the infinitely-many coefficients of the wave\u0002function in a set of orthonormal functional bases.\r
+By leveraging the advantages of canonical MPS [31] on ef\u0002ficiently simulating entanglement and correlations of quantum\r
+many-body states, we investigate the criticality of iCQOs with\r
+the presence of two- and three-body coupling terms. With\r
+just the two-body terms, we determine the range of coupling\r
+strength where there exists a physical ground-state solution\r
+(i.e., real ground-state energy as the Hamiltonian is hermi\u0002tian [38]), which we dub as physical region. At the divid\u0002ing point between the physical and non-physical regions, we\r
+uncover that the ground-state EE and correlation length sat\u0002isfy the critical scaling laws (against the virtual dimension of\r
+MPS), which were previously uncovered in the critical quan\u0002tum lattice models [11, 13, 16, 39]. The scaling coefficients\r
+result in a central charge c = 1 [40, 41], indicating that the\r
+ground state of iCQOs can be described by free boson confor\u0002mal field theory (CFT) [42]. With three-body couplings, we\r
+show the breakdown of CFT even with very weak three-body\r
+couplings. Our work explicitly shows the satisfaction of the\r
+1D scaling laws of EE, which can serve as solid supports on\r
+MPS as an efficient ansatz to represent the ground-state wave\u0002functions of continuous-space many-body systems, including\r
+those in the thermodynamic limit.\r
+II. IMAGINARY-TIME EVOLUTION FOR THE\r
+GROUND-STATE SIMULATION OF INFINITELY-MANY\r
+COUPLED QUANTUM OSCILLATORS\r
+To simulate the continuous-space quantum many-body sys\u0002tems, we expand the many-body wave-function, which is a\r
+normalized many-variable function denoted as ψ(x) with x =\r
+(x1, x2, . . .), in a set of complete functional bases {ϕsn(xn)}.\r
+A key idea is to encode the coefficients, which are exponen\u0002tially many, in an MPS whose complexity scales just linearly\r
+with the system size (i.e., number of variables) [33, 34]. The\r
+infinite functional MPS is written as\r
+ψ(x) = tTr \u0012 Y∞\r
+n=1\r
+As2n−1a2n−1a2n Bs2na2na2n+1\r
+λ\r
+I\r
+a2n\r
+λ\r
+II\r
+a2n+1\r
+ϕs2n−1(x2n−1)ϕs2n(x2n)\r
+\u0013\r
+,(1)\r
+with tTr the summation of all shared indexes. We take\r
+the Planck constant ℏ = 1 for simplicity. We here\r
+choose the functional bases to be “local”, i.e., constructed\r
+by the single-variable functions {ϕsn(xn)} that satisfy\r
+R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)ϕs\r
+′ (x)dx = δss′ . The physical dimension (the\r
+bond dimension of physical index sn, denoted as D) deter\u0002mines the order of expansion, namely dim(sn) in {ϕsn\r
+(xn)}.\r
+The virtual dimension (the dimension of virtual index an, de\u0002noted as χ) determines the number of expansion terms. Both\r
+dimensions determine the parameter complexity of the MPS.\r
+To efficiently represent the infinite-size wave-functions, we\r
+take the MPS to be translationally invariant. Fig. 1 illustrates\r
+the MPS satisfying the “two-tensor” translational invariance,\r
+namely the MPS is formed by infinitely-many copies of two\r
+inequivalent tensors A and B, as well as those of two inequiv\u0002alent spectra (diagonal matrices) λ\r
+I\r
+and λ\r
+II [Fig. 1(a)]. The\r
+spectra are necessary to define the canonical form of infinite\r
+MPS for the purpose of optimal truncations and entanglement\r
+simulations [31]. The number of variational parameters in\r
+such an MPS scales approximately as O(Dχ2). In practice,\r
+we adopt the “K-tensor” translational invariance. We take\r
+K = 2 when there exist only the one- and two-body terms in\r
+the Hamiltonian, and K = 6 with the presence of the three\u0002body terms.\r
+Translational invariance allows TN methods to efficiently\r
+simulate infinite-size quantum many-body systems. For quan\u0002tum lattice models, translational invariance explicitly corre\u0002sponds to the translational invariance of the quantum states\r
+with the respect to lattice sites, since the tensors are usually\r
+in one-to-one correspondence with the sites. For continuous\u0002space systems (such as iCQOs considered here), there is\r
+no such correspondences. The translational invariance re\u0002spects the symmetry of the Hamiltonian, and is not contra\u0002dictory to the indistinguishability of particles. Thus, we re\u0002gard translational invariance as a physically-reasonable con\u0002jecture imposed on the functional MPS ansatz. Note that the\r
+Schrodinger equations we aim to solve are in the canonical ¨\r
+quantization picture, where the bosonic or fermionic statistics\r
+of the wave-functions is not explicitly considered.\r
+The Hamiltonian of iCQOs is written as\r
+Hˆ = −\r
+1\r
+2\r
+X∞\r
+n=1\r
+(\r
+∂\r
+2\r
+∂x2\r
+n\r
+− ω\r
+2x2\r
+n\r
+) + γ\r
+X∞\r
+n=1\r
+xnxn+1, (2)\r
+where we take the natural frequency ω = 1 for simplicity. The\r
+time-independent Schrodinger equation reads ¨ Hˆ |ψ⟩ = E|ψ⟩,\r
+which is a set of PDE’s consisting of infinitely-many vari\u0002ables {xn}. The minimal eigenvalue (denoted as E0) gives\r
+the ground-state energy, satisfying E0 = min|ψ⟩⟨ψ|Hˆ |ψ⟩ =\r
+⟨ψ0|Hˆ |ψ0⟩ with |ψ0⟩ denoting the ground state.\r
+Given a set of orthonormal functional bases {ϕs(xn)}, the\r
+operators (say ∂\r
+∂xn\r
+and xn) can be represented as matrices\r
+(denoted as ∂ˆ\r
+n and Xˆn). Their coefficients satisfy ∂ss R\r
+′ = ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)\r
+∂\r
+∂x ϕs\r
+′ (x)dx and Xss′ =\r
+R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)xϕs\r
+′ (x)dx.\r
+We then re-write the Hamiltonian as Hˆ =\r
+P∞\r
+n=1 Hˆ\r
+n,n+1 with\r
+Hˆ\r
+n,n+1 = −\r
+1\r
+4\r
+(∂ˆ2\r
+n + ∂ˆ2\r
+n+1 − Xˆ 2\r
+n − Xˆ 2\r
+n+1) + γXˆ\r
+nXˆn+1.\r
+We adopt the infinite time-evolving block decimation\r
+(iTEBD) algorithm [31, 32] to simulate the ground state of\r
+iCQOs. We may define the two-body imaginary-time evo\u0002lution gate Uˆ\r
+n = e\r
+−τHˆn,n+1 with τ a small positive num\u0002ber called Trotter step. By iteratively implementing the
+
+3\r
+FIG. 2. (Color online) (a) The error of the ground-state energy ε\r
+versus the expansion order D (physical dimension) while fixing the\r
+virtual bond dimension χ = 16. (b) the error of the ground-state\r
+energy ε versus the virtual index χ by fixing D = 16. We vary the\r
+strength of the two-body interaction from γ = 0.45 to 0.5.\r
+gates {Uˆ\r
+n} on an initial state |ψinit⟩ [see Fig. 1(b)], one has\r
+1\r
+Z\r
+limK→∞(\r
+Q\r
+n Uˆ\r
+n)\r
+K = |ψ0⟩ with Z a normalization fac\u0002tor. The evolution scheme can be readily generalized to the\r
+cases with K-site translational invariance, in order to handle\r
+the simulations with multi-body couplings. More details can\r
+be found in the Supplemental Material [43].\r
+III. NUMERICAL RESULTS OF CRITICAL SCALING\r
+LAWS\r
+The ground-state energy of iCQOs with two-body cou\u0002plings [Eq. (2)] can be analytically obtained [38], which sat\u0002isfies\r
+Eexact = lim\r
+N→∞\r
+1\r
+2\r
+X\r
+N\r
+n=1\r
+s\r
+1 + 2γ cos \u0012\r
+nπ\r
+N + 1\u0013\r
+. (3)\r
+Eexact is real for γ <= γc ≡ 0.5, which we dub as the physical\r
+region. Fig. 2 shows the error ε = |Eexact − ⟨ψ|Hˆ |ψ⟩| versus\r
+the physical and virtual dimensions (D and χ). The error con\u0002verges to ε ∼ O(10−5\r
+), indicating that the ground states can\r
+be well approximated by the MPS’s with a finite D or χ.\r
+The correlation length ξ and entanglement entropy (EE) S\r
+of the ground state can be efficiently accessed by the MPS\r
+method [4, 44]. The correlation length is obtained from the\r
+eigenvalues of the transfer matrix M of the infinite MPS [see\r
+the inset of Fig. 3(a) for the illustration of M], satisfying\r
+ξ =\r
+1\r
+ln Λ0−ln Λ1\r
+with Λ0 and Λ1 the two dominant eigen\u0002values of M. It naturally obeys the standard definition of\r
+correlation length of continuous-space wave-functions, which\r
+characterizes the decay of correlation function ⟨Oˆ\r
+nOˆn′ ⟩ ver\u0002sus |n − n\r
+′\r
+|. The EE of continuous-space wave-functions is\r
+much less investigated. Here, the canonical form of the infi\u0002nite MPS gives us a well-defined entanglement spectrum. The\r
+EE can then be defined as S = −2\r
+P\r
+a\r
+(λ\r
+I(II)\r
+a )\r
+2\r
+ln λ\r
+I(II)\r
+a . The\r
+difference between the EE’s calculated from the two spectra\r
+is about O(10−3), which is the result of numerical errors.\r
+When γ is far away from the dividing point γ = 0.5, both\r
+the correlation length ξ and EE S converge as χ increases\r
+(Fig. 3). We fix D = 16, which should be sufficiently large.\r
+FIG. 3. (Color online) (a) The correlation length ξ and (b) EE S\r
+versus the virtual bond dimension χ. We vary the strength of the\r
+two-body interaction from γ = 0.49 to 0.5 by fixing D = 16. The\r
+correlation length is computed using the transfer matrix of the infi\u0002nite MPS illustrated in the inset of (a). The inset of (b) shows the\r
+convergence of central charge c → 1 against χmax (meaning the fit\u0002ting is implemented with the data for χ ≤ χmax). Fittings of ξ and S\r
+are given by the dashed lines, which obey algebraic and logarithmic\r
+scaling laws, respectively [see Eqs. (4) and (5)].\r
+These results indicate the finiteness of correlation length and\r
+EE for the ground state of iCQOs within the physical region,\r
+which are typical signatures of a finite excitation gap. This\r
+suggests that an infinite functional MPS with finite bond di\u0002mensions can well approximate such non-critical many-body\r
+wave-functions.\r
+As γ approaches the dividing point, both ξ and S become\r
+asymptotically divergent (Fig. 3). At γ = 0.5, our results\r
+suggest the algebraic scaling law of correlation length as\r
+ξ ∼ χ\r
+κ\r
+, (4)\r
+and meanwhile the logarithmic scaling law of EE as\r
+S ∼ η ln χ. (5)\r
+We have κ ≃ 1.32 and η ≃ 0.23. These two scaling laws\r
+are recognized as signatures of criticality for quantum lattice\r
+models [13], but haven’t been uncovered in the continuous\u0002space systems such as iCQOs. Our work reveals that even\r
+with divergent correlation length and EE, the continuous\u0002space wave-functions can still be asymptotically approached\r
+by MPS in a similar manner for approaching the critical quan\u0002tum lattice systems.\r
+The critical properties can be further characterized by the\r
+scaling coefficients. From CFT, we can estimate the central\r
+charge as\r
+c =\r
+6η\r
+κ\r
+= 1 + O(10−2). (6)\r
+This suggests the wave-function at the dividing point between\r
+the physical and non-physical regions to be described by the\r
+c = 1 boson CFT [42]. The inset of Fig. 3(b) demonstrates\r
+the convergence of c versus χ.
+
+4\r
+FIG. 4. (Color online) (a) The variational ground-state energy\r
+⟨ψ|Hˆ |ψ⟩ and (b) the violation of Schrodinger equation ¨ L [Eq. (7)]\r
+with different two- and three-body coupling strengths (γ and γ˜, re\u0002spectively). The dividing boundary between the physical and non\u0002physical regions obeys γ˜ = 0.896 (0.5 − γ)\r
+0.438\r
+.\r
+IV. BREAKDOWN OF CRITICALITY WITH\r
+THREE-BODY COUPLINGS\r
+Below, we introduce the three-body coupling terms\r
+γ˜\r
+P\r
+n\r
+xnxn+1xn+2 to the Hamiltonian with γ˜ the coupling\r
+strength. Fig. 4 show the physical region determined by the\r
+variational ground-state energy ⟨ψ|Hˆ |ψ⟩ and the violation of\r
+Schrodinger equation ¨\r
+L =\r
+\f\r
+\f\r
+\f\r
+Hˆ |ψ⟩ − E|ψ⟩\r
+\f\r
+\f\r
+\f\r
+2\r
+, (7)\r
+with E = ⟨ψ|Hˆ |ψ⟩. In the non-physical region, the obtained\r
+energy is irregularly low with the violation L ∼ O(102)\r
+(which is far larger than the violation L ∼ O(10−1) in the\r
+physical region). By fitting, we find the dividing boundary to\r
+satisfy an algebraic relation γ˜ ∼ (0.5 − γ)\r
+0.438\r
+.\r
+Fig. 5(a) shows that EE slightly increases when γ˜ ap\u0002proaches the dividing boundary from the physical side. The\r
+dividing boundary given by the peak of EE is consistent with\r
+that obtained in Fig. 4. We have γ˜ = 0.02 ± O(10−5) as the\r
+dividing point for γ = 0.499, and γ˜ = 0.035 ± O(10−5) for\r
+γ = 0.495. On the dividing boundary, our results show that\r
+EE no longer obeys the logarithmic scaling law but converges\r
+after χ ≃ 25 for γ = 0.499 (or after χ ≃ 15 for γ = 0.495).\r
+See Fig. 5(b). EE does not scale to diverge as χ increases,\r
+and thus implies the absence of criticality or the CFT descrip\u0002tion for the ground-state wave-functions when the three-body\r
+terms appear.\r
+V. SUMMARY\r
+This work concerns simulating the ground-state wave\u0002functions and their entanglement properties of infinite-size\r
+quantum many-body systems in continuous space. We com\u0002bine the infinite time-evolving block decimation algorithm\r
+with functional tensor network (TN) to simulate the ground\r
+states of infinite coupled quantum oscillators (iCQOs) defined\r
+in continuous space. At the dividing point between the phys\u0002ical and non-physical regions with just two-body couplings,\r
+FIG. 5. (Color online) (a) The ground-state EE S versus the strength\r
+of three-body couplings γ˜ for γ = 0.499 and 0.495. We fix D = 16\r
+and χ = 16. (b) The scaling of EE against χ. We take different\r
+strengths of three-body couplings γ˜ for γ = 0.499, and take γ˜ =\r
+0.035 for γ = 0.495.\r
+we reveal algebraic scaling laws of the correlation length and\r
+logarithmic scaling laws of the entanglement entropy (EE)\r
+against the virtual dimension of the TN ansatz. These findings\r
+suggest the c = 1 boson conformal field theory (CFT) describ\u0002ing the criticality at the dividing point. We further show that\r
+the three-body terms break down the criticality and the CFT\r
+description on the dividing boundary. Our work demonstrates\r
+the validity of EE scaling theories based on TN for investi\u0002gating the quantum many-body systems in continuous space.\r
+The satisfactions of EE scaling laws serves as a solid evidence\r
+on the efficiency of TN for approximating continuous-space\r
+wave-functions and for accessing the properties of criticality\r
+of continuous-space quantum many-body systems.\r
+ACKNOWLEDGMENT\r
+R.H. is grateful to Ding-Zu Wang for helpful discus\u0002sions.This work was supported in part by the Beijing Natu\u0002ral Science Foundation (Grant No. 1232025), NSFC (Grant\r
+No. 62175169), the Ministry of Education Key Laboratory of\r
+Quantum Physics and Photonic Quantum Information (Grant\r
+No. ZYGX2024K020), and the Academy for Multidisci\u0002plinary Studies, Capital Normal University. S.J.R. acknowl\u0002edges the support from the Peng Huanwu Visiting Professor\r
+Program, the Chinese Academy of Sciences. The machine\r
+learning simulations were partially performed on the robotic\r
+AI-Scientist platform of Chinese Academy of Sciences.\r
+DATA AVAILABILITY\r
+The data that support the findings of this work are available\r
+from the corresponding author upon reasonable request.\r
+Appendix A: Functional matrix product state and operators\r
+To simulate the continuous-space quantum many-body sys\u0002tems, we expand the many-body wave-function, which is\r
+a normalized many-variable function denoted as ψ(x) with
+
+5\r
+x = (x1, x2, . . .), in a set of orthonormal functional bases\r
+{ϕsn(xn)}. A key idea is to encode the coefficients, which\r
+are exponentially many, in a tensor network (TN) whose com\u0002plexity scales just polynomially with the system size [33, 34].\r
+Here, we take the matrix product state (MPS), where the\r
+many-body wave-function can be expressed as\r
+ψ(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN ϕs1\r
+(x1)· · · ϕsN (xN ). (A1)\r
+Below, we adopt the infinite MPS, which is a simple but\r
+powerful TN to represent infinite-size quantum states. To rep\u0002resent many-body wave-functions in the continuous space, the\r
+infinite functional MPS can be written as\r
+ψ(x) = tTr \u0012 Y∞\r
+n=1\r
+Aa2n−1s2n−1a2n λ\r
+I\r
+a2n Ba2ns2na2n+1\r
+λ\r
+II\r
+a2n+1\r
+ϕs2n−1\r
+(x2n−1)ϕs2n\r
+(x2n)\r
+\u0013\r
+, (A2)\r
+with tTr denoting the summation over all shared indexes.\r
+The indexes αn (n = 1, · · · , N − 1) are dubbed as vir\u0002tual bonds. The upper bound of their dimensions dim(αn)\r
+is called the virtual bond dimension, denoted by χ. The in\u0002dexes {sn} are called the physical bonds, with their dimen\u0002sions called the physical bond dimension , denoted by D. In\r
+our cases for representing continuous-space wave-functions,\r
+D determines the expansion order in the functional bases. The\r
+number of parameters in the MPS (i.e., the total number of el\u0002ements in the tensors {A(n)} for n = 1, · · · , N) scales only\r
+linearly with N as O(NDχ\r
+2\r
+), while the number of coeffi\u0002cients in ψ(x) scales exponentially as O(DN ).\r
+The MPS is formed by infinite copies of four inequivalent\r
+tensors, which are third-order tensors A, B, and vectors (or\r
+diagonal matrices) λ\r
+I\r
+, λ\r
+II. Such an MPS is called two-site\r
+or two-tensor (considering A and B are defined on the sites)\r
+translationally invariant.\r
+To solve the Schrodinger equation for the ground state, we ¨\r
+need to obtain the coefficients of operators in the same func\u0002tional bases. Considering an operator Oˆ(m) with respect to the\r
+variable xm, acting it on ψ(x) yields\r
+ψ˜(x) = Oˆ(m)[ψ(x)]\r
+=\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN [\r
+Y\r
+n̸=m\r
+ϕsn(xn)]\r
+Oˆ(m)[ϕsm(xm)]. (A3)\r
+Since the functional bases are assumed to be orthonormal, we\r
+have the expansion\r
+Oˆ(m)[ϕs(x)] =\r
+D−\r
+X\r
+1\r
+s\r
+′=0\r
+O\r
+(m)\r
+ss′ ϕs\r
+′ (x), (A4)\r
+where O\r
+(m)\r
+ss′ denotes the coefficients of Oˆ(m)\r
+. Substituting it\r
+into Eq. (A3), we have\r
+ψ˜(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN [\r
+Y\r
+n̸=m\r
+ϕsn(xn)]\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+sms\r
+′m\r
+ϕs\r
+′m\r
+(xm)\r
+=\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+sms\r
+′m\r
+Cs1···sN\r
+[\r
+Y\r
+n̸=m\r
+ϕsn\r
+(xn)]ϕs\r
+′m\r
+(xm). (A5)\r
+Rearranging the above equation (say, with the replacement\r
+sm ↔ s\r
+′\r
+m), we have\r
+ψ˜(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+(\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+s\r
+′msm\r
+Cs1···sm−1s\r
+′msm+1sN )\r
+Y\r
+n\r
+ϕsn((A6) xn).\r
+Denote the expansion of ψ˜(x) as ψ˜(x) =\r
+PD−1\r
+s1···sN =0 C˜\r
+s1···sN ϕs1\r
+(x1)· · · ϕsN (xN ) with C˜ the co\u0002efficient tensor, Then, comparing with Eq. (A6), we\r
+immediately have\r
+C˜\r
+s1···sN =\r
+X\r
+s\r
+′m\r
+O\r
+(m)\r
+s\r
+′msm\r
+Cs1···sm−1s\r
+′msm+1sN . (A7)\r
+When the coefficient tensor C is represented as an MPS,\r
+the contraction between O\r
+(m)\r
+and C becomes the contraction\r
+between O\r
+(m)\r
+and the corresponding local tensor A\r
+(m)\r
+as\r
+A˜\r
+(m)\r
+αsα′ =\r
+X\r
+s\r
+′\r
+O\r
+(m)\r
+s\r
+′s A\r
+(m)\r
+αs′α′ . (A8)\r
+Replacing A\r
+(m)\r
+by A˜\r
+(m)\r
+, one obtains all local tensors of the\r
+MPS representing ψ˜(x).\r
+To evaluate O\r
+(m)\r
+, let us return to Eq. (A4) and perform the\r
+following integral\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)Oˆ(m)\r
+[ϕs(x)]dx =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ ϕs\r
+′′ (x)dx\r
+=\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)ϕs\r
+′′ (x)dx. (A9)\r
+Using the orthonormal property of the functional bases, one\r
+has R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+′ (x)ϕs\r
+′′ (x)dx = δs′s′′ , and eventually\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)Oˆ(m)\r
+[ϕs(x)]dx =\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ δs\r
+′s′′\r
+= O\r
+(m)\r
+ss′ . (A10)
+
+6\r
+Appendix B: Infinite coupled quantum oscillators\r
+We consider the infinitely coupled quantum oscillators (iC\u0002QOs) in one dimension as an example. The Hamiltonian reads\r
+Hˆ HO =\r
+1\r
+2\r
+X\r
+N\r
+n=1\r
+\u0012\r
+−\r
+∂\r
+2\r
+∂x2\r
+n\r
++ ω\r
+2\r
+nx\r
+2\r
+n\r
+\u0013\r
++ γ\r
+N\r
+X−1\r
+m=1\r
+xmxm+1\r
++˜γ\r
+N\r
+X−2\r
+m=1\r
+xmxm+1xm+2, (B1)\r
+where we take the number of oscillators N → ∞ and the\r
+natural frequency ωn = 1. The strengths of the two- and\r
+three-body coupling are denoted as γ and γ˜, respectively. We\r
+also take the Planck constant to be ℏ = 1 for simplicity.\r
+A natural choice for the orthonormal functional bases is the\r
+Gaussian bases\r
+ϕs(x) = \u0012\r
+1\r
+2\r
+ss!\r
+√\r
+π\r
+\u00131\r
+2\r
+e\r
+− x\r
+2\r
+2 hs(x), (B2)\r
+with hs(x) the Hermitian polynomial. Taking the Gaussian\r
+bases and applying Eq. (A10) to the partial differentiation op\u0002erator ∂ˆ =\r
+∂\r
+∂x , we have\r
+∂s\r
+′s =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)∂ˆ[ϕs(x)]dx =\r
+\r
+\r
+\r
+q\r
+s+1\r
+2\r
+, s′ = s − 1;\r
+−\r
+q\r
+s+1\r
+2\r
+, s′ = s + 1.\r
+(B3)\r
+Another example is the operation Xˆ = x. We have\r
+Xss′ =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+(x)xϕs\r
+′ (x)dx =\r
+\r
+\r
+\r
+q\r
+s+1\r
+2\r
+, s′ = s − 1;\r
+q\r
+s+1\r
+2\r
+, s′ = s + 1.\r
+(B4)\r
+The Hamiltonian in Eq. (B2) can be expressed in terms of ∂ˆ\r
+and Xˆ. Taking the Hamiltonian without the three-body terms\r
+as an example (γ˜ = 0), we have Hˆ =\r
+P\r
+n Hˆ\r
+n,n+1, where the\r
+local Hamiltonian satisfies\r
+Hˆ\r
+n,n+1 = −\r
+1\r
+4\r
+(∂ˆ2\r
+n + ∂ˆ2\r
+n+1 − Xˆ 2\r
+n − Xˆ 2\r
+n+1)\r
++γXˆ\r
+nXˆn+1, (B5)\r
+with ∂ˆ\r
+n = ∂/∂xn and Xˆn = xn.\r
+Appendix C: Infinite time-evolving block decimation algorithm\r
+The ground state of a given Hamiltonian can be simulated\r
+using the infinite time-evolving block decimation (iTEBD)\r
+algorithm [32]. We start from the definition of the time\u0002evolution operator\r
+Uˆ(τ ) = Y\r
+n\r
+e\r
+−τHˆn,n+1\r
+, (C1)\r
+FIG. 6. (Color online) (a) An illustration of the imaginary-time evo\u0002lution in the iTEBD algorithm, where Uˆ represents the local evo\u0002lution operator. (b) The tensor contraction for computing the local\r
+evolution. See Eqs. (C3)-(C5).\r
+with τ a small positive number representing a short time slice.\r
+Note that Uˆ(τ ) is the product of infinitely-many copies of lo\u0002cal time-evolution operator Uˆ = e\r
+−τHˆn,n+1 . The ground state\r
+|ψ0⟩ can be approached by evolving an initial state |ψ0⟩ until\r
+it converges, where we have\r
+1\r
+Z\r
+lim\r
+K→∞\r
+(\r
+Y\r
+n\r
+Uˆ(τ ))K = |ψ0⟩, (C2)\r
+with Z the normalization factor. An illustration of the evolu\u0002tion is given in Fig. 6(a).\r
+With the presence of three-body terms, we assume the MPS\r
+to be 6-tensor translationally invariant, which is formed by\r
+infinitely-many copies of 6 third-order tensors and 6 spectra\r
+(diagonal matrices). The three-body evolution operator can\r
+be readily defined to implement the imaginary-time evolution\r
+with the presence of three-body coupling terms. Below, we\r
+still take the simulation without three-body terms (γ˜ = 0) as\r
+an example to explain the algorithm.\r
+Similar to Eq. (A8), the local operators (copies of Uˆ) are\r
+contracted with the local tensors in the MPS sequentially. For\r
+instance, considering the contraction of Uˆ, A, B, and the rel\u0002evant spectra, we have\r
+Tα′\r
+0\r
+p0p1α′\r
+1\r
+=\r
+X\r
+βα0α1s0s1\r
+λ\r
+I\r
+α′\r
+0α0Bα0s0βλ\r
+II\r
+ββAβs1α1 λ\r
+I\r
+α1α′\r
+1\r
+Us0s1p0p1\r
+(C3)\r
+with Us0s1p0p1 = ⟨s0s1|Uˆ|p0p1⟩. See Fig. 1(b).\r
+To restore the MPS form before contraction, we perform\r
+SVD on T as\r
+T [0,1],[2,3] = W λIIV\r
+†\r
+(C4)\r
+with T [0,1],[2,3] being the matrization of T by reshaping its\r
+first two indexes into one index and the rest two indices into\r
+another. See the first line of Fig. 1(b). The spectrum λ\r
+II is\r
+updated by the singular spectrum obtained in the above SVD.
+
+7\r
+FIG. 7. (Color online) The canonical conditions of MPS. See\r
+Eq. (D1) for the contraction formula corresponding to the left panel.\r
+Obviously, the new indexes obtained by SVD and the new\r
+spectrum λ\r
+II possess a larger dimension. Without any trunca\u0002tion, the dimension will increase exponentially with the evo\u0002lution time. What we do in the iTEBD algorithm is if this\r
+dimension exceeds the preset maximum (denoted as χ), it\r
+should be truncated to χ by keeping only the χ-largest sin\u0002gular values and the corresponding singular vectors.\r
+Finally, one restores the spectra located at the two sides by\r
+inserting λ\r
+I\r
+(λ\r
+I\r
+)\r
+−1\r
+, as shown in the last line of Fig. 1(b). The\r
+two third-order tensors are obtained as\r
+Aαsβ = (λ\r
+I\r
+)\r
+−1\r
+ααWαsβ, Bαsβ = V\r
+∗\r
+αsβ(λ\r
+I\r
+)\r
+−1\r
+ββ . (C5)\r
+Appendix D: Canonical form of matrix product state\r
+With τ → 0, the evolution given by Uˆ(τ ) is close to be\r
+identical. Therefore, the evolution drives the MPS to the\r
+so-called canonical form [31], where the tensors satisfy the\r
+canonical conditions illustrated in Fig. 7. As an example, the\r
+contraction given by the left panel reads\r
+X\r
+s0s1α0α′\r
+0α1α′1\r
+B\r
+∗\r
+β0s0α0Bβ\r
+′\r
+0\r
+s0α′\r
+0\r
+λ\r
+II\r
+α0α0\r
+λ\r
+II\r
+α′\r
+0α′0\r
+A\r
+∗\r
+α0s1β1Aα′\r
+0\r
+s1β1\r
+(λ\r
+I\r
+β1β1\r
+)\r
+2 = Iβ0β\r
+′\r
+0\r
+, (D1)\r
+with I representing the identity. The canonical conditions can\r
+be generalized to the cases with K-tensor translational invari\u0002ance.\r
+We here utilize two advantages of the MPS being in the\r
+canonical form. First, the truncations implemented in the\r
+iTEBD algorithm are (nearly) optimal. By “nearly”, we mean\r
+that the MPS approaches (but is not in) the strict canonical\r
+form in the nearly-identical evolution given by Uˆ(τ ). Sec\u0002ond, it has been proven that the spectra (λ\r
+I\r
+and λ\r
+II) give the\r
+entanglement spectra for the bipartitions at the corresponding\r
+positions. These two advantages hold not only for MPS rep\u0002resenting the quantum many-body states of lattice models, but\r
+also the functional MPS’s that represent the wave-functions in\r
+the continuous space as well as for the functional MPS’s with\r
+K-tensor translational invariance.\r
+Appendix E: Simulation of local fidelity\r
+Fig. 8 shows the convergence with the MPS’s of dif\u0002ferent translational symmetries. We consider the K-tensor\r
+translationally invariant MPS’s with K = 2, 3, 4, 6 and\r
+FIG. 8. (Color online) Local fidelity F from the fidelity f =\r
+|⟨ψ(K, n)|ψ(K′ = 6, n′ = 1000)⟩|2versus the evolution step n\r
+with different translational invariances (K = 2, 3, 4, 6). F is cal\u0002culated as the norm square of the largest eigenvalue of the transfer\r
+matrix of f (see Fig. 9 for the definition of transfer matrix).\r
+FIG. 9. (Color online) The illustration of the transfer matrix for\r
+|⟨ψ(K = 2, n)|ψ(K′ = 3, n′)⟩|. We have ignored to illustrate the\r
+transpose conjugation of the tensors for simplicity.\r
+show the “local” fidelity F that can give the fidelity f =\r
+|⟨ψ(K, n)|ψ(K′ = 6, n′ = 1000)⟩|2 versus the number of\r
+evolution steps n. Note |ψ(K, n)⟩ denotes a K-tensor trans\u0002lationally invariant MPS after n evolution steps.\r
+The local fidelity is calculated by the largest eigenvalue of\r
+the transfer matrix of |⟨ψ(K, n)|ψ(K′, n′)⟩|. See Fig. 9 as the\r
+illustration of the transfer matrix with K = 2 and K′ = 3 as\r
+an example. One should take K˜ = 6 tensors from each of the\r
+matrix to define the transfer matrix, with K˜ the least common\r
+multiple of K and K′. The local fidelity is calculated as the\r
+norm square of the largest eigenvalue of the transfer matrix.\r
+Specifically, we have\r
+f = F\r
+N\r
+K˜ , (E1)\r
+with the system size N → ∞ in the thermodynamic limit.\r
+One always has f → 0 when the difference between the lo\u0002cal tensors of two MPS’s lead the dominant eigenvalue to be\r
+smaller than 1. Therefore, we choose the local fidelity F to\r
+characterize the similarity between two infinite-size MPS’s\r
+rather than the fidelity f.\r
+In Fig. 8(a), we take γ = 0.49 and γ˜ = 0, where the Hamil\u0002tonian consists of just two-body couplings. All local fidelities\r
+converge to 1, meaning the MPS’s stably converge to |ψ(K =\r
+6, n = 1000)⟩. In Fig. 8(b), we introduce the three-body cou\u0002plings by taking γ˜ = 0.03. The MPS with 6-tensor transla\u0002tional invariance converges well as n increases. However, the\r
+fidelity F = |⟨ψ(K = 2, n)|ψ(K′ = 6, n′ = 1000)⟩|2con\u0002verges to about 0.1. This is due to the inconsistency between\r
+the translational invariance (K = 2) and the 3-body coupling\r
+terns. Therefore, we trust the results with K = 6.
+
+8\r
+[1] V. Murg F. Verstraete and J.I. Cirac, “Matrix product states,\r
+projected entangled pair states, and variational renormalization\r
+group methods for quantum spin systems,” Advances in Physics\r
+57, 143–224 (2008).\r
+[2] J Ignacio Cirac and Frank Verstraete, “Renormalization and ten\u0002sor product states in spin chains and lattices,” Journal of Physics\r
+A: Mathematical and Theoretical 42, 504004 (2009).\r
+[3] Roman Or ´ us, “A practical introduction to tensor networks: Ma- ´\r
+trix product states and projected entangled pair states,” Annals\r
+of Physics 349, 117–158 (2014).\r
+[4] Shi-Ju Ran, Emanuele Tirrito, Cheng Peng, Xi Chen, Luca\r
+Tagliacozzo, Gang Su, and Maciej Lewenstein, (Springer,\r
+Cham).\r
+[5] X. G. WEN, “Topological orders in rigid states,” International\r
+Journal of Modern Physics B 04, 239–271 (1990).\r
+[6] Michael Levin and Xiao-Gang Wen, “Detecting topological\r
+order in a ground state wave function,” Phys. Rev. Lett. 96,\r
+110405 (2006).\r
+[7] Alexei Kitaev and John Preskill, “Topological entanglement en\u0002tropy,” Physical Review Letters 96, 110404 (2006).\r
+[8] Wang Z. Balents L. Jiang, HC., “Identifying topological order\r
+by entanglement entropy,” Nature Phys 8, 902–905 (2012).\r
+[9] G. Evenbly and G. Vidal, “Tensor network renormalization,”\r
+Physical Review Letters 115, 180405 (2015).\r
+[10] Mingru Yang, Bram Vanhecke, and Norbert Schuch, “Detect\u0002ing emergent continuous symmetries at quantum criticality,”\r
+Physical Review Letters 131, 036505 (2023).\r
+[11] G. Vidal, J. I. Latorre, E. Rico, and A. Kitaev, “Entanglement\r
+in quantum critical phenomena,” Phys. Rev. Lett. 90, 227902\r
+(2003).\r
+[12] L. Tagliacozzo, Thiago. R. de Oliveira, S. Iblisdir, and J. I.\r
+Latorre, “Scaling of entanglement support for matrix product\r
+states,” Phys. Rev. B 78, 024410 (2008).\r
+[13] Frank Pollmann, Subroto Mukerjee, Ari M. Turner, and\r
+Joel E. Moore, “Theory of finite-entanglement scaling at one\u0002dimensional quantum critical points,” Physical Review Letters\r
+102, 255701 (2009).\r
+[14] Yimin Ge and Jens Eisert, “Area laws and efficient descrip\u0002tions of quantum many-body states,” New Journal of Physics\r
+18, 083026 (2016).\r
+[15] J. Eisert, M. Cramer, and M. B. Plenio, “Colloquium: Area\r
+laws for the entanglement entropy,” Rev. Mod. Phys. 82, 277–\r
+306 (2010).\r
+[16] Yijian Zou, Ashley Milsted, and Guifre Vidal, “Conformal data\r
+and renormalization group flow in critical quantum spin chains\r
+using periodic uniform matrix product states,” Physical Review\r
+Letters 121, 230402 (2018).\r
+[17] Rui-Zhen Huang, Long Zhang, Andreas M. Lauchli, Jutho ¨\r
+Haegeman, Frank Verstraete, and Laurens Vanderstraeten,\r
+“Emergent conformal boundaries from finite-entanglement\r
+scaling in matrix product states,” Physical Review Letters 132,\r
+086503 (2024).\r
+[18] Stellan Ostlund and Stefan Rommer, “Thermodynamic limit of ¨\r
+density matrix renormalization,” Physical Review Letters 75,\r
+3537–3540 (1995).\r
+[19] Stefan Rommer and Stellan Ostlund, “Class of ansatz wave ¨\r
+functions for one-dimensional spin systems and their relation\r
+to the density matrix renormalization group,” Physical Review\r
+B 55, 2164–2181 (1997).\r
+[20] F. Verstraete and J. I. Cirac, “Matrix product states represent\r
+ground states faithfully,” Physical Review B 73, 094423 (2006).\r
+[21] M. B. Hastings, “Solving gapped hamiltonians locally,” Phys.\r
+Rev. B 73, 085115 (2006).\r
+[22] Gilbert W. King, “Monte-carlo method for solving diffusion\r
+problems,” Industrial and Engineering Chemistry 43, 2475–\r
+2478 (1951).\r
+[23] David Ceperley and Berni Alder, “Quantum Monte Carlo,” Sci\u0002ence 231, 555–560 (1986).\r
+[24] W. M. C. Foulkes, L. Mitas, R. J. Needs, and G. Rajagopal,\r
+“Quantum monte carlo simulations of solids,” Reviews of Mod\u0002ern Physics 73, 33–83 (2001).\r
+[25] O’Gorman B.A. Rubin N.C. et al. Huggins, W.J., “Unbiasing\r
+fermionic quantum monte carlo with a quantum computer,” Na\u0002ture 603, 416–420 (2022).\r
+[26] Justin Sirignano and Konstantinos Spiliopoulos, “Dgm: A deep\r
+learning algorithm for solving partial differential equations,”\r
+Journal of Computational Physics 375, 1339–1364 (2018).\r
+[27] M. Raissi, P. Perdikaris, and G.E. Karniadakis, “Physics\u0002informed neural networks: A deep learning framework for solv\u0002ing forward and inverse problems involving nonlinear partial\r
+differential equations,” Journal of Computational Physics 378,\r
+686–707 (2019).\r
+[28] David Pfau, James S. Spencer, Alexander G. D. G. Matthews,\r
+and W. M. C. Foulkes, “Ab initio solution of the many-electron\r
+schrodinger equation with deep neural networks,” ¨ Physical Re\u0002view Research 2, 033429 (2020).\r
+[29] Schatzle Z. Hermann, J. and F No ¨ e, “Deep-neural-network so- `\r
+lution of the electronic schrodinger equation,” ¨ Nature Chem\u0002istry 12, 891–897 (2020).\r
+[30] Reisenhofer R. Gerard L. et al. cherbela, M., “Solving the\r
+electronic schrodinger equation for multiple nuclear geometries ¨\r
+with weight-sharing deep neural networks,” Nature Computa\u0002tional Science 2, 331–341 (2022).\r
+[31] R. Orus and G. Vidal, “Infinite time-evolving block decima- ´\r
+tion algorithm beyond unitary evolution,” Physical Review B\r
+78, 155117 (2008).\r
+[32] G. Vidal, “Classical simulation of infinite-size quantum lattice\r
+systems in one spatial dimension,” Physical Review Letters 98,\r
+070201 (2007).\r
+[33] S. Iblisdir, R. Orus, and J. I. Latorre, “Matrix product states ´\r
+algorithms and continuous systems,” Physical Review B 75,\r
+104305 (2007).\r
+[34] Rui Hong, Ya-Xuan Xiao, Jie Hu, An-Chun Ji, and Shi-Ju Ran,\r
+“Functional tensor network solving many-body Schrodinger ¨\r
+equation,” Physical Review B 105, 165116 (2022).\r
+[35] Nicholas Mueller, Yiran Zhao, Santiago Badia, and\r
+Tiangang Cui, “A tensor-train reduced basis solver for\r
+parameterized partial differential equations,” (2024),\r
+10.48550/arXiv.2412.14460.\r
+[36] Yian Chen and Yuehaw Khoo, “Combining Monte Carlo and\r
+Tensor-network Methods for Partial Differential Equations via\r
+Sketching,” (2023).\r
+[37] Gabriele De Chiara and Anna Sanpera, “Genuine quantum cor\u0002relations in quantum many-body systems: a review of recent\r
+progress,” Reports on Progress in Physics 81, 074002 (2018).\r
+[38] Alireza Beygi, S. P. Klevansky, and Carl M. Bender, “Coupled\r
+Oscillator Systems Having Partial PT Symmetry,” Physical Re\u0002view A 91, 062101 (2015).\r
+[39] Martin Andersson, Magnus Boman, and Stellan Ostlund, ¨\r
+“Density-matrix renormalization group for a gapless system of\r
+free fermions,” Physical Review B 59, 10493–10503 (1999).\r
+[40] Pasquale Calabrese and John Cardy, “Entanglement entropy
+
+9\r
+and quantum field theory,” Journal of Statistical Mechanics:\r
+Theory and Experiment 2004, P06002 (2004).\r
+[41] M. Ghasemi Nezhadhaghighi and M. A. Rajabpour, “Quantum\r
+entanglement entropy and classical mutual information in long\u0002range harmonic oscillators,” Physical Review B 88, 045426\r
+(2013).\r
+[42] P. Mathieu P. Di Francesco and D. Sen´ echal, ´ Conformal Field\r
+Theory (Springer, Heidelberg, 1999).\r
+[43] See the Supplemental Material at [with the url provided by the\r
+publisher] for more details on the infinite functional MPS rep\u0002resentation of continuous-space many-body wave-functions and\r
+the iTEBD algorithm based on such a representation.\r
+[44] J. Ignacio Cirac, David Perez-Garc ´ ´ıa, Norbert Schuch, and\r
+Frank Verstraete, “Matrix product states and projected entan\u0002gled pair states: Concepts, symmetries, theorems,” Reviews of\r
+Modern Physics 93, 045003 (2021)."""
+
+[metadata]
+title = "entanglement scaling continuous TN 2410.23624"
+authors = ["Unknown"]
+arxiv = "2410.23624"
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:2410.23624v2 [quant-ph] 14 Jun 2025\r
+Entanglement scaling and criticality of infinite-size quantum many-body systems in continuous\r
+space addressed by a tensor network approach\r
+Rui Hong,1 Hao-Wei Cui,1 An-Chun Ji,1and Shi-Ju Ran1, ∗\r
+1Center for Quantum Physics and Intelligent Sciences,\r
+Department of Physics, Capital Normal University, Beijing 10048, China\r
+(Dated: June 17, 2025)\r
+Simulating strongly-correlated quantum systems in continuous space belongs to the most challenging and\r
+long-concerned issues in quantum physics. This work investigates the quantum entanglement and criticality of\r
+the ground-state wave-functions of infinitely-many coupled quantum oscillators (iCQOs). The essential task\r
+involves solving a set of partial differential equations (Schrodinger equations in the canonical quantization ¨\r
+picture) with infinitely-many variables, which currently lacks valid methods. By extending the imaginary-time\r
+evolution algorithm with translationally-invariant functional tensor network, we simulate the ground state of\r
+iCQOs with the presence of two- and three-body couplings. We determine the range of coupling strengths\r
+where there exists a real ground-state energy (dubbed as physical region). With two-body couplings, we reveal\r
+the logarithmic scaling law of entanglement entropy (EE) and the polynomial scaling law of correlation length\r
+against the virtual bond dimension χ at the dividing point of physical and non-physical regions. These two\r
+scaling behaviors are signatures of criticality, according to the previous results in quantum lattice models, but\r
+were not reported in continuous-space quantum systems. The scaling coefficients result in a central charge\r
+c = 1, indicating the presence of free boson conformal field theory (CFT). We further show that the presence of\r
+three-body couplings, for which there are no analytical or numerical results, breaks down the CFT description at\r
+the dividing point. Our work uncovers the scaling behaviors of EE in the continuous-space quantum many-body\r
+systems. These results provide solid numerical evidence supporting the high efficiency of TN in representing\r
+the continuous-space quantum many-body wave-functions in the thermodynamic limit, and meanwhile suggest\r
+an efficient approach to study the entanglement properties and criticality in continuous space.\r
+I. INTRODUCTION\r
+Developing efficient approaches for simulating strongly\u0002correlated quantum systems is a long-standing topic of inter\u0002est. A well-established treatment is lattice approximation that\r
+leads to quantum lattice models such as Heisenberg and Hub\u0002bard models, where tensor network (TN) methods [1–4] have\r
+been successfully adopted to reveal fruitful exotic phenom\u0002ena such as quantum criticality and quantum topological or\u0002ders [5–10]. The success of TN methods in simulating quan\u0002tum lattice models is solidly supported by the scaling theo\u0002ries of entanglement entropy (EE) [11–17]. For instance, ma\u0002trix product state (MPS) [18, 19] can faithfully represent the\r
+states satisfying one-dimensional (1D) area law of EE, which\r
+include the ground states of gapped 1D Hamiltonians with lo\u0002cal couplings [12, 20, 21]. For 1D critical quantum lattice\r
+models, the criticality (such as central charge) can be accu\u0002rately accessed by the scaling behaviors of MPS [11–13, 17].\r
+Without lattice approximation, the main challenge lies in\r
+solving the many-body Schrodinger equations, which are ¨\r
+multi-variable partial differential equations (PDE’s). Analyt\u0002ical solutions are nearly infeasible. Numerical methods, such\r
+as Monte Carlo [22–25] and neural-network schemes [26–\r
+30], are severely hindered by the so-called “exponential wall”,\r
+namely the complexity (say the dimension of sampling space)\r
+scales exponentially with the system size. Meanwhile, theo\u0002ries and methods established for quantum lattice models, such\r
+as EE and its scaling laws, can hardly be applied to the quan-\r
+∗ Corresponding author. Email: sjran@cnu.edu.cn\r
+FIG. 1. (Color online) (a) The illustration of iTEBD algorithm incor\u0002porated with the two-tensor translationally-invariant function MPS\r
+that represents the coefficients of a quantum wave-function expanded\r
+in a set of orthonormal functional bases {ϕs(x)}. (b) The illustration\r
+of the imaginary-time evolution in the iTEBD algorithm, where Uˆ\r
+denotes the local evolution gate. Note the MPS and its time evolution\r
+can be readily generalized to the K-tensor translationally-invariant\r
+cases for K > 2.\r
+tum models in continuous space. These severely hinder the in\u0002vestigation of the realistic quantum systems such as the quan\u0002tum materials with strong correlations.\r
+In this work, we extend the TN-based imaginary-time evo\u0002lution algorithms for quantum lattice models [31, 32] to the\r
+simulation of continuous-space quantum many-body systems\r
+by incorporating the continuous-space TN method [33, 34]
+
+2\r
+(see Fig. 1). We here adopt the translationally-invariant\r
+MPS to solve the time-independent Schrodinger equation (in ¨\r
+the canonical quantization form) of infinitely-many coupled\r
+quantum oscillators (iCQOs). This Schrodinger equation con- ¨\r
+sists of a set of PDE’s with infinitely-many variables. No nu\u0002merical results of solving these PDE’s were reported to our\r
+best knowledge, due to the infinite number of variables in\u0002volved. One may refer to Refs. [35–37] on solving PDE’s with\r
+finite variables by MPS. The translationally-invariant MPS is\r
+used to represent the infinitely-many coefficients of the wave\u0002function in a set of orthonormal functional bases.\r
+By leveraging the advantages of canonical MPS [31] on ef\u0002ficiently simulating entanglement and correlations of quantum\r
+many-body states, we investigate the criticality of iCQOs with\r
+the presence of two- and three-body coupling terms. With\r
+just the two-body terms, we determine the range of coupling\r
+strength where there exists a physical ground-state solution\r
+(i.e., real ground-state energy as the Hamiltonian is hermi\u0002tian [38]), which we dub as physical region. At the divid\u0002ing point between the physical and non-physical regions, we\r
+uncover that the ground-state EE and correlation length sat\u0002isfy the critical scaling laws (against the virtual dimension of\r
+MPS), which were previously uncovered in the critical quan\u0002tum lattice models [11, 13, 16, 39]. The scaling coefficients\r
+result in a central charge c = 1 [40, 41], indicating that the\r
+ground state of iCQOs can be described by free boson confor\u0002mal field theory (CFT) [42]. With three-body couplings, we\r
+show the breakdown of CFT even with very weak three-body\r
+couplings. Our work explicitly shows the satisfaction of the\r
+1D scaling laws of EE, which can serve as solid supports on\r
+MPS as an efficient ansatz to represent the ground-state wave\u0002functions of continuous-space many-body systems, including\r
+those in the thermodynamic limit.\r
+II. IMAGINARY-TIME EVOLUTION FOR THE\r
+GROUND-STATE SIMULATION OF INFINITELY-MANY\r
+COUPLED QUANTUM OSCILLATORS\r
+To simulate the continuous-space quantum many-body sys\u0002tems, we expand the many-body wave-function, which is a\r
+normalized many-variable function denoted as ψ(x) with x =\r
+(x1, x2, . . .), in a set of complete functional bases {ϕsn(xn)}.\r
+A key idea is to encode the coefficients, which are exponen\u0002tially many, in an MPS whose complexity scales just linearly\r
+with the system size (i.e., number of variables) [33, 34]. The\r
+infinite functional MPS is written as\r
+ψ(x) = tTr \u0012 Y∞\r
+n=1\r
+As2n−1a2n−1a2n Bs2na2na2n+1\r
+λ\r
+I\r
+a2n\r
+λ\r
+II\r
+a2n+1\r
+ϕs2n−1(x2n−1)ϕs2n(x2n)\r
+\u0013\r
+,(1)\r
+with tTr the summation of all shared indexes. We take\r
+the Planck constant ℏ = 1 for simplicity. We here\r
+choose the functional bases to be “local”, i.e., constructed\r
+by the single-variable functions {ϕsn(xn)} that satisfy\r
+R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)ϕs\r
+′ (x)dx = δss′ . The physical dimension (the\r
+bond dimension of physical index sn, denoted as D) deter\u0002mines the order of expansion, namely dim(sn) in {ϕsn\r
+(xn)}.\r
+The virtual dimension (the dimension of virtual index an, de\u0002noted as χ) determines the number of expansion terms. Both\r
+dimensions determine the parameter complexity of the MPS.\r
+To efficiently represent the infinite-size wave-functions, we\r
+take the MPS to be translationally invariant. Fig. 1 illustrates\r
+the MPS satisfying the “two-tensor” translational invariance,\r
+namely the MPS is formed by infinitely-many copies of two\r
+inequivalent tensors A and B, as well as those of two inequiv\u0002alent spectra (diagonal matrices) λ\r
+I\r
+and λ\r
+II [Fig. 1(a)]. The\r
+spectra are necessary to define the canonical form of infinite\r
+MPS for the purpose of optimal truncations and entanglement\r
+simulations [31]. The number of variational parameters in\r
+such an MPS scales approximately as O(Dχ2). In practice,\r
+we adopt the “K-tensor” translational invariance. We take\r
+K = 2 when there exist only the one- and two-body terms in\r
+the Hamiltonian, and K = 6 with the presence of the three\u0002body terms.\r
+Translational invariance allows TN methods to efficiently\r
+simulate infinite-size quantum many-body systems. For quan\u0002tum lattice models, translational invariance explicitly corre\u0002sponds to the translational invariance of the quantum states\r
+with the respect to lattice sites, since the tensors are usually\r
+in one-to-one correspondence with the sites. For continuous\u0002space systems (such as iCQOs considered here), there is\r
+no such correspondences. The translational invariance re\u0002spects the symmetry of the Hamiltonian, and is not contra\u0002dictory to the indistinguishability of particles. Thus, we re\u0002gard translational invariance as a physically-reasonable con\u0002jecture imposed on the functional MPS ansatz. Note that the\r
+Schrodinger equations we aim to solve are in the canonical ¨\r
+quantization picture, where the bosonic or fermionic statistics\r
+of the wave-functions is not explicitly considered.\r
+The Hamiltonian of iCQOs is written as\r
+Hˆ = −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "X∞"
+text = """
+n=1\r
+(\r
+∂\r
+2\r
+∂x2\r
+n\r
+− ω\r
+2x2\r
+n\r
+) + γ\r
+X∞\r
+n=1\r
+xnxn+1, (2)\r
+where we take the natural frequency ω = 1 for simplicity. The\r
+time-independent Schrodinger equation reads ¨ Hˆ |ψ⟩ = E|ψ⟩,\r
+which is a set of PDE’s consisting of infinitely-many vari\u0002ables {xn}. The minimal eigenvalue (denoted as E0) gives\r
+the ground-state energy, satisfying E0 = min|ψ⟩⟨ψ|Hˆ |ψ⟩ =\r
+⟨ψ0|Hˆ |ψ0⟩ with |ψ0⟩ denoting the ground state.\r
+Given a set of orthonormal functional bases {ϕs(xn)}, the\r
+operators (say ∂\r
+∂xn\r
+and xn) can be represented as matrices\r
+(denoted as ∂ˆ\r
+n and Xˆn). Their coefficients satisfy ∂ss R\r
+′ = ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)\r
+∂\r
+∂x ϕs\r
+′ (x)dx and Xss′ =\r
+R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+(x)xϕs\r
+′ (x)dx.\r
+We then re-write the Hamiltonian as Hˆ =\r
+P∞\r
+n=1 Hˆ\r
+n,n+1 with\r
+Hˆ\r
+n,n+1 = −\r
+1\r
+4\r
+(∂ˆ2\r
+n + ∂ˆ2\r
+n+1 − Xˆ 2\r
+n − Xˆ 2\r
+n+1) + γXˆ\r
+nXˆn+1.\r
+We adopt the infinite time-evolving block decimation\r
+(iTEBD) algorithm [31, 32] to simulate the ground state of\r
+iCQOs. We may define the two-body imaginary-time evo\u0002lution gate Uˆ\r
+n = e\r
+−τHˆn,n+1 with τ a small positive num\u0002ber called Trotter step. By iteratively implementing the"""
+
+[[sections]]
+number = "3"
+title = "FIG. 2. (Color online) (a) The error of the ground-state energy ε"
+text = """
+versus the expansion order D (physical dimension) while fixing the\r
+virtual bond dimension χ = 16. (b) the error of the ground-state\r
+energy ε versus the virtual index χ by fixing D = 16. We vary the\r
+strength of the two-body interaction from γ = 0.45 to 0.5.\r
+gates {Uˆ\r
+n} on an initial state |ψinit⟩ [see Fig. 1(b)], one has\r
+1\r
+Z\r
+limK→∞(\r
+Q\r
+n Uˆ\r
+n)\r
+K = |ψ0⟩ with Z a normalization fac\u0002tor. The evolution scheme can be readily generalized to the\r
+cases with K-site translational invariance, in order to handle\r
+the simulations with multi-body couplings. More details can\r
+be found in the Supplemental Material [43].\r
+III. NUMERICAL RESULTS OF CRITICAL SCALING\r
+LAWS\r
+The ground-state energy of iCQOs with two-body cou\u0002plings [Eq. (2)] can be analytically obtained [38], which sat\u0002isfies\r
+Eexact = lim\r
+N→∞\r
+1\r
+2\r
+X\r
+N\r
+n=1\r
+s\r
+1 + 2γ cos \u0012\r
+nπ\r
+N + 1\u0013\r
+. (3)\r
+Eexact is real for γ <= γc ≡ 0.5, which we dub as the physical\r
+region. Fig. 2 shows the error ε = |Eexact − ⟨ψ|Hˆ |ψ⟩| versus\r
+the physical and virtual dimensions (D and χ). The error con\u0002verges to ε ∼ O(10−5\r
+), indicating that the ground states can\r
+be well approximated by the MPS’s with a finite D or χ.\r
+The correlation length ξ and entanglement entropy (EE) S\r
+of the ground state can be efficiently accessed by the MPS\r
+method [4, 44]. The correlation length is obtained from the\r
+eigenvalues of the transfer matrix M of the infinite MPS [see\r
+the inset of Fig. 3(a) for the illustration of M], satisfying\r
+ξ =\r
+1\r
+ln Λ0−ln Λ1\r
+with Λ0 and Λ1 the two dominant eigen\u0002values of M. It naturally obeys the standard definition of\r
+correlation length of continuous-space wave-functions, which\r
+characterizes the decay of correlation function ⟨Oˆ\r
+nOˆn′ ⟩ ver\u0002sus |n − n\r
+′\r
+|. The EE of continuous-space wave-functions is\r
+much less investigated. Here, the canonical form of the infi\u0002nite MPS gives us a well-defined entanglement spectrum. The\r
+EE can then be defined as S = −2\r
+P\r
+a\r
+(λ\r
+I(II)\r
+a )\r
+2\r
+ln λ\r
+I(II)\r
+a . The\r
+difference between the EE’s calculated from the two spectra\r
+is about O(10−3), which is the result of numerical errors.\r
+When γ is far away from the dividing point γ = 0.5, both\r
+the correlation length ξ and EE S converge as χ increases\r
+(Fig. 3). We fix D = 16, which should be sufficiently large.\r
+FIG. 3. (Color online) (a) The correlation length ξ and (b) EE S\r
+versus the virtual bond dimension χ. We vary the strength of the\r
+two-body interaction from γ = 0.49 to 0.5 by fixing D = 16. The\r
+correlation length is computed using the transfer matrix of the infi\u0002nite MPS illustrated in the inset of (a). The inset of (b) shows the\r
+convergence of central charge c → 1 against χmax (meaning the fit\u0002ting is implemented with the data for χ ≤ χmax). Fittings of ξ and S\r
+are given by the dashed lines, which obey algebraic and logarithmic\r
+scaling laws, respectively [see Eqs. (4) and (5)].\r
+These results indicate the finiteness of correlation length and\r
+EE for the ground state of iCQOs within the physical region,\r
+which are typical signatures of a finite excitation gap. This\r
+suggests that an infinite functional MPS with finite bond di\u0002mensions can well approximate such non-critical many-body\r
+wave-functions.\r
+As γ approaches the dividing point, both ξ and S become\r
+asymptotically divergent (Fig. 3). At γ = 0.5, our results\r
+suggest the algebraic scaling law of correlation length as\r
+ξ ∼ χ\r
+κ\r
+, (4)\r
+and meanwhile the logarithmic scaling law of EE as\r
+S ∼ η ln χ. (5)\r
+We have κ ≃ 1.32 and η ≃ 0.23. These two scaling laws\r
+are recognized as signatures of criticality for quantum lattice\r
+models [13], but haven’t been uncovered in the continuous\u0002space systems such as iCQOs. Our work reveals that even\r
+with divergent correlation length and EE, the continuous\u0002space wave-functions can still be asymptotically approached\r
+by MPS in a similar manner for approaching the critical quan\u0002tum lattice systems.\r
+The critical properties can be further characterized by the\r
+scaling coefficients. From CFT, we can estimate the central\r
+charge as\r
+c =\r
+6η\r
+κ\r
+= 1 + O(10−2). (6)\r
+This suggests the wave-function at the dividing point between\r
+the physical and non-physical regions to be described by the\r
+c = 1 boson CFT [42]. The inset of Fig. 3(b) demonstrates\r
+the convergence of c versus χ."""
+
+[[sections]]
+number = "4"
+title = "FIG. 4. (Color online) (a) The variational ground-state energy"
+text = """
+⟨ψ|Hˆ |ψ⟩ and (b) the violation of Schrodinger equation ¨ L [Eq. (7)]\r
+with different two- and three-body coupling strengths (γ and γ˜, re\u0002spectively). The dividing boundary between the physical and non\u0002physical regions obeys γ˜ = 0.896 (0.5 − γ)"""
+
+[[sections]]
+number = "0.438"
+title = "IV. BREAKDOWN OF CRITICALITY WITH"
+text = """
+THREE-BODY COUPLINGS\r
+Below, we introduce the three-body coupling terms\r
+γ˜\r
+P\r
+n\r
+xnxn+1xn+2 to the Hamiltonian with γ˜ the coupling\r
+strength. Fig. 4 show the physical region determined by the\r
+variational ground-state energy ⟨ψ|Hˆ |ψ⟩ and the violation of\r
+Schrodinger equation ¨\r
+L =\r
+\f\r
+\f\r
+\f\r
+Hˆ |ψ⟩ − E|ψ⟩\r
+\f\r
+\f\r
+\f\r
+2\r
+, (7)\r
+with E = ⟨ψ|Hˆ |ψ⟩. In the non-physical region, the obtained\r
+energy is irregularly low with the violation L ∼ O(102)\r
+(which is far larger than the violation L ∼ O(10−1) in the\r
+physical region). By fitting, we find the dividing boundary to\r
+satisfy an algebraic relation γ˜ ∼ (0.5 − γ)\r
+0.438\r
+.\r
+Fig. 5(a) shows that EE slightly increases when γ˜ ap\u0002proaches the dividing boundary from the physical side. The\r
+dividing boundary given by the peak of EE is consistent with\r
+that obtained in Fig. 4. We have γ˜ = 0.02 ± O(10−5) as the\r
+dividing point for γ = 0.499, and γ˜ = 0.035 ± O(10−5) for\r
+γ = 0.495. On the dividing boundary, our results show that\r
+EE no longer obeys the logarithmic scaling law but converges\r
+after χ ≃ 25 for γ = 0.499 (or after χ ≃ 15 for γ = 0.495).\r
+See Fig. 5(b). EE does not scale to diverge as χ increases,\r
+and thus implies the absence of criticality or the CFT descrip\u0002tion for the ground-state wave-functions when the three-body\r
+terms appear.\r
+V. SUMMARY\r
+This work concerns simulating the ground-state wave\u0002functions and their entanglement properties of infinite-size\r
+quantum many-body systems in continuous space. We com\u0002bine the infinite time-evolving block decimation algorithm\r
+with functional tensor network (TN) to simulate the ground\r
+states of infinite coupled quantum oscillators (iCQOs) defined\r
+in continuous space. At the dividing point between the phys\u0002ical and non-physical regions with just two-body couplings,\r
+FIG. 5. (Color online) (a) The ground-state EE S versus the strength\r
+of three-body couplings γ˜ for γ = 0.499 and 0.495. We fix D = 16\r
+and χ = 16. (b) The scaling of EE against χ. We take different\r
+strengths of three-body couplings γ˜ for γ = 0.499, and take γ˜ =\r
+0.035 for γ = 0.495.\r
+we reveal algebraic scaling laws of the correlation length and\r
+logarithmic scaling laws of the entanglement entropy (EE)\r
+against the virtual dimension of the TN ansatz. These findings\r
+suggest the c = 1 boson conformal field theory (CFT) describ\u0002ing the criticality at the dividing point. We further show that\r
+the three-body terms break down the criticality and the CFT\r
+description on the dividing boundary. Our work demonstrates\r
+the validity of EE scaling theories based on TN for investi\u0002gating the quantum many-body systems in continuous space.\r
+The satisfactions of EE scaling laws serves as a solid evidence\r
+on the efficiency of TN for approximating continuous-space\r
+wave-functions and for accessing the properties of criticality\r
+of continuous-space quantum many-body systems.\r
+ACKNOWLEDGMENT\r
+R.H. is grateful to Ding-Zu Wang for helpful discus\u0002sions.This work was supported in part by the Beijing Natu\u0002ral Science Foundation (Grant No. 1232025), NSFC (Grant\r
+No. 62175169), the Ministry of Education Key Laboratory of\r
+Quantum Physics and Photonic Quantum Information (Grant\r
+No. ZYGX2024K020), and the Academy for Multidisci\u0002plinary Studies, Capital Normal University. S.J.R. acknowl\u0002edges the support from the Peng Huanwu Visiting Professor\r
+Program, the Chinese Academy of Sciences. The machine\r
+learning simulations were partially performed on the robotic\r
+AI-Scientist platform of Chinese Academy of Sciences.\r
+DATA AVAILABILITY\r
+The data that support the findings of this work are available\r
+from the corresponding author upon reasonable request.\r
+Appendix A: Functional matrix product state and operators\r
+To simulate the continuous-space quantum many-body sys\u0002tems, we expand the many-body wave-function, which is\r
+a normalized many-variable function denoted as ψ(x) with
+
+5\r
+x = (x1, x2, . . .), in a set of orthonormal functional bases\r
+{ϕsn(xn)}. A key idea is to encode the coefficients, which\r
+are exponentially many, in a tensor network (TN) whose com\u0002plexity scales just polynomially with the system size [33, 34].\r
+Here, we take the matrix product state (MPS), where the\r
+many-body wave-function can be expressed as\r
+ψ(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN ϕs1\r
+(x1)· · · ϕsN (xN ). (A1)\r
+Below, we adopt the infinite MPS, which is a simple but\r
+powerful TN to represent infinite-size quantum states. To rep\u0002resent many-body wave-functions in the continuous space, the\r
+infinite functional MPS can be written as\r
+ψ(x) = tTr \u0012 Y∞\r
+n=1\r
+Aa2n−1s2n−1a2n λ\r
+I\r
+a2n Ba2ns2na2n+1\r
+λ\r
+II\r
+a2n+1\r
+ϕs2n−1\r
+(x2n−1)ϕs2n\r
+(x2n)\r
+\u0013\r
+, (A2)\r
+with tTr denoting the summation over all shared indexes.\r
+The indexes αn (n = 1, · · · , N − 1) are dubbed as vir\u0002tual bonds. The upper bound of their dimensions dim(αn)\r
+is called the virtual bond dimension, denoted by χ. The in\u0002dexes {sn} are called the physical bonds, with their dimen\u0002sions called the physical bond dimension , denoted by D. In\r
+our cases for representing continuous-space wave-functions,\r
+D determines the expansion order in the functional bases. The\r
+number of parameters in the MPS (i.e., the total number of el\u0002ements in the tensors {A(n)} for n = 1, · · · , N) scales only\r
+linearly with N as O(NDχ\r
+2\r
+), while the number of coeffi\u0002cients in ψ(x) scales exponentially as O(DN ).\r
+The MPS is formed by infinite copies of four inequivalent\r
+tensors, which are third-order tensors A, B, and vectors (or\r
+diagonal matrices) λ\r
+I\r
+, λ\r
+II. Such an MPS is called two-site\r
+or two-tensor (considering A and B are defined on the sites)\r
+translationally invariant.\r
+To solve the Schrodinger equation for the ground state, we ¨\r
+need to obtain the coefficients of operators in the same func\u0002tional bases. Considering an operator Oˆ(m) with respect to the\r
+variable xm, acting it on ψ(x) yields\r
+ψ˜(x) = Oˆ(m)[ψ(x)]\r
+=\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN [\r
+Y\r
+n̸=m\r
+ϕsn(xn)]\r
+Oˆ(m)[ϕsm(xm)]. (A3)\r
+Since the functional bases are assumed to be orthonormal, we\r
+have the expansion\r
+Oˆ(m)[ϕs(x)] =\r
+D−\r
+X\r
+1\r
+s\r
+′=0\r
+O\r
+(m)\r
+ss′ ϕs\r
+′ (x), (A4)\r
+where O\r
+(m)\r
+ss′ denotes the coefficients of Oˆ(m)\r
+. Substituting it\r
+into Eq. (A3), we have\r
+ψ˜(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+Cs1···sN [\r
+Y\r
+n̸=m\r
+ϕsn(xn)]\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+sms\r
+′m\r
+ϕs\r
+′m\r
+(xm)\r
+=\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+sms\r
+′m\r
+Cs1···sN\r
+[\r
+Y\r
+n̸=m\r
+ϕsn\r
+(xn)]ϕs\r
+′m\r
+(xm). (A5)\r
+Rearranging the above equation (say, with the replacement\r
+sm ↔ s\r
+′\r
+m), we have\r
+ψ˜(x) =\r
+D−\r
+X\r
+1\r
+s1···sN =0\r
+(\r
+D−\r
+X\r
+1\r
+s\r
+′m=0\r
+O\r
+(m)\r
+s\r
+′msm\r
+Cs1···sm−1s\r
+′msm+1sN )\r
+Y\r
+n\r
+ϕsn((A6) xn).\r
+Denote the expansion of ψ˜(x) as ψ˜(x) =\r
+PD−1\r
+s1···sN =0 C˜\r
+s1···sN ϕs1\r
+(x1)· · · ϕsN (xN ) with C˜ the co\u0002efficient tensor, Then, comparing with Eq. (A6), we\r
+immediately have\r
+C˜\r
+s1···sN =\r
+X\r
+s\r
+′m\r
+O\r
+(m)\r
+s\r
+′msm\r
+Cs1···sm−1s\r
+′msm+1sN . (A7)\r
+When the coefficient tensor C is represented as an MPS,\r
+the contraction between O\r
+(m)\r
+and C becomes the contraction\r
+between O\r
+(m)\r
+and the corresponding local tensor A\r
+(m)\r
+as\r
+A˜\r
+(m)\r
+αsα′ =\r
+X\r
+s\r
+′\r
+O\r
+(m)\r
+s\r
+′s A\r
+(m)\r
+αs′α′ . (A8)\r
+Replacing A\r
+(m)\r
+by A˜\r
+(m)\r
+, one obtains all local tensors of the\r
+MPS representing ψ˜(x).\r
+To evaluate O\r
+(m)\r
+, let us return to Eq. (A4) and perform the\r
+following integral\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)Oˆ(m)\r
+[ϕs(x)]dx =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ ϕs\r
+′′ (x)dx\r
+=\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)ϕs\r
+′′ (x)dx. (A9)\r
+Using the orthonormal property of the functional bases, one\r
+has R ∞\r
+−∞ ϕ\r
+∗\r
+s\r
+′ (x)ϕs\r
+′′ (x)dx = δs′s′′ , and eventually\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)Oˆ(m)\r
+[ϕs(x)]dx =\r
+D−\r
+X\r
+1\r
+s\r
+′′=0\r
+O\r
+(m)\r
+ss′′ δs\r
+′s′′\r
+= O\r
+(m)\r
+ss′ . (A10)"""
+
+[[sections]]
+number = "6"
+title = "Appendix B: Infinite coupled quantum oscillators"
+text = """
+We consider the infinitely coupled quantum oscillators (iC\u0002QOs) in one dimension as an example. The Hamiltonian reads\r
+Hˆ HO =\r
+1\r
+2\r
+X\r
+N\r
+n=1\r
+\u0012\r
+−\r
+∂\r
+2\r
+∂x2\r
+n\r
++ ω\r
+2\r
+nx\r
+2\r
+n\r
+\u0013\r
++ γ\r
+N\r
+X−1\r
+m=1\r
+xmxm+1\r
++˜γ\r
+N\r
+X−2\r
+m=1\r
+xmxm+1xm+2, (B1)\r
+where we take the number of oscillators N → ∞ and the\r
+natural frequency ωn = 1. The strengths of the two- and\r
+three-body coupling are denoted as γ and γ˜, respectively. We\r
+also take the Planck constant to be ℏ = 1 for simplicity.\r
+A natural choice for the orthonormal functional bases is the\r
+Gaussian bases\r
+ϕs(x) = \u0012\r
+1\r
+2\r
+ss!\r
+√\r
+π\r
+\u00131\r
+2\r
+e\r
+− x\r
+2\r
+2 hs(x), (B2)\r
+with hs(x) the Hermitian polynomial. Taking the Gaussian\r
+bases and applying Eq. (A10) to the partial differentiation op\u0002erator ∂ˆ =\r
+∂\r
+∂x , we have\r
+∂s\r
+′s =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+′ (x)∂ˆ[ϕs(x)]dx =\r
+\r
+\r
+\r
+q\r
+s+1\r
+2\r
+, s′ = s − 1;\r
+−\r
+q\r
+s+1\r
+2\r
+, s′ = s + 1.\r
+(B3)\r
+Another example is the operation Xˆ = x. We have\r
+Xss′ =\r
+Z ∞\r
+−∞\r
+ϕ\r
+∗\r
+s\r
+(x)xϕs\r
+′ (x)dx =\r
+\r
+\r
+\r
+q\r
+s+1\r
+2\r
+, s′ = s − 1;\r
+q\r
+s+1\r
+2\r
+, s′ = s + 1.\r
+(B4)\r
+The Hamiltonian in Eq. (B2) can be expressed in terms of ∂ˆ\r
+and Xˆ. Taking the Hamiltonian without the three-body terms\r
+as an example (γ˜ = 0), we have Hˆ =\r
+P\r
+n Hˆ\r
+n,n+1, where the\r
+local Hamiltonian satisfies\r
+Hˆ\r
+n,n+1 = −\r
+1\r
+4\r
+(∂ˆ2\r
+n + ∂ˆ2\r
+n+1 − Xˆ 2\r
+n − Xˆ 2\r
+n+1)\r
++γXˆ\r
+nXˆn+1, (B5)\r
+with ∂ˆ\r
+n = ∂/∂xn and Xˆn = xn.\r
+Appendix C: Infinite time-evolving block decimation algorithm\r
+The ground state of a given Hamiltonian can be simulated\r
+using the infinite time-evolving block decimation (iTEBD)\r
+algorithm [32]. We start from the definition of the time\u0002evolution operator\r
+Uˆ(τ ) = Y\r
+n\r
+e\r
+−τHˆn,n+1\r
+, (C1)\r
+FIG. 6. (Color online) (a) An illustration of the imaginary-time evo\u0002lution in the iTEBD algorithm, where Uˆ represents the local evo\u0002lution operator. (b) The tensor contraction for computing the local\r
+evolution. See Eqs. (C3)-(C5).\r
+with τ a small positive number representing a short time slice.\r
+Note that Uˆ(τ ) is the product of infinitely-many copies of lo\u0002cal time-evolution operator Uˆ = e\r
+−τHˆn,n+1 . The ground state\r
+|ψ0⟩ can be approached by evolving an initial state |ψ0⟩ until\r
+it converges, where we have\r
+1\r
+Z\r
+lim\r
+K→∞\r
+(\r
+Y\r
+n\r
+Uˆ(τ ))K = |ψ0⟩, (C2)\r
+with Z the normalization factor. An illustration of the evolu\u0002tion is given in Fig. 6(a).\r
+With the presence of three-body terms, we assume the MPS\r
+to be 6-tensor translationally invariant, which is formed by\r
+infinitely-many copies of 6 third-order tensors and 6 spectra\r
+(diagonal matrices). The three-body evolution operator can\r
+be readily defined to implement the imaginary-time evolution\r
+with the presence of three-body coupling terms. Below, we\r
+still take the simulation without three-body terms (γ˜ = 0) as\r
+an example to explain the algorithm.\r
+Similar to Eq. (A8), the local operators (copies of Uˆ) are\r
+contracted with the local tensors in the MPS sequentially. For\r
+instance, considering the contraction of Uˆ, A, B, and the rel\u0002evant spectra, we have\r
+Tα′\r
+0\r
+p0p1α′\r
+1\r
+=\r
+X\r
+βα0α1s0s1\r
+λ\r
+I\r
+α′\r
+0α0Bα0s0βλ\r
+II\r
+ββAβs1α1 λ\r
+I\r
+α1α′"""
+
+[[sections]]
+number = "1"
+title = "Us0s1p0p1"
+text = """
+(C3)\r
+with Us0s1p0p1 = ⟨s0s1|Uˆ|p0p1⟩. See Fig. 1(b).\r
+To restore the MPS form before contraction, we perform\r
+SVD on T as\r
+T [0,1],[2,3] = W λIIV\r
+†\r
+(C4)\r
+with T [0,1],[2,3] being the matrization of T by reshaping its\r
+first two indexes into one index and the rest two indices into\r
+another. See the first line of Fig. 1(b). The spectrum λ\r
+II is\r
+updated by the singular spectrum obtained in the above SVD."""
+
+[[sections]]
+number = "7"
+title = "FIG. 7. (Color online) The canonical conditions of MPS. See"
+text = """
+Eq. (D1) for the contraction formula corresponding to the left panel.\r
+Obviously, the new indexes obtained by SVD and the new\r
+spectrum λ\r
+II possess a larger dimension. Without any trunca\u0002tion, the dimension will increase exponentially with the evo\u0002lution time. What we do in the iTEBD algorithm is if this\r
+dimension exceeds the preset maximum (denoted as χ), it\r
+should be truncated to χ by keeping only the χ-largest sin\u0002gular values and the corresponding singular vectors.\r
+Finally, one restores the spectra located at the two sides by\r
+inserting λ\r
+I\r
+(λ\r
+I\r
+)\r
+−1\r
+, as shown in the last line of Fig. 1(b). The\r
+two third-order tensors are obtained as\r
+Aαsβ = (λ\r
+I\r
+)\r
+−1\r
+ααWαsβ, Bαsβ = V\r
+∗\r
+αsβ(λ\r
+I\r
+)\r
+−1\r
+ββ . (C5)\r
+Appendix D: Canonical form of matrix product state\r
+With τ → 0, the evolution given by Uˆ(τ ) is close to be\r
+identical. Therefore, the evolution drives the MPS to the\r
+so-called canonical form [31], where the tensors satisfy the\r
+canonical conditions illustrated in Fig. 7. As an example, the\r
+contraction given by the left panel reads\r
+X\r
+s0s1α0α′\r
+0α1α′1\r
+B\r
+∗\r
+β0s0α0Bβ\r
+′\r
+0\r
+s0α′\r
+0\r
+λ\r
+II\r
+α0α0\r
+λ\r
+II\r
+α′\r
+0α′0\r
+A\r
+∗\r
+α0s1β1Aα′\r
+0\r
+s1β1\r
+(λ\r
+I\r
+β1β1\r
+)\r
+2 = Iβ0β\r
+′\r
+0\r
+, (D1)\r
+with I representing the identity. The canonical conditions can\r
+be generalized to the cases with K-tensor translational invari\u0002ance.\r
+We here utilize two advantages of the MPS being in the\r
+canonical form. First, the truncations implemented in the\r
+iTEBD algorithm are (nearly) optimal. By “nearly”, we mean\r
+that the MPS approaches (but is not in) the strict canonical\r
+form in the nearly-identical evolution given by Uˆ(τ ). Sec\u0002ond, it has been proven that the spectra (λ\r
+I\r
+and λ\r
+II) give the\r
+entanglement spectra for the bipartitions at the corresponding\r
+positions. These two advantages hold not only for MPS rep\u0002resenting the quantum many-body states of lattice models, but\r
+also the functional MPS’s that represent the wave-functions in\r
+the continuous space as well as for the functional MPS’s with\r
+K-tensor translational invariance.\r
+Appendix E: Simulation of local fidelity\r
+Fig. 8 shows the convergence with the MPS’s of dif\u0002ferent translational symmetries. We consider the K-tensor\r
+translationally invariant MPS’s with K = 2, 3, 4, 6 and\r
+FIG. 8. (Color online) Local fidelity F from the fidelity f =\r
+|⟨ψ(K, n)|ψ(K′ = 6, n′ = 1000)⟩|2versus the evolution step n\r
+with different translational invariances (K = 2, 3, 4, 6). F is cal\u0002culated as the norm square of the largest eigenvalue of the transfer\r
+matrix of f (see Fig. 9 for the definition of transfer matrix).\r
+FIG. 9. (Color online) The illustration of the transfer matrix for\r
+|⟨ψ(K = 2, n)|ψ(K′ = 3, n′)⟩|. We have ignored to illustrate the\r
+transpose conjugation of the tensors for simplicity.\r
+show the “local” fidelity F that can give the fidelity f =\r
+|⟨ψ(K, n)|ψ(K′ = 6, n′ = 1000)⟩|2 versus the number of\r
+evolution steps n. Note |ψ(K, n)⟩ denotes a K-tensor trans\u0002lationally invariant MPS after n evolution steps.\r
+The local fidelity is calculated by the largest eigenvalue of\r
+the transfer matrix of |⟨ψ(K, n)|ψ(K′, n′)⟩|. See Fig. 9 as the\r
+illustration of the transfer matrix with K = 2 and K′ = 3 as\r
+an example. One should take K˜ = 6 tensors from each of the\r
+matrix to define the transfer matrix, with K˜ the least common\r
+multiple of K and K′. The local fidelity is calculated as the\r
+norm square of the largest eigenvalue of the transfer matrix.\r
+Specifically, we have\r
+f = F\r
+N\r
+K˜ , (E1)\r
+with the system size N → ∞ in the thermodynamic limit.\r
+One always has f → 0 when the difference between the lo\u0002cal tensors of two MPS’s lead the dominant eigenvalue to be\r
+smaller than 1. Therefore, we choose the local fidelity F to\r
+characterize the similarity between two infinite-size MPS’s\r
+rather than the fidelity f.\r
+In Fig. 8(a), we take γ = 0.49 and γ˜ = 0, where the Hamil\u0002tonian consists of just two-body couplings. All local fidelities\r
+converge to 1, meaning the MPS’s stably converge to |ψ(K =\r
+6, n = 1000)⟩. In Fig. 8(b), we introduce the three-body cou\u0002plings by taking γ˜ = 0.03. The MPS with 6-tensor transla\u0002tional invariance converges well as n increases. However, the\r
+fidelity F = |⟨ψ(K = 2, n)|ψ(K′ = 6, n′ = 1000)⟩|2con\u0002verges to about 0.1. This is due to the inconsistency between\r
+the translational invariance (K = 2) and the 3-body coupling\r
+terns. Therefore, we trust the results with K = 6.
+
+8\r
+[1] V. Murg F. Verstraete and J.I. Cirac, “Matrix product states,\r
+projected entangled pair states, and variational renormalization\r
+group methods for quantum spin systems,” Advances in Physics\r
+57, 143–224 (2008).\r
+[2] J Ignacio Cirac and Frank Verstraete, “Renormalization and ten\u0002sor product states in spin chains and lattices,” Journal of Physics\r
+A: Mathematical and Theoretical 42, 504004 (2009).\r
+[3] Roman Or ´ us, “A practical introduction to tensor networks: Ma- ´\r
+trix product states and projected entangled pair states,” Annals\r
+of Physics 349, 117–158 (2014).\r
+[4] Shi-Ju Ran, Emanuele Tirrito, Cheng Peng, Xi Chen, Luca\r
+Tagliacozzo, Gang Su, and Maciej Lewenstein, (Springer,\r
+Cham).\r
+[5] X. G. WEN, “Topological orders in rigid states,” International\r
+Journal of Modern Physics B 04, 239–271 (1990).\r
+[6] Michael Levin and Xiao-Gang Wen, “Detecting topological\r
+order in a ground state wave function,” Phys. Rev. Lett. 96,\r
+110405 (2006).\r
+[7] Alexei Kitaev and John Preskill, “Topological entanglement en\u0002tropy,” Physical Review Letters 96, 110404 (2006).\r
+[8] Wang Z. Balents L. Jiang, HC., “Identifying topological order\r
+by entanglement entropy,” Nature Phys 8, 902–905 (2012).\r
+[9] G. Evenbly and G. Vidal, “Tensor network renormalization,”\r
+Physical Review Letters 115, 180405 (2015).\r
+[10] Mingru Yang, Bram Vanhecke, and Norbert Schuch, “Detect\u0002ing emergent continuous symmetries at quantum criticality,”\r
+Physical Review Letters 131, 036505 (2023).\r
+[11] G. Vidal, J. I. Latorre, E. Rico, and A. Kitaev, “Entanglement\r
+in quantum critical phenomena,” Phys. Rev. Lett. 90, 227902\r
+(2003).\r
+[12] L. Tagliacozzo, Thiago. R. de Oliveira, S. Iblisdir, and J. I.\r
+Latorre, “Scaling of entanglement support for matrix product\r
+states,” Phys. Rev. B 78, 024410 (2008).\r
+[13] Frank Pollmann, Subroto Mukerjee, Ari M. Turner, and\r
+Joel E. Moore, “Theory of finite-entanglement scaling at one\u0002dimensional quantum critical points,” Physical Review Letters\r
+102, 255701 (2009).\r
+[14] Yimin Ge and Jens Eisert, “Area laws and efficient descrip\u0002tions of quantum many-body states,” New Journal of Physics\r
+18, 083026 (2016).\r
+[15] J. Eisert, M. Cramer, and M. B. Plenio, “Colloquium: Area\r
+laws for the entanglement entropy,” Rev. Mod. Phys. 82, 277–\r
+306 (2010).\r
+[16] Yijian Zou, Ashley Milsted, and Guifre Vidal, “Conformal data\r
+and renormalization group flow in critical quantum spin chains\r
+using periodic uniform matrix product states,” Physical Review\r
+Letters 121, 230402 (2018).\r
+[17] Rui-Zhen Huang, Long Zhang, Andreas M. Lauchli, Jutho ¨\r
+Haegeman, Frank Verstraete, and Laurens Vanderstraeten,\r
+“Emergent conformal boundaries from finite-entanglement\r
+scaling in matrix product states,” Physical Review Letters 132,\r
+086503 (2024).\r
+[18] Stellan Ostlund and Stefan Rommer, “Thermodynamic limit of ¨\r
+density matrix renormalization,” Physical Review Letters 75,\r
+3537–3540 (1995).\r
+[19] Stefan Rommer and Stellan Ostlund, “Class of ansatz wave ¨\r
+functions for one-dimensional spin systems and their relation\r
+to the density matrix renormalization group,” Physical Review\r
+B 55, 2164–2181 (1997).\r
+[20] F. Verstraete and J. I. Cirac, “Matrix product states represent\r
+ground states faithfully,” Physical Review B 73, 094423 (2006).\r
+[21] M. B. Hastings, “Solving gapped hamiltonians locally,” Phys.\r
+Rev. B 73, 085115 (2006).\r
+[22] Gilbert W. King, “Monte-carlo method for solving diffusion\r
+problems,” Industrial and Engineering Chemistry 43, 2475–\r
+2478 (1951).\r
+[23] David Ceperley and Berni Alder, “Quantum Monte Carlo,” Sci\u0002ence 231, 555–560 (1986).\r
+[24] W. M. C. Foulkes, L. Mitas, R. J. Needs, and G. Rajagopal,\r
+“Quantum monte carlo simulations of solids,” Reviews of Mod\u0002ern Physics 73, 33–83 (2001).\r
+[25] O’Gorman B.A. Rubin N.C. et al. Huggins, W.J., “Unbiasing\r
+fermionic quantum monte carlo with a quantum computer,” Na\u0002ture 603, 416–420 (2022).\r
+[26] Justin Sirignano and Konstantinos Spiliopoulos, “Dgm: A deep\r
+learning algorithm for solving partial differential equations,”\r
+Journal of Computational Physics 375, 1339–1364 (2018).\r
+[27] M. Raissi, P. Perdikaris, and G.E. Karniadakis, “Physics\u0002informed neural networks: A deep learning framework for solv\u0002ing forward and inverse problems involving nonlinear partial\r
+differential equations,” Journal of Computational Physics 378,\r
+686–707 (2019).\r
+[28] David Pfau, James S. Spencer, Alexander G. D. G. Matthews,\r
+and W. M. C. Foulkes, “Ab initio solution of the many-electron\r
+schrodinger equation with deep neural networks,” ¨ Physical Re\u0002view Research 2, 033429 (2020).\r
+[29] Schatzle Z. Hermann, J. and F No ¨ e, “Deep-neural-network so- `\r
+lution of the electronic schrodinger equation,” ¨ Nature Chem\u0002istry 12, 891–897 (2020).\r
+[30] Reisenhofer R. Gerard L. et al. cherbela, M., “Solving the\r
+electronic schrodinger equation for multiple nuclear geometries ¨\r
+with weight-sharing deep neural networks,” Nature Computa\u0002tional Science 2, 331–341 (2022).\r
+[31] R. Orus and G. Vidal, “Infinite time-evolving block decima- ´\r
+tion algorithm beyond unitary evolution,” Physical Review B\r
+78, 155117 (2008).\r
+[32] G. Vidal, “Classical simulation of infinite-size quantum lattice\r
+systems in one spatial dimension,” Physical Review Letters 98,\r
+070201 (2007).\r
+[33] S. Iblisdir, R. Orus, and J. I. Latorre, “Matrix product states ´\r
+algorithms and continuous systems,” Physical Review B 75,\r
+104305 (2007).\r
+[34] Rui Hong, Ya-Xuan Xiao, Jie Hu, An-Chun Ji, and Shi-Ju Ran,\r
+“Functional tensor network solving many-body Schrodinger ¨\r
+equation,” Physical Review B 105, 165116 (2022).\r
+[35] Nicholas Mueller, Yiran Zhao, Santiago Badia, and\r
+Tiangang Cui, “A tensor-train reduced basis solver for\r
+parameterized partial differential equations,” (2024),\r
+10.48550/arXiv.2412.14460.\r
+[36] Yian Chen and Yuehaw Khoo, “Combining Monte Carlo and\r
+Tensor-network Methods for Partial Differential Equations via\r
+Sketching,” (2023).\r
+[37] Gabriele De Chiara and Anna Sanpera, “Genuine quantum cor\u0002relations in quantum many-body systems: a review of recent\r
+progress,” Reports on Progress in Physics 81, 074002 (2018).\r
+[38] Alireza Beygi, S. P. Klevansky, and Carl M. Bender, “Coupled\r
+Oscillator Systems Having Partial PT Symmetry,” Physical Re\u0002view A 91, 062101 (2015).\r
+[39] Martin Andersson, Magnus Boman, and Stellan Ostlund, ¨\r
+“Density-matrix renormalization group for a gapless system of\r
+free fermions,” Physical Review B 59, 10493–10503 (1999).\r
+[40] Pasquale Calabrese and John Cardy, “Entanglement entropy
+
+9\r
+and quantum field theory,” Journal of Statistical Mechanics:\r
+Theory and Experiment 2004, P06002 (2004).\r
+[41] M. Ghasemi Nezhadhaghighi and M. A. Rajabpour, “Quantum\r
+entanglement entropy and classical mutual information in long\u0002range harmonic oscillators,” Physical Review B 88, 045426\r
+(2013).\r
+[42] P. Mathieu P. Di Francesco and D. Sen´ echal, ´ Conformal Field\r
+Theory (Springer, Heidelberg, 1999).\r
+[43] See the Supplemental Material at [with the url provided by the\r
+publisher] for more details on the infinite functional MPS rep\u0002resentation of continuous-space many-body wave-functions and\r
+the iTEBD algorithm based on such a representation.\r
+[44] J. Ignacio Cirac, David Perez-Garc ´ ´ıa, Norbert Schuch, and\r
+Frank Verstraete, “Matrix product states and projected entan\u0002gled pair states: Concepts, symmetries, theorems,” Reviews of\r
+Modern Physics 93, 045003 (2021)."""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 6
+image_path = "images/image_p6_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 7
+image_path = "images/image_p7_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 7
+image_path = "images/image_p7_9.png"

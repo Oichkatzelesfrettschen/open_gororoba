@@ -1,0 +1,4 @@
+Store ⇡(At+1,St+1)
+b(At+1,St+1) as ⇢t+1
+| ⌧ t,n +1 (⌧ is the time whose estimate is being updated)
+| If ⌧,0:

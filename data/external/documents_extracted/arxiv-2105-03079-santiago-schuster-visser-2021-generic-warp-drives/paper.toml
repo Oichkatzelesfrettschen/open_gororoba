@@ -1,0 +1,4985 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+Generic warp drives violate the\r
+null energy condition\r
+Jessica Santiago1,2 ID , Sebastian Schuster3 ID, and Matt Visser1 ID\r
+1 School of Mathematics and Statistics, Victoria University of Wellington,\r
+PO Box 600, Wellington 6140, New Zealand.\r
+2 Section of Astrophysics, Astronomy and Mechanics, Department of Physics,\r
+Aristotle University of Thessaloniki, Thessaloniki 54124, Greece.\r
+3\r
+Institute of Theoretical Physics, Faculty of Mathematics and Physics, Charles University,\r
+V Holeˇsoviˇck´ach 2, 180 00 Prague 8, Czech Republic.\r
+E-mail: jessica.santiago@sms.vuw.ac.nz,\r
+sebastian.schuster@utf.mff.cuni.cz, matt.visser@sms.vuw.ac.nz\r
+Abstract: Three recent articles have claimed that it is possible to, at least in theory,\r
+either set up positive energy warp drives satisfying the weak energy condition (WEC), or\r
+at the very least, to minimize the WEC violations. These claims are at best incomplete,\r
+since the arguments as presented only assert but do not prove the existence of one\r
+set of timelike observers, the co-moving Eulerian observers, who see relatively “nice”\r
+physics. While these particular observers might arguably see a positive energy density,\r
+the WEC requires all timelike observers to see positive energy density. Therefore, one\r
+should carefully revisit this issue. A more careful analysis shows that the situation\r
+is actually much grimmer than advertised — within the framework adopted by those\r
+three papers all physically reasonable warp drives will certainly violate the WEC, and\r
+both the strong and dominant energy conditions. Under plausible subsidiary conditions\r
+the null energy condition is also violated. While warp drives are certainly interesting\r
+examples of speculative physics, the violation of the energy conditions, at least within\r
+the framework of standard general relativity, is unavoidable. Even in modified gravity,\r
+physically reasonable warp drives will still violate the purely geometrical null convergence\r
+condition and the timelike convergence condition which, in turn, will place very strong\r
+constraints on any modified-gravity warp drive.\r
+Date: Saturday 26 February 2022; LATEX-ed March 1, 2022\r
+(Closely resembles final version accepted and in press at PRD.)\r
+Keywords: warp drives; energy conditions; convergence conditions;\r
+Alcubierre warp drive; Nat´ario generic warp drive; Nat´ario zero-expansion warp drive;\r
+zero-vorticity warp drive.\r
+arXiv:2105.03079v2 [gr-qc] 25 Feb 2022
+
+Contents\r
+1 Introduction 2\r
+2 Warp drive kinematics 3\r
+3 Warp-field curvature 7\r
+3.1 Riemann tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7\r
+3.2 Ricci tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8\r
+3.3 Einstein tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9\r
+4 Warp-field stress-energy tensor 10\r
+4.1 Density . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10\r
+4.2 Flux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11\r
+4.3 Spatial stresses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11\r
+5 Energy conditions 12\r
+6 Timelike and null convergence conditions 19\r
+7 Violation of the energy conditions 19\r
+7.1 Alcubierre warp drive . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19\r
+7.2 Nat´ario zero-expansion warp drive . . . . . . . . . . . . . . . . . . . . . 21\r
+7.3 Zero-vorticity warp drive . . . . . . . . . . . . . . . . . . . . . . . . . . 21\r
+7.4 Nat´ario’s generic warp drive . . . . . . . . . . . . . . . . . . . . . . . . 23\r
+8 Discussion and conclusions 29\r
+A “Spherically symmetric” warp drives 29\r
+B Warp drives beyond the generic Nat´ario framework 32\r
+C Some defective warp drives 33\r
+D Final considerations regarding recent warp drive proposals 34\r
+– 1 –
+
+1 Introduction\r
+Three recent articles [1–3] have argued for the existence of “physically reasonable”\r
+positive-energy warp drive configurations, either satisfying the weak energy condition\r
+(WEC), or minimizing violations thereof. (See also the series of articles [4–8].) These\r
+claims are in sharp contrast to the 25-year-old consensus opinion that at least some\r
+energy condition violations are necessary for the generation of warp fields [9–29].\r
+Specifically, known results already include:\r
+• Alcubierre warp drives have long been known to violate the WEC [9], and have\r
+more recently been shown to also violate the null energy condition (NEC) [29].\r
+• Nat´ario zero-expansion warp drives have long been known to violate the WEC [10].\r
+• Generic Nat´ario warp drives are known to violate the dominant energy condition\r
+(DEC) [15], and have also been shown to violate either the strong energy condition\r
+(SEC) or the WEC [10].\r
+We shall strengthen these well known results below, first showing that the Nat´ario zero\u0002expansion warp drives also violate the SEC, and the NEC, and then ultimately showing\r
+that generic Nat´ario warp drives (including the variants discussed in references [1–3])\r
+violate the WEC, and under plausible subsidiary conditions also violate the NEC.\r
+How, then, is this result compatible with the various rather bold claims made in\r
+references [1–3]? (And, for that matter, various parts of the popular press.) The key\r
+observation is that WEC requires all timelike observers to see positive energy density,\r
+whereas the analyses of references [1–3] at best only investigate the energy density as\r
+seen by one class of timelike observers (the co-moving Eulerian observers). Thus the\r
+claims made in references [1–3] are at best grossly incomplete, and in many key specific\r
+details, wrong.\r
+To set the stage, in section 2 we shall first discuss the kinematics of generic Nat´ario warp\r
+drive spacetimes, and then calculate the relevant spacetime curvature (Riemann, Ricci,\r
+and Einstein tensors) in section 3. Assuming standard general relativity, we calculate\r
+in section 4 all the components of the generic Nat´ario warp-field stress-energy tensor.\r
+In section 5, we then provide a number of general results regarding the implications of\r
+the point-wise energy conditions, and relate them to the null and timelike convergence\r
+conditions in section 6. With those preliminaries out of the way, the actual proof of energy\r
+condition violations in generic Nat´ario warp-field spacetimes will be straightforward\r
+(section 7). We conclude with some comments on the possibility of either moving\r
+beyond Einstein gravity, or the possibility of further generalizing the notion of warp-field\r
+spacetimes. Nevertheless, within the context of standard Einstein gravity, we emphasize\r
+that in physically reasonable warp field spacetimes energy condition violations are\r
+utterly unavoidable, and must be squarely faced.\r
+– 2 –
+
+In the appendices, we discuss various technical issues arising in recent papers concerning\r
+themselves with warp drives: Appendix A deals with a confusion over the precise meaning\r
+of “spherical symmetry” in warp space-times. Appendix B points to misunderstandings\r
+regarding coordinate transformations. Appendix C addresses issues of differentiability\r
+and related technical issues. Finally, Appendix D lists further technical oversights, small\r
+and large, of recent publications.\r
+2 Warp drive kinematics\r
+The generic Nat´ario warp drive line element we shall consider is this [10]:\r
+ds\r
+2 = −dt2 + δij \r
+dx\r
+i − vi\r
+(x, y, z, t) dt\r
+\u0001 dx\r
+j − vj\r
+(x, y, z, t) dt\r
+\u0001\r
+. (2.1)\r
+Nat´ario calls this a “warp drive spacetime”. Both the vector v\r
+i\r
+(x, y, z, t) and its\r
+derivatives are assumed to be smooth and bounded [10]. This line element is sufficiently\r
+general to cover well over 99% of the relevant literature, and the very few exceptions in\r
+the extant literature will be explicitly discussed later on in appendix B. Certainly the\r
+models discussed in references [1–3] fall into this generic Nat´ario framework.\r
+The line element represents an ADM-like (3+1) decomposition of the metric [30–36],\r
+with unit lapse N → 1; a flow vector v\r
+i = −(shift vector); and a flat spatial 3-metric\r
+gij = δij . The sign-flip on the shift vector is traditional in a warp drive context, and\r
+inspired by the notion of “flow” rather than “shift”. Accordingly we shall speak of\r
+the “flow vector” rather than the “shift vector”. (See also the traditional usage in the\r
+“analogue spacetime” programme [37–41].) The explicit metric components are\r
+gab =\r
+"\r
+−(1 − v\r
+2\r
+) −vj\r
+−vi δij #\r
+, gab =\r
+"\r
+−1 −v\r
+j\r
+−v\r
+i\r
+δ\r
+ij − vi\r
+v\r
+j\r
+#\r
+. (2.2)\r
+The metric signature is manifestly − + ++, while spacetime indices such as a, b, ... run\r
+from 0 to 3, and spatial indices such as i, j... run from 1 to 3. At large spatial distances\r
+we want the spacetime to be asymptotically flat, (that is, asymptotically Minkowski or\r
+at worst asymptotically Schwarzschild).\r
+The most natural boundary conditions to impose are that v\r
+i\r
+(x, y, z, t) → 0 at spatial\r
+infinity. One could alternatively impose v\r
+i\r
+(x, y, z, t) → v\r
+i\r
+∗\r
+(t) at spatial infinity, with\r
+v\r
+i\r
+∗\r
+(t) some function of time only. This would still be asymptotically Minkowski, but with\r
+new spatial coordinates x\r
+i → x¯i = xi −\r
+R\r
+v\r
+i\r
+∗\r
+(t) dt. This would be useful, for instance, if\r
+one wishes to adopt a coordinate system moving with the warp bubble. But there is\r
+certainly no loss of generality in enforcing v\r
+i\r
+(x, y, z, t) → 0 at spatial infinity.\r
+– 3 –
+
+Indeed there is a very important issue of physics hiding here — physically we want the\r
+warp bubble (for at least part of the time) to be “moving” with respect to the “fixed\r
+stars” — otherwise the construction is physically uninteresting. Motion between the\r
+warp bubble and the fixed stars can be achieved thusly: Either by choosing coordinates\r
+such that v\r
+i\r
+(x, y, z, t) → 0 at spatial infinity (so the fixed stars are “at rest”) while the\r
+warp bubble has explicit time dependence, or alternatively, by choosing coordinates\r
+where the warp bubble (the central region of the spacetime) is time independent and\r
+the fixed stars are in motion v\r
+i\r
+(x, y, z, t) → v\r
+i\r
+∗\r
+(t) at spatial infinity.\r
+Furthermore, we want the warp bubble to be physically well-localized; we do not wish\r
+to have to accelerate the entire universe to get an interesting warp field. On the other\r
+hand, demanding that the flow vector have compact support (while mathematically\r
+convenient) is physically unnecessarily restrictive. For our purposes it will be more than\r
+sufficient for us to demand that the flow field falls off sufficiently rapidly near spatial\r
+infinity so that we can integrate by parts. The key point in proving NEC violations\r
+(and so implicitly proving violations of WEC, SEC, and DEC) is the significantly weaker\r
+condition that gradients of the flow field tend to zero at spatial infinity. We shall expand\r
+on this point more extensively in the discussion below.\r
+Following Nat´ario, we shall also demand that the flow field (and hence the metric) be\r
+sufficiently smooth and bounded. At the very worst we shall allow Israel–Lanczos–Sen\r
+“thin-shell” distributional contributions to the Riemann tensor. Such assumptions are\r
+completely standard and implicit in the extant literature.\r
+Specifically, we shall demand that the flow ~v (and hence the metric) be C\r
+2− at worst,\r
+that is, piecewise twice differentiable, with at worst discontinuous first derivatives. Then\r
+the Christoffel symbols are C\r
+1− at worst, that is, piecewise once differentiable with at\r
+worst step-function discontinuities. Then the Riemann tensor is C\r
+0 at worst, piecewise\r
+continuous with at worst delta-function contributions.\r
+Finally, we emphasize the need for at least some subsidiary conditions to be applied to\r
+the generic Nat´ario metric (2.1) in order to distinguish a warp drive from, for instance,\r
+the Painlev´e–Gullstrand version of Schwarzschild spacetime. The line element (2.1) is\r
+sufficiently general and explicit to be physically interesting as a warp drive exemplar,\r
+but some subsidiary conditions would still be desirable.\r
+– 4 –
+
+Because the spatial 3-slices are intrinsically flat, and the lapse is unity, the only nontrivial\r
+physics hides in the extrinsic curvature of the spatial 3-slices, for which we have the\r
+particularly simple result\r
+Kij = v(i,j). (2.3)\r
+In order to prevent the warp field being trivial (Minkowski space) we will demand that\r
+there is at least one point in spacetime where the extrinsic curvature is nonzero.\r
+Let us define na = −∇at = (−1; 0, 0, 0)a. Then we have n\r
+a = gabnb = −gat = (1, vi\r
+).\r
+Thus n\r
+a\r
+is future-pointing. It is actually a future-pointing 4-velocity normal to the\r
+spatial 3-slices: g\r
+ab nanb = −1 = gab nanb\r
+. Observers with 4-velocity n\r
+a are often called\r
+“Eulerian”. In some sense (see discussion below) they “go with the flow”, they are\r
+“co-moving”. Furthermore, the Eulerian observers n\r
+a = −gab ∇bt are in fact timelike\r
+geodesics. This is a simple consequence of the fact that the warp spacetimes are\r
+unit-lapse:\r
+n\r
+b∇bna = gacnb∇b∇ct = gacnb∇c∇bt = gacnb∇cnb =\r
+1\r
+2\r
+g\r
+ac∇c(nbnb) = 1\r
+2\r
+g\r
+ac∇c(−1) = 0.\r
+(2.4)\r
+The warp drive spacetime is by construction globally hyperbolic, and at each and every\r
+instant in time “t” the Eulerian observers are 4-orthogonal to the flat spatial slices —\r
+so the Eulerian observers define a zero-vorticity congruence of timelike geodesics that\r
+by construction cannot have any focussing points.1\r
+From the metric line element one can easily read off a suitable choice of co-tetrad: The\r
+timelike covector is simply\r
+(e\r
+ˆ0\r
+)a = (1; 0, 0, 0)a = na, (2.5)\r
+while the spatial co-triad is\r
+(e\r
+ˆ1\r
+)a = (−vx; 1, 0, 0)a, (e\r
+ˆ2\r
+)a = (−vy; 0, 1, 0)a, (e\r
+ˆ3\r
+)a = (−vz; 0, 0, 1)a. (2.6)\r
+1Everett [11] takes the point of view that one might take this warp drive metric as a local notion\r
+only, thus avoiding the global hyperbolicity conditions of the original Alcubierre space-time, and uses\r
+that to construct closed timelike curves (CTCs). This introduces a whole new level of complexity\r
+related to global causality and “chronology protection”, of which more anon.\r
+– 5 –
+
+The corresponding tetrad is then easily determined: The timelike leg is\r
+(eˆ0)\r
+a = (1; vx\r
+, vy, vz)\r
+a = na\r
+, (2.7)\r
+while now the spatial triad is particularly simple\r
+(eˆ1)\r
+a = (0; 1, 0, 0)a\r
+, (eˆ2)\r
+a = (0; 0, 1, 0)a\r
+, (eˆ3)\r
+a = (0; 0, 0, 1)a\r
+. (2.8)\r
+This implies that, in the co-moving orthonormal basis, for any T\r
+0\r
+2\r
+tensor:\r
+Xaˆˆb = eaˆ\r
+a\r
+eˆb\r
+b Xab =\r
+"\r
+Xˆ0ˆ0 Xˆ0ˆj\r
+Xˆiˆ0 Xˆiˆj\r
+#\r
+=\r
+"\r
+Xnn Xnj\r
+Xin Xij #\r
+=\r
+"\r
+Xabn\r
+anb Xajna\r
+Xian\r
+a Xij #\r
+. (2.9)\r
+This is why objects such as Xnn = Xab n\r
+a nb = Xˆ0ˆ0\r
+and Xni = Xai n\r
+a = Xˆ0ˆi\r
+are so\r
+important. Subject to this choice of coordinates and tetrad, for the covariant spatial\r
+components we have the particularly simple result Xˆiˆj = Xij . We will often use this\r
+observation to simplify formulae by suppressing the “hats” when they are not critical\r
+to understanding.\r
+Similarly, for any fully covariant T\r
+0\r
+4\r
+tensor one has Xaˆˆbcˆdˆ = eaˆ\r
+a\r
+eˆb\r
+b\r
+ecˆ\r
+c\r
+edˆ\r
+d Xabdc. Then for\r
+any tensor that has the same symmetries as the Riemann tensor it suffices to calculate\r
+Xˆ0ˆiˆ0ˆj = Xninj = n\r
+anbXaibj ; Xˆ0ˆiˆjkˆ = Xnijk = n\r
+aXaijk; Xˆiˆjkˆˆl = Xijkl. (2.10)\r
+Some specific examples of the generic warp drive spacetime are:\r
+Alcubierre warp field [9]:\r
+The original Alcubierre warp field [9], taken to be moving in the z direction with\r
+constant velocity v∗, is given by\r
+v\r
+i\r
+(x, y, z, t) = (0, 0, 1)iv∗ f\r
+\u0010p\r
+x\r
+2 + y2 + (z − v∗t)2\r
+\u0011\r
+. (2.11)\r
+Here, f(0) = 1, and f(∞) = 0.\r
+This was rapidly generalized [9] to a time-dependent velocity for the warp bubble\r
+v\r
+i\r
+(x, y, z, t) = (0, 0, 1)iv∗(t) f\r
+\r
+\r
+s\r
+x\r
+2 + y2 +\r
+\u0012\r
+z −\r
+Z\r
+v∗(t) dt\r
+\u00132\r
+\r
+ . (2.12)\r
+Note these specific models are “spherically symmetric”. More on this point below.\r
+Despite repeated assertions in reference [2] there is absolutely no difficulty in\r
+making the velocity of the warp bubble time-dependent.\r
+– 6 –
+
+Nat´ario zero-expansion warp field [10]:\r
+The Nat´ario zero-expansion warp drive simply sets ∇ · ~v = 0. Note that the\r
+second half of Nat´ario’s 2001 paper [10] focusses on this zero-expansion warp\r
+field, whereas the first half of that paper deals with the generic Nat´ario warp field\r
+spacetime of equation (2.1). When mentioning Nat´ario’s warp field, it is therefore\r
+important to make explicit which of these two specific warp drives one is referring\r
+to.\r
+Lentz/Fell–Heisenberg zero-vorticity warp field [1, 3]:\r
+The Lentz/Fell–Heisenberg zero-vorticity warp drive uses a purely gradient flow\r
+~v = ∇Φ, implying ~ω = ∇ × ~v = 0.\r
+Thus the generic warp drive line element (2.1), introduced by Nat´ario in [10], covers all\r
+three of these specific cases, and many more, and is sufficiently general to cover almost\r
+all of the relevant literature.\r
+3 Warp-field curvature\r
+The spacetime curvature for warp drive spacetimes is relatively easily determined via a\r
+specific application of the ADM formalism [30–36].\r
+3.1 Riemann tensor\r
+The Gauss–Codazzi equations would in general imply2:\r
+Rˆiˆjkˆˆl =\r
+(3)Rˆiˆjkˆˆl + KˆikˆKˆjˆl − KˆiˆlKˆjkˆ. (3.1)\r
+However, since our 3-geometry is flat, we have (3)Rˆiˆjkˆˆl → 0, and because of our choice of\r
+spatial triad we can dispense with the “hats”. So for warp drive spacetimes we simply\r
+have\r
+Rijkl = KikKjl − KilKjk. (3.2)\r
+The Gauss–Mainardi equations imply3:\r
+Rnijk = Raijkn\r
+a = Kij,k − Kik,j = v(i,j),k − v(i,k),j = v[j,k],i. (3.3)\r
+2See for instance equation (2.92) of Gourgoulhon [31].\r
+3See for instance equation (2.101) of Gourgoulhon [31], specializing to Kij = v(i,j)\r
+.\r
+– 7 –
+
+The remaining components of the Riemann tensor do not (to our knowledge) seem to\r
+have a special name, and are a little trickier to calculate. In the present context, to\r
+explicitly calculate Rninj one could either use brute force (e.g., Maple), or appeal to a\r
+simplification of the ADM formalism,4 or use the general commutator identity\r
+[∇a, ∇b]nc = −R\r
+d\r
+cab nd, (3.4)\r
+suitably projected onto spatial and normal n directions.\r
+One finds\r
+Rninj = Raibj n\r
+a nb = −LnKij + (K2\r
+)ij . (3.5)\r
+Here LnKij is the Lie derivative of the extrinsic curvature, where K˙\r
+ij = ∂tKij , and\r
+LnKij = K˙\r
+ij + v\r
+k\r
+∂kKij + ∂iv\r
+kKkj + ∂jvkKik. (3.6)\r
+Also\r
+(K2)ij = Kik δ\r
+kl Klj . (3.7)\r
+We can rewrite the Lie derivative as\r
+LnKij = K˙\r
+ij + v\r
+k\r
+∂kKij + ∂[ivk]Kkj + Kik∂[jvk] + 2(K2)ij , (3.8)\r
+implying\r
+LnKij = n\r
+a\r
+∂aKij + ∂[ivk]Kkj + Kik∂[jvk] + 2(K2)ij . (3.9)\r
+Therefore\r
+Rninj = −n\r
+a\r
+∂aKij − ∂[ivk]Kkj − Kik∂[jvk] − (K2)ij . (3.10)\r
+3.2 Ricci tensor\r
+Performing suitable contractions, for the Ricci tensor we find\r
+Rnn = −LnK − trK2\r
+\u0001\r
+, (3.11)\r
+where LnK is the Lie derivative of K = Kij δ\r
+ij = tr(K), the trace of the extrinsic\r
+curvature. That is, LnK = K˙ + v\r
+i∂iK = na ∂aK, so we also have\r
+Rnn = −n\r
+a\r
+∂aK − trK2\r
+\u0001\r
+. (3.12)\r
+4For instance, use equation (3.43) of Gourgoulhon [31], specializing to N → 1,\r
+and flipping the sign of the Lie derivative term to account for (flow) = −(shift).\r
+– 8 –
+
+Furthermore,\r
+Rni = Kij,k δ\r
+jk − K,i. (3.13)\r
+In view of the fact that in this context spatial indices are always raised and lowered\r
+using Kronecker deltas, we can and shall often simplify notation by contracting over\r
+two indices down and writing\r
+Rni = Kij,j − K,i. (3.14)\r
+Finally, for the spatial components\r
+Rij = LnKij + KKij − 2(K2)ij , (3.15)\r
+which can be recast as\r
+Rij = n\r
+a\r
+∂aKij + KKij + ∂[ivk]Kkj + Kik∂[jvk]. (3.16)\r
+Alternatively\r
+Rij = ∂a(n\r
+aKij ) + ∂[ivk]Kkj + Kik∂[jvk]\r
+. (3.17)\r
+Then for the Ricci scalar R = −Rnn + δ\r
+ijRij we have\r
+R = 2LnK + K2 + trK2\r
+\u0001\r
+. (3.18)\r
+Here, in full, tr(K2) = (K2)ij δ\r
+ij = Kij δ\r
+ik δjl Kkl, though we can and shall often\r
+simplify notation by writing tr(K2) = Kij Kij , implying contraction on the repeated\r
+down indices.\r
+3.3 Einstein tensor\r
+Using Gab = Rab −\r
+1\r
+2Rgab we find\r
+Gnn =\r
+1\r
+2\r
+\r
+K2 − trK2\r
+\u0001\u0001 , (3.19)\r
+Gni = Kij,j − K,i, (3.20)\r
+and the somewhat messier result that\r
+Gij = LnKij + KKij − 2(K2)ij −\r
+\u0012\r
+LnK +\r
+1\r
+2\r
+K2 +\r
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij . (3.21)\r
+– 9 –
+
+Equivalently (and more explicitly)\r
+Gij = n\r
+a\r
+∂aKij+KKij+∂[ivk]Kkj+Kik∂[jvk]−\r
+\u0012\r
+n\r
+a\r
+∂aK +\r
+1\r
+2\r
+K2 +\r
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij . (3.22)\r
+4 Warp-field stress-energy tensor\r
+In this section, we use the standard Einstein equations Gab = 8πTab and analyse the\r
+density, flux, and spatial components of the stress-energy.\r
+4.1 Density\r
+In the Eulerian orthonormal basis, using (3.19), for the density we have:\r
+ρ =\r
+Gnn\r
+8π\r
+=\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 . (4.1)\r
+(Everyone agrees with this. This is the quantity that Lentz [1] and Fell–Heisenberg [3]\r
+eventually try to force to be positive. This is the only quantity Bobrick–Martire [2]\r
+explicitly calculate.) Now it is a mathematical identity that for any 3 × 3 matrix\r
+K2 − trK2\r
+\u0001\r
+= 2 tr (cof(Kij )). (4.2)\r
+That is, K2 − tr(K2) is twice the trace of the cofactor matrix of the 3 × 3 matrix Kij .\r
+This is most easily established by diagonalizing the 3×3 matrix. So in (3+1) dimensions\r
+the Eulerian energy density is intimately related to the cofactor matrix of the extrinsic\r
+curvature. This is the “hidden geometric structure” alluded to by Fell–Heisenberg in\r
+reference [3], a curiosity which is unfortunately less useful than one might hope.\r
+In the present context we have the fully explicit result\r
+ρ =\r
+1\r
+16π\r
+\r
+(vi,i)\r
+2 − v(i,j) v(i,j)\r
+\u0001\r
+. (4.3)\r
+It is straightforward to rewrite this as a spatial divergence plus a negative semi-definite\r
+contribution:\r
+ρ =\r
+1\r
+16π\r
+\b\r
+∂i(vi vj,j − vj vi,j ) − v[i,j]v[i,j]\r
+\t\r
+. (4.4)\r
+In terms of the vorticity ωi = \u000Fijk v[j,k] this becomes\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∂i(vi vj,j − vj vi,j ) −\r
+1\r
+2\r
+(ωi ωi)\r
+\u001B\r
+, (4.5)\r
+– 10 –
+
+or even\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∇ · {~v K − (~v · ∇)~v} − 1\r
+2\r
+(~ω · ~ω)\r
+\u001B\r
+. (4.6)\r
+That is, for the generic warp field, the Eulerian energy density is always the sum of a\r
+3-divergence plus a quantity that is negative semi-definite. We will have occasion to\r
+repeatedly use this result in subsequent discussion.\r
+4.2 Flux\r
+For the flux, in the Eulerian orthonormal basis, using (3.20) we have:\r
+fi =\r
+Gni\r
+8π\r
+=\r
+1\r
+8π\r
+(Kij,j − K,i) = 1\r
+16π\r
+(vi,jj − vj,ji) = 1\r
+16π\r
+\r
+∇2vi − ∇i(∇ · ~v)\r
+\u0001\r
+(4.7)\r
+That is\r
+fi =\r
+1\r
+16π\r
+(∇ × (∇ × ~v))i(4.8)\r
+(Everyone agrees with this. Note that in the Lentz/Fell-Heisenberg [1, 3] framework\r
+~v = ∇Φ is a gradient, so this co-moving Eulerian flux is identically zero.)\r
+4.3 Spatial stresses\r
+Finally, using (3.21), the spatial stresses are given by the 3 × 3 matrix:\r
+Tij =\r
+Gij\r
+8π\r
+=\r
+1\r
+8π\r
+\u0012\r
+LnKij + KKij − 2(K2)ij −\r
+\u0012\r
+LnK +\r
+1\r
+2\r
+K2 +\r
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij\u0013. (4.9)\r
+So for the average pressure, which we define to be ¯p =\r
+1\r
+3\r
+Tij δ\r
+ij , and noting that\r
+\r
+LnKij + KKij − 2(K2)ij\u0001δ\r
+ij = LnK+K2−2 tr\r
+K2\r
+\u0001\r
+−Kij Lnδ\r
+ij = LnK+K2\r
+, (4.10)\r
+we find\r
+p¯ =\r
+1\r
+3\r
+Tij δ\r
+ij =\r
+1\r
+24π\r
+\u0012\r
+−2LnK −\r
+1\r
+2\r
+K2 −\r
+3\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+. (4.11)\r
+It is furthermore useful to note that\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+\r
+LnK + trK2\r
+\u0001\u0001 , (4.12)\r
+and that\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 . (4.13)\r
+These quantities will soon be seen to be useful when investigating violations of the SEC\r
+and NEC, respectively.\r
+– 11 –
+
+It is sometimes useful to also note that\r
+∇an\r
+a = ∂ana = K, (4.14)\r
+and so write\r
+LnK = n\r
+a ∇aK = ∇a(Kna\r
+) − K2, (4.15)\r
+whence\r
+p¯ = −\r
+1\r
+24π\r
+\u0012\r
+2∇a(Kna) −\r
+3\r
+2\r
+K2 +\r
+3\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+. (4.16)\r
+Equivalently\r
+p¯ = ρ −\r
+1\r
+12π\r
+∇a(Kna). (4.17)\r
+That is, for the generic warp field, the average spatial pressure equals the energy density\r
+plus a 4-divergence. We will have occasion to repeatedly use this result in subsequent\r
+discussion.\r
+For completeness we point out that the trace-free part of the 3 × 3 spatial stress tensor,\r
+(Tij )\r
+tf = Tij −\r
+1\r
+3\r
+p δ ¯ ij , can be computed in terms of the trace-free part of the extrinsic\r
+curvature, (Kij )\r
+tf = Kij −\r
+1\r
+3 K δij .\r
+We find\r
+(Tij )\r
+tf =\r
+1\r
+8π\r
+\b\r
+n\r
+a\r
+∂a(Kij )\r
+tf + K(Kij )tf + ∂[ivk](Kkj )tf + (Kik)tf∂[jvk]\r
+\t\r
+. (4.18)\r
+That is\r
+(Tij )\r
+tf =\r
+1\r
+8π\r
+\b\r
+∂a[n\r
+a\r
+(Kij )\r
+tf] + ∂[ivk](Kkj )tf + (Kik)tf∂[jvk]\r
+\t\r
+. (4.19)\r
+Overall, we see that the generic Nat´ario line element (2.1) is sufficiently simple to permit\r
+detailed and explicit calculations, while being sufficiently general to encompass almost\r
+all physically interesting warp drive spacetimes.\r
+5 Energy conditions\r
+The (classical point-wise) energy conditions are constraints one places on the stress\u0002energy as a way of keeping unusual physics somewhat under control. The energy\r
+conditions all correspond, in some sense, to demanding that for some class of observers\r
+the energy density be non-negative.\r
+– 12 –
+
+Standard definitions are [31–33, 42–48]:\r
+NEC: For all null vectors k\r
+a we demand Tab kakb ≥ 0.\r
+WEC: For all timelike vectors V\r
+a we demand Tab VaVb ≥ 0.\r
+SEC: For all timelike vectors V\r
+a we demand (Tab −\r
+1\r
+2\r
+T gab)V\r
+aVb ≥ 0.\r
+DEC: For all future-pointing timelike vectors V\r
+a and Wa we demand TabVaWb ≥ 0.\r
+(The DEC in particular has a number of equivalent formulations [45].)\r
+The standard linkages between energy conditions are [31–33, 42–48]:\r
+DEC =⇒ WEC =⇒ NEC (5.1)\r
+SEC =⇒ NEC (5.2)\r
+But\r
+WEC 6⇐⇒ SEC (5.3)\r
+Despite claims made in early versions of [3], the WEC is not the weakest of the energy\r
+conditions.\r
+Some examples of the subtleties involved are:\r
+• A positive cosmological constant (positive vacuum energy density) satisfies the\r
+NEC and WEC, but not the SEC.\r
+• A negative cosmological constant (negative vacuum energy density) satisfies the\r
+NEC and SEC, but not the WEC.\r
+• Massive scalar fields, (classical, minimally coupled, with positive kinetic energy,\r
+and positive mass squared so that they are not tachyonic), satisfy the NEC and\r
+WEC but can violate the SEC. For example the standard scalar inflaton field of\r
+cosmological inflation satisfies the NEC and WEC but violates the SEC.\r
+• Classical Maxwell electromagnetism satisfies all the usual energy conditions.\r
+These examples suggest some caution when interpreting the physical significance of the\r
+energy conditions [49–58].\r
+There are indications that NEC and WEC can be violated on microscopic (quantum)\r
+scales [59–77], though they seem to be satisfied by (reasonable) matter on macroscopic\r
+scales. In contrast the SEC appears to be observationally violated on the largest\r
+cosmological scales [51–57].\r
+– 13 –
+
+While for the purposes of this paper we will be focussing on applying these point\u0002wise energy conditions specifically to warp drive spacetimes, it should be noted that\r
+these energy conditions also have direct applications to singularity theorems, positive\u0002mass theorems, traversable wormholes [78–87], topological censorship, and chronology\r
+protection [89–93].\r
+Other less commonly used energy conditions are:\r
+• TEC — trace energy condition: ρ − 3p ≥ 0. Mainly of historic interest [49, 50].\r
+Believed to be violated deep in the cores of neutron stars. Definitely violated by\r
+(hypothetical) “stiff matter” ρ = p, where (speed of sound) = (speed of light).\r
+• FEC — flux energy condition: for all timelike observers, V\r
+a\r
+, the flux F\r
+a = TabVb\r
+is either timelike or null [59, 60].\r
+(FEC is a weakening of DEC; that is, DEC =⇒ FEC.)\r
+• Averaged energy conditions (typically averaged along timelike or null geodesics)\r
+are weaker than their corresponding point-wise counterparts. The most useful\r
+of the averaged energy conditions is typically the ANEC (averaged null energy\r
+condition) where one averages the NEC along timelike geodesics using an affine\r
+parameterization [43, 71–77].\r
+As a cautionary example regarding application of the energy conditions, note that all\r
+three of the recent Lentz [1], Bobrick–Martire [2], and Fell–Heisenberg [3] articles merely\r
+assert the existence of one sub-class of timelike observers for which the energy density\r
+is positive. This is not enough to show that the WEC is satisfied. To explicitly see a\r
+specific example of this behaviour, let us work in an orthonormal basis. Take ρ0 > 0\r
+and Γ > 1, and consider:\r
+Taˆˆb = ρ0\r
+\r
+\r
+\r
+\r
+\r
+1 0 0 0\r
+0 −Γ\r
+2 0 0\r
+0 0 −Γ\r
+2 0\r
+0 0 0 −Γ\r
+2\r
+\r
+\r
+\r
+\r
+\r
+aˆˆb\r
+(5.4)\r
+Then in the natural rest frame V\r
+aˆ = (1; 0, 0, 0)aˆ we have ρ = Taˆˆb\r
+V\r
+aˆV\r
+ˆb = ρ0 > 0. But a\r
+moving observer, with 4-velocity V\r
+aˆ = γ(1; v ni\r
+)\r
+aˆ\r
+, where n\r
+i\r
+is any unit spatial 3-vector,\r
+will see an energy density\r
+ρ = TaˆˆbV\r
+aˆV\r
+ˆb = ρ0γ\r
+2\r
+(1 − Γ\r
+2\r
+v\r
+2\r
+). (5.5)\r
+For a sufficiently rapidly moving but still subluminal observer, with |v| > 1/Γ, the\r
+energy density will be seen to be negative. So in this example the WEC is violated.\r
+– 14 –
+
+What Lentz [1], and Bobrick–Martire [2], and Fell–Heisenberg [3] should be doing is to\r
+also calculate all of the stress components Tij . It is not enough for them to just focus\r
+on Tnn and Tni.\r
+One way of proceeding is to assume the stress-energy tensor is of Hawking–Ellis type I,\r
+see references [42–44, 60, 96–100], and work with the Lorentz-invariant eigenvalues\r
+{ρ, pi}, the Lorentz-invariant eigen-energy-density and principal pressures, respectively.\r
+Then it is a standard result that in terms of the Lorentz-invariant eigenvalues of a type I\r
+stress-energy tensor one has the two-way implications [42–44, 60, 96–100]\r
+NEC ⇐⇒ ρ + pi ≥ 0. (5.6)\r
+WEC ⇐⇒ ρ + pi ≥ 0 & ρ > 0. (5.7)\r
+SEC ⇐⇒ ρ + pi ≥ 0 & ρ +\r
+P\r
+i\r
+pi > 0. (5.8)\r
+DEC ⇐⇒ |pi| ≤ ρ. (5.9)\r
+Unfortunately, we do not know a priori whether or not the stress-energy for the\r
+warp drive is Hawking–Ellis type I in general, nor do the Eulerian observers typically\r
+diagonalize the stress-energy. So one has to be a little more indirect. (A limited result\r
+is this: For the zero-vorticity warp drives, because the Eulerian observers see zero flux\r
+~f = 0, the stress-energy is block diagonal, and so of Hawking–Ellis type I. In particular,\r
+an even more limited and precise result is this: For a zero-vorticity warp drive, since\r
+the stress-energy is Hawking–Ellis type I we explicitly have\r
+Tab V\r
+aVb = γ2\r
+ \r
+ρ +\r
+X\r
+i\r
+piβ\r
+2\r
+i\r
+!\r
+= γ\r
+2\r
+ \r
+ρ(1 − β\r
+2\r
+) +X\r
+i\r
+[ρ + pi]β\r
+2\r
+i\r
+!\r
+= ρ + γ\r
+2\r
+ X\r
+i\r
+[ρ + pi]β\r
+2\r
+i\r
+!\r
+. (5.10)\r
+Thus, by considering all possible physical values of the βi (including relativistic values),\r
+we see that non-negative Eulerian density plus the NEC implies the WEC — so for\r
+checking the WEC in this situation, checking ρ ≥ 0 is manifestly insufficient, one\r
+additionally needs to check the NEC (ρ + pi ≥ 0) as well.)\r
+In counterpoint, what the Eulerian observers do generically implement is a natural\r
+orthonormal frame in which\r
+Taˆˆb =\r
+"\r
+ρ fj\r
+fi Tij #\r
+. (5.11)\r
+NEC: Let us first investigate what we can say about the NEC. Let us take any two\r
+oppositely oriented null vectors `\r
+aˆ\r
++ = (1, +`\r
+i\r
+)\r
+aˆ\r
+, and `\r
+aˆ\r
+− = (1, −`\r
+i\r
+)\r
+aˆ\r
+, where `\r
+i\r
+is any\r
+– 15 –
+
+arbitrary unit spatial 3-vector. Then the NEC would imply both\r
+Taˆˆb`\r
+aˆ\r
++`\r
+ˆb\r
+± = Taˆˆb\r
+(1, +`\r
+i\r
+)\r
+aˆ\r
+(1, +`\r
+j\r
+)\r
+ˆb = ρ + 2fi`\r
+i + Tij `i\r
+`\r
+j ≥ 0, (5.12)\r
+and\r
+Taˆˆb`\r
+aˆ\r
+−`\r
+ˆb\r
+− = Taˆˆb\r
+(1, −`\r
+i\r
+)\r
+aˆ\r
+(1, −`\r
+j\r
+)\r
+ˆb = ρ − 2fi`\r
+i + Tij `i\r
+`\r
+j ≥ 0. (5.13)\r
+Averaging over these two equations, for any unit spatial 3-vector\r
+NEC =⇒ ρ + Tij `\r
+i\r
+`\r
+j ≥ 0. (5.14)\r
+Note the implication is one-way; effectively one throws away all information contained\r
+in the flux f\r
+i\r
+. In terms of the eigenvalues of the 3-stress we have5\r
+NEC =⇒ ρ + min{λ(Tij )} ≥ 0. (5.15)\r
+Now pick a triad `\r
+i\r
+A of three mutually orthogonal unit vectors. Then for each member\r
+of the triad the NEC implies\r
+ρ + Tij `\r
+i\r
+A `\r
+j\r
+A ≥ 0. (5.16)\r
+Now average over the three members of the triad\r
+ρ + Tij \r
+1\r
+3\r
+X\r
+A\r
+`\r
+i\r
+A`\r
+j\r
+A\r
+!\r
+≥ 0. (5.17)\r
+Thence, noting that by construction P\r
+A\r
+`\r
+i\r
+A`\r
+j\r
+A = δ\r
+ij , we see\r
+ρ + Tij \u0012\r
+1\r
+3\r
+δ\r
+ij\u0013\r
+≥ 0. (5.18)\r
+Defining, as usual, the average pressure as ¯p =\r
+1\r
+3\r
+Tij δ\r
+ij , (this works even if the 3-stress\r
+Tij is not diagonal), we see that\r
+NEC =⇒ ρ + ¯p ≥ 0. (5.19)\r
+As long as the 3-stress is even slightly anisotropic we have min{λ(Tij )} 6= max{λ(Tij )}\r
+so that we deduce the strict chain of inequalities\r
+min{λ(Tij )} < p <¯ max{λ(Tij )} (5.20)\r
+5For zero-vorticity warp drives one has the stronger equivalence that NEC ⇐⇒ ρ+min{λ(Tij )} ≥ 0.\r
+– 16 –
+
+Thence in the presence of anisotropies we can make the slightly stronger strict inequality\r
+involving the average pressure ¯p that\r
+NEC =⇒ ρ + ¯p > 0. (5.21)\r
+The implication is again one-way. Note also that this argument has nothing specific\r
+to do with warp drives, it is purely a statement about how the NEC implies an easily\r
+checked inequality that depends only on the existence of some orthonormal basis. For\r
+our current purposes the point is that it is relatively easy to pick a specific direction\r
+and calculate Tij `\r
+i\r
+`\r
+j\r
+, or to average over all directions and calculate ¯p.\r
+WEC: Similar things can be said about the WEC, although now one takes some\r
+0 ≤ β < 1 and considers two oppositely oriented timelike vectors V\r
+a\r
+± = γ(1, ±β`i\r
+)\r
+a\r
+.\r
+Then for any unit 3-vector `\r
+i\r
+, after averaging over the two orientations:\r
+WEC =⇒ ρ + β\r
+2 Tij `i\r
+`\r
+j ≥ 0. (5.22)\r
+Then averaging over a triad of unit vectors, for all 0 ≤ β < 1 one has\r
+WEC =⇒ ρ + β\r
+2\r
+p¯ ≥ 0. (5.23)\r
+By considering β = 0 and the limit β → 1 one has\r
+WEC =⇒ ρ ≥ 0 & ρ + ¯p ≥ 0. (5.24)\r
+The implication is again one-way. And the point is that Tij `\r
+i\r
+`\r
+j and p¯ are relatively\r
+easy to calculate. As long as the 3-stress is even slightly anisotropic, we can make the\r
+slightly stronger statement involving the average pressure ¯p that\r
+WEC =⇒ ρ ≥ 0 & ρ + ¯p > 0. (5.25)\r
+SEC: The SEC can be phrased in terms of the so-called “trace-reversed” stress-energy\r
+tensor Tab −\r
+1\r
+2\r
+T gab, as the condition (Tab −\r
+1\r
+2\r
+T gab)V\r
+aVb ≥ 0, which in turn is equivalent\r
+to enforcing TabV\r
+aVb ≥\r
+1\r
+2\r
+(ρ − 3¯p). Then the SEC implies\r
+ρ + β\r
+2 Tij `i\r
+`\r
+j ≥ (1 − β2\r
+)\r
+1\r
+2\r
+(ρ − 3¯p). (5.26)\r
+– 17 –
+
+This can be rearranged to\r
+SEC =⇒ (1 + β\r
+2\r
+)ρ + 3(1 − β\r
+2\r
+)¯p + 2β\r
+2 Tij `i\r
+`\r
+j ≥ 0. (5.27)\r
+Averaging over the unit directions `\r
+i\r
+, for all 0 ≤ β < 1 one has\r
+SEC =⇒ (1 + β\r
+2\r
+)ρ + (3 − β\r
+2\r
+)¯p ≥ 0. (5.28)\r
+By considering β = 0 and the limit β → 1 one has\r
+SEC =⇒ ρ + 3¯p ≥ 0 & ρ + ¯p ≥ 0. (5.29)\r
+The implication is again one-way. And the point is that Tij `\r
+i\r
+`\r
+j and p¯ are relatively\r
+easy to calculate. As long as the 3-stress is even slightly anisotropic, we can make the\r
+slightly stronger statement involving the average pressure ¯p that\r
+SEC =⇒ ρ + 3¯p > 0 & ρ + ¯p > 0. (5.30)\r
+DEC: One version of the DEC, as reported by Hawking and Ellis [42, page 91],\r
+is formulated as the requirement that in any orthonormal frame the energy density\r
+dominates all the other components of the stress-energy tensor:\r
+|T\r
+aˆˆb\r
+| ≤ T\r
+tˆtˆ\r
+. (5.31)\r
+In our language this would be\r
+|fi| ≤ ρ & |Tij | ≤ ρ. (5.32)\r
+But in particular this implies\r
+|p¯| =\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+1\r
+3\r
+X\r
+i\r
+Tii\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+≤\r
+1\r
+3\r
+X\r
+i\r
+|Tii| ≤ ρ. (5.33)\r
+That is\r
+DEC =⇒ |p¯| ≤ ρ. (5.34)\r
+The implication is one-way, but the inequality is particularly clean and easy to work\r
+with. As long as the 3-stress is even slightly anisotropic, we can make the slightly\r
+– 18 –
+
+stronger statement involving the average pressure ¯p that\r
+DEC =⇒ |p¯| < ρ. (5.35)\r
+6 Timelike and null convergence conditions\r
+In applications the various energy conditions are, using the Einstein equations, typically\r
+immediately converted into purely geometrical convergence conditions such as the null\r
+convergence condition (NCC) and the timelike convergence condition (TCC) [42–45].\r
+Within standard general relativity the NCC is equivalent to the NEC, and the TCC is\r
+equivalent to the SEC.\r
+NCC: The NCC is the statement that for all null vectors Rab `\r
+a\r
+`\r
+b ≥ 0.\r
+TCC: The TCC is the statement that for all timelike vectors Rab V\r
+aVb ≥ 0.\r
+If one wishes to step outside the framework of standard general relativity then this\r
+adds a new level of speculative physics to the mix, and then the distinction between\r
+geometrical convergence conditions and dynamical energy conditions might become\r
+important. However it should be emphasized that in many (but not all) modified\r
+theories of gravity the equations of motion can be rearranged into the form\r
+(Einstein tensor) = (some “effective” stress-energy tensor). (6.1)\r
+Whenever this can be done, statements about the usual energy conditions in Einstein\r
+gravity can be carried over to statements about “effective” energy conditions in modified\r
+gravity.\r
+7 Violation of the energy conditions\r
+Now consider the energy conditions in the warp drive spacetimes. We shall provide a\r
+number of results, ultimately demonstrating the generic violation of the NEC (thereby\r
+automatically implying violations of the WEC, SEC and DEC)\r
+7.1 Alcubierre warp drive\r
+The key defining characteristic of the Alcubierre warp drive is that vi(x, y, z, t) is always\r
+pointing in some fixed direction, which can without loss of generality be taken to be\r
+– 19 –
+
+the z-direction ˆzi = (0, 0, 1)i\r
+. That is, take\r
+vi(x, y, z, t) = v(x, y, z, t) ˆzi. (7.1)\r
+(This is slightly more general than what Alcubierre actually did [9]; but it is the best\r
+way of summarizing the key aspects of the physics.) Then the extrinsic curvature is\r
+simply\r
+Kij = ∂(iv zˆj) =\r
+\r
+\r
+\r
+0 0 1\r
+2\r
+∂xv\r
+0 0 1\r
+2\r
+∂yv\r
+1\r
+2\r
+∂xv\r
+1\r
+2\r
+∂xv ∂zv\r
+\r
+\r
+ . (7.2)\r
+Consequently\r
+K = ˆz\r
+i\r
+∂iv = ∂zv; (7.3)\r
+while\r
+(K2)ij =\r
+1\r
+2\r
+KKij +\r
+1\r
+4\r
+(∂v)\r
+2\r
+zˆizˆj +\r
+1\r
+4\r
+∂iv∂jv; (7.4)\r
+and\r
+trK2\r
+\u0001\r
+=\r
+1\r
+2\r
+K2 +\r
+1\r
+2\r
+(∂v)\r
+2 =\r
+1\r
+2\r
+(∂xv)\r
+2 +\r
+1\r
+2\r
+(∂yv)\r
+2 + (∂zv)2\r
+. (7.5)\r
+Then\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 = −\r
+1\r
+32π\r
+\r
+(∂xv)\r
+2 + (∂yv)2\r
+\u0001\r
+≤ 0. (7.6)\r
+But to have a non-trivial warp bubble, we must avoid the situation where one has an\r
+everywhere flat Minkowski space. So we need ((∂xv)\r
+2 + (∂yv)2\r
+) > 0 somewhere in the\r
+spacetime, and so ρ < 0 at those particular locations, and is at best zero everywhere\r
+else. Therefore the Alcubierre warp bubble definitely violates the WEC.\r
+In his original article [9] Alcubierre also claims (without proof): “In a similar way one\r
+can show that the strong energy condition is also violated.” However in a more recent\r
+article by Alcubierre and Lobo [29], they explicitly prove the stronger result that the\r
+Alcubierre warp drive violates the NEC. (So SEC, WEC, and DEC are all definitely\r
+violated, because NEC is.)\r
+Their proof is slightly tricky and depends (for a warp bubble moving in the z direction)\r
+on the identity Gzz = 3Gnn < 0. This identity is established by explicit computation,\r
+there does not seem to be an obvious geometrical reason for it. From this geometrical\r
+identity we have Tzz = 3ρ < 0 in the comoving frame. Hence ρ + Tzz = 4ρ < 0 and the\r
+NEC is violated in all Alcubierre warp drives.\r
+– 20 –
+
+7.2 Nat´ario zero-expansion warp drive\r
+The key defining characteristic of the Nat´ario zero-expansion warp drive is that the\r
+flow vi(x, y, z, t) is zero divergence: ∇ · ~v = 0. (This is slightly more general than what\r
+Nat´ario actually did [10]; but it is the best way of summarizing the relevant physics.)\r
+Then K = 0 and from (4.1) we have:\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 = −\r
+1\r
+16π\r
+trK2\r
+\u0001\r
+≤ 0. (7.7)\r
+But to avoid a trivial warp drive the extrinsic curvature Kij must be nonzero somewhere,\r
+and wherever Kij 6= 0 we have ρ < 0. So the Nat´ario zero-expansion warp drive definitely\r
+violates the WEC [10].\r
+But, now extending Nat´ario’s argument from the second half of reference [10], we note\r
+that in this situation, from equation (4.12), we also have\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+trK2\r
+\u0001\r
+≤ 0. (7.8)\r
+And the same non-triviality argument as immediately above now shows that any Nat´ario\r
+zero-expansion warp drive also violates the SEC.\r
+Furthermore, again extending Nat´ario’s argument from the second half of reference [10],\r
+now using equation (4.13) we note\r
+ρ + ¯p = −\r
+1\r
+8π\r
+trK2\r
+\u0001\r
+≤ 0. (7.9)\r
+And the same non-triviality argument again shows that any Nat´ario zero-expansion\r
+warp drive also violates the NEC.\r
+7.3 Zero-vorticity warp drive\r
+The key defining characteristic of the Lentz/Fell–Heisenberg zero-vorticity warp drive\r
+is that the flow vi(x, y, z, t) is taken to be a gradient vi(x, y, z, t) = ∂iΦ(x, y, z, t) [1, 3].\r
+(This is slightly more general than what Lentz and Fell–Heisenberg actually did; but it\r
+is the best way of summarizing the relevant physics.)\r
+Then\r
+Kij = Φ,ij , K = ∇2Φ. (7.10)\r
+– 21 –
+
+From (4.1) the co-moving energy density is\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 =\r
+1\r
+16π\r
+\r
+(∇2Φ)2 − Φ,ijΦ,ij\u0001\r
+. (7.11)\r
+This no longer obviously violates the WEC, at least not as seen by Eulerian observers.\r
+In view of equation (4.5), the energy density is now a pure 3-divergence\r
+ρ =\r
+1\r
+16π\r
+{∂i(Φ,iΦ,jj − Φ,j Φ,ij )} . (7.12)\r
+In this class of zero-vorticity warp drives the comoving flux is identically zero, f\r
+i = 0.\r
+Unfortunately, the spatial parts of the stress-energy Tij are still a bit of a mess, they do\r
+not really simplify appreciably. (And one really needs to know something about the\r
+spatial stresses Tij in order to say anything more precise about the energy conditions.)\r
+Fortunately, the average pressure is reasonably tractable. From equation (4.13),\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 =\r
+1\r
+24π\r
+\r
+−2Ln∇2Φ + (∇2Φ)2 − 3Φ,ij Φ,ij\u0001\r
+.\r
+(7.13)\r
+Now, given that we want our warp field to be localizable, to not spread over and\r
+affect the whole spacetime, it is natural to make the assumption that the flow field\r
+vi(x, y, z, t) = ∂iΦ(x, y, z, t) obeys some sort of fall-off conditions at spatial infinity.\r
+It is certainly more than sufficient if Ji = (Φ,iΦ,jj −Φ,j Φ,ij ) = o(r\r
+−2\r
+) for large distances,\r
+which is in turn certainly true if Φi = o(r\r
+−1/2\r
+), which is in turn certainly true if the ADM\r
+mass is zero. Vanishing of the ADM mass is certainly the case for Alcubierre’s warp drive,\r
+and also for Natario’s zero-expansion warp drive, and is a first crude approximation for\r
+well-localized warp fields. (We will subsequently significantly weaken this condition.) If\r
+this is the case, then it follows immediately that\r
+Z\r
+R3\r
+ρ d\r
+3x = 0. (7.14)\r
+But then, if the warp field has positive energy density anywhere, it must have negative\r
+energy density somewhere else. This implies violations of the WEC somewhere on each\r
+spatial slice. We shall subsequently be more specific by invoking stronger arguments\r
+using much weaker falloff conditions.\r
+Unfortunately, as we have previously argued, non-negativity of the Eulerian energy\r
+density, ρ ≥ 0, is insufficient to establish the WEC for a zero-vorticity warp drive; one\r
+– 22 –
+
+needs to check the NEC as well. The spatial parts of the stress-energy Tij are still a\r
+bit of a mess, they do not really simplify appreciably. (And one really needs to know\r
+something about the spatial stresses Tij in order to say anything more precise about\r
+the energy conditions.) Fortunately, the average pressure is reasonably tractable. From\r
+equation (4.13),\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 =\r
+1\r
+24π\r
+\r
+−2Ln∇2Φ + (∇2Φ)2 − 3Φ,ij Φ,ij\u0001\r
+.\r
+(7.15)\r
+The best way of proceeding seems to be to adapt, modify, and extend a general argument\r
+that Nat´ario applied to his general class of warp drive spacetimes [10]. Let us do this\r
+now.\r
+7.4 Nat´ario’s generic warp drive\r
+WEC: We have already established that from equation (4.6) it follows in general that\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∇ · {~v K − (~v · ∇)~v} − 1\r
+2\r
+(~ω · ~ω)\r
+\u001B\r
+. (7.16)\r
+Hence, with the strong fall-off conditions already mentioned, namely that the warp field\r
+is well-localized, and that gradients of vi → 0 sufficiently rapidly at spatial infinity, an\r
+integration by parts implies\r
+Z\r
+ρ d\r
+3x = −\r
+1\r
+32π\r
+Z\r
+(~ω · ~ω) d3x ≤ 0. (7.17)\r
+Again, if the warp field has positive energy density anywhere, it must have negative\r
+energy density somewhere else. This already implies violations of the WEC somewhere\r
+on each spatial slice. (We shall establish stronger results using weaker hypotheses\r
+below.)\r
+WEC-or-SEC: To improve on the preceding result for the WEC, and side-step the\r
+need for strong asymptotic falloff conditions, note that in reference [10] Nat´ario presents\r
+a quite general argument to the effect that in any generic warp spacetime, (Alcubierre,\r
+Nat´ario zero-expansion, and, yes, it even applies to Lentz/Fell–Heisenberg zero-vorticity\r
+warp drives), there must be violations of either the SEC or the WEC. (Or you have the\r
+trivial case of Minkowski space.) See his theorem 1.7.\r
+– 23 –
+
+SEC: Nat´ario’s result can already be slightly improved in view of our comments\r
+above: In any generic warp spacetime, (Alcubierre, Nat´ario, and, yes, it even applies to\r
+Lentz/Fell–Heisenberg), there must be violations of the SEC. (Or you have the trivial\r
+case of Minkowski space.) We shall go into some detail in order to localise where and\r
+when the SEC violations take place.\r
+The key point is that Eulerian observers define a zero-vorticity congruence of timelike\r
+geodesics, that by construction cannot have any focussing points. Now apply a variant\r
+of the Raychaudhuri equation (timelike focussing theorem) [42, 101–107].\r
+Explicit calculation has shown us, see equation (4.12), that for any warp drive spacetime:\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+\r
+LnK + trK2\r
+\u0001\u0001 . (7.18)\r
+Thus if the SEC holds (implying ρ + 3¯p ≥ 0) we have\r
+LnK + trK2\r
+\u0001\r
+≤ 0. (7.19)\r
+So\r
+LnK ≤ − trK2\r
+\u0001\r
+. (7.20)\r
+Now split the extrinsic curvature into trace-free part Ktf\r
+ij = Kij −\r
+1\r
+3Kδij and trace. Then\r
+trK2\r
+\u0001\r
+= tr \u0014Ktf\r
+ij +\r
+1\r
+3\r
+Kδij\u00152\r
+!\r
+= tr[Ktf]\r
+2\r
+\u0001\r
++\r
+1\r
+3\r
+K2 ≥\r
+1\r
+3\r
+K2(7.21)\r
+Consequently the SEC would imply\r
+LnK ≤ −\r
+1\r
+3\r
+K2. (7.22)\r
+So if K < 0, then it will be even more negative in the future. Similarly if K > 0,\r
+then it must have been even more positive in the past. Noting that, acting on scalars,\r
+LnK = V\r
+a∂aK = dK/dτ , we see that the Eulerian observers satisfy\r
+dK\r
+dτ\r
+≤ −\r
+1\r
+3\r
+K2. (7.23)\r
+Therefore\r
+−\r
+1\r
+K2\r
+dK\r
+dτ\r
+≥\r
+1\r
+3\r
+. (7.24)\r
+So\r
+dK−1\r
+dτ\r
+≥\r
+1\r
+3\r
+. (7.25)\r
+– 24 –
+
+Pick any Eulerian observer, and pick some point τ0 on that world-line. Integrating\r
+upwards, from τ = τ0 to some τ > τ0 we have\r
+K−1(τ ) ≥ K(τ0)\r
+−1 +\r
+1\r
+3\r
+(τ − τ0). (7.26)\r
+So if K(τ0) < 0, then there will be some finite proper time increment, less than 3/|K0|,\r
+at which K−1 → 0\r
+− implying K → −∞.\r
+Integrating downwards, from τ = τ0 to some τ < τ0 we have\r
+K−1\r
+0 ≥ K(τ )\r
+−1 +\r
+1\r
+3\r
+|τ − τ0|. (7.27)\r
+That is,\r
+K−1(τ ) ≤ K−1\r
+0 −\r
+1\r
+3\r
+|τ0|. (7.28)\r
+So if K(τ0) > 0, then there will be some finite proper time decrement, less than 3/|K0|,\r
+at which K−1 → 0\r
++ implying K → +∞.\r
+Either way, this is in contradiction to the fact that the Eulerian observers define a\r
+zero-vorticity congruence of timelike geodesics that by construction cannot have any\r
+focussing points. So either K ≡ 0 identically, or whenever K(τ0) 6= 0 somewhere for\r
+any arbitrary Eulerian observer, the SEC fails somewhere in the interval\r
+τ ∈\r
+\u0012\r
+τ0 −\r
+3\r
+|K(τ0)|\r
+, τ0 +\r
+3\r
+|K(τ0)|\r
+\u0013\r
+. (7.29)\r
+(Of course we could relax the global condition in the ADM-like split in the warp drive.\r
+However, this would imply either the formation of singularities in a finite time in the\r
+region of non-zero extrinsic curvature—meaning the warp bubble would encounter it; or\r
+we would have to save the situation by opting for CTCs [11], in many ways an even\r
+worse situation for physics [88–93].)\r
+Overall, this now gives us quite good control on where and when the SEC violations\r
+take place. The special case where K ≡ 0 identically reduces to the Nat´ario warp drive,\r
+for which we had already argued that the SEC fails (as long as the extrinsic curvature\r
+Kij is not identically zero everywhere in the spacetime).\r
+Note that this argument for SEC violations does not require any asymptotic conditions\r
+on the flow field at spatial infinity.\r
+– 25 –
+
+NEC: For the NEC we had already argued that the NEC requires ρ + p¯ ≥ 0, and we\r
+have the explicit calculation (4.13):\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 . (7.30)\r
+So the NEC would require\r
+2LnK − K2 + 3 trK2\r
+\u0001\r
+≤ 0. (7.31)\r
+But, in terms of the trace-free part of extrinsic curvature, we have\r
+trK2\r
+\u0001\r
+= tr[Ktf]\r
+2\r
+\u0001\r
++\r
+1\r
+3\r
+K2. (7.32)\r
+So we can rewrite the NEC as\r
+LnK ≤ −\r
+3\r
+2\r
+tr[Ktf]\r
+2\r
+\u0001\r
+. (7.33)\r
+That is, using LnK = dK/dτ , and assuming the NEC:\r
+dK\r
+dτ\r
+≤ −\r
+3\r
+2\r
+tr[Ktf]\r
+2\r
+\u0001\r
+≤ 0. (7.34)\r
+Let us now take a moment to further explore equation (7.34). The τ here refers to\r
+the proper time along an Eulerian observer’s trajectory. It represents, therefore, how\r
+a particular Eulerian observer will see the trace of the extrinsic curvature where they\r
+are located. Given the zero-vorticity nature of the Eulerian observers’ congruence, it is\r
+known that at each spacetime point one and only one Eulerian observer will be present.\r
+We might, therefore, associate an Eulerian observer to each point on a constant-time\r
+spatial slice.\r
+Keeping this in mind, let us now follow a particular Eulerian observer who is initially\r
+sitting in a flat region far away from the warp bubble. Given the already mentioned\r
+falloff conditions for warp drives, we have that Kij tends to zero at spatial infinity.\r
+Therefore, as long as the observer is sufficiently distant from the warp bubble, Kij will\r
+be as close to zero as the particular fall-off conditions allow.\r
+Without any loss of generality, we might pick such an observer to be in the region\r
+traversed by the warp drive as it moves from a certain origin to a specific destination\r
+— also assumed to be sufficiently far away. In this particular scenario, the extrinsic\r
+curvature as seen by such an observer must start and end up with values which approach\r
+– 26 –
+
+zero at spatial infinity — since they start and finish in an almost flat space.\r
+Let us now return to equation (7.34). It tells us that, as long as the NEC is satisfied in\r
+the generic Nat´ario warp drive spacetime, the trace of the extrinsic curvature can never\r
+increase. How does this apply to the particular Eulerian observer above?\r
+In the situation just described, the trace as seen by the particular Eulerian observer will\r
+naturally start arbitrarily close to zero, since they are in an approximately flat space. In\r
+this way, once the warp drive passes, it can either decrease or stay the same. If is stays\r
+the same we have only two possible explanations: either a zero expansion warp drive\r
+passed by or no warp drive passed at all. Since we already proved the violation of the\r
+NEC for the zero expansion warp drive case separately, let us now focus on the other\r
+hypothesis, namely, that K decreases. Now, again, two possibilities arise: K becomes\r
+negative or K becomes even closer to zero than it was in the asymptotically flat region.\r
+Independently of the case, after the warp drive passes and proceeds sufficiently far away,\r
+the observer will return to an asymptotically flat region, meaning that K increases as\r
+it returns to its original value.6 This, however, is not allowed if the NEC is always\r
+satisfied, as given by equation (7.34). This proves that the violation of the NEC is a\r
+necessary condition for the spacetime to “restore its asymptotics” after a warp drive\r
+passes through a particular point.\r
+A delicate point must be discussed before this proof is called closed and complete: The\r
+question regarding what happens to such a geodesic Eulerian observer when a warp drive\r
+reaches them. Is the observer’s trajectory disturbed by the warp drive? Is this geodesic\r
+dragged along so that it never leaves the bubble again? Gladly, all of these questions\r
+were already addressed in a paper by Pfenning and Ford [94], where they analysed the\r
+effect of the passage of a constant velocity warp bubble on an Eulerian observer. Any\r
+observer passing through the bubble wall7 but not reaching a flat interior will behave in\r
+the following way: As the front wall of the bubble reaches such Eulerian observers, their\r
+trajectory acquires a “coordinate acceleration” in the direction of the bubble, relative\r
+to observers at large distances.8 For a while, this is followed by a movement with nearly\r
+constant speed, shown to be always smaller than the bubble’s speed. These observers\r
+then finally decelerate, being left at rest as the bubble continues to go forward. In this\r
+way, while being displaced in space along the trajectory of the bubble, no momentum is\r
+transferred to these observers during the “collision”. Therefore, such Eulerian observers\r
+6Since we still have to assume that any contribution to Kij from the warp drive is sufficiently\r
+localized.\r
+7We have to assume wall of finite size—but then again a wall of infinitesimal size would render the\r
+metric distributional and thus unsuitable for standard GR, anyhow.\r
+8The Eulerian observers are geodesic, so the 4-acceleration is identically zero.\r
+– 27 –
+
+Eulerian worldline only leaving if interior is non-flat\r
+possibly flat\r
+rough outer edge of warp bubble\r
+Eulerian observer’s worldline\r
+Figure 1: Illustration of the key step for the proof of the violation of the NEC, viewed\r
+from the perspective of the bubble’s center. Eulerian observers as depicted here will be\r
+present in any warp drive. They will see a trace of the extrinsic curvature K that is in\r
+violation of its monotonicity as predicted by the NEC. Eulerian observers entering a\r
+flat inner region will remain there as long as the bubble persists.\r
+who were at rest before the arrival of the warp drive will finish as Eulerian observers\r
+at rest after the bubble passes. Another more recent study [27] extended these results\r
+to warp drives with non-constant velocities. An illustration of the Eulerian observers’\r
+worldlines in this argument for the violation of the NEC can be found in figure 1.\r
+9\r
+Let us summarise this argument again: Eulerian observers initially at rest, which even\u0002tually “collide” with the bubble wall—without, however, entering possible flat regions\r
+inside the warp bubble—will exit the bubble, and will again reenter the asymptotically\r
+flat space behind the bubble. The monotonicity implied by equation (7.34) then implies\r
+a violation of the NEC somewhere along these Eulerian trajectories. It is, therefore,\r
+proven that any warp drive in the generic Nat´ario form will inevitably violate the NEC\r
+as it moves through spacetime.\r
+Note that this proof for NEC violations uses only the fact that warp drive contributions\r
+are sufficiently localized — without any need to assume zero ADM mass or to invoke\r
+an integration by parts.\r
+9Very nice illustrations of this can also be found in [95].\r
+– 28 –
+
+8 Discussion and conclusions\r
+We have now demonstrated that all members of the general class of warp drives defined\r
+by Nat´ario [10] violate the NEC. This significantly extends previously known results.\r
+This argument applies, in particular, to all three of the Alcubierre [9], Nat´ario zero\u0002expansion [10], and Lentz/Fell–Heisenberg zero-vorticity [1, 3] warp drives, and also (for\r
+slightly different reasons) to the model warp drives considered by Bobrick–Martire [2].\r
+Because the NEC is violated then so are the WEC, SEC, and DEC.\r
+Consequently, insofar as one wishes to continue to entertain the possibility of warp\r
+drives as a real physical phenomenon, one has no choice but to face the violation of the\r
+energy conditions head on. Several possibilities arise: (i) modify the theory of gravity,\r
+(ii) modify the definition of warp drive, (iii) modify the energy conditions, (iv) appeal to\r
+macroscopic quantum physics, (v) allow for singularities or CTCs (time travel). None\r
+of these options are particularly palatable. All of these options have serious draw-backs.\r
+Thus it is our melancholy duty to report that none of the recent claims of positive-mass\r
+physical warp drives survive careful inspection of the proffered arguments.\r
+A “Spherically symmetric” warp drives\r
+“Spherically symmetric” warp drives date back to the original article by Alcubierre [9].\r
+Specifically, let us reconsider the explicit line element (2.12) and rephrase it as\r
+ds\r
+2 = −dt2 + dx2 + dy2 +\r
+\u0010\r
+dz − v∗(t) f (rs(x, y, z, t)) dt\r
+\u00112\r
+, (A.1)\r
+where we set\r
+rs(x, y, z, t) = q\r
+x\r
+2 + y2 + (z − z∗(t))2\r
+, z∗(t) = Zv∗(t) dt, (A.2)\r
+and enforce both f(0) = 1 and f(∞) = 0. This represents a spherically symmetric\r
+warp bubble, centred on the moving point (0, 0, z∗(t)), with a shape function f(rs) that\r
+depends only on the Euclidean distance from the moving centre. We emphasize that\r
+while the warp bubble is spherically symmetric the spacetime is not — there is certainly\r
+a preferred axis due to the direction of motion of the warp bubble. (Hence the warp\r
+bubble is spherically symmetric, but the spacetime is only “spherically symmetric”.)\r
+At large spatial distances ds\r
+2 → −dt2 + dx2 + dy2 + dz2\r
+, the usual representation of\r
+Minkowski space, while at the centre of the warp drive\r
+ds\r
+2 → −dt2 + dx2 + dy2 + (dz − v∗(t)dt)\r
+2\r
+. (A.3)\r
+– 29 –
+
+Consider now the coordinate transformation\r
+t˜= t, x˜ = x, y˜ = y, z˜ = z − z∗(t), (A.4)\r
+which is designed to bring the warp bubble “to rest”. Then\r
+dt˜= dt, d˜x = dx, d˜y = dy, d˜z = dz − v∗(t) dt, (A.5)\r
+and the line element becomes\r
+ds\r
+2 = −dt˜2 + d˜x2 + d˜y2 +\r
+\r
+d˜z + v∗(t)[1 − f(rs)] dt˜\r
+\u00012\r
+, (A.6)\r
+where now rs =\r
+p\r
+x˜\r
+2 + ˜y2 + ˜z2\r
+is time independent. At the centre of the warp bubble\r
+we now have ds\r
+2 → −dt˜2 + dx˜2 + dy˜2 + dz˜2\r
+, the usual representation of Minkowski\r
+space, while at spatial infinity it is now the outside universe that is streaming by with\r
+velocity −v∗(t).\r
+At spatial infinity the line element becomes\r
+ds\r
+2 → −dt˜2 + d˜x2 + d˜y2 +\r
+\r
+d˜z + v∗(t) dt˜\r
+\u00012\r
+. (A.7)\r
+This is again Minkowski space, but now in “moving coordinates”. Note the “conservation”\r
+of relative motion — either spatial infinity is standing still and the bubble is moving, or\r
+the bubble is standing still and spatial infinity is moving [9, 10].\r
+If one wishes to make the walls of the warp bubble thin, (but still of finite thickness),\r
+this is a choice, not a necessity, then one might pick\r
+f(rs) =\r
+\r
+\r
+\r
+1 rs ≤ rinner,\r
+smooth rs ∈ [rinner, router],\r
+0 rs ≥ router.\r
+(A.8)\r
+If one makes this choice, then one needs to enforce router > rinner to keep the metric\r
+continuous. A discontinuity in the metric leads to delta functions in the Christoffel\r
+symbols, squares of delta functions in the Riemann tensor, and cubes of delta functions\r
+in the Bianchi identities. Even when working with the Israel–Lanczos–Sen thin-shell\r
+formalism (the junction condition formalism) one needs to keep the metric piecewise\r
+differentiable, C\r
+1−, since then the Christoffel symbols at worst contain step functions\r
+and the Riemann tensor and Bianchi identities at worst contain delta functions.\r
+– 30 –
+
+The reason for being so explicit is that in reference [2] the authors present a deeply\r
+flawed discussion of spherically symmetric warp drives. In their implementation of\r
+spherically symmetric warp drives the warp bubble is certainly at rest, but in addition\r
+their choice of asymptotic boundary conditions also forces the warp bubble to be at\r
+rest with respect to spatial infinity. This defeats the whole purpose of a warp drive.\r
+Furthermore, these authors take the interior of the warp bubble to be a portion of flat\r
+Minkowski space, the wall of the warp bubble to be a non-negative density barotropic\r
+and isotropic fluid, and the exterior region to be a portion of Schwarzschild spacetime.\r
+They then attempt to apply the Tolman–Oppenheimer–Volkov (TOV) equation to the\r
+bubble wall. But under the set of assumptions they are imposing (zero pressure at\r
+the inner edge of the bubble wall, zero pressure at the outer edge of the bubble wall,\r
+non-negative energy density within the bubble wall, and a barotropic equation of state)\r
+the unique solution to the TOV is the trivial solution p(r) = 0 = ρ(r), and the mass of\r
+the exterior region must be zero. Thus their specific model (as presented in [2]) just\r
+reduces, globally, to flat Minkowski space — it is not a warp drive.\r
+These authors [2] also assert that both Alcubierre [9] and Nat´ario [10] must necessarily\r
+“truncate” their warp fields, forcing them to be exactly Minkowski space, at some finite\r
+distance from the centre of the warp bubble. This is simply not an accurate reflection\r
+of what is actually done in those references [9, 10]. Specifically, in Alcubierre’s original\r
+article [9, equation (6)] the concrete realization of the shape function f(rs) he chooses,\r
+see equation (A.8), uses tanh functions and so does not have compact support. In\r
+this terminology, Alcubierre sets rinner = 0 and router = ∞, which is certainly not\r
+a truncation. Unfortunately this terminology of “truncation” has been uncritically\r
+adopted by subsequent authors [3].\r
+The authors of [2] also assert in passing, see their section (5.2), that the Alcubierre warp\r
+drive [9] does not satisfy the continuity equations. They also assert that the velocity\r
+of the Alcubierre warp bubble cannot be time dependent, claiming a violation of the\r
+conservation of momentum. These statements are both false, and seem to arise (at\r
+best) from adopting a naive Newtonian viewpoint. What Alcubierre has actually done\r
+is to “reverse engineer” the warp drive — once one writes down a suitable metric, (at\r
+least C\r
+1−, piecewise differentiable), one simply calculates the Einstein tensor to find\r
+what the stress-energy is that would be required to support that spacetime geometry.\r
+The continuity equation is automatically enforced via the Bianchi identities, and there\r
+is no difficulty in making the velocity of the Alcubierre warp bubble time-dependent.\r
+(Reference [3] seems to repeat this error in their discussion. Reference [1] is more careful\r
+in this regard, setting the 3-velocity of their model warp bubble constant for simplicity,\r
+but without making any claim as to necessity.)\r
+– 31 –
+
+Overall, while the idea of a “spherically symmetric” warp drive is certainly well-defined\r
+and useful, the specific implementation of this notion in reference [2] is not a successful\r
+one, and is not useful.\r
+B Warp drives beyond the generic Nat´ario framework\r
+There are two somewhat more general warp drive spacetimes that do not fall into\r
+Nat´ario’s general classification [10], and are incompatible with the Alcubierre, Nat´ario,\r
+and Lentz/Fell–Heisenberg warp drives. These more general warp drives are obtained by\r
+either relaxing the condition that the lapse be unity, (so N(x, y, z, t) 6= 1), or relaxing\r
+the condition that the spatial slices be flat, (so gij 6= δij ). See reference [29] which\r
+discusses the case N = 1, and reference [ 6 17] which permits the spatial slices to be\r
+conformally flat gij = e\r
+2θ(x,y,z,t)\r
+δij rather than Riemann flat.\r
+Unhelpfully, in appendices A.1 and A.2 of reference [2] those authors incorrectly claim\r
+that both of these more general spacetimes can, by a coordinate transformation, be\r
+brought into Alcubierre form. The simplest way to see that both these claims are\r
+wrong is to set the flow vector to zero. The claims made in appendices A.1 and A.2 of\r
+reference [2] then reduce to the claims that the line elements\r
+ds\r
+2 = −N(x, y, z, t)2\r
+dt\r
+2 + dx2 + dy2 + dz2\r
+, (B.1)\r
+and\r
+ds\r
+2 = −dt2 + e2θ(x,y,z,t)\r
+{dx\r
+2 + dy2 + dz2\r
+}, (B.2)\r
+are actually Riemann flat. This is manifestly incorrect. What has gone wrong? The\r
+transformations these authors invoke are just not coordinate transformations. For a\r
+transformation dx\r
+a → dx¯a = Ja\r
+b dx\r
+b\r
+to actually be a coordinate transformation the\r
+critical requirement is that J\r
+a\r
+[b,c] = 0. (Additionally, one would want det(J\r
+a\r
+b) = 0, 6\r
+except on sets of measure zero.) While the transformations made in appendices A.1 and\r
+A.2 of reference [2] satisfy the determinant condition, they fail the more basic J\r
+a\r
+[b,c] = 0\r
+condition; they are simply not coordinate transformations.\r
+For our purposes then it means that the non-unit-lapse and van den Broeck warp drive\r
+spacetimes cannot simply be dismissed out of hand. There are other problematic issues\r
+with both of these models, but they are physically different from the Nat´ario class [10],\r
+(unit lapse, spatially flat 3-geometry), and must be directly addressed using different\r
+techniques.\r
+– 32 –
+
+C Some defective warp drives\r
+Some of the recently proposed warp drive spacetimes are defective for other reasons.\r
+For instance, in the first explicit example in reference [3] the velocity potential Φ is\r
+certainly C\r
+0 but is only piecewise differentiable, C1−. That is, the flow ~v = ∇Φ is\r
+discontinuous, which implies that the metric is discontinuous. This then leads to delta\r
+functions in the Christoffel symbols, squares of delta functions in the Riemann tensor,\r
+and cubes of delta functions in the Bianchi identities. This is mathematically and\r
+physically not viable.\r
+In their second explicit example, equation (9) of versions 1 and 2; equation (11) of\r
+versions 3 and 4 of reference [3], the velocity potential Φ is C\r
+∞, except possibly at the\r
+centre of the spacetime, but suffers other problems. If one takes r =\r
+p\r
+x\r
+2 + y2 + z2\r
+,\r
+then even at its most general their velocity potential is of the qualitative form\r
+Φ(x, y, z) = F(r, σ(x, y, z)) + v∗ z. (C.1)\r
+Then\r
+~v = ∇Φ(x, y, z) = ∂rF(r, σ(x, y, z)) ˆr + ∂σF(r, σ(x, y, z)) ∇σ + v∗ z. ˆ (C.2)\r
+But then, in their specific example, they do the equivalent of settting σ(x, y, z) → 1,\r
+and v∗ → 0, thereby enforcing spherical symmetry. That is Φ(x, y, z) → F(r, 1), which\r
+is a function of r only. But then\r
+~v = ∇Φ →\r
+∂F(r, 1)\r
+∂r r. ˆ (C.3)\r
+So their flow vector is always pointing radially outwards/inwards. This is simply not\r
+viable for describing a warp drive spacetime.\r
+Oddly enough, consider Φ(x, y, z) = 2√2mr = 2√2m\r
+p4 x\r
+2 + y2 + z2\r
+, so that\r
+~v = ∇Φ(x, y, z) =\r
+√\r
+2m (x, y, z)\r
+(x\r
+2 + y2 + z2\r
+)\r
+3/4\r
+=\r
+s\r
+2m\r
+p\r
+x\r
+2 + y2 + z2\r
+r. ˆ (C.4)\r
+This is the Schwarzschild spacetime (in Painlev´e–Gullstrand form, converted to Cartesian\r
+coordinates). This is not a warp drive spacetime.\r
+– 33 –
+
+Similarly, consider Φ(x, y, z) = (x\r
+2+y2+z2\r
+)\r
+2`\r
+so that\r
+~v = ∇Φ = (x, y, z)\r
+`\r
+=\r
+p\r
+x\r
+2 + y2 + z2\r
+`\r
+r. ˆ (C.5)\r
+This is the de Sitter spacetime (in Painlev´e–Gullstrand form, converted to Cartesian\r
+coordinates, with Λ = 3/`2). This is not a warp drive spacetime.\r
+But the central issue is this: Even if you pick a flow vector of the form\r
+~v = f(r) ˆr + v∗ z, ˆ (C.6)\r
+which at least has a hope of representing a moving warp bubble, then calculating and\r
+checking the non-negativity of the Eulerian energy density ρ by itself tells you next to\r
+nothing regarding satisfaction of the WEC. To test satisfaction of the WEC one would\r
+need to calculate all of the principal pressures pi and then check whether all of the\r
+combinations ρ + pi were non-negative.\r
+In reference [1] the claim is made that the author can self-consistently find a warp drive\r
+configuration that is sourced by a perfect fluid plasma (satisfying the WEC and so also\r
+the NEC) plus electromagnetic Maxwell stress-energy (satisfying all of NEC, WEC,\r
+SEC, and DEC). So if this claim were to be true, if these models truly were solutions of\r
+the Einstein equations with the specified source, one would have a warp drive spacetime\r
+satisfying the NEC, which we have just shown to be impossible. What has gone wrong?\r
+The point here is that the author of [1] has not actually solved the Einstein equations,\r
+he has only solved part of the Einstein equations — for the density, flux, and trace of\r
+the stress. This is not enough to obtain a valid solution of the Einstein equations — the\r
+author would also need to consider the remaining trace-free part Tij −\r
+1\r
+3\r
+(Tklδ\r
+kl)gij of\r
+the stress tensor.\r
+D Final considerations regarding recent warp drive proposals\r
+We would like to conclude by explicitly explaining (if not yet mentioned) why each of\r
+the recent warp drive proposals have failed in their claims.\r
+Starting with [1], the author has claimed to have found a warp drive solution which\r
+would not violate the WEC. This is actually an incorrect claim since the author has never\r
+actually solved the Einstein equations. By imposing a warp drive metric, it is clear from\r
+equations (3.19), (3.20) and (3.21) that all of the components of the energy momentum\r
+tensor are already determined, without much freedom to play around. This is called a\r
+reverse engineering process. Once you define your metric, your energy momentum tensor\r
+follows directly from it. The author, however, imposes not only the metric, but also an\r
+– 34 –
+
+energy momentum tensor — therefore imposing both sides of the Einstein equations\r
+without ever verifying if they are indeed an equation or not. Hence, they haven’t only\r
+not found a solution which satisfies the WEC, they haven’t found a solution at all.\r
+Proceeding with [2], their warp drives are divided into two classes: “General spherically\r
+symmetric warp drives”, which we already discussed in appendix A, and “Axisymmetric\r
+warp drives with a general internal region” in which they haven’t found any metric\r
+satisfying the WEC. In this way, their only “warp drive” which satisfies the WEC is\r
+actually not a warp drive metric at all. It is a static spherically symmetric spacetime,\r
+therefore being reduced to either Minkowski or Schwarzschild. Furthermore, their\r
+claims about Alcubierre’s warp drive requiring negative energy due to the “artificial”\r
+matching rate for the clocks inside and outside the warp drive follows directly from\r
+their rediscovery of the existence of time delays in Schwarzschild spacetimes, which they\r
+believe to be a warp drive.\r
+Finally, in [3], their main issue reduces to “proving” the WEC by calculating the energy\r
+density for a unique class of observers – the Eulerian observers. As mentioned already,\r
+to prove the WEC one needs to prove that the energy density is positive for all time-like\r
+observers and, proving only for one class of observers simply doesn’t prove anything.\r
+Furthermore, the specific examples provided by them have a great deal of problems, as\r
+already explained in appendix C.\r
+The series of articles by Santos-Pereira, Abreu, and Ribeiro [4–8], has other issues.\r
+Specifically:\r
+• Their perfect fluid warp drives (dust, non-zero pressure, non-zero pressure with\r
+cosmological constant) are just Riemann-flat Minkowski space in disguise.\r
+• Their anisotropic fluid warp drive (“parameterized perfect fluid” warp drive) is\r
+less trivial, but is still seriously diseased.\r
+• Their charged dust warp drive is less trivial, but is still seriously diseased.\r
+(Among other things, the calculation of energy density is deeply flawed, confusing\r
+T00 and T\r
+00.)\r
+• Their “cosmological” warp drive is not cosmological.\r
+We shall go into some detail in an attempt to make the situation clear and transparent.\r
+The earliest paper [4] analyzes the Alcubierre warp drive with a stress-energy that is pure\r
+comoving Eulerian dust. Now this is a very strong constraint, and one quickly deduces\r
+that the energy density of the dust is zero. This means that the entire stress-energy\r
+– 35 –
+
+tensor is identically zero; so one is looking for vacuum solutions of the Einstein equations\r
+for an Alcubierre warp drive. But the set of vacuum solutions in an Alcubierre warp\r
+drive framework is extremely limited — in fact once one completely satisfies all the\r
+Einstein equations the only such solution is Riemann-flat Minkowski space (which,\r
+viewed as a warp drive, is trivial).\r
+The anisotropic fluid (“parameterized perfect fluid”) studied in [5] has the defect that\r
+once one completely satisfies all the Einstein equations the “warp drive” is infinitely\r
+wide in the transverse directions — so it is not a warp “bubble”, the warp field stretches\r
+all the way across the universe in the y and z directions; one is trying to accelerate an\r
+entire “slab” of spacetime in the x direction. Furthermore, the Eulerian energy density,\r
+flux, and pressure in the direction of motion are zero, the pressures transverse to the\r
+direction of motion are equal and possibly nonzero — this would then certainly violate\r
+the DEC.\r
+For the charged dust solution of [6] there is a technical error in identifying the energy\r
+density. The physically interesting quantity is ρ = T\r
+00 = Tab (−1; 0, 0, 0)a (−1; 0, 0, 0)b,\r
+where the 4-covector (−1; 0, 0, 0)a is always timelike and future pointing (it is in fact the 4-\r
+velocity of an Eulerian observer). In contrast the quantity T00 = Tab (1; 0, 0, 0)a(1; 0, 0, 0)b\r
+is not physically interesting since the 4-vector (1; 0, 0, 0)ais timelike only for a limited\r
+range of warp velocities; in fact, this 4-vector becomes spacelike exactly when the warp\r
+bubble motion becomes superluminal.\r
+For the “cosmological” solution of [7] the attempt at including a cosmological constant\r
+is at best a redefinition of terms in the stress-energy tensor. For instance, the definition\r
+of Einstein tensor adopted in [7] is not the usual one, which is unhelpful. Furthermore,\r
+given that the entire calculation is taking place within the framework of the generic\r
+Alcubierre metric, we know the spacetime is asymptotically flat; it does not match\r
+(anti)de Sitter at large distances, so it is not a “cosmological” warp bubble.\r
+In all of these situations [4–8], one is working within the framework of the generic\r
+Alcubierre metric, so we know from first principles that energy condition violations\r
+must be present.\r
+– 36 –
+
+Acknowledgements\r
+JS acknowledges indirect financial support via the Marsden fund, administered by the\r
+Royal Society of New Zealand.\r
+SS acknowledges financial support via OP RDE project No. CZ.02.2.69/0.0/0.0/18 053/-\r
+0016976 (International mobility of research), and the technical and administrative staff\r
+at the Charles University.\r
+MV was directly supported by the Marsden Fund, via a grant administered by the\r
+Royal Society of New Zealand.\r
+The authors would like to thank the anonymous referee for making several very practical\r
+suggestions, helping us to improve the presentation and logic flow in this article.\r
+References\r
+[1] E. W. Lentz, “Breaking the warp barrier: hyper-fast solitons in\r
+Einstein–Maxwell-plasma theory”, Class. Quant. Grav. 38 (2021) no.7, 075015\r
+doi:10.1088/1361-6382/abe692 [arXiv:2006.07125 [gr-qc]].\r
+[2] A. Bobrick and G. Martire, “Introducing physical warp drives”,\r
+Class. Quant. Grav. 38 (2021) no.10, 105009 doi:10.1088/1361-6382/abdf6e\r
+[arXiv:2102.06824 [gr-qc]].\r
+[3] S. D. B. Fell and L. Heisenberg, “Positive energy warp drive from hidden geometric\r
+structures”, Class.Quant.Grav. 38 (2021) 155020 doi:10.1088/1361-6382/ac0e47\r
+[arXiv:2104.06488 [gr-qc]].\r
+[4] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Dust content solutions for the\r
+Alcubierre warp drive spacetime”, Eur. Phys. J. C 80 (2020) no.8, 786\r
+doi:10.1140/epjc/s10052-020-8355-2 [arXiv:2008.06560 [gr-qc]].\r
+[5] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Fluid dynamics in the warp\r
+drive spacetime geometry”, Eur. Phys. J. C 81 (2021) no.2, 133\r
+doi:10.1140/epjc/s10052-021-08921-3 [arXiv:2101.11467 [gr-qc]].\r
+[6] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Charged dust solutions for\r
+the warp drive spacetime”, Gen. Rel. Grav. 53 (2021) no.2, 23\r
+doi:10.1007/s10714-021-02799-y [arXiv:2102.05119 [gr-qc]].\r
+[7] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Perfect fluid warp drive\r
+solutions with the cosmological constant”, Eur. Phys. J. Plus 136 (2021) no.9, 902\r
+doi:10.1140/epjp/s13360-021-01899-7 [arXiv:2108.10960 [gr-qc]].\r
+– 37 –
+
+[8] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Warp drive dynamic solutions\r
+considering different fluid sources”, MG16 Conference Proceedings, [arXiv:2111.01298\r
+[gr-qc]].\r
+[9] M. Alcubierre, “The Warp drive: Hyperfast travel within general relativity”,\r
+Class. Quant. Grav. 11 (1994), L73-L77 doi:10.1088/0264-9381/11/5/001\r
+[arXiv:gr-qc/0009013 [gr-qc]].\r
+[10] J. Nat´ario, “Warp drive with zero expansion”,\r
+Class. Quant. Grav. 19 (2002), 1157-1166 doi:10.1088/0264-9381/19/6/308\r
+[arXiv:gr-qc/0110086 [gr-qc]].\r
+[11] A. E. Everett, “Warp drive and causality”, Phys. Rev. D 53 (1996), 7365-7368\r
+doi:10.1103/PhysRevD.53.7365\r
+[12] A. E. Everett and T. A. Roman, “A Superluminal subway: The Krasnikov tube”, Phys.\r
+Rev. D 56 (1997), 2100-2108 doi:10.1103/PhysRevD.56.2100 [arXiv:gr-qc/9702049\r
+[gr-qc]].\r
+[13] W. A. Hiscock, “Quantum effects in the Alcubierre warp drive space-time”,\r
+Class. Quant. Grav. 14 (1997), L183-L188 doi:10.1088/0264-9381/14/11/002\r
+[arXiv:gr-qc/9707024 [gr-qc]].\r
+[14] M. J. Pfenning, “Quantum inequality restrictions on negative energy densities in curved\r
+space-times”, [arXiv:gr-qc/9805037 [gr-qc]].\r
+[15] R. J. Low, “Speed limits in general relativity”, Class. Quant. Grav. 16 (1999), 543-549\r
+doi:10.1088/0264-9381/16/2/016 [arXiv:gr-qc/9812067 [gr-qc]].\r
+[16] K. D. Olum, “Superluminal travel requires negative energies”, Phys. Rev. Lett. 81\r
+(1998), 3567-3570 doi:10.1103/PhysRevLett.81.3567 [arXiv:gr-qc/9805003 [gr-qc]].\r
+[17] C. Van Den Broeck, “A warp drive with reasonable total energy requirements”,\r
+Class. Quant. Grav. 16 (1999), 3973-3979 doi:10.1088/0264-9381/16/12/314\r
+[arXiv:gr-qc/9905084 [gr-qc]].\r
+[18] C. Van Den Broeck, “On the (im)possibility of warp bubbles”, [arXiv:gr-qc/9906050\r
+[gr-qc]].\r
+[19] C. Clark, W. A. Hiscock and S. L. Larson, “Null geodesics in the Alcubierre warp drive\r
+space-time: The view from the bridge”, Class. Quant. Grav. 16 (1999), 3965-3972\r
+doi:10.1088/0264-9381/16/12/313 [arXiv:gr-qc/9907019 [gr-qc]].\r
+[20] M. Visser, B. Bassett and S. Liberati, “Perturbative superluminal censorship and the\r
+null energy condition”, AIP Conf. Proc. 493 (1999) no.1, 301-305 doi:10.1063/1.1301601\r
+[arXiv:gr-qc/9908023 [gr-qc]].\r
+[21] M. Alcubierre, “Warp-Antrieb — Wurml¨ocher — Zeitreisen” (“Warp propulsion,\r
+wormholes, time travel”), Sterne und Weltraum special 6 (2001), 70-76\r
+– 38 –
+
+[22] F. S. N. Lobo and P. Crawford, “Weak energy condition violation and superluminal\r
+travel”, Lect. Notes Phys. 617 (2003), 277-291 [arXiv:gr-qc/0204038 [gr-qc]].\r
+[23] F. S. N. Lobo and M. Visser, “Fundamental limitations on warp drive spacetimes”,\r
+Class. Quant. Grav. 21 (2004), 5871-5892 doi:10.1088/0264-9381/21/24/011\r
+[arXiv:gr-qc/0406083 [gr-qc]].\r
+[24] F. S. N. Lobo and M. Visser, “Linearized warp drive and the energy conditions”,\r
+Proceedings of the Spanish Relativity Meeting-2004 (Miraflores de la Sierra, Madrid,\r
+September 2004) [arXiv:gr-qc/0412065 [gr-qc]].\r
+[25] F. S. N. Lobo, “Exotic solutions in General Relativity: Traversable wormholes and warp\r
+drive spacetimes”, Classical and Quantum Gravity Research (2008) 1–78,\r
+Nova Sci. Pub. (New York), ISBN-10: 978-1-60456-366-5 [arXiv:0710.4474 [gr-qc]].\r
+[26] S. Finazzi, S. Liberati and C. Barcel´o, “Semiclassical instability of dynamical warp\r
+drives”, Phys. Rev. D 79 (2009), 124017 doi:10.1103/PhysRevD.79.124017\r
+[arXiv:0904.0141 [gr-qc]].\r
+[27] B. McMonigal, G. F. Lewis and P. O’Byrne, “The Alcubierre warp drive: On the matter\r
+of matter”, Phys. Rev. D 85 (2012), 064024 doi:10.1103/PhysRevD.85.064024\r
+[arXiv:1202.5708 [gr-qc]].\r
+[28] M. Alcubierre and F. S. N. Lobo, “Wormholes, Warp Drives and Energy Conditions”,\r
+Fundam. Theor. Phys. 189 (2017), pp.1-279 doi:10.1007/978-3-319-55182-1\r
+[arXiv:2103.05610 [gr-qc]].\r
+[29] M. Alcubierre and F. S. N. Lobo, “Warp Drive Basics”,\r
+Fundam. Theor. Phys. 189 (2017), 257-279 doi:10.1007/978-3-319-55182-1 11\r
+[arXiv:2103.05610 [gr-qc]]\r
+[30] R. L. Arnowitt, S. Deser and C. W. Misner, “The Dynamics of general relativity”,\r
+Originally published in “Gravitation: an introduction to current research”,\r
+edited by Louis Witten (Wiley 1962), chapter 7, pp 227–265.\r
+Republished as: Gen. Rel. Grav. 40 (2008), 1997-2027 doi:10.1007/s10714-008-0661-1\r
+[arXiv:gr-qc/0405109 [gr-qc]].\r
+[31] E. Gourgoulhon, “3+1 formalism and bases of numerical relativity”,\r
+Lecture Notes in Physics 846, (Springer-Verlag, Berlin, 2012)\r
+ISBN-13: 978-3-642-24524-4 [arXiv:gr-qc/0703035 [gr-qc]].\r
+[32] R. M. Wald, General Relativity, (University of Chicago Press, Chicago, 1984) ISBN-10:\r
+0-226-87033-2 doi:10.7208/chicago/9780226870373.001.0001\r
+[33] E. Poisson, A Relativist’s Toolkit: The Mathematics of Black-Hole Mechanics,\r
+(Cambridge, Cambridge, 2004) ISBN-10: 0-521-83091-5 doi:10.1017/CBO9780511606601\r
+– 39 –
+
+[34] C. W. Misner, K. S. Thorne and J. A. Wheeler, Gravitation, (Freeman, San Francisco,\r
+1973) ISBN-10: 0-7167-0334-3\r
+[35] C. Kiefer, Quantum gravity, (Oxford University Press, Oxford, 2007) ISBN-13:\r
+978-0-19-958520-5.\r
+[36] M. Alcubierre, Introduction to 3+1 Numerical Relativity, (Oxford, Oxford, 2008)\r
+ISBN-13: 9780199205677 doi:10.1093/acprof:oso/9780199205677.001.0001\r
+[37] W. G. Unruh, “Experimental black hole evaporation”, Phys. Rev. Lett. 46 (1981),\r
+1351-1353 doi:10.1103/PhysRevLett.46.1351\r
+[38] C. Barcel´o, S. Liberati and M. Visser, “Analogue gravity”, Living Rev. Rel. 8 (2005), 12\r
+doi:10.12942/lrr-2005-12 [arXiv:gr-qc/0505065 [gr-qc]].\r
+[39] M. Visser, “Acoustic black holes: Horizons, ergospheres, and Hawking radiation”, Class.\r
+Quant. Grav. 15 (1998), 1767-1791 doi:10.1088/0264-9381/15/6/024\r
+[arXiv:gr-qc/9712010 [gr-qc]].\r
+[40] M. Novello, M. Visser and G. Volovik, Artificial black holes, (World Scientific, Singapore,\r
+2002) ISBN-13: 978-981-02-4807-9\r
+[41] R. Schutzhold and W. G. Unruh, “Gravity wave analogs of black holes”, Phys. Rev. D\r
+66 (2002), 044019 doi:10.1103/PhysRevD.66.044019 [arXiv:gr-qc/0205099 [gr-qc]].\r
+[42] S. W. Hawking and G. F. R. Ellis, The large scale structure of space-time, ISBN-13:\r
+978-0-521-09906-6 doi:10.1017/CBO9780511524646\r
+[43] M. Visser, Lorentzian wormholes: From Einstein to Hawking, (AIP Press — now\r
+Springer, New York, 1995) ISBN-13: 978-1563966538 ISBN-10: 1563966530\r
+[44] E. Curiel, “A Primer on Energy Conditions”, Einstein Stud. 13 (2017), 43-104\r
+doi:10.1007/978-1-4939-3210-8 3 [arXiv:1405.0403 [physics.hist-ph]].\r
+[45] E. A. Kontou and K. Sanders, “Energy conditions in general relativity and quantum\r
+field theory”, Class. Quant. Grav. 37 (2020) no.19, 193001 doi:10.1088/1361-6382/ab8fcf\r
+[arXiv:2003.01815 [gr-qc]].\r
+[46] S. M. Carroll, Spacetime and geometry: An introduction to general relativity, (Addison\r
+Wesley, San Francisco, 2004) ISBN-10: 0-8053-8732-3.\r
+[47] S. W. Hawking and W. Israel, editors, General relativity: An Einstein centenary survey,\r
+(Cambridge, Cambridge, 1979) ISBN-10: 0-521-29928-4.\r
+[48] H. Maeda and C. Martinez, “Energy conditions in arbitrary dimensions”, PTEP 2020\r
+(2020) no.4, 043E02 doi:10.1093/ptep/ptaa009 [arXiv:1810.02487 [gr-qc]].\r
+[49] C. Barcel´o and M. Visser, “Twilight for the energy conditions?”, Int. J. Mod. Phys. D\r
+11 (2002), 1553-1560 doi:10.1142/S0218271802002888 [arXiv:gr-qc/0205066 [gr-qc]].\r
+– 40 –
+
+[50] J. D. Bekenstein, “If vacuum energy can be negative, why is mass always positive?:\r
+Uses of the subdominant trace energy condition”, Phys. Rev. D 88 (2013), 125005\r
+doi:10.1103/PhysRevD.88.125005 [arXiv:1310.6203 [quant-ph]].\r
+[51] M. Visser and C. Barcel´o, “Energy conditions and their cosmological implications”,\r
+doi:10.1142/9789812792129 0014 [arXiv:gr-qc/0001099 [gr-qc]].\r
+[52] M. Visser, “General relativistic energy conditions: The Hubble expansion in the epoch of\r
+galaxy formation”, Phys. Rev. D 56 (1997), 7578-7587 doi:10.1103/PhysRevD.56.7578\r
+[arXiv:gr-qc/9705070 [gr-qc]].\r
+[53] M. Visser, “Energy conditions in the epoch of galaxy formation”, Science 276 (1997),\r
+88-90 doi:10.1126/science.276.5309.88 [arXiv:1501.01619 [gr-qc]].\r
+[54] M. Visser, “Energy conditions and galaxy formation”, [arXiv:gr-qc/9710010 [gr-qc]].\r
+[55] C. Catto¨en and M. Visser, “Cosmodynamics: Energy conditions, Hubble bounds, density\r
+bounds, time and distance bounds”, Class. Quant. Grav. 25 (2008), 165013\r
+doi:10.1088/0264-9381/25/16/165013 [arXiv:0712.1619 [gr-qc]].\r
+[56] C. Catto¨en and M. Visser, “Cosmological milestones and energy conditions”,\r
+J. Phys. Conf. Ser. 68 (2007), 012011 doi:10.1088/1742-6596/68/1/012011\r
+[arXiv:gr-qc/0609064 [gr-qc]].\r
+[57] E. A. Kontou and K. D. Olum, “Energy conditions allow eternal inflation”,\r
+JCAP 03 (2021), 097 doi:10.1088/1475-7516/2021/03/097 [arXiv:2008.01878 [gr-qc]].\r
+[58] A. Zee, Einstein gravity in a nutshell, (Princeton, Princeton, 2013)\r
+ISBN-13: 978-0-691-14558-7\r
+[59] P. Mart´ın-Moruno and M. Visser, “Classical and quantum flux energy conditions for\r
+quantum vacuum states”, Phys. Rev. D 88 (2013) no.6, 061701\r
+doi:10.1103/PhysRevD.88.061701 [arXiv:1305.1993 [gr-qc]].\r
+[60] P. Mart´ın-Moruno and M. Visser, “Classical and semi-classical energy conditions”,\r
+Fundam. Theor. Phys. 189 (2017), 193-213 doi:10.1007/978-3-319-55182-1 9\r
+[arXiv:1702.05915 [gr-qc]].\r
+[61] P. Mart´ın-Moruno and M. Visser, “Semiclassical energy conditions for quantum vacuum\r
+states”, JHEP 09 (2013), 050 doi:10.1007/JHEP09(2013)050 [arXiv:1306.2076 [gr-qc]].\r
+[62] P. Mart´ın-Moruno and M. Visser, “Semi-classical and nonlinear energy conditions”,\r
+doi:10.1142/9789813226609 0126 [arXiv:1510.00158 [gr-qc]].\r
+[63] M. Visser, “Gravitational vacuum polarization. 1: Energy conditions in the\r
+Hartle-Hawking vacuum”, Phys. Rev. D 54 (1996), 5103-5115\r
+doi:10.1103/PhysRevD.54.5103 [arXiv:gr-qc/9604007 [gr-qc]].\r
+– 41 –
+
+[64] M. Visser, “Gravitational vacuum polarization. 2: Energy conditions in the Boulware\r
+vacuum”, Phys. Rev. D 54 (1996), 5116-5122 doi:10.1103/PhysRevD.54.5116\r
+[arXiv:gr-qc/9604008 [gr-qc]].\r
+[65] M. Visser, “Gravitational vacuum polarization. 3: Energy conditions in the (1+1)\r
+Schwarzschild space-time”, Phys. Rev. D 54 (1996), 5123-5128\r
+doi:10.1103/PhysRevD.54.5123 [arXiv:gr-qc/9604009 [gr-qc]].\r
+[66] M. Visser, “Gravitational vacuum polarization. 4: Energy conditions in the Unruh\r
+vacuum”, Phys. Rev. D 56 (1997), 936-952 doi:10.1103/PhysRevD.56.936\r
+[arXiv:gr-qc/9703001 [gr-qc]].\r
+[67] M. Visser, “Gravitational vacuum polarization”, Proceedings of MG8, the Eighth Marcel\r
+Grossmann Conference on General Relativity. (Jerusalem, Israel, June 1997) World\r
+Scientific (Singapore) ISBN-10: 981-02-3954-8 [arXiv:gr-qc/9710034 [gr-qc]].\r
+[68] C. J. Fewster and T. A. Roman, “Null energy conditions in quantum field theory”, Phys.\r
+Rev. D 67 (2003), 044003 [erratum: Phys. Rev. D 80 (2009), 069903]\r
+doi:10.1103/PhysRevD.67.044003 [arXiv:gr-qc/0209036 [gr-qc]].\r
+[69] C. J. Fewster and G. J. Galloway, “Singularity theorems from weakened energy\r
+conditions”, Class. Quant. Grav. 28 (2011), 125009 doi:10.1088/0264-9381/28/12/125009\r
+[arXiv:1012.6038 [gr-qc]].\r
+[70] C. J. Fewster, “Lectures on quantum energy inequalities”, [arXiv:1208.5399 [gr-qc]].\r
+[71] M. Visser, “Scale anomalies imply violation of the averaged null energy condition”, Phys.\r
+Lett. B 349 (1995), 443-447 doi:10.1016/0370-2693(95)00303-3 [arXiv:gr-qc/9409043\r
+[gr-qc]].\r
+[72] E. E. Flanagan and R. M. Wald, “Does back reaction enforce the averaged null energy\r
+condition in semiclassical gravity?”, Phys. Rev. D 54 (1996), 6233-6283\r
+doi:10.1103/PhysRevD.54.6233 [arXiv:gr-qc/9602052 [gr-qc]].\r
+[73] L. H. Ford and T. A. Roman, “Averaged energy conditions and quantum inequalities”,\r
+Phys. Rev. D 51 (1995), 4277-4286 doi:10.1103/PhysRevD.51.4277 [arXiv:gr-qc/9410043\r
+[gr-qc]].\r
+[74] L. H. Ford and T. A. Roman, “Averaged energy conditions and evaporating black holes”,\r
+Phys. Rev. D 53 (1996), 1988-2000 doi:10.1103/PhysRevD.53.1988 [arXiv:gr-qc/9506052\r
+[gr-qc]].\r
+[75] L. H. Ford, “The Classical singularity theorems and their quantum loop holes”, Int. J.\r
+Theor. Phys. 42 (2003), 1219-1227 doi:10.1023/A:1025754515197 [arXiv:gr-qc/0301045\r
+[gr-qc]].\r
+[76] L. H. Ford, “Spacetime in semiclassical gravity”, doi:10.1142/9789812700988 0011\r
+[arXiv:gr-qc/0504096 [gr-qc]].\r
+– 42 –
+
+[77] R. M. Wald and U. Yurtsever, “General proof of the averaged null energy condition for a\r
+massless scalar field in two-dimensional curved space-time”, Phys. Rev. D 44 (1991),\r
+403-416 doi:10.1103/PhysRevD.44.403\r
+[78] M. Visser, S. Kar and N. Dadhich, “Traversable wormholes with arbitrarily small energy\r
+condition violations”, Phys. Rev. Lett. 90 (2003), 201102\r
+doi:10.1103/PhysRevLett.90.201102 [arXiv:gr-qc/0301003 [gr-qc]].\r
+[79] D. Hochberg and M. Visser, “Dynamic wormholes, anti-trapped surfaces, and energy\r
+conditions”, Phys. Rev. D 58 (1998), 044021 doi:10.1103/PhysRevD.58.044021\r
+[arXiv:gr-qc/9802046 [gr-qc]].\r
+[80] D. Hochberg and M. Visser, “The Null energy condition in dynamic wormholes”, Phys.\r
+Rev. Lett. 81 (1998), 746-749 doi:10.1103/PhysRevLett.81.746 [arXiv:gr-qc/9802048\r
+[gr-qc]].\r
+[81] C. Barcel´o and M. Visser, “Scalar fields, energy conditions, and traversable wormholes”,\r
+Class. Quant. Grav. 17 (2000), 3843-3864 doi:10.1088/0264-9381/17/18/318\r
+[arXiv:gr-qc/0003025 [gr-qc]].\r
+[82] C. Barcel´o and M. Visser, “Brane surgery: Energy conditions, traversable wormholes,\r
+and voids”, Nucl. Phys. B 584 (2000), 415-435 doi:10.1016/S0550-3213(00)00379-5\r
+[arXiv:hep-th/0004022 [hep-th]].\r
+[83] S. Kar, N. Dadhich and M. Visser, “Quantifying energy condition violations in\r
+traversable wormholes”, Pramana 63 (2004), 859-864 doi:10.1007/BF02705207\r
+[arXiv:gr-qc/0405103 [gr-qc]].\r
+[84] T. A. Roman and P. G. Bergmann, “Stellar collapse without singularities?”, Phys. Rev.\r
+D 28 (1983), 1265-1277 doi:10.1103/PhysRevD.28.1265\r
+[85] T. A. Roman, “Some thoughts on energy conditions and wormholes”,\r
+doi:10.1142/9789812704030 0236 [arXiv:gr-qc/0409090 [gr-qc]].\r
+[86] F. S. N. Lobo, “From the Flamm–Einstein–Rosen bridge to the modern renaissance of\r
+traversable wormholes”, Int. J. Mod. Phys. D 25 (2016) no.07, 1630017\r
+doi:10.1142/S0218271816300172 [arXiv:1604.02082 [gr-qc]].\r
+[87] D. Hochberg, C. Molina-Par´ıs and M. Visser, “Tolman wormholes violate the strong\r
+energy condition”, Phys. Rev. D 59 (1999), 044011 doi:10.1103/PhysRevD.59.044011\r
+[arXiv:gr-qc/9810029 [gr-qc]].\r
+[88] S. W. Hawking, “Chronology protection conjecture”, Phys. Rev. D. 46 (2) (1992) 603.\r
+doi:10.1103/physrevd.46.603.\r
+[89] M. Visser, “The Quantum physics of chronology protection”, Published in: The Future\r
+of Theoretical Physics and Cosmology, Celebrating Steven Hawking’s 60th Birthday,\r
+Edited by G. W. Gibbons, E. P. S. Shellard, and S. J. Drake, (Cambridge, Cambridge,\r
+2003) ISBN-13: 978-0-521-14408-7 [arXiv:gr-qc/0204022 [gr-qc]].\r
+– 43 –
+
+[90] M. Visser, “From wormhole to time machine: Comments on Hawking’s chronology\r
+protection conjecture”, Phys. Rev. D 47 (1993), 554-565 doi:10.1103/PhysRevD.47.554\r
+[arXiv:hep-th/9202090 [hep-th]].\r
+[91] M. Visser, “Hawking’s chronology protection conjecture: Singularity structure of the\r
+quantum stress-energy tensor”, Nucl. Phys. B 416 (1994), 895-906\r
+doi:10.1016/0550-3213(94)90560-6 [arXiv:hep-th/9303023 [hep-th]].\r
+[92] J. L. Friedman and A. Higuchi, “Topological censorship and chronology protection”,\r
+Annalen Phys. 15 (2006), 109-128 doi:10.1002/andp.200510172 [arXiv:0801.0735 [gr-qc]].\r
+[93] S. Liberati, “Do not mess with time: Probing faster than light travel and chronology\r
+protection with superluminal warp drives”, doi:10.1142/9789813226609 0120\r
+[arXiv:1601.00785 [gr-qc]].\r
+[94] M. J. Pfenning and L. H. Ford, “The unphysical nature of “Warp Drive””, Class. Quant.\r
+Grav. 14 (1997) no.7, 1743 doi:10.1088/0264-9381/14/7/011 [arXiv:gr-qc/9702026v3].\r
+[95] R. Gattermann, “Nadsvˇeteln´y pohyb v obecn´e relativitˇe”, (“Superluminal motion in\r
+general relativity”), Bachelor Thesis (2013), Charles University Prague\r
+doi:20.500.11956/55966\r
+[96] P. Mart´ın-Moruno and M. Visser, “Essential core of the Hawking–Ellis types”, Class.\r
+Quant. Grav. 35 (2018) no.12, 125003 doi:10.1088/1361-6382/aac147 [arXiv:1802.00865\r
+[gr-qc]].\r
+[97] P. Mart´ın-Moruno and M. Visser, “Generalized Rainich conditions, generalized\r
+stress-energy conditions, and the Hawking-Ellis classification”, Class. Quant. Grav. 34\r
+(2017) no.22, 225014 doi:10.1088/1361-6382/aa9039 [arXiv:1707.04172 [gr-qc]].\r
+[98] P. Mart´ın-Moruno and M. Visser, “Hawking–Ellis type III spacetime geometry”, Class.\r
+Quant. Grav. 35 (2018) no.18, 185004 doi:10.1088/1361-6382/aad473 [arXiv:1806.02094\r
+[gr-qc]].\r
+[99] P. Mart´ın-Moruno and M. Visser, “The type III stress-energy tensor: Ugly duckling of\r
+the Hawking–Ellis classification”, Class. Quant. Grav. 37 (2020) no.1, 015013\r
+doi:10.1088/1361-6382/ab56f6 [arXiv:1907.01269 [gr-qc]].\r
+[100] P. Mart´ın-Moruno and M. Visser, “Hawking-Ellis classification of stress-energy:\r
+test-fields versus back-reaction”, [arXiv:2102.13551 [gr-qc]].\r
+[101] A. K. Raychaudhuri, “Relativistic cosmology I”, Phys. Rev. 98 #4 (1955) 1123?1126.\r
+doi:10.1103/PhysRev.98.1123.\r
+[102] S. Kar and S. SenGupta, “The Raychaudhuri equations: A Brief review”, Pramana 69\r
+(2007), 49 doi:10.1007/s12043-007-0110-9 [arXiv:gr-qc/0611123 [gr-qc]].\r
+[103] N. Dadhich, “Derivation of the Raychaudhuri equation”, [arXiv:gr-qc/0511123 [gr-qc]].\r
+– 44 –
+
+[104] J. Ehlers, “A. K. Raychaudhuri and his equation”, Int. J. Mod. Phys. D 15 (2006),\r
+1573-1580 doi:10.1142/S0218271806008966\r
+[105] A. Borde, “Geodesic focusing, energy conditions and singularities”, Class. Quant. Grav.\r
+4 (1987), 343-356 doi:10.1088/0264-9381/4/2/015\r
+[106] M. Visser, “van Vleck determinants: Geodesic focusing and defocusing in Lorentzian\r
+space-times”, Phys. Rev. D 47 (1993), 2395-2402 doi:10.1103/PhysRevD.47.2395\r
+[arXiv:hep-th/9303020 [hep-th]].\r
+[107] G. Abreu and M. Visser, “Some generalizations of the Raychaudhuri equation”, Phys.\r
+Rev. D 83 (2011), 104016 doi:10.1103/PhysRevD.83.104016 [arXiv:1012.4806 [gr-qc]].\r
+– 45 –"""
+
+[metadata]
+title = "arxiv 2105.03079 santiago schuster visser 2021 generic warp drives"
+authors = ["Unknown"]
+arxiv = "2105.03079"
+year = 2021
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Generic warp drives violate the\r
+null energy condition\r
+Jessica Santiago1,2 ID , Sebastian Schuster3 ID, and Matt Visser1 ID"""
+
+[[sections]]
+number = "1"
+title = "School of Mathematics and Statistics, Victoria University of Wellington,"
+text = "PO Box 600, Wellington 6140, New Zealand."
+
+[[sections]]
+number = "2"
+title = "Section of Astrophysics, Astronomy and Mechanics, Department of Physics,"
+text = """
+Aristotle University of Thessaloniki, Thessaloniki 54124, Greece.\r
+3\r
+Institute of Theoretical Physics, Faculty of Mathematics and Physics, Charles University,\r
+V Holeˇsoviˇck´ach 2, 180 00 Prague 8, Czech Republic.\r
+E-mail: jessica.santiago@sms.vuw.ac.nz,\r
+sebastian.schuster@utf.mff.cuni.cz, matt.visser@sms.vuw.ac.nz\r
+Abstract: Three recent articles have claimed that it is possible to, at least in theory,\r
+either set up positive energy warp drives satisfying the weak energy condition (WEC), or\r
+at the very least, to minimize the WEC violations. These claims are at best incomplete,\r
+since the arguments as presented only assert but do not prove the existence of one\r
+set of timelike observers, the co-moving Eulerian observers, who see relatively “nice”\r
+physics. While these particular observers might arguably see a positive energy density,\r
+the WEC requires all timelike observers to see positive energy density. Therefore, one\r
+should carefully revisit this issue. A more careful analysis shows that the situation\r
+is actually much grimmer than advertised — within the framework adopted by those\r
+three papers all physically reasonable warp drives will certainly violate the WEC, and\r
+both the strong and dominant energy conditions. Under plausible subsidiary conditions\r
+the null energy condition is also violated. While warp drives are certainly interesting\r
+examples of speculative physics, the violation of the energy conditions, at least within\r
+the framework of standard general relativity, is unavoidable. Even in modified gravity,\r
+physically reasonable warp drives will still violate the purely geometrical null convergence\r
+condition and the timelike convergence condition which, in turn, will place very strong\r
+constraints on any modified-gravity warp drive.\r
+Date: Saturday 26 February 2022; LATEX-ed March 1, 2022\r
+(Closely resembles final version accepted and in press at PRD.)\r
+Keywords: warp drives; energy conditions; convergence conditions;\r
+Alcubierre warp drive; Nat´ario generic warp drive; Nat´ario zero-expansion warp drive;\r
+zero-vorticity warp drive.\r
+arXiv:2105.03079v2 [gr-qc] 25 Feb 2022
+
+Contents"""
+
+[[sections]]
+number = "1"
+title = "Introduction 2"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Warp drive kinematics 3"
+text = ""
+
+[[sections]]
+number = "3"
+title = "Warp-field curvature 7"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "Riemann tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7"
+text = ""
+
+[[sections]]
+number = "3.2"
+title = "Ricci tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8"
+text = ""
+
+[[sections]]
+number = "3.3"
+title = "Einstein tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9"
+text = ""
+
+[[sections]]
+number = "4"
+title = "Warp-field stress-energy tensor 10"
+text = ""
+
+[[sections]]
+number = "4.1"
+title = "Density . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10"
+text = """
+4.2 Flux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11\r
+4.3 Spatial stresses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11"""
+
+[[sections]]
+number = "5"
+title = "Energy conditions 12"
+text = ""
+
+[[sections]]
+number = "6"
+title = "Timelike and null convergence conditions 19"
+text = ""
+
+[[sections]]
+number = "7"
+title = "Violation of the energy conditions 19"
+text = ""
+
+[[sections]]
+number = "7.1"
+title = "Alcubierre warp drive . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19"
+text = ""
+
+[[sections]]
+number = "7.2"
+title = "Nat´ario zero-expansion warp drive . . . . . . . . . . . . . . . . . . . . . 21"
+text = ""
+
+[[sections]]
+number = "7.3"
+title = "Zero-vorticity warp drive . . . . . . . . . . . . . . . . . . . . . . . . . . 21"
+text = ""
+
+[[sections]]
+number = "7.4"
+title = "Nat´ario’s generic warp drive . . . . . . . . . . . . . . . . . . . . . . . . 23"
+text = ""
+
+[[sections]]
+number = "8"
+title = "Discussion and conclusions 29"
+text = """
+A “Spherically symmetric” warp drives 29\r
+B Warp drives beyond the generic Nat´ario framework 32\r
+C Some defective warp drives 33\r
+D Final considerations regarding recent warp drive proposals 34\r
+– 1 –"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Three recent articles [1–3] have argued for the existence of “physically reasonable”\r
+positive-energy warp drive configurations, either satisfying the weak energy condition\r
+(WEC), or minimizing violations thereof. (See also the series of articles [4–8].) These\r
+claims are in sharp contrast to the 25-year-old consensus opinion that at least some\r
+energy condition violations are necessary for the generation of warp fields [9–29].\r
+Specifically, known results already include:\r
+• Alcubierre warp drives have long been known to violate the WEC [9], and have\r
+more recently been shown to also violate the null energy condition (NEC) [29].\r
+• Nat´ario zero-expansion warp drives have long been known to violate the WEC [10].\r
+• Generic Nat´ario warp drives are known to violate the dominant energy condition\r
+(DEC) [15], and have also been shown to violate either the strong energy condition\r
+(SEC) or the WEC [10].\r
+We shall strengthen these well known results below, first showing that the Nat´ario zero\u0002expansion warp drives also violate the SEC, and the NEC, and then ultimately showing\r
+that generic Nat´ario warp drives (including the variants discussed in references [1–3])\r
+violate the WEC, and under plausible subsidiary conditions also violate the NEC.\r
+How, then, is this result compatible with the various rather bold claims made in\r
+references [1–3]? (And, for that matter, various parts of the popular press.) The key\r
+observation is that WEC requires all timelike observers to see positive energy density,\r
+whereas the analyses of references [1–3] at best only investigate the energy density as\r
+seen by one class of timelike observers (the co-moving Eulerian observers). Thus the\r
+claims made in references [1–3] are at best grossly incomplete, and in many key specific\r
+details, wrong.\r
+To set the stage, in section 2 we shall first discuss the kinematics of generic Nat´ario warp\r
+drive spacetimes, and then calculate the relevant spacetime curvature (Riemann, Ricci,\r
+and Einstein tensors) in section 3. Assuming standard general relativity, we calculate\r
+in section 4 all the components of the generic Nat´ario warp-field stress-energy tensor.\r
+In section 5, we then provide a number of general results regarding the implications of\r
+the point-wise energy conditions, and relate them to the null and timelike convergence\r
+conditions in section 6. With those preliminaries out of the way, the actual proof of energy\r
+condition violations in generic Nat´ario warp-field spacetimes will be straightforward\r
+(section 7). We conclude with some comments on the possibility of either moving\r
+beyond Einstein gravity, or the possibility of further generalizing the notion of warp-field\r
+spacetimes. Nevertheless, within the context of standard Einstein gravity, we emphasize\r
+that in physically reasonable warp field spacetimes energy condition violations are\r
+utterly unavoidable, and must be squarely faced.\r
+– 2 –
+
+In the appendices, we discuss various technical issues arising in recent papers concerning\r
+themselves with warp drives: Appendix A deals with a confusion over the precise meaning\r
+of “spherical symmetry” in warp space-times. Appendix B points to misunderstandings\r
+regarding coordinate transformations. Appendix C addresses issues of differentiability\r
+and related technical issues. Finally, Appendix D lists further technical oversights, small\r
+and large, of recent publications."""
+
+[[sections]]
+number = "2"
+title = "Warp drive kinematics"
+text = """
+The generic Nat´ario warp drive line element we shall consider is this [10]:\r
+ds\r
+2 = −dt2 + δij \r
+dx\r
+i − vi\r
+(x, y, z, t) dt\r
+\u0001 dx\r
+j − vj\r
+(x, y, z, t) dt\r
+\u0001\r
+. (2.1)\r
+Nat´ario calls this a “warp drive spacetime”. Both the vector v\r
+i\r
+(x, y, z, t) and its\r
+derivatives are assumed to be smooth and bounded [10]. This line element is sufficiently\r
+general to cover well over 99% of the relevant literature, and the very few exceptions in\r
+the extant literature will be explicitly discussed later on in appendix B. Certainly the\r
+models discussed in references [1–3] fall into this generic Nat´ario framework.\r
+The line element represents an ADM-like (3+1) decomposition of the metric [30–36],\r
+with unit lapse N → 1; a flow vector v\r
+i = −(shift vector); and a flat spatial 3-metric\r
+gij = δij . The sign-flip on the shift vector is traditional in a warp drive context, and\r
+inspired by the notion of “flow” rather than “shift”. Accordingly we shall speak of\r
+the “flow vector” rather than the “shift vector”. (See also the traditional usage in the\r
+“analogue spacetime” programme [37–41].) The explicit metric components are\r
+gab =\r
+"\r
+−(1 − v\r
+2\r
+) −vj\r
+−vi δij #\r
+, gab =\r
+"\r
+−1 −v\r
+j\r
+−v\r
+i\r
+δ\r
+ij − vi\r
+v\r
+j\r
+#\r
+. (2.2)\r
+The metric signature is manifestly − + ++, while spacetime indices such as a, b, ... run\r
+from 0 to 3, and spatial indices such as i, j... run from 1 to 3. At large spatial distances\r
+we want the spacetime to be asymptotically flat, (that is, asymptotically Minkowski or\r
+at worst asymptotically Schwarzschild).\r
+The most natural boundary conditions to impose are that v\r
+i\r
+(x, y, z, t) → 0 at spatial\r
+infinity. One could alternatively impose v\r
+i\r
+(x, y, z, t) → v\r
+i\r
+∗\r
+(t) at spatial infinity, with\r
+v\r
+i\r
+∗\r
+(t) some function of time only. This would still be asymptotically Minkowski, but with\r
+new spatial coordinates x\r
+i → x¯i = xi −\r
+R\r
+v\r
+i\r
+∗\r
+(t) dt. This would be useful, for instance, if\r
+one wishes to adopt a coordinate system moving with the warp bubble. But there is\r
+certainly no loss of generality in enforcing v\r
+i\r
+(x, y, z, t) → 0 at spatial infinity.\r
+– 3 –
+
+Indeed there is a very important issue of physics hiding here — physically we want the\r
+warp bubble (for at least part of the time) to be “moving” with respect to the “fixed\r
+stars” — otherwise the construction is physically uninteresting. Motion between the\r
+warp bubble and the fixed stars can be achieved thusly: Either by choosing coordinates\r
+such that v\r
+i\r
+(x, y, z, t) → 0 at spatial infinity (so the fixed stars are “at rest”) while the\r
+warp bubble has explicit time dependence, or alternatively, by choosing coordinates\r
+where the warp bubble (the central region of the spacetime) is time independent and\r
+the fixed stars are in motion v\r
+i\r
+(x, y, z, t) → v\r
+i\r
+∗\r
+(t) at spatial infinity.\r
+Furthermore, we want the warp bubble to be physically well-localized; we do not wish\r
+to have to accelerate the entire universe to get an interesting warp field. On the other\r
+hand, demanding that the flow vector have compact support (while mathematically\r
+convenient) is physically unnecessarily restrictive. For our purposes it will be more than\r
+sufficient for us to demand that the flow field falls off sufficiently rapidly near spatial\r
+infinity so that we can integrate by parts. The key point in proving NEC violations\r
+(and so implicitly proving violations of WEC, SEC, and DEC) is the significantly weaker\r
+condition that gradients of the flow field tend to zero at spatial infinity. We shall expand\r
+on this point more extensively in the discussion below.\r
+Following Nat´ario, we shall also demand that the flow field (and hence the metric) be\r
+sufficiently smooth and bounded. At the very worst we shall allow Israel–Lanczos–Sen\r
+“thin-shell” distributional contributions to the Riemann tensor. Such assumptions are\r
+completely standard and implicit in the extant literature.\r
+Specifically, we shall demand that the flow ~v (and hence the metric) be C\r
+2− at worst,\r
+that is, piecewise twice differentiable, with at worst discontinuous first derivatives. Then\r
+the Christoffel symbols are C\r
+1− at worst, that is, piecewise once differentiable with at\r
+worst step-function discontinuities. Then the Riemann tensor is C\r
+0 at worst, piecewise\r
+continuous with at worst delta-function contributions.\r
+Finally, we emphasize the need for at least some subsidiary conditions to be applied to\r
+the generic Nat´ario metric (2.1) in order to distinguish a warp drive from, for instance,\r
+the Painlev´e–Gullstrand version of Schwarzschild spacetime. The line element (2.1) is\r
+sufficiently general and explicit to be physically interesting as a warp drive exemplar,\r
+but some subsidiary conditions would still be desirable.\r
+– 4 –
+
+Because the spatial 3-slices are intrinsically flat, and the lapse is unity, the only nontrivial\r
+physics hides in the extrinsic curvature of the spatial 3-slices, for which we have the\r
+particularly simple result\r
+Kij = v(i,j). (2.3)\r
+In order to prevent the warp field being trivial (Minkowski space) we will demand that\r
+there is at least one point in spacetime where the extrinsic curvature is nonzero.\r
+Let us define na = −∇at = (−1; 0, 0, 0)a. Then we have n\r
+a = gabnb = −gat = (1, vi\r
+).\r
+Thus n\r
+a\r
+is future-pointing. It is actually a future-pointing 4-velocity normal to the\r
+spatial 3-slices: g\r
+ab nanb = −1 = gab nanb\r
+. Observers with 4-velocity n\r
+a are often called\r
+“Eulerian”. In some sense (see discussion below) they “go with the flow”, they are\r
+“co-moving”. Furthermore, the Eulerian observers n\r
+a = −gab ∇bt are in fact timelike\r
+geodesics. This is a simple consequence of the fact that the warp spacetimes are\r
+unit-lapse:\r
+n\r
+b∇bna = gacnb∇b∇ct = gacnb∇c∇bt = gacnb∇cnb =\r
+1\r
+2\r
+g\r
+ac∇c(nbnb) = 1\r
+2\r
+g\r
+ac∇c(−1) = 0.\r
+(2.4)\r
+The warp drive spacetime is by construction globally hyperbolic, and at each and every\r
+instant in time “t” the Eulerian observers are 4-orthogonal to the flat spatial slices —\r
+so the Eulerian observers define a zero-vorticity congruence of timelike geodesics that\r
+by construction cannot have any focussing points.1\r
+From the metric line element one can easily read off a suitable choice of co-tetrad: The\r
+timelike covector is simply\r
+(e\r
+ˆ0\r
+)a = (1; 0, 0, 0)a = na, (2.5)\r
+while the spatial co-triad is\r
+(e\r
+ˆ1\r
+)a = (−vx; 1, 0, 0)a, (e\r
+ˆ2\r
+)a = (−vy; 0, 1, 0)a, (e\r
+ˆ3\r
+)a = (−vz; 0, 0, 1)a. (2.6)\r
+1Everett [11] takes the point of view that one might take this warp drive metric as a local notion\r
+only, thus avoiding the global hyperbolicity conditions of the original Alcubierre space-time, and uses\r
+that to construct closed timelike curves (CTCs). This introduces a whole new level of complexity\r
+related to global causality and “chronology protection”, of which more anon.\r
+– 5 –
+
+The corresponding tetrad is then easily determined: The timelike leg is\r
+(eˆ0)\r
+a = (1; vx\r
+, vy, vz)\r
+a = na\r
+, (2.7)\r
+while now the spatial triad is particularly simple\r
+(eˆ1)\r
+a = (0; 1, 0, 0)a\r
+, (eˆ2)\r
+a = (0; 0, 1, 0)a\r
+, (eˆ3)\r
+a = (0; 0, 0, 1)a\r
+. (2.8)\r
+This implies that, in the co-moving orthonormal basis, for any T\r
+0\r
+2\r
+tensor:\r
+Xaˆˆb = eaˆ\r
+a\r
+eˆb\r
+b Xab =\r
+"\r
+Xˆ0ˆ0 Xˆ0ˆj\r
+Xˆiˆ0 Xˆiˆj\r
+#\r
+=\r
+"\r
+Xnn Xnj\r
+Xin Xij #\r
+=\r
+"\r
+Xabn\r
+anb Xajna\r
+Xian\r
+a Xij #\r
+. (2.9)\r
+This is why objects such as Xnn = Xab n\r
+a nb = Xˆ0ˆ0\r
+and Xni = Xai n\r
+a = Xˆ0ˆi\r
+are so\r
+important. Subject to this choice of coordinates and tetrad, for the covariant spatial\r
+components we have the particularly simple result Xˆiˆj = Xij . We will often use this\r
+observation to simplify formulae by suppressing the “hats” when they are not critical\r
+to understanding.\r
+Similarly, for any fully covariant T\r
+0\r
+4\r
+tensor one has Xaˆˆbcˆdˆ = eaˆ\r
+a\r
+eˆb\r
+b\r
+ecˆ\r
+c\r
+edˆ\r
+d Xabdc. Then for\r
+any tensor that has the same symmetries as the Riemann tensor it suffices to calculate\r
+Xˆ0ˆiˆ0ˆj = Xninj = n\r
+anbXaibj ; Xˆ0ˆiˆjkˆ = Xnijk = n\r
+aXaijk; Xˆiˆjkˆˆl = Xijkl. (2.10)\r
+Some specific examples of the generic warp drive spacetime are:\r
+Alcubierre warp field [9]:\r
+The original Alcubierre warp field [9], taken to be moving in the z direction with\r
+constant velocity v∗, is given by\r
+v\r
+i\r
+(x, y, z, t) = (0, 0, 1)iv∗ f\r
+\u0010p\r
+x\r
+2 + y2 + (z − v∗t)2\r
+\u0011\r
+. (2.11)\r
+Here, f(0) = 1, and f(∞) = 0.\r
+This was rapidly generalized [9] to a time-dependent velocity for the warp bubble\r
+v\r
+i\r
+(x, y, z, t) = (0, 0, 1)iv∗(t) f\r
+\r
+\r
+s\r
+x\r
+2 + y2 +\r
+\u0012\r
+z −\r
+Z\r
+v∗(t) dt\r
+\u00132\r
+\r
+ . (2.12)\r
+Note these specific models are “spherically symmetric”. More on this point below.\r
+Despite repeated assertions in reference [2] there is absolutely no difficulty in\r
+making the velocity of the warp bubble time-dependent.\r
+– 6 –
+
+Nat´ario zero-expansion warp field [10]:\r
+The Nat´ario zero-expansion warp drive simply sets ∇ · ~v = 0. Note that the\r
+second half of Nat´ario’s 2001 paper [10] focusses on this zero-expansion warp\r
+field, whereas the first half of that paper deals with the generic Nat´ario warp field\r
+spacetime of equation (2.1). When mentioning Nat´ario’s warp field, it is therefore\r
+important to make explicit which of these two specific warp drives one is referring\r
+to.\r
+Lentz/Fell–Heisenberg zero-vorticity warp field [1, 3]:\r
+The Lentz/Fell–Heisenberg zero-vorticity warp drive uses a purely gradient flow\r
+~v = ∇Φ, implying ~ω = ∇ × ~v = 0.\r
+Thus the generic warp drive line element (2.1), introduced by Nat´ario in [10], covers all\r
+three of these specific cases, and many more, and is sufficiently general to cover almost\r
+all of the relevant literature."""
+
+[[sections]]
+number = "3"
+title = "Warp-field curvature"
+text = """
+The spacetime curvature for warp drive spacetimes is relatively easily determined via a\r
+specific application of the ADM formalism [30–36]."""
+
+[[sections]]
+number = "3.1"
+title = "Riemann tensor"
+text = """
+The Gauss–Codazzi equations would in general imply2:\r
+Rˆiˆjkˆˆl =\r
+(3)Rˆiˆjkˆˆl + KˆikˆKˆjˆl − KˆiˆlKˆjkˆ. (3.1)\r
+However, since our 3-geometry is flat, we have (3)Rˆiˆjkˆˆl → 0, and because of our choice of\r
+spatial triad we can dispense with the “hats”. So for warp drive spacetimes we simply\r
+have\r
+Rijkl = KikKjl − KilKjk. (3.2)\r
+The Gauss–Mainardi equations imply3:\r
+Rnijk = Raijkn\r
+a = Kij,k − Kik,j = v(i,j),k − v(i,k),j = v[j,k],i. (3.3)\r
+2See for instance equation (2.92) of Gourgoulhon [31].\r
+3See for instance equation (2.101) of Gourgoulhon [31], specializing to Kij = v(i,j)\r
+.\r
+– 7 –
+
+The remaining components of the Riemann tensor do not (to our knowledge) seem to\r
+have a special name, and are a little trickier to calculate. In the present context, to\r
+explicitly calculate Rninj one could either use brute force (e.g., Maple), or appeal to a\r
+simplification of the ADM formalism,4 or use the general commutator identity\r
+[∇a, ∇b]nc = −R\r
+d\r
+cab nd, (3.4)\r
+suitably projected onto spatial and normal n directions.\r
+One finds\r
+Rninj = Raibj n\r
+a nb = −LnKij + (K2\r
+)ij . (3.5)\r
+Here LnKij is the Lie derivative of the extrinsic curvature, where K˙\r
+ij = ∂tKij , and\r
+LnKij = K˙\r
+ij + v\r
+k\r
+∂kKij + ∂iv\r
+kKkj + ∂jvkKik. (3.6)\r
+Also\r
+(K2)ij = Kik δ\r
+kl Klj . (3.7)\r
+We can rewrite the Lie derivative as\r
+LnKij = K˙\r
+ij + v\r
+k\r
+∂kKij + ∂[ivk]Kkj + Kik∂[jvk] + 2(K2)ij , (3.8)\r
+implying\r
+LnKij = n\r
+a\r
+∂aKij + ∂[ivk]Kkj + Kik∂[jvk] + 2(K2)ij . (3.9)\r
+Therefore\r
+Rninj = −n\r
+a\r
+∂aKij − ∂[ivk]Kkj − Kik∂[jvk] − (K2)ij . (3.10)"""
+
+[[sections]]
+number = "3.2"
+title = "Ricci tensor"
+text = """
+Performing suitable contractions, for the Ricci tensor we find\r
+Rnn = −LnK − trK2\r
+\u0001\r
+, (3.11)\r
+where LnK is the Lie derivative of K = Kij δ\r
+ij = tr(K), the trace of the extrinsic\r
+curvature. That is, LnK = K˙ + v\r
+i∂iK = na ∂aK, so we also have\r
+Rnn = −n\r
+a\r
+∂aK − trK2\r
+\u0001\r
+. (3.12)\r
+4For instance, use equation (3.43) of Gourgoulhon [31], specializing to N → 1,\r
+and flipping the sign of the Lie derivative term to account for (flow) = −(shift).\r
+– 8 –
+
+Furthermore,\r
+Rni = Kij,k δ\r
+jk − K,i. (3.13)\r
+In view of the fact that in this context spatial indices are always raised and lowered\r
+using Kronecker deltas, we can and shall often simplify notation by contracting over\r
+two indices down and writing\r
+Rni = Kij,j − K,i. (3.14)\r
+Finally, for the spatial components\r
+Rij = LnKij + KKij − 2(K2)ij , (3.15)\r
+which can be recast as\r
+Rij = n\r
+a\r
+∂aKij + KKij + ∂[ivk]Kkj + Kik∂[jvk]. (3.16)\r
+Alternatively\r
+Rij = ∂a(n\r
+aKij ) + ∂[ivk]Kkj + Kik∂[jvk]\r
+. (3.17)\r
+Then for the Ricci scalar R = −Rnn + δ\r
+ijRij we have\r
+R = 2LnK + K2 + trK2\r
+\u0001\r
+. (3.18)\r
+Here, in full, tr(K2) = (K2)ij δ\r
+ij = Kij δ\r
+ik δjl Kkl, though we can and shall often\r
+simplify notation by writing tr(K2) = Kij Kij , implying contraction on the repeated\r
+down indices."""
+
+[[sections]]
+number = "3.3"
+title = "Einstein tensor"
+text = """
+Using Gab = Rab −\r
+1\r
+2Rgab we find\r
+Gnn =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 − trK2"
+text = """
+\u0001\u0001 , (3.19)\r
+Gni = Kij,j − K,i, (3.20)\r
+and the somewhat messier result that\r
+Gij = LnKij + KKij − 2(K2)ij −\r
+\u0012\r
+LnK +\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 +"
+text = """
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij . (3.21)\r
+– 9 –
+
+Equivalently (and more explicitly)\r
+Gij = n\r
+a\r
+∂aKij+KKij+∂[ivk]Kkj+Kik∂[jvk]−\r
+\u0012\r
+n\r
+a\r
+∂aK +\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 +"
+text = """
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij . (3.22)"""
+
+[[sections]]
+number = "4"
+title = "Warp-field stress-energy tensor"
+text = """
+In this section, we use the standard Einstein equations Gab = 8πTab and analyse the\r
+density, flux, and spatial components of the stress-energy."""
+
+[[sections]]
+number = "4.1"
+title = "Density"
+text = """
+In the Eulerian orthonormal basis, using (3.19), for the density we have:\r
+ρ =\r
+Gnn\r
+8π\r
+=\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 . (4.1)\r
+(Everyone agrees with this. This is the quantity that Lentz [1] and Fell–Heisenberg [3]\r
+eventually try to force to be positive. This is the only quantity Bobrick–Martire [2]\r
+explicitly calculate.) Now it is a mathematical identity that for any 3 × 3 matrix\r
+K2 − trK2\r
+\u0001\r
+= 2 tr (cof(Kij )). (4.2)\r
+That is, K2 − tr(K2) is twice the trace of the cofactor matrix of the 3 × 3 matrix Kij .\r
+This is most easily established by diagonalizing the 3×3 matrix. So in (3+1) dimensions\r
+the Eulerian energy density is intimately related to the cofactor matrix of the extrinsic\r
+curvature. This is the “hidden geometric structure” alluded to by Fell–Heisenberg in\r
+reference [3], a curiosity which is unfortunately less useful than one might hope.\r
+In the present context we have the fully explicit result\r
+ρ =\r
+1\r
+16π\r
+\r
+(vi,i)\r
+2 − v(i,j) v(i,j)\r
+\u0001\r
+. (4.3)\r
+It is straightforward to rewrite this as a spatial divergence plus a negative semi-definite\r
+contribution:\r
+ρ =\r
+1\r
+16π\r
+\b\r
+∂i(vi vj,j − vj vi,j ) − v[i,j]v[i,j]\r
+\t\r
+. (4.4)\r
+In terms of the vorticity ωi = \u000Fijk v[j,k] this becomes\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∂i(vi vj,j − vj vi,j ) −\r
+1\r
+2\r
+(ωi ωi)\r
+\u001B\r
+, (4.5)\r
+– 10 –
+
+or even\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∇ · {~v K − (~v · ∇)~v} − 1\r
+2\r
+(~ω · ~ω)\r
+\u001B\r
+. (4.6)\r
+That is, for the generic warp field, the Eulerian energy density is always the sum of a\r
+3-divergence plus a quantity that is negative semi-definite. We will have occasion to\r
+repeatedly use this result in subsequent discussion."""
+
+[[sections]]
+number = "4.2"
+title = "Flux"
+text = """
+For the flux, in the Eulerian orthonormal basis, using (3.20) we have:\r
+fi =\r
+Gni\r
+8π\r
+=\r
+1\r
+8π\r
+(Kij,j − K,i) = 1\r
+16π\r
+(vi,jj − vj,ji) = 1\r
+16π\r
+\r
+∇2vi − ∇i(∇ · ~v)\r
+\u0001\r
+(4.7)\r
+That is\r
+fi =\r
+1\r
+16π\r
+(∇ × (∇ × ~v))i(4.8)\r
+(Everyone agrees with this. Note that in the Lentz/Fell-Heisenberg [1, 3] framework\r
+~v = ∇Φ is a gradient, so this co-moving Eulerian flux is identically zero.)"""
+
+[[sections]]
+number = "4.3"
+title = "Spatial stresses"
+text = """
+Finally, using (3.21), the spatial stresses are given by the 3 × 3 matrix:\r
+Tij =\r
+Gij\r
+8π\r
+=\r
+1\r
+8π\r
+\u0012\r
+LnKij + KKij − 2(K2)ij −\r
+\u0012\r
+LnK +\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 +"
+text = """
+1\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+δij\u0013. (4.9)\r
+So for the average pressure, which we define to be ¯p =\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Tij δ"
+text = """
+ij , and noting that\r
+\r
+LnKij + KKij − 2(K2)ij\u0001δ\r
+ij = LnK+K2−2 tr\r
+K2\r
+\u0001\r
+−Kij Lnδ\r
+ij = LnK+K2\r
+, (4.10)\r
+we find\r
+p¯ =\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Tij δ"
+text = """
+ij =\r
+1\r
+24π\r
+\u0012\r
+−2LnK −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 −"
+text = """
+3\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+. (4.11)\r
+It is furthermore useful to note that\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+\r
+LnK + trK2\r
+\u0001\u0001 , (4.12)\r
+and that\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 . (4.13)\r
+These quantities will soon be seen to be useful when investigating violations of the SEC\r
+and NEC, respectively.\r
+– 11 –
+
+It is sometimes useful to also note that\r
+∇an\r
+a = ∂ana = K, (4.14)\r
+and so write\r
+LnK = n\r
+a ∇aK = ∇a(Kna\r
+) − K2, (4.15)\r
+whence\r
+p¯ = −\r
+1\r
+24π\r
+\u0012\r
+2∇a(Kna) −\r
+3"""
+
+[[sections]]
+number = "2"
+title = "K2 +"
+text = """
+3\r
+2\r
+trK2\r
+\u0001\r
+\u0013\r
+. (4.16)\r
+Equivalently\r
+p¯ = ρ −\r
+1\r
+12π\r
+∇a(Kna). (4.17)\r
+That is, for the generic warp field, the average spatial pressure equals the energy density\r
+plus a 4-divergence. We will have occasion to repeatedly use this result in subsequent\r
+discussion.\r
+For completeness we point out that the trace-free part of the 3 × 3 spatial stress tensor,\r
+(Tij )\r
+tf = Tij −\r
+1\r
+3\r
+p δ ¯ ij , can be computed in terms of the trace-free part of the extrinsic\r
+curvature, (Kij )\r
+tf = Kij −\r
+1"""
+
+[[sections]]
+number = "3"
+title = "K δij ."
+text = """
+We find\r
+(Tij )\r
+tf =\r
+1\r
+8π\r
+\b\r
+n\r
+a\r
+∂a(Kij )\r
+tf + K(Kij )tf + ∂[ivk](Kkj )tf + (Kik)tf∂[jvk]\r
+\t\r
+. (4.18)\r
+That is\r
+(Tij )\r
+tf =\r
+1\r
+8π\r
+\b\r
+∂a[n\r
+a\r
+(Kij )\r
+tf] + ∂[ivk](Kkj )tf + (Kik)tf∂[jvk]\r
+\t\r
+. (4.19)\r
+Overall, we see that the generic Nat´ario line element (2.1) is sufficiently simple to permit\r
+detailed and explicit calculations, while being sufficiently general to encompass almost\r
+all physically interesting warp drive spacetimes."""
+
+[[sections]]
+number = "5"
+title = "Energy conditions"
+text = """
+The (classical point-wise) energy conditions are constraints one places on the stress\u0002energy as a way of keeping unusual physics somewhat under control. The energy\r
+conditions all correspond, in some sense, to demanding that for some class of observers\r
+the energy density be non-negative.\r
+– 12 –
+
+Standard definitions are [31–33, 42–48]:\r
+NEC: For all null vectors k\r
+a we demand Tab kakb ≥ 0.\r
+WEC: For all timelike vectors V\r
+a we demand Tab VaVb ≥ 0.\r
+SEC: For all timelike vectors V\r
+a we demand (Tab −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "T gab)V"
+text = """
+aVb ≥ 0.\r
+DEC: For all future-pointing timelike vectors V\r
+a and Wa we demand TabVaWb ≥ 0.\r
+(The DEC in particular has a number of equivalent formulations [45].)\r
+The standard linkages between energy conditions are [31–33, 42–48]:\r
+DEC =⇒ WEC =⇒ NEC (5.1)\r
+SEC =⇒ NEC (5.2)\r
+But\r
+WEC 6⇐⇒ SEC (5.3)\r
+Despite claims made in early versions of [3], the WEC is not the weakest of the energy\r
+conditions.\r
+Some examples of the subtleties involved are:\r
+• A positive cosmological constant (positive vacuum energy density) satisfies the\r
+NEC and WEC, but not the SEC.\r
+• A negative cosmological constant (negative vacuum energy density) satisfies the\r
+NEC and SEC, but not the WEC.\r
+• Massive scalar fields, (classical, minimally coupled, with positive kinetic energy,\r
+and positive mass squared so that they are not tachyonic), satisfy the NEC and\r
+WEC but can violate the SEC. For example the standard scalar inflaton field of\r
+cosmological inflation satisfies the NEC and WEC but violates the SEC.\r
+• Classical Maxwell electromagnetism satisfies all the usual energy conditions.\r
+These examples suggest some caution when interpreting the physical significance of the\r
+energy conditions [49–58].\r
+There are indications that NEC and WEC can be violated on microscopic (quantum)\r
+scales [59–77], though they seem to be satisfied by (reasonable) matter on macroscopic\r
+scales. In contrast the SEC appears to be observationally violated on the largest\r
+cosmological scales [51–57].\r
+– 13 –
+
+While for the purposes of this paper we will be focussing on applying these point\u0002wise energy conditions specifically to warp drive spacetimes, it should be noted that\r
+these energy conditions also have direct applications to singularity theorems, positive\u0002mass theorems, traversable wormholes [78–87], topological censorship, and chronology\r
+protection [89–93].\r
+Other less commonly used energy conditions are:\r
+• TEC — trace energy condition: ρ − 3p ≥ 0. Mainly of historic interest [49, 50].\r
+Believed to be violated deep in the cores of neutron stars. Definitely violated by\r
+(hypothetical) “stiff matter” ρ = p, where (speed of sound) = (speed of light).\r
+• FEC — flux energy condition: for all timelike observers, V\r
+a\r
+, the flux F\r
+a = TabVb\r
+is either timelike or null [59, 60].\r
+(FEC is a weakening of DEC; that is, DEC =⇒ FEC.)\r
+• Averaged energy conditions (typically averaged along timelike or null geodesics)\r
+are weaker than their corresponding point-wise counterparts. The most useful\r
+of the averaged energy conditions is typically the ANEC (averaged null energy\r
+condition) where one averages the NEC along timelike geodesics using an affine\r
+parameterization [43, 71–77].\r
+As a cautionary example regarding application of the energy conditions, note that all\r
+three of the recent Lentz [1], Bobrick–Martire [2], and Fell–Heisenberg [3] articles merely\r
+assert the existence of one sub-class of timelike observers for which the energy density\r
+is positive. This is not enough to show that the WEC is satisfied. To explicitly see a\r
+specific example of this behaviour, let us work in an orthonormal basis. Take ρ0 > 0\r
+and Γ > 1, and consider:\r
+Taˆˆb = ρ0\r
+\r
+\r
+\r
+\r
+\r
+1 0 0 0\r
+0 −Γ\r
+2 0 0\r
+0 0 −Γ\r
+2 0\r
+0 0 0 −Γ\r
+2\r
+\r
+\r
+\r
+\r
+\r
+aˆˆb\r
+(5.4)\r
+Then in the natural rest frame V\r
+aˆ = (1; 0, 0, 0)aˆ we have ρ = Taˆˆb\r
+V\r
+aˆV\r
+ˆb = ρ0 > 0. But a\r
+moving observer, with 4-velocity V\r
+aˆ = γ(1; v ni\r
+)\r
+aˆ\r
+, where n\r
+i\r
+is any unit spatial 3-vector,\r
+will see an energy density\r
+ρ = TaˆˆbV\r
+aˆV\r
+ˆb = ρ0γ\r
+2\r
+(1 − Γ\r
+2\r
+v\r
+2\r
+). (5.5)\r
+For a sufficiently rapidly moving but still subluminal observer, with |v| > 1/Γ, the\r
+energy density will be seen to be negative. So in this example the WEC is violated.\r
+– 14 –
+
+What Lentz [1], and Bobrick–Martire [2], and Fell–Heisenberg [3] should be doing is to\r
+also calculate all of the stress components Tij . It is not enough for them to just focus\r
+on Tnn and Tni.\r
+One way of proceeding is to assume the stress-energy tensor is of Hawking–Ellis type I,\r
+see references [42–44, 60, 96–100], and work with the Lorentz-invariant eigenvalues\r
+{ρ, pi}, the Lorentz-invariant eigen-energy-density and principal pressures, respectively.\r
+Then it is a standard result that in terms of the Lorentz-invariant eigenvalues of a type I\r
+stress-energy tensor one has the two-way implications [42–44, 60, 96–100]\r
+NEC ⇐⇒ ρ + pi ≥ 0. (5.6)\r
+WEC ⇐⇒ ρ + pi ≥ 0 & ρ > 0. (5.7)\r
+SEC ⇐⇒ ρ + pi ≥ 0 & ρ +\r
+P\r
+i\r
+pi > 0. (5.8)\r
+DEC ⇐⇒ |pi| ≤ ρ. (5.9)\r
+Unfortunately, we do not know a priori whether or not the stress-energy for the\r
+warp drive is Hawking–Ellis type I in general, nor do the Eulerian observers typically\r
+diagonalize the stress-energy. So one has to be a little more indirect. (A limited result\r
+is this: For the zero-vorticity warp drives, because the Eulerian observers see zero flux\r
+~f = 0, the stress-energy is block diagonal, and so of Hawking–Ellis type I. In particular,\r
+an even more limited and precise result is this: For a zero-vorticity warp drive, since\r
+the stress-energy is Hawking–Ellis type I we explicitly have\r
+Tab V\r
+aVb = γ2\r
+ \r
+ρ +\r
+X\r
+i\r
+piβ\r
+2\r
+i\r
+!\r
+= γ\r
+2\r
+ \r
+ρ(1 − β\r
+2\r
+) +X\r
+i\r
+[ρ + pi]β\r
+2\r
+i\r
+!\r
+= ρ + γ\r
+2\r
+ X\r
+i\r
+[ρ + pi]β\r
+2\r
+i\r
+!\r
+. (5.10)\r
+Thus, by considering all possible physical values of the βi (including relativistic values),\r
+we see that non-negative Eulerian density plus the NEC implies the WEC — so for\r
+checking the WEC in this situation, checking ρ ≥ 0 is manifestly insufficient, one\r
+additionally needs to check the NEC (ρ + pi ≥ 0) as well.)\r
+In counterpoint, what the Eulerian observers do generically implement is a natural\r
+orthonormal frame in which\r
+Taˆˆb =\r
+"\r
+ρ fj\r
+fi Tij #\r
+. (5.11)\r
+NEC: Let us first investigate what we can say about the NEC. Let us take any two\r
+oppositely oriented null vectors `\r
+aˆ\r
++ = (1, +`\r
+i\r
+)\r
+aˆ\r
+, and `\r
+aˆ\r
+− = (1, −`\r
+i\r
+)\r
+aˆ\r
+, where `\r
+i\r
+is any\r
+– 15 –
+
+arbitrary unit spatial 3-vector. Then the NEC would imply both\r
+Taˆˆb`\r
+aˆ\r
++`\r
+ˆb\r
+± = Taˆˆb\r
+(1, +`\r
+i\r
+)\r
+aˆ\r
+(1, +`\r
+j\r
+)\r
+ˆb = ρ + 2fi`\r
+i + Tij `i\r
+`\r
+j ≥ 0, (5.12)\r
+and\r
+Taˆˆb`\r
+aˆ\r
+−`\r
+ˆb\r
+− = Taˆˆb\r
+(1, −`\r
+i\r
+)\r
+aˆ\r
+(1, −`\r
+j\r
+)\r
+ˆb = ρ − 2fi`\r
+i + Tij `i\r
+`\r
+j ≥ 0. (5.13)\r
+Averaging over these two equations, for any unit spatial 3-vector\r
+NEC =⇒ ρ + Tij `\r
+i\r
+`\r
+j ≥ 0. (5.14)\r
+Note the implication is one-way; effectively one throws away all information contained\r
+in the flux f\r
+i\r
+. In terms of the eigenvalues of the 3-stress we have5\r
+NEC =⇒ ρ + min{λ(Tij )} ≥ 0. (5.15)\r
+Now pick a triad `\r
+i\r
+A of three mutually orthogonal unit vectors. Then for each member\r
+of the triad the NEC implies\r
+ρ + Tij `\r
+i\r
+A `\r
+j\r
+A ≥ 0. (5.16)\r
+Now average over the three members of the triad\r
+ρ + Tij \r
+1\r
+3\r
+X\r
+A\r
+`\r
+i\r
+A`\r
+j\r
+A\r
+!\r
+≥ 0. (5.17)\r
+Thence, noting that by construction P\r
+A\r
+`\r
+i\r
+A`\r
+j\r
+A = δ\r
+ij , we see\r
+ρ + Tij \u0012\r
+1\r
+3\r
+δ\r
+ij\u0013\r
+≥ 0. (5.18)\r
+Defining, as usual, the average pressure as ¯p =\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Tij δ"
+text = """
+ij , (this works even if the 3-stress\r
+Tij is not diagonal), we see that\r
+NEC =⇒ ρ + ¯p ≥ 0. (5.19)\r
+As long as the 3-stress is even slightly anisotropic we have min{λ(Tij )} 6= max{λ(Tij )}\r
+so that we deduce the strict chain of inequalities\r
+min{λ(Tij )} < p <¯ max{λ(Tij )} (5.20)\r
+5For zero-vorticity warp drives one has the stronger equivalence that NEC ⇐⇒ ρ+min{λ(Tij )} ≥ 0.\r
+– 16 –
+
+Thence in the presence of anisotropies we can make the slightly stronger strict inequality\r
+involving the average pressure ¯p that\r
+NEC =⇒ ρ + ¯p > 0. (5.21)\r
+The implication is again one-way. Note also that this argument has nothing specific\r
+to do with warp drives, it is purely a statement about how the NEC implies an easily\r
+checked inequality that depends only on the existence of some orthonormal basis. For\r
+our current purposes the point is that it is relatively easy to pick a specific direction\r
+and calculate Tij `\r
+i\r
+`\r
+j\r
+, or to average over all directions and calculate ¯p.\r
+WEC: Similar things can be said about the WEC, although now one takes some\r
+0 ≤ β < 1 and considers two oppositely oriented timelike vectors V\r
+a\r
+± = γ(1, ±β`i\r
+)\r
+a\r
+.\r
+Then for any unit 3-vector `\r
+i\r
+, after averaging over the two orientations:\r
+WEC =⇒ ρ + β"""
+
+[[sections]]
+number = "2"
+title = "Tij `i"
+text = """
+`\r
+j ≥ 0. (5.22)\r
+Then averaging over a triad of unit vectors, for all 0 ≤ β < 1 one has\r
+WEC =⇒ ρ + β\r
+2\r
+p¯ ≥ 0. (5.23)\r
+By considering β = 0 and the limit β → 1 one has\r
+WEC =⇒ ρ ≥ 0 & ρ + ¯p ≥ 0. (5.24)\r
+The implication is again one-way. And the point is that Tij `\r
+i\r
+`\r
+j and p¯ are relatively\r
+easy to calculate. As long as the 3-stress is even slightly anisotropic, we can make the\r
+slightly stronger statement involving the average pressure ¯p that\r
+WEC =⇒ ρ ≥ 0 & ρ + ¯p > 0. (5.25)\r
+SEC: The SEC can be phrased in terms of the so-called “trace-reversed” stress-energy\r
+tensor Tab −\r
+1"""
+
+[[sections]]
+number = "2"
+title = "T gab, as the condition (Tab −"
+text = "1"
+
+[[sections]]
+number = "2"
+title = "T gab)V"
+text = """
+aVb ≥ 0, which in turn is equivalent\r
+to enforcing TabV\r
+aVb ≥\r
+1\r
+2\r
+(ρ − 3¯p). Then the SEC implies\r
+ρ + β"""
+
+[[sections]]
+number = "2"
+title = "Tij `i"
+text = """
+`\r
+j ≥ (1 − β2\r
+)\r
+1\r
+2\r
+(ρ − 3¯p). (5.26)\r
+– 17 –
+
+This can be rearranged to\r
+SEC =⇒ (1 + β\r
+2\r
+)ρ + 3(1 − β\r
+2\r
+)¯p + 2β"""
+
+[[sections]]
+number = "2"
+title = "Tij `i"
+text = """
+`\r
+j ≥ 0. (5.27)\r
+Averaging over the unit directions `\r
+i\r
+, for all 0 ≤ β < 1 one has\r
+SEC =⇒ (1 + β\r
+2\r
+)ρ + (3 − β\r
+2\r
+)¯p ≥ 0. (5.28)\r
+By considering β = 0 and the limit β → 1 one has\r
+SEC =⇒ ρ + 3¯p ≥ 0 & ρ + ¯p ≥ 0. (5.29)\r
+The implication is again one-way. And the point is that Tij `\r
+i\r
+`\r
+j and p¯ are relatively\r
+easy to calculate. As long as the 3-stress is even slightly anisotropic, we can make the\r
+slightly stronger statement involving the average pressure ¯p that\r
+SEC =⇒ ρ + 3¯p > 0 & ρ + ¯p > 0. (5.30)\r
+DEC: One version of the DEC, as reported by Hawking and Ellis [42, page 91],\r
+is formulated as the requirement that in any orthonormal frame the energy density\r
+dominates all the other components of the stress-energy tensor:\r
+|T\r
+aˆˆb\r
+| ≤ T\r
+tˆtˆ\r
+. (5.31)\r
+In our language this would be\r
+|fi| ≤ ρ & |Tij | ≤ ρ. (5.32)\r
+But in particular this implies\r
+|p¯| =\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+1\r
+3\r
+X\r
+i\r
+Tii\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+≤\r
+1\r
+3\r
+X\r
+i\r
+|Tii| ≤ ρ. (5.33)\r
+That is\r
+DEC =⇒ |p¯| ≤ ρ. (5.34)\r
+The implication is one-way, but the inequality is particularly clean and easy to work\r
+with. As long as the 3-stress is even slightly anisotropic, we can make the slightly\r
+– 18 –
+
+stronger statement involving the average pressure ¯p that\r
+DEC =⇒ |p¯| < ρ. (5.35)"""
+
+[[sections]]
+number = "6"
+title = "Timelike and null convergence conditions"
+text = """
+In applications the various energy conditions are, using the Einstein equations, typically\r
+immediately converted into purely geometrical convergence conditions such as the null\r
+convergence condition (NCC) and the timelike convergence condition (TCC) [42–45].\r
+Within standard general relativity the NCC is equivalent to the NEC, and the TCC is\r
+equivalent to the SEC.\r
+NCC: The NCC is the statement that for all null vectors Rab `\r
+a\r
+`\r
+b ≥ 0.\r
+TCC: The TCC is the statement that for all timelike vectors Rab V\r
+aVb ≥ 0.\r
+If one wishes to step outside the framework of standard general relativity then this\r
+adds a new level of speculative physics to the mix, and then the distinction between\r
+geometrical convergence conditions and dynamical energy conditions might become\r
+important. However it should be emphasized that in many (but not all) modified\r
+theories of gravity the equations of motion can be rearranged into the form\r
+(Einstein tensor) = (some “effective” stress-energy tensor). (6.1)\r
+Whenever this can be done, statements about the usual energy conditions in Einstein\r
+gravity can be carried over to statements about “effective” energy conditions in modified\r
+gravity."""
+
+[[sections]]
+number = "7"
+title = "Violation of the energy conditions"
+text = """
+Now consider the energy conditions in the warp drive spacetimes. We shall provide a\r
+number of results, ultimately demonstrating the generic violation of the NEC (thereby\r
+automatically implying violations of the WEC, SEC and DEC)"""
+
+[[sections]]
+number = "7.1"
+title = "Alcubierre warp drive"
+text = """
+The key defining characteristic of the Alcubierre warp drive is that vi(x, y, z, t) is always\r
+pointing in some fixed direction, which can without loss of generality be taken to be\r
+– 19 –
+
+the z-direction ˆzi = (0, 0, 1)i\r
+. That is, take\r
+vi(x, y, z, t) = v(x, y, z, t) ˆzi. (7.1)\r
+(This is slightly more general than what Alcubierre actually did [9]; but it is the best\r
+way of summarizing the key aspects of the physics.) Then the extrinsic curvature is\r
+simply\r
+Kij = ∂(iv zˆj) =\r
+\r
+\r
+\r
+0 0 1\r
+2\r
+∂xv\r
+0 0 1\r
+2\r
+∂yv\r
+1\r
+2\r
+∂xv\r
+1\r
+2\r
+∂xv ∂zv\r
+\r
+\r
+ . (7.2)\r
+Consequently\r
+K = ˆz\r
+i\r
+∂iv = ∂zv; (7.3)\r
+while\r
+(K2)ij =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "KKij +"
+text = """
+1\r
+4\r
+(∂v)\r
+2\r
+zˆizˆj +\r
+1\r
+4\r
+∂iv∂jv; (7.4)\r
+and\r
+trK2\r
+\u0001\r
+=\r
+1"""
+
+[[sections]]
+number = "2"
+title = "K2 +"
+text = """
+1\r
+2\r
+(∂v)\r
+2 =\r
+1\r
+2\r
+(∂xv)\r
+2 +\r
+1\r
+2\r
+(∂yv)\r
+2 + (∂zv)2\r
+. (7.5)\r
+Then\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 = −\r
+1\r
+32π\r
+\r
+(∂xv)\r
+2 + (∂yv)2\r
+\u0001\r
+≤ 0. (7.6)\r
+But to have a non-trivial warp bubble, we must avoid the situation where one has an\r
+everywhere flat Minkowski space. So we need ((∂xv)\r
+2 + (∂yv)2\r
+) > 0 somewhere in the\r
+spacetime, and so ρ < 0 at those particular locations, and is at best zero everywhere\r
+else. Therefore the Alcubierre warp bubble definitely violates the WEC.\r
+In his original article [9] Alcubierre also claims (without proof): “In a similar way one\r
+can show that the strong energy condition is also violated.” However in a more recent\r
+article by Alcubierre and Lobo [29], they explicitly prove the stronger result that the\r
+Alcubierre warp drive violates the NEC. (So SEC, WEC, and DEC are all definitely\r
+violated, because NEC is.)\r
+Their proof is slightly tricky and depends (for a warp bubble moving in the z direction)\r
+on the identity Gzz = 3Gnn < 0. This identity is established by explicit computation,\r
+there does not seem to be an obvious geometrical reason for it. From this geometrical\r
+identity we have Tzz = 3ρ < 0 in the comoving frame. Hence ρ + Tzz = 4ρ < 0 and the\r
+NEC is violated in all Alcubierre warp drives.\r
+– 20 –"""
+
+[[sections]]
+number = "7.2"
+title = "Nat´ario zero-expansion warp drive"
+text = """
+The key defining characteristic of the Nat´ario zero-expansion warp drive is that the\r
+flow vi(x, y, z, t) is zero divergence: ∇ · ~v = 0. (This is slightly more general than what\r
+Nat´ario actually did [10]; but it is the best way of summarizing the relevant physics.)\r
+Then K = 0 and from (4.1) we have:\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 = −\r
+1\r
+16π\r
+trK2\r
+\u0001\r
+≤ 0. (7.7)\r
+But to avoid a trivial warp drive the extrinsic curvature Kij must be nonzero somewhere,\r
+and wherever Kij 6= 0 we have ρ < 0. So the Nat´ario zero-expansion warp drive definitely\r
+violates the WEC [10].\r
+But, now extending Nat´ario’s argument from the second half of reference [10], we note\r
+that in this situation, from equation (4.12), we also have\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+trK2\r
+\u0001\r
+≤ 0. (7.8)\r
+And the same non-triviality argument as immediately above now shows that any Nat´ario\r
+zero-expansion warp drive also violates the SEC.\r
+Furthermore, again extending Nat´ario’s argument from the second half of reference [10],\r
+now using equation (4.13) we note\r
+ρ + ¯p = −\r
+1\r
+8π\r
+trK2\r
+\u0001\r
+≤ 0. (7.9)\r
+And the same non-triviality argument again shows that any Nat´ario zero-expansion\r
+warp drive also violates the NEC."""
+
+[[sections]]
+number = "7.3"
+title = "Zero-vorticity warp drive"
+text = """
+The key defining characteristic of the Lentz/Fell–Heisenberg zero-vorticity warp drive\r
+is that the flow vi(x, y, z, t) is taken to be a gradient vi(x, y, z, t) = ∂iΦ(x, y, z, t) [1, 3].\r
+(This is slightly more general than what Lentz and Fell–Heisenberg actually did; but it\r
+is the best way of summarizing the relevant physics.)\r
+Then\r
+Kij = Φ,ij , K = ∇2Φ. (7.10)\r
+– 21 –
+
+From (4.1) the co-moving energy density is\r
+ρ =\r
+1\r
+16π\r
+\r
+K2 − trK2\r
+\u0001\u0001 =\r
+1\r
+16π\r
+\r
+(∇2Φ)2 − Φ,ijΦ,ij\u0001\r
+. (7.11)\r
+This no longer obviously violates the WEC, at least not as seen by Eulerian observers.\r
+In view of equation (4.5), the energy density is now a pure 3-divergence\r
+ρ =\r
+1\r
+16π\r
+{∂i(Φ,iΦ,jj − Φ,j Φ,ij )} . (7.12)\r
+In this class of zero-vorticity warp drives the comoving flux is identically zero, f\r
+i = 0.\r
+Unfortunately, the spatial parts of the stress-energy Tij are still a bit of a mess, they do\r
+not really simplify appreciably. (And one really needs to know something about the\r
+spatial stresses Tij in order to say anything more precise about the energy conditions.)\r
+Fortunately, the average pressure is reasonably tractable. From equation (4.13),\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 =\r
+1\r
+24π\r
+\r
+−2Ln∇2Φ + (∇2Φ)2 − 3Φ,ij Φ,ij\u0001\r
+.\r
+(7.13)\r
+Now, given that we want our warp field to be localizable, to not spread over and\r
+affect the whole spacetime, it is natural to make the assumption that the flow field\r
+vi(x, y, z, t) = ∂iΦ(x, y, z, t) obeys some sort of fall-off conditions at spatial infinity.\r
+It is certainly more than sufficient if Ji = (Φ,iΦ,jj −Φ,j Φ,ij ) = o(r\r
+−2\r
+) for large distances,\r
+which is in turn certainly true if Φi = o(r\r
+−1/2\r
+), which is in turn certainly true if the ADM\r
+mass is zero. Vanishing of the ADM mass is certainly the case for Alcubierre’s warp drive,\r
+and also for Natario’s zero-expansion warp drive, and is a first crude approximation for\r
+well-localized warp fields. (We will subsequently significantly weaken this condition.) If\r
+this is the case, then it follows immediately that\r
+Z\r
+R3\r
+ρ d\r
+3x = 0. (7.14)\r
+But then, if the warp field has positive energy density anywhere, it must have negative\r
+energy density somewhere else. This implies violations of the WEC somewhere on each\r
+spatial slice. We shall subsequently be more specific by invoking stronger arguments\r
+using much weaker falloff conditions.\r
+Unfortunately, as we have previously argued, non-negativity of the Eulerian energy\r
+density, ρ ≥ 0, is insufficient to establish the WEC for a zero-vorticity warp drive; one\r
+– 22 –
+
+needs to check the NEC as well. The spatial parts of the stress-energy Tij are still a\r
+bit of a mess, they do not really simplify appreciably. (And one really needs to know\r
+something about the spatial stresses Tij in order to say anything more precise about\r
+the energy conditions.) Fortunately, the average pressure is reasonably tractable. From\r
+equation (4.13),\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 =\r
+1\r
+24π\r
+\r
+−2Ln∇2Φ + (∇2Φ)2 − 3Φ,ij Φ,ij\u0001\r
+.\r
+(7.15)\r
+The best way of proceeding seems to be to adapt, modify, and extend a general argument\r
+that Nat´ario applied to his general class of warp drive spacetimes [10]. Let us do this\r
+now."""
+
+[[sections]]
+number = "7.4"
+title = "Nat´ario’s generic warp drive"
+text = """
+WEC: We have already established that from equation (4.6) it follows in general that\r
+ρ =\r
+1\r
+16π\r
+\u001A\r
+∇ · {~v K − (~v · ∇)~v} − 1\r
+2\r
+(~ω · ~ω)\r
+\u001B\r
+. (7.16)\r
+Hence, with the strong fall-off conditions already mentioned, namely that the warp field\r
+is well-localized, and that gradients of vi → 0 sufficiently rapidly at spatial infinity, an\r
+integration by parts implies\r
+Z\r
+ρ d\r
+3x = −\r
+1\r
+32π\r
+Z\r
+(~ω · ~ω) d3x ≤ 0. (7.17)\r
+Again, if the warp field has positive energy density anywhere, it must have negative\r
+energy density somewhere else. This already implies violations of the WEC somewhere\r
+on each spatial slice. (We shall establish stronger results using weaker hypotheses\r
+below.)\r
+WEC-or-SEC: To improve on the preceding result for the WEC, and side-step the\r
+need for strong asymptotic falloff conditions, note that in reference [10] Nat´ario presents\r
+a quite general argument to the effect that in any generic warp spacetime, (Alcubierre,\r
+Nat´ario zero-expansion, and, yes, it even applies to Lentz/Fell–Heisenberg zero-vorticity\r
+warp drives), there must be violations of either the SEC or the WEC. (Or you have the\r
+trivial case of Minkowski space.) See his theorem 1.7.\r
+– 23 –
+
+SEC: Nat´ario’s result can already be slightly improved in view of our comments\r
+above: In any generic warp spacetime, (Alcubierre, Nat´ario, and, yes, it even applies to\r
+Lentz/Fell–Heisenberg), there must be violations of the SEC. (Or you have the trivial\r
+case of Minkowski space.) We shall go into some detail in order to localise where and\r
+when the SEC violations take place.\r
+The key point is that Eulerian observers define a zero-vorticity congruence of timelike\r
+geodesics, that by construction cannot have any focussing points. Now apply a variant\r
+of the Raychaudhuri equation (timelike focussing theorem) [42, 101–107].\r
+Explicit calculation has shown us, see equation (4.12), that for any warp drive spacetime:\r
+ρ + 3¯p = −\r
+1\r
+4π\r
+\r
+LnK + trK2\r
+\u0001\u0001 . (7.18)\r
+Thus if the SEC holds (implying ρ + 3¯p ≥ 0) we have\r
+LnK + trK2\r
+\u0001\r
+≤ 0. (7.19)\r
+So\r
+LnK ≤ − trK2\r
+\u0001\r
+. (7.20)\r
+Now split the extrinsic curvature into trace-free part Ktf\r
+ij = Kij −\r
+1\r
+3Kδij and trace. Then\r
+trK2\r
+\u0001\r
+= tr \u0014Ktf\r
+ij +\r
+1"""
+
+[[sections]]
+number = "3"
+title = "Kδij\u00152"
+text = """
+!\r
+= tr[Ktf]\r
+2\r
+\u0001\r
++\r
+1"""
+
+[[sections]]
+number = "3"
+title = "K2 ≥"
+text = "1"
+
+[[sections]]
+number = "3"
+title = "K2(7.21)"
+text = """
+Consequently the SEC would imply\r
+LnK ≤ −\r
+1"""
+
+[[sections]]
+number = "3"
+title = "K2. (7.22)"
+text = """
+So if K < 0, then it will be even more negative in the future. Similarly if K > 0,\r
+then it must have been even more positive in the past. Noting that, acting on scalars,\r
+LnK = V\r
+a∂aK = dK/dτ , we see that the Eulerian observers satisfy\r
+dK\r
+dτ\r
+≤ −\r
+1"""
+
+[[sections]]
+number = "3"
+title = "K2. (7.23)"
+text = """
+Therefore\r
+−"""
+
+[[sections]]
+number = "1"
+title = "K2"
+text = """
+dK\r
+dτ\r
+≥\r
+1\r
+3\r
+. (7.24)\r
+So\r
+dK−1\r
+dτ\r
+≥\r
+1\r
+3\r
+. (7.25)\r
+– 24 –
+
+Pick any Eulerian observer, and pick some point τ0 on that world-line. Integrating\r
+upwards, from τ = τ0 to some τ > τ0 we have\r
+K−1(τ ) ≥ K(τ0)\r
+−1 +\r
+1\r
+3\r
+(τ − τ0). (7.26)\r
+So if K(τ0) < 0, then there will be some finite proper time increment, less than 3/|K0|,\r
+at which K−1 → 0\r
+− implying K → −∞.\r
+Integrating downwards, from τ = τ0 to some τ < τ0 we have\r
+K−1\r
+0 ≥ K(τ )\r
+−1 +\r
+1\r
+3\r
+|τ − τ0|. (7.27)\r
+That is,\r
+K−1(τ ) ≤ K−1\r
+0 −\r
+1\r
+3\r
+|τ0|. (7.28)\r
+So if K(τ0) > 0, then there will be some finite proper time decrement, less than 3/|K0|,\r
+at which K−1 → 0\r
++ implying K → +∞.\r
+Either way, this is in contradiction to the fact that the Eulerian observers define a\r
+zero-vorticity congruence of timelike geodesics that by construction cannot have any\r
+focussing points. So either K ≡ 0 identically, or whenever K(τ0) 6= 0 somewhere for\r
+any arbitrary Eulerian observer, the SEC fails somewhere in the interval\r
+τ ∈\r
+\u0012\r
+τ0 −\r
+3\r
+|K(τ0)|\r
+, τ0 +\r
+3\r
+|K(τ0)|\r
+\u0013\r
+. (7.29)\r
+(Of course we could relax the global condition in the ADM-like split in the warp drive.\r
+However, this would imply either the formation of singularities in a finite time in the\r
+region of non-zero extrinsic curvature—meaning the warp bubble would encounter it; or\r
+we would have to save the situation by opting for CTCs [11], in many ways an even\r
+worse situation for physics [88–93].)\r
+Overall, this now gives us quite good control on where and when the SEC violations\r
+take place. The special case where K ≡ 0 identically reduces to the Nat´ario warp drive,\r
+for which we had already argued that the SEC fails (as long as the extrinsic curvature\r
+Kij is not identically zero everywhere in the spacetime).\r
+Note that this argument for SEC violations does not require any asymptotic conditions\r
+on the flow field at spatial infinity.\r
+– 25 –
+
+NEC: For the NEC we had already argued that the NEC requires ρ + p¯ ≥ 0, and we\r
+have the explicit calculation (4.13):\r
+ρ + ¯p =\r
+1\r
+24π\r
+\r
+−2LnK + K2 − 3 trK2\r
+\u0001\u0001 . (7.30)\r
+So the NEC would require\r
+2LnK − K2 + 3 trK2\r
+\u0001\r
+≤ 0. (7.31)\r
+But, in terms of the trace-free part of extrinsic curvature, we have\r
+trK2\r
+\u0001\r
+= tr[Ktf]\r
+2\r
+\u0001\r
++\r
+1"""
+
+[[sections]]
+number = "3"
+title = "K2. (7.32)"
+text = """
+So we can rewrite the NEC as\r
+LnK ≤ −\r
+3\r
+2\r
+tr[Ktf]\r
+2\r
+\u0001\r
+. (7.33)\r
+That is, using LnK = dK/dτ , and assuming the NEC:\r
+dK\r
+dτ\r
+≤ −\r
+3\r
+2\r
+tr[Ktf]\r
+2\r
+\u0001\r
+≤ 0. (7.34)\r
+Let us now take a moment to further explore equation (7.34). The τ here refers to\r
+the proper time along an Eulerian observer’s trajectory. It represents, therefore, how\r
+a particular Eulerian observer will see the trace of the extrinsic curvature where they\r
+are located. Given the zero-vorticity nature of the Eulerian observers’ congruence, it is\r
+known that at each spacetime point one and only one Eulerian observer will be present.\r
+We might, therefore, associate an Eulerian observer to each point on a constant-time\r
+spatial slice.\r
+Keeping this in mind, let us now follow a particular Eulerian observer who is initially\r
+sitting in a flat region far away from the warp bubble. Given the already mentioned\r
+falloff conditions for warp drives, we have that Kij tends to zero at spatial infinity.\r
+Therefore, as long as the observer is sufficiently distant from the warp bubble, Kij will\r
+be as close to zero as the particular fall-off conditions allow.\r
+Without any loss of generality, we might pick such an observer to be in the region\r
+traversed by the warp drive as it moves from a certain origin to a specific destination\r
+— also assumed to be sufficiently far away. In this particular scenario, the extrinsic\r
+curvature as seen by such an observer must start and end up with values which approach\r
+– 26 –
+
+zero at spatial infinity — since they start and finish in an almost flat space.\r
+Let us now return to equation (7.34). It tells us that, as long as the NEC is satisfied in\r
+the generic Nat´ario warp drive spacetime, the trace of the extrinsic curvature can never\r
+increase. How does this apply to the particular Eulerian observer above?\r
+In the situation just described, the trace as seen by the particular Eulerian observer will\r
+naturally start arbitrarily close to zero, since they are in an approximately flat space. In\r
+this way, once the warp drive passes, it can either decrease or stay the same. If is stays\r
+the same we have only two possible explanations: either a zero expansion warp drive\r
+passed by or no warp drive passed at all. Since we already proved the violation of the\r
+NEC for the zero expansion warp drive case separately, let us now focus on the other\r
+hypothesis, namely, that K decreases. Now, again, two possibilities arise: K becomes\r
+negative or K becomes even closer to zero than it was in the asymptotically flat region.\r
+Independently of the case, after the warp drive passes and proceeds sufficiently far away,\r
+the observer will return to an asymptotically flat region, meaning that K increases as\r
+it returns to its original value.6 This, however, is not allowed if the NEC is always\r
+satisfied, as given by equation (7.34). This proves that the violation of the NEC is a\r
+necessary condition for the spacetime to “restore its asymptotics” after a warp drive\r
+passes through a particular point.\r
+A delicate point must be discussed before this proof is called closed and complete: The\r
+question regarding what happens to such a geodesic Eulerian observer when a warp drive\r
+reaches them. Is the observer’s trajectory disturbed by the warp drive? Is this geodesic\r
+dragged along so that it never leaves the bubble again? Gladly, all of these questions\r
+were already addressed in a paper by Pfenning and Ford [94], where they analysed the\r
+effect of the passage of a constant velocity warp bubble on an Eulerian observer. Any\r
+observer passing through the bubble wall7 but not reaching a flat interior will behave in\r
+the following way: As the front wall of the bubble reaches such Eulerian observers, their\r
+trajectory acquires a “coordinate acceleration” in the direction of the bubble, relative\r
+to observers at large distances.8 For a while, this is followed by a movement with nearly\r
+constant speed, shown to be always smaller than the bubble’s speed. These observers\r
+then finally decelerate, being left at rest as the bubble continues to go forward. In this\r
+way, while being displaced in space along the trajectory of the bubble, no momentum is\r
+transferred to these observers during the “collision”. Therefore, such Eulerian observers\r
+6Since we still have to assume that any contribution to Kij from the warp drive is sufficiently\r
+localized.\r
+7We have to assume wall of finite size—but then again a wall of infinitesimal size would render the\r
+metric distributional and thus unsuitable for standard GR, anyhow.\r
+8The Eulerian observers are geodesic, so the 4-acceleration is identically zero.\r
+– 27 –
+
+Eulerian worldline only leaving if interior is non-flat\r
+possibly flat\r
+rough outer edge of warp bubble\r
+Eulerian observer’s worldline\r
+Figure 1: Illustration of the key step for the proof of the violation of the NEC, viewed\r
+from the perspective of the bubble’s center. Eulerian observers as depicted here will be\r
+present in any warp drive. They will see a trace of the extrinsic curvature K that is in\r
+violation of its monotonicity as predicted by the NEC. Eulerian observers entering a\r
+flat inner region will remain there as long as the bubble persists.\r
+who were at rest before the arrival of the warp drive will finish as Eulerian observers\r
+at rest after the bubble passes. Another more recent study [27] extended these results\r
+to warp drives with non-constant velocities. An illustration of the Eulerian observers’\r
+worldlines in this argument for the violation of the NEC can be found in figure 1.\r
+9\r
+Let us summarise this argument again: Eulerian observers initially at rest, which even\u0002tually “collide” with the bubble wall—without, however, entering possible flat regions\r
+inside the warp bubble—will exit the bubble, and will again reenter the asymptotically\r
+flat space behind the bubble. The monotonicity implied by equation (7.34) then implies\r
+a violation of the NEC somewhere along these Eulerian trajectories. It is, therefore,\r
+proven that any warp drive in the generic Nat´ario form will inevitably violate the NEC\r
+as it moves through spacetime.\r
+Note that this proof for NEC violations uses only the fact that warp drive contributions\r
+are sufficiently localized — without any need to assume zero ADM mass or to invoke\r
+an integration by parts.\r
+9Very nice illustrations of this can also be found in [95].\r
+– 28 –"""
+
+[[sections]]
+number = "8"
+title = "Discussion and conclusions"
+text = """
+We have now demonstrated that all members of the general class of warp drives defined\r
+by Nat´ario [10] violate the NEC. This significantly extends previously known results.\r
+This argument applies, in particular, to all three of the Alcubierre [9], Nat´ario zero\u0002expansion [10], and Lentz/Fell–Heisenberg zero-vorticity [1, 3] warp drives, and also (for\r
+slightly different reasons) to the model warp drives considered by Bobrick–Martire [2].\r
+Because the NEC is violated then so are the WEC, SEC, and DEC.\r
+Consequently, insofar as one wishes to continue to entertain the possibility of warp\r
+drives as a real physical phenomenon, one has no choice but to face the violation of the\r
+energy conditions head on. Several possibilities arise: (i) modify the theory of gravity,\r
+(ii) modify the definition of warp drive, (iii) modify the energy conditions, (iv) appeal to\r
+macroscopic quantum physics, (v) allow for singularities or CTCs (time travel). None\r
+of these options are particularly palatable. All of these options have serious draw-backs.\r
+Thus it is our melancholy duty to report that none of the recent claims of positive-mass\r
+physical warp drives survive careful inspection of the proffered arguments.\r
+A “Spherically symmetric” warp drives\r
+“Spherically symmetric” warp drives date back to the original article by Alcubierre [9].\r
+Specifically, let us reconsider the explicit line element (2.12) and rephrase it as\r
+ds\r
+2 = −dt2 + dx2 + dy2 +\r
+\u0010\r
+dz − v∗(t) f (rs(x, y, z, t)) dt\r
+\u00112\r
+, (A.1)\r
+where we set\r
+rs(x, y, z, t) = q\r
+x\r
+2 + y2 + (z − z∗(t))2\r
+, z∗(t) = Zv∗(t) dt, (A.2)\r
+and enforce both f(0) = 1 and f(∞) = 0. This represents a spherically symmetric\r
+warp bubble, centred on the moving point (0, 0, z∗(t)), with a shape function f(rs) that\r
+depends only on the Euclidean distance from the moving centre. We emphasize that\r
+while the warp bubble is spherically symmetric the spacetime is not — there is certainly\r
+a preferred axis due to the direction of motion of the warp bubble. (Hence the warp\r
+bubble is spherically symmetric, but the spacetime is only “spherically symmetric”.)\r
+At large spatial distances ds\r
+2 → −dt2 + dx2 + dy2 + dz2\r
+, the usual representation of\r
+Minkowski space, while at the centre of the warp drive\r
+ds\r
+2 → −dt2 + dx2 + dy2 + (dz − v∗(t)dt)\r
+2\r
+. (A.3)\r
+– 29 –
+
+Consider now the coordinate transformation\r
+t˜= t, x˜ = x, y˜ = y, z˜ = z − z∗(t), (A.4)\r
+which is designed to bring the warp bubble “to rest”. Then\r
+dt˜= dt, d˜x = dx, d˜y = dy, d˜z = dz − v∗(t) dt, (A.5)\r
+and the line element becomes\r
+ds\r
+2 = −dt˜2 + d˜x2 + d˜y2 +\r
+\r
+d˜z + v∗(t)[1 − f(rs)] dt˜\r
+\u00012\r
+, (A.6)\r
+where now rs =\r
+p\r
+x˜\r
+2 + ˜y2 + ˜z2\r
+is time independent. At the centre of the warp bubble\r
+we now have ds\r
+2 → −dt˜2 + dx˜2 + dy˜2 + dz˜2\r
+, the usual representation of Minkowski\r
+space, while at spatial infinity it is now the outside universe that is streaming by with\r
+velocity −v∗(t).\r
+At spatial infinity the line element becomes\r
+ds\r
+2 → −dt˜2 + d˜x2 + d˜y2 +\r
+\r
+d˜z + v∗(t) dt˜\r
+\u00012\r
+. (A.7)\r
+This is again Minkowski space, but now in “moving coordinates”. Note the “conservation”\r
+of relative motion — either spatial infinity is standing still and the bubble is moving, or\r
+the bubble is standing still and spatial infinity is moving [9, 10].\r
+If one wishes to make the walls of the warp bubble thin, (but still of finite thickness),\r
+this is a choice, not a necessity, then one might pick\r
+f(rs) =\r
+\r
+\r
+\r
+1 rs ≤ rinner,\r
+smooth rs ∈ [rinner, router],\r
+0 rs ≥ router.\r
+(A.8)\r
+If one makes this choice, then one needs to enforce router > rinner to keep the metric\r
+continuous. A discontinuity in the metric leads to delta functions in the Christoffel\r
+symbols, squares of delta functions in the Riemann tensor, and cubes of delta functions\r
+in the Bianchi identities. Even when working with the Israel–Lanczos–Sen thin-shell\r
+formalism (the junction condition formalism) one needs to keep the metric piecewise\r
+differentiable, C\r
+1−, since then the Christoffel symbols at worst contain step functions\r
+and the Riemann tensor and Bianchi identities at worst contain delta functions.\r
+– 30 –
+
+The reason for being so explicit is that in reference [2] the authors present a deeply\r
+flawed discussion of spherically symmetric warp drives. In their implementation of\r
+spherically symmetric warp drives the warp bubble is certainly at rest, but in addition\r
+their choice of asymptotic boundary conditions also forces the warp bubble to be at\r
+rest with respect to spatial infinity. This defeats the whole purpose of a warp drive.\r
+Furthermore, these authors take the interior of the warp bubble to be a portion of flat\r
+Minkowski space, the wall of the warp bubble to be a non-negative density barotropic\r
+and isotropic fluid, and the exterior region to be a portion of Schwarzschild spacetime.\r
+They then attempt to apply the Tolman–Oppenheimer–Volkov (TOV) equation to the\r
+bubble wall. But under the set of assumptions they are imposing (zero pressure at\r
+the inner edge of the bubble wall, zero pressure at the outer edge of the bubble wall,\r
+non-negative energy density within the bubble wall, and a barotropic equation of state)\r
+the unique solution to the TOV is the trivial solution p(r) = 0 = ρ(r), and the mass of\r
+the exterior region must be zero. Thus their specific model (as presented in [2]) just\r
+reduces, globally, to flat Minkowski space — it is not a warp drive.\r
+These authors [2] also assert that both Alcubierre [9] and Nat´ario [10] must necessarily\r
+“truncate” their warp fields, forcing them to be exactly Minkowski space, at some finite\r
+distance from the centre of the warp bubble. This is simply not an accurate reflection\r
+of what is actually done in those references [9, 10]. Specifically, in Alcubierre’s original\r
+article [9, equation (6)] the concrete realization of the shape function f(rs) he chooses,\r
+see equation (A.8), uses tanh functions and so does not have compact support. In\r
+this terminology, Alcubierre sets rinner = 0 and router = ∞, which is certainly not\r
+a truncation. Unfortunately this terminology of “truncation” has been uncritically\r
+adopted by subsequent authors [3].\r
+The authors of [2] also assert in passing, see their section (5.2), that the Alcubierre warp\r
+drive [9] does not satisfy the continuity equations. They also assert that the velocity\r
+of the Alcubierre warp bubble cannot be time dependent, claiming a violation of the\r
+conservation of momentum. These statements are both false, and seem to arise (at\r
+best) from adopting a naive Newtonian viewpoint. What Alcubierre has actually done\r
+is to “reverse engineer” the warp drive — once one writes down a suitable metric, (at\r
+least C\r
+1−, piecewise differentiable), one simply calculates the Einstein tensor to find\r
+what the stress-energy is that would be required to support that spacetime geometry.\r
+The continuity equation is automatically enforced via the Bianchi identities, and there\r
+is no difficulty in making the velocity of the Alcubierre warp bubble time-dependent.\r
+(Reference [3] seems to repeat this error in their discussion. Reference [1] is more careful\r
+in this regard, setting the 3-velocity of their model warp bubble constant for simplicity,\r
+but without making any claim as to necessity.)\r
+– 31 –
+
+Overall, while the idea of a “spherically symmetric” warp drive is certainly well-defined\r
+and useful, the specific implementation of this notion in reference [2] is not a successful\r
+one, and is not useful.\r
+B Warp drives beyond the generic Nat´ario framework\r
+There are two somewhat more general warp drive spacetimes that do not fall into\r
+Nat´ario’s general classification [10], and are incompatible with the Alcubierre, Nat´ario,\r
+and Lentz/Fell–Heisenberg warp drives. These more general warp drives are obtained by\r
+either relaxing the condition that the lapse be unity, (so N(x, y, z, t) 6= 1), or relaxing\r
+the condition that the spatial slices be flat, (so gij 6= δij ). See reference [29] which\r
+discusses the case N = 1, and reference [ 6 17] which permits the spatial slices to be\r
+conformally flat gij = e\r
+2θ(x,y,z,t)\r
+δij rather than Riemann flat.\r
+Unhelpfully, in appendices A.1 and A.2 of reference [2] those authors incorrectly claim\r
+that both of these more general spacetimes can, by a coordinate transformation, be\r
+brought into Alcubierre form. The simplest way to see that both these claims are\r
+wrong is to set the flow vector to zero. The claims made in appendices A.1 and A.2 of\r
+reference [2] then reduce to the claims that the line elements\r
+ds\r
+2 = −N(x, y, z, t)2\r
+dt\r
+2 + dx2 + dy2 + dz2\r
+, (B.1)\r
+and\r
+ds\r
+2 = −dt2 + e2θ(x,y,z,t)\r
+{dx\r
+2 + dy2 + dz2\r
+}, (B.2)\r
+are actually Riemann flat. This is manifestly incorrect. What has gone wrong? The\r
+transformations these authors invoke are just not coordinate transformations. For a\r
+transformation dx\r
+a → dx¯a = Ja\r
+b dx\r
+b\r
+to actually be a coordinate transformation the\r
+critical requirement is that J\r
+a\r
+[b,c] = 0. (Additionally, one would want det(J\r
+a\r
+b) = 0, 6\r
+except on sets of measure zero.) While the transformations made in appendices A.1 and\r
+A.2 of reference [2] satisfy the determinant condition, they fail the more basic J\r
+a\r
+[b,c] = 0\r
+condition; they are simply not coordinate transformations.\r
+For our purposes then it means that the non-unit-lapse and van den Broeck warp drive\r
+spacetimes cannot simply be dismissed out of hand. There are other problematic issues\r
+with both of these models, but they are physically different from the Nat´ario class [10],\r
+(unit lapse, spatially flat 3-geometry), and must be directly addressed using different\r
+techniques.\r
+– 32 –
+
+C Some defective warp drives\r
+Some of the recently proposed warp drive spacetimes are defective for other reasons.\r
+For instance, in the first explicit example in reference [3] the velocity potential Φ is\r
+certainly C\r
+0 but is only piecewise differentiable, C1−. That is, the flow ~v = ∇Φ is\r
+discontinuous, which implies that the metric is discontinuous. This then leads to delta\r
+functions in the Christoffel symbols, squares of delta functions in the Riemann tensor,\r
+and cubes of delta functions in the Bianchi identities. This is mathematically and\r
+physically not viable.\r
+In their second explicit example, equation (9) of versions 1 and 2; equation (11) of\r
+versions 3 and 4 of reference [3], the velocity potential Φ is C\r
+∞, except possibly at the\r
+centre of the spacetime, but suffers other problems. If one takes r =\r
+p\r
+x\r
+2 + y2 + z2\r
+,\r
+then even at its most general their velocity potential is of the qualitative form\r
+Φ(x, y, z) = F(r, σ(x, y, z)) + v∗ z. (C.1)\r
+Then\r
+~v = ∇Φ(x, y, z) = ∂rF(r, σ(x, y, z)) ˆr + ∂σF(r, σ(x, y, z)) ∇σ + v∗ z. ˆ (C.2)\r
+But then, in their specific example, they do the equivalent of settting σ(x, y, z) → 1,\r
+and v∗ → 0, thereby enforcing spherical symmetry. That is Φ(x, y, z) → F(r, 1), which\r
+is a function of r only. But then\r
+~v = ∇Φ →\r
+∂F(r, 1)\r
+∂r r. ˆ (C.3)\r
+So their flow vector is always pointing radially outwards/inwards. This is simply not\r
+viable for describing a warp drive spacetime.\r
+Oddly enough, consider Φ(x, y, z) = 2√2mr = 2√2m\r
+p4 x\r
+2 + y2 + z2\r
+, so that\r
+~v = ∇Φ(x, y, z) =\r
+√\r
+2m (x, y, z)\r
+(x\r
+2 + y2 + z2\r
+)\r
+3/4\r
+=\r
+s\r
+2m\r
+p\r
+x\r
+2 + y2 + z2\r
+r. ˆ (C.4)\r
+This is the Schwarzschild spacetime (in Painlev´e–Gullstrand form, converted to Cartesian\r
+coordinates). This is not a warp drive spacetime.\r
+– 33 –
+
+Similarly, consider Φ(x, y, z) = (x\r
+2+y2+z2\r
+)\r
+2`\r
+so that\r
+~v = ∇Φ = (x, y, z)\r
+`\r
+=\r
+p\r
+x\r
+2 + y2 + z2\r
+`\r
+r. ˆ (C.5)\r
+This is the de Sitter spacetime (in Painlev´e–Gullstrand form, converted to Cartesian\r
+coordinates, with Λ = 3/`2). This is not a warp drive spacetime.\r
+But the central issue is this: Even if you pick a flow vector of the form\r
+~v = f(r) ˆr + v∗ z, ˆ (C.6)\r
+which at least has a hope of representing a moving warp bubble, then calculating and\r
+checking the non-negativity of the Eulerian energy density ρ by itself tells you next to\r
+nothing regarding satisfaction of the WEC. To test satisfaction of the WEC one would\r
+need to calculate all of the principal pressures pi and then check whether all of the\r
+combinations ρ + pi were non-negative.\r
+In reference [1] the claim is made that the author can self-consistently find a warp drive\r
+configuration that is sourced by a perfect fluid plasma (satisfying the WEC and so also\r
+the NEC) plus electromagnetic Maxwell stress-energy (satisfying all of NEC, WEC,\r
+SEC, and DEC). So if this claim were to be true, if these models truly were solutions of\r
+the Einstein equations with the specified source, one would have a warp drive spacetime\r
+satisfying the NEC, which we have just shown to be impossible. What has gone wrong?\r
+The point here is that the author of [1] has not actually solved the Einstein equations,\r
+he has only solved part of the Einstein equations — for the density, flux, and trace of\r
+the stress. This is not enough to obtain a valid solution of the Einstein equations — the\r
+author would also need to consider the remaining trace-free part Tij −\r
+1\r
+3\r
+(Tklδ\r
+kl)gij of\r
+the stress tensor.\r
+D Final considerations regarding recent warp drive proposals\r
+We would like to conclude by explicitly explaining (if not yet mentioned) why each of\r
+the recent warp drive proposals have failed in their claims.\r
+Starting with [1], the author has claimed to have found a warp drive solution which\r
+would not violate the WEC. This is actually an incorrect claim since the author has never\r
+actually solved the Einstein equations. By imposing a warp drive metric, it is clear from\r
+equations (3.19), (3.20) and (3.21) that all of the components of the energy momentum\r
+tensor are already determined, without much freedom to play around. This is called a\r
+reverse engineering process. Once you define your metric, your energy momentum tensor\r
+follows directly from it. The author, however, imposes not only the metric, but also an\r
+– 34 –
+
+energy momentum tensor — therefore imposing both sides of the Einstein equations\r
+without ever verifying if they are indeed an equation or not. Hence, they haven’t only\r
+not found a solution which satisfies the WEC, they haven’t found a solution at all.\r
+Proceeding with [2], their warp drives are divided into two classes: “General spherically\r
+symmetric warp drives”, which we already discussed in appendix A, and “Axisymmetric\r
+warp drives with a general internal region” in which they haven’t found any metric\r
+satisfying the WEC. In this way, their only “warp drive” which satisfies the WEC is\r
+actually not a warp drive metric at all. It is a static spherically symmetric spacetime,\r
+therefore being reduced to either Minkowski or Schwarzschild. Furthermore, their\r
+claims about Alcubierre’s warp drive requiring negative energy due to the “artificial”\r
+matching rate for the clocks inside and outside the warp drive follows directly from\r
+their rediscovery of the existence of time delays in Schwarzschild spacetimes, which they\r
+believe to be a warp drive.\r
+Finally, in [3], their main issue reduces to “proving” the WEC by calculating the energy\r
+density for a unique class of observers – the Eulerian observers. As mentioned already,\r
+to prove the WEC one needs to prove that the energy density is positive for all time-like\r
+observers and, proving only for one class of observers simply doesn’t prove anything.\r
+Furthermore, the specific examples provided by them have a great deal of problems, as\r
+already explained in appendix C.\r
+The series of articles by Santos-Pereira, Abreu, and Ribeiro [4–8], has other issues.\r
+Specifically:\r
+• Their perfect fluid warp drives (dust, non-zero pressure, non-zero pressure with\r
+cosmological constant) are just Riemann-flat Minkowski space in disguise.\r
+• Their anisotropic fluid warp drive (“parameterized perfect fluid” warp drive) is\r
+less trivial, but is still seriously diseased.\r
+• Their charged dust warp drive is less trivial, but is still seriously diseased.\r
+(Among other things, the calculation of energy density is deeply flawed, confusing\r
+T00 and T\r
+00.)\r
+• Their “cosmological” warp drive is not cosmological.\r
+We shall go into some detail in an attempt to make the situation clear and transparent.\r
+The earliest paper [4] analyzes the Alcubierre warp drive with a stress-energy that is pure\r
+comoving Eulerian dust. Now this is a very strong constraint, and one quickly deduces\r
+that the energy density of the dust is zero. This means that the entire stress-energy\r
+– 35 –
+
+tensor is identically zero; so one is looking for vacuum solutions of the Einstein equations\r
+for an Alcubierre warp drive. But the set of vacuum solutions in an Alcubierre warp\r
+drive framework is extremely limited — in fact once one completely satisfies all the\r
+Einstein equations the only such solution is Riemann-flat Minkowski space (which,\r
+viewed as a warp drive, is trivial).\r
+The anisotropic fluid (“parameterized perfect fluid”) studied in [5] has the defect that\r
+once one completely satisfies all the Einstein equations the “warp drive” is infinitely\r
+wide in the transverse directions — so it is not a warp “bubble”, the warp field stretches\r
+all the way across the universe in the y and z directions; one is trying to accelerate an\r
+entire “slab” of spacetime in the x direction. Furthermore, the Eulerian energy density,\r
+flux, and pressure in the direction of motion are zero, the pressures transverse to the\r
+direction of motion are equal and possibly nonzero — this would then certainly violate\r
+the DEC.\r
+For the charged dust solution of [6] there is a technical error in identifying the energy\r
+density. The physically interesting quantity is ρ = T\r
+00 = Tab (−1; 0, 0, 0)a (−1; 0, 0, 0)b,\r
+where the 4-covector (−1; 0, 0, 0)a is always timelike and future pointing (it is in fact the 4-\r
+velocity of an Eulerian observer). In contrast the quantity T00 = Tab (1; 0, 0, 0)a(1; 0, 0, 0)b\r
+is not physically interesting since the 4-vector (1; 0, 0, 0)ais timelike only for a limited\r
+range of warp velocities; in fact, this 4-vector becomes spacelike exactly when the warp\r
+bubble motion becomes superluminal.\r
+For the “cosmological” solution of [7] the attempt at including a cosmological constant\r
+is at best a redefinition of terms in the stress-energy tensor. For instance, the definition\r
+of Einstein tensor adopted in [7] is not the usual one, which is unhelpful. Furthermore,\r
+given that the entire calculation is taking place within the framework of the generic\r
+Alcubierre metric, we know the spacetime is asymptotically flat; it does not match\r
+(anti)de Sitter at large distances, so it is not a “cosmological” warp bubble.\r
+In all of these situations [4–8], one is working within the framework of the generic\r
+Alcubierre metric, so we know from first principles that energy condition violations\r
+must be present.\r
+– 36 –
+
+Acknowledgements\r
+JS acknowledges indirect financial support via the Marsden fund, administered by the\r
+Royal Society of New Zealand.\r
+SS acknowledges financial support via OP RDE project No. CZ.02.2.69/0.0/0.0/18 053/-\r
+0016976 (International mobility of research), and the technical and administrative staff\r
+at the Charles University.\r
+MV was directly supported by the Marsden Fund, via a grant administered by the\r
+Royal Society of New Zealand.\r
+The authors would like to thank the anonymous referee for making several very practical\r
+suggestions, helping us to improve the presentation and logic flow in this article.\r
+References\r
+[1] E. W. Lentz, “Breaking the warp barrier: hyper-fast solitons in\r
+Einstein–Maxwell-plasma theory”, Class. Quant. Grav. 38 (2021) no.7, 075015\r
+doi:10.1088/1361-6382/abe692 [arXiv:2006.07125 [gr-qc]].\r
+[2] A. Bobrick and G. Martire, “Introducing physical warp drives”,\r
+Class. Quant. Grav. 38 (2021) no.10, 105009 doi:10.1088/1361-6382/abdf6e\r
+[arXiv:2102.06824 [gr-qc]].\r
+[3] S. D. B. Fell and L. Heisenberg, “Positive energy warp drive from hidden geometric\r
+structures”, Class.Quant.Grav. 38 (2021) 155020 doi:10.1088/1361-6382/ac0e47\r
+[arXiv:2104.06488 [gr-qc]].\r
+[4] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Dust content solutions for the\r
+Alcubierre warp drive spacetime”, Eur. Phys. J. C 80 (2020) no.8, 786\r
+doi:10.1140/epjc/s10052-020-8355-2 [arXiv:2008.06560 [gr-qc]].\r
+[5] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Fluid dynamics in the warp\r
+drive spacetime geometry”, Eur. Phys. J. C 81 (2021) no.2, 133\r
+doi:10.1140/epjc/s10052-021-08921-3 [arXiv:2101.11467 [gr-qc]].\r
+[6] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Charged dust solutions for\r
+the warp drive spacetime”, Gen. Rel. Grav. 53 (2021) no.2, 23\r
+doi:10.1007/s10714-021-02799-y [arXiv:2102.05119 [gr-qc]].\r
+[7] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Perfect fluid warp drive\r
+solutions with the cosmological constant”, Eur. Phys. J. Plus 136 (2021) no.9, 902\r
+doi:10.1140/epjp/s13360-021-01899-7 [arXiv:2108.10960 [gr-qc]].\r
+– 37 –
+
+[8] O. L. Santos-Pereira, E. M. C. Abreu and M. B. Ribeiro, “Warp drive dynamic solutions\r
+considering different fluid sources”, MG16 Conference Proceedings, [arXiv:2111.01298\r
+[gr-qc]].\r
+[9] M. Alcubierre, “The Warp drive: Hyperfast travel within general relativity”,\r
+Class. Quant. Grav. 11 (1994), L73-L77 doi:10.1088/0264-9381/11/5/001\r
+[arXiv:gr-qc/0009013 [gr-qc]].\r
+[10] J. Nat´ario, “Warp drive with zero expansion”,\r
+Class. Quant. Grav. 19 (2002), 1157-1166 doi:10.1088/0264-9381/19/6/308\r
+[arXiv:gr-qc/0110086 [gr-qc]].\r
+[11] A. E. Everett, “Warp drive and causality”, Phys. Rev. D 53 (1996), 7365-7368\r
+doi:10.1103/PhysRevD.53.7365\r
+[12] A. E. Everett and T. A. Roman, “A Superluminal subway: The Krasnikov tube”, Phys.\r
+Rev. D 56 (1997), 2100-2108 doi:10.1103/PhysRevD.56.2100 [arXiv:gr-qc/9702049\r
+[gr-qc]].\r
+[13] W. A. Hiscock, “Quantum effects in the Alcubierre warp drive space-time”,\r
+Class. Quant. Grav. 14 (1997), L183-L188 doi:10.1088/0264-9381/14/11/002\r
+[arXiv:gr-qc/9707024 [gr-qc]].\r
+[14] M. J. Pfenning, “Quantum inequality restrictions on negative energy densities in curved\r
+space-times”, [arXiv:gr-qc/9805037 [gr-qc]].\r
+[15] R. J. Low, “Speed limits in general relativity”, Class. Quant. Grav. 16 (1999), 543-549\r
+doi:10.1088/0264-9381/16/2/016 [arXiv:gr-qc/9812067 [gr-qc]].\r
+[16] K. D. Olum, “Superluminal travel requires negative energies”, Phys. Rev. Lett. 81\r
+(1998), 3567-3570 doi:10.1103/PhysRevLett.81.3567 [arXiv:gr-qc/9805003 [gr-qc]].\r
+[17] C. Van Den Broeck, “A warp drive with reasonable total energy requirements”,\r
+Class. Quant. Grav. 16 (1999), 3973-3979 doi:10.1088/0264-9381/16/12/314\r
+[arXiv:gr-qc/9905084 [gr-qc]].\r
+[18] C. Van Den Broeck, “On the (im)possibility of warp bubbles”, [arXiv:gr-qc/9906050\r
+[gr-qc]].\r
+[19] C. Clark, W. A. Hiscock and S. L. Larson, “Null geodesics in the Alcubierre warp drive\r
+space-time: The view from the bridge”, Class. Quant. Grav. 16 (1999), 3965-3972\r
+doi:10.1088/0264-9381/16/12/313 [arXiv:gr-qc/9907019 [gr-qc]].\r
+[20] M. Visser, B. Bassett and S. Liberati, “Perturbative superluminal censorship and the\r
+null energy condition”, AIP Conf. Proc. 493 (1999) no.1, 301-305 doi:10.1063/1.1301601\r
+[arXiv:gr-qc/9908023 [gr-qc]].\r
+[21] M. Alcubierre, “Warp-Antrieb — Wurml¨ocher — Zeitreisen” (“Warp propulsion,\r
+wormholes, time travel”), Sterne und Weltraum special 6 (2001), 70-76\r
+– 38 –
+
+[22] F. S. N. Lobo and P. Crawford, “Weak energy condition violation and superluminal\r
+travel”, Lect. Notes Phys. 617 (2003), 277-291 [arXiv:gr-qc/0204038 [gr-qc]].\r
+[23] F. S. N. Lobo and M. Visser, “Fundamental limitations on warp drive spacetimes”,\r
+Class. Quant. Grav. 21 (2004), 5871-5892 doi:10.1088/0264-9381/21/24/011\r
+[arXiv:gr-qc/0406083 [gr-qc]].\r
+[24] F. S. N. Lobo and M. Visser, “Linearized warp drive and the energy conditions”,\r
+Proceedings of the Spanish Relativity Meeting-2004 (Miraflores de la Sierra, Madrid,\r
+September 2004) [arXiv:gr-qc/0412065 [gr-qc]].\r
+[25] F. S. N. Lobo, “Exotic solutions in General Relativity: Traversable wormholes and warp\r
+drive spacetimes”, Classical and Quantum Gravity Research (2008) 1–78,\r
+Nova Sci. Pub. (New York), ISBN-10: 978-1-60456-366-5 [arXiv:0710.4474 [gr-qc]].\r
+[26] S. Finazzi, S. Liberati and C. Barcel´o, “Semiclassical instability of dynamical warp\r
+drives”, Phys. Rev. D 79 (2009), 124017 doi:10.1103/PhysRevD.79.124017\r
+[arXiv:0904.0141 [gr-qc]].\r
+[27] B. McMonigal, G. F. Lewis and P. O’Byrne, “The Alcubierre warp drive: On the matter\r
+of matter”, Phys. Rev. D 85 (2012), 064024 doi:10.1103/PhysRevD.85.064024\r
+[arXiv:1202.5708 [gr-qc]].\r
+[28] M. Alcubierre and F. S. N. Lobo, “Wormholes, Warp Drives and Energy Conditions”,\r
+Fundam. Theor. Phys. 189 (2017), pp.1-279 doi:10.1007/978-3-319-55182-1\r
+[arXiv:2103.05610 [gr-qc]].\r
+[29] M. Alcubierre and F. S. N. Lobo, “Warp Drive Basics”,\r
+Fundam. Theor. Phys. 189 (2017), 257-279 doi:10.1007/978-3-319-55182-1 11\r
+[arXiv:2103.05610 [gr-qc]]\r
+[30] R. L. Arnowitt, S. Deser and C. W. Misner, “The Dynamics of general relativity”,\r
+Originally published in “Gravitation: an introduction to current research”,\r
+edited by Louis Witten (Wiley 1962), chapter 7, pp 227–265.\r
+Republished as: Gen. Rel. Grav. 40 (2008), 1997-2027 doi:10.1007/s10714-008-0661-1\r
+[arXiv:gr-qc/0405109 [gr-qc]].\r
+[31] E. Gourgoulhon, “3+1 formalism and bases of numerical relativity”,\r
+Lecture Notes in Physics 846, (Springer-Verlag, Berlin, 2012)\r
+ISBN-13: 978-3-642-24524-4 [arXiv:gr-qc/0703035 [gr-qc]].\r
+[32] R. M. Wald, General Relativity, (University of Chicago Press, Chicago, 1984) ISBN-10:\r
+0-226-87033-2 doi:10.7208/chicago/9780226870373.001.0001\r
+[33] E. Poisson, A Relativist’s Toolkit: The Mathematics of Black-Hole Mechanics,\r
+(Cambridge, Cambridge, 2004) ISBN-10: 0-521-83091-5 doi:10.1017/CBO9780511606601\r
+– 39 –
+
+[34] C. W. Misner, K. S. Thorne and J. A. Wheeler, Gravitation, (Freeman, San Francisco,\r
+1973) ISBN-10: 0-7167-0334-3\r
+[35] C. Kiefer, Quantum gravity, (Oxford University Press, Oxford, 2007) ISBN-13:\r
+978-0-19-958520-5.\r
+[36] M. Alcubierre, Introduction to 3+1 Numerical Relativity, (Oxford, Oxford, 2008)\r
+ISBN-13: 9780199205677 doi:10.1093/acprof:oso/9780199205677.001.0001\r
+[37] W. G. Unruh, “Experimental black hole evaporation”, Phys. Rev. Lett. 46 (1981),\r
+1351-1353 doi:10.1103/PhysRevLett.46.1351\r
+[38] C. Barcel´o, S. Liberati and M. Visser, “Analogue gravity”, Living Rev. Rel. 8 (2005), 12\r
+doi:10.12942/lrr-2005-12 [arXiv:gr-qc/0505065 [gr-qc]].\r
+[39] M. Visser, “Acoustic black holes: Horizons, ergospheres, and Hawking radiation”, Class.\r
+Quant. Grav. 15 (1998), 1767-1791 doi:10.1088/0264-9381/15/6/024\r
+[arXiv:gr-qc/9712010 [gr-qc]].\r
+[40] M. Novello, M. Visser and G. Volovik, Artificial black holes, (World Scientific, Singapore,\r
+2002) ISBN-13: 978-981-02-4807-9\r
+[41] R. Schutzhold and W. G. Unruh, “Gravity wave analogs of black holes”, Phys. Rev. D\r
+66 (2002), 044019 doi:10.1103/PhysRevD.66.044019 [arXiv:gr-qc/0205099 [gr-qc]].\r
+[42] S. W. Hawking and G. F. R. Ellis, The large scale structure of space-time, ISBN-13:\r
+978-0-521-09906-6 doi:10.1017/CBO9780511524646\r
+[43] M. Visser, Lorentzian wormholes: From Einstein to Hawking, (AIP Press — now\r
+Springer, New York, 1995) ISBN-13: 978-1563966538 ISBN-10: 1563966530\r
+[44] E. Curiel, “A Primer on Energy Conditions”, Einstein Stud. 13 (2017), 43-104\r
+doi:10.1007/978-1-4939-3210-8 3 [arXiv:1405.0403 [physics.hist-ph]].\r
+[45] E. A. Kontou and K. Sanders, “Energy conditions in general relativity and quantum\r
+field theory”, Class. Quant. Grav. 37 (2020) no.19, 193001 doi:10.1088/1361-6382/ab8fcf\r
+[arXiv:2003.01815 [gr-qc]].\r
+[46] S. M. Carroll, Spacetime and geometry: An introduction to general relativity, (Addison\r
+Wesley, San Francisco, 2004) ISBN-10: 0-8053-8732-3.\r
+[47] S. W. Hawking and W. Israel, editors, General relativity: An Einstein centenary survey,\r
+(Cambridge, Cambridge, 1979) ISBN-10: 0-521-29928-4.\r
+[48] H. Maeda and C. Martinez, “Energy conditions in arbitrary dimensions”, PTEP 2020\r
+(2020) no.4, 043E02 doi:10.1093/ptep/ptaa009 [arXiv:1810.02487 [gr-qc]].\r
+[49] C. Barcel´o and M. Visser, “Twilight for the energy conditions?”, Int. J. Mod. Phys. D\r
+11 (2002), 1553-1560 doi:10.1142/S0218271802002888 [arXiv:gr-qc/0205066 [gr-qc]].\r
+– 40 –
+
+[50] J. D. Bekenstein, “If vacuum energy can be negative, why is mass always positive?:\r
+Uses of the subdominant trace energy condition”, Phys. Rev. D 88 (2013), 125005\r
+doi:10.1103/PhysRevD.88.125005 [arXiv:1310.6203 [quant-ph]].\r
+[51] M. Visser and C. Barcel´o, “Energy conditions and their cosmological implications”,\r
+doi:10.1142/9789812792129 0014 [arXiv:gr-qc/0001099 [gr-qc]].\r
+[52] M. Visser, “General relativistic energy conditions: The Hubble expansion in the epoch of\r
+galaxy formation”, Phys. Rev. D 56 (1997), 7578-7587 doi:10.1103/PhysRevD.56.7578\r
+[arXiv:gr-qc/9705070 [gr-qc]].\r
+[53] M. Visser, “Energy conditions in the epoch of galaxy formation”, Science 276 (1997),\r
+88-90 doi:10.1126/science.276.5309.88 [arXiv:1501.01619 [gr-qc]].\r
+[54] M. Visser, “Energy conditions and galaxy formation”, [arXiv:gr-qc/9710010 [gr-qc]].\r
+[55] C. Catto¨en and M. Visser, “Cosmodynamics: Energy conditions, Hubble bounds, density\r
+bounds, time and distance bounds”, Class. Quant. Grav. 25 (2008), 165013\r
+doi:10.1088/0264-9381/25/16/165013 [arXiv:0712.1619 [gr-qc]].\r
+[56] C. Catto¨en and M. Visser, “Cosmological milestones and energy conditions”,\r
+J. Phys. Conf. Ser. 68 (2007), 012011 doi:10.1088/1742-6596/68/1/012011\r
+[arXiv:gr-qc/0609064 [gr-qc]].\r
+[57] E. A. Kontou and K. D. Olum, “Energy conditions allow eternal inflation”,\r
+JCAP 03 (2021), 097 doi:10.1088/1475-7516/2021/03/097 [arXiv:2008.01878 [gr-qc]].\r
+[58] A. Zee, Einstein gravity in a nutshell, (Princeton, Princeton, 2013)\r
+ISBN-13: 978-0-691-14558-7\r
+[59] P. Mart´ın-Moruno and M. Visser, “Classical and quantum flux energy conditions for\r
+quantum vacuum states”, Phys. Rev. D 88 (2013) no.6, 061701\r
+doi:10.1103/PhysRevD.88.061701 [arXiv:1305.1993 [gr-qc]].\r
+[60] P. Mart´ın-Moruno and M. Visser, “Classical and semi-classical energy conditions”,\r
+Fundam. Theor. Phys. 189 (2017), 193-213 doi:10.1007/978-3-319-55182-1 9\r
+[arXiv:1702.05915 [gr-qc]].\r
+[61] P. Mart´ın-Moruno and M. Visser, “Semiclassical energy conditions for quantum vacuum\r
+states”, JHEP 09 (2013), 050 doi:10.1007/JHEP09(2013)050 [arXiv:1306.2076 [gr-qc]].\r
+[62] P. Mart´ın-Moruno and M. Visser, “Semi-classical and nonlinear energy conditions”,\r
+doi:10.1142/9789813226609 0126 [arXiv:1510.00158 [gr-qc]].\r
+[63] M. Visser, “Gravitational vacuum polarization. 1: Energy conditions in the\r
+Hartle-Hawking vacuum”, Phys. Rev. D 54 (1996), 5103-5115\r
+doi:10.1103/PhysRevD.54.5103 [arXiv:gr-qc/9604007 [gr-qc]].\r
+– 41 –
+
+[64] M. Visser, “Gravitational vacuum polarization. 2: Energy conditions in the Boulware\r
+vacuum”, Phys. Rev. D 54 (1996), 5116-5122 doi:10.1103/PhysRevD.54.5116\r
+[arXiv:gr-qc/9604008 [gr-qc]].\r
+[65] M. Visser, “Gravitational vacuum polarization. 3: Energy conditions in the (1+1)\r
+Schwarzschild space-time”, Phys. Rev. D 54 (1996), 5123-5128\r
+doi:10.1103/PhysRevD.54.5123 [arXiv:gr-qc/9604009 [gr-qc]].\r
+[66] M. Visser, “Gravitational vacuum polarization. 4: Energy conditions in the Unruh\r
+vacuum”, Phys. Rev. D 56 (1997), 936-952 doi:10.1103/PhysRevD.56.936\r
+[arXiv:gr-qc/9703001 [gr-qc]].\r
+[67] M. Visser, “Gravitational vacuum polarization”, Proceedings of MG8, the Eighth Marcel\r
+Grossmann Conference on General Relativity. (Jerusalem, Israel, June 1997) World\r
+Scientific (Singapore) ISBN-10: 981-02-3954-8 [arXiv:gr-qc/9710034 [gr-qc]].\r
+[68] C. J. Fewster and T. A. Roman, “Null energy conditions in quantum field theory”, Phys.\r
+Rev. D 67 (2003), 044003 [erratum: Phys. Rev. D 80 (2009), 069903]\r
+doi:10.1103/PhysRevD.67.044003 [arXiv:gr-qc/0209036 [gr-qc]].\r
+[69] C. J. Fewster and G. J. Galloway, “Singularity theorems from weakened energy\r
+conditions”, Class. Quant. Grav. 28 (2011), 125009 doi:10.1088/0264-9381/28/12/125009\r
+[arXiv:1012.6038 [gr-qc]].\r
+[70] C. J. Fewster, “Lectures on quantum energy inequalities”, [arXiv:1208.5399 [gr-qc]].\r
+[71] M. Visser, “Scale anomalies imply violation of the averaged null energy condition”, Phys.\r
+Lett. B 349 (1995), 443-447 doi:10.1016/0370-2693(95)00303-3 [arXiv:gr-qc/9409043\r
+[gr-qc]].\r
+[72] E. E. Flanagan and R. M. Wald, “Does back reaction enforce the averaged null energy\r
+condition in semiclassical gravity?”, Phys. Rev. D 54 (1996), 6233-6283\r
+doi:10.1103/PhysRevD.54.6233 [arXiv:gr-qc/9602052 [gr-qc]].\r
+[73] L. H. Ford and T. A. Roman, “Averaged energy conditions and quantum inequalities”,\r
+Phys. Rev. D 51 (1995), 4277-4286 doi:10.1103/PhysRevD.51.4277 [arXiv:gr-qc/9410043\r
+[gr-qc]].\r
+[74] L. H. Ford and T. A. Roman, “Averaged energy conditions and evaporating black holes”,\r
+Phys. Rev. D 53 (1996), 1988-2000 doi:10.1103/PhysRevD.53.1988 [arXiv:gr-qc/9506052\r
+[gr-qc]].\r
+[75] L. H. Ford, “The Classical singularity theorems and their quantum loop holes”, Int. J.\r
+Theor. Phys. 42 (2003), 1219-1227 doi:10.1023/A:1025754515197 [arXiv:gr-qc/0301045\r
+[gr-qc]].\r
+[76] L. H. Ford, “Spacetime in semiclassical gravity”, doi:10.1142/9789812700988 0011\r
+[arXiv:gr-qc/0504096 [gr-qc]].\r
+– 42 –
+
+[77] R. M. Wald and U. Yurtsever, “General proof of the averaged null energy condition for a\r
+massless scalar field in two-dimensional curved space-time”, Phys. Rev. D 44 (1991),\r
+403-416 doi:10.1103/PhysRevD.44.403\r
+[78] M. Visser, S. Kar and N. Dadhich, “Traversable wormholes with arbitrarily small energy\r
+condition violations”, Phys. Rev. Lett. 90 (2003), 201102\r
+doi:10.1103/PhysRevLett.90.201102 [arXiv:gr-qc/0301003 [gr-qc]].\r
+[79] D. Hochberg and M. Visser, “Dynamic wormholes, anti-trapped surfaces, and energy\r
+conditions”, Phys. Rev. D 58 (1998), 044021 doi:10.1103/PhysRevD.58.044021\r
+[arXiv:gr-qc/9802046 [gr-qc]].\r
+[80] D. Hochberg and M. Visser, “The Null energy condition in dynamic wormholes”, Phys.\r
+Rev. Lett. 81 (1998), 746-749 doi:10.1103/PhysRevLett.81.746 [arXiv:gr-qc/9802048\r
+[gr-qc]].\r
+[81] C. Barcel´o and M. Visser, “Scalar fields, energy conditions, and traversable wormholes”,\r
+Class. Quant. Grav. 17 (2000), 3843-3864 doi:10.1088/0264-9381/17/18/318\r
+[arXiv:gr-qc/0003025 [gr-qc]].\r
+[82] C. Barcel´o and M. Visser, “Brane surgery: Energy conditions, traversable wormholes,\r
+and voids”, Nucl. Phys. B 584 (2000), 415-435 doi:10.1016/S0550-3213(00)00379-5\r
+[arXiv:hep-th/0004022 [hep-th]].\r
+[83] S. Kar, N. Dadhich and M. Visser, “Quantifying energy condition violations in\r
+traversable wormholes”, Pramana 63 (2004), 859-864 doi:10.1007/BF02705207\r
+[arXiv:gr-qc/0405103 [gr-qc]].\r
+[84] T. A. Roman and P. G. Bergmann, “Stellar collapse without singularities?”, Phys. Rev.\r
+D 28 (1983), 1265-1277 doi:10.1103/PhysRevD.28.1265\r
+[85] T. A. Roman, “Some thoughts on energy conditions and wormholes”,\r
+doi:10.1142/9789812704030 0236 [arXiv:gr-qc/0409090 [gr-qc]].\r
+[86] F. S. N. Lobo, “From the Flamm–Einstein–Rosen bridge to the modern renaissance of\r
+traversable wormholes”, Int. J. Mod. Phys. D 25 (2016) no.07, 1630017\r
+doi:10.1142/S0218271816300172 [arXiv:1604.02082 [gr-qc]].\r
+[87] D. Hochberg, C. Molina-Par´ıs and M. Visser, “Tolman wormholes violate the strong\r
+energy condition”, Phys. Rev. D 59 (1999), 044011 doi:10.1103/PhysRevD.59.044011\r
+[arXiv:gr-qc/9810029 [gr-qc]].\r
+[88] S. W. Hawking, “Chronology protection conjecture”, Phys. Rev. D. 46 (2) (1992) 603.\r
+doi:10.1103/physrevd.46.603.\r
+[89] M. Visser, “The Quantum physics of chronology protection”, Published in: The Future\r
+of Theoretical Physics and Cosmology, Celebrating Steven Hawking’s 60th Birthday,\r
+Edited by G. W. Gibbons, E. P. S. Shellard, and S. J. Drake, (Cambridge, Cambridge,\r
+2003) ISBN-13: 978-0-521-14408-7 [arXiv:gr-qc/0204022 [gr-qc]].\r
+– 43 –
+
+[90] M. Visser, “From wormhole to time machine: Comments on Hawking’s chronology\r
+protection conjecture”, Phys. Rev. D 47 (1993), 554-565 doi:10.1103/PhysRevD.47.554\r
+[arXiv:hep-th/9202090 [hep-th]].\r
+[91] M. Visser, “Hawking’s chronology protection conjecture: Singularity structure of the\r
+quantum stress-energy tensor”, Nucl. Phys. B 416 (1994), 895-906\r
+doi:10.1016/0550-3213(94)90560-6 [arXiv:hep-th/9303023 [hep-th]].\r
+[92] J. L. Friedman and A. Higuchi, “Topological censorship and chronology protection”,\r
+Annalen Phys. 15 (2006), 109-128 doi:10.1002/andp.200510172 [arXiv:0801.0735 [gr-qc]].\r
+[93] S. Liberati, “Do not mess with time: Probing faster than light travel and chronology\r
+protection with superluminal warp drives”, doi:10.1142/9789813226609 0120\r
+[arXiv:1601.00785 [gr-qc]].\r
+[94] M. J. Pfenning and L. H. Ford, “The unphysical nature of “Warp Drive””, Class. Quant.\r
+Grav. 14 (1997) no.7, 1743 doi:10.1088/0264-9381/14/7/011 [arXiv:gr-qc/9702026v3].\r
+[95] R. Gattermann, “Nadsvˇeteln´y pohyb v obecn´e relativitˇe”, (“Superluminal motion in\r
+general relativity”), Bachelor Thesis (2013), Charles University Prague\r
+doi:20.500.11956/55966\r
+[96] P. Mart´ın-Moruno and M. Visser, “Essential core of the Hawking–Ellis types”, Class.\r
+Quant. Grav. 35 (2018) no.12, 125003 doi:10.1088/1361-6382/aac147 [arXiv:1802.00865\r
+[gr-qc]].\r
+[97] P. Mart´ın-Moruno and M. Visser, “Generalized Rainich conditions, generalized\r
+stress-energy conditions, and the Hawking-Ellis classification”, Class. Quant. Grav. 34\r
+(2017) no.22, 225014 doi:10.1088/1361-6382/aa9039 [arXiv:1707.04172 [gr-qc]].\r
+[98] P. Mart´ın-Moruno and M. Visser, “Hawking–Ellis type III spacetime geometry”, Class.\r
+Quant. Grav. 35 (2018) no.18, 185004 doi:10.1088/1361-6382/aad473 [arXiv:1806.02094\r
+[gr-qc]].\r
+[99] P. Mart´ın-Moruno and M. Visser, “The type III stress-energy tensor: Ugly duckling of\r
+the Hawking–Ellis classification”, Class. Quant. Grav. 37 (2020) no.1, 015013\r
+doi:10.1088/1361-6382/ab56f6 [arXiv:1907.01269 [gr-qc]].\r
+[100] P. Mart´ın-Moruno and M. Visser, “Hawking-Ellis classification of stress-energy:\r
+test-fields versus back-reaction”, [arXiv:2102.13551 [gr-qc]].\r
+[101] A. K. Raychaudhuri, “Relativistic cosmology I”, Phys. Rev. 98 #4 (1955) 1123?1126.\r
+doi:10.1103/PhysRev.98.1123.\r
+[102] S. Kar and S. SenGupta, “The Raychaudhuri equations: A Brief review”, Pramana 69\r
+(2007), 49 doi:10.1007/s12043-007-0110-9 [arXiv:gr-qc/0611123 [gr-qc]].\r
+[103] N. Dadhich, “Derivation of the Raychaudhuri equation”, [arXiv:gr-qc/0511123 [gr-qc]].\r
+– 44 –
+
+[104] J. Ehlers, “A. K. Raychaudhuri and his equation”, Int. J. Mod. Phys. D 15 (2006),\r
+1573-1580 doi:10.1142/S0218271806008966\r
+[105] A. Borde, “Geodesic focusing, energy conditions and singularities”, Class. Quant. Grav.\r
+4 (1987), 343-356 doi:10.1088/0264-9381/4/2/015\r
+[106] M. Visser, “van Vleck determinants: Geodesic focusing and defocusing in Lorentzian\r
+space-times”, Phys. Rev. D 47 (1993), 2395-2402 doi:10.1103/PhysRevD.47.2395\r
+[arXiv:hep-th/9303020 [hep-th]].\r
+[107] G. Abreu and M. Visser, “Some generalizations of the Raychaudhuri equation”, Phys.\r
+Rev. D 83 (2011), 104016 doi:10.1103/PhysRevD.83.104016 [arXiv:1012.4806 [gr-qc]].\r
+– 45 –"""

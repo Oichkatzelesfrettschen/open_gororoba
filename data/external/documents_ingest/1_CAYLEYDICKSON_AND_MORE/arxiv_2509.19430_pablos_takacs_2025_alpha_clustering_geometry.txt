@@ -1,0 +1,2260 @@
+Bayesian Constraints on Pre-Equilibrium Jet Quenching
+and Predictions for Oxygen Collisions
+Daniel Pablos∗
+IGFAE, Universidade de Santiago de Compostela, E-15782 Galicia-Spain
+Departamento de Física, Universidad de Oviedo,
+Avda. Federico García Lorca 18, 33007 Oviedo, Spain and
+Instituto Universitario de Ciencias y Tecnologías Espaciales de Asturias (ICTEA),
+Calle de la Independencia 13, 33004 Oviedo, Spain
+
+Adam Takacs†
+
+arXiv:2509.19430v1 [hep-ph] 23 Sep 2025
+
+Institute for Theoretical Physics, Heidelberg University, Philosophenweg 16, 69120 Heidelberg, Germany
+The contrast between the as-yet unmeasurable energy-loss effects in proton-nucleus collisions and
+the striking magnitude of the so-called high-momentum flow coefficients challenges our understanding of jet quenching mechanisms in large nucleus-nucleus collisions when applied to smaller systems.
+Intermediate-sized, light ion collisions will offer key insight into the system-size dependence of the
+interplay between jet energy loss and jet flow effects. To make quantitative predictions, we extend
+a semi-analytic jet quenching framework by coupling it to state-of-the-art event-by-event hydrodynamics and, for the first time, incorporate pre-equilibrium energy loss via the hydrodynamic
+attractor. A Bayesian analysis shows that an early-time onset of energy loss is compatible with
+RHIC and LHC measurements of jet suppression and jet elliptic flow in large systems, as well as
+hadron suppression, with the exception of hadron elliptic flow. Using these constraints, we predict
+both hadron and jet quenching observables in oxygen-oxygen collisions, finding sizable energy loss
+that exceeds the no-quenching baseline.
+
+I.
+
+INTRODUCTION
+
+Understanding the emergence of collective behavior in
+small collision systems, such as pp and pA collisions, remains one of the central challenges for both the highenergy physics and heavy-ion communities since their
+discovery at the LHC more than a decade ago [1–4] (for
+recent reviews, see [5–7]). While the dynamical origin of
+this collectivity is still under investigation, hydrodynamic
+models, originally thought to be valid only for large systems such as AA collisions, have proven quantitatively
+successful in describing several low-momentum observables in small systems as well [8–11] (a non-exhaustive
+list of alternative explanations includes [12–17]).
+This hydrodynamic picture requires the presence of a
+deconfined quark-gluon plasma (QGP), implying finalstate interactions and consequently jet quenching [18–20].
+In AA collisions, jet modifications are firmly established,
+and their dependence on the medium size is consistent
+with expectations from parton energy-loss calculations
+performed using perturbative QCD or holographic techniques [21–24]. However, in pA collisions, jet quenching
+remains elusive, possibly due to the short path lengths
+involved [25–28]. Despite the absence of measurable energy loss, significant azimuthal anisotropies have been
+observed in high-pT particles in pA systems [29–31]. In
+AA collisions, this anisotropy is understood in terms of
+differences in energy loss due to the different path lengths
+
+∗ pablosdaniel@uniovi.es
+† takacs@thphys.uni-heidelberg.de
+
+traversed as a function of the jet orientation with respect
+to the reaction plane of the collision [32, 33], adding further puzzling elements to the picture we attempt to draw
+for small systems.
+Recent LHC runs on OO and NeNe collisions have
+provided a valuable bridge between small (pp and pA)
+and large (such as PbPb and AuAu) collision systems,
+thereby reducing uncertainties related to short path
+lengths and centrality determination [34–37]. In these
+smaller systems, fluctuations and out-of-equilibrium dynamics are believed to play an increasingly critical role
+in achieving quantitative precision [38–41].
+In this work, we extend our semi-analytic jet quenching framework [42–44] by incorporating these elements to
+enable reliable predictions for the upcoming experimental results on the potential existence of jet quenching
+effects in OO collisions. We account for medium fluctuations by coupling the framework to state-of-the-art
+event-by-event hydrodynamic simulations of the expanding fireball within which jets are produced and subsequently traverse. Before hydrodynamics is believed to be
+applicable, we incorporate quenching effects during the
+pre-equilibrium phase via the hydrodynamic attractor extracted from QCD kinetic theory, representing the first
+time this is done in a realistic model for jet quenching.
+We benchmark our model against a broad set of AA
+data, including both LHC and RHIC energies and collision systems, spanning wide ranges in centrality, jet
+cone size and transverse momentum. Using Bayesian parameter estimation, we achieve a simultaneous and conjet
+sistent description of jet suppression RAA
+(pT ) and elliptic anisotropy v2jet (pT ) across all available data. We
+jet
+show that the combination of RAA
+and v2jet provides
+
+2
+constraints on energy-loss effects in the pre-equilibrium
+phase. The resulting posterior distributions can then be
+used to predict jet and hadron observables in other collision systems, including OO as we do in the present work.
+II.
+
+FRAMEWORK
+
+Our jet quenching framework builds on previous results from [42–44], which we briefly summarize here. We
+introduce two key new components: (i) the coupling to
+event-by-event fluctuating hydrodynamics, and (ii) energy loss in the pre-equilibrium phase using the hydrodynamic attractor.
+Our starting point is the vacuum jet cross section,
+σipp (pT , R), computed using MadGraph+Pythia [45–47] at
+NLO+LL accuracy. We reconstructed jets and assigned
+their flavor (i = q/g) with the Flavor-kt [48]. Nuclear
+PDF (nPDF) effects are incorporated using EPPS21 [49]
+within the LHAPDF [50] framework, yielding the modified
+cross section σ̃ pp (pT , R). The charged hadron spectrum
+is evaluated by convoluting this jet spectrum with the
+NPC23 [51] fragmentation function (FF).
+The quenched jet cross section is described via the convolution of the nPDF-modified jet cross section with the
+energy-loss probability distribution:
+X Z
+AA
+σ (pT , R) =
+dεPi (ε, R, pT )σ̃ipp (pT + ε, R) . (1)
+i=q,g
+
+Energy is lost predominantly due to medium-induced
+emissions escaping the jet cone R, as encoded in
+Pi (ε, R, pT ). The emission rate is computed using the
+Improved Opacity Expansion in a static medium, which
+captures both single hard and multiple soft scatterings,
+and also includes finite path length corrections [52, 53].
+Medium properties affect these rates through LO Hard
+Thermal Loop results, namely the (bare) jet quench2
+ing parameter q̂0 = gmed
+Nc m2D T /(4π), and the Debye
+2
+T 2 /2, where T is the local
+screening mass m2D = 3gmed
+temperature of the hydrodynamic medium. Here, gmed
+is the (fixed, i.e. non-running) strong coupling for jetmedium interactions, representing the first of the two parameters we will estimate using Bayesian inference. We
+assume factorization between induced collinear emissions
+and transverse momentum broadening: semi-hard emissions undergo Gaussian broadening, while hard emissions
+inherit their transverse momentum from the Coulomb
+tail of the scattering potential. Since the softest emissions thermalize rapidly [54], they should be considered
+part of the medium and contribute to hydrodynamic
+wakes [55, 56], a manifestation of medium response to
+the jet passage. We approximate these physics by assuming that the thermalized energy is distributed uniformly around the jet hemisphere. Elastic energy loss is
+also included and constrained via the Einstein relation
+ê = q̂/(4T ), and is assumed to thermalize in a similar
+fashion. Here, q̂ accounts for the logarithmic corrections
+of q̂0 (see later).
+
+Energetic jets consist of multiple partons produced
+by the high-virtuality DGLAP evolution that occurs at
+the early stages of the in-medium jet propagation [57].
+These partons represent an additional source of energy
+loss. We account for this by resumming these multiple
+sources via a factorization between early vacuum-like and
+medium-induced emissions [58]. Importantly, we also include color-coherence, and -resolution [59–61] effects (referred to as coherent energy loss) by incorporating the
+non-local angular scale below whichpthe medium cannot
+resolve individual partons, θc ∼ 1/ q̂L3 , with L being
+the traversed medium length. Detailed formulas are provided in [44].
+Jet propagation occurs within an event-by-event fluctuating 2+1D hydrodynamic background. We employ
+hydro profiles from the comprehensive multi-stage framework IP-Glasma+JIMWLK+MUSIC+UrQMD, which successfully describes a wide range of bulk observables in
+heavy-ion collisions [62]. This state-of-the-art framework evolves the bulk starting from the initial energy
+density deposited at specific hotspots determined by the
+IPSat [63]. Jet probes are placed precisely onto these
+hotspots, whose number is proportional to the number
+of binary collisions Ncoll , and their initial orientation is
+uniformly distributed in the azimuthal angle ϕ. Straight
+jet trajectories are sampled from their production point
+until they exit the deconfined medium at T < Tc , with
+Tc marks the crossover transition to the hadron gas
+phase. The medium and jet-medium interaction quantities needed for the computation of radiative and elastic
+energy loss are then obtained by averaging along each jet
+trajectory, as extracted from the hydrodynamic profiles.
+We neglect further quenching below Tc . For more details on the embedding of our jet quenching framework in
+the realistic heavy-ion environment, see Ref. [44], where
+event-averaged hydro profiles were used instead. Event
+classification into centrality classes is based on the final
+charged particle multiplicity of the bulk, from which one
+also extracts the soft event-plane angles Ψn , necessary for
+computing the jet flow coefficients. Thus, our framework
+predicts the quenched jet spectrum for various parameters σ AA% (pT , η, ϕ, R).
+The hydrodynamic description of the bulk begins at a
+finite time τhyd = 0.4 fm. The initial condition of this
+nearly ideal fluid is reached through the Glasma evolution
+of saturated gluon fields (for reviews on this approach to
+thermalization, see [64, 65]). Quenching effects have traditionally been neglected before this time, largely due
+to the absence of reliable energy-loss calculations in the
+non-equilibrated phase. While an earlier start could be
+mimicked by adjusting the jet-medium coupling, combined observables such as high-pT RAA and v2 are known
+to be sensitive to the actual value of the quenching onset
+time [66, 67]. The need to address jet quenching in the
+earliest stages has been emphasized in recent works where
+the pre-hydro phase is modeled either by Glasma [68, 69]
+or by QCD effective kinetic theory (EKT) [70, 71]. Despite differences in approach, these studies consistently
+
+3
+
+15
+
+(τ 1/3 T )4eff = (τ 1/3 T )4hyd · E(ω̃) .
+
+1.6
+
+with η/s = 0.12, where T (x) is the local initial temperature. We assume that our energy-loss model can be applied without any additional modification by using these
+extrapolated pre-equilibrium temperatures. Before τmin ,
+no quenching is applied, and we take this time as the
+second parameter of our Bayesian inference.
+Finally, fluid velocity fields also evolve during the preequilibrium phase, as initial spatial anisotropies begin to
+generate flow [65]. This non-equilibrium evolution is well
+approximated by the universal pre-flow extracted from
+EKT [80]. We incorporate it by scaling the transverse
+velocity linearly with time:
+
+veff,z (τ ) = tanh ηs ,
+
+(4)
+
+where the longitudinal velocity scales with the space-time
+rapidity ηs .
+III.
+
+RESULTS
+
+We evaluate the quenched inclusive jet spectrum
+σ AA% (pT , η, ϕ, R) for various collision systems and centralities. Our focus is on the simultaneous description of
+jet
+RAA
+and vnjet observables, which we evaluate using
+jet
+RAA
+=σ AA% (pT , R)/σ pp (pT , R) ,
+R
+(5)
+dηdϕ cos(n(ϕ − Ψn ))σ AA% (pT , η, ϕ, R)
+jet
+vn =
+.
+AA
+σ (pT , R)
+R
+where σ(pT , R) = dηdϕσ(pT , η, ϕ, R) with the appropriate experimental cuts. We use the event plane method
+to compute vnjet , following the procedure in the ATLAS
+measurement to which we compare our model [81]. We
+evaluate the hadron spectrum as
+X Z 1 dz
+ph
+σ(phT , η, ϕ) =
+σi ( zT , R, η, ϕ) Dih (z, µ2F ) , (6)
+z
+i=q,g x
+
+1.5
+
+5
+00.0
+
+(2)
+
+0.2
+
+min
+
+0.4
+
+1.20.0
+
+0.4
+
+20
+15
+10
+5
+01.2
+
+1.4
+1.3
+1.20.0
+
+1.4
+1.3
+
+1.5
+gmed
+
+where E(ω̃) is the attractor function, ω̃ = τ Teff /(4πη/s),
+and we implicitly used the the three flavor conformal
+equation of state of the EKT. We account for viscous
+corrections as
+
+
+2 η/s
+1/3
+1/3
+(τ T )hyd = τhyd T (x) +
+,
+(3)
+3 τhyd
+
+τ
+vT (τhyd , ⃗x) ,
+veff,T (τ, ⃗x) = τhyd
+
+10
+
+1.6
+
+only RAA
+RAA & v2
+
+gmed
+
+conclude that the broadening per unit length in the short
+pre-equilibrium phase is considerably larger than in the
+equilibrated hydro phase.
+In the present work, we extend our energy loss framework to the pre-equilibrium stage as follows. The outof-equilibrium evolution of the local energy density has
+been extensively studied in EKT [72–77], and it is well
+captured by the hydrodynamic attractor. We use the attractor to extrapolate the effective local temperature for
+times τ earlier than τhyd as [78, 79]:
+
+0.2
+
+min
+
+0.2
+
+0.4
+
+1.4
+gmed
+
+1.6
+
+min
+
+FIG. 1. Parameter posterior probability distributions and
+jet
+correlations. Red distributions include RAA
+and v2jet data,
+jet
+while blue only includes RAA .
+
+√
+where x = 2phT cosh(η)/ s, and we used the jet scale
+h
+µF = pT R/z. We averaged over (u, d, s) FFs and neglected the others. This simple convolution neglects
+medium effects in fragmentation, and thus ignores, for
+example, the impact of the angular redistribution of particles due to broadening.
+Our work resembles previous studies of RAA and
+v2 [66, 67, 82–96]. In contrast to these works, we focus on jets instead of hadrons, since jets are infraredand collinear-safe, and have small non-perturbative corrections in vacuum [97–100]. We use state-of-the-art hydrodynamics and energy-loss formulas, including elastic
+energy loss as well as the effects of medium response. To
+our knowledge, this is the first model implementation of
+jet energy loss in the pre-equilibrium phase carried out
+in a physically well-motivated manner.
+We employ Bayesian inference, implemented via the
+JETSCAPE/STAT toolkit [101–103], to constrain the jetmedium strong coupling gmed and the initial quenching time in the pre-equilibrium phase τmin . We used
+flat priors in the intervals 1.2 ≤ gmed ≤ 1.7, and
+jet
+0.01 ≤ τmin [fm] ≤ 0.4. Our data points include RAA
+at LHC energies for different jet-cones and centrality selections [104–106], as well as jet v2jet [81], up to 40-50%
+centrality. The inference incorporates statistical and systematic uncertainties of the data, and we estimate the
+full correlation matrix by employing a finite correlation
+length of 0.2 [102, 107]. Luminosity and centrality uncertainties are added to the systematics. We neglect inherent model uncertainties in the inference such as scale and
+nPDF uncertainties, and we will present them separately
+
+1.2
+
+1.2
+
+1.1
+
+1.1
+
+1.0
+
+1.0
+±
+
+h
+RAA
+
+jet
+RAA
+
+4
+
+0.9
+0.8
+0.7
+0.6
+30
+
+0.8
+
+No quenching
+OO: 0-30%
+OO: 30-100%
+
+0.7
+
+OO/pp @ 5.36 TeV
+inclusive jets: Rakt = 0.4, |ηjet| < 2.1
+EPPS21 + NLO QCD + coherent energy loss
+
+40 50
+
+100
+pjet
+T [GeV]
+
+0.9
+
+500
+
+0.6
+10
+
+No quenching
+OO: 0-30%
+OO: 30-100%
+
+OO/pp @ 5.36 TeV
+inclusive charged hadrons: |ηh± | < 2.1
+EPPS21 + NLO QCD + coherent energy loss + NPC23
+
+20
+
+50
+100
+±
+phT [GeV]
+
+200
+
+400
+
+FIG. 2. Nuclear modification for jets and charged hadrons in OO collisions for two different centrality selections. Dark bands
+represent the 68% confidence interval for quenching parameters, and light bands represent the 68% nPDF uncertainties.
+
+for the OO predictions.
+Figure. 1 shows the parameter posterior for two difjet
+ferent scenarios. Fitting only RAA
+(blue) results in little
+constraint on τmin . This is expected, as an earlier starting
+time can be compensated by a relatively smaller medium
+coupling to produce the same energy loss. Including v2jet
+constrains τmin ≈ 0.24 fm (red). This inference illustrates
+the role of pre-equilibrium effects in v2jet .
+Before moving to our predictions for oxygen collisions,
+Fig. 4 in App. A shows the posterior predictive distributions. We observe excellent overall agreement with all
+data. Small tensions can be found in v2jet at low pT , which
+motivates further improvements of the energy loss framework. For completeness, we also show inference results on
+gmed with two limiting scenarios: early pre-equilibrium
+with fixed τmin = 0.08 fm, and no pre-equilibrium with
+τmin = 0.4 fm. The best fit (whose parameters are shown
+in Fig. 1) outperforms these two scenarios, although differences are not very significant. The extracted bare
+jet transport coefficient is approximately q̂0 /T 3 ≈ 1.7,
+while after logarithmic corrections the effective value is
+q̂/T 3 = q̂0 /T 3 log(Q2s /µ2∗ ) ≈ 7, where Q2s = q̂0 L, and
+µ2∗ = m2D e−2+2γE /4. We note that this extracted q̂ is
+consistent with other recent extractions using Bayesian
+inference in the JETSCAPE framework [103].
+Figure 5 in App. A provides predictions for jets at
+RHIC energies [108] and charged hadrons at LHC energies [109–112] using the extracted parameters. Even
+though our framework was designed for jets, it also provides a good description of the charged hadron RAA without including them in the inference. We also see, however, that our framework underestimates hadron elliptic
+flow at low pT . This failure is consistent with previous
+findings using pQCD energy loss [66, 67]. It has been
+pointed out that a rather late quenching time of around
+
+∼ 1 fm would resolve the disagreement [67]. Alternatively, the absence of this issue for jets signals the need
+for model improvements which could be more relevant
+for (mid-pT ) hadrons than for jets. Again, for completeness, we show predictions with the previous two limiting
+scenarios (early pre-eq. and no pre-eq. energy loss), resulting as before in subtle differences.
+OO predictions: The recent OO run at the LHC has
+attracted considerable attention, with numerous dedicated studies on, for example, baseline analyses [113–
+116] and hadron quenching predictions [117–125]. Compared to these studies, our framework incorporates additional improvements, with an emphasis on jet observables. For our OO predictions of RAA and v2 we have set
+√
+sN N = 5.36 TeV and |η| < 2.1. We defer to future work
+the computation of higher-order flow harmonics, along
+with the corresponding predictions for NeNe collisions.
+Figure 2 shows our jet and charged hadron predictions
+for OO collisions. The left panel shows the inclusive jet
+suppression, where the no-quenching baseline, σ̃ pp /σ pp ,
+is indicated with gray bands. The dark band represents
+NLO scale uncertainties, while the light band is the 68%
+confidence of the nPDF. Below 50 GeV for jets and 30
+GeV for hadrons, we underestimate nPDF uncertainties
+because of the relatively high momentum cutoff we chose
+for the NLO cross-sections [115, 116]. This cutoff does
+not affect the central value. Quenching effects are shown
+with red and blue for different centrality selections. Dark
+bands are the 68% confidence of our Bayesian parameter
+estimation, and on top of these, 68% nPDF uncertainties are shown with light bands. Peripheral collisions
+(30-100%) are less suppressed than central ones (0-30%),
+as expected, and clear quenching signals are present towards lower jet pT for both centrality selections. The
+right panel in Fig. 2 shows the charged hadron suppres-
+
+5
+0.03
+
+IV.
+OO: 0-30% hadrons
+OO: 0-30% hadrons
+OO: 0-30% jets
+OO: 30-100% jets
+
+v2
+
+0.02
+
+0.01
+
+0
+OO/pp @ 5.36 TeV
+charged hadons / inclusive jets: Rakt = 0.4, |ηjet | < 2.1
+
+EPPS21 + NLO QCD + coherent energy loss (+ NPC23)
+
+-0.01
+10
+
+30
+
+50
+100
+pT [GeV]
+
+500
+
+FIG. 3. Charged hadron and jet elliptic flow in oxygen collisions for two different centrality selections. Dark bands represent the 68% confidence interval for quenching parameters,
+while light bands represent the 68% nPDF uncertainties.
+
+sion, which presents a similar pattern to jets.
+Figure 3 shows the inclusive jet and charged hadron
+elliptic flow. There is relatively smaller sensitivity to
+the nPDF, as v2 is an observable that is differential in
+the transverse plane, using solely the medium spectra,
+so the impact of the nPDF largely cancels in Eq. (5).
+Semi-inclusive observables can present analogous advantages [115]. We observe that, in contrast to large collision
+systems, the elliptic flow coefficient v2 increases with centrality. This is a consequence of the more prominent role
+played by the fluctuations of the initial nuclear shape in
+small collision systems [117, 119, 126]. Jet distributions
+are not shown for very low pT , where our framework is
+not expected to apply.
+Due to the relatively small path lengths involved in
+OO, the typical value of the coherence angle is relatively
+large, θc ∼ 0.5, and so R = 0.4 jets are unresolved and
+lose energy as single color charges. Therefore, hadron
+and jet suppression in our framework can be understood
+by the mere pT shift resulting from hadronization. In
+contrast, in larger systems (with smaller values of θc )
+both RAA and v2 receive additional contributions due to
+resolved jet substructure fluctuations [44, 127].
+Finally, Fig. 6 in App. B shows our OO predictions
+for minimum bias with the different limiting cases introduced previously. Only subtle differences are observed
+for earlier vs. later quenching for the ranges of τmin explored.
+
+CONCLUSIONS
+
+In this work, we have integrated our semi-analytical jet
+quenching model with a state-of-the-art description of
+heavy-ion collisions, IP-Glasma+JIMWLK+MUSIC+UrQMD.
+We incorporated energy loss in the pre-equilibrium phase
+via the hydrodynamic attractor for the first time. Our
+framework provides a simultaneous description of jet
+RAA and v2 in agreement with data in AA collisions, offering a strong validation of the approach. We show that
+a joint description of these observables places constraints
+on the onset time of jet-medium interactions, which is
+around 0.2 fm, deep in the pre-equilibrium phase. Then,
+we applied these parameters to predict jet and hadron
+quenching in other collision systems. We saw that our
+framework successfully predicts hadron suppression but
+underestimates hadron elliptic flow towards lower pT .
+Previous studies have reported similar results, suggesting
+that a delayed onset of quenching of about 1 fm could account for the hadron experimental data. Our success in
+describing jets, however, would rather suggest the need to
+account for additional medium effects whose importance
+could grow at lower pT .
+Our constrained framework has been used to make
+realistic predictions for the intermediate-sized OO collisions. We obtained sizable energy loss both for jets and
+charged hadrons, in quantitative agreement with the preliminary results from CMS [128]. Even though we have
+shown that pre-equilibrium effects play a moderate role
+in our model, we anticipate that including forthcoming
+data on high-pT flow coefficients will result in further
+constraints. Furthermore, in this work we have provided
+predictions for elliptic anisotropies and different centrality selections, both for hadrons and jets. Due to the
+small path lengths in OO, unlike in PbPb or AuAu, jet
+constituents are barely resolved (jets are fully coherent),
+and thus we obtain similar energy loss for hadrons and
+jets (modulo a pT shift in fragmentation). This outcome
+constitutes a prediction of our framework which can be
+confronted with future experimental results on jet suppression in light ions.
+As an outlook, our jet quenching framework could benefit from an improved description of medium-induced
+emissions, elastic scatterings, and medium response in
+several ways. It is important to note that, at very
+early times, local color fields are saturated and highly
+anisotropic, a scenario which our energy-loss framework,
+built on local equilibrium, cannot accommodate. For
+these initial stages, it would be desirable to incorporate recent developments in energy-loss calculations for
+anisotropic media [129–134], correlated color fields [135],
+and out of-equilibrium plasma [136, 137], so as to extend
+quenching for those earliest times where the attractor solution is not meant to apply.
+
+6
+ACKNOWLEDGMENTS
+
+We are grateful to Björn Schenke and Chun Shen for
+sharing the hydrodynamic profiles and to Jannis Gebhard for sharing oxygen events. We greatly appreciate
+discussions with Aleksas Mazeliauskas, Yacine MehtarTani, and Konrad Tywoniuk. The work of A.T. is
+supported by DFG through Emmy Noether Programme
+(project number 496831614) and through CRC 1225 ISOQUANT (project number 27381115). D.P. is funded
+by the European Union’s Horizon 2020 research and
+innovation program under the Marie Sklodowska-Curie
+grant agreement No 101155036 (AntScat), by the European Research Council project ERC-2018-ADG-835105
+YoctoLHC, by the Spanish Research State Agency under project PID2020-119632GB-I00, by Xunta de Galicia
+(CIGUS Network of Research Centres) and the European
+Union, and by Unidad de Excelencia María de Maetzu
+under project CEX2023-001318-M. D.P. also acknowledges support from the the Ramón y Cajal fellowship
+RYC2023-044989-I.
+
+Appendix A: Bayesian parameter estimation
+
+We have already introduced our Bayesian framework
+in Sec. II, and here we extend this discussion by providing additional details. In this appendix, PbPb and AuAu
+cross-sections σ̃ AA (pT , η, R) are computed using the microjet evolution as employed in [42, 44], with initial conditions from LO Pythia at R0 = 1. Our framework is
+built on the JETSCAPE/STAT toolkit [101–103]. We evaluated our model for 24 design points, equally distributed
+in the parameter space. To focus on primary model features that are robust against statistical uncertainty, we
+reduced our data to its 10 principal components, and
+trained a Gaussian Process Emulator to interpolate between the predictions. The resulting parameter posterior
+is shown in the main text in Fig. 1. Furthermore, we provide two alternative inferences for gmed : one with fixed
+τmin = 0.08 fm, (and extracted ⟨gmed ⟩ = 1.385) referred
+to as “early preeq”, and another with τmin = 0.4 fm, (extracted ⟨gmed ⟩ = 1.473), referred to as “no preeq”.
+
+[1] V. Khachatryan et al. (CMS), Observation of LongRange Near-Side Angular Correlations in ProtonProton Collisions at the LHC, JHEP 09, 091,
+arXiv:1009.4122 [hep-ex].
+[2] G. Aad et al. (ATLAS), Observation of Associated
+Near-Side and Away-Side Long-Range Correlations in
+√
+sN N =5.02 TeV Proton-Lead Collisions with the ATLAS Detector, Phys. Rev. Lett. 110, 182302 (2013),
+arXiv:1212.5198 [hep-ex].
+[3] B. Abelev et al. (ALICE), Long-range angular correlations on the near and away side in p-Pb collisions
+√
+at sN N = 5.02 TeV, Phys. Lett. B 719, 29 (2013),
+
+Figure 4 shows the corresponding posterior predictive
+distributions. These jet data were used to constrain the
+model parameters. Different rows correspond to different measurements. We observe good agreement with all
+jet
+data for both RAA
+and v2jet , including all collision energies, centralities, rapidities, jet cone sizes, and momenta.
+There is a slight tension in v2jet for the lowest pT bins.
+This tension could be do to missing ingredients in the
+description of energy loss towards lower pT . Dotted and
+dashed lines show the two alternative fits, where τmin is
+kept fixed. There are subtle differences between different
+fits, with the fixed earlier quenching reducing the jet v2 ,
+as expected.
+Finally, we also compare our results to jets at RHIC
+energies and charged hadron observables, shown in
+Fig. 5. As our framework was designed for jets, we did
+not include these data in the inference. We see an overall
+good agreement with both RHIC energies and charged
+hadron RAA . Interestingly, hadron RAA seems to favor
+early quenching, as indicated by the dashed lines. There
+is a clear underestimation of the hadron elliptic flow at
+low momenta, consistent with previous findings from
+other theory collaborations, likely linked to the (milder)
+tension with low pT jets mentioned above.
+
+Appendix B: OO predictions without
+pre-equilibrium quenching
+
+Figure 6 shows the nuclear modification and elliptic
+flow for minimum bias OO collisions. Curves represent
+the limiting scenarios tested in App. A regarding preequilibrium quenching: “early preeq” denotes τmin = 0.08
+fm, “no preeq” τmin = 0.4 fm, with their corresponding
+inferred gmed . The best fit denotes our default setting
+shown in Fig. 1. For simplicity, we don’t show nPDF
+uncertainties. Slight differences are present in the different limiting scenarios. Interestingly, an earlier quenching
+can result in a relatively larger v2 , in contrast to larger
+systems, likely reflecting the more important role of fluctuations over average geometry in smaller systems.
+
+arXiv:1212.2001 [nucl-ex].
+[4] S. Chatrchyan et al. (CMS), Observation of Long-Range
+Near-Side Angular Correlations in Proton-Lead Collisions at the LHC, Phys. Lett. B 718, 795 (2013),
+arXiv:1210.5482 [nucl-ex].
+[5] J. L. Nagle and W. A. Zajc, Small System Collectivity
+in Relativistic Hadronic and Nuclear Collisions, Ann.
+Rev. Nucl. Part. Sci. 68, 211 (2018), arXiv:1801.03477
+[nucl-ex].
+[6] J. Noronha, B. Schenke, C. Shen, and W. Zhao, Progress
+and challenges in small systems, Int. J. Mod. Phys. E
+33, 2430005 (2024), arXiv:2401.09208 [nucl-th].
+
+7
+
+10 20% PbPb 5.02 TeV
+jet
+0.0101| | < 2.8, Rakt10=20.4
+pTjet [GeV]
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.02
+
+v2jet
+
+v2jet
+
+0.04
+
+103
+
+jet
+RAA
+
+103
+
+1.0
+0.8
+jet
+RAA
+
+0.6
+
+103
+
+0.06
+
+0.04
+
+0.04
+
+0.04
+
+0.02
+
+0.02
+
+0.02
+
+no preeq
+best fit
+earlyPbPb
+preeq
+5.02 TeV
+0.02 10jet 20%
+ATLASRakt = 0.2
+| | < 1.2,
+1
+10
+102
+pTjet [GeV]
+0.00
+
+103
+
+1.0
+
+1.0
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+10 30% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.2
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+jet
+RAA
+
+103
+
+0.2
+
+no preeq
+best fit
+earlyPbPb
+preeq
+40 50%
+5.02 TeV
+jet ATLAS
+0.0101| | < 2.8, Rakt10=20.4
+pTjet [GeV]
+0.2
+
+103
+
+no preeq
+best fit
+earlyPbPb
+preeq
+5.02 TeV
+0.02 20jet 40%
+ATLASRakt = 0.2
+| | < 1.2,
+1
+10
+102
+pTjet [GeV]
+
+103
+
+0.00
+
+103
+
+103
+
+jet
+RAA
+
+103
+
+0.2
+
+103
+
+0.4
+30 50% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.4
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+
+103
+
+0.2
+103
+
+0.4
+
+0.2
+
+0.4
+10 30% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.6
+2
+pTjet [GeV]
+
+no preeq
+best fit
+early preeq
+CMS
+
+30 50% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.2
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+
+103
+
+0.4
+10 30% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.4
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+
+103
+
+0.2
+
+0.2
+
+0.4
+0 10% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.6
+2
+pTjet [GeV]
+
+0.4
+0.2
+
+0.4
+0 10% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.4
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+
+0.4
+
+no preeq
+best fit
+early preeq
+ALICE
+
+0.4
+no preeq
+best fit
+0.2
+0.2
+early preeq
+0 10% PbPb 5.02 TeV
+0 10% PbPb 5.02 TeV
+jet| < 0.3, Rakt = 0.2ALICE
+jet
+|
+0.0101
+0.0101| | < 0.3, Rakt10=20.4
+102
+103
+jet
+pT [GeV]
+pTjet [GeV]
+1.0
+1.0
+no preeq
+no preeq
+best fit
+best
+fit
+0.8
+0.8
+early preeq
+early preeq
+CMS
+CMS
+0.6
+0.6
+
+0 10% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.2
+2
+pTjet [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+CMS
+0.6
+jet
+RAA
+
+no preeq
+best fit
+0.2
+earlyPbPb
+preeq
+30 40%
+5.02 TeV
+jet ATLAS
+0.0101| | < 2.8, Rakt10=20.4
+pTjet [GeV]
+
+0.06
+
+0.2
+
+jet
+RAA
+
+0.4
+
+0.06
+
+0.00
+
+0.02 0 jet5% PbPb 5.02 TeV
+| | < 1.2, Rakt = 0.2
+101
+102
+pTjet [GeV]
+
+jet
+RAA
+
+0.4
+
+no preeq
+best fit
+early
+preeq
+PbPb
+5.02 TeV
+0.02 5 jet10%
+ATLASRakt = 0.2
+| | < 1.2,
+1
+10
+102
+pTjet [GeV]
+
+0.00
+
+jet
+RAA
+
+0.6
+
+v2jet
+
+0.06
+
+0.8
+
+0.6
+
+no preeq
+best fit
+0.2
+earlyPbPb
+preeq
+20 30%
+5.02 TeV
+jet ATLAS
+0.0101| | < 2.8, Rakt10=20.4
+pTjet [GeV]
+
+0.2
+103
+
+0.8
+
+0.6
+
+jet
+RAA
+
+0 10% PbPb 5.02 TeV
+jet
+0.0101| | < 2.8, Rakt10=20.4
+pTjet [GeV]
+
+0.8
+
+v2jet
+
+0.2
+
+0.4
+
+1.0
+
+jet
+RAA
+
+0.4
+
+1.0
+
+jet
+RAA
+
+0.6
+
+1.0
+
+jet
+RAA
+
+0.8
+
+jet
+RAA
+
+jet
+RAA
+
+0.6
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+jet
+RAA
+
+0.8
+
+1.0
+
+no preeq
+best fit
+early preeq
+ATLAS
+jet
+RAA
+
+1.0
+
+103
+
+0.4
+0.2
+
+103
+
+30 50% PbPb 5.02 TeV
+jet
+0.0101| | < 2, Rakt =100.6
+2
+pTjet [GeV]
+
+103
+
+FIG. 4. Posterior predictive distributions, the fitting performance of our model. Jet RAA and v2 data across all LHC experiments.
+
+[7] J. F. Grosse-Oetringhaus and U. A. Wiedemann, A
+Decade of Collectivity in Small Systems, (2024),
+arXiv:2407.07484 [hep-ex].
+[8] R. D. Weller and P. Romatschke, One fluid to rule them
+all: viscous hydrodynamic description of event-by-event
+
+√
+central p+p, p+Pb and Pb+Pb collisions at s = 5.02
+TeV, Phys. Lett. B 774, 351 (2017), arXiv:1701.07145
+[nucl-th].
+[9] C. Aidala et al. (PHENIX), Creation of quark–gluon
+plasma droplets with three distinct geometries, Nature
+
+8
+
+0.4
+
+0.4
+
+0.6
+
+0.2
+
+0.2
+
+0.8
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+0.6
+
+0.6
+
+0.6
+
+0.6
+
+0.8
+
+0.6
+
+0.6
+
+no preeq
+best fit
+early preeq
+5 ±10% PbPb 5.02 TeV
+CMS
+h |<1
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+ALICE
+0.6
+
+0 ±5% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+0.10
+0.08
+0.06
+
+0.2
+
+5 ±10% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+
+103
+
+0.10
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.06
+v2h±
+
+0.04
+
+0.08
+
+0.2
+
+10 ± 20% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+
+103
+
+0.10
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.04
+
+0.08
+0.06
+
+0.4
+0.2
+
+20 ± 30% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+
+103
+
+0.10
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.04
+
+0.08
+0.06
+
+0.4
+30 ± 40% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+
+103
+
+0.10
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.04
+
+0.08
+0.06
+
+0.02
+
+0.02
+
+0.00
+
+0.00
+
+0.00
+
+0.00
+
+0.00
+
+103
+
+20% PbPb 5.02 TeV
+0.02 |10h ± | <
+2.5
+101
+102
+pTh± [GeV]
+
+103
+
+30% PbPb 5.02 TeV
+0.02 |20h ± | <
+2.5
+101
+102
+pTh± [GeV]
+
+0.8
+0.6
+
+103
+
+0.4
+40 ± 50% PbPb 5.02 TeV
+h
+0.0101| | < 0.8 102
+pTh± [GeV]
+
+103
+
+0.10
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+40% PbPb 5.02 TeV
+0.02 |30h ± | <
+2.5
+101
+102
+pTh± [GeV]
+
+no preeq
+best fit
+early preeq
+ALICE
+
+0.2
+
+0.04
+
+0.02
+
+PbPb 5.02 TeV
+0.02 |5 h ± |10%
+< 2.5
+101
+102
+pTh± [GeV]
+
+1.0
+
+0.2
+
+0.02
+
+103
+
+h±
+RAA
+
+0.4
+
+0.02
+PbPb 5.02 TeV
+0.02 |0 h ± |5%< 2.5
+101
+102
+pTh± [GeV]
+
+no preeq
+best fit
+preeq
+40 ± 50% PbPb 5.02 early
+TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+
+0.2
+
+R hAA±
+
+0.4
+
+0.4
+0.2
+
+no preeq
+best fit
+30 ± 50% PbPb 5.02 early
+TeV preeq
+CMS
+h |<1
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+ALICE
+0.6
+
+0.2
+
+v2h±
+
+0.2
+
+0.4
+
+0.4
+
+no preeq
+best fit
+10 ± 30% PbPb 5.02 early
+TeV preeq
+CMS
+h |<1
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+ALICE
+0.6
+
+0.2
+
+R hAA±
+
+0.4
+
+0.4
+
+R hAA±
+
+0.4
+
+R hAA±
+
+0.8
+
+0.6
+R hAA±
+
+0.8
+
+v2h±
+
+0.6
+
+no preeq
+best fit
+early preeq
+ALICE
+
+no preeq
+best fit
+0.2
+preeq
+30 ± 40% PbPb 5.02 early
+TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+
+0.6
+no preeq
+best fit
+early preeq
+0 ±5% PbPb 5.02 TeV
+CMS
+h |<1
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+no preeq
+best fit
+0.8
+early preeq
+ALICE
+0.6
+R hAA±
+
+0.8
+
+no preeq
+best fit
+0.2
+preeq
+20 ± 30% PbPb 5.02 early
+TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+
+1.0
+
+0.4
+
+0.8
+
+0.2
+
+1.0
+
+0.4
+
+103
+
+h±
+RAA
+
+no preeq
+best fit
+0.2
+preeq
+10 ± 20% PbPb 5.02 early
+TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+
+v2h±
+
+R hAA±
+
+no preeq
+best fit
+0.2
+early preeq
+5 ±10% PbPb 5.02 TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+1.0
+
+0.4
+
+0 10% AuAu 200 GeV
+akt = 0.4
+0.0101| | < 1 Rakt, R10
+2
+pTjet [GeV]
+1.0
+
+0.08
+0.06
+v2h±
+
+0.4
+
+R hAA±
+
+0.4
+
+103
+
+R hAA±
+
+0.8
+R hAA±
+
+0.8
+R hAA±
+
+1.0
+
+0.8
+
+103
+
+0 10% AuAu 200 GeV
+akt = 0.3
+0.0101| | < 1 Rakt, R10
+2
+pTjet [GeV]
+1.0
+
+0.4
+
+1.0
+
+no preeq
+best fit
+0.2
+early preeq
+0 ±5% PbPb 5.02 TeV
+ATLAS
+h | < 2.5
+|
+0.0101
+2
+10
+103
+pTh± [GeV]
+
+R hAA±
+
+0.6
+
+no preeq
+best fit
+early preeq
+STAR
+
+0.8
+
+0 10% AuAu 200 GeV
+akt = 0.2
+0.0101| | < 1 Rakt, R10
+2
+pTjet [GeV]
+1.0
+
+R hAA±
+
+R hAA±
+
+0.2
+
+1.0
+
+no preeq
+best fit
+early preeq
+STAR
+
+0.8
+jet
+RAA
+
+jet
+RAA
+
+0.6
+
+v2h±
+
+1.0
+
+no preeq
+best fit
+early preeq
+STAR
+
+0.8
+
+jet
+RAA
+
+1.0
+
+103
+
+no preeq
+best fit
+early preeq
+ATLAS
+
+0.04
+0.02
+0.00
+
+103
+
+50% PbPb 5.02 TeV
+0.02 |40h ± | <
+2.5
+101
+102
+pTh± [GeV]
+
+103
+
+FIG. 5. Posterior predictive distributions for RHIC energy and for hadrons (not included in the inference). Data shown for
+RHIC jets and charged hadrons across different LHC experiments.
+
+Phys. 15, 214 (2019), arXiv:1805.02973 [nucl-ex].
+[10] S. Acharya et al. (ALICE), Investigations of Anisotropic
+Flow Using Multiparticle Azimuthal Correlations in pp,
+p-Pb, Xe-Xe, and Pb-Pb Collisions at the LHC, Phys.
+Rev. Lett. 123, 142301 (2019), arXiv:1903.01790 [nuclex].
+[11] G. Nijs, W. van der Schee, U. Gürsoy, and R. Snellings,
+Bayesian analysis of heavy ion collisions with the heavy
+ion computational framework Trajectum, Phys. Rev. C
+103, 054909 (2021), arXiv:2010.15134 [nucl-th].
+[12] C. Bierlich, G. Gustafson, L. Lönnblad, and H. Shah,
+The Angantyr model for Heavy-Ion Collisions in
+PYTHIA8, JHEP 10, 134, arXiv:1806.10820 [hep-ph].
+[13] A. Kurkela, A. Mazeliauskas, and R. Törnkvist, Collective flow in single-hit QCD kinetic theory, JHEP 11,
+216, arXiv:2104.08179 [hep-ph].
+[14] C. Bierlich, P. Christiansen, G. Gustafson, L. Lönnblad,
+R. Törnkvist, and K. Zapp, Going against the flow: Revealing the QCD degrees of freedom in hadronic collisions, (2024), arXiv:2409.16093 [hep-ph].
+[15] M. S. Torres, Y. Feng, and F. Wang, Azimuthal Correlation Anisotropies in p + p Collisions Simulated by
+
+Pythia, (2024), arXiv:2410.13143 [nucl-th].
+[16] I. Soudi and A. Majumder, T-odd parton distribution
+functions and azimuthal anisotropy at high transverse
+momentum in p-p and p-A collisions, Phys. Rev. C 111,
+024901 (2025), arXiv:2404.05287 [hep-ph].
+[17] I. Soudi et al. (JETSCAPE), Soft-hard framework with
+exact four-momentum conservation for small systems,
+Phys. Rev. C 112, 014905 (2025), arXiv:2407.17443
+[hep-ph].
+[18] N. Armesto and E. Scomparin, Heavy-ion collisions
+at the Large Hadron Collider: a review of the results from Run 1, Eur. Phys. J. Plus 131, 52 (2016),
+arXiv:1511.02151 [nucl-ex].
+[19] M. Connors, C. Nattrass, R. Reed, and S. Salur, Jet
+measurements in heavy ion physics, Rev. Mod. Phys.
+90, 025005 (2018), arXiv:1705.01974 [nucl-ex].
+[20] L. Cunqueiro and A. M. Sickles, Studying the QGP with
+Jets at the LHC and RHIC, Prog. Part. Nucl. Phys. 124,
+103940 (2022), arXiv:2110.14490 [nucl-ex].
+[21] J. Casalderrey-Solana and C. A. Salgado, Introductory
+lectures on jet quenching in heavy ion collisions, Acta
+Phys. Polon. B 38, 3731 (2007), arXiv:0712.3443 [hep-
+
+9
+1.2
+1.1
+
+0.03
+
+0-100% OO/pp @ 5.36 TeV
+inclusive jets / charged hadrons Rakt = 0.4, |η| < 2.1
+EPPS21 + NLO QCD + coherent energy loss (+ NPC23)
+
+jets: no preeq
+jets: best fit
+jets: early preeq
+hadrons
+
+0.02
+
+0.9
+
+v2
+
+RAA
+
+1.0
+
+No quenching
+jets: no preeq
+jets: best fit
+jets: early preeq
+hadrons
+
+0.8
+0.7
+0.6
+10
+
+20
+
+50
+100
+pT [GeV]
+
+200
+
+0.01
+
+0
+0-100% OO/pp @ 5.36 TeV
+inclusive jes / charged hadrons: Rakt = 0.4, |η| < 2.1
+
+400
+
+-0.01
+10
+
+EPPS21 + NLO QCD + coherent energy loss (+ NPC23)
+
+20
+
+50
+100
+pT [GeV]
+
+200
+
+400
+
+FIG. 6. Nuclear modification and elliptic flow for jets and charged hadrons in minimum bias OO collisions. Different lines
+corresponds to different limiting scenarios in the pre-equilibrium quenching. The bands represent the 68% confidence interval
+for quenching parameters.
+
+ph].
+[22] D. d’Enterria, Jet quenching, Landolt-Bornstein 23, 471
+(2010), arXiv:0902.2011 [nucl-ex].
+[23] Y. Mehtar-Tani, J. G. Milhano, and K. Tywoniuk, Jet
+physics in heavy-ion collisions, Int. J. Mod. Phys. A 28,
+1340013 (2013), arXiv:1302.2579 [hep-ph].
+[24] S. Cao, A. Majumder, R. Modarresi-Yazdi, I. Soudi,
+and Y. Tachibana, Jet Quenching: From Theory to
+Simulation, Int. J. Mod. Phys. E 33, 2430002 (2024),
+arXiv:2401.10026 [hep-ph].
+[25] G. Aad et al. (ATLAS), Centrality and rapidity depen√
+dence of inclusive jet production in sNN = 5.02 TeV
+proton-lead collisions with the ATLAS detector, Phys.
+Lett. B 748, 392 (2015), arXiv:1412.4092 [hep-ex].
+[26] J. Adam et al. (ALICE), Centrality dependence of
+√
+sNN
+charged jet production in p-Pb collisions at
+= 5.02 TeV 10.1140/epjc/s10052-016-4107-8 (2016),
+arXiv:1603.03402 [nucl-ex].
+[27] S. Acharya et al. (ALICE), Measurement of inclusive charged-particle b-jet production in pp and p√
+Pb collisions at sNN = 5.02 TeV, JHEP 01, 178,
+arXiv:2110.06104 [nucl-ex].
+[28] S. Acharya et al. (ALICE), Measurement of inclusive
+charged-particle jet production in pp and p-Pb collisions
+√
+at sNN = 5.02 TeV, JHEP 05, 041, arXiv:2307.10860
+[nucl-ex].
+[29] G. Aad et al. (ATLAS), Transverse momentum and pro√
+cess dependent azimuthal anisotropies in sNN = 8.16
+TeV p+Pb collisions with the ATLAS detector, Eur.
+Phys. J. C 80, 73 (2020), arXiv:1910.13978 [nucl-ex].
+[30] G. Aad et al. (ATLAS), Measurement of the Sensitivity of Two-Particle Correlations in pp Collisions to the
+Presence of Hard Scatterings, Phys. Rev. Lett. 131,
+162301 (2023), arXiv:2303.17357 [nucl-ex].
+[31] V. Chekhovsky et al. (CMS), Evidence for similar collectivity of high transverse momentum particles in pPb
+and PbPb collisions, (2025), arXiv:2502.07525 [nucl-ex].
+
+[32] M. Gyulassy, I. Vitev, and X. N. Wang, High p(T) azimuthal asymmetry in noncentral A+A at RHIC, Phys.
+Rev. Lett. 86, 2537 (2001), arXiv:nucl-th/0012092.
+[33] X.-N. Wang, Jet quenching and azimuthal anisotropy of
+large p(T) spectra in noncentral high-energy heavy ion
+collisions, Phys. Rev. C 63, 054902 (2001), arXiv:nuclth/0009019.
+[34] Z. Citron et al., Report from Working Group 5: Future
+physics opportunities for high-density QCD at the LHC
+with heavy-ion and proton beams, CERN Yellow Rep.
+Monogr. 7, 1159 (2019), arXiv:1812.06772 [hep-ph].
+[35] J. Brewer, A. Mazeliauskas, and W. van der Schee, Opportunities of OO and pO collisions at the LHC, in Opportunities of OO and pO collisions at the LHC (2021)
+arXiv:2103.01939 [hep-ph].
+[36] C. Loizides and A. Morsch, Absence of jet quenching
+in peripheral nucleus–nucleus collisions, Phys. Lett. B
+773, 408 (2017), arXiv:1705.08856 [nucl-ex].
+[37] J. Park, J. L. Nagle, D. V. Perepelitsa, S. Lim, and
+C. Loizides, Selection bias effects on high-pT yield
+and correlation measurements in Oxygen+Oxygen collisions, (2025), arXiv:2507.03603 [nucl-ex].
+[38] U. Heinz and R. Snellings, Collective flow and viscosity
+in relativistic heavy-ion collisions, Ann. Rev. Nucl. Part.
+Sci. 63, 123 (2013), arXiv:1301.2826 [nucl-th].
+[39] C. Gale, S. Jeon, and B. Schenke, Hydrodynamic Modeling of Heavy-Ion Collisions, Int. J. Mod. Phys. A 28,
+1340011 (2013), arXiv:1301.5893 [nucl-th].
+[40] H. Mäntysaari, B. Schenke, C. Shen, and P. Tribedy,
+Imprints of fluctuating proton shapes on flow in protonlead collisions at the LHC, Phys. Lett. B 772, 681
+(2017), arXiv:1705.03177 [nucl-th].
+[41] P. Romatschke and U. Romatschke, Relativistic Fluid
+Dynamics In and Out of Equilibrium, Cambridge Monographs on Mathematical Physics (Cambridge University
+Press, 2019) arXiv:1712.05815 [nucl-th].
+[42] Y. Mehtar-Tani, D. Pablos, and K. Tywoniuk, ConeSize Dependence of Jet Suppression in Heavy-Ion
+
+10
+Collisions, Phys. Rev. Lett. 127, 252301 (2021),
+arXiv:2101.01742 [hep-ph].
+[43] A. Takacs and K. Tywoniuk, Quenching effects
+in the cumulative jet spectrum, JHEP 10, 038,
+arXiv:2103.14676 [hep-ph].
+[44] Y. Mehtar-Tani, D. Pablos, and K. Tywoniuk, Jet suppression and azimuthal anisotropy from RHIC to LHC,
+Phys. Rev. D 110, 014009 (2024), arXiv:2402.07869
+[hep-ph].
+[45] J. Alwall, R. Frederix, S. Frixione, V. Hirschi, F. Maltoni, O. Mattelaer, H. S. Shao, T. Stelzer, P. Torrielli,
+and M. Zaro, The automated computation of tree-level
+and next-to-leading order differential cross sections, and
+their matching to parton shower simulations, JHEP 07,
+079, arXiv:1405.0301 [hep-ph].
+[46] C. Bierlich et al., A comprehensive guide to the physics
+and usage of PYTHIA 8.3, SciPost Phys. Codeb. 2022,
+8 (2022), arXiv:2203.11601 [hep-ph].
+[47] P. Skands, S. Carrazza, and J. Rojo, Tuning PYTHIA
+8.1: the Monash 2013 Tune, Eur. Phys. J. C 74, 3024
+(2014), arXiv:1404.5630 [hep-ph].
+[48] A. Banfi, G. P. Salam, and G. Zanderighi, Infrared safe
+definition of jet flavor, Eur. Phys. J. C 47, 113 (2006),
+arXiv:hep-ph/0601139.
+[49] K. J. Eskola, P. Paakkinen, H. Paukkunen, and C. A.
+Salgado, EPPS21: a global QCD analysis of nuclear
+PDFs, Eur. Phys. J. C 82, 413 (2022), arXiv:2112.12462
+[hep-ph].
+[50] A. Buckley, J. Ferrando, S. Lloyd, K. Nordström,
+B. Page, M. Rüfenacht, M. Schönherr, and G. Watt,
+LHAPDF6: parton density access in the LHC precision
+era, Eur. Phys. J. C 75, 132 (2015), arXiv:1412.7420
+[hep-ph].
+[51] J. Gao, C. Liu, X. Shen, H. Xing, and Y. Zhao, Global
+analysis of fragmentation functions to charged hadrons
+with high-precision data from the LHC, Phys. Rev. D
+110, 114019 (2024), arXiv:2407.04422 [hep-ph].
+[52] Y. Mehtar-Tani, Gluon bremsstrahlung in finite media
+beyond multiple soft scattering approximation, JHEP
+07, 057, arXiv:1903.00506 [hep-ph].
+[53] J. a. Barata, Y. Mehtar-Tani, A. Soto-Ontoso, and
+K. Tywoniuk, Revisiting transverse momentum broadening in dense QCD media, Phys. Rev. D 104, 054047
+(2021), arXiv:2009.13667 [hep-ph].
+[54] J.-P. Blaizot and Y. Mehtar-Tani, Jet Structure in
+Heavy Ion Collisions, Int. J. Mod. Phys. E 24, 1530012
+(2015), arXiv:1503.05958 [hep-ph].
+[55] J. Casalderrey-Solana, E. V. Shuryak, and D. Teaney,
+Conical flow induced by quenched QCD jets, J. Phys.
+Conf. Ser. 27, 22 (2005), arXiv:hep-ph/0411315.
+[56] P. M. Chesler and L. G. Yaffe, The Wake of a quark
+moving through a strongly-coupled plasma, Phys. Rev.
+Lett. 99, 152001 (2007), arXiv:0706.0368 [hep-th].
+[57] P. Caucal, E. Iancu, A. H. Mueller, and G. Soyez,
+Vacuum-like jet fragmentation in a dense QCD medium,
+Phys. Rev. Lett. 120, 232001 (2018), arXiv:1801.09703
+[hep-ph].
+[58] Y. Mehtar-Tani and K. Tywoniuk, Sudakov suppression
+of jets in QCD media, Phys. Rev. D 98, 051501 (2018),
+arXiv:1707.07361 [hep-ph].
+[59] Y. Mehtar-Tani, C. A. Salgado, and K. Tywoniuk, Antiangular ordering of gluon radiation in QCD media,
+Phys. Rev. Lett. 106, 122002 (2011), arXiv:1009.2965
+[hep-ph].
+
+[60] Y. Mehtar-Tani, C. A. Salgado, and K. Tywoniuk, Jets
+in QCD Media: From Color Coherence to Decoherence,
+Phys. Lett. B 707, 156 (2012), arXiv:1102.4317 [hepph].
+[61] J. Casalderrey-Solana and E. Iancu, Interference effects in medium-induced gluon radiation, JHEP 08, 015,
+arXiv:1105.1760 [hep-ph].
+[62] H. Mäntysaari, B. Schenke, C. Shen, and W. Zhao,
+Collision-Energy Dependence in Heavy-Ion Collisions
+from Nonlinear QCD Evolution, Phys. Rev. Lett. 135,
+022302 (2025), arXiv:2502.05138 [nucl-th].
+[63] H. Kowalski and D. Teaney, An Impact parameter
+dipole saturation model, Phys. Rev. D 68, 114005
+(2003), arXiv:hep-ph/0304189.
+[64] S. Schlichting and D. Teaney, The First fm/c of HeavyIon Collisions, Ann. Rev. Nucl. Part. Sci. 69, 447 (2019),
+arXiv:1908.02113 [nucl-th].
+[65] J. Berges, M. P. Heller, A. Mazeliauskas, and R. Venugopalan, QCD thermalization: Ab initio approaches
+and interdisciplinary connections, Rev. Mod. Phys. 93,
+035003 (2021), arXiv:2005.12299 [hep-th].
+[66] C. Andres, N. Armesto, H. Niemi, R. Paatelainen, and
+C. A. Salgado, Jet quenching as a probe of the initial
+stages in heavy-ion collisions, Phys. Lett. B 803, 135318
+(2020), arXiv:1902.03231 [hep-ph].
+[67] S. Stojku, J. Auvinen, M. Djordjevic, P. Huovinen, and
+M. Djordjevic, Early evolution constrained by high-p⊥
+quark-gluon plasma tomography, Phys. Rev. C 105,
+L021901 (2022), arXiv:2008.08987 [nucl-th].
+[68] A. Ipp, D. I. Müller, and D. Schuh, Jet momentum
+broadening in the pre-equilibrium Glasma, Phys. Lett.
+B 810, 135810 (2020), arXiv:2009.14206 [hep-ph].
+[69] D. Avramescu, V. Băran, V. Greco, A. Ipp, D. I. Müller,
+and M. Ruggieri, Simulating jets and heavy quarks in
+the glasma using the colored particle-in-cell method,
+Phys. Rev. D 107, 114021 (2023), arXiv:2303.05599
+[hep-ph].
+[70] K. Boguslavski, A. Kurkela, T. Lappi, F. Lindenbauer,
+and J. Peuron, Jet momentum broadening during initial
+stages in heavy-ion collisions, Phys. Lett. B 850, 138525
+(2024), arXiv:2303.12595 [hep-ph].
+[71] K. Boguslavski, A. Kurkela, T. Lappi, F. Lindenbauer, and J. Peuron, Jet quenching parameter in
+QCD kinetic theory, Phys. Rev. D 110, 034019 (2024),
+arXiv:2312.00447 [hep-ph].
+[72] A. Kurkela, A. Mazeliauskas, J.-F. Paquet, S. Schlichting, and D. Teaney, Matching the Nonequilibrium Initial Stage of Heavy Ion Collisions to Hydrodynamics
+with QCD Kinetic Theory, Phys. Rev. Lett. 122, 122302
+(2019), arXiv:1805.01604 [hep-ph].
+[73] A. Kurkela, A. Mazeliauskas, J.-F. Paquet, S. Schlichting, and D. Teaney, Effective kinetic description of
+event-by-event pre-equilibrium dynamics in high-energy
+heavy-ion collisions, Phys. Rev. C 99, 034910 (2019),
+arXiv:1805.00961 [hep-ph].
+[74] A. Mazeliauskas and J. Berges, Prescaling and far-fromequilibrium hydrodynamics in the quark-gluon plasma,
+Phys. Rev. Lett. 122, 122301 (2019), arXiv:1810.10554
+[hep-ph].
+[75] A. Kurkela, W. van der Schee, U. A. Wiedemann, and
+B. Wu, Early- and Late-Time Behavior of Attractors
+in Heavy-Ion Collisions, Phys. Rev. Lett. 124, 102301
+(2020), arXiv:1907.08101 [hep-ph].
+
+11
+[76] D. Almaalol, A. Kurkela, and M. Strickland, Nonequilibrium Attractor in High-Temperature QCD Plasmas,
+Phys. Rev. Lett. 125, 122302 (2020), arXiv:2004.05195
+[hep-ph].
+[77] A. Soloviev, Hydrodynamic attractors in heavy ion collisions: a review, Eur. Phys. J. C 82, 319 (2022),
+arXiv:2109.15081 [hep-th].
+[78] G. Giacalone, A. Mazeliauskas, and S. Schlichting, Hydrodynamic attractors, initial state energy and particle
+production in relativistic nuclear collisions, Phys. Rev.
+Lett. 123, 262301 (2019), arXiv:1908.02866 [hep-ph].
+[79] O. Garcia-Montero, A. Mazeliauskas, P. Plaschke,
+and S. Schlichting, Pre-equilibrium photons from the
+early stages of heavy-ion collisions, JHEP 03, 053,
+arXiv:2308.09747 [hep-ph].
+[80] L. Keegan, A. Kurkela, A. Mazeliauskas, and D. Teaney,
+Initial conditions for hydrodynamics from weakly
+coupled pre-equilibrium evolution, JHEP 08, 171,
+arXiv:1605.04287 [hep-ph].
+[81] G. Aad et al. (ATLAS), Measurements of azimuthal
+anisotropies of jet production in Pb+Pb collisions at
+√
+sN N = 5.02 TeV with the ATLAS detector, Phys. Rev.
+C 105, 064903 (2022), arXiv:2111.06606 [nucl-ex].
+[82] B. Betz and M. Gyulassy, Constraints on the PathLength Dependence of Jet Quenching in Nuclear Collisions at RHIC and LHC, JHEP 08, 090, [Erratum:
+JHEP 10, 043 (2014)], arXiv:1404.6378 [hep-ph].
+[83] J. Noronha-Hostler, B. Betz, J. Noronha, and M. Gyulassy, Event-by-event hydrodynamics + jet energy loss:
+A solution to the RAA ⊗v2 puzzle, Phys. Rev. Lett. 116,
+252301 (2016), arXiv:1602.03788 [nucl-th].
+[84] C. Andres, L. Apolinário, F. Dominguez, M. G. Martinez, and C. A. Salgado, Medium-induced radiation
+with vacuum propagation in the pre-hydrodynamics
+phase, JHEP 03, 189, arXiv:2211.10161 [hep-ph].
+[85] F. Arleo and G. Falmagne, Probing the path-length dependence of parton energy loss via scaling properties in
+heavy ion collisions, Phys. Rev. D 109, L051503 (2024),
+arXiv:2212.01324 [hep-ph].
+[86] C. Faraday and W. A. Horowitz, A unified description of small, peripheral, and large system suppression
+data from pQCD, Phys. Lett. B 864, 139437 (2025),
+arXiv:2411.09647 [hep-ph].
+[87] D. Zigic, I. Salom, J. Auvinen, M. Djordjevic, and
+M. Djordjevic, DREENA-C framework: joint RAA and
+v2 predictions and implications to QGP tomography, J.
+Phys. G 46, 085101 (2019), arXiv:1805.03494 [nucl-th].
+[88] D. Zigic, I. Salom, J. Auvinen, M. Djordjevic, and
+M. Djordjevic, DREENA-B framework: first predictions
+of RAA and v2 within dynamical energy loss formalism in evolving QCD medium, Phys. Lett. B 791, 236
+(2019), arXiv:1805.04786 [nucl-th].
+[89] D. Zigic, B. Ilic, M. Djordjevic, and M. Djordjevic, Exploring the initial stages in heavy-ion collisions with
+high-p⊥ RAA and v2 theory and data, Phys. Rev. C
+101, 064909 (2020), arXiv:1908.11866 [hep-ph].
+[90] D. Zigic, I. Salom, J. Auvinen, P. Huovinen, and
+M. Djordjevic, DREENA-A framework as a QGP tomography tool, Front. in Phys. 10, 957019 (2022),
+arXiv:2110.01544 [nucl-th].
+[91] D. Zigic, J. Auvinen, I. Salom, M. Djordjevic, and
+P. Huovinen, Importance of higher harmonics and v4
+puzzle in quark-gluon plasma tomography, Phys. Rev.
+C 106, 044909 (2022), arXiv:2208.09886 [hep-ph].
+
+[92] B. Karmakar, D. Zigic, I. Salom, J. Auvinen, P. Huovinen, M. Djordjevic, and M. Djordjevic, Constraining η/s
+through high-p⊥ theory and data, Phys. Rev. C 108,
+044907 (2023), arXiv:2305.11318 [hep-ph].
+[93] B. Karmakar, D. Zigic, P. Huovinen, M. Djordjevic,
+M. Djordjevic, and J. Auvinen, Probing the shape of
+the quark-gluon plasma droplet via event-by-event QGP
+tomography, (2024), arXiv:2403.17817 [hep-ph].
+[94] W. Zhao, W. Ke, W. Chen, T. Luo, and X.-N. Wang,
+From Hydrodynamics to Jet Quenching, Coalescence,
+and Hadron Cascade: A Coupled Approach to Solving the RAA⊗v2 Puzzle, Phys. Rev. Lett. 128, 022302
+(2022), arXiv:2103.14657 [hep-ph].
+[95] L. Barreto, F. M. Canedo, M. G. Munhoz, J. Noronha,
+and J. Noronha-Hostler, Jet cone radius dependence of RAA and v2 at PbPb 5.02 TeV from
+JEWEL+TRENTo+v-USPhydro, Phys. Lett. B 860,
+139217 (2025), arXiv:2208.02061 [nucl-th].
+[96] Y. He, W. Chen, T. Luo, S. Cao, L.-G. Pang, and X.N. Wang, Event-by-event jet anisotropy and hard-soft
+tomography of the quark-gluon plasma, Phys. Rev. C
+106, 044904 (2022), arXiv:2201.08408 [hep-ph].
+[97] R. K. Ellis, W. J. Stirling, and B. R. Webber, QCD
+and collider physics, Cambridge monographs on particle physics, nuclear physics, and cosmology (Cambridge
+University Press, Cambridge, 2003) photography by S.
+Vascotto.
+[98] G. P. Salam, Elements of QCD for hadron colliders, in
+2009 European School of High-Energy Physics (2010)
+arXiv:1011.5131 [hep-ph].
+[99] G. Luisoni and S. Marzani, QCD resummation for
+hadronic final states, J. Phys. G 42, 103101 (2015),
+arXiv:1505.04084 [hep-ph].
+[100] S. Marzani, G. Soyez, and M. Spannowsky, Looking
+inside jets: an introduction to jet substructure and
+boosted-object phenomenology, Vol. 958 (Springer, 2019)
+arXiv:1901.10342 [hep-ph].
+[101] J. Collaboration, Jetscape/stat, https://github.com/
+JETSCAPE/STAT (2025), accessed: (04.08.2025).
+[102] S. Cao et al. (JETSCAPE), Determining the jet transport coefficient q̂ from inclusive hadron suppression
+measurements using Bayesian parameter estimation,
+Phys. Rev. C 104, 024905 (2021), arXiv:2102.11337
+[nucl-th].
+[103] R. Ehlers et al. (JETSCAPE), Bayesian inference analysis of jet quenching using inclusive jet and hadron
+suppression measurements, Phys. Rev. C 111, 054913
+(2025), arXiv:2408.08247 [hep-ph].
+[104] M. Aaboud et al. (ATLAS), Measurement of the nuclear
+modification factor for inclusive jets in Pb+Pb collisions
+√
+at sNN = 5.02 TeV with the ATLAS detector, Phys.
+Lett. B 790, 108 (2019), arXiv:1805.05635 [nucl-ex].
+[105] S. Acharya et al. (ALICE), Measurements of inclusive jet spectra in pp and central Pb-Pb collisions at
+√
+sNN = 5.02 TeV, Phys. Rev. C 101, 034911 (2020),
+arXiv:1909.09718 [nucl-ex].
+[106] A. M. Sirunyan et al. (CMS), First measurement of large
+area jet transverse momentum spectra in heavy-ion collisions, JHEP 05, 284, arXiv:2102.13080 [hep-ex].
+[107] R. A. Soltz, D. A. Hangal, and A. Angerami, Simple
+model to investigate jet quenching and correlated errors for centrality-dependent nuclear modification factors in relativistic heavy-ion collisions, Phys. Rev. C
+111, 034911 (2025), arXiv:2412.03724 [nucl-th].
+
+12
+[108] J. Adam et al. (STAR), Measurement of inclusive
+charged-particle jet production in Au + Au collisions
+√
+at sN N =200 GeV, Phys. Rev. C 102, 054913 (2020),
+arXiv:2006.00582 [nucl-ex].
+[109] V. Khachatryan et al. (CMS), Charged-particle nuclear modification factors in PbPb and pPb collisions
+√
+at sN N = 5.02 TeV, JHEP 04, 039, arXiv:1611.01664
+[nucl-ex].
+[110] S. Acharya et al. (ALICE), Transverse momentum spectra and nuclear modification factors of charged particles
+in pp, p-Pb and Pb-Pb collisions at the LHC, JHEP 11,
+013, arXiv:1802.09145 [nucl-ex].
+[111] M. Aaboud et al. (ATLAS), Measurement of the azimuthal anisotropy of charged particles produced in
+√
+sNN = 5.02 TeV Pb+Pb collisions with the ATLAS detector, Eur. Phys. J. C 78, 997 (2018), arXiv:1808.03951
+[nucl-ex].
+[112] G. Aad et al. (ATLAS), Charged-hadron production in
+√
+pp, p+Pb, Pb+Pb, and Xe+Xe collisions at sNN = 5
+TeV with the ATLAS detector at the LHC, JHEP 07,
+074, arXiv:2211.15257 [hep-ex].
+[113] J. Brewer, A. Huss, A. Mazeliauskas, and W. van der
+Schee, Ratios of jet and hadron spectra at LHC energies:
+Measuring high-pT suppression without a pp reference,
+Phys. Rev. D 105, 074040 (2022), arXiv:2108.13434
+[hep-ph].
+[114] P. Paakkinen, Light-nuclei gluons from dijet production
+in proton-oxygen collisions, Phys. Rev. D 105, L031504
+(2022), arXiv:2111.05368 [hep-ph].
+[115] J. Gebhard, A. Mazeliauskas, and A. Takacs, Noquenching baseline for energy loss signals in oxygenoxygen collisions, JHEP 04, 034, arXiv:2410.22405 [hepph].
+[116] A. Mazeliauskas, Energy loss baseline for light hadrons
+√
+sNN = 5.36 TeV,
+in oxygen-oxygen collisions at
+(2025), arXiv:2509.07008 [hep-ph].
+[117] R. Katz, C. A. G. Prado, J. Noronha-Hostler, and
+A. A. P. Suaide, System-size scan of D meson RAA and
+vn using PbPb, XeXe, ArAr, and OO collisions at energies available at the CERN Large Hadron Collider,
+Phys. Rev. C 102, 041901 (2020), arXiv:1907.03308
+[nucl-th].
+[118] A. Huss, A. Kurkela, A. Mazeliauskas, R. Paatelainen,
+W. van der Schee, and U. A. Wiedemann, Discovering
+Partonic Rescattering in Light Nucleus Collisions, Phys.
+Rev. Lett. 126, 192301 (2021), arXiv:2007.13754 [hepph].
+[119] A. Huss, A. Kurkela, A. Mazeliauskas, R. Paatelainen,
+W. van der Schee, and U. A. Wiedemann, Predicting
+parton energy loss in small collision systems, Phys. Rev.
+C 103, 054903 (2021), arXiv:2007.13758 [hep-ph].
+[120] B. G. Zakharov, Jet quenching from heavy to light ion
+collisions, JHEP 09, 087, arXiv:2105.09350 [hep-ph].
+[121] M. Xie, W. Ke, H. Zhang, and X.-N. Wang, Global
+constraint on the jet transport coefficient from singlehadron, dihadron, and γ-hadron spectra in high-energy
+heavy-ion collisions, Phys. Rev. C 109, 064917 (2024),
+arXiv:2208.14419 [hep-ph].
+
+[122] W. Ke and I. Vitev, Searching for QGP droplets with
+high-pT hadrons and heavy flavor, Phys. Rev. C 107,
+064903 (2023), arXiv:2204.00634 [hep-ph].
+[123] I. Vitev and W. Ke, Initial-state and final-state effects
+on hadron production in small collision systems, EPJ
+Web Conf. 296, 15002 (2024), arXiv:2312.12580 [hepph].
+[124] A. Ogrodnik, M. Rybář, and M. Spousta, Flavor and
+path-length dependence of jet quenching from inclusive jet and γ-jet suppression, Eur. Phys. J. C 85, 899
+(2025), arXiv:2407.11234 [hep-ph].
+[125] W. van der Schee, I. Kolbé, G. Nijs, K. Ruhani,
+I. Ahmed, and S. Iqbal, Three models for charged
+hadron nuclear modification from light to heavy ions,
+(2025), arXiv:2509.04299 [nucl-th].
+[126] M. Rybczyński and W. Broniowski, Glauber
+Monte Carlo predictions for ultrarelativistic collisions with 16 O, Phys. Rev. C 100, 064912 (2019),
+arXiv:1910.09489 [hep-ph].
+[127] J. Casalderrey-Solana, Z. Hulcher, G. Milhano, D. Pablos, and K. Rajagopal, Simultaneous description of
+hadron and jet suppression in heavy-ion collisions, Phys.
+Rev. C 99, 051901 (2019), arXiv:1808.07386 [hep-ph].
+[128] Measurement of the charged particle nuclear modification factor in oxygen-oxygen collisions with CMS , Tech.
+Rep. (CERN, Geneva, 2025).
+[129] A. V. Sadofyev, M. D. Sievert, and I. Vitev, Ab initio coupling of jets to collective flow in the opacity expansion approach, Phys. Rev. D 104, 094044 (2021),
+arXiv:2104.09513 [hep-ph].
+[130] Y. Fu, J. Casalderrey-Solana, and X.-N. Wang, Asymmetric transverse momentum broadening in an inhomogeneous medium, Phys. Rev. D 107, 054038 (2023),
+arXiv:2204.05323 [hep-ph].
+[131] J. a. Barata, A. V. Sadofyev, and C. A. Salgado, Jet
+broadening in dense inhomogeneous matter, Phys. Rev.
+D 105, 114010 (2022), arXiv:2202.08847 [hep-ph].
+[132] C. Andres, F. Dominguez, A. V. Sadofyev, and
+C. A. Salgado, Jet broadening in flowing matter:
+Resummation, Phys. Rev. D 106, 074023 (2022),
+arXiv:2207.07141 [hep-ph].
+[133] S. Hauksson and E. Iancu, Jet polarisation in an
+anisotropic medium, JHEP 08, 027, arXiv:2303.03914
+[hep-ph].
+[134] M. V. Kuzmin, X. Mayo López, J. Reiten, and A. V.
+Sadofyev, Jet quenching in anisotropic flowing matter,
+Phys. Rev. D 109, 014036 (2024), arXiv:2309.00683
+[hep-ph].
+[135] J. Barata, S. Hauksson, X. Mayo López, and A. V.
+Sadofyev, Jet quenching in the glasma phase: Mediuminduced radiation, Phys. Rev. D 110, 094055 (2024),
+arXiv:2406.07615 [hep-ph].
+[136] A. Altenburger, K. Boguslavski, and F. Lindenbauer, Jet broadening and radiation in the early
+anisotropic plasma in heavy-ion collisions, (2025),
+arXiv:2509.03868 [hep-ph].
+[137] F. Lindenbauer, Gluon splitting rates in an
+anisotropic plasma in the AMY formalism, (2025),
+arXiv:2509.09897 [hep-ph].
+
+

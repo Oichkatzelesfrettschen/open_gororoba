@@ -1,0 +1,1207 @@
+Energy loss baseline for light hadrons in oxygen-oxygen collisions at
+
+√
+
+sNN = 5.36 TeV
+
+Aleksas Mazeliauskas∗
+
+arXiv:2509.07008v1 [hep-ph] 6 Sep 2025
+
+Institute for Theoretical Physics, University of Heidelberg, 69120 Heidelberg, Germany
+(Dated: September 10, 2025)
+I present predictions for inclusive charged hadron spectra in minimum-bias proton-proton and
+√
+oxygen-oxygen collisions at a centre-of-mass energy of sNN = 5.36 TeV, assuming no final-state
+interactions. Using next-to-leading order perturbative QCD matrix elements, along with stateof-the-art (nuclear) parton distribution and fragmentation functions, I establish a baseline for the
+h
+nuclear modification factor RAA
+in oxygen-oxygen collisions in the absence of quenching. Theoretical
+uncertainties in this baseline are found to be substantial for transverse momenta below 20 GeV. In
+the intermediate range 20 GeV ≲ phT ≲ 70 GeV, these uncertainties are significantly reduced to
+approximately 5%. At higher momenta (phT ≳ 70 GeV), however, predictions exhibit a marked
+spread due to differences between fragmentation functions, reflecting varying assumptions about
+isospin symmetry. Finally, I show that considering neon-neon collisions in the initial state or neutral
+pions in the final state does not appreciably change the nuclear modification factor.
+
+I.
+
+INTRODUCTION
+
+Collisions of ultra-relativistic heavy nuclei at the Relativistic Heavy Ion Collider (RHIC) and the Large Hadron
+Collider (LHC) provide a unique window into a novel
+state of quantum matter, the Quark–Gluon Plasma
+(QGP), composed of deconfined quark and gluon degrees of freedom [1]. A key signature of the formation
+of QGP is the suppression of high-momentum hadron
+and jet yields (jet quenching). This phenomenon is understood as energy loss of high-momentum partons, produced in initial hard scatterings, through multiple interactions with the medium, which leads to a depletion of
+the observed high-momentum yield [2–4]. A major open
+question in the field is understanding how different QGP
+signals, such as jet quenching, evolve with the size of the
+colliding system [5–7].
+Strikingly, several signatures traditionally associated
+with QGP formation, such as azimuthal anisotropies and
+strangeness enhancement, have been observed even in
+small systems, such as proton-proton, proton-nucleus,
+and peripheral nucleus-nucleus collisions [8–11]. However, an unambiguous signal of partonic energy loss has
+not yet been established in systems with ≲ 30 participating nucleons. Centrality-selected peripheral heavyion collisions (e.g., PbPb at the LHC or AuAu at
+RHIC) are complicated by significant uncertainties in
+collision-geometry modelling as well as by centralityselection biases [12, 13]. Measurements in asymmetric
+proton–nucleus collisions have so far provided only upper
+limits on possible jet-quenching effects [14–16]. A notable
+exception are recent PHENIX results in deuteron–gold
+collisions, where a suppression of neutral pion production was observed in the highest event-activity class [17];
+however, its interpretation in terms of a genuine finalstate effect remains under debate [18].
+Collisions of light ions provide symmetric systems
+
+with significant advantages and unique physics opportunities [19–21]. In particular, oxygen ion (168 O) collisions involve, on average, ∼ 10 participating nucleons, thus bridging the system size range between protonnucleus and peripheral nucleus-nucleus collisions [22]. In
+March 2021, RHIC conducted oxygen–oxygen collisions
+√
+at sNN = 200 GeV [23]. More recently, in July 2025, the
+LHC carried out oxygen–oxygen and neon–neon collisions
+√
+at sNN = 5.36 TeV, as well as proton–oxygen collisions
+√
+at sNN = 9.62 TeV [24, 25]. A pressing open question
+is whether unambiguous evidence of partonic energy loss
+can be established in these small collision systems.
+Selecting central oxygen-oxygen collisions enhances the
+potential medium-induced energy loss signal. However,
+such a selection introduces potential biases [26] and, importantly, prevents the construction of an accurate theoretical baseline. Only in minimum-bias collisions can
+the inclusive high-momentum hadron and jet production
+be reliably computed using QCD factorization. The standard observable of energy loss is the nuclear modification
+factor RAA , which is the ratio of pT spectra in nucleusnucleus and proton-proton collisions scaled by the number of binary collisions [2–4]. In minimum-bias collisions
+RAA can be written as a ratio of pT -differential cross
+sections (for some rapidity window |y| < ymax ):
+RAA ≡
+
+1 dσOO /dpT
+.
+A2 dσpp /dpT
+
+(1)
+
+where A = 16 is the nuclear mass number.
+In this work, I compute the perturbative QCD baseline, i.e., the expectation in the absence of mediuminduced energy loss, for the nuclear modification fach
+tor RAA
+of single-inclusive charged hadrons and neutral pions in minimum-bias oxygen–oxygen collisions at
+√
+sNN = 5.36 TeV1 . Any experimentally observed deviation from this “no-quenching” baseline would signal
+
+1 All scripts and data required to reproduce the plots are available
+∗ a.mazeliauskas@thphys.uni-heidelberg.de
+
+at https://github.com/amazeliauskas/OO_baseline
+
+2
+final-state effects indicative of QGP formation. Since
+the expected energy-loss signal is small, it is essential
+to quantify theoretical uncertainties in the baseline of
+Eq. (1) with high accuracy. To this end, I perform
+next-to-leading-order (NLO) perturbative QCD calculations using state-of-the-art nuclear parton distribution
+functions (nPDFs) and hadron fragmentation functions
+(FFs). This work updates the previous baseline estimate of Ref. [27] with latests nPDFs, FFs and the actual
+LHC centre-of-mass energy for oxygen–oxygen collisions.
+h
+Baseline estimates for charged hadron RAA
+for RHIC energies can be found in Ref. [28]. Baseline computations
+j
+for inclusive jet RAA
+and semi-inclusive jet- and hadrontriggered nuclear modification factors were recently presented in Ref. [29]. Although a statistically significant
+deviation between the no-quenching baseline and experimental data would suffice to establish energy loss in oxygen–oxygen collisions, interpreting such a signal requires
+dedicated model predictions. These have been developed
+in the literature [30–37] and are not discussed in this paper.
+The paper is structured as follows. In Section II, I
+describe the computational framework and present a validation plot. Section III contains the baseline results for
+the charged-hadron and neutral-pion nuclear modification factor RAA . For completeness, I also provide the
+absolute cross-section predictions for proton–proton and
+oxygen–oxygen collisions separately. The conclusions are
+summarised in Section IV. Additional results for different rapidity selections are shown in Section A, while Section B discusses the role of isospin symmetry in fragmentation functions.
+
+II.
+
+COMPUTATIONAL SETUP
+
+A.
+
+Inclusive hadron cross-section
+
+According to QCD factorisation, the perturbative
+single-inclusive hadronic cross section is given by the convolution of parton distribution functions, hard partonic
+cross section and fragmentation functions [38, 39]
+Eh
+
+dσ AB→h
+= fiA ⊗ fjB ⊗ σ̂ ij→l ⊗ Dlh .
+d3 p h
+
+(2)
+
+Here fiA and fjB are parton distribution functions (PDFs)
+for nucleus A and B and partons i and j at factorization scale µF . In this paper, I consider only symmetric
+collision systems, i.e., A = B = p or A = B = 168 O.
+σ̂ ij→l is the partonic cross-section ij → l, which is computed at leading (LO) and next-to-leading (NLO) order
+at renormalization scale µR . Finally, Dlh is the parton l
+fragmentation function (FF) into a hadron species h at
+fragmentation scale µF F . I consider two cases: fragmentation to charged hadrons and fragmentation to neutral
+pions, i.e., h = π 0 .
+
+I evaluated Eq. (2) using INCNLO program [40]2 modified to use LHAPDF grids [41] for parton distribution
+and fragmentation functions. Modifications were checked
+against an independent LO implementation of the hadron
+cross-section formula [27]. INCNLO computes the hadron
+cross section differentially in transverse momentum pT ,
+but averaged in the azimuth and rapidity |y| < ymax ,
+i.e., dσ h /(2πpT dpT dy). The factorisation, renormalisation, and fragmentation scales are chosen to be equal to
+hadron transverse momentum µF = µR = µF F = phT .
+To estimate uncertainties from missing higher order
+terms, I vary µF , µR and µF F by a factor 2 up and
+down with a condition that no two scales are varied up
+and down at the same time (15-point scale uncertainty
+prescription). Although scale uncertainties do not have
+probabilistic interpretation [42], the nested LO and NLO
+scale uncertainties are conventionally used to assess the
+perturbative convergence of the observable.
+To estimate uncertainties from (nuclear) parton distribution functions, I use three sets of proton and oxygen PDFs: EPPS21 [43], which uses CT18ANLO [44]
+as a proton PDF baseline, nNNPDF3.0 [45], which
+is matched to NNPDF3.1 [46] proton PDF, and
+TUJU21 [47], which simultaneously determines nucleus
+and proton PDFs. All three nPDF determinations
+include experimental data from measurements in pPb
+collisions at the LHC: W ± and Z boson production
+(TUJU21, EPPS21, nNNPDF3.0); dijet and D-meson
+data (EPPS21, nNNPDF3.0); isolated photon measurements (nNNPDF3.0). Each nPDF extraction is accompanied by a large set of PDF variations, which can be
+used to determine the confidence intervals for the computed cross section. For each PDF in an error set, I repeat the cross-section computation and use the built-in
+LHAPDF functionality to compute 68% confidence intervals. Note that no data with oxygen nucleus is included
+in the fits, and oxygen nPDFs are determined by interpolation in nuclear mass number A. Comparison between
+different collaborations shows how robust this extraction
+is with respect to changes in the input data, fitting techniques, and nPDF parametrisation.
+To estimate uncertainties from the choice of fragmentation functions, I used three choices of fragmentation
+functions: Binnewies-Kniehl-Kramer (BKK) [48] FFs,
+which is a built-in option in INCNLO, NNFF1.1h[49]3 and
+NPC23
+√ [50] FFs. BKK fits charged pion and kaon FFs
+to s = 29 GeV e+ e− annihilation data. The charged
+hadron FFs are formed as a sum of charged pion and
+kaon FFs. Pion contribution is increased by a factor 1.16
+to mimic (anti)proton contribution. NNFF1.1h charged
+hadron FFs are obtained from a direct fit to charged
+hadron data from a large set of single-inclusive e+ e− an-
+
+2 http://lapth.cnrs.fr/PHOX_FAMILY/readme_inc.html
+3 The initial NNFF1.1h release contained an error that is corrected
+
+in the erratum. I used corrected nPDF grids available at https:
+//nnpdf.mi.infn.it/nnff1-1h/
+
+3
+
+B.
+
+Validation
+
+To validate numerical setup, I computed inclusive
+√
+hadron cross section in proton-proton collisions at s =
+5.02 TeV, 6 GeV < phT < 50 GeV and |y| < 0.8 using
+CT18ANLO PDF (central value) with BKK, NNFF1.1h
+and NPC23 FFs (c.f. Ref. [53]). The results are shown in
+Fig. 1 and compared to experimental measurements by
+ALICE [52]. The pT -binned cross section was obtained
+using a three-point Gauss–Legendre quadrature to evaluate the momentum integrals. Note that ALICE reports
+the averaged hadron yield in pp collisions, which can be
+converted to the cross section by scaling it with inelastic
+pp cross section σNN = 67.3 ± 1.2 mb [13]. The black
+bands and black error points correspond to experimental systematic and statistical uncertainties, respectively
+(uncertainty in σNN is neglected). The lower panel shows
+the ratio to NLO BKK FF results.
+The brown and red colour bands indicate the LO
+and NLO scale uncertainties computed with CT18ANLO
+PDFs and BKK FFs. The NLO band ranges from ∼ 10%
+in the highest momentum bin to almost 50% in the lowest momentum bin. The NLO central value is within the
+
+4 FF grids for neutral pions were obtained from the authors by
+
+private communication.
+
+pp
+
+√
+
+10−3
+
+s = 5.02 TeV σNN = 67.3 mb, |yh | < 0.8
+LO scale
+NLO scale
+NNFF11
+NPC23
+ALICE sys.
+ALICE stat.
+
+10−4
+10−5
+10−6
+10−7
+
+ratio to BKK
+
+dσ h
+2
+2πpT dpT dy [mb/GeV ]
+
+nihilation (SIA) and pp collisions. Notably, NNFF1.1h
+includes
+√ LHC charged hadron data at centre of mass energies s = 0.9, 2.76 and 7 TeV. NPC23 performs global
+analysis of a wide range of precision measurements from
+the LHC, as well as data from electron-positron collisions
+and semi-inclusive deep inelastic scatterings. NPC23 in±
+±
+cludes both identified hadron (π
+√ , K , p(p̄)) and charged
+hadron data at LHC up to s = 13 TeV. Charged
+hadron FFs are a sum of fitted charged pion, kaon, and
+(anti)proton FFs. We also use neutral pion FFs constructed from NPC23 charged pion FFs using isospin
+symmetry [51]4 . NNFF1.1h and NPC23 provide FF error
+sets, which are used to compute 68% confidence intervals.
+BKK FFs do not include uncertainty estimates, and only
+scale uncertainties are shown.
+In the ratio of cross sections Eq. (1), one can expect a
+significant cancellation between common sources of theoretical uncertainties in proton and oxygen cross sections.
+Therefore, the scale uncertainty of RAA is determined
+by the simultaneous variation of µF , µR and µF F in the
+numerator and denominator. Cross sections for different
+members of the oxygen nPDF error set are also matched
+to the corresponding error set members in the proton
+baseline, maximising the uncertainty cancellation. For
+NNFF1.1h and NPC23 FFs, uncertainties in RAA are
+computed by taking the cross-section ratio for each member in the error set and then applying the corresponding
+uncertainty prescription.
+
+1.4
+1.2
+1.0
+0.8
+0.6
+6
+
+8
+
+10
+
+13
+20
+30
+hadron pT [GeV]
+
+50
+
+FIG. 1. pQCD computation of differential charged
+hadron
+√
+cross section in minimum-bias pp collisions at s = 5.02 TeV
+with CT18ANLO PDF. The lower panel shows the ratio to
+NLO BKK FF results. The brown and red colour bands represent LO and NLO scale variation for BKK FFs. Cyan and
+olive bands indicate 68% confidence intervals for NNFF1.1h
+and NPC23 FFs. Black bands and error points show systematic and statistical uncertainties of ALICE measured differential charge particle yield [52], which is converted to cross
+NN
+section using pp inelastic cross section of σpp
+= 67.3 mb [13]
+
+(large) LO scale band. Experimental data points are below NLO BKK expectations, even taking into account
+the scale uncertainty (see also Refs. [53, 54]). However,
+the ratio is approximately constant, which indicates that
+a suitable choice of fragmentation scale can better reproduce the spectra, see Ref. [55].
+
+In cyan and olive bands, I show 68% confidence intervals computed with NNFF1.1h and NPC23 charged
+hadron FFs. NNFF1.1h results are only slightly shifted
+above the data. NPC23 results have a smaller uncertainty band, but the momentum dependence is different
+from the one observed in data. Taking into account the
+scale uncertainty, NNFF1.1h and NPC23 results are in
+good agreement with experimental data, which is not surprising, since these FFs are fitted to LHC proton-proton
+data. Finally, I note that proton PDFs are much better constrained than FFs, and the corresponding (much
+smaller) uncertainty
+is not shown in Fig. 1. See the pre√
+dictions at s = 5.36 TeV in Section III B and Ref. [53]
+for proton PDF uncertainties in the spectrum.
+
+4
+
+1.3
+
+OO/pp
+
+sNN = 5.36 TeV,
+
+LO scale
+NLO scale
+EPPS21
+TUJU21
+
+1.2
+1.1
+
+|yh | < 0.8
+
+NeNe/OO
+
+nNNPDF30
+NNFF11
+NPC23
+π0
+
+√
+
+sNN = 5.36 TeV, |yh | < 0.8
+
+BKK LO scale
+BKK NLO scale
+
+1.04
+
+EPPS21
+
+1.02
+
+1.0
+
+h
+RAA
+
+h
+RAA
+
+√
+
+0.9
+
+1.00
+0.98
+
+0.8
+
+0.96
+
+0.7
+4
+
+6
+
+10
+
+20
+40
+70
+hadron pT [GeV]
+
+120 200
+
+FIG. 2.
+pQCD calculation of the charged-hadron nuclear
+modification factor baseline in oxygen–oxygen collisions at
+√
+sNN = 5.36 TeV. Hatched bands denote the 68% confidence
+intervals of EPPS21, TUJU21, and nNNPDF3.0 nPDFs.
+Brown and red bands indicate LO and NLO scale variations
+with BKK FFs. Cyan and olive bands show the 68% confidence intervals for NNFF1.1h and NPC23 FFs. The black
+dashed line represents the central prediction for the neutralpion nuclear modification factor obtained with NPC23 FFs.
+
+III.
+A.
+
+RESULTS
+
+Nuclear modification factor
+
+In Fig. 2, I present the no-quenching baseline results
+h
+for the charged-hadron nuclear√modification factor RAA
+in oxygen–oxygen collisions at s = 5.36 TeV, within the
+kinematic range |y| < 0.8 and 4 GeV < pT < 200 GeV.
+Additional results for other rapidity intervals are provided in Section A.
+The brown and red shaded bands indicate the LO and
+NLO scale uncertainties, computed with EPPS21 nPDFs
+and BKK FFs. At pT ≳ 20 GeV, these uncertainties cancel efficiently in the ratio, and the NLO band becomes
+comparable to the line thickness. At lower pT , scale uncertainties grow more noticeable, yet the NLO band remains fully nested within the LO band, reflecting good
+perturbative convergence.
+The hatched red, blue, and orange bands correspond
+to the 68% confidence intervals of EPPS21, TUJU21,
+and nNNPDF3.0 nPDFs (all with BKK FFs). For
+pT ≳ 20 GeV, the three nPDFs are consistent, with
+overlapping uncertainty bands. In the range 20 GeV ≲
+pT ≲ 100 GeV, EPPS21 gives the widest uncertainty
+band (∼ 5%), while for pT ≳ 100 GeV, nNNPDF3.0 becomes slightly broader. TUJU21 shows the narrowest
+uncertainties, though this reflects its limited dataset and
+restrictive parametrisation [47]. Interestingly, the central
+h
+values of all three nPDFs yield RAA
+> 1 in the interval
+30 GeV ≲ pT ≲ 120 GeV, though still consistent with
+unity within EPPS21 and nNNPDF3.0 uncertainties.
+
+4
+
+6
+
+10
+
+20
+40
+70
+hadron pT [GeV]
+
+120 200
+
+FIG. 3. QCD calculation of the charged-hadron cross-section
+√
+ratio in neon–neon and oxygen–oxygen collisions at sNN =
+5.36 TeV for |y| < 0.8. Coloured bands indicate scale variations, while the hatched band shows the 68% confidence interval of EPPS21 nPDFs.
+
+At lower momenta (pT ≲ 20 GeV), nPDF uncertainties
+increase, and differences between the extractions become
+more pronounced. TUJU21 and nNNPDF3.0 remain centred near unity, whereas the EPPS21 band drops below
+unity for pT ≲ 10 GeV. Thus, experimental observations
+h
+< 1 in this region would not unambiguously sigof RAA
+nal medium-induced energy loss.
+Next, I examine the sensitivity to fragmentation functions (FFs). The cyan and olive bands show the 68%
+confidence intervals for NNFF1.1h and NPC23 chargedhadron FFs. For both uncertainty cancellation is excellent with bands barely wider than the line thickness
+across the full pT range. Results with NPC23 closely
+match those with BKK FFs, whereas NNFF1.1h exhibits
+h
+falls well bestriking deviations: at pT ≳ 70 GeV, RAA
+low unity. As discussed in Section B, this originates
+from strong isospin breaking in NNFF1.1h, where downquark fragmentation is significantly suppressed. Since
+oxygen nuclei contain a larger fraction of down quarks,
+the hadron yield is reduced at high pT , where quark fragmentation dominates [30]. Such strong isospin breaking is unexpected, given that charged hadrons are dominated by pions. Nevertheless, in the intermediate region
+(20 GeV ≲ pT ≲ 70 GeV), differences between FF sets
+remain below 5%.
+The black dashed line in Fig. 2 shows the central prediction for the neutral-pion RAA obtained with NPC23
+h
+FFs. It closely follows the charged-hadron RAA
+with the
+same FF set, as expected, since charged-hadron production is pion-dominated and the neutral-pion FFs are constructed from charged-pion FFs.
+Finally, Fig. 3 presents the ratio of differential
+hadron cross sections (without final-state interactions)
+√
+in neon–neon and oxygen–oxygen collisions at sNN =
+
+5
+
+√
+
+s = 5.36 TeV,
+
+LO scale
+NLO scale
+CT18ANLO
+TUJU21
+nNNPDF30
+NNFF11
+NPC23
+
+10−5
+10−8
+10−11
+1.4
+1.2
+1.0
+0.8
+0.6
+4
+
+6
+
+10
+
+20
+40
+70
+hadron pT [GeV]
+
+120 200
+
+√
+
+sNN = 5.36 TeV,
+
+|yh | < 0.8
+
+LO scale
+NLO scale
+EPPS21
+TUJU21
+nNNPDF30
+NNFF11
+NPC23
+
+10−2
+10−5
+10−8
+10−11
+
+ratio to BKK
+
+ratio to BKK
+
+dσ h
+2
+2πpT dpT dy [mb/GeV ]
+
+10−2
+
+OO
+
+|yh | < 0.8
+
+dσ h
+2
+2
+2πpT dpT dy /A [mb/GeV ]
+
+pp
+
+1.4
+1.2
+1.0
+0.8
+0.6
+4
+
+6
+
+10
+
+20
+40
+70
+hadron pT [GeV]
+
+120 200
+
+FIG. 4. pQCD computation of differential charged hadron cross section in minimum-bias (left) pp and (right) oxygen-oxygen
+√
+collisions at sNN = 5.36 TeV. The brown and red bands show scale variation uncertainty. The hatched bands represent 68%
+confidence intervals of (left) CT18ANLO, TUJU21 and nNNPDF3.0 PDFs and (right) EPPS21, TUJU21 and nNNPDF3.0
+nPDFs. The cyan and olive bands show 68% confidence intervals of NNFF1.1h and NPC23 FFs. Note that the oxygen-oxygen
+cross section does not include final state modification and is normalised by A2 .
+
+5.36 TeV5 . The ratio agrees with unity to within 1%
+over most of the momentum range. This reflects the fact
+that the nuclear mass number dependence is poorly constrained in current nPDFs, leading to strongly correlated
+and nearly identical modifications for oxygen and neon.
+Consequently, the nuclear modification factor baseline for
+neon–neon collisions can be taken as essentially identical
+to that for oxygen–oxygen within current knowledge of
+nPDFs.
+
+B.
+
+Differential hadron cross section
+
+For completeness, in Fig. 4 I present pQCD calculations of the absolute pT -differential hadron cross section
+in minimum-bias
+(left) pp and (right) oxygen–oxygen col√
+lisions at s = 5.36 TeV with |y| < 0.8. The OO spectrum does not include final-state modifications and is
+normalised by the square of the nuclear mass number,
+A2 . The lower panels display the ratios to the central
+NLO prediction obtained with BKK FFs, using (left)
+CT18ANLO PDFs and (right) EPPS21 nPDFs.
+The brown and red bands indicate the LO and NLO
+scale uncertainties. At LO, the uncertainty remains large
+across the entire pT range. At NLO, the band is largely
+contained within the LO one, except for phT < 20 GeV. At
+
+5 I downloaded nPDF grids for 20 Ne from https://research.hip.
+10
+
+fi/qcdtheory/nuclear-pdfs/epps21/.
+
+high momenta, the NLO uncertainty reduces to ∼ 15%.
+For pp, the PDF uncertainties are below 4% (not shown
+in Fig. 1). The results with CT18ANLO and nNNPDF3.0
+are in good agreement, while TUJU21 exhibits a different trend, crossing the other two around phT ∼ 50 GeV.
+For OO collisions, EPPS21 nPDF uncertainties are substantially larger, exceeding 5%, and are mostly consistent
+with nNNPDF3.0 results, while TUJU21 again shows a
+distinct momentum dependence.
+Finally, sizeable discrepancies arise between BKK,
+NNFF1.0h, and NPC23 FFs, which are not covered by
+the uncertainty bands of NNFF1.0h and NPC23. Predictions with NNFF1.0h lie about 25% below those with
+BKK, while the NPC23-to-BKK ratio exhibits a pronounced momentum dependence. Nevertheless, all FF
+sets remain mutually consistent once the NLO scale uncertainty is taken into account.
+IV.
+
+CONCLUSIONS
+
+In July 2025 the LHC collided oxygen ions for the first
+time, providing a unique opportunity to search for an unambiguous signal of jet quenching in a system with, on
+average, only about ten participating nucleons. Because
+the expected signal is small, it is essential to quantify
+precisely the difference in the initial perturbative production of high-momentum partons between oxygen–oxygen
+and proton–proton collisions. To this end, I have carried out a systematic study of the no-quenching baseline
+for the single-inclusive hadron nuclear modification fac-
+
+6
+
+ACKNOWLEDGMENTS
+
+I thank Austin Baty, Jun Gao, Jannis Gebhard,
+Alexander Kalweit, ChongYang Liu, Emanuele Roberto
+Nocera, Patrik Novotny, Alexander Milov, Nicolas
+Strangmann, and Adam Takacs for helpful discussions
+and their interest in this work. I am particularly grateful
+to Jun Gao and ChongYang Liu of the NPC collaboration
+for providing the neutral-pion FFs. I also acknowledge
+the use of OpenAI’s ChatGPT to assist with language
+editing and improving the clarity of the manuscript.
+This work was supported by the DFG through the
+
+OO/pp
+1.2
+
+√
+
+sNN = 5.36 TeV,
+
+BKK LO scale
+BKK NLO scale
+
+|yh | < 0.8
+
+EPPS21
+
+h
+RAA
+
+1.1
+1.0
+0.9
+0.8
+0.7
+4
+
+6
+
+10
+
+OO/pp
+1.2
+
+√
+
+20
+40
+70
+hadron pT [GeV]
+
+sNN = 5.36 TeV,
+
+BKK LO scale
+BKK NLO scale
+
+120 200
+
+|yh | < 1
+
+EPPS21
+
+h
+RAA
+
+1.1
+1.0
+0.9
+0.8
+0.7
+4
+
+6
+
+10
+
+OO/pp
+
+√
+
+1.2
+
+20
+40
+70
+hadron pT [GeV]
+
+sNN = 5.36 TeV,
+
+BKK LO scale
+BKK NLO scale
+
+120 200
+
+|yh | < 2.5
+
+EPPS21
+
+1.1
+h
+RAA
+
+h
+tor, RAA
+, in minimum-bias oxygen–oxygen collisions at
+√
+sNN = 5.36 TeV. Using state-of-the-art nuclear parton
+distribution functions (nPDFs) and fragmentation functions (FFs), I have provided a robust estimate of the
+theoretical uncertainties associated with this baseline.
+In the momentum window 20 GeV ≲ pT ≲ 70 GeV, the
+baseline can be controlled at the ∼ 5% level, with nPDFs
+representing the dominant source of uncertainty. At
+lower and higher pT , however, the combined nPDF and
+FF uncertainties become sizeable, potentially limiting the
+ability to disentangle medium effects from the baseline.
+The difference between neutral-pion and charged-hadron
+h
+RAA
+is negligible compared with the nPDF uncertainties,
+indicating that both observables are equally suitable for
+probing medium-induced energy loss.
+The largest systematic uncertainty in charged-hadron
+h
+RAA
+, particularly at low pT , stems from the limited
+knowledge of oxygen nPDFs. The large pO dataset recently collected at the LHC will be crucial for constraining oxygen nPDFs in future global fits [56]. At high
+pT , I find non-negligible discrepancies between different
+FF extractions, which appear to originate from isospinsymmetry breaking in some sets. These discrepancies will
+hopefully be resolved in future global FF analyses, potentially aided by input from hadron spectra in pA collisions.
+In parallel, theoretical advances in charged hadron computations—NNLO accuracy in hadronic collisions [57]
+and N3LO in electron–positron annihilation [58]—are
+paving the way towards substantially more precise FF
+determinations.
+In conclusion, the charged-hadron nuclear modification
+factor in oxygen–oxygen collisions can be predicted to
+within ∼ 5% in the most favourable kinematic range.
+Whether this precision is sufficient to observe a jetquenching signal in such a small system will also depend
+on experimental uncertainties and the potential signal
+size [30–37]. In particular, a new source of experimental
+uncertainty arises in oxygen beams due to transmutation into other ion species [59]. Finally, the collected
+oxygen–oxygen and neon–neon data at the same energy
+provide an additional handle: the ratio of hadron spectra
+between NeNe and OO collisions would largely cancel the
+nPDF uncertainties in the perturbative baseline, while
+still allowing for a potential medium-induced signal [36].
+
+1.0
+0.9
+0.8
+0.7
+5 6
+
+10
+
+15 20
+40
+hadron pT [GeV]
+
+60
+
+85
+
+FIG. 5. pQCD computation of charged hadron nuclearmodification
+factor baseline in oxygen-oxygen collisions at
+√
+s = 5.36 TeV for (top) |y| < 0.8, (middle) |y| < 1.0 and
+(bottom) |y| < 2.5. The colour bands indicate scale variation,
+while the hatched band represents 68% nPDF confidence interval.
+
+Emmy Noether Programme (project number 496831614)
+and CRC 1225 ISOQUANT (project number 27381115).
+
+7
+i
+
+µFF = 100 GeV
+NNFF11
+NPC23
+
+z 3 Dih (z)
+
+0.08
+
+d
+u
+
+0.06
+0.04
+0.02
+0.00
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+z
+FIG. 6. Fragmentation functions for down (solid lines) and
+up (dashed lines) to charged hadrons for different FF families.
+Colour bands show 68% confidence intervals.
+
+h
+Appendix A: Rapidity dependence of RAA
+
+In Fig. 5, I present the no-quenching baseline results for
+the single-inclusive charged-hadron nuclear
+√ modification
+h
+in oxygen–oxygen collisions at s = 5.36 TeV
+factor RAA
+for different rapidity ranges, |y| < 0.8, |y| < 1.0, and
+|y| < 2.5. These intervals correspond to the expected
+charged-hadron rapidity acceptance of the ALICE [52],
+CMS [60], and ATLAS [61] detectors. The results for
+|y| < 0.8, already shown in Fig. 2, are repeated here to
+facilitate comparison. For |y| < 2.5, results are displayed
+only up to pT < 85 GeV, matching the anticipated experimental momentum coverage.
+The brown and red bands indicate the LO and NLO
+scale uncertainties, computed with EPPS21 nPDFs and
+BKK FFs, as in Fig. 2. The red hatched band denotes
+the 68% confidence interval for EPPS21. The results for
+|y| < 0.8 and |y| < 1.0 are nearly indistinguishable, while
+h
+for |y| < 2.5 the central value of RAA
+lies closer to unity
+in the range 40 GeV ≲ pT ≲ 85 GeV.
+Appendix B: Isospin symmetry breaking in
+NNFF1.1h fragmentation functions
+
+Z 1
+0
+
+dz dσ i
+× Dih (z, Q = phT ).
+z dqT qT =ph /z
+T
+
+OO/pp
+
+1.1
+
+√
+
+(B1)
+
+s = 5.36 TeV,
+
+|yh | < 0.8
+
+1.0
+0.9
+Leading Order
+
+0.8
+
+In this section, I discuss the origin of the surprising
+h
+suppression of RAA
+obtained with NNFF1.1h FFs in
+Fig. 2.
+In Fig. 6, I show the charged-hadron fragmentation
+functions Dih (z) for down (solid lines) and up (dashed
+lines) quarks from NNFF1.1h and NPC23 at µF F =
+100 GeV. The vertical axis is scaled by z 3 , motivated
+by the LO cross-section formula [30]:
+dσ h
+=
+dphT
+
+dσ
+∼ qT−4 , the
+For a steeply falling quark spectrum, dq
+T
+hadron cross section is proportional to the third moment
+of the FFs, i.e., the area under the z 3 Dih (z) curve.
+For NPC23, the up- and down-quark FFs are very similar (Fig. 6). This reflects the fact that NPC23 chargedhadron FFs are dominated by pions, which exhibit a high
+degree of isospin symmetry [50]. In contrast, NNFF1.1h
+shows a much smaller down-quark FF compared with
+the up-quark FF. The flavour separation of quark FFs
+is poorly constrained by data and typically requires additional assumptions. In NNFF1.1h [49], flavour separation was introduced following the procedure for kaons
+described in Appendix A of Ref. [62]. Since charged kaons
+are not symmetric under d ↔ u exchange, this approach
+naturally leads to FFs that violate isospin symmetry.
+In Fig. 7, I demonstrate that this up–down difference drives the discrepancy observed in Fig. 2. To this
+end, I performed LO cross-section calculations with modh
+ified FFs. The solid lines show RAA
+with the original NNFF1.1h and NPC23 FFs combined with EPPS21
+nPDFs. The dotted lines correspond to computations
+where the down-quark FF is set equal to the up-quark
+FF (enforcing strict isospin symmetry). In this case, the
+NPC23 results remain essentially unchanged and consistent with the observed isospin symmetry in Fig. 6. In
+contrast, the NNFF1.1h results become nearly identical to those of NPC23. Conversely, setting the downquark FF to zero (maximal isospin asymmetry) leaves
+NNFF1.1h largely unaffected, while NPC23 develops
+h
+at high momentum.
+the anomalous suppression of RAA
+These modifications only affect the high-pT region, since
+at pT < 50 GeV hadron production is dominated by gluon
+fragmentation [30].
+
+h
+RAA
+
+0.10
+
+0.7
+
+NNFF11
+NPC23
+
+4
+
+6
+
+10
+
+20
+40
+70
+hadron pT [GeV]
+
+Ddh = Duh
+Ddh = 0
+
+120 200
+
+√
+h
+FIG. 7. Leading order charged hadron RAA
+in sNN =
+5.36 TeV oxygen-oxygen collisions. Lines show the central
+results for different FFs and EPPS21 nPDFs. Dashed lines
+are results with down quark FF set to zero, while dotted lines
+show results for strict isospin symmetry, i.e., Duh = Ddh .
+
+8
+
+[1] Wit Busza, Krishna Rajagopal, and Wilke van der
+Schee, “Heavy Ion Collisions: The Big Picture, and the
+Big Questions,” Ann. Rev. Nucl. Part. Sci. 68, 339–376
+(2018), arXiv:1802.04801 [hep-ph].
+[2] Leticia Cunqueiro and Anne M. Sickles, “Studying the
+QGP with Jets at the LHC and RHIC,” Prog. Part. Nucl.
+Phys. 124, 103940 (2022), arXiv:2110.14490 [nucl-ex].
+[3] Megan Connors, Christine Nattrass, Rosi Reed, and
+Sevil Salur, “Jet measurements in heavy ion physics,”
+Rev. Mod. Phys. 90, 025005 (2018), arXiv:1705.01974
+[nucl-ex].
+[4] Guang-You Qin and Xin-Nian Wang, “Jet quenching in
+high-energy heavy-ion collisions,” Int. J. Mod. Phys. E
+24, 1530014 (2015), arXiv:1511.00790 [hep-ph].
+[5] James L. Nagle and William A. Zajc, “Small System
+Collectivity in Relativistic Hadronic and Nuclear Collisions,” Ann. Rev. Nucl. Part. Sci. 68, 211–235 (2018),
+arXiv:1801.03477 [nucl-ex].
+[6] Jan Fiete Grosse-Oetringhaus and Urs Achim Wiedemann, “A Decade of Collectivity in Small Systems,”
+(2024), arXiv:2407.07484 [hep-ex].
+[7] Jorge Noronha, Björn Schenke, Chun Shen, and Wenbin
+Zhao, “Progress and challenges in small systems,” Int.
+J. Mod. Phys. E 33, 2430005 (2024), arXiv:2401.09208
+[nucl-th].
+[8] Vardan Khachatryan et al. (CMS), “Evidence for Collective Multiparticle Correlations in p-Pb Collisions,” Phys.
+Rev. Lett. 115, 012301 (2015), arXiv:1502.05382 [nuclex].
+[9] Jaroslav Adam et al. (ALICE), “Multi-strange baryon
+√
+production in p-Pb collisions at sNN = 5.02 TeV,”
+Phys. Lett. B 758, 389–401 (2016), arXiv:1512.07227
+[nucl-ex].
+[10] Vardan Khachatryan et al. (CMS), “Evidence for collectivity in pp collisions at the LHC,” Phys. Lett. B 765,
+193–220 (2017), arXiv:1606.06198 [nucl-ex].
+[11] Jaroslav Adam et al. (ALICE), “Enhanced production
+of multi-strange hadrons in high-multiplicity protonproton collisions,” Nature Phys. 13, 535–539 (2017),
+arXiv:1606.07424 [nucl-ex].
+[12] Constantin Loizides and Andreas Morsch, “Absence of
+jet quenching in peripheral nucleus–nucleus collisions,”
+Phys. Lett. B 773, 408–411 (2017), arXiv:1705.08856
+[nucl-ex].
+[13] David d’Enterria and Constantin Loizides, “Progress in
+the Glauber Model at Collider Energies,” Ann. Rev.
+Nucl. Part. Sci. 71, 315–344 (2021), arXiv:2011.14909
+[hep-ph].
+[14] Shreyasi Acharya et al. (ALICE),
+√ “Constraints on jet
+quenching in p-Pb collisions at sNN = 5.02 TeV measured by the event-activity dependence of semi-inclusive
+hadron-jet distributions,” Phys. Lett. B 783, 95–113
+(2018), arXiv:1712.05603 [nucl-ex].
+[15] Georges Aad et al. (ATLAS), “Strong Constraints on Jet
+Quenching in Centrality-Dependent p+Pb Collisions at
+5.02 TeV from ATLAS,” Phys. Rev. Lett. 131, 072301
+(2023), arXiv:2206.01138 [nucl-ex].
+[16] Vladimir Chekhovsky et al. (CMS), “Search for jet
+quenching with dijets from high-multiplicity pPb col√
+lisions at sNN = 8.16 TeV,” JHEP 07, 118 (2025),
+arXiv:2504.08507 [nucl-ex].
+
+[17] N. J. Abdulameer et al. (PHENIX), “Disentangling Centrality Bias and Final-State Effects in the Production of
+High-pT Neutral Pions Using Direct Photon in d+Au
+Collisions at sNN=200 GeV,” Phys. Rev. Lett. 134,
+022302 (2025), arXiv:2303.12899 [nucl-ex].
+[18] Dennis V. Perepelitsa, “Contribution to differential π0
+and γdir modification in small systems from color fluctuation effects,” Phys. Rev. C 110, L011901 (2024),
+arXiv:2404.17660 [nucl-th].
+[19] Z. Citron et al., “Report from Working Group 5: Future
+physics opportunities for high-density QCD at the LHC
+with heavy-ion and proton beams,” CERN Yellow Rep.
+Monogr. 7, 1159–1410 (2019), arXiv:1812.06772 [hep-ph].
+[20] Jasmine Brewer, Aleksas Mazeliauskas,
+and Wilke
+van der Schee, “Opportunities of OO and pO collisions
+at the LHC,” in Opportunities of OO and pO collisions
+at the LHC (2021) arXiv:2103.01939 [hep-ph].
+[21] Participants of CERN TH Institute, “Summary Report:
+Light Ion Collisions at the LHC,” (2024).
+[22] Constantin Loizides, “Glauber predictions for oxygen and
+neon collisions at LHC,” (2025), arXiv:2507.05853 [nuclth].
+[23] Chuyu Liu et al., “Report of RHIC Beam Operation in
+2021,” JACoW IPAC2022, WEPOPT033 (2022).
+[24] Anaı̈s Schaeffer, “First-ever collisions of oxygen at the
+LHC,” CERN News (2025).
+[25] “163rd LHCC Meeting – OPEN Session,” Indico event
+page, CERN (2025).
+[26] JaeBeom Park, J. L. Nagle, Dennis V. Perepelitsa,
+Sanghoon Lim, and Constantin Loizides, “Selection bias
+effects on high-pT yield and correlation measurements in
+Oxygen+Oxygen collisions,” (2025), arXiv:2507.03603
+[nucl-ex].
+[27] Alexander Huss, Aleksi Kurkela, Aleksas Mazeliauskas,
+Risto Paatelainen, Wilke van der Schee, and Urs Achim
+Wiedemann, “Discovering Partonic Rescattering in Light
+Nucleus Collisions,” Phys. Rev. Lett. 126, 192301 (2021),
+arXiv:2007.13754 [hep-ph].
+[28] Ron Belmont et al., “Predictions for the sPHENIX
+physics program,” Nucl. Phys. A 1043, 122821 (2024),
+arXiv:2305.15491 [nucl-ex].
+[29] Jannis Gebhard, Aleksas Mazeliauskas, and Adam
+Takacs, “No-quenching baseline for energy loss signals
+in oxygen-oxygen collisions,” JHEP 04, 034 (2025),
+arXiv:2410.22405 [hep-ph].
+[30] Alexander Huss, Aleksi Kurkela, Aleksas Mazeliauskas,
+Risto Paatelainen, Wilke van der Schee, and Urs Achim
+Wiedemann, “Predicting parton energy loss in small
+collision systems,” Phys. Rev. C 103, 054903 (2021),
+arXiv:2007.13758 [hep-ph].
+[31] Yu-Fei Liu, Wen-Jing Xing, Xiang-Yu Wu, Guang-You
+Qin, Shanshan Cao, and Hongxi Xing, “Heavy and light
+flavor jet quenching in different collision systems at energies available at the CERN Large Hadron Collider,”
+Phys. Rev. C 105, 044904 (2022), arXiv:2107.01522 [hepph].
+[32] B. G. Zakharov, “Jet quenching from heavy to light ion
+collisions,” JHEP 09, 087 (2021), arXiv:2105.09350 [hepph].
+[33] Weiyao Ke and Ivan Vitev, “Searching for QGP droplets
+with high-pT hadrons and heavy flavor,” Phys. Rev. C
+
+9
+107, 064903 (2023), arXiv:2204.00634 [hep-ph].
+[34] Debadatta Behera, Suman Deb, Captain R. Singh, and
+Raghunath Sahoo, “Characterizing nuclear modification
+effects in high-energy O-O collisions at energies available at the CERN Large Hadron Collider: A transport
+model perspective,” Phys. Rev. C 109, 014902 (2024),
+arXiv:2308.06078 [hep-ph].
+[35] Man Xie, Weiyao Ke, Hanzhong Zhang, and Xin-Nian
+Wang, “Global constraint on the jet transport coefficient from single-hadron, dihadron, and γ-hadron spectra
+in high-energy heavy-ion collisions,” Phys. Rev. C 109,
+064917 (2024), arXiv:2208.14419 [hep-ph].
+[36] Wilke van der Schee, Isobel Kolbé, Govert Nijs, Kumail
+Ruhani, Ishtiaq Ahmed, and Shahin Iqbal, “Three models for charged hadron nuclear modification from light to
+heavy ions,” (2025), arXiv:2509.04299 [nucl-th].
+[37] Daniel Pablos and Adam Takacs, “Constraining the preequilibrium with jet quenching,” (2025), in preparation.
+[38] John C. Collins, Davison E. Soper, and George F. Sterman, “Factorization of Hard Processes in QCD,” Adv.
+Ser. Direct. High Energy Phys. 5, 1–91 (1989), arXiv:hepph/0409313.
+[39] Andreas Metz and Anselm Vossen, “Parton Fragmentation Functions,” Prog. Part. Nucl. Phys. 91, 136–202
+(2016), arXiv:1607.02521 [hep-ex].
+[40] F. Aversa, P. Chiappetta, Mario Greco, and J. P. Guillet, “QCD Corrections to Parton-Parton Scattering Processes,” Nucl. Phys. B 327, 105 (1989).
+[41] Andy Buckley, James Ferrando, Stephen Lloyd, Karl
+Nordström, Ben Page, Martin Rüfenacht, Marek
+Schönherr, and Graeme Watt, “LHAPDF6: parton density access in the LHC precision era,” Eur. Phys. J. C
+75, 132 (2015), arXiv:1412.7420 [hep-ph].
+[42] Claude Duhr, Alexander Huss, Aleksas Mazeliauskas,
+and Robert Szafron, “An analysis of Bayesian estimates
+for missing higher orders in perturbative calculations,”
+JHEP 09, 122 (2021), arXiv:2106.04585 [hep-ph].
+[43] Kari J. Eskola, Petja Paakkinen, Hannu Paukkunen,
+and Carlos A. Salgado, “EPPS21: a global QCD analysis of nuclear PDFs,” Eur. Phys. J. C 82, 413 (2022),
+arXiv:2112.12462 [hep-ph].
+[44] Tie-Jiun Hou et al., “New CTEQ global analysis
+of quantum chromodynamics with high-precision data
+from the LHC,” Phys. Rev. D 103, 014013 (2021),
+arXiv:1912.10053 [hep-ph].
+[45] Rabah Abdul Khalek, Rhorry Gauld, Tommaso Giani,
+Emanuele R. Nocera, Tanjona R. Rabemananjara, and
+Juan Rojo, “nNNPDF3.0: evidence for a modified partonic structure in heavy nuclei,” Eur. Phys. J. C 82, 507
+(2022), arXiv:2201.12363 [hep-ph].
+[46] Richard D. Ball et al. (NNPDF), “Parton distributions
+from high-precision collider data,” Eur. Phys. J. C 77,
+663 (2017), arXiv:1706.00428 [hep-ph].
+[47] Ilkka Helenius, Marina Walt,
+and Werner Vogelsang, “NNLO nuclear parton distribution functions with
+electroweak-boson production data from the LHC,”
+Phys. Rev. D 105, 094031 (2022), arXiv:2112.11904 [hepph].
+[48] J. Binnewies, Bernd A. Kniehl, and G. Kramer, “Nextto-leading order fragmentation functions for pions and
+kaons,” Z. Phys. C 65, 471–480 (1995), arXiv:hepph/9407347.
+
+[49] V. Bertone, N. P. Hartland, E. R. Nocera, J. Rojo,
+and L. Rottoli (NNPDF), “Charged hadron fragmentation functions from collider data,” Eur. Phys. J. C
+78, 651 (2018), [Erratum: Eur.Phys.J.C 84, 155 (2024)],
+arXiv:1807.03310 [hep-ph].
+[50] Jun Gao, ChongYang Liu, XiaoMin Shen, Hongxi Xing,
+and Yuxiang Zhao, “Global analysis of fragmentation
+functions to charged hadrons with high-precision data
+from the LHC,” Phys. Rev. D 110, 114019 (2024),
+arXiv:2407.04422 [hep-ph].
+[51] Jun Gao, ChongYang Liu, Mengyang Li, XiaoMin Shen,
+Hongxi Xing, Yuxiang Zhao, and Yiyu Zhou, “Global
+analysis of fragmentation functions to light neutral
+hadrons,” (2025), arXiv:2503.21311 [hep-ph].
+[52] S. Acharya et al. (ALICE), “Transverse momentum spectra and nuclear modification factors of charged particles
+in pp, p-Pb and Pb-Pb collisions at the LHC,” JHEP 11,
+013 (2018), arXiv:1802.09145 [nucl-ex].
+[53] Jasmine Brewer, Alexander Huss, Aleksas Mazeliauskas,
+and Wilke van der Schee, “Ratios of jet and hadron
+spectra at LHC energies: Measuring high-pT suppression without a pp reference,” Phys. Rev. D 105, 074040
+(2022), arXiv:2108.13434 [hep-ph].
+[54] David d’Enterria, Kari J. Eskola, Ilkka Helenius, and
+Hannu Paukkunen, “Confronting current NLO parton
+fragmentation functions with inclusive charged-particle
+spectra at hadron colliders,” Nucl. Phys. B 883, 615–628
+(2014), arXiv:1311.1415 [hep-ph].
+[55] Ignacio Borsa, Daniel de Florian, Rodolfo Sassot, and
+Marco Stratmann, “Pion fragmentation functions at high
+energy colliders,” Phys. Rev. D 105, L031502 (2022),
+arXiv:2110.14015 [hep-ph].
+[56] Petja Paakkinen, “Light-nuclei gluons from dijet production in proton-oxygen collisions,” Phys. Rev. D 105,
+L031504 (2022), arXiv:2111.05368 [hep-ph].
+[57] Michal Czakon, Terry Generet, Alexander Mitov, and
+Rene Poncelet, “Identified hadron production at hadron
+colliders in NNLO QCD,” (2025), arXiv:2503.11489
+[hep-ph].
+[58] Chuan-Qi He, Hongxi Xing, Tong-Zhi Yang,
+and
+Hua Xing Zhu, “Single-inclusive hadron production in
+electron-positron annihilation at next-to-next-to-next-toleading order in QCD,” (2025), arXiv:2503.20441 [hepph].
+[59] Govert Nijs and Wilke van der Schee, “Transmutation of
+16
+O and 20 Ne at the Large Hadron Collider,” (2025),
+arXiv:2507.01659 [nucl-th].
+[60] Vardan Khachatryan et al. (CMS), “Charged-particle
+nuclear modification factors in PbPb and pPb colli√
+sions at sN N = 5.02 TeV,” JHEP 04, 039 (2017),
+arXiv:1611.01664 [nucl-ex].
+[61] Georges Aad et al. (ATLAS), “Charged-hadron production in pp, p+Pb, Pb+Pb, and Xe+Xe collisions at
+√
+sNN = 5 TeV with the ATLAS detector at the LHC,”
+JHEP 07, 074 (2023), arXiv:2211.15257 [hep-ex].
+[62] Valerio Bertone, Stefano Carrazza, Nathan P. Hartland,
+Emanuele R. Nocera, and Juan Rojo (NNPDF), “A
+determination of the fragmentation functions of pions,
+kaons, and protons with faithful uncertainties,” Eur.
+Phys. J. C 77, 516 (2017), arXiv:1706.07049 [hep-ph].
+
+

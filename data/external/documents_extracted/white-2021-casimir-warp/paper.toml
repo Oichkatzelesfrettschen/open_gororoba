@@ -1,0 +1,1738 @@
+equations = []
+tables = []
+full_text = """
+Eur. Phys. J. C (2021) 81:677\r
+https://doi.org/10.1140/epjc/s10052-021-09484-z\r
+Regular Article - Theoretical Physics\r
+Worldline numerics applied to custom Casimir geometry\r
+generates unanticipated intersection with Alcubierre warp metric\r
+Harold White1,a, Jerry Vera1, Arum Han2,3,4,5, Alexander R. Bruccoleri6, Jonathan MacArthur6\r
+1 Limitless Space Institute, 16441 Space Center Blvd., Bldg. D-200, Houston, TX 77058, USA\r
+2 Department of Electrical and Computer Engineering, Texas A&M University, College Station, USA\r
+3 Department of Biomedical Engineering, Texas A&M University, College Station, USA\r
+4 NanoBio Systems Lab. (nanobio.tamu.edu), College Station, USA\r
+5 AggieFab (aggiefab.tamu.edu), College Station, USA\r
+6 Izentis LLC, P.O. Box 397002, Cambridge, MA 02139, USA\r
+Received: 17 May 2021 / Accepted: 25 July 2021 / Published online: 31 July 2021\r
+© The Author(s) 2021\r
+Abstract While conducting analysis related to a DARPA\u0002funded project to evaluate possible structure of the energy\r
+density present in a Casimir cavity as predicted by the\r
+dynamic vacuum model, a micro/nano-scale structure has\r
+been discovered that predicts negative energy density distri\u0002bution that closely matches requirements for the Alcubierre\r
+metric. The simplest notional geometry being analyzed as\r
+part of the DARPA-funded work consists of a standard par\u0002allel plate Casimir cavity equipped with pillars arrayed along\r
+the cavity mid-plane with the purpose of detecting a transient\r
+electric field arising from vacuum polarization conjectured to\r
+occur along the midplane of the cavity. An analytic technique\r
+called worldline numerics was adapted to numerically assess\r
+vacuum response to the custom Casimir cavity, and these\r
+numerical analysis results were observed to be qualitatively\r
+quite similar to a two-dimensional representation of energy\r
+density requirements for the Alcubierre warp metric. Subse\u0002quently, a toy model consisting of a 1 µm diameter sphere\r
+centrally located in a 4µm diameter cylinder was analyzed to\r
+show a three-dimensional Casimir energy density that corre\u0002lates well with the Alcubierre warp metric requirements. This\r
+qualitative correlation would suggest that chip-scale experi\u0002ments might be explored to attempt to measure tiny signatures\r
+illustrative of the presence of the conjectured phenomenon:\r
+a real, albeit humble, warp bubble.\r
+1 Background\r
+Work being conducted under a DARPA DSO1 grant is inves\u0002tigating the implications of the dynamic vacuum model for\r
+1 Defense Advanced Research Projects Agency Defense Science Office.\r
+a e-mail: sonny@limitlessspace.org (corresponding author)\r
+the possibility of structure to the Casimir energy distribu\u0002tion manifested in a parallel plate cavity. The dynamic vac\u0002uum model predicts that the negative vacuum energy density\r
+present in the parallel plate cavity is not isotropic, rather\r
+there is a varying energy density field present in the cavity\r
+with an average value that corresponds with that predicted\r
+by the traditional equation for parallel-plate Casimir energy\r
+density. The structure predicted to be manifest in the cav\u0002ity takes the form of a larger magnitude negative vacuum\r
+energy density concentrated along the cavity mid-plane that\r
+relaxes non-linearly to the unperturbed state at the cavity\r
+boundaries. Based on detailed studies of the atomic orbitals\r
+of the hydrogen atom, and deriving the acoustic wave equa\u0002tion from the Schrödinger equation [1,2], it is speculated that\r
+the energy density structure in a Casimir cavity is coupled to\r
+a small polarization field in the vacuum fluctuations resulting\r
+in a small but non-zero electrostatic field originating along\r
+the cavity mid-plane and terminating at the grounded cav\u0002ity walls. It has been further reasoned in the literature that\r
+it may be possible to construct a customized Casimir cav\u0002ity equipped with small pillars placed at the mid-plane as\r
+depicted in Fig. 1 such that when the pillar channel is sampled\r
+by a high impedance oscilloscope, the scope would detect a\r
+transient non-zero voltage signal2 that would rapidly go to\r
+zero as the stored energy in the polarization field is depleted\r
+from the measurement process [4].\r
+2 A recently published paper [3] details an experimental campaign\r
+using an asymmetric Casimir cavity arrangement where one cavity has\r
+a small separation and the other cavity has a much larger effective sep\u0002aration. This experimental campaign observed a current flow from the\r
+larger cavity electrode to the smaller cavity electrode. Our cavity is\r
+analogous in that the two parallel plates define a large cavity and the\r
+plate-pillar system plays the role of the smaller cavity.\r
+123
+
+677 Page 2 of 10 Eur. Phys. J. C (2021) 81 :677\r
+Fig. 1 Parallel plate cavity design with pillar-like features along the\r
+mid-plane – the dynamic vacuum model predicts that the scope will\r
+measure a small but non-zero transient voltage pulse from the pillars\r
+once connected to the cavities as shown. The anticipated geometry of\r
+each cavity is approximately 4 µm wide with each plate measuring\r
+40 µm by 40 µm. The pillars are expected to be approximately 1 µm\r
+in diameter\r
+If these cavities can be made small enough and arrayed\r
+together in large enough numbers to increase the stored\r
+energy, the magnitude and duration of this predicted tran\u0002sient voltage signal may be detectable in a laboratory set\u0002ting. The equation that predicts the magnitude of this small\r
+but non-zero electrostatic field was derived in [4] and takes\r
+the following form: E = \u0002\u0002cπ2\r
+/1080\u00030d4. A quick calculation\r
+for a Casimir cavity with a 4 µm gap predicts a magnitude\r
+of the electrostatic potential arising from the polarization\r
+of the vacuum fluctuations along the mid-plane of the cav\u0002ity to be ∼ 0.7 mV. Figure 2 shows some examples of the\r
+current nanofabrication trian runs that are ongoing as part\r
+of the effort. The left panel in the figure depicts a recent\r
+result obtained utilizing a Nanoscribe 3d printer to evaluate\r
+a range of cavity gaps and pillar sizes. The material being\r
+used in the manufacture is SU-8 2025 permanent epoxy neg\u0002ative photoresist. After printing and curing, the cavities then\r
+undergo electroless plating to add a layer of Ag to the outer\r
+surfaces. The right panel shows recent etching results using\r
+Deep Reactive Ion Etching (DRIE) equipment to etch the\r
+high-aspect ratio cavity planes into a silicon wafer substrate.\r
+This approach uses standard SiO2 wafer materials with the\r
+expectation that the final concepts will have a metallic layer\r
+added by means of evaporation. The results depicted were\r
+focused on achieving the high-aspect ratio etch, and future\r
+work will incorporate the masking necessary to produce pil\u0002lars. A technical concern with the proposed design imple\u0002mentation is how the presence of pillars might affect the pre\u0002dicted Casimir energy density distribution within the cavity\r
+- would there be self-screening that occurs within the pillar\r
+Fig. 2 Initial results from current nanofabrication trian runs: the left\r
+panel in the figure depicts a recent result obtained utilizing a Nanoscribe\r
+3D printer to evaluate a range of cavity gaps and pillar sizes; the right\r
+panel shows recent etching results using Deep Reactive Ion Etching\r
+(DRIE) equipment to etch the high-aspect ratio cavity planes into a\r
+silicon wafer substrate\r
+that minimizes the magnitude of the negative vacuum energy\r
+density present inside the pillar, and hence the magnitude of\r
+the detectable signal? It was during the analysis process seek\u0002ing to address this screening question that an unanticipated\r
+intersection with the Alcubierre metric was found.\r
+2 Introduction\r
+The literature search phase of this DARPA project discovered\r
+a numerical methods approach known as worldline numerics\r
+[5–9] that can be used to study and quantify the Casimir\r
+energy density and force. The curious aspect of this modeling\r
+approach that makes it of high interest to the DARPA project\r
+is that it predicts that there is structure (spatial variation)\r
+to the negative vacuum energy density in a Casimir cavity\r
+analogous to the predictions of the dynamic vacuum model.\r
+The primary value of considering an implementation of this\r
+model technique is that it provides a high fidelity prediction\r
+of the perturbed vacuum state insidemodel geometry (e.g. the\r
+evanescent fields in structure) along with predictions for the\r
+perturbed vacuum state within the cavity gaps. An additional\r
+benefit of the worldline numerics method3 for studying the\r
+Casimir effect is that it can be used to address any type of\r
+geometry with effectively no restrictions on curvature or lack\r
+of smoothness.\r
+Due to the similarities with the dynamic vacuum model\r
+and its computational flexibility coupled with maturity, this\r
+worldline numerics technique has been implemented to con\u0002sider the custom Casimir cavities and determine the predicted\r
+negative vacuum energy density distribution in the cavities\r
+and within the pillars. Figure 3 depicts the numerical analysis\r
+results from our implementation of the worldline approach\r
+3 Also referred to as the loop cloud method [10].\r
+123
+
+Eur. Phys. J. C (2021) 81 :677 Page 3 of 10 677\r
+Fig. 3 Panel (a) shows a 2 dimensional section cut of a sphere-plate\r
+case using the numerical worldline technique. The approach was imple\u0002mented using Open MPI-enabled c-code and the analysis was run on\r
+100 2.40 GHz Intel Skylake CPUs. The model grid was a 50 × 50 × 50\r
+grid with a 2000 unit-loop ensemble. The bottom plot shows a vector\r
+plot of forces normal to model surfaces and was created by importing\r
+the worldline numerics results into COMSOL\r
+considering a 3 dimensional sphere with a radius of 4 µm\r
+separated from an infinite flat plate by a separation of 4 µm.\r
+The approach was implemented using Open MPI-enabled c\u0002code and the analysis was run on 100 2.40 GHz Intel Skylake\r
+CPUs. The model grid was a 50 × 50 × 50 grid with a 2000\r
+unit-loop ensemble. The top panel shows a 2 dimensional sec\u0002tion cut of the predicted distribution to the negative vacuum\r
+energy density between the two bodies where it should also\r
+be noted that the field gradients extend into both the body of\r
+the sphere and the flat plate in the form of evanescent fields.\r
+The bottom panel shows the distribution of forces across the\r
+surfaces of the model and was generated using COMSOL.\r
+The following section provides a brief summary of the details\r
+behind the worldline numerics analytic approach.\r
+3 Synopsis of Casimir worldline numerics\r
+The string theory inspired worldline numerics approach to\r
+determine the Casimir effect is developed in detail in [5],\r
+and the critical aspects of the analysis technique are briefly\r
+summarized here for convenience. With the objective of eval\u0002uating the Casimir interaction energy ECasimir (e.g. normal\u0002ized) arising from the coupling of a real scalar quantum field\r
+φ of finite mass m with a background potential V(x)that rep\u0002resents the Casimir geometry, the key equation from Section\r
+2.1 of [5] is the effective action shown in Eq. (1).\r
+Γ [V]=− 1\r
+2(4π )2\r
+\u0003 ∞\r
+1/\u00062\r
+dT\r
+T 3 e−m2T\r
+\u0003\r
+d4x\r
+×\r
+\u0004\u0005\r
+WV [y(t); x]\r
+\u0006\r
+y\r
+− 1\r
+\u0007\r
+(1)\r
+The expectation value in Eq. (1) is the average of the loop\r
+ensemble over all closed loops with Gaussian walks:\r
+\u0005\r
+WV [y(t); x]\r
+\u0006\r
+y =\r
+\b\r
+y(0)=y(1) D y WV [y(t); x] e− \b 1\r
+0 dt y˙2/4\r
+\b\r
+y(0)=y(1) D y e− \b 1\r
+0 dt y˙2/4 ,\r
+(2)\r
+where the following “Wilson loop” identity has been intro\u0002duced with y representing the (unit) loop path4, x represent\u0002ing the position shift of the unit loop in model space, and T\r
+denoting the proper time and serves to scale the unit loops:\r
+WV [y(t); x] = exp \u0004\r
+−T\r
+\u0003 1\r
+0\r
+dt V(x + √T y(t))\u0007. (3)\r
+Equipped with this information, one can calculate the\r
+(unrenormalized) Casimir energy as E = Γ / \b dx0 where\r
+the integral represents the “volume” in the time direction.\r
+When considering the Casimir force, the portion of the\r
+Casimir energy that has a dependency on the relative posi\u0002tions of the bounding geometries can be obtained by subtract\u0002ing the energies of the single objects from the total Casimir\r
+energy.\r
+ECasimir:=EV1+V2+··· − EV1 − EV2 −··· (4)\r
+4 y : [0; 1] \u0005→ R and unit proper time t ∈ [0, 1].\r
+123
+
+677 Page 4 of 10 Eur. Phys. J. C (2021) 81 :677\r
+The Casimir force can be obtained by taking the negative\r
+spatial derivative of this interaction energy, and further, this\r
+process has removed any UV divergences. In the Dirichlet\r
+limit λ → ∞ and for a massless scalar field with Dirichlet\r
+boundaries in D = 3+1, the worldline representation of the\r
+Casimir interaction energy boils down to5:\r
+ECasimir = − 1\r
+2(4π )2\r
+\u0003 ∞\r
+0\r
+dT\r
+T 3\r
+\u0003\r
+d3xC M \b\bΣ[x(τ )]\tx (5)\r
+The worldline functional \bΣ[x(τ )] = 0 if the re-scaled\r
+unit loop does not intersect any Casimir geometry and\r
+\bΣ[x(τ )] = 1 − n if the re-scaled loop intersects n ≥ 1\r
+Casimir geometry. The numerical evaluation process requires\r
+two discretization steps. The first is the discretization of the\r
+path integral into an ensemble of nL random paths x\u000B(τ ),\r
+\u000B = 1,..., nL with each path forming a closed spacetime\r
+loop. The second is the discretization of the proper time inter\u0002val τ ∈ [0, T ] into N steps such that an individual closed\r
+loop consists of N points per loop: x\u000Bk :=x\u000B(k · T/N), k =\r
+1,... N. Transporting and rescaling the ensemble of unit\r
+loops to a point xCM in the model takes the following form:\r
+x\u000Bk = xCM + √T y\u000Bk . Applying these two discretizations to\r
+the Casimir interaction energy in Eq. (5) yields the following\r
+form:\r
+ECasimir = − 1\r
+2(4π )2\r
+\u0003 ∞\r
+0\r
+dT\r
+T 3\r
+\u0003\r
+d3xCM\r
+1\r
+nL\r
+\tnL\r
+\u000B=1\r
+\bΣ[xCM+\r
+√\r
+T y\u000B].\r
+(6)\r
+As the worldline numeric approach for the Casimir phe\u0002nomenon is based on (massless) scalar fields, the technique\r
+can currently only assess idealized behaviour for bounding\r
+geometry and cannot assess any frequency dependence of\r
+materials. Additionally, the approach developed to date in\r
+the literature does not account for the impacts of temperature.\r
+However, it is still a very capable and appealing technique in\r
+that it can provide quick and fairly accurate assessments for\r
+very complicated geometries where analytic techniques are\r
+not practical.\r
+3.1 Generating unit loops, computational approach, and\r
+implementation validation\r
+The developers of the worldline numerics for the Casimir\r
+phenomenon explored numerous ways [5] to generate ensem\u0002bles of unit loops with Gaussian distribution ranging from a\r
+heat bath kernel to random walks, and finally landing on a\r
+technique denoted as the “v-loop” algorithm. The curious\r
+5 A thorough articulation of the renormalization process is detailed in\r
+Section 3.2 of [8].\r
+(a) 100 point unit loop (b) 500 point unit loop\r
+(c) 1000 point unit loop (d) 5000 point unit loop\r
+Fig. 4 Gaussian distributed closed unit loops representative of scalar\r
+field fluctuation generated using v-loop methodology. Algorithm will\r
+generate ensemble of nL unit loops to be scaled and applied at each\r
+geometric point of interest in a physical model\r
+reader is encouraged to review the referenced manuscript for\r
+a thorough discussion of the benefits and shortfalls of the\r
+different techniques explored. The “v-loop” technique was\r
+selected as it can computationally generate an ensemble of\r
+nL each having N points per loop without having to perform\r
+multiple iterations on each loop to realize a closed random\r
+walk/worldline with the required statistical characteristics.\r
+Figure 4 shows several examples of unit-loops generated by\r
+the v-loop methodology ranging from a 100 point unit loop\r
+to a 5000 point unit loop. A summary of the computational\r
+procedure steps are provided here to facilitate the reader’s\r
+understanding of the “v-loop” approach:\r
+1. generate N − 1 numbers wi (i = 1,..., N − 1) with\r
+a Gaussian distribution e−w2\r
+i (e.g. using Box–Müller\r
+method);\r
+2. calculate N − 1 numbers v¯i by normalizing wi :\r
+v¯1 =\r
+
+ 2\r
+N\r
+w1,\r
+v¯i = 2\r
+√N\r
+
+ N + 1 − i\r
+N + 2 − i\r
+wi, i = 2,..., N − 1; (7)\r
+123
+
+Eur. Phys. J. C (2021) 81 :677 Page 5 of 10 677\r
+3. calculate vi for i = 2,..., N − 1 with the following:\r
+vi = ¯vi − 1\r
+N + 2 − i\r
+vi−1,1,\r
+where vi−1,1 = \t\r
+i−1\r
+j=2\r
+v j; (8)\r
+4. a unit loop y can now be created by using:\r
+y1 = 1\r
+N\r
+\u000B\r
+v¯1 −\r
+N\r
+\t−1\r
+i=2\r
+\f\r
+N − i +\r
+1\r
+2\r
+\r\r
+vi\r
+\u000E\r
+,\r
+yi = yi−1 + vi, i = 2,..., N − 1,\r
+yN = −\r
+N\r
+\t−1\r
+i=1\r
+yi; (9)\r
+5. this procedure is repeated nL times to create the unit loop\r
+ensemble y\u000B with \u000B = 1,..., nL.\r
+The benefit of this numeric worldline approach is that it\r
+can be used to address any type of geometry while other\r
+approaches such as Proximity-Force Approximation (PFA)\r
+are not as flexible. Additionally, the approach has no depen\u0002dency on the choice of model grid spacing or grid choice.\r
+The answer for a single point of interest in space does not\r
+have any interdependency on any other model grid points and\r
+may be calculated in total isolation if that is all that is needed.\r
+Figure 56 provides a pictoral representation of the analysis\r
+process for a parallel plate Casimir cavity. As indicated in\r
+the figure, once the loop ensemble has been generated the\r
+computational process to calculate the Casimir interaction\r
+energy follows the below enumerated steps:\r
+1. The loop ensemble is moved to each model grid point of\r
+interest and scaled using proper time until 2+ bodies in\r
+the model are pierced;\r
+2. the scale at which an individual loop pierces 2+ bod\u0002ies defines the integral limits for the Casimir interaction\r
+energy integral;\r
+3. the energy at the geometric point of interest in the model\r
+is increased based on wavelength (loop scale) and loop\r
+weight factor;\r
+4. this scaling process is repeated for each loop in the ensem\u0002ble at a geometric point of interest in the model;\r
+5. the above steps are repeated for each geometric point of\r
+interest in the model.\r
+6 While the figure depicts a regularized model grid for communication\r
+purposes, the computational result at an individual model point is not\r
+dependent on adjacent points making the technique independent of grid\r
+choice.\r
+Validation of our implementation of the numeric worldline\r
+approach was done on a plate-plate case and a corresponding\r
+plate-sphere case and was compared to documented results\r
+in the literature [5]. For the reader’s awareness, the work doc\u0002umented in [5] conducts extensive analysis to compare ana\u0002lytic results to the numeric results produced by the worldline\r
+technique for the simple plate-plate scenario and plate-sphere\r
+scenario. The referenced study explored the impact of num\u0002ber of points per unit loop, number of unit loops in an ensem\u0002ble, separation distance of geometries, coupling, and mass. It\r
+is not the intention of this paper to duplicate the viability of\r
+the overall worldline numerics approach as this has already\r
+been done in the literature as noted, rather the intention of this\r
+paper is to apply this very powerful and flexible technique to\r
+fairly complicated geometries where only numerical methods\r
+can effectively be used. In our validation effort, we confirmed\r
+that our model predict the correct Casimir force for a given\r
+plate-plate or sphere place scenario, and subsequently com\u0002pared their Casimir interaction energy density results from\r
+their numeric worldline algorithm to our interaction energy\r
+density results from our numeric worldline algorithm. The\r
+subsequent more complicated geometries we consider forth\u0002with as part of this work do not have trivial analytic solutions\r
+which is why the numeric worldline technique is employed.\r
+A plot of the results from our implementation is provided\r
+in Fig. 6 for the two cases and the plot also includes a plate\u0002blade case. The geometry of all three cases is such that the\r
+closest point of separation between all three cases is iden\u0002tical allowing for comparison of the results to evaluate the\r
+effects of curvature. The plots reflect the energy density as\r
+measured along a line normal to the plate-plate geometry\r
+and these geometric points of interest are the same for the\r
+plate-sphere and plate-blade cases. The colors of the Casimir\r
+energy density plots correspond to the colors of the toy geom\u0002etry also overlayed on the plot facilitating comparison of the\r
+results and to clearly see the impact of curvature. Comparing\r
+our results to those in literature indicates that our algorithms\r
+are functioning properly.\r
+4 Analysis results and unanticipated findings\r
+As discussed in the opening of the manuscript, the critical\r
+concern for this project is if the presence of a pillar in the\r
+Casimir cavity would serve to screen itself in such a way that\r
+it would be unable to see the negative vacuum energy density\r
+gradient predicted to be present in the cavity if the pillars were\r
+not present. A model was built to assess a 4 µm cavity with\r
+a 1 µm diameter pillar placed in the middle of the cavity.\r
+The model discretization was a 35×35 grid running ± 4 µm\r
+in both the x and y axis. The x-axis is the vector normal to\r
+the parallel cavity plates, and the y-axis is orthogonal to the\r
+x-axis and defines the 2D surface for the energy density plot.\r
+123
+
+677 Page 6 of 10 Eur. Phys. J. C (2021) 81 :677\r
+Fig. 5 Panel (a) shows the unit\r
+loop ensemble being moved to a\r
+geometric point of interest in\r
+model. Panel (b) shows scaling\r
+of one of the unit loops from the\r
+ensemble to the point that it\r
+intersects 2+ bodies of model.\r
+This establishes the support S\u000B\r
+to be used in integration and\r
+determine the weighted\r
+contribution of the loop to the\r
+Casimir energy density of the\r
+vacuum at this point in the\r
+model\r
+Generate ensemble of random nL unit\r
+loops with each having np points in\r
+loop\r
+Transport the ensemble of\r
+unit loops to each point of in\u0002terest in geometric model\r
+1 2 3 nL\r
+For each loop in the ensemble, trans\u0002port to a grid point, scale loop to de\u0002termine proper time for which loop\r
+pierces 2+ bodies\r
+This defines the support, S\u0002, of the\r
+loop that sets the integral limits for\r
+integration\r
+The energy density at the point is then\r
+increased by a loop-weighted amount\r
+(a) transporting unit loop ensemble to geometric point of interest\r
+(b) scaling of an individual loop of the ensemble so that it inter\u0002sects 2+ bodies of the model\r
+The origin of the coordinate system is at the center of the\r
+pillar. The analysis results are shown in Fig. 7 with a two\r
+dimensional representation of the energy density depicted in\r
+the left panel and a log of the energy density levels in the right\r
+panel. Inspecting the log-plot on the right shows that while\r
+the presence of the pillar in the cavity does perturb the field,\r
+it actually serves to slightly increase the effective negative\r
+vacuum energy density seen in the pillar by a factor of 3–\r
+5 compared to the density level present without the pillar in\r
+the cavity. These analysis results would suggest that the pillar\r
+does not adversely self-screen itself in a manner that prevents\r
+it from seeing the field magnitude in the cavity with no pillar\r
+present. Rather, due to the slightly elevated state, it could\r
+be reasoned that the pillar seems to focus the gradient in a\r
+manner that would at most allow the pillar to drain the stored\r
+energy in the cavity at a quicker rate once it is connected to\r
+a high impedance oscilloscope.This effect might result in a\r
+need for more cavities to provide enough stored energy such\r
+that the duration of the transient voltage signal will last long\r
+enough for detection.\r
+While the analysis results discussed above are encourag\u0002ing for the project objective of attempting to measure the\r
+presence of structure in the negative vacuum energy density\r
+within a customized Casimir cavity, the implications of this\r
+particular predicted negative vacuum energy density distri\u0002bution is quite intriguing for an altogether different reason.\r
+As it so happens, the structure of the field around the pillar\r
+in the two dimensional plot is qualitatively very similar to\r
+a plot of the negative vacuum energy density necessary for\r
+the Alcubierre warp metric.7 Figure 9 shows a zoomed view\r
+on the numeric worldline analysis of the plate-pillar case on\r
+7 The Casimir phenomenon was first discussed as an alternative source\r
+to exotic matter for the idea of a wormhole in [11,12] and later expanded\r
+on in a book[13] on wormholes by Visser. It was also identified by\r
+Alcubierre[14] in his seminal paper as an alternative source to exotic\r
+matter for the manifestation of a warp bubble. The Casimir phenomenon\r
+123
+
+Eur. Phys. J. C (2021) 81 :677 Page 7 of 10 677 plate plate\r
+plate-plate\r
+plate-sphere\r
+plate-blade sphere\r
+blade\r
+Fig. 6 Plot of validation runs for plate-plate and plate-sphere cases.\r
+The plot also includes a plate-blade case. The geometry elements are\r
+represented by a thick vertical black line for the left Casimir cavity\r
+plate, a thick vertical cyan line for the right plate, a thick gray quarter\r
+circle to show the location of the sphere, and an orange horizontal\r
+line representing the blade. The colors of the plots of energy density\r
+distribution match the color of the corresponding geometry overlayed in\r
+the plot. The magnitude of the energy density distribution clearly shows\r
+a decrease in magnitude as the cases go from plate-plate to plate-blade.\r
+Additionally, the plots show that there is a shifting of the peaks to the\r
+right due to the curvature effects\r
+the top, and the energy density field for the Alcubierre met\u0002ric on the bottom. Before fully exploring the implications of\r
+this unanticipated intersection between these two models, the\r
+critical elements of the Alcubierre model will be identified\r
+and discussed that lead to the energy density that allows the\r
+“trick” to work. The motivation for the Alcubierre metric [14]\r
+was to develop a model within the context of general relativ\u0002ity that would mathematically encapsulate the idea of a space\r
+warp that would allow for hyper fast travel between arbitrar\u0002ily distant stellar objects. The metric and shaping function\r
+are provided in Eq. (10) (with G = c = 1 where vs is the\r
+speed of the craft, f (rs)is the shaping function, σ is the shell\r
+thickness parameter that controls the thickness of the warp\r
+bubble wall, and R is the radius of the warp bubble.\r
+ds2 = −dt2 + \u000F\r
+dx − vs f (rs)dt\u00102 + dy2 + dz2\r
+f (rs) = tanh \u000F\r
+σ (rs + R)\r
+\u0010\r
+− tanh \u000Fσ (rs − R)\r
+\u0010\r
+2 tanh(σ R) (10)\r
+The critical element of the model that enables stellar hyper\r
+fast transit is conjectured to be the York Time which is a\r
+measure of the expansion and contraction of space associated\r
+with the metric.8 A plot of the York Time is provided in\r
+Footnote 7 continued\r
+has more recently been explored by Garattini in [15,16] as a sourcing\r
+material for “benign” wormholes.\r
+8 It was shown in [18] by putting the metric into canonical form that the\r
+catalytic mechanism was not the York Time, rather it was the boost field\r
+−4 −20 2 4\r
+·10−6\r
+−4\r
+−2\r
+0\r
+2\r
+4 ·10−6\r
+−4 −20 2 4\r
+·10−6\r
+−4\r
+−2\r
+0\r
+2\r
+4 ·10−6\r
+(a)linear plot of energy density\r
+(b) log plot of energy density\r
+Fig. 7 The white lines represent a 4 µm Casimir cavity, and the circle\r
+represents the 1µm pillar located at the midplane of the cavity. Panel (a)\r
+shows the linear 2D plot of the energy density and panel (b) shows the\r
+log 2D plot. The bright yellow regions show the impact of the presence of\r
+the pillar on the energy density, and the log plot shows that the pillars do\r
+not self-screen themselves from the background field gradient resulting\r
+from the presence of just the plates (lime-green color)\r
+Fig. 8 [17]. The York Time field is depicted as a grid that\r
+has a wave-like appearance with a simple representation of\r
+a notional craft overlayed on top of the field to show the\r
+connection between the spacetime disturbance and the source\r
+of the negative vacuum energy density. The York Time plot\r
+indicates that space is expanding behind the spacecraft and\r
+contracting in front of the spacecraft. The craft depicted in\r
+Footnote 8 continued\r
+serving as a multiplier of the ship’s initial velocity, akin to watching\r
+a movie in fast-forward. With the canonical form of the metric, the\r
+expansion and contraction of space is viewed as a response of spacetime\r
+as the hyperfast craft transits through space – space piles up in front of\r
+the craft and stretches out behind the craft.\r
+123
+
+677 Page 8 of 10 Eur. Phys. J. C (2021) 81 :677\r
+the plot has a central part located in the center of the warp\r
+bubble in the region where the spacetime is flat, the proper\r
+acceleration α is zero, and local clocks are synchronized with\r
+external clocks on earth. The craft is equipped with a ring\r
+structure that represents an encapsulation of exotic matter or\r
+negative vacuum energy density distributed throughout.\r
+The York Time, θ, and the energy density distribution T 00,\r
+are shown in Eqs. (11) and (12) respectively. The vs term\r
+again represents the velocity of the craft, xs represents the\r
+position of the center of the craft (and hence the fields), and\r
+the y2 and z2 just define a radial distance ρ from the central\r
+x-axis. Anecdotally, a sensitivity analysis of the field equa\u0002tions conducted in [19,20] showed that by varying the shell\r
+thickness parameter, σ, one could reduce the magnitude of\r
+the York Time, and as a result the total energy required to\r
+make the concept work. The analysis effort created two ani\u0002mations available online that show the response of the York\r
+Time field [21] and the energy density field [22] to variation\r
+of the shell thickness parameter. The animations show that\r
+as the warp bubble wall thickness increases the peak energy\r
+density decreases significantly, and as the warp bubble wall\r
+thickness decreases the peak energy density increases. The\r
+reasoning behind this response is that the York Time can be\r
+viewed as a sort of 3-dimensional strain of space, and as\r
+the shell thickness increases, the amount of 3-dimensional\r
+strain needed to manifest a target speed vs decreases which\r
+is accompanied by a decrease of energy density, and thus a\r
+reduction in total energy. This is not without a cost – as can\r
+be seen in the online animation of the York Time field, the\r
+region of flat spacetime available for the critical portions of\r
+the craft, say for a crew or science instruments, is decreased\r
+as the bubble wall thickness is increased. So the energy opti\u0002mization process has a competing constraint in the form of\r
+the required size, R, for the warp bubble to adequately encap\u0002sulate sensitive cargo within the flat spacetime region inside\r
+the bubble wall.\r
+θ = vs\r
+xs\r
+rs\r
+d f (rs)\r
+drs (11)\r
+T 00 = − 1\r
+8π\r
+v2\r
+s (y2+z2)\r
+4r 2\r
+s\r
+\u0011d f (rs)\r
+drs\r
+\u00122\r
+(12)\r
+Now that the Alcubierre metric has been introduced and\r
+the critical elements have been identified and discussed, a\r
+comparison between the exotic matter requirements of the\r
+warp concept and the numeric worldline analysis results for\r
+the custom Casimir cavity may now be made. The top panel\r
+of Fig. 9 shows a close up view of the predicted response of\r
+the quantum vacuum within the custom Casimir cavity, and\r
+the bottom panel shows a 2-dimensional representation of the\r
+energy density necessary for the Alcubierre model. The con\u0002centrations in the negative vacuum energy density due to the\r
+presence of the pillar in the Casimir cavity are qualitatively\r
+very similar to the 2D representation of the T 00 for the Alcu\u0002bierre model. It should be noted that the 2-dimensional plot\r
+expanding\r
+space\r
+contracting\r
+space\r
+exotic\r
+matter\r
+ring\r
+York\r
+Time \u0002v\r
+spacecraft\r
+velocity\r
+Fig. 8 Plot of York Time θ for Nature [17] - the plot shows the expan\u0002sion and contraction of space associated with the Alcubierre metric. The\r
+plot also includes a simple representation of craft overlayed to illustrate\r
+the alignment of the exotic matter ring (T 00) with the expansion and\r
+contraction of space. It should be noted that the flat region at the mid\u0002dle of the York Time plot represents the region of flat spacetime in the\r
+middle of the warp bubble where coordinate time is the same as proper\r
+time, and proper acceleration α is zero. This would be where sensitive\r
+spacecraft systems/instruments and possibly crew would be located.\r
+The effective velocity of the spacecraft is overlayed as a red vector\r
+for the Casimir cavity is in effect a linear extrusion extend\u0002ing up from the surface of the paper meaning the lenticular\r
+shaped concentration is rod-like, while the Alcubierre plot is\r
+a revolution which yields a toroidal distribution.\r
+Based on the custom Casimir cavity results for the parallel\r
+plate cavity with a cylindrical pillar at the mid-plane, a toy\r
+model comprised of a 1 µm diameter sphere suspended in\r
+the middle of a 4 µm diameter cylinder was implemented\r
+and the numeric worldline analysis technique was used find\r
+the predicted Casimir energy density. Figure 10a shows a sec\u0002tion cut of the toroidal Casimir energy density for the sphere\u0002cylinder system which correlates well with the toroidal Alcu\u0002bierre energy density requirements. If one could manufacture\r
+a chip with these types of nano structures (nano-spheres sus\u0002pended in nano-tubes), an experiment might be designed and\r
+attempted to conduct a test to measure transit time of say a\r
+current (alternately a photon or electron) through a tiny con\u0002ductor (alternately open bore) routed through the center of\r
+the sphere(s). This transit time could be compared to the time\r
+it takes for a current (photon/electron) to run through a mir\u0002ror system that has no external tube (control test). If need be,\r
+many of these nano structures could be arranged in parallel\r
+to increase the time resolution of the notional experiment\r
+123
+
+Eur. Phys. J. C (2021) 81 :677 Page 9 of 10 677\r
+Fig. 9 Comparison of energy density for the numeric worldline assess\u0002ment of the custom Casimir cavity and and the Alcubierre model energy\r
+density requirement\r
+(see Fig. 10b). If a difference in transit time were observed,\r
+this would be an empirical confirmation of the generation of\r
+a real nano scale warp bubble on a chip.9 To be clear, this\r
+9 It could be speculated that a nano sphere might be made to trans\u0002late through a nano cylinder as a more direct implementation of the\r
+Alcubierre model with the provision that it may be viewed as a space\r
+warp/wormhole hybrid with the cylinder serving as the connecting\r
+Fig. 10 The top panel depicts a section cut of predicted toroidal\r
+Casimir energy density distribution for sphere-cylinder system com\u0002prised of a 1 µm diameter sphere suspended in the middle of a 4 µm\r
+diameter cylinder. The approach was implemented using Open MPI\u0002enabled c-code and the analysis was run on 660 2.40 GHz Intel Skylake\r
+CPUs. The model grid was a 100 × 100 grid with a 2000 unit-loop\r
+ensemble. The bottom panel depicts a notional experimental setup that\r
+comprises an array of sphere-cylinder constructions arranged such that\r
+a pulse of electrons or photons may be routed through the test device in\r
+an attempt to measure a change in transit time for an equivalent pulse\r
+routed through free space\r
+would not be some simple analogue or proxy representation\r
+of a space warp phenomenon, rather it would be a genuine\r
+implementation of the idea in physical fact with observable\r
+consequences in the laboratory – just not in the dramatic form\r
+of a craft bound for a distant stellar destination.\r
+Footnote 9 continued\r
+pathway between two points and also enabling the formation of the\r
+necessary negative vacuum energy density around the sphere to boost\r
+the effective velocity.\r
+123
+
+677 Page 10 of 10 Eur. Phys. J. C (2021) 81 :677\r
+5 Conclusions\r
+The impetus for the work discussed in this manuscript was\r
+to explore the implications of the dynamic vacuum model as\r
+applied to a custom Casimir cavity geometry. The dynamic\r
+vacuum model suggests that the state of the negative vacuum\r
+energy density in the cavity is not just an isotropic value that\r
+is constant throughout the enclosing geometry, rather it has\r
+spatial variation and can manifest complicated structure. In\r
+the process of the team exploring the literature, a technique\r
+called worldline numerics was discovered that also predicts\r
+that there is structure to the perturbed vacuum state that is\r
+predicted to exist in a notional Casimir cavity. This tech\u0002nique was used to evaluate the predicted state of the vacuum\r
+in response to the presence of small pillars placed at the mid\u0002plane of a Casimir cavity. The analysis showed that the pillar\r
+would not adversely screen itself from the predicted back\u0002ground field that exists in response to just the presence of\r
+the plates. The analysis also showed a possible intersection\r
+with a model developed in the context of general relativity to\r
+understand how hyperfast stellar travel might be manifested\r
+mathematically. The qualitative correlation would suggest\r
+that a chip-scale experiment might be explored to attempt to\r
+measure a tiny signature illustrative of the presence of the\r
+conjectured phenomenon.\r
+Acknowledgements This work was supported by the DARPA Defense\r
+Science Office Quest for Undiscovered Energy Storage and Thrust\r
+(QUEST) Program through funded agreement HR00112090082. Spe\u0002cial thanks goes to Limitless Space Institute for organizational and insti\u0002tutional support, Prof. Mike Fiddy and Dr. David Lewis for helpful\r
+technical discussions, and Mark Rademaker for help with visualization\r
+graphics (e.g. Fig. 8). Godspeed.\r
+Data Availability Statement This manuscript has no associated data\r
+or the data will not be deposited. [Authors’ comment: This paper is pri\u0002marily a theoretical work. The algorithms used have been summarized\r
+in the text and references to the salient literature have been provided.\r
+All necessary data related to the article are presented and discussed in\r
+the narrative.].\r
+Open Access This article is licensed under a Creative Commons Attri\u0002bution 4.0 International License, which permits use, sharing, adaptation,\r
+distribution and reproduction in any medium or format, as long as you\r
+give appropriate credit to the original author(s) and the source, pro\u0002vide a link to the Creative Commons licence, and indicate if changes\r
+were made. The images or other third party material in this article\r
+are included in the article’s Creative Commons licence, unless indi\u0002cated otherwise in a credit line to the material. If material is not\r
+included in the article’s Creative Commons licence and your intended\r
+use is not permitted by statutory regulation or exceeds the permit\u0002ted use, you will need to obtain permission directly from the copy\u0002right holder. To view a copy of this licence, visit http://creativecomm\r
+ons.org/licenses/by/4.0/.\r
+Funded by SCOAP3.\r
+References\r
+1. H. White, J. Vera, P. Bailey, P. March, T. Lawrence, A. Sylvester,\r
+D. Brady, Dynamics of the vacuum and Casimir analogs to the\r
+hydrogen atom. J. Mod. Phys. 6, 1308–1320 (2015)\r
+2. H. White, P. Bailey, J. Lawrence, J. George, J. Vera, A discussion\r
+on a dynamic vacuum model: derivation of Helmholtz equation\r
+from Schrödinger equation. Phys. Open 1, 100009 (2019)\r
+3. G. Moddel, A. Weerakkody, D. Doroski, D. Bartusiak, Optical\u0002cavity-induced current. Symmetry 13, 517 (2021)\r
+4. H. White, P. Bailey, J. Lawrence, J. George, J. Vera, Dynamic vac\u0002uum model and Casimir cavity experiments. JBIS 73, 7 (2020)\r
+5. H. Gies, K. Langfeld, L. Moyaerts, Casimir effect on the worldline.\r
+JHEP 2003, 6 (2003)\r
+6. H. Gies, K. Klingmüller, Worldline algorithms for Casimir config\u0002uration. Phys. Rev. D 74, 4 (2006)\r
+7. H. Gies, K. Klingmüller, Casimir edge effects. Phys. Rev. Lett. 97,\r
+22 (2006)\r
+8. K. Klingmüller, Worldline approach to Casimir effect and Gross\u0002Neveu model, Ph.D.-thesis. Heidelberg University (2007)\r
+9. K. Aehlig, H. Dietert, T. Fischbacher, J. Gerhard, Casimir forces\r
+via worldline numerics: method improvements and potential engi\u0002neering applications (2011). arXiv:1110.5936 [hep-th]\r
+10. L. Moyaerts, K. Langfeld, H. Gies, Worldline approach to the\r
+Casimir effect. 6th Workshop on Quantum Field Theory under\r
+the Influence of External Conditions (QFEXT03), 11 (2003).\r
+arXiv:hep-th/0311168\r
+11. M.S. Morris, K.S. Thorne, Wormholes in spacetime and their use\r
+for interstellar travel: A tool for teaching general relativity. Am. J.\r
+Phys. 56, 5 (1988)\r
+12. M.S. Morris, K.S. Thorne, U. Yurtever, Wormholes, time machines,\r
+and the weak energy condition. Phys. Rev. Lett. 61, 13 (1988)\r
+13. M. Visser, Lorentzian Wormholes: From Einstein to Hawking\r
+(American Institute of Physics, New York, 1995)\r
+14. M. Alcubierre, The warp drive: hyper-fast travel within general\r
+relativity. Class. Quantum Gravity 11, 5 (1994)\r
+15. R. Garattini, Casimir wormholes. Eur. Phys. J. C 79, 11 (2019)\r
+16. R. Garattini, Generalized absurdly benign traversable wormholes\r
+powered by Casimir energy. Eur. Phys. J. C 80, 12 (2020)\r
+17. S. Perkowitz, Science Fiction: Boldly Going for 50 Years (2016).\r
+https://www.nature.com/articles/537165a\r
+18. H. White, A discussion of space-time metric engineering. Gen.\r
+Relativ. Gravit. J. 35, 2025 (2003)\r
+19. H. White, Warp field mechanics 101. J. Br. Interplanet. Soc. 66,\r
+242 (2013)\r
+20. H. White, Warp Field Mechanics 102 (2013). https://ntrs.nasa.gov/\r
+citations/20130011213\r
+21. H. White, Shell thickness parameter σ sensitivity analysis of York\r
+Time for Alcubierre model, animation of results (2013). https://\r
+www.youtube.com/watch?v=gy_UFmGh83E\r
+22. H. White, Shell thickness parameter σ sensitivity analysis of T 00\r
+for Alcubierre model, animation of results (2013). https://www.\r
+youtube.com/watch?v=n_VQPqKUwhQ\r
+123"""
+
+[metadata]
+title = "White 2021 Casimir Warp"
+authors = ["Unknown"]
+year = 2021
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Eur. Phys. J. C (2021) 81:677\r
+https://doi.org/10.1140/epjc/s10052-021-09484-z\r
+Regular Article - Theoretical Physics\r
+Worldline numerics applied to custom Casimir geometry\r
+generates unanticipated intersection with Alcubierre warp metric\r
+Harold White1,a, Jerry Vera1, Arum Han2,3,4,5, Alexander R. Bruccoleri6, Jonathan MacArthur6\r
+1 Limitless Space Institute, 16441 Space Center Blvd., Bldg. D-200, Houston, TX 77058, USA\r
+2 Department of Electrical and Computer Engineering, Texas A&M University, College Station, USA"""
+
+[[sections]]
+number = "3"
+title = "Department of Biomedical Engineering, Texas A&M University, College Station, USA"
+text = ""
+
+[[sections]]
+number = "4"
+title = "NanoBio Systems Lab. (nanobio.tamu.edu), College Station, USA"
+text = ""
+
+[[sections]]
+number = "5"
+title = "AggieFab (aggiefab.tamu.edu), College Station, USA"
+text = ""
+
+[[sections]]
+number = "6"
+title = "Izentis LLC, P.O. Box 397002, Cambridge, MA 02139, USA"
+text = """
+Received: 17 May 2021 / Accepted: 25 July 2021 / Published online: 31 July 2021\r
+© The Author(s) 2021\r
+Abstract While conducting analysis related to a DARPA\u0002funded project to evaluate possible structure of the energy\r
+density present in a Casimir cavity as predicted by the\r
+dynamic vacuum model, a micro/nano-scale structure has\r
+been discovered that predicts negative energy density distri\u0002bution that closely matches requirements for the Alcubierre\r
+metric. The simplest notional geometry being analyzed as\r
+part of the DARPA-funded work consists of a standard par\u0002allel plate Casimir cavity equipped with pillars arrayed along\r
+the cavity mid-plane with the purpose of detecting a transient\r
+electric field arising from vacuum polarization conjectured to\r
+occur along the midplane of the cavity. An analytic technique\r
+called worldline numerics was adapted to numerically assess\r
+vacuum response to the custom Casimir cavity, and these\r
+numerical analysis results were observed to be qualitatively\r
+quite similar to a two-dimensional representation of energy\r
+density requirements for the Alcubierre warp metric. Subse\u0002quently, a toy model consisting of a 1 µm diameter sphere\r
+centrally located in a 4µm diameter cylinder was analyzed to\r
+show a three-dimensional Casimir energy density that corre\u0002lates well with the Alcubierre warp metric requirements. This\r
+qualitative correlation would suggest that chip-scale experi\u0002ments might be explored to attempt to measure tiny signatures\r
+illustrative of the presence of the conjectured phenomenon:\r
+a real, albeit humble, warp bubble."""
+
+[[sections]]
+number = "1"
+title = "Background"
+text = "Work being conducted under a DARPA DSO1 grant is inves\u0002tigating the implications of the dynamic vacuum model for"
+
+[[sections]]
+number = "1"
+title = "Defense Advanced Research Projects Agency Defense Science Office."
+text = """
+a e-mail: sonny@limitlessspace.org (corresponding author)\r
+the possibility of structure to the Casimir energy distribu\u0002tion manifested in a parallel plate cavity. The dynamic vac\u0002uum model predicts that the negative vacuum energy density\r
+present in the parallel plate cavity is not isotropic, rather\r
+there is a varying energy density field present in the cavity\r
+with an average value that corresponds with that predicted\r
+by the traditional equation for parallel-plate Casimir energy\r
+density. The structure predicted to be manifest in the cav\u0002ity takes the form of a larger magnitude negative vacuum\r
+energy density concentrated along the cavity mid-plane that\r
+relaxes non-linearly to the unperturbed state at the cavity\r
+boundaries. Based on detailed studies of the atomic orbitals\r
+of the hydrogen atom, and deriving the acoustic wave equa\u0002tion from the Schrödinger equation [1,2], it is speculated that\r
+the energy density structure in a Casimir cavity is coupled to\r
+a small polarization field in the vacuum fluctuations resulting\r
+in a small but non-zero electrostatic field originating along\r
+the cavity mid-plane and terminating at the grounded cav\u0002ity walls. It has been further reasoned in the literature that\r
+it may be possible to construct a customized Casimir cav\u0002ity equipped with small pillars placed at the mid-plane as\r
+depicted in Fig. 1 such that when the pillar channel is sampled\r
+by a high impedance oscilloscope, the scope would detect a\r
+transient non-zero voltage signal2 that would rapidly go to\r
+zero as the stored energy in the polarization field is depleted\r
+from the measurement process [4]."""
+
+[[sections]]
+number = "2"
+title = "A recently published paper [3] details an experimental campaign"
+text = """
+using an asymmetric Casimir cavity arrangement where one cavity has\r
+a small separation and the other cavity has a much larger effective sep\u0002aration. This experimental campaign observed a current flow from the\r
+larger cavity electrode to the smaller cavity electrode. Our cavity is\r
+analogous in that the two parallel plates define a large cavity and the\r
+plate-pillar system plays the role of the smaller cavity.\r
+123"""
+
+[[sections]]
+number = "677"
+title = "Page 2 of 10 Eur. Phys. J. C (2021) 81 :677"
+text = """
+Fig. 1 Parallel plate cavity design with pillar-like features along the\r
+mid-plane – the dynamic vacuum model predicts that the scope will\r
+measure a small but non-zero transient voltage pulse from the pillars\r
+once connected to the cavities as shown. The anticipated geometry of\r
+each cavity is approximately 4 µm wide with each plate measuring\r
+40 µm by 40 µm. The pillars are expected to be approximately 1 µm\r
+in diameter\r
+If these cavities can be made small enough and arrayed\r
+together in large enough numbers to increase the stored\r
+energy, the magnitude and duration of this predicted tran\u0002sient voltage signal may be detectable in a laboratory set\u0002ting. The equation that predicts the magnitude of this small\r
+but non-zero electrostatic field was derived in [4] and takes\r
+the following form: E = \u0002\u0002cπ2\r
+/1080\u00030d4. A quick calculation\r
+for a Casimir cavity with a 4 µm gap predicts a magnitude\r
+of the electrostatic potential arising from the polarization\r
+of the vacuum fluctuations along the mid-plane of the cav\u0002ity to be ∼ 0.7 mV. Figure 2 shows some examples of the\r
+current nanofabrication trian runs that are ongoing as part\r
+of the effort. The left panel in the figure depicts a recent\r
+result obtained utilizing a Nanoscribe 3d printer to evaluate\r
+a range of cavity gaps and pillar sizes. The material being\r
+used in the manufacture is SU-8 2025 permanent epoxy neg\u0002ative photoresist. After printing and curing, the cavities then\r
+undergo electroless plating to add a layer of Ag to the outer\r
+surfaces. The right panel shows recent etching results using\r
+Deep Reactive Ion Etching (DRIE) equipment to etch the\r
+high-aspect ratio cavity planes into a silicon wafer substrate.\r
+This approach uses standard SiO2 wafer materials with the\r
+expectation that the final concepts will have a metallic layer\r
+added by means of evaporation. The results depicted were\r
+focused on achieving the high-aspect ratio etch, and future\r
+work will incorporate the masking necessary to produce pil\u0002lars. A technical concern with the proposed design imple\u0002mentation is how the presence of pillars might affect the pre\u0002dicted Casimir energy density distribution within the cavity\r
+- would there be self-screening that occurs within the pillar\r
+Fig. 2 Initial results from current nanofabrication trian runs: the left\r
+panel in the figure depicts a recent result obtained utilizing a Nanoscribe\r
+3D printer to evaluate a range of cavity gaps and pillar sizes; the right\r
+panel shows recent etching results using Deep Reactive Ion Etching\r
+(DRIE) equipment to etch the high-aspect ratio cavity planes into a\r
+silicon wafer substrate\r
+that minimizes the magnitude of the negative vacuum energy\r
+density present inside the pillar, and hence the magnitude of\r
+the detectable signal? It was during the analysis process seek\u0002ing to address this screening question that an unanticipated\r
+intersection with the Alcubierre metric was found."""
+
+[[sections]]
+number = "2"
+title = "Introduction"
+text = """
+The literature search phase of this DARPA project discovered\r
+a numerical methods approach known as worldline numerics\r
+[5–9] that can be used to study and quantify the Casimir\r
+energy density and force. The curious aspect of this modeling\r
+approach that makes it of high interest to the DARPA project\r
+is that it predicts that there is structure (spatial variation)\r
+to the negative vacuum energy density in a Casimir cavity\r
+analogous to the predictions of the dynamic vacuum model.\r
+The primary value of considering an implementation of this\r
+model technique is that it provides a high fidelity prediction\r
+of the perturbed vacuum state insidemodel geometry (e.g. the\r
+evanescent fields in structure) along with predictions for the\r
+perturbed vacuum state within the cavity gaps. An additional\r
+benefit of the worldline numerics method3 for studying the\r
+Casimir effect is that it can be used to address any type of\r
+geometry with effectively no restrictions on curvature or lack\r
+of smoothness.\r
+Due to the similarities with the dynamic vacuum model\r
+and its computational flexibility coupled with maturity, this\r
+worldline numerics technique has been implemented to con\u0002sider the custom Casimir cavities and determine the predicted\r
+negative vacuum energy density distribution in the cavities\r
+and within the pillars. Figure 3 depicts the numerical analysis\r
+results from our implementation of the worldline approach"""
+
+[[sections]]
+number = "3"
+title = "Also referred to as the loop cloud method [10]."
+text = ""
+
+[[sections]]
+number = "123"
+title = "Eur. Phys. J. C (2021) 81 :677 Page 3 of 10 677"
+text = """
+Fig. 3 Panel (a) shows a 2 dimensional section cut of a sphere-plate\r
+case using the numerical worldline technique. The approach was imple\u0002mented using Open MPI-enabled c-code and the analysis was run on\r
+100 2.40 GHz Intel Skylake CPUs. The model grid was a 50 × 50 × 50\r
+grid with a 2000 unit-loop ensemble. The bottom plot shows a vector\r
+plot of forces normal to model surfaces and was created by importing\r
+the worldline numerics results into COMSOL\r
+considering a 3 dimensional sphere with a radius of 4 µm\r
+separated from an infinite flat plate by a separation of 4 µm.\r
+The approach was implemented using Open MPI-enabled c\u0002code and the analysis was run on 100 2.40 GHz Intel Skylake\r
+CPUs. The model grid was a 50 × 50 × 50 grid with a 2000\r
+unit-loop ensemble. The top panel shows a 2 dimensional sec\u0002tion cut of the predicted distribution to the negative vacuum\r
+energy density between the two bodies where it should also\r
+be noted that the field gradients extend into both the body of\r
+the sphere and the flat plate in the form of evanescent fields.\r
+The bottom panel shows the distribution of forces across the\r
+surfaces of the model and was generated using COMSOL.\r
+The following section provides a brief summary of the details\r
+behind the worldline numerics analytic approach."""
+
+[[sections]]
+number = "3"
+title = "Synopsis of Casimir worldline numerics"
+text = """
+The string theory inspired worldline numerics approach to\r
+determine the Casimir effect is developed in detail in [5],\r
+and the critical aspects of the analysis technique are briefly\r
+summarized here for convenience. With the objective of eval\u0002uating the Casimir interaction energy ECasimir (e.g. normal\u0002ized) arising from the coupling of a real scalar quantum field\r
+φ of finite mass m with a background potential V(x)that rep\u0002resents the Casimir geometry, the key equation from Section\r
+2.1 of [5] is the effective action shown in Eq. (1).\r
+Γ [V]=− 1\r
+2(4π )2\r
+\u0003 ∞\r
+1/\u00062\r
+dT\r
+T 3 e−m2T\r
+\u0003\r
+d4x\r
+×\r
+\u0004\u0005\r
+WV [y(t); x]\r
+\u0006\r
+y\r
+− 1\r
+\u0007\r
+(1)\r
+The expectation value in Eq. (1) is the average of the loop\r
+ensemble over all closed loops with Gaussian walks:\r
+\u0005\r
+WV [y(t); x]\r
+\u0006\r
+y =\r
+\b\r
+y(0)=y(1) D y WV [y(t); x] e− \b 1\r
+0 dt y˙2/4\r
+\b\r
+y(0)=y(1) D y e− \b 1\r
+0 dt y˙2/4 ,\r
+(2)\r
+where the following “Wilson loop” identity has been intro\u0002duced with y representing the (unit) loop path4, x represent\u0002ing the position shift of the unit loop in model space, and T\r
+denoting the proper time and serves to scale the unit loops:\r
+WV [y(t); x] = exp \u0004\r
+−T\r
+\u0003 1\r
+0\r
+dt V(x + √T y(t))\u0007. (3)\r
+Equipped with this information, one can calculate the\r
+(unrenormalized) Casimir energy as E = Γ / \b dx0 where\r
+the integral represents the “volume” in the time direction.\r
+When considering the Casimir force, the portion of the\r
+Casimir energy that has a dependency on the relative posi\u0002tions of the bounding geometries can be obtained by subtract\u0002ing the energies of the single objects from the total Casimir\r
+energy.\r
+ECasimir:=EV1+V2+··· − EV1 − EV2 −··· (4)\r
+4 y : [0; 1] \u0005→ R and unit proper time t ∈ [0, 1].\r
+123"""
+
+[[sections]]
+number = "677"
+title = "Page 4 of 10 Eur. Phys. J. C (2021) 81 :677"
+text = """
+The Casimir force can be obtained by taking the negative\r
+spatial derivative of this interaction energy, and further, this\r
+process has removed any UV divergences. In the Dirichlet\r
+limit λ → ∞ and for a massless scalar field with Dirichlet\r
+boundaries in D = 3+1, the worldline representation of the\r
+Casimir interaction energy boils down to5:\r
+ECasimir = − 1\r
+2(4π )2\r
+\u0003 ∞\r
+0\r
+dT\r
+T 3\r
+\u0003\r
+d3xC M \b\bΣ[x(τ )]\tx (5)\r
+The worldline functional \bΣ[x(τ )] = 0 if the re-scaled\r
+unit loop does not intersect any Casimir geometry and\r
+\bΣ[x(τ )] = 1 − n if the re-scaled loop intersects n ≥ 1\r
+Casimir geometry. The numerical evaluation process requires\r
+two discretization steps. The first is the discretization of the\r
+path integral into an ensemble of nL random paths x\u000B(τ ),\r
+\u000B = 1,..., nL with each path forming a closed spacetime\r
+loop. The second is the discretization of the proper time inter\u0002val τ ∈ [0, T ] into N steps such that an individual closed\r
+loop consists of N points per loop: x\u000Bk :=x\u000B(k · T/N), k =\r
+1,... N. Transporting and rescaling the ensemble of unit\r
+loops to a point xCM in the model takes the following form:\r
+x\u000Bk = xCM + √T y\u000Bk . Applying these two discretizations to\r
+the Casimir interaction energy in Eq. (5) yields the following\r
+form:\r
+ECasimir = − 1\r
+2(4π )2\r
+\u0003 ∞\r
+0\r
+dT\r
+T 3\r
+\u0003\r
+d3xCM\r
+1\r
+nL\r
+\tnL\r
+\u000B=1\r
+\bΣ[xCM+\r
+√\r
+T y\u000B].\r
+(6)\r
+As the worldline numeric approach for the Casimir phe\u0002nomenon is based on (massless) scalar fields, the technique\r
+can currently only assess idealized behaviour for bounding\r
+geometry and cannot assess any frequency dependence of\r
+materials. Additionally, the approach developed to date in\r
+the literature does not account for the impacts of temperature.\r
+However, it is still a very capable and appealing technique in\r
+that it can provide quick and fairly accurate assessments for\r
+very complicated geometries where analytic techniques are\r
+not practical."""
+
+[[sections]]
+number = "3.1"
+title = "Generating unit loops, computational approach, and"
+text = """
+implementation validation\r
+The developers of the worldline numerics for the Casimir\r
+phenomenon explored numerous ways [5] to generate ensem\u0002bles of unit loops with Gaussian distribution ranging from a\r
+heat bath kernel to random walks, and finally landing on a\r
+technique denoted as the “v-loop” algorithm. The curious"""
+
+[[sections]]
+number = "5"
+title = "A thorough articulation of the renormalization process is detailed in"
+text = """
+Section 3.2 of [8].\r
+(a) 100 point unit loop (b) 500 point unit loop\r
+(c) 1000 point unit loop (d) 5000 point unit loop\r
+Fig. 4 Gaussian distributed closed unit loops representative of scalar\r
+field fluctuation generated using v-loop methodology. Algorithm will\r
+generate ensemble of nL unit loops to be scaled and applied at each\r
+geometric point of interest in a physical model\r
+reader is encouraged to review the referenced manuscript for\r
+a thorough discussion of the benefits and shortfalls of the\r
+different techniques explored. The “v-loop” technique was\r
+selected as it can computationally generate an ensemble of\r
+nL each having N points per loop without having to perform\r
+multiple iterations on each loop to realize a closed random\r
+walk/worldline with the required statistical characteristics.\r
+Figure 4 shows several examples of unit-loops generated by\r
+the v-loop methodology ranging from a 100 point unit loop\r
+to a 5000 point unit loop. A summary of the computational\r
+procedure steps are provided here to facilitate the reader’s\r
+understanding of the “v-loop” approach:\r
+1. generate N − 1 numbers wi (i = 1,..., N − 1) with\r
+a Gaussian distribution e−w2\r
+i (e.g. using Box–Müller\r
+method);\r
+2. calculate N − 1 numbers v¯i by normalizing wi :\r
+v¯1 =\r
+
+ 2\r
+N\r
+w1,\r
+v¯i = 2\r
+√N\r
+
+ N + 1 − i\r
+N + 2 − i\r
+wi, i = 2,..., N − 1; (7)"""
+
+[[sections]]
+number = "123"
+title = "Eur. Phys. J. C (2021) 81 :677 Page 5 of 10 677"
+text = """
+3. calculate vi for i = 2,..., N − 1 with the following:\r
+vi = ¯vi − 1\r
+N + 2 − i\r
+vi−1,1,\r
+where vi−1,1 = \t\r
+i−1\r
+j=2\r
+v j; (8)\r
+4. a unit loop y can now be created by using:\r
+y1 = 1\r
+N\r
+\u000B\r
+v¯1 −\r
+N\r
+\t−1\r
+i=2\r
+\f\r
+N − i +\r
+1\r
+2\r
+\r\r
+vi\r
+\u000E\r
+,\r
+yi = yi−1 + vi, i = 2,..., N − 1,\r
+yN = −\r
+N\r
+\t−1\r
+i=1\r
+yi; (9)\r
+5. this procedure is repeated nL times to create the unit loop\r
+ensemble y\u000B with \u000B = 1,..., nL.\r
+The benefit of this numeric worldline approach is that it\r
+can be used to address any type of geometry while other\r
+approaches such as Proximity-Force Approximation (PFA)\r
+are not as flexible. Additionally, the approach has no depen\u0002dency on the choice of model grid spacing or grid choice.\r
+The answer for a single point of interest in space does not\r
+have any interdependency on any other model grid points and\r
+may be calculated in total isolation if that is all that is needed.\r
+Figure 56 provides a pictoral representation of the analysis\r
+process for a parallel plate Casimir cavity. As indicated in\r
+the figure, once the loop ensemble has been generated the\r
+computational process to calculate the Casimir interaction\r
+energy follows the below enumerated steps:"""
+
+[[sections]]
+number = "1"
+title = "The loop ensemble is moved to each model grid point of"
+text = """
+interest and scaled using proper time until 2+ bodies in\r
+the model are pierced;\r
+2. the scale at which an individual loop pierces 2+ bod\u0002ies defines the integral limits for the Casimir interaction\r
+energy integral;\r
+3. the energy at the geometric point of interest in the model\r
+is increased based on wavelength (loop scale) and loop\r
+weight factor;\r
+4. this scaling process is repeated for each loop in the ensem\u0002ble at a geometric point of interest in the model;\r
+5. the above steps are repeated for each geometric point of\r
+interest in the model."""
+
+[[sections]]
+number = "6"
+title = "While the figure depicts a regularized model grid for communication"
+text = """
+purposes, the computational result at an individual model point is not\r
+dependent on adjacent points making the technique independent of grid\r
+choice.\r
+Validation of our implementation of the numeric worldline\r
+approach was done on a plate-plate case and a corresponding\r
+plate-sphere case and was compared to documented results\r
+in the literature [5]. For the reader’s awareness, the work doc\u0002umented in [5] conducts extensive analysis to compare ana\u0002lytic results to the numeric results produced by the worldline\r
+technique for the simple plate-plate scenario and plate-sphere\r
+scenario. The referenced study explored the impact of num\u0002ber of points per unit loop, number of unit loops in an ensem\u0002ble, separation distance of geometries, coupling, and mass. It\r
+is not the intention of this paper to duplicate the viability of\r
+the overall worldline numerics approach as this has already\r
+been done in the literature as noted, rather the intention of this\r
+paper is to apply this very powerful and flexible technique to\r
+fairly complicated geometries where only numerical methods\r
+can effectively be used. In our validation effort, we confirmed\r
+that our model predict the correct Casimir force for a given\r
+plate-plate or sphere place scenario, and subsequently com\u0002pared their Casimir interaction energy density results from\r
+their numeric worldline algorithm to our interaction energy\r
+density results from our numeric worldline algorithm. The\r
+subsequent more complicated geometries we consider forth\u0002with as part of this work do not have trivial analytic solutions\r
+which is why the numeric worldline technique is employed.\r
+A plot of the results from our implementation is provided\r
+in Fig. 6 for the two cases and the plot also includes a plate\u0002blade case. The geometry of all three cases is such that the\r
+closest point of separation between all three cases is iden\u0002tical allowing for comparison of the results to evaluate the\r
+effects of curvature. The plots reflect the energy density as\r
+measured along a line normal to the plate-plate geometry\r
+and these geometric points of interest are the same for the\r
+plate-sphere and plate-blade cases. The colors of the Casimir\r
+energy density plots correspond to the colors of the toy geom\u0002etry also overlayed on the plot facilitating comparison of the\r
+results and to clearly see the impact of curvature. Comparing\r
+our results to those in literature indicates that our algorithms\r
+are functioning properly."""
+
+[[sections]]
+number = "4"
+title = "Analysis results and unanticipated findings"
+text = """
+As discussed in the opening of the manuscript, the critical\r
+concern for this project is if the presence of a pillar in the\r
+Casimir cavity would serve to screen itself in such a way that\r
+it would be unable to see the negative vacuum energy density\r
+gradient predicted to be present in the cavity if the pillars were\r
+not present. A model was built to assess a 4 µm cavity with\r
+a 1 µm diameter pillar placed in the middle of the cavity.\r
+The model discretization was a 35×35 grid running ± 4 µm\r
+in both the x and y axis. The x-axis is the vector normal to\r
+the parallel cavity plates, and the y-axis is orthogonal to the\r
+x-axis and defines the 2D surface for the energy density plot.\r
+123"""
+
+[[sections]]
+number = "677"
+title = "Page 6 of 10 Eur. Phys. J. C (2021) 81 :677"
+text = """
+Fig. 5 Panel (a) shows the unit\r
+loop ensemble being moved to a\r
+geometric point of interest in\r
+model. Panel (b) shows scaling\r
+of one of the unit loops from the\r
+ensemble to the point that it\r
+intersects 2+ bodies of model.\r
+This establishes the support S\u000B\r
+to be used in integration and\r
+determine the weighted\r
+contribution of the loop to the\r
+Casimir energy density of the\r
+vacuum at this point in the\r
+model\r
+Generate ensemble of random nL unit\r
+loops with each having np points in\r
+loop\r
+Transport the ensemble of\r
+unit loops to each point of in\u0002terest in geometric model\r
+1 2 3 nL\r
+For each loop in the ensemble, trans\u0002port to a grid point, scale loop to de\u0002termine proper time for which loop\r
+pierces 2+ bodies\r
+This defines the support, S\u0002, of the\r
+loop that sets the integral limits for\r
+integration\r
+The energy density at the point is then\r
+increased by a loop-weighted amount\r
+(a) transporting unit loop ensemble to geometric point of interest\r
+(b) scaling of an individual loop of the ensemble so that it inter\u0002sects 2+ bodies of the model\r
+The origin of the coordinate system is at the center of the\r
+pillar. The analysis results are shown in Fig. 7 with a two\r
+dimensional representation of the energy density depicted in\r
+the left panel and a log of the energy density levels in the right\r
+panel. Inspecting the log-plot on the right shows that while\r
+the presence of the pillar in the cavity does perturb the field,\r
+it actually serves to slightly increase the effective negative\r
+vacuum energy density seen in the pillar by a factor of 3–\r
+5 compared to the density level present without the pillar in\r
+the cavity. These analysis results would suggest that the pillar\r
+does not adversely self-screen itself in a manner that prevents\r
+it from seeing the field magnitude in the cavity with no pillar\r
+present. Rather, due to the slightly elevated state, it could\r
+be reasoned that the pillar seems to focus the gradient in a\r
+manner that would at most allow the pillar to drain the stored\r
+energy in the cavity at a quicker rate once it is connected to\r
+a high impedance oscilloscope.This effect might result in a\r
+need for more cavities to provide enough stored energy such\r
+that the duration of the transient voltage signal will last long\r
+enough for detection.\r
+While the analysis results discussed above are encourag\u0002ing for the project objective of attempting to measure the\r
+presence of structure in the negative vacuum energy density\r
+within a customized Casimir cavity, the implications of this\r
+particular predicted negative vacuum energy density distri\u0002bution is quite intriguing for an altogether different reason.\r
+As it so happens, the structure of the field around the pillar\r
+in the two dimensional plot is qualitatively very similar to\r
+a plot of the negative vacuum energy density necessary for\r
+the Alcubierre warp metric.7 Figure 9 shows a zoomed view\r
+on the numeric worldline analysis of the plate-pillar case on"""
+
+[[sections]]
+number = "7"
+title = "The Casimir phenomenon was first discussed as an alternative source"
+text = """
+to exotic matter for the idea of a wormhole in [11,12] and later expanded\r
+on in a book[13] on wormholes by Visser. It was also identified by\r
+Alcubierre[14] in his seminal paper as an alternative source to exotic\r
+matter for the manifestation of a warp bubble. The Casimir phenomenon"""
+
+[[sections]]
+number = "123"
+title = "Eur. Phys. J. C (2021) 81 :677 Page 7 of 10 677 plate plate"
+text = """
+plate-plate\r
+plate-sphere\r
+plate-blade sphere\r
+blade\r
+Fig. 6 Plot of validation runs for plate-plate and plate-sphere cases.\r
+The plot also includes a plate-blade case. The geometry elements are\r
+represented by a thick vertical black line for the left Casimir cavity\r
+plate, a thick vertical cyan line for the right plate, a thick gray quarter\r
+circle to show the location of the sphere, and an orange horizontal\r
+line representing the blade. The colors of the plots of energy density\r
+distribution match the color of the corresponding geometry overlayed in\r
+the plot. The magnitude of the energy density distribution clearly shows\r
+a decrease in magnitude as the cases go from plate-plate to plate-blade.\r
+Additionally, the plots show that there is a shifting of the peaks to the\r
+right due to the curvature effects\r
+the top, and the energy density field for the Alcubierre met\u0002ric on the bottom. Before fully exploring the implications of\r
+this unanticipated intersection between these two models, the\r
+critical elements of the Alcubierre model will be identified\r
+and discussed that lead to the energy density that allows the\r
+“trick” to work. The motivation for the Alcubierre metric [14]\r
+was to develop a model within the context of general relativ\u0002ity that would mathematically encapsulate the idea of a space\r
+warp that would allow for hyper fast travel between arbitrar\u0002ily distant stellar objects. The metric and shaping function\r
+are provided in Eq. (10) (with G = c = 1 where vs is the\r
+speed of the craft, f (rs)is the shaping function, σ is the shell\r
+thickness parameter that controls the thickness of the warp\r
+bubble wall, and R is the radius of the warp bubble.\r
+ds2 = −dt2 + \u000F\r
+dx − vs f (rs)dt\u00102 + dy2 + dz2\r
+f (rs) = tanh \u000F\r
+σ (rs + R)\r
+\u0010\r
+− tanh \u000Fσ (rs − R)\r
+\u0010\r
+2 tanh(σ R) (10)\r
+The critical element of the model that enables stellar hyper\r
+fast transit is conjectured to be the York Time which is a\r
+measure of the expansion and contraction of space associated\r
+with the metric.8 A plot of the York Time is provided in\r
+Footnote 7 continued\r
+has more recently been explored by Garattini in [15,16] as a sourcing\r
+material for “benign” wormholes."""
+
+[[sections]]
+number = "8"
+title = "It was shown in [18] by putting the metric into canonical form that the"
+text = """
+catalytic mechanism was not the York Time, rather it was the boost field\r
+−4 −20 2 4\r
+·10−6\r
+−4\r
+−2\r
+0\r
+2\r
+4 ·10−6\r
+−4 −20 2 4\r
+·10−6\r
+−4\r
+−2\r
+0\r
+2\r
+4 ·10−6\r
+(a)linear plot of energy density\r
+(b) log plot of energy density\r
+Fig. 7 The white lines represent a 4 µm Casimir cavity, and the circle\r
+represents the 1µm pillar located at the midplane of the cavity. Panel (a)\r
+shows the linear 2D plot of the energy density and panel (b) shows the\r
+log 2D plot. The bright yellow regions show the impact of the presence of\r
+the pillar on the energy density, and the log plot shows that the pillars do\r
+not self-screen themselves from the background field gradient resulting\r
+from the presence of just the plates (lime-green color)\r
+Fig. 8 [17]. The York Time field is depicted as a grid that\r
+has a wave-like appearance with a simple representation of\r
+a notional craft overlayed on top of the field to show the\r
+connection between the spacetime disturbance and the source\r
+of the negative vacuum energy density. The York Time plot\r
+indicates that space is expanding behind the spacecraft and\r
+contracting in front of the spacecraft. The craft depicted in\r
+Footnote 8 continued\r
+serving as a multiplier of the ship’s initial velocity, akin to watching\r
+a movie in fast-forward. With the canonical form of the metric, the\r
+expansion and contraction of space is viewed as a response of spacetime\r
+as the hyperfast craft transits through space – space piles up in front of\r
+the craft and stretches out behind the craft.\r
+123"""
+
+[[sections]]
+number = "677"
+title = "Page 8 of 10 Eur. Phys. J. C (2021) 81 :677"
+text = """
+the plot has a central part located in the center of the warp\r
+bubble in the region where the spacetime is flat, the proper\r
+acceleration α is zero, and local clocks are synchronized with\r
+external clocks on earth. The craft is equipped with a ring\r
+structure that represents an encapsulation of exotic matter or\r
+negative vacuum energy density distributed throughout.\r
+The York Time, θ, and the energy density distribution T 00,\r
+are shown in Eqs. (11) and (12) respectively. The vs term\r
+again represents the velocity of the craft, xs represents the\r
+position of the center of the craft (and hence the fields), and\r
+the y2 and z2 just define a radial distance ρ from the central\r
+x-axis. Anecdotally, a sensitivity analysis of the field equa\u0002tions conducted in [19,20] showed that by varying the shell\r
+thickness parameter, σ, one could reduce the magnitude of\r
+the York Time, and as a result the total energy required to\r
+make the concept work. The analysis effort created two ani\u0002mations available online that show the response of the York\r
+Time field [21] and the energy density field [22] to variation\r
+of the shell thickness parameter. The animations show that\r
+as the warp bubble wall thickness increases the peak energy\r
+density decreases significantly, and as the warp bubble wall\r
+thickness decreases the peak energy density increases. The\r
+reasoning behind this response is that the York Time can be\r
+viewed as a sort of 3-dimensional strain of space, and as\r
+the shell thickness increases, the amount of 3-dimensional\r
+strain needed to manifest a target speed vs decreases which\r
+is accompanied by a decrease of energy density, and thus a\r
+reduction in total energy. This is not without a cost – as can\r
+be seen in the online animation of the York Time field, the\r
+region of flat spacetime available for the critical portions of\r
+the craft, say for a crew or science instruments, is decreased\r
+as the bubble wall thickness is increased. So the energy opti\u0002mization process has a competing constraint in the form of\r
+the required size, R, for the warp bubble to adequately encap\u0002sulate sensitive cargo within the flat spacetime region inside\r
+the bubble wall.\r
+θ = vs\r
+xs\r
+rs\r
+d f (rs)\r
+drs (11)\r
+T 00 = − 1\r
+8π\r
+v2\r
+s (y2+z2)\r
+4r 2\r
+s\r
+\u0011d f (rs)\r
+drs\r
+\u00122\r
+(12)\r
+Now that the Alcubierre metric has been introduced and\r
+the critical elements have been identified and discussed, a\r
+comparison between the exotic matter requirements of the\r
+warp concept and the numeric worldline analysis results for\r
+the custom Casimir cavity may now be made. The top panel\r
+of Fig. 9 shows a close up view of the predicted response of\r
+the quantum vacuum within the custom Casimir cavity, and\r
+the bottom panel shows a 2-dimensional representation of the\r
+energy density necessary for the Alcubierre model. The con\u0002centrations in the negative vacuum energy density due to the\r
+presence of the pillar in the Casimir cavity are qualitatively\r
+very similar to the 2D representation of the T 00 for the Alcu\u0002bierre model. It should be noted that the 2-dimensional plot\r
+expanding\r
+space\r
+contracting\r
+space\r
+exotic\r
+matter\r
+ring\r
+York\r
+Time \u0002v\r
+spacecraft\r
+velocity\r
+Fig. 8 Plot of York Time θ for Nature [17] - the plot shows the expan\u0002sion and contraction of space associated with the Alcubierre metric. The\r
+plot also includes a simple representation of craft overlayed to illustrate\r
+the alignment of the exotic matter ring (T 00) with the expansion and\r
+contraction of space. It should be noted that the flat region at the mid\u0002dle of the York Time plot represents the region of flat spacetime in the\r
+middle of the warp bubble where coordinate time is the same as proper\r
+time, and proper acceleration α is zero. This would be where sensitive\r
+spacecraft systems/instruments and possibly crew would be located.\r
+The effective velocity of the spacecraft is overlayed as a red vector\r
+for the Casimir cavity is in effect a linear extrusion extend\u0002ing up from the surface of the paper meaning the lenticular\r
+shaped concentration is rod-like, while the Alcubierre plot is\r
+a revolution which yields a toroidal distribution.\r
+Based on the custom Casimir cavity results for the parallel\r
+plate cavity with a cylindrical pillar at the mid-plane, a toy\r
+model comprised of a 1 µm diameter sphere suspended in\r
+the middle of a 4 µm diameter cylinder was implemented\r
+and the numeric worldline analysis technique was used find\r
+the predicted Casimir energy density. Figure 10a shows a sec\u0002tion cut of the toroidal Casimir energy density for the sphere\u0002cylinder system which correlates well with the toroidal Alcu\u0002bierre energy density requirements. If one could manufacture\r
+a chip with these types of nano structures (nano-spheres sus\u0002pended in nano-tubes), an experiment might be designed and\r
+attempted to conduct a test to measure transit time of say a\r
+current (alternately a photon or electron) through a tiny con\u0002ductor (alternately open bore) routed through the center of\r
+the sphere(s). This transit time could be compared to the time\r
+it takes for a current (photon/electron) to run through a mir\u0002ror system that has no external tube (control test). If need be,\r
+many of these nano structures could be arranged in parallel\r
+to increase the time resolution of the notional experiment"""
+
+[[sections]]
+number = "123"
+title = "Eur. Phys. J. C (2021) 81 :677 Page 9 of 10 677"
+text = """
+Fig. 9 Comparison of energy density for the numeric worldline assess\u0002ment of the custom Casimir cavity and and the Alcubierre model energy\r
+density requirement\r
+(see Fig. 10b). If a difference in transit time were observed,\r
+this would be an empirical confirmation of the generation of\r
+a real nano scale warp bubble on a chip.9 To be clear, this\r
+9 It could be speculated that a nano sphere might be made to trans\u0002late through a nano cylinder as a more direct implementation of the\r
+Alcubierre model with the provision that it may be viewed as a space\r
+warp/wormhole hybrid with the cylinder serving as the connecting\r
+Fig. 10 The top panel depicts a section cut of predicted toroidal\r
+Casimir energy density distribution for sphere-cylinder system com\u0002prised of a 1 µm diameter sphere suspended in the middle of a 4 µm\r
+diameter cylinder. The approach was implemented using Open MPI\u0002enabled c-code and the analysis was run on 660 2.40 GHz Intel Skylake\r
+CPUs. The model grid was a 100 × 100 grid with a 2000 unit-loop\r
+ensemble. The bottom panel depicts a notional experimental setup that\r
+comprises an array of sphere-cylinder constructions arranged such that\r
+a pulse of electrons or photons may be routed through the test device in\r
+an attempt to measure a change in transit time for an equivalent pulse\r
+routed through free space\r
+would not be some simple analogue or proxy representation\r
+of a space warp phenomenon, rather it would be a genuine\r
+implementation of the idea in physical fact with observable\r
+consequences in the laboratory – just not in the dramatic form\r
+of a craft bound for a distant stellar destination.\r
+Footnote 9 continued\r
+pathway between two points and also enabling the formation of the\r
+necessary negative vacuum energy density around the sphere to boost\r
+the effective velocity.\r
+123"""
+
+[[sections]]
+number = "677"
+title = "Page 10 of 10 Eur. Phys. J. C (2021) 81 :677"
+text = ""
+
+[[sections]]
+number = "5"
+title = "Conclusions"
+text = """
+The impetus for the work discussed in this manuscript was\r
+to explore the implications of the dynamic vacuum model as\r
+applied to a custom Casimir cavity geometry. The dynamic\r
+vacuum model suggests that the state of the negative vacuum\r
+energy density in the cavity is not just an isotropic value that\r
+is constant throughout the enclosing geometry, rather it has\r
+spatial variation and can manifest complicated structure. In\r
+the process of the team exploring the literature, a technique\r
+called worldline numerics was discovered that also predicts\r
+that there is structure to the perturbed vacuum state that is\r
+predicted to exist in a notional Casimir cavity. This tech\u0002nique was used to evaluate the predicted state of the vacuum\r
+in response to the presence of small pillars placed at the mid\u0002plane of a Casimir cavity. The analysis showed that the pillar\r
+would not adversely screen itself from the predicted back\u0002ground field that exists in response to just the presence of\r
+the plates. The analysis also showed a possible intersection\r
+with a model developed in the context of general relativity to\r
+understand how hyperfast stellar travel might be manifested\r
+mathematically. The qualitative correlation would suggest\r
+that a chip-scale experiment might be explored to attempt to\r
+measure a tiny signature illustrative of the presence of the\r
+conjectured phenomenon.\r
+Acknowledgements This work was supported by the DARPA Defense\r
+Science Office Quest for Undiscovered Energy Storage and Thrust\r
+(QUEST) Program through funded agreement HR00112090082. Spe\u0002cial thanks goes to Limitless Space Institute for organizational and insti\u0002tutional support, Prof. Mike Fiddy and Dr. David Lewis for helpful\r
+technical discussions, and Mark Rademaker for help with visualization\r
+graphics (e.g. Fig. 8). Godspeed.\r
+Data Availability Statement This manuscript has no associated data\r
+or the data will not be deposited. [Authors’ comment: This paper is pri\u0002marily a theoretical work. The algorithms used have been summarized\r
+in the text and references to the salient literature have been provided.\r
+All necessary data related to the article are presented and discussed in\r
+the narrative.].\r
+Open Access This article is licensed under a Creative Commons Attri\u0002bution 4.0 International License, which permits use, sharing, adaptation,\r
+distribution and reproduction in any medium or format, as long as you\r
+give appropriate credit to the original author(s) and the source, pro\u0002vide a link to the Creative Commons licence, and indicate if changes\r
+were made. The images or other third party material in this article\r
+are included in the article’s Creative Commons licence, unless indi\u0002cated otherwise in a credit line to the material. If material is not\r
+included in the article’s Creative Commons licence and your intended\r
+use is not permitted by statutory regulation or exceeds the permit\u0002ted use, you will need to obtain permission directly from the copy\u0002right holder. To view a copy of this licence, visit http://creativecomm\r
+ons.org/licenses/by/4.0/.\r
+Funded by SCOAP3.\r
+References"""
+
+[[sections]]
+number = "1"
+title = "H. White, J. Vera, P. Bailey, P. March, T. Lawrence, A. Sylvester,"
+text = """
+D. Brady, Dynamics of the vacuum and Casimir analogs to the\r
+hydrogen atom. J. Mod. Phys. 6, 1308–1320 (2015)"""
+
+[[sections]]
+number = "2"
+title = "H. White, P. Bailey, J. Lawrence, J. George, J. Vera, A discussion"
+text = """
+on a dynamic vacuum model: derivation of Helmholtz equation\r
+from Schrödinger equation. Phys. Open 1, 100009 (2019)\r
+3. G. Moddel, A. Weerakkody, D. Doroski, D. Bartusiak, Optical\u0002cavity-induced current. Symmetry 13, 517 (2021)\r
+4. H. White, P. Bailey, J. Lawrence, J. George, J. Vera, Dynamic vac\u0002uum model and Casimir cavity experiments. JBIS 73, 7 (2020)"""
+
+[[sections]]
+number = "5"
+title = "H. Gies, K. Langfeld, L. Moyaerts, Casimir effect on the worldline."
+text = """
+JHEP 2003, 6 (2003)\r
+6. H. Gies, K. Klingmüller, Worldline algorithms for Casimir config\u0002uration. Phys. Rev. D 74, 4 (2006)"""
+
+[[sections]]
+number = "7"
+title = "H. Gies, K. Klingmüller, Casimir edge effects. Phys. Rev. Lett. 97,"
+text = """
+22 (2006)\r
+8. K. Klingmüller, Worldline approach to Casimir effect and Gross\u0002Neveu model, Ph.D.-thesis. Heidelberg University (2007)"""
+
+[[sections]]
+number = "9"
+title = "K. Aehlig, H. Dietert, T. Fischbacher, J. Gerhard, Casimir forces"
+text = "via worldline numerics: method improvements and potential engi\u0002neering applications (2011). arXiv:1110.5936 [hep-th]"
+
+[[sections]]
+number = "10"
+title = "L. Moyaerts, K. Langfeld, H. Gies, Worldline approach to the"
+text = """
+Casimir effect. 6th Workshop on Quantum Field Theory under\r
+the Influence of External Conditions (QFEXT03), 11 (2003).\r
+arXiv:hep-th/0311168"""
+
+[[sections]]
+number = "11"
+title = "M.S. Morris, K.S. Thorne, Wormholes in spacetime and their use"
+text = """
+for interstellar travel: A tool for teaching general relativity. Am. J.\r
+Phys. 56, 5 (1988)"""
+
+[[sections]]
+number = "12"
+title = "M.S. Morris, K.S. Thorne, U. Yurtever, Wormholes, time machines,"
+text = "and the weak energy condition. Phys. Rev. Lett. 61, 13 (1988)"
+
+[[sections]]
+number = "13"
+title = "M. Visser, Lorentzian Wormholes: From Einstein to Hawking"
+text = "(American Institute of Physics, New York, 1995)"
+
+[[sections]]
+number = "14"
+title = "M. Alcubierre, The warp drive: hyper-fast travel within general"
+text = "relativity. Class. Quantum Gravity 11, 5 (1994)"
+
+[[sections]]
+number = "15"
+title = "R. Garattini, Casimir wormholes. Eur. Phys. J. C 79, 11 (2019)"
+text = ""
+
+[[sections]]
+number = "16"
+title = "R. Garattini, Generalized absurdly benign traversable wormholes"
+text = "powered by Casimir energy. Eur. Phys. J. C 80, 12 (2020)"
+
+[[sections]]
+number = "17"
+title = "S. Perkowitz, Science Fiction: Boldly Going for 50 Years (2016)."
+text = "https://www.nature.com/articles/537165a"
+
+[[sections]]
+number = "18"
+title = "H. White, A discussion of space-time metric engineering. Gen."
+text = "Relativ. Gravit. J. 35, 2025 (2003)"
+
+[[sections]]
+number = "19"
+title = "H. White, Warp field mechanics 101. J. Br. Interplanet. Soc. 66,"
+text = "242 (2013)"
+
+[[sections]]
+number = "20"
+title = "H. White, Warp Field Mechanics 102 (2013). https://ntrs.nasa.gov/"
+text = "citations/20130011213"
+
+[[sections]]
+number = "21"
+title = "H. White, Shell thickness parameter σ sensitivity analysis of York"
+text = """
+Time for Alcubierre model, animation of results (2013). https://\r
+www.youtube.com/watch?v=gy_UFmGh83E"""
+
+[[sections]]
+number = "22"
+title = "H. White, Shell thickness parameter σ sensitivity analysis of T 00"
+text = """
+for Alcubierre model, animation of results (2013). https://www.\r
+youtube.com/watch?v=n_VQPqKUwhQ\r
+123"""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 7
+image_path = "images/image_p7_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 8
+image_path = "images/image_p8_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 9
+image_path = "images/image_p9_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 9
+image_path = "images/image_p9_6.png"

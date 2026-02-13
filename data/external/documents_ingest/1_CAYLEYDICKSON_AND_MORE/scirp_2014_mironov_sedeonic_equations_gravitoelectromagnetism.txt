@@ -1,0 +1,2000 @@
+Journal of Modern Physics, 2014, 5, 917-927
+Published Online June 2014 in SciRes. http://www.scirp.org/journal/jmp
+http://dx.doi.org/10.4236/jmp.2014.510095
+
+Sedeonic Equations of
+Gravitoelectromagnetism
+Victor L. Mironov1,2, Sergey V. Mironov1
+1
+
+Institute for Physics of Microstructures RAS, Nizhniy Novgorod, Russia
+Lobachevsky State University of Nizhniy Novgorod, Nizhniy Novgorod, Russia
+Email: mironov@ipmras.ru
+
+2
+
+Received 24 March 2014; revised 21 April 2014; accepted 15 May 2014
+Copyright © 2014 by authors and Scientific Research Publishing Inc.
+This work is licensed under the Creative Commons Attribution International License (CC BY).
+http://creativecommons.org/licenses/by/4.0/
+
+Abstract
+In present paper we develop the description of massless fields on the basis of space-time algebra
+of sixteen-component sedeons. The generalized sedeonic second-order equation for unified gravito-electromagnetic (GE) field describing simultaneously weak gravity and electromagnetism is
+proposed. The relations for the GE field energy, momentum and Lorentz invariants are derived.
+The special case of GE field described by first-order sedeonic wave equation is also discussed.
+
+Keywords
+Gravitoelectromagnetism, Clifford Algebra, Space-Time Sedeons
+
+1. Introduction
+The analogy between electromagnetic and gravitational fields was discussed by many researchers starting from J.
+C. Maxwell and O. Heaviside [1] [2]. This analogy motivated many attempts to reformulate the equations of
+Newtonian gravitation in the form similar to the Maxwell equations in electrodynamics. Such approach is based
+on two general assumptions. First is the existence of gravitomagnetic field connected with moving masses.
+Second is the hypothesis that the speed of gravitational field propagation is equal to the speed of light. These
+assumptions enable the formulation of phenomenological Maxwell-like equations for gravitational field [3] [4].
+On the other hand, recently it was shown that linearized weak field equations of general relativity [5]-[9] can be
+represented as the set of Maxwell-like equations for the vectorial gravitational field and now this linear approximation (so-called “post-Newtonian approximation”) is widely used in astrophysics for the analysis of interactions between moving and spinning masses [8]-[13]. However, the Heaviside-Gibbs vector algebra, which is
+usually used for the formulation of electromagnetism and linear gravity, does not adequately specify the spacetime properties of gravitational and electromagnetic fields. Since the Maxwell equations are the system of four
+equations for scalar, pseudoscalar, vector and pseudovector values, the application of multi-component algebras
+How to cite this paper: Mironov, V.L. and Mironov, S.V. (2014) Sedeonic Equations of Gravitoelectromagnetism. Journal of
+Modern Physics, 5, 917-927. http://dx.doi.org/10.4236/jmp.2014.510095
+
+V. L. Mironov, S. V. Mironov
+
+is more appropriate. There are different approaches based on algebra of hypercomplex numbers and Clifford algebras to formulate electromagnetism [14]-[20] and linear gravity [21]-[23] taking into account above mentioned space symmetry. However, the consideration of total relativistic space-time field’s symmetry requires the
+introduction of sixteen-component space-time values. There are some attempts to develop a field theory on the
+basis of sixteen-component structures such as hypercomplex sedenions [24]-[27] and hypercomplex multivectors generating associative space-time Clifford algebras [28] [29]. Recently S. Demir and M. Tanisli [27] reported the compactification of the linear field equations for gravitational and electromagnetic fields on the basis
+of conic sedenions. They have shown that formally electromagnetism and gravity can be described by single
+unified equation for the conic sedenionic potentials. However, the sedenions is nonassociative algebra that leads
+to the problems in calculating the second-order relations for unified field. Besides, the inclusion of negative
+energy and negative Pointing vector of gravitational field in a mathematical structure of the unified field equation was not considered.
+Recently we proposed the sixteen-component associative space-time algebra of scalar-vector objects named
+by sedeons [30]. The sedeons have the clearly defined geometric meaning, take into account the symmetry of
+physical values to the space-time inversion and realize the scalar-vector representation of Poincare group. In
+present paper we develop the description of massless fields on the basis of sedeonic potentials. We show that
+sedeonic approach enables the introduction of unified sedeonic gravito-electromagnetic (GE) field describing
+simultaneously weak gravity and electromagnetism.
+
+2. Linear Equations of Gravitation in Flat Space-Time
+In this section we reproduce the arguments leading to the linear equations of the weak gravitational field. As is
+well known [6], Einstein’s equation for gravitational field is written as
+Rαβ −
+
+1
+8πG
+gαβ R =
+Tαβ ,
+2
+c4
+
+(1)
+
+where Rαβ is Ricci curvature tensor, gαβ is metric tensor, c is the speed of light, G is the gravitational
+constant, Tαβ is the tensor of energy-momentum of matter (Greek indexes are 0, 1, 2, 3, Latin indexes are 1, 2,
+3). In linear approximation [6]-[9] this equation has the following form
+ 1 ∂2
+
+16πG
+ 2 2 − ∆  hαβ = − 4 Tαβ ,
+∂
+c
+t
+c
+
+
+
+(2)
+
+where hαβ is the deviation from Minkovski metric tensor ηαβ defined as
+gαβ
+= ηαβ + hαβ ,
+
+(
+
+1
+h=
+hαβ − ηαβ h,
+αβ
+2
+αβ
+h ≡ η hαβ .
+
+)
+
+(3)
+
+The deviation hαβ
+hαβ 
+0 . Introducing mater density ρG
+ 1 satisfies the gauge condition ∂hαβ ∂xβ =
+and density of mater current j G according
+as well as the scalar ϕG
+
+=
+T00 ρG c 2 ,
+=
+T0 n jGn c,
+
+and vector AG potentials according
+
+4
+4
+h0 n
+AGn ,
+=
+ϕ ,
+2 G
+c
+c2
+the Equation (2) can be represented as the set of wave equations for potentials
+h00
+=
+
+(4)
+
+(5)
+
+ 1 ∂2
+
+ 2 2 − ∆  ϕG = −4πG ρG ,
+c
+t
+∂
+
+
+
+(6)
+
+ 1 ∂2
+
+4π 
+ 2 2 − ∆  AG = − G jG ,
+c
+ c ∂t
+
+
+(7)
+
+918
+
+V. L. Mironov, S. V. Mironov
+
+with gauge condition
+ 
+1 ∂ϕG
++ ∇ ⋅ AG = 0 .
+c ∂t
+
+(
+
+)
+
+(8)
+
+
+The analogy
+ with electrodynamics is evident. It allows one to introduce the gravitoelectric EG and gravitomagnetic H G fields
+
+
+
+ 
+1 ∂AG 
+EG = −
+− ∇ϕG , H G = ∇ × AG  ,
+(9)
+
+
+c ∂t
+
+which satisfy the following Maxwell-like equations written in Heaviside-Gibbs algebra:
+ 
+ 
+∇ ⋅ EG = −4πG ρG ,
+∇ ⋅ H G = 0,
+
+
+ 
+ 
+∂H G
+1 ∂EG 4π 
+∇ × EG  = − 1
+
+
+,
+∇ × HG =
+−
+jG .
+
+
+
+ c ∂t
+c ∂t
+c
+
+(
+
+)
+
+(
+
+)
+
+(10)
+
+3. Symmetry of Electrical and Gravitational Charges
+It is known that Coulomb’s law for the force of electrical interaction between two charged point bodies is written as follows:
+
+q q 
+Fe12 = e1 3 e 2 r12 ,
+(11)
+r12
+
+where qe1 and qe 2 are electrical charges, r12 is a vector directed from body 1 to body 2, r12 is the separa
+tion between point bodies, which is equal to modulus of r12 . For a symmetric description of electromagnetic
+and gravitational phenomena, we introduce the gravitational charge qg (considered previously in [3] and [31])
+as
+qg = Gm ,
+
+(12)
+
+where m is a mass of gravitating body. Then Newton’s law for gravitational force between two point bodies
+can be written in the form of Coulomb’s law:
+
+qg1qg 2 
+(13)
+Fg12 = − 3 r12 .
+r12
+Simultaneous consideration of gravitational and electric fields leads us to another symmetry connected with
+charge conjugation. The idea consists in an introduction of two additional units associated with electrical and
+gravitational charges. First one is electrical unit ε e , which is changed (in sign) under electrical charge conjugation. Second one is gravitational unit ε g , which is changed (in sign) under gravitational charge conjugation.
+Since in the classical gravitoelectrodynamics there is no direct interaction between gravitational and electrical
+charges, the rules of multiplication for units ε e and ε g should be chosen in accordance with Table 1. Besides,
+we suppose the anticommutativity of these units and assume that the priority of commutation is higher than multiplication, so that
+
+εe ε g εe −
+=
+ε g εe εe −
+=
+εg .
+
+(14)
+
+Following this approach, the generalized gravito-electromagnetic charge Q can be presented as
+
+=
+Q ε e qe − iε g qg
+
+(15)
+
+Table 1.
+εe
+
+εg
+
+εe
+
+1
+
+0
+
+εg
+
+0
+
+1
+
+919
+
+V. L. Mironov, S. V. Mironov
+
+and generalized Newton-Coulomb law can be written in the following symmetric form:
+
+F12 =
+
+Q1Q2 
+r12 .
+r123
+
+(16)
+
+Indeed, using (15) and (16) we obtain correct expression for the force between two massive electrically charged
+point bodies
+
+qe1qe 2  qg1qg 2 
+=
+F12
+r12 −
+r12 .
+r123
+r123
+
+(17)
+
+Using algebra of gravitoelectrical units we can introduce the following operations of charge conjugations:
+Iˆe Q ε
+=
+=
+−
+ε e qe − iε g qg ,
+g Qε g
+Iˆ=
+=
+ε e Qε
+ε e qe + iε g qg ,
+gQ
+e
+
+(18)
+
+Iˆeg Q ε
+=
+=
+−
+ε e qe + iε g qg .
+g ε e Qε e ε g
+
+4. Sedeonic Equations for GE Field
+ is defined as [30]:
+The space-time scalar-vector sixteen-component sedeon V
+
+ e (V a + V a + V a + V a ) + e (V a + V a + V a + V a )
+V
+=
+0
+1
+00 0
+01 1
+02 2
+03 3
+10 0
+11 1
+12 2
+13 3
++ e 2 (V20 a0 + V21a1 + V22 a 2 + V23a 3 ) + e 3 (V30 a0 + V31a1 + V32 a 2 + V33a 3 ) .
+
+(19)
+
+The values a0 , a1 , a 2 , a 3 are scalar-vector basis, where the value a0 ≡ 1 is absolute scalar unit and the
+values a1 , a 2 , a 3 are absolute unit vectors generating the right Cartesian basis. The values e0 , et , er , etr
+are space-time scalar units, where value e0 ≡ 1 is an absolute scalar unit; e1 = et is a time scalar unit; e 2 = er
+is a space scalar unit; e 3 = etr is a space-time scalar unit. The multiplication and commutation rules for sedeonic absolute unit vectors a1 , a 2 , a 3 and space-time units et , er , etr are presented in Table 2 and Table
+3 respectively. In the tables and further the value i is the imaginary unit i 2 = −1 . Note that sedeonic units
+e1 , e 2 , e 3 and unit vectors a1 , a 2 , a 3 generate the anticommutative algebras, but e1 , e 2 , e 3 commute
+with a1 , a 2 , a 3 :
+
+(
+
+an am = −am an ,
+en em = −em en ,
+
+for n and
+=
+m 1, 2,3 ( n ≠ m ) ,
+
+an em = em an , for any n and m .
+Table 2.
+a1
+
+a2
+
+a3
+
+a1
+
+1
+
+ia 3
+
+−ia 2
+
+a2
+
+−ia 3
+
+1
+
+ia 1
+
+a3
+
+ia 2
+
+−ia1
+
+1
+
+et
+
+er
+
+etr
+
+et
+
+1
+
+ietr
+
+−ier
+
+er
+
+−ietr
+
+1
+
+ie t
+
+etr
+
+ie r
+
+−iet
+
+1
+
+Table 3.
+
+920
+
+)
+
+(20)
+(21)
+
+V. L. Mironov, S. V. Mironov
+
+The sedeonic formalism enables the representation of gravitational and electromagnetic fields as one unified
+gravito-electromagnetic field. Indeed, the sedeonic second-order equation for massless field can be presented in
+the following form [30]:
+  1 ∂
+
+ 1 ∂
+ =J
+.
+(22)
+− e r ∇   ie t
+− er ∇  W
+ ie t
+ c ∂t
+  c ∂t
+
+Let us consider the potential of GE field as:
+
+
+
+ = ie ϕ + e A + i ie ϕ + e A ,
+W
+t е
+r е
+t g
+r g
+
+(
+
+)
+
+(23)
+
+
+where ϕе , Aе , ϕ g , and Ag are scalar and vector potentials of electromagnetic (index e) and gravitational
+(index g) fields. Hereafter we mean that electrical values contain ε e and gravitational values contain ε g units,
+but we omit them to simplify farther expressions. Let us also consider the sedeonic source of GE field
+1 
+1 
+
+
+ −
+(24)
+4π  ie t ρe + e r je  + 4πi  ie t ρ g + e r jg  ,
+J
+=
+c 
+c 
+
+
+
+where ρe is a volume density
+ of electrical charge; je is a density of electrical current; ρ g is a volume density of gravitational charge; jg is a density of gravitational current [3]. Then the sedeonic Equation (22) describes simultaneously electromagnetic and gravitational fields. Performing sedeonic multiplication of operators
+in the left part of (22) we get the system of wave equations for the components of GE potential
+ 1 ∂2
+
+,
+(25)
++ ∆ 
+W =J
+−
+2
+c
+∂
+t
+
+
+
+
+which is equivalent to the four equations for ϕе , Aе , ϕ g , and Ag . On the other hand, the sedeonic Equation
+(22) can be represented as the system of first-order Maxwell equation for electromagnetic and gravitational
+fields. Indeed, introducing scalar and vector strengths of GE field as
+ 
+ 
+1 ∂ϕ g
+1 ∂ϕe
+− ∇ ⋅ Ag ,
+fg = −
+fe = −
+− ∇ ⋅ Ae ,
+c ∂t
+c ∂t
+
+
+
+
+
+
+1 ∂Ag
+1 ∂Ae
+Eg = −∇ϕ g −
+,
+(26)
+,
+Ee = −∇ϕe −
+c ∂t
+c ∂t
+
+ 
+
+ 
+H g = −i ∇ × Ag  ,
+H e = −i ∇ × Ae  ,
+
+
+
+
+
+(
+
+(
+
+)
+
+)
+
+we get
+
+
+
+
+
+ 1 ∂
+− er ∇  
+W = f e + e tr Ee − iH e + i f g + e tr Eg − iH g
+ ie t
+ с ∂t
+
+
+(
+
+)
+
+(27)
+
+and the second-order wave Equation (22) can be represented in the following form:
+
+
+
+
+
+1 
+1 
+ 1 ∂
+
+
+(28)
+− e r ∇  f e + e tr Ee − iH e + i f g + e tr Eg − iH g =−4π  ie t ρe + e r je  + 4πi  ie t ρ g + e r jg  .
+ ie t
+c 
+c 
+ с ∂t
+
+
+
+
+1 ∂
+Applying operator iet
+− er ∇ to both parts of expression (28) one can obtain the second-order wave equс ∂t
+ations for the field strengths in the following form:
+
+(
+
+))
+
+(
+
+  
+ 1 ∂2
+
+4 π  ∂ρe
++ ∇ ⋅ je  ,
+
+ 2 2 − ∆  fe = −
+c  ∂t
+
+ c ∂t
+
+
+
+ 1 ∂2
+
+4π ∂je
+,
+ 2 2 − ∆  Ee = −4π∇ρe − 2
+c
+∂
+t
+c ∂t
+
+
+
+(
+
+ 1 ∂2
+ 
+4π    
+∇ × je  ,
+ 2 2 − ∆  H e = −i
+c 
+ c ∂t
+
+
+921
+
+)
+
+(29)
+
+(30)
+
+(31)
+
+V. L. Mironov, S. V. Mironov
+
+  
+ 1 ∂2
+
+4π  ∂ρ g
+=
++ ∇ ⋅ jg  ,
+
+ 2 2 −∆
+ fg
+c  ∂t
+ c ∂t
+
+
+
+
+ 1 ∂2
+
+4π ∂jg
+,
+ 2 2 − ∆  Eg= 4π∇ρ g + 2
+c ∂t
+ c ∂t
+
+
+(
+
+)
+
+(32)
+
+(33)
+
+ 1 ∂2
+ 
+4π    
+=
+∇ × jg .
+i
+ 2 2 − ∆H
+g
+
+c 
+ c ∂t
+
+
+(34)
+
+In the absence of processes of matter nucleation and annihilation, we can assume the conservation laws
+∂ρ g
+
+ 
+∂ρe
++ ∇⋅
+=
+je
+0,
+∂t
+
+)
+
+(
+
+∂t
+
+ 
++ ∇⋅
+=
+jg
+0
+
+(
+
+)
+
+(35)
+
+and on the basis of Equations (29) and (32) we can take the scalar fields f e and f g equal to zero. This is
+equivalent to the Lorentz gauge conditions (see expressions (26)):
+ 
+ 
+1 ∂ϕe
+1 ∂ϕ g
+0, =
+fg
+0.
++ ∇⋅ A
+=
++ ∇⋅ A
+=
+e
+g
+c ∂t
+c ∂t
+
+(
+
+fe
+=
+
+)
+
+(
+
+)
+
+(36)
+
+Taking into account these gauge conditions the Equation (28) is rewritten as
+
+
+
+
+
+ 1 ∂
+− e r ∇  e tr Ee − iH e + i e tr Eg − iH g
+ ie t
+ с ∂t
+
+
+(
+
+(
+
+
+
+
+
+)) =−4π  ie ρ + e 1c j  + 4πi  ie ρ + e 1c j  .
+t
+
+e
+
+e
+
+r
+
+g
+
+t
+
+r
+
+g
+
+(37)
+
+Performing sedeonic multiplication in the left part of Equation (37) and separating terms with different
+space-time and charge ( ε e and ε g ) properties, we obtain two systems of Maxwell equations for electromagnetic and gravitational fields:
+
+
+ 
+ 
+∂H g
+∂H e
+1
+1
+−i ∇ × Ee  = −
+,
+,
+−i ∇ × Eg  = −
+
+
+
+
+c ∂t
+c ∂t
+
+
+ 
+ 1 ∂Ee
+ 
+ 1 ∂Eg
+4π
+4π
+
+,
+−i ∇ × H
+=
+je +
+,
+jg +
+−i ∇ × H g  = −
+e
+(38)
+
+
+c
+c ∂t
+c
+c ∂t
+ 
+ 
+∇ ⋅ Ee = 4πρe ,
+∇ ⋅ Eg = −4πρ g ,
+ 
+ 
+∇ ⋅ H e = 0.
+∇ ⋅ H g = 0.
+
+(
+(
+
+)
+)
+
+(
+(
+
+)
+)
+
+Thus, we have shown that the generalized sedeonic Equation (22) correctly describes the unified GE field. Further, we will assume the performing of gauge conditions (36).
+
+4.1. Relations for Energy and Momentum of GE Field
+The sedeonic wave equation allows one to derive the generalized Pointing theorem for unified GE field [18].
+
+
+
+
+Multiplying the expression (37) on the sedeon e tr Ee − iH e + ie tr Eg + H g from the left and separating compo-
+
+(
+
+)
+
+nents with different space-time and charge properties, we obtain following equations:
+
+{(
+
+)} {( E ⋅ j ) + ( E ⋅ j )} = 0,
+
+(39)
+
+
+
+
+  
+1  2  2 2  2
+1 ∂ 
+1   
+∇ Ee + H e − Eg − H g − i
+Ee × H e  −  Eg × H g  −
+∇ ⋅ Ee Ee + ∇ ⋅ H e H e
+
+8π
+4πc ∂t
+4π
+  
+ 
+
+
+
+
+1   
++
+∇ ⋅ Eg Eg + ∇ ⋅ H g H g + i  H e × je  +  H g × jg  + ρe Ee + ρ g Eg = 0,
+4π
+
+(40)
+
+
+ 
+
+1 ∂ 2  2 2  2
+c  
+Ee + H e − Eg − H g − i
+∇ ⋅ Ee × H e  − ∇ ⋅  Eg × H g  +
+
+
+
+
+8π ∂t
+4π
+
+{
+
+}
+
+{
+{(
+
+{
+
+}
+
+)
+
+(
+
+) (
+
+}
+
+) } {
+
+}{
+
+922
+
+{(
+
+
+
+
+
+
+
+e
+
+e
+
+
+
+g
+
+) (
+}
+
+g
+
+) }
+
+V. L. Mironov, S. V. Mironov
+
+
+
+
+
+ 
+ 
+1   ∂H e    ∂Ee   1   ∂Eg    ∂H g  
+ −  Eg ⋅
+  − H e ⋅ je + H g ⋅ jg
+ −  H e ⋅
+  +
+ Ee ⋅
+ H g ⋅
+4π 
+∂t  
+∂t   4π 
+∂t  
+∂t  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+c
+c
+−i
+Ee ⋅ ∇ × Ee  + H e ⋅ ∇ × H e  + i
+Eg ⋅ ∇ × Eg  + H g ⋅ ∇ × H g  = 0,
+
+
+
+
+
+
+
+
+4π
+4π
+
+
+
+
+
+
+1    ∂E    ∂H  
+1    ∂Eg    ∂H g  
+−i   Ee × e  +  H e × e   + i   Eg ×
+ + H g ×
+  + c H e ρe + H g ρ g
+4π  
+∂t  
+∂t   4π  
+∂t  
+∂t  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+c
+c
++
+Ee ∇ ⋅ H e − H e ∇ ⋅ Ee −
+Eg ∇ ⋅ H g − H g ∇ ⋅ Eg − i  Ee × je  +  Eg × jg 
+4π
+4π
+c            
+c            
++
+Ee × ∇ × H e − H e × ∇ × Ee
++
+H g × ∇ × Eg − Eg × ∇ × H g
+= 0.
+
+
+
+
+
+ 
+
+
+
+
+
+
+4π
+4π 
+
+{(
+
+{(
+
+)}
+
+) (
+
+{(
+
+)}
+
+) (
+
+)}
+
+) (
+
+{
+
+{ (
+
+)
+
+)}
+
+(
+
+{ (
+
+{
+
+)
+
+}
+
+)} {
+
+(
+
+(41)
+
+}
+
+} {
+
+(42)
+
+}
+
+The system of (39)-(42) is the generalized Pointing theorem for the GE field. The value w
+1 2  2 2  2
+=
+w
+Ee + H e − Eg − H g
+8π
+
+plays the role of volume density of GE field energy, while vector P
+
+
+
+
+c 
+P −
+=
+i
+Ee × H e  −  Eg × H g 
+
+4π
+plays the role of Pointing vector of GE field.
+
+{
+
+}
+
+{
+
+(43)
+
+}
+
+(44)
+
+4.2. Lorentz Invariants of GE Field
+The sedeonic algebra allows one to obtain relations
+ for the Lorentz invariants [18] of GE field. Let us multiply
+expression (37) on the sedeon etr Ee + iH e − ietr Eg + H g from the left. Then performing sedeonic multiplication, and equating the components with different space-time and charge properties, we get following equations:
+  
+
+ 
+1 ∂ 2  2 2  2
+c
+Ee − H e + Eg − H g + i
+Ee ⋅ ∇ × H e  + H e ⋅ ∇ × Ee 
+8π ∂t
+4π
+(45)
+
+ 
+ 
+ 
+c    
++i
+Eg ⋅ ∇ × H g  + H g ⋅ ∇ × Eg  + Ee ⋅ je − Eg ⋅ jg = 0,
+4π
+
+
+   ∂H e    ∂Ee  
+ 
+
+
+c  2  2 2  2
+1
+∇ Ee − H e + Eg − H g − i  H e × je  −  H g × jg  − i   Ee ×
+ + He ×
+
+∂t  
+∂t  
+8π
+4π  
+
+
+  
+  
+c   
+1    ∂H g    ∂Eg   c   
+−i   Eg ×
+ + H g ×
+ −
+Ee ∇ ⋅ Ee + Ee ⋅ ∇ Ee +
+He ∇ ⋅ He + He ⋅ ∇ He
+(46)
+∂t  
+∂t   4π
+4π  
+4π
+ 
+
+
+  
+  
+  
+
+
+c
+c   
+−
+H g ∇ ⋅ H g + H g ⋅ ∇ H g + c ρe Ee − ρ g Eg = 0,
++ Eg ∇ ⋅ Eg + Eg ⋅ ∇ Eg +
+4π
+4π
+
+
+
+
+
+ 
+1 ∂
+c    
+Ee ⋅ H e + Eg ⋅ H g − i
+Ee ⋅ ∇ × Ee  − H e ⋅ ∇ × H e 
+4π ∂t
+4π
+(47)
+
+
+
+
+
+
+ 
+ 
+c
+−i
+Eg ⋅ ∇ × Eg  − H g ⋅ ∇ × H g  + H e ⋅ je − H g ⋅ jg = 0,
+4π
+
+(
+
+)
+
+{
+
+{(
+
+}
+
+{(
+
+)} (
+
+) (
+
+} {
+
+{
+
+)}
+
+) (
+
+) (
+
+)
+
+}
+
+{ (
+
+{ (
+
+) }
+
+) (
+
+) }
+
+) (
+
+}
+{ ( ) ( ) } {
+)} {(
+{( ) (
+) (
+)}
+) (
+)} ( ) ( )
+{(
+ 
+  
+  
+c   
+c   
+c   
+∇ {( E ⋅ H ) + ( E ⋅ H )} − { E ( ∇ ⋅ H ) + H ( ∇ ⋅ E )} − { E ( ∇ ⋅ H ) + H ( ∇ ⋅ E )}
+4π
+4π
+4π
+  
+  
+  
+  
+ 
+ 
+c
+c
++ {( E ⋅ ∇ ) H − ( H ⋅ ∇ ) E } − {( E ⋅ ∇ ) H + ( H ⋅ ∇ ) E } − i { E × j  −  E × j }
+4π
+4π
+
+{ (
+
+e
+
+e
+
+) }
+
+) (
+
+e
+
+g
+
+e
+
+g
+
+e
+
+e
+
+e
+
+e
+
+g
+
+e
+
+g
+
+e
+
+g
+
+g
+
+g
+
+e
+
+g
+
+g
+
+e
+
+g
+
+g
+
+g
+
+
+
+
+
+
+
+1    ∂Ee    ∂H e  
+1    ∂Eg    ∂H g  
++i   Ee ×
+=
+0.
+ − H g ×
+  + c H e ρe − H g ρ g
+ − He ×
+  + i   Eg ×
+∂t  
+∂t   4π  
+∂t  
+∂t  
+4π  
+ 
+
+
+
+{
+
+923
+
+}
+
+(48)
+
+V. L. Mironov, S. V. Mironov
+
+The expressions (45)-(48) are the equations for the Lorentz invariants I1 and I 2 of GE field:
+
+
+
+
+I1 = Ee2 − H e2 + Eg2 − H g2 ,
+ 
+  ,
+I 2 = Ee ⋅ H e + Eg ⋅ H g .
+
+(
+
+) (
+
+)
+
+(49)
+
+5. First-Order Equation of GE Field
+Let us consider the special case of massless GE field, which is described by sedeonic first-order equation
+
+ 1 ∂
+ =
+− er ∇  W
+0.
+ν
+ ie t
+ c ∂t
+
+Here the potential of GE field is
+
+where ϕν= ϕe + iϕ g
+
+(50)
+
+
+
+W
+=
+ie tϕν + e r Aν ,
+ν
+
+(51)
+
+
+
+and Aν= Ae + iAg . The sedeonic Equation (50) is equivalent to the following system:
+
+
+1 ∂Ae 
+1 ∂Ag 
++ ∇ϕe = 0,
++ ∇ϕ g = 0,
+c ∂t
+c ∂t
+(52)
+ 
+ 
+∇ × Ae  = 0,
+∇ × Ag  = 0,
+
+
+
+
+
+with gauge conditions:
+ 
+1 ∂ϕe
+0,
+=
++ ∇
+⋅ Ae
+c ∂t
+
+ 
+1 ∂ϕ g
+0.
+=
++ ∇
+⋅ Ag
+c ∂t
+
+
+
+
+In fact Equation (52) describe the GE field with zero field strengths Ee , H e , Eg , H g .
+
+(
+
+)
+
+(
+
+)
+
+( 53)
+
+5.1. Analogue of Poynting Theorem and Lorentz Invariants for the First-Order Equation
+Multiplying the Equation (50) on sedeon
+
+
+
+(ie ϕ + e A ) from the left and separating parts with different spacet ν
+
+r
+
+ν
+
+time properties (and taking into account ε e ε g = 0 ) we get the following second-order equations for the field
+potentials:
+
+
+
+
+
+1 ∂ 2 2
+ϕe + Ae − ϕ g2 − Ag2 + ∇ ⋅ ϕe Ae − ∇ ⋅ ϕe Ae = 0,
+2c ∂t
+
+{
+
+) (
+
+} (
+
+)
+
+(54)
+
+
+
+
+  
+  
+1  2 2
+1 ∂
+∇ ϕe − Ae − ϕ g2 + Ag2 +
+ϕe Ae − ϕ g Ag + ∇ ⋅ Ae Ae − ∇ ⋅ Ag Ag = 0,
+2
+c ∂t
+
+
+1    ∂Ae    ∂Ag                  
+  + ϕe ∇ × Ae − ϕ g ∇ × Ag + Ae × ∇ϕe − Ag × ∇ϕ g = 0,
+ −  Ag ×
+  Ae ×
+ 
+ 
+ 
+
+∂t  
+∂t   
+c  
+
+
+
+  
+
+ 
+Ae ⋅ ∇ × Ae  − Ag ⋅ ∇ × Ag  = 0.
+
+
+
+
+
+{
+
+{
+
+}
+
+(
+
+} (
+
+) (
+
+(
+
+)
+
+)
+
+)
+
+(55)
+
+(56)
+
+(57)
+
+
+On the other hand, multiplying (50) on sedeon −ie tϕν + e r Aν from the left and separating values with different space-time and charge properties we obtain the following four equations:
+
+(
+
+)
+
+
+ 
+ 
+ 
+ 
+1 ∂ 2 2
+ϕe − Ae − ϕ g2 + Ag2 + ϕe ∇ ⋅ Ae + ϕ g ∇ ⋅ Ag − Ae ⋅∇ ϕe − Ag ⋅∇ ϕ g = 0,
+2c ∂t
+
+
+2 1 
+  
+∂Ag 
+1  2 2
+ ∂Ae  ∂ϕe  ∂ϕ g
+   
+2
+∇ ϕe + Ae − ϕ g − Ag + ϕe
+− Ae
++ Ag
+− ϕg
+ − ∇ ⋅ Ae Ae − ∇ ⋅ Ag Ag = 0,
+c  ∂t
+2
+∂t
+∂t
+∂t 
+
+
+
+{
+
+{
+
+}
+
+(
+
+)
+
+(
+
+) (
+
+)
+
+(
+
+(
+
+}
+
+924
+
+)
+
+)
+
+(
+
+)
+
+(58)
+
+(59)
+
+V. L. Mironov, S. V. Mironov
+
+
+
+
+
+
+1    ∂Ae    ∂Ag    
+  − ∇ × ϕe Ae  + ∇ × ϕ g Ag  = 0,
+ −  Ag ×
+  Ae ×
+ 
+
+∂t  
+∂t   
+c  
+
+
+
+  
+
+ 
+Ae ⋅ ∇ × Ae  − Ag ⋅ ∇ × Ag  = 0.
+
+
+
+
+
+(
+
+) (
+
+)
+
+(60)
+
+(61)
+
+The expressions (54)-(57) and (58)-(61) are the analogs of Poynting theorem and Lorentz invariants relations
+for the field, which is described by first-order equation.
+
+5.2. Plane Wave Solution of Sedeonic First-Order Equation
+Let us consider the plane wave solution of Equation (50). In this case the potential can be written as:
+
+ =U
+ exp −iωt +i k ⋅ r ,
+(62)
+W
+v
+v
+
+U v does not depend on
+where ω is a frequency, k is an absolute wave vector and the wave amplitude 
+coordinates and time. The dependence of the frequency on the wave vector has two branches:
+
+{
+
+( )}
+
+ω± = ±ck ,
+(63)
+
+where k is the module of wave vector k . In general, the plane wave solution for the Equation (50) can be
+written in the following sedeonic form [30]:
+
+ 
+ ω±
+ =
+
+(64)
+W
+v
+ et c − ier k  M v exp −iω± t +i k ⋅ r ,
+
+
+ is an arbitrary sedeon with constant components. Note that the internal structure of this wave is
+where M
+v
+changed under space and time
+ conjugation. Let us analyze the structure of the plane wave (64) in detail. We
+suppose that wave vector k is directed along z axis. Then the first-order Equation (50) can be rewritten in the
+following equivalent form:
+
+{
+
+( )}
+
+∂ 
+1 ∂
++ e tr a 3  
+=
+Wν′ 0 ,
+
+∂z 
+ c ∂t
+
+Wν′ = iet 
+Wv . Using (63) and (64) we can write solution of (65) in the following form:
+where 
+
+
+ exp −iω t +i k ⋅ r ,
+− (1 + etr a 3 ) kM
+Wv′+ =
+v
++
+
+{
+
+( )}
+
+ ′ (1
+ exp −iω t +i ( k ⋅ r ) .
+W
+=
+− e a ) kM
+{
+}
+v−
+
+tr
+
+3
+
+v
+
+−
+
+(65)
+
+(66)
+(67)
+
+′ describes the positive branch of dispersion law (63) that corresponds, for
+Wv+
+Note that the wave function 
+′ describes the negative branch that corresponds to the “particle” state.
+Wv−
+example, to the “antiparticle”, while 
+The wave functions (66) and (67) are the eigenfunctions of spin operator [32]:
+1
+Sˆz = etr a 3 .
+2
+
+(68)
+
+Sˆz 
+Wv′ = S z 
+Wv′ ,
+
+(69)
+
+Indeed, it is simple to check that
+
+ ′ describes “antiparticle” state with spirality
+where eigenvalue S z = ± 1 2 . It is seen that plane wave W
+v+
+
+S z = + 1 2 , while W ′v− describes “particle” state with spirality S z = −1 2 .
+
+6. Discussion
+From a mathematical point of view, the analogy between electromagnetism and weak gravity leads us to integrating these fields into unified equation, which describes the interaction between electrically charged and gravitating bodies.
+On the other hand, from a physical point of view, the phenomena of electricity and gravity are absolutely in-
+
+925
+
+V. L. Mironov, S. V. Mironov
+
+separable from each other. Naturally, all electrically charged particles have the masses and consequently they
+are involved in both electromagnetic and gravitational interactions. Therefore, all processes involving charged
+particles should be considered from a unified concept of gravitoelectromagnetism. For example, the electron
+transitions between excited and ground states in an atom should be accompanied by simultaneous irradiation
+(absorption) of electromagnetic and gravitational waves (gravito-electromagnetic waves), since in these
+processes both electric and gravitational interactions of the electron with the atomic nucleus are changed. Also,
+the processes of particle-antiparticle pair’s nucleation (or annihilation) should be accompanied by absorption (or
+emission) of gravito-electromagnetic waves. At last, any antennas radiate gravito-electromagnetic waves since
+an alternating current in the radiating and receiving antennas has both electrical and gravitational components.
+Thus, the gravitational waves exist everywhere around us. For the sake of justice, it should be noted that the
+energy of gravitational wave’s components is very small and in general all effects of the interaction between
+radiation and matter are determined by electromagnetic component.
+Furthermore, the concept of gravitational charge allows separating the effects of inertia associated with inertial mass and the effects of gravity associated with gravitational charge of the particles. For example, the quantum sedeonic wave equation [30] for a quantum particle in a gravitational field can be written as
+ 
+ 
+m0 c   1  ∂ i
+m0 c 
+ 1 ∂ i
+
+ i
+
+ i
+
+iet  − qg ϕ g  − er  ∇ + qg Ag  − ietr
+ iet  − qg ϕ g  − er  ∇ + qg Ag  − ietr
+ψ
+(70)
+c
+   c  ∂t 
+c
+ 
+
+
+
+
+
+
+ c  ∂t 
+= 0.
+Here the parameter m0 is the inertial rest mass of particle, while qg is the gravitational charge. This opens
+the way for the quantum description of gravitational interactions of particles.
+Moreover the operation of charge conjugation allows one to describe the particles with opposite gravitational
+charges (antimatter [33]) and suppose the repulsive matter-antimatter gravitational interaction.
+Finally, we showed that the sedeonic first-order Equation (50) describes massless particles with spin 1/2. We
+believe that this equation can be considered for modeling a neutrino field including electromagnetic and gravitational components.
+
+Acknowledgements
+The authors are very thankful to Mironova, G.V. for help and moral support. We also thank Korolev, S. for assistance.
+
+References
+[1]
+
+Maxwell, J.C. (1865) Philosophical Transactions of the Royal Society of London, 155, 459-512.
+http://dx.doi.org/10.1098/rstl.1865.0008
+
+[2]
+
+Heaviside, O. (1893) The Electrician, 31, 281-282.
+https://archive.org/stream/electromagnetict01heavrich#page/454/mode/2up
+
+[3]
+
+Majernik, V. (1971) Astrophysics and Space Science, 14, 265-285. http://dx.doi.org/10.1007/BF00653317
+
+[4]
+
+Singh, A. (1981) Lettere Al Nuovo Cimento, 32, 231-234. http://dx.doi.org/10.1007/BF02799188
+
+[5]
+
+Weinberg, S. (1972) Gravitation and Cosmology. John Wiley, New York.
+
+[6]
+
+Landau, L.D. and Lifschitz, E.M. (1987) The Classical Theory of Fields. Pergamon Press, Oxford.
+
+[7]
+
+Misner, C.W., Thorne, K.S. and Wheeler, J.A. (1973) Gravitation. Freeman W.H. and Company, San Francisco.
+
+[8]
+
+Ruggiero, M.L. and Tartaglia, A. (2002) Il Nuovo Cimento B, 117, 743-768.
+
+[9]
+
+Mashhoon, B. (2007) Gravitoelectromagnetism: A Brief Review. In: Iorio, L., Ed., The Measurement of Gravitomagnetism: A Challenging Enterprise, NOVA Science, Hauppauge, New York, 29-39.
+
+[10] Kaplan, J.D., Nichols, D.A. and Thorne, K.S. (2009) Physical Review D, 80, 124014.
+http://dx.doi.org/10.1103/PhysRevD.80.124014
+[11] Kopeikin, S.M. (2006) International Journal of Modern Physics D, 15, 305-320.
+http://dx.doi.org/10.1142/S0218271806007663
+[12] Iorio, L. (2007) Recent Developments in Testing Gravitomagnetism with Satellite Laser Ranging. In: Iorio, L., Ed.,
+The Measurement of Gravitomagnetism: A Challenging Enterprise, NOVA Science, Hauppauge, New York, 103-136.
+[13] Schäfer, G. (2009) Space Science Review, 148, 37-52. http://dx.doi.org/10.1007/s11214-009-9537-2
+
+926
+
+V. L. Mironov, S. V. Mironov
+
+[14] Majernik, V. (1999) Advances in Applied Clifford Algebras, 9, 119-130. http://dx.doi.org/10.1007/BF03041944
+[15] Imaeda, K. (1976) Il Nuovo Cimento B, 32, 138-162. http://dx.doi.org/10.1007/BF02726749
+[16] Gamba, A. (1998) Il Nuovo Cimento A, 111, 293-302.
+[17] Tolan, T., Özdas, K. and Tanisli, M. (2006) Il Nuovo Cimento B, 121, 43-55.
+[18] Mironov, V.L. and Mironov, S.V. (2009) Journal of Mathematical Physics, 50, 012901.
+http://dx.doi.org/10.1063/1.3041499
+
+[19] Chanyal, B.C., Bisht, P.S. and Negi, O.P.S. (2010) International Journal of Theoretical Physics, 49, 1333-1343.
+http://dx.doi.org/10.1007/s10773-010-0314-5
+[20] Shaarawi, A.M. (2000) Foundations of Physics, 30, 1911-1941. http://dx.doi.org/10.1023/A:1003762405951
+[21] Majernik, V. (1982) Astrophysics and Space Science, 84, 191-204. http://dx.doi.org/10.1007/BF00713636
+[22] Ulrych, S. (2006) Physics Letters B, 633, 631-635. http://dx.doi.org/10.1016/j.physletb.2005.12.050
+[23] Demir, S., Tanisli, M. and Tolan, T. (2013) International Journal of Modern Physics A, 28, 1350112.
+http://dx.doi.org/10.1142/S0217751X13501121
+[24] Imaeda, K. and Imaeda, M. (2000) Applied Mathematics and Computation, 115, 77-88.
+http://dx.doi.org/10.1016/S0096-3003(99)00140-X
+[25] Carmody, K. (1988) Applied Mathematics and Computation, 28, 47-72.
+http://dx.doi.org/10.1016/0096-3003(88)90133-6
+[26] Carmody, K. (1997) Applied Mathematics and Computation, 84, 27-47.
+http://dx.doi.org/10.1016/S0096-3003(96)00051-3
+[27] Demir, S. and Tanisli, M. (2012) International Journal of Theoretical Physics, 51, 1239-1253.
+http://dx.doi.org/10.1007/s10773-011-0999-0
+[28] Joyce, W.P. (2001) Journal of Physics A: Mathematical and General, 34, 1991-2005.
+http://dx.doi.org/10.1088/0305-4470/34/10/304
+[29] Cafaro, C. and Ali, S.A. (2007) Advances in Applied Clifford Algebras, 17, 23-36.
+http://dx.doi.org/10.1007/s00006-006-0014-7
+[30] Mironov, V.L. and Mironov, S.V. (2013) Applied Mathematics, 4, 53-60. http://dx.doi.org/10.4236/am.2013.410A3007
+[31] Schwebel, S. (1970) International Journal of Theoretical Physics, 3, 315-330. http://dx.doi.org/10.1007/BF00669760
+[32] Mironov, V.L. and Mironov, S.V. (2009) International Journal of Modern Physics A, 24, 6237.
+http://dx.doi.org/10.1142/S0217751X09047739
+[33] Hajdukovic, D.S. (2013) Astrophysics and Space Science, 339, 1-5. http://dx.doi.org/10.1007/s10509-012-0992-y
+
+927
+
+

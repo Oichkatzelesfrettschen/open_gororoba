@@ -1,0 +1,2362 @@
+Octonionic Gravi-electromagnetism and Dark Matter
+
+arXiv:1502.05293v1 [physics.gen-ph] 10 Sep 2014
+
+B. C. Chanyal, V. K. Sharma and O. P. S. Negi
+
+Department of Physics
+Kumaun University, S. S. J. Campus Almora -263601 (U.K.) India
+
+Email:- bcchanyal@gmail.com
+vishalphysics1985@gmail.com
+ops_negi@yahoo.co.in
+
+Abstract
+An attempt has been made to analyse the the role of octonions in various unified field
+theories associated with dyons and the dark matter. Starting with the split octonion algebra and its properties, we have discussed the octonionic unified gauge formulation for
+SU (2) × U (1) electroweak theory and SU (3) × SU (2) × U (1) grand unified theory. Describing the octonion eight dimensional space as the combination of two quaternionic spaces
+(namely associated with the electromagnetic interaction (EM-space) and linear gravitational
+interaction (G-space)), we have reexamined the unified picture of EM-G space in terms of octonionic split formulation in consistent manner. Consequently, we have obtained the various
+field equations for unified gravi-electromagnetic interactions. Furthermore, we have reconstructed the field equations of hot and cold dark matter in terms of split octonions. It is
+shown that the difference between the octonion cold dark matter (OCDM) and the octonion
+hot dark matter (OHDM) is significant in the formulating of structure of these two, because
+the velocities of octonion hot dark matter cause it to wipe out structure on small scales.
+Key Words: octonions, split-octonions, monopole, dyons, non-Abelian gauge theories,
+octonion dark matter.
+
+1
+
+Introduction
+
+According to celebrated Hurwitz theorem there exists [1] a set of four division algebra {R, C, H, O}
+
+namely the real numbers (R), complex numbers (C), quaternions (H) [2, 3] and octonions (O)
+[4, 5, 6]. All these four algebra’s are alternative with totally anti symmetric associators. Real
+number explains well the classical Newtonian mechanics while the complex number plays an
+important role for the explanation beyond the framework of quantum theory and relativity. Real
+and complex numbers are limited only up to two dimensions while quaternions are extended to
+four dimensions (one real and three imaginaries), on the other hand the octonions represent eight
+dimensions (one real and seven imaginaries). Real and complex numbers are commutative and
+1
+
+associative. Quaternions are associative but not commutative while the octonions are neither
+commutative and nor associative but alternative. Quaternions are well connected [7] with the
+familiar SU (2) group and naturally unify [8, 9] electromagnetism and weak force responsible for
+the electroweak SU (2) × U (1) sector of standard model. The octonion analysis has played an
+
+important role in the context of various physical problems [10 -17] higher dimensional supersymmetry, super gravity and super strings. Octonions are also [13 -15] used for unification program
+
+of strong interaction with successful gauge theory of fundamental interactions. A theoretical description of the leptons and quark structure of hadrons has already been proposed by Günaydin
+and Gursey [18] in the context of octonionic quantum mechanics in terms of octonionic Hilbert
+space.
+Rather, there has been continuing interests of many authors [19 -21] towards the developments of wave equation and octonion form of Maxwell’s equations. We [22 -31] have also discussed
+the significance of octonions to develop generalized octonion electrodynamics, generalized split
+octonion electrodynamics, octonion quantum chromodynamics, octonionic non-Abelian gauge
+theory, octonion and conservation laws for dyons, octonion electrodynamics in isotropic and chiral medium, octonion massive electrodynamics, octonionic representation of superstring theory,
+octonion model of dark matter, octonion symmetric Dirac-Maxwell’s equations and obtained the
+corresponding field equations and equation of motion in compact and consistence way. Keeping in
+mind the recent update of theoretical physics, we have made to analyze the the role of octonions
+in various unified field theories associated with dyons and the dark matter. Starting with the split
+octonion algebra and its properties, we have discussed the octonionic unified gauge formulation
+for SU (2) × U (1) electroweak theory and SU (3) × SU (2) × U (1) grand unified theory. Describing
+the octonion eight dimensional space as the combination of two quaternionic spaces (namely
+associated with the electromagnetic interaction (EM-space) and linear gravitational interaction
+(G-space)), we have reexamined the unified picture of EM-G space in terms of octonionic split
+formulation in consistent manner. Consequently, we have obtained the various field equations for
+unified gravi-electromagnetic interactions. Furthermore, we have reconstructed the field equations of hot and cold dark matter in terms of split octonions. It is shown that the difference
+between the octonion cold dark matter (OCDM) and the octonion hot dark matter (OHDM) is
+significant in the formulating of structure of these two, because the velocities of octonion hot
+dark matter cause it to wipe out structure on small scales. As such, there exists more cold dark
+matter than that of hot dark matter in nature supported by octonionic field equations.
+
+2
+
+The Split Octonion
+
+An octonion O is expressed [22-29] as a real linear combination of the unit octonions (e0 , e1 , e2 , e3 ,
+e4 , e5 , e6 , e7 ) as
+
+O ≃ (O0 , O1 , O2 , O3 , O4 , O5 , O6 , O7 ) = O0 e0 +
+
+7
+X
+
+A=1
+
+OA eA ,
+
+(1)
+
+where eA (A = 1, 2, ....., 7) are imaginary octonion units and e0 is the real octonion unit element.
+The octet (e0 , e1 , e2 , e3 , e4 , e5 , e6 , e7 ) is known as the octonion basis where eA satisfy the following
+2
+
+multiplication rules
+e0 = 1, e2A = −1, e0 eA = eA e0 = eA ,
+eA eB = − δAB e0 + fABC eC . (A, B, C = 1, 2, ......7)
+
+(2)
+
+The structure constants fABC are completely antisymmetric and take the value 1, i.e.
+fABC = +1 7−→ (ABC) ≡ (123), (471), (257), (165), (624), (543), (736) .
+
+(3)
+
+Therefore, we get the following relations among octonion basis elements as
+[eA , eB ] = 2fABC eC , {eA , eB } = −δAB e0 , eA (eB eC ) 6= (eA eB )eC ,
+
+(4)
+
+where δAB is the usual Kronecker delta-Dirac symbol.
+Like wise, the split octonions [25, 26] are a non associative extension of split quaternions (associative). Split octonions differ from the octonions in the signature of quadratic form. The split
+octonion have a signature (4, 4) whereas the octonions have positive signature (8, 0). The Cayley
+algebra of octonion over the field of complex number CC = C ⊗ C is visualized as the algebra of
+split octonions with its following basis elements,
+
+u
+where i =
+
+√
+
+0
+
+= 21 (e0 + ie7 ) ;
+
+j
+
+= 12 (ej + iej+3 ) ; u∗j = 12 (ej − iej+3 ) ;
+
+u
+
+u∗0 = 12 (e0 − ie7 ) ;
+
+(5)
+(∀ j = 1, 2, 3)
+
+−1 is assumed
+to commute
+
+ with eA (A = 1, 2, ......, 7) octonion units. The split
+
+octonion basis elements u0 , uj , u∗0 , u∗j satisfy the following multiplication rules,
+ui uj = ǫijk u∗k ; u∗i u∗j = −ǫijk u∗k ; (∀i, j, k = 1, 2, 3)
+
+ui u∗j = − δij u0 ; ui u0 = 0; u∗i u0 = u∗i ;
+
+u∗i uj = − δij u0 ; ui u∗0 = ui ; u∗i u∗0 = 0 ;
+u0 ui = ui ;
+
+(6)
+
+u∗0 ui = 0; u0 u∗i = 0 ;
+
+∗
+∗
+∗
+u∗0 u∗i = ui ; u20 = u0 ; u∗2
+0 = u0 ; u0 u0 = u0 u0 = 0 .
+
+Thus the multiplication table of split octonionic basis elements is given in Table-1.
+
+·
+u∗0
+u∗1
+u∗2
+u∗3
+u0
+u1
+u2
+u3
+
+u∗0
+u∗0
+0
+0
+0
+0
+u1
+u2
+u3
+
+u∗1
+u∗1
+0
+−u3
+u2
+0
+−u0
+0
+0
+
+u∗2
+u∗2
+u3
+0
+−u1
+0
+0
+−u0
+0
+
+u∗3
+u∗3
+−u2
+u1
+0
+0
+0
+0
+−u0
+
+u0
+0
+u∗1
+u∗2
+u∗3
+u0
+0
+0
+0
+
+u1
+0
+−u∗0
+0
+0
+u1
+0
+−u∗3
+u∗2
+
+u2
+0
+0
+−u∗0
+0
+u2
+u∗3
+0
+−u∗1
+
+u3
+0
+0
+0
+−u∗0
+u3
+−u∗2
+u∗1
+0
+
+Table 1: Split-Octonion Multiplication Table
+3
+
+The automorphism group of octonion is described [32, 33] as G2 . Its subgroup which leaves
+imaginary octonion unit e7 invariant (or equivalently the idempotents u0 and u∗0 ) is SU (3). Here
+the units uj and u∗j (j = 1, 2, 3) transform respectively like a triplet and anti triplet respectively associated with colour and anti colour triplets of SU (3) group. We may now introduce a
+convenient realization for the basis elements (u0 , uj , u∗0 , u∗j ) in term of Pauli’s spin matrices as
+
+
+
+
+
+0 0
+
+
+;
+u0 = 
+
+
+
+0 1
+
+
+
+
+0
+0
+
+
+;
+u =
+
+
+ j
+ej 0
+
+
+
+1 0
+
+
+
+0 −ej
+
+u∗0 = 
+
+u∗j = 
+
+
+
+;
+
+0 0
+
+0
+
+0
+
+(7)
+
+
+
+.
+
+(∀j = 1, 2, 3)
+
+So, the split octonion algebra is now expressed in terms of 2×2 Zorn’s vector matrices components
+of which are scalar and vector parts of a quaternion, i.e.
+O =
+
+(
+
+m ~
+p
+q~
+
+n
+
+!
+
+;
+
+m, n ∈ Sc(H);
+
+)
+
+(8)
+
+& p~,~q ∈ V ec(H) .
+
+As such, we write an arbitrary split octonion A ∈ O in terms of following 2×2 Zorn’s vector
+
+matrix realization as
+
+A = au∗0 + bu0 + xi u∗i + yi ui ≃
+
+→
+a −−
+x
+→
+−
+y
+b
+
+!
+
+(9)
+
+,
+
+where a and b are scalars and ~x and y~ are three vectors. Thus the product of two octonions in
+terms of following 2×2 Zorn’s vector matrix realization is expressed as
+→
+a −
+x
+→
+−
+y b
+
+!
+
+→
+c −
+u
+~v
+
+d
+
+!
+
+=
+
+→
+→
+ac + (−
+x .−
+v)
+
+→
+a~u + d~x + (−
+y × ~v )
+→
+−
+→
+−
+→
+−
+→
+c y + b~v − (~x × u )
+bd + ( y .−
+u)
+
+!
+
+,
+
+(10)
+
+where (×) denotes the usual vector product, ej (j = 1, 2, 3) with ej × ek = ǫjkl el and ej ek = −δjk .
+Octonion conjugate of equation (9) in terms of 2×2 Zorn’s vector matrix realization is now defined
+
+as
+A
+
+=
+
+au0 + bu⋆0 − xi u⋆i − yi ui
+
+≃
+
+→
+−
+b
+x
+→
+−
+−y a
+
+!
+
+.
+
+(11)
+
+The norm of A is defined as
+→
+→
+N (A) = AA = AA = (ab + −
+x .−
+y )1̂ = n(A)1̂,
+
+(12)
+
+→
+→
+where 1̂ is the identity elements of matrix order 2 × 2, and the expression n(A) = (ab + −
+x .−
+y)
+defines the quadratic form which admits the composition as
+~ · B)
+~ = n(A)
+~ n(B),
+~
+~ B
+~ ∈ O)
+n(A
+(∀ A,
+
+(13)
+
+Thus, we may easily express the Euclidean or Minkowski four vector in split octonion formulation
+4
+
+in terms of 2×2 Zorn’s vector matrix realizations. Consequently, any four-vector Aµ (complex
+or real) can equivalently be written in terms of the following Zorn matrix realization as
+Z(A)
+
+=
+
+→
+x4 − −
+x
+→
+−
+y
+y4
+
+!
+
+;
+
+→
+x4 −
+x
+→
+−
+− y y4
+
+Z(A) =
+
+!
+
+(14)
+
+.
+
+The split octonion valued space time vector Zµ (µ = 0, 1, 2, 3) in terms of the 4 × 4 (space time
+vector-valued) Zorn matrix Zµab may now be expressed as [10],
+Z
+
+µ
+
+=xµ0 u∗0 + y0µ u0 + xµj u∗j + yjµ uj
+
+≃
+
+!
+
+xµ0 e0 −xµj ej
+yjµ ej
+
+y0µ e0
+
+(15)
+
+, (∀ j = 1, 2, 3)
+
+where µ (∀ 0, 1, 2, 3) represents the internal four dimensional space. Here µ = 0 describes U (1)
+abelian gauge structure while µ = j (∀ j = 1, 2, 3) is associated with the SU (2) non-Abelian
+gauge structure [26]. Here xµ0 , xµj , y0µ , yjµ are real valued variables for abelian and non-Abelian
+gauge fields. When the space time metric [10, 11] is ηµν 1̂4×4 , the bi linear term
+1
+1
+T race[ηµν Zµ · Zν ] = ηµν [xµ0 xν0 + y0µ y0ν + xµj xνj + yjµ yjν ] T race[1̂2×2 ]
+4
+4
+1
+= ηµν [xµ0 xν0 + y0µ y0ν + xµj xνj + yjµ yjν ]
+2
+
+(16)
+
+describes the inner product. The octonion conjugation is accordingly defined as
+Z
+
+µ
+
+= xµ0 u0 + y0µ u∗0 − xµj u∗j − yjµ uj
+
+y0µ e0
+
+≃
+
+−yjµ ej
+
+xµj ej
+
+xµ0 e0
+
+!
+
+(17)
+
+,
+
+while the Hermitian conjugation is described [10, 11] as
+(Zµ )† = (xµ0 )∗ u0 + (y0µ )∗ u∗0 − (xµj )∗ u∗j − (yjµ )∗ uj
+
+≃
+
+(y0µ )∗ e0
+−(yjµ )∗ ej
+
+(xµj )∗ ej
+
+(xµ0 )∗ e0
+
+!
+
+.
+
+(18)
+
+The Zorn matrix product of two split octonions
+A =
+
+A0 e0 −Ai ei
+Bi ei
+
+B0 e0
+
+!
+
+and B =
+
+C0 e0 −Ci ei
+Di ei
+
+D0 e0
+
+!
+
+(19)
+
+is defined by
+AB =
+
+(A0 C0 + Aj Dj ) e0
+(C0 Bk + B0 Dk + ǫijk Ai Cj ) ek
+
+− (A0 Ck + D0 Ak + ǫijk Bi Dj ) ek
+(B0 D0 + Bi Ci ) e0
+
+!
+
+.
+
+(20)
+
+Accordingly, the octonion Aµ (x) with a space-time index [34], may now be written in terms of
+the split generators as
+Aµ (x) = aµ (x)u∗0 + bµ (x)u0 + Xiµ (x)u∗i + Yiµ (x)ui , (i = 1, 2, 3)
+
+(21)
+
+where the coefficients of Aµ (x) transform like vectors under space-time transformations. As such,
+
+5
+
+the space-time covariant derivative of Aµ (x) can be written as the following form:
+Aµ+;α = Aµ,α + Ωµρα Aρ ,
+Aµ−;α = Aµ,α + Ωµαρ Aρ ,
+
+(22)
+
+where Ωµρα → Ωµρα .12×2 is the affinity of the nonsymmetric theory [34] and 12×2 ≃ (u∗0 + u0 ) is
+the unit element of the split octonion algebra. Similarly the space-time curvature is given by
+σ
+σ .1
+Rµνρ
+2×2 , where Rµνρ is the curvature of nonsymmetric theory.
+
+3
+
+Octonionic electroweak formulation
+
+In order to discuss the role of split octonion in particle physics, we describe the U (1) × SU (2)
+
+electroweak gauge formulation in terms of the split octonion representation. Thus, we may write
+
+an octonion as the combination of two gauge fields (i.e. Aµ and Bµ are respectively associated
+with electric and magnetic charges) expanded in terms of quaternions, i.e.
+Aµ
+Bµ
+
+!
+
+A0µ e0 + Aaµ ea
+
+7−→
+
+B0µ e0 + Baµ ea
+
+!
+
+(23)
+
+, (∀ a = 1, 2, 3)
+
+where the components A0µ and B0µ are described respectively as the electric and magnetic four
+potentials of dyons for U (1) gauge formalism. Rather, Aaµ and Baµ represent two non-Abelian
+SU (2) gauge field due to the presence of electric and magnetic charges of dyons. As such, the
+covariant derivative for the case of double fold degeneracy of U (1)×SU (2) gauge theory is defined
+as
+Dµ =
+
+Dµe
+
+0
+
+0
+
+Dµg
+
+!
+
+∂µ + A0µ e0 + Aaµ ea
+
+≃
+
+0
+
+
+
+0
+∂µ + B0µ e0 + Baµ ea
+
+
+
+!
+
+,
+
+(24)
+
+where e and g represent the electric and magnetic charges of dyons. From equation (24) we get,
+[Dµ , Dν ] =
+
+G0µν e0 + Gaµν ea
+
+0
+
+0
+
+0 e + Ga e
+Gµν
+0
+µν a
+
+!
+
+(25)
+
+;
+
+which is U (1) × SU (2) octonion gauge field strength for dyons in terms of 2×2 Zorn matrix
+vector realization. Equation (25) may be reduced to following compact form as
+
+(26)
+
+[Dµ , Dν ] = Gµν ,
+where
+Gµν =
+with
+
+Geµ
+
+0
+
+0
+
+Gµg
+
+!
+
+≃
+
+G0µν e0 + Gaµν ea
+
+0
+
+0
+
+0 e + Ga e
+Gµν
+0
+µν a
+
+
+G0 = ∂ A0 − ∂ A0 + e A0 , A0  ,
+0
+ν µ
+µ ν
+µν
+ν
+µ
+Ga = ∂ Aa − ∂ Aa + e Aa , Aa  .
+µ ν
+ν µ
+a
+µ
+ν
+µν
+6
+
+!
+
+,
+
+(27)
+
+(28)
+
+Here G0µν and Gaµν respectively describe the abelian and non-Abelian, i.e. U (1)e × SU (2)e
+
+electroweak gauge structures in presence of electric charge, while
+
+
+G 0 = ∂ B0 − ∂ B0 + e B0 , B0  ,
+µ ν
+ν µ
+0
+µ
+ν
+µν
+
+G a = ∂ Ba − ∂ Ba + e Ba , Ba  ,
+µ ν
+ν µ
+a
+µ
+ν
+µν
+
+(29)
+
+describes the U (1)m × SU (2)m electroweak gauge structure due to the presence of magnetic
+monopole. From equations (28) and (29), we get the following gauge field strength of dyons as
+
+
+
+
+0
+G0µν
+Eµν
+ a 
+ a 
+Gµν 
+
+
+
+ =⇒  Eµν  .
+G 0 
+H0 
+ µν 
+ µν 
+a
+a
+Gµν
+Hµν
+
+(30)
+
+0 and H0 are defined as the electric and magnetic field tensors of dyons for the case of
+Here Eµν
+µν
+
+U (1) while Eµa and Hµa describe the SU (2) non-Abelian gauge field strength. Operating Dµ given
+
+by the equation (24) to the U (1) × SU (2) octonion gauge field strength Gµν (27), we get
+Dµ Gµν =
+
+∂µ G0µν e0 + ∂µ Gaµν ea
+
+0
+
+0
+
+0 e + ∂ Ga e
+∂µ Gµν
+0
+µ µν a
+
+!
+
+(31)
+
+,
+
+which may further be reduced in terms of compect notation of split octonion formulation, i.e.
+Dµ Gµν = Jν =⇒
+
+Jeν
+
+0
+
+0
+
+Jgν
+
+!
+
+≃
+
+j0ν e0 + jaν ea
+
+0
+
+0
+
+k0ν e0 + kaν ea
+
+!
+
+.
+
+(32)
+
+Here Jν is U (1) × SU (2) form of octonion gauge current familiar to normal weak current for
+dyons. From equation (32), we may write the following field equations
+
+
+
+j0ν =
+
+
+
+
+ja =
+ν
+
+
+k0ν =
+
+
+
+
+ka =
+ν
+
+∂µ G0µν ;
+∂µ Gaµν ;
+0 ;
+∂µ Gµν
+
+(33)
+
+a ;
+∂µ Gµν
+
+where j0ν and jaν are generalized octonion electroweak current for U (1)e × SU (2)e (electric case)
+while k0ν and kaν for U (1)m × SU (2)m (magnetic case). Using equation (30), we may obtain the
+following gauge field equations of dyons for the case of electroweak gauge formulation,
+
+
+
+j0ν =
+
+
+
+
+ja =
+
+0 ;
+∂µ Eµν
+
+a ;
+∂µ Eµν
+
+ν
+
+
+0 ;
+
+k0ν = ∂µ Hµν
+
+
+
+
+ka = ∂ Ha ;
+µ µν
+ν
+
+7
+
+(34)
+
+So, the analogous continuity equation then changes to be
+Dµ Jµ =
+
+∂µ j0µ e0 + ∂µ jaµ ea
+
+0
+
+0
+
+∂µ k0ν e0 + ∂µ kaν ea
+
+!
+
+(35)
+
+= 0.
+
+Hence, the split octonion formulation of electroweak gauge theory is consistent, compect and
+simpler.
+
+4
+
+Octonionic formulation of Grand Unified Theory
+
+Keeping in mind the role of octonion in gauge field theories, let us start with the local SU (3) ×
+
+SU (2) × U (1) gauge symmetry which is an internal symmetry representing the Standard Model
+
+(SM). The smallest simple Lie group which contains the standard model, and upon which the
+first Grand Unified Theory (GUT) was based, is SU (5) ⊃ SU (3) × SU (2) × U (1). Thus we
+
+may extend SU (2) × U (1) electroweak gauge theory to the SU (3) × SU (2) × U (1) gauge theory
+
+(GUT) in terms of split octonion formulation. We may now write the SU (3) × SU (2) × U (1)
+gauge field for generalized fields of dyons as
+Aµ
+Bµ
+
+!
+
+7−→
+
+A0µ e0 + Aaµ ea + Aαµ eα
+B0µ e0 + Baµ ea + Bαµ eα
+
+!
+
+(36)
+
+,
+
+(∀ µ = 0, 1, 2, 3; a = 1, 2, 3; α = 1, 2, ......, 8)
+where the components of electric A0µ and magnetic B0µ are the four potentials of dyons in case
+of U (1). Similarly, the Aaµ , Baµ and Aαµ , Bαµ describe the SU (2) and SU (3) gauge field strengths
+for dyons in terms of split octonions. So, the covariant derivative for SU (3) × SU (2) × U (1)
+octonion gauge field in terms of 2×2 Zorn’s vector matrix realization of split octonions is then
+
+described as
+Dµ =
+
+∂µ + A0µ e0 + Aaµ ea + Aαµ eα
+0
+
+
+
+0
+∂µ + B0µ e0 + Baµ ea + Bαµ eα
+
+which is further reduced to
+[Dµ , Dν ] =
+
+G0µν e0 + Gaµν ea + Gαµν eα
+
+0
+
+0
+
+0 e + Ga e + Gα e
+Gµν
+0
+µν a
+µν α
+
+
+
+!
+
+!
+
+;
+
+,
+
+(37)
+
+(38)
+
+where G0µν , Gaµν , Gαµν are defined as the SU (3)×SU (2)×U (1) grand-unified gauge field strengths
+0 , G a , G α describe the SU (3) × SU (2) × U (1)
+of dyons in presence of electric charge, whereas Gµν
+µν
+µν
+
+grand-unified gauge field strengths in presence of magnetic monopole. Hence, equation (38) take
+the following forms
+[Dµ , Dν ] = Gαµν , (∀ α = 1, 2, ......, 8)
+8
+
+(39)
+
+which is SU (3) × SU (2) × U (1) octonion gauge field strength for dyons. Thus, from equation
+(39), we identity the octonion gauge field components of SU (3) × SU (2) × U (1) are
+
+
+
+
+
+G0 = ∂µ A0ν − ∂ν A0µ + e0 A0µ , A0ν ;
+
+ µν
+
+
+Gaµν = ∂µ Aaν − ∂ν Aaµ + ea Aaµ , Aaν ;
+
+
+
+Gα = ∂ Aα − ∂ Aα + e Aα , Aα  ;
+µ ν
+ν µ
+α
+µν
+µ
+ν
+
+(40)
+
+for U (1)e × SU (2)e × SU (3)e grand unified gauge structures in presence of electric charge, and
+
+
+
+0 = ∂ B0 − ∂ B0 + e B0 , B0 ;
+
+
+Gµν
+µ ν
+ν µ
+0
+µ
+ν
+
+
+
+
+a = ∂ Ba − ∂ Ba + e Ba , Ba ;
+Gµν
+a
+ν µ
+µ ν
+ν
+µ
+
+
+
+G α = ∂ Bα − ∂ Bα + e Bα , Bα  ;
+µ ν
+ν µ
+α
+µ
+ν
+µν
+
+(41)
+
+are the constituents of U (1)m × SU (2)m × SU (3)m gauge structure in presence of magnetic
+monopole. Thus, octonionic formulation leads the following gauge field strengths of dyons as
+ 0 
+ 0
+ 0 
+Hµν
+Gµν
+Eµν
+ a 
+ a
+ a 
+ a 
+⇒
+,
+and
+⇒
+Hµν  ,
+Gµν 
+Eµν 
+Gµν 
+α
+α
+α
+Hµν
+Gµν
+Eµν
+Gαµν
+
+
+G0µν
+
+
+
+(42)
+
+0 , E a , E α are respectively defined the electric gauge structures for the case of U (1),
+where Eµν
+µν
+µν
+0 , Ha , Hα are described for magnetic monopole
+SU (2), SU (3) gauge field theory, while Hµν
+µν
+µν
+
+gauge structures of dyons. Now we operate Dµ given by the equation (37) to the octonion gauge
+field strength Gαµν (39), we get
+Dµ Gαµν
+
+=
+
+∂µ G0µν e0 + ∂µ Gaµν ea + ∂µ Gαµν eα
+
+0
+
+0
+
+0 e + ∂ Ga e + ∂ Gα e
+∂µ Gµν
+0
+µ µν a
+µ µν α
+
+!
+
+,
+
+(43)
+
+which may further be reduced in terms of compect notation of octonion form as
+Dµ Gαµν = Jαν .
+
+(44)
+
+Here Jαν is U (1) × SU (2) × SU (3) grand-unified form of octonion gauge current for dyons which
+
+may be expressed in terms of 2×2 Zorn vector matrix realization of split octonions as
+Jαν
+
+=
+
+j0ν e0 + jaν ea + jαν eα
+0
+0
+k0ν e0 + kaν ea + kαν eα
+
+9
+
+!
+
+.
+
+(45)
+
+The octonionic formulation (44) thus leads to the following field equations of dyons
+
+
+
+j0ν =
+
+
+
+
+
+
+jaν =
+
+
+
+
+jα =
+ν
+
+
+k0ν =
+
+
+
+
+
+
+kaν =
+
+
+
+
+kα =
+ν
+
+0 ; (∀ µ, ν = 0, 1, 2, 3)
+∂µ Eµν
+
+a ; (∀ a = 1, 2, 3)
+∂µ Eµν
+
+α ; (∀ α = 1, 2, 3, ...., 8)
+∂µ Eµν
+
+(46)
+
+0 ; (∀ µ, ν = 0, 1, 2, 3)
+∂µ Hµν
+
+a ; (∀ a = 1, 2, 3)
+∂µ Hµν
+
+α ; (∀ α = 1, 2, 3, ...., 8)
+∂µ Hµν
+
+were j0ν is the U (1) current for electric charge, jaν is the SU (2) week current associated with
+electric charge and jαν is the current associated with SU (3)c used for chromo electric charge (i.e.
+normal color). On the other hand, k0ν is U (1) the counterpart of the four current, kaν is the
+SU (2) weak current while the kαν is SU (3)c gluonic current due to the presence of magnetic
+monopole (chromo-magnetic charges or magnetic color). As such, the octonionic formulation,
+regardless a generalization of GUTs for the mixing of gauge currents used for U (1), SU (2) and
+SU (3)c sectors associated respectively with the electromagnetic, weak and strong interactions
+in presence of dyons, also shows the duality invariance as well. Consequently, the continuity
+equation is generalized as
+Dµ Jαµ =
+
+∂µ j0µ e0 + ∂µ jaµ ea + ∂µ jαµ eα
+
+0
+
+0
+
+∂µ k0ν e0 + ∂µ kaν ea + ∂µ kαν eα
+
+!
+
+(47)
+
+= 0.
+
+which leading to the conservation of Noetherian current.
+
+5
+
+Octonion formulation with linear gravity
+
+Here we assume the octonion eight dimensional space, combination of two quaternionic spaces
+respectively associated with the electromagnetic interaction (EM-space) and linear gravitational
+interaction (G-space) [35, 36, 37]. Thus, we may write the split octonionic unified representation
+of gravitational-electromagnetic (G-EM) space in terms of following 2×2 Zorn’s vector matrix
+realization as
+O = (Oem−space , Og−space )
+
+j
+0 e
+Oem
+0 −Oem ej
+
+0
+j
+= Oem
+u∗0 + Og0 u0 + Oem
+u∗j + Ogj uj ≃
+
+Ogj ej
+
+Og0 e0
+
+!
+
+. (∀ j = 1, 2, 3)
+
+(48)
+
+!
+
+(49)
+
+As such, any physical quantity X ∈ O may be written as
+0
+j
+X = (Xem , Xg ) = Xem
+u∗0 + Xg0 u0 + Xem
+u∗j + Xgj uj ≃
+
+10
+
+j
+0 e
+Xem
+0 −Xem ej
+
+Xgj ej
+
+Xg0 e0
+
+,
+
+and accordingly the split octonion differential operator D may also be written for unified picture
+of the EM-G space [30] in terms of 2×2 Zorn’s matrix realization [23, 25], i.e.
+j
+0 e
+∂em
+0 −∂em ej
+∂gj ej
+−∂g0 e0
+
+D = (Dem , Dg ) ≃
+
+!
+
+,
+
+(50)
+
+!
+
+.
+
+(51)
+
+while the octonion conjugate of equation (50) is described as
+D =
+
+Dem , Dg
+
+
+
+j
+0 e
+−∂em
+0 ∂em ej
+
+≃
+
+−∂gj ej
+
+∂g0 e0
+
+Like wise, the split octonion valued potential V for the unified EM-G space is defined as
+V = (V− , V+ ) = V−0 u∗0 + V+0 u0 + V−j u∗j + V+j uj
+!
+V−0 e0 −V+j ej
+,
+=
+V−j ej V+0 e0
+
+(52)
+
+where we have expressed the split octonion valued potential in terms two four potential form as
+µ
+the combination of linear gravitational potential (Vgµ ) and electromagnetic potential (Vem
+) for
+
+unified EM-G space, i.e.
+
+
+
+0 e
+Vg0 − Vem
+0
+
+V = (Vg , Vem ) ≃   j
+j
+Vem − Vg ej
+
+ 
+
+j
+− Vem
++ Vgj ej
+,
+
+0 e
+Vg0 + Vem
+0
+
+(53)
+
+
+
+
+
+µ
+0 , Vj
+where Vgµ = Vg0 , Vgj and Vem
+= Vem
+(µ = 0, 1, 2, 3) are respectively denoted as linear
+em
+
+gravitational (G-space) and electromagnetic (EM-space) four potentials. Thus, we may write the
+split octonion potential wave equation for unified EM-G space by operating D given by equation
+(51) to octonion potential V (53) in the following manner,
+
+
+0 V 0 + ∂ j V j )+
+[−(∂em
+em g
+g
+
+k V 0 + ∂ 0 V k + ǫ ∂ i V j )+
+[(∂em
+ijk g em
+g
+em g
+
+
+
+
+0 V 0 + ∂ j V j )]e
+k V 0 + ∂ 0 V k − ǫ ∂ i V j )]e 
+(∂em
+(∂em
+
+em em
+0
+ijk g g
+k 
+em
+em
+em em
+
+
+,
+
+DV = 
+
+
+
+i V j )+
+[(∂g0 Vg0 + ∂gj Vgj )+
+
+ [(−∂gk Vg0 − ∂g0 Vgk + ǫijk ∂em
+em
+j
+j j
+k
+0
+0
+k
+i
+0
+0
+(∂g Vem + ∂g Vem + ǫijk ∂em Vg )]ek
+(∂g Vem + ∂g Vem )]e0
+
+(54)
+
+which can further be reduced to
+DV = F ≃ F−0 u∗0 + F+0 u0 + F−j u∗j + F+j uj
+
+!
+
+0
+Fg0 − Fem
+e0
+F−0 e0 −F+j ej
+
+=
+≃   j
+j
+j
+0
+F− ej F+ e0
+Fem − Fg ej
+
+11
+
+ 
+
+j
+− Fem
++ Fgj ej
+,
+
+0
+Fg0 + Fem
+e0
+
+(55)
+
+where F is an split octonion which reproduces the field strength of generalized gravitationalelectromagnetic interactions of dyons. Thus the unified components of F are expressed as
+
+j
+0
+j
+∂em
+Vg0 + ∂em
+Vgj e0 = F(em−g)
+;
+
+j
+0
+0
+j
+j
+∂em
+Vem
++ ∂em
+Vem
+;
+e0 = F(em−em)
+
+k
+j
+0
+k
+)ek = F(em−g)/(g−em)
+;
+Vgk + ǫijk ∂gi Vem
+Vg0 + ∂em
+(∂em
+k
+0
+0
+k
+k
+(∂em
+Vem
++ ∂em
+Vem
+− ǫijk ∂gi Vgj )ek = F(em−em)/(g−g)
+;
+i
+j
+k
+(−∂gk Vg0 − ∂g0 Vgk + ǫijk ∂em
+Vem
+)ek = F(g−g)/(em−em)
+;
+
+(56)
+
+0
+k
+i
+k
+(∂gk Vem
++ ∂g0 Vem
++ ǫijk ∂em
+Vgj )ek = F(g−em)/(em−g)
+;
+
+j
+∂g0 Vg0 + ∂gj Vgj e0 = F(g−g)
+;
+
+j
+0
+j
+∂g0 Vem
++ ∂gj Vem
+.
+e0 = F(g−em)
+
+j
+j
+Here the terms (Fem−em
+, Fg−g
+) are defined the interactions of electromagnetic- electromagj
+j
+are denetic (EM-EM), gravitational- gravitational (G-G) field strength, and F(em−g)
+, Fg−em
+
+scribed as the combinations of electromagnetic- gravitational (EM-G), gravitational- electrok
+k
+magnetic (G-EM) field strength while the other components F(em−g)/(g−em)
+, F(em−em)/(g−g)
+,
+k
+k
+F(g−g)/(em−em) , F(g−em)/(em−g) are defined the combined interactions of electromagnetic and
+
+gravitational for octonion space. Applied the following Lorentz Gauge conditions
+0
+j
+∂em
+Vg0 + ∂em
+Vgj
+
+
+
+= 0;
+
+
+j
+
+= 0;
+
+0
+0
+j
+j
+∂em
+Vem
++ ∂em
+Vem
+
+∂g0 Vg0 + ∂gj Vg
+
+
+
+= 0;
+
+(57)
+
+
+0
+j
+∂g0 Vem
++ ∂gj Vem
+= 0;
+
+we get the following split octonion form of the field tensor associated with the unified gravitationalelectromagnetic (G-EM) interactions as
+
+
+0
+
+
+
+j
+j
+
+F = Fem
+− Fgj u∗j + Fem
++ Fgj uj =   j
+Fem − Fgj ej
+
+ 
+
+j
+− Fem
++ Fgj ej
+.
+0
+
+(58)
+
+which can further be reduced to
+F =
+
+where Ψj(em−g)+ →
+
+
+
+j
+Fem
++ Fgj
+
+
+
+0
+Ψj(em−g)− ej
+
+−Ψj(em−g)+ ej
+
+and Ψj(em−g)− →
+
+0
+
+!
+
+,
+
+(59)
+
+
+
+j
+Fem
+− Fgj are generalized EM-G fields
+
+in octonionic space. Hence, we get the split octonionic field equation in unified gravitationalelectromagnetic space on applying the differential operator (50) to equation (58) as
+DF = J ,
+
+12
+
+(60)
+
+where J is the octonionic form of unified gravitational-electromagnetic field current defined as
+J =
+
+
+J(em−g) − J(em−em) e0
+
+
+J(g−g)/(em−em) + J(g−em)/(em−g) ej
+
+ !
+− J(em−em)/(g−g) − J(em−g)/(g−em) ej
+
+. (61)
+J(g−em) − J(g−g) e0
+
+
+
+Here J(em−g) , J(em−em) , and J(g−em) , J(g−g) are described as the octonionic current source
+
+density respectively for (EM-G, EM-EM) and (G-EM, G-G) spaces, while other components
+
+
+J(em−em)/(g−g) , J(em−g)/(g−em) and J(g−g)/(em−em) , J(g−em)/(em−g) are the mixed current
+
+source densities of (EM-EM/G-G, EM-G/ G-EM) and (G-G/EM-EM, G-EM/EM-G) octonionic
+spaces [30]. Thus from equation (60), we get
+
+
+ 
+j
+j
+j
+0 F k − ǫ ∂i F j −
+e0 −(∂em
+∂em
+Fgj − ∂em
+Fem
+g
+ijk
+g
+em
+
+
+j
+
+i
+k
+0
+)ek 
+∂em Fg + ǫijk ∂g Fem
+
+
+DF =
+.
+k + ǫ ∂i F j +
+
+ (−∂g0 Fem
+ijk em g
+
+
+
+
+j
+i F j )e
+∂g0 Fgk + ǫijk ∂em
+∂gj Fem
+− ∂gj Fgj e0
+em k
+
+(62)
+
+where the components of split octonionic current source density J are described as
+j
+∂em
+Fgj e0 = Jj(em−g) ;
+j
+j
+∂em
+Fem
+e0 = Jj(em−em) ;
+
+
+0
+k
+∂em
+Fem
+− ǫijk ∂gi Fgj ek = Jk(em−em)/(g−g) ;
+
+
+0
+j
+ek = Jk(em−g)/(g−em) ;
+∂em
+Fgk + ǫijk ∂gi Fem
+
+
+k
+i
+−∂g0 Fem
++ ǫijk ∂em
+Fgj ek = Jk(g−em)/(em−g) ;
+
+
+0 k
+i
+j
+∂g Fg + ǫijk ∂em Fem ek = Jk(g−g)/(em−em) ;
+
+(63)
+
+j
+∂gj Fem
+e0 = Jj(g−em) ;
+
+∂gj Fgj e0 = Jj(g−g) ;
+which are the various kinds of fields equations in presence of gravitational-gravitational (G-G),
+electromagnetic-electromagnetic (EM-EM), electromagnetic-gravitational (EM-G), gravitationalelectromagnetic (G-EM) and their combined interactions.
+Moreover, we write the split octonionic radius vector R as
+R = R0em u∗0 + R0g u0 + Rjem u∗j + Rjg uj ≃
+
+R0em e0 −Rjem ej
+Rjg ej
+
+R0g e0
+
+!
+
+,
+
+(64)
+
+which directly reproduces the velocity (V) of the particle in unified gravitational-electromagnetic
+space. Furthermore, V can be written as the following 2×2 Zorn’s matrix realization of split
+
+13
+
+octonion (u0 , uj , u∗0 , u∗j ) as
+∂  0 ∗
+∂R
+=
+Rem u0 + R0g u0 + Rjem u∗j + Rjg uj
+∂t
+∂t
+= V0em u∗0 + V0g u0 + Vjem u∗j + Vjg uj ,
+!
+V0em e0 −Vjem ej
+.
+=
+Vjg ej
+V0g e0
+
+V=
+
+(65)
+
+Hence, the momentum of massive particle also be expressed in the following octonionic form as
+0
+j
+P = Pem
+u∗0 + Pg0 u0 + Pem
+u∗j + Pgj uj =
+
+j
+0 e
+Pem
+0 −Pem ej
+
+Pgj ej
+
+Pg0 e0
+
+!
+
+,
+
+(66)
+
+whereas the charge and mass [30] of the particle in octonion formulation may also be analysed
+as,
+J(em−em)/(g−g) = Q(em−em)/(g−g) V(em−em)/(g−g) ,
+J(em−g)/(g−em) = Q(em−g)/(g−em) V(em−g)/(g−em) ,
+
+(67)
+
+Jg−g = Q(g−g) V(g−g) , J(em−em) = Q(em−em) V(em−em) ,
+where Q(g−g) , Q(em−g) , Q(g−em) and Q(em−g)/(g−em) , Qem−em)/(g−g) respectively denote the mass
+of the gravitational- gravitational (G-G), electromagnetic- gravitational (EM-G), gravitationalelectromagnetic (G-EM) interactions etc., while Q(em−em) represent the charge of the electromagneticelectromagnetic (EM-EM) interaction. Thus Q(g−g) , Q(em−g) , Q(g−em) , their other combinations
+and Q(em−em) respectively describe the generalized mass and generalized charge [30, 35, 36, 37]of
+dyons in the consistent unified picture for split octonions.
+
+6
+
+Octonion Dark Matter (ODM)
+
+Dark matter [38, 39] is a type of matter hypothesized to account for a large part of the total
+mass in the universe. Only about 4.6% of the mass-energy of the universe is ordinary matter,
+about 23% is thought to be composed of dark matter. The remaining 72% is thought to consist
+of dark energy, an even stranger component, distributed almost uniformly in space and with
+energy density non-evolving or slowly evolving with time. On the other hand, the nonbaryonic
+form of octonionic dark matter [38, 39] is evident through its gravitational effect only.
+However, form experiment point of views the summary of the current measurements of the
+matter density Ωmatter , the dark matter density ΩDM and the energy density Ωenergy is already
+given by Hagiwara [41]. Each are in units of the critical density ρcritical ≃ 3h2 /(8πG), where G
+is the Newton’s gravitational constant, and h is the present value of the Hubble constant. The
+
+experimental results [42, 43] require the best current values of the matter and energy densities
+respectively given as Ωmatter ≃ 0.27 and Ωenergy ≃ 0.73. The measurements describe the baryon
+
+density Ωbaryon to a value less than ∼ 0.03. The difference Ωmatter − Ωbaryon ≃ 0.24 must be in
+
+the form of non-baryonic dark matter. Some experimental results for energy, matter and dark
+matter densities [44, 45] are shown in Table-2.
+14
+
+0.49 ≤ Ωenergy ≤ 0.74
+
+0.49 ≤ Ωenergy ≤ 0.76
+
+0.20 ≤ Ωmatter ≤ 0.50
+
+0.11 ≤ h2 ΩDM ≤ 0.17
+
+0.09 ≤ h2 ΩDM ≤ 0.17
+
+0.00 ≤ h2 ΩHot−dark−matter ≤ 0.12
+
+0.10 ≤ h2 ΩCold−dark−matter ≤ 0.32
+0.02 ≤ h2 Ωbaryon ≤ 0.03
+
+0.01 ≤ h2 Ωbaryon ≤ 0.03
+
+Table 2: The experimental results for Matter and Dark Matter densities with the compression
+of first release data and newest data.
+
+The ranges of density parameters within the standard cosmological model derived from the
+first release data with corresponding values newest data and h ≃ 0.74 ± 0.08 is the Hubble
+parameter [44, 45]. Thus, the matter density:
+Ωmatter
+
+≃
+
+Ωbaryon + ΩHot−dark−matter + ΩCold−dark−matter
+
+≃
+
+Ωbaryon + ΩDM ,
+
+(68)
+
+includes both baryonic matter and dark matter. Moreover the dark matter can be classed either
+as hot or cold depending on whether it was relativistic or not in the early universe. So, we can
+analyse the hot and cold dark matter in terms of split octonions. We assume that the total
+octonionic dark matter density (ODM) is described as
+(69)
+
+ΩO−DM ≃ ΩO−HDM + ΩO−CDM ,
+
+where ΩO−HDM describes the octonionic hot dark matter density (OHDM) while ΩO−CDM
+describes the octonionic cold dark matter density (OCDM).
+
+7
+
+Octonion Hot and Cold Dark matter
+
+Let us assumed that the octonionic hot dark matter (OHDM) describes the particles that have
+zero or near-zero masses. Thus we assume that the octonionic hot dark matter (OHDM) is
+associated with the gravitational-gravitational (G-G), electromagnetic-electromagnetic (EM-EM)
+and the combination of (G-G) and (EM-EM) fields [30, 35, 36, 37] interactions. So, the hot dark
+matter may then be described in terms of following 2×2 Zorn vector matrix realization of split
+octonions, i.e.
+FO−HDM =
+
+0
+i V j )e
+(−∂gk Vg0 − ∂g0 Vgk + ǫijk ∂em
+em k
+
+15
+
+k V 0 + ∂ 0 V k − ǫ ∂ i V j )e
+(∂em
+ijk g g
+k
+em
+em em
+
+0
+
+!
+
+,
+(70)
+
+where FO−HDM is an octonionic field strength represents the hot dark matter. So, the components of equation (70) are given as
+
+F k
+(em−em)/(g−g)
+
+F k
+(g−g)/(em−em)
+
+
+
+k V 0 + ∂0 V k − ǫ ∂i V j e ;
+∂em
+k
+ijk g g
+em
+em em
+
+
+i Vj
+= −∂gk Vg0 − ∂g0 Vgk + ǫijk ∂em
+em ek .
+
+=
+
+(71)
+
+Here the octonion hot dark matter (OHDM) represents the quantas of EM-EM interactions
+(namely photons) and G-G interactions (i.e. gravitons). Similarly, the required current source
+density for octonionic hot dark matter (OHDM) is expressed by the following split octonion form
+as,
+JO−HDM =
+
+0
+i F j )e
+(∂g0 Fgk + ǫijk ∂em
+em k
+
+0 F k − ǫ ∂ i F j )e
+−(∂em
+ijk g g k
+em
+
+0
+
+!
+
+(72)
+
+,
+
+which represent the non-baryonic octonion hot dark matter current source density JO−HDM
+
+associated with massless photons, gravitons, etc. Thus the current source equations for octonionic
+hot dark matter (OHDM) are given below:
+
+Jk
+(em−em)/(g−g)
+
+Jk
+(g−g)/(em−em)
+
+
+
+0 F k − ǫ ∂i F j e ;
+∂em
+k
+ijk g g
+em
+
+
+j
+i F
+= ∂g0 Fgk + ǫijk ∂em
+em ek .
+
+=
+
+(73)
+
+Rather, the octonion cold dark matter (OCDM) can be described as the composition of the
+massive objects moving at sub-relativistic velocities. So, the difference between the octonion
+cold dark matter (OCDM) and the octonions hot dark matter (OHDM) is significant in the
+formulation of structure, because the velocities of octonions hot dark matter cause it to wipe
+out structure on small scales. Thus, the octonions cold dark matter is associated with the
+electromagnetic-gravitational (EM-G), gravitational-electromagnetic (G-EM) and their mixed
+interactions. Thus, we analyse the octonion cold dark matter for massive particles, responsible
+for EM-G and G-EM interactions, i.e.
+FO−CDM =
+
+0
+
+k V 0 + ∂ 0 V k + ǫ ∂ i V j )e
+(∂em
+ijk g em k
+g
+em g
+
+0 + ∂ 0 V k + ǫ ∂ i V j )e
+(∂gk Vem
+ijk em g
+k
+g em
+
+0
+
+!
+
+, (74)
+
+where FO−CDM represents the octonionic field tensor associated with the cold dark matter.
+Equation (74) reduced to following components
+
+F k
+
+(em−g)/(g−em)
+
+F k
+
+(g−em)/(em−g)
+
+
+
+k V 0 + ∂0 V k + ǫ ∂i V j
+∂em
+ijk g em ek ,
+g
+em g
+
+
+0 + ∂0V k + ǫ ∂i V j e .
+= ∂gk Vem
+ijk em g
+k
+g em
+=
+
+(75)
+
+So, the mediators for octonionic cold dark matter (OCDM), which are non-baryonic particles
+like W ± , Z 0 , etc. Therefore, the current source density for octonionic cold dark matter (OCDM)
+
+16
+
+can expressed as
+
+JO−CDM
+
+
+
+ 
+j
+j
+j
+0 F k + ǫ ∂ i F j )e
+e0
+−∂em
+∂em
+Fgj − ∂em
+Fem
+ijk g em k
+g
+,
+
+
+=
+j
+j
+j
+0
+k
+i
+(−∂g Fem + ǫijk ∂em Fg )ek
+∂g Fem − ∂gj Fgj e0
+
+(76)
+
+where JO−CDM defines the octonionic cold dark matter current source density, which associated
+
+EM-G and EM-G fields spaces. Thus the current source equations for octonionic cold dark matter
+are:
+
+
+
+
+Jj(em−g)/(em−em)
+
+
+
+
+
+Jj
+(g−em)/(g−g)
+
+
+Jk(em−g)/(g−em)
+
+
+
+
+
+Jk
+(g−em)/(em−g)
+
+
+
+j
+j
+j
+;
+∂em
+Fgj − ∂em
+Fem
+
+
+j
+= ∂gj Fem
+− ∂gj Fgj ;
+
+
+0 F k + ǫ ∂i F j
+ek ;
+= ∂em
+em
+ijk
+g
+g
+
+
+k + ǫ ∂i F j e .
+= −∂g0 Fem
+ijk em g
+k
+
+=
+
+(77)
+
+So, the quantum equations for octonionic hot and cold dark matter may easily be expressed in the
+terms of simpler and compact notation of octonions representations. From the foregoing analysis
+
+we find the matter density of octonionic cold dark matter (OCDM) i.e. 0.10 ≤ h2 ΩCDM ≤ 0.32
+
+is grater than that of octonionic hot dark matter (OHDM) as 0.00 ≤ h2 ΩHDM ≤ 0.12 . As such,
+
+there exists more cold dark matter than that of hot dark matter in nature supported by octonionic
+field equations.
+
+References
+[1] L. E. Dickson, “On Quaternions and Their Generalization and the History of the
+Eight Square Theorem”, Ann. Math., 20 (1919), 155.
+[2] W. R. Hamilton, “Elements of Quaternions”, Chelsea Publications Co., New York,
+(1969).
+[3] P. G. Tait, "An elementary Treatise on Quaternions", Oxford Univ. Press (1875).
+[4] A. Cayley, “An Jacobi’s elliptic functions, in reply to the Rev. B. Bornwin; and
+on quaternion”, Phil. Mag., 26 (1845), 208.
+[5] R. P. Graves, “Life of Sir William Rowan Hamilton”, 3 volumes, Arno Press, New
+York, (1975).
+[6] J. C. Baez, “The Octonions”, Bull. Amer. Math. Soc., 39 (20R. Bond and A. Szalay,
+Astrophys. J. 274 (1983) 443.01), 145.
+[7] K. Morita, “Quaternionic Variational Formalism for Poincaré Gauge Theory and
+Supergravity”, Prog. Theor. Phys., 73 (1985), 999.
+[8] K. Morita, “Gauge Theories over Quaternions and Weinberg-Salam Theory”, Prog.
+Theor. Phys., 65 (1981), 2071.
+[9] K. Morita, “Quaternionic Weinberg-Salam Theory”, Prog. Theor. Phys., 67 (1982),
+1860.
+17
+
+[10] S. Catto, “ Exceptional Projective Geometries and Internal Symmetries”, eprint:
+arXiv: hep-th/0302079 (2003).
+[11] S. Catto, “Symmetries in Science:from the rotation group to quantum algebras”,
+Ed. B. Gruber, Plenum Press, 6 (1993), 129.
+[12] R. Foot and G. C. Joshi, “Space-time symmetries of superstring and Jordan Algebras”, Int. J. Theor. Phys., 28 (1989), 1449.
+[13] R. Foot and G. C. Joshi, “String theories and the Jordan algebras”, Phys. Lett., B199
+(1987), 203.
+[14] T. Kugo and P. Townsend, “Supersymmetry and the Division Algebras”, Nucl Phys.,
+B221 (1983), 357.
+[15] C. A. Manogue and A. Sudbery, “General solutions of covariant superstring equations of motion”, Phys. Rev., D40 (1989), 4073.
+[16] J. Schray, “Octonions and Supersymmetry”, Ph. D. thesis, Department of Physics,
+Oregon State University, (1994) (un published).
+[17] K. S. Abdel-Khalek Mostafa, “Ring Division Algebra, Self Duality and Supersymmetry”, eprint: arXiv: hep-th/0002155 (2000).
+[18] M. Günaydin and F. Gürsey, “Quark structure and octonions”, J. Math. Phys., 14
+(1973), 1651.
+[19] K. Imaeda, “Quaternionic formulation of tachyons, superluminal transformations
+and a complex space-time”, Lett. Nuovo Cimento, 50 (1979), 271.
+[20] R. Penny, “Octonions and the Dirac equation”, Amer. J. Phys., 36 (1968), 871.
+[21] A. Gamba, “Peculiarities of the Eight Dimensional Space”, J. Math. Phys., 8 (1967),
+775.
+[22] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Generalized Octonion Electrodynamics”,
+Int. J. Theor. Phys., 49 (2010), 1333.
+[23] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Generalized Split-Octonion Electrodynamics”, Int. J. Theor. Phys., 50 (2011), 1919.
+[24] B. C. Chanyal, P. S. Bisht, Tianjun Li and O. P. S. Negi, “Octonion Quantum Chromodynamics”, Int. J. Theor. Phys., 51 (2012), 3410.
+[25] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Octonionic non-Abelian Gauge Theory”,
+Int. J. Theor. Phys., 52 (2013), 3522.
+[26] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Octonion and conservation laws for
+dyons”, Int. J. Mod. Phys. A, 28 (2013), 1350125.
+18
+
+[27] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Octonion Electrodynamics in Isotropic
+and Chiral Medium”, Int. J. Mod. Phys. A, 29 (2014), 1450008.
+[28] B. C. Chanyal, “Octonion massive electrodynamics”, Gen. Relativ. Gravit., 46 (2014),
+16461.
+[29] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Octonion Representation of the Superstring Theory” Int. J. Eng. Res. & Tech., 2 (2013), 1459.
+[30] B. C. Chanyal, P. S. Bisht and O. P. S. Negi, “Octonion model of dark matter”, J.
+Theor. Phys., 2 (2013), 23.
+[31] B. C. Chanyal, “Octonion symmetric Dirac-Maxwell equations”, Turk. J. Phys., 38
+(2014), 174.
+[32] M. Günaydin and F. Gursey, “Quark structure and octonions”, J. Math. Phys., 14
+(1973), 1651.
+[33] M. Günaydin and F. Gursey, “Quark statistics and octonions”, Phys. Rev. D, 9 (1974),
+3387.
+[34] S. Marques and C. G. Oliveira, “Geometrical properties of an internal local octonionic space in curved space time”, Phys. Rev. D, 36 (1987), 1716.
+[35] Z. Weng, “Octonionic Quantum Interplays of Dark Matter and Ordinary Matter”,
+arXiv: physics.gen-ph/0702019v4, (2008).
+[36] Z. Weng, “Octonionic electromagnetic and gravitational interactions and dark
+matter”, arXiv: physics.class-ph/0612102v8, (2009).
+[37] B. C. Chanyal, “Role of Octonion in gravity and dark matter”, Cliff. Analy. Cliff.
+Algeb. & Appl., 3 (2014), 121.
+[38] G. Bertone, D. Hooper and J. Silk, “Particle darkmatter: evidence, candidates and
+constraints”, Physics Reports, Vol. 405 (2005), 279.
+[39] M. Dine, “Origin of the matter-antimatter asymmetry”, Rev. Mod. Phys., 76 (2003),
+1.
+[40] R. Bond and A. Szalay, “The collisionless damping of density fluctuations in an
+expanding universe” Astrophys. J. 274 (1983), 443.
+[41] K Hagiwara, et al “Review of Particle Physics. Particle Data Group” Phys. Rev.
+D66 (2002), 010001.
+[42] S P Ahlen, et al “Limits on Cold Dark Matter Candidates from an Ultralow Background Germanium Spectrometer”, Phys. Lett., B195 (1987), 603.
+[43] D S Akerib, et al “New results from the cryogenic dark matter search experiment”,
+Phys. Rev., D68 (2003), 082002.
+19
+
+[44] M Tegmark, et al “Sources and Detection of Dark Matter and Dark Energy in the
+Universe”, Springer, Berlin (2000), (hep-ph/0008145).
+[45] X Wang, et al “Is cosmology consistent?”, Phys. Rev., D65 (2002), 123001.
+
+20
+
+

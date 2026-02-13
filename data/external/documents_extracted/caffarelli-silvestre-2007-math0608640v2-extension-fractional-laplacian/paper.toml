@@ -1,0 +1,3505 @@
+equations = []
+tables = []
+full_text = """
+arXiv:math/0608640v2 [math.AP] 13 Feb 2007\r
+An extension problem related to the fractional Laplacian\r
+Luis Caffarelli and Luis Silvestre\r
+November 26, 2024\r
+Abstract\r
+The operator square root of the Laplacian (−△)\r
+1/2\r
+can be obtained from the harmonic\r
+extension problem to the upper half space as the operator that maps the Dirichlet boundary\r
+condition to the Neumann condition. In this paper we obtain similar characterizations for\r
+general fractional powers of the Laplacian and other integro-differential operators. From those\r
+characterizations we derive some properties of these integro-differential equations from purely\r
+local arguments in the extension problems.\r
+1 Introduction\r
+Let us suppose we have a smooth bounded function f : R\r
+n → R and we solve the extension\r
+problem\r
+u(x, 0) = f(x) for x ∈ R\r
+n\r
+(1.1)\r
+△u(x, y) = 0 for x ∈ R\r
+n\r
+and y > 0 (1.2)\r
+to obtain a smooth bounded function u. It is well known that −uy(x, 0) = (−△)\r
+1/2f(x), and\r
+therefore we can realize (−△)\r
+1/2 as the operator T : f 7→ −uy(x, 0) in the above extension\r
+problem.\r
+This is easy to show by applying T twice. When we place −uy(x, 0) instead of f as the\r
+Dirichlet condition in (1.1), we obtain −uy(x, y) instead of u as the solution of (1.1)-(1.2). Then\r
+T (T (f))(x) = T (−uy(x, 0))(x) = uyy(x, 0) = −△xf(x). To show T = (−△)\r
+1/2\r
+it is only left to\r
+check that T is indeed a positive operator, which follows by a simple integration by parts argument.\r
+In this paper we will generalize this situation to a similar extension problem for each fractional\r
+power of the Laplacian. We will construct any fractional Laplacian from an extension problem\r
+to the upper half space for a specific elliptic partial differential equation. This allows us (in\r
+forthcoming work) to treat non linear variational problems, involving fractional Laplacians, with\r
+standard local perturbation methods from the calculus of variations. Examples of such methods\r
+are the Almgren Frequency formula, and the Boundary Harnack inequality presented below. The\r
+partial differential equation that we obtain will turn out to be degenerate for any power of the\r
+Laplacian other than (−△)\r
+1/2\r
+, however they belong to a more general class of equations that\r
+shares many of the essential properties of uniformly elliptic equations (as in [7], [6], [8] for the\r
+divergence case, or [5] for the non-divergence case).\r
+The fractional Laplacian of a function f : R\r
+n → R is expressed by the formula\r
+(−△)\r
+s\r
+f(x) = Cn,s Z\r
+Rn\r
+f(x) − f(ξ)\r
+|x − ξ|\r
+n+2s\r
+dξ (1.3)\r
+where the parameter s is a real number between 0 and 1, and Cn,s is some normalization constant.\r
+1
+
+It can also be defined as a pseudo-differential operator\r
+(−△\\)\r
+sf(ξ) = |ξ|\r
+2s\r
+fb(ξ)\r
+The fractional Laplacian can be defined in a distributional sense for functions that are not\r
+differentiable as long as ˆf is not too singular at the origin or, in terms of the x variable, as long as\r
+Z\r
+Rn\r
+|f(x)|\r
+(1 + |x|)\r
+n+2s\r
+dx < +∞\r
+We will relate the fractional Laplacian with solutions of the following extension problem. For\r
+a function f : R\r
+n → R, we consider the extension u : Rn × [0, ∞) → R that satisfies the equation\r
+u(x, 0) = f(x) (1.4)\r
+△xu +\r
+a\r
+y\r
+uy + uyy = 0 (1.5)\r
+The equation (1.5) can also be written as\r
+div (y\r
+a∇u) = 0 (1.6)\r
+Which is clearly the Euler-Lagrange equation for the functional\r
+J(u) = Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+adX (1.7)\r
+We will show that\r
+C(−△)\r
+s\r
+f = lim\r
+y→0+\r
+−y\r
+auy =\r
+1\r
+1 − a\r
+lim\r
+y→0\r
+u(x, y) − u(x, 0)\r
+y\r
+1−a\r
+for s = 1−a\r
+2\r
+and some constant C depending on n and s. Which reduces to the regular normal\r
+derivative in the case a = 0 (as in (1.1)-(1.2)).\r
+If we make the change of variables z =\r
+\u0010\r
+y\r
+1−a\r
+\u00111−a\r
+in (1.5), we obtain a nondivergence form\r
+equation\r
+△xu + z\r
+αuzz = 0 (1.8)\r
+for α =\r
+−2a\r
+1−a\r
+. Moreover, y\r
+auy = uz. Thus, we claim that the following equality holds up to a\r
+multiplicative constant\r
+(−△)\r
+s\r
+f(x) = − lim\r
+y→0+\r
+y\r
+auy(x, y) = −uz(x, 0)\r
+It seems convenient to keep this notation. The variable x is always in R\r
+n\r
+. The variables y\r
+and z are nonnegative real numbers that satisfy the relation z =\r
+\u0010\r
+y\r
+1−a\r
+\u00111−a\r
+. The function u is\r
+the extension of f to the upper half space and takes values in R\r
+n × [0, ∞). We will use u and its\r
+version after the change of variables y 7→ z indistinctly, and we will call the variable either y or z\r
+to point out the difference. Whenever we refer to a point in R\r
+n+1 we will use capital letters (like\r
+X).\r
+2 Properties of the PDEs\r
+In this section we will study the basic properties of the equations (1.5) and (1.8). We will develop\r
+explicit Poisson formulas among other properties.\r
+2
+
+2.1 Harmonic functions in n + 1 + a dimensions\r
+The equation (1.5) has a curious intuition behind it that will help us obtain several properties of\r
+its solutions.\r
+For a nonnegative integer a, suppose u(x, y) : R\r
+n × R1+a → R is radially symmetric in the y\r
+variable, meaning that if |y| = |y\r
+′\r
+| = r, then u(x, y) = u(x, y′). We can think of u as a function of\r
+x and r, and in these variables write an expresion for its Laplacian:\r
+△u = △xu +\r
+a\r
+r\r
+ur + urr\r
+We thus obtain an identical expression of equation (1.5) (with r instead of y, but that’s just\r
+naming). As far as the expresion is concerned, there is no need to consider only integer values\r
+of a. We can then think of the equation (1.5) as the harmonic extension problem of f in 1 + a\r
+dimensions more. Although it is impossible to think of a meaning for R\r
+n+1+a when a is not an\r
+integer, the solutions of (1.5) will satisfy many properties common to harmonic functions.\r
+2.2 Fundamental solution at the origin\r
+To obtain the fundamental solution for (1.5) at the origin, we just have to consider the fundamental\r
+solution of the Laplacian in n + 1 + a dimensions. If n − 1 + a > 1, it reads\r
+Γ(X) = Cn+1+a\r
+1\r
+|X|\r
+n−1+a\r
+(2.1)\r
+where the constant Cn+1+a is given by the formula Ck = π\r
+k/2Γ(k/2 − 1)/4.\r
+It can be verified as a direct computation that Γ is a solution of (1.5) when y 6= 0 and indeed\r
+limy→0+ y\r
+auy = −Cδ0 for some constant C as we will see later. Notice that Γ(x, 0) = C\r
+|x|\r
+n−1+a is\r
+the fundamental solution of the fractional Laplacian (−△)\r
+1−a\r
+2 for some appropriate constant C\r
+depending on n and a (Recall X = (x, y)).\r
+Since the equation (1.8) can be derived from (1.5) by just a change of variables, we can also\r
+change variables to obtain a corresponding fundamental solution\r
+Γ( ˜ x, z) = Cn+1+a\r
+1\r
+\u0010\r
+|x|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n−1+a\r
+2\r
+(2.2)\r
+that solves (1.8) when z 6= 0 and uz(x, z) → −δ0 as z → 0.\r
+2.3 Conjugate equation\r
+We have seen that if u is a solution of (1.5), then the function w(x, y) := y\r
+auy(x, y) seems to carry\r
+interesting information. Indeed, this function satisfies the conjugate equation\r
+△xw −\r
+a\r
+y\r
+wy + wyy = 0\r
+that is nothing but (1.5) with −a instead of a. This property of w can be checked by a direct\r
+computation:\r
+△xw −\r
+a\r
+y\r
+wy + wyy = y\r
+a\r
+\u0012\r
+∂y△xu −\r
+a\r
+2\r
+y\r
+2\r
+uy −\r
+a\r
+y\r
+uyy +\r
+a(a − 1)\r
+y\r
+2\r
+uy + 2\r
+a\r
+y\r
+uyy + uyyy\u0013\r
+= y\r
+a\r
+\u0012\r
+∂y△xu −\r
+a\r
+y\r
+2\r
+uy +\r
+a\r
+y\r
+uyy + uyyy\u0013\r
+= y\r
+a\r
+∂y\r
+\u0012\r
+△xu +\r
+a\r
+y\r
+uy + uyy\u0013\r
+= 0\r
+3
+
+The intuition behind the above fact is simple to explain when n = 1 (x ∈ R and y ∈ [0, +∞)).\r
+The function w turns out to be the stream function related to ux in the following sense: if we set\r
+v = ux, then clearly v is a solution of (1.5), since the equation is invariant under translations in\r
+x. Thus we have div(y\r
+a∇v) = 0. The vector field (yavy, −yavx) is then irrotational and there is\r
+a function w such that ∇w = (−y\r
+a\r
+vy, yavx). This function w is the stream function of v, and it\r
+satisfies the equation div(y\r
+−a∇w) = 0. Now we check that w = yauy(x, y), since\r
+∇(y\r
+auy) = \u0012\r
+y\r
+auxy, ya\r
+\u0012\r
+a\r
+y\r
+uy + uyy\u0013\u0013 = (y\r
+a\r
+vy, −y\r
+a\r
+vx)\r
+2.4 Poisson formula\r
+We want to develop a Poisson formula P to explicitly solve (1.4)-(1.5).\r
+u(X) = Z\r
+Rn\r
+P(x − ξ, y)f(ξ) dξ\r
+The Poisson kernel P must be a solution to (1.5) where y > 0 and limy→0 P(x, y) = δ0. from\r
+the previous sections, we see that the correct choice would be to take P(x, y) = −y\r
+−a∂yΓ−a(x, y).\r
+Therefore\r
+P(x, y) = Cn,a\r
+y\r
+1−a\r
+\u0010\r
+|x|\r
+2 + |y|2\r
+\u0011 n+1−a\r
+2\r
+(2.3)\r
+The fact that P is a solution to (1.5) where y > 0 is a consequence of the fact that Γ−a is\r
+to the conjugate equation. Of course it can also be checked by a direct computation. Moreover,\r
+P(x, y) = y\r
+−nP(x/y, 1), so P must converge to a multiple of the Dirac delta as y → 0, so P is\r
+indeed the Poisson kernel.\r
+The corresponding Poisson kernel for the equation (1.8) can be obtained either by a change of\r
+variables from (2.3) or by computing −P˜\r
+z:\r
+P˜(x, z) = Cn,a\r
+z\r
+\u0010\r
+|x|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n+1−a\r
+2\r
+(2.4)\r
+3 Relation with fractional Laplacian\r
+In this section we will see how the equations (1.5) or (1.8) relate to the operator (−△)\r
+s\r
+. Namely,\r
+we will show that up to a constant factor\r
+limy→0y\r
+auy(x, y) = uz(x, 0) = −(−△)s\r
+f(x) = Z\r
+Rn\r
+f(ξ) − f(x)\r
+|ξ − x|\r
+n+2s\r
+dξ (3.1)\r
+4
+
+3.1 Proof using the Poisson formula\r
+We can compute uz(x, 0) using the Poisson formula.\r
+uz(x, 0) = limz→0\r
+u(x, z) − u(x, 0)\r
+z\r
+(3.2)\r
+= limz→0\r
+1\r
+z\r
+Z\r
+Rn\r
+P˜(x − ξ, z)(f(ξ) − f(x)) dξ (3.3)\r
+= lim\r
+z→0\r
+Z\r
+Rn\r
+C\r
+\u0010\r
+|x − ξ|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n+1−a\r
+2\r
+(f(ξ) − f(x)) dξ (3.4)\r
+= CPV Z\r
+Rn\r
+f(ξ) − f(x)\r
+|x − ξ|\r
+n+1−a\r
+dξ (3.5)\r
+= −C(−△)\r
+1−a\r
+2 f(x) (3.6)\r
+where the limit in (3.4) exists and equals (3.5) as long as f is regular enough.\r
+Changing variables, this implies that limy→0 −y\r
+auy(x, y) also converges to a multiple of the\r
+fractional Laplacian. The fact that y\r
+auy(x, y) has a limit as y → 0, immediately implies that\r
+limy→0\r
+u(x,y)−u(x,0)\r
+y1−a has the same limit.\r
+Remark 3.1. The proof was done by computing uz. If instead we had chosen to compute y\r
+auy\r
+or\r
+u(x,y)−u(x,0)\r
+y1−a the complexity of the computation would be comparable.\r
+3.2 Proof using Fourier transform\r
+Alternatively, we can also prove (3.1) taking Fourier transform in x.\r
+One way to do this is proving that the corresponding energy functionals coincide. Namely\r
+Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+adX =\r
+Z\r
+Rn\r
+|ξ|\r
+2s\r
+\f\r
+\f\r
+\f\r
+ˆf(ξ)\r
+\f\r
+\f\r
+\f\r
+2\r
+dξ (3.7)\r
+The equation (1.5) becomes\r
+− |ξ|\r
+2\r
+uˆ(ξ, y) + a\r
+y\r
+uˆy(ξ, y) + ˆuyy(ξ, y) = 0\r
+We thus obtain an ordinary differential equation for each value of ξ.\r
+Suppose that φ : [0, ∞) → R is the minimizer of the functional\r
+J(φ) := Z\r
+y>0\r
+(|φ\r
+′\r
+|\r
+2 + |φ|\r
+2\r
+) y\r
+ady\r
+for φ(0) = 1, then φ solves the following equation:\r
+−φˆ(y) + a\r
+y\r
+φˆ\r
+y(y) + φyy(y) = 0\r
+φ(0) = 1\r
+limy→∞φ(y) = 0\r
+5
+
+By a simple scaling we can see that\r
+uˆ(ξ, y) = ˆf(ξ)φ(|ξ| y)\r
+and thus, the energy of u becomes\r
+Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+a\r
+dX =\r
+Z\r
+Rn\r
+Z∞\r
+0\r
+(|ξ|\r
+2\r
+|uˆ|\r
+2 + |uˆy|2\r
+)y\r
+a\r
+dy dξ\r
+=\r
+Z\r
+Rn\r
+Z∞\r
+0\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+2\r
+\u0010\r
+|φ(|ξ| y)|\r
+2 + |φ\r
+′\r
+(|ξ| y)|\r
+2\r
+\u0011\r
+y\r
+a dy dξ\r
+=\r
+Z\r
+Rn\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+1−a\r
+Z∞\r
+0\r
+\u0010\r
+|φ(¯y)|\r
+2 + |φ\r
+′\r
+(¯y)|\r
+2\r
+\u0011\r
+y¯\r
+a d¯y dξ\r
+=\r
+Z\r
+Rn\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+1−a\r
+J(φ) dξ\r
+Thus we conclude (3.7). The corresponding Euler Lagrange equations for each energy must\r
+then coincide up to a constant factor. Therefore we obtain\r
+− limy→0\r
+y\r
+auy(x, y) = C(−△)\r
+1−a\r
+2 f(x)\r
+where the constant C is given by J(φ).\r
+We could also make another proof from (1.8). After taking Fourier transform, the equation\r
+(1.8) becomes\r
+− |ξ|\r
+2\r
+uˆ(ξ, z) + z\r
+αuˆzz(ξ, z) = 0\r
+We thus obtain an ordinary differential equation for each value of ξ.\r
+Suppose that φ : [0, ∞) → R solves the following equation\r
+−z\r
+αφ′′(z) + φ(z) = 0\r
+φ(0) = 1\r
+limz→∞φ(z) = 0\r
+(3.8)\r
+Then by a simple scaling we can see that\r
+uˆ(ξ, z) = ˆu(ξ, 0)φ(|ξ|\r
+2\r
+2−α z)\r
+And then,\r
+uˆz(ξ, 0) = ˆu(ξ, 0)|ξ|\r
+2\r
+2−α φ\r
+′\r
+(0)\r
+= Ca |ξ|\r
+1−a\r
+uˆ(ξ, 0) = Ca |ξ|\r
+1−a ˆf(ξ)\r
+To prove (3.1) we now only need to show that such function φ exists and it is differentiable at\r
+zero. We notice that for ε small enough then\r
+φ(z) := min(1, z−ε)\r
+is a supersolution, whereas for A and B large\r
+φ(z) := e\r
+−Az1/2+Bz2\r
+6
+
+is a supersolution. Thus, by Perron’s method, we can find a φ in between that solves (3.8).\r
+Moreover this φ is Lipschitz at z = 0 and 0 ≤ φ ≤ 1 since it is trapped between φ and φ. From the\r
+equation (3.8) we also see that then 0 ≤ φzz ≤ z\r
+−α, thus φ ∈ C2−α. Not only does this complete\r
+the proof of (3.1) but it also gives an interesting regularity estimate for the solution u with respect\r
+to z. In the next section we will explore this issue further.\r
+4 Reflection extensions\r
+In order to apply interior Harnack estimates to our PDE (1.5) (or (1.8)), we must show that if the\r
+operator (−△)\r
+sf = 0 in an open ball, then we can reflect the solution u and make it a solution of\r
+(1.5) (or (1.8)) across y = 0 (z = 0) in a suitable sense.\r
+We first address the divergence case.\r
+Lemma 4.1. Suppose that u : R\r
+n × [0, ∞) → R is a solution to (1.5) such that for |x| ≤ r\r
+lim\r
+y→0\r
+y\r
+auy(x, y) = 0 (4.1)\r
+then the extension to the whole space\r
+u˜(x, y) = (\r
+u(x, y) y ≥ 0\r
+u(x, −y) y < 0\r
+is a solution to\r
+div(|y|\r
+a∇u) = 0\r
+in the week sense in the (n + 1) dimensional ball of radius R ({(x, y) : |x|\r
+2 + |y|2 ≤ R2}).\r
+Proof. Let h ∈ C∞\r
+0\r
+(BR) be a test function. We want to show that\r
+Z\r
+BR\r
+∇u˜ · ∇h |y|\r
+a\r
+dX = 0 (4.2)\r
+Let ε > 0, we separate a strip of width ε around y = 0 in the domain of the integral above\r
+Z\r
+BR\r
+∇u˜ · ∇h |y|\r
+a\r
+dX =\r
+Z\r
+BR\\{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+=\r
+Z\r
+BR\\{|y|<ε}\r
+div (|y|\r
+ah∇u˜) dX +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+=\r
+Z\r
+BR∩{|y|=ε}\r
+hu˜y(x, ε) ε\r
+a\r
+dx +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+When we let ε → 0, the second term of the right hand side above clearly goes to zero because\r
+|y|\r
+a\r
+|∇u|\r
+2\r
+is locally integrable, and the first term converges to zero if ε\r
+au˜y(x, ε) → 0 as ε → 0.\r
+Therefore, if ε\r
+au˜y(x, ε) → 0 as ε → 0, then div(|y|a∇u) = 0 in the whole ball BR (accross\r
+y = 0).\r
+We must clarify in what sense we take the limit in (4.1). In this particular case, since the limit\r
+vanishes, we could prove that actually u is C∞ in x and the limit holds in the uniform sense. In\r
+general it would be convenient to have a weak definition of (4.1). The equation (4.2) becomes the\r
+7
+
+definition of (4.1) in the weak sense. In any case the limit (4.1) holds in the sense that, if we take\r
+any smooth test function ϕ ∈ C∞\r
+0\r
+(B∗\r
+1\r
+),\r
+limy→0\r
+Z\r
+B∗\r
+1\r
+y\r
+auy(x, y)ϕ(x) dx = 0\r
+For a general class of functions g, the problem\r
+div(|y|\r
+a ∇u) = 0 in the weak sense in BR\r
+u = g on ∂BR\r
+has a unique solution in the weighted Sobolev space H1,2(BR, |y|\r
+a\r
+). This kind of problems and\r
+general properties of elliptic equations with A2 weights are studied in [7].\r
+We now address the nondivergence case.\r
+Lemma 4.2. Given a continuous function g on ∂BR, such that g(x, z) = g(x, −z), there exists a\r
+unique function u ∈ C(BR) such that:\r
+i. u solves uxx + |z|\r
+α\r
+uzz = 0 in BR ∪ {z 6= 0} in the classical sense.\r
+ii. u ∈ C\r
+1\r
+(BR)\r
+iii. uz(x, 0) = 0\r
+Moreover, for this solution the Harnack inequality result of [5] applies.\r
+Proof. We point out that any viscosity solution of (1.8) is C\r
+2 away from z = 0, so it would be a\r
+solution in the classical sense in BR ∪ {z 6= 0}.\r
+Let us prove uniqueness first. Let us suppose there were two solutions u and v satisfying i., ii.,\r
+and iii.. For an arbitrary ε > 0, consider w = u − v + ε |z|. Then w ≤ εR on ∂BR. Let us suppose\r
+that w has an interior maximum at a point x ∈ BR. This point cannot be in BR ∩ {z 6= 0}, since\r
+there w solves the non-degenerate elliptic equation (1.8) and thus it does not have an interior\r
+maximum. Therefore, if there is any interior maximum, it has to be on {z = 0} ∩ BR. But clearly\r
+there cannot be a maximum since ∂\r
++\r
+z w > ∂−z w. Therefore w < εR in the whole ball BR. Since\r
+ε is arbitrary, we conclude that u ≤ v in BR. Similarly we can obtain that v ≤ u in BR, so they\r
+must coincide. Notice that we only used (i.) and (ii.) for uniqueness.\r
+Now, let us prove existence. The subtle point here is to show that there is a C\r
+1\r
+solution. What\r
+we do is to prove a uniform C\r
+1,α estimate for solutions to the problem\r
+u\r
+ε = g on ∂BR (4.3)\r
+△xu\r
+ε + (|z| + ε)αuε\r
+zz = 0 in ∂BR (4.4)\r
+For any ε > 0, by the Schauder theory, this problem has classical solutions. If we have a C\r
+1,η\r
+estimate uniform in ε, we take limit as ε → 0 and obtain the desired solution.\r
+The solutions u\r
+ε are uniformly bounded in L∞ due to the maximum principle for uniformilly\r
+elliptic equations. The equation (4.4) has constant coefficients with respect to x. This means that\r
+we can differentiate the equation in a standard way to obtain uniform estimates for derivatives of\r
+any order with respect to x (In terms of fractional Laplacian, this corresponds to the fact that\r
+functions such that (−△)\r
+su = 0 are C∞). Therefore we have that △xuε\r
+is bounded independently\r
+of ε in any smaller ball B(1−δ/2)R.\r
+Since u\r
+ε ∈ C2\r
+(BR) and u is symmetric respect to the hyperplane z = 0, then u\r
+ε\r
+z\r
+(x, 0) = 0.\r
+8
+
+From the equation (4.4):\r
+|u\r
+ε\r
+zz| =\r
+|△xu\r
+ε\r
+|\r
+(|z| + ε)\r
+α\r
+≤\r
+C\r
+|z|\r
+α\r
+Recall that α = −2a\r
+1−a\r
+and since a ∈ (−1, 1), then α < 1. We can then integrate u\r
+ε\r
+zz for any x, z\r
+such that |x| < 1 − 2δ and 0 < z < 1 − δ.\r
+|u\r
+ε\r
+z\r
+(x, z)| =\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+Zz\r
+0\r
+u\r
+ε\r
+zz(x, s) ds\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+≤\r
+Zz\r
+0\r
+C\r
+|z|\r
+α ds = Cz1−α\r
+This shows u\r
+ε\r
+y\r
+is C\r
+η\r
+in B(1−δ)R for η = min(1, 1 − α), independently of ε for any δ.\r
+So, we can take ε → 0 and extract a subsequence that converges to the desired solution u.\r
+Moreover, for any ε, u\r
+ε\r
+is smooth and satisfies the equation (4.4) that has smooth coefficients\r
+and for which the Harnack inequality from [5] applies. Therefore, the same estimate passes to the\r
+limit as ε → 0 and the solution u of the original problem satisfies Harnack inequality.\r
+Remark 4.3. We have to be careful if we want to study the viscosity solutions to (1.8). The naive\r
+definition using C\r
+2\r
+test functions would not suffice for uniqueness. If, for example, α > 0 and we\r
+consider the function u(x, z) = |z|, then for any C\r
+2\r
+function φ touching u from below at a point\r
+(x, 0), △xφ(x, 0) + 0αφzz(x, 0) = △xφ ≤ 0 and thus u(x, z) = |z| would be a (non-differentiable)\r
+viscosity solution. However if we test against less regular functions, like φ(x, z) = z\r
+2−α, then u\r
+would fail to be a supersolution. In the notation of [4], this corresponds to the distinction between\r
+C-viscosity solutions and L\r
+p\r
+-viscosity solutions.\r
+5 Harnack and boundary Harnack type estimates\r
+As an application on how to apply the equations (1.5) or (1.8) to the study of fractional harmonic\r
+functions, we prove a Harnack inequality and a boundary Harnack inequality using (local) pde\r
+methods.\r
+Harnack inequality is not a new result for the fractional Laplacian. It can actually be proved\r
+using direct classical potential methods like in [9]. A boundary Harnack estimate for the fractional\r
+Laplacian was first proved in [3] using potential methods.\r
+In this paper we derive the Harnack and boundary Harnack inequality for the fractional Lapla\u0002cian from the Harnack inequality for singular elliptic equations, either with A2 weights (see [7],\r
+[8] and also [10]) or for certain classes of nondivergence problems (see [5]).\r
+Theorem 5.1 (Harnack inequality). Let f : R\r
+n → R be nonnegative such that (−△)sf = 0 in\r
+Br. Then there is a constant C (depending only on s and dimension) such that\r
+sup\r
+Br/2\r
+f ≤ C inf\r
+Br/2\r
+f\r
+9
+
+Proof using (1.5). We consider the extension u of f that solves (1.5). This function u is going to\r
+be nonnegative since f is. We reflect it through the {y = 0} hyperplane. Since (−△)\r
+sf = 0 in\r
+Br, by Lemma 4.1, u is a solution to\r
+div (|y|\r
+a∇u) = 0\r
+in the n + 1 dimensional ball of radius r centered at the origin.\r
+We can then apply the result of [7] to obtain Harnack inequality for u and thus also for f in\r
+half of the ball.\r
+Proof using (1.8). We consider the extension u of f that solves (1.8). This function u is going to\r
+be nonnegative since f is. We reflect it through the {z = 0} hyperplane. Since (−△)\r
+sf = 0 in\r
+Br, then u satisfies the conditions of Lemma 4.2. We can then apply the result of [5] to obtain\r
+Harnack inequality for u and thus also for f in half of the ball.\r
+Remark 5.2. In the two proofs above we can observe that what is needed for Harnack inequality\r
+is that the function u is nonnegative in an n + 1 dimensional ball. The condition f ≥ 0 is indeed\r
+sufficient for that, but it is not strictly necessary.\r
+Theorem 5.3 (Boundary Harnack). Let f, g : R\r
+n → R be two nonnegative functions such that\r
+(−△)\r
+sf = (−△)s\r
+g = 0 in a domain Ω. Suppose that x0 ∈ ∂Ω, f(x) = g(x) = 0 for any x ∈ B1 \\Ω,\r
+and ∂Ω ∩ B1 is a Lipschitz graph in the direction of x1 with Lipschitz constant less than 1. Then\r
+there is a constant C depending only on dimension such that\r
+sup\r
+x∈Ω∩B 1\r
+2\r
+f(x)\r
+g(x)\r
+≤ C inf\r
+x∈Ω∩B 1\r
+2\r
+f(x)\r
+g(x)\r
+(5.1)\r
+for any x, y ∈ Ω ∩ B1/2(x0).\r
+Proof. We consider the extension u\r
+(1) of f and u(2) of g that solve (1.5). As before, we reflect u(k)\r
+through {y = 0} for k = 1, 2 and obtain a solution across this hyperplane through Ω. What we\r
+want to do is to find a map that straightens up the domain in order to apply the result of [8].\r
+First, since Ω is a Lipschitz domain, we can find a bilipschitz map ϕ1 : R\r
+n → Rn such that\r
+ϕ1(x0) = 0 and ϕ1(Ω) ∩ B1/2 = B1/2 ∩ {x1 > 0}. We can extend this map to R\r
+n+1 as constant in\r
+the variable y. Now, the functions u\r
+(k)\r
+2 = u\r
+(k) ◦ ϕ\r
+−1\r
+1\r
+are solutions of the equation\r
+div(|y|\r
+a\r
+bij∂ju\r
+(k)\r
+2\r
+) = 0 in {y 6= 0} and across {y = 0} on ϕ1(Ω)\r
+where the matrix bij is given by Dϕt\r
+1Dϕ1\r
+det Dϕ1\r
+. Since ϕ1 is bilipschitz, then the singular values of Dϕ1\r
+are bounded below and above and bij is uniformilly elliptic.\r
+Now we take the map ϕ2 that maps R\r
+n+1 \\{x1 ≤ 0∧y = 0} into the half space Rn+1∩{x1 > 0}.\r
+This map is constant in the variables x1, . . . , xn, and if we write the pair (x1, y) in polar coordinates\r
+(r, θ), it maps it to (r, θ/2). The singular values of Dϕ2 are all equal to 1 but the one in the direction\r
+of ∂\r
+∂θ ( i.e. the one in the direction (−y, 0, . . . , 0, x1)), that is 1/2. Thus the singular values of\r
+Dϕ2 are bounded above and below. The functions u\r
+(k)\r
+3 = u\r
+(k)\r
+2\r
+◦ ϕ\r
+−1\r
+2\r
+satisfy the equation\r
+div(cij∂ju\r
+(k)\r
+3\r
+) = 0 in B1/2 ∩ {x1 > 0}\r
+The matrix cij is given by (cij ) = Dϕt\r
+2\r
+(bij ) Dϕ2 m(X), where the weighted measure m(X) dX is\r
+the pull back of the measure |y|\r
+a dX by ϕ\r
+−1\r
+2\r
+. Since the A2 class of weights is invariant by (local)\r
+bilipschitz transformations, the equation still fits into the theory in [8].\r
+10
+
+We can apply the boundary Harnack inequality of [8] to the functions u\r
+(1)\r
+3\r
+and u\r
+(2)\r
+3\r
+to obtain\r
+sup\r
+B 1\r
+4\r
+∩{x1>0}\r
+u\r
+(1)\r
+3\r
+(x)\r
+u\r
+(2)\r
+3\r
+(x)\r
+≤ C inf\r
+B 1\r
+4\r
+∩{x1>0}\r
+u\r
+(1)\r
+3\r
+(x)\r
+u\r
+(2)\r
+3\r
+(x)\r
+Recalling that f(x) = u\r
+(1)\r
+3\r
+◦ ϕ2 ◦ ϕ1(x1, . . . , xn, 0) and g(x) = u\r
+(2)\r
+3\r
+◦ ϕ2 ◦ ϕ1(x1, . . . , xn, 0), we\r
+obtain that\r
+sup\r
+x∈Ω∩Br\r
+f(x)\r
+g(x)\r
+≤ C inf\r
+x∈Ω∩Br\r
+f(x)\r
+g(x)\r
+(5.2)\r
+for some universal r < 1. By a standard covering argument, (5.2) together with Theorem 5.1\r
+imply (5.1).\r
+As before, the condition in Theorem 5.3 that requires f and g to be nonnegative in the whole\r
+R\r
+n is not sharp. In the proof we can see that what we need to apply the result of [8] is that\r
+the corresponding extensions u\r
+(1) and u(2) are nonnegative in the unit ball of n + 1 dimensions.\r
+The advantage is that this is a local condition, therefore we can obtain the standard corollary of\r
+boundary Harnack saying that u\r
+(1)\r
+u(2) is C\r
+α in a neighborhood of the origin. In particular f\r
+g\r
+is C\r
+α,\r
+which is not strictly a corollary of Theorem 5.3 but of its proof.\r
+Corollary 5.4. Let f and g be as in Theorem 5.3, then f(x)\r
+g(x)\r
+is a C\r
+α function in B1/2 ∩ Ω for\r
+some universal α\r
+Remark 5.5. In [8], the boundary Harnack principle is proven for A2 weights and Lipschitz\r
+domains. An extension of that result to nontangentiably accesible (NTA) domains (as in the last\r
+section of [2]) would lead to a boudary Harnack principle for the fractional Laplacian to domains\r
+only requiring a uniform capacity condition.\r
+6 Monotonicity Formulas\r
+Monotonicity formulas are a very powerfull tool in the study of the regularity properties of elliptic\r
+PDEs. They have been used in a number of problems to exploit the local properties of the equations\r
+by giving information about the blowup configurations. Since the equation (1.5) represents a\r
+harmonic function in n + 1 + a dimensions, it is to be expected that any monotonicity formula\r
+known for harmonic functions will have its counterpart for solutions to (1.5). For example, the\r
+simplest one would be that if\r
+△xu +\r
+a\r
+y\r
+uy + uyy = 0 for (x, y) ∈ B\r
++\r
+1\r
+limy→0y\r
+auy(x, y) = 0for |x| ≤ 1\r
+then\r
+Φ(R) = 1\r
+Rn+1+a\r
+Z\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX is monotone nondecreasing in R\r
+where B\r
++\r
+R stands for the n + 1 dimensional half ball {(x, y) : |x|\r
+2 + y\r
+2 < 1 ∧ y > 0}.\r
+The weight y\r
+a\r
+is the correct one if we think that the function u is radially symmetric in a + 1\r
+variables and the y is the modulus of those variables as it is explained in section 2.1\r
+More interestingly, we have Almgren’s frequency formula\r
+11
+
+Theorem 6.1. If u is a solution to (1.5) in B\r
++\r
+R0\r
+such that for any x in B\r
++\r
+R0\r
+, either u(x, 0) = 0\r
+or limy→0 y\r
+auy(x, y) = 0, then\r
+Φ(R) = R\r
+R\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX\r
+R\r
+∂B+\r
+R\r
+|u|\r
+2\r
+y\r
+adσ\r
+is monotone nondecreasing in R for R < R0\r
+Moreover, Φ is constant if and only if u is homogeneous.\r
+The proof is essentially the same as for harmonic functions and it is mainly computational.\r
+The original proof can be found in [1]. Here we only need a few minor modifications for our case.\r
+First we need the following lemma.\r
+Lemma 6.2. Let u be s solution of (1.5) in BR0 ∩ {y 6= 0}, such that y\r
+auy(x, y) is bounded and\r
+for every x with |x| < R0 either u(x, 0) = 0 or limy→0 y\r
+auy(x, y) = 0. Then the following identity\r
+holds for any R ≤ R0.\r
+R\r
+Z\r
+∂BR∩{y>0}\r
+\u0010\r
+|uτ |\r
+2 − |uν|2\r
+\u0011\r
+y\r
+adσ =\r
+Z\r
+B\r
++\r
+R\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adx (6.1)\r
+where uτ stands for the gradient of u tangential to ∂Br.\r
+Proof. The only thing we have to notice is that since u solves (1.5), then\r
+div \r
+y\r
+a\r
+|∇u|\r
+2\r
+2\r
+X − y\r
+a\r
+hX, ∇ui∇u\r
+!\r
+= y\r
+a n + a − 1\r
+2\r
+|∇u|\r
+2\r
+So we apply divergence theorem in the set BR ∩ {y > ε} to obtain\r
+R\r
+Z\r
+∂BR∩{y>ε}\r
+y\r
+a\r
+ \r
+|∇u|\r
+2\r
+2\r
+− |uν|\r
+2\r
+!\r
+dσ +\r
+Z\r
+|x|<R\r
+−ε\r
+a\r
+|∇u(x, ε)|\r
+2\r
+2\r
+ε + ε\r
+a\r
+h(x, ε), ∇u(x, ε)iuy(x, ε) dx\r
+=\r
+Z\r
+B\r
++\r
+R\r
+n + a − 1\r
+2\r
+y\r
+a\r
+|∇u|\r
+2\r
+dx\r
+The second term comes from the integration of the vector field at the bottom of the half sphere.\r
+We observe it goes to zero as ε → 0 since there we have that for each x either u(x, 0) = 0 or\r
+limy→0 y\r
+auy(x, y) = 0 and a < 1. So we can remove that term and extend the expresion to the\r
+whole ball BR.\r
+R\r
+Z\r
+∂BR∩{y>0}\r
+ \r
+|∇u|\r
+2\r
+2\r
+− |uν|\r
+2\r
+!\r
+y\r
+adσ =\r
+Z\r
+B\r
++\r
+R\r
+n + a − 1\r
+2\r
+|∇u|\r
+2\r
+y\r
+adx\r
+Expanding |∇u|\r
+2 = |uτ |2 + |uν|2 we obtain (6.1).\r
+Proof of Theorem 6.1. We will show that log Φ(R) is nondecreasing. By the usual scaling argu\u0002ment, it is enough to check it at r = 1. We compute log Φ:\r
+log Φ(R) = log R + log Z\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX − log Z\r
+∂B+\r
+R\r
+|u|\r
+2\r
+y\r
+adθ\r
+12
+
+and now we compute its derivative at R = 1. Let S1 = ∂B1 ∩ {y > 0}, then\r
+(log Φ)′(1) = 1 +\r
+R\r
+S1\r
+|∇u|\r
+2\r
+y\r
+adσ\r
+R\r
+B\r
++\r
+1\r
+|∇u|\r
+2\r
+y\r
+adX\r
+−\r
+R\r
+S1\r
+(2uuν + (n + a)|u|\r
+2\r
+) y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+(6.2)\r
+Now we observe that since div(y\r
+a∇u) = 0, we have div yau∇u = ya\r
+|∇u|\r
+2\r
+, and then\r
+Z\r
+B\r
++\r
+1\r
+|∇u|\r
+2\r
+y\r
+a\r
+dX = lim\r
+ε→0+\r
+Z\r
+S1\r
+uuν y\r
+a\r
+dσ +\r
+Z\r
+|x|<1\r
+uyu yadx\r
+=\r
+Z\r
+S1\r
+uuν y\r
+adσ\r
+(6.3)\r
+From Lemma 6.2 we have that\r
+Z\r
+S1\r
+|∇u|\r
+2\r
+y\r
+adσ =\r
+Z\r
+S1\r
+\u0010\r
+|uθ|\r
+2 − |uν|2\r
+\u0011\r
+y\r
+adσ + 2 Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+=\r
+Z\r
+B\r
++\r
+1\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adX + 2 Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+(6.4)\r
+Putting (6.3) and (6.4) together with (6.2) we obtain\r
+(log Φ)′(1) = 1 +\r
+R\r
+B\r
++\r
+1\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adX + 2 R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+(2uuν + (n + a)|u|\r
+2\r
+) y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+= 1 + (n + a − 1) − (n + a) +\r
+2\r
+R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+2uuν y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+= 2 R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+!\r
+Therefore (log Φ)′(1) ≥ 0 follows from Cauchy-Schwartz inequality since\r
+\r
+\r
+Z\r
+S1\r
+uuν y\r
+adσ\r
+\r
+\r
+2\r
+≤\r
+\r
+\r
+Z\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+\r
+ ·\r
+\r
+\r
+Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+\r
+\r
+and the equality is achieved if and only if uν = λu for some constant λ. Therefore, only when u\r
+is homogeneous of degree λ.\r
+7 Other operators\r
+The results in this paper suggest that many integro-differential operators can be thought in the\r
+same way. Let us suppose we have smooth uniformilly elliptic coefficients aij in R\r
+n × [0, ∞).\r
+13
+
+Consider the following extension problem:\r
+u(x, 0) = f(x) for x ∈ R\r
+n\r
+(7.1)\r
+Xaijuij (x, y) = 0 for x ∈ R\r
+n\r
+and y > 0 (7.2)\r
+If we now consider the operator f 7→ uy(x, 0), this is going to be some integro-differential operator\r
+of degree one that we can also obtain from a local type pde. We can push the situation even\r
+further by considering coefficients aij that are only measurable, and maybe singular near y = 0.\r
+It is not reasonable to expect that every integro-differential operator can be realized in this way.\r
+It looks difficult to characterize the ones that can. But certainly for many it is possible.\r
+Let us consider the case when the operators are invariant under translation in x. We want to\r
+study the operator that maps the Dirichlet to the Neumann condition for the equation\r
+△xu + a(z)uzz = 0\r
+we take the Fourier transform in x and proceed as in section 3.2 to obtain the differential equation\r
+−a(z)φ\r
+′′(z) + |ξ|\r
+2\r
+φ(z) = 0\r
+φ(0) = 1\r
+limz→∞φ(z) = 0\r
+(7.3)\r
+The operator T : u(x, 0) 7→ −uz(x, 0) is then the pseudodifferential operator whose symbol s(ξ) is\r
+given by solving (7.3) and computing φz(0) for each value of ξ.\r
+The question is what symbols s(ξ) can we obtain by the above procedure. We can see that\r
+s(ξ) is radially symmetric and monotone increasing in |ξ|. Indeed, if φ1 is a solution of (7.3) for\r
+|ξ| = r0 and ϕ1 for |ξ1| = r1 ≥ r0 then\r
+−a(z)φ\r
+′′\r
+1\r
+(z) + |ξ0|\r
+2\r
+φ1(z) = (|ξ0|\r
+2 − |ξ1|2\r
+)φ1(z) < 0\r
+Thus φ1 < φ0 by comparison principle.\r
+As ξ → 0, the solution φ of (7.3) converges to φ ≡ 1, so s(0) = 0. We leave the question if\r
+every radially symmetric symbol s such that s(0) = 0 and it is monotone increasing with respect\r
+to |ξ| can be obtained by a suitable choice of a(z).\r
+Acknowledgements\r
+Luis Caffarelli was partially supported by NSF grants.\r
+We would like to thank Zoran Vondracek and Renming Song for pointing out a computational\r
+mistake in an earlier version of this paper.\r
+References\r
+[1] Frederick J. Almgren, Jr. Almgren’s big regularity paper, volume 1 of World Scientific Mono\u0002graph Series in Mathematics. World Scientific Publishing Co. Inc., River Edge, NJ, 2000.\r
+Q-valued functions minimizing Dirichlet’s integral and the regularity of area-minimizing rec\u0002tifiable currents up to codimension 2, With a preface by Jean E. Taylor and Vladimir Scheffer.\r
+[2] I. Athanasopoulos, L. A Caffarelli, and S. Salsa. The structure of the free boundary for lower\r
+dimesional obstacle problems. Preprint.\r
+14
+
+[3] Krzysztof Bogdan. The boundary Harnack principle for the fractional Laplacian. Studia\r
+Math., 123(1):43–80, 1997.\r
+[4] L. Caffarelli, M. G. Crandall, M. Kocan, and A. Swi‘ech. On viscosity solutions of fully\r
+nonlinear equations with measurable ingredients. Comm. Pure Appl. Math., 49(4):365–397,\r
+1996.\r
+[5] Luis A. Caffarelli and Cristian E. Guti´errez. Properties of the solutions of the linearized\r
+Monge-Amp`ere equation. Amer. J. Math., 119(2):423–465, 1997.\r
+[6] E. Fabes, D. Jerison, and C. Kenig. The Wiener test for degenerate elliptic equations. Ann.\r
+Inst. Fourier (Grenoble), 32(3):vi, 151–182, 1982.\r
+[7] E. Fabes, C. Kenig, and R. Serapioni. The local regularity of solutions of degenerate elliptic\r
+equations. Comm. Partial Differential Equations, 7(1):77–116, 1982.\r
+[8] E. B. Fabes, C. E. Kenig, and D. Jerison. Boundary behavior of solutions to degenerate\r
+elliptic equations. In Conference on harmonic analysis in honor of Antoni Zygmund, Vol. I,\r
+II (Chicago, Ill., 1981), Wadsworth Math. Ser., pages 577–589. Wadsworth, Belmont, CA,\r
+1983.\r
+[9] N. S. Landkof. Foundations of modern potential theory. Springer-Verlag, New York, 1972.\r
+Translated from the Russian by A. P. Doohovskoy, Die Grundlehren der mathematischen\r
+Wissenschaften, Band 180.\r
+[10] P. D. Smith. A regularity theorem for a singular elliptic equation. Applicable Anal., 14(3):223–\r
+236, 1982/83.\r
+Luis Caffarelli\r
+University of Texas at Austin.\r
+Austin, TX, USA.\r
+caffarel@math.utexas.edu\r
+Luis Silvestre\r
+Courant Institute of Mathematical Sciences.\r
+New York, NY, USA.\r
+silvestr@cims.nyu.edu\r
+15"""
+
+[metadata]
+title = "caffarelli silvestre 2007 math0608640v2 extension fractional laplacian"
+authors = ["Unknown"]
+year = 2007
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:math/0608640v2 [math.AP] 13 Feb 2007\r
+An extension problem related to the fractional Laplacian\r
+Luis Caffarelli and Luis Silvestre\r
+November 26, 2024\r
+Abstract\r
+The operator square root of the Laplacian (−△)\r
+1/2\r
+can be obtained from the harmonic\r
+extension problem to the upper half space as the operator that maps the Dirichlet boundary\r
+condition to the Neumann condition. In this paper we obtain similar characterizations for\r
+general fractional powers of the Laplacian and other integro-differential operators. From those\r
+characterizations we derive some properties of these integro-differential equations from purely\r
+local arguments in the extension problems."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Let us suppose we have a smooth bounded function f : R\r
+n → R and we solve the extension\r
+problem\r
+u(x, 0) = f(x) for x ∈ R\r
+n\r
+(1.1)\r
+△u(x, y) = 0 for x ∈ R\r
+n\r
+and y > 0 (1.2)\r
+to obtain a smooth bounded function u. It is well known that −uy(x, 0) = (−△)\r
+1/2f(x), and\r
+therefore we can realize (−△)\r
+1/2 as the operator T : f 7→ −uy(x, 0) in the above extension\r
+problem.\r
+This is easy to show by applying T twice. When we place −uy(x, 0) instead of f as the\r
+Dirichlet condition in (1.1), we obtain −uy(x, y) instead of u as the solution of (1.1)-(1.2). Then\r
+T (T (f))(x) = T (−uy(x, 0))(x) = uyy(x, 0) = −△xf(x). To show T = (−△)\r
+1/2\r
+it is only left to\r
+check that T is indeed a positive operator, which follows by a simple integration by parts argument.\r
+In this paper we will generalize this situation to a similar extension problem for each fractional\r
+power of the Laplacian. We will construct any fractional Laplacian from an extension problem\r
+to the upper half space for a specific elliptic partial differential equation. This allows us (in\r
+forthcoming work) to treat non linear variational problems, involving fractional Laplacians, with\r
+standard local perturbation methods from the calculus of variations. Examples of such methods\r
+are the Almgren Frequency formula, and the Boundary Harnack inequality presented below. The\r
+partial differential equation that we obtain will turn out to be degenerate for any power of the\r
+Laplacian other than (−△)\r
+1/2\r
+, however they belong to a more general class of equations that\r
+shares many of the essential properties of uniformly elliptic equations (as in [7], [6], [8] for the\r
+divergence case, or [5] for the non-divergence case).\r
+The fractional Laplacian of a function f : R\r
+n → R is expressed by the formula\r
+(−△)\r
+s\r
+f(x) = Cn,s Z\r
+Rn\r
+f(x) − f(ξ)\r
+|x − ξ|\r
+n+2s\r
+dξ (1.3)\r
+where the parameter s is a real number between 0 and 1, and Cn,s is some normalization constant."""
+
+[[sections]]
+number = "1"
+title = "It can also be defined as a pseudo-differential operator"
+text = """
+(−△\\)\r
+sf(ξ) = |ξ|\r
+2s\r
+fb(ξ)\r
+The fractional Laplacian can be defined in a distributional sense for functions that are not\r
+differentiable as long as ˆf is not too singular at the origin or, in terms of the x variable, as long as\r
+Z\r
+Rn\r
+|f(x)|\r
+(1 + |x|)\r
+n+2s\r
+dx < +∞\r
+We will relate the fractional Laplacian with solutions of the following extension problem. For\r
+a function f : R\r
+n → R, we consider the extension u : Rn × [0, ∞) → R that satisfies the equation\r
+u(x, 0) = f(x) (1.4)\r
+△xu +\r
+a\r
+y\r
+uy + uyy = 0 (1.5)\r
+The equation (1.5) can also be written as\r
+div (y\r
+a∇u) = 0 (1.6)\r
+Which is clearly the Euler-Lagrange equation for the functional\r
+J(u) = Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+adX (1.7)\r
+We will show that\r
+C(−△)\r
+s\r
+f = lim\r
+y→0+\r
+−y\r
+auy =\r
+1\r
+1 − a\r
+lim\r
+y→0\r
+u(x, y) − u(x, 0)\r
+y\r
+1−a\r
+for s = 1−a\r
+2\r
+and some constant C depending on n and s. Which reduces to the regular normal\r
+derivative in the case a = 0 (as in (1.1)-(1.2)).\r
+If we make the change of variables z =\r
+\u0010\r
+y\r
+1−a\r
+\u00111−a\r
+in (1.5), we obtain a nondivergence form\r
+equation\r
+△xu + z\r
+αuzz = 0 (1.8)\r
+for α =\r
+−2a\r
+1−a\r
+. Moreover, y\r
+auy = uz. Thus, we claim that the following equality holds up to a\r
+multiplicative constant\r
+(−△)\r
+s\r
+f(x) = − lim\r
+y→0+\r
+y\r
+auy(x, y) = −uz(x, 0)\r
+It seems convenient to keep this notation. The variable x is always in R\r
+n\r
+. The variables y\r
+and z are nonnegative real numbers that satisfy the relation z =\r
+\u0010\r
+y\r
+1−a\r
+\u00111−a\r
+. The function u is\r
+the extension of f to the upper half space and takes values in R\r
+n × [0, ∞). We will use u and its\r
+version after the change of variables y 7→ z indistinctly, and we will call the variable either y or z\r
+to point out the difference. Whenever we refer to a point in R\r
+n+1 we will use capital letters (like\r
+X)."""
+
+[[sections]]
+number = "2"
+title = "Properties of the PDEs"
+text = """
+In this section we will study the basic properties of the equations (1.5) and (1.8). We will develop\r
+explicit Poisson formulas among other properties.\r
+2"""
+
+[[sections]]
+number = "2.1"
+title = "Harmonic functions in n + 1 + a dimensions"
+text = """
+The equation (1.5) has a curious intuition behind it that will help us obtain several properties of\r
+its solutions.\r
+For a nonnegative integer a, suppose u(x, y) : R\r
+n × R1+a → R is radially symmetric in the y\r
+variable, meaning that if |y| = |y\r
+′\r
+| = r, then u(x, y) = u(x, y′). We can think of u as a function of\r
+x and r, and in these variables write an expresion for its Laplacian:\r
+△u = △xu +\r
+a\r
+r\r
+ur + urr\r
+We thus obtain an identical expression of equation (1.5) (with r instead of y, but that’s just\r
+naming). As far as the expresion is concerned, there is no need to consider only integer values\r
+of a. We can then think of the equation (1.5) as the harmonic extension problem of f in 1 + a\r
+dimensions more. Although it is impossible to think of a meaning for R\r
+n+1+a when a is not an\r
+integer, the solutions of (1.5) will satisfy many properties common to harmonic functions."""
+
+[[sections]]
+number = "2.2"
+title = "Fundamental solution at the origin"
+text = """
+To obtain the fundamental solution for (1.5) at the origin, we just have to consider the fundamental\r
+solution of the Laplacian in n + 1 + a dimensions. If n − 1 + a > 1, it reads\r
+Γ(X) = Cn+1+a\r
+1\r
+|X|\r
+n−1+a\r
+(2.1)\r
+where the constant Cn+1+a is given by the formula Ck = π\r
+k/2Γ(k/2 − 1)/4.\r
+It can be verified as a direct computation that Γ is a solution of (1.5) when y 6= 0 and indeed\r
+limy→0+ y\r
+auy = −Cδ0 for some constant C as we will see later. Notice that Γ(x, 0) = C\r
+|x|\r
+n−1+a is\r
+the fundamental solution of the fractional Laplacian (−△)\r
+1−a\r
+2 for some appropriate constant C\r
+depending on n and a (Recall X = (x, y)).\r
+Since the equation (1.8) can be derived from (1.5) by just a change of variables, we can also\r
+change variables to obtain a corresponding fundamental solution\r
+Γ( ˜ x, z) = Cn+1+a\r
+1\r
+\u0010\r
+|x|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n−1+a\r
+2\r
+(2.2)\r
+that solves (1.8) when z 6= 0 and uz(x, z) → −δ0 as z → 0."""
+
+[[sections]]
+number = "2.3"
+title = "Conjugate equation"
+text = """
+We have seen that if u is a solution of (1.5), then the function w(x, y) := y\r
+auy(x, y) seems to carry\r
+interesting information. Indeed, this function satisfies the conjugate equation\r
+△xw −\r
+a\r
+y\r
+wy + wyy = 0\r
+that is nothing but (1.5) with −a instead of a. This property of w can be checked by a direct\r
+computation:\r
+△xw −\r
+a\r
+y\r
+wy + wyy = y\r
+a\r
+\u0012\r
+∂y△xu −\r
+a\r
+2\r
+y\r
+2\r
+uy −\r
+a\r
+y\r
+uyy +\r
+a(a − 1)\r
+y\r
+2\r
+uy + 2\r
+a\r
+y\r
+uyy + uyyy\u0013\r
+= y\r
+a\r
+\u0012\r
+∂y△xu −\r
+a\r
+y\r
+2\r
+uy +\r
+a\r
+y\r
+uyy + uyyy\u0013\r
+= y\r
+a\r
+∂y\r
+\u0012\r
+△xu +\r
+a\r
+y\r
+uy + uyy\u0013\r
+= 0\r
+3
+
+The intuition behind the above fact is simple to explain when n = 1 (x ∈ R and y ∈ [0, +∞)).\r
+The function w turns out to be the stream function related to ux in the following sense: if we set\r
+v = ux, then clearly v is a solution of (1.5), since the equation is invariant under translations in\r
+x. Thus we have div(y\r
+a∇v) = 0. The vector field (yavy, −yavx) is then irrotational and there is\r
+a function w such that ∇w = (−y\r
+a\r
+vy, yavx). This function w is the stream function of v, and it\r
+satisfies the equation div(y\r
+−a∇w) = 0. Now we check that w = yauy(x, y), since\r
+∇(y\r
+auy) = \u0012\r
+y\r
+auxy, ya\r
+\u0012\r
+a\r
+y\r
+uy + uyy\u0013\u0013 = (y\r
+a\r
+vy, −y\r
+a\r
+vx)"""
+
+[[sections]]
+number = "2.4"
+title = "Poisson formula"
+text = """
+We want to develop a Poisson formula P to explicitly solve (1.4)-(1.5).\r
+u(X) = Z\r
+Rn\r
+P(x − ξ, y)f(ξ) dξ\r
+The Poisson kernel P must be a solution to (1.5) where y > 0 and limy→0 P(x, y) = δ0. from\r
+the previous sections, we see that the correct choice would be to take P(x, y) = −y\r
+−a∂yΓ−a(x, y).\r
+Therefore\r
+P(x, y) = Cn,a\r
+y\r
+1−a\r
+\u0010\r
+|x|\r
+2 + |y|2\r
+\u0011 n+1−a\r
+2\r
+(2.3)\r
+The fact that P is a solution to (1.5) where y > 0 is a consequence of the fact that Γ−a is\r
+to the conjugate equation. Of course it can also be checked by a direct computation. Moreover,\r
+P(x, y) = y\r
+−nP(x/y, 1), so P must converge to a multiple of the Dirac delta as y → 0, so P is\r
+indeed the Poisson kernel.\r
+The corresponding Poisson kernel for the equation (1.8) can be obtained either by a change of\r
+variables from (2.3) or by computing −P˜\r
+z:\r
+P˜(x, z) = Cn,a\r
+z\r
+\u0010\r
+|x|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n+1−a\r
+2\r
+(2.4)"""
+
+[[sections]]
+number = "3"
+title = "Relation with fractional Laplacian"
+text = """
+In this section we will see how the equations (1.5) or (1.8) relate to the operator (−△)\r
+s\r
+. Namely,\r
+we will show that up to a constant factor\r
+limy→0y\r
+auy(x, y) = uz(x, 0) = −(−△)s\r
+f(x) = Z\r
+Rn\r
+f(ξ) − f(x)\r
+|ξ − x|\r
+n+2s\r
+dξ (3.1)\r
+4"""
+
+[[sections]]
+number = "3.1"
+title = "Proof using the Poisson formula"
+text = """
+We can compute uz(x, 0) using the Poisson formula.\r
+uz(x, 0) = limz→0\r
+u(x, z) − u(x, 0)\r
+z\r
+(3.2)\r
+= limz→0\r
+1\r
+z\r
+Z\r
+Rn\r
+P˜(x − ξ, z)(f(ξ) − f(x)) dξ (3.3)\r
+= lim\r
+z→0\r
+Z\r
+Rn\r
+C\r
+\u0010\r
+|x − ξ|\r
+2 + (1 − a)\r
+2 |z|\r
+2/(1−a)\r
+\u0011 n+1−a\r
+2\r
+(f(ξ) − f(x)) dξ (3.4)\r
+= CPV Z\r
+Rn\r
+f(ξ) − f(x)\r
+|x − ξ|\r
+n+1−a\r
+dξ (3.5)\r
+= −C(−△)\r
+1−a\r
+2 f(x) (3.6)\r
+where the limit in (3.4) exists and equals (3.5) as long as f is regular enough.\r
+Changing variables, this implies that limy→0 −y\r
+auy(x, y) also converges to a multiple of the\r
+fractional Laplacian. The fact that y\r
+auy(x, y) has a limit as y → 0, immediately implies that\r
+limy→0\r
+u(x,y)−u(x,0)\r
+y1−a has the same limit.\r
+Remark 3.1. The proof was done by computing uz. If instead we had chosen to compute y\r
+auy\r
+or\r
+u(x,y)−u(x,0)\r
+y1−a the complexity of the computation would be comparable."""
+
+[[sections]]
+number = "3.2"
+title = "Proof using Fourier transform"
+text = """
+Alternatively, we can also prove (3.1) taking Fourier transform in x.\r
+One way to do this is proving that the corresponding energy functionals coincide. Namely\r
+Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+adX =\r
+Z\r
+Rn\r
+|ξ|\r
+2s\r
+\f\r
+\f\r
+\f\r
+ˆf(ξ)\r
+\f\r
+\f\r
+\f\r
+2\r
+dξ (3.7)\r
+The equation (1.5) becomes\r
+− |ξ|\r
+2\r
+uˆ(ξ, y) + a\r
+y\r
+uˆy(ξ, y) + ˆuyy(ξ, y) = 0\r
+We thus obtain an ordinary differential equation for each value of ξ.\r
+Suppose that φ : [0, ∞) → R is the minimizer of the functional\r
+J(φ) := Z\r
+y>0\r
+(|φ\r
+′\r
+|\r
+2 + |φ|\r
+2\r
+) y\r
+ady\r
+for φ(0) = 1, then φ solves the following equation:\r
+−φˆ(y) + a\r
+y\r
+φˆ\r
+y(y) + φyy(y) = 0\r
+φ(0) = 1\r
+limy→∞φ(y) = 0"""
+
+[[sections]]
+number = "5"
+title = "By a simple scaling we can see that"
+text = """
+uˆ(ξ, y) = ˆf(ξ)φ(|ξ| y)\r
+and thus, the energy of u becomes\r
+Z\r
+y>0\r
+|∇u|\r
+2\r
+y\r
+a\r
+dX =\r
+Z\r
+Rn\r
+Z∞\r
+0\r
+(|ξ|\r
+2\r
+|uˆ|\r
+2 + |uˆy|2\r
+)y\r
+a\r
+dy dξ\r
+=\r
+Z\r
+Rn\r
+Z∞\r
+0\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+2\r
+\u0010\r
+|φ(|ξ| y)|\r
+2 + |φ\r
+′\r
+(|ξ| y)|\r
+2\r
+\u0011\r
+y\r
+a dy dξ\r
+=\r
+Z\r
+Rn\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+1−a\r
+Z∞\r
+0\r
+\u0010\r
+|φ(¯y)|\r
+2 + |φ\r
+′\r
+(¯y)|\r
+2\r
+\u0011\r
+y¯\r
+a d¯y dξ\r
+=\r
+Z\r
+Rn\r
+|f(ξ)|\r
+2\r
+|ξ|\r
+1−a\r
+J(φ) dξ\r
+Thus we conclude (3.7). The corresponding Euler Lagrange equations for each energy must\r
+then coincide up to a constant factor. Therefore we obtain\r
+− limy→0\r
+y\r
+auy(x, y) = C(−△)\r
+1−a\r
+2 f(x)\r
+where the constant C is given by J(φ).\r
+We could also make another proof from (1.8). After taking Fourier transform, the equation\r
+(1.8) becomes\r
+− |ξ|\r
+2\r
+uˆ(ξ, z) + z\r
+αuˆzz(ξ, z) = 0\r
+We thus obtain an ordinary differential equation for each value of ξ.\r
+Suppose that φ : [0, ∞) → R solves the following equation\r
+−z\r
+αφ′′(z) + φ(z) = 0\r
+φ(0) = 1\r
+limz→∞φ(z) = 0\r
+(3.8)\r
+Then by a simple scaling we can see that\r
+uˆ(ξ, z) = ˆu(ξ, 0)φ(|ξ|\r
+2\r
+2−α z)\r
+And then,\r
+uˆz(ξ, 0) = ˆu(ξ, 0)|ξ|\r
+2\r
+2−α φ\r
+′\r
+(0)\r
+= Ca |ξ|\r
+1−a\r
+uˆ(ξ, 0) = Ca |ξ|\r
+1−a ˆf(ξ)\r
+To prove (3.1) we now only need to show that such function φ exists and it is differentiable at\r
+zero. We notice that for ε small enough then\r
+φ(z) := min(1, z−ε)\r
+is a supersolution, whereas for A and B large\r
+φ(z) := e\r
+−Az1/2+Bz2\r
+6
+
+is a supersolution. Thus, by Perron’s method, we can find a φ in between that solves (3.8).\r
+Moreover this φ is Lipschitz at z = 0 and 0 ≤ φ ≤ 1 since it is trapped between φ and φ. From the\r
+equation (3.8) we also see that then 0 ≤ φzz ≤ z\r
+−α, thus φ ∈ C2−α. Not only does this complete\r
+the proof of (3.1) but it also gives an interesting regularity estimate for the solution u with respect\r
+to z. In the next section we will explore this issue further."""
+
+[[sections]]
+number = "4"
+title = "Reflection extensions"
+text = """
+In order to apply interior Harnack estimates to our PDE (1.5) (or (1.8)), we must show that if the\r
+operator (−△)\r
+sf = 0 in an open ball, then we can reflect the solution u and make it a solution of\r
+(1.5) (or (1.8)) across y = 0 (z = 0) in a suitable sense.\r
+We first address the divergence case.\r
+Lemma 4.1. Suppose that u : R\r
+n × [0, ∞) → R is a solution to (1.5) such that for |x| ≤ r\r
+lim\r
+y→0\r
+y\r
+auy(x, y) = 0 (4.1)\r
+then the extension to the whole space\r
+u˜(x, y) = (\r
+u(x, y) y ≥ 0\r
+u(x, −y) y < 0\r
+is a solution to\r
+div(|y|\r
+a∇u) = 0\r
+in the week sense in the (n + 1) dimensional ball of radius R ({(x, y) : |x|\r
+2 + |y|2 ≤ R2}).\r
+Proof. Let h ∈ C∞\r
+0\r
+(BR) be a test function. We want to show that\r
+Z\r
+BR\r
+∇u˜ · ∇h |y|\r
+a\r
+dX = 0 (4.2)\r
+Let ε > 0, we separate a strip of width ε around y = 0 in the domain of the integral above\r
+Z\r
+BR\r
+∇u˜ · ∇h |y|\r
+a\r
+dX =\r
+Z\r
+BR\\{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+=\r
+Z\r
+BR\\{|y|<ε}\r
+div (|y|\r
+ah∇u˜) dX +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+=\r
+Z\r
+BR∩{|y|=ε}\r
+hu˜y(x, ε) ε\r
+a\r
+dx +\r
+Z\r
+BR∩{|y|<ε}\r
+∇u˜ · ∇h |y|\r
+a\r
+dX\r
+When we let ε → 0, the second term of the right hand side above clearly goes to zero because\r
+|y|\r
+a\r
+|∇u|\r
+2\r
+is locally integrable, and the first term converges to zero if ε\r
+au˜y(x, ε) → 0 as ε → 0.\r
+Therefore, if ε\r
+au˜y(x, ε) → 0 as ε → 0, then div(|y|a∇u) = 0 in the whole ball BR (accross\r
+y = 0).\r
+We must clarify in what sense we take the limit in (4.1). In this particular case, since the limit\r
+vanishes, we could prove that actually u is C∞ in x and the limit holds in the uniform sense. In\r
+general it would be convenient to have a weak definition of (4.1). The equation (4.2) becomes the\r
+7
+
+definition of (4.1) in the weak sense. In any case the limit (4.1) holds in the sense that, if we take\r
+any smooth test function ϕ ∈ C∞\r
+0\r
+(B∗\r
+1\r
+),\r
+limy→0\r
+Z\r
+B∗\r
+1\r
+y\r
+auy(x, y)ϕ(x) dx = 0\r
+For a general class of functions g, the problem\r
+div(|y|\r
+a ∇u) = 0 in the weak sense in BR\r
+u = g on ∂BR\r
+has a unique solution in the weighted Sobolev space H1,2(BR, |y|\r
+a\r
+). This kind of problems and\r
+general properties of elliptic equations with A2 weights are studied in [7].\r
+We now address the nondivergence case.\r
+Lemma 4.2. Given a continuous function g on ∂BR, such that g(x, z) = g(x, −z), there exists a\r
+unique function u ∈ C(BR) such that:\r
+i. u solves uxx + |z|\r
+α\r
+uzz = 0 in BR ∪ {z 6= 0} in the classical sense.\r
+ii. u ∈ C\r
+1\r
+(BR)\r
+iii. uz(x, 0) = 0\r
+Moreover, for this solution the Harnack inequality result of [5] applies.\r
+Proof. We point out that any viscosity solution of (1.8) is C\r
+2 away from z = 0, so it would be a\r
+solution in the classical sense in BR ∪ {z 6= 0}.\r
+Let us prove uniqueness first. Let us suppose there were two solutions u and v satisfying i., ii.,\r
+and iii.. For an arbitrary ε > 0, consider w = u − v + ε |z|. Then w ≤ εR on ∂BR. Let us suppose\r
+that w has an interior maximum at a point x ∈ BR. This point cannot be in BR ∩ {z 6= 0}, since\r
+there w solves the non-degenerate elliptic equation (1.8) and thus it does not have an interior\r
+maximum. Therefore, if there is any interior maximum, it has to be on {z = 0} ∩ BR. But clearly\r
+there cannot be a maximum since ∂\r
++\r
+z w > ∂−z w. Therefore w < εR in the whole ball BR. Since\r
+ε is arbitrary, we conclude that u ≤ v in BR. Similarly we can obtain that v ≤ u in BR, so they\r
+must coincide. Notice that we only used (i.) and (ii.) for uniqueness.\r
+Now, let us prove existence. The subtle point here is to show that there is a C\r
+1\r
+solution. What\r
+we do is to prove a uniform C\r
+1,α estimate for solutions to the problem\r
+u\r
+ε = g on ∂BR (4.3)\r
+△xu\r
+ε + (|z| + ε)αuε\r
+zz = 0 in ∂BR (4.4)\r
+For any ε > 0, by the Schauder theory, this problem has classical solutions. If we have a C\r
+1,η\r
+estimate uniform in ε, we take limit as ε → 0 and obtain the desired solution.\r
+The solutions u\r
+ε are uniformly bounded in L∞ due to the maximum principle for uniformilly\r
+elliptic equations. The equation (4.4) has constant coefficients with respect to x. This means that\r
+we can differentiate the equation in a standard way to obtain uniform estimates for derivatives of\r
+any order with respect to x (In terms of fractional Laplacian, this corresponds to the fact that\r
+functions such that (−△)\r
+su = 0 are C∞). Therefore we have that △xuε\r
+is bounded independently\r
+of ε in any smaller ball B(1−δ/2)R.\r
+Since u\r
+ε ∈ C2\r
+(BR) and u is symmetric respect to the hyperplane z = 0, then u\r
+ε\r
+z\r
+(x, 0) = 0."""
+
+[[sections]]
+number = "8"
+title = "From the equation (4.4):"
+text = """
+|u\r
+ε\r
+zz| =\r
+|△xu\r
+ε\r
+|\r
+(|z| + ε)\r
+α\r
+≤\r
+C\r
+|z|\r
+α\r
+Recall that α = −2a\r
+1−a\r
+and since a ∈ (−1, 1), then α < 1. We can then integrate u\r
+ε\r
+zz for any x, z\r
+such that |x| < 1 − 2δ and 0 < z < 1 − δ.\r
+|u\r
+ε\r
+z\r
+(x, z)| =\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+Zz\r
+0\r
+u\r
+ε\r
+zz(x, s) ds\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+\f\r
+≤\r
+Zz\r
+0\r
+C\r
+|z|\r
+α ds = Cz1−α\r
+This shows u\r
+ε\r
+y\r
+is C\r
+η\r
+in B(1−δ)R for η = min(1, 1 − α), independently of ε for any δ.\r
+So, we can take ε → 0 and extract a subsequence that converges to the desired solution u.\r
+Moreover, for any ε, u\r
+ε\r
+is smooth and satisfies the equation (4.4) that has smooth coefficients\r
+and for which the Harnack inequality from [5] applies. Therefore, the same estimate passes to the\r
+limit as ε → 0 and the solution u of the original problem satisfies Harnack inequality.\r
+Remark 4.3. We have to be careful if we want to study the viscosity solutions to (1.8). The naive\r
+definition using C\r
+2\r
+test functions would not suffice for uniqueness. If, for example, α > 0 and we\r
+consider the function u(x, z) = |z|, then for any C\r
+2\r
+function φ touching u from below at a point\r
+(x, 0), △xφ(x, 0) + 0αφzz(x, 0) = △xφ ≤ 0 and thus u(x, z) = |z| would be a (non-differentiable)\r
+viscosity solution. However if we test against less regular functions, like φ(x, z) = z\r
+2−α, then u\r
+would fail to be a supersolution. In the notation of [4], this corresponds to the distinction between\r
+C-viscosity solutions and L\r
+p\r
+-viscosity solutions."""
+
+[[sections]]
+number = "5"
+title = "Harnack and boundary Harnack type estimates"
+text = """
+As an application on how to apply the equations (1.5) or (1.8) to the study of fractional harmonic\r
+functions, we prove a Harnack inequality and a boundary Harnack inequality using (local) pde\r
+methods.\r
+Harnack inequality is not a new result for the fractional Laplacian. It can actually be proved\r
+using direct classical potential methods like in [9]. A boundary Harnack estimate for the fractional\r
+Laplacian was first proved in [3] using potential methods.\r
+In this paper we derive the Harnack and boundary Harnack inequality for the fractional Lapla\u0002cian from the Harnack inequality for singular elliptic equations, either with A2 weights (see [7],\r
+[8] and also [10]) or for certain classes of nondivergence problems (see [5]).\r
+Theorem 5.1 (Harnack inequality). Let f : R\r
+n → R be nonnegative such that (−△)sf = 0 in\r
+Br. Then there is a constant C (depending only on s and dimension) such that\r
+sup\r
+Br/2\r
+f ≤ C inf\r
+Br/2\r
+f\r
+9
+
+Proof using (1.5). We consider the extension u of f that solves (1.5). This function u is going to\r
+be nonnegative since f is. We reflect it through the {y = 0} hyperplane. Since (−△)\r
+sf = 0 in\r
+Br, by Lemma 4.1, u is a solution to\r
+div (|y|\r
+a∇u) = 0\r
+in the n + 1 dimensional ball of radius r centered at the origin.\r
+We can then apply the result of [7] to obtain Harnack inequality for u and thus also for f in\r
+half of the ball.\r
+Proof using (1.8). We consider the extension u of f that solves (1.8). This function u is going to\r
+be nonnegative since f is. We reflect it through the {z = 0} hyperplane. Since (−△)\r
+sf = 0 in\r
+Br, then u satisfies the conditions of Lemma 4.2. We can then apply the result of [5] to obtain\r
+Harnack inequality for u and thus also for f in half of the ball.\r
+Remark 5.2. In the two proofs above we can observe that what is needed for Harnack inequality\r
+is that the function u is nonnegative in an n + 1 dimensional ball. The condition f ≥ 0 is indeed\r
+sufficient for that, but it is not strictly necessary.\r
+Theorem 5.3 (Boundary Harnack). Let f, g : R\r
+n → R be two nonnegative functions such that\r
+(−△)\r
+sf = (−△)s\r
+g = 0 in a domain Ω. Suppose that x0 ∈ ∂Ω, f(x) = g(x) = 0 for any x ∈ B1 \\Ω,\r
+and ∂Ω ∩ B1 is a Lipschitz graph in the direction of x1 with Lipschitz constant less than 1. Then\r
+there is a constant C depending only on dimension such that\r
+sup\r
+x∈Ω∩B 1\r
+2\r
+f(x)\r
+g(x)\r
+≤ C inf\r
+x∈Ω∩B 1\r
+2\r
+f(x)\r
+g(x)\r
+(5.1)\r
+for any x, y ∈ Ω ∩ B1/2(x0).\r
+Proof. We consider the extension u\r
+(1) of f and u(2) of g that solve (1.5). As before, we reflect u(k)\r
+through {y = 0} for k = 1, 2 and obtain a solution across this hyperplane through Ω. What we\r
+want to do is to find a map that straightens up the domain in order to apply the result of [8].\r
+First, since Ω is a Lipschitz domain, we can find a bilipschitz map ϕ1 : R\r
+n → Rn such that\r
+ϕ1(x0) = 0 and ϕ1(Ω) ∩ B1/2 = B1/2 ∩ {x1 > 0}. We can extend this map to R\r
+n+1 as constant in\r
+the variable y. Now, the functions u\r
+(k)\r
+2 = u\r
+(k) ◦ ϕ\r
+−1\r
+1\r
+are solutions of the equation\r
+div(|y|\r
+a\r
+bij∂ju\r
+(k)\r
+2\r
+) = 0 in {y 6= 0} and across {y = 0} on ϕ1(Ω)\r
+where the matrix bij is given by Dϕt\r
+1Dϕ1\r
+det Dϕ1\r
+. Since ϕ1 is bilipschitz, then the singular values of Dϕ1\r
+are bounded below and above and bij is uniformilly elliptic.\r
+Now we take the map ϕ2 that maps R\r
+n+1 \\{x1 ≤ 0∧y = 0} into the half space Rn+1∩{x1 > 0}.\r
+This map is constant in the variables x1, . . . , xn, and if we write the pair (x1, y) in polar coordinates\r
+(r, θ), it maps it to (r, θ/2). The singular values of Dϕ2 are all equal to 1 but the one in the direction\r
+of ∂\r
+∂θ ( i.e. the one in the direction (−y, 0, . . . , 0, x1)), that is 1/2. Thus the singular values of\r
+Dϕ2 are bounded above and below. The functions u\r
+(k)\r
+3 = u\r
+(k)\r
+2\r
+◦ ϕ\r
+−1\r
+2\r
+satisfy the equation\r
+div(cij∂ju\r
+(k)\r
+3\r
+) = 0 in B1/2 ∩ {x1 > 0}\r
+The matrix cij is given by (cij ) = Dϕt\r
+2\r
+(bij ) Dϕ2 m(X), where the weighted measure m(X) dX is\r
+the pull back of the measure |y|\r
+a dX by ϕ\r
+−1"""
+
+[[sections]]
+number = "2"
+title = "Since the A2 class of weights is invariant by (local)"
+text = "bilipschitz transformations, the equation still fits into the theory in [8]."
+
+[[sections]]
+number = "10"
+title = "We can apply the boundary Harnack inequality of [8] to the functions u"
+text = """
+(1)\r
+3\r
+and u\r
+(2)\r
+3\r
+to obtain\r
+sup\r
+B 1\r
+4\r
+∩{x1>0}\r
+u\r
+(1)\r
+3\r
+(x)\r
+u\r
+(2)\r
+3\r
+(x)\r
+≤ C inf\r
+B 1\r
+4\r
+∩{x1>0}\r
+u\r
+(1)\r
+3\r
+(x)\r
+u\r
+(2)\r
+3\r
+(x)\r
+Recalling that f(x) = u\r
+(1)\r
+3\r
+◦ ϕ2 ◦ ϕ1(x1, . . . , xn, 0) and g(x) = u\r
+(2)\r
+3\r
+◦ ϕ2 ◦ ϕ1(x1, . . . , xn, 0), we\r
+obtain that\r
+sup\r
+x∈Ω∩Br\r
+f(x)\r
+g(x)\r
+≤ C inf\r
+x∈Ω∩Br\r
+f(x)\r
+g(x)\r
+(5.2)\r
+for some universal r < 1. By a standard covering argument, (5.2) together with Theorem 5.1\r
+imply (5.1).\r
+As before, the condition in Theorem 5.3 that requires f and g to be nonnegative in the whole\r
+R\r
+n is not sharp. In the proof we can see that what we need to apply the result of [8] is that\r
+the corresponding extensions u\r
+(1) and u(2) are nonnegative in the unit ball of n + 1 dimensions.\r
+The advantage is that this is a local condition, therefore we can obtain the standard corollary of\r
+boundary Harnack saying that u\r
+(1)\r
+u(2) is C\r
+α in a neighborhood of the origin. In particular f\r
+g\r
+is C\r
+α,\r
+which is not strictly a corollary of Theorem 5.3 but of its proof.\r
+Corollary 5.4. Let f and g be as in Theorem 5.3, then f(x)\r
+g(x)\r
+is a C\r
+α function in B1/2 ∩ Ω for\r
+some universal α\r
+Remark 5.5. In [8], the boundary Harnack principle is proven for A2 weights and Lipschitz\r
+domains. An extension of that result to nontangentiably accesible (NTA) domains (as in the last\r
+section of [2]) would lead to a boudary Harnack principle for the fractional Laplacian to domains\r
+only requiring a uniform capacity condition."""
+
+[[sections]]
+number = "6"
+title = "Monotonicity Formulas"
+text = """
+Monotonicity formulas are a very powerfull tool in the study of the regularity properties of elliptic\r
+PDEs. They have been used in a number of problems to exploit the local properties of the equations\r
+by giving information about the blowup configurations. Since the equation (1.5) represents a\r
+harmonic function in n + 1 + a dimensions, it is to be expected that any monotonicity formula\r
+known for harmonic functions will have its counterpart for solutions to (1.5). For example, the\r
+simplest one would be that if\r
+△xu +\r
+a\r
+y\r
+uy + uyy = 0 for (x, y) ∈ B\r
++\r
+1\r
+limy→0y\r
+auy(x, y) = 0for |x| ≤ 1\r
+then\r
+Φ(R) = 1\r
+Rn+1+a\r
+Z\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX is monotone nondecreasing in R\r
+where B\r
++\r
+R stands for the n + 1 dimensional half ball {(x, y) : |x|\r
+2 + y\r
+2 < 1 ∧ y > 0}.\r
+The weight y\r
+a\r
+is the correct one if we think that the function u is radially symmetric in a + 1\r
+variables and the y is the modulus of those variables as it is explained in section 2.1\r
+More interestingly, we have Almgren’s frequency formula"""
+
+[[sections]]
+number = "11"
+title = "Theorem 6.1. If u is a solution to (1.5) in B"
+text = """
++\r
+R0\r
+such that for any x in B\r
++\r
+R0\r
+, either u(x, 0) = 0\r
+or limy→0 y\r
+auy(x, y) = 0, then\r
+Φ(R) = R\r
+R\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX\r
+R\r
+∂B+\r
+R\r
+|u|\r
+2\r
+y\r
+adσ\r
+is monotone nondecreasing in R for R < R0\r
+Moreover, Φ is constant if and only if u is homogeneous.\r
+The proof is essentially the same as for harmonic functions and it is mainly computational.\r
+The original proof can be found in [1]. Here we only need a few minor modifications for our case.\r
+First we need the following lemma.\r
+Lemma 6.2. Let u be s solution of (1.5) in BR0 ∩ {y 6= 0}, such that y\r
+auy(x, y) is bounded and\r
+for every x with |x| < R0 either u(x, 0) = 0 or limy→0 y\r
+auy(x, y) = 0. Then the following identity\r
+holds for any R ≤ R0.\r
+R\r
+Z\r
+∂BR∩{y>0}\r
+\u0010\r
+|uτ |\r
+2 − |uν|2\r
+\u0011\r
+y\r
+adσ =\r
+Z\r
+B\r
++\r
+R\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adx (6.1)\r
+where uτ stands for the gradient of u tangential to ∂Br.\r
+Proof. The only thing we have to notice is that since u solves (1.5), then\r
+div \r
+y\r
+a\r
+|∇u|\r
+2"""
+
+[[sections]]
+number = "2"
+title = "X − y"
+text = """
+a\r
+hX, ∇ui∇u\r
+!\r
+= y\r
+a n + a − 1\r
+2\r
+|∇u|"""
+
+[[sections]]
+number = "2"
+title = "So we apply divergence theorem in the set BR ∩ {y > ε} to obtain"
+text = """
+R\r
+Z\r
+∂BR∩{y>ε}\r
+y\r
+a\r
+ \r
+|∇u|\r
+2\r
+2\r
+− |uν|\r
+2\r
+!\r
+dσ +\r
+Z\r
+|x|<R\r
+−ε\r
+a\r
+|∇u(x, ε)|\r
+2\r
+2\r
+ε + ε\r
+a\r
+h(x, ε), ∇u(x, ε)iuy(x, ε) dx\r
+=\r
+Z\r
+B\r
++\r
+R\r
+n + a − 1\r
+2\r
+y\r
+a\r
+|∇u|\r
+2\r
+dx\r
+The second term comes from the integration of the vector field at the bottom of the half sphere.\r
+We observe it goes to zero as ε → 0 since there we have that for each x either u(x, 0) = 0 or\r
+limy→0 y\r
+auy(x, y) = 0 and a < 1. So we can remove that term and extend the expresion to the\r
+whole ball BR.\r
+R\r
+Z\r
+∂BR∩{y>0}\r
+ \r
+|∇u|\r
+2\r
+2\r
+− |uν|\r
+2\r
+!\r
+y\r
+adσ =\r
+Z\r
+B\r
++\r
+R\r
+n + a − 1\r
+2\r
+|∇u|\r
+2\r
+y\r
+adx\r
+Expanding |∇u|\r
+2 = |uτ |2 + |uν|2 we obtain (6.1).\r
+Proof of Theorem 6.1. We will show that log Φ(R) is nondecreasing. By the usual scaling argu\u0002ment, it is enough to check it at r = 1. We compute log Φ:\r
+log Φ(R) = log R + log Z\r
+B\r
++\r
+R\r
+|∇u|\r
+2\r
+y\r
+adX − log Z\r
+∂B+\r
+R\r
+|u|\r
+2\r
+y\r
+adθ\r
+12
+
+and now we compute its derivative at R = 1. Let S1 = ∂B1 ∩ {y > 0}, then\r
+(log Φ)′(1) = 1 +\r
+R\r
+S1\r
+|∇u|\r
+2\r
+y\r
+adσ\r
+R\r
+B\r
++\r
+1\r
+|∇u|\r
+2\r
+y\r
+adX\r
+−\r
+R\r
+S1\r
+(2uuν + (n + a)|u|\r
+2\r
+) y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+(6.2)\r
+Now we observe that since div(y\r
+a∇u) = 0, we have div yau∇u = ya\r
+|∇u|\r
+2\r
+, and then\r
+Z\r
+B\r
++\r
+1\r
+|∇u|\r
+2\r
+y\r
+a\r
+dX = lim\r
+ε→0+\r
+Z\r
+S1\r
+uuν y\r
+a\r
+dσ +\r
+Z\r
+|x|<1\r
+uyu yadx\r
+=\r
+Z\r
+S1\r
+uuν y\r
+adσ\r
+(6.3)\r
+From Lemma 6.2 we have that\r
+Z\r
+S1\r
+|∇u|\r
+2\r
+y\r
+adσ =\r
+Z\r
+S1\r
+\u0010\r
+|uθ|\r
+2 − |uν|2\r
+\u0011\r
+y\r
+adσ + 2 Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+=\r
+Z\r
+B\r
++\r
+1\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adX + 2 Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+(6.4)\r
+Putting (6.3) and (6.4) together with (6.2) we obtain\r
+(log Φ)′(1) = 1 +\r
+R\r
+B\r
++\r
+1\r
+(n + a − 1)|∇u|\r
+2\r
+y\r
+adX + 2 R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+(2uuν + (n + a)|u|\r
+2\r
+) y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+= 1 + (n + a − 1) − (n + a) +\r
+2\r
+R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+2uuν y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+= 2 R\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+−\r
+R\r
+S1\r
+uuν y\r
+adσ\r
+R\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+!\r
+Therefore (log Φ)′(1) ≥ 0 follows from Cauchy-Schwartz inequality since\r
+\r
+\r
+Z\r
+S1\r
+uuν y\r
+adσ\r
+\r
+\r
+2\r
+≤\r
+\r
+\r
+Z\r
+S1\r
+|u|\r
+2\r
+y\r
+adσ\r
+\r
+ ·\r
+\r
+\r
+Z\r
+S1\r
+|uν|\r
+2\r
+y\r
+adσ\r
+\r
+\r
+and the equality is achieved if and only if uν = λu for some constant λ. Therefore, only when u\r
+is homogeneous of degree λ."""
+
+[[sections]]
+number = "7"
+title = "Other operators"
+text = """
+The results in this paper suggest that many integro-differential operators can be thought in the\r
+same way. Let us suppose we have smooth uniformilly elliptic coefficients aij in R\r
+n × [0, ∞)."""
+
+[[sections]]
+number = "13"
+title = "Consider the following extension problem:"
+text = """
+u(x, 0) = f(x) for x ∈ R\r
+n\r
+(7.1)\r
+Xaijuij (x, y) = 0 for x ∈ R\r
+n\r
+and y > 0 (7.2)\r
+If we now consider the operator f 7→ uy(x, 0), this is going to be some integro-differential operator\r
+of degree one that we can also obtain from a local type pde. We can push the situation even\r
+further by considering coefficients aij that are only measurable, and maybe singular near y = 0.\r
+It is not reasonable to expect that every integro-differential operator can be realized in this way.\r
+It looks difficult to characterize the ones that can. But certainly for many it is possible.\r
+Let us consider the case when the operators are invariant under translation in x. We want to\r
+study the operator that maps the Dirichlet to the Neumann condition for the equation\r
+△xu + a(z)uzz = 0\r
+we take the Fourier transform in x and proceed as in section 3.2 to obtain the differential equation\r
+−a(z)φ\r
+′′(z) + |ξ|\r
+2\r
+φ(z) = 0\r
+φ(0) = 1\r
+limz→∞φ(z) = 0\r
+(7.3)\r
+The operator T : u(x, 0) 7→ −uz(x, 0) is then the pseudodifferential operator whose symbol s(ξ) is\r
+given by solving (7.3) and computing φz(0) for each value of ξ.\r
+The question is what symbols s(ξ) can we obtain by the above procedure. We can see that\r
+s(ξ) is radially symmetric and monotone increasing in |ξ|. Indeed, if φ1 is a solution of (7.3) for\r
+|ξ| = r0 and ϕ1 for |ξ1| = r1 ≥ r0 then\r
+−a(z)φ\r
+′′\r
+1\r
+(z) + |ξ0|\r
+2\r
+φ1(z) = (|ξ0|\r
+2 − |ξ1|2\r
+)φ1(z) < 0\r
+Thus φ1 < φ0 by comparison principle.\r
+As ξ → 0, the solution φ of (7.3) converges to φ ≡ 1, so s(0) = 0. We leave the question if\r
+every radially symmetric symbol s such that s(0) = 0 and it is monotone increasing with respect\r
+to |ξ| can be obtained by a suitable choice of a(z).\r
+Acknowledgements\r
+Luis Caffarelli was partially supported by NSF grants.\r
+We would like to thank Zoran Vondracek and Renming Song for pointing out a computational\r
+mistake in an earlier version of this paper.\r
+References\r
+[1] Frederick J. Almgren, Jr. Almgren’s big regularity paper, volume 1 of World Scientific Mono\u0002graph Series in Mathematics. World Scientific Publishing Co. Inc., River Edge, NJ, 2000.\r
+Q-valued functions minimizing Dirichlet’s integral and the regularity of area-minimizing rec\u0002tifiable currents up to codimension 2, With a preface by Jean E. Taylor and Vladimir Scheffer.\r
+[2] I. Athanasopoulos, L. A Caffarelli, and S. Salsa. The structure of the free boundary for lower\r
+dimesional obstacle problems. Preprint.\r
+14
+
+[3] Krzysztof Bogdan. The boundary Harnack principle for the fractional Laplacian. Studia\r
+Math., 123(1):43–80, 1997.\r
+[4] L. Caffarelli, M. G. Crandall, M. Kocan, and A. Swi‘ech. On viscosity solutions of fully\r
+nonlinear equations with measurable ingredients. Comm. Pure Appl. Math., 49(4):365–397,\r
+1996.\r
+[5] Luis A. Caffarelli and Cristian E. Guti´errez. Properties of the solutions of the linearized\r
+Monge-Amp`ere equation. Amer. J. Math., 119(2):423–465, 1997.\r
+[6] E. Fabes, D. Jerison, and C. Kenig. The Wiener test for degenerate elliptic equations. Ann.\r
+Inst. Fourier (Grenoble), 32(3):vi, 151–182, 1982.\r
+[7] E. Fabes, C. Kenig, and R. Serapioni. The local regularity of solutions of degenerate elliptic\r
+equations. Comm. Partial Differential Equations, 7(1):77–116, 1982.\r
+[8] E. B. Fabes, C. E. Kenig, and D. Jerison. Boundary behavior of solutions to degenerate\r
+elliptic equations. In Conference on harmonic analysis in honor of Antoni Zygmund, Vol. I,\r
+II (Chicago, Ill., 1981), Wadsworth Math. Ser., pages 577–589. Wadsworth, Belmont, CA,\r
+1983.\r
+[9] N. S. Landkof. Foundations of modern potential theory. Springer-Verlag, New York, 1972.\r
+Translated from the Russian by A. P. Doohovskoy, Die Grundlehren der mathematischen\r
+Wissenschaften, Band 180.\r
+[10] P. D. Smith. A regularity theorem for a singular elliptic equation. Applicable Anal., 14(3):223–\r
+236, 1982/83.\r
+Luis Caffarelli\r
+University of Texas at Austin.\r
+Austin, TX, USA.\r
+caffarel@math.utexas.edu\r
+Luis Silvestre\r
+Courant Institute of Mathematical Sciences.\r
+New York, NY, USA.\r
+silvestr@cims.nyu.edu\r
+15"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+image_path = "images/image_p2_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 2
+image_path = "images/image_p2_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 2
+image_path = "images/image_p2_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 2
+image_path = "images/image_p2_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 2
+image_path = "images/image_p2_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 2
+image_path = "images/image_p2_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 2
+image_path = "images/image_p2_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 3
+image_path = "images/image_p3_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+image_path = "images/image_p3_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 3
+image_path = "images/image_p3_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 3
+image_path = "images/image_p3_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 3
+image_path = "images/image_p3_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 3
+image_path = "images/image_p3_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 3
+image_path = "images/image_p3_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 3
+image_path = "images/image_p3_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 3
+image_path = "images/image_p3_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 3
+image_path = "images/image_p3_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 3
+image_path = "images/image_p3_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 3
+image_path = "images/image_p3_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 3
+image_path = "images/image_p3_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 3
+image_path = "images/image_p3_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 3
+image_path = "images/image_p3_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 4
+image_path = "images/image_p4_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 4
+image_path = "images/image_p4_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 4
+image_path = "images/image_p4_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 4
+image_path = "images/image_p4_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 4
+image_path = "images/image_p4_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 4
+image_path = "images/image_p4_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 5
+image_path = "images/image_p5_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 5
+image_path = "images/image_p5_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 5
+image_path = "images/image_p5_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 5
+image_path = "images/image_p5_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 5
+image_path = "images/image_p5_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 5
+image_path = "images/image_p5_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 5
+image_path = "images/image_p5_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 5
+image_path = "images/image_p5_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 5
+image_path = "images/image_p5_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 5
+image_path = "images/image_p5_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 6
+image_path = "images/image_p6_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 6
+image_path = "images/image_p6_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 6
+image_path = "images/image_p6_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 6
+image_path = "images/image_p6_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 6
+image_path = "images/image_p6_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 7
+image_path = "images/image_p7_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 7
+image_path = "images/image_p7_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 7
+image_path = "images/image_p7_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 7
+image_path = "images/image_p7_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 7
+image_path = "images/image_p7_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 7
+image_path = "images/image_p7_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 8
+image_path = "images/image_p8_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 9
+image_path = "images/image_p9_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 9
+image_path = "images/image_p9_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 9
+image_path = "images/image_p9_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 9
+image_path = "images/image_p9_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 9
+image_path = "images/image_p9_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 9
+image_path = "images/image_p9_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 9
+image_path = "images/image_p9_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 9
+image_path = "images/image_p9_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 10
+image_path = "images/image_p10_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 10
+image_path = "images/image_p10_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 10
+image_path = "images/image_p10_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 10
+image_path = "images/image_p10_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 10
+image_path = "images/image_p10_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 10
+image_path = "images/image_p10_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 10
+image_path = "images/image_p10_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 10
+image_path = "images/image_p10_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 10
+image_path = "images/image_p10_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 10
+image_path = "images/image_p10_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 10
+image_path = "images/image_p10_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 10
+image_path = "images/image_p10_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 10
+image_path = "images/image_p10_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 10
+image_path = "images/image_p10_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 11
+image_path = "images/image_p11_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 11
+image_path = "images/image_p11_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 11
+image_path = "images/image_p11_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 11
+image_path = "images/image_p11_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 11
+image_path = "images/image_p11_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 11
+image_path = "images/image_p11_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 11
+image_path = "images/image_p11_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 11
+image_path = "images/image_p11_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 11
+image_path = "images/image_p11_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 11
+image_path = "images/image_p11_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 11
+image_path = "images/image_p11_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 11
+image_path = "images/image_p11_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 11
+image_path = "images/image_p11_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 11
+image_path = "images/image_p11_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 11
+image_path = "images/image_p11_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 11
+image_path = "images/image_p11_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 12
+image_path = "images/image_p12_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 12
+image_path = "images/image_p12_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 12
+image_path = "images/image_p12_93.png"
+
+[[figures]]
+label = "fig:94"
+page_num = 12
+image_path = "images/image_p12_94.png"
+
+[[figures]]
+label = "fig:95"
+page_num = 12
+image_path = "images/image_p12_95.png"
+
+[[figures]]
+label = "fig:96"
+page_num = 12
+image_path = "images/image_p12_96.png"
+
+[[figures]]
+label = "fig:97"
+page_num = 12
+image_path = "images/image_p12_97.png"
+
+[[figures]]
+label = "fig:98"
+page_num = 12
+image_path = "images/image_p12_98.png"
+
+[[figures]]
+label = "fig:99"
+page_num = 12
+image_path = "images/image_p12_99.png"
+
+[[figures]]
+label = "fig:100"
+page_num = 12
+image_path = "images/image_p12_100.png"
+
+[[figures]]
+label = "fig:101"
+page_num = 12
+image_path = "images/image_p12_101.png"
+
+[[figures]]
+label = "fig:102"
+page_num = 12
+image_path = "images/image_p12_102.png"
+
+[[figures]]
+label = "fig:103"
+page_num = 13
+image_path = "images/image_p13_103.png"
+
+[[figures]]
+label = "fig:104"
+page_num = 13
+image_path = "images/image_p13_104.png"
+
+[[figures]]
+label = "fig:105"
+page_num = 13
+image_path = "images/image_p13_105.png"
+
+[[figures]]
+label = "fig:106"
+page_num = 13
+image_path = "images/image_p13_106.png"
+
+[[figures]]
+label = "fig:107"
+page_num = 13
+image_path = "images/image_p13_107.png"
+
+[[figures]]
+label = "fig:108"
+page_num = 13
+image_path = "images/image_p13_108.png"
+
+[[figures]]
+label = "fig:109"
+page_num = 13
+image_path = "images/image_p13_109.png"
+
+[[figures]]
+label = "fig:110"
+page_num = 13
+image_path = "images/image_p13_110.png"
+
+[[figures]]
+label = "fig:111"
+page_num = 13
+image_path = "images/image_p13_111.png"
+
+[[figures]]
+label = "fig:112"
+page_num = 13
+image_path = "images/image_p13_112.png"
+
+[[figures]]
+label = "fig:113"
+page_num = 13
+image_path = "images/image_p13_113.png"
+
+[[figures]]
+label = "fig:114"
+page_num = 13
+image_path = "images/image_p13_114.png"

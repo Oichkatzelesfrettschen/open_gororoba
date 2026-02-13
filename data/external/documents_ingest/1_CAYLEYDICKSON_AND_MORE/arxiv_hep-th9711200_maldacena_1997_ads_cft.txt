@@ -1,0 +1,920 @@
+                                                                                                              hep-th/9711200
+                                                                                                               HUTP-97/A097
+
+
+
+
+                                             The Large N Limit of Superconformal field
+                                                    theories and supergravity
+
+
+
+
+arXiv:hep-th/9711200v3 22 Jan 1998
+                                                                          Juan Maldacena1
+
+                                           Lyman Laboratory of Physics, Harvard University, Cambridge, MA 02138, USA
+
+
+
+
+                                                                             Abstract
+                                           We show that the large N limit of certain conformal field theories in various dimen-
+                                     sions include in their Hilbert space a sector describing supergravity on the product of
+                                     Anti-deSitter spacetimes, spheres and other compact manifolds. This is shown by taking
+                                     some branes in the full M/string theory and then taking a low energy limit where the field
+                                     theory on the brane decouples from the bulk. We observe that, in this limit, we can still
+                                     trust the near horizon geometry for large N . The enhanced supersymmetries of the near
+                                     horizon geometry correspond to the extra supersymmetry generators present in the super-
+                                     conformal group (as opposed to just the super-Poincare group). The ’t Hooft limit of 3+1
+                                     N = 4 super-Yang-Mills at the conformal point is shown to contain strings: they are IIB
+                                     strings. We conjecture that compactifications of M/string theory on various Anti-deSitter
+                                     spacetimes is dual to various conformal field theories. This leads to a new proposal for a
+                                     definition of M-theory which could be extended to include five non-compact dimensions.
+
+
+
+
+                                       1
+                                           malda@pauli.harvard.edu
+1. General idea
+
+    In the last few years it has been extremely fruitful to derive quantum field theories by
+taking various limits of string or M-theory. In some cases this is done by considering the
+theory at geometric singularities and in others by considering a configuration containing
+branes and then taking a limit where the dynamics on the brane decouples from the bulk.
+In this paper we consider theories that are obtained by decoupling theories on branes from
+gravity. We focus on conformal invariant field theories but a similar analysis could be done
+for non-conformal field theories. The cases considered include N parallel D3 branes in IIB
+string theory and various others. We take the limit where the field theory on the brane
+decouples from the bulk. At the same time we look at the near horizon geometry and we
+argue that the supergravity solution can be trusted as long as N is large. N is kept fixed
+as we take the limit. The approach is similar to that used in [1] to study the NS fivebrane
+theory [2] at finite temperature. The supergravity solution typically reduces to p + 2
+dimensional Anti-deSitter space (AdSp+2 ) times spheres (for D3 branes we have AdS5 ×S 5 ).
+The curvature of the sphere and the AdS space in Planck units is a (positive) power of
+1/N . Therefore the solutions can be trusted as long as N is large. Finite temperature
+configurations in the decoupled field theory correspond to black hole configurations in
+AdS spacetimes. These black holes will Hawking radiate into the AdS spacetime. We
+conclude that excitations of the AdS spacetime are included in the Hilbert space of the
+corresponding conformal field theories. A theory in AdS spacetime is not completely well
+defined since there is a horizon and it is also necessary to give some boundary conditions
+at infinity. However, local properties and local processes can be calculated in supergravity
+when N is large if the proper energies involved are much bigger than the energy scale
+set by the cosmological constant (and smaller than the Planck scale). We will conjecture
+that the full quantum M/string-theory on AdS space, plus suitable boundary conditions
+is dual to the corresponding brane theory. We are not going to specify the boundary
+conditions in AdS, we leave this interesting problem for the future. The AdS×(spheres)
+description will become useful for large N , where we can isolate some local processes from
+the question of boundary conditions. The supersymmetries of both theories agree, both
+are given by the superconformal group. The superconformal group has twice the amount
+of supersymmetries of the corresponding super-Poincare group[3,4]. This enhancement of
+supersymmetry near the horizon of extremal black holes was observed in [5,6] precisely
+by showing that the near throat geometry reduces to AdS×(spheres). AdS spaces (and
+
+                                             1
+branes in them) were extensively considered in the literature [7,8,9,10,11,12,13], includding
+the connection with the superconformal group.
+         In section 2 we study N = 4 d=4 U (N ) super-Yang-Mills as a first example, we discuss
+several issues which are present in all other cases. In section 3 we analyze the theories
+describing M-theory five-branes and M-theory two-branes. In section 4 we consider theories
+with lower supersymmetry which are related to a black string in six dimensions made with
+D1 and D5 branes. In section 5 we study theories with even less supersymmetry involving
+black strings in five dimensions and finally we mention the theories related to extremal
+Reissner-Nordström black holes in four spacetime dimensions (these last cases will be
+more speculative and contain some unresolved puzzles). Finally in section 6 we make some
+comments on the relation to matrix theory.
+
+
+
+2.       D3 branes or N = 4 U (N ) super-Yang-Mills in d=3+1
+
+         We start with type IIB string theory with string coupling g, which will remain fixed.
+Consider N parallel D3 branes separated by some distances which we denote by r. For
+low energies the theory on the D3 brane decouples from the bulk. It is more convenient to
+take the energies fixed and take
+
+                                                           r
+                                α′ → 0 ,              U≡      = fixed .                      (2.1)
+                                                           α′
+
+The second condition is saying that we keep the mass of the stretched strings fixed. As
+we take the decoupling limit we bring the branes together but the the Higgs expectation
+values corresponding to this separation remains fixed. The resulting theory on the brane
+is four dimensional N = 4 U (N ) SYM. Let us consider the theory at the superconformal
+point, where r = 0. The conformal group is SO(2,4). We also have an SO(6) ∼ SU (4)
+R-symmetry that rotates the six scalar fields into each other2 . The superconformal group
+includes twice the number of supersymmetries of the super-Poincare group: the commu-
+tator of special conformal transformations with Poincare supersymmetry generators gives
+the new supersymmetry generators. The precise superconformal algebra was computed in
+[3]. All this is valid for any N .
+
+     2
+         The representation includes objects in the spinor representations, so we should be talking
+about SU(4), we will not make this, or similar distinctions in what follows.
+
+                                                  2
+      Now we consider the supergravity solution carrying D3 brane charge [14]
+
+                           ds2 = f −1/2 dx2|| + f 1/2 (dr 2 + r 2 dΩ25 ) ,
+                                        4πgN α′2                                         (2.2)
+                              f =1+              ,
+                                           r4
+where x|| denotes the four coordinates along the worldvolume of the three-brane and dΩ25
+is the metric on the unit five-sphere3 . The self dual five-form field strength is nonzero and
+has a flux on the five-sphere. Now we define the new variable U ≡ αr′ and we rewrite the
+metric in terms of U . Then we take the α′ → 0 limit. Notice that U remains fixed. In this
+limit we can neglect the 1 in the harmonic function (2.2). The metric becomes
+
+                               U2                 dU 2 p
+                                                                     
+                   2     ′            2                             2
+                                         p
+                 ds = α √           dx + 4πgN 2 + 4πgNdΩ5 .                              (2.3)
+                              4πgN ||              U
+
+This metric describes five dimensional Anti-deSitter (AdS5 ) times a five-sphere4 . We see
+that there is an overall α′ factor. The metric remains constant in α′ units. The radius of
+                    2
+                              √
+the five-sphere is Rsph /α′ = 4πgN, and is the same as the “radius” of AdS5 (as defined
+in the appendix). In ten dimensional Planck units they are both proportional to N 1/4 .
+The radius is quantized because the flux of the 5-form field strength on the 5 sphere is
+quantized. We can trust the supergravity solution when
+
+                                            gN ≫ 1 .                                     (2.4)
+
+When N is large we have approximately ten dimensional flat space in the neighborhood
+of any point5 . Note that in the large N limit the flux of the 5 form field strength per unit
+Planck (or string) 5-volume becomes small.
+      Now consider a near extremal black D3 brane solution in the decoupling limit (2.1).
+We keep the energy density on the brane worldvolume theory (µ) fixed. We find the metric
+
+            U2                                            dU 2
+                                                                                    
+  2    ′                    4   4   2    2
+                                            p                           p         2
+ds =α √            −(1 − U0 /U )dt + dxi + 4πgN 2                       + 4πgNdΩ5 .
+            4πgN                                      U (1 − U04 /U 4 )
+  4  27 4 2
+U0 = π g µ
+      3
+                                                                                   (2.5)
+  3
+      We choose conventions where g → 1/g under S-duality.
+  4
+      See the appendix for a brief description of AdS spacetimes.
+  5
+      In writing (2.4) we assumed that g ≤ 1, if g > 1 then the condition is N/g ≫ 1. In other
+words we need large N , not large g.
+
+                                                 3
+We see that U0 remains finite when we take the α′ → 0 limit. The situation is similar
+to that encountered in [1]. Naively the whole metric is becoming of zero size since we
+have a power of α′ in front of the metric, and we might incorrectly conclude that we
+should only consider the zero modes of all fields. However, energies that are finite from
+the point of view of the gauge theory, lead to proper energies (measured with respect to
+proper time) that remain finite is in α′ units (or Planck units, since g is fixed). More
+concretely, an excitation that has energy ω (fixed in the limit) from the point of view of
+                                                                    1/4
+the gauge theory, will have proper energy Eproper = √1α′ ω(gN4π)
+                                                             U            . This also means that
+the corresponding proper wavelengths remain fixed. In other words, the spacetime action
+                                              √
+on this background has the form S ∼ α1′4 d10 x GR+· · ·, so we can cancel the factor of α′
+                                        R
+
+in the metric and the Newton constant, leaving a theory with a finite Planck length in the
+limit. Therefore we should consider fields that propagate on the AdS background. Since
+the Hawking temperature is finite, there is a flux of energy from the black hole to the AdS
+spacetime. Since N = 4 d=4 U (N ) SYM is a unitary theory we conclude that, for large
+N , it includes in its Hilbert space the states of type IIB supergravity on (AdS5 × S5 )N ,
+where subscript indicates the fact that the “radii” in Planck units are proportional to
+N 1/4 . In particular the theory contains gravitons propagating on (AdS5 × S5 )N . When we
+consider supergravity on AdS5 × S5 , we are faced with global issues like the presence of a
+horizon and the boundary conditions at infinity. It is interesting to note that the solution
+is nonsingular [15]. The gauge theory should provide us with a specific choice of boundary
+conditions. It would be interesting to determine them.
+    We have started with a quantum theory and we have seen that it includes gravity so it
+is natural to think that this correspondence goes beyond the supergravity approximation.
+We are led to the conjecture that Type IIB string theory on (AdS5 × S 5 )N plus some
+appropriate boundary conditions (and possibly also some boundary degrees of freedom) is
+dual to N =4 d=3+1 U(N) super-Yang-Mills. The SYM coupling is given by the (complex)
+                                                      1 1       χ
+IIB string coupling, more precisely g 21 + i 8πθ 2 = 2π ( g + i 2π ) where χ is the value of the
+                                       YM
+
+RR scalar.
+    The supersymmetry group of AdS5 ×S 5 , is known to be the same as the superconformal
+group in 3+1 spacetime dimensions [3], so the supersymmetries of both theories are the
+same. This is a new form of “duality”: a large N field theory is related to a string theory
+on some background, notice that the correspondence is non-perturbative in g and the
+SL(2, Z) symmetry of type IIB would follow as a consequence of the SL(2, Z) symmetry
+
+                                               4
+of SYM6 . It is also a strong-weak coupling correspondence in the following sense. When
+the effective coupling gN becomes large we cannot trust perturbative calculations in the
+Yang-Mills theory but we can trust calculations in supergravity on (AdS5 × S 5 )N . This
+is suggesting that the N = 4 Yang-Mills master field is the anti-deSitter supergravity
+solution (similar ideas were suggested in [17]). Since N measures the size of the geometry
+in Planck units, we see that quantum effects in AdS5 × S 5 have the interpretation of 1/N
+effects in the gauge theory. So Hawking radiation is a 1/N effect. It would be interesting
+to understand more precisely what the horizon means from the gauge theory point of view.
+IIB supergravity on AdS5 × S 5 was studied in [7,9].
+      The above conjecture becomes nontrivial for large N and gives a way to answer some
+large N questions in the SYM theory. For example, suppose that we break U (N ) →
+U (N − 1) × U (1) by Higgsing. This corresponds to putting a three brane at some point
+on the 5-sphere and some value of U , with world volume directions along the original four
+dimensions (x|| ). We could now ask what the low energy effective action for the light U(1)
+fields is. For large N (2.4) it is the action of a D3 brane in AdS5 × S 5 . More concretely,
+the bosonic part of the action becomes the Born-Infeld action on the AdS background
+
+                                                                              √
+                        q                                                                
+       1
+             Z
+                 4   −1
+ S=−           d xh        −Det(ηαβ + h∂α U ∂β U + U 2 hgij ∂α θ i ∂β θ j + 2π hFαβ ) − 1
+     (2π)3 g
+            4πgN
+       h=          ,
+              U4
+                                                                                       (2.6)
+with α, β = 0, 1, 2, 3, i, j = 1, .., 5; and gij is the metric of the unit five-sphere. As any low
+energy action, (2.6) is valid when the energies are low compared to the mass of the massive
+states that we are integrating out. In this case the mass of the massive states is proportional
+to U (with no factors of N ). The low energy condition translates into ∂U/U ≪ U and
+∂θ i << U , etc.. So the nonlinear terms in the action (2.6) will be important only when gN
+is large. It seems that the form of this action is completely determined by superconformal
+invariance, by using the broken and unbroken supersymmetries, in the same sense that
+the Born Infeld action in flat space is given by the full Poincare supersymmetry [18]. It
+would be very interesting to check this explicitly. We will show this for a particular term
+in the action. We set θ i = const and F = 0, so that we only have U left. Then we will
+show that the action is completely determined by broken conformal invariance. This can
+
+  6
+      This is similar in spirit to [16] but here N is not interpreted as momentum.
+
+                                                5
+be seen as follows. Using Lorentz invariance and scaling symmetry (dimensional analysis)
+one can show that the action must have the form
+                              Z
+                          S = dp+1 xU p+1 f (∂α U ∂ α U/U 4 ) ,                               (2.7)
+
+where f is an arbitrary function. Now we consider infinitesimal special conformal trans-
+formations
+                                                          R̃4
+                               δxα = ǫβ xβ xα − ǫα (x2 +      )/2 ,
+                                                          U2                                  (2.8)
+                                δU ≡ U ′ (x′ ) − U (x) = −ǫα xα U ,
+
+where ǫα is an infinitesimal parameter. For the moment R̃ is an arbitrary constant. We
+will later identify it with the “radius” of AdS, it will turn out that R̃4 ∼ gN . In the limit
+of small R̃ we recover the more familiar form of the conformal transformations (U is a
+weight one field). Usually conformal transformations do not involve the variable U in the
+transformations of x. For constant U the extra term in (2.8) is a translation in x, but we
+will take U to be a slowly varying function of x and we will determine R̃ from other facts
+that we know. Demanding that (2.7) is invariant under (2.8) we find that the function f
+in (2.7) obeys the equation
+                                                          
+                                                       1
+                                f (z) + const = 2 z +        f ′ (z)                          (2.9)
+                                                      R̃ 4
+
+                         p
+which is solved by f = b[ 1 + R̃4 z − a]. Now we can determine the constants a, b, R̃ from
+supersymmetry. We need to use three facts. The first is that there is no force (no vacuum
+energy) for a constant U . This implies a = 1. The second is that the ∂U 2 term (F 2 term)
+in the U (1) action is not renormalized. The third is that the only contribution to the (∂U )4
+term (an F 4 term) comes from a one loop diagram [19]. This determines all the coefficients
+to be those expected from (2.6) including the fact that R̃4 = 4πgN . It seems very plausible
+that using all 32 supersymmetries we could fix the action (2.6) completely. This would be
+saying that (2.6) is a consequence of the symmetries and thus not a prediction7 . However
+we can make very nontrivial predictions (though we were not able to check them). For
+example, if we take g to be small (but N large) we can predict that the Yang-Mills theory
+contains strings. More precisely, in the limit g → 0, gN = fixed ≫ 1 (’t Hooft limit) we
+  7
+      Notice that the action (2.6) includes a term proportional to v 6 similar to that calculated in
+[20]. Conformal symmetry explains the agreement that they would have found if they had done
+the calculation for 3+1 SYM as opposed to 0+1.
+
+                                                 6
+find free strings in the spectrum, they are IIB strings moving in (AdS5 × S 5 )gN .8 The
+sense in which these strings are present is rather subtle since there is no energy scale in
+the Yang-Mills to set their tension. In fact one should translate the mass of a string state
+from the AdS description to the Yang-Mills description. This translation will involve the
+position U at which the string is sitting. This sets the scale for its mass. As an example,
+consider again the D-brane probe (Higgsed configuration) which we described above. From
+the type IIB description we expect open strings ending on the D3 brane probe. From the
+                                                                           U
+                                                                                 p
+point of view of the gauge theory these open strings have energies E = (4πgN)1/4   Nopen
+where Nopen is the integer charaterizing the massive open string level. In this example we
+see that α′ disappears when we translate the energies and is replaced by U , which is the
+energy scale of the Higgs field that is breaking the symmetry.
+      Now we turn to the question of the physical interpretation of U . U has dimensions
+of mass. It seems natural to interpret motion in U as moving in energy scales, going to
+the IR for small U and to the UV for large U. For example, consider a D3 brane sitting
+at some position U . Due to the conformal symmetry, all physics at energy scales ω in this
+theory is the same as physics at energies ω ′ = λω, with the brane sitting at U ′ = λU .
+      Now let us turn to another question. We could separate a group of D3 branes from
+the point were they were all sitting originally. Fortunately, for the extremal case we can
+find a supergravity solution describing this system. All we have to do is the replacement
+                                   N    N −M      M
+                                      →      +           ,                                  (2.10)
+                                   U4     U4    ~ −W
+                                               |U   ~ |4
+
+      ~ = ~r/α′ is the separation. It is a vector because we have to specify a point on S 5
+where W
+also. The resulting metric is
+                          
+                                                 1                  2
+                   ds2 = α′ U 2                             1/2 dx|| +
+                            
+                                   √      
+                                                      MU4
+                                       4πg N − M + |U−W
+                                                    ~   |4
+                                                                                           (2.11)
+                                                                   !1/2
+                                p    1                    MU4              ~ 2 .
+                            +    4πg 2        N −M +                      dU
+                                    U                   ~ − W |4
+                                                       |U
+
+  8
+      In fact, Polyakov [21] recently proposed that the string theory describing bosonic Yang-Mills
+has a new dimension corresponding to the Liouville mode ϕ, and that the metric at ϕ = 0 is zero
+due to a “zig-zag” symmetry. In our case we see that the physical distances along the directions
+of the brane contract to zero as U → 0. The details are different, since we are considering the
+N = 4 theory.
+
+                                                 7
+For large U ≫ |W | we find basically the solution for (AdS5 × S 5 )N which is interpreted
+as saying that for large energies we do not see the fact that the conformal symmetry
+was broken, while for small U ≪ |W | we find just (AdS5 × S 5 )N−M , which is associated
+to the CFT of the unbroken U (N − M ) piece. Furthermore, if we consider the region
+ ~ −W
+|U   ~ | ≪ |W
+            ~ | we find (AdS5 × S 5 )M , which is described by the CFT of the U (M ) piece.
+    We could in principle separate all the branes from each other. For large values of
+U we would still have (AdS5 × S 5 )N , but for small values of U we would not be able to
+trust the supergravity solution, but we naively get N copies of (AdS5 × S 5 )1 which should
+correspond to the U (1)N .
+    Now we discuss the issue of compactification. We want to consider the YM theory
+compactified on a torus of radii Ri , xi ∼ xi + 2πRi , which stay fixed as we take the
+α′ → 0 limit. Compactifying the theory breaks conformal invariance and leaves only
+the Poincare supersymmetries. However one can still find the supergravity solutions and
+follow the above procedure, going near the horizon, etc. The AdS piece will contain some
+identifications. So we will be able to trust the supergravity solution as long as the physical
+length of these compact circles stays big in α′ units. This implies that we can trust the
+supergravity solution as long as we stay far from the horizon (at U = 0)
+
+                                             (gN )1/4
+                                        U≫            ,                                (2.12)
+                                               Ri
+
+for all i. This is a larger bound than the naive expectation (1/Ri ). If we were considering
+near extremal black holes we would require that U0 in (2.5) satisfies (2.12), which is, of
+course, the same condition on the temperature gotten in [22].
+    The relation of the three-brane supergravity solution and the Yang-Mills theory has
+been studied in [23,24,25,26] . All the calculations have been done for near extremal D3
+branes fall into the category described above. In particular the absorption cross section of
+the dilaton and the graviton have been shown to agree with what one would calculate in
+the YM theory [24,25]. It has been shown in [26] that some of these agreements are due
+to non-renormalization theorems for N = 4 YM. The black hole entropy was compared to
+the perturbative YM calculation and it agrees up to a numerical factor [23]. This is not
+in disagreement with the correspondence we were suggesting, It is expected that large gN
+effects change this numerical factor, this problem remains unsolved.
+    Finally notice that the group SO(2, 4) × SO(6) suggests a twelve dimensional realiza-
+tion in a theory with two times [27].
+
+                                              8
+3.       Other cases with 16 → 32 supersymmetries, M5 and M2 brane theories
+         Basically all that we have said for the D3 brane carries over for the other conformal
+field theories describing coincident M-theory fivebranes and M-theory twobranes. We de-
+scribe below the limits that should be taken in each of the two cases. Similar remarks
+can be made about the entropies [28], and the determination of the probe actions using
+superconformal invariance. Eleven dimensional supergravity on the corresponding AdS
+spaces was studied in [8,10,11,15].
+
+3.1. M 5 brane
+         The decoupling limit is obtained by taking the 11 dimensional Planck length to zero,
+lp → 0, keeping the worldvolume energies fixed and taking the separations U 2 ≡ r/lp3 =
+fixed [29]. This last condition ensures that the membranes stretching between fivebranes
+give rise to strings with finite tension.
+         The metric is9
+                                     ds2 = f −1/3 dx2|| + f 2/3 (dr 2 + r 2 dΩ24 ) ,
+                                     πN lp3                                            (3.1)
+                                          f =1+
+                                             ,
+                                       r3
+We also have a flux of the four-form field strength on the four-sphere (which is quantized).
+Again, in the limit we obtain
+                                                                         2
+                           2               U2        2           2/3 dU
+                      ds       = lp2 [         1/3
+                                                   dx|| + 4(πN )        2
+                                                                           + (πN )2/3 dΩ24 ] ,   (3.2)
+                                         (πN )                        U
+where now the “radii” of the sphere and the AdS7 space are Rsph = RAdS /2 = lp (πN )1/3 .
+Again, the “radii” are fixed in Planck units as we take lp → 0, and supergravity can be
+applied if N ≫ 1.
+         Reasoning as above we conclude that this theory contains seven dimensional Anti-
+deSitter times a four-sphere, which for large N looks locally like eleven dimensional
+Minkowski space.
+         This gives us a method to calculate properties of the large N limit of the six dimen-
+sional (0,2) conformal field theory [30]. The superconformal group again coincides with
+the algebra of the supersymmetries preserved by AdS7 × S 4 . The bosonic symmetries are
+SO(2, 6) × SO(5) [4]. We can do brane probe calculations, thermodynamic calculations
+[28], etc.
+         The conjecture is now that the (0,2) conformal field theory is dual to M-theory on
+(AdS7 × S 4 )N , the subindex indicates the dependence of the “radius” with N .
+     9
+         In our conventions the relation of the Planck length to the 11 dimensional Newton constant
+           7 9
+is G11
+    N = 16π lp .
+
+
+                                                             9
+3.2. M2 brane
+                                                               3/2
+     We now take the limit lp → 0 keeping U 1/2 ≡ r/lp               = fixed. This combination has
+to remain fixed because the scalar field describing the motion of the twobrane has scaling
+dimension 1/2. Alternatively we could have derived this conformal field theory by taking
+first the field theory limit of D2 branes in string theory as in [31,32,33], and then taking the
+strong coupling limit of that theory to get to the conformal point as in [34,35,36]. The fact
+that the theories obtained in this fashion are the same can be seen as follows. The D2 brane
+gauge theory can be obtained as the limit α′ → 0, keeping gY2 M ∼ g/α′ = fixed. This is the
+                                                                                   3/2
+same as the limit of M-theory two branes in the limit lp → 0 with R11 /lp                ∼ gY M = fixed.
+                                                                             11
+This is a theory where one of the Higgs fields is compact. Taking R               → ∞ we see that we
+get the theory of coincident M2 branes, in which the SO(8) R-symmetry has an obvious
+origin.
+     The metric is
+                           ds2 = f −2/3 dx2|| + f 1/3 (dr 2 + r 2 dΩ27 ) ,
+                                        25 π 2 N lp6                                               (3.3)
+                             f =1+                   ,
+                                            r6
+and there is a nonzero flux of the dual of the four-form field strength on the seven-sphere.
+In the decoupling limit we obtain AdS4 × S 7 , and the supersymmetries work out correctly.
+The bosonic generators are given by SO(2, 3) × SO(8). In this case the “radii” of the
+sphere and AdS4 are Rsph = 2RAdS = lp (25 π 2 N )1/6 .
+     The entropy of the near extremal solution agrees with the expectation from dimen-
+sional analysis for a conformal theory in 2+1 dimensions [28], but the N dependence or
+the numerical coefficients are not understood.
+     Actually for the case of the two brane the conformal symmetry was used to determine
+the v 4 term in the probe action [37], we are further saying that conformal invariance
+determines it to all orders in the velocity of the probe. Furthermore the duality we have
+proposed with M-theory on AdS4 × S 7 determines the precise numerical coefficient.
+     When M-theory is involved the dimensionalities of the groups are suggestive of a
+thirteen dimensional realization [38].
+
+
+
+4. Theories with 8 → 16 supersymmetries, the D1+D5 system
+
+     Now we consider IIB string theory compactified on M 4 (where M 4 = T 4 or K3) to
+six spacetime dimensions. As a first example let us start with a D-fivebrane with four
+
+                                                  10
+dimensions wrapping on M 4 giving a string in six dimensions. Consider a system with Q5
+fivebranes and Q1 D-strings, where the D-string is parallel to the string in six dimensions
+arising from the fivebrane. This system is described at low energies by a 1+1 dimensional
+(4,4) superconformal field theory. So we take the limit
+
+                     r                              V4                       g
+     α′ → 0 ,           = fixed ,           v≡             = fixed ,   g6 = √ = fixed     (4.1)
+                     α′                          (2π)4 α′2                    v
+
+where V4 is the volume of M 4 . All other moduli of M 4 remain fixed. This is just a low
+energy limit, we keep all dimensionless moduli fixed. As a six dimensional theory, IIB on
+M 4 contains strings. They transform under the U-duality group and they carry charges
+given by a vector q I . In general we can consider a configuration where q 2 = ηIJ q I q J 6= 0
+(the metric is the U-duality group invariant), and then take the limit (4.1).
+    This theory has a branch which we will call the Higgs branch and one which we call the
+Coulomb branch. On the Higgs branch the 1+1 dimensional vector multiplets have zero
+expectation value and the Coulomb branch is the other one. Notice that the expectation
+values of the vector multiplets in the Coulomb branch remain fixed as we take the limit
+α′ → 0.
+    The Higgs branch is a SCFT with (4,4) supersymmetry. This is the theory considered
+in [39]. The above limit includes also a piece of the Coulomb branch, since we can separate
+the branes by a distance such that the mass of stretched strings remains finite.
+    Now we consider the supergravity solution corresponding to D1+D5 branes [40]
+                                   −1/2 −1/2        1/2 1/2
+                     ds2 = f1  f5     dx2|| + f1 f5 (dr 2 + r 2 dΩ23 ) ,
+                           
+                               gα′ Q1
+                                                      
+                                                              gα′ Q5
+                                                                                         (4.2)
+                      f1 = 1 +             ,       f5 = 1 +              ,
+                                 vr 2                            r2
+
+where dx2|| = −dt2 + dx2 and x is the coordinate along the D-string. Some of the moduli
+of M 4 vary over the solution and attain a fixed value at the horizon which depends only
+on the charges and some others are constant throughout the solution. The three-form
+RR-field strength is also nonzero.
+    In the decoupling limit (4.1) we can neglect the 1’s in fi in (4.2) and the metric
+becomes
+                                     U2                    dU 2
+                                                                               
+                 2       ′
+                                           dx2|| + g6 Q1 Q5 2 + g6 Q1 Q5 dΩ23
+                                                     p            p
+                ds = α              √                                               .     (4.3)
+                                 g 6 Q1 Q5                  U
+The compact manifold M 4 (Q) that results in the limit is determined as follows. Some of
+its moduli are at their fixed point value which depends only on the charges and not on
+
+                                                   11
+the asymptotic value of those moduli at infinity (the notation M 4 (Q) indicates the charge
+dependence of the moduli)[41]10 . The other moduli, that were constant in the black hole
+solution, have their original values. For example, the volume of M 4 has the fixed point
+value vf ixed = Q1 /Q5 , while the six dimensional string coupling g6 has the original value.
+Notice that there is an overall factor of α′ in (4.3) which can be removed by canceling it with
+the factor of α′ in the Newton constant as explained above. We can trust the supergravity
+solution if Q1 , Q5 are large, g6 Qi ≫ 1. Notice that we are talking about a six dimensional
+supergravity solution since the volume of M 4 is a constant in Planck units (we keep the
+Q1 /Q5 ratio fixed). The metric (4.3) describes three dimensional AdS3 times a 3-sphere.
+The supersymmetries work out correctly, starting from the 8 Poincare supersymmetries
+we enhance then to 16 supersymmetries. The bosonic component is SO(2, 2) × SO(4).
+In conformal field theory language SO(2, 2) is just the SL(2, R) × SL(2, R) part of the
+conformal group and SO(4) ∼ SU (2)L × SU (2)R are the R-symmetries of the CFT [43].
+      So the conjecture is that the 1+1 dimensional CFT describing the Higgs branch of the
+D1+D5 system on M 4 is dual to type IIB string theory on (AdS3 × S 3 )Q1 Q5 × M 4 (Q) .
+                                                                           √
+                                                                2
+The subscript indicates that the radius of the three sphere is Rsph = α′ g6 Q1 Q5 . The
+compact fourmanifold M 4 (Q) is at some particular point in moduli space determined as
+follows. The various moduli of M 4 are divided as tensors and hypers according to the
+(4,4) supersymmetry on the brane. Each hypermultiplet contains four moduli and each
+tensor contains a modulus and an anti-self-dual B-field. (There are five tensors of this
+type for T 4 and 21 for K3). The scalars in the tensors have fixed point values at the
+horizon of the black hole, and those values are the ones entering in the definition of M 4 (Q)
+(Q indicates the dependence on the charges). The hypers will have the same expectation
+value everywhere. It is necessary for this conjecture to work that the 1+1 dimensional
+(4,4) theory is indendent of the tensor moduli appearing in its original definition as a
+limit of the brane configurations, since M 4 (Q) does not depend on those moduli. A non
+renomalization theorem like [44,45] would explain this. We also need that the Higgs branch
+decouples from the Coulomb branch as in [46,47].
+      Finite temperature configurations in the 1+1 conformal field theory can be considered.
+They correspond to near extremal black holes in AdS3 . The metric is the same as that of
+
+ 10
+      The fixed values of the moduli are determined by the condition that they minimize the
+tension of the corresponding string (carrying charges q I ) in six dimensions [41]. This is parallel
+to the discussion in four dimensions [42].
+
+                                                12
+the BTZ 2+1 dimensional black hole [48], except that the angle of the BTZ description
+is not periodic. This angle corresponds to the spatial direction x of the 1+1 dimensional
+CFT and it becomes periodic if we compactify the theory11 [49,50,51] 12 . All calculations
+done for the 1D+5D system [39,53,54] are evidence for this conjecture. In all these cases
+[54] the nontrivial part of the greybody factors comes from the AdS part of the spacetime.
+Indeed, it was noticed in [55] that the greybody factors for the BTZ black hole were the
+same as the ones for the five-dimensional black hole in the dilute gas approximation. The
+dilute gas condition r0 , rn ≪ r1 r5 [53] is automatically satisfied in the limit (4.1) for finite
+temperature configurations (and finite chemical potential for the momentum along x̂). It
+was also noticed that the equations have an SL(2, R) × SL(2, R) symmetry [56], these are
+the isometries of AdS3 , and part of the conformal symmetry of the 1+1 dimensional field
+theory. It would be interesting to understand what is the gravitational counterpart of the
+full conformal symmetry group in 1+1 dimensions.
+
+
+5. Theories with 4 → 8 supersymmetries
+
+      The theories of this type will be related to black strings in five dimensions and
+Reissner-Nordström black holes in four dimensions. This part will be more sketchy, since
+there are several details of the conformal field theories involved which I do not completely
+understand, most notably the dependence on the various moduli of the compactification.
+
+5.1. Black string in five dimensions
+
+      One can think about this case as arising from M-theory on M 6 where M 6 is a CY
+manifold, K3 × T 2 or T 6 . We wrap fivebranes on a four-cycle P4 = pA αA in M 6 with
+nonzero triple self intersection number, see [57]. We are left with a one dimensional object
+in five spacetime dimensions. Now we take the following limit
+
+               lp → 0          (2π)6 v ≡ V6 /lp6 = fixed      U 2 ≡ r/lp3 = fixed ,          (5.1)
+ 11
+      I thank G. Horowitz for many discussions on this correspondence and for pointing out ref.
+[49] to me. Some of the remarks the remarks below arose in conversations with him.
+ 12
+      The ideas in [49,50,51] could be used to show the relation between the AdS region and black
+holes in M-theory on a light like circle. However the statement in [49,50,51] that the AdS3 × S 3
+spacetime is U-dual to the full black hole solution (which is asymptotic to Minkowski space) should
+be taken with caution because in those cases the spacetime has identifications on circles that are
+becoming null. This changes dramatically the physics. For examples of these changes see [32,52].
+
+
+
+                                                13
+where lp is the eleven dimensional Planck length. In this limit the theory will reduce to a
+conformal field theory in two dimensions. It is a (0,4) CFT and it was discussed in some
+detail in a region of the moduli space in [57]. More generally we should think that the
+five dimensional theory has some strings characterized by charges pA , forming a multiplet
+of the U-duality group and we are taking a configuration where the triple self intersection
+number p3 is nonzero (in the case M 6 = T 6 , p3 ≡ D ≡ DABC pA pB pC is the cubic E6
+invariant).
+     We now take the corresponding limit of the black hole solution. We will just present
+the near horizon geometry, obtained after taking the limit. Near the horizon all the vector
+moduli are at their fixed point values [58]. So the near horizon geometry can be calculated
+by considering the solution with constant moduli. We get
+
+                                      U 2 v 1/3                   D2/3      dU 2
+                                                                                   
+                      2
+                 ds       = lp2                 (−dt 2
+                                                       + dx 2
+                                                              ) +                  2
+                                                                           4 2 + dΩ2    .   (5.2)
+                                       D1/3                       v 2/3      U
+
+In this limit M 6 has its vector moduli equal to their fixed point values which depend only
+on the charge while its hyper moduli are what they were at infinity. The overall size of
+M 6 in Planck units is a hypermultiplet, so it remains constant as we take the limit (5.1).
+We get a product of three dimensional AdS3 spacetime with a two-sphere, AdS3 × S 2 .
+                                                3
+Defining the five dimensional Planck length by l5p = lp3 /v we find that the “radii” of the
+two sphere and the AdS3 are Rsph = RAdS /2 = l5p D1/3 . In this case the superconformal
+group contains as a bosonic subgroup SO(2, 2) × SO(3). So the R-symmetries are just
+SU (2)R , associated to the 4 rightmoving supersymmetries.
+     In this case we conjecture that this (0,4) conformal field theory is dual, for large pA ,
+to M-theory on AdS3 × S 2 × Mp6 . The hypermultiplet moduli of Mp6 are the same as the
+ones entering the definition of the (0,4) theory. The vector moduli depend only on the
+charges and their values are those that the black string has at the horizon. A necessary
+condition for this conjecture to work is that the (0,4) theory should be independent of the
+original values of the vector moduli (at least for large p). It is not clear to me whether
+this is true.
+     Using this conjecture we would get for large N a compactification of M theory which
+has five extended dimensions.
+
+                                                          14
+5.2. Extremal 3+1 dimensional Reissner-Nordström
+
+      This section is more sketchy and contains an unresolved puzzle, so the reader will not
+miss much if he skips it.
+      We start with IIB string theory compactified on M 6 , where M 6 is a Calabi-Yau
+manifold or K3 × T 2 or T 6 . We consider a configuration of D3 branes that leads to a black
+hole with nonzero horizon area. Consider the limit
+                                           V6                    r
+                 α′ → 0        (2π)6 v ≡       = fixed      U≡      = fixed .           (5.3)
+                                           α′3                   α′
+The string coupling is arbitrary. In this limit the system reduces to quantum mechanics
+on the moduli space of the three-brane configuration.
+      Taking the limit (5.3) of the supergravity solution we find
+                                    2                   2
+                                                                      
+                          2      ′    U       2   2 2 dU      2 2   2
+                        ds = α              dt + g4 N      + g4 N dΩ2                   (5.4)
+                                    g42 N 2            U2
+where N is proportional to the number of D3 branes. We find a two dimensional AdS2
+                                                                       2
+space times a two-sphere, both with the same radius R = l4p N , where l4p = g 2 α′ /v. The
+bosonic symmetries of AdS2 × S 2 are SO(2, 1) × SO(3). This superconformal symmetry
+seems related to the symmetries of the chiral conformal field theory that was proposed in
+[59] to describe the Reissner-Nordström black holes. Here we find a puzzle, since in the
+limit (5.3) we got a quantum mechanical system and not a 1+1 dimensional conformal
+field theory. In the limit (5.3) the energy gap (mentioned in [60,59]) becomes very large13 .
+So it looks like taking a large N limit at the same time will be crucial in this case. These
+problems might be related to the large ground state entropy of the system.
+      If this is understood it might lead to a proposal for a non perturbative definition of
+M/string theory (as a large N limit) when there are four non-compact dimensions.
+      It is interesting to consider the motion of probes on the AdS2 background. This cor-
+responds to going into the “Coulomb” branch of the quantum mechanics. Dimensional
+analysis says that the action has the form (2.7) with p = 0. Expanding f to first order we
+          R U̇ 2
+                       dtv 2 /r 3 , which is the dependence on r that we expect from super-
+                     R
+find S ∼ dt U   3 ∼
+
+gravity when we are close to the horizon. A similar analysis for Reissner-Nordström black
+holes in five dimensions would give a term proportional to 1/r 4 [17]. It will be interesting
+to check the coefficient (note that this is the only term allowed by the symmetries, as
+opposed to [17]).
+ 13
+      I thank A. Strominger for pointing this out to me.
+
+                                               15
+6.    Discussion, relation to matrix theory
+
+      By deriving various field theories from string theory and considering their large N limit
+we have shown that they contain in their Hilbert space excitations describing supergravity
+on various spacetimes. We further conjectured that the field theories are dual to the full
+quantum M/string theory on various spacetimes. In principle, we can use this duality to
+give a definition of M/string theory on flat spacetime as (a region of) the large N limit of
+the field theories. Notice that this is a non-perturbative proposal for defining such theories,
+since the corresponding field theories can, in principle, be defined non-perturbatively. We
+are only scratching the surface and there are many things to be worked out. In [61] it
+has been proposed that the large N limit of D0 brane quantum mechanics would describe
+eleven dimensional M-theory. The large N limits discussed above, also provide a definition
+of M-theory. An obvious difference with the matrix model of [61] is that here N is not
+interpreted as the momentum along a compact direction. In our case, N is related to the
+curvature and the size of the space where the theory is defined. In both cases, in the
+large N limit we expect to get flat, non-compact spaces. The matrix model [61] gives us a
+prescription to build asymptotic states, we have not shown here how to construct graviton
+states, and this is a very interesting problem. On the other hand, with the present proposal
+it is more clear that we recover supergravity in the large N limit.
+      This approach leads to proposals involving five (and maybe in some future four)
+non-compact dimensions. The five dimensional proposal involves considering the 1+1
+dimensional field theory associated to a black string in five dimensions. These theories
+need to be studied in much more detail than we have done here.
+      It seems that this correspondence between the large N limit of field theories and
+supergravity can be extended to non-conformal field theories. An example was considered
+in [1], where the theory of NS fivebranes was studied in the g → 0 limit. A natural
+interpretation for the throat region is that it is a region in the Hilbert space of a six
+dimensional “string” theory14 . And the fact that contains gravity in the large N limit is
+just a common feature of the large N limit of various field theories. The large N master
+field seems to be the anti-deSitter supergravity solutions [17].
+      When we study non extremal black holes in AdS spacetimes we are no longer re-
+stricted to low energies, as we were in the discussion in higher dimensions [44,54]. The
+
+ 14
+      This possibility was also raised by [62], though it is a bit disturbing to find a constant energy
+flux to the UV (that is how we are interpreting the radial dimension).
+
+                                                  16
+restriction came from matching the AdS region to the Minkowski region. So the five dimen-
+sional results [53,54] can be used to describe arbitrary non-extremal black holes in three
+dimensional Anti-deSitter spacetimes. This might lead us to understand better where the
+degrees of freedom of black holes really are, as well as the meaning of the region behind the
+horizon. The question of the boundary conditions is very interesting and the conformal
+field theories should provide us with some definite boundary conditions and will probably
+explain us how to interpret physically spacetimes with horizons. It would be interesting
+to find the connection with the description of 2+1 dimensional black holes proposed by
+Carlip [63].
+    In [8,13] super-singleton representations of AdS were studied and it was proposed
+that they would describe the dynamics of a brane “at the end of the world”. It was also
+found that in maximally supersymmetric cases it reduces to a free field [8]. It is tempting
+therefore to identify the singleton with the center of mass degree of freedom of the branes
+[6,13]. A recent paper suggested that super-singletons would describe all the dynamics
+of AdS [51]. The claim of the present paper is that all the dynamics of AdS reduces to
+previously known conformal field theories.
+    It seems natural to study conformal field theories in Euclidean space and relate them
+to deSitter spacetimes.
+    Also it would be nice if these results could be extended to four-dimensional gauge
+theories with less supersymmetry.
+    Acknowledgments
+    I thank specially G. Horowitz and A. Strominger for many discussions. I also thank
+R. Gopakumar, R. Kallosh, A. Polyakov, C. Vafa and E. Witten for discussions at various
+stages in this project. My apologies to everybody I did not cite in the previous version of
+this paper. I thank the authors of [64] for pointing out a sign error.
+    This work was supported in part by DOE grant DE-FG02-96ER40559.
+
+
+7. Appendix
+
+    D = p + 2-dimensional anti-deSitter spacetimes can be obtained by taking the hyper-
+boloid
+                        2
+                      −X−1                              2
+                           − X02 + X12 + · · · + Xp2 + Xp+1 = −R2 ,                     (7.1)
+
+embedded in a flat D+1 dimensional spacetime with the metric η = Diag(−1, −1, 1, · · · , 1).
+We will call R the “radius” of AdS spacetime. The symmetry group SO(2, D − 1) =
+
+                                             17
+SO(2, p + 1) is obvious in this description. In order to make contact with the previously
+presented form of the metric let us define the coordinates
+
+                             U = (X−1 + Xp+1 )
+                                   Xα R
+                            xα =                    α = 0, 1, · · · , p                 (7.2)
+                                    U
+                                                        x2 U   R2
+                             V = (X−1 − Xp+1 ) =             +    .
+                                                         R2    U
+
+The induced metric on the hyperboloid (7.1) becomes
+
+                                           U2 2      2 dU
+                                                          2
+                                   ds2 =      dx + R        .                           (7.3)
+                                           R2           U2
+
+This is the form of the metric used in the text. We could also define Ũ = U/R2 so that
+metric (7.3) has an overall factor of R2 , making it clear that R is the overall scale of the
+metric. The region outside the horizon corresponds to U > 0, which is only a part of
+(7.1). It would be interesting to understand what the other regions in the AdS spacetime
+correspond to. For further discussion see [65].
+
+
+
+
+                                               18
+                                         References
+
+ [1]   J. Maldacena and A. Strominger, hep-th/9710014.
+ [2]   N. Seiberg, Phys. Lett. B408 (1997) 98, hep-th/9705221
+ [3]   R. Haag, J. Lopuszanski and M. Sohnius, Nucl. Phys. B88 (1975) 257.
+ [4]   W. Nahm, Nucl. Phys. B135 (1978) 149.
+ [5]   G. Gibbons, Nucl. Phys. B207, (1982) 337; R. Kallosh and A. Peet, Phys. Rev. D46
+       (1992) 5223, hep-th/9209116; S. Ferrara, G. Gibbons, R. Kallosh, Nucl. Phys. B500
+       (1997) 75, hep-th/9702103.
+ [6]   G. Gibbons and P. Townsend, Phys. Rev. Lett. 71 (1993) 5223, hep-th/9307049.
+ [7]   Look for “gauged” supergravities in Supergravities in Diverse Dimensions , Vol. 1 and
+       2, A. Salam and E. Sezgin, (1989), North-Holland.
+ [8]   C. Frondal, Phys. Rev. D26 (82) 1988; D. Freedman and H. Nicolai, Nucl. Phys. B237
+       (84) 342; K. Pilch, P. van Nieuwenhuizen and P. Townsend, Nucl. Phys. B242 (84)
+       377; M. Günaydin, P. van Nieuwenhuizen and N. Warner, Nucl. Phys. B255 (85) 63;
+       M. Günaydin and N. Warner, Nucl. Phys. B272 (86) 99; M. Günaydin, N. Nilsson,
+       G. Sierra and P. Townsend, Phys. Lett. B176 (86) 45; E. Bergshoeff, A. Salam, E.
+       Sezgin and Y. Tanii, Phys. Lett. 205B (1988) 237; Nucl. Phys. D305 (1988) 496; E.
+       Bergshoeff, M. Duff, C. Pope and E. Sezgin, Phys. Lett. B224 (1989) 71;
+ [9]   M. Günaydin and N. Marcus, Class. Quant. Grav. 2 (1985) L11; Class. Quant. Grav.
+       2 (1985) L19; H. Kim, L. Romans and P. van Nieuwenhuizen, Phys. Lett. 143B (1984)
+       103; M. Günaydin, L. Romans and N. Warner, Phys. Lett. 154B (1985) 268; Phys.
+       Lett. 164B (1985) 309; Nucl. Phys. B272 (1986) 598
+[10]   M. Blencowe and M. Duff, Phys. Lett. 203B (1988) 229; Nucl. Phys. B310 (1988)
+       387.
+[11]   H. Nicolai, E. Sezgin and Y. Tanii, Nucl. Phys. B305 (1988) 483.
+[12]   M. Duff, G. Gibbons and P. Townsend, hep-th/9405124.
+[13]   P. Claus, R. Kallosh and A. van Proeyen, hep-th/9711161.
+[14]   G. Horowitz and A. Strominger, Nucl. Phys. B360 (1991) 197.
+[15]   G. Gibbons, G. Horowitz and P. Townsend, hep-th/9410073.
+[16]   L. Susskind, hep-th/9611164; O. Ganor, S. Ramgoolam and W. Taylor IV, Nucl. Phys.
+       B492 (1997) 191, hep-th/9611202.
+[17]   M. Douglas, J. Polchinski and A. Strominger, hep-th/9703031.
+[18]   M. Aganagic, C. Popescu and J. Schwarz, Nucl. Phys. B495 (1997) 99, hep-
+       th/9612080.
+[19]   M. Dine and N. Seiberg, Phys. Lett. B409 (1997) 239, hep-th/9705057.
+[20]   K. Becker, M. Becker, J. Polchinski and A. Tseytlin, Phys. Rev. D56 (1997) 3174,
+       hep-th/9706072.
+[21]   A. Polyakov, hep-th/9711002.
+
+                                              19
+[22] T. Banks, W. Fishler, I. Klebanov and L. Susskind, hep-th/9709091.
+[23] S. Gubser, I. Klebanov and A. Peet, Phys. Rev. D54 (1996) 3915, hep-th/9602135;
+     A. Strominger, unpublised.
+[24] I. Klebanov, Nucl. Phys. B496 (1997) 231, hep-th/9702076.
+[25] S. Gubser, I. Klebanov and A. Tseytlin, Nucl. Phys. B499 (1997) 217, hep-th/9703040.
+[26] S. Gubser and I. Klebanov, hep-th/9708005.
+[27] C. Vafa, Nucl. Phys. B469 (1996) 403, hep-th/9602022.
+[28] I. Klebanov and A. Tseytlin, Nucl. Phys. B475 (1996) 164, hep-th/9604089.
+[29] A. Srominger, Phys. Lett. B383 (1996) 44, hep-th/9512059.
+[30] E. Witten, hep-th/9507121, N. Seiberg and E. Witten, Nucl. Phys. B 471 (1996)
+     121, hep-th/9603003
+[31] J. Maldacena, Proceedings of Strings’97, hep-th/9709099.
+[32] N. Seiberg, Phys. Rev. Lett. 79 (1997) 3577, hep-th/9710009.
+[33] A. Sen, hep-th/9709220.
+[34] N. Seiberg, hep-th/9705117.
+[35] S. Sethi and L. Susskind, Phys. Lett. B400 (1997) 265, hep-th/9702101.
+[36] T. Banks and N. Seiberg, Nucl. Phys. B497 (1997) 41, hep-th/9702187.
+[37] T. Banks, W. Fishler, N. Seiberg and L. Susskind, Phys. Lett. B408 (1997) 111,
+     hep-th/9705190.
+[38] I. Bars, Phys. Rev. D55 (1997) 2373, hep-th/9607112.
+[39] A. Strominger and C. Vafa, Phys. Lett. B379 (1996) 99, hep-th/9601029.
+[40] G. Horowitz, J. Maldacena and A. Strominger, Phys. Lett. B383 (1996) 151, hep-
+     th/9603109.
+[41] L. Andrianopoli, R. D’Auria and S. Ferrara, Int. J. Mod .Phys A12 (1997) 3759,
+     hep-th/9612105.
+[42] S. Ferrara, R. Kallosh and A. Strominger, Phys. Rev. D52 (1995) 5412, hep-
+     th/9508072; S. Ferrara and R. Kallosh, Phys. Rev. D54 (1996) 1514, hep-th/9602136;
+     Phys.Rev. D54 (1996) 1525, hep-th/960309.
+[43] J.C. Breckenridge, R.C. Myers, A.W. Peet and C. Vafa, Phys. Lett. B391 (1997) 93,
+     hep-th/9602065.
+[44] J. Maldacena, Phys. Rev. D55 (1997) 7645, hep-th/9611125.
+[45] D. Diaconescu and N. Seiberg, JHEP07(1997)001, hep-th/9707158.
+[46] O. Aharony, M. Berkooz, S. Kachru, N. Seiberg and E. Silverstein, hep-th/9707079.
+[47] E. Witten, hep-th/9707093.
+[48] Bañados, Teitelboim and Zanelli, Phys. Rev. Lett. 69 (1992) 1849, hep-th/9204099.
+[49] S. Hyun, hep-th/9704005.
+[50] H. Boonstra, B. Peeters and K. Skenderis, hep-th/9706192
+[51] K. Sfetsos and K. Skenderis, hep-th/9711138.
+[52] S. Hellerman and J. Polchinski, hep-th/9711037.
+
+                                           20
+[53] G. Horowitz and A. Strominger, Phys. Rev. Lett. 77 (1996) 2368, hep-th/9602051.
+[54] A. Dhar, G. Mandal and S. Wadia Phys. Lett. B388 (1996) 51, hep-th/9605234;
+     S. Das and S. Mathur, Nucl. Phys. B478 (1996) 561, hep-th/9606185; Nucl.Phys.
+     B482 (1996) 153, hep-th/9607149; J. Maldacena and A. Strominger, Phys. Rev. D55
+     (1997) 861, hep-th/9609026; S. Gubser, I. Klebanov, Nucl. Phys. B482 (1996) 173,
+     hep-th/9608108; C. Callan, Jr., S. Gubser, I. Klebanov and A. Tseytlin, Nucl. Phys.
+     B489 (1997) 65, hep-th/9610172; I. Klebanov and M. Krasnitz Phys. Rev. D55 (1997)
+     3250, hep-th/9612051; I. Klebanov, A. Rajaraman and A. Tseytlin Nucl. Phys. B503
+     (1997) 157, hep-th/9704112; S. Gubser, hep-th/9706100; H. Lee, Y. Myung and J.
+     Kim, hep-th/9708099; K. Hosomichi, hep-th/9711072.
+[55] D. Birmingham, I. Sachs and S. Sen, hep-th/9707188.
+[56] M. Cvetic and F. Larsen, Phys. Rev. D56 (1997) 4994, hep-th/9705192; hep-
+     th/9706071.
+[57] J. Maldacena, A. Strominger and E. Witten, hep-th/9711053.
+[58] A. Chamseddine, S. Ferrara, G. Gibbons and R Kallosh, Phys. Rev. D55 (1997) 3647,
+     hep-th/9610155.
+[59] J. Maldacena and A. Strominger, Phys. Rev. D56 (1997) 4975, hep-th/9702015.
+[60] J. Maldacena and L. Susskind, Nucl .Phys. B475 (1996) 679, hep-th/9604042.
+[61] T. Banks, W. Fischler, S. Shenker and L. Susskind, hep-th/9610043.
+[62] O. Aharony, S. Kachru, N. Seiberg and E. Silverstein, private communication.
+[63] S. Carlip, Phys. Rev. D51 (1995) 632, gr-qc/9409052.
+[64] R. Kallosh, J. Kumar and A. Rajaraman, hep-th/9712073.
+[65] S. Hawking and J. Ellis, The large scale structure of spacetime, Cambrige Univ. Press
+     (1973), and references therein.
+
+
+
+
+                                            21
+

@@ -1,0 +1,2218 @@
+equations = []
+tables = []
+full_text = """
+arXiv:gr-qc/0407051v2 23 Aug 2004\r
+Black hole entropy from Quantum Geometry\r
+Marcin Domagala\r
+1 and Jerzy Lewandowski1,2,3\r
+1. Instytut Fizyki Teoretycznej, Uniwersytet Warszawski, ul. Ho˙za 69, 00-681 Warszawa, Poland\r
+2. Physics Department, 104 Davey, Penn State, University Park, PA 16802, USA\r
+3. Max Planck Institut f¨ur Gravitationsphysik, Albert Einstein Institut, 14476 Golm, Germany\r
+Abstract\r
+Quantum Geometry (the modern Loop Quantum Gravity using graphs and\r
+spin-networks instead of the loops) provides microscopic degrees of freedom\r
+that account for the black-hole entropy. However, the procedure for state\r
+counting used in the literature contains an error and the number of the rel\u0002evant horizon states is underestimated. In our paper a correct method of\r
+counting is presented. Our results lead to a revision of the literature of the\r
+subject. It turns out that the contribution of spins greater then 1/2 to the\r
+entropy is not negligible. Hence, the value of the Barbero-Immirzi parameter\r
+involved in the spectra of all the geometric and physical operators in this\r
+theory is different than previously derived. Also, the conjectured relation be\u0002tween Quantum Geometry and the black hole quasi-normal modes should be\r
+understood again.\r
+Pacs 04.60Pp, 04.60.Ds, 04.60.Nc, 03.65.Sq 1
+
+I. INTRODUCTION AND RESULTS\r
+Quantum Geometry [1–3] provides microscopic degrees of freedom that account for the\r
+black-hole entropy. The issue was raised in works by Krasnov [4] and Rovelli [5]. The fi\u0002nal quantum Isolated Horizon framework was introduced by Ashtekar, Baez, Corichi and\r
+Krasnov [8]. The framework describes a black-hole in equilibrium surrounded by a quite\r
+arbitrary space-time. In the canonical formulation of the theory, the classical phase space\r
+is restricted to the set of space-times containing a black-hole of a fixed area a. After quan\u0002tization, the kinematic Hilbert space is the tensor product of the horizon Hilbert space HS\r
+and the bulk Hilbert space HΣ. Elements of HS are identified with the black-hole kinematic\r
+quantum states. They represent quantum excitations of the U(1) spin connection defined on\r
+the horizon. Mathematically, they are described by the quantum Chern-Simons theories on\r
+a punctured sphere, where all possible sets of punctures are admitted. Therefore, they are\r
+labeled by certain sequences of numbers (referred to as spins) assigned to the punctures. The\r
+bulk states, that is elements of HΣ, on the other hand, are described by Quantum Geometry,\r
+and define the quantum area of the horizon [6,7]. The quantum constraints commute with\r
+the quantum horizon area operator. Most importantly, all the solutions whose quantum\r
+areas fall into any given finite interval [a − δa, a + δa] can be labeled by a finite number of\r
+the black-hole states (and by other labels corresponding to the bulk states). That number\r
+defines the Ashtekar-Baez-Corichi-Krasnov black-hole entropy. However, the procedure in\u0002troduced in [8] for state counting contains a spurious constraint on admissible sequences of\r
+the labels, and the number of the relevant horizon states is underestimated. The goal of our\r
+work1is to point out this error, to formulate a correct counting procedure, and to study the\r
+consequences. Several conclusions of [8] have to be re-examined:\r
+(i) the statement that the leading contribution to the entropy comes entirely from the\r
+simplest states (characterized by punctures with labels ±1/2),\r
+(ii) the confirmation of the Bekenstein and Hawking formula [9],\r
+(iii) the determination of the value of the free parameter γ introduced in Quantum Geom\u0002etry by Barbero and Immirzi, as\r
+γABCK =\r
+ln 2\r
+π\r
+√\r
+3\r
+. (1)\r
+The Barbero-Immirzi parameter labeles different sectors of Quantum Geometry. The spectra\r
+of all the geometric and physical operators depend on γ. For example the quantized area is\r
+proportional to γ.\r
+Therefore, in our paper we go back to the issue of calculating the entropy within the\r
+Quantum Geometry and the Ashtekar-Baez-Corichi-Krasnov framework. We formulate an\r
+exact combinatoric problem whose solution is the entropy: we carefully define a set of\r
+sequences freely labeling the black-hole quantum states which correspond to eigenvalues of\r
+1This project was a part of the diploma thesis of one of the authors [14].\r
+2
+
+the quantum area operator equal or less than a. The entropy is ln N(a), where N(a) is the\r
+number of elements of this set. Next, we address the issue of the proportionality of the\r
+entropy to the area. We consider the ratio\r
+ln N(a)\r
+a\r
+(2)\r
+which is expected to be constant in the limit as a → ∞. We find that for large a,\r
+ln 2\r
+4πγℓ2\r
+Pl\r
+a ≤ ln N(a) ≤\r
+ln 3\r
+4πγℓ2\r
+Pl\r
+a . (3)\r
+As before (in [8]), the Barbero-Immirzi parameter γ can be fixed by assuming the agreement\r
+with the Bekenstein-Hawking entropy (the proportionality of the entropy to the area in the\r
+leading order is not proved yet, at this point, but see below). Then, (3) provides lower and\r
+upper bounds for γ,\r
+ln 2\r
+π\r
+≤ γ ≤\r
+ln 3\r
+π\r
+. (4)\r
+These results lead to a revision of the literature of the subject.\r
+To begin with, they show that the number of states characterized by the lowest spin\r
+labels is essentially smaller than the number of all the states contributing to a given value of\r
+the horizon area. Therefore, the horizon states labeled by higher spins do contribute to the\r
+leading term of the entropy. In the consequence, the ABCK model of quantum black hole\r
+does not agree with Wheeler’s heuristic model ‘It from bit’. The (contradicted here) conclu\u0002sion (i) listed above, had been used in [10] to point out a remarkable relation between the\r
+black hole quasi-normal modes, the Bekenshtein-Hawking entropy and the ABCK entropy\r
+provided the minimal spin of the quantum excitations of the horizon is 1 rather then 1/2. In\r
+view of our correction, the meaning of that observation of [10] should be understood again.\r
+Next, the conclusion (iii) listed above is not true: the value of the parameter γ can not\r
+be that of (1).\r
+We were not able to verify the proportionality of the horizon entropy to the area ourselves.\r
+However, our combinatoric formulation of the problem of calculating the entropy derived\r
+in this paper has been later solved in an exact way in the accompanying paper [11]. The\r
+number ln N(a) has been calculated rigorously therein, and the result is\r
+ln N(a) = γM\r
+γ\r
+a\r
+4ℓ\r
+2\r
+Pl\r
+−\r
+1\r
+2\r
+ln a + O(1) (5)\r
+in the limit of large horizon area a, where the value of the parameter γM can be calculated at\r
+arbitrary accuracy. In conclusion, taking into account the results of [11], the proportionality\r
+of the entropy to the area in the leading order for large a is confirmed, and even the sub\u0002leading terms are calculated.\r
+In the last section we derive the probability distribution of the spin at a given puncture.\r
+The physical meaning of these new results will be discussed in a joint paper [12].\r
+3
+
+II. THE HORIZON QUANTUM STATES\r
+Our departure point is the quantum Isolated Horizon theory introduced in [8]. A classical\r
+(weakly) isolated horizon is a null, non-expanding world-surface of a space-like 2-sphere S,\r
+equipped with a null vector field of a constant self-acceleration. This idea gave rise to a\r
+new quasi-local theory of black-hole in equilibrium interesting also from purely classical\r
+point of view [13]. The local degrees of freedom of space-time geometry out of the horizon\r
+are not restricted. An additional assumption satisfied by the isolated horizon geometry\r
+considered in [8] is the spherical symmetry (see [3] for a discussion of the general case). The\r
+classical phase space introduced in the Ashtekar-Baez-Corichi-Krasnov framework consists\r
+of all the gravitational fields which can exist in a neighborhood of an isolated horizon.\r
+The location and area a of the horizon are fixed. In the corresponding 3 + 1 Hamiltonian\r
+framework the horizon is represented by a 2-sphere S, whereas the remaining part of space\r
+under consideration (bulk) is the exterior region, a 3-manifold Σ bounded by S. The only\r
+kinematic degrees of freedom of the horizon S are given by a U(1) connection defined on a\r
+spin bundle over S. The gravitational field data is defined on Σ. The bulk and the horizon\r
+data are subject to a consistency condition ensuring that the world-surface of S is indeed\r
+an isolated horizon. In the quantum theory of this system, the bulk gravitational field is\r
+described by Quantum Geometry. The quantum consistency condition between the bulk and\r
+the horizon implies that the quantum degrees of freedom of the horizon should be described\r
+by a union of the Chern-Simons theories on arbitrarily punctured S.\r
+Below, we outline the elements of the quantum theory which play a role in the entropy\r
+calculation. The kinematic Hilbert space of the quantum Isolated Horizon theory is contained\r
+in the tensor product HS⊗HΣ, where HS is the Hilbert space of the quantum horizon degrees\r
+of freedom whereas HΣ is the Hilbert space of the quantum geometry defined in the bulk Σ.\r
+To characterize the bulk quantum geometry Hilbert space HΣ, it is convenient to use\r
+a certain orthogonal decomposition adapted to the boundary S. Consider a finite set of\r
+points,\r
+P = {p1, ..., pn} ⊂ S, (6)\r
+and a labeling of elements of P by numbers j = (j1, ..., jn), and m = m1, ..., mn) where\r
+ji ∈\r
+1\r
+2\r
+N, mi ∈ {−j1, ..., ji} (7)\r
+for i = 1, ..., n. The jilabels are assumed not to vanish,\r
+ji 6= 0 . (8)\r
+The space HΣ is the orthogonal sum\r
+HΣ =\r
+M\r
+(P,j,m)\r
+H\r
+P,j,m\r
+Σ\r
+, (9)\r
+where P runs through all the finite subsets of S, (j, m) through all the finite labeling (7,8),\r
+and the empty set P = ∅ is also associated a (non-trivial) single Hilbert space H∅\r
+Σ\r
+. Each\r
+4
+
+of the subspaces H\r
+P,j,m\r
+Σ\r
+is a certain (infinitely dimensional) Hilbert space. To understand\r
+the (quantum) geometric meaning of these subspaces, consider any piece S\r
+′ of the horizon\r
+S (more precisely, S\r
+′\r
+is an arbitrary 2-sub-manifold in the 2-sphere S). The quantum area\r
+operator Aˆ\r
+S′ is defined in HΣ. Another operator of the quantum geometry in Σ assigned to\r
+S\r
+′\r
+is the flux Eˆ\r
+S′ of the vector field normal to S.\r
+2 Every subspace H\r
+P,j,m\r
+Σ\r
+is the eigenspace\r
+of the operators. The corresponding eigenvalues are:\r
+a\r
+P,j\r
+S′ = 8πγℓ2\r
+Pl X\r
+pi∈P∩S′\r
+p\r
+ji(ji + 1), (10)\r
+e\r
+P,m\r
+S′ = 8πγℓ2\r
+Pl X\r
+pi∈P∩S′\r
+mi (11)\r
+where only those points pi ∈ P contribute which are contained also in S\r
+′\r
+, and γ > 0 is a\r
+free parameter of Quantum Geometry known as Barbero-Immirzi parameter. In particular,\r
+if we take for S\r
+′\r
+the whole horizon S, then the corresponding eigenvalue of the horizon area\r
+operator is (we drop P because only the set of the values of j matters)\r
+a\r
+j\r
+S = 8πγℓ2\r
+PlX\r
+i\r
+p\r
+ji(ji + 1). (12)\r
+Of course the quantum area and flux operators are defined also for 2-dimensional sub\u0002manifolds of Σ which do not intersect S, and there are also other interesting operators of\r
+Quantum Geometry acting in HΣ but they are not used in the Isolated Horizon framework.\r
+We turn now to the horizon Hilbert space HS. Recall, that the ABCK framework requires\r
+fixing an arbitrary value for the classical horizon area a. In order to quantize consistently\r
+the horizon degrees of freedom, it is assumed in [8] that the fixed classical area a is quantized\r
+in the following way,\r
+a = 4πγℓ2\r
+Plk, k ∈ N, (13)\r
+where k is arbitrary. The horizon Hilbert space can also be orthogonally decomposed in a\r
+way analogous to (9). In this case the labeling set consists of all the finite sequences P~ of\r
+points in S, labeled by arbitrary non-zero integers defined modulo k, and whose sum is zero\r
+modulo k,\r
+P~ = (p1, ..., pn) b = (b1, ..., bn), (14)\r
+bi ∈ Zk, i = 1, ..., n, Xn\r
+i=1\r
+bi = 0 . (15)\r
+2 There are two subtleties, which may be intriguing for the reader. The first one is that classically\r
+the flux of a vector field normal to a surface is the same as the area of the surface. In our quantum\r
+case however, the vector field is a quantum operator itself, in fact it is one of the SU(2) spin\r
+operators. The area, on the other hand, is given by the total SU(2) spin operator. The second\r
+subtlety is, that S\r
+′\r
+contained in the horizon is assigned the area and flux by the bulk geometry.\r
+5
+
+To every labeled sequence (P~ , b) there is assigned a 1-dimensional Hilbert space H\r
+P~,b\r
+S\r
+. The\r
+points pi are often called punctures, and for every pi, the U(1) element e\r
+i\r
+2πbi\r
+k is the eigenvalue\r
+of the holonomy transport along a circle containing pi. The full horizon Hilbert space can\r
+be written as the orthogonal sum\r
+HS =\r
+M\r
+(P~,b)\r
+H\r
+P~,b\r
+S\r
+, (16)\r
+where to the labeling set of pairs (P~ , b) we add the empty sequence which labels a single,\r
+1-dimensional space H\r
+~∅\r
+S\r
+.\r
+Now, the quantum condition that S be a section of a spherically symmetric isolated\r
+horizon is introduced in the product Hilbert space\r
+HS ⊗ HΣ =\r
+M\r
+(P~,b)\r
+M\r
+(P′,j,m)\r
+\u0010\r
+H\r
+P~,b\r
+S ⊗ HP′\r
+,j,m\r
+Σ\r
+\u0011\r
+. (17)\r
+It involves the holonomy operators acting in H\r
+P~,b\r
+S\r
+on the one hand and the flux operators\r
+acting in H\r
+P′,j,m\r
+Σ\r
+on the other hand (see [8] or [3] for a summary). The set of solutions is the\r
+orthogonal sum of products H\r
+P~,b\r
+S ⊗HP,j,mΣ\r
+such that the points coincide modulo the ordering\r
+P~ = (p1, ..., pn), P = {p1, ..., pn} (18)\r
+and the labelings agree with each other in the following way\r
+bi = −2mi mod k. (19)\r
+In conclusion, the kinematic Hilbert space of states in the ABCK quantum Isolated Horizon\r
+framework is the orthogonal sum with respect to all the labeled sequences of points in S\r
+which satisfy (18,19),\r
+Hkin =\r
+M\r
+P~,j,m\r
+H\r
+P~,b(m)\r
+S ⊗ HP,j,mΣ\r
+, (20)\r
+where we emphasized the dependence of each sequence b = (b1, ..., bn) on a sequence m =\r
+(m1, ..., mn) via (19).\r
+The final step of the ABCK framework is to take into account the quantum Einstein\r
+constraints [1–3] adjusted to the Isolated Horizon framework [8]. The vector constraints\r
+generate diffeomorphisms of Σ which preserve the boundary S. The diffeomorphisms act\r
+naturally in Hkin and this action is unitary. In the Quantum Geometry framework, the\r
+quantum vector constraints come down to the diffeomorphism invariance. Whereas there\r
+is only one normalizable diffeomorphism invariant state in Hkin, the invariance condition is\r
+imposed in a certain larger space (dual to an appropriate subspace of Hkin). A Hilbert space\r
+of solutions is constructed via the diffeomorphism averaging procedure whose Quantum\r
+Geometry version is well described in [1,3]. It is particularly easy to explain the result of the\r
+6
+
+analogous diffeomorphism averaging suitable for the space HS itself. Assign to every finite\r
+sequence b = (b1, ..., bn) defined in (15) a 1-dimensional Hilbert space Hb\r
+S\r
+, and define\r
+HS,phys =\r
+M\r
+b\r
+Hb\r
+S\r
+. (21)\r
+The averaging applied to the full space Hkin provides a Hilbert space of the following struc\u0002ture\r
+H =\r
+M\r
+j,m\r
+H˜b(m),j,m, (22)\r
+where b = (b1, ..., bn), j = (j1, ...jn) and m = (m1, ..., mn) are arbitrary triples of finite\r
+sequences such that (7,15,19) holds. The remaining constraints are the scalar and the Gauss\r
+constraint. The Gauss constraint amounting to the invariance with respect to the local SU(2)\r
+rotations of the spin frames is already satisfied at S due to (19). The scalar constraint, on\r
+the other hand, has been solved at the horizon already on the classical level. Since the\r
+quantum numbers (j, m) used in (23) characterize the quantum geometry of bulk Σ right\r
+at the boundary S, the plausible, but non-trivial assumption made in [8] is that the bulk\r
+scalar constraints with laps functions vanishing on S do not affect (j, m), and that for every\r
+choice of (j, m) there is a solution of the bulk scalar constraints.\r
+We are lead to a conclusion, that the final physical Hilbert Hphys of the quantum states\r
+can be characterized as\r
+Hphys =\r
+M\r
+j,m\r
+Hb(m),j,m, (23)\r
+where b = (b1, ..., bn), j = (j1, ...jn) and m = (m1, ..., mn) are arbitrary triples of finite\r
+sequences such that (7,15,19) is satisfied, and none of the spaces Hb(m),j,m is empty. Since\r
+the horizon area operator Aˆ\r
+S commutes with all the constraints in this framework, it passes\r
+to the physical Hilbert space. It also follows from the details of the diffeomorphism averaging\r
+map, that each of the subspaces Hb(m),j,m is an eigenspace corresponding to the eigenvalue\r
+(12). In this way, the sequences j are responsible for the area assigned to the 2-surface\r
+S of the horizon by the bulk Quantum Geometry, whereas the sequences b represent the\r
+intrinsic quantum degrees of freedom of the horizon. This is the key conclusion of the\r
+ABCK framework.\r
+III. THE COMBINATORIC FORMULATION OF THE PROBLEM\r
+From now our treatment starts to differ from that of [8]. Our aim is to define the number\r
+of the quantum states of the horizon which contribute to the entropy in a form of a clear\r
+and precise combinatoric formula.\r
+Recall that the classical area a of the horizon is fixed as\r
+a = 4πγℓ2\r
+Plk, k ∈ N. (24)\r
+7
+
+Calculation of the horizon entropy consists in counting those quantum horizon states, ele\u0002ments of the Hilbert space HS,phys (21) labeled by the finite sequences defined in (15) (the\r
+number n of the entries can be arbitrary) which correspond to subspaces Hb(m),j,m in (23)\r
+such that the area operator eigenvalue a\r
+j\r
+S\r
+satisfies the following inequality3\r
+a\r
+j\r
+S = 8πγℓ2\r
+PlXn\r
+i=1\r
+p\r
+ji(ji + 1) ≤ a. (25)\r
+Combinatorially, the task amounts to counting the finite sequences (b1, ..., bn) of elements of\r
+Zk, such that the following two conditions (i) and (ii) are satisfied:\r
+(i)\r
+Xn\r
+i=1\r
+bi = 0 , (26)\r
+(ii) there exist two sequences: a sequence (j1, ..., jn) consisting of non-zero elements of 1\r
+2N\r
+which satisfies the inequality (25), and a sequence (m1, ..., mn) such that\r
+bi = −2mi mod k , (27)\r
+and mi ∈ {−ji, −ji + 1, ..., ji} , (28)\r
+for every i = 1, , , n.\r
+This recipe can be simplified. It is easy to eliminate the ji’s by noting that, given a\r
+sequence (m1, ..., mn), there is a sequence (j1, ..., jn) such that (28) and (25) if and only if\r
+8πγℓ2\r
+PlXn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) ≤ a. (29)\r
+Next, it follows from (26, 27) that\r
+Xn\r
+i=1\r
+mi = n\r
+′\r
+k\r
+2\r
+, (30)\r
+with some n\r
+′ ∈ Z. But then,\r
+a = 4πγℓ2\r
+Plk ≥ 8πγℓ2PlXn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) > (31)\r
+> 8πγℓ2\r
+PlXn\r
+i=1\r
+|mi| ≥ 8πγℓ2\r
+Pl|\r
+Xn\r
+i=1\r
+mi| = (32)\r
+= 4πγℓ2\r
+Plk|n\r
+′\r
+|. (33)\r
+3Assuming just inequality instead of considering an interval [a−δa, a+δa] simplifies the calculation.\r
+Knowing the result for all a one can always consider the interval. The result, at least in our case,\r
+is the same.\r
+8
+
+Hence\r
+Xn\r
+i=1\r
+mi = 0, and also Xn\r
+i=1\r
+|mi| ≤ k\r
+2\r
+. (34)\r
+Finally, notice that given a sequence (b1, ..., bn) of elements of Zk there is exactly one sequence\r
+(m1, ..., mn) of elements of 1\r
+2\r
+Z such that (27) and (34) holds. In this way, we have derived\r
+the following formula for the entropy counting:\r
+The entropy S of a quantum horizon of the classical area a according to Quantum Ge\u0002ometry and the Ashtekar-Baez-Corichi-Krasnov [8] framework is\r
+S = ln N(a), (35)\r
+where N(a) is 1 plus the number of all the finite sequences (m1, ...., mn) of non-zero elements\r
+of 1\r
+2\r
+Z, such that the following equality and inequality are satisfied:\r
+Xn\r
+i=1\r
+mi = 0,\r
+Xn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) ≤\r
+a\r
+8πγℓ2\r
+Pl\r
+, (36)\r
+where γ is the Barbero-Immirzi parameter of Quantum Geometry.\r
+The extra term 1 above comes from the trivial sequence.\r
+IV. THE ENTROPY CALCULATIONS\r
+To find an upper bound for the number N(a) introduced in the previous section (recall\r
+that a = 4πγℓ2\r
+Plk, and k ∈ N), consider the set M+\r
+k\r
+of all the finite sequences (m1, ..., mn)\r
+of non-zero elements of 1\r
+2\r
+Z which satisfy the inequality in (34), but do not necessarily sum\r
+to zero,that is,\r
+M+\r
+k\r
+:= {(m1, ..., mn)\r
+\f\r
+\f\r
+\f\r
+n ∈ N, 0 6= m1, ..., mn ∈\r
+1\r
+2\r
+Z,\r
+Xn\r
+i=1\r
+|mi| ≤ k\r
+2\r
+} . (37)\r
+Let N\r
++\r
+k\r
+be the number of elements of M+\r
+k\r
+plus 1 (the empty sequence). Certainly,\r
+N(a) ≤ N\r
++\r
+k\r
+(38)\r
+Next, since k is arbitrarily fixed integer, let it become a variable of the se\u0002quence (N\r
++\r
+0\r
+, N +\r
+1\r
+, ..., N +\r
+k\r
+, ...). To establish a recurrence relation satisfied by the\r
+sequence (N\r
++\r
+0\r
+, N +\r
+1\r
+, ..., N +\r
+k\r
+, ...), notice that if (m1, ..., mn) ∈ M+\r
+k−1\r
+, then both\r
+(m1, ..., mn,\r
+1\r
+2\r
+), (m1, ..., mn, −\r
+1\r
+2\r
+) ∈ M+\r
+k\r
+. In the same way, for arbitrary natural 0 < l ≤ k,\r
+(m1, ..., mn) ∈ M+\r
+k−l ⇒ (m1, ..., mn, ±\r
+1\r
+2\r
+l) ∈ M+\r
+k\r
+. (39)\r
+9
+
+Obviously, if we consider all 0 < l ≤ k, and all the sequences (m1, ..., mn) ∈ M+\r
+k−l\r
+, then the\r
+resulting (m1, ..., mn, ±\r
+1\r
+2\r
+l) form the entire set M+\r
+k\r
+. Also, for two different l 6= l\r
+′\r
+,\r
+(m1, ..., mn, ±\r
+1\r
+2\r
+l) 6= (m1, ..., mn, ±\r
+1\r
+2\r
+l\r
+′\r
+). (40)\r
+This proves the following recurrence relation,\r
+N\r
++\r
+k = 2N\r
++\r
+k−1 + ... + 2N\r
++\r
+0 + 1. (41)\r
+The (unique) solution is\r
+N\r
++\r
+k = 3k\r
+. (42)\r
+In conclusion,\r
+N(a) ≤ 3\r
+k\r
+. (43)\r
+To find a lower bound for N(a), we use the inequality\r
+p\r
+|mi|(|mi| + 1) ≤ |mi| +\r
+1\r
+2\r
+, (44)\r
+and consider the number N\r
+−\r
+k\r
+equal to 1 plus the number of elements in the set\r
+M−\r
+k\r
+:= {(m1, ..., mn)\r
+\f\r
+\f\r
+\f\r
+n ∈ N, 0 6= m1, ..., mn ∈\r
+1\r
+2\r
+Z,\r
+Xn\r
+i=1\r
+(|mi| +\r
+1\r
+2\r
+) ≤\r
+k\r
+2\r
+} (45)\r
+Notice that this time, ignoring the constraint that the elements mi of each sequence sum to\r
+zero (34) makes an in-equivalence relation between N(a) and N\r
+−\r
+k\r
+a priori not known. But\r
+let us postpone this problem for a moment. Using the same construction as above, we find\r
+the recurrence relation satisfied by N\r
+−\r
+k\r
+,\r
+N\r
+−\r
+k = 2N\r
+−\r
+k−2 + ... + 2N\r
+−\r
+0 + 1. (46)\r
+The unique solution is\r
+N\r
+−\r
+k =\r
+2\r
+3\r
+2\r
+k +\r
+(−1)k\r
+3\r
+. (47)\r
+A lower bound for N(a) is the number N′−\r
+k\r
+of the elements of M−\r
+k which additionally satisfy\r
+m1 + ... + mn = 0,\r
+N\r
+′−\r
+k ≤ N(a). (48)\r
+A statistical physics argument giving the value of the desired number N′−\r
+k\r
+is as follows (this\r
+argument is due to Meissner, who also provided an exact proof in [11]). We can think of\r
+each sequence (m1, ..., mn) as of a sequence of random steps on a line. The total length of\r
+10
+
+each path is bounded by k owing to the inequality in the definition of the set M−\r
+k\r
+. The\r
+number of sequences in M−\r
+k\r
+of a given, fixed value of the sum\r
+m1 + ... + mn = δ (49)\r
+depends on δ. The average value of δ is ¯δ = 0. For large values of k, the number of the\r
+paths corresponding to the random walk distance δ should be given by the Gaussian function\r
+√\r
+C\r
+k\r
+e\r
+− δ\r
+2\r
+βk N\r
+−\r
+k\r
+. In particular, the value\r
+N\r
+′−\r
+k =\r
+C\r
+√\r
+k\r
+N\r
+−\r
+k\r
+(50)\r
+corresponds to δ = 0.\r
+Summarizing,\r
+C\r
+√\r
+k\r
+N\r
+−\r
+k ≤ N(a) ≤ N\r
++\r
+k\r
+, (51)\r
+where the numbers N\r
+−\r
+k\r
+and N\r
++\r
+k were calculated in (43, 47). Therefore the entropy is\r
+bounded in the following way\r
+ln 2\r
+4πγℓ2\r
+Pl\r
+a + o(a) ≤ S(a) ≤\r
+ln 3\r
+4πγℓ2\r
+Pl\r
+a. (52)\r
+We are in a position now, to compare our results with those of [8]. The mistake made in [8]\r
+in the combinatorial formulation (see (44) in that paper) is an assumption, that one can order\r
+the jilabels in (23) such that j1 ≤ ... ≤ jn, and impose this as a constraint on ‘admissible’\r
+states we count. As a consequence, the number of the states contributing to the entropy\r
+was underestimated: the analysis of [8] implied that for large a the leading contribution to\r
+the number of sequences comes only from the sequences (m1, ..., mn) = (±\r
+1\r
+2\r
+, ..., ±\r
+1\r
+2\r
+). The\r
+resulting number SABCK(a) proposed for the value of the entropy was\r
+SABCK(a) = ln 2\r
+4π\r
+√\r
+3γℓ2\r
+Pl\r
+a + O(a). (53)\r
+The comparison with our (52) shows that the contribution from the higher half integers\r
+|mi| >\r
+1\r
+2\r
+can not be neglected.\r
+The next consequence of the estimate (52) is a necessary condition for the agreement\r
+of the entropy S(a) with the Bekenstein-Hawking entropy a / 4ℓ\r
+2\r
+Pl; the condition is that the\r
+value of the Barbero-Immirzi parameter γ is bounded in the following way,\r
+ln 2\r
+π\r
+≤ γ ≤\r
+ln 3\r
+π\r
+. (54)\r
+On the other hand, the value proposed for the Barbero-Immirzi parameter by counting the\r
+sequences (±1/2, ..., ±1/2) was\r
+γABCK =\r
+ln 2\r
+π\r
+√\r
+3\r
+. (55)\r
+11
+
+In the accompanying paper [11] the recurrence relations (46,41) are generalized to an\r
+appropriate generalized recurrence relation satisfied by the desired number N(a) itself. Next,\r
+the combinatorial problem formulated in the previous section is solved completely. The\r
+method is remarkably powerful. The result of [11] is\r
+S(a) = γM\r
+γ\r
+a\r
+4ℓ\r
+2\r
+Pl\r
+−\r
+1\r
+2\r
+ln a + O(1), (56)\r
+where γM is a constant defined by the following equation\r
+1\r
+2\r
+−\r
+X\r
+06=j∈\r
+1\r
+2\r
+N\r
+e\r
+−2πγM\r
+√\r
+j(j+1) = 0. (57)\r
+The numerical value of γM is calculated in [11].\r
+An interesting historical remark is (it has been unraveled to us recently, after our results\r
+were derived) that before coming to their final result (53, 55), Ashtekar, Baez and Krasnov\r
+had established certain estimate. The inequality had been\r
+Sbh(a) ≤\r
+γ0\r
+γ\r
+a\r
+4ℓ\r
+2\r
+Pl\r
++ O(a) (58)\r
+where the constant γ0 had been defined by the same equation as as γM above. But since this\r
+result emerged as an upper bound only, finally it was replaced by the improper one (53,55).\r
+V. THE SPIN PROBABILITY DISTRIBUTION\r
+Given any value a of the classical horizon area, and the N(a) quantum states of the\r
+horizon labeled by all the finite sequences (m1, ..., mn) of the non-zero half-integers such\r
+that (36) one can fix any arbitrary\r
+0 6= m ∈\r
+1\r
+2\r
+Z (59)\r
+and consider the subset of states corresponding to the sequences such that\r
+m1 = m. (60)\r
+Denote the number of the elements of this subset by N(a)(m). The ratio\r
+P(a)(m) := N(a)(m)\r
+N(a)\r
+(61)\r
+can be considered as the probability that the first puncture is labeled by m1 = m. The\r
+question is, what P(a)(m) is when a is large compared to the minimal area am created at the\r
+puncture4,\r
+am = 8πγℓ2\r
+Plp\r
+|m|(|m| + 1). (62)\r
+4This issue has been raised recently by John Baez.\r
+12
+
+(Notice, that the answer could make no probabilistic sense, if the lima→∞ P(a)(m) were 0 for\r
+all the values of m, for example.) The number N(a)(m) defined above can be also thought\r
+of as a number of all the finite sequences (m2, ..., mn) such that\r
+Xn\r
+i=2\r
+mi = −m, Xn\r
+i=2\r
+p\r
+|mi|(|mi| + 1) ≤\r
+a − am\r
+8πγℓ2\r
+Pl\r
+. (63)\r
+By the same randon walk argument as the one used above in the treatment of the number\r
+N′−\r
+k\r
+(as before, see [11] for a proof) we have\r
+N(a)(m) = e\r
+− m2\r
+a−am N(a − am) + ... (64)\r
+where the other terms can be neglected when we go to the limit a → ∞. Since the number\r
+N(a) is given by exponentiating (56), we can see that in the limit a → ∞\r
+P(a)(m) → e\r
+−2πγM\r
+√\r
+|m|(|m|+1) =: P(m). (65)\r
+Now, the equality (57) means that the limits P(m) of the probabilities still sum to 1,\r
+X\r
+06=m∈\r
+1\r
+2\r
+Z\r
+P(m) = 1. (66)\r
+That (limit) probability distribution P(m) can also be written in terms of the entropy\r
+S(am) corresponding to the area am, namely\r
+P(m) = e\r
+−S(am)\r
+, (67)\r
+regardless of whether we fix the value of γ by the agreement with the Bekenstein-Hawking\r
+entropy or not.\r
+Acknowledgments We benefited a lot from the discussions with Abhay Ashtekar, John\r
+Baez, Alejandro Corichi, Kirill Krasnov and Marek Napi´orkowski. Krzysztof Meissner, the\r
+referee of the diploma thesis of one us (MD), helped us to understand the relevance and\r
+irrelevance of the constraint on the quantum excitations of the C-S field. JL was partially\r
+supported by Polish Committee for Scientific Research (KBN) under grant number 2P03B\r
+12724.\r
+13
+
+REFERENCES\r
+[1] Thiemann T 2003 Lectures on Loop Quantum Gravity inQuantum Gravity: From The\u0002ory to Experimental Search Lecture Notes in Physics Preprint gr-qc0112038\r
+Thiemann T 2004 Modern Canonical Quantum General Relativity (Cambridge: Cam\u0002bridge University Press) at press gr-qc/0110034\r
+[2] Rovelli C 1998 Loop quantum gravity Living Rev. Rel 1 1\r
+[3] Ashtekar A and Lewandowski J 2004 Background Independent Quantum Gravity: A\r
+Status Report Class. Quantum Grav. 21 R1-R100 gr-qc/0404018\r
+[4] Krasnov K 1998 On Quantum Statistical Mechanics of a Schwarzschild Black Hole\r
+Gen.Rel.Grav. 30 53-68\r
+[5] Rovelli C 1996 Black Hole Entropy from Loop Quantum Gravity Phys.Rev.Lett. 77\r
+3288-3291\r
+[6] Rovelli C and Smolin L 1995 Discretness of area and volume in quantum gravity Nucl.\r
+Phys. B442 593-622; Erratum: Nucl. Phys. B456 753\r
+[7] Ashtekar A and Lewandowski J 1997 Quantum theory of geometry I: Area operators\r
+Class. Quant. Grav. 14 A55-A81\r
+[8] Ashtekar A, Corichi A and Krasnov K 1999 Isolated Horizons: The Classical Phase\r
+Space Adv. Theo. Math. Phys. 3 419\r
+Ashtekar A, Baez J C, Krasnov K 2000 Quantum geometry of isolated horizons and\r
+black hole entropy Adv. Theo. Math. Phys. 4 1-95\r
+[9] Bekenstein J D 1973 Black holes entropy Phys. Rev. D7 2333\r
+Bekenstein J D 1974 Generalized second law of termodynamics in black hole physics\r
+Phys. Rev. D9 3292\r
+Bardeen J W, Carter B and Hawking S W 1973 The four laws of black hole mechanics\r
+Commun. Math. Phys. 31 161\r
+[10] Dreyer O 2003 Quasinormal Modes, the Area Spectrum, and Black Hole Entropy\r
+Phys.Rev.Lett. 90 081301\r
+[11] Meissner KA 2004 Black Hole etropy in Loop Quantum Gravity gr-qc/0407052\r
+[12] Ashtekar A, Domagala M, Lewandowski J, Meissner KA 2004 in preparation\r
+[13] Ashtekar A and Krishnan B 2004 Isolated and Dynamical Horizons and Their Applica\u0002tions gr-qc/0407042\r
+Ashtekar A, Beetle C, Dreyer O, Fairhurst S, Krishnan B, Lewandowski J, Wisniewski\r
+J 2000 Generic Isolated Horizons and their Applications Phys.Rev.Lett. 85 3564-3567\r
+[14] Domagala M 2004 Kwantowy operator pola powierzchni oraz entropia czarnej dziury\r
+Diploma Thesis, Uniwersytet Warszawski, Warsaw, Poland\r
+14"""
+
+[metadata]
+title = "arxiv gr qc0407051 domagala lewandowski 2004 bh entropy quantum geometry"
+authors = ["Unknown"]
+year = 2004
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:gr-qc/0407051v2 23 Aug 2004\r
+Black hole entropy from Quantum Geometry\r
+Marcin Domagala\r
+1 and Jerzy Lewandowski1,2,3\r
+1. Instytut Fizyki Teoretycznej, Uniwersytet Warszawski, ul. Ho˙za 69, 00-681 Warszawa, Poland"""
+
+[[sections]]
+number = "2"
+title = "Physics Department, 104 Davey, Penn State, University Park, PA 16802, USA"
+text = """
+3. Max Planck Institut f¨ur Gravitationsphysik, Albert Einstein Institut, 14476 Golm, Germany\r
+Abstract\r
+Quantum Geometry (the modern Loop Quantum Gravity using graphs and\r
+spin-networks instead of the loops) provides microscopic degrees of freedom\r
+that account for the black-hole entropy. However, the procedure for state\r
+counting used in the literature contains an error and the number of the rel\u0002evant horizon states is underestimated. In our paper a correct method of\r
+counting is presented. Our results lead to a revision of the literature of the\r
+subject. It turns out that the contribution of spins greater then 1/2 to the\r
+entropy is not negligible. Hence, the value of the Barbero-Immirzi parameter\r
+involved in the spectra of all the geometric and physical operators in this\r
+theory is different than previously derived. Also, the conjectured relation be\u0002tween Quantum Geometry and the black hole quasi-normal modes should be\r
+understood again.\r
+Pacs 04.60Pp, 04.60.Ds, 04.60.Nc, 03.65.Sq 1
+
+I. INTRODUCTION AND RESULTS\r
+Quantum Geometry [1–3] provides microscopic degrees of freedom that account for the\r
+black-hole entropy. The issue was raised in works by Krasnov [4] and Rovelli [5]. The fi\u0002nal quantum Isolated Horizon framework was introduced by Ashtekar, Baez, Corichi and\r
+Krasnov [8]. The framework describes a black-hole in equilibrium surrounded by a quite\r
+arbitrary space-time. In the canonical formulation of the theory, the classical phase space\r
+is restricted to the set of space-times containing a black-hole of a fixed area a. After quan\u0002tization, the kinematic Hilbert space is the tensor product of the horizon Hilbert space HS\r
+and the bulk Hilbert space HΣ. Elements of HS are identified with the black-hole kinematic\r
+quantum states. They represent quantum excitations of the U(1) spin connection defined on\r
+the horizon. Mathematically, they are described by the quantum Chern-Simons theories on\r
+a punctured sphere, where all possible sets of punctures are admitted. Therefore, they are\r
+labeled by certain sequences of numbers (referred to as spins) assigned to the punctures. The\r
+bulk states, that is elements of HΣ, on the other hand, are described by Quantum Geometry,\r
+and define the quantum area of the horizon [6,7]. The quantum constraints commute with\r
+the quantum horizon area operator. Most importantly, all the solutions whose quantum\r
+areas fall into any given finite interval [a − δa, a + δa] can be labeled by a finite number of\r
+the black-hole states (and by other labels corresponding to the bulk states). That number\r
+defines the Ashtekar-Baez-Corichi-Krasnov black-hole entropy. However, the procedure in\u0002troduced in [8] for state counting contains a spurious constraint on admissible sequences of\r
+the labels, and the number of the relevant horizon states is underestimated. The goal of our\r
+work1is to point out this error, to formulate a correct counting procedure, and to study the\r
+consequences. Several conclusions of [8] have to be re-examined:\r
+(i) the statement that the leading contribution to the entropy comes entirely from the\r
+simplest states (characterized by punctures with labels ±1/2),\r
+(ii) the confirmation of the Bekenstein and Hawking formula [9],\r
+(iii) the determination of the value of the free parameter γ introduced in Quantum Geom\u0002etry by Barbero and Immirzi, as\r
+γABCK =\r
+ln 2\r
+π\r
+√\r
+3\r
+. (1)\r
+The Barbero-Immirzi parameter labeles different sectors of Quantum Geometry. The spectra\r
+of all the geometric and physical operators depend on γ. For example the quantized area is\r
+proportional to γ.\r
+Therefore, in our paper we go back to the issue of calculating the entropy within the\r
+Quantum Geometry and the Ashtekar-Baez-Corichi-Krasnov framework. We formulate an\r
+exact combinatoric problem whose solution is the entropy: we carefully define a set of\r
+sequences freely labeling the black-hole quantum states which correspond to eigenvalues of\r
+1This project was a part of the diploma thesis of one of the authors [14].\r
+2
+
+the quantum area operator equal or less than a. The entropy is ln N(a), where N(a) is the\r
+number of elements of this set. Next, we address the issue of the proportionality of the\r
+entropy to the area. We consider the ratio\r
+ln N(a)\r
+a\r
+(2)\r
+which is expected to be constant in the limit as a → ∞. We find that for large a,\r
+ln 2\r
+4πγℓ2\r
+Pl\r
+a ≤ ln N(a) ≤\r
+ln 3\r
+4πγℓ2\r
+Pl\r
+a . (3)\r
+As before (in [8]), the Barbero-Immirzi parameter γ can be fixed by assuming the agreement\r
+with the Bekenstein-Hawking entropy (the proportionality of the entropy to the area in the\r
+leading order is not proved yet, at this point, but see below). Then, (3) provides lower and\r
+upper bounds for γ,\r
+ln 2\r
+π\r
+≤ γ ≤\r
+ln 3\r
+π\r
+. (4)\r
+These results lead to a revision of the literature of the subject.\r
+To begin with, they show that the number of states characterized by the lowest spin\r
+labels is essentially smaller than the number of all the states contributing to a given value of\r
+the horizon area. Therefore, the horizon states labeled by higher spins do contribute to the\r
+leading term of the entropy. In the consequence, the ABCK model of quantum black hole\r
+does not agree with Wheeler’s heuristic model ‘It from bit’. The (contradicted here) conclu\u0002sion (i) listed above, had been used in [10] to point out a remarkable relation between the\r
+black hole quasi-normal modes, the Bekenshtein-Hawking entropy and the ABCK entropy\r
+provided the minimal spin of the quantum excitations of the horizon is 1 rather then 1/2. In\r
+view of our correction, the meaning of that observation of [10] should be understood again.\r
+Next, the conclusion (iii) listed above is not true: the value of the parameter γ can not\r
+be that of (1).\r
+We were not able to verify the proportionality of the horizon entropy to the area ourselves.\r
+However, our combinatoric formulation of the problem of calculating the entropy derived\r
+in this paper has been later solved in an exact way in the accompanying paper [11]. The\r
+number ln N(a) has been calculated rigorously therein, and the result is\r
+ln N(a) = γM\r
+γ\r
+a\r
+4ℓ"""
+
+[[sections]]
+number = "2"
+title = "Pl"
+text = """
+−\r
+1\r
+2\r
+ln a + O(1) (5)\r
+in the limit of large horizon area a, where the value of the parameter γM can be calculated at\r
+arbitrary accuracy. In conclusion, taking into account the results of [11], the proportionality\r
+of the entropy to the area in the leading order for large a is confirmed, and even the sub\u0002leading terms are calculated.\r
+In the last section we derive the probability distribution of the spin at a given puncture.\r
+The physical meaning of these new results will be discussed in a joint paper [12]."""
+
+[[sections]]
+number = "3"
+title = "II. THE HORIZON QUANTUM STATES"
+text = """
+Our departure point is the quantum Isolated Horizon theory introduced in [8]. A classical\r
+(weakly) isolated horizon is a null, non-expanding world-surface of a space-like 2-sphere S,\r
+equipped with a null vector field of a constant self-acceleration. This idea gave rise to a\r
+new quasi-local theory of black-hole in equilibrium interesting also from purely classical\r
+point of view [13]. The local degrees of freedom of space-time geometry out of the horizon\r
+are not restricted. An additional assumption satisfied by the isolated horizon geometry\r
+considered in [8] is the spherical symmetry (see [3] for a discussion of the general case). The\r
+classical phase space introduced in the Ashtekar-Baez-Corichi-Krasnov framework consists\r
+of all the gravitational fields which can exist in a neighborhood of an isolated horizon.\r
+The location and area a of the horizon are fixed. In the corresponding 3 + 1 Hamiltonian\r
+framework the horizon is represented by a 2-sphere S, whereas the remaining part of space\r
+under consideration (bulk) is the exterior region, a 3-manifold Σ bounded by S. The only\r
+kinematic degrees of freedom of the horizon S are given by a U(1) connection defined on a\r
+spin bundle over S. The gravitational field data is defined on Σ. The bulk and the horizon\r
+data are subject to a consistency condition ensuring that the world-surface of S is indeed\r
+an isolated horizon. In the quantum theory of this system, the bulk gravitational field is\r
+described by Quantum Geometry. The quantum consistency condition between the bulk and\r
+the horizon implies that the quantum degrees of freedom of the horizon should be described\r
+by a union of the Chern-Simons theories on arbitrarily punctured S.\r
+Below, we outline the elements of the quantum theory which play a role in the entropy\r
+calculation. The kinematic Hilbert space of the quantum Isolated Horizon theory is contained\r
+in the tensor product HS⊗HΣ, where HS is the Hilbert space of the quantum horizon degrees\r
+of freedom whereas HΣ is the Hilbert space of the quantum geometry defined in the bulk Σ.\r
+To characterize the bulk quantum geometry Hilbert space HΣ, it is convenient to use\r
+a certain orthogonal decomposition adapted to the boundary S. Consider a finite set of\r
+points,\r
+P = {p1, ..., pn} ⊂ S, (6)\r
+and a labeling of elements of P by numbers j = (j1, ..., jn), and m = m1, ..., mn) where\r
+ji ∈\r
+1"""
+
+[[sections]]
+number = "2"
+title = "N, mi ∈ {−j1, ..., ji} (7)"
+text = """
+for i = 1, ..., n. The jilabels are assumed not to vanish,\r
+ji 6= 0 . (8)\r
+The space HΣ is the orthogonal sum\r
+HΣ =\r
+M\r
+(P,j,m)\r
+H\r
+P,j,m\r
+Σ\r
+, (9)\r
+where P runs through all the finite subsets of S, (j, m) through all the finite labeling (7,8),\r
+and the empty set P = ∅ is also associated a (non-trivial) single Hilbert space H∅\r
+Σ\r
+. Each\r
+4
+
+of the subspaces H\r
+P,j,m\r
+Σ\r
+is a certain (infinitely dimensional) Hilbert space. To understand\r
+the (quantum) geometric meaning of these subspaces, consider any piece S\r
+′ of the horizon\r
+S (more precisely, S\r
+′\r
+is an arbitrary 2-sub-manifold in the 2-sphere S). The quantum area\r
+operator Aˆ\r
+S′ is defined in HΣ. Another operator of the quantum geometry in Σ assigned to\r
+S\r
+′\r
+is the flux Eˆ\r
+S′ of the vector field normal to S."""
+
+[[sections]]
+number = "2"
+title = "Every subspace H"
+text = """
+P,j,m\r
+Σ\r
+is the eigenspace\r
+of the operators. The corresponding eigenvalues are:\r
+a\r
+P,j\r
+S′ = 8πγℓ2\r
+Pl X\r
+pi∈P∩S′\r
+p\r
+ji(ji + 1), (10)\r
+e\r
+P,m\r
+S′ = 8πγℓ2\r
+Pl X\r
+pi∈P∩S′\r
+mi (11)\r
+where only those points pi ∈ P contribute which are contained also in S\r
+′\r
+, and γ > 0 is a\r
+free parameter of Quantum Geometry known as Barbero-Immirzi parameter. In particular,\r
+if we take for S\r
+′\r
+the whole horizon S, then the corresponding eigenvalue of the horizon area\r
+operator is (we drop P because only the set of the values of j matters)\r
+a\r
+j\r
+S = 8πγℓ2\r
+PlX\r
+i\r
+p\r
+ji(ji + 1). (12)\r
+Of course the quantum area and flux operators are defined also for 2-dimensional sub\u0002manifolds of Σ which do not intersect S, and there are also other interesting operators of\r
+Quantum Geometry acting in HΣ but they are not used in the Isolated Horizon framework.\r
+We turn now to the horizon Hilbert space HS. Recall, that the ABCK framework requires\r
+fixing an arbitrary value for the classical horizon area a. In order to quantize consistently\r
+the horizon degrees of freedom, it is assumed in [8] that the fixed classical area a is quantized\r
+in the following way,\r
+a = 4πγℓ2\r
+Plk, k ∈ N, (13)\r
+where k is arbitrary. The horizon Hilbert space can also be orthogonally decomposed in a\r
+way analogous to (9). In this case the labeling set consists of all the finite sequences P~ of\r
+points in S, labeled by arbitrary non-zero integers defined modulo k, and whose sum is zero\r
+modulo k,\r
+P~ = (p1, ..., pn) b = (b1, ..., bn), (14)\r
+bi ∈ Zk, i = 1, ..., n, Xn\r
+i=1\r
+bi = 0 . (15)\r
+2 There are two subtleties, which may be intriguing for the reader. The first one is that classically\r
+the flux of a vector field normal to a surface is the same as the area of the surface. In our quantum\r
+case however, the vector field is a quantum operator itself, in fact it is one of the SU(2) spin\r
+operators. The area, on the other hand, is given by the total SU(2) spin operator. The second\r
+subtlety is, that S\r
+′\r
+contained in the horizon is assigned the area and flux by the bulk geometry.\r
+5
+
+To every labeled sequence (P~ , b) there is assigned a 1-dimensional Hilbert space H\r
+P~,b\r
+S\r
+. The\r
+points pi are often called punctures, and for every pi, the U(1) element e\r
+i\r
+2πbi\r
+k is the eigenvalue\r
+of the holonomy transport along a circle containing pi. The full horizon Hilbert space can\r
+be written as the orthogonal sum\r
+HS =\r
+M\r
+(P~,b)\r
+H\r
+P~,b\r
+S\r
+, (16)\r
+where to the labeling set of pairs (P~ , b) we add the empty sequence which labels a single,\r
+1-dimensional space H\r
+~∅\r
+S\r
+.\r
+Now, the quantum condition that S be a section of a spherically symmetric isolated\r
+horizon is introduced in the product Hilbert space\r
+HS ⊗ HΣ =\r
+M\r
+(P~,b)\r
+M\r
+(P′,j,m)\r
+\u0010\r
+H\r
+P~,b\r
+S ⊗ HP′\r
+,j,m\r
+Σ\r
+\u0011\r
+. (17)\r
+It involves the holonomy operators acting in H\r
+P~,b\r
+S\r
+on the one hand and the flux operators\r
+acting in H\r
+P′,j,m\r
+Σ\r
+on the other hand (see [8] or [3] for a summary). The set of solutions is the\r
+orthogonal sum of products H\r
+P~,b\r
+S ⊗HP,j,mΣ\r
+such that the points coincide modulo the ordering\r
+P~ = (p1, ..., pn), P = {p1, ..., pn} (18)\r
+and the labelings agree with each other in the following way\r
+bi = −2mi mod k. (19)\r
+In conclusion, the kinematic Hilbert space of states in the ABCK quantum Isolated Horizon\r
+framework is the orthogonal sum with respect to all the labeled sequences of points in S\r
+which satisfy (18,19),\r
+Hkin =\r
+M\r
+P~,j,m\r
+H\r
+P~,b(m)\r
+S ⊗ HP,j,mΣ\r
+, (20)\r
+where we emphasized the dependence of each sequence b = (b1, ..., bn) on a sequence m =\r
+(m1, ..., mn) via (19).\r
+The final step of the ABCK framework is to take into account the quantum Einstein\r
+constraints [1–3] adjusted to the Isolated Horizon framework [8]. The vector constraints\r
+generate diffeomorphisms of Σ which preserve the boundary S. The diffeomorphisms act\r
+naturally in Hkin and this action is unitary. In the Quantum Geometry framework, the\r
+quantum vector constraints come down to the diffeomorphism invariance. Whereas there\r
+is only one normalizable diffeomorphism invariant state in Hkin, the invariance condition is\r
+imposed in a certain larger space (dual to an appropriate subspace of Hkin). A Hilbert space\r
+of solutions is constructed via the diffeomorphism averaging procedure whose Quantum\r
+Geometry version is well described in [1,3]. It is particularly easy to explain the result of the\r
+6
+
+analogous diffeomorphism averaging suitable for the space HS itself. Assign to every finite\r
+sequence b = (b1, ..., bn) defined in (15) a 1-dimensional Hilbert space Hb\r
+S\r
+, and define\r
+HS,phys =\r
+M\r
+b\r
+Hb\r
+S\r
+. (21)\r
+The averaging applied to the full space Hkin provides a Hilbert space of the following struc\u0002ture\r
+H =\r
+M\r
+j,m\r
+H˜b(m),j,m, (22)\r
+where b = (b1, ..., bn), j = (j1, ...jn) and m = (m1, ..., mn) are arbitrary triples of finite\r
+sequences such that (7,15,19) holds. The remaining constraints are the scalar and the Gauss\r
+constraint. The Gauss constraint amounting to the invariance with respect to the local SU(2)\r
+rotations of the spin frames is already satisfied at S due to (19). The scalar constraint, on\r
+the other hand, has been solved at the horizon already on the classical level. Since the\r
+quantum numbers (j, m) used in (23) characterize the quantum geometry of bulk Σ right\r
+at the boundary S, the plausible, but non-trivial assumption made in [8] is that the bulk\r
+scalar constraints with laps functions vanishing on S do not affect (j, m), and that for every\r
+choice of (j, m) there is a solution of the bulk scalar constraints.\r
+We are lead to a conclusion, that the final physical Hilbert Hphys of the quantum states\r
+can be characterized as\r
+Hphys =\r
+M\r
+j,m\r
+Hb(m),j,m, (23)\r
+where b = (b1, ..., bn), j = (j1, ...jn) and m = (m1, ..., mn) are arbitrary triples of finite\r
+sequences such that (7,15,19) is satisfied, and none of the spaces Hb(m),j,m is empty. Since\r
+the horizon area operator Aˆ\r
+S commutes with all the constraints in this framework, it passes\r
+to the physical Hilbert space. It also follows from the details of the diffeomorphism averaging\r
+map, that each of the subspaces Hb(m),j,m is an eigenspace corresponding to the eigenvalue\r
+(12). In this way, the sequences j are responsible for the area assigned to the 2-surface\r
+S of the horizon by the bulk Quantum Geometry, whereas the sequences b represent the\r
+intrinsic quantum degrees of freedom of the horizon. This is the key conclusion of the\r
+ABCK framework.\r
+III. THE COMBINATORIC FORMULATION OF THE PROBLEM\r
+From now our treatment starts to differ from that of [8]. Our aim is to define the number\r
+of the quantum states of the horizon which contribute to the entropy in a form of a clear\r
+and precise combinatoric formula.\r
+Recall that the classical area a of the horizon is fixed as\r
+a = 4πγℓ2\r
+Plk, k ∈ N. (24)\r
+7
+
+Calculation of the horizon entropy consists in counting those quantum horizon states, ele\u0002ments of the Hilbert space HS,phys (21) labeled by the finite sequences defined in (15) (the\r
+number n of the entries can be arbitrary) which correspond to subspaces Hb(m),j,m in (23)\r
+such that the area operator eigenvalue a\r
+j\r
+S\r
+satisfies the following inequality3\r
+a\r
+j\r
+S = 8πγℓ2\r
+PlXn\r
+i=1\r
+p\r
+ji(ji + 1) ≤ a. (25)\r
+Combinatorially, the task amounts to counting the finite sequences (b1, ..., bn) of elements of\r
+Zk, such that the following two conditions (i) and (ii) are satisfied:\r
+(i)\r
+Xn\r
+i=1\r
+bi = 0 , (26)\r
+(ii) there exist two sequences: a sequence (j1, ..., jn) consisting of non-zero elements of 1\r
+2N\r
+which satisfies the inequality (25), and a sequence (m1, ..., mn) such that\r
+bi = −2mi mod k , (27)\r
+and mi ∈ {−ji, −ji + 1, ..., ji} , (28)\r
+for every i = 1, , , n.\r
+This recipe can be simplified. It is easy to eliminate the ji’s by noting that, given a\r
+sequence (m1, ..., mn), there is a sequence (j1, ..., jn) such that (28) and (25) if and only if\r
+8πγℓ2\r
+PlXn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) ≤ a. (29)\r
+Next, it follows from (26, 27) that\r
+Xn\r
+i=1\r
+mi = n\r
+′\r
+k\r
+2\r
+, (30)\r
+with some n\r
+′ ∈ Z. But then,\r
+a = 4πγℓ2\r
+Plk ≥ 8πγℓ2PlXn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) > (31)\r
+> 8πγℓ2\r
+PlXn\r
+i=1\r
+|mi| ≥ 8πγℓ2\r
+Pl|\r
+Xn\r
+i=1\r
+mi| = (32)\r
+= 4πγℓ2\r
+Plk|n\r
+′\r
+|. (33)\r
+3Assuming just inequality instead of considering an interval [a−δa, a+δa] simplifies the calculation.\r
+Knowing the result for all a one can always consider the interval. The result, at least in our case,\r
+is the same."""
+
+[[sections]]
+number = "8"
+title = "Hence"
+text = """
+Xn\r
+i=1\r
+mi = 0, and also Xn\r
+i=1\r
+|mi| ≤ k\r
+2\r
+. (34)\r
+Finally, notice that given a sequence (b1, ..., bn) of elements of Zk there is exactly one sequence\r
+(m1, ..., mn) of elements of 1"""
+
+[[sections]]
+number = "2"
+title = "Z such that (27) and (34) holds. In this way, we have derived"
+text = """
+the following formula for the entropy counting:\r
+The entropy S of a quantum horizon of the classical area a according to Quantum Ge\u0002ometry and the Ashtekar-Baez-Corichi-Krasnov [8] framework is\r
+S = ln N(a), (35)\r
+where N(a) is 1 plus the number of all the finite sequences (m1, ...., mn) of non-zero elements\r
+of 1"""
+
+[[sections]]
+number = "2"
+title = "Z, such that the following equality and inequality are satisfied:"
+text = """
+Xn\r
+i=1\r
+mi = 0,\r
+Xn\r
+i=1\r
+p\r
+|mi|(|mi| + 1) ≤\r
+a\r
+8πγℓ2\r
+Pl\r
+, (36)\r
+where γ is the Barbero-Immirzi parameter of Quantum Geometry.\r
+The extra term 1 above comes from the trivial sequence.\r
+IV. THE ENTROPY CALCULATIONS\r
+To find an upper bound for the number N(a) introduced in the previous section (recall\r
+that a = 4πγℓ2\r
+Plk, and k ∈ N), consider the set M+\r
+k\r
+of all the finite sequences (m1, ..., mn)\r
+of non-zero elements of 1"""
+
+[[sections]]
+number = "2"
+title = "Z which satisfy the inequality in (34), but do not necessarily sum"
+text = """
+to zero,that is,\r
+M+\r
+k\r
+:= {(m1, ..., mn)\r
+\f\r
+\f\r
+\f\r
+n ∈ N, 0 6= m1, ..., mn ∈\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z,"
+text = """
+Xn\r
+i=1\r
+|mi| ≤ k\r
+2\r
+} . (37)\r
+Let N\r
++\r
+k\r
+be the number of elements of M+\r
+k\r
+plus 1 (the empty sequence). Certainly,\r
+N(a) ≤ N\r
++\r
+k\r
+(38)\r
+Next, since k is arbitrarily fixed integer, let it become a variable of the se\u0002quence (N\r
++\r
+0\r
+, N +\r
+1\r
+, ..., N +\r
+k\r
+, ...). To establish a recurrence relation satisfied by the\r
+sequence (N\r
++\r
+0\r
+, N +\r
+1\r
+, ..., N +\r
+k\r
+, ...), notice that if (m1, ..., mn) ∈ M+\r
+k−1\r
+, then both\r
+(m1, ..., mn,\r
+1\r
+2\r
+), (m1, ..., mn, −\r
+1\r
+2\r
+) ∈ M+\r
+k\r
+. In the same way, for arbitrary natural 0 < l ≤ k,\r
+(m1, ..., mn) ∈ M+\r
+k−l ⇒ (m1, ..., mn, ±\r
+1\r
+2\r
+l) ∈ M+\r
+k\r
+. (39)\r
+9
+
+Obviously, if we consider all 0 < l ≤ k, and all the sequences (m1, ..., mn) ∈ M+\r
+k−l\r
+, then the\r
+resulting (m1, ..., mn, ±\r
+1\r
+2\r
+l) form the entire set M+\r
+k\r
+. Also, for two different l 6= l\r
+′\r
+,\r
+(m1, ..., mn, ±\r
+1\r
+2\r
+l) 6= (m1, ..., mn, ±\r
+1\r
+2\r
+l\r
+′\r
+). (40)\r
+This proves the following recurrence relation,\r
+N\r
++\r
+k = 2N\r
++\r
+k−1 + ... + 2N\r
++\r
+0 + 1. (41)\r
+The (unique) solution is\r
+N\r
++\r
+k = 3k\r
+. (42)\r
+In conclusion,\r
+N(a) ≤ 3\r
+k\r
+. (43)\r
+To find a lower bound for N(a), we use the inequality\r
+p\r
+|mi|(|mi| + 1) ≤ |mi| +\r
+1\r
+2\r
+, (44)\r
+and consider the number N\r
+−\r
+k\r
+equal to 1 plus the number of elements in the set\r
+M−\r
+k\r
+:= {(m1, ..., mn)\r
+\f\r
+\f\r
+\f\r
+n ∈ N, 0 6= m1, ..., mn ∈\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z,"
+text = """
+Xn\r
+i=1\r
+(|mi| +\r
+1\r
+2\r
+) ≤\r
+k\r
+2\r
+} (45)\r
+Notice that this time, ignoring the constraint that the elements mi of each sequence sum to\r
+zero (34) makes an in-equivalence relation between N(a) and N\r
+−\r
+k\r
+a priori not known. But\r
+let us postpone this problem for a moment. Using the same construction as above, we find\r
+the recurrence relation satisfied by N\r
+−\r
+k\r
+,\r
+N\r
+−\r
+k = 2N\r
+−\r
+k−2 + ... + 2N\r
+−\r
+0 + 1. (46)\r
+The unique solution is\r
+N\r
+−\r
+k =\r
+2\r
+3\r
+2\r
+k +\r
+(−1)k\r
+3\r
+. (47)\r
+A lower bound for N(a) is the number N′−\r
+k\r
+of the elements of M−\r
+k which additionally satisfy\r
+m1 + ... + mn = 0,\r
+N\r
+′−\r
+k ≤ N(a). (48)\r
+A statistical physics argument giving the value of the desired number N′−\r
+k\r
+is as follows (this\r
+argument is due to Meissner, who also provided an exact proof in [11]). We can think of\r
+each sequence (m1, ..., mn) as of a sequence of random steps on a line. The total length of\r
+10
+
+each path is bounded by k owing to the inequality in the definition of the set M−\r
+k\r
+. The\r
+number of sequences in M−\r
+k\r
+of a given, fixed value of the sum\r
+m1 + ... + mn = δ (49)\r
+depends on δ. The average value of δ is ¯δ = 0. For large values of k, the number of the\r
+paths corresponding to the random walk distance δ should be given by the Gaussian function\r
+√\r
+C\r
+k\r
+e\r
+− δ\r
+2\r
+βk N\r
+−\r
+k\r
+. In particular, the value\r
+N\r
+′−\r
+k =\r
+C\r
+√\r
+k\r
+N\r
+−\r
+k\r
+(50)\r
+corresponds to δ = 0.\r
+Summarizing,\r
+C\r
+√\r
+k\r
+N\r
+−\r
+k ≤ N(a) ≤ N\r
++\r
+k\r
+, (51)\r
+where the numbers N\r
+−\r
+k\r
+and N\r
++\r
+k were calculated in (43, 47). Therefore the entropy is\r
+bounded in the following way\r
+ln 2\r
+4πγℓ2\r
+Pl\r
+a + o(a) ≤ S(a) ≤\r
+ln 3\r
+4πγℓ2\r
+Pl\r
+a. (52)\r
+We are in a position now, to compare our results with those of [8]. The mistake made in [8]\r
+in the combinatorial formulation (see (44) in that paper) is an assumption, that one can order\r
+the jilabels in (23) such that j1 ≤ ... ≤ jn, and impose this as a constraint on ‘admissible’\r
+states we count. As a consequence, the number of the states contributing to the entropy\r
+was underestimated: the analysis of [8] implied that for large a the leading contribution to\r
+the number of sequences comes only from the sequences (m1, ..., mn) = (±\r
+1\r
+2\r
+, ..., ±\r
+1\r
+2\r
+). The\r
+resulting number SABCK(a) proposed for the value of the entropy was\r
+SABCK(a) = ln 2\r
+4π\r
+√\r
+3γℓ2\r
+Pl\r
+a + O(a). (53)\r
+The comparison with our (52) shows that the contribution from the higher half integers\r
+|mi| >\r
+1\r
+2\r
+can not be neglected.\r
+The next consequence of the estimate (52) is a necessary condition for the agreement\r
+of the entropy S(a) with the Bekenstein-Hawking entropy a / 4ℓ"""
+
+[[sections]]
+number = "2"
+title = "Pl; the condition is that the"
+text = """
+value of the Barbero-Immirzi parameter γ is bounded in the following way,\r
+ln 2\r
+π\r
+≤ γ ≤\r
+ln 3\r
+π\r
+. (54)\r
+On the other hand, the value proposed for the Barbero-Immirzi parameter by counting the\r
+sequences (±1/2, ..., ±1/2) was\r
+γABCK =\r
+ln 2\r
+π\r
+√\r
+3\r
+. (55)\r
+11
+
+In the accompanying paper [11] the recurrence relations (46,41) are generalized to an\r
+appropriate generalized recurrence relation satisfied by the desired number N(a) itself. Next,\r
+the combinatorial problem formulated in the previous section is solved completely. The\r
+method is remarkably powerful. The result of [11] is\r
+S(a) = γM\r
+γ\r
+a\r
+4ℓ"""
+
+[[sections]]
+number = "2"
+title = "Pl"
+text = """
+−\r
+1\r
+2\r
+ln a + O(1), (56)\r
+where γM is a constant defined by the following equation\r
+1\r
+2\r
+−\r
+X\r
+06=j∈\r
+1\r
+2\r
+N\r
+e\r
+−2πγM\r
+√\r
+j(j+1) = 0. (57)\r
+The numerical value of γM is calculated in [11].\r
+An interesting historical remark is (it has been unraveled to us recently, after our results\r
+were derived) that before coming to their final result (53, 55), Ashtekar, Baez and Krasnov\r
+had established certain estimate. The inequality had been\r
+Sbh(a) ≤\r
+γ0\r
+γ\r
+a\r
+4ℓ"""
+
+[[sections]]
+number = "2"
+title = "Pl"
+text = """
++ O(a) (58)\r
+where the constant γ0 had been defined by the same equation as as γM above. But since this\r
+result emerged as an upper bound only, finally it was replaced by the improper one (53,55).\r
+V. THE SPIN PROBABILITY DISTRIBUTION\r
+Given any value a of the classical horizon area, and the N(a) quantum states of the\r
+horizon labeled by all the finite sequences (m1, ..., mn) of the non-zero half-integers such\r
+that (36) one can fix any arbitrary\r
+0 6= m ∈\r
+1"""
+
+[[sections]]
+number = "2"
+title = "Z (59)"
+text = """
+and consider the subset of states corresponding to the sequences such that\r
+m1 = m. (60)\r
+Denote the number of the elements of this subset by N(a)(m). The ratio\r
+P(a)(m) := N(a)(m)\r
+N(a)\r
+(61)\r
+can be considered as the probability that the first puncture is labeled by m1 = m. The\r
+question is, what P(a)(m) is when a is large compared to the minimal area am created at the\r
+puncture4,\r
+am = 8πγℓ2\r
+Plp\r
+|m|(|m| + 1). (62)\r
+4This issue has been raised recently by John Baez.\r
+12
+
+(Notice, that the answer could make no probabilistic sense, if the lima→∞ P(a)(m) were 0 for\r
+all the values of m, for example.) The number N(a)(m) defined above can be also thought\r
+of as a number of all the finite sequences (m2, ..., mn) such that\r
+Xn\r
+i=2\r
+mi = −m, Xn\r
+i=2\r
+p\r
+|mi|(|mi| + 1) ≤\r
+a − am\r
+8πγℓ2\r
+Pl\r
+. (63)\r
+By the same randon walk argument as the one used above in the treatment of the number\r
+N′−\r
+k\r
+(as before, see [11] for a proof) we have\r
+N(a)(m) = e\r
+− m2\r
+a−am N(a − am) + ... (64)\r
+where the other terms can be neglected when we go to the limit a → ∞. Since the number\r
+N(a) is given by exponentiating (56), we can see that in the limit a → ∞\r
+P(a)(m) → e\r
+−2πγM\r
+√\r
+|m|(|m|+1) =: P(m). (65)\r
+Now, the equality (57) means that the limits P(m) of the probabilities still sum to 1,\r
+X\r
+06=m∈\r
+1\r
+2\r
+Z\r
+P(m) = 1. (66)\r
+That (limit) probability distribution P(m) can also be written in terms of the entropy\r
+S(am) corresponding to the area am, namely\r
+P(m) = e\r
+−S(am)\r
+, (67)\r
+regardless of whether we fix the value of γ by the agreement with the Bekenstein-Hawking\r
+entropy or not.\r
+Acknowledgments We benefited a lot from the discussions with Abhay Ashtekar, John\r
+Baez, Alejandro Corichi, Kirill Krasnov and Marek Napi´orkowski. Krzysztof Meissner, the\r
+referee of the diploma thesis of one us (MD), helped us to understand the relevance and\r
+irrelevance of the constraint on the quantum excitations of the C-S field. JL was partially\r
+supported by Polish Committee for Scientific Research (KBN) under grant number 2P03B\r
+12724."""
+
+[[sections]]
+number = "13"
+title = "REFERENCES"
+text = """
+[1] Thiemann T 2003 Lectures on Loop Quantum Gravity inQuantum Gravity: From The\u0002ory to Experimental Search Lecture Notes in Physics Preprint gr-qc0112038\r
+Thiemann T 2004 Modern Canonical Quantum General Relativity (Cambridge: Cam\u0002bridge University Press) at press gr-qc/0110034\r
+[2] Rovelli C 1998 Loop quantum gravity Living Rev. Rel 1 1\r
+[3] Ashtekar A and Lewandowski J 2004 Background Independent Quantum Gravity: A\r
+Status Report Class. Quantum Grav. 21 R1-R100 gr-qc/0404018\r
+[4] Krasnov K 1998 On Quantum Statistical Mechanics of a Schwarzschild Black Hole\r
+Gen.Rel.Grav. 30 53-68\r
+[5] Rovelli C 1996 Black Hole Entropy from Loop Quantum Gravity Phys.Rev.Lett. 77\r
+3288-3291\r
+[6] Rovelli C and Smolin L 1995 Discretness of area and volume in quantum gravity Nucl.\r
+Phys. B442 593-622; Erratum: Nucl. Phys. B456 753\r
+[7] Ashtekar A and Lewandowski J 1997 Quantum theory of geometry I: Area operators\r
+Class. Quant. Grav. 14 A55-A81\r
+[8] Ashtekar A, Corichi A and Krasnov K 1999 Isolated Horizons: The Classical Phase\r
+Space Adv. Theo. Math. Phys. 3 419\r
+Ashtekar A, Baez J C, Krasnov K 2000 Quantum geometry of isolated horizons and\r
+black hole entropy Adv. Theo. Math. Phys. 4 1-95\r
+[9] Bekenstein J D 1973 Black holes entropy Phys. Rev. D7 2333\r
+Bekenstein J D 1974 Generalized second law of termodynamics in black hole physics\r
+Phys. Rev. D9 3292\r
+Bardeen J W, Carter B and Hawking S W 1973 The four laws of black hole mechanics\r
+Commun. Math. Phys. 31 161\r
+[10] Dreyer O 2003 Quasinormal Modes, the Area Spectrum, and Black Hole Entropy\r
+Phys.Rev.Lett. 90 081301\r
+[11] Meissner KA 2004 Black Hole etropy in Loop Quantum Gravity gr-qc/0407052\r
+[12] Ashtekar A, Domagala M, Lewandowski J, Meissner KA 2004 in preparation\r
+[13] Ashtekar A and Krishnan B 2004 Isolated and Dynamical Horizons and Their Applica\u0002tions gr-qc/0407042\r
+Ashtekar A, Beetle C, Dreyer O, Fairhurst S, Krishnan B, Lewandowski J, Wisniewski\r
+J 2000 Generic Isolated Horizons and their Applications Phys.Rev.Lett. 85 3564-3567\r
+[14] Domagala M 2004 Kwantowy operator pola powierzchni oraz entropia czarnej dziury\r
+Diploma Thesis, Uniwersytet Warszawski, Warsaw, Poland\r
+14"""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+image_path = "images/image_p2_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 3
+image_path = "images/image_p3_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 3
+image_path = "images/image_p3_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 3
+image_path = "images/image_p3_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 3
+image_path = "images/image_p3_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 3
+image_path = "images/image_p3_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 3
+image_path = "images/image_p3_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+image_path = "images/image_p3_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 4
+image_path = "images/image_p4_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 5
+image_path = "images/image_p5_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 5
+image_path = "images/image_p5_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 5
+image_path = "images/image_p5_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 6
+image_path = "images/image_p6_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 8
+image_path = "images/image_p8_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 8
+image_path = "images/image_p8_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 8
+image_path = "images/image_p8_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 8
+image_path = "images/image_p8_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 8
+image_path = "images/image_p8_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 8
+image_path = "images/image_p8_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 9
+image_path = "images/image_p9_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 9
+image_path = "images/image_p9_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 9
+image_path = "images/image_p9_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 9
+image_path = "images/image_p9_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 9
+image_path = "images/image_p9_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 9
+image_path = "images/image_p9_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 9
+image_path = "images/image_p9_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 9
+image_path = "images/image_p9_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 9
+image_path = "images/image_p9_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 9
+image_path = "images/image_p9_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 9
+image_path = "images/image_p9_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 10
+image_path = "images/image_p10_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 10
+image_path = "images/image_p10_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 10
+image_path = "images/image_p10_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 10
+image_path = "images/image_p10_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 10
+image_path = "images/image_p10_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 10
+image_path = "images/image_p10_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 10
+image_path = "images/image_p10_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 10
+image_path = "images/image_p10_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 10
+image_path = "images/image_p10_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 10
+image_path = "images/image_p10_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 11
+image_path = "images/image_p11_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 11
+image_path = "images/image_p11_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 11
+image_path = "images/image_p11_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 11
+image_path = "images/image_p11_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 11
+image_path = "images/image_p11_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 11
+image_path = "images/image_p11_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 11
+image_path = "images/image_p11_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 11
+image_path = "images/image_p11_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 11
+image_path = "images/image_p11_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 11
+image_path = "images/image_p11_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 11
+image_path = "images/image_p11_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 11
+image_path = "images/image_p11_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 11
+image_path = "images/image_p11_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 11
+image_path = "images/image_p11_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 11
+image_path = "images/image_p11_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 11
+image_path = "images/image_p11_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 11
+image_path = "images/image_p11_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 11
+image_path = "images/image_p11_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 12
+image_path = "images/image_p12_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 12
+image_path = "images/image_p12_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 12
+image_path = "images/image_p12_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 12
+image_path = "images/image_p12_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 12
+image_path = "images/image_p12_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 12
+image_path = "images/image_p12_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 12
+image_path = "images/image_p12_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 12
+image_path = "images/image_p12_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 12
+image_path = "images/image_p12_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 12
+image_path = "images/image_p12_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 12
+image_path = "images/image_p12_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 12
+image_path = "images/image_p12_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 13
+image_path = "images/image_p13_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 13
+image_path = "images/image_p13_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 13
+image_path = "images/image_p13_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 13
+image_path = "images/image_p13_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 13
+image_path = "images/image_p13_78.png"

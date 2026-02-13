@@ -1,0 +1,898 @@
+Mon. Not. R. Astron. Soc. 000, 000–000 (0000)
+
+Printed 15 November 2021
+
+(MN LATEX style file v2.2)
+
+arXiv:1207.5805v2 [astro-ph.HE] 6 Nov 2012
+
+Multiwavelength spectral evolution during the 2011 outburst of the
+very faint X-ray transient Swift J1357.2–0933
+M. Armas Padilla1 ⋆ , N. Degenaar2 , D. M. Russell3 and R. Wijnands1
+1 Astronomical Institute ”Anton Pannekoek”, University of Amsterdam, Postbus 94249, 1090 GE Amsterdam, The Netherlands
+2 University of Michigan, Department of Astronomy, 500 Church St, Ann Arbor, MI 48109, USA
+3 Instituto de Astrofı́sica de Canarias (IAC), Vı́a Láctea s/n, La Laguna 38205, S/C de Tenerife, Spain
+
+15 November 2021
+
+ABSTRACT
+
+We report our multiwavelength study of the 2011 outburst evolution of the newly discovered black hole candidate X-ray binary Swift J1357.2–0933. We analysed the Swift X-ray
+telescope and Ultraviolet/Optical telescope (UVOT) data taken during the ∼7 months duration
+of the outburst. It displayed a 2-10 keV X-ray peak luminosity of ∼ 1035 (D/1.5 kpc)2 erg s−1
+which classifies the source as a very faint X-ray transient. We found that the X-ray spectrum at
+the peak was consistent with the source being in the hard state, but it softened with decreasing
+luminosity, a common behaviour of black holes returning to quiescence from the hard state.
+The correlations between the simultaneous X-ray and ultraviolet/optical data suggest a system with a black hole accreting from a viscous disc, and we do not detect X-ray reprocessing
+on the disc surface. The UVOT filters provide the opportunity to study these correlations up
+to ultraviolet wavelengths, a regime so far unexplored. If the black hole nature is confirmed,
+Swift J1357.2–0933 would be one of the very few established black hole very-faint X-ray
+transients.
+Key words: X-rays:binaries –stars:individual: Swift J1357.2–0933–accretion, accretion discs
+
+1 INTRODUCTION
+X-ray binaries are the brightest X-ray point sources in our Galaxy.
+They are black holes (BH) or neutron stars (NS) accreting material
+from a companion star. The transient X-ray binaries alternate long
+epochs of quiescence during which they have X-ray luminosities
+of LX ∼ 1030−33 erg s−1 with outburst episodes during which
+the luminosity increases more than two orders of magnitude. The
+systems that reach a peak X-ray luminosity in their outbursts of
+only Lpeak
+∼ 1034−36 erg s−1 are called very-faint X-ray binary
+X
+transients (VFXTs). They are several orders of magnitude fainter at
+their peaks than the better studied faint (Lpeak
+∼ 1036−37 erg s−1 )
+X
+37−39
+−1
+and bright (Lpeak
+∼
+10
+erg
+s
+)
+systems
+(Wijnands et al.
+X
+2006).
+It is in the last decade that VFXTs have been investigated in
+detail thanks to the improvement in sensitivity and resolution
+of the X-ray instruments in orbit. However, even though the
+number of known sources has increased, their characteristics
+are still not well known. A considerable fraction of them have
+exhibited thermonuclear Type-I X-ray bursts, identifying the
+accretor as a NS (eg. Cornelisse et al. 2002; Del Santo et al. 2007;
+Chelovekov & Grebenev 2007; Degenaar & Wijnands 2009).
+
+⋆
+
+E-mail:M.Armaspadilla@uva.nl
+
+Swift J1357.2–0933 is a new VFXT BH candidate
+(Casares et al. 2011, Corral-Santana et al. 2012 submitted, private
+communication) discovered with the Swift Burst Alert Telescope
+(BAT; Barthelmy et al. 2005) on 2011 January 28 (Krimm et al.
+2011). In the following days it was observed with several Xray satellites as well as ground-based telescopes. The MPI/ESO
+2.2m telescope at La Silla detected a new optical source within
+the Swift/BAT error circle. The magnitude difference compared to
+archival Sloan Digital Sky Survey (SDSS) images (when the source
+was in quiescence) was ∼6 mag. This indicates a Galactic origin,
+likely a low mass X-ray binary (LMXB) or a dwarf nova outburst
+(Rau et al. 2011), although the X-ray spectrum pointed to a LMXB
+nature (Krimm et al. 2011). The SDSS photometry indicated that
+the quiescent counterpart was very red and that the companion
+was likely an M4 star. This resulted in a distance estimate of ∼1.5
+kpc (Rau et al. 2011). In this work we present analysis of the Swift
+X-ray and ultraviolet–optical (UV/optical) data of Swift J1357.2–
+0933 along its 2011 outburst.
+
+2 OBSERVATIONS AND ANALYSIS
+Immediately following its discovery Swift J1357.2–0933 was monitored with the Swift satellite (Gehrels et al. 2004) throughout its
+outburst both with the X-ray telescope (XRT; Burrows et al. 2005)
+and the Ultraviolet/Optical telescope (UVOT; Roming et al. 2005),
+
+2
+
+M. Armas Padilla et al.
+
+which lasted ∼7 months. A total of 42 pointings were performed
+during this period, for a total exposure time of 54.8 ks. A log of the
+observations is given in Table 1. The observations were performed
+daily in the first 10 days, and once every 2 days in the following
+month. After that, the observations were separated by 1 to 2 weeks.
+
+95 per cent confidence upper limits on the flux with WebPIMMS
+HEASARC tool3 . An absorbed power-law model with a hydrogen
+column density (NH ) of 1.2×1020 cm−2 (see Section 3) was
+assumed. We used a photon index of Γ=2.13 which corresponds to
+the value we obtained in the last observation where the source was
+detected.
+
+2.1 XRT data
+
+In order to improve the statistics we have also combined observations that were performed within a few days time span and
+that yielded comparable fluxes. As such, we have combined observations 03–05, 07–12, 13–15, 17–20, 21–25, 26–20, 30–33, 34–37,
+38–41 and 43–44. We extracted the combined spectra, lightcurves
+and images in the same way as the individual cases. We merged
+the individual exposure maps created for each image using the task
+ximage.
+
+The Swift/XRT observations were obtained both in photoncounting (PC) and windowed timing (WT) modes. Due to the
+high flux of Swift J1357.2–0933 the XRT was operated in WT
+mode in the early observations in order to avoid pile-up (except for
+the first observation; see below). When the count rate was below
+0.5 count/s the observations were taken in PC mode (see Table 1).
+The data were processed using the HEASoft v.6.11 software. The
+raw data were reduced running the xrtpipeline task in which
+standard event grades of 0–12 were selected for the PC data and
+0–2 for the WT mode observations.
+For every observation, spectra, lightcurves and images were
+obtained using Xselect. The regions to extract the source events
+both for PC and WT modes were centred at the source position
+(RA=13h 57m 16.s 86, Dec=-09◦ 32′ 38.′′ 9, J2000, 0.′′ 42 error radius;
+Krimm et al. 2011). For the WT data, we used a circle of ∼27 pixels of radius for the source and for the background extraction we
+used an annulus centred on the source with ∼64 pixels for the inner
+radius and ∼118 pixels for the outer radius. In the case of the PC
+mode observations, the region used was a circle of ∼10 pixels of
+radius for the source and for the background three circular regions
+with the same size located in nearby source-free regions.
+To look for eclipses, dips or X-ray bursts we checked the
+lightcurves with different bin–sizes extracted for each observation.
+We did not detect any evidence or feature that suggest modulations
+or a pattern in the source flux, although we cannot rule out with
+high confidence the presence of any modulations due to the low
+count rate. We created the exposure maps in order to correct for
+the effect of bad columns on the CCD, which in turn are used to
+create the ancillary response files using the xrtmkarf task. The
+latest versions of the response matrix files (v.14) were taken from
+the HEASARC calibration database. Finally, with grppha we
+grouped the spectra to have a minimum of 20 photons per bin to be
+able to consistently use the χ2 . Due to the low number of counts
+collected during observations 38/39/40/411 , we fitted these data
+using both C-statistic and χ2 but grouped them with a minimum of
+5 photons per bin. The results using both methods were consistent
+with each other.
+The first observation 01 was taken in PC mode which is
+severely affected by pile-up. It has a count rate of 2.3 c/s, while the
+pile-up becomes considerable in PC mode for count rates above
+∼0.6 c/s (Evans et al. 2009; see also the Swift/XRT analysis web2 ).
+Therefore we do not include this observation in our analysis. In
+the last two XRT observations (43/44) the source was not detected.
+The count rates were calculated using the prescription for small
+numbers of counts given by Gehrels (1986). We calculated the
+
+1
+
+We refer to the observations with the last two numbers of their
+observation-ID’s in the main text. The full observation–ID’s are in Table
+1
+2 http://www.swift.ac.uk/analysis/xrt/xselect.php
+
+2.2 UVOT data
+The UVOT observations were performed in image mode. Most of
+them were taken with 6 filters (v, b, u, uvw1, uvm2, uvw2) but
+some of them with only a few filters and sometimes only one.
+We calculated the source’s magnitude (in the Vega system) and
+flux densities with the uvotsource tool, which performs aperture photometry on the sky images. We selected a circular region
+with a radius of 5 arcsec centred on the source and a circular region source–free with a radius of 18 arcsec for the background
+correction. We corrected the magnitudes and fluxes for the Galactic extinction. The reddening is E(B–V)=0.04 mag in the direction
+of Swift J1357.2–0933 (Schlegel et al. 1998). Using this value and
+the prescription of Pei (1992) we calculate the extinction for every band. The obtained values are Av =0.123, Ab =0.163, Au =0.193,
+Auvw1 =0.263, Auvm2 =0.387 and Auvw2 =0.349. The source is located at high Galactic latitude (b=50.0042) and for a distance of
+1.5 kpc or larger, the source will be located outside the plane of
+the Galaxy. Therefore, the measured column density (or reddening) corresponds to the full Galactic one in that direction. In case
+of no source detection the uvotsource tool returns a 3–sigma
+upper limit for the magnitudes.
+
+3 RESULTS
+3.1 X-ray light curve and spectra
+We fitted the spectra using XSPEC (v 12.7.0). All observations
+were well fitted with a simple power–law (powerlaw) affected
+by photoelectric absorption (phabs). We assumed a column
+density to Swift J1357.2–0933 of 1.2 ×1020 cm−2 constant with
+time. We inferred this value from the high-resolution X-ray spectra
+obtained with XMM-Newton (Armas Padilla et al. 2012 in prep),
+which is consistent with that reported by Krimm et al. (2011). The
+results are reported in Table 1, where the flux errors have been
+calculated following the procedure presented by Wijnands et al.
+(2004). We also tried other single component models like a blackbody (bbodyrad) and an accretion disk consisting of multiple
+blackbody components (diskbb, Makishima et al. 1986) but both
+models could not fit the data accurately (χ2ν > 3 and χ2ν > 1.5,
+respectively). A two component model (diskbb+powerlaw)
+can fit the data as well, however it does not improve the best fit of
+the single power–law model and the additional thermal component
+3
+
+Available from http://heasarc.gsfc.nasa.gov/Tools/w3pimms.html
+
+Multiwavelength spectral evolution of Swift J1357.2–0933
+
+3
+
+Table 1. Log and XRT spectral results for Swift J1357.2–0933.
+Obs-ID
+
+Date
+
+Mode
+
+Exp-time (ksec)
+
+Γ
+
+FX,abs a
+
+FX,unabs a
+
+LX b
+
+χ2ν /d.o.f.
+
+31918002
+31918003
+31918004
+31918005
+31918007
+31918008
+31918009
+31918010
+31918011
+31918012
+31918013
+31918014
+31918015
+31918016
+31918017
+31918018
+31918019
+31918020
+31918021
+31918022
+31918023
+31918024
+31918025
+31918026
+31918027
+31918028
+31918029
+31918030
+31918031
+31918032
+31918033
+31918034
+31918035
+31918036
+31918037
+31918038
+31918039
+31918040
+31918041
+31918043
+31918044
+
+2/1/11
+2/2/11
+2/3/11
+2/4/11
+2/6/11
+2/7/11
+2/8/11
+2/9/11
+2/10/11
+2/11/11
+2/16/11
+2/18/11
+2/20/11
+2/24/11
+2/26/11
+2/28/11
+3/2/11
+3/4/11
+3/6/11
+3/8/11
+3/10/11
+3/12/11
+3/13/11
+3/16/11
+3/18/11
+3/20/11
+3/29/11
+4/3/11
+4/13/11
+4/20/11
+4/23/11
+4/28/11
+5/3/11
+5/8/11
+5/13/11
+6/15/11
+6/29/11
+7/14/11
+7/28/11
+8/23/11
+9/5/11
+
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+WT
+PC
+PC
+PC
+PC
+PC
+PC
+
+3.28
+0.98
+1.63
+1.65
+1
+1.1
+1.74
+1.14
+1.03
+1.19
+1
+1.25
+1.08
+0.49
+1.11
+1.39
+1.35
+1.31
+1.31
+1.3
+1.2
+1.38
+1.23
+0.25
+1.21
+1.22
+1.27
+1.45
+1.34
+1.56
+1.26
+1.24
+1.12
+1.02
+1.34
+1.15
+1.24
+1.07
+0.65
+1.19
+2.05
+
+1.53 ± 0.02
+1.59 ± 0.03
+1.56 ± 0.03
+1.56 ± 0.02
+1.54 ± 0.03
+1.53 ± 0.03
+1.52 ± 0.03
+1.57 ± 0.03
+1.55 ± 0.03
+1.56 ± 0.03
+1.53 ± 0.03
+1.53 ± 0.03
+1.53 ± 0.04
+1.57 ± 0.06
+1.61 ± 0.04
+1.57 ± 0.04
+1.56 ± 0.04
+1.53 ± 0.04
+1.57 ± 0.04
+1.52 ± 0.04
+1.55 ± 0.04
+1.57 ± 0.05
+1.58 ± 0.05
+1.53 ± 0.13
+1.6 ± 0.05
+1.52 ± 0.1
+1.57 ± 0.06
+1.61 ± 0.06
+1.47 ± 0.12
+1.63 ± 0.08
+1.6 ± 0.09
+1.73 ± 0.15
+1.79 ± 0.1
+1.72 ± 0.13
+1.69 ± 0.13
+1.87 ± 0.25
+1.89 ± 0.27
+1.76 ± 0.53
+2.13+1.86
+−0.95
+2.13 (fix)
+2.13 (fix)
+
+404 ± 6
+374 ± 7
+394 ± 7
+365 ± 6
+360 ± 7
+341 ± 6
+338 ± 6
+321 ± 6
+310 ± 6
+303 ± 5
+292 ± 6
+258 ± 5
+228 ± 5
+203 ± 7
+172 ± 4
+168 ± 4
+157 ± 4
+147 ± 4
+130 ± 4
+144 ± 4
+123 ± 3
+130 ± 4
+106 ± 3
+80.3 ± 6.6
+85.3 ± 2.8
+97.5 ± 5.8
+76.9 ± 3.1
+63.6 ± 2.2
+45.0 ± 3.2
+36.2 ± 1.6
+35.4 ± 1.8
+19.9 ± 1.7
+28.3 ± 1.7
+21.9 ± 1.6
+21.5 ± 1.6
+5.64 ± 0.70
+3.92 ± 0.51
+3.23 ± 0.85
+1.65 ± 0.81
+< 0.22
+< 0.07
+
+408 ± 6
+378 ± 7
+398 ± 7
+369 ± 5
+364 ± 7
+345 ± 6
+342 ± 6
+325 ± 6
+314 ± 6
+306 ± 5
+296 ± 6
+261 ± 5
+230 ± 5
+205 ± 7
+175 ± 4
+170 ± 4
+159 ± 4
+148 ± 4
+131 ± 4
+145 ± 4
+125 ± 3
+132 ± 4
+107 ± 3
+81.2 ± 6.5
+86.3 ± 2.8
+98.5 ± 5.8
+77.8 ± 3.1
+64.3 ± 2.2
+45.4 ± 3.2
+36.6 ± 1.6
+35.8 ± 1.8
+20.2 ± 1.7
+28.7 ± 1.6
+22.2 ± 1.6
+21.8 ± 1.6
+5.74 ± 0.69
+3.99 ± 0.50
+3.28 ± 0.84
+1.69 ± 0.79
+< 0.23
+< 0.08
+
+110 ± 2
+102 ± 2
+107 ± 2
+99.4 ± 1.5
+98.1 ± 1.8
+92.9 ± 1.7
+91.9 ± 1.6
+87.5 ± 1.7
+84.5 ± 1.7
+82.5 ± 1.5
+79.6 ± 1.7
+70.2 ± 1.4
+62.0 ± 1.4
+55.2 ± 1.9
+47.0 ± 1.1
+45.7 ± 1.0
+42.8 ± 1.0
+40.0 ± 1.0
+35.4 ± 1.0
+39.1 ± 1.0
+33.6 ± 0.9
+35.4 ± 1.0
+28.8 ± 0.9
+21.9 ± 1.7
+23.2 ± 0.8
+26.5 ± 1.6
+20.9 ± 0.8
+17.3 ± 0.6
+12.2 ± 0.8
+9.87 ± 0.43
+9.63 ± 0.49
+5.45 ± 0.46
+7.73 ± 0.44
+5.97 ± 0.43
+5.87 ± 0.44
+1.54 ± 0.19
+1.07 ± 0.13
+0.88 ± 0.23
+0.45 ± 0.21
+< 0.06
+< 0.02
+
+0.98 / 323
+1.09 / 258
+0.95 / 263
+0.98 / 313
+0.96 / 250
+0.95 / 260
+1.10 / 274
+0.90 / 244
+1.08 / 240
+0.94 / 260
+0.99 / 224
+0.88 / 239
+0.88 / 189
+1.02 / 99
+0.92 / 173
+0.78 / 203
+0.92 / 185
+1.02 / 174
+0.94 / 141
+0.97 / 160
+0.81 / 131
+1.12 / 114
+1.21 / 122
+0.97 / 22
+0.97 / 102
+0.88 / 45
+0.97 / 76
+0.95 / 93
+0.53 / 29
+1.02 / 60
+0.84 / 49
+1.10 / 26
+1.00 / 38
+1.04 / 25
+1.08 / 21
+0.95 / 31
+0.99 / 23
+1.00 / 10
+1.21 / 4
+–
+–
+
+Note.- NH has been fixed to 1.2 ×1020 cm−2 , value inferred from the high-resolution X-ray spectra obtained with XMM-Newton (Armas Padilla et al. 2012
+in prep), which is consistent with that reported by Krimm et al. (2011).
+a Flux in units of 10−12 erg cm−2 s−1 in the 0.5–10 keV energy band.
+b X-ray luminosity in units of 1033 erg s−1 calculated from the 0.5–10 keV unabsorbed flux by adopting a distance of 1.5 kpc.
+
+contributes only a few per cent of the total flux.
+
+the last two observations are between 2 and 6 × 1031 erg s−1 .
+
+In Fig. 1 we show the 0.5–10 keV light curve. The outburst has its maximum as observed during observation 02
+in the beginning4 , where the peak of the unabsorbed flux is
+4.1 × 10−10 erg cm−2 s−1 . This corresponds to a peak luminosity
+of 1.1 × 1035 erg s−1 assuming a distance of 1.5 kpc (Rau et al.
+2011). After this, the luminosity monotonically decreases until
+the source goes undetected using the XRT ∼180 days after the
+discovery date. The upper–limits on the luminosity calculated from
+
+Plotting the photon index evolution with time (Fig. 1) shows
+that the photon index increases from a value of Γ ∼1.5 to a
+value of Γ ∼2 indicating that the spectra became softer during
+the decay of the outburst. This softening behaviour is also seen
+when using the hardness ratio (HR; Fig.1 left panel). The hardness
+ratio is defined as the ratio between the counts in the hard band
+(2–10 keV) and the counts in the soft band (0.5–2 keV). We have
+performed the same analysis when combining sets of observations
+(see Section 2.1). The result is shown in Fig. 1 right panel. Due to
+the smaller error bars, the increase of the photon index and the HR
+decay are more clearly visible.
+
+4
+
+Observation 01 could be brighter, but due to the strong pile-up it was not
+included in the analysis.
+
+4
+
+M. Armas Padilla et al.
+
+Figure 1. In both plots the upper panel is the light curve (0.5-10 keV; assumed distance of 1.5 kpc), the central panel is the photon index evolution with time,
+and the bottom panel is the hardness ratio evolution with time (ratio of the counts in the hard, 2-10 keV, and soft, 0.5-2 keV energy bands). All data are plotted
+in the left figure, whereas in the right figure we present the result of the combined sets of observations (see Section 2.1).
+
+3.2 Ultraviolet/optical and X-ray correlation
+The Swift/UVOT observations were taken simultaneously with the
+X-ray ones. Most of the observations were taken with all six filters,
+which allows us to study the correlation between the X-ray and
+the UV/optical emission along the outburst. Fig. 2 shows the Xray light curve and the UV/optical magnitudes in the Vega system.
+The last UVOT detection (u band) was 203 days after the first detection when the source was already undetected in X-ray. Over the
+course of the outburst the brightness in all bands is decreasing simultaneously with the decline in the X-rays. This resulted in a clear
+correlation between X-ray and UV/optical fluxes which is shown in
+Fig. 3. We have assumed a power-law model to fit these correlations
+and calculate the correlation slopes β (FU V /optical ∝ FX β ). We
+have calculated β for every UVOT band and for the X-ray flux in
+the 2–10 keV energy range in order to compare them with values in
+previous publications (e.g. Russell et al. 2006). However, the spectral resolution of Swift/XRT allows us to also measure the correlation slopes for X-ray fluxes in the 0.5–10 keV energy range. The
+results are shown in Table 2. Clearly β increases towards shorter
+wavelengths, going from 0.2 in the v band to 0.37 uvw2 (using the
+0.5–10 keV energy range). The numbers become 0.19 to 0.35 in the
+2–10 keV range (see Fig. 4).
+
+4 DISCUSSION
+We have analysed the XRT and UVOT data taken over the
+∼7 months duration of the 2011 outburst of the newly discovered
+candidate black hole LMXB Swift J1357.2–0933. We fitted the
+
+Table 2. Correlation slope between UV/optical and X-ray fluxes
+(FU V /optical ∝ FX β ). λef f is the effective wavelength for each band.
+UVOT/Band
+v
+b
+u
+uvw1
+uvm2
+uvw2
+
+λef f
+(Å)
+
+0.5–10 KeV
+
+β
+2–10 keV
+
+5402
+4329
+3501
+2634
+2231
+2030
+
+0.203 ± 0.019
+0.237 ± 0.011
+0.293 ± 0.007
+0.321 ± 0.007
+0.374 ± 0.007
+0.370 ± 0.006
+
+0.199 ± 0.017
+0.232 ± 0.011
+0.286 ± 0.006
+0.311 ± 0.006
+0.357 ± 0.006
+0.358 ± 0.005
+
+Swift/XRT spectra using a simple power-law model affected by
+absorption. The peak flux was reached at the beginning of the
+outburst, after which, it steadily decreased until the source went undetected with XRT ∼180 days after its discovery. The unabsorbed
+peak flux has a value of FX,unabs = 4.1× 10−10 erg cm−2 s−1 in
+the 0.5–10 keV energy range, which corresponds to an outburst
+peak luminosity of LX =1.1× 1035 erg s−1 assuming a distance of
+1.5 kpc. This low peak luminosity classifies Swift J1357.2–0933
+as a VFXT, which have peak luminosities Lpeak
+<1036 erg s−1 .
+X
+Even if the source was located at a distance of 8 kpc the inferred
+peak luminosity is a few times 1036 erg s−1 , still in the faint
+regime. However, such long distance is unlikely since the high
+Galactic latitude (b=50.0042) would place Swift J1357.2–0933 at
+6 kpc above the Galactic plane.
+
+Multiwavelength spectral evolution of Swift J1357.2–0933
+
+5
+
+Figure 4. Correlation slopes (β) between the UVOT bands and the X-ray
+flux in the 0.5–10 keV and 2–10 keV energy bands.
+
+considerably softer, with a photon index regime from Γ=2.0 to
+Γ=2.7. The reason for Swift J1357.2–0933 to have harder spectra
+than XTE J1719–291 could be a difference in the nature of their
+compact objects. Although it is not established, the characteristics
+of XTE J1719–291 favour a NS accretor (Armas Padilla et al.
+2011) whereas Swift J1357.2–0933 has been identify as a strong
+BH candidate system using optical spectroscopy (Casares et al.
+2011, Corral-Santana et al. 2012 submitted, private communication).
+Figure 2. In the top panel the X-ray light curve in the 0.5–10 keV energy band for a distance of 1.5 kpc is shown while in the bottom panel the
+UV/optical light curves in the Vega system are plotted
+
+Figure 3. Correlation between the UV/optical density fluxes and the X-ray
+2–10 keV flux.
+
+The system was in the hard state at peak of the outburst and
+remained in this state throughout the outburst, which is usual at
+these low X-ray luminosities (see Belloni 2010 for the state definitions). From the first observation until the last one the spectral
+index of the power law increases from 1.5 to 2.1. As can be seen in
+Fig. 1, the X-ray luminosity and photon index are anti-correlated.
+The softening can also be seen in the HR curve demonstrating that
+it does not depend on assumed spectral model. It shows how the
+spectrum becomes softer as the luminosity decays (Fig. 1). Such
+softening behaviour was also present in the VFXT XTE J1719–291
+(Armas Padilla et al. 2011), but for this source the spectra were
+
+The upper-limit on the luminosity inferred from the nondetections in the last two observations is LX ∼ 2×1031 erg s−1 .
+This could indicate that the nature of the accretor is a BH
+since they typically have quiescent luminosities in the range of
+LX ∼ 1030 − 1031 erg s−1 while the NS’s usually have quiescent
+luminosities LX >1032 erg s−1 (but see Jonker et al. 2007 for an
+exception).
+Several other BH sources have shown softening in their X-ray
+spectra at low luminosities. XTE J1650–500 softened in its 20012002 outburst. The photon index changed from Γ=1.66 to Γ=1.93
+when the luminosity decayed to 2×1034 erg s−1 (Tomsick et al.
+2004). Also at these intermediate luminosities 4U 1543–47 evolved
+from a photon index of Γ=1.64 in its hard state to a photon index
+of Γ=2.22 at lower LX (Kalemci et al. 2005). By studying a sample of 7 BHs in their quiescence state, Corbel et al. (2006) arrived
+to the conclusion that all BHs are softer in quiescence than in the
+standard hard state. Using a study of 25 BHs, Dunn et al. (2010)
+presented data from which the same conclusion can be inferred:
+when data are available, the sources show softening towards quiescence. However, in the 2008 outburst decay of H 1743–322 to quiescence, Jonker et al. (2010) did not see any evidence of softening,
+although it cannot be ruled out that this is caused the inaccuracy in
+the photon index due to the high NH .
+
+4.1 X-ray and UV/optical simultaneous data: A
+non-irradiated accretion disc
+The proximity and the low Galactic extinction towards
+Swift J1357.2–0933 have made it possible to obtain X-ray
+and UV/optical data simultaneously using XRT and UVOT
+instruments on board Swift. Until today this had not been possible
+for any VFXT since, in addition to their low luminosity, the vast
+
+6
+
+M. Armas Padilla et al.
+
+majority are located towards the Galactic centre, which makes
+it very difficult to detect the optical counterpart due to the high
+Galactic absorption.
+The optical/UV and X-ray fluxes are strongly correlated during
+the outburst (Fig. 2). Russell et al. (2006) quantified the disc and
+jet contribution from the optical/infrared and X-ray (2-10 keV)
+correlation in the hard state. Based on the values of β expected
+from the different emission processes (sections 3.3 and 3.4 of
+their work), our correlation in the v band is consistent with a BH
+accreting via a non irradiated viscous disc. For a viscously heated
+disc, 0.15 ⩽ β ⩽ 0.25 is expected in the case of a BH (for V-band
+optical and 2–10 keV X-ray), and for Swift J1357.2–0933 we find
+β = 0.2 (Table 2). For a NS, 0.3 ⩽ β ⩽ 0.5 is predicted, so our
+correlation is consistent with optical emission from a viscously
+heated disc around a BH accretor. Higher values of β are expected
+if the optical emission originates in an irradiated accretion disc or
+a jet.
+Additionally, Frank et al. (2002) predict a dependency of the slopes
+β with the wavelength. For optical emission from a viscously
+heated steady-state disc, β increases at shorter wavelengths. This
+is consistent with our results, where β increases from 0.2 in the
+v band to 0.35 in the uvw2 one (see Table 2). Therefore, all the
+evidence favours UV/optical emission dominated by the viscously
+heated disc, with little or no X-ray irradiation detected.
+
+ACKNOWLEDGMENTS
+MAP acknowledges J. Corral-Santanta and J. Casares for useful
+discussion on the nature of the source. MAP and RW are supported by an European Research Council Starting Grant awarded
+by RW. RW also acknowledge support from The European Community’s Seventh Framework Programme (FP7/2007-2013) under
+grant agreement number ITN 215212 Black Hole Universe. ND is
+supported by NASA through Hubble Postdoctoral Fellowship grant
+number HST-HF-51287.01-A from the Space Telescope Science
+Institute (STScI). D.M.R is supported by a Marie Curie Intra European Fellowship within the 7th European Community Framework
+Programme under contract No. IEF 274805.
+
+REFERENCES
+Armas Padilla M., Degenaar N., Patruno A., Russell D. M.,
+Linares M., Maccarone T. J., Homan J., Wijnands R., 2011, MNRAS, 417, 659
+Barthelmy S. D., Barbier L. M., Cummings J. R., Fenimore
+E. E., Gehrels N., Hullinger D., Krimm H. A., Markwardt C. B.,
+Palmer D. M., Parsons A., Sato G., Suzuki M., Takahashi T.,
+Tashiro M., Tueller J., 2005, Space Sci. Rev., 120, 143
+Belloni T. M., 2010, in T. Belloni ed., Lecture Notes in Physics,
+Berlin Springer Verlag Vol. 794 of Lecture Notes in Physics,
+Berlin Springer Verlag, States and Transitions in Black Hole Binaries. pp 53–+
+Burrows D. N., Hill J. E., Nousek J. A., Kennea J. A., Wells A.,
+Osborne J. P., Abbey A. F., Beardmore A., Mukerjee K., Short
+A. D. T., Chincarini G., Campana S., Citterio O., Moretti A.,
+Pagani e. a., 2005, Space Sci. Rev., 120, 165
+Casares J., Torres M. A. P., Negueruela I., Gonzalez-Fernandez
+C., Corral-Santana J. M., Zurita C., Llano S. R., 2011, The Astronomer’s Telegram, 3206, 1
+
+Chelovekov I. V., Grebenev S. A., 2007, Astron. Lett. , 33, 807
+Corbel S., Tomsick J. A., Kaaret P., 2006, ApJ, 636, 971
+Cornelisse R., Verbunt F., in’t Zand J. J. M., Kuulkers E., Heise J.,
+Remillard R. A., Cocchi M., Natalucci L., Bazzano A., Ubertini
+P., 2002, A&A, 392, 885
+Degenaar N., Wijnands R., 2009, A&A, 495, 547
+Del Santo M., Sidoli L., Mereghetti S., Bazzano A., Tarana A.,
+Ubertini P., 2007, A&A, 468, L17
+Dunn R. J. H., Fender R. P., Körding E. G., Belloni T., Cabanac
+C., 2010, MNRAS, 403, 61
+Evans P. A., Beardmore A. P., Page K. L., Osborne J. P., O’Brien
+P. T. e. a., 2009, MNRAS, 397, 1177
+Frank J., King A., Raine D. J., 2002, Accretion Power in Astrophysics: Third Edition
+Gehrels N., 1986, ApJ, 303, 336
+Gehrels N., Chincarini G., Giommi P., Mason K. O., Nousek J. A.,
+Wells A. A., White N. E., Barthelmy S. D., Burrows D. N.,
+Cominsky L. R., Hurley K. C., Marshall F. E., Mészáros P.,
+Roming P. W. A., Angelini L., Barbier L. M. e. a., 2004, ApJ,
+611, 1005
+Jonker P. G., Miller-Jones J., Homan J., Gallo E., Rupen M., Tomsick J., Fender R. P., Kaaret P., Steeghs D. T. H., Torres M. A. P.,
+Wijnands R., Markoff S., Lewin W. H. G., 2010, MNRAS, 401,
+1255
+Jonker P. G., Steeghs D., Chakrabarty D., Juett A. M., 2007, ApJ,
+665, L147
+Kalemci E., Tomsick J. A., Buxton M. M., Rothschild R. E.,
+Pottschmidt K., Corbel S., Brocksopp C., Kaaret P., 2005, ApJ,
+622, 508
+Krimm H. A., Barthelmy S. D., Baumgartner W., Cummings J.,
+Fenimore E., Gehrels N., Markwardt C. B., Palmer D., Sakamoto
+T., Skinner G., Stamatikos M., Tueller J., Ukwatta T., 2011, The
+Astronomer’s Telegram, 3138, 1
+Krimm H. A., Kennea J. A., Holland S. T., 2011, The Astronomer’s Telegram, 3142, 1
+Makishima K., Maejima Y., Mitsuda K., Bradt H. V., Remillard
+R. A., Tuohy I. R., Hoshi R., Nakagawa M., 1986, ApJ, 308, 635
+Pei Y. C., 1992, ApJ, 395, 130
+Rau A., Greiner J., Filgas R., 2011, The Astronomer’s Telegram,
+3140, 1
+Roming P. W. A., Kennedy T. E., Mason K. O., Nousek J. A., Ahr
+L., Bingham R. E., Broos P. S., Carter M. J., Hancock B. K.,
+Huckle H. E., Hunsberger S. D., Kawakami H., Killough e. a.,
+2005, Space Sci. Rev., 120, 95
+Russell D. M., Fender R. P., Hynes R. I., Brocksopp C., Homan
+J., Jonker P. G., Buxton M. M., 2006, MNRAS, 371, 1334
+Schlegel D. J., Finkbeiner D. P., Davis M., 1998, ApJ, 500, 525
+Tomsick J. A., Kalemci E., Kaaret P., 2004, ApJ, 601, 439
+Wijnands R., Homan J., Miller J. M., Lewin W. H. G., 2004, ApJ,
+606, L61
+Wijnands R., in’t Zand J. J. M., Rupen M., Maccarone T., Homan
+J., Cornelisse R., Fender R., Grindlay J., van der Klis M., Kuulkers E., Markwardt C. B., Miller-Jones J. C. A., Wang Q. D.,
+2006, A&A, 449, 1117
+
+

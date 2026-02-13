@@ -1,0 +1,3662 @@
+                                         On Spectral Triples in Quantum Gravity I
+
+                                                     Johannes Aastrup a1 , Jesper Møller Grimstrup b2
+                                                                   & Ryszard Nest c3
+
+
+
+
+arXiv:0802.1783v1 [hep-th] 13 Feb 2008
+                                                a
+                                                    SFB 478 ”Geometrische Strukturen in der Mathematik”
+                                                        Hittorfstr. 27, D-48149 Münster, Germany
+
+                                                                  b
+                                                                  The Niels Bohr Institute
+                                                      Blegdamsvej 17, DK-2100 Copenhagen, Denmark
+
+                                                                      c
+                                                                      Matematisk Institut
+                                                    Universitetsparken 5, DK-2100 Copenhagen, Denmark
+
+
+
+                                                                           Abstract
+                                                 This paper establishes a link between Noncommutative Geometry
+                                             and canonical quantum gravity. A semi-finite spectral triple over a
+                                             space of connections is presented. The triple involves an algebra of
+                                             holonomy loops and a Dirac type operator which resembles a global
+                                             functional derivation operator. The interaction between the Dirac op-
+                                             erator and the algebra reproduces the Poisson structure of General
+                                             Relativity. Moreover, the associated Hilbert space corresponds, up to
+                                             a discrete symmetry group, to the Hilbert space of diffeomorphism in-
+                                             variant states known from Loop Quantum Gravity. Correspondingly,
+                                             the square of the Dirac operator has, in terms of canonical quantum
+                                             gravity, the form of a global area-squared operator. Furthermore, the
+                                             spectral action resembles a partition function of Quantum Gravity.
+                                             The construction is background independent and is based on an in-
+                                             ductive system of triangulations. This paper is the first of two papers
+                                             on the subject.
+
+
+
+
+                                         1
+                                           email: johannes.aastrup@uni-muenster.de
+                                         2
+                                           email: grimstrup@nbi.dk
+                                         3
+                                           email: rnest@math.ku.dk
+
+                                                                               1
+Contents
+1 Introduction                                                               3
+  1.1 Outline of the construction . . . . . . . . . . . . . . . . . . . .    9
+
+2 Projective systems of simplicial complexes                                12
+  2.1 Simplicial complexes and their loop algebras . . . . . . . . . .      13
+  2.2 Loop group homomorphisms and connections . . . . . . . . . .          15
+  2.3 The projective system . . . . . . . . . . . . . . . . . . . . . .     17
+
+3 A spectral triple on a simplicial complex                                 19
+  3.1 Outline of the construction. . . . . . . . . . . . . . . . . . . .    19
+  3.2 Notation and basic setup . . . . . . . . . . . . . . . . . . . . .    20
+  3.3 The Hilbert space . . . . . . . . . . . . . . . . . . . . . . . . .   21
+  3.4 The Dirac operator . . . . . . . . . . . . . . . . . . . . . . . .    22
+  3.5 The general Dirac operator associated to Ki . . . . . . . . . .       25
+
+4 The limit of the triple pBn , Dn , Hn q                                   27
+  4.1 A semi-finite spectral triple . . . . . . . . . . . . . . . . . . .   28
+                   
+  4.2 The space A and generalised connections . . . . . . . . . . .         30
+  4.3 Gauge transformations . . . . . . . . . . . . . . . . . . . . . .     32
+  4.4 The commutator between D and the algebra B . . . . . . . .          33
+  4.5 The role of the sequence tan u . . . . . . . . . . . . . . . . . .    35
+
+5 Link to canonical quantum gravity I. Operator brackets.                 36
+  5.1 Canonical gravity . . . . . . . . . . . . . . . . . . . . . . . . . 37
+  5.2 Canonical Quantum Gravity . . . . . . . . . . . . . . . . . . . 39
+
+6 Link to Canonical Quantum Gravity II. Diffeomorphisms.                    43
+  6.1 Functional spaces of connections in Loop Quantum Gravity . .          43
+                                       a
+      6.1.1 Projective structure on A . . . . . . . . . . . . . . . .       44
+      6.1.2 Actions of the diffeomorphism group . . . . . . . . . .         45
+                                     a
+  6.2 Comparing the spaces A and A . . . . . . . . . . . . . . . .          45
+
+7 Area operators                                                         49
+  7.1 Area operators in Loop Quantum Gravity . . . . . . . . . . . 49
+  7.2 A global area operator . . . . . . . . . . . . . . . . . . . . . . 50
+
+8 The spectral action                                                       51
+
+
+                                      2
+9 Including the sequences tan u as dynamical variables                         53
+  9.1 The space of permissible sequences tai u . . . . . . . . . . . . .       54
+  9.2 A spectral triple over R8 . . . . . . . . . . . . . . . . . . . . .      56
+  9.3 θ-summability . . . . . . . . . . . . . . . . . . . . . . . . . . .      59
+  9.4 The U p1q-case . . . . . . . . . . . . . . . . . . . . . . . . . . .     59
+  9.5 The triple pBt , Dt , Ht q . . . . . . . . . . . . . . . . . . . . . .   61
+                      
+10 Distances on A                                                              63
+
+11 Discussion                                                                  65
+   11.1 The quantization scheme . . . . . . . . . . . . . . . . . . . . .      65
+   11.2 The group diffp△q and the question of constraints . . . . . . .        67
+   11.3 Background independence . . . . . . . . . . . . . . . . . . . .        68
+   11.4 Additional degrees of freedom . . . . . . . . . . . . . . . . . .      69
+
+12 Conclusion and outlook                                                      71
+
+A A spectral triple without the basepoint                                      77
+
+B On diffeomorphism invariance                                                 78
+
+C Symmetric states                                                             80
+
+
+1     Introduction
+Ever since the discovery of the Standard Model of Particle Physics physicists
+have worked to understand the apparently arbitrary structure of this the-
+ory. Natures choice of gauge group, the Higgs sector, the 20-30 apparently
+unrelated parameters etc. almost begs for a deeper explanation.
+    With the pioneering work of Alain Connes and co-workers on the Standard
+Model [1]-[8] such an explanation now appears to emerge. In Connes’ work
+the Standard Model coupled to General Relativity is expressed as a single
+gravitational theory. The language used for this unification is Noncommu-
+tative Geometry [1]. Within this framework, and under a few mathematical
+assumptions, the Standard Model coupled to gravity can be shown to be
+almost unique [7, 8].
+    Noncommutative Geometry is based on the result [1, 9] that Riemannian
+spin geometry has an equivalent formulation in terms of commutative -
+
+
+                                       3
+algebras and Dirac operators. In this formulation it is the Dirac operator that
+carries metric information of the underlying manifold which is now written
+as the spectrum of the -algebra. In total, a Riemannian spin geometry can
+be described in terms of a spectral triple which is the collection pB, H, D q of
+the algebra B, the Dirac operator D and the Hilbert space H which carries
+a representation and action of B and D. To obtain equivalence the triple is
+required to satisfy a set of axioms of Noncommutative Geometry.
+    The language of spectral triples has a natural generalisation which in-
+cludes also noncommutative -algebras and corresponding Dirac type opera-
+tors. It is this generalisation which leads to the aforementioned formulation
+of the Standard Model. It turns out that the classical action of the Standard
+Model coupled to the Einstein-Hilbert action emerges from a spectral action
+principle applied to a specific spectral triple [3, 4, 5]. This triple involves
+an almost commutative -algebra which is an algebra that factorises into a
+commutative part times a matrix factor. This means that the classical action
+describing all fundamental physics4 emerges from an asymptotic expansion
+of the spectral action                    ¸
+                              TrφpD̃{λq     λ n cn .
+Here D̃ denotes the Dirac type operator D subjected to certain inner fluc-
+tuations stemming from the noncommutativity of the algebra. Without the
+matrix factor, that is, for a commutative -algebra, the same expression leads
+to the Einstein-Hilbert action alone. Thus, it is the inclusion of noncommuta-
+tive -algebras in the language of spectral triples that permits the formulation
+of all fundamental forces and particles in terms of pure gravity.
+    This success of Noncommutative Geometry as a framework to describe
+fundamental physics in a unified manner raises, however, a fundamental ques-
+tion regarding quantization. The Standard Model by itself is a quantum
+field theory. However, in its noncommutative formulation it arises as an
+integrated part of a purely gravitational theory. This theory is essentially
+classical. Quantum Field Theory enters the construction in a secondary step
+where the spectral action has been expanded in a gravitational sector involv-
+ing only the metric field and a matter sector including all the fermionic and
+bosonic fields of the Standard Model. Quantization is applied to the latter
+sector only.
+    So this is the question: how does the quantization procedure of Quantum
+Field Theory fit into the language of Noncommutative Geometry? Since the
+  4
+      Here we give the bosonic part only.
+
+                                            4
+structure of the Standard Model is so readily translated into the language of
+Noncommutative Geometry one would expect also Quantum Field Theory to
+have a corresponding translation. This question is further complicated by the
+intrinsic gravitational nature of Connes’ formulation of the Standard Model.
+If a notion of quantization does exist within this framework one would expect
+this to involve, at some level, Quantum Gravity.
+    This paper is motivated by these considerations. We wish to address the
+question regarding the inclusion of the quantization procedure in the general
+framework of Noncommutative Geometry and, in particular, in the noncom-
+mutative formulation of the Standard Model. We start the investigation with
+the assumption that the answer will involve some notion of Quantum Grav-
+ity. Thus, to guide our intuition we consult first canonical quantum gravity
+and one of its modern trends known as Loop Quantum Gravity [11]-[15].
+    Loop Quantum Gravity is an approach to non-perturbative Quantum
+Gravity which is based on a formulation of General Relativity in terms of
+Ashtekar variables [16, 17]. These variables include the Ashtekar connection
+and its conjugate variable, the inverse densitised dreibein. In Loop Quantum
+Gravity one takes as the classical phase space variables the holonomy loop
+of the Ashtekar connection and its conjugate, a certain flux vector. These
+variables are then used in a Dirac-type quantization procedure. This involves
+the representation of the corresponding Poisson structure on a kinematical
+Hilbert space as well as the formulation of constraints encoding the sym-
+metries of the classical theory. Here, the holonomy loops are represented
+as multiplication operators. This means that the kinematical Hilbert space
+involves functions over a space of connections.
+    On a technical level, Loop Quantum Gravity exploits the holonomy-
+formulation of gravity to recast the problem of quantizing gravity in terms
+of a inductive system of graphs. It turns out that the space of connections,
+when seen in terms of holonomies restricted to a specific graph, is a mani-
+fold. This manifold is related to the gauge group which, in the case of Loop
+Quantum Gravity, is SU p2q. This means that the space of connections itself
+is a pro-manifold, the projective limit of manifolds. This, in turn, permits a
+formulation of the quantization procedure on the level of finite graphs whose
+complexity are subsequently increased infinitely. This construction is due to
+Ashtekar and Lewandowski [18, 19].
+    In this paper we aim to construct a model which involves elements of
+both Noncommutative Geometry and Quantum Gravity. We use two central
+elements of Loop Quantum Gravity to obtain such a model. First, the fact
+
+                                      5
+that gravity can be formulated in terms of Wilson loops leads us to consider
+a spectral triple which involves an algebra of holonomy loops. These loop
+variables serve as functions on an underlying space of connections. Second,
+we wish to exploit the pro-manifold structure of the space of connections to
+describe the algebra of loops and to construct a Dirac type operator on the
+space of connections. This means that we aim to construct a spectral triple
+over each manifold associated to graphs in the projective system. These
+spectral triples are required to be compatible with all embeddings between
+graphs. This requirement will ensure that the limit where the complexity of
+graphs is increased infinitely gives rise to a limit spectral triple.
+    This program was initiated first in [20] (see also [21]) where the authors
+attempted to construct such a spectral triple. There the authors found that
+the inductive system of graphs used in Loop Quantum Gravity, which is the
+system of all piecewise analytic graphs, is too large to permit a Dirac type
+operator on the space of connections. Technically, the multitude of possible
+embedding of different graphs was found to be too large for a Dirac type
+operator compatible with all embeddings to exist.
+    In the present paper we return to this problem to consider now different
+systems of embedded graphs. In particular, we study the countable system of
+embedded graphs given by a triangulation and its barycentric subdivisions.
+It turns out that this restricted system of graphs does permit a Dirac type
+operator on the associated projective system of manifolds. Furthermore, we
+find that the limit of infinitely many barycentric subdivisions gives us an
+accurate description of the full space of connections as well as the associated
+algebra of holonomy loops. The construction is general and only assumes the
+gauge group G to be compact.
+    What we obtain is the following. Given a triangulation T and a compact
+Lie group G, we construct a spectral triple
+                              pB , D, Hq ,                              (1)
+where B is the -algebra of holonomy loops obtained via the inductive system
+of triangulations. The algebra is represented on the separable Hilbert space
+H which carries an action of the Dirac type operator D . If we denote by A
+the space of smooth connections in a trivial principal bundle M  G, where
+M is a manifold which corresponds to the triangulation T , then we find
+that A is densely contained in the pro-manifold associated to the algebra B .
+This means that the spectral triple (1) is a geometrical construction over the
+space of connections.
+
+                                       6
+    The construction of the spectral triple (1) depends, as mentioned, cru-
+cially on the choice of graphs. This choice is closely related to the group
+of diffeomorphisms acting on the Hilbert space H . We find that the choice
+of a restricted system of graphs amounts to a type of gauge fixing of the
+diffeomorphism group. Thus, the Hilbert space H does not carry an action
+of any smooth diffeomorphisms. Rather, it carries an action of a discrete
+group of diffeomorphisms associated to the inductive system of graphs. This
+means that the construction reduces the diffeomorphism group to a countable
+group.
+    The spectral triple (1) has a clear interpretation in terms of a non-
+perturbative, background independent Quantum Field Theory related to
+gravity. First of all, since the triple exists over a space of connections the
+Dirac type operator D should be interpreted as a global functional deriva-
+tion operator. Also, the Hilbert space H has an inner product which involves
+a functional integral. Next, we find that the interaction between the Dirac
+type operator D and the loop algebra B reproduces the Poisson structure
+of General Relativity. Furthermore, the Hilbert space H is found to be
+directly related to the Hilbert space of (spatial) diffeomorphism invariant
+states known from Loop Quantum Gravity [23]. The difference between the
+two is given by the group of discrete diffeomorphisms acting on H . Thus, we
+interpret the Hilbert space H in terms of a partial solution to the (spatial)
+diffeomorphism constraint.
+    The square of the Dirac type operator D has the form of an integral over
+the underlying manifold M. The integrand is a quantity which, in terms of
+canonical quantum gravity, has an interpretation as an area-squared density
+operator. This operator resembles the area operators known in Loop Quan-
+tum Gravity [24]. Furthermore, we suggest that pD q2 should be interpreted
+in terms of an action. This, in turn, gives the spectral action of D the form
+of a Feynman integral. Thus, at the core of the construction we find an
+object which resembles a partition function related to Quantum Gravity.
+    It is important to realize that the construction works in any dimension
+and does not require a foliation of the underlying manifold.
+    The construction of the Dirac type operator D involves an infinite di-
+mensional Clifford bundle. This structure entails the canonical anticommu-
+tation relations (CAR) algebra, which appears as a tensor factor acting on
+the Hilbert space H .
+    Technically, the triple (1) satisfies the requirements of a semi-finite spec-
+tral triple. This is due to the fact that the infinite dimensional Clifford bundle
+
+                                        7
+entails a large degeneracy of the spectrum of D which, naively, fails to have
+compact resolvent. The solution to this problem is, in short, to integrate
+out the symmetry group related to this degeneracy. This process leads to a
+semi-finite spectral triple.
+    The Dirac type operator D is gauge invariant. It is, however, not invari-
+ant under the group of discrete diffeomorphisms acting on H . This means
+that D is, by itself, not an observable in a physical sense. We suggest to
+apply a standard trick of Noncommutative Geometry: One obtains invari-
+ant quantities by multiplying the algebra of observables with the relevant
+symmetry group. A prime example of this method is the identification of
+two points: By applying the noncommutative trick one obtains, besides in-
+variance under exchange of the points, additional degrees of freedom which,
+ultimately, leads to the Higgs mechanism. In the present case we expect this
+general mechanism to entail further degrees of freedom.
+    Let us note in passing, that the algebra of holonomy loops that we work
+with in this paper is smaller than the correponding algebra of Wilson loops.
+However, the missing information is recovered by the Hopf algebra structure
+of the algebra of holonomy loops. The missing information is coded in the
+extra structure coming from the fact that it is given as a (norm closure of a)
+group algebra
+                             CrfL , L loops on S s ,
+where S denotes the entire inductive system of triangulations. As such it
+has a Hopf algebra structure and for example the connections on M can be
+recovered as Hopf algebra homomorphisms into the group algebra of G.
+    The construction of the Dirac type operator D is not unique. In fact,
+we find a large class of Dirac type operators labelled by infinite sequences
+tanu of real parameters. The operator D has compact resolvent whenever
+the sequence diverges sufficiently fast. These parameters are related to the
+scaling behaviour of the operator and are clearly of metric origin. Thus, in
+order to obtain a Dirac type operator D we are forced to choose a certain
+scaling behaviour.
+    It is clear that a correct interpretation of the sequence tan u is imperative
+since the existence of the operator D depends crucially hereon. In this paper
+we present one possible solution as to how these free parameters should be
+dealt with. We propose an extension of the spectral triple (1) to include
+the sequence tan u as dynamical degrees of freedom. The result is a new
+triple pBt , Dt , Ht q which is a fibration of spectral triples pB , D , H q. We
+
+
+                                        8
+                            ǫ1                       ǫ4
+                                 ǫ2
+                                        ǫ3
+
+
+                Figure 1: A graph Γ with edges tǫ1 , ǫ2 , ǫ3 , ǫ4 u.
+
+
+emphasise, however, that the question as to how the sequence tan u should
+be understood and dealt with remains open.
+    This paper is this first of two papers concerned with the spectral triple
+(1). This paper is primarily concerned with the general construction and
+physical interpretation of the triple. The second paper [22] deals with the
+concise mathematical construction.
+
+1.1    Outline of the construction
+Before we go into details we first give a brief outline of the construction. The
+first step is concerned with the formulation of a semi-finite spectral triple over
+a space of connections. The triple is, as mentioned, based on a -algebra of
+loops which we denote by B . A smooth loop l gives a map from the space
+of smooth connections, denoted A, into the structure group G
+
+                            l : ∇ Ñ Holp∇, lq P G ,
+
+ where Holp∇, lq is the holonomy of the connection ∇ P A along l and G is a
+compact connected Lie group. In order to describe the algebra of holonomy
+loops we first restrict the loop algebra to a finite graph Γ with edges ǫi (see
+figure 1.1). Seen from Γ the connection ∇ can be seen as point ∇ in the
+space Gn
+                         ∇  pg1 , . . . , gn q P Gn  AΓ ,
+
+
+                                         9
+where n is the number of edges in Γ and where gi  Holp∇, ǫi q is the holon-
+omy transform along the i’th edge. That is, a connection is given by its
+holonomy transforms along edges ǫi . Clearly, AΓ is a highly inaccurate pic-
+ture of the full space A of connections. However, one can show [22] that for
+a suitable choice of embedded graphs
+
+                       Γ1  Γ2  Γ3 . . .  Γn  . . .                     (2)
+
+the space A is densely contained in the limit space
+
+                                A  lim AΓn .
+                                        n   Ñ8
+This provides us with the strategy to construct a spectral triple over A. With
+the system of graphs given by nested triangulations we construct, at the level
+of each graph Γn , a spectral triple
+
+                                pBn, Dn, HnqΓ ,   n
+
+
+where the algebra Bn is generated by loops in Γn , the operator Dn is some
+Dirac operator on AΓn  Gn and where Hn  L2 pGn , ClpT  Gn qq. This triple
+is almost canonical and the little choice one has is mostly eliminated by the
+requirement that the construction of the triple should be compatible with
+structure maps
+                        Pnm : AΓn Ñ AΓm , n ¡ m
+between the different coarse-grained spaces of field configurations.
+   The Dirac type operator obtained in the limit is an operator on the space
+G8 and is of the general form
+
+                       a1 D1    a2 D2       ...   ak Dk   ...
+
+where Dk is an operator corresponding to a certain level in the projective sys-
+tem (2) and where the infinite sequence tak u determines the weight assigned
+to each operator Dk . We find that for sequences satisfying
+
+                       lim ak  8 sufficiently fast                        (3)
+                       k   Ñ8
+the limit spectral triple
+
+                    pB , D, Hq : nlim pB , D , H q
+                                       Ñ8 n n n Γ          n               (4)
+
+                                            10
+satisfies the requirements of a semi-finite spectral triple.
+    The second part of the construction is more tentative. This part is con-
+cerned with the infinite sequence tak u of free parameters which enters the
+construction of the semi-finite spectral triple pB , D , H q. The sequence tak u
+is readily seen to carry metric data since it determines the scaling behaviour
+of the operator D . Also, the sequence determines the measure that arises
+in the square of D . Furthermore, the choice of parameters tak u is related
+to the invariance properties of D . Based on these observations we choose to
+include the sequence tak u as dynamical parameters in the construction. This
+means that we first construct a spectral triple
+                               pAa, Da, Haq ,                                  (5)
+where elements in the algebra Aa are functions f px1 , x2 , . . .q on the moduli
+space of sequences tak u satisfying condition (3). The construction of the
+triple (5) is inspired by Higson and Kasparov [25]. The Hilbert space Ha is
+a L2 space of functions over this moduli space and Da is a Dirac operator
+hereon. Next, we merge the triple (5) with the triple (4) to obtain a total
+spectral triple
+                                pBt , Dt, Ht q ,                               (6)
+where the Dirac type operator Dt combines the operators D and Da . It
+is important to see that the first part of the Dirac operator, the operator
+D , depends on the parameters tak u which the second part, the operator Da ,
+probes. The exact form of this interdependency, which makes the operator
+Dt highly nontrivial, is governed by the requirement that Ha is a Hilbert
+space over an infinite dimensional space corresponding exactly to those se-
+quences tak u which leaves the operator D θ-summable.
+
+    The paper is organised as follows. Sections 2 - 4 give a self contained pre-
+sentation of the mathematical construction of the spectral triple pB , D , H q.
+Here, section 2 introduces the basic machinery used in this paper: First the
+loop algebra associated to an abstract simplicial complex and the concept
+of abstract connections associated to a simplicial complex. Thereafter pro-
+jective systems of simplicial complexes. In section 3 we construct a spectral
+triple on the level of a simplicial complex and in section 4 we obtain the
+triple pB , D , H q via an inductive limit of simplicial complexes.
+    Next, sections 5 - 8 are concerned with the physical significance of the
+spectral triple pB , D , H q. In section 5 we show that the spectral triple
+
+                                         11
+involves a representation of the Poisson algebra of General Relativity. Then
+in section 6 we give a detailed comparison between the setup presented in
+this paper and the setup used in Loop Quantum Gravity and find that the
+two constructions, on a technical level, differ primarily in the way the dif-
+feomorphism group is treated. Section 7 briefly reviews area operators in
+Loop Quantum Gravity and finds that the square of the Dirac operator D
+has a natural interpretation as a kind of global area operator. This leads
+naturally, in section 8, to an interpretation of the operator D2 in terms of an
+action. This, in turn, gives the spectral action of D a strong resemblance to
+a partition function related to gravity.
+    Then, in section 9, we describe the construction of the spectral triple
+pBt , Dt, Ht q which includes the sequence tak u as dynamical variables. Finally,
+in section 10 we mention that the Dirac type operator D defines a distance
+                  
+on the space A . Sections 11 and 12 contain a discussion and conclusion.
+Three appendices are added to outline first an extended setup which avoids
+the choice of a basepoint and next to discuss again a notion of diffeomorphism
+invariance. The last appendix is concerned with certain symmetric states.
+
+
+2     Projective systems of simplicial complexes
+As explained in the introduction, the aim is to study geometrical structures
+over a space of connections. To do this we apply a dual picture of the space of
+connections. This means that, rather than studying the space of connections
+itself, we will work with an algebra of functions on the space. This algebra
+is an algebra of loops and has a natural interpretation in terms of holonomy
+loops.
+    The purpose of this section is to introduce the machinery needed to de-
+scribe this algebra of loops. The strategy is to break up the algebra into
+finite parts, introduce various geometrical structures on each finite part and
+finally let the complexity of the construction increase infinitely to obtain the
+full algebra of loops.
+    To emphasise the purely combinatorial nature of the construction we
+adopt a formalism which, for the main part of the analysis, avoids any refer-
+ence to an underlying manifold. This means that we will work with abstract
+graphs and their loop algebras. An alternative approach is to work directly
+with graphs on a manifold and their loop algebras. This approach, which
+may be intuitively clearer, is applied in [22].
+
+
+                                       12
+        Figure 2: An abstract simplicial complex with directed edges.
+
+
+2.1     Simplicial complexes and their loop algebras
+We first introduce the notion of an abstract graph and its associated loop
+algebra. The abstract graphs we consider are given by simplicial complexes.
+Consider therefore first an abstract, finite, d-dimensional simplicial complex
+K with vertexes vi and directed edges
+
+                       ǫj : t0, 1u Ñ tvi u ,    ǫj p0q  ǫj p1q ,
+
+connecting the vertexes. We shall refer to the two elements of the set t0, 1u
+as start and endpoint of the edge. The construction which we present works
+for a large class of simplicial complexes. We will, however, restrict ourselves
+to simplicial complexes which corresponds to triangulations of d-dimensional
+manifolds.
+    We will consider based simplicial complexes which means that the com-
+plex has a preferred vertex v0 .
+    Given a simplicial complex K we wish to describe an algebra of based
+loops living on K. First, a path is a finite sequence L  tǫi1 , ǫi2 , . . . , ǫin u of
+edges in EK with the property that
+
+                                 ǫik p1q  ǫik 1 p0q .
+
+Next, a loop is a path satisfying
+
+                                    ǫi1 p0q  ǫin p1q ,
+
+and a based loop is a loop satisfying the additional requirement
+
+                                 ǫi1 p0q  ǫin p1q  v0 .
+
+
+                                          13
+By ǫj we denote the edge ǫj with reversed direction
+
+                            ǫj pτ q  ǫj p1  τ q ,            τ P t0, 1u .
+
+A path may contain both edges and their reverse. We discard trivial back-
+tracking by which we mean sequences that contain successions of edges ǫi
+and their reverse ǫi . Thus, we introduce the equivalence relation
+
+                      t. . . , ǫj , ǫk , ǫk , ǫl , . . .u  t. . . , ǫj , ǫl , . . .u ,
+and regard a path as an equivalence class with respect to this relation.
+   We define a product between two based loops Li  tǫji u, i P t1, 2u, simply
+by gluing
+                         L1  L2  ttǫj1 u, tǫj2 uu .
+Notice that this product is noncommutative.
+   The inversion of a based loop L  tǫj1 , . . . , ǫji , . . . , ǫjn u defined by
+
+                                L  tǫjn , . . . , ǫji , . . . , ǫj1 u ,
+
+is again a based loop and satisfy the requirements of an involution
+
+                        pLq  L , pL1  L2q  L2  L1 .
+Furthermore, we define the based identity loop L0 as the equivalence class
+that includes the empty loop
+
+                                             L0  tØu .
+
+The based identity loop clearly satisfies
+
+                          L0  L1  L1              based loops L1 .
+This, together with the observation that
+
+                                   L  L  L  L  L0 ,
+
+implies that, for based loops, the involution equals an inverse. This provides
+the set of based loops with a group structure. We call the group of based
+loops associated to K for the hoop group (holonomy loops, see [18]), denoted
+HGK .
+
+                                                     14
+   For the remaining part of this paper we shall consider only based loops
+and will therefore drop the prefix ’based’.
+   We finally consider formal, finite series of loops living on a complex K
+                       ¸
+                  a       ai Li ,     Li P HGK ,             ai P C .    (7)
+                       i
+
+The product between two elements a and b is defined by
+                                      ¸
+                           ab             pai  bj qLi  Lj ,
+                                      i,j
+
+and the involution of a is defined by
+                                             ¸
+                                     a          āi Li .
+                                              i
+
+The set of elements of the form (7) is a Æ-algebra. We denote this algebra
+with BK .
+
+2.2    Loop group homomorphisms and connections
+We now introduce the notion of an abstract connection. Let G be a compact,
+connected Lie-group and, for later reference, fix a matrix representation of
+G.
+   Next we introduce a G-bundle over a smooth manifold M and a loop l
+in M. A smooth connection can be understood as a map
+
+                             ∇ : l Ñ ∇plq P G ,                           (8)
+
+which satisfies the condition
+
+                       ∇pl1  l2 q  ∇pl1 q  ∇pl2 q ,                    (9)
+
+where l1 and l2 are loops in M. Here, the map (8) is the holonomy transform
+of ∇ along l, ∇plq  Holp∇, lq.
+   This motivates the following definition of an abstract connection as a map
+
+                              ∇ : tǫj u Ñ G ,                            (10)
+
+that associates to each edge ǫj P EK a point gj P G. The map is required to
+satisfy
+                            ∇pǫj q  p∇pǫj qq1 .
+
+                                             15
+Denote by AK the space of all abstract connections associated to K. The
+action of ∇ is extended to a path L  tǫi1 , ǫi2 , . . . , ǫin u simply by
+
+                    ∇pLq  ∇pǫi1 q  ∇pǫi2 q  . . .  ∇pǫin q ,          (11)
+
+where the product on the rhs is matrix multiplication. This makes ∇ a
+group homomorphism from the hoop group HGK into G which means that it
+satisfies
+                     ∇pL1  L2 q  ∇pL1 q  ∇pL2 q .
+This corresponds to condition (9) and justifies the terminology abstract con-
+nection.
+   Via the space AK we can equip the Æ-algebra formed by elements of the
+form (7) with a natural norm given by
+                                        ¸
+                         }a}  sup }        ai ∇pLi q}G ,                 (12)
+                                  P
+                                ∇ AK
+
+where the norm on the rhs of (12) is the matrix norm given by the repre-
+sentation of G. The closure of the Æ-algebra BK of loops with respect to this
+norm is a C Æ -algebra. We denote this loop algebra by BK .
+    In fact, the algebra BK is a function algebra over the space AK with values
+in the matrix representation of the group G. A loop L gives rise to a function
+fL via
+                    fL p∇q : ∇pLq , L P HGK , ∇ P AK .
+Notice that the algebra of functions fL with the natural product
+
+                                 fL1  fL2  fL1 L2 ,
+
+is noncommutative whenever G is non-Abelian.
+    The space AK is identified as a manifold
+
+                                 A K  G n pK q ,
+
+via the bijection
+
+                AK Q ∇ Ñ p∇pǫ1 q, . . . , ∇pǫnpKq qq P GnpKq .            (13)
+
+where npKq denotes the number of edges in VK . This identification gives rise
+to various structures on AK . For example the topological structure is given
+by the topological structure of GnpKq .
+
+                                          16
+                                                                                 ....
+
+
+
+Figure 3: The lhs shows a triangulation (dimension  2) and the rhs its two
+first barycentric subdivisions.
+
+
+   A loop L  tǫi1 , ǫi2 , . . . , ǫik u gives, according to (13), rise a function on
+GnpKq given by
+                fL : pg1 , g2, . . . , gnpKq q Ñ gi1  gi2  . . .  gik P G .
+    We think of the space AK as a ”coarse grained version of a space of
+(smooth) connections”. To clarify this interpretation consider an embedding
+of the simplicial complex into a triangulation
+                                     φ:KÑT                                       (14)
+and a trivial principal bundle P  M  G. Denote by A the space of smooth
+connections in P . There is a natural map
+               χK : A Ñ AK ,         χK p∇qpǫi q  Holp∇, φpǫi qq ,              (15)
+where Holp∇, φpǫi qq denotes the holonomy of ∇ along the edge ǫi which now
+lives in M via the embedding φ. This means that points in AK can be
+understood in terms of connections. Clearly, the map (15) is not injective
+which is exactly what is meant by ’coarse grained’. The idea is to gradually
+increase the complexity of the simplicial complex and thereby to turn the map
+(15) into an injection. Therefore, the next step is to introduce a refinement
+procedure for the simplicial complex K.
+
+2.3     The projective system
+The key tool to refine the simplicial complex K is the barycentric subdivision
+of simplexes. We will consider repeated barycentric subdivisions of K. Thus,
+the basic element in our analysis of geometrical structures over spaces of
+connections is an inductive systems of simplicial complexes. We start with
+the following
+
+                                             17
+Definition 2.3.1 An inductive system of simplicial complexes is a countable
+set ptKi u, tIjk uq of nested abstract simplicial complexes Ki and embeddings
+
+                           Ijk : Kj Ñ Kk ,             j       k         (16)
+
+so that Ijk is either a barycentric subdivision or an inversion of edges. The
+set is required to satisfy
+                               lim npKi q  8 .
+                                     i
+
+A barycentric subdivision of a simplicial complex K is here understood as the
+simultaneous subdivision of all simplices in K.
+The simplest simplicial complex in the inductive system is called the initial
+complex and is denoted Ko . The orientation of the initial complex is not
+important and one simply chooses one.
+   The embedding (16) gives rise to a projection between spaces of abstract
+connections
+                    Pn2 ,n1 : AKn2 Ñ AKn1 , n2 ¥ n1 ,
+which, via (13), is identified as a projection between manifolds
+
+                       Pn2 ,n1 : Gn2 Ñ Gn1 ,           n2 ¥ n1 .         (17)
+
+The projection Pn2 ,n1 is given by composition of one or more of the following
+operations:
+   • multiplying gi1 with gi2 .
+
+   • inverting gi .
+
+   • leaving out some gi in pg1 , . . . , gn2 q P Gn2 .
+  The embedding (16) commute by construction with the identification
+AK  GnpKq , i.e. the diagram:
+
+                               AKi 1         ÝÑ
+                                             σ
+                                             i 1
+                                                GnpK q     i 1
+
+                                Ó               Ó
+                               AKi           ÝÑ GnpK q
+                                              σ
+                                              i            i
+
+
+
+where σi is given by (13), commutes. This means that the limit space
+
+                                     A : lim AK
+                                         
+
+                                                  Ý
+                                                   K
+
+
+
+                                              18
+is a pro-manifold. That is, it is the projective limit of manifolds. This gives
+                                                    
+us immediate access to various structures on A . For instance, since the
+                                                                              
+projections P in (17) are continuous they give a topological structure on A .
+In general, the structure of a pro-manifold is a powerful tool that leads us to
+                                                                 
+both Hilbert space and metric structures on the limit space A .
+    In section 4.2 we show that the space A of smooth connections is densely
+                 
+embedded in A (once a suitable embedding of the simplicial complex has
+been applied, see (14)). This fact is the very reason for studying the space
+                                   
+A . It means that structures on A can equally be understood as structures
+on A.
+
+
+3     A spectral triple on a simplicial complex
+The aim is to construct a spectral triple at the level of each simplicial complex
+in an inductive system of simplicial complexes. The triples are required to
+involve the loop algebras BKi as function algebras over the associated spaces
+AKi of abstract connections. To ensure that the limit of increased complex-
+ity is well defined we require the spectral triples to be compatible with all
+projections induced by the inductive system of complexes. This means that
+geometrical structures over AKi will converge to geometrical structures over
+  
+A.
+
+3.1    Outline of the construction.
+Before we go into details let us outline the construction of the spectral triple
+at the level of a simplicial complex K. The starting point is the manifold
+AK  GnpKq . It is natural to consider first the Hilbert space
+                               HK  L2 pGnpKq q ,
+where L2 is with respect to the Haar measure on GnpKq . Since we wish to
+construct both a Dirac operator acting on HK and to have a representation
+of the algebra BK on HK we need to equip the Hilbert space with additional
+structure. Consider therefore instead the Hilbert space
+                 HK  L2 pGnpKq , ClpT  GnpKq q b Ml pCqq ,                (18)
+where l is the size of the representation of G and ClpT  GnpKq q is the Clif-
+ford bundle involving the cotangent bundle over GnpKq . If we recall that
+
+                                       19
+points in GnpKq represents homomorphisms ∇ from the hoop group into G
+we immediately have a representation of the loop algebra BK on HK
+
+               fL  ψ p∇q  p1 b ∇pLqq  ψ p∇q ,         ψ P HK ,           (19)
+
+where the first factor acts on the Clifford part of the Hilbert space and the
+second factor acts by matrix multiplication on the matrix part of the Hilbert
+space. Finally, we choose some Dirac operator DK on GnpKq and obtain the
+triple
+
+                              pBK , DK, HKq ,                               (20)
+
+on the level of the simplicial complex K.
+    It is not difficult to construct the candidate (20) for a spectral triple on
+the space AK . The crucial point, however, is to ensure that the construction
+is compatible with the induced projections between the simplicial complexes
+(17). This requirement turns out to restrict the choice of Dirac operator on
+AK considerably.
+    To ease the notation we shall from now on write Ai for AKi , Bi for BKi ,
+Hi for HKi , Di for DKi and ni for npKi q.
+
+3.2    Notation and basic setup
+Before we proceed with the construction we need some preparations. A point
+pg1, . . . , gnq P Gn is denoted ḡ. Let Rg denote right translation on the group
+G, i.e. Rg phq  hg. Accordingly, Lg denotes left translation. We also denote
+by Rg the corresponding differential, Rg : Th G Ñ Thg G. Lg likewise. Given
+a cotangent vector φ at the identity we define the right translated cotangent
+vector field Rφ by:
+
+                     Rφpg qpv q  φpRg1 pv qq ,   v P Tg G .
+
+The left translated cotangent vector fields are defined equivalently. Given a
+projection P : Gn Ñ Gm we denote by P the corresponding differential
+
+                             P : Tḡ Gn Ñ TP pḡ q Gm
+
+and by P  the induced map on cotangent spaces
+
+                           P  : TPpḡq Gm Ñ Tḡ Gn .
+
+                                        20
+Consider the particular projection
+                         P : G2 Ñ G ;           pg1, g2q Ñ g1  g2 .
+An element in pv1 , v2 q P Tpg1 ,g2 q G2 transforms according to
+                           P pv1 , v2 q Ñ pRg2 v1         Lg1 v2 q ,
+which is best seen by writing v1  γ9 1 pτ q|τ 0 where
+                                  γ1 pτ q  pγ11 pτ q, g2 q P G2
+is the one parameter subgroup in G2 generated by v1 . P clearly maps γ1 pτ q
+into γ11 pτ q  g2  Rg2 γ11 pτ q P G. The same argument applies to v2 . Corre-
+spondingly, given an element of the cotangent bundle φ P Tg1 g2 G the dual
+maps yields
+                      P  φ  pRg21 φ, Lg11 φq P Tpg1 ,g2 q G2 ,                   (21)
+where
+                       Rg21 φpv q φpRg vq , v P Tg G
+                                                    2                1
+
+                        Lg φpv q  φpLg v q , v P Tg G .
+                          1
+                              1
+                                                    1                2
+
+
+
+
+3.3     The Hilbert space
+To construct the Hilbert space related to a simplicial complex Ki we first
+construct an inner product on T  Gni . We choose a left and right invariant
+metric on G. The edges in K are numbered with 1, . . . , ni . In the following
+we shall occasionally write n instead of ni  npKi q. Consider two elements
+φ1 , φ2 P Tḡ Gni . We write φk  pφk1, . . . , φkn q and define the inner product
+by
+                                              ¸
+                                              n
+                         xφ1|φ2yḡ  21N           xφ1j |φ2j yGg ,
+                                                               j
+                                                                                      (22)
+                                               
+                                              j 1
+
+where x|yG                                                       5
+           gj is the inner product on Tgj G. In (22) N is the number of
+barycentric subdivision between the simplicial complex Ki and the initial
+   5
+    There is some freedom in the choice of N . We could also introduce a factor Nj asso-
+ciated to each individual edge ǫj . Here, Nj counts the number of barycentric subdivisions
+that lies between the edge ǫj and the simplest complex Kk (k j) that has the edge ǫj as
+a segment of an edge in Kk . This choice therefore associated different weights to edges in
+a simplicial complex according to their position in the complex.
+
+                                               21
+          ei                                              ...                   ...
+
+
+
+               G             G2             G4                        Gn
+      Figure 4: an edge ei and its repeated barycentric subdivisions.
+
+
+complex Ko . In [22] we prove that the inner product (22) is compatible with
+projections induced by embeddings (16).
+   With the inner product (22) on T  Gn we construct the Clifford bundle
+ClpT  Gn q and define an inner product on the Hilbert space (18)
+                                       »
+                             x|y        dµ  Tr x|yCl ,                         (23)
+
+where dµ is the Haar measure on Gn , Tr is the trace on Ml and x|yCl is the
+inner product of the Clifford bundle ClpT  Gn q. The inner product (23) is
+compatible with projections (16). This gives us the Hilbert space (18).
+
+3.4    The Dirac operator
+The Dirac-like operator on each space Ai is required to be compatible with
+the projections in the inductive system of complexes. Thus, the induced
+maps
+
+                      P  : T  Gm Ñ T  Gn ,             m      n,                   (24)
+
+give rise to the compatibility conditions
+
+               P  pDm v qpg1, . . . , gn q  Dn pP  v qpg1 , . . . , gn q ,         (25)
+
+where v P L2 pGm , ClpT  Gm qq. These conditions largely restrict the Dirac-
+like operator Di on Ki . On the initial complex Ko with the corresponding
+
+
+
+
+                                               22
+manifold Gno the Dirac operator is chosen to have the canonical form6
+                                          ¸
+                                  Do            eij  ∇lc
+                                                        êi ,                       (26)
+                                                         j
+                                           i,j
+
+
+where teij u is a global basis on T  G corresponding to the i’th copy of G. têij u
+is the corresponding basis on T G, obtained from teij u via the inner product
+(22). ∇lc is the Levi-Civita connection on G.
+    The problem is therefore to find a Dirac operator on Gni compatible with
+projections (16). Here, it is sufficient to deal with an edge ǫ and its partitions
+generated by barycentric subdivisions of the complex to which ǫ belongs, see
+figure 4. Once the operator is constructed here we obtain an operator on the
+entire system of simplicial complexes by gluing the individual operators in
+an obvious manner.
+    The generic problem is the projection
+
+                       P : G2 Ñ G ;          pg1, g2q Ñ g1  g2 ,                   (27)
+
+which we now consider together with the induced map between cotangent
+bundles (21). Let tei u be an orthonormal basis of Tid G and denote by
+
+                                   ei pg q  Lg ei pidq  ei
+
+the left-translated basis covectors at g P G. The push-forward of the basis
+covector ei pg q in Tpg1 ,g2 q G by P  gives
+
+                       P  ei pg1  g2 q  pRg21 ei pg q, Lg11 ei pg qq ,
+
+where g  g1  g2 . This suggests a natural orthonormal basis of Tpg1 ,g2 q G2
+given by
+
+                                  Ei2,s  pEi1 , Ei2q ,                            (28)
+
+where
+
+              Ei1 pg1 q  Lg1 g2 Rg21 ei pidq ,      Ei2 pg2 q  Lg2 ei pidq ,    (29)
+   6
+    There is some freedom of choice here since the Dirac operator on Ko need not involve
+the Levi-Civita connection. However, to obtain a self-adjoint operator certain invariance
+properties must be satisfied [22].
+
+
+                                                 23
+and where s in (28) represents the appropriate sign combinations
+                                      s P tp ,      q, p , qu
+characterising the two orthonormal covectors. Denote by Eˆij and Eˆi2,s the
+corresponding sections in T G and T G2 respectively, defined via the inner
+product (22).
+   We consider a Dirac operator corresponding to G2 of the form
+                                           1 ¸ 2,s
+                             D2                E  ∇2Ê 2,s ,                           (30)
+                                           2 s,i i      i
+
+
+
+where ∇2 is a connection on T  G2 . It turns out that the operator (30)
+satisfies the compatibility condition (25) if the connection ∇2 satisfies
+                        ∇2pÊ 1 ,0q pEi1 , 0q
+                                           p∇Ê Ei1, 0q ,     lc
+                                                                 1
+                                 i                               i
+
+                        ∇p0,Ê q p0, Ei2q  p0, ∇Ê Ei2 q .
+                             2
+                                     2
+                                                                     lc
+                                                                       2
+                                     i                                 i
+
+   To obtain the general form of the Dirac like operator on Gn we first define
+the following twisted covectors on G
+                    Ei1 pg1 q          Lg ...g Rpg ...g q ei pidq
+                                               1   n       2         n
+                                                                           1
+
+                                      ..
+                                       .
+                    Eij pgj q          Lg ...g Rpg
+                                               j   n             q1 ei pidq
+                                                           j 1 ... gn
+
+                                      ..
+                                       .
+                    Ein pgn q          Lg ei pidq .
+                                               n                                         (31)
+Next, we write
+                             Ein,s  pEi1 , Ei2 , . . . , Ein q ,
+where s  p , , . . . , q is the sequence of signs which characterises the
+covector. Again, we denote by Eˆin,s the corresponding sections in T Gn . The
+global frames Ein,s are found by repeated lifts of the covector ei pg q on G to
+Gn . Therefore, they are constructed to satisfy
+                                                        n 2,s1
+                                                           {
+                                         Ein,s  P  pEi         q,
+where the sequence s is obtained from the sequence s1 by replacing each sign
+in s1 with the same sign twice, and where
+        P : G n Ñ G n {2 ;           pg1, . . . , gnq Ñ pg1  g2, . . . , gn1  gnq .   (32)
+
+                                                   24
+The Dirac like operator on Gn has the form
+                                      1 ¸ n,s
+                            Dn             Ei  ∇nÊ n,s ,                      (33)
+                                      n s,i          i
+
+
+
+
+where the sum runs over i as well as all appropriate sign sequences s.
+   We define the connections ∇n recursively. That is, the action of ∇n on
+basis covectors Ein,s are given recursively and thereafter extended via linearity
+and the requirements of a derivation to the entire Clifford bundle. Thus, we
+require
+
+                            ∇nP  Ê pP  E q     P p∇Ê E q ,
+                                                            n/2
+
+
+                         ∇pnP  Ê qK pP  E q    0,                            (34)
+
+where E and Eˆ are basis covectors and vectors, respectively, of the type
+pEi1, Ei2, . . . , Ein{2q at the level n2 . In equation (34) and in the following we
+denote by pP  EˆqK general elements in the orthogonal complement to vectors
+(and covectors) of the form P  ˆ      E. We fix the remaining freedom in ∇n with
+the additional condition
+
+                     ∇pnP  Ê qK pP  Ē qK  ∇pnP  Ê q pP  E¯qK  0 ,
+
+which is required for the construction of the trace, see section 4.1 and [22].
+The properties given in (34) are again dictated by the requirement that the
+Dirac operator (33) is compatible with the projections.
+    The proof that the operator (33) satisfies the compatibility condition (25)
+is given in [22].
+
+3.5     The general Dirac operator associated to Ki
+The Dirac type operator (33) is not the most general operator satisfying the
+requirements of compatibility with the structure maps (25). In fact, these
+requirements renders substantial parts of the operator (33) free to modifi-
+cations. This observation is closely related to the fact that the Dirac type
+operator (33) will, at it stands, not descend to an operator with a compact
+resolvent in the inductive limit of repeated barycentric subdivisions. It turns
+out that the additional degrees of freedom are exactly the necessary leverage
+needed to obtain a well-behaved Dirac type operator in the limit.
+
+                                                 25
+   Let us start with the case n  2. We observe that a rescaling of parts of
+the operator (30) according to
+                  1 ¸ 1 2
+           D2        pEi , Ei q  ∇2pE 1 ,E 2 q        a1 pEi1 , Ei2 q  ∇2pE 1 ,E 2 q .       (35)
+                  2 i                  i    i                                  i    i
+
+
+
+
+where a1 P R, does not affect the compatibility with the embedding (21). In
+the general case, the modification of (33) is as follows: Let tak u be an infinite
+sequence of real numbers and put a0  1. Consider a single edge ǫ and its
+subdivisions. Consider the n’th subdivision. Let s be a finite sequence of n
+signs and denote by #psq the number of ’+’s in the beginning of the sequence.
+Define the number                         2N
+                            mpsq  log2
+                                           #psq
+                                                    .
+
+The modified Dirac type operator now has the form
+                                    1¸
+                            Dn           ampsq Ein,s  ∇nÊ n,s .                                (36)
+                                    n s,i                   i
+
+
+
+
+Let us consider the eigenvalues of this operator. For simplicity, consider
+the Abelian case G  U p1q. If we define the product between a sequence
+s  p , , , . . .q of signs with a sequence of real numbers7 pn1 , n1 , . . .q by
+
+                           pn1, n2 , . . .q  s  n1  n2  . . .                                 (37)
+
+where the signs on the rhs are read of the sequence s, then we can write the
+spectrum of the Dirac type operator (36) as
+                           $                                                              ,
+                           &        d                                                     .
+                                        ¸
+              specpD q                     a2mpsk q ppn1 , n2 , . . . , n2N q  sk q2
+                              1
+                                                                                              ,
+                           % 2N                                                           -
+                                         k
+
+
+where sk is the sequence of signs corresponding to the k’th orthonormal
+vector E n,sk . In this case, the number of eigenvalues of the limit operator
+D  limn Dn in a range r0, Λs, Λ 8, is finite whenever
+
+                        an  2n bn       where           lim bn  8 .                             (38)
+                                                        n   Ñ8
+  7
+      or, to be general, any sequence of objects.
+
+
+                                                   26
+The general case where G is a non-Abelian Lie-group is more complicated.
+The full analysis is given in [22] where we prove that for any compact Lie-
+group G there exist a sequence tai u so that the number of eigenvalues within
+a finite range is finite up to a controllable degeneracy. This result will be
+clarified in the next section.
+
+
+4    The limit of the triple pBn, Dn, Hn q
+Up till now we have considered a system of embedded, abstract simplicial
+complexes tKn u. To each simplicial complex Kn we introduced a space An
+which we interpreted as a coarse-grained version of a space of connections.
+The next step was to construct a spectral triple pBn , Dn , Hn q on each of the
+spaces An . The spectral triple satisfies requirements of compatibility with
+the operation of barycentric subdivision. This means that we can take the
+limit of infinitely many barycentric subdivisions. The resulting triple, which
+is denoted by pB , D , H q, has the following elements:
+    First, the Hilbert space H is constructed by adding all Hilbert spaces
+Hn
+
+             H1  `K L2 pGnpKq , ClpT  GnpKq q b Ml pCqq{N ,             (39)
+
+where N is the subspace generated by elements of the form
+
+                          p. . . , v, . . . , Pij pvq, . . .q ,
+where Pij are maps between Hilbert spaces Hn induced by (24). The Hilbert
+space H is the completion of H1 . The inner product on H is the inductive
+limit inner product. This Hilbert space is manifestly separable. Next, the
+algebra
+
+                               B : lim BK .                             (40)
+                                         ÝÑ
+                                          K
+
+
+
+contains loops defined on a simplicial complex Kn in tKn u as well as their
+closure. Again, the algebra B is separable. Finally, the Dirac-like operator
+Dn descends to a densely defined operator on the limit space H
+
+                               D  lim Dn .                              (41)
+                                         ÝÑ
+                                          K
+
+
+
+
+                                           27
+4.1    A semi-finite spectral triple
+The question is whether the triple pB , D , H q satisfies the requirements of
+a spectral triple. Clearly, to have a true spectral triple is highly desirable,
+first of all to ensure that we are operating on mathematically safe ground.
+Also, the toolbox of Noncommutative Geometry is a rich one. It provides
+not only metric structures to the underlying spaces involved, it also involves
+aspects which does not exist in ordinary Riemannian geometry.
+    To have a spectral triple pB, D, H q where B is a C Æ -algebra represented
+on a Hilbert space H on which an unbounded, selfadjoint operator D acts,
+means that the two requirements
+
+   1. pλ  D q1 , where λ R R, is a compact operator
+
+   2. rb, D s, where b P B, is a bounded operator and where B is a dense
+      Æ-subalgebra of B
+are satisfied. However, the triple pB , D , H q is not spectral in this sense.
+The spectrum of D involves a large degeneracy due to the infinite dimen-
+sional Clifford bundle. This means that the resolvent of D will not be com-
+pact.
+    There exist, however, another sense in which a triple pB, D, H q can be
+called spectral. If there exist a trace on the algebra containing B and the
+spectral projections of D, then pB, D, H q is called a semi-finite spectral triple
+if pλ  D q1 is compact with respect to this trace.
+    It turns out that the triple pB , D , H q does form a semi-finite spectral
+triple. The sufficient requirement is that the sequence tak u satisfies
+
+                     lim ak Ñ 8 ,     sufficiently fast .                    (42)
+                      k
+
+    A semi-finite spectral triple can be thought of as a spectral triple which
+involves a redundant symmetry group. This symmetry group resembles a
+gauge group and one must integrate out the extra degrees of freedom. In the
+present case the symmetry group is identified as the endomorphisms of the
+infinite dimensional Clifford bundle. To deal with this redundancy we first
+define a trace on the algebra containing B as well as the spectral projections
+of D .
+    We will construct the trace at each level in the inductive system of sim-
+plicial complexes and subsequently take the limit of repeated barycentric
+
+
+                                       28
+subdivisions. For the construction we factorize the Hilbert space. Choose a
+global orthonormal frame in Te G. This choice gives rise to a decomposition
+
+        L2 pGn , Ml b ClpT  Gn qq  L2 pGn q b Ml pCq b ClpTe Gn q.        (43)
+
+We will construct the trace on the algebra
+
+               Cn  KpL2 pGn qq b EndpMl q b EndpClpTe Gn qq.
+
+where K here denotes the compact operators.
+   Let T rop denote the operator trace on KpL2 pGn qq. For each n we have
+the normalised trace tr on EndpClpTe Gn qq. We define the trace as
+
+                           T r  T rop b T rl b tr.                          (44)
+
+Note that the trace is independent of the choice of global orthonormal frame
+in T  G, since a different choice of basis is given by a unitary transformation.
+    In [22] we prove that the limit
+
+                                  C : lim Cn
+
+will be a C  -algebra and that the trace T r gives a trace on C . Since C
+is contained in the weak closure of B the trace extends to a trace on B as
+well.
+    The important point in this construction is the normalisation of the trace
+tr on EndpClpTe Gn qq. To explain this consider the step going from n to
+n m. Let Pλ be the spectral projection of Dn for the eigenvalue λ. Going
+from n to n m the spectral projection will roughly speaking be mapped
+to Pλ b 1. Thus the size of the eigenspace λ grows in the same rate as the
+dimension of the Clifford bundle. To remedy this defect we must ensure that
+
+                                   tr p1q  1 ,
+
+which is what the normalised trace does.
+    The proof that pB , D , H q form a semi-finite spectral triple with respect
+to the trace (44) is given in [22]. It turns out that in general the Dirac-type
+operator (41) may require a perturbation at each level in the inductive sys-
+tem. This perturbation deals with the fact that the operators Dn may, in
+general, have nontrivial kernels which obstructs the control of the eigenvalues
+of the limit operator D . These perturbations lift the entailed degeneracy,
+
+                                       29
+which would otherwise destroy the spectral properties of the triple. The re-
+quired perturbation is, at each level in the projective system, bounded and
+does not affect the commutator between D and the algebra B significantly.
+For the special case G  SU p2q we find that the operators Dn have trivial
+kernels and therefore that no perturbations are needed.
+
+    To recapitulate, we have successfully constructed a large class of semi-
+finite spectral triples pB , D , H q. The triples are labelled by infinite se-
+quences tak u of real numbers satisfying limk ak Ñ 8 sufficiently fast.
+
+    Let us end this section with a short discussion of the structure of the
+Hilbert space H the role of the infinite dimensional Clifford bundle. Consider
+first the decomposition in (43) and rewrite it in the suggestive form
+
+                L2 pGn q b Ml pCq b ClpTe Gn q  Hn,b b Hn,f ,
+
+where Hn,b  L2 pGn q b Ml pCq. In the inductive limit this leads to the
+decomposition
+                          H  H,b b H,f .
+Next we factorize the algebra H according to the above factorisation of the
+Hilbert space. The result is
+
+                                C  KpH,b q b C,
+
+where
+                             C  lim EndpClpTe Gn qq,
+                                  n
+
+where the morphisms in this inductive system are the unital ones. In par-
+ticular C is a UHF-algebra and since ClpTe Gn q has dimension 2ndimpGq , the
+C  -algebra C is isomorphic to the CAR algebra.
+     The CAR algebra is an integral element of fermionic Quantum Field The-
+ory. We find it interesting that this algebra naturally emerges from the triple
+pB , D, Hq which, a priori, is an entirely ’bosonic’ construction. In section
+11 we shall comment further on the appearance of the CAR algebra.
+
+                         
+4.2     The space A and generalised connections
+                                              
+We have already indicated that the space A is a space of generalised connec-
+tions. This means that it is a closure of the space A of smooth G-connections.
+
+                                        30
+            M                                        M
+
+
+
+
+                                                                                 ...
+
+
+
+            T1                                      T2
+
+Figure 5: The embedding of the system tKi u into M gives rise to an inductive
+system of triangulations tTi u.
+
+
+To see this consider the embedding φ of the simplicial complex Ki
+
+                                   Ti : φpKi q ,
+
+where Ti is a triangulation of the manifold M. There is a natural map
+
+              χ : A Ñ A ,      χ p∇qpφpǫi qq  Holp∇, φpǫi qq ,
+                           
+                                                                                (45)
+
+where Holp∇, φpǫi qq is the holonomy of ∇ along the edge φpǫi q which now has
+a location in M via the embedding φ. Further, if we are given two different
+connections ∇1 , ∇2 P A they will differ in a point, say m P M, and hence
+in a neighbourhood of m. We can therefore choose a small, directed edge
+φpǫi q in a triangulation Ti that is sufficiently refined, so that φpǫi q lies in the
+neighbourhood of m where the connections ∇1 and ∇2 differ. Furthermore,
+because the system of triangulations contain edges in all directions in M we
+can choose φpǫi q so that
+
+                        Holp∇1 , φpǫi qq  Holp∇2 , φpǫi qq .
+
+In other words, χ is an embedding, and hence the terminology generalised
+connection is justified.
+    This means that we have successfully turned the map (15) into an injec-
+tion by repeating the barycentric subdivisions of the simplicial complexes.
+                           
+    The identification of A as a space of connections provides us with a new
+understanding of the spectral triple pB , D , H q. First, as already mentioned,
+
+                                         31
+according to (45) the algebra of loops should be interpreted in terms of
+holonomy loops
+                          fL p∇q  HolpL, ∇q .
+It is a well known result (see [26] and [27] and references therein) that the
+complete set of holonomies, as well as their associated Wilson loops, contain
+the full information, up to gauge transformations, about the underlying space
+of smooth connections. The fact that the map (45) is an injection means that
+the algebra B , which involves a highly restricted set of loops, does in fact
+contain the same information about the underlying space of connections as
+does the full set of smooth or piece-wise analytic loops.
+                                                                             
+    Second, since the Dirac-type operator D is a derivation on the space A
+it should be understood in terms of a functional derivation operator
+
+                                        D 
+                                                     δ
+                                                    δ∇
+in some integrated sense which shall become clearer soon. Finally, elements
+in the Hilbert space H are functions over field configurations of connections
+and the inner product in H comes in the form of a functional integral
+                                          »
+                xΨp∇q| . . . |Ψp∇qy          
+                                                  rd∇s . . . ,   Ψ P H .              (46)
+                                           A
+                                  
+That is, an integral8 over A .
+   All together it is clear that the construction should be interpreted in
+terms of Quantum Field Theory.
+
+    Notice that the diffeomorphism group diff(M) has no natural action on
+  
+A or the algebra B , except for a few, discrete diffeomorphisms. We shall
+comment on this fact in section 6.2.
+
+4.3     Gauge transformations
+It remains to clarify whether the Dirac type operator D is gauge invariant.
+To this end let U be an element of the gauge group G of M  P , i.e. U :
+   8
+     This integral resembles functional integrals found elsewhere in physics. First, it is
+similar to the inner product on the Hilbert space Hdif f of diffeomorphism invariant states
+in Loop Quantum Gravity, see below. Second, it also resembles functional integrals in
+lattice gauge theories. Here, the main difference is the ’lattice spacing’ a in lattice gauge
+theories which gives the continuum limit a Ñ 0.
+
+                                              32
+M Ñ G is a smooth function. Given a connection ∇ P A, U induces a gauge
+                       ˜ Given a path L with startpoint x1 and endpoint
+transformed connection ∇.
+x2 the holonomy along L transforms according to
+
+                   Holp∇, Lq Ñ U px1 qHolp∇, LqU  px2 q .
+
+To determine the properties of the Dirac type operator D when subjected to
+a gauge transformation we consider first the case An  Gn that corresponds
+to n divisions of a single edge. Consider the general transformation
+
+  Un : Gn Ñ Gn ,     pg1 , g2, . . . , gnq Ñ pu0g1u1 1, u1g2u2 1, . . . , un1gnun 1q ,
+where u0 , u1 , . . . , un are unitary group elements in G. This transformation
+generates a map
+
+                Un : L2 pGn , ClpT  Gn qq Ñ L2 pGn , ClpT  Gn qq
+
+between Hilbert spaces. We need to check whether
+
+              Dn ξ  Un Dn Un ξ ,     ξ P L2 pGn , ClpT  Gn qq .                      (47)
+
+In [22] we find that (47) holds whenever the connections used to construct
+Dn satisfy a certain gauge compatibility condition. In particular, we find
+that the special flat connections entering the construction of Dn do satisfy
+this condition. This, in turn, implies that the full Dirac type operator D is
+gauge invariant. For the full analysis we refer the reader to [22].
+
+4.4    The commutator between D and the algebra B
+Section 5 is concerned with the relation between the Poisson algebra of Gen-
+eral Relativity and the algebra B . The point is that the interaction between
+the Dirac type operator D and the algebra B equals the interaction between
+conjugate variables of gravity. Before we show this we need to calculate the
+commutator between the operator (36) and a loop operator.
+    First of all, the commutator is non vanishing
+
+                              rD, bs  0 ,     b P B
+
+since, on the level of refinement corresponding to n edges, b is a non-trivial
+matrix valued function on Gn and D is the Dirac-type operator on Gn .
+
+                                          33
+   Consider first the simple case where a loop Lj corresponds to the function
+on Gn
+                           fLj : pg1 , . . . , gn q Ñ gj .
+Thus, the loop Lj is really just the j’th edge. We wish to calculate the
+commutator
+                          rdÊ j , fLj sξ pg1, . . . , gnq ,
+                                      i
+
+where ξ P L pG q. If we denote by ei the generators of the Lie algebra g,
+              2    n
+
+then we introduce the twisted generators of g
+
+                          Eji  gj 1gj 2 . . . gn ei gn1 . . . gj11
+
+corresponding to Êij . We now calculate
+                                     
+  rdÊ , fL sξ pg1, . . . , gnq 
+      j
+      i
+          j
+                                          dÊ j fL ξ pg1 , . . . , gn q
+                                              i
+
+                                                                                 
+                                          gj . . . gn exp ptei qgn1 . . . gj11 ξ pg1 , . . . , gn q
+                                      d
+                                     dt
+                                    gj Eji ξ pg1, . . . , gn q .                                  (48)
+
+It is important to notice that product in the last line of (48) is a matrix
+multiplication.
+    Equation (48) implies that9
+                                              ¸
+                       rDn, fL s  n1
+                                j
+                                                        ampsq Ein,s  gj Eji .                  (49)
+                                                  s,i
+
+
+The sign on the rhs of (49) correspond to the j’th sign in the sequence s.
+Thus, for i  1 all the signs are positive and else the total number of ’s
+and ’s are equal.
+   Next, the commutator between D and a general loop L
+
+                           fL : pg1 , . . . , gn q Ñ gi1 gi2 . . . gik .
+
+simply consist of repeated applications of p49q according to
+
+          rD, fLs  rD, fL sgi . . . gi
+                                i1        2             k
+                                                              gi1 rD , fLi2 s . . . gik   ...   (50)
+  9
+    we here consider the subdivision of an edge into n segments. Therefore, Dn is the
+operator given by (36).
+
+                                                         34
+where each commutator on the rhs is calculated by inserting the appropriate
+operator Dn corresponding to the level of refinement given by the loop L.
+   Thus, the action of D on a single loop is to insert the ’twisted’ generators
+ j
+Ei of the Lie-algebra into the loop at each vertex the loop passes through
+and to multiply with an appropriate element in the Clifford bundle.
+
+4.5    The role of the sequence tan u
+In section 9 we will include the sequence tan u as dynamical variables in the
+construction. To motivate this step we need a better understanding of the
+sequence tan u and the role it plays in the spectral triple pB , D , H q.
+    Primarily, the role of the sequence tan u is to shift an otherwise impossible
+degeneracy in the spectrum of the operator D via the condition (42). The
+parameters ai introduces a hierarchy between the eigenvalues of D on the
+                                    
+infinitely many copies of G in A . This hierarchy is closely related to the
+scaling behaviour of the construction.
+    Consider first a line segment divided in two, corresponding to the projec-
+tion
+                                  P : G2 Ñ G .
+Functions on G2 naturally fall into two classes: push-forward of functions on
+G
+                 P  : L2 pGq Ñ L2 pG2 q , pP  f qpg1  g2 q ,
+and the orthogonal complement hereof. We denote the former V and the
+latter VK  pP  L2 pGqqK . Functions in V correspond to information which is
+also contained in the less refined picture which involves only one copy of G.
+This is the simplest and most coarse-grained description of parallel transports
+along the line segment available. Function in VK , on the other hand, contain
+additional information which cannot be traced back to the simpler picture.
+Each additional division of the line segment refines the picture further.
+    It is clear that any division of a line segment into two will involve new
+segments which are shorter - independently of any choice of metric - than
+the original segment. Therefore, functions in VK correspond to information
+          
+about A which is deeper, i.e. at a shorter distance, compared to information
+carried by functions in V .
+    The role of the sequence tai u is to take this scaling behaviour into account.
+                                            
+The operator D weights functions on A according to where in the projective
+system of spaces Ai the information originates (see figure 6). Therefore, if
+
+                                       35
+                                                   ai
+
+                                                   ai 1
+
+                                                   ai 2
+
+Figure 6: The role of the parameters tai u is to weight the different segments
+of a given loop according to the refinement of the segments.
+
+
+a function ψ P L2 pA q is the push-forward of functions on L2 pAi q then the
+                     
+
+corresponding eigenvalues of ψ are weighted with the appropriate parameter
+ai .
+                                  
+     Thus, if we wish to probe A at a very short distance, this information
+will come with a very high weight factor ai corresponding to high energy.
+                          
+On the other hand, if A is probed at a more coarse-grained level, then the
+corresponding eigenvalues are weighted with smaller weights ai .
+     Let us end this subsection with a curious observation. If we start with a
+meter, then we find that it takes about 116 subdivisions of the meter to reach
+the Planck length of 1.6  1035 meter. This corresponds then to 116 of the
+parameters tai u. Thus, although the sequence tai u is infinite, the number of
+parameters involved when probing physical scales is certainly finite.
+
+
+5    Link to canonical quantum gravity I. Op-
+     erator brackets.
+In the next two sections we relate the construction of the spectral triple
+pB , D, Hq to canonical quantization of field theories and in particular to
+canonical quantum gravity.
+    The first section is concerned with the Poisson brackets of General Rel-
+ativity. We first introduce the formulation of General Relativity based on
+Ashtekar variables. The fact that this formulation has a gauge connection
+as a primary variable is the Raison D’étre for the study of spaces of connec-
+tions in this paper. Next, we show that the interaction between the Dirac
+
+                                     36
+type operator D with the algebra B reproduces the structure of the Poisson
+brackets of General Relativity when these are formulated in terms of loop
+variables. This means that the triple pB , D , H q includes a representation
+of the Poisson algebra of General Relativity.
+    Section 6 is primarily concerned with a more detailed comparison between
+the construction presented in this paper (the choice of graphs, the Hilbert
+space) and the study of spaces of connections within Loop Quantum Gravity.
+It turns out that the key difference between the two lies in the treatment of
+the diffeomorphism group. We find that the Hilbert space H is directly
+related to the Hilbert space of diffeomorphism invariant states known from
+Loop Quantum Gravity. The difference between the two is a group of discrete
+diffeomorphisms. This means that the representation of the Poisson brackets
+given by the triple pB , D , H q includes partial diffeomorphism invariance as
+a first principle.
+    For the remaining part of this section we will, unless otherwise stated,
+restrict ourselves to G  SU p2q and dimension three.
+
+5.1    Canonical gravity
+For an introduction to canonical gravity see for example [28, 29]. Let us first
+fix some notation. We follow [29] and [30]. Consider the vierbein formulation
+of General Relativity where EµA is the vierbein and gµν  EµA EνB ηAB is the
+corresponding space-time metric where ηAB  t1, 1, 1, 1u. Here µ, ν, . . . and
+A, B, ... denote curved and flat space-time indices respectively. We assume
+that space-time can be foliated according to M  Σ  R where Σ is a spatial
+manifold. Let m, n, . . . and a, b, . . . denote curved and flat spatial indices,
+respectively. Denote by eam the spatial dreibein. The spin connection ωµAB
+is given by
+                             ωµAB  EAν ∇µ EBν ,
+where ∇µ is the covariant derivative which involves the Christoffel connec-
+tion.
+    The canonical momenta Πm a corresponding to the dreibein are obtained
+from the Einstein-Hilbert Lagrangian L [29]
+
+                     a :
+                    Πm
+                               δL
+                            δ pBt em q
+                                   a
+                                         ee pKab  δab K q ,
+                                         1 m
+                                         2 b
+
+where e  detpeam q and Kab  ωab0 is the extrinsic curvature. We write
+
+                                       37
+K  Kaa . The non-vanishing canonical Poisson brackets read
+                        tema pxq, Πnbpyqu  δab δmn δp3q px, yq .                (51)
+The Hamiltonian formulation of gravity involves a set of 3 constraints10 re-
+lated to the symmetries of the theory: the Gauss constraint corresponding
+to gauge invariance; the diffeomorphism constraint corresponding to spatial
+diffeomorphisms within Σ; the Hamiltonian constraint encoding the full 4-
+dimensional diffeomorphism invariance and thus containing the dynamics of
+General Relativity. The diffeomorphism and Hamiltonian constraints corre-
+sponds to 4 of the 10 Einstein field equations. The Hamiltonian itself is a
+linear combination of the two constraints. In the quantum theory, this leads
+to the famous Wheeler-DeWitt equation.
+    A change of variables from the spatial spin connection and dreibein field
+to the connection
+
+                      Ama :  ǫabc ωmbc γKma ,
+                                1
+                                                                        (52)
+                                2
+where ǫabc is the totally antisymmetric symbol, and the inverse densitised
+spatial dreibein Ẽam  eem
+                          a leads to the Poisson brackets (all other vanish)
+
+                   tAam pxq, Ẽbnpyqu  γδbaδmn δp3q px, yq .           (53)
+Often the variables tẼ, Au are contracted with Pauli matrices τ a according
+to
+                          m
+                        Ẽαβ : Ẽam τaαβ ,    Amαβ : Ama τaαβ
+in order to replace Lorentz indices by spinorial SU p2q indices.
+    The variables tẼ, Au are the well-known Ashtekar variables [16, 17] and
+the parameter γ  0 in (52) is known as the ’Barbero-Immirzi parameter’
+[31, 32].
+    The identification of a gauge connection Ama as a primary variable of
+General Relativity permits applications of techniques from Yang-Mills theory.
+In particular, one might shift focus from connections to their holonomies [11]
+                                                    »
+                               HolC pAq  P exp          A,
+                                                     C
+
+where C is a curve in Σ, and express the Poisson brackets in terms of
+holonomies and a set of conjugate variables. To find a suitable choice of
+ 10
+      The Gauss constraint corresponds to the connection-formalism, see below.
+
+                                              38
+conjugate variables pick any two-dimensional surface S in Σ and define the
+flux vector                             »
+                             FS pẼ q : dF a .
+                              a
+                                            S
+where the area element dF a is given by
+                        dF a  ǫmnp Ẽ ma dxn ^ dxp .                        (54)
+To obtain the Poisson brackets pick a curve C  C1  C2 which intersects
+S at the single point C1 X C2 . Then the Poisson bracket between the new
+variables reads [33]
+         tFSapẼ q, HolC pAqu  ιpC, S qγHolC pAqτ aHolC pAq ,
+                                                 1           2           (55)
+where ιpC, S q  1 or 0 encodes information about the intersection of S and
+C (ιpC, S q vanishes when C and S do not intersect).
+    Notice that the structure of the bracket (55) is identical to structure of the
+commutators (49) and (50) between the loop algebra B and the Dirac type
+operator D . Both set of commutators prescribe an insertion of an element
+in the Lie-algebra into the loop or curve at an ”intersection point”: either
+at the intersection between the surface S and the curve C, or at the vertex
+between neighbouring edges in a given simplicial complex. To investigate this
+correspondence we first need to consider the canonical quantization approach
+to Quantum Gravity.
+
+5.2    Canonical Quantum Gravity
+When the canonical quantization procedure is applied to gravity the philoso-
+phy is to rewrite Poisson brackets like (51), (53) or (55) as operator brackets
+and represent the canonical variables on a suitable Hilbert space as multipli-
+cation and derivation operators. Clearly, there is a freedom in choice as to
+which variables should be represented as multiplication operators and which
+should be represented as differential operators. Using Ashtekars variables it
+is possible to represent the holonomies HolC pAq as multiplication operators
+                                 HolC pAq Ñ C
+and the corresponding triad and flux variables Ẽ and F as differential oper-
+ators
+                                                »
+  Ẽa pxq Ñ Ea pxq             , FS Ñ FS  ǫmnp Ema dxn ^ dxp . (56)
+    m         m      ~    δ         a      a
+                     i δAam pxq                  S
+
+
+                                       39
+                                                            ǫi
+                          ǫ
+
+
+
+ Figure 7: Repeated division of an edge ǫ in the initial simplicial complex.
+
+
+on a suitable Hilbert space corresponding to a configuration space of connec-
+tions. In the following we refer to the setup used in Loop Quantum Gravity.
+We postpone to section 6 the construction of the Hilbert space on which the
+operators C and F are represented within Loop Quantum Gravity. For now
+it suffices to state that the Hilbert space is based on a projective system of
+piecewise analytic graphs. Therefore, we assume that the bracket
+                                rFaS , Cs  γC1τ aC2 ,                               (57)
+where C  C1  C2 is piecewise analytic, is defined as an operator bracket act-
+ing on a Hilbert space of functions over a configuration space of connections.
+
+    We wish to show that the spectral triple pB , D , H q reproduces the
+operator bracket (57). To do this we will use the operators FaS to construct
+a new operator D. The commutator between this operator and an operator
+C is then shown to be identical to the commutator between the Dirac type
+operator D and an element of the algebra B .
+    To proceed we restrict the algebra (57) to an inductive system of simplicial
+complexes tKi u and an embedding hereof φpKi q  Ti P M. Thus, we consider
+only curves Cj which coincide with edges11 ǫj in the some triangulation Ti .
+To simplify matters further we first consider a single edge ǫ in the initial
+complex K0 . This edge corresponds to a sequence of edges tǫ1 , ǫ2 , . . . , ǫ2N u
+in the i’th triangulation Ti arising through N barycentric subdivisions, see
+figure 7. For simplicity we set γ  1. For each edge ǫj there exist a set of
+sections Êij pg1 , . . . , gn q in the tangent bundle of the j’th copy of G, see section
+3.4. Expand the corresponding generators Eji in terms of Pauli matrices
+                                        Eji  bji,a τ a ,
+  11
+       To be exact, we here assume that the triangulation Ti is piecewise analytic.
+
+                                              40
+                                            Si
+                                                            ǫn
+                                                 vi
+                                    ǫm
+
+     Figure 8: The surface Si is chosen to intersect only the vertex vi .
+
+
+and define the new operators
+                                            ¸
+                                    Fji         bji,a FaSj ,
+                                             a
+
+where we introduce a set of surfaces tSk u chosen so that Sk intersects the
+triangulation Ti at its vertices only. Choose the numbering of the surfaces so
+that Sk intersects the edge ǫk at its endpoint, see figure 8. Then we obtain
+(no summation over repeated indices)
+                                 rFji , Cj s  Cj Eji .                        (58)
+We chose Sk in a way so that the sign in (58) is always positive when the
+orientation of the curve Ck coincide with the orientation of the triangulation.
+    The commutator (58) has the same structure as the commutator (48)
+between the vector field Êij and the group element corresponding to the j’th
+copy of G in Gn . This suggest that the vector field Eˆij corresponds to the
+flux operator Fji
+                                       Fji Ø Êij                              (59)
+when Fj is restricted to the triangulation Ti .
+   Next, we define the operator
+                         ¸                                              
+               Dn  n1         ampsq Ein,s  pF1i , F2i , F3i , . . .q  s ,   (60)
+                         s,i
+
+ where s is the sequence of signs p , , , . . .q corresponding to the vector
+Ein,s and the ’’ in the bracket to the right is defined in (37). Then, the final
+commutator reads
+                                  ¸                
+                    rDn, Cj s  n1 ampsq  Cj Eji  Ein,s .                 (61)
+                                  s,j
+
+
+                                              41
+In (61) the sign on the rhs is again given by the i’th entries in the sequences
+s. The commutator (61) has precisely the same form as the commutator (49).
+This shows that the operator Dn corresponds exactly to the Dirac operator
+Dn defined in equation (36):
+
+                                       Dn Ø Dn .
+    Notice also that the choice of surfaces Sk has no importance for the defi-
+nition of (60). Only the intersection points, the vertices, counts. Therefore,
+the surfaces Sk serve merely as labels of the vertices.
+    The generalisation to the full picture where we consider the complete set
+of edges tǫk u in Ti is straightforward. The corresponding operator, which we
+again denote Dn , is simply build from the operators associated to each edge
+ǫk in the initial triangulation T0 . Further, we denote the limiting operator
+with D . Again, the message is that the operator D corresponds exactly to
+the Dirac like operator D . The difference is that D is written in terms of
+variables from canonical quantum gravity.
+    This shows that the spectral triples pB , D , H q constructed in section
+4.1 give a representation of the Poisson brackets (55). The representation is
+separable and based on a system of graphs dense in M.
+    In which sense does the representation of the Poisson algebra (55) given
+by the triple pB , D , H q differ by the representation used in Loop Quantum
+Gravity? To answer this question we need a precise comparison of the gen-
+eral setup used in this paper with the setup used in Loop Quantum Gravity.
+This will be the topic of the next section.
+
+   For later reference we need an expression for the square of the Dirac-like
+operator (60). We write
+                            ¸
+                    D2         cj Fij Fij        lower order ,          (62)
+                            ij
+
+
+where cj are constants depending on the parameters tai u and where we by
+lower order refer to terms which are linear in Fij .
+
+
+
+
+                                              42
+6     Link to Canonical Quantum Gravity II. Dif-
+      feomorphisms.
+In this section we first introduce the inductive system of piecewise analytic
+graphs applied in Loop Quantum Gravity. This system entail a space of
+                                                  
+generalised connections much alike the space A constructed in this paper.
+We find that the essential difference between the two spaces is separability.
+This issue is closely related to the manner in which the diffeomorphism group
+is treated in Loop Quantum Gravity and this paper respectively.
+    These insights lead us to consider the role of diffeomorphism invariance
+in Quantum Gravity, in particular the diffeomorphism constraints found in
+Loop Quantum Gravity. We find that the Hilbert space H is, up to a discrete
+symmetry group, identical to the Hilbert space of diffeomorphism invariant
+states in Loop Quantum Gravity.
+
+6.1    Functional spaces of connections in Loop Quantum
+       Gravity
+The following is a review of material known in Loop Quantum Gravity. In
+particular, we refer to the publications [18, 19, 34].
+    Let M be a real analytic manifold and let P be the space of piecewise
+analytic directed paths on M. We will consider two paths in P to be the same
+if they differs by trivial backtracking. P has a product simply by composing
+paths. We define the space of generalised G-connections by
+
+                           A  HompP, Gq ,
+                             a
+                                                                        (63)
+
+where Hom means maps ∇ from P to G satisfying
+
+                         ∇pP1 P2 q  ∇pP1 q∇pP2 q .
+            a
+The space A was studied in [19].
+   Again, we consider the space A of smooth G-connections. We repeat the
+argument of section 4.2: There is a natural map χa : A Ñ A given by
+                                                          a
+
+
+
+                          χa p∇qpP q  Holp∇, P q ,
+
+where Holp∇, P q denoted the holonomy of ∇ along P . If we are given two
+different smooth connections ∇1 , ∇2 P A they are going to differ in a point,
+
+                                     43
+let us say m, and hence also in a neighbourhood of m. We can therefore
+choose a small directed analytic path P in a neighbourhood of m such that
+Holp∇1 , P q  Holp∇2 , P q. In other words, χa is an embedding, and hence
+the terminology generalised connection is justified.
+                                         a
+6.1.1   Projective structure on A .
+On M we will consider the system of connected piecewise analytic graphs.
+This system is directed under inclusions of graphs. Given a piecewise con-
+nected analytic graph Γ in M we denote by tǫ1 , . . . , ǫnpΓq u the edges and by
+tv1 , . . . , vmpΓq u the vertices. Let PΓ be the set of paths in Γ and define
+                               AΓ  HompPΓ , Gq .
+
+An inclusion of graphs Γ1  Γ induces a projection
+
+                              PΓ1 Γ : AΓ Ñ AΓ1 .                               (64)
+
+Since every analytic path is a path in a piecewise analytic graph and vice
+versa we get
+                               A  lim AΓ,
+                                 a
+
+                                         Ý
+                                          Γ
+
+
+where the projective limit is taken over all piecewise analytic graphs.
+   If we choose an orientation of the edges tǫ1 , . . . , ǫnpΓq u we obtain again an
+identification
+                                 AΓ  GnpΓq
+via the map
+                   AΓ Q ∇ Ñ p∇pǫ1 q, . . . , ∇pǫnpΓq qq P GnpΓq .
+This identification gives rise to various structures on AΓ and therefore also on
+  a
+A . For example the topological structure given by the topological structure
+of GnpΓq . Also the projections PΓ1 Γ are continuous and hence give a topological
+                                           a                               a
+structure on the projective limit, i.e. A . We note that A is dense in A , see
+[22] and references therein.
+    Another structure arising from this identification is the measure or more
+relevant the Hilbert space structure. Since G is a compact group we can
+equip GnpΓq uniquely with product Haar measure and define
+
+                              L2 pAΓ q  L2 pGnpΓq q.
+
+                                        44
+The projections PΓ1 Γ induce embeddings of Hilbert spaces
+                           PΓ1 Γ : L2 pA1Γ q Ñ L2 pAΓq.
+With this we then define
+                            L2 pA q  lim L2 pAΓ q.
+                                  a
+
+                                              ÝÑ
+                                               Γ
+
+
+
+which is non-separable.
+    The Hilbert space L2 pA q is the Hilbert space that carries the representa-
+                            a
+
+tion of the Poisson algebra (57) used in Loop Quantum Gravity. It is known
+as the kinematical Hilbert space.
+
+6.1.2   Actions of the diffeomorphism group
+Since an analytic diffeomorphism of M maps P to P we get an action of the
+group of analytic diffeomorphisms Dif fa pMq on A . On the other hand the
+                                                    a
+
+group of all diffeomorphisms Dif f pMq acts on A but does not extend to an
+             a
+action on A . There are several different way of completing A depending on
+the choice of ”lattice”, for example piecewise analytic paths like in the case
+described above, various kinds of smooth paths, where one gets an action
+of the full diffeomorphism group. See [35, 36] for results and a thorough
+discussion. The different completions all contain A but the crucial difference
+seems to be the size of the symmetry group.
+
+                                                                  a
+6.2     Comparing the spaces A and A
+                                                                      a
+So far we have introduced the three spaces A, A and A . A is the space of
+smooth G-connections and we demonstrated that
+                            A ãÑ A ,               A ãÑ A ,
+                                                          a
+
+                                         a
+which means that both A and A are spaces of generalised connections.
+                                                   a
+Furthermore, since it is known that A is dense in A , and since there exist a
+natural surjection
+                                σ:A ÑA
+                                     a     
+
+                                      
+we know that A, too, is dense in A . To see how the surjection σ works recall
+                  a
+that both A and A are spaces of homomorphisms
+                A  HompP , Gq ,             A  HompPa , Gq ,
+                                                  a
+                                                                           (65)
+
+                                              45
+and since12 tP u ãÑ tPa u then σ is just the corresponding surjection between
+the spaces (65) of homomorphisms.
+                                                                     
+    To be precise we should state that we now think of the space A in terms
+of an embedding
+                                  φ : Ki Ñ Ti
+of the projective system tKi u, and that we therefore identify
+
+                                   A  lim AT .
+                                      
+
+                                              
+                                              T
+
+
+
+    In the following we will demonstrate the relationship between and role
+played by these three spaces of connections.
+    First, it is important to see that the shift from A to a larger space of
+generalised connections is necessary to equip A with topological and Hilbert
+                                                 a
+space structures. The identification of A and A as pro-manifolds is the key
+step to obtain this. The space A itself is not a pro-manifold.
+                                                          a          a
+    The key difference between the two spaces A and A is that A has an
+                                                     
+action of the (analytic) diffeomorphism group; A does not. Further, the
+Hilbert space structure associated to the two spaces are respectively non-
+                  a                    
+separable for A and separable for A . That is, the way A is completed is
+decisive for how large a symmetry group remains. This shows that there is a
+direct link between separability of the Hilbert space structure and the action
+of the diffeomorphism group.
+    The following diagram illustrate the relationship between the three spaces
+of connections:
+                                  A  diffa pMq
+                                     a
+
+                                 Õ
+                            A        σÓ
+                                 ×
+                                      A
+                                          
+                                                  diffp△q
+where we by diffp△q refer to the discrete symmetries which remain on the
+                                     
+infinite triangulation underlying A .
+    It is interesting that the construction of the Dirac-like operator (41) re-
+                          a     
+quires the shift from A to A : In [20] the authors attempted to construct
+                          a
+such an operator on A and a corresponding Hilbert space. The attempt
+was unsuccessful exactly because the number of possible projections (64) is
+  12
+    we assume here that the edges in the triangulations Ti are analytic. This depends on
+the embedding φ : Ki Ñ Ti but is no real restriction.
+
+                                              46
+too large to permit a Hilbert space structure carrying a Dirac-like operator
+                                   a      
+similar to (41). The shift from A to A reduces the type of embeddings
+between graphs sufficiently. We appear to find the following hierarchy:
+                   A:     No Hilbert space structure
+                          No Dirac-like operator
+                          Action of diff(M)
+                     a
+                   A : Hilbert space structure, non-separable
+                       No Dirac-like operator
+                       Action of analytic diffeomorphisms
+                     
+                   A : Hilbert space structure, separable
+                       Dirac-like operator
+                       Action of diff(△)
+                                             
+    One way to think of the space A is to see it as the space of (smooth)
+connections subjected to a sort of gauge fixing of the diffeomorphism group13 .
+Here gauge fixing is meant in the sense that a symmetry group is (partly)
+removed while the integration at hand still involves the entire space, in this
+case the space of smooth connections A. In this sense the inner product (46)
+resembles a functional integral over A ”up to diffeomorphisms”.
+                                           
+    Another way to think of the space A is to relate it to the construction
+of the Hilbert space Hdif f of diffeomorphism invariant states in Loop Quan-
+tum Gravity, see [23]. To do this we first notice that each triangulation in
+particular is a graph, and we hence get an embedding
+                              lim L2 pAT q ãÑ lim L2 pAΓ q.
+                                             ι
+
+                              ÝÑ
+                               T
+                                                 ÝÑ
+                                                  Γ
+
+
+On the other hand consider the Hilbert space formally defined by
+            Hdif f  diffeomorphism invariant states in lim L2 pAΓ q.
+                                                                 ÝÑ
+                                                                  Γ
+
+
+The elaborate definition is written in [23]. There is a surjection
+                                   lim L2 pAΓ q Ñ Hdif f
+                                                 q
+
+                                   ÝÑ
+                                    Γ
+
+
+  13                a
+    In fact, space A is, in this line of thinking, subjected to another partial gauge fixing
+by reducing the symmetry group from the group of diffeomorphisms to the .group of
+analytical diffeomorphisms.
+
+                                            47
+given by meaning vectors over the action of the diffeomorphism group. We
+thus get a map
+                          lim L2 pAT q ÝÑ Hdif f
+                                        Ξ
+
+                            ÝÑ
+                             T
+
+
+by composing. This map is also going to be a surjection since each graph
+can, via a diffeomorphism, be mapped into a triangulated graph. The map
+is not injective because of the symmetries of the triangulated graph.
+    We have the following commutative diagram
+                                    lim L pAΓ q
+                                    ÝÑ
+                                                2
+
+
+                                  Õ     Óq
+                                     ι
+                                                                           (66)
+                     lim L pAT q ÝÑ
+                     ÝÑ
+                          2       Ξ
+                                       Hdif f
+
+The amount by which the map Ξ fails to be injective is exactly the symmetry
+group diffp△q of discrete diffeomorphisms of triangulations. Therefore, we
+can think of the Hilbert space L2 pAT q, and thereby also H , as Hilbert spaces
+of diffeomorphism invariant states up to the discrete group diffp△q. In this
+picture one should therefore think of a loop associated to a simplicial complex
+as a kind of equivalence class of smooth loops where the equivalence is with
+respect to smooth diffeomorphisms.
+    It is interesting that the construction of H relies on a partition of the
+diffeomorphism group in a ’countable’ and a ’over countable’ part. Here,
+the countable part is diffp△q. This partition is a compromise between two
+opposite considerations:
+   • For the Hilbert space H to carry a representation of the loop algebra
+     it must have an action of at least parts of the diffeomorphism group
+     since the loop algebra itself is not diffeomorphism invariant. This re-
+     quirement works to maximise the size of the remaining symmetry group
+     diffp△q.
+
+   • The construction of a Dirac type operator acting on H requires a strict
+     control over permissible embeddings of the type (16). This requirement
+     works to minimise the size of diffp△q.
+Therefore, the identification of the symmetry group diffp△q is essential for
+the construction of the spectral triple pB , D , H q.
+    Let us now return to the question regarding the different representa-
+tions of the Poisson algebras (53) and (55), the representation used in Loop
+
+                                         48
+Quantum Gravity and the representation contained in the triple pB , D , H q.
+We find that the different representations correspond to different choices of
+holonomy loops in (55). The representation used in Loop Quantum Gravity
+involves the non separable Hilbert space L2 pA q whereas the representation
+                                               a
+
+presented in this paper involves the separable Hilbert space L2 pA q. The
+                                                                      
+
+central difference between the two representations lies therefore in the corre-
+sponding symmetry groups. The larger the class of loops is, the larger is the
+symmetry group.
+
+
+7     Area operators
+The area operators are an important set of operators in Loop Quantum Grav-
+ity [24]. It turns out that the area operator also exist within the framework
+described by the spectral triple pB , D , H q. These operators are, however,
+not very natural objects to consider within this framework. However, we find
+that the square of the Dirac-like operator D has a natural interpretation in
+terms of a global area-squared operator.
+
+7.1    Area operators in Loop Quantum Gravity
+Classically, the area of a 2-dimensional surface S in Σ is given by
+                                     »       ?
+                           ApS q             dF a  dF a .
+                                         S
+
+where the area element dF a was defined in (54). To convert this expression
+into a form suitable for quantization consider
+                                           a partition of S into N smaller
+surfaces Sn such that for any N we have n Sn  S. Then the area of S can
+be written
+                                     N b
+                                     ¸
+                     ApS q  lim                  FSi n FSjn δij .        (67)
+                              N   Ñ8 n1
+
+In Loop Quantum Gravity, the area operator is constructed by substituting
+the classical flux variable FSi n with the corresponding operators FiSn
+                                     N b
+                                     ¸
+                     ApS q  lim                  FiSn FjSn δij .         (68)
+                              N   Ñ8 n1
+
+                                             49
+The point here is that this operator, at the level of a given graph, is well
+defined. This is due to the fact that the number of intersections of any graph
+with the surface S is finite. Continued subdivisions of S are obsolete once the
+resolution is reached where each Sn contains one intersection point. If the
+area element Sn does not involve an intersection with the graph Γ then the
+corresponding operator FiSk vanishes. This means that the surface S has a
+minimal subdivision into elementary cells Sn each containing one intersection
+point with the graph. The area operator obtains the form
+                                           ¸
+                              ApS q              Appi q ,
+                                            i
+
+where the sum runs over intersection points pn and where
+                                    b
+                         Appn q         FjSn FkSn δjk .                     (69)
+
+The operator Appn q basically assigns an area to the intersection point pn .
+The spectrum of the area operator ApS q, at the level of a given graph Γ, can
+be computed and reads [15]
+                                   #                                 +
+                                                  ¸b
+                  SpecpApS qq         4πγlP2 l          jp pjp     1q   ,
+                                                   p
+
+where p are intersection points between S and the graph Γ and jp are positive
+half integers (for details and subtleties we refer to [15]). lP l is the Planck
+length.
+
+7.2    A global area operator
+The spectral triple pB , D , H q involves another representation of the oper-
+ator algebra (57), now based on curves in the inductive system of triangu-
+lations. Therefore, it is possible to repeat the line of reasoning from Loop
+Quantum Gravity and define a second area operator, now based on the Dirac-
+like operator D and the vectors Eˆij .
+    Recall the interpretation (59) which relates the vectors Eˆij to the flux
+operators Fij . This leads to an area operator
+                                        ¸b
+                     A pS q  lim                FiSn FjSn δij .            (70)
+                               N   Ñ8 n
+
+                                          50
+where FiSn are as explained in section 5.2.
+    The difference between the operators (68) and (70) lies not in the expres-
+sion of the operators themselves but rather in the Hilbert spaces on which
+they act. The former acts on a non-separable Hilbert space whereas the latter
+acts on the separable Hilbert space H .
+    The area operator (70), however, does not appear to be a natural object
+in the construction presented here. It involves a surface S which has no
+natural place in this setting.
+    We can nevertheless apply the line of reasoning from Loop Quantum
+Gravity to obtain a better understanding of the operator D . Consider again
+the interpretation of D in terms of conjugate variables of canonical gravity.
+If we combine equation (62) with equation (69) we obtain
+                                  ¸
+                           D2            ci Apvi q2       ...               (71)
+                                      i
+
+where, in the limit, the sum runs over all vertices in the inductive system of
+triangulations tTi u. It is clear that the set of all vertices is a dense set M.
+Therefore, the sum over all vertices, weighted with the sequence tai u and the
+a multiplicity factor given by the valency of the vertex, defines an integral
+over M                          ¸        »
+                                   ... Ñ    dVol .
+                                vi              M
+
+This provides us with a surprising interpretation of D2 and thereby of D2 .
+According to (71) it is an operator which is related to the area of the entire
+manifold M
+                                  »       
+                          D                 Apxq
+                                                       2
+                            2
+                                                            ...              (72)
+                                      M
+
+Clearly, the spectrum of ∆ is discrete.
+
+
+8     The spectral action
+The identification of the operator D2 as a global operator related to the area
+of the underlying manifold leads us to a new interpretation of the spectral
+triple pB , D , H q. In this section we suggest that the operator D2 should be
+thought of as an action. Subsequently, we point out that the spectral action
+
+                                               51
+of D resembles a partition function. The argumentation presented in the
+following is tentative.
+    The first indication that pD q2 may be understood in terms of an action is,
+as already mentioned, that is has the form of an integral over an underlying
+manifold.
+    The second indication is directly related to the classical Einstein-Hilbert
+action. Within the language of Noncommutative Geometry the Einstein-
+Hilbert action has a natural interpretation as an area of the underlying man-
+ifold. With the previous section in mind this suggest that the operator pD q2
+is somehow related to the Einstein-Hilbert action.
+    Let us go into some details. Consider a 4-dimensional, Riemannian spin-
+geometry described by the real, even spectral triple pA, D, H q where A is a
+commutative C  -algebra. The Eucledian Einstein-Hilbert action on M can
+be computed directly from D. It is proportional to the Wodzicki residue of
+the inverse square of the Dirac operator D [37]. If we denote by T r the
+Dixmier trace and define the noncommutative integral by
+
+                                  f : T r f |D |4
+
+one has                             »
+                            D 
+                              2  1    ?
+                                      R gd4 x ,
+                                    48π 2
+          ?
+                                            M
+
+where dv  gd4 x is the volume form and R is the scalar curvature. It
+is in this sense that one may interpret the Einstein-Hilbert action as the
+”two-dimensional measure of a four manifold”, the ”area” of M [38].
+    This resembles the findings of the previous section where we saw that the
+operator D2 has a natural interpretation in terms of a global area-squared
+operator over an underlying manifold. If we ignore the obvious issue of ’area’
+vs. ’area-squared’ one may speculate whether there is some deeper relation
+between the operator D2 and the Einstein-Hilbert action.
+    These considerations entail an interesting interpretation of the spectral
+action of D . Consider the quantity
+
+                             T r exppsD2 q ,                             (73)
+
+where s is a real parameter, and let us perform a formal calculation to obtain
+
+
+
+                                       52
+a better understanding of this quantity. We write
+                           ¸                             
+     T r exppsD2 q           xψn| exp sD2 |ψny
+                           ψn
+                           »
+                                                                 
+                               
+                                    rd∇sxδ∇| exp sD2 |δ∇y
+                           »A              »
+                                                                            
+                               
+                                    rd∇s         
+                                                     rd∇1sδ∇p∇1 q exp sD2δ∇ p∇1q
+                           »A                   A
+                                                             
+                               
+                                    rd∇s exp sD2δ∇ p∇q ,                               (74)
+                           A
+
+
+where tδ∇ u is the orthogonal set of delta functions on the space A and
+                                                                                     
+
+where rd∇s denotes the measure on A introduced in section 4. The final
+                                       
+
+expression in (74) may, strictly speaking, not make perfect mathematical
+sense. However, we know that the initial quantity (73) is well defined. This
+formal calculations shows that the spectral action (73) has the form of a
+formal Feynman integral where the expression
+
+                                                D2 δ∇
+
+plays the role of a classical action.
+
+
+9     Including the sequences tanu as dynamical
+      variables
+Up till this point we have constructed the spectral triple pB , D , H q and
+related it to Quantum Gravity. We have shown that it contains information
+of the Poisson brackets of canonical gravity and that it partly incorporates
+diffeomorphism invariance. Two questions remains to be addressed:
+
+    1. The spectral triple relies on the divergent sequence tai u. What struc-
+       ture does this sequence represent and how do we deal with it?
+
+    2. How do we incorporate the remaining diffeomorphisms contained in the
+       group diffp△q.
+
+  One solution to the first question would be to fix the sequence tai u in a
+manner which counts a partition of an edge with a factor 21 . However, we
+
+                                                    53
+will argue that there may be another solution which is more natural. This
+section is concerned with this issue.
+    In section 5 we demonstrated that the triple pB , D , H q has a natural
+interpretation in terms of Poisson brackets of canonical gravity. In this pic-
+ture the Dirac type operator D , including the sequence tai u, is a linear sum
+of the flux operators involving the densitised vielbein operator, see equation
+(56). This suggest an interpretation of the parameters ai in terms of the
+determinant of the vielbein
+
+                                   ai  detpeam q .
+
+That the sequence tai u carries metric information also comes out of the
+discussion in subsection 4.5 where we relate the sequence tai u to the scaling
+behaviour of the construction.
+    Thirdly, in section 7 we found that the square of D has the form of an
+integral over the underlying manifold. Here, the measure involved in this
+integral is given by the sequence tai u.
+    This suggests, as a possible solution to the first question, that we should
+include the sequence tai u in the construction as dynamical variables. If the
+sequence tai u has a metric origin, then it seems natural to try to integrate
+over these degrees of freedom.
+    Therefore we extend the spectral triple pB , D , H q to include the se-
+quence tak u as dynamical variables. By doing this we obtain a new triple,
+denoted pBt , Dt , Ht q, which is a fibration of triples pB , D , H q over the space
+of permissible sequences tak u. It turns out that there is a way to obtain this
+which leaves the spectral triple pBt , Dt , Ht q with very few free parameters.
+    This section gives a presentation of ideas and methods used to construct
+the triple pBt , Dt , Ht q. A detailed account of the construction will be pre-
+sented elsewhere.
+    To emphasise the dependency on the sequence tai u we shall in the follow-
+ing write Dpai q instead of D .
+
+9.1     The space of permissible sequences tai u
+We would like to think of the parameters ai as a coordinates in a space H of
+permissible sequences tai u (that is, sequences that satisfy the condition given
+by (42)) and to define a Dirac operator on this space. Clearly H  R8 . The
+sequence tai u is characterised by the condition that it diverges sufficiently
+
+                                          54
+fast. This means that the inverse sequence ta
+                                             i u converges towards zero:
+                                               1
+
+
+                      lim a
+                           i  0 sufficiently fast .
+                             1
+                                                                         (75)
+                       i
+
+This convergency condition is easier to work with than condition (42) since
+convergent sequences can be understood in terms of a Hilbert space structure.
+Therefore, in a first step we consider L2 -sequences. That is, sequences
+
+                           txk u  px1 , . . . , xn, . . .q P R8
+which satisfy
+                                          ¸
+                            }txk u}2 :        x2k   8.                  (76)
+                                           k
+
+The space of sequences satisfying (76) is an infinite dimensional, real, sepa-
+rable Hilbert space which we also denote H.
+    The exact relationship between vectors txk u in H and the sequences tak u
+satisfying condition (42) will be determined in the following.
+    In order to construct a Dirac operator on H we first need a Hilbert space
+structure over H. The goal is to construct a spectral triple over H.
+    The techniques used to construct L2 pH q and the corresponding spectral
+                                                                             
+triple are essentially the same techniques we used to construct the space A
+and the triple pB , D , H q. The following is based on ideas by Higson and
+Kasparov, see [25].
+    The strategy is to consider first finite dimensional subspaces Hn of H,
+corresponding Hilbert spaces L2 pHn q and structure maps
+                      : L2 pH q Ñ L2 pH q ,
+                    Pm,n                                    n¤m
+                              n         m
+
+between Hilbert spaces. Next step is to construct a spectral triple over each
+space Hn , ensure compatibility with the structure maps Pm,n   and finally
+obtain a triple over H by taking the limit n Ñ 8.
+   There are two potential difficulties with this strategy:
+   • The spaces Hn are non-compact. The construction of the spectral triple
+     pB, D , Hq relies strongly on the fact that G is compact. This is a
+     necessary condition to construct the structure maps P  (24) between
+     Hilbert spaces. Specifically, we used the fact that the constant function
+     is square integrable. This is no-longer the case when the underlying
+     space is non-compact.
+
+                                            55
+   • The Dirac type operator, which we aim to construct, will have a non-
+     compact resolvent. This is the same problem we encountered when
+     we constructed the operator D and a problem which will always arise
+     when one constructs a Dirac like operator on an infinite dimensional
+     space (see also [25]). This problem was solved in section 3 by intro-
+     ducing the parameters tai u, whose presence is the very reason why we
+     now wish to construct the extended triple pBt , Dt , Ht q. Therefore, it
+     appears that we are in danger of a circular argument: Certainly, we do
+     not wish to introduce yet another infinite sequence to ensure a well be-
+     haved Dirac operator acting on L2 pH q entailing yet another extension
+     of pBt , Dt , Ht q and so forth.
+
+    It turns out that there exist a way to construct the triple pBt , Dt , Ht q
+which avoids these two technical pitfalls.
+    The first problem is related to the fact the canonical map from Hn to Hm
+is given by ξ Ñ ξ b 1n,m , where 1n,m is the identity function on the m  n
+dimensional orthogonal complement to Hn in Hm . However, the function
+1n,m is not a L2 -function and therefore the canonical map is not a map
+between Hilbert spaces. We can remedy this defect by finding a suitable L2 -
+function φn,m to replace the constant function 1n,m . The choice of function
+φn,m is restricted by the requirement that it must lie in the kernel of the
+Dirac type operator, which we wish to construct, when this is restricted to
+the orthogonal complement to Hn in Hm .
+    The second problem is related to the fact that we are dealing with an
+infinite dimensional space. To solve this problem we modify the canonical
+algebra of functions on Hn to include operators which project onto finite
+dimensional subspaces.
+
+9.2    A spectral triple over R8
+We first consider finite dimensional subspaces Hn  Rn embedded in H by
+
+                Hn Q px1 , . . . , xn q Ñ px1 , . . . , xn , 0, . . .q P H .
+
+Before we proceed with the construction we introduce some notation and
+definitions. The Gaussian functions on R
+                                                     
+                         φ pxq  pπαq { exp1 4           x2     ,
+                           α
+                                                         2α
+
+                                            56
+where α is a real positive number, is a square integrable normalised function
+on R and the composition
+                                                           
+                                                                  ¸
+                                                                  n
+                                                                    x2
+               φ px q  . . .  φ px q  pπαq { exp
+                 α     1         α    n
+                                                  n 4
+                                                                      i
+
+                                                                  i 1
+                                                                      2α
+
+is square integrable and normalised on Rn . Define also
+                φn,m pxn 1 , . . . , xm q  φα pxn 1 q  . . .  φα pxm q .
+This is a square integrable and normalised function on the orthogonal com-
+plement Hn,m of Hn in Hm .
+   Given a function ξ P L2 pHn q define a function Pn,m
+                                                     pf q, n m, in L2 pHm q
+by
+                 pf qpx , . . . , x q  f px , . . . , x q  φ .
+               Pn,m                                                           (77)
+                        1           m        1           n     n,m
+
+              defines an embedding of Hilbert spaces. We can therefore
+Note that Pn,m
+define the limit
+                         L2 pH q : lim L2 pHn q ,
+                                             Ñ
+which is a real, separable Hilbert space over H.
+   Note that, as mentioned in the previous section, the Gauss distributions
+play the same role in the construction as the constant function did in the
+construction of H . This solves the first pitfall mentioned above.
+   Since we wish to construct a Dirac type operator we need the Clifford
+bundle. We define
+                       L2 pH, ClpH qq : lim L2 pHn , ClpHn qq ,
+                                            Ñ
+where we have used the unital embedding ClpHn q Ñ ClpHm q, n m.
+   We identify ClpHn q with the exterior product Λ Hn and define the oper-
+ators
+             extpeq   exterior multiplication by e on ΛHn ,
+             intpeq   interior multiplication by e on ΛHn ,
+              c peq  extpeq  intpeq .
+which means that c peq is Clifford multiplication with e and c peq is Clifford
+multiplication with e except that e2  1 and not e2  1. Furthermore, one
+easily checks that tc peq, c pequ  0.
+
+                                            57
+   Define ei to be the vector which is 1 and the i’th place and zero elsewhere.
+Define the operator Dn on L2 pHn , ClpHn qq by
+                                   
+                     Dn 
+                             ¸
+                             n
+                                     c pei q
+                                                 B    c pei q
+                                                                xi
+                             
+                             i 1
+                                                Bxi             α
+                                                                     .      (78)
+
+This operator is known as the Bott-Dirac operator and its construction is
+due to Higson and Kasparov [25]. It is proven in [25] that it is self adjoint
+with compact resolvent. It satisfies
+                                 Dn φ1,n px1 , . . . , xn q  0 .
+In fact, the kernel of Dn is one dimensional and given by the function
+φ1,n px1 , . . . , xn q. From this we get that
+                                    pD pξ qq  D pξ q
+                                  Pn,m n         m
+
+and we obtain a self adjoint unbounded operator D on L2 pH, ClpH qq.
+   The square of Dn is
+                             
+                               BBx BBx
+                         ¸
+               Dn2                               xi xi
+                                                   α2
+                                                           αn       2
+                                                                     α
+                                                                       N,   (79)
+                         i             i   i
+
+where N is the operator which assigns a differential form its degree. The first
+part of (79) is the harmonic oscillator Hamiltonian which has the spectrum
+0, 2{α, 4{α, . . ..
+    As anticipated, the operator D does not have compact resolvent since
+the group of all finite perturbations of N acts on its spectrum. A possible
+solution to this problem is to modify the canonical algebra of functions acting
+on L2 pH, ClpH qq. In stead of functions on L2 pH, ClpH qq we consider instead
+functions on finite subspaces of L2 pH, ClpH qq and extend these to the full
+Hilbert space by tensoring them with projection onto Gauss functions. Thus,
+effectively we include cut-off’s in the algebra. This will ensure that the
+resolvent of D, understood in terms of an interaction with the algebra, is
+compact.
+    Define
+                    Φn,m : 1Hn b Pφn,m P BpL2 pHm q, Clpmqq ,
+where Pφn,m is the orthogonal projection onto φn,m in Hn,m . Let An be
+the algebra of operators in L2 pHn , ClpHn qq generated by tensor products of
+elements in C0 pRq b Clp1q and Φk,l . Note that An embeds in Am , n m, by
+                             An Q a Ñ a b 1Hn,m  Φn,m .
+
+                                                 58
+Define
+                                      A  lim An .
+                                             Ñ
+In particular, A consist of operators on L2 pH, ClpH qq. Since the operators
+in A contain a cut-down to the Gauss distribution from a certain point on,
+we see that pA, D, L2 pH, ClpH qqq is a spectral triple since
+
+                           apλ  D q1 ,          a P A ,λ R R
+
+is a compact operator.
+    Note that the semi-finite trick with the Clifford bundle, which worked
+for the spaces of connections does not seem to work in this case, since the
+kernel of D is one dimensional. Therefore there is no symmetry which can
+be discarded of.
+
+9.3      θ-summability
+We would like to interpret condition (76) in terms of θ-summability of the
+operator Dpai q . That is, we wish to establish a relation between sequences
+txi u satisfying (76) and sequences taiu which leave
+                                                     
+                               T r exp D2pai q                        (80)
+
+finite. Thus, we seek a function
+
+                                      f : R8 Ñ R8
+
+which satisfies
+                                      
+                  T r exp D2pai q       8  f ptai uq P l2pNq .       (81)
+
+    This emphasis on θ-summability has a clear physical motivation. In sec-
+tion 8 we noted that the quantity (80) has the form of a path integral. In
+this light θ-summability simply means that this path integral is finite.
+
+9.4      The U p1q-case
+As a toy example let us consider the U p1q-case and the simplified operator
+D1 pai q on U p1q8 which is the limit of operators of the form
+
+                         Dn1 : D1        a2 D2     ...   an Dn ,
+
+                                            59
+where Di is the Dirac operator on the i’th copy of G. With this operator we
+consider expression (80) and calculate
+                                                   
+                                                          ¸                     ¸
+                 T r exp pD 1 q2pai q                            exp              a2i n2i
+                                                         n N8
+                                                           P                           
+                                  ΠnT r exp a2nD12 ,
+where D1 is the Dirac operator on U p1q. Taking the logarithm we obtain
+                                                          ¸                                    
+                 ln T r exp pD1 pai q q2                      ln T r exp a2n D1
+                                                           n
+                                                           ¸          ¸                         
+                                                                ln       exp a2n k 2 .            (82)
+                                                           n          k
+
+Thus                                                             
+                                T r exp pD1 pai q q2                    8
+if and only if                  ¸¸                              
+                                          exp a2n k 2                8.
+                                     ¡
+                                 n k 1
+
+If we define the function
+                                                  d
+                                                      ¸
+                           f paq  sgnpaq                      exppa2 k 2 q ,
+                                                    k 1¡
+
+we see that, for G  U p1q and for the modified operator, θ-summability of
+D1 pai q is directly related to the Hilbert space condition
+                                      ¸
+                                              f pan q2          8.
+                                         n
+
+This means that the sequence tai u is related to the Hilbert state txi u P H
+through the relation
+
+                                      xi  f pai q .                                                (83)
+
+
+
+
+                                                   60
+9.5    The triple pBt , Dt, Ht q
+We are now ready to combine the two spectral triples pB , D , H q and
+pA, D, L2pH, ClpH qqq. A point txn u in H gives a θ-summable spectral triple
+on B via the Dirac operator on H defined by the sequence f 1 ptxn uq. Let
+us denote this Dirac operator by Df 1 ptxn uq . We define the operator Dt acting
+on
+                         Ht : L2 pH, ClpH qq b H
+by
+
+       Dt pξ b η qptxn uq
+                        
+                D pξ q b η ptxn uq p1qdegpξq ξ b Df  ptx uq pη qptxn uq , (84)
+                                                        1
+                                                            n
+
+
+where degpξ q means the degree of ξ with respect to the degree in CLpH q.
+   One of the requirement that this defines a semi-finite spectral triple over
+A b B : Bt is that
+                                 , for all a P Bt ,
+                            a
+                          1 Dt2
+is τ -compact, where τ is a trace defined in (44) tensored with the trace on
+B pL2 pH, ClpH qqq where B denotes the bounded operators.
+    We see that this requirement collide with the following symmetry prop-
+erty: All a P Bt are from a certain step of the form
+
+                                   1 b Pφn,8
+
+and therefore the operator
+                                      a
+                                    1 Dt2
+is invariant under symmetries permuting all coordinates bigger than n.
+    In order to remedy this we modify the construction of the spectral triple
+pA, D, L2pH, ClpH qqq slightly. This modification is based on the observation
+that the parameter α in the Gauss distribution φα pxq is in fact a free pa-
+rameter. Further, there are an infinite number of these free parameters in
+the construction of the triple pA, D, L2 pH, ClpH qqq, one for each dimension
+in H. Let us denote these with tαi u. By choosing these parameters carefully
+we can solve the problem mentioned above.
+    For Dt to have a T r-compact resolvent its eigenvalues must approach
+infinity. However, for each copy of G we know that its eigenvalues scale with
+
+                                       61
+pαiq1. Thus, if we require the sequence tαi u to satisfy
+                                 lim αi  0 ,
+                                 iÑ8
+
+then the triple pBt , Dt , Ht q may be spectral.
+    Let us pause to comment on this idea. It appears that we have sim-
+ply exchanged one infinite sequence of free parameters tai u with another
+infinite sequence tαi u. However, we suggest that the sequence tαi u is not ar-
+bitrary but should be determined completely from symmetry considerations.
+The idea is that the αi ’s represent an “average background” over which the
+parameters ai are allowed to fluctuate. Therefore, we suggest to choose a
+specific sequence tαi u satisfying the following requirements:
+   • Copies of G which correspond to the same level in the projective system
+     of graphs should be assigned the same αi ’s.
+
+   • Given two copies of G where one copy G2 corresponds to a subdivision
+     of the edge associated to the other copy G1 , then the corresponding
+     parameters α1 , α2 should satisfy
+
+                                         α2 
+                                                α1
+                                                   .
+                                                2
+
+    The first point reflects a rotational symmetry within each graph. The
+second point is related to the scaling properties of the construction: a division
+of a line segment corresponds to a factor 12 (see section 4.5 and the discussion
+of the role of the parameters tai u).
+    To implement this we enumerate the barycentric subdivisions with k and
+introduce the modified Gauss distributions
+                                                 
+                        φ pxq  pπα q { exp
+                                         1 4         x2     ,
+                         k           k
+                                                       2αk
+where
+
+                                αk  2k α .                                (85)
+
+This means that we associate to each edge in the simplicial complexes a
+parameter αk . In the initial complex each edge is associated the parameter
+α0  α. Edges arising through the first barycentric subdivision are then
+associated the parameter α1  α{2 and so forth.
+
+                                         62
+    Consider now the triple pA, D, L2 pH, ClpH qqq constructed with with these
+new Gauss distributions. This means that the Hilbert space embeddings (77)
+are modified together with the Bott-Dirac operator (78) which is now of the
+form                              
+                  Dn 
+                         ¸ n
+                          N   ¸ k
+
+                                    c pei q
+                                              B c pe q xi ,
+                         k 0 i1
+                                             Bxi    i
+                                                      αk
+           °
+where n  k nk and where the first sum runs over the number of barycentric
+subdivisions involved in the graph to which Dn is associated, N being the
+total number of barycentric subdivisions. The second sum runs over the
+number of edges within a barycentric subdivision.
+    One now repeats the above construction leading to the operator (84), now
+with the modified Bott-Dirac operator.
+    The details concerning the spectral properties of the triple pBt , Dt , Ht q
+will appear elsewhere.
+
+                                       
+10      Distances on A
+On a Riemannian spin-geometry the Dirac operator D contains the geomet-
+rical information of the manifold M. In particular, distances can be formu-
+lated purely algebraically due to Connes [1]. Given two points x, y P M their
+distance is given by
+                                                                  (
+             dpx, y q        sup     |f pxq  f pyq| }rD, f s} ¤ 1 .       (86)
+                          f C8 M
+                          P     p q
+On a Noncommutative Geometry the state space replaces the notion of
+points. It is possible to extend the notion of distance to the state space
+by generalising (86).
+    In the present case it is natural to ask whether the Dirac-like operator
+                                                      
+D introduces a metric structure over the space A and if so, how distances
+should be interpreted in this setting.
+    The possibility for a distance between smooth connections in A and some
+closure hereof was first considered in [20]. There, however, the distance
+between two smooth connections was found to be infinite, since two smooth
+connections will differ on infinitely many different loops. This entails a finite
+contribution to the distance from infinitely many copies of G.
+    In the present setting the situation is different due to the sequence tai u.
+The role of the ai ’s is to assign a weight to each copy of G and therefore to
+
+                                           63
+                                                                                          
+scale the corresponding distance on G. Therefore, given two points in A
+their distance
+                                                             (
+   dp∇1 , ∇2 q  sup     }∇1paq  ∇2 paq} }rD, as} ¤ 1 ,          ∇ 1 , ∇2 P A ,
+                                                                                 
+                                                                                       (87)
+                   P
+                  a B
+
+where we choose }} as the operator norm on matrices in Ml pCq, is well defined
+and finite, even for ∇1 , ∇2 P A. This is related to the fact that although our
+                                                      
+geometry on A is infinite dimensional it assigns A zero volume.
+    The distance (87), when it is applied to smooth connections, is not inde-
+pendent of the embedding h of simplicial complexes into triangulations.
+                                              
+    With a metric structure on the space A it is natural to ask which con-
+nections are ’close’ to each other. Clearly, this depends on the choice of the
+sequence tai u. However, it is possible to give some general remarks indepen-
+dently of this choice.
+                            
+    Recall that the space A is the limit space limn Gn in an appropriate sense.
+The distance between ∇1 , ∇2 P AKi is simply the sum of geodesic distances
+on each copy of G, weighted with the appropriate parameters ai . In the
+previous section we found that the role of the parameters tai u is to scale
+the different copies of G according to their location in the projective system
+of simplicial complexes. The larger ai ’s corresponds to short distances, now
+with respect to some manifold. This means that the the distance between
+∇1 and ∇2 is larger if the connections differ mostly on those copies of G
+which are assigned small ai ’s. Correspondingly, the distance between ∇1 and
+∇2 is smaller if ∇1 and ∇2 differ mostly on those copies of G which are
+assigned large ai ’s. Therefore, in general, the two generalised connections
+will be ’close’ to each other if they differ mostly at short scales.
+    Via Levi-Civita connections we can interpret equation (87) as a distance
+between geometries14 . Again we can say that the distance between two ge-
+ometries depends on the scale on which they differ.
+    Let us consider the Abelian case G  U p1q and two points ∇1 , ∇2 in A .
+                                                                                
+
+In this case ∇1 and ∇2 are given by sequences of angles tθi1 u and tθi2 u where
+each angle θij corresponds to points expp2πiθij q on the i’th copies of U p1q. Let
+us for simplicity choose a coordinate system on Gn so that θij corresponds to
+the parameter ai . Thus, for example, if we consider G  G parametrised by
+angles φ1 and φ2 we choose
+                            θ1  φ1     φ2 ,     θ2  φ1  φ2
+  14
+   In this case, however, the distance formula will be degenerate since different geometries
+may have identical Levi-Civita connections.
+
+                                            64
+and so forth. Then the distance between ∇1 and ∇2 reads
+                                       ¸ 2k
+                       dp∇1 , ∇2 q              |θk1  θk2 | ,
+                                       k
+                                         ak 2π
+
+which should be read together with the condition (75).
+    The notion of a distance on a space of connections is not a new one but
+was discussed already by Feynman [39] and Singer [40]. See also [41] and ref-
+erences herein. However, these papers all deal with distances between gauge
+equivalence classes of connections. The construction presented in this paper
+is quite different from these previous works since two connections which differ
+by a gauge transformation will, in general, have a non vanishing distance.
+
+
+11     Discussion
+Before we end this paper we give a few remarks concerning the physical
+interpretation of the constructions presented.
+
+11.1     The quantization scheme
+As already mentioned, the shift to Ashtekar variables permits a formulation
+of General Relativity which is close to ordinary Yang-Mills theory. In the
+Hamilton formulation the theory involves a configuration space of connec-
+tions corresponding to ordinary SU p2q Yang-Mills theory. The essential dif-
+ference between General Relativity and Yang-Mills theory lies in the algebra
+of constraints which encode the symmetries of the theory. For General Rel-
+ativity the constraints encode diffeomorphism invariance. These constraints
+are closely related to the foliation of the spacetime M according to
+
+                              ΣR ÑM ,                                    (88)
+
+where Σ is a 3-dimensional hypersurface. Loosely stated, the constraints
+encode information about diffeomorphisms within and perpendicular to Σ.
+Therefore, the key question in any quantization procedure of gravity is the
+implementation of diffeomorphism invariance in the construction.
+   To quantize a constrained theory there are in general two standard ap-
+proaches:
+
+
+                                       65
+  a) To eleminate first, at a classical level, the constraints and thereby find
+     the reduced phase space of the theory. The quantization procedure is
+     applied to the reduced phase space.
+
+  b) To construct first quantum kinematics for the full phase space by ig-
+     noring the constraints, then construct operators corresponding to the
+     classical constraints and finally solve the quantum constraints to obtain
+     the physical Hilbert space.
+
+Loop Quantum Gravity follows the second approach which is due to Dirac
+(see [42] for a detailed exposition). In section 5.2 we demonstrated that the
+spectral triple pB , D , H q involves a representation of the Poisson algebra
+(55) of General Relativity. In our interpretation, the construction should
+be understood as a quantization scheme which lies somewhere between the
+approaches a) and b).
+    First of all, there is nothing in the geometrical construction that corre-
+sponds directly to the constraint algebra of General Relativity. However, in
+section 6 we related the Hilbert space H to the diffeomorphism invariant
+Hilbert space Hdif f of Loop Quantum Gravity. The difference between H
+and Hdif f is the group diff(△) of discrete diffeomorphisms on the system of
+simplicial complexes. Therefore, we think of the spectral triple pB , D , H q
+as a geometrical construction describing a quantization procedure of gravity
+on a Hilbert space which corresponds to a partial solution to the (spatial)
+diffeomorphism constraint. What remains then, in this picture, is the imple-
+mentation of the remaining diffeomorphisms encoded in the discrete group
+diff(△).
+    The second point in which our construction differs from canonical quan-
+tum gravity is the issue of time. Clearly, a foliation of the manifold is essential
+for canonical gravity since the Hamilton formulation is based on a choice of
+an explicit time direction. In contrast to this, the construction presented here
+does not a priori involve a foliation of space-time. Further, the dimension of
+the underlying space is completely free. The only restriction is the choice of
+symmetry group, which, for now, has to be compact15 . In particular, we can
+consider triangulations of a 4-dimensional manifold.
+    These observations suggest two possible interpretations of the construc-
+tion: First, the construction may be interpreted as a completely covariant
+construction in four dimensions, involving the full, four-dimensional group
+  15
+       The case G  SOp1, 3q, for example, is not permitted.
+
+
+                                             66
+of diffeomorphisms. This interpretation leaves no room for a foliation and
+thus no Hamiltonian constraint. Therefore, a dynamical principle replacing
+the Hamiltonian constraint must be sought elsewhere. This interpretation
+implies that the group G corresponds to four-dimensional local Lorentz rota-
+tions. Next, if the loop algebra lives on a four-dimensional manifold, then the
+interpretation of the Dirac type operator D in terms of canonical quantum
+gravity must involve a flux operator FaS where S is now a three-dimensional
+hypersurface. Further, the interaction between D and the algebra of loops
+should be understood as a four-dimensional operator algebra containing a
+representation of the Poisson algebra of General Relativity as a kind of sub-
+algebra.
+    Alternatively, we may interpret the construction as fundamentally three-
+dimensional, with G equal to SU p2q. This interpretation does not necessarily
+mean that we consider a foliation of space-time according to (88). Rather,
+we would like time to emerge naturally from the construction.
+    Indeed, let us end this discussion with the remark that the philosophy of
+Noncommutative Geometry is to seek a time within the algebraic construc-
+tion rather than imposing it a priori. Here we think of the Tomita-Takesaki
+theory [43] which identifies a one-parameter automorphism group uniquely
+up to inner automorphisms. It is an interesting question whether this group
+of modular automorphisms is nontrivial in this or perhaps some similar con-
+struction. If the answer is in the affirmative, then this might provide us with
+an alternative to the foliation and thereby with a new dynamical principle.
+
+11.2     The group diffp△q and the question of constraints
+Regardless of how one interprets the spectral triple pB , D , H q it is clear
+that one should seek to obtain invariance under the discrete group diffp△q of
+graph preserving diffeomorphisms.
+    Traditionally, given some space M, invariance under a symmetry group
+G is obtained by taking the the quotient
+
+                                    M {G .
+
+However, Noncommutative Geometry gives an alternative approach to quo-
+tient spaces. A simple example is the space of two points identified. Within
+Noncommutative Geometry this setup is described via two by two matrices
+where the off-diagonal entries represent the identification of the points. This
+
+                                      67
+entails a noncommutative algebra and a structure which, ultimately, leads
+to the Higgs mechanism in the noncommutative formulation of the Standard
+Model.
+    In the case of gravity the relevant symmetry group is the diffeomorphism
+group. This group is probably too large for an application of the noncom-
+mutative approach. However, in the present setup we have instead the much
+smaller group diffp△q and one could speculate if the machinery of Noncom-
+mutative Geometry of quotient spaces could be successfully applied. This
+idea differs fundamentally from a Dirac-type quantization procedure.
+    Thus, what we suggest is to obtain a formal diffeomorphism invariance
+by considering the semi-direct product of the loop algebra with the group
+diffp△q
+                                  B diffp△q ,
+and thereafter building a spectral triple with an associated Hilbert space
+L2 pAq b L2 pdiffp△qq. Presumably, such a construction will give rise to addi-
+tional degrees of freedom through fluctuations around the Dirac type opera-
+tor.
+
+11.3     Background independence
+                                            
+In section 6.2 we argued that the space A should be viewed as a space of
+connections subjected to a gauge fixing of the diffeomorphism group. Naively,
+it appears that this gauge fixing does not involve any choice of metric or
+background ’field’ on the manifold. Let us comment on this.
+    The construction in section 2 depends primarily on the initial simplicial
+complex Ko . The idea is that the basic data entering the construction is the
+topology of the corresponding manifold. The initial complex gives rise to an
+initial triangulation To via a homeomorphism
+
+                                h:KÑM.
+
+This initial triangulation introduces a metric structure on M. The embed-
+ding A ãÑ A will, of course, depend crucially on the triangulation and in
+              
+
+particular on the homeomorphism h. However, the construction and spec-
+trum of the Dirac-type operator is independent of h and so is its interaction
+with the algebra and the construction of the Hilbert space. In fact, the no-
+tion of a manifold may be left out altogether. It is only the identification of
+  
+A as a space of generalised connections that requires a manifold.
+
+                                      68
+    Another question is the dependency on the sequence tai u. The Dirac
+type operator D depends crucially on this sequence as does its spectrum.
+Thus, one may argue that some degree of background dependency enters the
+construction with the sequence tai u. In section 9 we attempted to free the
+construction of this dependency by making the ai ’s dynamical. The price
+paid, however, is the introduction of a new sequence tαi u determining the
+Gauss distributions. Therefore, it seems that the construction, whether we
+consider the triple pB , D , H q or the triple pBt , Dt , Ht q, does posses some
+degree of dependency on a parameter space which one may interpret in terms
+of a background. The exact nature and implication of this dependency is to
+be clarified.
+
+11.4      Additional degrees of freedom
+The construction of the triples pB , D , H q and pBt , Dt , Ht q takes canonical
+quantum gravity as its point of departure. Thus, both spectral triples are a
+priori of purely gravitational origin. However, there are several indications
+that the framework presented in this paper contains additional degrees of
+freedom, both bosonic and fermionic.
+    First, recall that the framework of Noncommutative Geometry generally
+involves fermionic degrees of freedom since it involves a Dirac type operator
+acting on a Hilbert space16 . The ’fermions’ involved in the spectral triple
+pB , D, Hq are clearly very different from the fermions of the Standard
+Model since they live on a space of connections. However, this space of con-
+nections is of course linked to an underlying manifold. A classical limit will
+presumable involve some kind of delta function on the space of connections
+(see next section for a discussion hereof) and therefore leave only space-time
+degrees of freedom for the fermions. Therefore the interesting question is
+what structures may emerge from these ’fermions’ in a classical limit.
+    Furthermore, during the construction of the the triple pB , D , H q we
+found that the CAR algebra emerged in an almost canonical fashion. It
+seems plausible that almost any construction of a Dirac type operator on
+an infinite dimensional space will naturally entail an infinite dimensional
+Clifford bundle which, in turn, leads to the CAR algebra. Thus, it seems
+that Noncommutative Geometry provides us with a mechanism which equips
+  16
+    For a commutative algebra the underlying space is a Riemannian geometry and the
+Dirac operator acts on a Hilbert space of spinors. In the noncommutative formulation of
+the Standard Model the Hilbert space is labelled by the fermions in the Standard Model.
+
+                                          69
+a purely gravitational setting, the construction of a Dirac type operator on
+an infinite dimensional space of field configurations, with basic elements of
+fermionic Quantum Field Theory. In section 4.1 we found that the Hilbert
+space H factorizes into
+                             H  H,b b H,f ,
+where the CAR algebra acts on H,f . This shows that H naturally involves
+both bosonic and fermionic sectors.
+   Finally, let us consider the possibility that the noncommutativity of the
+loop algebra will generate an additional bosonic sector through the inner
+automorphisms of the algebra. To explain this consider first a classical finite-
+dimensional, real spectral triple pA, D, H q. A noncommutative algebra A
+contains inner automorphisms of the form
+
+                           αu pxq  uxu     x P A ,
+where u is an arbitrary element of the unitary group, uu  u u  1. A
+change of representation of the algebra A from π to π  αu1 is equivalent to
+the replacement of the Dirac operator D by
+
+                         D̃  D    A1    JA1 J 1 ,                        (89)
+
+where A1  urD, u s is a noncommutative one-form, and where J is a real
+structure. In the noncommutative formulation of the Standard Model cou-
+pled to gravity [2] the entire bosonic sector of the Standard Model, including
+the Higgs boson, is generated by ° this type of fluctuations of the Dirac oper-
+ator by a general one-form A1  ai rD, bi s with ai , bi P A.
+    This mechanism is general. The interesting question is what kind of
+bosonic sector the inner automorphisms of the spectral triple pB , D , H q
+will generate.
+
+   The general idea behind these remarks is that pure Quantum Gravity may,
+as a ”free” spin-off, contain matter degrees of freedom. Thus, we believe
+that one should not attempt to couple matter degrees of freedom to the
+construction presented in this paper but rather hope to see matter emerge
+dynamically.
+
+
+
+
+                                        70
+12      Conclusion and outlook
+In this paper we establish a link between the mathematics of Noncommu-
+tative Geometry and the field of canonical quantum gravity. We construct
+a spectral triple pB , D , H q over a space of connections and show that the
+Poisson structure of General Relativity, formulated in terms of loop variables,
+is encoded in the interaction between the Dirac type operator D and the
+loop algebra B . The Hilbert space H corresponds to a partial solution of
+the diffeomorphism constraint of canonical gravity. The inner product of H
+involves a functional integral over a space of connections and the Dirac type
+operator D has the form of a global functional derivation. Consequently, we
+interpret the triple in terms of a non-perturbative, background independent,
+quantum field theory.
+
+    The construction is based on a projective system of simplicial complexes.
+The simplicial complexes are related through repeated barycentric subdivi-
+sions. The triple pB , D , H q is the limit of spectral triples formulated at
+the level of finite simplicial complexes. Since the operation of barycentric
+subdivision is countable the limit triple is separable and spectral.
+
+    The square of the Dirac type operator has, in terms of canonical quan-
+tum gravity, a natural interpretation as global operator related to the area
+operators known in Loop Quantum Gravity. We interpret the operator pD q2
+in terms of an action and show that the spectral action of D has the form
+of a Feynman path integral. Thus, at the core of the construction we find an
+object which resembles a partition function related to Quantum Gravity.
+
+    The construction of the spectral triple pB , D , H q differs from a tradi-
+tional canonical quantization procedure of General Relativity in the way the
+group of diffeomorphisms is treated. Rather than encoding the symmetries
+of the classical theory in a set of constraints the construction works directly
+on a Hilbert space H which corresponds to a partial solution of the (spa-
+tial) diffeomorphism constraint. The existence of the spectral triple relies
+on a particular split of the diffeomorphism group into a countable and an
+over-countable part. The over-countable part is discarded of; the group of
+countable diffeomorphisms is the group diffp△q of diffeomorphisms between
+simplicial complexes. This means that the Poisson algebra of General Rela-
+tivity is represented on the separable Hilbert space H .
+
+                                       71
+   The Dirac type operator D depends on an infinite sequence of parameters
+tai u. These parameters determine the scaling behaviour of the construction.
+We believe that a correct understanding and treatment of these parameters
+is essential. In this paper we propose a possible way to treat the sequence
+tai u. Since the sequence is seen to have metric origin we propose to include
+it as a dynamical variable in the construction. This leads to a new triple,
+denoted pBt , Dt , Ht q, which includes the spectral triple pB , D , H q as well
+as a sector permitting the sequence tai u to vary. The triple pBt , Dt , Ht q is
+constructed to ensure that the operator D is θ-summable. Thus, we permit
+only sequences tai u which leaves the spectral action of D finite.
+
+    Furthermore, the Dirac type operator D defines a distance on the un-
+derlying space of connections. Clearly, this distance depends strongly on the
+sequence tai u. However, we find that a general feature of this distance func-
+tion is that two connections are ”close” if they differ mostly at short scales.
+
+    It is possible to read this paper in a more conservative way, discarding the
+role of Noncommutative Geometry and reading it as a reformulation of Loop
+Quantum Gravity. If we ignore the construction of the Dirac type operator
+D and focus instead on the algebra B and the Hilbert space H , with-
+out the Clifford bundle, and consider the algebra of the vectors Eˆji , then, as
+already mentioned, we obtain a representation of the Poisson algebra of Gen-
+eral Relativity on a separable Hilbert space. Therefore, this Hilbert space, let
+us denote it H1 , replaces the otherwise non-separable Hilbert space L2 pA q
+                                                                              a
+
+known as the kinematical Hilbert space in Loop Quantum Gravity. In Loop
+Quantum Gravity the kinematical Hilbert space is the Hilbert space on which
+the constraints of General Relativity are defined. Thus, one could formulate
+the complete set of constraints of General Relativity in terms of operators
+acting on the Hilbert space H1 . First, as explained in section 6, the Hilbert
+space H1 has an action of the reduced set of diffeomorphisms diffp△q. There-
+fore the spatial diffeomorphism constraint should be formulated in terms of
+the group diffp△q. Next, one may likewise formulate the Gauss and Hamil-
+tonian constraints of Loop Quantum Gravity on H1 . The central message
+here is that it is possible to formulate Loop Quantum Gravity in terms of
+a separable kinematical Hilbert space. It is an interesting question whether
+this observation will have an impact on any of the challenges facing Loop
+Quantum Gravity.
+
+                                        72
+    Let us finally remind the reader that the focus of this paper is the physi-
+cal significance of the spectral triple pB , D , H q. The detailed mathematical
+analysis of the triple is given in [22].
+
+Outlook
+
+    More analysis is needed to understand the physical and mathematical
+significance of the spectral triple pB , D , H q. First of all it is imperative
+to understand the role and proper treatment of the sequence tai u since this
+sequence is central to the existence of the triple. Let us here just say that
+the sequence tai u should be understood in connection with the group of
+diffeomorphisms diffp△q since elements hereof are given by rearrangement of
+the parameters ai . Having said this, let us list other issues which we think
+deserves attention.
+    - First, we have seen that the spectral action resembles a Feynman path
+      integral. We believe that the computation and analysis of the spectral
+      action is the most interesting task to address at the present stage of the
+      project. Here one should consider the Dirac operator which involves
+      the inner fluctuations described in section 11.
+    - A prime issue for any theory or framework for non-perturbative Quan-
+      tum Gravity is the formulation of a semi-classical limit. In the present
+      case the aim is to obtain a classical limit which involves not only a
+      smooth geometry - characterised by a commutative -algebra - but to
+      obtain a limit which includes an additional matrix factor of the type
+      that characterises the almost commutative algebra in Connes’ formula-
+      tion of the Standard Model. Indeed, since Connes’ geometrical realiza-
+      tion of the Standard Model is so attractive and powerful as it stands,
+      it remains to understand why the algebra which lies at the heart of
+      this formulation should have this particular noncommutativity. We
+      suggest that the source of this noncommutativity lies in pure Quan-
+      tum Gravity. Recall that the loop algebra B is essentially an almost
+      commutative algebra over the space A of connections. That is, it is
+      a product of smooth functions over A and a matrix factor Ml pCq. If
+      we think of a classical limit as the emergence of a single geometry it
+      seems reasonable to expect something close to a delta function peaked
+      around a connection ∇. However, when we apply the loop algebra on a
+
+                                       73
+        delta function it reduces to the matrix factor Ml pCq or some subalgebra
+        hereof. Furthermore, if we keep in mind that the construction of the
+        spectral triple pB , D , H q involves a choice of a basepoint17 , then it
+        seems possible that a similar construction which does not involve this
+        basepoint will entail a smearing of the matrix factor over the manifold.
+        Thus, we speculate that the matrix factor behind the noncommutative
+        formulation of the Standard Model emerges in the classical limit from
+        the noncommutative algebra of holonomy loops.
+        We suspect this issue to be related to the calculation of the spectral
+        action. However, one should also investigate whether ideas from Loop
+        Quantum Gravity concerning coherent states [44] can be applied.
+
+       - The question about time is fundamental to any general covariant theory
+         since such theories have no preferred time flow. This situation is even
+         more complicated when one attempts to include quantum theory since
+         this will presumable lead to a theory which involves some notion of
+         superpositions of geometries and thus does not permit any notion of
+         a predetermined time. A possible solution to this problem has been
+         proposed by Connes (see for example [38]. See also [45] for similar
+         ideas developed by Connes and Rovelli). The idea is that the concept
+         of time is intimately linked to the noncommutativity of the algebra
+         of observables of Quantum Gravity. Specifically, it is a fundamental
+         property of von Neumann algebras that they possess a 1-parameter
+         family of automorphisms which is unique up to inner automorphisms.
+         Thus, the idea is that this group of automorphisms, the modular group,
+         should be understood in terms of a time. It is therefore natural to ask
+         whether the noncommutative -algebras introduced in this paper give
+         rise to a nontrivial modular group and whether this can be interpreted
+         as a time flow.
+        Alternatively, one might try to exploit the fact that the construction
+        presented in this paper is basically quantum mechanics on the group
+        G taken infinitely many times. Here, each copy of G corresponds to a
+        degree of freedom originating somewhere on the underlying manifold.
+        Thus, one could consider the time evolution, with respect to one copy
+        of G, given by the operator exppi∆tq where ∆ is the Laplace operator.
+  17
+    See appendix A for an extension of the triple pB , D , H q which avoids this choice of
+basepoint.
+
+
+                                             74
+  This suggest that the unitary operator
+
+                            U ptq : exppipD q2 tq
+
+  may be thought of as a time evolution operator.
+
+- The construction of the spectral triple pB , D , H q starts with a sim-
+  plicial complex. It is an important question to determine the exact
+  dependency of the triple on the choice of initial complex. For instance,
+  consider two simplicial complexes K1 and K2 chosen so that their union
+  is the barycentric subdivision of yet another simplicial complex K3 .
+  Does the construction depend on whether one chooses K3 or the union
+  of K1 and K2 as the initial complex? The answer is, a priori, yes, since
+  the two choices will come with different sequences of parameters tai u.
+  The exact nature of this dependency needs to be clarified. Clearly, the
+  idea is that the spectral triple should depend only on topological data
+  coming from the underlying manifold. A related issue is the merging
+  of different spectral triples based on different simplicial complexes. By
+  gluing complexes it should be possible to move from one topological
+  setting to another. These issues are all connected with the sequence
+  taiu and the group of diffeomorphisms in diffp△q.
+- A related issue is the possibility to obtain a similar construction based
+  on a different projective system of graphs. The choice of simplicial com-
+  plexes (or, triangulations) and barycentric subdivisions seems natural
+  but is not compulsory. In [22] we provide certain necessary require-
+  ments for a system of graphs to be suitable for the construction of a
+  spectral triple. These requirements leave room for projective systems
+  of graphs which are not simplicial complexes. Again, more analysis is
+  needed to determine the dependency of the final construction on dif-
+  ferent choices of graphs. It is clear that a projective system of graphs
+  must be countable in order to permit the construction of a spectral
+  triple.
+
+- It is desirable to be able to deal also with a non-compact gauge group
+  such as SO p3, 1q. At present, the compactness of the gauge group is
+  essential for the construction of the Hilbert space to work. Basically,
+  we need the identity to be an L2 -function with respect to the Haar
+  measure. One could speculate whether the techniques of Higson and
+
+                                  75
+  Kasparov [25] might be applied to resolve this issue. Here, the trick is
+  to use a Dirac operator with a nontrivial square-integrable kernel and
+  to define embeddings between Hilbert spaces via this kernel.
+
+- One should further clarify the relation between the construction pre-
+  sented here and Loop Quantum Gravity. In particular, it would be
+  interesting to understand if there is a relation between the operator D
+  and the Hamilton constraint. Here one should most likely consider the
+  fluctuated version of D , with respect to inner automorphisms, since
+  this operator involves also the loop algebra.
+
+- It is an interesting question whether the construction presented in this
+  paper has anything to say about nonperturbative gauge theory. Con-
+  sider a single line segment and the sequence an  a0 2n , where n cor-
+  responds to the number of subdivisions of the segment. This is a nat-
+  ural sequence to consider but we know that the asymptotic behaviour
+  an  2n is too weak for the Dirac type operator to have a compact
+  resolvent. If we consider instead the sequence an  a0 p2 |ǫ|qn then
+  D will have a compact resolvent as long as ǫ is non-zero. This setup is
+  then extended to all line segments in the projective system of graphs.
+  As long as ǫ is non-zero the corresponding spectral action of D is well
+  defined and resembles a Feynman path integral over a space of connec-
+  tions. The interesting question is what theory this object represents. It
+  seems clear that it should be understood as a non-perturbative Quan-
+  tum Field Theory involving a gauge field. The setup resembles lattice
+  gauge theory with the crucial difference that a lattice spacing is ab-
+  sent and that one does not have the freedom to choose an action. It
+  would be interesting to calculate the spectral action and, subsequently,
+  to take the limit ǫ Ñ 0. Presumably, this limit will lead to divergences
+  since the operator D ceases to have compact resolvent when ǫ  0.
+  One can speculate whether these divergences might correspond to the
+  divergences found in perturbative Quantum Field Theory.
+
+- Of course, the exact construction and analysis of the triple pBt , Dt , Ht q
+  should be carried out. A publication with these details is under prepa-
+  ration.
+
+
+
+
+                                   76
+Acknowledgements
+
+    We thank the following colleagues for fruitful discussions: Christian Fleis-
+chhack, Victor Gayral, Gerd Grubb, Troels Harmark, Thordur Jonsson,
+Mario Paschke, Adam Rennie, Carlo Rovelli, Thomas Schucker, Christian
+Voigh and Raimar Wulkenhaar. Furthermore, we are grateful to the fol-
+lowing institutes for hospitality during visits: the Institute of Mathematics
+in Reykjavik, Iceland; The Max Planck Institute for Mathematics in the
+Sciences, Leipzig, Germany; the Isaac Newton Institute for Mathematical
+Sciences, Cambridge, UK; the Institute of Theoretical Physics in Marseilles,
+France.
+    Johannes Aastrup was funded by the German Research Foundation (DFG)
+within the research projects Deformation Theory for Boundary Value Prob-
+lems and Geometrische Strukturen in der Mathematik (SFB 478).
+
+
+A     A spectral triple without the basepoint
+The diffeomorphism invariance obtained so far only includes diffeomorphisms
+which preserve the basepoint introduced in section 2. The role of the base-
+point is to equip the algebra of loops with a product. Because the choice of
+basepoint partly breaks diffeomorphism invariance we would like to obtain
+a structure which avoids the basepoint. It turns out that such a construc-
+tion does exist. Instead of the group structure of loops this more general
+construction is based on a groupoid structure of path.
+    Once again we start with an abstract simplicial complex K with vertices
+tviu and edges tǫj u. Consider the Hilbert space
+                        HK  L2 ptvi u  AK , Ml pCqq ,
+
+where we recall that AK  GnpKq . For now we omit the Clifford bundle which
+is not necessary for the construction and representation of the algebra.
+    In fact, there are two natural algebras to consider. Denote by Ω the set of
+loops in K with arbitrary basepoint and consider first the algebra generated
+by these loops equipped with the product
+                              "
+                fL1  fL2 
+                                  0       if basepoints differ
+                                  fL1 L2 if basepoints coincide.
+
+
+                                         77
+Again we can construct a norm via the matrix norm on G and we obtain a
+C  -algebra which we denote BΩ .
+     The second option, which is perhaps more natural, is to consider paths in
+K. Denote by P the set of paths in K and denote by BP the algebra generated
+by such paths with a natural product. Clearly, BΩ ãÑ BP . Concretely, we
+let the algebra BP be given by its representation which is as follows. Given
+a path p that starts in v1 and ends in v2 we write
+                                     "
+                                                           if vj  v2
+               pfp  ξ qpvj , ∇q        0
+                                         ∇ppq  ξ pv1 , ∇q if vj  v2 ,
+
+where ∇ppq is defined as in (11), just with a path instead of a loop.
+   In this setup a path can now be seen as an operator which combines the
+holonomy along the path with a matrix structure
+
+                                         |vmyxvn|
+and we notice that loops with arbitrary basepoint are found on the diagonal
+of this matrix structure. Thus, a natural trace will pick out all the loops and
+thereby, in terms of holonomy loops, the gauge covariant elements.
+    The inner product on the Hilbert space HK also involves a sum over
+vertices. The rest of the construction can be carried out in a similar manner
+to the construction of the triple pB , D , H q.
+    This formulation seems better suitable for a semi-classical limit since it
+involves the points of the manifold, which, presumable, should emerge in
+such a limit.
+
+
+B     On diffeomorphism invariance
+Although the Hilbert space L2 pA q does not have an action of the full dif-
+                                         
+
+feomorphism group it is possible to introduce a notion of analytic diffeomor-
+phisms on L2 pA q via the space L2 pA q. This, in turn, allows us to extend
+                                       a
+
+the action of certain operators on L2 pA q to the larger Hilbert space L2 pA q
+                                                                           a
+
+and thereby introduce a notion of (analytic) diffeomorphism invariance for
+these operators. This setup involves an embedding of general piecewise ana-
+lytic graphs Γ into triangulations Ti coming from the projective system tKi u.
+Therefore, the action of these operators on L2 pA q will depend on a choice
+                                                   
+
+of embedding. It is important to realize that this construction does not work
+
+                                             78
+for the operator D since we do not have a Clifford bundle over the space
+L2 pA q.
+      a
+
+    The following should be read as a rough idea or strategy as to how one
+introduces a notion of diffeomorphism invariance on L2 pA q, rather than a
+                                                           
+
+complete analysis.
+    Let us go into details. Given an element ξΓ P L2 pA q associated to a
+                                                         a
+
+piece-wise analytic graph Γ we choose an embedding of a suitable simplicial
+complex Ki
+                               φ : Ki Ñ Ti ,
+where Ti is a triangulation in M, so that Γ lies in Ti . Consider an operator
+O on L2 pA q. This could for example be the Laplace operator. The action
+           
+
+of O on ξΓ is defined as
+                                OpξΓq : φpOpφ1ξΓ qq .
+If we map d : ξΓ Ñ ξdpΓq with a diffeomorphism d then the action of O
+changes accordingly
+                            OpξdpΓq q : φ1 pOppφ1 q1 ξΓ qq ,
+where φ1 is a new embedding. We obtain the diagram
+                       1
+               ξΓ    ÝÑ
+                     φ
+                                ÝÑ Oξ ÝÑ
+                                 ξ
+                                            φ
+                                                  pOξqΓ
+               dÓ               d Ó d Ó           dÓ                (90)
+                   pφ1 q                     1
+             ξdpΓq ÝÑ ξ1 ÝÑ Oξ1 ÝÑ pOξ1 qdpΓq
+                            1
+                                            φ
+
+
+where d and d1 belong to diffp△q. To have a diffeomorphism invariant
+state means that the state is invariant under diffp△q. This is exactly the
+space Hdif f of diffeomorphism invariant states mentioned in the previous
+subsection. A diffeomorphism invariant operator O is an operator for which
+the centre part of the diagram (90) commute
+                                    ξ    ÝÑ Opξq
+                                   d Ó   ö  d Ó
+                                    ξ1   ÝÑ Opξ1 q
+This reflects the simple observation that a loop is, by itself, not an observable
+since it is not self-adjoint. Only the combination L L1 is self-adjoint,
+exactly because it is invariant with respect to the symmetry group of the
+loop.
+
+                                           79
+C        Symmetric states
+In Quantum Field Theory the vacuum state is defined as the unique trans-
+lational invariant state. In the present setting there are certain states which
+display a high degree of symmetry and which may be thought in terms of a
+ground state.
+    Consider first the spectral triple pB , D , H q and the two states
+      ψ0 p∇q  ψ0 pg1 , g2 , . . . , gn , . . .q  δG1 pidq  δG2 pidq  . . .  δGn pidq  . . . ,
+and
+                                              φ 0 p∇ q  1 .
+Here δGn is the delta-function on the n’th copy of G and c is a constant. The
+action of a loop L on the first state reads
+                                        fL  ψ0 p∇q  ψ0 p∇q
+for any L in B . This means that the entire algebra B collapses into the
+identity on the state ψ0 . This corresponds to flat space. This state, however,
+does not lie in the Hilbert space, nor in the domain of the operator D . In
+contrast to this the state φ0 lies in the kernel of D . Both states ψ0 are
+invariant under diffp△q since they are invariant under any permutation of
+the argument pg1 , . . . , gn , . . .q.
+    If we consider instead the spectral triple pBt , Dt , Ht q there are again two
+states which are highly symmetric. Consider first
+                              Ht Q Ψ0 p∇, x̄q  ψ0 p∇q b ξo px̄q ,
+where
+       ξ0 px̄q  ξ0 px1 , x2 , . . . , xn , . . .q  δx1 pα1 q  δx2 pα2 q  . . .  δxn pαn q  . . .
+This state fixes the sequence tai u on the ’background’ sequence tαi u which
+was, in section 9.5, fixed according to relation (85). Again, this states does
+not lie in the domain of the Dirac operator Dt . Notice however, that by
+choosing the parameters ai ’s according to relation (85) one obtains a Dirac
+type operator D which is, up to an overall factor, invariant under a shift in
+the parameters ai . Such a shift corresponds to a change of scale.
+   Next, we may also consider the state
+                               Ht Q Φ0 p∇, x̄q  φ0 p∇q b ηo px̄q ,
+
+                                                    80
+where
+                   η0 px̄q  φ1 px1 q  φ2 px2 q  . . .  φn pxn q  . . .
+Here φn pxn q is the Gauss distribution which we used to construct the triple
+pBt , Dt, Ht q. Since the state η0 lies in the kernel of Da the state Φ0 lies in
+the kernel of Dt .
+
+
+References
+ [1] A. Connes, “Noncommutative Geometry,” Academic Press, 1994.
+
+ [2] A. Connes, “Gravity coupled with matter and the foundation of
+     non-commutative geometry,” Commun. Math. Phys. 182 (1996) 155
+     [arXiv:hep-th/9603053].
+
+ [3] A. H. Chamseddine and A. Connes, “Universal formula for Noncom-
+     mutative Geometry actions: Unification of gravity and the standard
+     model,” Phys. Rev. Lett. 77 (1996) 4868.
+
+ [4] A. H. Chamseddine and A. Connes, “A universal action formula,”
+     [arXiv:hep-th/9606056].
+
+ [5] A. H. Chamseddine and A. Connes, “The spectral action principle,”
+     Commun. Math. Phys. 186 (1997) 731 [arXiv:hep-th/9606001]
+
+ [6] A. H. Chamseddine, A. Connes and M. Marcolli, “Gravity and the stan-
+     dard model with neutrino mixing,” arXiv:hep-th/0610241.
+
+ [7] A. H. Chamseddine and A. Connes, “Why the Standard Model,”
+     arXiv:0706.3688 [hep-th].
+
+ [8] A. H. Chamseddine and A. Connes, “A Dress for SM the Beggar,”
+     arXiv:0706.3690 [hep-th].
+
+ [9] A. Rennie and J. C. Varilly, “Reconstruction of manifolds in Noncom-
+     mutative Geometry,” arXiv:math/0610418.
+
+[10] A. Ashtekar, J. Lewandowski, D. Marolf, J. Mourao and T. Thiemann,
+     “Quantization of diffeomorphism invariant theories of connections with
+     local degrees of freedom,” J. Math. Phys. 36 (1995) 6456 [arXiv:gr-
+     qc/9504018].
+
+                                             81
+[11] C. Rovelli and L. Smolin, “Knot Theory and Quantum Gravity,” Phys.
+     Rev. Lett. 61 (1988) 1155.
+
+[12] C. Rovelli and L. Smolin, “Loop Space Representation of Quantum Gen-
+     eral Relativity,” Nucl. Phys. B 331 (1990) 80.
+
+[13] T. Thiemann, “Introduction to modern canonical quantum general rel-
+     ativity,” [arXiv:gr-qc/0110034].
+
+[14] C. Rovelli, “Quantum gravity,” Cambridge, UK: Univ. Pr. (2004) 455
+     p.
+
+[15] A. Ashtekar and J. Lewandowski, “Background independent Quantum
+     Gravity: A status report,” Class. Quant. Grav. 21 (2004) R53 [arXiv:gr-
+     qc/0404018].
+
+[16] A. Ashtekar, “New Variables for Classical and Quantum Gravity,” Phys.
+     Rev. Lett. 57 (1986) 2244.
+
+[17] A. Ashtekar, “New Hamiltonian Formulation of General Relativity,”
+     Phys. Rev. D 36 (1987) 1587.
+
+[18] A. Ashtekar and J. Lewandowski, “Representation theory of analytic
+     holonomy C* algebras,” [arXiv:gr-qc/9311010].
+
+[19] A. Ashtekar and J. Lewandowski, “Differential geometry on the space of
+     connections via graphs and projective limits,” J. Geom. Phys. 17 (1995)
+     191 [arXiv:hep-th/9412073].
+
+[20] J. Aastrup and J. M. Grimstrup, “Spectral triples of holonomy loops,”
+     Commun. Math. Phys. 264 (2006) 657 [arXiv:hep-th/0503246].
+
+[21] J. Aastrup and J. M. Grimstrup, “Intersecting Connes noncommutative
+     geometry with quantum gravity,” Int. J. Mod. Phys. A 22 (2007) 1589
+     [arXiv:hep-th/0601127].
+
+[22] J. Aastrup, J. M. Grimstrup and R. Nest, ”On Spectral triples in Quan-
+     tum Gravity II.” To appear shortly.
+
+[23] W. Fairbairn and C. Rovelli, “Separable Hilbert space in loop Quantum
+     Gravity,” J. Math. Phys. 45 (2004) 2802 [arXiv:gr-qc/0403047].
+
+
+                                    82
+[24] A. Ashtekar and J. Lewandowski, “Quantum theory of geometry. I: Area
+     operators,” Class. Quant. Grav. 14 (1997) A55 [arXiv:gr-qc/9602046].
+[25] N. Higson and G. Kasparov, ”E-theory and KK-theory for groups which
+     act properly and isometrically on Hilbert space,” Invent. Math. 144
+     (2001).
+[26] J. W. Barrett, “Holonomy and path structures in general relativity and
+     Yang-Mills theory,” Int. J. Theor. Phys. 30 (1991) 1171.
+[27] R. Loll, “Gauge theory and gravity in the loop formulation.” Talk pre-
+     sented at the 117th WE-Heraeus-Seminar : the Canonical Formalism in
+     Classical and Quantum General Relativity, Bad Honnef, Germany, 13 -
+     17 Sep 1993.
+[28] J. C. Baez, I. E. Segal and Z. Zhou, “Introduction to algebraic and
+     constructive quantum field theory,” Princeton, USA: Univ. Pr. (1992)
+     291 p. (Princeton series in physics)
+[29] H. Nicolai and H. J. Matschull, “Aspects Of Canonical Gravity And
+     Supergravity,” J. Geom. Phys. 11 (1993) 15.
+[30] H. Nicolai, K. Peeters and M. Zamaklar, “Loop Quantum Gravity:
+     An outside view,” Class. Quant. Grav. 22 (2005) R193 [arXiv:hep-
+     th/0501114].
+[31] Barbero, ”Real Ashtekar variables for Lorentzian signature space time”
+     gr-qc/9410014
+[32] Immirzi ”Real and complex connections for canonical gravity” gr-
+     qc/9612030
+[33] A. Ashtekar, A. Corichi and J. A. Zapata, “Quantum theory of geometry.
+     III: Non-commutativity of Riemannian structures,” Class. Quant. Grav.
+     15 (1998) 2955 [arXiv:gr-qc/9806041].
+[34] D. Marolf and J. M. Mourao, “On the support of the Ashtekar-
+     Lewandowski measure,” Commun. Math. Phys. 170 (1995) 583
+     [arXiv:hep-th/9403112].
+[35] C. Fleischhack, “Hyphs and the Ashtekar-Lewandowski measure,” J.
+     Geo. Phys. 45 (2003) 231 [arXiv:math-ph/0001007].
+
+                                    83
+[36] C. Fleischhack, “Gauge Orbit Types for Generalized Connections,”
+     Commun. Math. Phys. 214 (2000) 607 [arXiv:math-ph/0001006].
+
+[37] D. Kastler, “The Dirac Operator And Gravitation,” Commun. Math.
+     Phys. 166 (1995) 633.
+
+[38] A.    Connes,   “Noncommutative        geometry:        Year    2000,”
+     arXiv:math/0011193.
+
+[39] R. P. Feynman, “The Qualitative Behavior Of Yang-Mills Theory In
+     (2+1)-Dimensions,” Nucl. Phys. B 188 (1981) 479.
+
+[40] I. M. Singer, “The Geometry Of The Orbit Space For Nonabelian Gauge
+     Theories. (Talk),” Phys. Scripta 24 (1981) 817.
+
+[41] P. Orland, “The metric on the space of Yang-Mills configurations,”
+     arXiv:hep-th/9607134.
+
+[42] M. Henneaux and C. Teitelboim, “Quantization of gauge systems,”
+     Princeton, USA: Univ. Pr. (1992) 520 p
+
+[43] M. Takesaki, Tomita’s theory of modular Hilbert algebras and its appli-
+     cations , Springer-Verlag Berlin 1970.
+
+[44] T. Thiemann, “Complexifier coherent states for quantum general rela-
+     tivity,” Class. Quant. Grav. 23 (2006) 2063 [arXiv:gr-qc/0206037].
+
+[45] A. Connes and C. Rovelli, “Von Neumann algebra automorphisms and
+     time thermodynamics relation in general covariant quantum theories,”
+     Class. Quant. Grav. 11 (1994) 2899 [arXiv:gr-qc/9406019].
+
+
+
+
+                                    84
+

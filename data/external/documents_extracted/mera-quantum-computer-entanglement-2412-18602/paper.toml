@@ -1,0 +1,4437 @@
+equations = []
+figures = []
+full_text = """
+Probing Entanglement Scaling Across a Quantum Phase Transition\r
+on a Quantum Computer\r
+Qiang Miao,1 Tianyi Wang,2, 1 Kenneth R. Brown,1, 2, 3, 4 Thomas Barthel,1, 2, 5, ∗ and Marko Cetina2, 1, 3, †\r
+1Duke Quantum Center, Duke University, Durham, North Carolina 27701, USA\r
+2Department of Physics, Duke University, Durham, North Carolina 27708, USA\r
+3Department of Electrical and Computer Engineering,\r
+Duke University, Durham, North Carolina 27708, USA\r
+4Department of Chemistry, Duke University, Durham, North Carolina 27708, USA\r
+5National Quantum Laboratory, University of Maryland, College Park, MD 20742, USA\r
+(Dated: January 2025)\r
+The investigation of strongly-correlated quantum matter is difficult due to the curse of dimen\u0002sionality and intricate entanglement structures. These challenges are particularly pronounced in the\r
+vicinity of continuous quantum phase transitions, where quantum fluctuations manifest across all\r
+length scales. While quantum simulators give controlled access to a number of strongly correlated\r
+systems, the study of critical phenomena has been hampered by finite-size effects arising from di\u0002verging correlation lengths. Moreover, the experimental investigation of entanglement in many-body\r
+systems has been hindered by limitations in measurement protocols. To address these challenges, we\r
+employ the multiscale entanglement renormalization ansatz (MERA) and implement a holographic\r
+scheme for subsystem tomography on a fully-connected trapped-ion quantum computer. Our method\r
+accurately represents infinite systems and long-range correlations with few qubits, facilitating the\r
+efficient extraction of observables and entanglement properties, even at criticality. We observe a\r
+quantum phase transition with spontaneous symmetry breaking and reveal the evolution of entan\u0002glement properties across the critical point. For the first time, we demonstrate log-law scaling of\r
+subsystem entanglement entropies at criticality on a digital quantum computer. This achievement\r
+highlights the potential of MERA for the investigation of strongly-correlated many-body systems\r
+on quantum computers.\r
+I. INTRODUCTION\r
+In physics and materials science, universality ap\u0002pears near continuous phase transitions, where long\u0002range properties become independent of microscopic de\u0002tails, and the singular behavior of physical quantities\r
+such as susceptibilities and correlation lengths can be\r
+characterized by universal critical exponents. While clas\u0002sical phase transitions are driven by thermal fluctuations,\r
+quantum phase transitions occur at zero temperature\r
+when a system parameter is varied, causing the ground\r
+state to become highly entangled due to quantum fluc\u0002tuations [1, 2]. This groundstate non-locality presents\r
+challenges for theoretical and experimental analysis.\r
+Rapid advancements on controlled quantum platforms\r
+have expanded the range of experimentally accessible\r
+quantum many-body systems on quantum simulators and\r
+computers [3–10]. Previous studies [11–18] have made\r
+significant progress in the experimental characterization\r
+of entanglement. However, probing entanglement prop\u0002erties across quantum phase transitions remains difficult.\r
+Analog quantum simulators have limited control, re\u0002stricting available models and measurements [19]. Quan\u0002tum simulations using quantum computers face chal\u0002lenges including: (i) Limited number of qubits: Quantum\r
+phase transitions formally occur only in infinite systems,\r
+∗ thomas.barthel@duke.edu\r
+† marko.cetina@duke.edu\r
+and finite-size effects are pronounced in the vicinity of\r
+critical points. Preparing critical ground states directly\r
+requires more qubits than current quantum devices offer.\r
+(ii) Exponential cost for probing subsystem entanglement:\r
+Resolving detailed entanglement structures requires state\r
+tomography for large subsystems, which generally results\r
+in exponential costs. (iii) Difficulties in state prepara\u0002tion: Without deeper insight into the physics, the study\r
+of complex many-body ground states necessitates highly\r
+expressive quantum circuits with many gates, leading to\r
+low trainability [20, 21] and significant error accumula\u0002tion.\r
+We overcome these challenges for condensed-matter\r
+ground states using highly structured quantum cir\u0002cuits on a digital quantum computer. The cir\u0002cuits prepare states corresponding to hierarchical tensor\r
+networks—the multiscale entanglement renormalization\r
+ansatz (MERA) [22–24]. This ansatz can represent in\u0002finite systems and accurately encodes long-range corre\u0002lations, even at critical points. The causal structure of\r
+MERA, inspired by the real-space renormalization group,\r
+drastically reduces circuit depths and the number of mea\u0002sured qubits, both scaling logarithmically with system\r
+size [25–28]. This allows efficient extraction of local\r
+observables, subsystem entanglement, and entanglement\r
+spectra. Additionally, MERA is robust to noise [29] and\r
+not affected by barren plateaus [30, 31].\r
+In this work, we study quantum many-body ground\r
+states on a digital quantum computer based on a chain of\r
+ytterbium ions. We demonstrate a quantum phase tran\u0002arXiv:2412.18602v3 [quant-ph] 24 Aug 2025
+
+2\r
+-1 0 1 2\r
+Local Observables\r
+0100010101011...\r
+Entanglement ... etc.\r
+Spin site ... ...\r
+Layer 1\r
+Layer 2\r
+Layer 3\r
+... ...\r
+0 1\r
+2\r
+3\r
+4\r
+5\r
+6\r
+7\r
+Ion chain\r
+Qubit maps 0\r
+0\r
+1\r
+1\r
+2\r
+2\r
+5 4\r
+5\r
+6\r
+6\r
+7\r
+7 4\r
+-7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7\r
+Map I\r
+Map II\r
+Ion index\r
+d\r
+a\r
+b c\r
+FIG. 1. MERA on a trapped-ion chain. (a) An infinite,\r
+binary 1D MERA with three homogeneous layers. The ansatz\r
+is prepared from top to bottom, with each layer comprising\r
+entangling gates (bare rectangles) and isometries (rectangles\r
+with attached circles) that double the number of sites. The\r
+output is the many-body state on the physical spin sites.\r
+Repeating the MERA circuit horizontally in the spatial di\u0002mension generates a state in the thermodynamic limit. Lo\u0002cal observables and bipartite entanglement can be studied\r
+by executing circuits within the corresponding causal cone\r
+(unshaded area) and measuring the target qubits. (b) Each\r
+MERA tensor is implemented as a sequence of two- and one\u0002qubit gates. Circles represent qubits initialized in |0⟩, and\r
+diamonds indicate measurements. (c) Repeated preparation\r
+and measurement yield probabilistic binary outcomes (0s and\r
+1s) from which the desired physical properties can be inferred.\r
+(d) Fluorescence image of a 15-ion (171Yb+) chain with two\r
+hardware-tailored examples of ion-to-qubit mappings: Map I\r
+for local measurements on sites 0 and 1, and Map II optimized\r
+for entanglement studies with respect to a bipartition into the\r
+semi-infinite subsystems A = (−∞, 1] and B = [2, ∞).\r
+sition characterized by spontaneous symmetry breaking\r
+in the thermodynamic limit, using 12 or fewer qubits. We\r
+show the universal scaling of relevant physical quantities\r
+near the transition and observe significant changes in the\r
+entanglement structure across the critical point. At the\r
+critical point, we find that the subsystem entanglement\r
+entropies follow a universal log-area law, and the gap of\r
+the entanglement Hamiltonian closes as the subsystem\r
+size increases. In non-critical regimes, subsystem entan\u0002glement entropy follows an area law [32–34]. The mea\u0002sured entanglement Hamiltonian remains gapped with\r
+increasing subsystem size and accurately reproduces ex\u0002pected symmetry properties.\r
+II. SETUP\r
+Preparing ground states of many-body systems with\r
+long-range quantum fluctuations is challenging. This can\r
+be mitigated by accounting for the system’s entanglement\r
+structure. To approximate the ground state |Ψ⟩ in the\r
+thermodynamic limit, we implement MERA on a digital\r
+ion-trap quantum computer.\r
+A. MERA circuits\r
+As shown in Fig. 1(a), the layered structure of MERA\r
+tensor networks introduces an additional dimension asso\u0002ciated with a hierarchy of length and energy scales. The\r
+MERA comprises T layers, each composed of unitary\r
+(dis)entanglers and isometries, which can be efficiently\r
+implemented on our hardware. Viewed from bottom to\r
+top, starting from the physical layer, MERA acts as a\r
+renormalization group (RG) flow, where the ascending\r
+layer index represents the RG scale. In each renormal\u0002ization step, short-distance entanglement is removed by\r
+the disentanglers (bare rectangles), and the isometries\r
+(rectangles with attached circles) then coarse-grain the\r
+system. This process maps physical sites to renormal\u0002ized effective degrees of freedom, continuing until the\r
+final layer T ∼ log ξ is reached, where ξ is the largest\r
+correlation length in the system.\r
+Viewed in reverse (the direction of decreasing layer in\u0002dex), the MERA represents a quantum circuit, which\r
+prepares the quantum state by first generating long\u0002range correlations associated with low-energy modes, and\r
+then progressively incorporating shorter-range correla\u0002tions that correspond to higher energy scales. For each\r
+layer, ancillary qubits initialized in the |0⟩ state (depicted\r
+as circles) are injected and entangled with existing qubits\r
+through unitary operations. Each unitary tensor consists\r
+of two-qubit entangling gates and single-qubit rotations,\r
+as illustrated in Fig. 1(b).\r
+B. Observables and holographic subsystem\r
+tomography\r
+Local observables can be studied by implementing only\r
+the associated causal-cone circuits. For measurements on\r
+sites 0 and 1 of a binary one-dimensional (1D) MERA,\r
+the corresponding reduced circuit is indicated by the non\u0002shaded MERA tensors in Fig. 1(a). Due to their isomet\u0002ric properties, the shaded tensors outside the causal cone\r
+do not influence the local measurements.\r
+Entanglement entropies and spectra for a spatial bipar\u0002tition of the system into parts A and B can be obtained\r
+from the reduced density matrix ˆϱB = TrA |Ψ⟩⟨Ψ|. For\r
+a MERA, only the gates within the causal cone of the\r
+boundary between A and B need to be implemented, as\r
+gates outside the causal cone correspond to unitary basis\r
+transformations UˆA and UˆB in the two subsystems and\r
+do not affect bipartite entanglement properties. More\u0002over, tomography on the renormalized sites (qubits) at\r
+the edges of A’s causal cone provides access to ˆϱB in the\r
+basis defined by UˆB. Thus, due to the causal structure\r
+of MERA, the number of gates and number of measured\r
+qubits are proportional to the number of layers T ∼ log ξ,\r
+rather than the total system size and subsystem size,
+
+3\r
+respectively. Details of our scheme, termed holographic\r
+subsystem tomography, are described in Appendix A.\r
+In the experiment, we implement an infinite, homoge\u0002neous, binary 1D MERA with bond dimension χ = 2\r
+and up to T = 5 layers, which captures a maximum cor\u0002relation range of 3 × 2\r
+5 = 96 sites. To this purpose,\r
+all tensors of the same color in Fig. 1(a) are chosen to\r
+be identical, and the shown tensor network structure is\r
+continued horizontally ad infinitum. For the self-similar\r
+critical systems, the correlation length ξ diverges, which\r
+we address by employing a scale-invariant MERA [35, 36]\r
+as discussed in Sec. III B 2 and Appendix C.\r
+C. Trapped-ion system\r
+We implement MERA circuits on a digital ion-trap\r
+quantum computer. Our experimental system consists\r
+of a linear chain of fifteen 171Yb+ ions, spaced by ap\u0002proximately 3.7 µm, confined in a micro-fabricated Paul\r
+trap (Sandia HOA-2.1.1 [37]) held in a room-temperature\r
+vacuum chamber. The qubits are encoded in the hyper\u0002fine “clock” states of the ground 2S1/2 electronic manifold\r
+as |0⟩ ≡ |F = 0; mF = 0⟩ and |1⟩ ≡ |F = 1; mF = 0⟩,\r
+where F is the total atomic angular momentum and mF\r
+its projection onto the direction of the magnetic field,\r
+with a magnitude of 3.2 G. Qubits are initialized in the\r
+|0⟩ state using optical pumping and measured by state\u0002dependent fluorescence on the 369 nm D1 line.\r
+The qubits are manipulated via a Raman process us\u0002ing a wide (300 µm×30 µm) linearly-polarized global\u0002addressing beam and equispaced, linearly-polarized\r
+1 µm-diameter individual-addressing beams derived from\r
+the same 355-nm pulsed laser (Coherent Paladin Com\u0002pact 355-4000). Radio-frequency (rf) gate waveforms\r
+are produced by an rf system on a chip (ZCU111\r
+from Xilinx Corp.) controlled by the Sandia Octet\r
+firmware [38] and separately modulated onto each laser\r
+beam using acousto-optic modulators (L3 Harris Corp.).\r
+Available single-qubit operations are virtual z-axis ro\u0002tations Rz(θ), implemented via phase offsets in the\r
+radio-frequency controls, and physical xy-plane rota\u0002tions R(θ, ϕ) = e−iθ(Xˆ cos ϕ+Yˆ sin ϕ)/2\r
+. Entangling gates\r
+XX(θ) = e−iθXˆi⊗Xˆj /2 between arbitrary qubits i and\r
+j are realized through a Mølmer-Sørensen interaction\r
+mediated by the shared radial motional modes of the\r
+ion chain with mode frequencies near 3 MHz. This in\u0002teraction is implemented by amplitude-shaping a state\u0002dependent force on the addressed ions using the 355-nm\r
+Raman process.\r
+The all-to-all qubit connectivity of our platform simpli\u0002fies the implementation of the non-local MERA circuits.\r
+Using a detailed error model discussed in Appendix E, we\r
+optimize ion-to-qubit mappings for each MERA circuit;\r
+see Fig. 1(d).\r
+III. RESULTS\r
+To demonstrate the potential of the MERA approach,\r
+we apply it to the 1D transverse-field Ising model (TFIM)\r
+described by the Hamiltonian\r
+Hˆ = −\r
+X\r
+L\r
+i\r
+Xˆ\r
+iXˆi+1 − g\r
+X\r
+L\r
+i\r
+Zˆ\r
+i\r
+. (1)\r
+Here, Xˆ\r
+i and Zˆi are Pauli operators acting on the spin\r
+at lattice site i, and g is the transverse magnetic field.\r
+The TFIM features a well-characterized continuous quan\u0002tum phase transition with spontaneous Z2 symmetry\u0002breaking, making it a good testbed for our approach.\r
+Since the 1D binary MERA with small bond dimension\r
+is classically simulable, we determine the optimal gate pa\u0002rameters of the variational MERA circuit using classical\r
+computers. The gate compilation of the tensors and a\r
+concrete circuit example are discussed in Appendix D.\r
+A. Quantum phase transition\r
+We benchmark the infinite MERA across the quantum\r
+phase transition of the TFIM (1) by first measuring local\r
+observables ⟨Oˆ\r
+i⟩. We prepare the causal-cone state of\r
+the target spins as indicated in Fig. 1. The number T\r
+of employed MERA layers ranges from 2 to 5, depending\r
+on the correlation length; T = 2 layers are used far from\r
+criticality and up to 5 layers near the critical point g = 1.\r
+Correspondingly, the number of required qubits ranges\r
+from 6 to 12.\r
+Figure 2(a) shows the measured magnetization ⟨Xˆ⟩ in\r
+the x-direction as a function of the z-field g, nicely re\u0002solving the phase transition. For g > 1, the observed\r
+magnetization is consistent with zero within the statisti\u0002cal uncertainty, as expected for the paramagnetic phase.\r
+For g < 1, non-zero magnetization is observed along\r
+the x-direction, indicating spontaneous breaking of the\r
+Xˆ → −Xˆ symmetry, characteristic of the ferromagnetic\r
+phase. Due to experimental noise, the observed magne\u0002tization at small g is slightly lower than the theoretical\r
+prediction ⟨Xˆ⟩ = (1−g\r
+2\r
+)\r
+1/8\r
+in the thermodynamic limit\r
+L → ∞ [39–41].\r
+We conducted separate experiments to characterize\r
+noise and develop a corresponding error model, as de\u0002scribed in Appendix E. In simulations, we model gate\u0002induced dephasing and addressing noise due to ion mo\u0002tion by randomly perturbing gates in each shot. We\r
+model idle dephasing, state preparation and measure\u0002ment (SPAM) errors, and X-flip errors during entangling\r
+gates by introducing random Z- and X-flips. The noisy\r
+simulations (shaded area in Fig. 2(a)) demonstrate ex\u0002cellent agreement with experimental data.\r
+To determine the critical exponent, Fig. 2(b) displays\r
+the order parameter ⟨Xˆ⟩ on a logarithmic scale. Due to\r
+the small MERA bond dimension χ = 2, ⟨Xˆ⟩ saturates
+
+4\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+X\r
+2-symmetric\r
+a\r
+Theory (N )\r
+Sim. (ideal)\r
+Sim. (noisy)\r
+Expt. data\r
+10\r
+0 10\r
+1 10\r
+2\r
+(1 g\r
+2\r
+)\r
+1\r
+0.6\r
+0.7\r
+0.8\r
+0.9\r
+1.0\r
+X\r
+b\r
+0.6 0.8 1.0\r
+gcut\r
+0.1\r
+1/8\r
+0.14\r
+0.18\r
+Critical exponent\r
+MERA, = 2\r
+TMERA, = 4\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+0.8\r
+0.9\r
+1.0 c\r
+X0X1\r
+Z\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+2-symmetric\r
+d\r
+0.5 1.0 1.5 2.0\r
+g\r
+0.0\r
+0.1\r
+0.2\r
+C0, 1\r
+FIG. 2. Local observables and few-site entanglement in the 1D transverse-field Ising model as function of the\r
+field g. (a) Mean magnetization ⟨Xˆ⟩ over spin sites 0 and 1. The dashed gray line represents the reference value for a\r
+Z2-symmetric state. (b) Logarithmic plot of ⟨Xˆ⟩ in the Z2 symmetry-broken ferromagnetic phase (g < 1). The orange and\r
+gray dotted lines show the theoretical predictions for MERA with bond dimension χ = 2 and Trotterized MERA [25, 26] with\r
+χ = 4, respectively. The inset displays the critical exponent obtained from fitting the data on intervals g ∈ [0.5, gcut]. Error\r
+bars indicate 1σ fitting uncertainties, and the theoretical critical exponent for the Ising class is 1/8. (c) Local observables\r
+corresponding to the two competing terms in the Hamiltonian (1). (d) The R´enyi-2 entanglement entropy of a single spin.\r
+The dashed gray line corresponds to the Z2-symmetric ground state. The inset shows the nearest-neighbor concurrence C0,1\r
+(pairwise entanglement) for two neighboring sites. For all panels, solid lines correspond to theoretical predictions in the\r
+thermodynamic limit, dotted lines represent ideal infinite MERA simulations, and the shaded areas indicate the central 95%\r
+quantile obtained from noisy simulations based on an error model that reflects experimental device characteristics. Unless\r
+otherwise noted, error bars indicate 95% confidence intervals obtained from a bootstrap resampling of the experimental data,\r
+based on 2,000 measurements per quantum circuit.\r
+at a non-zero value as the system approaches the criti\u0002cal regime. Nevertheless, it is still possible to determine\r
+the critical scaling from these experimental data. The\r
+inset shows the critical exponent obtained by fitting the\r
+data in ranges g ∈ [0.5, gcut]. The fitted values grad\u0002ually converge to the theoretical prediction of 1/8 but\r
+deviate when gcut approaches g = 1. Such deviations\r
+near the critical point can be mitigated by increasing the\r
+bond dimension χ. As shown by the thick gray dotted\r
+line, a Trotterized MERA circuit [25–28] with χ = 4 is\r
+predicted to achieve sufficient accuracy to eliminate the\r
+discrepancies at the cost of more qubits and gates.\r
+Figure 2(c) shows additional local observables. As\r
+the transverse field g increases, the dominant contribu\u0002tion to the groundstate energy shifts from the correlator\r
+⟨Xˆ\r
+iXˆi+1⟩ to the field term ⟨Zˆi⟩, showing a symmetry due\r
+to the Kramers-Wannier duality [42] with respect to the\r
+critical point g = 1. The measured values of these ob\u0002servables cross at a slightly smaller value of g, aligning\r
+with our noise model. Here, the noise is dominated by\r
+fluctuations in XX-gate rotations due to the ions’ axial\r
+motion (see Appendix E 3).
+
+5\r
+B. Entanglement structure\r
+In the following, we use MERA to investigate ground\u0002state entanglement across the quantum phase transition\r
+in the TFIM (1). We find that MERA on the digital\r
+quantum computer can resolve details of the entangle\u0002ment structure, including the hallmark transition from\r
+area-law to log-area-law scaling of block entanglement\r
+entropies when approaching the critical point.\r
+1. Local entanglement measures\r
+For a pure state |Ψ⟩, the entanglement between sub\u0002system B and its complement A can be quantified by the\r
+R´enyi entanglement entropy\r
+S\r
+(α)\r
+B =\r
+1\r
+1 − α\r
+log2 Tr(ˆϱ\r
+α\r
+B), where ˆϱB = TrA |Ψ⟩⟨Ψ| (2)\r
+is the reduced density matrix of subsystem B. Our ap\u0002proach provides efficient access to the entanglement spec\u0002tra and, hence, S\r
+(α)\r
+B for any α. Here, we focus on the\r
+R´enyi-2 entropy (α = 2) as, for the TFIM (1), all R´enyi\r
+entropies with α > 0 exhibit the same scaling.\r
+The reduced density matrix for a single-site is fully\r
+characterized by its Bloch vector. The time-reversal sym\u0002metry of the TFIM ensures that the local expectation\r
+value ⟨Yˆ ⟩ vanishes for all eigenstates. Thus, the Bloch\r
+vector is determined by ⟨Xˆ⟩ and ⟨Zˆ⟩. Figure 2(d) shows\r
+the measured single-site R´enyi-2 entanglement entropy.\r
+Our data faithfully reproduces the predicted sharp peak\r
+at criticality and tends to zero for small g. In the ferro\u0002magnetic phase, the two symmetry-broken ground states\r
+are almost product states. Meanwhile, their symmetric\r
+superposition is entangled, and the corresponding single\u0002site entanglement is smooth at the critical point. The in\u0002set of Fig. 2(d) presents the nearest-neighbor concurrence\r
+(pairwise entanglement) C0,1 [41, 44] obtained from the\r
+measured nearest-neighbor correlators ⟨Xˆ\r
+0Xˆ1⟩, ⟨Zˆ0Zˆ1⟩,\r
+and ⟨Yˆ\r
+0Yˆ1⟩ [45, 46]. The concurrence slightly deviates\r
+from theoretical predictions but aligns well with noisy\r
+simulations. Notably, the concurrence does not peak\r
+at criticality but increases smoothly before reaching a\r
+broad maximum in the paramagnetic phase. This sug\u0002gests that the peak of single-site entanglement at critical\u0002ity arises not only from short-distance entanglement but\r
+also from the accumulation of entanglement over long\r
+distances. In contrast, in the paramagnetic phase, the\r
+nearest-neighbor entanglement is the dominant contri\u0002bution to the single-site entanglement.\r
+2. Entanglement scaling: area-law versus log-area-law\r
+For the ground states of typical quantum many-body\r
+systems in D spatial dimensions, the subsystem entangle\u0002ment entropy S(ℓ) is proportional to the surface area of\r
+the subsystem ∝ ℓ\r
+D−1\r
+, rather than its volume ∝ ℓ\r
+D [32–\r
+34]. The entanglement entropy is dominated by short\u0002range correlations around the subsystem boundary, re\u0002sulting in area-law scaling. This can change when the\r
+system becomes critical and the correlation length di\u0002verges. For critical systems in 1D and fermionic systems\r
+with a Fermi surface of codimension D−1, the subsystem\r
+entanglement entropy is predicted to follow a log-area law\r
+∝ ℓ\r
+D−1\r
+log ℓ [47–52].\r
+Resolving these fundamentally different scaling laws\r
+has remained an experimental challenge. In small sys\u0002tems, it is difficult to differentiate between log-area-law\r
+and area-law scalings. As the linear subsystem size ℓ\r
+grows, preparing ground states with sufficient precision\r
+becomes increasingly difficult, and, in direct approaches,\r
+the number of measurements needed for subsystem to\u0002mography grows exponentially in ℓ.\r
+For MERA, however, each step of the renormalization\r
+process changes length scales by a constant factor. This\r
+maps a logarithmic scaling in the subsystem size ℓ to\r
+a linear scaling in the number of renormalization steps\r
+T = 1, 2, 3, . . . . Thus, distinguishing between area and\r
+log-area laws in 1D translates to determining whether the\r
+entanglement entropy saturates or grows linearly with\r
+increasing T.\r
+We experimentally realize spatially infinite MERA\r
+with a finite number of layers T. For a bipartition into\r
+subsystems A = (−∞, 1] and B = [2, +∞), we im\u0002plement the holographic subsystem tomography as de\u0002scribed in Sec. II and detailed in Appendix A. We pre\u0002pare the MERA circuit within the causal cone of the\r
+subsystem boundary, measure the T renormalized sites\r
+at the right edge of the cone (Fig. 1), and use the classical\r
+shadow method [53] to extract the R´enyi-2 entanglement\r
+entropy (2). The finite number of MERA layers limits\r
+the maximal correlation length to 3 × 2\r
+T\r
+. Thus, we ex\u0002perimentally probe effective subsystem sizes ℓ ∝ 2\r
+T\r
+. See\r
+Appendix B for a more detailed argument on this relation\r
+of T and effective subsystem sizes.\r
+For the non-critical point g = 1.5 of the TFIM (1), the\r
+measured half-chain R´enyi-2 entanglement entropy S is\r
+shown in Fig. 3(b). We observe a rapid saturation of the\r
+entanglement entropy for T ≥ 3, in agreement with the\r
+area-law. This is expected as, due to the energy gap,\r
+the physical correlation length ξ is finite. Here, addi\u0002tional MERA layers (T > 3) have a negligible effect on\r
+the groundstate approximation and entanglement for this\r
+gapped system. Our error model indicates that, in this\r
+regime, SPAM errors and gate rotation errors due to the\r
+ions’ axial motion are the dominant noise sources.\r
+At criticality (g = 1), the system has gapless excita\u0002tions, and the correlation length diverges (ξ → ∞). Here,\r
+we model the ground state using a scale-invariant MERA\r
+with an infinite number of homogeneous identical layers\r
+in both the spatial and preparation directions [35, 36].\r
+Directly preparing a scale-invariant MERA is not exper\u0002imentally feasible. Instead, we truncate at layer T and\r
+add an additional tensor to the top layer to minimize the
+
+6\r
+0 1 2 3 4\r
+Number of MERA layers T\r
+0\r
+0.05\r
+0.10\r
+0.15\r
+0.20\r
+0.25\r
+0.30\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+Gapless (g = 1)\r
+a\r
+CFT\r
+Sim. (ideal)\r
+Sim. (noisy)\r
+Expt. data\r
+1 2 3 4 5\r
+Number of MERA layers T\r
+0\r
+0.05\r
+0.10\r
+0.15\r
+0.20\r
+0.25\r
+0.30\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+Gapped (g = 1.5)\r
+b\r
+FIG. 3. Log-area-law and area-law scaling of entanglement entropy for critical and gapped systems. (a) Bipartite\r
+half-chain R´enyi-2 entanglement entropy for the infinite Ising chain (1) at the critical point g = 1 depending on the number\r
+T of MERA layers. The effective subsystem size is ℓ = 3 × 2\r
+T\r
+. The gray dashed line shows the log-area law prediction of\r
+conformal field theory (CFT) with central charge c = 1/2, and the solid line corresponds to ideal MERA simulations. Both the\r
+noisy simulation (shaded area) and experimental data (dots with error bars) are shown with 95% confidence intervals based\r
+on 1,500 shots per element of the tomographic measurement basis. (b) R´enyi-2 entanglement entropy for MERA states at the\r
+non-critical point g = 1.5. Here, the half-chain entanglement saturates rapidly as the number T of MERA layers increases,\r
+indicating the area law. The shaded area and error bars show 95% confidence intervals based on 8,000, 5,000, 3,000, and 2,000\r
+shots per measurement basis element for cases with one-, two-, three-, and four-layer MERA, respectively.\r
+4\r
+5\r
+6\r
+k = lo\r
+g2 k\r
+a\r
+0.8\r
+0.85\r
+0.9\r
+0.95\r
+= 0 1\r
+b\r
+CFT\r
+4\r
+5\r
+6\r
+k = lo\r
+g2 k\r
+d\r
+0.00\r
+0.01\r
+0.02\r
+1 ( 1)\r
+k Z\r
+T\r
+k\r
+e\r
+| 1\r
+| 0\r
+0 1 2 3 4\r
+T\r
+0.0\r
+0.1\r
+0.2\r
+1 2 3 4\r
+T\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1 c\r
+1 2 3 4 5\r
+T\r
+0.0\r
+0.1\r
+0.2\r
+Sim. (ideal)\r
+Sim. (noisy)\r
+Expt. data\r
+1 2 3 4\r
+T\r
+10\r
+5\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1 f\r
+FIG. 4. Analysis of half-chain density matrices. (a) and (d) T-dependence of the lowest two eigenvalues {ζ0, ζ1} of the\r
+MERA entanglement Hamiltonian at the critical point g = 1 and the non-critical point g = 1.5, respectively. (b) The Schmidt\r
+gap ∆λ = λ0−λ1 gradually closes as the (sub)system size increases at criticality. The gray dashed line represents the theoretical\r
+approximation from Ref. [43]. (c) and (f) Infidelity of the subsystem density matrices relative to ideal simulations at g = 1\r
+and g = 1.5, respectively. (e) Expectation values of Pauli Z-strings for the first two eigenstates {|ζ0⟩, |ζ1⟩} of the entanglement\r
+Hamiltonian at g = 1.5. In all plots, solid lines represent ideal infinite MERA simulations. Both the noisy simulation (shaded\r
+area) and the experimental data (dots) are shown with indicators for the 95% confidence intervals. The results are based\r
+on the same dataset as Fig. 3, but here, positive semi-definite density matrices are reconstructed using maximum-likelihood\r
+estimation.
+
+7\r
+finite-T effects as detailed in Appendix C.\r
+The measured half-chain R´enyi-2 entanglement en\u0002tropy S at criticality is shown as a function of T in\r
+Fig. 3(a). The observed entropy increases linearly by\r
+approximately 1/16 per MERA layer. This is consistent\r
+with the prediction 1\r
+16 log2\r
+(ℓ/a) of conformal field the\u0002ory, where a is an ultraviolet cutoff that regularizes the\r
+continuum field theory [54]. The slight increase in the\r
+measured S over the field-theoretical prediction is repro\u0002duced by our error model. Here, errors primarily arise\r
+during SPAM and from fluctuations in gate angles due\r
+to the ions’ axial motion; X-flips and idle dephasing are\r
+secondary (see Appendix E).\r
+3. Entanglement spectrum\r
+Using the holographic tomography data and a\r
+maximum-likelihood approach [55–58], we reconstruct\r
+proper (positive semidefinite) density matrices ˆϱB for\r
+subsystem B in the UˆB basis. They can be written in\r
+the form ˆϱB = 2−\r
+P\r
+i\r
+ζi|ζi⟩⟨ζi|\r
+, where {ζi:= − log2 λi} is\r
+the entanglement spectrum [59] expressed in terms of the\r
+eigenvalues {λi} of ˆϱB.\r
+Figures 4(a) and (d) show the two lowest entanglement\r
+eigenvalues {ζ0, ζ1} of ˆϱB for the TFIM (1), revealing dis\u0002tinct behaviors at and away from the critical point. At\r
+criticality (g = 1), the lowest eigenvalue ζ0 exhibits a\r
+log-law scaling like the entanglement entropy, while ζ1\r
+decreases with increasing T. As shown in Fig. 4(b), the\r
+Schmidt gap ∆λ = λ0−λ1 reduces by approximately 1/24\r
+per renormalization step, which agrees with the approx\u0002imate theoretical prediction ∆λ ∼ ℓ\r
+−1/24 from Ref. [43],\r
+where ℓ denotes again the (effective) subsystem size. For\r
+the non-critical point g = 1.5, Fig. 4(d) shows that ζ0\r
+and ζ1 saturate with increasing T.\r
+Since g = 1.5 lies in the Z2-symmetric paramagnetic\r
+phase, all subsystem density matrices of the ground state\r
+must commute with the operator ⊗iZˆ\r
+i\r
+. We verify this\r
+symmetry by measuring the spin-flip operator on subsys\u0002tem B. As discussed in Sec. II, the measurement is done\r
+efficiently with the compressed representation of ˆϱB on\r
+the renormalized sites, exploiting the fact that, for g ≥ 1,\r
+the unitary UˆB which transforms the measured state to\r
+the actual state on B preserves the Z2-symmetry. As ob\u0002served in Fig. 4(e), the associated entanglement Hamil\u0002tonian exhibits a ground state in the even-parity sector\r
+and a first excited state in the odd sector. This mirrors\r
+the properties of the system Hamiltonian, aligning with\r
+recent efforts concerning connections between entangle\u0002ment Hamiltonians and system Hamiltonians [17, 60].\r
+4. Subsystem fidelity\r
+Finally, we compare the reconstructed subsystem den\u0002sity matrix ˆϱB in the UˆB basis with the ideal MERA\r
+simulations, and show the infidelity 1 − F in Figs. 4c\r
+and for the transverse fields g = 1.0 and 1.5, where the\r
+fidelity is defined as\r
+F =\r
+\u0012\r
+Tr qp\r
+ϱˆB ρˆideal pϱˆB\r
+\u00132\r
+. (3)\r
+We achieve infidelities ranging from 10−4to 10−2, which\r
+enables the clear discrimination of different entanglement\r
+scaling laws, even when the absolute difference in S is\r
+small. These high fidelities arise from careful calibra\u0002tions, optimized ion–qubit mappings, the intrinsic noise\r
+resilience of MERA, suitable gate decompositions for the\r
+MERA circuit, and the efficient holographic tomography\r
+method.\r
+Recall that we determine ˆϱB through tomography on\r
+only ∼ T renormalized sites at the edge of subsystem A’s\r
+causal cone (cf. Sec. II B and Fig. 5), where, in the basis\r
+defined by UˆB, all other qubits are in the |0⟩ state and\r
+need not be implemented. This is sufficient because the\r
+fidelity metric (3) and bipartite entanglement properties\r
+are invariant under the unitary transformation UˆB.\r
+Also, while many widely used variational ans¨atze\r
+employ CNOT gates, our circuits use two-qubit XX\r
+Mølmer-Sørensen gates with typical absolute rotation an\u0002gles in the range from 0.01π to 0.2π, which are much\r
+smaller than those of fully entangling gates. As Mølmer\u0002Sørensen gate errors decrease with the rotation angle,\r
+this leads to significantly reduced experimental errors.\r
+Appendix F provides a breakdown of error contributions\r
+and explains how the infidelity scales with experimental\r
+errors.\r
+IV. OUTLOOK\r
+We employed MERA on an ion-trap quantum com\u0002puter to clearly resolve the quantum phase transition in a\r
+condensed matter system, successfully capturing the uni\u0002versal properties of Ising-class physics. Furthermore, our\r
+holographic subsystem tomography method made it pos\u0002sible to demonstrate the transition from area-law to log\u0002area-law scaling in groundstate entanglement entropies.\r
+This entanglement scaling transition is a hallmark of\r
+quantum many-body physics with no classical analog. Its\r
+experimental observation had previously faced substan\u0002tial challenges including finite-size effects and attainable\r
+fidelities.\r
+The investigation of more complicated models, includ\u0002ing systems with higher spin and spatial dimensions, re\u0002quires larger MERA bond dimensions χ ≳ 8. In classical\r
+MERA simulations, the primary bottleneck are tensor\r
+contractions, whose cost scales as O(χ\r
+r\r
+), where the ex\u0002ponent r depends on the spatial dimension D and specific\r
+MERA structure. In 1D with r = 7, . . . , 9, these costs\r
+are still tractable for moderate bond dimensions χ ≲ 20\r
+[22–24]. However, for higher-dimensional systems such\r
+as (quasi-)2D frustrated quantum magnets and fermionic\r
+systems, where quantum Monte Carlo generally fails due
+
+8\r
+to the negative sign problem, the classical contraction\r
+costs with scaling exponents r = 16, . . . , 26 become pro\u0002hibitive even for small χ [24, 61].\r
+To avoid these high contraction costs, our prior\r
+work [25, 26] proposed implementing (Trotterized)\r
+MERA on quantum computers. As discussed in Refs. [25,\r
+26, 28], the required qubit count grows only logarithmi\u0002cally with χ and is independent of system size if mid\u0002circuit resets are available. The circuit depth scales as\r
+O(T t), where the number of MERA layers T ∼ log ξ gov\u0002erns the maximal correlated length ξ, and t is a tunable\r
+Trotter depth that controls the expressiveness of sub\u0002circuits in individual tensors. For example, simulating\r
+a large (e.g., hundreds-by-hundreds) 2D system with a\r
+2 × 2 7→ 1 MERA using χ = 8, T = 6, and t = 2 re\u0002quires either (i) 108 resettable qubits and a circuit depth\r
+of 96 when minimizing depth or (ii) 42 qubits and depth\r
+624 when minimizing the qubit count. Such circuits are\r
+not classically tractable, yet they are realistic for state\u0002of-the-art quantum hardware.\r
+Recent advances in trapped-ion platforms have\r
+brought these capabilities closer to realization. For exam\u0002ple, 56-qubit systems with ≥99.8% two-qubit gate fidelity\r
+are now available [62], and circuits with over 2000 two\u0002qubit gates have been demonstrated [63]. Larger systems,\r
+with ∼ 200 qubits, can be achieved by scaling up the\r
+system used in this work [64]. The primary error source\r
+in high-connectivity long ion chains—motional heating\r
+of low-frequency modes—can be reduced by over two or\u0002ders of magnitude using cryogenic techniques and sympa\u0002thetic cooling with a different isotopic species [65]. This\r
+approach also facilitates qubit reset and reuse, further\r
+enhancing scalability.\r
+Since MERA has been rigorously proven to be free of\r
+barren plateaus [30, 31], the variational optimization of\r
+MERA on quantum computers is feasible, and we have\r
+substantiated a polynomial quantum advantage, which\r
+is particularly pronounced in D ≥ 2 spatial dimensions\r
+[26].\r
+Once an optimized MERA state is determined, rich\r
+physics can be probed through local observables, cor\u0002relators, and entanglement measures. Measuring local\r
+observables and correlators is straightforward, requir\u0002ing similar resources as energy estimation. Probing en\u0002tanglement is more demanding, as large-χ MERA in\u0002volve multiple qubits per renormalized site, making holo\u0002graphic subsystem tomography costly. To address this,\r
+one can perform randomized measurements on edges of\r
+the boundary causal cones, and adopt the idea of en\u0002tanglement Hamiltonian tomography [17, 60] to learn\r
+the renormalized entanglement Hamiltonian, assuming a\r
+structured form in terms of renormalized degrees of free\u0002dom.\r
+Beyond the study of strongly correlated many-body\r
+ground states, MERA states can serve as high-quality\r
+starting points for the investigation of nonequilibrium dy\u0002namics. As demonstrated in this work, MERA accurately\r
+captures both critical and non-critical ground states. A\r
+natural extension is to prepare a MERA state and evolve\r
+it under quench or Floquet dynamics. Since entangle\u0002ment growth under nonequilibrium dynamics generally\r
+leads to volume-law scaling of entanglement entropies, a\r
+quantum advantage is expected as soon as we surpass\r
+the realm of exact classical Krylov-subspace methods for\r
+≳36 qubits.\r
+ACKNOWLEDGMENTS\r
+We thank K. Sun and Y. Yu for valuable discussions.\r
+Funding: This work was funded by the NSF Quantum\r
+Leap Challenge Institute for Robust Quantum Simula\u0002tion (OMA-2120757) and the NSF STAQ project (Phy\u00022325080). Support is also acknowledged from the U.S.\r
+Department of Energy, Office of Science, National Quan\u0002tum Information Science Research Centers, Quantum\r
+Systems Accelerator.\r
+Author contributions: Q.M. designed the MERA\r
+implementation, conducted the numerical simulations,\r
+and analyzed the experimental data. T.W. executed the\r
+experiment and collected the experimental data. T.B.\r
+initiated the project and devised the holographic sub\u0002system tomography. M.C. supervised the experimental\r
+work, while T.B. and K.R.B. supervised the theoretical\r
+effort. All authors contributed to the manuscript.\r
+Competing interests: K.R.B. has a personal finan\u0002cial interest in the company IonQ. M.C. is a co-inventor\r
+on patents that are licensed by University of Maryland\r
+to IonQ, Inc. Other authors declare that they have no\r
+competing interests.\r
+Appendix A: Holographic subsystem tomography\r
+and entanglement scaling\r
+For the study of bipartite entanglement entropies, en\u0002tanglement spectra, and subsystem state fidelities as dis\u0002cussed in Sec. III, we consider MERA approximations\r
+|Ψ⟩ for the ground state and a spatial bipartition into\r
+subsystem A and its complement B.\r
+The goal of the holographic subsystem tomography is\r
+to efficiently access the reduced density matrix ˆϱB =\r
+TrA |Ψ⟩⟨Ψ| of subsystem B in the experiment. The iso\u0002metric property (Wˆ †Wˆ = 1) of the MERA tensors im\u0002plies that, under the partial trace TrA, all tensors out\u0002side the causal cone of B can be removed, as exemplified\r
+by the shaded area atop subsystem A in Fig. 5. Fur\u0002thermore, the aforementioned quantities are all invariant\r
+under unitary transformations on subsystem B. Using\r
+this invariance, we can remove all MERA gates outside\r
+the causal cone of subsystem A, which corresponds to\r
+the action of the unitary transformation Uˆ †\r
+B from Sec. II.\r
+Only the gates inside the causal cone(s) of the subsys\u0002tem boundary(ies) remain. All qubits outside this causal\r
+cone are in the reference state |0⟩ and need not be im\u0002plemented in the experiment.
+
+9\r
+To determine the transformed subsystem density ma\u0002trix\r
+Uˆ †\r
+BϱˆBUˆB = TrA(Uˆ †\r
+B|Ψ⟩⟨Ψ|UˆB), (A1)\r
+we only need to measure the ∼ T non-trivial renormal\u0002ized sites at the edge of A’s causal cone, as indicated by\r
+the diamonds in Fig. 5. Again T denotes the number of\r
+MERA layers.\r
+To further reduce experimental resource requirements,\r
+we consider either infinite chains with a bipartition into\r
+two semi-infinite subsystems, or finite chains with peri\u0002odic boundary conditions where block B is large enough\r
+such that the causal cones of its two boundaries are dis\u0002joint as exemplified in Fig. 5. In the latter scenario, the\r
+transformed density operator (A1) is actually a tensor\r
+product of a state ˜ϱ\r
+L\r
+B at the left edge, a state ˜ϱ\r
+R\r
+B at the\r
+right edge, and central sites in the reference state |0⟩⟨0|,\r
+Uˆ †\r
+BϱˆBUˆB = ˜ϱ\r
+L\r
+B ⊗ |0⟩⟨0| ⊗ . . . ⊗ |0⟩⟨0| ⊗ ϱ˜\r
+R\r
+B. (A2)\r
+Due to the product structure, ˜ϱ\r
+L\r
+B and ˜ϱ\r
+R\r
+B can be mea\u0002sured independently.\r
+Moreover, when studying quantities that only depend\r
+on the spectrum of ˆϱB for a bipartition of the system\r
+into two equally sized halves and for total system sizes\r
+L = 6 × 2\r
+T\r
+, 8 × 2\r
+T\r
+, ..., it is sufficient to measure only one\r
+of the two density operators. In this case, the MERA\r
+circuits for ˜ϱ\r
+L\r
+B and ˜ϱ\r
+R\r
+B prepare the same pure state, and\r
+only differ in the selection of sites to be measured: those\r
+at the right edge of the causal cone for ˜ϱ\r
+L\r
+B and those at\r
+the left edge for ˜ϱ\r
+R\r
+B, as indicated in Fig. 5. Thus, all\r
+nonzero eigenvalues of ˆϱB are given by the elementwise\r
+product\r
+{λiλj} of ˜ϱ\r
+L\r
+B’s spectrum {λi} (A3)\r
+with itself.\r
+Appendix B: Subsystem size versus number of\r
+MERA layers\r
+In the main text, we associated the number T of layers\r
+in infinite MERA with the logarithm of subsystem sizes\r
+ℓ. Here, we elaborate further on this relation.\r
+Infinite binary 1D MERA |Ψ⟩ with T layers have a\r
+maximum correlation range ξmax := 3 × 2\r
+T\r
+, where the\r
+prefactor 3 arises from the maximal causal-cone width\r
+of local operators acting on k ≤ 3 contiguous sites. In\r
+particular, connected correlation functions\r
+⟨Oˆ\r
+iOˆ′\r
+i+δℓ⟩Ψ − ⟨Oˆ\r
+i⟩Ψ⟨Oˆ′\r
+i+δℓ⟩Ψ (B1)\r
+are exactly zero for all i and local operators Oˆ\r
+i and Oˆ′\r
+j\r
+whenever δℓ ≥ ξmax − 3 + k.\r
+Hence, all local observables, two-point correlation\r
+functions, and subsystem density matrices for blocks of\r
+ℓ ≤ ξmax sites of an infinite MERA coincide with those\r
+of a corresponding finite-size MERA for a system of\r
+2ξmax = 6 × 2\r
+T\r
+sites with periodic boundary conditions.\r
+Furthermore, the half-chain density operator of an in\u0002finite T-layer MERA, considered in Sec. III, is given by\r
+Uˆ †\r
+BϱˆBUˆB = ˜ϱ\r
+L\r
+B ⊗ |0⟩⟨0| ⊗ |0⟩⟨0| ⊗ . . . , (B2)\r
+where ˜ϱ\r
+L\r
+B is the same state as the one in Eq. (A2) for an\r
+ℓ = 3 × 2\r
+T\r
+-site block in a periodic 6 × 2\r
+T\r
+-site system,\r
+establishing the exponential relation between ℓ and T.\r
+The spectra of the states (B2) and (A2) are related by\r
+the elementwise product (A3).\r
+Appendix C: Scale-invariant MERA\r
+Scale-invariant MERA are designed for critical sys\u0002tems, where correlation lengths diverge. As shown in\r
+Fig. 6(a), they feature an elementary cell of tensors that\r
+repeats in the spatial and renormalization directions, in\r
+accordance with the self-similarity of critical systems.\r
+Viewed in the renormalization direction, the scale\u0002invariant MERA maps the local Hamiltonian of a crit\u0002ical system into an RG fixed point. Seen in reverse, the\r
+scale-invariant MERA acts as a quantum channel that\r
+iteratively refines the state, starting from an initial ref\u0002erence state and adding layers to construct the ground\r
+state of the critical system.\r
+Consider spin sites 0 and 1. Their causal-cone state\r
+as indicated by the unshaded region in Fig.6(a) is con\u0002structed by applying the same layer-transition channel\r
+M (Fig. 6(b)) multiple times, where renormalized sites\r
+that leave the causal cone are traced out. M is a quan\u0002tum channel and can be diagonalized in bi-orthonormal\r
+operator bases such that\r
+M(·) = |ϱˆsteady⟩⟩⟨⟨1| +\r
+X\r
+i>0\r
+mi|rˆi⟩⟩⟨⟨ˆℓi|, (C1)\r
+where |mi| < 1 for all i > 0, and we use a super-bra\u0002ket notation for the operator-basis elements according to\r
+the Hilbert-Schmidt inner product ⟨⟨Lˆ|Rˆ⟩⟩ := Tr\u0010\r
+Lˆ†Rˆ\r
+\u0011\r
+.\r
+With ˆr0 ≡ ϱˆsteady and ˆℓ0 ≡ 1, ˆri and ˆℓi are the right\r
+and left eigen-operators of M for eigenvalue mi and obey\r
+⟨⟨ˆℓi|rˆj ⟩⟩ = δi,j .\r
+We initialize the MERA in the product state |0⟩ =\r
+|0, . . . , 0⟩ at the topmost (infinite) layer. The expectation\r
+value of a local observable Oˆ\r
+0,1 with the scale-invariant\r
+MERA then is\r
+lim\r
+T→∞\r
+Tr \u0010Oˆ\r
+0,1MT\r
+(|0⟩⟨0|)\r
+\u0011\r
+= Tr\u0010Oˆ\r
+0,1ϱˆsteady\u0011\r
+. (C2)\r
+See Fig. 6(d). Experimentally, we cannot directly imple\u0002ment MERA with an infinite number of layers. Instead,\r
+we truncate after layer T and use the top layer to prepare\r
+a two-site state ˆϱ\r
+′\r
+that maximizes the contribution of the\r
+dominant eigenmode ˆϱsteady of the layer-transition chan\u0002nel (C1). This is achieved by choosing the gate angles
+
+10\r
+Spin site\r
+Layer 1\r
+Layer 2\r
+Layer 3\r
+0 1\r
+2\r
+4\r
+5\r
+6\r
+7\r
+Subsystem B\r
+33 34 35 37 36 38 40 39 41 43 42 44 4645 47 2 43 0 1 5 7 6 8 109 11 12 13 14 16 15 17 18 19 2120 22 2423 2625 27 2928 30 31 32\r
+UB\r
+<\r
+TrA\r
+Subsystem A\r
+FIG. 5. Holographic subsystem tomography and entanglement scaling. An infinite binary MERA with T layers is\r
+consistent with a MERA on 6 × 2\r
+T\r
+sites with periodic boundary conditions. Here, T = 3, resulting in a total of 6 × 2\r
+3 = 48\r
+sites. All connected two-point correlation functions for sites of distance ≥ 3 × 2\r
+T − 2 = 22 are exactly zero. For example,\r
+⟨Xˆ10Yˆ31⟩ − ⟨Xˆ10⟩⟨Yˆ31⟩ can be nonzero while ⟨Xˆ10Yˆ32⟩ − ⟨Xˆ10⟩⟨Yˆ32⟩ ≡ 0. This is due to the fact that, in the latter case,\r
+the causal cones of the two operators have no overlap. Similarly, for any bipartition of the system into equally sized blocks\r
+like A = {26, . . . , 47, 0, 1} and B = {2, . . . , 25}, the causal cones of the two subsystem boundaries do not overlap. Hence,\r
+measurements of the renormalized sites at the two boudnaries are independent of each other, i.e., follow a product distribution.\r
+Spin site ... ... -1 0 1 2\r
+Layer 1\r
+Layer 2\r
+Layer 3\r
+... ...\r
+...\r
+Layer \r
+* *\r
+*\r
+* *\r
+*\r
+* *\r
+*\r
+* *\r
+*\r
+0 1\r
+0 1\r
+2\r
+3\r
+4\r
+5\r
+6\r
+7\r
+* *\r
+*\r
+* *\r
+*\r
+0\r
+1\r
+2\r
+4\r
+5\r
+6\r
+7\r
+a b c\r
+d e f g\r
+FIG. 6. Scale-invariant MERA and its implementation on the quantum computer. (a) A scale-invariant binary\r
+1D MERA with an infinite number of lattice sites and layers. All unitaries (bare rectangles) and isometries (rectangles with\r
+attached circles) are identical across layers and the spatial direction. (b) Local observables on sites 0 and 1 have a causal cone\r
+consisting of a repeating configuration of tensors in each layer. The corresponding repeated layer-transition channel M(·) maps\r
+reduced density matrices from the top to the bottom layer. Stars indicate complex conjugation. (c) The shown doubled and\r
+SWAP-contracted layer-transition map D can be used to compute the second-order R´enyi entanglement entropy of a bipartition\r
+into subsystems (−∞, 1] and [2, ∞) (see panel f). (d) Causal-cone tensor-network for the evaluation of local expectation values\r
+on sites 0 and 1. The MERA circuit is initialized with reference state |0⟩ at the top layer. (e) In the experiment, we truncate\r
+the scale-invariant MERA after layer T. For the measurement of local observables, the top layer is optimized to approximate\r
+the dominant eigenmode ˆρsteady := limT→∞ MT(|0⟩⟨0|) of the layer-transition channel. Finally, we measure the qubits at sites\r
+0 and 1. (f) The tensor network for the purity of the reduced density operator of subsystem [2, ∞). (g) In this case, the top\r
+tensor (blue) is optimized to suppress sub-leading contributions from the eigenvectors of the doubled map D. Scale-invariant\r
+layers are then appended. To extract the scaling of entanglement as a function of the number T of RG steps, we perform\r
+tomography on T qubits at the right edge of the boundary causal-cone circuit (see also Fig. 5).
+
+11\r
+{θ} in layer T as arg minθ\r
+P\r
+i>0\r
+|mi⟨⟨ˆℓi|ϱˆ\r
+′\r
+⟩⟩|2. We then\r
+append T − 1 layers of the scale-invariant MERA to re\u0002fine the dominant eigenmode as shown in Fig. 6(e). This\r
+approach is highly effective as demonstrated for T = 5\r
+and a few local observables in Secs. III A and III B 1.\r
+To account for layer truncations in the study of sub\u0002system purity and entanglement, we introduce a dou\u0002bled SWAP-contracted layer-transition map D as shown\r
+in Fig. 6(c). For a scale-invariant MERA truncated af\u0002ter layer T and initialized with the reference state |0⟩,\r
+the purity of subsystem B = [2, ∞) can be computed by\r
+iteratively applying D to the (doubled) zero-product ref\u0002erence state |0, 0⟩⟨0, 0| at the topmost layer and taking\r
+the final trace as\r
+Trϱˆ\r
+2\r
+B\r
+\u0001\r
+= Tr D\r
+T\r
+(|0, 0⟩⟨0, 0|)\r
+\u0001\r
+; (C3)\r
+see Fig. 6(f). Similarly to the channel M, we can diago\u0002nalize D such that D(·) = P\r
+i\r
+di|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+| with |d0| > |di|\r
+for all i > 1. Due to the SWAP operation, D is not a\r
+quantum channel and |d0| < 1. The second-order R´enyi\r
+entanglement entropy with α = 2 in Eq. (2) evaluates to\r
+S\r
+(2)\r
+B = − log2\r
+\r
+Tr D\r
+T\r
+(|0, 0⟩⟨0, 0|)\r
+\u0001\u0001\r
+= − log2\r
+ X\r
+i=0\r
+d\r
+T\r
+i\r
+⟨⟨1|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+|0, 0⟩⟩!\r
+→ −T log2 d0 − log2\r
+\u0010\r
+⟨⟨1|Rˆ\r
+0⟩⟩⟨⟨Lˆ0|0, 0⟩⟩\u0011\r
+,(C4)\r
+where the large-T limit is taken in the last line, and |0, 0⟩⟩\r
+represents the projector |0, 0⟩⟨0, 0|. Hence, the entangle\u0002ment entropy should increase linearly with T, i.e., by a\r
+constant in each renormalization step.\r
+Even with the small bond dimension χ = 2, the domi\u0002nant eigenvalue d0 of D in the optimized scale invariant\r
+MERA agrees well with the conformal field theory pre\u0002diction for the Ising model with central charge c = 1/2:\r
+−8 log2 d0 = 0.475 . . . ≈ c. (C5)\r
+Again, we truncate the scale-invariant MERA after\r
+layer T ≤ 4 for experiments. To mitigate the effect of\r
+the truncation, we do not initialize with the reference\r
+state |0⟩ at the top layer but with a more suitable two\u0002site state |φ⟩, generated from |0⟩ through one entangling\r
+and further single-qubit gates. These gates are chosen to\r
+suppress subleading contributions in (C4) by minimiz\u0002ing P\r
+i>0\r
+|di⟨⟨1|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+|φ, φ⟩⟩|2. Thus, we arrive at the\r
+approximation\r
+S\r
+(2)\r
+B = − log2\r
+(TrD\r
+T\r
+(|φ, φ⟩⟨φ, φ|)\r
+\u0001\r
+) ≈ −T log2 d0.\r
+(C6)\r
+After implementing such T-layer approximations of a\r
+scale-invariant MERA in the experiment, we perform\r
+the holographic subsystem tomography, measuring all T\r
+qubits at the right edge of the boundary causal-cone as\r
+discussed in Sec. A and illustrated in Fig. 6(g).\r
+Appendix D: Gate compilation and circuit examples\r
+In the main text and previous appendices, we showed\r
+tensor network diagrams of MERA and schematic gate\r
+decompositions of individual tensors. Here, we demon\u0002strate how to compile these into native quantum gates\r
+and provide concrete circuit examples for measuring both\r
+local observables and nonlocal entanglement properties.\r
+As shown in Fig. 7(a), a generic 4-by-4 unitary oper\u0002ation can be decomposed into a two-qubit circuit using\r
+3 entangling gates and 12 single-qubit gates, involving a\r
+total of 15 parameters (up to a global phase). However,\r
+this generic decomposition turns out to be unnecessary\r
+for our MERA circuits. For example, in a network of\r
+such two-qubit unitaries, redundant single-qubit gates on\r
+connected bonds can be eliminated. More importantly, a\r
+physically motivated ansatz should preserve the symme\u0002tries of the Hamiltonian, except in cases of spontaneous\r
+symmetry breaking.\r
+For the transverse-field Ising model studied here, the\r
+ground state exhibits time-reversal symmetry (invariance\r
+under complex conjugation in the computational basis)\r
+for all values of g and a Z2 symmetry when g ≤ 1. While\r
+a global symmetry does not necessarily imply local sym\u0002metry, we find that, in our case, it does hold locally. A\r
+suitable choice of entangling gates that respect the sym\u0002metries of the Ising model includes XY (θ) = e−iθXˆ⊗Y / ˆ 2\r
+and YX(θ) = e−iθYˆ ⊗X/ˆ 2, which are real in the compu\u0002tational basis and respect the model’s Z2 symmetry as\r
+[⊗iZˆ\r
+i\r
+, XY (θ)] = 0. Based on this, we replace XX and\r
+Y Y gates with XY and YX gates. We remove ZZ and\r
+single-qubit Z gates as they violate time-reversal sym\u0002metry. Variable Ry(θ) = e−iθY / ˆ 2 gates are retained in\r
+some tensors to allow for spontaneous breaking of the Z2\r
+symmetry. The Ry gates that have been removed only\r
+have a relatively small effect on the accuracy.\r
+The resulting refined gate compilation for a unit cell\r
+in the binary MERA, including one isometry and one\r
+unitary (dis)entangler, is shown in Fig. 7(b). This\r
+symmetry-respecting compilation significantly reduces\r
+the parameter space and redundancy without sacrific\u0002ing expressiveness in approximating the ground state, as\r
+confirmed by our numerical simulations. Since binary\r
+MERA with one qubit per bond is classically simula\u0002ble, we do not implement the variational MERA on the\r
+quantum computer. Instead, we classically optimize the\r
+MERA with the gate configuration in Fig. 7(b). Notably,\r
+while the Ry gate is retained for all values of g, the op\u0002timized angles are non-zero only when g < 1 within our\r
+data points, which is consistent with the presence of a\r
+non-zero order parameter in the ferromagnetic phase.\r
+In our experimental setup, the native entangling gate is\r
+the XX gate. As shown in Fig. 7(c), we convert the XY\r
+and YX gates into native gates by appending additional\r
+virtual Rz(±\r
+π\r
+2\r
+) rotations, which are effectively free, as\r
+mentioned in Sec. II C.\r
+As previously discussed and shown in Fig. 1, local ob-
+
+12\r
+0\r
+1\r
+2\r
+4\r
+5\r
+6\r
+7\r
+3\r
+Layer 3 Layer 2 Layer 1\r
+a b c\r
+d\r
+FIG. 7. Gate compilation and circuit examples. (a) Gate decomposition of a generic two-qubit unitary. (b) Gate\r
+compilation for a unit cell in the binary 1D MERA, incorporating symmetry constraints. The isometry tensor is formed by\r
+injecting a |0⟩ qubit (indicated by a circle) into one leg of a unitary tensor. The unit cell contains six variable gates. (c)\r
+Equivalence between the XY gate and a circuit of three native gates. (d) An example circuit used in the experiment, composed\r
+of native gates. Qubits (circles with indices) are initialized in the |0⟩ state. The circuit consists of three layers, and in each\r
+layer, gates of the same color correspond to either two isometric tensors or a single unitary (dis)entangler, respectively. Local\r
+observables at spin sites 0 and 1 are obtained by measuring qubits 3 and 4, while subsystem entanglement is extracted by\r
+measuring qubits 5, 6, and 7.\r
+servables and subsystem entanglement can be probed by\r
+preparing only the causal cone state (unshaded regions\r
+in Figs. 1 and 5), rather than the full MERA circuit.\r
+Fig. 7(d) presents a concrete example of such a circuit.\r
+From left to right, 8 qubits are initialized in the |0⟩ state,\r
+followed by layers of gates grouped into either isometry\r
+or (dis)entangler tensors. Finally, the desired observables\r
+are measured. In this circuit example, measurements on\r
+qubits 3 and 4 yield local observables on spin sites 0 and\r
+1 as indicated in Fig. 1, while qubits 5, 6, and 7 are used\r
+to evaluate the entanglement between the subsystems A\r
+and B consisting of spin sites (−∞, 1] and [2, ∞), respec\u0002tively.\r
+Appendix E: System characterization and error\r
+model\r
+1. State preparation and measurement error\r
+State preparation and measurement (SPAM) errors\r
+contribute significantly to our error budget. To quan\u0002tify the probability pd of SPAM errors for the dark state\r
+(|0⟩), we performed fluorescence detection after initial\u0002izing all qubits via the usual optical pumping, yielding\r
+an average measured error of 0.16% (see Fig. 8 for de\u0002tailed SPAM errors). To measure the probability pb of\r
+SPAM errors for the bright state (|1⟩), we applied Ry(π)\r
+gates following the optical pumping and then performed\r
+fluorescence detection, yielding an average measured er\u0002ror of 0.45% (see Fig. 8 for detailed SPAM errors). We\r
+checked the rotation error of the Ry(π) gates by applying\r
+nine consecutive Ry(π)-gates, yielding a population error\r
+of 0.56+0.17\r
+−0.12% as determined by the binomial proportion\u0002ate 95% confidence interval using the Clopper-Pearson\r
+method. The population error resulting from single-qubit\r
+gates should scale superlinearly with the number N of\r
+gates, corresponding to a mixture of uncorrelated and\r
+correlated noise. Our results imply a population error\r
+below 10−3 per π-gate, which is below the determined\r
+bright-state SPAM error.\r
+The measurement error for the 171Yb+ hyperfine\r
+qubits arises from optical pumping between the hyper\u0002fine states during the optical detection pulse [66, 67]. We\r
+fit the measured photon count statistics at various detec\u0002tion time τ to an optical pumping model as discussed\r
+below to determine the state preparation error and the\r
+measurement errors.\r
+The distributions of detection counts for a single ion\r
+prepared in the bright state for different detection times\r
+are shown in Fig. 9(a). Ideally, the ion would cycle be\u0002tween the |S, F = 1⟩ and |P, F = 0⟩ manifolds, resulting\r
+in a Poisson distribution of the recorded photon counts.\r
+However, the bright state can be off-resonantly pumped\r
+to the dark hyperfine ground state via the |S, F = 1⟩ →\r
+|P, F = 1⟩ transition detuned by 2.1 GHz with a rate Rb\r
+that is about 5 × 104times lower than the bright-state\r
+photon scattering rate Γsc. Neglecting the even slower\r
+dark-to-bright pumping process, the predicted distribu\u0002tion of the bright-state photon counts are\r
+Pb(n) = e−RbτP(n; ηΓscτ ) + Z τ\r
+0\r
+e\r
+−RbtP(n; ηΓsct)Rb dt,\r
+(E1)\r
+where P(n; ¯n) = e\r
+−n¯n¯n/n! is the Poisson distribution
+
+13\r
+6 4 2 0 2 4 6\r
+Ion index\r
+0.0010\r
+0.0015\r
+0.0020\r
+0.0025\r
+0.0030\r
+P|1\r
+a Run 1\r
+Run 2\r
+Run 3\r
+6 4 2 0 2 4 6\r
+Ion index\r
+0.9935\r
+0.9940\r
+0.9945\r
+0.9950\r
+0.9955\r
+0.9960\r
+0.9965\r
+P|1\r
+b\r
+FIG. 8. State preparation and measurement (SPAM) population as a function of the ion index. (a) Dark-state (|0⟩) SPAM\r
+experiments, with ion-averaged errors of 0.205(7)%, 0.143(4)%, and 0.180(7)% for three runs; (b) Bright-state (|1⟩) SPAM\r
+experiments, with ion-averaged errors of 0.460(9)%, 0.432(9)%, and 0.495(11)% for three runs. Error bars and shaded areas\r
+indicate 1σ statistical intervals.\r
+0 35\r
+10\r
+4\r
+10\r
+2\r
+Pb(nph)\r
+a 130 s\r
+0 55\r
+10\r
+4\r
+10\r
+1\r
+200 s\r
+0 65\r
+10\r
+4\r
+10\r
+2\r
+300 s\r
+0 80\r
+10\r
+6\r
+10\r
+3\r
+400 s\r
+0 170\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1000 s\r
+0 35\r
+nph\r
+10\r
+4\r
+10\r
+1\r
+Pd(nph)\r
+b 130 s\r
+0 55\r
+nph\r
+10\r
+4\r
+10\r
+2\r
+200 s\r
+0 65\r
+nph\r
+10\r
+4\r
+10\r
+1\r
+300 s\r
+0 80\r
+nph\r
+10\r
+5\r
+10\r
+2\r
+400 s\r
+0 170\r
+nph\r
+10\r
+4\r
+10\r
+2\r
+1000 s\r
+FIG. 9. Distribution of the detected photon counts nph for different detection times for the bright state (a) and the dark state\r
+(b). The red dashed lines indicate a fit to the models from Eq. (E1) and (E2).\r
+with mean ¯n, and η is the detection efficiency. The red\r
+dashed curves in Fig. 9(a) show fits of the obtained count\r
+data to this model with ηΓscτ and Rb as the fitting pa\u0002rameters. We average the fitted Rb values with weights\r
+inversely proportional to the fitted variances to obtain\r
+Rb = 3.0(1) × 102/s. The detection count statistics for\r
+a single ion prepared in the dark |S, F = 0⟩ state are\r
+shown in Fig. 9(b). The dark state can be off-resonantly\r
+pumped to the bright manifold via the 14.7-GHz detuned\r
+|S, F = 0⟩ → |P, F = 1⟩ transition, with a rate Rd that\r
+is about 106times lower than Γsc. Neglecting the reverse\r
+pumping process yields the predicted dark-state count\r
+distribution\r
+Pd(n) = Z τ\r
+0\r
+P(n; ηΓsc(τ − t))e\r
+−RdtRd dt. (E2)\r
+Fitting this model to the count data for photon number\r
+nph > 1 in Fig. 9(b) yields Rd = 18(1)/s. The obtained\r
+ratio of Rb and Rd is close to the theoretical prediction\r
+in Ref. [68].\r
+To distinguish the preparation error from the measure\u0002ment error, we fitted the average dark-state photon num\u0002ber as a function of detection time τ (Fig. 10) to the rate\r
+equation model from Ref. [68]:\r
+n¯ph =\r
+Z τ\r
+0\r
+ηΓsc \u0010\r
+Pd,∞ − (p − Pb,∞) e−(Rb+Rd)t\r
+\u0011\r
+dt,\r
+(E3)\r
+where p is the state preparation error probability. Here,\r
+Pb,∞ = (Rb/Rd + 1)−1 and Pd,∞ = 1 − Pb,∞ are the\r
+equilibrium bright and dark-state populations, respec\u0002tively. The fitted value p = 10(6) × 10−5\r
+confirms that\r
+our SPAM error is dominated by the measurement errors,\r
+as p ≪ pd, pb.\r
+To model state-preparation error in the numerical sim\u0002ulations, we flip each qubit with probability p. To sim\u0002ulate the detection error, after applying the circuit and\r
+measuring in the computational basis {|0⟩, |1⟩}, we ran\u0002domly flip |0⟩ → |1⟩ with probability pd −p and |1⟩ → |0⟩\r
+with probability pb − p.
+
+14\r
+0 200 400 600 800 1000\r
+Detection time ( s)\r
+10\r
+5\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+10\r
+1\r
+10\r
+0\r
+nph\r
+FIG. 10. The average number ¯nph of collected photons when\r
+preparing the ion in the |0⟩ as a function of detection time\r
+τ . The error bars indicate 1σ confidence interval with 60,000\r
+experimental shots.\r
+0 2 4 6 8 10\r
+Idle time (ms)\r
+0.95\r
+0.96\r
+0.97\r
+0.98\r
+0.99\r
+1.00\r
+Ramsey fringe contrast\r
+T\r
+*\r
+2 = 300(17) ms\r
+FIG. 11. The average qubit Ramsey fringe contrast as a\r
+function of the idle time τidle from a sample dataset. The\r
+orange line represents the fit to the model A e\r
+−τidle/T ∗\r
+2 yielding\r
+T\r
+∗\r
+2 = 300(17) ms and A = 0.991(1). For the experimental\r
+data, error bars indicate 1σ fitting uncertainties.\r
+2. Idling noise\r
+We characterized the dephasing of idle qubits using\r
+a Ramsey pulse sequence. After applying Ry(\r
+π\r
+2\r
+) gates\r
+to all 13 qubits, we simulated idling by turning off the\r
+individual-addressing Raman beams while keeping the\r
+global beam on with the same settings as during a gate\r
+sequence. After a variable idle time τidle, we completed\r
+the Ramsey sequence with Rz(ϕ) and Ry(\r
+π\r
+2\r
+) gates and\r
+recorded the |1⟩ state population as a function of ϕ. We\r
+obtained the fitted ion-averaged contrast C from the re\u0002sulting fringes and modeled it as A e\r
+−τidle/T ∗\r
+2 . Fig. 11\r
+shows a representative fit from a sample dataset, yielding\r
+A = 0.991(1) and T\r
+∗\r
+2 = 300(17) ms. The deviation of the\r
+fitted value of A from 1 mainly reflects SPAM errors, with\r
+additional contributions potentially arising from residual\r
+single-qubit gate errors and qubit addressing and detec\u0002tion crosstalk. From several datasets collected on differ\u0002ent experimental days, the fitted T\r
+∗\r
+2\r
+ranges from 260 ms\r
+to 370 ms, with an average of 290 ms. We attribute the\r
+measured dephasing to acoustic noise, mainly from air\r
+cooling fans, in our phase-sensitive Raman interferom\u0002eter setup. We expect that T\r
+∗\r
+2\r
+times of several seconds\r
+can be achieved using phase-insensitive schemes [69] that\r
+are compatible with our experimental setup.\r
+In our simulations, we model the effects of dephasing\r
+on the qubit density matrix ˆρ over the time interval t via\r
+the quantum channel\r
+EZ(ˆρ) = (1 − pZ)ˆρ + pZZˆρˆZ, ˆ (E4)\r
+with the Z-flip probability pZ = t/(2T\r
+∗\r
+2\r
+).\r
+3. Gate errors\r
+a. Axial motion\r
+Axial motion of our 15-ion chain, dominated by the\r
+lowest-frequency axial mode (mode 0) with angular fre\u0002quency ω0 = 2π × 241.8 kHz, is a leading error source in\r
+our platform. This motion misaligns the ions relative to\r
+the tightly-focused addressing beams, causing gate errors\r
+[65]. These errors increase over time as the ions’ motion\r
+is driven by noisy electric fields.\r
+We quantified the addressing error after a wait time t\r
+following laser cooling by applying a variable number N\r
+of XX(\r
+π\r
+2\r
+) gates of total duration ∆t to ions i and j and\r
+measuring the mean population P|11⟩ of the |1, 1⟩ state.\r
+The recorded populations P|11⟩ as a function of N for\r
+(i, j) = (3, −3) are shown in the inset of Fig. 12. Uncer\u0002tainty in the ions’ axial motion translates into a variance\r
+in the total XX rotation angle, leading to damping of\r
+P|11⟩ oscillations.\r
+The observed damping is governed by the statistics of\r
+the phonon number of mode 0 during gate application\r
+[65]. We model the evolution of the phonon number nt\r
+at time t as a biased random walk. Since the energy of\r
+mode 0 following laser cooling corresponds to hundreds\r
+of phonons, and the average heating per XX gate corre\u0002sponds to more than 20 phonons, we coarse-grain nt on\r
+intervals of size δn with 1 ≤ δn ≪ 2nt and model the\r
+random walk as\r
+nt+δt :=\r
+\r
+\r
+\r
+nt + δn with prob. nt+δn\r
+δn\r
+nδt ¯˙\r
+δn\r
+nt − δn with prob. nt\r
+δn\r
+nδt ¯˙\r
+δn\r
+nt otherwise,\r
+(E5)\r
+where n¯˙ is the heating rate of mode 0, and the time step\r
+δt is chosen so that the change of nt/δn remains small\r
+(\r
+2nt+δn\r
+δn\r
+nδt ¯˙\r
+δn ≤ 1).\r
+When initialized with a Boltzmann distribution with\r
+mean ¯n0 ≫ 1, nt remains exponentially distributed with\r
+mean ¯nt = ¯n0 + nt ¯˙ . In this thermal limit, the time\u0002averaged phonon number n\r
+avg\r
+t\r
+:= 1\r
+∆t\r
+R t+∆t\r
+t\r
+nt\r
+′ dt\r
+′ be\u0002tween time t and t + ∆t has the mean µt = ¯nt+∆t/2 =\r
+n¯t + n¯˙ ∆t\r
+2\r
+and the variance σ\r
+2\r
+t = µ\r
+2\r
+t −\r
+n¯tn¯˙ ∆t\r
+3 +\r
+n¯˙\r
+2∆t2\r
+6\r
+.
+
+15\r
+7 6 5 4 3 2 1 0\r
+Ion index i\r
+0\r
+0.01\r
+0.02\r
+0.03\r
+0.04\r
+0.05\r
+i, i(0)\r
+b\r
+2\r
+i0 + b\r
+2\r
+i0\r
+0\r
+4\r
+8\r
+12\r
+16\r
+d i, i(t)/dt\r
+0 2 4 6 8 N\r
+0.0\r
+0.5\r
+1.0\r
+P|11\r
+Expt.\r
+FIG. 12. The fitted initial decay parameter ¯εi,−i(0) (blue)\r
+and its increase rate d¯εi,−i(t)/dt (red) for XX gates acting\r
+on ions i and −i. The gray line is proportional to the sum of\r
+squares b\r
+2\r
+i0+b\r
+2\r
+−i0 of the participation factors for the addressed\r
+ions in the lowest axial mode of the ion chain. Error bars\r
+indicate 1σ fit uncertainties. The inset shows the |1, 1⟩-state\r
+population for ions (−3, 3) as a function of the gate number\r
+N after a wait time of t ≈ 10 ms, with a fit according to\r
+Eq. (E6).\r
+The distribution of n\r
+avg\r
+t\r
+can be well approximated by a\r
+Gamma distribution with the corresponding mean and\r
+variance.\r
+If N XX(θ) gates are applied between time t and t+∆t,\r
+neglecting other errors and assuming the above Gamma\r
+distribution, we obtain the population\r
+P|11⟩(t) = 1 − C cos(Nθ − ϕ)\r
+2\r
+, (E6)\r
+of the |1, 1⟩ state with phase shift ϕ =\r
+α arctanαNθε¯i,j (t +\r
+∆t\r
+2\r
+)\r
+\u0001\r
+and contrast C =\r
+(1 + [αNθε¯i,j (t +\r
+∆t\r
+2\r
+)]2)\r
+−α/2\r
+, where α = µ\r
+2\r
+t /σ2t\r
+and ¯εi,j (t) = ¯εi(t) + ¯εj (t). The mean dimensionless\r
+decay parameter ¯εi(t) during the gate sequence is\r
+ε¯i(t) = ℏb\r
+2\r
+i0\r
+mω0w2\r
+n¯t, (E7)\r
+where bi0 is the participation factor of ion i in mode\r
+0. Here, we assume that the ion motion remains much\r
+smaller than our Gaussian-shaped beams. We determine\r
+the individual-beam waist w by fitting the dependence of\r
+the single-qubit Rabi frequency Ω on the axial ion posi\u0002tion x to Ω0e\r
+−(x−x0)\r
+2/w2\r
+, yielding w = 646(12) nm. In\r
+the limit of negligible heating during the gate sequence,\r
+the prediction (E6) reduces to Eq. (4) in [65].\r
+For different ion pairs (i, j = −i), we fit the mea\u0002sured mean |1, 1⟩-state population as a function of the\r
+gate number N and wait time t to the model (E6). The\r
+fitted dimensionless effective decay parameter ¯εi,j (0) at\r
+t = 0 and its rate of increase d¯εi,j/dt are shown as func\u0002tions of i in Fig. 12. Both parameters scale with b\r
+2\r
+i0+b\r
+2\r
+j0\r
+,\r
+indicating that addressing errors are dominated by exci\u0002tations of the lowest axial mode of the ion chain. The\r
+-6\r
+-6\r
+-4\r
+-4\r
+-2\r
+-2\r
+0\r
+0\r
+2\r
+2\r
+4\r
+4\r
+6\r
+6\r
+Ion j\r
+-6 -6\r
+-4 -4\r
+-2 -2\r
+0 0\r
+2 2\r
+4 4\r
+6 6\r
+Ion i\r
+pX\r
+0\r
+0.04%\r
+0.08%\r
+0.12%\r
+0.16%\r
+FIG. 13. Pauli X error pX,i,j (π/2) per fully-entangling XX\r
+gate acting on ions i and j; cf. Eq. (E9). We only show error\r
+data for gate pairs that are actually utilized in this work.\r
+fitted initial phonon number in this mode is ¯n0 = 409(4)\r
+and the heating rate is n¯˙ = 133(1) phonons/ms.\r
+To model gate rotation errors for arbitrary single\u0002and two-qubit gates, in each shot of the noisy simu\u0002lations, we sample the initial phonon number n0 from\r
+an exponential distribution with mean ¯n0. We then\r
+evolve nt using the random walk model (E5). For\r
+each native gate in the circuit, we compute the time\u0002averaged phonon number n\r
+avg\r
+t\r
+. In the noise model, the\r
+phonon number n\r
+avg\r
+t\r
+changes single-qubit gate rotations\r
+as R(θ) → R(θ(1 − n\r
+avg\r
+t\r
+ε¯i/n¯t)) and two-qubit gate rota\u0002tions as XX(θ) → XX(θ(1 − n\r
+avg\r
+t\r
+ε¯i,j/n¯t).\r
+b. X-errors\r
+We describe X-errors during an XX(θ) gate on ion pair\r
+(i, j) using a bit-flip channel acting on the density matrix\r
+ρˆ of ion i as\r
+EX(ˆρ) = (1 − pX)ˆρ + pXXˆρˆX, ˆ (E8)\r
+where pX ≡ pX,i,j (θ) is the X-flip probability per gate.\r
+X-errors can be caused by residual spin-motion en\u0002tanglement at the end of Mølmer-Sørensen gates. They\r
+can be minimized by carefully choosing the motional de\u0002tuning, gate duration, and envelope of the amplitude\u0002modulated gate waveforms [70]. In-between experiment\r
+runs, we stabilized frequencies of the radial ion-motion\r
+modes via blue-sideband Ramsey spectroscopy. Each of\r
+the central 11 qubits was used to query one of 11 radial\r
+modes that are addressed by the entangling gate wave\u0002forms. The obtained spectroscopical data was used to\r
+automatically adjust the quadratic and quartic terms in\r
+the static axial potential of the trap and a common mo\u0002tional offset frequency for all gates.\r
+After applying N consecutive XX(\r
+π\r
+2\r
+) gates to the |0, 0⟩\r
+state on ions i and j, we measured the probability of X-
+
+16\r
+0 5 10 15 20 25 30\r
+N [XX\r
++ XX ]\r
+0.6\r
+0.7\r
+0.8\r
+0.9\r
+1.0\r
+Contrast\r
+Gate 1,6\r
+a\r
+Ion 1: = 0.9(1)%\r
+Ion 6: = 1.5(1)%\r
+-6\r
+-6\r
+-4\r
+-4\r
+-2\r
+-2\r
+0\r
+0\r
+2\r
+2\r
+4\r
+4\r
+6\r
+6\r
+Ion j\r
+-6 -6\r
+-4 -4\r
+-2 -2\r
+0 0\r
+2 2\r
+4 4\r
+6 6\r
+Ion i\r
+i\r
+0\r
+0.5%\r
+1.0%\r
+1.5%\r
+2.0%\r
+b\r
+FIG. 14. (a) Ramsey fringe contrast as a function of the number of (XX+, XX−) gate pairs inside the Ramsey sequence\r
+for a sample gate. Solid lines indicate fits to a Gaussian function with zero mean and standard deviation Nσi\r
+ϕ. (b) Standard\r
+deviation σ\r
+i\r
+ϕ of the random Gaussian-distributed phase shift ϕi on ion i per fully-entangling XX gate acting on ion pair (i, j).\r
+Error data are shown only for gate pairs utilized in this work.\r
+flip errors by tracking the population Pi,j (N) of the |0, 1⟩\r
+and |1, 0⟩ states (parity leakage). We distinguished X-flip\r
+errors from coherent XX gate crosstalk by focusing on\r
+the shots where only the target qubits are flipped. In the\r
+noise model (E8), we employ the X-flip error probability\r
+pX,i,j (θ) = |θ|\r
+π/2\r
+Pi,j (N)\r
+2N\r
+. (E9)\r
+c. Z-errors\r
+To measure Stark shifts during a specific XX gate, we\r
+insert N pairs of XX(\r
+π\r
+2\r
+) − XX(−\r
+π\r
+2\r
+) gates into a Ram\u0002sey pulse sequence consisting of initial Ry(\r
+π\r
+2\r
+) and final\r
+Rz(ϕ)−Ry(\r
+π\r
+2\r
+) pulses applied to each targeted ion. After\r
+adjusting the qubit frequencies during the gate to com\u0002pensate for the measured shifts, we use the same sequence\r
+to estimate any residual gate Z-errors.\r
+The fitted contrast of the obtained Ramsey fringes for a\r
+sample gate is shown in Fig. 14(a). The observed depen\u0002dence of the contrast on N is roughly quadratic, indicat\u0002ing that the phase shift error accumulates coherently as\r
+the number of gates increases. We model the observed de\u0002coherence by correlated fluctuations in the gate-induced\r
+Stark shift, which can arise from fluctuations in the am\u0002plitude balance of the red and blue tones of the Mølmer\u0002Sørensen gate due to air turbulence in the Raman beam\r
+setup. Since our Ramsey sequence prepares the qubits\r
+in the X-basis, we do not expect gate X-errors to affect\r
+the measured contrast. We assume that the phase shift\r
+ϕiinduced on ion i by a fully-entangling XX gate during\r
+each shot follows a Gaussian distribution with zero mean\r
+and standard deviation σ\r
+i\r
+ϕ\r
+. This noise model results in a\r
+fringe contrast proportional to e−(Nσi\r
+ϕ)\r
+2/2\r
+to first order.\r
+Figure 14 show fits of this model to the measured contrast\r
+data and the fitted values of σ\r
+i\r
+ϕ\r
+for all fully-entangling\r
+XX gates on the ion pairs used in this work.\r
+In the noise-model simulations, for each shot, we sam\u0002ple random numbers s from the Gaussian distribution\r
+N (0, 1). When executing quantum circuits, we replace\r
+the ideal XX(θ) gate by\r
+e\r
+− i\r
+2 (θXˆiXˆj+ϕiZˆi+ϕjZˆj )\r
+, where ϕi = s\r
+σ\r
+i\r
+ϕ\r
+|θ|\r
+π/2\r
+(E10)\r
+is a rescaled phase shift on ion i.\r
+Appendix F: Breakdown of error contributions\r
+To better understand our experimental results, we an\u0002alyze the breakdown of error contributions through nu\u0002merical simulation. As shown in Fig. 15, we selected two\r
+representative cases from Fig. 4 of the main text, one\r
+with the highest reported infidelity 1 − F (∼ 10−2) and\r
+one with the lowest (∼ 10−4).\r
+The case of highest reported infidelity corresponds to a\r
+4-qubit tomography result on a 4-layer MERA circuit at\r
+the critical point g = 1. The circuit involves 9 qubits and\r
+21 XX gates with rotation amplitudes ranging from 0.06π\r
+to 0.18π. We performed 1,500 measurement shots per ba\u0002sis over a total of 34 = 81 measurement bases. Based on\r
+our error model and the calibrated parameters provided\r
+in the Appendix E, we identify several key sources of er\u0002ror. First, there is the inevitable statistical uncertainty\r
+in the measured density matrix elements on the order of\r
+∼ 10−2from the finite number of measurement shots.\r
+Second, aggregated SPAM errors for the 4-qubit tomog\u0002raphy are on the order of ∼ 10−2\r
+. The dominant gate\r
+error arises from rotation-angle fluctuations caused by\r
+axial motion of the ion chain, which, for fully-entangling
+
+17\r
+0.12\r
+0.13\r
+0.14\r
+0.15\r
+0.16\r
+0\r
+a Expt. data\r
+Sim. (noisy)\r
+Sim. (ideal)\r
+0.027\r
+0.030\r
+0.033\r
+0.036\r
+0.039\r
+0\r
+c\r
+Full noise\r
+SPAM\r
+Idling\r
+Axial\r
+X flip\r
+Stark shift\r
+Shot only\r
+10\r
+2\r
+6 × 10\r
+3\r
+2 × 10\r
+2\r
+1\r
+b\r
+Full noise\r
+SPAM\r
+Idling\r
+Axial\r
+X flip\r
+Stark shift\r
+Shot only\r
+10\r
+5\r
+10\r
+4\r
+1\r
+d\r
+FIG. 15. Breakdown of error contributions. The top row (a,c) shows the first eigenvalues ζ0 of the entanglement\r
+Hamiltonian, and the bottom row (b,d) shows corresponding state infidelities 1 − F. The left column (a,b) presents results\r
+at the critical point g = 1 with T = 4, while the right column (c,d) corresponds to the gapped phase at g = 1.5 with T = 1.\r
+Experimental data points with error bars are reproduced from Fig. 4 in the main text. The dashed lines indicate the ideal\r
+simulation results from Fig. 4. Noisy simulation results are shown as shaded regions representing the 95% quantiles, with solid\r
+colored lines indicating the mean values. In the “full noise” case, we reproduce the full noisy simulation including all error\r
+sources from Fig. 4. In the “shot only” case, all errors are disabled except for shot noise (the statistical uncertainty due to\r
+the finite number of measurement shots). In the remaining cases, the simulations include both the shot noise and the specified\r
+individual error source. We run 1000 independent noisy simulation trials for each case. Each trail uses the same number of\r
+measurement shots as the experiment: 1,500 shots per basis per trial in the left column, and 8,000 shots per basis per trial in\r
+the right column.\r
+gates, typically leads to errors on the order of 10−2. After\r
+accounting for the error rescaling due to smaller rotation\r
+angles in the actual MERA gates and the accumulation\r
+of errors throughout the circuit, the overall gate-induced\r
+error is also expected to be in the 10−2range. This es\u0002timate is confirmed in Fig. 15(a). A small discrepancy\r
+remains between the experimental data and the full-noise\r
+simulation, which we attribute to system miscalibration\r
+over the long experimental runtime required for 4-qubit\r
+tomography, as well as unmodeled single-qubit gate er\u0002rors.\r
+The case of lowest reported infidelity corresponds to a\r
+single-qubit tomography result on a single-layer MERA\r
+circuit in the gapped phase at g = 1.5. The circuit in\u0002volves only 2 qubits and a single XX gate with a rotation\r
+amplitude of 0.095π. We performed 8,000 measurement\r
+shots for each Pauli-X, -Y , and -Z basis. In this case,\r
+the statistical uncertainty from finite sampling is on the\r
+order of 10−3 ∼ 10−2, while the SPAM error for a single\r
+qubit is on the order of 10−3, and the error from the sin\u0002gle gate is also on the order of 10−3\r
+. Hence, we expect\r
+the statistical uncertainty to dominate over other error\r
+sources, which is consistent with the simulation results\r
+shown in Fig. 15(c).\r
+We observe that the infidelity is of comparable magni\u0002tude to the errors for the high-infidelity case in Fig. 15(b)\r
+and at least an order of magnitude below the error scale\r
+for the low-infidelity case in Fig. 15(d). We attribute this\r
+to the fact that the infidelity has different scaling behav\u0002ior for rank-deficient and full-rank states: Consider the\r
+exact (noise-free) density operator ˆρ and the perturbed\r
+version ˆσ = ˆρ + ϵDˆ with noise level ϵ and Tr(Dˆ) = 0.\r
+For a full-rank state ˆρ, the perturbed ˆσ remains well\u0002defined (positive semidefinite) for sufficiently small ϵ > 0\r
+as well as small ϵ < 0. The infidelity 1 − F(ˆρ, σˆ(ϵ)) is\r
+differentiable and minimal at ϵ = 0. This implies that\r
+the linear term vanishes and 1 − F = O(ϵ\r
+2\r
+). This is\r
+the case in Fig. 15(d), where the corresponding single\u0002qubit reduced density matrix has full rank with eigenval\u0002ues {0.98, 2.2 × 10−2}. A linear scaling 1 − F = O(ϵ)\r
+is only possible for rank-deficient states. For example,\r
+consider a pure state ˆρ = |ψ⟩⟨ψ| and the perturbation\r
+Dˆ = −|ψ⟩⟨ψ| + |ψ⊥⟩⟨ψ⊥| with an orthogonal state |ψ⊥⟩\r
+and ϵ ≥ 0. In this case, the infidelity is simply ϵ. In the\r
+current experiments, the ideal reduced density matrix is\r
+indeed approximately rank-deficient at larger layer num\u0002bers T, and this is the case in Fig. 15(b) with eigenvalues\r
+{0.92, 7.9 × 10−2, 3.5 × 10−3, 3.1 × 10−4, 2.7 × 10−4, 2.7 ×\r
+10−5, . . . }.
+
+18\r
+[1] S. L. Sondhi, S. M. Girvin, J. P. Carini, and D. Shahar,\r
+Continuous quantum phase transitions, Rev. Mod. Phys.\r
+69, 315 (1997).\r
+[2] S. Sachdev, Quantum Phase Transitions, 2nd ed. (Cam\u0002bridge University Press, Cambridge, UK, 2011).\r
+[3] I. Bloch, J. Dalibard, and W. Zwerger, Many-body\r
+physics with ultracold gases, Rev. Mod. Phys. 80, 885\r
+(2008).\r
+[4] A. Smith, M. Kim, F. Pollmann, and J. Knolle, Simu\u0002lating quantum many-body dynamics on a current digi\u0002tal quantum computer, npj Quantum Information 5, 106\r
+(2019).\r
+[5] F. Barratt, J. Dborin, M. Bal, V. Stojevic, F. Pollmann,\r
+and A. G. Green, Parallel quantum simulation of large\r
+systems on small nisq computers, npj Quantum Informa\u0002tion 7, 79 (2021).\r
+[6] M. Meth, V. Kuzmin, R. van Bijnen, L. Postler,\r
+R. Stricker, R. Blatt, M. Ringbauer, T. Monz, P. Silvi,\r
+and P. Schindler, Probing phases of quantum matter with\r
+an ion-trap tensor-network quantum eigensolver, Phys.\r
+Rev. X 12, 041035 (2022).\r
+[7] J. Dborin, V. Wimalaweera, F. Barratt, E. Ostby, T. E.\r
+O’Brien, and A. G. Green, Simulating groundstate and\r
+dynamical quantum phase transitions on a supercon\u0002ducting quantum computer, Nature Communications 13,\r
+5977 (2022).\r
+[8] Q. Zhu, Z.-H. Sun, M. Gong, F. Chen, Y.-R. Zhang,\r
+Y. Wu, Y. Ye, C. Zha, S. Li, S. Guo, H. Qian, H.-L.\r
+Huang, J. Yu, H. Deng, H. Rong, J. Lin, Y. Xu, L. Sun,\r
+C. Guo, N. Li, F. Liang, C.-Z. Peng, H. Fan, X. Zhu, and\r
+J.-W. Pan, Observation of thermalization and informa\u0002tion scrambling in a superconducting quantum processor,\r
+Phys. Rev. Lett. 128, 160502 (2022).\r
+[9] M. Tajik, M. Gluza, N. Sebe, P. Sch¨uttelkopf, F. Catal\u0002dini, J. Sabino, F. Møller, S.-C. Ji, S. Erne, G. Guarnieri,\r
+S. Sotiriadis, J. Eisert, and J. Schmiedmayer, Experimen\u0002tal observation of curved light-cones in a quantum field\r
+simulator, Proceedings of the National Academy of Sci\u0002ences 120, e2301287120 (2023).\r
+[10] F. Fang, K. Wang, V. S. Liu, Y. Wang, R. Cimmino,\r
+J. Wei, M. Bintz, A. Parr, J. Kemp, K.-K. Ni, and N. Y.\r
+Yao, Probing critical phenomena in open quantum sys\u0002tems using atom arrays (2024), arXiv:2402.15376 [quant\u0002ph].\r
+[11] R. Islam, R. Ma, P. M. Preiss, M. Eric Tai, A. Lukin,\r
+M. Rispoli, and M. Greiner, Measuring entanglement en\u0002tropy in a quantum many-body system, Nature 528, 77\r
+(2015).\r
+[12] K. Li, M. Han, D. Qu, Z. Huang, G. Long, Y. Wan, D. Lu,\r
+B. Zeng, and R. Laflamme, Measuring holographic entan\u0002glement entropy on a quantum simulator, npj Quantum\r
+Information 5, 30 (2019).\r
+[13] A. Bergschneider, V. M. Klinkhamer, J. H. Becher,\r
+R. Klemt, L. Palm, G. Z¨urn, S. Jochim, and P. M. Preiss,\r
+Experimental characterization of two-particle entangle\u0002ment through position and momentum correlations, Na\u0002ture Physics 15, 640 (2019).\r
+[14] T. Brydges, A. Elben, P. Jurcevic, B. Vermersch,\r
+C. Maier, B. P. Lanyon, P. Zoller, R. Blatt, and C. F.\r
+Roos, Probing R´enyi entanglement entropy via random\u0002ized measurements, Science 364, 260 (2019).\r
+[15] M. Foss-Feig, S. Ragole, A. Potter, J. Dreiling, C. Fig\u0002gatt, J. Gaebler, A. Hall, S. Moses, J. Pino, B. Spaun,\r
+B. Neyenhuis, and D. Hayes, Entanglement from ten\u0002sor networks on a trapped-ion quantum computer, Phys.\r
+Rev. Lett. 128, 150504 (2022).\r
+[16] M. Tajik, I. Kukuljan, S. Sotiriadis, B. Rauer, T. Schwei\u0002gler, F. Cataldini, J. Sabino, F. Møller, P. Sch¨uttelkopf,\r
+S.-C. Ji, et al., Verification of the area law of mutual in\u0002formation in a quantum field simulator, Nature Physics\r
+19, 1022 (2023).\r
+[17] M. K. Joshi, C. Kokail, R. van Bijnen, F. Kranzl, T. V.\r
+Zache, R. Blatt, C. F. Roos, and P. Zoller, Exploring\r
+large-scale entanglement in quantum simulation, Nature\r
+624, 539 (2023).\r
+[18] A. H. Karamlou, I. T. Rosen, S. E. Muschinske, C. N.\r
+Barrett, A. Di Paolo, L. Ding, P. M. Harrington,\r
+M. Hays, R. Das, D. K. Kim, et al., Probing entanglement\r
+in a 2d hard-core Bose–Hubbard lattice, Nature 629, 561\r
+(2024).\r
+[19] T. Barthel and J. Lu, Fundamental limitations for mea\u0002surements in quantum many-body systems, Phys. Rev.\r
+Lett. 121, 080406 (2018).\r
+[20] J. R. McClean, S. Boixo, V. N. Smelyanskiy, R. Bab\u0002bush, and H. Neven, Barren plateaus in quantum neural\r
+network training landscapes, Nature Communications 9,\r
+4812 (2018).\r
+[21] M. Cerezo, A. Sone, T. Volkoff, L. Cincio, and P. J.\r
+Coles, Cost function dependent barren plateaus in shal\u0002low parametrized quantum circuits, Nature Communica\u0002tions 12, 1791 (2021).\r
+[22] G. Vidal, Entanglement renormalization, Phys. Rev.\r
+Lett. 99, 220405 (2007).\r
+[23] G. Vidal, Class of quantum many-body states that can\r
+be efficiently simulated, Phys. Rev. Lett. 101, 110501\r
+(2008).\r
+[24] G. Evenbly and G. Vidal, Algorithms for entanglement\r
+renormalization, Phys. Rev. B 79, 144108 (2009).\r
+[25] Q. Miao and T. Barthel, Quantum-classical eigensolver\r
+using multiscale entanglement renormalization, Phys.\r
+Rev. Res. 5, 033141 (2023).\r
+[26] Q. Miao and T. Barthel, Convergence and quantum ad\u0002vantage of Trotterized MERA for strongly-correlated sys\u0002tems, Quantum 9, 1631 (2025).\r
+[27] R. Haghshenas, J. Gray, A. C. Potter, and G. K.-L. Chan,\r
+Variational power of quantum circuit tensor networks,\r
+Phys. Rev. X 12, 011047 (2022).\r
+[28] R. Haghshenas, E. Chertkov, M. DeCross, T. M. Gat\u0002terman, J. A. Gerber, K. Gilmore, D. Gresh, N. He\u0002witt, C. V. Horst, M. Matheny, T. Mengle, B. Neyen\u0002huis, D. Hayes, and M. Foss-Feig, Probing critical states\r
+of matter on a digital quantum computer, Phys. Rev.\r
+Lett. 133, 266502 (2024).\r
+[29] I. H. Kim and B. Swingle, Robust entanglement\r
+renormalization on a noisy quantum computer,\r
+arXiv:1711.07500 (2017).\r
+[30] T. Barthel and Q. Miao, Absence of barren plateaus and\r
+scaling of gradients in the energy optimization of isomet\u0002ric tensor network states, Commun. Math. Phys. 406, 86\r
+(2025).\r
+[31] Q. Miao and T. Barthel, Isometric tensor network op\u0002timization for extensive Hamiltonians is free of barren
+
+19\r
+plateaus, Phys. Rev. A 109, L050402 (2024).\r
+[32] J. Eisert, M. Cramer, and M. B. Plenio, Colloquium:\r
+Area laws for the entanglement entropy, Rev. Mod. Phys.\r
+82, 277 (2010).\r
+[33] J. I. Latorre and A. Riera, A short review on entangle\u0002ment in quantum spin systems, J. Phys. A: Math. Theor.\r
+42, 504002 (2009).\r
+[34] N. Laflorencie, Quantum entanglement in condensed\r
+matter systems, Phys. Rep. 646, 1 (2016).\r
+[35] S. Montangero, M. Rizzi, V. Giovannetti, and R. Fazio,\r
+Critical exponents with a multiscale entanglement renor\u0002malization ansatz channel, Phys. Rev. B 80, 113103\r
+(2009).\r
+[36] R. N. C. Pfeifer, G. Evenbly, and G. Vidal, Entanglement\r
+renormalization, scale invariance, and quantum critical\u0002ity, Phys. Rev. A 79, 040301 (2009).\r
+[37] P. L. W. Maunz, High optical access trap 2.0., osti.gov ,\r
+SAND (2016).\r
+[38] D. Lobser, P. Maunz, and J. Van Der Wall, Octet: A\r
+coherent qubit control system for trapped-ion quantum\r
+computers, osti.gov , SAND2020 (2020).\r
+[39] B. M. McCoy, Spin correlation functions of the X − Y\r
+model, Phys. Rev. 173, 531 (1968).\r
+[40] P. Pfeuty, The one-dimensional ising model with a trans\u0002verse field, Annals of Physics 57, 79 (1970).\r
+[41] T. J. Osborne and M. A. Nielsen, Entanglement in a sim\u0002ple quantum phase transition, Phys. Rev. A 66, 032110\r
+(2002).\r
+[42] H. A. Kramers and G. H. Wannier, Statistics of the\r
+two-dimensional ferromagnet. part i, Phys. Rev. 60, 252\r
+(1941).\r
+[43] G. De Chiara, L. Lepori, M. Lewenstein, and A. San\u0002pera, Entanglement spectrum, critical exponents, and or\u0002der parameters in quantum spin chains, Phys. Rev. Lett.\r
+109, 237208 (2012).\r
+[44] A. Osterloh, L. Amico, G. Falci, and R. Fazio, Scaling of\r
+entanglement close to a quantum phase transition, Na\u0002ture 416, 608 (2002).\r
+[45] O. F. Sylju˚asen, Entanglement and spontaneous symme\u0002try breaking in quantum spin models, Phys. Rev. A 68,\r
+060301 (2003).\r
+[46] T. R. de Oliveira, G. Rigolin, M. C. de Oliveira, and\r
+E. Miranda, Symmetry-breaking effects upon bipartite\r
+and multipartite entanglement in the XY model, Phys.\r
+Rev. A 77, 032325 (2008).\r
+[47] M. Srednicki, Entropy and area, Phys. Rev. Lett. 71, 666\r
+(1993).\r
+[48] C. Callan and F. Wilczek, On geometric entropy, Phys.\r
+Lett. B 333, 55 (1994).\r
+[49] C. Holzhey, F. Larsen, and F. Wilczek, Geometric and\r
+renormalized entropy in conformal field theory, Nucl.\r
+Phys. B 424, 443 (1994).\r
+[50] M. M. Wolf, Violation of the entropic area law for\r
+fermions, Phys. Rev. Lett. 96, 010404 (2006).\r
+[51] D. Gioev and I. Klich, Entanglement entropy of fermions\r
+in any dimension and the Widom conjecture, Phys. Rev.\r
+Lett. 96, 100503 (2006).\r
+[52] T. Barthel, M.-C. Chung, and U. Schollw¨ock, Entangle\u0002ment scaling in critical two-dimensional fermionic and\r
+bosonic systems, Phys. Rev. A 74, 022329 (2006).\r
+[53] H.-Y. Huang, R. Kueng, and J. Preskill, Predicting many\r
+properties of a quantum system from very few measure\u0002ments, Nature Physics 16, 1050 (2020).\r
+[54] P. Calabrese and J. Cardy, Entanglement entropy and\r
+conformal field theory, Journal of Physics A: Mathemat\u0002ical and Theoretical 42, 504005 (2009).\r
+[55] Z. Hradil, Quantum-state estimation, Phys. Rev. A 55,\r
+R1561 (1997).\r
+[56] J. Reh´aˇcek, Z. Hradil, and M. Jeˇzek, Iterative algorithm ˇ\r
+for reconstruction of entangled states, Phys. Rev. A 63,\r
+040303 (2001).\r
+[57] J. Fiur´aˇsek, Maximum-likelihood estimation of quantum\r
+measurement, Phys. Rev. A 64, 024102 (2001).\r
+[58] D. F. V. James, P. G. Kwiat, W. J. Munro, and A. G.\r
+White, Measurement of qubits, Phys. Rev. A 64, 052312\r
+(2001).\r
+[59] H. Li and F. D. M. Haldane, Entanglement spectrum as\r
+a generalization of entanglement entropy: Identification\r
+of topological order in non-Abelian fractional quantum\r
+Hall effect states, Phys. Rev. Lett. 101, 010504 (2008).\r
+[60] C. Kokail, R. van Bijnen, A. Elben, B. Vermersch,\r
+and P. Zoller, Entanglement Hamiltonian tomography in\r
+quantum simulation, Nature Physics 17, 936 (2021).\r
+[61] T. Barthel and Q. Miao, Scaling of contraction costs for\r
+entanglement renormalization algorithms including ten\u0002sor Trotterization and variational Monte Carlo, Phys.\r
+Rev. B 111, 045104 (2025).\r
+[62] M. DeCross, R. Haghshenas, M. Liu, E. Rinaldi, J. Gray,\r
+Y. Alexeev, C. H. Baldwin, J. P. Bartolotta, M. Bohn,\r
+E. Chertkov, J. Cline, J. Colina, D. DelVento, J. M.\r
+Dreiling, C. Foltz, J. P. Gaebler, T. M. Gatterman,\r
+C. N. Gilbreth, J. Giles, D. Gresh, A. Hall, A. Hankin,\r
+A. Hansen, N. Hewitt, I. Hoffman, C. Holliman, R. B.\r
+Hutson, T. Jacobs, J. Johansen, P. J. Lee, E. Lehman,\r
+D. Lucchetti, D. Lykov, I. S. Madjarov, B. Mathewson,\r
+K. Mayer, M. Mills, P. Niroula, J. M. Pino, C. Ro\u0002man, M. Schecter, P. E. Siegfried, B. G. Tiemann,\r
+C. Volin, J. Walker, R. Shaydulin, M. Pistoia, S. A.\r
+Moses, D. Hayes, B. Neyenhuis, R. P. Stutz, and M. Foss\u0002Feig, Computational power of random quantum circuits\r
+in arbitrary geometries, Phys. Rev. X 15, 021052 (2025).\r
+[63] R. Haghshenas, E. Chertkov, M. Mills, W. Kadow, S.-\r
+H. Lin, Y.-H. Chen, C. Cade, I. Niesen, T. Beguˇsi´c,\r
+M. S. Rudolph, C. Cirstoiu, K. Hemery, C. M. Keever,\r
+M. Lubasch, E. Granet, C. H. Baldwin, J. P. Bartolotta,\r
+M. Bohn, J. Cline, M. DeCross, J. M. Dreiling, C. Foltz,\r
+D. Francois, J. P. Gaebler, C. N. Gilbreth, J. Gray,\r
+D. Gresh, A. Hall, A. Hankin, A. Hansen, N. Hewitt,\r
+R. B. Hutson, M. Iqbal, N. Kotibhaskar, E. Lehman,\r
+D. Lucchetti, I. S. Madjarov, K. Mayer, A. R. Milne, S. A.\r
+Moses, B. Neyenhuis, G. Park, B. Ponsioen, M. Schecter,\r
+P. E. Siegfried, D. T. Stephen, B. G. Tiemann, M. D.\r
+Urmey, J. Walker, A. C. Potter, D. Hayes, G. K.-L. Chan,\r
+F. Pollmann, M. Knap, H. Dreyer, and M. Foss-Feig,\r
+Digital quantum magnetism at the frontier of classical\r
+simulations (2025), arXiv:2503.20870 [quant-ph].\r
+[64] X.-C. Wu, D. M. Debroy, Y. Ding, J. M. Baker, Y. Alex\u0002eev, K. R. Brown, and F. T. Chong, Tilt: Achiev\u0002ing higher fidelity on a trapped-ion linear-tape quan\u0002tum computing architecture, in 2021 IEEE International\r
+Symposium on High-Performance Computer Architecture\r
+(HPCA) (2021) pp. 153–166.\r
+[65] M. Cetina, L. Egan, C. Noel, M. Goldman, D. Biswas,\r
+A. Risinger, D. Zhu, and C. Monroe, Control of trans\u0002verse motion for quantum gates on individually addressed\r
+atomic qubits, PRX Quantum 3, 010334 (2022).\r
+[66] S. Crain, C. Cahall, G. Vrijsen, E. E. Wollman, M. D.\r
+Shaw, V. B. Verma, S. W. Nam, and J. Kim, High-speed
+
+20\r
+low-crosstalk detection of a 171yb+ qubit using super\u0002conducting nanowire single photon detectors, Commun\r
+Phys 2, 1 (2019).\r
+[67] C. Roman, A. Ransford, M. Ip, and W. C. Campbell,\r
+Coherent control for qubit state readout, New J. Phys.\r
+22, 073038 (2020).\r
+[68] R. Noek, G. Vrijsen, D. Gaultney, E. Mount, T. Kim,\r
+P. Maunz, and J. Kim, High speed, high fidelity detection\r
+of an atomic hyperfine qubit, Opt. Lett., OL 38, 4735\r
+(2013).\r
+[69] J. M. Pino, J. M. Dreiling, C. Figgatt, J. P. Gaebler, S. A.\r
+Moses, M. Allman, C. Baldwin, M. Foss-Feig, D. Hayes,\r
+K. Mayer, et al., Demonstration of the trapped-ion quan\u0002tum ccd computer architecture, Nature 592, 209 (2021).\r
+[70] S. Huang, K. R. Brown, and M. Cetina, Comparing Shor\r
+and Steane error correction using the Bacon-Shor code,\r
+Science Advances 10, eadp2008 (2024)."""
+
+[metadata]
+title = "mera quantum computer entanglement 2412.18602"
+authors = ["Unknown"]
+arxiv = "2412.18602"
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Probing Entanglement Scaling Across a Quantum Phase Transition\r
+on a Quantum Computer\r
+Qiang Miao,1 Tianyi Wang,2, 1 Kenneth R. Brown,1, 2, 3, 4 Thomas Barthel,1, 2, 5, ∗ and Marko Cetina2, 1, 3, †\r
+1Duke Quantum Center, Duke University, Durham, North Carolina 27701, USA\r
+2Department of Physics, Duke University, Durham, North Carolina 27708, USA\r
+3Department of Electrical and Computer Engineering,\r
+Duke University, Durham, North Carolina 27708, USA\r
+4Department of Chemistry, Duke University, Durham, North Carolina 27708, USA\r
+5National Quantum Laboratory, University of Maryland, College Park, MD 20742, USA\r
+(Dated: January 2025)\r
+The investigation of strongly-correlated quantum matter is difficult due to the curse of dimen\u0002sionality and intricate entanglement structures. These challenges are particularly pronounced in the\r
+vicinity of continuous quantum phase transitions, where quantum fluctuations manifest across all\r
+length scales. While quantum simulators give controlled access to a number of strongly correlated\r
+systems, the study of critical phenomena has been hampered by finite-size effects arising from di\u0002verging correlation lengths. Moreover, the experimental investigation of entanglement in many-body\r
+systems has been hindered by limitations in measurement protocols. To address these challenges, we\r
+employ the multiscale entanglement renormalization ansatz (MERA) and implement a holographic\r
+scheme for subsystem tomography on a fully-connected trapped-ion quantum computer. Our method\r
+accurately represents infinite systems and long-range correlations with few qubits, facilitating the\r
+efficient extraction of observables and entanglement properties, even at criticality. We observe a\r
+quantum phase transition with spontaneous symmetry breaking and reveal the evolution of entan\u0002glement properties across the critical point. For the first time, we demonstrate log-law scaling of\r
+subsystem entanglement entropies at criticality on a digital quantum computer. This achievement\r
+highlights the potential of MERA for the investigation of strongly-correlated many-body systems\r
+on quantum computers.\r
+I. INTRODUCTION\r
+In physics and materials science, universality ap\u0002pears near continuous phase transitions, where long\u0002range properties become independent of microscopic de\u0002tails, and the singular behavior of physical quantities\r
+such as susceptibilities and correlation lengths can be\r
+characterized by universal critical exponents. While clas\u0002sical phase transitions are driven by thermal fluctuations,\r
+quantum phase transitions occur at zero temperature\r
+when a system parameter is varied, causing the ground\r
+state to become highly entangled due to quantum fluc\u0002tuations [1, 2]. This groundstate non-locality presents\r
+challenges for theoretical and experimental analysis.\r
+Rapid advancements on controlled quantum platforms\r
+have expanded the range of experimentally accessible\r
+quantum many-body systems on quantum simulators and\r
+computers [3–10]. Previous studies [11–18] have made\r
+significant progress in the experimental characterization\r
+of entanglement. However, probing entanglement prop\u0002erties across quantum phase transitions remains difficult.\r
+Analog quantum simulators have limited control, re\u0002stricting available models and measurements [19]. Quan\u0002tum simulations using quantum computers face chal\u0002lenges including: (i) Limited number of qubits: Quantum\r
+phase transitions formally occur only in infinite systems,\r
+∗ thomas.barthel@duke.edu\r
+† marko.cetina@duke.edu\r
+and finite-size effects are pronounced in the vicinity of\r
+critical points. Preparing critical ground states directly\r
+requires more qubits than current quantum devices offer.\r
+(ii) Exponential cost for probing subsystem entanglement:\r
+Resolving detailed entanglement structures requires state\r
+tomography for large subsystems, which generally results\r
+in exponential costs. (iii) Difficulties in state prepara\u0002tion: Without deeper insight into the physics, the study\r
+of complex many-body ground states necessitates highly\r
+expressive quantum circuits with many gates, leading to\r
+low trainability [20, 21] and significant error accumula\u0002tion.\r
+We overcome these challenges for condensed-matter\r
+ground states using highly structured quantum cir\u0002cuits on a digital quantum computer. The cir\u0002cuits prepare states corresponding to hierarchical tensor\r
+networks—the multiscale entanglement renormalization\r
+ansatz (MERA) [22–24]. This ansatz can represent in\u0002finite systems and accurately encodes long-range corre\u0002lations, even at critical points. The causal structure of\r
+MERA, inspired by the real-space renormalization group,\r
+drastically reduces circuit depths and the number of mea\u0002sured qubits, both scaling logarithmically with system\r
+size [25–28]. This allows efficient extraction of local\r
+observables, subsystem entanglement, and entanglement\r
+spectra. Additionally, MERA is robust to noise [29] and\r
+not affected by barren plateaus [30, 31].\r
+In this work, we study quantum many-body ground\r
+states on a digital quantum computer based on a chain of\r
+ytterbium ions. We demonstrate a quantum phase tran\u0002arXiv:2412.18602v3 [quant-ph] 24 Aug 2025
+
+2\r
+-1 0 1 2\r
+Local Observables"""
+
+[[sections]]
+number = "0100010101011"
+title = "Entanglement ... etc."
+text = """
+Spin site ... ...\r
+Layer 1\r
+Layer 2\r
+Layer 3\r
+... ...\r
+0 1\r
+2\r
+3\r
+4\r
+5\r
+6"""
+
+[[sections]]
+number = "7"
+title = "Ion chain"
+text = """
+Qubit maps 0\r
+0\r
+1\r
+1\r
+2\r
+2\r
+5 4\r
+5\r
+6\r
+6\r
+7\r
+7 4\r
+-7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7\r
+Map I\r
+Map II\r
+Ion index\r
+d\r
+a\r
+b c\r
+FIG. 1. MERA on a trapped-ion chain. (a) An infinite,\r
+binary 1D MERA with three homogeneous layers. The ansatz\r
+is prepared from top to bottom, with each layer comprising\r
+entangling gates (bare rectangles) and isometries (rectangles\r
+with attached circles) that double the number of sites. The\r
+output is the many-body state on the physical spin sites.\r
+Repeating the MERA circuit horizontally in the spatial di\u0002mension generates a state in the thermodynamic limit. Lo\u0002cal observables and bipartite entanglement can be studied\r
+by executing circuits within the corresponding causal cone\r
+(unshaded area) and measuring the target qubits. (b) Each\r
+MERA tensor is implemented as a sequence of two- and one\u0002qubit gates. Circles represent qubits initialized in |0⟩, and\r
+diamonds indicate measurements. (c) Repeated preparation\r
+and measurement yield probabilistic binary outcomes (0s and\r
+1s) from which the desired physical properties can be inferred.\r
+(d) Fluorescence image of a 15-ion (171Yb+) chain with two\r
+hardware-tailored examples of ion-to-qubit mappings: Map I\r
+for local measurements on sites 0 and 1, and Map II optimized\r
+for entanglement studies with respect to a bipartition into the\r
+semi-infinite subsystems A = (−∞, 1] and B = [2, ∞).\r
+sition characterized by spontaneous symmetry breaking\r
+in the thermodynamic limit, using 12 or fewer qubits. We\r
+show the universal scaling of relevant physical quantities\r
+near the transition and observe significant changes in the\r
+entanglement structure across the critical point. At the\r
+critical point, we find that the subsystem entanglement\r
+entropies follow a universal log-area law, and the gap of\r
+the entanglement Hamiltonian closes as the subsystem\r
+size increases. In non-critical regimes, subsystem entan\u0002glement entropy follows an area law [32–34]. The mea\u0002sured entanglement Hamiltonian remains gapped with\r
+increasing subsystem size and accurately reproduces ex\u0002pected symmetry properties.\r
+II. SETUP\r
+Preparing ground states of many-body systems with\r
+long-range quantum fluctuations is challenging. This can\r
+be mitigated by accounting for the system’s entanglement\r
+structure. To approximate the ground state |Ψ⟩ in the\r
+thermodynamic limit, we implement MERA on a digital\r
+ion-trap quantum computer.\r
+A. MERA circuits\r
+As shown in Fig. 1(a), the layered structure of MERA\r
+tensor networks introduces an additional dimension asso\u0002ciated with a hierarchy of length and energy scales. The\r
+MERA comprises T layers, each composed of unitary\r
+(dis)entanglers and isometries, which can be efficiently\r
+implemented on our hardware. Viewed from bottom to\r
+top, starting from the physical layer, MERA acts as a\r
+renormalization group (RG) flow, where the ascending\r
+layer index represents the RG scale. In each renormal\u0002ization step, short-distance entanglement is removed by\r
+the disentanglers (bare rectangles), and the isometries\r
+(rectangles with attached circles) then coarse-grain the\r
+system. This process maps physical sites to renormal\u0002ized effective degrees of freedom, continuing until the\r
+final layer T ∼ log ξ is reached, where ξ is the largest\r
+correlation length in the system.\r
+Viewed in reverse (the direction of decreasing layer in\u0002dex), the MERA represents a quantum circuit, which\r
+prepares the quantum state by first generating long\u0002range correlations associated with low-energy modes, and\r
+then progressively incorporating shorter-range correla\u0002tions that correspond to higher energy scales. For each\r
+layer, ancillary qubits initialized in the |0⟩ state (depicted\r
+as circles) are injected and entangled with existing qubits\r
+through unitary operations. Each unitary tensor consists\r
+of two-qubit entangling gates and single-qubit rotations,\r
+as illustrated in Fig. 1(b).\r
+B. Observables and holographic subsystem\r
+tomography\r
+Local observables can be studied by implementing only\r
+the associated causal-cone circuits. For measurements on\r
+sites 0 and 1 of a binary one-dimensional (1D) MERA,\r
+the corresponding reduced circuit is indicated by the non\u0002shaded MERA tensors in Fig. 1(a). Due to their isomet\u0002ric properties, the shaded tensors outside the causal cone\r
+do not influence the local measurements.\r
+Entanglement entropies and spectra for a spatial bipar\u0002tition of the system into parts A and B can be obtained\r
+from the reduced density matrix ˆϱB = TrA |Ψ⟩⟨Ψ|. For\r
+a MERA, only the gates within the causal cone of the\r
+boundary between A and B need to be implemented, as\r
+gates outside the causal cone correspond to unitary basis\r
+transformations UˆA and UˆB in the two subsystems and\r
+do not affect bipartite entanglement properties. More\u0002over, tomography on the renormalized sites (qubits) at\r
+the edges of A’s causal cone provides access to ˆϱB in the\r
+basis defined by UˆB. Thus, due to the causal structure\r
+of MERA, the number of gates and number of measured\r
+qubits are proportional to the number of layers T ∼ log ξ,\r
+rather than the total system size and subsystem size,
+
+3\r
+respectively. Details of our scheme, termed holographic\r
+subsystem tomography, are described in Appendix A.\r
+In the experiment, we implement an infinite, homoge\u0002neous, binary 1D MERA with bond dimension χ = 2\r
+and up to T = 5 layers, which captures a maximum cor\u0002relation range of 3 × 2\r
+5 = 96 sites. To this purpose,\r
+all tensors of the same color in Fig. 1(a) are chosen to\r
+be identical, and the shown tensor network structure is\r
+continued horizontally ad infinitum. For the self-similar\r
+critical systems, the correlation length ξ diverges, which\r
+we address by employing a scale-invariant MERA [35, 36]\r
+as discussed in Sec. III B 2 and Appendix C.\r
+C. Trapped-ion system\r
+We implement MERA circuits on a digital ion-trap\r
+quantum computer. Our experimental system consists\r
+of a linear chain of fifteen 171Yb+ ions, spaced by ap\u0002proximately 3.7 µm, confined in a micro-fabricated Paul\r
+trap (Sandia HOA-2.1.1 [37]) held in a room-temperature\r
+vacuum chamber. The qubits are encoded in the hyper\u0002fine “clock” states of the ground 2S1/2 electronic manifold\r
+as |0⟩ ≡ |F = 0; mF = 0⟩ and |1⟩ ≡ |F = 1; mF = 0⟩,\r
+where F is the total atomic angular momentum and mF\r
+its projection onto the direction of the magnetic field,\r
+with a magnitude of 3.2 G. Qubits are initialized in the\r
+|0⟩ state using optical pumping and measured by state\u0002dependent fluorescence on the 369 nm D1 line.\r
+The qubits are manipulated via a Raman process us\u0002ing a wide (300 µm×30 µm) linearly-polarized global\u0002addressing beam and equispaced, linearly-polarized\r
+1 µm-diameter individual-addressing beams derived from\r
+the same 355-nm pulsed laser (Coherent Paladin Com\u0002pact 355-4000). Radio-frequency (rf) gate waveforms\r
+are produced by an rf system on a chip (ZCU111\r
+from Xilinx Corp.) controlled by the Sandia Octet\r
+firmware [38] and separately modulated onto each laser\r
+beam using acousto-optic modulators (L3 Harris Corp.).\r
+Available single-qubit operations are virtual z-axis ro\u0002tations Rz(θ), implemented via phase offsets in the\r
+radio-frequency controls, and physical xy-plane rota\u0002tions R(θ, ϕ) = e−iθ(Xˆ cos ϕ+Yˆ sin ϕ)/2\r
+. Entangling gates\r
+XX(θ) = e−iθXˆi⊗Xˆj /2 between arbitrary qubits i and\r
+j are realized through a Mølmer-Sørensen interaction\r
+mediated by the shared radial motional modes of the\r
+ion chain with mode frequencies near 3 MHz. This in\u0002teraction is implemented by amplitude-shaping a state\u0002dependent force on the addressed ions using the 355-nm\r
+Raman process.\r
+The all-to-all qubit connectivity of our platform simpli\u0002fies the implementation of the non-local MERA circuits.\r
+Using a detailed error model discussed in Appendix E, we\r
+optimize ion-to-qubit mappings for each MERA circuit;\r
+see Fig. 1(d).\r
+III. RESULTS\r
+To demonstrate the potential of the MERA approach,\r
+we apply it to the 1D transverse-field Ising model (TFIM)\r
+described by the Hamiltonian\r
+Hˆ = −\r
+X\r
+L\r
+i\r
+Xˆ\r
+iXˆi+1 − g\r
+X\r
+L\r
+i\r
+Zˆ\r
+i\r
+. (1)\r
+Here, Xˆ\r
+i and Zˆi are Pauli operators acting on the spin\r
+at lattice site i, and g is the transverse magnetic field.\r
+The TFIM features a well-characterized continuous quan\u0002tum phase transition with spontaneous Z2 symmetry\u0002breaking, making it a good testbed for our approach.\r
+Since the 1D binary MERA with small bond dimension\r
+is classically simulable, we determine the optimal gate pa\u0002rameters of the variational MERA circuit using classical\r
+computers. The gate compilation of the tensors and a\r
+concrete circuit example are discussed in Appendix D.\r
+A. Quantum phase transition\r
+We benchmark the infinite MERA across the quantum\r
+phase transition of the TFIM (1) by first measuring local\r
+observables ⟨Oˆ\r
+i⟩. We prepare the causal-cone state of\r
+the target spins as indicated in Fig. 1. The number T\r
+of employed MERA layers ranges from 2 to 5, depending\r
+on the correlation length; T = 2 layers are used far from\r
+criticality and up to 5 layers near the critical point g = 1.\r
+Correspondingly, the number of required qubits ranges\r
+from 6 to 12.\r
+Figure 2(a) shows the measured magnetization ⟨Xˆ⟩ in\r
+the x-direction as a function of the z-field g, nicely re\u0002solving the phase transition. For g > 1, the observed\r
+magnetization is consistent with zero within the statisti\u0002cal uncertainty, as expected for the paramagnetic phase.\r
+For g < 1, non-zero magnetization is observed along\r
+the x-direction, indicating spontaneous breaking of the\r
+Xˆ → −Xˆ symmetry, characteristic of the ferromagnetic\r
+phase. Due to experimental noise, the observed magne\u0002tization at small g is slightly lower than the theoretical\r
+prediction ⟨Xˆ⟩ = (1−g\r
+2\r
+)\r
+1/8\r
+in the thermodynamic limit\r
+L → ∞ [39–41].\r
+We conducted separate experiments to characterize\r
+noise and develop a corresponding error model, as de\u0002scribed in Appendix E. In simulations, we model gate\u0002induced dephasing and addressing noise due to ion mo\u0002tion by randomly perturbing gates in each shot. We\r
+model idle dephasing, state preparation and measure\u0002ment (SPAM) errors, and X-flip errors during entangling\r
+gates by introducing random Z- and X-flips. The noisy\r
+simulations (shaded area in Fig. 2(a)) demonstrate ex\u0002cellent agreement with experimental data.\r
+To determine the critical exponent, Fig. 2(b) displays\r
+the order parameter ⟨Xˆ⟩ on a logarithmic scale. Due to\r
+the small MERA bond dimension χ = 2, ⟨Xˆ⟩ saturates
+
+4\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+X\r
+2-symmetric\r
+a\r
+Theory (N )\r
+Sim. (ideal)\r
+Sim. (noisy)\r
+Expt. data\r
+10\r
+0 10\r
+1 10\r
+2\r
+(1 g\r
+2\r
+)\r
+1\r
+0.6\r
+0.7\r
+0.8\r
+0.9\r
+1.0\r
+X\r
+b\r
+0.6 0.8 1.0\r
+gcut\r
+0.1\r
+1/8\r
+0.14"""
+
+[[sections]]
+number = "0.18"
+title = "Critical exponent"
+text = """
+MERA, = 2\r
+TMERA, = 4\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.2\r
+0.3\r
+0.4\r
+0.5\r
+0.6\r
+0.7\r
+0.8\r
+0.9\r
+1.0 c\r
+X0X1\r
+Z\r
+0.6 0.8 1.0 1.2 1.4\r
+g\r
+0.0\r
+0.2\r
+0.4\r
+0.6\r
+0.8\r
+1.0\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+2-symmetric\r
+d\r
+0.5 1.0 1.5 2.0\r
+g\r
+0.0\r
+0.1"""
+
+[[sections]]
+number = "0.2"
+title = "C0, 1"
+text = """
+FIG. 2. Local observables and few-site entanglement in the 1D transverse-field Ising model as function of the\r
+field g. (a) Mean magnetization ⟨Xˆ⟩ over spin sites 0 and 1. The dashed gray line represents the reference value for a\r
+Z2-symmetric state. (b) Logarithmic plot of ⟨Xˆ⟩ in the Z2 symmetry-broken ferromagnetic phase (g < 1). The orange and\r
+gray dotted lines show the theoretical predictions for MERA with bond dimension χ = 2 and Trotterized MERA [25, 26] with\r
+χ = 4, respectively. The inset displays the critical exponent obtained from fitting the data on intervals g ∈ [0.5, gcut]. Error\r
+bars indicate 1σ fitting uncertainties, and the theoretical critical exponent for the Ising class is 1/8. (c) Local observables\r
+corresponding to the two competing terms in the Hamiltonian (1). (d) The R´enyi-2 entanglement entropy of a single spin.\r
+The dashed gray line corresponds to the Z2-symmetric ground state. The inset shows the nearest-neighbor concurrence C0,1\r
+(pairwise entanglement) for two neighboring sites. For all panels, solid lines correspond to theoretical predictions in the\r
+thermodynamic limit, dotted lines represent ideal infinite MERA simulations, and the shaded areas indicate the central 95%\r
+quantile obtained from noisy simulations based on an error model that reflects experimental device characteristics. Unless\r
+otherwise noted, error bars indicate 95% confidence intervals obtained from a bootstrap resampling of the experimental data,\r
+based on 2,000 measurements per quantum circuit.\r
+at a non-zero value as the system approaches the criti\u0002cal regime. Nevertheless, it is still possible to determine\r
+the critical scaling from these experimental data. The\r
+inset shows the critical exponent obtained by fitting the\r
+data in ranges g ∈ [0.5, gcut]. The fitted values grad\u0002ually converge to the theoretical prediction of 1/8 but\r
+deviate when gcut approaches g = 1. Such deviations\r
+near the critical point can be mitigated by increasing the\r
+bond dimension χ. As shown by the thick gray dotted\r
+line, a Trotterized MERA circuit [25–28] with χ = 4 is\r
+predicted to achieve sufficient accuracy to eliminate the\r
+discrepancies at the cost of more qubits and gates.\r
+Figure 2(c) shows additional local observables. As\r
+the transverse field g increases, the dominant contribu\u0002tion to the groundstate energy shifts from the correlator\r
+⟨Xˆ\r
+iXˆi+1⟩ to the field term ⟨Zˆi⟩, showing a symmetry due\r
+to the Kramers-Wannier duality [42] with respect to the\r
+critical point g = 1. The measured values of these ob\u0002servables cross at a slightly smaller value of g, aligning\r
+with our noise model. Here, the noise is dominated by\r
+fluctuations in XX-gate rotations due to the ions’ axial\r
+motion (see Appendix E 3)."""
+
+[[sections]]
+number = "5"
+title = "B. Entanglement structure"
+text = """
+In the following, we use MERA to investigate ground\u0002state entanglement across the quantum phase transition\r
+in the TFIM (1). We find that MERA on the digital\r
+quantum computer can resolve details of the entangle\u0002ment structure, including the hallmark transition from\r
+area-law to log-area-law scaling of block entanglement\r
+entropies when approaching the critical point."""
+
+[[sections]]
+number = "1"
+title = "Local entanglement measures"
+text = """
+For a pure state |Ψ⟩, the entanglement between sub\u0002system B and its complement A can be quantified by the\r
+R´enyi entanglement entropy\r
+S\r
+(α)\r
+B =\r
+1\r
+1 − α\r
+log2 Tr(ˆϱ\r
+α\r
+B), where ˆϱB = TrA |Ψ⟩⟨Ψ| (2)\r
+is the reduced density matrix of subsystem B. Our ap\u0002proach provides efficient access to the entanglement spec\u0002tra and, hence, S\r
+(α)\r
+B for any α. Here, we focus on the\r
+R´enyi-2 entropy (α = 2) as, for the TFIM (1), all R´enyi\r
+entropies with α > 0 exhibit the same scaling.\r
+The reduced density matrix for a single-site is fully\r
+characterized by its Bloch vector. The time-reversal sym\u0002metry of the TFIM ensures that the local expectation\r
+value ⟨Yˆ ⟩ vanishes for all eigenstates. Thus, the Bloch\r
+vector is determined by ⟨Xˆ⟩ and ⟨Zˆ⟩. Figure 2(d) shows\r
+the measured single-site R´enyi-2 entanglement entropy.\r
+Our data faithfully reproduces the predicted sharp peak\r
+at criticality and tends to zero for small g. In the ferro\u0002magnetic phase, the two symmetry-broken ground states\r
+are almost product states. Meanwhile, their symmetric\r
+superposition is entangled, and the corresponding single\u0002site entanglement is smooth at the critical point. The in\u0002set of Fig. 2(d) presents the nearest-neighbor concurrence\r
+(pairwise entanglement) C0,1 [41, 44] obtained from the\r
+measured nearest-neighbor correlators ⟨Xˆ\r
+0Xˆ1⟩, ⟨Zˆ0Zˆ1⟩,\r
+and ⟨Yˆ\r
+0Yˆ1⟩ [45, 46]. The concurrence slightly deviates\r
+from theoretical predictions but aligns well with noisy\r
+simulations. Notably, the concurrence does not peak\r
+at criticality but increases smoothly before reaching a\r
+broad maximum in the paramagnetic phase. This sug\u0002gests that the peak of single-site entanglement at critical\u0002ity arises not only from short-distance entanglement but\r
+also from the accumulation of entanglement over long\r
+distances. In contrast, in the paramagnetic phase, the\r
+nearest-neighbor entanglement is the dominant contri\u0002bution to the single-site entanglement."""
+
+[[sections]]
+number = "2"
+title = "Entanglement scaling: area-law versus log-area-law"
+text = """
+For the ground states of typical quantum many-body\r
+systems in D spatial dimensions, the subsystem entangle\u0002ment entropy S(ℓ) is proportional to the surface area of\r
+the subsystem ∝ ℓ\r
+D−1\r
+, rather than its volume ∝ ℓ\r
+D [32–\r
+34]. The entanglement entropy is dominated by short\u0002range correlations around the subsystem boundary, re\u0002sulting in area-law scaling. This can change when the\r
+system becomes critical and the correlation length di\u0002verges. For critical systems in 1D and fermionic systems\r
+with a Fermi surface of codimension D−1, the subsystem\r
+entanglement entropy is predicted to follow a log-area law\r
+∝ ℓ\r
+D−1\r
+log ℓ [47–52].\r
+Resolving these fundamentally different scaling laws\r
+has remained an experimental challenge. In small sys\u0002tems, it is difficult to differentiate between log-area-law\r
+and area-law scalings. As the linear subsystem size ℓ\r
+grows, preparing ground states with sufficient precision\r
+becomes increasingly difficult, and, in direct approaches,\r
+the number of measurements needed for subsystem to\u0002mography grows exponentially in ℓ.\r
+For MERA, however, each step of the renormalization\r
+process changes length scales by a constant factor. This\r
+maps a logarithmic scaling in the subsystem size ℓ to\r
+a linear scaling in the number of renormalization steps\r
+T = 1, 2, 3, . . . . Thus, distinguishing between area and\r
+log-area laws in 1D translates to determining whether the\r
+entanglement entropy saturates or grows linearly with\r
+increasing T.\r
+We experimentally realize spatially infinite MERA\r
+with a finite number of layers T. For a bipartition into\r
+subsystems A = (−∞, 1] and B = [2, +∞), we im\u0002plement the holographic subsystem tomography as de\u0002scribed in Sec. II and detailed in Appendix A. We pre\u0002pare the MERA circuit within the causal cone of the\r
+subsystem boundary, measure the T renormalized sites\r
+at the right edge of the cone (Fig. 1), and use the classical\r
+shadow method [53] to extract the R´enyi-2 entanglement\r
+entropy (2). The finite number of MERA layers limits\r
+the maximal correlation length to 3 × 2\r
+T\r
+. Thus, we ex\u0002perimentally probe effective subsystem sizes ℓ ∝ 2\r
+T\r
+. See\r
+Appendix B for a more detailed argument on this relation\r
+of T and effective subsystem sizes.\r
+For the non-critical point g = 1.5 of the TFIM (1), the\r
+measured half-chain R´enyi-2 entanglement entropy S is\r
+shown in Fig. 3(b). We observe a rapid saturation of the\r
+entanglement entropy for T ≥ 3, in agreement with the\r
+area-law. This is expected as, due to the energy gap,\r
+the physical correlation length ξ is finite. Here, addi\u0002tional MERA layers (T > 3) have a negligible effect on\r
+the groundstate approximation and entanglement for this\r
+gapped system. Our error model indicates that, in this\r
+regime, SPAM errors and gate rotation errors due to the\r
+ions’ axial motion are the dominant noise sources.\r
+At criticality (g = 1), the system has gapless excita\u0002tions, and the correlation length diverges (ξ → ∞). Here,\r
+we model the ground state using a scale-invariant MERA\r
+with an infinite number of homogeneous identical layers\r
+in both the spatial and preparation directions [35, 36].\r
+Directly preparing a scale-invariant MERA is not exper\u0002imentally feasible. Instead, we truncate at layer T and\r
+add an additional tensor to the top layer to minimize the
+
+6\r
+0 1 2 3 4\r
+Number of MERA layers T\r
+0\r
+0.05\r
+0.10\r
+0.15\r
+0.20\r
+0.25\r
+0.30\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+Gapless (g = 1)\r
+a\r
+CFT\r
+Sim. (ideal)\r
+Sim. (noisy)\r
+Expt. data\r
+1 2 3 4 5\r
+Number of MERA layers T\r
+0\r
+0.05\r
+0.10\r
+0.15\r
+0.20\r
+0.25\r
+0.30\r
+R\r
+e\r
+n\r
+yi e\r
+ntro\r
+p\r
+y\r
+S\r
+Gapped (g = 1.5)\r
+b\r
+FIG. 3. Log-area-law and area-law scaling of entanglement entropy for critical and gapped systems. (a) Bipartite\r
+half-chain R´enyi-2 entanglement entropy for the infinite Ising chain (1) at the critical point g = 1 depending on the number\r
+T of MERA layers. The effective subsystem size is ℓ = 3 × 2\r
+T\r
+. The gray dashed line shows the log-area law prediction of\r
+conformal field theory (CFT) with central charge c = 1/2, and the solid line corresponds to ideal MERA simulations. Both the\r
+noisy simulation (shaded area) and experimental data (dots with error bars) are shown with 95% confidence intervals based\r
+on 1,500 shots per element of the tomographic measurement basis. (b) R´enyi-2 entanglement entropy for MERA states at the\r
+non-critical point g = 1.5. Here, the half-chain entanglement saturates rapidly as the number T of MERA layers increases,\r
+indicating the area law. The shaded area and error bars show 95% confidence intervals based on 8,000, 5,000, 3,000, and 2,000\r
+shots per measurement basis element for cases with one-, two-, three-, and four-layer MERA, respectively.\r
+4\r
+5\r
+6\r
+k = lo\r
+g2 k\r
+a\r
+0.8\r
+0.85\r
+0.9\r
+0.95\r
+= 0 1\r
+b\r
+CFT\r
+4\r
+5\r
+6\r
+k = lo\r
+g2 k\r
+d\r
+0.00\r
+0.01\r
+0.02\r
+1 ( 1)\r
+k Z\r
+T\r
+k\r
+e\r
+| 1\r
+| 0\r
+0 1 2 3 4\r
+T\r
+0.0\r
+0.1\r
+0.2\r
+1 2 3 4\r
+T\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1 c\r
+1 2 3 4 5\r
+T\r
+0.0\r
+0.1"""
+
+[[sections]]
+number = "0.2"
+title = "Sim. (ideal)"
+text = """
+Sim. (noisy)\r
+Expt. data\r
+1 2 3 4\r
+T\r
+10\r
+5\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1 f\r
+FIG. 4. Analysis of half-chain density matrices. (a) and (d) T-dependence of the lowest two eigenvalues {ζ0, ζ1} of the\r
+MERA entanglement Hamiltonian at the critical point g = 1 and the non-critical point g = 1.5, respectively. (b) The Schmidt\r
+gap ∆λ = λ0−λ1 gradually closes as the (sub)system size increases at criticality. The gray dashed line represents the theoretical\r
+approximation from Ref. [43]. (c) and (f) Infidelity of the subsystem density matrices relative to ideal simulations at g = 1\r
+and g = 1.5, respectively. (e) Expectation values of Pauli Z-strings for the first two eigenstates {|ζ0⟩, |ζ1⟩} of the entanglement\r
+Hamiltonian at g = 1.5. In all plots, solid lines represent ideal infinite MERA simulations. Both the noisy simulation (shaded\r
+area) and the experimental data (dots) are shown with indicators for the 95% confidence intervals. The results are based\r
+on the same dataset as Fig. 3, but here, positive semi-definite density matrices are reconstructed using maximum-likelihood\r
+estimation.
+
+7\r
+finite-T effects as detailed in Appendix C.\r
+The measured half-chain R´enyi-2 entanglement en\u0002tropy S at criticality is shown as a function of T in\r
+Fig. 3(a). The observed entropy increases linearly by\r
+approximately 1/16 per MERA layer. This is consistent\r
+with the prediction 1\r
+16 log2\r
+(ℓ/a) of conformal field the\u0002ory, where a is an ultraviolet cutoff that regularizes the\r
+continuum field theory [54]. The slight increase in the\r
+measured S over the field-theoretical prediction is repro\u0002duced by our error model. Here, errors primarily arise\r
+during SPAM and from fluctuations in gate angles due\r
+to the ions’ axial motion; X-flips and idle dephasing are\r
+secondary (see Appendix E)."""
+
+[[sections]]
+number = "3"
+title = "Entanglement spectrum"
+text = """
+Using the holographic tomography data and a\r
+maximum-likelihood approach [55–58], we reconstruct\r
+proper (positive semidefinite) density matrices ˆϱB for\r
+subsystem B in the UˆB basis. They can be written in\r
+the form ˆϱB = 2−\r
+P\r
+i\r
+ζi|ζi⟩⟨ζi|\r
+, where {ζi:= − log2 λi} is\r
+the entanglement spectrum [59] expressed in terms of the\r
+eigenvalues {λi} of ˆϱB.\r
+Figures 4(a) and (d) show the two lowest entanglement\r
+eigenvalues {ζ0, ζ1} of ˆϱB for the TFIM (1), revealing dis\u0002tinct behaviors at and away from the critical point. At\r
+criticality (g = 1), the lowest eigenvalue ζ0 exhibits a\r
+log-law scaling like the entanglement entropy, while ζ1\r
+decreases with increasing T. As shown in Fig. 4(b), the\r
+Schmidt gap ∆λ = λ0−λ1 reduces by approximately 1/24\r
+per renormalization step, which agrees with the approx\u0002imate theoretical prediction ∆λ ∼ ℓ\r
+−1/24 from Ref. [43],\r
+where ℓ denotes again the (effective) subsystem size. For\r
+the non-critical point g = 1.5, Fig. 4(d) shows that ζ0\r
+and ζ1 saturate with increasing T.\r
+Since g = 1.5 lies in the Z2-symmetric paramagnetic\r
+phase, all subsystem density matrices of the ground state\r
+must commute with the operator ⊗iZˆ\r
+i\r
+. We verify this\r
+symmetry by measuring the spin-flip operator on subsys\u0002tem B. As discussed in Sec. II, the measurement is done\r
+efficiently with the compressed representation of ˆϱB on\r
+the renormalized sites, exploiting the fact that, for g ≥ 1,\r
+the unitary UˆB which transforms the measured state to\r
+the actual state on B preserves the Z2-symmetry. As ob\u0002served in Fig. 4(e), the associated entanglement Hamil\u0002tonian exhibits a ground state in the even-parity sector\r
+and a first excited state in the odd sector. This mirrors\r
+the properties of the system Hamiltonian, aligning with\r
+recent efforts concerning connections between entangle\u0002ment Hamiltonians and system Hamiltonians [17, 60]."""
+
+[[sections]]
+number = "4"
+title = "Subsystem fidelity"
+text = """
+Finally, we compare the reconstructed subsystem den\u0002sity matrix ˆϱB in the UˆB basis with the ideal MERA\r
+simulations, and show the infidelity 1 − F in Figs. 4c\r
+and for the transverse fields g = 1.0 and 1.5, where the\r
+fidelity is defined as\r
+F =\r
+\u0012\r
+Tr qp\r
+ϱˆB ρˆideal pϱˆB\r
+\u00132\r
+. (3)\r
+We achieve infidelities ranging from 10−4to 10−2, which\r
+enables the clear discrimination of different entanglement\r
+scaling laws, even when the absolute difference in S is\r
+small. These high fidelities arise from careful calibra\u0002tions, optimized ion–qubit mappings, the intrinsic noise\r
+resilience of MERA, suitable gate decompositions for the\r
+MERA circuit, and the efficient holographic tomography\r
+method.\r
+Recall that we determine ˆϱB through tomography on\r
+only ∼ T renormalized sites at the edge of subsystem A’s\r
+causal cone (cf. Sec. II B and Fig. 5), where, in the basis\r
+defined by UˆB, all other qubits are in the |0⟩ state and\r
+need not be implemented. This is sufficient because the\r
+fidelity metric (3) and bipartite entanglement properties\r
+are invariant under the unitary transformation UˆB.\r
+Also, while many widely used variational ans¨atze\r
+employ CNOT gates, our circuits use two-qubit XX\r
+Mølmer-Sørensen gates with typical absolute rotation an\u0002gles in the range from 0.01π to 0.2π, which are much\r
+smaller than those of fully entangling gates. As Mølmer\u0002Sørensen gate errors decrease with the rotation angle,\r
+this leads to significantly reduced experimental errors.\r
+Appendix F provides a breakdown of error contributions\r
+and explains how the infidelity scales with experimental\r
+errors.\r
+IV. OUTLOOK\r
+We employed MERA on an ion-trap quantum com\u0002puter to clearly resolve the quantum phase transition in a\r
+condensed matter system, successfully capturing the uni\u0002versal properties of Ising-class physics. Furthermore, our\r
+holographic subsystem tomography method made it pos\u0002sible to demonstrate the transition from area-law to log\u0002area-law scaling in groundstate entanglement entropies.\r
+This entanglement scaling transition is a hallmark of\r
+quantum many-body physics with no classical analog. Its\r
+experimental observation had previously faced substan\u0002tial challenges including finite-size effects and attainable\r
+fidelities.\r
+The investigation of more complicated models, includ\u0002ing systems with higher spin and spatial dimensions, re\u0002quires larger MERA bond dimensions χ ≳ 8. In classical\r
+MERA simulations, the primary bottleneck are tensor\r
+contractions, whose cost scales as O(χ\r
+r\r
+), where the ex\u0002ponent r depends on the spatial dimension D and specific\r
+MERA structure. In 1D with r = 7, . . . , 9, these costs\r
+are still tractable for moderate bond dimensions χ ≲ 20\r
+[22–24]. However, for higher-dimensional systems such\r
+as (quasi-)2D frustrated quantum magnets and fermionic\r
+systems, where quantum Monte Carlo generally fails due
+
+8\r
+to the negative sign problem, the classical contraction\r
+costs with scaling exponents r = 16, . . . , 26 become pro\u0002hibitive even for small χ [24, 61].\r
+To avoid these high contraction costs, our prior\r
+work [25, 26] proposed implementing (Trotterized)\r
+MERA on quantum computers. As discussed in Refs. [25,\r
+26, 28], the required qubit count grows only logarithmi\u0002cally with χ and is independent of system size if mid\u0002circuit resets are available. The circuit depth scales as\r
+O(T t), where the number of MERA layers T ∼ log ξ gov\u0002erns the maximal correlated length ξ, and t is a tunable\r
+Trotter depth that controls the expressiveness of sub\u0002circuits in individual tensors. For example, simulating\r
+a large (e.g., hundreds-by-hundreds) 2D system with a\r
+2 × 2 7→ 1 MERA using χ = 8, T = 6, and t = 2 re\u0002quires either (i) 108 resettable qubits and a circuit depth\r
+of 96 when minimizing depth or (ii) 42 qubits and depth\r
+624 when minimizing the qubit count. Such circuits are\r
+not classically tractable, yet they are realistic for state\u0002of-the-art quantum hardware.\r
+Recent advances in trapped-ion platforms have\r
+brought these capabilities closer to realization. For exam\u0002ple, 56-qubit systems with ≥99.8% two-qubit gate fidelity\r
+are now available [62], and circuits with over 2000 two\u0002qubit gates have been demonstrated [63]. Larger systems,\r
+with ∼ 200 qubits, can be achieved by scaling up the\r
+system used in this work [64]. The primary error source\r
+in high-connectivity long ion chains—motional heating\r
+of low-frequency modes—can be reduced by over two or\u0002ders of magnitude using cryogenic techniques and sympa\u0002thetic cooling with a different isotopic species [65]. This\r
+approach also facilitates qubit reset and reuse, further\r
+enhancing scalability.\r
+Since MERA has been rigorously proven to be free of\r
+barren plateaus [30, 31], the variational optimization of\r
+MERA on quantum computers is feasible, and we have\r
+substantiated a polynomial quantum advantage, which\r
+is particularly pronounced in D ≥ 2 spatial dimensions\r
+[26].\r
+Once an optimized MERA state is determined, rich\r
+physics can be probed through local observables, cor\u0002relators, and entanglement measures. Measuring local\r
+observables and correlators is straightforward, requir\u0002ing similar resources as energy estimation. Probing en\u0002tanglement is more demanding, as large-χ MERA in\u0002volve multiple qubits per renormalized site, making holo\u0002graphic subsystem tomography costly. To address this,\r
+one can perform randomized measurements on edges of\r
+the boundary causal cones, and adopt the idea of en\u0002tanglement Hamiltonian tomography [17, 60] to learn\r
+the renormalized entanglement Hamiltonian, assuming a\r
+structured form in terms of renormalized degrees of free\u0002dom.\r
+Beyond the study of strongly correlated many-body\r
+ground states, MERA states can serve as high-quality\r
+starting points for the investigation of nonequilibrium dy\u0002namics. As demonstrated in this work, MERA accurately\r
+captures both critical and non-critical ground states. A\r
+natural extension is to prepare a MERA state and evolve\r
+it under quench or Floquet dynamics. Since entangle\u0002ment growth under nonequilibrium dynamics generally\r
+leads to volume-law scaling of entanglement entropies, a\r
+quantum advantage is expected as soon as we surpass\r
+the realm of exact classical Krylov-subspace methods for\r
+≳36 qubits.\r
+ACKNOWLEDGMENTS\r
+We thank K. Sun and Y. Yu for valuable discussions.\r
+Funding: This work was funded by the NSF Quantum\r
+Leap Challenge Institute for Robust Quantum Simula\u0002tion (OMA-2120757) and the NSF STAQ project (Phy\u00022325080). Support is also acknowledged from the U.S.\r
+Department of Energy, Office of Science, National Quan\u0002tum Information Science Research Centers, Quantum\r
+Systems Accelerator.\r
+Author contributions: Q.M. designed the MERA\r
+implementation, conducted the numerical simulations,\r
+and analyzed the experimental data. T.W. executed the\r
+experiment and collected the experimental data. T.B.\r
+initiated the project and devised the holographic sub\u0002system tomography. M.C. supervised the experimental\r
+work, while T.B. and K.R.B. supervised the theoretical\r
+effort. All authors contributed to the manuscript.\r
+Competing interests: K.R.B. has a personal finan\u0002cial interest in the company IonQ. M.C. is a co-inventor\r
+on patents that are licensed by University of Maryland\r
+to IonQ, Inc. Other authors declare that they have no\r
+competing interests.\r
+Appendix A: Holographic subsystem tomography\r
+and entanglement scaling\r
+For the study of bipartite entanglement entropies, en\u0002tanglement spectra, and subsystem state fidelities as dis\u0002cussed in Sec. III, we consider MERA approximations\r
+|Ψ⟩ for the ground state and a spatial bipartition into\r
+subsystem A and its complement B.\r
+The goal of the holographic subsystem tomography is\r
+to efficiently access the reduced density matrix ˆϱB =\r
+TrA |Ψ⟩⟨Ψ| of subsystem B in the experiment. The iso\u0002metric property (Wˆ †Wˆ = 1) of the MERA tensors im\u0002plies that, under the partial trace TrA, all tensors out\u0002side the causal cone of B can be removed, as exemplified\r
+by the shaded area atop subsystem A in Fig. 5. Fur\u0002thermore, the aforementioned quantities are all invariant\r
+under unitary transformations on subsystem B. Using\r
+this invariance, we can remove all MERA gates outside\r
+the causal cone of subsystem A, which corresponds to\r
+the action of the unitary transformation Uˆ †\r
+B from Sec. II.\r
+Only the gates inside the causal cone(s) of the subsys\u0002tem boundary(ies) remain. All qubits outside this causal\r
+cone are in the reference state |0⟩ and need not be im\u0002plemented in the experiment."""
+
+[[sections]]
+number = "9"
+title = "To determine the transformed subsystem density ma\u0002trix"
+text = """
+Uˆ †\r
+BϱˆBUˆB = TrA(Uˆ †\r
+B|Ψ⟩⟨Ψ|UˆB), (A1)\r
+we only need to measure the ∼ T non-trivial renormal\u0002ized sites at the edge of A’s causal cone, as indicated by\r
+the diamonds in Fig. 5. Again T denotes the number of\r
+MERA layers.\r
+To further reduce experimental resource requirements,\r
+we consider either infinite chains with a bipartition into\r
+two semi-infinite subsystems, or finite chains with peri\u0002odic boundary conditions where block B is large enough\r
+such that the causal cones of its two boundaries are dis\u0002joint as exemplified in Fig. 5. In the latter scenario, the\r
+transformed density operator (A1) is actually a tensor\r
+product of a state ˜ϱ\r
+L\r
+B at the left edge, a state ˜ϱ\r
+R\r
+B at the\r
+right edge, and central sites in the reference state |0⟩⟨0|,\r
+Uˆ †\r
+BϱˆBUˆB = ˜ϱ\r
+L\r
+B ⊗ |0⟩⟨0| ⊗ . . . ⊗ |0⟩⟨0| ⊗ ϱ˜\r
+R\r
+B. (A2)\r
+Due to the product structure, ˜ϱ\r
+L\r
+B and ˜ϱ\r
+R\r
+B can be mea\u0002sured independently.\r
+Moreover, when studying quantities that only depend\r
+on the spectrum of ˆϱB for a bipartition of the system\r
+into two equally sized halves and for total system sizes\r
+L = 6 × 2\r
+T\r
+, 8 × 2\r
+T\r
+, ..., it is sufficient to measure only one\r
+of the two density operators. In this case, the MERA\r
+circuits for ˜ϱ\r
+L\r
+B and ˜ϱ\r
+R\r
+B prepare the same pure state, and\r
+only differ in the selection of sites to be measured: those\r
+at the right edge of the causal cone for ˜ϱ\r
+L\r
+B and those at\r
+the left edge for ˜ϱ\r
+R\r
+B, as indicated in Fig. 5. Thus, all\r
+nonzero eigenvalues of ˆϱB are given by the elementwise\r
+product\r
+{λiλj} of ˜ϱ\r
+L\r
+B’s spectrum {λi} (A3)\r
+with itself.\r
+Appendix B: Subsystem size versus number of\r
+MERA layers\r
+In the main text, we associated the number T of layers\r
+in infinite MERA with the logarithm of subsystem sizes\r
+ℓ. Here, we elaborate further on this relation.\r
+Infinite binary 1D MERA |Ψ⟩ with T layers have a\r
+maximum correlation range ξmax := 3 × 2\r
+T\r
+, where the\r
+prefactor 3 arises from the maximal causal-cone width\r
+of local operators acting on k ≤ 3 contiguous sites. In\r
+particular, connected correlation functions\r
+⟨Oˆ\r
+iOˆ′\r
+i+δℓ⟩Ψ − ⟨Oˆ\r
+i⟩Ψ⟨Oˆ′\r
+i+δℓ⟩Ψ (B1)\r
+are exactly zero for all i and local operators Oˆ\r
+i and Oˆ′\r
+j\r
+whenever δℓ ≥ ξmax − 3 + k.\r
+Hence, all local observables, two-point correlation\r
+functions, and subsystem density matrices for blocks of\r
+ℓ ≤ ξmax sites of an infinite MERA coincide with those\r
+of a corresponding finite-size MERA for a system of\r
+2ξmax = 6 × 2\r
+T\r
+sites with periodic boundary conditions.\r
+Furthermore, the half-chain density operator of an in\u0002finite T-layer MERA, considered in Sec. III, is given by\r
+Uˆ †\r
+BϱˆBUˆB = ˜ϱ\r
+L\r
+B ⊗ |0⟩⟨0| ⊗ |0⟩⟨0| ⊗ . . . , (B2)\r
+where ˜ϱ\r
+L\r
+B is the same state as the one in Eq. (A2) for an\r
+ℓ = 3 × 2\r
+T\r
+-site block in a periodic 6 × 2\r
+T\r
+-site system,\r
+establishing the exponential relation between ℓ and T.\r
+The spectra of the states (B2) and (A2) are related by\r
+the elementwise product (A3).\r
+Appendix C: Scale-invariant MERA\r
+Scale-invariant MERA are designed for critical sys\u0002tems, where correlation lengths diverge. As shown in\r
+Fig. 6(a), they feature an elementary cell of tensors that\r
+repeats in the spatial and renormalization directions, in\r
+accordance with the self-similarity of critical systems.\r
+Viewed in the renormalization direction, the scale\u0002invariant MERA maps the local Hamiltonian of a crit\u0002ical system into an RG fixed point. Seen in reverse, the\r
+scale-invariant MERA acts as a quantum channel that\r
+iteratively refines the state, starting from an initial ref\u0002erence state and adding layers to construct the ground\r
+state of the critical system.\r
+Consider spin sites 0 and 1. Their causal-cone state\r
+as indicated by the unshaded region in Fig.6(a) is con\u0002structed by applying the same layer-transition channel\r
+M (Fig. 6(b)) multiple times, where renormalized sites\r
+that leave the causal cone are traced out. M is a quan\u0002tum channel and can be diagonalized in bi-orthonormal\r
+operator bases such that\r
+M(·) = |ϱˆsteady⟩⟩⟨⟨1| +\r
+X\r
+i>0\r
+mi|rˆi⟩⟩⟨⟨ˆℓi|, (C1)\r
+where |mi| < 1 for all i > 0, and we use a super-bra\u0002ket notation for the operator-basis elements according to\r
+the Hilbert-Schmidt inner product ⟨⟨Lˆ|Rˆ⟩⟩ := Tr\u0010\r
+Lˆ†Rˆ\r
+\u0011\r
+.\r
+With ˆr0 ≡ ϱˆsteady and ˆℓ0 ≡ 1, ˆri and ˆℓi are the right\r
+and left eigen-operators of M for eigenvalue mi and obey\r
+⟨⟨ˆℓi|rˆj ⟩⟩ = δi,j .\r
+We initialize the MERA in the product state |0⟩ =\r
+|0, . . . , 0⟩ at the topmost (infinite) layer. The expectation\r
+value of a local observable Oˆ\r
+0,1 with the scale-invariant\r
+MERA then is\r
+lim\r
+T→∞\r
+Tr \u0010Oˆ\r
+0,1MT\r
+(|0⟩⟨0|)\r
+\u0011\r
+= Tr\u0010Oˆ\r
+0,1ϱˆsteady\u0011\r
+. (C2)\r
+See Fig. 6(d). Experimentally, we cannot directly imple\u0002ment MERA with an infinite number of layers. Instead,\r
+we truncate after layer T and use the top layer to prepare\r
+a two-site state ˆϱ\r
+′\r
+that maximizes the contribution of the\r
+dominant eigenmode ˆϱsteady of the layer-transition chan\u0002nel (C1). This is achieved by choosing the gate angles"""
+
+[[sections]]
+number = "10"
+title = "Spin site"
+text = """
+Layer 1\r
+Layer 2\r
+Layer 3\r
+0 1\r
+2\r
+4\r
+5\r
+6"""
+
+[[sections]]
+number = "7"
+title = "Subsystem B"
+text = """
+33 34 35 37 36 38 40 39 41 43 42 44 4645 47 2 43 0 1 5 7 6 8 109 11 12 13 14 16 15 17 18 19 2120 22 2423 2625 27 2928 30 31 32\r
+UB\r
+<\r
+TrA\r
+Subsystem A\r
+FIG. 5. Holographic subsystem tomography and entanglement scaling. An infinite binary MERA with T layers is\r
+consistent with a MERA on 6 × 2\r
+T\r
+sites with periodic boundary conditions. Here, T = 3, resulting in a total of 6 × 2\r
+3 = 48\r
+sites. All connected two-point correlation functions for sites of distance ≥ 3 × 2\r
+T − 2 = 22 are exactly zero. For example,\r
+⟨Xˆ10Yˆ31⟩ − ⟨Xˆ10⟩⟨Yˆ31⟩ can be nonzero while ⟨Xˆ10Yˆ32⟩ − ⟨Xˆ10⟩⟨Yˆ32⟩ ≡ 0. This is due to the fact that, in the latter case,\r
+the causal cones of the two operators have no overlap. Similarly, for any bipartition of the system into equally sized blocks\r
+like A = {26, . . . , 47, 0, 1} and B = {2, . . . , 25}, the causal cones of the two subsystem boundaries do not overlap. Hence,\r
+measurements of the renormalized sites at the two boudnaries are independent of each other, i.e., follow a product distribution.\r
+Spin site ... ... -1 0 1 2\r
+Layer 1\r
+Layer 2\r
+Layer 3\r
+... ...\r
+...\r
+Layer \r
+* *\r
+*\r
+* *\r
+*\r
+* *\r
+*\r
+* *\r
+*\r
+0 1\r
+0 1\r
+2\r
+3\r
+4\r
+5\r
+6\r
+7\r
+* *\r
+*\r
+* *\r
+*\r
+0\r
+1\r
+2\r
+4\r
+5\r
+6\r
+7\r
+a b c\r
+d e f g\r
+FIG. 6. Scale-invariant MERA and its implementation on the quantum computer. (a) A scale-invariant binary\r
+1D MERA with an infinite number of lattice sites and layers. All unitaries (bare rectangles) and isometries (rectangles with\r
+attached circles) are identical across layers and the spatial direction. (b) Local observables on sites 0 and 1 have a causal cone\r
+consisting of a repeating configuration of tensors in each layer. The corresponding repeated layer-transition channel M(·) maps\r
+reduced density matrices from the top to the bottom layer. Stars indicate complex conjugation. (c) The shown doubled and\r
+SWAP-contracted layer-transition map D can be used to compute the second-order R´enyi entanglement entropy of a bipartition\r
+into subsystems (−∞, 1] and [2, ∞) (see panel f). (d) Causal-cone tensor-network for the evaluation of local expectation values\r
+on sites 0 and 1. The MERA circuit is initialized with reference state |0⟩ at the top layer. (e) In the experiment, we truncate\r
+the scale-invariant MERA after layer T. For the measurement of local observables, the top layer is optimized to approximate\r
+the dominant eigenmode ˆρsteady := limT→∞ MT(|0⟩⟨0|) of the layer-transition channel. Finally, we measure the qubits at sites\r
+0 and 1. (f) The tensor network for the purity of the reduced density operator of subsystem [2, ∞). (g) In this case, the top\r
+tensor (blue) is optimized to suppress sub-leading contributions from the eigenvectors of the doubled map D. Scale-invariant\r
+layers are then appended. To extract the scaling of entanglement as a function of the number T of RG steps, we perform\r
+tomography on T qubits at the right edge of the boundary causal-cone circuit (see also Fig. 5).
+
+11\r
+{θ} in layer T as arg minθ\r
+P\r
+i>0\r
+|mi⟨⟨ˆℓi|ϱˆ\r
+′\r
+⟩⟩|2. We then\r
+append T − 1 layers of the scale-invariant MERA to re\u0002fine the dominant eigenmode as shown in Fig. 6(e). This\r
+approach is highly effective as demonstrated for T = 5\r
+and a few local observables in Secs. III A and III B 1.\r
+To account for layer truncations in the study of sub\u0002system purity and entanglement, we introduce a dou\u0002bled SWAP-contracted layer-transition map D as shown\r
+in Fig. 6(c). For a scale-invariant MERA truncated af\u0002ter layer T and initialized with the reference state |0⟩,\r
+the purity of subsystem B = [2, ∞) can be computed by\r
+iteratively applying D to the (doubled) zero-product ref\u0002erence state |0, 0⟩⟨0, 0| at the topmost layer and taking\r
+the final trace as\r
+Trϱˆ\r
+2\r
+B\r
+\u0001\r
+= Tr D\r
+T\r
+(|0, 0⟩⟨0, 0|)\r
+\u0001\r
+; (C3)\r
+see Fig. 6(f). Similarly to the channel M, we can diago\u0002nalize D such that D(·) = P\r
+i\r
+di|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+| with |d0| > |di|\r
+for all i > 1. Due to the SWAP operation, D is not a\r
+quantum channel and |d0| < 1. The second-order R´enyi\r
+entanglement entropy with α = 2 in Eq. (2) evaluates to\r
+S\r
+(2)\r
+B = − log2\r
+\r
+Tr D\r
+T\r
+(|0, 0⟩⟨0, 0|)\r
+\u0001\u0001\r
+= − log2\r
+ X\r
+i=0\r
+d\r
+T\r
+i\r
+⟨⟨1|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+|0, 0⟩⟩!\r
+→ −T log2 d0 − log2\r
+\u0010\r
+⟨⟨1|Rˆ\r
+0⟩⟩⟨⟨Lˆ0|0, 0⟩⟩\u0011\r
+,(C4)\r
+where the large-T limit is taken in the last line, and |0, 0⟩⟩\r
+represents the projector |0, 0⟩⟨0, 0|. Hence, the entangle\u0002ment entropy should increase linearly with T, i.e., by a\r
+constant in each renormalization step.\r
+Even with the small bond dimension χ = 2, the domi\u0002nant eigenvalue d0 of D in the optimized scale invariant\r
+MERA agrees well with the conformal field theory pre\u0002diction for the Ising model with central charge c = 1/2:\r
+−8 log2 d0 = 0.475 . . . ≈ c. (C5)\r
+Again, we truncate the scale-invariant MERA after\r
+layer T ≤ 4 for experiments. To mitigate the effect of\r
+the truncation, we do not initialize with the reference\r
+state |0⟩ at the top layer but with a more suitable two\u0002site state |φ⟩, generated from |0⟩ through one entangling\r
+and further single-qubit gates. These gates are chosen to\r
+suppress subleading contributions in (C4) by minimiz\u0002ing P\r
+i>0\r
+|di⟨⟨1|Rˆ\r
+i⟩⟩⟨⟨Lˆi\r
+|φ, φ⟩⟩|2. Thus, we arrive at the\r
+approximation\r
+S\r
+(2)\r
+B = − log2\r
+(TrD\r
+T\r
+(|φ, φ⟩⟨φ, φ|)\r
+\u0001\r
+) ≈ −T log2 d0.\r
+(C6)\r
+After implementing such T-layer approximations of a\r
+scale-invariant MERA in the experiment, we perform\r
+the holographic subsystem tomography, measuring all T\r
+qubits at the right edge of the boundary causal-cone as\r
+discussed in Sec. A and illustrated in Fig. 6(g).\r
+Appendix D: Gate compilation and circuit examples\r
+In the main text and previous appendices, we showed\r
+tensor network diagrams of MERA and schematic gate\r
+decompositions of individual tensors. Here, we demon\u0002strate how to compile these into native quantum gates\r
+and provide concrete circuit examples for measuring both\r
+local observables and nonlocal entanglement properties.\r
+As shown in Fig. 7(a), a generic 4-by-4 unitary oper\u0002ation can be decomposed into a two-qubit circuit using\r
+3 entangling gates and 12 single-qubit gates, involving a\r
+total of 15 parameters (up to a global phase). However,\r
+this generic decomposition turns out to be unnecessary\r
+for our MERA circuits. For example, in a network of\r
+such two-qubit unitaries, redundant single-qubit gates on\r
+connected bonds can be eliminated. More importantly, a\r
+physically motivated ansatz should preserve the symme\u0002tries of the Hamiltonian, except in cases of spontaneous\r
+symmetry breaking.\r
+For the transverse-field Ising model studied here, the\r
+ground state exhibits time-reversal symmetry (invariance\r
+under complex conjugation in the computational basis)\r
+for all values of g and a Z2 symmetry when g ≤ 1. While\r
+a global symmetry does not necessarily imply local sym\u0002metry, we find that, in our case, it does hold locally. A\r
+suitable choice of entangling gates that respect the sym\u0002metries of the Ising model includes XY (θ) = e−iθXˆ⊗Y / ˆ 2\r
+and YX(θ) = e−iθYˆ ⊗X/ˆ 2, which are real in the compu\u0002tational basis and respect the model’s Z2 symmetry as\r
+[⊗iZˆ\r
+i\r
+, XY (θ)] = 0. Based on this, we replace XX and\r
+Y Y gates with XY and YX gates. We remove ZZ and\r
+single-qubit Z gates as they violate time-reversal sym\u0002metry. Variable Ry(θ) = e−iθY / ˆ 2 gates are retained in\r
+some tensors to allow for spontaneous breaking of the Z2\r
+symmetry. The Ry gates that have been removed only\r
+have a relatively small effect on the accuracy.\r
+The resulting refined gate compilation for a unit cell\r
+in the binary MERA, including one isometry and one\r
+unitary (dis)entangler, is shown in Fig. 7(b). This\r
+symmetry-respecting compilation significantly reduces\r
+the parameter space and redundancy without sacrific\u0002ing expressiveness in approximating the ground state, as\r
+confirmed by our numerical simulations. Since binary\r
+MERA with one qubit per bond is classically simula\u0002ble, we do not implement the variational MERA on the\r
+quantum computer. Instead, we classically optimize the\r
+MERA with the gate configuration in Fig. 7(b). Notably,\r
+while the Ry gate is retained for all values of g, the op\u0002timized angles are non-zero only when g < 1 within our\r
+data points, which is consistent with the presence of a\r
+non-zero order parameter in the ferromagnetic phase.\r
+In our experimental setup, the native entangling gate is\r
+the XX gate. As shown in Fig. 7(c), we convert the XY\r
+and YX gates into native gates by appending additional\r
+virtual Rz(±\r
+π\r
+2\r
+) rotations, which are effectively free, as\r
+mentioned in Sec. II C.\r
+As previously discussed and shown in Fig. 1, local ob-
+
+12\r
+0\r
+1\r
+2\r
+4\r
+5\r
+6\r
+7"""
+
+[[sections]]
+number = "3"
+title = "Layer 3 Layer 2 Layer 1"
+text = """
+a b c\r
+d\r
+FIG. 7. Gate compilation and circuit examples. (a) Gate decomposition of a generic two-qubit unitary. (b) Gate\r
+compilation for a unit cell in the binary 1D MERA, incorporating symmetry constraints. The isometry tensor is formed by\r
+injecting a |0⟩ qubit (indicated by a circle) into one leg of a unitary tensor. The unit cell contains six variable gates. (c)\r
+Equivalence between the XY gate and a circuit of three native gates. (d) An example circuit used in the experiment, composed\r
+of native gates. Qubits (circles with indices) are initialized in the |0⟩ state. The circuit consists of three layers, and in each\r
+layer, gates of the same color correspond to either two isometric tensors or a single unitary (dis)entangler, respectively. Local\r
+observables at spin sites 0 and 1 are obtained by measuring qubits 3 and 4, while subsystem entanglement is extracted by\r
+measuring qubits 5, 6, and 7.\r
+servables and subsystem entanglement can be probed by\r
+preparing only the causal cone state (unshaded regions\r
+in Figs. 1 and 5), rather than the full MERA circuit.\r
+Fig. 7(d) presents a concrete example of such a circuit.\r
+From left to right, 8 qubits are initialized in the |0⟩ state,\r
+followed by layers of gates grouped into either isometry\r
+or (dis)entangler tensors. Finally, the desired observables\r
+are measured. In this circuit example, measurements on\r
+qubits 3 and 4 yield local observables on spin sites 0 and\r
+1 as indicated in Fig. 1, while qubits 5, 6, and 7 are used\r
+to evaluate the entanglement between the subsystems A\r
+and B consisting of spin sites (−∞, 1] and [2, ∞), respec\u0002tively.\r
+Appendix E: System characterization and error\r
+model"""
+
+[[sections]]
+number = "1"
+title = "State preparation and measurement error"
+text = """
+State preparation and measurement (SPAM) errors\r
+contribute significantly to our error budget. To quan\u0002tify the probability pd of SPAM errors for the dark state\r
+(|0⟩), we performed fluorescence detection after initial\u0002izing all qubits via the usual optical pumping, yielding\r
+an average measured error of 0.16% (see Fig. 8 for de\u0002tailed SPAM errors). To measure the probability pb of\r
+SPAM errors for the bright state (|1⟩), we applied Ry(π)\r
+gates following the optical pumping and then performed\r
+fluorescence detection, yielding an average measured er\u0002ror of 0.45% (see Fig. 8 for detailed SPAM errors). We\r
+checked the rotation error of the Ry(π) gates by applying\r
+nine consecutive Ry(π)-gates, yielding a population error\r
+of 0.56+0.17\r
+−0.12% as determined by the binomial proportion\u0002ate 95% confidence interval using the Clopper-Pearson\r
+method. The population error resulting from single-qubit\r
+gates should scale superlinearly with the number N of\r
+gates, corresponding to a mixture of uncorrelated and\r
+correlated noise. Our results imply a population error\r
+below 10−3 per π-gate, which is below the determined\r
+bright-state SPAM error.\r
+The measurement error for the 171Yb+ hyperfine\r
+qubits arises from optical pumping between the hyper\u0002fine states during the optical detection pulse [66, 67]. We\r
+fit the measured photon count statistics at various detec\u0002tion time τ to an optical pumping model as discussed\r
+below to determine the state preparation error and the\r
+measurement errors.\r
+The distributions of detection counts for a single ion\r
+prepared in the bright state for different detection times\r
+are shown in Fig. 9(a). Ideally, the ion would cycle be\u0002tween the |S, F = 1⟩ and |P, F = 0⟩ manifolds, resulting\r
+in a Poisson distribution of the recorded photon counts.\r
+However, the bright state can be off-resonantly pumped\r
+to the dark hyperfine ground state via the |S, F = 1⟩ →\r
+|P, F = 1⟩ transition detuned by 2.1 GHz with a rate Rb\r
+that is about 5 × 104times lower than the bright-state\r
+photon scattering rate Γsc. Neglecting the even slower\r
+dark-to-bright pumping process, the predicted distribu\u0002tion of the bright-state photon counts are\r
+Pb(n) = e−RbτP(n; ηΓscτ ) + Z τ\r
+0\r
+e\r
+−RbtP(n; ηΓsct)Rb dt,\r
+(E1)\r
+where P(n; ¯n) = e\r
+−n¯n¯n/n! is the Poisson distribution
+
+13\r
+6 4 2 0 2 4 6\r
+Ion index\r
+0.0010\r
+0.0015\r
+0.0020\r
+0.0025"""
+
+[[sections]]
+number = "0.0030"
+title = "P|1"
+text = """
+a Run 1\r
+Run 2\r
+Run 3\r
+6 4 2 0 2 4 6\r
+Ion index\r
+0.9935\r
+0.9940\r
+0.9945\r
+0.9950\r
+0.9955\r
+0.9960"""
+
+[[sections]]
+number = "0.9965"
+title = "P|1"
+text = """
+b\r
+FIG. 8. State preparation and measurement (SPAM) population as a function of the ion index. (a) Dark-state (|0⟩) SPAM\r
+experiments, with ion-averaged errors of 0.205(7)%, 0.143(4)%, and 0.180(7)% for three runs; (b) Bright-state (|1⟩) SPAM\r
+experiments, with ion-averaged errors of 0.460(9)%, 0.432(9)%, and 0.495(11)% for three runs. Error bars and shaded areas\r
+indicate 1σ statistical intervals.\r
+0 35\r
+10\r
+4\r
+10"""
+
+[[sections]]
+number = "2"
+title = "Pb(nph)"
+text = """
+a 130 s\r
+0 55\r
+10\r
+4\r
+10\r
+1\r
+200 s\r
+0 65\r
+10\r
+4\r
+10\r
+2\r
+300 s\r
+0 80\r
+10\r
+6\r
+10\r
+3\r
+400 s\r
+0 170\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+1000 s\r
+0 35\r
+nph\r
+10\r
+4\r
+10"""
+
+[[sections]]
+number = "1"
+title = "Pd(nph)"
+text = """
+b 130 s\r
+0 55\r
+nph\r
+10\r
+4\r
+10\r
+2\r
+200 s\r
+0 65\r
+nph\r
+10\r
+4\r
+10\r
+1\r
+300 s\r
+0 80\r
+nph\r
+10\r
+5\r
+10\r
+2\r
+400 s\r
+0 170\r
+nph\r
+10\r
+4\r
+10\r
+2\r
+1000 s\r
+FIG. 9. Distribution of the detected photon counts nph for different detection times for the bright state (a) and the dark state\r
+(b). The red dashed lines indicate a fit to the models from Eq. (E1) and (E2).\r
+with mean ¯n, and η is the detection efficiency. The red\r
+dashed curves in Fig. 9(a) show fits of the obtained count\r
+data to this model with ηΓscτ and Rb as the fitting pa\u0002rameters. We average the fitted Rb values with weights\r
+inversely proportional to the fitted variances to obtain\r
+Rb = 3.0(1) × 102/s. The detection count statistics for\r
+a single ion prepared in the dark |S, F = 0⟩ state are\r
+shown in Fig. 9(b). The dark state can be off-resonantly\r
+pumped to the bright manifold via the 14.7-GHz detuned\r
+|S, F = 0⟩ → |P, F = 1⟩ transition, with a rate Rd that\r
+is about 106times lower than Γsc. Neglecting the reverse\r
+pumping process yields the predicted dark-state count\r
+distribution\r
+Pd(n) = Z τ"""
+
+[[sections]]
+number = "0"
+title = "P(n; ηΓsc(τ − t))e"
+text = """
+−RdtRd dt. (E2)\r
+Fitting this model to the count data for photon number\r
+nph > 1 in Fig. 9(b) yields Rd = 18(1)/s. The obtained\r
+ratio of Rb and Rd is close to the theoretical prediction\r
+in Ref. [68].\r
+To distinguish the preparation error from the measure\u0002ment error, we fitted the average dark-state photon num\u0002ber as a function of detection time τ (Fig. 10) to the rate\r
+equation model from Ref. [68]:\r
+n¯ph =\r
+Z τ\r
+0\r
+ηΓsc \u0010\r
+Pd,∞ − (p − Pb,∞) e−(Rb+Rd)t\r
+\u0011\r
+dt,\r
+(E3)\r
+where p is the state preparation error probability. Here,\r
+Pb,∞ = (Rb/Rd + 1)−1 and Pd,∞ = 1 − Pb,∞ are the\r
+equilibrium bright and dark-state populations, respec\u0002tively. The fitted value p = 10(6) × 10−5\r
+confirms that\r
+our SPAM error is dominated by the measurement errors,\r
+as p ≪ pd, pb.\r
+To model state-preparation error in the numerical sim\u0002ulations, we flip each qubit with probability p. To sim\u0002ulate the detection error, after applying the circuit and\r
+measuring in the computational basis {|0⟩, |1⟩}, we ran\u0002domly flip |0⟩ → |1⟩ with probability pd −p and |1⟩ → |0⟩\r
+with probability pb − p.
+
+14\r
+0 200 400 600 800 1000\r
+Detection time ( s)\r
+10\r
+5\r
+10\r
+4\r
+10\r
+3\r
+10\r
+2\r
+10\r
+1\r
+10\r
+0\r
+nph\r
+FIG. 10. The average number ¯nph of collected photons when\r
+preparing the ion in the |0⟩ as a function of detection time\r
+τ . The error bars indicate 1σ confidence interval with 60,000\r
+experimental shots.\r
+0 2 4 6 8 10\r
+Idle time (ms)\r
+0.95\r
+0.96\r
+0.97\r
+0.98\r
+0.99"""
+
+[[sections]]
+number = "1.00"
+title = "Ramsey fringe contrast"
+text = """
+T\r
+*\r
+2 = 300(17) ms\r
+FIG. 11. The average qubit Ramsey fringe contrast as a\r
+function of the idle time τidle from a sample dataset. The\r
+orange line represents the fit to the model A e\r
+−τidle/T ∗\r
+2 yielding\r
+T\r
+∗\r
+2 = 300(17) ms and A = 0.991(1). For the experimental\r
+data, error bars indicate 1σ fitting uncertainties."""
+
+[[sections]]
+number = "2"
+title = "Idling noise"
+text = """
+We characterized the dephasing of idle qubits using\r
+a Ramsey pulse sequence. After applying Ry(\r
+π\r
+2\r
+) gates\r
+to all 13 qubits, we simulated idling by turning off the\r
+individual-addressing Raman beams while keeping the\r
+global beam on with the same settings as during a gate\r
+sequence. After a variable idle time τidle, we completed\r
+the Ramsey sequence with Rz(ϕ) and Ry(\r
+π\r
+2\r
+) gates and\r
+recorded the |1⟩ state population as a function of ϕ. We\r
+obtained the fitted ion-averaged contrast C from the re\u0002sulting fringes and modeled it as A e\r
+−τidle/T ∗"""
+
+[[sections]]
+number = "2"
+title = "Fig. 11"
+text = """
+shows a representative fit from a sample dataset, yielding\r
+A = 0.991(1) and T\r
+∗\r
+2 = 300(17) ms. The deviation of the\r
+fitted value of A from 1 mainly reflects SPAM errors, with\r
+additional contributions potentially arising from residual\r
+single-qubit gate errors and qubit addressing and detec\u0002tion crosstalk. From several datasets collected on differ\u0002ent experimental days, the fitted T\r
+∗\r
+2\r
+ranges from 260 ms\r
+to 370 ms, with an average of 290 ms. We attribute the\r
+measured dephasing to acoustic noise, mainly from air\r
+cooling fans, in our phase-sensitive Raman interferom\u0002eter setup. We expect that T\r
+∗\r
+2\r
+times of several seconds\r
+can be achieved using phase-insensitive schemes [69] that\r
+are compatible with our experimental setup.\r
+In our simulations, we model the effects of dephasing\r
+on the qubit density matrix ˆρ over the time interval t via\r
+the quantum channel\r
+EZ(ˆρ) = (1 − pZ)ˆρ + pZZˆρˆZ, ˆ (E4)\r
+with the Z-flip probability pZ = t/(2T\r
+∗\r
+2\r
+)."""
+
+[[sections]]
+number = "3"
+title = "Gate errors"
+text = """
+a. Axial motion\r
+Axial motion of our 15-ion chain, dominated by the\r
+lowest-frequency axial mode (mode 0) with angular fre\u0002quency ω0 = 2π × 241.8 kHz, is a leading error source in\r
+our platform. This motion misaligns the ions relative to\r
+the tightly-focused addressing beams, causing gate errors\r
+[65]. These errors increase over time as the ions’ motion\r
+is driven by noisy electric fields.\r
+We quantified the addressing error after a wait time t\r
+following laser cooling by applying a variable number N\r
+of XX(\r
+π\r
+2\r
+) gates of total duration ∆t to ions i and j and\r
+measuring the mean population P|11⟩ of the |1, 1⟩ state.\r
+The recorded populations P|11⟩ as a function of N for\r
+(i, j) = (3, −3) are shown in the inset of Fig. 12. Uncer\u0002tainty in the ions’ axial motion translates into a variance\r
+in the total XX rotation angle, leading to damping of\r
+P|11⟩ oscillations.\r
+The observed damping is governed by the statistics of\r
+the phonon number of mode 0 during gate application\r
+[65]. We model the evolution of the phonon number nt\r
+at time t as a biased random walk. Since the energy of\r
+mode 0 following laser cooling corresponds to hundreds\r
+of phonons, and the average heating per XX gate corre\u0002sponds to more than 20 phonons, we coarse-grain nt on\r
+intervals of size δn with 1 ≤ δn ≪ 2nt and model the\r
+random walk as\r
+nt+δt :=\r
+\r
+\r
+\r
+nt + δn with prob. nt+δn\r
+δn\r
+nδt ¯˙\r
+δn\r
+nt − δn with prob. nt\r
+δn\r
+nδt ¯˙\r
+δn\r
+nt otherwise,\r
+(E5)\r
+where n¯˙ is the heating rate of mode 0, and the time step\r
+δt is chosen so that the change of nt/δn remains small\r
+(\r
+2nt+δn\r
+δn\r
+nδt ¯˙\r
+δn ≤ 1).\r
+When initialized with a Boltzmann distribution with\r
+mean ¯n0 ≫ 1, nt remains exponentially distributed with\r
+mean ¯nt = ¯n0 + nt ¯˙ . In this thermal limit, the time\u0002averaged phonon number n\r
+avg\r
+t\r
+:= 1\r
+∆t\r
+R t+∆t\r
+t\r
+nt\r
+′ dt\r
+′ be\u0002tween time t and t + ∆t has the mean µt = ¯nt+∆t/2 =\r
+n¯t + n¯˙ ∆t\r
+2\r
+and the variance σ\r
+2\r
+t = µ\r
+2\r
+t −\r
+n¯tn¯˙ ∆t\r
+3 +\r
+n¯˙\r
+2∆t2\r
+6\r
+.
+
+15\r
+7 6 5 4 3 2 1 0\r
+Ion index i\r
+0\r
+0.01\r
+0.02\r
+0.03\r
+0.04\r
+0.05\r
+i, i(0)\r
+b\r
+2\r
+i0 + b\r
+2\r
+i0\r
+0\r
+4\r
+8\r
+12\r
+16\r
+d i, i(t)/dt\r
+0 2 4 6 8 N\r
+0.0\r
+0.5"""
+
+[[sections]]
+number = "1.0"
+title = "P|11"
+text = """
+Expt.\r
+FIG. 12. The fitted initial decay parameter ¯εi,−i(0) (blue)\r
+and its increase rate d¯εi,−i(t)/dt (red) for XX gates acting\r
+on ions i and −i. The gray line is proportional to the sum of\r
+squares b\r
+2\r
+i0+b\r
+2\r
+−i0 of the participation factors for the addressed\r
+ions in the lowest axial mode of the ion chain. Error bars\r
+indicate 1σ fit uncertainties. The inset shows the |1, 1⟩-state\r
+population for ions (−3, 3) as a function of the gate number\r
+N after a wait time of t ≈ 10 ms, with a fit according to\r
+Eq. (E6).\r
+The distribution of n\r
+avg\r
+t\r
+can be well approximated by a\r
+Gamma distribution with the corresponding mean and\r
+variance.\r
+If N XX(θ) gates are applied between time t and t+∆t,\r
+neglecting other errors and assuming the above Gamma\r
+distribution, we obtain the population\r
+P|11⟩(t) = 1 − C cos(Nθ − ϕ)\r
+2\r
+, (E6)\r
+of the |1, 1⟩ state with phase shift ϕ =\r
+α arctanαNθε¯i,j (t +\r
+∆t\r
+2\r
+)\r
+\u0001\r
+and contrast C =\r
+(1 + [αNθε¯i,j (t +\r
+∆t\r
+2\r
+)]2)\r
+−α/2\r
+, where α = µ\r
+2\r
+t /σ2t\r
+and ¯εi,j (t) = ¯εi(t) + ¯εj (t). The mean dimensionless\r
+decay parameter ¯εi(t) during the gate sequence is\r
+ε¯i(t) = ℏb\r
+2\r
+i0\r
+mω0w2\r
+n¯t, (E7)\r
+where bi0 is the participation factor of ion i in mode"""
+
+[[sections]]
+number = "0"
+title = "Here, we assume that the ion motion remains much"
+text = """
+smaller than our Gaussian-shaped beams. We determine\r
+the individual-beam waist w by fitting the dependence of\r
+the single-qubit Rabi frequency Ω on the axial ion posi\u0002tion x to Ω0e\r
+−(x−x0)\r
+2/w2\r
+, yielding w = 646(12) nm. In\r
+the limit of negligible heating during the gate sequence,\r
+the prediction (E6) reduces to Eq. (4) in [65].\r
+For different ion pairs (i, j = −i), we fit the mea\u0002sured mean |1, 1⟩-state population as a function of the\r
+gate number N and wait time t to the model (E6). The\r
+fitted dimensionless effective decay parameter ¯εi,j (0) at\r
+t = 0 and its rate of increase d¯εi,j/dt are shown as func\u0002tions of i in Fig. 12. Both parameters scale with b\r
+2\r
+i0+b\r
+2\r
+j0\r
+,\r
+indicating that addressing errors are dominated by exci\u0002tations of the lowest axial mode of the ion chain. The\r
+-6\r
+-6\r
+-4\r
+-4\r
+-2\r
+-2\r
+0\r
+0\r
+2\r
+2\r
+4\r
+4\r
+6"""
+
+[[sections]]
+number = "6"
+title = "Ion j"
+text = """
+-6 -6\r
+-4 -4\r
+-2 -2\r
+0 0\r
+2 2\r
+4 4\r
+6 6\r
+Ion i\r
+pX\r
+0\r
+0.04%\r
+0.08%\r
+0.12%\r
+0.16%\r
+FIG. 13. Pauli X error pX,i,j (π/2) per fully-entangling XX\r
+gate acting on ions i and j; cf. Eq. (E9). We only show error\r
+data for gate pairs that are actually utilized in this work.\r
+fitted initial phonon number in this mode is ¯n0 = 409(4)\r
+and the heating rate is n¯˙ = 133(1) phonons/ms.\r
+To model gate rotation errors for arbitrary single\u0002and two-qubit gates, in each shot of the noisy simu\u0002lations, we sample the initial phonon number n0 from\r
+an exponential distribution with mean ¯n0. We then\r
+evolve nt using the random walk model (E5). For\r
+each native gate in the circuit, we compute the time\u0002averaged phonon number n\r
+avg\r
+t\r
+. In the noise model, the\r
+phonon number n\r
+avg\r
+t\r
+changes single-qubit gate rotations\r
+as R(θ) → R(θ(1 − n\r
+avg\r
+t\r
+ε¯i/n¯t)) and two-qubit gate rota\u0002tions as XX(θ) → XX(θ(1 − n\r
+avg\r
+t\r
+ε¯i,j/n¯t).\r
+b. X-errors\r
+We describe X-errors during an XX(θ) gate on ion pair\r
+(i, j) using a bit-flip channel acting on the density matrix\r
+ρˆ of ion i as\r
+EX(ˆρ) = (1 − pX)ˆρ + pXXˆρˆX, ˆ (E8)\r
+where pX ≡ pX,i,j (θ) is the X-flip probability per gate.\r
+X-errors can be caused by residual spin-motion en\u0002tanglement at the end of Mølmer-Sørensen gates. They\r
+can be minimized by carefully choosing the motional de\u0002tuning, gate duration, and envelope of the amplitude\u0002modulated gate waveforms [70]. In-between experiment\r
+runs, we stabilized frequencies of the radial ion-motion\r
+modes via blue-sideband Ramsey spectroscopy. Each of\r
+the central 11 qubits was used to query one of 11 radial\r
+modes that are addressed by the entangling gate wave\u0002forms. The obtained spectroscopical data was used to\r
+automatically adjust the quadratic and quartic terms in\r
+the static axial potential of the trap and a common mo\u0002tional offset frequency for all gates.\r
+After applying N consecutive XX(\r
+π\r
+2\r
+) gates to the |0, 0⟩\r
+state on ions i and j, we measured the probability of X-
+
+16\r
+0 5 10 15 20 25 30\r
+N [XX\r
++ XX ]\r
+0.6\r
+0.7\r
+0.8\r
+0.9"""
+
+[[sections]]
+number = "1.0"
+title = "Contrast"
+text = """
+Gate 1,6\r
+a\r
+Ion 1: = 0.9(1)%\r
+Ion 6: = 1.5(1)%\r
+-6\r
+-6\r
+-4\r
+-4\r
+-2\r
+-2\r
+0\r
+0\r
+2\r
+2\r
+4\r
+4\r
+6"""
+
+[[sections]]
+number = "6"
+title = "Ion j"
+text = """
+-6 -6\r
+-4 -4\r
+-2 -2\r
+0 0\r
+2 2\r
+4 4\r
+6 6\r
+Ion i\r
+i\r
+0\r
+0.5%\r
+1.0%\r
+1.5%\r
+2.0%\r
+b\r
+FIG. 14. (a) Ramsey fringe contrast as a function of the number of (XX+, XX−) gate pairs inside the Ramsey sequence\r
+for a sample gate. Solid lines indicate fits to a Gaussian function with zero mean and standard deviation Nσi\r
+ϕ. (b) Standard\r
+deviation σ\r
+i\r
+ϕ of the random Gaussian-distributed phase shift ϕi on ion i per fully-entangling XX gate acting on ion pair (i, j).\r
+Error data are shown only for gate pairs utilized in this work.\r
+flip errors by tracking the population Pi,j (N) of the |0, 1⟩\r
+and |1, 0⟩ states (parity leakage). We distinguished X-flip\r
+errors from coherent XX gate crosstalk by focusing on\r
+the shots where only the target qubits are flipped. In the\r
+noise model (E8), we employ the X-flip error probability\r
+pX,i,j (θ) = |θ|\r
+π/2\r
+Pi,j (N)\r
+2N\r
+. (E9)\r
+c. Z-errors\r
+To measure Stark shifts during a specific XX gate, we\r
+insert N pairs of XX(\r
+π\r
+2\r
+) − XX(−\r
+π\r
+2\r
+) gates into a Ram\u0002sey pulse sequence consisting of initial Ry(\r
+π\r
+2\r
+) and final\r
+Rz(ϕ)−Ry(\r
+π\r
+2\r
+) pulses applied to each targeted ion. After\r
+adjusting the qubit frequencies during the gate to com\u0002pensate for the measured shifts, we use the same sequence\r
+to estimate any residual gate Z-errors.\r
+The fitted contrast of the obtained Ramsey fringes for a\r
+sample gate is shown in Fig. 14(a). The observed depen\u0002dence of the contrast on N is roughly quadratic, indicat\u0002ing that the phase shift error accumulates coherently as\r
+the number of gates increases. We model the observed de\u0002coherence by correlated fluctuations in the gate-induced\r
+Stark shift, which can arise from fluctuations in the am\u0002plitude balance of the red and blue tones of the Mølmer\u0002Sørensen gate due to air turbulence in the Raman beam\r
+setup. Since our Ramsey sequence prepares the qubits\r
+in the X-basis, we do not expect gate X-errors to affect\r
+the measured contrast. We assume that the phase shift\r
+ϕiinduced on ion i by a fully-entangling XX gate during\r
+each shot follows a Gaussian distribution with zero mean\r
+and standard deviation σ\r
+i\r
+ϕ\r
+. This noise model results in a\r
+fringe contrast proportional to e−(Nσi\r
+ϕ)\r
+2/2\r
+to first order.\r
+Figure 14 show fits of this model to the measured contrast\r
+data and the fitted values of σ\r
+i\r
+ϕ\r
+for all fully-entangling\r
+XX gates on the ion pairs used in this work.\r
+In the noise-model simulations, for each shot, we sam\u0002ple random numbers s from the Gaussian distribution\r
+N (0, 1). When executing quantum circuits, we replace\r
+the ideal XX(θ) gate by\r
+e\r
+− i\r
+2 (θXˆiXˆj+ϕiZˆi+ϕjZˆj )\r
+, where ϕi = s\r
+σ\r
+i\r
+ϕ\r
+|θ|\r
+π/2\r
+(E10)\r
+is a rescaled phase shift on ion i.\r
+Appendix F: Breakdown of error contributions\r
+To better understand our experimental results, we an\u0002alyze the breakdown of error contributions through nu\u0002merical simulation. As shown in Fig. 15, we selected two\r
+representative cases from Fig. 4 of the main text, one\r
+with the highest reported infidelity 1 − F (∼ 10−2) and\r
+one with the lowest (∼ 10−4).\r
+The case of highest reported infidelity corresponds to a\r
+4-qubit tomography result on a 4-layer MERA circuit at\r
+the critical point g = 1. The circuit involves 9 qubits and"""
+
+[[sections]]
+number = "21"
+title = "XX gates with rotation amplitudes ranging from 0.06π"
+text = """
+to 0.18π. We performed 1,500 measurement shots per ba\u0002sis over a total of 34 = 81 measurement bases. Based on\r
+our error model and the calibrated parameters provided\r
+in the Appendix E, we identify several key sources of er\u0002ror. First, there is the inevitable statistical uncertainty\r
+in the measured density matrix elements on the order of\r
+∼ 10−2from the finite number of measurement shots.\r
+Second, aggregated SPAM errors for the 4-qubit tomog\u0002raphy are on the order of ∼ 10−2\r
+. The dominant gate\r
+error arises from rotation-angle fluctuations caused by\r
+axial motion of the ion chain, which, for fully-entangling
+
+17\r
+0.12\r
+0.13\r
+0.14\r
+0.15\r
+0.16\r
+0\r
+a Expt. data\r
+Sim. (noisy)\r
+Sim. (ideal)\r
+0.027\r
+0.030\r
+0.033\r
+0.036\r
+0.039\r
+0\r
+c\r
+Full noise\r
+SPAM\r
+Idling\r
+Axial\r
+X flip\r
+Stark shift\r
+Shot only\r
+10\r
+2\r
+6 × 10\r
+3\r
+2 × 10\r
+2\r
+1\r
+b\r
+Full noise\r
+SPAM\r
+Idling\r
+Axial\r
+X flip\r
+Stark shift\r
+Shot only\r
+10\r
+5\r
+10\r
+4\r
+1\r
+d\r
+FIG. 15. Breakdown of error contributions. The top row (a,c) shows the first eigenvalues ζ0 of the entanglement\r
+Hamiltonian, and the bottom row (b,d) shows corresponding state infidelities 1 − F. The left column (a,b) presents results\r
+at the critical point g = 1 with T = 4, while the right column (c,d) corresponds to the gapped phase at g = 1.5 with T = 1.\r
+Experimental data points with error bars are reproduced from Fig. 4 in the main text. The dashed lines indicate the ideal\r
+simulation results from Fig. 4. Noisy simulation results are shown as shaded regions representing the 95% quantiles, with solid\r
+colored lines indicating the mean values. In the “full noise” case, we reproduce the full noisy simulation including all error\r
+sources from Fig. 4. In the “shot only” case, all errors are disabled except for shot noise (the statistical uncertainty due to\r
+the finite number of measurement shots). In the remaining cases, the simulations include both the shot noise and the specified\r
+individual error source. We run 1000 independent noisy simulation trials for each case. Each trail uses the same number of\r
+measurement shots as the experiment: 1,500 shots per basis per trial in the left column, and 8,000 shots per basis per trial in\r
+the right column.\r
+gates, typically leads to errors on the order of 10−2. After\r
+accounting for the error rescaling due to smaller rotation\r
+angles in the actual MERA gates and the accumulation\r
+of errors throughout the circuit, the overall gate-induced\r
+error is also expected to be in the 10−2range. This es\u0002timate is confirmed in Fig. 15(a). A small discrepancy\r
+remains between the experimental data and the full-noise\r
+simulation, which we attribute to system miscalibration\r
+over the long experimental runtime required for 4-qubit\r
+tomography, as well as unmodeled single-qubit gate er\u0002rors.\r
+The case of lowest reported infidelity corresponds to a\r
+single-qubit tomography result on a single-layer MERA\r
+circuit in the gapped phase at g = 1.5. The circuit in\u0002volves only 2 qubits and a single XX gate with a rotation\r
+amplitude of 0.095π. We performed 8,000 measurement\r
+shots for each Pauli-X, -Y , and -Z basis. In this case,\r
+the statistical uncertainty from finite sampling is on the\r
+order of 10−3 ∼ 10−2, while the SPAM error for a single\r
+qubit is on the order of 10−3, and the error from the sin\u0002gle gate is also on the order of 10−3\r
+. Hence, we expect\r
+the statistical uncertainty to dominate over other error\r
+sources, which is consistent with the simulation results\r
+shown in Fig. 15(c).\r
+We observe that the infidelity is of comparable magni\u0002tude to the errors for the high-infidelity case in Fig. 15(b)\r
+and at least an order of magnitude below the error scale\r
+for the low-infidelity case in Fig. 15(d). We attribute this\r
+to the fact that the infidelity has different scaling behav\u0002ior for rank-deficient and full-rank states: Consider the\r
+exact (noise-free) density operator ˆρ and the perturbed\r
+version ˆσ = ˆρ + ϵDˆ with noise level ϵ and Tr(Dˆ) = 0.\r
+For a full-rank state ˆρ, the perturbed ˆσ remains well\u0002defined (positive semidefinite) for sufficiently small ϵ > 0\r
+as well as small ϵ < 0. The infidelity 1 − F(ˆρ, σˆ(ϵ)) is\r
+differentiable and minimal at ϵ = 0. This implies that\r
+the linear term vanishes and 1 − F = O(ϵ\r
+2\r
+). This is\r
+the case in Fig. 15(d), where the corresponding single\u0002qubit reduced density matrix has full rank with eigenval\u0002ues {0.98, 2.2 × 10−2}. A linear scaling 1 − F = O(ϵ)\r
+is only possible for rank-deficient states. For example,\r
+consider a pure state ˆρ = |ψ⟩⟨ψ| and the perturbation\r
+Dˆ = −|ψ⟩⟨ψ| + |ψ⊥⟩⟨ψ⊥| with an orthogonal state |ψ⊥⟩\r
+and ϵ ≥ 0. In this case, the infidelity is simply ϵ. In the\r
+current experiments, the ideal reduced density matrix is\r
+indeed approximately rank-deficient at larger layer num\u0002bers T, and this is the case in Fig. 15(b) with eigenvalues\r
+{0.92, 7.9 × 10−2, 3.5 × 10−3, 3.1 × 10−4, 2.7 × 10−4, 2.7 ×\r
+10−5, . . . }.
+
+18\r
+[1] S. L. Sondhi, S. M. Girvin, J. P. Carini, and D. Shahar,\r
+Continuous quantum phase transitions, Rev. Mod. Phys.\r
+69, 315 (1997).\r
+[2] S. Sachdev, Quantum Phase Transitions, 2nd ed. (Cam\u0002bridge University Press, Cambridge, UK, 2011).\r
+[3] I. Bloch, J. Dalibard, and W. Zwerger, Many-body\r
+physics with ultracold gases, Rev. Mod. Phys. 80, 885\r
+(2008).\r
+[4] A. Smith, M. Kim, F. Pollmann, and J. Knolle, Simu\u0002lating quantum many-body dynamics on a current digi\u0002tal quantum computer, npj Quantum Information 5, 106\r
+(2019).\r
+[5] F. Barratt, J. Dborin, M. Bal, V. Stojevic, F. Pollmann,\r
+and A. G. Green, Parallel quantum simulation of large\r
+systems on small nisq computers, npj Quantum Informa\u0002tion 7, 79 (2021).\r
+[6] M. Meth, V. Kuzmin, R. van Bijnen, L. Postler,\r
+R. Stricker, R. Blatt, M. Ringbauer, T. Monz, P. Silvi,\r
+and P. Schindler, Probing phases of quantum matter with\r
+an ion-trap tensor-network quantum eigensolver, Phys.\r
+Rev. X 12, 041035 (2022).\r
+[7] J. Dborin, V. Wimalaweera, F. Barratt, E. Ostby, T. E.\r
+O’Brien, and A. G. Green, Simulating groundstate and\r
+dynamical quantum phase transitions on a supercon\u0002ducting quantum computer, Nature Communications 13,\r
+5977 (2022).\r
+[8] Q. Zhu, Z.-H. Sun, M. Gong, F. Chen, Y.-R. Zhang,\r
+Y. Wu, Y. Ye, C. Zha, S. Li, S. Guo, H. Qian, H.-L.\r
+Huang, J. Yu, H. Deng, H. Rong, J. Lin, Y. Xu, L. Sun,\r
+C. Guo, N. Li, F. Liang, C.-Z. Peng, H. Fan, X. Zhu, and\r
+J.-W. Pan, Observation of thermalization and informa\u0002tion scrambling in a superconducting quantum processor,\r
+Phys. Rev. Lett. 128, 160502 (2022).\r
+[9] M. Tajik, M. Gluza, N. Sebe, P. Sch¨uttelkopf, F. Catal\u0002dini, J. Sabino, F. Møller, S.-C. Ji, S. Erne, G. Guarnieri,\r
+S. Sotiriadis, J. Eisert, and J. Schmiedmayer, Experimen\u0002tal observation of curved light-cones in a quantum field\r
+simulator, Proceedings of the National Academy of Sci\u0002ences 120, e2301287120 (2023).\r
+[10] F. Fang, K. Wang, V. S. Liu, Y. Wang, R. Cimmino,\r
+J. Wei, M. Bintz, A. Parr, J. Kemp, K.-K. Ni, and N. Y.\r
+Yao, Probing critical phenomena in open quantum sys\u0002tems using atom arrays (2024), arXiv:2402.15376 [quant\u0002ph].\r
+[11] R. Islam, R. Ma, P. M. Preiss, M. Eric Tai, A. Lukin,\r
+M. Rispoli, and M. Greiner, Measuring entanglement en\u0002tropy in a quantum many-body system, Nature 528, 77\r
+(2015).\r
+[12] K. Li, M. Han, D. Qu, Z. Huang, G. Long, Y. Wan, D. Lu,\r
+B. Zeng, and R. Laflamme, Measuring holographic entan\u0002glement entropy on a quantum simulator, npj Quantum\r
+Information 5, 30 (2019).\r
+[13] A. Bergschneider, V. M. Klinkhamer, J. H. Becher,\r
+R. Klemt, L. Palm, G. Z¨urn, S. Jochim, and P. M. Preiss,\r
+Experimental characterization of two-particle entangle\u0002ment through position and momentum correlations, Na\u0002ture Physics 15, 640 (2019).\r
+[14] T. Brydges, A. Elben, P. Jurcevic, B. Vermersch,\r
+C. Maier, B. P. Lanyon, P. Zoller, R. Blatt, and C. F.\r
+Roos, Probing R´enyi entanglement entropy via random\u0002ized measurements, Science 364, 260 (2019).\r
+[15] M. Foss-Feig, S. Ragole, A. Potter, J. Dreiling, C. Fig\u0002gatt, J. Gaebler, A. Hall, S. Moses, J. Pino, B. Spaun,\r
+B. Neyenhuis, and D. Hayes, Entanglement from ten\u0002sor networks on a trapped-ion quantum computer, Phys.\r
+Rev. Lett. 128, 150504 (2022).\r
+[16] M. Tajik, I. Kukuljan, S. Sotiriadis, B. Rauer, T. Schwei\u0002gler, F. Cataldini, J. Sabino, F. Møller, P. Sch¨uttelkopf,\r
+S.-C. Ji, et al., Verification of the area law of mutual in\u0002formation in a quantum field simulator, Nature Physics\r
+19, 1022 (2023).\r
+[17] M. K. Joshi, C. Kokail, R. van Bijnen, F. Kranzl, T. V.\r
+Zache, R. Blatt, C. F. Roos, and P. Zoller, Exploring\r
+large-scale entanglement in quantum simulation, Nature\r
+624, 539 (2023).\r
+[18] A. H. Karamlou, I. T. Rosen, S. E. Muschinske, C. N.\r
+Barrett, A. Di Paolo, L. Ding, P. M. Harrington,\r
+M. Hays, R. Das, D. K. Kim, et al., Probing entanglement\r
+in a 2d hard-core Bose–Hubbard lattice, Nature 629, 561\r
+(2024).\r
+[19] T. Barthel and J. Lu, Fundamental limitations for mea\u0002surements in quantum many-body systems, Phys. Rev.\r
+Lett. 121, 080406 (2018).\r
+[20] J. R. McClean, S. Boixo, V. N. Smelyanskiy, R. Bab\u0002bush, and H. Neven, Barren plateaus in quantum neural\r
+network training landscapes, Nature Communications 9,\r
+4812 (2018).\r
+[21] M. Cerezo, A. Sone, T. Volkoff, L. Cincio, and P. J.\r
+Coles, Cost function dependent barren plateaus in shal\u0002low parametrized quantum circuits, Nature Communica\u0002tions 12, 1791 (2021).\r
+[22] G. Vidal, Entanglement renormalization, Phys. Rev.\r
+Lett. 99, 220405 (2007).\r
+[23] G. Vidal, Class of quantum many-body states that can\r
+be efficiently simulated, Phys. Rev. Lett. 101, 110501\r
+(2008).\r
+[24] G. Evenbly and G. Vidal, Algorithms for entanglement\r
+renormalization, Phys. Rev. B 79, 144108 (2009).\r
+[25] Q. Miao and T. Barthel, Quantum-classical eigensolver\r
+using multiscale entanglement renormalization, Phys.\r
+Rev. Res. 5, 033141 (2023).\r
+[26] Q. Miao and T. Barthel, Convergence and quantum ad\u0002vantage of Trotterized MERA for strongly-correlated sys\u0002tems, Quantum 9, 1631 (2025).\r
+[27] R. Haghshenas, J. Gray, A. C. Potter, and G. K.-L. Chan,\r
+Variational power of quantum circuit tensor networks,\r
+Phys. Rev. X 12, 011047 (2022).\r
+[28] R. Haghshenas, E. Chertkov, M. DeCross, T. M. Gat\u0002terman, J. A. Gerber, K. Gilmore, D. Gresh, N. He\u0002witt, C. V. Horst, M. Matheny, T. Mengle, B. Neyen\u0002huis, D. Hayes, and M. Foss-Feig, Probing critical states\r
+of matter on a digital quantum computer, Phys. Rev.\r
+Lett. 133, 266502 (2024).\r
+[29] I. H. Kim and B. Swingle, Robust entanglement\r
+renormalization on a noisy quantum computer,\r
+arXiv:1711.07500 (2017).\r
+[30] T. Barthel and Q. Miao, Absence of barren plateaus and\r
+scaling of gradients in the energy optimization of isomet\u0002ric tensor network states, Commun. Math. Phys. 406, 86\r
+(2025).\r
+[31] Q. Miao and T. Barthel, Isometric tensor network op\u0002timization for extensive Hamiltonians is free of barren
+
+19\r
+plateaus, Phys. Rev. A 109, L050402 (2024).\r
+[32] J. Eisert, M. Cramer, and M. B. Plenio, Colloquium:\r
+Area laws for the entanglement entropy, Rev. Mod. Phys.\r
+82, 277 (2010).\r
+[33] J. I. Latorre and A. Riera, A short review on entangle\u0002ment in quantum spin systems, J. Phys. A: Math. Theor.\r
+42, 504002 (2009).\r
+[34] N. Laflorencie, Quantum entanglement in condensed\r
+matter systems, Phys. Rep. 646, 1 (2016).\r
+[35] S. Montangero, M. Rizzi, V. Giovannetti, and R. Fazio,\r
+Critical exponents with a multiscale entanglement renor\u0002malization ansatz channel, Phys. Rev. B 80, 113103\r
+(2009).\r
+[36] R. N. C. Pfeifer, G. Evenbly, and G. Vidal, Entanglement\r
+renormalization, scale invariance, and quantum critical\u0002ity, Phys. Rev. A 79, 040301 (2009).\r
+[37] P. L. W. Maunz, High optical access trap 2.0., osti.gov ,\r
+SAND (2016).\r
+[38] D. Lobser, P. Maunz, and J. Van Der Wall, Octet: A\r
+coherent qubit control system for trapped-ion quantum\r
+computers, osti.gov , SAND2020 (2020).\r
+[39] B. M. McCoy, Spin correlation functions of the X − Y\r
+model, Phys. Rev. 173, 531 (1968).\r
+[40] P. Pfeuty, The one-dimensional ising model with a trans\u0002verse field, Annals of Physics 57, 79 (1970).\r
+[41] T. J. Osborne and M. A. Nielsen, Entanglement in a sim\u0002ple quantum phase transition, Phys. Rev. A 66, 032110\r
+(2002).\r
+[42] H. A. Kramers and G. H. Wannier, Statistics of the\r
+two-dimensional ferromagnet. part i, Phys. Rev. 60, 252\r
+(1941).\r
+[43] G. De Chiara, L. Lepori, M. Lewenstein, and A. San\u0002pera, Entanglement spectrum, critical exponents, and or\u0002der parameters in quantum spin chains, Phys. Rev. Lett.\r
+109, 237208 (2012).\r
+[44] A. Osterloh, L. Amico, G. Falci, and R. Fazio, Scaling of\r
+entanglement close to a quantum phase transition, Na\u0002ture 416, 608 (2002).\r
+[45] O. F. Sylju˚asen, Entanglement and spontaneous symme\u0002try breaking in quantum spin models, Phys. Rev. A 68,\r
+060301 (2003).\r
+[46] T. R. de Oliveira, G. Rigolin, M. C. de Oliveira, and\r
+E. Miranda, Symmetry-breaking effects upon bipartite\r
+and multipartite entanglement in the XY model, Phys.\r
+Rev. A 77, 032325 (2008).\r
+[47] M. Srednicki, Entropy and area, Phys. Rev. Lett. 71, 666\r
+(1993).\r
+[48] C. Callan and F. Wilczek, On geometric entropy, Phys.\r
+Lett. B 333, 55 (1994).\r
+[49] C. Holzhey, F. Larsen, and F. Wilczek, Geometric and\r
+renormalized entropy in conformal field theory, Nucl.\r
+Phys. B 424, 443 (1994).\r
+[50] M. M. Wolf, Violation of the entropic area law for\r
+fermions, Phys. Rev. Lett. 96, 010404 (2006).\r
+[51] D. Gioev and I. Klich, Entanglement entropy of fermions\r
+in any dimension and the Widom conjecture, Phys. Rev.\r
+Lett. 96, 100503 (2006).\r
+[52] T. Barthel, M.-C. Chung, and U. Schollw¨ock, Entangle\u0002ment scaling in critical two-dimensional fermionic and\r
+bosonic systems, Phys. Rev. A 74, 022329 (2006).\r
+[53] H.-Y. Huang, R. Kueng, and J. Preskill, Predicting many\r
+properties of a quantum system from very few measure\u0002ments, Nature Physics 16, 1050 (2020).\r
+[54] P. Calabrese and J. Cardy, Entanglement entropy and\r
+conformal field theory, Journal of Physics A: Mathemat\u0002ical and Theoretical 42, 504005 (2009).\r
+[55] Z. Hradil, Quantum-state estimation, Phys. Rev. A 55,\r
+R1561 (1997).\r
+[56] J. Reh´aˇcek, Z. Hradil, and M. Jeˇzek, Iterative algorithm ˇ\r
+for reconstruction of entangled states, Phys. Rev. A 63,\r
+040303 (2001).\r
+[57] J. Fiur´aˇsek, Maximum-likelihood estimation of quantum\r
+measurement, Phys. Rev. A 64, 024102 (2001).\r
+[58] D. F. V. James, P. G. Kwiat, W. J. Munro, and A. G.\r
+White, Measurement of qubits, Phys. Rev. A 64, 052312\r
+(2001).\r
+[59] H. Li and F. D. M. Haldane, Entanglement spectrum as\r
+a generalization of entanglement entropy: Identification\r
+of topological order in non-Abelian fractional quantum\r
+Hall effect states, Phys. Rev. Lett. 101, 010504 (2008).\r
+[60] C. Kokail, R. van Bijnen, A. Elben, B. Vermersch,\r
+and P. Zoller, Entanglement Hamiltonian tomography in\r
+quantum simulation, Nature Physics 17, 936 (2021).\r
+[61] T. Barthel and Q. Miao, Scaling of contraction costs for\r
+entanglement renormalization algorithms including ten\u0002sor Trotterization and variational Monte Carlo, Phys.\r
+Rev. B 111, 045104 (2025).\r
+[62] M. DeCross, R. Haghshenas, M. Liu, E. Rinaldi, J. Gray,\r
+Y. Alexeev, C. H. Baldwin, J. P. Bartolotta, M. Bohn,\r
+E. Chertkov, J. Cline, J. Colina, D. DelVento, J. M.\r
+Dreiling, C. Foltz, J. P. Gaebler, T. M. Gatterman,\r
+C. N. Gilbreth, J. Giles, D. Gresh, A. Hall, A. Hankin,\r
+A. Hansen, N. Hewitt, I. Hoffman, C. Holliman, R. B.\r
+Hutson, T. Jacobs, J. Johansen, P. J. Lee, E. Lehman,\r
+D. Lucchetti, D. Lykov, I. S. Madjarov, B. Mathewson,\r
+K. Mayer, M. Mills, P. Niroula, J. M. Pino, C. Ro\u0002man, M. Schecter, P. E. Siegfried, B. G. Tiemann,\r
+C. Volin, J. Walker, R. Shaydulin, M. Pistoia, S. A.\r
+Moses, D. Hayes, B. Neyenhuis, R. P. Stutz, and M. Foss\u0002Feig, Computational power of random quantum circuits\r
+in arbitrary geometries, Phys. Rev. X 15, 021052 (2025).\r
+[63] R. Haghshenas, E. Chertkov, M. Mills, W. Kadow, S.-\r
+H. Lin, Y.-H. Chen, C. Cade, I. Niesen, T. Beguˇsi´c,\r
+M. S. Rudolph, C. Cirstoiu, K. Hemery, C. M. Keever,\r
+M. Lubasch, E. Granet, C. H. Baldwin, J. P. Bartolotta,\r
+M. Bohn, J. Cline, M. DeCross, J. M. Dreiling, C. Foltz,\r
+D. Francois, J. P. Gaebler, C. N. Gilbreth, J. Gray,\r
+D. Gresh, A. Hall, A. Hankin, A. Hansen, N. Hewitt,\r
+R. B. Hutson, M. Iqbal, N. Kotibhaskar, E. Lehman,\r
+D. Lucchetti, I. S. Madjarov, K. Mayer, A. R. Milne, S. A.\r
+Moses, B. Neyenhuis, G. Park, B. Ponsioen, M. Schecter,\r
+P. E. Siegfried, D. T. Stephen, B. G. Tiemann, M. D.\r
+Urmey, J. Walker, A. C. Potter, D. Hayes, G. K.-L. Chan,\r
+F. Pollmann, M. Knap, H. Dreyer, and M. Foss-Feig,\r
+Digital quantum magnetism at the frontier of classical\r
+simulations (2025), arXiv:2503.20870 [quant-ph].\r
+[64] X.-C. Wu, D. M. Debroy, Y. Ding, J. M. Baker, Y. Alex\u0002eev, K. R. Brown, and F. T. Chong, Tilt: Achiev\u0002ing higher fidelity on a trapped-ion linear-tape quan\u0002tum computing architecture, in 2021 IEEE International\r
+Symposium on High-Performance Computer Architecture\r
+(HPCA) (2021) pp. 153–166.\r
+[65] M. Cetina, L. Egan, C. Noel, M. Goldman, D. Biswas,\r
+A. Risinger, D. Zhu, and C. Monroe, Control of trans\u0002verse motion for quantum gates on individually addressed\r
+atomic qubits, PRX Quantum 3, 010334 (2022).\r
+[66] S. Crain, C. Cahall, G. Vrijsen, E. E. Wollman, M. D.\r
+Shaw, V. B. Verma, S. W. Nam, and J. Kim, High-speed
+
+20\r
+low-crosstalk detection of a 171yb+ qubit using super\u0002conducting nanowire single photon detectors, Commun\r
+Phys 2, 1 (2019).\r
+[67] C. Roman, A. Ransford, M. Ip, and W. C. Campbell,\r
+Coherent control for qubit state readout, New J. Phys.\r
+22, 073038 (2020).\r
+[68] R. Noek, G. Vrijsen, D. Gaultney, E. Mount, T. Kim,\r
+P. Maunz, and J. Kim, High speed, high fidelity detection\r
+of an atomic hyperfine qubit, Opt. Lett., OL 38, 4735\r
+(2013).\r
+[69] J. M. Pino, J. M. Dreiling, C. Figgatt, J. P. Gaebler, S. A.\r
+Moses, M. Allman, C. Baldwin, M. Foss-Feig, D. Hayes,\r
+K. Mayer, et al., Demonstration of the trapped-ion quan\u0002tum ccd computer architecture, Nature 592, 209 (2021).\r
+[70] S. Huang, K. R. Brown, and M. Cetina, Comparing Shor\r
+and Steane error correction using the Bacon-Shor code,\r
+Science Advances 10, eadp2008 (2024)."""
+
+[[tables]]
+page_num = 9
+headers = [
+    "mi",
+    "rˆi⟩⟩⟨⟨ˆℓi",
+    ", (C1)",
+]
+rows = [
+    [
+    "where",
+    "mi",
+    "< 1 for all i > 0, and we use a super-bra\u0002ket notation for the operator-basis elements according to",
+],
+    [
+    "the Hilbert-Schmidt inner product ⟨⟨Lˆ",
+    "Rˆ⟩⟩ := Tr\u0010",
+],
+]

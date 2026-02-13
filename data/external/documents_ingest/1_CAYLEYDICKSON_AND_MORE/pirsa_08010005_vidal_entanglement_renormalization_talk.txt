@@ -1,0 +1,189 @@
+   Title: Entanglement Renormalization, Quantum Criticality and Topological Order
+   Date: Jan 23, 2008 04:00 PM
+   URL: http://pirsa.org/08010005
+   Abstract: The renormalization group (RG) is one of the conceptual pillars of statistical mechanics and quantum field theory, and a key theoretical
+   element in the modern formulation of critical phenomena and phase transitions. RG transformations are also the basis of numerical approaches to the
+   study of low energy properties and emergent phenomena in quantum many-body systems. In this colloquium I will introduce the notion of
+   \\\"entanglement renormalization\\\" and use it to define a coarse-graining transformation for quantum systems on a lattice [G.Vidal, Phys. Rev. Lett.
+
+   99, 220405 (2007)]. The resulting real-space RG approach is able to numerically address 1D and 2D lattice systems with thousands of quantum
+   spins using only very modest computational resources. From the theoretical point of view, entanglement renormalization sheds new light into the
+   structure of correlations in the ground state of extended quantum systems.
+
+   I will discuss how it leads to a novel, efficient representation for the ground state of a system at a quantum critical point or with topological order.
+
+
+
+
+Pirsa: 08010005                                                                                                                                Page 1/171
+Pirsa: 08010005   Page 2/171
+Pirsa: 08010005   Page 3/171
+Pirsa: 08010005   Page 4/171
+Pirsa: 08010005   Page 5/171
+Pirsa: 08010005   Page 6/171
+Pirsa: 08010005   Page 7/171
+Pirsa: 08010005   Page 8/171
+Pirsa: 08010005   Page 9/171
+Pirsa: 08010005   Page 10/171
+Pirsa: 08010005   Page 11/171
+Pirsa: 08010005   Page 12/171
+Pirsa: 08010005   Page 13/171
+Pirsa: 08010005   Page 14/171
+Pirsa: 08010005   Page 15/171
+Pirsa: 08010005   Page 16/171
+Pirsa: 08010005   Page 17/171
+Pirsa: 08010005   Page 18/171
+Pirsa: 08010005   Page 19/171
+Pirsa: 08010005   Page 20/171
+Pirsa: 08010005   Page 21/171
+Pirsa: 08010005   Page 22/171
+Pirsa: 08010005   Page 23/171
+Pirsa: 08010005   Page 24/171
+Pirsa: 08010005   Page 25/171
+Pirsa: 08010005   Page 26/171
+Pirsa: 08010005   Page 27/171
+Pirsa: 08010005   Page 28/171
+Pirsa: 08010005   Page 29/171
+Pirsa: 08010005   Page 30/171
+Pirsa: 08010005   Page 31/171
+Pirsa: 08010005   Page 32/171
+Pirsa: 08010005   Page 33/171
+Pirsa: 08010005   Page 34/171
+Pirsa: 08010005   Page 35/171
+Pirsa: 08010005   Page 36/171
+Pirsa: 08010005   Page 37/171
+Pirsa: 08010005   Page 38/171
+Pirsa: 08010005   Page 39/171
+Pirsa: 08010005   Page 40/171
+Pirsa: 08010005   Page 41/171
+Pirsa: 08010005   Page 42/171
+Pirsa: 08010005   Page 43/171
+Pirsa: 08010005   Page 44/171
+Pirsa: 08010005   Page 45/171
+Pirsa: 08010005   Page 46/171
+Pirsa: 08010005   Page 47/171
+Pirsa: 08010005   Page 48/171
+Pirsa: 08010005   Page 49/171
+Pirsa: 08010005   Page 50/171
+Pirsa: 08010005   Page 51/171
+Pirsa: 08010005   Page 52/171
+Pirsa: 08010005   Page 53/171
+Pirsa: 08010005   Page 54/171
+Pirsa: 08010005   Page 55/171
+Pirsa: 08010005   Page 56/171
+Pirsa: 08010005   Page 57/171
+Pirsa: 08010005   Page 58/171
+Pirsa: 08010005   Page 59/171
+Pirsa: 08010005   Page 60/171
+Pirsa: 08010005   Page 61/171
+Pirsa: 08010005   Page 62/171
+Pirsa: 08010005   Page 63/171
+Pirsa: 08010005   Page 64/171
+Pirsa: 08010005   Page 65/171
+Pirsa: 08010005   Page 66/171
+Pirsa: 08010005   Page 67/171
+Pirsa: 08010005   Page 68/171
+Pirsa: 08010005   Page 69/171
+Pirsa: 08010005   Page 70/171
+Pirsa: 08010005   Page 71/171
+Pirsa: 08010005   Page 72/171
+Pirsa: 08010005   Page 73/171
+Pirsa: 08010005   Page 74/171
+Pirsa: 08010005   Page 75/171
+Pirsa: 08010005   Page 76/171
+Pirsa: 08010005   Page 77/171
+Pirsa: 08010005   Page 78/171
+Pirsa: 08010005   Page 79/171
+Pirsa: 08010005   Page 80/171
+Pirsa: 08010005   Page 81/171
+Pirsa: 08010005   Page 82/171
+Pirsa: 08010005   Page 83/171
+Pirsa: 08010005   Page 84/171
+Pirsa: 08010005   Page 85/171
+Pirsa: 08010005   Page 86/171
+Pirsa: 08010005   Page 87/171
+Pirsa: 08010005   Page 88/171
+Pirsa: 08010005   Page 89/171
+Pirsa: 08010005   Page 90/171
+Pirsa: 08010005   Page 91/171
+Pirsa: 08010005   Page 92/171
+Pirsa: 08010005   Page 93/171
+Pirsa: 08010005   Page 94/171
+Pirsa: 08010005   Page 95/171
+Pirsa: 08010005   Page 96/171
+Pirsa: 08010005   Page 97/171
+Pirsa: 08010005   Page 98/171
+Pirsa: 08010005   Page 99/171
+Pirsa: 08010005   Page 100/171
+Pirsa: 08010005   Page 101/171
+Pirsa: 08010005   Page 102/171
+Pirsa: 08010005   Page 103/171
+Pirsa: 08010005   Page 104/171
+Pirsa: 08010005   Page 105/171
+Pirsa: 08010005   Page 106/171
+Pirsa: 08010005   Page 107/171
+Pirsa: 08010005   Page 108/171
+Pirsa: 08010005   Page 109/171
+Pirsa: 08010005   Page 110/171
+Pirsa: 08010005   Page 111/171
+Pirsa: 08010005   Page 112/171
+Pirsa: 08010005   Page 113/171
+Pirsa: 08010005   Page 114/171
+Pirsa: 08010005   Page 115/171
+Pirsa: 08010005   Page 116/171
+Pirsa: 08010005   Page 117/171
+Pirsa: 08010005   Page 118/171
+Pirsa: 08010005   Page 119/171
+Pirsa: 08010005   Page 120/171
+Pirsa: 08010005   Page 121/171
+Pirsa: 08010005   Page 122/171
+Pirsa: 08010005   Page 123/171
+Pirsa: 08010005   Page 124/171
+Pirsa: 08010005   Page 125/171
+Pirsa: 08010005   Page 126/171
+Pirsa: 08010005   Page 127/171
+Pirsa: 08010005   Page 128/171
+Pirsa: 08010005   Page 129/171
+Pirsa: 08010005   Page 130/171
+Pirsa: 08010005   Page 131/171
+Pirsa: 08010005   Page 132/171
+Pirsa: 08010005   Page 133/171
+Pirsa: 08010005   Page 134/171
+Pirsa: 08010005   Page 135/171
+Pirsa: 08010005   Page 136/171
+Pirsa: 08010005   Page 137/171
+Pirsa: 08010005   Page 138/171
+Pirsa: 08010005   Page 139/171
+Pirsa: 08010005   Page 140/171
+Pirsa: 08010005   Page 141/171
+Pirsa: 08010005   Page 142/171
+Pirsa: 08010005   Page 143/171
+Pirsa: 08010005   Page 144/171
+Pirsa: 08010005   Page 145/171
+Pirsa: 08010005   Page 146/171
+Pirsa: 08010005   Page 147/171
+Pirsa: 08010005   Page 148/171
+Pirsa: 08010005   Page 149/171
+Pirsa: 08010005   Page 150/171
+Pirsa: 08010005   Page 151/171
+Pirsa: 08010005   Page 152/171
+Pirsa: 08010005   Page 153/171
+Pirsa: 08010005   Page 154/171
+Pirsa: 08010005   Page 155/171
+Pirsa: 08010005   Page 156/171
+Pirsa: 08010005   Page 157/171
+Pirsa: 08010005   Page 158/171
+Pirsa: 08010005   Page 159/171
+Pirsa: 08010005   Page 160/171
+Pirsa: 08010005   Page 161/171
+Pirsa: 08010005   Page 162/171
+Pirsa: 08010005   Page 163/171
+Pirsa: 08010005   Page 164/171
+Pirsa: 08010005   Page 165/171
+Pirsa: 08010005   Page 166/171
+Pirsa: 08010005   Page 167/171
+Pirsa: 08010005   Page 168/171
+Pirsa: 08010005   Page 169/171
+Pirsa: 08010005   Page 170/171
+Pirsa: 08010005   Page 171/171
+

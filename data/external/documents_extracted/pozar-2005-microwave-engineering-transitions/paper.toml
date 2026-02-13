@@ -1,0 +1,1596 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+13 \r
+Capabilities and Performances of the \r
+Selective Laser Melting Process \r
+Sabina L. Campanelli, Nicola Contuzzi, \r
+Andrea Angelastro and Antonio D. Ludovico \r
+Polytechnic of Bari, Department of Management and Mechanical Engineering, \r
+Viale Japigia, 182 \r
+Italy \r
+1. Introduction \r
+The current market is in a phase of accelerated process of change, that leads companies to \r
+innovate in new techniques or technologies to respond as quickly as possible to the ever\u0002changing aspects of the global environment. The economy of a country is heavily dependent \r
+on new and innovative products with very short development time. \r
+Companies, currently, have considerable success, only if they develop the ability to respond \r
+quickly to changing of customer needs and to use new innovative technologies. In this \r
+context, the companies that can offer a greater variety of new products with higher \r
+performance resulting in advantage over the other. \r
+At the heart of this environment there is a new generation of customers, who forced \r
+organizations to research new technologies and techniques to improve business processes \r
+and accelerate product development cycle. As a direct result, factories are forced to apply a \r
+new philosophy of engineering as the Rapid Response to Manufacturing (RRM). The \r
+concept of the RRM uses products previously designed to support the development of new \r
+products. \r
+The RRM environment was developed by integrating the various technologies, such as \r
+CAD-based modelling, the knowledge-based engineering for integrated product and \r
+process management and the direct production concepts. Direct production uses \r
+prototyping, tooling and rapid manufacturing technologies to quickly test the design and \r
+build the part (Cherng et al., 1998). \r
+Among RRM technologies, Rapid (RP) and Virtual (VP) Prototyping are revolutionizing the \r
+way in which artefacts are designed. \r
+Rapid Prototyping (RP) technologies embraces a wide range of processes for producing \r
+parts directly from CAD models, with little need for human intervention; so, designers can \r
+produce real prototypes, even very complex, in a simple and efficient way, allowing them to \r
+check the assembly and functionality of the design, minimizing errors, product \r
+development costs and lead times (Waterman & Dickens, 1994). \r
+The SLS technology was developed, like other RP technologies, to provide a prototyping \r
+technique to decrease the time and cost of the product cycle design. It consists of building a \r
+three dimensional object layer by layer selectively sintering or partial melting a powder bed \r
+by laser radiation. \r
+www.intechopen.com
+
+234 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+The SLS objects appear as rigid and porous, in fact, the density of the material depends on \r
+the temperature evolution. The molten layer, when the temperature decreases, solidifies and \r
+binds to the underlying layer, but the presence of the liquid phase, although happens for a \r
+few time, leads to a shrinkage of the powder–liquid mixture. Thus, the porosity cannot be \r
+completely eliminated, but the density of the manufactured part is usually higher than the \r
+powder density. Moreover, due to temperature variation, mechanical stresses are induced. \r
+As a consequence, the final state of the part (dimensions, density, residual stress levels, etc.) \r
+strongly depends on the process evolution (Kolossov et al., 2004). \r
+The success of SLS as a rapid prototyping and rapid manufacturing technology results \r
+mainly to the possibility to process almost any type of materials (polymers, glass-filled \r
+nylon, metal and composites) to accommodate multiple applications throughout the \r
+manufacturing process, but high density is desired for the production of functional metallic \r
+parts. \r
+The Selective laser sintering process can be indirect or direct: \r
+1. The indirect SLS uses a polymer coating of about 5 µm in thickness for metal powders \r
+and ceramics. The metal powder particles are coated with the polymer and the action of \r
+the laser melts the polymer, bonding the metal particles together to produce a green \r
+part. It is necessary, therefore, a post-treatment in the oven at high temperature, so \r
+remove the polymer and sintering particles by creating a metal-metal link. \r
+2. In Direct SLS (DMLS) a low melting point component is melted and employed as a \r
+matrix in which the higher melting point components sit. In this process are used or a \r
+single powder with two different grain sizes (a slight and a coarse grains) or binary \r
+systems. Typical binary phase systems investigated include Ni-Cu, Fe-Cu and Cu\u0002Pb/Sn (Kruth et al. 2008; Lu et al., 2001). The disadvantage of the above processing \r
+routes is that the components produced exhibit the mechanical properties and \r
+characteristics of their weakest composite phase, thus lacking the full mechanical \r
+functionality required for heavy-duty tasks (Dewidar et al., 2008). \r
+To obtain high density, for functional metallic prototypes, parts or tools, different powder \r
+binding mechanisms is necessary, so, Selective Laser Melting (SLM) was developed. \r
+The SLM represents a variation from the classical SLS. The substantial differences compared \r
+to the latter are: \r
+• using an integral powder metal without adding low melting point elements; \r
+• the need to provide a much higher energy density, to bring fusion the powder. \r
+In SLM near full density parts can be produced without the need for post-processing steps, \r
+while the same materials can be used as in serial production. \r
+The advantage is to get an element a massively dense, close to 100%, with metallurgical \r
+characteristics similar to the objects achievable with conventional production processes and \r
+without need of post-treatments. \r
+The laser must have a greater power than the SLS and at the end of the process the \r
+manufactured objects is quite similar to series production, in fact, it does not require special \r
+surface finishes and may be subjected quietly at conventional machining. \r
+In addition, with Selective Laser Melting process there is the theoretical possibility of \r
+produce any complex geometry. This result is attributable to Layer Manufacturing, each \r
+individual point of the component can be reached by the laser beam at any time during the \r
+process. In contrast, the process isn't competitive for large lots or for slight complex parts, \r
+because the technique is rather slow and, therefore, very expensive. \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 235 \r
+In order to reach a high density, the metallic powder particles are fully molten, laser melting \r
+process is accompanied by the development of residual stresses, that derive from high \r
+thermal gradients in the material. These stresses can cause distortion of the part, cracks or \r
+delaminations (Fischer et al., 2003; Pohl et al., 2001; Nickel et al., 2001). \r
+Another undesirable phenomenon is the vaporization, that occurs when the bed of powder \r
+is irradiated with high energy intensity. During the laser melting process, the temperature of \r
+the powder particles exposed to the laser beam exceed the melting temperature of the \r
+material. A further increase in temperature (about twice the material melting temperature) \r
+causes the evaporation of the powder, so, there are a fast-moving expansion of evaporated \r
+particles, which generate a overpressure on the melted zone and the material is ejected from \r
+its bed (Hauser et al., 2003). \r
+Another problem that may occur during the SLM process is the "balling" or spheroidization \r
+phenomenon, i.e. the formation of isolated spheres with a diameter equal to the laser beam \r
+focus, which inhibits deposition and decreases the density of produced part. It occurs when \r
+the molten material is unable to fully wet the substrate because of surface tension. \r
+The phenomenon is caused by an excessive amount of energy, which gives to the melted \r
+powder a too low value in viscosity (Nickel et al., 2001; Kannatey-Asibu, 2009; Niu & \r
+Chang, 1999). \r
+The aim of this chapter will be to describe capabilities and performances of the SLM process. \r
+First, the capacity of the system in realizing micro-components with both high dimensional \r
+accuracy and maximum density, with mechanical properties similar to those assured by \r
+traditional technologies, will be investigated. Later on it, the chapter will describe some \r
+applications of the SLM process, such as the manufacture of moulds with conformal \r
+channels, of customised jigs for welding and the design and fabrication of reticular \r
+structures, to be used in automotive and aerospace field or in the medical one for custom \r
+prosthesis fabrication. \r
+2. The process \r
+Selective Laser Melting Equipment technology provide a laser system, a set of optical laser \r
+beam focusing, a powder feeding system (loader and roller or coater) and a control center \r
+(Fig. 1). \r
+The piece to be achieved should be drawn using a three dimensional solid or surface \r
+modeler, then the mathematical model is developed in a CAD format compatible with the \r
+management software of the RP machine. \r
+The currently accepted graphic standard by all manufacturers is the STL (solid to layer), \r
+introduced by 3D Systems, which provides the mesh of internal and external surfaces of the \r
+workpiece through triangular elements. \r
+The STL file is then processed for the orientation and slicing phases. The first step allows to \r
+select the best growth direction of the piece, which greatly influences the dimensional \r
+accuracy and production time. \r
+The slicing step, instead, is a critical because it determines the accuracy of the product; in \r
+fact, it provides a breakdown of the object with orthogonal planes to the direction of growth, \r
+obtaining the contour of each section, which describes the path of scanning beam laser, and \r
+the thickness of the layers. \r
+The process takes place inside an enclosed chamber, filled with nitrogen gas, to minimize \r
+oxidation and degradation of the powdered material. \r
+www.intechopen.com
+
+236 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 1. SLM equipment \r
+Fig. 2. Phases of the SLM process \r
+In some technological solutions, to minimize distortions and residual stresses, the powder in \r
+the build platform is maintained at an elevated temperature (below the melting point of the \r
+powdered material); in other technological solution the preheating phase is used to \r
+minimize porosity on the built piece (Slocombe et al., 2001) \r
+The most common solutions include: \r
+• infrared heaters, that are placed about the building platform to maintain an elevated \r
+temperature around the part that being formed; \r
+• feed cartridges, to pre-heat the powder prior to spreading over the build area. \r
+• resistive heaters, around the building platform. \r
+This powder pre-heating and the next maintenance of an elevated and uniform temperature, \r
+within the build platform, is necessary, also, to minimize the power laser requirements of \r
+the process, to improve absorption of the laser beam, to prevent warping of the part during \r
+the build due to non-uniform thermal expansion and contraction (curling), to reduce the \r
+temperature gradients and improve the wetting properties. \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 237 \r
+Preheating of the powder is used to improve absorption of the laser to reduce the \r
+temperature gradients and improve the wetting properties. \r
+The Control Centre commands the RP machine power system: the powder room is raised by \r
+an amount such that the deposited powder by roller or coater, on the surface of the building \r
+chamber, deposits a layer of a thickness equal to that given during slicing, while the \r
+working chamber decreases the thickness of a layer (Fig.2a). \r
+The coater deposits, in uniform way, the powder on the building chamber (Fig.2b). \r
+The laser beam selectively scans the surface of the powder, that is, then, sintered (Fig.2c). \r
+When the first two-dimensional layer is created, the process is repeated until the object is \r
+built, with a lowering, equal to the thickness of the layer, of the building chamber (Fig. 2.d) \r
+and the subsequent distribution of the powder with the coater and the selective scanning by \r
+the laser beam. Surrounding powder remains loose and serves as support for subsequent \r
+layers, thus eliminating the need for the secondary supports which are necessary for \r
+photopolymer vat processes. \r
+For pre-heated solution, a cooling period is required. If the high temperature parts and \r
+powders are prematurely exposed to external atmosphere, they may degrade for the \r
+presence of oxygen and the powder cannot be recovered and used for further processing; \r
+also, the built objects may warp due to uneven thermal contraction. So, to allow the parts to \r
+uniformly come to a low-enough temperature that they can be handled and exposed to \r
+ambient temperature and atmosphere. \r
+Finally, the parts are removed from the powder bed, loose powder is cleaned off the parts, \r
+and further finishing operations, if necessary, are performed. \r
+3. Materials \r
+In order to develop a process that can produce functional high strength parts, in a first time, \r
+successful results, with DMLS, have been obtained with high-strength powder mixtures, \r
+that containing only two metal powders, such as Fe-Cu, WC-Co, TiC-Ni/Co/Mo, TiCN-Ni, \r
+TiB2-Ni, ZrB2-Cu and Fe3C-Fe, melting only the powder having the lower melting point \r
+(Kruth et al., 1997; Kruth et al., 1996; Laoui et al., 1998). \r
+However, a substantial amount of work has been carried out in the field of laser sintering of \r
+metal parts, some of which are as follows. Niu and Chang (Niu and Chang, 1998; Niu and \r
+Chang, 1999; Niu and Chang, 1999; Niu and Chang, 2000) have studied the SLS process on \r
+HSS powder with a carbon di-oxide laser of 25 W, while Fischer (Fischer et al., 2003) has \r
+studied the behaviour of commercial titanium. Song (Song, 1997) have performed \r
+experiments on direct sintering of pre-alloyed bronze as a low melting metallic powder on a \r
+laboratory test facility. Abe (Abe et al., 2001) has studied the behavior of nickel base alloys \r
+and has reported that the process does not exhibit balling phenomenon but only part \r
+deflections and cracking. \r
+At this day, few studies have been performed on SLM process. Badrossamay (Badrossamay\r
+& Childs, 2007) has performed a further studies on M2 tool steel, 316L and 314S-HC \r
+stainless steel, while Abe (Abe et al., 2001) has investigated the effects of a single scanning \r
+test on several kinds of materials: aluminium, copper, iron, stainless steels (SUS 316L), \r
+chromium, titanium and nickel-based alloy. Kruth (Kruth et al., 2004) has studied a mixture \r
+of different types of particles (Fe, Ni, Cu and Fe3P) specially developed for SLM. \r
+www.intechopen.com
+
+238 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+4. Experimental tests and analysis of results \r
+4.1 Experimental plan \r
+Experimental tests have been performed in this work to understand the capabilities of the \r
+SLM process in terms of density, roughness, dimensional accuracy and mechanical \r
+properties. \r
+Several process parameters can be modified in order to obtain optimum quality of laser \r
+sintered samples. Some of these parameters are related to the process (single layer thickness, \r
+scan velocity, hatch spacing, scan strategy), others depend on the laser (laser power, spot \r
+diameter, wavelengths, the energy of the pulse laser), the type of material and other \r
+characteristics of the used powder (such as particle size, distribution, shape, material type, \r
+the percentage composition of materials), others by the final component which is to be \r
+realized (shape, size, etc...). \r
+The energy density Ed of a single track can be calculated by the relation between laser power \r
+(P), scan speed (v) and spot diameter (d) (Eq. 1) (Lu, 2009): \r
+d 2\r
+P J E\r
+v d mm\r
+⎡ ⎤\r
+= ⎢ ⎥\r
+⋅ ⎣ ⎦ (1) \r
+where: \r
+• P is the laser power used to scan a part; \r
+• v is the scan speed or the velocity by which the laser beam moves over the powder \r
+surface. \r
+• d is the spot diameter, equal to 0.2 [mm]. \r
+A full factorial plan (32 plan) was used to project experiments. A contemporary variation of \r
+the two parameters, scanning speed (measured in mm/s) of the laser power (measured in \r
+Watt) was considered, in order to find out the parameters combination leading to the \r
+maximum mechanical properties. The combination of these two parameters is responsible \r
+for the melting mechanism and influence the quality of built parts. \r
+Nine samples were built, with three levels of scanning speed (180, 200, 220) and three levels \r
+of laser power (57, 86, 100). Moreover, five replications for each combination of the \r
+parameters were realized. \r
+4.2 Machine set up \r
+The machine used to perform experiments was equipped with a Rofin Nd:YAG laser source \r
+characterized by a wavelength of 1.064 μm, a spot diameter of 200 μm and a maximum \r
+output power of 100 W. The laser beam was moved over the powder surface by means of \r
+scanning mirrors in order to draw selectively every layer of the powder. \r
+The powder deposition system consisted in a building chamber, a powder chamber and a \r
+coater. Powder layers were deposited in one direction using a coater and the layer thickness \r
+was set to 30 µm. Moreover, the chamber was filled, in slight overpressure, with nitrogen to \r
+prevent oxidation of the parts and to reduce the initial oxygen level at 0.8%. \r
+4.3 Material \r
+A material with the typical composition of maraging steels, reinforced with cobalt, was used \r
+for the present study. Specifically, the composition was very close to the 18 Ni Marage 300 \r
+steel and the powder had spherical particles with average size below 40μm. The chemical \r
+composition of the used powder, determined by Energy Dispersive X-ray (EDX) analysis, \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 239 \r
+consisted in 4.2 wt.% Mo, 0.88 wt.% Ti, 65.9 wt.% Fe, 10.2 wt.% Co, 18.8 wt.% Ni and 0.02 \r
+wt.% C. \r
+Maraging steels are a special class of low-carbon ultra-high-strength steels, which derive \r
+their strength not from carbon, but from precipitation of inter-metallic compounds; they \r
+were developed for high performance applications, especially those in which high strength \r
+and good toughness are required. \r
+18 Ni Marage 300 steel presents excellent mechanical properties, high value of yield and \r
+tensile strength, toughness, ductility and impact strength, high fatigue limit, high \r
+compressive strength, hardness and wear resistance suitable for many machining tools. \r
+This type of steel is conventionally used for produce tools suitable for complex machining, \r
+to achieve high-performance industrial parts (aerospace applications), for manufacturing of \r
+dies for hot injection moulding, for inserts for moulds of all standard thermoplastic \r
+materials, for casting and for the direct realization of objects for engineering applications. \r
+4.4 Mechanical characterisation of built samples \r
+Small square samples of 15 x 15 x 10 mm were built to measure density, hardness and to \r
+study microstructure. \r
+First, density was measured with the ‘Archimedes-method’ by weighting the samples in air \r
+and subsequently in ethanol after coating them with a lacquer. The coating prevented \r
+absorption of ethanol by the specimen during measurements. \r
+Fig. 3. Density versus Energy Density \r
+Fig. 3 shows the tendency of Density versus the Energy Density Ed. Values of Ed were \r
+calculated by means of Eq. 1. \r
+ It is evident that density increases with the increase of Ed and it is maximal for the \r
+maximum Ed, which means scan speed and laser power set respectively to the minimum \r
+(180 mm/s) and the maximum value (100W) of the considered range. A maximum value of \r
+8.0 g/m3 was found for density; thus the porosity was approximately 0.01%. This means \r
+that it was possible to produce nearly full dense parts with properties comparable to those \r
+of the bulk material. \r
+Hardness and tensile tests were performed on specimens built with the maximum density, \r
+setting the scan speed to 180 mm/s and laser power to 100W. \r
+Rockwell C test was used for determining hardness. Experimental results gave an average \r
+value of 34 HRC. \r
+www.intechopen.com
+
+240 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Tensile tests were performed using an Instron 4467 machine equipped by an extensometer \r
+(with a 12.5 mm gage length and maximum elongation of 5 mm). Results of tensile test \r
+brought to a value of 985 MPa for Yield Strenght, 1145 MPa for Tensile Strength and 7.6 % \r
+for Elongation to break. \r
+Fig.4(a) and Fig.4(b), respectively, show micrographs at magnifications 200X and 1000X \r
+obtained with an optical microscope. It is evident that the metal powder is completely fused \r
+and constituted by molten/re-solidified zones with curved edges (approximately parabolic). \r
+The laser tracks overlap in order to produce a non-porous part. This means that each part is \r
+welded onto the layers surrounding it. The presence of pores is very limited as it is possible \r
+to see from black spots in the pictures. \r
+200 µm 20 µm\r
+a) b)\r
+20 µm\r
+a) b)\r
+Fig. 4. 200x magnification (a) and 1000x magnification (b) of the sample obtained with \r
+P=100W and v=180mm/s \r
+4.5 Dimensional accuracy \r
+A specific part test was developed in order to test the dimensional accuracy of SLM parts \r
+with the maximum density achieved. The proposed geometry with maximum dimensions \r
+70 x 70 x 25 mm is shown in (Fig. 5). It was thought to determine capabilities of the process \r
+in terms of: \r
+- minimum feasible feature size; \r
+- dimensional achievable accuracy. \r
+Fig. 5. Benchmark geometry \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 241 \r
+The feasible precision and resolution of the process were tested by: \r
+- cylindrical holes (CH), ranging from 0.2 to 6 mm diameter (CH1. CH2, CH3, CH4, CH5, \r
+CH6, CH7 ); \r
+- cylindrical extrusions (CE), ranging from 0.2 to 6 mm diameter (CE1, CE2, CE3, CE4, \r
+CE5, CE6, CE7); \r
+- parallelepiped extrusions (PE), ranging from 0.2 to 6 mm thickness (PE1, PE2, PE3, PE4, \r
+PE5, PE6, PE7); \r
+- parallelepiped cavities (PC), ranging from 0.2 to 6 mm width (PC1, PC2, PC3, PC4, PC5, \r
+PC6, PC7); \r
+- vertical holes (VH) ranging from 0.2 to 6 mm diameter (VH1, VH2, VH3, VH4, VH5, \r
+VH6, VH7); \r
+- thin walls (TW) ranging from 0.2 to 6 mm thickness (TW1, TW2, TW3, TW4, TW5, TW6, \r
+TW7); \r
+The built benchmark (Fig. 6) was measured using a coordinate measuring machine (DEMeet \r
+400) together with an optical microscope. \r
+Fig. 6 shows a picture of the built benchmark. It is evident how all designed features could \r
+be realized, except for cylindrical extrusions CE1, CE2, CE3. They were probably built, but \r
+they were removed by the coater during the deposition of the powder. \r
+The dimensional error E% was introduced in order to perform an analytical study of the \r
+accuracy (Eq. 2). In this equation Nd and Md represent respectively the nominal and the \r
+measured dimension. \r
+100\r
+d\r
+N\r
+d Md\r
+N\r
+E ⋅\r
+−\r
+=\r
+°\r
+° (2) \r
+Results of measurements (Table 3) showed that it was possible to build: \r
+- thin walls with a maximum error of 15% for a thickness of 0.2 mm and with a minimum \r
+error of 1.17% for a thickness of 6 mm; \r
+- parallelepiped cavities with a maximum error of 20% for a width of 0.2 mm and with a \r
+minimum error of 4% for a width of 6 mm; \r
+- parallelepiped extrusions with a maximum error of 20% for a thickness of 0.2 mm and \r
+with a minimum error of 1.33% for a thickness of 6 mm; \r
+Fig. 6. Built benchmark \r
+www.intechopen.com
+
+242 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Element Measurable \r
+size \r
+Nominal dimension\r
+[mm] \r
+Measured Dimension\r
+[mm] E% \r
+CE1 diameter 0.2 - - \r
+CE2 diameter 0.3 - - \r
+CE3 diameter 0.4 - - \r
+CE4 diameter 0.8 0.87 -8.75 \r
+CE5 diameter 1.5 1.6 -6.67 \r
+CE6 diameter 3 2.99 0.33 \r
+CE7 diameter 6 5.99 0.17 \r
+CH1 diameter 0.2 0.23 -15.00 \r
+CH2 diameter 0.3 0.34 -13.33 \r
+CH3 diameter 0.4 0.41 -2.50 \r
+CH4 diameter 0.8 0.82 -2.50 \r
+CH5 diameter 1.5 1.53 -2.00 \r
+CH6 diameter 3 2.91 1.67 \r
+CH7 diameter 6 5.94 1.00 \r
+PE1 thickness 0.2 0.16 20.00 \r
+PE2 thickness 0.3 0.32 -6.67 \r
+PE3 thickness 0.4 0.36 10.00 \r
+PE4 thickness 0.8 0.88 -10.00 \r
+PE5 thickness 1.5 1.64 -9.33 \r
+PE6 thickness 3 3.24 -8.00 \r
+PE7 thickness 6 6.08 -1.33 \r
+PC1 width 0.2 0.24 -20.00 \r
+PC2 width 0.3 0.33 -10.00 \r
+PC3 width 0.4 0.44 -10.00 \r
+PC4 width 0.8 0.84 -5.00 \r
+PC5 width 1.5 1.37 8.67 \r
+PC6 width 3 2.84 5.33 \r
+PC7 width 6 5.43 9.50 \r
+VH1 diameter 0.2 0.25 -25.00 \r
+VH2 diameter 0.3 0.36 -20.00 \r
+VH3 diameter 0.4 0.43 -7.50 \r
+VH4 diameter 0.8 0.85 -6.25 \r
+VH5 diameter 1.5 1.55 -3.33 \r
+VH6 diameter 3 2.73 9.00 \r
+VH7 diameter 6 5.46 9.00 \r
+TW1 thickness 0.2 0.17 15.00 \r
+TW2 thickness 0.3 0.33 -10.00 \r
+TW3 thickness 0.4 0.37 7.50 \r
+TW4 thickness 0.8 0.75 6.25 \r
+TW5 thickness 1.5 1.44 4.00 \r
+TW6 thickness 3 3.06 -2.00 \r
+TW7 thickness 6 6.07 -1.17 \r
+Table 3. Results of measurements \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 243 \r
+- cylindrical extrusions with a maximum error of 8.75% for a diameter of 0.8 mm and \r
+with a minimum error of 0.17% for a diameter of 6 mm; \r
+- cylindrical holes with a maximum error of 15% for a diameter of 0.2 mm and with a \r
+minimum error of 1% for a diameter of 6 mm; \r
+- vertical holes with a maximum error of 25% for a thickness of 0.2 mm and with a \r
+minimum error of 3.33% for a thickness of 1.5 mm. \r
+The following considerations can be drawn: \r
+The process has a good accuracy for nominal dimensions over 0.4 mm; E% increases for \r
+values lower than 0.4 mm because the nominal dimension is gradually approaching to the \r
+laser spot diameter. \r
+5. SLM Applications \r
+5.1 Cellular structures \r
+The cellular metal structures have been used in various industrial applications such as heat \r
+exchangers, in reconstructive surgery, in chemistry, in automotive and aerospace industries. \r
+They possess valuable characteristics as low density, high strength, good energy absorption, \r
+good thermal and acoustic properties (Dotcheva et al., 2008). \r
+Periodic cellular structures are highly porous structures, with only 20% or less of their \r
+internal volume occupied by solid material (Evans et al., 2001). These advantageous \r
+characteristics make them very desirable, but difficulties in their production limits their \r
+application. Layer manufacturing technologies such as Direct Metal Additive \r
+Manufacturing, the Electron Beam Melting, the Direct Metal Laser Sintering and Selective \r
+Laser Melting (SLM), allow the manufacture of solid parts of any geometry, using laser \r
+technology and layers of metal powder. \r
+The SLM technology offers the possibility to produce parts with complex engineering \r
+materials (stainless steel, tool steel, titanium alloy and cobalt-chromium alloys) relatively \r
+quickly, directly from a 3D CAD data. \r
+This gives designers the freedom to use the cellular materials where there is the need to \r
+create a better functionality of a product without sacrificing its mechanical properties. \r
+The SLM technology, used as a process for the production of cellular structures, can be \r
+beneficial as it has: \r
+• The complete freedom in defining the geometry of the part (Kruf et al., 2006); \r
+• The reduction of the production cycle (Santos et al., 2006). \r
+In this field, few works have been performed. \r
+Rehme (Rehme,2010) have been investigated the manufacturability and scaling laws for \r
+mechanical properties of periodic lattice structures built with SLM technology. In his work \r
+has built eight different unit cell types, that possess low relative density and response well \r
+to compressive load. Dotcheva et al. (Dotcheva et al., 2008) have been used cellular truss \r
+structures as a core material for injection moulding tools. They investigated the capabilities\r
+of SLM technology for fast building of 3D complex geometry and to improve the thermal \r
+management of the injection moulding process. \r
+At DIMeG of the Polytechnic of Bari, has been tested the ability of the SLM to build lattice \r
+structures (Contuzzi, 2010). \r
+To test the process, it was chosen, for its versatility, a lattice structure reinforced vertically \r
+and with 45° truss columns (Fig. 7). \r
+www.intechopen.com
+
+244 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 7. Single cell and its dimension \r
+The studied configurations are: \r
+A. cell of 2 mm (L) with side of the truss of 500 μm (l) (Fig. 8); \r
+B. cell of 3 mm (L) with side of the truss of 700 μm (l) (Fig. 9). \r
+Overall, the configuration A (2 mm cells, 500 μm side truss) has the dimensions of 16x16x16 \r
+mm, while the B configuration (3 mm cells, 700 μm side truss) has the dimensions of \r
+21x21x15 mm. \r
+Between multi-functional applications of periodic cellular structures one of the most \r
+interesting is one that uses they as heat sinks (resistors). \r
+Fig. 8. CAD model of sample A \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 245 \r
+Fig. 9. CAD model of sample B \r
+Its function is to extend the physical dimensions of the device, allowing, thus, a better heat \r
+dissipation, because it deprives heat, for Joule effect, and transfers it to the surroundings \r
+ambient, preventing the excess of the temperature limit. The presence of the heat sink leads \r
+to a reduction in overall thermal resistance, allowing, thus, the reduction of the temperature \r
+reached of the device, or, wanting exploit the maximum operating temperature, have a \r
+higher power dissipated. \r
+The studied lattice structure have a good behavior as resistors, allowing a disposal, in both \r
+configurations, well over 100 watts (Fig. 10) at room temperature of 0°C and over 60 W at \r
+room temperature of 220°C. \r
+The structures show, also, good mechanical properties. A compressive test was performed \r
+(Fig. 11) \r
+The sintered AISI MARAGE 300 has an elastic behavior almost to the breaking point, this \r
+means that, according to Timoshenko & Gere (Gere & Timoshenko ,1984), the lattice \r
+structure, at a certain point, begins to deform plastically, but continues to support the stress \r
+because of the hardening of the trusses, the beams themselves then collapsing for plastic \r
+instability. \r
+For this reason the tests were not performed until the complete collapse of structures, but \r
+were stopped when the load is stable for a specified time interval. In this interval the trusses \r
+begin to destabilized, but the load is supported by the intact trusses. \r
+Fig. 10. Maximum power dissipated \r
+www.intechopen.com
+
+246 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 11. Load-Displacement curve \r
+5.2 Tools with three-dimensional conformal channels \r
+In recent years, SLM have found widespread use in the field of rapid tooling, especially in \r
+the injection mould. The basic principle of injection moulding is that a solid polymer is \r
+molten and injected into a cavity inside a mould, which is then cooled and the part ejected \r
+from the machine. Therefore, the main phases in an injection moulding process involve \r
+filling, cooling and ejection. The cost-efficiency of the process is dependent on the time spent \r
+in the moulding cycle. Correspondingly, since the cooling phase is the most lenghty step \r
+among the three, it determines the rate at which the parts are produced. A reduction in the \r
+time spent on cooling the part before it is ejected would drastically increase the production \r
+rate, hence reduce costs (Dimla et al., 2005). Historically, this result has been achieved by \r
+creating several channels inside the mould and forcing a cooler liquid to circulate and \r
+conduct the excess heat away. The channels are constituted by holes as close as possible to \r
+the actual moulding area of the die. Up to now, the methods used for producing these holes \r
+rely on the conventional machining process such as drilling or boring. However, this simple \r
+technology can only create straight holes which, besides having to intersect each other and \r
+requiring the closure of entry points of the tool with a plug, cannot remain at a constant \r
+distance from the moulding area to cool it uniformly. Uneven cooling will result in an \r
+increase of the mould defects, like warpages or residual stresses, and of the cooling time. A \r
+more acceptable cooling method, the conformal cooling, is performed by the coolant flows \r
+in a pattern that closely matches the geometry of the part being moulded (Au & Yu, 2007). \r
+The term conformal means that the geometry of the cooling channel follows the mould \r
+surface geometry. The aim is to maintain a steady and uniform cooling performance for the \r
+moulding part. \r
+Ring et al. investigated the effectiveness of conformal channels by through the construction \r
+of three different moulds with and without conformal cooling. They showed that the \r
+conformal cooling channels technique led to significant improvements and a general \r
+reduction of the cycle time while increasing heat transfer (Ring et al., 2002). \r
+A comparison between conformal channels and drilled cooling channels has also been \r
+conducted by Sachs et al. Their analysis shows that the conformal channel mould reaches \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 247 \r
+operational temperature faster than the conventional one, attaining a more uniform \r
+temperature distribution with efficient heat transfer capacity (Sachs et al., 2000). \r
+While the use of conformal cooling channels on the one hand greatly enhances the injection \r
+molding process, on the other hand it is much more complicated fabricate them on respect \r
+of the straight ones. \r
+The advancement of Solid Freeform Fabrication gives rise to the production of injection \r
+mould with intricate cooling channel geometry. Rapid tooling based on SFF technology \r
+includes SLM. Much research has focused on improving the geometric design of the cooling \r
+channel via SFF technologies. In 2001, Xu studied injection mould with complex cooling \r
+channels based on SFF processes. He described the conformal cooling layout that can be \r
+realized with substantial improvements in part quality and productivity (Xu et al., 2001). \r
+At DIMeG of the Polytechnic of Bari, in collaboration with Elfim srl company of Gravina in \r
+Puglia (Ba), SLM was used to create a jig for welding of constituent parts of a titanium alloy \r
+intramedullary nail. The realization of this jig had two basic problems: \r
+• cooling of the jig; \r
+• conveyance of shielding gas on the welding area. \r
+The cooling circuit of each component of the jig was designed with conformal channels in \r
+order to follow the welding areas and the nail seat, as the conformal cooling channels follow \r
+the geometry of the cavity in the dies for injection moulding. However, in this case, the \r
+situation was more complicated because of the need to provide even the conveyance of \r
+shielding gas. \r
+The use of the shielding gas was necessary due to the high chemical reactivity of titanium, at \r
+high temperature, in presence of the oxygen. So, for a good quality joints and to prevent the \r
+oxides formation, the shielding of an inert gas was indispensable both during welding and \r
+during the cooling of the seam. Therefore, with the same concept usually adopted for the \r
+conformal cooling, was created a system of cylindrical channels, whit a diameter down to 1 \r
+mm, in order to direct the shielding gas on weld areas. \r
+Fig.12a and 13a show respectively the 3D CAD geometry of the upper and the lower \r
+component of the jig; Fig 12b and Fig 13b show the cooling (blue) and shielding gas (yellow) \r
+channels that were designed for the jig. Fig. 14 and Fig. 15 show respectively the fabricated \r
+upper and lower part of the jig, while Fig. 16 shows the coupling of the jig components. \r
+ \r
+Fig. 12. 3D-CAD model of (a) the upper component of the jig; (b) cooling (blue) and \r
+shielding gas (yellow) channels in it \r
+(a) (b) \r
+www.intechopen.com
+
+248 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+ \r
+Fig. 13. 3D-CAD model of (a) the lower component of the jig; (b) cooling (blue) and \r
+shielding gas (yellow) channels in it \r
+Fig. 14. Laser sintered upper component of the jig \r
+Fig. 15. Laser sintered lower component of the jig \r
+(a) (b) \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 249 \r
+Fig. 16. Coupling of the jig components \r
+6. Conclusions \r
+The aim of this chapter was to describe capabilities and performances of the SLM process. \r
+First, experimental tests were performed in order to investigate characteristics of SLM parts. \r
+It was found that SLM parts could be produced with almost full density and with \r
+mechanical properties similar to those assured by traditional technologies. Later on it, a \r
+benchmark was built to study the accuracy of the process. It was found that the process has \r
+a good accuracy for nominal dimensions over 0.4 mm; the dimensional error increases for \r
+values lower than 0.4 mm because the nominal size is gradually approaching to the laser \r
+spot diameter. \r
+Finally, the capacity of the process in producing customized jigs for welding and reticular \r
+structures was illustrated. \r
+7. References \r
+Abe F., Osakada K., Shiomi M., Uematsu K. & Matsumoto M. (2001). The manufacturing of \r
+hard tools from metallic powders by selective laser sintering. Journal of Materials \r
+Processing Technology, Vol. 111, No. 1-3, April 2001, 210–213, ISSN 0924-0136 \r
+Au K.M. & Yu K.M. (2007). A scaffolding architecture for conformal cooling design in rapid \r
+plastic injection moulding, International Journal of Advanced Manufacturing \r
+Technology, Vol. 34, No. 5-6, September 2007, 496-515, ISSN: 0268-3768 \r
+Badrossamay, M. & Childs, T.H.C. (2007). Further studies in selective laser melting of \r
+stainless and tool steel powders. International Journal of Machine Tools & \r
+Manufacture, Vol. 47, No. 5, April 2007, 779–784, ISSN: 0890-6955 \r
+www.intechopen.com
+
+250 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Campanelli, S.L; Contuzzi, N. & Ludovico, A.D (2009). Selective Laser Melting: Evaluation \r
+of the performances of 18 AISI Marage 300 steel parts. Proceedings of 9th A.I.Te.M. \r
+Conference, ISBN 8895057074, pp. 109-110, September 2009, Torino, Italy \r
+Campanelli, S.L; Contuzzi, N. & Ludovico, A.D (2010). Manufacturing of 18 Ni Marage 300 \r
+steel samples by selective laser melting. Advanced Materials Research, Vol. 83-86, \r
+February 2010, 850-857, ISBN 0-87849-297-6 \r
+Cherng, J. G.; Shao, X.; Chen Y. & Sferro P. R. (1998). Feature-Based Part Modeling And \r
+Process Planning For Rapid Response Manufacturing. Computers and Industrial \r
+Engineering, Vol. 34, No. 2, April 1998, 515-530, ISSN 0360-8352 \r
+Contuzzi, N. (2010). Analisi numerica e sperimentale di strutture innovative create mediante \r
+Fusione Laser Selettiva. Ph.D. Thesis in Mechanical and Biomechanical Design\r
+Dewidar, M. M.; Lim J. K. & Dalgarno, K.W. (2008). A Comparison between Direct and \r
+Indirect Laser Sintering of Metals. Journal of Materials Sciences and Technology, Vol. \r
+24, No.2, 227-232, ISSN 1005-0302 \r
+Dimla, D.E.; Camilotto, M. & Miani, F. (2005), Design and optimisation of conformal cooling \r
+channels in injection moulding tools. Journal of Materials Processing Technology, Vol. \r
+164–165, May 2005, 1294–1300, ISSN 0924-0136 \r
+Dotcheva, M.; Millward, H. & Thomas, D. (2008), Investigation of Rapid Manufactured \r
+Cellular Structures for Injection Moulding Tools. Proceedings of 6th CIRP Int. Conf. \r
+on Intelligent Computation in Manufacturing Engineering- CIRP ICME’08, ISBN 978-\r
+88-900948-7-3, pp.369-374, July 2008, Naples, Italy \r
+Evans, A. G.; Hutchinson, J. W.; Fleck, N. A.; Ashby, M. F. & Wadley, H. N. G. (2001). The \r
+topological design of multifunctional cellular metals. Progress in Materials Science, \r
+Vol. 46, No. 3-4, April 2001, 309–327, ISSN 0079-6425 \r
+Fischer, P.; Romano, V.; Weber, H.P.; Karapatis, N.P.; Boillat, E. & Glardon, R. (2003). \r
+Sintering of commercially pure titanium powder with a Nd:YAG laser source, Acta \r
+Materialia, Vol. 51, No. 6, April 2003, 1651–1662, ISSN 1359-6454 \r
+Fischer, P.; Romano, V.;. Weber, H.P.; Karapatis, N.P.; Boillat, E. & Glardon, R. (2003). \r
+Sintering of commercially pure titanium powder with a Nd:YAG laser source, Acta \r
+Materialia, Vol. 51, No. 6, April 2003, 1651–1662, ISSN 1359-6454 \r
+Gere, J. M. & Timoshenko, S. P. (1984). Mechanics of materials, Stanley Thornes Publishers, \r
+ISBN 074873998X, Boston, USA \r
+Hauser, C.; Childs, T.H.C. ; Taylor, C.M. & Badrossamay, M. (2003). Direct selective laser \r
+sintering of tool steel powders to high density. Part A. Effect of laser beam width \r
+and scan strategy, Proceedings of the Solid Freeform Fabrication Symposium, pp. 644–\r
+655, ISBN 1845440803, Austin, TX, August 2003, Emerald, Bingley, UK \r
+Kannatey-Asibu, E. Jr. (2009). Principles Of Laser Materials Processing, John Wiley & Sons Inc., \r
+ISBN 978-0-470-17798-3, Hoboken, New Jersey, \r
+Kolossov, S.; Boillat, E.; Glardon, R.; Fischer P. & Locher M. (2004). 3D FE simulation for \r
+temperature evolution in the selective laser sintering process. International Journal of \r
+Machine Tools & Manufacture, Vol. 44, No. 2-3, February 2004, 117–123, ISSN 0890-\r
+6955 \r
+Kruf, W.; Van de Vorst, B.; Maalderink, H. & Kamperman, N. (2006). Design for Rapid \r
+Manufacturing Functional SLS Parts, Proceedings of 5th CIRP Int. Conf. on Intelligent \r
+Computation in Manufacturing Engineering- CIRP ICME’06, ISBN 978-88-95028-01-9, \r
+pp. 609-613, July 2006, Ischia, Italy \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 251 \r
+Kruth, J.P.; Van der Schueren, B.; Bonse, J.E. & Morren, B. (1996). Basic powder metallurgical \r
+aspects in selective metal powder sintering. CIRP Annals - Manufacturing \r
+Technology, Vol. 45, No. 1, 1996, 183-186, ISSN 0007-8506 \r
+Kruth, J.P.; Froyen, L.; Morren, B. & Bonse, J.E. (1997). Selective laser sintering of WC-Co \r
+‘hard metal’ parts. Proceedings of 8th Int. Conf. on Production Engineering (ICPE-8), \r
+Rapid Product Development, pp.149-56, ISBN 0-412-81160X, Hokkaido University, \r
+Sapporo, Japan, August 1997, Chapman and Hall, London \r
+Kruth, J.P.; Froyen, L.; Van Vaerenbergh, L.; Mercelis, P.; Rombouts M. & Lauwers, B. (2004). \r
+Selective laser melting of iron-based powder. Journal of Materials Processing \r
+Technology, Vol. 149, No. 1-3, June 2004, 616-622, ISSN 0924-0136 \r
+Laoui, T.; Froyen, L. & Kruth, J.P.(1998). Selective laser sintering of hard metal powders. \r
+Proceedings of Rapid Prototyping and Manufacturing Conference, pp. 435–467, ISSN : \r
+1018-7375, Dearborn, Michigan, USA, April 1998 \r
+Lu, L.; Fuh, J.Y.H. & Wong, Y.S. (2001). Laser-Induced Materials and Processes for Rapid \r
+Prototyping, Kluwer Academic Publishers, ISBN 0792374002, Norwell, USA \r
+Lu, T. J. (1998). Heat transfer efficiency of metal honeycombs. International Journal of Heat and \r
+Mass Transfer, Vol. 42, No 11, June 1998 , 2031-2040, ISSN 0017-9310 \r
+Nickel, A.H.;. Barnett, D.M & Prinz, F.B. (2001). Thermal stresses and deposition patterns in \r
+layered manufacturing. Materials Science and Engineering A, Vol. 317, No. 1-2, \r
+October 2001, 59-64, ISSN 0921-5093 \r
+Niu, H.J. & Chang I.T.H. (1998). Liquid phase sintering of M3/2 high speed steel by selective \r
+laser sintering. Scripta Materialia, Vol. 39, No.1, June 1998, 67-72, ISSN 1359-6462 \r
+Niu, H.J. & Chang I.T.H. (1999). Selective laser sintering of gas and water atomized high \r
+speed steel powders. Scripta Materialia, Vol. 41, No. 1, June 1999, 25–30, ISSN 1359-\r
+6462 \r
+Niu, H.J. & Chang I.T.H. (2000). Selective laser sintering of gas atomized M2 high speed \r
+steel powder. Journal of Materials Science, Vol.35, No. 1, January 2000, 31-38, ISSN \r
+0022-2461 \r
+Niu, H.J. & Chang, T.H. (1999). Instability of scan tracks of selective laser sintering of high \r
+speed steel powder. Scripta Materialia, Vol. 41, No. 11, November 1999, 1229–1234, \r
+ISSN: 1359-6462 \r
+Pohl, H.; Simchi, A.; Issa, M. & Dias, H.C. (2001). Thermal stresses in direct metal laser \r
+sintering, Proceedings of the Solid Freeform Fabrication Symposium, pp. 366–372, ISBN \r
+1845440803, Austin, TX, August 2001, Emerald, Bingley, UK \r
+Queheillalt, D. T.; Murtyb, Y. & Wadleya, H. N.G. (2008). Mechanical properties of an \r
+extruded pyramidal lattice truss sandwich structure, Scripta Materialia, Vol. 58, No. \r
+1, January 2008, 76-79, ISSN 1359-6462 \r
+Rehme, O. (2010). Cellular Design for Laser Freeform Fabrication, Cuvillier Verlag, ISBN \r
+3869552735, Hamburg, Germany \r
+Ring, M.; Dimla, D.E. & Wimpenny, W.I. (2002). An Investigation of the effectiveness of \r
+Conformal Cooling channels and Selective Laser Sintering material in injection \r
+moulding tools, RPD 2002 Advanced Solutions in Product Development, Miranda \r
+Grande, Portugal, October 2002 \r
+Sachs, E.; Wylonis, E.; Allens, S.; Cima, M. & Guo, H. (2000). Production of Injection \r
+Moulding Tooling with Conformal Cooling Channels Using the Three Dimensional \r
+Printing Process, Polymer Engineering and Science, Vol. 40, No. 5, 2000, 1232-1247. \r
+www.intechopen.com
+
+252 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Santos, E. C.; Shiomi, M.; Osaka, K. & Laoui, T. (2006). Rapid manufacturing of metal \r
+components by laser forming, International Journal of Machine Tools and Manufacture, \r
+Vol. 46, No. 12-13, October 2006, pp. 1459-1468, ISSN 0890-6955 \r
+Slocombe, A. & Li, L. (2001). Selective laser sintering of TiC–Al2O3 composite with self\u0002propagating high-temperature synthesis. Journal of Materials Processing Technology, \r
+Vol. 118, No. 1-3, December 2001, 173-178, ISSN 0924-0136 \r
+Song, Y. (1997). Experimental study of the basic process mechanism for direct selective laser \r
+sintering of low-melting metallic powder. CIRP Annals - Manufacturing Technology, \r
+Vol. 46, No. 1,1997, 127–130, ISSN 0007-8506 \r
+Van der Schueren, B. & Kruth, J.P. (1995). Laser Based Selective Metal Powder Sintering : A \r
+Feasibility Study. Proceedings of the Laser Assisted Net Shape Engineering, pp. 517-523, \r
+October 1994, Erlangen, Germany \r
+Waterman, N.A.; Dickens P. (1994). Rapid product development in the USA, Europe and \r
+Japan. World Class Design To Manufacture, Vol. 1, No. 3, 27–36, ISSN 1352-3074 \r
+Xu, X.; Sachs, E. & Allen, S. (2001). The design of conformal cooling channels in injection \r
+molding tooling. Polymer Engineering And Science, Vol. 41, No. 7, July 2001, 1265–\r
+1279, ISSN 0032-3888 \r
+Yadroitsev, I.; Shishkovsky , I.; Bertrand P. & Smurov I. (2009). Manufacturing of fine\u0002structured 3D porous filter elements by selective laser melting. Applied Surface \r
+Science, Vol. 255, No. 10, March 2009, 5523–5527, ISSN 0169-4332 \r
+Yadroitsev, I.; Thivillon, L.; Bertrand, P. & Smurov, I. (2007). Strategy of manufacturing \r
+components with designed internal structure by selective laser melting of metallic \r
+powder. Applied Surface Science, Vol. 254, No. 4, December 2007, 980-983, ISSN 0169-\r
+4332 \r
+Zhang, J. & Ashby, M. F. (1992). The out-of-plane properties of honeycombs, International \r
+Journal of Mechanical Sciences, Vol. 34, No. 6, June 1992, pp. 475–489, ISSN 0020-7403 \r
+www.intechopen.com
+
+New Trends in Technologies: Devices, Computer, Communication\r
+and Industrial Systems\r
+Edited by Meng Joo Er\r
+ISBN 978-953-307-212-8\r
+Hard cover, 444 pages\r
+Publisher Sciyo\r
+Published online 02, November, 2010\r
+Published in print edition November, 2010\r
+InTech Europe\r
+University Campus STeP Ri \r
+Slavka Krautzeka 83/A \r
+51000 Rijeka, Croatia \r
+Phone: +385 (51) 770 447 \r
+Fax: +385 (51) 686 166\r
+www.intechopen.com\r
+InTech China\r
+Unit 405, Office Block, Hotel Equatorial Shanghai \r
+No.65, Yan An Road (West), Shanghai, 200040, China \r
+Phone: +86-21-62489820 \r
+Fax: +86-21-62489821\r
+The grandest accomplishments of engineering took place in the twentieth century. The widespread\r
+development and distribution of electricity and clean water, automobiles and airplanes, radio and television,\r
+spacecraft and lasers, antibiotics and medical imaging, computers and the Internet are just some of the\r
+highlights from a century in which engineering revolutionized and improved virtually every aspect of human life.\r
+In this book, the authors provide a glimpse of new trends in technologies pertaining to devices, computers,\r
+communications and industrial systems.\r
+How to reference\r
+In order to correctly reference this scholarly work, feel free to copy and paste the following:\r
+Sabina Luisa Campanelli, Nicola Contuzzi, Andrea Angelastro and Antonio Domenico Ludovico (2010).\r
+Capabilities and Performances of the Selective Laser Melting Process, New Trends in Technologies: Devices,\r
+Computer, Communication and Industrial Systems, Meng Joo Er (Ed.), ISBN: 978-953-307-212-8, InTech,\r
+Available from: http://www.intechopen.com/books/new-trends-in-technologies--devices--computer--\r
+communication-and-industrial-systems/capabilities-and-performances-of-the-selective-laser-melting-process
+
+© 2010 The Author(s). Licensee IntechOpen. This chapter is distributed\r
+under the terms of the Creative Commons Attribution-NonCommercial\u0002ShareAlike-3.0 License, which permits use, distribution and reproduction for\r
+non-commercial purposes, provided the original is properly cited and\r
+derivative works building on this content are distributed under the same\r
+license."""
+
+[metadata]
+title = "Pozar 2005 Microwave Engineering Transitions"
+authors = ["Unknown"]
+year = 2005
+
+[[sections]]
+number = "13"
+title = "Capabilities and Performances of the"
+text = """
+Selective Laser Melting Process \r
+Sabina L. Campanelli, Nicola Contuzzi, \r
+Andrea Angelastro and Antonio D. Ludovico \r
+Polytechnic of Bari, Department of Management and Mechanical Engineering, \r
+Viale Japigia, 182 \r
+Italy"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The current market is in a phase of accelerated process of change, that leads companies to \r
+innovate in new techniques or technologies to respond as quickly as possible to the ever\u0002changing aspects of the global environment. The economy of a country is heavily dependent \r
+on new and innovative products with very short development time. \r
+Companies, currently, have considerable success, only if they develop the ability to respond \r
+quickly to changing of customer needs and to use new innovative technologies. In this \r
+context, the companies that can offer a greater variety of new products with higher \r
+performance resulting in advantage over the other. \r
+At the heart of this environment there is a new generation of customers, who forced \r
+organizations to research new technologies and techniques to improve business processes \r
+and accelerate product development cycle. As a direct result, factories are forced to apply a \r
+new philosophy of engineering as the Rapid Response to Manufacturing (RRM). The \r
+concept of the RRM uses products previously designed to support the development of new \r
+products. \r
+The RRM environment was developed by integrating the various technologies, such as \r
+CAD-based modelling, the knowledge-based engineering for integrated product and \r
+process management and the direct production concepts. Direct production uses \r
+prototyping, tooling and rapid manufacturing technologies to quickly test the design and \r
+build the part (Cherng et al., 1998). \r
+Among RRM technologies, Rapid (RP) and Virtual (VP) Prototyping are revolutionizing the \r
+way in which artefacts are designed. \r
+Rapid Prototyping (RP) technologies embraces a wide range of processes for producing \r
+parts directly from CAD models, with little need for human intervention; so, designers can \r
+produce real prototypes, even very complex, in a simple and efficient way, allowing them to \r
+check the assembly and functionality of the design, minimizing errors, product \r
+development costs and lead times (Waterman & Dickens, 1994). \r
+The SLS technology was developed, like other RP technologies, to provide a prototyping \r
+technique to decrease the time and cost of the product cycle design. It consists of building a \r
+three dimensional object layer by layer selectively sintering or partial melting a powder bed \r
+by laser radiation. \r
+www.intechopen.com
+
+234 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+The SLS objects appear as rigid and porous, in fact, the density of the material depends on \r
+the temperature evolution. The molten layer, when the temperature decreases, solidifies and \r
+binds to the underlying layer, but the presence of the liquid phase, although happens for a \r
+few time, leads to a shrinkage of the powder–liquid mixture. Thus, the porosity cannot be \r
+completely eliminated, but the density of the manufactured part is usually higher than the \r
+powder density. Moreover, due to temperature variation, mechanical stresses are induced. \r
+As a consequence, the final state of the part (dimensions, density, residual stress levels, etc.) \r
+strongly depends on the process evolution (Kolossov et al., 2004). \r
+The success of SLS as a rapid prototyping and rapid manufacturing technology results \r
+mainly to the possibility to process almost any type of materials (polymers, glass-filled \r
+nylon, metal and composites) to accommodate multiple applications throughout the \r
+manufacturing process, but high density is desired for the production of functional metallic \r
+parts. \r
+The Selective laser sintering process can be indirect or direct: \r
+1. The indirect SLS uses a polymer coating of about 5 µm in thickness for metal powders \r
+and ceramics. The metal powder particles are coated with the polymer and the action of \r
+the laser melts the polymer, bonding the metal particles together to produce a green \r
+part. It is necessary, therefore, a post-treatment in the oven at high temperature, so \r
+remove the polymer and sintering particles by creating a metal-metal link."""
+
+[[sections]]
+number = "2"
+title = "In Direct SLS (DMLS) a low melting point component is melted and employed as a"
+text = """
+matrix in which the higher melting point components sit. In this process are used or a \r
+single powder with two different grain sizes (a slight and a coarse grains) or binary \r
+systems. Typical binary phase systems investigated include Ni-Cu, Fe-Cu and Cu\u0002Pb/Sn (Kruth et al. 2008; Lu et al., 2001). The disadvantage of the above processing \r
+routes is that the components produced exhibit the mechanical properties and \r
+characteristics of their weakest composite phase, thus lacking the full mechanical \r
+functionality required for heavy-duty tasks (Dewidar et al., 2008). \r
+To obtain high density, for functional metallic prototypes, parts or tools, different powder \r
+binding mechanisms is necessary, so, Selective Laser Melting (SLM) was developed. \r
+The SLM represents a variation from the classical SLS. The substantial differences compared \r
+to the latter are: \r
+• using an integral powder metal without adding low melting point elements; \r
+• the need to provide a much higher energy density, to bring fusion the powder. \r
+In SLM near full density parts can be produced without the need for post-processing steps, \r
+while the same materials can be used as in serial production. \r
+The advantage is to get an element a massively dense, close to 100%, with metallurgical \r
+characteristics similar to the objects achievable with conventional production processes and \r
+without need of post-treatments. \r
+The laser must have a greater power than the SLS and at the end of the process the \r
+manufactured objects is quite similar to series production, in fact, it does not require special \r
+surface finishes and may be subjected quietly at conventional machining. \r
+In addition, with Selective Laser Melting process there is the theoretical possibility of \r
+produce any complex geometry. This result is attributable to Layer Manufacturing, each \r
+individual point of the component can be reached by the laser beam at any time during the \r
+process. In contrast, the process isn't competitive for large lots or for slight complex parts, \r
+because the technique is rather slow and, therefore, very expensive. \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 235 \r
+In order to reach a high density, the metallic powder particles are fully molten, laser melting \r
+process is accompanied by the development of residual stresses, that derive from high \r
+thermal gradients in the material. These stresses can cause distortion of the part, cracks or \r
+delaminations (Fischer et al., 2003; Pohl et al., 2001; Nickel et al., 2001). \r
+Another undesirable phenomenon is the vaporization, that occurs when the bed of powder \r
+is irradiated with high energy intensity. During the laser melting process, the temperature of \r
+the powder particles exposed to the laser beam exceed the melting temperature of the \r
+material. A further increase in temperature (about twice the material melting temperature) \r
+causes the evaporation of the powder, so, there are a fast-moving expansion of evaporated \r
+particles, which generate a overpressure on the melted zone and the material is ejected from \r
+its bed (Hauser et al., 2003). \r
+Another problem that may occur during the SLM process is the "balling" or spheroidization \r
+phenomenon, i.e. the formation of isolated spheres with a diameter equal to the laser beam \r
+focus, which inhibits deposition and decreases the density of produced part. It occurs when \r
+the molten material is unable to fully wet the substrate because of surface tension. \r
+The phenomenon is caused by an excessive amount of energy, which gives to the melted \r
+powder a too low value in viscosity (Nickel et al., 2001; Kannatey-Asibu, 2009; Niu & \r
+Chang, 1999). \r
+The aim of this chapter will be to describe capabilities and performances of the SLM process. \r
+First, the capacity of the system in realizing micro-components with both high dimensional \r
+accuracy and maximum density, with mechanical properties similar to those assured by \r
+traditional technologies, will be investigated. Later on it, the chapter will describe some \r
+applications of the SLM process, such as the manufacture of moulds with conformal \r
+channels, of customised jigs for welding and the design and fabrication of reticular \r
+structures, to be used in automotive and aerospace field or in the medical one for custom \r
+prosthesis fabrication."""
+
+[[sections]]
+number = "2"
+title = "The process"
+text = """
+Selective Laser Melting Equipment technology provide a laser system, a set of optical laser \r
+beam focusing, a powder feeding system (loader and roller or coater) and a control center \r
+(Fig. 1). \r
+The piece to be achieved should be drawn using a three dimensional solid or surface \r
+modeler, then the mathematical model is developed in a CAD format compatible with the \r
+management software of the RP machine. \r
+The currently accepted graphic standard by all manufacturers is the STL (solid to layer), \r
+introduced by 3D Systems, which provides the mesh of internal and external surfaces of the \r
+workpiece through triangular elements. \r
+The STL file is then processed for the orientation and slicing phases. The first step allows to \r
+select the best growth direction of the piece, which greatly influences the dimensional \r
+accuracy and production time. \r
+The slicing step, instead, is a critical because it determines the accuracy of the product; in \r
+fact, it provides a breakdown of the object with orthogonal planes to the direction of growth, \r
+obtaining the contour of each section, which describes the path of scanning beam laser, and \r
+the thickness of the layers. \r
+The process takes place inside an enclosed chamber, filled with nitrogen gas, to minimize \r
+oxidation and degradation of the powdered material. \r
+www.intechopen.com
+
+236 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 1. SLM equipment \r
+Fig. 2. Phases of the SLM process \r
+In some technological solutions, to minimize distortions and residual stresses, the powder in \r
+the build platform is maintained at an elevated temperature (below the melting point of the \r
+powdered material); in other technological solution the preheating phase is used to \r
+minimize porosity on the built piece (Slocombe et al., 2001) \r
+The most common solutions include: \r
+• infrared heaters, that are placed about the building platform to maintain an elevated \r
+temperature around the part that being formed; \r
+• feed cartridges, to pre-heat the powder prior to spreading over the build area. \r
+• resistive heaters, around the building platform. \r
+This powder pre-heating and the next maintenance of an elevated and uniform temperature, \r
+within the build platform, is necessary, also, to minimize the power laser requirements of \r
+the process, to improve absorption of the laser beam, to prevent warping of the part during \r
+the build due to non-uniform thermal expansion and contraction (curling), to reduce the \r
+temperature gradients and improve the wetting properties. \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 237 \r
+Preheating of the powder is used to improve absorption of the laser to reduce the \r
+temperature gradients and improve the wetting properties. \r
+The Control Centre commands the RP machine power system: the powder room is raised by \r
+an amount such that the deposited powder by roller or coater, on the surface of the building \r
+chamber, deposits a layer of a thickness equal to that given during slicing, while the \r
+working chamber decreases the thickness of a layer (Fig.2a). \r
+The coater deposits, in uniform way, the powder on the building chamber (Fig.2b). \r
+The laser beam selectively scans the surface of the powder, that is, then, sintered (Fig.2c). \r
+When the first two-dimensional layer is created, the process is repeated until the object is \r
+built, with a lowering, equal to the thickness of the layer, of the building chamber (Fig. 2.d) \r
+and the subsequent distribution of the powder with the coater and the selective scanning by \r
+the laser beam. Surrounding powder remains loose and serves as support for subsequent \r
+layers, thus eliminating the need for the secondary supports which are necessary for \r
+photopolymer vat processes. \r
+For pre-heated solution, a cooling period is required. If the high temperature parts and \r
+powders are prematurely exposed to external atmosphere, they may degrade for the \r
+presence of oxygen and the powder cannot be recovered and used for further processing; \r
+also, the built objects may warp due to uneven thermal contraction. So, to allow the parts to \r
+uniformly come to a low-enough temperature that they can be handled and exposed to \r
+ambient temperature and atmosphere. \r
+Finally, the parts are removed from the powder bed, loose powder is cleaned off the parts, \r
+and further finishing operations, if necessary, are performed."""
+
+[[sections]]
+number = "3"
+title = "Materials"
+text = """
+In order to develop a process that can produce functional high strength parts, in a first time, \r
+successful results, with DMLS, have been obtained with high-strength powder mixtures, \r
+that containing only two metal powders, such as Fe-Cu, WC-Co, TiC-Ni/Co/Mo, TiCN-Ni, \r
+TiB2-Ni, ZrB2-Cu and Fe3C-Fe, melting only the powder having the lower melting point \r
+(Kruth et al., 1997; Kruth et al., 1996; Laoui et al., 1998). \r
+However, a substantial amount of work has been carried out in the field of laser sintering of \r
+metal parts, some of which are as follows. Niu and Chang (Niu and Chang, 1998; Niu and \r
+Chang, 1999; Niu and Chang, 1999; Niu and Chang, 2000) have studied the SLS process on \r
+HSS powder with a carbon di-oxide laser of 25 W, while Fischer (Fischer et al., 2003) has \r
+studied the behaviour of commercial titanium. Song (Song, 1997) have performed \r
+experiments on direct sintering of pre-alloyed bronze as a low melting metallic powder on a \r
+laboratory test facility. Abe (Abe et al., 2001) has studied the behavior of nickel base alloys \r
+and has reported that the process does not exhibit balling phenomenon but only part \r
+deflections and cracking. \r
+At this day, few studies have been performed on SLM process. Badrossamay (Badrossamay\r
+& Childs, 2007) has performed a further studies on M2 tool steel, 316L and 314S-HC \r
+stainless steel, while Abe (Abe et al., 2001) has investigated the effects of a single scanning \r
+test on several kinds of materials: aluminium, copper, iron, stainless steels (SUS 316L), \r
+chromium, titanium and nickel-based alloy. Kruth (Kruth et al., 2004) has studied a mixture \r
+of different types of particles (Fe, Ni, Cu and Fe3P) specially developed for SLM. \r
+www.intechopen.com
+
+238 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems"""
+
+[[sections]]
+number = "4"
+title = "Experimental tests and analysis of results"
+text = ""
+
+[[sections]]
+number = "4.1"
+title = "Experimental plan"
+text = """
+Experimental tests have been performed in this work to understand the capabilities of the \r
+SLM process in terms of density, roughness, dimensional accuracy and mechanical \r
+properties. \r
+Several process parameters can be modified in order to obtain optimum quality of laser \r
+sintered samples. Some of these parameters are related to the process (single layer thickness, \r
+scan velocity, hatch spacing, scan strategy), others depend on the laser (laser power, spot \r
+diameter, wavelengths, the energy of the pulse laser), the type of material and other \r
+characteristics of the used powder (such as particle size, distribution, shape, material type, \r
+the percentage composition of materials), others by the final component which is to be \r
+realized (shape, size, etc...). \r
+The energy density Ed of a single track can be calculated by the relation between laser power \r
+(P), scan speed (v) and spot diameter (d) (Eq. 1) (Lu, 2009): \r
+d 2\r
+P J E\r
+v d mm\r
+⎡ ⎤\r
+= ⎢ ⎥\r
+⋅ ⎣ ⎦ (1) \r
+where: \r
+• P is the laser power used to scan a part; \r
+• v is the scan speed or the velocity by which the laser beam moves over the powder \r
+surface. \r
+• d is the spot diameter, equal to 0.2 [mm]. \r
+A full factorial plan (32 plan) was used to project experiments. A contemporary variation of \r
+the two parameters, scanning speed (measured in mm/s) of the laser power (measured in \r
+Watt) was considered, in order to find out the parameters combination leading to the \r
+maximum mechanical properties. The combination of these two parameters is responsible \r
+for the melting mechanism and influence the quality of built parts. \r
+Nine samples were built, with three levels of scanning speed (180, 200, 220) and three levels \r
+of laser power (57, 86, 100). Moreover, five replications for each combination of the \r
+parameters were realized."""
+
+[[sections]]
+number = "4.2"
+title = "Machine set up"
+text = """
+The machine used to perform experiments was equipped with a Rofin Nd:YAG laser source \r
+characterized by a wavelength of 1.064 μm, a spot diameter of 200 μm and a maximum \r
+output power of 100 W. The laser beam was moved over the powder surface by means of \r
+scanning mirrors in order to draw selectively every layer of the powder. \r
+The powder deposition system consisted in a building chamber, a powder chamber and a \r
+coater. Powder layers were deposited in one direction using a coater and the layer thickness \r
+was set to 30 µm. Moreover, the chamber was filled, in slight overpressure, with nitrogen to \r
+prevent oxidation of the parts and to reduce the initial oxygen level at 0.8%."""
+
+[[sections]]
+number = "4.3"
+title = "Material"
+text = """
+A material with the typical composition of maraging steels, reinforced with cobalt, was used \r
+for the present study. Specifically, the composition was very close to the 18 Ni Marage 300 \r
+steel and the powder had spherical particles with average size below 40μm. The chemical \r
+composition of the used powder, determined by Energy Dispersive X-ray (EDX) analysis, \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 239 \r
+consisted in 4.2 wt.% Mo, 0.88 wt.% Ti, 65.9 wt.% Fe, 10.2 wt.% Co, 18.8 wt.% Ni and 0.02 \r
+wt.% C. \r
+Maraging steels are a special class of low-carbon ultra-high-strength steels, which derive \r
+their strength not from carbon, but from precipitation of inter-metallic compounds; they \r
+were developed for high performance applications, especially those in which high strength \r
+and good toughness are required. \r
+18 Ni Marage 300 steel presents excellent mechanical properties, high value of yield and \r
+tensile strength, toughness, ductility and impact strength, high fatigue limit, high \r
+compressive strength, hardness and wear resistance suitable for many machining tools. \r
+This type of steel is conventionally used for produce tools suitable for complex machining, \r
+to achieve high-performance industrial parts (aerospace applications), for manufacturing of \r
+dies for hot injection moulding, for inserts for moulds of all standard thermoplastic \r
+materials, for casting and for the direct realization of objects for engineering applications."""
+
+[[sections]]
+number = "4.4"
+title = "Mechanical characterisation of built samples"
+text = """
+Small square samples of 15 x 15 x 10 mm were built to measure density, hardness and to \r
+study microstructure. \r
+First, density was measured with the ‘Archimedes-method’ by weighting the samples in air \r
+and subsequently in ethanol after coating them with a lacquer. The coating prevented \r
+absorption of ethanol by the specimen during measurements. \r
+Fig. 3. Density versus Energy Density \r
+Fig. 3 shows the tendency of Density versus the Energy Density Ed. Values of Ed were \r
+calculated by means of Eq. 1. \r
+ It is evident that density increases with the increase of Ed and it is maximal for the \r
+maximum Ed, which means scan speed and laser power set respectively to the minimum \r
+(180 mm/s) and the maximum value (100W) of the considered range. A maximum value of \r
+8.0 g/m3 was found for density; thus the porosity was approximately 0.01%. This means \r
+that it was possible to produce nearly full dense parts with properties comparable to those \r
+of the bulk material. \r
+Hardness and tensile tests were performed on specimens built with the maximum density, \r
+setting the scan speed to 180 mm/s and laser power to 100W. \r
+Rockwell C test was used for determining hardness. Experimental results gave an average \r
+value of 34 HRC. \r
+www.intechopen.com
+
+240 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Tensile tests were performed using an Instron 4467 machine equipped by an extensometer \r
+(with a 12.5 mm gage length and maximum elongation of 5 mm). Results of tensile test \r
+brought to a value of 985 MPa for Yield Strenght, 1145 MPa for Tensile Strength and 7.6 % \r
+for Elongation to break. \r
+Fig.4(a) and Fig.4(b), respectively, show micrographs at magnifications 200X and 1000X \r
+obtained with an optical microscope. It is evident that the metal powder is completely fused \r
+and constituted by molten/re-solidified zones with curved edges (approximately parabolic). \r
+The laser tracks overlap in order to produce a non-porous part. This means that each part is \r
+welded onto the layers surrounding it. The presence of pores is very limited as it is possible \r
+to see from black spots in the pictures. \r
+200 µm 20 µm\r
+a) b)\r
+20 µm\r
+a) b)\r
+Fig. 4. 200x magnification (a) and 1000x magnification (b) of the sample obtained with \r
+P=100W and v=180mm/s"""
+
+[[sections]]
+number = "4.5"
+title = "Dimensional accuracy"
+text = """
+A specific part test was developed in order to test the dimensional accuracy of SLM parts \r
+with the maximum density achieved. The proposed geometry with maximum dimensions \r
+70 x 70 x 25 mm is shown in (Fig. 5). It was thought to determine capabilities of the process \r
+in terms of: \r
+- minimum feasible feature size; \r
+- dimensional achievable accuracy. \r
+Fig. 5. Benchmark geometry \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 241 \r
+The feasible precision and resolution of the process were tested by: \r
+- cylindrical holes (CH), ranging from 0.2 to 6 mm diameter (CH1. CH2, CH3, CH4, CH5, \r
+CH6, CH7 ); \r
+- cylindrical extrusions (CE), ranging from 0.2 to 6 mm diameter (CE1, CE2, CE3, CE4, \r
+CE5, CE6, CE7); \r
+- parallelepiped extrusions (PE), ranging from 0.2 to 6 mm thickness (PE1, PE2, PE3, PE4, \r
+PE5, PE6, PE7); \r
+- parallelepiped cavities (PC), ranging from 0.2 to 6 mm width (PC1, PC2, PC3, PC4, PC5, \r
+PC6, PC7); \r
+- vertical holes (VH) ranging from 0.2 to 6 mm diameter (VH1, VH2, VH3, VH4, VH5, \r
+VH6, VH7); \r
+- thin walls (TW) ranging from 0.2 to 6 mm thickness (TW1, TW2, TW3, TW4, TW5, TW6, \r
+TW7); \r
+The built benchmark (Fig. 6) was measured using a coordinate measuring machine (DEMeet \r
+400) together with an optical microscope. \r
+Fig. 6 shows a picture of the built benchmark. It is evident how all designed features could \r
+be realized, except for cylindrical extrusions CE1, CE2, CE3. They were probably built, but \r
+they were removed by the coater during the deposition of the powder. \r
+The dimensional error E% was introduced in order to perform an analytical study of the \r
+accuracy (Eq. 2). In this equation Nd and Md represent respectively the nominal and the \r
+measured dimension. \r
+100\r
+d\r
+N\r
+d Md\r
+N\r
+E ⋅\r
+−\r
+=\r
+°\r
+° (2) \r
+Results of measurements (Table 3) showed that it was possible to build: \r
+- thin walls with a maximum error of 15% for a thickness of 0.2 mm and with a minimum \r
+error of 1.17% for a thickness of 6 mm; \r
+- parallelepiped cavities with a maximum error of 20% for a width of 0.2 mm and with a \r
+minimum error of 4% for a width of 6 mm; \r
+- parallelepiped extrusions with a maximum error of 20% for a thickness of 0.2 mm and \r
+with a minimum error of 1.33% for a thickness of 6 mm; \r
+Fig. 6. Built benchmark \r
+www.intechopen.com
+
+242 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Element Measurable \r
+size \r
+Nominal dimension\r
+[mm] \r
+Measured Dimension\r
+[mm] E% \r
+CE1 diameter 0.2 - - \r
+CE2 diameter 0.3 - - \r
+CE3 diameter 0.4 - - \r
+CE4 diameter 0.8 0.87 -8.75 \r
+CE5 diameter 1.5 1.6 -6.67 \r
+CE6 diameter 3 2.99 0.33 \r
+CE7 diameter 6 5.99 0.17 \r
+CH1 diameter 0.2 0.23 -15.00 \r
+CH2 diameter 0.3 0.34 -13.33 \r
+CH3 diameter 0.4 0.41 -2.50 \r
+CH4 diameter 0.8 0.82 -2.50 \r
+CH5 diameter 1.5 1.53 -2.00 \r
+CH6 diameter 3 2.91 1.67 \r
+CH7 diameter 6 5.94 1.00 \r
+PE1 thickness 0.2 0.16 20.00 \r
+PE2 thickness 0.3 0.32 -6.67 \r
+PE3 thickness 0.4 0.36 10.00 \r
+PE4 thickness 0.8 0.88 -10.00 \r
+PE5 thickness 1.5 1.64 -9.33 \r
+PE6 thickness 3 3.24 -8.00 \r
+PE7 thickness 6 6.08 -1.33 \r
+PC1 width 0.2 0.24 -20.00 \r
+PC2 width 0.3 0.33 -10.00 \r
+PC3 width 0.4 0.44 -10.00 \r
+PC4 width 0.8 0.84 -5.00 \r
+PC5 width 1.5 1.37 8.67 \r
+PC6 width 3 2.84 5.33 \r
+PC7 width 6 5.43 9.50 \r
+VH1 diameter 0.2 0.25 -25.00 \r
+VH2 diameter 0.3 0.36 -20.00 \r
+VH3 diameter 0.4 0.43 -7.50 \r
+VH4 diameter 0.8 0.85 -6.25 \r
+VH5 diameter 1.5 1.55 -3.33 \r
+VH6 diameter 3 2.73 9.00 \r
+VH7 diameter 6 5.46 9.00 \r
+TW1 thickness 0.2 0.17 15.00 \r
+TW2 thickness 0.3 0.33 -10.00 \r
+TW3 thickness 0.4 0.37 7.50 \r
+TW4 thickness 0.8 0.75 6.25 \r
+TW5 thickness 1.5 1.44 4.00 \r
+TW6 thickness 3 3.06 -2.00 \r
+TW7 thickness 6 6.07 -1.17 \r
+Table 3. Results of measurements \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 243 \r
+- cylindrical extrusions with a maximum error of 8.75% for a diameter of 0.8 mm and \r
+with a minimum error of 0.17% for a diameter of 6 mm; \r
+- cylindrical holes with a maximum error of 15% for a diameter of 0.2 mm and with a \r
+minimum error of 1% for a diameter of 6 mm; \r
+- vertical holes with a maximum error of 25% for a thickness of 0.2 mm and with a \r
+minimum error of 3.33% for a thickness of 1.5 mm. \r
+The following considerations can be drawn: \r
+The process has a good accuracy for nominal dimensions over 0.4 mm; E% increases for \r
+values lower than 0.4 mm because the nominal dimension is gradually approaching to the \r
+laser spot diameter."""
+
+[[sections]]
+number = "5"
+title = "SLM Applications"
+text = ""
+
+[[sections]]
+number = "5.1"
+title = "Cellular structures"
+text = """
+The cellular metal structures have been used in various industrial applications such as heat \r
+exchangers, in reconstructive surgery, in chemistry, in automotive and aerospace industries. \r
+They possess valuable characteristics as low density, high strength, good energy absorption, \r
+good thermal and acoustic properties (Dotcheva et al., 2008). \r
+Periodic cellular structures are highly porous structures, with only 20% or less of their \r
+internal volume occupied by solid material (Evans et al., 2001). These advantageous \r
+characteristics make them very desirable, but difficulties in their production limits their \r
+application. Layer manufacturing technologies such as Direct Metal Additive \r
+Manufacturing, the Electron Beam Melting, the Direct Metal Laser Sintering and Selective \r
+Laser Melting (SLM), allow the manufacture of solid parts of any geometry, using laser \r
+technology and layers of metal powder. \r
+The SLM technology offers the possibility to produce parts with complex engineering \r
+materials (stainless steel, tool steel, titanium alloy and cobalt-chromium alloys) relatively \r
+quickly, directly from a 3D CAD data. \r
+This gives designers the freedom to use the cellular materials where there is the need to \r
+create a better functionality of a product without sacrificing its mechanical properties. \r
+The SLM technology, used as a process for the production of cellular structures, can be \r
+beneficial as it has: \r
+• The complete freedom in defining the geometry of the part (Kruf et al., 2006); \r
+• The reduction of the production cycle (Santos et al., 2006). \r
+In this field, few works have been performed. \r
+Rehme (Rehme,2010) have been investigated the manufacturability and scaling laws for \r
+mechanical properties of periodic lattice structures built with SLM technology. In his work \r
+has built eight different unit cell types, that possess low relative density and response well \r
+to compressive load. Dotcheva et al. (Dotcheva et al., 2008) have been used cellular truss \r
+structures as a core material for injection moulding tools. They investigated the capabilities\r
+of SLM technology for fast building of 3D complex geometry and to improve the thermal \r
+management of the injection moulding process. \r
+At DIMeG of the Polytechnic of Bari, has been tested the ability of the SLM to build lattice \r
+structures (Contuzzi, 2010). \r
+To test the process, it was chosen, for its versatility, a lattice structure reinforced vertically \r
+and with 45° truss columns (Fig. 7). \r
+www.intechopen.com
+
+244 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 7. Single cell and its dimension \r
+The studied configurations are: \r
+A. cell of 2 mm (L) with side of the truss of 500 μm (l) (Fig. 8); \r
+B. cell of 3 mm (L) with side of the truss of 700 μm (l) (Fig. 9). \r
+Overall, the configuration A (2 mm cells, 500 μm side truss) has the dimensions of 16x16x16 \r
+mm, while the B configuration (3 mm cells, 700 μm side truss) has the dimensions of \r
+21x21x15 mm. \r
+Between multi-functional applications of periodic cellular structures one of the most \r
+interesting is one that uses they as heat sinks (resistors). \r
+Fig. 8. CAD model of sample A \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 245 \r
+Fig. 9. CAD model of sample B \r
+Its function is to extend the physical dimensions of the device, allowing, thus, a better heat \r
+dissipation, because it deprives heat, for Joule effect, and transfers it to the surroundings \r
+ambient, preventing the excess of the temperature limit. The presence of the heat sink leads \r
+to a reduction in overall thermal resistance, allowing, thus, the reduction of the temperature \r
+reached of the device, or, wanting exploit the maximum operating temperature, have a \r
+higher power dissipated. \r
+The studied lattice structure have a good behavior as resistors, allowing a disposal, in both \r
+configurations, well over 100 watts (Fig. 10) at room temperature of 0°C and over 60 W at \r
+room temperature of 220°C. \r
+The structures show, also, good mechanical properties. A compressive test was performed \r
+(Fig. 11) \r
+The sintered AISI MARAGE 300 has an elastic behavior almost to the breaking point, this \r
+means that, according to Timoshenko & Gere (Gere & Timoshenko ,1984), the lattice \r
+structure, at a certain point, begins to deform plastically, but continues to support the stress \r
+because of the hardening of the trusses, the beams themselves then collapsing for plastic \r
+instability. \r
+For this reason the tests were not performed until the complete collapse of structures, but \r
+were stopped when the load is stable for a specified time interval. In this interval the trusses \r
+begin to destabilized, but the load is supported by the intact trusses. \r
+Fig. 10. Maximum power dissipated \r
+www.intechopen.com
+
+246 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Fig. 11. Load-Displacement curve"""
+
+[[sections]]
+number = "5.2"
+title = "Tools with three-dimensional conformal channels"
+text = """
+In recent years, SLM have found widespread use in the field of rapid tooling, especially in \r
+the injection mould. The basic principle of injection moulding is that a solid polymer is \r
+molten and injected into a cavity inside a mould, which is then cooled and the part ejected \r
+from the machine. Therefore, the main phases in an injection moulding process involve \r
+filling, cooling and ejection. The cost-efficiency of the process is dependent on the time spent \r
+in the moulding cycle. Correspondingly, since the cooling phase is the most lenghty step \r
+among the three, it determines the rate at which the parts are produced. A reduction in the \r
+time spent on cooling the part before it is ejected would drastically increase the production \r
+rate, hence reduce costs (Dimla et al., 2005). Historically, this result has been achieved by \r
+creating several channels inside the mould and forcing a cooler liquid to circulate and \r
+conduct the excess heat away. The channels are constituted by holes as close as possible to \r
+the actual moulding area of the die. Up to now, the methods used for producing these holes \r
+rely on the conventional machining process such as drilling or boring. However, this simple \r
+technology can only create straight holes which, besides having to intersect each other and \r
+requiring the closure of entry points of the tool with a plug, cannot remain at a constant \r
+distance from the moulding area to cool it uniformly. Uneven cooling will result in an \r
+increase of the mould defects, like warpages or residual stresses, and of the cooling time. A \r
+more acceptable cooling method, the conformal cooling, is performed by the coolant flows \r
+in a pattern that closely matches the geometry of the part being moulded (Au & Yu, 2007). \r
+The term conformal means that the geometry of the cooling channel follows the mould \r
+surface geometry. The aim is to maintain a steady and uniform cooling performance for the \r
+moulding part. \r
+Ring et al. investigated the effectiveness of conformal channels by through the construction \r
+of three different moulds with and without conformal cooling. They showed that the \r
+conformal cooling channels technique led to significant improvements and a general \r
+reduction of the cycle time while increasing heat transfer (Ring et al., 2002). \r
+A comparison between conformal channels and drilled cooling channels has also been \r
+conducted by Sachs et al. Their analysis shows that the conformal channel mould reaches \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 247 \r
+operational temperature faster than the conventional one, attaining a more uniform \r
+temperature distribution with efficient heat transfer capacity (Sachs et al., 2000). \r
+While the use of conformal cooling channels on the one hand greatly enhances the injection \r
+molding process, on the other hand it is much more complicated fabricate them on respect \r
+of the straight ones. \r
+The advancement of Solid Freeform Fabrication gives rise to the production of injection \r
+mould with intricate cooling channel geometry. Rapid tooling based on SFF technology \r
+includes SLM. Much research has focused on improving the geometric design of the cooling \r
+channel via SFF technologies. In 2001, Xu studied injection mould with complex cooling \r
+channels based on SFF processes. He described the conformal cooling layout that can be \r
+realized with substantial improvements in part quality and productivity (Xu et al., 2001). \r
+At DIMeG of the Polytechnic of Bari, in collaboration with Elfim srl company of Gravina in \r
+Puglia (Ba), SLM was used to create a jig for welding of constituent parts of a titanium alloy \r
+intramedullary nail. The realization of this jig had two basic problems: \r
+• cooling of the jig; \r
+• conveyance of shielding gas on the welding area. \r
+The cooling circuit of each component of the jig was designed with conformal channels in \r
+order to follow the welding areas and the nail seat, as the conformal cooling channels follow \r
+the geometry of the cavity in the dies for injection moulding. However, in this case, the \r
+situation was more complicated because of the need to provide even the conveyance of \r
+shielding gas. \r
+The use of the shielding gas was necessary due to the high chemical reactivity of titanium, at \r
+high temperature, in presence of the oxygen. So, for a good quality joints and to prevent the \r
+oxides formation, the shielding of an inert gas was indispensable both during welding and \r
+during the cooling of the seam. Therefore, with the same concept usually adopted for the \r
+conformal cooling, was created a system of cylindrical channels, whit a diameter down to 1 \r
+mm, in order to direct the shielding gas on weld areas. \r
+Fig.12a and 13a show respectively the 3D CAD geometry of the upper and the lower \r
+component of the jig; Fig 12b and Fig 13b show the cooling (blue) and shielding gas (yellow) \r
+channels that were designed for the jig. Fig. 14 and Fig. 15 show respectively the fabricated \r
+upper and lower part of the jig, while Fig. 16 shows the coupling of the jig components. \r
+ \r
+Fig. 12. 3D-CAD model of (a) the upper component of the jig; (b) cooling (blue) and \r
+shielding gas (yellow) channels in it \r
+(a) (b) \r
+www.intechopen.com
+
+248 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+ \r
+Fig. 13. 3D-CAD model of (a) the lower component of the jig; (b) cooling (blue) and \r
+shielding gas (yellow) channels in it \r
+Fig. 14. Laser sintered upper component of the jig \r
+Fig. 15. Laser sintered lower component of the jig \r
+(a) (b) \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 249 \r
+Fig. 16. Coupling of the jig components"""
+
+[[sections]]
+number = "6"
+title = "Conclusions"
+text = """
+The aim of this chapter was to describe capabilities and performances of the SLM process. \r
+First, experimental tests were performed in order to investigate characteristics of SLM parts. \r
+It was found that SLM parts could be produced with almost full density and with \r
+mechanical properties similar to those assured by traditional technologies. Later on it, a \r
+benchmark was built to study the accuracy of the process. It was found that the process has \r
+a good accuracy for nominal dimensions over 0.4 mm; the dimensional error increases for \r
+values lower than 0.4 mm because the nominal size is gradually approaching to the laser \r
+spot diameter. \r
+Finally, the capacity of the process in producing customized jigs for welding and reticular \r
+structures was illustrated."""
+
+[[sections]]
+number = "7"
+title = "References"
+text = """
+Abe F., Osakada K., Shiomi M., Uematsu K. & Matsumoto M. (2001). The manufacturing of \r
+hard tools from metallic powders by selective laser sintering. Journal of Materials \r
+Processing Technology, Vol. 111, No. 1-3, April 2001, 210–213, ISSN 0924-0136 \r
+Au K.M. & Yu K.M. (2007). A scaffolding architecture for conformal cooling design in rapid \r
+plastic injection moulding, International Journal of Advanced Manufacturing \r
+Technology, Vol. 34, No. 5-6, September 2007, 496-515, ISSN: 0268-3768 \r
+Badrossamay, M. & Childs, T.H.C. (2007). Further studies in selective laser melting of \r
+stainless and tool steel powders. International Journal of Machine Tools & \r
+Manufacture, Vol. 47, No. 5, April 2007, 779–784, ISSN: 0890-6955 \r
+www.intechopen.com
+
+250 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Campanelli, S.L; Contuzzi, N. & Ludovico, A.D (2009). Selective Laser Melting: Evaluation \r
+of the performances of 18 AISI Marage 300 steel parts. Proceedings of 9th A.I.Te.M. \r
+Conference, ISBN 8895057074, pp. 109-110, September 2009, Torino, Italy \r
+Campanelli, S.L; Contuzzi, N. & Ludovico, A.D (2010). Manufacturing of 18 Ni Marage 300 \r
+steel samples by selective laser melting. Advanced Materials Research, Vol. 83-86, \r
+February 2010, 850-857, ISBN 0-87849-297-6 \r
+Cherng, J. G.; Shao, X.; Chen Y. & Sferro P. R. (1998). Feature-Based Part Modeling And \r
+Process Planning For Rapid Response Manufacturing. Computers and Industrial \r
+Engineering, Vol. 34, No. 2, April 1998, 515-530, ISSN 0360-8352 \r
+Contuzzi, N. (2010). Analisi numerica e sperimentale di strutture innovative create mediante \r
+Fusione Laser Selettiva. Ph.D. Thesis in Mechanical and Biomechanical Design\r
+Dewidar, M. M.; Lim J. K. & Dalgarno, K.W. (2008). A Comparison between Direct and \r
+Indirect Laser Sintering of Metals. Journal of Materials Sciences and Technology, Vol. \r
+24, No.2, 227-232, ISSN 1005-0302 \r
+Dimla, D.E.; Camilotto, M. & Miani, F. (2005), Design and optimisation of conformal cooling \r
+channels in injection moulding tools. Journal of Materials Processing Technology, Vol. \r
+164–165, May 2005, 1294–1300, ISSN 0924-0136 \r
+Dotcheva, M.; Millward, H. & Thomas, D. (2008), Investigation of Rapid Manufactured \r
+Cellular Structures for Injection Moulding Tools. Proceedings of 6th CIRP Int. Conf. \r
+on Intelligent Computation in Manufacturing Engineering- CIRP ICME’08, ISBN 978-\r
+88-900948-7-3, pp.369-374, July 2008, Naples, Italy \r
+Evans, A. G.; Hutchinson, J. W.; Fleck, N. A.; Ashby, M. F. & Wadley, H. N. G. (2001). The \r
+topological design of multifunctional cellular metals. Progress in Materials Science, \r
+Vol. 46, No. 3-4, April 2001, 309–327, ISSN 0079-6425 \r
+Fischer, P.; Romano, V.; Weber, H.P.; Karapatis, N.P.; Boillat, E. & Glardon, R. (2003). \r
+Sintering of commercially pure titanium powder with a Nd:YAG laser source, Acta \r
+Materialia, Vol. 51, No. 6, April 2003, 1651–1662, ISSN 1359-6454 \r
+Fischer, P.; Romano, V.;. Weber, H.P.; Karapatis, N.P.; Boillat, E. & Glardon, R. (2003). \r
+Sintering of commercially pure titanium powder with a Nd:YAG laser source, Acta \r
+Materialia, Vol. 51, No. 6, April 2003, 1651–1662, ISSN 1359-6454 \r
+Gere, J. M. & Timoshenko, S. P. (1984). Mechanics of materials, Stanley Thornes Publishers, \r
+ISBN 074873998X, Boston, USA \r
+Hauser, C.; Childs, T.H.C. ; Taylor, C.M. & Badrossamay, M. (2003). Direct selective laser \r
+sintering of tool steel powders to high density. Part A. Effect of laser beam width \r
+and scan strategy, Proceedings of the Solid Freeform Fabrication Symposium, pp. 644–\r
+655, ISBN 1845440803, Austin, TX, August 2003, Emerald, Bingley, UK \r
+Kannatey-Asibu, E. Jr. (2009). Principles Of Laser Materials Processing, John Wiley & Sons Inc., \r
+ISBN 978-0-470-17798-3, Hoboken, New Jersey, \r
+Kolossov, S.; Boillat, E.; Glardon, R.; Fischer P. & Locher M. (2004). 3D FE simulation for \r
+temperature evolution in the selective laser sintering process. International Journal of \r
+Machine Tools & Manufacture, Vol. 44, No. 2-3, February 2004, 117–123, ISSN 0890-\r
+6955 \r
+Kruf, W.; Van de Vorst, B.; Maalderink, H. & Kamperman, N. (2006). Design for Rapid \r
+Manufacturing Functional SLS Parts, Proceedings of 5th CIRP Int. Conf. on Intelligent \r
+Computation in Manufacturing Engineering- CIRP ICME’06, ISBN 978-88-95028-01-9, \r
+pp. 609-613, July 2006, Ischia, Italy \r
+www.intechopen.com
+
+Capabilities and Performances of the Selective Laser Melting Process 251 \r
+Kruth, J.P.; Van der Schueren, B.; Bonse, J.E. & Morren, B. (1996). Basic powder metallurgical \r
+aspects in selective metal powder sintering. CIRP Annals - Manufacturing \r
+Technology, Vol. 45, No. 1, 1996, 183-186, ISSN 0007-8506 \r
+Kruth, J.P.; Froyen, L.; Morren, B. & Bonse, J.E. (1997). Selective laser sintering of WC-Co \r
+‘hard metal’ parts. Proceedings of 8th Int. Conf. on Production Engineering (ICPE-8), \r
+Rapid Product Development, pp.149-56, ISBN 0-412-81160X, Hokkaido University, \r
+Sapporo, Japan, August 1997, Chapman and Hall, London \r
+Kruth, J.P.; Froyen, L.; Van Vaerenbergh, L.; Mercelis, P.; Rombouts M. & Lauwers, B. (2004). \r
+Selective laser melting of iron-based powder. Journal of Materials Processing \r
+Technology, Vol. 149, No. 1-3, June 2004, 616-622, ISSN 0924-0136 \r
+Laoui, T.; Froyen, L. & Kruth, J.P.(1998). Selective laser sintering of hard metal powders. \r
+Proceedings of Rapid Prototyping and Manufacturing Conference, pp. 435–467, ISSN : \r
+1018-7375, Dearborn, Michigan, USA, April 1998 \r
+Lu, L.; Fuh, J.Y.H. & Wong, Y.S. (2001). Laser-Induced Materials and Processes for Rapid \r
+Prototyping, Kluwer Academic Publishers, ISBN 0792374002, Norwell, USA \r
+Lu, T. J. (1998). Heat transfer efficiency of metal honeycombs. International Journal of Heat and \r
+Mass Transfer, Vol. 42, No 11, June 1998 , 2031-2040, ISSN 0017-9310 \r
+Nickel, A.H.;. Barnett, D.M & Prinz, F.B. (2001). Thermal stresses and deposition patterns in \r
+layered manufacturing. Materials Science and Engineering A, Vol. 317, No. 1-2, \r
+October 2001, 59-64, ISSN 0921-5093 \r
+Niu, H.J. & Chang I.T.H. (1998). Liquid phase sintering of M3/2 high speed steel by selective \r
+laser sintering. Scripta Materialia, Vol. 39, No.1, June 1998, 67-72, ISSN 1359-6462 \r
+Niu, H.J. & Chang I.T.H. (1999). Selective laser sintering of gas and water atomized high \r
+speed steel powders. Scripta Materialia, Vol. 41, No. 1, June 1999, 25–30, ISSN 1359-\r
+6462 \r
+Niu, H.J. & Chang I.T.H. (2000). Selective laser sintering of gas atomized M2 high speed \r
+steel powder. Journal of Materials Science, Vol.35, No. 1, January 2000, 31-38, ISSN \r
+0022-2461 \r
+Niu, H.J. & Chang, T.H. (1999). Instability of scan tracks of selective laser sintering of high \r
+speed steel powder. Scripta Materialia, Vol. 41, No. 11, November 1999, 1229–1234, \r
+ISSN: 1359-6462 \r
+Pohl, H.; Simchi, A.; Issa, M. & Dias, H.C. (2001). Thermal stresses in direct metal laser \r
+sintering, Proceedings of the Solid Freeform Fabrication Symposium, pp. 366–372, ISBN \r
+1845440803, Austin, TX, August 2001, Emerald, Bingley, UK \r
+Queheillalt, D. T.; Murtyb, Y. & Wadleya, H. N.G. (2008). Mechanical properties of an \r
+extruded pyramidal lattice truss sandwich structure, Scripta Materialia, Vol. 58, No. \r
+1, January 2008, 76-79, ISSN 1359-6462 \r
+Rehme, O. (2010). Cellular Design for Laser Freeform Fabrication, Cuvillier Verlag, ISBN \r
+3869552735, Hamburg, Germany \r
+Ring, M.; Dimla, D.E. & Wimpenny, W.I. (2002). An Investigation of the effectiveness of \r
+Conformal Cooling channels and Selective Laser Sintering material in injection \r
+moulding tools, RPD 2002 Advanced Solutions in Product Development, Miranda \r
+Grande, Portugal, October 2002 \r
+Sachs, E.; Wylonis, E.; Allens, S.; Cima, M. & Guo, H. (2000). Production of Injection \r
+Moulding Tooling with Conformal Cooling Channels Using the Three Dimensional \r
+Printing Process, Polymer Engineering and Science, Vol. 40, No. 5, 2000, 1232-1247. \r
+www.intechopen.com
+
+252 New Trends in Technologies: Devices, Computer, Communication and Industrial Systems \r
+Santos, E. C.; Shiomi, M.; Osaka, K. & Laoui, T. (2006). Rapid manufacturing of metal \r
+components by laser forming, International Journal of Machine Tools and Manufacture, \r
+Vol. 46, No. 12-13, October 2006, pp. 1459-1468, ISSN 0890-6955 \r
+Slocombe, A. & Li, L. (2001). Selective laser sintering of TiC–Al2O3 composite with self\u0002propagating high-temperature synthesis. Journal of Materials Processing Technology, \r
+Vol. 118, No. 1-3, December 2001, 173-178, ISSN 0924-0136 \r
+Song, Y. (1997). Experimental study of the basic process mechanism for direct selective laser \r
+sintering of low-melting metallic powder. CIRP Annals - Manufacturing Technology, \r
+Vol. 46, No. 1,1997, 127–130, ISSN 0007-8506 \r
+Van der Schueren, B. & Kruth, J.P. (1995). Laser Based Selective Metal Powder Sintering : A \r
+Feasibility Study. Proceedings of the Laser Assisted Net Shape Engineering, pp. 517-523, \r
+October 1994, Erlangen, Germany \r
+Waterman, N.A.; Dickens P. (1994). Rapid product development in the USA, Europe and \r
+Japan. World Class Design To Manufacture, Vol. 1, No. 3, 27–36, ISSN 1352-3074 \r
+Xu, X.; Sachs, E. & Allen, S. (2001). The design of conformal cooling channels in injection \r
+molding tooling. Polymer Engineering And Science, Vol. 41, No. 7, July 2001, 1265–\r
+1279, ISSN 0032-3888 \r
+Yadroitsev, I.; Shishkovsky , I.; Bertrand P. & Smurov I. (2009). Manufacturing of fine\u0002structured 3D porous filter elements by selective laser melting. Applied Surface \r
+Science, Vol. 255, No. 10, March 2009, 5523–5527, ISSN 0169-4332 \r
+Yadroitsev, I.; Thivillon, L.; Bertrand, P. & Smurov, I. (2007). Strategy of manufacturing \r
+components with designed internal structure by selective laser melting of metallic \r
+powder. Applied Surface Science, Vol. 254, No. 4, December 2007, 980-983, ISSN 0169-\r
+4332 \r
+Zhang, J. & Ashby, M. F. (1992). The out-of-plane properties of honeycombs, International \r
+Journal of Mechanical Sciences, Vol. 34, No. 6, June 1992, pp. 475–489, ISSN 0020-7403 \r
+www.intechopen.com
+
+New Trends in Technologies: Devices, Computer, Communication\r
+and Industrial Systems\r
+Edited by Meng Joo Er\r
+ISBN 978-953-307-212-8\r
+Hard cover, 444 pages\r
+Publisher Sciyo\r
+Published online 02, November, 2010\r
+Published in print edition November, 2010\r
+InTech Europe\r
+University Campus STeP Ri \r
+Slavka Krautzeka 83/A"""
+
+[[sections]]
+number = "51000"
+title = "Rijeka, Croatia"
+text = """
+Phone: +385 (51) 770 447 \r
+Fax: +385 (51) 686 166\r
+www.intechopen.com\r
+InTech China\r
+Unit 405, Office Block, Hotel Equatorial Shanghai \r
+No.65, Yan An Road (West), Shanghai, 200040, China \r
+Phone: +86-21-62489820 \r
+Fax: +86-21-62489821\r
+The grandest accomplishments of engineering took place in the twentieth century. The widespread\r
+development and distribution of electricity and clean water, automobiles and airplanes, radio and television,\r
+spacecraft and lasers, antibiotics and medical imaging, computers and the Internet are just some of the\r
+highlights from a century in which engineering revolutionized and improved virtually every aspect of human life.\r
+In this book, the authors provide a glimpse of new trends in technologies pertaining to devices, computers,\r
+communications and industrial systems.\r
+How to reference\r
+In order to correctly reference this scholarly work, feel free to copy and paste the following:\r
+Sabina Luisa Campanelli, Nicola Contuzzi, Andrea Angelastro and Antonio Domenico Ludovico (2010).\r
+Capabilities and Performances of the Selective Laser Melting Process, New Trends in Technologies: Devices,\r
+Computer, Communication and Industrial Systems, Meng Joo Er (Ed.), ISBN: 978-953-307-212-8, InTech,\r
+Available from: http://www.intechopen.com/books/new-trends-in-technologies--devices--computer--\r
+communication-and-industrial-systems/capabilities-and-performances-of-the-selective-laser-melting-process
+
+© 2010 The Author(s). Licensee IntechOpen. This chapter is distributed\r
+under the terms of the Creative Commons Attribution-NonCommercial\u0002ShareAlike-3.0 License, which permits use, distribution and reproduction for\r
+non-commercial purposes, provided the original is properly cited and\r
+derivative works building on this content are distributed under the same\r
+license."""

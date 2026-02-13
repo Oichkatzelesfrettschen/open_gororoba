@@ -1,0 +1,3 @@
+degree (1,), producing a return of R1 + R2, and so on. The latter degree corresponds
+to terminating on the second step, 1,, and not having already terminated on the
+first step, . The degree of termination on the third step is thus (1,)2, with the 2

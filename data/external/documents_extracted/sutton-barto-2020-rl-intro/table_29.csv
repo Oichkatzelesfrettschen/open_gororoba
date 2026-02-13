@@ -1,0 +1,4 @@
+1>D(I,P) = µ>(I,P)
+= µ>,µ>P
+= µ>,µ> (because µ is the stationary distribution)
+= (1,)µ>,

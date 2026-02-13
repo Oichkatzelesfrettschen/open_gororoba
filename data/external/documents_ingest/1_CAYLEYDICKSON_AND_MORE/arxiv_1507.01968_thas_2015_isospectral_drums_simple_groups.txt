@@ -1,0 +1,1499 @@
+                                                              ISOSPECTRAL DRUMS AND SIMPLE GROUPS
+
+                                                                                       KOEN THAS
+
+
+
+
+arXiv:1507.01968v1 [math.GR] 6 Jul 2015
+                                                   A BSTRACT . Virtually every known pair of isospectral but nonisometric manifolds
+                                                   — with as most famous members isospectral bounded R-planar domains which
+                                                   makes one “not hear the shape of a drum” [13] — arise from the (group theoret-
+                                                   ical) Gassman-Sunada method. Moreover, all the known R-planar examples (so
+                                                   counter examples to Kac’s question) are constructed through a famous specializa-
+                                                   tion of this method, called transplantation.
+                                                   We first describe a number of very general classes of length equivalent manifolds,
+                                                   with as particular cases isospectral manifolds, in each of the constructions start-
+                                                   ing from a given example that arises itself from the Gassman-Sunada method. The
+                                                   constructions include the examples arising from the transplantation technique (and
+                                                   thus in particular the planar examples). To that end, we introduce four properties
+                                                   — called FF, MAX, PAIR and INV — inspired by natural physical properties (which
+                                                   rule out trivial constructions), that are satisfied for each of the known planar ex-
+                                                   amples.
+                                                   Vice versa, we show that length equivalent manifolds with FF, MAX, PAIR and INV
+                                                   which arise from the Gassman-Sunada method, must fall under one of our prior
+                                                   constructions, thus describing a precise classification of these objects.
+                                                   Due to the nature of our constructions and properties, a deep connection with fi-
+                                                   nite simple groups occurs which seems, perhaps, rather surprising in the context of
+                                                   this paper. On the other hand, our properties define physically irreducible pairs of
+                                                   length equivalent manifolds — “atoms” of general pairs of length equivalent mani-
+                                                   folds, in that such a general pair of manifolds is patched up out of irreducible pairs
+                                                   — and that is precisely what simple groups are for general groups.
+
+
+
+
+                                                                                       C ONTENTS
+
+                                             1. Introduction and statement of the main results                                              2
+                                             2. Tiles and transplantation                                                                   6
+                                             3. Elementwise and almost conjugacy                                                            9
+                                             4. Construction of isospectral drums                                                           10
+                                             5. Classifying planar isospectral drums                                                        23
+                                             6. Conclusion                                                                                  28
+                                             7. Appendix: The O’Nan-Scott theorem                                                           29
+                                             References                                                                                     31
+
+
+
+
+                                             2000 Mathematics Subject Classification. 11R25, 20B25, 37N20, 43A85, 51E24, 58J50, 58J53,
+                                          65N25, 81Q10.
+                                                                                             1
+2                                      KOEN THAS
+
+
+             1. I NTRODUCTION AND STATEMENT OF THE MAIN RESULTS
+
+In 1966, in a celebrated paper [13], Mark Kac formulated the famous question “Can
+one hear the shape of a drum?”: is it possible to find two nonisometric Euclidean
+simply connected domains for which the sets {En |n ∈ N} of solutions of
+
+(1)                                 ∆f + Ef = 0,
+
+where ∆ is the d-dimensional Laplacian and with Ψ|Boundary = 0, are identical?
+It was known very early, from Weyl’s formula, that one can “hear” the area of a
+drum and the length of its perimeter. But could the shape itself be retrieved from
+the spectrum?
+
+
+Formally, answering “no” to Kac’s question amounts to finding isospectral billiards,
+that is, nonisometric billiards having exactly the same eigenvalue spectrum (with
+multiplicities). Since the appearance of [13], an incredible amount of variations on
+the theme have found their way through literature.
+Very early examples of flat tori sharing the same eigenvalue spectrum had been
+found in 1964 by Milnor in R16 in his classic note [17], from nonisometric lat-
+tices of rank 16 in R16 . Other examples of isospectral Riemannian manifolds were
+constructed later, e.g., on lens spaces [12] or on surfaces with constant negative
+curvature [32]. In 1982, Urakawa produced the first examples of isospectral do-
+mains in Rn , n ≥ 4 [31], applying work of Bérard and Besson [2].
+In the late eighties, various other papers appeared, giving necessary conditions that
+any family of billiards sharing the same spectrum should fulfill ([16], [19], [20]),
+and necessary conditions given as inequalities on the eigenvalues were reviewed in
+[21].
+
+
+
+1.1. Planar counter examples. It took almost 30 years after Kac’s paper that the
+first example of two-dimensional billiards having exactly the same spectrum was
+exhibited (in 1992). The pair was found by Gordon, Webb and Wolpert in the
+paper “Isospectral plane domains and surfaces via Riemannian orbifolds” [9]. The
+authors thus gave a “no” as a final answer to Kac’s question, and as a reply to Kac’s
+paper, they published a paper titled “One cannot hear the shape of a drum” [10].
+The most popularized example is shown in Figure 1.
+Crucial for finding the example was a theorem by Sunada asserting that when two
+subgroups that are “almost conjugate” in a group that acts by isometries on a Rie-
+mannian manifold, the quotient manifolds are isospectral. In fact, the other exam-
+ples which were constructed after 1992 virtually all used Sunada’s method. Later,
+the so-called “transplantation technique” was introduced, giving an easier way of
+detecting isospectrality of planar billiards. (Still, essentially only seventeen families
+of examples that say “no” to Kac’s question were constructed in a forty year period.)
+We refer to [8] for an extensive review on the modern theory after Kac.
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                          3
+
+
+
+
+        F IGURE 1. The famous pair of isospectral billiards with seven half-
+        square shaped base tiles. The dotted lines are just an eyeguide.
+
+
+1.2. More on Sunada’s method. For M a Riemannian manifold, one defines the
+zeta function
+                                ∞
+                                X
+(2)                    ζM (s) =   λ−s
+                                   i , Re(s) ≥ 0,
+                                      i=1
+
+where 0 < λ1 ≤ λ2 ≤ · · · are the nonzero eigenvalues of the Laplacian for M. The
+function ζM has an analytic continuation to the whole plane, and it is well known
+that ζM1 (s) = ζM2 (s) if and only if M1 and M2 are isospectral.
+The next theorem is important.
+Theorem 1.1 (T. Sunada [25]). Let π : M 7→ M0 be a normal finite Riemannian
+covering with covering transformation group G, and let π1 : M1 7→ M0 and π2 : M2 7→
+M0 be the coverings corresponding to the subgroups H1 and H2 of G, respectively. If
+the triplet (G, H1 , H2 ) satisfies the property that each conjugacy class of G meets H1
+and H2 in the same number of elements, then the zeta functions ζM1 (s) and ζM2 (s)
+are identical.
+
+Triples as in the theorem are called “Gassman-Sunada triples,” and one also says
+that H1 and H2 are “almost conjugate’ in G (and (G, H1 , H2 ) is an almost conjugate
+or AC-triple).
+Expressed in terms of isospectrality, we have the following version of Theorem 1.1.
+Let M be a closed hyperbolic n-manifold, G a group, and H and K almost conjugate
+subgroups of G. Then if π1 (M) admits a homomorphism onto G, the covers MH
+and MK associated to the pullback subgroups of H and K are isospectral.
+4                                     KOEN THAS
+
+
+This bridge between spectral theory and Group Theory gave a strong impetus to
+the construction theory for isospectral manifolds, and indeed, the first counter ex-
+amples to the original question of Kac — namely in the planar case over R — arose
+via that bridge.
+
+
+
+1.3. Different directions. Almost conjugacy has occurred (independently) in var-
+ious other parts of Mathematics and Physics. For instance, let K be a finite Galois
+extension of Q with Galois group G = Gal(K/Q), and let K1 and K2 be subfields
+of K corresponding to subgroups G1 and G2 of G, respectively. Then the zeta func-
+tions of K1 and K2 are the same if and only if G1 and G2 are almost conjugate
+in G. In particular, if G1 and G2 are not conjugate in G, then K1 and K2 are not
+isomorphic while having the same zeta function.
+The theme of isospectrality of surfaces has occurred, in one of its many guises, and
+often independently, in (but not restricted to) the following list.
+
+      • Acoustics.
+      • Quantum Chaos.
+      • Nonlinear Dynamics.
+      • Topology of Manifolds.
+      • Combinatorial Theory.
+      • Number Theory.
+      • Group Theory.
+      • ...
+
+
+
+
+1.4. The EC condition as a setting for construction and classification. Call a
+group triple (G, H, K) an EC-triple if each element of H is conjugate to some ele-
+ment in H (and vice versa). Such triples generalize AC-triples, and H and K are
+said to be elementwise conjugate in G.
+In the same vein as Sunada’s Theorem 1.1, one can obtain the following result.
+Let M be a closed hyperbolic n-manifold, G a group, and H and K elementwise
+conjugate subgroups of G. Then if π1 (M) admits a homomorphism onto G, the
+covers MH and MK associated to the pullback subgroups of H and K are length
+equivalent.
+For our purposes it is more convenient to first study the EC-property, since it is
+more flexible in several ways, e.g., for manupilation in induction arguments. As
+AC implies EC, any classification result on the broader class of EC-triples (G, H, K)
+will yield direct results for the AC-triples.
+But there is more. In some sense, the EC-property reflects a combinatorial property
+of an underlying incidence geometry (which I have described in this text), which
+is a crucial tool in the whole theory that is set up in this paper (and we will come
+back to this geometry in a near future).
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                          5
+
+
+1.5. The present paper. We start this paper with a detailed explanation of the con-
+nection between the notions of “transplantability” and “almost conjugacy,” which
+are crucial in the construction theory of planar isospectral billiards. We then dis-
+cuss the related notions AC-triple (or Gassman-Sunada triple) and EC-triple (which
+naturally generalizes AC-triples), in the context of isospectral drumheads (in any
+dimension). Next, we explore some “naive” constructions of EC-triples, starting
+from one given EC-triple, through direct products and “adding kernels.” Then we
+will introduce four properties — being FF, MAX, PAIR, INV — inspired by physical
+properties which “irreducible” drumheads should have on the one hand, and which
+planar examples have, on the other.
+We will introduce a set of extremely general construction procedures of EC-triples
+with FF and MAX (starting from a given one), which due to MAX, is connected to
+the O’Nan-Scott Theorem of finite Group Theory, and which involves finite simple
+groups. Contrary to the fact that most known examples of isospectral manifolds
+arise from solvable groups (see for instance de Smit and Lenstra [4]) — in partic-
+ular, from two-step nilpotent (p)-groups such as the finite Heisenberg group (see
+for instance Guralnick [11]) — our examples live at the complete other end of the
+spectrum: they essentially arise from finite simple groups!
+
+        simple groups + data −→ irred. length equiv. manifolds
+
+In a final stage, we will classify EC-triples, by starting from EC-triples with FF, MAX,
+PAIR and INV, and we will show that, indeed, any such example is constructed
+through one of our procedures. The property MAX allows us to use the O’Nan-Scott
+Theorem to some extent. In particular, all the known planar counter examples to
+Kac’s question “Can one hear the shape of a drum” eventually arise, after careful
+analysis of the properties beyond O’Nan-Scott.
+                                              O’Nan-Scott Theory
+      irred. length equiv. manifolds                −→             simple groups
+
+In such a way, we will obtain a deep connection between irreducible (possibly
+higher-dimensional) drumheads and finite simple groups that offers a new direction
+in the theory.
+6                                             KOEN THAS
+
+
+                                    2. T ILES AND TRANSPLANTATION
+
+All known pairs of planar isospectral billiards can be described through Gassman-
+Sunada group triples which have a very specific form. In this section, we analyze
+this situation. We also clarify the notion of “transplantation” in its connection with
+AC, a subject which seems to be obscured at some places in the literature.
+
+2.1. Involution graphs. All known isospectral billiards can be obtained by unfold-
+ing polygonal-shaped tiles — see [8], but essentially one can only consider triangles.
+The way the tiles are unfolded can be specified by three permutation (N × N )-
+matrices M (µ) , 1 ≤ µ ≤ 3 and N ∈ N× , associated with the three sides of the
+triangle:
+                (µ)
+         • Mij = 1 if tiles i and j are glued by their side µ;
+                (µ)
+         • Mii = 1 if the side µ of tile i is on the boundary of the billiard, and
+         • 0 otherwise.
+The number of tiles is, of course, N .
+One can encrypt the action of the M (µ) “in” a graph with colored edges: each copy
+of the base tile is associated with a vertex, and vertices i and j, i 6= j, are joined
+                                          (µ)
+by an edge of color µ if and only if Mij = 1. In the same way, in the second
+member of the pair, the tiles are unfolded according to permutation matrices N (µ) ,
+1 ≤ µ ≤ 3. We call such a colored graph an involution graph (for reasons to be
+made clear later on).
+Remark 2.1. As motivated in [8], we assume the hypothesis that these involutions
+graphs are trees.
+
+
+
+                2
+                            1
+                                                      4
+                    3                                                           1
+                                                       7                2
+
+                    +   3
+                                      =           6
+                                                           5
+                                                                            3
+                                                                                        4
+                                                                            5
+4   7       6       5   2       1                          2
+                                                                                    6
+                                                   3           1
+                                                                                7
+
+1    2     3        5   6       4
+                        7
+
+           F IGURE 2. Tiling a triangle through an involution graph; here, the
+           colors are represented by multiple edges.
+
+
+Remark 2.2. The consideration of the colored graph as such defined was first made
+by Y. Okada and A. Shudo in [18].
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                         7
+
+
+2.2. Transplantability. Two “polygonally tiled” billiards are said to be transplantable
+if there exists an invertible matrix T — the transplantation matrix — such that
+(3)                          T M (µ) = N (µ) T for all µ.
+
+Define GM := hM (µ) | µ = 1, 2, 3i (with ordinary matrix multiplication) and
+GN := hN (µ) | µ = 1, 2, 3i; then GM and GN are subgroups of GLN (C), and the
+existence of the invertible matrix T precisely expresses the fact that GN and GM are
+equivalent (= isomorphic) GLN (C)-linear representations of the same group.
+Remark 2.3. We note that the M (µ) -elements and N (ν) -elements are involutions.
+
+On the other hand, since the M (i) and N (j) are permutation matrices, GM and
+GN are subgroups of the symmetric group SN — that is, they both come with an
+action on Υ = {1, 2, . . . , N }. Now the aforementioned linear representations are
+equivalent if and only if they have the same permutation character — i.e., there
+exists an isomorphism
+(4)                                χ : GM −→ GN
+such that
+(5)                       #Fix(g) = #Fix(g χ ) ∀ g ∈ GM .
+
+Note that the permutation groups (GM , Υ) and (GN , Υ) are respectively similar
+to the actions given by left translation on the left coset spaces (GM , GM /U ) and
+(GN , GN /V ), where U = (GM )x is an arbitrary point stabilizer in (GM , Υ), and
+V = (GN )y an arbitrary point stabilizer in (GN , Υ). After applying T (by conju-
+gation), we obtain permutation representations (GM , GM /U ) and (GM , GM /V T )
+with the same permutation character.
+
+Conversely, let (G, X) and (G, Y ) be two faithful transitive permutation groups of
+the same degree. As we have seen, we can identify both actions similarly with
+left translation actions (G, G/U ) and (G, G/V ) with U, V subgroups of G, and [G :
+U ] = [G : V ]. Now (G, X) and (G, Y ) have the same permutation character if and
+only if AC is satisfied for (G, U, V ).
+Let k ∈ {Q, R, C}, and let V := k[G/H] be the k-vector space defined by the formal
+sums over k with base the elements of the left coset space G/H, H any subgroup
+of G. Then G acts naturally on V by left translation. If B is the (standard) base
+of V corresponding to G/H, it is clear that G naturally defines a subgroup GH of
+GLℓ (V ), with ℓ = [G : H] (by its action on B and linear extension). In this way,
+we have a faithful k-linear representation
+(6)                            ρH : G ֒→ GLℓ (V ).
+
+Now AC is satisfied for (G, U, V ) if and only if ρU and ρV are equivalent, that is, if
+and only if there exists a T ∈ GLℓ (V ) such that for all g ∈ G,
+(7)                            ρU (g) ◦ T = T ◦ ρV (g).
+(Here, k[G/U ] and k[G/V ] are naturally identified.)
+8                                     KOEN THAS
+
+
+Theorem 2.4 (Transplantability). Two faithful permutation representations (G, G/U )
+and (G, G/V ) of the same degree (with U and V subgroups of the group G) have the
+same permutation character if and only if AC is satisfied for (G, U, V ) if and only if
+the faithful k-linear representations ρU and ρV are k-linearly equivalent if and only
+there exists a T ∈ GLℓ (V ) such that for all g ∈ G, ρU (g) ◦ T = T ◦ ρV (g).
+
+In other words: almost conjugacy and transplantability express the same property.
+Abstractly, we will sum up some equivalent properties in the next section.
+
+2.3. Connection with shape. If the matrix T is a permutation matrix, the two
+domains would just have the same shape (i.e., are isometric), and vice versa.
+
+2.4. Analysis of the known examples. All known planar counter examples (DU , DV )
+to Kac’s question are transplantable, i.e., come from Gassman-Sunada data (G, U, V );
+see e.g. [8]. Much more can be said about the triples.
+      (i) In all known examples, the group G is isomorphic to the classical simple
+          group PSLn (q), where (n, q) ∈ {(3, 2), (3, 3), (4, 2), (3, 4)}, cf. [3].
+     (ii) In all these examples, U and V are maximal subgroups of G.
+    (iii) Also, the T -elements are involutions which play the role of a duality of
+          a naturally associated projective space PG(n − 1, q), on which the M (µ) -
+          elements, the N (ν) -elements and PSLn (q) naturally act as automorphisms.
+    (iv) By combined work of O. Giraud and K. Thas, it follows that, conversely, all
+          transplantable pairs arising from the special linear group, and satisfying
+          Equation (8) below, are the known ones. This was observed in [7, 26, 27,
+          28].
+We also mention the following result.
+Lemma 2.5 (Y. Okada and A. Shudo [18]). All isospectral transplantable drums,
+that unfold an r-gon N times, are known if N ≤ 13.
+
+Fixed points equation. The involution graph of DU (respectively DV ) which was
+earlier defined is the so-called (undirected) “Schreier coset graph” of G with re-
+spect to U (respectively V ) relative to {M (µ) } (respectively {N (ν) }) — which is a
+generating set of involutions of G — by definition.
+As the Schreier graphs under consideration are trees (cf. Remark 2.1), the following
+identity holds:
+                                     X r
+(8)                       (r − 2)Λ =      Fix (χ(j) ) − 2,
+                                        j=1
+
+where Fix(χ ) is the number of fixed points of χ(j) in the permutation group
+             (j)
+
+(Gχ , Gχ /S), with χ = M, N and S = U, V respectively; see [8]. Here, Λ is the
+number of tiles, and r is the gonality of the base polygon, which may be taken to
+equal 3.
+                           ISOSPECTRAL DRUMS AND SIMPLE GROUPS                         9
+
+
+                      3. E LEMENTWISE AND ALMOST CONJUGACY
+
+The following properties are easily shown to be equivalent. Let H, H ′ be subgroups
+of a finite group G.
+      (a) H and H ′ are almost conjugate (AC) (that is, (G, H ′ , H ′ ) is a Gassmann-
+          Sunada triple).
+      (b) There exists a bijection B : H −→ H ′ such that for each h ∈ H, B(h) is
+          conjugate to h in G.
+      (c) For all g ∈ G, we have that |g G ∩ H| = |g G ∩ H ′ |.
+Theorem 3.1 (AC and Isospectrality). Let M be a closed hyperbolic n-manifold, G
+a group, and H and K almost conjugate subgroups of G. Then if π1 (M) admits a
+homomorphism onto G, the covers MH and MK associated to the pullback subgroups
+of H and K are isospectral.
+We say that subgroups H and H ′ of a finite group G are elementwise conjugate if for
+each g ∈ G we have that
+(9)                         g G ∩ H 6= ∅ ⇐⇒ g G ∩ H ′ 6= ∅
+The following properties are equivalent.
+       (i) H and H ′ are almost elementwise conjugate (EC).
+      (ii) Each element of H ′ is conjugate to an element of H and each element of
+           H is conjugate to some element of H ′ .
+For M a compact Riemannian manifold, let L(M) be the set of lengts of closed
+geodesics of M (that is, L(M) is the length spectrum without multiplicities). Then
+two such manifolds M and M e are length equivalent if L(M) = L( e
+                                                               M).
+Expressed in terms of isospectrality-related properties, we have the following ver-
+sion of Theorem 3.1.
+Theorem 3.2 (EC and Length Equivalence). Let M be a closed hyperbolic n-manifold,
+G a group, and H and K elementwise conjugate subgroups of G. Then if π1 (M) ad-
+mits a homomorphism onto G, the covers MH and MK associated to the pullback
+subgroups of H and K are length equivalent.
+The following is obvious.
+Observation 3.3. Let (G, H, H ′ ) be a Gassmann-Sunada triple. Then H and H ′ are
+elementwise conjugate in G.
+So in general we have
+(10)                                AC −→ EC.
+The converse is not necessarily true — one cannot even conclude that H and H ′
+have the same order! For example, let An be the alternating group on n letters
+(n ≥ 3), and consider commuting involutions (transpositions) α and β. Then H =
+{id, α} and H ′ = {id, α, β, αβ} are EC (and certainly not AC).
+Still, for our purposes it is more convenient to first study the EC-property, since it
+is more flexible in several ways (e.g. for manupilation in induction arguments). As
+AC implies EC, any classification result on the broader class of EC-triples (G, H, H ′ )
+will yield direct results for the AC-triples.
+10                                      KOEN THAS
+
+
+                      4. C ONSTRUCTION OF ISOSPECTRAL DRUMS
+
+In this section, we want to construct isospectral drums (not necessarily planar)
+arising from Gassman-Sunada group triples (G, H, H ′ ). We will define a class D of
+drums which contains all presently known examples of isospectral planar drums.
+Our way to construct starts from a known example, and makes an infinite class of
+examples out of it.
+We start very generally, with generic constructions which give rise to many EC-
+triples. We always start from some Gassman-Sunada triple, or more generally
+with an EC-triple. We then fine-tune our construction in such a way that the
+drums which come out satisfy some strong properties which are suggested by the
+physics of the game (cf. the next subsection). On the other hand, we want every
+drum/triple which is constructed to inherit certain properties from the initial ex-
+ample. This also means that an initial triple (G, H, H ′ ) has to satisfy a number of
+properties in order to make it eligible for our method to apply. Our model example
+will be the projective linear groups PGLn (q) over a finite field Fq .
+So the idea is this: in each step of our theoretic construction, the construction
+becomes more and more general, and produces a wealth of (new) examples of
+triples/drums. But in order to apply it, in each step, the needed base triples be-
+come more specialized (but at this point only slightly). After having established
+the construction method the connection with simple groups will be revealed in the
+next section,.
+
+4.1. Properties FF, MAX, INV and PAIR. We will give extra attention to the follow-
+ing properties, which are partly motivated by the list of known isospectral planar
+drums.
+
+Recall that a subgroup U, · of a group V, · is normal if for every (u, v) ∈ U × V , we
+have that
+(11)                                 v −1 · u · v ∈ U.
+(Below, we will omit the “·-notation” if the group operation is clear.)
+       FF The FF-property expresses the fact that the actions G y G/H and G y
+          G/H ′ are faithful. This means that there are no nontrivial normal sub-
+          groups of G contained in H and H ′ . Note that if N is a normal subgroup
+          of G inside H, N is also contained in H ′ , since each element of H ′ is con-
+          jugate to some element in H, and N is self-conjugate. This assumption is
+          natural, since dividing out normal subgroups yields the same drums. (“The
+          drums do not see these normal subgroups.”)
+
+
+P RINCIPLE 4.1 (FF). By its mere definition, any example of isospectral drums coming
+from involution graphs à la Okada-Shudo is FF.                                   ∇
+
+
+     MAX MAX expresses the fact that both H and H ′ are maximal subgroups of G,
+         i.e., if A is a subgroup of G containing H (respectively H ′ ), then either
+         A = G or A = H (respectively A = G or A = H ′ ). This is an irreducibility
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                      11
+
+
+        assumption, as in some way MAX-examples represent irreducible exam-
+        ples; if for instance H would not be maximal, it might happen that there
+        are proper subgroups A, B of G for which H ≤ A 6= H and H ′ ≤ B 6= H ′
+        such that (G, A, B) is also Gassman-Sunada/EC. And then physically, the
+        drums coming from the data (G, H, H ′ ) consist of the smaller drums com-
+        ing from the data (G, A, B).
+
+
+P RINCIPLE 4.2 (MAX). Asking that H and H ′ are maximal means that the drums are
+not built from smaller ones.                                                  ∇
+
+
+   INV By Involution Formula, we known that transplantable planar drums satisfy
+       equation (8). The existence of involutions satisfying (8) is INV.
+  PAIR In the known planar examples, there is an outer automorphism of G which
+       maps H to H ′ — in those cases, G is isomorphic to a general special pro-
+       jective linear group over some finite field, and H is the stabilizer of some
+       point (in the action on the associated projective space), and H ′ the stabi-
+       lizer of some hyperplane, cf. §§4.5 and 4.7. The outer automorphism is
+       associated to a duality of the projective space. PAIR expresses this fact:
+       PAIR is satisfied for (G, H, H ′ ) if there is some σ ∈ Out(G)× such that
+       H σ = H ′ and σ 2 ∈ Inn(H). In fact, in most cases in which we will need
+       PAIR, much more general versions suffice. As we will see, often it will be
+       enough to ask that |H| = |H ′ |.
+
+
+4.2. Adding kernels. Let (S, L, L′ ) be a Gassman-Sunada triple which is FF. Let K
+be any group, and consider (S × K, L × K, L′ × K). Here A × B, with A and B
+denoting groups, is the direct product of A and B. It consists of all elements of the
+Cartesian product of A and B, and the group law is
+(12)                           (a, b) · (a′ b′ ) := (aa′ , bb′ ).
+Note that conjugation works as follows:
+(13)       (a, b)(u,v) = (u, v)−1 (a, b)(u, v) = (u−1 au, v −1 bv) = (au , bv ).
+
+As (S, L, L′ ) is Gassman-Sunada, there is a bijection B : L −→ L′ such that for
+s ∈ L, B(s) is conjugate to s (in S). Now define the bijection B as
+(14)                B : L × K −→ L′ × K : (s, k) −→ (B(s), k).
+We know that B(s) = sg for some g ∈ S; it follows that (B(s), k) = (s, k)(g,1) , so
+that (S × K, L × K, L′ × K) clearly also is Gassman-Sunada.
+But of course, no new information is added, as (S × K, L × K, L′ × K) is not
+FF — {id} × K obviously is a normal subgroup of S and it is contained in both
+L × K, L′ × K.
+Remark 4.3 (EC-Triples). Exactly the same procedure also works when we start
+with EC-triples. And FF remains valid throughout the construction.
+Remark 4.4 (Arbitrary products). Note that K is arbitrary, so can be replaced by
+any finite product of finte groups.
+12                                      KOEN THAS
+
+
+We will change this procedure slightly, so that we can sustain the FF-property when
+passing to “bigger examples.”
+
+
+4.3. Passing to products. Start again from data (S, L, L′ ), and consider (S ×S, L×
+L, L′ × L′ ). Suppose that (S, L, L′ ) is FF.
+Let B be as above, and define B as follows:
+(15)                B : L × L −→ L′ × L′ : (s, t) −→ (B(s), B(t))
+We know that there are g, h in S such that B(s) = sg and B(t) = th , so (B(s), B(t)) =
+(s, t)(u,v) , and B obviously is a bijection. It follows that (S × S, L × L, L′ × L′ ) is
+Gassman-Sunada.
+The same can be concluded when starting from an EC-triple (S, L, L′ ) (i.e., (S ×
+S, L × L, L′ × L′ ) is then EC).
+We need to check FF, so suppose that N is a normal subgroup of S × S contained in
+L×L (and so also in L′ ×L′ ). Let π1 be the projection of N onto the first component
+in S × S (that is, π1 (n, m) = n for (n, m) in S × S), and let π2 be the projection
+on the second component. Suppose one of the images, say π1 (N ) is different from
+{id} and L; then π1 (N ) obviously is a normal subgroup of S inside L, contradicting
+the fact that (S, L, L′ ) is FF. If this property does not hold for both π1 and π2 , then
+πi (N ) must be either {id} or L, and for at least one component, say the second, we
+have π2 (N ) = L. And then L is a normal subgroup of S.
+If (S, L, L′ ) is Gassman-Sunada, we have a contradiction as L and L′ are AC, so
+that L ✂ S would imply L = L′ .
+Now let (S, L, L′ ) be an EC-triple, and let L be a normal subgroup of S. Let l′ ∈
+L′ \ L; as l′ is conjugate to some element l in L, we obtain a contradiction as
+lS ⊆ L. As N ≤ (L × L) ∩ (L′ × L′ ), π2 (N ) = L ≤ L′ . We thus conclude that
+L = L′ , contradiction.
+
+P RINCIPLE 4.5 (Inheritance of FF). Let (S, L, L′ ) be an EC-triple (so that as a par-
+ticular case we have Gassman-Sunada triples); then our construction is guaranteed to
+give us an example with FF.                                                         ∇
+
+
+And clearly, instead of considering a product with two components, we can do
+exactly the same reasoning on any finite number of components.
+
+Observation 4.6. If (S, L, L′ ) is Gassman-Sunada with FF, or more generally (S, L, L′ )
+                                                                                  ×k
+is an EC-triple with FF, and k 6= 0 is any positive integer, then (S ×k , L×k , L′ ) is also
+Gassman-Sunada with FF.                                                                   
+
+
+Here, A×k denotes the direct product A × · · · × A with k factors.
+But there is a catch: even if we would assume that L and L′ are maximal subgroups
+of S, L × L and L′ × L′ certainly are not, as for example L × L ≤ L × S. So MAX
+is not inherited if we pass to products.
+We need a more subtle approach.
+                             ISOSPECTRAL DRUMS AND SIMPLE GROUPS                              13
+
+
+4.4. Products with a twist. Now consider an EC-triple (S, L, L′ ), with FF (MAX is
+not needed for now). We pass to (S × S, L × L, L′ × L′ ) as above, which is also FF by
+Principle 4.5. Now consider S2 = hσi =: B, the symmetric group acting on {1, 2}
+(σ = σ −1 ). If (s1 , s2 ) ∈ S × S, we define σ((s1 , s2 )) as
+(16)                            (sσ−1 (1) , sσ−1 (2) ) = (s2 , s1 ).
+
+Put A := S × S, and define a group A ⋊ B as follows. Its elements are just of the
+form (a, b) with a ∈ A and b ∈ B, but the group operation is given by
+(17)                           (a, b) · (a′ , b′ ) := (ab(a′ ), bb′ ).
+By definition, A ⋊ B is the wreath product S ≀ B of S by B. Note that A and B
+naturally are (isomorphic to) subgroups of A ⋊ B; note also that A is (isomorphic
+to) a normal subgroup of A ⋊ B.
+
+Let (l, r), (n, h) be elements of A ⋊ B; then
+(18)
+ (n, h)(l,r) = (l, r)−1 (n, h)(l, r) = (r−1 (l−1 ), r−1 )(n, h)(l, r) = (r−1 (l−1 nh(l)), hr ).
+In particular, if r = 1, then we obtain that (n, h)(l,r) = (l−1 nh(l), h).
+
+Define subgroups H and H ′ of G := A ⋊ B by H := (L × L) ⋊ B and H ′ :=
+(L′ × L′ ) ⋊ B. It is clear that L × L and L′ × L′ can be naturally seen as subgroups
+of index two of respectively H and H ′ .
+                                                      e as follows:
+Now let B : L × L −→ L′ × L′ be as before, and define B
+(19)                        e : H −→ H ′ : (n, b) −→ (B(n), b).
+                            B
+Here, n ∈ L × L and b ∈ hσi = B. The fact that B is a bijection from L × L to
+                             e is a bijection between H and H ′ .
+L′ × L′ readily implies that B
+
+To show that H and H ′ are EC in G, we need to show that for all h′ ∈ H ′ , we can
+find u ∈ G and h ∈ H such that hu = h′ . By the above, this property is certainly
+true for the subgroup L′ × L′ of H ′ (each of its elements is conjugate in G to some
+element of L × L). So it is sufficient only to consider elements of type (n, σ) in
+H ′ (where n = (a, b) ∈ L′ × L′ ). The symmetrical argument then yields that the
+obtained triple is EC. So we seek for (l, δ) ∈ G (with l = (l1 , l2 ) ∈ S × S and
+δ ∈ {id, σ}) and (r, σ) (with r ∈ L × L) such that
+(20)                                  (r, σ)(l,δ) = (n, σ).
+
+Plugging this into equation (18), we obtain the following equations, the first being
+for δ = σ, the second for δ = id, and the third being a trivial equation:
+
+                      
+                       r     = lσ(n)σ(l)−1          = (l1 bl2−1 , l2 al1−1 )
+(21)                    r     =   lnσ(l)−1           = (l1 al2−1 , l2 bl1−1 )
+                      
+                        σ     =      σ.
+14                                          KOEN THAS
+
+
+P RINCIPLE 4.7 (Reduction to the base group S). Since (a, b) ∈ L′ × L′ is essen-
+tially arbitrary, both equations boil down to one: we need (l1 , l2 ) ∈ S × S such that
+(l1 al2−1 , l2 bl1−1 ) ∈ L × L. In fact, since l2 bl1−1 ∈ S if and only if l1 b−1 l2−1 ∈ S, and
+since b is arbitrary, we need (l1 , l2 ) ∈ S × S such that (l1 al2−1 , l1 bl2−1 ) ∈ L × L.   ∇
+
+Remark 4.8 (EC and its geometry). At this point, one has to start specifying the
+initial triple (S, L, L′ ) in order to play the game. We will introduce a fundamental
+example in the next subsection. Much seems to depend on detailed knowledge
+of the natural (geometric) modules on which the groups act. However, we will
+surprisingly observe that this is not true, and that the geometric property we need
+naturally comes from the EC-property (in fact, it is even equivalent). This is another
+reason why the class of EC-triples is a more natural candidate to study for our
+purposes than the class of AC-triples.
+
+
+4.5. Model example: the general linear groups. Consider the simple group PGLn (F)
+(over any commutative field F, n ∈ N× \ {1}), and put S = PGLn (F). As we
+have seen earlier, S acts naturally on the linear subspaces of the projective space
+PG(n − 1, F). Let L := Sx be the stabilizer in S of a point x in PG(n − 1, F), and
+let L′ = SΠ be the stabilizer in S of a hyperplane Π in PG(n − 1, F). It is well
+known and easy to see that (S, Sx , SΠ ) has the EC-property. (If n = 2, Sx and SΠ
+are conjugate, though.)
+Remark 4.9. The choice of (x, Π) is not important, as the reader will see.
+
+So a, b both stabilize Π, and hence ab−1 has the same property. A well-known
+property for projective spaces tells us that ab−1 therefore must fix some point y of
+the space. This means that
+(22)                                     a(y) = b(y) = y ′
+for some point y ′ .
+
+
+                                                 a
+
+
+                       point y                                    point y ′
+
+
+                                                  b
+                                  l1−1                       l2
+
+
+                                             point x
+
+Let l1−1 map y to x (note that such elements certainly exist!), and let l2 map x to
+y ′ (same remark). A standard property of permutation groups now tells us that all
+elements in S that map y to y ′ are in the set
+(23)                                         l1−1 Sx l2 ,
+and hence (l1 al2−1 , l1 bl2−1 ) ∈ Sx × Sx = L × L.
+                           ISOSPECTRAL DRUMS AND SIMPLE GROUPS                           15
+
+
+Proposition 4.10 (Linear groups and 2-cycles). Put
+(24)              (S, L, L′ ) = (PGLn (F), PGLn (F)x , PGLn (F)Π )
+with (x, Π) any point-hyperplane pair. Then (S ≀ S2 , L ≀ S2 , L′ ≀ S2 ) is an EC-triple. 
+
+We will observe further on how this construction behaves with respect to the prop-
+erties we introduced in the beginning of this section. First, we want to replace the
+involutive action by a 3-cycle action. This will lead us to the general construction,
+which will handle wreath products of simple groups with any transitive subgroup of
+the symmetric group.
+
+
+4.6. 3-Products with a 3-cycle. Consider an EC-triple (S, L, L′ ), with FF (MAX is
+again not asked). We pass to (S × S × S, L × L × L, L′ × L′ × L′ ) as above, which is
+also FF by Principle 4.5. Now consider any γ ∈ S3 , the symmetric group acting on
+{1, 2, 3}. If (s1 , s2 , s3 ) ∈ S × S × S, we define γ((s1 , s2 , s3 )) as
+(25)                             (sγ −1 (1) , sγ −1 (2) , sγ −1 (3) ).
+
+Put A := S × S × S, and define a group S ≀ B as in the previous subsection (see also
+the next remark), where B ≤ Sym(3) is supposed to be transitive.
+Remark 4.11 (Wreath products). Let G be any group, and let P be a subgroup of
+the symmetric group Sym(Ω) acting on the finite set Ω 6= ∅. The wreath product
+G ≀ P of G by P is defined as follows. Its elements are of the form (g, p) with g ∈ GΩ
+(which is the Cartesian product of |Ω| copies of G, indexed by Ω) and p ∈ P , while
+the group operation is given as before by
+(26)                          (g, p) · (g ′ , p′ ) := (gp(g ′ ), pp′ ).
+Here, with g ′ = (gω )ω∈Ω ,
+(27)                               p(g ′ ) := (gp−1 (ω) )ω∈Ω .
+One notes that G and P are naturally isomorphic to subgroups of G ≀ P , and that G
+becomes a normal subgroup under this natural identification.
+
+
+To show that H and H ′ are EC in G, we need to show that for all h′ ∈ H ′ , we can
+find u ∈ G and h ∈ H such that hu = h′ . By the above, this property is certainly
+true for the subgroup L′ × L′ × L′ of H ′ (each of its elements is conjugate in G to
+some element of L × L × L, even in a bijective correspondence). So it is sufficient
+only to consider elements of type (n, γ) in H ′ (where n = (a1 , a2 , a3 ) ∈ L′ ×L′ ×L′ ).
+So we seek for (l, δ) ∈ G (with l = (l1 , l2 , l3 ) ∈ S × S × S and δ ∈ B) and (r, γ ′ )
+(with r ∈ L × L × L and γ ′ ∈ B) such that
+(28)                                 (r, γ ′ )(l,δ) = (n, γ).
+
+Plugging this into equation (18), we obtain the following equations, the first being
+                                                                        δ
+for δ = σ, the second for δ = id. (For general δ ∈ B, one needs that γ ′ = γ, but we
+                                            ′
+will show below that the case δ = id and γ = γ already suffices to find solutions.)
+So below, we let γ ′ = γ.
+16                                          KOEN THAS
+
+
+
+            
+                r   =      lσ(n)σ(l)−1
+(29)
+                r   =        lnσ(l)−1     = (l1 a1 lγ−1               −1                −1
+                                                      −1 (1) , l2 a2 lγ −1 (2) , l3 a3 lγ −1 (3) ).
+
+
+
+
+4.7. Model example: the general linear groups. We show again that with S =
+PGLn (q) (n, q as above), L = Sx and L′ = SΠ (x and Π as above), we can make
+the desired properties work. We choose an “arbitrary” γ ∈ S3 , but we assume it to
+be a regular 3-cycle (that is, it generates a sharply transitive subgroup of S3 ). The
+reason is that if it is not of this form, the existence of the desired (l1 , l2 , l3 ) follows
+from it cycle decomposition together with the fact that we already obtained the
+result for n = 2. In any case, the technique we present also works for any cycle.
+Choose for instance (and without loss of generality) the permutation
+
+                                        
+                                         γ(1) =          3
+(30)                                      γ(2) =          1
+                                        
+                                          γ(3) =          2,
+so that we must check one of the conditions
+
+                
+                    r     = lγ(n)γ(l)−1
+(31)
+                    r     =   lnγ(l)−1       =     (l1 a1 l2−1 , l2 a2 l3−1 , l3 a3 l1−1 ).
+
+We solve, as before, the second set of equations.
+As a1 , a2 , a3 are elements of SΠ , their inverses are in SΠ as well, and so a2 ◦a−1
+                                                                                   1 ◦a3 is
+also in SΠ . As before, we know this element fixes some point, say y. Put a3 (y) =: y1
+and a1 ◦ a3 (y) =: y2 ; then a2 (y2 ) = y. Now choose elements l1 , l2 , l3 such that:
+
+                                        
+                                         l1 (x)      = y1
+(32)                                      l2 (x)      = y2
+                                        
+                                          l3 (x)      = y,
+
+
+                                            point y1
+
+                                   a3                           a1
+
+
+                        point y               l1                         point y2
+
+
+                                                 a2
+                                   l3                          l2
+
+
+                                            point x
+                            ISOSPECTRAL DRUMS AND SIMPLE GROUPS                              17
+
+
+4.8. The general case: general twists. Consider an EC-triple (S, L, L′ ), with FF
+(MAX is again not needed for the construction). Take any n ∈ N× . We pass to
+                ×n
+(S ×n , L×n , L′ ) as above, which is also FF. Now we take any transitive subgroup
+B in the symmetric group Sn , acting naturally on {1, . . . , n}. If (s1 , . . . , sn ) ∈ S ×n ,
+we define γ((s1 , . . . , sn )) for any γ ∈ B as
+(33)                               (sγ −1 (1) , . . . , sγ −1 (n) ).
+
+Put A := S ×n , and define G := S ≀ B, H := L ≀ B and H ′ := L′ ≀ B as before.
+To show that H and H ′ are EC in G, we consider any element ((a1 , . . . , an ), γ) ∈
+        ×n
+H ′ = L′ ⋊ B, and we show that it is conjugate to some (r, γ) ∈ H = L×n ⋊ B
+through some element of the form ((l1 , . . . , ln ), id). It is not necessary to consider
+elements with trivial γ, since they already have the required property.
+So we want to solve the set of equations
+
+                n
+(34)                r   =   lnγ(l)−1      = (l1 a1 lγ−1                       −1
+                                                      −1 (1) , . . . , ln an lγ −1 (n) ).
+
+
+
+
+4.9. General theory: solving equation (34), and EC-geometry. Before proceed-
+ing, let (C, D, D′ ) be an EC-triple. Define “points” as being the elements of the left
+coset space X = {cD|c ∈ C} and “hyperplanes” as being elements of the left coset
+space X′ = {cD′ |c ∈ C}. In the left action of C on X, a point stabilizer (of the point
+                        −1
+gD) has the form Dg , and in the left action of C on X′ , the stabilizer of hD′ is
+   h−1
+D′ . In particular, D is the stabilizer of the point (id·)D and D′ is the stabilizer
+                                                                −1
+of the point (id·)D′ . Now by EC, any a ∈ D′ is in some Dl , so that a fixes the
+point lD.
+P RINCIPLE 4.12. EC precisely expresses the geometric property we used in the model
+example of projective general linear groups to solve the necessary equations for obtain-
+ing EC.                                                                               ∇
+
+Now we return to the setting of §§4.8, and let S, L, L′ , G, H, H ′ , γ, etc. be as before.
+We need to solve equation set (34).
+By induction on the decomposition cycles of the permutation γ, it suffices to con-
+sider only regular n-cycles, although our method also applies to non-regular per-
+mutations. So from now on, let γ be a regular n-cycle. As a1 , . . . , an ∈ S ′ , the
+(composition) product (acting on the left)
+                                    n
+                                    Y
+(35)                                      aγ −(n−i) (1) =: a
+                                    i=1
+is also in S ′ , and so fixes some point y of the left coset space {sL|s ∈ S} by EC. For
+each i = 1, . . . , n, we define
+(36)                                   ai (yi ) =: yγ −1 (i) ,
+and note that yn = y (and γ 0 = id). We stress the fact that all considered points
+are elements of the space {sL | s ∈ S}. Put x equal to the point (id) · L, so that L
+is the point stabilizer of x in S acting on {sL | s ∈ S}.
+18                                         KOEN THAS
+
+
+Remark 4.13. Note that there could be i such that yi = yi+1 . This phenomenon
+gives no obstructions. (And this is why the argument works for any type of permu-
+tation.)
+
+Now for each i = 1, . . . , n, define li as being any element of S which sends x
+to yl (and note that such elements exist since S acts transitively on the points of
+{sL|s ∈ S}).
+
+
+                                 an                     aγ −1 (n)
+                                            yγ −1 (n)
+                   y                                                        yγ −2 (n)
+                                        lγ −1 (n)
+
+                           ln                                       lγ −2 (1)
+
+
+                                                x
+
+
+4.10. General case — definition of D: “Type I triples”. We are now ready to
+define the class D. Elements of D are constructed through the following data:
+(37)                                 E = (S, L, L′ , n, T )
+where
+       • (S, L, L′ ) is an EC-triple with FF (we call (S, L, L′ ) the base of E),
+       • n ∈ N× is a positive integer, and
+       • T is any transitive subgroup of the symmetric group Sn acting naturally on
+         {1, . . . , n}.
+We construct the EC-triple (S ≀ T, L ≀ T, L′ ≀ T ) as above, which we also denote by
+(E(S), E(L), E(L′ )). Note that |S ≀ T | = |S|n |T |, |L ≀ T | = |L|n |T | and |L′ ≀ T | =
+|L′ |n |T |.
+
+If L and L′ are not conjugate (in particular L 6= L′ ), then L ≀ T and L′ ≀ T also
+are no conjugate. For, suppose the latter are conjugate: (L ≀ T )g = L′ ≀ T with
+g ∈ S ≀ T . Then as (L ≀ T ) ∩ S n = Ln (where as usual we write Ln for Ln × {id},
+                           n
+etc.), (L′ ≀ T ) ∩ S n = L′ and S n ✂ S ≀ T , we have
+           g                                                                            n
+(38) (Ln ) = ((L ≀ T ) ∩ Sn )g = (L ≀ T )g ∩ Sng = (L ≀ T )g ∩ Sn = (L′ ≀ T ) ∩ Sn = L′ .
+Now with g = (u, γ), we obtain that
+               g                 g                                              n
+(39)      (Ln ) = (Ln × {id}) = (γ −1 (u−1 Ln u)) × {id} = (L′ ) × {id},
+and it easily follows that L and L′ are also conjugate in S.
+
+
+Remark 4.14 (Transitive groups). Any group acts transitively on some set: for
+instance, let it act on the left on itself, and one obtains a sharply transitive action.
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                         19
+
+
+Remark 4.15 (Finiteness versus infinite). For physical means, one requires that the
+groups be finite, but everything works fine for infinite groups as well.
+
+
+4.11. Generic properties. As we have seen, several of the “naive” product con-
+structions generate examples which lose fundamental properties of the initial base
+example, such as FF or MAX. We will show that our construction preserves them.
+This is most important for the physical viewpoint.
+
+
+Theorem 4.16 (Conservation of Properties). Let E = (S, L, L′ , n, T ) be an element
+of D, and suppose (S, L, L′ ) is MAX. Then (E(S), E(L), E(L′ )) is an EC-triple which is
+FF, and also MAX.
+
+Proof. We first prove FF. Suppose by way of contradiction that N is a normal
+subgroup of E(S) which is contained in E(L). Then N ∩ S ×n (where we write S ×n
+for S ×n ⋊{id}) is a normal subgroup of S ×n (as S ×n is a normal subgroup in E(S)).
+Since N is contained in E(L), it follows that N ∩ S ×n = N ∩ L×n ≤ L×n . For, an
+element of N ∩ S ×n is of the form (s, id) with s ∈ S ×n , and as N ≤ L×n ⋊ T , each
+element of N has the form (l, t) with l ∈ L×n , t ∈ T . So the elements in N ∩ S ×n
+are precisely the elements in N ∩ L×n . By Principle 4.5, we conclude that N ∩ L×n
+                                                        ×n
+must be trivial (if (S, L, L′ ) has FF, (S ×n , L×n , L′ ) must have FF). Now let (n, γ)
+be in N ≤ E(L); as T ≤ E(L), we have (n, id) ∈ E(L), which implies it to be an
+element of L×n . This is only possible if n = id. So N ≤ T . Finally, let (id, β) be any
+element of N ; then with (r, α) an arbitrary element of E(S), we must have that
+(40)                      (id, β)(r,α) = (α−1 (r−1 β(r)), β α )
+is an element of N . So α−1 (r−1 β(r)) = id, implying that β(r) = r for all r ∈ S ×n .
+It follows that N is trivial, and that (E(S), E(L), E(L′ )) has FF (since the same ar-
+gument works for E(L′ )).
+
+We now turn to MAX. Suppose E(L) is not a maximal subgroup of E(S), and let M
+be a proper subgroup of E(S) that properly contains E(L). Note that T is contained
+in M (up to a natural isomorphism t ∈ T 7→ (id, t)). Let (m, β) ∈ M \ E(L). As
+(id, β −1 ) ∈ M , it follows that (m, id) 6∈ L×n , so with m = (m1 , . . . , mn ), some
+mi is not in Li ∼  = L (= the ith copy of L in the Cartesian product L×n ). So if
+                  ∼
+πi : M −→ Si = S is the projection of M onto the ith copy of S in the product
+S ×n , we have that πi (M ) properly contains Li , so that it must coincide with Si
+as Li is maximal in Si by assumption. Now L×n ⋊ {id} ≤ M , and if M is the
+projection of M onto S ×n ⋊ {id}, then L×n ⋊ {id} 6= M . Consider the subgroup
+L × {id} × · · · × {id} of M . As π1 (M ) = S1 = S, we have that
+(41)          h(L × {id} × · · · × {id})M i = hLS i × {id} × · · · × {id}.
+
+But L is maximal in S, so either hLS i = L, and then L is a normal subgroup of S,
+or hLS i = S. First suppose that we are in the latter case (for both the properties
+AC/EC), so that S × {id} × · · ·× {id} ≤ M . As T acts transitively on the components
+in S ×n , and as T is contained in M , it follows that M coincides with E(S). The
+same argument works for E(L′ ), so we have indeed proved that MAX is inherited.
+20                                      KOEN THAS
+
+
+Now let L ✂ S. If (S, L, L′ ) is supposed to be AC, it follows as before that L = L′ ,
+contradiction. If (S, L, L′ ) is EC, as before it follows that L′ ≤ L. On the other
+hand, as L′ is also supposed to be maximal in S, we must have L = L′ , contradic-
+tion.                                                                              
+
+
+
+4.12. Examples of unbounded index. Since for all m ∈ N× we can find sharply
+transitive permutation groups (T, X) with |T | = |M | = m (e.g., T is cyclic of order
+m acting on itself by translation), we have the following theorem.
+Theorem 4.17 (Unbounded index). For each N ∈ N, there exist EC-triples (G, U, V )
+with MAX and FF, such that
+                                    |G|    |G|
+(42)                                     =      > N.
+                                    |U |   |V |
+
+Proof. Follows immediately from the expressions of the sizes of the EC-triples
+(S ≀ T, L ≀ T, L′ ≀ T ) with (S, L, L′ , n, T ) in D (by suitably adapting n in function
+of N ), and the remark preceding the theorem.                                          
+
+
+
+4.13. Variation on the construction in §§4.10: “Type II triples”. There is a sec-
+                        e which we describe below. It is important to note that S
+ond class of examples, D,
+will be a simple group by assumption.
+            e are constructed through the following data:
+Elements of D
+(43)                               E = (S, L, L′ , n, T )
+where
+
+       • S is a simple group,
+       • n ∈ N× is a positive integer,
+       • L and L′ are diagonal subgroups of S n ,
+       • (S n , L, L′ ) is an EC-triple (again called the base of E), and
+       • T is any transitive subgroup of the symmetric group Sn acting naturally on
+         {1, . . . , n}, and both L, L′ are stabilized by T in its natural action on S n .
+
+We construct the triple (S ≀ T, L ⋊ T, L′ ⋊ T ) as above, which we also denote by
+(E(S), E(L), E(L′ )). Note that in this construction, |S≀T | = |S|n |T |, |L⋊T | = |L|·|T |
+and |L′ ⋊ T | = |L′ | · |T |.
+
+The fact that (E(S), E(L), E(L′ )) is EC can be obtained as before.
+
+Again, one can verify MAX and FF for these examples (note that for MAX, one does
+not have to assume MAX for (S, L, L′ )). We will quickly browse through the proofs,
+which are a bit different than for the original construction (due, a.o., to the fact
+that S is simple).
+                             ISOSPECTRAL DRUMS AND SIMPLE GROUPS                               21
+
+
+  MAX. One can derive MAX from O’Nan Scott theory (cf. the appendix of this
+paper), but we will describe the idea for the sake of the reader. Without loss of
+generality, suppose
+(44)                             L := {(s, s, . . . , s)|s ∈ S},
+                n
+and denote S by N . Suppose by way of contradiction that M properly contains
+L⋊T , M 6= N ⋊T . Then L 6= M ∩N 6= N . Let R ≥ M ∩N be maximal in N . Before
+proceeding, recall that a group C is maximal in a direct product Dr (of r copies of
+                                                                        −1
+D, r ≥ 2), if either it is a normal subgroup of prime index, or C = πi,j   (E), where
+                                                         r
+E is maximal in Di × Dj , and πi,j is the projection of D on the i-th and j-th com-
+ponent in Dr . We call a maximal subgroup of Dr standard if it is a direct product
+of a maximal subgroup in D with r − 1 copies of D. If R is a normal subgroup of
+prime index in N , then R does not contain some Si (seen as a subgroup of N ), so
+R∼ = S m−1 × (Si ∩ R). By the transitive action of M on the components, it follows
+                                                         −1
+that R = N . If R is not normal of prime index, R = πi,j    (M ′ ) for some maximal
+subgroup M ′ in Si × Sj . If m ≥ 3, then R ∼    = S m−2 × M ′ , and the transitivity
+argument of above leads to R = N = M ∩ N , and hence M = S n ⋊ T . If m = 2,
+then we use the fact that a group F is simple if and only if the diagonal group is
+maximal in F × F , to conclude that L is already maximal in S × S = N , so that
+M ∩ N = N , and hence M = S n ⋊ T .
+
+
+  FF. Suppose K is a normal subgroup of N ⋊ T which is a subgroup of L ⋊ T .
+First suppose that (k, id) ∈ K (with k = (e, e, . . . , e) ∈ Ln ). Then for any (v, id) in
+N ⋊T , v = (v1 , . . . , vn ), we have that (k, id)(v,id) = (ev1 , . . . , evn , id) ∈ K ≤ L⋊{id}.
+This is obviously not possible: take, for instance, v1 = id and v2 6∈ CS (e) (which is
+possible as S is simple). (For n = 1, there is nothing to prove by assumption.)
+
+It follows that K ∩ (L ⋊ {id}) = {id}. Now let (k, γ) ∈ K (with k = (e, e, . . . , e) ∈ L
+and γ 6= id). Then for any (v, id) in N ⋊ T , v = (v1 , . . . , vn ), we have that
+ϕ := (k, γ)(v,id) = (v −1 kγ(v), γ). Let v := (s, id, . . . , id). If n ≥ 3, then at least
+on entry of ϕ is simply e, while the others have the form s−1 es, s−1 e, es or e, and
+not only the latter form occurs. If an entry has the form s−1 es, let again s 6∈ CS (e);
+if the entry has the form s−1 e or es, then let s 6= id. It follows that we can find v
+such that (k, γ)(v,id) is not in K, that is, such that K is not a normal subgroup of
+N ⋊ T inside L ⋊ T .
+
+We have shown that FF holds (as the same works for L′ ).
+
+Theorem 4.18 (Conservation of Properties). Let E = (S, L, L′ , n, T ) be an element
+   e Then (E(S), E(L), E(L′ )) is an EC-triple which is FF, and also MAX.
+of D.                                                                            
+
+
+
+4.14. Second variation on the construction in §§4.10: “Type III triples”. There
+                                        b which we describe below. It is important
+is a second class of examples, denoted D,
+to note that S again will be a simple group by assumption. These examples will be
+a mixture of the two first constructions.
+22                                         KOEN THAS
+
+
+            b are constructed through the following data:
+Elements of D
+(45)                               E = (S, L, L′ , (l, k), T )
+where
+       • S is a simple group,
+       • l, k ∈ N× are positive integers both different from 1,
+       • L and L′ are diagonal copies of S in (groups isomorphic to) S k ,
+       • (S k , L, L′ ) is an EC-triple with FF (again called the base of E), and
+       • T is any transitive subgroup of Slk acting naturally on {1, . . . , lk}, by a
+         block system with block {1, . . . , k}, and both L, L′ are stabilized by T{1,...,k}
+         in its natural action on S k .
+                                              l
+We construct a triple (S ≀ T, Ll ⋊ T, L′ ⋊ T ) as above, which we also denote by
+(E(S), E(L), E(L′ )). Note that |S ≀ T | = |S|lk |T |, |Ll ⋊ T | = |S|l |T | and |L′ l ⋊ T | =
+|S|l |T |.
+
+The fact that (E(S), E(L), E(L′ )) is EC can again be obtained as before.
+
+The proof of the following result is left to the reader.
+
+Theorem 4.19 (Conservation of Properties). Let E = (S, L, L′ , (l, k), T ) be an ele-
+        b Then (E(S), E(L), E(L′ )) is an EC-triple which is FF, and also MAX.
+ment of D.                                                                         
+
+Remark 4.20. Note that we suppose that L and L′ are diagonal copies of S in
+groups isomorphic to S k . After applying the appropriate isomorphisms, we can then
+indeed without loss of generality formulate the next property for D      b as “(S k , L, L′ ) is
+an EC-triple with FF” (not having changed the notation for L and L′ for the sake of
+convenience). In exactly the same vein, after considering the last defining property
+for Db (namely, the one concerning the action of T ), L and L′ could be defined as
+diagonal copies of S inside respectively Su1 × · · · × Suk and Su′1 × · · · × Su′k , where
+{u1 , . . . , uk } and {u′1 , . . . , u′k } are members of the same block system described
+above.
+                           ISOSPECTRAL DRUMS AND SIMPLE GROUPS                       23
+
+
+                    5. C LASSIFYING PLANAR ISOSPECTRAL DRUMS
+
+Let (G, U, V ) be a (finite) EC-triple with MAX and FF.
+We will determine the structure of such an example, imposing more properties on
+the way which are satisfied for any pair of transplantable planar isospectral drums.
+Eventually, we will observe that finite (almost) simple groups yield the right triples.
+To some point, we will follow some standard steps in the proof of the O’Nan-Scott
+Theorem (cf. the appendix). But especially the physical constraints will eventually
+shape the classification (in §§5.3 and §§5.4).
+
+We will use the following fact throughout (see the appendix).
+
+FACT. If X is a maximal subgroup of Y and the action of Y by left multiplication on
+the left cosets of X is faithful, then for a hypothetical nontrivial normal subgroup Z
+of Y , we have that Y = XZ. In other words, Z acts transitively on {lX | l ∈ Y }.
+
+
+5.1. Case I: G is simple. If G is simple, we are in a special case of our construction,
+Type I, namely the case with data E = (G = S, U = L, V = L′ , 1, {id}).
+Note that all the known examples of isospectral pairs fall under Case 1 (in each
+of these examples, G ∼
+                     = PSLℓ (q) for small values of ℓ and q, and these groups are
+simple).
+
+5.2. Case II: G is not simple — first case. As U is maximal, G acts primitively
+on the left cosets of U by left multiplication (and the same can be said about V ).
+The fact that G is not simple implies that there are nontrivial minimal normal
+subgroups. But, there are at most two (cf. the appendix), and detailed information
+is known about them. First we suppose there is only one minimal normal subgroup
+N , and that it is not abelian. The fact that there is one and only one nontrivial
+minimal normal subgroup implies that the action of G on the left coset space G/U
+is not sharply transitive (cf. the appendix), that is, U ∩ N 6= {id}.
+By Appendix 7, N is (isomorphic to) a direct product of (m) copies of the same
+nonabelian simple group, say S. Now G acts by conjugation as an automorphism
+group on N .
+   First put m = 1, so that N = S is simple. Then G is an almost simple group
+(by definition), since S ≤ G ≤ Aut(S). So this falls under the data E = (G =
+S, U = L, V = L′ , 1, {id}) for the Type I construction.
+
+  Now let m ≥ 2. Write N as
+(46)                           N = S1 × · · · × Sm ,
+              ∼
+where each Si = S is simple, and let S = {S1 , . . . , Sm }.
+First note that as G = U N = V N , it follows that
+(47)                G/N = U N/N ∼   = U/(U ∩ N ) ∼ = V /(V ∩ N ),
+that is, U and V act in the same way on S as G does (they “contain” the complete
+G-action). By Appendix 7, the action is transitive.
+24                                             KOEN THAS
+
+
+By O’Nan-Scott theory (see for instance the excellent lecture notes [33] for more
+details besides those in the appendix), there are two cases (with some subdivision)
+to consider (for both U and V — we only state them for U ):
+       A The natural maps πi : U 7→ Si are not surjective. This implies that U ∩N =
+         M1 × · · ·× Mm , where each Mi ∼          = M is a maximal subgroup in S. It follows
+         that |U ∩ N | = |M |m .
+       B The natural maps πi : U 7→ Si are surjective. There are two subcases.
+          B.1 U ∩N is a diagonal copy diag(S) of S in N . In particular, |U ∩N | = |S|.
+          B.2 U acts on {1, . . . , m} through blocks {u1 , . . . , uk| }U , where χ(U ) :=
+               {u1 , . . . , uk } ⊂ {1, . . . , m}, and k divides m, and U ∩ (Su1 × · · · × Suk )
+               is a diagonal copy diag(S) of S. (So in this case, χ(U ) is a block in
+               a system of blocks for the action of G on {1, . . . , m}.) In particular,
+               |U ∩ N | = |S|m/k .
+If we are in (A), then U ∼
+                         = M ≀ T , where T is isomorphic to the subgroup of Sm
+which is induced on S by G, and also U . Also, G ∼
+                                                 = S ≀ T = N ⋊ T.
+
+                      = diag(S) ⋊ T , with T as above. Also, G ∼
+If we are in (B.1), U ∼                                        = S ≀ T = N ⋊ T.
+
+If we are in (B.2), U ∼
+                      = diag(S)m/k ⋊ T , and also, G ∼
+                                                     = S ≀ T = N ⋊ T . It should be
+noted that diag(S) ≤ N .
+
+Before finishing this part of the classification, we need the following result. First
+note that in (A), (B.1) and (B.2), (G, U, V ) already has the form as in the Type I,
+II, III triples (respectively) defined before. In the same way as for these triples, we
+introduce the “base triple.”
+Theorem 5.1. Let (G, U, V ) be EC. Let (A, B, C) be the base triple in each of (A),
+(B.1), (B.2).
+     (1) We have that (A, B, C) is EC.
+     (2) If U and V are not conjugate, then B and C are not conjugate.
+     (3) If |U | = |V |, then |A| = |B|, and hence U and V both are constructed through
+         the same process (A), (B.1) or (B.2).
+         In particular, if PAIR is satisfied, the same conclusion holds.
+
+Proof. (1)      Take any (u, t) ∈ U ; then by EC there is a (n, r) ∈ G and (v, t′ ) ∈ V
+such that
+(48)                                    (u, t)(n,r) = (v, t′ ).
+In particular, the formula holds when t = id, t′ = id, and we then have
+(49)                     (u, id)(n,r) = (r−1 (n−1 un), id) = (v, id).
+So for all u = ((b1 , . . . , bm ), id) in U (each bi taken in B), there is some (n, id) =
+((a1 , . . . , am ), r) in G (each ai taken in A) and (v, id) = ((c1 , . . . , cm ), id) in V (each
+ci taken in C), such that
+(50)                     ((ba1 1 , . . . , bamm ), id) = (r(c1 , . . . , cm ), id).
+The element (r(c1 , . . . , cm ), id) is an element of V , as V also contains the G-action.
+The EC-property easily follows for (A, B, C) in each of the cases (A), (B.1) and
+                              ISOSPECTRAL DRUMS AND SIMPLE GROUPS                       25
+
+
+(B.2).
+
+(2) Was obtained before.
+
+(3) Follows immediately.                                                                
+
+Remark 5.2. Consider the triple (G, U, V ) in B.2 (so both (G, U ) and (G, V ) are
+assumed to fall under B.2). Then (G, U ) = (S ≀ T, U ∼     = S l ⋊ T ) and (G, V ) =
+(S ≀ T, V ∼
+          =  S l
+                 ⋊ T ). Also, G acts on N , and on S = {S 1 , . . . , Sm } by conjugation,
+and T also does. Besides that, T preserves the block systems of U and V . If u ∈ U ,
+there is some g ∈ G and v ∈ V such that ug = v by EC, so it follows that U and V
+live in the same block system. So we are indeed dealing with Type III triples (that
+is, not only (G, U ) and (G, V ) have the desired form, but (G, U, V ) as well, as it
+should have).
+
+From this point on, the physical properties (FF and INV) will be the deciding factors
+in the classification.
+
+5.3. Case III: G is not simple — second case. Now suppose G has precisely two
+minimal normal subgroups N and N ′ ; then by Appendix 7, N = CH (N ′ ), N ′ =
+CH (N ), N ∩N ′ and N ∩N ′ = {id}, so that M := N ×N ′ is a normal (characteristic)
+subgroup of G. Both N and N ′ act sharply transitively on the left cosets of U and
+V , so that U ∩ N = U ∩ N ′ = V ∩ N = V ∩ N ′ = {id}, and
+(51)                          G = U N = U N ′ = V N = V N ′.
+
+In particular, |U | = |V |.
+
+By INV, there is an involution γ in G which has more than |X|/3 fixed points in X.
+If x and y are any two of these fixed points, and n ∈ N is such that xn = y, then as
+N acts sharply transitively on X and as it is a normal subgroup of G, it follows that
+n and γ commute (as the commutator [n, γ] fixes y and is contained in N ). So
+                                                    |X|   |N |
+(52)                          Fix(γ) = |CN (γ)| >       =      .
+                                                     3     3
+So only the possibilities |N |/2 and |N | come out for |CN (γ)|. If N = CN (γ), it
+follows that γ fixes all points of X, a property which violates FF (and also INV).
+Now turn to the case |CN (γ)| = |N |/2. By Appendix 7, N is (isomorphic to) a direct
+product of (m) copies of the same nonabelian simple group, S. Write
+(53)                           N∼ = S1 × · · · × Sm ,
+each Sj being isomorphic to S.
+Some S-factor Se of N is not contained in CN (γ) (as otherwise N = CN (γ)), and
+then Se ∩ CN (γ) is a subgroup of index 2 in S.
+                                             e So if |S| > 2, Se ∩ CN (γ) is a nontrivial
+                        e
+normal subgroup of S, contradicting its simplicity. So |S| = 2, meaning that N is
+elementary abelian, contradiction. (This is in fact Case IV — see §§5.4.)
+             26                                       KOEN THAS
+
+
+             5.4. Case IV: G is not simple — abelian case. Suppose N is abelian. In that
+             case, N acts sharply transitively on the left coset spaces G/U and G/V , and N is
+             elementary abelian (cf. the appendix to this paper):
+             (54)                         N∼ = Cp × Cp × · · · × Cp ,
+             where Cp is the cyclic group of prime order p, and where we have taken m copies
+             on the right-hand side. So we can identify N as the translation group of the affine
+             space AG(m, p) =: A, which is itself identified with, say, G/U . (So the elements
+             of G/U correspond to the points of AG(m, p).) After this identification, G acts
+             as a faithful automorphism group of A, and it is isomorphic to a subgroup of
+             AGLm+1 (p).
+             We will now invoke INV to solve the last piece of the puzzle. As INV assumes
+             an identity involving three involutions which are contained in G, we need extra
+             knowledge of how involutions act on affine spaces. So we will discuss the different
+             types of involutions that can occur in the automorphism group of a finite projective
+             space PG(n, q), cf. [23]. The reader can deduct the different types of involutions
+             for affine spaces from this result.
+  Baer involutions A Baer involution is an involution which is not contained in the linear au-
+                    tomorphism group of the space, so that q is a square, and it fixes an n-
+                    dimensional subspace over F√q pointwise.
+Even characteristic If q is even, and θ is an involution which is not of Baer type, θ must fix an
+                    m-dimensional subspace of PG(n, q) pointwise, with 1 ≤ m ≤ n ≤ 2m + 1.
+                    In fact, to avoid trivialities, one assumes that m ≤ n − 1.
+Odd characteristic If θ is a linear involution of PG(n, q), q odd, the set of fixed points is the
+                    union of two disjoint complementary subspaces. Denote these by PG(k, q)
+                    and PG(n − k − 1, q), k ≥ n − k − 1 > −1.
+ Other involutions Those without fixed points.
+             The argument below can now to some extent be taken from the combined work of
+             Giraud [7] and the author [26, 27, 28].
+             By INV we want to consider triples (A, {θ(i) }, r), where A is our affine space of
+             dimension m ≥ 2 over Fp , and {θ(i) } a set of r nontrivial involutory automorphisms
+             of A, satisfying
+                                             X r
+             (55)                  r(|A|) −       Fix(θ(j) ) = 2(|A| − 1),
+                                                j=1
+
+             for some natural number r ≥ 3. So we consider
+                                                      Xr
+             (56)                     (r − 2)pm + 2 =     Fix(θ(j) ).
+                                                            j=1
+
+             As p is a prime, Baer involutions do not occur. Since an automorphic involution
+             fixes at most pm−1 + 1 points of A, we have r = 3. It is also clear that p ≤ 3.
+             For p = 3, the only solution is {Fix(θ(1) ), Fix(θ(2) ), Fix(θ(3) )} = {pm−1 + 1, pm−1 +
+             1, pm−1 } = {3m−1 + 1, 3m−1 + 1, 3m−1 }. Without loss of generality, we suppose
+             θ(1) =: θ has 3m−1 + 1 fixed points in A, so that θ fixes an affine subspace Aθ of
+             dimension m − 1 pointwise, and one additional affine point z. Let ∆ be the hyper-
+             plane at infinity of A. Below, if α ⊆ A is an affine subspace of A, by α we denote
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                        27
+
+
+the projective completion of α, which is a projective subspace of A. Also, if β is an
+automorphism of A (i.e., an element of AGLm+1 (p)), then β is the corresponding
+automorphism of A. First suppose m ≥ 2, and let y be any point of A contained
+in ∆, but not contained in the projective completion of Aθ . Then in the projective
+completion of A, we have that zy ∩ Aθ = {y ′ } is a point which is not in ∆. As θ
+fixes z and y ′ but not y, it follows that ∆ cannot be fixed by θ, contradiction by
+the definition of θ. It follows that m = 1. In that case, each θ(i) fixes precisely one
+point of A, and whence this case cannot occur.
+
+Now let p = 2. Then
+                                          r
+                                          X
+(57)                           2m + 2 =         Fix(θ(j) ).
+                                          j=1
+
+As the left-hand side is divisible by 2 but not by 4, some θ(i) must fix precisely two
+points of A (we are working in even characteristic!). So (m − 1)/2 ≤ 1, and hence
+m ≤ 3. If m = 1, it is easily seen that there are no solutions of the INV-equation. If
+m ∈ {2, 3}, the only numerical solution is given by {2, 2m−1 , 2m−1 }.
+
+All AC-triples with these numerical properties are known — see e.g. [18]. We have
+not performed a more detailed analysis to find EC-triples with these data.
+
+
+5.5. On AC-triples and planar examples. One expects triples (G, U, V ) that yield
+elusive (counter) R2 -examples to fall inside classes I, II — first case, III or IV; in
+class II — second case (so with m ≥ 2), a similar analysis as in the affine case
+after invoking INV might lead to a very restrictive list (read: empty) of arithmetic
+possibilities. If that were true, one would have that an AC-triple (G, U, V ) with
+MAX, FF, PAIR and INV (that is, an irreducible Gassman-Sunada triple which yields
+planar isospectral non-isometric billliards) is of only two types:
+PLAN-1 of “almost simple type,”
+PLAN-2 or known.
+The author hopes to perform this analysis soon.
+28                                    KOEN THAS
+
+
+                                  6. C ONCLUSION
+
+We started this paper with a detailed explanation of the connection between the
+notions of “transplantability” and “almost conjugacy,” which are crucial in the con-
+struction theory of planar isospectral billiards. We then discussed the related no-
+tions AC-triple (or Gassman-Sunada triple) and EC-triple (which naturally general-
+izes AC-triples), in the context of isospectral drumheads (in any dimension). Next,
+we explored some “naive” constructions of EC-triples, starting from one given EC-
+triple, through direct products and “adding kernels.” Then we introduced four
+properties — being FF, MAX, PAIR, INV — inspired by physical properties which
+“irreducible” drumheads should have on the one hand, and which planar examples
+have, on the other.
+We introduced an extremely general set of construction procedures of EC-triples
+with FF and MAX (starting from a given one), which due to MAX, is connected
+to the O’Nan-Scott Theorem of finite Group Theory, which involves finite simple
+groups. The essential reason why the procedures work can be situated in properties
+of underlying combinatorial point-line geometries which translate EC.
+In a final stage, we classified EC-triples, by starting from EC-triples with FF, MAX,
+PAIR and INV, and showed that, indeed, any such example is constructed through
+one of our procedures. In particular, all the known planar counter examples to
+Kac’s question “Can one hear the shape of a drum” arise.
+In such a way, we have obtained a deep connection between irreducible (possibly
+higher-dimensional) drumheads and finite simple groups that offers a new direction
+in the theory.
+                          ISOSPECTRAL DRUMS AND SIMPLE GROUPS                        29
+
+
+                    7. A PPENDIX : T HE O’N AN -S COTT THEOREM
+
+Let H ≤ Sym(Ω) be a finite primitive permutation group, let M be a minimal
+normal subgroup of H, and let z ∈ Ω.
+Below, soc(Y ), where Y is a group, denotes the socle of Y — the normal subgroup
+generated by the minimal normal subgroups of Y . Also, hol(Y ) denotes the holo-
+morph of Y — a group which is isomorphic to Y ⋊ Aut(Y ).
+The O’Nan-Scott theorem distinguishes the following cases:
+
+
+  (HA) M is elementary abelian and regular, CH (M ) = M , and H ≤ hol(M ); in
+       this case M is the translation group of some finite affine space AG(l, p) (p
+       a prime and l some positive integer), and H ≤ GLl (p).
+
+  (HS) M is non-abelian, simple and regular, soc(H) = M × CH (M ) ∼
+                                                                  = M × M,
+       and H ≤ hol(M );
+
+  (HC) M is non-abelian, non-simple and regular, soc(H) = M × CH (M ) ∼
+                                                                      =
+       M × M , and H ≤ hol(M );
+
+  (SD) M is non-abelian and non-simple, Mz is a simple subdirect product of M
+       and CH (M ) = {id};
+
+  (CD) M is non-abelian and non-simple, Mz is a non-simple subdirect product of
+       M and CH (M ) = {id};
+
+  (PA) M is non-abelian and non-simple, Mz is not a subdirect subgroup of M
+       and Mz 6= {id}; CH (M ) = {id};
+
+  (AS) M is non-abelian and simple, CH (M ) = {id} and H is an almost simple
+       group;
+
+ (TW) M is non-abelian and non-simple, Mz = {id} and CH (M ) = {id}. Also,
+      there is a (non-abelian) simple group T such that M = T × · · · × T (m
+      factors) (and so |M | = |T |m ).
+
+
+
+The theorem has a simple proof. Below, we list some fundamental lemmas which
+are used to prove O’Nan-Scott, and which were frequently used in the body of this
+paper. All of them can be found in [33].
+Observation 7.1. Every normal subgroup of a primitive group is transitive.
+Observation 7.2. If K is a characteristically simple group, then it is a direct product
+of isomorphic simple groups. In particular, this applies to minimal normal subgroups
+of any finite group.
+Observation 7.3. If H is a primitive group, and N is a minimal normal subgroup of
+H, then H = KN for any point stabilizer K.
+30                                      KOEN THAS
+
+
+Based on the previous observations, we consider the following, more transparent
+form of O’Nan-Scott, which summarizes the previous version in four main classes.
+
+Let H be primitive (in its action on the set X), and let N be a minimal normal
+subgroup of H. Let x ∈ X, and let Hx be the stabilizer of x in H.
+      I If any such N is trivial, H is simple.
+If no such N is abelian, there are two cases to consider.
+      II N is unique. If N is simple, H is almost simple. If N is not simple, N is a
+         direct product of (r) mutually isomorphic simple groups ∼       = P , on which H
+         acts transitively by conjugation. One distinguishes three cases: (a) Hx ∩
+         N = W r ≤ P r is a direct product of (r) mutually isomorphic groups
+         (W ≤ P ); (b) Hx ∩ N is a diagonal copy of P ; (c) there is a block system
+         for H in its action on {P1 , . . . , Pr }, where N = P1 × · · · × Pr , and a block
+         B such that (Hx ∩ N ) ∩ B is a diagonal copy of P . (Here, we see B as the
+         subgroup of N naturally defined by its elements.)
+     III N is not unique. In that case, there is a second minimal normal subgroup
+         N ′ , and N ∩ N ′ = {id}, CH (N ) = N ′ , CH (N ′ ) = N , so that N × N ′ is a
+         normal subgroup of H. Also, N and N ′ have the same properties as N in
+         (II), and there is an outer automorphism of H which acts as an involution
+         on {N, N ′ }. Finally, both N and N ′ have the same sharply transitive action
+         on X.
+Finally, there is the abelian case.
+     IV If N is abelian, it is elementary abelian and sharply transitive on X, and H
+        is an affine group.
+For more information, we refer the reader to [33].
+                               ISOSPECTRAL DRUMS AND SIMPLE GROUPS                                      31
+
+
+                                              R EFERENCES
+
+ [1] F. B UEKENHOUT . Handbook of Incidence Geometry, North-Holland, Amsterdam, 1995.
+ [2] P. BÉRARD AND G. B ESSON . Spectres et groupes cristallographiques. II. Domaines sphriques, Ann.
+     Inst. Fourier (Grenoble) 30 (1980), 237–248.
+ [3] P. B USER , J. C ONWAY, P. D OYLE , AND K.-D. S EMMLER. Some planar isospectral domains, Internat.
+     Math. Res. Notices 9 (1994), approx. 9 pp.
+ [4] B. DE S MIT AND H. W. L ENSTRA , J R . Linearly equivalent actions of solvable groups, J. Algebra 228
+     (2000), 270–285.
+ [5] J. D. D IXON AND B. M ORTIMER. Permutation Groups, Graduate Texts in Mathematics 163,
+     Springer-Verlag, New York, 1996.
+ [6] F. G ASSMAN . Bemerkungen zur vorstehenden Arbeit von Hurwitz, Math. Zeit. 25 (1926), 665–
+     675.
+ [7] O. G IRAUD . Finite geometries and diffractive orbits in isospectral billiards, J. Phys. A: Math. Gen.
+     38 (2005), L477–L483.
+ [8] O. G IRAUD AND K. T HAS . Hearing shapes of drums — mathematical and physical aspects of
+     isospectrality, Rev. Modern Phys. 82 (2010), 2213–2255.
+ [9] C. G ORDON , D. W EBB AND S. W OLPERT . Isospectral plane domains and surfaces via Riemannian
+     orbifolds. Invent. Math. 110 (1992), 1–22.
+[10] C. G ORDON , D. L. W EBB AND S. W OLPERT. One cannot hear the shape of a drum, Bull. Amer.
+     Math. Soc. (N.S.) 27 (1992), 134–138.
+[11] R. G URALNICK. Subgroups inducing the same permutation representation, J. Algebra 81 (1983),
+     312–319.
+[12] A. I KEDA . On lens spaces which are isospectral but not isometric, Ann. Sci. École Norm. Sup. 13
+     (1980), 303–315.
+[13] M. K AC . Can one hear the shape of a drum?, Amer. Math. Monthly 73 (4, part 2) (1966), 1–23.
+[14] K. K OMATSU . On the adèle ring of algebraic number fields, Kodai Math. Sem. Rep. 28 (1976),
+     78–84.
+[15] G. M ALLE , H. B. M ATZAT . Inverse Galois Theory, Springer Monographs in Mathematics, Springer-
+     Verlag, Berlin, 1999.
+[16] R. M ELROSE . Isospectral sets of drumheads are compact in C ∞ , Unpublished preprint from Math.
+     Science Res. Inst., 048-83, 1983.
+[17] J. M ILNOR. Eigenvalues of the Laplace operator on certain manifolds, Proc. Nat. Acad. Sci. U.S.A.
+     51 (1964), 542.
+[18] Y. O KADA AND A. S HUDO . Equivalence between isospectrality and isolength spectrality for a cer-
+     tain class of planar billiard domains, J. Phys. A 34 (2001), 5911–5922.
+[19] B. O SGOOD , R. P HILLIPS AND P. S ARNAK. Compact isospectral sets of plane domains, Proc. Nat.
+     Acad. Sci. U.S.A. 85 (1988), 5359–5361.
+[20] B. O SGOOD , R. P HILLIPS AND P. S ARNAK. Compact isospectral sets of surfaces, J. Funct. Anal. 80
+     (1988), 212–234.
+[21] M. H. P ROTTER. Can one hear the shape of a drum? revisited, SIAM Rev. 29 (1987), 185–197.
+[22] J. S CHILLEWAERT AND K. T HAS . The 2-transitive transplantable isospectral drums, SIGMA Sym-
+     metry Integrability Geom. Methods Appl. 7 (2011), Paper 080, 8 pp.
+[23] B. S EGRE . Lectures on Modern Geometry. With an appendix by Lucio Lombardo-Radice, Consiglio
+     Nazionale delle Rierche Monografie Matematiche 7, Edizioni Cremonese, Rome, 1961.
+[24] J. S TARK. On involutions with many fixed points in Gassman triples, Rose-Hulman Undergraduate
+     Mathematics Journal 9 (1) (2008), 12 pp.
+[25] T. S UNADA . Riemannian coverings and isospectral manifolds, Ann. Math. 121 (1985), 169–186.
+[26] K. T HAS . Kac’s question, planar isospectral pairs and involutions in projective space, J. Phys. A:
+     Math. Gen. 39 (2006), L385-L388.
+[27] K. T HAS . Kac’s question, planar isospectral pairs and involutions in projective space: II. Classifi-
+     cation of generalized projective isospectral data, J. Phys. A: Math. Gen. 39 (2006), 13237-13242.
+[28] K. T HAS . PSLn (q) as operator group of isospectral drums, J. Phys. A: Math. Gen. 39 (2006),
+     L673-L675.
+[29] K. T HAS . Isospectral drums in R2 , involution graphs and Euclidean TI-domains, J. Phys. A: Math.
+     Theor. 40 (2007), 7233–7238.
+[30] K. T HAS . The geometry of billiards, in preparation.
+32                                           KOEN THAS
+
+
+ [31] H. U RAKAWA . Bounded domains which are isospectral but not congruent, Ann. Sci. cole Norm.
+      Sup. 15 (1982), 441–456.
+ [32] M.-F. V IGNRAS . Variétés riemanniennes isospectrales et non isométriques, Ann. of Math. 112
+      (1980), 21–32.
+ [33] R. A. W ILSON . The O’Nan-Scott Theorem, QMUL, November 2005.
+
+G HENT U NIVERSITY, D EPARTMENT OF M ATHEMATICS , K RIJGSLAAN 281, S25, B-9000 G HENT, B ELGIUM
+E-mail address: koen.thas@gmail.com
+

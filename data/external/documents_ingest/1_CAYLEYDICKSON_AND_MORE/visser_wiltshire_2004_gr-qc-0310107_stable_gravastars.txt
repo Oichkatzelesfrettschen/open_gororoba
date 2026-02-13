@@ -1,0 +1,1343 @@
+Stable gravastars — an alternative to black holes?
+
+arXiv:gr-qc/0310107v2 4 Dec 2003
+
+Matt Visser † ‡ and David L. Wiltshire ¶ k
+
+† School of Mathematical and Computing Sciences, Victoria University of Wellington,
+New Zealand
+¶ Department of Physics and Astronomy, University of Canterbury, Private Bag
+4800, Christchurch, New Zealand
+E-mail: matt.visser@vuw.ac.nz, d.wiltshire@phys.canterbury.ac.nz
+
+Abstract. The “gravastar” picture developed by Mazur and Mottola is one of a very
+small number of serious challenges to our usual conception of a “black hole”. In the
+gravastar picture there is effectively a phase transition at/ near where the event horizon
+would have been expected to form, and the interior of what would have been the black
+hole is replaced by a segment of de Sitter space. While Mazur and Mottola were
+able to argue for the thermodynamic stability of their configuration, the question of
+dynamic stability against spherically symmetric perturbations of the matter or gravity
+fields remains somewhat obscure. In this article we construct a model that shares the
+key features of the Mazur–Mottola scenario, and which is sufficiently simple for a full
+dynamical analysis. We find that there are some physically reasonable equations of
+state for the transition layer that lead to stability.
+Dated: 23 October 2003; LATEX-ed 23 October 2018
+Keywords: Gravastar, black hole, phase transition, de Sitter.
+arXiv: gr-qc/0310107
+
+To appear in Classical and Quantum Gravity
+
+‡ http://www.mcs.vuw.ac.nz/˜visser
+k http://www.phys.canterbury.ac.nz/˜dlw24
+
+Stable gravastars — an alternative to black holes?
+
+2
+
+1. Introduction
+Whereas researchers in the relativity community (and the bulk of the astrophysics and
+particle physics communities) are by and large happy with our understanding of classical
+black holes, there is a certain amount of polite dissent. Such dissent ranges from a careful
+sceptical analysis of what it physically means to observe an event horizon [1], through
+alternative models for compact objects [2], to more radical proposals that drastically
+modify the physics in the region where the event horizon would otherwise be expected
+to form [3, 4, 5, 6, 7, 8].
+In particular, the “gravastar” (gravitational vacuum star) picture recently
+developed by Mazur and Mottola [8] is one of a very small number of serious challenges
+to our usual conception of a “black hole”. In the gravastar picture there is effectively
+a phase transition at or near the location where the event horizon would have been
+expected to form. The interior of what would have been the black hole is replaced by
+a suitably chosen segment of de Sitter space. (See also Laughlin et al. [5, 6, 7] for a
+similar proposal.) While Mazur and Mottola were able to make considerable progress
+with their proposal, and to argue for the thermodynamic stability of their configuration,
+the question of whether their model enjoys full dynamic stability against spherically
+symmetric perturbations of the matter and/ or gravity fields remains an open question.
+In this article we construct a simplified model that shares the key features of the Mazur–
+Mottola scenario, and which is sufficiently simple to be amenable to a full dynamical
+analysis. We find that there are some physical equations of state for the transition layer
+that lead to stability.
+2. The physical model
+To set the stage, we note that the Mottola-Mazur gravastar is an onion-like construction
+which has five layers (including two thin shells):
+• An external Schwarzschild vacuum, with energy density, ρ = 0, and pressure, p = 0.
+> 2M.
+• A thin shell, with surface density σ+ and surface tension ϑ+ ; with radius r+ ∼
+• A (relatively thin) finite-thickness shell of stiff matter with equation of state p = ρ;
+straddling r = 2M where the horizon would in normal circumstances have formed.
+• A second thin shell; with radius r− . 2M, and with surface density σ− and surface
+tension ϑ− .
+• A de Sitter interior, with p = −ρ.
+The two thin shells are used to “confine” the stiff matter in a transition layer straddling
+r = 2M, while the energy density in the de Sitter vacuum is chosen to satisfy
+4π
+ρ(2M)3 = M,
+(1)
+3
+so that, in the approximation where the transition layer is neglected, all of the mass of
+the resulting object can be traced back to the energy density of the de Sitter vacuum.
+
+Stable gravastars — an alternative to black holes?
+
+3
+
+In order to dynamically study the gravitational stability of this setup, we will
+simplify the model even further: We shall combine the thick shell of stiff matter, and
+the two thin shells, into a single thin shell. This reduces the gravastar to a simple
+three-layer model:
+• An external Schwarzschild vacuum, ρ = 0 = p.
+
+• A single thin shell, with surface density σ and surface tension ϑ; with radius
+> 2M.
+a∼
+
+• A de Sitter interior, p = −ρ.
+
+To avoid forming an event horizon, we shall demand
+4π
+ρ(2M)3 . M.
+(2)
+3
+The closer we are to saturating this bound, the closer we will be to the Mazur–Mottola
+scenario (and the closer we will be to attributing all the mass of the gravastar to the
+energy of the de Sitter vacuum).
+We will analyse the dynamical stability of this simplified three-layer model. Initially,
+we had hoped to either unambiguously determine stability or unambiguously determine
+instability (which would then have killed the gravastar scenario). The actual results are
+much more ambiguous: Some physically reasonable equations of state for the thin shell
+lead to stability, but that situation does not appear to be completely generic — some
+fine tuning seems to be necessary.
+3. The mathematical model
+Let us consider the class of geometries
+
+
+dr 2
+2m(r)
+2
+2
+dt +
++ r 2 (dθ2 + sin2 θ dφ2 ).
+(3)
+ds = − 1 −
+r
+1 − 2m(r)/r
+While less general than the class of all static spherically symmetric geometries, this
+restricted class of metrics is more than sufficient for our current needs, and includes both
+the Schwarzschild and the de Sitter geometries. We will assume that two geometries of
+this type are connected along a timelike hypersurface at r = a(t), with spacelike normal,
+na . By considering a point at fixed θ and φ and making use of the definition
+
+
+2
+
+1
+da(t)
+2m(a(t))
+2
+2
+dt +
+−dτ = − 1 −
+dt2 , (4)
+a(t)
+1 − 2m(a(t))/a(t)
+dt
+we can reparameterize the position of the timelike hypersurface in terms of τ — the
+proper time along this hypersurface — and so determine a(τ ). To understand the
+dynamics of the hypersurface we adopt the Israel–Lanczos–Sen thin-shell formalism [9].
+The induced metric on the shell,
+hab = gab − na nb ,
+
+(5)
+
+hab dxa dxb = −dτ 2 + a(τ )2 (dθ2 + sin2 θ dφ2 ).
+
+(6)
+
+is given by
+
+Stable gravastars — an alternative to black holes?
+
+4
+
+We are interested in the extrinsic curvature
+Kab = ha c hb d ∇c nd
+
+(7)
+
+so that we can then apply the junction conditions to relate the discontinuity in extrinsic
+curvature to the surface stress-energy, Sab , located on the shell:
+
+
+1
+[[Kab − K hab ]] = −8π Sab .
+(8)
+[[Kab ]] = −8π Sab − S hab ;
+2
+
+Here [[X]] denotes the discontinuity in X across the shell. A modern exposition of the
+thin-shell formalism (in a rather different physical context) can be found in [10] to which
+we make extensive reference in the interests of simplifying the current presentation.
+3.1. Static shell
+For simplicity, let us first assume the shell is static. The extrinsic curvature may be
+computed directly from the definition (7), or alternatively in terms of Gaussian normal
+coordinates (GNC). Define na = (∂/∂η)a , where
+dr
+dη = p
+.
+1 − 2m(r)/r
+
+(9)
+
+In GNC the extrinsic curvature is
+1 ∂gab ∂r
+,
+Kab =
+2 ∂r ∂η
+or in an orthonormal basis,
+
+
+p
+{m(a)/a}′
+1 1
+Kâb̂ = 1 − 2m(a)/a diag
+.
+, ,
+1 − 2m(a)/a a a
+
+(10)
+
+(11)
+
+Then in an orthonormal frame the surface stress-energy tensor is given by Sâb̂ =
+diag (σ, −ϑ, −ϑ), and standard manipulations yield both
+ii
+hhp
+(12)
+1 − 2m(a)/a a−1 = −4πσ,
+and
+
+""
+
+1 − m(a)/a − m′ (a)
+p
+a 1 − 2m(a)/a
+
+##
+
+= −8πϑ.
+
+(13)
+
+Thus there are only two algebraically independent components of the extrinsic curvature
+and they can be related to surface density and surface tension. (Compare, for
+instance, with [10], pp 179 ff. ¶ For calculationally similar though physically distinct
+presentations, see also [11, 12, 13, 14, 15].)
+Equation (12) may be recast as
+p
+p
+1 − 2m+ /a = 1 − 2m− /a − 4πσ a ,
+(14)
+
+¶ Note that equation (15.39b) on page 179 of [10] has a typographical error and should read
+o
+1 n τ̂ τ̂
+· −κ + κθ̂θ̂ .
+ϑ=−
+8π
+
+Stable gravastars — an alternative to black holes?
+
+5
+
+where we use the notation m+ ≡ m(a+ ) and m− ≡ m(a− ). If we square both sides of
+equation (14) and rearrange it follows that
+p
+(15)
+8πσ a2 1 − 2m− /a = 16π 2 σ 2 a3 + 2(m+ − m− ).
+A further manipulation of this sort then yields
+
+2
+16π 2 σ 2 a4 + 4m+ m− = 8π 2 σ 2 a3 + (m+ + m− ) .
+
+(16)
+
+If we wish to solve (16) for a as a function of the other parameters, we are dealing with
+a sextic. In contrast, solving for any of one of m+ , m− , or σ is no worse than a simple
+quadratic. One can simplify equation (16) by expressing it in terms of ms = 4π σ a2 ,
+which represents the mass of the thin shell itself. We then obtain a [static] “master
+equation”, which directly relates the three masses (m+ , m− , and ms ) to the radial
+location of the shell, a:
+
+2
+m2s + 4m+ m− = m2s /(2a) + (m+ + m− ) .
+(17)
+We have gone through this analysis in some detail as we will want to re-use and generalize
+this calculation in the dynamic case.
+The master equation (17) is only one single equation; one would simultaneously have
+to solve the surface tension equation. In many ways the best approach for the static
+shell is prescriptive: choose the interior and exterior geometries arbitrarily, then choose
+a, and then calculate the shell energy density σ and surface tension ϑ from equations
+(12) and (13). Of course, this analysis presently gives no information about stability;
+we are simply assuming a static shell. Developing a dynamical stability analysis is our
+next concern.
+3.2. Dynamic shell
+We now add time dependence by allowing the shell to move radially, so that the proper
+time, τ , at points on the shell is given by (4). It follows from (4) that the (unit)
+4-velocity of a point on the hypersurface (at fixed θ and φ) is
+!
+√
+∆ + ȧ2
+a
+, ȧ, 0, 0 ,
+(18)
+V =
+∆
+where ∆ ≡ 1 − 2m(a)/a, ȧ = da/dτ and we have chosen τ to be future-pointing with
+respect to t. The unit normal to the shell is obtained from (18) using the orthogonality
+condition, na V a = 0, giving
+
+
+ȧ √
+a
+2
+(19)
+, ∆ + ȧ , 0, 0 .
+n =
+∆
+There is an overall sign ambiguity in defining the components of the unit normal (18),
+which is fixed by demanding that the chart of the Gaussian normal coordinates (τ, η) be
+consistently oriented with respect to the chart of local coordinates (t, r), the Jacobian
+of the transformation being
+!
+√
+∂(τ, η)
+∆ + ȧ2
+−∆−1 ȧ
+√
+,
+(20)
+=
+−ȧ
+∆−1 ∆ + ȧ2
+∂(t, r)
+
+Stable gravastars — an alternative to black holes?
+with unit determinant and inverse
+!
+√
+∂(t, r)
+∆−1 ∆ + ȧ2
+∆−1 ȧ
+√
+.
+=
+∂(τ, η)
+∆ + ȧ2
+ȧ
+
+6
+
+(21)
+
+The components of the extrinsic curvature in GNC may be computed using (10)
+and (21), or alternatively directly from the definition (7). In fact, the second approach
+is more direct in the present case. On account of the orthogonality relation, combined
+with the definition of the induced metric, we have ha b V a = V b , so that it immediately
+follows that
+Kτ̂ τ̂ = Kτ τ = V a V b Kab
+= V a V b ∇a nb
+= − nb Ab ,
+
+(22)
+
+where Ab ≡ V a ∇a V b is the 4-acceleration of a point on the shell. Since the 4-acceleration
+and 4-velocity are orthogonal we must have Ab = Anb , so that
+Kτ̂ τ̂ = −A
+
+(23)
+
+where A is the magnitude of the 4-acceleration of the shell. The angular components of
+the extrinsic curvature are easily found to be
+1√
+∆ + ȧ2 .
+(24)
+Kθ̂θ̂ = Kφ̂φ̂ =
+a
+Imposing the junction conditions, similarly to the case of the static shell, we then
+have
+ii
+1 hhp
+2
+σ=−
+1 − 2m(a)/a + ȧ
+,
+(25)
+4πa
+and
+"" p
+##
+2
+1 − 2m(a)/a + ȧ
+1
+ϑ=−
++A ,
+(26)
+8π
+a
+Since the restricted class of geometries we are considering possess a timelike Killing
+vector, k a = (∂/∂t)a , the 4-acceleration is easily calculated. Following reference [10],
+p. 183, we can use both
+d
+(ka V a ) = −Aȧ,
+(27)
+dτ
+and
+o
+d np
+d
+a
+2
+(28)
+1 − 2m/a + ȧ ,
+(ka V ) = −
+dτ
+dτ
+to give the simple relation
+ä − {m/a}′
+A= p
+.
+(29)
+1 − 2m/a + ȧ2
+
+This gives the 4-acceleration of the shell in terms of a combination of kinematic (ä, ȧ)
+and gravitational (m(a)/a) properties. Substituting (29) in (26) we then have
+""
+##
+1 − m/a − m′ + ȧ2 + aä
+1
+p
+.
+(30)
+ϑ=−
+8πa
+1 − 2m/a + ȧ2
+
+Stable gravastars — an alternative to black holes?
+
+7
+
+We now have explicit formulae for both surface density (25) and surface tension (30).
+These equations are the natural generalization of equations (15.63) and (15.64) of
+reference [10], where a somewhat more restricted class of metric was considered in a
+different context.
+3.3. Conservation laws
+Equation (30) for ϑ, though manageable, is still a little messy. There is no need to
+use it directly, however, since equations (25) and (30) are related on account of energymomentum conservation. It is easily verified by straightforward manipulations of (25)
+and (30) that
+d
+d
+(σa2 ) = ϑ (a2 ).
+(31)
+dτ
+dτ
+We note that in general one would expect the the r.h.s. of (31) to be supplemented
+by a term of the form
+
+
+flux term = Tab V a nb ,
+(32)
+
+corresponding to the net discontinuity in the momentum flux, Fa = Tab V b , impinging on
+the shell. Such a term is absent in the case of the special class of metrics (3) considered
+here, for which
+1 m′
+,
+ρ = −pr =
+4π r 2
+
+(33)
+
+and
+1 m′′
+.
+(34)
+8π r
+Since the density equals minus the radial pressure, when restricted to the r–t plane
+Tab ∝ gab . But since both V and n lie in the r–t plane this implies
+pt = −
+
+Tab V a nb ∝ gab V a nb = 0,
+
+(35)
+
+and the flux terms on both sides of the shell automatically vanish. This is a special
+feature of the “sufficiently general” class of geometries (3). By contrast, in the general
+spherically symmetric geometry this flux term would be somewhat difficult to deal with.
+Consequently, if we are provided with an equation of state for the shell σ = σ(ϑ),
+[or ϑ = ϑ(σ)], we can formally integrate the conservation equation (31) to determine
+σ(a) as a function of a. Once we have that function, all the dynamics will be encoded
+in the single dynamical equation (25), the result being true subject only to our “general
+enough” restriction on the metric (3).
+
+8
+
+Stable gravastars — an alternative to black holes?
+4. The master equation
+4.1. Derivation
+Let us re-write the dynamical σ equation (25) as
+ii
+hhp
+1 − 2m(a)/a + ȧ2 = −4πσ(a) a,
+
+(36)
+
+where we are now keeping arbitrary time dependence in the form of ȧ. That is
+p
+p
+1 − 2m+ (a)/a + ȧ2 = 1 − 2m− (a)/a + ȧ2 − 4πσ(a) a.
+
+A series of steps identical to those that lead from (14) to (17) now yields
+ 2
+2
+ms
+2
+2
+ms (1 + ȧ ) + 4m+ m− =
++ (m+ + m− ) ,
+2a
+
+(37)
+
+(38)
+
+where, as before ms = 4πσa2 is the mass of the thin shell. This dynamic “master
+equation” is of the form of an “energy equation” for a nonrelativistic particle,
+1 2
+ȧ + V (a) = E,
+(39)
+2
+with “potential”
+(
+2 )
+
+1
+4m+ (a)m− (a)
+ms (a) (m+ (a) + m− (a))
+V (a) =
+1+
+, (40)
+−
++
+2
+m2s (a)
+2a
+ms (a)
+and “energy” E = 0.
+There will then be a strictly stable solution for the shell (stable against spherically
+symmetric radial oscillations) if and only if there is some ms (a) and some a0 such that
+we simultaneously have
+V (a0 ) = 0;
+
+V ′ (a0 ) = 0;
+
+V ′′ (a0 ) > 0.
+
+(41)
+
+A small quirk in this relativistic calculation is that since E ≡ 0, the situation where
+V (a) ≡ 0, which in nonrelativistic mechanics corresponds to neutral equilibrium, is now
+converted to a situation of stable equilibrium (since now, because one is not free to
+increase the “energy” E, one has ȧ ≡ 0).
+There is a less stringent notion of stability that is also useful, that of “bounded
+excursion”. Suppose we have a2 > a1 such that
+V (a1 ) = 0;
+
+V ′ (a1 ) ≤ 0;
+
+V (a2 ) = 0;
+
+V ′ (a2 ) ≥ 0;
+
+(42)
+
+with V (a) < 0 for a ∈ (a1 , a2 ). In this situation the motion of the shell remains
+bounded by the interval (a1 , a2 ). Although not strictly stable, since the shell does in
+fact move, this notion of “bounded excursion” more accurately reflects some of the
+aspects of stability naturally arising in nonrelativistic mechanics. In particular, it is
+simply a version of the standard stability criterion for orbits about the fixed point that
+would exist if we were free to arbitrarily specify the constant E on the r.h.s. of (39), and
+corresponds to orbits about the fixed point which are “stable but not asymptotically
+
+Stable gravastars — an alternative to black holes?
+
+9
+
+stable”. In the present context, perturbing the potential by adding a small negative
+offset
+V (a) → V (a) − ǫ2
+
+(43)
+
+will generically convert a strictly stable potential to one exhibiting “bounded excursion”.
+4.2. Inverting the potential
+Suppose we now take the potential V (a), and the masses m± (a) as given. Then equation
+(40) yields a quadratic equation for m2s (a):
+
+m+ (a) m− (a)
+2
+2
+−
+ms (a) = 2a 1 − 2V (a) −
+a
+a
+r
+r
+
+2m+ (a)
+2m− (a)
+± 1 − 2V (a) −
+1 − 2V (a) −
+.
+(44)
+a
+a
+It is important to note that we have not chosen any specific equation of state for the
+shell; we have only used the assumption that some equation of state exists. As always
+when solving a quadratic, there is a risk that one of the roots is unphysical. In this
+case the (+) sign is unphysical and the (−) sign the physically interesting branch. This
+may most easily be verified by setting m+ (a) = m− (a) in which case the spacetime
+geometry is completely continuous across the location of the shell, so that its mass ms
+(and surface energy density σ and surface tension ϑ) must be zero. Therefore the surface
+energy density σ(a) is given by the expression
+
+σ(a) =
+s
+r
+r
+√
+m+ (a) m− (a)
+2
+2m+ (a)
+2m− (a)
+−
+− 1 − 2V (a) −
+.
+1 − 2V (a) −
+1 − 2V (a) −
+±
+4πa
+a
+a
+a
+a
+(45)
+We can now, by noting that the contents of the outer radical sign above are a perfect
+square, extract the square root. The overall sign is determined by the unique choice
+which leads to the above expression being the compatibility equation between equations
+(39) and (36). This now yields:
+(r
+)
+r
+2m+ (a)
+2m− (a)
+1
+(46)
+− 1 − 2V (a) −
+1 − 2V (a) −
+σ(a) = −
+4πa
+a
+a
+""r
+##
+1
+2m(a)
+= −
+.
+(47)
+1 − 2V (a) −
+4πa
+a
+There is a subtlety one should be aware of when comparing equation (36) with (47).
+Whereas in (36) we are simply determining the energy density on a shell if it happens to
+have “velocity” ȧ at radius a, here in (47) we are determining something considerably
+more powerful based on a fully dynamic analysis, viz., what the surface energy density
+
+Stable gravastars — an alternative to black holes?
+
+10
+
+would have to be as a function of a in order to be compatible with the specified potential
+V (a). Proceeding further, from the conservation equation
+1 dσ
+a
+,
+2 da
+we can calculate ϑ(a). Analytically, the result is
+##
+""
+1
+1 − 2V (a) − m(a)/a − aV ′ (a) − m′ (a)
+p
+ϑ(a) = −
+.
+8πa
+1 − 2V (a) − 2m(a)/a
+ϑ=σ+
+
+(48)
+
+(49)
+
+Recall that m± (a) and V (a) are at this stage arbitrary functions that we are still free
+to prescribe. These expressions for σ(a) and ϑ(a) — equations (47) and (49) — now
+determine the equation of state parametrically. In summary
+• Either we choose an equation of state in the form of a specific σ(ϑ) and integrate
+the conservation equation to determine σ(a) [and hence ms (a) and hence V (a)];
+• or we choose a potential in the form V (a) and parametrically extract the
+corresponding equation of state using the algorithm just presented.
+
+4.3. Specialization of gravastar geometry
+We will now specialize to a specific model for the gravastar, which simplifies the Mazur–
+Mottola model to a thin shell separating two bulk regions:
+• Outside, a Schwarzschild region Tab = 0.
+• Inside, a de Sitter region Tab ∝ gab .
+
+Thus m+ and m− are no longer arbitrary. In view of our assumptions we can simply
+write m+ = M, the total external mass of the system, while
+m− = (4π/3)ρa3 = ka3 ,
+
+(50)
+
+where ρ is the energy density in the de Sitter vacuum and we have introduced the
+parameter k simply to minimize the explicit appearance of factors of 4π/3. Keeping
+V (a) arbitrary, our previous analysis implies
+(
+)
+r
+p
+2M
+1
+1 − 2V (a) − 2ka2 − 1 − 2V (a) −
+,
+(51)
+σ(a) ≡
+4πa
+a
+while for ϑ(a) we have
+
+
+1 − 2V (a) − a V ′ (a) − 4ka2 1 − 2V (a) − a V ′ (a) − M/a
+1
+p
+p
+ϑ(a) ≡
+.
+−
+8πa
+1 − 2V (a) − 2ka2
+1 − 2V (a) − 2M/a
+
+(52)
+
+These now are a pair of parametric equations determining the equation of state for
+any 3-layer Mazur–Mottola model with exterior Schwarzschild geometry and interior de
+Sitter geometry in terms of a freely specified V (a). (For formally similar analyses in
+physically different contexts, see [14, 15].) If we want the system to be strictly stable
+at some a0 then we need to enforce equation (41). There are two obvious examples of
+such behaviour:
+
+11
+
+Stable gravastars — an alternative to black holes?
+• V (a) ≡ 0, a degenerate, but physically important, case corresponding to ȧ ≡ 0.
+
+• V (a) = 12 (a−a0 )2 f (a), where f (a) is an arbitrary positive function which is regular
+at a0 . In this situation the stability is in a sense trivial: The master equation has
+a unique solution at a = a0 and ȧ = 0, and all possibility of motion is excluded by
+fiat.
+More generally we could consider cases of “bounded excursion” by choosing V (a) =
+1
+(a − a0 )2 f (a) − ǫ2 . For sufficiently small ǫ there will be distinct roots a1 and a2 where
+2
+V (a) = 0, with a1 < a0 < a2 . The motion of the shell will be of “bounded excursion”
+and forced to remain in the interval (a1 , a2 ).
+These observations are now enough to guarantee that there are large classes of
+potential V (a) — and so large classes of equation of state σ(ϑ) — for which the system
+is stable against radial oscillations. Of course there are also large classes of potential for
+which the system is unstable. Depending on one’s views regarding the gravastar model
+this may be interpreted as either good news or bad news.
+4.4. The V (a) ≡ 0 case
+We will now investigate the V (a) ≡ 0 case. This is an important case as it corresponds
+to a completely static gravastar with ȧ ≡ 0. Furthermore, since equations (51) and (52)
+have no explicit dependence on V ′′ (a) or higher derivatives of V , the analysis we will
+present suffices to determine the relationship between the energy density, σ, and surface
+tension, ϑ, of the shell at any specific a0 for which V (a0 ) = 0 and V ′ (a0 ) = 0.
+Setting V (a) ≡ 0 in (51) and (52) we find
+(
+)
+r
+√
+2M
+1
+1 − 2ka2 − 1 −
+,
+(53)
+σ(a) ≡
+4πa
+a
+and
+1
+ϑ(a) ≡
+8πa
+
+(
+
+1 − M/a
+1 − 4ka2
+√
+−p
+2
+1 − 2ka
+1 − 2M/a
+
+)
+
+.
+
+(54)
+
+It is easy to check that the strong energy condition
+σ − 2ϑ > 0
+
+(55)
+
+is satisfied for all values of the parameters for which real solutions exist. The null energy
+condition is consequently also satisfied. However, other energy conditions are possibly
+violated. (We note that there are good reasons for not taking the energy conditions too
+seriously as fundamental physics [16]. Nevertheless the energy conditions are still useful
+as a crude measure of how peculiar a certain matter distribution is.)
+Since
+√ we assume M > 0 in order2 that σ and ϑ be real, we require a > 2M and
+a ≤ 1/ 2k. Consequently k < 1/(8M ). The surface energy function σ(a) ranges from
+the positive value
+√
+1 − 8kM 2
+,
+(56)
+σ(2M) =
+8πM
+
+12
+
+Stable gravastars — an alternative to black holes?
+
+at a = 2M, to the negative value
+r 
+
+
+√ 
+−1
+1
+√
+2k 1 − 2M 2k ;
+(57)
+=
+σ
+4π
+2k
+√
+at a = 1/ 2k, and crosses zero at a = (M/k)1/3 . Thus the weak energy
+condition is
+√
+1/3
+1/3
+satisfied for 2M < a < (M/k) , but violated for (M/k) ≤ a < 1/ 2k.
+The status of the dominant energy condition, |ϑ| ≤ σ, is more complicated and
+depends crucially on the value of the dimensionless parameter
+kM 2 . The surface tension
+√
+ϑ itself is negative on the whole interval 2M < a < 1/ 2k, and diverges as ϑ → −∞ at
+the endpoints. To get the full equation of state ϑ(σ) we can simply obtain a graphical
+solution from (53) and (54) by plotting θ(a) versus σ(a) parametrically.
+2
+As an example, we provide
+√ several plots exploring the case kM = 1/18, for which
+amin = 2M and amax = 1/ 2k = 3M. In this case the dominant energy condition is
+violated throughout the entire range a ∈ (2M, 3M).
+0.03
+
+0.02
+
+σ
+0.01
+
+0
+
+2.2
+
+2.4
+
+2.6
+
+2.8
+
+a3
+
+–0.01
+
+–0.02
+
+Figure 1. Surface energy density, σ (in units M −1 ), as a function of radius, a (in
+units M ). (kM 2 = 1/18; V (a) ≡ 0.)
+
+2
+0
+
+2.2
+
+2.4
+
+2.6
+
+2.8
+
+3
+
+a
+
+–0.1
+–0.2
+
+θ –0.3
+–0.4
+–0.5
+–0.6
+
+Figure 2. Surface tension, ϑ (in units M −1 ), as a function of radius, a (in units M ).
+(kM 2 = 1/18; V (a) ≡ 0.)
+
+13
+
+Stable gravastars — an alternative to black holes?
+0.03
+
+0.02
+
+σ
+0.01
+
+–0.6 –0.5 –0.4 –0.3 –0.2 –0.1
+
+0
+
+θ
+
+–0.01
+
+–0.02
+
+Figure 3. Equation of state: Surface energy density as a function of surface tension.
+(kM 2 = 1/18; V (a) ≡ 0.)
+0.02
+0.015
+
+σ
+
+0.01
+0.005
+0
+–0.005
+
+–0.06
+
+–0.05
+
+θ
+
+–0.04
+
+–0.03
+
+–0.01
+
+Figure 4. Equation of state: Enlargement of the central region of figure 3 — surface
+energy density as a function of surface tension. (kM 2 = 1/18; V (a) ≡ 0.)
+2
+√ As a second specific example we plot the case kM = 1/72, for which amax =
+1/ 2k = 6M, in figure 5. In this case the dominant energy condition is satisfied
+for 2.1243194234 M ≤ a ≤ 3M, and violated throughout the rest of the range
+a ∈ (2M, 6M). The “least stiff” equation of state for this example is obtained at
+a = 2.5764849609 M when ϑ = −0.6912774322 σ. We have simply shown the central
+region of the equation of state σ(ϑ) in figure 5, since the functions σ(a) and ϑ(a) have
+the same qualitative form as the case depicted in figures 1 and 2, the only difference
+being that a now ranges from a = 2M to a = 6M.
+The range of parameter values for which it is possible to obtain stable configurations
+which satisfy the dominant energy condition can be quantified precisely. The critical
+case is that of a stiff matter shell, for which p = ρ, or σ = −ϑ. Applying this condition
+to (51) and (52) we have
+r
+
+
+
+2M
+5M √
+2
+2
+1 − 2ka = 3 − 8ka
+.
+(58)
+3−
+1−
+a
+a
+
+Stable gravastars — an alternative to black holes?
+
+14
+
+0.03
+
+0.02
+
+σ
+0.01
+
+0
+
+–0.06 –0.05 –0.04 –0.03 –0.02 –0.01
+
+θ
+
+–0.01
+
+Figure 5. Equation of state: Enlargement of the central region for an example in
+which the dominant energy condition is satisfied. Surface energy density as a function
+of surface tension for the case kM 2 = 1/72; V (a) ≡ 0. Parameter values for which the
+dominant energy condition is violated are shown by a thin line, and parameter values
+for which the dominant energy condition is satisfied, viz., 2.124319 M < a < 3 M , are
+shown by a thick line.
+
+If we square both sides of (58) and rearrange we obtain a sextic in a,
+64k 2 a6 − 128k 2 Ma5 − 30ka4 + 36kMa3 + 50kM 2 a2 + 12Ma − 25M 2 = 0 .
+
+(59)
+
+Only half of the roots of (59) are potentially of interest since (59) also applies to the
+equation one would obtain by changing the relative sign of the roots on each side of
+(58). Given that the l.h.s. of (58) is positive for a√
+> 2M, positivity of the r.h.s. of (58)
+√
+further tightens the upper bound on a to a < √ 3/ 8k. There are then at most two real
+√
+solutions of (59) in the range 2M < a < 3/ 8k. (Note that in order for this range to
+be non empty we must have kM 2 < 3/32, which is why the dominant energy condition
+was always violated in our first example.)
+To derive the condition for the existence the relevant thin shells it is convenient to
+rewrite (59) in terms of the dimensionless parameters α = a/M and λ = kM 2 , so that
+64λ2 α6 − 128λ2α5 − 30λα4 + 36λα3 + 50λα2 + 12α − 25 = 0 .
+
+(60)
+
+Solutions of the required type exist if the discriminant of (60), when considered as a
+polynomial in α, is negative, i.e.,
+−14155776 λ7 (200 λ − 27)2 D4 (λ) < 0 ,
+
+(61)
+
+where
+D4 (λ) ≡ (400000000 λ4 − 1054320000 λ3 + 257041039 λ2 − 19516500 λ + 337500) . (62)
+This means that the quartic D4 (λ) must be positive. Solving for roots of this quartic
+numerically we find that
+λ = kM 2 ≤ λcr = 0.0243045493773
+
+(63)
+
+is the critical condition for the existence of thin shells which satisfy the dominant energy
+condition.
+
+Stable gravastars — an alternative to black holes?
+
+15
+
+In the critical case kM 2 = λcr the dominant energy condition is satisfied only
+for a stiff matter thin shell at a = acr ≡ 2.3005600972496 M. For parameter values
+0 < kM 2 < λcr , there will be a range of values a1 < a < a2 over which the dominant
+energy condition is satisfied. Figure 5 shows one such example. The bounds a1,2
+are given
+√ √
+by the relevant solutions of (59), such that 2M < a1 < acr and acr < a2 < 3/ 8k. Thin
+shells with a = a1,2 will have stiff matter equations of state, while those with a1 < a < a2
+will have “almost stiff” equations of state. Since the dominant energy condition is the
+most stringent of the standard energy conditions this construction implies that all the
+standard energy conditions will be satisfied.
+Although the construction used in this section has not yielded an analytic expression
+for the equation of state in a form σ(ϑ), it has nevertheless been “effective” — this
+construction does certainly demonstrate that there are physically reasonable equations
+of state that lead to a stable gravastar configuration for many values of the parameters
+a, M, and k.
+It is also important to note that the V (a) ≡ 0 examples considered in this section
+are notable mainly for their relative simplicity — there is no physical reason for not
+choosing V (a) 6= 0, say V (a) = 12 (a − a0 )2 f (a) − ǫ2 , and doing so opens new possibilities
+for stable shell configurations.
+5. Special gravastar geometries
+5.1. V ≡ 0 equation of state — Special limits
+For a general equation of state of the thin shell, two special limits of the V ≡ 0 model
+are of interest:
+• k → 0, corresponding to an empty interior.
+
+• k → 1/(8M 2 ), corresponding to the Mazur–Mottola limit.
+For an empty interior, results are straightforward, and can be explicitly written as
+p
+1 − 1 − 2M/a
+;
+(64)
+σ(a) =
+4πa
+#
+"
+1
+1 − M/a
+.
+(65)
+ϑ(a) =
+1− p
+8πa
+1 − 2M/a
+
+Though these formulae are very similar to standard results occurring in the theory of
+thin shells, the interpretation here is rather different — remember, these are the σ(a)
+and ϑ(a) required to have V (a) ≡ 0; and so a transition layer that is dynamically stable
+(to radial perturbations) at all a.
+In contrast the Mazur–Mottola model corresponds to another particular limiting
+choice for the energy density in the de Sitter vacuum:
+1
+.
+(66)
+k(2M)3 = M
+⇒
+k=
+8M 2
+
+Stable gravastars — an alternative to black holes?
+
+16
+
+To understand the nature of this limit it is convenient to write
+1
+.
+(67)
+k=
+2
+8M (1 + ǫ)2
+> 0. Then the energy density and surface tension in (53) and (54) are both real
+with ǫ ∼
+for
+a ∈ (2M, 2M[1 + ǫ]).
+
+(68)
+
+This indicates, purely on kinematic grounds, a severely restricted range of possible
+motions for the shell.
+In the limit that ǫ → 0 the surface energy density of our 3-layer model is forced to
+go to zero. In the language of the 5-layer Mazur–Mottola model [8] this means
+σnet = σ+ + ρtransition ηtransition + σ− → 0.
+
+(69)
+
+In other words, as the transition layer in the Mazur–Mottola 5-layer model becomes
+thinner and thinner, the contributions from σ± conspire with the density of the stiff
+matter in the transition layer to produce a net surface energy density of zero. A quick
+way of seeing that this must be the case is to realise that if one is attributing all of the
+mass of the black hole to the de Sitter vacuum in the interior, then whatever is going
+on in the transition layer must average out to zero surface energy density.
+In contrast, the transverse pressures in the transition layer do not have any
+pleasantly behaved limit. Indeed ϑ → −∞, corresponding to infinite transverse
+pressures. This is not unexpected, and is one of the reasons many in the general relativity
+community are extremely hesitant to adopt models with thin layers of matter hovering
+just at the location where the event horizon would have been expected to form.
+5.2. Stiff-shell gravastars
+Given the potential problems associated with the limits just discussed, there is another
+model among the class we have considered which might be considered to be an
+alternative 3-layer simplification of the Mazur–Mottola model. In particular, let us
+specify the equation of state of the thin shell to be that of stiff matter, p = ρ or ϑ = −σ.
+This is a limit of the Mazur–Mottola model in which the equation of state of the thick
+stiff matter shell is maintained, but the shell itself is made infinitesimally thin. One
+principle difference is that no attempt is made to equate the energy of the interior de
+Sitter vacuum with the ADM mass of the exterior solution. The other crucial point
+is that the thin shell is to be placed at a > 2M, where one avoids infinite transverse
+pressures discussed above.
+The analysis of the conditions required for satisfying the dominant energy condition
+in section 4.4 have already shown that such solutions exist and are dynamically stable
+to spherically symmetric perturbations. This follows since the stiff matter shell occurs
+at the extreme values for which the dominant energy condition holds. In particular, we
+found that such solutions exist if kM 2 is less than or equal to the critical value given
+by (63). Furthermore, for λ < λcr there are two values of a at which we can place a stiff
+
+Stable gravastars — an alternative to black holes?
+
+17
+
+shell in stable gravastars, the lower value, a1 , being in the range 2M < a1 < 2.30056 M.
+For the case plotted in figure 5, for example, a1 = 2.12432 M and a2 = 3M. The inner
+stiff shell case is certainly so close to the putative horizon that any test to distinguish
+such an object from a true Schwarzschild black hole would be extremely difficult in
+astrophysical contexts.
+5.3. Anti-de Sitter gravastars
+Although we have been primarily interested in the case of a de Sitter interior, our general
+analysis remains valid for the case of an anti-de Sitter interior, with Λ < 0. For such
+interiors it is impossible to satisfy the junction conditions with a thin shell having a
+stiff equation of state. However, it is possible to take a thin shell with a “cosmological
+constant” or “vacuum energy” equation of state, p = −ρ, or ϑ = +σ.
+Since k < 0, there are a number of changes to the analysis of section 4.4. In
+particular, there is now no upper bound to the value of a. The surface energy, σ, is
+always positive, being bounded below by (56). The strong energy condition is now
+violated for particular parameter values. We are interested in the particular case ϑ=σ.
+Applying this condition to (51) and (52) we have
+r
+
+
+2M
+3M √
+2
+.
+(70)
+1 − 2ka = 1 −
+1−
+a
+a
+Squaring (70) and rearranging we find that the shell must be located at values of a
+which solve the quartic
+2a4 k − 12a3 Mk + 18M 2 ka2 + 4Ma − 9M 2 = 0 ,
+
+(71)
+
+and lie in the range a > 3M. An analysis of the discriminant of this quartic reveals that
+solutions exist for all values k < 0. Furthermore, for each value of k < 0 there is only
+one root of (70) in the range a > 3M. For small values of −kM 2 one finds that that
+a is very large, but as −kM 2 gets larger the value of a approaches 3M asymptotically.
+For kM 2 = −1, for example, a = 3.44898 M.
+6. Discussion
+The general relativity community is, by and large, extremely comfortable with the
+“black hole” concept; a concept firmly based in the classical solutions of the Einstein
+equations [17, 18, 19]. In contrast, there is a strong undercurrent [certainly not the
+mainstream] in the particle physics and condensed matter communities that views the
+notion of event horizons with some alarm — this has lead over the years to repeated
+suggestions that quantum physics should intervene at/ near the the would-be event
+horizon, either replacing it with a singularity or preventing appearance of the horizon
+in the first place. A particular proposal along these lines that has recently attracted
+considerable attention is the Mazur–Mottola “gravastar” [8].
+In this article we have considered the dynamical stability of a 3-layer simplification
+of the 5-layer Mazur–Mottola model. Aficionados of the model will be happy to know
+
+Stable gravastars — an alternative to black holes?
+
+18
+
+that there are many equations of state for the transition layer that imply dynamical
+stability for the gravastar configuration. Those who are less enamoured of the model
+will be equally happy to see that large classes of equation of state are ruled out. Our own
+interpretation of these results is that this calculation, or suitable modification thereof, is
+a necessary first step towards any kind of serious model building with a thin transition
+layer separating two “vacuum” regions.
+In this regard, we have in this article explored a tentative suggestion: If one really
+wishes to build a 3-layer thin-shell alternative to a black hole, then it seems to us that
+r = 2M is not the appropriate place to insert the transition layer. In order to avoid the
+infinite stress (presumably cutoff at the Planck scale so that we would really be talking
+about Planck-scale stresses) that occur when the transition layer is placed at r = 2M,
+it would seem to us to be more profitable to move the transition layer out to r > 2M.
+We have demonstrated that particular models do exist which realise this possibility.
+One particular case is the stiff shell gravastar, namely an exterior Schwarzschild
+geometry, and an interior de Sitter vacuum, separated by a stiff matter thin shell.
+Such models could be regarded as simplified versions of the Mazur–Mottola model
+which avoid its singular limit. Stiff shell gravastars exist and are dynamically stable for
+Λ ≤ 6λcr /M 2 = 0.145827 /M 2. In fact, generally two possible stiff shell gravastars exist,
+and in one of these cases one must place the thin shell at a value 2M < r < 2.30056 M.
+Since this is very close to the nominal position of a black hole horizon, it would be
+extremely difficult to distinguish the exterior geometry of such a gravastar from a genuine
+black hole in astrophysical contexts.
+The idea of moving the transition layer to a finite r > 2M should possibly also be
+explored in the related Chapline–Hohlfeld–Laughlin–Santiago model [5, 6, 7]. More
+generally, if the transition layer is not “thin” but rather of finite thickness, then
+investigations along the lines of Gliner’s [20] and Dymnikova’s [21] ideas might be
+profitable.
+Finally we emphasise what we feel is the most important technical aspect of this
+paper. We have analyzed spherically symmetric thin shells in a large class of background
+geometries [arbitrary m(r)], and related the resulting shell motion to an equivalent “nonrelativistic particle”. Furthermore we have shown how to take any desired “potential”
+V (a) and “invert” it to determine the equation of state for shell-matter that would lead
+to this potential. This result is of general interest to anyone building thin-shell models
+— regardless of one’s views on gravastars versus black holes.
+Note added: Since this paper was completed we have learned that solutions with features
+similar to those discussed here – possessing an asymptotically Schwarzschild exterior,
+a thin-shell and a de Sitter core – have recently been found by Wohlfarth [22] in
+a gravity model in which the Einstein–Hilbert action is replaced by a “Born-Infeld
+style” action nonlinear in the curvature. Wohlfarth’s solutions completely regularize
+the Schwarzschild singularity for M > 0. While much work remains to be done, these
+results suggest that the model presented in this paper may represent a simplified version
+
+Stable gravastars — an alternative to black holes?
+
+19
+
+of a class of objects which occur very naturally in string theory inspired gravity models.
+Acknowledgments
+We would like to thank Benedict Carter for his careful reading and comments on an
+early version of the manuscript. This research was supported by the Marsden Fund
+administered by the Royal Society of New Zealand.
+References
+[1] M. A. Abramowicz, W. Kluzniak and J. P. Lasota, “No observational proof of the black-hole
+event-horizon”, Astron. Astrophys. 396 (2002) L31 [arXiv:astro-ph/0207270].
+[2] E. W. Mielke and F. E. Schunck, “Boson stars: Alternatives to primordial black holes?”, Nucl.
+Phys. B 564 (2000) 185 [arXiv:gr-qc/0001061].
+[3] C. R. Stephens, G. ’t Hooft and B. F. Whiting, “Black hole evaporation without information loss”,
+Class. Quant. Grav. 11 (1994) 621 [arXiv:gr-qc/9310006];
+G. ’t Hooft, “On the quantum structure of a black hole,” Nucl. Phys. B 256 (1985) 727.
+[4] V. Berezin, “Black hole thermodynamics without a black hole?,” Nucl. Phys. B661 (2003) 409
+[arXiv:gr-qc/0302066].
+[5] G. Chapline, E. Hohlfeld, R. B. Laughlin and D. I. Santiago, “Quantum phase transitions and the
+breakdown of classical general relativity”, Phil. Mag. B81 (2001) 235 [arXiv:gr-qc/0012094].
+[6] G. Chapline, R. B. Laughlin and D. I. Santiago, “Emergent relativity and the physics of black hole
+horizons”, in “Artificial Black Holes”, edited by M. Novello, M. Visser and G. Volovik, (World
+Scientific, 2002)
+[7] R. B. Laughlin, “Emergent relativity”, Int. J. Mod. Phys. A18 (2003) 831 [arXiv:gr-qc/0302028].
+[8] P. O. Mazur and E. Mottola, “Gravitational condensate stars: An alternative to black holes”,
+arXiv:gr-qc/0109035.
+[9] W. Israel, “Singular hypersurfaces and thin shells in general relativity”, Nuovo Cim. B 44S10
+(1966) 1 [Erratum-ibid. B 48 (1967) 463];
+K. Lanczos, “Flächenhafte Verteilung der Materie in der Einsteinschen Gravitationstheorie”,
+Ann. Phys. (Leipzig) 74 (1924) 518;
+N. Sen, “Über die Grenzbedingungen des Schwerefelds an unstetig Keistflächen”, Ann. Phys.
+(Leipzig) 73 (1924) 365.
+[10] M. Visser, “Lorentzian Wormholes: From Einstein To Hawking”, AIP Press (now Springer–Verlag),
+1995.
+[11] M. Visser, “Traversable wormholes from surgically modified Schwarzschild space-times”, Nucl.
+Phys. B 328 (1989) 203.
+[12] C. Barcelo and M. Visser, “Brane surgery: Energy conditions, traversable wormholes, and voids”,
+Nucl. Phys. B 584 (2000) 415 [arXiv:hep-th/0004022].
+[13] C. Barcelo and M. Visser, “Living on the edge: Cosmology on the boundary of anti-de Sitter
+space”, Phys. Lett. B 482 (2000) 183 [arXiv:hep-th/0004056].
+[14] P. R. Brady, J. Louko and E. Poisson, “Stability of a shell around a black hole”, Phys. Rev. D 44
+(1991) 1891.
+[15] E. Poisson and M. Visser, “Thin shell wormholes: Linearization stability”, Phys. Rev. D 52 (1995)
+7318 [arXiv:gr-qc/9506083].
+[16] C. Barcelo and M. Visser, “Twilight for the energy conditions”, Int. J. Mod. Phys. D 11 (2002)
+1553 [arXiv:gr-qc/0205066].
+[17] K. S. Thorne, R. H. Price and D. A. Macdonald, “Black Holes: The Membrane Paradigm”, (Yale
+University Press, 1986).
+[18] R. M. Wald, “General Relativity”, (University of Chicago Press, 1984).
+
+Stable gravastars — an alternative to black holes?
+
+20
+
+[19] B. F. Schutz, “A First Course In General Relativity”, (Cambridge University Press, 1895).
+[20] E. B. Gliner, “Scalar black holes”, arXiv:gr-qc/9808042;
+E. B. Gliner, “Inflationary universe and the vacuumlike state of physical medium”, Phys. Usp.
+45 (2002) 213 [Usp. Fiz. Nauk 45 (2002) 221].
+[21] I. Dymnikova, “Cosmological term as a source of mass”, Class. Quant. Grav. 19 (2002) 725
+[arXiv:gr-qc/0112052];
+I. G. Dymnikova, “The algebraic structure of a cosmological term in spherically symmetric
+solutions”, Phys. Lett. B 472 (2000) 33 [arXiv:gr-qc/9912116];
+I. Dymnikova, “Vacuum nonsingular black hole”, Gen. Rel. Grav. 24 (1992) 235.
+[22] M. N. R. Wohlfarth, “Gravity à la Born-Infeld,” arXiv:hep-th/0310067.
+
+

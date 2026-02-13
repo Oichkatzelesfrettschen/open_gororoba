@@ -1,0 +1,1241 @@
+                                                        The Spectral Action Principle
+
+
+                                                     Ali H. Chamseddine1,2       and   Alain Connes2
+
+
+
+
+arXiv:hep-th/9606001v1 3 Jun 1996
+                                    1. Theoretische Physik, ETH-Hönggerberg, CH-8093 Zürich, Switzerland
+                                    2. I.H.E.S., F-91440 Bures-sur-Yvette, France
+
+
+
+
+                                                                        Abstract.
+                                    We propose a new action principle to be associated with a noncommutative space
+                                    (A, H, D). The universal formula for the spectral action is (ψ, Dψ) + Trace(χ(D/
+                                    Λ)) where ψ is a spinor on the Hilbert space, Λ is a scale and χ a positive func-
+                                    tion. When this principle is applied to the noncommutative space defined by the
+                                    spectrum of the standard model one obtains the standard model action coupled to
+                                    Einstein plus Weyl gravity. There are relations between the gauge coupling con-
+                                    stants identical to those of SU (5) as well as the Higgs self-coupling, to be taken
+                                    at a fixed high energy scale.
+
+
+
+
+                                                                             1
+1. Introduction.
+     The basic data of Riemannian geometry consists in a manifold M whose
+points x ∈ M are locally labelled by finitely many coordinates xµ ∈ R, and in the
+infinitesimal line element, ds,
+
+                                 ds2 = gµν dxµ dxν .                             (1.1)
+
+The laws of physics at reasonably low energies are well encoded by the action
+functional,
+                                   I = IE + ISM                              (1.2)
+                1
+                   R   √
+where IE = 16πG      R g d4 x is the Einstein action, which depends only upon
+the 4-geometry (we shall work throughout in the Euclidean, i.e. imaginary time
+                                                                   R
+formalism) and where ISM is the standard model action, ISM = LSM , LSM =
+LG + LGH + LH + LGf + LHf . The action functional ISM involves, besides the
+4-geometry, several additional fields: bosons G of spin 1 such as γ, W ± and Z,
+and the eight gluons, bosons of spin 0 such as the Higgs field H and fermions f of
+spin 1/2, the quarks and leptons.
+These additional fields have a priori a very different status than the geometry
+(M, g) and the gauge invariance group which governs their interaction is a priori
+very different from the diffeomorphism group which governs the invariance of the
+Einstein action. In fact the natural group of invariance of the functional (1.2) is
+the semidirect product,
+                                G = U >⊳ Diff(M )                             (1.3)
+of the group of local gauge transformations, U = C ∞ (M, U (1) × SU (2) × SU (3))
+by the natural action of Diff(M ).
+The basic data of noncommutative geometry consists of an involutive algebra A
+of operators in Hilbert space H and of a selfadjoint unbounded operator D in H
+[1-6].
+The inverse D−1 of D plays the role of the infinitesimal unit of length ds of ordinary
+geometry.
+To a Riemannian compact spin manifold corresponds the spectral triple given by
+the algebra A = C ∞ (M ) of smooth functions on M , the Hilbert space H =
+L2 (M, S) of L2 -spinors and the Dirac operator D of the Levi-Civita Spin connec-
+tion. The line element ds is by construction the propagator of fermions,
+
+                                     ds = ×—× .                                  (1.4)
+
+                                          2
+No information is lost in trading the original Riemannian manifold M for the
+corresponding spectral triple (A, H, D). The points of M are recovered as the
+characters of the involutive algebra A, i.e. as the homomorphisms ρ : A → C
+(linear maps such that ρ(ab) = ρ(a) ρ(b) ∀ a, b ∈ A). The geodesic distance
+between points is recovered by
+
+               d(x, y) = Sup {|a(x) − a(y)| ; a ∈ A , k[D, a]k ≤ 1} .            (1.5)
+
+More importantly one can characterize the spectral triples (A, H, D) which come
+from the above spinorial construction by very simple axioms ([4]) which involve
+the dimension n of M . The parity of n implies a Z/2 grading γ of the Hilbert
+space H such that,
+
+                γ = γ ∗ , γ 2 = 1 , γa = aγ   ∀ a ∈ A , γD = −Dγ .               (1.6)
+
+Moreover one keeps track of the real structure on H as an antilinear isometry J in
+H satisfying simple relations
+
+              J 2 = ε , JD = ε′ DJ , Jγ = ε′′ γJ ; ε, ε′ , ε′′ ∈ {−1, 1}         (1.7)
+
+where the value of ε, ε′ , ε′′ is determined by n modulo 8. One first virtue of these
+axioms is to allow for a shift of point of view, similar to Fourier transform, in which
+the usual emphasis on the points x ∈ M of a geometric space is now replaced by
+the spectrum Σ ⊂ R of the operator D. Indeed, if one forgets about the algebra
+A in the spectral triple (A, H, D) but retains only the operators D, γ and J
+acting in H one can (using (1.7)) characterize this data by the spectrum Σ of D
+which is a discrete subset with multiplicity of R. In the even case Σ = −Σ. The
+existence of Riemannian manifolds which are isospectral (i.e. have the same Σ)
+but not isometric shows that the following hypothesis is stronger than the usual
+diffeomorphism invariance of the action of general relativity,
+
+                   “The physical action only depends upon Σ .”                   (1.8)
+
+In order to apply this principle to the action (1.2) we need to exploit a second
+virtue of the axioms (cf. [4]) which is that they do not require the commutativity
+of the algebra A. Instead one only needs the much weaker form,
+
+                    ab0 = b0 a ∀ a, b ∈ A with b0 = Jb∗ J −1 .                   (1.9)
+
+                                          3
+In the usual Riemannian case the group Diff(M ) of diffeomorphisms of M is
+canonically isomorphic to the group Aut(A) of automorphisms of the algebra
+A = C ∞ (M ). To each ϕ ∈ Diff(M ) one associates the algebra preserving map
+αϕ : A → A given by
+
+                    αϕ (f ) = f ◦ ϕ−1          ∀ f ∈ C ∞ (M ) = A .        (1.10)
+
+In general the group Aut(A) of automorphisms of the involutive algebra A plays
+the role of the diffeomorphisms of the noncommutative (or spectral for short)
+geometry (A, H, D). The first interesting new feature of the general case is that
+the group Aut(A) has a natural normal subgroup,
+
+                                Int(A) ⊂ Aut(A)                            (1.11)
+
+where an automorphism α is inner iff there exists a unitary operator u ∈ A,
+(uu∗ = u∗ u = 1) such that,
+
+                            α(a) = uau∗           ∀a ∈ A.                  (1.12)
+
+The corresponding exact sequence of groups,
+
+                     1 → Int(A) → Aut(A) → Out(A) → 1                      (1.13)
+
+looks very similar to the exact sequence
+
+                          1 → U → G → Diff(M ) → 1                         (1.14)
+
+which describes the structure of the symmetry group G of the action functional
+(1.2).
+Comparing (1.13) and (1.14) and taking into account the action of inner automor-
+phisms of A in H given by
+
+                              ξ → u(u∗ )0 ξ = uξu∗                         (1.15)
+
+                                       g
+one determines the algebra A such that Aut(A)            g takes into account
+                                              = G (where Aut
+the action of automorphisms in the Hilbert space H). The answer is
+
+                               A = C ∞ (M ) ⊗ AF                           (1.16)
+
+                                           4
+where the algebra AF is finite dimensional,
+
+                                   AF = C ⊕ H ⊕ M3 (C)                              (1.17)
+
+where H ⊂ M2 (C) is the algebra of quaternions,
+                                                               
+                                      α     β
+                           H=                        ; α, β ∈ C       .             (1.18)
+                                      −β̄   ᾱ
+
+Giving the algebra A does not suffice to determine the spectral geometry, one
+still needs the action of A in H and the operator D. Since A is a tensor product
+(16) which geometrically corresponds to a product space, an instance of spectral
+geometry for A is given by the product rule,
+
+                   H = L2 (M, S) ⊗ HF , D = ∂/M ⊗ 1 + γ5 ⊗ DF                       (1.19)
+
+where (HF , DF ) is a spectral geometry on AF , while both L2 (M, S) and the Dirac
+operator ∂/M on M are as above.
+Since AF is finite dimensional the dimension of the corresponding space is 0 so
+that HF must be finite dimensional. The list of elementary fermions provides a
+natural candidate for HF . One lets HF be the Hilbert space with basis labelled
+by elementary leptons and quarks. Thus for the first generation of leptons we get
+eL , eR , νL , ēL , ēR , ν̄L for instance, as the corresponding basis. The Z/2 grading γF
+is given by +1 for left handed particles and −1 for right handed ones. For quarks
+one has an additional color index, y, r, b. The involution J is just such that Jf = f¯
+for any f in the basis. One has J 2 = 1, Jγ = γJ as dictated by the dimension
+n = 0. Moreover the algebra AF has a natural representation in HF and:
+
+                      ab0 = b0 a      ∀ a, b ∈ AF , b0 = Jb∗ J −1 .                 (1.20)
+
+Finally there is a natural matrix acting in the finite dimensional Hilbert space HF .
+It is                                            
+                                          Y 0
+                                  DF =              ,                          (1.21)
+                                           0 Ȳ
+where Y is the Yukawa coupling matrix.
+The special features of Y show that the algebraic rule
+
+                             [[D, a], b0] = 0         ∀ a, b ∈ A                    (1.22)
+
+                                             5
+which is one of the essential axioms, holds for the spectral geometry (AF , HF , DF )
+= F . Of course this 0-dimensional geometry is encoding the knowledge of the
+fermions of the standard model and it is a basic question to understand and char-
+acterize it abstractly, but let us postpone this problem and proceed with the
+product geometry M × F .
+The next important new feature of the noncommutative case is the following. We
+saw that the group Aut(A) of diffeomorphisms falls in equivalence classes under
+the normal subgroup Int(A) of inner automorphisms. In the same way the space of
+metrics has a natural foliation into equivalence classes. The internal fluctuations
+of a given metric are given by the formula,
+
+    D = D0 + A + JAJ −1 , A = Σ ai [D0 , bi ] , ai , bi ∈ A and A = A∗ .       (1.23)
+
+Thus starting from (A, H, D0 ) with obvious notations, one leaves the representa-
+tion of A in H untouched and just perturbs the operator D0 by (1.23) where A is
+an arbitrary self-adjoint operator in H of the form A = Σ ai [D0 , bi ] ; ai , bi ∈ A.
+One checks that this does not alter the axioms (check (1.22) for instance). These
+fluctuations are trivial: D = D0 in the usual Riemannian case in the same way as
+the group of inner automorphisms Int(A) = {1} is trivial for A = C ∞ (M ).
+In general the natural action of fInt(A) on the space of metrics restricts to the
+above equivalence classes and is simply given by (for the automorphism associated
+to u ∈ A, uu∗ = u∗ u = 1),
+
+                 ξ ∈ H → uξu∗ = uu∗0 ξ , A → u[D, u∗ ] + uAu∗ .                (1.24)
+
+When one computes the internal fluctuations of the above product geometry M ×F
+one finds ([6]) that they are parametrized exactly by the bosons γ, W ± , Z, the eight
+gluons and the Higgs fields H of the standard model. The equality
+                         Z
+                                          √
+                             (LGf + LHf ) g d4 x = hψ, Dψi                      (1.25)
+                         M
+
+gives the contribution to (1.2) of the last two term of the SM Lagrangian in terms
+of the operator D alone.
+The operator D encodes the metric of our “discrete Kaluza Klein” geometry M ×F
+but this metric is no longer the product metric as it was for D0 . In fact the initial
+scale given by DF completely disappears when one considers the arbitrary internal
+fluctuations of D0 = ∂/M ⊗ 1 + γ5 ⊗ DF . What remains is to understand in a purely
+
+                                          6
+gravitational manner the 4 remaining terms of the action (1.2). This is where we
+apply the basic principle (1.8).
+We shall check in this paper that for any smooth cutoff function χ, χ(λ) = 1 for
+|λ| ≤ 1, one has
+                       
+                        D
+              Trace χ       = IE + IG + IGH + IH + IC + 0(Λ−∞ )           (1.26)
+                        Λ
+
+where IC is a sum of a cosmological term, a term of Weyl gravity and a term in
+R        √
+  R H 2 g d4 x. The computation in itself is not new, and goes back to the work
+of DeWitt [7]. Similar computations also occur in the theory of induced gravity
+[8]. It is clear that the left hand side of (1.26) only depends upon the spectrum
+Σ of the operator D, and following our principle (1.8) this allows to take it as the
+natural candidate for the bare action at the cutoff scale Λ.
+In our framework there is a natural way to cutoff the geometry at a given energy
+scale Λ, which has been developed in [9] for some concrete examples. It consists
+in replacing the Hilbert space H by the subspace HΛ ,
+                                             
+                                               D
+                               HΛ = range χ                                (1.27)
+                                               Λ
+
+and restricting both D and A to this subspace, while maintaining the commutation
+rule (1.20) for the algebra A. This procedure is superior to the familiar lattice
+approximation because it does respect the geometric symmetry group. The point
+is that finite dimensional noncommutative algebras have continuous Lie groups of
+automorphisms while the automorphism group of a commutative finite dimensional
+algebra is necessarily finite. The hypothesis which we shall test in this paper is
+that there exist an energy scale Λ in the range 1015 − 1019 Gev at which the bare
+action (1.2) becomes geometric, i.e. ∼
+                                       
+                                       D
+                              Trace χ      + hψ, Dψi .                      (1.28)
+                                       Λ
+
+
+
+2. The spectral action principle applied to the Einstein-Yang-Mills
+system.
+     To test the spectral action functional (1.28) we shall first consider the sim-
+plest noncommutative modification of a manifold M . Thus we replace the algebra
+
+                                         7
+C ∞ (M ) of smooth functions on M by the tensor product A = C ∞ (M ) ⊗ MN (C)
+where MN (C) is the algebra of N × N matrices. The spectral triple is obtained by
+tensoring the Dirac spectral triple for M by the spectral triple for MN (C) given
+by the left action of MN (C) on the Hilbert space of N × N matrices with Hilbert-
+Schmidt norm while the operator is 0. The real structure is given by the adjoint
+operation, m → m∗ on matrices. Thus for the product geometry one has
+
+                                    H = L2 (M, S) ⊗ MN (C)
+                                       J(ξ ⊗ m) = Cξ ⊗ m∗                                        (2.1)
+                                           D = ∂/M ⊗ 1 .
+
+We shall compare the spectral action functional (1.28) with the following
+                                    Z
+                                1       √
+                           I= 2       R g d4 x + IY M                     (2.2)
+                               2κ
+              R             √
+where IY M = (LG + LGf ) g d4 x is the action for an SU (N ) Yang-Mills theory
+coupled to fermions in the adjoint representation.
+Starting with (2.1), one first computes the internal fluctuations of the metric and
+finds that they are parametrized exactly by an SU (N ) Yang Mills field A. Note
+that the formula D = D0 + A + JAJ ∗ eliminates the U (1) part of A even if one
+starts with an U (N ) gauge potential.
+One also checks that the coupling of the Yang Mills field A with the fermions is
+equal to
+                             hψ, Dψi      ψ ∈ H.                           (2.3)
+The operator D = D0 + A + JAJ ∗ is given by
+                                                       
+                   µ a                        i    i   i
+              D = ea γ (∂µ + ωµ ) ⊗ 1N + 1 ⊗ − g0 Aµ T                                           (2.4)
+                                              2
+where ωµ is the spin-connection on M :
+                                                 1 ab
+                                          ωµ =    ω γab
+                                                 4 µ
+and T i are matrices in the adjoint representation of SU(N) satisfying Tr(Ti Tj ) =
+2δ ij . (ωµab is related to the eaµ by the vanishing of the covariant derivative(∗) ,
+
+                             ∇µ eaν = ∂µ eaν − ωµab ebν − Γρµν eaρ = 0 .                         (2.5)
+ (∗)
+       We have limited our considerations to torsion free spaces. The more general case of torsion will
+
+be treated somewhere else.
+
+
+                                                   8
+As the Christoffel connection
+                                       1 ρσ
+                              Γρµν =     g (gµσ,ν + gνσ,µ − gµν,σ )               (2.6)
+                                       2
+is a given function of gµν = eaµ eaν , equation (2.5) could be solved to express ωµab as
+a function of eaµ .)
+It is a simple exercise to compute the square of the Dirac operator given by (2.4)
+[10-11]. This can be cast into the elliptic operator form [12]:
+
+                         P = D2 = −(g µν ∂µ ∂ν · 1I + Aµ ∂µ + B)                  (2.7)
+
+where 1I, Aµ and B are matrices of the same dimensions as D, and are given by:
+
+                         Aµ = (2ω µ − Γµ ) ⊗ 1N − ig0 14 ⊗ Aµi T i                (2.8)
+            B = (∂ µ ωµ + ω µ ωµ − Γν ων + R) ⊗ 1N − ig0 ωµ ⊗ Aµi T i .
+
+In deriving (2.8) we have used equation (2.5) as well as the following definitions
+and identities
+                                                     1
+                          [∂µ + ωµ , ∂ν + ων ] ≡       R ab (ω(e))γab
+                                                     4 µν
+                                eaρ ebσ Rµνab (ω(e)) = Rµνρσ (g)                  (2.9)
+                   Rνρσµ = ∂ρ Γµνσ − ∂σ Γµνρ + Γµρκ Γκνσ − Γµσκ Γκνρ
+                                           Γµ = g νσ Γµνσ
+
+we have also used the symmetries of the Riemann tensor to prove that
+
+                                       γ µν Rµνab γab = −2R .                    (2.10)
+
+We shall now compute the spectral action for this theory given by
+                                 2
+                                  D
+                           Tr χ         + (ψ, D ψ)                               (2.11)
+                                  m20
+
+where the trace Tr is the usual trace of operators in the Hilbert space H, and m0
+is a (mass) scale to be specified. The function χ is chosen to be positive and this
+has important consequences for the positivity of the gravity action.
+Using identities [12]:
+                                         Z ∞
+                                  1
+                 Tr(P    −s
+                              )=               ts−1 Tr e−tP dt   Re(s) ≥ 0       (2.12)
+                                 Γ(s)     0
+
+                                                  9
+and the heat kernel expansion for
+                                        X n−m Z
+                               −tP
+                           Tr e       ≃  t d                  an (x, P ) dv(x)     (2.13)
+                                         n≥0            M
+
+
+where m is the dimension of the manifold in C ∞ (M ), d is the order of P (in our
+                               √
+case m = 4, d = 2) and dv(x) = g dm x where g µν is the metric on M appearing
+in equation (2.7).
+If s = 0, −1, . . . is a non-positive integer then Tr(P −s ) is regular at this value of s
+and is given by
+                             Tr(P −s ) = Res Γ(s) |s= m−n an .
+                                                                     d
+
+From this we deduce that
+                                                   X
+                                      Tr χ(P ) ≃         fn an (P )                (2.14)
+                                                   n≥0
+
+where the coefficients fn are given by
+                           Z ∞                  Z ∞
+                     f0 =       χ(u) udu , f2 =     χ(u) du ,
+                                  0                              0
+                                                   n    (n)
+                              f2(n+2) = (−1) χ                (0) , n ≥ 0          (2.15)
+                R
+and an (P ) =       an (x, P ) dv(x).
+    The Seeley-de Witt coefficients an (P ) vanish for odd values of n. The first
+three an ’s for n even are [12]:
+
+             a0 (x, P ) = (4π)−m/2 Tr(1I)
+                                                
+                               −m/2       R
+             a2 (x, P ) = (4π)      Tr − 1I + E
+                                           6
+                                     1
+             a4 (x, P ) = (4π)−m/2      Tr((−12R;µ µ + 5R2 − 2Rµν Rµν
+                                    360
+                        + 2Rµνρσ Rµνρσ )1I − 60RE + 180E2 + 60E;µ µ
+                          + 30Ωµν Ωµν ))                                           (2.16)
+
+where E and Ωµν are defined by
+
+                            E = B − g µν (∂µ ων′ + ωµ′ ων′ − Γρµν ωβ′ )
+                          Ωµν = ∂µ ων′ − ∂ν ωµ′ + [ωµ′ ων′ ]                       (2.17)
+                                1
+                           ωµ′ = gµν (Aν − Γν · 1I) .
+                                2
+
+                                                   10
+The Ricci and scalar curvature are defined by
+
+                                        Rµρ = Rµνab eνb eaρ
+                                           R = Rµνab eµa eνb .                                (2.18)
+
+We now have all the necessary tools to evaluate explicitely the spectral action
+(2.11). Using equations (2.8) and (2.16) we find :
+
+                               1               i
+                            E = R ⊗ 1I4 ⊗ 1IN + γ µν ⊗ gFµν
+                                                          i
+                                                             Ti
+                               4               4
+                               1 ab            i        i
+                          Ωµν = Rµν γab ⊗ 1N − 1I4 ⊗ gFµν   Ti .                              (2.19)
+                               4               2
+From the knowledge that the invariants of the heat equation are polynomial func-
+tions of R, Rµν , Rµνρσ , E and Ωµν and their covariant derivatives, it is then evident
+from equation (2.19) that the spectral action would not only be diffeomorphism
+invariant but also gauge invariant. The first three invariants are then(∗)
+                              Z
+                          N      √ 4
+               a0 (P ) = 2         gd x
+                         4π M
+                               Z
+                          N       √
+               a2 (P ) =     2
+                                    g R d4 x                                                  (2.20)
+                         48π M
+                                    Z         
+                           1     N       4 √
+               a4 (P ) =     2
+                               ·        d x g (12R;µ µ + 5R2 − 8Rµν Rµν
+                         16π 360 M
+                                                          
+                                  µνρσ     120 2 i    µνi
+                       − 7Rµνρσ R      )+     g Fµν F       .
+                                            N
+
+For the special case where the dimension of the manifold M is four, we have a
+relation between the Gauss-Bonnet topological invariant and the three possible
+curvature square terms:
+
+                           R∗ R∗ = Rµνρσ Rµνρσ − 4Rµν Rµν + R2                                (2.21)
+
+where R∗ R∗ ≡ 14 εµνρσ εαβγδ Rµν αβ γδ
+                                    Rρσ . Moreover, we can change the expression
+for a4 (P ) in terms of Cµνρσ instead of Rµνρσ where
+
+                                                   1
+       Cµνρσ = Rµνρσ − (gµ[ρ Rν|σ] − gν[ρ Rµ|σ] ) + (gµρ gνσ − gµσ gνρ )R                     (2.22)
+                                                   6
+ (∗)
+       Note that according to our notations the scalar curvature R is negative for spheres.
+
+
+                                                  11
+is the Weyl tensor. Using the identity:
+                                                        1
+                 Rµνρσ Rµνρσ = Cµνρσ C µνρσ + 2Rµν Rµν − R2                   (2.23)
+                                                        3
+we can recast a4 (P ) into the alternative form:
+                     Z         
+                N        4 √        3               1
+      a4 (p) =     2
+                        d x g − Cµνρσ C µνρσ +         (11R∗ R∗ + 12R;µ µ )
+               48π                 20              120
+                                     2
+                                                 
+                                   g
+                                 +     F i F µνi                            (2.24)
+                                   N µν
+and this is explicitely conformal invariant. The Euler characteristic χE (not to be
+confused with the function χ) is related to R∗ R∗ by the relation
+                                         Z
+                                     1         √
+                            χE =       2
+                                           d4 x g R ∗ R ∗ .                  (2.25)
+                                   32π
+If we choose the function χ to be a cutoff function, i.e. χ(x) = 1 for x near 0, then
+χ(n) (0) is zero ∀ n > 0 and this removes the non-renormalizable interactions. It is,
+also possible to introduce a mass
+                                scale m0 and consider χ to be a function of the
+                             P
+dimensionless variable χ m2 . In this case terms coming from an (P ), n > 4 will
+                             0
+be supressed by powers of m12 :
+                             0
+                               Z              Z
+                  N         4       4 √              √
+           Ib =      2
+                        12m0 f0 d x g + m0 f2 d4 x g R
+                                             2
+                48π
+                   Z          
+                        4 √       3              1          11 ∗ ∗
+              + f4 d x g − Cµνρσ C µνρσ +           R;µ µ +    R R
+                                 20              10         20
+                                      
+                g2 i      µνi        1
+              +    F F         +0          .                                  (2.26)
+                N µν                m20
+We shall adopt Wilson’s view point of the renormalization group approach to field
+theory [13] where the spectral action is taken to give the bare action with bare
+quantities m0 and g0 and with a cutoff scale Λ where the theory is assumed to
+take a geometrical form. Introducing the cutoff scale Λ will regularize the theory.
+The perturbative expansion is then reexpressed in terms of renormalized physical
+quanties. The fields also receive wave function renormalization. Normalizing the
+Einstein and Yang-Mills terms in the bare action we then have:
+                                 N m20 f 2   1      1
+                                           =  2 ≡
+                                  24π 2      κ0   8πG0
+                                    f4 g02
+                                           =1                                 (2.27)
+                                    12π 2
+
+                                          12
+and (2.26) becomes:
+                Z       
+                    4 √    1
+            Ib = d x g         R + e0
+                          2κ20
+                                                                                   
+                                                                      1 i
+                  + a0 Cµνρσ C    µνρσ          ∗     ∗
+                                         + c0 R R + d0 R;µ       µ
+                                                                     + Fµν F µνi       (2.28)
+                                                                      4
+
+where
+                                              −3N 1
+                                         a0 =                                          (2.29)
+                                               80 g02
+                                                 2
+                                         c0 = − a0
+                                                 3
+                                                 11
+                                         d0 = −     a0
+                                                  3
+                                              N m40
+                                         e0 =       f0 .
+                                               4π 2
+The renormalized action receives counterterms of the same form as the bare action
+but with physical parameters k, a, c, d, and the addition of one new term [14]
+                                Z
+                                        √
+                                   d4 x g (b R2 ) .                         (2.30)
+
+This adds one further boundary condition for the equations (2.29):
+
+                                              b0 = 0 .
+
+The renormalized fermionic action (ψ, Dψ) keeps the same form as the bare
+fermionic action.
+The renormalization group equations will yield relations between the bare quanti-
+ties and the physical quantities with the addition of the cutoff scale Λ. Conditions
+on the bare quantities would translate into conditions on the physical quantities.
+In the present example only the gauge coupling g(Λ) and Newton’s constant will
+have measurable effects. The dependence of κ0 on κ and the other physical quan-
+tities is such that κ−2
+                     0 −κ
+                         −2
+                             contains terms proportional to the cutoff scale. As κ2
+must be identified with 8πG at low energy it is clear that both κ−1  0 and Λ could
+                               (∗)
+be as high as the Planck scale
+The renormalization group equations of this system were studied by Fradkin and
+Tseytlin [15] and is known to be renormalizable, but non-unitary [14] due to the
+(∗)
+      We like to thank A. Tseytlin for correspondence on this point.
+
+
+                                                 13
+presence of spin-two ghost (tachyon) pole near the Planck mass. We shall not
+worry about non-unitarity (see, however, reference 16), because in our view at the
+Planck energy the manifold structure of space-time will break down and one must
+have a completely finite theory where only the part of the Hilbert space given by
+χ(D2 )H enters. The algebra A becomes finite dimensional in such a way that all
+symmetries of the continuum (in some approximation) would be admitted.
+In the limit of flat space-time we have gµν = δµν and the action (2.11) becomes
+(adopting the normalizations (2.29)):
+                              1 i
+                                Fµν F µνi + (ψ, D ψ)                        (2.31)
+                              4
+where we have droped the constant term. This action is known to have N = 1
+global supersymmetry. In reality we can also obtain the N = 2 and N = 4
+super Yang-Mills actions by taking the appropriate Dirac operators in six and ten
+dimensions respectively [17].
+
+
+
+3. Spectral action for the standard model.
+    Having illustrated the computation of our spectral action for the Einstein-
+Yang-Mills system we now address the realistic case of obtaining action (1.2) for
+the Einstein-Standard model system.
+We first briefly summarize the spectral triple (A, H, D) associated with the spec-
+trum of the standard model. A complete treatment can be found in [4,6].
+The geometry is that of a 4-dimensional smooth Riemannian manifold with a fixed
+spin structure times a discrete geometry. The product geometry is given by the
+rules
+             A = A1 ⊗ A2 , H = H1 ⊗ H2 , D = D1 ⊗ 1 + γ5 ⊗ D2             (3.1)
+where A1 = C ∞ (M ), D1 = ∂/M the Dirac operator on M , H1 = L2 (M, S) and
+the discrete geometry (A2 , H2 , D2 ) will now be described. The algebra A2 is the
+direct sum of the real involutive algebras C of complex numbers, H of quaternions,
+and M3 (C) of 3 × 3 matrices. H2 is the Hilbert space with basis the elementary
+fermions, namely the quarks Q, leptons L and their charge conjugates, where
+                                                
+                                    uL
+                                                   νL
+                                   dL 
+                            Q=         , L = eL 
+                                                                            (3.2)
+                                    dR
+                                                   eR
+                                    uR
+
+                                       14
+and we have omitted family indices for Q and L and colour index for Q. The
+antilinear isometry J = J2 in H2 exchanges a fermions with its conjugate.
+The action of an element a = (λ, q, m) ∈ A2 in H2 is given by:
+                                            
+                                           uL
+                                      q dL 
+                              aQ =                                         (3.3)
+                                      λ̄ dR 
+                                         λ uR
+                   
+              α β
+where q =             is a quaternion. A similar formula holds for leptons. The
+             −β̄ ᾱ
+action on conjugate particles is:
+
+                                       a L̄ = λ L̄
+                                 a Q̄ = m Q̄ .                            (3.4)
+                                        
+                                   Y 0
+For the operator D2 we take D2 =            where Y is a Yukawa coupling matrix
+                                   0 Ȳ
+of the form
+                               Y = Yq ⊗ 1 3 ⊕ Yℓ                          (3.5)
+
+with                                                                
+                                  02        k0d ⊗ H0     k0u ⊗ He0
+                  Yq =         d ∗      ∗    u ∗    e ∗
+                                                                             (3.6)
+                             (k0 ) ⊗ H0 (k0 ) ⊗ H     0      02
+                                                        
+                                         02     k0e ⊗ H0
+                             Yℓ =     e∗    ∗               .
+                                     k0 ⊗ H 0       0
+The matrices k d , k u and k e are 3 × 3 family mixing matrices and
+                                      
+                                       0     e 0 = iσ2 H0 .
+                            H0 = µ         , H
+                                       1
+
+The parameter µ has the dimension of mass.
+The choice of the Dirac operator and the action of A2 in H2 comes from the
+restrictions that these must satisfy:
+
+                      J 2 = 1 , [J, D2 ] = 0 , [a, Jb∗ J −1 ] = 0
+                              [[D, a], Jb∗J −1 ] = 0 ∀ a, b .                (3.7)
+
+The next step is to compute the inner fluctuations of the metric and thus the
+operators of the form: A = Σ ai [D, bi ]. This with the self-adjointness condition
+
+                                            15
+   A = A∗ gives a U (1), SU (2) and U (3) gauge fields as well as a Higgs field. The
+   computation of A + JAJ −1 removes a U (1) part from the above gauge fields (such
+   that the full matrix is traceless) (for derivation see [4]). The Dirac operator Dq
+   that takes the inner fluctuations into account is given by the 36×36 matrix (acting
+   on the 36 quarks) (tensored with Clifford algebras)
+
+Dq =
+    µ                                         
+     γ ⊗ Dµ ⊗ 12 − 2i g02 Aα  α    i
+                           µ σ − 6 g01 Bµ ⊗ 12 
+                                                                                 e
+                                                 ⊗ 13 , γ5 ⊗ k0d ⊗ H, γ5 ⊗ k0u ⊗ H
+    γ5 ⊗ k0d∗ ⊗ H ∗ ,      γ µ ⊗ Dµ + 3i g01 Bµ ⊗ 13 ,                    0        ⊗ 13
+                                                                      
+             e ∗,
+     γ5 k0u∗ H                       0,          γ µ ⊗ Dµ − 2i   g B ⊗ 13
+                                                             3 01 µ
+                         i
+   + γ µ ⊗ 14 ⊗ 13 ⊗ − g03 Vµi λi                                                (3.8)
+                         2
+
+   where σ α are Pauli matrices and λi are Gell-mann matrices satisfying
+
+                                     Tr(λi λj ) = 2δ ij .                           (3.9)
+
+   The vector fields Bµ , Aα        i
+                           µ and Vµ are the U (1), SU (2)w and SU (3)c gauge fields
+   with gauge couplings g01 , g02 and g03 . The differential operator Dµ is given by
+
+                                      Dµ = ∂µ + ωµ                                (3.10)
+
+                                                                    e is the SU (2)
+   and γ µ = eµa γ a . The scalar field H is the Higgs doublet, and H
+   conjugate of H:
+                                       e = (iσ 2 H) .
+                                       H                                     (3.11)
+   We note that although H0 was introduced in the definition of D2 it is absorbed in
+   the field H.
+   It is a simple exercise to see that the action for the fermionic quark sector is given
+   by
+                                         (Q, Dq Q) .                               (3.12)
+   The Dirac operator acting on the leptons, taking inner fluctuations into account
+   is given by the 9 × 9 matrix (tensored with Clifford algebra matrices):
+             µ                                                                 
+              γ ⊗ Dµ − 2i g02 Aα   α   i
+                                µ σ + 2 g01 Bµ ⊗ 12 ⊗ 13           γ5 ⊗ k0e ⊗ H
+       Dℓ =                                                                        .
+              γ5 ⊗ k0∗e ⊗ H ∗                         γ µ ⊗ (Dµ + ig01 Bµ ) ⊗ 13
+                                                                                 (3.13)
+   Again the leptonic action have the simple form
+
+                                        (L, Dℓ L) .                               (3.14)
+
+                                             16
+According to our universal formula (1.28) the spectral action for the standard
+model is given by:
+                           Tr[χ(D2 /m20 )] + (ψ, Dψ)                     (3.15)
+
+where (ψ, Dψ) will include the quark sector (3.12) and the leptonic sector (3.14).
+Calculating the bosonic part of the above action follows the same lines as in the
+previous section. The steps that lead to the result are given in the appendix.
+
+    The bosonic action is
+                      Z
+            9m40 5          √
+        I = 2 f0 d4 x g
+             π 4
+                   Z                         
+            3m20        4 √    5        2 ∗
+          +      f2 d x g        R − 2y H H
+            4π 2               4
+                 Z        
+             f4      4 √    1 5
+          + 2 d x g              (12R;µ µ + 11R∗ R∗ − 18Cµνρσ C µνρσ )
+            4π              40 4
+                                        
+              2         ∗ µ      1    ∗
+          + 3y Dµ H D H − R H H
+                                 6
+              2
+           + g03 Giµν Gµνi + g02
+                              2   α
+                                 Fµν F µνα
+             5 2
+           + g01   Bµν B µν
+             3                                                   
+                2    ∗       2   2      ∗       µ            1
+           + 3z (H H) − y (H H);µ                   +0                         (3.16)
+                                                             m20
+
+where we have denoted
+                                                                      
+                         2                               1
+                         y = Tr       |k0d |2 + |k0u |2 + |k0e |2
+                                                          3
+                                                                          
+                                                             1
+                         2
+                         z = Tr       (|k0d |2 + |k0u |2 )2 + |k0e |4          (3.17)
+                                                               3
+                                            i             i
+                    Dµ H = ∂µ H −             g02 Aα α
+                                                   µσ H −   g01 Bµ H .
+                                            2             2
+Normalizing the Einstein and Yang-Mills terms gives:
+
+                                 15m20 f2    1
+                                      2
+                                           = 2
+                                   4π       κ0
+                                    2
+                                   g03  f4
+                                       2
+                                           =1                                  (3.18)
+                                     π
+                                             2     2         5 2
+                                            g03 = g02 =       g .
+                                                             3 01
+
+                                                 17
+Relations (3.18) among the gauge coupling constants coincide with those coming
+from SU (5) unification.
+To normalize the Higgs fields kinetic energy we have to rescale H by:
+
+                                          2 g03
+                                   H→           H.                             (3.19)
+                                          3 y
+
+This transforms the bosonic action (3.16) to the form:
+                   Z         
+                      4 √       1
+             Ib =    d x g          R − µ20 (H ∗ H) + a0 Cµνρσ C µνρσ
+                               2κ20
+                 + b0 R2 + c0 ∗ R∗ R + d0 R;µ µ
+                        1              1 α µνα
+                 + e0 + Giµν Gµνi + Fµν      F
+                        4              4                 
+                   1       µν           2       2  ∗   2
+                 + Bµν B + |Dµ H| − ξ0 R|H| + λ0 (H H)                         (3.20)
+                   4
+
+where
+                                           4
+                                  µ20 =
+                                          3κ20
+                                              9
+                                  a0 = −       2
+                                             8g03
+                                   b0 = 0                                      (3.21)
+                                          11
+                                   c0 = −    a0
+                                          18
+                                          2
+                                  d0 = − a 0
+                                          3
+                                        45
+                                  e0 =      f0 m40
+                                       4π 2
+                                       4 2 z2
+                                  λ0 = g03
+                                       3     y4
+                                       1
+                                  ξ0 = .
+                                       6
+As explained in the last section this action has to be taken as the bare action at
+some cutoff scale Λ. The renormalized action will have the same form as (3.20)
+but with the bare quantities κ0 , µ0 , λ0 , a0 to e0 and g01 , g02 , g03 replaced with
+physical quantities.
+Relations between the bare gauge coupling constants as well as equations (3.19)
+have to be imposed as boundary conditions on the renormalization group equations
+
+                                          18
+[13]. The bare mass of the Higgs field is related to the bare value of Newton’s
+constant, and both have quadratic divergences in the limit of infinite cutoff Λ.
+The relation between m20 and the physical quantities is:
+                2                                  
+                  Λ
+                     −   1                                     
+   2     2       m2           9 2 3 2             2          Λ2
+ m0 = m 1 +                     g + g + 6λ − 6kt         +0 ln 2 +. . . (3.22)
+                   32π 2       4 2 4 1                         m
+
+For m2 (Λ) to be small at low-energies m20 should be tuned to be proportional to
+the cutoff scale according to equation (3.22).
+Similarly the bare cosmological constant is related to the physical one (which must
+be tuned to zero at low energies):
+
+                                         Λ4
+                             e0 = e +         (62) + . . .                   (3.23)
+                                        32π 2
+where 62 is the difference between the fermionic degrees of freedom (90) and the
+bosonic ones (28).
+There is also a relation between the bare scale κ−2
+                                                 0 and the physical one κ
+                                                                         −2
+                                                                            which
+is similar to equation (3.20) (but with all one-loop contributions coming with the
+same sign) which shows that κ−1 0 ∼ m0 and Λ are of the same order as the Planck
+mass.
+The renormalization group equations for the gauge coupling constants are:
+                                         
+                            dg1     1     41
+                                =     2
+                                                g13
+                             dt   16π      6
+                                               
+                            dg2     1        19
+                                =         −        g23                    (3.24)
+                             dt   16π 2       6
+                            dg3     1
+                                =       (−7)g33
+                             dt   16π 2
+where t = ln µ, µ being the running scale.
+     Solutions to equations (3.22) are known from the SU (5) case and are given
+by [19]
+                                             41    Λ
+                        α−1         −1
+                         1 (MZ ) = α1 (Λ) +     ln
+                                            12π    MZ
+                                             19    Λ
+                        α−1         −1
+                         2 (MZ ) = α2 (Λ) −     ln                           (3.25)
+                                            12π    MZ
+                                             42    Λ
+                        α−1         −1
+                         3 (MZ ) = α3 (Λ) −     ln
+                                            12π    MZ
+
+                                         19
+            g2
+where αi = 4πi , i = 1, 2, 3 and Mz is the mass of the Z vectors. At the scale Λ we
+have to impose the boundary conditions (3.18):
+
+                                                 5
+                             α3 (Λ) = α2 (Λ) =     α1 (Λ) .                  (3.26)
+                                                 3
+
+Using equations (3.27) and (3.28) one easily find:
+                                                     
+                         2      3      109          Λ
+                       sin θw =     1−     αem ln
+                                8      18π         MZ
+                           Λ    2π                 −1
+                       ln     =    (3α−1
+                                      em (MZ ) − 8α3 (MZ )) .                (3.27)
+                          MZ    67
+
+The present experimental values for α−1
+                                     em (MZ ) and α3 (MZ ) are
+
+
+                                α−1
+                                 em (MZ ) = 128.09
+
+                             0.110 ≤ α3 (MZ ) ≤ 0.123 .                      (3.28)
+
+These values lead to
+
+                        9.14 × 1014 ≤ Λ ≤ 4.44 × 1014 (Gev)
+                              0.206 ≤ sin2 θw ≤ 0.210 .                      (3.29)
+
+Therefore the bare action we obtained and associated with the spectrum of the
+standard model is consistent with experimental data provided the cutoff scale is
+taken to be Λ ∼ 1015 Gev. There is, however, a slight disagreement (10%) between
+the predicted value of sin2 θw and the experimental value of 0.2325 known to a
+very high precision. It is a remarkable fact that starting from the spectrum of
+the standard model at low-energies, and assuming that this spectrum does not
+change, one can get the geometrical spectral action which holds at very high-
+energies and consistent within ten percent with experimental data. This can be
+taken that at higher energies the noncommutative nature of space-time reveals
+itself and shows that the effective theory at the scale Λ have a higher symmetry.
+The other disagreement is that the gravity sector requires the cutoff scale to be of
+the same order as the Planck scale while the condition on gauge coupling constants
+give Λ ∼ 1015 Gev. The gravitational coupling G runs with Λ due to the matter
+interactions. This dictates that it must be of the order Λ−2 and gives a large
+value for Newton’s constant. These results must be taken as an indication that
+the spectrum of the standard model has to be altered as we climb up in energy.
+
+                                         20
+The change may happen at low energies (just as in supersymmetry which also
+pushes the cutoff scale to 1016 Gev) or at some intermediate scale. Incidently the
+porblem that Newton’s constant is coming out to be too large is also present in
+string theroy where also a unification of gauge couplings and Newton’s constant
+occurs [20]. Ultimately one would hope that modification of the spectrum will
+increase the cutoff scale nearer to the Planck mass as dictated by gravity.
+    There is one further relation in our theory between the λ(H ∗ H)2 coupling
+and the gauge couplings to be imposed at the scale Λ [21]:
+
+                                                4 2 z2
+                                         λ0 =    g       .                  (3.30)
+                                                3 03 y 4
+
+This relation could be simplified if we assume that the top quark Yukawa coupling
+is much larger than all the other Yukawa couplings. In this case equation (3.30)
+simplifies to
+                                         16π
+                                λ(Λ) =       α3 (Λ) .                      (3.31)
+                                           3
+Therefore the value of λ at the unification scale is λ0 ≃ 0.402 showing that one
+does not go outside the perturbation domain. In reality, equation (3.31) could be
+used, together with the RG equations for λ and kt to determine the Higgs mass
+at the low-energy scale MZ [22]:
+
+                       dλ           1
+                          = 4λγ + 2 (12λ2 + B)
+                       dt         8π                    
+                      dkt     1       3     2  9 2 17 2
+                          =        9kt − 16g3 + g2 +   g kt                 (3.32)
+                      dt    32π 2              2     6 1
+
+where
+                             1
+                         γ=     (12k 2 − 9gt2 − 3g12 )
+                           64π 2  t                           
+                             3     1     4      2 2    4     4
+                        B=            (3g + 2g1 g2 − g1 ) − kt .            (3.33)
+                           84π 2 16 2
+
+These equations have to be integrated numerically [21]. One can get a rough
+estimate on the Higgs mass from the triviality bound(∗) on the λ couplings. For
+Λ ≃ 1015 Gev as given in equation (3.29) the limits are
+
+                                    160 < mH < 200 Gev .                    (3.34)
+(∗)
+      We like to thank M. Lindner for explanations on this point.
+
+
+                                                 21
+     This together with the boundary condition (3.31) gives a mass of the Higgs
+near the lower bound of 160 Gev. The exact answer can be only determined
+by numerical integration, but this of course cannot be completely trusted as the
+predicted value for sin2 θw is off by ten percent. It can, however, be taken as an
+approximate answer and in this respect one can say that the Higgs mass lies in
+the interval 160 − 180 Gev. We expect this prediction to be correct to the same
+precision as that of sin2 θw in (3.29).
+In reality we can perform the same analysis for the gravitational sector to deter-
+mine the dependence of κ0 , a0 , b0 , c0 , d0 and e0 on the physical quantities and
+the effect of the boundary conditions (3.19) on them. This, however, will not have
+measurable consequences and will not be pursued here.
+
+
+
+4. Conclusions.
+      The basic symmetry for a noncommutative space (A, H, D) is Aut(A). This
+symmetry includes diffeomorphisms and internal symmetry transformations. The
+bosonic action is a spectral function of the Dirac operator while the fermionic
+action takes the simple linear form (ψ, Dψ) where ψ are spinors defined on the
+Hilbert space. Applying this principle to the simple case where the algebra is
+C ∞ (M )⊗Mn (C) with a Hilbert space of fermions in the adjoint representation one
+finds that the bosonic action contains the Yang-Mills, Einstein and Weyl actions.
+This action is to be interpreted as the bare Wilsonian action at some cutoff scale Λ.
+The same principle when applied to the less trivial noncommutative geometry of
+the standard model gives the standard model action coupled to Einstein and Weyl
+gravity plus higher order non-renormalizable interactions supressed by powers of
+the inverse of the mass scale in the theory. One also gets a mass term for the Higgs
+field. This bare mass is of the same order as the cutoff scale and this is related
+to the fact that there are quadratic divergences associated with the Higgs mass in
+the standard model. There are some relations between the bare quantities. The
+renormalized action will have the same form as the bare action but with physical
+quantities replacing the bare ones (except for an R2 term which is absent in the
+bare action due to the scale invariance of the a4 term associated with the square
+of the Dirac operator). The relations among the bare quantities must be taken as
+boundary conditions on the renormalization group equations governing the scale
+dependence of the physical quantities.
+    In particular there are relations among the gauge couplings coinciding with
+
+                                         22
+those of SU (5) (or any gauge group containing SU (5) and also between the Higgs
+couplings to be imposed at some scale. These relations give a unification scale
+(or cutoff scale) of order ∼ 1015 Gev and a value for sin2 θw ∼ 0.21 which is
+off by ten percent from the true value. We also have a prediction of the Higgs
+mass in the interval 160 − 180 Gev. This can be taken as an indication that the
+noncommutative structure of space-time reveals itself at such high scale where the
+effective action has a geometrical interpretation.
+    The slight disagreement with experiment indicates that the spectrum of the
+standard model could not be extrapolated to very high energies without adding
+new particles necessary to change the RG equations of the gauge couplings. One
+possibility could be supersymmetry, but there could be also less drastic solutions.
+It might be tempting by changing the spectrum to push the unification scale up
+nearer to the Planck scale a situation which is also present in string theory.
+
+     In summary, we have succeeded in finding a universal action formula that
+unified the standard model with the Einstein action. This necessarily involved an
+extrapolation from the low-energy sector to 1015 Gev, assuming no new physics
+arise. Our slight disagreement for the prediction of sin2 θw and for the low value
+of the unification scale seems to imply that the spectrum of the standard model
+must be modified either at low-energy or at an intermediate scale. There is also
+the possibility that by formulating the theory at very high energies, the concept
+of space-time as a manifold breaks down and the noncommutativity of the algebra
+must be extended to include the manifold part. One expects that the algebra A
+becomes a finite dimensional algebra. Finally, we hope that our universal action
+formula should be applicable to many situations of which the most important could
+be superconformal field theory. Work along these ideas is now in progress.
+
+
+
+Acknowledgments. A.H.C. would like to thank Jürg Fröhlich for very useful
+discussions and I.H.E.S. for hospitality where part of this work was done.
+
+
+
+
+                                        23
+Appendix.
+     To derive a general formula for Tr χ(D2 /Λ2 ) we must evaluate the heat kernel
+invariants an (x, P ) for a Dirac operator of the form
+                                                                         
+                         γ µ (Dµ · 1IN + Aµ )       γ5 S
+                D=                             µ                              .   (A.1)
+                                 γ5 S         γ (Dµ ⊗ 1IN + Aµ )
+
+Evaluating D2 we find that
+
+                         Aµ = ((2ω µ − Γµ ) ⊗ 1N + 2Aµ ) ⊗ 12                     (A.2)
+
+
+           B = (∂ µ ωµ + ω µ ωµ − Γµ ωµ + R) ⊗ 1N + 2Aµ · ωµ
+                                                              
+                   µ    µ     µ        1 µν         µ        2
+             + ∂ + ω − Γ ) Aµ − γ Fµν + A Aµ − S ⊗ 12
+                                       2
+                                             
+                µ                         0 1
+             − γ γ5 (Dµ S + [Aµ , S]) ⊗         .                                 (A.3)
+                                          1 0
+
+From this we can construct E and Ωµν :
+                                                     
+                          1           1 µν          2
+                     E=     R ⊗ 1N − γ Fµν − S ⊗ 12
+                          4           2
+                                                       
+                         µ                         0 1
+                      − γ γ5 (Dµ S + [Aµ , S]) ⊗                                  (A.4)
+                                                   1 0
+                                                            
+                                1
+                   Ωµν =          R ab γab ⊗ 1N + γ µν Fµν       ⊗ 12 .           (A.5)
+                                4 µν
+From this we deduce that
+                      Z
+                 Λ4     √ 4
+    a0 (x, P ) = 2       g d x Tr(1)
+                 4π
+                      Z                              
+                 Λ2     √ 4      R                 2
+    a2 (x, P ) = 2       gd x       Tr(1) − 2 Tr(S )
+                 4π              12
+                      Z                                             
+                   1    √ 4 Tr(1)             µ   9      µνρσ  11 ∗ ∗
+    a4 (x, P ) = 2       gd x           3R;µ − Cµνρσ C        + R R
+                 4π              360              2            4
+                                              
+                                          R
+               + Tr (Dµ S + [Aµ , S])2 − S 2
+                                          6
+                                                       
+                 1         µν       4   1       2    µ
+               − Tr Fµν F + Tr S − Tr(S );µ .                           (A.6)
+                 6                      3
+
+                                           24
+Applying these formulas to the Dirac operator of the quark sector we can obtain the
+same answer as from an explicit calculation by replacing in the previous formulas:
+
+   Tr(1) → 36
+   Tr S 2 → 3 Tr(|k0d |2 + |k0u |2 )H ∗ H
+   Tr S 4 → 3 Tr |(|k0d |2 + |k0u |2 )2 |(H ∗ H)2
+                                                                            
+               − 2i g02 Aα    α       i
+                           µ σ − 6 g01 Bµ · 1I2
+     Aµ →                                            1
+                                                      3 g01 Bµ
+                                                                               ⊗ 13 ⊗ 13
+                                                                 − 2i
+                                                                   3 g01 Bµ
+                                
+                       i     i i
+          + 14 ⊗ 13 ⊗ − g03 Vµ λ .                                                     (A.7)
+                       2
+
+Then
+     1             3 2 α µνα 11 2
+    − Tr Fµν F µν = g02 Fµν F +   g01 Bµν B µν + g03
+                                                  2
+                                                     Giµν Gµνi .                       (A.8)
+     6             4            2
+In the leptonic sector, we make the replacements:
+
+              Tr(1) → 9
+              Tr S 2 → Tr |k0e |2 H ∗ H
+           Tr S 4 → Tr |k0e |4 (H ∗ H)2
+                                                                  
+     1        µν    1 3 2 α µνα 11 2               µν  2   i   µνi
+    − Tr Fµν F →            g F F       +   g Bµν B + g03 Gµν G      .(A.9)
+     6              3 4 02 µν             2 01
+
+
+
+
+                                              25
+References.
+
+ [1] A. Connes, Publ. Math. IHES 62, 44 (1983); Noncommutative Geometry
+     (Academic Press, New York 1994).
+ [2] A. Connes and J. Lott, Nucl. Phys. Proc. Supp. B18, 295 (1990); proceed-
+     ings of 1991 Cargèse Summer Conference, edited by J. Fröhlich et al (Plenum,
+     New York 1992).
+ [3] D. Kastler, Rev. Math. Phys. 5, 477 (1993).
+ [4] A. Connes, “Gravity Coupled with Matter and the Foundation of Noncom-
+     mutative Geometry”, hep-th/9603053.
+ [5] A.H. Chamseddine, G. Felder and J. Fröhlich, Comm. Math. Phys. 155, 109
+     (1993); A.H. Chamseddine, J. Fröhlich and O. Grandjean, J. Math. Phys.
+     36, 6255 (1995).
+ [6] A. Connes, J. Math. Phys. 36, 6194 (1995).
+ [7] B. De Witt, Dynamical Theory of Groups and Fields (New York, Gordon and
+     Breach 1965).
+ [8] S. Adler in The high energy limit, Erice lectures edited by A. Zichichi (Plenum,
+     New York 1983).
+ [9] H. Grosse, C. Klimcik and P. Presnajder, “On Finite 4D Quantum Field
+     Theory in Noncommutative Geometry”, hep-th/9602115.
+[10] D. Kastler, Comm. Math. Phys. 166, 633 (1995).
+[11] W. Kalau and M. Walze, J. Geom. Phys. 16, 327 (1995).
+[12] P. Gilkey, Invariance theory, the heat equation and the Atiyah-Singer index
+     theorem, (Publish or Perish, Dilmington, 1984).
+[13] K.G. Wilson, Rev. Mod. Phys. 47 (1975), 773; For an exposition very close to
+     the steps taken here see C. Itzykson and J. -M. Drouffe, Field theory, Chapter
+     five, Cambridge University Press, 1989.
+[14] K.S. Stelle, Phys. Rev. D16, 953 (1977).
+[15] E. Fradkin and A. Tseytlin, Nucl. Phys.
+[16] E. Tomboulis, Phys. Lett. 70B, 361 (1977).
+[17] A.H. Chamseddine, Phys. Lett. B332, 349 (1994).
+[18] For a discussion of quadratic divergences and the hierarchy problem in the
+     standard model see e.g. J. Ellis, “Supersymmetry and Grand Unification”,
+     hep-ph/9512335.
+[19] For a review see G. Ross, Grand unified theories, Frontiers in Physics Series,
+     Vol.60 (Benjamin, New York 1985).
+
+                                         26
+[20] E. Witten, “Strong Coupling Expansion of Calabi-Yau Compactification”,
+     hep-th/9602070.
+[21] M. Bég, C. Panagiotakopoulos and A. Sirlin, Phys. Rev. Lett. 52, 883 (1984);
+     M. Lindner, Z. Phys. C31, 295 (1986).
+[22] For an extensive review see M. Sher, Phys. Rep. 179, 273 (1989).
+
+
+
+
+                                       27
+

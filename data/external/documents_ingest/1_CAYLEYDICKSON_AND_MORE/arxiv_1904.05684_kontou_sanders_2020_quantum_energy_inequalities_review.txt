@@ -1,0 +1,2135 @@
+RANGE CONVERGENCE MONOTONICITY FOR VECTOR
+MEASURES AND RANGE MONOTONICITY OF THE
+MASS
+
+arXiv:1904.05684v1 [math.CA] 11 Apr 2019
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+Abstract. We prove that the range of sequence of vector measures
+converging widely satisﬁes a weak lower semicontinuity property, that
+the convergence of the range implies the strict convergence (convergence
+of the total variation) and that the strict convergence implies the range
+convergence for strictly convex norms. In dimension 2 and for Euclidean
+spaces of any dimensions, we prove that the total variation of a vector
+measure is monotone with respect to the range.
+
+Contents
+1. Introduction
+2. Total variation and range
+3. Convergence of the total variation and of the range
+4. Zonal representation of masses
+5. Perimeter representation of masses
+Acknowledgement
+References
+
+1
+4
+14
+19
+24
+27
+27
+
+1. Introduction
+A vector measure µ maps some Σ–measurable subsets of a space X to
+vectors in a linear space V [1, Chapter 1; 8; 13]. Vector measures appear naturally in calculus of variations and in geometric measure theory,
+as derivatives of functions of bounded variation (BV) [6] and as currents of
+finite mass [10]. In these contexts, it is natural to work with sequences of
+finite Radon measures and to study their convergence.
+The wide convergence of a sequence (µn )n∈N of finite vector measures
+to some finite vector measure µ is defined by the condition that for every
+compactly supported continuous test function ϕ ∈ Cc (X, R), one has
+ˆ
+ˆ
+ϕ dµ.
+ϕ dµn =
+lim
+n→∞ X
+
+X
+
+2010 Mathematics Subject Classification. 46G10 (28B05, 52A05,52A39).
+Key words and phrases. Wide convergence of vector measures; total variation; strict
+convexity; zonoids.
+J. Van Schaftingen was supported by the Mandat d’Impulsion Scientiﬁque F.4523.17,
+“Topological singularities of Sobolev maps” of the Fonds de la Recherche Scientiﬁque–
+FNRS.
+1
+
+2
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+The strict convergence, which requires the total variation to converge also,
+is an important concept that brings one back into a setting similar to tight
+sequences of probability measures.
+The total variation of a vector measure µ is defined in terms of a seminorm
+|·|V on V by
+|µ|V (X) , sup
+
+(
+
+X
+
+)
+
+|µ(E)|V : P is a finite Σ–measurable partition of X .
+
+E∈P
+
+For real-valued signed Radon measures, V = R and the mass depends only,
+up to a constant positive multiple, on the vector structure of the space V .
+This is not any more the case when V is a finite-dimensional vector space
+of dimension greater than 1 (dim V > 1). The norms on the space V are
+all equivalent, but induce total variations whose values are not connected
+mutually beyond the bounds given by equivalence of seminorms.
+This lack of connection between various total variations is the starting
+question of the present work. Reshetnyak [16] and Delladio [7] have proved
+that strict convergence with respect to a strictly convex norm is a sufficient
+assumption to obtain strict convergence with respect to any another norm
+on V (see also [21] for the mass with respect to a Euclidean norm).
+In order to characterize strict convergence through a topological object,
+independent of a choice of norm, we propose to describe strict convergence
+with the range of a vector measure µ, which is defined as 1
+rg µ (X) , conv µ(A) : A ∈ Σ .
+In particular, when V = R, we have
+(1.1)
+
+
+
+rg µ (X) = [µ− (X), µ+ (X)],
+
+where µ = µ+ + µ− , with µ+ ≥ 0, µ− ≤ 0, and µ+ and µ− are mutually
+singular, so that for any widely converging sequence of vector measures,
+the convergence of the range is equivalent with the convergence of the mass
+[5, Appendix C].
+In general, the range of a vector measure characterizes uniquely the total
+variation of a measure [18]. This result is stable under convergence as the
+range convergence implies in general the mass convergence:
+Theorem 1.1. Let X be a locally compact separable metric space endowed
+with its Borel σ-algebra B(X), let V be a finite-dimensional space and let
+|·|V be a seminorm on V . If (µn )n∈N is a sequence of Borel vector measures
+from X to V that converges widely to some vector Borel measure µ, and
+if the sequence of ranges (rg µn (X))n∈N converges to rg µ (X) in Hausdorff
+distance, then
+lim |µn |V (X) = |µ|V (X).
+n→∞
+
+The assumption on the convergence is described in terms of Hausdorff distance; this choice is in practice inconsequential: since the space V is finitedimensional, the Hausdorff convergence of compact convex sets is equivalent
+1Classically, the range of a vector measure is deﬁned [8] as the closure of the set
+
+{µ(A) : A ⊂ X is Σ–measurable}. This deﬁnition coincides with ours as soon as µ has no
+atoms [8, Corollary 9.5; 14]. Our notion has the advantage of being always a convex set
+and is natural in view of the link between range and the total variation [18, Theorem 3].
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+3
+
+to the Kuratowski convergence and to the convergence of the support functions [20, Corollaries 3A and P4.A] (see also [15]).
+The converse statement of Theorem 1.1 does not hold in general. In fact,
+the strict convexity of the norm appears as a necessary condition to have
+range convergence:
+Proposition 1.2. If the locally compact separable metric space X is not
+discrete and if the seminorm |·|V is not strictly convex, then there exists a
+sequence (µn )n∈N of Borel vector measures from X to V converging widely
+to some vector measure µ such that (|µn |V (X))n∈N converges to |µ|V (X) but
+(rg µn (X))n∈N is constant and different from rg µ (X).
+We prove that strict convexity is in fact a necessary and sufficient condition for the equivalence between range convergence and mass convergence:
+Theorem 1.3. Let X be a locally compact separable metric space and (V, |·|V )
+be a finite-dimensional Euclidean space. If the norm |·|V is strictly convex
+and if (µn )n∈N is a sequence of Borel vector measures from X to V that
+converges widely to some vector measure µ, then
+lim rg µn (X) = rg µ (X)
+
+n→∞
+
+if and only if
+lim |µn |V (X) = |µ|V (X).
+
+n→∞
+
+The above result completely characterizes the strict convergence in terms
+of range convergence. In comparison to mass convergence, the definition
+of the rank depends on V only as a topological vector space, and does not
+require any specific choice of norm.
+The proof of Theorem 1.3 follows a more general approach due to Reshetnyak [16], relying on layerwise decomposition technique.
+Theorem 1.3 shows that mass convergence implies range convergence in a
+strictly convex setting. It is also known [18] that equality of the range implies
+equality of the variation. This leads to the question whether the mass of a
+measure depends monotonically on its range, that is, whether the inclusion
+of sets rg ν (X) ⊆ rg µ (X) does imply the inequality |ν|V (X) ≤ |µ|V (X).
+In the case where the norm |·|V is Euclidean, we prove such a relation:
+Theorem 1.4. Assume that V is a finite-dimensional vector space, equipped
+with a semi-norm |·|V . If either dim V ≤ 2 or |·|V is Euclidean, then if Σ is
+a σ–algebra on X and the vector measures ν, µ : Σ → V satisfy
+rg ν (X) ⊆ rg µ (X) ,
+then
+|ν|V (X) ≤ |µ|V (X).
+If moreover the norm |·|V is strictly convex, equality in the above conclusion
+occurs if and only if the ranges are equal.
+In higher dimensions, we do not know if such relation still holds.
+Open problem 1. If dim V ≥ 3 and if V is endowed with an arbitrary (respectively strictly) convex norm, is the mass (respectively strictly) monotone
+with respect to range inclusion?
+
+4
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+Our approach to prove Theorem 1.4 when V is a Euclidean space directly
+derives from the a representation formula
+ˆ
+(1.2)
+|v|V = |hη, vi| dσ(η)
+S
+
+for some suitable multiple of the uniform measure σ on the unit sphere S of
+V ⋆ . We will prove that (1.2) implies the representation formula
+Theorem 1.5. Assume that V is a finite-dimensional vector space, equipped
+with a Euclidean norm |·|V , then for every σ–algebra Σ on X, every vector
+measure µ : Σ → V and every A ∈ Σ,
+ˆ
+|hη, vi|(A) dσ(η).
+|µ|V (A) =
+S
+
+The representation formula (1.2) means that the norm is an L1 -norm in
+the sense of Choquet [4, Paragraph 41], and that the unit ball of the dual
+norm is a zonoid [2, Theorem 2.1; 4]. In the two-dimensional case, any
+centrally symmetric convex set is a zonoid [2, Theorem 5.4; 4] and, in fact,
+any norm has a similar representation for some positive even measure σ this
+implies a counterpart of Theorem 1.5 for any two-dimensional norm. The
+latter characterization of zonoids fails in higher dimensions: for example
+the ℓ∞ norm whose whose dual ℓ1 ball is hyperoctahedron, which is not a
+zonoid.
+In dimension 2, one has similar representation for any choice of norm,
+and strict convexity translates by density of the support for the representing
+measure σ.
+When the vector space V is two-dimensional, we improve the geometric
+interplay between range convergence and mass convergence, by drawing the
+following link:
+Theorem 1.6. Assume that V is a two-dimensional vector space, equipped
+with a seminorm |·|V . If Σ is a σ–algebra on X and if µ : Σ → V is a vector
+measure, then
+
+|µ|V (X) = 21 PerV rg µ (X) .
+
+Here PerV (rg µ (X)) is the perimeter of the closed convex set rg µ (X),
+computed with respect to the seminorm |·|V . When the target space V
+is equipped with a strictly convex norm, the perimeter becomes strictly
+monotone and Theorem 1.3 may be derived from Theorem 1.6. This kind
+of isoperimetric inequalities for convex sets were also investigated in [12].
+Theorem 1.6 is the extension of the one-dimensional formula |µ|(X) =
+diam rg µ (X) that follows from (1.1).
+For the two-dimensional case, Theorem 1.3 may be derived also from the
+integral representation (1.2).
+2. Total variation and range
+2.1. Vector measures. We assume that X is a space endowed with a σ–
+algebra Σ and that the space V is a finite-dimensional vector space on the
+real numbers. The space V ∗ is the algebraic dual of V and hη, vi = η(v)
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+5
+
+denotes the duality product defined by the action of the linear form η ∈ V ∗
+on the vector v ∈ V .
+A vector measure µ : Σ → V is a countably additive function; when
+V = R it is a (finite) signed measure. A vector measure µ induces definitions
+of integrals
+ˆ
+ˆ
+hg, dµi ∈ R.
+f dµ ∈ V
+and
+A
+
+A
+
+for all Σ–measurable and bounded functions f : X → R and g : X → V ∗
+and sets A ∈ Σ. These integrals satisfy for every E ∈ Σ and η ∈ V ∗ ,
+ˆ
+ˆ
+hη χE , dµi = hη, µ(A ∩ E)i,
+χE dµ = µ(A ∩ E)
+and
+A
+
+A
+
+and the usual additivity, linearity and dominated convergence properties.
+2.2. Total variation. The total variation of a vector measure is defined as
+follows (see [1, Definition 1.4 (b)]).
+Definition 2.1. Let Σ be a σ–algebra on X. The total variation of a vector
+measure µ : Σ → X with respect to a seminorm |·|V is the function |µ|V :
+Σ → [0, +∞] defined for each set A ∈ Σ by
+|µ|V (A)(
+, sup
+
+m
+X
+
+|µ(En )|V : E1 , . . . , Em ∈ Σ, E1 , . . . , Em ⊆ A
+
+n=1
+
+and the sets E1 , . . . , Em are pairwise disjoint
+
+)
+
+.
+
+The total variation enjoys properties that make of it a finite measure
+[1, Theorem 1.6].
+Proposition 2.2 (Finiteness). Let Σ be a σ–algebra on X and let µ : Σ → V
+be a vector measure. For every A ∈ Σ, |µ|V (A) < +∞.
+Proposition 2.3 (Monotonicity). Let Σ be a σ–algebra on X, let µ : Σ → V
+be a vector measure and let A, B ∈ Σ. If A ⊆ B, then
+|µ|V (A) ⊆ |µ|V (B).
+Proposition 2.4 (Countable additivity). Let Σ be a σ–algebra on X and
+let µ : Σ → V be a vector measure. For every sequence (An )n∈N of disjoint
+sets in Σ,
+X
+
+S
+|µ|V n∈N An =
+|µ|V (An ).
+n∈N
+
+We also have some algebraic properties:
+
+Proposition 2.5 (Triangle inequality). Let Σ be a σ–algebra on X and let
+µ, ν : Σ → V be vector measures. For every A ∈ Σ,
+|µ + ν|V (A) ≤ |µ|V (A) + |µ|V (A).
+Proposition 2.6 (Homogeneity). Let Σ be a σ–algebra on X and let µ :
+Σ → V be a vector measure. For every λ ∈ R and every A ∈ Σ,
+|λµ|V (A) = |λ| |µ|V (A).
+
+6
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+It follows from the previous properties that if the function f : X → R is
+bounded and Σ–measurable, then
+ˆ
+ˆ
+f dµ ≤ |f | d|µ|V .
+A
+
+A
+
+V
+
+If X is a locally compact separable metric space, we endow it with its Borel
+σ-algebra B(X). This topological setting on X is common when thinking
+of C0 (X)⋆ as the space of finite measures on X, every finite measure being
+Radon measures because X is second-countable and metric. In particular,
+whatever the choice of the norm |·|V on V , the variation measure |µ|V is a
+Radon measure.
+Proposition 2.7. Let X be a locally compact separable metric space. If
+µ : B(A) → V is a vector measure and if A ⊂ X is open, then
+
+ˆ
+hψ, dµi : ψ ∈ Cc (A, V ′ ) and |ψ|V ′ ≤ 1 .
+|µ|V (A) = sup
+A
+
+Here
+V ′ , η ∈ V ∗ : |η|V ′ < +∞ ,
+where V ∗ is the algebraic dual space of the vector space V and
+
+
+|η|V ′ , sup hη, vi : v ∈ V and |v|V ≤ 1 .
+
+
+(2.1)
+
+Equivalently, η ∈ V ′ if and only if for every v ∈ V , |v|V = 0 implies
+hη, vi = 0. By the Hahn–Banach theorem for seminorms (see for example [3, Theorem 1.1]), one has
+|v|V = sup hη, vi : η ∈ V ′ and |v| ≤ 1 .
+
+
+(2.2)
+
+Since V and V ′ are finite-dimensional, the suprema in (2.1) and (2.2) are
+achieved in view of the Weierstrass extreme value theorem.
+The proof of Proposition 2.7 is a transposition of the proof when V is
+Euclidean and X is separable [1, Proposition 1.47].
+Proof of Proposition 2.7. Let E1 , . . . , Em ∈ B(X) be disjoint subsets of A
+and, in view of (2.2), let η1 , . . . , ηm ∈ V ′ be linear forms such that for
+every i ∈ {1, . . . , m} |ηi |V ′ = 1 and hηi , µ(Ei )i = |µ(Ei )|V . Since µ is
+a vector measure, |µ|V is a finite measure (Propositions 2.2 and 2.4) and
+thus by Lusin’s theoremPthere exists a function ψ ∈ C(A, V ′ ) such that
+|µ|V ({x ∈ A : ψ(x) 6= m
+n=1 ηn χEn (x)}) < ε. Without loss of generality
+we can assume that |ψ|V ′ ≤ 1. Since the set A is σ–compact and in view
+Urysohn’s lemma for locally compact spaces [19, lemma 2.12], there exists
+a sequence of functions (θj )j∈N in Cc (A, [0, 1]) that converges everywhere to
+1 in the set A. Therefore, by multiplying ψ by θj for j ∈ N large enough,
+we can assume that ψ ∈ Cc (A, V ′ ) and |ψ|V ′ ≤ 1 everywhere in A. We then
+have
+ˆ
+m
+X
+|µ(En )|V − hψ, dµi ≤ ε|µ|V (A).
+A
+
+n=1
+
+This implies thus that
+m
+X
+
+|µ(En )|V ∈
+
+n=1
+
+ˆ
+
+A
+
+
+
+hψ, dµi : ψ ∈ Cc (A, V ′ ) and |ψ|V ′ ≤ 1
+
+.
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+7
+
+Conversely, if ψ ∈ Cc (A, V ′ ) and |ψ|V ′ ≤ 1 on A, then there exist an
+integer m ∈ N, forms η1 , . . . , ηm ∈ V ′ and pairwise disjoint sets E1 , . . . , Em ∈
+B(A) such P
+that for each n ∈ {1, . . . , m}, |ηn |V ′ ≤ 1 and En ⊆ A and such
+that if g = m
+n=1 ηn χEn , one has |g − ψ|V ′ ≤ ε everywhere on A. We then
+have
+ˆ
+ˆ
+hg, dµi − hψ, dµi ≤ ε|µ|V (A)
+A
+
+A
+
+and by Definition 2.1
+ˆ
+m
+m
+X
+X
+|g| dµ =
+hηn , µ(En )i ≤
+|µ(En )|V ≤ |µ|V (A).
+A
+
+n=1
+
+
+
+n=1
+
+From now on, even if not stated explicitly, X will be assumed to be a
+locally compact separable metric space endowed with its Borel σ-algebra
+Σ = B(X).
+2.3. Range. The range of a measure has a definition that has some analogies with the total variation.
+Definition 2.8. The range of the vector measure µ : Σ → V on a set A ∈ Σ
+is the set
+rg µ (A) , conv µ(E) : E ∈ Σ and E ⊂ A ⊆ V.
+
+
+Here, conv H denotes the closed convex hull of a set H ⊂ V . The range
+defined by Definition 2.8 only depends on the structure of V as a topological
+vector space.
+P
+If µ = ki=1 vi δxi , with x1 , . . . , xk ∈ X distinct points, then Definition 2.8
+gives for every A ∈ Σ
+rg µ (A) =
+
+( d
+X
+i=1
+
+)
+
+ti vi : 0 ≤ ti ≤ χA (xi ) .
+
+If X ⊂ RN is a Borel-measurable set and if µ , wLN , where w : X → V is
+a Borel-measurable function, then
+(ˆ
+f w dLN : f : X → R is Borel measurable
+rg µ (A) =
+)
+X
+
+and 0 ≤ f ≤ χA in X .
+
+It follows immediately from the Definition 2.8 that the set rg µ (A) is
+a closed convex subset of the space V and that 0 ∈ rg µ (A). Moreover,
+rg µ (A) = {0} if and only if µ = 0.
+Since for every E ∈ Σ such that E ⊂ A, µ(A \ E) = µ(A) − µ(E), we
+have rg µ (A) = µ(A) − rg µ (A), that is, the set rg µ (A) is symmetric with
+respect to the vector µ(A)/2 ∈ V .
+In a finite-dimensional space V , the range is always bounded (see Proposition 2.2).
+Proposition 2.9. Let Σ be a σ–algebra on X. If µ : Σ → V is a vector
+measure, then for every A ∈ Σ, the set rg µ (A) is bounded.
+This property fails in general if the domain is not a σ-algebra [8, Example 8, Proposition 11].
+
+8
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+Proof of Proposition 2.9. Since V is finite-dimensional, there exist vectors
+v1 , . . . , vd ∈ V and linear forms η1 , . . . , ηd ∈ V ′ such that d = dim V and for
+every i, j ∈ {1, . . . , d}, hηi , vj i = δij , where δij denotes Kronecker’s delta.
+P
+In particular, we have for every v ∈ V , v = di=1 vi hηi , vi, and thus, for
+P
+every set E ∈ Σ, µ(E) = di=1 vi µi (E), where µi (E) = hηi , µ(E)i. For every
+i ∈ {1, . . . , d}, the set function µi is a finite signed measure and thus by the
+−
+Hahn–Jordan decomposition theorem it can be decomposed as µi = µ+
+i +µi ,
+−
+where µ+
+i ≥ 0, µi ≤ 0 are finite Borel measures [5, Appendix C]. Hence
+rg µ (A) ⊆
+
+X
+n
+
+
+
++
+τi vi : for every i ∈ {1, . . . , d}, µ−
+i (A) ≤ τi ≤ µi (A)
+
+i=1
+
+,
+
+
+and thus the set rg µ (A) is bounded.
+
+The range is monotone with respect to the set, as was the total variation
+(Proposition 2.3).
+Proposition 2.10 (Monotonicity). Let Σ be a σ–algebra on X, let µ : Σ →
+V be a vector measure and let A, B ∈ Σ. If A ⊆ B, then
+rg µ (A) ⊆ rg µ (B) .
+
+
+Proof. This follows directly from Definition 2.8.
+
+Finally the range has a countable additivity property as the total variation
+(Proposition 2.4).
+Proposition 2.11 (Countable additivity). Let Σ be a σ–algebra on X, let
+µ : Σ → V be a vector measure and let (An )n∈N be a sequence of disjoint
+sets in Σ. Then
+P
+S
+rg µ ( n∈N An ) = n∈N rg µ (An ).
+Here n∈N rg µ (An ) denotes the set of finite sums of elements in the sets
+rg µ (An ).
+Since the range is compact (Proposition 2.9), Proposition 2.11 implies
+that if A1 , . . . , Ak ∈ Σ are disjoint, we have
+P
+
+rg µ
+
+S
+k
+
+n=1 An
+
+
+
+=
+
+Pk
+
+n=1 rg µ (An ) .
+
+If we drop in Proposition 2.11 the assumption that the sets (An )n∈N are
+disjoint we obtain
+rg µ (
+
+n∈N An ) ⊆
+
+S
+
+P
+
+n∈N rg µ (An ).
+
+P
+
+Proof of Proposition 2.11. We first assume that v ∈ n∈N rg µ (An ). Then
+there exists k ∈ N and v0 , . . . , vk such that for each n ∈ {0, . . . , k}, vn ∈
+Pk
+rg µ (An ) and v =
+i=0 vn . By definition of the range, for every n ∈
+{0, . . . , k}, vn = limℓ→∞ vnℓ , where
+vnℓ ∈ conv µ(E) : E ∈ Σ and E ⊂ An ⊆ V.
+
+
+Hence we have by additivity of the measure,
+ℓ
+
+v ,
+
+k
+X
+
+n=0
+
+vnℓ ∈ conv
+
+
+
+µ(E) : E ∈ Σ and E ⊂
+
+n
+[
+
+i=0
+
+An
+
+
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+9
+
+S
+
+and, P
+by closedness of the range,
+v ∈ rg µ ( n∈N An ). We have thus proved
+S
+that n∈N rg µ (An ) ⊆ rg µ ( n∈N An ). Since the range is a closed set by
+S
+P
+) ⊆ rg µ ( n∈N An )
+definition, we deduce that n∈N rg µ (A
+Sn
+additivity
+Conversely, we observe that if E ⊂P n∈N An , then by countable
+P
+of the measure µ, we have µ(E) = n∈N µ(E ∩ An ) ∈ n∈N rg µ (An ). It
+S
+P
+then follows that rg µ ( n∈N An ) ⊆ n∈N rg µ (An ).
+
+
+The range operation is also compatible with the linear structure of vector
+measures. First it is sublinear with respect to the sum of measures, as was
+the total variation Proposition 2.5.
+
+Proposition 2.12 (Triangle inequality). Let Σ be a σ–algebra on X and
+let µ : Σ → V be a vector measure. For every A ∈ Σ,
+rg(µ + ν) (A) ⊆ rg µ (A) + rg ν (A) .
+The range is not linear. Indeed, in general one has rg(µ − µ) (A) = {0} 6=
+rg µ (A) + rg(−µ) (A).
+Proof of Proposition 2.12. One has for every E ∈ Σ such that E ⊂ A,
+µ(E) ∈ rg µ (A) + rg ν (A). Since the range is convex and bounded (Proposition 2.9), the set rg µ (A) + rg ν (A) is closed and convex and the conclusion
+follows.
+
+The range operation is also stable under linear mappings in the target.
+Proposition 2.13 (Linearity of the range). Let Σ be a σ–algebra on X, let
+V, W be finite-dimensional spaces and let µ : Σ → V be a vector measure.
+For every T ∈ Lin(V, W ),
+
+
+rg(T ◦ µ) (X) = T rg µ (X) .
+In particular, if λ ∈ R and A ∈ Σ, we have
+(2.3)
+
+rg(λ µ) (A) = λ rg µ (A) ,
+
+which is the counterpart of Proposition 2.6.
+Proof of Proposition 2.13. If E ∈ Σ and if E ⊆ A, then we have (T ◦µ)(E) =
+T (µ(E)). It follows then that
+conv ({T ◦ µ(E) : E ∈ Σ and E ⊆ A})
+= T (conv ({µ(E) : E ∈ Σ and E ⊆ A})
+We observe now that if the set H ⊂ V is convex and bounded, then by continuity and compactness in the finite-dimensional space V , T (H) = T (H). 
+The topological structure on the space X can be used to characterize the
+range by duality on test functions.
+Proposition 2.14. If X is a locally compact separable metric space and if
+µ : B(X) → V is a vector Borel measure and if the set A ⊂ X is open, then
+
+ˆ
+ϕ dµ : ϕ ∈ Cc (A, [0, 1]) .
+rg µ (A) =
+A
+
+Proposition 2.14 is the counterpart of Proposition 2.7 for the range.
+
+10
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+Proof of Proposition 2.14. Let E ∈ B(X). Since µ is a vector measure,
+|µ|V (X) is a finite measure (Propositions 2.2 and 2.4) and thus by Lusin’s
+theorem there exists a function ϕ ∈ C(X) such that |µ|V ({x ∈ X : ϕ(x) 6=
+χE (x)}) ≤ ε). Since the set A is open and σ–compact, we can assume
+without loss of generality that ϕ ∈ Cc (A, [0, 1]). We then have
+ˆ
+ϕ dµ ≤ ε|µ|V (A).
+µ(E) −
+X
+
+This implies thus that
+
+
+µ(E) ∈ hµ, ϕi : ϕ ∈ Cc (X, [0, 1]) .
+Conversely, if ϕ ∈ Cc (A), there exists a Borel-measurable function f :
+A → [0, 1] that takes only finitely may values and such that |f − ϕ| ≤ ε on
+A. We then have
+ˆ
+ˆ
+ϕ dµ ≤ ε|µ|V
+f dµ −
+A
+
+A
+
+and
+
+ˆ
+
+f dµ ∈ conv {µ(E) : E ∈ B(X) and E ⊂ X},
+A
+
+so that by Definition 2.8
+ˆ
+
+ϕ dµ ∈ rg µ (A) .
+
+
+
+A
+
+2.4. Links between the range and the total variation. In the onedimensional case, there is a straightforward relationship between the range
+and the mass.
+Proposition 2.15. Assume that dim(V ) = 1. If µ : Σ → V is a vector
+measure and A ∈ Σ, then
+|µ|V (A) = diam(rg µ (A)).
+Proof. Without loss of generality, we can assume that V = R. Let µ =
+µ+ + µ− be the Hahn–Jordan decomposition (see e.g. [5, Appendix C]) into
+measures µ+ ≥ 0 and µ− ≤ 0. One has then
+|µ|(A) = µ+ (A) − µ− (A)
+and
+rg µ (A) = [µ− (A), µ+ (A)],
+and the conclusion follows.
+
+
+
+In higher dimensions, the mass and the range are still related by a quantitative bound.
+Proposition 2.16 (Comparison between total variation and range). Let
+(V, |·|V ) be a seminormed space. There exists a constant C > 0 such that for
+every Σ–algebra on the space X and every vector measure µ : Σ → V and
+every A ∈ Σ, we have
+rg µ (A) ⊂ BV (0, |µ|V (A))
+and
+
+
+|µ|V (A) ≤ C sup |v|V : v ∈ rg µ (A) .
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+11
+
+Diestel and Uhl have a similar statement for the semivariation of a vector
+measure in a Banach space [8, Proposition I.1.11].
+Proof of Proposition 2.16. For the first part of the proposition, by Definition 2.1, for every set E ∈ Σ such that E ⊆ A we have
+|µ(E)|V ≤ |µ(E)|V + |µ(A \ E)|V ≤ |µ|V (A),
+and the assertion follows from Definition 2.8.
+For the second part, let η1 , . . . , ηd be a basis of V ′ . By (2.2), there exists
+a constant C1 > 0 such that for every v ∈ V ,
+|v|V ≤ C1
+
+d
+X
+
+|hηi , vi|.
+
+i=1
+
+It follows then that if the sets E1 , . . . , Eℓ ∈ Σ are pairwise disjoint and if
+E1 , . . . , Eℓ ⊂ A, we have
+ℓ
+X
+
+|µ(Ei )|V ≤ C1
+
+d X
+ℓ
+X
+
+|hηi , µ(Ei )i| ≤ C1
+
+i=1 n=1
+
+n=1
+
+|hηi , µ(Ei )i|V (A),
+
+i=1
+
+and using Proposition 2.15 we infer
+ℓ
+X
+
+d
+X
+
+
+
+|µ(Ei )|V ≤ C2 sup |v|V : v ∈ rg µ (A) .
+
+n=1
+
+
+
+Proposition 2.16 implies the continuity of the range with respect to the
+seminorm induced by the total variation.
+Proposition 2.17. If µ, ν : Σ → V and A ∈ Σ, then
+dH (rg ν (A) , rg µ (A)) ≤ |ν − µ|V (A).
+Here dH (rg ν (A) , rg µ (A)) denotes the Hausdorff distance between nonempty compact subsets of V : if K1 , K2 ⊂ V are non-empty compact sets,
+dH (K1 , K2 ) , inf ε > 0 : K1 ⊆ K2 + B(0, ε) and K2 ⊆ K1 + B(0, ε) .
+
+
+Proposition 2.17 implies in particular that if the sequence (µn )n∈N converges in total variation to µ on A, then the sequence of sets (rg µn (A))n∈N
+converges to rg µ (X) in Hausdorff distance.
+Proof of Proposition 2.17. By the triangle inequality for the range (Proposition 2.12), we have
+rg ν (X) ⊆ rg(ν − µ) (X) + rg µ (X) .
+By Proposition 2.16, we have
+rg(ν − µ) (X) ⊆ BV (0, |ν − µ|V ).
+We conclude then that
+rg ν (X) ⊆ BV (0, |ν − µ|V ) + rg µ (X) .
+By symmetry, we also have
+rg µ (X) ⊆ BV (0, |ν − µ|V ) + rg ν (X) ,
+and the conclusion follows from the definition of Hausdorff distance.
+
+
+
+12
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+A second property is the fact that the range determines univocally the
+image: if two measures share the same range on a set A, then their total
+variation on that set coincides [18].
+Proposition 2.18 (Rodríguez-Piazza). Let µ, ν : Σ → V be vector measures. If rg µ (X) = rg ν (X), then |µ|V (X) = |ν|V (X).
+The next lemma highlights the key property used by Rodríguez-Piazza
+to prove Proposition 2.18. It is an adaptation, in terms of total masses,
+of a representation principle for the norm by finite combination of positive
+values of linear functionals [18, Lemma 2].
+Lemma 2.19. Let |·|V be a seminorm on V . For each ε > 0, there exists
+η1 , . . . , ηm ∈ V ′ and α1 , . . . , αm ∈ {−1, 1} such that, for every Σ–algebra on
+the space X and every vector measure µ : Σ → V , we have
+|µ|V (A) −
+
+m
+X
+
+αi |hηi , µi|(A) ≤ ε|µ|V (A).
+
+i=1
+
+The proof follows the strategy of [18, Theorem 3].
+Proof of Lemma 2.19. Fix ε > 0. There exist forms η1 , . . . , ηm ∈ V ′ and
+α1 , . . . , αm ∈ {−1, 1} such that for each v ∈ V , we have
+|v|V −
+
+m
+X
+
+αi |hηi , vi| ≤ ε|v|V
+
+i=1
+
+(see [2, Theorem 2.8; 4, p. 53; 17, Lemma 1].) Let δ > 0. By definition of
+total mass there exists a finite partition P∗ ⊂ Σ of A such that
+X
+
+|µ(E)|V ≥ |µ|V (A) − δ.
+
+E∈P∗
+
+and for every i ∈ {1, . . . , m}, there exists a finite partition Pi ⊂ Σ of A such
+that
+X
+|hηi , µ(E)i| ≥ |hηi , µi|(A) − δ.
+E∈Pi
+
+If we now take P to be a common refinement the partitions of P∗ , P1 , . . . , Pm ,
+we have
+X
+|µ(E)|V ≥ |µ|V (A) − δ
+E∈P
+
+and
+
+X
+
+|hηi , µ(E)i| ≥ |hηi , µi|(A) − δ.
+
+E∈P
+
+It follows then that
+|µ|V (A) −
+
+m
+X
+i=1
+
+αi |hηi , µi|(A) ≤ ε
+
+X
+
+|µ(E)|V +
+
++
+
+|αi |
+
+X
+
+|µ(E)|V − |µ|V (A)
+
+E∈P
+
+E∈P
+m
+X
+i=1
+
+X
+
+|hηi , µ(E)i| − |hηi , µi|(A)
+
+E∈P
+
+
+
+≤ ε|µ|V (A) + 1 +
+Since δ > 0 is arbitrary, the conclusion follows.
+
+m
+X
+i=1
+
+
+
+|αi | δ.
+
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+13
+
+Rodríguez-Piazza’s Proposition 2.18 can be deduced immediately from
+Lemma 2.19.
+Proof of Proposition 2.18. Let ε > 0 and let then η1 , . . . , ηm ∈ V ′ and
+α1 , . . . , αm ∈ {−1, 1} be given by Lemma 2.19. Since rg µ (A) = rg ν (A),
+we have for every i ∈ {1, . . . , m}, in view of Proposition 2.15,
+|hηi , µi|(A) = diam(rghηi , µi (A)) = diam(rghηi , νi (A)) = |hηi , νi|(A),
+and therefore by Lemma 2.19,
+
+
+|ν|V (A) − |µ|V (A) ≤ ε |ν|V (A) + |µ|V (A) ;
+since ε > 0 is arbitrary, the conclusion follows.
+
+
+
+2.5. Wide convergence. The notion of wide convergence of measures is
+classically defined by testing the measure against compactly supported functions.
+Definition 2.20. Let X be a locally compact separable metric space. A
+sequence of vector measures (µn )n∈N from X to V converges widely to some
+vector measure µ whenever for every ϕ ∈ Cc (X),
+ˆ
+ˆ
+ϕ dµ.
+ϕ dµn =
+lim
+n→∞ X
+
+X
+
+The wide convergence is compatible with the linear structure of V . If
+T ∈ Lin(V, W ) and if the sequence (µn )n∈N converges widely to µ, then
+(T ◦ µn )n∈N converges widely to T ◦ µ.
+A classical result is the lower semicontinuity of the mass under weak
+convergence.
+Proposition 2.21. Let X be a locally compact separable metric space and let
+(V, |·|V ) be a seminormed finite-dimensional space. If (µn )n∈N is a sequence
+of vector measures from X to V widely converging to some vector measure
+µ : B(X) → V , then
+|µ|V (X) ≤ lim inf |µn |V (X).
+
+n→∞
+′
+Proof. Let ψ ∈ Cc (X, V ) and assume that |ψ|V ′ ≤ 1 everywhere in X.
+
+By
+
+Proposition 2.7 for every n ∈ N,
+ˆ
+hψ, dµn i ≤ |µn |V ,
+X
+
+and thus, in view of Definition 2.20
+ˆ
+ˆ
+hψ, dµn i ≤ lim inf |µn |V .
+hψ, dµn i = lim
+n→∞ X
+
+X
+
+n→∞
+
+We conclude by Proposition 2.7.
+
+
+
+In order to have an analogue for the range, we define the Kuratoswki
+lower limit of a sequence of set.
+Definition 2.22. The Kuratowski lower limit of a sequence (Cn )n∈N of subsets of V is defined as
+lim inf Cn ,
+n→∞
+
+n
+
+lim xn : the sequence (xn )n∈N converges in V
+o
+and for every n ∈ N, xn ∈ Cn .
+
+n→∞
+
+14
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+By a diagonal argument, the Kuratowski lower limit lim inf n→∞ Cn is
+always a closed set. Moreover, if Cn is convex for every n ∈ N, then the
+Kuratowski lower limit lim inf n→∞ Cn is convex. Similarly, if for every n ∈
+N, 0 ∈ Cn , then 0 ∈ lim inf n→∞ Cn .
+Proposition 2.23 (Weak lower-semi continuity of the range). If (µn )n∈N
+is a sequence of vector measures from X to V that converges widely to some
+vector measure µ : B(X) → V , then
+rg µ (X) ⊆ lim inf rg µn (X) .
+n→∞
+
+Moreover, for every ε > 0, if n ∈ N is large enough
+rg µ (X) ⊆ rg µn (X) + B(0, ε).
+In general, the inclusion is strict. Indeed if the space X is not discrete
+and V 6= {0}, there exists a point x ∈ X and a sequence (xn )n∈N in X \ {x}
+converging to x. If v ∈ V \ {0}, the sequence (vδx − vδxn )n∈N converges
+widely to 0, but the range of any of its terms is [−v, v] while the range of
+the limit is 0, so that the inclusion is strict.
+Proof of Proposition 2.23. For every ϕ ∈ Cc (X, [0, 1]), we observe that for
+every n ∈ N, in view of Proposition 2.14
+ˆ
+ϕ dµn ∈ rg µn (X)
+lim
+n→∞ X
+
+Hence in view of Definitions 2.20 and 2.22, we have
+ˆ
+ˆ
+ϕ dµn ∈ lim inf rg µn (X) .
+ϕ dµ = lim
+X
+
+n→∞ X
+
+n→∞
+
+Since the Kuratowski lower limit lim inf n→∞ rg µn (X) is closed and convex,
+the conclusion follows from Proposition 2.14.
+For the additional assertion, let ε > 0. Since the set rg µ (X) is compact,
+there exists a finite set F ⊆ rg µ (X) such that
+(2.4)
+
+rg µ (X) ⊆ F + B(0, ε/2).
+
+Since the set F is finite, by the first part of the proof, when n ∈ N is large
+enough
+(2.5)
+
+F ⊂ rg µn (X) + B(0, ε/2)
+
+and thus by (2.4) and (2.5) we have
+(2.6)
+
+rg µ (X) ⊆ rg µn (X) + B(0, ε).
+
+
+
+3. Convergence of the total variation and of the range
+We consider in this section the relationship, for widely converging sequences between convergence of the range and convergence of the total variation.
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+15
+
+3.1. Range convergence implies mass convergence. If a sequence of
+vector measures converges widely and if its ranges converge, then its total
+variations converge.
+Proof of Theorem 1.1. We fix ε ∈ (0, 1) and we let η1 , . . . , ηm ∈ V ′ and
+α1 , . . . , αm ∈ R be given by Lemma 2.19, so that
+(1−ε)|µn |V (X) ≤ (1+ε)|µ|V (X)+
+
+m
+X
+
+αi |hηi , µi|V (X) − αi |hηi , µn i|V (X) .
+
+i=1
+
+We observe that for every n ∈ N and every i ∈ {1, . . . , m},
+diam(hηi , rg µn (X)i) − diam(hηi , rg µn (X)i)
+≤ 2 |ηi |V ′ dH (rg µn (X) , rg µ (X)).
+By Proposition 2.21 and by Proposition 2.15, we have, as n → ∞,
+|hηi , µn i|V (X) = diam(hηi , rg µn (X)i)
+→ diam(hηi , rg µ (X)i) = |hηi , µi|V (X).
+If ε < 1, it follows that
+lim sup |µn |V (X) ≤
+n→∞
+
+1+ε
+|µ|V (X).
+1−ε
+
+
+The conclusion follows by letting ε → 0.
+
+3.2. One-dimensional case. When dim V = 1, the convergence of the
+range is equivalent to the convergence of the total variation.
+Proposition 3.1. Let X be a locally compact separable metric space and
+let V be a one-dimensional space. Let (µn )n∈N be sequence from X to V
+converging widely to some vector measure µ. If
+lim sup |µn |(X) ≤ |µ|(X),
+n→∞
+
+
+
+then the sequence rg µn (X) n∈N converges to rg µ (X) in Hausdorff distance.
+Proof. Let ε > 0. By Proposition 2.23, if n ∈ N is large enough, we have
+rg µ (X) ⊆ rg µn (X) + B(0, ε).
+
+(3.1)
+It follows then that
+(3.2)
+
+rg µn (X) ⊆ rg µ (X)
+ 
+
++ B 0, ε + diam(rg µn (X)) − diam(rg µ (X)) + .
+The conclusion follows from (3.1) and (3.2) since ε > 0 is arbitrary.
+
+
+
+A corollary of the one dimensional case described above in Proposition 3.1
+is the following equivalence criterion for range convergence, in terms of
+masses of projection measures:
+
+16
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+Corollary 3.2. Let (µn )n∈N be a sequence of vector measures. The sequence
+(rg µn (X))n∈N converges to rg µ (X) in Hausdorff distance if, and only if,
+for every η ∈ V ′ ,
+lim sup |hη, µn i|(X) ≤ |hη, µi|(X).
+n→∞
+
+Proof. Let ε > 0. For every η ∈ V ′ , the sequence (hη, µn i)n∈N of signed
+measures converges widely to the signed measure hη, µi. By Proposition 3.1,
+we have then
+
+
+lim dH rghηi , µn i (X) , rghηi , µi (X) = 0.
+
+(3.3)
+
+n→∞
+
+Since the set rg µ (X) ⊂ V is compact and convex, there exist η1 , . . . , ηm ∈
+V ′ and δ > 0 such that
+
+
+(3.4)
+
+rg µ (X) ⊆ v ∈ V : for each i ∈ {1, . . . , m}, hηi , vi ≤ 1
+
+and
+(3.5)
+
+
+
+v ∈ V : for each i ∈ {1, . . . , m} hηi , vi ≤ 1 + δ
+⊆ rg µ (X) + B(0, δ).
+
+In particular, if n ∈ N is large enough, we have by Proposition 2.13 and by
+(3.3) and (3.4),
+sup hηi , rg µn (X)i = sup rg hηi , µn i (X) ≤ 1 + δ,
+and thus by (3.5)
+(3.6)
+
+rg µn (X) ⊆ rg µ (X) + B(0, ε).
+
+We conclude the first implication by combining the inclusion (3.6) with
+Proposition 2.23. The converse claim of the proposition follows from the
+fact that range convergence always implies mass convergence, and
+|hη, rg µ (X)i| = |µ|Ṽ ,
+where Ṽ is the vector space V endowed with the degenerate norm
+|x|Ṽ = | (x, η) |.
+
+
+
+3.3. Higher-dimensional case. In this section, we prove an equivalence
+result between convergence of the range and convergence of the total mass,
+when the mass is taken with respect to any strictly convex norm.
+A seminorm |·|V is strictly convex whenever if the vectors v, w ∈ V are
+linearly independent, then
+|v + w|V < |v|V + |w|V .
+As claimed in Proposition 1.2 stated in the introduction, strict convexity of the norm is necessary to enforce the convergence of ranges. The
+proof of Proposition 1.2 we propose is based on an straightforward counterexample involving Dirac masses:
+Proof of Proposition 1.2. Since by our assumption the seminorm |·|V is not
+strictly convex, there exist two linearly independent vectors v, w ∈ V \ {0}
+such that |v + w|V = |v|V + |w|V . Since the space X is not discrete, there
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+17
+
+exists a point x ∈ X and a sequence of points (xn )n∈N in X \ {x} that
+converges to x. We define for each n ∈ N, the vector measure
+µn , v δx + w δxn .
+The sequence (µn )n∈N then widely converges to the measure µ = (v + w) δx
+and we have for each n ∈ N
+|µ|V (X) = |v + w|V = |v|V + |w|V = |µn |V (X).
+On the other hand the range of rg µn (X) = conv {0, v, w, v + w} while
+rg µ (X) = conv {0, v + w} corresponds to the diagonal of the parallelogram
+rg((X) µn ). Since the vectors v and w are linearly independent, the sequence
+of ranges does not converge.
+
+In particular, by Proposition 1.2 and Proposition 3.1 there exists a linear
+map T : V → R such that the sequence (|T ◦ µn |(Ω))n∈N does not converge
+to |T ◦ µ|(Ω). That is, in contrast with wide convergence and with convergence of ranges, the convergence of total variations is not invariant under
+linear changes of variables.
+Theorem 3.3. Assume that X is a locally compact separable metric space,
+and let (µn )n∈N be a sequence of vector measures weakly converging to some
+vector measure µ. If |·|V is a strictly convex norm on V such that
+lim |µn |V (X) = |µ|V (X),
+
+n→∞
+
+then the sequence of ranges (rg µn (X))n∈N converges to rg µ (X) in Hausdorff distance.
+The proof follows lines of thought from the work of Reshetnyak [16, Theorem 3], Since the approach requires some tools from measure theory, we
+repeat the proof with explanations on how the tools are used, and we chain
+the argument with Corollary 3.2 to obtain Hausdorff convergence of the
+ranges.
+Proof of Theorem 3.3. For all n ∈ N, let χµn be the indicator measure [16]
+of |µ|V , defined as the unique measure
+χµ : B(X × S) → [0, +∞)
+acting on any continuous function ϕ ∈ C(X × S, R) as
+ˆ
+ˆ
+
+
+dµn
+(x) d|µ|V (x).
+ϕ x,
+ϕ(x, e) dχµ (x, e) =
+d|µ|V
+X
+X×S
+Since we are working with vector measures, and because the ranges and
+the masses remain uniformly bounded for n ∈ N, we may pass to subsequences and assume without loss of generality that the sequence (χµn )n∈N
+weakly converges to some measure ρ. As in [16, Theorem 3], we are going to
+prove that the limit ρ actually equals χµ , the indicator function of |µ|V . To
+that purpose, we use [16, Theorem 1] to obtain a layerwise decomposition
+(ω, λ) of the indicator measure ρ [16], in the
+ sense that ω : X → [0, +∞) is
+a positive measure and λ : X → M B(S) is a function such that for every
+ϕ ∈ C(X × S),
+ˆ ˆ
+ˆ
+ϕ(x, e) dλ(x, e) dω(x).
+ϕ(x, e) dρ(v, e) =
+X×S
+
+X
+
+S
+
+18
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+Moreover, for this layerwise decomposition, the function
+ˆ
+e dλ(x, e)
+x ∈ X 7→ u(x) =
+S
+
+is B(X)-measurable and for every A ∈ B(X),
+ˆ ˆ
+ˆ
+e dλ(x, e) dω(x) = µ(A).
+u(x) dω(x) =
+(3.7)
+A
+
+A
+
+S
+
+The existence of such decomposition with relation (3.7) only uses the weak
+convergence assumption µn ⇀ µ. By convexity of the norm, we have
+ˆ
+dλ(x, e) ≤ 1.
+(3.8)
+|u(x)|V ≤
+S
+
+Those inequality follow from [16, Theorem 1], where it is proved that λ(x, S) =
+1 for ω-almost-all x ∈ X. Integrating left sides of the above inequality (3.8)
+with respect to the measure ω also yields
+ˆ
+ˆ ˆ
+ˆ
+dρ(x, e),
+dλ(x, e) dω(e) =
+|u(x)|V dω(x) ≤
+X
+
+X
+
+and by construction of ρ:
+ˆ
+ˆ
+dρ(x, e) = lim
+
+n→∞ X×S
+
+X×S
+
+S
+
+X×S
+
+dχµn (x, e) = lim |µn |V (X) = |µ|V (X).
+n→∞
+
+Thus
+ˆ
+
+|u(x)|V dω(x) ≤ |µ|V .
+
+X
+
+For A ∈ B(X) an arbitrary Borel set, we observe that
+ˆ
+ˆ
+dµ
+u dω.
+d|µ|V = µ(A) =
+A d|µ|V
+A
+Considering the Radon-Nikodym derivatives of |µ|V and ω with respect to
+the measure σ , (|µ|V + ω), we obtain
+ˆ
+ˆ
+dµ
+d|µ|V
+dω
+u
+dσ =
+dσ,
+d(ω + |µ|V )
+A d|µ|V d(ω + |µ|V )
+A
+and since the set A ∈ B(X) is arbitrary, we obtain
+(3.9)
+
+u
+
+d|µ|V
+dµ
+dω
+=
+d(ω + |µ|V )
+d|µ|V d(ω + |µ|V )
+
+(|µ|V + ω)-almost-everywhere on X. Using the fact that ω and |µ|V are
+positive measures, we take norms on both sides of (3.9) and we integrate
+both sides with respect to σ to obtain
+ˆ
+ˆ
+dµ
+|u(x)|V dω(x)
+(x) d|µ|V (x) = |µ|V (X)
+X d|µ|V
+X
+V
+and equality holds in the inequality (3.8): we have |u(x)|V = 1 for ω-almostdµ
+all x ∈ X. In particular, ω = |µ|V and u = d|µ|
+on X.
+V
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+19
+
+The strict convexity of the norm |·|V may be used to observe that in fact,
+λ(x, ·) is a Dirac mass at u(x), for |µ|V -almost-all x ∈ X. Indeed, this
+follows from the fact that
+ˆ
+ˆ
+e dλ(x, e) = |e|V dλ(x, e),
+S
+
+S
+
+V
+
+which is possible if and only if λ(x, ·) is a multiple of a Dirac mass. The
+concentration point should thus be u(x), and the multiple is 1.
+Now we fix an arbitrary direction η ∈ S. Considering again RadonNikodym derivatives, it is straightforward to check the identity
+ˆ D
+E
+dµ
+|hµ, ηi|(X) =
+(x), η d|µ|V (x),
+d|µ|V
+X
+or equivalently
+ˆ
+hu(x), ηi dω(x).
+
+|hµ, ηi|(X) =
+
+X
+
+Using the fact that λ(x, ·) is a Dirac mass at u(x), the inner absolute value
+commutes the integral to give
+ˆ
+ˆ ˆ
+ˆ D
+E
+|he, ηi| dρ(x, e).
+|he, ηi| dλ(x, e) dω(x) =
+u(x), η dω(x) =
+X
+
+X
+
+S
+
+X×S
+
+Now we always have
+ˆ D
+ˆ
+E
+dµ
+|hµn , ηi|(X) =
+|he, ηi| dχµn (x, e),
+(x), η d|µ|V (x) =
+d|µ|V
+X
+X×S
+
+and therefore, by definition of ρ, we obtain
+
+lim |hµn , ηi|(X) = |hµ, ηi|(X).
+
+n→∞
+
+Since this holds for all η ∈ S, we obtain Hausdorff convergence of the range,
+by Corollary 3.2.
+
+Theorem 1.1 and Theorem 3.3 imply immediately Theorem 1.3.
+4. Zonal representation of masses
+In this section, we develop a geometric approach to manage the relation
+between range convergence and mass convergence. Although the geometric
+approach will give much less results when dim(V ) ≥ 3, it provides an interesting geometric point of view of the relation between mass convergence
+and strict convergence when dim(V ) = 2.
+4.1. Zonal representation formula. We will show that seminorms having a zonal representation have an associated mass that has an integral
+representation.
+Definition 4.1. A locally finite non-negative Borel measure σ : B(V ′ ) →
+[0, +∞] is a zonal representation of a seminorm |·|V whenever
+ˆ
+|η|V ′ dσ(η) < +∞,
+V′
+
+and for every v ∈ V ,
+|v|V =
+
+ˆ
+
+|hη, vi| dσ(η).
+V′
+
+20
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+As an example, we can consider the standard Euclidean norm in R2 and
+the uniform measure ν on the unit circle S ⊂ R2 , giving
+ˆ
+ˆ
+|v|2 2π
+2
+|hv, ei| dρ(e) =
+| cos(θ)| dθ = |v|2 ,
+2π 0
+π
+S
+and the zonal representation holds with σ = π2 ρ.
+More generally, every Euclidean norm admits a zonal representation.
+Theorem 4.2 (Representation of Euclidean norms). If |·|V is a Euclidean
+semi-norm on V , then it admits a zonal representation.
+Proof. Up to a linear isometry and an orthogonal projection, we can assume
+that V = Rd and |·|V = |·|2 is the standard Euclidean norm. Then we have
+ˆ
+|v|2 = α |hv, ei| dσ(e),
+S
+
+where σ is the uniform surface measure on the Euclidean sphere S, and
+α = α(d) > 0 is a normalization constant. The above identity directly
+follows from the fact that the uniform surface measure is the unique (up to
+multiplication constants) Borel measure on S that is stable under isometries
+of Rd .
+
+A norm |·|V has a zonal representation if and only if the associated unit
+ball in V ⋆ is a zonoid, which can be defined as the ranges of vector measure
+[2, Theorem 2.1; 4].
+If V is a two-dimensional space, every norm has a zonal representation
+in the sense of Definition 4.1 ([2, Theorem 5.4; 4, 41.2]). This follows from
+the fact that, in the plane R2 , every symmetric compact convex set may
+be approximated by a symmetric convex polygon with is automatically a
+zonotope in R2 .
+For example, the usual Euclidean norm is represented by the uniform
+measure on the dual sphere S of V ′ since the uniform measure is the only
+(up to multiplicative constants) invariant measure under rotations and thus,
+balls induced by its associated norm are Euclidean balls. This argument is
+also valid in higher dimensions.
+Another example is given by the ℓ1 -norm on Rd defined for v ∈ Rd by
+|v|∞ ,
+
+d
+X
+
+|v1 |,
+
+i=1
+
+which can be represented with σ =
+
+Pd
+
+i=1 δηi , where ηi (v1 , . . . , vd ) = vi .
+
+In higher dimensions dim V ≥ 3, there are some norms that do not have
+a zonal representation. If v = (v1 , . . . , vd ) ∈ Rd , then
+|v|∞ = max{|v1 |, . . . , |vd |}.
+has no zonal representation of the form Definition 4.1 by any positive measure σ. Indeed, if such measure σ existed, then its dual ball, which is the
+ℓ1 –ball, should be a zonotope. However, the 1–ball is a hyperoctahedron,
+which has some 2–dimensional that are triangles, and is thus not a zonotope
+[2, Theorem 3.3].
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+21
+
+The above example is not related with the fact that the ℓ1 and ℓ∞ norms
+are not strictly convex. In fact, there are also strictly convex norms that
+are do not have a zonal representation Definition 4.1. Indeed, in R3 , the
+log 3
+p–norm does not have a zonal representation, if p ≥ log
+3 , and for every
+2
+
+p > 2 it is known that the p–norm does not have a zonal representation is
+the dimension is large enough [2, (32); 23, Proposition 2].
+Remark 4.3. If σ ′ : B(V ′ ) → [0, +∞) is a measure such that for every Borel
+cone C ∈ B(V ′ ), σ ′ (C) = σ(C), then for every v ∈ V ,
+ˆ
+ˆ
+′
+|hη, vi| dσ(η)
+|hη, vi| dσ (η) =
+V′
+
+V′
+
+and for every vector measure µ : Σ → V ,
+ˆ
+ˆ
+|hη, µi|(A) dσ(η).
+|hη, µi|(A) dσ ′ (η) =
+V′
+
+V′
+
+In particular, the measure σ satisfying the assumption of Lemma 4.4 is not
+unique; a canonical representative can be given by requiring sigma to be an
+even measure supported on the unit sphere of V ′ .
+The existence of zonal representation of the norm in V automatically
+implies a similar representation formula for the mass. It may be seen as
+an alternative way of representing the mass, without relying on layerwise
+decompositions.
+Lemma 4.4 (Representation of the mass). If σ : B(V ′ ) → R+ is a zonal
+representation of |·|V , then for every σ–algebra Σ on X, every vector measure
+µ : Σ → V and every A ∈ Σ,
+ˆ
+|hη, µi|(A) dσ(η).
+|µ|V (A) =
+V′
+
+Proof. If E1 , . . . , Em ∈ Σ are disjoints subsets of A, we have
+ˆ X
+ˆ
+m
+m
+X
+|hη, µi|(A) dσ(η)
+|µ(Ei )|V =
+|hη, µ(Ei )i| dσ(η) ≤
+i=1
+
+V ′ i=1
+
+V′
+
+and thus by the definition of total variation of a vector measure (Definition 2.1)
+ˆ
+|hη, µi|(A) dσ(η).
+(4.1)
+|µ|V (A) ≤
+V′
+
+Conversely, in view of Remark 4.3 we can assume that the measure σ is
+supported in a compact set K ⊂ V ′ \{0}. In particular σ is a finite measure.
+Let ε > 0, there exists η1 , . . . , ηm ∈ K such that
+K⊂
+
+m
+[
+
+BV ′ (ηi , ε).
+
+i=1
+
+In particular, if η ∈ BV ′ (ηi , ε) and E ∈ Σ, we have
+(4.2)
+
+|hη, µi|(E) − |hηi , µi|(E) ≤ ε|µ|V (E).
+
+22
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+We decompose K = ℓi=1 Ki , with K1 , . . . , Kℓ ∈ B(V ′ ) pairwise disjoint
+and Ki ⊂ BV ′ (ηi , ε). We have then by (4.2)
+ˆ
+d
+X
+|hη, µi|(A) dσ(η) ≤
+σ(Ki ) |hηi , µi|(A) + εσ(K)|µ|V (A).
+(4.3)
+S
+
+V′
+
+i=1
+
+Since hηi , µi is a signed measure, by the Hahn–Jordan decomposition theorem and a common refinement, there exists a partition E1 , . . . , Em ∈ Σ of
+A such that for each i ∈ {1, . . . , ℓ},
+(4.4)
+
+|hηi , µi|(A) =
+
+m
+X
+
+|hηi , µi(En )|.
+
+n=1
+
+We obtain thus by (4.2) again combined with (4.3) and (4.4)
+ˆ
+|hη, µi|(A) dσ(η)
+V′
+
+≤
+
+m
+X
+
+ˆ
+
+
+
+|hη, µi(En )| dσ(η) + εσ(K) |µ|V (A) +
+
+′
+n=1 V
+
+m
+X
+
+
+
+|µ|V (En ) .
+
+n=1
+
+By our assumption on the seminorm this implies in turn by our assumption
+and by additivity of the total mass (Proposition 2.4) and by the definition
+of total variation (Definition 2.1) that
+ˆ
+m
+X
+|hη, µi|(A) dσ(η) ≤
+|µ(En )|V + 2εσ(K)|µ|V (A)
+V′
+
+n=1
+
+≤ |µ|V (A) + 2εσ(K)|µ|V (A).
+
+We conclude by letting ε → 0 that
+ˆ
+|hη, µi|(A) dσ(η) ≤ |µ|V (A).
+(4.5)
+V′
+
+The conclusion then follows from (4.1) and (4.5).
+
+
+
+4.2. Application to monotonicity and convergence. When V is equipped
+with an Euclidean norm the monotony of the mass with respect to range
+inclusion, Theorem 1.4 stated in the introduction, is a direct consequence of
+the zonal representation, Lemma 4.4.
+Because of the particular structure of two-dimensional vector spaces, the
+proof we give also holds for any norm on V whenever dim V = 2.
+Proof of Theorem 1.4. Given two vector measures µ, ν such that
+rg µ (X) ⊆ rg ν (X) ,
+we clear have, for all η ∈ S:
+hη, rg µ (X)i ⊆ hη, rg ν (X)i.
+Since the range commutes with linear maps, we directly obtain, for all η ∈ S:
+rghη, µi (X) ⊆ rghη, νi (X) .
+Since the measures hη, µi and hη, νi are real-valued, we obtain
+|hη, µi| ≤ |hη, νi|,
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+23
+
+for all η ∈ S. Since V is Euclidean or dim V = 2, this implies, by Lemma 4.4,
+|µ|V (X) ≤ |ν|V (X). If the norm is strictly convex, then the inequality is
+strict.
+
+Relying on the integral and perimeter formulae obtained above, we also
+propose an alternative proof of Theorem 1.3.
+We first draw a link between the support of a zonal representation and
+strict convexity. The above characterization will turn out to be particularly
+efficient in dimension 2.
+Definition 4.5. A zonal representation σ : B(V ′ ) → [0, +∞] of a seminorm
+|·|V is non-degenerate whenever for every non-empty double cone C ⊂ V ,
+σ(C) > 0.
+We recall that the set C ⊂ V ′ is an open cone whenever for every λ ∈
+R \ {0} and x ∈, λC = C.
+In dimension 2, the non-degeneracy of the zonal representation is equivalent to strict convexity. This will turn out to be false in higher dimensions.
+Proposition 4.6. Let V be a finite-dimensional space. Assume that σ is a
+zonal representation of the seminorm |·|V . The norm |·|V is strictly convex
+if and only if for every linearly independent vectors v, w ∈ V , there exists
+η ∈ supp(σ) such that hη, vi and hη, wi do not have the same sign.
+In particular, if V is a 2-dimensional vector space, then the norm is strictly
+convex if, and only if, σ is non-degenerate.
+Proof of Proposition 4.6. We observe that for every η ∈ V ′ and v ∈ V , we
+have
+hη, vi + hη, wi ≥ hη, vi + hη, wi ,
+with equality if and only if the numbers hη, vi and hη, wi have the same sign.
+We have
+ˆ
+hη, vi + hη, wi dσ(η)
+|v + w|V =
+′
+ˆ
+ˆV
+hη, wi dσ(η) = |v|V + |w|V ,
+hη, vi dσ(η) +
+≥
+V′
+
+V′
+
+with equality if and only if hη, vi and hη, wi have the same sign for every
+η ∈ supp σ, since the map z ∈ V ′ 7→ hη, zi is continuous.
+In particular, if σ is a non-degenerate zonal representation, then the norm
+|·|V is strictly convex. In the two-dimensional case dim V = 2, the separation condition of Proposition 4.6 on the support conversely implies the
+density condition on the support. Indeed, for every η ∈ V ′ and every δ > 0,
+there exists v, w ∈ V such that if η ′ ∈ V ′ and hη ′ , vi ≤ 0 ≤ hη ′ , wi, then
+
+|η − η ′ |V ′ ≤ δ.
+Density of the support for a zonal representation of a strictly convex norm
+in higher dimensions dim V ≥ 3 fails in general. As an example, one can
+consider V = R3 and the measure σ = σx,y + σx,z + σz,y , where σx,y is the
+uniform measure on the circle orthogonal to the y-axis; and similarly for
+σx,z and σz,y . Then the support supp(σ) is far from being dense in S, but
+
+24
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+the induced norm
+ˆ
+p
+p
+p
+hη, vi dσ(η) = v1 2 + v2 2 + v1 2 + v3 2 + v2 2 + v3 2 .
+S
+
+is strictly convex.
+
+We know give another proof of Theorem 1.3 by mean of zonal integral
+representation. We restrict ourselves to the case of Euclidean norms in the
+case dim V ≥ 3, and strictly convex norms in the case dim V = 2.
+Second proof of Theorem 1.3, by zonal representation. We shall only need
+to prove that mass convergence implies convergence of the range, as the
+converse statement holds in all generality.
+For every η ∈ V ′ , the sequence (hη, µn i)n∈N converges widely to (hη, µi)
+and by Proposition 2.21, we have
+(4.6)
+
+lim inf |hη, µn i|(X) ≥ |hη, µi|(X).
+n→∞
+
+Since |·|V is a Euclidean norm, there exists a constant κ > 0 such that for
+every v ∈ V ,
+ˆ
+(4.7)
+|v|V = κ |hη, vi| dη
+
+S
+′
+where S is the unit sphere in V ≃ V . By Lemma 4.4 and by our assumption,
+
+we have
+(4.8)
+
+lim sup
+
+For every η1 , η2
+(4.9)
+
+ˆ
+
+|hη, µn i|(X) dη ≤
+n→∞
+S
+∈ V ′ and n ∈ N, we have
+
+ˆ
+
+|hη, µi|(X) dη.
+S
+
+|hη2 , µn i|(X) − |hη1 , µn i|(X) ≤ |η2 − η1 |V ′ |µn |V (X).
+
+By (4.6), (4.8) and (4.9), we deduce that for every η ∈ SV ′ , we have
+(4.10)
+
+lim |hη, µn i|(X) = |hη, µi|(X).
+
+n→∞
+
+By homogeneity, this still holds for every η ∈ V ′ and the conclusion follows
+then from Corollary 3.2.
+
+5. Perimeter representation of masses
+5.1. Perimeter formula. So far, we have used zonal representation of
+norms in spaces of dimension 2 to approach the problem of mass convergence
+from a geometric point of view. In particular, we were able to characterize
+strict convexity of the norm through density of the support for the measure
+representing the norm.
+We now give further geometric insight of the problem, by interpreting the
+total mass of a vector valued measure as the perimeter of its range (up to
+some multiplicative constant).
+We first define the perimeter of a polygon in a two-dimensional space.
+Definition 5.1. If dim V = 2 and P ⊂ V if P is a polygon of vertices
+v1 , . . . , vℓ , we define its perimeter as
+PerV (P ) ,
+
+ℓ
+X
+i=1
+
+|vℓ − vℓ−1 |V ,
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+25
+
+with the convention that v0 = vℓ .
+This notion of perimeter is analogous to the notion of perimeter in crystalline variational problems [9, 11, 22, 24].
+The perimeter of convex polygons is monotone with respect to set inclusion.
+Lemma 5.2. If dim V = 2 and P1 ⊆ P2 ⊂ V are convex polygons, then
+PerV (P1 ) ≤ PerV (P2 ).
+Proof. Let H ⊂ V be a half-plane such that P1 ⊂ H and ∂H contains one
+side of ∂P1 . Then by the triangle inequality for the seminorm PerV (H∩P2 ) ≤
+PerV (H). By repeating this process on each edge of the polygon P1 , we reach
+the conclusion.
+
+Lemma 5.2 suggests to extend the definition of perimeter to convex sets
+as the least upper bound of the perimeter of polygonal subsets.
+Definition 5.3. If C ⊂ V is convex, we set
+o
+
+PerV (C) , sup PerV (P ) : P ⊆ C is a convex polygon .
+
+
+In view of Lemma 5.2, Lemma 5.2 and Definition 5.3 coincide for polygons.
+The monotonicity property of Lemma 5.2 can be transferred to arbitrary
+subsets and the equality cases can be characterized for strictly convex norms.
+Proposition 5.4. If C1 ⊆ C2 ⊆ V are compact convex sets, then
+PerV (C1 ) ≤ PerV (C2 ),
+If |·|V is a strictly convex norm and if equality holds, then C1 = C2 .
+Proof. The inequality follows from Lemma 5.2 and Definition 5.3.
+For the equality case, we assume by contradiction that C1 ( C2 There
+exists v ∈ C2 \ C1 . Let H ⊂ V be a half-plane such that v 6∈ H and C1 ⊂ H.
+In particular, for every w1 , w2 ∈ C1 , we have since |·|V is a strictly convex
+norm,
+|w2 − w1 |V < |w2 − v|V + |v − w1 |V .
+We define
+η , inf{|w2 − v|V + |v − w1 |V − |w2 − w1 |V : w1 , w2 ∈ C1 }.
+Since the set C1 is compact and convex, we have η > 0. If P1 ⊆ C1 is a
+polygon, then the polygon P2 defined as the convex hull of P1 and v satisfies
+P2 ⊆ C2 and
+PerV (P2 ) ≥ PerV (P1 ) + η.
+By taking the supremum, it follows from Definition 5.3 that
+PerV (C2 ) ≥ PerV (C1 ) + η > PerV (C1 ).
+
+
+
+We establish Theorem 1.6 which states that
+|µ|V (X) = 21 Per rg µ (X) .
+
+
+This formula together with Lemma 4.4 yield a Cauchy–Crofton-like integral
+formula for the perimeter: for any compact convex set C ⊆ V :
+ˆ
+(5.1)
+PerV (C) = 2 diamhη, Ci dσ(η).
+S
+
+26
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+The proof of Theorem 1.6 is based on the following property of polygons.
+Lemma 5.5. Let V be a two-dimensional vector space and |·|V be a seminorm on V . For every m ∈ N and v1 , . . . , vm ∈ V , one has
+m
+X
+
+|vn |V = 12 PerV [0, v1 ] + · · · + [0, vm ] .
+
+
+n=1
+
+Lemma 5.5 implies in particular immediately that Theorem 1.6 holds
+when µ has finite support.
+Proof of Lemma 5.5. We proceed by induction. The identity is trivial if
+m = 0. The induction step follows from the observation that
+1
+2 PerV
+
+[0, v1 ]+ · · · + [0, vm+1 ] = 12 PerV [0, v1 ]+ · · · + [0, vm ] + |vm+1 |V . 
+
+
+
+
+Proof of Theorem 1.6. If E1 , . . . , Em ∈ Σ are disjoint subsets of A, then we
+have
+m
+X
+
+|µ(En )|V = 21 PerV [0, µ(E1 )] + · · · + [0, µ(En )] .
+
+
+n=1
+
+Since [0, µ(E1 )] + · · · + [0, µ(En )] ⊂ rg µ (A), it follows from the definition of
+total variation (Definition 2.1) that
+(5.2)
+
+|µ|V (A) ≤ 12 PerV (rg µ (A)).
+
+Conversely, if P ⊂ rg µ (A) is a polygon, there exist sets F1 , . . . , Fk ∈ Σ
+such that F1 , . . . , Fk ⊆ A, µ(F1 ), . . . , µ(Fk ) are the vertices of P . Hence there
+exists disjoint sets E1 , . . . , Em ∈ Σ such that P ⊆ [0, µ(E1 )]+· · ·+[0, µ(Em )].
+It follows thus by Definition 5.3 that
+(5.3) 12 PerV (P ) ≤ 12 PerV [0, µ(E1 )] + · · · + [0, µ(Em )] =
+
+
+m
+X
+
+|µ(En )|V (A).
+
+n=1
+
+Hence by definition of total variation (Definition 2.1),
+1
+2 PerV (P ) ≤ |µ|V (A)
+
+and thus by definition of perimeter (Definition 5.3)
+(5.4)
+
+1
+2 PerV (rg µ (A)) ≤ |µ|V (A).
+
+The conclusion comes from the combination of (5.2) and (5.4).
+
+
+
+5.2. Application to monotonicity and convergence. Theorem 1.6 gives
+a proof of the monotonicity of the range with respect to the mass.
+Second proof of Theorem 1.4 when dim V = 2. We apply Theorem 1.6 and
+Proposition 5.4.
+
+As a final result, we give a proof of Theorem 1.3 in the two-dimensional
+case, based on the perimeter formula, Theorem 1.6.
+Third proof of Theorem 1.3 by mean of perimeter formula. If the set C ⊂
+V is compact and convex, we define the function γC : V → [0, +∞) by
+(5.5)
+
+γC (v) , PerV conv (C + {v}) .
+
+
+CONVERGENCE AND MASS OF VECTOR MEASURES
+
+27
+
+We observe that, by the triangle inequality and the definitions, for every
+v1 , v2 ∈ V ,
+(5.6)
+
+|γC (v2 ) − γC (v1 )| ≤ 2|v2 − v1 |V
+
+and that if 0 ∈ C,
+(5.7)
+
+|v|V ≤ γC (v).
+
+Let ε > 0. By the Weierstrass extreme value theorem and, since |·|V is a
+strictly convex norm, by Proposition 5.4 we have
+δ , inf{γrg µ(X) (v) : dist(v, rg µ (X)) ≥ ε} − PerV (rg µ (X)) > 0.
+By (5.5) and Definition 5.3 for every v ∈ V , there exists a polygon Pv ⊂
+rg µ (X) such that
+δ
+γPv (v) ≥ γrg µ(X) (v) − .
+4
+δ
+, we have by (5.6)
+Thus if |v ′ − v|V ≤ 16
+δ
+2
+δ
+′
+′
+and thus if γPv (v ) ≤ PerV (rg µ (X))+ 2 , then v ∈ rg µ (X)+B(0, ε). In view
+of (5.7), by a compactness argument, there exists a polygon P ⊆ rg µ (X)
+such that if γP (v) ≤ PerV (rg µ (X)) + 2δ , then v ∈ rg µ (X) + B(0, ε). By
+Proposition 2.23 and Definition 2.22, there exists a sequence of polygons
+(Pn )n∈N whose vertices converge to those of P and such that for every n ∈ N,
+Pn ⊂ rg µn (X). For every v ∈ V , we have limn→∞ γPn (v) = γP (v), and
+thus in view of (5.6), for n ∈ N large enough, if v ∈ V satisfies γPn (v) ≤
+PerV (rg µ (X)) + 4δ , then v ∈ rg µ (X) + B(0, ε).
+Assume now that v ∈ rg µn (X). One has then conv Pn + {v} ⊂ rg µn (X),
+and thus if n ∈ N is large enough, we have
+δ
+γPn (v) ≤ PerV (µn ) ≤ PerV (µ) + .
+4
+By construction of Pn , this implies that v ∈ rg µ (X) + B(0, ε) and thus
+γPv (v ′ ) ≥ γrg µ(X) (v ′ ) −
+
+(5.8)
+
+rg µn (X) ⊆ rg µ (X) + B(0, ε).
+
+The conclusion then follows from (5.8) and Proposition 2.23.
+
+
+
+Acknowledgement
+The authors thank Jan Kristensen for bringing to their attention the
+references [7, 16].
+References
+[1] L. Ambrosio, N. Fusco, and D. Pallara, Functions of bounded variation and free discontinuity problems, Oxford Mathematical Monographs, The Clarendon Press, Oxford
+University Press, New York, 2000. ↑1, 5, 6
+[2] E. D. Bolker, A class of convex bodies, Trans. Amer. Math. Soc. 145 (1969), 323–345,
+doi:10.2307/1995073. ↑4, 12, 20, 21
+[3] H. Brezis, Functional analysis, Sobolev spaces and partial differential equations, Universitext, Springer, New York, 2011. ↑6
+[4] G. Choquet, Lectures on analysis: Infinite-dimensional measures and problem solutions, Vol. III, W. A. Benjamin, New York–Amsterdam, 1969. ↑4, 12, 20
+
+28
+
+JUSTIN DEKEYSER AND JEAN VAN SCHAFTINGEN
+
+[5] J. B. Conway, A course in functional analysis, 2nd ed., Graduate Texts in Mathematics, vol. 96, Springer, New York, 1990. ↑2, 8, 10
+[6] E. De Giorgi, Su una teoria generale della misura (r−1)-dimensionale in uno spazio ad
+r dimensioni, Ann. Mat. Pura Appl. (4) 36 (1954), 191–213, doi:10.1007/BF02412838.
+↑1
+[7] S. Delladio, Lower semicontinuity and continuity of functions of measures with respect
+to the strict convergence, Proc. Roy. Soc. Edinburgh Sect. A 119 (1991), no. 3-4, 265–
+278, doi:10.1017/S0308210500014827. ↑2, 27
+[8] J. Diestel and J. J. Uhl Jr., Vector measures, with foreword by B. J. Pettis, Mathematical Surveys, vol. 15, American Mathematical Society, Providence, R.I., 1977. ↑1,
+2, 7, 11
+[9] A. Dinghas, Über einen geometrischen Satz von Wulff für die Gleichgewichtsform von
+Kristallen, Z. Kristallogr., Mineral. Petrogr. 105 (1944), no. Abt. A., 304–314. ↑25
+[10] H. Federer, Geometric measure theory, Die Grundlehren der mathematischen Wissenschaften, vol. 153, Springer, New York, 1969. ↑1
+[11] A. Figalli, F. Maggi, and A. Pratelli, A mass transportation approach to quantitative isoperimetric inequalities, Invent. Math. 182 (2010), no. 1, 167–211,
+doi:10.1007/s00222-010-0261-z. ↑25
+[12] G. Stefani, On the monotonicity of perimeter of convex bodies, J. Convex Anal. 25
+(2018), no. 1, 93–102. ↑4
+[13] P. R. Halmos, The range of a vector measure, Bull. Amer. Math. Soc. 54 (1948),
+416–421, doi:10.1090/S0002-9904-1948-09020-6. ↑1
+[14] A. Liapounoﬀ, Sur les fonctions-vecteurs complètement additives, Bull. Acad. Sci.
+URSS. Sér. Math. 4 (1940), 465–478 (Russian, with French summary). ↑2
+[15] A. Löhne and C. Zălinescu, On convergence of closed convex sets, J. Math. Anal.
+Appl. 319 (2006), no. 2, 617–634, doi:10.1016/j.jmaa.2005.06.061. ↑3
+[16] Yu. G. Reshetnyak, The weak convergence of completely additive vector-valued set
+functions, Sibirsk. Mat. Zh. 9 (1968), 1386–1394 (Russian); English transl., Siberian
+Math. J. 9 (1968), 1039—1045. ↑2, 3, 17, 18, 27
+[17] N. W. Rickert, The range of a measure, Bull. Amer. Math. Soc. 73 (1967), 560–563,
+doi:10.1090/S0002-9904-1967-11747-6. ↑12
+[18] L. Rodríguez-Piazza, The range of a vector measure determines its total variation,
+Proc. Amer. Math. Soc. 111 (1991), no. 1, 205–214, doi:10.2307/2047879. ↑2, 3, 12
+[19] W. Rudin, Real and complex analysis, 3rd ed., McGraw-Hill, New York, 1987. ↑6
+[20] G. Salinetti and R. J.-B. Wets, On the convergence of sequences of convex sets in
+finite dimensions, SIAM Rev. 21 (1979), no. 1, 18–33, doi:10.1137/1021002. ↑3
+[21] D. Spector, Simple proofs of some results of Reshetnyak, Proc. Amer. Math. Soc. 139
+(2011), no. 5, 1681–1690, doi:10.1090/S0002-9939-2010-10593-2. ↑2
+[22] J. E. Taylor, Existence and structure of solutions to a class of nonelliptic variational problems, Convegno di Teoria Geometrica dell’Integrazione e Varietà Minimali
+(INDAM, Roma, Maggio 1973), Symposia Mathematica, vol. XIV, Academic Press,
+London, 1974, pp. 499–508. ↑25
+[23] H. S. Witsenhausen, Metric inequalities and the zonoid problem, Proc. Amer. Math.
+Soc. 40 (1973), 517–520, doi:10.2307/2039404. ↑21
+[24] G. Wulﬀ, Zur Frage der Geschwindigkeit des Wachsthums und der Auflösung der Krystallflächen, Zeitschrift für Kristallographie 34, no. 1–6, 449-–530,
+doi:10.1524/zkri.1901.34.1.449. ↑25
+E-mail address: Jean.VanSchaftingen@UCLouvain.be
+Université catholique de Louvain, Institut de Recherche en Mathématique
+et Physique, Chemin du Cyclotron 2 bte L7.01.01, 1348 Louvain-la-Neuve, Belgium
+
+

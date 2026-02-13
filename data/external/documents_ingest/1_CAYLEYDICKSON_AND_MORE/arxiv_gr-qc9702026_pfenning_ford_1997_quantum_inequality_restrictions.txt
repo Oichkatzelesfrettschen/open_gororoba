@@ -1,0 +1,716 @@
+gr-qc/9702026
+TUTP-96-4
+March 20, 1997
+
+arXiv:gr-qc/9702026v3 15 Mar 2001
+
+The unphysical nature of “Warp Drive”
+Michael J. Pfenning∗ and L. H. Ford†
+Institute of Cosmology
+Department of Physics and Astronomy
+Tufts University, Medford, Massachusetts 02155, USA
+
+Abstract
+We will apply the quantum inequality type restrictions to Alcubierre’s warp drive
+metric on a scale in which a local region of spacetime can be considered “flat”. These
+are inequalities that restrict the magnitude and extent of the negative energy which
+is needed to form the warp drive metric. From this we are able to place limits on the
+parameters of the “Warp Bubble”. It will be shown that the bubble wall thickness is
+on the order of only a few hundred Planck lengths. Then we will show that the total
+integrated energy density needed to maintain the warp metric with such thin walls is
+physically unattainable.
+
+Submitted to: Classical and Quantum Gravity
+PACS numbers: 04.62.+v, 03.70.+k, 11.10.-z, 04.60.-m
+
+∗
+†
+
+email: mitchel@cosmos2.phy.tufts.edu
+email: ford@cosmos2.phy.tufts.edu
+
+1
+
+1
+
+Introduction
+
+In both the scientific community, and pop culture, humans have been fascinated with the
+prospects of being able to travel between the stars within their own lifetime. Within the
+framework of special relativity, the space-going traveler may move with any velocity up to,
+but not including, the speed of light. Upon doing so, he or she would experience a time
+dilation which would allow them to make the round trip from earth to any star, and then
+return to earth in an arbitrarily short elapsed time from their point of view. However, upon
+returning to earth such observers would find that their family and friends would have aged
+considerably more then they had. This is well known as the twin paradox [1, 2, 3].
+Recently, Miguel Alcubierre proposed a metric [4], fondly called the warp drive, in which
+a spaceship could travel to a star a distance D away and return home, such that the elapsed
+time for the stationary observers on earth would be less than 2D/c where c is the velocity of
+light. What is even more surprising about this spacetime is that the proper time of the space
+going traveler’s trip is identical to that of the elapsed time on earth. However, the spaceship
+never locally travels faster than the speed of light. In fact, the spaceship can sit at rest with
+respect to the interior of the warp bubble. The ship is carried along by the spacetime, much
+in the same way that the galaxies are receding away from each other at extreme speeds due
+to the expansion of the universe, while locally they are at rest. The warp drive makes use of
+this type of expansion (and contraction) in order to achieve the ability to travel faster than
+light.
+Although warp drive sounds appealing, it does have one serious drawback. As with
+traversable wormholes, in order to achieve warp drive one must employ exotic matter, that
+is, negative energy densities. This is a violation of the classical energy conditions. Quantum
+inequality restrictions in flat spacetimes on negative energies [5, 6, 7, 8] do allow negative
+energy to exist, however they place serious limitations on its magnitude and duration. The
+flat space inequalities have been applied to the curved spacetimes of wormhole geometries
+[9] with the restriction that the negative energy be sampled on timescales smaller than the
+minimum local radius of curvature. It was argued that over such small sampling times, the
+spacetime would be locally flat and the inequalities would be valid. This led to the conclusion
+that static wormholes must either be on the order of several Planck lengths in size, or there
+would be large discrepancies in the length scales that characterize the wormhole.
+More recently, exact quantum inequalities have been developed for the static RobertsonWalker spacetimes in three and four dimensions [10]. In these spaces of constant curvature,
+it was found that the quantum inequalities take the flat space form modified by a scale
+function which depends on the ratio of the sampling time to the local radius of curvature. In
+the limit of the sampling time being smaller than the local radius of curvature, the quantum
+inequalities reduce to the flat space form, often accompanied by higher order corrections due
+to the curvature [10, 11]. In the limit of the radius of curvature going to infinity, one recovers
+the flat space inequalities exactly.
+One would like to apply the same method to the warp drive metric, but such an exercise
+would require that we know the solutions to the Klein-Gordon equation for the mode functions of the scalar field. Such an approach, although exact, would be exceptionally difficult.
+In this paper we will therefore apply the flat space inequality directly to the warp drive
+metric but restrict the sampling time to be small. By doing so we will be able to show
+2
+
+that the walls of the warp bubble must be exceedingly thin as compared to its radius. This
+constrains the negative energy to an exceedingly thin band surrounding the spaceship, much
+in the same way it was shown that negative energy is concentrated to a thin band around the
+throat of a wormhole [9]. Recently, it has been shown for the Krasnikov metric [12], which
+also allows superluminal travel, that the required negative energy is also constrained to a
+very thin wall [13]. We will then calculate the total negative energy that would be required
+to generate a macroscopic sized bubble capable of transporting humans. As we will see, such
+a bubble would require physically unattainable energies.
+
+2
+
+Warp Drive Basics
+
+Let us discuss some of the basic principles of the warp drive spacetime. We begin with a
+flat (Minkowski) spacetime and then consider a small spherical region, which we will call
+the bubble, inside this spacetime. On the forward edge of the bubble, we cause spacetime
+to contract, and on the trailing edge is an equal spacetime expansion. The region inside the
+bubble, which can be flat, is therefore transported forward with respect to distant objects.
+Objects at rest inside the bubble are transported forward with the bubble, even though they
+have no (or nominal) local velocity. Such a spacetime is described by the Alcubierre warp
+drive metric
+ds2 = −dt2 + [dx − vs (t)f (rs (t))dt]2 + dy 2 + dz 2 ,
+(1)
+where xs (t) is the trajectory of the center of the bubble and vx (t) = dxs (t)/dt is the bubble’s
+velocity. The variable rs (t) measures the distance outward from the center of the bubble
+given by
+q
+rs (t) = (x − xs (t))2 + y 2 + z 2 .
+(2)
+The shape function of the bubble is given by f (rs ), which Alcubierre originally chose to be
+f (rs ) =
+
+tanh[σ(rs + R)] − tanh[σ(rs − R)]
+.
+2 tanh[σ R]
+
+(3)
+
+The variable R is the radius of the warp bubble, and σ is a free parameter which can be used
+to describe the thickness of the bubble walls. In the large σ limit, the function f (rs ) quickly
+approaches that of a top hat function, where f (rs ) = 1 for rs ≤ R and zero everywhere else.
+It is not necessary to choose a particular form of f (rs ). Any function will suffice so long as
+it has the value of approximately 1 inside some region of rs < R and goes to zero rapidly
+outside the bubble, such that as rs → ∞ we recover Minkowski space. In order to make
+later calculations easier, we will also use the piece-wise continuous function
+
+
+
+
+1
+1
+fp.c.(rs ) = − ∆ (rs − R − ∆2 )
+
+
+0
+
+rs < R − ∆2
+R − ∆2 < rs < R + ∆2
+rs > R + ∆2
+
+(4)
+
+where R is the radius of the bubble. The variable ∆ is the bubble wall thickness. It is chosen
+to relate to the parameter σ for the Alcubierre form of the shape function by setting the
+
+3
+
+observer's path
+ρ
+R
+vb
+
+Figure 1: The path of an observer who passes through the outer region of the bubble, shown
+in the bubble’s rest frame. As viewed from the interior of the bubble, the observer is moving
+to the left.
+slopes of the functions f (rs ) and fp.c.(rs ) to be equal at rs = R. This leads to
+∆=
+
+h
+
+1 + tanh2 (σR)
+
+i2
+
+2 σ tanh(σR)
+
+,
+
+(5)
+
+which in the limit of large σR can be approximated by ∆ ≃ 2/σ.
+We now turn our attention to the solutions of the geodesic equation. It is straightforward
+to show that
+dxµ
+= uµ = (1, vs (t)f (rs (t)), 0, 0) ,
+uµ = (−1, 0, 0, 0)
+(6)
+dt
+is a first integral of the geodesic equations. Observers with this four-velocity are called the
+Eulerian observers by Alcubierre. We see that the proper time and the coordinate time are
+the same for all observers. Also, the y and z components of the 4-velocity are zero. The
+bubble therefore exerts no “force” in the directions perpendicular to the direction of travel.
+In Figure 1, we have plotted one such trajectory for a observer that passes through the wall
+of a warp bubble at a distance ρ away from the center of the bubble. The x-component of
+the 4-velocity is dependent on the shape function, and solving this explicitly for all cases can
+be rather difficult due to the time dependence of rs (t). A spacetime plot of an observer with
+the four-velocity given above is shown in Figure 2, for a bubble with constant velocity.
+We see that the Eulerian observers are initially at rest. As the front wall of the bubble
+reaches the observer, he or she begins to accelerate, relative to observers at large distances,
+in the direction of the bubble. Once inside the bubble the observer moves with a nearly
+constant velocity given by
+dx(t)
+|max. = vs (tρ )f (ρ),
+(7)
+dt
+which will always be less than the bubble’s velocity unless ρ = (y 2 + z 2 )1/2 = 0. The time tρ
+is defined by rs (tρ ) = ρ, i.e. it is the time at which the observer reaches the bubble equator.
+4
+
+50
+
+time
+
+40
+30
+20
+10
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+x-position
+Figure 2: The worldline (the dark line) of the geodesic observer passing through the outer
+region of a warp bubble, plotted in the observer’s initial rest frame. The two lighter diagonal
+lines are the worldlines of the center of the bubble wall on the front and rear edges of the
+bubble, respectively. The bubble has a radius of 3, a velocity of 1, and the σ parameter is
+also 1. The plot shows an observer who begins at rest at x = 10, y 2 + z 2 = ρ2 = 4. The
+shape function is of the form given by Alcubierre, Equation (3).
+
+5
+
+Such observers then decelerate, and are left at rest as they pass out of the rear edge of the
+bubble wall. In other words no residual momentum is imparted to these observers during
+the “collision”. However they have been displaced forward in space along the trajectory of
+the bubble.
+There is also another interesting feature of these geodesics. As already noted, the observers will move with a nearly constant velocity through the interior of the bubble. This
+holds true for any value of ρ. However, the velocity is still dependent upon the value of ρ, so
+observers at different distances from the center of the bubble will be moving with different
+velocities relative to one another. If a spaceship of finite size is placed inside the bubble with
+its center of mass coincident with the center of the bubble, then the ship would experience a
+net “force” pushing it opposite to the direction of motion of the bubble, so long 1 − f (rs ) is
+nonzero at the walls of the ship. The ship would therefore have to use its engines to maintain
+its position inside the bubble. In addition, the ship would be subject to internal stresses on
+any parts that extended sufficiently far away from the rest of the ship.
+In the above discussion we have used the Alcubierre form of the shape function, f (rs ).
+If one uses the piece-wise continuous form, Equation (4), one finds similar results with some
+modification. Inside the bubble, where rs < (R−∆/2), every observer would move at exactly
+the speed of the bubble. So any observer who reaches the bubble interior would continue
+on with it forever. This arises from the fact that everywhere inside the bubble, spacetime
+is perfectly flat because f (rs ) = 1. For observers whose geodesics pass solely through the
+bubble walls, so (R − ∆/2) < ρ < (R + ∆/2), the result is more or less identical to that
+of the geodesics found with the Alcubierre shape function. This is the region we are most
+interested in because it is the region that contains the largest magnitude of negative energy.
+We now turn our attention to the energy density distribution of the warp drive metric.
+Using the first integral of the geodesic equations, it is easily shown that
+1 00
+1 vs2 (t)ρ2
+hT uµ uν i = hT i =
+G =−
+8π
+8π 4rs2 (t)
+µν
+
+00
+
+df (rs )
+drs
+
+!2
+
+,
+
+(8)
+
+where ρ = [y 2 + z 2 ]1/2 , is the radial distance perpendicular the x-axis as was defined above.
+We immediately see that the energy density measured by any geodesic observer is always
+negative, as was shown in Alcubierre’s original paper[4]. In Figure 3, we see that the distribution of negative energy is concentrated in a toroidal region perpendicular to the direction
+of travel.
+In Section 4 we will integrate the energy density over all of space to obtain the total
+negative energy required to maintain the bubble, under the restrictions of the quantum
+inequalities. As we will show, the total energy is physically unrealizable in the most extreme
+sense.
+
+3
+
+Quantum Inequality Restrictions
+
+We begin with the quantum inequality (QI) for a free, massless scalar field in four-dimensional
+Minkowski spacetime derived by Ford and Roman [7],
+τ0
+π
+
+3
+hTµν uµ uν i
+dτ ≥ −
+,
+2
+2
+32π 2 τ04
+−∞ τ + τ0
+
+Z ∞
+
+6
+
+(9)
+
+σR=2
+
+σR=5
+
+1.5
+
+1.5
+
+1.0
+
+1.0
+
+0.5
+
+0.5
+
+ρ/R 0
+
+0
+
+-0.5
+
+-0.5
+
+-1.0
+
+-1.0
+
+-1.5
+-1.5 -1.0 -0.5
+
+0
+
+0.5
+
+1
+
+1.5
+
+-1.5
+-1.5 -1.0 -0.5
+
+x/R
+
+0
+
+0.5
+
+1
+
+1.5
+
+x/R
+
+Figure 3: The negative energy density is plotted for a longitudinal cross section of the warp
+metric traveling at constant velocity vs = 1 to the right for the Alcubierre shape function.
+Black regions are devoid of matter, while white regions are maximal negative energy.
+where τ is an inertial observer’s proper time, and τ0 is an arbitrary sampling time. This
+places a limit on the magnitude and duration of the negative energy density experienced by
+an observer. In the limit that τ0 → ∞ one recovers the Averaged Weak Energy Condition
+(AWEC). It has been argued by Ford and Roman [9] that one may apply the QI to nonMinkowski spacetimes if the sampling time is of the order, or less than the smallest local
+radius of curvature.
+We begin by taking the expression for the energy density (8), and inserting it into the
+quantum inequality, Equation (9). One finds
+vs (t)2
+t0
+rs2
+−∞
+Z +∞
+
+df (rs )
+drs
+
+!2
+
+dt
+t2 + t20
+
+≤
+
+3
+ρ2 t40
+
+.
+
+(10)
+
+If the time scale of the sampling is sufficiently small compared to the time scale over which
+the bubble’s velocity is changing, then the warp bubble’s velocity can be considered roughly
+constant, vs (t) ≈ vb , during the sampling interval. We can now find the form of the geodesic
+at the time the sampling is taking place. Because of the small sampling time, the [t2 + t20 ]−1
+term becomes strongly peaked, causing the QI integral to sample only a small portion of the
+geodesic. We therefore arrange that the observer is at the equator of the warp bubble at
+t = 0. Then the geodesic is well-approximated by
+x(t) ≈ f (ρ)vb t ,
+7
+
+(11)
+
+which results in
+h
+
+rs (t) = (vb t)2 (f (ρ) − 1)2 + ρ2
+
+i1/2
+
+.
+
+(12)
+
+Finally, we must specify the form of the shape function of the bubble. If we Taylor
+series expand any shape function about the sampling point, rs (t) → ρ, and then take the
+appropriate derivatives to obtain the needed term for the quantum inequality, we find
+df (rs)
+≈ f ′ (ρ) + f ′′ (ρ)[rs (t) − ρ] + ....
+drs
+
+(13)
+
+The leading term is the slope of the shape function at the sampling point, which is in general
+roughly proportional to the inverse of the bubble wall thickness. We can therefore use, with
+no loss of generality, the piece-wise continuous form of the shape function (4) to obtain a
+good order of magnitude approximation for any choice of shape function. The quantum
+inequality (10) then becomes
+t0
+
+dt
+3∆2
+≤
+2
+vb2 t40 β 2
+−∞ (t2 + β 2 )(t2 + t0 )
+
+(14)
+
+ρ
+.
+vb (1 − f (ρ))
+
+(15)
+
+Z +∞
+
+where
+β=
+
+Formally the integral should not be taken over all time but just the time the observer is
+inside the bubble walls. However, the sampling function rapidly approaches zero. Therefore
+contributions to the integral from the distant past or the far future are negligible. The
+integral itself can be done as the principal value of a contour that is closed in the upper half
+of the complex plane. We find
+Z +∞
+−∞
+
+dt
+(t2 + β 2 )(t2 + t20 )
+
+=
+
+π
+,
+t0 β (t0 + β)
+
+(16)
+
+yielding an inequality of
+π
+∆2 vb t0
+≤ 2 4
+(1 − f (ρ)) + 1 .
+3
+vb t0 ρ
+"
+
+#
+
+(17)
+
+The above inequality is only valid for sampling times on which the spacetime may be
+considered approximately flat. We must therefore find some characteristic length scale below
+which this occurs. For an observer passing through the bubble wall at a distance ρ from the
+center, one may calculate the Riemann tensor in the static background frame, then transform
+the components to the observer’s frame by use of an orthonormal tetrad of unit vectors. In
+this frame, the tetrad is given by the velocity vector uµ (t) and three unit vectors x̂, ŷ, and
+ẑ. One finds that the largest component of the Riemann tensor in the orthonormal frame is
+given by
+#2
+"
+3vb2 y 2 df (ρ)
+(18)
+|Rt̂ŷt̂ŷ | =
+4 ρ2
+dρ
+which yields
+
+1
+2∆
+rmin ≡ q
+∼√
+,
+3 vb
+|Rt̂ŷt̂ŷ |
+8
+
+(19)
+
+when y = ρ and the piece-wise continuous form of the shape function is used. The sampling
+time must be smaller than this length scale, so we take
+2∆
+t0 = α √
+3 vb
+
+0 < α ≪ 1.
+
+(20)
+
+Here α is an unspecified parameter that describes how much smaller the sampling time is
+compared to the minimal radius of curvature. If we insert this into the quantum inequality
+and use
+vb t0
+∆
+∼
+≪1,
+(21)
+ρ
+ρ
+we may neglect the term involving 1 − f (ρ) to find
+3
+∆≤
+4
+
+s
+
+3 vb
+.
+π α2
+
+(22)
+
+Now as an example, if we let α = 1/10, then
+∆ ≤ 102 vb LP lanck ,
+
+(23)
+
+where LP lanck is the Planck length. Thus, unless vb is extremely large, the wall thickness
+cannot be much above the Planck scale. Typically, the walls of the warp bubble are so thin
+that the shape function could be considered a “top hat” for most purposes.
+
+4
+
+Total Energy Calculation
+
+We will now look at the total amount of negative energy that is involved in the maintenance
+of a warp metric. For simplicity, let us take a bubble that moves with constant velocity such
+that xs (t) = vb t. Because the total energy is constant, we can calculate it at time t = 0.
+We then have
+1
+rs (t = 0) = [x2 + y 2 + z 2 ] 2 = r.
+(24)
+With this in mind we can write the integral of the local matter energy density over proper
+volume as
+!2
+Z
+q
+2
+2 Z
+ρ
+df
+(r)
+v
+dx3 ,
+(25)
+E = dx3 |g| hT 00 i = − b
+32π r 2
+dr
+where g = Det|gij | is the determinant of the spatial metric on the constant time hypersurfaces. Portions of this integration can be carried out by making a transformation to spherical
+coordinates. By doing so, one finds that
+∞
+1
+d f (r)
+E = − vb2
+r2
+12
+dr
+0
+
+Z
+
+!2
+
+dr
+
+(26)
+
+Since we are making only order of magnitude estimates of the total energy, we will use a
+piece-wise continuous approximation to the shape function given by Equation (4). When
+
+9
+
+one takes the derivative of this shape function, we find that the contributions to the energy
+come only from the bubble wall region, and we end up evaluating
+∆
+
+1 2 R+ 2 2 −1
+r
+v
+12 b R− ∆2
+∆
+!
+1
+∆
+R2
+.
+= − vb2
++
+12
+∆
+12
+
+E = −
+
+Z
+
+
+
+2
+
+dr
+
+(27)
+(28)
+
+For a macroscopically useful warp drive, we want the radius of the bubble to be at least
+in the range of 100 meters so that we may fit a ship inside. It has been shown in the
+previous section that the wall thickness is constrained by (23). If we use this constraint and
+let the bubble radius be equal to 100 meters, then we may neglect the second term on the
+right-hand-side of Equation (28). It follows that
+E ≤ −6.2 × 1070 vb LP lanck ∼ −6.2 × 1065 vb grams.
+
+(29)
+
+Because a typical galaxy has a mass of approximately
+MM ilkyW ay ≈ 1012 Msun = 2 × 1045 grams,
+
+(30)
+
+the energy required for a warp bubble is on the order of
+E ≤ −3 × 1020 Mgalaxy vb .
+
+(31)
+
+This is a fantastic amount of negative energy, roughly ten orders of magnitude greater than
+the total mass of the entire visible universe.
+If one can violate the quantum inequality restrictions and make a bubble with a wall
+thickness on the order of a meter, things are improved somewhat. The total energy required
+in the case of the same sized radius and ∆ = 1 meter would be on the order of a quarter of
+a solar mass, which would be more practical, yet still not attainable.
+
+5
+
+Summary
+
+We see that, from (23), the quantum inequality restrictions on the warp drive metric constrain the bubble walls to be exceptionally thin. Typically, the walls are on the order of only
+hundreds or thousands of Planck lengths. Similar constraints on the size of the negative
+energy region have been found in the case of traversable wormholes [9].
+One might note that by making the velocity of the bubble, vb , very large then we can
+make the walls thicker, however this causes another problem. For every order of magnitude
+by which the velocity increases, the total negative energy required to generate the warp
+drive metric also increases by the same magnitude. It is evident, that for macroscopically
+sized bubbles to be useful for human transportation, even at subluminal speeds, the required
+negative energy is unphysically large.
+On the other hand, we may consider the opposite regime. Warp bubbles are still conceivable if they are very tiny, i.e., much less than the size of an atom. Here the difference
+in length scales is not as great. As a result, a smaller amount of negative energy is required
+10
+
+to maintain the warp bubble. For example, a bubble with a radius the size of one electron
+Compton wavelength would require a negative energy of the order E ∼ −400Msun .
+The above derivation assumed that we are using a quantized, massless scalar field to
+generate the required negative energy. Similar quantum inequalities have been proven for
+both massive scalar fields [8, 10] and the electromagnetic field [8]. In the case of the massive
+scalar field, the quantum inequality becomes even more restrictive, thereby requiring the
+bubble walls to be even thinner. For
+√ the quantized electromagnetic field, the wall thickness
+can be made larger by a factor of 2, due to the two spin degrees of freedom of the photon.
+However this is not much of an improvement over the scalar field case.
+Acknowledgments
+We would like to thank Thomas A. Roman and Allen Everett for useful discussion. This
+research was supported in part by NSF Grant No. Phy-9507351 and the John F. Burlingame
+Physics Fellowship Fund.
+
+References
+[1] Misner C W, Thorne K S and Wheeler J A 1973 Gravitation (W.H. Freeman and
+Company)
+[2] Wheeler J A 1990 A Journey Into Gravity and Spacetime (Scientific American Library)
+[3] Taylor E F and Wheeler J A 1992 Spacetime Physics: Introduction to Special Relativity
+2nd ed. (W.H. Freeman and Company)
+[4] Alcubierre M 1994 Class. Quantum Grav. 11, L73
+[5] Ford L H 1978 Proc. Roy. Soc. Lond. A 364; 1991 Phys. Rev. D 43 p 3972
+[6] Ford L H and Roman T A 1992 Phys. Rev. D 46 p 1328
+[7] Ford L H and Roman T A 1995 Phys. Rev. D 51 p 4277 gr-qc/9410043
+[8] Ford L H and Roman T A 1997 Phys. Rev. D 55 p 2082 gr-qc/9607003
+[9] Ford L H and Roman T A 1996 Phys. Rev. D 53 p 5496 gr-qc/9510071
+[10] Pfenning M J and Ford L H 1997 Phys. Rev. D 55 (15 April 1997 issue) gr-qc/9608005
+[11] Pfenning M J and Ford L H 1997 manuscript in preparation
+[12] Krasnikov S V 1995 Hyper-fast interstellar travel in general relativity gr-qc/9511068
+[13] Everett A and Roman T A 1997 A superluminal subway: the Krasnikov tube, Tufts
+University Institute of Cosmology preprint gr-qc/9702049
+
+11
+
+

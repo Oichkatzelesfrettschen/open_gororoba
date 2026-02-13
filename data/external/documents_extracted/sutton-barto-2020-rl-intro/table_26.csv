@@ -1,0 +1,3 @@
+⇡(a,St+1)Qh1(St+1, a) +  ⇡(At+1,St+1)Gt+1:h
+= Rt+1 + V¯h1(St+1)  ⇡(At+1,St+1)Qh1(St+1, At+1) + ⇡(At+1,St+1)Gt+1:h
+= Rt+1 + ⇡(At+1,St+1)

@@ -1,0 +1,895 @@
+arXiv:2006.07125v2 [gr-qc] 10 Aug 2020
+
+Breaking the Warp Barrier: Hyper-Fast Solitons in
+Einstein-Maxwell-Plasma Theory
+Erik W. Lentz
+Institut für Astrophysik, Georg-August Universitat Göttingen, Göttingen, Germany
+37077
+E-mail: erik.lentz@uni-goettingen.de
+11 August 2020
+Abstract. Solitons in space–time capable of transporting time-like observers at
+superluminal speeds have long been tied to violations of the weak, strong, and dominant
+energy conditions of general relativity. The negative-energy sources required for these
+solitons must be created through energy-intensive uncertainty principle processes as
+no such classical source is known in particle physics. This paper overcomes this barrier
+by constructing a class of soliton solutions that are capable of superluminal motion
+and sourced by purely positive energy densities. The solitons are also shown to be
+capable of being sourced from the stress-energy of a conducting plasma and classical
+electromagnetic fields. This is the first example of hyper-fast solitons resulting from
+known and familiar sources, reopening the discussion of superluminal mechanisms
+rooted in conventional physics.
+
+1. Introduction
+Hyper-fast solitons within modern theories of gravity have been a topic of energetic
+speculation in recent decades [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].
+One of the most prominent critiques of compact mechanisms of superluminal motion
+within general relativity is that the geometry must largely be sourced from a form of
+negative energy density, though there are no such known macroscopic sources in particle
+physics. Other concerns include difficulties associated with constructing a soliton
+from a nearly flat space–time up to the superluminal phase, where the transported
+central observers become surrounded by a horizon, and the equal difficulties of evolving
+from the superluminal phase back the flat space–time. Challenges associated with
+creating horizons also include communication between inside and outside observers
+through the soliton shell, bombardment of the inside observers by Hawking radiation,
+and stress-energy buildup on the leading horizon. Further, creating a self-sustaining
+Alcubierre-type superluminal soliton [1] of 100 m radius would need an immense
+amount of (magnitude) energy, in excess of the scale that is in the visible universe,
+Etot ∼ −6 × 1062 vs /c kg mass equivalent [3], though some progress has been made in
+
+Breaking the Warp Barrier
+
+2
+
+this area, reducing the required energy to ∼ −1030 vs /c kg mass equivalent [7, 16], and
+even down to the kilogram and gram scale [19].
+This paper addresses the first critique by constructing a new class of hyper-fast
+soliton solutions within general relativity that are sourced purely from positive energy
+densities, thus removing the need for exotic negative-energy-density sources. This is
+made possible through considering hyperbolic relations between components of the
+space–time metric’s shift vector, which depart from the elliptic or linear relations that
+limited solitons in the previous literature to require negative energies. Further, the
+stress-energy sourcing these solutions fits the form of a classical electronic plasma,
+placing superluminal phenomena into the purview of known physics. The remainder
+of the paper is structured as follows: Section 2 presents the geometry of these novel
+solitons using the ADM formalism [20] and produces the components of the Einstein
+equation relevant for the class of solutions; Section 3 introduces the conditions of the
+hyperbolically-related shift vectors and the rules for constructing a class of solutions with
+everywhere-positive energy density and conventional energy-momentum conditions and
+demonstrates these qualities for a family of solutions; Section 4 solves the dynamical
+component of the geometry via the Einstein equation trace and derives requirements
+for a potential sourcing plasma; and Section 5 discusses the consequences of discovering
+a superluminal mechanism driven by known sources and potential avenues for future
+study.
+2. Solitons in General Relativity
+The space–times considered here are decomposed in the “3+1” (ADM) formalism using
+a similar convention to that presented in [21], or [22], specifically following the latter’s
+sign protocol. The line element of the space–time is cast in the form
+
+ds2 = − N 2 − N i Ni dt2 − 2Ni dxi dt + hij dxi dxj ,
+
+(1)
+
+where the time coordinate t stratifies space–time into space-like hypersurfaces, the space
+metric components hij evaluated at t provide the intrinsic geometry of that hypersurface,
+and the similarly-evaluated shift vector components N i at t provide the coordinate threevelocity of the hypersurface’s normal. The time-like unit normal one-form is therefore
+proportional to the coordinate time element n∗ = N dt, and the unit normal vector n to
+the hypersurface has components
+
+
+1 Ni
+ν
+,
+.
+(2)
+n =
+N N
+Einstein summation notation is used throughout this paper, with Greek indices running
+over space–time components and Latin indices over space components. The lowering
+of Latin indices is performed using the hypersurface metric h unless otherwise stated.
+Natural units G = c = 1 are used. Lastly, the lapse function N is set to unity.
+
+Breaking the Warp Barrier
+
+3
+
+Central to the computation of the Einstein tensor is the hypersurface extrinsic
+curvature, which can be written as the negative covariant derivative of the normal
+vector field n, or in terms of coordinate derivatives as
+Kij = −
+
+
+1
+∂t hij + N k ∂k hij + ∂i N k hkj + ∂j N k hki .
+2
+
+(3)
+
+The solutions considered here will have hypersurfaces parameterized by flat metrics
+under Cartesian coordinates hij = δij , reducing the extrinsic curvature expression to
+the symmetric combination of shift vector derivatives. The trivial form of N and h
+imply that the Eulerian observers, time-like observers whose motion in space–time is
+normal to the hypersurfaces with four-velocity n, are in free fall.
+Resolving the behavior of solitons within general relativity begins with a check of
+the weak energy condition and the momentum conditions. The weak energy condition
+is given by the projection of the Einstein equation onto the hypersurface normal
+
+
+1 µν
+µν
+µν
+(4)
+G nµ nν = R − g R nµ nν = 8πT µν nµ nν ,
+2
+where the projected stress-energy is to be called the local Eulerian energy density
+T µν nµ nν = N 2 T 00 = E.
+
+(5)
+
+The geometric side of the energy constraint equation is divisible into the intrinsic
+hypersurface curvature (3) R, and the extrinsic curvature’s trace K = Kii and its
+quadratic hypersurface scalar Kji Kij
+8πE =
+
+1
+2
+
+(3)
+
+
+R − Kji Kij + K 2 .
+
+(6)
+
+The contribution of the hypersurface intrinsic curvature vanishes as the space metric h
+is flat. The purely geometric portion of the energy condition may then be expanded in
+terms of the shift vector components
+K 2 − Kji Kij = 2∂x Nx ∂y Ny + 2∂x Nx ∂z Nz + 2∂z Nz ∂y Ny
+1
+1
+1
+− (∂x Ny + ∂y Nx )2 − (∂x Nz + ∂z Nx )2 − (∂z Ny + ∂y Nz )2 .
+2
+2
+2
+
+(7)
+
+Note that the last three elements of the above expression are negative definite, while
+the first three are of indeterminant type. These first three terms have the potential
+to provide the energy function with an island of configurations that satisfy the weak
+energy condition. The first task of this work will be to show there exist non-flat compact
+moving configurations that have everywhere non-negative energy.
+The momentum conditions are implemented here by comparing the mixed
+projection local Eulerian momentum density,
+Ji = −nα Tiα = N Ti0 ,
+
+(8)
+
+Breaking the Warp Barrier
+
+4
+
+to the mixed projection of the Einstein tensor, resulting for the considered geometries
+in the three conditions
+8πJi = ∂j Kij − ∂i K.
+(9)
+Both the energy and momentum conditions must be satisfied everywhere and will provide
+a sense for the stress-energy sources needed to construct the soliton geometries.
+The dynamics of the geometry are in general set by the remaining six free
+components of the Einstein equation. Several of these degrees have already been made
+moot by the choice of a flat h and constant lapse function N . The conditions for positive
+energy solutions introduced in the next section will reduce the number of dynamical
+geometric degrees of freedom to one, meaning that only a single component of the
+dynamical portion of the Einstein equation is needed. The trace condition is a natural
+choice, given by
+8πTµµ = −R,
+(10)
+where the space–time Ricci scalar decomposes in this class of space–times to
+R = K 2 + Kji Kij + 2Ln K,
+
+(11)
+
+where Ln () is the Lie derivative in the direction of the normal unit vector field.
+3. Constructing Positive-Energy Solutions Using a Hyperbolic Shift Vector
+Potential
+The class of geometries studied here will be characterized by a shift vector potential
+function, a real-valued function φ with spatial gradient relating the shift vector
+components
+Ni = ∂i φ.
+(12)
+The soliton potentials considered here will be set to a steady state, moving with constant
+velocity and allowing the potential to be parameterized by displacement from its moving
+center φ(x − xs (t), y − ys (t), z − zs (t)), where ẋs (t) = vx , ẏs (t) = vy , and żs (t) = vz are
+the constant velocity components of the soliton.
+The potential condition alone is insufficient to produce a positive definite function
+of Eqn. 7, and so a relation between all the shift vector components is added. The
+most common relations explored in the literature are linear and elliptic. Specifically,
+the linear relation (Nx = Ny = 0) of Ref. [1] produced the renowned toroid of negative
+energy density about the soliton bubble of Nz , here displayed in Cartesian coordinates,
+EAlc =
+
+
+−1
+(∂x Nz )2 + (∂y Nz )2 .
+32π
+
+(13)
+
+The expansionless (K = −1/2(∂x Nx + ∂y Ny + ∂z Nz ) = 0) elliptic relation of Ref. [11]
+restricted the energy form to the negative definite square of the extrinsic curvature
+ENat =
+
+−1 i j
+KK .
+16π j i
+
+(14)
+
+Breaking the Warp Barrier
+
+5
+
+Parabolic and hyperbolic relations remained to be explored.
+The hyperbolic relation is examined here. Specifically, the potential function will
+be taken to satisfy a linear wave equation over the spatial coordinates
+∂x2 φ + ∂y2 φ −
+
+2 2
+∂ φ = ρ,
+vh2 z
+
+(15)
+
+√
+where vh / 2 is the dimensionless wave front ‘speed’ on the hypersurface, and ρ is the
+source function. The positive z-axis is singled out as it will be the principal direction of
+travel for the soliton. Therefore, the remainder of this paper will consider only motion
+along the z direction, setting vx = vy = 0. The geometric side of the energy condition
+can then be rewritten as
+
+
+2 2
+2
+i j
+2
+2
+2
+∂ φ + ρ −2 (∂y ∂x φ)2 −2 (∂z ∂x φ)2 −2 (∂y ∂z φ)2 . (16)
+K −Kj Ki = 2∂x φ∂y φ+2∂z φ
+vh2 z
+It is still not altogether clear what the sign of the energy function is, so two
+simplifications are applied for the purpose of demonstration. Assuming that ρ and
+φ are both parameterized in the (x, y) coordinates by the l1 norm s = |x| + |y|, the
+energy further can be further simplified to a two-coordinate form, here using (z, x),
+
+
+
+
+1
+2 2
+2
+2
+E=
+2∂z φ ρ + 2 ∂z φ − 4 (∂z ∂x φ) .
+(17)
+16π
+vh
+The Green’s function representation of the potential, holding that the potential’s initial
+condition at z → −∞ is null, takes the form
+
+
+Z
+|∆x|
+0
+0 1
+0
+φ = dx dz
+Θ z−z −
+ρ(z 0 , |x0 | + |y|),
+(18)
+4vh
+vh
+where Θ() is the Heaviside function and ∆x = x − x0 . The shift vectors can then be
+found in the Green’s form
+
+
+Z
+1
+|∆x| 0
+0
+dx ρ z −
+, |x | + |y| ,
+(19)
+Nz =
+4vh
+vh
+
+
+Z
+1
+|∆x| 0
+0
+Nx = − 2 dx sign (∆x) ρ z −
+, |x | + |y| ,
+(20)
+4vh
+vh
+where sign () is the sign function. One can see that the shift vector components
+are proportional to integrals of source over the ‘past’ wave cone. Given the Green’s
+expressions, it can be straightforwardly computed that |∂z2 φ| ≥ vh |∂z ∂x φ|, implying that
+the energy condition satisfies the inequality
+E ≥ 2ρ × ∂z2 φ
+Z
+1
+=ρ×
+dx0 ∂r ρ(r, |x0 | + |y|)|r=z−|∆x|/vh ,
+2vh
+
+(21)
+
+from which rules may be formed to ensure the energy density is everywhere non-negative.
+For instance, the energy function will be non-negative for configurations such that the
+
+Breaking the Warp Barrier
+
+6
+
+local source density and the z-component source density gradient integrated along the
+intersecting ‘past’ wave trajectories are of the same sign.
+Consider the pentagonal configuration of sources in Fig. 1, illustrated via bi-lateral
+s-projection onto the (x, 0, z) plane of a hypersurface, as a demonstration of one such
+compact positive energy configuration with net motion vz = vs . The configuration is
+such that the spatial wave fronts traveling from the left-most beams create a broad
+region of high and level Nz at the center, terminating on the right-most pair of beams of
+opposing density, with the remaining sources organized to terminate the stray branches
+of the wave cone, Fig. 2. The net hyperbolic source of the soliton is zero. The individual
+sources are formed as rhomboids in the 2D projection such that the boundary lines
+are angled to be between the trajectories of the hyperbolic wavefront cone and the zconstant plane for the purpose of satisfying the “non-negative energy rule” above. The
+perpendicular components of the shift vector are seen to vanish in the central region,
+while the parallel component over the same region is also very level but non-zero. The
+placid region at the soliton center is nearly tidal-force-free, where Eulerian observers
+move along essentially straight lines at vrel = Nz (0) − vo relative to the soliton. This is
+in contrast to the volatile boundary where there exist domains in which the shift vector
+can be much greater in size and divergent in direction. The net shift vector of the soliton
+is found to be zero.
+The relation between the soliton velocity is assigned to be consistent with the shift
+vector of the soliton’s central region (vs = Nz (0, 0)) as Eulerian observers in the central
+region will then travel along time-like curves with proper time rate matching those far
+from the soliton, dτ = dt. In this case, the logistics of soliton travel for observers in the
+central region reflect those in [1].
+The energy density of the soliton is seen to be positive definite in Fig. 3. Each
+rhomboid source ρrhom is constructed individually to have everywhere positive energy
+density and to have positive energy density in the presence of other sources of ρrhom of
+the same size and orientation. One can therefore piece together many other solutions
+from these elements of hyperbolic source. The total energy requirements of the positiveenergy solitons closely follow that of Ref. [3] as applied to the Alcubierre solution
+Z
+√
+(22)
+Etot = E −gd3 x.
+For solitons where the radial extent of the central region R is much larger than the
+thickness of the energy-density laden boundary shell w (w  R), the energy is estimated
+to be
+R2
+Etot ∼ Cvs2
+(23)
+w
+where C is a form factor typically of order unity. The required energy for a positiveenergy soliton with central regions radius R = 100 m and average source thickness along
+the z-axis w = 1 m approaches a mass equivalent of Etot ∼ (few) × 10−1 M vs , which is
+of the same magnitude as the estimate of Ref. [3] for an Alcubierre solution of the same
+dimensions, but without the uncertainties associated with where one might source the
+
+Breaking the Warp Barrier
+
+7
+48
+40
+
+2
+
+32
+24
+16
+
+0
+
+8
+
+[Nz(0, 0)/R]
+
+x xs [R]
+
+1
+
+0
+
+1
+
+8
+
+2
+
+16
+24
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+Figure 1. Projection of the source ρ of shift vector potential φ along (x, 0, z).
+Propagation direction of the soliton is along the z-axis. Charge within each chord
+perpendicular to the long axis of the sources are calibrated to give a level surface in
+the central region. Shape and charge profile of each rhomboid source are identical.
+Total integrated charge of the system is 0.
+
+energy. The estimate for the Alcubierre solution sourced by naturally occurring Casimir
+forces is much higher, ∼ −6 × 1062 vs kg, which requires one to reduce the boundary
+thickness to a few hundred Planck lengths. However, no such naturality conditions are
+known to restrict the stress-energy driving the positive energy solutions. Further, many
+soliton solutions have been made since Ref. [1] that drastically improved on the overall
+negative energy requirements [7, 10, 19, 16, 17]. Several of these approaches may provide
+significant savings in energy for the positive-energy soliton.
+The hypersurface volume expansion, calculated here from the extrinsic curvature
+trace θ = K, can be found in Fig. 4. The volume expansion of the positive-energy soliton
+is complex, containing expansions and contractions on all sides of the central region.
+The solution of [1] possesses only one negative expansion lobe at the leading edge of
+its soliton and one positive expansion lobe at the trailing edge. The largest values of
+θ for the positive-energy soliton coincide with the sources of stress-energy density, in
+contrast to the solution of Ref. [1] where the energy density and expansion factor are
+maximally separated on the soliton boundary. Further, the largest positive and negative
+lobes of θ on the positive-energy soliton are seen to correlate to the negative and positive
+hyperbolic sources respectively. Both solutions have net expansion of 0.
+The momentum conditions under the hyperbolic shift vector potential are seen to
+
+Breaking the Warp Barrier
+
+8
+
+0.9
+
+2
+
+0.6
+0.3
+0.0
+
+Ni/Nz(0, 0)
+
+x xs [R]
+
+1
+
+0.3
+
+0
+
+0.6
+0.9
+
+1
+
+1.2
+1.5
+
+2
+
+1.8
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+Figure 2. Projection of the shift vector components Nz (left) and Nx (right) along
+(x, 0, z). Propagation direction of the soliton is from left to right along the z-axis. The
+multi-compartment structure is a distinct departure from the single top-hat soliton
+fond in [1] and [11]. Total integrated shift in each direction is 0.
+
+vanish
+Ji = 0,
+
+(24)
+
+implying a trivial net energy–momentum relation relative to free-falling Eulerian
+observers. Sources with multiple species can can satisfy zero net momentum flux while
+each variety is non-static. The multi-species stress-energy source of choice in this paper is
+an electric plasma consisting of a massive fluid and electromagnetic fields, the conditions
+of which are investigated further in the next section.
+4. Soliton-Plasma Dynamics
+This section describes the conditions needed for an electrically conducting plasma to act
+as source for the positive-energy soliton. The dynamics of the hyperbolic potential φ, or
+equivalently the hyperbolic source ρ, can be set by the Einstein equation trace, Eqn. 10.
+The Ricci scalar of Eqn. 11 under the conditions of the previous section becomes
+R = −16πE + 2θ2 + 16π ((Nz − vs ) ∂z K + 2Nx ∂x K) .
+
+(25)
+
+The stress-energy of the plasma plus electromagnetic fields is of the form
+1
+T µν = (ρm + p) uµ uν + pg µν + F µα F νβ gαβ − g µν F αβ Fαβ ,
+4
+
+(26)
+
+Breaking the Warp Barrier
+
+9
+121.5
+108.0
+
+2
+
+x xs [R]
+
+1
+
+81.0
+67.5
+
+0
+
+54.0
+
+1
+
+40.5
+
+Energy [Nz(0, 0)2/R 2]
+
+94.5
+
+27.0
+
+2
+
+13.5
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+0.0
+
+Figure 3. Projection of the local energy density of Eqn. 17 along (x, 0, z). Propagation
+direction of the soliton is from left to right along the z-axis. The energy density is
+dominated by those regions containing hyperbolic source ρ, but also extends weakly
+to the boundaries of the wavefronts. The energy density is everywhere positive and
+therefore satisfies the weak energy condition.
+
+where ρm is the plasma mass density, p is the plasma pressure, uα are the components
+of the plasma velocity field, and F µν are the components of the anti-symmetric field
+strength tensor. The trace condition then becomes
+−16πE + 2θ2 + 16π ((Nz − vs ) Jz + 2Nx Jx ) = 8π (ρm − 3p) ,
+
+(27)
+
+which on the stress-energy side involves only the massive fluid as the electromagnetic
+stress-energy is trace-less. Further, note that the energy and momentum conditions
+involve the plasma, the electromagnetic fields, as well as the shift vector
+
+2 1
+1
+1
+1
+1 + 2Ni N i E i Ei −
+Ni E i + Bi B i − ijk N i E j B k ,
+2
+2
+2
+2
+(28)
+
+Ji = (ρm + p) ui u0 − pNi + ijk E j B k − Ei Ej N j
+
+
+2
+1 
+(29)
+− Ni 1 − Nk N k El E l + Nk E k − Bk B k + ljk N l E j B k ,
+2
+E = (ρm + p) u0
+
+2
+
+−p+
+
+where E i are the components of the electric field three-vector and B i are the components
+of the magnetic field pseudo-three-vector. The trace equation is used here to investigate
+the response of the fluid’s mass and pressure density as the soliton velocity has already
+been set. In their trace combination, ρm − 3p can take on both positive and negative
+
+Breaking the Warp Barrier
+
+10
+48
+
+2
+
+36
+24
+12
+0
+
+0
+
+[Nz(0, 0)/R]
+
+x xs [R]
+
+1
+
+12
+
+1
+
+24
+36
+
+2
+
+48
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+60
+
+Figure 4. Projection of the local volume expansion factor θ along (x, 0, z).
+Propagation direction of the soliton is from left to right along the z-axis. Positive and
+negative expansion factor are largely associated with negative and positive hyperbolic
+sources respectively. Non-zero expansion factor also exist in the spaces in-between
+hyperbolic sources along the hyperbolic wavefronts. Total integrated expansion factor
+is 0.
+
+values, limited by the fluid equation of state. The solitons considered here, where the
+velocity matches the central shift vector (vs = Nz (0, 0)) has trace that is consistent with
+a fluid with equation of state p ≤ ρ, Fig. 5, which is within the physically accepted
+range [23].
+In addition to supporting the energy, momentum, and trace conditions for steadystate motion, the plasma must satisfy its own conditions. These include the Maxwell
+equations for the electric and magnetic fields, the conservation and dynamical equations
+for the massive component of the plasma, the pressure equation of state, and the
+additional relations between the massive and electric current densities. These conditions
+are of sufficient number to determine all the plasma’s degrees, meaning that the
+geometric conditions cannot in general be used to dictate the state of media without overconstraining it, as there is only one geometric field and multiple independent geometric
+conditions. In addition to the energy and momentum conditions discussed above, causal
+contact is often used as a pre-condition for relativistic plasmas, and is frequently checked
+using the dominant energy condition. The dominant energy condition is respected by
+the sub-luminal solitons so long as the magnitude of the shift vector is less than unity
+in all domains (Ni N i < 1). For higher speeds, the soliton begins to form horizons
+between its domains and the external vacuum. To further identify a solution of the
+
+Breaking the Warp Barrier
+
+11
+32000
+28000
+
+2
+
+24000
+
+Trace [Nz(0, 0)2/R 2]
+
+20000
+
+1
+x xs [R]
+
+16000
+
+0
+
+12000
+8000
+
+1
+
+4000
+0
+
+2
+
+4000
+
+2
+
+1
+
+0
+
+z zs [R]
+
+1
+
+2
+
+3
+
+Figure 5. Projection of the Einstein tensor trace from Eqn. 27 along (x, 0, z).
+Propagation of the soliton is taken to be uniform with speed consistent with shift
+vector in the central region, vs = Nz (0, 0).
+
+more than dozen degrees of freedom of the plasma that satisfy the example soliton, and
+to investigate the horizon problems endemic to this and all other known superluminal
+solitons, would require computation beyond the scope of this paper. What can be said
+here is that the conditions of the plasma are consistent with the soliton geometry. It is
+now a matter of finding the right configuration.
+5. Conclusions
+This paper has demonstrated that there exist superluminal solitons in general
+relativity satisfying both the weak energy condition and the momentum conditions for
+conventional sources of stress-energy. This is the first known solution of its kind, as
+previous superluminal solitons have required large amounts of negative energy. The
+positive-energy geometries presented here distinguish themselves from the literature in
+that they obey a hyperbolic relation among their shift vector components in the form
+of a wave equation on the associated space-like hypersurface, whereas only linear or
+elliptic relations had been previously considered. The solitons were further constructed
+to contain a central region with minimal tidal forces, where proper time coincides with
+asymptotic coordinate time, and any Eulerian observer within the central region would
+remain stationary with respect to the soliton. The transport logistics of the presented
+positive-energy solitons are similar to the solitons of the Alcubierre solution.
+Beyond being the first positive energy solutions of their kind, the presented solitons
+
+Breaking the Warp Barrier
+
+12
+
+appear to be a counter example to claims in the literature that superluminal space–
+times must violate the weak energy condition [6, 13]. To contrast the present positiveenergy soliton and the previous proofs, one must realize that the pre-conditions of
+these proofs are restricted to geometries with a single fastest causal path. No known
+generalizations of the proofs exist to extensive superluminal mechanisms. Previous
+superluminal solitons such as the Alcubierre and Natário solutions can be made to
+fit this condition as their structures permit a point-like limit of the interior, where
+the fastest causal path would settle. The example positive-energy, in contrast, must
+have non-trivial extent. Similar point-like limits of the positive energy solitons would
+collapse the geometry to the Minkowski vacuum, an expected outcome as the shift vector
+components are seen to integrate to zero. The positive energy soliton therefore appears
+to circumvent the criteria of [6] and [13].
+The energy and momentum conditions of the presented positive-energy geometries
+were found to conform to a plasma with no net momentum flux. The trace of the
+Einstein equation, the single dynamical conditions that determines the hyperbolic shift
+vector potential, was used to determine the limits on the plasma equation of state
+in lieu of having already set the steady-state velocity of the soliton. The geometric
+conditions on the plasma are deferential to the plasma’s own dynamical equations,
+which include equations of motion and constitutive relations for both the massive fluid
+and the electromagnetic fields. The total energy requirements of the positive-energy
+solitons appear to be of the same order as the original Alcubierre soliton under the
+same shell-thickness-to-diameter conditions, with the energy for a soliton of modest
+radius R = 100 m and shell thickness w = 1 m requiring Etot ∼ (few) × 10−1 M vs /c.
+This energy, though still immense, is intriguing as there have been many advances in
+reducing the required energy of the negative-energy solitons that may be equally effective
+for this new class of solutions. The next challenge is to bring the energy requirements
+of the positive-energy soliton to the human technological scale.
+Once the energy requirement is lowered, the space–time signatures of positiveenergy solitons may be studied in a laboratory setting using existing or novel methods.
+For instance, previous interferometric searches for hyperfast solitons could be recast
+to search for the much larger signal of a positive-energy-efficient soliton [17, 24]. The
+highly magnetized energetic and diffuse atmospheric plasma of magnetars may also be
+a natural place to look for signatures of positive-energy soliton geometries even prior to
+advances in energy reduction.
+For theory, it is an appealing proposition to incorporate the degrees and dynamics
+of the plasma into the geometric computation. One could self-consistently simulate
+the creation, propagation, and dismantlement phases of a soliton at both sub- and
+superluminal speeds. Other directions include further optimizations of the solutions over
+the energy requirements and other trade-offs, the broadening of the soliton geometry
+to incorporate a “payload” in the soliton’s central region, and studying the challenges
+of horizon formation when transitioning to superluminal speeds. However, developing
+models and configurations of the plasma alongside the geometry would in general require
+
+Breaking the Warp Barrier
+
+13
+
+a large-scale numerical effort. Fortunately, in the era of gravitational-wave astronomy
+and high-precision cosmology, there exist a number of numerical relativity codes that are
+increasingly capable of describing massive fluids and gauge fields in relativistic space–
+time.
+6. Acknowledgements
+I would like to thank Justin Feng, Ken Olum, José Natário, Jeffery Lee, Gerald Cleaver,
+Katy Clough, Leslie Rosenberg, Andreas Karch, and Sanjay Reddy for their insightful
+comments during the preparation of this manuscript.
+References
+[1] Alcubierre M 1994 Classical and Quantum Gravity 11 L73–L77 URL https://doi.org/10.1088%
+2F0264-9381%2F11%2F5%2F001
+[2] Everett A E 1996 Phys. Rev. D 53(12) 7365–7368 URL https://link.aps.org/doi/10.1103/
+PhysRevD.53.7365
+[3] Pfenning M J and Ford L H 1997 Classical and Quantum Gravity 14 1743–1751 URL https:
+//doi.org/10.1088%2F0264-9381%2F14%2F7%2F011
+[4] Hiscock W A 1997 Classical and Quantum Gravity 14 L183–L188 URL https://doi.org/10.
+1088%2F0264-9381%2F14%2F11%2F002
+[5] Krasnikov S V 1998 Phys. Rev. D 57(8) 4760–4766 URL https://link.aps.org/doi/10.1103/
+PhysRevD.57.4760
+[6] Olum K D 1998 Phys. Rev. Lett. 81(17) 3567–3570 URL https://link.aps.org/doi/10.1103/
+PhysRevLett.81.3567
+[7] Broeck C V D 1999 Classical and Quantum Gravity 16 3973–3979 URL https://doi.org/10.
+1088%2F0264-9381%2F16%2F12%2F314
+[8] Millis M G 1999 Acta Astronautica 44 175 – 182 ISSN 0094-5765 missions to the Outer
+Solar System and Beyond URL http://www.sciencedirect.com/science/article/pii/
+S0094576599000454
+[9] Visser M, Bassett B and Liberati S 2000 Nuclear Physics B - Proceedings Supplements 88
+267 – 270 ISSN 0920-5632 URL http://www.sciencedirect.com/science/article/pii/
+S0920563200007829
+[10] Loup F, Waite D and Halerewicz E J 2001 arXiv e-prints gr-qc/0107097 (Preprint gr-qc/0107097)
+URL http://www.jbis.org.uk/paper.php?p=2013.66.242
+[11] Natário J 2002 Classical and Quantum Gravity 19 1157–1165 URL https://doi.org/10.1088%
+2F0264-9381%2F19%2F6%2F308
+[12] Gauthier C, Gravel P and Melanson J 2002 International Journal of Modern Physics A 17 2761
+[13] Lobo F and Crawford P 2003 Weak Energy Condition Violation and Superluminal Travel vol 617
+p 277
+[14] Lobo F S N and Visser M 2004 Classical and Quantum Gravity 21 5871–5892 URL https:
+//doi.org/10.1088%2F0264-9381%2F21%2F24%2F011
+[15] Lobo F S N 2008 Classical and Quantum Gravity Research arXiv:0710.4474 (Preprint 0710.4474)
+[16] Obousy R K and Cleaver G 2008 Journal of the British Interplanetary Society 61 364–369 (Preprint
+0712.1649)
+[17] White H 2013 Journal of the British Interplanetary Society 66 242–247
+[18] DeBenedictis A and Ilijić S 2018 Classical and Quantum Gravity 35 215001 URL https:
+//doi.org/10.1088%2F1361-6382%2Faae326
+[19] Krasnikov S 2003 Phys. Rev. D 67 104013 (Preprint gr-qc/0207057)
+
+Breaking the Warp Barrier
+
+14
+
+[20] Arnowitt R, Deser S and Misner C W 1959 Phys. Rev. 116(5) 1322–1330 URL https://link.
+aps.org/doi/10.1103/PhysRev.116.1322
+[21] Misner C W, Thorne K and Wheeler J 1973 Gravitation (San Francisco: W. H. Freeman) ISBN
+978-0-7167-0344-0, 978-0-691-17779-3
+[22] Bardeen J M and Piran T 1983 Physics Reports 96 205 – 250 ISSN 0370-1573 URL http:
+//www.sciencedirect.com/science/article/pii/0370157383900698
+[23] Neilsen D W and Choptuik M W 2000 Classical and Quantum Gravity 17 733–759 (Preprint
+gr-qc/9904052)
+[24] Lee J S and Cleaver G B 2016 Physics Essays 29 201206 ISSN 0836-1398 URL http://dx.doi.
+org/10.4006/0836-1398-29.2.201
+
+

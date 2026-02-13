@@ -1,0 +1,293 @@
+                                                                                                    Entanglement renormalization
+
+                                                                                                                    G. Vidal1, 2
+                                                                                 1
+                                                                                   School of Physical Sciences, the University of Queensland, QLD 4072, Australia
+                                                                    2
+                                                                        Institute for Quantum Information, California Institute for Technology, Pasadena, CA 91125 USA
+                                                                                                             (Dated: November 26, 2024)
+                                                                           In the context of real-space renormalization group methods, we propose a novel scheme for quan-
+
+
+
+
+arXiv:cond-mat/0512165v2 [cond-mat.str-el] 5 Dec 2006
+                                                                        tum systems defined on a D-dimensional lattice. It is based on a coarse-graining transformation
+                                                                        that attempts to reduce the amount of entanglement of a block of lattice sites before truncating its
+                                                                        Hilbert space. Numerical simulations involving the ground state of a 1D system at criticality show
+                                                                        that the resulting coarse-grained site requires a Hilbert space dimension that does not grow with
+                                                                        successive rescaling transformations. As a result we can address, in a quasi-exact way, tens of thou-
+                                                                        sands of quantum spins with a computational effort that scales logarithmically in the system’s size.
+                                                                        The calculations unveil that ground state entanglement in extended quantum systems is organized
+                                                                        in layers corresponding to different length scales. At a quantum critical point, each rellevant length
+                                                                        scale makes an equivalent contribution to the entanglement of a block with the rest of the system.
+
+                                                                        PACS numbers:
+
+
+                                                           Renormalization, one of the conceptual pillars of sta-            the system, aims to eliminate the growth of the site’s
+                                                        tistical mechanics and quantum field theory, revolves                Hilbert space dimension along successive rescaling trans-
+                                                        around the idea of rescaling transformations of an ex-               formations. In particular, when applied to a scale invari-
+                                                        tended system [1]. These so-called renormalization group             ant system the transformation is expected to produce a
+                                                        (RG) transformations are not only a key theoretical el-              coarse-grained system identical to the original one. Nu-
+                                                        ement in the modern formulation of critical phenomena                merical tests for critical systems in D = 1 spatial dimen-
+                                                        and phase transitions, but also the basis of important               sions confirm this expectation. Our results also unveil
+                                                        computational methods for many-body problems.                        the stratification of entanglement in extended quantum
+                                                           In the case of quantum systems defined on a lattice,              systems, and open the path to a very compact description
+                                                        Wilson’s real-space RG methods [2], based on the trun-               of quantum criticality.
+                                                        cation of the Hilbert space, replaced Kadanoff’s spin-                  Real-space RG and DMRG.– As originally intro-
+                                                        blocking ideas [3] with a concise mathematical formu-                duced by Wilson [2], real-space RG methods truncate the
+                                                        lation and an explicit prescription to implement rescal-             local Hilbert space of a block of sites in order to reduce
+                                                        ing transformations. But it was not until the advent of              its degrees of freedom. Let us consider a system on a
+                                                        White’s density matrix renormalization group (DMRG)                  lattice L in D spatial dimensions and its Hilbert space
+                                                        algorithm [4] that RG methods became the undisputed                                                O
+                                                        numerical approach for systems on a 1D lattice. More re-                                     VL ≡     Vs ,                  (1)
+                                                                                                                                                            s∈L
+                                                        cently such techniques have gained renewed momentum
+                                                        under the influence of quantum information science. By               where s ∈ L denotes the lattice sites and Vs has finite
+                                                        paying due attention to entanglement, algorithms to sim-             dimension. Let us also consider a block B ⊂ L of neigh-
+                                                        ulate time-evolution in 1D systems [5] and to address 2D             boring sites, with corresponding Hilbert space
+                                                        systems [6] have been put forward.                                                               O
+                                                           The practical value of DMRG and related methods is                                      VB ≡     Vs .                 (2)
+                                                        unquestionable. And yet, they notably fail to satisfy                                               s∈B
+
+                                                        one of the most natural requirements for a RG transfor-              In an elementary RG transformation, the lattice L is
+                                                        mation, namely to have scale invariant systems as fixed              mapped into a new, effective lattice L′ , where each site
+                                                        points. Instead, for such systems the number of degrees              s′ ∈ L′ is obtained from a block B of sites in L by coarse-
+                                                        of freedom (that is, the Hilbert space dimension) of an ef-          graining. More specifically, the space V′s′ for site s′ ∈ L′
+                                                        fective site increases with each rescaling transformation.           corresponds to a subspace SB of VB ,
+                                                        This fact conflicts with the very spirit of renormalization,
+                                                        but it is not only disturbing from a conceptual viewpoint.                                 V′s′ ∼
+                                                                                                                                                        = SB ⊆ VB ,                  (3)
+                                                        The cost of a computation depends on the size of the
+                                                        effective sites and it becomes unaffordable after a suffi-           as characterized by an isometric tensor w, Fig (1),
+                                                        ciently large number of iterations.
+                                                                                                                                             w : V′s′ 7→ VB ,     w† w = I.          (4)
+                                                          In this Letter we propose a real-space RG transfor-
+                                                        mation for quantum systems on a D-dimensional lattice                Isometry w can now be used to map a state |Ψi ∈ VL
+                                                        that, by renormalizing the amount of entanglement in                 [typically, a ground state] into a coarse-grained state
+                                                                                                                                               2
+
+            V'                                        Vɶ sɶ                     r1 s1 and s2 r2 ,
+             s'
+                                                                                        u1 : Vr1 ⊗ Vs1 → Vr1 ⊗ Vs1 ,    u†1 u1 = u1 u†1 = I,
+                                                 w
+        w                                                                               u2 : Vs2 ⊗ Vr2 → Vs2 ⊗ Vr2 ,    u†2 u2 = u2 u†2 = I. (7)
+
+                                          u1                  u2                Properly chosen disentanglers reduce the short-range en-
+                                                                                tanglement between the block B and its immediate neigh-
+                                                                                borhood. The original state ρ[B] of block B,
+  Vs1               Vs                   Vr     Vs            Vs    Vr
+                        2                  1      1             2     2                                      h               i
+                                                                                               ρ[B] = trr1 r2 ρ[r1 s1 s2 r2 ] ,      (8)
+FIG. 1: Isometries and disentanglers. Left: a standard nu-
+merical RG transformation builds a coarse-grained site s′ ,                     is now replaced with a partially disentangled state ρ̃[B] ,
+with Hilbert space dimension m, from a block of two sites s1
+and s2 through the isometry w of Eq. (4). Right: by using the                                        h                                     i
+disentanglers u1 and u2 of Eq. (7), short-range entanglement                          ρ̃[B] = trr1 r2 (u1 ⊗ u2 )ρ[r1 s1 s2 r2 ] (u1 ⊗ u2 )† , (9)
+residing near the boundary of the block is eliminated before
+the coarse-graining step. As a result, the coarse-grained site                  which has a smaller effective rank m̃, m̃ < m. Our RG
+s̃ requires a smaller Hilbert space dimension m̃, m̃ < m.                       transformation consists of two steps:
+                                                                                  (i) First we decrease or renormalize the amount of en-
+                                                                                tanglement between block B and the rest of L. This is
+|Ψ′ i ∈ VL′ . A thoughtful selection of subspace SB is es-                      achieved with disentanglers that act locally around the
+sential. On the one hand, its dimension m should be as                          boundary of B. The block does not become completely
+small as possible, because the cost of subsequent tasks,                        disentangled because only entanglement localized near its
+such as computing expectation values for local observ-                          boundaries can be removed.
+ables, grows polynomially with m. On the other, SB                                (ii) Then, as in Wilson’s proposal, we truncate the
+needs to be large enough that |Ψ′ i retains all relevant                        Hilbert space of block B, and we do so following White’s
+properties of |Ψi. White identified the optimal choice                          idea to target the support of the block’s density matrix.
+as part of his DMRG algorithm [4]. Let ρ[B] denote the                          But instead of keeping the support of the original ρ[B] , we
+reduced density matrix of |Ψi on block B. Then,                                 retain the (smaller) support of the partially disentangled
+                                                                                density matrix ρ̃[B] .
+                    SB ≡< |ρ1 i, · · · , |ρm i >,                         (5)
+                                                                                τ
+where |ρi i are the m eigenvectors of ρ P with largest [B]                        3
+                                                                                                                       τ     y
+                                              m
+eigenvalues pi , and m is such that ǫ ≥ 1 − i=1 pi , where                                                                   x
+ǫ is a preestablished truncation error, ǫ ≪ 1.                                      2
+
+   Notice that m refers to the amount of entanglement be-
+tween B and the rest of the lattice, L−B, as characterized                        1
+by the rank of the truncated Schmidt decomposition
+                                                                                  0
+                  m
+                                                                                                                 x
+                  X     √
+        |Ψi ≈               pi |ρi i ⊗ |σi i,   |σi i ∈ VL−B .            (6)
+                                                                                FIG. 2: Left: MERA for a 1D lattice with periodic boundary
+                  i=1
+                                                                                conditions. Notice the fractal nature of the tensor network.
+                                                                                Translational symmetry and scale invariance can be naturally
+In other words, the performance of DMRG-based meth-                             incorporated, substantially reducing the computational com-
+ods depends on the amount of entanglement in |Ψi.                               plexity of the numerical simulations. Right: building block
+  Entanglement Renormalization.– We propose a                                   of a MERA for a 2D lattice. Disentanglers and isometries
+technique to reduce the amount of entanglement between                          address one of the x and y spatial directions at a time.
+the block B and the rest of the lattice L while still ob-
+taining a quasi-exact description of the state of the sys-                         The above steps, characterized by unitary and iso-
+tem. This is achieved by deforming, by means of a uni-                          metric tensors u and w, produce an alternative coarse-
+tary transformation, the boundaries of the block B before                       grained lattice L̃ and a coarse-grained state |Ψ̃i ∈ VL̃
+truncating its Hilbert space, see Fig. (1).                                     that contains less entanglement than |Ψ′ i ∈     L′ . Impor-
+                                                                                                                              V[R]
+  Let us specialize, for simplicity, to a 1D lattice and to a                   tantly, the expectation value hΨ|o|Ψi = tr oρ         , where
+block B made of just two contiguous sites s1 and s2 . Let                       o is an observable defined on a small set of sites R ⊂ L,
+r1 and r2 be the two sites immediately to the left and to                       can be efficiently computed from just |Ψ̃i, u, w and o.
+the right of B. Then we consider unitary transformations                        There are two ways: (i) as described in [9], ρ[R] can be
+u1 and u2 , the disentanglers, acting on the pairs of sites                     computed from ρ̃[R̃] ≡ trL̃−R̃ |Ψ̃ihΨ̃|, where R̃ is the set
+                                                                                                                                                                        3
+
+                   2.5                                    (ii)
+                                                                                              mensions. The extra direction τ , related to the RG flow,
+                         E = 1/6  log L + k
+                             unrenormalized entropy (i)                                       grows only as the logarithm of the lattice dimensions, see
+                             renormalized entropy
+                    2                                                                         Fig. (2). Several properties of the MERA together with
+                                                                                              its connection to quantum circuits are described in [9].
+                   1.5
+                                                                                                                  0
+
+
+
+
+   Block entropy
+                    1                                                                                            10
+                                                                                                                                          Block 4 16 64 256
+                                                                                                                                          size L: 8 32 128
+                         4    8 16              64         256         1,024   4,096 16,384                       −3
+                                                                                                                 10
+                             unrenormalized entropy
+                   2.5        renormalized entropy
+                                                                 (a)
+                                                                                                                  −6
+                                                                                                                       renormalized
+                    2                                                                                            10
+
+
+
+
+                                                                                                 Block spectra
+                                                                                                                        spectrum
+                   1.5
+                    1                                                                                                                 5      10         20   30 40 50
+
+                   0.5                                                                                            0
+                                                                 (b)                                             10
+                    0
+                         4     8 16             64          256        1,024   4,096 16,384                                                       unrenormalized
+                                                                                                                  −3                               spectrum
+                                                   Block size                                                    10
+
+FIG. 3: Scaling of the entropy of entanglement in 1D quan-                                                        −6
+                                                                                                                       renormalized
+tum Ising model with transverse magnetic field. Up: in a                                                         10     spectrum
+critical lattice [h = 1 in Eq. (10)], the unrenormalized entan-
+glement of the block scales with the block size L according to
+                                                                                                                                      5      10         20   30 40 50
+Eq. (11). Instead, renormalized entanglement remains con-
+stant along successive RG transformations, as a clear man-
+ifestation of scale invariance. Line (i) corresponds to using                                 FIG. 4: Spectrum of the reduced density matrix of a spin
+disentanglers only in the first RG transformation. Line (ii)                                  block. Up: as the size L of the spin increases, the number m
+corresponds to using disentanglers only in the first and second                               of eigenvalues {pi } required to achieve a given accuracy ǫ, see
+RG transformation. Down: in a noncritical lattice [h = 1.001                                  Eq. (5), also increases. In particular, m grows roughly ex-
+in Eq. (10)], the unrenormalized entanglement scales roughly                                  ponentially in the number τ = log 2 L of RG transformations.
+as in the critical case until it saturates (a) for block sizes com-                           The spectrum resulting from applying disentanglers leads to
+parable to the correlation length. Beyond that length scale,                                  a significantly smaller m̃ invariant along successive RG trans-
+the renormalized entanglement vanishes (b) and the system                                     formations. Down: spectrum of the reduced density matrix of
+becomes effectively unentangled.                                                              2τ spins immediately before and after using the disentanglers
+                                                                                              at the τ th coarse-graining step. These spectra are essentially
+                                                                                              independent of the value of τ = 1, · · · , 14.
+of sites of L̃ causally connected to R through u and w;
+(ii) alternatively, we can use u and w to lift o from L to                                      Example.– Figs. (3)-(4) study the ground state of the
+L̃, producing õ, and exploit that hΨ|o|Ψi = hΨ̃|õ|Ψ̃i.                                      1D quantum Ising model with transverse magnetic field,
+   The lifting of linear operators from L to L̃ generates,                                              H=
+                                                                                                               X
+                                                                                                                    σsx1 ⊗ σsx2 + h
+                                                                                                                                    X
+                                                                                                                                      σsz ,      (10)
+by iteration, a well-defined RG flow in the space of hamil-                                                               <s1 ,s2 >                 s
+tonians such that, in the 1D case, an interaction term h
+acting on at most three consecutive sites of L is mapped                                      for an infinite lattice [10]. The entanglement entropy be-
+into an interaction term h̃ acting also on at most three                                      tween a block B of L adjacent spins and the rest of the
+                                                                                                                                                   [B]
+consecutive sites in L̃ [analogous rules apply in D > 1                                       lattice, defined
+                                                                                                          P in terms of the eigenvalues {pi } of ρ as
+spatial dimensions]. Thus, in spite of the fact that disen-                                   S(B) ≡ − i pi log2 pi , scales at criticality (h = 1) with
+tanglers deform the original tensor product structure of                                      the block size L as [11]
+VL , the above rescaling transformation preserves locality,
+                                                                                                                                      1
+in that it maps local theories into local theories.                                                                            SL ≈     log2 L.                    (11)
+                                                                                                                                      6
+   In the same way as DMRG is related to matrix product
+states (MPS) [7], the above RG transformation is natu-                                        On the other hand, off criticality S(B) grows monoton-
+rally associated to a new ansatz for quantum many-body                                        ically with L until it reaches a saturation value for a
+states on a D dimensional lattice. The multi-scale en-                                        block size comparable to the correlation length in the
+tanglement renormalization ansatz (MERA) consists of a                                        system. Fig. (3) shows the effect of disentanglers on
+network of isometric tensors (namely the isometries u and                                     the entanglement entropy of a block. Most notably, the
+disentanglers w corresponding to successive iterations of                                     renormalized entanglement of a block in the critical case
+the RG transformation) locally connected in D + 1 di-                                         is reduced to a small constant value along the RG flow.
+                                                                                                                            4
+
+Correspondingly, as Fig. (4) shows, the Hilbert space di-      pectation values for the original system can be efficiently
+mension m̃ of a block of size L = 2τ can be kept constant      computed from the coarse-grained system.
+as we increase τ , allowing in principle for an arbitrary         We conclude with two remarks. First, a scale invari-
+number of iterations of the scale transformation. Our          ant critical ground state leads to disentanglers u and
+calculations, involving the reduced density matrix of up       isometries w that are the same at each iteration of the
+to L = 214 = 16, 384 spins, have been conducted with           RG transformation. A single pair (u, w), depending on
+Hilbert spaces of dimension m̃ = 8, while keeping the          O(m̃4 ) parameters, is thus seen to specify the ground
+truncation error ǫ at each step fixed below 5 × 10−7 . We      state, leading to an extremely compact characterization
+estimate that without disentanglers an equivalent error ǫ      that deserves further study. Second, renormalization
+requires a Hilbert space of m ≈ 500 − 1000 dimensions          group techniques are extensively used also in classical
+for the largest spin blocks. This exemplifies the compu-       problems, where the MERA can efficiently represent par-
+tational advantatges of using disentanglers.                   tition functions of lattice systems, extending the scope of
+   Discussion.– An appealing picture emerges from              this work beyond the study quantum systems.
+the above numerical exploration. Entanglement in the
+ground state of the quantum spin chain is organized in            The author appreciates conversations with I. Cirac, J.
+layers corresponding to different length scales in the sys-    I. Latorre, T. Osborne, D. Poulin, J. Preskill and, very
+tem. The entanglement of a given length scale can be           specially, with F. Verstraete, whose advise was crucial to
+modified by means of a disentangler that acts on a re-         find a fast disentangling algorithm. USA NSF grant no
+gion with linear size as large as that length scale. We        EIA-0086038 and an Australian Research Council Feder-
+obserbe two situations: (i) Off criticality, the entangle-     ation Fellowship are acknowledged.
+ment between a block of sites B and the rest of the lattice
+L consists roughly of contributions from layers of length
+scale not greater than the correlation length in the sys-
+tem. Therefore, after a sufficiently large number of RG
+transformations with disentanglers, the effective ground        [1] M.E. Fischer, Rev. Mod. Phys. 70, 653 (1998).
+state becomes a product state, that is, completely dis-         [2] See S.R. White and R.M. Noack, Phys. Rev. Lett. 68,
+                                                                    3487 (1992).
+entangled. (ii) At criticality, instead, the entanglement
+                                                                [3] L. P. Kadanov, Physics 2, 263 (1966).
+between R and the rest of L receives equivalent contri-         [4] S. R. White, Phys. Rev. Lett. 69, 2863 (1992), Phys. Rev.
+butions from all length scales (smaller than the size of            B 48, 10345 (1993). U. Schollwoeck, Rev. Mod. Phys. 77,
+B) – see [9] for a justification of the logarithmic scaling         259 (2005), cond-mat/0409292.
+of Eq. (11). In this case, by applying disentanglers we         [5] G. Vidal, Phys. Rev. Lett. 91, 147902 (2003),
+obtain a coarse-grained lattice identical to the original           quant-ph/0301063; ibid. Phys. Rev. Lett. 93, 040502
+one, including an effective Hamiltonian identical (up to            (2004), quant-ph/0310089. S. R. White and A. E.
+                                                                    Feiguin, Phys. Rev. Lett. 93, 076401 (2004). A. J. Da-
+a proportionality constant) to the original one [12]. In
+                                                                    ley et al, J. Stat. Mech.: Theor. Exp. (2004) P04005,
+either case, a fixed point of the RG transformation is              cond-mat/0403313.
+attained after sufficiently many iterations. Non-critical       [6] F. Verstraete, J.I. Cirac, cond-mat/0407066.
+theories collapse into the trivial fixed point (a product       [7] M. Fannes, B. Nachtergaele and R. F. Werner, Comm.
+state) while critical theories correspond to a non-trivial          Math. Phys. 144, 3 (1992), pp. 443-490. S. Östlund and
+fixed point (an entangled state expected to depends on              S. Rommer, Phys. Rev. Lett. 75, 19 (1995), pp. 3537.
+the universality class of critical theory). We conjecture       [8] F. Verstraete, D. Porras, J. I. Cirac Phys. Rev. Lett.
+that this picture holds also for quantum lattices in D > 1          93, 227205 (2004); D. Porras, F. Verstraete, J. I. Cirac,
+                                                                    cond-mat/0504717;
+spatial dimensions. Interestingly, a third type of fixed
+                                                                [9] G. Vidal, quant-ph/0610099.
+point is possible, in the case of a ground state with ei-      [10] here we have obtained an MPS for the ground state
+ther long-range order or topological order [13].                    of Eq. (10) with the infinite TEBD algorithm [14] and
+   In summary, we have presented a quasi-exact real-                then transformed it using several rows disentanglers and
+space RG transformation that, when tested in 1D sys-                isometries. An algorithm to compute the ground state at
+tems, produces effective sites of bounded dimension and             each iteration of the RG transformation, as well to obtain
+have (scale invariant) critical systems as its non-trivial          disentanglers, will be described elsewhere.
+                                                               [11] G. Vidal, J.I. Latorre, E. Rico, A. Kitaev, Phys. Rev.
+fixed points. The key feature of our approach is a lo-
+                                                                    Lett. 90 (2003) 227902, quant-ph/0211074. B.-Q.Jin,
+cal deformation of the tensor product structure of the              V.E.Korepin, J Stat. Phys. 116, 79-95 (2004). P. Cal-
+Hilbert space of the lattice, that identifies and factorizes        abrese and J. Cardy, J. Stat. Mech. 0406 (2004) P002.
+out those local degrees of freedom that are uncorrelated       [12] G. Evenbly and G. Vidal, in preparation.
+from the rest. This deformation is such that local opera-      [13] M. Aguado et al., in preparation.
+tors are mapped into local operators, so that relevant ex-     [14] G. Vidal, cond-mat/0605597.
+

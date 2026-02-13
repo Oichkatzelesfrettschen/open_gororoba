@@ -1,0 +1,1154 @@
+equations = []
+tables = []
+full_text = """
+Letter 1\r
+Spontaneous four-wave mixing in a thin layer with\r
+second-order nonlinearity\r
+CHANGJIN SON1,2,* AND MARIA CHEKHOVA1,2\r
+1Max Planck Institute for the Science of Light, 91058 Erlangen, Germany\r
+2Friedrich-Alexander Universität Erlangen-Nürnberg, 91058 Erlangen, Germany\r
+*\r
+changjin.son@mpl.mpg.de\r
+Compiled February 2, 2026\r
+Pairs of entangled photons are crucial for photonic quan\u0002tum technologies. The demand for integrability and\r
+multi-functionality suggests ‘flat’ platforms - ultrathin\r
+layers and metasurfaces - as sources of photon pairs.\r
+With the success in demonstrating spontaneous paramet\u0002ric down-conversion (SPDC) from such sources, an al\u0002ternative process to generate photon pairs, spontaneous\r
+four-wave mixing (SFWM), also starts to attract interest.\r
+In materials with nonzero second-order nonlinear sus\u0002ceptibility χ\r
+(2)\r
+, SFWM can generate photon pairs both\r
+directly, through the third-order nonlinear susceptibility\r
+χ\r
+(3)\r
+, and in a cascaded way, through second harmonic\r
+generation (SHG) followed by SPDC. Usually, the cas\u0002caded process is more efficient. Here, we show that\r
+in a thin layer, direct SFWM dominates, because the\r
+wavevector mismatch for SFWM is much smaller than\r
+for SHG or SPDC. To demonstrate it, we implement\r
+the photon pair generation via SFWM in a second-order\r
+nonlinear material - a thin layer of lithium niobate (LN).\r
+The existence of both second- and third-order nonlin\u0002ear processes offers broader opportunities for quantum\r
+state engineering.\r
+http://dx.doi.org/10.1364/ao.XX.XXXXXX\r
+1. INTRODUCTION\r
+Spontaneous parametric down-conversion (SPDC) - a second\u0002order nonlinear process where a single pump photon splits into a\r
+pair of daughter photons - is widely used to generate entangled\r
+photons in bulk crystals and waveguides. During the last few\r
+years, SPDC has been also implemented in micro- and nanoscale\r
+nonlinear layers [1–12]. Due to their tiny thickness, such layers\r
+satisfy the SPDC phase-matching automatically, even though\r
+the wavevector mismatch ∆k can be very large. As a result,\r
+materials with high second-order susceptibility χ\r
+(2)\r
+, or orienta\u0002tions using large components of the χˆ\r
+(2)\r
+tensor, which normally\r
+are excluded from SPDC because of phase-matching restriction,\r
+come into play. Although, because of the small thickness, such\r
+sources produce photon pairs at low rates – up to a few kHz so\r
+far [12, 13] – their advantage is multifunctionality. For example,\r
+a thin layer can generate photon pairs not only forwards, but\r
+also backwards and bidirectionally [14]; by tuning the pump\r
+polarization, the polarization state and the degree of entangle\u0002ment of the photon pairs can be also tuned [3, 6]; the pump\r
+wavelength and direction can be chosen arbitrarily.\r
+The variety of materials used to generate entangled photons\r
+through SPDC is quickly expanding. Most promising are van\u0002der-Waals crystals [4, 6, 8, 10], whose nonlinearity can be con\u0002trolled by stacking several atomic layers in different ways [15].\r
+Recently, entangled photons were generated in a liquid crys\u0002tal [13, 16], which offers new ways to control the properties of\r
+entangled photons: through molecular orientation twist and by\r
+applying electric field.\r
+An alternative way to generate photon pairs is the sponta\u0002neous four-wave mixing (SFWM), where two pump photons\r
+are converted into a pair of entangled photons and the third\u0002order susceptibility χ\r
+(3)\r
+is involved. Since χ\r
+(3)\r
+is nonzero in any\r
+material, the material choice becomes broader. An important\r
+advantage of SFWM is that it generates entangled photons on\r
+both sides of the pump spectral line. This allows one of the pho\u0002tons to cover blue or even UV range of wavelengths [17] without\r
+using even more blue-shifted pump. During the last few years,\r
+considerable efforts to implement SFWM in ‘flat’ sources have\r
+been made. However, due to the weakness of the third-order\r
+nonlinear interaction compared to the second-order one, most of\r
+the experiments on SFWM in thin sources are carried out in the\r
+seeded regime [18–22], where a coherent beam at the frequency\r
+of one of the output photons is stimulating the process. So far,\r
+there are only two experiments on photon pair generation via\r
+SFWM in thin layers [23, 24].\r
+Meanwhile, SFWM can also take place in non\u0002centrosymmetric materials, where both χ\r
+(2) and χ(3) are\r
+present. Such materials were so far avoided in SFWM experi\u0002ments. In the absence of the phase-matching restriction, a direct\r
+third-order nonlinear process should compete with a cascaded\r
+process. For example, the third harmonic can be generated not\r
+only directly but also through the second harmonic generation\r
+(SHG) followed by sum frequency generation. This cascaded\r
+arXiv:2601.23137v1 [physics.optics] 30 Jan 2026
+
+Letter 2\r
+process is well-studied, both theoretically and experimen\u0002tally [25, 26]. Similarly, both cascaded and direct nonlinear\r
+processes can generate photon pairs at a certain wavelength\r
+set ωs (signal) and ωi(idler). In the cascaded process, first,\r
+the pump at ωp is up-converted to the second harmonic\r
+(ωp + ωp → ωSH), and then the second harmonic (SH) photons\r
+are down-converted through SPDC: ωSH → ωs + ωi. The direct\r
+process generates photon pairs through SFWM: 2ωp → ωs + ωi.\r
+The cascaded process is commonly considered to be stronger\r
+compared to the direct one. However, its phase-matching\r
+condition is more restrictive than that of the direct process.\r
+In this work, we show that in a thin nonlinear layer, the direct\r
+process is always stronger. To demonstrate this effect experi\u0002mentally, we use a 10 µm-thick lithium niobate (LN) crystal and\r
+generate photon pairs through SFWM.\r
+2. EXPERIMENTAL SETUP\r
+For the photon pair measurement, we use a Hanbury Brown\u0002Twiss setup separating the entangled photon in two arms. Fig\u0002ure 1 shows the scheme of the experimental setup. A laser at\r
+Fig. 1. Experimental setup: lens L1 focuses the pump on\r
+the LN sample; signal (visible, shown in blue) and idler (IR,\r
+shown in orange) photons are collimated by lens L2, separated\r
+by dichroic mirror DM, and coupled into detectors D1, D2 by\r
+lenses L3, L4, respectively. Their polarization is analyzed by\r
+an HWP and a PBS in each arm. Filter F1 eliminates unwanted\r
+wavelengths in the pump beam, and bandpass filters F2, F3\r
+select the signal and idler photon detection bands. Photon\r
+detection events are registered by a time tagger triggered by\r
+pulses from the laser.\r
+1030 nm, with a pulse duration of 210 fs and a repetition rate\r
+of 1.023 MHz, is used as the pump. Its power and polarization\r
+are controlled by two half-wave plates (HWPs) and a polarizing\r
+beam splitter (PBS). A band-pass filter (F1) at 1030 nm with 10\r
+nm bandwidth filters out unwanted wavelengths. The pump is\r
+focused by lens L1 into a 100 µm spot on the 10 µm-thick x-cut\r
+LN layer on a 500 µm-thick fused silica substrate, and the output\r
+photons are collimated by lens L2 with the focal length 100 mm\r
+and NA=0.5. The collected photons are separated by a long-pass\r
+dichroic mirror (DM) with the cut-off wavelength at 950 nm. The\r
+visible (reflected) and IR (transmitted) photons are coupled to\r
+the multi-mode fibers at the end of each arm by lenses L3 and\r
+L4, respectively. At each arm, an HWP and a PBS are installed\r
+to analyze the polarization of the photons. The detection wave\u0002lengths are selected by band-pass filters F2 (770 nm with 10 nm\r
+band width) and F3 (1550 nm with 50 nm band width), respec\u0002tively. The coupled photons are sent to single-photon detectors\r
+D1 (Perkin&Elmer, SPCM-AQRH-16-FC) and D2 (IDQ, ID220),\r
+respectively. The detection events are triggered by the electric\r
+pulses of the laser and registered by the time tagger.\r
+3. EXPERIMENTAL RESULTS\r
+Figure 2 shows the experimental results. The pump power de\u0002pendences of the mean photon numbers per pulse for visible and\r
+IR photons, ⟨Nvis⟩ and ⟨NIR⟩, are plotted in panel (a) with blue\r
+circles and red triangles, respectively. The visible and IR photons\r
+Fig. 2. SFWM in LN. (a) Mean photon number per pulse for\r
+visible (blue circles) and IR (red triangles) photons. (b) The\r
+polarization dependences of the photon detection rates in the\r
+visible (blue circles) and IR (red triangles) arms. The 0 angle\r
+corresponds to the pump polarization direction. (c) The num\u0002ber of coincidence counts per pulse as a function of the pump\r
+power, with a quadratic fitting curve. (d) Corresponding g\r
+(2)\r
+as a function of the pump power, with a fitting curve.\r
+exhibit different dependences on the pump power, one quadratic\r
+and the other linear. The quadratic power dependence is indeed\r
+expected for SFWM. Meanwhile, the linear power scaling of the\r
+IR photons rate with the pump can be explained by SPDC. In\u0002deed, under pumping at 1030 nm, SPDC in thin LN can generate\r
+signal photons at 1550 nm, with their idler counterparts being at\r
+3.078 µm. The coherence length for this process is 15 µm, longer\r
+than the sample thickness. While the idler photons cannot be\r
+detected by our setup, the signal photons generation rate should\r
+be much higher than the SFWM rate. Consequently, the domi\u0002nant contribution to the rate of IR photons is from SPDC, which\r
+scales linearly with the pump power. Importantly, SPDC cannot\r
+affect the coincidence detection in our experiment because the\r
+idler SPDC photons are not detected in the visible arm.\r
+Since the strongest components of LN second- and third\u0002order nonlinear susceptibility tensors are χ\r
+(2)\r
+zzz and χ\r
+(3)\r
+zzzz, respec\u0002tively, both SPDC and SFWM are most efficient if the pump and\r
+the output photons are all polarized along the z axis. Indeed, the\r
+photon count rates are maximal for the pump polarized along\r
+the z axis (see Supplement 1). Also, from Fig. 2(b), where the po\u0002larization dependences of ⟨Nvis⟩ and ⟨NIR⟩ are plotted, we see\r
+that both visible and IR photons are polarized the same way as\r
+the pump. For visible photons, this is evidence that they mostly\r
+come from SFWM and not from two-photon photoluminescence.\r
+Figure 2(c) shows the mean number of coincidences per pulse\r
+⟨Ncc⟩ as a function of the pump power. The dependence is\r
+quadratic, as expected for SFWM. The efficiency of pair gener\u0002ation is much lower than the one measured in SiN films using
+
+Letter 3\r
+the same pump [24]; however, higher rates can be achieved\r
+because of the high damage threshold of LN at 1030 nm. The\r
+second-order correlation function g\r
+(2)\r
+, calculated as\r
+g\r
+(2)\r
+(0) = ⟨Ncc⟩\r
+⟨Nvis⟩⟨NIR⟩\r
+, (1)\r
+is plotted in panel (d). The fitting curve is g\r
+(2) = 1 + a/P2\r
+,\r
+where a is a fitting parameter and P is the pump power. The g\r
+(2)\r
+exceeding the ‘thermal’ value 2 and its inverse dependence on\r
+the mean photon number of SFWM (scaling as P\r
+2\r
+) indicate the\r
+detection of correlated photon pairs.\r
+Importantly, the fused silica substrate could also contribute\r
+to SFWM, due to its noticeable χ\r
+(3) = 3 × 10−22 m2/V2\r
+[27] and\r
+large length. Its contribution can be estimated from these param\u0002eters and the phase matching condition (see the Supplementary\r
+Information) as 25% of the total rate of coincidences.\r
+So far, it was not clear if the observed photon pairs are gen\u0002erated through the direct or cascaded process. To figure out\r
+the contribution of the cascaded process, we first investigated\r
+the efficiency of its second stage. To this end, using the same\r
+setup, we detected photon pairs from SPDC pumped at 515 nm.\r
+The pump was prepared by frequency-doubling the 1030 nm\r
+radiation in a bulk phase-matched BBO crystal installed after F1\r
+(see Fig. 1). Further, knowing the efficiency of SHG from the LN\r
+layer, we estimated ⟨Ncc⟩ stemming from the cascaded process.\r
+Fig. 3. SPDC in LN pumped at 515 nm. (a) The mean number\r
+of coincidence counts per pulse as a function of the pump\r
+power, with a linear fit. (b) Corresponding g\r
+(2) as a function of\r
+the pump power, with the fitting curve.\r
+Figure 3 shows the correlation measurement results for SPDC\r
+in the same LN layer, pumped at 515 nm. The mean number of\r
+coincidences per pulse ⟨Ncc⟩ is plotted as a function of pump\r
+power with a linear fitting curve in panel (a). Panel (b) shows\r
+the correlation function g\r
+(2)\r
+, calculated according to Eq. 1, with\r
+the fitting curve g\r
+(2) = 1 + a/P. Meanwhile, the SHG efficiency\r
+of the LN layer is evaluated by measuring the pump and SH\r
+powers after the sample. The measured conversion efficiency is\r
+2 × 10−2%/W: pumping with 400 mW at 1030 nm yields 30 µW\r
+of SH. Based on this measurement, under 400 mW pumping the\r
+cascaded process generates 4 × 10−8 pairs per pulse, which is\r
+only 5% of the total rate of photon pairs.\r
+4. ANALYSIS AND DISCUSSION\r
+To describe the cascaded and direct processes theoretically, con\u0002sider first their phase-matching functions\r
+F(L) = Lsinc∆kL\r
+2\r
+, (2)\r
+where ∆k is the wavevector mismatch and L the crystal length.\r
+Figure 4 shows [F(L)]2for each of the three involved processes:\r
+SFWM generating 770 nm / 1550 nm photon pairs from 1030 nm\r
+pump (green solid line), SHG from 1030 nm (blue dot-dashed\r
+line), and SPDC generating 770 nm / 1550 nm photon pairs\r
+from 515 nm pump (red dashed line). For each process, the\r
+phase matching function oscillates (Maker fringes), reaching\r
+maxima at odd numbers of the nonlinear coherence length\r
+Lcoh = π/|∆k|. The nonlinear coherence lengths for the three\r
+processes are 33.3 µm, 3.1 µm, and 3.4 µm, respectively; there\u0002fore, the efficiencies of both steps of the cascaded process should\r
+oscillate faster than the efficiency of direct SFWM. Moreover,\r
+because the peak values of F\r
+2\r
+(L) scale inversely with ∆k\r
+2\r
+, they\r
+are much lower for SHG and SPDC than for SFWM. This already\r
+gives a qualitative explanation for the effect we see: because\r
+|∆kSFWM| = |∆kSHG| − |∆kSPDC| ≪ |∆kSHG|, |∆kSPDC|, the\r
+phase-matching function of SFWM considerably exceeds the\r
+ones of SHG and SPDC.\r
+Fig. 4. (a) [F(L)]2calculated for SFWM generating 770 nm /\r
+1550 nm photon pairs from 1030 nm pump (green solid line),\r
+SHG from 1030 nm (blue dot-dashed line), and SPDC generat\u0002ing 770 nm / 1550 nm photon pairs from 515 nm pump (red\r
+dashed line) as functions of the crystal length. (b) Calculated\r
+rates of photon pair generation through the direct (green) and\r
+cascaded (blue dashed line) processes vs the crystal length.\r
+For an accurate comparison, we consider both second-order\r
+processes, SHG and SPDC, occurring simultaneously. Assuming\r
+a non-depleted pump, the electric field amplitude of the SH\r
+generated from the pump propagating along the x-direction is\r
+[27]\r
+ESH(x) = 2π\r
+λSH\r
+χ\r
+(2)\r
+SHGE\r
+2\r
+p\r
+e\r
+i∆kSHG·x − 1\r
+∆kSHG\r
+, (3)\r
+where λSH, Ep, and χ\r
+(2)\r
+SHG are the SH wavelength, the ampli\u0002tude of pump field, and the effective second-order nonlinear\r
+susceptibility for SHG, respectively. The Hamiltonian of SPDC\r
+generating photons at frequencies ωs and ωifrom the SH is [28]\r
+Hˆ\r
+SPDC =\r
+2\r
+3\r
+C(ωs, ωi)\r
+Z L\r
+0\r
+dx · χ\r
+(2)\r
+SPDCESH(x)e\r
+i∆kSPDC·x\r
+a\r
+†\r
+s\r
+a\r
+†\r
+i + H.c.,\r
+(4)\r
+where a\r
+†\r
+s,i\r
+are the creation operators for the signal and idler pho\u0002tons, H.c. means Hermitian conjugation, χ\r
+(2)\r
+SPDC is the effective\r
+second-order nonlinear susceptibility for SPDC, and we have\r
+introduced C(ωs, ωi) ≡ h¯\r
+√\r
+ωsωi/(2ϵ0Vqnsni), with ns,i being\r
+the refractive indices at signal and idler wavelengths and Vq the\r
+quantization volume. By substituting Eq. (3) into Eq. (4) and\r
+integrating, we get the Hamiltonian of the cascaded process in\r
+the form\r
+Hˆ\r
+cas =\r
+2\r
+3\r
+C(ωs, ωi)Acasa\r
+†\r
+s\r
+a\r
+†\r
+i + H.c., (5)
+
+Letter 4\r
+with the amplitude\r
+Acas =\r
+2π[χ\r
+(2)\r
+]\r
+2E2\r
+p\r
+nSHλSH∆kSHG\r
+e\r
+i∆kSPDC L/2\r
+×\r
+\u0002\r
+e\r
+i∆kSHG L/2FSFWM(L) − FSPDC(L)\r
+\u0003\r
+, (6)\r
+where nSH is the refractive index at λSH, and we assumed\r
+χ\r
+(2)\r
+SPDC = χ\r
+(2)\r
+SHG ≡ χ\r
+(2) and used the relation ∆kSFWM =\r
+∆kSHG + ∆kSPDC.\r
+Meanwhile, the Hamiltonian for direct SFWM is [29, 30]\r
+Hˆ\r
+dir =\r
+3\r
+4\r
+C(ωs, ωi)\r
+Z L\r
+0\r
+dxχ\r
+(3)\r
+SFWME\r
+2\r
+p\r
+e\r
+i∆kSFWM x\r
+a\r
+†\r
+s\r
+a\r
+†\r
+i + H.c\r
+=\r
+3\r
+4\r
+C(ωs, ωi)Adira\r
+†\r
+s\r
+a\r
+†\r
+i + H.c, (7)\r
+with the amplitude\r
+Adir = χ\r
+(3)\r
+SFWME\r
+2\r
+p\r
+e\r
+i∆kSFWM L/2FSFWM(L). (8)\r
+Omitting the common factors in Eqs. (5,7), we see that the rates\r
+of pair generation through the cascaded and direct processes are,\r
+respectively, Rcas ∝\r
+4\r
+9\r
+|Acas|\r
+2 and Rdir ∝\r
+9\r
+16 |Adir|\r
+2\r
+.\r
+Figure 4 (b) shows these rates as functions of the crystal\r
+length: in green solid line for the direct process and in blue\r
+dot-dashed line for the cascaded process. For the calculation, we\r
+used the values of χ\r
+(2) = 2.5 × 10−11 m/V [31] and χ\r
+(3)\r
+SFWM =\r
+1.5 × 10−20 m2/V2[32]. The rates oscillate with the same period,\r
+equal to twice the coherence length of the SFWM process. This is\r
+because the first term in the square brackets of Eq. (6) dominates,\r
+see Fig. 4(b). At 10 µm thickness, the ratio Rcas/Rdir is 0.048,\r
+which is in good correspondence to the experimental result.\r
+If the cascaded process has the phase matching satisfied for\r
+both its stages (i.e., through periodic poling), it should be more\r
+efficient than direct SFWM. Note that for ∆kSH = ∆kSPDC = 0,\r
+the field in Eq. (3) scales as z, which leads to Eq. (6) scaling as\r
+L\r
+2\r
+instead of L. But here we see that without phase matching\r
+satisfied, SHG and SPDC have larger wavevector mismatches\r
+than SPDC, which makes the cascaded process less efficient than\r
+the direct one.\r
+SFWM in thin second-order nonlinear films can considerably\r
+enrich the toolbox of ’flat’ quantum optics. In high-χ\r
+(2)\r
+semicon\u0002ductors, such as GaAs or AlGaAs, it can produce photon pairs\r
+with one of the photons above the bandgap, which is impossible\r
+through SPDC. Moreover, as we show above, a second-order\r
+nonlinear film pumped at frequency ωp can simultaneously gen\u0002erate photon pairs at frequencies ωs and ωi\r
+through SFWM, but\r
+also at frequencies ωi and ωp − ωithrough SPDC. This simulta\u0002neous action of two coherently pumped nonlinear effects can be\r
+used for building interesting quantum superpositions.\r
+5. BACK MATTER\r
+Funding. Deutsche Forschungsgemeinschaft (568143457); ERC\r
+(Project 101199215 — MultiFlaQS).\r
+Acknowledgment. We thank Francesco Tani, who kindly allowed us\r
+to use his laser.\r
+Disclosures. The authors declare no conflicts of interest.\r
+Data Availability. Data underlying the results presented in this\r
+paper are not publicly available at this time but may be obtained from\r
+the authors upon reasonable request.\r
+Supplemental document. See Supplement 1 for supporting con\u0002tent.\r
+6. REFERENCES\r
+REFERENCES\r
+1. C. Okoth, A. Cavanna, T. Santiago-Cruz, and M. V. Chekhova, Phys.\r
+review letters 123, 263602 (2019).\r
+2. T. Santiago-Cruz, V. Sultanov, H. Zhang, et al., Opt. Lett. 46, 653\r
+(2021).\r
+3. V. Sultanov, T. Santiago-Cruz, and M. V. Chekhova, Opt. Lett. 47, 3872\r
+(2022).\r
+4. Q. Guo, X.-Z. Qi, L. Zhang, et al., Nature 613, 53 (2023).\r
+5. V. Sultanov and M. Chekhova, ACS photonics 11, 2 (2023).\r
+6. M. A. Weissflog, A. Fedotova, Y. Tang, et al., Nat. Commun. 15, 7600\r
+(2024).\r
+7. E. A. Santos, M. A. Weissflog, T. Pertsch, et al., Nanophotonics 13,\r
+3545 (2024).\r
+8. J. Feng, Y.-K. Wu, R. Duan, et al., eLight 4, 16 (2024).\r
+9. X. Lyu, L. Kallioniemi, H. Hong, et al., Nat. Commun. 16, 1899 (2025).\r
+10. H. Liang, T. Gu, Y. Lou, et al., Sci. Adv. 11, eadt3710 (2025).\r
+11. N. J. Sorensen, V. Sultanov, and M. V. Chekhova, Opt. Express 33,\r
+13946 (2025).\r
+12. S. Stich, V. Sultanov, T. Blaikie, et al., Opt. Express 34, 1664 (2026).\r
+13. V. Sultanov, A. Kavci ˇ c, E. Kokkinakis, ˇ et al., Nature 631, 294 (2024).\r
+14. Z. Lu, J. Janousek, S. M. Assad, et al., Nat. Commun. 16, 9616 (2025).\r
+15. A. Säynätjoki, L. Karvonen, H. Rostami, et al., Nat. Commun. 8, 893\r
+(2017).\r
+16. S. Klopci ˇ c, A. Kav ˇ ci ˇ c, N. Sebastián, and M. Humar, Adv. Sci. ˇ n/a,\r
+e15206 (2025).\r
+17. S. Lopez-Huidobro, M. Noureddin, M. V. Chekhova, and N. Y. Joly, Opt.\r
+Lett. 48, 3423 (2023).\r
+18. L. Caspani, R. Kaipurath, M. Clerici, et al., Phys. review letters 116,\r
+233901 (2016).\r
+19. E. G. Carnemolla, W. Jaffray, M. Clerici, et al., Opt. Lett. 46, 5433\r
+(2021).\r
+20. L. Xu, D. A. Smirnova, R. Camacho-Morales, et al., New J. Phys. 24,\r
+035002 (2022).\r
+21. J. Yang, X. Xiao, J. Flórez, et al., ACS Photonics 12, 4415 (2025).\r
+22. S. C. Malek, T. Norden, C. F. Doiron, et al., ACS nano 19, 35609 (2025).\r
+23. K. F. Lee, Y. Tian, H. Yang, et al., Adv. Mater. 29, 1605978 (2017).\r
+24. C. Son, S. Peana, O. Matthiessen, et al., Opt. Lett. 50, 4434 (2025).\r
+25. S. D. Gennaro, C. F. Doiron, N. Karl, et al., ACS Photonics 9, 1026\r
+(2022).\r
+26. S. M. Saltiel, A. A. Sukhorukov, and Y. S. Kivshar, “Multistep parametric\r
+processes in nonlinear optics,” in Progress in optics, , vol. 47 (Elsevier,\r
+2005), pp. 1–73.\r
+27. R. Boyd, Nonlinear Optics (Academic Press, 1992).\r
+28. M. H. Rubin, D. N. Klyshko, Y. Shih, and A. Sergienko, Phys. Rev. A\r
+50, 5122 (1994).\r
+29. L. Wang, C. Hong, and S. Friberg, J. optics B: Quantum semiclassical\r
+optics 3, 346 (2001).\r
+30. K. Garay-Palmett, A. B. U’Ren, and R. Rangel-Rojo, Phys. Rev. A 82,\r
+043809 (2010).\r
+31. I. Shoji, T. Kondo, A. Kitamoto, et al., J. Opt. Soc. Am. B 14, 2268\r
+(1997).\r
+32. Y. Wang, Y. Niu, G. Wang, et al., J. Alloy. Compd. 778, 691 (2019)."""
+
+[metadata]
+title = "arxiv 2601.23137v1 son chekhova 2026 sfwm thin layer"
+authors = ["Unknown"]
+arxiv = "2601.23137v1"
+year = 2026
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Letter 1\r
+Spontaneous four-wave mixing in a thin layer with\r
+second-order nonlinearity\r
+CHANGJIN SON1,2,* AND MARIA CHEKHOVA1,2\r
+1Max Planck Institute for the Science of Light, 91058 Erlangen, Germany\r
+2Friedrich-Alexander Universität Erlangen-Nürnberg, 91058 Erlangen, Germany\r
+*\r
+changjin.son@mpl.mpg.de\r
+Compiled February 2, 2026\r
+Pairs of entangled photons are crucial for photonic quan\u0002tum technologies. The demand for integrability and\r
+multi-functionality suggests ‘flat’ platforms - ultrathin\r
+layers and metasurfaces - as sources of photon pairs.\r
+With the success in demonstrating spontaneous paramet\u0002ric down-conversion (SPDC) from such sources, an al\u0002ternative process to generate photon pairs, spontaneous\r
+four-wave mixing (SFWM), also starts to attract interest.\r
+In materials with nonzero second-order nonlinear sus\u0002ceptibility χ\r
+(2)\r
+, SFWM can generate photon pairs both\r
+directly, through the third-order nonlinear susceptibility\r
+χ\r
+(3)\r
+, and in a cascaded way, through second harmonic\r
+generation (SHG) followed by SPDC. Usually, the cas\u0002caded process is more efficient. Here, we show that\r
+in a thin layer, direct SFWM dominates, because the\r
+wavevector mismatch for SFWM is much smaller than\r
+for SHG or SPDC. To demonstrate it, we implement\r
+the photon pair generation via SFWM in a second-order\r
+nonlinear material - a thin layer of lithium niobate (LN).\r
+The existence of both second- and third-order nonlin\u0002ear processes offers broader opportunities for quantum\r
+state engineering.\r
+http://dx.doi.org/10.1364/ao.XX.XXXXXX"""
+
+[[sections]]
+number = "1"
+title = "INTRODUCTION"
+text = """
+Spontaneous parametric down-conversion (SPDC) - a second\u0002order nonlinear process where a single pump photon splits into a\r
+pair of daughter photons - is widely used to generate entangled\r
+photons in bulk crystals and waveguides. During the last few\r
+years, SPDC has been also implemented in micro- and nanoscale\r
+nonlinear layers [1–12]. Due to their tiny thickness, such layers\r
+satisfy the SPDC phase-matching automatically, even though\r
+the wavevector mismatch ∆k can be very large. As a result,\r
+materials with high second-order susceptibility χ\r
+(2)\r
+, or orienta\u0002tions using large components of the χˆ\r
+(2)\r
+tensor, which normally\r
+are excluded from SPDC because of phase-matching restriction,\r
+come into play. Although, because of the small thickness, such\r
+sources produce photon pairs at low rates – up to a few kHz so\r
+far [12, 13] – their advantage is multifunctionality. For example,\r
+a thin layer can generate photon pairs not only forwards, but\r
+also backwards and bidirectionally [14]; by tuning the pump\r
+polarization, the polarization state and the degree of entangle\u0002ment of the photon pairs can be also tuned [3, 6]; the pump\r
+wavelength and direction can be chosen arbitrarily.\r
+The variety of materials used to generate entangled photons\r
+through SPDC is quickly expanding. Most promising are van\u0002der-Waals crystals [4, 6, 8, 10], whose nonlinearity can be con\u0002trolled by stacking several atomic layers in different ways [15].\r
+Recently, entangled photons were generated in a liquid crys\u0002tal [13, 16], which offers new ways to control the properties of\r
+entangled photons: through molecular orientation twist and by\r
+applying electric field.\r
+An alternative way to generate photon pairs is the sponta\u0002neous four-wave mixing (SFWM), where two pump photons\r
+are converted into a pair of entangled photons and the third\u0002order susceptibility χ\r
+(3)\r
+is involved. Since χ\r
+(3)\r
+is nonzero in any\r
+material, the material choice becomes broader. An important\r
+advantage of SFWM is that it generates entangled photons on\r
+both sides of the pump spectral line. This allows one of the pho\u0002tons to cover blue or even UV range of wavelengths [17] without\r
+using even more blue-shifted pump. During the last few years,\r
+considerable efforts to implement SFWM in ‘flat’ sources have\r
+been made. However, due to the weakness of the third-order\r
+nonlinear interaction compared to the second-order one, most of\r
+the experiments on SFWM in thin sources are carried out in the\r
+seeded regime [18–22], where a coherent beam at the frequency\r
+of one of the output photons is stimulating the process. So far,\r
+there are only two experiments on photon pair generation via\r
+SFWM in thin layers [23, 24].\r
+Meanwhile, SFWM can also take place in non\u0002centrosymmetric materials, where both χ\r
+(2) and χ(3) are\r
+present. Such materials were so far avoided in SFWM experi\u0002ments. In the absence of the phase-matching restriction, a direct\r
+third-order nonlinear process should compete with a cascaded\r
+process. For example, the third harmonic can be generated not\r
+only directly but also through the second harmonic generation\r
+(SHG) followed by sum frequency generation. This cascaded\r
+arXiv:2601.23137v1 [physics.optics] 30 Jan 2026
+
+Letter 2\r
+process is well-studied, both theoretically and experimen\u0002tally [25, 26]. Similarly, both cascaded and direct nonlinear\r
+processes can generate photon pairs at a certain wavelength\r
+set ωs (signal) and ωi(idler). In the cascaded process, first,\r
+the pump at ωp is up-converted to the second harmonic\r
+(ωp + ωp → ωSH), and then the second harmonic (SH) photons\r
+are down-converted through SPDC: ωSH → ωs + ωi. The direct\r
+process generates photon pairs through SFWM: 2ωp → ωs + ωi.\r
+The cascaded process is commonly considered to be stronger\r
+compared to the direct one. However, its phase-matching\r
+condition is more restrictive than that of the direct process.\r
+In this work, we show that in a thin nonlinear layer, the direct\r
+process is always stronger. To demonstrate this effect experi\u0002mentally, we use a 10 µm-thick lithium niobate (LN) crystal and\r
+generate photon pairs through SFWM."""
+
+[[sections]]
+number = "2"
+title = "EXPERIMENTAL SETUP"
+text = """
+For the photon pair measurement, we use a Hanbury Brown\u0002Twiss setup separating the entangled photon in two arms. Fig\u0002ure 1 shows the scheme of the experimental setup. A laser at\r
+Fig. 1. Experimental setup: lens L1 focuses the pump on\r
+the LN sample; signal (visible, shown in blue) and idler (IR,\r
+shown in orange) photons are collimated by lens L2, separated\r
+by dichroic mirror DM, and coupled into detectors D1, D2 by\r
+lenses L3, L4, respectively. Their polarization is analyzed by\r
+an HWP and a PBS in each arm. Filter F1 eliminates unwanted\r
+wavelengths in the pump beam, and bandpass filters F2, F3\r
+select the signal and idler photon detection bands. Photon\r
+detection events are registered by a time tagger triggered by\r
+pulses from the laser.\r
+1030 nm, with a pulse duration of 210 fs and a repetition rate\r
+of 1.023 MHz, is used as the pump. Its power and polarization\r
+are controlled by two half-wave plates (HWPs) and a polarizing\r
+beam splitter (PBS). A band-pass filter (F1) at 1030 nm with 10\r
+nm bandwidth filters out unwanted wavelengths. The pump is\r
+focused by lens L1 into a 100 µm spot on the 10 µm-thick x-cut\r
+LN layer on a 500 µm-thick fused silica substrate, and the output\r
+photons are collimated by lens L2 with the focal length 100 mm\r
+and NA=0.5. The collected photons are separated by a long-pass\r
+dichroic mirror (DM) with the cut-off wavelength at 950 nm. The\r
+visible (reflected) and IR (transmitted) photons are coupled to\r
+the multi-mode fibers at the end of each arm by lenses L3 and\r
+L4, respectively. At each arm, an HWP and a PBS are installed\r
+to analyze the polarization of the photons. The detection wave\u0002lengths are selected by band-pass filters F2 (770 nm with 10 nm\r
+band width) and F3 (1550 nm with 50 nm band width), respec\u0002tively. The coupled photons are sent to single-photon detectors\r
+D1 (Perkin&Elmer, SPCM-AQRH-16-FC) and D2 (IDQ, ID220),\r
+respectively. The detection events are triggered by the electric\r
+pulses of the laser and registered by the time tagger."""
+
+[[sections]]
+number = "3"
+title = "EXPERIMENTAL RESULTS"
+text = """
+Figure 2 shows the experimental results. The pump power de\u0002pendences of the mean photon numbers per pulse for visible and\r
+IR photons, ⟨Nvis⟩ and ⟨NIR⟩, are plotted in panel (a) with blue\r
+circles and red triangles, respectively. The visible and IR photons\r
+Fig. 2. SFWM in LN. (a) Mean photon number per pulse for\r
+visible (blue circles) and IR (red triangles) photons. (b) The\r
+polarization dependences of the photon detection rates in the\r
+visible (blue circles) and IR (red triangles) arms. The 0 angle\r
+corresponds to the pump polarization direction. (c) The num\u0002ber of coincidence counts per pulse as a function of the pump\r
+power, with a quadratic fitting curve. (d) Corresponding g\r
+(2)\r
+as a function of the pump power, with a fitting curve.\r
+exhibit different dependences on the pump power, one quadratic\r
+and the other linear. The quadratic power dependence is indeed\r
+expected for SFWM. Meanwhile, the linear power scaling of the\r
+IR photons rate with the pump can be explained by SPDC. In\u0002deed, under pumping at 1030 nm, SPDC in thin LN can generate\r
+signal photons at 1550 nm, with their idler counterparts being at\r
+3.078 µm. The coherence length for this process is 15 µm, longer\r
+than the sample thickness. While the idler photons cannot be\r
+detected by our setup, the signal photons generation rate should\r
+be much higher than the SFWM rate. Consequently, the domi\u0002nant contribution to the rate of IR photons is from SPDC, which\r
+scales linearly with the pump power. Importantly, SPDC cannot\r
+affect the coincidence detection in our experiment because the\r
+idler SPDC photons are not detected in the visible arm.\r
+Since the strongest components of LN second- and third\u0002order nonlinear susceptibility tensors are χ\r
+(2)\r
+zzz and χ\r
+(3)\r
+zzzz, respec\u0002tively, both SPDC and SFWM are most efficient if the pump and\r
+the output photons are all polarized along the z axis. Indeed, the\r
+photon count rates are maximal for the pump polarized along\r
+the z axis (see Supplement 1). Also, from Fig. 2(b), where the po\u0002larization dependences of ⟨Nvis⟩ and ⟨NIR⟩ are plotted, we see\r
+that both visible and IR photons are polarized the same way as\r
+the pump. For visible photons, this is evidence that they mostly\r
+come from SFWM and not from two-photon photoluminescence.\r
+Figure 2(c) shows the mean number of coincidences per pulse\r
+⟨Ncc⟩ as a function of the pump power. The dependence is\r
+quadratic, as expected for SFWM. The efficiency of pair gener\u0002ation is much lower than the one measured in SiN films using
+
+Letter 3\r
+the same pump [24]; however, higher rates can be achieved\r
+because of the high damage threshold of LN at 1030 nm. The\r
+second-order correlation function g\r
+(2)\r
+, calculated as\r
+g\r
+(2)\r
+(0) = ⟨Ncc⟩\r
+⟨Nvis⟩⟨NIR⟩\r
+, (1)\r
+is plotted in panel (d). The fitting curve is g\r
+(2) = 1 + a/P2\r
+,\r
+where a is a fitting parameter and P is the pump power. The g\r
+(2)\r
+exceeding the ‘thermal’ value 2 and its inverse dependence on\r
+the mean photon number of SFWM (scaling as P\r
+2\r
+) indicate the\r
+detection of correlated photon pairs.\r
+Importantly, the fused silica substrate could also contribute\r
+to SFWM, due to its noticeable χ\r
+(3) = 3 × 10−22 m2/V2\r
+[27] and\r
+large length. Its contribution can be estimated from these param\u0002eters and the phase matching condition (see the Supplementary\r
+Information) as 25% of the total rate of coincidences.\r
+So far, it was not clear if the observed photon pairs are gen\u0002erated through the direct or cascaded process. To figure out\r
+the contribution of the cascaded process, we first investigated\r
+the efficiency of its second stage. To this end, using the same\r
+setup, we detected photon pairs from SPDC pumped at 515 nm.\r
+The pump was prepared by frequency-doubling the 1030 nm\r
+radiation in a bulk phase-matched BBO crystal installed after F1\r
+(see Fig. 1). Further, knowing the efficiency of SHG from the LN\r
+layer, we estimated ⟨Ncc⟩ stemming from the cascaded process.\r
+Fig. 3. SPDC in LN pumped at 515 nm. (a) The mean number\r
+of coincidence counts per pulse as a function of the pump\r
+power, with a linear fit. (b) Corresponding g\r
+(2) as a function of\r
+the pump power, with the fitting curve.\r
+Figure 3 shows the correlation measurement results for SPDC\r
+in the same LN layer, pumped at 515 nm. The mean number of\r
+coincidences per pulse ⟨Ncc⟩ is plotted as a function of pump\r
+power with a linear fitting curve in panel (a). Panel (b) shows\r
+the correlation function g\r
+(2)\r
+, calculated according to Eq. 1, with\r
+the fitting curve g\r
+(2) = 1 + a/P. Meanwhile, the SHG efficiency\r
+of the LN layer is evaluated by measuring the pump and SH\r
+powers after the sample. The measured conversion efficiency is\r
+2 × 10−2%/W: pumping with 400 mW at 1030 nm yields 30 µW\r
+of SH. Based on this measurement, under 400 mW pumping the\r
+cascaded process generates 4 × 10−8 pairs per pulse, which is\r
+only 5% of the total rate of photon pairs."""
+
+[[sections]]
+number = "4"
+title = "ANALYSIS AND DISCUSSION"
+text = """
+To describe the cascaded and direct processes theoretically, con\u0002sider first their phase-matching functions\r
+F(L) = Lsinc∆kL\r
+2\r
+, (2)\r
+where ∆k is the wavevector mismatch and L the crystal length.\r
+Figure 4 shows [F(L)]2for each of the three involved processes:\r
+SFWM generating 770 nm / 1550 nm photon pairs from 1030 nm\r
+pump (green solid line), SHG from 1030 nm (blue dot-dashed\r
+line), and SPDC generating 770 nm / 1550 nm photon pairs\r
+from 515 nm pump (red dashed line). For each process, the\r
+phase matching function oscillates (Maker fringes), reaching\r
+maxima at odd numbers of the nonlinear coherence length\r
+Lcoh = π/|∆k|. The nonlinear coherence lengths for the three\r
+processes are 33.3 µm, 3.1 µm, and 3.4 µm, respectively; there\u0002fore, the efficiencies of both steps of the cascaded process should\r
+oscillate faster than the efficiency of direct SFWM. Moreover,\r
+because the peak values of F\r
+2\r
+(L) scale inversely with ∆k\r
+2\r
+, they\r
+are much lower for SHG and SPDC than for SFWM. This already\r
+gives a qualitative explanation for the effect we see: because\r
+|∆kSFWM| = |∆kSHG| − |∆kSPDC| ≪ |∆kSHG|, |∆kSPDC|, the\r
+phase-matching function of SFWM considerably exceeds the\r
+ones of SHG and SPDC.\r
+Fig. 4. (a) [F(L)]2calculated for SFWM generating 770 nm /\r
+1550 nm photon pairs from 1030 nm pump (green solid line),\r
+SHG from 1030 nm (blue dot-dashed line), and SPDC generat\u0002ing 770 nm / 1550 nm photon pairs from 515 nm pump (red\r
+dashed line) as functions of the crystal length. (b) Calculated\r
+rates of photon pair generation through the direct (green) and\r
+cascaded (blue dashed line) processes vs the crystal length.\r
+For an accurate comparison, we consider both second-order\r
+processes, SHG and SPDC, occurring simultaneously. Assuming\r
+a non-depleted pump, the electric field amplitude of the SH\r
+generated from the pump propagating along the x-direction is\r
+[27]\r
+ESH(x) = 2π\r
+λSH\r
+χ\r
+(2)\r
+SHGE\r
+2\r
+p\r
+e\r
+i∆kSHG·x − 1\r
+∆kSHG\r
+, (3)\r
+where λSH, Ep, and χ\r
+(2)\r
+SHG are the SH wavelength, the ampli\u0002tude of pump field, and the effective second-order nonlinear\r
+susceptibility for SHG, respectively. The Hamiltonian of SPDC\r
+generating photons at frequencies ωs and ωifrom the SH is [28]\r
+Hˆ\r
+SPDC =\r
+2"""
+
+[[sections]]
+number = "3"
+title = "C(ωs, ωi)"
+text = """
+Z L\r
+0\r
+dx · χ\r
+(2)\r
+SPDCESH(x)e\r
+i∆kSPDC·x\r
+a\r
+†\r
+s\r
+a\r
+†\r
+i + H.c.,\r
+(4)\r
+where a\r
+†\r
+s,i\r
+are the creation operators for the signal and idler pho\u0002tons, H.c. means Hermitian conjugation, χ\r
+(2)\r
+SPDC is the effective\r
+second-order nonlinear susceptibility for SPDC, and we have\r
+introduced C(ωs, ωi) ≡ h¯\r
+√\r
+ωsωi/(2ϵ0Vqnsni), with ns,i being\r
+the refractive indices at signal and idler wavelengths and Vq the\r
+quantization volume. By substituting Eq. (3) into Eq. (4) and\r
+integrating, we get the Hamiltonian of the cascaded process in\r
+the form\r
+Hˆ\r
+cas =\r
+2"""
+
+[[sections]]
+number = "3"
+title = "C(ωs, ωi)Acasa"
+text = """
+†\r
+s\r
+a\r
+†\r
+i + H.c., (5)
+
+Letter 4\r
+with the amplitude\r
+Acas =\r
+2π[χ\r
+(2)\r
+]\r
+2E2\r
+p\r
+nSHλSH∆kSHG\r
+e\r
+i∆kSPDC L/2\r
+×\r
+\u0002\r
+e\r
+i∆kSHG L/2FSFWM(L) − FSPDC(L)\r
+\u0003\r
+, (6)\r
+where nSH is the refractive index at λSH, and we assumed\r
+χ\r
+(2)\r
+SPDC = χ\r
+(2)\r
+SHG ≡ χ\r
+(2) and used the relation ∆kSFWM =\r
+∆kSHG + ∆kSPDC.\r
+Meanwhile, the Hamiltonian for direct SFWM is [29, 30]\r
+Hˆ\r
+dir =\r
+3"""
+
+[[sections]]
+number = "4"
+title = "C(ωs, ωi)"
+text = """
+Z L\r
+0\r
+dxχ\r
+(3)\r
+SFWME\r
+2\r
+p\r
+e\r
+i∆kSFWM x\r
+a\r
+†\r
+s\r
+a\r
+†\r
+i + H.c\r
+=\r
+3"""
+
+[[sections]]
+number = "4"
+title = "C(ωs, ωi)Adira"
+text = """
+†\r
+s\r
+a\r
+†\r
+i + H.c, (7)\r
+with the amplitude\r
+Adir = χ\r
+(3)\r
+SFWME\r
+2\r
+p\r
+e\r
+i∆kSFWM L/2FSFWM(L). (8)\r
+Omitting the common factors in Eqs. (5,7), we see that the rates\r
+of pair generation through the cascaded and direct processes are,\r
+respectively, Rcas ∝\r
+4\r
+9\r
+|Acas|\r
+2 and Rdir ∝\r
+9\r
+16 |Adir|"""
+
+[[sections]]
+number = "2"
+title = "Figure 4 (b) shows these rates as functions of the crystal"
+text = """
+length: in green solid line for the direct process and in blue\r
+dot-dashed line for the cascaded process. For the calculation, we\r
+used the values of χ\r
+(2) = 2.5 × 10−11 m/V [31] and χ\r
+(3)\r
+SFWM =\r
+1.5 × 10−20 m2/V2[32]. The rates oscillate with the same period,\r
+equal to twice the coherence length of the SFWM process. This is\r
+because the first term in the square brackets of Eq. (6) dominates,\r
+see Fig. 4(b). At 10 µm thickness, the ratio Rcas/Rdir is 0.048,\r
+which is in good correspondence to the experimental result.\r
+If the cascaded process has the phase matching satisfied for\r
+both its stages (i.e., through periodic poling), it should be more\r
+efficient than direct SFWM. Note that for ∆kSH = ∆kSPDC = 0,\r
+the field in Eq. (3) scales as z, which leads to Eq. (6) scaling as\r
+L\r
+2\r
+instead of L. But here we see that without phase matching\r
+satisfied, SHG and SPDC have larger wavevector mismatches\r
+than SPDC, which makes the cascaded process less efficient than\r
+the direct one.\r
+SFWM in thin second-order nonlinear films can considerably\r
+enrich the toolbox of ’flat’ quantum optics. In high-χ\r
+(2)\r
+semicon\u0002ductors, such as GaAs or AlGaAs, it can produce photon pairs\r
+with one of the photons above the bandgap, which is impossible\r
+through SPDC. Moreover, as we show above, a second-order\r
+nonlinear film pumped at frequency ωp can simultaneously gen\u0002erate photon pairs at frequencies ωs and ωi\r
+through SFWM, but\r
+also at frequencies ωi and ωp − ωithrough SPDC. This simulta\u0002neous action of two coherently pumped nonlinear effects can be\r
+used for building interesting quantum superpositions."""
+
+[[sections]]
+number = "5"
+title = "BACK MATTER"
+text = """
+Funding. Deutsche Forschungsgemeinschaft (568143457); ERC\r
+(Project 101199215 — MultiFlaQS).\r
+Acknowledgment. We thank Francesco Tani, who kindly allowed us\r
+to use his laser.\r
+Disclosures. The authors declare no conflicts of interest.\r
+Data Availability. Data underlying the results presented in this\r
+paper are not publicly available at this time but may be obtained from\r
+the authors upon reasonable request.\r
+Supplemental document. See Supplement 1 for supporting con\u0002tent."""
+
+[[sections]]
+number = "6"
+title = "REFERENCES"
+text = "REFERENCES"
+
+[[sections]]
+number = "1"
+title = "C. Okoth, A. Cavanna, T. Santiago-Cruz, and M. V. Chekhova, Phys."
+text = "review letters 123, 263602 (2019)."
+
+[[sections]]
+number = "2"
+title = "T. Santiago-Cruz, V. Sultanov, H. Zhang, et al., Opt. Lett. 46, 653"
+text = "(2021)."
+
+[[sections]]
+number = "3"
+title = "V. Sultanov, T. Santiago-Cruz, and M. V. Chekhova, Opt. Lett. 47, 3872"
+text = "(2022)."
+
+[[sections]]
+number = "4"
+title = "Q. Guo, X.-Z. Qi, L. Zhang, et al., Nature 613, 53 (2023)."
+text = ""
+
+[[sections]]
+number = "5"
+title = "V. Sultanov and M. Chekhova, ACS photonics 11, 2 (2023)."
+text = ""
+
+[[sections]]
+number = "6"
+title = "M. A. Weissflog, A. Fedotova, Y. Tang, et al., Nat. Commun. 15, 7600"
+text = "(2024)."
+
+[[sections]]
+number = "7"
+title = "E. A. Santos, M. A. Weissflog, T. Pertsch, et al., Nanophotonics 13,"
+text = "3545 (2024)."
+
+[[sections]]
+number = "8"
+title = "J. Feng, Y.-K. Wu, R. Duan, et al., eLight 4, 16 (2024)."
+text = ""
+
+[[sections]]
+number = "9"
+title = "X. Lyu, L. Kallioniemi, H. Hong, et al., Nat. Commun. 16, 1899 (2025)."
+text = ""
+
+[[sections]]
+number = "10"
+title = "H. Liang, T. Gu, Y. Lou, et al., Sci. Adv. 11, eadt3710 (2025)."
+text = ""
+
+[[sections]]
+number = "11"
+title = "N. J. Sorensen, V. Sultanov, and M. V. Chekhova, Opt. Express 33,"
+text = "13946 (2025)."
+
+[[sections]]
+number = "12"
+title = "S. Stich, V. Sultanov, T. Blaikie, et al., Opt. Express 34, 1664 (2026)."
+text = ""
+
+[[sections]]
+number = "13"
+title = "V. Sultanov, A. Kavci ˇ c, E. Kokkinakis, ˇ et al., Nature 631, 294 (2024)."
+text = ""
+
+[[sections]]
+number = "14"
+title = "Z. Lu, J. Janousek, S. M. Assad, et al., Nat. Commun. 16, 9616 (2025)."
+text = ""
+
+[[sections]]
+number = "15"
+title = "A. Säynätjoki, L. Karvonen, H. Rostami, et al., Nat. Commun. 8, 893"
+text = "(2017)."
+
+[[sections]]
+number = "16"
+title = "S. Klopci ˇ c, A. Kav ˇ ci ˇ c, N. Sebastián, and M. Humar, Adv. Sci. ˇ n/a,"
+text = "e15206 (2025)."
+
+[[sections]]
+number = "17"
+title = "S. Lopez-Huidobro, M. Noureddin, M. V. Chekhova, and N. Y. Joly, Opt."
+text = "Lett. 48, 3423 (2023)."
+
+[[sections]]
+number = "18"
+title = "L. Caspani, R. Kaipurath, M. Clerici, et al., Phys. review letters 116,"
+text = "233901 (2016)."
+
+[[sections]]
+number = "19"
+title = "E. G. Carnemolla, W. Jaffray, M. Clerici, et al., Opt. Lett. 46, 5433"
+text = "(2021)."
+
+[[sections]]
+number = "20"
+title = "L. Xu, D. A. Smirnova, R. Camacho-Morales, et al., New J. Phys. 24,"
+text = "035002 (2022)."
+
+[[sections]]
+number = "21"
+title = "J. Yang, X. Xiao, J. Flórez, et al., ACS Photonics 12, 4415 (2025)."
+text = ""
+
+[[sections]]
+number = "22"
+title = "S. C. Malek, T. Norden, C. F. Doiron, et al., ACS nano 19, 35609 (2025)."
+text = ""
+
+[[sections]]
+number = "23"
+title = "K. F. Lee, Y. Tian, H. Yang, et al., Adv. Mater. 29, 1605978 (2017)."
+text = ""
+
+[[sections]]
+number = "24"
+title = "C. Son, S. Peana, O. Matthiessen, et al., Opt. Lett. 50, 4434 (2025)."
+text = ""
+
+[[sections]]
+number = "25"
+title = "S. D. Gennaro, C. F. Doiron, N. Karl, et al., ACS Photonics 9, 1026"
+text = "(2022)."
+
+[[sections]]
+number = "26"
+title = "S. M. Saltiel, A. A. Sukhorukov, and Y. S. Kivshar, “Multistep parametric"
+text = """
+processes in nonlinear optics,” in Progress in optics, , vol. 47 (Elsevier,\r
+2005), pp. 1–73."""
+
+[[sections]]
+number = "27"
+title = "R. Boyd, Nonlinear Optics (Academic Press, 1992)."
+text = ""
+
+[[sections]]
+number = "28"
+title = "M. H. Rubin, D. N. Klyshko, Y. Shih, and A. Sergienko, Phys. Rev. A"
+text = "50, 5122 (1994)."
+
+[[sections]]
+number = "29"
+title = "L. Wang, C. Hong, and S. Friberg, J. optics B: Quantum semiclassical"
+text = "optics 3, 346 (2001)."
+
+[[sections]]
+number = "30"
+title = "K. Garay-Palmett, A. B. U’Ren, and R. Rangel-Rojo, Phys. Rev. A 82,"
+text = "043809 (2010)."
+
+[[sections]]
+number = "31"
+title = "I. Shoji, T. Kondo, A. Kitamoto, et al., J. Opt. Soc. Am. B 14, 2268"
+text = "(1997)."
+
+[[sections]]
+number = "32"
+title = "Y. Wang, Y. Niu, G. Wang, et al., J. Alloy. Compd. 778, 691 (2019)."
+text = ""
+
+[[figures]]
+label = "fig:1"
+page_num = 2
+image_path = "images/image_p2_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"

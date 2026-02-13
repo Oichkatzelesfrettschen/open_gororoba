@@ -1,0 +1,500 @@
+                                       Ann. Phys. (Leipzig) 9 (2000) 5, 855 – 864
+
+
+
+
+                                       Einselection and Decoherence
+                                       from an Information Theory Perspective
+
+                                       W. H. Zurek
+
+                                       Los Alamos National Lab.
+                                       T-6, Los Alamos, NM 87545 USA
+                                       whz@lanl.gov
+
+                                       Received 29 Aug. 2000, accepted 25 Sep. 2000 by C. Thomsen
+
+                                       Abstract.
+
+
+
+
+arXiv:quant-ph/0011039v2 26 Jun 2011
+                                           We introduce and investigate a simple model of conditional quantum dynamics. It allows
+                                       for a discussion of the information-theoretic aspects of quantum measurements, decoherence,
+                                       and environment-induced superselection (einselection).
+
+                                       Keywords: Decoherence, Einselection, Information
+                                       PACS: 03.65.Bz, 89.70
+
+
+
+
+                                       1   Introduction
+
+                                       Transfer of information was the focus of attention [1-3] of research on decoherence
+                                       since the early days. In the intervening two decades this perspective was not forgotten
+                                       [4], but the study of different mechanisms of decoherence [5-9] took precedence over
+                                       considerations of information-theoretic nature. The aim of this paper is to sketch a few
+                                       ideas which tie the “traditional” points of view of einselection and decoherence (espe-
+                                       cially the issue of the preferred pointer basis) to various other aspects of decoherence
+                                       that have a strong connection with information-theoretic concepts.
+                                           A large part of our discussion shall be based on a simple model of conditional
+                                       dynamics, which is a direct generalization of the “bit by bit” measurement introduced
+                                       in [1] and studied in [3]. We shall introduce the model in Section 2 and use it to
+                                       compute the “price” of information in units of action in Section 3. Section 4 defines
+                                       information theoretic quantum discord between two classically identical definitions of
+                                       mutual information. Discord can be regarded as a measure of a violation of classicality
+                                       of a joint state of two quantum subsystems. Section 5 turns to the evolution of the state
+                                       of the environment in course of decoherence. The redundancy ratio introduced there
+                                       can be regarded as a measure of objectivity of quantum states. A large redundancy
+                                       ratio is a sufficient condition for an effective classicality of quantum states.
+856                                                      Ann. Phys. (Leipzig) 9 (2000) 5
+
+2     Controlled shifts for conditional dynamics
+
+The simplest example of an entangling quantum evolution is known as the controlled
+not (c-not). It involves two bits (a “control” and a “target”). Their interaction leads
+to:
+       |0C i|xT i −→ |0C i|xT i                                                     (1a)
+
+       |1C i|xT i −→ |1C i|¬xT i                                                    (1b)
+
+where the state |¬xi is defined through a basis-dependent negation:
+       ¬(γ|0T i + η|1T i) = γ|1T i + η|0T i .                                        (2)
+Classical c-not “flips” the target bit whenever the control is in the state “1”, but does
+nothing otherwise. Quantum c-not is an obvious generalization.
+    The distinction between the classical and quantum c-not comes from the fact that
+both quantum and classical bits can be in an arbitrary superposition. Thus, c-not
+starting from a superposition of |0i and |1i will in general lead to an entangled state.
+Moreover, when both the control and the target start in Hadamard-transformed states:
+                        √
+      |±i = (|0i ± |1i)/ 2 ,                                                          (3)
+c-not reverses direction:
+       |±i|+i −→ |±i|+i;                                                            (4a)
+
+       |±i|−i −→ |∓i|−i .                                                           (4b)
+
+Above, we have dropped labels: The original control is always to the left, as was the
+case in Eq. (1). We say “the original”, because the Hadamard transform of Eq. (3)
+reverses the direction of the information flow in the quantum c-not. As can be seen
+in Eq. (4), the sign of the former control (left ket) flips when the former target is in
+the state |−i.
+    Study of such simple models has led to the concept of preferred pointer states
+[1] and einselection [2,3]. We shall not review here these well known developments,
+directing the reader instead to the already available [10] or forthcoming [11] reviews
+of the subject.
+    Controlled shift (c-shift) is a straightforward generalization of c-not. The orig-
+inal truth table (an analogue of Eq. (1)) can be written as:
+       |sj i|Ak i −→ |sj i|Ak+j i                                                    (5)
+There is also a control and a target (which we shall more often call “the system S” and
+“the apparatus A”, reflecting this nomenclature in notation). Equation (5) implies
+Eq. (1) when both S and A have two-dimensional Hilbert spaces. Moreover, when
+j = 0, Eq. (1) becomes a model of a pre-measurement:
+                                       !
+                          X                      X
+      |Ψ0 i = |ψi|A0 i =       ai |si i |A0 i −→   ai |si i|Ai i = |Ψt i .           (6)
+                              i                  i
+W. H. Zurek, Einselection and Decoherence                                                                    857
+
+As in the case of c-not, in the respective bases {|si i} and {|Ak i}, Eq. (5) seems to
+imply a one - way flow of information, from S to A. However, a complementary basis
+[12,13] can be readily defined:
+                             N −1
+                         1
+                             X              2πi
+     |Bk i = N − 2                   exp(       kl) |Al i .                                                   (7)
+                                             N
+                               l=0
+
+It is analogous to the Hadamard transform we have introduced before, but it also
+has an obvious affinity to the Fourier transform. We shall call it a Hadamard-Fourier
+Transform (HFT). It is straightforward to show that the orthonormality of {|Ak i}
+immediately implies:
+     hBl |Bm i = δlm .                                                                                        (8)
+The inverse of HFT can be easily given:
+                             N −1
+                         1
+                             X                2πi
+     |Ak i = N − 2                   exp(−        kl) |Bl i .                                                 (9)
+                                               N
+                               l=0
+
+Consequently, for an arbitrary |ψi;
+           X              X
+     |ψi =     αn |An i =    βk |Bk i ,                                                                      (10)
+               n                       k
+
+where the coefficients are given by the HFT;
+                        N −1
+                    1
+                        X              2πi
+     βk = N − 2                exp(−       kn)αn .                                                           (11)
+                        n=0
+                                        N
+
+To implement the truth table of Eq. (5) we shall use observables of the apparatus:
+            N
+            X −1
+     Â =          k|Ak ihAk |;                                                                             (12a)
+            k=0
+
+            N
+            X −1
+     B̂ =           l|Bl ihBl | ,                                                                           (12b)
+             l=0
+
+as well as the observable of the system:
+            N
+            X −1
+     ŝ =          l|sl ihsl | .                                                                             (13)
+            l=0
+
+The interaction Hamiltonian of the form;
+     Hint = gŝB̂                                                                                            (14)
+acting over a period t will induce a transition;
+                                                                  N −1
+                                                              1
+                                                                  X
+      exp(−iHint t/h̄)|sj i|Ak i = |sj > N − 2                           exp[−i(jgt/h̄ + 2πk/N )l]|Bl i .    (15)
+                                                                  l=0
+858                                                         Ann. Phys. (Leipzig) 9 (2000) 5
+
+Thus, if the coupling constant g is selected so that the associated action is
+
+       I = gt/h̄ = G × 2π/N .                                                         (16)
+
+a perfect one-to-one correlation between the states of the system and of the apparatus
+can be accomplished, since:
+
+       exp(−iHint t/h̄)|sj i|Ak i = |sj i|A{k+G∗j}N i .                               (17)
+
+Thus, true to its name, the interaction described here accomplishes a simple shift,
+Eq. (5), of the state of the apparatus, while the system acts as a control. The index
+{k + G ∗ j}N has to be evaluated modulo N (where N is the number of the orthogonal
+states of the apparatus) so that when k + G ∗ j > N , the apparatus states can “rotate”
+through |A0 i and stop where the interaction takes it. The integer G can be regarded
+as the gain factor. As Eqs. (14) - (17) imply, the adjacent states of the system (i.e.,
+|sj i, |sj+1 i) get mapped onto the states of the apparatus that are G apart “on the
+dial”.
+     When the dimension of the Hilbert space of the system n is such that
+
+       nG < N ,                                                                       (18)
+
+the above model provides one with a simple example of amplification. It is possible
+to use it to study the utility of amplification in increasing signal to noise ratio in
+measurements [11]. It also shows why amplification can bring about decoherence and
+effective irreversibility (although c-shift is of course perfectly reversible). We shall
+employ c-shift to study the cost of information transfer, to introduce information –
+theoretic discord, the measure of the classicality of correlations, and to discuss objec-
+tivity of quantum states which arises from the redundancy of the records imprinted
+by the state of the system on its environment.
+
+
+3     Planck’s constant and the price of a bit
+
+Transfer of information is the objective of the measurement process and an inevitable
+consequence of most interactions. It happens in course of decoherence. Here we shall
+quantify its cost in the units of action.
+    The consequence of the interaction between S and A is the correlated state |Ψt i,
+Eq. (6). While the joint state of AS is pure, each of the subsystems is in a mixed
+state given by the reduced density matrix of the system
+                               N
+                               X −1
+       ρS = TrA |Ψt ihΨt | =          |ai |2 |si ihsi | ;                            (19a)
+                                i=0
+
+and of the apparatus
+                               N
+                               X −1
+       ρA = TrS |Ψt ihΨt | =          |ai |2 |Ai ihAi | .                            (19b)
+                                i=0
+W. H. Zurek, Einselection and Decoherence                                                 859
+
+    The correlation brought about by the interaction, Eq. (6), leads to the loss of
+information about S and A individually. The entropy of each increases to
+                                        N
+                                        X −1
+     HS = −TrρS log ρS = −                     |ai |2 log |ai |2 = −TrρA log ρA = HA .    (20)
+                                        i=0
+
+As the evolution of the whole AS is unitary, the entropies of the subsystems must
+be compensated by the decrease of their mutual entropy, i.e., by the increase of their
+mutual information:
+                                                      N
+                                                      X −1
+     I(S : A) = HS + HA − HSA = −2                           |ai |2 log |ai |2            (21)
+                                                      i=0
+
+Above, HSA is the joint entropy of SA. This quantity, Eq. (21), was introduced in
+the quantum context as a measure of entanglement some time ago [3] and has been
+since rediscovered and used [14].
+    The cost of a bit of information in terms of some other physical quantity is an
+often raised question. In the context of our model we shall inquire what is the cost of
+a bit transfer in terms of action. Let us then consider a transition represented by Eq.
+(6). The associated action must be no less than
+          N
+          X −1
+     I=          |aj |2 arccos |hA0 |Aj i| .                                              (22)
+          j=0
+
+When {|Aj i} are mutually orthogonal, the action is:
+     I = π/2                                                                             (23a)
+in Planck (h = 2πh̄) units. This estimate can be lowered by using a judiciously chosen
+initial |A0 i which is a superposition of the outcomes |Aj i. For a two-dimensional
+Hilbert space the average action can be thus brought down to πh̄/4 [1,3]. In general,
+an interaction of the form
+                  N
+                  X −1                N
+                                      X −1
+     HSA = ig            |sk ihsk |         (|Ak ihAl | − |Al ihAk |)                     (24)
+                   k=0                l=0
+
+saturates at the lower bound given by
+                 p
+      I = arcsin 1 − 1/N .                                                               (23b)
+As the dimensionality of the Hilbert spaces increases, the least action approaches π/2
+per completely entangling interaction. The action per bit will be less when, for a given
+N , the transferred information is maximized, which happens when |ai |2 = 1/N in Eq.
+(22). Then the cost of information in Planck units is
+            I         π
+     ι=         ≈          .                                                              (25)
+          log N   2 log2 N
+The cost of information per bit decreases with increasing N , the dimension of the
+Hilbert space of the smaller of the two entangled systems.
+860                                                       Ann. Phys. (Leipzig) 9 (2000) 5
+
+    This result is at the same time both enlightening and disappointing: It shows that
+the cost of information transfer is not “fixed” (as one might have hoped). Rather, the
+least total amount of action needed for a complete entanglement is at least asymptot-
+ically fixed as Eqs. (23) show. Consequently, the least price per bit goes down when
+information is transferred “wholesale”, i.e., when N is large. Yet, this is enlightening,
+as it may indicate why in the classical continuous world (where N is effectively infinite)
+one may be ignorant of that price and convinced that information is free.
+
+
+4     Discord
+
+Mutual information can be defined either by the symmetric formula, Eq. (21), or
+through an asymmetric looking equation which employs conditional entropy:
+       J (S : A) = HS − HS|A                                                         (26)
+Above, HS|A expresses the average ignorance of S remaining after the observer has
+found out the state of A. In classical physics, the two formulae, Eqs. (21) and (26),
+are strictly identical, so that the discord between them:
+       δI = I(S : A) − J (S : A) = 0                                                (27a)
+always disappears [15]:
+       δI = 0 .                                                                     (27b)
+In quantum physics things are never this simple: To begin with, conditional informa-
+tion depends on the observer finding out about one of the subsystems, which implies
+a measurement. So HS|A must be carefully defined before Eqs. (26) and (27) become
+meaningful.
+    Conditional entropy is non-trivial in the quantum context because, in general, in
+order to find out HS|A one must choose a set of projection operators Πj and define a
+conditional density matrix given by the outcome corresponding to Πj through
+       ρ̃S|Πj = TrA Πj ρSA ,                                                         (28)
+where in the simplest case Πj = |Cj ihCj | is a projection operator onto a pure state
+of the apparatus. A normalized ρS|Πj can be obtained by using the probability of the
+outcome
+       pj = Trρ̃S|Πj ;                                                               (29)
+
+       ρS|Πj = p−1
+                j ρ̃S|Πj .                                                           (30)
+    The conditional density matrix ρS|Πj represents the description of the system S
+available to the observer who knows that the apparatus A is in a subspace defined by
+Πj . For a pure initial state and an exhaustive measurement the conditional density
+matrix will also be pure. We shall however consider a broader range of possibilities,
+including joint density matrices which undergo a decoherence process, so that
+              X                                 X
+      ρP
+       SA =      αi α∗j |si ihsj ||Ai ihAj | =⇒   |αi |2 |si ihsi ||Ai ihAi | = ρD
+                                                                                 SA . (31)
+                i,j                         i
+W. H. Zurek, Einselection and Decoherence                                           861
+
+This transition is accompanied by an increase in entropy
+
+     ∆H(ρSA ) = H(ρD         P
+                   SA ) − H(ρSA )
+
+and by the simultaneous disappearance of the ambiguity in what was measured [1-3].
+Now, ρS|Πj is no longer pure, unless Πj = |Aj ihAj |. That is, a measurement of the
+apparatus in bases other than the pointer basis will leave an observer with varying
+degrees of ignorance about the state of the system. More general cases when the
+density matrix is neither a pure pre-decoherence projection operator ρPSA to the left of
+the arrow in Eq. (31) nor a completely decohered ρD  SA state on the right are possible
+and typical.
+   To define discord δI we finalize our definition of HS|A :
+              X
+     HS|A =        p|Ci i H(ρD
+                             S|Ci i ) .                                            (32)
+               i
+
+Above, we have used an obvious notation for the density matrix conditioned upon pure
+states {|Cj i}. We emphasize again that the conditional entropy depends on ρSA , but
+also on the choice of the observable measured on A. In classical physics all observables
+commute, so there is no such dependence. Thus, non-commutation of observables in
+quantum theory is the ultimate source of the information - theoretic discord.
+    The obvious use for the discord is to employ it as a measure of how non-classical
+the underlying correlation of two quantum systems is. In particular, when there exists
+a set of states in one of the two systems in which the discord disappears, the state
+represented by ρSA admits a classical interpretation of probabilities in that special
+basis. Moreover, unless the discord disappears for trivial reasons (which would happen
+in the absence of correlation, i.e., when ρSA = ρS ρA ), the basis which minimizes the
+discord can be regarded as “the most classical”. For δI = 0 the states of such preferred
+basis and their corresponding eigenvalues can be treated as effectively classical [11].
+    The vanishing discord is a stronger condition than the absence of entanglement.
+In effect, δI = 0 implies existence of the eigenstates of ρSA which are products of the
+states of S and of A. An instructive example of this situation arises as a result of
+decoherence: When the off-diagonal terms of ρSA disappear in a manner illustrated
+by Eq. (31), the discord disappears as well.
+
+
+
+5   Environment as a witness: Redundancy ratio
+
+The discussion of decoherence to date tends to focus on the effect of the environment
+on the system or on the apparatus. The destruction of quantum coherence and the
+emergence of preferred pointer observables whose eigenvalues are associated with the
+decoherence-free pointer subspaces was the focus of the investigation.
+    Here we shall break with this tradition. According to the theory of decoherence,
+the environment is monitoring the system. Therefore, its state must contain a record
+of the system. It is of obvious interest to analyze the nature and the role of this
+record. To this end, we shall use mutual information introduced before defining the
+862                                                       Ann. Phys. (Leipzig) 9 (2000) 5
+
+redundancy ratio
+                                    !
+                     X
+      RI (⊗HE ) =          I(S : E k ) /H(S) .                                        (33)
+               k
+                       k
+
+Above, we imagined a setting where the system is decohering due to the interaction
+with the environment which is composed of many subsystems Ek . RI ({⊗HE }) is a
+                                                                              k
+measure of how many times – how redundantly – the information about the system has
+been inscribed in the environment. An essentially identical formula can be introduced
+using the asymmetric J , Eq. (26). It is easy to establish that the discord is always
+non-negative and, hence, that
+
+      RJM AX ≤ RIM AX .                                                               (34)
+
+The subscript indicating maximization may refer to two distinct procedures: RJ will
+obviously depend on the manner in which subsystems of the environment are measured.
+In fact, it is convenient to use
+
+      Jk = J (S : E k ) = H(Ek ) − H(Ek |S) ,                                         (35)
+
+to define a basis-dependent
+
+      RJ ({|si}) = RJ (⊗HE k )                                                        (36)
+
+in a manner analogous to Eq. (33). Maximizing RJ ({|si}) with respect to the choice
+of the choice of states {|si} [11] is an obvious “counterpoint” to the predictability sieve
+[16-19], the strategy which seeks states that entangle the least with the environment.
+    There is one more maximization procedure which may and should be considered:
+The environment can be partitioned differently – for example, it may turn out that
+more information about the system can be extracted by measuring, say, the photon
+environment in some collective fashion (homodyne?) instead of directly counting the
+environment photons. It is clear that for such optimization to be physically significant,
+it should respect to some degree the natural structure of the environment.
+    In addition to the redundancy ratio one can define the rate at which the redundancy
+ratio increases. The redundancy rate is defined as
+             d
+      Ṙ =      R.                                                                    (37)
+             dt
+Either the basis dependent or the basis-independent versions of Ṙ may be of interest.
+The physical significance of the redundancy ratio rate is clear: It shows how quickly
+the information about the system spreads throughout the environment. It is, in effect,
+a measure of the rate of increase of the effective number of the environment subsystems
+which have recorded the state of the system S.
+   It is worth noting that either RI or RJ can keep on increasing after the density
+matrix of the system has lost its off-diagonal terms in the pointer basis and after it
+can be therefore considered completely decohered. Indeed, direct interaction between
+the system and the environment is not needed for either R to change. For example,
+W. H. Zurek, Einselection and Decoherence                                               863
+
+information about the system inscribed in the primary environment may be communi-
+cated to a secondary, tertiary, and more remote environment (which need not interact
+with the system at all).
+    It is natural to define objectivity and, therefore, classicality with the help of R. In
+the limit RJ → ∞ the information about the preferred states of the system is spread
+so widely that it can be acquired by many observers simultaneously [11]. Moreover, it
+already exists in multiple copies, so it can be safely cloned in spite of the no-cloning
+theorem [20]. Thus, a state of the system redundantly recorded in the environment
+has all the symptoms of “objective existence”. In particular, such well-advertised
+states can be found out without being disturbed by approximately R observers acting
+independently [11,21] (each simply measuring the state of ∼ 1/RJ fraction of the
+environment).
+
+
+6   Summary and Conclusions
+
+Information theory offers a useful perspective on the measurement process, on de-
+coherence and, above all, on the definitions of classicality. Discord can be used to
+characterize the nature of quantum correlations and to distinguish the ones that are
+classical. The redundancy ratio is a powerful measure of the classicality of states:
+While a vanishing discord is a necessary condition for classicality of correlations, the
+redundancy ratio is a direct measure of objective existence of quantum states. Ob-
+jectivity can be defined operationally as the ability to find what the state is without
+disturbing it [11,21]. Objective existence of quantum states would make them effec-
+tively classical, and was the ultimate goal of the interpretation of quantum theory.
+We have established it here by investigating einselection from the point of view of
+information theory and by shifting focus from the system to the environment which is
+monitoring the system.
+    These advances clarify some of the interpretational issues which are now a cen-
+tury old. The relation between the epistemological and ontological significance of the
+quantum state vectors is now apparent: Objective existence of the quantum states is
+a direct consequence of the redundant records permeating the environment. Episte-
+mology begets ontology!
+    This research was supported in part by NSA.
+
+
+References
+ [1] Zurek, W. H., Phys. Rev. D 24 (1981) 1516-1524
+ [2] Zurek, W. H., Phys. Rev. D 26 (1982) 1862-1880
+ [3] Zurek, W. H., Information transfer in quantum measurements, pp. 87-116 in Quantum
+     Optics, Experimental Gravity, and the Measurement Theory, P. Meystre and M. O.
+     Scully, eds. (Plenum, New York, 1983)
+ [4] Schumacher, B., Westmoreland, M., and Wootters, W. K., Phys. Rev. Lett. 76 (1996)
+     3452-3455; Hall, M. J. H., and O’Rourke, M. J., Quant. Opt. 5 (1993) 161; Halliwell, J.
+     J., Phys. Rev. D 60 (1999) 105031
+ [5] Joos, E., and Zeh, H. D., Zeits. Phys. B 59 (1985) 229
+864                                                        Ann. Phys. (Leipzig) 9 (2000) 5
+
+ [6] Caldeira, A. O., and Leggett, A. J., Physica 121A (1983) 587-616; Phys. Rev. A 31
+     (1985) 1059; Haake, F., and Reibold, R., Phys. Rev. A 32 (1985) 2462; Grabert, H.,
+     Schramm, P., and Ingold., G.-L., Phys. Rev. 168 (1988) 115-207
+ [7] Zurek, W. H., Reduction of the Wavepacket: How long does it take? presented at a
+     NATO ASI Frontiers of Nonequilibrium Statistical Mechanics Santa Fe, June 1984, pp.
+     145-149 in the proceedings, G. T. Moore and M. O. Scully, eds. (Plenum, New York,
+     1986); Haake, F., and Walls, D. F., in Quantum Optics IV, J. D. Harvey and D. F.
+     Walls, eds. (Springer, Berlin, 1986). Unruh, W. G., and Zurek, W. H., Phys. Rev. D 40
+     (1989) 1071-1094
+ [8] Hu, B. L., Paz, J. P., and Zhang, Y., Phys. Rev. D 45 (1992) 2843-2861; Zurek, W.
+     H., Habib, S., and Paz, J. P., Phys. Rev. Lett 70 (1993) 1187-1190; Anglin, J. R., and
+     Zurek, W. H., Phys Rev. D 53 (1996) 7327-7335; Anglin, J. R., Paz, J. P., and Zurek,
+     W. H., Phys. Rev. A 53 (1997) 4041
+ [9] Brune, M., Hagley, E., Dreyer, J., Maı̂tre, X., Maali, A., Wunderlich, C., Raimond,
+     J-M., and Haroche, S., Phys. Rev. Lett. 77 (1996) 4887-4890; Myatt et al., Nature 403
+     (2000) 269
+[10] Giulini, D., Joos, E., Kiefer, C., Kupsch, J., Stamatescu, I.-O., and Zeh, H. D., Deco-
+     herence and the Appearance of a Classical World in Quantum Theory, (Springer, Berlin,
+     1996); Blanchard, Ph., Giulini, D., Joos, E., Kiefer, C., and Stamatescu, I.-O., eds,
+     Decoherence: Theoretical, Experimental, and Conceptual Problems, (Springer, Berlin,
+     2000); Paz, J. P., and Zurek, W. H., in Les Houches Lectures, in press (2000)
+[11] Zurek, W. H., Rev. Mod. Phys., submitted (2000)
+[12] Ivanovic I. D., J. Phys. A 14 (1981) 3241-3245; J. Math. Phys. 24 (1983) 1199-1205
+[13] Wootters, W. K., and Fields, B. D., Ann. Phys. 191 (1989) 363
+[14] Barnett, S. M., and Phoenix, S. J. D., Phys. Rev. A 40 (1989) 2404-2409
+[15] Cover, T. M., and Thomas, J. A., Elements of Information Theory, (Wiley, New York,
+     1991)
+[16] Zurek, W. H., Progr. Theor. Phys. 89 (1993) 281-302
+[17] Zurek, W. H., Habib, S., and Paz, J. P., Phys. Rev. Lett 70 (1993) 1187-1190
+[18] Tegmark, M., and Shapiro, H. S., Phys. Rev. E 50 (1994) 2538-2547
+[19] Gallis, M. R., Phys. Rev. A 53 (196) 655-660; Paraoanu, Gh.-S., and Scutaru, H., Phys.
+     Lett. A 238 (1998) 219-222
+[20] Wootters, W. K., and Zurek, W. H., Nature 299 (1982) 802-802; Dieks, D., Phys. Lett.
+     92 (1982) 271-272
+[21] Zurek, W. H., Phil. Trans. Roy. Soc. Lond. 356 (1998) 1793-1821
+

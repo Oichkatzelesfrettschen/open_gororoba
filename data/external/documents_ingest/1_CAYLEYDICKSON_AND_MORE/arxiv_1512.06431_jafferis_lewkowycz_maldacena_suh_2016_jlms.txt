@@ -1,0 +1,1053 @@
+                                                                                                                       NSF-KITP-15-162
+
+
+
+
+                                                  Relative entropy equals bulk relative entropy
+
+                                          Daniel L. Jafferis1 , Aitor Lewkowycz2 , Juan Maldacena3 , S. Josephine Suh4,5
+
+
+
+
+arXiv:1512.06431v1 [hep-th] 20 Dec 2015
+                                           1
+                                               Center for Fundamental Laws of Nature, Harvard University, Cambridge, MA, USA
+                                                              2
+                                                                  Jadwin Hall, Princeton University, Princeton, NJ, USA
+                                                                   3
+                                                                       Institute for Advanced Study, Princeton, NJ, USA
+                                                       4
+                                                           Kavli Institute for Theoretical Physics, Santa Barbara, CA, USA
+                                           5
+                                               Department of Physics and Astronomy, University of British Columbia, Vancouver,
+                                                                              B.C., Canada
+
+
+
+
+                                                                                         Abstract
+
+                                                     We consider the gravity dual of the modular Hamiltonian associated to a general
+                                                  subregion of a boundary theory. We use it to argue that the relative entropy of
+                                                  nearby states is given by the relative entropy in the bulk, to leading order in the
+                                                  bulk gravitational coupling. We also argue that the boundary modular flow is
+                                                  dual to the bulk modular flow in the entanglement wedge, with implications for
+                                                  entanglement wedge reconstruction.
+Contents
+1 Introduction and summary of results                                                      1
+
+2 Entanglement entropy, the modular hamiltonian, and relative entropy                      4
+  2.1 Modular Hamiltonian . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        4
+  2.2 Relative entropy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     4
+
+3 Gravity dual of the modular hamiltonian                                                  6
+
+4 Regions with a local boundary modular Hamiltonian                                        7
+  4.1 Linear order in the metric . . . . . . . . . . . . . . . . . . . . . . . . . . .     7
+  4.2 The graviton contribution . . . . . . . . . . . . . . . . . . . . . . . . . . .      8
+  4.3 Quadratic order for coherent states . . . . . . . . . . . . . . . . . . . . . .      9
+
+5 Modular flow                                                                     10
+  5.1 Smoothness of the full modular Hamiltonian in the bulk . . . . . . . . . . 10
+  5.2 Implications for entanglement wedge reconstruction . . . . . . . . . . . . . 12
+
+6 Comments and discussion                                                                 14
+  6.1 The relative entropy for coherent states . . . . . . . . . . . . . . . . . . . .    14
+  6.2 Positivity of relative entropy and energy constraints . . . . . . . . . . . . .     14
+  6.3 Higher derivative gravity . . . . . . . . . . . . . . . . . . . . . . . . . . . .   14
+  6.4 Beyond extremal surfaces . . . . . . . . . . . . . . . . . . . . . . . . . . .      15
+  6.5 Distillable entanglement . . . . . . . . . . . . . . . . . . . . . . . . . . . .    15
+
+A Subregions of gauge theories                                                          16
+  A.1 U(1) gauge theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+  A.2 Gravity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+
+1    Introduction and summary of results
+Recently there has been a great deal of effort in elucidating patterns of entanglement for
+theories that have gravity duals. The simplest quantity that can characterize such patterns
+is the von Neumann entropy of subregions, sometimes called the “entanglement entropy”.
+This quantity is divergent in local quantum field theories, but the divergences are well
+understood and one can extract finite quantities. Moreover, one can construct strictly
+finite quantities that are well-defined and have no ambiguities. A particularly interesting
+quantity is the so called “relative entropy” [1, 2]. This is a measure of distinguishability
+
+
+
+
+                                             1
+between two states, a reference “vacuum state” σ and an arbitrary state ρ
+
+                               S(ρ|σ) = T r[ρ log ρ − ρ log σ]                         (1.1)
+
+If we define a modular Hamiltonian K = − log σ, then this can be viewed as the free
+energy difference between the state ρ and the “vacuum” σ at temperature β = 1, S(ρ|σ) =
+∆K − ∆S.
+    Relative entropy has nice positivity and monotonicity properties. It has also played an
+important role in formulating a precise version of the Bekenstein bound [3] and arguments
+for the second law of black hole thermodynamics [4, 5].
+    In some cases the modular hamiltonian has a simple local expression. The simplest
+case is the one associatated to Rindler space, where the modular Hamiltonian is simply
+given by the boost generator.
+    In this article we consider quantum field theories that have a gravity dual. We consider
+an arbitrary subregion on the boundary theory R, and a reference state σ, described by
+a smooth gravity solution. σ can be the vacuum state, but is also allowed to be any
+state described by the bulk gravity theory. We then claim that the modular Hamiltonian
+corresponding to this state has a simple bulk expression. It is given by
+
+                                   Areaext
+                          Kbdy =           + Kbulk + · · · + o(GN )                    (1.2)
+                                    4GN
+
+The first term is the area of the Ryu Takayangi surface S (see figure 1), viewed as an
+operator in the semiclassically quantized bulk theory. This term was previously discussed
+in [6]. The o(G0N ) term Kbulk is the modular Hamiltonian of the bulk region enclosed
+by the Ryu-Takayanagi surface, Rb , when we view the bulk as an ordinary quantum
+field theory, with suitable care exercised to treat the quadratic action for the gravitons.
+Finally, the dots represent local operators on S, which we will later specify. We see that
+the boundary modular Hamiltonian has a simple expression in the bulk. In particular, to
+leading order in the 1/GN expansion it is just the area term, which is a very simple local
+expression in the bulk. Furthermore, this simple expression is precisely what appears
+in the entropy. This modular Hamiltonian makes sense when we compute its action on
+bulk field theory states ρ which are related to σ by bulk perturbation theory. Roughly
+speaking, we consider a ρ which is obtained from σ by adding or subtracting particles
+without generating a large backreaction.
+    Due to the form of the modular Hamiltonian (1.2), we obtain a simple result for the
+relative entropy
+                                   Sbdy (ρ|σ) = Sbulk (ρ|σ)                           (1.3)
+
+where the left hand side is the expression for the relative entropy on the boundary. In
+the right hand side we have the relative entropy of the bulk quantum field theory, with ρ
+
+
+                                              2
+and σ in the right hand side, being the bulk states associated to the boundary states ρ, σ
+appearing in the left hand side. Note that the area term cancels.
+   Another consequence of (1.2) is that the action of Kbdy coincides with the action of
+Kbulk in the interior of the entanglement wedge1 ,
+
+                                        [Kbdy , φ] = [Kbulk , φ]                         (1.4)
+
+for φ a local operator in Rb . This follows from causality in bulk perturbation theory: terms
+in Kbdy localized on S do not contribute to its action in the interior of the entanglement
+wedge, S being space-like to the interior. Note Kbulk is the bulk modular Hamiltonian
+associated to a very specific subregion, that bounded by the extremal surface S. Impli-
+cations of (1.4) for entanglement wedge reconstruction are described in section 5.2.
+
+
+
+
+Figure 1: The red segment indicates a spatial region, R, of the boundary theory. The
+leading contribution to the entanglement entropy is computed by the area of an extremal
+surface S that ends at the boundary of region R. This surface divides the bulk into two,
+region Rb and its complement. Region Rb lives in the bulk and has one more dimension
+than region R. The leading correction to the boundary entanglement entropy is given by
+the bulk entanglement entropy between region Rb and the rest of the bulk.
+
+
+    The bulk dual of relative entropy for subregions with a Killing symmetry was con-
+sidered before in [7, 8, 9, 10, 11, 12]. In particular, in [12], the authors related it to the
+classical canonical energy. In fact, we argue below that the bulk modular hamiltonian
+is equal to the canonical energy in this case. This result extends that discussion to the
+quantum case. Note (1.2) and (1.3) are valid for arbitrary regions, with or without a
+Killing symmetry. In addition, we are not restricting σ to be the vacuum state. Recently
+a different extension of [12] has been explored in [13], which extends it to situations where
+one has a very large deformation relative to the vacuum state. That discussion does not
+obviously overlap with ours.
+    This paper is organized as follows. In section two, we recall definitions and properties
+of entanglement entropy, the modular Hamiltonian, and relative entropy. In section three,
+  1
+      The entanglement wedge is the domain of dependence of the region Rb .
+
+
+                                                   3
+we present an argument for the gravity dual of the modular hamiltonian and the bulk
+expression for relative entropy. In section four, we discuss the case with a U (1) symmetry,
+relating to previous work. In section five, we discuss the flow generated by the boundary
+modular hamiltonian in the bulk. We close in section six with some discussion and open
+questions.
+
+
+2     Entanglement entropy, the modular hamiltonian,
+      and relative entropy
+We consider a system that is specified by a density matrix ρ. This can arise in quantum
+field theory by taking a global state and reducing it to a subregion R. We can compute the
+von Neuman entropy S = −T r[ρ log ρ]. Due to UV divergences this is infinite in quantum
+field theory. However, these divergences are typically independent of the particular state
+we consider, and when they depend on the state, they do so via the expectation value of
+an operator. See [14, 15].
+
+
+2.1     Modular Hamiltonian
+It is often useful to define the modular hamiltonian Kρ ≡ − log ρ. From its definition, it
+is not particularly clear why this is useful – it is in general a very non-local complicated
+operator. However, for certain symmetric situations it is nice and simple.
+    The simplest case is a thermal state where K = H/T , with H the Hamiltonian of the
+system. Another case is when the subregion is the Rindler wedge and the state is the
+vacuum of Minkowski space, when K is the boost generator. This is a simple integral
+of a local operator, the stress tensor. For a spherical region in a conformal field theory,
+we have a similarly simple expression, which is obtained from the previous case by a
+conformal transformation [16]. In free field theory one can also obtain a relatively simple
+expression that is bilocal in the fields [17] for a general subregion of the vacuum state.
+    In this paper we consider another case in which simplification occurs. We consider
+a quantum system with a gravity dual and a state that can be described by a gravity
+solution. We will argue that the modular Hamitonian is given by the area of the Ryu-
+Takayanagi minimal surface plus the bulk modular Hamiltonian of the bulk region enclosed
+by the Ryu-Takayanagi surface.
+
+
+2.2     Relative entropy
+Modular Hamiltonians also appear in the relative entropy
+
+                      Srel (ρ|σ) = trρ(log ρ − log σ) = ∆hKσ i − ∆S                    (2.5)
+
+
+                                             4
+where Kσ = − log σ is the modular Hamiltonian associated to the state σ. If σ was a
+thermal state, the relative entropy would be the free energy difference relative to the
+thermal state. As such it should always be positive.
+    Relative entropies have a number of interesting properties such as positivity and mono-
+tonicity [1]. Moreover, while the entanglement entropy is not well defined for QFT’s,
+relative entropies have a precise mathematical definition [2].
+    If ρ = σ + δρ, then, because of positivity, the relative entropy is zero to first order in
+δρ. This is called the first law of entanglement:
+
+                                            δS = δhKσ i                                         (2.6)
+
+    When we consider a gauge theory, the definition of entanglement entropy is ambiguous.
+If we use the lattice definition, there are different operator algebras that can be naturally
+associated with a region R [14]. Different choices give different entropies. These algebras
+differ in the elements that are kept when splitting space into two, so that ambiguities are
+localized on the boundary of the region, ∂R. One natural way of defining the entanglement
+entropy is by fixing a set of boundary conditions and summing over all possibilities, since
+there is no physical boundary. This was carried out for gauge fields in [18, 19, 51] and gives
+the same result as the euclidean prescription of [20]. However, the details involved in the
+definition of the subalgebra are localized on the boundary. Because of the monotonicity
+of relative entropy, these do not contribute to the relative entropy (see section 6 of [14]
+for more details).
+    In the case of gravitons we expect that similar results should hold. We expect that
+we similarly need to fix some boundary conditions and then sum over these choices. For
+example, we could choose to fix the metric fluctuations on the Ryu-Takayanagi surface,
+viewing it as a classical variable, and then integrate over it. As argued in [14], we expect
+that the detailed choice should not matter when we compute the relative entropy. See
+appendix A for more details.
+    As we mentioned above, it often occurs that two different possible definitions of the
+entropy give results that differ by the expectation value of a local operator, S(ρ) =tr(ρO)+
+S̃(ρ). A trivial example is the divergent area term which is just a number. In these cases
+the two possible modular Hamiltonians are related by
+
+                            S(ρ) = tr (ρO) + S̃(ρ) −→ K = O + K̃                                (2.7)
+
+This implies that relative entropies are unambiguous, S(ρ|σ) = S̃(ρ|σ). For the equality
+of relative entropies, it is not necessary for O to be a state independent operator. It is
+only necessary that O is the same operator for the states ρ and σ.2
+   2
+    In other words, if we consider a family of states, with ρ and σ in that family, then O should be a
+state independent operator within that family.
+
+
+                                                  5
+3       Gravity dual of the modular hamiltonian
+A leading order holographic prescription for computing entanglement entropy was pro-
+posed in [21, 22] and it was extended to the next order in GN in [23] (see also [24]). The
+entanglement entropy of a region R is the area of the extremal codimension-two surface
+S that asymptotes to the boundary of the region ∂R, plus the bulk von Neuman entropy
+of the region enclosed by S, denoted by Rb . See figure 1.
+
+                                         Aext (S)
+                           Sbdy (R) =             + Sbulk (Rb ) + SWald−like                         (3.8)
+                                          4GN
+
+SWald−like indicates terms which can be written as expectation values of local operators on
+S. They arise when we compute quantum corrections [23], we discuss examples below.
+    We can extract a modular Hamiltonian from this expression. We consider states that
+can be described by quantum field theory in the bulk. We consider a reference state σ,
+which could be the vacuum or any other state that has a semiclassical bulk description.
+We consider other states ρ which likewise can be viewed as semiclassical states built
+around the bulk state for σ. To be concrete we consider the situation where the classical
+or quantum fields of ρ are a small perturbation on σ so that the area is only changed by
+a small amount. Now the basic and simple observation is that both the area term and
+the SWald−like are expectation values of operators in the bulk effective theory. Therefore,
+for states that have a bulk effective theory, we can use (2.7) to conclude that
+
+                                           Âext
+                                 Kbdy =          + ŜWald−like + Kbulk                               (3.9)
+                                           4GN
+
+This includes the contribution from the gravitons, as we will explain in detail below.
+The area term was first discussed in [6]. We view the area of the extremal surface as
+an operator in the bulk effective theory. This contains both the classical area as well as
+any changes in the area that result from the backreaction of quantum effects. Since we
+are specifying the surface using the extremality condition, this area is a gauge invariant
+observable in the gravity theory.3 Note that the area changes as we change the state,
+but we can choose a gauge where the position of the extremal surface is fixed. Finally
+ŜWald−like are the operators whose expectation values give us SWald−like .
+    Interestingly, all terms that can be written as local operators drop out when we con-
+sider the relative entropy. The relative entropy has a very simple expression
+
+                                        Sbdy (ρ|σ) = Sbulk (ρ|σ)                                   (3.10)
+    3
+     If we merely define a surface by its coordinate location in the background solution, then a pure gauge
+fluctuation of the metric can change the area. If the original surface is not extremal this already happens
+to first order.
+
+
+
+
+                                                    6
+Note that the term going like 1/GN cancels out and we are only left with terms of order
+G0N . There could be further corrections proportional to GN which we do not discuss in
+this article. It is tempting to speculate that perhaps (3.10) might be true to all orders in
+the GN expansion (i.e. to all orders within bulk perturbation theory).
+    Of course, using the equation for the entropy (3.8) and (3.9) we can check that the
+first law (2.6) is obeyed. In the next section we discuss this in more detail for a spherical
+subregion in the vacuum.
+
+
+4     Regions with a local boundary modular Hamilto-
+      nian
+For thermal states, Rindler space, or spherical regions of conformal field theories we have
+an explicit expression for the boundary modular Hamiltonian. In all these cases there is
+a continuation to Euclidean space with a compact euclidean time and a U (1) translation
+symmetry along Euclidean time. We also have a corresponding symmetry in Lorentzian
+signature generated by a Killing or (conformal Killing) vector ξ. The modular Hamiltonian
+                                                             R
+is then given in terms of the stress tensor as Kbdy = ER ≡ ∗(ξ.Tbdy ), where the integral
+is over a boundary space-like slice. When the theory has a gravity dual, the bulk state σ
+is also invariant under a bulk Killing vector ξ. In this subsection we will discuss (3.9) for
+states constructed around σ.
+    For this discussion it is useful to recall Wald’s treatment of the first law [25, 26, 27]
+                                                  Z
+                                   Alin (δg)
+                             δER =           +        ∗(ξ.Eg (δg))                     (4.11)
+                                    4GN           Σ
+
+
+where Eg (δg) is simply the linearized Einstein tensor with the proper cosmological con-
+stant. It is just the variation of the gravitational part of the action and does not include
+the matter contribution. Here Alin is the first order variation in the area due to a met-
+ric fluctuation δg. And Σ is any Cauchy slice in the entanglement wedge Rb . Equation
+(4.11) is a tautology, it arises by integrating by parts the linearized Einstein tensor. It is
+linear in δg and we can write it as an operator equation by sending δg → δĝ, where δĝ is
+the operator describing small fluctuations in the metric in the semiclassically quantized
+theory.
+
+
+4.1     Linear order in the metric
+For clarity we will first ignore dynamical gravitons, and include them later (we would
+have nothing extra to include if we were in three bulk dimensions). We consider matter
+fields with an o(G0N ) stress tensor in the bulk, assuming the matter stress tensor was zero
+
+
+
+                                              7
+on the σ background.4 Such matter fields produce a small change in the metric that can
+be obtained by linearizing the Einstein equations around the vacuum. These equations
+                   mat          mat
+say Eg (δg)µν = Tµν    , where Tµν  is the stress tensor of matter. Inserting this in (4.11)
+we find that [25, 26, 27]
+                                            Z
+                              Alin (δg)                       Alin (δg)
+                        δER =           +         ∗(ξ.T ) =             + Kbulk                (4.12)
+                               4GN            Σ                4GN
+
+where we used that the bulk modular Hamiltonian also has a simple local expression in
+terms of the stress tensor due to the presence of a Killing vector with the right properties
+at the entangling surface S. Notice that we can disregard additive constants in both the
+area and E, which are the values for the state σ. We only care about deviations from these
+values. This is basically the inverse of the argument in [28]. This shows how (3.9) works
+in this symmetric case. The term ŜWald−like in (3.9) arises in some cases as we discuss
+below.
+    Let us now discuss the ŜWald−like term. There can be different sources for this term. A
+simple source is the following. The bulk entanglement entropy has a series of divergences
+which include an area term, but also terms with higher powers of the curvature. Depending
+on how we extract the divergences we can get certain terms with finite coefficients. Such
+terms are included in SWald−like . A different case is that of a scalar field with a coupling
+αφ2 (R − R0 ) where R is the Ricci scalar in the bulk, and R0 the Ricci scalar on the
+unpertubed background, the one associated to the state σ. Then there exists an additional
+                                                      R
+term in the entropy of the form ŜWald−like = 2πα S φ2 . If we compute the entropy as
+the continuum limit of the one on the lattice, then it will be independent of α. Under
+these conditions the bulk modular Hamiltonian is also independent of α and is given
+by the canonical stress tensor, involving only first derivatives of the field. However, the
+                                      R
+combination of Kbulk + ŜWald−like = Σ ∗(ξ.T grav (φ)), where Tµν
+                                                                grav
+                                                                     (φ) is the standard stress
+                                                                                   grav
+tensor that would appear in the right hand side of Einstein’s equations. Tµν            (φ) does
+depend on α. The α dependent contribution is a total derivative which evaluates to
+2παφ2 at the extremal surface. A related discussion in the field theory context appeared
+in [15, 29].
+
+
+4.2      The graviton contribution
+We expect that we can view the propagating gravitons as one more field that lives on the
+original background, given by the metric gσ . In fact, we can expand Einstein’s equations
+                                                          √
+in terms of g = gσ + δg2 + h. Here h, which is of order GN , represents the dynamical
+graviton field and obeys linearized field equations. δg2 takes into account the effects of
+   4
+    This discussion can be simply extended when there is a non-zero but U (1)-symmetric background
+matter stress tensor, such as in a charged black hole. In that case we need to subtract the background
+stress tensor to obtain the bulk modular Hamiltonian.
+
+
+                                                   8
+back-reaction and obeys the equation
+
+                                                   grav        matter
+                                      E(δg2 )µν = Tµν   (h) + Tµν                            (4.13)
+
+        grav
+where Tµν    (h) comes simply from expanding the Einstein tensor (plus the cosmological
+constant) to second order and moving the quadratic term in h to the right hand side.
+h obeys the homogeneous linearized equation of motion, so the term linear in h in the
+equation above vanishes. We can now use equations (44-46) in [30], which imply that
+
+                                               Âlin (h + δg2 ) + Âquad (h)
+                        Kbdy,1+2 = E1+2 =                                    + Ecan          (4.14)
+                                                           4GN
+
+where Kbdy,1+2 is the boundary modular Hamitonian (or energy conjugate to τ trans-
+lations) expanded to quadratic order in fluctuations. Similarly, the area is expanded
+to linear and quadratic order. Finally, Ecan is the bulk canonical energy5 defined by
+        R
+Ecan = ω(h, Lξ h)+matter contribution, where ω is the symplectic form defined in [30].
+From this expression we conclude that the modular Hamiltonian is the canonical energy
+
+                                               Kbulk = Ecan                                  (4.15)
+
+    We can make contact with the previous expression (4.12) as follows. If we include
+                               mat      mat    grav
+the gravitons by replacing Tµν     → Tµν    + Tµν   (h) in (4.12), then we notice that we get
+Alin (δg2 ), without the term Aquad (h). However, one can argue that (see eqn. (84) of [30])
+                                Z
+                                                                    Aquad (h)
+                                     ∗(ξ.T grav (h)) = Ecan (h) +                            (4.16)
+                                 Σ                                   4GN
+
+thus recovering (4.14).
+    In appendix A we discuss in more detail the boundary conditions that are necessary
+for quantizing the graviton field.
+
+
+4.3        Quadratic order for coherent states
+The problem of the gravity dual of relative entropy was considered in [12] in the classical
+regime for quadratic fluctuations around a background with a local modular Hamiltonian.
+They argued that the gravity dual is equal to the canonical energy. Here we rederive their
+result from (3.10).
+    We simply view a classical background as a coherent state in the quantum theory.
+   R
+eiλ Πφ̂+φΠ̂ |ψσ i, where |ψσ i is the state associated to σ 6 . We see that in free field theory
+we can view coherent states as arising from the action of a product of unitary operators,
+  5
+      This differs from the integral
+                            √        of the gravitational stress tensor by boundary terms.
+  6
+      Here λ could be O(1/ GN ) as long as the backreaction is small.
+
+
+                                                      9
+one acting inside the region and one ouside. For this reason finite coherent excitations
+do not change the bulk von Neuman entropy of subregions, or ∆Sbulk = 0. Thus, the
+contribution to the bulk relative entropy comes purely from the bulk Hamiltonian, which
+we have argued is equal to canonical energy (4.15) . Therefore, in this situation we recover
+the result in [12]
+
+             Sbdy (ρ|σ) = Sbulk (ρ|σ) = ∆Kbulk − ∆Sbulk = ∆Kbulk = Ecanonical        (4.17)
+
+
+5     Modular flow
+The modular hamiltonian generates an automorphism on the operator algebra, the mod-
+ular flow. Consider the unitary transformation U (s) = eiKs . Even if the modular hamil-
+tonian is not technically an operator in the algebra, the modular flow of an operator,
+O(s) ≡ U (s)OU (−s), stays within the algebra. For a generic region, the modular flow
+might be complicated, see [31] for some discussion about modular flows for fermions in
+1+1 dimensions. However, in our holographic context it can help us understand subregion-
+subregion duality. In particular, it can help answer the question of whether the boundary
+region R describes the entanglement wedge or only the causal wedge [32, 33, 34, 35]. The
+entanglement wedge is the causal domain of the spatial region bounded by the interior of
+S.
+    From (1.2), we have that
+                                    [Kbdy , φ] = [Kbulk , φ]                        (5.18)
+
+where φ is any operator with support only in the interior of the entanglement wedge,
+and where on the right-hand side we have suppressed terms subleading in GN . On the
+left-hand side terms in Kbdy localized on S have dropped out, similarly as in (3.10). Thus
+the boundary modular flow is equal to the bulk modular flow of the entanglement wedge,
+the causal wedge does not play any role.
+    One may also consider the flow generated by the total modular operator, Kbdy,Total =
+Kbdy,R − KbdyR̄ , which should be a smooth operator without any ambiguities. From
+our full formula for the bulk dual of the modular Hamiltonian we see that Kbdy,Total =
+Kbulk,Total + o(GN ). If the global state is pure, then KTotal annihillates it.
+
+
+5.1    Smoothness of the full modular Hamiltonian in the bulk
+For problems that have a U (1) symmetry, such as thermal states and Rindler or spherical
+subregions of CFTs, we know the full boundary modular Hamiltonian E. We can define a
+time coordinate τ which is translated by the action of E in the boundary theory. In these
+situations the bulk state also has an associated symmetry generated by the Killing vector
+ξ. We can choose coordinates so that we extend τ in the bulk and ξ simply translates τ
+
+
+                                            10
+in the bulk. Then the bulk modular Hamiltonian is the bulk operator that performs a
+translation of the bulk fields along the bulk τ direction.
+    Let us now consider an eternal black hole and the thermofield double state [36]. This
+state is invariant under the action of HR − HL . Let us now consider the action of only
+the right side boundary Hamiltonian HR 7 . It was argued in [37] that this corresponds
+to the same gravity solution but where the origin of the time direction on the right side
+is changed. This implies that the Wheeler de Witt patch associated to tL = tR = 0
+looks as in figure 2(b), after the action of e−itHR On the other hand, if we consider the
+bulk quantum field theory and we act with only the right side bulk modular Hamiltonian
+Kbulk,R we would produce a state that is singular at the horizon. By the way, it is precisely
+for this reason that algebraic quantum field theorists like to consider the total modular
+Hamiltonian instead. It turns out that the change in the bulk state is the same as the
+one would obtain if we were quantizing the bulk field theory along a slice which had a
+kink as shown in figure 2(b). Interestingly the area term in the full modular Hamiltonian
+(3.9) has the effect of producing such a kink. In other words, the area term produces a
+shift in the τ coordinate, or a relative boost between the left and right sides [38]. The
+action of only the area term or only KBulk,R would lead to a state that is singular at the
+horizon, but the combined action of the two produces a smooth state, which is simply the
+same bulk geometry but with a relative shift in the identification of the boundary time
+coordinates8 .
+
+
+
+                                                                                   t
+
+
+
+
+                             (a)                                            (b)
+
+
+Figure 2: In this figure we are considering the thermofield double state. (a) Acting with
+the bulk modular Hamiltonian e−itKbulk,R we get a new state on the horizontal line that
+has a singularity at the horizon. (b) The area term introduces a kink, or a relative
+boost between the left and right sides. Then the state produced by the full right side
+Hamiltonian is non-singular, and locally equal to the vacuum state.
+
+
+
+      Let us go back to a general non-U(1) invariant case. Since the bulk modular Hamilto-
+  7
+      Here left and right denote the two copies in the thermofield double state.
+  8
+      We thank D. Marolf for discussions about this point.
+
+
+                                                     11
+nian reduces to the one in the U (1)-symmetric case very near the bulk entangling surface
+S, we expect that the action of the full boundary modular Hamiltonian, including the
+area term, will not be locally singular in the bulk – though it can be singular from the
+boundary point of view due to boundary UV divergences.
+
+
+5.2       Implications for entanglement wedge reconstruction
+One is often interested in defining local bulk operators as smeared operators in the bound-
+ary. This operator should be defined order by order in GN over a fixed background and
+should be local to the extent allowed by gauge constraints. If we consider a t = 0 slice in
+the vacuum state, then we can think of a local bulk operator φ(X) as a smeared integral
+of boundary operators [39]
+                                           Z
+                           φ(X) =                dxd−1 dt G(X|x, t)O(x, t) + o(GN )             (5.19)
+                                           bdy
+
+
+One would like to understand to what extent this φ operator can be localized to a subregion
+in the boundary.
+    Given a region in the boundary R, we have been associating a corresponding region
+in the bulk, the so-called entanglement wedge which is the domain of dependence of Rb ,
+D[Rb ]. There is another bulk region one can associate to R, the causal wedge (with space-
+like slice RC ) which is the set of all bulk points in causal contact with D[R], [40]. RC is
+generically smaller than Rb [41, 35].
+    In situations with a U (1) symmetry, such as a thermal state or a Rindler or spherical
+subregion of a CFT, we have time-translation symmetry and a local modular Hamilto-
+nian that generates translations in the time τ . We can express bulk local operators in
+the entanglement wedge (which coincides with the causal wedge) in terms of boundary
+operators localized in D[R] [39, 42]9
+                          Z                Z
+                 φ(X) =         dy   d−1
+                                               dτ G0 (X|y, τ )O(y, τ ) + o(GN ) ,     X ∈ Rb    (5.20)
+                            R
+
+    A natural proposal for describing operators in that case is that we can replace τ in
+(5.20) by the modular parameter s. In other words, we consider modular flows of local
+operators on the boundary, defined as OR (x, s) ≡ U (s)OR (x, 0)U −1 (s)
+    A simple case in which Rb is larger than RC is the case of two intervals in a 1+1 CFT
+such that their total size is larger than half the size of the whole system, see figure 3.
+Here, it is less clear how to think about the operators in the entanglement wedge. We
+would like to use the previous fact that the modular flow is bulk modular flow to try to
+get some insight into this issue.
+  9
+      It is sometimes necessary to go to Fourier space to make this formula precise [42, 43].
+
+
+
+                                                          12
+Figure 3: In both figures the region R is the union of the two red intervals and the
+Ryu-Takayanagi surface is the dotted black line, while the boundary of RC is the blue
+dashed line (color online). In a), the shaded region denotes the defining spatial slice Rb
+of the entanglement wedge. In b), the shaded region is the defining spatial slice RC of the
+causal wedge. The modular flow of an operator close to the Ryu-Takayanagi surface will
+be approximately local, so that φ1 (s) will be almost local and, after some s, it will be in
+causal contact with φC1 . This flow takes the operator out of this slice to its past or to its
+future. Alternatively, if we consider an operator near the boundary of the causal wedge
+φC2 , it is clear that, under modular flow, [φC2 (s), φ2 ] 6= 0.
+
+
+
+    The modular flow in the entanglement wedge will be non-local, but highly constrained:
+the bulk modular hamiltonian is bilocal in the fields [17]. If we have an operator near the
+boundary of the causal wedge and modular evolve it, it will quickly develop a non zero
+commutator with a nearby operator which does not lie in the causal wedge. Alternatively,
+an operator close to the boundary of the entanglement wedge will have an approximately
+local modular flow. It will follow the light rays emanating from the extremal surface and
+it can be on causal contact with the operators in the causal wedge. See figure 3.
+    So we see that to reconstruct the operator in the interior of the entanglement wedge,
+one necessarily needs to understand better the modular flow. It seems natural to con-
+jecture that one can generalize (5.20) to two intervals (or general regions) by considering
+the modular parameter instead of Rindler time, ie the simplest generalization of the
+AdS/Rindler formula which accounts for the non-locality of the modular hamiltonian
+would be                     Z     Z
+                   φ(X) =       dx dsG00 (X|x, s)O(x, s) ,       X ∈ Rb              (5.21)
+                              R
+       00
+Here G is a function that should be worked out. It will depend on the bilocal kernel that
+describes the modular Hamiltonian for free fields [17].
+   So we see that to reconstruct the operator in the interior of the entanglement wedge, it
+
+                                             13
+is necessary to understand better modular flows in the quantum field theory of the bulk.
+To make these comments more precise, a more detailed analysis would be required, which
+should include a discussion about gravitational dressing and the constraints. We leave
+this to future work.
+    Here we have discussed how the operators in the entanglement wedge can be though
+of from the boundary perspective. However, note that from (3.9) (and consequently the
+formula for the relative entropy), it is clear that one should think of the entanglement
+wedge as the only meaningful candidate for the “dual of R”, see also [32]. If we add some
+particles to the vacuum in the entanglement wedge Rb (which do not need to be entangled
+with R̄b ), the bulk relative entropy will change. According to (1.3), the boundary relative
+entropy also changes and, therefore, state is distinguishable from the vacuum, even if we
+have only access to R.
+
+
+6     Comments and discussion
+6.1    The relative entropy for coherent states
+If we consider coherent states, since their bulk entanglement entropy is not changed, the
+relative entropy will just come from the difference in the bulk modular hamiltonian. Since
+our formulation is completely general, one could in principle compute it for any reference
+region or state and small perturbations over it.
+    A particularly simple case would be the relative entropy for an arbitrary subregion
+between the vacuum and a coherent state of matter. To second order in the perturbation,
+one only needs to work out how the modular hamiltonian for the free fields [17] looks like
+for that subregion of AdS, and then evaluate it in the coherent state background.
+
+
+6.2    Positivity of relative entropy and energy constraints
+Our formula (3.10) implies that the energy constraints obtained from the positivity of the
+relative entropy can be understood as arising from the fact that the relative entropy has
+to be positive in the bulk.
+
+
+6.3    Higher derivative gravity
+Even though we focused on Einstein gravity, our discussion is likely to apply to other
+theories of gravity. The modular hamiltonian will likely be that of an operator localized
+on the entangling surface plus the bulk modular Hamiltonian in the corresponding en-
+tanglement wedge. Thus the relative entropy will be that of the bulk. There could be
+subtleties that we have not thought about.
+
+
+
+                                            14
+6.4    Beyond extremal surfaces
+A. Wall proved the second law by using the monotonicity of relative entropy [4, 5]. If we
+consider two Cauchy slices Σ0 , Σt>0 outside a black hole, then Srel,t < Srel,0 is enough to
+prove the generalized second law. Interestingly, section 3 of [30] shows the “decrease of
+canonical energy”: Ecan (t) < Ecan (0). The setup (Cauchy slices) that they both consider
+is the same. Due to the connection between relative entropy and canonical energy, [12],
+we expect a relation between these two statements. This does not obviously follow from
+what we said due to the following reason.
+    Here we limited our discussion to the entanglement wedge. In other words, we are
+always considering the surface S to be extremal. We expect that the discussion should
+generalize to situations where the surface S is along a causal horizon. The question is:
+what is the precise boundary dual of the region exterior to such a horizon? Even though
+we can think about the bulk computation, we are not sure what boundary computation
+it corresponds to. A proposal was made in [44], and perhaps one can understand it in
+that context.
+    Being able to define relative entropies for regions which are not bounded by minimal
+surfaces is also crucial to the interesting proposal in [45] to derive Einstein’s equations
+from (a suitable extension to non-extremal surfaces of) the Ryu-Takayanagi formula for
+entanglement.
+
+
+6.5    Distillable entanglement
+In the recent papers [46, 47] it was argued that for gauge fields, only the purely quantum
+part of the entanglement entropy corresponds to distillable entanglement. The “classical”
+piece that cannot be used as a resource corresponds to the shannon entropy of the center
+variables of [14]. Our terms local in S are the gravitational analog of this classical piece
+and one might expect that a bulk observer with access only to the low-energy effective
+field theory can only extract bell pairs from the bulk entanglement. This seems relevant
+for the AMPS paradox [48, 49, 50].
+
+
+Acknowledgments
+We thank H. Casini, M. Guica, D. Harlow, T. Jacobson, N. Lashkari, J. Lin, D. Marolf,
+H. Ooguri, M. Rangamani, and A. Wall for discussions. The work of D.L.J. is supported
+in part by NSFCAREER grant PHY-1352084. A.L. was supported in part by the US
+NSF under Grant No. PHY-1314198. J.M. was supported in part by U.S. Department of
+Energy grant de-sc0009988. J.S. was supported at KITP in part by the National Science
+Foundation under Grant No. NSF PHY11-25915, and is now supported in part by the
+
+
+
+                                            15
+Natural Sciences and Engineering Research Council of Canada and by grant 376206 from
+the Simons Foundation.
+
+
+A      Subregions of gauge theories
+A.1     U(1) gauge theory
+The problem of defining the operator algebra of a subregion of a gauge theory was con-
+sidered in [14]. It was shown that for a lattice gauge theory there are several possible
+definitions of the subalgebra. It was further found that the subalgebra can have a center,
+namely some operators that commute with all the other elements of the subalgebra. In
+this case we can view the center as classical variables. Calling the classical variables xi ,
+then for each value of xi we have a classical probability pi and a density matrix ρi for
+each irreducible block. The relative entropy between two states is then
+                                                   X
+                              S(ρ|σ) = H(p|q) +             pi S(ρi |σi )               (A.22)
+                                                       i
+
+
+where pi , qi are the probabilities of variables xi in the state ρ and σ respectively. H is the
+                                                                              P
+classical (Shanon) relative entropies of two probability distributions, H = i pi log(pi /qi ).
+    In the continuum we expect that the relative entropy is finite and independent of the
+microscopic details regarding the precise definition of the algebra [2].
+    These microscopic details have a continum counterpart. When we consider a region
+R we would like to be able to define a consistent quantum theory within the subregion.
+In particular, imagine that we consider all classical solutions restricted to the subregion.
+Then we define a presymplectic product between two such solutions, which we will use to
+quantize the gauge orbits. This presymplectic product should be gauge invariant so that
+it does not depend on the particular representative. Let us consider a free Maxwell field.
+The presymplectic product is given by integrating
+                                 Z                Z
+                        1  2
+                   Ω(A , A ) =      ω(A , A ) = (A1 ∧ ∗F 2 − A2 ∧ ∗F 1 )
+                                         1   2
+                                                                                        (A.23)
+                                 Σ                 Σ
+
+
+where A1 = A1µ dxµ is a gauge field configuration. Here we imagine that both A1 and A2
+are solutions to the equations of motion. Σ is any spacelike surface.
+    Demanding gauge invariance amounts to the statement
+                                                Z
+                                 0 = Ω(A, d) =     ∧F                          (A.24)
+                                                       ∂Σ
+
+where ∂Σ is the boundary of the spacelike surface. We have used the equations of motion
+for F and integrated by parts. In order to make this vanish we need some boundary
+
+
+                                              16
+conditions. In particular, let us concentrate on the boundary conditions required at the
+boundary of Σ corresponding to the boundary of a region S = ∂Σ. One possible boundary
+condition is to set Ai = Acl                                                cl
+                           i for components along the surface, where Ai is a classical gauge
+field on the surface. In this case, it is natural to set  = 0 on the surface. We can quantize
+the problem for each fixed Acl                                    cl                    cl
+                               i and then integrate over all Ai . These values of Ai are the
+“center” variables xi in the above discussion. This is called the “magnetic” center, since
+                                                         cl
+the gauge field Acli defines a magnetic field F = dA on the surface.
+    There are other possibilities, such as fixing the electric field, or “electric center”, where
+the perpendicular electric field is fixed.
+    These would correspond to specific choices on the lattice. Since we expect that relative
+entropy is a finite and smooth function of the shape of the region, [14] has shown that the
+detailed boundary condition does not matter, as long as we choose something that makes
+physical sense. Recently, [18, 19] carried out explicitly the field theory calculation, being
+careful with the center variables.
+
+
+A.2     Gravity
+Here we consider the problem of defining a subregion in a theory of Einstein gravity. We
+consider only the problem at the quadratic level where we need to consider free gravitons
+moving around a fixed background (which obeys Einstein’s equations). These gravitons
+can be viewed as a particular example of a gauge theory. We can also compute the
+symplectic form, as given in [27], and then impose that the symplectic inner product
+between a pure gauge mode and another solution to the linearized equations vanishes.
+Here the gauge tranformations are reparametrizations, generated by a vector field ζ.
+Note that ζ is not a killing vector, it is a general vector field and it should not be confused
+with ξ discussed in section 4. Writing the metric as g + δg, where g is the background
+metric and δg is a small fluctuation. Then the gauge tranformation acts as δg → δg +Lζ g,
+where Lζ is the Lie derivative. Then, as shown in [30], there is a simple expression for
+the sympectic product with a such a pure gauge mode
+                            Z                  Z
+                               ω(δg, Lζ g) =       δQζ − ζ.Θ(g, δg)                      (A.25)
+                             Σ                 ∂Σ
+
+
+with Qζ and Θ(g, δg) given in eqns (32) and (17) of [30].
+    We would like to choose boundary conditions on the surface which make the right
+hand side zero. We choose boundary conditions similar to the “magnetic” ones above.
+Namely, we fix the metric along the entangling surface S to δgij = γij . We treat γij as
+classical and then integrate over it. This is enough to make all terms in (A.25) vanish.
+Let us be more explicit. By a change of coordinates we can always set the metric to have
+the following form near the entangling surface. For simplicity we write it in Euclidean
+
+
+                                               17
+space, but the same is true in Lorentzian signature
+
+                          ds2 = dρ2 + [ρ2 + o(ρ4 )](dτ + ai dy i )2 + hij dy i dy j             (A.26)
+
+here ai and hij can be functions of τ and ρ, with a regular expansion around ρ = 0. In
+these coordinates the extremal surface S is always at ρ = 0, both for the original metric
+and the perturbed metric. Extremality implies that the trace of the extrinsic curvature
+is zero, or K A = hij ∂X A hij = 0, where X A = (X 1 , X 2 ) = (ρ cos τ, ρ sin τ ). This is true for
+the background and the fluctuations
+
+                                          K A = 0,         δK A = 0                             (A.27)
+
+which ensures that even on the perturbed solution we are considering the minimal surface.
+These conditions ensure that the splitting between the two regions is defined in a gauge
+invariant way.
+    We demand that all fluctuations are given in the gauge (A.26). Thus, near ρ = 0, δg
+leads to δai and δhij . We now further set a boundary condition that δhij = γij where
+γij is a classical function which we will later integrate over. For defining the quantum
+problem we will view it as being classical. We will quantize the fields in the subregion for
+fixed values of γij and then integrate over the classical values of γij .
+    With these boundary conditions we see that all terms in (A.25) vanish. In fact, (A.25),
+has three terms10
+         Z                  Z
+            ω(δh, Lξ g) =       δδh Q(ζ) − iζ Θ(g, δh)
+          Σ                  ∂Σ
+                            Z                                                      
+                                      i   τ    i       ij         1 ij           AB
+                         =       δai ζ + ζ δhi + (−h ∂A δhij + δh ∂A hij )ζB         (A.28)
+                             ∂Σ                                   2
+
+    Since the fluctuation of the metric is zero at the entangling surface, δhij = 0, we see
+that many terms vanish. In addition, since we are setting δhij = 0, it is also natural to
+restrict the vector fields so that ζ i = 0 on the surface. This ensures that the first term in
+(A.28) vanishes. Note that the middle term is related to the fact that the area generates
+a shift in the coordinate τ . After all the area is the Noether charge associated to such
+shifts [26, 27].
+    The extremality condition makes sure that we are choosing a (generically) unique
+surface for each geometry. We then treat the induced geometry on the surface as a
+classical variable, quantize the metric in the subregion, and then sum over this classical
+variable. In this region, we seem to have a gauge invariant symplectic product.
+    We have not explicitly computed the entanglement entropy for gravitons with these
+choices, but we expect that it should lead to a well defined problem and that relative
+  10
+       We did not keep track of the numerical coeficients in front of each of the three terms
+
+
+                                                      18
+entropies will be finite.
+
+
+References
+ [1] M. Ohya and D. Petz, “Quantum entropy and its use”, Text and Monographs in
+     Physics, Springer Study Edition, Corrected 2nd Printing, 2004.
+
+ [2] H. Araki, “Relative Entropy of States of Von Neumann Algebras,” Publ. Res. Inst.
+     Math. Sci. Kyoto 1976, 809 (1976).
+
+ [3] H. Casini, “Relative entropy and the Bekenstein bound,” Class. Quant. Grav. 25,
+     205021 (2008) doi:10.1088/0264-9381/25/20/205021 [arXiv:0804.2182 [hep-th]].
+
+ [4] A. C. Wall, “A Proof of the generalized second law for rapidly-evolving Rindler
+     horizons,” Phys. Rev. D 82, 124019 (2010) doi:10.1103/PhysRevD.82.124019
+     [arXiv:1007.1493 [gr-qc]].
+
+ [5] A. C. Wall, “A proof of the generalized second law for rapidly changing fields and
+     arbitrary horizon slices,” Phys. Rev. D 85, 104049 (2012) [Phys. Rev. D 87, no.
+     6, 069904 (2013)] doi:10.1103/PhysRevD.87.069904, 10.1103/PhysRevD.85.104049
+     [arXiv:1105.3445 [gr-qc]].
+
+ [6] D. L. Jafferis and S. J. Suh, “The Gravity Duals of Modular Hamiltonians,”
+     arXiv:1412.8465 [hep-th].
+
+ [7] D. D. Blanco, H. Casini, L. Y. Hung and R. C. Myers, “Relative Entropy and Hologra-
+     phy,” JHEP 1308, 060 (2013) doi:10.1007/JHEP08(2013)060 [arXiv:1305.3182 [hep-
+     th]].
+
+ [8] N. Lashkari, M. B. McDermott and M. Van Raamsdonk, JHEP 1404, 195 (2014)
+     doi:10.1007/JHEP04(2014)195 [arXiv:1308.3716 [hep-th]].
+
+ [9] T. Faulkner, M. Guica, T. Hartman, R. C. Myers and M. Van Raamsdonk,
+     “Gravitation from Entanglement in Holographic CFTs,” JHEP 1403, 051 (2014)
+     doi:10.1007/JHEP03(2014)051 [arXiv:1312.7856 [hep-th]].
+
+[10] J. Lin, M. Marcolli, H. Ooguri and B. Stoica, Phys. Rev. Lett. 114, 221601 (2015)
+     doi:10.1103/PhysRevLett.114.221601 [arXiv:1412.1879 [hep-th]].
+
+[11] N. Lashkari, C. Rabideau, P. Sabella-Garnier and M. Van Raamsdonk, “Invio-
+     lable energy conditions from entanglement inequalities,” JHEP 1506, 067 (2015)
+     doi:10.1007/JHEP06(2015)067 [arXiv:1412.3514 [hep-th]].
+
+
+
+                                          19
+[12] N. Lashkari and M. Van Raamsdonk, “Canonical Energy is Quantum Fisher Infor-
+     mation,” arXiv:1508.00897 [hep-th].
+
+[13] N. Lashkari, J. Lin, H. Ooguri, M. van Raamsdonk, B. Stoica, to appear.
+
+[14] H. Casini, M. Huerta and J. A. Rosabal, “Remarks on entanglement entropy for gauge
+     fields,” Phys. Rev. D 89, no. 8, 085012 (2014) doi:10.1103/PhysRevD.89.085012
+     [arXiv:1312.1183 [hep-th]].
+
+[15] H. Casini, F. D. Mazzitelli and E. Test, “Area terms in entanglement entropy,” Phys.
+     Rev. D 91, no. 10, 104035 (2015) doi:10.1103/PhysRevD.91.104035 [arXiv:1412.6522
+     [hep-th]].
+
+[16] H. Casini, M. Huerta and R. C. Myers, “Towards a derivation of holographic
+     entanglement entropy,” JHEP 1105, 036 (2011) doi:10.1007/JHEP05(2011)036
+     [arXiv:1102.0440 [hep-th]].
+
+[17] H. Casini and M. Huerta, “Entanglement entropy in free quantum field theory,” J.
+     Phys. A 42, 504007 (2009) doi:10.1088/1751-8113/42/50/504007 [arXiv:0905.2562
+     [hep-th]].
+
+[18] W. Donnelly and A. C. Wall, “Entanglement entropy of electromagnetic edge modes,”
+     Phys. Rev. Lett. 114, no. 11, 111603 (2015) doi:10.1103/PhysRevLett.114.111603
+     [arXiv:1412.1895 [hep-th]].
+
+[19] W. Donnelly and A. C. Wall, “Geometric entropy and edge modes of the electromag-
+     netic field,” arXiv:1506.05792 [hep-th].
+
+[20] D. N. Kabat, “Black hole entropy and entropy of entanglement,” Nucl. Phys. B 453,
+     281 (1995) doi:10.1016/0550-3213(95)00443-V [hep-th/9503016].
+
+[21] S. Ryu and T. Takayanagi, “Holographic derivation of entanglement entropy from
+     AdS/CFT,” Phys. Rev. Lett. 96, 181602 (2006) doi:10.1103/PhysRevLett.96.181602
+     [hep-th/0603001].
+
+[22] V. E. Hubeny, M. Rangamani and T. Takayanagi, “A Covariant holographic
+     entanglement entropy proposal,” JHEP 0707, 062 (2007) doi:10.1088/1126-
+     6708/2007/07/062 [arXiv:0705.0016 [hep-th]].
+
+[23] T. Faulkner, A. Lewkowycz and J. Maldacena, “Quantum corrections to holographic
+     entanglement entropy,” JHEP 1311, 074 (2013) doi:10.1007/JHEP11(2013)074
+     [arXiv:1307.2892 [hep-th]].
+
+
+
+
+                                           20
+[24] T. Barrella, X. Dong, S. A. Hartnoll and V. L. Martin, “Holographic entanglement
+     beyond classical gravity,” JHEP 1309, 109 (2013) doi:10.1007/JHEP09(2013)109
+     [arXiv:1306.4682 [hep-th]].
+
+[25] J. M. Bardeen, B. Carter and S. W. Hawking, “The Four laws of black hole mechan-
+     ics,” Commun. Math. Phys. 31, 161 (1973). doi:10.1007/BF01645742
+
+[26] R. M. Wald, “Black hole entropy is the Noether charge,” Phys. Rev. D 48, 3427
+     (1993) doi:10.1103/PhysRevD.48.R3427 [gr-qc/9307038].
+
+[27] V. Iyer and R. M. Wald, “Some properties of Noether charge and a pro-
+     posal for dynamical black hole entropy,” Phys. Rev. D 50, 846 (1994)
+     doi:10.1103/PhysRevD.50.846 [gr-qc/9403028].
+
+[28] B. Swingle and M. Van Raamsdonk, “Universality of Gravity from Entanglement,”
+     arXiv:1405.2933 [hep-th].
+
+[29] J. Lee, A. Lewkowycz, E. Perlmutter and B. R. Safdi, “Rnyi entropy, sta-
+     tionarity, and entanglement of the conformal scalar,” JHEP 1503, 075 (2015)
+     doi:10.1007/JHEP03(2015)075 [arXiv:1407.7816 [hep-th]].
+
+[30] S. Hollands and R. M. Wald, “Stability of Black Holes and Black Branes,” Commun.
+     Math. Phys. 321, 629 (2013) doi:10.1007/s00220-012-1638-1 [arXiv:1201.0463 [gr-
+     qc]].
+
+[31] H. Casini and M. Huerta, “Reduced density matrix and internal dynamics for mul-
+     ticomponent regions,” Class. Quant. Grav. 26, 185005 (2009) doi:10.1088/0264-
+     9381/26/18/185005 [arXiv:0903.5284 [hep-th]].
+
+[32] A. Almheiri, X. Dong and D. Harlow, “Bulk Locality and Quantum Error Cor-
+     rection in AdS/CFT,” JHEP 1504, 163 (2015) doi:10.1007/JHEP04(2015)163
+     [arXiv:1411.7041 [hep-th]].
+
+[33] B. Czech, J. L. Karczmarek, F. Nogueira and M. Van Raamsdonk, “The Gravity
+     Dual of a Density Matrix,” Class. Quant. Grav. 29, 155009 (2012) doi:10.1088/0264-
+     9381/29/15/155009 [arXiv:1204.1330 [hep-th]].
+
+[34] R. Bousso, S. Leichenauer and V. Rosenhaus, “Light-sheets and AdS/CFT,” Phys.
+     Rev. D 86, 046009 (2012) doi:10.1103/PhysRevD.86.046009 [arXiv:1203.6619 [hep-
+     th]].
+
+[35] M. Headrick, V. E. Hubeny, A. Lawrence and M. Rangamani, “Causal-
+     ity & holographic entanglement entropy,” JHEP 1412, 162 (2014)
+     doi:10.1007/JHEP12(2014)162 [arXiv:1408.6300 [hep-th]].
+
+                                          21
+[36] J. M. Maldacena, “Eternal black holes in anti-de Sitter,” JHEP 0304, 021 (2003)
+     doi:10.1088/1126-6708/2003/04/021 [hep-th/0106112].
+
+[37] J. Maldacena and L. Susskind, “Cool horizons for entangled black holes,” Fortsch.
+     Phys. 61, 781 (2013) doi:10.1002/prop.201300020 [arXiv:1306.0533 [hep-th]].
+
+[38] S. Carlip and C. Teitelboim, “The Off-shell black hole,” Class. Quant. Grav. 12, 1699
+     (1995) doi:10.1088/0264-9381/12/7/011 [gr-qc/9312002].
+
+[39] A. Hamilton, D. N. Kabat, G. Lifschytz and D. A. Lowe, “Holographic
+     representation of local bulk operators,” Phys. Rev. D 74, 066009 (2006)
+     doi:10.1103/PhysRevD.74.066009 [hep-th/0606141].
+
+[40] V. E. Hubeny and M. Rangamani, “Causal Holographic Information,” JHEP 1206,
+     114 (2012) doi:10.1007/JHEP06(2012)114 [arXiv:1204.1698 [hep-th]].
+
+[41] A. C. Wall, “Maximin Surfaces, and the Strong Subadditivity of the Covariant Holo-
+     graphic Entanglement Entropy,” Class. Quant. Grav. 31, no. 22, 225007 (2014)
+     doi:10.1088/0264-9381/31/22/225007 [arXiv:1211.3494 [hep-th]].
+
+[42] I. A. Morrison, “Boundary-to-bulk maps for AdS causal wedges and
+     the Reeh-Schlieder property in holography,” JHEP 1405, 053 (2014)
+     doi:10.1007/JHEP05(2014)053 [arXiv:1403.3426 [hep-th]].
+
+[43] K. Papadodimas and S. Raju, “An Infalling Observer in AdS/CFT,” JHEP 1310,
+     212 (2013) doi:10.1007/JHEP10(2013)212 [arXiv:1211.6767 [hep-th]].
+
+[44] W. R. Kelly and A. C. Wall, “Coarse-grained entropy and causal holographic in-
+     formation in AdS/CFT,” JHEP 1403, 118 (2014) doi:10.1007/JHEP03(2014)118
+     [arXiv:1309.3610 [hep-th]].
+
+[45] T. Jacobson, “Entanglement          equilibrium   and    the   Einstein   equation,”
+     arXiv:1505.04753 [gr-qc].
+
+[46] R. M. Soni and S. P. Trivedi, “Aspects of Entanglement Entropy for Gauge Theories,”
+     arXiv:1510.07455 [hep-th].
+
+[47] K. Van Acoleyen, N. Bultinck, J. Haegeman, M. Marien, V. B. Scholz and F. Ver-
+     straete, “The entanglement of distillation for gauge theories,” arXiv:1511.04369
+     [quant-ph].
+
+[48] A. Almheiri, D. Marolf, J. Polchinski and J. Sully, “Black Holes: Complementarity or
+     Firewalls?,” JHEP 1302, 062 (2013) doi:10.1007/JHEP02(2013)062 [arXiv:1207.3123
+     [hep-th]].
+
+
+                                           22
+[49] A. Almheiri, D. Marolf, J. Polchinski, D. Stanford and J. Sully, “An Apologia for
+     Firewalls,” JHEP 1309, 018 (2013) doi:10.1007/JHEP09(2013)018 [arXiv:1304.6483
+     [hep-th]].
+
+[50] D. Marolf and J. Polchinski, “Gauge/Gravity Duality and the Black Hole Inte-
+     rior,” Phys. Rev. Lett. 111, 171301 (2013) doi:10.1103/PhysRevLett.111.171301
+     [arXiv:1307.4706 [hep-th]].
+
+[51] K. W. Huang, “Central Charge and Entangled Gauge Fields,” Phys. Rev. D 92, no.
+     2, 025010 (2015) doi:10.1103/PhysRevD.92.025010 [arXiv:1412.2730 [hep-th]].
+
+
+
+
+                                         23
+

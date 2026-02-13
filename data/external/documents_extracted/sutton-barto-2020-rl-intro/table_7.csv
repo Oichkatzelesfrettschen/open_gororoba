@@ -1,0 +1,3 @@
+= maxa E⇡⇤[Gt,St =s, At =a]
+= maxa E⇡⇤[Rt+1 + Gt+1,St =s, At =a] (by (3.9))
+= maxa E[Rt+1 + v⇤(St+1),St =s, At =a] (3.18)

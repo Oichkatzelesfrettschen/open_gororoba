@@ -1,0 +1,2295 @@
+                                         Prepared for submission to JHEP                                         Thursday 13th July, 2017, 00:18
+
+
+
+                                         Gravitation from entanglement in holographic CFTs
+
+
+                                         Thomas Faulkner,a Monica Guica,b Thomas Hartman,c Robert C. Myersd
+
+
+
+
+arXiv:1312.7856v2 [hep-th] 12 Jul 2017
+                                         and Mark Van Raamsdonke
+                                         a
+                                             Institute for Advanced Study, Princeton, NJ, 08540
+                                         b
+                                             Department of Physics and Astronomy, University of Pennsylvania
+                                             209 S. 33rd St., Philadelphia, PA 19104-6396, USA
+                                         c
+                                             Kavli Institute for Theoretical Physics, University of California
+                                             Santa Barbara, CA 93106-4030 USA
+                                         d
+                                             Perimeter Institute for Theoretical Physics
+                                             31 Caroline Street N., Waterloo, Ontario N2L 2Y5, Canada
+                                         e
+                                             Department of Physics and Astronomy, University of British Columbia
+                                             6224 Agricultural Road, Vancouver, B.C. V6T 1W9, Canada
+
+                                             E-mail: faulkner@ias.edu, mguica@sas.upenn.edu,
+                                             thartman@kitp.ucsb.edu, rmyers@perimeterinstitute.ca, mav@phas.ubc.ca
+
+                                         Abstract:
+
+                                         Entanglement entropy obeys a ‘first law’, an exact quantum generalization of the ordinary
+                                         first law of thermodynamics. In any CFT with a semiclassical holographic dual, this first
+                                         law has an interpretation in the dual gravitational theory as a constraint on the spacetimes
+                                         dual to CFT states. For small perturbations around the CFT vacuum state, we show that
+                                         the set of such constraints for all ball-shaped spatial regions in the CFT is exactly equivalent
+                                         to the requirement that the dual geometry satisfy the gravitational equations of motion,
+                                         linearized about pure AdS. For theories with entanglement entropy computed by the Ryu-
+                                         Takayanagi formula S = A/(4GN ), we obtain the linearized Einstein equations. For theories
+                                         in which the vacuum entanglement entropy for a ball is computed by more general Wald
+                                         functionals, we obtain the linearized equations for the associated higher-curvature theories.
+                                         Using the first law, we also derive the holographic dictionary for the stress tensor, given the
+                                         holographic formula for entanglement entropy. This method provides a simple alternative to
+                                         holographic renormalization for computing the stress tensor expectation value in arbitrary
+                                         higher derivative gravitational theories.
+Contents
+
+1 Introduction                                                                      2
+
+2 Background                                                                        5
+  2.1 The first law of entanglement entropy                                         5
+  2.2 The first law in conformal field theories                                     6
+  2.3 Interpretation of the first law in holographic CFTs                           8
+
+3 The holographic first law of entanglement from the first law of black hole
+  thermodynamics                                                             11
+
+4 Linearized gravity from the holographic first law                                12
+  4.1 The holographic stress tensor from the holographic entanglement functional   12
+  4.2 The linearized Fefferman-Graham expansion                                    14
+  4.3 Linearized equations from the holographic entanglement functional            15
+
+5 Linearized equations in general theories of gravity                              19
+  5.1 The covariant formalism for entropy and conserved charges                    19
+  5.2 Definition of χ                                                              22
+  5.3 Equivalence of the holographic and the canonical modular energy              22
+
+6 Application: the holographic dictionary in higher curvature gravity              24
+  6.1 General results                                                              25
+  6.2 Examples                                                                     29
+  6.3 Other terms in the FG expansion                                              31
+
+7 Discussion                                                                       32
+
+A Vanishing of the integrand                                                       34
+
+B Noether identities and the off-shell Hamiltonian                                 35
+
+C Example: Einstein Gravity coupled to a Scalar                                    36
+
+D Form of the bulk charge                                                          36
+
+
+
+
+                                         –1–
+1       Introduction
+
+According to the AdS/CFT correspondence, spacetime and gravitational physics in AdS
+emerge from the dynamics of certain strongly-coupled conformal field theories with a large
+number of degrees of freedom. A central question is to understand why and how this hap-
+pens. In recent work, it has been suggested that the physics of quantum entanglement plays
+an essential role, e.g. [1–5]. This was motivated in part by the importance of quantum en-
+tanglement for understanding quantum phases of matter in condensed matter systems [6].
+Ryu and Takayanagi have proposed [1, 2] that entanglement entropy, one measure of en-
+tanglement between subsets of degrees of freedom in general quantum systems, provides a
+direct window into the emergent spacetime geometry, giving the areas of certain extremal
+surfaces. This provides a quantitative connection between CFT entanglement and the dual
+spacetime geometry. Recently, this connection has been utilized to understand the emergence
+of spacetime dynamics (i.e. gravity) from the CFT physics [7]. Making use of a ‘first law’
+for entanglement entropy derived in [8], it was shown [7] that in any holographic theory for
+which the Ryu-Takayanagi prescription computes the entanglement entropy of the boundary
+CFT, spacetimes dual to small perturbations of the CFT vacuum state must satisfy Einstein’s
+equations linearized around pure AdS spacetime.
+     In this paper, we provide further insight into the results of [7, 8] and extend them to
+general holographic CFTs, for which the classical bulk equations may include terms at higher
+order in the curvatures or derivatives. We show further that the first law for entanglement
+entropy in the CFT can be understood as the microscopic origin of a particular case of the
+first law of black hole thermodynamics, applied to AdS-Rindler horizons. We begin with a
+brief review of some essential background before summarizing our main results.
+
+The ‘first law’ of entanglement entropy
+The crucial piece of CFT physics giving rise to linearized gravitational equations in the dual
+theory is a ‘first law’ of entanglement entropy,
+                                             δSA = δhHA i                                            (1.1)
+equating the first order variation in the entanglement entropy for a spatial region A with
+the first order variation in the expectation value of HA , the modular (or entanglement)
+Hamiltonian. The latter operator is defined as the logarithm of the unperturbed state, i.e.
+ρA ≃ e−HA — see section 2.1 for further details. The first law was derived in [8]1 as a special
+case of a more general result for finite perturbations
+                                            ∆SA ≤ ∆hHA i                                             (1.2)
+obtained using the positivity of ‘relative entropy’.2 A more direct demonstration of (1.1) is
+reviewed in section 2.1 below.
+    1
+   Related observations had been made independently using various holographic calculations, e.g. [9].
+    2
+   Relative entropy can be viewed as a statistical measure of the distance between two states (i.e. density
+matrices) in the same Hilbert space — e.g. see [10, 11] for reviews.
+
+
+
+
+                                                  –2–
+    In general, the modular Hamiltonian HA is a complicated object that cannot be expressed
+as an integral of local operators. However, starting from the vacuum state of a CFT in flat
+space and taking A to be a ball-shaped spatial region of radius R centered at x0 , denoted
+B(R, x0 ), the modular Hamiltonian is given by a simple integral [12]
+
+                                                R2 − |~x − ~x0 |2
+                                    Z
+                          HB = 2π        dd−1 x                   Ttt ,               (1.3)
+                                     B(R,x0 )         2R
+
+of the energy density over the interior of the sphere (weighted by a certain spatial profile).
+Thus, given any perturbation to the CFT vacuum we have for any ball-shaped region
+
+                                               R2 − |~x − ~x0 |2
+                                  Z
+                       δSB = 2π         dd−1 x                   δhTtt i ,              (1.4)
+                                   B(R,x0 )         2R
+
+where HB and SB denote the modular Hamiltonian and the entanglement entropy for a ball,
+respectively.
+
+The holographic interpretation
+For conformal field theories with a gravity dual, the first law for ball-shaped regions can be
+translated into a geometrical constraint obeyed by any spacetime dual to a small perturbation
+of the CFT vacuum. To understand this, we first recall the holographic interpretation of
+entanglement entropy and energy density in the general case (see section 2.3 for more details).
+     As shown by [12] in deriving (1.3), the vacuum entanglement entropy of a CFT for a
+ball-shaped region in flat space can be reinterpreted as the thermal entropy of the CFT on
+a hyperbolic cylinder at temperature set by the hyperbolic space curvature scale, by relating
+the two backgrounds with a conformal mapping. For a holographic CFT, the latter thermal
+entropy may then be calculated as the horizon entropy of the “black hole” dual to this thermal
+state on hyperbolic space. In this case, the black hole is simply a Rindler wedge (which we
+call the AdS-Rindler patch) of the original pure AdS space, as shown in figure 2. If the
+gravitational theory in the bulk is Einstein gravity, then the horizon entropy is given by
+the usual Bekenstein-Hawking formula, SBH = A/(4GN ), and this construction [12] provides a
+derivation of the Ryu-Takayanagi prescription [1] for a spherical entangling surface.3 However,
+we note that the same analysis applies for any classical and covariant gravity theory in the
+bulk, in which case the horizon entropy is given by Wald’s formula [14–16]
+                                        Z       √      δL
+                           SWald = −2π      dn σ h      ab
+                                                              nab ncd ,                   (1.5)
+                                          H          δR    cd
+
+where L denotes the gravitational Lagrangian and nab is the binormal to the horizon H.
+     To summarize, in general holographic theories, entanglement entropy in the vacuum state
+for a ball-shaped region B is computed by the Wald functional applied to the horizon of the
+  3
+    Recently, this approach was extended to a general argument for the Ryu-Takayanagi prescription for
+arbitrary entangling surfaces in time-independent (and some special time-dependent) backgrounds [13].
+
+
+
+
+                                                –3–
+AdS-Rindler patch associated with B. We will argue in section 2.3 that this should remain
+true for perturbations to the vacuum state, so the left side of (1.4) computes the change in
+entropy of the AdS-Rindler horizon under a small variation of the CFT state. Meanwhile, the
+expectation value of the stress tensor is related to the asymptotic behaviour of the metric,
+so the right side of (1.4) may be expressed as an integral involving the asymptotic metric
+over a ball-shaped region of the boundary. In section 2.3, we show that this integral may
+be interpreted as the variation in energy of the AdS-Rindler spacetime. Thus, the gravity
+version of the entanglement first law (1.4) may be interpreted as a first law for AdS-Rindler
+spacetimes. At a technical level, this represents a non-local constraint on the spacetime fields,
+equating an integral involving the asymptotic metric perturbation over a boundary surface
+to an integral involving the bulk metric perturbation (and possibly matter fields) over a bulk
+surface.
+
+Main results
+Our first main result, presented in section 3, is that this first law for AdS-Rindler spacetimes,
+i.e. the gravitational version of (1.4), is a special case of a first law proved by Iyer and
+Wald for stationary spacetimes with bifurcate Killing horizons (i.e. at finite temperature) in
+general classical theories of gravity. According to Iyer and Wald, for any perturbation of a
+stationary background that satisfies the linearized equations of motion following from some
+Lagrangian, the first law holds provided we define horizon entropy using the Wald functional
+(1.5) associated with this Lagrangian. Thus, the CFT result (1.4) can be seen as an exact
+quantum version of the Iyer-Wald first law, at least for the case of AdS-Rindler horizons.
+     Our second result, presented in sections 4 and 5, provides a converse to the theorem
+of Iyer and Wald. In AdS space, we can associate an AdS-Rindler patch to any ball-shaped
+spatial region on the boundary in any Lorentz frame, as in figure 2. An arbitrary perturbation
+to the AdS metric can be understood as a perturbation to each of these Rindler patches. We
+show that if the first law is satisfied for every AdS-Rindler patch, then the perturbation must
+satisfy the linearized gravitational equations. Thus, the set of non-local constraints (one for
+each ball-shaped region in each Lorentz frame) implied by (1.4) is equivalent to the set of
+local gravitational equations.
+     The result in the previous paragraph – that the first law for AdS-Rindler patches implies
+the linearized gravitational equations – is completely independent of AdS/CFT and holds for
+any classical theory of gravity in AdS. However, since for holographic CFTs this gravitational
+first law is implied by the entanglement first law, we conclude that the linearized gravita-
+tional equations for the dual spacetime can be derived from any holographic CFT, given the
+entanglement functional. This extends the results of [7] to general holographic CFTs.
+     As a further application of the entanglement first law, we point out (see section 4.1)
+that eq. (1.1), applied to infinitesimal balls, can be used to deduce the ‘holographic stress
+tensor,’ i.e. the gravitational quantity that computes the expectation value of the CFT
+stress tensor, given the holographic prescription for computing entanglement entropy. This
+provides a simple alternative approach to the usual holographic renormalization procedure,
+
+
+
+
+                                             –4–
+as we illustrate with examples in section 6. Finally, we show that eq. (1.1) also provides
+information about the operators in the boundary theory corresponding to additional degrees
+of freedom that can be associated with the metric in the context of higher derivative gravity.
+     We conclude in section 7 with a brief discussion of our results. In particular, we discuss
+the relation of our work to the work of Jacobson [17], who obtained gravitational equations
+by considering a gravitational first law applied to local Rindler horizons.
+
+2       Background
+
+In this section, we review some basic facts about entanglement entropy, modular Hamiltonians
+and their holographic interpretation. In section 2.1, following [8], we review the first law-like
+relation δSA = δhHA i satisfied by entanglement entropy, specializing to entanglement for
+ball-shaped regions in a conformal field theory in section 2.2. In section 2.3, we review the
+bulk interpretation of SA and hHA i in a holographic CFT.
+
+2.1      The first law of entanglement entropy
+For any state in a general quantum system, the state of a subsystem A is described by
+a reduced density matrix ρA = trĀ ρtotal , where ρtotal is the density matrix describing the
+global state of the full system and Ā is the complement of A. The entanglement of this
+subsystem with the rest of the system may be quantified by the entanglement entropy SA ,
+defined as the von Neumann entropy
+                                          SA = − tr ρA log ρA                                          (2.1)
+of the density matrix ρA .
+     Since the reduced density matrix ρA is both hermitian and positive (semi)definite, it can
+be expressed as
+                                               e−HA
+                                       ρA =            ,                                 (2.2)
+                                             tr(e−HA )
+where the Hermitian operator HA is known as the modular Hamiltonian. The denominator
+is included on the right in the expression above to ensure that the reduced density matrix
+has unit trace. Note the eq. (2.2) only defines HA up to an additive constant.
+     Now, consider any infinitesimal variation to the state of the system. The first order
+variation4 of the entanglement entropy (2.1) is given by
+                           δSA = − tr(δρA log ρA ) − tr ρA ρ−1
+                                                                  
+                                                            A δρA
+                                    = tr(δρA HA ) − tr(δρA ) .                                         (2.3)
+Since the the trace of the reduced density matrix equals one by definition, we must have
+tr(δρA ) = 0. Hence, the variation of the entanglement entropy obeys
+                                             δSA = δhHA i ,                                            (2.4)
+    4
+    Here and below, the variations are defined by considering a one-parameter family of states |Ψ(λ)i such
+that |Ψ(0)i = |0i. The variation δO of any quantity associated with |Ψi is then defined by δO = ∂λ O(λ)|λ=0 .
+
+
+
+
+                                                   –5–
+                       D
+                                                                                     d-1
+                                 B                                                H
+
+
+
+
+Figure 1. Causal development D (left) of a ball-shaped region B on a spatial slice of Minkowski
+space, showing the evolution generated by HB . A conformal transformation maps D to a hyperbolic
+cylinder H d−1 × time (right), taking HB to the ordinary Hamiltonian for the CFT on H d−1 .
+
+
+where HA is the modular Hamiltonian associated with the original unperturbed state.
+    In cases where we start with a thermal state ρA = e−βH / tr(e−βH ), equation (2.4) gives
+δhHi = T δSA , an exact quantum version of the first law of thermodynamics. Thus, (2.4)
+represents a generalization of the first law of thermodynamics valid for arbitrary perturbations
+to arbitrary (non-equilibrium) states.
+
+2.2      The first law in conformal field theories
+We now specialize to the case of local quantum field theories. Here, for any fixed Cauchy
+surface, the field configurations on this time slice are representative of the Hilbert space of
+the underlying quantum theory. We can then define a subsystem A by introducing a smooth
+boundary or ‘entangling surface’, which divides the Cauchy surface into two separate regions,
+A and Ā; the local fields in the region A define a subsystem.
+     In general, the relation (2.4) is of limited use. For a general quantum field theory, a
+general state, and a general region A, the modular Hamiltonian is not known and there is
+no known practical method to compute it. Typically, HA is expected to be a complicated
+non-local operator. However, there are a few situations where the modular Hamiltonian has
+been established to have a simple form as the integral of a local operator, and in which it
+generates a simple geometric flow.
+     One example is when we consider a conformal field theory in its vacuum state, ρtotal =
+|0ih0| in d-dimensional Minkowski space, and choose the region A to be a ball B(R, x0 ) of
+radius R on a time slice t = t0 and centered at xi = xi0 .5 For this particular case, the modular
+     5
+   Our notation for the flat space coordinates will be xµ = (t, ~
+                                                                x) or (t, xi ) where i = 1 . . . d − 1, while
+ a
+x = (z, t, ~
+           x) denotes a coordinate on AdSd+1 .
+
+
+
+
+                                                   –6–
+Hamiltonian takes the simple form [12, 18]
+                                            R2 − |~x − ~x0 |2
+                                Z
+                     HB = 2π         dd−1 x                   Ttt (t0 , ~x) ,                     (2.5)
+                                 B(R,x0 )        2R
+where Tµν is the stress tensor.
+     To understand the origin of this expression, we recall that the causal development6 D of
+B is related by a conformal transformation to a hyperbolic cylinder H = H d−1 × Rτ (time)
+as shown in figure 1. As argued in [12], this transformation induces a map of CFT states that
+takes the vacuum density matrix on B to the thermal density matrix ρH ∼ exp(−2πRHτ ) for
+the CFT on hyperbolic space, where R is the curvature radius of the hyperbolic space and
+Hτ is the CFT Hamiltonian generating time translations in H. The modular Hamiltonian for
+ρH is then just 2πRHτ . Going back to D, it follows that the modular Hamiltonian for the
+density matrix ρB is the Hamiltonian which generates the image under the inverse conformal
+transformation of these time translations back in D, shown on the left in figure 1.
+     To obtain the explicit expression (2.5), we define ζB to be the image of the Killing vector
+2πR ∂τ under the inverse conformal transformation. This is a conformal Killing vector on the
+original Minkowski space which can be written as a combination of a time translation Pt and
+a certain special conformal transformation Kt ,
+                                               iπ 2
+                                        ζB =     (R Pt + Kt )                                     (2.6)
+                                               R
+where
+
+           iPt = ∂t ,   and iKt = −[(t − t0 )2 + |~x − ~x0 |2 ]∂t − 2(t − t0 )(xi − xi0 )∂i .     (2.7)
+
+It is straightforward to check that ζB generates a flow which remains entirely in D, acting as
+a null flow on ∂D and vanishing on the sphere ∂B(R, x0 ) and at the future and past tips of
+D. The generator of this flow in the underlying CFT may be written covariantly as
+                                           Z
+                                     HB =     dΣµ Tµν ζBν
+                                                                                         (2.8)
+                                                 S
+
+where dΣµ is the volume-form on the (d − 1)-dimensional surface S.       The integral may be
+evaluated on any spatial surface S within the causal diamond D whose boundary is ∂B, but
+for the particular choice S = B(R, x0 ), we recover (2.5). Note that the normalization of the
+conformal Killing vector ζB was chosen in (2.6) to ensure that modular Hamiltonian HB and
+the Hamiltonian on the hyperbolic cylinder Hτ are related by HB = 2πR U0 Hτ U0−1 where
+U0 is the unitary transformation which implements the conformal mapping between the two
+backgrounds [12].
+     In summary, starting from the vacuum state of any conformal field theory and considering
+a ball-shaped region B, the first law (2.4) simplifies to
+
+                                             δSB = δEB ,                                          (2.9)
+  6
+    The causal development D of the ball (also known as the domain of dependence) comprises all points p
+for which all causal curves through p necessarily intersect B(R, ~x0 ).
+
+
+
+
+                                                 –7–
+where we define
+                                                        R2 − |~x − ~x0 |2
+                                       Z
+                          EB ≡ 2π              dd−1 x                     hTtt (t0 , ~x)i .               (2.10)
+                                           B(R,x0 )          2R
+2.3     Interpretation of the first law in holographic CFTs
+The first law (2.4) reviewed in the previous section is a general result. Hence for ball-shaped
+regions in an arbitrary CFT in any number of spacetime dimensions, δSB = δEB with EB
+defined in eq. (2.10). We will be interested in understanding this relation for holographic
+CFT’s with a classical bulk dual, i.e. theories for which at least a subset of the states have
+a dual interpretation as smooth, asymptotically AdS field configurations. In this case, the
+vacuum state of the boundary CFT corresponds to pure anti-de Sitter space, while certain
+small perturbations around the vacuum state should correspond to spacetime geometries that
+are small perturbations around empty AdS.7 In holographic theories, both SB and EB should
+match with observables on the gravity side, so δSB = δEB will translate into a constraint
+   grav      grav
+δSB     = δEB     that must be satisfied for any spacetime dual to a small perturbation of the
+vacuum AdS spacetime.
+
+2.3.1    Holographic interpretation of the entanglement entropy
+The holographic prescription for computing the entanglement entropy is not known in general,
+but in the known cases (e.g., [1, 13, 20–22]), it is given by extremizing a certain functional
+of the bulk metric over codimension-two bulk surfaces whose boundary coincides with ∂A in
+the boundary CFT. However, here we are only interested in the holographic entanglement
+entropy for a ball-shaped region B in the CFT when the total state is the vacuum or a small
+perturbation thereof. This particular case is well-understood due to the observation of [12],
+reviewed in the previous section, that the vacuum density matrix for B maps by a conformal
+transformation to a thermal state of the CFT on hyperbolic space.
+      Using the AdS/CFT correspondence, the thermal state of the CFT on hyperbolic space
+                       1
+at temperature T = 2πR    is dual to a hyperbolic ‘black hole’ spacetime at this temperature,
+i.e., AdS-Rindler space, with metric
+                           ρ2 − ℓ2 2       ℓ2 dρ2
+                     ds2 = −       dτ  +           + ρ2 (du2 + sinh2 u dΩ2d−2 ) .     (2.11)
+                             R2           ρ2 − ℓ 2
+The entanglement entropy for the region B equals the thermal entropy of the hyperbolic
+space CFT, which can be interpreted as the entropy of this ‘black hole.’ In an arbitrary
+theory of gravity, black hole entropy is computed by evaluating the Wald functional (1.5) on
+the horizon. In terms of the Poincaré coordinates on AdS space
+                                       ℓ2
+                                ds2 = 2 dz 2 + ηµν dxµ dxν ,
+                                                              
+                                                                                      (2.12)
+                                       z
+   7
+    More precisely, the states that we will consider have energy of order ε cT , where cT is the central charge of
+the boundary CFT (e.g. see [19]) which provides a measure of the number of degrees of freedom in the CFT.
+Since we consider classical gravity in the bulk, cT → ∞; we take ε << 1 in order for the perturbation to be
+classical, but small. The first law relation also holds for quantum states in the bulk, whose CFT energy does
+not scale with cT , but we will not consider them in this article.
+
+
+
+
+                                                        –8–
+                                                Σ              ~
+                                                               B
+                                              B
+
+
+
+
+Figure 2. AdS-Rindler patch associated with a ball B(R, x0 ) on a spatial slice of the boundary. Solid
+blue paths indicate the boundary flow associated with HB and the conformal Killing vector ζ. Dashed
+red paths indicate the action of the Killing vector ξ.
+
+
+the hyperbolic ‘black hole’ associated with the ball B(R, x0 ) is simply the wedge shown in
+figure 2, the intersection of the causal past and the casual future of the region D on the
+boundary. The coordinate transformation between the two metrics is described in [12]. The
+horizon slice approached with ρ → ℓ and τ fixed in the black hole metric (2.11) corresponds
+to the hemisphere B̃ = {t = t0 , (xi − xi0 )2 + z 2 = R2 } in Poincaré coordinates. By design
+[12], this is also the extremal surface in AdS bulk with boundary ∂B. Thus, the entanglement
+entropy SB for the vacuum state can be calculated gravitationally by evaluating the Wald
+functional (1.5) on the surface B̃.
+     If we consider a perturbation of the original vacuum state, the perturbation of the en-
+tanglement entropy must equal the perturbation of the thermal entropy of the CFT on the
+hyperbolic cylinder. Assuming that this equals the perturbation to the black hole entropy,
+                             grav      W ald . In general, the entanglement entropy functional is
+we must also have that δSB        = δSB
+known to differ from the Wald functional [21, 23] by terms quadratic in the extrinsic curvature
+of the extremal bulk surface. These terms are important for arbitrarily-shaped entangling
+surfaces or general states in the CFT. However, for the special case of a spherical entangling
+surface considered here and a CFT in the vacuum, the extremal surface B̃ in the bulk is the
+bifurcation surface of the Killing horizon defining the boundary of the AdS-Rindler patch
+
+
+
+
+                                                  –9–
+                                                                   grav        W ald are equal
+and the extrinsic curvatures of this surface vanish. Therefore, δSB     and δSB
+at linear order in the perturbations we are considering.8
+                                                               grav
+     To summarize, the holographic dictionary implies that SB        for a small perturbation
+around AdS is the Wald functional of the perturbed metric evaluated on B̃.
+
+2.3.2    Holographic interpretation of the modular energy EB
+In the CFT, the expression (2.10) defines EB in terms of the expectation value of the field
+theory stress energy tensor. On the gravity side, the latter is computed by the “holographic
+                 grav
+stress tensor” Tµν    , a quantity constructed locally from the asymptotic metric.9 For a general
+          grav
+theory, Tµν can be obtained via a systematic procedure known as holographic renormal-
+                                                                                grav
+ization [24–26]. Alternatively, as we show in sections 4.1 and 6 below, Tµν          can be derived
+using the holographic entanglement entropy function and the relation δSB = δEB .
+     The gravitational version of EB is simply obtained by replacing the stress tensor expec-
+tation value in (2.8) or (2.10) with the holographic stress tensor
+
+                                                           R2 − |~x − ~x0 |2 grav
+                        Z                     Z
+               grav
+             EB =             µ grav ν
+                            dΣ Tµν ζB = 2π         dd−1 x                   Ttt (t0 , ~x)    (2.13)
+                          S                        x0 )
+                                               B(R,~             2R
+           grav
+giving EB        as an integral of a local functional of the asymptotic metric over the region
+B(R, x0 ) at the AdS boundary.
+     As discussed above, EB is the conserved quantity associated with the boundary conformal
+Killing vector ζB . An alternate definition [16] of the gravitational quantity associated with this
+is as the canonical conserved charge associated to translations along a bulk asymptotic Killing
+vector ξB that asymptotically agrees with ζB , limz→0 ξB = ζB . We review this definition
+  grav
+EB     [ξB ] in section 5 below and show in section 5.3 that it agrees with (2.13) (at least for the
+                                                                                           grav
+perturbations we are considering). Thus, for perturbations to the vacuum state, EB               can
+be interpreted as the perturbation to the energy of the AdS-Rindler patch associated with
+the region B, as in figure 2.
+     Note that under the conformal map from D to H, the conserved charge associated to ζB
+maps to (2πR times) the energy associated to τ translations, computed using either formalism.
+
+2.3.3    Summary
+In summary, for states of a holographic CFT with a classical gravity dual description, the
+CFT relation δSB = δEB translates to a statement that the integral of the Wald functional
+over the bulk surface B̃ must equal the integral of the energy functional, as given in (2.13),
+   8
+      Further, note that in the perturbed spacetime, the extremal surface will not necessarily correspond to
+the bifurcation surface of the AdS-Rindler horizon. However, since B̃ is an extremal surface for the Wald
+functional, changes in the Wald functional due to variations in the surface come in only at second order in
+the metric perturbation. To calculate the Wald functional at leading order in the metric perturbation, we
+                                 W ald
+therefore need only evaluate δSB       on B̃, the bifurcation surface of the unperturbed AdS-Rindler horizon.
+    9
+      Other fields in the bulk may also contribute to the holographic stress tensor (e.g. a bilinear of gauge
+fields when d = 2), but their contributions are always nonlinear in the fields and vanish at the linearized order
+around pure AdS that we are considering.
+
+
+
+
+                                                    – 10 –
+over the boundary surface B. This provides one nonlocal constraint on the metric for each
+ball B in each Lorentz frame. The constraints may be interpreted as the statement that the
+perturbation to the entropy of the AdS-Rindler patch associated with the region B equals
+the perturbation to the energy.
+
+3   The holographic first law of entanglement from the first law of black hole
+    thermodynamics
+
+In holographic CFTs, whenever the gravitational observables corresponding to SB and EB
+are known, the first law of entanglement entropy (2.4) applied to a ball, i.e. δSB = δEB ,
+                                                                                                   grav
+gives a prediction for the equivalence of two corresponding gravitational quantities, δSB
+         grav
+and δEB       , in any spacetime dual to a small perturbation of the CFT vacuum state. This
+prediction must hold assuming the validity of the AdS/CFT correspondence and of our holo-
+graphic interpretation of EB and SB . As we will see in the next section, the power of this
+equivalence arises because in fact, we have an infinite number of predictions since δSB = δEB
+can be applied for any ball-shaped region in any Lorentz frame in the boundary geometry. For
+the case of Einstein gravity, where entanglement entropy is calculated by the Ryu-Takayanagi
+                                        grav        grav
+proposal [1, 2], the equivalence of δSB      and δEB     was confirmed in [8], and by a different
+method in [7].
+                                             grav      grav
+     In this section, we will verify that δSB     = δEB     follows from the equations of motion
+in a general theory of gravity. The crucial observation, described in the previous section, is
+that this gravitational relation can be interpreted as a statement of the equivalence of energy
+and entropy for perturbations of AdS-Rindler space. This equivalence follows directly from
+the generalized first law of black hole thermodynamics proved by Iyer and Wald [27].
+     The Iyer-Wald theorem states that for a stationary spacetime with a bifurcate Killing
+                                                                                            κ
+horizon generated by a Killing vector ξ, arbitrary on-shell perturbations satisfy 2π          δSWald =
+δE[ξ]. Here SWald is the Wald entropy defined in the introduction, E[ξ] is a canonical energy
+associated to the Killing vector ξ and κ is the surface gravity: ξ a ∇a ξ b = κ ξ b on the horizon.
+     The key observation that connects this to our holographic version of the entanglement
+first law is that the Iyer-Wald theorem applies to AdS-Rindler horizons. It is straightforward
+to check that the vector
+                 2π                               π
+        ξB = − (t − t0 )[z∂z + (xi − xi0 )∂i ] + [R2 − z 2 − (t − t0 )2 − (~x − x~0 )2 ] ∂t      (3.1)
+                  R                               R
+is an exact Killing vector of the standard Poincaré metric (2.12), which vanishes on B̃(R, ~x0 ).
+This vector is in fact proportional to ∂τ in the AdS-Rindler coordinates (2.11). Thus, the
+hemisphere B̃ is the bifurcation surface of the Killing horizon for ξB and the region Σ(R, ~x0 )
+enclosed by B̃ and B is a spacelike slice that plays the role of the black hole exterior. The
+Iyer-Wald theorem applies, and the Killing vector has been normalized such that κ = 2π, so
+δSBW ald = δE [ξ ].
+             B B
+     The definition of modular energy entering the above equality is the Iyer-Wald one; we
+                                                       grav
+show in section 5.3 that this quantity agrees with δEB      defined in terms of the holographic
+
+
+
+
+                                                – 11 –
+                                                                 grav     W ald , and therefore
+stress tensor. Finally, we argued in the previous section that δSB    = δSB
+                   grav       grav
+it follows that δSB     = δEB . This generalizes the result of [8] to an arbitrary higher-
+derivative theory of gravity.
+
+4     Linearized gravity from the holographic first law
+
+In the previous section, making use of the theorem of Iyer and Wald [27], we argued that in
+a general theory of gravity, any perturbation to AdS satisfying the linearized gravitational
+                                                                                      grav      grav
+equations will obey the holographic version of the entanglement first law, i.e. δSB        = δEB     .
+In this section, we will demonstrate a converse statement: any asymptotically AdS spacetime
+              grav        grav
+for which δSB      = δEB       for all balls B in all Lorentz frames must satisfy the linearized
+gravitational equations and have the appropriate boundary conditions at the asymptotic
+boundary.
+                                                     grav         grav
+     We begin in section 4.1 by showing that δSB           = δEB       applied to infinitesimal ball-
+shaped regions allows us to determine the holographic stress tensor in a general theory of
+gravity and to constrain the asymptotic behavior of the metric. In section 4.3, we explain
+        grav       grav
+how δSB       = δEB     , when applied to balls of arbitrary radius and centered at arbitrary
+locations in arbitrary Lorentz frames, can be used to deduce the linearized gravitational
+equations of motion, generalizing the results of [7]. Since we have already argued in section 3
+                                            grav      grav
+that these equations of motion imply δSB         = δEB     , it follows that the holographic version
+of the entanglement first law is equivalent to the linearized gravitational equations in general
+theories of gravity.
+     In situations where the metric perturbation is the only field turned on in the bulk, the
+asymptotic behavior of the metric together with the linearized equations of motion determine
+the metric perturbation everywhere. In this case, knowledge of the entanglement functional
+allows us to recover the complete mapping from states to dual spacetimes at the linearized
+level.
+
+4.1    The holographic stress tensor from the holographic entanglement functional
+To begin, we show that given the holographic prescription for computing entanglement en-
+tropy, the equation δSB = δEB applied to ball-shaped regions of vanishing size can be used
+to determine the relation between the expectation value of the field theory stress tensor and
+the asymptotic metric in the dual spacetime.
+    Recall the result (2.10),
+
+                                               R2 − |~x − ~x0 |2
+                                   Z
+                   δEB(R,x0 ) = 2π      dd−1 x                   δhTtt (t0 , ~x)i .      (4.1)
+                                    B(R,x0 )        2R
+
+In the limit of a very small spherical region, i.e. R → 0, the expectation value of the stress
+tensor is approximately constant throughout the ball B(R, x0 ). Thus, the leading contribution
+to δEB is obtained by replacing δhTtt (t0 , ~x)i with its central value δhTtt (t0 , ~x0 )i ≡ δhTtt (x0 )i,
+
+
+
+
+                                                 – 12 –
+which yields
+
+                                                            R2 − ~x2   2πRd Ωd−2
+                                            Z
+                      R→0
+          δEB(R,x0 ) −−−→ 2π δhTtt (x0 )i          dd−1 x            =           δhTtt (x0 )i   (4.2)
+                                                |x|≤R         2R         d2 − 1
+
+where Ωd−2 is the volume of a unit (d − 2)-sphere. Now using the CFT relation δEB = δSB ,
+we find
+                                       d2 − 1
+                                                              
+                                                    1
+                       δhTtt (x0 )i =         lim     δS         .                  (4.3)
+                                      2π Ωd−2 R→0 Rd B(R,x0 )
+The meaning of this equation is the following: SB is a bulk Wald functional that depends
+on a small metric perturbation hab , as well as the radius R and center x0 of the entangling
+surface. The above equation tells us that SB [h]/Rd cannot be arbitrary, but rather it must
+have a finite limit as R → 0.
+    Repeating the same calculation for a frame of reference defined by some proper d-velocity
+ µ
+u , we find
+                                           d2 − 1
+                                                                   
+                        µ ν                              1    (u)
+                       u u δhTµν (x0 )i =         lim      δS          ,                (4.4)
+                                          2πΩd−2 R→0 Rd B(R,x0 )
+          (u)
+where δSB(R,x0 ) is the variation of the entanglement entropy for a ball of radius R, centered
+at x0 on a spatial slice in the frame of reference of an observer moving with the d-velocity
+uµ . From the result (4.4), it is clear that given the bulk prescription for calculating δSB , this
+formula provides us the holographic dictionary for the stress tensor.
+
+Example: theories with entropy equal to area
+As an example, consider a d-dimensional field theory for which the entanglement entropy is
+computed by the Ryu-Takayanagi prescription [1] in the dual (d + 1)-dimensional bulk
+
+                                             grav       AB̃
+                                            SB    =         .                                   (4.5)
+                                                        4GN
+We consider a small metric perturbation hab of the AdS metric (2.12), chosen to be in radial
+gauge,
+                                     hzµ = hzz = 0 .                                   (4.6)
+The change in the entanglement entropy of the ball due to this bulk perturbation is
+
+              Rℓd−3
+                                                                  
+                                              1 i
+                    Z
+       grav                  d−1  2−d    ij             i   j    j
+    δSB =                   d xz        δ − 2 (x − x0 )(x − x0 ) hij (z, t0 , ~x) .             (4.7)
+               8GN |~x−~x0 |≤R               R
+
+In the limit R → 0, we can replace hij (z, xµ ) by hij (z, xµ0 ) under the integral sign. To compute
+the R-scaling of the entropy and check whether it can satisfy (4.3), it is useful to define the
+rescaled variables
+                                          xi − xi0              z
+                                   x̂i =           ,     ẑ =                                   (4.8)
+                                             R                  R
+
+
+
+
+                                                  – 13 –
+which are to be kept fixed as R → 0. Then, the only way that (4.7) has a finite limit as
+R → 0 is if
+                                             z→0         (d) λ
+                              hµν (z, xλ0 ) −−−−→ z d−2 hµν (x0 )                  (4.9)
+         (d)
+where hµν does not scale with R. Performing the xi integral and substituting into (4.3), we
+find
+                                            dℓd−3 (d)i
+                                 δhTtt i =        h i.                               (4.10)
+                                           16πGN
+In order to generalize this result to an arbitrary Lorentz frame as in (4.4), it is useful to
+                   (d)       (d)λ
+rewrite h(d)i i = h00 − η00 hλ . Passing to an arbitrary frame and equating the coefficients
+of uµ uν , we find
+                                          dℓd−3 (d)       (d)λ
+                               δhTµν i =       (h − ηµν hλ ) .                         (4.11)
+                                         16πGN µν
+Now tracelessness and conservation of the CFT stress tensor imply that this leading pertur-
+bation of the bulk metric must satisfy
+
+                                      h(d)µ
+                                       µ    =0,        ∂µ h(d)µν = 0 .                                 (4.12)
+
+These equations correspond to the initial value constraints on the z = 0 surface in Einstein
+gravity. Applying the tracelessness condition allows the stress tensor to be simplified to
+
+                                               grav        dℓd−3 (d)
+                                   δhTµν i ≡ δTµν   =            h   .                                 (4.13)
+                                                          16πGN µν
+Of course, this expression is the usual result for the linearized holographic stress tensor in
+Einstein gravity in AdSd+1 [24, 25].
+    In section 5.3 we show, using a scaling argument, that even in the presence of higher
+                                                   (d)
+derivative terms, the CFT stress tensor Tµν ∝ hµν , but with a non-trivial coefficient that
+depends on the higher curvature couplings10 — see also section 6.
+
+4.2    The linearized Fefferman-Graham expansion
+We have just shown how the R → 0 limit of the first law relation constrains the leading
+behavior of the metric for small z and determines the holographic stress tensor. By equating
+                                                grav         grav
+terms at higher orders in the expansion of δSB(R,x   0)
+                                                        = δEB(R,x 0)
+                                                                     in powers of R, we can
+obtain additional constraints on the metric. At each higher order in R, the equations involve
+successively higher terms in the Fefferman-Graham expansion of the metric (i.e. the expansion
+in powers of z). In [7], it was shown, for theories with holographic entanglement entropy
+computed by area, that these constraints completely determine the linearized metric to all
+orders in the Fefferman-Graham expansion. At the linearized level, this gives the complete
+  10                                                                (d)
+    This result can understood using conformal invariance, since hµν is the only spin-2 tensor that we can
+write down with scaling dimension d under z → λz. Here we are assuming that there are no scalar fields,
+coupled linearly to curvature, with mass tuned so that the conformal dimension of the dual operators is ∆ = d,
+and similarly for other matter fields.
+
+
+
+
+                                                   – 14 –
+                                       t
+                                               z
+
+
+                                               x
+
+                                           R             Σ
+                                                              ~
+                                                    x0        B
+                                                    B
+
+
+
+
+ Figure 3. Notation for regions in AdSd+1 , with radial coordinate z and boundary space coordinate
+~x. B(R, x0 ) is the (d − 1)-dimensional ball on the z = 0 boundary of radius R centered at ~x0 on the
+ spatial slice at time t0 . B̃ is the (d − 1)-dimensional hemispherical surface in AdS ending on ∂B, and
+ Σ is the enclosed d-dimensional spatial region.
+
+
+metric perturbation everywhere in the bulk, and the result is precisely the solution to the
+linearized Einstein’s equations with boundary behavior governed by the holographic stress
+tensor.
+     While we could apply the same approach to more general theories of gravity, we will
+instead take another route that leads to the full equations of motion without having to
+assume a series expansion for the quantities in the first law relation.
+
+4.3   Linearized equations from the holographic entanglement functional
+In this section, we will show that knowledge of the holographic entanglement functional allows
+us to deduce the linearized gravitational equations for the entire dual spacetime, by making
+use of the relation δSB = δEB for ball shaped regions B(R, x0 ) of arbitrary radius R and
+center position xµ0 in arbitrary Lorentz frames.
+     Figure 3 shows the unperturbed bulk AdS spacetime, with the region B(R, x0 ) on the
+boundary, together with the bulk extremal surface B̃(R, x0 ) with the same boundary as B
+and the spatial region Σ on a constant time slice bounded by these two surfaces. Using
+the definition (2.13) and the result (4.4) for the holographic stress tensor, we can write the
+             grav
+quantity δEB      as an integral over the corresponding region B(R, x0 ) on the boundary of the
+dual spacetime of some local quantity, a (d − 1)-form, that is constructed from the asymptotic
+limit of the metric perturbation hab .
+     In a similar way, the holographic entanglement functional gives us a prescription for
+writing the entanglement entropy δSB as an integral over the extremal surface B̃(R, x0 ) in
+the bulk (shown in figure 2). Again, the form that we integrate is locally constructed from
+                                                                             grav      grav
+the metric perturbation hab (and possibly matter fields). The relation δSB         = δEB    then
+                                                                                  grav       grav
+places a constraint on the perturbation: the two integrals corresponding to δEB and δSB
+
+
+
+
+                                                   – 15 –
+must be equal. This must be true for any R and xµ0 , in any Lorentz frame. We will show that
+this infinite set of nonlocal integral equations together implies the local differential equations
+   g                  g
+δEab  = 0, where δEab    are the linearized gravitational equations of motion.
+
+Turning the nonlocal constraint into a local equation
+To convert the nonlocal integral equations into a local equation, the strategy is to make use
+of the machinery used by Iyer and Wald to derive the first law from the equations of motion.
+The Iyer-Wald formalism is reviewed in detail in the next section, but for now we just need
+one fact: the crucial step in the derivation is the construction of a (d− 1)-form χ that satisfies
+                                Z                    Z
+                                           grav                grav
+                                   χ = δEB              χ = δSB                            (4.14)
+                                       B                      B̃
+
+and for which dχ = 0 on shell (i.e. when the gravitational equations of motion are satisfied).
+                                                R
+The first law follows immediately by writing Σ dχ = 0 and applying Stokes theorem (i.e.
+integrating by parts).
+     To derive local equations from the gravitational first law, we will show that there exists
+a form χ which satisfies the relations (4.14) off shell, and whose derivative is
+                                                     a   g b
+                                             dχ = −2ξB δEab ε                                  (4.15)
+
+where the d-form εb is the natural volume form on co-dimension one surfaces in the bulk
+                                                                                          g
+(defined in eq. (5.3)), ξB is the Killing vector (3.1) that vanishes on B̃(R, x0 ), and δEab are
+the linearized gravitational equations of motion. In addition, we will require that
+
+                                                   dχ|∂M = 0                                   (4.16)
+
+where ∂M is the AdS boundary, assuming the tracelessness and conservation of the holo-
+                                                         grav
+graphic stress tensor.11 This ensures that the energy EB      does not depend on the surface
+S on the boundary that we use to evaluate it, as long as ∂S = ∂B. Note that on Σ, only the
+time components of ξBa and εb are non-vanishing, so only the tt component of the gravitational
+
+equations appears on the right-hand side of eq. (4.15).
+    The derivation of these statements in a general theory of gravity relies on the Iyer-Wald
+formalism [27] and is deferred to section 5. Now we will show that the existence of the form
+                                                                          grav      grav
+χ with these properties implies the equations of motion. The relation δSB       = δEB     gives
+                              Z       Z       Z       Z            Z
+              grav
+      0 = δSB − δEB =   grav
+                                 χ−      χ=       χ=      dχ = −2 ξB   t
+                                                                         δEttg εt .      (4.17)
+                                       B̃      B        ∂Σ             Σ         Σ
+
+Multiplying this result by R and then taking the derivative with respect to R, we obtain
+                          Z                             Z
+                                t
+                             (RξB ) δEttg r̂ · εt + 2πR   δEttg εt = 0 .              (4.18)
+                                  B̃                               Σ
+ 11
+      This in turn follows from the conservation and tracelessness of the CFT stress tensor.
+
+
+
+
+                                                     – 16 –
+The first term vanishes because ξB = 0 on B̃, so we find that
+                                       Z
+                                         δEttg εt = 0                                             (4.19)
+                                                   Σ
+
+for any Σ(R, ~x0 ). As we show in appendix A, this implies that the integrand vanishes every-
+where, i.e. δEttg = 0, as we wished to show.
+     So far we have used the first law for every ball B(R, ~x0 ) in a spatial slice at fixed t. More
+                          grav      grav
+generally, demanding δSB       = δEB     in a frame of reference defined by a d-velocity vector uµ
+                  g
+implies uµ uν δEµν = 0, where the index µ = 0, . . . , d − 1 runs over the boundary coordinates.
+Since this holds for any uµ , we have
+                                                g
+                                            δEµν  =0.                                          (4.20)
+These are all the components of the gravitational equations of motion along the boundary
+directions.
+                                               g               g
+     To obtain the remaining equations δEzµ       = 0 and δEzz    = 0, we appeal to the initial
+value formulation of gravity, in a radial slicing where these are the constraint equations. This
+formulation guarantees that if these constraints are satisfied at z = 0, and the other equations
+(4.20) hold everywhere, then the constraints hold for all z.12 The vanishing of the constraints
+at z = 0 follows from eq. (4.16) combined with eq. (4.15), or ultimately from the conservation
+and tracelessness of the holographic stress tensor.
+     In detail, we have using the Noether identity (discussed in appendix B) linearized about
+the AdS background,
+                                        ∇a (δE g )ab = 0 .                                (4.21)
+                        g
+Using the vanishing of Eµν , the general solution to (4.21) can be written as:
+
+                                                                     1
+                                g
+                              δEzµ = z d−1 Cµ ,       g
+                                                    δEzz = z d−2 Cz − z d ∂µ C µ ,                (4.22)
+                                                                     2
+for unfixed Cµ , Cz which are functions of the boundary coordinates. We simply need to show
+that Cµ , Cz must vanish. This is achieved by the requirement (4.16) which (using eq. (4.15)
+and (4.22)) gives:
+                                                   
+                                       µ
+                     0 = dχ|∂M = − ζB           z
+                                         Cµ + ζ̃B Cz dt ∧ dx1 . . . ∧ dxd−1 .         (4.23)
+
+                        z ≡ lim
+Here, we have defined ζ̃B             −1 z           −1
+                                z→0 (z ξB ) = −2πR (t−t0 ) which is related to the boundary
+                                                             z . Since it is possible to construct
+conformal Killing vector via: ∂µ (ζB )ν + ∂ν (ζB )µ = 2ηµν ζ̃B
+χ for all possible boundary regions B and in all Lorentz frames, it follows that Cµ = Cz = 0.
+    In summary, we can obtain the full set of linearized gravitational equations, if we can
+show that a form χ exists, which satisfies eqs. (4.14), (4.15) and (4.16). We do this in section
+5.
+  12
+       In Einstein gravity, this follows from the Bianchi identity by a standard argument [28].
+
+
+
+
+                                                       – 17 –
+Example: linearized Einstein equations from S = A/4GN
+In section 5, we will prove that χ exists in a general theory, but we first give the explicit
+formula for Einstein gravity without introducing any additional formalism. Consider the case
+of a holographic CFT for which the field theory entanglement entropy of a region A is equal
+to one quarter the area of the bulk extremal-area surface with boundary ∂A. In this case,
+writing the metric perturbation as hµν = z d−2 Hµν , we are looking for a form χ whose exterior
+derivative, restricted to Σ, is proportional to the tt component of the Einstein equation, and
+which satisfies
+                                          d
+                     Z                         Z
+                                grav
+                        χ = δEB =                 dd−1 x (R2 − |~x − ~x0 |2 ) H i i      (4.24)
+                      B                16GN R B
+and
+                                ℓd−3
+               Z                       Z
+                         grav
+                   χ = δSB    =             dd−1 x(R2 H i i − (x − x0 )i (x − x0 )j Hij ) .        (4.25)
+              B̃               8G N R    B̃
+                                                                                           grav
+Here, we have used eqs. (2.10) and (4.13) to write an explicit expression for δEB               , making
+                                     i        ij                                grav
+use of (4.12) to replace Htt with H i = δ Hij . The expression for δSB                was taken from
+[7, 8].
+     A form χ that satisfies the above requirements is
+                              1 h       a b           b          ac       a c
+                                                                               i
+                   χ=−             δ(∇ ξB εab ) + ξB εab (∇c h − ∇ h c )                           (4.26)
+                           16πGN
+where εab is defined in eq. (5.3). The restriction of χ to Σ is
+                  zd
+                                                        
+                                  2πz d t
+       χ|Σ =               εt z         + ξ + ξ t ∂z H i i +                               (4.27)
+               16πGN               R       z
+                           "                                                     !     #)
+                                     i − xi )                      j − xj )
+                                                     
+                                2π(x      0                   2π(x      0
+                     +εt i                    + ξt∂ i H j j −               + ξt∂j H ij
+                                     R                             R
+
+where ξ t = R π
+                (R2 − z 2 − |~x − ~x0 |2 ). Using this expression, it is straightforward to verify
+eqs. (4.24) and (4.25), and also check that
+                                          dχ|Σ = −2ξ t δEttg εt                                      (4.28)
+where
+                            z d ℓ2−d
+                                                                               
+                     g                  2 i     d+1     i        j i     i j
+                   δEtt = −            ∂z H i +     ∂z H i + ∂j ∂ H i − ∂ ∂ Hij                      (4.29)
+                             32πGN                  z
+is the (tt)-component of the linearized Einstein equations.13 Conservation dχ|∂M = 0 follows
+from the conservation and tracelessness of the CFT stress tensor, so the other components
+                               g
+of the Einstein equations δEab   = 0 are also satisfied by the argument above.14 Thus, for
+theories where the Ryu-Takayanagi area formula computes entanglement entropies, the non-
+                  grav      grav
+local equations δSB    = δEB     are equivalent to the linearized Einstein equations.
+  13         g                                                                       √
+    Here, Eab   is defined by varying the action with respect to g ab and dividing by −g, as usual.
+  14                                                      µ           g        µ
+    For the case of Einstein gravity, we have δEzz ∝ H µ and δEzµ ∝ ∂µ H ν − ∂ν H µ µ = 0 so the vanishing
+of these expressions at z = 0 follows immediately from the tracelessness and conservation of the holographic
+stress tensor, using (4.13).
+
+
+
+
+                                                  – 18 –
+5        Linearized equations in general theories of gravity
+
+In this section, we review the formalism used by Iyer and Wald to prove a version of the first
+law of black hole thermodynamics in general theories of gravity (section 5.1), and apply it in
+section 5.2 to construct a form χ with the properties outlined in section 4.3. We also argue
+in section 5.3 that the energy for a perturbed AdS-Rindler spacetime as defined by Iyer and
+Wald is equivalent to the energy defined using the holographic stress tensor in eq. (2.10).
+
+5.1       The covariant formalism for entropy and conserved charges
+We begin by introducing notation and setting up the Iyer-Wald formalism [14, 16]. A helpful
+general discussion motivating this formalism can be found in [29].
+
+Basic definitions
+Let L be any gravitational Lagrangian, viewed as a d + 1-form
+
+                                                 L = Lε ,                                                 (5.1)
+
+where L is constructed from the metric, curvature tensors, and their covariant derivatives.
+Here, ε is the volume form15
+                                       1
+                               ε=           εa ···a dxa1 ∧ · · · ∧ dxad+1 .                               (5.2)
+                                    (d + 1)! 1 d+1
+
+For later convenience, we also define:
+            1                                               1
+    εa =      εab ···b dxb2 ∧ · · · ∧ dxbd+1 ,   εab =            εabc3 ···cd+1 dxc3 ∧ · · · ∧ dxcd+1 .   (5.3)
+            d! 2 d+1                                     (d − 1)!
+
+Denoting the dynamical fields collectively by φ = {gµν , . . . }, the variation of L under a general
+variation of the fields takes the form
+
+                                          δL = Eφ δφ + dΘ(δφ)                                             (5.4)
+
+where Eφ = 0 are the equations of motion for the theory, and Θ is called the symplectic
+potential current.16 In the first term, a sum over fields φ with indices contracted appropriately
+is implied.
+
+Definition of Wald entropy from the Noether current
+For a spacetime with a bifurcate Killing horizon associated to a Killing vector ξ, the Wald
+entropy can be defined in terms of the Noether current associated with ξ, as we now review.
+    15                                                                                             √
+     Note that εa1 ···ad+1 is an antisymmetric tensor, and our sign convention is εzti1 ···id−1 = + −g .
+  16
+     This potential Θ, and similarly the Noether charge form Q below, have ambiguities related to boundary
+terms in the Lagrangian and shifting by an exact form. Implicitly, these ambiguities, discussed in [15, 16],
+have been fixed to simplify our formulae here but would not affect our arguments.
+
+
+
+
+                                                  – 19 –
+   Starting with an arbitrary vector field ξ, the variation of the Lagrangian under a diffeo-
+morphism generated by ξ µ is
+                                       δξ L = d(ξ · L)                                 (5.5)
+where the dot denotes the usual inner product of ξ µ with the form L.17 Since this represents
+a local symmetry of a Lagrangian field theory, Noether’s theorem guarantees that we can
+associate to it a current J µ [ξ] that is conserved when the equations of motion are satisfied.
+This Noether current (expressed as a d-form) is given by
+
+                                                J[ξ] = Θ(δξ φ) − ξ · L .                                            (5.6)
+
+Using eqs. (5.5) and (5.4), we can check that
+
+                                                   dJ[ξ] = −Eφ δξ φ ,                                               (5.7)
+
+so J is conserved on shell as promised.
+    Because eq. (5.7) holds for all vector fields ξ, it follows [30] that we can find a (d− 1)-form
+Q such that
+                                  J[ξ] = dQ[ξ]        (on shell) .                             (5.8)
+Recalling that the Noether charge associated with the diffeomorphism ξ is the integral of J
+over a spacelike hypersurface Σ, we see that the existence of Q (called the Noether charge
+form) allows us to express this charge as an integral over the boundary of Σ.
+    As shown in [16], Q can be written as
+
+                                Q[ξ] = Wc ξ c + Xcd ∇[c ξd] ,           Xcd = −ER
+                                                                                abcd
+                                                                                     εab ,                          (5.9)
+
+where ERabcd is the ‘equation of motion’ for the Riemann tensor, derived as if it were an
+
+independent field in the Lagrangian:
+
+                               abcd       δL       ∂L            ∂L
+                              ER    =           ≡        − ∇a1           + ··· .                                   (5.10)
+                                         δRabcd   ∂Rabcd       ∂∇a1Rabcd
+
+Eq. (5.8) only defines Q on shell. It is always possible to define Q off shell so that
+
+                                                J[ξ] = dQ[ξ] + ξ a Ca ,                                            (5.11)
+
+where Ca are the constraint equations on a fixed-time slice. That is,
+                                                               s
+                " r                                                                                     #
+                                                                                i ···bs c1 ···cr
+                                         φc1 ···ci ···cr εci −
+            X X                                                X
+      Ca =                     ···bs
+                    (E φ )cb11 ···a···c r b1 ···bs
+                                                                 (E φ )cb11 ···b
+                                                                            ···cr      φb1 ···a···bs εbi ,         (5.12)
+                     φ    i=1                                     i=1
+
+where φ is a type (r, s) tensor, and the dots indicate that the indices appear in the ith position.
+This is shown in [27] and reviewed in appendix B. Note that only the equations of motion of
+non-scalar fields appear in Ca .
+  17                                1                                                1
+       That is, given an n-form N = n! Na1 a2 ···an dxa1 ∧dxa2 ∧· · ·∧dxan , ξ·N = (n−1)! ξ b Nba2 ···an dxa2 ∧· · ·∧dxan .
+
+
+
+
+                                                          – 20 –
+       In a spacetime with a bifurcate Killing horizon, the Wald entropy (1.5) is now defined as
+                                                 Z
+                                      SWald = 2π     Xcd ncd ,                            (5.13)
+                                                       H
+where H is the bifurcation surface and ncd is the binormal to H. This definition also applies
+to linearized excitations of a stationary background. It is related to the Noether charge as
+follows. Let ξ be the Killing vector that generates the horizon and vanishes on H. In general,
+∇[c ξd] = κ ncd on the horizon, where κ is the surface gravity. If we normalize ξ so that κ = 2π,
+then the Wald entropy equals the Noether charge
+                                                 Z
+                                       SWald =      Q[ξ] .                                  (5.14)
+                                                       H
+
+On the stationary background, this agrees with (5.13) because ξ = 0 on the bifurcation surface.
+It was argued in [14, 16] that eqs. (5.14) and (5.13) also agree for linearized excitations.
+
+Definition of energy
+For perturbations of the background spacetime, we can define an energy canonically associated
+to a Killing vector ξ. Defining the symplectic current
+
+                               ω (δ1 φ, δ2 φ) = δ2 Θ(δ1 φ) − δ1 Θ(δ2 φ) ,                         (5.15)
+
+the Hamiltonian that generates translations along ξ µ is obtained by integrating ω over a
+Cauchy surface C,                         Z
+                                      δHW [ξ] =        ω (δφ, δξ φ) .                             (5.16)
+                                                   C
+This can be rewritten using
+
+                                 δJ[ξ] = δΘ(δξ φ) − ξ · dΘ(δφ)                                    (5.17)
+                                        = ω (δξ φ, δφ) + d(ξ · Θ(δφ))                             (5.18)
+
+where we used the background equations of motion E φ = 0 and the formula for the Lie
+derivative of a form,
+                            δξ u ≡ Lξ u = ξ · du + d(ξ · u).                  (5.19)
+Therefore using eqs. (5.11) and (5.18), we have
+                                   Z         Z
+                                       a
+                       δHW [ξ] = δ ξ Ca +       (δQ[ξ] − ξ · Θ(δφ)) .                             (5.20)
+                                        C           ∂C
+Thus, H reduces to a boundary term when the equations of motion are satisfied. We define
+the energy δE[ξ] for an arbitrary (i.e. not necessarily on-shell) perturbation of the background
+spacetime as this contribution at the asymptotic boundary,18
+                                         Z
+                               δE[ξ] =       (δQ[ξ] − ξ · Θ(δφ)) .                         (5.21)
+                                            ∂C
+  18
+    As discussed in [16], this definition can be extended to general spacetimes with the same asymptotic
+                                                          R           R
+behavior provided that there exists a form B such that δ ∂C ξ · B = ∂C ξ · Θ. In this case, we can define
+       R
+E[ξ] = ∂C (Q[ξ] − ξ · B) .
+
+
+
+
+                                                 – 21 –
+5.2   Definition of χ
+Using the notation above, we can now define the form χ described in section 2.3 as
+
+                                  χ = δQ[ξB ] − ξB · Θ(δφ) .                              (5.22)
+
+As an example, the covariant formalism is applied to Einstein gravity plus a scalar field
+in appendix C, leading to (4.26). In the rest of this section, we will demonstrate that χ
+obeys the equations (4.14) and (4.15) that were needed to derive the equations of motion
+         grav      grav
+from δSB      = δEB     . That χ also obeys eq. (4.16) will be shown in the next section. We
+emphasize that it is the existence of a form χ with these properties that guarantees that the
+                                                       grav     grav
+linearized equations of motion are equivalent to δSB        = δEB    . Thus, starting from only
+the entropy functional SWald , it should be possible to recover the linearized equations even if
+we do not know χ, L, Θ, or Q.
+     The first property in eq. (4.14) follows directly from our definition (5.21) and the equiv-
+alence of δE[ξB ] and δE grav , to be shown in the next section. The second property follows
+from                                             Z            Z
+                                grav
+                             δSB = δSWald =         δQ[ξB ] =    χ.                       (5.23)
+                                                  B̃            B̃
+The first equality was discussed in section 2.3, the third equality follows from the definition
+of χ since ξB vanishes on B̃, and the second equality was proved in [27], as discussed in the
+previous section. The proof in [27] does not use the equations of motion, so it holds off shell
+if we define the entropy as in eq. (5.13).
+     To show eq. (4.15) note that for ξ a Killing vector of the background, eq. (5.18) implies
+δJ[ξ] = d(ξ · Θ). Therefore
+                                                  a          a   g b
+                     dχ = δ(dQ[ξB ] − J[ξB ]) = −ξB δCa = −2ξB δEab ε                     (5.24)
+          g
+where Eab   is the equation of motion derived by varying the action with respect to g ab . Note
+that fields vanishing on the background do not contribute to the first variation of Ca , which is
+why our derivation always gives the gravitational equations rather than the some combination
+of gravitational and matter equations.
+
+5.3   Equivalence of the holographic and the canonical modular energy
+For arbitrary perturbations to AdS, we now have two definitions of modular energy associated
+to a given boundary region B: the “canonical” energy (5.21)
+                                           Z
+                           grav
+                        δE(1) ≡ δE[ξB ] ≡     (δQ[ξB ] − ξB · Θ(δφ))                  (5.25)
+                                              B
+
+associated with the bulk Killing vector ξB that asymptotes to ζB , and the “holographic”
+energy (2.10)                            Z
+                                    grav
+                                  δE(2)  =       dΣµ δTµν
+                                                       grav ν
+                                                           ζB                             (5.26)
+                                             B
+
+
+
+
+                                             – 22 –
+defined in terms of the holographic stress tensor (4.13).
+     In order to complete our story, we must show that these two definitions of energy agree,
+without assuming the equations of motion. This is not to say that the formulae agree for
+arbitrary hµν – they do not. However, equivalence follows from the restrictions on the asymp-
+                             grav        grav
+totic metric implied by δSB       = δE(2)     . Note that the purely gravitational result of this
+                                                                           grav      grav
+paper – that the linearized equations of motion are equivalent to δSB           = δE(1)   – does
+not require the results of this subsection; it is needed only to map the CFT problem to the
+gravity problem.
+     Consistency of the AdS/CFT dictionary requires the two definitions to agree, since both
+should equal the CFT energy. This is confirmed for Einstein gravity in [31, 32], and rather
+generally in [33], but these discussions rely on the equations of motion. Here we will demon-
+strate the equivalence explicitly, at the linearized level, in a way that makes clear that we do
+not need to start from the equations of motion. For simplicity, we assume in this calculation
+that matter fields are not coupled to curvature, so only the metric appears in the linearized
+energy.
+     As we discussed in section 4.1 and will show in more detail in section 6, metric perturba-
+tions for which the first law is satisfied at leading order in the R expansion behave near the
+boundary as
+                                                    (d)
+                                       hµν = z d−2 hµν  + ...                              (5.27)
+                                                                            grav
+where the dots indicate terms at higher order in z. Other fall-offs, with δSB    = 0, are also
+                                                                                       (d)
+allowed; these are addressed below. The holographic stress tensor is proportional to hµν , so
+                                          Z
+                                 grav                   (d) ν
+                             δE(2) = C2      dd−1 x uµ hµν ζB .                         (5.28)
+                                             B
+
+On the other hand, if we plug in the asymptotic expansion (5.27) into eq. (5.25), we find
+                                          Z
+                                 grav                   (d) ν
+                              δE(1) = C1     dd−1 x uµ hµν ζB                          (5.29)
+                                              B
+
+for some coefficient C1 , as shown in appendix D. One should in principle be able to verify that
+C1 = C2 by an explicit computation. However, since this can be a bit tedious in an arbitrary
+higher derivative gravity theory, we present below a slightly indirect but simpler argument
+that the two constants must be the same.
+     To show that the coefficients C1 and C2 are equal, we use the fact that, according to our
+definition, the entanglement first law is
+                                         grav     grav
+                                       δSB    = δE(2)  .                                  (5.30)
+
+What we have shown in the previous section is that
+                                               Z
+                             grav     grav          a   g b
+                          δE(1) − δSB = 2          ξB δEab ε .                            (5.31)
+                                                      Σ
+
+
+
+
+                                             – 23 –
+Plugging eq. (5.30) into eq. (5.31), we find
+                                   Z                        Z
+                                              (d) t
+       grav
+    δE(1)        grav
+            − δE(2)   = (C1 − C2 )    dd−1 x htt ζB = 2ℓd−1   dz dd−1 x z 1−d δEttg ξB
+                                                                                     t
+                                                                                         (5.32)
+                                    B                          Σ
+
+As R → 0, the middle term in this equation is proportional to (C1 − C2 )Rd . On the other
+                                                                    (d)
+hand, the term on the right-hand side starts at O(Rd+2 ), because hµν satisfies the linearized
+equations of motion at leading order, as can be explicitly checked. Thus
+                                          grav     grav
+                                        δE(1)  = δE(2)                                   (5.33)
+
+for these modes.
+     As we discuss in section 6.3, the other fall-offs allowed by first law are those for which
+   grav
+δSB     = 0 as R → 0. These behave near the boundary as
+
+                                     hµν = z ∆−2 h∆
+                                                  µν + · · ·                             (5.34)
+
+for particular values of ∆ > d − 2, given in eq. (6.37). These modes do not appear in the
+                                                      grav                           grav
+holographic stress tensor, so do not contribute to δE(2)   . Their contribution to δE(1)  is
+proportional to z ∆−d as z → 0, and thus vanishes if ∆ > d. This means that our entire
+analysis applies to modes with ∆ > d, so the linearized equations of motion hold everywhere.
+                                                                              grav
+Furthermore, since ∆ depends on the parameters in the Lagrangian, and δE(1)        must also
+depend smoothly on these parameters, this conclusion also applies to modes with ∆ < d.
+Alternatively, it can be checked explicitly that such modes obey the leading equations of
+motion near the boundary (there is a single term to check because ∆ > d − 2) so eq. (5.32)
+           grav      grav
+implies δE(1)   = δE(2)   .
+    Applying this discussion in an arbitrary frame, we have now established that, at the
+boundary, χ is equal to the conserved current that appears in the modular energy:
+
+                                    χ|∂M = dΣµ Tµν
+                                                grav ν
+                                                    ζ .                                  (5.35)
+
+Conservation and traceless of the CFT stress tensor therefore imply dχ|∂M = 0, completing
+the derivation in section 4.
+
+6   Application: the holographic dictionary in higher curvature gravity
+
+In section 4.1, we have argued that in the limit R → 0, the entanglement first law, together
+with the holographic entanglement functional, yields the holographic dictionary for the stress
+tensor. As a concrete and non-trivial application of this observation, in this section we derive
+the holographic dictionary for the case when the entanglement entropy is given by a Wald
+functional that is polynomial in the Riemann tensor — in other words, for a higher derivative
+gravity theory whose action is constructed from arbitrary powers of the Riemann tensor, but
+no derivatives thereof. The analysis including derivatives of the Riemann tensor is similar —
+and straightforward in any particular example — but we leave it to future work. As we will
+
+
+
+
+                                             – 24 –
+show, in this case the entanglement first law allows one to derive holographic dictionary not
+only for the stress tensor, but also for the other operators that couple to the metric in the
+context of higher derivative gravity.
+     The usual procedure for finding the holographic dictionary for an arbitrary gravitational
+theory in AdS is holographic renormalization [24–26]. This technique provides full information
+about the holographic dictionary, allowing both arbitrary sources and expectation values. One
+can thus compute, in principle at least, any desired correlator of the stress tensor and the
+other operators that couple to classical fields in the bulk. Nevertheless, computations that use
+this method can become extremely tedious in the context of higher derivative gravity. The
+reason is that a necessary first step in holographic renormalization is to render the variational
+principle at the spacetime boundary well-defined, and this can be rather difficult in a general
+higher derivative gravity theory (e.g. [33, 34]).
+     However, if one is only interested in computing the expectation value of the stress tensor
+in higher derivative gravity rather than its general correlation functions, the “entanglement
+first law” method for deriving the holographic dictionary can provide an easy alternative. The
+reason for this simplification — besides not having to deal with the variational principle —
+is that one can perform all calculations at linearized level, where all higher derivative gravity
+theories effectively reduce to R2 theories. A scaling argument can then be used to argue that
+the linearized answer holds quite generally.
+
+6.1   General results
+We begin with the general result derived in section 4.1
+
+                                       d2 − 1
+                                                               
+                          grav                       1     grav
+                      δTtt (x0 ) =            lim       δS        .                            (6.1)
+                                      2πΩd−2 R→0 Rd B(R,x0 )
+
+For a general theory of gravity, we have
+                                    Z                  
+           grav      W ald                  abcd
+        δSB = δSB          = δ −2π        ER εab ncd
+                                       B̃
+                                  Z                                                      
+                                           abcd            abcd             abcd
+                           = −2π       δER      εab ncd + ER    δεab ncd + ER    εab δncd      (6.2)
+                                       B̃
+
+The binormal ncd is defined as
+                                            ncd = n1a n2b − n2a n1b                            (6.3)
+where n1 and n2 are unit vectors normal to each other and to the bifurcation surface B̃. To
+linearized order in the perturbation, they are given by
+
+                                 z2                               Aℓ         z2
+                                                                                        
+                      ℓ                                       x
+          n1a dxa = −         1 − 2 htt dt ,        n2a dxa =                         i j
+                                                                         1 + 2 2 hij x x dxA   (6.4)
+                      z          2ℓ                             Rz          2ℓ R
+where xA = xA = {xi , z}.
+
+
+
+
+                                                   – 25 –
+    Next, from the definition of εab in eq. (5.3), we have
+                                           1
+                                  δεab =     h εab ,     h ≡ gcd hcd .                            (6.5)
+                                           2
+Substituting all these expressions into eq. (6.2), we find
+
+              4πℓd+1                     2ℓ2 tAtB
+                      Z d−1
+                                                                                   xi xj
+                                                                                       
+      W ald              d x                              tAtB               ij
+   δSB      =              d+2
+                                xA xB − 2 δER        + ER        2htt − hij δ − hij 2       (6.6)
+                 R     B z                z                                         R
+
+For a general Lagrangian built from curvatures but no covariant derivatives of curvatures,
+ERabcd is a function of g ab and Rabcd . Evaluated on an AdS background, which is maximally
+
+symmetric and thus satisfies
+                                           1
+                                 Rabcd = − 2 (gac gbd − gad gbc ) ,                               (6.7)
+                                          ℓ
+the Wald functional takes the following simple form
+
+                                          abcd
+                                         ER    = c1 ghab gcdi                                     (6.8)
+for some constant c1 . The indices inside the h , i brackets are (anti)symmetrized so that the
+resulting object has the same symmetries as the Riemann tensor, as in [34].
+     To compute δER abcd , we use the chain rule
+
+
+                                        ∂ERabcd           abcd
+                                                        ∂ER
+                               abcd                ef
+                             δER    =           δg    +         δRef gh .                         (6.9)
+                                         ∂gef           ∂Ref gh
+The partial derivatives above are to be evaluated on the background AdS, so using eq. (6.7),
+they can be expressed entirely in terms of products of the unperturbed AdS metric, with
+various contractions and symmetrizations. Letting
+
+                                 δgab = −hab ,         δRabcd = Rabcd                            (6.10)
+                                     abcd is then
+the general form of the linearized δER
+     abcd
+   δER    = −c2 ghab gcdi h − c3 hhab gcdi + ℓ2 c4 ghab gcdi R + ℓ2 c5 Rhab gcdi + ℓ2 c6 Rabcd   (6.11)
+
+where the first two terms come from the partial derivative of ERabcd with respect to g ef , and
+
+the last three from the partial derivative with respect to the Riemann tensor, evaluated on
+AdS. All indices are raised and contracted with the background metric gab . Note that not all
+coefficients ci introduced above are independent, but rather they satisfy
+
+                       c2 = −2d c4 − c5 ,      c3 = 2 c1 − (d − 1) c5 − 4 c6 .                   (6.12)
+
+These constraints follow from the fact that the most general Wald functional that is linear in
+the Riemann tensor takes the form (6.27) — see below — which is parametrized by just four
+constants. Eq. (6.28) then shows that the six coefficients ci satisfy two additional relations.
+
+
+
+
+                                                – 26 –
+    To finalize our computation of the linearized Wald functional, we only need to evaluate
+the linearized Riemann tensor, given by
+           1                                                  1
+  Rabcd = (∇c ∇b had − ∇b ∇b hac + ∇b ∇a hbc − ∇c ∇a hbd ) + (Raecd he b + Re bcd hae ) . (6.13)
+           2                                                  2
+For the computation of the holographic stress tensor (6.1), we only need the leading behaviour
+of the Riemann tensor as R → 0. This can be easily evaluated by noting that z ∝ R and z-
+derivatives of the metric perturbation dominate over xµ -derivatives as z → 0. More explicitly,
+near the boundary we can write
+                                               hµν (z, xλ ) = z ∆−2 h(∆)  λ
+                                                                     µν (x ) + · · ·                                    (6.14)
+for some ∆ to be determined, where the dots indicate terms at higher order in z. Then, we
+can replace ∂z hµν = (∆ − 2)z −1 hµν and ignore all xµ -derivatives, because ∂µ ∼ O(1) will
+always be subleading in the R expansion, as compared to ∂z ∼ O(R−1 ). Consequently, in
+taking R → 0, we can approximate19
+                                                 ∆−2
+                            Rµνρσ |R→0 =              (hµρ gνσ + hνσ gµρ − hµσ gνρ − hνρ gµσ )                          (6.15)
+                                                  2ℓ2
+and
+                                               1
+                                                   [2(∆ − 1) − ∆2 ] hµν .
+                                          Rµzνz |R→0 =                                         (6.16)
+                                              2z 2
+We can then substitute this simplified expression into20 eq. (6.11) and further into eq. (6.6).
+Upon contracting with xA xB , the integrand will contain terms proportional to htt , δij hij and
+hij xi xj ; using spherical symmetry, the latter can be replaced by ~x2 δij hij /(d−1). Furthermore,
+we can write hij δij = hµν η µν + htt . The final answer takes the form
+                                             Z d−1
+                                      4πℓd−3      d x
+                              W ald
+                            δSB     =                d−2
+                                                         (A htt + B η µν hµν )                 (6.17)
+                                        R      B   z
+where the coefficients A and B are given by
+             |~x|2
+                        h
+                       2    c1 c3 c5                                            i
+     A=            −R         −   + (2 − 2d + ∆d − ∆2 ) + (∆2 − d∆2 + d∆ − 2)c6
+            d−1             2   2     4
+                        −R2 ∆(∆ − 1)(d − 2)c6
+           |~x|2 h c1 c3 c5                                        i
+       B =            −    + (2 − 2d + ∆ − 2∆2 + d∆2 ) + c6 (∆ − 2) +
+           d−1 2         2h 4
+                        2 c1                                c5             i
+                     +R      − c2 + c4 (∆ + d∆ − 2d − ∆2 ) + (3∆ − 4 − ∆2 ) .                                           (6.18)
+                           2                                4
+  19
+     It is not hard to see that if we had also allowed derivatives of the Riemann tensor into the Wald functional,
+their linearized leading contribution to the entropy as R → 0 would also be linear in hµν with no derivatives,
+due to the above scaling argument. Their contribution would typically be of the same order as the polynomial
+one, and straightforward if a bit tedious to compute.
+  20
+     The explicit expression for eq. (6.11) is
+                                          c5                                         c5
+                                                                                                         
+  µνρσ                      2                          hµν ρσi                                            2   hµν ρσi
+δER      =       (∆d − 2d − ∆ + ∆) c4 +
+                                      (∆ − 2) − c2 h g     g   + 2(∆ − 2)c6 − c3 +       (∆d − 2d + 2 − ∆ ) h     g
+                                    2                                                 2
+           c6                 c5                       c3              c4                        c5                 c2
+                                                                                                                    
+  µzρz                   2                        2          µν zz                     2                       2           µν zz
+δER    =      (2∆ − 2 − ∆ ) +    (∆d − 2d + 2 − ∆ ) −       h g    +      (∆d − 2d − ∆ + ∆) +       (3∆ − 4 − ∆ ) −      hg g
+            2                  8                        4               2                         8                  2
+
+
+
+
+                                                             – 27 –
+Using eq. (6.14), it is not hard to verify that the leading contribution in eq. (6.17) scales as
+R∆ , so we must choose ∆ = d to obtain a finite result in eq. (6.1). Thus, we find again, as in
+Einstein gravity, that in order for the first law of entanglement to be satisfied, the asymptotic
+expansion of the metric should start at order z d−2 . Performing the integral in eq. (6.17) with
+∆ = d, we find that
+                                                 (d)
+                                  δTttgrav = α htt + β ηtt hµ(d) µ                         (6.19)
+where the indices on h(d) are now raised with η µν , and the two coeffcients are given by
+
+                                 α = d(−c1 + c3 + (d − 1)c5 + 2dc6 ) ℓd−3                                    (6.20)
+
+       β = [−(d + 2)c1 + 2(d + 1)c2 + c3 + 2d(d + 1)c4 + (d + 1)c5 − 2(d − 2)c6 ] ℓd−3                       (6.21)
+Generalizing the calculation to an arbitrary Lorentz frame as in section (4.1), we conclude
+that
+                                            (d)
+                                   grav
+                                δTµν    = αhµν  + β ηµν hα(d) α                       (6.22)
+As in Einstein gravity, tracelessness and conservation of Tµν imply that21
+                                                                  (d)
+                                          h(d)µ µ = 0 ,      ∂ µ hµν  =0                                     (6.23)
+
+so we have
+                             grav                                            (d)
+                           δTµν   = d ℓd−3 [−c1 + c3 + (d − 1) c5 + 2d c6 ] hµν
+                                                                (d)
+                                    = dℓd−3 [c1 + 2(d − 2)c6 ] hµν  .                                        (6.24)
+
+This gives the holographic stress for a theory in which the Wald entropy is an arbitrary
+function of the Riemann tensor, but not its covariant derivatives. The coefficients ci are
+defined in eqs. (6.8) and (6.11).
+     Note that to this point, we have only been considering the leading contribution to the
+expectation value of the stress tensor. That is, as noted in footnote 4, we are considering
+a one-parameter family of states |Ψ(λ)i with |Ψ(0)i = |0i and within this family, δhTµν i ≡
+∂λ hTµν i|λ=0 . However, we will now argue that our result extends beyond this leading order to
+                                                                               (d)
+give a general prescription for hTµν i. In particular, the fact that hTµν i ∝ hµν simply follows
+from conformal invariance: there is no other field in spacetime that has the correct tensor
+structure and transformation properties under rescalings.22 Thus, the above expression for the
+                                  (d)
+stress tensor holds even when hµν is finite. Another way to see this fact is to note that since
+  21
+     When α + β d = 0, the vanishing of the trace of the stress tensor no longer implies h(d)µ µ = 0. Using our
+results from section 6.3, it is easy to check that precisely at this value of the ci , the additional scalar operator
+present in higher curvature gravity — which couples to the trace of the metric — has dimension ∆ = d, and
+thus appears at the same order in the asymptotic z expansion as the traceless mode that couples to the CFT
+stress tensor.
+  22
+     There are a few exceptions to this, such as a gauge field in three space-time dimensions, which can
+contribute to the stress tensor at quadratic order, or when fields have finely-tuned dimensions that can add
+up to d.
+
+
+
+
+                                                      – 28 –
+the theory is conformal, the only dimensionless number that characterizes the perturbation
+                                        (d) d
+is ε = c−1           d
+         T hTµν iR in the CFT, or hµν R in spacetime. Applicability of the first law only
+requires that ε << 1, see also the appendix of [35]. Thus, we can either have hTtt i small and
+R finite, or hTtt i finite and R → 0. In the first case, we can derive the linearized gravitational
+equations in the entire bulk, by taking the amplitude of the perturbation to be small and
+using the Wald functional method. In the second case, we can derive the leading asymptotic
+expansion of the metric (as z → 0) for a general non-linear solution.
+
+6.2     Examples
+We now give some explicit examples employing the general formula (6.24) and compare with
+known results in the literature.
+
+6.2.1    The holographic stress tensor in R2 gravity
+To begin, consider the case of an arbitrary R2 gravity theory in d + 1 dimensions, which
+contains all possible contractions of the Riemann tensor but no derivatives thereof. It is
+convenient to write the most general Lagrangian of such a theory as
+                                                                                
+               1      d(d − 1)            2        abcd        2     ab      2 2
+       L=                      + R + a1 ℓ̃ Rabcd R      + a2 ℓ̃ Rab R + a3 ℓ̃ R ,   (6.25)
+             16πGN       ℓ̃2
+
+where ℓ̃ is the scale parametrizing the (negative) cosmological constant. We also use ℓ̃ to set
+the scale in the curvature-squared terms, which leaves ai as dimensionless couplings controlling
+the strength of these interactions. We assume that the parameters are chosen such that the
+theory admits an AdSd+1 vacuum solution of radius ℓ. In fact, it is straightforward to show
+the AdS radius is determined by the parameters in the Lagrangian (6.25) by the following
+quadratic equation
+
+                        ℓ4 ℓ2 d − 3
+                           −   +      (2 a1 + d a2 + d(d + 1) a3 ) = 0 .                    (6.26)
+                        ℓ̃4 ℓ̃2 d − 1
+
+Of course, ℓ = ℓ̃ when the ai are set to zero. To construct the Wald entropy (1.5), we consider
+the variation of the Lagrangian with respect to the curvature, as in eq. (5.10)
+                                         
+                       1       1
+           ERabcd
+                  =              + a3 ℓ̃2 R (g ac gbd − gad gbc )                        (6.27)
+                    16πGN      2
+                                        1 2  ac bd                                
+                             2 abcd                          bc ad ad bc     bd ac
+                      +2a1 ℓ̃ R      + a2 ℓ̃ R g − R g − R g + R g
+                                        2
+
+
+
+
+                                              – 29 –
+The coefficients ci defined in eq. (6.11) are given by
+                    "                                    #
+                1                                    ℓ̃2                2(a2 + 2d a3 ) ℓ̃2
+      c1 =            1 − 2 (2a1 + da2 + d(d + 1)a3 ) 2 ,        c2 = −                    ,
+            16πGN                                    ℓ                     16πGN       ℓ2
+                   "                                           #
+               1                                           ℓ̃2
+      c3 =           1 − (8a1 + (3d − 1)a2 + 2d(d + 1)a3 ) 2 ,                               (6.28)
+            8πGN                                           ℓ
+                a3 ℓ̃2                       a2 ℓ̃2                       a1 ℓ̃2
+        c4 =           ,             c5 =           ,             c6 =           ,
+               8πGN ℓ2                      8πGN ℓ2                      8πGN ℓ2
+which one can verify satisfy the constraints in eq. (6.12). Hence our general expression (6.24)
+gives                           "                                          #
+                        d ℓd−3                                          ℓ̃2 (d)
+              hTµν i =           1 + 2 (2(d − 3)a1 − d a2 − d(d + 1)a3 ) 2 hµν           (6.29)
+                       16πGN                                            ℓ
+We have checked that eq. (6.29) agrees perfectly with previous results in the literature that
+used more standard holographic techniques: see, for example, equation (51) of [36] for the
+case d = 3. We have also checked that in general d our answer agrees with the holographic
+stress tensor of [34], when the results of that paper are applied to a flat boundary metric
+and the volume divergences are subtracted. Note that the covariant expression of [34] for the
+holographic stress tensor in terms of induced fields at the boundary obscures somewhat the
+simplicity of the final answer (6.29) for hTµν i, which is dictated by scaling.23
+
+6.2.2    An R4 example
+As an example where higher powers of curvature appear, consider the theory
+                            d+1 √
+                                                                         
+                   1                   d(d − 1)
+                        Z
+                                                         6         µνρσ 2
+             I=            d x −g               + R + αℓ̃ (Rµνρσ R     ) .                            (6.30)
+                16πGN                     ℓ̃2
+This particular example has been studied previously in section 3.4 of [36], for the case d = 3.
+The authors of that paper were investigating black hole thermodynamics in the above theory,
+and found that in order for the first law to hold, the mass of the black hole had to be
+independent of the coefficient of the R4 term. In this subsection, we will use the holographic
+entanglement method for computing the stress tensor expectation value to confirm their result.
+    The Wald functional for this theory reads
+                                                                              
+                 abcd      1     1 ac bd     ad bc       6 abcd          αβγδ
+               ER =                (g g − g g ) + 4αℓ̃ R        (Rαβγδ R      )          (6.31)
+                       16πGN 2
+The four independent coefficients ci are given by
+                                      !
+           1                      ℓ˜6             2α ℓ̃6                                   d(d + 1)α ℓ̃6
+   c1 =         1 − 16d(d + 1)α 6 ,         c4 =         ,             c5 = 0 ,     c6 =
+        16πGN                     ℓ              πGN ℓ6                                      2πGN ℓ6
+                                                                                                     (6.32)
+  23
+    This scaling property might be more obvious if one used instead the Hamiltonian method for holographic
+renormalization [26]. Nevertheless, one would still need to deal with the variational principle with that ap-
+proach.
+
+
+
+
+                                                  – 30 –
+so our general expression (6.24) gives
+                                                                      !
+                                 dℓd−3                          ℓ̃6        (d)
+                       hTµν i =           1 + 16d(d + 1)(d − 3)α 6        hµν               (6.33)
+                                16πGN                           ℓ
+
+                                                 (3)
+Thus, precisely in d = 3 we have hTtt i = 3htt /(16πGN ). The explicit solution (142)-(143)
+in [36] for the metric of the black hole in presence of the R4 term shows that h00 = m is
+uncorrected by the higher derivative term. Hence we also conclude that the mass of the black
+hole is uncorrected, in agreement with the expectation of [36].
+
+6.3   Other terms in the FG expansion
+A feature of higher derivative gravity is the existence of additional degrees of freedom con-
+tained in the metric. This occurs because the equations of motion are no longer second order.
+These new degrees of freedom will appear as new terms in the asymptotic FG expansion,
+which according to the usual AdS/CFT lore will represent new operators in the dual CFT.
+Here we show how the entanglement first law can be used to derive the FG expansion for
+these new modes, including a derivation of the conformal dimensions of the CFT operators
+to which they couple.
+      Of course, the physical interpretation of these modes is unclear. First, they typically have
+negative norm indicating that the boundary theory is no longer unitary [37], and second,
+their masses are typically at the string scale where the low energy effective field theory is
+unreliable. Nonetheless, they do satisfy the equations of motion, so we can ask how they fit
+mathematically into our discussion of the first law.
+                                                                                            grav
+      These new modes appear as additional solutions to the first law constraint δSB             =
+    grav
+δEB . Previously, we argued that a metric perturbation of the form (6.14) that satisfies the
+first law relation must have ∆ = d and be related to the stress tensor expectation value as
+we described in the preceding section. Nevertheless, perturbations with ∆ 6= d, with ∆ an
+                                                                      grav
+arbitrary real number, are also allowed, as long as they satisfy δSB       = 0.
+      To show how this works explicitly, we consider the example of general R2 gravity, with
+Lagrangian given by eq. (6.25). We consider a metric perturbation of the form (6.14). The x
+integral in eq. (6.6) is convergent as long as ∆ > d − 2. Performing this integral, we find
+
+                        ℓd−3 R∆ Ωd−2 Γ d−1     Γ 21 (∆ − d) + 1  (∆)
+                                                                                    
+                 grav                     2                                   (∆)
+             δS       =                                          ĥ00  a T + h    a S        (6.34)
+                                               2 Γ ∆+1
+                                                       
+                            2GN                      2
+
+where we have defined
+                                         (∆)                        1 (∆)
+                      h(∆) ≡ h(∆)i i − h00     and ĥ(∆)   (∆)
+                                                     µν ≡ hµν −       h   .                 (6.35)
+                                                                    d
+Further the constant factors are given by
+
+              ℓ̃2 ∆                                                              ℓ2
+                                                                                     
+                                                                              2
+    aT = 2              2d(a2 + a3 + d a3 ) + a2 (d − ∆)∆ + 4a1 3 − d + d∆ − ∆ −
+          4ℓ (1 + ∆)                                                              ℓ̃2
+
+
+
+                                               – 31 –
+                    ℓ̃2 ∆
+                             
+           aS =                2(d − 3)d(a2 + a3 + d a3 ) − (a2 + d a2 + 4d a3 )(d − ∆)∆+
+                4dℓ2 (1 + ∆)
+                                                                        ℓ2
+                                                                            
+                                   −4a1 3 − d + d∆ − ∆2 − (d − 1)
+                                                            
+                                                                              .           (6.36)
+                                                                        ℓ̃2
+                                    grav
+We can then satisfy the equation δSB     = 0 at leading order in R, the radius of the ball,
+by demanding that the constants aT , aS vanish. This is the case for ∆ = 0 and ∆ = ∆T,S ,
+where24
+                       s
+                   d      d2 2a3 d(d + 1) + 2da2 − 4a1 (d − 3) − ℓ2 /ℓ̃2
+           ∆±T  =    ±      +
+                   2      4                    4a1 + a2
+                       s
+                   d      d2 (d − 1)ℓ2 /ℓ̃2 − 2(d − 3)[2a1 + a2 d + d(d + 1)a3 ]
+           ∆±S  =    ±      +                                                       (6.37)
+                   2      4                4a1 + a2 (d + 1) + 4a3 d
+
+We have checked that these expressions agree with the coefficients of the asymptotic falloffs
+of solutions to the equations of motion in R2 gravity.25 Also, for d = 3, ∆+
+                                                                           S agrees with the
+operator dimension that was obtained in [36], also by solving the asymptotic equations of
+                                 grav
+motion. Therefore, imposing δSB       = 0 as R → 0 ensures that the asymptotic equations of
+motion are satisfied, a claim which we use in section 5.3.
+
+7        Discussion
+
+In this paper, we have seen that a universal relation between entanglement entropy and ‘mod-
+ular’ energy for small perturbations to the vacuum state of a CFT leads, in the holographic
+context, to a nonlocal constraint on the dual spacetimes, which is exactly equivalent to the
+linearized gravitational equations. Thus, given any holographic CFT, we can derive the lin-
+earized bulk equations knowing only the entanglement functional. Moreover, as we showed
+in sections 4.1 and 6, we can also derive the asymptotic boundary conditions for the metric
+perturbation, as well as an expression for the holographic stress tensor. When matter cou-
+plings to curvature vanish, these results taken together imply that from the entanglement
+functional, we can derive the complete map from states to metrics at the linearized level
+about the vacuum.
+     We have also shown that this non-local gravitational constraint is precisely the first law
+of black hole thermodynamics (in the form proved by Iyer and Wald) applied to certain
+     Of course, only the ∆+
+    24
+                           S,T solutions are physical, since only for them does the x integral converge. It is
+                                grav
+interesting though that the δSB      = 0 constraint also knows about the non-normalizable modes in gravity,
+including the perturbation of the boundary metric, with ∆ = 0.
+  25
+     For completeness, we reproduce the equations of motion that follow from the Lagrangian (6.25):
+     σ         d(d − 1)       1
+                                 a1 Rµνρσ Rµνρσ + a2 Rµν Rµν + a3 R2 − (a2 + 4a3 ) R gµν − 2a1 Rµαβγ Rν αβγ
+                                                                                     
+         Gµν −          gµν =
+    ℓ̃ 2         2ℓ̃ 4        2
+             −(2a2 + 4a1 )Rµανβ Rαβ − 2a3 RRµν + 4a1 Rµα Rν α + (2a3 + a2 + 2a1 )∇µ ∇ν R − (a2 + 4a1 )Rµν
+
+On the AdS solution of radius ℓ, the relationship between ℓ and ℓ̃ is given in eq. (6.26).
+
+
+
+
+                                                     – 32 –
+Rindler patches of pure AdS that can be also interpreted as zero-mass hyperbolic black holes.
+Thus, we have a result that holds purely in classical gravity: in any classical gravitational
+theory for which anti-de Sitter space is a solution and for which the first law of black hole
+thermodynamics holds for some Wald functional SWald , small perturbations about the AdS
+vacuum solution are governed by the linearized gravitational equations obtained from varying
+the Lagrangian associated to SWald . This provides a converse to the theorem of Iyer and Wald,
+but also a microscopic understanding of the origin of the Iyer-Wald first law for AdS-Rindler
+horizons.
+
+Relation to the work of Jacobson
+The results in this paper are reminiscent of (and partly motivated by) the work of Jacob-
+son [17] (see also [38–40]). There, it was shown that if the first law of thermodynamics –
+governing the local change in entropy (defined to be horizon area) as a certain bulk energy
+flows through the horizon – is assumed to hold for an arbitrary Rindler horizon, then the
+full nonlinear Einstein equations must be satisfied. In Jacobson’s case, there was no micro-
+scopic understanding of the meaning of the entropy, and thus no fundamental understanding
+of why the thermodynamic relation should hold. By contrast, in our case there is a pre-
+cise microscopic understanding of both the energy and the entropy appearing in our relation
+δSB = δEB , and a proof of the first law at the microscopic level. Also, our gravity analysis
+applies to an arbitrary higher curvature theory, a scenario that is problematic with Jacobson’s
+approach [39]. On the other hand, because our proof is based on global rather than local
+Rindler horizons, we were only able to obtain the gravitational equations of motion at the
+linearized level.
+
+Deriving the nonlinear equations?
+It is obviously interesting to ask whether we can extend our results to the nonlinear level.
+On the CFT side, the entanglement entropies for finite perturbations to the vacuum state are
+still constrained by the modular energies, but the constraint is the inequality ∆SA ≤ ∆hHA i
+following from the positivity of relative entropy. For any ball-shaped region, we can still
+translate this inequality to a constraint on the bulk metric. The set of all such constraints
+should significantly restrict the allowed bulk spacetimes, but it seems unlikely that these
+restrictions will fully determine the bulk equations at the nonlinear level. In particular, the
+nonlinear gravitational equations are sensitive to all the other fields present in the classical
+bulk theory, including the components of the metric along any extra compact directions.
+These additional degrees of freedom depend significantly on which holographic CFT we are
+considering. Thus, starting from the universal relation ∆SA ≤ ∆hHA i (or any other universal
+relation for holographic CFTs) one might realistically expect to recover only a part of the
+constraints implied by the full non-linear equations; for example, one might obtain Einstein’s
+equations with the additional assumption that no other matter fields are turned on in the
+bulk.
+
+
+
+
+                                            – 33 –
+     Another interesting possibility is that one might be able to obtain some constraints at
+the nonlinear level in the bulk even from the linearized entanglement first law, by considering
+bulk perturbations which are kept finite but taken to be localized closer and closer to the
+AdS-Rindler horizon. In such a limit, the energy perturbation in the CFT vanishes due to
+gravitational redshift effects. By considering infinitesimal perturbations away from this limit,
+the linearized CFT first law should apply, but on the gravity side, it would appear that we
+will obtain constraints on a finite perturbation localized near the horizon. This may be closely
+related to the approach of Jacobson.
+
+Quantum first law in the bulk
+Finally, it would be interesting to understand the implications of the entanglement first law (in
+its infinitesimal form) beyond the classical level on the gravity side. Since the entanglement
+first law is an exact relation, it can also be used to study subleading quantum gravitational
+corrections to the classical results that we have derived, or CFT states that do not have
+a classical bulk interpretation. These quantum states/corrections can be easily identified
+by the scaling of their energy and entropy with the central charge in the CFT: while the
+classical contributions are proportional to the central charge, the quantum ones scale with a
+lower power of it. Thus, the first law should place constraints on the quantum behaviour of
+the bulk gravitational theory and will likely also involve an understanding of the quantum
+corrections to the Ryu-Takayanagi formula as discussed recently in [41–43].
+
+Acknowledgements
+
+We thank Horacio Casini, Nima Lashkari, Aitor Lewkowycz, Juan Maldacena, Don Marolf,
+and Sasha Zhiboedov, for useful conversations. TH, RCM, and MVR also acknowledge the
+support of the KITP during the program “Black Holes: Complementarity, Fuzz, or Fire?”
+where some of this work was done. The research of TH is supported in part by the National
+Science Foundation under Grant No. NSF PHY11-25915. Research at Perimeter Institute
+is supported by the Government of Canada through Industry Canada and by the Province
+of Ontario through the Ministry of Research & Innovation. The research of MVR and RCM
+is supported in part by the Natural Sciences and Engineering Research Council of Canada.
+RCM also acknowledges support from the Canadian Institute for Advanced Research. The
+research of MG is supported by the DOE grant DE-SC0007901. TF is supported by NSF
+Grant No. PHY-1314311.
+
+A    Vanishing of the integrand
+
+Suppose                        Z
+                                   dd−1 x dz f (~x, z) = 0   ∀R, ~x0                       (A.1)
+                                   Σ
+
+
+
+
+                                               – 34 –
+where Σ(R, ~x0 ) is the region z ≥ 0, |~x − ~x0 |2 + z 2 ≤ R2 . We would like to show that (A.1)
+implies that f = 0. To prove this, differentiate the integral, and define
+                          Z                                    Z
+                              d−1
+                 IR = ∂R d x dz f = 0 ,               Ii = ∂xi dd−1 x dz f = 0 .           (A.2)
+                                                                                0
+                                  Σ                                                 Σ
+
+These are the average and the first moment of f on the hemisphere B̃(R, x0 ),
+                            Z                      Z
+                       IR = dA f = 0 ,         Ii = dA xi f = 0                                                                 (A.3)
+                                         B̃                                B̃
+
+where dA represents the area element on B̃. Now we can repeat the argument replacing
+f → xi f in (A.1), and deduce that all moments of f vanish on every hemisphere B̃. We
+conclude that f = 0, as we needed to show.
+    An alternative argument for the vanishing of f is to note that the integral in (A.3), viewed
+as a map from B̃ to R, defines the “hyperbolic Radon transform” of the function f , whose
+vanishing implies the vanishing of the function, assuming that f is continuous [44].
+
+B     Noether identities and the off-shell Hamiltonian
+
+In this section, we derive the Noether identities for diffeomorphism invariance, and show that
+J[ξ] = dQ[ξ] + ξ a Ca as claimed in (5.11).
+     Under a diffeomorphism, the variation of the action I is
+                                             Z
+                                      δξ I = ε(E φ δξ φ)                                 (B.1)
+
+with the sum over fields φ implicit. The integrand for a field of rank r is
+                                                                          r                                s
+                                                                                                                                          !
+                      a1 ···ar                                  ···ar                        ···λ···ar                        ···ar
+                                                                          X                                X
+ε (E φ )ab11···b                     φ b1 ···bs
+            ···ar δξ φb1 ···bs = ε (E )a1 ···ar
+                s
+                                                    ξ b ∇b φba11···bs
+                                                                      −         ∇λ ξ ai φba11···bs
+                                                                                                       +         ∇bi ξ λ φba11···λ···bs
+                                                                          i=1                              i=1
+                                                                            r        h                                  i
+                                                                                                        a1 ···λ···ar
+                                                       a1 ···ar
+                                                                                ∇λ (E φ )ab11···b
+                                                                           X
+                            = εξ b (E φ )ab11···b
+                                             ···ar ∇b φb1 ···bs + εξ
+                                                 s                   b
+                                                                                             ···b···ar φb1 ···bs
+                                                                                                 s
+
+                                                                          i=1
+                                              s         h                            i
+                                                                         a1 ···ar
+                                              X
+                                      −εξ b         ∇bi (E φ )ab11···b                     a
+                                                                  ···ar φb1 ···b···bs − d(ξ Ca )
+                                                                      s
+                                                                                                                                  (B.2)
+                                              i=1
+
+where the dots indicate that indices appear in the ith position, and the constraints Ca are
+defined in eq. (5.12). If ξ has compact support, then the total derivative does not contribute
+and since δξ I = 0 for any ξ, we have the following identity for the integrand,
+                                     r                                          s
+                                                                                                                      !
+                                         h                                  i        h                              i
+                                                               a1 ···λ···ar                            a1 ···ar
+                          a1 ···ar
+                                       ∇λ (E φ )ab11···b
+X                                    X                                          X
+      (E φ )ab11···b
+                ···ar ∇b φb1 ···bs +
+                    s
+                                                    ···b···ar φb1 ···bs
+                                                        s
+                                                                              −   ∇bi (E φ )ab11···b
+                                                                                                ···ar φb1 ···b···bs
+                                                                                                    s
+                                                                                                                        =0.
+  φ                                   i=1                                                i=1
+                                                                                                                                (B.3)
+This is the Noether identity.
+
+
+
+
+                                                            – 35 –
+    Next, remember that the Noether current (5.6) satisfies dJ[ξ] = −εE φ δξ φ. Using (B.2)
+and the Noether identity, this becomes
+
+                                       dJ[ξ] = d(ξ a Ca )                               (B.4)
+
+for all diffeomorphisms ξ. It follows that [30]
+
+                                    J[ξ] = dQ[ξ] + ξ a Ca ,                             (B.5)
+
+for some Q, which we take to be the off-shell definition of the Noether charge Q.
+
+C     Example: Einstein Gravity coupled to a Scalar
+
+In this appendix we review the covariant formalism applied to Einstein gravity coupled to a
+scalar field. The Lagrangian is
+                                                            
+                                     1       1     2
+                           L=ε           R − (∂ψ) − V (ψ) .                           (C.1)
+                                   16πGN     2
+
+The cosmological constant is included in the scalar potential V (ψ). The definitions (5.4) and
+(5.6) give                                                        
+                                1         ab     a   b
+                                                        
+                                                                α
+                      Θ=             ∇b δg − ∇ δgb − δψ∇ ψ εa                            (C.2)
+                             16πGN
+and                                                      
+                                1    
+                                       [e d]
+                                             
+                                                    g d e
+                           J=      ∇e ∇ ξ      + 2(E ) e ξ εd                           (C.3)
+                              8πGN
+where E g is the gravitational equation of motion,
+                                                                  
+              g       1           1          1      1     1  2
+            Eab =           Rab − gab R − ∂a ψ∂b ψ + gab (∂ψ) − V (ψ) .                 (C.4)
+                   16πGN          2          2      2     2
+
+The Noether current can be written
+                                                     g b
+                                      J = dQ + 2ξ a Eab ε                               (C.5)
+
+where
+                                              1
+                                     Q=−         ∇a ξ b εab .                           (C.6)
+                                             16π
+
+D     Form of the bulk charge
+
+In this appendix, we show that the linearized modular energy defined by the bulk Wald-
+Noether procedure always take the simple form noted in eq. (5.29). We start with eq. (5.25),
+reproduced here for convenience:
+                                     Z
+                               grav
+                            δE(1) =     (δQ[ξB ] − ξB · Θ(δφ))                        (D.1)
+                                         B
+
+
+
+
+                                             – 36 –
+where the Killing vector ξB is given in eq. (3.1). Into this equation we would like to substitute
+the asymptotic form of the metric perturbation (5.27), representing the stress tensor pertur-
+bation. As we argued in the main text, modes with different falloffs will not contribute, since
+they have the wrong scaling dimension.
+    As shown in [16], the most general form of Q[ξ] is
+
+                         Q[ξ] = Xcd ∇[c ξd] + Wc ξ c + Y(φ, Lξ φ) + dZ(ξ, φ)                                 (D.2)
+
+where Y is linear in Lξ φ, Z is linear in ξ, and all forms are covariant expressions constructed
+from the fields. We assume there is no matter with linear couplings to curvature. The general
+covariant form of Xcd is
+                                         Xcd = X abcd εab                                  (D.3)
+where X abcd is antisymmetric in both is first two and last two indices. Using symmetry and
+arguments similar to those in section 6, at zeroth and first order around AdS and to leading
+in the z expansion, we must have (ignoring coefficients)
+
+                     X abcd         ∝ ghab g cdi ,    δX abcd ∝ ghab gcdi h + hhab gcdi .                    (D.4)
+                              AdS
+                                                     grav
+The contribution of the first term in eq. (D.2) to δE(1)  is then
+                                Z                                                     
+                                                      1
+          Z  
+                 abcd                     abcd             abcd           abcd
+   IX =     δ X       εab ∇c ξd =      δX      ∇c ξd + h X      ∇c ξd + X      δ(∇c ξd ) εab
+          B                        B                  2
+                                                                                          (D.5)
+where the quantities without δ’s are evaluated on the background AdS solution. The non-zero
+background components are
+
+                 dd−1 x                    xi                    R2 − |~x|2                        [c
+   εab → εtz ∝          ,     ∇[i ξt] =        ,     ∇[z ξt] =              ,       X tzcd ∝ z 4 δt δzd] .   (D.6)
+                  z d+1                   Rz 2                    2Rz 3
+Using eq. (D.4), the leading behaviour of the linearized quantities reads
+
+     δX tztz ∝ z 6 (htt + hµν η µν ) ,     δX tzti ∝ z 7 (∂i htt + . . .) ,     δ(∇[z ξt] ) ∝ ζ t ∂z htt     (D.7)
+
+It is clear from the above expressions that only the leading terms in X tztz and δX tztz will
+contribute as z → 0. Plugging in the z-dependence of hµν , one finds that all the non-vanishing
+                                   (d)     (d)                             (d)      (d)    (d)
+contributions are proportional to htt or hi i . Requiring moreover that hµ µ = hi i − htt =
+0, which follows from tracelessness of the CFT stress tensor, we find that
+                                           Z
+                                                     (d)
+                                     IX ∝ dd−1 x htt ζ t                                  (D.8)
+
+where we used the fact that limz→0 ξ t = ζ t .
+     The contribution of the Wc ξ c = Wt ζ t term is easy to evaluate, taking into account the
+fact that the d − 1 form Wc is a covariant expression constructed from hab , gab and their
+
+
+
+
+                                                     – 37 –
+background covariant derivatives. The most general form of Wc , linearized around AdS, is
+thus
+
+     Wc = εab F ab c ,   F ab c = f1 ()(∇a hb c − ∇b ha c ) + f2 ()(δa c ∇b h − δb c ∇a h) .    (D.9)
+
+The only non-zero contribution on B will be from F [tz] t , and using tracelessness of the leading
+term in h one can easily show that
+                                Z           Z
+                                                           (d)
+                                        c
+                                   Wc ξ ∝      dd−1 x htt ζ t .                             (D.10)
+                                    B             B
+
+The ξ · Θ term in eq. (D.2) has the same form as Wc ξ c so can be treated similarly.
+    The term Y in eq. (D.2) comes from the ambiguity Θ → Θ + dY(δφ). Together, these
+terms contribute to χ in the combination
+
+                                        δY(δξ φ) − δξ Y(δφ) .                                    (D.11)
+
+This vanishes for a background Killing vector.
+     Finally, the dZ term is an ambiguity that comes from the fact that Q is only defined by
+its derivative. We fix this ambiguity to zero by requiring that there are no boundary terms
+in the horizon entropy.
+     The overall conclusion is
+                                             Z
+                                   grav                 (d)
+                                 δE(1)  = C1    dd−1 x htt ζ t ,                      (D.12)
+                                                  B
+
+for some constant C1 .
+
+References
+ [1] S. Ryu and T. Takayanagi, “Holographic derivation of entanglement entropy from AdS/CFT,”
+     Phys. Rev. Lett. 96, 181602 (2006) [arXiv:hep-th/0603001];
+     S. Ryu and T. Takayanagi, “Aspects of holographic entanglement entropy,” JHEP 0608, 045
+     (2006) [arXiv:hep-th/0605073].
+ [2] T. Nishioka, S. Ryu and T. Takayanagi, “Holographic Entanglement Entropy: An Overview,” J.
+     Phys. A 42, 504008 (2009) [arXiv:0905.0932 [hep-th]];
+     T. Takayanagi, “Entanglement Entropy from a Holographic Viewpoint,” arXiv:1204.2450
+     [gr-qc].
+ [3] M. Van Raamsdonk, “Comments on quantum gravity and entanglement,” arXiv:0907.2939
+     [hep-th];
+     M. Van Raamsdonk, “Building up spacetime with quantum entanglement,” Gen. Rel. Grav. 42,
+     2323 (2010) [arXiv:1005.3035 [hep-th]].
+ [4] B. Swingle, “Entanglement Renormalization and Holography,” Phys. Rev. D 86, 065007 (2012)
+     [arXiv:0905.1317 [cond-mat.str-el]];
+     B. Swingle, “Constructing holographic spacetimes using entanglement renormalization,”
+     arXiv:1209.3304 [hep-th].
+
+
+
+
+                                               – 38 –
+ [5] E. Bianchi and R. C. Myers, “On the Architecture of Spacetime Geometry,” arXiv:1212.5183
+     [hep-th];
+     R. C. Myers, R. Pourhasan and M. Smolkin, “On Spacetime Entanglement,” JHEP 1306, 013
+     (2013) [arXiv:1304.2030 [hep-th]].
+ [6] See, for example:
+     M. Levin and X. G. Wen, “Detecting Topological Order in a Ground State Wave Function,”
+     Phys. Rev. Lett. 96, 110405 (2006) [arXiv:cond-mat/0510613];
+     A. Kitaev and J. Preskill, “Topological entanglement entropy,” Phys. Rev. Lett. 96, 110404
+     (2006) [arXiv:hep-th/0510092];
+     H. Li and F. D. M. Haldane, “Entanglement Spectrum as a Generalization of Entanglement
+     Entropy: Identification of Topological Order in Non-Abelian Fractional Quantum Hall Effect
+     States,” Phys. Rev. Lett. 101, 010504 (2008) [arXiv:0805.0332 [cond-mat.mes-hall]];
+     A. M. Turner, F. Pollmann and E. Berg, “Topological Phases of One-Dimensional Fermions:
+     An Entanglement Point of View,” Phys. Rev. B 83, 075102 (2011) [arXiv:1008.4346
+     [cond-mat.str-el]].
+ [7] N. Lashkari, M. B. McDermott and M. Van Raamsdonk, “Gravitational Dynamics From
+     Entanglement ‘Thermodynamics’,” arXiv:1308.3716 [hep-th].
+ [8] D. D. Blanco, H. Casini, L.-Y. Hung and R. C. Myers, “Relative Entropy and Holography,”
+     JHEP 1308, 060 (2013) [arXiv:1305.3182 [hep-th]].
+ [9] J. Bhattacharya, M. Nozaki, T. Takayanagi and T. Ugajin, “Thermodynamical Property of
+     Entanglement Entropy for Excited States,” Phys. Rev. Lett. 110, no. 9, 091602 (2013)
+     [arXiv:1212.1164];
+     M. Nozaki, T. Numasawa and T. Takayanagi, “Holographic Local Quenches and Entanglement
+     Density,” JHEP 1305, 080 (2013) [arXiv:1302.5703 [hep-th]];
+     D. Allahbakhshi, M. Alishahiha and A. Naseh, “Entanglement Thermodynamics,” JHEP 1308,
+     102 (2013) [arXiv:1305.2728 [hep-th]];
+     G. Wong, I. Klich, L. A. Pando Zayas and D. Vaman, “Entanglement Temperature and
+     Entanglement Entropy of Excited States,” arXiv:1305.3291 [hep-th].
+[10] A. Wehrl, “General properties of entropy”, Rev. Mod. Phys. 50, 221 (1978).
+[11] V. Vedral, “The role of relative entropy in quantum information theory”, Rev. Mod. Phys. 74,
+     197 (2002).
+[12] H. Casini, M. Huerta and R. C. Myers, “Towards a derivation of holographic entanglement
+     entropy,” JHEP 1105, 036 (2011) [arXiv:1102.0440 [hep-th]].
+[13] A. Lewkowycz and J. Maldacena, “Generalized gravitational entropy,” JHEP 1308, 090 (2013)
+     [arXiv:1304.4926 [hep-th]].
+[14] R. M. Wald, “Black hole entropy is the Noether charge,” Phys. Rev. D 48, 3427 (1993)
+     [gr-qc/9307038].
+[15] T. Jacobson, G. Kang and R. C. Myers, “On black hole entropy,” Phys. Rev. D 49, 6587 (1994)
+     [gr-qc/9312023].
+[16] V. Iyer and R. M. Wald, “Some properties of Noether charge and a proposal for dynamical
+     black hole entropy,” Phys. Rev. D 50, 846 (1994) [gr-qc/9403028].
+
+
+
+
+                                             – 39 –
+[17] T. Jacobson, “Thermodynamics of space-time: The Einstein equation of state,” Phys. Rev.
+     Lett. 75, 1260 (1995) [gr-qc/9504004].
+[18] P. D. Hislop and R. Longo, “Modular Structure of the Local Algebras Associated With the Free
+     Massless Scalar Field Theory,” Commun. Math. Phys. 84, 71 (1982).
+[19] A. Buchel, J. Escobedo, R. C. Myers, M. F. Paulos, A. Sinha and M. Smolkin, “Holographic
+     GB gravity in arbitrary dimensions,” JHEP 1003, 111 (2010) [arXiv:0911.4257 [hep-th]].
+[20] V. E. Hubeny, M. Rangamani and T. Takayanagi, “A Covariant holographic entanglement
+     entropy proposal,” JHEP 0707, 062 (2007) [arXiv:0705.0016 [hep-th]];
+     A. C. Wall, “Maximin Surfaces, and the Strong Subadditivity of the Covariant Holographic
+     Entanglement Entropy,” arXiv:1211.3494 [hep-th].
+[21] X. Dong, “Holographic Entanglement Entropy for General Higher Derivative Gravity,”
+     arXiv:1310.5713 [hep-th];
+     J. Camps, “Generalized entropy and higher derivative Gravity,” arXiv:1310.6659 [hep-th].
+[22] D. V. Fursaev, A. Patrushev and S. N. Solodukhin, arXiv:1306.4000 [hep-th].
+[23] L.-Y. Hung, R. C. Myers and M. Smolkin, “On Holographic Entanglement Entropy and Higher
+     Curvature Gravity,” JHEP 1104, 025 (2011) [arXiv:1101.5813 [hep-th]].
+[24] S. de Haro, S. N. Solodukhin and K. Skenderis, “Holographic reconstruction of space-time and
+     renormalization in the AdS / CFT correspondence,” Commun. Math. Phys. 217, 595 (2001)
+     [hep-th/0002230];
+     K. Skenderis, “Asymptotically Anti-de Sitter space-times and their stress energy tensor,” Int. J.
+     Mod. Phys. A 16, 740 (2001) [hep-th/0010138];
+     M. Bianchi, D. Z. Freedman and K. Skenderis, “Holographic renormalization,” Nucl. Phys. B
+     631, 159 (2002) [hep-th/0112119];
+     K. Skenderis, “Lecture notes on holographic renormalization,” Class. Quant. Grav. 19, 5849
+     (2002) [hep-th/0209067].
+[25] V. Balasubramanian and P. Kraus, “A Stress tensor for Anti-de Sitter gravity,” Commun.
+     Math. Phys. 208, 413 (1999) [hep-th/9902121].
+[26] I. Papadimitriou and K. Skenderis, “AdS/CFT correspondence and geometry,” hep-th/0404176.
+[27] V. Iyer and R. M. Wald, “A Comparison of Noether charge and Euclidean methods for
+     computing the entropy of stationary black holes,” Phys. Rev. D 52, 4430 (1995)
+     [gr-qc/9503052].
+[28] R. M. Wald, General Relativity, Chicago, Usa: Univ. Pr. (1984) 491p.
+[29] J. Lee and R. M. Wald, “Local symmetries and constraints,” J. Math. Phys. 31, 725 (1990).
+[30] R. M. Wald, “On identically closed forms locally constructed from a field,” J. Math. Phys. 31,
+     2378 (1990).
+[31] I. Papadimitriou and K. Skenderis, “Thermodynamics of asymptotically locally AdS
+     spacetimes,” JHEP 0508, 004 (2005) [hep-th/0505190].
+[32] S. Hollands, A. Ishibashi and D. Marolf, “Comparison between various notions of conserved
+     charges in asymptotically AdS-spacetimes,” Class. Quant. Grav. 22, 2881 (2005)
+     [hep-th/0503045].
+
+
+
+
+                                               – 40 –
+[33] S. Hollands, A. Ishibashi and D. Marolf, “Counter-term charges generate bulk symmetries,”
+     Phys. Rev. D 72, 104025 (2005) [hep-th/0503105].
+[34] O. Hohm and E. Tonni, “A boundary stress tensor for higher-derivative gravity in AdS and
+     Lifshitz backgrounds,” JHEP 1004, 093 (2010) [arXiv:1001.3598 [hep-th]].
+[35] D. D. Blanco, H. Casini, L.-Y. Hung and R. C. Myers, “Relative Entropy and Holography,”
+     JHEP 1308, 060 (2013) [arXiv:1305.3182 [hep-th]].
+[36] J. Smolic and M. Taylor, “Higher derivative effects for 4d AdS gravity,” JHEP 1306, 096
+     (2013) [arXiv:1301.5205 [hep-th]].
+[37] R. C. Myers and A. Sinha, “Holographic c-theorems in arbitrary dimensions,” JHEP 1101, 125
+     (2011) [arXiv:1011.5819 [hep-th]].
+[38] T. Jacobson, “Gravitation and vacuum entanglement entropy,” Int. J. Mod. Phys. D 21,
+     1242006 (2012) [arXiv:1204.6349 [gr-qc]].
+[39] R. Guedens, T. Jacobson and S. Sarkar, “Horizon entropy and higher curvature equations of
+     state,” Phys. Rev. D 85, 064017 (2012) [arXiv:1112.6215 [gr-qc]].
+[40] E. Bianchi, “Horizon entanglement entropy and universality of the graviton coupling,”
+     arXiv:1211.0522 [gr-qc].
+[41] T. Barrella, X. Dong, S. A. Hartnoll and V. L. Martin, “Holographic entanglement beyond
+     classical gravity,” JHEP 1309, 109 (2013) [arXiv:1306.4682 [hep-th]].
+[42] T. Faulkner, A. Lewkowycz and J. Maldacena, “Quantum corrections to holographic
+     entanglement entropy,” JHEP 1311, 074 (2013) [arXiv:1307.2892 [hep-th]].
+[43] D. A. Galante and R. C. Myers, “Holographic Renyi entropies at finite coupling,” JHEP 1308,
+     063 (2013) [arXiv:1305.7191 [hep-th]].
+[44] A. Kurusa, The Radon transform on hyperbolic space, Geometriae Dedicata, December 1991,
+     Volume 40, Issue 3, pp 325-339
+
+
+
+
+                                              – 41 –
+

@@ -1,0 +1,521 @@
+1
+
+Metamaterial-based model of the Alcubierre warp drive
+Igor I. Smolyaninov
+Department of Electrical and Computer Engineering, University of Maryland, College
+Park, MD 20742, USA
+
+Electromagnetic metamaterials are capable of emulating many exotic space-time
+geometries, such as black holes, rotating cosmic strings, and the big bang
+singularity. Here we present a metamaterial-based model of the Alcubierre warp
+drive, and study its limitations due to available range of material parameters. It
+appears that the material parameter range introduces strong limitations on the
+achievable “warp speed”, so that ordinary magnetoelectric materials cannot be
+used. On the other hand, newly developed “perfect” bi-anisotropic non-reciprocal
+magnetoelectric metamaterials should be capable of emulating the physics of warp
+drive gradually accelerating up to 1/4c.
+
+PACS numbers: 78.20.Ci, 42.25.Bs.
+
+Metamaterial optics [1,2] greatly benefited from the field theoretical ideas developed to
+describe physics in curvilinear space-times [3]. Unprecedented degree of control of the
+local dielectric permittivity εik and magnetic permeability μik tensors in electromagnetic
+metamaterials has enabled numerous recent attempts to engineer highly unusual “optical
+spaces”, such as electromagnetic black holes [4-8], wormholes [9], and rotating cosmic
+strings [10]. Phase transitions in metamaterials are also capable of emulating physical
+
+2
+
+processes which took place during and immediately after the big bang [11,12]. These
+models can be very informative for phenomena where researchers have no direct
+experience and therefore limited intuition.
+Since its original introduction by Alcubierre [13], the warp drive spacetime has
+become one of the most studied geometries in general relativity. In the simplest form it
+can be described by the metric
+
+ds 2 = c 2 dt 2 − (dx − v(r )dt ) − dy 2 − dz 2
+2
+
+(
+
+where r = ( x − v0 t ) + y 2 + z 2
+2
+
+)
+
+1/ 2
+
+(1)
+
+is the distance from the center of the “warp bubble”,
+
+v0 is the warp drive velocity, and v=v0f(r). The function f(r) is a smooth function
+satisfying f(0)=1 and f (r ) → 0 for r → ∞ . This metric describes an almost flat
+spheroidal “warp bubble” which is moving with respect to asymptotically flat external
+spacetime with an arbitrary speed v0. Such a metric bypasses the speed limitation due to
+special relativity: while nothing can move with speeds greater than the speed of light
+with respect to the flat background, spacetime itself has no restriction on the speed with
+which it can be stretched. One example of fast stretching of the spacetime is given by
+the inflation theories, which demonstrate that immediately after the big bang our
+Universe expanded exponentially during an extremely short period of time.
+Unfortunately, when the spacetime metric (1) is plugged into the Einstein’s
+equations, it is apparent that exotic matter with negative energy density is required to
+build the warp drive. In addition, it was demonstrated that the eternal superluminal warp
+drive becomes unstable when quantum mechanical effects are introduced [14]. Another
+line of research deals with a situation in which a warp drive would be created at a very
+low velocity, and gradually accelerated to large speeds. Physics of such a process is also
+quite interesting [15]. We should point out that the warp drive space-time cannot be
+
+3
+
+reduced to a simple combination of a white-hole and a black-hole event horizons. Such
+a combination would be non-controversial and “easy” to realize. The difference between
+the warp drive space-time and such a white-hole/black-hole combination is that the flat
+space-time region inside the warp bubble is moving as a whole with respect to the flat
+space-time outside the warp bubble (see metric in eq.(1)) . This non-trivial property of
+the warp drive space-time has led to conclusion that it cannot be realized even at subluminal speeds. Very recently it was demonstrated that even low speed sub-luminal
+warp drives generically require energy-conditions-violating matter [16]: the T00
+component of the energy-momentum tensor (the energy density distribution) appears to
+be negative even at sub-luminal speeds. Therefore, even subluminal warp drives appear
+to be prohibited by the laws of physics.
+In this paper we demonstrate that electromagnetic metamaterials are capable of
+emulating the warp drive metric (1). Since energy conditions violations do not appear to
+be a problem in this case, metamaterial realization of the warp drive is possible. Our
+result is interesting because the body of evidence collected so far seemed to indicate that
+the warp drives operating at any speed (even sub-luminal) were strictly prohibited by
+the laws of Nature
+Below we will find out what kind of metamaterial geometry is needed to
+emulate a laboratory model of the warp drive, so that we can build more understanding
+of the physics involved. It appears that the available range of material parameters
+introduces strong limitations on the possible “warp speed”. Nevertheless, our results
+demonstrate that physics of a gradually accelerating warp drive can be modeled based
+on newly developed “perfect” magnetoelectric metamaterials [17]. Since even low
+
+4
+
+velocity physics of warp drives is quite interesting [15,16], such a lab model deserves
+further study.
+To avoid unnecessary mathematical complications, let us consider a 1+1
+dimensional warp drive metric of the form
+2
+2
+ds 2 = (c / n∞ ) dt 2 − (dx − v0 f ( ~
+x )dt ) − dy 2 − dz 2
+
+(2)
+
+where ~
+x = ( x − v0 t ) and n∞ is a scaling constant. In the rest frame of the warp bubble it
+can be re-written as
+
+(
+
+)
+
+2
+~
+2
+ds 2 = (c / n∞ ) dt 2 − d~
+x + v0 f ( ~
+x )dt − dy 2 − dz 2
+
+(3)
+
+~
+~
+x → ±∞ . The resulting metric is
+where f (0) = 0 , and f ( ~
+x ) → 1 for ~
+
+⎛ 1 v02 ~ 2 ~ ⎞ 2 2 ~ 2
+~
+ds = ⎜⎜ 2 − 2 f ( x ) ⎟⎟c dt − dx − 2v0 f ( ~
+x )d~
+x dt − dy 2 − dz 2
+⎝ n∞ c
+⎠
+2
+
+(4)
+
+Following ref.[18], Maxwell equations in this gravitational field can be written in the
+three-dimensional form as
+
+r
+rr
+r E
+D=
++ Hg ,
+h
+
+[ ]
+
+r
+r H
+rr
+B=
++ gE ,
+h
+
+[ ]
+
+(5)
+
+where h=g00, and gα=-g0α/g00. These equations coincide with the macroscopic Maxwell
+equations in a magneto-electric material [19]. In the equivalent material
+
+ε = μ = h −1 / 2 =
+
+1
+1 v02 ~ 2 ~
+−
+f (x )
+n∞2 c 2
+
+(6)
+
+and the only non-zero component of the magneto-electric coupling vector is
+
+v0 ~ ~
+f (x )
+c
+gx =
+1 v02 ~ 2 ~
+−
+f (x )
+n∞2 c 2
+
+(7)
+
+5
+
+In the subluminal v0<<c limit eqs.(6) and (7) become
+
+⎛ v02 n∞2 ~ 2 ~ ⎞
+v ~
+ε = μ ≈ n∞ ⎜⎜1 + 2 f ( x ) ⎟⎟ , g x ≈ n∞2 0 f ( ~x )
+2c
+c
+⎝
+⎠
+
+(8)
+
+The magneto-electric coupling coefficients in thermodynamically stable materials are
+limited by the inequality [20]:
+g x2 ≤ (ε − 1)(μ − 1) ,
+
+(9)
+
+which means that a subluminal warp drive model based on the magnetoelectric effect
+must satisfy inequality
+v0 ~ ~
+n −1
+f (x ) ≤ ∞ 2
+c
+n∞
+
+(10)
+
+This inequality demonstrates that while “the true warp drive” in vacuum ( n∞ = 1 ) is
+prohibited, n∞ > 1 values
+
+in a material medium make a warp drive model
+
+thermodynamically stable at least at subluminal speeds. This is an important result
+because the body of evidence collected so far seems to indicate that the warp drives
+operating at any speed are strictly prohibited by laws of Nature. Equation (10) also
+provides an upper bound on the largest possible “warp speed”, which is achievable
+within the described metamaterial model. This upper bound is reached at n∞ = 2 , and
+equals to v0=1/4c. Therefore, at the very least, we can build a toy model of a warp drive
+“operating” at v0~1/4c. Coordinate dependence of the metamaterial parameters in such a
+−1
+~
+model is shown in Fig.1 assuming f ( ~
+x ) = (1 + a 2 / ~
+x2) .
+
+However, in classical magnetoelectric materials, such as Cr2O3 and
+multiferroics, actual values of magnetoelectric susceptibilities are two orders of
+magnitude smaller than the limiting value described by eq. (9) [21], so that the warp
+drive model is impossible to make with ordinary materials. On the other hand, recently
+
+6
+
+developed “perfect” magnetoelectric metamaterials [17], which can be built based on
+such designs as split ring resonators, fishnet structures [22], etc. allow experimentalists
+to reach the limiting values described by eq.(9), and make a lab model of the warp drive
+possible. Following ref.[17], the effective susceptibilities of the split ring metamaterial
+can be written in the RLC-circuit model as
+
+nCd 2ω02
+nCS 2ω 2ω02
+ε = 1+ 2
+, μ = 1+ 2 2
+, and
+ω0 − ω 2 − iωγ
+c ω0 − ω 2 − iωγ
+
+(
+
+)
+
+g=
+
+(
+
+)
+
+inCdSωω02
+,
+c ω02 − ω 2 − iωγ
+
+(
+
+)
+
+(11)
+
+(12)
+
+where n is the split ring density, d is the gap in the ring, S is the ring area, and C is the
+gap capacitance. These expressions explicitly demonstrate that the split ring
+metamaterial considered in ref. [17] satisfies the upper bound given by eq.(9), and
+therefore can be used as one of the building blocks in the metamaterial warp drive
+design. On the other hand, this particular split-ring design cannot be used without
+modification, since this metamaterial is reciprocal.
+An actual laboratory demonstration of a metamaterial warp drive space time
+would require a non-reciprocal bi-anisotropic metamaterial, in which both spatial and
+time reversal symmetries are broken. In addition, the metamaterial loss issue has to be
+overcome. Since the issue of metamaterial loss compensation using gain media is well
+studied (see for example recent experimental demonstration of loss compensation in a
+negative index metamaterial [23]) let us concentrate on the experimental ways of
+breaking spatial and time reversal symmetries. Breaking the mirror x ↔ -x symmetry is
+most easily achieved by deformation of the metamaterial, which can be easily done in
+either one of the most popular split ring [17] or fishnet [22] metamaterial designs. As far
+as breaking the time-reversal t ↔ -t symmetry is concerned, there are two most natural
+
+7
+
+ways to break this symmetry in solids: application of external magnetic field [24,25], or
+spin-orbit interaction in a nonsymmorfic lattice [26]. In addition, such chiral
+superconductors as Sr2RuO4 [27] may be used in superconducting metamaterial designs
+[28]. Application of external electric and magnetic fields is known to break both spatial
+and time symmetries of such materials as methyl-cyclopentadienyl-Mn-tricarbonil
+molecular liquids [24], thus creating an illusion of a moving (non-reciprocal bianisotropic) medium [25]. Experimental results of ref. [24] do indeed demonstrate this
+behavior (however, the emulated “medium velocity” is very low, of the order of 50 nm/s
+[25]). Since utilization of magnetized particles, such as ferrites is easily applicable in
+the metamaterial design, all the ingredients necessary for experimental realization of the
+Alcubierre metric have been demonstrated in the experiment. Moreover, we should
+point out that very recently it was also asserted [29,30] that material parameters, which
+are necessary to achieve a warp drive imitation in a nanostructured metamaterial are
+indeed possible.
+Let us come back to the split ring-based “perfect magnetoelectric metamaterial”
+design implemented in [17], and demonstrate how the time-reversal symmetry may be
+broken in this metamaterial. One of the possible metamaterial geometries is shown
+schematically in Fig.2. An elementary unit of the split ring-based “perfect
+magnetoelectric metamaterial” design of ref.[17] is supplemented with a magnetized
+ferrite particle. The particle is magnetized and shifted along the x-direction with respect
+to the center of the split ring. Thus, this geometry explicitly violates spatial and time
+reversal symmetries, resulting in a non-reciprocal bi-anisotropic metamaterial. As
+demonstrated in [31], near the ferromagnetic resonance frequency in such a
+metamaterial
+
+8
+
+g~
+
+ω mω 0
+,
+ω02 − ω 2
+
+(13)
+
+where ω0 is the ferromagnetic resonance frequency, and ωm=γM0. Thus, in the design
+presented in Fig.2 gx is proportional to the particle magnetization M0 in a given location,
+which explicitly demonstrate the non-reciprocal nature of this metamaterial design.
+Time reversal t ↔ -t leads to change of sign of gx. We should also note that very
+recently a somewhat related metamaterial design has been proposed in ref.[32] , which
+emulates medium motion at an arbitrary speed. While demonstrating the proof of
+principle, the designs presented in Fig.2 and ref.[32] may only be considered as a first
+step. Such complicated metamaterial designs typically contain many unwanted terms in
+
+ε, μ and g, which must be carefully eliminated by iteration, so that the ideal form of
+eqs.(8) may be achieved.
+Light rays propagation inside the metamaterial model of the warp drive
+“operating” at 1/4c is illustrated in Fig.3. The metamaterial medium (1) outside the
+warp bubble is engineered to have properties of a medium moving towards the warp
+bubble with the designed warp speed, while medium (3) is “moving” away from the
+bubble. In the reference frame moving with the warp speed these media look exactly the
+
+~
+x)
+same as medium (2) at rest. Ray trajectories were calculated assuming a step-like f ( ~
+profile. Rays are emitted by a point source located at the origin point (0,0,0) of the
+coordinate frame inside the “warp bubble” (marked as medium (2)). Boundaries of the
+warp bubble are located at x=±5 (they are marked by the dashed lines). At large enough
+incidence angles light rays originating inside the “warp bubble” cannot penetrate into
+medium (3) (in the hypothetical superluminal warp drive this would be true for any
+incidence angle: this boundary would look like a white hole event horizon). On the
+
+9
+
+other hand, all the light rays propagating towards the other boundary of the “warp
+bubble” can propagate into medium (1). Note that the metamaterial medium (1) is
+identical to medium (3).
+In conclusion, we have presented a metamaterial-based model of the Alcubierre
+warp drive metric. It appears that the material parameter range introduces strong
+limitations on the achievable “warp speed”, so that ordinary magnetoelectric materials
+cannot emulate the warp drive. On the other hand, newly developed “perfect”
+magnetoelectric bi-anisotropic non-reciprocal metamaterials should be capable of
+emulating the physics of gradually accelerating warp drive, which can reach “warp
+speeds” up to 1/4c.
+
+References
+
+[1] J. B. Pendry, D. Schurig, D.R. Smith, Science 312, 1780-1782 (2006).
+[2] U. Leonhardt, Science 312, 1777-1780 (2006).
+[3] U. Leonhardt and T. G. Philbin, New J. Phys. 8, 247 (2006).
+[4] I.I. Smolyaninov, New Journal of Physics 5, 147 (2003).
+[5] T. G. Philbin, C. Kuklewicz, S. Robertson, S. Hill, F. König, and U. Leonhardt,
+Science 319, 1367 (2008).
+[6] D.A. Genov, S. Zhang, and X. Zhang, Nature Physics, 5, 687-692 (2009).
+[7] E.E. Narimanov and A.V. Kildishev, Appl. Phys. Lett. 95, 041106 (2009).
+[8] Q. Cheng and T. J. Cui, arXiv:0910.2159v3
+[9] A. Greenleaf, Y. Kurylev, M. Lassas, and G. Uhlmann, Phys. Rev. Lett. 99, 183901
+(2007).
+[10] T. G. Mackay and A. Lakhtakia, Phys. Lett. A 374, 2305-2308 (2010).
+
+10
+
+[11] I.I. Smolyaninov and E.E. Narimanov, Phys. Rev. Letters 105, 067402 (2010)
+[12] I.I. Smolyaninov, Journal of Optics 12, 024004 (2010).
+[13] M. Alcubierre, Classical and Quantum Gravity 11, L73 (1994).
+[14] S. Finazzi, S. Liberati and C. Barcelo, Phys. Rev. D 79, 124017 (2009).
+[15] C. Clark, W.A. Hiscock, and S.L. Larson, Classical and Quantum Gravity 16,
+3965-3972 (1999).
+[16] F.S.N. Lobo and M. Visser, Classical and Quantum Gravity 21, 5871 (2004).
+[17] A.M. Shuvaev, S. Engelbrecht, M. Wunderlich, A. Schneider, and A. Pimenov,
+arXiv:1004.4524v1
+[18] L.D. Landau, E.M. Lifshitz, The Classical Theory of Fields (Elsevier, Oxford,
+2000).
+[19] A.N. Serdyukov, I.V. Semchenko, S.A. Tretyakov, and A. Sihvola,
+Electromagnetics of Bi-Anisotropic Materials: Theory and Applications (Gordon and
+Breach, Amsterdam 2001).
+[20] W.F. Brown, R.M. Hornreich, and S. Shtrikman, Phys. Rev. 168, 574-577 (1968).
+[21] M. Fiebig, Journal of Physics D: Applied Physics 38, R123 (2005).
+[22] M.S. Rill, C.E. Kriegler, M. Thiel, G. von Freymann, S. Linden, and M. Wegener,
+Optics Letters 34, 19-21 (2009).
+[23] S. Xiao, V.P. Drachev, A.V. Kildishev, X. Ni, U.K. Chettiar, H.-K. Yuan, and
+V.M. Shalaev, Nature 466, 735-740 (2010).
+[24] T. Roth, G.L.J.A. Rikken, Phys. Rev. Letters 88, 063001 (2002).
+[25] A. Feigel, Phys. Rev. Letters 92, 020404 (2004).
+[26] Y. T. Rebane, Phys. Rev. B 52, 1590–1595 (1995).
+
+11
+
+[27] H. Nobukane, A. Tokuno, T. Matsuyama, and S. Tanda, Phys. Rev. B 83, 144502
+(2011).
+[28] S.M. Anlage, J. Opt. 13, 024001 (2011).
+[29] I.I. Smolyaninov, arXiv:1009.5663v1.
+[30] T.H. Anderson, T.G. Mackay, and A. Lakhtakia, arXiv:1101.0044v1.
+[31] S.A. Tretyakov, A.H. Sihvola, A.A. Sochava, and C.R. Simovski, J. of
+Electromagnetic Waves and Applications 12, 481-497 (1998).
+[32] S.A. Tretyakov and I.S. Nefedov, in Proc. of the 3rd Int. Conf. on Advanced
+Electromagnetic Materials in Microwaves and Optics, p. 114-116 (2009).
+
+12
+
+Figure Captions
+Figure 1. Spatial distributions of ε, μ, and gx in the metamaterial model of a warp drive
+
+gradually accelerated up to 1/4c.
+Figure 2. Example of a non-reciprocal bi-anisotropic metamaterial geometry, which
+
+explicitly violates spatial and time reversal symmetries. An elementary unit of the split
+ring-based “perfect magnetoelectric metamaterial” design of ref.[17] is supplemented
+with a magnetized ferrite particle. The particle is magnetized and shifted along the xdirection with respect to the center of the split ring. The particle magnetization is
+proportional to the required gx in a given location.
+Figure 3. Light rays propagation inside the metamaterial model of the warp drive
+
+operating at 1/4c. Rays are emitted by a point source located at the origin point (0,0,0)
+of the coordinate frame inside the “warp bubble”. Boundaries of the warp bubble are
+located at x=±5. Note that the metamaterial media (1) and (3) are identical.
+
+13
+
+v=1/4c
+
+2.0
+
+v=1/8c
+
+ε, μ, gx
+
+1.5
+
+ε=μ
+
+1.0
+v=1/4c
+
+gx
+
+0.5
+v=1/8c
+
+0.0
+-15
+
+Fig.1
+
+-10
+
+-5
+
+0
+
+5
+
+10
+
+15
+4x/a
+
+14
+
+Fig.2
+
+15
+
+50
+
+(1)
+
+(2)
+
+(3)
+
+40
+30
+20
+
+y
+
+10
+0
+-10
+-20
+-30
+-40
+-50
+-50 -40 -30 -20 -10
+
+0
+x
+
+Fig.3
+
+10 20 30 40 50
+
+

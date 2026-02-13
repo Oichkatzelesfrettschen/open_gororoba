@@ -1,0 +1,2734 @@
+arXiv:2504.06118v3 [astro-ph.CO] 1 Sep 2025
+
+Dynamical Dark Energy in light of the DESI DR2 Baryonic Acoustic Oscillations
+Measurements
+Gan Gu ,1, 2, a Xiaoma Wang ,1, 2, a Yuting Wang B ,1, 3 Gong-Bo Zhao B ,1, 2, 3 Levon Pogosian B ,4
+Kazuya Koyama B ,5, 6 John A. Peacock ,7 Zheng Cai ,8 Jorge L. Cervantes-Cota ,9 Mustapha Ishak ,10 Arman
+Shafieloo ,11, 12 Ruiyang Zhao ,1, 2 Steven Ahlen ,13 Davide Bianchi ,14, 15 David Brooks ,16 Todd Claybaugh ,17
+Shaun Cole ,18 Axel de la Macorra ,19 Arnaud de Mattia ,20 Peter Doel ,16 Simone Ferraro ,17, 21 Jaime
+E. Forero-Romero ,22, 23 Enrique Gaztañaga ,24, 5, 25 Satya Gontcho A Gontcho ,17 Gaston Gutierrez ,26
+ChangHoon Hahn ,27 Cullan Howlett ,28 Robert Kehoe,29 David Kirkby ,30 Jean-Paul Kneib ,31, 32 Anthony
+Kremin ,17 Ofer Lahav ,16 Martin Landriau ,17 Laurent Le Guillou ,33 Alexie Leauthaud ,34, 35 Michael
+Levi ,17 Marc Manera ,36, 37 Aaron Meisner ,38 Ramon Miquel ,39, 37 John Moustakas ,40 Andrea
+Muñoz-Gutiérrez,19 Seshadri Nadathur ,5 Jeffrey A. Newman ,41 Nathalie Palanque-Delabrouille ,20, 17 Will
+Percival ,42, 43, 44 Francisco Prada ,45 Ignasi Pérez-Ràfols ,46 Graziano Rossi,47 Lado Samushia ,48, 49, 50
+Eusebio Sanchez ,51 David Schlegel ,17 Hee-Jong Seo ,52 David Sprayberry,38 Gregory Tarlé ,53 Michael
+Walther ,54, 55 Benjamin Alan Weaver,38 Pauline Zarrouk ,33 Cheng Zhao ,8 Rongpu Zhou ,17 and Hu Zou 1
+1
+
+National Astronomical Observatories, Chinese Academy of Sciences, Beijing, 100101, P.R.China
+2
+University of Chinese Academy of Sciences, Beijing, 100049, P.R.China
+3
+Institute for Frontiers in Astronomy and Astrophysics,
+Beijing Normal University, Beijing, 102206, P.R.China
+4
+Department of Physics, Simon Fraser University, Burnaby, BC, V5A 1S6, Canada
+5
+Institute of Cosmology & Gravitation, University of Portsmouth, Portsmouth, PO1 3FX, UK
+6
+Kavli IPMU (WPI), UTIAS, The University of Tokyo, Kashiwa, Chiba 277-8583, Japan
+7
+Institute for Astronomy, University of Edinburgh,
+Royal Observatory, Blackford Hill, Edinburgh EH9 3HJ, UK
+8
+Department of Astronomy, Tsinghua University, Beijing 100084, P.R.China
+9
+Departamento de Fı́sica, Instituto Nacional de Investigaciones Nucleares,
+Apartado Postal 18-1027, Col. Escandón, Ciudad de México, 11801, México
+10
+Department of Physics, The University of Texas at Dallas,
+800 W. Campbell Rd., Richardson, TX 75080, USA
+11
+Korea Astronomy and Space Science Institute, 776,
+Daedeokdae-ro, Yuseong-gu, Daejeon 34055, Republic of Korea
+12
+University of Science and Technology, 217 Gajeong-ro, Yuseong-gu, Daejeon 34113, Republic of Korea
+13
+Physics Department, Boston University, 590 Commonwealth Avenue, Boston, MA 02215, USA
+14
+Dipartimento di Fisica “Aldo Pontremoli”, Università degli Studi di Milano, Via Celoria 16, I-20133 Milano, Italy
+15
+INAF-Osservatorio Astronomico di Brera, Via Brera 28, 20122 Milano, Italy
+16
+Department of Physics & Astronomy, University College London, Gower Street, London, WC1E 6BT, UK
+17
+Lawrence Berkeley National Laboratory, 1 Cyclotron Road, Berkeley, CA 94720, USA
+18
+Institute for Computational Cosmology, Department of Physics,
+Durham University, South Road, Durham DH1 3LE, UK
+19
+Instituto de Fı́sica, Universidad Nacional Autónoma de México,
+Circuito de la Investigación Cientı́fica, Ciudad Universitaria, Cd. de México C. P. 04510, México
+20
+IRFU, CEA, Université Paris-Saclay, F-91191 Gif-sur-Yvette, France
+21
+University of California, Berkeley, 110 Sproul Hall #5800 Berkeley, CA 94720, USA
+22
+Departamento de Fı́sica, Universidad de los Andes,
+Cra. 1 No. 18A-10, Edificio Ip, CP 111711, Bogotá, Colombia
+23
+Observatorio Astronómico, Universidad de los Andes,
+Cra. 1 No. 18A-10, Edificio H, CP 111711 Bogotá, Colombia
+24
+Institut d’Estudis Espacials de Catalunya (IEEC), c/ Esteve Terradas 1,
+Edifici RDIT, Campus PMT-UPC, 08860 Castelldefels, Spain
+25
+Institute of Space Sciences, ICE-CSIC, Campus UAB,
+Carrer de Can Magrans s/n, 08913 Bellaterra, Barcelona, Spain
+26
+Fermi National Accelerator Laboratory, PO Box 500, Batavia, IL 60510, USA
+27
+Steward Observatory, University of Arizona, 933 N. Cherry Avenue, Tucson, AZ 85721, USA
+28
+School of Mathematics and Physics, University of Queensland, Brisbane, QLD 4072, Australia
+29
+Department of Physics, Southern Methodist University, 3215 Daniel Avenue, Dallas, TX 75275, USA
+30
+Department of Physics and Astronomy, University of California, Irvine, 92697, USA
+31
+Institute of Physics, Laboratory of Astrophysics,
+École Polytechnique Fédérale de Lausanne (EPFL),
+Observatoire de Sauverny, CH-1290 Versoix, Switzerland
+32
+Aix Marseille Université, CNRS, LAM (Laboratoire d’Astrophysique de Marseille) UMR 7326, F13388, Marseille, France
+
+2
+33
+
+Sorbonne Université, CNRS/IN2P3, Laboratoire de Physique
+Nucléaire et de Hautes Energies (LPNHE), FR-75005 Paris, France
+34
+Department of Astronomy and Astrophysics, UCO/Lick Observatory,
+University of California, 1156 High Street, Santa Cruz, CA 95064, USA
+35
+Department of Astronomy and Astrophysics, University of California,
+Santa Cruz, 1156 High Street, Santa Cruz, CA 95065, USA
+36
+Departament de Fı́sica, Serra Húnter, Universitat Autònoma de Barcelona, 08193 BELlaterra (Barcelona), Spain
+37
+Institut de Fı́sica d’Altes Energies (IFAE), The Barcelona Institute of Science and Technology,
+Edifici Cn, Campus UAB, 08193, Bellaterra (Barcelona), Spain
+38
+NSF NOIRLab, 950 N. Cherry Ave., Tucson, AZ 85719, USA
+39
+Institució Catalana de Recerca i Estudis Avançats,
+Passeig de Lluı́s Companys, 23, 08010 Barcelona, Spain
+40
+Department of Physics and Astronomy, Siena College,
+515 Loudon Road, Loudonville, NY 12211, USA
+41
+Department of Physics & Astronomy and Pittsburgh Particle Physics,
+Astrophysics, and Cosmology Center (PITT PACC),
+University of Pittsburgh, 3941 O’Hara Street, Pittsburgh, PA 15260, USA
+42
+Department of Physics and Astronomy, University of Waterloo,
+200 University Ave W, Waterloo, ON N2L 3G1, Canada
+43
+Perimeter Institute for Theoretical Physics, 31 Caroline St. North, Waterloo, ON N2L 2Y5, Canada
+44
+Waterloo Centre for Astrophysics, University of Waterloo,
+200 University Ave W, Waterloo, ON N2L 3G1, Canada
+45
+Instituto de Astrofı́sica de Andalucı́a (CSIC), Glorieta de la Astronomı́a, s/n, E-18008 Granada, Spain
+46
+Departament de Fı́sica, EEBE, Universitat Politècnica de Catalunya,
+c/Eduard Maristany 10, 08930 Barcelona, Spain
+47
+Department of Physics and Astronomy, Sejong University,
+209 Neungdong-ro, Gwangjin-gu, Seoul 05006, Republic of Korea
+48
+Abastumani Astrophysical Observatory, Tbilisi, GE-0179, Georgia
+49
+Department of Physics, Kansas State University, 116 Cardwell Hall, Manhattan, KS 66506, USA
+50
+Faculty of Natural Sciences and Medicine, Ilia State University, 0194 Tbilisi, Georgia
+51
+CIEMAT, Avenida Complutense 40, E-28040 Madrid, Spain
+52
+Department of Physics & Astronomy, Ohio University,
+139 University Terrace, Athens, OH 45701, USA
+53
+Department of Physics, University of Michigan, 450 Church Street, Ann Arbor, MI 48109, USA
+54
+University Observatory, Faculty of Physics, Ludwig-Maximilians-Universität, Scheinerstr. 1, 81677 München, Germany
+55
+Excellence Cluster ORIGINS, Boltzmannstrasse 2, D-85748 Garching, Germany
+(Dated: September 22, 2025)
+Understanding whether cosmic acceleration arises from a cosmological constant or a dynamical
+component is a central goal of cosmology, and the Dark Energy Spectroscopic Instrument (DESI)
+enables stringent tests with high-precision distance measurements. We analyze baryon acoustic oscillation (BAO) measurements from DESI Data Release 1 (DR1) and Data Release 2 (DR2), combined
+with Type Ia supernovae and a cosmic microwave background (CMB) distance prior. With the larger
+statistical power and wider redshift coverage of DR2, the preference for dynamical dark energy does
+not diminish relative to DR1. Using both a shape-function reconstruction and non-parametric approaches with a Horndeski-motivated correlation prior, we find that the dark-energy equation of
+state w(z) varies with redshift. BAO data alone yield modest constraints, but in combination with
+independent supernova compilations and the CMB prior they strengthen the evidence for dynamics.
+Bayesian model comparison shows moderate support for departures from ΛCDM when multiple
+degrees of freedom in w(z) are allowed, corresponding to ≈ 3σ tension with ΛCDM (and higher
+for some data sets). Despite methodological differences, our results are consistent with companion
+DESI papers, underscoring the complementarity of approaches. Possible systematics remain under
+study; forthcoming DESI, Euclid, and next-generation CMB data will provide decisive tests.
+
+I.
+
+a These authors contributed equally to this work.
+B Correspondence:
+
+gbzhao@nao.cas.cn
+levon@sfu.ca
+kazuya.koyama@port.ac.uk
+ytwang@nao.cas.cn
+
+INTRODUCTION
+
+One of the most enduring puzzles in modern cosmology
+is the accelerating expansion of the Universe. The impetus for introducing an additional component beyond ordinary matter first arose in the 1980s, when early cosmic
+microwave background (CMB) anisotropy calculations
+showed that a low-density open model would conflict with
+
+3
+small-scale CMB observations. Subsequently, large-scale
+clustering analyses [1] and baryon-fraction arguments [2]
+made it clear that a Universe consisting solely of criticaldensity dark matter was untenable, prompting the emergence of a cosmological constant (Λ) as the leading explanation. Observations of Type Ia supernovae (SNe) then
+provided direct evidence for an accelerating cosmic expansion [3, 4], and by the turn of the millennium, the
+ΛCDM framework was firmly established as the consensus model of cosmology. This paradigm has been continuously supported by increasingly precise CMB measurements [5] and baryon acoustic oscillation (BAO) data [6],
+solidifying its status as the standard picture of cosmic acceleration.
+Despite this consensus, the fundamental cause of cosmic acceleration remains elusive. A widely favored interpretation involves postulating an effective dark energy (DE) component that dominates the current energy
+density of the Universe (see [7–9] for reviews). Provided
+its sound speed is not too small, DE can be treated as
+nearly homogeneous on sub-sound-horizon scales, leaving
+its main cosmological signatures determined by its energy
+density ρ and pressure P . The equation of state (EoS),
+w ≡ P/c2 ρ, serves as a crucial diagnostic: w = −1 corresponds to vacuum energy, while dynamical DE models
+allow w to vary with time, as exemplified by quintessence
+[10], phantom [11], quintom [12], k-essence [13], Chaplygin gas [14], and holographic dark energy [15]. Subclasses
+of these scenarios can be further differentiated by examining their trajectories
+in the phase space spanned by
+
+w, dw/d ln a , where a is the cosmic scale factor [16].
+Recent observational progress, including supernova
+measurements from the Dark Energy Survey (DES) [17],
+as well as other large SNe compilations such as PantheonPlus [18, 19] and Union [20], high-precision CMB
+data from the Planck Collaboration [21], and BAO results
+from the Sloan Digital Sky Survey (SDSS) eBOSS program [22], has significantly refined our insight into DE.
+These complementary probes constrain DE-related parameters with growing precision, thus enhancing our understanding of cosmic acceleration. While combined analyses that integrate all available datasets provide the most
+stringent overall limits, it remains instructive to consider
+each probe in isolation. Such a modular approach not
+only underscores the unique strengths and systematics of
+each measurement but also furnishes critical cross-checks,
+reinforcing the robustness of DE constraints.
+The Dark Energy Spectroscopic Instrument (DESI)’s
+Data Release 1 (DR1) [23] and Data Release 2 (DR2)
+[24, 25] BAO observations place stringent limits on the
+Universe’s background expansion history, achieving a
+level of precision on a par with recent SNe surveys. These
+include the PantheonPlus compilation of 1,550 spectroscopically confirmed SNe [18, 19], the Union3 compilation
+of 2,087 SNe [20], and the five-year Dark Energy Survey
+sample (DESY5) [17].
+In this paper we probe dark-energy dynamics along two
+complementary routes. First, we fit the distance ladder
+
+with a shape-function formalism that makes no explicit
+assumption about the equation of state. Secondly, we
+carry out a fully Bayesian reconstruction of w(z) in which
+a correlation prior derived from the Horndeski gravity
+[26] yields an interpretable Bayes factor, recovering the
+standard (w0 , wa ) result [27, 28] with two effective degrees of freedom. Although these techniques differ from
+the Gaussian-process and (w0 , wa ) analyses presented in
+the companion DESI studies [25, 29], all approaches paint
+a coherent picture: DESI DR1 and DR2 BAO measurements, together with three different Type Ia supernova
+samples, indicate the same mild, oscillatory departure
+from a cosmological constant. The convergence of results
+across data sets and methodologies strengthens the statistical case for an evolving dark energy component.
+
+II.
+
+A SHAPE-FUNCTION ANALYSIS OF DARK
+ENERGY
+
+The shape function S0 (a) illustrates how dark energy
+grows relative to matter, and the function S1 (a) reveals whether and how the dark energy pressure changes
+with time. Finally, S2 (a)—often referred to as the ‘statefinder’ parameter [30, 31]—encodes both w(a) and its
+derivative, making it particularly useful for distinguishing among dark energy models (See Methods for the defination and more details of the shape functions). For
+example, a ‘freezing’ quintessence scenario predicts S2 <
+−1 [32], whereas barotropic fluid models require S2 > −1
+[33]. If S2 crosses the −1 threshold during cosmic evolution, it may indicate that multiple dark energy components dominate at different epochs.
+Fig. 1 displays the reconstructed S functions derived
+from DESI BAO and three SNe datasets, based on
+Eqs. (2)–(5). All panels reveal a systematic deviation
+from the ΛCDM baseline, and this pattern of deviation
+is consistent across the four datasets, indicating a shared
+underlying trend.
+A key point is that the DESI DR2 sample uncovers a
+stronger dynamical DE signal than DESI DR1. In particular, S0 and S1 both lie systematically above the ΛCDM
+expectation in DR2, pointing to a more pronounced departure from a pure cosmological constant. Even more
+notably, S2 in DR2 exhibits a sharper crossing behavior
+relative to DR1, suggesting that the observed expansion
+may not be fully described by standard ΛCDM.
+This amplified crossing, coupled with smaller uncertainties, bolsters the case for dark energy possessing
+additional internal degrees of freedom. Further reinforcing this conclusion, the DR2-based reconstructions
+closely match those obtained from three independent
+SNe samples. Their broad consistency indicates that
+these deviations probably reflect real dynamical evolution of the dark energy; for this not to be the case,
+a number of different systematics would all need to
+conspire in the same direction. Although DR2 provides
+stronger statistical evidence overall, uncertainties remain
+
+4
+
+ 6     ]  
+
+2.0
+
+ ' ( 6 ,  ' 5 
+
+ ' ( 6 ,   ' 5 
+
+ 3 D Q W K H R Q 3 O X V
+
+ 8 Q L R Q 
+
+ ' ( 6 < 
+
+1.5
+1.0
+
+ 6      ]  
+
+3
+2
+1
+
+ 6     ]  
+
+0
+0
+1
+2
+0.0
+
+0.5
+
+1.0
+
+0.0
+
+0.5
+
+1.0
+
+0.0
+
+0.5
+
+1.0
+ U H G V K L I W  ]
+
+0.0
+
+0.5
+
+1.0
+
+0.0
+
+0.5
+
+1.0
+
+Fig. 1. Reconstructed shape functions Si (i = 0, 1, 2) derived from multiple cosmic-distance measurements,
+displayed as a function of redshift z. All five distance probes show a consistent, ΛCDM-deviating trend in the S-functions,
+strongest in DESI DR2. Each column corresponds to a different dataset: DESI BAO DR 1 (leftmost), DESI BAO DR 2,
+PantheonPlus, Union3, and DESY5, (rightmost). From top to bottom, the panels show S0 (z), S1 (z), and S2 (z), as defined in
+Eqs. (5), which capture the time evolution of the energy density of dark energy, the pressure of dark energy, and the equation of
+state of dark energy, respectively. In each panel, the solid white line indicates the best-fit reconstruction, while the blue shaded
+region denotes the 68% confidence-level uncertainty, derived according to Eqs. (2)–(5). The green dash-dotted curve represents
+the best-fit shape function from the CPL parameterization, and the horizontal dashed line is the corresponding prediction of
+the ΛCDM model. See texts for further details.
+
+significant at z ≳ 0.5, limiting definitive conclusions
+at higher redshifts. Even so, the alignment between
+DESI DR2 and SNe data underscores the importance of
+forthcoming high-precision measurements for clarifying
+the fundamental nature and potential evolution of dark
+energy.
+
+III.
+
+EVOLUTION OF THE EQUATION OF
+STATE
+
+To explore this further, we adopt the commonly used
+w0 –wa parameterization [27, 28], in which the dark energy equation of state is written as w(a) = w0 + wa (1 −
+a). Here, w0 is the present-day equation-of-state value,
+while wa describes how w evolves with redshift. Notably,
+ΛCDM is recovered by setting w0 = −1 and wa = 0.
+Fitting this model to the data constrains the possible
+dynamical nature of dark energy in a simple yet effective manner. Moreover, the w0 –wa approach serves as a
+bridge between the shape-function reconstructions and
+the fully non-parametric w(z) methods discussed later,
+
+offering an intermediate step toward more general dark
+energy modeling.
+Fig. 2 shows the inferred constraints on (w0 , wa ) for
+different data combinations (See Methods for datasets
+and priors used). The left panel corresponds to DESI
+DR1, while the right panel presents DR2. Contour colors
+indicate various datasets, with inner and outer contours
+marking 1σ and 2σ confidence intervals, respectively. We
+divide the parameter space into four dark energy models:
+Quintessence (w > −1 at all epochs, thus w0 > −1 and
+w0 +wa > −1) [10], Full Phantom (w < −1 at all epochs,
+thus w0 < −1 and w0 + wa < −1) [11], Quintom A
+(w > −1 in the past but w < −1 today, thus w0 < −1
+and w0 + wa > −1) [12], and Quintom B (w < −1 in the
+past but w > −1 today, thus w0 > −1 and w0 +wa < −1)
+[12].
+Using only DESI DR1 BAO measurements yields constraints that are broadly consistent with ΛCDM, albeit
+with mild (∼ 1.5–2σ) hints of departure. Incorporating
+supernova data narrows these contours further, indicating a slight preference for dynamical dark energy. A similar pattern emerges from the DR2-only analysis, which
+achieves notably tighter constraints than DR1 and favors
+
+5
+DR1
+DR1 + Union3
+
+DR1 + PantheonPlus
+DR1 + DESY5
+
+Quintom A
+
+DR2
+DR2 + Union3
+
+Quintessence
+
+0
+
+0
+
+Quintom A
+
+Quintessence
+
+Phantom
+
+Quintom B
+
+wa
+
+1
+
+wa
+
+1
+
+DR2 + PantheonPlus
+DR2 + DESY5
+
+−1
+
+−1
+
+−2
+
+−2
+
+Phantom
+
+Quintom B
+−1.0
+
+w0
+
+0.0
+
+−0.5
+
+−1.0
+
+w0
+
+0.0
+
+−0.5
+
+Fig. 2. 68% and 95% credible intervals constraints on the dark energy equation-of-state parameters (w0 , wa ) for
+various data combinations. The left panel displays results based on DESI DR1 measurements, while the right panel shows
+DR2. Different colors indicate distinct dataset combinations, as labeled. In all cases we assume in addition a BBN constraint
+on Ωb h2 and a CMB constraint on θ∗ . The parameter space is subdivided according to four dark energy models: Quintom A
+(w > −1 in the past and w < −1 today), Quintessence (w > −1 at all epochs), Phantom (w < −1 at all epochs), and Quintom
+B (w < −1 in the past but w > −1 today). The intersection point of the two dashed lines corresponds to the ΛCDM limit
+(w0 , wa ) = (−1, 0).
+
+ 
+
+   $     
+
+   $     
+
+   $     
+
+   $     
+
+ 
+
+ Z   ] 
+
+ 
+   ' 5 
+ 
+
+ ' 5     3 D Q W K H R Q 3 O X V 
+   %     
+
+ ' 5     8 Q L R Q  
+
+ ' 5     ' ( 6 < 
+
+   %     
+
+   %     
+
+   %     
+
+ 
+ 
+   ' 5 
+   
+   
+
+ ' 5     3 D Q W K H R Q 3 O X V 
+   
+
+   
+
+   
+
+   
+
+ ' 5     8 Q L R Q  
+   
+
+ U H G V K L I W  ]
+
+   
+
+ ' 5     ' ( 6 < 
+   
+
+   
+
+   
+
+   
+
+   
+
+Fig. 3. Reconstructed dark energy equation of state w(z) from multiple datasets. Panels (A1 –A4 ) show DESI DR1
+BAO results, both alone and in combination with three independent Type Ia supernova (SNe) datasets, under two different
+approaches: the correlation-prior method (bottom-layered, dark-blue band) and the (w0 , wa ) parameterization (top-layered,
+green band). The solid and dashed white lines indicate the best-fit reconstructions of w(z), and the shaded regions are 68%
+confidence-level uncertainties. The horizontal dashed line denotes the ΛCDM prediction (w = −1). Panels (B1 –B4 ) mirror these
+setups for the DESI DR2 BAO sample. In all panels, the Big Bang Nucleosynthesis (BBN) prior and constraints on the CMB
+acoustic scale θ∗ are imposed.
+
+6
+ 
+
+ ' 5 
+ ' 5 
+
+ % $ 2
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+  
+
+ 
+
+ % $ 2    3 D Q W K H R Q 3 O X V
+
+      
+ $
+ 
+
+      
+ $
+ 
+
+ 
+
+ 3 & 
+ 3 & 
+ 3 & 
+
+ % $ 2    8 Q L R Q 
+
+λ  L
+
+ H L   ] 
+
+ 
+
+ % $ 2    ' ( 6 < 
+
+ 
+
+      
+ $
+ 
+
+ 
+   
+
+   
+
+   
+
+      
+ $
+ 
+   
+
+   
+
+   
+
+   
+
+ ' 5 
+ ' 5 
+ S U L R U
+
+ % $ 2
+
+ % $ 2    3 D Q W K H R Q 3 O X V
+
+      
+ %
+ 
+
+      
+ %
+ 
+
+ % $ 2    8 Q L R Q 
+
+ % $ 2    ' ( 6 < 
+
+      
+ %
+ 
+ 
+
+  
+
+  
+
+ U H G V K L I W  ]
+
+      
+ %
+ 
+ 
+
+  
+
+  
+
+  
+
+ 0 R G H  1 X P E H U
+
+Fig. 4. Principal Component Analysis (PCA) of the dark energy equation of state w(z). The left panels (A1 –A4 )
+plot the first three principal components ei (z) as functions of redshift, showcasing how different dataset combinations constrain
+distinct modes in w(z). The right panels (B1 –B4 ) display the corresponding eigenvalues λi versus the mode index, revealing
+the relative information that each dataset provides compared with the correlation-prior baseline (green curves). Solid lines
+distinguish DESI DR1 BAO analyses, and dashed lines indicate DESI DR2, and the Big Bang Nucleosynthesis (BBN) prior
+and constraints on the CMB acoustic scale θ∗ are imposed in all cases. Larger eigenvalues signify better-constrained modes.
+
+  
+
+ 
+
+       
+
+ ' 5 
+
+  
+
+ 
+
+ O Q /
+ O Q (   D Q D O \ W L F 
+ O Q 9
+ O Q (   Q X P H U L F 
+
+         
+
+ H I I
+ 
+
+ 
+
+ ' 5     3 D Q W K H R Q 3 O X V
+
+           
+
+ 
+
+ ' 5     8 Q L R Q  
+
+         
+
+ 
+
+ ' 5     ' ( 6 < 
+
+ 
+  
+
+  
+  
+
+ 
+
+           
+
+ ' 5 
+
+           
+
+ H I I
+   
+
+ ' 5     3 D Q W K H R Q 3 O X V
+
+               
+
+ ' 5     8 Q L R Q  
+
+             
+
+ ' 5     ' ( 6 < 
+
+ 
+  
+
+      
+
+   
+
+ 
+
+ 
+
+      
+
+   
+
+ 
+
+ 
+
+      
+
+   
+
+ 
+
+ 
+
+      
+
+   
+
+ 
+
+ 
+
+Fig. 5. Likelihood, prior volume, and evidence as a function of the effective degrees of freedom Neff . Bayesian
+evidence peaks at “moderate” support for dynamical w(z) once SNe are included. The strength of this prior is varied by adding
+different values of ∆ to its diagonal. For comparison, we show both the analytically estimated ln E (calculated as ln L + ln V )
+and the numerically computed values obtained via Polychord. The top panel presents results derived using DESI DR1 BAO
+data, while the bottom panel corresponds to DESI DR2. The Big Bang Nucleosynthesis (BBN) priors and constraints on the
+CMB acoustic scale θ∗ are imposed in all cases. The shaded region highlights values of ∆ for which the correlation prior is
+affected by the flat prior of the w bins. See texts for further discussion.
+
+7
+w0 > −1 with wa < 0, consistent with a Quintom B-like
+scenario. Even so, ΛCDM remains viable at ∼ 1.5σ. This
+is weaker than the 2.3σ rejection of ΛCDM in [25] from
+DESI+CMB, because our CMB prior uses only part of
+the information, and also because we have chosen to inflate uncertainties. When DR2 is combined with supernova data, the best-fit values stay in the Quintom B region, pushing the tension with ΛCDM above 2σ, showing
+somewhat stronger preference for departure from a simple cosmological constant (see Supplementary Tables 1
+and 2 for more details).
+To delve deeper into the dynamical nature of dark energy, we perform a non-parametric Bayesian reconstruction of w(z) using the correlation-prior framework originally proposed in [34, 35] and subsequently applied in
+[36, 37]. In this methodology, w(z) is treated as a free
+function, while a correlation prior enforces smoothness
+and mitigates flat directions in the likelihood. The correlation prior itself can be motivated by theoretical considerations [38]; here, we adopt the version derived in [38]
+from Horndeski theory [26] (See Methods for details of
+the reconstruction).
+Fig. 3 (white curves and blue bands) illustrates the
+best-fit and 68% CL constraints on w(z) obtained from
+various data combinations. The upper row corresponds
+to DESI DR1 BAO data, and the lower row to DR2.
+In each row, the leftmost panel reports BAO-only constraints, while the other panels incorporate additional supernova datasets: PantheonPlus, Union3, and DESY5. In
+all cases, w(z) ̸= −1 is clearly indicated. Throughout the
+paper, we define the significance (i.e., the signal-to-noise
+ratio, SNR) of the reconstructed w(z) deviating from a
+specific model wmod via
+SNR2 ≡ (w − wmod )T C−1
+w (w − wmod ),
+
+(1)
+
+where Cw is the posterior covariance for the w bins. For
+the DR1-based reconstructions (panels A1 –A4 ), the SNR
+of w ̸= −1 is 2.6, 3.9, 3.9, and 4.2, respectively. Switching to the DR2 dataset yields comparable significance at
+2.6, 3.7, 4.3, and 4.5, respectively. It is interesting that
+the preference for deviations from ΛCDM when the SNe
+samples are included remained strong with the enhanced
+statistical power of DESI DR2.
+All dataset combinations exhibit a persistent pattern
+in w(z): w > −1 at z ≲ 0.2 and w < −1 at z ∼ 0.75,
+which is consistent with the results reported in companion DESI papers [25, 29]. Including supernova data
+highlights this feature further, revealing pronounced oscillations in w(z). These patterns remain stable and gain
+additional significance when DR1 BAO is replaced by
+DR2. In fact, oscillatory or non-monotonic w(z) evolution
+arises naturally in several classes of dark energy models
+– including axion-like quintessence scenarios with periodic potentials [39], interacting dark sector frameworks,
+where energy exchange between dark energy and dark
+matter can induce transient oscillations in w [40, 41],
+and multi-field quintom constructions that allow w(z)
+to cross the −1 threshold and back [12, 42]. Crucially,
+
+the oscillatory feature seen in our reconstruction is not
+an artifact of any single dataset: it appears consistently
+across different Type Ia supernova samples and remains
+essentially unchanged when the BAO dataset is upgraded
+from DESI DR1 to DR2. This stability across independent data sets and updated observations reinforces the
+interpretation that the observed oscillations in w(z) are
+a robust physical signal, potentially pointing toward an
+underlying dynamical dark energy component consistent
+with the aforementioned model classes.
+The green bands—reconstructions using the CPL parameterization—track the transition across w = −1 well
+and are broadly compatible with the non-parametric results, reinforcing the robustness of these conclusions.
+While the significance of w ̸= −1 stems from the reduction in χ2 relative to ΛCDM, fully assessing the fit
+also requires determining the effective degrees of freedom
+(DoF) in the reconstructed w(z). This step is nontrivial
+because the correlation prior couples the w(z) bins. To
+address this, we perform a principal component analysis
+(PCA) [43] to decorrelate the prior and posterior inverse
+covariance matrices of w(z). Further technical details on
+the PCA procedure can be found in the Supplementary
+Information.
+Fig. 4 shows the PCA results for the reconstructed dark
+energy equation of state w(z). The left panels (A1 –A4 )
+plot the eigenvectors of the first few well-constrained
+modes, highlighting their redshift dependence, while the
+right panels (B1 –B4 ) display the corresponding eigenvalues λi for different dataset combinations. The PCA
+identifies independent modes constrained by the data.
+In panel A1 (BAO-only), the first principal component
+(PC1) is smooth and relatively featureless, indicating
+that BAO data alone primarily constrain a single dominant mode of w(z). By contrast, adding supernova data
+(panels A2 –A4 ) produces additional constrained modes;
+PC2 and PC3 become more oscillatory, especially at low
+redshift, demonstrating that supernova observations significantly improve constraints on the redshift evolution
+of w(z). Because the main feature of w(z) is effectively a
+linear combination of these three modes, further progress
+will come from shrinking the PC1 error bar through improved low-z SN calibration, tightening PC2 and PC3
+with denser distance tracers in the 0.3 < z < 0.8 window,
+and extending observations to z ≳ 0.8 to assess whether
+additional PCs are required.
+The right panels show the eigenvalues λi , which quantify the statistical significance of each mode (larger values correspond to tighter constraints). In panel B1 (also
+BAO-only), four eigenvalue notably exceeds that of the
+correlation prior (green curve). When supernova datasets
+are incorporated (panels B2 –B4 ), more modes become
+well constrained. Comparing DESI Data Release 1 (DR1;
+orange) and Data Release 2 (DR2; blue) eigenvalues reveals that DR2 consistently achieves larger eigenvalues
+for the constrained modes, indicating stronger statistical
+power in the DR2 sample. This gain is most evident when
+supernova data are included, as the gap between the first
+
+8
+few eigenvalues of DR1 and DR2 widens, showing that
+DR2 improves constraints across multiple modes of w(z).
+We further validate these findings by computing the effective number of degrees of freedom Neff numerically with
+covariant principal component analysis (CPCA) [44], detailed in the Supplementary Information. The CPCA results align with the PCA, confirming the robustness of
+our assessment of how many independent modes of w(z)
+are constrained by the data.
+We can
+P project w(z) onto the PC eigenmodes 1 +
+w(z) = i γi ei (z) where the corresponding eigenvalue λi
+of the covariance matrix represents the error of the amplitude γi , λi = 1/σ 2 (γi ). Supplementary Table 5 shows
+the amplitude of the first five PCs. Considering the case
+with DR2 and DR1/DR2 + SNe, the amplitude of the
+first PC is positive, indicating that this mode describes
+a behavior of w(z) that increases fromP−1 over time.
+The improvement in the fits, ∆χ2 = − i [γi /σ(γi )]2 , is
+dominated by PC1. Including higher-order PCs, multiple
+crossings of w = −1 occur, as we observe in the reconstructed w(z) shown in Fig. 3. In the case of DR2 + SNe,
+PC4 gives the second largest contribution to ∆χ2 .
+It is the advantage of the Bayesian reconstruction
+that the dependence of the reconstructed w(z) on the
+correlation prior is explicit. To demonstrate this, we
+deliberately change the amplitude of the correlation
+prior, A, and impose a stronger prior to avoid possible
+overfitting. By tuning A, the effective number of degrees
+of freedom Neff can be reduced. In the case of Neff = 2,
+the reconstructed w(z) is consistent with the results
+that we obtained based on the w0 -wa parametrization as
+shown in Supplementary Fig. 1, with related ∆χ2 shown
+in Supplementary Table 6.
+
+IV.
+
+BAYESIAN EVIDENCE AND EVOLUTION
+
+We evaluate the evidence against ΛCDM analytically
+and numerically (see Methods for details), as illustrated
+in Fig. 5. Consistent with expectations, ln L grows while
+ln V decreases monotonically with increasing ∆ (or Neff ),
+which reflects the number of modes in w(z) that remain
+after applying the correlation prior. The analytic and
+numerical evidence estimates typically agree, except in
+BAO-only scenarios, where the data are not sufficiently
+constraining to maintain Gaussianity in the posterior.
+Fig. 5 plots the model evidence and related quantities
+versus ∆, with the effective degrees of freedom Neff noted
+on the top axis. The top panels show DESI DR1 results, and the bottom panels DESI DR2. We display the
+change in log-likelihood ∆ ln L (blue squares), the analytic ∆ ln E (orange circles), the numerical ∆ ln E (red
+points), and the change in log-prior volume ∆ ln V (green
+diamonds).
+The increase in both ∆ ln E and the signal-to-noise ratio (SNR) for detecting w ̸= −1 with larger Neff further supports the idea that adding extra degrees of free-
+
+dom favors a dynamical dark energy interpretation over
+a pure cosmological constant. When using BAO data
+alone, ∆ ln E remains consistent with zero for all Neff ,
+confirming that BAO measurements by themselves offer
+limited evidence against ΛCDM. In contrast, once supernova datasets are added, ∆ ln E rises substantially. For
+instance, DR1 + DESY5 yields a peak ∆ ln E of 4.1 ± 0.6
+(classified as “Moderate” on Jeffreys’ scale [45–47]) at
+Neff = 2, increasing to 5.2 ± 0.7 (also “Moderate”) for
+DR2 + DESY5 at Neff = 3. A similar pattern emerges
+with BAO + Union3: the evidence systematically increases from DR1 to DR2, reaching 3.3 ± 0.7 (“Moderate”) at Neff = 3 for DR2.
+By contrast, BAO + PantheonPlus shows weaker evidence, changing only slightly from DR1 to DR2, with
+∆ ln E peaking at 1.5±0.6 (“Weak”) in DR1 and 1.4±0.7
+(“Weak”) in DR2—consistent with what is seen under
+the CPL parameterization. Although the PantheonPlus
+dataset alone can show a mild preference for w ̸= −1
+(see Supplementary Fig. 2), combining it with BAO data
+partially cancels that signal. One possibility is a mild
+tension between the PantheonPlus-inferred distance scale
+and the BAO-preferred expansion history, pushing the
+joint constraints closer to ΛCDM. Further investigation
+is needed to determine whether this is attributable to
+systematics.
+To gauge the strongest possible deviation from w = −1
+without overfitting the data, we look at w(z)CDM models with the largest departure from ΛCDM while still
+having a positive evidence, ı.e. ∆ ln E ≥ 0. Under this
+condition, the significance of w ̸= −1 for BAO + DESY5
+reaches 4.1 (DR1) and 4.3 (DR2). For BAO + Union3,
+the corresponding values are 3.8 (DR1) and 3.9 (DR2).
+Meanwhile, BAO + PantheonPlus yields maximum
+SNRs of 3.2 (DR1) and 3.1 (DR2), reinforcing the prior
+finding that PantheonPlus offers comparatively weaker
+support for w ̸= −1 than either Union3 or DESY5.
+
+V.
+
+SUMMARY AND CONCLUSIONS
+
+With the start of the DESI survey, we now have access to exceptionally precise BAO measurements, providing a robust tool to probe the nature of dark energy.
+In this work, we analyzed DESI DR2 BAO observations
+in tandem with complementary cosmic distance indicators— SNe data and the CMB acoustic scale θ∗ —to test
+for deviations from the ΛCDM paradigm. Employing a
+shape-function approach [48, 49], we derived key observables sensitive to dark energy (DE) and found consistent
+evidence for an evolving equation of state w(z) across
+multiple, independent datasets.
+Building on these findings, we performed a nonparametric Bayesian reconstruction of w(z) by jointly
+analyzing DESI BAO, SNe, and CMB data, employing a
+correlation prior rooted in Horndeski theory. Our results
+exhibit strong statistical support for dynamical dark en-
+
+9
+ergy, at a confidence level exceeding 3σ. Rigorous model
+selection further indicates that DESI BAO, SNe, and
+CMB observations together constrain roughly three independent degrees of freedom (DoFs) without overfitting.
+In particular, combining DESI BAO, CMB, and the fiveyear DES supernova sample detects dark energy evolution at a signal-to-noise ratio of 3.9, with a Bayesian evidence of 5.2±0.7 in favor of w(z)CDM over ΛCDM when
+Neff = 3.
+These results suggest that dark energy may not be
+described by a simple cosmological constant, favoring a
+time-dependent equation of state w(z) instead. Although
+earlier work [37] hinted at similar conclusions, this study
+provides some of the tightest constraints to date, thanks
+in large part to the enhanced statistical power of DESI
+DR2 BAO data. Furthermore, adding supernova datasets
+significantly boosts sensitivity to potential dark energy
+evolution: all three independent SN samples (PantheonPlus, Union3, and DESY5) show broadly consistent indications of deviations from ΛCDM.
+Companion DESI papers [25, 29] investigate the time
+evolution of dark energy using complementary methods,
+and also report the detection of the dynamical dark energy. The level of significance is generally greater in those
+works because the full Planck measurements are used
+there, as opposed to the θ∗ information used in this
+work. Moreover, the recent Atacama Cosmology Telescope (ACT) results find that the time evolution of dark
+energy is still favored when replacing the Planck data
+with the ACT measurements [50].
+Extensive cross-checks indicate that known systematics cannot mimic the oscillatory pattern in Fig. 3.
+Photometric offsets and a possible evolution of the
+colour–luminosity relation in PantheonPlus can shift
+w(z) by about 0.03 at z ≲ 0.4 [19], and the 0.04 mag
+low–high-z mismatch removes only a smooth trend in
+(w0 , wa ) fits when using the DESY5 SNe sample [51]. For
+the BAO analysis, DESI DR1 analyses bound templateand reconstruction-induced BAO shifts to 0.1% [52]. All
+of these effects vary smoothly with redshift: they can tilt
+or raise the whole w(z) curve but cannot produce the
+alternating-sign wiggles we recover. The feature therefore remains most naturally interpreted as evidence for
+genuine dark-energy dynamics.
+In conclusion, our study finds tentative evidence for departures from ΛCDM using the DESI DR2 data. While
+our results favor a dynamical dark energy interpretation, continued observational and theoretical efforts will
+be critical in establishing whether these deviations signify new physics or stem from unknown systematics. The
+complete DESI sample, with increased statistical depth
+and extended redshift coverage, is expected to yield even
+stricter constraints on dark energy evolution. Additional
+surveys, such as Euclid [53] and the Prime Focus Spectrograph (PFS) [54], will deliver complementary BAO
+and large-scale structure measurements, enabling crossvalidation of DESI results. Likewise, next-generation
+CMB projects will improve knowledge of early-universe
+
+physics, strengthening the overall dark energy picture.
+
+VI.
+A.
+
+METHODS
+
+Datasets and priors
+
+DESI at Kitt Peak National Observatory in Arizona
+marks a significant step forward in Stage IV large-scale
+structure surveys [55, 56]. Designed with a 3.2◦ diameter prime focus corrector [57], DESI deploys 5,000 fibers
+[58] via a robotic focal plane assembly [59] to simultaneously measure multiple spectra. These hardware capabilities are bolstered by a high-throughput spectroscopic
+data processing pipeline [60] and an efficient operations
+plan [61]. Since beginning operations in 2021, DESI has
+been gathering high-fidelity spectra for numerous target
+classes—Bright Galaxy Sample (BGS; 0.1 < z < 0.4)
+[62], Luminous Red Galaxies (LRGs; 0.4 < z < 1.1)
+[63], Emission Line Galaxies (ELGs; 1.1 < z < 1.6) [64],
+Quasars (QSOs; 0.8 < z < 2.1) [65], and the Lyman-α
+Forest (1.77 < z < 4.16) [66]. Early data analyses and
+survey validation [56, 67] confirmed that DESI satisfies
+the performance benchmarks required for a Stage IV survey, advancing our grasp of dark energy’s role in cosmic
+expansion [55].
+DESI’s DR1 spans observations from May 14, 2021, to
+June 14, 2022 [23], and has already yielded new insights
+into dark energy by detecting the baryon acoustic oscillation (BAO) signature in galaxy and quasar clustering
+[52], as well as in the Lyman-α forest [68]. These results
+fit seamlessly with external data [69], paving the way for
+more comprehensive analyses that incorporate the full
+clustering information from the DESI galaxy sample and
+other tracers [70, 71]. The subsequent DR2, covering observations through April 9, 2024 [24, 25], not only encompasses the entirety of DR1 but also extends the redshift
+range and statistical reach of the survey. This expanded
+dataset offers a critical test of dynamical dark energy: if
+dark energy truly evolves over cosmic time, the enriched
+DR2 sample could reveal a more pronounced signature.
+By comparing DR1 and DR2 results, one can assess both
+internal consistency and potential evidence for evolving
+dark energy. This paper contributes to a suite of companion analyses that build on the main cosmological results
+[25], with related supporting study on dark energy [29]
+and neutrino constraints [72].
+Our analysis draws upon three categories of measurements: BAO observations from DESI DR1 and DR2
+[52, 68], SNe samples from PantheonPlus, Union3, and
+the 5-year DES survey (DESY5), and distance constraints from the CMB. Because dark energy chiefly affects the Universe’s background expansion history, and
+modeling its perturbations requires additional assumptions, we focus here on background observables. Specifically, we incorporate the DESI DR1/DR2 BAO measurements, SNe luminosity distances, and the Big Bang Nucleosynthesis (BBN) prior Ωb h2 = 0.02196±0.00063 [73].
+
+10
+We also include CMB distance information from Planck
+PR4 [74], imposing 100 θ∗ = 1.04098 ± 0.00042, where
+θ∗ ≡ r∗ /DM (z∗ ) is the ratio of the comoving sound horizon at recombination r∗ to the transverse comoving distance DM (z∗ ) [21, 69]. The quantity r∗ is computed using
+RECFAST [75] within CAMB [76]. As in [69], we inflate the
+error bar from [74] (column ‘PR4 12.6’ TTTEEE in Table 5) by 75% to account for potential broadening of θ∗
+constraints in extended cosmological models.
+Our baseline dataset comprises DESI BAO measurements, the BBN prior on Ωb h2 , and the CMB
+acoustic-scale constraint on θ∗ . We then supplement
+this baseline with each of the three SNe samples in
+turn: ‘DR1(2)+PantheonPlus’, ‘DR1(2)+Union3’, and
+‘DR1(2)+DESY5’ for the DES 5-year sample. Each combination is analyzed independently to gauge its impact on
+w(z) constraints.
+
+B.
+
+The shape functions of dark energy
+
+Galaxy surveys measure cosmic distances via
+(DM /rd , DH /rd ) or DV /rd at specific redshifts, where
+DH ≡ c/H with H being the Hubble expansion rate,
+and DM the comoving distance. The volume-averaged
+1/3
+2
+distance is defined by DV ≡ z DM
+DH
+, with z being
+the redshift, and rd the sound horizon scale. These
+observations constrain the shape of H(z), which is
+directly related to dark energy. To link DH and DM , we
+adopt the parametrization introduced in [77], providing
+an accurate yet general description of cosmic distances
+across a wide range of cosmologies:
+
+DM (z)
+R = α0 1 + α1 x + α2 x2 + α3 x3 + . . . ,
+f
+DM (z)
+
+DH (z)
+R = β0 1 + β1 x + β2 x2 + β3 x3 + . . . , (2)
+f
+DH (z)
+where the superscript (subscript) ‘f’ denotes quantities evaluated in a fiducial ΛCDM model with ΩM =
+0.3153. The normalization factor R ≡ rdf /rd accounts
+for discrepancies in the sound horizon scale, and x ≡
+f
+f
+DM
+(z)/DM
+(zp )−1, where DM denotes the comoving distance and zp is a pivot redshift for the series expansion.
+Because DH and DM are interdependent, the coefficients βi follow from αi via
+
+β0 = α0 1 + α1 ,
+
+βi = (i + 1)
+
+αi + αi+1
+1 + α1
+
+(i > 0). (3)
+
+To avoid overfitting, the series expansion is truncated
+once the uncertainty in any αi exceeds unity. For
+DESI DR1 and DR2 BAO data, a cutoff at i = 3 (yielding
+four α parameters) proves adequate.
+Given the values of α, one can construct the following
+function [48, 49]:
+S(a) ≡ A H 2 (a) a3 = B X(a) a3 + C,
+
+(4)
+
+where A, B, and C are constants, and X(a) ≡
+ρDE (a)/ρDE (1) is the normalized dark energy density. Since S(a) shares the same functional form as
+ρDE (a)—up to a shift and overall rescaling—this ‘shape
+function’ effectively encodes the potential dynamical
+properties of dark energy.
+Specifically, we define three dimensionless functions
+that offer clear diagnostics for dark energy evolution:
+3 [S(a) − S(1)]
+X(a) a3 − 1 Λ
+= a3 +
+−
+→ 1,
+′
+S (1)
+w(1)
+1 S ′ (a)
+PDE (a) Λ
+S1 (a) ≡ 3 ′
+=
+−
+→ 1,
+a S (1)
+PDE (1)
+S ′′ (a)
+w′ (a) Λ
+S2 (a) ≡ − ′
+= w(a) −
+−
+→ −1,
+(5)
+3 S (a)
+3 w(a)
+S0 (a) ≡ a3 −
+
+where derivatives are taken with respect to ln a. Here,
+PDE (a) and w(a) denote the pressure and equation of
+state of dark energy, respectively, and the arrows indicate
+their expected values under ΛCDM.
+C.
+
+A non-parametric Bayesian reconstruction of
+dark energy with the Horndeski prior
+
+Within the w(z) cold dark matter (CDM) framework,
+w(z) is discretized into N = 29 piecewise-constant segments, w ≡ {w1 , w2 , . . . , wN }, uniformly spaced in scale
+factor for z < 2.5. Additionally, an extra ‘wide’ bin
+wwide = −1 is assigned for z > 2.5 up to recombination. Allowing wwide to vary left it largely unconstrained
+by our data, and it showed minimal correlations with the
+other w bins. We therefore fix wwide = −1 for simplicity.
+Alongside these wi , we vary several cosmological parameters: ΩM , the current fractional matter density; Ωb h2 ,
+the physical baryon density; H0 , the Hubble constant;
+and Mb , the absolute SNe magnitude (used only when
+supernova data are included).
+We place sufficiently broad flat priors on all parameters. Specifically, H0 ∈ [20, 100], ΩM ∈ [0.01, 0.99],
+w0 ∈ [−3, 1], wa ∈ [−3, 2], and wi ∈ [−6, 4] (for i =
+1, . . . , 29). We explore the resulting parameter space using the Markov Chain Monte Carlo (MCMC) algorithm
+implemented in Cobaya [78]. At each step, we compute a
+total χ2 that combines contributions from both the data
+and the correlation prior. The prior covariance CΠ is derived from Horndeski-based simulations [38] spanning a
+broad parameter space, as investigated in [38]. Specifically, the prior is defined as,
+C(a, a′ ) ≡ ⟨[w(a) − wfid (a)][w(a) − wfid (a′ )]⟩
+p
+=
+C(a)C(a′ )R(a, a′ ),
+
+(6)
+
+where C(a) ≡ C(a, a) and R(a, a′ ) is the normalised correlation function thus equals unity for a = a′ . The functional form of the correlation prior used in this work is
+taken from [38]:
+C(a) = 0.05 + 0.8a2 ,
+
+11
+h
+i
+1.2
+R(a, a′ ) = exp − (|ln a − ln a′ | /0.3)
+.
+
+(7)
+
+The total χ2 minimised in the MCMC process has two
+pieces, namely
+
+data.desi.lbl.gov/doc/releases/). The data files
+and python scripts used to produce figures in the main
+text of this paper are available in a Zenodo repository
+[82].
+
+χ2 = χ2data + Aχ2prior ,
+T −1
+χ2prior = DTw C−1
+Π Dw = w C̃Π w,
+
+(8)
+
+−1
+where Dw = w − wfid = (I − S) w and C̃Π
+, the inverse modified covariance matrix of the prior, is defined
+T
+−1
+as C̃−1
+Π ≡ (I − S) CΠ (I − S). Matrices I and S are the
+identity matrix and the transformation matrix, respectively, and the fiducial model wfid = Sw is calculated by
+taking a local average of 5 neighboring w bins through
+the transformation matrix S [35–37, 79]. The factor A
+balances the strength between data and prior, and we
+set A = 1 as a default to obtain the main result in Fig.
+3.
+We validate our pipeline using mock datasets generated for four input dark energy models with the same
+data covariance matrix for DESI and SNe measurements,
+before applying to actual observations. Further technical
+details are provided in the Supplementary Information.
+
+D.
+
+The calculation of the Bayesian evidence
+
+For a rigorous test of whether the w(z)CDM model
+is preferred over ΛCDM, we evaluate the Bayesian evidence using both PolyChord [80, 81] within Cobaya [78]
+and an analytic approximation. Under the assumption
+that both prior and posterior distributions are Gaussian,
+the evidence E can be computed as [36] lnE
+ = lnV +lnL,
+where lnV = 12 ln det Cpost − ln det C̃prior . Here, C̃prior
+and Cpost are the modified correlation-prior covariance
+and the posterior covariance, respectively, and lnL is the
+maximum log-likelihood from the data and prior. Because our reconstruction uses a running-average method
+to specify the fiducial w(z), C̃prior has zero eigenvalues
+that render its volume ill-defined [35, 36] (see Supplementary Information).
+To address this, we add a diagonal term ∆−2 to the
+prior correlation matrix, interpolating between ΛCDM
+(∆ = 0) and a w(z)CDM model in which wfid is unconstrained by the correlation prior. The prior volume is
+controlled by ∆ and, for ∆ < 1, it becomes independent
+of the flat prior imposed on w in the MCMC analysis.
+The parameter ∆ changes the effective number of degrees of freedom, Neff , by controling the strength of the
+correlation prior.
+
+Data availability statement
+The data used in this analysis will be made public along the Data Release 2 (details in https://
+
+ACKNOWLEDGMENTS
+
+We thank Dragan Huterer, Rodrigo Calderon, Eric
+Linder and Paul Martini for discussions. GG, XW, YW,
+RZ and GBZ are supported by NSFC grant 12525301,
+and by the CAS Project for Young Scientists in Basic Research (No. YSBR-092). GBZ is also supported
+by the New Cornerstone Science Foundation through
+the XPLORER prize. YW is supported by National
+Key R&D Program of China No. (2023YFA1607800,
+2023YFA1607803, 2022YFF0503404), NSFC Grants
+(12273048, 12422301), and the Youth Innovation Promotion Association CAS. JLCC is supported by the
+CONAHCYT grant CBF2023-2024-589. KK is supported
+by STFC grant number ST/W001225/1.
+This material is based upon work supported by the
+U.S. Department of Energy (DOE), Office of Science,
+Office of High-Energy Physics, under Contract No.
+DE–AC02–05CH11231, and by the National Energy Research Scientific Computing Center, a DOE Office of
+Science User Facility under the same contract. Additional support for DESI was provided by the U.S.
+National Science Foundation (NSF), Division of Astronomical Sciences under Contract No. AST-0950945
+to the NSF’s National Optical-Infrared Astronomy Research Laboratory; the Science and Technology Facilities Council of the United Kingdom; the Gordon and
+Betty Moore Foundation; the Heising-Simons Foundation; the French Alternative Energies and Atomic Energy Commission (CEA); the National Council of Humanities, Science and Technology of Mexico (CONAHCYT); the Ministry of Science, Innovation and Universities of Spain (MICIU/AEI/10.13039/501100011033), and
+by the DESI Member Institutions: https://www.desi.
+lbl.gov/collaborating-institutions.
+The DESI Legacy Imaging Surveys consist of three individual and complementary projects: the Dark Energy
+Camera Legacy Survey (DECaLS), the Beijing-Arizona
+Sky Survey (BASS), and the Mayall z-band Legacy Survey (MzLS). DECaLS, BASS and MzLS together include data obtained, respectively, at the Blanco telescope, Cerro Tololo Inter-American Observatory, NSF’s
+NOIRLab; the Bok telescope, Steward Observatory, University of Arizona; and the Mayall telescope, Kitt Peak
+National Observatory, NOIRLab. NOIRLab is operated
+by the Association of Universities for Research in Astronomy (AURA) under a cooperative agreement with
+the National Science Foundation. Pipeline processing and
+analyses of the data were supported by NOIRLab and
+the Lawrence Berkeley National Laboratory. Legacy Surveys also uses data products from the Near-Earth Object Wide-field Infrared Survey Explorer (NEOWISE),
+
+12
+a project of the Jet Propulsion Laboratory/California
+Institute of Technology, funded by the National Aeronautics and Space Administration. Legacy Surveys was
+supported by: the Director, Office of Science, Office of
+High Energy Physics of the U.S. Department of Energy; the National Energy Research Scientific Computing Center, a DOE Office of Science User Facility; the
+U.S. National Science Foundation, Division of Astronomical Sciences; the National Astronomical Observatories of China, the Chinese Academy of Sciences and
+the Chinese National Natural Science Foundation. LBNL
+is managed by the Regents of the University of California under contract to the U.S. Department of Energy. The complete acknowledgments can be found at
+https://www.legacysurvey.org/.
+Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the U.
+S. National Science Foundation, the U. S. Department of
+Energy, or any of the listed funding agencies.
+The authors are honored to be permitted to conduct
+scientific research on I’oligam Du’ag (Kitt Peak), a mountain with particular significance to the Tohono O’odham
+Nation.
+Author contributions
+G.G. and X.W. carried out the data analysis and generated all figures under the supervision of G.B.Z. and
+Y.W. Y.W. contributed to the Bayesian-evidence calculation and assisted with manuscript preparation. G.B.Z.
+conceived the project, designed the analysis strategy,
+and led the writing of the paper. L.P. proposed the use
+of a Horndeski correlation prior and provided technical
+support for its implementation. L.P. and K.K. offered
+critical guidance on the presentation and interpretation
+of the results, and made important contribution to the
+manuscript. J.A.P., Z.C., J.L.C., M.I., A.S., R.Z. and
+J.P.K. contributed valuable comments and edits. All remaining co-authors are core DESI “builder” members
+who were responsible for survey design, instrument construction, data acquisition, and data processing.
+Competing Interests
+The authors declare that they have no competing interests.
+
+13
+REFERENCES
+[1] Efstathiou, G., Sutherland, W. J. & Maddox, S. J. The
+cosmological constant and cold dark matter. Nature 348,
+705–707 (1990).
+[2] White, S. D. M., Navarro, J. F., Evrard, A. E. & Frenk,
+C. S. The baryon content of galaxy clusters: a challenge
+to cosmological orthodoxy. Nature 366, 429–433 (1993).
+[3] Riess, A. G. et al. Observational evidence from supernovae for an accelerating universe and a cosmological
+constant. Astron. J. 116, 1009–1038 (1998). astroph/9805201.
+[4] Perlmutter, S. et al. Measurements of Ω and Λ from 42
+High Redshift Supernovae. Astrophys. J. 517, 565–586
+(1999). astro-ph/9812133.
+[5] Spergel, D. N. et al. First year Wilkinson Microwave
+Anisotropy Probe (WMAP) observations: Determination
+of cosmological parameters. Astrophys. J. Suppl. 148,
+175–194 (2003). astro-ph/0302209.
+[6] Ata, M. et al. The clustering of the SDSS-IV extended
+Baryon Oscillation Spectroscopic Survey DR14 quasar
+sample: first measurement of baryon acoustic oscillations
+between redshift 0.8 and 2.2. Mon. Not. R. Astron. Soc.
+473, 4773–4794 (2018). 1705.06373.
+[7] Peebles, P. J. E. & Ratra, B. The Cosmological Constant
+and Dark Energy. Rev. Mod. Phys. 75, 559–606 (2003).
+astro-ph/0207347.
+[8] Copeland, E. J., Sami, M. & Tsujikawa, S. Dynamics of
+dark energy. Int. J. Mod. Phys. D 15, 1753–1936 (2006).
+hep-th/0603057.
+[9] Frieman, J., Turner, M. & Huterer, D. Dark Energy and
+the Accelerating Universe. Ann. Rev. Astron. Astrophys.
+46, 385–432 (2008). 0803.0982.
+[10] Ratra, B. & Peebles, P. J. E. Cosmological Consequences
+of a Rolling Homogeneous Scalar Field. Phys. Rev. D 37,
+3406 (1988).
+[11] Caldwell, R. R. A Phantom menace? Phys. Lett. B 545,
+23–29 (2002). astro-ph/9908168.
+[12] Feng, B., Wang, X.-L. & Zhang, X.-M. Dark energy constraints from the cosmic age and supernova. Phys. Lett.
+B 607, 35–41 (2005). astro-ph/0404224.
+[13] Armendariz-Picon, C., Mukhanov, V. F. & Steinhardt,
+P. J. A Dynamical solution to the problem of a small
+cosmological constant and late time cosmic acceleration. Phys. Rev. Lett. 85, 4438–4441 (2000). astroph/0004134.
+[14] Bento, M. C., Bertolami, O. & Sen, A. A. Generalized
+Chaplygin gas, accelerated expansion and dark energy
+matter unification. Phys. Rev. D 66, 043507 (2002). grqc/0202064.
+[15] Li, M. A Model of holographic dark energy. Phys. Lett.
+B 603, 1 (2004). hep-th/0403127.
+[16] Caldwell, R. R. & Linder, E. V.
+The Limits of
+quintessence. Phys. Rev. Lett. 95, 141301 (2005). astroph/0505494.
+[17] Abbott, T. M. C. et al. The Dark Energy Survey: Cosmology Results with ∼1500 New High-redshift Type Ia
+Supernovae Using the Full 5 yr Data Set. Astrophys. J.
+Lett. 973, L14 (2024). 2401.02929.
+[18] Scolnic, D. et al. The Pantheon+ Analysis: The Full
+Data Set and Light-curve Release. Astrophys. J. 938,
+113 (2022). 2112.03863.
+[19] Brout, D. et al. The Pantheon+ Analysis: Cosmological
+
+Constraints. Astrophys. J. 938, 110 (2022). 2202.04077.
+[20] Rubin, D. et al. Union through UNITY: Cosmology with
+2000 SNe Using a Unified Bayesian Framework. Astrophys. J. 986, 231 (2025). 2311.12098.
+[21] Aghanim, N. et al. Planck 2018 results. VI. Cosmological
+parameters. Astron. Astrophys. 641, A6 (2020). [Erratum: Astron.Astrophys. 652, C4 (2021)], 1807.06209.
+[22] Alam, S. et al. Completed SDSS-IV extended Baryon
+Oscillation Spectroscopic Survey: Cosmological implications from two decades of spectroscopic surveys at the
+Apache Point Observatory. Phys. Rev. D 103, 083533
+(2021). 2007.08991.
+[23] Abdul Karim, M. et al. Data Release 1 of the Dark Energy Spectroscopic Instrument (2025). 2503.14745.
+[24] Abdul Karim, M. et al. DESI DR2 Results I: Baryon
+Acoustic Oscillations from the Lyman Alpha Forest
+(2025). 2503.14739.
+[25] Abdul Karim, M. et al. DESI DR2 Results II: Measurements of Baryon Acoustic Oscillations and Cosmological
+Constraints (2025). 2503.14738.
+[26] Horndeski, G. W. Second-order scalar-tensor field equations in a four-dimensional space. Int. J. Theor. Phys.
+10, 363–384 (1974).
+[27] Chevallier, M. & Polarski, D. Accelerating universes with
+scaling dark matter. Int. J. Mod. Phys. D 10, 213–224
+(2001). gr-qc/0009008.
+[28] Linder, E. V. Exploring the expansion history of the
+universe. Phys. Rev. Lett. 90, 091301 (2003). astroph/0208512.
+[29] Lodha, K. et al. Extended Dark Energy analysis using
+DESI DR2 BAO measurements (2025). 2503.14743.
+[30] Sahni, V., Saini, T. D., Starobinsky, A. A. & Alam, U.
+Statefinder: A New geometrical diagnostic of dark energy. J. Exp. Theor. Phys. 77, 201–206 (2003). astroph/0201498.
+[31] Alam, U., Sahni, V., Saini, T. D. & Starobinsky, A. A.
+Exploring the expanding universe and dark energy using
+the Statefinder diagnostic. Mon. Not. R. Astron. Soc.
+344, 1057 (2003). astro-ph/0303009.
+[32] Caldwell, R. R. & Linder, E. V.
+The Limits of
+quintessence. Phys. Rev. Lett. 95, 141301 (2005). astroph/0505494.
+[33] Scherrer, R. J. Dark energy models in the w-w′ plane.
+Phys. Rev. D 73, 043502 (2006). astro-ph/0509890.
+[34] Crittenden, R. G., Pogosian, L. & Zhao, G.-B. Investigating dark energy experiments with principal components. J. Cosmol. Astropart. Phys. 12, 025 (2009). astroph/0510293.
+[35] Crittenden, R. G., Zhao, G.-B., Pogosian, L., Samushia,
+L. & Zhang, X. Fables of reconstruction: controlling bias
+in the dark energy equation of state. J. Cosmol. Astropart. Phys. 02, 048 (2012). 1112.1693.
+[36] Zhao, G.-B., Crittenden, R. G., Pogosian, L. & Zhang,
+X. Examining the evidence for dynamical dark energy.
+Phys. Rev. Lett. 109, 171301 (2012). 1207.3804.
+[37] Zhao, G.-B. et al. Dynamical dark energy in light of
+the latest observations. Nat. Astron. 1, 627–632 (2017).
+1701.08165.
+[38] Raveri, M., Bull, P., Silvestri, A. & Pogosian, L. Priors on the effective Dark Energy equation of state in
+scalar-tensor theories. Phys. Rev. D 96, 083509 (2017).
+1703.05297.
+[39] Frieman, J. A., Hill, C. T., Stebbins, A. & Waga,
+I. Cosmology with ultralight pseudo Nambu-Goldstone
+
+14
+bosons. Phys. Rev. Lett. 75, 2077–2080 (1995). astroph/9505060.
+[40] Amendola, L. Coupled quintessence. Phys. Rev. D 62,
+043511 (2000). astro-ph/9908023.
+[41] Wang, B., Abdalla, E., Atrio-Barandela, F. & Pavon, D.
+Dark Matter and Dark Energy Interactions: Theoretical Challenges, Cosmological Implications and Observational Signatures. Rept. Prog. Phys. 79, 096901 (2016).
+1603.08299.
+[42] Feng, B., Li, M., Piao, Y.-S. & Zhang, X. Oscillating
+quintom and the recurrent universe. Phys. Lett. B 634,
+101–105 (2006). astro-ph/0407432.
+[43] Huterer, D. & Starkman, G. Parameterization of darkenergy properties: A Principal-component approach.
+Phys. Rev. Lett. 90, 031301 (2003). astro-ph/0207517.
+[44] Raveri, M. et al. Principal reconstructed modes of dark
+energy and gravity. J. Cosmol. Astropart. Phys. 02, 061
+(2023). 2107.12990.
+[45] Jeffreys, H. Theory of Probability (Oxford University
+Press, Oxford, 1939), 1st edn.
+[46] Trotta, R. Bayes in the sky: Bayesian inference and
+model selection in cosmology. Contemp. Phys. 49, 71–104
+(2008). 0803.4089.
+[47] Lee, M. D. & Wagenmakers, E.-J. Bayesian Cognitive Modeling: A Practical Course (Cambridge University
+Press, Cambridge, 2014).
+[48] Gu, G., Wang, X., Mu, X., Yuan, S. & Zhao, G.B. Dynamical Dark Energy in Light of Cosmic Distance Measurements. I. A Demonstration Using Simulated Datasets. Res. Astron. Astrophys. 24, 065001
+(2024). 2404.06303.
+[49] Wang, X., Gu, G., Mu, X., Yuan, S. & Zhao, G.-B. Dynamical Dark Energy in Light of Cosmic Distance Measurements. II. A Study Using Current Observations. Res.
+Astron. Astrophys. 24, 065002 (2024). 2404.06310.
+[50] Calabrese, E. et al. The Atacama Cosmology Telescope: DR6 Constraints on Extended Cosmological Models (2025). 2503.14454.
+[51] Efstathiou, G. Evolving dark energy or supernovae systematics? Mon. Not. R. Astron. Soc. 538, 875–882
+(2025). 2408.07175.
+[52] Adame, A. G. et al. DESI 2024 III: baryon acoustic oscillations from galaxies and quasars. JCAP 04, 012 (2025).
+2404.03000.
+[53] Amendola, L. et al. Cosmology and fundamental physics
+with the Euclid satellite. Living Rev. Rel. 21, 2 (2018).
+1606.00180.
+[54] Ellis, R. et al. Extragalactic science, cosmology, and
+Galactic archaeology with the Subaru Prime Focus Spectrograph.
+Publ. Astron. Soc. Jap. 66, R1 (2014).
+1206.0737.
+[55] Aghamousa, A. et al. The DESI Experiment Part I: Science,Targeting, and Survey Design (2016). 1611.00036.
+[56] DESI Collaboration et al. Overview of the Instrumentation for the Dark Energy Spectroscopic Instrument. Astron. J. 164, 207 (2022). 2205.10939.
+[57] Miller, T. N. et al. The Optical Corrector for the Dark
+Energy Spectroscopic Instrument. Astron. J. 168, 95
+(2024). 2306.06310.
+[58] Poppett, C. et al. Overview of the Fiber System for the
+Dark Energy Spectroscopic Instrument. Astron. J. 168,
+245 (2024).
+[59] Silber, J. H. et al. The Robotic Multiobject Focal Plane
+System of the Dark Energy Spectroscopic Instrument
+
+(DESI). Astron. J. 165, 9 (2023). 2205.09014.
+[60] Guy, J. et al. The Spectroscopic Data Processing Pipeline
+for the Dark Energy Spectroscopic Instrument. Astron.
+J. 165, 144 (2023). 2209.14482.
+[61] Schlafly, E. F. et al. Survey Operations for the Dark
+Energy Spectroscopic Instrument. Astron. J. 166, 259
+(2023). 2306.06309.
+[62] Hahn, C. et al. The DESI Bright Galaxy Survey: Final
+Target Selection, Design, and Validation. Astron. J. 165,
+253 (2023). 2208.08512.
+[63] Zhou, R. et al. Target Selection and Validation of DESI
+Luminous Red Galaxies. Astron. J. 165, 58 (2023).
+2208.08515.
+[64] Raichoor, A. et al. Target Selection and Validation
+of DESI Emission Line Galaxies. Astron. J. 165, 126
+(2023). 2208.08513.
+[65] Chaussidon, E. et al. Target Selection and Validation of DESI Quasars. Astrophys. J. 944, 107 (2023).
+2208.08511.
+[66] Bault, A. et al. Impact of systematic redshift errors on
+the cross-correlation of the Lyman-α forest with quasars
+at small scales using DESI Early Data. J. Cosmol. Astropart. Phys. 01, 130 (2025). 2402.18009.
+[67] Adame, A. G. et al. The Early Data Release of the Dark
+Energy Spectroscopic Instrument. Astron. J. 168, 58
+(2024). 2306.06308.
+[68] Adame, A. G. et al. DESI 2024 IV: Baryon Acoustic
+Oscillations from the Lyman alpha forest. JCAP 01, 124
+(2025). 2404.03001.
+[69] Adame, A. G. et al. DESI 2024 VI: cosmological constraints from the measurements of baryon acoustic oscillations. JCAP 02, 021 (2025). 2404.03002.
+[70] Adame, A. G. et al. DESI 2024 VII: cosmological constraints from the full-shape modeling of clustering measurements. JCAP 07, 028 (2025). 2411.12022.
+[71] Adame, A. G. et al.
+DESI 2024 V: Full-Shape
+Galaxy Clustering from Galaxies and Quasars (2024).
+2411.12021.
+[72] Elbers, W. et al. Constraints on Neutrino Physics from
+DESI DR2 BAO and DR1 Full Shape (2025). 2503.14744.
+[73] Schöneberg, N. The 2024 BBN baryon abundance update. J. Cosmol. Astropart. Phys. 06, 006 (2024).
+2401.15054.
+[74] Rosenberg, E., Gratton, S. & Efstathiou, G. CMB power
+spectra and cosmological parameters from Planck PR4
+with CamSpec. Mon. Not. R. Astron. Soc. 517, 4620–
+4636 (2022). 2205.10869.
+[75] Seager, S., Sasselov, D. D. & Scott, D. How exactly did
+the universe become neutral? Astrophys. J. Suppl. 128,
+407–430 (2000). astro-ph/9912182.
+[76] Lewis, A., Challinor, A. & Lasenby, A. Efficient computation of CMB anisotropies in closed FRW models.
+Astrophys. J. 538, 473–476 (2000). astro-ph/9911177.
+[77] Zhu, F., Padmanabhan, N. & White, M. Optimal Redshift Weighting For Baryon Acoustic Oscillations. Mon.
+Not. R. Astron. Soc. 451, 236–243 (2015). 1411.1424.
+[78] Torrado, J. & Lewis, A. Cobaya: code for Bayesian analysis of hierarchical physical models. J. Cosmol. Astropart.
+Phys. 2021, 057 (2021). 2005.05290.
+[79] Wang, Y., Pogosian, L., Zhao, G.-B. & Zucca, A. Evolution of dark energy reconstructed from the latest observations. Astrophys. J. Lett. 869, L8 (2018). 1807.03772.
+[80] Handley, W. J., Hobson, M. P. & Lasenby, A. N. PolyChord: nested sampling for cosmology. Mon. Not. R.
+
+15
+Astron. Soc. 450, L61–L65 (2015). 1502.01856.
+[81] Handley, W. J., Hobson, M. P. & Lasenby, A. N. polychord: next-generation nested sampling. Mon. Not. R.
+Astron. Soc. 453, 4385–4399 (2015). 1506.00171.
+[82] Gu, G. et al. Data files and scripts used to produce
+figures in https://arxiv.org/abs/2504.06118 (2025).
+URL https://doi.org/10.5281/zenodo.16881576.
+
+16
+
+Supplementary Information
+This document includes Supplementary Figures 1-7, Supplementary Discussions, and Supplementary Tables 1-6.
+1.
+
+RECONSTRUCTION OF w(z) USING A WIENER FILTER PROJECTION
+
+ 
+
+  H I I      
+ & 3 /
+
+   $     
+
+   $     
+
+ $    H 
+
+ ' 5     3 D Q W K H R Q 3 O X V   $    H 
+
+   %     
+
+   %     
+
+   $     
+
+   $     
+
+ Z   ] 
+
+ 
+
+ 
+
+ ' 5 
+
+ ' 5     8 Q L R Q  
+
+ $    H 
+
+ ' 5     ' ( 6 < 
+
+ $    H 
+
+   %     
+
+   %     
+
+ 
+ ' 5 
+
+ 
+   
+
+ $    H 
+
+   
+
+ 
+
+   
+  H I I      
+ & 3 /
+
+ ' 5     3 D Q W K H R Q 3 O X V   $    H 
+
+   
+
+   
+
+   
+
+ ' 5     8 Q L R Q  
+
+   
+
+ U H G V K L I W  ]
+
+   $     
+
+   $     
+
+ $    H 
+
+ ' 5     3 D Q W K H R Q 3 O X V   $    H 
+
+   %     
+
+   %     
+
+   
+
+ $    H 
+
+   
+
+ ' 5     ' ( 6 < 
+
+   
+
+   
+
+ $    H 
+
+   
+
+   $     
+
+   
+
+   $     
+
+ Z   ] 
+
+ 
+
+ 
+
+ ' 5 
+
+ ' 5     8 Q L R Q  
+
+ $    H 
+
+ ' 5     ' ( 6 < 
+
+ $    H 
+
+   %     
+
+   %     
+
+ 
+ ' 5 
+
+ 
+   
+
+ $    H 
+
+   
+
+   
+
+ ' 5     3 D Q W K H R Q 3 O X V   $    H 
+
+   
+
+   
+
+   
+
+ ' 5     8 Q L R Q  
+
+   
+
+ U H G V K L I W  ]
+
+   
+
+ $    H 
+
+   
+
+ ' 5     ' ( 6 < 
+
+   
+
+   
+
+ $    H 
+
+   
+
+   
+
+Supplementary Fig. 1. Same as Fig. 3 in the main text, but the blue bands show the reconstruction result with 1 (top) and
+2 (bottom) effective data modes by using enhanced correlation priors quantified by the A factor. See texts for details.
+
+In order to obtain the data modes without using any correlation prior, we need to set A = 0. However, this makes
+the convergence of MCMC chains impractical. To overcome this problem, we use a Wiener filter projection.
+Suppose a Fisher matrix of w, denoted as Fdata , can be obtained from a given dataset, and one performs two
+−1
+MCMC reconstructions to obtain w1 and w2 with two sets of modified prior covariance matrices C̃−1
+Π,1 and C̃Π,2 ,
+respectively, then the following relation can be derived using the formulism of the Wiener filter projection [35]:
+−1 
+
+
+−1
+−1
+−1
+w2 = I + F−1
+C̃
+I
++
+F
+C̃
+(9)
+data Π,2
+data Π,1 w1
+where I is the identity matrix.
+In practice, we set A = 0.01 to perform a MCMC reconstruction to obtain Cp (A = 0.01), which is the posterior
+covariance matrix of w, then we can obtain Fdata via
+−1
+Fdata = C−1
+p (A = 0.01) − 0.01CΠ .
+
+(10)
+
+17
+
+PantheonPlus
+
+1
+
+Union3
+
+DESY5
+DR1
+
+0
+
+−1
+
+w(z)
+
+−2
+
+(A1)
+
+(A2)
+
+(A3)
+
+1
+
+DR2
+
+0
+
+−1
+
+−2
+
+(B1)
+
+0.0
+
+(B2)
+
+SNe
+
+0.5
+
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+(B1)
+
+BAO
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+BAO+SNe
+1.0
+
+1.5
+
+2.0
+
+Redshift z
+Supplementary Fig. 2. Reconstructed evolution of the dark energy equation-of-state parameter w(z) from SNe, BAO, and
+combined (SNe+BAO) data. A BBN prior and a CMB measurement of θ∗ are included when BAO measurements are used.
+The top row (A1 , A2 , A3 ) uses BAO data from DESI DR1, while the bottom row (B1 , B2 , B3 ) uses BAO data from DESI DR2.
+From left to right, the columns show SNe data from PantheonPlus, Union3, and DESY5, respectively. The blue and red shaded
+regions denote the 68% confidence intervals from SNe-only and BAO-only fits, respectively, and the black hatched regions show
+the combined SNe+BAO constraints. The black solid line in each panel indicates the best-fit reconstruction for the combined
+data. The horizontal dotted line at w = −1 corresponds to the value for a cosmological constant.
+−1
+The MCMC also returns the reconstructed w, denoted as wA=0.01 . Given Fdata , w1 = wA=0.01 and C̃−1
+Π,1 = 0.01CΠ ,
+one can in principle reconstruct w for another modified correlation prior by a Wiener filter projection using Eq. (9).
+One interesting special case is the reconstruction w from data alone, without using any correlation prior. This is
+−1
+straightforward since wdata can be found by setting C̃−1
+Π,2 = 0, and the covariance matrix for wdata is simply Fdata .
+
+2.
+
+PRINCIPAL COMPONENTS ANALYSIS (PCA)
+
+PCA is a widely used tool in cosmology to find uncorrelated eigenmodes by diagonalising the associated (inverse)
+covariance matrix. Specifically,
+F = WT ΛW ,
+
+(11)
+
+where F is the inverse covariance matrix, W is the decorrelation matrix whose rows are the eigenvectors ei (z), and
+Λ is a diagonal matrix storing the eigenvalues λi [43]. In this work, we apply PCA for Fdata and C̃−1
+Π , respectively,
+and show the eigenvalues and eigenvectors in Fig. 4.
+3.
+
+COVARIANT PRINCIPAL COMPONENTS ANALYSIS (CPCA)
+
+CPCA is a variant of PCA with nice features. It allows for finding eigenmodes for both the prior and posterior,
+therefore it is much easier to quantify the effective degrees of freedom in the system, especially when the prior is
+complex.
+
+18
+
+   
+
+ ' 5 
+ ' 5 
+
+ % $ 2
+
+ % $ 2    3 D Q W K H R Q 3 O X V
+
+ % $ 2    8 Q L R Q 
+
+ % $ 2    ' ( 6 < 
+
+   
+
+σΠ2 /σp2
+
+   
+   
+   
+   
+    
+
+  
+
+  
+
+ 
+
+  
+
+  
+
+  
+
+ 0 R G H  1 X P E H U
+Supplementary Fig. 3. Ratio of the eigenvalues from the prior covariance matrix (CΠ ) to those from the posterior covariance
+matrix (Cp ) plotted against the covariant principal component analysis (CPCA) mode number. Each panel corresponds to a
+different data combination: Top left: BAO alone, Top right: BAO + PantheonPlus, Bottom left: BAO + Union3, and Bottom
+right: BAO + DESY5. Blue squares represent DESI DR2, while orange circles represent DESI DR1. The Big Bang Nucleosynthesis (BBN) priors and constraints on the CMB acoustic scale θ∗ are imposed in all cases. Modes for which Cp has smaller
+eigenvalues than CΠ indicate tighter data constraints relative to the prior.
+
+Unlike PCA, the CPCA decomposition is as in [44]:
+CΠ Ψ = Cp ΨL ,
+
+(12)
+
+where the decomposition matrix Ψ and the diagonal matrix L store the CPCA eigenvectors and eigenvalues, respectively. The CPCA decomposition, Eq. (12), yields
+ΨT Cp Ψ = I,
+ΨT CΠ Ψ = L.
+
+(13)
+
+A ratio of eigenvalues of the prior and posterior matrices, presented in Supplementary Fig. 3, shows how informative
+the posterior modes are against the prior modes, and the effective number of degrees of freedom Neff , can be calculated
+as
+
+Neff = N − Tr C−1
+(14)
+Π Cp ,
+where N is the number of nominal parameters. The trace of the diagonal ‘improvement’ matrix L, denoted as
+T ≡ Tr(L), quantifies the constraining power, and thus is a useful metric for a comparison among different datasets.
+Supplementary Table 4 shows Neff , T and the significance of deviation of w(z)CDM model from three models (in
+terms of the improved χ2 ) as illustrated in the table. Results are shown for four datasets.
+
+19
+
+1
+
+(A1)
+
+(A2)
+
+(A3)
+
+(A4)
+
+0
+−1
+
+w(z)
+
+−2
+
+DR1
+
+DR1 + PantheonPlus
+
+(B1)
+
+DR1 + Union3
+
+(B2)
+
+DR1 + DESY5
+
+(B3)
+
+(B4)
+
+0
+−1
+−2
+
+DR2
+
+0.0
+
+0.5
+
+DR2 + PantheonPlus
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+DR2 + Union3
+0.0
+
+0.5
+
+Redshift z
+
+1.0
+
+DR2 + DESY5
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+Supplementary Fig. 4. The best-fit (white solid curve) and 68% uncertainty of w(z) reconstructed from a mock dataset with
+the fiducial model of w = −1, as illustrated in black dashed line.
+
+1
+
+(A1)
+
+(A2)
+
+(A3)
+
+(A4)
+
+0
+−1
+
+w(z)
+
+−2
+
+DR1
+
+DR1 + PantheonPlus
+
+1
+
+(B1)
+
+DR1 + Union3
+
+(B2)
+
+DR1 + DESY5
+
+(B3)
+
+(B4)
+
+0
+−1
+−2
+
+DR2
+
+0.0
+
+0.5
+
+DR2 + PantheonPlus
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+DR2 + Union3
+0.0
+
+0.5
+
+Redshift z
+
+1.0
+
+DR2 + DESY5
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+Supplementary Fig. 5. The best-fit (white solid curve) and 68% uncertainty of w(z) reconstructed from a mock dataset with
+the fiducial model of w = −1.2, as illustrated in black dashed line.
+
+4.
+
+MOCK TESTS
+
+In this section, we show the reconstructed w(z) from mock datasets, generated for models of w = −1, w = −1.2,
+w(a) = −1.2 + 0.5(1 − a) and w(a) = −1.1 − 1.3(1 − a) + 11.2(1 − a)2 − 15.7(1 − a)3 , respectively, in Supplementary
+Figs 4 - 7.
+
+20
+
+1
+
+(A1)
+
+(A2)
+
+(A3)
+
+(A4)
+
+0
+−1
+
+w(z)
+
+−2
+
+DR1
+
+DR1 + PantheonPlus
+
+1
+
+(B1)
+
+DR1 + Union3
+
+(B2)
+
+DR1 + DESY5
+
+(B3)
+
+(B4)
+
+0
+−1
+−2
+
+DR2
+
+0.0
+
+0.5
+
+DR2 + PantheonPlus
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+DR2 + Union3
+0.0
+
+0.5
+
+Redshift z
+
+1.0
+
+DR2 + DESY5
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+Supplementary Fig. 6. The best-fit (white solid curve) and 68% uncertainty of w(z) reconstructed from a mock dataset with
+the fiducial model of w(a) = −1.2 + 0.5(1 − a), as illustrated in black dashed line.
+
+1
+
+(A1)
+
+(A2)
+
+(A3)
+
+(A4)
+
+0
+−1
+
+w(z)
+
+−2
+
+DR1
+
+DR1 + PantheonPlus
+
+1
+
+(B1)
+
+DR1 + Union3
+
+(B2)
+
+DR1 + DESY5
+
+(B3)
+
+(B4)
+
+0
+−1
+−2
+
+DR2
+
+0.0
+
+0.5
+
+DR2 + PantheonPlus
+1.0
+
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+DR2 + Union3
+0.0
+
+0.5
+
+Redshift z
+
+1.0
+
+DR2 + DESY5
+1.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+Supplementary Fig. 7. The best-fit (white solid curve) and 68% uncertainty of w(z) reconstructed from a mock dataset with
+the fiducial model of w(a) = −1.1 − 1.3(1 − a) + 11.2(1 − a)2 − 15.7(1 − a)3 , as illustrated in black dashed line.
+
+5.
+
+SUPPLEMENTARY TABLES
+
+21
+BAO: DESI DR1
+BAO: DESI DR2
+−1
+2
+−1
+H0 [km s Mpc ]
+ΩM
+∆χ
+H0 [km s Mpc−1 ]
+ΩM
+∆χ2
+BAO
+68.69 ± 0.63
+0.2934 ± 0.0071
+0
+68.53 ± 0.48
+0.2955 ± 0.0042
+0
+68.30 ± 0.61
+0.2989 ± 0.0068
+0
+68.41 ± 0.48
+0.2974 ± 0.0041
+0
+BAO + PantheonPlus
+ΛCDM
+BAO + Union3
+68.36 ± 0.62
+0.2982 ± 0.0070
+0
+68.43 ± 0.48
+0.2972 ± 0.0042
+0
+BAO + DESY5
+67.98 ± 0.59
+0.3036 ± 0.0067
+0
+68.29 ± 0.48
+0.2992 ± 0.0042
+0
++0.014
+68.6+1.8
+0.294
+−0.02
+67.7
+±
+1.1
+0.3004
+±
+0.0076
+−0.71
+BAO
+−2.2
+−0.013
+BAO + PantheonPlus
+67.22 ± 0.82
+0.3030 ± 0.0072 −3.96
+67.22 ± 0.72
+0.3037 ± 0.0051 −4.74
+wCDM
+BAO + Union3
+66.4 ± 1.0
+0.3079 ± 0.0083 −5.23
+66.71 ± 0.86
+0.3070 ± 0.0061 −5.60
+BAO + DESY5
+66.37 ± 0.78
+0.3083 ± 0.0071 −10.79
+66.56 ± 0.68
+0.3080 ± 0.0050 −11.66
++0.041
++1.9
+BAO
+65.0+2.3
+0.337
+−1.79
+64.2
+0.343+0.028
+−3.37
+−3.7
+−0.029
+−2.5
+−0.025
+BAO + PantheonPlus
+67.55 ± 0.87
+0.3053 ± 0.0076 −4.80
+67.26 ± 0.72
+0.3073 ± 0.0061 −5.86
+w0 wa CDM
+BAO + Union3
+66.2 ± 1.0
+0.322 ± 0.011 −9.23
+65.90 ± 0.92
+0.3233 ± 0.0096 −10.62
+BAO + DESY5
+66.92 ± 0.77
+0.3148 ± 0.0076 −14.42
+66.59 ± 0.67
+0.3157 ± 0.0061 −16.16
+BAO
+61.3+5.6
+0.43+0.15
+−6.81
+65.2+6.9
+0.373+0.091
+−6.98
+−17
+−0.21
+−18
+−0.21
+BAO + PantheonPlus
+67.2 ± 1.0
+0.3132 ± 0.0097 −15.98
+66.90 ± 0.86
+0.3141 ± 0.0076 −13.80
+w(z)CDM
+66.6 ± 1.7
+0.319 ± 0.016 −18.03
+66.4 ± 1.6
+0.319 ± 0.015 −20.07
+BAO + Union3
+BAO + DESY5
+66.3 ± 1.1
+0.3213 ± 0.011 −17.70
+66.05 ± 0.96
+0.3226 ± 0.0089 −21.33
+Model
+
+Dataset
+
+−1
+
+Supplementary Table 1. Mean values and 68% confidence-level (CL) uncertainties for the Hubble constant (H0 ) and the
+present-day matter density parameter (ΩM ) extracted under four different cosmological models (listed in the first column) and
+four data combinations (BAO alone and BAO combined with each of the three supernova datasets). For non-Gaussian posterior
+distributions, we provide asymmetric error bars. The final column gives the improvement in χ2 relative to the corresponding
+ΛCDM fit. Results are shown for DESI Data Release 1 (DR1) and Data Release 2 (DR2) BAO measurements, enabling a direct
+comparison of constraints at different survey stages.
+
+BAO: DESI DR1
+BAO: DESI DR2
+Model/Dataset
+w or w0
+wa
+w or w0
+wa
+wCDM
+BAO
+−0.997+0.093
+−0.964 ± 0.047
+−0.079
+BAO + PantheonPlus −0.937 ± 0.032
+−0.940 ± 0.027
+BAO + Union3
+−0.902 ± 0.044
+−0.918 ± 0.034
+BAO + DESY5
+−0.899 ± 0.031
+−0.912 ± 0.026
+w0 wa CDM
+BAO
+−0.54+0.43
+< −1.03
+−0.52+0.29
+−1.40+0.84
+−0.23
+−0.25
+−0.88
+BAO + PantheonPlus −0.874 ± 0.071 −0.40 ± 0.39 −0.883 ± 0.059 −0.30 ± 0.27
+BAO + Union3
+−0.68 ± 0.12 −1.10 ± 0.55 −0.713 ± 0.098 −0.83 ± 0.37
+BAO + DESY5
+−0.755 ± 0.080 −0.86 ± 0.44 −0.790 ± 0.063 −0.61 ± 0.29
+Supplementary Table 2. Mean values of the dark energy equation-of-state parameters for ΛCDM extensions (i.e. wCDM
+and w0 wa CDM) derived from the indicated BAO datasets (DESI DR1 and DR2). Each row presents results for a different data
+combination. The quoted uncertainties correspond to 68% confidence intervals.
+
+22
+Neff
+DR1
+DR1+PantheonPlus DR1+Union3 DR1+DESY5
+DR2
+DR2+PantheonPlus DR2+Union3 DR2+DESY5
+1
+0.0 ± 0.6
+1.0 ± 0.6
+1.7 ± 0.6
+3.2 ± 0.6
+0.3 ± 0.6
+1.0 ± 0.6
+2.3 ± 0.6
+3.8 ± 0.6
+2
+0.2 ± 0.7
+1.5 ± 0.6
+2.5 ± 0.6
+4.1 ± 0.6
+0.4 ± 0.7
+1.3 ± 0.6
+3.0 ± 0.6
+5.0 ± 0.6
+0.0 ± 0.7
+1.5 ± 0.7
+2.8 ± 0.7
+3.4 ± 0.7
+−0.5 ± 0.7
+1.4 ± 0.7
+3.3 ± 0.7
+5.2 ± 0.7
+3
+4 −1.2 ± 0.8
+1.1 ± 0.7
+2.3 ± 0.7
+2.4 ± 0.7
+−1.4 ± 0.7
+1.1 ± 0.7
+3.1 ± 0.7
+4.7 ± 0.7
+5
+−
+−0.1 ± 0.7
+0.7 ± 0.7
+1.2 ± 0.7
+−
+−0.3 ± 0.7
+2.1 ± 0.7
+3.0 ± 0.7
+6
+−
+−5.2 ± 0.7
+−4.2 ± 0.7
+−5.1 ± 0.7
+−
+−3.0 ± 0.7
+−0.6 ± 0.7
+−0.8 ± 0.7
+1
+1.1
+1.7
+2.2
+2.9
+1.2
+1.8
+2.0
+2.9
+2
+1.7
+2.3
+2.8
+3.5
+1.8
+2.4
+2.8
+3.6
+3
+2.2
+2.8
+3.2
+3.8
+2.2
+2.8
+3.2
+3.9
+4
+2.4
+3.2
+3.5
+4.0
+2.4
+3.1
+3.6
+4.2
+5
+−
+3.6
+3.8
+4.1
+−
+3.3
+3.9
+4.3
+−
+3.9
+3.9
+4.2
+−
+3.6
+4.1
+4.5
+6
+Supplementary Table 3. Comparison of ∆ ln E (numbers with error bars in the upper half of the table) and the signal-to-noise
+ratio (SNR) for detecting deviations from w = −1 (numbers in the lower half of the table) across different values of Neff using
+four data combinations. The left half of the table corresponds to DESI DR1 results, while the right half presents the DESI DR2
+results.
+
+Dataset
+
+Neff
+
+DR1
+DR1 + PantheonPlus
+DR1 + Union3
+DR1 + DESY5
+DR2
+DR2 + PantheonPlus
+DR2 + Union3
+DR2 + DESY5
+
+4.9
+6.2
+5.9
+6.1
+5.2
+6.7
+6.4
+6.5
+
+SNR of
+SNR of
+SNR of
+w ̸= −1 w ̸= constant w ̸= w0 + wa (1 − a)
+5394.7
+2.8
+2.8
+2.1
+61373.7
+3.8
+3.1
+3.1
+43855.4
+3.9
+3.0
+2.3
+68266.3
+4.2
+2.4
+1.6
+16963.5
+2.6
+2.3
+1.6
+155945.6
+3.6
+2.8
+2.7
+95745.0
+4.2
+3.3
+2.6
+148540.7
+4.5
+2.8
+2.1
+T
+
+Supplementary Table 4. Effective degrees of freedom Neff , trace T , and the signal-to-noise ratio (SNR) of deviations of
+the w(z)CDM model from three reference models—ΛCDM, wCDM, and w0 wa CDM—across four data combinations. The top
+section lists DESI Data Release 1 (DR1) results, while the bottom section shows DESI Data Release 2 (DR2).
+
+Dataset
+γ1
+γ2
+γ3
+γ4
+γ5
+DR1
+0.23 ± 0.40 −1.86 ± 0.78 0.3 ± 1.3
+1.6 ± 1.7
+0.7 ± 2.6
+DR1 + PantheonPlus 0.28 ± 0.12 0.16 ± 0.25 −0.51 ± 0.43 −1.66 ± 0.65 0.92 ± 0.87
+DR1 + Union3
+0.52 ± 0.18 −0.37 ± 0.32 −0.14 ± 0.52 −0.95 ± 0.73 2.7 ± 1.1
+DR1 + DESY5
+0.42 ± 0.12 −0.30 ± 0.25 −0.17 ± 0.49 −1.22 ± 0.73 0.1 ± 1.1
+DR2
+0.28 ± 0.21 −0.90 ± 0.47 −0.85 ± 0.73 0.72 ± 0.90 −0.3 ± 2.0
+DR2 + PantheonPlus 0.26 ± 0.11 0.15 ± 0.20 0.01 ± 0.33 −1.21 ± 0.48 0.56 ± 0.70
+0.44 ± 0.15 −0.36 ± 0.25 −0.08 ± 0.39 −1.23 ± 0.58 0.93 ± 0.73
+DR2 + Union3
+DR2 + DESY5
+0.41 ± 0.11 −0.16 ± 0.20 −0.22 ± 0.36 −1.35 ± 0.59 0.38 ± 0.74
+Supplementary Table 5. The amplitude of the first five PCA eigenmodes of w(z) reconstructed from various data combinations.
+
+23
+∆χ2
+∆χ2
+∆χ2
+∆χ2
+(Neff =1) (Neff =2) (w0 wa CDM) (w(z)CDM)
+DR1
+−1.34
+−4.04
+−6.98
+−8.01
+−6.20
+−4.78
+−14.81
+DR1 + PantheonPlus −5.93
+DR1 + Union3
+−7.51
+−9.45
+−9.00
+−14.93
+DR1 + DESY5
+−12.06 −14.14
+−14.25
+−17.51
+DR2
+−2.33
+−5.12
+−3.57
+−6.61
+DR2 + PantheonPlus −5.79
+−6.30
+−5.79
+−13.29
+−7.78
+−10.26
+−9.97
+−17.64
+DR2 + Union3
+DR2 + DESY5
+−13.71 −15.68
+−16.24
+−20.34
+Dataset
+
+Supplementary Table 6. The improved χ2 of four different dark energy models with respect to the ΛCDM model derived
+from various data combinations.
+
+

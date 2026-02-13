@@ -1,0 +1,3 @@
+v⇤(h) = max ⇢ p(h,h, s)[r(h, s, h) + v⇤(h)] + p(l,h, s)[r(h, s, l) + v⇤(l)],
+p(h,h, w)[r(h, w, h) + v⇤(h)] + p(l,h, w)[r(h, w, l) + v⇤(l)]
+= max ⇢ ↵[rs + v⇤(h)] + (1,↵)[rs + v⇤(l)],

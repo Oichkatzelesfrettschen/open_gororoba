@@ -1,0 +1,2988 @@
+equations = []
+tables = []
+full_text = """
+Introducing Physical Warp Drives\r
+Alexey Bobrick, Gianni Martire\r
+Advanced Propulsion Laboratory at Applied Physics, 477 Madison Avenue, New\r
+York, 10022, U.S.\r
+E-mail: alexey.bobrick@appliedphysics.org\r
+September 2020\r
+Abstract. The Alcubierre warp drive is an exotic solution in general relativity.\r
+It allows for superluminal travel at the cost of enormous amounts of matter\r
+with negative mass density. For this reason, the Alcubierre warp drive has been\r
+widely considered unphysical. In this study, we develop a model of a general\r
+warp drive spacetime in classical relativity that encloses all existing warp drive\r
+definitions and allows for new metrics without the most serious issues present\r
+in the Alcubierre solution. We present the first general model for subluminal\r
+positive-energy, spherically symmetric warp drives; construct superluminal warp\u0002drive solutions which satisfy quantum inequalities; provide optimizations for the\r
+Alcubierre metric that decrease the negative energy requirements by two orders of\r
+magnitude; and introduce a warp drive spacetime in which space capacity and the\r
+rate of time can be chosen in a controlled manner. Conceptually, we demonstrate\r
+that any warp drive, including the Alcubierre drive, is a shell of regular or exotic\r
+material moving inertially with a certain velocity. Therefore, any warp drive\r
+requires propulsion. We show that a class of subluminal, spherically symmetric\r
+warp drive spacetimes, at least in principle, can be constructed based on the\r
+physical principles known to humanity today.\r
+Submitted to: Class. Quantum Grav.\r
+1. Introduction\r
+The classical-relativistic Alcubierre drive solution allows timelike observers to travel\r
+superluminally, although at the expense of using material with negative rest-mass\r
+energy (Alcubierre 1994); for recent reviews see also (Lobo 2007, Alcubierre &\r
+Lobo 2017). This solution is given by the following asymptotically-flat metric:\r
+ds\r
+2 = −c2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, (1)\r
+where rs =\r
+p\r
+(x − vst)\r
+2 + y2 + z2. The metric describes a spherical warp bubble\r
+(a region deviating from the flat metric) moving along the x-axis with an arbitrary\r
+velocity vs, which may be larger or smaller than the speed of light c.\r
+The shape function f(rs), present in the metric, defines the size and profile of the\r
+warp bubble. For large distances rs from the bubble, f(rs) = 0 and the spacetime is\r
+flat. For small distances, rs ≈ 0, the shape function f(rs) = 1, and the metric describes\r
+the flat internal region of the bubble. In a coordinate system with x → x\r
+0 = x−vst, this\r
+internal region is described explicitly by the Minkowski flat metric. The intermediate\r
+arXiv:2102.06824v2 [gr-qc] 17 Feb 2021
+
+Introducing Physical Warp Drives 2\r
+region, for which f(rs) & 0, corresponds to the spherical boundary of the warp. In\r
+the original study, (Alcubierre 1994) chose function f(rs), somewhat arbitrarily, as:\r
+fAlc(rs) = tanh(σ(rs + R)) − tanh(σ(rs − R))\r
+2 tanh(σR)\r
+, (2)\r
+where parameters R and σ\r
+−1 define the radius and the thickness of the transition from\r
+the internal to the external region, correspondingly.\r
+In the case of superluminal motion, the metric possesses a black hole-like event\r
+horizon behind the bubble and a white hole-like event horizon in front of it (Finazzi\r
+et al. 2009). These event horizons arise because timelike observers cannot exit the\r
+superluminal ship in the direction ahead of it, and cannot enter it from behind. In\r
+both cases, the timelike observers would have to move superluminally when outside\r
+of the ship.\r
+The energy density for the Alcubierre drive, as measured by Eulerian observers\r
+(uµ = (1, 0, 0, 0)), is given by:\r
+T\r
+00 = −\r
+1\r
+8π\r
+ρ\r
+2v2\r
+s\r
+4r\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+, (3)\r
+where ρ\r
+2 ≡ y2 + z2\r
+is the cylindrical coordinate.\r
+Despite its interesting properties which allow timelike observers to travel at\r
+arbitrary velocities, the Alcubierre drive solution possesses several drawbacks. As\r
+noted earlier, it requires negative energy densities, Equation (3), and thus violates the\r
+weak energy condition. Although negative energy densities are a general property\r
+of any superluminal drive (Olum 1998, Visser et al. 2000), the energy density is\r
+also negative at subluminal speeds for the Alcubierre drive, even in the weak-field\r
+approximation (Lobo & Visser 2004). Additionally, superluminal motion allows for\r
+closed timelike loops, e.g. leading to grandfather paradox, and violates the null energy\r
+condition and causality, e.g. (Everett 1996), although the latter may be recovered at\r
+the expense of Lorentz invariance (Liberati et al. 2002). When moving superluminally,\r
+the drive has an additional problem. It leads to quantum instabilities related to pair\r
+production near the horizon behind the warp as well as accumulation of particles at\r
+the horizon in the front part of the warp (Finazzi et al. 2009).\r
+The Alcubierre drive is also problematic at sub-relativistic speeds. Firstly, it\r
+requires unphysically large amounts of (negative) energy. For instance, it would require\r
+an amount of negative energy comparable to the mass of the Sun to produce relativistic\r
+bubbles of ≈ meter sizes (Alcubierre 1994). Furthermore, such high negative energy\r
+densities do not appear even theoretically feasible. There are no known materials\r
+which would allow for gathering large amounts of negative energy in a controlled\r
+way. While zero-point vacuum fluctuations may produce negative energies in curved\r
+spacetimes, for Alcubierre drives this situation is only possible if the walls of the\r
+bubble had thicknesses comparable to Planck scales. Such thin walls, however, require\r
+extreme amounts of energy – comparable to the rest-mass energy of the Universe –\r
+as may be seen from Equation (3). Therefore, there is no physical way to create an\r
+Alcubierre drive (Pfenning & Ford 1997, Ford & Roman 1997).\r
+Finally, there is no proposed way of creating an Alcubierre drive, even if negative\r
+energy were available. In the original study, (Alcubierre 1994) suggested that the\r
+velocity may be time-dependent, vs = vs(t). Indeed, Equation (3) retains its form even\r
+for time-dependent velocities. And, since vs = 0 corresponds to flat spacetime, it was\r
+assumed that the Alcubierre drive might be generated through acceleration. However,
+
+Introducing Physical Warp Drives 3\r
+the metric in Equation (1) with time-variable vs = vs(t) corresponds to a time-variable\r
+stress-energy tensor which does not satisfy continuity equations. Alternatively, such\r
+solutions may be said to require an implicit dynamical field to effectively provide\r
+propulsion for the object, e.g. (Bassett et al. 2000). Generally, there are no self\u0002consistent warp drive solutions proposed in the literature which can self-accelerate at\r
+all from zero velocities, not to mention gain superluminal speeds.\r
+Despite the rather extensive work on the properties of the Alcubierre drive\r
+solution, it remains unclear which of the above issues are features of the Alcubierre\r
+solution specifically or more fundamental properties of warp drives as such. New warp\r
+drive solutions have been introduced only in very few studies. (Van Den Broeck 1999)\r
+reduced the energy requirements of the Alcubierre drive to about the mass of the\r
+Sun while satisfying the vacuum energy inequalities. The reduction was realized\r
+by decreasing the externally measured size of the warp bubble down to 10−15 m\r
+while keeping the internal volume constant. This solution satisfies the weak energy\r
+conditions, although it requires that classical gravity remains applicable down to such\r
+small scales, at which it was never tested. However, as we show in Appendix A through\r
+a coordinate transformation, this solution is equivalent to the Alcubierre solution.\r
+(Nat´ario 2002) constructed a warp drive solution without space contraction or\r
+expansion, contrary to the earlier assumption that it facilitated the movement of\r
+warp drives. (Nat´ario 2006) constructed a new subluminal warp drive solution in the\r
+weak-field regime, which required negative energies. (Loup et al. 2001) had previously\r
+introduced a modified version of the Alcubierre drive intended to alter the rate of\r
+time for the observers inside the bubble. However, their modification reduces to the\r
+original Alcubierre metric, as we also show in Appendix A. Finally, (Lentz 2020)\r
+has recently proposed a warp drive metric claiming to have purely positive energy\r
+everywhere in both subluminal and superluminal regimes, although without providing\r
+means to reproduce the study.\r
+The works above, to our knowledge, summarize all the modifications of the\r
+Alcubierre drive available in the literature. Superluminal travel had also been studied\r
+by (Krasnikov 1998) and (Everett & Roman 1997). In these studies, the authors\r
+introduced Krasnikov tubes. Krasnikov tubes are ‘spacetime tunnels’ which allow for\r
+superluminal travel without violating causality, but only for round trips and with\r
+much larger energy requirements than the Alcubierre drive. Superluminal travel has\r
+also been discussed in the context of wormholes, e.g. (Garattini & Lobo 2007), and\r
+time-machine metrics, e.g. (Fermi & Pizzocchero 2018), in all cases requiring negative\r
+energies. Finally, modified gravity theories may provide some desirable properties\r
+for the Alcubierre drive. For instance, conformal gravity allows for construction of\r
+Alcubierre solutions with positive energy only (Varieschi & Burstein 2013), while\r
+extra-dimensional theories of gravity may reduce the energy requirements of the drive\r
+(White 2013).\r
+In this study, we show that the properties of the Alcubierre metric – in particular,\r
+its negative energy density and the accompanying immense energy requirements – are\r
+not a necessary feature of warp drive spacetimes. In Section 2, we discuss that any\r
+general warp drive, including the Alcubierre metric, may be thought of as a shell of\r
+positive- or negative-energy density material which modifies the state of spacetime in\r
+the flat vacuum region inside it. In Section 3, we introduce, for the first time, the most\r
+general spherically symmetric warp drives. We show that the reason for the negative\r
+energy requirements of the Alcubierre metric and all the warp drives introduced in\r
+the literature is, likely, the truncation of the gravitational field outside of the metric,
+
+Introducing Physical Warp Drives 4\r
+and the accelerated rate of time compared to the comoving free observer. In turn, the\r
+most general positive-energy (spherical) warp drive solutions must slow down the time\r
+compared to the comoving observer and have a gradual (Schwarzschild) fall off of the\r
+gravitational field. In Section 4, we introduce a simple method to construct warp drive\r
+metrics by choosing the state of spacetime inside them. Additionally, we show that the\r
+Alcubierre metric is only a particular member of a much more general class of warp\r
+drive solutions admitting negative energy densities. Subsequently, we construct several\r
+spacetimes with a range of new properties. We introduce a macroscopic negative\u0002energy drive which satisfies quantum inequalities, as well as several metrics with\r
+negative-energies which allow one to control the rate of time and spatial contraction\r
+inside the drive. In Section 5, we review the interpretation of warp drives in light of\r
+this study.\r
+2. General class of warp drives\r
+2.1. Definition of a general warp drive spacetime\r
+We define a general warp drive spacetime, as shown in Figure 1, as an asymptotically\u0002flat vacuum region Dout (background) which encloses a compact arbitrarily curved\r
+region Dwarp with a spherical topology (the warping region); Dwarp, in turn, encloses\r
+a flat extended‡ compact region Din with a trivial topology (the ‘passenger’ area).\r
+This definition covers both all the existing warp drive spacetimes, such as the one by\r
+(Alcubierre 1994), as well as trivial solutions, such as weak-field perturbations of the\r
+Minkowski spacetime. To formalize the difference between extreme and mild cases\r
+like these, we shall consider the warped region Dwarp by using comoving reference\r
+frames located inside and outside it, which will allow us to quantify how strong its\r
+gravitational influence is.\r
+We shall focus on warp drive spacetimes which, intuitively, are stationary or non\u0002changing from the ‘passenger’ point of view. More formally, we consider warp drive\r
+spacetimes which, by definition, admit a global Killing vector field, ξ, which is aligned\r
+with the four-velocity of the boundary of the region ∂Din (the inner boundary of the\r
+shaded region in Figure 1). Such a field establishes the global frame of rest with\r
+respect to the warped region. Subsequently, whenever we discuss a physical motion\r
+of an observer relative to the warp drive, we consider, locally, the motion relative to\r
+the global reference frame defined by the field ξ. Furthermore, using this vector field\r
+will allow us to apply the well-known techniques suitable for spacetimes possessing a\r
+timelike Killing vector to analyse and classify warp drive spacetimes.\r
+Since the internal region Din is flat, vector field ξ is constant in that region.\r
+Therefore, in the internal region, this vector field ξ defines a reference frame (tetrad)\r
+for the internal observer§ Oin. Similarly, in the asymptotic infinity, vector field ξ\r
+defines the frame of the remote comoving observer Oout,co. This comoving reference\r
+frame Oout,co, as we further argue, is the most natural frame against which one can\r
+compare the frame Oin inside the warped region. Finally, this remote comoving\r
+‡ To avoid effectively including general asymptotically-flat spacetimes in the defintion, we require\r
+that the extent of the region Din should be non-vanishing and physically interesting. In other words,\r
+the inner region Din should be large enough to allow observers to conduct physical experiments of\r
+desired scales.\r
+§ While, in relativity, physical observers are timelike by definition, we shall occasionally be\r
+mentioning timelike and spacelike observers for convenience. By these, we shall understand physical\r
+observers and spacelike frames, correspondingly.
+
+Introducing Physical Warp Drives 5\r
+Figure 1. A schematic illustration of a warp-drive spacetime. The\r
+spacetime consists of three regions: Asymptotically-flat vacuum background Dout\r
+(background), general stationary curved region Dwarp with a spherical topology\r
+(the warping region) and a flat inner region Din (‘passenger’ space). Any such\r
+spacetime, including the Alcubierre drive metric, is realised through a shell of\r
+ordinary or exotic negative energy density material filling the warping region\r
+Dwarp. Axis x shows the direction of motion, while ρ is the cylindrical radius.\r
+As we discuss in Section 4.1, flattened disk-shaped metrics minimise energy\r
+requirements of the particular Alcubierre, but not necessarily other, warp drive\r
+spacetimes. As we also discuss in Section 5, warp drive spacetimes require some\r
+form of propulsion in order to accelerate. For this reason, in physical realisations\r
+of such spacetimes, the front and rear parts are likely asymmetric.\r
+observer Oout,co may be moving with constant three-velocity vs with respect to a\r
+timelike observer Oout, the latter of which we shall consider to be at rest. Everywhere\r
+in this study, apart from the general discussion in this section, we shall consider warp\r
+drives spacetimes which are axisymmetric along the direction of motion.\r
+The three-velocity of the comoving observer vs, which represents the velocity of\r
+the warped region relative to the remote observer Oout, may be slower or faster than\r
+the speed of light with respect to the observer. This corresponds to four-velocity of\r
+the comoving observer Oout,co being timelike, null or spacelike. Both observers Oin\r
+and Oout,co, therefore, may in general, at least formally, be timelike, null, or spacelike.\r
+If region Dwarp contained vanishing stress-energy tensor, the whole spacetime would\r
+be close to Minkowski spacetime and the two observers Oin and Oout would both be
+
+Introducing Physical Warp Drives 6\r
+timelike, null, or spacelike at the same time. However, it is also possible for region\r
+Dwarp to be sufficiently curved such that, as we show further, the norms of the four\u0002velocities of observers Oin and Oout,co may be different from each other. Therefore,\r
+all stationary warp drive spacetimes may be split into four distinct classes, based on\r
+whether the remote comoving observer Oout,co moves subluminally (subluminal drives)\r
+or superluminally (superluminal drives), and whether the internal observer Oin has\r
+the same norm as the comoving observer Oout,co (mild warp drives) or different norm\r
+from the comoving observer (extreme warp drives):\r
+Class I: Mild subluminal warp drives: These spacetimes are defined by the\r
+vector field ξ being timelike everywhere. Consequently, three-velocities of such\r
+drives are subluminal, i.e. vs < c. Spacetimes of this class approach the flat\r
+Minkowski spacetime in the trivial limit, and observers Oin, Oout,co reduce to\r
+a pair of co-moving timelike Lorentz observers. Non-trivial members of this\r
+class contain spacetimes with region Dwarp sufficiently curved, so that tetrads\r
+of observers Oin and Oout,co differ significantly from each other, i.e. the observers\r
+read off different rates of clocks and lengths of rulers. At the same time, such\r
+spacetimes also contain weak-field solutions corresponding to classical shell-like\r
+objects moving with subluminal velocities and weakly modifying the state of the\r
+spacetime inside them. Such solutions are possible because the Dwarp region may\r
+be set arbitrarily close to being flat, rendering the whole spacetime arbitrarily\r
+close to Minkowski spacetime.\r
+Class II: Mild superluminal warp drives: These spacetimes are characterized by\r
+the vector field ξ being spacelike or null everywhere. Consequently, such warp\r
+drives have luminal or superluminal velocities, i.e., vs ≥ c. These spacetimes\r
+also admit a trivial limit, wherein they reduce to flat Minkowski spacetime, with\r
+the tetrads Oin, Oout,co corresponding to a pair of comoving null or spacelike\r
+(superluminal) ‘observers’. Weak-field members of the class correspond to small\r
+amounts of ‘superluminal matter’ in the region Dwarp introducing small differences\r
+in the measurements of frames Oin, Oout,co. By ‘superluminal matter’ we\r
+understand the matter at rest with respect to a space-like reference frame. In\r
+the case of the stress-energy tensor for a perfect fluid, such matter violates the\r
+dominant energy condition. A general spacetime of this class introduces non\u0002trivial differences between frames Oin and Oout,co. Since superluminal matter\r
+cannot be produced from physical matter, and since null or spacelike tetrads\r
+cannot be associated with physical observers, the spacetimes of this class have\r
+limited interest.\r
+Class III: Extreme superluminal warp drives: These spacetimes are defined by\r
+the vector field ξ being timelike in the inner region Din, but null or spacelike in the\r
+asymptotic infinity of the outer region Dout. The remote comoving observers in\r
+such spacetimes move luminally or superluminally relative to the resting timelike\r
+observer Oout, i.e., vs ≥ c. This class of spacetimes does not contain trivial\r
+solutions and the warped region Dwarp is sufficiently curved to allow timelike\r
+observers Oin to be moving superluminally relative to the timelike observer Oout\r
+(and as a consequence, the timelike observer Oin will be travelling back in time\r
+from the point of view of yet another remote timelike observer O0\r
+out). At the\r
+same time, the comoving observer Oout,co is formally superluminal; in other\r
+words, remote timelike observers cannot be comoving with a warp drive of this\r
+class. For such spacetimes, we can define a Killing horizon ∂DK as the minimal
+
+Introducing Physical Warp Drives 7\r
+boundary surface where the Killing vector field ξ becomes null. A necessary, but\r
+not sufficient, condition for warp drives of this class to be physical is that the\r
+Killing horizon ∂DK does not intersect with region Dwarp. If the Killing horizon\r
+did intersect with region Dwarp, some part of the matter in that region would\r
+be at rest with respect to spacelike tetrads aligned with vector field ξ. In other\r
+words, a fraction of matter in the region Dwarp would have to be superluminal (in\r
+the same sense, as for Class II above) and violate the dominant energy condition.\r
+Class IV: ‘Extreme’ subluminal warp drives: Spacetimes of this class are\r
+defined by the vector field ξ being null or spacelike in the inner region Din, but\r
+timelike at the asymptotic infinity of the outer region Dout. Since the comoving\r
+observer Oout,co is timelike, such spacetimes are subluminal, i.e. vs < c. Since the\r
+Killing vector is spacelike in the inner region Din, no timelike internal observers\r
+can be at rest relative to the inner boundary of the drive ∂Din. This property\r
+bears similarity to black hole spacetimes, except for that the inner region Din for\r
+this class of spacetimes is flat everywhere. A necessary condition for spacetimes\r
+of this class to be physical is that the Killing horizon coincides with the boundary\r
+of the inner region, ∂Din. Otherwise, some fraction of matter in the region Dwarp\r
+will be superluminal, as in the previous class.\r
+In practical terms, as follows from our definition, any warp drive spacetime may\r
+be seen as a shell of ordinary or exotic material which fills region Dwarp and moves with\r
+some constant velocity relative to an external timelike observer Oout. The presence\r
+of the shell inevitably modifies the space and time in the inner region Din. This\r
+modification leads (in addition to other effects) to a difference in the measurements\r
+of times and lengths between an observer in the inner region Din and a comoving\r
+remote observer Oout,co. General warp drive spacetimes, therefore, form a continuous\r
+family which includes both trivial (flat or nearly-flat) and non-trivial (strongly curved)\r
+spacetimes.\r
+2.2. How do existing warp drive spacetimes fit in the classification?\r
+The Alcubierre drive is a truncated warp drive spacetime defined by meeting the three\r
+requirements. First, that the external spacetime Dout is Minkowskian. In other words,\r
+the matter in the warped region Dwarp does not exhibit gravitational influence outside\r
+of it (Requirement 1). Second, observers Oin and Oout are always timelike, and the\r
+tetrads of these observers are equal to each other. In other words, the clock rates and\r
+the lengths of the rulers of observers Oin and Oout are synchronized and put equal to\r
+each other (Requirement 2). Finally, the warped region Dwarp is functionally limited\r
+to Equations (1) and (2) in Section 1 (Requirement 3). For subluminal velocities, the\r
+Alcubierre drive belongs to Class I, mild subluminal warp drives. For superluminal\r
+velocities it belongs to Class III, extreme superluminal warp drives.\r
+Compared to general warp drives, this set of constraints may seem artificial.\r
+For example, requiring that the material of the Alcubierre drive does not gravitate\r
+in region Dout, which is non-typical for massive objects, as we discuss further in\r
+Section 3, unnecessarily puts strong constraints on the stress-energy tensor in region\r
+Dwarp. Similarly, requiring that the time of observers Oin is synchronized with the time\r
+of observers Oout means that, at least in the subluminal regime, the time of internal\r
+observers Oin is accelerated compared to the time of remote comoving observers\r
+Oout,co. In comparison, general warp drive spacetimes do not need to be truncated
+
+Introducing Physical Warp Drives 8\r
+and may allow an arbitrary relation between the measurements of observers Oin and\r
+Oout,co.\r
+A more general class of warp drive metric was proposed by (Nat´ario 2002).\r
+However, their most general warp drive, similarly to the Alcubierre solution, still\r
+imposes Requirements 1 and 2 from the Alcubierre metric. That is, is also makes\r
+region Dout strictly flat outside of the drive and synchronizes the time of the internal\r
+and the resting (not comoving) observers. Similarly to the Alcubierre solution, the\r
+(Nat´ario 2002) class of spacetimes also belongs to Class I in the subluminal regime\r
+and Class III in the superluminal regime.\r
+Further, in Sections 4 and 3, we show that general warp drive spacetimes are\r
+diverse and can have a variety of properties that are often more appealing compared\r
+to either the Alcubierre spacetime or to the (Nat´ario 2002) class of spacetimes.\r
+2.3. Properties of warp drive spacetimes\r
+In this section, we summarise the standard tools applicable for analyzing general warp\r
+drives, in order to apply them further in Sections 4 and 3.\r
+The internal physical volume of a warp drive measured by observer Oin, inside the\r
+warped region, is given by Vin ≡\r
+R\r
+Din\r
+d\r
+3xi\r
+in. For truncated warp drive spacetimes, i.e.\r
+spacetimes where the outside vacuum region Dout is flat, the external volume may be\r
+defined as Vout ≡\r
+R\r
+Din∪warp\r
+d\r
+3xi\r
+out. The integral is calculated over the volume enclosing\r
+the warped region and assuming, during the integration, that the volume’s interior is\r
+flat. Such a construction provides a measure of the size of the warp bubble as observed\r
+from outside. It may be formally done with the help of the Cartesian coordinate grid\r
+of the remote observer Oout, analytically extended to cover the warped region. The\r
+comoving external volume Vout,co may be similarly defined for the comoving observer.\r
+For general asymptotically-flat metrics, we do not consider external volumes as they\r
+are coordinate-dependent.\r
+We calculate the energy density, the momentum flux, and their volume integrals\r
+for warp drive spacetimes, and the mechanical stress distributions, in the coordinate\r
+system adapted to the remote comoving observer Oout,co. The coordinate system\r
+adapted to the comoving observer is aligned with the Killing vector field ξ, which\r
+allows for a 3+1 decomposition of the spacetime and thus provides coordinate-invariant\r
+measures for the total energy, mass and momentum of the drive. We also consider\r
+a system of Eulerian observers defined through four-velocities uµ = √\r
+1\r
+−g\r
+00\r
+(1, 0, 0, 0),\r
+similar to how it was done in (Alcubierre 1994). These observers are imperatively\r
+timelike and are normal to the surfaces of constant time, but are coordinate-dependent.\r
+The energy density w in each of the coordinate systems is given by w =\r
+(−g\r
+00)−1T00. The momentum flux ji and the pressure P in the same reference system\r
+are given by j\r
+i = uµTµi = √\r
+1\r
+−g\r
+00\r
+T\r
+0i and P = Tµν(δµν − uµuν) = T + (g00)−1T00\r
+,\r
+where T ≡ T\r
+µνgµν. Notably, the total energy and momentum contain the contribution\r
+only from the warped region Dwarp: E =\r
+R\r
+Dwarp\r
+(−g\r
+00)−1T00√\r
+−gd\r
+3xi\r
+out, J\r
+i =\r
+R\r
+Dwarp √\r
+1\r
+−g\r
+00\r
+T\r
+0i√\r
+−gd\r
+3xi\r
+out.\r
+Warp drive solutions may be compared based on how they satisfy different energy\r
+conditions. Among these are the strong and weak energy conditions. Furthermore, we\r
+also consider quantum inequalities, e.g. (Pfenning & Ford 1997). These inequalities,\r
+at least in the weak-field regime, potentially allow the spacetime curvature to modify
+
+Introducing Physical Warp Drives 9\r
+the quantum vacuum and, this way, allow for some negative-energy density:\r
+τ0\r
+π\r
+Z ∞\r
+−∞\r
+hTµνu\r
+µuν\r
+i\r
+τ\r
+2 + τ\r
+2\r
+0\r
+dτ ≥ −\r
+3\r
+32π\r
+2τ\r
+4\r
+0\r
+, (4)\r
+where τ is the proper time of the observer and τ0 is an arbitrary constant smaller than\r
+the local radius of curvature.\r
+3. General spherically symmetric warp drives\r
+3.1. General subluminal spherically symmetric drives\r
+One may gain considerable intuition into the nature of warp drive spacetimes by\r
+considering spacetimes which are spherically symmetric in the comoving reference\r
+frame. Since spherically symmetric spacetimes are fully solvable in relativity, we may\r
+achieve full characterization of such warp drive spacetimes. More formally, in this\r
+section, we limit ourselves to spacetimes which contain an SO(3) group whose orbits\r
+are orthogonal to the Killing vector field ξ introduced in Section 2. The Killing vector\r
+field ξ defines the local frame of rest in the comoving reference frame. As we comment\r
+further, the presence of such a group is possible only for class I and IV spacetimes,\r
+i.e., subluminal warp drives.\r
+Class I of subluminal warp drives – mild subluminal warp drives – contains\r
+trivial solutions and may be associated with ordinary objects, such as a thin shell\r
+of non-exotic material. However, the well-known Alcubierre and Nat´ario drives, in the\r
+subluminal regime, also belong to the same class. By considering general spherically\r
+symmetric subluminal warp drives, we shall gain considerable intuition about these\r
+spacetimes and provide a possible explanation for their negative energy requirement.\r
+The most general metric for a spherically symmetric stationary spacetime can be\r
+written in Schwarzschild coordinates as:\r
+ds\r
+2 = −N(r)c2dt2 + Λ(r)dr2 + r2\r
+(dθ\r
+2 + sin2\r
+θdϕ\r
+2\r
+), (5)\r
+where functions N(r) and Λ(r) are general. Therefore, energy density of a spherically\r
+symmetric warp drive spacetime, in the comoving reference frame, is given by:\r
+w(r) = 1\r
+8πr2\r
+\u0012\r
+1 − (\r
+r\r
+Λ(r)\r
+)\r
+0\r
+\u0013\r
+(6)\r
+A necessary condition for the spherically symmetric metric in Equation (5) (above) to\r
+describe a warp drive spacetime is that the energy density w in both the inner region\r
+Din and outer region Dout be equal to zero. In particular, as follows from Equation (6),\r
+for any spherically symmetric warp drive, Λ(r) = 1 in region Din. Furthermore,\r
+integrating Equation (6), we can express the metric function Λ(r) directly through\r
+the energy density distribution:\r
+Λ(r) = 1\r
+1 −\r
+2\r
+r\r
+R r\r
+0\r
+4πw(r\r
+0)r02dr0\r
+(7)\r
+Equations (6) and (7) allow us to analyze the energy density distribution of\r
+spherically symmetric solutions and to construct such spacetimes from any desired\r
+energy distribution. Thus, we may see that for purely positive energy spacetimes,\r
+Λ(r) > 1 in the outside region Dout. This result is in agreement with the Birkhoff’s\r
+theorem, and states that the metric in the region Dout is described by the Schwarzschild\r
+solution. In comparison, for truncated warp drive spacetimes, such as the Alcubierre
+
+Introducing Physical Warp Drives 10\r
+or Nat´ario solutions, the metric in the external region is assumed to be strictly flat.\r
+This assumption necessarily requires that the integral R rout\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0 = 0. As\r
+a result, any non-trivial truncated spherically symmetric warp drive must contain\r
+regions where the energy density is negative. Therefore, the fact that Alcubierre\r
+and Nat´ario solutions are truncated may partly explain why they require negative\r
+energy even in subluminal regimes. Finally, for any spherically symmetric warp drive\r
+spacetime, since Λ(0) = Λ(r → ∞) = 1, coordinate r describes the same physical\r
+length scale both inside the drive and at the asymptotic infinity. In other words,\r
+unlike the drives discussed in (Van Den Broeck 1999), spherically symmetric warp\r
+drives cannot contain objects which significantly exceed the sizes of warp drives, as\r
+measured by external observers.\r
+We may further calculate the spatial component of the stress energy tensor.\r
+To do so, we assume that the material in region Dwarp is an isotropic fluid, i.e.\r
+Trr = P(r)Λ(r). This way, we obtain the pressure of the material which constitutes\r
+the warp drive:\r
+P(r)Λ(r) = 1 − Λ(r) + rN0\r
+(r)/N(r)\r
+r\r
+2\r
+(8)\r
+By requiring that P = 0 in the inner vacuum region Din, and by remembering that\r
+Λ(r) = 1 in that region, we can see that N(r) is constant in Din. In the external\r
+region Dout, from Equation (8), N(r) = (Λ(r))−1 = 1 −\r
+2\r
+r\r
+R r\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0\r
+. This\r
+result also follows from Birkhoff’s theorem, according to which spherically symmetric\r
+spacetimes must be static and asymptotically flat. In the vacuum region, such setup,\r
+by definition, corresponds to the Schwarzschild solution (assuming the central object\r
+is electrically neutral), which matches by the form the equation for N(r). In this case,\r
+R r\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0 will have the effective meaning of enclosed mass.\r
+We can now obtain N(r) in region Dwarp, and this way determine N(r) in the\r
+inner region Din. We do this by writing down the equation for continuity of the stress\u0002energy tensor, T\r
+µ\r
+r;µ = 0, similarly to how it is done for Tolman–Oppenheimer–Volkoff\r
+(TOV) equation. As a result, we obtain:\r
+N0(r)\r
+N(r)\r
+= −\r
+\u0012\r
+P + ρ\r
+2\r
+\u0013−1\r
+P\r
+0\r
+(r) (9)\r
+Firstly, we make a simplifying assumption that density ρ is a function of only pressure\r
+P, as, for example, is the case for the polytropic equation of state. Then, by using\r
+the condition that P = 0 at the inner and outer boundary of the warp region Dwarp,\r
+we find that the integral of the right-hand side over Dwarp vanishes. As a result, we\r
+conclude that N(rin) = N(rout), where rin and rout are the locations of the inner and\r
+outer boundary of the region Dwarp.\r
+From the solution for N(r) in the outside region Dout, we see that the time-time\r
+coefficient of the metric N(r) at the asymptotic infinity can only be larger than inside\r
+the warped region. In other words, for a subluminal warp drive based on non-exotic\r
+matter, the time inside the drive can only pass more slowly than it does for a remote\r
+Minkowski observer comoving with the drive. For scale, an Earth-mass shell of 10\r
+meter radius will slow down the rate of time by a small fraction of 4 · 10−4. If we\r
+require that the time in the inner region goes faster than in the reference frame of\r
+the comoving observer, the material in the warp drive would have to contain negative\r
+energy. This is the case for the Alcubierre and Nat´ario drives. In these drives, the\r
+time is passing more quickly in the inside region than it is in the reference frame of the\r
+remote comoving observer (due to the clocks in the inner region being synchronized
+
+Introducing Physical Warp Drives 11\r
+to the remote observer at rest). This is another related possible reason why the\r
+Alcubierre drive requires negative energy even in the subluminal mode.\r
+3.2. Impossibility of superluminal spherically symmetric spacetimes\r
+The method from the previous section could potentially have been useful for analysing\r
+superluminal warp drives. However, superluminal classes of warp drives (Classes II and\r
+III) cannot be spherically symmetric. This fact is closely related to the impossibility of\r
+superluminal spherical objects in special relativity, e.g. (Fayngold 2002). In Section 2,\r
+we have introduced a Killing vector field ξ, which defines a local frame of rest with\r
+respect to the drive. In superluminal warp drives, vector field ξ becomes spacelike\r
+whether inside or outside of the drive. In order both to maintain spherical symmetry\r
+and for the field ξ to remain orthogonal to the orbits of the SO(3) group, the spatial\r
+component of the field ξ can only be radial with respect to the drive. Therefore, at\r
+asymptotic infinity, comoving observers for such a spacetime would have to be moving\r
+radially towards or away from a spherically symmetric drive. In other words, warp\r
+drives cannot be both spherically symmetric and move superluminally.\r
+Similarly, Class IV drives cannot be spherically symmetric. As follows from\r
+Equation (7), in order for the radial basis vector inside the drive to be timelike,\r
+one would need to have non-zero energy density present in the vacuum inner region\r
+Din. Therefore, all spherically symmetric positive-energy warp drive solutions belong\r
+to Class I. These solutions are always subluminal, satisfy the energy conditions,\r
+and are devoid of causality paradoxes present in superluminal metrics. Overall, the\r
+subluminal spherically symmetric solution presented in this section is the first example\r
+of manifestly positive energy warp drive spacetimes.\r
+4. Axisymmetric warp drives with a general internal region\r
+In this section, we explore the diversity of axisymmetric warp drive solutions. There\r
+are some limitations on possible axisymmetric solutions. Explicitly expressing a\r
+metric through a desired stress-energy tensor in a closed form is not possible for a\r
+general axisymmetric spacetime. Therefore, we leave generalizing the positive energy\r
+spherically symmetric warp drive solutions to the axisymmetric case to future studies.\r
+However, by constructing sufficiently broad classes of metrics, we show that interesting\r
+solutions are possible even within these less general classes.\r
+4.1. Method for constructing axisymmetric warp drive solutions\r
+Below we introduce a method, by which one can construct new metrics for a warp\r
+drive spacetime. For constructing new solutions, following the discussion in Section 3,\r
+we focus on choosing how the spacetime properties of the observers inside the inner\r
+region Oin relate to those of remote observers Oout. This choice may put significant\r
+constraints on the energy content of the spacetime, and may potentially be exploited\r
+to find spacetimes with lower energy requirements. Additionally, having an explicit\r
+way to define the properties of spacetime inside the inner region Din allows us to\r
+explore and demonstrate the diversity of possible warp drive solutions.\r
+As discussed in Section 2, any stationary warp drive spacetime may be associated\r
+with a coordinate system x\r
+µ\r
+co, adapted to the Killing vector ξ which defines the rest\r
+frame of the craft. We also adopt a global coordinate system x\r
+µ which asymptotically,
+
+Introducing Physical Warp Drives 12\r
+at infinity, approaches the coordinate system of the resting observer Oout in region\r
+Dout. Since the two charts x\r
+µ\r
+co and x\r
+µ cover the whole spacetime and overlap, it is, in\r
+principle, possible to introduce a mapping from one to another in the regions Din and\r
+Dwarp. The procedure for constructing an axisymmetric warp drive spacetime from\r
+this subclass is as follows:\r
+1. Choose a one-to-one mapping x\r
+µ\r
+co(x\r
+ν\r
+) between the coordinate system x\r
+µ\r
+co adopted\r
+to the comoving observer inside the inner region Oin and the coordinate system\r
+x\r
+ν adopted to the external observer at rest Oout.\r
+2. Choose functions fx(x\r
+i\r
+co), fy(x\r
+i\r
+co), fz(x\r
+i\r
+co), ft(x\r
+i\r
+co) which are equal to 1 in region\r
+Din and are equal to 0 in region Dout. These functions define the shape and size\r
+of the warp region Dwarp from the point of view of observer Oin.\r
+3. Formulate the metric of the spacetime as:\r
+ds\r
+2 = −c2\r
+(dt(1−ft)+ftdtco)\r
+2+(dx(1−fx)+fxdxco)2+ (10)\r
++(dy(1 − fy) + fydyco)\r
+2 + (dz(1 − fz) + fzdzco)2\r
+,\r
+Express the metric in terms of a common coordinate system x\r
+µ00, by expressing\r
+x\r
+µ\r
+co and x\r
+ν\r
+explicitly through x\r
+µ00\r
+.\r
+4. Analyze the metric with the methods introduced in Section 2.3\r
+The procedure above is based on the idea of explicitly comparing the\r
+measurements of observers Oin and Oout. Indeed, in region Din all the functions\r
+fη = 1, and the metric corresponds to the coordinate system of observer Oin\r
+(ds\r
+2 = −c2dt2\r
+co + dx\r
+2\r
+co + dy\r
+2\r
+co + dz\r
+2\r
+co). Similarly, asymptotically, in region Dout all\r
+the functions fη = 0 and the metric corresponds to the coordinate system of the\r
+remote observer at rest Oout (ds\r
+2 = −c2dt2 + dx2 + dy2 + dz2\r
+). Several studies in\r
+the literature, e.g. (Loup et al. 2001), have proposed modifications of the Alcubierre\r
+metric without explicitly considering the measurements of inner and outer observers.\r
+Such modifications may be erroneous and may reduce to coordinate transformations,\r
+as happens in (Loup et al. 2001) case. We discuss these studies further in Appendix\r
+A.\r
+The procedure developed here assumes that the observers Oin and Oout are\r
+timelike, and therefore leads to warp drive spacetimes of Class I in the subluminal\r
+regime, and of Class III in the superluminal regime. While these classes of spacetimes\r
+are arguably most interesting, the procedure may be easily generalized to cover the\r
+spacetimes of Class II and Class IV. We also comment that while the procedure\r
+ensures a relationship for the measurements of observers Oin and Oout, one may\r
+also use it to obtain different coordinate representations and, potentially, different\r
+spacetimes satisfying the same relationships between the observers. Subsequently, one\r
+may choose, for example, the most interesting spacetimes of the class.\r
+As a demonstration, we show how the above procedure may be used to construct\r
+the Alcubierre metric given by Equation (1).\r
+1. We choose the one-to-one mapping as follows:\r
+\r
+\r
+\r
+dtco = dt\r
+dxco = dx − vsdt\r
+dyco = dy\r
+dzco = dz\r
+(11)
+
+Introducing Physical Warp Drives 13\r
+2. We select fx = f, where f is given by Equation (2), whereas functions fy, fz and\r
+ft cancel out in Equation (10) and will not contribute to the metric.\r
+3. We arrive at the metric ds\r
+2 = −c2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, as given\r
+by Equation (1).\r
+This example once again highlights the fact that the Alcubierre metric is based\r
+on a rather artificial identification of spacetime properties between the two observers\r
+Oin and Oout, in particular increasing the rate of the time passing for the observer\r
+Oin. In the following sections, we explore other possible axisymmetric spacetimes and\r
+show that they have more appealing properties than the Alcubierre metric.\r
+4.2. Reducing Etot by flattening the Alcubierre metrics\r
+We start by considering the flattened Alcubierre metrics. The longitudinal extent is\r
+a simple property of the Alcubierre metric. However, it has not been studied in the\r
+literature, despite having several interesting properties.\r
+The longitudinal extent has several peculiarities for the Alcubierre metric. Indeed,\r
+in Equation (1), for sufficiently large distances rs0 from the center of the warped region,\r
+function f(rs) vanishes in the Alcubierre solution. Therefore, the external observer O\r
+perceives the boundaries of the warped region Dwarp as a sphere of radius rs0 moving\r
+with velocity vs. If the velocity vs is subluminal due to Lorentz contraction, the\r
+boundary of the warped region Dwarp must be elongated for the comoving observers.\r
+Moreover, when the Alcubierre warp drive approaches the speed of light while at the\r
+same time preserving its energy content, given by Equation (3), the warped region\r
+must appear infinitely elongated. The divergent elongation of the solution in the\r
+comoving frame puts into question the possibility of accelerating Alcubierre metrics\r
+beyond the speed of light.\r
+To analyze the solutions deformed along the axis of motion, we switch to more\r
+convenient cylindrical coordinates (y, z) → (ρ, θ). For the transition regions described\r
+by Equation (1), a more general non-spherically symmetric metric may be obtained by\r
+replacing f(rs) ≡ f(\r
+p\r
+(x − xs)\r
+2 + ρ2) −→ f(x − xs, ρ). Notablyk, for the Alcubierre\r
+drive, recalculating the energy density with f = f(x − xs, ρ) simplifies the expression,\r
+compared to Equation (2):\r
+w = −\r
+1\r
+8π\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
+(12)\r
+This form leads to three useful implications. The first implication is that,\r
+for a given velocity of the warp drive vs, the most optimal way of reducing the\r
+total energy, as measured by Eulerian observers, is by flattening the shape of the\r
+warp drive. Indeed, as √\r
+−g = ρ for the Alcubierre metric, the total energy\r
+E = −\r
+v\r
+2\r
+s\r
+16\r
+R ∞\r
+−∞ dx\r
+R ∞\r
+0\r
+ρdρ\r
+\u0010\r
+∂f\r
+∂ρ\u00112\r
+. And indeed, flattening the warp drive by a factor\r
+of αX (αX > 1) – i.e., by replacing f(x − xs, ρ) → f(αX(x − xs), ρ), as may be\r
+shown through variable change αX(x − xs) → x\r
+0 – leads to the energy reduction by\r
+E → E/αX. Similarly, elongating the drive (choosing αX < 1) increases its energy\r
+requirements. Therefore, putting aside the fundamental issues related to negative\r
+energy of Alcubierre drives, an optimal implementation of such spacetimes would\r
+likely be flattened in shape.\r
+k We believe, this form has not been found in the literature so far
+
+Introducing Physical Warp Drives 14\r
+The second implication of Equation (2) is that the flattening of the warped region\r
+may be adjusted with velocity so that the drive preserves the same total energy.\r
+Indeed, setting αX = 1 + v\r
+2\r
+leads to E → E/(1 + v\r
+2\r
+), asymptotically removing the\r
+dependency of the total energy on velocity. As discussed earlier in Section 1, the fact\r
+that the total energy of the Alcubierre drive depends on velocity is problematic. This\r
+is because the energy and momentum conservation, applicable to asymptotically-flat\r
+spacetimes, implies that the Alcubierre drive must be changing its already very large\r
+energy (and mass) as it accelerates. Removing or softening the dependence of the\r
+total energy on velocity may, in principle, lead to more efficient ways of accelerating\r
+the drive to large velocities.\r
+Finally, the third implication of Equation (2) is that it allows one to construct\r
+superluminal solutions which satisfy the quantum inequalities given by Equation (4).\r
+Indeed, selecting a sufficiently large αX allows one to reduce the thickness of the\r
+warp in x-direction down to nearly-Planck scale size (correspondingly, allowing only\r
+for extremely thin physical observers inside the warp bubble). As a result, the\r
+local curvature radius in Equation (4) may be arbitrarily small, thus satisfying the\r
+quantum inequalities given by Equation (4). At the same time, such superluminal\r
+drives still maintain a macroscopic size in ρ-direction perpendicular to the direction\r
+of motion and, more importantly, do not increase their densities due to contraction.\r
+Such solutions, may offer an exciting possibility of superluminal physical solutions.\r
+Perhaps, they may help probe the physics of superluminal motion and the problems\r
+associated with it, e.g. the violation of causality (Krasnikov 1998), (Everett &\r
+Roman 1997). However, they more likely probe the limits of applicability of the\r
+quantum inequalities (4), which are derived in semiclassical gravity approximation.\r
+Indeed, superluminal motion violates the averaged null energy condition (Visser\r
+et al. 2000), and the latter does not have the same dependency on the dimensions\r
+of the bubble as the quantum inequalities, e.g. (Graham & Olum 2007). As a result,\r
+even the extremely flattened version of the Alcubierre drive, as discussed here, does\r
+not satisfy the averaged null energy conditions.\r
+4.3. Lorentz drive\r
+The Alcubierre metric is artificial in the sense that it forces the clocks and rulers of\r
+observers Oin and Oout to be synchronized. An arguably more natural choice would\r
+be to require that the observer Oin should experience the same time dilation and space\r
+contraction as a Lorentz observer would experience when moving with velocity vs < c.\r
+Since Lorentz transformations are defined for subluminal speeds, in this section, we\r
+consider subluminal warp drives of Class I. To construct the spacetime, we choose:\r
+dtco = γ(dt −\r
+vsdx\r
+c\r
+2\r
+) (13)\r
+dxco = γ(dx − vsdt),\r
+where γ is the Lorentz gamma-factor. Using these definitions to construct the warp\r
+drive metric with Equation (10) leads to a diagonal metric:\r
+ds\r
+2 = −c2F2dt2 + F2dx2 + dρ2 + ρ2dθ2\r
+, (14)\r
+where F\r
+2 ≡ 1 + 2f(1−f)(γ −1). Moreover, any diagonalizable warp drive spacetimes\r
+are described by Equation (13) (the diagonal form is retained if γ is replaced by any\r
+constant).
+
+Introducing Physical Warp Drives 15\r
+The energy density for this metric is given by:\r
+w = −\r
+1\r
+8π\r
+(ρF0\r
+ρ\r
+)\r
+0\r
+ρ\r
+ρF\r
+(15)\r
+For this metric, independent of the choice of function f(x − xs, ρ), the region\r
+Dwarp contains areas of both positive and negative energy density. This result is likely\r
+related to the fact that the spacetime is effectively flat beyond a certain radius, rather\r
+than asymptotically approaching the flat spacetime, similarly to the Schwarzschild\r
+solution. In the case of spherically symmetric solutions, as discussed in Section 3,\r
+such truncation of the gravitational field also requires the warp region Dwarp to contain\r
+regions of positive and negative energy.\r
+The Lorentz drive metric may be generalized to porduce a continuous limit\r
+to flat spacetime. Indeed, if region Dwarp were replaced by Minkowski spacetime,\r
+the whole spacetime would be Minkowski space. Therefore, one may introduce a\r
+continuum of solutions parametrized by a dimensionless parameter λ ∈ [0, 1], by using\r
+F\r
+2 ≡ 1+2λf(1−f)(γ−1). For λ = 0 the whole spacetime reduces to a flat spacetime,\r
+and for λ = 1 the Lorentz warp drive solution is recovered. The intermediate values of\r
+λ allow for solutions with smaller energy requirements. To our knowledge, this is the\r
+first example of a family of warp drive solutions containing near-Minkowski metrics.\r
+4.4. An improved Van Den Broeck’s drive\r
+The warp drive solution by (Van Den Broeck 1999) is intended to reduce the energy\r
+requirements of warp drives by significantly expanding the volume of the Alcubierre\r
+drive inside radius rs while significantly decreasing the externally measured size of\r
+the craft. In this section, we realize the idea of (Van Den Broeck 1999) in a simpler\r
+and, importantly, coordinate-independent form. We select the relation between clocks\r
+of the internal and the external observers to be the same as in the Alcubierre\r
+metric, dtco = dt, but choose the internal spacetime to be expanded in x-direction:\r
+dxco = A(dx − vsdt), dρco = dρ, dθco = dθ, where A > 1. Substituting these relations\r
+into Equation (10), we obtain the resulting spacetime:\r
+ds\r
+2 = −c2dt2 + (dx + f(A − 1)dx − fAvsdt)2 + dρ2 + ρ2dθ2\r
+(16)\r
+This spacetime leads to the energy density distribution of:\r
+w = −\r
+1\r
+8π\r
+"\r
+v\r
+2\r
+s\r
+4\r
+A2f\r
+02\r
+ρ\r
+(1 + (A − 1)f)\r
+2\r
++ (A − 1)\r
+(ρf0\r
+ρ\r
+)\r
+0\r
+ρ\r
+(1 + (A − 1)f)\r
+#\r
+(17)\r
+The expression contains a velocity-independent component, which also leads to regions\r
+of positive and negative energy density. We see here that while stretching the\r
+space inside the warp drive does lead to higher energy density, the metric may be\r
+optimized to achieve the highest internal volume per unit energy needed to construct\r
+the spacetime.\r
+4.5. Warp drive metric with modified time\r
+In this section, we consider spacetimes, in which the clocks in the region Din run at\r
+a different rate compared to the clocks in the region Dout. This is done by letting\r
+dtco = A−1dt, where A > 1 corresponds to the clocks going slower in the region Din.
+
+Introducing Physical Warp Drives 16\r
+Substituting this relation into Equation (10) and otherwise using the same definitions\r
+as in the Alcubierre solution, we obtain:\r
+ds\r
+2 = −c2\r
+((1 − f)dt + A\r
+−1\r
+fdt)\r
+2 + (dx − fvsdt)2 + dρ2 + ρ2dθ2\r
+(18)\r
+The resulting energy density for the Eulerian observers is:\r
+w = −\r
+1\r
+8π\r
+(1 − (A−1 − 1)f)\r
+2\r
+(1 + (A−1 − 1)f)\r
+4\r
+·\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
+(19)\r
+This demonstrates that the rate of clocks used in the original Alcubierre solution\r
+(A = 1) in fact leads to the simplest possible expression for the total energy of the\r
+warp drive, other parameters being constant. From Equation (19) it follows that\r
+slowing down the clocks inside the Alcubierre drive leads to higher amounts of energy\r
+density from the point of view of Eulerian observers.\r
+4.6. Spinning warp drive metric\r
+Finally, our method can be used to construct relatively complex relations between\r
+the inner and outer regions. For example, the following metric corresponds to the\r
+two Minkowski regions Din and Dout spinning with respect to each other. In other\r
+words, the observers at rest in region Din will be rotating with respect to observers in\r
+region Dout without experiencing any centrifugal or Coriolis forces typical to rotating\r
+systems. Such settings are impossible to realize in the absence of the transition region\r
+Dwarp. The settings may be achieved by relating dθco = dθ − ωsdt, in addition to the\r
+definition used for the Alcubierre drive, where ωs is a constant parameter defining the\r
+angular velocity. Substituting these relations into Equation (10) leads to the following\r
+metric:\r
+ds\r
+2 = −c2dt2 + (dx − vsfdt)2 + dρ2 + (ρdθ − f ρωsdt)2\r
+, (20)\r
+The energy density for Eulerian observers then is:\r
+w = −\r
+1\r
+8π\r
+"\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
++\r
+ρ\r
+2ω2\r
+s\r
+4\r
+ \u0012\r
+∂f\r
+∂ρ \u00132\r
++\r
+\u0012\r
+∂f\r
+∂x\u00132\r
+!# (21)\r
+We see that the energy density is negatively defined independent of the spin or velocity\r
+of the inner region. Additionally, the contributions from the velocity in x-direction\r
+and the velocity of angular rotation have a similar form. The main interest for such\r
+spacetimes may be that they offer a stationary, dissipationless way of storing energy\r
+or angular momentum.\r
+5. Discussion\r
+5.1. What is a warp drive?\r
+One of the main conclusions of our study is that warp drives are simpler and\r
+much less mysterious objects than the broader literature has suggested when citing\r
+(Alcubierre 1994). Warp drives are inertially moving shells of positive or negative\r
+energy material which enclose a ‘passenger’ region with a flat metric. The main\r
+feature distinguishing warp drives from trivial inertially moving low-mass shells is\r
+that the large amount of energy contained in the warp shell allows one to modify the\r
+state of spacetime inside it. In particular, as shown in Sections 3 and 4, the time in\r
+the inner region may go faster or slower than it would go without the shell. Similarly,
+
+Introducing Physical Warp Drives 17\r
+the spatial volume may be stretched, compressed, or even be rotating compared to its\r
+normal state. Further, more complex, modifications are likewise possible.\r
+Warp drives can move superluminally only in the same sense as any ordinary\r
+inertial mass, test mass, or any other object. Namely, there is no known way of\r
+accelerating regular material beyond the speed of light. However, one may postulate a\r
+test particle which moves faster than light in relativity, in which case it may continue\r
+moving inertially. In the same way, as warp drives are shells of material, there is\r
+no known way of accelerating a warp drive beyond the speed of light. However, one\r
+may also postulate the warp drive shell to be in superluminal motion, just like the\r
+hypothetical test particles, and the shell-like object will continue moving in the same\r
+fashion. In this sense, superluminal warp drives are at least as hypothetically possible\r
+as any other superluminal objects.\r
+An interesting feature of warp drives, from the theoretical point of view, is\r
+that the modifications of the spacetime in the internal region may be sufficiently\r
+strong so as to allow superluminal objects to move subluminally or vice versa. The\r
+different possibilities are embodied in four different classes of warp drives, presented\r
+in Section 2. In particular, there are solutions possible (Class IV) wherein a shell of\r
+subluminal material may contain regions where no subluminal material can remain at\r
+rest no matter what velocity it has. In this aspect, the shells of these hypothetical Class\r
+IV warp drives would share properties with black holes. Further, such a spacetime\r
+could effectively stop and contain inside a hypothetical superluminal test-mass object,\r
+or make it move slower than the speed of light.\r
+Similarly, one may hypothesize a spherical shell moving faster than the speed\r
+of light, but which contains an inner region where no (hypothetical) superluminal\r
+objects can be at rest relative to the shell (Class III). Or, in another interpretation,\r
+subluminal normal objects inside such shell could be at rest with respect to them,\r
+despite their motion being superluminal. This class of warp drives, which also includes\r
+the Alcubierre drive, however, remains entirely hypothetical, just in the same way as\r
+no other object can be set to move superluminally. Using the methods in Section 2,\r
+one can examine whether any other particular spacetime belongs to this class of warp\r
+drives.\r
+5.2. Constructing warp drives\r
+Warp drives, being inertially moving shells of normal or exotic material, do not have\r
+any natural way of changing their velocities. They are just like any other types of\r
+inertially moving objects. Similarly, just like for any other massive objects, achieving\r
+a certain velocity for a warp drive requires an externally applied force or, more\r
+practically, some form of propulsion. Propulsion may be realized, for example, by\r
+an interaction with a bosonic field, or regular gaseous or plasma material.\r
+Whatever is the acceleration mechanism, it must obey the conservation of 4-\r
+momentum. This is because all warp drive spacetimes are asymptotically-flat. An\r
+unfortunate error, introduced in (Alcubierre 1994), was to postulate the velocity in\r
+Equation (1) to be time-variable. An Alcubierre spacetime with time-variable velocity\r
+also changes its energy and momentum with time, and, this way, such a construction\r
+violates energy conservation. More technically, the metric given by Equation (1) does\r
+not satisfy the continuity equations, unless additional dynamical fields are implicitly\r
+introduced to compensate for that. In view of this, no metric which describes an\r
+accelerating warp drive solution has so far been presented in the literature.
+
+Introducing Physical Warp Drives 18\r
+A more subtle point is that the Alcubierre and Nat´ario drives, as well as the\r
+spacetimes constructed in Section 4, represent classes of different objects parametrized\r
+by velocity v rather than the same object changing its velocity v. In particular,\r
+different warp drive solutions with different values of v have different mass, different\r
+energy content, and often different shapes in their reference frame of rest. Any\r
+realistic object should at least conserve its ADM-mass in the subluminal regime and its\r
+analogue in the superluminal regime. A natural way of constructing such spacetimes\r
+is by defining them explicitly in their frame of rest, as discussed in Section 2 and\r
+implemented for spherically symmetric drives in Section 3. Implementing metrics\r
+for such accelerating objects and more general axisymmetric objects which preserve\r
+their shape and mass in the comoving frame as they change their velocity remains a\r
+subject for future studies. As a simple compromise, one may also adjust the shape\r
+of the warp drive with velocity so as to conserve the mass of the drive, as suggested\r
+in Section 4.1. Finally, among all classes of subluminal warp drive solutions, the\r
+particularly interesting ones in the practical sense are those classes which contain a\r
+continuous set of solutions ranging from trivial to highly curved.\r
+At least in the subluminal case, warp drive spacetimes may be constructed by\r
+using purely positive energy density, as presented in Section 3 for the spherically\r
+symmetric case. They can likewise be constructed using purely negative energy\r
+density, as is the case for the Alcubierre solution, or constructed using both positive\r
+and negative energy density. In Section 3 we showed, for the first time, that the only\r
+type of modification to the internal spacetime that is achievable with purely positive\r
+energy for spherically symmetric warp drives is slowing down the rate of time inside\r
+the craft.\r
+In Section 4 we demonstrated that, by using both positive and negative\r
+energy density, one may achieve a variety of modifications for the spacetime inside\r
+more general axisymmetric subluminal warp drives. The range of all the possible\r
+modifications achievable with purely positive energy in the general axisymmetric case,\r
+and whether the class of axisymmetric spacetimes in Section 4 may lead to purely\r
+positive energy metrics, remain important open questions in the field. Similarly, in\r
+Section 2 we have provided a new argument why superluminal warp drive solutions\r
+may always violate weak energy conditions resulting in their negative energy density\r
+requirements. While this is an established fact (Olum 1998, Visser et al. 2000), a\r
+strict independent proof of this based on our argument is another important avenue\r
+for future studies. Our conclusions do not support the recent claim in (Lentz 2020)\r
+of superluminal purely positive energy warp drive solutions, which merits further\r
+investigation.\r
+5.3. Optimal members in the class\r
+An interesting question remaining is: assuming that a practical realization of a warp\r
+drive spacetime is possible, what would the optimized versions look like? As we\r
+showed in Section 4.2, a more optimal implementation of the Alcubierre warp drives\r
+would be flattened in shape, since such shapes are more efficient in terms of energy\r
+requirements. In particular, flattening the shape by a factor of 10 would lead to\r
+proportionally smaller energy requirements. This conclusion likely holds for the,\r
+more physical, purely positive energy subluminal warp drives as well. Curiously, as\r
+we discussed in Section 4.1, extreme flattening of Alcubierre drives may allow for\r
+superluminal solutions which satisfy quantum inequalities, without reaching extreme
+
+Introducing Physical Warp Drives 19\r
+energy densities.\r
+For the Alcubierre solution, one may similarly optimize the energy requirement by\r
+finding the most suitable shape function ¯f(rs). The originally proposed function given\r
+by Equation (2), is not optimized and was originally chosen solely for demonstration.\r
+By applying the variational method to the expression for the total energy of the\r
+Alcubierre drive, we find that the shape function optimizing the energy is given by\r
+¯f(rs) = min( r0\r
+rs\r
+, 1), where r0 is a free parameter determining the inner size of the\r
+region Dwarp. Using this slower-decreasing shape reduces the energy requirement for\r
+a similarly sized Alcubierre drive by about a factor of three. The physical reason\r
+for it, as we discuss in Section 3, is perhaps related to the fact that truncating the\r
+gravitational fields of a warp drive, as done in the Alcubierre solution, may increase the\r
+(absolute) amount of necessary negative energy compared to the more slowly falling off\r
+solutions. We provide the details of this derivation in Appendix A.3, and also remark\r
+that optimizing the shape or matter distribution in region Dwarp can be equally well\r
+performed for all the other warp drive solutions.\r
+Given the wide range of possible states of spacetime achievable inside a warp\r
+drive, it is also possible to imagine more complex and instrumental optimizations.\r
+For example, one may speculate that it is possible, at least in principle, to form a\r
+region inside a subluminal warp drive which is similar to ergospheres of spinning black\r
+holes. In this case, such a region would be used as an efficient energy storage. The\r
+energy could then potentially be extracted through a Penrose process applied to the\r
+propellant of the craft, when passing through the ergoregion. Similarly to the Penrose\r
+process for spinning black holes, the extracted energy would likely be coming from the\r
+rotation of some regions of the spacetime.\r
+Finally, since all warp drive objects require propulsion in order to accelerate, any\r
+practical implementation of such objects would have to be asymmetric in shape, since\r
+the back part would have to accommodate a propellant exhaust system. One may\r
+further hypothesise on setups, wherein black hole-like regions of the spacetime may\r
+be used to produce accretion power. Accretion of material onto black holes is known\r
+to be a few tens of times more efficient at extracting rest-mass energy in the form of\r
+electromagnetic radiation from the material than nuclear burning (Frank et al. 2002).\r
+Such a process could potentially provide both a source of energy and a source of\r
+propulsion.\r
+5.4. Towards physical warp drives\r
+In Section 3, we demonstrated that it is possible to construct non-trivial warp drive\r
+solutions with purely positive energy. In other words, at least in principle, one can\r
+construct objects of progressively larger masses and with progressively more salient\r
+modifications to the internal spacetime. While the mass requirements needed for such\r
+modifications are still enormous at present, our work suggests a method of constructing\r
+such objects based on fully understood laws of physics.\r
+The most promising way of practically probing such spacetimes is through\r
+laboratory experiments – most importantly – through analogue gravity experiments,\r
+e.g. (Barcel´o et al. 2005). Another important avenue of exploring such spacetimes,\r
+especially the accelerating solutions, is through numerical relativity. Such experiments\r
+may bring a better understanding of purely positive energy drives, and negative energy\r
+solutions, as well as the possibility of accelerating objects superluminally.\r
+Since the introduction of (Alcubierre 1994), much theoretical effort has been put
+
+Introducing Physical Warp Drives 20\r
+into unveiling the unphysical nature of the Alcubierre solution. Our work shows that\r
+there is a variety of warp solutions, each with properties often much more physical and\r
+interesting than the originally proposed spacetime. Through this, we suggest there\r
+is a need for broader theoretical and experimental investigation to uncover the full\r
+diversity and properties of physical warp drives.\r
+Acknowledgements\r
+We would like to thank Parsa Ghorbani, Lorenzo Pieri, Adam Lewis, Philip Chang,\r
+Hrant Gharibyan and Stefano Liberati for their insightful comments and helpful\r
+discussions at different stages of this work.
+
+Introducing Physical Warp Drives 21\r
+Appendix A. Existing warp drive solutions\r
+The previously mentioned Alcubierre and Nat´ario metrics are distinct from each other\r
+and satisfy the definition of warp drive metrics. In this section, we list the metrics\r
+present in the literature that claim or intend to describe new warp drive metrics.\r
+We further show that these metrics reduce to the Alcubierre and Nat´ario solutions.\r
+We also comment that the (Lentz 2020) study likely forms a new class of warp drive\r
+spacetimes, though it does not provide means for reproducing itself.\r
+Appendix A.1. Loup metric\r
+The non-refereed study by (Loup et al. 2001), also discussed in the (Alcubierre &\r
+Lobo 2017) review, aims to reduce the energy requirements of the (Alcubierre 1994)\r
+drive by introducing a lapse function, which modifies the time-components of the\r
+metric as a function of spatial coordinates. However, their metric is equivalent to the\r
+Alcubierre metric.\r
+Indeed, their defining Equations (7)–(9), expressed in our notation, read:\r
+ds\r
+2 = −A2\r
+(rs)c\r
+2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, (A.1)\r
+where A(rs) ≥ 1 is the lapse function, defined to be equal to unity at rs = 0 and,\r
+asymptotically, at rs → ∞. However, by transforming to a new time coordinate\r
+A(rs)dt → dt¯, and checking that the coordinate transformation has a finite non\u0002vanishing Jacobian and is, therefore, well-defined, we arrive at:\r
+ds\r
+2 = −c2dt¯2 + (dx − ¯f(rs)vsdt¯)2 + dy2 + dz2\r
+, (A.2)\r
+where ¯f(rs) ≡\r
+f(rs)\r
+A(rs)\r
+. Therefore, the Loup metric is that of the Alcubierre drive.\r
+The shape function, ¯f(rs), as in the Alcubierre solution, is equal to 1 at rs = 0\r
+and asymptotically approaches 0 at infinity. Unlike in the Alcubierre solution, the\r
+shape function now decreases non-monotonically, which corresponds to redistributing\r
+the energy density, according to Equation (3). Assuming the volume of the inner flat\r
+region is preserved, such a shape function only increases the total energy required by\r
+the solution.\r
+Appendix A.2. Van Den Broeck metric\r
+The study by (Van Den Broeck 1999) provided a metric, which intended to significantly\r
+reduce the energy requirements compared to the Alcubierre solution. Such a reduction\r
+was made by reducing the outer surface area of the warped region Dwarp and through\r
+expanding the volume in the interior region Din.\r
+The (Van Den Broeck 1999) metric is given as:\r
+ds\r
+2 = −c2dt2 + B2\r
+(rs)\r
+\r
+(dx − f(rs)vsdt)\r
+2 + dy2 + dz2\r
+\u0001\r
+, (A.3)\r
+where B(rs) ≥ 1 is a monotonically decreasing function, taking large values B \u001D 1\r
+at rs = 0 and asymptotically decreasing to unity. By applying a coordinate\r
+transformation defined by d¯x = dxB(rs), d¯y = dyB(rs), d¯z = dzB(rs) and t¯ = t\r
+and ensuring that the transformation is well-defined, by checking that the Jacobian\r
+of the transformation is finite and non-vanishing, the metric transforms to:\r
+ds\r
+2 = −c2dt¯2 +\r
+\u0012\r
+d¯x −\r
+f(rs)B(rs)\r
+B(0) (vsB(0))dt¯\r
+\u00132\r
++ d¯y\r
+2 + d¯z2\r
+(A.4)
+
+Introducing Physical Warp Drives 22\r
+At the center of the warped region rs = 0 or, equivalently, x = vst. In the new\r
+coordinates this corresponds to ¯x = B(0)vst. Therefore, in the new coordinates, the\r
+object moves with velocity ¯vs ≡ B(0)vs. Finally, introducing a new shape function\r
+¯f(¯rs) = f(rs)B(rs)\r
+B(0) , we arrive again at the Alcubierre metric:\r
+ds\r
+2 = −c2dt¯2 + (d¯x − ¯f(¯rs)¯vsdt¯)2 + d¯y2 + d¯z2\r
+(A.5)\r
+The modified shape function ¯f(¯rs) satisfies the condition ¯f(0) = 1 and decreases to\r
+zero asymptotically at large values of ¯rs. As for the Alcubierre solution, d¯x − v¯sdt¯,\r
+d¯y, d¯z, dt¯ correspond to the coordinates adapted to a resting observer inside the\r
+inner region Din. Therefore, the physical size of the inner region of the metric, as\r
+measured by the inner observer, is given by the region where function ¯f(¯rs) is close\r
+to unity. In the Van Den Broeck example, function B(rs) is sharp-peaked at the\r
+center, B(0) = B(R˜) ≈ 1017, and B(R˜ + ∆) = 1, where R˜ = ∆ = 10−15 m. In the\r
+coordinates of the internal observer, Oin, the inner region is limited to rs = R˜, or\r
+r¯s = B(0)rs = 100 m, which corresponds to the physical size of the inner region. The\r
+location, where function B(rs) decreases to 1, corresponds to ¯rs ≈ 200 m, at which\r
+point ¯f(¯rs) = 10−17, i.e. is nearly vanishing. In the Van Den Broeck example, function\r
+¯f(¯rs) should subsequently decrease further to zero, between distances corresponding\r
+to rs = R and rs = R+ 102vsLP , i.e. in a thin region 100vs Planck scales thick. Since,\r
+at these distances, B(¯rs) = 1, the interval of ¯rs, at which the function ¯f(¯rs) decreases\r
+from 10−17 to 0, is also 100vs Planck scales thick.\r
+Therefore, in summary, the Van Den Broeck solution is equivalent to the\r
+Alcubierre solution. The shape function f(¯rs) in their study is chosen to decrease\r
+to nearly zero within a volume comparable to the inner volume of the drive (Region\r
+1). Subsequently, further out, the function f(¯rs) decreases to exactly zero (Region 2).\r
+Since in the second outer region (Region 2), function f(¯rs) decreases from a very small\r
+initial value to zero, it is expected that Region 2 should correspond to a small total\r
+energy and satisfy the quantum inequalities due to its near-zero thickness. As follows\r
+from our derivation, the total energy in the inner Region 1, and of the Van Den Broeck\r
+metric as a whole, is comparable to that of the standard Alcubierre solution of similar\r
+dimensions. Our derivation suggests that the total energy should be proportional to\r
+B(0)2, through the ¯v\r
+2\r
+s\r
+term. The absence in the van den Broeck expression for Region\r
+1 of dependence on B(0) or on the velocity at all, potentially explains why the energies\r
+they obtain for that region are small.\r
+Appendix A.3. Optimizing the energy requirements of the Alcubierre solution\r
+This section provides details on how one may optimize a warp drive solution in terms\r
+of its energy requirements. As an example, we choose the well-known Alcubierre\r
+solution. The total energy measured by Eulerian observers on a hypersurface\r
+of constant t for this spacetime is given, as follows from Section 2.3, by E = R\r
+Dwarp\r
+(−g\r
+00)−1T00√\r
+−gd\r
+3xi\r
+out. For the Alcubierre solution (1), one may verify\r
+that the contravariant time-time component of the metric tensor and the metric\r
+determinant are equal to minus unity, i.e. g\r
+00 = g = −1. In this case, by using\r
+Equation (3) for the value of energy density T\r
+00, the total energy is obtained from a\r
+simple expression:\r
+E = −\r
+Z\r
+Dwarp\r
+1\r
+8π\r
+ρ\r
+2v2\r
+s\r
+4r\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+d\r
+3x (A.6)
+
+Introducing Physical Warp Drives 23\r
+Function f(rs) in this equation defines the location of the wall of the warp bubble\r
+and is given by Equation (2). As we discuss in the main text, the specific form of\r
+the function was chosen in (Alcubierre 1994) rather arbitrarily in order to satisfy the\r
+requirement that f(rs) = 1 for rs → 0 and f(rs) = 0 for rs → ∞. Therefore, one may\r
+search for other functions satisfying the same constraints and leading to some further\r
+desired properties, for example, an optimised energy.\r
+To formulate a variational problem, we switch to spherical coordinates (rs, θ, ϕ)\r
+centered at x = xs(t), y = z = 0, with the pole aligned with the direction of motion.\r
+In these coordinates, ρ = rs sin θ, and we get:\r
+E = −\r
+v\r
+2\r
+s\r
+16 Z ∞\r
+r0\r
+drs\r
+Z π\r
+0\r
+dθr2\r
+s\r
+sin3θ\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+= −\r
+v\r
+2\r
+s\r
+12 Z ∞\r
+r0\r
+drsr\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+(A.7)\r
+The Lagrangian for this system is L = r\r
+2\r
+s\r
+f\r
+02\r
+rs\r
+, and therefore the Euler-Lagrange\r
+equation for the function f(rs) which optimizes the energy reads:\r
+∂\r
+∂rs\r
+∂L\r
+∂f0\r
+rs\r
+= 2\r
+∂\r
+∂rs\r
+(r\r
+2\r
+s\r
+f\r
+0\r
+rs\r
+) = ∂L\r
+∂f = 0 (A.8)\r
+The solution of this equation is ¯f(rs) = C +\r
+D\r
+rs\r
+. The requirement that f(rs) = 0 at\r
+rs → ∞ can be satisfied by setting C = 0, while the requirement that f(rs) = 1 for\r
+rs → 0 may be satisfied by setting D = r0. Since the variational problem was solved\r
+for r > r0, the optimal solution in the whole space is given by ¯f(rs) = min( r0\r
+r\r
+, 1).\r
+One may verify numerically that this choice of ¯f decreases the needed (absolute\r
+value of) negative energy of the Alcubierre solution by about a factor of 3.\r
+Intuitively, the decrease may be understood because a smooth fall-off is more natural\r
+for gravitating bodies than a sharp-exponential cut in the metric introduced by\r
+Equation (2). Repeating the derivation but assuming that f is a general axisymmetric\r
+function of both ρ and x − xs shows that in this case the energy is optimized by an\r
+infinitely thin shape, similar to the conclusions we obtained in Section 4. We conclude\r
+this section by mentioning that one can apply a similar method to other warp drive\r
+spacetimes (or even classes of warp drive spacetimes) to optimize their properties such\r
+as the total energy.\r
+Bibliography\r
+Alcubierre M 1994 Classical and Quantum Gravity 11(5), L73–L77.\r
+Alcubierre M & Lobo F S N 2017 Fundamental Theories of Physics 189, 257.\r
+Barcel´o C, Liberati S & Visser M 2005 Living Reviews in Relativity 8(1), 12.\r
+Bassett B A, Liberati S, Molina-Par´ıs C & Visser M 2000 Phys. Rev. D 62(10), 103518.\r
+Everett A E 1996 Phys. Rev. D 53, 7365–7368.\r
+Everett A E & Roman T A 1997 Phys. Rev. D 56, 2100–2108.\r
+Fayngold M 2002 Special relativity and motions faster than light.\r
+Fermi D & Pizzocchero L 2018 Classical and Quantum Gravity 35(16), 165003.\r
+Finazzi S, Liberati S & Barcel´o C 2009 Phys. Rev. D 79(12), 124017.\r
+Ford L H & Roman T A 1997 Phys. Rev. D 55, 2082–2089.\r
+Frank J, King A & Raine D J 2002 Accretion Power in Astrophysics: Third Edition.\r
+Garattini R & Lobo F S N 2007 Classical and Quantum Gravity 24(9), 2401–2413.\r
+Graham N & Olum K D 2007 Phys. Rev. D 76(6), 064001.\r
+Krasnikov S V 1998 Phys. Rev. D 57, 4760–4766.\r
+Lentz E W 2020 arXiv e-prints p. arXiv:2006.07125.\r
+Liberati S, Sonego S & Visser M 2002 Annals of Physics 298(1), 167–185.\r
+Lobo F S N 2007 arXiv e-prints p. arXiv:0710.4474.\r
+Lobo F S N & Visser M 2004 Classical and Quantum Gravity 21, 5871–5892.\r
+Loup F, Waite D & Halerewicz, E. J 2001 arXiv e-prints pp. gr–qc/0107097.
+
+Introducing Physical Warp Drives 24\r
+Nat´ario J 2002 Classical and Quantum Gravity 19(6), 1157–1165.\r
+Nat´ario J 2006 General Relativity and Gravitation 38, 475–484.\r
+Olum K D 1998 Phys. Rev. Lett. 81(17), 3567–3570.\r
+Pfenning M J & Ford L H 1997 Classical and Quantum Gravity 14, 1743–1751.\r
+Van Den Broeck C 1999 Classical and Quantum Gravity 16(12), 3973–3979.\r
+Varieschi G U & Burstein Z 2013 ISRN Astronomy and Astrophysics 2013, 482734.\r
+Visser M, Bassett B A & Liberati S 2000 Nuclear Physics B Proceedings Supplements 88(1), 267–270.\r
+White H 2013 Journal of the British Interplanetary Society 66, 242–247."""
+
+[metadata]
+title = "arxiv 2102.06824 bobrick martire 2021 introducing physical warp drives"
+authors = ["Unknown"]
+arxiv = "2102.06824"
+year = 2021
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Introducing Physical Warp Drives\r
+Alexey Bobrick, Gianni Martire\r
+Advanced Propulsion Laboratory at Applied Physics, 477 Madison Avenue, New\r
+York, 10022, U.S.\r
+E-mail: alexey.bobrick@appliedphysics.org\r
+September 2020\r
+Abstract. The Alcubierre warp drive is an exotic solution in general relativity.\r
+It allows for superluminal travel at the cost of enormous amounts of matter\r
+with negative mass density. For this reason, the Alcubierre warp drive has been\r
+widely considered unphysical. In this study, we develop a model of a general\r
+warp drive spacetime in classical relativity that encloses all existing warp drive\r
+definitions and allows for new metrics without the most serious issues present\r
+in the Alcubierre solution. We present the first general model for subluminal\r
+positive-energy, spherically symmetric warp drives; construct superluminal warp\u0002drive solutions which satisfy quantum inequalities; provide optimizations for the\r
+Alcubierre metric that decrease the negative energy requirements by two orders of\r
+magnitude; and introduce a warp drive spacetime in which space capacity and the\r
+rate of time can be chosen in a controlled manner. Conceptually, we demonstrate\r
+that any warp drive, including the Alcubierre drive, is a shell of regular or exotic\r
+material moving inertially with a certain velocity. Therefore, any warp drive\r
+requires propulsion. We show that a class of subluminal, spherically symmetric\r
+warp drive spacetimes, at least in principle, can be constructed based on the\r
+physical principles known to humanity today.\r
+Submitted to: Class. Quantum Grav."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The classical-relativistic Alcubierre drive solution allows timelike observers to travel\r
+superluminally, although at the expense of using material with negative rest-mass\r
+energy (Alcubierre 1994); for recent reviews see also (Lobo 2007, Alcubierre &\r
+Lobo 2017). This solution is given by the following asymptotically-flat metric:\r
+ds\r
+2 = −c2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, (1)\r
+where rs =\r
+p\r
+(x − vst)\r
+2 + y2 + z2. The metric describes a spherical warp bubble\r
+(a region deviating from the flat metric) moving along the x-axis with an arbitrary\r
+velocity vs, which may be larger or smaller than the speed of light c.\r
+The shape function f(rs), present in the metric, defines the size and profile of the\r
+warp bubble. For large distances rs from the bubble, f(rs) = 0 and the spacetime is\r
+flat. For small distances, rs ≈ 0, the shape function f(rs) = 1, and the metric describes\r
+the flat internal region of the bubble. In a coordinate system with x → x\r
+0 = x−vst, this\r
+internal region is described explicitly by the Minkowski flat metric. The intermediate\r
+arXiv:2102.06824v2 [gr-qc] 17 Feb 2021
+
+Introducing Physical Warp Drives 2\r
+region, for which f(rs) & 0, corresponds to the spherical boundary of the warp. In\r
+the original study, (Alcubierre 1994) chose function f(rs), somewhat arbitrarily, as:\r
+fAlc(rs) = tanh(σ(rs + R)) − tanh(σ(rs − R))\r
+2 tanh(σR)\r
+, (2)\r
+where parameters R and σ\r
+−1 define the radius and the thickness of the transition from\r
+the internal to the external region, correspondingly.\r
+In the case of superluminal motion, the metric possesses a black hole-like event\r
+horizon behind the bubble and a white hole-like event horizon in front of it (Finazzi\r
+et al. 2009). These event horizons arise because timelike observers cannot exit the\r
+superluminal ship in the direction ahead of it, and cannot enter it from behind. In\r
+both cases, the timelike observers would have to move superluminally when outside\r
+of the ship.\r
+The energy density for the Alcubierre drive, as measured by Eulerian observers\r
+(uµ = (1, 0, 0, 0)), is given by:\r
+T\r
+00 = −\r
+1\r
+8π\r
+ρ\r
+2v2\r
+s\r
+4r\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+, (3)\r
+where ρ\r
+2 ≡ y2 + z2\r
+is the cylindrical coordinate.\r
+Despite its interesting properties which allow timelike observers to travel at\r
+arbitrary velocities, the Alcubierre drive solution possesses several drawbacks. As\r
+noted earlier, it requires negative energy densities, Equation (3), and thus violates the\r
+weak energy condition. Although negative energy densities are a general property\r
+of any superluminal drive (Olum 1998, Visser et al. 2000), the energy density is\r
+also negative at subluminal speeds for the Alcubierre drive, even in the weak-field\r
+approximation (Lobo & Visser 2004). Additionally, superluminal motion allows for\r
+closed timelike loops, e.g. leading to grandfather paradox, and violates the null energy\r
+condition and causality, e.g. (Everett 1996), although the latter may be recovered at\r
+the expense of Lorentz invariance (Liberati et al. 2002). When moving superluminally,\r
+the drive has an additional problem. It leads to quantum instabilities related to pair\r
+production near the horizon behind the warp as well as accumulation of particles at\r
+the horizon in the front part of the warp (Finazzi et al. 2009).\r
+The Alcubierre drive is also problematic at sub-relativistic speeds. Firstly, it\r
+requires unphysically large amounts of (negative) energy. For instance, it would require\r
+an amount of negative energy comparable to the mass of the Sun to produce relativistic\r
+bubbles of ≈ meter sizes (Alcubierre 1994). Furthermore, such high negative energy\r
+densities do not appear even theoretically feasible. There are no known materials\r
+which would allow for gathering large amounts of negative energy in a controlled\r
+way. While zero-point vacuum fluctuations may produce negative energies in curved\r
+spacetimes, for Alcubierre drives this situation is only possible if the walls of the\r
+bubble had thicknesses comparable to Planck scales. Such thin walls, however, require\r
+extreme amounts of energy – comparable to the rest-mass energy of the Universe –\r
+as may be seen from Equation (3). Therefore, there is no physical way to create an\r
+Alcubierre drive (Pfenning & Ford 1997, Ford & Roman 1997).\r
+Finally, there is no proposed way of creating an Alcubierre drive, even if negative\r
+energy were available. In the original study, (Alcubierre 1994) suggested that the\r
+velocity may be time-dependent, vs = vs(t). Indeed, Equation (3) retains its form even\r
+for time-dependent velocities. And, since vs = 0 corresponds to flat spacetime, it was\r
+assumed that the Alcubierre drive might be generated through acceleration. However,
+
+Introducing Physical Warp Drives 3\r
+the metric in Equation (1) with time-variable vs = vs(t) corresponds to a time-variable\r
+stress-energy tensor which does not satisfy continuity equations. Alternatively, such\r
+solutions may be said to require an implicit dynamical field to effectively provide\r
+propulsion for the object, e.g. (Bassett et al. 2000). Generally, there are no self\u0002consistent warp drive solutions proposed in the literature which can self-accelerate at\r
+all from zero velocities, not to mention gain superluminal speeds.\r
+Despite the rather extensive work on the properties of the Alcubierre drive\r
+solution, it remains unclear which of the above issues are features of the Alcubierre\r
+solution specifically or more fundamental properties of warp drives as such. New warp\r
+drive solutions have been introduced only in very few studies. (Van Den Broeck 1999)\r
+reduced the energy requirements of the Alcubierre drive to about the mass of the\r
+Sun while satisfying the vacuum energy inequalities. The reduction was realized\r
+by decreasing the externally measured size of the warp bubble down to 10−15 m\r
+while keeping the internal volume constant. This solution satisfies the weak energy\r
+conditions, although it requires that classical gravity remains applicable down to such\r
+small scales, at which it was never tested. However, as we show in Appendix A through\r
+a coordinate transformation, this solution is equivalent to the Alcubierre solution.\r
+(Nat´ario 2002) constructed a warp drive solution without space contraction or\r
+expansion, contrary to the earlier assumption that it facilitated the movement of\r
+warp drives. (Nat´ario 2006) constructed a new subluminal warp drive solution in the\r
+weak-field regime, which required negative energies. (Loup et al. 2001) had previously\r
+introduced a modified version of the Alcubierre drive intended to alter the rate of\r
+time for the observers inside the bubble. However, their modification reduces to the\r
+original Alcubierre metric, as we also show in Appendix A. Finally, (Lentz 2020)\r
+has recently proposed a warp drive metric claiming to have purely positive energy\r
+everywhere in both subluminal and superluminal regimes, although without providing\r
+means to reproduce the study.\r
+The works above, to our knowledge, summarize all the modifications of the\r
+Alcubierre drive available in the literature. Superluminal travel had also been studied\r
+by (Krasnikov 1998) and (Everett & Roman 1997). In these studies, the authors\r
+introduced Krasnikov tubes. Krasnikov tubes are ‘spacetime tunnels’ which allow for\r
+superluminal travel without violating causality, but only for round trips and with\r
+much larger energy requirements than the Alcubierre drive. Superluminal travel has\r
+also been discussed in the context of wormholes, e.g. (Garattini & Lobo 2007), and\r
+time-machine metrics, e.g. (Fermi & Pizzocchero 2018), in all cases requiring negative\r
+energies. Finally, modified gravity theories may provide some desirable properties\r
+for the Alcubierre drive. For instance, conformal gravity allows for construction of\r
+Alcubierre solutions with positive energy only (Varieschi & Burstein 2013), while\r
+extra-dimensional theories of gravity may reduce the energy requirements of the drive\r
+(White 2013).\r
+In this study, we show that the properties of the Alcubierre metric – in particular,\r
+its negative energy density and the accompanying immense energy requirements – are\r
+not a necessary feature of warp drive spacetimes. In Section 2, we discuss that any\r
+general warp drive, including the Alcubierre metric, may be thought of as a shell of\r
+positive- or negative-energy density material which modifies the state of spacetime in\r
+the flat vacuum region inside it. In Section 3, we introduce, for the first time, the most\r
+general spherically symmetric warp drives. We show that the reason for the negative\r
+energy requirements of the Alcubierre metric and all the warp drives introduced in\r
+the literature is, likely, the truncation of the gravitational field outside of the metric,
+
+Introducing Physical Warp Drives 4\r
+and the accelerated rate of time compared to the comoving free observer. In turn, the\r
+most general positive-energy (spherical) warp drive solutions must slow down the time\r
+compared to the comoving observer and have a gradual (Schwarzschild) fall off of the\r
+gravitational field. In Section 4, we introduce a simple method to construct warp drive\r
+metrics by choosing the state of spacetime inside them. Additionally, we show that the\r
+Alcubierre metric is only a particular member of a much more general class of warp\r
+drive solutions admitting negative energy densities. Subsequently, we construct several\r
+spacetimes with a range of new properties. We introduce a macroscopic negative\u0002energy drive which satisfies quantum inequalities, as well as several metrics with\r
+negative-energies which allow one to control the rate of time and spatial contraction\r
+inside the drive. In Section 5, we review the interpretation of warp drives in light of\r
+this study."""
+
+[[sections]]
+number = "2"
+title = "General class of warp drives"
+text = ""
+
+[[sections]]
+number = "2.1"
+title = "Definition of a general warp drive spacetime"
+text = """
+We define a general warp drive spacetime, as shown in Figure 1, as an asymptotically\u0002flat vacuum region Dout (background) which encloses a compact arbitrarily curved\r
+region Dwarp with a spherical topology (the warping region); Dwarp, in turn, encloses\r
+a flat extended‡ compact region Din with a trivial topology (the ‘passenger’ area).\r
+This definition covers both all the existing warp drive spacetimes, such as the one by\r
+(Alcubierre 1994), as well as trivial solutions, such as weak-field perturbations of the\r
+Minkowski spacetime. To formalize the difference between extreme and mild cases\r
+like these, we shall consider the warped region Dwarp by using comoving reference\r
+frames located inside and outside it, which will allow us to quantify how strong its\r
+gravitational influence is.\r
+We shall focus on warp drive spacetimes which, intuitively, are stationary or non\u0002changing from the ‘passenger’ point of view. More formally, we consider warp drive\r
+spacetimes which, by definition, admit a global Killing vector field, ξ, which is aligned\r
+with the four-velocity of the boundary of the region ∂Din (the inner boundary of the\r
+shaded region in Figure 1). Such a field establishes the global frame of rest with\r
+respect to the warped region. Subsequently, whenever we discuss a physical motion\r
+of an observer relative to the warp drive, we consider, locally, the motion relative to\r
+the global reference frame defined by the field ξ. Furthermore, using this vector field\r
+will allow us to apply the well-known techniques suitable for spacetimes possessing a\r
+timelike Killing vector to analyse and classify warp drive spacetimes.\r
+Since the internal region Din is flat, vector field ξ is constant in that region.\r
+Therefore, in the internal region, this vector field ξ defines a reference frame (tetrad)\r
+for the internal observer§ Oin. Similarly, in the asymptotic infinity, vector field ξ\r
+defines the frame of the remote comoving observer Oout,co. This comoving reference\r
+frame Oout,co, as we further argue, is the most natural frame against which one can\r
+compare the frame Oin inside the warped region. Finally, this remote comoving\r
+‡ To avoid effectively including general asymptotically-flat spacetimes in the defintion, we require\r
+that the extent of the region Din should be non-vanishing and physically interesting. In other words,\r
+the inner region Din should be large enough to allow observers to conduct physical experiments of\r
+desired scales.\r
+§ While, in relativity, physical observers are timelike by definition, we shall occasionally be\r
+mentioning timelike and spacelike observers for convenience. By these, we shall understand physical\r
+observers and spacelike frames, correspondingly.
+
+Introducing Physical Warp Drives 5\r
+Figure 1. A schematic illustration of a warp-drive spacetime. The\r
+spacetime consists of three regions: Asymptotically-flat vacuum background Dout\r
+(background), general stationary curved region Dwarp with a spherical topology\r
+(the warping region) and a flat inner region Din (‘passenger’ space). Any such\r
+spacetime, including the Alcubierre drive metric, is realised through a shell of\r
+ordinary or exotic negative energy density material filling the warping region\r
+Dwarp. Axis x shows the direction of motion, while ρ is the cylindrical radius.\r
+As we discuss in Section 4.1, flattened disk-shaped metrics minimise energy\r
+requirements of the particular Alcubierre, but not necessarily other, warp drive\r
+spacetimes. As we also discuss in Section 5, warp drive spacetimes require some\r
+form of propulsion in order to accelerate. For this reason, in physical realisations\r
+of such spacetimes, the front and rear parts are likely asymmetric.\r
+observer Oout,co may be moving with constant three-velocity vs with respect to a\r
+timelike observer Oout, the latter of which we shall consider to be at rest. Everywhere\r
+in this study, apart from the general discussion in this section, we shall consider warp\r
+drives spacetimes which are axisymmetric along the direction of motion.\r
+The three-velocity of the comoving observer vs, which represents the velocity of\r
+the warped region relative to the remote observer Oout, may be slower or faster than\r
+the speed of light with respect to the observer. This corresponds to four-velocity of\r
+the comoving observer Oout,co being timelike, null or spacelike. Both observers Oin\r
+and Oout,co, therefore, may in general, at least formally, be timelike, null, or spacelike.\r
+If region Dwarp contained vanishing stress-energy tensor, the whole spacetime would\r
+be close to Minkowski spacetime and the two observers Oin and Oout would both be
+
+Introducing Physical Warp Drives 6\r
+timelike, null, or spacelike at the same time. However, it is also possible for region\r
+Dwarp to be sufficiently curved such that, as we show further, the norms of the four\u0002velocities of observers Oin and Oout,co may be different from each other. Therefore,\r
+all stationary warp drive spacetimes may be split into four distinct classes, based on\r
+whether the remote comoving observer Oout,co moves subluminally (subluminal drives)\r
+or superluminally (superluminal drives), and whether the internal observer Oin has\r
+the same norm as the comoving observer Oout,co (mild warp drives) or different norm\r
+from the comoving observer (extreme warp drives):\r
+Class I: Mild subluminal warp drives: These spacetimes are defined by the\r
+vector field ξ being timelike everywhere. Consequently, three-velocities of such\r
+drives are subluminal, i.e. vs < c. Spacetimes of this class approach the flat\r
+Minkowski spacetime in the trivial limit, and observers Oin, Oout,co reduce to\r
+a pair of co-moving timelike Lorentz observers. Non-trivial members of this\r
+class contain spacetimes with region Dwarp sufficiently curved, so that tetrads\r
+of observers Oin and Oout,co differ significantly from each other, i.e. the observers\r
+read off different rates of clocks and lengths of rulers. At the same time, such\r
+spacetimes also contain weak-field solutions corresponding to classical shell-like\r
+objects moving with subluminal velocities and weakly modifying the state of the\r
+spacetime inside them. Such solutions are possible because the Dwarp region may\r
+be set arbitrarily close to being flat, rendering the whole spacetime arbitrarily\r
+close to Minkowski spacetime.\r
+Class II: Mild superluminal warp drives: These spacetimes are characterized by\r
+the vector field ξ being spacelike or null everywhere. Consequently, such warp\r
+drives have luminal or superluminal velocities, i.e., vs ≥ c. These spacetimes\r
+also admit a trivial limit, wherein they reduce to flat Minkowski spacetime, with\r
+the tetrads Oin, Oout,co corresponding to a pair of comoving null or spacelike\r
+(superluminal) ‘observers’. Weak-field members of the class correspond to small\r
+amounts of ‘superluminal matter’ in the region Dwarp introducing small differences\r
+in the measurements of frames Oin, Oout,co. By ‘superluminal matter’ we\r
+understand the matter at rest with respect to a space-like reference frame. In\r
+the case of the stress-energy tensor for a perfect fluid, such matter violates the\r
+dominant energy condition. A general spacetime of this class introduces non\u0002trivial differences between frames Oin and Oout,co. Since superluminal matter\r
+cannot be produced from physical matter, and since null or spacelike tetrads\r
+cannot be associated with physical observers, the spacetimes of this class have\r
+limited interest.\r
+Class III: Extreme superluminal warp drives: These spacetimes are defined by\r
+the vector field ξ being timelike in the inner region Din, but null or spacelike in the\r
+asymptotic infinity of the outer region Dout. The remote comoving observers in\r
+such spacetimes move luminally or superluminally relative to the resting timelike\r
+observer Oout, i.e., vs ≥ c. This class of spacetimes does not contain trivial\r
+solutions and the warped region Dwarp is sufficiently curved to allow timelike\r
+observers Oin to be moving superluminally relative to the timelike observer Oout\r
+(and as a consequence, the timelike observer Oin will be travelling back in time\r
+from the point of view of yet another remote timelike observer O0\r
+out). At the\r
+same time, the comoving observer Oout,co is formally superluminal; in other\r
+words, remote timelike observers cannot be comoving with a warp drive of this\r
+class. For such spacetimes, we can define a Killing horizon ∂DK as the minimal
+
+Introducing Physical Warp Drives 7\r
+boundary surface where the Killing vector field ξ becomes null. A necessary, but\r
+not sufficient, condition for warp drives of this class to be physical is that the\r
+Killing horizon ∂DK does not intersect with region Dwarp. If the Killing horizon\r
+did intersect with region Dwarp, some part of the matter in that region would\r
+be at rest with respect to spacelike tetrads aligned with vector field ξ. In other\r
+words, a fraction of matter in the region Dwarp would have to be superluminal (in\r
+the same sense, as for Class II above) and violate the dominant energy condition.\r
+Class IV: ‘Extreme’ subluminal warp drives: Spacetimes of this class are\r
+defined by the vector field ξ being null or spacelike in the inner region Din, but\r
+timelike at the asymptotic infinity of the outer region Dout. Since the comoving\r
+observer Oout,co is timelike, such spacetimes are subluminal, i.e. vs < c. Since the\r
+Killing vector is spacelike in the inner region Din, no timelike internal observers\r
+can be at rest relative to the inner boundary of the drive ∂Din. This property\r
+bears similarity to black hole spacetimes, except for that the inner region Din for\r
+this class of spacetimes is flat everywhere. A necessary condition for spacetimes\r
+of this class to be physical is that the Killing horizon coincides with the boundary\r
+of the inner region, ∂Din. Otherwise, some fraction of matter in the region Dwarp\r
+will be superluminal, as in the previous class.\r
+In practical terms, as follows from our definition, any warp drive spacetime may\r
+be seen as a shell of ordinary or exotic material which fills region Dwarp and moves with\r
+some constant velocity relative to an external timelike observer Oout. The presence\r
+of the shell inevitably modifies the space and time in the inner region Din. This\r
+modification leads (in addition to other effects) to a difference in the measurements\r
+of times and lengths between an observer in the inner region Din and a comoving\r
+remote observer Oout,co. General warp drive spacetimes, therefore, form a continuous\r
+family which includes both trivial (flat or nearly-flat) and non-trivial (strongly curved)\r
+spacetimes."""
+
+[[sections]]
+number = "2.2"
+title = "How do existing warp drive spacetimes fit in the classification?"
+text = """
+The Alcubierre drive is a truncated warp drive spacetime defined by meeting the three\r
+requirements. First, that the external spacetime Dout is Minkowskian. In other words,\r
+the matter in the warped region Dwarp does not exhibit gravitational influence outside\r
+of it (Requirement 1). Second, observers Oin and Oout are always timelike, and the\r
+tetrads of these observers are equal to each other. In other words, the clock rates and\r
+the lengths of the rulers of observers Oin and Oout are synchronized and put equal to\r
+each other (Requirement 2). Finally, the warped region Dwarp is functionally limited\r
+to Equations (1) and (2) in Section 1 (Requirement 3). For subluminal velocities, the\r
+Alcubierre drive belongs to Class I, mild subluminal warp drives. For superluminal\r
+velocities it belongs to Class III, extreme superluminal warp drives.\r
+Compared to general warp drives, this set of constraints may seem artificial.\r
+For example, requiring that the material of the Alcubierre drive does not gravitate\r
+in region Dout, which is non-typical for massive objects, as we discuss further in\r
+Section 3, unnecessarily puts strong constraints on the stress-energy tensor in region\r
+Dwarp. Similarly, requiring that the time of observers Oin is synchronized with the time\r
+of observers Oout means that, at least in the subluminal regime, the time of internal\r
+observers Oin is accelerated compared to the time of remote comoving observers\r
+Oout,co. In comparison, general warp drive spacetimes do not need to be truncated
+
+Introducing Physical Warp Drives 8\r
+and may allow an arbitrary relation between the measurements of observers Oin and\r
+Oout,co.\r
+A more general class of warp drive metric was proposed by (Nat´ario 2002).\r
+However, their most general warp drive, similarly to the Alcubierre solution, still\r
+imposes Requirements 1 and 2 from the Alcubierre metric. That is, is also makes\r
+region Dout strictly flat outside of the drive and synchronizes the time of the internal\r
+and the resting (not comoving) observers. Similarly to the Alcubierre solution, the\r
+(Nat´ario 2002) class of spacetimes also belongs to Class I in the subluminal regime\r
+and Class III in the superluminal regime.\r
+Further, in Sections 4 and 3, we show that general warp drive spacetimes are\r
+diverse and can have a variety of properties that are often more appealing compared\r
+to either the Alcubierre spacetime or to the (Nat´ario 2002) class of spacetimes."""
+
+[[sections]]
+number = "2.3"
+title = "Properties of warp drive spacetimes"
+text = """
+In this section, we summarise the standard tools applicable for analyzing general warp\r
+drives, in order to apply them further in Sections 4 and 3.\r
+The internal physical volume of a warp drive measured by observer Oin, inside the\r
+warped region, is given by Vin ≡\r
+R\r
+Din\r
+d\r
+3xi\r
+in. For truncated warp drive spacetimes, i.e.\r
+spacetimes where the outside vacuum region Dout is flat, the external volume may be\r
+defined as Vout ≡\r
+R\r
+Din∪warp\r
+d\r
+3xi\r
+out. The integral is calculated over the volume enclosing\r
+the warped region and assuming, during the integration, that the volume’s interior is\r
+flat. Such a construction provides a measure of the size of the warp bubble as observed\r
+from outside. It may be formally done with the help of the Cartesian coordinate grid\r
+of the remote observer Oout, analytically extended to cover the warped region. The\r
+comoving external volume Vout,co may be similarly defined for the comoving observer.\r
+For general asymptotically-flat metrics, we do not consider external volumes as they\r
+are coordinate-dependent.\r
+We calculate the energy density, the momentum flux, and their volume integrals\r
+for warp drive spacetimes, and the mechanical stress distributions, in the coordinate\r
+system adapted to the remote comoving observer Oout,co. The coordinate system\r
+adapted to the comoving observer is aligned with the Killing vector field ξ, which\r
+allows for a 3+1 decomposition of the spacetime and thus provides coordinate-invariant\r
+measures for the total energy, mass and momentum of the drive. We also consider\r
+a system of Eulerian observers defined through four-velocities uµ = √\r
+1\r
+−g\r
+00\r
+(1, 0, 0, 0),\r
+similar to how it was done in (Alcubierre 1994). These observers are imperatively\r
+timelike and are normal to the surfaces of constant time, but are coordinate-dependent.\r
+The energy density w in each of the coordinate systems is given by w =\r
+(−g\r
+00)−1T00. The momentum flux ji and the pressure P in the same reference system\r
+are given by j\r
+i = uµTµi = √\r
+1\r
+−g\r
+00\r
+T\r
+0i and P = Tµν(δµν − uµuν) = T + (g00)−1T00\r
+,\r
+where T ≡ T\r
+µνgµν. Notably, the total energy and momentum contain the contribution\r
+only from the warped region Dwarp: E =\r
+R\r
+Dwarp\r
+(−g\r
+00)−1T00√\r
+−gd\r
+3xi\r
+out, J\r
+i =\r
+R\r
+Dwarp √\r
+1\r
+−g\r
+00\r
+T\r
+0i√\r
+−gd\r
+3xi\r
+out.\r
+Warp drive solutions may be compared based on how they satisfy different energy\r
+conditions. Among these are the strong and weak energy conditions. Furthermore, we\r
+also consider quantum inequalities, e.g. (Pfenning & Ford 1997). These inequalities,\r
+at least in the weak-field regime, potentially allow the spacetime curvature to modify
+
+Introducing Physical Warp Drives 9\r
+the quantum vacuum and, this way, allow for some negative-energy density:\r
+τ0\r
+π\r
+Z ∞\r
+−∞\r
+hTµνu\r
+µuν\r
+i\r
+τ\r
+2 + τ\r
+2\r
+0\r
+dτ ≥ −\r
+3\r
+32π\r
+2τ\r
+4\r
+0\r
+, (4)\r
+where τ is the proper time of the observer and τ0 is an arbitrary constant smaller than\r
+the local radius of curvature."""
+
+[[sections]]
+number = "3"
+title = "General spherically symmetric warp drives"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "General subluminal spherically symmetric drives"
+text = """
+One may gain considerable intuition into the nature of warp drive spacetimes by\r
+considering spacetimes which are spherically symmetric in the comoving reference\r
+frame. Since spherically symmetric spacetimes are fully solvable in relativity, we may\r
+achieve full characterization of such warp drive spacetimes. More formally, in this\r
+section, we limit ourselves to spacetimes which contain an SO(3) group whose orbits\r
+are orthogonal to the Killing vector field ξ introduced in Section 2. The Killing vector\r
+field ξ defines the local frame of rest in the comoving reference frame. As we comment\r
+further, the presence of such a group is possible only for class I and IV spacetimes,\r
+i.e., subluminal warp drives.\r
+Class I of subluminal warp drives – mild subluminal warp drives – contains\r
+trivial solutions and may be associated with ordinary objects, such as a thin shell\r
+of non-exotic material. However, the well-known Alcubierre and Nat´ario drives, in the\r
+subluminal regime, also belong to the same class. By considering general spherically\r
+symmetric subluminal warp drives, we shall gain considerable intuition about these\r
+spacetimes and provide a possible explanation for their negative energy requirement.\r
+The most general metric for a spherically symmetric stationary spacetime can be\r
+written in Schwarzschild coordinates as:\r
+ds\r
+2 = −N(r)c2dt2 + Λ(r)dr2 + r2\r
+(dθ\r
+2 + sin2\r
+θdϕ\r
+2\r
+), (5)\r
+where functions N(r) and Λ(r) are general. Therefore, energy density of a spherically\r
+symmetric warp drive spacetime, in the comoving reference frame, is given by:\r
+w(r) = 1\r
+8πr2\r
+\u0012\r
+1 − (\r
+r\r
+Λ(r)\r
+)\r
+0\r
+\u0013\r
+(6)\r
+A necessary condition for the spherically symmetric metric in Equation (5) (above) to\r
+describe a warp drive spacetime is that the energy density w in both the inner region\r
+Din and outer region Dout be equal to zero. In particular, as follows from Equation (6),\r
+for any spherically symmetric warp drive, Λ(r) = 1 in region Din. Furthermore,\r
+integrating Equation (6), we can express the metric function Λ(r) directly through\r
+the energy density distribution:\r
+Λ(r) = 1\r
+1 −\r
+2\r
+r\r
+R r\r
+0\r
+4πw(r\r
+0)r02dr0\r
+(7)\r
+Equations (6) and (7) allow us to analyze the energy density distribution of\r
+spherically symmetric solutions and to construct such spacetimes from any desired\r
+energy distribution. Thus, we may see that for purely positive energy spacetimes,\r
+Λ(r) > 1 in the outside region Dout. This result is in agreement with the Birkhoff’s\r
+theorem, and states that the metric in the region Dout is described by the Schwarzschild\r
+solution. In comparison, for truncated warp drive spacetimes, such as the Alcubierre
+
+Introducing Physical Warp Drives 10\r
+or Nat´ario solutions, the metric in the external region is assumed to be strictly flat.\r
+This assumption necessarily requires that the integral R rout\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0 = 0. As\r
+a result, any non-trivial truncated spherically symmetric warp drive must contain\r
+regions where the energy density is negative. Therefore, the fact that Alcubierre\r
+and Nat´ario solutions are truncated may partly explain why they require negative\r
+energy even in subluminal regimes. Finally, for any spherically symmetric warp drive\r
+spacetime, since Λ(0) = Λ(r → ∞) = 1, coordinate r describes the same physical\r
+length scale both inside the drive and at the asymptotic infinity. In other words,\r
+unlike the drives discussed in (Van Den Broeck 1999), spherically symmetric warp\r
+drives cannot contain objects which significantly exceed the sizes of warp drives, as\r
+measured by external observers.\r
+We may further calculate the spatial component of the stress energy tensor.\r
+To do so, we assume that the material in region Dwarp is an isotropic fluid, i.e.\r
+Trr = P(r)Λ(r). This way, we obtain the pressure of the material which constitutes\r
+the warp drive:\r
+P(r)Λ(r) = 1 − Λ(r) + rN0\r
+(r)/N(r)\r
+r\r
+2\r
+(8)\r
+By requiring that P = 0 in the inner vacuum region Din, and by remembering that\r
+Λ(r) = 1 in that region, we can see that N(r) is constant in Din. In the external\r
+region Dout, from Equation (8), N(r) = (Λ(r))−1 = 1 −\r
+2\r
+r\r
+R r\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0\r
+. This\r
+result also follows from Birkhoff’s theorem, according to which spherically symmetric\r
+spacetimes must be static and asymptotically flat. In the vacuum region, such setup,\r
+by definition, corresponds to the Schwarzschild solution (assuming the central object\r
+is electrically neutral), which matches by the form the equation for N(r). In this case,\r
+R r\r
+0\r
+4πw(r\r
+0\r
+)r\r
+02dr0 will have the effective meaning of enclosed mass.\r
+We can now obtain N(r) in region Dwarp, and this way determine N(r) in the\r
+inner region Din. We do this by writing down the equation for continuity of the stress\u0002energy tensor, T\r
+µ\r
+r;µ = 0, similarly to how it is done for Tolman–Oppenheimer–Volkoff\r
+(TOV) equation. As a result, we obtain:\r
+N0(r)\r
+N(r)\r
+= −\r
+\u0012\r
+P + ρ\r
+2\r
+\u0013−1\r
+P\r
+0\r
+(r) (9)\r
+Firstly, we make a simplifying assumption that density ρ is a function of only pressure\r
+P, as, for example, is the case for the polytropic equation of state. Then, by using\r
+the condition that P = 0 at the inner and outer boundary of the warp region Dwarp,\r
+we find that the integral of the right-hand side over Dwarp vanishes. As a result, we\r
+conclude that N(rin) = N(rout), where rin and rout are the locations of the inner and\r
+outer boundary of the region Dwarp.\r
+From the solution for N(r) in the outside region Dout, we see that the time-time\r
+coefficient of the metric N(r) at the asymptotic infinity can only be larger than inside\r
+the warped region. In other words, for a subluminal warp drive based on non-exotic\r
+matter, the time inside the drive can only pass more slowly than it does for a remote\r
+Minkowski observer comoving with the drive. For scale, an Earth-mass shell of 10\r
+meter radius will slow down the rate of time by a small fraction of 4 · 10−4. If we\r
+require that the time in the inner region goes faster than in the reference frame of\r
+the comoving observer, the material in the warp drive would have to contain negative\r
+energy. This is the case for the Alcubierre and Nat´ario drives. In these drives, the\r
+time is passing more quickly in the inside region than it is in the reference frame of the\r
+remote comoving observer (due to the clocks in the inner region being synchronized
+
+Introducing Physical Warp Drives 11\r
+to the remote observer at rest). This is another related possible reason why the\r
+Alcubierre drive requires negative energy even in the subluminal mode."""
+
+[[sections]]
+number = "3.2"
+title = "Impossibility of superluminal spherically symmetric spacetimes"
+text = """
+The method from the previous section could potentially have been useful for analysing\r
+superluminal warp drives. However, superluminal classes of warp drives (Classes II and\r
+III) cannot be spherically symmetric. This fact is closely related to the impossibility of\r
+superluminal spherical objects in special relativity, e.g. (Fayngold 2002). In Section 2,\r
+we have introduced a Killing vector field ξ, which defines a local frame of rest with\r
+respect to the drive. In superluminal warp drives, vector field ξ becomes spacelike\r
+whether inside or outside of the drive. In order both to maintain spherical symmetry\r
+and for the field ξ to remain orthogonal to the orbits of the SO(3) group, the spatial\r
+component of the field ξ can only be radial with respect to the drive. Therefore, at\r
+asymptotic infinity, comoving observers for such a spacetime would have to be moving\r
+radially towards or away from a spherically symmetric drive. In other words, warp\r
+drives cannot be both spherically symmetric and move superluminally.\r
+Similarly, Class IV drives cannot be spherically symmetric. As follows from\r
+Equation (7), in order for the radial basis vector inside the drive to be timelike,\r
+one would need to have non-zero energy density present in the vacuum inner region\r
+Din. Therefore, all spherically symmetric positive-energy warp drive solutions belong\r
+to Class I. These solutions are always subluminal, satisfy the energy conditions,\r
+and are devoid of causality paradoxes present in superluminal metrics. Overall, the\r
+subluminal spherically symmetric solution presented in this section is the first example\r
+of manifestly positive energy warp drive spacetimes."""
+
+[[sections]]
+number = "4"
+title = "Axisymmetric warp drives with a general internal region"
+text = """
+In this section, we explore the diversity of axisymmetric warp drive solutions. There\r
+are some limitations on possible axisymmetric solutions. Explicitly expressing a\r
+metric through a desired stress-energy tensor in a closed form is not possible for a\r
+general axisymmetric spacetime. Therefore, we leave generalizing the positive energy\r
+spherically symmetric warp drive solutions to the axisymmetric case to future studies.\r
+However, by constructing sufficiently broad classes of metrics, we show that interesting\r
+solutions are possible even within these less general classes."""
+
+[[sections]]
+number = "4.1"
+title = "Method for constructing axisymmetric warp drive solutions"
+text = """
+Below we introduce a method, by which one can construct new metrics for a warp\r
+drive spacetime. For constructing new solutions, following the discussion in Section 3,\r
+we focus on choosing how the spacetime properties of the observers inside the inner\r
+region Oin relate to those of remote observers Oout. This choice may put significant\r
+constraints on the energy content of the spacetime, and may potentially be exploited\r
+to find spacetimes with lower energy requirements. Additionally, having an explicit\r
+way to define the properties of spacetime inside the inner region Din allows us to\r
+explore and demonstrate the diversity of possible warp drive solutions.\r
+As discussed in Section 2, any stationary warp drive spacetime may be associated\r
+with a coordinate system x\r
+µ\r
+co, adapted to the Killing vector ξ which defines the rest\r
+frame of the craft. We also adopt a global coordinate system x\r
+µ which asymptotically,
+
+Introducing Physical Warp Drives 12\r
+at infinity, approaches the coordinate system of the resting observer Oout in region\r
+Dout. Since the two charts x\r
+µ\r
+co and x\r
+µ cover the whole spacetime and overlap, it is, in\r
+principle, possible to introduce a mapping from one to another in the regions Din and\r
+Dwarp. The procedure for constructing an axisymmetric warp drive spacetime from\r
+this subclass is as follows:"""
+
+[[sections]]
+number = "1"
+title = "Choose a one-to-one mapping x"
+text = """
+µ\r
+co(x\r
+ν\r
+) between the coordinate system x\r
+µ\r
+co adopted\r
+to the comoving observer inside the inner region Oin and the coordinate system\r
+x\r
+ν adopted to the external observer at rest Oout."""
+
+[[sections]]
+number = "2"
+title = "Choose functions fx(x"
+text = """
+i\r
+co), fy(x\r
+i\r
+co), fz(x\r
+i\r
+co), ft(x\r
+i\r
+co) which are equal to 1 in region\r
+Din and are equal to 0 in region Dout. These functions define the shape and size\r
+of the warp region Dwarp from the point of view of observer Oin."""
+
+[[sections]]
+number = "3"
+title = "Formulate the metric of the spacetime as:"
+text = """
+ds\r
+2 = −c2\r
+(dt(1−ft)+ftdtco)\r
+2+(dx(1−fx)+fxdxco)2+ (10)\r
++(dy(1 − fy) + fydyco)\r
+2 + (dz(1 − fz) + fzdzco)2\r
+,\r
+Express the metric in terms of a common coordinate system x\r
+µ00, by expressing\r
+x\r
+µ\r
+co and x\r
+ν\r
+explicitly through x\r
+µ00\r
+."""
+
+[[sections]]
+number = "4"
+title = "Analyze the metric with the methods introduced in Section 2.3"
+text = """
+The procedure above is based on the idea of explicitly comparing the\r
+measurements of observers Oin and Oout. Indeed, in region Din all the functions\r
+fη = 1, and the metric corresponds to the coordinate system of observer Oin\r
+(ds\r
+2 = −c2dt2\r
+co + dx\r
+2\r
+co + dy\r
+2\r
+co + dz\r
+2\r
+co). Similarly, asymptotically, in region Dout all\r
+the functions fη = 0 and the metric corresponds to the coordinate system of the\r
+remote observer at rest Oout (ds\r
+2 = −c2dt2 + dx2 + dy2 + dz2\r
+). Several studies in\r
+the literature, e.g. (Loup et al. 2001), have proposed modifications of the Alcubierre\r
+metric without explicitly considering the measurements of inner and outer observers.\r
+Such modifications may be erroneous and may reduce to coordinate transformations,\r
+as happens in (Loup et al. 2001) case. We discuss these studies further in Appendix\r
+A.\r
+The procedure developed here assumes that the observers Oin and Oout are\r
+timelike, and therefore leads to warp drive spacetimes of Class I in the subluminal\r
+regime, and of Class III in the superluminal regime. While these classes of spacetimes\r
+are arguably most interesting, the procedure may be easily generalized to cover the\r
+spacetimes of Class II and Class IV. We also comment that while the procedure\r
+ensures a relationship for the measurements of observers Oin and Oout, one may\r
+also use it to obtain different coordinate representations and, potentially, different\r
+spacetimes satisfying the same relationships between the observers. Subsequently, one\r
+may choose, for example, the most interesting spacetimes of the class.\r
+As a demonstration, we show how the above procedure may be used to construct\r
+the Alcubierre metric given by Equation (1)."""
+
+[[sections]]
+number = "1"
+title = "We choose the one-to-one mapping as follows:"
+text = """
+\r
+\r
+\r
+dtco = dt\r
+dxco = dx − vsdt\r
+dyco = dy\r
+dzco = dz\r
+(11)
+
+Introducing Physical Warp Drives 13"""
+
+[[sections]]
+number = "2"
+title = "We select fx = f, where f is given by Equation (2), whereas functions fy, fz and"
+text = "ft cancel out in Equation (10) and will not contribute to the metric."
+
+[[sections]]
+number = "3"
+title = "We arrive at the metric ds"
+text = """
+2 = −c2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, as given\r
+by Equation (1).\r
+This example once again highlights the fact that the Alcubierre metric is based\r
+on a rather artificial identification of spacetime properties between the two observers\r
+Oin and Oout, in particular increasing the rate of the time passing for the observer\r
+Oin. In the following sections, we explore other possible axisymmetric spacetimes and\r
+show that they have more appealing properties than the Alcubierre metric."""
+
+[[sections]]
+number = "4.2"
+title = "Reducing Etot by flattening the Alcubierre metrics"
+text = """
+We start by considering the flattened Alcubierre metrics. The longitudinal extent is\r
+a simple property of the Alcubierre metric. However, it has not been studied in the\r
+literature, despite having several interesting properties.\r
+The longitudinal extent has several peculiarities for the Alcubierre metric. Indeed,\r
+in Equation (1), for sufficiently large distances rs0 from the center of the warped region,\r
+function f(rs) vanishes in the Alcubierre solution. Therefore, the external observer O\r
+perceives the boundaries of the warped region Dwarp as a sphere of radius rs0 moving\r
+with velocity vs. If the velocity vs is subluminal due to Lorentz contraction, the\r
+boundary of the warped region Dwarp must be elongated for the comoving observers.\r
+Moreover, when the Alcubierre warp drive approaches the speed of light while at the\r
+same time preserving its energy content, given by Equation (3), the warped region\r
+must appear infinitely elongated. The divergent elongation of the solution in the\r
+comoving frame puts into question the possibility of accelerating Alcubierre metrics\r
+beyond the speed of light.\r
+To analyze the solutions deformed along the axis of motion, we switch to more\r
+convenient cylindrical coordinates (y, z) → (ρ, θ). For the transition regions described\r
+by Equation (1), a more general non-spherically symmetric metric may be obtained by\r
+replacing f(rs) ≡ f(\r
+p\r
+(x − xs)\r
+2 + ρ2) −→ f(x − xs, ρ). Notablyk, for the Alcubierre\r
+drive, recalculating the energy density with f = f(x − xs, ρ) simplifies the expression,\r
+compared to Equation (2):\r
+w = −\r
+1\r
+8π\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
+(12)\r
+This form leads to three useful implications. The first implication is that,\r
+for a given velocity of the warp drive vs, the most optimal way of reducing the\r
+total energy, as measured by Eulerian observers, is by flattening the shape of the\r
+warp drive. Indeed, as √\r
+−g = ρ for the Alcubierre metric, the total energy\r
+E = −\r
+v\r
+2\r
+s"""
+
+[[sections]]
+number = "16"
+title = "R ∞"
+text = """
+−∞ dx\r
+R ∞\r
+0\r
+ρdρ\r
+\u0010\r
+∂f\r
+∂ρ\u00112\r
+. And indeed, flattening the warp drive by a factor\r
+of αX (αX > 1) – i.e., by replacing f(x − xs, ρ) → f(αX(x − xs), ρ), as may be\r
+shown through variable change αX(x − xs) → x\r
+0 – leads to the energy reduction by\r
+E → E/αX. Similarly, elongating the drive (choosing αX < 1) increases its energy\r
+requirements. Therefore, putting aside the fundamental issues related to negative\r
+energy of Alcubierre drives, an optimal implementation of such spacetimes would\r
+likely be flattened in shape.\r
+k We believe, this form has not been found in the literature so far
+
+Introducing Physical Warp Drives 14\r
+The second implication of Equation (2) is that the flattening of the warped region\r
+may be adjusted with velocity so that the drive preserves the same total energy.\r
+Indeed, setting αX = 1 + v\r
+2\r
+leads to E → E/(1 + v\r
+2\r
+), asymptotically removing the\r
+dependency of the total energy on velocity. As discussed earlier in Section 1, the fact\r
+that the total energy of the Alcubierre drive depends on velocity is problematic. This\r
+is because the energy and momentum conservation, applicable to asymptotically-flat\r
+spacetimes, implies that the Alcubierre drive must be changing its already very large\r
+energy (and mass) as it accelerates. Removing or softening the dependence of the\r
+total energy on velocity may, in principle, lead to more efficient ways of accelerating\r
+the drive to large velocities.\r
+Finally, the third implication of Equation (2) is that it allows one to construct\r
+superluminal solutions which satisfy the quantum inequalities given by Equation (4).\r
+Indeed, selecting a sufficiently large αX allows one to reduce the thickness of the\r
+warp in x-direction down to nearly-Planck scale size (correspondingly, allowing only\r
+for extremely thin physical observers inside the warp bubble). As a result, the\r
+local curvature radius in Equation (4) may be arbitrarily small, thus satisfying the\r
+quantum inequalities given by Equation (4). At the same time, such superluminal\r
+drives still maintain a macroscopic size in ρ-direction perpendicular to the direction\r
+of motion and, more importantly, do not increase their densities due to contraction.\r
+Such solutions, may offer an exciting possibility of superluminal physical solutions.\r
+Perhaps, they may help probe the physics of superluminal motion and the problems\r
+associated with it, e.g. the violation of causality (Krasnikov 1998), (Everett &\r
+Roman 1997). However, they more likely probe the limits of applicability of the\r
+quantum inequalities (4), which are derived in semiclassical gravity approximation.\r
+Indeed, superluminal motion violates the averaged null energy condition (Visser\r
+et al. 2000), and the latter does not have the same dependency on the dimensions\r
+of the bubble as the quantum inequalities, e.g. (Graham & Olum 2007). As a result,\r
+even the extremely flattened version of the Alcubierre drive, as discussed here, does\r
+not satisfy the averaged null energy conditions."""
+
+[[sections]]
+number = "4.3"
+title = "Lorentz drive"
+text = """
+The Alcubierre metric is artificial in the sense that it forces the clocks and rulers of\r
+observers Oin and Oout to be synchronized. An arguably more natural choice would\r
+be to require that the observer Oin should experience the same time dilation and space\r
+contraction as a Lorentz observer would experience when moving with velocity vs < c.\r
+Since Lorentz transformations are defined for subluminal speeds, in this section, we\r
+consider subluminal warp drives of Class I. To construct the spacetime, we choose:\r
+dtco = γ(dt −\r
+vsdx\r
+c\r
+2\r
+) (13)\r
+dxco = γ(dx − vsdt),\r
+where γ is the Lorentz gamma-factor. Using these definitions to construct the warp\r
+drive metric with Equation (10) leads to a diagonal metric:\r
+ds\r
+2 = −c2F2dt2 + F2dx2 + dρ2 + ρ2dθ2\r
+, (14)\r
+where F\r
+2 ≡ 1 + 2f(1−f)(γ −1). Moreover, any diagonalizable warp drive spacetimes\r
+are described by Equation (13) (the diagonal form is retained if γ is replaced by any\r
+constant).
+
+Introducing Physical Warp Drives 15\r
+The energy density for this metric is given by:\r
+w = −\r
+1\r
+8π\r
+(ρF0\r
+ρ\r
+)\r
+0\r
+ρ\r
+ρF\r
+(15)\r
+For this metric, independent of the choice of function f(x − xs, ρ), the region\r
+Dwarp contains areas of both positive and negative energy density. This result is likely\r
+related to the fact that the spacetime is effectively flat beyond a certain radius, rather\r
+than asymptotically approaching the flat spacetime, similarly to the Schwarzschild\r
+solution. In the case of spherically symmetric solutions, as discussed in Section 3,\r
+such truncation of the gravitational field also requires the warp region Dwarp to contain\r
+regions of positive and negative energy.\r
+The Lorentz drive metric may be generalized to porduce a continuous limit\r
+to flat spacetime. Indeed, if region Dwarp were replaced by Minkowski spacetime,\r
+the whole spacetime would be Minkowski space. Therefore, one may introduce a\r
+continuum of solutions parametrized by a dimensionless parameter λ ∈ [0, 1], by using\r
+F\r
+2 ≡ 1+2λf(1−f)(γ−1). For λ = 0 the whole spacetime reduces to a flat spacetime,\r
+and for λ = 1 the Lorentz warp drive solution is recovered. The intermediate values of\r
+λ allow for solutions with smaller energy requirements. To our knowledge, this is the\r
+first example of a family of warp drive solutions containing near-Minkowski metrics."""
+
+[[sections]]
+number = "4.4"
+title = "An improved Van Den Broeck’s drive"
+text = """
+The warp drive solution by (Van Den Broeck 1999) is intended to reduce the energy\r
+requirements of warp drives by significantly expanding the volume of the Alcubierre\r
+drive inside radius rs while significantly decreasing the externally measured size of\r
+the craft. In this section, we realize the idea of (Van Den Broeck 1999) in a simpler\r
+and, importantly, coordinate-independent form. We select the relation between clocks\r
+of the internal and the external observers to be the same as in the Alcubierre\r
+metric, dtco = dt, but choose the internal spacetime to be expanded in x-direction:\r
+dxco = A(dx − vsdt), dρco = dρ, dθco = dθ, where A > 1. Substituting these relations\r
+into Equation (10), we obtain the resulting spacetime:\r
+ds\r
+2 = −c2dt2 + (dx + f(A − 1)dx − fAvsdt)2 + dρ2 + ρ2dθ2\r
+(16)\r
+This spacetime leads to the energy density distribution of:\r
+w = −\r
+1\r
+8π\r
+"\r
+v\r
+2\r
+s"""
+
+[[sections]]
+number = "4"
+title = "A2f"
+text = """
+02\r
+ρ\r
+(1 + (A − 1)f)\r
+2\r
++ (A − 1)\r
+(ρf0\r
+ρ\r
+)\r
+0\r
+ρ\r
+(1 + (A − 1)f)\r
+#\r
+(17)\r
+The expression contains a velocity-independent component, which also leads to regions\r
+of positive and negative energy density. We see here that while stretching the\r
+space inside the warp drive does lead to higher energy density, the metric may be\r
+optimized to achieve the highest internal volume per unit energy needed to construct\r
+the spacetime."""
+
+[[sections]]
+number = "4.5"
+title = "Warp drive metric with modified time"
+text = """
+In this section, we consider spacetimes, in which the clocks in the region Din run at\r
+a different rate compared to the clocks in the region Dout. This is done by letting\r
+dtco = A−1dt, where A > 1 corresponds to the clocks going slower in the region Din.
+
+Introducing Physical Warp Drives 16\r
+Substituting this relation into Equation (10) and otherwise using the same definitions\r
+as in the Alcubierre solution, we obtain:\r
+ds\r
+2 = −c2\r
+((1 − f)dt + A\r
+−1\r
+fdt)\r
+2 + (dx − fvsdt)2 + dρ2 + ρ2dθ2\r
+(18)\r
+The resulting energy density for the Eulerian observers is:\r
+w = −\r
+1\r
+8π\r
+(1 − (A−1 − 1)f)\r
+2\r
+(1 + (A−1 − 1)f)\r
+4\r
+·\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
+(19)\r
+This demonstrates that the rate of clocks used in the original Alcubierre solution\r
+(A = 1) in fact leads to the simplest possible expression for the total energy of the\r
+warp drive, other parameters being constant. From Equation (19) it follows that\r
+slowing down the clocks inside the Alcubierre drive leads to higher amounts of energy\r
+density from the point of view of Eulerian observers."""
+
+[[sections]]
+number = "4.6"
+title = "Spinning warp drive metric"
+text = """
+Finally, our method can be used to construct relatively complex relations between\r
+the inner and outer regions. For example, the following metric corresponds to the\r
+two Minkowski regions Din and Dout spinning with respect to each other. In other\r
+words, the observers at rest in region Din will be rotating with respect to observers in\r
+region Dout without experiencing any centrifugal or Coriolis forces typical to rotating\r
+systems. Such settings are impossible to realize in the absence of the transition region\r
+Dwarp. The settings may be achieved by relating dθco = dθ − ωsdt, in addition to the\r
+definition used for the Alcubierre drive, where ωs is a constant parameter defining the\r
+angular velocity. Substituting these relations into Equation (10) leads to the following\r
+metric:\r
+ds\r
+2 = −c2dt2 + (dx − vsfdt)2 + dρ2 + (ρdθ − f ρωsdt)2\r
+, (20)\r
+The energy density for Eulerian observers then is:\r
+w = −\r
+1\r
+8π\r
+"\r
+v\r
+2\r
+s\r
+4\r
+\u0012\r
+∂f\r
+∂ρ \u00132\r
++\r
+ρ\r
+2ω2\r
+s\r
+4\r
+ \u0012\r
+∂f\r
+∂ρ \u00132\r
++\r
+\u0012\r
+∂f\r
+∂x\u00132\r
+!# (21)\r
+We see that the energy density is negatively defined independent of the spin or velocity\r
+of the inner region. Additionally, the contributions from the velocity in x-direction\r
+and the velocity of angular rotation have a similar form. The main interest for such\r
+spacetimes may be that they offer a stationary, dissipationless way of storing energy\r
+or angular momentum."""
+
+[[sections]]
+number = "5"
+title = "Discussion"
+text = ""
+
+[[sections]]
+number = "5.1"
+title = "What is a warp drive?"
+text = """
+One of the main conclusions of our study is that warp drives are simpler and\r
+much less mysterious objects than the broader literature has suggested when citing\r
+(Alcubierre 1994). Warp drives are inertially moving shells of positive or negative\r
+energy material which enclose a ‘passenger’ region with a flat metric. The main\r
+feature distinguishing warp drives from trivial inertially moving low-mass shells is\r
+that the large amount of energy contained in the warp shell allows one to modify the\r
+state of spacetime inside it. In particular, as shown in Sections 3 and 4, the time in\r
+the inner region may go faster or slower than it would go without the shell. Similarly,
+
+Introducing Physical Warp Drives 17\r
+the spatial volume may be stretched, compressed, or even be rotating compared to its\r
+normal state. Further, more complex, modifications are likewise possible.\r
+Warp drives can move superluminally only in the same sense as any ordinary\r
+inertial mass, test mass, or any other object. Namely, there is no known way of\r
+accelerating regular material beyond the speed of light. However, one may postulate a\r
+test particle which moves faster than light in relativity, in which case it may continue\r
+moving inertially. In the same way, as warp drives are shells of material, there is\r
+no known way of accelerating a warp drive beyond the speed of light. However, one\r
+may also postulate the warp drive shell to be in superluminal motion, just like the\r
+hypothetical test particles, and the shell-like object will continue moving in the same\r
+fashion. In this sense, superluminal warp drives are at least as hypothetically possible\r
+as any other superluminal objects.\r
+An interesting feature of warp drives, from the theoretical point of view, is\r
+that the modifications of the spacetime in the internal region may be sufficiently\r
+strong so as to allow superluminal objects to move subluminally or vice versa. The\r
+different possibilities are embodied in four different classes of warp drives, presented\r
+in Section 2. In particular, there are solutions possible (Class IV) wherein a shell of\r
+subluminal material may contain regions where no subluminal material can remain at\r
+rest no matter what velocity it has. In this aspect, the shells of these hypothetical Class\r
+IV warp drives would share properties with black holes. Further, such a spacetime\r
+could effectively stop and contain inside a hypothetical superluminal test-mass object,\r
+or make it move slower than the speed of light.\r
+Similarly, one may hypothesize a spherical shell moving faster than the speed\r
+of light, but which contains an inner region where no (hypothetical) superluminal\r
+objects can be at rest relative to the shell (Class III). Or, in another interpretation,\r
+subluminal normal objects inside such shell could be at rest with respect to them,\r
+despite their motion being superluminal. This class of warp drives, which also includes\r
+the Alcubierre drive, however, remains entirely hypothetical, just in the same way as\r
+no other object can be set to move superluminally. Using the methods in Section 2,\r
+one can examine whether any other particular spacetime belongs to this class of warp\r
+drives."""
+
+[[sections]]
+number = "5.2"
+title = "Constructing warp drives"
+text = """
+Warp drives, being inertially moving shells of normal or exotic material, do not have\r
+any natural way of changing their velocities. They are just like any other types of\r
+inertially moving objects. Similarly, just like for any other massive objects, achieving\r
+a certain velocity for a warp drive requires an externally applied force or, more\r
+practically, some form of propulsion. Propulsion may be realized, for example, by\r
+an interaction with a bosonic field, or regular gaseous or plasma material.\r
+Whatever is the acceleration mechanism, it must obey the conservation of 4-\r
+momentum. This is because all warp drive spacetimes are asymptotically-flat. An\r
+unfortunate error, introduced in (Alcubierre 1994), was to postulate the velocity in\r
+Equation (1) to be time-variable. An Alcubierre spacetime with time-variable velocity\r
+also changes its energy and momentum with time, and, this way, such a construction\r
+violates energy conservation. More technically, the metric given by Equation (1) does\r
+not satisfy the continuity equations, unless additional dynamical fields are implicitly\r
+introduced to compensate for that. In view of this, no metric which describes an\r
+accelerating warp drive solution has so far been presented in the literature.
+
+Introducing Physical Warp Drives 18\r
+A more subtle point is that the Alcubierre and Nat´ario drives, as well as the\r
+spacetimes constructed in Section 4, represent classes of different objects parametrized\r
+by velocity v rather than the same object changing its velocity v. In particular,\r
+different warp drive solutions with different values of v have different mass, different\r
+energy content, and often different shapes in their reference frame of rest. Any\r
+realistic object should at least conserve its ADM-mass in the subluminal regime and its\r
+analogue in the superluminal regime. A natural way of constructing such spacetimes\r
+is by defining them explicitly in their frame of rest, as discussed in Section 2 and\r
+implemented for spherically symmetric drives in Section 3. Implementing metrics\r
+for such accelerating objects and more general axisymmetric objects which preserve\r
+their shape and mass in the comoving frame as they change their velocity remains a\r
+subject for future studies. As a simple compromise, one may also adjust the shape\r
+of the warp drive with velocity so as to conserve the mass of the drive, as suggested\r
+in Section 4.1. Finally, among all classes of subluminal warp drive solutions, the\r
+particularly interesting ones in the practical sense are those classes which contain a\r
+continuous set of solutions ranging from trivial to highly curved.\r
+At least in the subluminal case, warp drive spacetimes may be constructed by\r
+using purely positive energy density, as presented in Section 3 for the spherically\r
+symmetric case. They can likewise be constructed using purely negative energy\r
+density, as is the case for the Alcubierre solution, or constructed using both positive\r
+and negative energy density. In Section 3 we showed, for the first time, that the only\r
+type of modification to the internal spacetime that is achievable with purely positive\r
+energy for spherically symmetric warp drives is slowing down the rate of time inside\r
+the craft.\r
+In Section 4 we demonstrated that, by using both positive and negative\r
+energy density, one may achieve a variety of modifications for the spacetime inside\r
+more general axisymmetric subluminal warp drives. The range of all the possible\r
+modifications achievable with purely positive energy in the general axisymmetric case,\r
+and whether the class of axisymmetric spacetimes in Section 4 may lead to purely\r
+positive energy metrics, remain important open questions in the field. Similarly, in\r
+Section 2 we have provided a new argument why superluminal warp drive solutions\r
+may always violate weak energy conditions resulting in their negative energy density\r
+requirements. While this is an established fact (Olum 1998, Visser et al. 2000), a\r
+strict independent proof of this based on our argument is another important avenue\r
+for future studies. Our conclusions do not support the recent claim in (Lentz 2020)\r
+of superluminal purely positive energy warp drive solutions, which merits further\r
+investigation."""
+
+[[sections]]
+number = "5.3"
+title = "Optimal members in the class"
+text = """
+An interesting question remaining is: assuming that a practical realization of a warp\r
+drive spacetime is possible, what would the optimized versions look like? As we\r
+showed in Section 4.2, a more optimal implementation of the Alcubierre warp drives\r
+would be flattened in shape, since such shapes are more efficient in terms of energy\r
+requirements. In particular, flattening the shape by a factor of 10 would lead to\r
+proportionally smaller energy requirements. This conclusion likely holds for the,\r
+more physical, purely positive energy subluminal warp drives as well. Curiously, as\r
+we discussed in Section 4.1, extreme flattening of Alcubierre drives may allow for\r
+superluminal solutions which satisfy quantum inequalities, without reaching extreme
+
+Introducing Physical Warp Drives 19\r
+energy densities.\r
+For the Alcubierre solution, one may similarly optimize the energy requirement by\r
+finding the most suitable shape function ¯f(rs). The originally proposed function given\r
+by Equation (2), is not optimized and was originally chosen solely for demonstration.\r
+By applying the variational method to the expression for the total energy of the\r
+Alcubierre drive, we find that the shape function optimizing the energy is given by\r
+¯f(rs) = min( r0\r
+rs\r
+, 1), where r0 is a free parameter determining the inner size of the\r
+region Dwarp. Using this slower-decreasing shape reduces the energy requirement for\r
+a similarly sized Alcubierre drive by about a factor of three. The physical reason\r
+for it, as we discuss in Section 3, is perhaps related to the fact that truncating the\r
+gravitational fields of a warp drive, as done in the Alcubierre solution, may increase the\r
+(absolute) amount of necessary negative energy compared to the more slowly falling off\r
+solutions. We provide the details of this derivation in Appendix A.3, and also remark\r
+that optimizing the shape or matter distribution in region Dwarp can be equally well\r
+performed for all the other warp drive solutions.\r
+Given the wide range of possible states of spacetime achievable inside a warp\r
+drive, it is also possible to imagine more complex and instrumental optimizations.\r
+For example, one may speculate that it is possible, at least in principle, to form a\r
+region inside a subluminal warp drive which is similar to ergospheres of spinning black\r
+holes. In this case, such a region would be used as an efficient energy storage. The\r
+energy could then potentially be extracted through a Penrose process applied to the\r
+propellant of the craft, when passing through the ergoregion. Similarly to the Penrose\r
+process for spinning black holes, the extracted energy would likely be coming from the\r
+rotation of some regions of the spacetime.\r
+Finally, since all warp drive objects require propulsion in order to accelerate, any\r
+practical implementation of such objects would have to be asymmetric in shape, since\r
+the back part would have to accommodate a propellant exhaust system. One may\r
+further hypothesise on setups, wherein black hole-like regions of the spacetime may\r
+be used to produce accretion power. Accretion of material onto black holes is known\r
+to be a few tens of times more efficient at extracting rest-mass energy in the form of\r
+electromagnetic radiation from the material than nuclear burning (Frank et al. 2002).\r
+Such a process could potentially provide both a source of energy and a source of\r
+propulsion."""
+
+[[sections]]
+number = "5.4"
+title = "Towards physical warp drives"
+text = """
+In Section 3, we demonstrated that it is possible to construct non-trivial warp drive\r
+solutions with purely positive energy. In other words, at least in principle, one can\r
+construct objects of progressively larger masses and with progressively more salient\r
+modifications to the internal spacetime. While the mass requirements needed for such\r
+modifications are still enormous at present, our work suggests a method of constructing\r
+such objects based on fully understood laws of physics.\r
+The most promising way of practically probing such spacetimes is through\r
+laboratory experiments – most importantly – through analogue gravity experiments,\r
+e.g. (Barcel´o et al. 2005). Another important avenue of exploring such spacetimes,\r
+especially the accelerating solutions, is through numerical relativity. Such experiments\r
+may bring a better understanding of purely positive energy drives, and negative energy\r
+solutions, as well as the possibility of accelerating objects superluminally.\r
+Since the introduction of (Alcubierre 1994), much theoretical effort has been put
+
+Introducing Physical Warp Drives 20\r
+into unveiling the unphysical nature of the Alcubierre solution. Our work shows that\r
+there is a variety of warp solutions, each with properties often much more physical and\r
+interesting than the originally proposed spacetime. Through this, we suggest there\r
+is a need for broader theoretical and experimental investigation to uncover the full\r
+diversity and properties of physical warp drives.\r
+Acknowledgements\r
+We would like to thank Parsa Ghorbani, Lorenzo Pieri, Adam Lewis, Philip Chang,\r
+Hrant Gharibyan and Stefano Liberati for their insightful comments and helpful\r
+discussions at different stages of this work.
+
+Introducing Physical Warp Drives 21\r
+Appendix A. Existing warp drive solutions\r
+The previously mentioned Alcubierre and Nat´ario metrics are distinct from each other\r
+and satisfy the definition of warp drive metrics. In this section, we list the metrics\r
+present in the literature that claim or intend to describe new warp drive metrics.\r
+We further show that these metrics reduce to the Alcubierre and Nat´ario solutions.\r
+We also comment that the (Lentz 2020) study likely forms a new class of warp drive\r
+spacetimes, though it does not provide means for reproducing itself.\r
+Appendix A.1. Loup metric\r
+The non-refereed study by (Loup et al. 2001), also discussed in the (Alcubierre &\r
+Lobo 2017) review, aims to reduce the energy requirements of the (Alcubierre 1994)\r
+drive by introducing a lapse function, which modifies the time-components of the\r
+metric as a function of spatial coordinates. However, their metric is equivalent to the\r
+Alcubierre metric.\r
+Indeed, their defining Equations (7)–(9), expressed in our notation, read:\r
+ds\r
+2 = −A2\r
+(rs)c\r
+2dt2 + (dx − f(rs)vsdt)2 + dy2 + dz2\r
+, (A.1)\r
+where A(rs) ≥ 1 is the lapse function, defined to be equal to unity at rs = 0 and,\r
+asymptotically, at rs → ∞. However, by transforming to a new time coordinate\r
+A(rs)dt → dt¯, and checking that the coordinate transformation has a finite non\u0002vanishing Jacobian and is, therefore, well-defined, we arrive at:\r
+ds\r
+2 = −c2dt¯2 + (dx − ¯f(rs)vsdt¯)2 + dy2 + dz2\r
+, (A.2)\r
+where ¯f(rs) ≡\r
+f(rs)\r
+A(rs)\r
+. Therefore, the Loup metric is that of the Alcubierre drive.\r
+The shape function, ¯f(rs), as in the Alcubierre solution, is equal to 1 at rs = 0\r
+and asymptotically approaches 0 at infinity. Unlike in the Alcubierre solution, the\r
+shape function now decreases non-monotonically, which corresponds to redistributing\r
+the energy density, according to Equation (3). Assuming the volume of the inner flat\r
+region is preserved, such a shape function only increases the total energy required by\r
+the solution.\r
+Appendix A.2. Van Den Broeck metric\r
+The study by (Van Den Broeck 1999) provided a metric, which intended to significantly\r
+reduce the energy requirements compared to the Alcubierre solution. Such a reduction\r
+was made by reducing the outer surface area of the warped region Dwarp and through\r
+expanding the volume in the interior region Din.\r
+The (Van Den Broeck 1999) metric is given as:\r
+ds\r
+2 = −c2dt2 + B2\r
+(rs)\r
+\r
+(dx − f(rs)vsdt)\r
+2 + dy2 + dz2\r
+\u0001\r
+, (A.3)\r
+where B(rs) ≥ 1 is a monotonically decreasing function, taking large values B \u001D 1\r
+at rs = 0 and asymptotically decreasing to unity. By applying a coordinate\r
+transformation defined by d¯x = dxB(rs), d¯y = dyB(rs), d¯z = dzB(rs) and t¯ = t\r
+and ensuring that the transformation is well-defined, by checking that the Jacobian\r
+of the transformation is finite and non-vanishing, the metric transforms to:\r
+ds\r
+2 = −c2dt¯2 +\r
+\u0012\r
+d¯x −\r
+f(rs)B(rs)\r
+B(0) (vsB(0))dt¯\r
+\u00132\r
++ d¯y\r
+2 + d¯z2\r
+(A.4)
+
+Introducing Physical Warp Drives 22\r
+At the center of the warped region rs = 0 or, equivalently, x = vst. In the new\r
+coordinates this corresponds to ¯x = B(0)vst. Therefore, in the new coordinates, the\r
+object moves with velocity ¯vs ≡ B(0)vs. Finally, introducing a new shape function\r
+¯f(¯rs) = f(rs)B(rs)\r
+B(0) , we arrive again at the Alcubierre metric:\r
+ds\r
+2 = −c2dt¯2 + (d¯x − ¯f(¯rs)¯vsdt¯)2 + d¯y2 + d¯z2\r
+(A.5)\r
+The modified shape function ¯f(¯rs) satisfies the condition ¯f(0) = 1 and decreases to\r
+zero asymptotically at large values of ¯rs. As for the Alcubierre solution, d¯x − v¯sdt¯,\r
+d¯y, d¯z, dt¯ correspond to the coordinates adapted to a resting observer inside the\r
+inner region Din. Therefore, the physical size of the inner region of the metric, as\r
+measured by the inner observer, is given by the region where function ¯f(¯rs) is close\r
+to unity. In the Van Den Broeck example, function B(rs) is sharp-peaked at the\r
+center, B(0) = B(R˜) ≈ 1017, and B(R˜ + ∆) = 1, where R˜ = ∆ = 10−15 m. In the\r
+coordinates of the internal observer, Oin, the inner region is limited to rs = R˜, or\r
+r¯s = B(0)rs = 100 m, which corresponds to the physical size of the inner region. The\r
+location, where function B(rs) decreases to 1, corresponds to ¯rs ≈ 200 m, at which\r
+point ¯f(¯rs) = 10−17, i.e. is nearly vanishing. In the Van Den Broeck example, function\r
+¯f(¯rs) should subsequently decrease further to zero, between distances corresponding\r
+to rs = R and rs = R+ 102vsLP , i.e. in a thin region 100vs Planck scales thick. Since,\r
+at these distances, B(¯rs) = 1, the interval of ¯rs, at which the function ¯f(¯rs) decreases\r
+from 10−17 to 0, is also 100vs Planck scales thick.\r
+Therefore, in summary, the Van Den Broeck solution is equivalent to the\r
+Alcubierre solution. The shape function f(¯rs) in their study is chosen to decrease\r
+to nearly zero within a volume comparable to the inner volume of the drive (Region\r
+1). Subsequently, further out, the function f(¯rs) decreases to exactly zero (Region 2).\r
+Since in the second outer region (Region 2), function f(¯rs) decreases from a very small\r
+initial value to zero, it is expected that Region 2 should correspond to a small total\r
+energy and satisfy the quantum inequalities due to its near-zero thickness. As follows\r
+from our derivation, the total energy in the inner Region 1, and of the Van Den Broeck\r
+metric as a whole, is comparable to that of the standard Alcubierre solution of similar\r
+dimensions. Our derivation suggests that the total energy should be proportional to\r
+B(0)2, through the ¯v\r
+2\r
+s\r
+term. The absence in the van den Broeck expression for Region\r
+1 of dependence on B(0) or on the velocity at all, potentially explains why the energies\r
+they obtain for that region are small.\r
+Appendix A.3. Optimizing the energy requirements of the Alcubierre solution\r
+This section provides details on how one may optimize a warp drive solution in terms\r
+of its energy requirements. As an example, we choose the well-known Alcubierre\r
+solution. The total energy measured by Eulerian observers on a hypersurface\r
+of constant t for this spacetime is given, as follows from Section 2.3, by E = R\r
+Dwarp\r
+(−g\r
+00)−1T00√\r
+−gd\r
+3xi\r
+out. For the Alcubierre solution (1), one may verify\r
+that the contravariant time-time component of the metric tensor and the metric\r
+determinant are equal to minus unity, i.e. g\r
+00 = g = −1. In this case, by using\r
+Equation (3) for the value of energy density T\r
+00, the total energy is obtained from a\r
+simple expression:\r
+E = −\r
+Z\r
+Dwarp\r
+1\r
+8π\r
+ρ\r
+2v2\r
+s\r
+4r\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+d\r
+3x (A.6)
+
+Introducing Physical Warp Drives 23\r
+Function f(rs) in this equation defines the location of the wall of the warp bubble\r
+and is given by Equation (2). As we discuss in the main text, the specific form of\r
+the function was chosen in (Alcubierre 1994) rather arbitrarily in order to satisfy the\r
+requirement that f(rs) = 1 for rs → 0 and f(rs) = 0 for rs → ∞. Therefore, one may\r
+search for other functions satisfying the same constraints and leading to some further\r
+desired properties, for example, an optimised energy.\r
+To formulate a variational problem, we switch to spherical coordinates (rs, θ, ϕ)\r
+centered at x = xs(t), y = z = 0, with the pole aligned with the direction of motion.\r
+In these coordinates, ρ = rs sin θ, and we get:\r
+E = −\r
+v\r
+2\r
+s"""
+
+[[sections]]
+number = "16"
+title = "Z ∞"
+text = """
+r0\r
+drs\r
+Z π\r
+0\r
+dθr2\r
+s\r
+sin3θ\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+= −\r
+v\r
+2\r
+s"""
+
+[[sections]]
+number = "12"
+title = "Z ∞"
+text = """
+r0\r
+drsr\r
+2\r
+s\r
+\u0012\r
+df\r
+drs\r
+\u00132\r
+(A.7)\r
+The Lagrangian for this system is L = r\r
+2\r
+s\r
+f\r
+02\r
+rs\r
+, and therefore the Euler-Lagrange\r
+equation for the function f(rs) which optimizes the energy reads:\r
+∂\r
+∂rs\r
+∂L\r
+∂f0\r
+rs\r
+= 2\r
+∂\r
+∂rs\r
+(r\r
+2\r
+s\r
+f\r
+0\r
+rs\r
+) = ∂L\r
+∂f = 0 (A.8)\r
+The solution of this equation is ¯f(rs) = C +\r
+D\r
+rs\r
+. The requirement that f(rs) = 0 at\r
+rs → ∞ can be satisfied by setting C = 0, while the requirement that f(rs) = 1 for\r
+rs → 0 may be satisfied by setting D = r0. Since the variational problem was solved\r
+for r > r0, the optimal solution in the whole space is given by ¯f(rs) = min( r0\r
+r\r
+, 1).\r
+One may verify numerically that this choice of ¯f decreases the needed (absolute\r
+value of) negative energy of the Alcubierre solution by about a factor of 3.\r
+Intuitively, the decrease may be understood because a smooth fall-off is more natural\r
+for gravitating bodies than a sharp-exponential cut in the metric introduced by\r
+Equation (2). Repeating the derivation but assuming that f is a general axisymmetric\r
+function of both ρ and x − xs shows that in this case the energy is optimized by an\r
+infinitely thin shape, similar to the conclusions we obtained in Section 4. We conclude\r
+this section by mentioning that one can apply a similar method to other warp drive\r
+spacetimes (or even classes of warp drive spacetimes) to optimize their properties such\r
+as the total energy.\r
+Bibliography\r
+Alcubierre M 1994 Classical and Quantum Gravity 11(5), L73–L77.\r
+Alcubierre M & Lobo F S N 2017 Fundamental Theories of Physics 189, 257.\r
+Barcel´o C, Liberati S & Visser M 2005 Living Reviews in Relativity 8(1), 12.\r
+Bassett B A, Liberati S, Molina-Par´ıs C & Visser M 2000 Phys. Rev. D 62(10), 103518.\r
+Everett A E 1996 Phys. Rev. D 53, 7365–7368.\r
+Everett A E & Roman T A 1997 Phys. Rev. D 56, 2100–2108.\r
+Fayngold M 2002 Special relativity and motions faster than light.\r
+Fermi D & Pizzocchero L 2018 Classical and Quantum Gravity 35(16), 165003.\r
+Finazzi S, Liberati S & Barcel´o C 2009 Phys. Rev. D 79(12), 124017.\r
+Ford L H & Roman T A 1997 Phys. Rev. D 55, 2082–2089.\r
+Frank J, King A & Raine D J 2002 Accretion Power in Astrophysics: Third Edition.\r
+Garattini R & Lobo F S N 2007 Classical and Quantum Gravity 24(9), 2401–2413.\r
+Graham N & Olum K D 2007 Phys. Rev. D 76(6), 064001.\r
+Krasnikov S V 1998 Phys. Rev. D 57, 4760–4766.\r
+Lentz E W 2020 arXiv e-prints p. arXiv:2006.07125.\r
+Liberati S, Sonego S & Visser M 2002 Annals of Physics 298(1), 167–185.\r
+Lobo F S N 2007 arXiv e-prints p. arXiv:0710.4474.\r
+Lobo F S N & Visser M 2004 Classical and Quantum Gravity 21, 5871–5892.\r
+Loup F, Waite D & Halerewicz, E. J 2001 arXiv e-prints pp. gr–qc/0107097.
+
+Introducing Physical Warp Drives 24\r
+Nat´ario J 2002 Classical and Quantum Gravity 19(6), 1157–1165.\r
+Nat´ario J 2006 General Relativity and Gravitation 38, 475–484.\r
+Olum K D 1998 Phys. Rev. Lett. 81(17), 3567–3570.\r
+Pfenning M J & Ford L H 1997 Classical and Quantum Gravity 14, 1743–1751.\r
+Van Den Broeck C 1999 Classical and Quantum Gravity 16(12), 3973–3979.\r
+Varieschi G U & Burstein Z 2013 ISRN Astronomy and Astrophysics 2013, 482734.\r
+Visser M, Bassett B A & Liberati S 2000 Nuclear Physics B Proceedings Supplements 88(1), 267–270.\r
+White H 2013 Journal of the British Interplanetary Society 66, 242–247."""
+
+[[figures]]
+label = "fig:1"
+page_num = 5
+image_path = "images/image_p5_1.png"

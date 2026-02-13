@@ -1,0 +1,981 @@
+1
+
+Quantum Gravity and Regge Calculus
+Giorgio Immirzi a
+
+arXiv:gr-qc/9701052v1 23 Jan 1997
+
+a
+
+Dipartimento di Fisica and I.N.F.N., Perugia;
+immirzi@perugia.infn.it
+II meeting on Constrained Dynamics and Quantum Gravity, Santa Margherita Ligure, Sept.96.
+For Tullio Regge on his 65th birthday
+This is an informal review of the formulation of canonical general relativity and of its implications for quantum
+gravity; the various versions are compared, both in the continuum and in a discretized approximation suggested
+by Regge calculus. I also show that the weakness of the link with the geometric content of the theory gives rise
+to what I think is a serious flaw in the claimed derivation of a discrete structure for space at the quantum level.
+
+1. Introduction
+From chromodynamics, I have inherited the
+prejudice that a decent quantum field theory
+must have a credible discrete approximation. Being deep rooted, this prejudice resists counterexamples. In particular, Regge calculus [1] makes
+the geometric content of General Relativity so
+clear that I find difficult to believe that a successful quantization scheme would not originate,
+or translate cleanly into this discretized approximation. And therefore, I am reluctant to add the
+quantization of Regge calculus to the list of counterexamples, in spite of the modest success which
+the various attempts have achieved [2–5], and of
+the unquestionable fact that what progress there
+has been has been achieved ignoring this point of
+view.
+I shall give a quick sketch of the recent work
+on canonical quantization of gravity, and a tentative critique of this work in the light of what
+I claim Regge calculus would suggest, with side
+comments on the meaning of the results so far
+obtained. So, in spite of the rather generic title,
+I shall mention only a small fraction of the work
+going on.
+The idea that gravity should be treated as a
+connection theory underlies all the work I shall
+be considering, and this is where I shall begin;
+the other main ingredient is the idea of the ”loop
+representation” of Rovelli and Smolin, which has
+evolved into a theory of ”Spin nets”, and this will
+
+be discussed next, with a brief summary of the
+striking and very recent progress that has taken
+place. Here I shall try and explain why I think
+that these results are spoilt by the imperfect link
+of the theory with the geometric content of general relativity. The crucial importance of this link
+will be illustrated using Regge calculus as an example.
+2. Connections and constraints.
+If the aim is to formulate canonical general relativity as a some sort of gauge theory on 3–space,
+we have various options[6].
+Option (1) is A.D.M. geometrodynamics
+rewritten as a connection theory.
+One follows A.D.M. taking space slices Σt :
+t(x) =const., with a congruence ta : ta ∂a t = 1
+related to the unit normal to the slice na by
+ta = N na + N a , or na = −N ∂a t; however
+A.D.M. Rstart
+√ with4 the Einstein–Hilbert action
+1
+−g R dR x, while here one starts with
+S = 2κ
+1
+ǫIJKL eI ∧ eJ ∧ RKL (where
+an action S = 4κ
+KL
+R
+is the curvature 2–form of the Levi–Civita
+connection ΩIJ , and κ := (8πGN ewton )/c3 ), and
+the further choice is made to partially fix the
+O(3, 1) gauge freedom setting:
+e0a = −na = N ∂a t
+
+(1)
+
+This choice (”time gauge”) leaves invariance under local O(3) transformations, with eia , i =
+1, 2, 3 space–like to provide a local frame on the
+
+2
+slice. The pull–back of ΩIJ to the space slice gives
+the 3–d L.C. connection Γia := 12 qab ǫjik Ωjk
+b , and
+ib
+the extrinsic curvature Kai := qab Ω0i
+b = e Kab .
+As canonical variables we take the pair:
+(E ia := 21 ǫabc ǫijk ejb ekc = det(eia ) eia , Kai )
+
+(2)
+
+They form a canonical pair, just like the
+√
+(qab , π ab := q(K ab − q ab K) variables of A.D.M.,
+ia ib
+because E E = q q ab implies:
+1
+1
+Kai δE ia = √ Kab δ(E ia E ib ) = − π ab δqab (3)
+2 q
+2
+i
+The Γia have curvature Rab
+, and can be exia
+pressed in terms of E (and its inverse) solving
+the 9 linear equations they satisfy:
+
+Da E ia = 0 ;
+
+(b
+
+c)
+
+ǫijk Eia Ej Da Ek = 0
+
+(4)
+
+We need to impose the A.D.M. constraint, and
+to constrain Kai to make sure that Kab =
+i
+√1 qbc E c Ka
+is symmetrical; altogether:
+i
+q
+Gi := ǫijk Kaj E ka ≈ 0
+i
+≈0
+Vc := qbc ∇a π ab = 2Eia D[a Kc]
+
+1
+H := √ π ab πab − 21 π 2 − q R =
+q
+1
+[a b]
+i
+√
+)≈0
+(2Ei Ej Kaj Kbi + ǫijk E ia E jb Rab
+det E
+Everything can be rewitten in terms of 2×2 matrices saturating i, j, . . . indices with τi := σi /(2i);
+so for ex. the effect of local rotations becomes:
+E a := τi E ia
+Γa := τi Γia
+
+→ U E a U −1
+→ U (Γa + ∂a )U −1
+
+(5)
+
+There is nothing particularly new about any of
+this; in particular Kai fits into the scheme poorly,
+like an external field, and the connection is a derived quantity.
+Option (2) is a shrewd variation on the theme
+devised by J. F. Barbero[7,6], in a re–examination
+of the Ashtekar[8] formulation.
+For some β to be fixed, we can change our basic
+variables as follows:
+(E
+
+ia
+
+, Kai )
+
+→ (E
+
+ia
+
+,
+
+Aa(β)i := Γia + β Kai )
+
+(6)
+
+which is a canonical transformation, because
+1
+E ia δAa(β)i = βE ia δKai + ∂a (ǫ̃abc ekb δekc )
+2
+
+(7)
+
+so that:
+{Aa(β)i (x), E jb (y)} = βκ δji δab δ(x, y)
+
+(8)
+
+and all other Poisson brackets vanish (in partic(β)i
+(β)j
+ular, {Aa , Ab } = 0). However unlike Kai ,
+(β)i
+Aa transforms like an SU (2) connection for any
+(β)
+β, and one can introduce Da derivatives and
+(β)i
+a curvature Fab . Using the properties of the
+Levi–Civita connection and a bit of algebra the
+constraints become:
+
+(β)i
+
+E ia Fab
+
+Da(β) E ia = βGi ≈ 0
+
+= β Vb + β 2 Kbj Gj ≈ 0
+
+1
+(β)k
+H= p
+ǫijk E ia E jb Fab
+det(E)
+
+(1 + β 2 ) [a b] i j
+−2 p
+Ei Ej Ka Kb + . . . ≈ 0
+det(E)
+
+where the dots are terms proportional to βGi and
+its derivatives.
+Clearly the first two constraints are in an acceptable form, and the last one is not: the bit proportional
+to (1 + β 2 ) is a mess, the overall factor
+p
+1/ det(E) is unpleasant. As for this last point:
+we either learn to live with the factor, or we ignore it, absorbing it in the Lagrange multiplier.
+The messy bit is more troublesome. The quickest way to get rid of it would be to take β = i.
+This is Ashtekar’s original choice (together
+with
+p
+the idea of absorbing the factor 1/ det(E) in
+the Lagrange multiplier)[8] . The point is that
+there is much more to be said for this choice: it
+is (or, one can convince oneself that it is) the
+one choice that is geometrically and physically
+(i)i
+well motivated. In fact the connection Aa is
+the pull–back to the space slice of the self–dual
+connection, and E ia the pull–back of the self–dual
+product of two vierbeins:
+A(i)i
+a
+
+jk
+0i
+i
+b
+1
+:= qab CIJ
+ΩIJ
+b := qa (− 2 ǫijk Ωb + iΩb )
+
+E ia
+
+i
+:= −ǫabc CIJ
+eIb eJc
+
+(9)
+
+This definition of E ia coincides with eq. (2) if
+we assume ”time gauge”, eq. (1); for the defi(i)i
+nition of Aa to coincide with eq. (6) we have
+to assume ”time gauge” and to impose explicitly
+
+3
+that the connection ΩIJ
+a is Levi–Civita, which follows if we add to the constraints the real part of
+the second eq. (4) as a brand new ”reality” condition. The result is, I think, physically splendid,
+because we retain the full Lorentz group as gauge
+group of the canonical theory, but technically appalling, because of the obvious complications implicit in the use of complex variables. In particular, the i which now occurs in the Poisson brackets eq. (8) puts all simple minded quantizations
+on collision course with the desire to have the
+operators corrsponding to E ia hermitean. More
+particularly, I have not found a way round this
+difficulty, simple minded or not.
+The alternative that has become most popular is to take β = 1, the ”Barbero connection”.
+I would like to claim that the trouble with this
+choice is that the connection has no obvious geometric meaning, and that there is nothing special
+about the value 1. In fact, β can be anything,
+and I shall leave it arbitrary (but real > 0) in the
+following. In Euclidean (++++) gravity the second term of H is proportional to (1− β 2 ), and the
+choice β = 1 is natural, just like β = i was ”natural” for the (-+++) signature, but that’s not
+saying much, unless somehow we learn to ”Wick–
+rotate” the theory. For this possibility [6] see
+later.
+There are at least two smart ways out of the
+inconvenience that Kai is a complicated function
+(β)i
+and E ia (so that the expression of H
+of Aa
+is messy), which come by roundabout arguments
+devised by T. Thiemann[9]. I begin by listing
+some identities; let f (x), h(x) be nice test functions on Σ, and
+Z
+f
+(β)k
+√
+ǫijk E ia E jb Fab d3 x
+HE [f ] :=
+det E
+Σ
+Z √
+(10)
+h det Ed3 x
+V [h] :=
+Σ
+
+then one can work out the following remarkable
+Poisson brackets:
+Z
+ E
+f h E ia Kai d3 x =
+H [f ] , V [h]
+= 2β 2 κ
+Σ
+
+
+T [f ] , E ia (x)
+
+{T [f ] , Kai (x)}
+
+:=
+
+2β 2 κ2 T [f h]
+
+=
+
++f (x)E ia (x)
+
+=
+
+−f (x)Kai (x)
+
+(11)
+
+{T [f ] , Γia (x)}
+n
+o
+Aa(β)i , V [h]
+
+=
+
+cd
+1 ib
+2 E ǫabc q ∂d f
+
+=
+
+βκh
+√
+ǫabc ǫijk E ia E jb
+4 det E
+
+I shall ignore possible problems with boundary
+terms, write simply V := V [1], T := T [1], H E :=
+HE [1], and summarize the above as:
+{H E , V } = 2β 2 κ2 T
+{T, Γia } = 0
+
+; {T, E ia } = E ia
+; {T, Kai } = −Kai
+
+(12)
+
+One use of these identities could be to rewrite H
+in the (possibly more manageable) form:
+βκ
+(β)i
+H = {Aa(β)i , V }ǫabc Fbc
+2
+−
+
+(13)
+
+1 + β 2 (β)i
+(β)j
+{Aa , V }ǫabc ǫijk {Ab , T }{Ac(β)k , T }
+β2
+
+This is the line followed by T. Thiemann in [9],
+and claimed to be a runaway success.
+A more fancy approach starts from the observation that the Hamiltonian evolution induced by
+some H on a function f on phase space is given
+by the map:
+WH (t) ◦ f := f + t{f, H} +
+
+t2
+{{f, H}, H} + ..(14)
+2!
+
+which preserves Poisson brackets etc.; furthermore, from eq.(12):
+WT (t) ◦ E ia
+WT (t) ◦ Aa(β)i
+
+= e−t E ia
+= Γia + βet Kai
+
+(15)
+
+One may say that this relation shows explicitly
+that the value of β does not matter, since it can
+be changed at will (which is the point I am trying to make). More boldly, that it gives us a way
+to go from the Barbero to the Ashtekar connection, setting t = iπ/2 if we had β = 1 [10,6] .
+This idea of a ”Wick rotation” is striking, but I
+find it very difficult to articulate. In particular,
+I find difficult to understand how the transformation brings about a change of (gauge) symmetry group. I nevertheless regard this as the most
+promising clue to the construction of a satisfactory quantum theory within this set of ideas.
+
+4
+3. Spin nets.
+To quantize the theory we may use the connection representation, in which states are function(β)i
+als of Aa (x), and
+E ia
+
+→
+
+Ê ia :=
+
+βκh̄ δ
+i δAa(β)i
+
+(16)
+
+The important states turn out to be ”spin net
+states”, which are an obvious generalization of
+Wilson loops.
+
+4
+2
+0
+
+1
+3
+Take for ex. the net in the picture, which
+has 5 vertices and 10 lines, and lives in a space
+(β)i
+with a connection Aa ; assign to each line
+γl an orientation, hence a ”transporter” gl :=
+R
+(β)i
+P exp l τi Aa dγla , and a spin sl = 0, 12 , 1, . . .,
+sl
+so that γl → Dmm
+′ (gl ); assign to each vertex v
+v
+, and we shall
+an SU (2) invariant tensor Cm
+a ,..,md
+have that:
+XY
+Y
+v
+ψn (g1 , ..., g10 ) =
+C...
+D..sl (gl )
+(17)
+{m} v
+
+l
+
+is gauge invariant. If gl ∈ SU (2), and we indicate by dgl the Haar measure, these states form a
+(smallish) Hilbert space with the scalar product:
+Z
+(18)
+< ψn′ |ψn >= ψ n′ ψn dg1 . . . dg10
+Ashtekar and collaborators have discovered and
+emphasized again and again (see e.g.[11] ) that
+if one considers all possible nets, then the (very
+large) set of these states is dense in the Hilbert
+space of gauge invariant functionals of A(β) . In
+
+this sense eq.(18) induces a measure DA(β) in this
+space.
+The gauge invariant functionals of A(β) which
+might represent physical states are invariant
+under diffeomorphism. Given one such state
+Ψ[A(β) ], for every spin net state ψn [A(β) ] we can
+in principle calculate its ”loop transform”:
+Z
+Ψ(n) := DA(β) ψ n [A(β) ] Ψ[A(β) ]
+(19)
+that will represent the same state, and is diffeomorphic invariant if it depends only on the structure of the net and on our assigments of spins
+and invariant tensors. This is the latest incarnation of the ”loop representation” idea of Rovelli
+and Smolin[12]. This form goes particularly well
+with the idea of the ”weave”[13]: that the world
+that (we think) we know is likely to be described
+by states Ψ(n) with support on huge, immensely
+complicated and fine meshed nets, in fact with
+mesh sizes of the order of the Planck length.
+If we keep in mind the weave idea, it is quite
+sensible to look at net states to find the spectrum
+of the operators that correspond to the area of a
+surface S and to the volume of a region R, and
+to study the operator form of the constraints.
+Very briefly: if the surface S intersects a subset
+L of lines of the net, does not touch the vertices,
+has no line lying on it, carefully regularizing the
+operator (first taking the square root, then removing the regulator), one finds[11,14] :
+Z
+q
+Â(S)ψn = : d2 σ na nb Ê ia Ê ib : ψn
+s
+Xp
+= (βh̄κ)
+sl (sl + 1) ψn
+(20)
+l∈L
+
+If the region R contains a subset V of vertices
+of the net, one finds[14–16] by a similar procedure that a suitably regularized volume operator
+V̂ (R) mixes the states ψn with coefficients pro3
+portional to (βh̄κ) 2 . This operator can be diagonalized[14] , and has a complicated, but discrete
+spectrum. Before going further, it is important
+to notice that nothing works for the theory based
+on the Ashtekar connection β = i: all operators
+have the wrong hermiticity; on this, see later.
+However, I claim that the discrete spectra one
+gets for areas and volume cannot at this stage be
+
+5
+interpreted as evidence for a discrete structure of
+space, because of the arbitrariness of β; we are
+faced with a ”β crisis”. Unless we find some good
+reason to fix β, the commutation relations eq.(8)
+will be unable to fix the scale of the theory. My
+feeling is that this requires a group larger than
+SU (2); a bit like in good old current algebra. A
+larger group may come from the need to implement the ”Wick rotation”, whether interpreted as
+a passage from the Euclidean to the Minkowskian
+or from the Barbero to the Ashtekar connection
+I do not know.
+Alternatively, it may be that looking at the
+Wheeler De Witt equation Ĥ · Ψ = 0, following
+Thiemann’s work [9] , we shall find that solutions exist only for particular values of β. Given
+the way in which eq.(13) depends on β, this is
+actually rather likely; but then, it m ay be just another way of saying the same thing. At the same
+time, if it were true it would be splendid: because
+we would have derived the discreteness of space
+from dynamics, and not from a kinematic fiddle.
+
+3
+4
+
+1
+
+4 X IJK
+−1
+ǫ
+Tr( gI gIJ gJ−1 gK {gK
+, V })
+3βκ
+I,J,K
+
+≈√
+
+1
+det E
+
+(β)k
+
+ǫijk E ia E jb Fab
+
+V(123)
+
+(21)
+
+where V(123) := 16 ǫabc ∆a1 ∆b2 ∆c3 is the coordinate
+volume of the tetrahedron shown. The action of
+the quantum ĤE [f ] on net states is defined summing over all vertices and all choices of three lines
+the corresponding operator:
+X
+4
+ĤE [f ] · ψn =
+f (v)·
+3iβh̄κ
+v,{IJK}
+X
+−1
+IJK
+·
+ǫ
+Tr( gI gIJ gJ−1 gK [gK
+, V̂ ]) · ψn (22)
+I,J,K
+
+This is only the beginning, the definition is sharpened and modified several times en route. I understand that this summer it has been the object
+of intensive discussions by lots of specialists at the
+ESI workshop, and no doubt you will hear more
+and in more detail about it.
+4. Discretizing.
+
+2
+
+v
+
+a choice of three (outgoing) lines, say 1, 2, 3,
+adding lines (IJ) (see the figure), in the naı̈ve
+limit gI ≈ 1 + Aa ∆aI + . . . one has:
+
+(12)
+
+Thiemann’s work [9] on the Hamiltonian constraint is the latest thing. It is a massive and difficult piece of work, so that my comments, based on
+a very limited understanding, are obviously very
+tentative. The main effort is aimed at defining a
+satisfactory quantum operator corresponding to
+HE [f ], eq.(10), from which, in view of eq.(11,12)
+the rest follows (more or less). A regularization is
+obtained noticing that for a vertex v of a net and
+
+The pattern I have described so far occurs again
+if you try and discretize the theory, except that
+there are more variants: from the variable mesh
+discretizations of the groups that solve problems
+in the classical theory numerically (an industry in
+rapid expansion), to emulatations of lattice gauge
+theory or to the theory of random triangulations.
+I shall restrict myself drastically, and try to keep
+close in spirit to the original Regge idea.
+Divide space in tetrahedra with a flat inside:
+the natural variables corresponding to the E ia
+would be the areas of the triangles, oriented outwards with respect to a frame local to the tetrahedron:
+S := τi S i := τi E ia ǫabc 12 (x1 x2 +x2 x3 +x3 x1 )bc (23)
+The area square of a triangle will be S i S i , and
+of course tetrahedra must close; for the tetrahedron A = (1234), labeling each triangle with the
+
+6
+number of the vertex opposite, this gives the constraint:
+S1i + S2i + S3i + S4i = 0
+
+(24)
+
+The volume square of the tetrahedron will be :
+VA2 =
+
+ǫijk i j k
+(S S S + S1i S4j S3k + S2i S4j S1k + S3i S2j S1k )
+18 2 3 4
+The variables S must be paired with variables g
+that link the frame attached to tetrahedron A to
+the one of its neighbour B across the triangle,
+with the basic condition that the triangle looks
+the same from both sides:
+−1
+SB = −gAB
+SA gAB
+
+(25)
+2
+
+5
+C
+B
+4
+
+A
+3
+
+gAB
+
+→
+
+−1
+SB → g B SB
+gB
+−1
+gA gAB gB
+
+(26)
+
+An explicit parametrization for the triangle (123)
+would be :
+SA := uA · τ3 s · u−1
+A
+with : uA = eατ3 eβτ2
+gAB := uA eΦτ3 2τ2 u−1
+B
+
+;
+;
+
+SB := uB · τ3 s · u−1
+B
+uB := eγτ3 eδτ2
+(27)
+
+(28)
+
+I omit the details: the point is that from these
+relations we can calculate all the angles Φ, and
+for the curvature around the edge (12) we find:
+
+= u4A e
+
+φA τ 3
+
+e
+
+RA := eFA =
+(θA +θB +θC −2π)τ2
+
+(29)
+2τ2 e−φA τ3 u−1
+4A
+
+Curvature is essentially the ”defect angle” in the
+rotation; the connection is Levi–Civita.
+But what can we make of the Kai ? To make the
+connection ”dynamic”, we must give up eq.(28),
+and therefore (29), and leave the angles Φ arbitrary, because that is the only place where the extrinsic curvature can go. Omitting details again,
+by various plausibility arguments, and insisting
+that in the limit eq.(8) is recovered,
+one finds for
+R
+the Liouville form Θ (the pdq bit of the action)
+and for the Poisson brackets:
+
+1 XX
+Tr St δgt gt−1 T
+Θ = −
+βκ
+{S i , S j }
+
+If g is a rotation, we will discover the local geometry of our space going round an edge, from
+tetrahedron to tetrahedron, until we get back:
+then if we are not in the same frame we started
+from, we conclude that space is curved. Changes
+of the frames, i.e. local rotations, are ”gauge”
+transformations, which translate eq.(5) to:
+;
+
+−1
+[S3A , S4A ] gAB ] = 0
+[[S3B , S5B ] , gAB
+
+T
+
+1
+
+−1
+SA → g A SA g A
+
+with s > 0; the angle Φ is arbitrary at this stage.
+Suppose that we are given the lengths of all
+edges, like in Regge’s original scheme for ”general
+relativity without coordinates”: then we are in
+a Riemannian space, and we have conditions for
+the triangles that share an edge; for the edge (12)
+they read:
+
+{g (1) , g (2) }
+
+t∈T
+
+= βκ ǫijk S k ; {g, S i } = βκ τi g
+= 0
+
+(30)
+
+In the explicit parametrization eq.(27) each triangle contributes to the Liouville form:
+−
+
+2
+Tr(S δg g −1 ) =
+βκ
+1
+=
+(s δΦ + s cos β δα + s cos δ δγ)
+βκ
+
+(31)
+
+I have not tried to write the constraints for real
+β. The idea of squeezing in dynamics by fiddling
+Φ may appear ugly and artificial, but it is the
+sense of the ”Barbero connection”. The Ashtekar
+choice makes much more sense: one replaces the
+Φ we calculated above with a complex variable:
+Φ
+
+→
+
+Φ + iζ
+
+(32)
+
+7
+so that gAB is promoted to a Lorentz transformation, with rapidity ζ, that links the different inertial frames attached to tetrahedra A and B. One
+may say that this is physically well motivated,
+and follows straight from the principle of equivalence. However, extending the gauge transformations eq.(26) from SU (2) to SL(2, C) inevitably
+creates complications: we have to impose explicitly that within a tetrahedron SIi SJi is real and
+positive definite, and eq.(28) has to be modified.
+On the other hand we know that the Hamiltonian
+constraint simplifies to the HE form, for which it
+is not difficult to guess discrete versions, for ex.:
+X
+
+I<J∈T
+
+1
+Tr([SI , SJ ]FIJ )T ≈ 0
+VT
+
+(33)
+
+in words: for each tetrahedron, the sum of the
+lengths of the edges times the corresponding defect angle must vanish. This comes about because
+for the edge (12) of A we can see that
+i
+:=
+l(12)
+
+2
+ǫijk S4j S3k ≈ eia (xa2 − x1a )
+3VA
+
+(34)
+
+In practice to make any use of eq.(33), which
+is certainly not the only expression possible, we
+must approximate F with some function of R,
+e.g.F ≈ (R − R−1 )/2. The same or a similar
+expression can be used for the HE part of the
+Hamiltonian constraint for real β. It is unfortunate that, as far as I can see, the regularized form
+used by Thiemann is just about the least natural
+in this scheme. This is because, at the first step
+one finds, for ex.:
+g4 {g4−1 , VA } =
+
+βκτi ǫijk j k
+(S2 S3 + S3j S1k + S1j S2k )
+36V
+βκ
+i
+i
+i
+τi (l(41)
++ l(42)
++ l(43)
+)
+=
+24
+
+a rather uncooperative expression; or, said more
+generally, because Thiemann’s tetrahedra live in
+a lattice dual to the Regge lattice1 , in which to
+each of our triangles corresponds a line, and to
+each tetrahedron a (4–valent) vertex.
+1 notice that in eq.(21) the volume operator V̂
+
+acts on the
+vertices of the net, that correspond to Regge tetrahedra,
+while V(123) is the volume of a tetrahedron in the dual
+lattice.
+
+Now for quantization. At first sight, from what
+I said about nets, it would appear that discretization, and Regge calculus in particular, offers the
+perfect tool; in fact, I became interested in Regge
+calculus because I was trying with spin nets. Spin
+nets naturally live in the dual of the Regge lattice. One can immediately envisage putting on a
+(small) computer a finite, simple lattice like a five
+tetrahedra division of S 3 . In a real SU (2) formulation the quantization of areas follows directly
+from eq.(31): the area variable s is conjugate to
+an angle Φ. This is just the way ’t Hooft argued in his discretized 2+1 gravity[17] , but with
+a very refined argument to Wick-rotate the theory. However, the direct use of the Ashtekar connection for quantization is made impossible by a
+muddle over the measure. I shall explain this in
+detail because I still hope that the muddle has a
+simple solution that I cannot see because of some
+selective blindness.
+One can see what the problem is quite simply
+by writing the quantum version of eq.(30) for β =
+i:
+[Ŝ i , Ŝ j ] = −κ ǫijk Ŝ k ;
+[ĝ (1) , ĝ (2) ] = 0
+
+[ĝ, Ŝ i ] = −κ τi ĝ
+
+(35)
+(36)
+
+so that if ψ = ψ({g}), Ŝ i = −κT̂Li , the (holomorphic) generator of the left–regular representation
+of SL(2, C). The problem is that now there is no
+way to juggle the measure to make Ŝ i hermitean;
+worse, Ŝ 2 is negative, with eigenvalues −j(j + 1).
+Of course one did expect troubles: there are always troubles with non–compact groups, e.g. in
+2+1 gravity[18], and even linearized gravity turns
+out to be quite tricky[19]; in QED the scalar product is well defined only for gauge invariant states.
+So the cure should come from considering the
+Hamiltonian constraint; in an interesting analysis of the linearized case[20] the suggestion is that
+one should gauge fix it. In our case, the idea of
+”Wick rotation” seems much more attractive, but
+notice that in any case it depends on solving the
+Hamiltonian constraint.
+The idea[10] is that one can apply to this transformation the formalism of ”coherent state transformations” developed by B.C. Hall[21] , suitably
+generalized. These are isometries between Hilbert
+
+8
+spaces on e.g. SU (2) and on its complexification
+SL(2, C); in the simplest case one defines heat
+kernels on the two groups by:
+∂ρt
++ 12 Ĵ2 ρt = 0
+∂t
+
+,
+
+ρ0 = δ(x)
+
+∂µt
++ 41 (Ĵ2 + K̂2 )µt = 0
+∂t
+
+,
+
+µ0 = δ(g)
+
+(37)
+
+(notice that (Ĵ2 + K̂2 ) is an elliptic operator, but
+not the Casimir). Then the transformation Bt :
+Z
+f (x)ρt (x−1 g)dx
+(38)
+f → (Bt f )(g) :=
+SU(2)
+
+maps functions on SU (2) which are L2 with the
+measure ρt dx to functions on SL(2, C) which are
+holomorphic and L2 with the measure µt dg. The
+map can be proved to be invertible and isometric,
+i.e.
+Z
+(Bt f )(g) (Bt h)(g) µt (g)dg =
+SL(2,C)
+Z
+=
+f (x) h(x)ρt (x)dx
+SU(2)
+
+This seems to be just what we need, but the connection with the ”Wick rotation” is still to be
+understood.
+REFERENCES
+1. Tullio Regge, Il Nuovo Cimento 19 (1962)
+558.
+2. Paul Renteln and Lee Smolin, Class. and
+Quantum Grav.6 (1989) 275.
+3. Renate Loll, Nucl. Phys. B244 (1995)
+619; Phys. Rev. Lett. 75 (1995) 3048; grqc/9602041.
+4. Giorgio Immirzi, Class. and Quantum Grav.
+11 (1994) 1971; 13 (1996) 2385.
+5. Josè A. Zapata, Class. and Quantum Grav.
+13 (1996) 2617.
+6. Abhay Ashtekar, Phys. Rev. D53 (1996)
+2865.
+7. Jesus Fernando Barbero, Phys. Rev. D51
+(1995) 5507.
+8. Abhay Ashtekar, Phys. Rev. Lett. 57 (1986)
+2244.
+9. Thomas Thiemann, Phys. Lett. B380 (1996)
+257, gr-qc/9606089, 90.
+
+10. Thomas Thiemann, Class. and Quantum
+Grav. 13 (1996) 1383.
+11. Abhay Ashtekar and Jerzy Lewandoski, grqc/9602046.
+12. Carlo Rovelli and Lee Smolin, Phys. Rev.
+Lett. 61 (1988) 1155.
+13. A. Ashtekar, C. Rovelli and L. Smolin, Phys.
+Rev. Lett. 69 (1992) 237.
+14. Roberto De Pietri and Carlo Rovelli, Phys.
+Rev. D54 (1996) 2664.
+15. Jerzy Lewandoski, gr-qc/9602035
+16. Thomas Thiemann, gr-qc/9606091
+17. Gerardt ’t Hooft, Class. and Quantum Grav.
+10 (1993) 1653.
+18. A. Ashtekar and R. Loll, Class. and Quantum
+Grav. 11 (1996) 2417.
+19. A. Ashtekar, C. Rovelli and L. Smolin, Phys.
+Rev. D44 (1991) 1740.
+20. Richard P. Woodard, Class. and Quantum
+Grav. 10 (1993) 483.
+21. Brian C. Hall, Journal of Functional Analysis
+122 (1994) 103.
+
+

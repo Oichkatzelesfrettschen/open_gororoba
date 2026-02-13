@@ -1,0 +1,1077 @@
+equations = []
+tables = []
+full_text = """
+PREPRINT Page 1 2/13/2002 \r
+1\r
+Determination of Negative Permittivity and Permeability of Metamaterials from Reflection \r
+and Transmission Coefficients \r
+D. R. Smith, S. Schultz \r
+Department of Physics, University of California, San Diego, 9500 Gilman Drive, La Jolla, CA 92093-0319 \r
+P. Markoš*, C. M. Soukoulis \r
+Ames Laboratory and Department of Physics and Astronomy, Iowa State University, Ames, Iowa 50011 \r
+(Submitted 26 November 2001) \r
+We analyze the reflection and transmission coefficients calculated from transfer matrix \r
+simulations on finite lengths of electromagnetic metamaterials, to determine the effective \r
+permittivity (ε) and permeability (µ). We perform this analysis on structures composed of \r
+periodic arrangements of wires, split ring resonators (SRRs) and both wires and SRRs. We find \r
+the recovered frequency-dependent ε and µ are entirely consistent with analytic expressions \r
+predicted by effective medium arguments. Of particular relevance are that a wire medium \r
+exhibits a frequency region in which the real part of ε is negative, and SRRs produce a \r
+frequency region in which the real part of µ is negative. In the combination structure, at \r
+frequencies where both the recovered real parts of ε and µ are simultaneously negative, the real \r
+part of the index-of-refraction is found also to be unambiguously negative. \r
+ \r
+*\r
+ Permanent address: Institute of Physics, Slovak Academy of Sciences, Dúbravska cesta 9, 842 28 Bratislava, Slovakia. \r
+It has been proposed that electromagnetic \r
+metamaterials—composite structured materials, formed \r
+from either periodic or random arrays of scattering \r
+elements—should respond to electromagnetic radiation \r
+as continuous materials, at least in the long wavelength \r
+limit [1,2]. In recent experiments and simulations [3,4], \r
+it has been demonstrated that certain metamaterial \r
+configurations exhibit scattering behavior consistent \r
+with the assumption of approximate frequency\u0002dependent forms for ε and µ. However, the techniques \r
+applied in those studies probed the materials indirectly, \r
+and did not provide an explicit measurement that would \r
+assign values for ε and µ. It is our aim in this paper to \r
+show that the previous conjectures were indeed valid: \r
+unambiguous values for ε and µ can be applied to \r
+electromagnetic metamaterials. Our approach here \r
+utilizes the transmission and reflection coefficients (S\u0002parameters, equivalently) calculated for a wave \r
+normally incident on a finite slab of metamaterial. We \r
+invert the scattering data to determine n and z, for \r
+systems of several thicknesses, from which we obtain \r
+self-consistent values for ε and µ. While we utilize \r
+simulation data in this study, the technique we describe \r
+will be readily applicable to the experimental \r
+characterization of metamaterial samples whenever the \r
+scattering parameters are known. \r
+The common method of characterizing the \r
+electromagnetic scattering properties of a homogeneous \r
+material is to identify its impedance (z) and refractive \r
+index (n) [5,6]. While it is possible to completely \r
+specify the scattering in terms of z and n, it is often \r
+more convenient to choose a second set of analytic \r
+variables that carry a direct material interpretation. \r
+These variables are the electric permittivity ε=n/z, and \r
+the magnetic permeability µ=nz. Both n and z, and \r
+therefore ε and µ, are frequency-dependent complex \r
+functions that satisfy certain requirements based on \r
+causality. For passive materials, Re(z) and Im(n) must \r
+be greater than zero. \r
+At a given frequency, any material that supports \r
+only one propagating mode will generally exhibit a \r
+well-defined refractive index n, whether the material is \r
+continuous or not. Photonic band gap materials, for \r
+example, are characterized by dispersion curves from \r
+which an effective index can extracted, even for bands \r
+well above the first band gap, and well-defined \r
+refraction phenomena can result [7,8,9]. However, it is \r
+generally not possible to assign an impedance (z) to a \r
+non-continuous material, except in those cases where \r
+the wavelength in the material is much larger than the \r
+dimensions and spacing of the constituent scattering \r
+elements that compose the medium. If z depends \r
+strongly on the surface termination, or if z depends on \r
+the overall size of the sample, then z is ambiguous, and \r
+it is not possible to assign intrinsic values for ε and µ. \r
+The transmission coefficient for waves incident \r
+normally to the face of a 1-D slab of continuous \r
+material (in vacuum) with length d is related to n and z \r
+by 
+
+PREPRINT Page 2 2/13/2002 \r
+2\r
+( ) ( ) 1 1\r
+cos sin\r
+2\r
+ikd t nkd z nkd e z− i\r
+= −+\r
+            , (1) \r
+where k=ω/c is the wavenumber of the incident wave. \r
+The incident wave is assumed to travel rightward along \r
+the positive x-axis, with the origin defined as the first \r
+face of the material seen by the radiation. To improve \r
+the clarity of the subsequent formulas, we introduce the \r
+normalized transmission coefficient t’=exp(ikd)t. The \r
+reflection coefficient is also related to z and n by \r
+( ) 1\r
+sin\r
+2\r
+r 1\r
+i z nkd\r
+t z =− −\r
+′\r
+      (2) \r
+ \r
+Eqs. (1) and (2) can be inverted to find n and z as \r
+functions of t’ and r. Performing this inversion leads to \r
+the following expressions: \r
+( )\r
+( )\r
+1 2 2 cos( ) 1\r
+2\r
+1 1\r
+Re 2 1 2\r
+2\r
+nkd r t\r
+t\r
+A r At\r
+t t\r
+= −− ′ ′\r
+=− + ′ ′ ′\r
+   \r
+     \r
+ (3) \r
+and \r
+( )\r
+( )\r
+2 2 1\r
+2 2 1\r
+r t z\r
+r t\r
++ − ′ = ±\r
+− − ′ , (4) \r
+where 1 A = + rt t r * * ′ ′ and 2 2\r
+2 A 1 r t =− − ′ are both \r
+real-valued functions that go to zero in the absence of \r
+material losses. \r
+Note that while the expressions for n and z are \r
+relatively uncomplicated, they are complex functions \r
+with multiple branches, the interpretation of which can \r
+lead to ambiguities in determining the final expressions \r
+for ε and µ. We can resolve these ambiguities by \r
+making use of additional knowledge about the material. \r
+For example, if the material is passive, the requirement \r
+that Re(z)>0 fixes the choice of sign in Eq. 4. \r
+Likewise, Im(n)>0 leads to an unambiguous result for \r
+Im(n): \r
+( ) ( ( ) ) 1 22 1 cos 1\r
+2 Im Im\r
+r t\r
+t\r
+n\r
+kd\r
+− − − ′ ′ = ±\r
+       \r
+ \r
+ (5) \r
+When we solve for the right-hand side of Eq. 5, we \r
+select whichever of the two roots yields a positive \r
+solution for Im(n). Re(n), however, is complicated by \r
+the branches of the arccosine function, or, \r
+( ) ( ( ) ) 1 22 1 cos 1\r
+2 2\r
+Re Re\r
+r t\r
+t m\r
+n\r
+kd kd\r
+π\r
+− − − ′ ′ =± +\r
+       \r
+ \r
+, (6) \r
+where m is an integer. When d is large, these branches \r
+can lie arbitrarily close to one another, making the \r
+selection of the correct branch difficult in the case of \r
+dispersive materials. For this reason best results are \r
+obtained for the smallest possible thickness of sample, \r
+as has commonly been known in the analysis of \r
+continuous materials. Even with a small sample, more \r
+than one thickness must be measured to identify the \r
+correct branch(es) of the solution which yields \r
+consistently the same values for n. Note that the \r
+requirement that Im(n)>0 uniquely identifies the sign of \r
+Re(n), which is essential when the material may \r
+potentially have regions which are left-handed—that is, \r
+materials in which Re(n) may be negative. \r
+In order to demonstrate the validity of assigning \r
+bulk permeability and permittivity values to non \r
+continuous metamaterials, we utilize simulation data \r
+generated by the transfer matrix method (TMM) [10,11] \r
+on three types of structures: a medium composed of a \r
+periodic array of wires, a medium composed of a \r
+periodic array of split ring resonators (SRRs), and a \r
+medium composed by interleaving the wire and the \r
+SRR arrays. We simulate one unit cell of a given \r
+system using periodic boundary conditions in the \r
+directions perpendicular to the propagation direction. \r
+The TMM represents a complete solution of Maxwell’s \r
+equations, and differs from Eqs. (1) and (2) in that the \r
+exact details of the scattering elements are taken into \r
+account. In the embedding medium, all eigenvalues of \r
+the TM can be found analytically [12]. We find that in \r
+the frequency range of interest and for the incoming \r
+wave perpendicular to the sample surface, there is only \r
+one propagating mode. All other modes are evanescent, \r
+so that the systems considered are effectively one\u0002dimensional and we are justified utilizing Eqs. (5) and \r
+(6), in which t’ and r represent the transmission and \r
+reflection for this propagating mode. In the calculations \r
+presented here, cells were meshed with 15x11x15 grid \r
+points, in a manner described in Ref. 11. In the \r
+formulation of the TMM used here, the metal dielectric \r
+function is approximated by ε=-1000 + 18,000i, for all \r
+frequencies. A larger value of the imaginary part of the \r
+dielectric function for the metal results in lowered \r
+absorption, but does not change the qualitative picture \r
+presented here. \r
+A square array of conducting wires, based on \r
+effective medium arguments, is expected to exhibit the 
+
+PREPRINT Page 3 2/13/2002 \r
+3\r
+ideal frequency-dependent plasmonic form of ε=1-\r
+ωco2\r
+/ω2, where ωco is a cutoff frequency [1]. Fig. 1 \r
+shows the permittivity recovered from simulation data \r
+for an array of wires, continuous along the E-polarized \r
+direction of the incident wave, and with lattice constant \r
+5 mm. The figure shows data for one, three, and five \r
+layers of lattice in the propagation direction. A fit to the \r
+resulting curves indicates a cutoff frequency of \r
+ωp/2π=22.3 GHz, consistent with that determined by the \r
+noting the onset of transmission (not shown), with a \r
+frequency dependence indistinguishable from the three \r
+and five row curves. The recovered permeability was \r
+found to be unity at all frequencies. \r
+While there is no ambiguity in determining the \r
+phase of the transmitted wave, the phase of the reflected \r
+wave must be measured relative to a reference plane \r
+that is considered to be at the first face of the material. \r
+Given that metamaterials generally do not have well\u0002defined surfaces, the question arises as to where this \r
+reference plane should be located. A definite answer \r
+can be obtained in the case of the wire structure, where \r
+it is reasonable to assume that the reference plane \r
+coincides with the first plane of the wires. We found \r
+that with this choice of reference plane, the relation \r
+z(ω)=1/n(ω) holds, consistent with the response of the \r
+wire medium being entirely electric (i.e., µ=1). For the \r
+SRR medium, the choice of reference plane was not \r
+found to be critical; for the combined structure, \r
+however, the wires dominate the scattering, and the \r
+reference plane was again chosen to coincide with the \r
+first plane of wires. \r
+A second ambiguity that arises is the effective unit cell \r
+length that will result in values of ε and µ that do not \r
+depend on the overall length of the structure. \r
+Empirically, we find in the three cases investigated that \r
+the correct length corresponds to the number of unit \r
+cells multiplied by the length of each unit cell. This can \r
+be seen in Fig. 1, where the analysis of different lengths \r
+of the wire medium results in the same permittivity; \r
+only for a wire medium consisting of one layer is there \r
+a noticeable deviation from the “bulk” behavior. It \r
+should be noted that the unit cells analyzed here are \r
+square, and thus the unit cell length is implicit in the \r
+calculation by virtue of the spacing between elements in \r
+the direction perpendicular to propagation. The fact \r
+that even one unit cell in the propagation direction \r
+produces nearly the same scattering parameters as a \r
+thicker material may therefore not be so unexpected. \r
+Fig. 2 shows the real and imaginary parts of the \r
+permeability for a medium composed of only SRRs, as \r
+configured in Ref. [11]. The dark solid curves are taken \r
+from the simulation data, while the dashed curves are \r
+from transmission and reflection coefficients computed \r
+for a uniform material with a permeability \r
+corresponding to \r
+( )\r
+2\r
+2 2\r
+0\r
+1 mp\r
+i\r
+ω\r
+µ ω\r
+ω ω ω = − − + Γ (7) \r
+where we have used ω0/2π=8.5 GHz, ωmp/2π=3.3 GHz \r
+Figure 2: Permeability as a function of frequency for the \r
+SRR medium, for one or more unit cell lengths. The solid \r
+dark lines correspond to the real and imaginary parts of the \r
+permeability determined using the TMM data, while the \r
+dashed lines were obtained from Eq. (7) by assuming \r
+parameters chosen to approximate the SRR medium. Note \r
+that at ~8.5 GHz the real part of the permeability goes \r
+negative, with a bandwidth of ~0.5 GHz. \r
+Figure 1: Permittivity as a function of frequency for a wire \r
+medium. The cutoff frequency for the structure, \r
+determined by the onset of propagation is 22.3 GHz. The \r
+inset depicts the orientation of the wire with respect to the \r
+incident radiation. 
+
+PREPRINT Page 4 2/13/2002 \r
+4\r
+0\r
+1\r
+2\r
+3\r
+4\r
+5\r
+6\r
+7\r
+2 4 6 8 10 12 14\r
+Permittivity (ε)\r
+Frequency (GHz)\r
+and Γ=2.0 GHz. The recovered form for the \r
+permeability is in agreement with the ideal resonant \r
+form shown in Eq. 7, indicating a region of negative \r
+permeability over the range from ~8.5 GHz to 9 GHz. \r
+This is consistent with the region of attenuated \r
+transmission found from a plot of the transmittance \r
+versus frequency (not shown).\r
+An array of metal scattering elements can be \r
+expected to have a net polarization in response to an \r
+applied electric field, and it might be further anticipated \r
+that the effective permittivity will be dispersive, \r
+-6\r
+-4\r
+-2\r
+0\r
+2\r
+4\r
+-12\r
+-8\r
+-4\r
+0\r
+4\r
+8\r
+12\r
+16\r
+4 6 8 10 12 14\r
+Permeability (µ)\r
+Permittivity (ε)\r
+Frequency e\r
+especially if the elements are resonant. In Fig. 3, we \r
+plot the recovered frequency-dependent permittivity \r
+corresponding to the SRR medium, which is significant \r
+over the frequency range covered. \r
+The result of combining a wire medium with an \r
+SRR medium is shown in Fig. 4, in which we compare \r
+the real parts of the recovered permittivity and \r
+permeability from the combined structure with that \r
+from either the wire or the SRR medium alone. The \r
+solid curves are from the combined structure, while the \r
+dashed curves are from either medium alone. \r
+Consistent with what is observed in other calculations, \r
+as well as experiments, the addition of the wires to the \r
+SRR medium does not impact the permeability \r
+properties of the SRR medium. However, the \r
+combination of the SRRs and wires results in a \r
+permittivity that is less negative than that for wires \r
+alone. \r
+It was first theoretically suggested by Veselago \r
+[13] that an incoming wave incident on an interface \r
+between vacuum and material with simultaneously \r
+negative Re(ε) and Re(µ) would be refracted to the \r
+same side of the normal to the interface. By \r
+considering the analytic properties of the refractive \r
+index in such a medium, it was shown that the refractive \r
+index n must, in fact, be negative wherever ε and µ are \r
+both negative [14]. In a recent experiment [4], a \r
+metamaterial formed by combining a wire medium with \r
+a SRR medium, qualitatively similar to those simulated \r
+here, was used to demonstrate negative refraction, and \r
+the angle of refraction was utilized to recover n as a \r
+function of frequency. While a refraction experiment is \r
+a useful method to measure the index, we can also \r
+obtain this information directly and unambiguously \r
+using Eq. 3, as shown in Fig. 5. If one has access to \r
+phase information in the transmission and reflection \r
+coefficients, one can identify both the magnitude and \r
+sign of the refractive index from direct incidence \r
+measurements on a planar slab. \r
+We have demonstrated that the traditional \r
+procedure of obtaining material parameters from \r
+transmission/reflection data can be successfully applied \r
+to metamaterials, subject to the possible ambiguities of \r
+the definition of the first surface of the measured \r
+sample, and the sample length. The former ambiguity \r
+can be resolved in certain cases by using additional \r
+information about the material, as shown in the case for \r
+the wire medium above. In cases for which it is not \r
+possible to determine the correct position of the \r
+scattering surface, the range of possible solutions \r
+corresponding to the various possible surfaces \r
+throughout the unit cell will place bounds on the \r
+possible values of the effective material parameters. \r
+These bounds will become narrower as the unit cell \r
+becomes smaller in comparison with the wavelength. \r
+The correct length of a unit cell can be determined \r
+Figure 4: Recovered Re(µ) (top, left-hand scale) and Re(ε) \r
+(bottom, solid curve, right-hand scale) as a function of \r
+frequency for the combination SRR/wire medium. The flat \r
+dashed lines indicate the zero values for the two axes \r
+(offset for clarity). Note that while the addition of the SRR \r
+medium to the wire medium results in a more positive \r
+permittivity (solid line) than wires alone (dashed curve), \r
+nevertheless there is a frequency region (~8.5-9.0 GHz) \r
+where both ε and µ are negative. \r
+Figure 3: Real part of the Recovered permittivity as a \r
+function of frequency for the SRR medium. 
+
+PREPRINT Page 5 2/13/2002 \r
+5\r
+-3\r
+-2\r
+-1\r
+0\r
+1\r
+2\r
+3\r
+4\r
+5\r
+0 2 4 6 8 10 12 14\r
+Re(n)\r
+Frequency\r
+empirically, by requiring a solution that is stable for \r
+several analyzed lengths. \r
+As a final point, we note that this analysis depends \r
+entirely on our ability to measure structures for which \r
+the electric polarization P depends only on the electric \r
+field E, and the magnetization M depends only on the \r
+magnetic field H. For a general scattering element, this \r
+does not necessarily hold, and we may have, for \r
+example, a constitutive relation such as \r
+H=γE+B/µ [15]. A medium that responds in such a \r
+manner will exhibit chirality, and a rotation of the \r
+polarization. Indeed, in these calculations we do find \r
+some degree of polarization conversion in the data for \r
+the SRRs and the combined SRR/wire medium. This \r
+evidence of chiral behavior suggests the analysis \r
+presented here provides a good, but not exact, \r
+characterization of the metamaterial. Further \r
+improvements to the technique should allow a full \r
+characterization to be implemented. \r
+ACKNOWLEDGEMENTS: \r
+We are grateful for helpful discussions with Art Vetter \r
+(Boeing, PhantomWorks), and John Pendry (Imperial \r
+College). This work was supported by DARPA, \r
+through grants from AFOSR (Contract No. KG3523) \r
+and ARO (Contract No. DAAD19-00-1-0525). CS also \r
+thanks NATO and Ames Lab. (DOE Contract No. W\u00027405-Eng-82) for support, and PM thanks the Slovak \r
+Grant Agency for partial financial support. \r
+REFERENCES: \r
+1. J. B. Pendry, A. J. Holden, W. J. Stewart, I. \r
+Youngs, Phys. Rev. Lett., 76, 4773 (1996). \r
+2. J. B. Pendry, A. J. Holden, D. J. Robbins, W. J. \r
+Stewart, IEEE Trans. Microwave Theory Tech., 47, \r
+2075 (1999). \r
+3. D. R. Smith, W. J. Padilla, D. C. Vier, S. C. Nemat\u0002Nasser, S. Schultz, Phys. Rev. Lett., 84, 4184 \r
+(2000). \r
+4. R. A. Shelby, D. R. Smith, S. Schultz, Science, 292, \r
+79 (2001). \r
+5. W. B. Weir, Proc. IEEE, 62, 33 (1974). \r
+6. A. M. Nicolson and G. F. Ross, IEEE Trans. Instr. \r
+and Meas., IM-19, 377 (1970). \r
+7. M. Notomi, Phys. Rev. B 62, 10696 (2000). \r
+8. B. Gralak, S. Enoch, G. Tayeb, J. Opt. Soc. Am. A\r
+17, 1012 (2000). \r
+9. H. Kosaka, T. Kawashima, A. Tomita, M. Notomi, \r
+T. Tamamura, T. Sato, S. Kawakami, J. Lightwave \r
+Tech., 17, 2032 (1999). \r
+10. J. B. Pendry and A. MacKinnon, Phys. Rev. Lett., \r
+69, 2772 (1992). \r
+11. P. Markoš and C. M. Soukoulis, Phys. Rev. B. 65, \r
+033401 (2002); Phys. Rev. E, to be published.\r
+12. J. B. Pendry and P. M. Bell, in Photonic Band Gap \r
+Materials, Ed. C. M. Soukoulis (Kluwer, Dodrecht, \r
+1996). \r
+13. V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968). \r
+14. D. R. Smith and N. Kroll, Phys. Rev. Lett., 85, 3966 \r
+(2000). \r
+15. F. Mariotte, P. Pelet, N. Engheta, Prog. In \r
+Electromagnetics Res., 9, 311 (1994). \r
+Figure 5: Refractive index (n) as a function of frequency \r
+for the combination SRR/wire medium. The region where \r
+the index is negative corresponds to the frequency region \r
+where both ε and µ are simultaneously negative. """
+
+[metadata]
+title = "arxiv physics0111203 smith et al 2002 effective eps mu from rt"
+authors = ["Unknown"]
+year = 2002
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+PREPRINT Page 1 2/13/2002 \r
+1\r
+Determination of Negative Permittivity and Permeability of Metamaterials from Reflection \r
+and Transmission Coefficients \r
+D. R. Smith, S. Schultz \r
+Department of Physics, University of California, San Diego, 9500 Gilman Drive, La Jolla, CA 92093-0319 \r
+P. Markoš*, C. M. Soukoulis \r
+Ames Laboratory and Department of Physics and Astronomy, Iowa State University, Ames, Iowa 50011 \r
+(Submitted 26 November 2001) \r
+We analyze the reflection and transmission coefficients calculated from transfer matrix \r
+simulations on finite lengths of electromagnetic metamaterials, to determine the effective \r
+permittivity (ε) and permeability (µ). We perform this analysis on structures composed of \r
+periodic arrangements of wires, split ring resonators (SRRs) and both wires and SRRs. We find \r
+the recovered frequency-dependent ε and µ are entirely consistent with analytic expressions \r
+predicted by effective medium arguments. Of particular relevance are that a wire medium \r
+exhibits a frequency region in which the real part of ε is negative, and SRRs produce a \r
+frequency region in which the real part of µ is negative. In the combination structure, at \r
+frequencies where both the recovered real parts of ε and µ are simultaneously negative, the real \r
+part of the index-of-refraction is found also to be unambiguously negative. \r
+ \r
+*\r
+ Permanent address: Institute of Physics, Slovak Academy of Sciences, Dúbravska cesta 9, 842 28 Bratislava, Slovakia. \r
+It has been proposed that electromagnetic \r
+metamaterials—composite structured materials, formed \r
+from either periodic or random arrays of scattering \r
+elements—should respond to electromagnetic radiation \r
+as continuous materials, at least in the long wavelength \r
+limit [1,2]. In recent experiments and simulations [3,4], \r
+it has been demonstrated that certain metamaterial \r
+configurations exhibit scattering behavior consistent \r
+with the assumption of approximate frequency\u0002dependent forms for ε and µ. However, the techniques \r
+applied in those studies probed the materials indirectly, \r
+and did not provide an explicit measurement that would \r
+assign values for ε and µ. It is our aim in this paper to \r
+show that the previous conjectures were indeed valid: \r
+unambiguous values for ε and µ can be applied to \r
+electromagnetic metamaterials. Our approach here \r
+utilizes the transmission and reflection coefficients (S\u0002parameters, equivalently) calculated for a wave \r
+normally incident on a finite slab of metamaterial. We \r
+invert the scattering data to determine n and z, for \r
+systems of several thicknesses, from which we obtain \r
+self-consistent values for ε and µ. While we utilize \r
+simulation data in this study, the technique we describe \r
+will be readily applicable to the experimental \r
+characterization of metamaterial samples whenever the \r
+scattering parameters are known. \r
+The common method of characterizing the \r
+electromagnetic scattering properties of a homogeneous \r
+material is to identify its impedance (z) and refractive \r
+index (n) [5,6]. While it is possible to completely \r
+specify the scattering in terms of z and n, it is often \r
+more convenient to choose a second set of analytic \r
+variables that carry a direct material interpretation. \r
+These variables are the electric permittivity ε=n/z, and \r
+the magnetic permeability µ=nz. Both n and z, and \r
+therefore ε and µ, are frequency-dependent complex \r
+functions that satisfy certain requirements based on \r
+causality. For passive materials, Re(z) and Im(n) must \r
+be greater than zero. \r
+At a given frequency, any material that supports \r
+only one propagating mode will generally exhibit a \r
+well-defined refractive index n, whether the material is \r
+continuous or not. Photonic band gap materials, for \r
+example, are characterized by dispersion curves from \r
+which an effective index can extracted, even for bands \r
+well above the first band gap, and well-defined \r
+refraction phenomena can result [7,8,9]. However, it is \r
+generally not possible to assign an impedance (z) to a \r
+non-continuous material, except in those cases where \r
+the wavelength in the material is much larger than the \r
+dimensions and spacing of the constituent scattering \r
+elements that compose the medium. If z depends \r
+strongly on the surface termination, or if z depends on \r
+the overall size of the sample, then z is ambiguous, and \r
+it is not possible to assign intrinsic values for ε and µ. \r
+The transmission coefficient for waves incident \r
+normally to the face of a 1-D slab of continuous \r
+material (in vacuum) with length d is related to n and z \r
+by 
+
+PREPRINT Page 2 2/13/2002 \r
+2\r
+( ) ( ) 1 1\r
+cos sin\r
+2\r
+ikd t nkd z nkd e z− i\r
+= −+\r
+            , (1) \r
+where k=ω/c is the wavenumber of the incident wave. \r
+The incident wave is assumed to travel rightward along \r
+the positive x-axis, with the origin defined as the first \r
+face of the material seen by the radiation. To improve \r
+the clarity of the subsequent formulas, we introduce the \r
+normalized transmission coefficient t’=exp(ikd)t. The \r
+reflection coefficient is also related to z and n by \r
+( ) 1\r
+sin\r
+2\r
+r 1\r
+i z nkd\r
+t z =− −\r
+′\r
+      (2) \r
+ \r
+Eqs. (1) and (2) can be inverted to find n and z as \r
+functions of t’ and r. Performing this inversion leads to \r
+the following expressions: \r
+( )\r
+( )\r
+1 2 2 cos( ) 1\r
+2\r
+1 1\r
+Re 2 1 2\r
+2\r
+nkd r t\r
+t\r
+A r At\r
+t t\r
+= −− ′ ′\r
+=− + ′ ′ ′\r
+   \r
+     \r
+ (3) \r
+and \r
+( )\r
+( )\r
+2 2 1\r
+2 2 1\r
+r t z\r
+r t\r
++ − ′ = ±\r
+− − ′ , (4) \r
+where 1 A = + rt t r * * ′ ′ and 2 2"""
+
+[[sections]]
+number = "2"
+title = "A 1 r t =− − ′ are both"
+text = """
+real-valued functions that go to zero in the absence of \r
+material losses. \r
+Note that while the expressions for n and z are \r
+relatively uncomplicated, they are complex functions \r
+with multiple branches, the interpretation of which can \r
+lead to ambiguities in determining the final expressions \r
+for ε and µ. We can resolve these ambiguities by \r
+making use of additional knowledge about the material. \r
+For example, if the material is passive, the requirement \r
+that Re(z)>0 fixes the choice of sign in Eq. 4. \r
+Likewise, Im(n)>0 leads to an unambiguous result for \r
+Im(n): \r
+( ) ( ( ) ) 1 22 1 cos 1"""
+
+[[sections]]
+number = "2"
+title = "Im Im"
+text = """
+r t\r
+t\r
+n\r
+kd\r
+− − − ′ ′ = ±\r
+       \r
+ \r
+ (5) \r
+When we solve for the right-hand side of Eq. 5, we \r
+select whichever of the two roots yields a positive \r
+solution for Im(n). Re(n), however, is complicated by \r
+the branches of the arccosine function, or, \r
+( ) ( ( ) ) 1 22 1 cos 1\r
+2 2\r
+Re Re\r
+r t\r
+t m\r
+n\r
+kd kd\r
+π\r
+− − − ′ ′ =± +\r
+       \r
+ \r
+, (6) \r
+where m is an integer. When d is large, these branches \r
+can lie arbitrarily close to one another, making the \r
+selection of the correct branch difficult in the case of \r
+dispersive materials. For this reason best results are \r
+obtained for the smallest possible thickness of sample, \r
+as has commonly been known in the analysis of \r
+continuous materials. Even with a small sample, more \r
+than one thickness must be measured to identify the \r
+correct branch(es) of the solution which yields \r
+consistently the same values for n. Note that the \r
+requirement that Im(n)>0 uniquely identifies the sign of \r
+Re(n), which is essential when the material may \r
+potentially have regions which are left-handed—that is, \r
+materials in which Re(n) may be negative. \r
+In order to demonstrate the validity of assigning \r
+bulk permeability and permittivity values to non \r
+continuous metamaterials, we utilize simulation data \r
+generated by the transfer matrix method (TMM) [10,11] \r
+on three types of structures: a medium composed of a \r
+periodic array of wires, a medium composed of a \r
+periodic array of split ring resonators (SRRs), and a \r
+medium composed by interleaving the wire and the \r
+SRR arrays. We simulate one unit cell of a given \r
+system using periodic boundary conditions in the \r
+directions perpendicular to the propagation direction. \r
+The TMM represents a complete solution of Maxwell’s \r
+equations, and differs from Eqs. (1) and (2) in that the \r
+exact details of the scattering elements are taken into \r
+account. In the embedding medium, all eigenvalues of \r
+the TM can be found analytically [12]. We find that in \r
+the frequency range of interest and for the incoming \r
+wave perpendicular to the sample surface, there is only \r
+one propagating mode. All other modes are evanescent, \r
+so that the systems considered are effectively one\u0002dimensional and we are justified utilizing Eqs. (5) and \r
+(6), in which t’ and r represent the transmission and \r
+reflection for this propagating mode. In the calculations \r
+presented here, cells were meshed with 15x11x15 grid \r
+points, in a manner described in Ref. 11. In the \r
+formulation of the TMM used here, the metal dielectric \r
+function is approximated by ε=-1000 + 18,000i, for all \r
+frequencies. A larger value of the imaginary part of the \r
+dielectric function for the metal results in lowered \r
+absorption, but does not change the qualitative picture \r
+presented here. \r
+A square array of conducting wires, based on \r
+effective medium arguments, is expected to exhibit the 
+
+PREPRINT Page 3 2/13/2002 \r
+3\r
+ideal frequency-dependent plasmonic form of ε=1-\r
+ωco2\r
+/ω2, where ωco is a cutoff frequency [1]. Fig. 1 \r
+shows the permittivity recovered from simulation data \r
+for an array of wires, continuous along the E-polarized \r
+direction of the incident wave, and with lattice constant \r
+5 mm. The figure shows data for one, three, and five \r
+layers of lattice in the propagation direction. A fit to the \r
+resulting curves indicates a cutoff frequency of \r
+ωp/2π=22.3 GHz, consistent with that determined by the \r
+noting the onset of transmission (not shown), with a \r
+frequency dependence indistinguishable from the three \r
+and five row curves. The recovered permeability was \r
+found to be unity at all frequencies. \r
+While there is no ambiguity in determining the \r
+phase of the transmitted wave, the phase of the reflected \r
+wave must be measured relative to a reference plane \r
+that is considered to be at the first face of the material. \r
+Given that metamaterials generally do not have well\u0002defined surfaces, the question arises as to where this \r
+reference plane should be located. A definite answer \r
+can be obtained in the case of the wire structure, where \r
+it is reasonable to assume that the reference plane \r
+coincides with the first plane of the wires. We found \r
+that with this choice of reference plane, the relation \r
+z(ω)=1/n(ω) holds, consistent with the response of the \r
+wire medium being entirely electric (i.e., µ=1). For the \r
+SRR medium, the choice of reference plane was not \r
+found to be critical; for the combined structure, \r
+however, the wires dominate the scattering, and the \r
+reference plane was again chosen to coincide with the \r
+first plane of wires. \r
+A second ambiguity that arises is the effective unit cell \r
+length that will result in values of ε and µ that do not \r
+depend on the overall length of the structure. \r
+Empirically, we find in the three cases investigated that \r
+the correct length corresponds to the number of unit \r
+cells multiplied by the length of each unit cell. This can \r
+be seen in Fig. 1, where the analysis of different lengths \r
+of the wire medium results in the same permittivity; \r
+only for a wire medium consisting of one layer is there \r
+a noticeable deviation from the “bulk” behavior. It \r
+should be noted that the unit cells analyzed here are \r
+square, and thus the unit cell length is implicit in the \r
+calculation by virtue of the spacing between elements in \r
+the direction perpendicular to propagation. The fact \r
+that even one unit cell in the propagation direction \r
+produces nearly the same scattering parameters as a \r
+thicker material may therefore not be so unexpected. \r
+Fig. 2 shows the real and imaginary parts of the \r
+permeability for a medium composed of only SRRs, as \r
+configured in Ref. [11]. The dark solid curves are taken \r
+from the simulation data, while the dashed curves are \r
+from transmission and reflection coefficients computed \r
+for a uniform material with a permeability \r
+corresponding to \r
+( )\r
+2\r
+2 2\r
+0\r
+1 mp\r
+i\r
+ω\r
+µ ω\r
+ω ω ω = − − + Γ (7) \r
+where we have used ω0/2π=8.5 GHz, ωmp/2π=3.3 GHz \r
+Figure 2: Permeability as a function of frequency for the \r
+SRR medium, for one or more unit cell lengths. The solid \r
+dark lines correspond to the real and imaginary parts of the \r
+permeability determined using the TMM data, while the \r
+dashed lines were obtained from Eq. (7) by assuming \r
+parameters chosen to approximate the SRR medium. Note \r
+that at ~8.5 GHz the real part of the permeability goes \r
+negative, with a bandwidth of ~0.5 GHz. \r
+Figure 1: Permittivity as a function of frequency for a wire \r
+medium. The cutoff frequency for the structure, \r
+determined by the onset of propagation is 22.3 GHz. The \r
+inset depicts the orientation of the wire with respect to the \r
+incident radiation. 
+
+PREPRINT Page 4 2/13/2002 \r
+4\r
+0\r
+1\r
+2\r
+3\r
+4\r
+5\r
+6\r
+7\r
+2 4 6 8 10 12 14\r
+Permittivity (ε)\r
+Frequency (GHz)\r
+and Γ=2.0 GHz. The recovered form for the \r
+permeability is in agreement with the ideal resonant \r
+form shown in Eq. 7, indicating a region of negative \r
+permeability over the range from ~8.5 GHz to 9 GHz. \r
+This is consistent with the region of attenuated \r
+transmission found from a plot of the transmittance \r
+versus frequency (not shown).\r
+An array of metal scattering elements can be \r
+expected to have a net polarization in response to an \r
+applied electric field, and it might be further anticipated \r
+that the effective permittivity will be dispersive, \r
+-6\r
+-4\r
+-2\r
+0\r
+2\r
+4\r
+-12\r
+-8\r
+-4\r
+0\r
+4\r
+8\r
+12\r
+16\r
+4 6 8 10 12 14\r
+Permeability (µ)\r
+Permittivity (ε)\r
+Frequency e\r
+especially if the elements are resonant. In Fig. 3, we \r
+plot the recovered frequency-dependent permittivity \r
+corresponding to the SRR medium, which is significant \r
+over the frequency range covered. \r
+The result of combining a wire medium with an \r
+SRR medium is shown in Fig. 4, in which we compare \r
+the real parts of the recovered permittivity and \r
+permeability from the combined structure with that \r
+from either the wire or the SRR medium alone. The \r
+solid curves are from the combined structure, while the \r
+dashed curves are from either medium alone. \r
+Consistent with what is observed in other calculations, \r
+as well as experiments, the addition of the wires to the \r
+SRR medium does not impact the permeability \r
+properties of the SRR medium. However, the \r
+combination of the SRRs and wires results in a \r
+permittivity that is less negative than that for wires \r
+alone. \r
+It was first theoretically suggested by Veselago \r
+[13] that an incoming wave incident on an interface \r
+between vacuum and material with simultaneously \r
+negative Re(ε) and Re(µ) would be refracted to the \r
+same side of the normal to the interface. By \r
+considering the analytic properties of the refractive \r
+index in such a medium, it was shown that the refractive \r
+index n must, in fact, be negative wherever ε and µ are \r
+both negative [14]. In a recent experiment [4], a \r
+metamaterial formed by combining a wire medium with \r
+a SRR medium, qualitatively similar to those simulated \r
+here, was used to demonstrate negative refraction, and \r
+the angle of refraction was utilized to recover n as a \r
+function of frequency. While a refraction experiment is \r
+a useful method to measure the index, we can also \r
+obtain this information directly and unambiguously \r
+using Eq. 3, as shown in Fig. 5. If one has access to \r
+phase information in the transmission and reflection \r
+coefficients, one can identify both the magnitude and \r
+sign of the refractive index from direct incidence \r
+measurements on a planar slab. \r
+We have demonstrated that the traditional \r
+procedure of obtaining material parameters from \r
+transmission/reflection data can be successfully applied \r
+to metamaterials, subject to the possible ambiguities of \r
+the definition of the first surface of the measured \r
+sample, and the sample length. The former ambiguity \r
+can be resolved in certain cases by using additional \r
+information about the material, as shown in the case for \r
+the wire medium above. In cases for which it is not \r
+possible to determine the correct position of the \r
+scattering surface, the range of possible solutions \r
+corresponding to the various possible surfaces \r
+throughout the unit cell will place bounds on the \r
+possible values of the effective material parameters. \r
+These bounds will become narrower as the unit cell \r
+becomes smaller in comparison with the wavelength. \r
+The correct length of a unit cell can be determined \r
+Figure 4: Recovered Re(µ) (top, left-hand scale) and Re(ε) \r
+(bottom, solid curve, right-hand scale) as a function of \r
+frequency for the combination SRR/wire medium. The flat \r
+dashed lines indicate the zero values for the two axes \r
+(offset for clarity). Note that while the addition of the SRR \r
+medium to the wire medium results in a more positive \r
+permittivity (solid line) than wires alone (dashed curve), \r
+nevertheless there is a frequency region (~8.5-9.0 GHz) \r
+where both ε and µ are negative. \r
+Figure 3: Real part of the Recovered permittivity as a \r
+function of frequency for the SRR medium. 
+
+PREPRINT Page 5 2/13/2002 \r
+5\r
+-3\r
+-2\r
+-1\r
+0\r
+1\r
+2\r
+3\r
+4\r
+5\r
+0 2 4 6 8 10 12 14\r
+Re(n)\r
+Frequency\r
+empirically, by requiring a solution that is stable for \r
+several analyzed lengths. \r
+As a final point, we note that this analysis depends \r
+entirely on our ability to measure structures for which \r
+the electric polarization P depends only on the electric \r
+field E, and the magnetization M depends only on the \r
+magnetic field H. For a general scattering element, this \r
+does not necessarily hold, and we may have, for \r
+example, a constitutive relation such as \r
+H=γE+B/µ [15]. A medium that responds in such a \r
+manner will exhibit chirality, and a rotation of the \r
+polarization. Indeed, in these calculations we do find \r
+some degree of polarization conversion in the data for \r
+the SRRs and the combined SRR/wire medium. This \r
+evidence of chiral behavior suggests the analysis \r
+presented here provides a good, but not exact, \r
+characterization of the metamaterial. Further \r
+improvements to the technique should allow a full \r
+characterization to be implemented. \r
+ACKNOWLEDGEMENTS: \r
+We are grateful for helpful discussions with Art Vetter \r
+(Boeing, PhantomWorks), and John Pendry (Imperial \r
+College). This work was supported by DARPA, \r
+through grants from AFOSR (Contract No. KG3523) \r
+and ARO (Contract No. DAAD19-00-1-0525). CS also \r
+thanks NATO and Ames Lab. (DOE Contract No. W\u00027405-Eng-82) for support, and PM thanks the Slovak \r
+Grant Agency for partial financial support. \r
+REFERENCES:"""
+
+[[sections]]
+number = "1"
+title = "J. B. Pendry, A. J. Holden, W. J. Stewart, I."
+text = "Youngs, Phys. Rev. Lett., 76, 4773 (1996)."
+
+[[sections]]
+number = "2"
+title = "J. B. Pendry, A. J. Holden, D. J. Robbins, W. J."
+text = """
+Stewart, IEEE Trans. Microwave Theory Tech., 47, \r
+2075 (1999). \r
+3. D. R. Smith, W. J. Padilla, D. C. Vier, S. C. Nemat\u0002Nasser, S. Schultz, Phys. Rev. Lett., 84, 4184 \r
+(2000)."""
+
+[[sections]]
+number = "4"
+title = "R. A. Shelby, D. R. Smith, S. Schultz, Science, 292,"
+text = "79 (2001)."
+
+[[sections]]
+number = "5"
+title = "W. B. Weir, Proc. IEEE, 62, 33 (1974)."
+text = ""
+
+[[sections]]
+number = "6"
+title = "A. M. Nicolson and G. F. Ross, IEEE Trans. Instr."
+text = "and Meas., IM-19, 377 (1970)."
+
+[[sections]]
+number = "7"
+title = "M. Notomi, Phys. Rev. B 62, 10696 (2000)."
+text = ""
+
+[[sections]]
+number = "8"
+title = "B. Gralak, S. Enoch, G. Tayeb, J. Opt. Soc. Am. A"
+text = "17, 1012 (2000)."
+
+[[sections]]
+number = "9"
+title = "H. Kosaka, T. Kawashima, A. Tomita, M. Notomi,"
+text = """
+T. Tamamura, T. Sato, S. Kawakami, J. Lightwave \r
+Tech., 17, 2032 (1999)."""
+
+[[sections]]
+number = "10"
+title = "J. B. Pendry and A. MacKinnon, Phys. Rev. Lett.,"
+text = "69, 2772 (1992)."
+
+[[sections]]
+number = "11"
+title = "P. Markoš and C. M. Soukoulis, Phys. Rev. B. 65,"
+text = "033401 (2002); Phys. Rev. E, to be published."
+
+[[sections]]
+number = "12"
+title = "J. B. Pendry and P. M. Bell, in Photonic Band Gap"
+text = """
+Materials, Ed. C. M. Soukoulis (Kluwer, Dodrecht, \r
+1996)."""
+
+[[sections]]
+number = "13"
+title = "V. G. Veselago, Sov. Phys. Usp. 10, 509 (1968)."
+text = ""
+
+[[sections]]
+number = "14"
+title = "D. R. Smith and N. Kroll, Phys. Rev. Lett., 85, 3966"
+text = "(2000)."
+
+[[sections]]
+number = "15"
+title = "F. Mariotte, P. Pelet, N. Engheta, Prog. In"
+text = """
+Electromagnetics Res., 9, 311 (1994). \r
+Figure 5: Refractive index (n) as a function of frequency \r
+for the combination SRR/wire medium. The region where \r
+the index is negative corresponds to the frequency region \r
+where both ε and µ are simultaneously negative."""
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 4
+image_path = "images/image_p4_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 4
+image_path = "images/image_p4_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 5
+image_path = "images/image_p5_7.png"

@@ -1,0 +1,1056 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+E10 Billiards, Octonion Locality, and Zero‑Divisor\r
+Skies\r
+Corpus boundary, audit method, and what could not be directly\r
+retrieved\r
+This synthesis treats the entire discussion so far as a single research corpus with three interacting “engines”:\r
+Engine A — Hyperbolic reflection dynamics: cosmological billiards in the Weyl chamber of the\r
+hyperbolic Kac–Moody algebra E10, used to model near‑singularity BKL chaos. \r
+Engine B — Nonassociative locality: octonion multiplication locality, encoded via the oriented \r
+Fano plane and its multiplication triples. \r
+Engine C — Cayley–Dickson annihilation geometry: de Marrais’ zero‑divisor ensembles, \r
+emanation tables, box‑kites, and bit‑string recipe theory for “Skies” (meta‑fractals). \r
+The repository you are aligning toward contains explicit infrastructure for E8 lattices, Kac–Moody E9/E10/\r
+E11 scaffolding, and a de Marrais‑style “emanation architecture” stack, but the specific example path you\r
+cited— crates/algebra_core/examples/e10_billiard.rs —was not found on the repository’s\r
+main branch as accessible via the GitHub connector in this session (404 at that path). This is a lacuna in\r
+verifiability that must be resolved either by locating the file under a different path/branch or by exporting\r
+the exact file contents into the repo. (The analysis below reconstructs the necessary mathematics and\r
+implementation shape using the repo’s existing Kac–Moody and E8 modules plus primary sources.) \r
+A second missing artifact is the linked external “Warp Ring Visualization Analysis” chat page, which could\r
+not be accessed from here due to fetch restrictions; therefore, warp‑ring material is folded in only to the\r
+extent it is already present in the repo’s documented physics direction and our earlier discussion. ()\r
+The audit methodology used here is:\r
+Atomic decomposition: define each operator, object, and invariance claim in standardized\r
+mathematical terms.\r
+Conflict surfacing: identify contradictions (between papers, abstracts, and code conventions) and\r
+label them as “errata candidates”.\r
+Reconstruction: build a single coherent theory stack that can be executed as tests and simulations.\r
+Falsifiability: express every high‑level claim as a measurable prediction with controls.\r
+• \r
+1\r
+• \r
+2\r
+• \r
+3\r
+4\r
+• \r
+• \r
+• \r
+• \r
+1
+
+Mathematical backbone: three dynamical formalisms in one\r
+language\r
+Cosmological billiards as Weyl reflection dynamics in hyperbolic space\r
+The BKL scenario (near‑singularity generic solutions oscillate chaotically) admits a “billiard” reduction: a\r
+point particle moves freely on a hyperbolic space and undergoes specular reflections on a set of dominant\r
+potential walls. In the superstring/supergravity cases studied by entity["people","Thibault\r
+Damour","theoretical physicist"] and entity["people","Marc Henneaux","theoretical physicist"], the\r
+billiard region is a simplex in hyperbolic space whose reflection group is identified with the Weyl group of\r
+E10 (type II) or BE10 (heterotic/type I). \r
+At the algebraic level, a Weyl reflection in a simple root acts on a vector (root/weight) by the standard\r
+formula \r
+with the inner product induced by the (generalized) Cartan data and, for hyperbolic algebras, a Lorentzian\r
+signature structure on the root space. \r
+Key point for your locality discovery: the billiard’s wall adjacency is encoded by the Coxeter/Dynkin\r
+diagram (for simply‑laced cases, adjacency corresponds to Cartan off‑diagonal ). Therefore, any claim\r
+about “transitions occurring almost exclusively between adjacent nodes in the Dynkin diagram” is a claim\r
+about the empirical statistics of wall‑hit sequences relative to that diagram.\r
+Octonions: Fano plane and “local” associative triples\r
+The octonions are the unique 8‑dimensional normed division algebra. Their multiplication can be\r
+memorized (and encoded) by the oriented Fano plane, where each oriented line gives a cyclic multiplication\r
+triple such that and reversing order changes sign. \r
+Two locality‑relevant facts follow:\r
+Any two distinct imaginary units generate a quaternionic subalgebra (associative) inside , and\r
+the Fano-plane line containing them selects the third unit completing that associative triple. \r
+The Fano plane is the projective plane , i.e. it is canonically tied to bit‑structures over . \r
+This matters because it creates a standard bridge between: - “local triple operations” (Fano lines) and\r
+- “bit/finite‑geometry operations” (projective spaces over ).\r
+1\r
+αi β\r
+si(β) = β − α ,\r
+(αi, αi)\r
+2(β, αi)\r
+i\r
+4\r
+−1\r
+O\r
+(ei, ej, ek) eiej = ek\r
+2\r
+1. O\r
+2\r
+2. PG(2, 2) Z2\r
+2\r
+Z2\r
+2
+
+Cayley–Dickson zero divisors: DMZ relations, emanation tables, and bit‑string recipes\r
+In the Cayley–Dickson process, beyond octonions (at sedenions and above), zero divisors emerge. de\r
+Marrais’ program treats these as fundamental “annihilation carriers,” organizing them into:\r
+Box‑kites: octahedral vertex figures representing the primitive ZD substructures.\r
+Strut constants : parameters selecting ensembles; each drives a characteristic pattern of ZD\r
+connectivity.\r
+Emanation tables (ETs): Cayley‑table analogues for ZD annihilation relations, where cells encode\r
+whether two structures mutually zero‑divide (“DMZ”). \r
+The core “meta‑fractal” claim is that any integer (non‑power‑of‑2) interpreted as a strut constant \r
+generates a specific infinite‑dimensional “Sky” whose filled/empty ET patterns are determined by simple\r
+bitstring rules (“recipe theory”). \r
+Two high‑impact structural elements from the de Marrais side are directly relevant to your E10/E8 locality\r
+observation:\r
+Adjacency‑constrained navigation: “twist product” navigation (catamaran/tray‑rack logic) describes\r
+long‑distance movement through ZD ensembles via structured swaps; this is framed as network\r
+navigation constrained by the underlying combinatorics of the structures. \r
+Finite‑geometry underlay: the same body of work repeatedly leverages incidence structure and\r
+small simple groups (e.g., PSL(2,7) in “Twisted Sisters”) to describe allowable transitions. \r
+Alignment audit against the repository: what is implemented, what\r
+is approximate, what is missing\r
+What the repository already supports for the E10 billiard direction\r
+The repo’s algebra core includes explicit infrastructure for:\r
+Generalized Cartan matrices and Dynkin diagram reconstruction, including explicit E8/E9/E10/\r
+E11 Cartan matrices and a “simply‑laced” check, along with a reflection operation at the level of a\r
+realized root system. This is the minimal apparatus needed to define Weyl reflections and adjacency. \r
+An E8 lattice/root system generator (240 roots) and a built‑in Freudenthal–Tits magic square\r
+framing that explicitly positions exceptional Lie structures as arising from the division algebras (with \r
+ yielding E8). This is the correct conceptual bridge for your “E8 sector ↔ octonion locality”\r
+hypothesis. \r
+E10 physics context in comments and references (Damour–Henneaux–Nicolai 2002; “cosmological\r
+billiards near spacelike singularities” as an application), matching the mainstream literature. \r
+• \r
+• S S\r
+• \r
+5\r
+> 8 S\r
+5\r
+• \r
+6\r
+• Z2\r
+7\r
+• \r
+4\r
+• \r
+O × O\r
+8\r
+• \r
+9\r
+3
+
+Lacunae and errata candidates inside the current E9/E10 scaffolding\r
+There are three mathematically significant “precision gaps” that must be addressed before you can treat\r
+any observed adjacency statistics as a physics‑meaningful discovery rather than an implementation artifact:\r
+Affine (E9) highest root encoding is flag‑marked as approximate in common implementations.\r
+In a billiard implementation, the affine root structure determines wall geometry and reflection\r
+couplings; approximation can bias which wall is next encountered. Damour–Henneaux–Nicolai\r
+explicitly require accurate decomposition and matching up to high height levels in their E10/\r
+supergravity matching. \r
+Lorentzian inner product structure must be implemented in the correct root space. Hyperbolic\r
+Kac–Moody root spaces are not “Euclidean finite part + ad hoc level + one negative coordinate”\r
+unless the realization is carefully constructed; otherwise, reflection times and wall ordering can be\r
+wrong, producing spurious locality patterns. The IHES preprint emphasizes the structured coset/\r
+geodesic equivalence; that equivalence is delicate. \r
+Dynkin node numbering conventions must be standardized end‑to‑end. Your locality claim uses\r
+“adjacent in the E8 Dynkin diagram.” But adjacency is meaningful only after a fixed node labeling\r
+consistent across:\r
+the E8 Cartan used in the simulation,\r
+the identification of the “E8 sector” inside E10,\r
+and any octonion/Fano mapping you’re invoking.\r
+Kac–Moody theory texts emphasize that different conventions exist, and proof‑level claims must\r
+specify the convention. \r
+A concrete missing‑artifact issue\r
+Your statement “I implemented and refined the simulation at crates/algebra_core/examples/\r
+e10_billiard.rs ” cannot currently be verified from the accessible branch. This creates an immediate\r
+audit requirement:\r
+either the example exists under a different path (e.g., src/bin , examples/ at workspace root, or\r
+a differently named file), or \r
+it exists only locally and must be committed (or pasted) so the results can be reproduced and\r
+checked.\r
+Without that, the “100% connected ratio” finding is a reported empirical result with unknown\r
+measurement definition, i.e., it cannot yet be classified as “replicated.”\r
+Novel connection: E10 billiards locality, E8 “octonianity,” and why\r
+100% adjacency is both exciting and suspicious\r
+The hypothesis as a mathematically precise statement\r
+Let be the E10 (or E8‑sector) Cartan matrix. Define adjacency between simple roots iff \r
+(simply‑laced). Consider a billiard wall‑hit sequence of simple wall labels. Define the connected ratio\r
+• \r
+10\r
+• \r
+10\r
+• \r
+• \r
+• \r
+• \r
+4\r
+• \r
+• \r
+A i ∼ j Aij = −1\r
+(it)t=1\r
+T\r
+4
+
+restricted to the indices in the designated “E8 sector” subset.\r
+Your discovery claims (effectively 100%) in the E8 sector.\r
+Why a high adjacency ratio can arise “for free” in Coxeter billiards\r
+In a Coxeter polytope, nonadjacent Dynkin nodes correspond to orthogonal walls (commuting\r
+reflections, ). When the particle reflects off one wall, the outgoing direction is obtained by reflecting\r
+its velocity vector. In many event‑driven billiards, the next collision is the wall minimizing a positive collision\r
+time. In such geometries:\r
+orthogonal walls may be geometrically “harder to reach next” for typical outgoing directions, raising\r
+adjacency statistics, and \r
+any algorithm that canonicalizes reflection words by commuting nonconnected generators away\r
+from each other will force adjacency by construction.\r
+Therefore, can either mean: - a real geometric locality phenomenon, or\r
+- a bookkeeping artifact (word reduction / commutation normalization / selection bias in collision-time\r
+calculations).\r
+This is the single most important “scathing rigor” checkpoint: you must establish which is the case.\r
+Why E8’s tie to octonions makes your hypothesis plausible in a deeper way\r
+There is a genuine, not‑merely‑aesthetic reason to suspect “octonion locality” inside E8:\r
+The E8 lattice has constructions in terms of integer octonions, and the E8 root lattice is deeply tied to\r
+octonionic arithmetic (Cayley integral octonions, Kirmse vs Cayley integers). \r
+E8 appears as the corner of the Freudenthal–Tits magic square, capturing the slogan\r
+“exceptional structures exist because of octonions.” \r
+In this context, “octonion locality” should be stated carefully:\r
+Not “E8 Dynkin diagram equals the Fano plane” (it does not). \r
+Rather: there exist coordinate realizations and generating sets of E8 in which elementary\r
+moves correspond to operations confined to small associative (quaternionic) subalgebras of ,\r
+and octonionic multiplication structure can constrain allowable “nearby moves.”\r
+Your observed adjacency phenomenon is consistent with a sharpened version of that claim:\r
+Locality claim (sharpened): the effective billiard dynamics selects a thin subset of Weyl\r
+group words whose consecutive generators are restricted to those that share a\r
+non‑orthogonal pairing, and in E8‑sector embeddings tied to octonionic arithmetic this\r
+restriction can be interpreted as “stepwise confinement” to overlapping associative\r
+subalgebras.\r
+r =\r
+T − 1\r
+#{t : it ∼ it+1}\r
+r ≈ 1\r
+mij = 2\r
+• \r
+• \r
+r = 1\r
+• \r
+11\r
+• O × O\r
+12\r
+• \r
+• \r
+O\r
+5
+
+That sharpened claim becomes testable (next section).\r
+Unified synthesis: a single framework that covers E10 billiards, ZD\r
+emanation tables, and “warp ring” transport\r
+A common abstract model: generator‑driven piecewise geodesic dynamics on\r
+stratified state spaces\r
+All three engines can be written in the same mathematical “template”:\r
+A state space (root space / hyperbolic domain / Cayley‑Dickson algebra slice / optical phase\r
+space).\r
+A set of generators (simple reflections ; DMZ adjacency steps; twist operators; ray‑step\r
+map).\r
+A constraint structure encoded by a graph or hypergraph (Dynkin adjacency; box‑kite edges/\r
+struts; Fano triples; ET occupancy).\r
+A dynamics that produces a sequence by a deterministic or stochastic selection rule\r
+(collision time minimum; annihilation compatibility; twist‑pairing constraints).\r
+The unification move—your “better than sum of parts”—is to treat locality as a property of the generator\r
+sequence relative to , and to treat annihilation/absorption as a measurable “selection pressure” that\r
+biases which generators are realized.\r
+This yields a single organizing principle:\r
+Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes,\r
+generator sequences concentrate on locally adjacent moves in , because nonlocal moves\r
+are either dynamically suppressed (long collision times, low measure) or annihilated (zero\r
+product, absorption), producing “geometric locality” in the observed chaos.\r
+This principle is already strongly supported in the published cosmological billiards literature at the level of\r
+Coxeter identification (the walls correspond to simple roots, hence is the Dynkin/Coxeter diagram). \r
+Your contribution is the empirical claim that the locality is nearly perfect in the E8 sector—and the de\r
+Marrais side provides a second, independent arena where locality emerges from annihilation constraints\r
+and bit‑string recipes rather than hyperbolic geometry. \r
+A deeper (and testable) bridge: ET “Skies” as discrete limit sets of reflection dynamics\r
+de Marrais’ recipe theory claims bitstring rules generate ET occupancy patterns that converge to a\r
+“meta‑fractal Sky” in the infinite‑dimensional limit. \r
+Separately, hyperbolic reflection groups (Coxeter/Weyl groups) have well‑studied limit sets and can\r
+generate fractal structures on boundaries of hyperbolic spaces.\r
+The synthesis hypothesis is:\r
+• X\r
+• G = {gi} si\r
+• Γ\r
+• gi1, gi2,…\r
+Γ\r
+Γ\r
+Γ 13\r
+14\r
+15\r
+6
+
+Sky–Limit‑Set Hypothesis: For an appropriate encoding of ET rules as reflection‑group\r
+constraints, the ET empty/filled pattern is a discrete cross‑section of a reflection‑group limit\r
+set; the “spectroscopy bands” in strut constants correspond to changes in the effective\r
+Coxeter data.\r
+This is a high‑risk/high‑reward bridge, but it is falsifiable by comparing: - ET pattern invariants (box‑kite\r
+counts, emptiness clusters, scaling exponents) \r
+with - known or simulated invariants of Coxeter limit sets (Hausdorff-like dimensions, spectral radii of\r
+adjacency operators).\r
+Where “warp ring” fits structurally, even without the external chat text\r
+Even without the inaccessible external chat page, your earlier warp-ring direction can be reinserted cleanly:\r
+Ray transport in a GRIN/absorbing medium generates trajectories that are piecewise smooth and\r
+can exhibit strong caustic skeletons (stable structure under perturbations), which behave like a\r
+continuous analog of “localized transition networks.” \r
+Absorption (complex refractive index, or any deterministic attenuation model) is a continuous analog\r
+of “annihilation.” \r
+In the unified template, a warp‑ring simulation produces a generator sequence of local update steps whose\r
+observable “hot maps” can be reduced to a graph and compared against Dynkin‑like or ET‑like adjacency\r
+restrictions.\r
+This makes “warp ring” not a separate artistic project, but an experimental arena to test ALP outside pure\r
+algebra.\r
+Falsifiable theses, validation controls, and the next executable\r
+roadmap\r
+The E10–E8 locality discovery: four falsifiable claims\r
+Each claim below is written so it can be tested with a single additional harness and has a clear failure mode.\r
+Claim 1: Adjacency ratio is robust under coordinate changes\r
+- Prediction: remains near 1 when you randomize initial conditions, change time step, and change\r
+collision-time solver tolerances.\r
+- Control: replace the billiard with random reduced words in the E10 Weyl group with the same generator\r
+frequency profile; compute for this syntactic baseline.\r
+- Falsifier: collapses under small solver changes (indicates numerical artifacts), or matches the random\u0002word baseline.\r
+Claim 2: Locality is not forced by commutation normalization\r
+- Prediction: If you record the raw collision sequence (before any reduction/normalization), adjacency\r
+remains high.\r
+- Control: run two versions: (a) raw event‑driven collisions, (b) reduced/canonical word representation;\r
+5\r
+• \r
+• \r
+Γ\r
+r\r
+r\r
+r r\r
+7
+
+compare .\r
+- Falsifier: is high only after reduction.\r
+Claim 3: Locality is sector‑specific\r
+- Prediction: E8‑sector adjacency is near 1, but transitions involving the hyperbolic/affine nodes show lower\r
+adjacency or a distinctive pattern.\r
+- Control: compute adjacency matrix of the full E10 diagram and compute separate ratios: , , \r
+.\r
+- Falsifier: all sectors show the same trivial pattern (indicative of universal implementation bias).\r
+Claim 4: Octonion interpretation adds predictive power\r
+- Prediction: when you map E8 simple roots to an octonionic arithmetic representation (e.g., via Cayley\r
+integer models), the most frequent adjacency transitions correlate with specific low‑associator\r
+“triples” (quaternionic overlaps).\r
+- Control: compare against random bijections between E8 nodes and octonion basis elements.\r
+- Falsifier: no correlation above chance after permutation tests.\r
+These claims are anchored to the established fact that the billiard reflection group is the Weyl group of E10\r
+in the relevant theories, and that E8 is octonion‑linked via integral octonion/E8 lattice and magic square\r
+structure. \r
+Repo‑level engineering steps to make the E10 billiard result publishable\r
+Minimal steps, in dependency order:\r
+Commit the exact simulation (the file you referenced) or place it under a discoverable path with a\r
+stable CLI and deterministic RNG seed control. Without this, the result is non‑reproducible.\r
+Normalize Dynkin conventions: pick a numbering standard (Bourbaki/Kac), document it, and\r
+enforce it in E8/E9/E10 constructors and the billiard label outputs. \r
+Fix the E9 highest-root/affine‑root realization using a reference‑consistent construction, because\r
+E9 embeds into E10 and influences wall geometry. \r
+Implement a correct Lorentzian bilinear form on the E10 root space and use it in collision-time\r
+calculations and reflections.\r
+Add a “locality metrics” module:\r
+adjacency ratio ,\r
+mutual information between consecutive generator labels,\r
+commutation rate (how often ),\r
+and a permutation‑test p‑value estimator for “octonion overlay correlations.”\r
+Add “null hypothesis” baselines:\r
+random words in Weyl group with matched generator counts,\r
+billiards in random simplices with the same number of walls and random dihedral angles,\r
+and “no‑geometry” iid generator sequences.\r
+Cross‑stack synthesis experiments: E10 billiards × ET Skies × lanyards\r
+To unify your corpus (and not merely juxtapose it), run the following three “bridging experiments”:\r
+r\r
+r\r
+rE8 rmixed\r
+rhyperbolic\r
+16\r
+1. \r
+2. \r
+1\r
+3. \r
+17\r
+4. \r
+5. \r
+6. r\r
+7. \r
+8. Aij = 0\r
+9. \r
+10. \r
+11. \r
+12. \r
+13. \r
+8
+
+Experiment A: Compare adjacency locality across three graphs\r
+Compute locality metrics on: - E10 billiard wall sequence (Dynkin graph), - de Marrais navigation sequences\r
+(Twisted Sisters / catamaran twists), - ET DMZ‑walk sequences (emanation adjacency graph).\r
+Prediction: all three show heavy concentration on graph‑adjacent transitions if ALP is real. \r
+Experiment B: Treat an ET as a discrete “wall set”\r
+Define a toy billiard where “walls” correspond to ET constraints; reflections become ET‑rule updates. Test\r
+whether “spectroscopy bands” in strut constants correspond to qualitative phase changes in the toy\r
+billiard’s symbolic dynamics. \r
+Experiment C: Sky–limit‑set test\r
+Pick a reflection group with known limit set structure (or one you can simulate), and compare its boundary\r
+pattern invariants to ET skybox recursions (fill/hide involution and period‑doubling). If match fails, the Sky–\r
+limit‑set hypothesis is falsified; if match succeeds, it becomes a major unifying result. \r
+Glossary and notation normalization across the merged theory\r
+stack\r
+This glossary normalizes the symbols and terms that collided across our discussion.\r
+BKL dynamics: Belinsky–Khalatnikov–Lifshitz near‑singularity oscillatory behavior; reduced to a billiard in\r
+hyperbolic space with reflections. \r
+Cosmological billiards: Hamiltonian reduction of near‑singularity dynamics to geodesic motion with\r
+specular reflections; reflection group identified with Weyl group of a hyperbolic Kac–Moody algebra (E10/\r
+BE10 in superstring models). \r
+Dynkin diagram adjacency: for simply‑laced diagrams, nodes and are adjacent iff Cartan matrix entry\r
+.\r
+Weyl reflection: . \r
+Octonions : 8‑dimensional normed division algebra; multiplication encoded by oriented Fano plane\r
+triples. \r
+Fano plane: ; mnemonic and structural encoding of octonion multiplication; triples define local\r
+associative (quaternionic) subalgebras. \r
+E8 lattice / Cayley integral octonions: E8 lattice constructed from integral octonions; “Cayley integers” are\r
+a multiplication‑closed E8 lattice variant discussed in the Conway–Smith/Baez literature. \r
+E10 (hyperbolic Kac–Moody): hyperbolic extension of E8; appears in Damour–Henneaux–Nicolai “small\r
+tension expansion” and cosmological billiards reflection group identification. \r
+18\r
+15\r
+19\r
+20\r
+13\r
+i j\r
+Aij = −1\r
+si(β) = β − 2(β, αi)/(αi, αi) αi\r
+4\r
+O\r
+2\r
+PG(2, 2)\r
+2\r
+11\r
+4\r
+9
+
+Zero divisor (ZD): nonzero element such that with . In the Cayley–Dickson hierarchy,\r
+ZDs appear at sedenions and above. \r
+DMZ (mutual zero‑division): de Marrais’ relation encoding ZD annihilation compatibility; ETs encode DMZ\r
+pairings. \r
+Emanation table (ET): Cayley‑table‑like grid for ZD relations; cells are filled/empty depending on DMZ;\r
+patterns depend on strut constant . \r
+Strut constant : integer parameter selecting a box‑kite/ensemble; bitstring rules in recipe theory\r
+generate “Skies.” \r
+Sky (meta‑fractal): infinite‑dimensional limit object generated by recipe theory (bitstring rules) from strut\r
+constant . \r
+Catamaran / twist product: de Marrais’ long‑distance navigation operator swapping components between\r
+dyads; used to traverse ZD ensemble structure. \r
+Errata and conflict notes surfaced during the audit\r
+de Marrais abstract typo candidate: the Complex Systems abstract as crawled appears to say “Any\r
+integer less than 8 and not a power of 2… generates a metafractal,” which conflicts with the\r
+consistent statement “integer > 8 and not a power of 2” in other versions/PDFs. Treat this as an\r
+erratum candidate and standardize on “>8” unless a primary corrected source indicates otherwise. \r
+Tooling mismatch: your stated example path for e10_billiard.rs is not accessible on the\r
+visible branch; publishability requires resolving this mismatch (commit, path correction, or branch\r
+pointer).\r
+If you want the next step executed as a continuation of this report: the highest‑value move is to pin down\r
+the exact definition of “connected ratio” used in your simulation and produce a formal “artifact\r
+checklist” (inputs, integrator, collision selection rule, normalization steps, adjacency definition, sector\r
+definition). That single clarification determines whether your 100% locality is a physics‑level result or a\r
+word‑reduction artifact—and it will immediately inform how to connect E10 locality to the ET/lanyard locality\r
+predicted by recipe theory. \r
+E10, BE10 and arithmetical chaos in superstring cosmology - PubMed\r
+https://pubmed.ncbi.nlm.nih.gov/11384339/?utm_source=chatgpt.com\r
+The Octonions\r
+https://math.ucr.edu/home/baez/octonions/octonions.pdf?utm_source=chatgpt.com\r
+Placeholder Substructures I: The Road from\r
+https://content.wolfram.com/sites/13/2023/02/17-2-3.pdf?utm_source=chatgpt.com\r
+x  0 = ∃y  0 = xy = 0\r
+5\r
+15\r
+S 15\r
+S\r
+5\r
+S 15\r
+21\r
+• \r
+22\r
+• \r
+1 13 16\r
+2\r
+3 5 7 14 18\r
+10
+
+E10 and a "small tension expansion'' of M theory · Archives de l'IHES\r
+https://archives.ihes.fr/document/P_02_48.pdf?utm_source=chatgpt.com\r
+Effecting Semantic Network Bricolage via\r
+https://content.wolfram.com/sites/13/2019/03/18-1-4.pdf?utm_source=chatgpt.com\r
+On Quaternions and Octonions, by John Conway and Derek Smith\r
+https://math.ucr.edu/home/baez/octonions/conway_smith/?utm_source=chatgpt.com\r
+week194\r
+https://math.ucr.edu/home/baez/week194.html?utm_source=chatgpt.com\r
+Placeholder Substructures III: A\r
+https://citeseerx.ist.psu.edu/document?\r
+doi=c89ff3d20eb7d4b63b6490c1356729fc02e17a91&repid=rep1&type=pdf&utm_source=chatgpt.com\r
+Standard model symmetries and K(E10) | Journal of High Energy Physics | Springer Nature Link\r
+https://link.springer.com/article/10.1007/JHEP08%282025%29054?utm_source=chatgpt.com\r
+PPT - Voyage by Catamaran PowerPoint Presentation, free download - ID:6361823\r
+https://www.slideserve.com/bert-monroe/voyage-by-catamaran?utm_source=chatgpt.com\r
+Placeholder Substructures I: The Road from NKS to Scale-Free Networks is Paved with Zero-Divisors by\r
+Robert P. C. de Marrais\r
+https://www.complex-systems.com/abstracts/v17_i02_a03/?utm_source=chatgpt.com\r
+4 9 10 17\r
+6\r
+8 12\r
+11\r
+15 19\r
+20\r
+21\r
+22\r
+11"""
+
+[metadata]
+title = "E10 Billiards, Octonion Locality, and Zero‑Divisor Skies"
+authors = ["Unknown"]
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+E10 Billiards, Octonion Locality, and Zero‑Divisor\r
+Skies\r
+Corpus boundary, audit method, and what could not be directly\r
+retrieved\r
+This synthesis treats the entire discussion so far as a single research corpus with three interacting “engines”:\r
+Engine A — Hyperbolic reflection dynamics: cosmological billiards in the Weyl chamber of the\r
+hyperbolic Kac–Moody algebra E10, used to model near‑singularity BKL chaos. \r
+Engine B — Nonassociative locality: octonion multiplication locality, encoded via the oriented \r
+Fano plane and its multiplication triples. \r
+Engine C — Cayley–Dickson annihilation geometry: de Marrais’ zero‑divisor ensembles, \r
+emanation tables, box‑kites, and bit‑string recipe theory for “Skies” (meta‑fractals). \r
+The repository you are aligning toward contains explicit infrastructure for E8 lattices, Kac–Moody E9/E10/\r
+E11 scaffolding, and a de Marrais‑style “emanation architecture” stack, but the specific example path you\r
+cited— crates/algebra_core/examples/e10_billiard.rs —was not found on the repository’s\r
+main branch as accessible via the GitHub connector in this session (404 at that path). This is a lacuna in\r
+verifiability that must be resolved either by locating the file under a different path/branch or by exporting\r
+the exact file contents into the repo. (The analysis below reconstructs the necessary mathematics and\r
+implementation shape using the repo’s existing Kac–Moody and E8 modules plus primary sources.) \r
+A second missing artifact is the linked external “Warp Ring Visualization Analysis” chat page, which could\r
+not be accessed from here due to fetch restrictions; therefore, warp‑ring material is folded in only to the\r
+extent it is already present in the repo’s documented physics direction and our earlier discussion. ()\r
+The audit methodology used here is:\r
+Atomic decomposition: define each operator, object, and invariance claim in standardized\r
+mathematical terms.\r
+Conflict surfacing: identify contradictions (between papers, abstracts, and code conventions) and\r
+label them as “errata candidates”.\r
+Reconstruction: build a single coherent theory stack that can be executed as tests and simulations.\r
+Falsifiability: express every high‑level claim as a measurable prediction with controls.\r
+• \r
+1\r
+• \r
+2\r
+• \r
+3\r
+4\r
+• \r
+• \r
+• \r
+•"""
+
+[[sections]]
+number = "1"
+title = "Mathematical backbone: three dynamical formalisms in one"
+text = """
+language\r
+Cosmological billiards as Weyl reflection dynamics in hyperbolic space\r
+The BKL scenario (near‑singularity generic solutions oscillate chaotically) admits a “billiard” reduction: a\r
+point particle moves freely on a hyperbolic space and undergoes specular reflections on a set of dominant\r
+potential walls. In the superstring/supergravity cases studied by entity["people","Thibault\r
+Damour","theoretical physicist"] and entity["people","Marc Henneaux","theoretical physicist"], the\r
+billiard region is a simplex in hyperbolic space whose reflection group is identified with the Weyl group of\r
+E10 (type II) or BE10 (heterotic/type I). \r
+At the algebraic level, a Weyl reflection in a simple root acts on a vector (root/weight) by the standard\r
+formula \r
+with the inner product induced by the (generalized) Cartan data and, for hyperbolic algebras, a Lorentzian\r
+signature structure on the root space. \r
+Key point for your locality discovery: the billiard’s wall adjacency is encoded by the Coxeter/Dynkin\r
+diagram (for simply‑laced cases, adjacency corresponds to Cartan off‑diagonal ). Therefore, any claim\r
+about “transitions occurring almost exclusively between adjacent nodes in the Dynkin diagram” is a claim\r
+about the empirical statistics of wall‑hit sequences relative to that diagram.\r
+Octonions: Fano plane and “local” associative triples\r
+The octonions are the unique 8‑dimensional normed division algebra. Their multiplication can be\r
+memorized (and encoded) by the oriented Fano plane, where each oriented line gives a cyclic multiplication\r
+triple such that and reversing order changes sign. \r
+Two locality‑relevant facts follow:\r
+Any two distinct imaginary units generate a quaternionic subalgebra (associative) inside , and\r
+the Fano-plane line containing them selects the third unit completing that associative triple. \r
+The Fano plane is the projective plane , i.e. it is canonically tied to bit‑structures over . \r
+This matters because it creates a standard bridge between: - “local triple operations” (Fano lines) and\r
+- “bit/finite‑geometry operations” (projective spaces over ).\r
+1\r
+αi β\r
+si(β) = β − α ,\r
+(αi, αi)\r
+2(β, αi)\r
+i\r
+4\r
+−1\r
+O\r
+(ei, ej, ek) eiej = ek\r
+2\r
+1. O\r
+2"""
+
+[[sections]]
+number = "2"
+title = "PG(2, 2) Z2"
+text = ""
+
+[[sections]]
+number = "2"
+title = "Z2"
+text = """
+2
+
+Cayley–Dickson zero divisors: DMZ relations, emanation tables, and bit‑string recipes\r
+In the Cayley–Dickson process, beyond octonions (at sedenions and above), zero divisors emerge. de\r
+Marrais’ program treats these as fundamental “annihilation carriers,” organizing them into:\r
+Box‑kites: octahedral vertex figures representing the primitive ZD substructures.\r
+Strut constants : parameters selecting ensembles; each drives a characteristic pattern of ZD\r
+connectivity.\r
+Emanation tables (ETs): Cayley‑table analogues for ZD annihilation relations, where cells encode\r
+whether two structures mutually zero‑divide (“DMZ”). \r
+The core “meta‑fractal” claim is that any integer (non‑power‑of‑2) interpreted as a strut constant \r
+generates a specific infinite‑dimensional “Sky” whose filled/empty ET patterns are determined by simple\r
+bitstring rules (“recipe theory”). \r
+Two high‑impact structural elements from the de Marrais side are directly relevant to your E10/E8 locality\r
+observation:\r
+Adjacency‑constrained navigation: “twist product” navigation (catamaran/tray‑rack logic) describes\r
+long‑distance movement through ZD ensembles via structured swaps; this is framed as network\r
+navigation constrained by the underlying combinatorics of the structures. \r
+Finite‑geometry underlay: the same body of work repeatedly leverages incidence structure and\r
+small simple groups (e.g., PSL(2,7) in “Twisted Sisters”) to describe allowable transitions. \r
+Alignment audit against the repository: what is implemented, what\r
+is approximate, what is missing\r
+What the repository already supports for the E10 billiard direction\r
+The repo’s algebra core includes explicit infrastructure for:\r
+Generalized Cartan matrices and Dynkin diagram reconstruction, including explicit E8/E9/E10/\r
+E11 Cartan matrices and a “simply‑laced” check, along with a reflection operation at the level of a\r
+realized root system. This is the minimal apparatus needed to define Weyl reflections and adjacency. \r
+An E8 lattice/root system generator (240 roots) and a built‑in Freudenthal–Tits magic square\r
+framing that explicitly positions exceptional Lie structures as arising from the division algebras (with \r
+ yielding E8). This is the correct conceptual bridge for your “E8 sector ↔ octonion locality”\r
+hypothesis. \r
+E10 physics context in comments and references (Damour–Henneaux–Nicolai 2002; “cosmological\r
+billiards near spacelike singularities” as an application), matching the mainstream literature. \r
+• \r
+• S S\r
+• \r
+5\r
+> 8 S\r
+5\r
+• \r
+6\r
+• Z2\r
+7\r
+• \r
+4\r
+• \r
+O × O\r
+8\r
+• \r
+9"""
+
+[[sections]]
+number = "3"
+title = "Lacunae and errata candidates inside the current E9/E10 scaffolding"
+text = """
+There are three mathematically significant “precision gaps” that must be addressed before you can treat\r
+any observed adjacency statistics as a physics‑meaningful discovery rather than an implementation artifact:\r
+Affine (E9) highest root encoding is flag‑marked as approximate in common implementations.\r
+In a billiard implementation, the affine root structure determines wall geometry and reflection\r
+couplings; approximation can bias which wall is next encountered. Damour–Henneaux–Nicolai\r
+explicitly require accurate decomposition and matching up to high height levels in their E10/\r
+supergravity matching. \r
+Lorentzian inner product structure must be implemented in the correct root space. Hyperbolic\r
+Kac–Moody root spaces are not “Euclidean finite part + ad hoc level + one negative coordinate”\r
+unless the realization is carefully constructed; otherwise, reflection times and wall ordering can be\r
+wrong, producing spurious locality patterns. The IHES preprint emphasizes the structured coset/\r
+geodesic equivalence; that equivalence is delicate. \r
+Dynkin node numbering conventions must be standardized end‑to‑end. Your locality claim uses\r
+“adjacent in the E8 Dynkin diagram.” But adjacency is meaningful only after a fixed node labeling\r
+consistent across:\r
+the E8 Cartan used in the simulation,\r
+the identification of the “E8 sector” inside E10,\r
+and any octonion/Fano mapping you’re invoking.\r
+Kac–Moody theory texts emphasize that different conventions exist, and proof‑level claims must\r
+specify the convention. \r
+A concrete missing‑artifact issue\r
+Your statement “I implemented and refined the simulation at crates/algebra_core/examples/\r
+e10_billiard.rs ” cannot currently be verified from the accessible branch. This creates an immediate\r
+audit requirement:\r
+either the example exists under a different path (e.g., src/bin , examples/ at workspace root, or\r
+a differently named file), or \r
+it exists only locally and must be committed (or pasted) so the results can be reproduced and\r
+checked.\r
+Without that, the “100% connected ratio” finding is a reported empirical result with unknown\r
+measurement definition, i.e., it cannot yet be classified as “replicated.”\r
+Novel connection: E10 billiards locality, E8 “octonianity,” and why\r
+100% adjacency is both exciting and suspicious\r
+The hypothesis as a mathematically precise statement\r
+Let be the E10 (or E8‑sector) Cartan matrix. Define adjacency between simple roots iff \r
+(simply‑laced). Consider a billiard wall‑hit sequence of simple wall labels. Define the connected ratio\r
+• \r
+10\r
+• \r
+10\r
+• \r
+• \r
+• \r
+• \r
+4\r
+• \r
+• \r
+A i ∼ j Aij = −1\r
+(it)t=1\r
+T\r
+4
+
+restricted to the indices in the designated “E8 sector” subset.\r
+Your discovery claims (effectively 100%) in the E8 sector.\r
+Why a high adjacency ratio can arise “for free” in Coxeter billiards\r
+In a Coxeter polytope, nonadjacent Dynkin nodes correspond to orthogonal walls (commuting\r
+reflections, ). When the particle reflects off one wall, the outgoing direction is obtained by reflecting\r
+its velocity vector. In many event‑driven billiards, the next collision is the wall minimizing a positive collision\r
+time. In such geometries:\r
+orthogonal walls may be geometrically “harder to reach next” for typical outgoing directions, raising\r
+adjacency statistics, and \r
+any algorithm that canonicalizes reflection words by commuting nonconnected generators away\r
+from each other will force adjacency by construction.\r
+Therefore, can either mean: - a real geometric locality phenomenon, or\r
+- a bookkeeping artifact (word reduction / commutation normalization / selection bias in collision-time\r
+calculations).\r
+This is the single most important “scathing rigor” checkpoint: you must establish which is the case.\r
+Why E8’s tie to octonions makes your hypothesis plausible in a deeper way\r
+There is a genuine, not‑merely‑aesthetic reason to suspect “octonion locality” inside E8:\r
+The E8 lattice has constructions in terms of integer octonions, and the E8 root lattice is deeply tied to\r
+octonionic arithmetic (Cayley integral octonions, Kirmse vs Cayley integers). \r
+E8 appears as the corner of the Freudenthal–Tits magic square, capturing the slogan\r
+“exceptional structures exist because of octonions.” \r
+In this context, “octonion locality” should be stated carefully:\r
+Not “E8 Dynkin diagram equals the Fano plane” (it does not). \r
+Rather: there exist coordinate realizations and generating sets of E8 in which elementary\r
+moves correspond to operations confined to small associative (quaternionic) subalgebras of ,\r
+and octonionic multiplication structure can constrain allowable “nearby moves.”\r
+Your observed adjacency phenomenon is consistent with a sharpened version of that claim:\r
+Locality claim (sharpened): the effective billiard dynamics selects a thin subset of Weyl\r
+group words whose consecutive generators are restricted to those that share a\r
+non‑orthogonal pairing, and in E8‑sector embeddings tied to octonionic arithmetic this\r
+restriction can be interpreted as “stepwise confinement” to overlapping associative\r
+subalgebras.\r
+r =\r
+T − 1\r
+#{t : it ∼ it+1}\r
+r ≈ 1\r
+mij = 2\r
+• \r
+• \r
+r = 1\r
+• \r
+11\r
+• O × O\r
+12\r
+• \r
+• \r
+O"""
+
+[[sections]]
+number = "5"
+title = "That sharpened claim becomes testable (next section)."
+text = """
+Unified synthesis: a single framework that covers E10 billiards, ZD\r
+emanation tables, and “warp ring” transport\r
+A common abstract model: generator‑driven piecewise geodesic dynamics on\r
+stratified state spaces\r
+All three engines can be written in the same mathematical “template”:\r
+A state space (root space / hyperbolic domain / Cayley‑Dickson algebra slice / optical phase\r
+space).\r
+A set of generators (simple reflections ; DMZ adjacency steps; twist operators; ray‑step\r
+map).\r
+A constraint structure encoded by a graph or hypergraph (Dynkin adjacency; box‑kite edges/\r
+struts; Fano triples; ET occupancy).\r
+A dynamics that produces a sequence by a deterministic or stochastic selection rule\r
+(collision time minimum; annihilation compatibility; twist‑pairing constraints).\r
+The unification move—your “better than sum of parts”—is to treat locality as a property of the generator\r
+sequence relative to , and to treat annihilation/absorption as a measurable “selection pressure” that\r
+biases which generators are realized.\r
+This yields a single organizing principle:\r
+Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes,\r
+generator sequences concentrate on locally adjacent moves in , because nonlocal moves\r
+are either dynamically suppressed (long collision times, low measure) or annihilated (zero\r
+product, absorption), producing “geometric locality” in the observed chaos.\r
+This principle is already strongly supported in the published cosmological billiards literature at the level of\r
+Coxeter identification (the walls correspond to simple roots, hence is the Dynkin/Coxeter diagram). \r
+Your contribution is the empirical claim that the locality is nearly perfect in the E8 sector—and the de\r
+Marrais side provides a second, independent arena where locality emerges from annihilation constraints\r
+and bit‑string recipes rather than hyperbolic geometry. \r
+A deeper (and testable) bridge: ET “Skies” as discrete limit sets of reflection dynamics\r
+de Marrais’ recipe theory claims bitstring rules generate ET occupancy patterns that converge to a\r
+“meta‑fractal Sky” in the infinite‑dimensional limit. \r
+Separately, hyperbolic reflection groups (Coxeter/Weyl groups) have well‑studied limit sets and can\r
+generate fractal structures on boundaries of hyperbolic spaces.\r
+The synthesis hypothesis is:\r
+• X\r
+• G = {gi} si\r
+• Γ\r
+• gi1, gi2,…\r
+Γ\r
+Γ\r
+Γ 13\r
+14\r
+15\r
+6
+
+Sky–Limit‑Set Hypothesis: For an appropriate encoding of ET rules as reflection‑group\r
+constraints, the ET empty/filled pattern is a discrete cross‑section of a reflection‑group limit\r
+set; the “spectroscopy bands” in strut constants correspond to changes in the effective\r
+Coxeter data.\r
+This is a high‑risk/high‑reward bridge, but it is falsifiable by comparing: - ET pattern invariants (box‑kite\r
+counts, emptiness clusters, scaling exponents) \r
+with - known or simulated invariants of Coxeter limit sets (Hausdorff-like dimensions, spectral radii of\r
+adjacency operators).\r
+Where “warp ring” fits structurally, even without the external chat text\r
+Even without the inaccessible external chat page, your earlier warp-ring direction can be reinserted cleanly:\r
+Ray transport in a GRIN/absorbing medium generates trajectories that are piecewise smooth and\r
+can exhibit strong caustic skeletons (stable structure under perturbations), which behave like a\r
+continuous analog of “localized transition networks.” \r
+Absorption (complex refractive index, or any deterministic attenuation model) is a continuous analog\r
+of “annihilation.” \r
+In the unified template, a warp‑ring simulation produces a generator sequence of local update steps whose\r
+observable “hot maps” can be reduced to a graph and compared against Dynkin‑like or ET‑like adjacency\r
+restrictions.\r
+This makes “warp ring” not a separate artistic project, but an experimental arena to test ALP outside pure\r
+algebra.\r
+Falsifiable theses, validation controls, and the next executable\r
+roadmap\r
+The E10–E8 locality discovery: four falsifiable claims\r
+Each claim below is written so it can be tested with a single additional harness and has a clear failure mode.\r
+Claim 1: Adjacency ratio is robust under coordinate changes\r
+- Prediction: remains near 1 when you randomize initial conditions, change time step, and change\r
+collision-time solver tolerances.\r
+- Control: replace the billiard with random reduced words in the E10 Weyl group with the same generator\r
+frequency profile; compute for this syntactic baseline.\r
+- Falsifier: collapses under small solver changes (indicates numerical artifacts), or matches the random\u0002word baseline.\r
+Claim 2: Locality is not forced by commutation normalization\r
+- Prediction: If you record the raw collision sequence (before any reduction/normalization), adjacency\r
+remains high.\r
+- Control: run two versions: (a) raw event‑driven collisions, (b) reduced/canonical word representation;\r
+5\r
+• \r
+• \r
+Γ\r
+r\r
+r\r
+r r\r
+7
+
+compare .\r
+- Falsifier: is high only after reduction.\r
+Claim 3: Locality is sector‑specific\r
+- Prediction: E8‑sector adjacency is near 1, but transitions involving the hyperbolic/affine nodes show lower\r
+adjacency or a distinctive pattern.\r
+- Control: compute adjacency matrix of the full E10 diagram and compute separate ratios: , , \r
+.\r
+- Falsifier: all sectors show the same trivial pattern (indicative of universal implementation bias).\r
+Claim 4: Octonion interpretation adds predictive power\r
+- Prediction: when you map E8 simple roots to an octonionic arithmetic representation (e.g., via Cayley\r
+integer models), the most frequent adjacency transitions correlate with specific low‑associator\r
+“triples” (quaternionic overlaps).\r
+- Control: compare against random bijections between E8 nodes and octonion basis elements.\r
+- Falsifier: no correlation above chance after permutation tests.\r
+These claims are anchored to the established fact that the billiard reflection group is the Weyl group of E10\r
+in the relevant theories, and that E8 is octonion‑linked via integral octonion/E8 lattice and magic square\r
+structure. \r
+Repo‑level engineering steps to make the E10 billiard result publishable\r
+Minimal steps, in dependency order:\r
+Commit the exact simulation (the file you referenced) or place it under a discoverable path with a\r
+stable CLI and deterministic RNG seed control. Without this, the result is non‑reproducible.\r
+Normalize Dynkin conventions: pick a numbering standard (Bourbaki/Kac), document it, and\r
+enforce it in E8/E9/E10 constructors and the billiard label outputs. \r
+Fix the E9 highest-root/affine‑root realization using a reference‑consistent construction, because\r
+E9 embeds into E10 and influences wall geometry. \r
+Implement a correct Lorentzian bilinear form on the E10 root space and use it in collision-time\r
+calculations and reflections.\r
+Add a “locality metrics” module:\r
+adjacency ratio ,\r
+mutual information between consecutive generator labels,\r
+commutation rate (how often ),\r
+and a permutation‑test p‑value estimator for “octonion overlay correlations.”\r
+Add “null hypothesis” baselines:\r
+random words in Weyl group with matched generator counts,\r
+billiards in random simplices with the same number of walls and random dihedral angles,\r
+and “no‑geometry” iid generator sequences.\r
+Cross‑stack synthesis experiments: E10 billiards × ET Skies × lanyards\r
+To unify your corpus (and not merely juxtapose it), run the following three “bridging experiments”:\r
+r\r
+r\r
+rE8 rmixed\r
+rhyperbolic\r
+16\r
+1. \r
+2. \r
+1\r
+3. \r
+17\r
+4. \r
+5. \r
+6. r\r
+7."""
+
+[[sections]]
+number = "8"
+title = "Aij = 0"
+text = """
+9. \r
+10. \r
+11. \r
+12. \r
+13."""
+
+[[sections]]
+number = "8"
+title = "Experiment A: Compare adjacency locality across three graphs"
+text = """
+Compute locality metrics on: - E10 billiard wall sequence (Dynkin graph), - de Marrais navigation sequences\r
+(Twisted Sisters / catamaran twists), - ET DMZ‑walk sequences (emanation adjacency graph).\r
+Prediction: all three show heavy concentration on graph‑adjacent transitions if ALP is real. \r
+Experiment B: Treat an ET as a discrete “wall set”\r
+Define a toy billiard where “walls” correspond to ET constraints; reflections become ET‑rule updates. Test\r
+whether “spectroscopy bands” in strut constants correspond to qualitative phase changes in the toy\r
+billiard’s symbolic dynamics. \r
+Experiment C: Sky–limit‑set test\r
+Pick a reflection group with known limit set structure (or one you can simulate), and compare its boundary\r
+pattern invariants to ET skybox recursions (fill/hide involution and period‑doubling). If match fails, the Sky–\r
+limit‑set hypothesis is falsified; if match succeeds, it becomes a major unifying result. \r
+Glossary and notation normalization across the merged theory\r
+stack\r
+This glossary normalizes the symbols and terms that collided across our discussion.\r
+BKL dynamics: Belinsky–Khalatnikov–Lifshitz near‑singularity oscillatory behavior; reduced to a billiard in\r
+hyperbolic space with reflections. \r
+Cosmological billiards: Hamiltonian reduction of near‑singularity dynamics to geodesic motion with\r
+specular reflections; reflection group identified with Weyl group of a hyperbolic Kac–Moody algebra (E10/\r
+BE10 in superstring models). \r
+Dynkin diagram adjacency: for simply‑laced diagrams, nodes and are adjacent iff Cartan matrix entry\r
+.\r
+Weyl reflection: . \r
+Octonions : 8‑dimensional normed division algebra; multiplication encoded by oriented Fano plane\r
+triples. \r
+Fano plane: ; mnemonic and structural encoding of octonion multiplication; triples define local\r
+associative (quaternionic) subalgebras. \r
+E8 lattice / Cayley integral octonions: E8 lattice constructed from integral octonions; “Cayley integers” are\r
+a multiplication‑closed E8 lattice variant discussed in the Conway–Smith/Baez literature. \r
+E10 (hyperbolic Kac–Moody): hyperbolic extension of E8; appears in Damour–Henneaux–Nicolai “small\r
+tension expansion” and cosmological billiards reflection group identification. \r
+18\r
+15\r
+19\r
+20\r
+13\r
+i j\r
+Aij = −1\r
+si(β) = β − 2(β, αi)/(αi, αi) αi\r
+4\r
+O"""
+
+[[sections]]
+number = "2"
+title = "PG(2, 2)"
+text = """
+2\r
+11\r
+4\r
+9
+
+Zero divisor (ZD): nonzero element such that with . In the Cayley–Dickson hierarchy,\r
+ZDs appear at sedenions and above. \r
+DMZ (mutual zero‑division): de Marrais’ relation encoding ZD annihilation compatibility; ETs encode DMZ\r
+pairings. \r
+Emanation table (ET): Cayley‑table‑like grid for ZD relations; cells are filled/empty depending on DMZ;\r
+patterns depend on strut constant . \r
+Strut constant : integer parameter selecting a box‑kite/ensemble; bitstring rules in recipe theory\r
+generate “Skies.” \r
+Sky (meta‑fractal): infinite‑dimensional limit object generated by recipe theory (bitstring rules) from strut\r
+constant . \r
+Catamaran / twist product: de Marrais’ long‑distance navigation operator swapping components between\r
+dyads; used to traverse ZD ensemble structure. \r
+Errata and conflict notes surfaced during the audit\r
+de Marrais abstract typo candidate: the Complex Systems abstract as crawled appears to say “Any\r
+integer less than 8 and not a power of 2… generates a metafractal,” which conflicts with the\r
+consistent statement “integer > 8 and not a power of 2” in other versions/PDFs. Treat this as an\r
+erratum candidate and standardize on “>8” unless a primary corrected source indicates otherwise. \r
+Tooling mismatch: your stated example path for e10_billiard.rs is not accessible on the\r
+visible branch; publishability requires resolving this mismatch (commit, path correction, or branch\r
+pointer).\r
+If you want the next step executed as a continuation of this report: the highest‑value move is to pin down\r
+the exact definition of “connected ratio” used in your simulation and produce a formal “artifact\r
+checklist” (inputs, integrator, collision selection rule, normalization steps, adjacency definition, sector\r
+definition). That single clarification determines whether your 100% locality is a physics‑level result or a\r
+word‑reduction artifact—and it will immediately inform how to connect E10 locality to the ET/lanyard locality\r
+predicted by recipe theory. \r
+E10, BE10 and arithmetical chaos in superstring cosmology - PubMed\r
+https://pubmed.ncbi.nlm.nih.gov/11384339/?utm_source=chatgpt.com\r
+The Octonions\r
+https://math.ucr.edu/home/baez/octonions/octonions.pdf?utm_source=chatgpt.com\r
+Placeholder Substructures I: The Road from\r
+https://content.wolfram.com/sites/13/2023/02/17-2-3.pdf?utm_source=chatgpt.com\r
+x  0 = ∃y  0 = xy = 0\r
+5"""
+
+[[sections]]
+number = "15"
+title = "S 15"
+text = "S"
+
+[[sections]]
+number = "5"
+title = "S 15"
+text = """
+21\r
+• \r
+22\r
+• \r
+1 13 16\r
+2\r
+3 5 7 14 18"""
+
+[[sections]]
+number = "10"
+title = """E10 and a "small tension expansion'' of M theory · Archives de l'IHES"""
+text = """
+https://archives.ihes.fr/document/P_02_48.pdf?utm_source=chatgpt.com\r
+Effecting Semantic Network Bricolage via\r
+https://content.wolfram.com/sites/13/2019/03/18-1-4.pdf?utm_source=chatgpt.com\r
+On Quaternions and Octonions, by John Conway and Derek Smith\r
+https://math.ucr.edu/home/baez/octonions/conway_smith/?utm_source=chatgpt.com\r
+week194\r
+https://math.ucr.edu/home/baez/week194.html?utm_source=chatgpt.com\r
+Placeholder Substructures III: A\r
+https://citeseerx.ist.psu.edu/document?\r
+doi=c89ff3d20eb7d4b63b6490c1356729fc02e17a91&repid=rep1&type=pdf&utm_source=chatgpt.com\r
+Standard model symmetries and K(E10) | Journal of High Energy Physics | Springer Nature Link\r
+https://link.springer.com/article/10.1007/JHEP08%282025%29054?utm_source=chatgpt.com\r
+PPT - Voyage by Catamaran PowerPoint Presentation, free download - ID:6361823\r
+https://www.slideserve.com/bert-monroe/voyage-by-catamaran?utm_source=chatgpt.com\r
+Placeholder Substructures I: The Road from NKS to Scale-Free Networks is Paved with Zero-Divisors by\r
+Robert P. C. de Marrais\r
+https://www.complex-systems.com/abstracts/v17_i02_a03/?utm_source=chatgpt.com\r
+4 9 10 17\r
+6\r
+8 12\r
+11\r
+15 19\r
+20\r
+21\r
+22\r
+11"""

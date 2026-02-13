@@ -1,0 +1,728 @@
+Sedenion algebra for three lepton/quark generations and its relations to SU(5)
+
+
+                                      Qiang Tang1 and Jau Tang2*
+    1
+        School of Artificial Intelligence, Anhui University of Science and Technology, Huainan,
+                                            Anhui 232000, China
+                             2
+                                 Wuhan University, Wuhan 430072, China
+
+
+
+Corresponding author: Jau Tang: jautang@whu.edu.cn
+
+
+
+Abstract
+
+          In this work, we analyze two models beyond the Standard Model’s descriptions that make
+ad hoc hypotheses of three point-like lepton and quark generations without explanations of their
+physical origins. Instead of using the same Dirac equation involving four anti-commutative
+matrices for all such structure-less elementary particles, we consider in the first model the use of
+sixteen direct-product matrices of quaternions that are related to Dirac’s gamma matrices. This
+associative direct-product matrix model could not generate three fermion generations satisfying
+Einstein’s’ mass-energy relation. We show that sedenion algebra contains five distinct quaternion
+sub-algebras and three octonion sub-algebras but with a common intersecting quaternion algebra.
+This model naturally leads to precisely three generations as each of the non-associative octonion
+sub-algebra leads to one fermion generation. Moreover, we demonstrate the use of basis sedenion
+operators to construct twenty-four 5x5 generalized lambda matrices representing SU(5) generators,
+in analogy to the use of octonion basis operators to construct Gell-Mann’s eight 3x3 lambda
+matrices for SU(3) generators. Thus, this work links the sedenion algebra to Georgi-Glashaw’s
+SU(5) Grand Unification Theory (GUT) that unifies the electroweak and strong interactions for
+known Standard Model’s elementary particles.
+
+
+
+Keywords: Standard Model, SU(5) GUT, sedenion, octonion, quarternion, direct-product
+matrices
+    1. Introduction
+        The Dirac equation is the Standard Model's cornerstone for describing all fermionic
+elementary particles [1-3]. According to the ad hoc assumptions, three generations of leptons and
+quarks are point-like objects without a physical size [4-6]. However, such a long-held conceptual
+picture of a point-like particle is inconsistent with observations. For example, why there exist
+precisely three generations of leptons and quarks [7], and why could a point-like muon or tau be
+much heavier than an electron [8, 9]. And, for the six types of point-like quarks, why are charm,
+strange, top, and bottom quarks heavier than up and down quarks [10, 11]. In Dirac’s theory of a
+relativistic electron, he coupled four 4x4 anti-commutative matrices α1, α 2 , α 3 , β , or equivalently
+
+ 0 ,  ,1,  , 2 ,  3 , to the 1st-order derivatives in space and time to describe the wave [12, 13]. By
+extending the operator techniques beyond Dirac’s theory, one can include additional operators in
+a higher dimension to describe a particle’s internal degrees of freedom. In this work, we analyze
+two types of higher dimensional generalization using the direct-product operators constructed from
+Pauli’s matrices versus hyper-complex operators beyond quaternions [14-15] which is equivalent
+to Dirac’s 4x4 gamma-matrices. Like the 4-element quaternion algebra with three anti-
+commutative basis operators [16], the 8-element octonion algebra contains seven anti-
+commutative basis operators, but unlike the associative quaternion algebra, the octonion algebra
+is non-associative [17-20]. In this work, we will examine the corresponding multiplication rules
+and compare their multiplication tables to clarify the similarities, differences, and the physical
+implications.
+
+        In Sec. 2.1 we shall briefly review Dirac’s original model and its connection to the
+quaternion algebra. In Sec. 2.2, we consider a higher dimensional model beyond Dirac’s use of
+four anti-commutative gamma matrices. We analyze the group of 16 direct-product operators
+constructed from quaternions or, equivalently, Pauli’s matrices and an identity operator, which are
+related to 16 Dirac’s gamma. In Sec. 2.3, we discuss the non-associative 16-element sedenion
+algebra [21-24], and show it is composed of three distinctive octonion algebras. We shall analyze
+its differences from the direct-product case,and examine whether the corresponding mass-energy
+relation is consistent with Einstein’s special relativity. In Sec. 2.5, we shall show how proper
+operator assignment of the operators from three octonion sub-algebras can naturally lead to the
+rise of three generations of lepton and quarks. Finally, in Sec. 2.6, we shall present a mapping of
+octonions to 8 SU(3) generators, and a mapping of sedenion operators to 24 generators for SU(5),
+which was proposed by Geogi-Glashow [25,26] for their GUT model for grand unification of the
+Standard Model’s elementary particles.
+
+
+
+    1. Theory
+
+        In this section, we present a theoretical analysis of an associative algebra model using
+Dirac’s gamma matrices, which are related to direct-product operators which are constructed from
+quaternions or equivalently Pauli’s matrices and an identity matrix, versus non-associative algebra
+model based on octonion and sedenion operators. This work extends Dirac’s original theory for
+the electron to three generations of leptons and quarks, and extends the Standard Model beyond
+the ad hoc assumption of a point-like elementary fermions. We shall show that the sedenion
+algebra provides a key link to SU(5) symmetry of GUT. This hyper-complex operator model with
+higher degrees of freedom leads precisely to three generations of leptons/quarks which possess
+internal structures.
+
+
+
+2.1. Dirac equation
+
+        According to Dirac’s theory for the electron, using the gamma matrices one has
+
+        (i     − m ) = 0,  = 0,1, 2, 3
+         p k = − i  k , p0 = i  0                                                    (1A)
+                              0      k                        I      0 
+         k = =  t   k =            ,  0 = =  3   0 =  2         .
+                             −k      0                         0    − I 2 
+
+
+where the natural unit  = c = 1 is used. Here, we define five 2x2 matrices, including Pauli’s
+
+matrices  1 `,  2 ,  3 , , an identity matrix I 2 and  t  i 2 , as
+
+               0 1           0 − i         1 0                     1 0
+         1 =      ,  2 =     ,  3 =        ,  0 = I 2 =      ,     (1B)
+               1 0 `          i 0            0 − 1 `                0 1
+
+Equivalently, using the matrices α k =  0 k and β =  0 , the Dirac equation can also be expressed
+as E = ( α  P + βm ) . The identity matrix and three Pauli matrices form the basis operators for
+quaternion algebra. Based on Dirac’s1st-order differential equation in spacetime one obtains
+Einstein’s relativistic mass-energy relation E 2 = m 2 + p 2 . These Dirac’s gamma matrices in
+I ,  ,  ,  ,   are used in the Dirac equation. However, the product of these matrices does
+  4
+       0     ,1    ,2    3
+
+
+not satisfy the closure property, for example,  1 2 =  0   3 does not belong to the same set,
+therefore, these five operators do not form a group.
+
+   In the Standard Model the same Dirac equation is used for all leptons and quarks, assuming
+these particles are a point-like object with an infinitely small volume, it does not offer physical
+explanations to exist precisely why there are three generations. To generalize Dirac equation to
+higher dimensions, and to account for three fermion generations by incorporating internal
+structural dynamics, we consider in the following sections two modelling approaches, i.e., an
+direct-product matrix model of 16 associative 4x4 matrices versus non-associative hype-complex
+algebra of 16 sedenion basis operators..
+
+
+
+2.2. Associative algebra of 16 direct-product matrices
+I, Γ1, Γ2 , Γ3 , Θ1, U1 , U 2 , U 3 , Θ2 , V1 , V2 , V3 , Θ3 , W1 , W2 , W3 
+
+           To generalize Dirac’s description of the electron using four Dirac’s gamma matrices
+  ( = 0,1, 2, 3), , we can define a set of direct-product operators using three Pauli’s matrices and
+
+an identity matrix as
+
+            ij   i   j
+                                                                                                           (2)
+           U k = i 1k , Vk = i 2 k Wk = i 3k , Γ k = i 0k Θk = i k 0
+
+One can show that the eight-element set of direct-product operators I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3
+
+form a group with the closure property for multiplication. Similarly, one can show that the other
+two sets          I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and      I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 form a group for
+multiplication. These direct-product operators can be related to the sixteen direct-product matrices
+of quaternions. The multiplication table for the sixteen direct-product operators, which are related
+to Dirac’s gamma matrices, is illustrated in Fig. 1.
+Figure 1. The color-coded multiplication table for 16 direct-product operators. Among the sixteen
+operators, the 4-th, 8-th and 12-th operators are commutative with other operators although most
+are anti-commutative. These properties differs from that of sedenion algebra. This 16-element
+group contains three 8-element sub-groups with closure property for multiplication, namely,
+I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3 , I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 . Each
+domain containing quaternion triplets follows cyclic multiplication rules.
+
+
+
+        Here we summarize their multiplication rules for these sixteen direct-product operators
+
+         U i U j = − ijk Γ k −  ij I, Vi V j = − ijk Γ k −  ij I, Wi W j = − ijk Γ k −  ij I
+         Γ i Γ j = −  ijk Γ k −  ij I, Θ i Θ j = − ijk Θ k −  ij I
+         U i V j = − i ijk Wk −  ij Θ3 ,
+         V j U i = − i ijk Wk +  ij Θ3                                                                      (3A)
+         Vi W j = − i ijk U k +  ij Θ1 ,
+         W j Vi = − i ijk U k +  ij Θ1 ,
+         Wi U j = − i ijk Vk +  ij Θ 2
+
+and
+        U i Γ j = − 1i 0 j = − i ijk 1k −  ij 10 = −  ijk U k + i ij 1
+        Γ j U i = − 0 j 1i = i ijk 1k −  ij 10 =  ijk U k + i ij 1
+        Vi Γ j = −  ijk Vk + i ijΘ2
+                                                                                                            (4B)
+        Γ j Vi =  ijk Vk + i ijΘ2
+        Wi Γ j = −  ijk Wk + i ij 3
+        Γ j Wi =  ijk Wk + i ij3
+
+and
+
+        Γi Γ j = −  ijk Γk −  ij I, Θi Θ j = − ijkΘk −  ij I
+
+`       Θ1Γ k = Γ k Θ1 = i U k , Θ2 Γ k = Γ k Θ2 = i Vk , Θ3Γ k = Γ k Θ3 = i Wk
+
+
+        U k Θ1 = Θ1U k = iΓ k , Vk Θ 2 = Θ 2 Vk = iΓ k , Wk Θ3 = Θ3 Wk = iΓ k
+        U k 2 = −2 U k = − Wk , U k 3 = −3U k = Vk
+                                                                                                            (4C)
+        Vk 1 = −1Vk = Wk , Vk 3 = −3 Vk = −U k
+        Wk 1 = −1Wk − Vk , Wk 2 = −2 Wk = U k .
+
+This 16-element group contains three 8-element subgroups, namely, I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3 ,
+I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 . These three subgroups with eight
+elements of 4x4 matrices satisfy the closure and associative properties. They differ from the non-
+associative octonions algebra which will be discussed in details later in Sec. 2.3.
+
+`       Here, we examine the mass-energy relation based on the operators according to the first
+sub-group I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3 . We can extend Dirac’s equation involving four gamma
+matrices to higher dimensions involving eight direct-product operators as
+
+                            3            3
+        m0 = iEΘ1 +  Pk Γ k +  Qk U k                                                              (5A)
+                         k =1          k =1
+
+
+By taking the square of both sides of the equation, one obtains
+
+
+                                                          Pi Pj Γi , Γ j +  QiQ j U i , U j 
+                        3               3                  3                          3
+        m02 = E 2 +  Pk 2 Γ k 2 +  Qk 2 U k 2 +
+                       k =1           k =1             i ,  j =1                 i ,  j =1
+                                                                                                            (5B)
+                               
+              3                              3
+          +  PiQ j U i , Γ j + iE  (Pk Θ1 , Γ k + Qk Θ1, U k )
+            i , j =1                     k =1
+
+
+or, equivalently, according to the multiplication rules in Fig. 1, one has
+                              (          ) − iΘ  P Q − iE  (P U + Q Γ )
+                      3                     2         3                          3
+         E 2 = m0 2 +  Pk 2 + Qk 2             1               k       k                k       k       k       k
+                     k =1                            k =1                    k =1
+                                                                                                                     (5C)
+
+
+
+Similarly, for the second assignments using I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3, one has
+
+                          3             3
+         m0 = iEΘ 2 +  Pk Γ k , +  Qk Vk ,
+                      k =1             k =1
+                                                                                                                     (5D)
+                              (         ) − i  P Q − iE  (P V + Q Γ ),.
+                      3                  2           3                       3
+         E 2 = m0 2 +  Pk 2 + Qk     2
+                                                2           k       k                k       k       k       k
+                     k =1                           k =1                    k =1
+
+
+and for I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3, one obtains
+
+                          3             3
+         m0 = iEΘ3 +  Pk Γ k , +  Qk Wk ,
+                      k =1             k =1
+                                                                                                                     (5E)
+                            (           ) − i  P Q − iE  (P W + Q Γ ).
+                      3                   2          3                       3
+         E = m0 +  Pk + Qk
+           2     2                2   2
+                                                3           k       k                k       k       k       k
+                     k =1                           k =1                    k =1
+
+
+In Equations (5A), (5D) and (5E), the last two terms of the equations involve operators
+Θ k , Γ k , U k , Vk or Wk which lead to mass-energy oscillations in time for a lepton and quark.
+
+Therefore, such results are neither consistent with experimental observations nor in agreement
+
+                                                                                         (
+with Einstein’s mass-energy relation of E 2 = m02 + k Pk 2 + Qk 2 which contains an additional              )
+kinetic energy k Qk 2 due to a particle’s internal structural dynamics. Therefore, although the
+
+16-element group of direct-product operator contains three 8-element subgroup, the above direct-
+product model cannot represent three generations of leptons and quarks. In the following sections,
+we will discuss the non-associative sedenion and octonion algebras, and show that they do not
+encounter these problems facing the associative direct-product operator model.
+
+
+
+
+2.3. Non-associative octonion algebra and one fermion generation
+     We consider the octonion algebra to avoid the problems facing the direct-product matrix
+model. Any element x and its conjugate x in the octonion algebra, x can be expressed in terms
+of the identity operator e 0 and seven other octonion unit operators
+
+                                               7
+        x = x0 e 0 + X , x = x0 e 0 − X , X =  x k e k ,                                      (6A)
+                                              k =1
+
+
+                                                               
+where e k satisfies the anti-commutative relation e i , e j = 0, i  j for a different pair of indices.
+
+These non-associative octonion operators follow the specific multiplication rules in Fig. 2.
+
+
+
+
+Fig. 2. The color-coded multiplication table for the eight basis octonions. According to the
+multiplication rules, other than the identity operator, all other seven operators anti-commute with
+each other, however, the multiplications are not associative. The arrays are color-coded to illustrate
+domains of cyclic multiplication rules for quaternions. Each color-coded domain of quaternion
+triplets follows cyclic multiplication rules.
+
+
+
+       For the octonion algebra of Fig. 2, the 4th element anti-commutes with all other operators
+except the identity operator. However, in Fig. 1 for the direct-product operators, the 4th element
+a4 , a8 or a12 is commutative with all other operators, except the identity element. This property
+
+is important for the corresponding mass-energy relation to be consistent with Einstein’s relativity.
+Therefore, the model with seven non-associative but anti-commutative octonion operators is the
+correct model to describe one generation of lepton or quark. The octonion model invokes three
+extra degrees of freedom to represent the internal structural dynamics of a fermion as three
+momentum components with respect to the center-of-mass reference frame, whereas the other
+three anti-commutative operators represent the external degrees of freedom as three momentum
+operators for the particle with respect to the laboratory frame.
+
+
+
+2.4. Three octonion sub-algebras in sedenion algebra and three generations of
+charged/neutral leptons
+         In the last section, we explain that the octonion algebra leads to only one fermion
+generation. To accommodate three generations, one needs to consider higher-dimensional
+hypercomplex algebra, namely, the sedenion algebra. In the sedenion algebra, it consists of 16
+basis          ssedenion              operators            e k , k = 0,1, 2, ..., 15      ,         denoted             as
+I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3, Θ2 , V1, V2 , V3 , , Θ3 , W1, W2 , W3 sequentially.
+
+The multiplication rules for 16 sedenion basis operators are given in Fig. 3, and is different from
+the table for the direct-product operator model shown earlier in Fig. 31
+
+
+
+
+Fig. 3. The color-coded multiplication table for16 basis sedenion operators e k , k = 0,1, 2, ..., 15 .
+The region algebra contains three distinct types of octonion sub-algebras, denoted by
+I, Γ1 , Γ 2 , Γ3 , Θ1 , U1 , U 2 , U 3 , I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 . Each
+color-coded domain containing quaternion triplets follows cyclic multiplication rules. Unlike the
+table in Fig. 1 for the associative direct-product matrices, the 4-th, 8-th and 12-th operators in the
+non-associative sedenion algebra anti-commutes with U, V, W operators.
+
+         The multiplication table in Fig. 3 can be rearranged in order to become Fig. 4 to illustrate
+that the sedenion algebra contains five distinct quaternion algebras with each quaternion algebra
+representing a distinct type of SU(2) spinors with a cyclic multiplication rule.
+
+
+
+
+Fig. 4. The rearranged multiplication table which is color-coded to illustrate five distinct types of
+SU(2) spinors, U, V, W,   wich each type following a cyclic multiplication rule. Each type
+of spinor triad together with an unit operator forms a quaternion algebra.
+
+
+         As can be seen from Fig. 3, the sedenion algebra contains three distinct types of octonion
+algebra, which are denoted by I, Γ1 , Γ2 , Γ3 , Θ1 , U1 , U 2 , U3, I, Γ1 , Γ 2 , Γ3 , Θ2 , V1 , V2 , V3  and
+I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 .
+
+The multiplication tables for these three distinct types of octonion algebra are illustrated in Fig.
+5.
+                                                                                         
+Fig. 5. (A) The multiplication rules for the octonions I, Γ1 , Γ 2 , , Γ3 ,Θ1. U1 , U 2 , U 3 . (B) The                         
+multiplication          table                    of        I, Γ1, Γ2 , , Γ3,Θ2 , V1, V2 , V3           .          (C)   The   table   of
+
+I, Γ1, Γ2 , , Γ3,Θ3 , W1, W2 , W3  . Each color-coded domain of quaternion triplets follows cyclic
+multiplication rules.
+
+
+
+         We examine here the mass-energy relation according to the octonion algebra of
+I, Γ1, Γ2 , Γ3 , Θ1, U1, U 2 , U3 that represents the basis octonion operators e0 , e1 , e 2 , e3 , e5 , e6 , e7 , e8 
+sequentially. We can generalize Dirac’s equation and utilize
+
+                                         3                  3
+         1) m0 I = iEΘ1 +  Pk Γ k +  Ak U k
+                                      k =1                 k =1
+                                     3                        3                          3                    3
+         iE I = − m0Θ1 +  Pk Θ1Γ k , +  Ak Θ1U k = − m0Θ1 −  Pk U k +  Ak Γ k
+                                  k =1                      k =1                        k =1                 k =1
+                                                                            2
+                             3          3         
+         − E 2 =  − m0Θ1 +  Ak Γ k −  Pk U k , 
+                            k =1       k =1        
+                                 3                                                                                              (6A)
+            = m0 Θ1 +  Ak Γ k + Pk U k
+                    2   2                    2        2     2       2
+
+                                k =1
+
+                                                                     
+                3                                     3                                            3
+            +  Ai A j Γ i , Γ j +  Pi P j U i , U j − m0 P Θ1 , Γ k + m0  Pk Θ1 , U k 
+              i , j                                  3                                           k =1
+                                                    Pi
+                                                  i , j
+
+                                     3                                           3
+          E 2 = m0,eff 2 +  Pk 2 , m0,eff 2 = m0 2 +  Ak 2 .
+                                 k =1                                           k =1
+The above result is consistent with Einstein’s mass-energy relation indicating the octonion model
+gives rise to one generation of fermion with an internal structural dynamic. Similarly, for
+I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3, one obtains
+
+                                             3                3
+         2)       m0I = iEΘ2 +  Pk Γ k +  Bk Vk
+                                            k =1             k =1
+                                                                                                                              (6B)
+                                    3                                           3
+         E = m0, eff +  Pk , m0, eff = m0 +  Bk ,
+              2            2                  2               2            2          2
+
+                                   k =1                                        k =1
+
+
+and
+
+                                             3                3
+         3)       m0I = iEΘ1 +  Pk Γ k +  C k Wk
+                                            k =1           k =1
+                                                                                                                              (6C)
+                                    3                                           3
+         E 2 = m0, eff +  Pk , m0, eff = m0 +  C k .
+                           2                  2               2            2          2
+
+                                   k =1                                        k =1
+
+
+The     above             three              equations                reproduce           Einstein’s   mass-energy   relation,   i.e.,
+
+E 2 = m0,eff 2 + k Pk 2 , m0,eff 2  m02 + k Qk 2 , Qk = Ak , Bk , Ck for a particle with an effective rest
+
+mass m0,eff which contains the kinetic energy of its internal structural dynamics. Equations (6A)
+
+- (6C) represent three generations of charged leptons, namely electron, muon, and tau. For three
+generations of the neutral leptons, i.e., the corresponding neutrino for each generation of leptons,
+we use the following assignments
+
+                                                  3               3
+         1) m0 I = iE iΘ1 +  Pk Γ k +  Ak (Vk + iWk )
+                                              k =1            k =1
+                                        3              3
+         iE I = − m0Θ1 +  Pk U k +  Ak (Wk − iVk )
+                                    k =1              k =1
+                                                         3
+         − E 2 = m0 2Θ12 + Pk 2 U k 2 +  Ak 2 (Wk − iVk )2                                                            (7A)
+                                                       k =1
+
+                                                                                         
+                    3                                         3
+          − m0  Ak Θ1 , Wk − iVk  +  Pi U i , W j − iV j
+                   k =1                                    i , j =1
+                               3
+         E 2 = m0 2 +  Pk 2
+                           k =1
+                                        3                 3
+       2) m0 I = iE iΘ2 +  Pk Γ k +  Bk (Wk + iU k )
+                                       k =1              k =1
+                             3                 3
+       iE I = − m0Θ2 +  Pk Vk +  Bk (U k − iWk )                                        (7B)
+                            k =1              k =1
+                      3
+        E 2 = m0 2 +  Pk 2
+                     k =1
+
+
+                                       3                 3
+       3)    m0 I = iE Θ3 +  Pk Γ k +  C k (U k + iVk )
+                                   k =1              k =1
+                             3                  3
+       iE I = − m0Θ3 +  Pk Wk +  C k (Vk − iU k )                                        (7C)
+                            k =1              k =1
+                      3
+        E 2 = m0 2 +  Pk 2 .
+                     k =1
+
+
+
+Owing to the absence of k Qk 2 in the above results for three neutrino generations, one has a
+
+vanishingly small rest mass E 2  k Pk 2 if m0 is close to zero. Unlike the cases for the charged
+                                                                
+leptons, one has E 2 = m0,eff 2 + k Pk 2 , where m0,eff 2 = m02 + k Qk 2  k Qk 2 even if m0 is
+
+close to zero. According to the above sedenion model, their masses could be close to zero and are
+much smaller than those of their corresponding leptons. The experimental observations of flavor
+mixing and the mass oscillations among three generations of neutrinos are believed to be induced
+by the symmetry breaking mechanism.
+
+
+
+2.5. Sedenion algebra and three generations of quarks
+       Here, we propose assignments of sedenion operators for three quark generations.
+
+                                   3                 3
+       1) m0 I = iE iΘ1 +  Pk Γ k +  (Bk Vk + C k Wk )
+                                 k =1              k =1
+                             3                 3
+       iE I = − m0Θ1 +  Pk U k +  (Bk Wk − C k Vk )                                     (8A)
+                            k =1              k =1
+
+                                                                         (   )
+                            3                                        3
+        E 2 = m0, eff 2 +  Pk 2 , m0.eff 2 = m0 2 +  Bk 2 + C k 2
+                          k =1                                      k =1
+                                      3                3
+       2) m0 I = iE iΘ2 +  Pk Γ k +  (C k Wk + Ak U k )
+                                     k =1          k =1
+                             3               3
+       iE I = − m0Θ 2 +  Pk U k +  (C k U k − Ak Wk )                               (8B)
+                         k =1               k =1
+
+                                                                      (       )
+                         3                                      3
+        E 2 = m0, eff 2 +  Pk 2 , m0.eff 2 = m0 2 +  Ak 2 + C k 2
+                        k =1                                   k =1
+
+
+                                      3                3
+       3) im0 I = iE iΘ3 +  Pk Γ k +  ( Ak U k + Bk Vk )
+                                     k =1          k =1
+                             3               3
+       iE I = − m0Θ3 +  Pk U k +  (− Ak Vk + Bk U k )                               (8C)
+                         k =1               k =1
+
+                                                                      (       )
+                         3                                      3
+        E 2 = m0, eff 2 +  Pk 2 , m0.eff 2 = m0 2 +  Ak 2 + Bk 2 .
+                        k =1                                   k =1
+
+
+One could also make different assignments to the generalized energy and momentum operators for
+other three heavier quark generations.
+
+                                 3                 3
+        1) m0I = iEΘ1 +  Pk Γ k +  ( Ak U k + Bk Vk + Bk Wk )
+                             k =1                k =1
+                         3                   3
+       iEI = im0Θ1 +  Pk U k +  ( Ak Γ k + Bk Wk − Bk Vk )                          (9A)
+                        k =1                k =1
+
+                                                                      (           )
+                         3                                       3
+        E 2 = m0, eff 2 +  Pk 2 , m0.eff 2 = m0 2 +  Ak 2 + 2 Bk 2 ,
+                        k =1                                   k =1
+
+
+                                 3                3
+       2) m0I = iEΘ2 +  Pk Γ k +  (C k U k + Bk Vk + Ak Wk )
+                             k =1                k =1
+                                                                                      (9B)
+                                                                     (            )
+                         3                                      3
+        E = m0, eff +  Pk , m0.eff = m0 +  Bk + 2C k ,
+          2         2                 2           2        2              2   2
+
+                        k =1                                   k =1
+
+
+                                 3                 3
+       3) m0I = iEΘ3 +  Pk Γ k +  ( Ak U k + Ak Vk + C k Wk )
+                             k =1                k =1
+                                                                                      (9C)
+                                                                      (           )
+                         3                                      3
+        E = m0, eff +  Pk , m0.eff = m0 +  C k + 2 Ak .
+          2         2                 2           2        2              2   2
+
+                        k =1                                   k =1
+
+
+
+
+2.6. Mapping octonions to SU(3) generators and sedenion to SU(5) generators
+         In this section, we discuss the mapping of the octonion operators to 8 SU(3) generators and
+the mapping of sedenion operators to 24 SU(5) generators. For each type of octonion algebra, one
+can show its isomorphism to Clifford algebra𝐶ℓ(6) [20]. Here, we define three pairs of fermion
+
+creation and annihilation operators  k+ and  k which satisfy the anti-commutation relations as
+
+          1 = (− e6 + ie5 ) 2 ,  2 = (− e3 + ie1 ) 2 , 3 = (− e7 + ie2 ) 2
+          i , j = i+ , +j = 0 , i , +j  =  ij                                             (10A)
+
+
+For the first lepton/quark generation, these eight basis octonion operators are denoted by
+I, Γ1 , Γ 2 , Γ3 , Θ1 , U1 , U 2 , U 3 
+
+          1 = (− U2 + iU1 ) 2 ,  2 = (− Γ3 + iΓ1 ) 2 , 3 = (− U3 + iΓ2 ) 2
+                                                                                                       (10B)
+          a1+ = (U 2 + iU1 ) 2 , a2+ = (Γ3 + iΓ1 ) 2 , a3+ = (U3 + iΓ2 ) 2 .
+
+                        +
+One can define i j   i  j to construct the following eight SU(3) generators which are related
+
+to Gell-Mann’s lambda matrices Λ k as
+
+          Λ1 = 2 1 + 1 2 = i (U 3 − U 2 ) 2
+          Λ 2 = − i 1 2 + i 2 1 = − i (U1 − Θ1 ) 2
+          Λ 3 = 1 1 − 2 2 = i (Γ 3 − Γ 2 ) 2
+          Λ 4 = 1 3 + 3 1 = i (Θ1 − Γ 2 ) 2
+                                                                                                       (10C)
+          Λ 5 = − i 1 3 + i 3 1 = − − i (Γ1 + U 3 ) 2
+          Λ 6 = 2 3 + 3 2 = − i (Γ1 + U 2 ) 4
+          Λ 7 = − i 2 3 + i 3 2 = − i (Θ1 − Γ3 ) 2
+          Λ8 = ( 1 1 + 2 2 − 2 3 3 )           3 = i (Γ 3 + Γ 2 − 2U 2 ) 2 .
+
+         We have shown above the eight lambda matrices as the SU(3) generators which can be
+constructed from I, Γ1 , Γ 2 , Γ 3 , Θ1 , U1 , U 2 , U 3  . Because the sedenion algebra is shown to consist
+of three octonion sub-algebras. Similarly, one can use two other octonion basis sets, i.e.,
+I, Γ1, Γ2 , Γ3 , Θ2 , V1, V2 , V3 and I, Γ1, Γ2 , Γ3 , Θ3 , W1, W2 , W3 to construct two other lambda-matrix
+generators. Together with the U-type, V-type and W-type octonion algebras which are the three
+distinct sub-algebra of the sedenion algebra, we can construct all together 24 generators for SU(5).
+       By extending the three pairs of creation and annihilation and creation operators for the
+octonion algebra, we define five pairs of fermion creation and annihilation operators for the
+sedenion algebra as
+
+       1 = (− e6 + ie5 ) 2 ,  2 = (− e3 + ie1 ) 2 ,  3 = (− e7 + ie2 ) 2
+       5 = (− e14 + ie13 ) 2 ,  6 = (− e11 + ie9 ) 2                                                  (11A)
+        i , j =  i+ , +j = 0 ,  i , +j  =  ij ,
+or, equivalently
+
+       1 = (− U 2 + iU1 ) 2 ,  2 = (− Γ3 + iΓ1 ) 2 , 3 = (− U3 + iΓ2 ) 2
+                                                                                                        (11B)
+        a4 = (− V2 + iV1 ) 2 , a5 = (− W2 + iW1 ) 2 .
+
+Similar to Eq. (10C) by constructing eight of 3x3 lambda matrices for the SU(3) generators from
+three pairs of creation and annihilation operators, one can construct from five pairs of fermion[c
+creation and annihilation operators, a total of twenty-four generalized lambda matrices as the
+SU(5) generators. Using the five pairs of fermionic creation and annihilation operators , one can
+construct          10      pairs       of          5x5         off-diagonal   SU(5)   generator   matrices   as
+m n + n m , − i m n + i n m , for m  n =1, 2, .., 5. And, with the same indices one can construct
+
+four off-diagonal but orthogonal 5x5 matrices.                       Therefore, among these twenty-four SU(5)
+generators which can be represented by 5x5 generalized lambda matrices, there are four diagonal
+matrices and twenty off-diagonal matrices.                     The SU(5) symmetry plays an essential role in the
+GUT (grand unification theory) that has been advocated to unify the electromagnetic, weak and
+strong interactions among elementary particles. These three types of the 8-element octonion
+algebra are not totally independent of each other because they contain the same quaternion algebra
+I, Γ1, Γ2 , Γ3 . Such an intersection among three octonion sub-algebras underlies the quark
+confinement mechanism. The cooling after the big bang of the universe plays an important role in
+symmetry breaking of SU(5) to become SU(3)  SU(2)  U(1) , and the break sown of the
+sedenion algebra into direct-product of octonion and quaternion algebras. Such breakdown results
+in flavor mixing of neutrinos and their mass oscillations.
+
+
+
+3. Conclusions
+     In this work, we present a theoretical analysis of higher dimensional models beyond the
+conventional Dirac model for a point-like fermion without a volume or an internal structure. Dirac
+utilized four anti-commutative matrices to couple to the first derivative of particle’s space and time
+coordinates. Such an extension is necessary, because the traditional Dirac theory cannot explain
+the origins for the observed three generations of leptons and quarks postulated in the Standard
+Model. We first consider an 16-element group of 4x4 matrices as direct products of quaternion
+operators, i.e., three 2x2 Pauli’s matrices and an identity matrix. This model contains three extra
+degrees of freedom to incorporate a particle’s internal structure. This 16-element group contains
+three 8-element subgroups, possessing a closure property for multiplications among eight elements
+of each subgroup. However, this direct-product matrix model with associative operators could not
+reproduce Einstein’s mass-energy relation, in contrast to the model with 16 sedenion basis
+operators. The significant difference between the two models is the associativity of whether
+multiplication is associative or not, as clearly illustrated from the differences in the multiplication
+tables of Figs. 1 and 2. The 8-element octonion algebra is shown to be able to lead to one lepton
+generation, however, we need 16-element sedenion algebra to encompass precisely three
+generation of leptons and quarks. We have shown from the color-code table arrays in Fig. 2, the
+sedenion algebra contains three distinct octonion algebras, with the U, V, and W-type operators,
+and each type of octonion sub-algebra corresponding to one generation. We have also shown for
+neutrinos that from Eq. (7) the effective rest mass could be vanishingly small in comparison to that
+in Eq. (6) for the counterpart charged leptons. We have also provided operator assignments in
+Equations (8) and (9) to represent three generations of lighter and heavier quarks. Moreover, we
+have shown that by properly pairing up the octonion basis operators one an construct 8 3x3 Gell-
+Mann’s lambda matrices as the 8 generators for SU(3). For the U, V and W-type octonion sub-
+algebra of the sedenion algebra, we could pair up the sedenion basis operators to construct a total
+of 24 5x5 matrices to represent the 24 generators of SU(5). The SU(5) symmetry plays an essential
+role in the GUT that unifies the electroweak and strong interactions among the Standard Model’s
+elementary particles. These three types of the 8-element octonion algebra contain the same
+quaternions I, Γ1, Γ2 , Γ3 , and such an intersection underlies the quark confinement mechanism.
+Soon after the big bang of the universe, its cooling plays an important role in symmetry breaking
+for SU(5) to be broken down to become SU(3)  SU(2)  U(1) [25, 26], and the broken sedenion
+algebra into direct-product algebra of octonions and quaternions results in flavor mixing of
+neutrinos to induce the mass oscillation behavior.
+
+
+
+Acknowledgment
+
+This research was funded by the Scientific Research Foundation for High-level Talents of Anhui
+University of Science and Technology (grant number (2022yjrc67).
+
+
+
+References
+
+1.     Finster, F. and M. Jokel. Causal fermion systems: An elementary introduction to physical ideas and
+       mathematical concepts. Springer.
+2.     Hwang, J.-K., New fermionic dark matters, extended Standard Model and cosmic rays. Modern
+       Physics Letters A, 2017. 32(26): p. 1730023.
+3.     Donoghue, J.F., E. Golowich, and B.R. Holstein, Dynamics of the standard model. 2014:
+       Cambridge university press.
+4.     Fryberger, D., A model for the structure of point-like fermions: Qualitative features and physical
+       description. Foundations of physics, 1983. 13(11): p. 1059-1100.
+5.     Arkani-Hamed, N. and M. Schmaltz, Hierarchies without symmetries from extra dimensions.
+       Physical Review D, 2000. 61(3): p. 033005.
+6.     Burch, U., et al. Test of non-point-like behavior of Fermions. American Institute of Physics.
+7.     Furey, C., Three generations, two unbroken gauge symmetries, and one eight-dimensional algebra.
+       Physics Letters B, 2018. 785: p. 84-89.
+8.     Frampton, P.H., P.Q. Hung, and M. Sher, Quarks and leptons beyond the third generation. Physics
+       Reports, 2000. 330(5-6): p. 263-348.
+9.     Hertzog, D.W., Muons: particles of the moment. Physics World, 2004. 17(3): p. 29.
+10.    Lincoln, D., THE INNER LIFE OF QURKS. Scientific American, 2012. 307(5): p. 36-43.
+11.    Close, F. and J. Maddox, Getting to the bottom of top. Nature, 1994. 368: p. 805-805.
+12.    Thaller, B., The Dirac equation. 2013: Springer Science & Business Media.
+13.    Joyce, W.P., Dirac theory in spacetime algebra: I. The generalized bivector Dirac equation.
+       Journal of Physics A: Mathematical and General, 2001. 34(10): p. 1991.
+14.    Wang, C., Z. Li, and R.P. Agarwal, A new quaternion hyper-complex space with hyper argument
+       and essential functions via quaternion dynamic equations. The Journal of Geometric Analysis,
+       2022. 32(2): p. 67.
+15.    Defranceschi, M., et al., Quaternion symmetry of the Dirac equation. Mathematical Models and
+       Methods for Ab Initio Quantum Chemistry, 2000: p. 227-246.
+16.    Jakubczyk, D. and P. Jakubczyk, On the SU (2)× SU (2) symmetry in the Hubbard model. Open
+       Physics, 2012. 10(4): p. 906-912.
+17.    Gogberashvili, M., Octonionic Electrodynamics, J. Phys. A: Math. Gen. 2006, 39 p. 7099.
+18.    Chanyal, B.C., Octonion generalization of Pauli and Dirac matrices. International Journal of
+       Geometric Methods in Modern Physics, 2015. 12(01): p. 1550007.
+19.    Okubo, S., Introduction to octonion and other non-associative algebras in physics. 1995:
+       Cambridge University Press.
+20.   Stoica, O. C., Leptons, quarks, and gauge from the complex Clifford algebra Cl6, Adv. Appl.
+      Clifford Algebra 2018, 28,52.
+21.   Chanyal, B.C., Classical geometrodynamics with Zorn vector-matrix algebra for gravity-dyons.
+      Reports on Mathematical Physics, 2015. 76(1) 1-20.
+22.   Sedenion, Wilkipedia, Sedenion - Wikipedia.
+23.   R. E. Cawagas, On the structure and zero divisors of the Cayley-Dickson sedenion algebra,
+      Disc. Math. Gen. Algebra and App. 24, 251 265 (2004).
+24.   Gillard, A. B. and Gresnigt, N. G. , Three fermion generations with two unbroken gauge
+      symmetries from the complex sedenions, Euro. Phys. J. C 79, 44n6 (2019).
+25.   Georgi, H., S. Glashaw, Unity of all elementary-particle forces, Phys. Rev. Lett. 1974, 32,
+      438.
+26.   Huebsch T., Pallua S., Symmetry breaking mechanism in an alternative SU(5) model,
+      Phyusl Lett. B, 1984, 138, 279-282..
+

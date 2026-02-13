@@ -1,0 +1,408 @@
+                                                  Holographic Derivation of Entanglement Entropy from AdS/CFT
+                                                                             Shinsei Ryu and Tadashi Takayanagi
+                                                 Kavli Institute for Theoretical Physics, University of California, Santa Barbara, CA 93106, USA
+                                                                                     (Dated: February 1, 2008)
+                                                    A holographic derivation of the entanglement entropy in quantum (conformal) field theories is
+                                                 proposed from AdS/CFT correspondence. We argue that the entanglement entropy in d + 1 dimen-
+                                                 sional conformal field theories can be obtained from the area of d dimensional minimal surfaces in
+                                                 AdSd+2 , analogous to the Bekenstein-Hawking formula for black hole entropy. We show that our
+                                                 proposal perfectly reproduces the correct entanglement entropy in 2D CFT when applied to AdS3 .
+                                                 We also compare the entropy computed in AdS5 ×S5 with that of the free N = 4 super Yang-Mills.
+
+
+                                                     I.   INTRODUCTION                              tool to investigate the nature of quantum criticality (refer
+                                                                                                    to [10] and references therein for example).
+
+
+
+
+arXiv:hep-th/0603001v2 7 Mar 2006
+                                      One of the most remarkable successes in gravitational           For one-dimensional (1D) quantum many-body sys-
+                                    aspects of string theory is the microscopic derivation of       tems at criticality (i.e. 2D CFT), it is known that the
+                                    the Bekenstein-Hawking entropy SBH                              entanglement entropy is given by [10, 11]
+                                                                                                                                           
+                                                             Area of horizon                                              c         L       πl
+                                                    SBH =                    ,            (1.1)                   SA =      · log      sin       ,         (1.3)
+                                                                  4GN                                                     3         πa      L
+                                    for BPS black holes [1]. This idea relates the gravi-           where l and L are the length of the subsystem A and
+                                    tational entropy with the degeneracy of quantum field           the total system A ∪ B (both ends of A ∪ B are peri-
+                                    theory as its microscopic description. Taking near hori-        odically identified), respectively; a is a ultra violet (UV)
+                                    zon limit, we can regard this as a special example of           cutoff (lattice spacing); c is the central charge of the CFT.
+                                    AdS/CFT correspondence [2, 3, 4]. It claims that the            When we are away from criticality, Eq. (1.3) is replaced
+                                    d + 1 dimensional conformal field theories (CFTd+1 ) are        by [7, 10]
+                                    equivalent to the (super)gravity on d+2 dimensional anti-
+                                    deSitter space AdSd+2 . We expect that each CFT is sit-                                     c          ξ
+                                                                                                                       SA =       · A · log ,              (1.4)
+                                    ting at the boundary of AdS space.                                                          6          a
+                                       On the other hand, there is a different kind of entropy
+                                                                                                    where ξ is the correlation length and A is the number of
+                                    called entanglement entropy (von-Neumann entropy) in
+                                                                                                    boundary points of A (e.g. A = 2 in the setup of (1.3)).
+                                    quantum mechanical systems. The entanglement entropy
+                                                                                                       In spite of these recent developments, and its simi-
+                                          SA = −trA ρA log ρA ,     ρA = trB |ΨihΨ|,      (1.2)     larity to the black hole entropy, a comprehensive gravi-
+                                                                                                    tational interpretation of the entanglement entropy has
+                                    provides us with a convenient way to measure how closely        been lacking so far. Here, we present a simple proposal
+                                    entangled (or how “quantum”) a given wave function |Ψi          on this issue in the light of AdS/CFT duality. Earlier
+                                    is. Here, the total system is divided into two subsystems       discussions from different viewpoints can be found in e.g.
+                                    A and B and ρA is the reduced density matrix for the            papers [12, 13]. Define the entanglement entropy SA in
+                                    subsystem A obtained by taking a partial trace over the         a CFT on R1,d (or R × S d ) for a subsystem A that has an
+                                    subsystem B of the total density matrix ρ = |ΨihΨ|. In-         arbitrary d − 1 dimensional boundary ∂A ∈ Rd (or S d ).
+                                    tuitively, we can think SA as the entropy for an observer       In this setup we propose the following ‘area law’
+                                    who is only accessible to the subsystem A and cannot
+                                    receive any signals from B. In this sense, the subsystem                                   Area of γA
+                                                                                                                        SA =        (d+2)
+                                                                                                                                            ,              (1.5)
+                                    B is analogous to the inside of a black hole horizon for an                                  4GN
+                                    observer sitting in A, i.e., outside of the horizon. Indeed,
+                                    an original motivation of the entanglement entropy was          where γA is the d dimensional static minimal surface in
+                                                                                                                                                        (d+2)
+                                    its similarity to the Bekenstein-Hawking entropy [5, 6].        AdSd+2 whose boundary is given by ∂A, and GN              is
+                                       The entanglement entropy is of growing importance            the d + 2 dimensional Newton constant. Intuitively, this
+                                    in many fields of physics in our exploration for better         suggests that the minimal surface γA plays the role of a
+                                    understanding of quantum systems. For example, in a             holographic screen for an observer who is only accessible
+                                    modern trend of condensed matter physics it has been            to the subsystem A. We show explicitly the relation (1.5)
+                                    becoming clear that quantum phases of matter need to be         in the lowest dimensional case d = 1, where γA is given
+                                    characterized by their pattern of entanglement encoded          by a geodesic line in AdS3 . We also compute SA from the
+                                    in many-body wave functions of ground states, rather            gravity side for general d and compare it with field theory
+                                    than conventional order parameters [7, 8, 9]. Recently,         results, which is successful at least qualitatively. From
+                                    the entanglement entropy has been extensively studied in        (1.5), it is readily seen that the basic properties of the
+                                    low-dimensional quantum many-body systems as a new              entanglement entropy (i) SA = SB (B is the complement
+                                                                                                                                2
+
+  (a)                                   (b)   A                 Assuming the large UV cutoff eρ0 ≫ 1, the entropy
+                 2πl/L                                        (1.5) is expressed as follows, using Eq. (2.1)
+                                                                                                             
+                                                                        R         2ρ0   2 πl     c      ρ0   πl
+                                                               SA ≃      (3)
+                                                                             log e sin         = log e sin        . (2.5)
+      t                                                               4GN                 L      3           L
+                                              γA
+                  A
+                                                              This entropy precisely coincides with the known CFT
+           γA               ρ                                 result (1.3) after we remember the relation Eq. (2.3).
+                                                                This proposed relation (1.5) suggests that the geodesic
+            B                                  B              (or minimal surface in the higher dimensional case) γA is
+                   θ
+                                                              analogous to an event horizon as if B were a black hole,
+                                                              though the division into A and B is just artificial. In
+FIG. 1: (a) AdS3 space and CFT2 living on its boundary        other words, the observer, who is not accessible to B, will
+and (b) a geodesics γA as a holographic screen.               probe γA as a holographic screen [16], instead of B itself
+                                                              (Fig. 1 (b)). The minimal surface provides the severest
+                                                              entropy bound when we fix its boundary condition. In
+of A) and (ii) SA1 + SA2 ≥ SA1 ∪A2 (subadditivity) are
+                                                              our case it saturates the bound.
+satisfied.
+                                                                More generally, we can consider a subsystem A which
+   We can also define the entanglement entropy at finite
+                                                              consists of multiple disjoint intervals as follows
+temperature T = β −1 . E.g. in a 2D CFT on a infinitely
+long line, it is given by replacing L in Eq. (1.3) with iβ       A = {x|x ∈ [r1 , s1 ] ∪ [r2 , s2 ] ∪ · · · ∪ [rN , sN ]},   (2.6)
+[10]. We argue that Eq. (1.5) still holds in T > 0 cases.
+Note that SA = SB is no longer true if T > 0 since ρ          where 0 ≤ r1 < s1 < r2 < s2 < · · · < rN < sN ≤ L. In
+is in a mixed state generically. At high temperature, we      the dual AdS3 description, the region (2.6) corresponds
+                                                                             2πri 2πsi
+will see that this occurs due to the presence of black hole   to θ ∈ ∪N i=1 [ L , L ] at the boundary. In this case it
+horizon in the dual gravity description.                      is not straightforward to determine minimal (geodesic)
+                                                              lines responsible for the entropy. However, we can find
+                                                              the answer from the entanglement entropy computed in
+II.     ENTANGLEMENT ENTROPY IN AdS3 /CFT2                    the CFT side. The general prescription of calculating the
+                                                              entropy for such systems is given in [10] using conformal
+  Let us start with the entanglement entropy in 2D            mapping. For our system (2.6), we find, when rewritten
+CFTs. According to AdS/CFT correspondence, gravi-             in the AdS3 language, the following expression of SA
+tational theories on AdS3 space of radius R are dual to                   P                 P              P
+(1+1)D CFTs with the central charge [14]                                      i,j Lrj ,si −  i<j Lrj ,ri −   i<j Lsj ,si
+                                                                   SA =                          (3)
+                                                                                                                         , (2.7)
+                                3R                                                            4GN
+                          c=      (3)
+                                        .             (2.1)
+                                2GN                           where La,b is the geodesic distance between two boundary
+                                                              points a and b. We can think that the correct definition
+The metric of AdS3 in the global coordinate (t, ρ, θ) is
+                                                              of minimal surface is given by the numerator in Eq. (2.7).
+    ds2 = R2 − cosh ρ2 dt2 + dρ2 + sinh ρ2 dθ2 . (2.2)
+                                              
+                                                                 Next we turn to the entanglement entropy at finite
+                                                              temperature. We assume the spacial length of the total
+At the boundary ρ = ∞ of AdS3 the metric is divergent.
+                                                              system L is infinitely long s.t. β/L ≪ 1. At high tem-
+To regulate physical quantities we put a cutoff ρ0 and
+                                                              perature, the gravity dual of the CFT is the Euclidean
+restrict the space to the bounded region ρ ≤ ρ0 . This
+                                                              BTZ black hole [17] with the metric given by
+procedure corresponds to the UV cutoff in the dual CFTs
+[15]. If L is the total length of the system with both ends                                      R2
+identified, and a is the lattice spacing (or UV cutoff) in         ds2 = (r2 − r+
+                                                                                2
+                                                                                  )dτ 2 +           2   dr2 + r2 dϕ2 .       (2.8)
+                                                                                              r2 − r+
+the CFTs, we have the relation (up to a numerical factor)
+                         eρ0 ∼ L/a.                   (2.3)   The Euclidean time is compactified as τ ∼ τ + 2πR  r+ to
+                                                              obtain a smooth geometry in addition to the periodicity
+   The (1+1)D spacetime for the CFT2 is identified with       ϕ ∼ ϕ+2π. Looking at its boundary, we find the relation
+the cylinder (t, θ) at the boundary ρ = ρ0 . The subsys-       β     R
+tem A is the region 0 ≤ θ ≤ 2πl/L. Then γA in Eq. (1.5)       L = r+ ≪ 1 between the CFT and the BTZ black hole.
+
+is identified with the static geodesic that connects the         The subsystem A is defined by 0 ≤ ϕ ≤ 2πl/L at the
+boundary points θ = 0 and 2πl/L with t fixed, traveling       boundary. Then we expect that the entropy can be com-
+inside AdS3 (Fig. 1 (a)). With the cutoff ρ0 introduced       puted from the geodesic distance between the boundary
+above, the geodesic distance LγA is given by                  points ϕ = 0, 2πl/L at a fixed time. To find the geodesic
+                                                            line, it is useful to remember the familiar fact that the
+                L γA                        πl                Euclidean BTZ black hole at temperature TBT Z is equiv-
+         cosh          = 1 + 2 sinh2 ρ0 sin2 .     (2.4)
+                 R                          L                 alent to the thermal AdS3 at temperature 1/TBT Z . This
+                                                                                                                                         3
+
+equivalence can be interpreted as a modular transfor-                   (a)    xi>1                        (b) xi>1
+mation in the CFT side [18]. If we define the new co-
+ordinates r = r+ cosh ρ, r+ τ = Rθ, r+ ϕ = Rt, then
+                                                                                                x1                                 x1
+the metric (2.8) indeed becomes the Euclidean version of                                                            l
+AdS3 metric (2.2). Thus the geodesic distance can be
+                                                                          L
+                                                                                                                                     z
+                     as in Eq. (2.4) : cosh(LγA /R) =
+found in the same way
+                                                                                      l
+1 + 2 cosh2 ρ0 sinh2 πlβ , where the UV cutoff is inter-                                         z
+           ρ0
+preted as e ∼ β/a. Then the area law (1.5) reproduces
+the known CFT result [10]
+                                     
+                     c       β        πl
+           SA (β) = · log       sinh       .       (2.9)              FIG. 2: Minimal surfaces in AdSd+2 : (a) AS and (b) AD .
+                     3       πa       β
+We can extend these arguments to the multi interval
+cases and find the same formula (2.7) as before.                      [−∞, ∞]} at the boundary z = 0 (Fig. 2 (a)). In
+   It is instructive to repeat the same analysis in the               this
+                                                                      p case the minimal surface is defined by dz/dx1 =
+                                                                                       d
+Poincare metric ds2 = R2 z −2 (dz 2 − dx20 + dr2 ). We de-                  2d    2d
+                                                                      R zz∗ ∗ −dz 2d/z , 2dwhere z∗ is determined by l/2 =
+                                                                                                        √                  1
+fine the subsystem A by the region −l/2 ≤ r ≤ l/2 at                   0     dzz (z ∗ −  z  )−1/2 = z∗ πΓ( d+1   2d )/Γ( 2d ). The area
+the boundary z = 0. The geodesic line γA is given by                  of this minimal surface is
+                                                                                                                               !d 
+                l                                                                     2Rd L
+                                                                                            d−1 d d/2 d
+                                                                                                       2 π R Γ( d+1
+                                                                                                                                      d−1
+     (r, z) =     (cos s, sin s),   (ǫ ≤ s ≤ π − ǫ),         (2.10)                                                      2d )     L
+                2                                                         AreaAS =                   −                    1            ,
+                                                                                      d−1 a              d−1          Γ( 2d  )     l
+where the infinitesimal ǫ is the UV cutoff ǫ ∼ 2a/l (or                                                                              (3.2)
+equally zUV ∼ a). We obtain the entropy SA as follows                 where L is the length of AS in the x2,3,··· ,d -direction.
+                          Z π/2                                          The second example is the disk AD defined P            by AD =
+           L γA      R           ds    c    l                         {xi |r ≤ l} (Fig. 2(b)) in the polar coordinate i dx2i =
+   SA =       (3)
+                  =   (3)
+                                      = log .    (2.11)
+          4G    N   2G     ǫ
+                           N
+                                sin s  3    a                         dr2 + r2 dΩ2d−1 . The minimal surface is a d dimensional
+                                                                      ball B d defined by (2.10). Its area is
+This reproduces the small l limit of Eq. (1.3) [11] .
+                                                                                           Z 1
+   When we perturb a CFT by a relevant perturbation,                                                (1 − y 2 )(d−2)/2
+the RG flow generically drives the theory to a trivial IR                     AreaAD = C         dy
+                                                                                             a/l           yd
+fixed point. We denote the correlation length ξ in the                                 d−1              d−3
+latter theory. In the AdS dual, this massive deformation                   = p1 (l/a)    + p3 (l/a)    + ···              (3.3)
+corresponds to capping off the IR region, restricting the
+                                                                                 
+                                                                                   pd−1 (l/a) + pd + O(a/l),        d: even,
+allowed values of z to z ≤ ξ. In the large l limit, we find                ···+              2
+                                                                                   pd−2 (l/a) + q log (l/a) + O(1), d: odd,
+                       Z 2ξ/l
+                 1             ds    c    ξ                           where C = 2π d/2 Rd /Γ(d/2)                 = (d − 1)−1 etc.
+         SA =      (3)
+                                    = log .          (2.12)                                    √ −1 and  d
+                                                                                                           p1 /C
+                                                                                                                1−d
+               4GN ǫ          sin s  6    a                           For d even, pd /C = (2 π) Γ 2 Γ 2 and for d odd,
+                                                                      q/C = (−)(d−1)/2 (d − 2)!!/(d − 1)!!.
+This agrees with the CFT result with A = 1 (1.4) [7, 10].                From these results, the entanglement entropy can be
+                                                                      calculated by Eq. (1.5). Each of (3.2) and (3.3) has a
+                                                                      UV divergent term ∼ a−d+1 that is proportional to the
+       III.     HIGHER DIMENSIONAL CASES                              area of the boundary ∂A. This agrees with the known
+                                                                      ‘area law’ of the entanglement entropy in quantum field
+   Motivated by the success in our gravitational deriva-              theories [5, 6]. Note that this ‘area law’ is related to ours
+tion of the entanglement entropy for d = 1, it is inter-              Eq. (1.5) via the basic property of holography.
+esting to extend the idea to higher dimensional cases                    We may prefer a physical quantity that is independent
+(d ≥ 2). A natural thing to do is to replace geodesic                 of the cutoff (i.e. universal). The second term in Eq. (3.2)
+lines with minimal surfaces. The computations are anal-               has this property. In general, when A is a finite size, there
+ogous to the evaluation of Wilson loops [19], though the              is a universal and conformal invariant constant contribu-
+dimension of relevant minimal surfaces is different.                  tion to SA if d is even (see [20] for properties of minimal
+   We will work in the Poincare metric for AdSd+2                     surfaces in AdS). In (2+1)D topological field theories the
+                                             d
+                                                                      constant contribution to SA encodes the quantum dimen-
+                                             X                        sion and is called the topological entanglement entropy
+              ds2 = R2 z −2 (dz 2 − dx20 +         dx2i ).    (3.1)
+                                                                      [8, 9]. If d is odd, the coefficient of the logarithmic term
+                                             i=1
+                                                                      ∼ log(l/a) is universal as in Eq. (1.3).
+We consider two examples for the shape of A. The first                   Let us apply the previous results to a specific string
+one is a straight belt AS = {xi |x1 ∈ [−l/2, l/2], x2,3,···,d ∈       theory setup. Type IIB string on AdS5 × S 5 is dual to
+                                                                                                                                  4
+
+4D N = 4 SU (N ) super Yang-Mills theory [2]. The                      (a)                              (b)
+radius of AdS5 and S 5 are given by the same value R =                                       horizon
+              1
+(4πgs α′2 N ) 4 . The 5D Newton constant is related to the                                                    γA         γB
+                  (10)          (5)
+10D one via GN = π 3 R5 GN . Then we obtain from                                                        A                     B
+Eqs. (3.2) and (3.3)
+                                          !3                                                boundary
+                    N 2 L2    √     Γ 23      N 2 L2
+         S AS =          2
+                            −2 π      1              , (3.4)
+                                                l2
+                                         
+                    2πa             Γ 6
+                         2
+                          l
+                                  
+                                    l
+                                                                    FIG. 3: (a) Minimal surfaces γA for various sizes of A. (b)
+        SAD = N 2 2 − log              + O(1) .        (3.5)         γA and γB wrap the different parts of the horizon.
+                          a         a
+   It is interesting to compare the finite universal term in                                   R∞
+Eq. (3.4) with the field theory one. For free real scalars           where u∗ satisfies l/2 = u∗ du[(u4 − u40 )(u6 /u6∗ − 1)]−1/2 .
+and fermions in general dimensions, one way to com-                  Eq. (4.2) contains the UV divergence ∼ a−2 as before.
+pute SAS is presented in [21] (see also [22]). Indeed,               As in the analogous computation of Wilson loops [25], we
+this leads to the same behavior in a and l as in Eq.                 also expect a term which is proportional to the area of
+(3.4). Following this approach, we can estimate finite               A. Indeed, when l is large (u∗ ∼ u0 ) we find the constant
+contributions from 6 scalars and 4 Majorana fermions in              term ∼ π 3 R3 L2 lT 3 . This leads to the finite part of SA
+the N = 4 Yang-Mills multiplet. In the end, we obtain
+Sffinite
+   reeCF T
+             ∼ −(0.068 + g) · N 2 L2 /l2 , where g is the con-                       π2 2 3 2        π2 N 2 T 3
+                                                                        Sf inite ≃     N T L l=                 × (Area of AS ) .
+tribution from the gauge field (g = 0.010 if we treat the                            2                   2
+                                                                                                                              (4.3)
+gauge field as 2 scalars). On the other hand, our AdS5
+                                                                     We can regard this entropy as a part of the Bekenstein-
+result (3.4) leads to SfAdS                     2 2 2
+                           inite ∼ −0.051 · N L /l . We may          Hawking entropy of black 5-branes [23], which is propor-
+think this is a good agreement if we remember that the
+                                                                     tional to the area of horizon situated at u = u0 . Thus we
+gravity description corresponds to the strongly coupled
+                                                                     can interpret the part (4.3) as a thermal entropy contri-
+gauge theory instead of the free theory as in [23].
+                                                                     bution to the total entanglement entropy at finite tem-
+   We can also compute the entanglement entropy for the
+                                                                     perature. In our gravitational description, this part arises
+near horizon limit AdS4 ×S 7 (AdS7 ×S 4 ) of N M 2-branes
+                                                                     because the minimal surface wraps a part of the black
+(M 5-branes)
+                  √                                                  hole horizon (Fig. 3 (a)). If we expand the size of A until
+                                        4π 3 L                       it coincides with the total system (in the global coordi-
+                                               
+          M2         2 3/2 L
+        S AS =         N           −               ,         (3.6)   nate), γA wraps the horizon completely and SA becomes
+                   3            a    Γ(1/4)4 l
+                  √                                                equal to the Bekenstein-Hawking entropy as expected.
+          M2         2π 3/2 l                                        In a sense, the overall normalization in Eq. (1.5) is fixed
+        SA     =        N           − 1   ,                  (3.7)
+           D
+                    3             a                                  from Eq. (1.1) once we consider the entanglement entropy
+                                                                     at finite temperature. Note that at finite temperature,
+                           4                        5 4
+                                                         
+          M5       2     3 L            5/2 Γ(3/5) L
+        SA     =       N         −  16π                    , (3.8)   SA = SB does not hold generically. In the present situ-
+           S
+                  3π 2       a4             Γ(1/10)5 l4
+                                                                     ation, this occurs because the surfaces γA and γB wrap
+                  32 3 1 l4            3 l2
+                                                        
+          M5                                     3     l             two different parts of the horizon (Fig. 3 (b)).
+        S AD =        N       ·     − · 2 + log            . (3.9)
+                   9        4 a4       4 a       8     a                As argued in [13, 26], the AdS black hole can be dual to
+Note that the constant terms in Eqs. (3.6), (3.7) and (3.8)          an entanglement of two different CFTs at the two bound-
+do not depend on the choice of the cutoff a.                         aries. It is interesting to look at the minimal surfaces that
+                                                                     connect them. As a specific limit, we may think the black
+                                                                     hole entropy is the same as the entanglement entropy of
+IV.    YANG-MILLS AT FINITE TEMPERATURE                              the CFTs as the minimal surface wrap the horizon.
+
+  As the final example, we discuss the N = 4 super Yang-
+                                                                                        V.   CONCLUSION
+Mills theory on R3 at a finite temperature T , which is
+dual to the AdS black hole defined by the metric [24]
+           2                                                          In this paper we proposed a holographic description of
+  2     2 du        2        2     2       2     2         2         the entanglement entropy in quantum (conformal) field
+                                                   
+ds = R          + u −hdt + dx1 + dx2 + dx3 + dΩ5 ,
+            hu2                                                      theories via AdSd+2 /CFTd+1 correspondence. This is
+                                                         (4.1)       summarized as the area law relation (1.5). Based on
+where h = 1 − u40 /u4 , u0 = πT . For the straight belt AS ,         our proposal we computed the entanglement entropy for
+the area is given by (putting the cut off u ∼ z −1 ∼ a)              various systems, e.g. 2D CFTs and the 4D large-N N =
+                        Z a−1                                        4 super Yang-Mills theory. We checked that in the lowest
+                                     du u6                           dimensional case (d = 1), our formula exactly coincides
+    AreaAS = 2R3 L2            p                       , (4.2)
+                         u∗     (u4 − u40 )(u6 − u6∗ )               with the entropy computed directly from CFT.
+                                                                                                                             5
+
+   In higher dimensions (d ≥ 2), a quantitative compar-             Finally we computed the entanglement entropy at fi-
+ison is not easy because the gravity description corre-           nite temperature employing AdS black hole geometry. In
+sponds to the strongly coupled gauge theory whose entan-          this case the minimal surface wraps a fraction of the black
+glement entropy is not known at present. Nevertheless,            hole horizon and this part is responsible for the thermal
+we found that our computation for AdS5 × S 5 reproduces           contribution.
+the same functional form of entanglement entropy as the
+one in the 4D free N = 4 super Yang-Mills. Their nu-                We would like to thank M. Einhorn, T. Harmark, G.
+merical coefficients only differ by a factor ∼ 32 in a rough      Horowitz, Y. Hyakutake, D. Marolf, T. Okuda, S.-J. Rey,
+estimation (assuming that the gauge field contribution is         M. Shigemori and Y. Sugawara for useful discussions.
+the same as that of two real scalar fields). This is similar      This research was supported in part by the National Sci-
+to the well-known result of the thermal entropy [23].             ence Foundation under Grant No. PHY99-07949.
+
+
+
+
+ [1] A. Strominger and C. Vafa, “Microscopic Origin of the             [arXiv:hep-th/9905177].
+     Bekenstein-Hawking Entropy,” Phys. Lett. B 379, 99           [17] M. Banados, C. Teitelboim and J. Zanelli, “The Black
+     (1996) [arXiv:hep-th/9601029].                                    hole in three-dimensional space-time,” Phys. Rev. Lett.
+ [2] J. M. Maldacena, “The large N limit of superconfor-               69, 1849 (1992) [arXiv:hep-th/9204099].
+     mal field theories and supergravity,” Adv. Theor. Math.      [18] J. M. Maldacena and A. Strominger, “AdS(3) black holes
+     Phys. 2, 231 (1998) [Int. J. Theor. Phys. 38, 1113 (1999)]        and a stringy exclusion principle,” JHEP 9812, 005
+     [arXiv:hep-th/9711200].                                           (1998) [arXiv:hep-th/9804085].
+ [3] S. S. Gubser, I. R. Klebanov and A. M. Polyakov, “Gauge      [19] S. J. Rey and J. T. Yee, “Macroscopic strings as
+     theory correlators from non-critical string theory,” Phys.        heavy quarks in large N gauge theory and anti-de Sit-
+     Lett. B 428, 105 (1998) [arXiv:hep-th/9802109].                   ter supergravity,” Eur. Phys. J. C 22, 379 (2001)
+ [4] E. Witten, “Anti-de Sitter space and hologra-                     [arXiv:hep-th/9803001]; J. M. Maldacena, “Wilson loops
+     phy,” Adv. Theor. Math. Phys. 2, 253 (1998)                       in large N field theories,” Phys. Rev. Lett. 80, 4859
+     [arXiv:hep-th/9802150].                                           (1998) [arXiv:hep-th/9803002]; D. Berenstein, R. Cor-
+ [5] L. Bombelli, R. K. Koul, J. H. Lee and R. D. Sorkin,              rado, W. Fischler and J. M. Maldacena, “The oper-
+     “A Quantum Source Of Entropy For Black Holes,” Phys.              ator product expansion for Wilson loops and surfaces
+     Rev. D 34, 373 (1986).                                            in the large N limit,” Phys. Rev. D 59, 105023 (1999)
+ [6] M. Srednicki, “Entropy and area,” Phys. Rev. Lett. 71,            [arXiv:hep-th/9809188].
+     666 (1993) [arXiv:hep-th/9303048].                           [20] C. R. Graham and E. Witten, “Conformal anomaly of
+ [7] G. Vidal, J. I. Latorre, E. Rico and A. Kitaev, “Entangle-        submanifold observables in AdS/CFT correspondence,”
+     ment in quantum critical phenomena,” Phys. Rev. Lett.             Nucl. Phys. B 546, 52 (1999) [arXiv:hep-th/9901021].
+     90, 227902 (2003) [arXiv:quant-ph/0211074].                  [21] H. Casini and M. Huerta, “Entanglement and alpha en-
+ [8] A. Kitaev and J. Preskill, “Topological entanglement en-          tropies for a massive scalar field in two dimensions,”
+     tropy,” arXiv:hep-th/0510092.                                     arXiv:cond-mat/0511014.
+ [9] M. Levin and X. G. Wen, “Detecting topological order in      [22] D. V. Fursaev, “Entanglement entropy in critical phe-
+     a ground state wave function,” arXiv:cond-mat/0510613.            nomena and analogue models of quantum gravity,”
+[10] P. Calabrese and J. Cardy, “Entanglement entropy and              arXiv:hep-th/0602134.
+     quantum field theory,” J. Stat. Mech. 0406, P002 (2004)      [23] S. S. Gubser, I. R. Klebanov and A. W. Peet, “Entropy
+     [arXiv:hep-th/0405152].                                           and Temperature of Black 3-Branes,” Phys. Rev. D 54,
+[11] C. Holzhey, F. Larsen and F. Wilczek, “Geometric and              3915 (1996) [arXiv:hep-th/9602135].
+     renormalized entropy in conformal field theory,” Nucl.       [24] E. Witten, “Anti-de Sitter space, thermal phase transi-
+     Phys. B 424, 443 (1994) [arXiv:hep-th/9403108].                   tion, and confinement in gauge theories,” Adv. Theor.
+[12] S. Hawking, J. M. Maldacena and A. Strominger, “De-               Math. Phys. 2, 505 (1998) [arXiv:hep-th/9803131].
+     Sitter entropy, quantum entanglement and AdS/CFT,”           [25] S. J. Rey, S. Theisen and J. T. Yee, “Wilson-Polyakov
+     JHEP 0105, 001 (2001) [arXiv:hep-th/0002145].                     loop at finite temperature in large N gauge the-
+[13] J. M. Maldacena, “Eternal black holes in Anti-de-Sitter,”         ory and anti-de Sitter supergravity,” Nucl. Phys. B
+     JHEP 0304, 021 (2003) [arXiv:hep-th/0106112].                     527, 171 (1998) [arXiv:hep-th/9803135]; A. Brandhuber,
+[14] J. D. Brown and M. Henneaux, “Central Charges In                  N. Itzhaki, J. Sonnenschein and S. Yankielowicz, “Wilson
+     The Canonical Realization Of Asymptotic Symmetries                loops in the large N limit at finite temperature,” Phys.
+     ,” Commun. Math. Phys. 104, 207 (1986).                           Lett. B 434, 36 (1998) [arXiv:hep-th/9803137]; “Wil-
+[15] L. Susskind and E. Witten, “The holographic bound in              son loops, confinement, and phase transitions in large
+     anti-de Sitter space,” arXiv:hep-th/9805114.                      N gauge theories from supergravity,” JHEP 9806, 001
+[16] G. ’t Hooft, “Dimensional reduction in quantum                    (1998) [arXiv:hep-th/9803263].
+     gravity,” arXiv:gr-qc/9310026; L. Susskind, “The             [26] R. Brustein, M. B. Einhorn and A. Yarom, “Entangle-
+     World as a hologram,” J. Math. Phys. 36, 6377                     ment interpretation of black hole entropy in string the-
+     (1995) [arXiv:hep-th/9409089]; R. Bousso, “A Co-                  ory,” JHEP 0601, 098 (2006) [arXiv:hep-th/0508217].
+     variant Entropy Conjecture,” JHEP 9907 (1999) 004
+

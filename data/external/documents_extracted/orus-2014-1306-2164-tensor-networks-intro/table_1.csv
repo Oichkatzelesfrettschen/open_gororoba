@@ -1,0 +1,3 @@
+(1) Infinitesimal evolution: apply operator U(δτ ) on a given TN state,Ψi (e.g. MPS or PEPS)
+with bond dimension D, obtaining a new TN state,Ψei = U(δτ ),Ψi with bond dimension D0 ≥ D.
+(2) Truncation: approximate,Ψei by a new TN state,Ψ0i back with bond dimension D.

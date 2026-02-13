@@ -1,0 +1,4464 @@
+equations = []
+full_text = """
+arXiv:hep-th/9310026v2 10 Oct 1993\r
+hep-th/9310026\r
+YCTP-P19-93\r
+Symmetries\r
+of the Bosonic String\r
+S-Matrix\r
+Gregory Moore\r
+moore@castalia.physics.yale.edu\r
+Dept. of Physics\r
+Yale University\r
+New Haven, CT 06511\r
+The bracket operation on mutually local BRST classes may be combined with Lorentz\r
+invariance and analyticity to write an infinite set of finite difference relations on string\r
+scattering amplitudes. When combined with some simple physical criteria these relations\r
+uniquely determine the genus zero stringS-matrix forN≤ 26-particle scattering in IR25\r
+,1\r
+in terms of a single parameter,κ, the string coupling. We propose that the high-energy\r
+limit of the relations are the Ward identities for the high-energy symmetries of string\r
+theory.\r
+October 8, 1993
+
+1. Introduction\r
+String theory is a generalization of gauge theory. Historically, understanding the\r
+importance of general covariance and local isotopic-spin invariance were crucial steps in the\r
+formulation of general relativity and Yang-Mills theory. One might therefore suspect that\r
+a complete formulation of string theory will be predicated upon a deeper understanding\r
+of the symmetries in the theory.\r
+In [1] D. Gross proposed that one useful tool for discovering fundamental string sym\u0002metries is the analysis of the high energy behavior of string scattering amplitudes. In field\r
+theories of spontaneously broken gauge invariance this technique works very well. Using\r
+the saddle-point analysis of [2] Gross derived an infinite set of linear relations between\r
+bosonic string 4-particle S-matrix amplitudes. Usually linear relations between scattering\r
+amplitudes are derived from an underlying symmetry, and it was suggested in [1] that such\r
+a symmetry must explain these linear relations. Some work has subsequently been done\r
+with a view towards understanding this mysterious symmetry in [3] [4] [5].\r
+In [6] it was suggested that the infinite dimensional hyperbolic symmetries which arise\r
+upon toroidal compactification of time might be the source of the high energy symmetries\r
+of string theory. The original program of [6] is probably misguided, for reasons explained\r
+in appendix B below. Nevertheless, as we show in the present paper, the basic idea that\r
+generalized Kac-Moody algebras are high-energy symmetries of string theory is correct. In\r
+fact, more is true. We can replace high energy Ward identities, which relate amplitudes\r
+at the same values of s, t by finite difference relations for the exact amplitudes. These\r
+finite difference relations put strong constraints on the genus zero string S-matrix. We\r
+will show that they determine scattering amplitudes at all mass levels in terms of tachyon\r
+scattering. Moreover, when supplemented with some mild analyticity requirements (e.g.\r
+Regge-like behavior at s → ∞) the finite difference relations even determine the tachyon\r
+amplitude itself. A technical point discussed in section 3.3 limits our discussion to N\u0002particle scattering for N ≤ 26.\r
+In essence the answer to the problem posed in [1] is very simple: the underlying\r
+symmetries are the bracket algebras defined by on-shell mutually local BRST invariant\r
+chiral vertex operators.\r
+2. Review of Bosonic String Scattering\r
+It is convenient to summarize some standard facts [7].\r
+1
+
+2.1. On-Shell States\r
+The states of the open bosonic string are defined in terms of the BRST cohomology\r
+H∗[7][8]. We focus on the chiral ghost number 1 cohomology, H = Hg=1. The space H is\r
+graded by level number n and momentum p ∈ IR25,1:\r
+H = ⊕n∈ZZ+\r
+Z\r
+IR25,1\r
+dp H[p, n] (2.1)\r
+where H[p, n] = 0 unless p\r
+2 = 2 − 2n and dim H[p, n] = p24(n). H is an induced represen\u0002tation of the Poincar´e group in IR25,1\r
+.\r
+Cohomology classes have representatives of the form cV where V is a chiral vertex\r
+operator satisfying the physical state conditions. These conditions state that V is a di\u0002mension one Virasoro primary. 1 Such operators have the form V = Pe\r
+ipX where P is a\r
+polynomial in ∂\r
+∗X of dimension n. For example:\r
+n = 0 : P = 1\r
+n = 1 : P = iζ · ∂X ζ ∈ TIR25,1\r
+ζ · p = 0 ζ ∼ ζ + λp\r
+n = 2 : P = ip · ζ · ∂\r
+2X + ∂X · ζ · ∂X ζ ∈\r
+\r
+TIR25,1\r
+\u0001⊗2\r
+tr(ζ) − 2p · ζ · p = 0 ζ ∼ ζ +\r
+1\r
+2\r
+\u0002\r
+p ⊗ χ + χ ⊗ p −\r
+1\r
+3\r
+(p · χ)η\r
+\u0003\r
+(2.2)\r
+The fields Xµ are always normalized to have the correlator\r
+∂Xµ(z)∂Xν(w) ∼ −\r
+η\r
+µν\r
+(z − w)\r
+2\r
+.\r
+We use units where α\r
+′ =\r
+1\r
+2\r
+for open string amplitudes. Polarization tensors, or multiplets\r
+of polarization tensors are generically denoted by ζ.\r
+2.2. S-Matrix Amplitudes\r
+S-matrix amplitudes are multilinear functions A : H⊗n → C constructed as follows.\r
+The operator formalism associates a measure Ω(V1, . . . Vn) on the moduli space F of ordered\r
+points on the boundary of the unit disk. We define A =\r
+R\r
+F Ω. By Mobius invariance of Ω,\r
+A is invariant under cyclic permutations.\r
+1 The ghosts will not play an essential role in this paper so we will often identify a class with\r
+V .\r
+2
+
+The definition of R\r
+F Ω requires some care. Using Mobius invariance of Ω we transform\r
+the disk to the upper half plane and write:\r
+A(V1, . . . Vn) = κ\r
+n−2\r
+Z\r
+Fn−3([0,1])\r
+nY−2\r
+2\r
+dyih0|Vn(yn)Vn−1(yn−1)· · · V1(y1)|0i (2.3)\r
+where yn = ∞, yn−1 = 1, y1 = 0 and Fn−3([0, 1]) is the moduli space of n−3 ordered points\r
+on the interval. The integral (2.3) is given meaning as follows. The integrand is a function\r
+of the yi and of the relativistic invariants sij ≡ pi· pj . It follows from the o.p.e. that there\r
+is a domain where Re(sij) is sufficiently large and positive, or negative, (depending on ij)\r
+so that the integral is absolutely convergent and defines a holomorphic function of the sij .\r
+The analytic continuation from this domain defines an amplitude which is a meromorphic\r
+function of the sij .\r
+It will be important to specify clearly the independent relativistic invariants that A\r
+depends upon. These invariants are formed out of momenta pi and polarization tensors\r
+ζi. Relativistic invariants formed from the pi alone parametrize the different orbits of\r
+SO(1, d − 1) on the space of n − 1 independent momenta. Taking into consideration the\r
+relevant little group we see that the number of independent relativistic invariants for n\r
+particle scattering in d dimensions is\r
+nd −\r
+1\r
+2\r
+d(d + 1) for n ≥ d + 1\r
+1\r
+2\r
+n(n − 1) for n ≤ d + 1\r
+(2.4)\r
+For n ≤ d a set of algebraically independent invariants can be chosen to be an ap\u0002propriate collection of the sij. For example, we may choose sij for 1 ≤ i ≤ j ≤\r
+n − 1. (We make a different choice below.) For n ≥ d + 1 the story is more com\u0002plicated. By classical invariant theory [9] the ring of polynomial invariants is gener\u0002ated by the sij and by [p\r
+i1\r
+, . . . , pid ] = ǫ\r
+µ1···µd pi1\r
+µ1\r
+· · · p\r
+id\r
+µd\r
+. The relations are generated\r
+by [p\r
+i1\r
+, . . . , pid ][p\r
+j1\r
+, . . . , pjd ] = dets,t p\r
+is\r
+· p\r
+jt\r
+, det ∆ = 0 where ∆ is any (d+ 1)-dimensional\r
+minor of the matrix (sij ), and P\r
+σ ±[p\r
+iσ(1) , . . . , piσ(d)\r
+]p\r
+iσ(d+1) ·p\r
+j = 0 [10]. Thus for n ≥ d+1\r
+a maximal algebraically independent set of invariants can be taken to be an appropriate\r
+set of sij together with [p\r
+1\r
+, . . . , pd].\r
+We separate the independent relativistic invariants into three types:\r
+• Levels of the particles: p\r
+2\r
+i = 2 − 2ni\r
+, i = 1, . . . n\r
+• Scalar product invariants. According to the above discussion for n ≤ d these can be\r
+taken to be the sij , 1 ≤ i < j ≤ n − 2, together with 1 ≤ i ≤ n − 3, j = n − 1 . For\r
+n ≥ d + 1 we must choose an appropriate set of n(d − 1) −\r
+1\r
+2\r
+d(d + 1) − 1 sij ’s.\r
+3
+
+• Polarization invariants. These are formed from contractions of the ζ’s with themselves or\r
+the ζ’s with p’s. The only way the relativistic invariants [p\r
+i1\r
+, . . . , pid ] can enter a (bosonic)\r
+string amplitude is through the polarization invariants.\r
+Example: The case n = 4 is of particular importance. This is the function A :\r
+H⊗4 → C given by:\r
+A(V1, V2, V3, V4) = κ\r
+2\r
+Z 1\r
+0\r
+dzh0|V4(∞)V3(1)V2(z)V1(0)|0i (2.5)\r
+The kinematic invariants are s = p1 · p2, t = p2 · p3. We let\r
+\u001A\r
+ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\r
+(2.6)\r
+stand for an ordered set of independent polarization invariants. 2 Thus,the amplitudes are\r
+functions with independent arguments:\r
+An1,n2,n3,n4\r
+\u0012\u001A ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t\u0013(2.7)\r
+2.3. Analyticity Properties\r
+As an analytic function A is a polynomial in the polarization invariants. The coeffi\u0002cients of this polynomial are meromorphic functions of the sij. One of the goals of this\r
+paper is to replace the complicated formula (2.3) by a symmetry principle. We will need\r
+to take the following three analyticity properties as axiomatic:\r
+AP1: Location of poles. The dual diagrams of the genus zero open string amplitudes are\r
+binary trees rooted at the center of the unit disk with ordered terminal vertices on the\r
+boundary of the disk as in:\r
+2 We choose a lexicographic ordering, with ζ in front of p.\r
+4
+
+p\r
+1\r
+p\r
+2\r
+p\r
+3\r
+p\r
+4 p\r
+5\r
+p\r
+6\r
+s\r
+12\r
+Only poles at 2s\r
+12 2 p\r
+2\r
+1p\r
+2\r
+2+f2; 0; 2; : : :g\r
+Each terminal vertex carries an ingoing momentum pi. Using momentum conservation\r
+we associate a momentum pI with each internal edge I. We assume that the amplitudes can\r
+only have poles when p\r
+2\r
+I ∈ {2, 0, −2, −4, . . .} for some I in some dual diagram. Explicitly,\r
+this is the condition that (pi + · · ·+ pi+k)\r
+2 ∈ {2, 0, −2, −4, . . .} for some i, k, where indices\r
+are understood modulo n.\r
+The proof that the n-point amplitudes (2.3) satisfy the axiom AP1 makes use of the\r
+operator product expansion and Mobius invariance of Ω.\r
+AP2: Growth at infinity. We assume that the amplitude has at most power law growth\r
+as any sij tends to infinity, holding all other independent kinematic invariants fixed. This\r
+is a generalization of Regge behavior.\r
+The axiom AP2 can be motivated by considering the n-tachyon scattering amplitude:\r
+A = κ\r
+n−2\r
+Z 1\r
+0\r
+nY−2\r
+2\r
+dyiθ(yi − yi−1)\r
+Y\r
+1≤i<j≤n−1\r
+(yj − yi)\r
+sij (2.8)\r
+where yn−1 = 1, y1 = 0. The standard argument [11] proceeds as follows. If Re(sij) → +∞\r
+then since all the factors in the product in (2.8) are ≤ 1 the integration is dominated by\r
+the region where those factors raised to a power sij are near one. Making an exponential\r
+change of variables and isolating this region proves the claim. As the simplest example\r
+5
+
+of this argument, suppose we take the sij appearing in (2.8) as independent variables\r
+(s1,n−1 will be considered dependent). Consider the limit Re(s12) → +∞ holding all other\r
+independent sij fixed. We write y2 = e\r
+−x2 and the integral is dominated by the region\r
+x2 ∼ 0. Making this approximation in the rest of the integrand we find the asymptotics\r
+s\r
+−s2,n−1\r
+12 . In general we find\r
+A ∼ αs\r
+β\r
+ij\r
+where β is a combination of the other skl’s. This argument extends to any correlation\r
+function and justifies the axiom AP2.\r
+Finally we need an axiom that relates the amplitudes for different values of n. These\r
+are the well-known and standard tree-level unitarity equations:\r
+AP3: Factorization. If we cut a dual diagram on some internal edge I we decompose it\r
+into two dual diagrams I1, I2. We assume that when p\r
+2\r
+I → 2−2nI and other momenta are\r
+in general position the residue at the pole is\r
+X\r
+a,b\r
+A(Vi, . . . , Vi+k, Va)G\r
+abA(Vb, Vi+k+1, . . . , Vi−1) (2.9)\r
+where {Va} is a basis for H[pI , nI ] and Gab is the inverse of the positive definite metric on\r
+H[pI , nI] whose existence is assured by the no-ghost theorem.\r
+The proof that property AP3 is satisfied again makes use of the operator product\r
+expansion.\r
+Remark: In stating the factorization axiom we have not made any use of a complex\r
+structure or of local coordinates on the disk. One could state a stronger factorization\r
+axiom valid for all values of the momenta. This requires the introduction of the full off\u0002shell BRST chain complex and the introduction of local coordinates. We will not need\r
+that in the present paper.\r
+2.4. High Energy-Fixed Angle Scattering\r
+We define s = p1 ·p2 ≡ −2E\r
+2\r
+, and t = p2 ·p3 ≡ 2E\r
+2\r
+sin2 1\r
+2\r
+θ. In the limit of high energy\r
+scattering, where all masses are effectively zero, E and θ have the physical interpretation of\r
+center of mass energy and scattering angle. In the plane of scattering the spatial momenta\r
+look like:\r
+6
+
+\u0012\r
+\u0012\r
+~p\r
+1 ~p\r
+2\r
+~p\r
+3\r
+~p\r
+4\r
+The high energy limit is defined to be the limit where E\r
+2 → ∞ along any ray other\r
+than the positive or negative real axis, holding θ and all other independent relativistic\r
+invariants fixed. 3\r
+Gross and Mende studied the asymptotic behavior of the amplitudes in the high-energy\r
+limit [2]. The amplitudes are dominated by a saddle point. For open strings: 4\r
+A ∼ As.p.\u0014\r
+1 + O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+\u0015\r
+A\r
+s.p. ≡\r
+√\r
+2π\r
+s\r
+st\r
+(s + t)\r
+3\r
+h0|V4(∞)V3(1)V2(z0)V1(0)|0i\r
+(2.10)\r
+where z0 ≡ s/(s + t) = 1/ cos2 1\r
+2\r
+θ.\r
+The proof of (2.10) may be obtained by combining Stirling’s formula with the analytic\r
+structure of the amplitudes described above. Alternatively, one may use a saddle point\r
+analysis of either the integral over moduli space or of the path integral. The saddle point\r
+typically lies outside the domain of integration, and for good reason. The true high energy\r
+asymptotics obtained by taking E2 → ∞ along the positive real axis must encounter an\r
+infinite set of poles when any intermediate state goes onshell. These poles are manifestly\r
+absent from (2.10). The saddle point analysis applies to the asymptotics of analytically\r
+continued S-matrix elements. This is important to bear in mind when considering gener\u0002alizations to n ≥ 5 point functions and to higher orders of string perturbation theory, in\r
+which case one probably must consider asymptotics only for E2 → ±i∞.\r
+3 Warning: this differs slightly from the α\r
+′ → ∞ limit of [1], since we hold expressions of the\r
+form ζ · p\r
+k\r
+constant, even for polarizations with longitudinal components.\r
+4 The result is BRST invariant despite appearances. The choice of the point z0 magically\r
+cancels all differences arising from different choices of representative P for the cohomology class.\r
+7
+
+3. Bracket Relations\r
+3.1. Bracket\r
+Two years ago it was shown that the BRST cohomology of 2D string theory has\r
+a rich algebraic structure related to BV quantization [12] [13] [14]. Subsequently, Lian\r
+and Zuckerman studied the algebraic structures of the BRST cohomology based on an\r
+arbitrary chiral algebra (=vertex operator algebra [15]) in [16] [17]. As shown by Lian and\r
+Zuckerman, there is an operation {·, ·} : Hg1 × Hg2 → Hg1+g2−1 which they called the\r
+“Gerstenhaber bracket.” The bracket is very fundamental: it exists for arbitrary bosonic\r
+string cohomology and plays a role related to the BV anti-bracket for the on-shell BV\r
+structure of string theory. In the present case we may identify ghost number 1 classes with\r
+chiral physical state operators and the bracket is simply the standard “commutator” of\r
+dimension one currents:\r
+J ⊗ V → {J, V }(z) ≡\r
+I\r
+z\r
+dwJ(w)V (z) (3.1)\r
+In general, the ghost number one cohomology based on a chiral algebra is a Lie algebra.\r
+In our case H in (2.1) is not based on a chiral algebra because the fields have mon\u0002odromy when considered as chiral vertex operators. Nevertheless, when J, V are mutually\r
+local (3.1) still makes sense. 5In particular, given two momenta p, q with q\r
+2 = 2 − 2n1,\r
+p\r
+2 = 2 − 2n2, (p + q)2 = 2 − 2n3. we have a map:\r
+{·, ·} : H[q, n1] ⊗ H[p, n2] → H[p + q, n3]\r
+We may extend the bracket to all of H:\r
+{·, ·} : H ⊗ H → H\r
+by defining it to be zero on pairs not mutually local. 6\r
+The bracket has the two properties:\r
+B1. If p1, p2 are the momenta of V1, V2 then:\r
+{V1, V2} = −(−1)p1·p2 {V2, V1}\r
+5\r
+In this paper “mutually local” means the o.p.e. has only integral powers of z − w. Equiva\u0002lently, the monodromy is trivial (although the braiding matrix could be (−1)).\r
+6 Alternatively, one can take the point of view that the bracket is only defined on some pairs of\r
+states. That is, it is like multiplication in a groupoid, or composition of morphisms in a category.\r
+8
+
+B2. If V1, V2, V3 are all pairwise mutually local then:\r
+(−1)p1·p3 {V1, {V2, V3}} + (−1)p3·p2 {V3, {V1, V2}} + (−1)p2·p1 {V2, {V3, V1}} = 0 (3.2)\r
+Unfortunately (3.2) does not hold for all triples in H.\r
+The bracket on ghost number one cohomology generalizes the Lie algebra of the Ger\u0002stenhaber bracket in two ways. First, property B1 shows that the bracket is “vectorially\u0002graded.” Second, the vectorially-graded Jacobi relation only holds for mutually local\r
+triples.\r
+A table of useful structure constants for {·, ·} can be found in appendix A.\r
+3.2. Relations\r
+Let J be any chiral physical state operator of momentum q and let Vi, i = 1, 2, 3, 4 be\r
+chiral physical state operators of momenta pi such that q +\r
+Ppi = 0. Assume that q · pi\r
+are integral so that J and Vi are mutually local. 7In this case we can regard the integrand\r
+of (2.5) as a correlator of chiral vertex operators for conformal field theory on the plane.\r
+Using standard contour deformation arguments we derive the identity\r
+0 = h0|V4(∞)V3(1)V2(z){J, V1}(0)|0i\r
++(−1)q·p2h0|V4(∞)V3(1){J, V2}(z)V1(0)|0i\r
++(−1)q·p2+q·p3h0|V4(∞){J, V3}(1)V2(z)V1(0)|0i\r
++ (−1)q·p2+q·p3+q·p4\r
+h0|{J, V4}(∞)V3(1)V2(z)V1(0)|0i\r
+(3.3)\r
+Now we simply integrate z from 0 to 1, assuming that Re(s) and Re(t) are sufficiently\r
+positive that the integral is absolutely convergent. This gives the finite difference relations:\r
+0 =An˜1,n2,n3,n4\r
+\u0012\u001A ˜ζ1 ζ2 ζ3 ζ4\r
+p1 + q p2 p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s + q · p2, t\u0013\r
++(−1)q·p2An1,n˜2,n3,n4\r
+\u0012\u001A ζ1\r
+˜ζ2 ζ3 ζ4\r
+p1 p2 + q p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s + q · p1, t + q · p3\r
+\u0013\r
++(−1)q·p2+q·p3An1,n2,n˜3,n4\r
+\u0012\u001A ζ1 ζ2\r
+˜ζ3 ζ4\r
+p1 p2 p3 + q p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t + q · p2\r
+\u0013\r
++(−1)q·p2+q·p3+q·p4An1,n2,n3,n˜4\r
+\u0012\u001A ζ1 ζ2 ζ3\r
+˜ζ4\r
+p1 p2 p3 p4 + q\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t\u0013\r
+(3.4)\r
+7 We do not assume that the Vi are mutually local.\r
+9
+
+Here ˜n,\r
+˜ζ refer to the transformed operator under the bracket.\r
+The relations (3.4) are finite difference equations relating scattering amplitudes for\r
+particles at different mass levels. The essential content of these identities is displayed by a\r
+matrix of the levels of the states involved. Each row of the matrix encodes the level-number\r
+of the states in an amplitude. The general Ward identity is associated with a matrix of\r
+the form:\r
+\r
+\r
+n˜1 n2 n3 n4\r
+n1 n˜2 n3 n4\r
+n1 n2 n˜3 n4\r
+n1 n2 n3 n˜4\r
+\r
+ (3.5)\r
+Here integers ni ≥ 0, are levels of the untransformed particles, while the integers ˜ni are\r
+the levels of the transformed particles. The level nJ of the symmetry current J is easily\r
+extracted from the sum of the diagonal minus the anti-diagonal:\r
+Xn˜i −Xni = −q\r
+2 = 2nJ − 2 (3.6)\r
+If ˜niis negative then {J, V } = 0 and the corresponding amplitude simply vanishes.\r
+This procedure generalizes to N-particle scattering. Whenever J of momentum q is\r
+mutually local w.r.t all the pi and q +\r
+Ppi = 0 we have an identity\r
+X\r
+i\r
+(−1)q·p2+···q·piA\r
+\r
+V1, . . . , {J, Vi}, . . . VN\r
+\u0001\r
+= 0 (3.7)\r
+These relations are subject to an important technical restriction discussed in the next\r
+section.\r
+Remark: Although we have used currents J to derive relations on amplitudes, they\r
+are not unbroken symmetry currents in the theory since there are many operators in the\r
+BRST cohomology which are not mutually local w.r.t. any given J. Nevertheless, using\r
+Lorentz invariance and analyticity we are still able to derive relations on amplitudes.\r
+3.3. Existence of required momenta\r
+The identities (3.4) would be of little use if one could rarely choose momenta in the way\r
+we have indicated. In this section we show that we can always find momenta corresponding\r
+to any prescription of the levels and kinematic invariants (at least, for N ≤ d = 26). In\r
+doing so it is necessary to allow the momenta to be complex. We may do this since the\r
+BRST conditions and the vertex operator calculus make perfect sense when momenta are\r
+complex.\r
+10
+
+Lemma. Suppose N ≤ d. For any complex numbers ni\r
+, ˜ni, i = 1, . . . N, and 1\r
+2N(N − 3)\r
+complex numbers zij , 1 ≤ i < j ≤ N − 2, z1,N−1, . . . zN−3,N−1, there exist momenta 8\r
+p1, . . . , pN ∈ Cˆ\r
+d\r
+such that, if we define q ≡ −Ppi then\r
+p\r
+2\r
+i = 2 − 2ni (3.8a)\r
+(pi + q)\r
+2 =\r
+X\r
+j:j6=i\r
+pj\r
+\u00012\r
+= 2 − 2˜ni (3.8b)\r
+pi· pj = zij (3.8c)\r
+Proof: For N ≤ d the invariants sij made from N momenta pi are algebraically\r
+independent. It is straightforward to solve (3.8 )as a linear system of equations to find the\r
+pi· pj in terms of linear combinations of the ni, n˜i, zij . We can regard the equations for\r
+pi· pj as equations for the intersection of 1\r
+2N(N + 1) quadrics in IPNd. These intersect in\r
+a variety of codimension at most 1\r
+2N(N + 1) [18]. Even if this variety lies at infinity we\r
+can use the solution - we simply must take a momentum → ∞ limit in the amplitudes. ♠\r
+The different sets of polarization invariants in (3.4) are polynomially related. There\u0002fore, using the analyticity of A we conclude that (3.4) holds for all values of s, t and\r
+all polarization tensors satisfying these polynomial relations. Similarly, provided ni, nJ\r
+are positive integers and ˜ni are integers, we can find momenta for arbitrary kinematic\r
+invariants for which the identities (3.7) can be written.\r
+Unfortunately one cannot generalize the lemma to the case N > d. For N ≥ d + 1\r
+the sij are not algebraically indpendent, hence we cannot specify arbitrarily the ni, n˜i and\r
+independent sij, i 6= j (for N-particle scattering).\r
+We are therefore stuck with the rather distasteful limitation to N-particle scattering\r
+for N ≤ d.\r
+3.4. High Energy Limit\r
+Combining (2.10) with (3.4) we obtain the high energy identities:\r
+0 =z\r
+p2·q\r
+0 A\r
+s.p.({J, V1}, V2, V3, V4)\r
++(−1)q·p2z\r
+p1·q\r
+0\r
+(1 − z0)\r
+p3·qAs.p.(V1, {J, V2}, V3, V4)\r
++(−1)q·p2+q·p3(1 − z0)\r
+p2·qAs.p.(V1, V2, {J, V3}, V4)\r
++(−1)q·p1A\r
+s.p.(V1, V2, V3, {J, V4})\r
+(3.9)\r
+8 The momenta are allowed to take values in the extended complex plane C. ˆ\r
+11
+
+where z0 = s/(s + t) = 1/ cos2 1\r
+2\r
+θ, 1 − z0 = t/(s + t) = − tan2 1\r
+2\r
+θ, and each amplitude in\r
+(3.9) is evaluated at the same value of s, t. We take s, t → ∞ holding q · pi fixed. The\r
+amplitude As.p. in (2.10) has the form RU where R is a rational function of s, t and\r
+U ≡\r
+s\r
+st\r
+(s + t)\r
+3\r
+exp\u001A\r
+\u0002\r
+tlogt + slog|s| − (s + t)log|s + t|\r
+\u0003\r
+\u001B\r
+=\r
+cos 1\r
+2\r
+θ\r
+√\r
+2E sin3 1\r
+2\r
+θ\r
+exp\u001A2E\r
+2\r
+\r
+sin2 1\r
+2\r
+θlog[sin2 1\r
+2\r
+θ] + cos2 1\r
+2\r
+θlog[cos2 1\r
+2\r
+θ]\r
+\u0001\r
+\u001B (3.10)\r
+Shifts such as s, t → s + q · p2, t + q · p3 lead to an order one change in the amplitude from\r
+the exponential factor in (3.10), leading to the “extra” powers of z0, 1 − z0 in (3.9). The\r
+change δz0 in the position of the saddle-point in moduli space is O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+.\r
+Similarly, the shifts in s, t change the rational function R by terms of the same order.\r
+Hence (3.9) holds up to factors 1 + O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+.\r
+4. Six Examples\r
+Example 1: The simplest example of (3.4) has level matrix:\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 −2\r
+\r
+ (4.1)\r
+From the entries we read off that this is a “tachyonic identity,” i.e. q\r
+2 = 2. We also can\r
+read off:\r
+p\r
+2\r
+i = 2 p1 · q = p2 · q = p3 · q = −1 p4 · q = +1\r
+Using (A.1) of appendix A we see that (3.4) implies\r
+A(s − 1, t) + A(s, t − 1) = A(s − 1, t − 1) (4.2)\r
+where A is the basic Veneziano amplitude A0000 = A(s, t) for scattering of four states at\r
+level 0.\r
+Example 2: Consider the level matrix:\r
+\r
+\r
+1 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 −1\r
+\r
+ (4.3)\r
+12
+
+This encodes a lightlike Ward identity with J = iζ1 · ∂Xeiq·X and q\r
+2 = 0. It relates γT T T\r
+scattering to T T T T scattering, where γ refers to the level one photon and T refers to the\r
+level zero tachyon. For the γT T T amplitude (2.7) simplifies to:\r
+A1000(ζ1 · p2, ζ1 · p3|s, t)\r
+From (4.3) we read off\r
+p\r
+2\r
+1 = p\r
+2\r
+2 =p\r
+2\r
+3 = p\r
+2\r
+4 = 2\r
+p1 · q = −1 p2 · q = p3 · q = 0 p4 · q = +1\r
+Using (A.3) we have:\r
+A1000(ζ1 · p2, ζ1 · p3|s, t) = −ζ1 · p2A(s − 1, t) − ζ1 · p3A(s, t) (4.4)\r
+From (3.9) we see that at high energies γT T T scattering is related to tachyon scattering\r
+via\r
+0 = A\r
+s.p.\r
+1000(ζ1 · p2, ζ1 · p3|s, t) + (1 + t/s)ζ1 · p2A\r
+s.p.(s, t) + ζ1 · p3As.p.(s, t) (4.5)\r
+Similarly, one easily derives relations on similar amplitudes. For example:\r
+A0100(ζ2 · p1, ζ2 · p3|s, t) = ζ2 · p1A(s − 1, t) − ζ2 · p3A(s, t − 1) (4.6)\r
+Example 3: We now consider the level matrix\r
+\r
+\r
+1 1 0 0\r
+0 1 0 0\r
+0 1 0 0\r
+0 1 0 −1\r
+\r
+ (4.7)\r
+again giving a lightlike Ward identity. This relates γγT T to γT T T scattering.\r
+We consider the γγT T amplitude to be a function of seven arguments:\r
+A1100(ζ1 · ζ2, ζ1 · p2, ζ1 · p3, ζ2 · p1, ζ2 · p3|s, t)\r
+Using (A.3) and (A.5) (3.4) becomes (after shifting arguments and setting ζ2 · q = 0):\r
+A1100(x1, x2, x3, x4, x5|s, t) = −A0100(x2x4 − x1, x2x5|s − 1, t)\r
+− x3A0100(x4, x5, s, t)\r
+= (x1 − x2x4)A(s − 2, t)+x2x5A(s − 1, t − 1) − x3x4A(s − 1, t)\r
++ x3x5A(s, t − 1)\r
+(4.8)\r
+13
+
+Which has the high energy limit:\r
+A\r
+s.p.\r
+1100(x1, x2, x3, x4, x5|s, t) = −(1 + t/s)A\r
+s.p.\r
+0100(x2x4 − x1, x2x5|s, t)\r
+− x3A\r
+s.p.\r
+0100(x4, x5|s, t)\r
+(4.9)\r
+Notice that if we were restricted to using real momenta and polarizations then p\r
+2 =\r
+q\r
+2 = p · q = 0 ⇒ p k q and we would not derive relations on the most general amplitude\r
+(e.g. s would be fixed). This is not true if we use complex momenta. After we derive the\r
+Ward identity we can specialize to physical values of the relativistic invariants, and, as in\r
+(4.9), solve for the amplitude in terms of previously known amplitudes.\r
+Example 4: We now consider\r
+\r
+\r
+1 1 0 0\r
+1 1 0 0\r
+1 1 1 0\r
+1 1 0 −1\r
+\r
+ (4.10)\r
+which will express A1110 in terms of amplitudes at lower total level. The ordered set of\r
+relativistic invariants in A1110 is:\r
+\u001A\r
+ζ1 ζ2 ζ3 1\r
+p1 p2 p3 p4\r
+\u001B\r
+= {ζ1 · ζ2, ζ1 · ζ3, ζ2 · ζ3, ζ1 ·p2, ζ1 ·p3, ζ2 ·p1, ζ2 ·p3, ζ3 ·p1, ζ3 ·p2} (4.11)\r
+Following the procedure of the previous two examples we get:\r
+A1110(x1, . . . , x9|s, t) = A1100(x1x8, x4x8, x5x8 − x2, x6, x7|s, t)\r
++ A1100(x1x9, x4, x5, x6x9, x7x9 − x3|s, t − 1)\r
+(4.12)\r
+which has the high energy limit:\r
+A\r
+s.p.\r
+1110(x1, . . . , x9|s, t) = A\r
+s.p.\r
+1100(x1x8, x4x8, x5x8 − x2, x6, x7|s, t)\r
++ (1 + s/t)A\r
+s.p.\r
+1100(x1x9, x4, x5, x6x9, x7x9 − x3|s, t)\r
+(4.13)\r
+Example 5: We take\r
+\r
+\r
+1 1 1 0\r
+1 1 1 0\r
+1 1 0 0\r
+1 1 1 1\r
+\r
+ (4.14)\r
+which will relate the 4-photon amplitude to the tachyon amplitude. We now need the\r
+bracket (A.4)\r
+14
+
+The ordered set of relativistic invariants occurring in A1111 is:\r
+\u001A\r
+ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\r
+= {ζ1 · ζ2,ζ1 · ζ3, ζ1 · ζ4, ζ2 · ζ3, ζ2 · ζ4, ζ3 · ζ4,\r
+ζ1 · p2, ζ1·p3, ζ2 · p1, ζ2 · p3, ζ3 · p1, ζ3 · p2, ζ4 · p1, ζ4 · p2}\r
+(4.15)\r
+So the four-photon amplitude is a function of 16 arguments, and (3.4) becomes\r
+A1111(x1, . . . ,, x14|s, t)\r
+= −A1110(x1x13, x2x13, x4, x7x13, x8x13 + x3, x9, x10, x11, x12|s, t)\r
+−A1110(x1x14, x2, x4x14, x7, x8, x9x14, x10x14 + x5, x11, x12|s, t + 1)\r
++x6A1100(x1, x7, x8, x9, x10|s, t)\r
+(4.16)\r
+with high energy limit:\r
+A\r
+s.p.\r
+1111(x1, . . . ,, x14|s, t)\r
+= −As.p.\r
+1110(x1x13, x2x13, x4, x7x13, x8x13 + x3, x9, x10, x11, x12|s, t)\r
+−\r
+t\r
+(s + t)\r
+A\r
+s.p.\r
+1110(x1x14, x2, x4x14, x7, x8, x9x14, x10x14 + x5, x11, x12|s, t)\r
++x6A\r
+s.p.\r
+1100(x1, x7, x8, x9, x10|s, t)\r
+(4.17)\r
+Example 6: As a final example we look at a timelike identity with level matrix:\r
+\r
+\r
+2 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+ (4.18)\r
+Hence q\r
+2 = −2 and\r
+J = Vζ,q ≡\r
+\u0002\r
+iq · ζ · ∂\r
+2X + ∂X · ζ · ∂X\u0003\r
+e\r
+iq·X\r
+tr(ζ)−2q · ζ · q = 0\r
+(4.19)\r
+We parametrize the scattering of 1 level 2 on 3 level 0 states by the function of 8 variables:\r
+A2000(p1 · ζ · p1, p1 · ζ · p2, p1 · ζ · p3, p2 · ζ · p2, p2 · ζ · p3, p3 · ζ · p3|s, t) (4.20)\r
+Now we use the bracket in (A.6). After shifting arguments a little one finds the bracket\r
+relation:\r
+A2000(p1 · ζ · p1, . . . p3 · ζ · p3|s, t) = −(p2 · ζ · p2 + p1 · ζ · p2)A(s − 2, t + 1)\r
++ (p3 · ζ · p3 + p1 · ζ · p3)A(s − 1, t + 1)\r
+−(p3 · ζ · p3 + p1 · ζ · p3+p2 · ζ · p2 + p1 · ζ · p2 + 2p2 · ζ · p3)A(s − 1, t)\r
+(4.21)\r
+15
+
+with high energy limit:\r
+A\r
+s.p.\r
+2000(p1 · ζ · p1, . . . p3 · ζ · p3|s, t) = −\r
+t\r
+s\r
+(1 + t\r
+s\r
+)(p2 · ζ · p2 + p1 · ζ · p2)A\r
+s.p.(s, t)\r
++\r
+t\r
+s\r
+(p3 · ζ · p3 + p1 · ζ · p3)A\r
+s.p.(s, t)\r
+−(1 + t\r
+s\r
+)(p3 · ζ · p3 + p1 · ζ · p3+p2 · ζ · p2 + p1 · ζ · p2 + 2p2 · ζ · p3)A\r
+s.p.(s, t)\r
+(4.22)\r
+As an exercise the reader may care to work out some futuristic identities for A2001.\r
+5. Determination of Tachyon Amplitudes\r
+In the previous section we saw that the relations (3.4) lead to a host of interlevel\r
+amplitude identities. In the present section we discuss finite difference relations on the\r
+tachyon amplitudes themselves. We show that relations (3.4)(3.7) together with the an\u0002alyticity properties AP1,AP2 determine the N- tachyon scattering amplitudes up to an\r
+overall constant cN .\r
+5.1. Derivation of the Veneziano formula\r
+Example one of the previous section has already produced one identity on the tachyon\r
+scattering amplitude A(s, t). The relation (4.2) by itself is not sufficiently strong to de\u0002termine the function A. However, we can combine it with (4.6) using the decoupling of\r
+BRST trivial states. Decoupling of the longitudinal photon implies that A0100(s, t|s, t) = 0.\r
+Combining this with (4.6) we get\r
+sA(s − 1, t) = tA(s, t − 1) (5.1)\r
+Now the recursion relations (4.2) and (5.1) determine the value of A for s, t ∈ ZZ+ to be\r
+given by the Veneziano formula:\r
+A0000 = A(s, t) = c4\r
+Γ(s + 1)Γ(t + 1)\r
+Γ(s + t + 2) (5.2)\r
+where c4 = A(0, 0) is assumed nonzero.\r
+In order to obtain the amplitude for all s, t we must “analytically continue from the\r
+integers,” an idea familiar from studies of the S-matrix in D = 2 spacetime dimensions.\r
+(For reviews see [19]. ) It is at this point that we must invoke the analyticity properties\r
+AP1,AP2 of section 2.3.\r
+16
+
+Let us define\r
+A(s, t) = c4\r
+Γ(s + 1)Γ(t + 1)\r
+Γ(s + t + 2) A˜(s, t) (5.3)\r
+The functional equations for A imply that A˜(s, t) is periodic of period one in both s, t.\r
+Moreover, by AP1 it is an entire function. By AP2, the entire function A˜ is of expo\u0002nential type [20]. A periodic entire function of exponential type must be a trigonometric\r
+polynomial [20], that is:\r
+A˜(s, t) = X\r
+n,m\r
+cn,me\r
+2πi(ns+mt)\r
+where the sum is finite. Now applying AP2 again we see that A˜ must in fact be constant,\r
+so A˜ = 1.\r
+In conclusion, with a mild analyticity assumption we see that the Veneziano amplitude\r
+is fixed by symmetry.\r
+5.2. n-particle scattering, n ≤ 26\r
+The above procedure can be extended to higher point functions, although the amount\r
+of work involved goes up rapidly with n. We take the independent kinematic variables to\r
+be sij for 1 ≤ i < j ≤ n − 2 and si,n−1 for 1 ≤ i ≤ n − 3. The equation\r
+2 − n =\r
+X\r
+1≤i<j≤n−1\r
+sij (5.4)\r
+expresses sn−2,n−1 in terms of the other invariants. It is often useful to think of the\r
+variables as an upper triangular matrix:\r
+s =\r
+\r
+\r
+∗ s12 s13 · · · s1,n−1\r
+0 ∗ s23 · · · s2,n−1\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+0 · · · ∗ sn−3,n−2 sn−3,n−1\r
+0 · · · ∗ sn−2,n−1\r
+0 · · · 0 0 ∗\r
+\r
+\r
+(5.5)\r
+where sn−2,n−1 is not an independent variable but is fixed by (5.4).\r
+The tachyon amplitudes are functions on the space of upper triangular matrices (5.5)\r
+defined by (2.8).\r
+The generalization of (4.2) is\r
+A(. . . , sab, . . . , sac, . . . , sbc, . . .) =A(. . . ,(sab − 1), . . . ,(sac + 1), . . . , sbc, . . .)\r
+−A(. . . ,(sab − 1), . . .,(sac), . . . ,(sbc + 1), . . .)\r
+(5.6)\r
+17
+
+which holds ∀a, b, c such that 1 ≤ a < b < c ≤ n−1 where all other variables in the ellipsis\r
+are held fixed. We call these “triangle relations” since they relate a triangle of variables in\r
+(5.5).\r
+Using the triangle relations one easily reduces an arbitrary tachyon amplitude for\r
+sij ∈ ZZ+, 1 ≤ i < j ≤ n − 2 to the case where:\r
+s =\r
+\r
+\r
+∗ 0 0 · · · 0 s1,n−1\r
+0 ∗ 0 · · · 0 s2,n−1\r
+.\r
+.\r
+.\r
+.\r
+.\r
+. 0\r
+.\r
+.\r
+.\r
+0 · · · 0 ∗ 0 sn−3,n−1\r
+0 · · · 0 ∗ sn−2,n−1\r
+0 · · · 0 0 0 ∗\r
+\r
+\r
+We denote a tachyon amplitude evaluated for such a set of invariants by the function\r
+F(s1,n−1, . . . sn−3,n−1).\r
+Next, one may write lightlike relations connecting A0···010···0 to tachyon scattering.\r
+As above, one can put A0···010···0 to zero by evaluating at special polarization invariants\r
+corresponding to longitudinal photons. In this way we obtain a set of n − 1 relations for\r
+the function F. These equations are:\r
+0 = X\r
+1≤j≤n−2:j6=a\r
+" X\r
+ǫ∈ZZn−2\r
+2\r
+:ǫj=ǫa=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +\r
+\r
+n − 4 − |~ǫ|\r
+\u0001\r
+eˆa +~ǫ\u0013#\r
++sa,n−1\r
+X\r
+ǫ∈ZZn−2\r
+2\r
+:ǫa=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +\r
+\r
+n − 4 − |~ǫ|\r
+\u0001\r
+eˆa +~ǫ\u0013 (5.7)\r
+which holds for 1 ≤ a ≤ n−3 and where ˆea is a unit vector in the a direction, |~ǫ| is the sum\r
+of the nonzero entries, and the last entry of an n − 2 vector is dropped in the argument of\r
+F. We have two additional identities for a = n − 2:\r
+(6 − 2n −\r
+nX−3\r
+1\r
+si,n−1)\r
+X\r
+ǫ∈ZZn−3\r
+2\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +~ǫ\u0013=\r
+X\r
+1≤j≤n−3\r
+" X\r
+ǫ∈ZZn−3\r
+2\r
+:ǫj=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +~ǫ\u0013# (5.8)\r
+and for a = n − 1:\r
+X\r
+1≤j≤n−3\r
+sj,n−1F(~s − eˆj ) = (n − 3 +\r
+nX−3\r
+1\r
+si,n−1)F(~s) (5.9)\r
+18
+
+As we will show below, these equations are sufficient to determine the functional\r
+dependence of F for sij ∈ ZZ, up to a finite set of arbitrary constants. The remaining\r
+undetermined constants can be fixed (up to one overall scale) by use of the axiom AP1.\r
+We illustrate this by giving the general solution to the functional equations (5.7)(5.8)(5.9)\r
+for the case of the 5-particle function. We then give the general argument.\r
+5.3. 5-particle function\r
+The functional equations become\r
+x\r
+"\r
+F(x + 1, y) − F(x, y) − F(x, y + 1) + F(x − 1, y + 1)#+\r
++2F(x + 1, y) − F(x, y)−F(x, y + 1) = 0\r
+y\r
+"\r
+F(x + 1, y) − F(x + 1, y − 1) − F(x, y + 1) + F(x, y)\r
+#\r
++\r
++F(x + 1, y) + F(x, y) − 2F(x, y + 1) = 0\r
+(x + y + 4)"F(x + 1, y + 1) − F(x + 1, y) − F(x, y + 1) + F(x, y)\r
+#\r
++\r
+F(x + 1, y)+F(x, y + 1) − 2F(x, y) = 0\r
+(x + y + 2)F(x, y) = xF(x − 1, y) + yF(x, y − 1)\r
+(5.10)\r
+The equations must be evaluated in the quadrant x = −2 − a, y = −2 − b, a, b ≥ 0,\r
+otherwise the amplitude might have poles. The general solution to (5.10) in this quadrant\r
+is easily found to be\r
+F(x, y) =\r
+2\r
+\u0014\r
+4β + (3α − 4β)x + (8β − 3α)y)\r
+\u0015\r
+(x + 1)(y + 1)(x + y + 2) (5.11)\r
+where α, β are undetermined. By AP1 we only allow poles in x or in x + y ( since y itself\r
+is not related to the squared momentum in any channel). This requirement fixes 3α = 4β\r
+so that\r
+F(x, y) = 6α\r
+1\r
+(x + 1)(x + y + 2) (5.12)\r
+It is now a simple matter to use the triangle relations together with the relation\r
+Xn\r
+j=0\r
+\u0012\r
+n\r
+j\r
+\u0013\r
+(−1)j\r
+1\r
+n − j + x\r
+= −\r
+Γ(−n − x)Γ(n + 1)\r
+Γ(1 − x)\r
+19
+
+to obtain the complete five-particle amplitude in terms of a generalized hypergeometric\r
+function:\r
+A(s12, s13, s14, s23, s24) =\r
+6α\r
+Γ(s12 + 1)Γ(s23 + 1)Γ(1 + s34)\r
+Γ(2 + s23 + s34)\r
+Γ(−1 − s12 − s13 − s14)\r
+Γ(−s13 − s14)\r
+3F2\r
+\u0012\r
+−s13, −1 − s12 − s13 − s14, 1 + s34; −s13 − s14,2 + s23 + s34\r
+\f\r
+\f1\r
+\u0013\r
+(5.13)\r
+where s34 is defined by (5.4).\r
+Equation (5.13) is derived for integral values of sij . In order to “continue” to all values\r
+of sij we must combine results on entire functions with the analyticity property AP2 of\r
+section 2.3, as in the previous section. This is straightforward when s13 = 0. In the\r
+general case we must use a Mellin-Barnes representation for 3F2 to establish appropriate\r
+asymptotics.\r
+The formula (5.13) can actually be derived directly from the integral representation\r
+(2.8) using formulae in, e.g., [21]. Similar formulae have appeared in a different context in\r
+[22].\r
+5.4. 6 ≤ n ≤ 26\r
+The above discussion generalizes to n- particle scattering for 6 ≤ n ≤ 26. The\r
+analyticity property AP1 combined with the functional equation (5.9) is sufficiently strong\r
+to obtain the general formula.\r
+We now prove this. To begin we use (5.9) with s2 = s3 = · · · = 0:\r
+s1F(s1 − 1,~0) = (n − 3 + s1)F(s1,~0) (5.14)\r
+which implies\r
+F(s1,~0) = c\r
+(s1 + 1)· · ·(s1 + n − 3) (5.15)\r
+where c is a constant. Now given F(s1,~0) we can again use (5.9) to derive\r
+F(s1, 1,~0) = c1s1 + c2\r
+(s1 + 1)· · ·(s1 + n − 2) (5.16)\r
+where c1, c2 are constants. We can carry on in this way and easily establish by induction\r
+that if s2, s3, . . . are nonnegative integers then\r
+F(s1, s2, . . . sn−3) = P\r
+s2,...sn−3 (s1)\r
+(s1 + 1)· · ·(s1 + s2 + · · · + sn−3 + n − 3) (5.17)\r
+20
+
+where P\r
+s2,...sn−3 (s1) is a polynomial of degree s2 + · · · + sn−3.\r
+Now, as with the 5pt function we can fix the coefficients of the polynomial by invoking\r
+AP1. By AP1 the function F(~s) can only have poles when\r
+s1,n−1 ∈ {−1, 0, 1, 2, . . .}\r
+s1,n−1 + s2,n−1 ∈ {−2, −1, 0, 1, 2, . . .}\r
+s1,n−1 + s2,n−1 + s3,n−1 ∈ {−3, −2, −1, 0, 1, . . .}\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+s1,n−1 + · · · sn−3,n−1 ∈ {−(n − 3), −(n − 4), . . .}\r
+(5.18)\r
+Therefore, the polynomial in the numerator of (5.17) must cancel the poles:\r
+s1,n−1 ∈ {−s2 − 1, . . . , −2}\r
+s1,n−1 ∈ {−s2 − 3, . . . , −s2 − s3 − 2}\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+s1,n−1 ∈ {−s2 − · · · − sn−4 − (n − 3), . . . , −s2 − · · · − sn−3 − (n − 4)}\r
+(5.19)\r
+This fixes all the constants in P up to an overall scale and we obtain the result\r
+F(~s) = cn\r
+nY−3\r
+j=1\r
+−1\r
+j +\r
+Pj\r
+ℓ=1 sℓ,n−1\r
+(5.20)\r
+which can also be checked directly from the integral representation (2.8).\r
+One can proceed from here to evaluate the general tachyon amplitude using the tri\u0002angle relations and AP2. The result after “putting back” s12, s23, . . . sn−3,n−2 is still a\r
+product of gamma functions. The general result is a multiple hypergeometric function of\r
+1\r
+2\r
+(n − 3)(n − 4) arguments. For example, the six-point function turns out to be:\r
+X\r
+j1,j2,j3≥0\r
+(−s14)j1(−s24)j2(−s13)j3\r
+j1!j2!j3!\r
+Γ(−s12 − s13 − s14 − s15 + j1 + j3)\r
+Γ(1 − s13 − s14 − s15 + j1 + j3)\r
+×\r
+Γ(4 − s34 − s35 − s45 + j1 + j2 + j3)\r
+Γ(5 − s23 − s34 − s35 − s45 + j1 + j2 + j3)\r
+Γ(1 + s12)Γ(1 + s23)Γ(1 + s34)\r
+Γ(5 − s23 − s34 − s35 − s45 + j1 + j2)\r
+(5.21)\r
+Multiple hypergeometric functions have been studied to some extent in the literature, see,\r
+e.g., [21]. In order to apply AP2 we must give a Mellin-Barnes representation to series\r
+like (5.21) to establish the appropriate asymptotics in sij . We have not carried out this\r
+procedure in complete detail, but fully expect that it can be done.\r
+21
+
+6. S is unique\r
+We now argue that the solution to the bracket relations is essentially unique.\r
+6.1. 4-particle S-matrix\r
+We begin by showing that the identities (3.4) completely fix the 4-particle S-matrix\r
+for all particles in terms of the level zero S-matrix A(s, t). Indeed, this can already be\r
+done simply by using the lightlike Ward identities. The proof of this assertion is a simple\r
+application of the no-ghost theorem and DDF operators [7]. If k0 is a lightlike vector,\r
+p\r
+2\r
+0 = 2, and p0 · k0 = 1 then the bracket\r
+{iζ · ∂Xe−iℓk0X, · } : H[p0 − (n − ℓ)k0, n − ℓ] → H[p0 − nk0, n]\r
+is equivalent to applying DDF operators ζ · A−ℓ to H[p0 − (n − ℓ)k0, n − ℓ]. Therefore, the\r
+no-ghost theorem implies that\r
+{, } : ⊕1≤ℓ≤nH[−ℓk0, 1] ⊗ H[p0 − (n − ℓ)k0, n − ℓ] → H[p0 − nk0, n] (6.1)\r
+is a surjective map.\r
+We would like to proceed as in the examples of section four using the Ward identities\r
+to reduce the level-numbers of various states in the amplitude. We use induction on\r
+nT =\r
+Pni\r
+, the sum of the level numbers of the states in an amplitude. Consider the\r
+lightlike Ward identities of the form\r
+\r
+\r
+n1 n2 n3 n4\r
+n1 − ℓ n2 − ℓ n3 n4\r
+n1 − ℓ n2 n3 n4\r
+n1 − ℓ n2 n3 n4\r
+\r
+ (6.2)\r
+for 1 ≤ ℓ ≤ n1. These identities relate the amplitude encoded by the first row to amplitudes\r
+with smaller values of nT . Since (6.1) is surjective, we can map an arbitrary amplitude,\r
+that is, an amplitude where the level n1 state has an arbitrary polarization, to amplitudes\r
+with smaller total level number.\r
+22
+
+6.2. N-particle scattering\r
+The above argument generalizes easily to N-particle scattering, using the level matrix\r
+\r
+\r
+n1 n2 n3 . . . nN\r
+n1 − ℓ n2 − ℓ n3 . . . nN\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+n1 − ℓ n2 n3 . . . nN\r
+n1 − ℓ n2 n3 . . . nN\r
+\r
+\r
+(6.3)\r
+as long as we can specify the levels and kinematic invariants arbitrarily. From the discussion\r
+of section 3.3 we see that this is possible for N ≤ 26 and hence N-particle scattering for\r
+arbitrary levels can be expressed in terms of tachyon scattering.\r
+We can complete the argument for uniqueness by using the results of section 5, where\r
+we showed that the bracket relations determine the N-tachyon amplitude up to a constant\r
+cN (see (5.20)).\r
+6.3. Summary\r
+We have established:\r
+Theorem 1: A multilinear function AN : H⊗N → C, N ≤ 26, which satisfies\r
+1. Poincar´e invariance\r
+2. The bracket relations (3.7).\r
+3. The analyticity properties AP1 and AP2\r
+is uniquely determined up to an overall constant, cN .\r
+Moreover, an easy argument gives:\r
+Theorem 2: A set of multilinear functions {AN }N≤26 which satisfy 1,2,3 above as well\r
+as AP3 are uniquely specified up to one parameter κ by cN = κ\r
+N−2\r
+.\r
+Theorem 2 follows in the standard way by examining the residue of a tachyon ampli\u0002tude at a tachyon pole. By AP3 this must be a product of tachyon amplitudes. Hence\r
+cN1+1cN2+1 = cN1+N2so cN = κ\r
+N−2\r
+, where κ is the string coupling.\r
+Remark: We offer one speculation on how the above results can be generalized to N > 26.\r
+In establishing theorem 1 we only used the bracket relations for currents J at levels 0, 1.\r
+In order to extend the results to N > 26 it will be necessary to use higher level currents.\r
+In the notation of section 3.3 , by fixing the ni, n˜i we are only free to choose momenta\r
+to fix independent invariants sij (i 6= j), on a codimension N subvariety I(ni, n˜i) of the\r
+variety I(ni) of all invariants sij at fixed ni. Nonetheless, it is possible that the amplitude\r
+23
+
+can still be uniquely determined by generalizing the idea of “analytic continuation from\r
+the integers” used previously. By varying the ˜ni at fixed ni one can possibly determine\r
+the amplitude An1,...nN on “enough” subvarieties I(ni, n˜i) ⊂ I(ni) that, when combined\r
+with the axioms AP1,AP2, the amplitude is fixed on the entire variety I(ni).\r
+7. Closed Strings\r
+The closed string cohomology for ghost number (1, 1) is\r
+Hc = H1,1\r
+c = ⊕n∈ZZ+\r
+Z\r
+IR25,1\r
+dp H[p, n] ⊗ H¯[p, n] (7.1)\r
+where the superscript refers to left and right ghost number and the bar always stands\r
+for “right-mover,” and not “complex conjugate.” S-matrix amplitudes are multilinear\r
+functions Ac : H⊗n\r
+c → C constructed as follows. The operator formalism associates a\r
+measure Ω(V1 ⊗ V¯\r
+1, . . . , Vn ⊗ V¯n) on the moduli space of the n-punctured Riemann sphere,\r
+M0,n. We integrate Ω over M0,n for an appropriate domain of sij and continue analytically\r
+from there. There are two ways we may try to extend the above results to closed strings.\r
+7.1. Factorization of Amplitudes\r
+A beautiful result of Kawai, Lewellen, and Tye [23] states that the closed and open\r
+four-particle amplitudes are related by 9\r
+Ac(V1 ⊗ V¯\r
+1, V2 ⊗ V¯2,V3 ⊗ V¯3, V4 ⊗ V¯4)\r
+= − sin(πt)A(V1, V2, V3, V4)A(V¯\r
+1, V¯3, V¯2, V¯4)\r
+(7.2)\r
+At high energy we have\r
+Ac(V1 ⊗ V¯\r
+1, V2 ⊗ V¯2,V3 ⊗ V¯3, V4 ⊗ V¯4)\r
+∼ As.p.(V1, V2, V3, V4)A\r
+s.p.(V¯\r
+1, V¯2, V¯3, V¯4)\r
+(7.3)\r
+Similar, but more complicated remarks hold for n-particle scattering. We may combine\r
+(7.2) with previous results to relate scattering of massive closed string states to closed\r
+string tachyonic scattering.\r
+9 We take α\r
+′ = 2 for closed string amplitudes.\r
+24
+
+7.2. Algebraic structures for closed strings\r
+It is possible to extend the definition of the bracket to the closed string, as shown in\r
+[16][17]. Composing this bracket with b\r
++\r
+0 = b0 + ¯b0 we obtain a map of the physical states\r
+to themselves: H1,1\r
+c ⊗ H1,1c → H1,1c\r
+. This map is essentially a tensor product of open\r
+string brackets and does not turn the physical states into a Lie algebra. Also, one cannot\r
+justify the analog of (3.7). Thus, the most straightforward generalization of the previous\r
+discussion does not work.\r
+Instead what one can do is consider Hc to be the “diagonal” subspace of the larger\r
+space\r
+H˜\r
+c = Hopen ⊗ H¯open\r
+defined by equality of left and right momenta: p = ¯p. Amplitudes on the larger space H˜\r
+c\r
+are only defined for n-tuples which are pairwise mutually local. The physical amplitudes\r
+are a subset of this expanded set. It is straightforward to write bracket relations for this\r
+expanded set of amplitudes. Suppose J ⊗ J¯ has momentum (q, q¯), and suppose further\r
+that q +\r
+Ppi = 0, q · pi ∈ ZZ, ¯q +Pp¯i = 0, ¯q · p¯i ∈ ZZ. Then\r
+X\r
+i,¯i\r
+(−1)q·p2+···q·pi(−1)q¯·p¯2+···q¯·p¯¯i\r
+Ac\r
+\r
+V1 ⊗ V¯\r
+1, . . . , {J, Vi} ⊗ V¯i\r
+, . . . ,V¯i ⊗ {J, ¯ V¯¯i}, . . . , Vn ⊗ V¯\r
+n\r
+\u0001\r
+= 0\r
+(7.4)\r
+Evidently, the previous sections apply to the left- and right- degrees of freedom separately\r
+and fully determine the expanded set of amplitudes, hence a fortiori, the physical ones, at\r
+least for n ≤ 26.\r
+One implication of these remarks is that the α\r
+′ → 0 limit of scattering amplitudes of\r
+gravitons are in principle completely determined by the bracket relations. This raises the\r
+interesting issue of the relation of bracket algebras and algebras of vector fields.\r
+8. Conclusions\r
+8.1. What we did\r
+We have shown that the bracket operation on mutually local BRST classes may be\r
+combined with Lorentz invariance and analyticity to write an infinite set of functional\r
+relations on string scattering amplitudes. These relations are rather restrictive. The\r
+central results of this paper are theorems 1 and 2 of section 6.3 which state that the bracket\r
+25
+
+relations together with the analyticity axioms AP1,AP2, AP3 of section 2.3 uniquely\r
+determine the genus zero open string S-matrix in terms of a single free parameter, κ, the\r
+string coupling constant, at least for N ≤ 26-particle scattering.\r
+Some readers will be puzzled by our emphasis on high-energy limits. This limit might\r
+seem irrelevant if the bracket relations already determine the amplitude for all energies.\r
+The finite-difference relations are not, properly speaking, Ward identities since they relate\r
+amplitudes at different energies. Our chief concern has been understanding the symmetries\r
+of string theory and how they are realized in different backgrounds. Since high energy\r
+limits of the finite-difference relations look more like Ward-identities they deserve special\r
+attention.\r
+Some readers will object that this paper contains nothing new. After all, the structure\r
+constants of the bracket are just the on-shell three point functions. By factorization, a\r
+knowledge of all the three-point functions in principle determines the full S-matrix. If one\r
+were mainly interested in explicit formulae for amplitudes the factorization approach would\r
+be impracticable, whereas our approach could be made quite efficient. The important point\r
+is, however, that the present discussion clarifies the fundamental role of the underlying\r
+algebraic structure of the bracket.\r
+8.2. What we should do\r
+There is plenty of room for further work.\r
+Clearly the restriction on N ≤ 26 for N-particle scattering is extremely unsatisfactory.\r
+It is possible that the result of this paper can be extended to N > 26 by combining the\r
+procedure of “analytic continuation from the integers” with bracket relations for states\r
+other than lightlike states. Indeed, in arriving at our result we have used only a small\r
+subset of the entire set of bracket relations.\r
+There are several possible generalizations of the present study. These include:\r
+1. String perturbation theory. Unfortunately, it is far from clear how to extend the\r
+above results to quantum perturbation theory. The problem is that a chiral BRST class J\r
+is not mutually local with respect to all states. That means {J, · } does not commute with\r
+an insertion of the identity operator P|IihI| or, more geometrically, contour integrals\r
+of J cannot be pulled around handles. This problem disappears for total closed string\r
+compactification, but, curiously, such theories have other difficulties with loop amplitudes\r
+[6]. For the same reason extension to mixed open-closed string scattering is not trivial.\r
+26
+
+Our attitude towards this problem is that in this paper we have managed to understand\r
+better the classical symmetries of string theory. It remains to be seen how the symmetries\r
+are realized quantum-mechanically. We are pursuing some ideas in this direction.\r
+2. Fermionic strings. It should be interesting to generalize these results to superstring\r
+amplitudes. We intend to return to this in a future work.\r
+3. Other backgrounds. We have restricted attention to the background of 26-\r
+dimensional Minkowski space. Bracket relations should exist for amplitudes in any back\u0002ground with an uncompactified Minkowski space component. If the monodromy of the\r
+internal parts of vertex operators is abelian one should be able to adjust spacetime mo\u0002menta to obtain mutual locality in some situations. In such situations the technical lemma\r
+of section 3.3 shows that one could write bracket relations for N ≤ d -particle scattering\r
+where d is the number of uncompactified dimensions. The symmetry algebra of mutu\u0002ally local BRST classes will depend on the background. It is not clear how effective the\r
+relations will be in other backgrounds.\r
+The bracket relations are very reminiscent of the “W∞ Ward identities” which have\r
+been used to obtain amplitudes for string scattering in 1 + 1 dimensional spacetime [13]\r
+[24–26]. These techniques made essential use of the existence of a nontrivial ghost number\r
+zero cohomology, something which is absent in the critical bosonic string. We hope that\r
+the bracket relations will play a role in general backgrounds analogous to the “W∞ Ward\r
+identities” of 1 + 1 dimensional string theory.\r
+Finally, finite difference relations for correlation functions are known to arise in certain\r
+exactly solvable quantum field theories as well as in studies of q-deformed affine algebras.\r
+It would be very interesting to discover an underlying quantum group symmetry in the\r
+critical bosonic string S-matrix.\r
+8.3. What are we doing?\r
+Beyond these questions of generalization there is the much larger question of exactly\r
+what role the bracket should play in the formulation of string theory.\r
+We believe that the bracket relations are a stringy expression of spontaneous symmetry\r
+breaking. On physical grounds one expects that symmetries which connect scattering of\r
+states at different mass levels must be spontaneously broken. We will say that a current\r
+J(z) (or, more generally, a ghost number 1 BRST class) is “broken” if it is not mutually\r
+local with respect to some on-shell state. In the open string the on-shell condition is simply\r
+Qψ = 0 so the only unbroken currents are ∂Xµ. In the closed string statespace - viewed\r
+27
+
+as a subspace of Hopen ⊗ H¯\r
+open- the on-shell condition requires furthermore that pL = pR.\r
+According to this terminology all holomorphic BRST classes are off-shell and broken with\r
+the exception of c∂Xµ and its conjugate. Nevertheless, through the bracket relations these\r
+holomorphic classes constrain the couplings of on-shell particles.\r
+From the above point of view, the uncompactified string contains infinitely many\r
+broken symmetry algebras. These are the sets L = {Vi} of mutually local BRST invariant\r
+states in Hopen which are closed under the bracket. We have seen in section 3.1 that such\r
+sets L can be given the structure of a vectorially-graded Lie algebra. We can further justify\r
+the name “broken symmetry algebra” for such sets L by noting that L can also be given\r
+a Lie algebra structure, and that this Lie algebra is an algebra of unbroken symmetries\r
+of some closed string toroidal compactification. The reason for this is that, if {pi} is the\r
+set of momenta associated to {Vi} then Γ = hpii is an even integral lattice. (Γ may be\r
+Euclidean or Lorentzian.) The lattice is even since p\r
+2\r
+i = 2 − 2ni and integral by mutual\r
+locality. By the Frenkel-Kac construction [27] [28], we can introduce cocycle operators to\r
+turn the vectorially-graded bracket algebra of the {Vi} into a true Lie algebra structure on\r
+LΓ = ⊕n≥0,p∈ΓH[p, n] .\r
+To see that this is the unbroken symmetry of a toroidal compactification recall that\r
+(Γ; 0) ⊕ (0; Γ) ֒→{(pL; pR)|pL, pR ∈ Γ\r
+∗\r
+, pL − pR ∈ Γ}\r
+∼= IID,D\r
+and the unbroken symmetry associated with this background is LΓ ⊕ LΓ.\r
+It is further natural to consider maximal sets of mutually local BRST classes {Vi}. The\r
+associated lattices have rank 26 and are necessarily hyperbolic. The associated Lie algebras\r
+are unbroken symmetries of totally compactified backgrounds. Among these backgrounds\r
+there is a distinguished compactification, namely, compactification on the torus defined\r
+by Γ∗ = II25,1in the open case or on the Narain compactification for Γ∗ = (II25,1; 0) ⊕\r
+(0; II25,1) in the closed case. Here II25,1is the unique even self-dual lattice in IR25,1.\r
+The corresponding algebra L∗ = LΓ∗ has been dubbed the “fake Monster Lie algebra” by\r
+Borcherds [29] [30].\r
+Based on the analogy with Euclidean compactifications, which duly reproduces the\r
+Higgs mechanism in the α\r
+′ → 0 limit [7], we may say that the uncompactified string is\r
+a spontaneously broken gauge theory with the gauge algebra L∗ (in the open case) and\r
+L∗ ⊕ L∗ (in the closed case) broken down to IR26 and IR26 ⊕ IR26 respectively.\r
+28
+
+At high energies the bracket relations become Ward identities. This should be un\u0002derstood as some kind of stringy high-energy symmetry restoration which replaces the\r
+analogous notion in spontaneously broken gauge theory. (As shown in appendix B, the\r
+standard field-theoretic approach does not generalize straightforwardly.) In this sense the\r
+above hyperbolic Lie algebras of toroidal compactification “explain” the linear relations\r
+on high energy amplitudes discussed in [1].\r
+Remark: The uniqueness of S is a generalization of Proposition 14 of [6], with the fake\r
+Monster Lie algebra replaced by the “vectorially-graded Lie algebroid of physical states.” It\r
+is interesting to note that the structure constants of these two algebraic objects are closely\r
+related. The structure constants of appendix A are, essentially, analytic continuations of\r
+the structure constants of L∗. One could say that the bosonic string S-matrix is made out\r
+of the structure constants of L∗.\r
+8.4. What we dream of doing\r
+It is clear from a study of unbroken symmetries in toroidal compactification that the\r
+Lie algebras L∗, L∗ ⊕ L∗, while distinguished, are not the full story. As explained in [6]\r
+L∗ ⊕ L∗ is not a universal symmetry for closed string toroidal compactification. We hope\r
+that there is some kind of “universal” algebraic structure in string theory which will replace\r
+compact Lie algebras in the complete formulation of string theory as a generalization of\r
+gauge theory.\r
+In nonabelian gauge theories like the standard model the on-shell asymptotic states\r
+form representations of the symmetry group. Since the representations do not just involve\r
+the adjoint there is, in general, no algebraic structure on the space of on-shell states. String\r
+theories are a very interesting class of theories in which the on-shell states themselves form\r
+an algebra. String theory might some day be regarded as the theory of symmetry in\r
+its purest form: a single symmetry principle fixes entirely the particle content and the\r
+interactions.\r
+Note added: The earlier version of this paper erroneously claimed that the lemma of\r
+section 3.3 applied to N-particle scattering for all N, not just N ≤ 26, and hence that\r
+bracket relations fixed all N-particle amplitudes. I thank E. Witten for pointing out this\r
+error. I also thank H. Verlinde for insisting on the point when I didn’t listen.\r
+Acknowledgements\r
+29
+
+I would like to thank T. Banks for important encouragement, and B. Lian and G.\r
+Zuckerman for many useful discussions of their work. I also thank S. Cordes, I. Frenkel,\r
+J. Horne, R. Shankar, and E. Verlinde for discussions. I thank the Ecole Normale Su\u0002perieure (Paris) and CERN for hospitality extended to me while some of this research was\r
+done. This work is supported by DOE grant DE-AC02-76ER03075, DOE grant DE-FG02-\r
+92ER25121, and by a Presidential Young Investigator Award.\r
+Appendix A. Table of some structure constants for the bracket\r
+• {p\r
+2\r
+1 = 2, p22 = 2}:\r
+{e\r
+ip1·X, eip2·X} =\r
+\r
+\r
+\r
+0 for p1 · p2 ≥ 0\r
+e\r
+i(p1+p2)·X for p1 · p2 = −1\r
+Sn(p1 · X(z))e\r
+i(p1+p2)·X for p1 · p2 = −(n + 1)\r
+(A.1)\r
+where Sn[f(z)] is a differential polynomial in f(z) defined by Taylor expansion:\r
+e\r
+i(f(w)−f(z)) ≡\r
+X\r
+n∈ZZ\r
+(w − z)\r
+nSn[f(z)]\r
+The Sn are essentially Schur polynomials in the derivatives of f. The first few nonvanishing\r
+ones are\r
+S0 = 1\r
+S1 = i∂Y\r
+S2 =\r
+i\r
+2\r
+∂\r
+2Y −\r
+1\r
+2\r
+(∂Y )\r
+2\r
+(A.2)\r
+• {p\r
+2\r
+1 = 0, p22 = 2}:\r
+{iζ1∂Xeip1X, eip2X} = ζ1 · p2e\r
+i(p1+p2)X p1 · p2 = 0\r
+= i(ζ1 + (p2 · ζ1)p1) · ∂Xei(p1+p2)X p1 · p2 = −1\r
+(A.3)\r
+• {p\r
+2\r
+1 = 0, p22 = 0}:\r
+{iζ1 · ∂Xeip1X, iζ2 · ∂Xeip2X} =\r
+\u0002\r
+ζ1 · ζ2 − (ζ1 · p2)(ζ2 · p1)\r
+\u0003\r
+e\r
+i(p1+p2)X p1 · p2 = +1\r
+(A.4)\r
+{iζ1 · ∂Xeip1X, iζ2 · ∂Xeip2X} = iζ′· ∂Xei(p2+p1)X p1 · p2 = 0\r
+ζ\r
+′ = (ζ1 · ζ2 − (ζ2 · p1)(ζ1 · p2))p1 + (ζ1 · p2)ζ2 − (ζ2 · p1)ζ1\r
+(A.5)\r
+30
+
+• {p\r
+2\r
+1 = −2, p22 = 2}:\r
+{Vζ,p1, eip2X} = −(p2 + p1) · ζ · p2e\r
+i(p2+p1)·X p1 · p2 = +1\r
+= Vζ\r
+′\r
+,p2+p1 p1 · p2 = −1\r
+ζ\r
+′ = ζ+\r
+\r
+p1 ⊗ p2 · ζ + ζ · p2 ⊗ p1\r
+\u0001\r
++\r
+1\r
+2\r
+\u0002\r
+(p2 + p1) · ζ · p2\r
+\u0003\r
+p1 ⊗ p1\r
+(A.6)\r
+Appendix B. High energy symmetries and spontaneous symmetry breaking\r
+In [6] we proposed that the infinite dimensional symmetries arising upon time\u0002compactification - of which L∗ ⊕ L∗ is a spectacular example - are the high-energy sym\u0002metries of [1]. The idea was that Ward identities derived in a symmetric compactification\r
+could be “parallel transported” to the decompactified background. The decompactifica\u0002tion forces momenta to infinity, hence the connection with high energy scattering. This\r
+proposal was based on a field theoretic intuition: in field theory the effects of spontaneous\r
+symmetry breaking disappear at high energies. It turns out that this intuition is not very\r
+good in string theory. Closed string scattering at high energy is sensitive to the breaking\r
+of toroidal symmetries. In this appendix we demonstrate that surprising fact with a few\r
+simple examples.\r
+B.1. Recovery of Ward Identities in Field Theory\r
+We consider enhanced symmetries and symmetry breaking in the framework of toroidal\r
+compactification. (We only consider compactification of spacelike dimensions here.) Sup\u0002pose we have an unbroken symmetry current Jq = e\r
+iq·Y at a Narain lattice Γ which has a\r
+vector (q; 0) with q\r
+2 = 2. Consider a theory at Γ′ = g(λ)·Γ where g(λ) is a one-parameter\r
+family of O(d, d) rotations taking (q; 0) to (qL; qR) with qR 6= 0. The symmetry associated\r
+with J is spontaneously broken in spacetime leading to massive gauge bosons with mass\r
+m2\r
+V\r
+/m2\r
+pl = q\r
+2\r
+R(λ) and α\r
+′ ∼ 1/m2\r
+pl is related to the Planck mass.\r
+Consider the scattering amplitudes A(V1, . . . Vn) for (massless and massive) gauge\r
+bosons. The field-theory limit is obtained by letting q\r
+2\r
+R, pi\r
+· pj → 0 and expanding in these\r
+variables. The amplitudes have an expansion A =\r
+Pǫ\r
+nA(n)\r
+in powers of ǫ = 1/mpl, where\r
+each A(n)is a rational function of its arguments.\r
+If we have a Ward identity in the unbroken phase PA(V1, . . . δVi, . . . Vm) = 0 then we\r
+may ask what happens to the corresponding amplitudes in the broken phase. The precise\r
+definition of “corresponding amplitudes” requires a transport operator T\r
+λ on the BRST\r
+31
+
+cohomology. We will simply rotate momenta by O(d, d) transformations: this will suffice\r
+for our examples. 10 For each n we have\r
+lim\r
+λ→0\r
+X\r
+i\r
+A\r
+(n)\r
+(T\r
+λV1, . . . T λ\r
+δVi, . . . T λVm) = 0 (B.1)\r
+and since A(n) are rational functions of pi· pj and of the symmetry-breaking masses q\r
+2\r
+R(λ)\r
+we conclude that the sum of the terms is proportional to the symmetry breaking masses.\r
+Therefore, for dimensional reasons, at each order in the expansion in 1/mpl the sum of\r
+the terms grows more slowly in energy than the individual terms. In particular, for the\r
+leading terms ∼ mn\r
+pl where n is a nonnegative power, the sum of the terms vanishes. This\r
+is the recovery of the Ward identity at high energy.\r
+Example. To be explicit, consider a circular compactification of a single dimension\r
+Y . Let R = e\r
+λ\r
+. At λ = 0 we have an unbroken SU(2) × SU(2) gauge theory which is\r
+broken to U(1) × U(1) for λ > 0. Introduce the notation:\r
+e(j, ¯j, R) ≡ e\r
+√i\r
+2\r
+(\r
+j+¯j\r
+R +(j−¯j)R)Y\r
+(z)e\r
+√i\r
+2\r
+(\r
+j+¯j\r
+R −(j−¯j)R)Y¯\r
+(¯z) (B.2)\r
+Focus on a single factor SU(2) → U(1). In the broken phase we have massive gauge\r
+bosons, call them W±(ǫ), with corresponding vertex operators:\r
+W±(ǫ, p) = e(±1, 0, R)ǫ · ∂Xe ¯ ip·X (B.3)\r
+where X, p refer to uncompactified dimensions. (B.3) are on shell for p · ǫ = 0, p2 +\r
+2 sinh2λ = 0. There are also massless gauge bosons for the unbroken U(1) generators, call\r
+them Z(ǫ) described by vertex operators:\r
+Z(ǫ, p) = cosh λ∂Y ǫ · ∂Xe ¯ ip·X (B.4)\r
+which are on-shell for p · ǫ = 0, p2 = 0. (The factor of cosh λ in (B.4) is motivated by the\r
+transport in [6]. It can be dropped without changing our conclusions.)\r
+At the su(2) point λ = 0 we have the su(2) Ward identity:\r
+0 = A\r
+\u0002\r
+W+(ǫ1),Z(ǫ2), W−(ǫ3), Z(ǫ4)\r
+\u0003\r
+(s, u)\r
++A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), Z(ǫ3), Z(ǫ4)\r
+\u0003\r
+(s, u)\r
++ A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), W−(ǫ3), W+(ǫ4)\r
+\u0003\r
+(s, u)\r
+(B.5)\r
+10 See [6] for a detailed discussion of a parallel transport on the entire CFT statespace.\r
+32
+
+What happens at λ > 0? For simplicity assume that all polarizations ǫi are transverse\r
+to the plane of scattering and that ǫ1 · ǫ3ǫ2 · ǫ4 = ǫ1 · ǫ4ǫ2 · ǫ3 = 0, ǫ1 · ǫ2ǫ3 · ǫ4 = 1. In the\r
+field theory limit we have\r
+A\r
+\u0002\r
+W+, Z, W−, Z\u0003(s, u) = 2(u − m2\r
+)\r
+s\r
++\r
+1\r
+m2\r
+pl\r
+(2m2u/s + u − s − 2m4/s − m2) + · · ·\r
+A\r
+\u0002\r
+W+, W−, Z, Z\u0003(s, u) = 2 + 1\r
+m2\r
+pl\r
+(2s − u)(s − m2) − u\r
+2\r
+s − m2\r
++ · · ·\r
+A\r
+\u0002\r
+W+, W−, W−, W+\r
+\u0003\r
+(s, u) = 2(2m2 − s − u)\r
+s − m2\r
++\r
+1\r
+m2\r
+pl\r
+(u − s)(s + u − 2m2)\r
+s − m2\r
++ · · ·\r
+(B.6)\r
+where s ≡ p1 · p2, u ≡ p1 · p3, m2 ≡ 2 sinh2λ. The sum of the three amplitudes is\r
+2\r
+m2\r
+s\r
+m2 − u\r
+s − m2\r
++\r
+1\r
+m2\r
+pl\r
+m4\r
+s\r
+2m2 − s − 2u\r
+s − m2\r
++ · · ·\r
+The high-energy field-theoretic limit is now obtained by letting s → −∞, u → ∞\r
+holding m2 fixed. As promised, at each order in 1/mpl the sum vanishes more rapidly\r
+than each of the separate amplitudes, and, in particular, the leading term of order O(m0\r
+pl)\r
+vanishes.\r
+B.2. String theory Ward identities are not recovered at high energy\r
+We illustrate this with two simple examples.\r
+Example 1:\r
+We now take the high energy limit of the three amplitudes in (B.5). The high energy\r
+asymptotics of the amplitudes are:\r
+A\r
+\u0002\r
+W+(ǫ1), Z(ǫ2), W−(ǫ3), Z(ǫ4)\r
+\u0003\r
+∼ −U\r
+2\r
+(1 + sinh2λ)e\r
+4 sinh2 λlog(−s/u−1)\r
+(s + u)\r
+3\r
+s\r
+3u2\r
+[s\r
+2 + su + 2u2 + 2 sinh2\r
+λu2](1 + O(1/s, 1/u, 1/(s + u))\r
+A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), Z(ǫ3), Z(ǫ4)\r
+\u0003\r
+∼ −U\r
+2\r
+(1 + sinh2λ)e\r
+4 sinh2 λlog(u/s+1)\r
+(s + u)\r
+3\r
+s\r
+4u\r
+[u\r
+2 + us + 2s2 + 2 sinh2\r
+λs2](1 + O(1/s, 1/u, 1/(s + u))\r
+A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), W−(ǫ3), W+(ǫ4)\r
+\u0003\r
+∼ U\r
+2\r
+e\r
+4 sinh2 λlog[(u/s+1)(−s/u−1)]\r
+(s + u)\r
+6\r
+s\r
+4u2\r
+(1 + O(1/s, 1/u, 1/(s + u))\r
+(B.7)\r
+33
+
+where U is defined in (3.10).\r
+While the sum of the three terms in (B.7) vanishes at λ = 0 this is not the case for\r
+any λ 6= 0: the sum is not any smaller in magnitude than any of the three terms in the\r
+sum.\r
+Example 2:\r
+At the SU(2) point the vertex operators φ\r
+±± = e(±\r
+1\r
+2\r
+, ±\r
+1\r
+2\r
+, R = 1)e\r
+ip·X describe a\r
+scalar field multiplet in the (2, 2) of SU(2)×SU(2). At the SU(2) point we have the Ward\r
+identity (again for J\r
++):\r
+A(φ\r
++−, φ−+, φ+−, φ−+) + A(φ−−, φ++, φ+−, φ−+) + A(φ−−, φ−+, φ+−, φ++) = 0 (B.8)\r
+In the broken phase λ > 0 and in the high energy limit the sum of the three terms becomes:\r
+\u0014\r
+1\r
+|z0|R2\r
+|z0 − 1|\r
+R\r
+2\r
++\r
+1\r
+|z0|\r
+1/R2 − 1\r
+\u0015\r
+U\r
+2 =\r
+\u0014\r
+(sin2 1\r
+2\r
+θ)\r
+R\r
+2\r
++ (cos2 1\r
+2\r
+θ)\r
+1/R2\r
+− 1\r
+\u0015\r
+U\r
+2\r
+(B.9)\r
+Again we see that the sum of terms is no smaller than the individual terms.\r
+B.3. Physical interpretation\r
+We believe that the failure to recover the Ward identities in the high energy limit is\r
+related to the notorious delocalization of strings at ultrahigh energies [31]. This delocaliza\u0002tion makes the string amplitudes once again sensitive to relatively long-distance physics,\r
+like the specific nature of the compactification scheme.\r
+34
+
+References\r
+[1] D. Gross, “High energy symmetries of string theory,” Phys. Rev. Lett. 60B(1988)1229\r
+[2] D.J. Gross and P.F. Mende, “String theory beyond the Planck scale,” Nucl.Phys.\r
+B303: 407, 1988; “The high-energy behavior of string scattering amplitudes,” Phys.\r
+Lett. 197B: 129, 1987.\r
+[3] E. Witten, “Spacetime and topological orbifolds,” Phys. Rev. Lett. 61B(1988)670\r
+[4] M. Evans and B.A. Ovrut, “Spontaneously broken inter mass level symmetries in\r
+string theory,” Phys. Lett. 231B(1989)80; “Deformations of conformal field theories\r
+and symmetries of the string,” Phys. Rev. D41(1990)3149\r
+[5] U. Lindstrom, B. Sundborg, and G. Theodoridis, Phys. Lett. 258B(1991)319; “The\r
+zero tension limit of the spinning string,” Phys. Lett. 258B(1991)331\r
+[6] G. Moore, “Finite in all directions,” hep-th/9305139; “Symmetries and symmetry\u0002breaking in string theory,” hep-th/9308052, to appear in Proceedings of SUSY93.\r
+[7] M. Green, J. Schwarz, and E. Witten, Superstring theory, Cambridge Univ. Press\r
+(1987).\r
+[8] I. Frenkel, H. Garland, and G. Zuckerman, “Semi-infinite cohomology and string the\u0002ory,” Proc. Nat. Acad. Sci. 83(1986)8442\r
+[9] H. Weyl, The Classical Groups, Princeton University Press, Princeton 1946\r
+[10] See [9], pp. 75-78\r
+[11] S. Mandelstam, “Dual Resonance Models,” Phys. Reports, 13 (1974)259\r
+[12] E. Witten, Ground ring of two-dimensional string theory” (hep-th/9108004), Nucl.\r
+Phys. B373 (1992) 187.\r
+[13] E. Witten and B. Zwiebach, “Algebraic Structures and Differential Geometry in 2D\r
+String Theory” (hep-th/9201056), Nucl. Phys. B377 (1992) 55.\r
+[14] E. Verlinde, “The master equation of 2D string theory,” hep-th/9202021; Nucl. Phys.\r
+B381 (1992) 141.\r
+[15] I.B. Frenkel, J. Lepowsky, and A. Meurman, “Vertex Operator Algebras and the Mon\u0002ster,” Academic Press, New York, 1988\r
+[16] B. Lian and G. Zuckerman, “New perspectives on the brst algebraic structure of string\r
+theory,” (hep-th/9211072) Commun. Math. Phys. 154613 (1993).\r
+[17] Related results have been obtained in G. Segal, Lectures at the Isaac Newton\r
+Institute, August 1992, and lectures at Yale University, March 1993; E. Getzler,\r
+“Batalin-Vilkovisky Algebras and Two-Dimensional Toplogical Field Theories” (hep\u0002th/9212043)\r
+[18] See, e.g., K. Kendig, Elementary Algebraic Geometry, Springer, 1977, thm. 3.8\r
+[19] P. Ginsparg and G. Moore, “Lectures on 2D Gravity and 2D String Theory,” hep-th/\r
+9304011, Lectures given at the 1992 TASI summer school;\r
+I.R. Klebanov, “String theory in two-dimensions,” hep-th/9108019; In Trieste 1991,\r
+35
+
+Proceedings , String Theory and quantum gravity;\r
+D. Kutasov, “Some Properties of (Non)Critical Strings,” hep-th/9110041; In Trieste\r
+1991, Proceedings , String Theory and quantum gravity.\r
+[20] R. P. Boas, Entire Functions, Academic Press, 1954\r
+[21] H. Exton, Handbook of Hypergeometric Integrals, John Wiley, 1978\r
+[22] J. Bienkowska, “The renormalization group flow in 2D N=2 SUSY Landau-Ginsburg\r
+models,” hep-th/9109003.\r
+[23] H. Kawai, D.C. Lewellen, S.-H. H. Tye, “A relation between tree amplitudes of closed\r
+and open strings,” Nucl. Phys. B269(1986)1\r
+[24] D. Kutasov, E. Martinec, and N. Seiberg, “Ground Rings and Their Modules in 2D\r
+Gravity with c ≤ 1 Matter” (hep-th/9111048), Phys. Lett. B276 (1992) 437.\r
+[25] I. Klebanov and A. Pasquinucci, “Correlation functions from two-dimensional string\r
+Ward identities” (hep-th/9204052) PUPT-1313.\r
+[26] M. Bershadsky and D. Kutasov, “Scattering of Open and Closed Strings in 1 + 1\r
+Dimensions,” hep-th/9204049, Nucl. Phys. B382(1992)213.\r
+[27] I.B. Frenkel and V.G. Kac, “Basic Representations of Affine Lie Algebras and Dual\r
+Resonance Models,” Inv. Math. 62(1980)23.\r
+[28] P. Goddard and D. Olive, “Algebras, lattices and strings,” in Vertex Operators in\r
+Mathematics and Physics, Proceedings of a Conference eds. J. Lepowsky, S. Mandel\u0002stam, I.M. Singer, Springer;Intl. Jour. Mod. Phys. A1(1986)303.\r
+[29] R. Borcherds, “Generalized Kac-Moody Algebras,” J. Algebra 115(1988)501; “Mon\u0002strous moonshine and monstrous lie superalgebras,” Invent. Math. 109(1992)405\r
+[30] R. Gebert, “Introduction to Vertex Algebras, Borcherds Algebras, and the Monster\r
+Lie Algebra,” hep-th/9308151; DESY 93-120\r
+[31] See, e.g., D. Gross, “Superstrings and Unification,” Talk at the XXIV Int. Conf. on\r
+High Energy Physics, Munich, 1988;\r
+L. Susskind, “String theory and the principle of black hole complementarity,” hep\u0002th/9307168\r
+36"""
+
+[metadata]
+title = "arxiv hep th9310026 thooft 1993 dimensional reduction qg"
+authors = ["Unknown"]
+year = 1993
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/9310026v2 10 Oct 1993\r
+hep-th/9310026\r
+YCTP-P19-93\r
+Symmetries\r
+of the Bosonic String\r
+S-Matrix\r
+Gregory Moore\r
+moore@castalia.physics.yale.edu\r
+Dept. of Physics\r
+Yale University\r
+New Haven, CT 06511\r
+The bracket operation on mutually local BRST classes may be combined with Lorentz\r
+invariance and analyticity to write an infinite set of finite difference relations on string\r
+scattering amplitudes. When combined with some simple physical criteria these relations\r
+uniquely determine the genus zero stringS-matrix forN≤ 26-particle scattering in IR25\r
+,1\r
+in terms of a single parameter,κ, the string coupling. We propose that the high-energy\r
+limit of the relations are the Ward identities for the high-energy symmetries of string\r
+theory.\r
+October 8, 1993"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+String theory is a generalization of gauge theory. Historically, understanding the\r
+importance of general covariance and local isotopic-spin invariance were crucial steps in the\r
+formulation of general relativity and Yang-Mills theory. One might therefore suspect that\r
+a complete formulation of string theory will be predicated upon a deeper understanding\r
+of the symmetries in the theory.\r
+In [1] D. Gross proposed that one useful tool for discovering fundamental string sym\u0002metries is the analysis of the high energy behavior of string scattering amplitudes. In field\r
+theories of spontaneously broken gauge invariance this technique works very well. Using\r
+the saddle-point analysis of [2] Gross derived an infinite set of linear relations between\r
+bosonic string 4-particle S-matrix amplitudes. Usually linear relations between scattering\r
+amplitudes are derived from an underlying symmetry, and it was suggested in [1] that such\r
+a symmetry must explain these linear relations. Some work has subsequently been done\r
+with a view towards understanding this mysterious symmetry in [3] [4] [5].\r
+In [6] it was suggested that the infinite dimensional hyperbolic symmetries which arise\r
+upon toroidal compactification of time might be the source of the high energy symmetries\r
+of string theory. The original program of [6] is probably misguided, for reasons explained\r
+in appendix B below. Nevertheless, as we show in the present paper, the basic idea that\r
+generalized Kac-Moody algebras are high-energy symmetries of string theory is correct. In\r
+fact, more is true. We can replace high energy Ward identities, which relate amplitudes\r
+at the same values of s, t by finite difference relations for the exact amplitudes. These\r
+finite difference relations put strong constraints on the genus zero string S-matrix. We\r
+will show that they determine scattering amplitudes at all mass levels in terms of tachyon\r
+scattering. Moreover, when supplemented with some mild analyticity requirements (e.g.\r
+Regge-like behavior at s → ∞) the finite difference relations even determine the tachyon\r
+amplitude itself. A technical point discussed in section 3.3 limits our discussion to N\u0002particle scattering for N ≤ 26.\r
+In essence the answer to the problem posed in [1] is very simple: the underlying\r
+symmetries are the bracket algebras defined by on-shell mutually local BRST invariant\r
+chiral vertex operators."""
+
+[[sections]]
+number = "2"
+title = "Review of Bosonic String Scattering"
+text = """
+It is convenient to summarize some standard facts [7].\r
+1"""
+
+[[sections]]
+number = "2.1"
+title = "On-Shell States"
+text = """
+The states of the open bosonic string are defined in terms of the BRST cohomology\r
+H∗[7][8]. We focus on the chiral ghost number 1 cohomology, H = Hg=1. The space H is\r
+graded by level number n and momentum p ∈ IR25,1:\r
+H = ⊕n∈ZZ+\r
+Z\r
+IR25,1\r
+dp H[p, n] (2.1)\r
+where H[p, n] = 0 unless p\r
+2 = 2 − 2n and dim H[p, n] = p24(n). H is an induced represen\u0002tation of the Poincar´e group in IR25,1\r
+.\r
+Cohomology classes have representatives of the form cV where V is a chiral vertex\r
+operator satisfying the physical state conditions. These conditions state that V is a di\u0002mension one Virasoro primary. 1 Such operators have the form V = Pe\r
+ipX where P is a\r
+polynomial in ∂\r
+∗X of dimension n. For example:\r
+n = 0 : P = 1\r
+n = 1 : P = iζ · ∂X ζ ∈ TIR25,1\r
+ζ · p = 0 ζ ∼ ζ + λp\r
+n = 2 : P = ip · ζ · ∂\r
+2X + ∂X · ζ · ∂X ζ ∈\r
+\r
+TIR25,1\r
+\u0001⊗2\r
+tr(ζ) − 2p · ζ · p = 0 ζ ∼ ζ +\r
+1\r
+2\r
+\u0002\r
+p ⊗ χ + χ ⊗ p −\r
+1\r
+3\r
+(p · χ)η\r
+\u0003\r
+(2.2)\r
+The fields Xµ are always normalized to have the correlator\r
+∂Xµ(z)∂Xν(w) ∼ −\r
+η\r
+µν\r
+(z − w)"""
+
+[[sections]]
+number = "2"
+title = "We use units where α"
+text = """
+′ =\r
+1\r
+2\r
+for open string amplitudes. Polarization tensors, or multiplets\r
+of polarization tensors are generically denoted by ζ."""
+
+[[sections]]
+number = "2.2"
+title = "S-Matrix Amplitudes"
+text = """
+S-matrix amplitudes are multilinear functions A : H⊗n → C constructed as follows.\r
+The operator formalism associates a measure Ω(V1, . . . Vn) on the moduli space F of ordered\r
+points on the boundary of the unit disk. We define A =\r
+R\r
+F Ω. By Mobius invariance of Ω,\r
+A is invariant under cyclic permutations.\r
+1 The ghosts will not play an essential role in this paper so we will often identify a class with\r
+V ."""
+
+[[sections]]
+number = "2"
+title = "The definition of R"
+text = """
+F Ω requires some care. Using Mobius invariance of Ω we transform\r
+the disk to the upper half plane and write:\r
+A(V1, . . . Vn) = κ\r
+n−2\r
+Z\r
+Fn−3([0,1])\r
+nY−2\r
+2\r
+dyih0|Vn(yn)Vn−1(yn−1)· · · V1(y1)|0i (2.3)\r
+where yn = ∞, yn−1 = 1, y1 = 0 and Fn−3([0, 1]) is the moduli space of n−3 ordered points\r
+on the interval. The integral (2.3) is given meaning as follows. The integrand is a function\r
+of the yi and of the relativistic invariants sij ≡ pi· pj . It follows from the o.p.e. that there\r
+is a domain where Re(sij) is sufficiently large and positive, or negative, (depending on ij)\r
+so that the integral is absolutely convergent and defines a holomorphic function of the sij .\r
+The analytic continuation from this domain defines an amplitude which is a meromorphic\r
+function of the sij .\r
+It will be important to specify clearly the independent relativistic invariants that A\r
+depends upon. These invariants are formed out of momenta pi and polarization tensors\r
+ζi. Relativistic invariants formed from the pi alone parametrize the different orbits of\r
+SO(1, d − 1) on the space of n − 1 independent momenta. Taking into consideration the\r
+relevant little group we see that the number of independent relativistic invariants for n\r
+particle scattering in d dimensions is\r
+nd −\r
+1\r
+2\r
+d(d + 1) for n ≥ d + 1\r
+1\r
+2\r
+n(n − 1) for n ≤ d + 1\r
+(2.4)\r
+For n ≤ d a set of algebraically independent invariants can be chosen to be an ap\u0002propriate collection of the sij. For example, we may choose sij for 1 ≤ i ≤ j ≤\r
+n − 1. (We make a different choice below.) For n ≥ d + 1 the story is more com\u0002plicated. By classical invariant theory [9] the ring of polynomial invariants is gener\u0002ated by the sij and by [p\r
+i1\r
+, . . . , pid ] = ǫ\r
+µ1···µd pi1\r
+µ1\r
+· · · p\r
+id\r
+µd\r
+. The relations are generated\r
+by [p\r
+i1\r
+, . . . , pid ][p\r
+j1\r
+, . . . , pjd ] = dets,t p\r
+is\r
+· p\r
+jt\r
+, det ∆ = 0 where ∆ is any (d+ 1)-dimensional\r
+minor of the matrix (sij ), and P\r
+σ ±[p\r
+iσ(1) , . . . , piσ(d)\r
+]p\r
+iσ(d+1) ·p\r
+j = 0 [10]. Thus for n ≥ d+1\r
+a maximal algebraically independent set of invariants can be taken to be an appropriate\r
+set of sij together with [p\r
+1\r
+, . . . , pd].\r
+We separate the independent relativistic invariants into three types:\r
+• Levels of the particles: p\r
+2\r
+i = 2 − 2ni\r
+, i = 1, . . . n\r
+• Scalar product invariants. According to the above discussion for n ≤ d these can be\r
+taken to be the sij , 1 ≤ i < j ≤ n − 2, together with 1 ≤ i ≤ n − 3, j = n − 1 . For\r
+n ≥ d + 1 we must choose an appropriate set of n(d − 1) −\r
+1\r
+2\r
+d(d + 1) − 1 sij ’s.\r
+3
+
+• Polarization invariants. These are formed from contractions of the ζ’s with themselves or\r
+the ζ’s with p’s. The only way the relativistic invariants [p\r
+i1\r
+, . . . , pid ] can enter a (bosonic)\r
+string amplitude is through the polarization invariants.\r
+Example: The case n = 4 is of particular importance. This is the function A :\r
+H⊗4 → C given by:\r
+A(V1, V2, V3, V4) = κ"""
+
+[[sections]]
+number = "2"
+title = "Z 1"
+text = """
+0\r
+dzh0|V4(∞)V3(1)V2(z)V1(0)|0i (2.5)\r
+The kinematic invariants are s = p1 · p2, t = p2 · p3. We let\r
+\u001A\r
+ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\r
+(2.6)\r
+stand for an ordered set of independent polarization invariants. 2 Thus,the amplitudes are\r
+functions with independent arguments:\r
+An1,n2,n3,n4\r
+\u0012\u001A ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t\u0013(2.7)"""
+
+[[sections]]
+number = "2.3"
+title = "Analyticity Properties"
+text = """
+As an analytic function A is a polynomial in the polarization invariants. The coeffi\u0002cients of this polynomial are meromorphic functions of the sij. One of the goals of this\r
+paper is to replace the complicated formula (2.3) by a symmetry principle. We will need\r
+to take the following three analyticity properties as axiomatic:\r
+AP1: Location of poles. The dual diagrams of the genus zero open string amplitudes are\r
+binary trees rooted at the center of the unit disk with ordered terminal vertices on the\r
+boundary of the disk as in:"""
+
+[[sections]]
+number = "2"
+title = "We choose a lexicographic ordering, with ζ in front of p."
+text = """
+4
+
+p\r
+1\r
+p\r
+2\r
+p\r
+3\r
+p\r
+4 p\r
+5\r
+p\r
+6\r
+s"""
+
+[[sections]]
+number = "12"
+title = "Only poles at 2s"
+text = """
+12 2 p\r
+2\r
+1p\r
+2\r
+2+f2; 0; 2; : : :g\r
+Each terminal vertex carries an ingoing momentum pi. Using momentum conservation\r
+we associate a momentum pI with each internal edge I. We assume that the amplitudes can\r
+only have poles when p"""
+
+[[sections]]
+number = "2"
+title = "I ∈ {2, 0, −2, −4, . . .} for some I in some dual diagram. Explicitly,"
+text = """
+this is the condition that (pi + · · ·+ pi+k)\r
+2 ∈ {2, 0, −2, −4, . . .} for some i, k, where indices\r
+are understood modulo n.\r
+The proof that the n-point amplitudes (2.3) satisfy the axiom AP1 makes use of the\r
+operator product expansion and Mobius invariance of Ω.\r
+AP2: Growth at infinity. We assume that the amplitude has at most power law growth\r
+as any sij tends to infinity, holding all other independent kinematic invariants fixed. This\r
+is a generalization of Regge behavior.\r
+The axiom AP2 can be motivated by considering the n-tachyon scattering amplitude:\r
+A = κ\r
+n−2\r
+Z 1\r
+0\r
+nY−2\r
+2\r
+dyiθ(yi − yi−1)\r
+Y\r
+1≤i<j≤n−1\r
+(yj − yi)\r
+sij (2.8)\r
+where yn−1 = 1, y1 = 0. The standard argument [11] proceeds as follows. If Re(sij) → +∞\r
+then since all the factors in the product in (2.8) are ≤ 1 the integration is dominated by\r
+the region where those factors raised to a power sij are near one. Making an exponential\r
+change of variables and isolating this region proves the claim. As the simplest example\r
+5
+
+of this argument, suppose we take the sij appearing in (2.8) as independent variables\r
+(s1,n−1 will be considered dependent). Consider the limit Re(s12) → +∞ holding all other\r
+independent sij fixed. We write y2 = e\r
+−x2 and the integral is dominated by the region\r
+x2 ∼ 0. Making this approximation in the rest of the integrand we find the asymptotics\r
+s\r
+−s2,n−1"""
+
+[[sections]]
+number = "12"
+title = "In general we find"
+text = """
+A ∼ αs\r
+β\r
+ij\r
+where β is a combination of the other skl’s. This argument extends to any correlation\r
+function and justifies the axiom AP2.\r
+Finally we need an axiom that relates the amplitudes for different values of n. These\r
+are the well-known and standard tree-level unitarity equations:\r
+AP3: Factorization. If we cut a dual diagram on some internal edge I we decompose it\r
+into two dual diagrams I1, I2. We assume that when p"""
+
+[[sections]]
+number = "2"
+title = "I → 2−2nI and other momenta are"
+text = """
+in general position the residue at the pole is\r
+X\r
+a,b\r
+A(Vi, . . . , Vi+k, Va)G\r
+abA(Vb, Vi+k+1, . . . , Vi−1) (2.9)\r
+where {Va} is a basis for H[pI , nI ] and Gab is the inverse of the positive definite metric on\r
+H[pI , nI] whose existence is assured by the no-ghost theorem.\r
+The proof that property AP3 is satisfied again makes use of the operator product\r
+expansion.\r
+Remark: In stating the factorization axiom we have not made any use of a complex\r
+structure or of local coordinates on the disk. One could state a stronger factorization\r
+axiom valid for all values of the momenta. This requires the introduction of the full off\u0002shell BRST chain complex and the introduction of local coordinates. We will not need\r
+that in the present paper."""
+
+[[sections]]
+number = "2.4"
+title = "High Energy-Fixed Angle Scattering"
+text = """
+We define s = p1 ·p2 ≡ −2E\r
+2\r
+, and t = p2 ·p3 ≡ 2E\r
+2\r
+sin2 1\r
+2\r
+θ. In the limit of high energy\r
+scattering, where all masses are effectively zero, E and θ have the physical interpretation of\r
+center of mass energy and scattering angle. In the plane of scattering the spatial momenta\r
+look like:\r
+6
+
+\u0012\r
+\u0012\r
+~p\r
+1 ~p\r
+2\r
+~p\r
+3\r
+~p"""
+
+[[sections]]
+number = "4"
+title = "The high energy limit is defined to be the limit where E"
+text = """
+2 → ∞ along any ray other\r
+than the positive or negative real axis, holding θ and all other independent relativistic\r
+invariants fixed. 3\r
+Gross and Mende studied the asymptotic behavior of the amplitudes in the high-energy\r
+limit [2]. The amplitudes are dominated by a saddle point. For open strings: 4\r
+A ∼ As.p.\u0014\r
+1 + O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+\u0015\r
+A\r
+s.p. ≡\r
+√\r
+2π\r
+s\r
+st\r
+(s + t)\r
+3\r
+h0|V4(∞)V3(1)V2(z0)V1(0)|0i\r
+(2.10)\r
+where z0 ≡ s/(s + t) = 1/ cos2 1\r
+2\r
+θ.\r
+The proof of (2.10) may be obtained by combining Stirling’s formula with the analytic\r
+structure of the amplitudes described above. Alternatively, one may use a saddle point\r
+analysis of either the integral over moduli space or of the path integral. The saddle point\r
+typically lies outside the domain of integration, and for good reason. The true high energy\r
+asymptotics obtained by taking E2 → ∞ along the positive real axis must encounter an\r
+infinite set of poles when any intermediate state goes onshell. These poles are manifestly\r
+absent from (2.10). The saddle point analysis applies to the asymptotics of analytically\r
+continued S-matrix elements. This is important to bear in mind when considering gener\u0002alizations to n ≥ 5 point functions and to higher orders of string perturbation theory, in\r
+which case one probably must consider asymptotics only for E2 → ±i∞."""
+
+[[sections]]
+number = "3"
+title = "Warning: this differs slightly from the α"
+text = """
+′ → ∞ limit of [1], since we hold expressions of the\r
+form ζ · p\r
+k\r
+constant, even for polarizations with longitudinal components.\r
+4 The result is BRST invariant despite appearances. The choice of the point z0 magically\r
+cancels all differences arising from different choices of representative P for the cohomology class.\r
+7"""
+
+[[sections]]
+number = "3"
+title = "Bracket Relations"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "Bracket"
+text = """
+Two years ago it was shown that the BRST cohomology of 2D string theory has\r
+a rich algebraic structure related to BV quantization [12] [13] [14]. Subsequently, Lian\r
+and Zuckerman studied the algebraic structures of the BRST cohomology based on an\r
+arbitrary chiral algebra (=vertex operator algebra [15]) in [16] [17]. As shown by Lian and\r
+Zuckerman, there is an operation {·, ·} : Hg1 × Hg2 → Hg1+g2−1 which they called the\r
+“Gerstenhaber bracket.” The bracket is very fundamental: it exists for arbitrary bosonic\r
+string cohomology and plays a role related to the BV anti-bracket for the on-shell BV\r
+structure of string theory. In the present case we may identify ghost number 1 classes with\r
+chiral physical state operators and the bracket is simply the standard “commutator” of\r
+dimension one currents:\r
+J ⊗ V → {J, V }(z) ≡\r
+I\r
+z\r
+dwJ(w)V (z) (3.1)\r
+In general, the ghost number one cohomology based on a chiral algebra is a Lie algebra.\r
+In our case H in (2.1) is not based on a chiral algebra because the fields have mon\u0002odromy when considered as chiral vertex operators. Nevertheless, when J, V are mutually\r
+local (3.1) still makes sense. 5In particular, given two momenta p, q with q\r
+2 = 2 − 2n1,\r
+p\r
+2 = 2 − 2n2, (p + q)2 = 2 − 2n3. we have a map:\r
+{·, ·} : H[q, n1] ⊗ H[p, n2] → H[p + q, n3]\r
+We may extend the bracket to all of H:\r
+{·, ·} : H ⊗ H → H\r
+by defining it to be zero on pairs not mutually local. 6\r
+The bracket has the two properties:\r
+B1. If p1, p2 are the momenta of V1, V2 then:\r
+{V1, V2} = −(−1)p1·p2 {V2, V1}\r
+5\r
+In this paper “mutually local” means the o.p.e. has only integral powers of z − w. Equiva\u0002lently, the monodromy is trivial (although the braiding matrix could be (−1)).\r
+6 Alternatively, one can take the point of view that the bracket is only defined on some pairs of\r
+states. That is, it is like multiplication in a groupoid, or composition of morphisms in a category."""
+
+[[sections]]
+number = "8"
+title = "B2. If V1, V2, V3 are all pairwise mutually local then:"
+text = """
+(−1)p1·p3 {V1, {V2, V3}} + (−1)p3·p2 {V3, {V1, V2}} + (−1)p2·p1 {V2, {V3, V1}} = 0 (3.2)\r
+Unfortunately (3.2) does not hold for all triples in H.\r
+The bracket on ghost number one cohomology generalizes the Lie algebra of the Ger\u0002stenhaber bracket in two ways. First, property B1 shows that the bracket is “vectorially\u0002graded.” Second, the vectorially-graded Jacobi relation only holds for mutually local\r
+triples.\r
+A table of useful structure constants for {·, ·} can be found in appendix A."""
+
+[[sections]]
+number = "3.2"
+title = "Relations"
+text = """
+Let J be any chiral physical state operator of momentum q and let Vi, i = 1, 2, 3, 4 be\r
+chiral physical state operators of momenta pi such that q +\r
+Ppi = 0. Assume that q · pi\r
+are integral so that J and Vi are mutually local. 7In this case we can regard the integrand\r
+of (2.5) as a correlator of chiral vertex operators for conformal field theory on the plane.\r
+Using standard contour deformation arguments we derive the identity\r
+0 = h0|V4(∞)V3(1)V2(z){J, V1}(0)|0i\r
++(−1)q·p2h0|V4(∞)V3(1){J, V2}(z)V1(0)|0i\r
++(−1)q·p2+q·p3h0|V4(∞){J, V3}(1)V2(z)V1(0)|0i\r
++ (−1)q·p2+q·p3+q·p4\r
+h0|{J, V4}(∞)V3(1)V2(z)V1(0)|0i\r
+(3.3)\r
+Now we simply integrate z from 0 to 1, assuming that Re(s) and Re(t) are sufficiently\r
+positive that the integral is absolutely convergent. This gives the finite difference relations:\r
+0 =An˜1,n2,n3,n4\r
+\u0012\u001A ˜ζ1 ζ2 ζ3 ζ4\r
+p1 + q p2 p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s + q · p2, t\u0013\r
++(−1)q·p2An1,n˜2,n3,n4\r
+\u0012\u001A ζ1\r
+˜ζ2 ζ3 ζ4\r
+p1 p2 + q p3 p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s + q · p1, t + q · p3\r
+\u0013\r
++(−1)q·p2+q·p3An1,n2,n˜3,n4\r
+\u0012\u001A ζ1 ζ2\r
+˜ζ3 ζ4\r
+p1 p2 p3 + q p4\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t + q · p2\r
+\u0013\r
++(−1)q·p2+q·p3+q·p4An1,n2,n3,n˜4\r
+\u0012\u001A ζ1 ζ2 ζ3\r
+˜ζ4\r
+p1 p2 p3 p4 + q\r
+\u001B\f\r
+\f\r
+\f\r
+\f\r
+s, t\u0013\r
+(3.4)"""
+
+[[sections]]
+number = "7"
+title = "We do not assume that the Vi are mutually local."
+text = ""
+
+[[sections]]
+number = "9"
+title = "Here ˜n,"
+text = """
+˜ζ refer to the transformed operator under the bracket.\r
+The relations (3.4) are finite difference equations relating scattering amplitudes for\r
+particles at different mass levels. The essential content of these identities is displayed by a\r
+matrix of the levels of the states involved. Each row of the matrix encodes the level-number\r
+of the states in an amplitude. The general Ward identity is associated with a matrix of\r
+the form:\r
+\r
+\r
+n˜1 n2 n3 n4\r
+n1 n˜2 n3 n4\r
+n1 n2 n˜3 n4\r
+n1 n2 n3 n˜4\r
+\r
+ (3.5)\r
+Here integers ni ≥ 0, are levels of the untransformed particles, while the integers ˜ni are\r
+the levels of the transformed particles. The level nJ of the symmetry current J is easily\r
+extracted from the sum of the diagonal minus the anti-diagonal:\r
+Xn˜i −Xni = −q\r
+2 = 2nJ − 2 (3.6)\r
+If ˜niis negative then {J, V } = 0 and the corresponding amplitude simply vanishes.\r
+This procedure generalizes to N-particle scattering. Whenever J of momentum q is\r
+mutually local w.r.t all the pi and q +\r
+Ppi = 0 we have an identity\r
+X\r
+i\r
+(−1)q·p2+···q·piA\r
+\r
+V1, . . . , {J, Vi}, . . . VN\r
+\u0001\r
+= 0 (3.7)\r
+These relations are subject to an important technical restriction discussed in the next\r
+section.\r
+Remark: Although we have used currents J to derive relations on amplitudes, they\r
+are not unbroken symmetry currents in the theory since there are many operators in the\r
+BRST cohomology which are not mutually local w.r.t. any given J. Nevertheless, using\r
+Lorentz invariance and analyticity we are still able to derive relations on amplitudes."""
+
+[[sections]]
+number = "3.3"
+title = "Existence of required momenta"
+text = """
+The identities (3.4) would be of little use if one could rarely choose momenta in the way\r
+we have indicated. In this section we show that we can always find momenta corresponding\r
+to any prescription of the levels and kinematic invariants (at least, for N ≤ d = 26). In\r
+doing so it is necessary to allow the momenta to be complex. We may do this since the\r
+BRST conditions and the vertex operator calculus make perfect sense when momenta are\r
+complex."""
+
+[[sections]]
+number = "10"
+title = "Lemma. Suppose N ≤ d. For any complex numbers ni"
+text = """
+, ˜ni, i = 1, . . . N, and 1\r
+2N(N − 3)\r
+complex numbers zij , 1 ≤ i < j ≤ N − 2, z1,N−1, . . . zN−3,N−1, there exist momenta 8\r
+p1, . . . , pN ∈ Cˆ\r
+d\r
+such that, if we define q ≡ −Ppi then\r
+p\r
+2\r
+i = 2 − 2ni (3.8a)\r
+(pi + q)\r
+2 =\r
+X\r
+j:j6=i\r
+pj\r
+\u00012\r
+= 2 − 2˜ni (3.8b)\r
+pi· pj = zij (3.8c)\r
+Proof: For N ≤ d the invariants sij made from N momenta pi are algebraically\r
+independent. It is straightforward to solve (3.8 )as a linear system of equations to find the\r
+pi· pj in terms of linear combinations of the ni, n˜i, zij . We can regard the equations for\r
+pi· pj as equations for the intersection of 1\r
+2N(N + 1) quadrics in IPNd. These intersect in\r
+a variety of codimension at most 1\r
+2N(N + 1) [18]. Even if this variety lies at infinity we\r
+can use the solution - we simply must take a momentum → ∞ limit in the amplitudes. ♠\r
+The different sets of polarization invariants in (3.4) are polynomially related. There\u0002fore, using the analyticity of A we conclude that (3.4) holds for all values of s, t and\r
+all polarization tensors satisfying these polynomial relations. Similarly, provided ni, nJ\r
+are positive integers and ˜ni are integers, we can find momenta for arbitrary kinematic\r
+invariants for which the identities (3.7) can be written.\r
+Unfortunately one cannot generalize the lemma to the case N > d. For N ≥ d + 1\r
+the sij are not algebraically indpendent, hence we cannot specify arbitrarily the ni, n˜i and\r
+independent sij, i 6= j (for N-particle scattering).\r
+We are therefore stuck with the rather distasteful limitation to N-particle scattering\r
+for N ≤ d."""
+
+[[sections]]
+number = "3.4"
+title = "High Energy Limit"
+text = """
+Combining (2.10) with (3.4) we obtain the high energy identities:\r
+0 =z\r
+p2·q\r
+0 A\r
+s.p.({J, V1}, V2, V3, V4)\r
++(−1)q·p2z\r
+p1·q\r
+0\r
+(1 − z0)\r
+p3·qAs.p.(V1, {J, V2}, V3, V4)\r
++(−1)q·p2+q·p3(1 − z0)\r
+p2·qAs.p.(V1, V2, {J, V3}, V4)\r
++(−1)q·p1A\r
+s.p.(V1, V2, V3, {J, V4})\r
+(3.9)"""
+
+[[sections]]
+number = "8"
+title = "The momenta are allowed to take values in the extended complex plane C. ˆ"
+text = """
+11
+
+where z0 = s/(s + t) = 1/ cos2 1\r
+2\r
+θ, 1 − z0 = t/(s + t) = − tan2 1\r
+2\r
+θ, and each amplitude in\r
+(3.9) is evaluated at the same value of s, t. We take s, t → ∞ holding q · pi fixed. The\r
+amplitude As.p. in (2.10) has the form RU where R is a rational function of s, t and\r
+U ≡\r
+s\r
+st\r
+(s + t)\r
+3\r
+exp\u001A\r
+\u0002\r
+tlogt + slog|s| − (s + t)log|s + t|\r
+\u0003\r
+\u001B\r
+=\r
+cos 1\r
+2\r
+θ\r
+√\r
+2E sin3 1\r
+2\r
+θ\r
+exp\u001A2E\r
+2\r
+\r
+sin2 1\r
+2\r
+θlog[sin2 1\r
+2\r
+θ] + cos2 1\r
+2\r
+θlog[cos2 1\r
+2\r
+θ]\r
+\u0001\r
+\u001B (3.10)\r
+Shifts such as s, t → s + q · p2, t + q · p3 lead to an order one change in the amplitude from\r
+the exponential factor in (3.10), leading to the “extra” powers of z0, 1 − z0 in (3.9). The\r
+change δz0 in the position of the saddle-point in moduli space is O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+.\r
+Similarly, the shifts in s, t change the rational function R by terms of the same order.\r
+Hence (3.9) holds up to factors 1 + O\r
+\r
+1/s, 1/t, 1/(s + t)\r
+\u0001\r
+."""
+
+[[sections]]
+number = "4"
+title = "Six Examples"
+text = """
+Example 1: The simplest example of (3.4) has level matrix:\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 −2\r
+\r
+ (4.1)\r
+From the entries we read off that this is a “tachyonic identity,” i.e. q\r
+2 = 2. We also can\r
+read off:\r
+p\r
+2\r
+i = 2 p1 · q = p2 · q = p3 · q = −1 p4 · q = +1\r
+Using (A.1) of appendix A we see that (3.4) implies\r
+A(s − 1, t) + A(s, t − 1) = A(s − 1, t − 1) (4.2)\r
+where A is the basic Veneziano amplitude A0000 = A(s, t) for scattering of four states at\r
+level 0.\r
+Example 2: Consider the level matrix:\r
+\r
+\r
+1 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 −1\r
+\r
+ (4.3)"""
+
+[[sections]]
+number = "12"
+title = "This encodes a lightlike Ward identity with J = iζ1 · ∂Xeiq·X and q"
+text = """
+2 = 0. It relates γT T T\r
+scattering to T T T T scattering, where γ refers to the level one photon and T refers to the\r
+level zero tachyon. For the γT T T amplitude (2.7) simplifies to:\r
+A1000(ζ1 · p2, ζ1 · p3|s, t)\r
+From (4.3) we read off\r
+p\r
+2\r
+1 = p\r
+2\r
+2 =p\r
+2\r
+3 = p\r
+2\r
+4 = 2\r
+p1 · q = −1 p2 · q = p3 · q = 0 p4 · q = +1\r
+Using (A.3) we have:\r
+A1000(ζ1 · p2, ζ1 · p3|s, t) = −ζ1 · p2A(s − 1, t) − ζ1 · p3A(s, t) (4.4)\r
+From (3.9) we see that at high energies γT T T scattering is related to tachyon scattering\r
+via\r
+0 = A\r
+s.p.\r
+1000(ζ1 · p2, ζ1 · p3|s, t) + (1 + t/s)ζ1 · p2A\r
+s.p.(s, t) + ζ1 · p3As.p.(s, t) (4.5)\r
+Similarly, one easily derives relations on similar amplitudes. For example:\r
+A0100(ζ2 · p1, ζ2 · p3|s, t) = ζ2 · p1A(s − 1, t) − ζ2 · p3A(s, t − 1) (4.6)\r
+Example 3: We now consider the level matrix\r
+\r
+\r
+1 1 0 0\r
+0 1 0 0\r
+0 1 0 0\r
+0 1 0 −1\r
+\r
+ (4.7)\r
+again giving a lightlike Ward identity. This relates γγT T to γT T T scattering.\r
+We consider the γγT T amplitude to be a function of seven arguments:\r
+A1100(ζ1 · ζ2, ζ1 · p2, ζ1 · p3, ζ2 · p1, ζ2 · p3|s, t)\r
+Using (A.3) and (A.5) (3.4) becomes (after shifting arguments and setting ζ2 · q = 0):\r
+A1100(x1, x2, x3, x4, x5|s, t) = −A0100(x2x4 − x1, x2x5|s − 1, t)\r
+− x3A0100(x4, x5, s, t)\r
+= (x1 − x2x4)A(s − 2, t)+x2x5A(s − 1, t − 1) − x3x4A(s − 1, t)\r
++ x3x5A(s, t − 1)\r
+(4.8)"""
+
+[[sections]]
+number = "13"
+title = "Which has the high energy limit:"
+text = """
+A\r
+s.p.\r
+1100(x1, x2, x3, x4, x5|s, t) = −(1 + t/s)A\r
+s.p.\r
+0100(x2x4 − x1, x2x5|s, t)\r
+− x3A\r
+s.p.\r
+0100(x4, x5|s, t)\r
+(4.9)\r
+Notice that if we were restricted to using real momenta and polarizations then p\r
+2 =\r
+q\r
+2 = p · q = 0 ⇒ p k q and we would not derive relations on the most general amplitude\r
+(e.g. s would be fixed). This is not true if we use complex momenta. After we derive the\r
+Ward identity we can specialize to physical values of the relativistic invariants, and, as in\r
+(4.9), solve for the amplitude in terms of previously known amplitudes.\r
+Example 4: We now consider\r
+\r
+\r
+1 1 0 0\r
+1 1 0 0\r
+1 1 1 0\r
+1 1 0 −1\r
+\r
+ (4.10)\r
+which will express A1110 in terms of amplitudes at lower total level. The ordered set of\r
+relativistic invariants in A1110 is:\r
+\u001A\r
+ζ1 ζ2 ζ3 1\r
+p1 p2 p3 p4\r
+\u001B\r
+= {ζ1 · ζ2, ζ1 · ζ3, ζ2 · ζ3, ζ1 ·p2, ζ1 ·p3, ζ2 ·p1, ζ2 ·p3, ζ3 ·p1, ζ3 ·p2} (4.11)\r
+Following the procedure of the previous two examples we get:\r
+A1110(x1, . . . , x9|s, t) = A1100(x1x8, x4x8, x5x8 − x2, x6, x7|s, t)\r
++ A1100(x1x9, x4, x5, x6x9, x7x9 − x3|s, t − 1)\r
+(4.12)\r
+which has the high energy limit:\r
+A\r
+s.p.\r
+1110(x1, . . . , x9|s, t) = A\r
+s.p.\r
+1100(x1x8, x4x8, x5x8 − x2, x6, x7|s, t)\r
++ (1 + s/t)A\r
+s.p.\r
+1100(x1x9, x4, x5, x6x9, x7x9 − x3|s, t)\r
+(4.13)\r
+Example 5: We take\r
+\r
+\r
+1 1 1 0\r
+1 1 1 0\r
+1 1 0 0\r
+1 1 1 1\r
+\r
+ (4.14)\r
+which will relate the 4-photon amplitude to the tachyon amplitude. We now need the\r
+bracket (A.4)"""
+
+[[sections]]
+number = "14"
+title = "The ordered set of relativistic invariants occurring in A1111 is:"
+text = """
+\u001A\r
+ζ1 ζ2 ζ3 ζ4\r
+p1 p2 p3 p4\r
+\u001B\r
+= {ζ1 · ζ2,ζ1 · ζ3, ζ1 · ζ4, ζ2 · ζ3, ζ2 · ζ4, ζ3 · ζ4,\r
+ζ1 · p2, ζ1·p3, ζ2 · p1, ζ2 · p3, ζ3 · p1, ζ3 · p2, ζ4 · p1, ζ4 · p2}\r
+(4.15)\r
+So the four-photon amplitude is a function of 16 arguments, and (3.4) becomes\r
+A1111(x1, . . . ,, x14|s, t)\r
+= −A1110(x1x13, x2x13, x4, x7x13, x8x13 + x3, x9, x10, x11, x12|s, t)\r
+−A1110(x1x14, x2, x4x14, x7, x8, x9x14, x10x14 + x5, x11, x12|s, t + 1)\r
++x6A1100(x1, x7, x8, x9, x10|s, t)\r
+(4.16)\r
+with high energy limit:\r
+A\r
+s.p.\r
+1111(x1, . . . ,, x14|s, t)\r
+= −As.p.\r
+1110(x1x13, x2x13, x4, x7x13, x8x13 + x3, x9, x10, x11, x12|s, t)\r
+−\r
+t\r
+(s + t)\r
+A\r
+s.p.\r
+1110(x1x14, x2, x4x14, x7, x8, x9x14, x10x14 + x5, x11, x12|s, t)\r
++x6A\r
+s.p.\r
+1100(x1, x7, x8, x9, x10|s, t)\r
+(4.17)\r
+Example 6: As a final example we look at a timelike identity with level matrix:\r
+\r
+\r
+2 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+ (4.18)\r
+Hence q\r
+2 = −2 and\r
+J = Vζ,q ≡\r
+\u0002\r
+iq · ζ · ∂\r
+2X + ∂X · ζ · ∂X\u0003\r
+e\r
+iq·X\r
+tr(ζ)−2q · ζ · q = 0\r
+(4.19)\r
+We parametrize the scattering of 1 level 2 on 3 level 0 states by the function of 8 variables:\r
+A2000(p1 · ζ · p1, p1 · ζ · p2, p1 · ζ · p3, p2 · ζ · p2, p2 · ζ · p3, p3 · ζ · p3|s, t) (4.20)\r
+Now we use the bracket in (A.6). After shifting arguments a little one finds the bracket\r
+relation:\r
+A2000(p1 · ζ · p1, . . . p3 · ζ · p3|s, t) = −(p2 · ζ · p2 + p1 · ζ · p2)A(s − 2, t + 1)\r
++ (p3 · ζ · p3 + p1 · ζ · p3)A(s − 1, t + 1)\r
+−(p3 · ζ · p3 + p1 · ζ · p3+p2 · ζ · p2 + p1 · ζ · p2 + 2p2 · ζ · p3)A(s − 1, t)\r
+(4.21)\r
+15
+
+with high energy limit:\r
+A\r
+s.p.\r
+2000(p1 · ζ · p1, . . . p3 · ζ · p3|s, t) = −\r
+t\r
+s\r
+(1 + t\r
+s\r
+)(p2 · ζ · p2 + p1 · ζ · p2)A\r
+s.p.(s, t)\r
++\r
+t\r
+s\r
+(p3 · ζ · p3 + p1 · ζ · p3)A\r
+s.p.(s, t)\r
+−(1 + t\r
+s\r
+)(p3 · ζ · p3 + p1 · ζ · p3+p2 · ζ · p2 + p1 · ζ · p2 + 2p2 · ζ · p3)A\r
+s.p.(s, t)\r
+(4.22)\r
+As an exercise the reader may care to work out some futuristic identities for A2001."""
+
+[[sections]]
+number = "5"
+title = "Determination of Tachyon Amplitudes"
+text = """
+In the previous section we saw that the relations (3.4) lead to a host of interlevel\r
+amplitude identities. In the present section we discuss finite difference relations on the\r
+tachyon amplitudes themselves. We show that relations (3.4)(3.7) together with the an\u0002alyticity properties AP1,AP2 determine the N- tachyon scattering amplitudes up to an\r
+overall constant cN ."""
+
+[[sections]]
+number = "5.1"
+title = "Derivation of the Veneziano formula"
+text = """
+Example one of the previous section has already produced one identity on the tachyon\r
+scattering amplitude A(s, t). The relation (4.2) by itself is not sufficiently strong to de\u0002termine the function A. However, we can combine it with (4.6) using the decoupling of\r
+BRST trivial states. Decoupling of the longitudinal photon implies that A0100(s, t|s, t) = 0.\r
+Combining this with (4.6) we get\r
+sA(s − 1, t) = tA(s, t − 1) (5.1)\r
+Now the recursion relations (4.2) and (5.1) determine the value of A for s, t ∈ ZZ+ to be\r
+given by the Veneziano formula:\r
+A0000 = A(s, t) = c4\r
+Γ(s + 1)Γ(t + 1)\r
+Γ(s + t + 2) (5.2)\r
+where c4 = A(0, 0) is assumed nonzero.\r
+In order to obtain the amplitude for all s, t we must “analytically continue from the\r
+integers,” an idea familiar from studies of the S-matrix in D = 2 spacetime dimensions.\r
+(For reviews see [19]. ) It is at this point that we must invoke the analyticity properties\r
+AP1,AP2 of section 2.3."""
+
+[[sections]]
+number = "16"
+title = "Let us define"
+text = """
+A(s, t) = c4\r
+Γ(s + 1)Γ(t + 1)\r
+Γ(s + t + 2) A˜(s, t) (5.3)\r
+The functional equations for A imply that A˜(s, t) is periodic of period one in both s, t.\r
+Moreover, by AP1 it is an entire function. By AP2, the entire function A˜ is of expo\u0002nential type [20]. A periodic entire function of exponential type must be a trigonometric\r
+polynomial [20], that is:\r
+A˜(s, t) = X\r
+n,m\r
+cn,me\r
+2πi(ns+mt)\r
+where the sum is finite. Now applying AP2 again we see that A˜ must in fact be constant,\r
+so A˜ = 1.\r
+In conclusion, with a mild analyticity assumption we see that the Veneziano amplitude\r
+is fixed by symmetry.\r
+5.2. n-particle scattering, n ≤ 26\r
+The above procedure can be extended to higher point functions, although the amount\r
+of work involved goes up rapidly with n. We take the independent kinematic variables to\r
+be sij for 1 ≤ i < j ≤ n − 2 and si,n−1 for 1 ≤ i ≤ n − 3. The equation\r
+2 − n =\r
+X\r
+1≤i<j≤n−1\r
+sij (5.4)\r
+expresses sn−2,n−1 in terms of the other invariants. It is often useful to think of the\r
+variables as an upper triangular matrix:\r
+s =\r
+\r
+\r
+∗ s12 s13 · · · s1,n−1\r
+0 ∗ s23 · · · s2,n−1\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+0 · · · ∗ sn−3,n−2 sn−3,n−1\r
+0 · · · ∗ sn−2,n−1\r
+0 · · · 0 0 ∗\r
+\r
+\r
+(5.5)\r
+where sn−2,n−1 is not an independent variable but is fixed by (5.4).\r
+The tachyon amplitudes are functions on the space of upper triangular matrices (5.5)\r
+defined by (2.8).\r
+The generalization of (4.2) is\r
+A(. . . , sab, . . . , sac, . . . , sbc, . . .) =A(. . . ,(sab − 1), . . . ,(sac + 1), . . . , sbc, . . .)\r
+−A(. . . ,(sab − 1), . . .,(sac), . . . ,(sbc + 1), . . .)\r
+(5.6)\r
+17
+
+which holds ∀a, b, c such that 1 ≤ a < b < c ≤ n−1 where all other variables in the ellipsis\r
+are held fixed. We call these “triangle relations” since they relate a triangle of variables in\r
+(5.5).\r
+Using the triangle relations one easily reduces an arbitrary tachyon amplitude for\r
+sij ∈ ZZ+, 1 ≤ i < j ≤ n − 2 to the case where:\r
+s =\r
+\r
+\r
+∗ 0 0 · · · 0 s1,n−1\r
+0 ∗ 0 · · · 0 s2,n−1\r
+.\r
+.\r
+.\r
+.\r
+.\r
+. 0\r
+.\r
+.\r
+.\r
+0 · · · 0 ∗ 0 sn−3,n−1\r
+0 · · · 0 ∗ sn−2,n−1\r
+0 · · · 0 0 0 ∗\r
+\r
+\r
+We denote a tachyon amplitude evaluated for such a set of invariants by the function\r
+F(s1,n−1, . . . sn−3,n−1).\r
+Next, one may write lightlike relations connecting A0···010···0 to tachyon scattering.\r
+As above, one can put A0···010···0 to zero by evaluating at special polarization invariants\r
+corresponding to longitudinal photons. In this way we obtain a set of n − 1 relations for\r
+the function F. These equations are:\r
+0 = X\r
+1≤j≤n−2:j6=a\r
+" X\r
+ǫ∈ZZn−2\r
+2\r
+:ǫj=ǫa=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +\r
+\r
+n − 4 − |~ǫ|\r
+\u0001\r
+eˆa +~ǫ\u0013#\r
++sa,n−1\r
+X\r
+ǫ∈ZZn−2\r
+2\r
+:ǫa=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +\r
+\r
+n − 4 − |~ǫ|\r
+\u0001\r
+eˆa +~ǫ\u0013 (5.7)\r
+which holds for 1 ≤ a ≤ n−3 and where ˆea is a unit vector in the a direction, |~ǫ| is the sum\r
+of the nonzero entries, and the last entry of an n − 2 vector is dropped in the argument of\r
+F. We have two additional identities for a = n − 2:\r
+(6 − 2n −\r
+nX−3\r
+1\r
+si,n−1)\r
+X\r
+ǫ∈ZZn−3\r
+2\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +~ǫ\u0013=\r
+X\r
+1≤j≤n−3\r
+" X\r
+ǫ∈ZZn−3\r
+2\r
+:ǫj=0\r
+(−1)|~ǫ|F\r
+\u0012\r
+~s +~ǫ\u0013# (5.8)\r
+and for a = n − 1:\r
+X\r
+1≤j≤n−3\r
+sj,n−1F(~s − eˆj ) = (n − 3 +\r
+nX−3\r
+1\r
+si,n−1)F(~s) (5.9)\r
+18
+
+As we will show below, these equations are sufficient to determine the functional\r
+dependence of F for sij ∈ ZZ, up to a finite set of arbitrary constants. The remaining\r
+undetermined constants can be fixed (up to one overall scale) by use of the axiom AP1.\r
+We illustrate this by giving the general solution to the functional equations (5.7)(5.8)(5.9)\r
+for the case of the 5-particle function. We then give the general argument.\r
+5.3. 5-particle function\r
+The functional equations become\r
+x\r
+"\r
+F(x + 1, y) − F(x, y) − F(x, y + 1) + F(x − 1, y + 1)#+\r
++2F(x + 1, y) − F(x, y)−F(x, y + 1) = 0\r
+y\r
+"\r
+F(x + 1, y) − F(x + 1, y − 1) − F(x, y + 1) + F(x, y)\r
+#\r
++\r
++F(x + 1, y) + F(x, y) − 2F(x, y + 1) = 0\r
+(x + y + 4)"F(x + 1, y + 1) − F(x + 1, y) − F(x, y + 1) + F(x, y)\r
+#\r
++\r
+F(x + 1, y)+F(x, y + 1) − 2F(x, y) = 0\r
+(x + y + 2)F(x, y) = xF(x − 1, y) + yF(x, y − 1)\r
+(5.10)\r
+The equations must be evaluated in the quadrant x = −2 − a, y = −2 − b, a, b ≥ 0,\r
+otherwise the amplitude might have poles. The general solution to (5.10) in this quadrant\r
+is easily found to be\r
+F(x, y) =\r
+2\r
+\u0014\r
+4β + (3α − 4β)x + (8β − 3α)y)\r
+\u0015\r
+(x + 1)(y + 1)(x + y + 2) (5.11)\r
+where α, β are undetermined. By AP1 we only allow poles in x or in x + y ( since y itself\r
+is not related to the squared momentum in any channel). This requirement fixes 3α = 4β\r
+so that\r
+F(x, y) = 6α\r
+1\r
+(x + 1)(x + y + 2) (5.12)\r
+It is now a simple matter to use the triangle relations together with the relation\r
+Xn\r
+j=0\r
+\u0012\r
+n\r
+j\r
+\u0013\r
+(−1)j\r
+1\r
+n − j + x\r
+= −\r
+Γ(−n − x)Γ(n + 1)\r
+Γ(1 − x)\r
+19
+
+to obtain the complete five-particle amplitude in terms of a generalized hypergeometric\r
+function:\r
+A(s12, s13, s14, s23, s24) =\r
+6α\r
+Γ(s12 + 1)Γ(s23 + 1)Γ(1 + s34)\r
+Γ(2 + s23 + s34)\r
+Γ(−1 − s12 − s13 − s14)\r
+Γ(−s13 − s14)\r
+3F2\r
+\u0012\r
+−s13, −1 − s12 − s13 − s14, 1 + s34; −s13 − s14,2 + s23 + s34\r
+\f\r
+\f1\r
+\u0013\r
+(5.13)\r
+where s34 is defined by (5.4).\r
+Equation (5.13) is derived for integral values of sij . In order to “continue” to all values\r
+of sij we must combine results on entire functions with the analyticity property AP2 of\r
+section 2.3, as in the previous section. This is straightforward when s13 = 0. In the\r
+general case we must use a Mellin-Barnes representation for 3F2 to establish appropriate\r
+asymptotics.\r
+The formula (5.13) can actually be derived directly from the integral representation\r
+(2.8) using formulae in, e.g., [21]. Similar formulae have appeared in a different context in\r
+[22].\r
+5.4. 6 ≤ n ≤ 26\r
+The above discussion generalizes to n- particle scattering for 6 ≤ n ≤ 26. The\r
+analyticity property AP1 combined with the functional equation (5.9) is sufficiently strong\r
+to obtain the general formula.\r
+We now prove this. To begin we use (5.9) with s2 = s3 = · · · = 0:\r
+s1F(s1 − 1,~0) = (n − 3 + s1)F(s1,~0) (5.14)\r
+which implies\r
+F(s1,~0) = c\r
+(s1 + 1)· · ·(s1 + n − 3) (5.15)\r
+where c is a constant. Now given F(s1,~0) we can again use (5.9) to derive\r
+F(s1, 1,~0) = c1s1 + c2\r
+(s1 + 1)· · ·(s1 + n − 2) (5.16)\r
+where c1, c2 are constants. We can carry on in this way and easily establish by induction\r
+that if s2, s3, . . . are nonnegative integers then\r
+F(s1, s2, . . . sn−3) = P\r
+s2,...sn−3 (s1)\r
+(s1 + 1)· · ·(s1 + s2 + · · · + sn−3 + n − 3) (5.17)\r
+20
+
+where P\r
+s2,...sn−3 (s1) is a polynomial of degree s2 + · · · + sn−3.\r
+Now, as with the 5pt function we can fix the coefficients of the polynomial by invoking\r
+AP1. By AP1 the function F(~s) can only have poles when\r
+s1,n−1 ∈ {−1, 0, 1, 2, . . .}\r
+s1,n−1 + s2,n−1 ∈ {−2, −1, 0, 1, 2, . . .}\r
+s1,n−1 + s2,n−1 + s3,n−1 ∈ {−3, −2, −1, 0, 1, . . .}\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+s1,n−1 + · · · sn−3,n−1 ∈ {−(n − 3), −(n − 4), . . .}\r
+(5.18)\r
+Therefore, the polynomial in the numerator of (5.17) must cancel the poles:\r
+s1,n−1 ∈ {−s2 − 1, . . . , −2}\r
+s1,n−1 ∈ {−s2 − 3, . . . , −s2 − s3 − 2}\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+s1,n−1 ∈ {−s2 − · · · − sn−4 − (n − 3), . . . , −s2 − · · · − sn−3 − (n − 4)}\r
+(5.19)\r
+This fixes all the constants in P up to an overall scale and we obtain the result\r
+F(~s) = cn\r
+nY−3\r
+j=1\r
+−1\r
+j +\r
+Pj\r
+ℓ=1 sℓ,n−1\r
+(5.20)\r
+which can also be checked directly from the integral representation (2.8).\r
+One can proceed from here to evaluate the general tachyon amplitude using the tri\u0002angle relations and AP2. The result after “putting back” s12, s23, . . . sn−3,n−2 is still a\r
+product of gamma functions. The general result is a multiple hypergeometric function of\r
+1\r
+2\r
+(n − 3)(n − 4) arguments. For example, the six-point function turns out to be:\r
+X\r
+j1,j2,j3≥0\r
+(−s14)j1(−s24)j2(−s13)j3\r
+j1!j2!j3!\r
+Γ(−s12 − s13 − s14 − s15 + j1 + j3)\r
+Γ(1 − s13 − s14 − s15 + j1 + j3)\r
+×\r
+Γ(4 − s34 − s35 − s45 + j1 + j2 + j3)\r
+Γ(5 − s23 − s34 − s35 − s45 + j1 + j2 + j3)\r
+Γ(1 + s12)Γ(1 + s23)Γ(1 + s34)\r
+Γ(5 − s23 − s34 − s35 − s45 + j1 + j2)\r
+(5.21)\r
+Multiple hypergeometric functions have been studied to some extent in the literature, see,\r
+e.g., [21]. In order to apply AP2 we must give a Mellin-Barnes representation to series\r
+like (5.21) to establish the appropriate asymptotics in sij . We have not carried out this\r
+procedure in complete detail, but fully expect that it can be done.\r
+21"""
+
+[[sections]]
+number = "6"
+title = "S is unique"
+text = """
+We now argue that the solution to the bracket relations is essentially unique.\r
+6.1. 4-particle S-matrix\r
+We begin by showing that the identities (3.4) completely fix the 4-particle S-matrix\r
+for all particles in terms of the level zero S-matrix A(s, t). Indeed, this can already be\r
+done simply by using the lightlike Ward identities. The proof of this assertion is a simple\r
+application of the no-ghost theorem and DDF operators [7]. If k0 is a lightlike vector,\r
+p\r
+2\r
+0 = 2, and p0 · k0 = 1 then the bracket\r
+{iζ · ∂Xe−iℓk0X, · } : H[p0 − (n − ℓ)k0, n − ℓ] → H[p0 − nk0, n]\r
+is equivalent to applying DDF operators ζ · A−ℓ to H[p0 − (n − ℓ)k0, n − ℓ]. Therefore, the\r
+no-ghost theorem implies that\r
+{, } : ⊕1≤ℓ≤nH[−ℓk0, 1] ⊗ H[p0 − (n − ℓ)k0, n − ℓ] → H[p0 − nk0, n] (6.1)\r
+is a surjective map.\r
+We would like to proceed as in the examples of section four using the Ward identities\r
+to reduce the level-numbers of various states in the amplitude. We use induction on\r
+nT =\r
+Pni\r
+, the sum of the level numbers of the states in an amplitude. Consider the\r
+lightlike Ward identities of the form\r
+\r
+\r
+n1 n2 n3 n4\r
+n1 − ℓ n2 − ℓ n3 n4\r
+n1 − ℓ n2 n3 n4\r
+n1 − ℓ n2 n3 n4\r
+\r
+ (6.2)\r
+for 1 ≤ ℓ ≤ n1. These identities relate the amplitude encoded by the first row to amplitudes\r
+with smaller values of nT . Since (6.1) is surjective, we can map an arbitrary amplitude,\r
+that is, an amplitude where the level n1 state has an arbitrary polarization, to amplitudes\r
+with smaller total level number.\r
+22"""
+
+[[sections]]
+number = "6.2"
+title = "N-particle scattering"
+text = """
+The above argument generalizes easily to N-particle scattering, using the level matrix\r
+\r
+\r
+n1 n2 n3 . . . nN\r
+n1 − ℓ n2 − ℓ n3 . . . nN\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+.\r
+n1 − ℓ n2 n3 . . . nN\r
+n1 − ℓ n2 n3 . . . nN\r
+\r
+\r
+(6.3)\r
+as long as we can specify the levels and kinematic invariants arbitrarily. From the discussion\r
+of section 3.3 we see that this is possible for N ≤ 26 and hence N-particle scattering for\r
+arbitrary levels can be expressed in terms of tachyon scattering.\r
+We can complete the argument for uniqueness by using the results of section 5, where\r
+we showed that the bracket relations determine the N-tachyon amplitude up to a constant\r
+cN (see (5.20))."""
+
+[[sections]]
+number = "6.3"
+title = "Summary"
+text = """
+We have established:\r
+Theorem 1: A multilinear function AN : H⊗N → C, N ≤ 26, which satisfies"""
+
+[[sections]]
+number = "1"
+title = "Poincar´e invariance"
+text = ""
+
+[[sections]]
+number = "2"
+title = "The bracket relations (3.7)."
+text = ""
+
+[[sections]]
+number = "3"
+title = "The analyticity properties AP1 and AP2"
+text = """
+is uniquely determined up to an overall constant, cN .\r
+Moreover, an easy argument gives:\r
+Theorem 2: A set of multilinear functions {AN }N≤26 which satisfy 1,2,3 above as well\r
+as AP3 are uniquely specified up to one parameter κ by cN = κ\r
+N−2\r
+.\r
+Theorem 2 follows in the standard way by examining the residue of a tachyon ampli\u0002tude at a tachyon pole. By AP3 this must be a product of tachyon amplitudes. Hence\r
+cN1+1cN2+1 = cN1+N2so cN = κ\r
+N−2\r
+, where κ is the string coupling.\r
+Remark: We offer one speculation on how the above results can be generalized to N > 26.\r
+In establishing theorem 1 we only used the bracket relations for currents J at levels 0, 1.\r
+In order to extend the results to N > 26 it will be necessary to use higher level currents.\r
+In the notation of section 3.3 , by fixing the ni, n˜i we are only free to choose momenta\r
+to fix independent invariants sij (i 6= j), on a codimension N subvariety I(ni, n˜i) of the\r
+variety I(ni) of all invariants sij at fixed ni. Nonetheless, it is possible that the amplitude\r
+23
+
+can still be uniquely determined by generalizing the idea of “analytic continuation from\r
+the integers” used previously. By varying the ˜ni at fixed ni one can possibly determine\r
+the amplitude An1,...nN on “enough” subvarieties I(ni, n˜i) ⊂ I(ni) that, when combined\r
+with the axioms AP1,AP2, the amplitude is fixed on the entire variety I(ni)."""
+
+[[sections]]
+number = "7"
+title = "Closed Strings"
+text = """
+The closed string cohomology for ghost number (1, 1) is\r
+Hc = H1,1\r
+c = ⊕n∈ZZ+\r
+Z\r
+IR25,1\r
+dp H[p, n] ⊗ H¯[p, n] (7.1)\r
+where the superscript refers to left and right ghost number and the bar always stands\r
+for “right-mover,” and not “complex conjugate.” S-matrix amplitudes are multilinear\r
+functions Ac : H⊗n\r
+c → C constructed as follows. The operator formalism associates a\r
+measure Ω(V1 ⊗ V¯\r
+1, . . . , Vn ⊗ V¯n) on the moduli space of the n-punctured Riemann sphere,\r
+M0,n. We integrate Ω over M0,n for an appropriate domain of sij and continue analytically\r
+from there. There are two ways we may try to extend the above results to closed strings."""
+
+[[sections]]
+number = "7.1"
+title = "Factorization of Amplitudes"
+text = """
+A beautiful result of Kawai, Lewellen, and Tye [23] states that the closed and open\r
+four-particle amplitudes are related by 9\r
+Ac(V1 ⊗ V¯\r
+1, V2 ⊗ V¯2,V3 ⊗ V¯3, V4 ⊗ V¯4)\r
+= − sin(πt)A(V1, V2, V3, V4)A(V¯\r
+1, V¯3, V¯2, V¯4)\r
+(7.2)\r
+At high energy we have\r
+Ac(V1 ⊗ V¯\r
+1, V2 ⊗ V¯2,V3 ⊗ V¯3, V4 ⊗ V¯4)\r
+∼ As.p.(V1, V2, V3, V4)A\r
+s.p.(V¯\r
+1, V¯2, V¯3, V¯4)\r
+(7.3)\r
+Similar, but more complicated remarks hold for n-particle scattering. We may combine\r
+(7.2) with previous results to relate scattering of massive closed string states to closed\r
+string tachyonic scattering."""
+
+[[sections]]
+number = "9"
+title = "We take α"
+text = """
+′ = 2 for closed string amplitudes.\r
+24"""
+
+[[sections]]
+number = "7.2"
+title = "Algebraic structures for closed strings"
+text = """
+It is possible to extend the definition of the bracket to the closed string, as shown in\r
+[16][17]. Composing this bracket with b\r
++\r
+0 = b0 + ¯b0 we obtain a map of the physical states\r
+to themselves: H1,1\r
+c ⊗ H1,1c → H1,1c\r
+. This map is essentially a tensor product of open\r
+string brackets and does not turn the physical states into a Lie algebra. Also, one cannot\r
+justify the analog of (3.7). Thus, the most straightforward generalization of the previous\r
+discussion does not work.\r
+Instead what one can do is consider Hc to be the “diagonal” subspace of the larger\r
+space\r
+H˜\r
+c = Hopen ⊗ H¯open\r
+defined by equality of left and right momenta: p = ¯p. Amplitudes on the larger space H˜\r
+c\r
+are only defined for n-tuples which are pairwise mutually local. The physical amplitudes\r
+are a subset of this expanded set. It is straightforward to write bracket relations for this\r
+expanded set of amplitudes. Suppose J ⊗ J¯ has momentum (q, q¯), and suppose further\r
+that q +\r
+Ppi = 0, q · pi ∈ ZZ, ¯q +Pp¯i = 0, ¯q · p¯i ∈ ZZ. Then\r
+X\r
+i,¯i\r
+(−1)q·p2+···q·pi(−1)q¯·p¯2+···q¯·p¯¯i\r
+Ac\r
+\r
+V1 ⊗ V¯\r
+1, . . . , {J, Vi} ⊗ V¯i\r
+, . . . ,V¯i ⊗ {J, ¯ V¯¯i}, . . . , Vn ⊗ V¯\r
+n\r
+\u0001\r
+= 0\r
+(7.4)\r
+Evidently, the previous sections apply to the left- and right- degrees of freedom separately\r
+and fully determine the expanded set of amplitudes, hence a fortiori, the physical ones, at\r
+least for n ≤ 26.\r
+One implication of these remarks is that the α\r
+′ → 0 limit of scattering amplitudes of\r
+gravitons are in principle completely determined by the bracket relations. This raises the\r
+interesting issue of the relation of bracket algebras and algebras of vector fields."""
+
+[[sections]]
+number = "8"
+title = "Conclusions"
+text = ""
+
+[[sections]]
+number = "8.1"
+title = "What we did"
+text = """
+We have shown that the bracket operation on mutually local BRST classes may be\r
+combined with Lorentz invariance and analyticity to write an infinite set of functional\r
+relations on string scattering amplitudes. These relations are rather restrictive. The\r
+central results of this paper are theorems 1 and 2 of section 6.3 which state that the bracket\r
+25
+
+relations together with the analyticity axioms AP1,AP2, AP3 of section 2.3 uniquely\r
+determine the genus zero open string S-matrix in terms of a single free parameter, κ, the\r
+string coupling constant, at least for N ≤ 26-particle scattering.\r
+Some readers will be puzzled by our emphasis on high-energy limits. This limit might\r
+seem irrelevant if the bracket relations already determine the amplitude for all energies.\r
+The finite-difference relations are not, properly speaking, Ward identities since they relate\r
+amplitudes at different energies. Our chief concern has been understanding the symmetries\r
+of string theory and how they are realized in different backgrounds. Since high energy\r
+limits of the finite-difference relations look more like Ward-identities they deserve special\r
+attention.\r
+Some readers will object that this paper contains nothing new. After all, the structure\r
+constants of the bracket are just the on-shell three point functions. By factorization, a\r
+knowledge of all the three-point functions in principle determines the full S-matrix. If one\r
+were mainly interested in explicit formulae for amplitudes the factorization approach would\r
+be impracticable, whereas our approach could be made quite efficient. The important point\r
+is, however, that the present discussion clarifies the fundamental role of the underlying\r
+algebraic structure of the bracket."""
+
+[[sections]]
+number = "8.2"
+title = "What we should do"
+text = """
+There is plenty of room for further work.\r
+Clearly the restriction on N ≤ 26 for N-particle scattering is extremely unsatisfactory.\r
+It is possible that the result of this paper can be extended to N > 26 by combining the\r
+procedure of “analytic continuation from the integers” with bracket relations for states\r
+other than lightlike states. Indeed, in arriving at our result we have used only a small\r
+subset of the entire set of bracket relations.\r
+There are several possible generalizations of the present study. These include:\r
+1. String perturbation theory. Unfortunately, it is far from clear how to extend the\r
+above results to quantum perturbation theory. The problem is that a chiral BRST class J\r
+is not mutually local with respect to all states. That means {J, · } does not commute with\r
+an insertion of the identity operator P|IihI| or, more geometrically, contour integrals\r
+of J cannot be pulled around handles. This problem disappears for total closed string\r
+compactification, but, curiously, such theories have other difficulties with loop amplitudes\r
+[6]. For the same reason extension to mixed open-closed string scattering is not trivial.\r
+26
+
+Our attitude towards this problem is that in this paper we have managed to understand\r
+better the classical symmetries of string theory. It remains to be seen how the symmetries\r
+are realized quantum-mechanically. We are pursuing some ideas in this direction.\r
+2. Fermionic strings. It should be interesting to generalize these results to superstring\r
+amplitudes. We intend to return to this in a future work."""
+
+[[sections]]
+number = "3"
+title = "Other backgrounds. We have restricted attention to the background of 26-"
+text = """
+dimensional Minkowski space. Bracket relations should exist for amplitudes in any back\u0002ground with an uncompactified Minkowski space component. If the monodromy of the\r
+internal parts of vertex operators is abelian one should be able to adjust spacetime mo\u0002menta to obtain mutual locality in some situations. In such situations the technical lemma\r
+of section 3.3 shows that one could write bracket relations for N ≤ d -particle scattering\r
+where d is the number of uncompactified dimensions. The symmetry algebra of mutu\u0002ally local BRST classes will depend on the background. It is not clear how effective the\r
+relations will be in other backgrounds.\r
+The bracket relations are very reminiscent of the “W∞ Ward identities” which have\r
+been used to obtain amplitudes for string scattering in 1 + 1 dimensional spacetime [13]\r
+[24–26]. These techniques made essential use of the existence of a nontrivial ghost number\r
+zero cohomology, something which is absent in the critical bosonic string. We hope that\r
+the bracket relations will play a role in general backgrounds analogous to the “W∞ Ward\r
+identities” of 1 + 1 dimensional string theory.\r
+Finally, finite difference relations for correlation functions are known to arise in certain\r
+exactly solvable quantum field theories as well as in studies of q-deformed affine algebras.\r
+It would be very interesting to discover an underlying quantum group symmetry in the\r
+critical bosonic string S-matrix."""
+
+[[sections]]
+number = "8.3"
+title = "What are we doing?"
+text = """
+Beyond these questions of generalization there is the much larger question of exactly\r
+what role the bracket should play in the formulation of string theory.\r
+We believe that the bracket relations are a stringy expression of spontaneous symmetry\r
+breaking. On physical grounds one expects that symmetries which connect scattering of\r
+states at different mass levels must be spontaneously broken. We will say that a current\r
+J(z) (or, more generally, a ghost number 1 BRST class) is “broken” if it is not mutually\r
+local with respect to some on-shell state. In the open string the on-shell condition is simply\r
+Qψ = 0 so the only unbroken currents are ∂Xµ. In the closed string statespace - viewed\r
+27
+
+as a subspace of Hopen ⊗ H¯\r
+open- the on-shell condition requires furthermore that pL = pR.\r
+According to this terminology all holomorphic BRST classes are off-shell and broken with\r
+the exception of c∂Xµ and its conjugate. Nevertheless, through the bracket relations these\r
+holomorphic classes constrain the couplings of on-shell particles.\r
+From the above point of view, the uncompactified string contains infinitely many\r
+broken symmetry algebras. These are the sets L = {Vi} of mutually local BRST invariant\r
+states in Hopen which are closed under the bracket. We have seen in section 3.1 that such\r
+sets L can be given the structure of a vectorially-graded Lie algebra. We can further justify\r
+the name “broken symmetry algebra” for such sets L by noting that L can also be given\r
+a Lie algebra structure, and that this Lie algebra is an algebra of unbroken symmetries\r
+of some closed string toroidal compactification. The reason for this is that, if {pi} is the\r
+set of momenta associated to {Vi} then Γ = hpii is an even integral lattice. (Γ may be\r
+Euclidean or Lorentzian.) The lattice is even since p\r
+2\r
+i = 2 − 2ni and integral by mutual\r
+locality. By the Frenkel-Kac construction [27] [28], we can introduce cocycle operators to\r
+turn the vectorially-graded bracket algebra of the {Vi} into a true Lie algebra structure on\r
+LΓ = ⊕n≥0,p∈ΓH[p, n] .\r
+To see that this is the unbroken symmetry of a toroidal compactification recall that\r
+(Γ; 0) ⊕ (0; Γ) ֒→{(pL; pR)|pL, pR ∈ Γ\r
+∗\r
+, pL − pR ∈ Γ}\r
+∼= IID,D\r
+and the unbroken symmetry associated with this background is LΓ ⊕ LΓ.\r
+It is further natural to consider maximal sets of mutually local BRST classes {Vi}. The\r
+associated lattices have rank 26 and are necessarily hyperbolic. The associated Lie algebras\r
+are unbroken symmetries of totally compactified backgrounds. Among these backgrounds\r
+there is a distinguished compactification, namely, compactification on the torus defined\r
+by Γ∗ = II25,1in the open case or on the Narain compactification for Γ∗ = (II25,1; 0) ⊕\r
+(0; II25,1) in the closed case. Here II25,1is the unique even self-dual lattice in IR25,1.\r
+The corresponding algebra L∗ = LΓ∗ has been dubbed the “fake Monster Lie algebra” by\r
+Borcherds [29] [30].\r
+Based on the analogy with Euclidean compactifications, which duly reproduces the\r
+Higgs mechanism in the α\r
+′ → 0 limit [7], we may say that the uncompactified string is\r
+a spontaneously broken gauge theory with the gauge algebra L∗ (in the open case) and\r
+L∗ ⊕ L∗ (in the closed case) broken down to IR26 and IR26 ⊕ IR26 respectively.\r
+28
+
+At high energies the bracket relations become Ward identities. This should be un\u0002derstood as some kind of stringy high-energy symmetry restoration which replaces the\r
+analogous notion in spontaneously broken gauge theory. (As shown in appendix B, the\r
+standard field-theoretic approach does not generalize straightforwardly.) In this sense the\r
+above hyperbolic Lie algebras of toroidal compactification “explain” the linear relations\r
+on high energy amplitudes discussed in [1].\r
+Remark: The uniqueness of S is a generalization of Proposition 14 of [6], with the fake\r
+Monster Lie algebra replaced by the “vectorially-graded Lie algebroid of physical states.” It\r
+is interesting to note that the structure constants of these two algebraic objects are closely\r
+related. The structure constants of appendix A are, essentially, analytic continuations of\r
+the structure constants of L∗. One could say that the bosonic string S-matrix is made out\r
+of the structure constants of L∗."""
+
+[[sections]]
+number = "8.4"
+title = "What we dream of doing"
+text = """
+It is clear from a study of unbroken symmetries in toroidal compactification that the\r
+Lie algebras L∗, L∗ ⊕ L∗, while distinguished, are not the full story. As explained in [6]\r
+L∗ ⊕ L∗ is not a universal symmetry for closed string toroidal compactification. We hope\r
+that there is some kind of “universal” algebraic structure in string theory which will replace\r
+compact Lie algebras in the complete formulation of string theory as a generalization of\r
+gauge theory.\r
+In nonabelian gauge theories like the standard model the on-shell asymptotic states\r
+form representations of the symmetry group. Since the representations do not just involve\r
+the adjoint there is, in general, no algebraic structure on the space of on-shell states. String\r
+theories are a very interesting class of theories in which the on-shell states themselves form\r
+an algebra. String theory might some day be regarded as the theory of symmetry in\r
+its purest form: a single symmetry principle fixes entirely the particle content and the\r
+interactions.\r
+Note added: The earlier version of this paper erroneously claimed that the lemma of\r
+section 3.3 applied to N-particle scattering for all N, not just N ≤ 26, and hence that\r
+bracket relations fixed all N-particle amplitudes. I thank E. Witten for pointing out this\r
+error. I also thank H. Verlinde for insisting on the point when I didn’t listen.\r
+Acknowledgements"""
+
+[[sections]]
+number = "29"
+title = "I would like to thank T. Banks for important encouragement, and B. Lian and G."
+text = """
+Zuckerman for many useful discussions of their work. I also thank S. Cordes, I. Frenkel,\r
+J. Horne, R. Shankar, and E. Verlinde for discussions. I thank the Ecole Normale Su\u0002perieure (Paris) and CERN for hospitality extended to me while some of this research was\r
+done. This work is supported by DOE grant DE-AC02-76ER03075, DOE grant DE-FG02-\r
+92ER25121, and by a Presidential Young Investigator Award.\r
+Appendix A. Table of some structure constants for the bracket\r
+• {p\r
+2\r
+1 = 2, p22 = 2}:\r
+{e\r
+ip1·X, eip2·X} =\r
+\r
+\r
+\r
+0 for p1 · p2 ≥ 0\r
+e\r
+i(p1+p2)·X for p1 · p2 = −1\r
+Sn(p1 · X(z))e\r
+i(p1+p2)·X for p1 · p2 = −(n + 1)\r
+(A.1)\r
+where Sn[f(z)] is a differential polynomial in f(z) defined by Taylor expansion:\r
+e\r
+i(f(w)−f(z)) ≡\r
+X\r
+n∈ZZ\r
+(w − z)\r
+nSn[f(z)]\r
+The Sn are essentially Schur polynomials in the derivatives of f. The first few nonvanishing\r
+ones are\r
+S0 = 1\r
+S1 = i∂Y\r
+S2 =\r
+i\r
+2\r
+∂\r
+2Y −\r
+1\r
+2\r
+(∂Y )\r
+2\r
+(A.2)\r
+• {p\r
+2\r
+1 = 0, p22 = 2}:\r
+{iζ1∂Xeip1X, eip2X} = ζ1 · p2e\r
+i(p1+p2)X p1 · p2 = 0\r
+= i(ζ1 + (p2 · ζ1)p1) · ∂Xei(p1+p2)X p1 · p2 = −1\r
+(A.3)\r
+• {p\r
+2\r
+1 = 0, p22 = 0}:\r
+{iζ1 · ∂Xeip1X, iζ2 · ∂Xeip2X} =\r
+\u0002\r
+ζ1 · ζ2 − (ζ1 · p2)(ζ2 · p1)\r
+\u0003\r
+e\r
+i(p1+p2)X p1 · p2 = +1\r
+(A.4)\r
+{iζ1 · ∂Xeip1X, iζ2 · ∂Xeip2X} = iζ′· ∂Xei(p2+p1)X p1 · p2 = 0\r
+ζ\r
+′ = (ζ1 · ζ2 − (ζ2 · p1)(ζ1 · p2))p1 + (ζ1 · p2)ζ2 − (ζ2 · p1)ζ1\r
+(A.5)\r
+30
+
+• {p\r
+2\r
+1 = −2, p22 = 2}:\r
+{Vζ,p1, eip2X} = −(p2 + p1) · ζ · p2e\r
+i(p2+p1)·X p1 · p2 = +1\r
+= Vζ\r
+′\r
+,p2+p1 p1 · p2 = −1\r
+ζ\r
+′ = ζ+\r
+\r
+p1 ⊗ p2 · ζ + ζ · p2 ⊗ p1\r
+\u0001\r
++\r
+1\r
+2\r
+\u0002\r
+(p2 + p1) · ζ · p2\r
+\u0003\r
+p1 ⊗ p1\r
+(A.6)\r
+Appendix B. High energy symmetries and spontaneous symmetry breaking\r
+In [6] we proposed that the infinite dimensional symmetries arising upon time\u0002compactification - of which L∗ ⊕ L∗ is a spectacular example - are the high-energy sym\u0002metries of [1]. The idea was that Ward identities derived in a symmetric compactification\r
+could be “parallel transported” to the decompactified background. The decompactifica\u0002tion forces momenta to infinity, hence the connection with high energy scattering. This\r
+proposal was based on a field theoretic intuition: in field theory the effects of spontaneous\r
+symmetry breaking disappear at high energies. It turns out that this intuition is not very\r
+good in string theory. Closed string scattering at high energy is sensitive to the breaking\r
+of toroidal symmetries. In this appendix we demonstrate that surprising fact with a few\r
+simple examples.\r
+B.1. Recovery of Ward Identities in Field Theory\r
+We consider enhanced symmetries and symmetry breaking in the framework of toroidal\r
+compactification. (We only consider compactification of spacelike dimensions here.) Sup\u0002pose we have an unbroken symmetry current Jq = e\r
+iq·Y at a Narain lattice Γ which has a\r
+vector (q; 0) with q\r
+2 = 2. Consider a theory at Γ′ = g(λ)·Γ where g(λ) is a one-parameter\r
+family of O(d, d) rotations taking (q; 0) to (qL; qR) with qR 6= 0. The symmetry associated\r
+with J is spontaneously broken in spacetime leading to massive gauge bosons with mass\r
+m2\r
+V\r
+/m2\r
+pl = q"""
+
+[[sections]]
+number = "2"
+title = "R(λ) and α"
+text = """
+′ ∼ 1/m2\r
+pl is related to the Planck mass.\r
+Consider the scattering amplitudes A(V1, . . . Vn) for (massless and massive) gauge\r
+bosons. The field-theory limit is obtained by letting q"""
+
+[[sections]]
+number = "2"
+title = "R, pi"
+text = """
+· pj → 0 and expanding in these\r
+variables. The amplitudes have an expansion A =\r
+Pǫ\r
+nA(n)\r
+in powers of ǫ = 1/mpl, where\r
+each A(n)is a rational function of its arguments.\r
+If we have a Ward identity in the unbroken phase PA(V1, . . . δVi, . . . Vm) = 0 then we\r
+may ask what happens to the corresponding amplitudes in the broken phase. The precise\r
+definition of “corresponding amplitudes” requires a transport operator T\r
+λ on the BRST\r
+31
+
+cohomology. We will simply rotate momenta by O(d, d) transformations: this will suffice\r
+for our examples. 10 For each n we have\r
+lim\r
+λ→0\r
+X\r
+i\r
+A\r
+(n)\r
+(T\r
+λV1, . . . T λ\r
+δVi, . . . T λVm) = 0 (B.1)\r
+and since A(n) are rational functions of pi· pj and of the symmetry-breaking masses q"""
+
+[[sections]]
+number = "2"
+title = "R(λ)"
+text = """
+we conclude that the sum of the terms is proportional to the symmetry breaking masses.\r
+Therefore, for dimensional reasons, at each order in the expansion in 1/mpl the sum of\r
+the terms grows more slowly in energy than the individual terms. In particular, for the\r
+leading terms ∼ mn\r
+pl where n is a nonnegative power, the sum of the terms vanishes. This\r
+is the recovery of the Ward identity at high energy.\r
+Example. To be explicit, consider a circular compactification of a single dimension\r
+Y . Let R = e\r
+λ\r
+. At λ = 0 we have an unbroken SU(2) × SU(2) gauge theory which is\r
+broken to U(1) × U(1) for λ > 0. Introduce the notation:\r
+e(j, ¯j, R) ≡ e\r
+√i\r
+2\r
+(\r
+j+¯j\r
+R +(j−¯j)R)Y\r
+(z)e\r
+√i\r
+2\r
+(\r
+j+¯j\r
+R −(j−¯j)R)Y¯\r
+(¯z) (B.2)\r
+Focus on a single factor SU(2) → U(1). In the broken phase we have massive gauge\r
+bosons, call them W±(ǫ), with corresponding vertex operators:\r
+W±(ǫ, p) = e(±1, 0, R)ǫ · ∂Xe ¯ ip·X (B.3)\r
+where X, p refer to uncompactified dimensions. (B.3) are on shell for p · ǫ = 0, p2 +\r
+2 sinh2λ = 0. There are also massless gauge bosons for the unbroken U(1) generators, call\r
+them Z(ǫ) described by vertex operators:\r
+Z(ǫ, p) = cosh λ∂Y ǫ · ∂Xe ¯ ip·X (B.4)\r
+which are on-shell for p · ǫ = 0, p2 = 0. (The factor of cosh λ in (B.4) is motivated by the\r
+transport in [6]. It can be dropped without changing our conclusions.)\r
+At the su(2) point λ = 0 we have the su(2) Ward identity:\r
+0 = A\r
+\u0002\r
+W+(ǫ1),Z(ǫ2), W−(ǫ3), Z(ǫ4)\r
+\u0003\r
+(s, u)\r
++A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), Z(ǫ3), Z(ǫ4)\r
+\u0003\r
+(s, u)\r
++ A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), W−(ǫ3), W+(ǫ4)\r
+\u0003\r
+(s, u)\r
+(B.5)\r
+10 See [6] for a detailed discussion of a parallel transport on the entire CFT statespace.\r
+32
+
+What happens at λ > 0? For simplicity assume that all polarizations ǫi are transverse\r
+to the plane of scattering and that ǫ1 · ǫ3ǫ2 · ǫ4 = ǫ1 · ǫ4ǫ2 · ǫ3 = 0, ǫ1 · ǫ2ǫ3 · ǫ4 = 1. In the\r
+field theory limit we have\r
+A\r
+\u0002\r
+W+, Z, W−, Z\u0003(s, u) = 2(u − m2\r
+)\r
+s\r
++\r
+1\r
+m2\r
+pl\r
+(2m2u/s + u − s − 2m4/s − m2) + · · ·\r
+A\r
+\u0002\r
+W+, W−, Z, Z\u0003(s, u) = 2 + 1\r
+m2\r
+pl\r
+(2s − u)(s − m2) − u\r
+2\r
+s − m2\r
++ · · ·\r
+A\r
+\u0002\r
+W+, W−, W−, W+\r
+\u0003\r
+(s, u) = 2(2m2 − s − u)\r
+s − m2\r
++\r
+1\r
+m2\r
+pl\r
+(u − s)(s + u − 2m2)\r
+s − m2\r
++ · · ·\r
+(B.6)\r
+where s ≡ p1 · p2, u ≡ p1 · p3, m2 ≡ 2 sinh2λ. The sum of the three amplitudes is\r
+2\r
+m2\r
+s\r
+m2 − u\r
+s − m2\r
++\r
+1\r
+m2\r
+pl\r
+m4\r
+s\r
+2m2 − s − 2u\r
+s − m2\r
++ · · ·\r
+The high-energy field-theoretic limit is now obtained by letting s → −∞, u → ∞\r
+holding m2 fixed. As promised, at each order in 1/mpl the sum vanishes more rapidly\r
+than each of the separate amplitudes, and, in particular, the leading term of order O(m0\r
+pl)\r
+vanishes.\r
+B.2. String theory Ward identities are not recovered at high energy\r
+We illustrate this with two simple examples.\r
+Example 1:\r
+We now take the high energy limit of the three amplitudes in (B.5). The high energy\r
+asymptotics of the amplitudes are:\r
+A\r
+\u0002\r
+W+(ǫ1), Z(ǫ2), W−(ǫ3), Z(ǫ4)\r
+\u0003\r
+∼ −U\r
+2\r
+(1 + sinh2λ)e\r
+4 sinh2 λlog(−s/u−1)\r
+(s + u)\r
+3\r
+s\r
+3u2\r
+[s\r
+2 + su + 2u2 + 2 sinh2\r
+λu2](1 + O(1/s, 1/u, 1/(s + u))\r
+A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), Z(ǫ3), Z(ǫ4)\r
+\u0003\r
+∼ −U\r
+2\r
+(1 + sinh2λ)e\r
+4 sinh2 λlog(u/s+1)\r
+(s + u)\r
+3\r
+s\r
+4u\r
+[u\r
+2 + us + 2s2 + 2 sinh2\r
+λs2](1 + O(1/s, 1/u, 1/(s + u))\r
+A\r
+\u0002\r
+W+(ǫ1), W−(ǫ2), W−(ǫ3), W+(ǫ4)\r
+\u0003\r
+∼ U\r
+2\r
+e\r
+4 sinh2 λlog[(u/s+1)(−s/u−1)]\r
+(s + u)\r
+6\r
+s\r
+4u2\r
+(1 + O(1/s, 1/u, 1/(s + u))\r
+(B.7)\r
+33
+
+where U is defined in (3.10).\r
+While the sum of the three terms in (B.7) vanishes at λ = 0 this is not the case for\r
+any λ 6= 0: the sum is not any smaller in magnitude than any of the three terms in the\r
+sum.\r
+Example 2:\r
+At the SU(2) point the vertex operators φ\r
+±± = e(±\r
+1\r
+2\r
+, ±\r
+1\r
+2\r
+, R = 1)e\r
+ip·X describe a\r
+scalar field multiplet in the (2, 2) of SU(2)×SU(2). At the SU(2) point we have the Ward\r
+identity (again for J\r
++):\r
+A(φ\r
++−, φ−+, φ+−, φ−+) + A(φ−−, φ++, φ+−, φ−+) + A(φ−−, φ−+, φ+−, φ++) = 0 (B.8)\r
+In the broken phase λ > 0 and in the high energy limit the sum of the three terms becomes:\r
+\u0014\r
+1\r
+|z0|R2\r
+|z0 − 1|\r
+R\r
+2\r
++\r
+1\r
+|z0|\r
+1/R2 − 1\r
+\u0015\r
+U\r
+2 =\r
+\u0014\r
+(sin2 1\r
+2\r
+θ)\r
+R\r
+2\r
++ (cos2 1\r
+2\r
+θ)\r
+1/R2\r
+− 1\r
+\u0015\r
+U\r
+2\r
+(B.9)\r
+Again we see that the sum of terms is no smaller than the individual terms.\r
+B.3. Physical interpretation\r
+We believe that the failure to recover the Ward identities in the high energy limit is\r
+related to the notorious delocalization of strings at ultrahigh energies [31]. This delocaliza\u0002tion makes the string amplitudes once again sensitive to relatively long-distance physics,\r
+like the specific nature of the compactification scheme."""
+
+[[sections]]
+number = "34"
+title = "References"
+text = """
+[1] D. Gross, “High energy symmetries of string theory,” Phys. Rev. Lett. 60B(1988)1229\r
+[2] D.J. Gross and P.F. Mende, “String theory beyond the Planck scale,” Nucl.Phys.\r
+B303: 407, 1988; “The high-energy behavior of string scattering amplitudes,” Phys.\r
+Lett. 197B: 129, 1987.\r
+[3] E. Witten, “Spacetime and topological orbifolds,” Phys. Rev. Lett. 61B(1988)670\r
+[4] M. Evans and B.A. Ovrut, “Spontaneously broken inter mass level symmetries in\r
+string theory,” Phys. Lett. 231B(1989)80; “Deformations of conformal field theories\r
+and symmetries of the string,” Phys. Rev. D41(1990)3149\r
+[5] U. Lindstrom, B. Sundborg, and G. Theodoridis, Phys. Lett. 258B(1991)319; “The\r
+zero tension limit of the spinning string,” Phys. Lett. 258B(1991)331\r
+[6] G. Moore, “Finite in all directions,” hep-th/9305139; “Symmetries and symmetry\u0002breaking in string theory,” hep-th/9308052, to appear in Proceedings of SUSY93.\r
+[7] M. Green, J. Schwarz, and E. Witten, Superstring theory, Cambridge Univ. Press\r
+(1987).\r
+[8] I. Frenkel, H. Garland, and G. Zuckerman, “Semi-infinite cohomology and string the\u0002ory,” Proc. Nat. Acad. Sci. 83(1986)8442\r
+[9] H. Weyl, The Classical Groups, Princeton University Press, Princeton 1946\r
+[10] See [9], pp. 75-78\r
+[11] S. Mandelstam, “Dual Resonance Models,” Phys. Reports, 13 (1974)259\r
+[12] E. Witten, Ground ring of two-dimensional string theory” (hep-th/9108004), Nucl.\r
+Phys. B373 (1992) 187.\r
+[13] E. Witten and B. Zwiebach, “Algebraic Structures and Differential Geometry in 2D\r
+String Theory” (hep-th/9201056), Nucl. Phys. B377 (1992) 55.\r
+[14] E. Verlinde, “The master equation of 2D string theory,” hep-th/9202021; Nucl. Phys.\r
+B381 (1992) 141.\r
+[15] I.B. Frenkel, J. Lepowsky, and A. Meurman, “Vertex Operator Algebras and the Mon\u0002ster,” Academic Press, New York, 1988\r
+[16] B. Lian and G. Zuckerman, “New perspectives on the brst algebraic structure of string\r
+theory,” (hep-th/9211072) Commun. Math. Phys. 154613 (1993).\r
+[17] Related results have been obtained in G. Segal, Lectures at the Isaac Newton\r
+Institute, August 1992, and lectures at Yale University, March 1993; E. Getzler,\r
+“Batalin-Vilkovisky Algebras and Two-Dimensional Toplogical Field Theories” (hep\u0002th/9212043)\r
+[18] See, e.g., K. Kendig, Elementary Algebraic Geometry, Springer, 1977, thm. 3.8\r
+[19] P. Ginsparg and G. Moore, “Lectures on 2D Gravity and 2D String Theory,” hep-th/\r
+9304011, Lectures given at the 1992 TASI summer school;\r
+I.R. Klebanov, “String theory in two-dimensions,” hep-th/9108019; In Trieste 1991,"""
+
+[[sections]]
+number = "35"
+title = "Proceedings , String Theory and quantum gravity;"
+text = """
+D. Kutasov, “Some Properties of (Non)Critical Strings,” hep-th/9110041; In Trieste\r
+1991, Proceedings , String Theory and quantum gravity.\r
+[20] R. P. Boas, Entire Functions, Academic Press, 1954\r
+[21] H. Exton, Handbook of Hypergeometric Integrals, John Wiley, 1978\r
+[22] J. Bienkowska, “The renormalization group flow in 2D N=2 SUSY Landau-Ginsburg\r
+models,” hep-th/9109003.\r
+[23] H. Kawai, D.C. Lewellen, S.-H. H. Tye, “A relation between tree amplitudes of closed\r
+and open strings,” Nucl. Phys. B269(1986)1\r
+[24] D. Kutasov, E. Martinec, and N. Seiberg, “Ground Rings and Their Modules in 2D\r
+Gravity with c ≤ 1 Matter” (hep-th/9111048), Phys. Lett. B276 (1992) 437.\r
+[25] I. Klebanov and A. Pasquinucci, “Correlation functions from two-dimensional string\r
+Ward identities” (hep-th/9204052) PUPT-1313.\r
+[26] M. Bershadsky and D. Kutasov, “Scattering of Open and Closed Strings in 1 + 1\r
+Dimensions,” hep-th/9204049, Nucl. Phys. B382(1992)213.\r
+[27] I.B. Frenkel and V.G. Kac, “Basic Representations of Affine Lie Algebras and Dual\r
+Resonance Models,” Inv. Math. 62(1980)23.\r
+[28] P. Goddard and D. Olive, “Algebras, lattices and strings,” in Vertex Operators in\r
+Mathematics and Physics, Proceedings of a Conference eds. J. Lepowsky, S. Mandel\u0002stam, I.M. Singer, Springer;Intl. Jour. Mod. Phys. A1(1986)303.\r
+[29] R. Borcherds, “Generalized Kac-Moody Algebras,” J. Algebra 115(1988)501; “Mon\u0002strous moonshine and monstrous lie superalgebras,” Invent. Math. 109(1992)405\r
+[30] R. Gebert, “Introduction to Vertex Algebras, Borcherds Algebras, and the Monster\r
+Lie Algebra,” hep-th/9308151; DESY 93-120\r
+[31] See, e.g., D. Gross, “Superstrings and Unification,” Talk at the XXIV Int. Conf. on\r
+High Energy Physics, Munich, 1988;\r
+L. Susskind, “String theory and the principle of black hole complementarity,” hep\u0002th/9307168\r
+36"""
+
+[[tables]]
+page_num = 10
+headers = [
+    "0 = h0",
+    "V4(∞)V3(1)V2(z){J, V1}(0)",
+    "0i",
+]
+rows = [
+    [
+    "+(−1)q·p2h0",
+    "V4(∞)V3(1){J, V2}(z)V1(0)",
+    "0i",
+],
+    [
+    "+(−1)q·p2+q·p3h0",
+    "V4(∞){J, V3}(1)V2(z)V1(0)",
+    "0i",
+],
+]
+
+[[tables]]
+page_num = 16
+headers = [
+    "A1111(x1, . . . ,, x14",
+    "s, t)",
+]
+rows = [
+    [
+    "= −A1110(x1x13, x2x13, x4, x7x13, x8x13 + x3, x9, x10, x11, x12",
+    "s, t)",
+],
+    [
+    "−A1110(x1x14, x2, x4x14, x7, x8, x9x14, x10x14 + x5, x11, x12",
+    "s, t + 1)",
+],
+    [
+    "+x6A1100(x1, x7, x8, x9, x10",
+    "s, t)",
+],
+]
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 3
+image_path = "images/image_p3_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 3
+image_path = "images/image_p3_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 3
+image_path = "images/image_p3_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 4
+image_path = "images/image_p4_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 4
+image_path = "images/image_p4_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 4
+image_path = "images/image_p4_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 5
+image_path = "images/image_p5_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 5
+image_path = "images/image_p5_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 7
+image_path = "images/image_p7_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 8
+image_path = "images/image_p8_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 8
+image_path = "images/image_p8_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 8
+image_path = "images/image_p8_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 8
+image_path = "images/image_p8_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 8
+image_path = "images/image_p8_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 9
+image_path = "images/image_p9_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 10
+image_path = "images/image_p10_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 12
+image_path = "images/image_p12_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 12
+image_path = "images/image_p12_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 12
+image_path = "images/image_p12_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 12
+image_path = "images/image_p12_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 12
+image_path = "images/image_p12_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 12
+image_path = "images/image_p12_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 13
+image_path = "images/image_p13_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 13
+image_path = "images/image_p13_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 13
+image_path = "images/image_p13_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 13
+image_path = "images/image_p13_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 13
+image_path = "images/image_p13_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 13
+image_path = "images/image_p13_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 13
+image_path = "images/image_p13_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 13
+image_path = "images/image_p13_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 13
+image_path = "images/image_p13_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 13
+image_path = "images/image_p13_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 13
+image_path = "images/image_p13_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 13
+image_path = "images/image_p13_37.png"
+
+[[figures]]
+label = "fig:38"
+page_num = 16
+image_path = "images/image_p16_38.png"
+
+[[figures]]
+label = "fig:39"
+page_num = 17
+image_path = "images/image_p17_39.png"
+
+[[figures]]
+label = "fig:40"
+page_num = 17
+image_path = "images/image_p17_40.png"
+
+[[figures]]
+label = "fig:41"
+page_num = 17
+image_path = "images/image_p17_41.png"
+
+[[figures]]
+label = "fig:42"
+page_num = 17
+image_path = "images/image_p17_42.png"
+
+[[figures]]
+label = "fig:43"
+page_num = 17
+image_path = "images/image_p17_43.png"
+
+[[figures]]
+label = "fig:44"
+page_num = 18
+image_path = "images/image_p18_44.png"
+
+[[figures]]
+label = "fig:45"
+page_num = 20
+image_path = "images/image_p20_45.png"
+
+[[figures]]
+label = "fig:46"
+page_num = 20
+image_path = "images/image_p20_46.png"
+
+[[figures]]
+label = "fig:47"
+page_num = 20
+image_path = "images/image_p20_47.png"
+
+[[figures]]
+label = "fig:48"
+page_num = 20
+image_path = "images/image_p20_48.png"
+
+[[figures]]
+label = "fig:49"
+page_num = 21
+image_path = "images/image_p21_49.png"
+
+[[figures]]
+label = "fig:50"
+page_num = 21
+image_path = "images/image_p21_50.png"
+
+[[figures]]
+label = "fig:51"
+page_num = 21
+image_path = "images/image_p21_51.png"
+
+[[figures]]
+label = "fig:52"
+page_num = 21
+image_path = "images/image_p21_52.png"
+
+[[figures]]
+label = "fig:53"
+page_num = 21
+image_path = "images/image_p21_53.png"
+
+[[figures]]
+label = "fig:54"
+page_num = 22
+image_path = "images/image_p22_54.png"
+
+[[figures]]
+label = "fig:55"
+page_num = 22
+image_path = "images/image_p22_55.png"
+
+[[figures]]
+label = "fig:56"
+page_num = 22
+image_path = "images/image_p22_56.png"
+
+[[figures]]
+label = "fig:57"
+page_num = 22
+image_path = "images/image_p22_57.png"
+
+[[figures]]
+label = "fig:58"
+page_num = 22
+image_path = "images/image_p22_58.png"
+
+[[figures]]
+label = "fig:59"
+page_num = 22
+image_path = "images/image_p22_59.png"
+
+[[figures]]
+label = "fig:60"
+page_num = 24
+image_path = "images/image_p24_60.png"
+
+[[figures]]
+label = "fig:61"
+page_num = 25
+image_path = "images/image_p25_61.png"
+
+[[figures]]
+label = "fig:62"
+page_num = 25
+image_path = "images/image_p25_62.png"
+
+[[figures]]
+label = "fig:63"
+page_num = 31
+image_path = "images/image_p31_63.png"
+
+[[figures]]
+label = "fig:64"
+page_num = 31
+image_path = "images/image_p31_64.png"
+
+[[figures]]
+label = "fig:65"
+page_num = 32
+image_path = "images/image_p32_65.png"
+
+[[figures]]
+label = "fig:66"
+page_num = 33
+image_path = "images/image_p33_66.png"
+
+[[figures]]
+label = "fig:67"
+page_num = 33
+image_path = "images/image_p33_67.png"
+
+[[figures]]
+label = "fig:68"
+page_num = 33
+image_path = "images/image_p33_68.png"
+
+[[figures]]
+label = "fig:69"
+page_num = 33
+image_path = "images/image_p33_69.png"
+
+[[figures]]
+label = "fig:70"
+page_num = 33
+image_path = "images/image_p33_70.png"
+
+[[figures]]
+label = "fig:71"
+page_num = 33
+image_path = "images/image_p33_71.png"
+
+[[figures]]
+label = "fig:72"
+page_num = 33
+image_path = "images/image_p33_72.png"
+
+[[figures]]
+label = "fig:73"
+page_num = 34
+image_path = "images/image_p34_73.png"
+
+[[figures]]
+label = "fig:74"
+page_num = 34
+image_path = "images/image_p34_74.png"
+
+[[figures]]
+label = "fig:75"
+page_num = 34
+image_path = "images/image_p34_75.png"
+
+[[figures]]
+label = "fig:76"
+page_num = 34
+image_path = "images/image_p34_76.png"
+
+[[figures]]
+label = "fig:77"
+page_num = 34
+image_path = "images/image_p34_77.png"
+
+[[figures]]
+label = "fig:78"
+page_num = 34
+image_path = "images/image_p34_78.png"
+
+[[figures]]
+label = "fig:79"
+page_num = 34
+image_path = "images/image_p34_79.png"
+
+[[figures]]
+label = "fig:80"
+page_num = 34
+image_path = "images/image_p34_80.png"
+
+[[figures]]
+label = "fig:81"
+page_num = 34
+image_path = "images/image_p34_81.png"
+
+[[figures]]
+label = "fig:82"
+page_num = 34
+image_path = "images/image_p34_82.png"
+
+[[figures]]
+label = "fig:83"
+page_num = 34
+image_path = "images/image_p34_83.png"
+
+[[figures]]
+label = "fig:84"
+page_num = 34
+image_path = "images/image_p34_84.png"
+
+[[figures]]
+label = "fig:85"
+page_num = 34
+image_path = "images/image_p34_85.png"
+
+[[figures]]
+label = "fig:86"
+page_num = 34
+image_path = "images/image_p34_86.png"
+
+[[figures]]
+label = "fig:87"
+page_num = 34
+image_path = "images/image_p34_87.png"
+
+[[figures]]
+label = "fig:88"
+page_num = 35
+image_path = "images/image_p35_88.png"
+
+[[figures]]
+label = "fig:89"
+page_num = 35
+image_path = "images/image_p35_89.png"
+
+[[figures]]
+label = "fig:90"
+page_num = 35
+image_path = "images/image_p35_90.png"
+
+[[figures]]
+label = "fig:91"
+page_num = 35
+image_path = "images/image_p35_91.png"
+
+[[figures]]
+label = "fig:92"
+page_num = 35
+image_path = "images/image_p35_92.png"
+
+[[figures]]
+label = "fig:93"
+page_num = 35
+image_path = "images/image_p35_93.png"

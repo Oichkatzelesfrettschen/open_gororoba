@@ -1,0 +1,129 @@
+sections = []
+equations = []
+tables = []
+full_text = ""
+
+[metadata]
+title = "kass raftery 1995 bayes factors"
+authors = ["Unknown"]
+year = 1995
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 2
+image_path = "images/image_p2_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 4
+image_path = "images/image_p4_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 5
+image_path = "images/image_p5_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 6
+image_path = "images/image_p6_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 7
+image_path = "images/image_p7_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 8
+image_path = "images/image_p8_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 9
+image_path = "images/image_p9_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 10
+image_path = "images/image_p10_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 11
+image_path = "images/image_p11_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 12
+image_path = "images/image_p12_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 13
+image_path = "images/image_p13_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 14
+image_path = "images/image_p14_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 15
+image_path = "images/image_p15_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 16
+image_path = "images/image_p16_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 17
+image_path = "images/image_p17_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 18
+image_path = "images/image_p18_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 19
+image_path = "images/image_p19_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 20
+image_path = "images/image_p20_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 21
+image_path = "images/image_p21_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 22
+image_path = "images/image_p22_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 23
+image_path = "images/image_p23_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 24
+image_path = "images/image_p24_24.png"

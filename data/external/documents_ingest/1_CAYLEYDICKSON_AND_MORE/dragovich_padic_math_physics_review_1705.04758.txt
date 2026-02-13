@@ -1,0 +1,2831 @@
+arXiv:1705.04758v1 [math-ph] 12 May 2017
+
+p-Adic Mathematical Physics: The First 30 Years
+B. Dragovich1,2 , A. Yu. Khrennikov3,4 , S. V. Kozyrev5 ,
+I. V. Volovich5 and E. I. Zelenov5
+1
+Institute of Physics, University of Belgrade, 11080 Belgrade, Serbia
+2
+Mathematical Institute, Serbian Academy of Sciences and Arts, Serbia
+3
+International Center for Mathematical Modeling in Physics,
+Engineering, Economics, and Cognitive Science, Linnaeus University,
+S-35195, Växjö, Sweden
+4
+National Research University of Information Technologies,
+Mechanics and Optics (ITMO), St. Petersburg, 197101 Russia
+5
+Steklov Mathematical Institute of the Russian Academy of Sciences,
+Gubkina Str. 8, Moscow, 119991 Russia
+Abstract
+p-Adic mathematical physics is a branch of modern mathematical physics based on the
+application of p-adic mathematical methods in modeling physical and related phenomena.
+It emerged in 1987 as a result of efforts to find a non-Archimedean approach to the
+spacetime and string dynamics at the Planck scale, but then was extended to many other
+areas including biology. This paper contains a brief review of main achievements in some
+selected topics of p-adic mathematical physics and its applications, especially in the last
+decade. Attention is mainly paid to developments with promising future prospects.
+
+Key words:p-adic numbers, adeles, ultrametrics, p-adic mathematical physics, p-adic
+wavelets, complex systems, hierarchy, p-adic string theory, quantum theory, gravity, cosmology, stochastic processes, biological systems, proteins, genetic code, cognitive science.
+
+1
+
+Introduction
+
+p-Adic mathematical physics (PAMP) is a branch of modern mathematical physics based
+on the application of p-adic mathematical methods in modeling physical phenomena. It is
+mainly related to the phenomena: (i) at the very short spacetime scales and (ii) of the very
+complex systems with hierarchical structure. PAMP emerged in 1987 as a result of efforts to
+find a non-Archimedean approach to the spacetime and string dynamics at the Planck scale,
+see paper [320], review [53] and book [308]. PAMP is not constrained only to the physical
+systems but includes also related topics in mathematics and sciences, in particular in biology.
+There are many physical and mathematical motivations to investigate p-adic mathematical physics. Below are some primary motivations.
+• There is well-known generic quantum gravity restriction to measure distances at and
+beyond the Planck scale, because of the relation
+r
+~G
+∼ 10−33 cm ,
+(1.1)
+∆x ≥ ℓP =
+c3
+1
+
+where ∆x is the uncertainty measuring a distance x and ℓP is the Planck length. This
+is a situation when the uncertainty (error) is not smaller than the value of measuring
+quantity. In fact, this means a breakdown of the Archimedean axiom and application of
+real numbers at the Planck scale. Namely, relation (1.1) is derived under the assumption
+that the whole spacetime in quantum theory and gravity can be described using only real
+numbers and Archimedean geometry. However, to have better insight into spacetime
+structure at the Planck scale it is rather natural to use also p-adic numbers and adelic
+approach.
+• All experimental and observational numerical data are rational numbers. Note that the
+field of rational numbers Q is dense in the fields of p-adic numbers Qp as well as in the
+field of real numbers R. Recall also the local-global (Hasse-Minkowski) principle which
+states that, usually, when something is valid on all local fields (R, Qp ), it is also valid
+on the global field Q. Hence, the simultaneous employment of both real (complex) and
+p-adic analysis should lead to better understanding of the mathematical structure of
+fundamental physical laws. Moreover, it is natural to suppose that there is number
+field invariance principle [321]: Fundamental physical laws should be invariant under
+the change of the number fields.
+• Some phenomena of the complex systems have hierarchical structure. p-Adic numbers inherently have ultrametric hierarchical structure and they seem to be the most
+adequate mathematical instrument for investigation of hierarchical systems and phenomena.
+• At the first sight one can doubt in application of p-adic numbers in description of
+physical and other phenomena, because results of measurements are not p-adic numbers
+[70]. However, recall that experimental numerical data are also not real numbers but
+rationals that are
+√ real and p-adic simultaneously. Moreover, complex numbers (in
+particular i = −1) also cannot be seen in experiments, but nevertheless quantum
+theory is based on complex analysis. There is a part of p-adic analysis related to
+mapping Qp → R (C) and it gives a possibility how one can connect p-adic models with
+quantum phenomena and hierarchical systems. Note that usually progress in theoretical
+physics was related to invention of new concepts and principles, employment of adequate
+mathematical methods and formulation of the corresponding theoretical laws.
+This paper contains a brief review of mathematical background, developments of some
+mathematical methods, applications in physics, biology and some other sciences.
+In this review the attention is mainly paid to those topics that have got a considerable
+progress in the last decade, or so, and that they seem to be prospective research in the near
+future. For a review of the earlier developments of PAMP, we refer readers to [53, 308] and
+[69].
+In addition to Introduction, this review contains the sections and subsections listed below.
+• 2. MATHEMATICAL METHODS. Subsections: 2.1 Mathematical Background; 2.2
+Vladimirov Fractional Operator; 2.3 Analysis on General Ultrametric Spaces; 2.4 pAdic Wavelets (Multidimensional p-adic metric; Multidimensinal wavelets; Wavelets
+with matrix dilations; Relation to spectral theory of pseudodifferential operators; Relation to coherent states); 2.5 Summation of p-Adic Series.
+2
+
+• 3. APPLICATIONS IN PHYSICS. Subsections: 3.1 p-Adic Strings, Fields and Quantum Theory (p-Adic strings; Quantization of the Riemann zeta-function; Zetafunction classical field theory; Zeta-function quantum field theory; Quantum Lfunctions and Langlands program; Zeta strings; Quantum mechanics); 3.2 Gravity
+and Cosmology; 3.3 p-Adic Stochastic Processes; 3.4 Disordered Systems and Spin
+Glasses; 3.5 Some Other Applications (Nonlinear equations and cascade models of
+turbulence; Non-Newtonian mechanics).
+• 4. APPLICATIONS IN BIOLOGY. Subsections: 4.1 Applications to Proteins and
+Genomes (Genome organization); 4.2 p-Adic Genetic Code and Bioinformation; 4.3
+p-Adic Models of Cognition.
+• 5. OTHER APPLICATIONS. Subsections: 5.1 Data Mining; 5.2 Cryptography and
+Information Security; 5.3 Applications of p-Adic Analysis to Geology; 5.4 Some other
+Investigations.
+• 6. CONCLUDING REMARKS.
+
+2
+
+Mathematical Methods
+
+2.1
+
+Mathematical Background
+
+In this subsection we recall some usual basic notions on p-adic numbers, adeles and their
+functions.
+The field Qp of p-adic numbers (introduced by K. Hensel in 1897) is a completion of the
+field Q of rationals with respect to the p-adic norm: for rational number x = pγ a/b, where
+non-zero integers a and b are not divisible by p, the norm is |x|p = p−γ . p-Adic numbers have
+natural expansions in the form of series
+x=
+
+∞
+X
+i=γ
+
+i
+
+xi p ,
+
+xi = 0, . . . , p − 1,
+
+{x} =
+
+−1
+X
+
+xi p i ,
+
+i=γ
+
+where {x} is called the fractional part of x and for x with the above expansion one has
+|x|p = p−γ (if xγ 6= 0). Zp = {xp ∈ Qp : |xp |p ≤ 1} is the ring of p-adic integers (unit ball
+with respect to the p-adic norm).
+Bruhat-Schwartz test functions are locally constant functions with compact support. Any
+test function is a finite linear combination of the characteristic functions of balls. BruhatSchwartz generalized functions are linear continuous functionals on the space D(Qp ) of test
+functions.
+Relation of real and p-adic norms is given by the adelic formula of the multiplicative
+characters, i.e. in the simple form
+Y
+|x|p = 1, 0 6= x ∈ Q,
+|x|∞
+p
+
+where | · |∞ is the real norm (absolute value). Adelic product of the additive characters
+connects real and all p-adic fractional parts of the rational numbers, namely
+Y
+Y
+χ∞ (x)
+χp (x) = exp (−2πix)
+exp (2πi{x}p ) = 1, x ∈ Q,
+p
+
+p
+
+3
+
+where {x}p denotes the fractional part of x.
+Another relation between real and p-adic parameters is given by the Monna map ([199]),
+subsection 2.4 below. This map and its deformations give p-adic parameters in complex,
+disordered and fractal systems, in particular in the Cantor set, spin glasses (parametrization
+of the Parisi matrix) and genetic code, see below.
+An adele x is an infinite sequence [120, 92]
+x = (x∞ , x2 , x3 , ..., xp , ...),
+where x∞ ∈ R and xp ∈ Qp with the restriction that for all but a finite set S of primes p one
+has xp ∈ Zp . Componentwise addition and multiplication of adeles are standard arithmetical
+operations on the ring of adeles A, which can be presented as
+[
+Y
+Y
+A=
+A(S), A(S) = R ×
+Qp ×
+Zp .
+S
+
+p∈S
+
+p6=S
+
+Rational numbers are naturally embedded into the space of adeles A. In complex-valued
+adelic analysis, elementary functions are of the form
+Y
+Y
+ϕS (x) = ϕ∞ (x∞ )
+ϕp (xp )
+Ω(|xp |p ),
+p∈S
+
+p6=S
+
+where ϕ∞ (x∞ ) is an infinitely differentiable function on R such that |x∞ |∞ ϕ∞ (x∞ ) → 0
+as |x∞ |∞ → ∞ for any n = 0, 1, 2, 3, ..., ϕp (xp ) are some locally constant functions with
+compact support, and
+(
+1, |xp |p ≤ 1,
+Ω(|xp |p ) =
+0, |xp |p > 1.
+p-Adic analysis with applications to mathematical physics and other fields attracted a lot
+of attention in the last thirty years. There are many books and reviews which are useful for
+mathematical background of p-adic mathematical physics, see e.g. [308, 137, 53, 99, 18, 1,
+171, 172, 170, 163, 199, 304, 120].
+
+2.2
+
+Vladimirov Fractional Operator
+
+The Vladimirov operator [309, 308] of p-adic fractional differentiation is defined as
+Z
+Z
+α
+α
+e
+e
+χ(kx)f (x)dµ(x).
+χ(−kx)|k|p dkf (k)dµ(k),
+f (k) =
+D f (x) =
+Qp
+
+Qp
+
+Here f (x) is a complex-valued function of p-adic argument x and χ is the additive character:
+χ(x) = exp (2πi{x}), where {x} is the fractional part of x, the integration runs with respect
+to the Haar measure (with the normalization: measure of the unit ball is equal to one:
+µ(Zp ) = 1).
+For α > 0 the Vladimirov operator has the following integral representation:
+Z
+f (x) − f (y)
+1
+dy,
+D α f (x) =
+Γp (−α) Qp |x − y|1+α
+p
+4
+
+with the constant
+Γp (−α) =
+
+pα − 1
+.
+1 − p−1−α
+
+There is a well-developed theory of the Vladimirov operator and related constructions
+(spectral properties, operators on bounded regions, analogs of elliptic and parabolic equations,
+a wave-type equation, etc); see subsection 2.4 on wavelets and [308, 163, 164, 169, 334, 15,
+338, 339, 340].
+A basis of eigenvectors with compact support for the Vladimirov operator was found in
+[310] (the same property holds for the wavelet basis, see subsection 2.4, but the basis of [310]
+is different). In [178] it was mentioned that ultrametric pseudodifferential equations have
+compactly supported solutions and relation to the Anderson localization was discussed in
+[118].
+In [2] maps φ : Qp → Qp were considered which are automorphisms of the tree of balls in
+Qp (i.e. φ is a one to one map and image and inverse image of any ball is a ball). In this
+case the norm of the derivative |φ′ (x)|p is constant (does not depend on x, if the derivative
+exists). If the derivative does not exists, the formula below holds but the constant does not
+possess interpretation as derivative. The corresponding map on functions acts as
+Φf (x) = f (φ(x)).
+The following formula of pseudodifferentiation of a composite function takes place
+D α [Φf ] (x) = |φ′ (x)|αp Φ [D α f ] (x).
+There exists also a multidimensional generalization of this formula.
+
+2.3
+
+Analysis on General Ultrametric Spaces
+
+The analysis of wavelets and pseudodifferential operators on general locally compact ultrametric spaces was developed by Kozyrev in [173, 140, 174, 171]. A pseudodifferential operator
+on ultrametric space X is defined as the integral operator
+Z
+T (sup(x, y))(f (x) − f (y)) dν(y) ,
+Df (x) =
+X
+
+where ν is a Borel measure and the following integrability condition for the integration kernel
+is satisfied: the kernel should be absolutely integrable at infinity
+Z
+|T (sup(x, y))| dν(y) ,
+d(x,y)>R
+
+where R is some positive constant and d(·, ·) is the metric in X.
+The sup(x, y) is the minimal ball in X which contains both points x and y, the integration
+kernel T is a function on the tree T (X) of balls in X. Thus T (sup(x, y)) is a locally constant
+(for x 6= y) function of x, y.
+Tree T (X) of balls in (locally compact) ultrametric space X is defined as follows: balls
+with nonzero diameter or isolated points are vertices of the tree; edges connect pairs of vertices
+of the form (ball, maximal subball). This tree possesses a natural partial order by embedding
+of balls.
+5
+
+Ultrametric wavelet bases {ΨIj } on X (which contain locally constant compactly supported mean zero complex valued functions) were introduced and it was found that ultrametric wavelets are eigenvectors of ultrametric pseudodifferential operators:
+T ΨIj = λI ΨIj .
+Let us note that locally compact ultrametric spaces under consideration are completely general and do not possess any group structure.
+Here the index I in the wavelet basis {ΨIj } enumerate balls in X with non-zero diameters,
+a wavelet function ΨIj is a mean zero linear combination of characteristic functions of maximal
+subbals in I. The eigenvalue has the form of a series which should converge absolutely
+X
+λI = T (I)ν(I) +
+T (J)ν(S(J, I)).
+J>I
+
+Here S(J, I) is the set obtained by elimination from ball J the maximal subball containing
+ball I (a sphere with center in I corresponding to the ball J).
+Analysis on p-adic infinite-dimensional spaces was developed by Kochubei, Kaneko and
+Yasuda [165, 163, 327, 166, 131]. Another important class of ultrametric spaces consists of
+locally compact fields of positive characteristic, see the book of Kochubei [167] for details.
+
+2.4
+
+p-Adic Wavelets
+
+p-Adic wavelet theory was initiated by Kozyrev [175]. For the review of p-adic wavelets
+see [172]. Important contributions in p-adic wavelet theory were done also by Albeverio,
+Benedetto, Khrennikov, Shelkovich, Skopina, Evdokimov [41, 42, 6, 7, 143, 144, 222, 145,
+15]. Wavelets on locally compact abelian groups (in particular Kantor dyadic group) were
+considered in [127, 128, 113], and wavelets on adeles were investigated in [187, 188, 151].
+In the p-adic case it is not possible to use for construction of wavelet basis translations
+by elements of Z (these elements constitute a dense set in the unit ball). It was proposed to
+use instead translations by representatives of elements of the factor group Qp /Zp of the form
+n=
+
+−1
+X
+
+n l pl ,
+
+l=k
+
+nl = 0, . . . , p − 1 k ∈ Z, k < 0.
+
+(2.1)
+
+An example of p-adic wavelet was introduced in the form of the product of the additive
+character and the characteristic function Ω of the unit ball:
+ψ(x) = χ(p−1 x)Ω(|x|p ),
+
+1,
+t ∈ [0, 1],
+Ω(t) =
+t ∈ R,
+0,
+t∈
+/ [0, 1],
+χ(x) = exp (2πi{x}) , {x} =
+
+−1
+X
+
+xi p i , x =
+
+∞
+X
+i=γ
+
+i=γ
+
+(2.2)
+
+xi pi , xi = 0, . . . , p − 1.
+
+The orthonormal basis {ψγnj } of p-adic wavelets in L2 (Qp ) was constructed [175] by
+translations and dilations of ψ:
+γ
+
+ψγnj (x) = p− 2 χ(pγ−1 j(x − p−γ n))Ω(|pγ x − n|p ),
+6
+
+(2.3)
+
+γ ∈ Z,
+
+n ∈ Qp /Zp ,
+
+j = 1, . . . , p − 1.
+
+Relation between real and p-adic wavelets is given by the p-adic change of variable, or the
+Monna map [199]
+ρ : Qp → R+ ,
+
+ρ:
+
+∞
+X
+i=γ
+
+xi pi 7→
+
+∞
+X
+
+xi p−i−1 ,
+
+i=γ
+
+xi = 0, . . . , p − 1,
+
+γ ∈ Z.
+
+This map transforms (for p = 2) the basis {ψγnj } of p-adic wavelets onto the basis of Haar
+wavelets on the positive half-line.
+In comparison to real wavelets, p-adic wavelets possess some additional useful properties.
+The most important are relations to spectral properties of pseudodifferential operators and
+to orbits of groups of representations (or theory of coherent states).
+Multidimensional p-adic metric.
+
+The standard ultrametric in Qdp has the form
+
+d(x, y) = |x − y|p = max(|xl − yl |p ),
+x = (x1 , . . . , xd ),
+
+l = 1, . . . , d,
+
+(2.4)
+
+y = (y1 , . . . , yd ).
+
+A deformed metric depending on weights ql is introduced as
+s(x, y) = max(ql |xl − yl |p ),
+
+l = 1, . . . , d,
+
+ql > 0.
+
+(2.5)
+
+The corresponding norm on Qdp we denote k · k: s(x, y) = kx − yk. More general ultrametric
+can be obtained from (2.5) by a non-degenerate linear transformation
+r(x, y) = s(U x, U y),
+
+U ∈ Gl(Qp , d).
+
+(2.6)
+
+A dilation with respect to ultrametric r on Qdp is a linear map Qdp → Qdp which maps an
+arbitrary r-ball centered in zero to a maximal r-subball (with a center in zero) of this ball.
+Let us note that for a given metric a dilation does not necessarily exist. For metric (2.4)
+dilation is given by multiplication by p.
+The below matrix A is a dilation in Qdp with the metric s given by (2.5) with the parameters
+satisfying p−1 < q1 < q2 < · · · < qd ≤ 1.
+
+ 
+
+
+0 1 0 ... 0
+1 0 ... 0
+0 1 0 ... 0
+ 0 0 1 ... 0   0 1 ... 0  0 0 1 ... 0 
+
+ 
+
+
+
+..  =  ..
+..   ..
+..  .
+A =  ...
+(2.7)
+
+
+
+
+.   .
+.  .
+. 
+
+
+ 0 0 ...
+0 1   0 ...
+1 0  0 0 ...
+0 1 
+p 0 ...
+0 0
+0 ...
+0 p
+1 0 ...
+0 0
+Multidimensional wavelets. The set of functions {ψk;jn } defined by (2.9), (2.10), (2.11)
+is an orthonormal basis in L2 (Qdp ) (multidimensional p-adic wavelet basis [10])
+ψk (x) = χ(p−1 k · x)Ω(|x|p ),
+
+x ∈ Qdp ,
+
+7
+
+k·x=
+
+d
+X
+l=1
+
+kl xl ,
+
+(2.8)
+
+the norm | · |p is given by (2.4),
+dj
+
+ψk;jn (x) = p− 2 ψk (pj x − n),
+
+x ∈ Qdp ,
+
+j ∈ Z,
+
+n ∈ Qdp /Zdp ,
+
+(2.9)
+
+the index k is given by the set
+k = (k1 , . . . , kd ) ,
+
+kl = 0, . . . , p − 1,
+
+(2.10)
+
+where at least one of kl is non-zero,
+
+
+n = n(1) , . . . , n(d) ,
+
+n(l) =
+
+−1
+X
+
+(l)
+
+n i pi ,
+
+i=βl
+
+(l)
+
+ni = 0, . . . , p − 1,
+
+βl ∈ Z− .
+
+(2.11)
+
+Wavelets with matrix dilations. Let us consider the metric s given by (2.5) with the
+parameters satisfying p−1 < q1 < q2 < · · · < qd ≤ 1 and the dilation (2.7). A wavelet function
+with matrix dilation is given by
+
+Ψk (x) = χ k · A−1 x Ω(kxk), k ∈ Zdp /A∗ Zdp \{0},
+(2.12)
+
+and the set of representatives k is given by
+ 
+   
+0
+0
+0
+ 0 
+ 1   0 
+ 
+   
+ 0 
+ 0   1 
+ 
+   
+ ..  ,  ..  , . . . ,  ..  .
+ . 
+ .   . 
+ 
+   
+ 0 
+ 0   0 
+1
+0
+0
+Then the set of functions
+
+j
+
+Ψk;jn (x) = p− 2 Ψk (Aj x − n),
+
+j ∈ Z,
+
+n ∈ Qdp /Qdp
+
+(2.13)
+
+is an orthonormal basis in L2 (Qdp ) (basis of p-adic wavelets with matrix dilations).
+This basis was constructed in [11]. p-Adic quincunx basis with matrix dilations was
+described in [136].
+Relation to spectral theory of pseudodifferential operators.
+are eigenvectors of the Vladimirov operator:
+
+p-Adic wavelets (2.3)
+
+D α ψγnj = pα(1−γ) ψγnj .
+This property can be generalized to much more general operators [176, 179]; including
+the case of general locally compact ultrametric spaces [173, 140, 174]; and multidimensional
+p-adic case [146, 10, 11, 13].
+Integral operators with more general kernels were considered in [180, 181]. For these
+operators wavelets were not eigenvectors, but matrices of operators in wavelet bases have
+non-zero matrix elements only for finite number of main diagonals.
+Since p-adic wavelets are eigenvectors of integral operators, wavelets were used for the
+investigation of integral equations [179, 178, 150, 9, 12, 13, 14, 335, 336, 55, 223, 57, 337, 221].
+8
+
+Relation to coherent states. The standard approach to the real wavelet is multiresolution
+analysis [195, 58]. Multiresolution analysis was also developed for the p-adic case, where
+instead of translations by integers the translations by representatives (2.1) were used [6, 7,
+143, 144, 222, 146, 147, 148, 149, 8, 217].
+In the p-adic case the multiresolution approach was generalized to more powerful construction related to coherent states for group actions [5, 10, 11]. Let us consider a group G
+of transformations which acts in Qdp with some metric in the following way. The group maps
+a ball onto a ball and acts transitively on the tree of balls (with respect to the considered
+metric). The example is the p-adic affine group with transformations
+
+
+x−b
+−1
+,
+a, b ∈ Qp , a 6= 0.
+G(a, b)f (x) = |a|p 2 f
+a
+The orbit of the wavelet (2.2) with respect to this action gives the set of products of
+p-adic wavelets from the basis {ψγnj } and p-roots of one. In general [5], the orbit of generic
+complex-valued locally constant mean zero compactly supported function gives a frame of
+p-adic wavelets.
+In the multidimensional case one can consider different examples of multidimensional
+metrics and correspondingly different groups acting on trees of balls. This approach generates different examples of p-adic wavelet bases and frames [10], including bases with matrix
+dilations [11]. In particular in this way one can reproduce the p-adic quincunx basis described
+in [136].
+
+2.5
+
+Summation of p-Adic Series
+
+Since rational numbers
+may be treated with respect to ordinary and p-adic absolute values,
+P
+the power series
+an xn with an ∈ Q can be considered as real (x ∈ R) as well as p-adic
+(x ∈ Qp ). Divergent series in the real case have usually good p-adic convergence, see [20] for
+the anharmonic oscillator and [73] for some examples in quantum field theory. This is one
+of the motivations to investigate summation of some p-adic series, especially when the sum
+is a rational number for a rational argument. It is of a special interest when this rational
+summation is p-adic invariant, i.e. when the sum does not depend on the primes p. There
+are now many examples of the p-adic invariant rational summation with n! in the coefficients
+of the series [71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83]. Recall that p-adic norm of n!
+has the property
+n−sn
+
+|n!|p = p− p−1 → 0 when n → ∞ ,
+
+(2.14)
+
+where sn = n0 + n1 + ... + nr is the sum of digits in the canonical expansion of number n in
+base p, i.e. n = n0 + n1 p + ... + nr pr . As a simple illustrative example of the p-adic invariant
+rational summation one can refer to
+∞
+X
+n! n = 1! 1 + 2! 2 + ... + n! n + ... = −1 .
+(2.15)
+n=1
+
+In the proof of (2.15) one can take any of the following two properties:
+(i) : n! n = (n + 1)! − n! ,
+
+(ii) :
+
+N
+−1
+X
+n=1
+
+9
+
+n! n = −1 + N ! .
+
+(2.16)
+
+In the sequence of papers [74, 75, 76, 77, 78, 79, 81, 82, 83], main attention has been paid
+to the summation of various versions of functional series of the form
+Skε (x) =
+
++∞
+X
+
+εn n! Pk (n; x) xn ,
+
+n=0
+
+where ε = ±1 ,
+
+x ∈ Zp ,
+
+(2.17)
+
+k ∈ N0 = N ∪ {0} and
+Pk (n; x) = Ck (n) xk + Ck−1 (n) xk−1 + · · · + C1 (n) x + C0 (n)
+
+(2.18)
+
+and Cj (n), 0 ≤ j ≤ k, are some polynomials in n with integer-valued coefficients depending
+on the parameter ε. Note that series (2.17) is convergent when x ∈ Zp for every p and
+consequently is convergent for all x ∈ Z. The main interest was to find a class of polynomials
+Pk (n; x) which provide p-adic invariant rational summation, that is x ∈ Z implies Skε (x) ∈ Z.
+It has been successfully done in papers [81, 82, 83]. To solve this problem of the p-adic
+invariant rational summation the following auxiliary summation was considered
+n−1
+X
+
+εi i! [ik xk + Ukε (x)] xi = Vkε (x) + n! Aεk−1 (n; x) ,
+
+(2.19)
+
+i=0
+
+where Ukε (x), Vkε (x), Aεk (n; x) are some polynomials in x of the degree k and the integer
+coefficients. Note that polynomials Aεk (n; x) contain all information on invariant summation
+of series (2.19) (see [81, 82, 83]), in particular holds
+Ukε (x) = x Aεk−1 (1; x) − ε Aεk−1 (0; x) ,
+
+Vkε (x) = −εAεk−1 (0; x).
+
+(2.20)
+
+Some sequences (see [81, 82, 83]) composed of Aεk (n; ±1) and Aεk (n; 0) are related to a few
+interesting integer sequences, including the the Bell numbers, presented in the Sloane on-line
+encyclopedia [84].
+It is also worth noting some other investigations related to the p-adic invariant rational
+summation. In [71], adelic summation of the divergent series in the real case was introduced.
+Some power series everywhere convergent on R and Qp are introduced and considered in [72],
+see also [75]. Paper [78] contains a proof that the sum of the p-adic series
+∞
+X
+
+n! nk xn ,
+
+n=0
+
+k ∈ N0 , x ∈ N \ {1}
+
+(2.21)
+
+cannot be the same rational number in Zp for every p. It also contains conjecture that the
+sum of series (2.21) is a rational number if and only if k = x = 1. Some differential equations,
+whose solutions are p-adic power series with n!, are considered in [80].
+
+3
+
+Applications in Physics
+
+3.1
+
+Strings, Fields and Quantum Theory
+
+p-Adic strings. p-Adic mathematical physics practically started by construction of p-adic
+analogs of the Veneziano scattering amplitudes for scalar tachyon strings. Two kinds of the
+scattering amplitudes were constructed: p-adic-valued and complex-valued. In the case of
+10
+
+complex-valued amplitudes only the world sheet of strings is described by p-adic numbers,
+while all other ingredients are real or complex, i.e.,
+Z
+1 − pa−1 1 − pb−1 1 − pc−1
+|x|a−1
+|1 − x|b−1
+dx =
+Ap (a, b) =
+, a + b + c = 1, (3.1)
+p
+p
+1 − p−a 1 − p−b 1 − p−c
+Qp
+Q
+and the product adelic formula A∞ (a, b) p Ap (a, b) = 1 holds. Mainly, this kind of p-adic
+strings has been investigated and occurred to be very useful in mathematical physics.
+Theory of p-adic strings was pushed forward by construction of related effective Lagrangian
+i
+✷
+1
+mD p 2 h 1
+− ϕ p− 2m2 ϕ +
+(3.2)
+Lp = 2
+ϕp+1 ,
+g p−1
+2
+p+1
+
+where ϕ = ϕ(x) is a realvalued scalar field on the real Minkowski spacetime RD , m and g
+are real parameters, and ✷ is d’Alambert operator. Lagrangian (3.2) reproduces four-point
+amplitude (3.1) and also gives possibility to calculate any higher-point one at the tree level.
+This Lagrangian stimulated further investigation of p-adic string theory, in particular the
+corresponding equation of motion
+✷
+
+p− 2m2 ϕ(x) = ϕp (x)
+
+(3.3)
+
+has been studied [313, 314, 315, 316, 317, 318]. The prime p can be replaced with any natural
+number n ≥ 2 and expressions (3.2) and (3.3) still make sense.
+On p-adic strings, see reviews [53, 308, 69] and references therein.
+Quantization of the Riemann zeta-function.
+Quantization of the Riemann zetafunction motivated by p-adic string theory was proposed by Aref’eva and Volovich in [25].
+The Riemann zeta-function is treated as a symbol of a pseudodifferential operator and the
+corresponding classical and quantum field theories are studied. It is shown that the Lagrangian for the zeta-function field is equivalent to the sum of the Klein-Gordon Lagrangians
+with masses defined by the zeros of the Riemann zeta-function. Quantization of the mathematics of Fermat-Wiles and the Langlands program is also indicated. Possible cosmological
+applications of the zeta-function field theory are discussed.
+The Riemann zeta-function is defined as
+ζ(s) =
+
+∞
+X
+1
+n=1
+
+ns
+
+, s = σ + iτ, σ > 1 ,
+
+(3.4)
+
+and there is an Euler adelic representation
+ζ(s) =
+
+Y
+(1 − p−s )−1 .
+
+(3.5)
+
+p
+
+The zeta-function admits an analytic continuation to the whole complex plane s except the
+point s = 1 where it has a simple pole.
+Due to the Riemann hypothesis on zeros of the zeta-function a very interesting operator
+is the following pseudodifferential one,
+1
+ζ( + i✷) .
+2
+11
+
+(3.6)
+
+We call this operator the quantum zeta-function. Here ✷ is the d’Alembert operator. We also
+consider quantization of the Riemann ξ-function and various L-functions. Euclidean version
+of the quantum zeta-function is ζ( 21 + i∆) where ∆ is the Laplace operator.
+Under the assumption that the Riemann hypothesis is true it was shown that the Lagrangian for the zeta-function field is equivalent to the sum of the Klein-Gordon Lagrangians
+with masses defined by the zeros of the Riemann zeta-function at the critical line. If the
+Riemann hypothesis is not true then the mass spectrum of the field theory is different.
+We can quantize not only the Riemann zeta-function but also more general L-functions.
+Quantization of the mathematics of Fermat-Wiles [286] and the Langlands program [287] is
+indicated.
+One introduces the Riemann ξ-function
+ξ(s) =
+
+s
+s(s − 1) − s
+π 2Γ
+ζ(s).
+2
+2
+
+(3.7)
+
+The Riemann hypothesis asserts that all nontrivial zeros ρ lie at the critical line: ρ =
+1
+2 + iτ . There is a conjecture that all zeros are simple.
+
+The zeros of the ξ-function are the same as the nontrivial zeros of the ζ-function. It is
+known that ξ( 21 + iτ ) is real for real τ and is bounded. Locating zeros on the critical line
+of the (complex) zeta function reduces to locating zeros on the real line of the real function
+ξ( 21 + iτ ).
+Zeta-function classical field theory. If F (τ ) is a function of a real variable τ then we
+define a pseudodifferential operator F (✷) [288] by using the Fourier transform
+Z
+F (✷)φ(x) = eixk F (k2 )φ̃(k)dk .
+(3.8)
+Here ✷ is the d’Alembert operator
+✷=−
+
+∂2
+∂2
+∂2
+,
++
++
+...
++
+∂x20 ∂x21
+∂x2d−1
+
+(3.9)
+
+2 .
+φ(x) is a function from x ∈ Rd , φ̃(k) is the Fourier transform and k2 = k02 − k12 − ... − kd−1
+One assumes that the integral (3.8) converges, see [313] for a consideration of one-dimensional
+p-adic field equations.
+One can introduce a natural field theory related to the real valued function F (τ ) =
+ξ( 12 + iτ ) defined by means of the zeta-function. We consider the following Lagrangian
+
+1
+L = φ ξ( + i✷) φ .
+2
+The integral
+
+1
+ξ( + i✷) φ(x) =
+2
+
+Z
+
+1
+eixk ξ( + ik2 ) φ̃(k)dk
+2
+
+(3.10)
+
+(3.11)
+
+converges if φ(x) is a decreasing function since ξ( 21 + iτ ) is bounded.
+The operator ξ( 12 + i✷) (or ζ( 21 + i✷)) is the first quantization of the Riemann zetafunction. Similarly one can define operators ζ(σ + i✷) and ζ(σ + i∆) where ∆ is the Laplace
+operator. We will obtain the second quantization of the Riemann zeta-function when we
+quantize the field φ(x).
+12
+
+Let
+
+1
+1
++ im2n , ρ̄n = − im2n , mn > 0, n = 1, 2, ...
+2
+2
+be the zeros of the zeta-function at the critical line.
+There is the following
+Proposition. The Lagrangian (3.10) is equivalent to the following Lagrangian
+X
+L′ =
+ηǫn ψǫn (✷ + ǫm2n )ψǫn ,
+ρn =
+
+(3.12)
+
+(3.13)
+
+ǫ,n
+
+where ǫ = ±1.
+Therefore, the zeros m2n of the Riemann zeta-function become the masses of elementary
+particles in the Klein-Gordon equation.
+Zeta-function quantum field theory. To quantize the zeta-function classical field φ(x)
+which satisfies the equation in the Minkowski space
+F (✷)φ(x) = 0 ,
+
+(3.14)
+
+where F (✷) = ξ( 12 + i✷) we can try to interpret φ(x) as an operator valued distribution in a
+space H which satisfies the equation (3.14). We suppose that there is a representation of the
+Poincaré group and a vacuum vector |0i in H though the space H might be equipped with
+indefinite metric and the Lorentz invariance can be violated. The Wightman function
+W (x − y) = h0|φ(x)φ(y)|0i
+is a solution of the equation
+F (✷)W (x) = 0 .
+
+(3.15)
+
+By using Proposition one can write the formal Kallen-Lehmann [289] representation
+XZ
+W (x) =
+eixk fǫn (k)δ(k2 + ǫm2n )dk .
+ǫn
+
+A mathematical meaning of this formal expression requires a further investigation.
+Quantization of the fields ψǫn with the Lagrangian (3.13) can be performed straightforwardly. We will obtain ordinary scalar fields as well as ghosts and tachyons. Remind that
+tachyon is present in the Veneziano amplitude. It was removed by using supersymmetry.
+Now we discuss an approach how to use a Galois group and quantum L-functions instead of
+supersymmetry to improve the spectrum.
+Quantum L-functions and Langlands program.
+In this section we briefly discuss
+L-functions and their quantization [25]. The role of (super)symmetry group here is played
+by the Galois group, see [290, 307, 319].
+For any character χ to modulus q one defines the corresponding Dirichlet L-function [291]
+by setting
+∞
+X
+χ(n)
+, (σ > 1).
+L(s, χ) =
+ns
+n=1
+
+13
+
+If χ is primitive then L(s, χ) has an analytic continuation to the whole complex plane. One
+introduces the function
+π −(s+a)/2 s a 
+ξ(s, χ) =
+Γ +
+L(s, χ) ,
+k
+2 2
+where k and a are some parameters. The zeros ρ lie in the critical strip and symmetrically
+distributed about the critical line σ = 1/2. It is important to notice that unless χ is real
+the zeros will not necessary be symmetric about the real line. Therefore if we quantize the
+L-function by considering the pseudodifferential operator
+1
+L( + i✷, χ) ,
+2
+then we could avoid the appearance of tachyons and/or ghosts by choosing an appropriate
+character χ.
+The Taniyama-Shimura conjecture relates elliptic curves and modular forms. It asserts
+that if E is an elliptic curve over Q, then there exists a weight-two cusp form f which can be
+expressed as the Fourier series
+X
+f (z) =
+an e2πnz
+with the coefficients an depending on the curve E. Such a series is a modular form if and
+only if its Mellin transform, i.e. the Dirichlet L-series
+X
+L(s, f ) =
+an n−s
+has a holomorphic extension to the full s-plane and satisfies a functional equation. For the
+elliptic curve E we obtain the L-series L(s, E). The Taniyama-Shimura conjecture was proved
+by Wiles and Taylor for semistable elliptic curves and it implies Fermat‘s Last Theorem [286].
+Let E be an elliptic curve defined over Q, and L(s) = LK (s, E) be the L-function of E
+over the field K. The Birch and Swinnerton-Dyer conjecture asserts that
+ords=1 L(s) = r ,
+where r is the rank of the group E(K) of points of E defined over K. The quantum L-function
+in this case has the form
+L(1 + i✷) = A(i✷)r + ...,
+where the leading term is expressed in terms of the Tate-Shafarevich group.
+Wiles‘s work can be viewed as establishing connections between the automorphic forms
+and the representation theory of the adelic groups and the Galois representations. Therefore
+it can be viewed as part of the Langlands program in number theory and the representation
+theory [287] (for a recent consideration of the geometrical Langlands program see [292]).
+Let G be the Galois group of a Galois extension of Q and α a representation of G in Cn .
+There is the Artin L-function L(s, α) associated with α. Artin conjectured that L(s, α) is
+entire, when α is irreducible, and moreover it is automorphic: there exists a modular form f
+such that
+L(s, α) = L(s, f ) .
+Langlands formulated the conjecture that L(s, α)Q
+is the L-function associated to an automorphic representation of GL(n, A), where A = R × ′p Qp is the ring of adeles of Q. Here Qp is
+14
+
+the field of p-adic numbers. Let π be an automorphic cuspidal representation of GL(n, A),
+then there is an L-function L(s, π) associated to π. Langlands conjecture (general reciprocity
+law) states: Let K be a finite extension of Q with Galois group G and α be an irreducible
+representation of G in Cn . Then there exists an automorphic cuspidal representation πα of
+GL(n, AK ) such that
+L(s, α) = L(s, πα ) .
+Quantization of the L-function can be performed similarly to the quantization of the Riemann
+zeta-function discussed above by considering the corresponding pseudodifferential operator
+L(σ + i✷) with some σ.
+One speculates that we can not observe the structure of spacetime at the Planck scale
+but feel only its motive [319].
+There is a conjecture that the zeros of L-functions are distributed like the eigenvalues of
+large random matrices from a gaussian ensemble, see [293]. The limit of large matrices in
+gauge theory (the master field) is derived in [27].
+Zeta strings.
+Extension of Lagrangian for a single p-adic string (3.2) to a Lagrangian
+for the whole p-adic sector was considered by Dragovich [85, 86, 87, 88, 89, 90, 91]. A few
+interesting Lagrangians L were constructed in the following additive way:
+
+
+∞
+∞
+X
+X
+1
+1
+Cn n 2
+− ✷2
+p+1
+D
+φ
+− φ p 2m φ +
+,
+(3.16)
+Cn L n = m
+L=
+gn2 n − 1
+2
+p+1
+n=1
+
+n=1
+
+where concrete model for a new scalar field φ(x) depends on the choice of the coefficients Cn
+and coupling constants gn . For each of the following coefficients Dn
+Cn n 2
+= Dn ,
+gn2 n − 1
+
+Dn = 1 , (−1)n−1 , n + 1 , (−1)n−1 (n + 1) , µ(n) , µ(n)(n + 1)
+
+(3.17)
+
+one obtains a particular Lagrangian (3.16) containing the Riemann zeta function and nonpolynomial potential V (φ) = −L(✷ = 0). In (3.17), µ(n) is the Möbius function. For example,
+taking Dn = (−1)n−1 and employing formula
+∞
+X
+
+(−1)n−1
+
+n=1
+
+1
+= (1 − 21−s ) ζ(s) ,
+ns
+
+s = σ + iτ , σ > 0 ,
+
+(3.18)
+
+which has analytic continuation on the entire complex s plane, one obtains Lagrangian
+
+
+✷ 
+✷ 
+1
+1
+2
+L = mD − φ 1 − 21− 2m2 ζ
+φ
++
+φ
+−
+ln(1
++
+φ)
+(3.19)
+2
+2m2
+2
+
+Some basic properties of the obtained Lagrangians have been investigated. These field
+theory models with the Riemann zeta function are also interesting in itself.
+p-Adic fractal strings [129] and Dirac zeta functions [130] are also considered.
+Quantum mechanics. There are a few p-adic analogs of ordinary quantum mechanics.
+In Vladimirov-Volovich-Zelenov [311, 312] formulation, p-adic quantum mechanics is based
+on the following triple {L2 (Qp ), W (x), U (t)}, where L2 (Qp ) is the Hilbert space of complexvalued functions of p-adic space and time. W (z) is a unitary representation of the HeisenbergWeyl group in L2 (Qp ) and U (t) is a unitary evolution operator in L2 (Qp ).
+15
+
+Symplectic group and Heisenberg group in p-adic quantum mechanics are considered in
+[308, 298]. An early review of the developments of p-adic quantum mechanics is presented in
+[308], see also [69].
+Adelic quantum mechanics was introduced by Dragovich in [97, 98], see also review [99].
+Adelic quantum mechanics is a unification of ordinary and p-adic quantum mechanics for all
+primes p. The corresponding probability amplitudes are treated by adelic path integral. It
+was shown that probability amplitude for one-dimensional systems with quadratic Lagrangian
+has the same form in p-adic and ordinary quantum mechanics, see [100, 101, 102]. In the case
+of the adelic harmonic oscillator [97, 98], it was noted connection between some adelic states
+and the functional equation for the Riemann zeta function. Decoherence in adelic quantum
+mechanic is considered in [332].
+p-Adic valued quantum mechanics was also considered, e. g., see [17] and references
+therein.
+Various aspects of p-adic quantum field theory are considered in many papers, see, e.g.
+[308, 197, 198, 302]. A p-adic analog to AdS/CFT is investigated in [299, 300, 301], where an
+unramified extension of the p-adic numbers replaces Euclidean space as the boundary and a
+version of the Bruhat-Tits tree replaces the bulk.
+
+3.2
+
+p-Adic Gravity and Cosmology.
+
+One can argue that at the very small (Planck) scale in cosmology and in black holes the
+geometry of the spacetime should be non-Archimedean [320, 321]. There should be quantum
+fluctuations not only of metrics and geometry but even of the number field. Therefore, it was
+suggested [321] the following number field invariance principle: Fundamental physical laws
+should be invariant under the change of the number field. Adelic approach to the universe
+was emphasized by Manin [290].
+An approach to the wave function of the universe was suggested in [21]. The key idea is
+to take into account fluctuating number fields and present the wave function in the form of
+an adelic product. For this purpose a p-adic generalization of both classical and quantum
+gravitational theory was proposed. Elements of p-adic differential geometry are described.
+The action and gravitation field equations over the p-adic number field are investigated. pAdic analogs of some known solutions to the Einstein equations are presented. It was shown
+that the wave function for the de Sitter minisuperspace model can be treated in the form
+of an adelic product of p-adic counterparts. It was argued that in quantum cosmology one
+should consider summation only over algebraic manifolds.
+In the path integral approach to standard quantum cosmology, the starting point is Feynman’s path integral method, i.e. the amplitude to go from one state with intrinsic metric h′ij
+and matter configuration φ′ on an initial hypersurface Σ′ to another state with metric h′′ij
+and matter configuration φ′′ on a final hypersurface Σ′′ is given by a functional integral
+Z
+′′
+′′
+′′ ′
+′
+′
+hhij , φ , Σ |hij , φ , Σ i∞ = D(gµν )∞ D(Φ)∞ χ∞ (−S∞ [gµν , Φ])
+(3.20)
+over all four-geometries gµν and matter configurations Φ, which interpolate between the
+initial and final configurations. In this expression S[gµν , Φ] is an Einstein-Hilbert action for
+the gravitational and matter fields. This action can be calculated using metric in the standard
+
+16
+
+3+1 decomposition
+ds2 = gµν dxµ dxν = −(N 2 − Ni N i )dt2 + 2Ni dxi dt + hij dxi dxj ,
+
+(3.21)
+
+where N and Ni are the lapse and shift functions, respectively.
+To perform p-adic and adelic generalization we first make p-adic counterpart of the action
+using form-invariance under change of real to the p-adic number fields. Then we generalize
+(3.20) and introduce p-adic complex-valued cosmological amplitude
+Z
+′′
+′′
+′′ ′
+′
+′
+hhij , φ , Σ |hij , φ , Σ ip = D(gµν )p D(Φ)p χp (−Sp [gµν , Φ]),
+(3.22)
+
+where gµν (x) and Φ(x) are the corresponding p-adic counterparts of metric and matter fields
+continually connecting their values on Σ′ and Σ′′ . In its general aspects p-adic functional
+integral (3.22) mimics the usual Feynman path integral. The definite integral in the classical
+action is understood as the usual difference of the indefinite one at final and initial points.
+The measures D(gµν )p and D(Φ)p are related to the real-valued Haar measure on p-adic
+spaces.
+Note that in (3.20) and (3.22) one has to take also a sum over manifolds which have Σ′′
+and Σ′ as their boundaries. Since the problem of topological classification of four-manifolds
+is algorithmically unsolvable it was proposed that summation should be taken over algebraic
+manifolds.
+Investigation of p-adic gravity and adelic cosmology was initiated in paper [21]. Adelic
+quantum cosmology, as application of adelic quantum mechanics to minisuperspace cosmological models, was initiated by Dragovich [93] and has been considered in several papers,
+see, e.g. [94, 65, 64, 66, 67, 68]. As a result of p-adic effects and adelic approach to the wave
+function of the universe one obtains that spacetime exhibits discreteness at the Planck scale.
+Cosmological applications to the dark eergy, motivated by non-local p-adic effective actions and string field theory are considered in [22, 313, 54, 23, 24, 25, 256]. Inspired by
+Lagrangian (3.2), p-adic origin of the dark matter and dark energy was considered in [95, 96].
+It was also considered p-adic inflation in [40].
+Nonlocality of p-adic string theory and string field theory was one of the motivations
+to consider nonlocal gravity models with cosmological solutions (see [60, 61, 62, 63] and
+references therein), given by the modified Einstein-Hilbert action in the form
+Z 
+√
+R − 2Λ
+(3.23)
++ H(R)F(✷)G(R) −g d4 x,
+S=
+16πG
+∞
+X
+fn ✷n as an analytic function of
+where H(R)F(✷)G(R) is a nonlocal term with F(✷) =
+n=0
+
+the d’Alembert operator ✷. H(R) and G(R) are differentiable functions of the scalar curvature
+R and Λ is the cosmological constant.
+A discrete stochastic model of eternal inflation based on p-adic numbers is proposed in
+[294]. A connection with the late-time statistical distribution of bubble-universes in the
+multiverse is discussed.
+Algebraic geometric models in cosmology related to the ”boundaries” of spacetime: Big
+Bang, Mixmaster Universe, Penrose’s crossovers between aeons are introduced in [295]. It is
+suggested to model the kinematics of Big Bang using the algebraic geometric (or analytic)
+blow up of a point. Symbolic dynamics, modular curves, and Bianchi IX cosmologies are
+considered in [296, 297].
+17
+
+3.3
+
+p-Adic Stochastic Processes
+
+The p-adic diffusion (heat) equation
+∂f (x, t)
++ Dxα f (x, t) = 0,
+∂t
+where f (x, t) is a real valued function, t (time) is real coordinate and x is p-adic, Dxα is
+the Vladimirov fractional operator, was suggested in [308]. Mathematical properties of the
+corresponding stochastic processes were studied (see also [126, 168, 122, 306]).
+p-Adic Brownian motion is a real or complex valued stochastic process of p-adic argument
+t, defined by the stochastic pseudodifferential equation
+Dtα f (t) = φ(t),
+where φ is the white noise (delta-correlated gaussian mean zero generalized stochastic process). This stochastic process was explored in [43, 44, 132, 141, 142] (in particular, ultrametric
+analogue of the Markov property was discussed), see also [112].
+Various classes of p-adic stochastic processes are investigated by Albeverio and Karwowski
+[3], Kochubei [163], Yasuda [328], Albeverio and Belopolskaya [4]; see [163, 133, 341, 342] for
+further references. Kaneko [134] showed a relationship between Besov space and potential
+space. For recent developments on p-adic stochastic processes see [135, 125, 121, 329].
+p-Adic models of statistical mechanics on the Cayley tree are studied in [206, 207].
+
+3.4
+
+Qp -Valued Random Processes
+
+A number of articles are devoted to Qp -valued random processes or random processes with
+p-adic parameter (see, for example, [247, 43, 248, 249, 163]). The results discussed below
+have been published in [330, 331].
+Let us consider a system with p-adic parameter. Models of spin glasses ([250, 251, 28])
+and protein dynamics ([30, 35, 31]) can be considered as related examples.
+For an ensemble of p-adic systems the following natural questions arise. What is the
+equilibrium state of the ensemble? In what sense one should understand deviation of the
+state from equilibrium one and how fast the system converges to the equilibrium?
+In order to answer the above questions, the distribution of sum of the independent and
+identically distributed (iid ) p-adic-valued random variables was analyzed.
+Under some natural assumptions on the support of distribution of a random variable the
+distribution of sum of the iid variables tends to the uniform one (Haar measure) on the
+support of the initial distribution. The result is well known in the framework of random
+walks on compact groups ([252]). The initial distribution is naturally considered as close to
+the equilibrium one if convex hull of its support contains zero point. If it is the case, then
+the distribution of sum of the iid variables converges to the uniform one. Otherwise there
+exist limits for some subsequences only. The result is known also for more general situation
+in the framework of p-adic valued U-statistic theory ([253]).
+The most interesting question, namely the rate of convergence of non-equilibrium distributions to the equilibrium one, is managed to obtain only for absolutely continuous distribution
+with locally constant density.
+Let {ξn , n = 1, 2, . . . } be a sequence of iid random variables with values in a disk of
+radius D. The variables are absolutely continuous and their densities pξ are locally constant
+18
+
+with parameter ∆. Let pSn , n = 1, 2, . . . denotes the density of probability distribution of
+random variable Sn = ξ1 + ξ2 + · · · + ξn , n = 1, 2, . . . . Then the following estimation is valid:
+
+
+1
+D
+sup pSn (x) − h(0, D)(x) ≤
+− 1 e−λξ n .
+D
+∆
+x∈Qp
+p
+Here real number λξ depends only on pξ and satisfies the inequality
+1
+λξ ≥
+3
+
+
+
+∆
+D
+
+3
+
+.
+
+The problem considered is closely related to random walks on cyclic groups ([252]) and on
+profinite (commutative or noncomutative) groups ([254, 255]).
+Let us define a random variable ξt for any t ∈ Zp , i. e. the family of random variables is
+indexed by p-adic integers {ξt , t ∈ Zp }. The function X(t, ω), t ∈ Zp , ω ∈ Zp coincides with
+random variable ξt for any t ∈ Zp , X(t, ω) = ξt (ω). The function X(t, ω) is said to be the
+p-adic random process.
+For arbitrary p-adic numbers a, b the symbol [a, b] denotes minimal disk Qp which contains
+a, b. We use notation a < c < b for c ∈ [a, b], c 6= a, c 6= b. Random process has independent
+increments iff for any finite sets {0 = t0 , t1 , . . . , tn } of p-adic integers, t0 < t1 < · · · < tn random variables X(t0 , ·), X(t1 , ·) − X(t0 , ·), . . . , X(tn , ·) − X(tn−1 , ·) are mutually independent.
+p-Adic random process W (t, ·) = Wt , t ∈ Zp is said to be (p-adic) Wiener random process
+if it satisfies the following properties:
+• W0 = 0 almost surely;
+• Wt has independent increments;
+1
+h (0, |t − s|p ).
+• Wt − Ws are absolutely continuous with densities |t−s|
+p
+
+Let ξn (ω), n ∈ Z+ , ω ∈ Zp be a sequence of iid absolutely continuous random variables
+with constant densities on Zp . Then the series
+W (ω, t) =
+
+∞
+X
+
+ξn (ω) γn en (t)
+
+(3.24)
+
+n=0
+
+converges for any t ∈ Zp almost surely and defines the p-adic Wiener process. Almost surely,
+a sample path of p-adic Wiener process is 1-Lipschitz function and is nowhere differentiable.
+p-Adic Wiener process can be considered as random variable {W (t), t ∈ Zp } with values
+in the space of continuous functions C (Zp → Qp ). Distributions of this random variable is
+said to be p-adic Wiener measure µW .
+Let L0 denotes the set of 1-Lipschits functions with Lipschits constants equal 1 and are
+equal to zero at zero point. L0 is compact Zp -modul in the space of continuous functions.
+Support of p-adic Wiener measure coincides with L0 . p-Adic Wiener measure under restriction
+on L0 coincides with Haar measure on L0 .
+In the paper [249] the last statement is considered as definition of p-adic Wiener process.
+It is closely related to the theory of Qp -Gaussian random variables developed in [249].
+
+19
+
+3.5
+
+Disordered Systems and Spin Glasses
+
+Spin glasses (disordered magnetics) are examples of disordered systems, see [196, 224, 115,
+46] for the discussion of statistical mechanics of disordered systems. Glass transition for
+disordered systems is described by the replica symmetry breaking approach. The order
+parameter for replica symmetry breaking is given by the Parisi matrix – some hierarchical
+block matrix. It was found that [196] the structure of correlation functions for spin glasses
+are related to ultrametricity.
+It was shown (Avetisov, Bikulov, Kozyrev [28] and Parisi, Sourlas [219]) that the Parisi
+matrix possesses the p-adic parametrization. Matrix elements of this matrix after some
+natural enumeration of the indices takes the form of some real valued function of the p-adic
+norm of difference of indices
+Qab = q(|a − b|p ).
+(3.25)
+This allows to express correlation functions of spin glasses in the state with broken replica
+symmetry in the form of p-adic integrals [219].
+Relation of the p-adic Fourier transform to replica symmetry breaking was discussed in
+[56, 59]. More general replica solutions related to general locally compact ultrametric spaces
+were obtained [152, 153, 154], in this approach the Parisi matrix takes the form
+Qab = q(sup(a, b)),
+
+(3.26)
+
+where the indices are enumerated by some ultrametric space and sup(a, b) is the minimal ball
+containing a, b (i.e. matrix elements are generated by a real valued function on the tree of
+balls in some ultrametric space).
+The p-adic Potts model was considered in [201, 155, 202, 203, 204, 205, 119]. Ultrametricity in spin glasses can be discussed as a result of branching process in multidimensional space,
+see for mathematical discussion [214, 29, 333]. Ultrametricity index in spaces of high dimension was discussed in [52].
+
+3.6
+
+Some Other Applications
+
+We mention here only a few of the other applications of p-adic methods in physics. Some
+other applications can be found in the previous reviews [53, 308, 69].
+Nonlinear equations and cascade models of turbulence.
+wavelet (2.2) satisfies
+|ψ(x)|2 ψ(x) = ψ(x).
+
+It is easy to see that the
+
+This property can be applied to construct solutions of non-linear equations, in particular,
+the analogue of the non-linear Schroedinger equation [171, 14].
+An analog of this trick was used to construct solutions of nonlinear ultrametric integral
+equation [177] which models Richardson energy-cascading process in developed turbulence.
+p-Adic model of developed turbulence was introduced earlier by Fischenko and Zelenov [114]
+(but for their model the mentioned above trick is not applicable).
+Non-Newtionian mechanics.
+Based on the assertion that Newton‘s equations of motions use real numbers while one can observe only rationals, a “functional” formulation of
+classical mechanics was suggested [322, 323, 324, 325, 326]. The fundamental equation of the
+20
+
+microscopic dynamics in the functional approach is not the Newton equation but the Liouville
+equation for the distribution function of the single particle or the Fokker-Planck-Kolmogorov
+equation. The Newton equation in this approach appears as an approximate equation describing the dynamics of the average values of the position and momenta for not too long
+time intervals. Corrections to the Newton trajectories are computed. An interpretation of
+quantum mechanics is attempted in which both classical and quantum mechanics contain
+fundamental randomness. Instead of an ensemble of events one introduces an ensemble of
+observers.
+Review of p-adic dynamical systems is presented in [69]. An adelic approach to dynamical
+systems is considered in [103].
+Some aspects of quantum statistical mechanical systems are considered in [191, 192]. On
+KMS weights on higher rank buildings, see [193].
+
+4
+
+Applications in Biology
+
+4.1
+
+Applications to Proteins and Genomes
+
+Approximation of the space of states of a complex system by ultrametric space was proposed
+in theory of spin glasses and was used in biology starting from 1980-ies [220]. In particular
+it was proposed (H. Frauenfelder, see [19, 116, 117, 303]) to consider a hierarchy of states of
+protein molecules. In [47] the dynamics of polypeptides was modeled and it was shown that
+it can be approximated by a hierarchy of transitions between the energy minima described
+by the so called disconnectivity graph.
+Models of ultrametric random walk were investigated, in particular in [218, 123, 48].
+These earlier works were confronted with difficulties in description of different regimes in the
+protein dynamics, for instance in application to the experiments on ligand-rebinding kinetics
+of myoglobin and spectral diffusion in deeply frozen proteins.
+Application of model of ultrametric diffusion generated by the Vladimirov operator to
+investigation of the protein dynamics was proposed in [28, 30]. It was shown that p-adic
+diffusion equation introduced in [308] offers an accurate and universal description of the
+protein fluctuation dynamics on extremely large range of scales from cryogenic up to room
+temperatures:
+1
+∂f (x, t)
++ Dxα f (x, t) = 0,
+α∼ .
+(4.1)
+∂t
+T
+Here t is the real time and the p-adic coordinate x describes the “tree of basins” which
+corresponds to the conformational state of the protein, T is the temperature. This equation
+was used to describe two drastically different types of experiments – on rebinding of CO to
+myoglobin and spectral diffusion of proteins.
+Applicability of this special p-adic diffusion equation to protein dynamics shows that the
+protein energy landscape exhibits the hierarchical self-similarity (which can be represented
+as scaling in the kernel of the Vladimirov fractional operator).
+Further results on application of p-adic diffusion to proteins were obtained in [31, 32, 33,
+35, 36, 37]. In [182] a general diffusion on energy landscape in the Arrhenius approximation
+was considered (in this approximation the dynamics on the energy landscape is approximated
+by transitions between the energy minima). It was shown that in this case the dynamics is
+
+21
+
+described by ultrametric diffusion equation with drift of the form
+Z −βE(sup(x,y)) h
+i
+e
+∂
+eβE(x) f (x, t) − eβE(y) f (y, t) dν(y) = 0,
+f (x, t) +
+∂t
+X ν(sup(x, y))
+
+(4.2)
+
+where x enumerates local energy minima, ultrametric space X describes the ”tree of basins”
+for the energy landscape (x ∈ X are energy minima, the distance measures the transition
+barriers between the minima); sup(x, y) is the minimal ball in X containing x and y; E(x)
+is the energy of minimum x; ν(y) measures the entropy of vicinity of energy minimum y;
+E(sup(x, y)) is the energy of the Arrhenius transition state between x and y and ν(sup(x, y))
+is the entropy of this transition state. The multipliers eβE(x) , eβE(y) are drift terms, if
+these terms are constant (i.e. all local minima have the same energy) the diffusion generator
+becomes ultrametric pseudodifferential operator. Equation (4.2) generalizes (4.1) for the case
+of general energy landscape.
+In [38, 156] systems of p-adic integral equations for models of molecular motors were
+discussed. A construction of molecular machines as crumpled hierarchical polymer globules
+was discussed in [39]. In this approach the dynamics of blocks of the molecular machine is
+described by a system of equations controlled by a hierarchical block matrix similar to (3.25)
+or (3.26).
+In [215, 216] an approach for description of hierarchical structure of proteins was proposed.
+It was shown that the domain structure of proteins is one of the levels of the described
+hierarchy. In [183] this approach was generalized as a model which unifies the fragment
+approach to proteins (construction of protein conformations as sequences of conformations of
+short fragments, see [305, 225, 226]) and the method of statistical potentials.
+A model of biological evolution based on p-adic diffusion equation has been proposed in
+[34]. A model of gene duplication when genome is considered as a probabilistic algorithm
+was considered in [157].
+Genome organization. For the structure of chromatin (organization of DNA in living
+cells) the structure of crumpled globule was discussed [227]. This structure is characterized by
+absence of entanglement of polymer chains, which is of particular importance for functioning
+of the genome. One of the tricks to avoid entanglement is the ring topology for polymers
+[228, 229].
+Another trick is the hierarchical organization of polymer globule similar to known examples of Peano curves (space filling curves) [39]. This hierarchical organization was observed
+experimentally [230, 231]. The chromatin is organized in a hierarchy of levels of folding, some
+of levels include ring structures, this hierarchy is related to regulation of gene expression.
+
+4.2
+
+p-Adic Genetic Code and Bioinformation
+
+Another very important application of p-adic numbers is successful modeling of the genetic
+code, initiated by B. Dragovich and A. Dragovich [104], A. Khrennikov [158], and A. Khrennikov and S. Kozyrev [159].
+Biologically, the genetic code is a connection between codons as building blocks of the
+genes and the amino acids which are basic elements of the proteins. From mathematical
+point of view, the genetic code is a mapping from a set of 64 elements (codons) into a set of
+21 elements (20 amino acids and one stop signal). Since there are more codons than amino
+acids, there is degeneration of the genetic code, i.e. a few codons code the same amino acid.
+22
+
+There is an estimation that theoretically may be more than 1084 possible maps, but in the
+living cells there are only dozens of genetic codes. The problem of modeling of the genetic
+code consists in finding an adequate mathematical description of the existing genetic codes.
+According to the B. Dragovich approach [104, 105, 106, 107, 108, 109, 110], when two
+codes code the same amino acid then they are close in the information sense which can be
+described by the p-adic distance, in particular by using together both p = 5 and p = 2. The
+codons are numbered by the three-digit numbers in the base p = 5, where nucleotides are
+identified with digits as follows: C = 1, A = 2, T = U = 3, G = 4. So, there is one-to-one
+correspondence between codons and numbers c0 + c1 5 + c2 52 ≡ c0 c1 c2 , where ci = 1, 2, 3, 4.
+The vertebrate mitochondrial code is very simple code and it is presented in Tab. 1. Using padic distances between codons, it was shown that degeneration of the vertebral mitochondrial
+code has p-adic structure, and all other codes can be regarded as slight modifications of this
+one.
+It is also shown that:
+• between codons and amino acids can be introduced p-adic distance [109],
+• not only codons but also protein amino acids make an utrametric space [109, 110],
+• both codons and amino acids are some p-adic ultrametric networks [110],
+• the genetic code connects two ultrametric networks to one larger network of 85 elements
+[107].
+It is also introduced [109] the p-adic modified Hamming distance suitable for applications
+in investigation of informational similarity between sequences which elements are codons,
+nucleotides or amino acids. For conjecture on possible evolution of the genetic code, see
+[106, 107].
+The following 2-dimensional 2-adic model of the genetic (amino acid) code was proposed
+in [159]. It was shown that, if we consider the following 2-dimensional parametrization of the
+nucleotides
+A G
+00 01
+=
+U C
+10 11
+this gives a natural 2-dimensional parametrization of the set of codons (the 2-adic plane).
+With this enumeration the degeneracy of the amino acid code is equivalent to local constancy
+of the map on the 2-adic plane. The following table of amino acids on the 2-adic plane of
+codons was obtained:
+Lys
+Glu
+Ter
+Gly
+Asn
+Asp
+Ser
+Ter
+Gln
+Trp
+Arg
+Tyr
+His
+Cys
+Met
+Val
+Thr Ala
+Ile
+Leu
+Leu
+Ser
+Pro
+Phe
+Further properties of this 2-adic 2-dimensional parametrization were investigated [160,
+184, 161, 162] (relation to the Rumer symmetry, to PAM and BLOSUM matrices, to the
+23
+
+Table 1: The vertebrate mitochondrial code with p-adic structure [110]. 5-Adic distance
+1
+between codons is: 25
+inside quadruplets, 15 between different quadruplets in the same column,
+1 otherwise. Each quadruplet can be viewed as two doublets with respect to the 2-adic
+distance between codons equal 21 . Every doublet codes one amino acid or stop signal (Ter).
+111
+112
+113
+114
+
+CCC
+CCA
+CCU
+CCG
+
+Pro
+Pro
+Pro
+Pro
+
+211
+212
+213
+214
+
+ACC
+ACA
+ACU
+ACG
+
+Thr
+Thr
+Thr
+Thr
+
+311
+312
+313
+314
+
+UCC
+UCA
+UCU
+UCG
+
+Ser
+Ser
+Ser
+Ser
+
+411
+412
+413
+414
+
+GCC
+GCA
+GCU
+GCG
+
+Ala
+Ala
+Ala
+Ala
+
+121 CAC
+122 CAA
+123 CAU
+124 CAG
+
+His
+Gln
+His
+Gln
+
+221
+222
+223
+224
+
+AAC
+AAA
+AAU
+AAG
+
+Asn
+Lys
+Asn
+Lys
+
+321
+322
+323
+324
+
+UAC
+UAA
+UAU
+UAG
+
+Tyr
+Ter
+Tyr
+Ter
+
+421
+422
+423
+424
+
+GAC
+GAA
+GAU
+GAG
+
+Asp
+Glu
+Asp
+Glu
+
+131
+132
+133
+134
+
+CUC
+CUA
+CUU
+CUG
+
+Leu
+Leu
+Leu
+Leu
+
+231 AUC Ile
+232 AUA Met
+233 AUU Ile
+234 AUG Met
+
+331
+332
+333
+334
+
+UUC
+UUA
+UUU
+UUG
+
+Phe
+Leu
+Phe
+Leu
+
+431
+432
+433
+434
+
+GUC
+GUA
+GUU
+GUG
+
+Val
+Val
+Val
+Val
+
+141
+142
+143
+144
+
+CGC
+CGA
+CGU
+CGG
+
+Arg
+Arg
+Arg
+Arg
+
+241
+242
+243
+244
+
+341
+342
+343
+344
+
+UGC
+UGA
+UGU
+UGG
+
+Cys
+Trp
+Cys
+Trp
+
+441
+442
+443
+444
+
+GGC
+GGA
+GGU
+GGG
+
+Gly
+Gly
+Gly
+Gly
+
+AGC
+AGA
+AGU
+AGG
+
+Ser
+Ter
+Ser
+Ter
+
+energy of binding of codons, etc.). This parametrization can be considered as an example of
+multidimensional hierarchy, see subsection 5.1.
+
+4.3
+
+p-Adic Models of Cognition
+
+Applications of p-adic and more generally ultrametric spaces to mathematical modeling of
+cognition and psychology have quite long history, with the pioneer papers [266]. The basics of
+the p-adic model of cognition were presented in monograph [267]; applications to psychology,
+including p-adic modeling of unconscious mind (with applications to Freud’s psychoanalysis
+and treatment of depressions) were summarized in another monograph [268]. The starting
+point is observation that cognition is based on the hierarchic representation of information.
+Hierarchy can be typically represented by using tree-like structures. Such structures can be
+formalized by using ultrametric spaces. The p-adic trees are the simplest trees and X = Zp
+is one of the simplest ultrametric spaces. Therefore it is natural to use it as the configuration
+space of cognition, a mental space. In this model basic mental states are represented as points
+of X (branches of the p-adic tree). One of the advantages of operating with p-adic mental
+space is that it can be endowed with the algebraic structure which can be used as the basis
+of analysis (the p-adic analysis). This analysis is used to model information processing in the
+mental space. This model provides the possibility to encode cognitive hierarchy in topology.
+Thus the p-adic analysis plays the role of machinery for analyzing hierarchic information.
+Real mental states are represented by finite branches and, hence, by natural numbers. The
+collection of real mental states represented by the set of natural numbers N is embedded in
+24
+
+the complete mental space represented by the ring of p-adic integers Zp . Processing of mental
+states by the brain is mathematically modeled with the aid of p-adic dynamical systems. The
+split of cognition into subconsciousness and consciousness plays the basic role in this model of
+dynamical thinking. Powerful p-adic dynamical systems work in subconsciousness and we are
+not able to inspect consciously their iterations. Only attractors (and more generally) cycles
+of these dynamical systems (unconscious information processors) are reported to conscious
+and then analyzed by the latter [266, 267].
+The recent development of p-adic and ultrametric modeling of cognition is represented in
+the works of G. Iurato, A. Khrennikov, and F. Murtagh [269, 270, 271, 274]. In [272, 273, 274]
+there was explored the p-adic generalization of theory of hysteresis dynamics: conscious
+states are generated as the result of integrating of unconscious memories. One of the main
+mathematical consequences of our model is that trees representing unconscious and conscious
+mental states have to have different structures of branching. In [272, 273, 274] there were
+done two new steps: a) the use of hysteresis model in the unconscious-conscious framework;
+b) p-adic mathematical formalization of the hierarchic hysteresis. In [269, 270, 271] the
+ultrametric model of cognition was used for a few important applications, e.g., text content
+analysis and search and discovery, to narrative and to thinking as well as to the mathematical
+representation of Matte Blanco’s bi-logic. Finally, we point to paper of Khrennikov and
+Kotovich [275] about ultrametric modeling of unconscious creativity
+
+5
+
+Other Applications
+
+5.1
+
+Data Mining
+
+One of the most promising applications of hierarchical methods is to deep learning [232, 233].
+Another well known approach in data mining is clustering, which can be considered as a
+hierarchical organization of data using some metric on data, see for example [212, 213, 234].
+Hierarchical classification of data using ”tree of life” was extensively used in biology starting
+from the 18-th century [235].
+Hierarchy is a natural feature in ultrametric spaces which mathematically can be expressed
+as a duality between ultrametric spaces and trees of balls in these spaces [236, 171]. In the
+p-adic case there exists also multidimensional hierarchy which is described by the Bruhat-Tits
+buildings [237, 238].
+In computer science clustering with respect to a family of metrics results in a network
+of clusters (this network is not necessarily a tree) [239, 240]. This network of clusters is
+obtained by combining cluster trees with respect to different metrics, where two trees are
+glued together by vertices (clusters) which coincide as sets. This approach is referred to as
+multi-clustering, or multiple clustering, or ensemble clustering. One of possible applications
+of this approach is to phylogenetic networks needed for description of hybridization and
+horizontal gene transfer in biological evolution [243]. For the discussion of mathematical
+methods used in investigation of phylogenetic networks see [241, 242].
+It was found that network of cluster can be considered as a simplicial complex which
+in the case of family of metrics on multidimensional p-adic spaces is directly related to the
+Bruhat–Tits buildings [185, 16, 186, 170]. The example of multiclustering, or multidimensional hierarchy on the set of three points can seen on the figure (see also review [170]).
+
+25
+
+ABC
+
+C
+BC
+
+AB
+A
+
+A
+B
+
+B
+
+C
+
+For some other applications of p-adic, hierarchical and wavelet methods in data analysis
+and related fields see [245, 246, 45, 111, 244, 208, 209, 210, 211].
+p-Adic methods were applied to classification problems in [49] and to computer vision
+problems in [50, 51].
+
+5.2
+
+Cryptography and Information Security
+
+The possibility to use p-adic analysis and theory of p-adic dynamical systems in cryptography
+was explored in a series of papers of V. Anashin, see, e.g., [256, 257, 258]. His studies were
+continued in a series of joint works with A. Khrennikov and E. Yurova [18, 260, 259, 261, 262].
+The starting point of this approach is that the set of natural numbers N can be considered as
+a subset of the ring of p-adic integers Zp . Thus any data-set in the form of natural numbers
+can be embedded into Zp and, hence, it can be analyzed by using the p-adic analysis. This is
+the main feature of p-adics explored in cryptography and information security: the possibility
+to treat discrete data in the continuous framework, but continuous from the p-adic viewpoint.
+In applications we typically use 2-adic numbers. Then ergodic and more generally measurepreserving p-adic dynamical systems are explored to encrypt information.
+The main mathematical achievement behind this approach is the possibility to formulate in practically realizable terms criteria of ergodicity and measure preserving of p-adic
+dynamical systems. The first steps in this direction were done by V. Anashin and later
+new results were received by A. Khrennikov and E. Yurova (including joint works with V.
+Anashin) [258, 18, 260, 259, 261, 262]. Two types of such criteria are based on two special
+representations of maps f : Zp → Zp . One representation is through expansion of f into
+the van der Put series [260] and another representation is based on the coordinate functions
+associated with the p-adic expansion of the number y = f (x), see [262].
+Recently A. Khrennikov and E. Yurova found that p-adic analysis can be used as the
+mathematical basis for cloud computing [263]. Cloud computing is a type of Internet-based
+computing that provides shared computer processing resources and data to computers and
+other devices on demand. It is a model for enabling ubiquitous, on-demand access to a
+shared pool of configurable computing resources (e.g., computer networks, servers, storage,
+applications and services), see [264, 265].
+In [263] a description of homomorphic and fully homomorphic cryptographic primitives
+in the p-adic model was considered. This model describes a wide class of ciphers (including
+substitution ciphers, substitution ciphers streaming, keystream ciphers in the alphabet of p
+elements), but certainly not all. Homomorphic and fully homomorphic ciphers are used to
+ensure the credibility of remote computing, including cloud technology. Within considered
+
+26
+
+p-adic model there were described all homomorphic cryptographic primitives with respect to
+arithmetic and coordinate-wise logical operations in the ring of p-adic integers Zp . It was
+shown that there are no fully homomorphic cryptographic primitives for each pair of the
+considered set of arithmetic and coordinate-wise logical operations on Zp . The problem of
+constructing a fully homomorphic cryptographic primitives was formulated as follows.
+Consider a homomorphic cryptographic primitives with respect to operation “∗” on Zp .
+Then, it is possible to describe the complete set of operations “G”, for which the cryptographic
+primitives are homomorphic. As a result, a fully homomorphic cryptographic primitives with
+respect to the operations “∗” and “G” can be constructed. There was proposed the description of the set of all operations “G”, for which fully homomorphic cryptographic primitives
+with respect to the operations “+” and “G” can be constructed from the homomorphic cryptographic primitive based on the operation “+”. Examples of such “new operations” were
+presented. Of course, this work is just the first step towards creation of p-adics based cloud
+computing. Here the expectations are very high. But the problem is extremely difficult both
+mathematically and methodologically.
+
+5.3
+
+Application of p-Adic Analysis to Geology
+
+The cooperation between the research groups of K. Oleschko (applied geophysics and petroleum
+research) and A. Khrennikov (p-adic mathematical physics) lead to the creation of a new
+promising field of research [142, 276, 277]: p-adic and more generally ultrametric modeling
+of dynamics of flows (of, e.g., water, oil, oil-in-water and water-in-oil droplets) in capillary
+networks in porous random media. The starting point of this project is the observation that
+tree-like capillary networks are very common geological structures. Fluids move through such
+trees of capillaries and, hence, it is natural to try to reduce the configuration space to these
+tree-like structures and the adequate mathematical model of such a configuration space is
+given by an ultrametric space. The simplest tree-like structure of a capillary network can be
+modeled as the ring of p-adic integers Zp .
+Consider the variable x belonging to the field of p-adic numbers (or the ring of p-adic
+integers) and the real time variable t. Here x is the “pore network coordinate”, each pathway
+of pore capillaries is encoded by a branch of the p-adic tree. The center of this tree is selected
+as an arbitrary branching point of the pore network; for a moment, it plays the role of the
+center of the coordinate, i.e., this is a purely mathematical entity; we do not assign any
+geological meaning to such a center. Thus by assigning the p-adic number x to a system we
+know in which pathway of capillaries it is located; nothing more. Hence, the p-adic model
+provides a fuzzy description of pore networks. In particular, the size of capillaries is not
+included in geometry. It can be introduced into the model with the aid of the coefficients
+of the anomalous diffusion-reaction equation playing the role of the master equation. From
+the dynamics, we get to know concentration of fluid (oil, water or emulsions and droplets)
+in capillaries. (Recall that the dynamics are probabilistic.) However, we cannot get to know
+the concentration of fluid in the precisely fixed point of the Euclidean physical space.
+This modeling heavily explores theory of p-adic pseudodifferential equations, equations
+with fractional differential operators D α (Vladimirov’s operators), see, e.g. [163, 175, 176,
+1, 143, 172, 140, 173, 174]. In particular, to find solutions of p-adic master equations of the
+diffusion type one uses theory of p-adic wavelets established by S. Kozyrev [175, 176], see
+[1, 143, 172] for its further development.
+27
+
+In spite of its mathematical beauty, the p-adic model does not reflect completely the
+complex branching structure of trees of capillaries in random porous media. Therefore the
+use of general ultrametric spaces is very important for concrete geological applications. Here is
+used theory of ultrametric wavelets and pseudodifferential operators which was established by
+Kozyrev and Khrennikov [140, 173, 174]. For a moment, this theory is about linear equations.
+However, the real equations describing geological flows are nonlinear both in the Euclidean
+[280, 281, 282] and ultramentric models [279]. There can be mentioned only a few works about
+existence of a solution of ultrametric pseudo-differential equations [140, 173, 174]. Geological
+studies strongly stimulate development of theory of non-linear ultrametric pseudodifferential
+equations [285].
+
+5.4
+
+Some Other Investigations
+
+Let us also mention some other p-adic subjects.
+A brief review of Qp -valued probability is presented in [69]. p-Adic probability logics was
+considered and its overview is presented in [124]. For a brief review of m-adic representation
+of images, see [69]. For possible applications of p-adic analysis in econometrics, see e.g. [111]
+and references therein.
+See Manin’s paper on numbers as functions [189] and on the Painleve VI equations in
+p-adic time [190]. p-Adic knot invariants are discussed in [200].
+
+6
+
+Concluding Remarks
+
+During the past thirty years of p-adic mathematcal physics, a lot has been done in invention of
+methods, their developments and applications. In particular, the following methods have been
+introduced and well developed: the Vladimirov operator of p-adic fractional differentiation,
+various aspects of p-adic wavelets, analysis on general ultrametric spaces, and summation of
+p-adic series.
+Applications in physics have been mainly related to: p-adic strings and models with the
+Riemann zeta function, p-adic and adelic quantum mechanics, p-adic classical and quantum
+field theory, p-adic gravity and cosmology, p-adic stochastic processes, disordered systems
+and spin glasses, p-adic dynamical systems, and some p-adic valued models.
+Applications in biology have been mainly devoted to investigations of the genetic code,
+dynamics and structure of proteins, and the hierarchical organization of polymer globules.
+The obtained results are in satisfactory agreement with experimental data. A lot of work
+was also done towards p-adic modeling of the cognition.
+Among other applications, there should be pointed developments in data mining, cryptography and information security, and also attempts to p-adic modeling of flow dynamics in
+geology.
+Concluding, in this paper we have presented a brief review of the recent main developments
+in p-adic mathematical physics and related topics. In particular, attention has been paid to
+achievements during last decade and to those topics which are expecting to be prospective in
+the near future. Some topics which are well presented in the previous reviews [53, 308, 69],
+are not much discussed in this article. To go into details we provide an extensive list of
+references (which is not the complete one).
+
+28
+
+Acknowledgments
+Work on this paper by one of the authors (B. Dragovich) was partially supported by Ministry
+of Education, Science and Technological Development of the Republic of Serbia, projects
+174012 and 173052.
+
+References
+[1] S. Albeverio, A. Yu. Khrennikov and V. M. Shelkovich, Theory of p-Adic Distributions:
+Linear and Nonlinear Models, London Mathematical Society Lecture Note Series 370
+(Cambridge Univ. Press, Cambridge, New York, Melbourne, Madrid, Cape Town, Singapore, Sao Paulo, Delhi, Dubai, Tokyo, 2010).
+[2] S. Albeverio and S. V. Kozyrev, “Pseudodifferential p-adic vector fields and pseudodifferentiation of a composite p-adic function,” p-Adic Numbers Ultrametric Anal. Appl.
+2 (1), 21–34 (2010) [arXiv:1105.1506].
+[3] S. Albeverio and W. Karwowski, “A random walk on p-adic numbers – generator and
+its spectrum,” Stoch. Proc. Theory Appl. 53, 1–22 (1994).
+[4] S. Albeverio and Ya. Belopolskaya, “Stochastic processes in Qp associated with systems
+of nonlinear PDEs,” p-Adic Numbers Ultrametric Anal. Appl. 1 (2), 105–117 (2009).
+[5] S. Albeverio and S. V. Kozyrev, “Frames of p-adic wavelets and orbits of the affine
+group,” p-Adic Numbers Ultrametric Anal. Appl. 1 (1), 18-33 (2009) [arXiv:0801.4713].
+[6] S. Albeverio, S. Evdokimov and M. Skopina, “p-Adic multiresolution analysis and
+wavelet frames,” J. Fourier Anal. Appl. 16 (5), 693–714 (2010) [arXiv:0802.1079v1].
+[7] S. Albeverio, S. Evdokimov and M. Skopina, “p-Adic multiresolution analyses,” (2008)
+[arXiv:0810.1147].
+[8] S. Albeverio, S. Evdokimov and M. Skopina, “p-Adic non-orthogonal wavelet bases,”
+Proc. Steklov Inst. Math. 265, 1–12 (2009).
+[9] S. Albeverio, A. Yu. Khrennikov and V. M. Shelkovich, “Harmonic analysis in the p-adic
+Lizorkin spaces: fractional operators, pseudo-differential equations, p-adic wavelets,
+Tauberian theorems,” J. Fourier Anal. Appl. 12 (4), 393–425 (2006).
+[10] S. Albeverio and S. V. Kozyrev, “Multidimensional basis of p-adic wavelets and representation theory,” p-Adic Numbers Ultrametric Anal. Appl. 1 (3), 181–189 (2009)
+[arXiv:0903.0461].
+[11] S. Albeverio and S. V. Kozyrev, “Multidimensional p-adic wavelets for the deformed metric,” p-Adic Numbers Ultrametric Anal. Appl. 2 (4), 265–277 (2010)
+[arXiv:1105.1524].
+[12] S. Albeverio, A. Yu. Khrennikov and V. M. Shelkovich, “Pseudo-differential operators in the p-adic Lizorkin space,” in p-Adic Mathematical Physics, AIP Conference
+Proceedings 826, 195–205 (2006).
+29
+
+[13] S. Albeverio and S. V. Kozyrev, “Multidimensional ultrametric pseudodifferential equations,” Proc. Steklov Math. Inst. 265, 19–35 (2009) [arXiv:0708.2074].
+[14] S. Albeverio, A. Yu. Khrennikov and V. M. Shelkovich, “p-Adic semilinear evolutionary
+pseudodifferential equations in Lizorkin spaces,” Dokl. Akad. Nauk 415 (3), 295–299
+(2007) [Dokl. Math. 76 (1), 539–543 (2007)].
+[15] S. Albeverio, S. Kuzhel, and S. Torba, “p-Adic Schrödinger-type operator with point
+interactions,” J. Math. Anal. Appl. 338, 1267–1281 (2008).
+[16] S. Albeverio and S. V. Kozyrev, “Clustering by hypergraphs and dimensionality of
+cluster systems,” p-Adic Numbers Ultrametric Anal. Appl. 4 (3), 167–178 (2012)
+[arXiv:1204.5952v1].
+[17] S. Albeverio, R. Cianci and A. Yu. Khrennikov, “p-Adic valued quantization,” p-Adic
+Number Ultrametric Anal. Appl. 1 (2), 91–104 (2009).
+[18] V. Anashin and A. Khrennikov, Applied Algebraic Dynamics, de Gruyter Expositions
+in Mathematics (de Gruyter, 2009).
+[19] A. Ansari, J. Berendzen, S. F. Bowne, H. Frauenfelder, I. E. T. Iben, T. B. Sauke, E.
+Shyamsunder and R. D. Young, “Protein states and proteinquakes,” Proc. Natl. Acad.
+Sci. USA 82, 5000–5004 (1985).
+[20] I. Ya. Arefeva, B. Dragovich and I. V. Volovich, “On the p-adic summability of the
+anharmonic oscillator,” Phys. Lett. B 200, 512–514 (1988).
+[21] I. Ya. Aref’eva, B. Dragovich, P. H. Frampton and I. V. Volovich, “The wave function
+of the Universe and p-adic gravity,” Int. J. Mod. Phys. A 6, 4341–4358 (1991).
+[22] I. Ya. Aref’eva, “Nonlocal string tachyon as a model for cosmological dark energy,”
+AIP Conf. Proc. 826, 301–311 (2006) [astro-ph/0410443].
+[23] I. Ya. Aref’eva, A. S. Koshelev and S. Yu. Vernov, “Crossing of the w = −1 barrier by
+D3-brane dark energy model,” Phys. Rev. D 72, 064017 (2005) [astro-ph/0507067].
+[24] I. Ya. Aref’eva, L. V. Joukovskaya and S. Yu. Vernov, “Bouncing and accelerating
+solutions in nonlocal stringy models,” (2007) [hep-th/0701189].
+[25] I. Ya. Aref’eva and I. V. Volovich, “Quantization of the Riemann zeta-function and
+cosmology,” Int. J. Geom. Meth. Mod. Phys. 4, 881–895 (2007).
+[26] I. Ya. Arefeva and I. V. Volovich, “Cosmological daemon,” JHEP, 2011 8 (2011) 102,
+32 pp. [arXiv:1103.0273].
+[27] I. Ya. Arefeva and I. V. Volovich, “The master field for QCD and q-deformed quantum
+field theory,” Nucl. Phys. B 462, 600–612 (1996) [hep-th/9510210].
+[28] V. A. Avetisov, A. H. Bikulov and S. V. Kozyrev, “Application of p-adic analysis to
+models of spontaneous breaking of replica symmetry,” J. Phys. A: Math. Gen. 32 (50),
+8785–8791 (1999) [arXiv:cond-mat/9904360].
+30
+
+[29] V. Avetisov, P. L. Krapivsky and S. Nechaev, “Native ultrametricity of sparse random
+ensembles,” J. Phys. A: Math. Theor. 49 (3), (2016).
+[30] V. A. Avetisov, A. Kh. Bikulov, S. V. Kozyrev and V. A. Osipov, “p-Adic models of
+ultrametric diffusion constrained by hierarchical energy landscapes,” J. Phys. A: Math.
+Gen. 35 (2), 177–189 (2002) [arXiv:cond-mat/0106506].
+[31] V. A. Avetisov, A. Kh. Bikulov and V. A. Osipov, “ p-Adic models for ultrametric
+diffusion in conformational dynamics of macromolecules,” Proc. Steklov Inst. Math.
+245, 48–57 (2004).
+[32] V. A. Avetisov and A. Kh. Bikulov, “Protein ultrametricity and spectral diffusion in
+deeply frozen proteins,” Biophys. Rev. Lett. 3 (3), 387 (2008) [arXiv:0804.4551].
+[33] V. A. Avetisov, A. Kh. Bikulov and A. P. Zubarev, “First passage time distribution
+and number of returns for ultrametric random walk,” J. Phys. A: Math. Theor. 42,
+085003–085020 (2009) [arXiv:0808.3066].
+[34] V. A. Avetisov and Yu. N. Zhuravlev, “An evolutionary interpretation of the p-adic
+ultrametric diffusion equation,” Dokl. Math. 75 (3), 435–455 (2007) [arXiv:0808.3066].
+[35] V. A. Avetisov and A. Kh. Bikulov, “Ultrametricity of fluctuation dynamic mobility of
+protein molecules,” Proc. Steklov Inst. Math. 265 (1), 75–81 (2009).
+[36] V. A. Avetisov, A. Kh. Bikulov and A. P. Zubarev, “Ultrametric random walk and
+dynamics of protein molecules,” Proc. Steklov Inst. Math. 285, 3–25 (2014).
+[37] V. A. Avetisov, A. Kh. Bikulov and V. A. Osipov, “p-Adic description of characteristic
+relaxation in complex systems,” J. Phys. A: Math. Gen. 36 (15), 4239–4246 (2003).
+[38] V. A. Avetisov, A. Kh. Bikulov and A. P. Zubarev, “Mathematical modeling of molecular nanomachines,” Vestn. Samar. Gos. Tekhn. Univ. Ser. Fiz.-Mat. Nauki 1 (22), 9–15
+(2011) [in Russian].
+[39] V. A. Avetisov, V. A. Ivanov, D. A. Meshkov and S. K. Nechaev, “Fractal globule as a
+molecular machine, JETP Lett. 98 (4), 242–246 (2013).
+[40] N. Barnaby, T. Biswas and J. M. Cline, “p-Adic inflation,” (2006) [hep-th/0612230].
+[41] J. J. Benedetto and R. L. Benedetto, “A wavelet theory for local fields and related
+groups,” J. Geom. Anal. 3, 423–456 (2004).
+[42] R. L. Benedetto, “Examples of wavelets for local fields,” in Wavelets, Frames, and
+Operator Theory (College Park, MD, 2003) pp. 27–47 (Am. Math. Soc., Providence,
+RI, 2004).
+[43] A. Kh. Bikulov and I. V. Volovich, “p-Adic Brownian motion,” Izv. Math. 61 (3),
+537–552 (1997).
+[44] A. Kh. Bikulov, “Stochastic p-adic equations of mathematical physics,” Theor. Math.
+Phys. 119 (2), 594–604 (1999).
+31
+
+[45] A. Kh. Bikulov, A. P. Zubarev and L. V. Kaidalova, “Hierarchical dynamical model
+of financial market near the crash point and p-adic analysis,” Vest. Samarsk. Gosud.
+Tekhn. Univer. Seriya Fiziko-Matem. Nauki 42, 135–141 (2006) [in Russian].
+[46] K. Binder and A. P. Young, “Spin glasses: Experimental facts, theoretical concepts,
+and open questions,” Rev. Mod. Phys. 58, 801–976 (1986).
+[47] O. M. Becker and M. Karplus, “The topology of multidimensional protein energy surfaces: Theory and application to peptide structure and kinetics,” J. Chem. Phys. 106,
+1495–1517 (1997).
+[48] A. Blumen, J. Klafter and G. Zumofen, “Random walks on ultrametric spaces: low
+temperature patterns,” J. Phys. A: Math. Gen. 19, L861 (1986).
+[49] P. E. Bradley, “On p-adic classification,” p-Adic Numbers Ultrametric Anal. Appl. 1
+(4), 271–283 (2009).
+[50] P. E. Bradley, “A p-adic RANSAC algorithm for stereo vision using Hensel lifting,”
+p-Adic Numbers Ultrametric Anal. Appl. 2 (1), 55–67 (2010).
+[51] P. E. Bradley, “From image processing to topological modelling with p-adic numbers,”
+p-Adic Numbers Ultrametric Anal. Appl. 2 (4), 293–304 (2010).
+[52] P. E. Bradley, “Ultrametricity indices for the Euclidean and Boolean hypercubes,”
+p-Adic Numbers Ultrametric Anal. Appl. 8 (4), 298–311 (2016).
+[53] L. Brekke and P. G. O. Freund, “p-Adic numbers in physics,” Phys. Rep. 233 (1), 1–66
+(1993).
+[54] G. Calcagni, “Cosmological tachyon from cubic string field theory,” JHEP 05 012 (2006)
+[hep-th/0512259].
+[55] L. F. Chacon-Cortes and W. A. Zuniga-Galindo, “Nonlocal operators, parabolic-type
+equations, and ultrametric random walks,” J. Math. Phys. 54 (11), 113503 (2013).
+[56] D. M. Carlucci and C. De Dominicis, “On the replica Fourier transform,”
+Compt. Rendus Ac.Sci. Ser. IIB Mech. Phys. Chem. Astr. 325, 527 (1997)
+[arXiv:cond-mat/9709200].
+[57] O. Casas-Sanchez and W. A. Zuniga-Galindo, “Riesz kernels and pseudodifferential
+operators attached to quadratic forms over p-adic fields,” p-Adic Numbers Ultrametric
+Anal. Appl. 5 (3), 177–193 (2013).
+[58] I. Daubechies, Ten Lectures on Wavelets, CBMS-NSR Series in Appl. Math. (SIAM,
+1992).
+[59] C. De Dominicis, D. M. Carlucci and T. Temesvari, “Replica Fourier tansforms on ultrametric trees, and block-diagonalizing multi-replica matrices,” J. Physique I (France)
+7, 105–115 (1997) [arXiv:cond-mat/9703132].
+
+32
+
+[60] I. Dimitrijevic, B. Dragovich, J. Stankovic, A. S. Koshelev and Z. Rakic, “On nonlocal
+modified gravity and its cosmological solutions,” Springer Proc. Math. & Stat. 191,
+35–51 (2016) [arXiv:1701.02090[hep-th]].
+[61] I. Dimitrijevic, B. Dragovich, J. Grujic and Z. Rakic, “Some Cosmological Solutions of a
+Nonlocal Modified Gravity,” Filomat 29 (3), 619–628 (2015) [arXiv:1508.05583[hep-th]].
+[62] I. Dimitrijevic, B. Dragovich, J. Grujic and Z. Rakic, “New cosmological solutions in nonlocal modified gravity,” Romanian J. Phys. 58 (5-6), 550–559 (2013)
+[arXiv:1302.2794[gr-qc]].
+[63] I. Dimitrijevic, B. Dragovich, J. Grujic, A.S. Koshelev and Z. Rakic, “Cosmology of
+modified gravity with a non-local f(R),” (2015) [arXiv:1509.04254[hep-th]].
+[64] D. D. Dimitrijevic, G. S. Djordjevic and Lj. Nesic, “Quantum cosmology and tachyons,”
+Fortsch. Physik (Progr. Phys.) 56 (4-5), 412–417 (2008).
+[65] G. S. Djordjević, B. Dragovich, Lj. D. Nešić and I. V. Volovich, “p-Adic and adelic
+minisuperspace quantum cosmology,” Int. J. Mod. Phys. A 17 (10), 1413–1433 (2002)
+[arXiv:gr-qc/0105050].
+[66] G. S. Djordjevic, L. Nesic and D. Radovancevic, Signature Change in p-Adic and Noncommutative FRW Cosmology, Int. J. Mod. Phys. A 29, 1450155(2014)
+[67] D. D. Dimitrijevic, G. S. Djordjevic and M. Milosevic, “Classicalization and quantization of tachyon-like matter in (non)Archimedean spaces,” Roman. Rep. Phys. 68 (1),
+5–18 (2016).
+[68] G. S. Djordjevic, Lj. Nesic and D. Radovancevic, “Two-oscillator KantowskiSachs model
+of the Schwarzschild black hole interior,” Gen. Relativ. Gravit. 48, 106 (2016).
+[69] B. Dragovich, A. Yu. Khrennikov, S. V. Kozyrev and I. V. Volovich, “On p-adic
+mathematical physics,” p-Adic Numbers Ultrametric Anal. Appl. 1 (1), 1–17 (2009)
+[arXiv:0904.4205].
+[70] B. Dragovich, “On measurements, numbers and p-adic mathematical physics,” p-Adic
+Numbers Ultrametric Anal. Appl. 4 (2), 102–108 (2012).
+[71] B. Dragovich, “p-Adic perturbation series and adelic summability,” Phys. Lett. B 256
+(3,4), 392–39 (1991).
+[72] B. G. Dragovich, “Power series everywhere convergent on R and Qp ,” J. Math. Phys.
+34 (3), 1143–1148 (1992) [arXiv:math-ph/0402037].
+[73] B. G. Dragovich, “On p-adic aspects of some perturbation series,” Theor. Math. Phys.
+93 (2), 1225–1231 (1993).
+[74] B. G. Dragovich, “Rational summation of p-adic series,” Theor. Math. Phys. 100 (3),
+1055–1064 (1994).
+[75] B. Dragovich, “On p-adic series in mathematical physics,” Proc. Steklov Inst. Math.
+203, 255–270 (1994).
+33
+
+[76] B. Dragovich, “On p-adic series with rational sums,” Scientific Review 19–20, 97–104
+(1996).
+[77] B. Dragovich, “On some p-adic series with factorials,” in p-Adic Functional
+Analysis, Lect. Notes Pure Appl. Math. 192, 95–105 (Marcel Dekker, 1997)
+[arXiv:math-ph/0402050].
+[78] B. Dragovich, “On p-adic power series,” in p-Adic Functional Analysis, Lect. Notes
+Pure Appl. Math. 207, 65–75 (Marcel Dekker, 1999) [arXiv:math-ph/0402051].
+[79] B. Dragovich, “On some finite sums with factorials,” Facta Universitatis: Ser. Math.
+Inform. 14, 1–10 (1999) [arXiv:math/0404487 [math.NT]].
+[80] M. de Gosson, B. Dragovich and A. Khrennikov, “Some p-adic differential equations,”
+in p-Adic Functional Analysis, Lect. Notes Pure Appl. Math. 222, 91–112 (Marcel
+Dekker, 2001) [arXiv:math-ph/0010023].
+[81] B. Dragovich and N. Z. Misic, “p-Adic invariant summation of some p-adic functional series,” p-Adic Numbers Ultrametric Anal. Appl. 6 (4), 275–283 (2014)
+[arXiv:1411.4195v1 [math.NT]].
+[82] B. Dragovich, A. Yu. Khrennikov and N. Ž. Mišić, “Summation of p-adic functional series in integer points,” Filomat 31 (5), 1339–1347 (2017), [arXiv:1508.05079 [math.NT]].
+[83] B. Dragovich, “On summation of p-adic series,” accepted for publication in Contem.
+Math., AMS, [arXiv:1702.02569 [math.NT]] (2017).
+[84] N. J. A. Sloane, The on-line encyclopedia of integer sequences, https://oeis.org/.
+[85] B. Dragovich, “Zeta strings,” [arXiv:hep-th/0703008] (2007).
+[86] B. Dragovich, “Zeta-nonlocal scalar fields,” Theor. Math. Phys. 157 (3), 1669–1675
+(2008) [arXiv:0804.4114[hep-th]].
+[87] B. Dragovich, “Some Lagrangians with zeta function nonlocality,” [arXiv:0805.0403
+[hep-th]] (2008).
+[88] B. Dragovich, “Lagrangians with Riemann zeta function,” Rom. J. Phys. 53 (9-10),
+1105–1110 (2008) [arXiv:0809.1601[hep-th]].
+[89] B. Dragovich, “Towards effective Lagrangians for adelic strings,” Fortschr. Phys. 57
+(5-7), 546–551 (2009) [arXiv:0902.0295[hep-th]].
+[90] B. Dragovich, “The p-adic sector of the adelic string,” Theor. Math. Phys. 163 (3),
+768–773 (2010) [arXiv:0911.3625[hep-th]].
+[91] B. Dragovich, “Nonlocal dynamics of p-adic strings,” Theor. Math. Phys. 164 (3),
+1151–1155 (2010) [arXiv:1011.0912[hep-th]].
+[92] B. Dragovich, “Adeles in mathematical physics,” (2007) [arXiv:0707.3876[math-ph]].
+
+34
+
+[93] B. Dragovich, “Adelic wave function of the Universe,” in Proc. Third A. Friedmann Int.
+Seminar on Grav. and Cosmology, Eds. Yu. N. Gnedin, A. A. Grib and V. M. Mostepanenko, pp. 311–321 (Friedmann Lab. Publishing, St. Petersburg, 1995).
+[94] B. Dragovich and Lj. Nešić, “p-Adic and adelic generalization of quantum cosmology,”
+Gravitat. Cosmol. 5, 222–228 (1999) [arXiv:gr-qc/0005103].
+[95] B. Dragovich, “p-Adic and adelic cosmology: p-adic origin of dark energy and dark
+matter,” AIP Conf. Proc. 826, 25–42 (2006) [arXiv:hep-th/0602044].
+[96] B. Dragovich, “Towards p-adic matter in the universe,” Springer Proc. Math & Stat.
+36, 13–24 (2013) [arXiv:1205.4409[hep-th]].
+[97] B. Dragovich, “Adelic model of harmonic oscillator,” Theor. Math. Phys. 101, 1404–
+1415 (1994) [arXiv:hep-th/0402193].
+[98] B. Dragovich, “Adelic harmonic oscillator,” Int. J. Mod. Phys. A 10, 2349–2365 (1995)
+[arXiv:hep-th/0404160].
+[99] B. Dragovich, “p-Adic and adelic quantum mechanics,” Proc. Steklov Inst. Math. 245,
+72–85 (2004) [arXiv:hep-th/0312046].
+[100] G. Djordjević and B. Dragovich, “p-Adic path integrals for quadratic actions,” Mod.
+Phys. Lett. A 12 (20), 1455–1463 (1997) [arXiv:math-ph/0005026].
+[101] G. Djordjević, B. Dragovich and Lj. Nešić, “Adelic path intergals for quadratic
+Lagrangians,” Infin. Dimens. Anal. Quan. Prob. Relat. Topics 6, 179–195 (2003)
+[arXiv:hep-th/0105030].
+[102] B. Dragovich and Z. Rakic, “Path integrals for quadratic Lagrangians on p-adic
+and adelic spaces,” p-Adic Numbers Ultrametric Anal Appl. 2 (4), 322–340 (2010)
+[arXiv:1011.6589[math-ph]].
+[103] B. Dragovich, A. Khrennikov and D. Mihajlovic, “Linear fractional p-adic and adelic
+dynamical systems,” Rep. Math. Phys. 60, 55–68 (2007) [arXiv:math-ph/0612058].
+[104] B. Dragovich and A. Yu. Dragovich, “A p-adic model of DNA sequence and genetic
+code,” (2006) [arXiv:q-bio.GN/0607018].
+[105] B. Dragovich and A. Yu. Dragovich, “A p-adic model of DNA sequence and
+genetic code,” p-Adic Numbers Ultrametric Anal. Appl. 1 (1), 34–41 (2009)
+[arXiv:q-bio.GN/0607018].
+[106] B. Dragovich and A. Yu. Dragovich, “p-Adic modelling of the genome and the genetic
+code,” Comp. J. 53, 432–442 (2010) [arXiv:0707.3043, doi:10.1093/comjnl/bxm083].
+[107] B. Dragovich, “Genetic code and number theory,” Facta Universitatis: Phys. Chem.
+Techn. 14 (3), 225–241 (2016) [arXiv:0911.4014[q-bio.OT]].
+[108] B. Dragovich, “p-Adic structure of the genetic code,” (2012) [arXiv:1202.2353[qbio.OT]].
+35
+
+[109] B. Dragovich, “On ultrametricity in bioinformation systems,” in Conference Proceedings Theoretical Approaches to Bioinformation Systems (ABIS.2013 Conference, Belgrade, 17-22.09.2013; (published by Institute of Physics, Belgrade, 2014).
+[110] B. Dragovich, A. Yu. Khrennikov and N. Ž. Mišić, “Ultrametrics in the genetic code and
+the genome,” Appl. Math. Comput. 309, 350–358 (2017) [arXiv:1704.04194 [q-bio.OT]].
+[111] B. Dragovich and D. Joksimović, “On possible uses of p-adic analysis in econometrics,”
+Megatrend Revija 4 (2), 5–16 (2007).
+[112] S. N. Evans, “Local field Brownian motion,” J. Theor. Probab. 6, 817–850 (1993).
+[113] Yu. A. Farkov, “Orthogonal wavelets with compact support on locally compact Abelian
+groups,” Izv. Ross. Akad. Nauk, Ser. Mat. 69 (3), 193–220 (2005) [Izv. Math. 69, 623–
+650 (2005)].
+[114] S. Fischenko and E. I. Zelenov, “p–Adic models of turbulence,” in p-Adic Mathematical
+Physics, AIP Conference Proceedings 286, 174–191 (Melville, New York, 2006).
+[115] K. H. Fischer and J. A. Hertz, Spin Glasses (Cambridge Univ. Press, 1993).
+[116] H. Frauenfelder, S. G. Sligar and P. G. Wolynes, “The energy landscapes and motions
+of proteins,” Science 254 5038, 1598–1603 (1991).
+[117] H. Frauenfelder, B. H. McMahon and P. W. Fenimore, “Myoglobin: the hydrogen atom
+of biology and paradigm of complexity, PNAS 100 (15), 8615–8617 (2003).
+[118] Y. V. Fyodorov, A. Ossipov and A. Rodriguez, “The Anderson localization transition
+and eigenfunction multifractality in an ensemble of ultrametric random matrices,” J.
+Stat. Mech.: Theory Exp. 12, L12001 (2009).
+[119] N. Ganikhodjaev, F. Mukhamedov and C. H. Pah, “Phase diagram of the three states
+Potts model with next nearest neighbour interactions on the Bethe lattice,” Phys. Lett.
+A 373 (1), 33–38 (2008).
+[120] I. M. Gelfand, M. I. Graev and I. I. Pyatetskii-Shapiro, Representation Theory and
+Automorphic Functions (Saunders, Philadelphia, 1969).
+[121] C. Hara, R. Iijima, H. Kaneko and H. Matsumoto, “Orlicz norm and Sobolev-Orlicz
+capacity on ends of tree based on probabilistic Bessel kernels,” p-Adic Numbers Ultrametric Anal. Appl. 7 (1), 24–38 (2015).
+[122] S. Haran, “Analytic potential theory over p-adics,” Ann. Inst. Fourier 43, 905–944
+(1993).
+[123] K. H. Hoffmann and P. Sibani, “Diffusion in hierarchies,” Phys. Rev. A 38, 4261–4270
+(1988).
+[124] A. Ilić Stepić, Z. Ognjanović, N. Ikodinović and A. Perović, “p-Adic probability logics,”
+p-Adic Numbers Ultrametric Anal. Appl. 8 (3), 177–203 (2016).
+
+36
+
+[125] A. Imai, H. Kaneko and H. Matsumoto, “A Dirichlet space associated with consistent
+networks on the ring of p-adic integers,” p-Adic Numbers Ultrametric Anal. Appl. 3
+(4), 309–325 (2011).
+[126] R. S. Ismagilov, “On the spectrum of the self-adjoint operator in L2 (K) where K is a
+local field: an analog of the Feynman-Kac formula,” Theor. Math. Phys. 89, 1024–1028
+(1991).
+[127] W. C. Lang, “Wavelet analysis on the Cantor dyadic group,” Houston J. Math. 24,
+533–544 (1998).
+[128] W.C. Lang, “Orthogonal wavelets on the Cantor dyadic group,” SIAM J. Math. Anal.
+27, 305–312 (1996).
+[129] M. L. Lapidus and Lu Hung, “Self-similar p-adic fractal strings and their complex
+dimensions,” p-Adic Numbers Ultrametric Anal. Appl. 1 (2), 167–180 (2009).
+[130] J.W. de Jong, Graphs, spectral triples and Dirac zeta functions p-Adic Numbers Ultrametric Anal. Appl. 1 (3) 286–296 (2009).
+[131] H. Kaneko and K. Yasuda, “Capacities associated with Dirichlet space on an infinite
+extension of a local field,” Forum Math. 17, 1011–1032 (2005).
+[132] K. Kamizono, “p-Adic Brownian motion over Qp ,” Proc. Steklov Inst. Math. 265, 115–
+130 (2009).
+[133] H. Kaneko and A. N. Kochubei, “Weak solutions of stochastic differential equations
+over the field of p-adic numbers,” Tohoku Math. J. 59, 547–564 (2007).
+[134] H. Kaneko, “Fractal theoretic aspects of local field,” p-Adic Numbers Ultrametric Anal.
+Appl. 1 (1), 51–57 (2009).
+[135] W. Karwowski and K. Yasuda, “Dirichlet forms for diffusion in R2 and jumps on fractals: The regularity problem,” p-Adic Numbers Ultrametric Anal. Appl. 2 (4), 341–359
+(2010).
+[136] E. King and M. A. Skopina, “Quincunx multiresolution analysis for L2 (Q22 ),” p-Adic
+Numbers Ultrametric Anal. Appl. 2 (3), 222–231 (2010).
+[137] A. Yu. Khrennikov, p-Adic Valued Distributions in Mathematical Physics (Kluwer, Dordrecht, 1994).
+[138] A. Yu. Khrennikov, Non-Archimedean Analysis: Quantum Paradoxes, Dynamical Systems and Biological Models (Kluwer Acad. Publ., Dordrecht, 1997).
+[139] A. Yu. Khrennikov, Non-Archimedean Analysis and Its Applications (Fizmatlit,
+Moscow, 2003) [in Russian].
+[140] A. Yu. Khrennikov and S. V. Kozyrev, “Wavelets on ultrametric spaces,” Appl. Comput. Harm. Anal. 19, 61–76 (2005).
+
+37
+
+[141] A. Yu. Khrennikov and S. V. Kozyrev, “Ultrametric random field,” Infin. Dimens. Anal.
+Quan. Prob. Related Topics 9 (2), 199–213 (2006) [arXiv:math/0603584].
+[142] A. Yu. Khrennikov, S. V. Kozyrev, K. Oleschko, A. G. Jaramillo and M. de Jesús
+Correa López, “Application of p-adic analysis to time series,” Infin. Dimens. Anal.
+Quant. Probab. Relat. Topics, 16 (4), 1350030, 15 pp. (2013) [arXiv:1312.3878].
+[143] A. Yu. Khrennikov and V. M. Shelkovich, “Non-Haar p-adic wavelets and their application to pseudodifferential operators and equations,” Appl. Comput. Harm. Anal. 28
+(1), 1–23 (2010) [arXiv:0808.3338v1].
+[144] A. Yu. Khrennikov, V. M. Shelkovich and M. Skopina, “p-Adic refinable functions and
+MRA-based wavelets,” J. Approx. Theory 161, 226–238 (2009) [arXiv:0711.2820].
+[145] A. Yu. Khrennikov and V. M. Shelkovich, “Distributional asymptotics and p-adic
+Tauberian and Shannon-Kotelnikov theorems,” Asympt. Anal. 46 (2), 163–187 (2006).
+[146] A. Yu. Khrennikov and V. M. Shelkovich, “p-Adic multidimensional wavelets and their
+application to p-adic pseudo-differential operators,” (2006) [arXiv:math-ph/0612049].
+[147] A. Yu. Khrennikov, V. M. Shelkovich and M. Skopina, “p-Adic orthogonal wavelet
+bases,” p-Adic Numbers Ultrametric Anal. Appl. 1 (2), 145–156 (2009).
+[148] A. Yu. Khrennikov and V. M. Shelkovich, “Non-Haar p-adic wavelets and pseudodifferential operators,” Dokl. Akad. Nauk 418 (2), 167–170 (2008) [Dokl. Math. 77 (1),
+42–45 (2008)].
+[149] A. Yu. Khrennikov and V. M. Shelkovich, “An infinite family of p-adic non-Haar wavelet
+bases and pseudo-differential operators,” p-Adic Numbers Ultrametric Anal. Appl. 1
+(3), 204–216 (2009).
+[150] A. Yu. Khrennikov and S. V. Kozyrev, “Wavelets and the Cauchy problem for the
+Schrödinger equation on analytic ultrametric space,” in Proceedings of the 2nd Conference on Mathematical Modelling of Wave Phenomena 2005 (14–19 August 2005,
+Växjö, Sweden), eds. B.Nilsson, L.Fishman, AIP Conference Proceedings 834, 344–350
+(Melville, New York, 2006).
+[151] A. Khrennikov, V. M. Shelkovich and J. H. Van Der Walt, “ Adelic multiresolution
+analysis, construction of wavelet bases and pseudo-differential operators,” J. Fourier
+Anal. Appl. 19, 1323–1358 (2013).
+[152] A. Yu. Khrennikov and S. V. Kozyrev, “Replica symmetry breaking related to a general
+ultrametric space I: Replica matrices and functionals,” Physica A: Stat. Mech. Appl.
+359, 222–240 (2006) [arXiv:cond-mat/0603685].
+[153] A. Yu. Khrennikov and S. V. Kozyrev, “Replica symmetry breaking related to a general
+ultrametric space II: RSB solutions and the n → 0 limit,” Physica A: Stat. Mech. Appl.
+359, 241–266 (2006) [arXiv:cond-mat/0603687].
+
+38
+
+[154] A. Yu. Khrennikov and S. V. Kozyrev, “Replica symmetry breaking related to a general
+ultrametric space III: The case of general measure,” Physica A: Stat. Mech. Appl. 378
+(2), 283–298 (2007) [arXiv:cond-mat/0603694].
+[155] A. Yu. Khrennikov, F. M. Mukhamedov and J. F. Mendes, “On p-adic Gibbs measures
+of the countable state Potts model on the Cayley tree,” Nonlinearity 20, 2923–2937
+(2007).
+[156] A. Khrennikov, S. Kozyrev and A. Mansson, “Hierarchical model of the actomyosin
+molecular motor based on ultrametric diffusion with drift,” Infin. Dimens. Anal. Quantum Probab. Relat. Top. 18 (2), 1550013, 16 pp. (2015) [arXiv:1312.7528].
+[157] A. Yu. Khrennikov and S. V. Kozyrev, “Replica procedure for probabilistic algorithms
+as a model of gene duplication,” Dokl. Math. 84 (2), 726–729 (2011) [arXiv:1105.2893].
+[158] A. Yu. Khrennikov, “p-Adic information space and gene expression,” in Integrative Approaches to Brain Complexity, Eds. S. Grant, N. Heintz and J. Noebels, p. 14 (Wellcome
+Trust Publ., 2006).
+[159] A. Yu. Khrennikov and S. V. Kozyrev, “Genetic code on the dyadic plane,” Physica A:
+Stat. Mech. Appl. 381, 265–272 (2007) [arXiv:q-bio.QM/0701007].
+[160] A. Yu. Khrennikov and S. V. Kozyrev, “2-Adic clustering of the PAM matrix,” J.
+Theor. Biol. 261, 396–406 (2009) [arXiv:0903.0137].
+[161] A. Yu. Khrennikov and S. V. Kozyrev, “Genetic code and deformation of the 2dimensional 2-adic metric,” p-Adic Numbers Ultrametric Anal. Appl. 3 (2), 165–168
+(2011).
+[162] A. Yu. Khrennikov and S. V. Kozyrev, “2-Adic degeneration of the genetic code and
+energy of binding of codons,” in Quantum Bio-Informatics III pp. 193–204, eds. L.
+Accardi, W. Freudenberg and M. Ohya (World Scientific, 2010).
+[163] A. N. Kochubei, Pseudo-Differential Equations and Stochastics over Non-Archimedean
+Fields (Marcel Dekker, New York, USA, 2001).
+[164] A. N. Kochubei, “A non-Archimedean wave equation,” Pacif. J. Math. 235, 245–261
+(2008).
+[165] A. N. Kochubei, “Analysis and probability over infinite extensions of a local field,”
+Potential Anal. 10, 305–325 (1999).
+[166] A. N. Kochubei, “Hausdorff measure for a stable-like process over an infinite extension
+of a local field,” J. Theor. Probab. 15, 951–972 (2002).
+[167] A. N. Kochubei, Analysis in Positive Characteristic (Cambridge Univ. Press, Cambridge, 2009).
+[168] A. N. Kochubei, “Parabolic equations over the field of p-adic numbers,” Math. USSR
+Izv. 39, 1263–1280 (1992).
+
+39
+
+[169] A. N. Kochubei, “Radial solutions of non-Archimedean pseudodifferential equations,”
+Pacific J. Math. 269 (2), 355–369 (2014).
+[170] S. V. Kozyrev, “Ultrametricity in the theory of complex systems,” Theor. Math. Phys.
+185 (2), 46–360 (2015).
+[171] S. V. Kozyrev, “Methods and applications of ultrametric and p-adic analysis: From
+wavelet theory to biophysics,” Proc. Steklov Inst. Math. 274 suppl. (1), 1–84 (2011).
+[172] S. V. Kozyrev, A. Yu. Khrennikov and V. M. Shelkovich, “p-Adic wavelets and their
+applications,” Proc. Steklov Inst. Math. 285, 157–196 (2014).
+[173] S. V. Kozyrev and A. Yu. Khrennikov, “Pseudodifferential operators on ultrametric
+spaces and ultrametric wavelets,” Izv. Ross. Akad. Nauk., Ser. Mat. 69 (5), 133–148
+(2005) [Izv. Math. 69, 989–1003 (2005)] [arXiv:math-ph/0412062].
+[174] S. V. Kozyrev, “Wavelets and spectral analysis of ultrametric pseudodifferential operators,” Mat. Sbornik 198 (1), 103–126 (2007) [Sb. Math. 198, 97–116 (2007)]
+[arXiv:math-ph/0412082].
+[175] S. V. Kozyrev, “Wavelet theory as p-adic spectral analysis,” Izvest. Math. 66 (2),
+367–376 (2002) [arXiv:math-ph/0012019].
+[176] S. V. Kozyrev, “p-Adic pseudodifferential operators and p-adic wavelets,” Theor. Math.
+Phys. 138 (3), 322–332 (2004) [arXiv:math-ph/0303045].
+[177] S. V. Kozyrev, “Toward an ultrametric theory of turbulence,” Theor. Math. Phys. 157
+(3), 1711–1720 (2008) [arXiv:0803.2719].
+[178] S. V. Kozyrev and A. Yu. Khrennikov, “Localization in space for a free particle in
+ultrametric quantum mechanics,” Dokl. Akad. Nauk 411 (3), 319–322 (2006) [Dokl.
+Math. 74 (3), 906–909 (2006)].
+[179] S. V. Kozyrev, “p-Adic pseudodifferential operators: Methods and applications,” Proc.
+Steklov Inst. Math. 245, 143–153 (2004).
+[180] S. V. Kozyrev, V. Al. Osipov and V. A. Avetisov, “Nondegenerate ultrametric diffusion,” J. Math. Phys. 46, 063302–063317 (2005).
+[181] S. V. Kozyrev and A. Yu. Khrennikov, “p-Adic integral operators in wavelet bases,”
+Dokl. Akad. Nauk 437 (4), 457–461 (2011) [Dokl. Math. 83 (2), 209–212 (2011)].
+[182] S. V. Kozyrev, “Dynamics on rugged landscapes of energy and ultrametric diffusion,”
+p-Adic Numbers Ultrametric Anal. Appl. 2 (2), 122–132 (2010).
+[183] S. V. Kozyrev, “Model of protein fragments and statistical potentials,” p-Adic Numbers
+Ultrametric Anal. Appl. 8 (4), 325–337 (2016) [arXiv:1504.03940].
+[184] S. V. Kozyrev and A. Yu. Khrennikov, “2-Adic numbers in genetics and Rumer’s symmetry,” Dokl. Math. 81 (1), 128–130 (2010).
+
+40
+
+[185] S. V. Kozyrev, “Multidimensional clustering and hypergraphs,” Theor. Math. Phys.
+164 (3), 1163–1168 (2010).
+[186] S. V. Kozyrev, “Cluster networks and Bruhat-Tits buildings,” Theor. Math. Phys. 180
+(2), 958–966 (2014) [arXiv:1404.6960].
+[187] A. V. Kosyak, A. Khrennikov and V. M. Shelkovich, “Wavelet bases on adele rings,”
+Dokl. Math. 85, 75–79 (2012).
+[188] A. V. Kosyak, A. Khrennikov and V. M. Shelkovich, “Pseudodifferential operators on
+adele rings and wavelet bases,” Dokl. Math. 85, 358–362 (2012).
+[189] Yu. I. Manin, “Numbers as functions,” p-Adic Numbers Ultrametric Anal. Appl. 5 (4),
+313–325 (2013).
+[190] Yu. I. Manin, “Painleve VI equations in p-adic time,” p-Adic Numbers Ultrametric
+Anal. Appl. 8 (3), 217–224 (2016).
+[191] M. Greenfield, M. Marcolli and K. Teh, “Twisted spectral triples and quantum statistical mechanical systems,” p-Adic Numbers Ultrametric Anal. Appl. 6 (2), 81–104
+(2014).
+[192] M. Marcolli and N. Tedeschi, “Multifractals, Mumford curves and eternal inflation,”
+p-Adic Numbers Ultrametric Anal. Appl. 6 (2), 135–154 (2014).
+[193] J. Marcinek and M. Marcolli, “KMS weights on higher rank buildings,” p-Adic Numbers
+Ultrametric Anal. Appl. 8 (1), 45–67 (2016).
+[194] M. Marcolli, “Cyclotomy and endomotives,” p-Adic Numbers Ultrametric Anal. Appl.
+1 (3), 217–263 (2009).
+[195] Y. Meyer, Wavelets and Operators (Cambridge Univ. Press, Cambridge, 1992).
+[196] M. Mezard, G. Parisi and M. Virasoro, Spin-Glass Theory and Beyond (World Scientific, Singapore, 1987).
+[197] M. D. Missarov and R. G. Stepanov, “Asymptotic properties of combinatorial optimization problems in p-adic space,” p-Adic Numbers Ultrametric Anal. Appl. 3 (2),
+114–128 (2011).
+[198] M. D. Missarov, p-Adic renormalization group solutions and the euclidean renormalization group conjectures p-Adic Numbers Ultrametric Anal. Appl. 4 (2), 109–114 (2012).
+[199] A. Monna, Analyse non-Archimedienne (Springer-Verlag, New York, 1970).
+[200] A. Morozov, “Are there p-adic knot invariants?,” Theor. Math. Phys. 187 (1), 447–454
+(2016) [arXiv:1509.04928].
+[201] F. Mukhamedov and U. Rozikov, “On inhomogeneous p-adic Potts model on a Cayley
+tree,” Infin. Dimens. Anal. Quantum Probab. Relat. Top. 8 (2), 277–290 (2005).
+
+41
+
+[202] F. Mukhamedov and H. Akin, “The p-adic Potts model on the Cayley tree of order
+three,” Theor. Math. Phys. 176 (3), 1267–1279 (2013).
+[203] F. Mukhamedov, “A dynamical system approach to phase transitions for p-adic Potts
+model on the Cayley tree of order two,” Rep. Math. Phys. 70 (3), 385–406 (2012).
+[204] F. Mukhamedov, “On p-adic quasi Gibbs measures for q + 1-state Potts model on the
+Cayley tree,” p-Adic Numbers Ultrametric Anal. Appl. 2 (3), 241–251 (2010).
+[205] F. Mukhamedov, “On the existence of generalized Gibbs measures for the onedimensional p-adic countable state Potts model,” Proc. Steklov Inst. Math. 265 (1),
+165–176 (2009).
+[206] F. Mukhamedov, M. Saburov and O. Khakimov, “On p-adic Ising-Vannimenus model
+on an arbitrary order Cayley tree,” J. Stat. Mech.: Theory Exper. 5, P05032 (2015).
+[207] F. Mukhamedov and O. Khakimov, “On periodic Gibbs measures of p-adic Potts model
+on a Cayley tree,” p-Adic Numbers Ultrametric Anal. Appl. 8 (3), 225–235 (2016).
+[208] F. Murtagh and A. Heck, Multivariate Data Analysis (Springer Science & Business
+Media, 2012).
+[209] F. Murtagh and P. Contreras, “Algorithms for hierarchical clustering: an overview,”
+Wiley Interdisci. Reviews: Data Mining and Knowledge Discovery 2 (1), 86–97 (2012).
+[210] F. Murtagh and P. Legendre, “Ward’s hierarchical agglomerative clustering method:
+which algorithms implement Ward’s criterion?,” J. Classif. 31 (3), 274–295 (2014).
+[211] F. Murtagh, “Sparse p-adic data coding for computationally efficient and effective big
+data analytics,” p-Adic Numbers Ultrametric Anal. Appl. 8 (3), 236–247 (2016).
+[212] F. Murtagh, Multidimensional Clustering Algorithms (Physica-Verlag, Heidelberg,
+1985).
+[213] F. Murtagh, “From data to the p-adic or ultrametric model,” p-Adic Numbers Ultrametric Anal. Appl. 1 (1), 58–68 (2009).
+[214] S. K. Nechaev and O. A. Vasiliev, “On the metric structure of ultrametric spaces,”
+Proc. Steklov Inst. Math. 245, 169–188 (2004) [arXiv:cond-mat/0310079].
+[215] A. N. Nekrasov, “Analysis of the information structure of protein sequences: a new
+method for analyzing the domain organization of proteins,” J. Biomol. Struct. Dyn. 21
+(5), 615–624 (2004).
+[216] A. N. Nekrasov, A. A. Anashkina and A. I. Zinchenko, “A new paradigm of protein
+structural organization,” in Proceedings of the 2-nd International Conference “Theoretical Approaches to Bioinformatic Systems” (TABIS.2013), pp. 1–23 (Belgrade, Serbia,
+Sept. 17–22, 2013).
+[217] I. Ya. Novikov and M. A. Skopina, “Why are Haar bases in various structures the
+same?,” Mat. Zametki 91 (6), 950–953 (2012).
+42
+
+[218] A. T. Ogielski and D. L. Stein, “Dynamics on ultrametric spaces,” Phys. Rev. Lett. 55,
+1634–1637 (1985).
+[219] G. Parisi and N. Sourlas, “p-Adic numbers and replica symmetry breaking,” Europ.
+Phys. J. B 14, 535–542 (2000) [arXiv:cond-mat/9906095].
+[220] G. Rammal, M. A. Toulouse and M. A. Virasoro, “Ultrametricity for physicists,” Rev.
+Mod. Phys. 58, 765–788 (1986).
+[221] J. J. Rodriguez-Vega and W. A. Zuniga-Galindo, “Taibleson operators, p-adic parabolic
+equations and ultrametric diffusion,” Pacif. J. Math. 237, 327–347 (2008).
+[222] V. M. Shelkovich and M. Skopina, “p-Adic Haar multiresolution analysis and pseudodifferential operators,” J. Fourier Anal. Appl. 15 (3), 366–393 (2009).
+[223] S. M. Torba and W. A. Zuniga-Galindo, “Parabolic type equations and Markov stochastic processes on adeles,” J. Fourier Anal. Appl. 19 (4), 792–835 (2013).
+[224] M. Talagrand, Spin glasses, a Challenge for Mathematicians (Springer-Verlag, 2003).
+[225] C. Micheletti, F. Seno and A. Maritan, “Recurrent oligomers in proteins: An optimal
+scheme reconciling accurate and concise backbone representations in automated folding
+and design studies,” Proteins: Struct. Funct. Genet. 40, 662–674 (2000).
+[226] A. G. de Brevern, C. Etchebest and S. Hazout, “Bayesian probabilistic approach for
+predicting backbone structures in terms of protein blocks,” Proteins: Struct. Funct.
+Genet. 41, 271–287 (2000).
+[227] A. Y. Grosberg, S. K. Nechaev and E. I. Shakhnovich, “The role of topological constraints in the kinetics of collapse of macromolecules,” J. Physique 49, 2095–2100
+(1988).
+[228] J. D. Halverson, J. Smrek, K. Kremer, A. Y. Grosberg, “From a melt of rings to
+chromosome territories: the role of topological constraints in genome folding,” Rep.
+Prog. Phys. 77, 022601, 24 pp. (2014).
+[229] M. Imakaev, K. Tchourine, S. Nechaev and L. Mirny, “Effects of topological constraints
+on globular polymers,” Soft Matter 11, 665–671 (2015).
+[230] G. Fudenberg, G. Getz, M. Meyerson and L. A. Mirny, “High order chromatin architecture shapes the landscape of chromosomal alterations in cancer,” Nature Biotech.
+29, 1109–1113 (2011).
+[231] B. Bonev and G. Cavalli, “Organization and function of the 3D genome,” Nature Rev.
+Genet. 17, 661–678 (2016).
+[232] G. E. Hinton and R. R. Salakhutdinov, “Reducing the dimensionality of data with
+neural networks,” Science 313, 504–507 (2006).
+[233] Y. Bengio, “Learning deep architectures for AI,” Found. Trends Mach. Learn. 2 (1),
+(2009).
+43
+
+[234] C. Hennig, M. Meila, F. Murtagh and R. Rocci, Handbook of Cluster Analysis (CRC
+Press, 2015).
+[235] C. Linnaeus, Systema naturae (Leiden, 1735).
+[236] V. A. Lemin, “Finite ultrametric spaces and computer science,” pp. 219–241, in Categorical Perspectives, Trends in Mathematics (Springer, 2001).
+[237] F. Bruhat and J. Tits, “Groupes reductifs sur un corps local, I. Donnees radicielles
+valuees,” Publ. Math. IHES 41, 5–251 (1972).
+[238] P. B. Garrett, Buildings and Classical Groups (Chapman and Hall, London, 1997).
+[239] A. Strehl, J. Ghosh and C. Cardie, “Cluster ensembles – a knowledge reuse framework
+for combining multiple partitions,” J. Mach. Learn. Res. 3, 583–617 (2002).
+[240] E. Bauer and R. Kohavi, “An empirical comparison of voting classification algorithms:
+bagging, boosting, and variants,” Mach. Learn. 36, 105–139 (1999).
+[241] D. H. Huson, R. Rupp and C. Scornavacca, Phylogenetic Networks (Cambridge Univ.
+Press, Cambridge, 2010).
+[242] A. Dress, K. T. Huber, J. Koolen, V. Moulton and A. Spillner, Basic Phylogenetic
+Combinatorics (Cambridge Univ. Press, Cambridge, 2012).
+[243] E. V. Koonin, The Logic of Chance: The Nature and Origin of Biological Evolution
+(FT Press Science, 2012).
+[244] J.-L. Starck, F. Murtagh and J. Fadili, Sparse Image and Signal Processing: Wavelets
+and Related Geometric Multiscale Analysis (Cambridge Univ. Press, 2015).
+[245] M. N. Khokhlova and I. V. Volovich, “Modeling theory and hypergraph of classes,”
+Proc. Steklov Inst. Math. 245, 266–272 (2004).
+[246] J. Q. Trelewicz and I. V. Volovich, “Analysis of business connections utilizing theory
+of topology of random graphs,” in p-Adic Mathematical Physics AIP Conf. Proc. 826,
+330–344 (Melville, New York, 2006).
+[247] S. Albeverio and W. Karwowski, Diffusion on p-Adic Numbers (Bielefeld-Bochum
+Stochastik, 1990).
+[248] A. Khrennikov and M.Nilsen. p-Adic Deterministic and Random Dynamics, Math.
+Appl. 574 (Kluwer Acad. Publishers, Dordrecht, 2004).
+[249] S. Evans, “Local fields, Gaussian measures, and Brownian motions,” Topics in Lie
+Groups and Probability: Boundary Theory (J. Taylor ed.) CRM Proceedings and Lecture Notes 28, American Math. Society.
+[250] G. Parisi, “Infinite number of order parameters for spin-glasses,” Phys. Rev. Lett. 43,
+1754 (1979).
+
+44
+
+[251] M. Mezard, G. Parisi, N. Sourlas, G. Toulouse and M. Virasoro, “Nature of the spinglass phase,” Phys. Rev. Lett. 52, 1156 (1984).
+[252] P. Diaconis, “Random walk on groups: characters and geometry,” C.M. Campbell et
+al. (eds) (Groups St. Andrews, 2001) Cambridge Univ. Press 1 120–142, (2003).
+[253] S. Evans, “Local field U-statistics,” Algebraic Methods in Statistics and Probability
+(Marlos A.G. Viana and Donald St. P. Richards eds.) Contemp. Math. 287, (2001).
+[254] P. P. Varju, “Random walks in compact groups,” Documenta Math. 18, 1137–1175
+(2013).
+[255] S. Mustafa, “Random walks on unimodular p-adic groups,” Stoch. Proc. Appl. 115,
+927–937 (2005).
+[256] V. Anashin, A. Khrennikov and E. Yurova, “T -functions revisited: new criteria for
+bijectivity/transitivity,” Designs Codes Crypt. 7, 383–407 (2014).
+[257] V. Anashin, “Uniformly distributed sequences of p-adic integers,” Math. Notes 55,
+109–133 (1994).
+[258] V. Anashin, “Ergodic transformations in the space of p-adic integers,” Proc. Int. Conf.
+on p-adic Mathematical Physics, AIP Conference Proceedings 826, 3–24 (2006).
+[259] V. Anashin, A. Khrennikov and E. Yurova, “Ergodicity criteria for non-expanding
+transformations of 2-adic spheres,” Disc. Cont. Dyn. Syst. 34, 367–377 (2014).
+[260] A. Khrennikov and E. Yurova, “Criteria of measure-preserving for p-adic dynamical
+systems in terms of the van der Put basis,” J. Number Theor. 133 (2), 484–491 (2013).
+[261] E. Yurova Axelsson, “On recent results of ergodic property for p-adic dynamical systems,” p-Adic Numbers Ultrametric Anal. Appl. 6, 235–257 (2014).
+[262] A. Khrennikov and E. Yurova, “Criteria of ergodicity for p-adic dynamical systems in
+terms of coordinate functions,” Chaos Solit. Fract. 60, 11–30 (2014).
+[263] A. Khrennikov and E. Yurova, “Secure cloud computations: Description of
+(fully)homomorphic ciphers within the p-adic model of encryption,” (2016)
+[arXiv:1603.07699 [cs.CR]].
+[264] H. Qusay, “Demystifying cloud computing,” J. Defense Softw. Engin., CrossTalk N 1/2,
+16–21 (2011).
+[265] P. Mell and T. Grance, “The NIST definition of cloud computing,” Technical report,
+National Institute of Standards and Technology: U.S. Department of Commerce. Special publication 800–145 (2011).
+[266] A. Khrennikov, “Human subconscious as the p-adic dynamical system’,’ J. Theor. Biol.
+193, 179–196 (1998).
+[267] A. Khrennikov, Information Dynamics in Cognitive, Psychological, Social, and Anomalous Phenomena, Ser. Fundamental Theories of Physics (Kluwer, Dordreht, 2004).
+45
+
+[268] A. Khrennikov, Classical and Quantum Mental Models and Freud’s Theory of Unconscious Mind (Växjö Univ. Press, Växjö, 2002).
+[269] F. Murtagh, “Ultrametric model of mind, I: Review,” p-Adic Numbers Ultrametric
+Anal. Appl. 4, 193–206 (2012).
+[270] F. Murtagh, “Ultrametric model of mind, II: Application to text content analysis,”
+p-Adic Numbers Ultrametric Anal. Appl. 4, 207–221 (2012).
+[271] F. Murtagh, “The new science of complex systems through ultrametric analysis: Application to search and discovery, to narrative and to thinking,” p-Adic Numbers Ultrametric Anal. Appl. 5, 326–337 (2013).
+[272] G. Iurato and A. Khrennikov, “Hysteresis model of unconscious-conscious interconnection: Exploring dynamics on m-adic trees,” p-Adic Numbers Ultrametric Anal. Appl.
+7, 312–321 (2015).
+[273] G. Iurato, A. Khrennikov and F. Murtagh, “Formal foundations for the origins of human
+consciousness,” p-Adic Numbers Ultrametric Anal. Appl. 8, 249–279 (2016).
+[274] G. Iurato and A. Khrennikov, “On the topological structure of a mathematical model
+of human unconscious,” p-Adic Numbers Ultrametric Anal. Appl. 9, 78–81 (2017).
+[275] A. Khrennikov and N. Kotovich, “Towards ultrametric modeling of unconscious creativity,” Int. J. Cogn. Inform. Natural Intell. 8, 98–109 (2014).
+[276] A. Khrennikov, K. Oleschko and M. de Jesus Correa Lopez, “Modeling fluid’s dynamics with master equations in ultrametric spaces representing the treelike structure of
+capillary networks,” Entropy 18, 249 (2016).
+[277] A. Yu. Khrennikov, K. Oleschko and M. de Jesus Correa Lopez, “Applications of p-adic
+numbers: from physics to geology,” Contemp. Math. 665, 121–131 (2016).
+[278] A. Khrennikov, K. Oleschko and M. de Jesus Correa Lopez, “Application of p-adic
+wavelets to model reaction-diffusion dynamics in random porous media,” J. Fourier
+Anal. Appl. 22, 809–822 (2016).
+[279] K. Oleschko and A. Khrennikov, “Applications of p-adics to geophysics: Linear and
+quasilinear diffusion of water-in-oil and oil-in-water emulsions,” Theor. Math. Phys.
+190, 154–163 (2017).
+[280] L. A. Richards, “Capillary conduction of liquids through porous mediums,” Physics 1
+(5), 318–333 (1931).
+[281] J. Richter, The Soil as a Reactor (Catena, 1987).
+[282] M. Th. van Genuchten, “A closed-form equation for predicting the hydraulic conductivity of unsaturated soils,” Soil Sc. Soc. America J. 44 (5), 892–898 (1980).
+[283] S. V. Kozyrev, “Ultrametric analysis and interbasin kinetics,” AIP Conf. Proc. 826,
+121–128 (2006).
+46
+
+[284] S. Albeverio, A. Yu. Khrennikov and V. M. Shelkovich, “The Cauchy problems for
+evolutionary pseudo-differential equations over p-adic field and the wavelet theory,” J.
+Math. Anal. Appl. 375, 82–98 (2011).
+[285] A. Yu. Khrennikov and A. N. Kochubei, “p-Adic analogue of the porous medium equation,” (2016) [arXiv:1611.08863 [math.AP]].
+[286] A. Wiles, “Modular elliptic curves and Fermat’s last theorem, Annals Math. 141, 443–
+551 (1995) ; R. Taylor and A. Wiles, “Ring-theoretic properties of certain Hecke
+algebras,” Annals Math. 141, 553–572 (1995) ; Yves Hellegouarch, Invitation to the
+Mathematics of Fermat-Wiles (Academic Press, 2001).
+[287] R. P. Langlands, “Problems in the theory of automorphic forms,” Lect. Notes Math.
+170, 18–61 (Springer Verlag, 1970).
+[288] L. Hormander, The Analysis of Linear Partial Differential Operators, III PseudoDifferential Operators, IV Fourier Integral Operators (Springer-Verlag, 1985) ; M. A.
+Shubin, Pseudodifferential Operators and Spectral Theory (Nauka, 1978).
+[289] N. N. Bogoliubov and D. V. Schirkov, Introduction to the Theory of Quantized Fields
+(Springer, 1984).
+[290] Yu. I. Manin, “Reflections on arithmetical physics,” in Poiana Brasov 1987, Proceedings, Conformal Invariance and String Theory, 293–303 (Acad. Press, Boston 1989).
+[291] E. C. Titchmarsh, The Theory of the Riemann Zeta-Function (Clarendon Press, Oxford, 1986) ; A. A. Karatsuba and S. M. Voronin, The Riemann Zeta-Function (Walter
+de Gruyter Publishers, Berlin-New York 1992 ; K. Chandrasekharan, Arithmetic Functions (Springer, 1972).
+[292] A. Kapustin and E. Witten, “Electric-magnetic duality and the geometric Langlands program,” (2006) [hep-th/0604151] ; S. Gukov and E. Witten, “Gauge theory, ramification, and the geometric Langlands program,” (2006) [hep-th/0612073] ;
+E. Frenkel, “Lectures on the Langlands program and conformal field theory,” (2005)
+[hep-th/0512172].
+[293] N. M. Katz and P. Sarnak, “Zeroes of zeta-functions and symmetry,” Bull. Amer. Math.
+Soc. (N.Y.) 36, 1–26 (1999) ; J. P. Keating and N. C. Snaith, “Random matrix theory
+and L-functions at s = 1/2,” Comm. Math. Phys. 214, 91–110 (2000).
+[294] D. Harlow, S. Shenker, D. Stanford and L. Susskind, “Eternal symmetree,” Phys. Rev.
+D 85, 063516 (2012) [arXiv:1110.0496].
+[295] Yu. I. Manin and M. Marcolli, “Big Bang, blowup, and modular curves: algebraic
+geometry in cosmology,” SIGMA 10, 073 (2014) [arXiv:1402.2158].
+[296] Yu. I. Manin and M. Marcolli, “Symbolic dynamics, modular curves, and Bianchi IX
+cosmologies,” (2015) [arXiv:1504.04005].
+[297] W. Fan, F. Fathizadeh and M. Marcolli, “Modular forms in the spectral action of
+Bianchi IX gravitational instantons,” (2015) [arXiv:1511.05321].
+47
+
+[298] Zhi Hu and Sen Hu, “Symplectic group and Heisenberg group in p-adic quantum mechanics,” [arXiv:1502.01789].
+[299] S. S. Gubser, J. Knaute, S. Parikh, A. Samberg and P. Witaszczyk, “p-adic AdS/CFT,”
+Comm. Math. Phys. 352 (3), 1019–1059 (2017) [arXiv:1605.01061].
+[300] M. Heydeman, M. Marcolli, I. Saberi and B. Stoica, “Tensor networks, “p-Adic
+fields, and algebraic curves: arithmetic and the AdS3/CFT2 correspondence,” (2016)
+[arXiv:1605.07639].
+[301] S. S. Gubser, M. Heydeman, C. Jepsen, M. Marcolli, S. Parikh, I. Saberi, B. Stoica and
+B. Trundy, “Edge length dynamics on graphs with applications to p-adic AdS/CFT,”
+(2016) [arXiv:1612.09580].
+[302] S. S. Gubser, C. Jepsen, S. Parikh and B. Trundy, “O(N) and O(N) and O(N),” (2017)
+[arXiv:1703.04202].
+[303] Spin Glasses and Biology, Ed. D. L. Stein (World Scientific, Singapore, 1992).
+[304] W. Schikhof, Ultrametric Calculus: an introduction to p-adic analysis (Cambridge Univ.
+Press, 1985).
+[305] R. Unger, D. Harel, S. Wherland and J. L. Sussman, “A 3D building blocks approach
+to analyzing and predicting structure of proteins,” Proteins: Struct. Funct. Genet. 5,
+355–373 (1989).
+[306] V. S. Varadarajan, “Path integrals for a class of p-adic Schrödinger equations,” Lett.
+Math. Phys. 39, 97–106 (1997).
+[307] V. S. Varadarajan, “Arithmetic quantum physics: why, what, and whither,” in Selected
+Topics of p-Adic Mathematical Physics and Analysis, Proc. V. A. Steklov Inst. Math.
+245, 273–280 (2005).
+[308] V. S. Vladimirov, I. V. Volovich and E. I. Zelenov, p-Adic Analysis and Mathematical
+Physics (World Scientific, Singapore, 1994).
+[309] V. S. Vladimirov, “Generalized functions over the field of p-adic numbers,” Russ. Math.
+Surv. 43, 19–64 (1988).
+[310] V. S. Vladimirov, I. V. Volovich and E. I. Zelenov, “Spectral theory in p-adic quantum
+mechanics, and representation theory,” Math. USSR-Izv. 36 (2), 281–309 (1991).
+[311] V. S. Vladimirov and I. V. Volovich, “p-Adic quantum mechanics,” Comm. Math. Phys.
+123, 659–676 (1989).
+[312] V. S. Vladimirov, I. V. Volovich and E. I. Zelenov, “The spectral theory in the p-adic
+quantum mechanics,” Izvestia Akad. Nauk SSSR, Ser. Mat. 54, 275–302 (1990).
+[313] V. S. Vladimirov and Ya. I. Volovich, “Nonlinear dynamics equation in p-adic string
+theory,” Theor. Math. Phys. 138, 297 (2004) [math-ph/0306018].
+
+48
+
+[314] V. S. Vladimirov, “On the non-linear equation of a p-adic open string for a scalar field,”
+Russian Math. Surv. 60 (6), 1077–1092 (2005).
+[315] V. S. Vladimirov, “Nonlinear equations for p-adic open, closed, and open-closed
+strings,” Theor. Math. Phys. 149 (3), 1604–1616 (2006).
+[316] V. S. Vladimirov, “On the equations for p-adic closed and open strings,” p-Adic Numbers Ultrametric Anal. Appl. 1 (1), 79–87 (2009).
+[317] V. S. Vladimirov, “Solutions of p-adic string equations,” Theor. Math. Phys. 167 (2),
+539–546 (2011).
+[318] V. S. Vladimirov, “Nonexistence of solutions of the p-adic strings,” Theor. Math. Phys.
+174 (2), 178–185 (2013).
+[319] I. V. Volovich, “D-branes, black holes and SU (∞) gauge theory,” (1996)
+[hep-th/9608137] ; I. V. Volovich, “From p-adic strings to etale strings,” Proc. Steklov
+Math. Inst. 203, 41–48 (1994).
+[320] I. V. Volovich, “p-Adic string,” Class. Quant. Grav. 4 (4), L83–L87 (1987).
+[321] I. V. Volovich, “Number theory as the ultimate physical theory,” p-Adic Numbers
+Ultrametric Anal. Appl. 2 (1), 77–87 (2010).
+[322] I. V. Volovich, “Time irreversibility problem and functional formulation of classical
+mechanics,” (2009) [arXiv:0907.2445].
+[323] A. S. Trushechkin and I. V. Volovich, “Functional classical mechanics and rational
+numbers,” p-Adic Numbers Ultrametric Anal. Appl. 1 (4), 361–367 (2009.
+[324] I. V. Volovich, “Functional stochastic classical mechanics,” p-Adic Numbers Ultrametric
+Anal. Appl. 7 (1), 56–70 (2015).
+[325] I. V. Volovich, “Bogolyubov’s equations and functional mechanics,” Theor. Math. Phys.
+bf 164 (3), 1128–1135 (2010).
+[326] I. V. Volovich, “Randomness in classical mechanics and quantum mechanics,” Found.
+Phys. 41 (3), 516–528 (2011).
+[327] K. Yasuda, “Extension of measures to infinite dimensional spaces over p-adic field,”
+Osaka J. Math. 37, 967–985 (2000).
+[328] K. Yasuda, “Additive processes on local fields,” J. Math. Sci. Univ. Tokyo 3, 629-654
+(1996).
+[329] K. Yasuda, “Limit theorems for p-adic valued asymmetric semistable laws and processes,” p-Adic Numbers Ultrametric Anal. Appl. 9 (1), 62–77 (2017).
+[330] E. Zelenov, “p-Adic law of large numbers,” Izv. RAN Ser. Math. 80 (3), 31–42 (2016).
+[331] E. Zelenov, “p-Adic Brownian motion,” Izv. RAN Ser. Math. 80 (6), 92–102 (2016).
+
+49
+
+[332] E. I. Zelenov, “Adelic decoherence,” p-Adic Numbers Ultrametric Anal. Appl. 4 (1),
+84–87 (2012).
+[333] A. P. Zubarev, “On stochastic generation of ultrametrics in high-dimensional Euclidean
+spaces,” p-Adic Numbers Ultrametric Anal. Appl. 6 (2), 155–165 (2014).
+[334] W. A. Zuniga-Galindo, “Parabolic equations and Markov processes over p-adic fields,”
+Potential Anal. 28, 185–200 (2008).
+[335] W. A. Zuniga-Galindo, “Pseudo-differential equations connected with p-adic forms and
+local zeta functions,” Bull. Austral. Math. Soc., 70 (1), 73–86 (2004).
+[336] W. A. Zuniga-Galindo, “Fundamental solutions of pseudo-differential operators over
+p-adic fields,” Rend. Sem. Mat. Univ. Padova 109, 241–245 (2003).
+[337] W. A. Zuniga-Galindo, “Local zeta functions and fundamental solutions for pseudodifferential operators over p-adic fields,” p-Adic Numbers Ultrametric Anal. Appl. 3
+(4), 344–358 (2011).
+[338] W. A. Zuniga-Galindo, Pseudodifferential Equations Over Non-Archimedean Spaces,
+Lecture Notes in Mathematics 2174 (Springer, 2017).
+[339] J. Galeano-Penaloza and W. A. Zuniga-Galindo, “Pseudo-differential operators with
+semi-quasielliptic symbols over p-adic fields,” J. Math. Anal. Appl. 386 (1), 32–49
+(2012).
+[340] W. A. Zuniga-Galindo, “The Cauchy problem for non-Archimedean pseudodifferential
+equations of Klein–Gordon type,” J. Math. Anal. Appl. 420 (2), 1033–1050 (2014).
+[341] W. A. Zuniga-Galindo, “The non-Archimedean stochastic heat equation driven by
+Gaussian noise,” J. Fourier Anal. Appl. 21 (3), 600–627 (2015).
+[342] W. A. Zuniga-Galindo, “Non-Archimedean white noise, pseudodifferential stochastic
+equations, and massive Euclidean fields,” J. Fourier Anal. Appl. 23 (2), 288–323 (2017).
+
+50
+
+

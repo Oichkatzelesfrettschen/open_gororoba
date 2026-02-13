@@ -1,0 +1,4 @@
+g2,2 may be contracted with the reduced space objects (e.g. x, b zb or the reduced metric),
+which will trivially give zero. Alternatively, the indices of g2,2 may be contracted with the
+indices of some other g2,2 floating around, such as if there are more than one S1 operators
+in (4.6). However, the latter contraction gives the supertrace (g2,2)

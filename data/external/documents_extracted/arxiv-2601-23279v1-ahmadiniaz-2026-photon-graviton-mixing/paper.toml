@@ -1,0 +1,6953 @@
+tables = []
+figures = []
+full_text = """
+Prepared for submission to JHEP\r
+One loop photon-graviton mixing in an\r
+electromagnetic field: Part 3\r
+N. Ahmadiniaz,a F. Bastianelli,b F. Karbsteinc and C. Schubert d,1\r
+aHelmholtz-Zentrum Dresden-Rossendorf, Bautzner Landstraße 400, 01328 Dresden, Germany\r
+bDipartimento di Fisica ed Astronomia, Università di Bologna, Via Irnerio 46, I-40126 Bologna,\r
+Italy and INFN, Sezione di Bologna, Via Irnerio 46, I-40126 Bologna, Italy\r
+cHelmholtz-Institut Jena, Fröbelstieg 3, 07743 Jena, Germany and Theoretisch-Physikalisches In\u0002stitut, Friedrich-Schiller-Universität Jena, Max-Wien-Platz 1, 07743 Jena, Germany\r
+dFacultad de Ciencias Físico-Matemáticas, Universidad Michoacana de San Nicolás de Hidalgo,\r
+Avenida Francisco J. Mújica, 58060 Morelia, Michoacán, Mexico\r
+E-mail: n.ahmadiniaz@hzdr.de, bastianelli@bo.infn.it,\r
+felix.karbstein@uni-jena.de, christianschubert137@gmail.com\r
+Abstract: Photon-graviton conversion in an electromagnetic field is a well-known predic\u0002tion of Einstein-Maxwell theory. First discussed at tree-level by Gertsenshtein in 1962, more\r
+recently it has been shown to lead to magnetic dichroism starting from one-loop. While\r
+previously only two diagrams were assumed to contribute to this one-loop photon-graviton\r
+amplitude in a constant electromagnetic field, here we point out the existence of a third\r
+one involving a tadpole subdiagram. As shown by H. Gies and one of the authors in 2016\r
+for the pure QED case, such diagrams cannot be omitted in general even though the tad\u0002pole formally vanishes. After a short review of the calculation of one-loop photon-graviton\r
+amplitudes in the worldline formalism, we use this formalism for a unified calculation of all\r
+three diagrams. Although phenomenologically this amplitude is mainly of interest for the\r
+case of the spinor loop in a magnetic field, here we will also include the scalar loop and the\r
+electric field component, since the computational effort is essentially the same. We show\r
+that the tadpole diagram, although contributing to the amplitude, does not contribute to\r
+the magnetic dichroism. The gravitational Ward identity provides a useful check.\r
+1Corresponding author\r
+arXiv:2601.23279v1 [hep-th] 30 Jan 2026
+
+Contents\r
+1 Introduction 1\r
+2 One-loop amplitudes with one graviton and N photons 5\r
+2.1 Irreducible contribution 5\r
+2.2 Reducible contribution 6\r
+3 Inclusion of a constant electromagnetic field 7\r
+3.1 General procedure 7\r
+3.2 The photon tadpole 8\r
+3.3 The vacuum-polarization tensor in a constant field 9\r
+4 Irreducible contribution to electromagnetic photon-graviton conversion 11\r
+5 Tadpole contribution to electromagnetic photon-graviton conversion 13\r
+6 Third contribution to electromagnetic photon-graviton conversion 15\r
+7 Weak-field expansion of the tadpole contribution 16\r
+8 Ward identities for the photon-graviton amplitude in a constant field 17\r
+9 Conclusions 18\r
+A Einstein-Maxwell theory 19\r
+B Worldline Green’s functions and determinants in a constant field 21\r
+B.1 Periodic case 21\r
+B.2 Anti-periodic case 24\r
+1 Introduction\r
+Although processes in Einstein-Maxwell theory are presently not of direct experimental\r
+relevance, they are of great theoretical interest, and much effort has gone into their study\r
+both at the tree-level [1–6] and the one-loop level [7–11].\r
+A particularly well-studied process is photon-graviton conversion in a magnetic field.\r
+Einstein-Maxwell theory contains a tree-level vertex involving two photons and one graviton,\r
+Fig. 1.\r
+– 1 –
+
+1)\r
+2)\r
+k\r
+k0\r
+k0\r
+3)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0\r
+30)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0\r
+300)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0\r
+1\r
+Figure 1. Tree-level vertex photon-photon-graviton vertex.\r
+Replacing one of the photons by an electromagnetic field Fµν, one can convert this\r
+vertex into the following amplitude for photon-graviton conversion in the field (or the inverse\r
+process),\r
+Γ\r
+(tree)(k0, ϵ0; k, ε; F) = ϵ0µνεαΠ\r
+µν,α\r
+(tree)(k; F), Π\r
+µν,α\r
+(tree)(k; F) = −\r
+iκ\r
+2\r
+C\r
+µν,α\r
+, (1.1)\r
+where k0, ϵ0 (k, ε) are the graviton (photon) momentum and polarisation, and the tensor\r
+C\r
+µν,α is given by\r
+C\r
+µν,α = Fµαkν + Fναkµ −\r
+\r
+F · k\r
+\u0001µ\r
+δ\r
+να −\r
+\r
+F · k\r
+\u0001ν\r
+δ\r
+µα +\r
+\r
+F · k\r
+\u0001α\r
+δ\r
+µν\r
+. (1.2)\r
+This is well-known, but we give a derivation in appendix A for completeness.\r
+An important application of this amplitude is the conversion of electromagnetic waves\r
+into gravitational waves (and vice-versa) in an external magnetic field, as pointed out by\r
+Gertsenshtein as early as 1962 [12]. At the tree level, these processes and the associated\r
+photon-graviton conversion have since been studied by many authors [13–20]. However, it\r
+is only in 2005 that two of the present authors [21] calculated the one-loop correction to\r
+the amplitude (1.1) due to the diagram shown in Fig. 2 on the left, with either a scalar or\r
+spinor loop.\r
+4)\r
+p p0\r
+k0 = k + k0\r
+k\r
+k0\r
+=========\r
+p p0\r
+k0\r
+k0\r
+k\r
+=========\r
+6)\r
+k k\r
+7)\r
+k k\r
++\r
+k k\r
++\r
+k k\r
+2\r
+Γ\r
+(irr) Γ(tadpole) Γ(ext)\r
+Figure 2. The three one-loop contributions to electromagnetic photon–graviton conversion. Here\r
+“irr” and “ext” denote the irreducible and “extra” contributions, respectively.\r
+Here we employ the usual double-line notation for the full propagator in the constant\r
+external field (Fig. 3).\r
+Using the then novel worldline representation of photon-graviton amplitudes [22–31]\r
+they obtained compact parameter integral representations for this amplitude and for both\r
+– 2 –
+
+Γ , where 1-loop\r
+HE [A¯] =\r
+= + + + ···\r
+FIG. 1: Diagrammatic representation of the one-loop Heisenberg-Euler effective action. The \r
+ble line denotes the dressed fermion propagator accounting for arbitrarily many couplings t\r
+external field A¯, represented by the wiggly lines ending at crosses.\r
+with Γl-loop\r
+HE ∼ (α\r
+π )l−1, where α = e24π " 1137 is the fine-structure constant; we use the Heavi\r
+Lorentz System with c = ! = 1. At each loop order l, Γl-loop\r
+HE = !\r
+x Ll-loop\r
+HE accounts fo\r
+infinite number of couplings to the external field, and thus is fully nonperturbative in \r
+parameter eA¯. For completeness, we sketch the expansion to two-loop order in the follow\r
+We begin by noting that the fermionic integral in Eq. (7) can be written as a funct\r
+determinant,\r
+iSψ[A¯ + q] = ln det"−iD/[A¯ + q] + m\r
+#\r
+. \r
+If evaluated at q = 0, this quantity amounts to the one-loop Heisenberg-Euler effective ac\r
+in the external field A¯, i.e., Γ1-loop\r
+HE [A¯] = Sψ[A¯]; for a graphical representation, cf. Fi\r
+Since Sψ is a one-loop expression, the two-loop order of the Schwinger functional is alr\r
+obtained by performing the photonic fluctuation integral ∼ Dq to Gaußian order. For \r
+we expand Sψ about the external field A¯,\r
+Sψ[A¯ + q] = Sψ[A¯] + $ %S(1)\r
+ψ [A¯]\r
+&µ\r
+qµ +\r
+1\r
+2\r
+$ $ qµ\r
+%\r
+S(2)\r
+ψ [A¯]\r
+&µν\r
+qν + O(q3), \r
+where we employed the shorthand notation\r
+%\r
+S(n)\r
+ψ\r
+&σ1...σn\r
+[A¯] := δnSψ[A]\r
+δAσ1 ... δAσn\r
+'\r
+'\r
+'\r
+'\r
+A=A¯\r
+. \r
+The first-order term corresponds to a one-loop photon current induced by the field A¯, \r
+the Hessian is related to the one-loop photon polarization tensor Πµν [A¯] := %S(2)\r
+ψ\r
+&µ\r
+evaluated in the external field A¯; for completeness note that this definition of the ph\r
+polarization tensor differs from that of [57] by an overall minus sign. To Gaußian orde\r
+ignore the terms of O(q3) in the exponent, resulting in\r
+eiW[A¯] " eiSψ[A¯]\r
+$\r
+Dq e\r
+i\r
+! %\r
+S(1)\r
+ψ [A¯]\r
+&µ\r
+qµ− i\r
+2\r
+!! qµ\r
+%\r
+D−1−Π[A¯]\r
+&µν\r
+qν . \r
+Figure 3. Full scalar or spinor propagator in a constant field.\r
+the scalar and spinor loop cases. Those representations are of the same type as the ones\r
+that one finds for the better-known one-loop photon vacuum polarisation in a constant field,\r
+computed either in the worldline formalism [32, 33] or the Feynman diagram approach (see\r
+[34–36] and refs. therein).\r
+Although numerically these one-loop corrections for realistic field strengths are small\r
+(suppressed by a factor of α) compared to the tree-level ones, in the subsequent study [37]\r
+an important qualitative difference emerged: while the tree-level photon-graviton conver\u0002sion amplitude in the field gives (contrary to the superficially similar case of photon-axion\r
+conversion [14, 38–43]) equal conversion rates for both photon polarisations, at the one-loop\r
+level this rate starts becoming polarisation-dependent. This leads to dichroism, and further\r
+analysis by Ahlers et al. [44], who undertook an exhaustive search for other sources of\r
+magnetic dichroism showed that, although magnetic photon-graviton conversion is a very\r
+small effect under realistic conditions, remarkably it is still the leading such effect in the\r
+whole Standard Model. Their analysis of magnetic dichroism was also more complete in\r
+taking the right-hand diagram of Fig. 2 into account, which contributes to it at the same\r
+order in α.\r
+Even so, from their numbers it is clear that this effect will hardly be accessible to\r
+experiment in the near future, a conclusion that is consistent with recent detailed feasibility\r
+and sensitivity studies of light-induced gravitational effects using interferometric techniques\r
+[45, 46]. Nevertheless, this is of course presently the case for all process involving gravitons,\r
+and in the long run we would still consider magnetic dichroism due to photon-graviton\r
+conversion as a leading contender in the quest for an eventual experimental demonstration\r
+of the existence of the graviton. This is because (i) it involves only a single gravitational\r
+coupling (ii) it does not require a direct measurement of the graviton itself and (iii) dichroism\r
+can be measured with high precision using optical cavities [47–53].\r
+The main purpose of the present paper is to point out the existence of yet another dia\u0002gram contributing to electromagnetic photon-graviton conversion at the same order, shown\r
+in the middle of Fig. 2, or more precisely its non-vanishing. This requires some explanation.\r
+Prior to 2017 it had generally been assumed, and even stated in QED textbooks (see, e.g.,\r
+[34, 54]) that the one-photon tadpole diagram in a constant electromagnetic field Fig. 4\r
+vanishes, and therefore also any diagram containing it.\r
+The argument goes as follows:\r
+1. A constant field emits only photons with zero energy-momentum, thus there is a factor\r
+of δ(k).\r
+– 3 –
+
+kµ\r
+Figure 4. One-photon amplitude in a constant electromagnetic field.\r
+2. Because of gauge invariance, this diagram in a momentum expansion starts with the\r
+term linear in momentum.\r
+3. δ(k)k\r
+µ = 0.\r
+Since the tadpole thus formally vanishes, it has been assumed for decades that also any\r
+diagram containing it can be discarded, for example, the “handcuff” contribution Fig. 5 to\r
+the two-loop Euler-Heisenberg Lagrangian [34, 35].\r
++ + + ...\r
+3: One-particle reducible diagrams constituting the last term in Eq. (26). For the definition\r
+e double line, cf. Fig. 1.\r
+Γ2-loop\r
+HE [A¯]= +\r
+4: Diagrams constituting the two-loop Heisenberg-Euler effective action. Obviously, we have\r
+p\r
+= Γ2-loop\r
+HE\r
+!\r
+!\r
+1PI+Γ2-loop\r
+HE\r
+!\r
+!\r
+1PR. Note that the first diagram amounts to the leftmost one in Fig. 2,\r
+e it is drawn in a slightly different way; for the definition of the double line, cf. Fig. 1.\r
+sponding to the Dyson series of the full one-loop resummed photon propagator. In the\r
+erm of Eq. (26), this resummed propagator interconnects two one-loop photon currents\r
+(1)\r
+ψ [A¯]\r
+#\r
+. All the diagrams arising when adopting the expansion (29) in the last term in\r
+26) are one-particle reducible; see Fig. 3.\r
+turn, the two-loop Heisenberg-Euler effective action consists of a 1PI and a 1PR\r
+am and is given by\r
+Γ2-loop\r
+HE [A¯] = 1\r
+2\r
+Tr(DΠ[A¯])\r
+$ %& '\r
+=:Γ2-loop\r
+HE\r
+!\r
+!\r
+1PI\r
++\r
+1\r
+2\r
+( ( "\r
+S(1)\r
+ψ [A¯]\r
+#\r
+µ\r
+Dµν "S(1)\r
+ψ [A¯]\r
+#\r
+ν\r
+$ %& '\r
+=:Γ2-loop\r
+HE\r
+!\r
+!\r
+1PR\r
+. (30)\r
+he existence as a matter of principle of the 1PR term in Eq. (30) has been known for a\r
+time. It has, however, been argued that this term vanishes for constant external fields\r
+4]. Let us reproduce this argument for reasons of completeness: a crucial building block\r
+e 1PR term is "S(1)\r
+ψ [A¯]\r
+#\r
+ν, which corresponds to the one-loop photon current which will\r
+alled j\r
+µ\r
+1-loop[A¯] below. For a constant external field, j\r
+µ\r
+1-loop[A¯] does not depend on any\r
+etime point x either. On the other hand, j\r
+µ\r
+1-loop[A¯] is a Lorentz 4-vector. The vector\r
+x of the current can only be generated from the building blocks F¯, ∂ and x. However,\r
+onstant fields ∂µFνκ = 0 and for an x independent current, all conceivable combinations\r
+one vector index vanish and so does the current (an explicit verification of this fact in\r
+entum space is given below).\r
+While this part of the argument holds true in the full analysis, it does not necessarily\r
+Figure 5. “Handcuff” diagram in a constant field.\r
+However, in 2016 H. Gies and one of the authors [55] noted that such diagrams can\r
+give finite values because of the infrared divergence of the connecting photon propagator.\r
+In dimensional regularization, the key integral is\r
+Z\r
+d\r
+Dk δD(k)\r
+k\r
+µkν\r
+k\r
+2\r
+=\r
+η\r
+µν\r
+D\r
+. (1.3)\r
+Applying this integral to the handcuff diagram one finds a non-vanishing result, which\r
+can be expressed in the following simple way in terms of the one-loop Euler-Heisenberg\r
+Lagrangian [56, 57] (see also [58])\r
+L\r
+1PR\r
+spin =\r
+1\r
+2\r
+∂L\r
+(EH)\r
+spin\r
+∂Fµν\r
+∂L\r
+(EH)\r
+spin\r
+∂Fµν\r
+,\r
+(the superscript ‘1PR’ stands for “one-particle reducible”).\r
+Eq. (2) follows straightforwardly from Eq. (4).\r
+Prior to the recent analysis performed in Ref. [1], this contribution was believed to vanish\r
+in constant fields [7, 9], based on the argument that (2π)dδ(d)(k) kα = 0 in Eq. (5), thereby\r
+missing the subtlety that, upon convolution with the infrared divergent photon propagator,\r
+the current (5) might induce finite 1PR tadpole contributions in Feynman diagrams. Finally,\r
+note that L2-loop\r
+HE may alternatively be viewed as a one-loop calculation performed with the\r
+charged particle propagator in the constant field already accounting for quantum corrections\r
+at one-loop level. The latter is depicted in Fig. 2. Identifying the in- and outgoing charged\r
++\r
+FIG. 2: One-loop corrections to the charged particle propagator in an external electromagnetic\r
+field.\r
+particle lines in Fig. 2 to form loops, the diagrams shown in Fig. 1 are recovered.\r
+B. Charged particle propagators in constant electromagnetic fields\r
+Meanwhile, Refs. [5, 6] have explicitly determined the one-loop tadpole corrections for\r
+the propagators of both charged scalar and spinor particles in constant fields within the\r
+worldline formalism. The respective Feynman diagram is depicted in Fig. 2 (right). Their\r
+finding is that in momentum space this 1PR contribution to the charged particle propagator\r
+can be expressed similarly to Eq. (2) as\r
+Figure 6. Full scalar or spinor propagator in a constant field.\r
+Similarly, [59, 60] found that the one-loop tadpole contribution to the scalar or spinor\r
+propagator in a constant field (Fig.6) is also non-vanishing, and given by\r
+S\r
+1PR(p) = ∂S(p)\r
+∂Fµν\r
+∂L\r
+(EH)\r
+∂Fµν\r
+,\r
+– 4 –
+
+where S(p) denotes the tree-level propagator in the field, see also [61].\r
+Below we perform the similar, albeit more complicated, calculation of the middle dia\u0002gram of Fig. 2. Moreover, we provide a unified calculation of all three diagrams using the\r
+worldline formalism, and show that, although the tadpole diagram contributes to the am\u0002plitude, it leaves the magnetic dichroism unchanged. Although our main interest is in the\r
+magnetic field and spinor loop case, we will perform all calculations in a general constant\r
+field and for both the scalar and spinor loop, since in the worldline formalism this essen\u0002tially does not imply any extra computational effort. All formulas required to specialize the\r
+field to a purely magnetic one (as well as a purely electric or crossed-field one) are given in\r
+appendix B.\r
+The organization of the paper is as follows. In section 2 we review the worldline\r
+representation of the one-loop photon-graviton amplitudes with a scalar or spinor loop in\r
+vacuum, including a short discussion of the gauge and gravitational Ward identities. In\r
+section 3 we show how to incorporate an external constant electromagnetic field. Section 4\r
+summarizes the worldline calculation of [21, 37] of the “main” or “irreducible” contributions\r
+Γ\r
+(irr) to these amplitudes, while section 6 analyzes the contribution Γ(ext). The central\r
+section is 5 where we derive the new “tadpole” contributions Γ\r
+(tadpole). In section 7 we\r
+study the weak-field expansion of the tadpole contribution in a magnetic field. In section\r
+8 we verify the gravitational Ward identities for these amplitudes, which also provides a\r
+non-trivial check. Section 9 offers our conclusions. Appendix A establishes our conventions\r
+for Einstein-Maxwell theory, while in appendix B we collect some useful formulas involving\r
+the worldline Green’s functions and determinants in a constant field.\r
+Partial results of this work were presented in [62].\r
+2 One-loop amplitudes with one graviton and N photons\r
+We shortly summarize the worldline approach to the calculation of the one-loop amplitudes\r
+involving a scalar or spinor in the loop and one graviton and N photons, first in vacuum\r
+[28–31, 63, 64]. These amplitudes have an irreducible contribution, where all the external\r
+legs are directly attached to the loop, and a reducible one, where the graviton is attached\r
+to one of the photons.\r
+2.1 Irreducible contribution\r
+The irreducible spinor/scalar loop contribution to the one-graviton N-photon amplitude is\r
+given by [65]\r
+Γ\r
+(irr)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = \u0012\r
+−2\r
+1\r
+\u0013\r
+(−ie)\r
+N\r
+\u0010\r
+−\r
+κ\r
+4\r
+\u0011Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2\r
+×\r
+D\r
+V\r
+G\r
+spin\r
+scal \u0001[k0, ϵ0] V\r
+γ\r
+\r
+spin\r
+scal \u0001[k1, ε1] · · · V\r
+γ\r
+\r
+spin\r
+scal \u0001[kN , εN ]\r
+E\r
+. (2.1)\r
+Here e and κ are the electromagnetic and gravitational couplings, m the mass and T the\r
+proper-time of the loop scalar or spinor. k0 and ϵ0 denote the graviton momentum and\r
+– 5 –
+
+polarization tensor, the remaining ki\r
+’s and εi’s the photon ones. V\r
+G and Vγ denote the\r
+graviton and photon vertex operators,\r
+V\r
+γ\r
+scal[k, ε] = Z T\r
+0\r
+dτ ε · x˙(τ ) eik·x(τ), (2.2)\r
+V\r
+γ\r
+spin[k, ε] = Z T\r
+0\r
+dτ hε · x˙(τ ) − iψ(τ ) · f · ψ(τ )\r
+i\r
+e\r
+ik·x(τ)\r
+, (2.3)\r
+V\r
+G\r
+scal[k0, ϵ0] = ϵ0µν Z T\r
+0\r
+dτhx˙\r
+µ\r
+(τ ) ˙x\r
+ν\r
+(τ ) + a\r
+µ\r
+(τ )a\r
+ν\r
+(τ ) + b\r
+µ\r
+(τ )c\r
+ν\r
+(τ )\r
+i\r
+e\r
+ik0·x(τ)\r
+, (2.4)\r
+V\r
+G\r
+spin[k0, ϵ0] = ϵ0µν Z T\r
+0\r
+dτhx˙\r
+µ\r
+(τ ) ˙x\r
+ν\r
+(τ ) + a\r
+µ\r
+(τ )a\r
+ν\r
+(τ ) + b\r
+µ\r
+(τ )c\r
+ν\r
+(τ )\r
++ψ\r
+µ\r
+(τ )ψ˙ν(τ ) + α\r
+µ\r
+(τ )α\r
+ν\r
+(τ ) + ix˙\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ )ψ(τ ) · k\r
+i\r
+e\r
+ik0·x(τ)\r
+, (2.5)\r
+and fµν = kµεν − kνεµ the linearized photon field-strength tensor. The Wick contractions\r
+⟨· · · ⟩ are to be performed using the set of worldline correlators\r
+⟨x\r
+µ\r
+(τ )x\r
+ν\r
+(τ\r
+′\r
+)⟩ = −GB(τ, τ ′), (2.6)\r
+⟨ψ\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ\r
+′\r
+)⟩ =\r
+1\r
+2\r
+GF (τ, τ ′), (2.7)\r
+⟨a\r
+µ\r
+(τ )a\r
+ν\r
+(τ\r
+′\r
+)⟩ = 2δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.8)\r
+⟨b\r
+µ\r
+(τ )c\r
+ν\r
+(τ\r
+′\r
+)⟩ = −4δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.9)\r
+⟨α\r
+µ\r
+(τ )α\r
+ν\r
+(τ\r
+′\r
+)⟩ = 2δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.10)\r
+with the worldline Green’s functions\r
+GB(τ, τ ′) = | τ − τ\r
+′\r
+| −(τ − τ\r
+′\r
+)\r
+2\r
+T\r
+, (2.11)\r
+GF (τ, τ ′) = sgn(τ − τ\r
+′\r
+). (2.12)\r
+2.2 Reducible contribution\r
+The reducible contribution to the N-photon/one graviton amplitude, where the graviton is\r
+attached to one of the photons, usually would be constructed by sewing together the N\u0002photon amplitude and the photon-photon-graviton vertex of Fig. 1. For the analogous case\r
+of the scalar tree-level propagator dressed with N photons and one graviton, D\r
+(red)pp′\r
+N,1\r
+, it was\r
+shown in [64] that the effect of this sewing can be expressed by the following replacement\r
+rule\r
+D\r
+(red)pp′\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = X\r
+N\r
+i=1\r
+D\r
+pp′\r
+N,0\r
+(k1, ε1; . . . ; ki + k0, υi; . . . ; kN , εN ),\r
+with an effective photon polarization vector\r
+υi ≡ −κ\r
+{ϵ0, fi} · (ki + k0)\r
+(ki + k0)\r
+2\r
+= −κ\r
+ϵ0 · fi· k0 + fi· ϵ0 · ki\r
+2k0 · ki\r
+. (2.13)\r
+– 6 –
+
+Here we observe that the same replacement rule applies as well for the one-loop N-photon/one\r
+graviton amplitudes with either a scalar or a spinor loop. For the scalar loop this is obvious\r
+from the fact that our derivation of that rule in [64] did not make use at all of the boundary\r
+conditions imposed on the scalar path integral. But neither did we use the specific form\r
+of the scalar vertex operator, and the reader can easily convince herself that changing the\r
+scalar vertex operator into a spinor one will not make a difference here. Thus, without\r
+further ado, we can write down the reducible part of the spinor/scalar loop contribution to\r
+the one-graviton N-photon amplitude as\r
+Γ\r
+(red)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = X\r
+N\r
+i=1\r
+Γ\r
+spin\r
+scal \u0001\r
+N,0\r
+(k1, ε1; . . . ; ki + k0, υi; . . . ; kN , εN ), (2.14)\r
+where υ\r
+µ\r
+i\r
+is the same as in (2.13).\r
+3 Inclusion of a constant electromagnetic field\r
+3.1 General procedure\r
+The generalisation of the formalism to the case of the photon-graviton amplitudes in a\r
+constant electromagnetic field is straightforward and proceeds essentially as in the purely\r
+electromagnetic case [24, 26, 27, 33, 68–70]: the master formulas (2.1) acquire an additional\r
+determinant factor\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tanZ\r
+\u0015\r
+(Spinor loop), (3.1)\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sinZ\r
+\u0015\r
+(Scalar loop), (3.2)\r
+(Zµν ≡ eFµνT), and the worldline Green’s functions GB, GF have to be replaced by their\r
+constant-field versions GB, GF ,\r
+GB(τ, τ ′) = T\r
+2Z\r
+\u0012\r
+e\r
+−iG˙ B(τ,τ′)Z − cos Z\r
+sin Z\r
++ iG˙ B(τ, τ ′)\r
+\u0013\r
+,\r
+GF (τ, τ ′) = GF (τ, τ ′)\r
+e\r
+−iZG˙ B(τ,τ′)\r
+cosZ\r
+. (3.3)\r
+Since these Green’s functions have a non-trivial Lorentz structure, the Wick-contraction\r
+rules (2.6), (2.7) generalise in the form\r
+⟨x\r
+µ\r
+(τ )x\r
+ν\r
+(τ\r
+′\r
+)⟩F = −Gµν\r
+B\r
+(τ, τ ′\r
+), (3.4)\r
+⟨ψ\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ\r
+′\r
+)⟩F =\r
+1\r
+2\r
+G\r
+µν\r
+F\r
+(τ, τ ′), (3.5)\r
+with the Wick-contraction rules for the ghosts unchanged.\r
+Thus the vacuum master formula (2.1) directly generalises to the constant-field back\u0002ground as\r
+Γ\r
+(irr)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ; F) = \u0012\r
+−2\r
+1\r
+\u0013\r
+(−ie)\r
+N\r
+\u0010\r
+−\r
+κ\r
+4\r
+\u0011Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2 det\r
+1\r
+2\r
+\u0014\u0012Z/tanZ\r
+Z/sinZ\r
+\u0013\u0015\r
+×\r
+D\r
+V\r
+G\r
+spin\r
+scal \u0001[k0, ϵ0] V\r
+γ\r
+\r
+spin\r
+scal \u0001[k1, ε1] · · · V\r
+γ\r
+\r
+spin\r
+scal \u0001[kN , εN ]\r
+E\r
+F\r
+. (3.6)\r
+– 7 –
+
+The rule (2.14) for the construction of the reducible contributions, where the graviton\r
+gets attached to one of the photons, is also not affected by the presence of the external\r
+field.\r
+At the one-graviton level, the only really new aspect arising from the presence of the\r
+external field is that there is now a second type of reducible contributions, since the graviton\r
+can now be attached also to one of the photons emitted by the external field, see Fig. 7.\r
+Figure 7. Field-induced type of reducible contributions.\r
+It is easy to see that the contribution of this diagram, to be called Γ\r
+(ext)\r
+N,1\r
+, can be\r
+obtained from the purely photonic amplitude with N +1 photons in the field by the following\r
+modification of (2.14),\r
+Γ\r
+(ext)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ; F) = Γ\r
+spin\r
+scal \u0001\r
+N+1,0\r
+(k0, υF ; k1, ε1; . . . ; . . . ; kN , εN ; F), (3.7)\r
+where now\r
+υF ≡ iκ\r
+{ϵ0, F} · k0\r
+k\r
+2\r
+0\r
+. (3.8)\r
+3.2 The photon tadpole\r
+For starters, let us work out (3.6) for the pure QED case with one and two photons. For\r
+the tadpole (Fig. 4) with a scalar loop, this yields\r
+Γscal(k, ε; F) = −e(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT\r
+T\r
+(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+×\r
+Z T\r
+0\r
+dτ ε · G˙B(τ, τ ) · k exph\r
+1\r
+2\r
+k · GB(τ, τ ) · k\r
+i\r
+. (3.9)\r
+Using the coincidence limits (B.6), (B.7) this can be written more explicitly as\r
+Γscal(k, ε; F) = −ie(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+×ε ·\r
+\u0010\r
+cotZ − 1\r
+Z\r
+\u0011\r
+· k exp\u0014\r
+T\r
+4\r
+k ·\r
+\u0010cotZ\r
+Z\r
+−\r
+1\r
+Z2\r
+\u0011\r
+· k\r
+\u0015\r
+. (3.10)\r
+To get the corresponding quantity for spinor QED, we have to include the spin part of\r
+the photon vertex operator, change the determinant factor, and to supply the usual global\r
+– 8 –
+
+factor of −2. This yields\r
+Γspin(k, ε; F) = 2ie(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+×ε ·\r
+\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· k exp\u0014\r
+T\r
+4\r
+k ·\r
+\u0010cotZ\r
+Z\r
+−\r
+1\r
+Z2\r
+\u0011\r
+· k\r
+\u0015\r
+. (3.11)\r
+Note that, as mentioned in the introduction, the expressions (3.10), (3.11) formally vanish\r
+on account of the factor δ\r
+D(k) kµ\r
+.\r
+3.3 The vacuum-polarization tensor in a constant field\r
+For N = 2 in the scalar case we find the integrand\r
+D\r
+V\r
+γ\r
+scal[k1, ε1]V\r
+γ\r
+scal[k2, ε2]\r
+E\r
+F\r
+=\r
+h\r
+ε1 · G¨B12 · ε2 − ε1 · G˙B1i· ki ε2 · G˙B2j · kj\r
+i\r
+e\r
+1\r
+2\r
+ki·GBij ·kj\r
+,\r
+(3.12)\r
+where summation over i, j = 1, 2 is understood. We use momentum conservation to write\r
+k = k1 = −k2. Removing the second derivative in the first term by an IBP in τ1, the\r
+integrand becomes\r
+h\r
+ε1 · G˙B12 · ε2 k · G˙B12 · k + ε1 ·\r
+\u0010\r
+G˙B12 − G˙B\r
+\u0011\r
+· k ε2 ·\r
+\u0010\r
+G˙B21 − G˙B\r
+\u0011\r
+· k\r
+i\r
+e\r
+−k·(GB12−GB)·k\r
+, (3.13)\r
+where we have introduced the further notation of indicating the constant coincidence limit\r
+of a Green’s function by the omission of its argument, G˙B ≡ G˙Bii etc. The content of the\r
+brackets then turns into ε1µI\r
+µν\r
+scalε2ν,\r
+I\r
+µν\r
+scal = G˙\r
+µν\r
+B12k · G˙B12 · k +\r
+\u0010\r
+G˙B12 − G˙B\r
+\u0011µλ\u0010\r
+G˙B21 − G˙B\r
+\u0011νκ\r
+k\r
+κ\r
+k\r
+λ\r
+. (3.14)\r
+Next we would like to use the fact that the integrand contains terms which integrate to zero\r
+due to antisymmetry under the exchange τ1 ↔ τ2. Thus we decompose the constant-field\r
+worldline Green’s function as\r
+GB12 = SB12 + AB12 , (3.15)\r
+where SBij denotes the even (SBii ≡ SB) and ABij the odd part (ABii ≡ AB) as a power\r
+series in F. Only the Lorentz even part of GBij contributes in the exponent,\r
+k · (GB12 − GB) · k = k ·\r
+\r
+SB12 − SB\r
+\u0001\r
+· k ≡ T k · Φ12 · k . (3.16)\r
+I\r
+µν\r
+scal turns, after decomposing all factors of G˙Bij as above, and deleting all τ - odd terms,\r
+into\r
+˜I\r
+µν\r
+scal ≡\r
+\u001A\r
+S˙\r
+µν\r
+B12S˙κλ\r
+B12 − S˙\r
+µλ\r
+B12S˙νκ\r
+B12 +\r
+\u0010\r
+A˙B12 − A˙B\r
+\u0011µλ\u0010\r
+A˙B12 − A˙B\r
+\u0011νκ\u001B\r
+k\r
+κ\r
+k\r
+λ\r
+.\r
+(3.17)\r
+– 9 –
+
+In this way we obtain the following integral representations for the dimensionally regularized\r
+constant-field vacuum polarization tensor in scalar QED:\r
+Π\r
+µν\r
+scal(k; F) = −\r
+e\r
+2\r
+(4π)\r
+D\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+T\r
+2− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015 Z 1\r
+0\r
+du1\r
+˜I\r
+µν\r
+scal e\r
+−T k·Φ12·k\r
+.\r
+(3.18)\r
+As usual we have rescaled to the unit circle and set u2 = 0.\r
+For spinor QED, the formula corresponding to (3.14) is [33]\r
+I\r
+µν\r
+spin = G˙\r
+µν\r
+B12k · G˙B12 · k − GµνF12k · GF12 · k (3.19)\r
+−\r
+\u0014\u0010\r
+G˙B − GF − G˙B12\u0011µλ\u0010G˙B21 − G˙B + GF\r
+\u0011νκ\r
++ G\r
+µλ\r
+F12G\r
+νκ\r
+F21\u0015\r
+k\r
+κ\r
+k\r
+λ\r
+and (3.17) generalizes to\r
+˜I\r
+µν\r
+spin ≡\r
+\u001A\u0010\r
+S˙\r
+µν\r
+B12S˙κλ\r
+B12 − S˙\r
+µλ\r
+B12S˙νκ\r
+B12\u0011\r
+−\r
+\u0010\r
+S\r
+µν\r
+F12S\r
+κλ\r
+F12 − Sµλ\r
+F12S\r
+νκ\r
+F12\u0011\r
++\r
+\u0010\r
+A˙B12 − A˙B + AF\r
+\u0011µλ\u0010\r
+A˙B12 − A˙B + AF\r
+\u0011νκ\r
+−Aµλ\r
+F12A\r
+νκ\r
+F12\u001B\r
+k\r
+κ\r
+k\r
+λ\r
+. (3.20)\r
+Taking the global factor of −2 and the change of the field-dependent determinant factor\r
+(3.2) into account, (3.18) generalizes to\r
+Π\r
+µν\r
+spin(k; F) = 2 e\r
+2\r
+(4π)\r
+D\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+T\r
+2− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015 Z 1\r
+0\r
+du1\r
+˜I\r
+µν\r
+spin e\r
+−T k·Φ12·k\r
+.\r
+(3.21)\r
+As is well-known, the constant field vacuum polarization tensors contain the UV diver\u0002gences of the ordinary vacuum polarization tensors, but no further ones, so that on-shell\r
+renormalization can be performed by subtraction of the integrand at zero field strength\r
+and momentum. In this way we find for the renormalized vacuum polarization tensors\r
+(indicating the renormalisation by a ‘bar’) [33]\r
+Π¯ µν\r
+scal(k; F) = −\r
+e\r
+2\r
+16π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+˜I\r
+µν\r
+scal e\r
+−T k·Φ12·k\r
+−\r
+\r
+δ\r
+µνk2 − kµ\r
+k\r
+ν\r
+\u0001\r
+(1 − 2u1)\r
+2\r
+\u001B\r
+, (3.22)\r
+Π¯ µν\r
+spin(k; F) = e\r
+2\r
+8π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+˜I\r
+µν\r
+spin e\r
+−T k·Φ12·k\r
++4δ\r
+µνk2 − kµ\r
+k\r
+ν\r
+\u0001\r
+u1(1 − u1)\r
+\u001B\r
+. (3.23)\r
+The remaining u1 - integral can be brought into a more standard form by a transformation\r
+of variables v = G˙ B12 = 1 − 2u1.\r
+The matrix decomposition formulas of appendix B can be used to write these integral\r
+representations more explicitly (for the generic case of parallel electric and magnetic fields\r
+this has been done in [33]).\r
+– 10 –
+
+4 Irreducible contribution to electromagnetic photon-graviton conver\u0002sion\r
+We now turn to applying this formalism to the electromagnetic photon-graviton conversion\r
+amplitude, starting with the irreducible contribution Γ\r
+(irr)\r
+spin. Using the machinery developed\r
+above, its worldline representation can be written as\r
+Γ\r
+(irr)\r
+spin(k0, ϵ0; k, ε; F) = −2(−ie)(−\r
+κ\r
+4\r
+)\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2 det− 1\r
+2\r
+\u0014\r
+tan(Z)\r
+Z\r
+\u0015\r
+×\r
+D\r
+V\r
+G\r
+spin[k0, ϵ0]V\r
+γ\r
+spin[k, ε]\r
+E\r
+F\r
+. (4.1)\r
+Performing the Wick contractions according to the rules for the constant-field case, eqs.\r
+(3.4) and (3.5), stripping off ϵ0, ε as in (1.1), and eliminating k0 through k0 = −k, the\r
+result can be written as\r
+Π\r
+µν,α\r
+spin (k; F) = −\r
+eκ\r
+2(4π)\r
+D\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T T− D\r
+2 det− 12\r
+h\r
+tanZ\r
+Z\r
+i\r
+×\r
+Z T\r
+0\r
+dτ1\r
+Z T\r
+0\r
+dτ2 e\r
+−k·G¯B12·k\r
+\r
+J\r
+µν,α\r
+scal + J\r
+(µν),α\r
+ψ\r
+\u0001\r
+, (4.2)\r
+where in J\r
+µν,α\r
+scal we have collected all terms that come from the purely orbital part of the\r
+vertex operators, and J\r
+(µν),α\r
+ψ ≡\r
+1\r
+2\r
+\r
+J\r
+(µν),α\r
+ψ + J\r
+(νµ),α\r
+ψ\r
+\u0001\r
+contains all the terms involving the\r
+spin of the loop fermion. Here G¯B12 ≡ GB12 − GB is the modified Green’s function obtained\r
+by subtracting its coincidence limit. Using the symmetry properties (B.5) and (B.37), the\r
+result can be written as\r
+J\r
+µν,α\r
+scal =\r
+\u0010\r
+G¨µν\r
+B11 − 2δ11δ\r
+µν\u0011\u0010k · G˙B12\u0011α\r
++\r
+h\r
+G¨µα\r
+B12\u0010\r
+G˙B12 · k\r
+\u0011ν\r
++\r
+\u0010\r
+µ ↔ ν\r
+\u0011i\r
+−\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+G˙B12 · k\r
+\u0011ν\u0010\r
+k · G˙B12\u0011α\r
+, (4.3)\r
+J\r
+µν,α\r
+ψ =\r
+h\r
+G˙\r
+µν\r
+F11 − 2δ11δ\r
+µν +\r
+\u0010\r
+GF11 · k\r
+\u0011ν\u0010\r
+G˙B12 · k\r
+\u0011µi\u0010 GF22 · k\u0011α\r
+−\r
+\u0010\r
+GF12 · k\r
+\u0011µ\r
+G˙να\r
+F12 + G\r
+µα\r
+F12\u0010\r
+G˙\r
+F12 · k\r
+\u0011ν\r
++\r
+h\r
+−Gνα\r
+F12\u0010\r
+k · GF12 · k\r
+\u0011\r
++\r
+\u0010\r
+GF12 · k\r
+\u0011ν\u0010\r
+k · GF12\u0011α\r
+i\u0010 G˙B12 · k\r
+\u0011µ\r
+−\r
+\u0010\r
+G˙\r
+µν\r
+F11 − 2δ11δ\r
+µν\u0011\u0010 k · G˙B12\u0011α\r
+−\r
+h\r
+G¨µν\r
+B11 − 2δ11δ\r
+µν −\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+G˙B12 · k\r
+\u0011νi\u0010 GF22 · k\u0011α\r
++\r
+h\r
+G¨µα\r
+B12 −\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+k · G˙B12\u0011α\r
+i\u0010 GF11 · k\u0011ν\r
+. (4.4)\r
+It will be useful to add to J\r
+µν,α\r
+scal e\r
+−k·GB12·k\r
+the total derivative term\r
+−\r
+1\r
+2\r
+∂\r
+∂τ1\r
+h\r
+G˙\r
+µα\r
+B12\u0010\r
+G˙B12 · k\r
+\u0011ν\r
+e\r
+−k·GB12·k +\r
+\u0010\r
+µ ↔ ν\r
+\u0011i. (4.5)\r
+– 11 –
+
+We can then replace J\r
+µν,α\r
+scal + J\r
+(µν),α\r
+ψ\r
+by\r
+J\r
+µν,α\r
+spin = J\r
+µν,α\r
+spin,1 + J\r
+(µν),α\r
+spin,2 + J\r
+(µν),α\r
+spin,3\r
+(4.6)\r
+where\r
+J\r
+µν,α\r
+spin,1 = −\r
+\u0010\r
+G¨µν\r
+B11 − G˙\r
+µν\r
+F11\u0011h\r
+G˙B21 + GF22\u0001\r
+· k\r
+iα\r
+,\r
+J\r
+µν,α\r
+spin,2 = −G˙\r
+µα\r
+B12\u0010\r
+G¨B12 · k\r
+\u0011ν\r
++ G\r
+µα\r
+F12\u0010\r
+G˙\r
+F12 · k\r
+\u0011ν\r
++ G¨να\r
+B12h\r
+G˙B12 + GF11\u0001· k\r
+iµ\r
+−G˙να\r
+F12\u0010\r
+GF12 · k\r
+\u0011µ\r
+,\r
+J\r
+µν,α\r
+spin,3 =\r
+\u0010\r
+G˙B12 · k\r
+\u0011µnh\r
+G˙B12 + GF11\u0001\r
+· k\r
+iνh\r
+G˙B21 + GF22\u0001\r
+· k\r
+iα\r
+−\r
+\u0010\r
+GF12k\r
+\u0011ν\u0010\r
+GF21k\r
+\u0011α\r
++ G˙\r
+να\r
+B12k · G˙B12 · k − Gνα\r
+F12k · GF12 · k\r
+o\r
+. (4.7)\r
+Before proceeding further, let us use this integral representation to analyse the general\r
+structure of this amplitude. Although our calculation is nonperturbative in the external\r
+field, we can use the series expansions of GB, G˙B, G¨B and GF , G˙\r
+F in the field, whose first few\r
+terms are given in (B.9) - (B.11) and (B.40), (B.41), to compute the amplitude involving a\r
+given number of interactions with the field. It is then immediately seen that this amplitude\r
+is nonzero only if this number of interactions is odd, since otherwise the τ1,2 integrations\r
+vanish by antisymmetry.\r
+The leading term in this expansion in the background field is UV divergent. In dimen\u0002sional regularisation, this divergence is [21]\r
+Π\r
+µν,α\r
+spin,div(k; F) = −\r
+4\r
+3\r
+ie2κ\r
+(4π)\r
+2\r
+1\r
+D − 4\r
+C\r
+µν,α(k), (4.8)\r
+where C\r
+µν,α is the same tensor that appeared in the tree-level amplitude, eq. (1.2). This\r
+was to be expected since the amplitude must be multiplicatively renormalizable (although\r
+quantum gravity is not a renormalizable theory, amplitudes in Einstein-Maxwell theory\r
+involving gravitational fields and gravitons only externally are still renormalizable by power\r
+counting). Renormalization is performed by subtracting the amplitude at zero field strength\r
+and zero momentum, leading to the following form of the renormalized amplitude Π¯ :\r
+Π¯ µν,α\r
+spin (k; F) = −\r
+eκ\r
+32π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T3\r
+e\r
+−m2T\r
+(4.9)\r
+×\r
+\u001A\r
+det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i Z T\r
+0\r
+dτ1\r
+Z T\r
+0\r
+dτ2 e\r
+−k·GB12·kJ\r
+µν,α\r
+spin +\r
+4\r
+3\r
+iT2eCµν,α\u001B.\r
+Once more this can still be simplified using the decompositions GB,F = SB,F + AB,F where\r
+S\r
+µν\r
+B,F contains the even powers of F\r
+µν in the power series representation of G\r
+µν\r
+B,F , and A\r
+µν\r
+B,F\r
+the odd ones. After this replacement all terms in the integrand are either symmetric or\r
+antisymmetric under the exchange τ1 ↔ τ2, and the antisymmetric ones can be deleted\r
+since their τ1,2 - integrals vanish. Further, as usual, we rescale τi = T ui, i = 1, 2, and set\r
+– 12 –
+
+u2 = 0. This leads to\r
+Π¯ µν,α\r
+spin (k; F) = −\r
+eκ\r
+32π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(\r
+det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i Z 1\r
+0\r
+du1\r
+× e\r
+−k·SB12·k X\r
+3\r
+m=1\r
+J˜\r
+(µν),α\r
+spin,m +\r
+4\r
+3\r
+ieCµν,α), (4.10)\r
+where\r
+J˜µν,α\r
+spin,1 =\r
+\u0010\r
+S¨µν\r
+B11 − S˙\r
+µν\r
+F11)\r
+\u0010\r
+k ·\r
+\r
+A˙B12 + AF22\u0001\r
+\u0011α\r
+,\r
+J˜µν,α\r
+spin,2 = −S˙\r
+µα\r
+B12\u0010\r
+A¨B12 · k\r
+\u0011ν\r
++ S\r
+µα\r
+F12\u0010\r
+A˙\r
+F12 · k\r
+\u0011ν\r
++ A¨να\r
+B12\u0010\r
+S˙B12 · k\r
+\u0011µ\r
+− A˙να\r
+F12\u0010\r
+SF12 · k\r
+\u0011µ\r
+− A˙\r
+µα\r
+B12\u0010\r
+S¨B12 · k\r
+\u0011ν\r
++ A\r
+µα\r
+F12\u0010\r
+S˙\r
+F12 · k\r
+\u0011ν\r
++S¨να\r
+B12\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011µ\r
+− S˙να\r
+F12\u0010\r
+AF12 · k\r
+\u0011µ\r
+,\r
+J˜µν,α\r
+spin,3 = −\r
+\u0010\r
+S˙B12 · k\r
+\u0011µh\u0010 S˙B12 · k\u0011ν\u0010\r
+k ·\r
+\r
+A˙B12 + AF11\u0001\r
+\u0011α\r
+−\r
+\u0010\r
+SF12 · k\r
+\u0011ν\u0010\r
+k · AF12\u0011α\r
++\r
+\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011ν\u0010\r
+k · S˙B12\u0011α\r
+−\r
+\u0010\r
+AF12 · k\r
+\u0011ν\u0010\r
+k · SF12\u0011α\r
+− A˙\r
+να\r
+B12k · S˙B12 · k + A\r
+να\r
+F12k · SF12 · k\r
+i\r
+−\r
+\u0010\r
+A˙B12 · k\r
+\u0011µh\u0010 S˙B12 · k\u0011ν\u0010\r
+k · S˙B12\u0011α\r
+−\r
+\u0010\r
+SF12 · k\r
+\u0011ν\u0010\r
+k · SF12\u0011α\r
++\r
+\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011ν\u0010\r
+k ·\r
+\r
+A˙B12 + AF11\u0001\r
+\u0011α\r
+−\r
+\u0010\r
+AF12 · k\r
+\u0011ν\u0010\r
+k · AF12\u0011α\r
+− S˙να\r
+B12k · S˙B12 · k + S\r
+να\r
+F12k · SF12 · k\r
+i\r
+. (4.11)\r
+It is then straightforward to write the integrands more explicitly using the decomposition\r
+formulas of appendix B.\r
+The corresponding result for the scalar loop is obtained by omitting all terms involving\r
+the fermionic worldline Green’s function, changing det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i\r
+to det− 1\r
+2\r
+h\r
+sin(Z)\r
+Z\r
+i\r
+, and\r
+multiplying by a global factor of −\r
+1\r
+2\r
+.\r
+5 Tadpole contribution to electromagnetic photon-graviton conversion\r
+The tadpole contribution (middle diagram in Fig. 2) can be constructed using our result\r
+(3.11) for the one-photon amplitude in the field, replacing k by k\r
+′\r
+, ε by the υ of (2.13), and\r
+integrating over k\r
+′\r
+. This gives\r
+Γ\r
+(tadpole)\r
+spin (k0, ϵ0; k, ε; F) = 2ieκ Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015 Z\r
+d\r
+Dk′\r
+δ\r
+D(k′\r
+)\r
+k\r
+′2\r
+×k\r
+′\r
+·\r
+\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· {ϵ0, f} · k\r
+′\r
+exp\u0014\r
+T\r
+4\r
+k\r
+′\r
+·\r
+\u0010cotZ\r
+Z\r
+−\r
+1\r
+Z2\r
+\u0011\r
+· k\r
+′\r
+\u0015\r
+(5.1)\r
+(we have also used the antisymmetry of the Lorentz matrix cotZ + tanZ − 1\r
+Z\r
+). In the\r
+presence of the delta function, the factor exp[k\r
+′\r
+· · · k\r
+′\r
+] can be replaced by unity since the\r
+– 13 –
+
+prefactor already contains two powers of k\r
+′\r
+. Applying the integral formula (1.3) leads to\r
+Γ\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; F) = 4\r
+D\r
+ieκ Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T\r
+×det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+tr \u0014\u0010cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
+. (5.2)\r
+This contribution, too, for D = 4, contains a UV divergence, stemming from the terms\r
+linear in the field. Thus to calculate it we can replace the determinant factor with unity,\r
+and under the trace make the replacement\r
+cotZ + tanZ − 1\r
+Z\r
+≈\r
+2\r
+3\r
+Z . (5.3)\r
+Extracting the pole in dimensional regularization we get\r
+Γ\r
+(tadpole)\r
+spin,div (k0 = −k, ϵ0; k, ε; F) = −\r
+4\r
+3\r
+ie2κ\r
+(4π)\r
+2\r
+1\r
+D − 4\r
+tr (F ϵ0f) . (5.4)\r
+As usual, we remove it by a subtraction at the integrand level, and the renormalized tadpole\r
+contribution becomes\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; F) = ieκ\r
+16π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T2\r
+e\r
+−m2T\r
+×\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+tr \u0014\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
+−\r
+2\r
+3\r
+tr (Zϵ0f)\r
+\u001B\r
+. (5.5)\r
+Specializing to a constant magnetic background pointing along the z-axis (see Appendix B),\r
+we rewrite the renormalized expression in D dimensions in order to perform the proper-time\r
+integral within dimensional regularization. Now the renormalized tadpole contribution is\r
+given by\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = −\r
+ieκ\r
+D\r
+(2π)\r
+− D\r
+2 tr(r+ϵ0f)\r
+Z ∞\r
+0\r
+dT T − D\r
+2 e\r
+−m2T\r
+×\r
+\u001A\r
+z\r
+3\r
++ coth z − z coth2z\r
+\u001B\r
+(5.6)\r
+with z = eBT and Z = zr+. The z-integral can be carried out in closed form, leading to an\r
+expression of the renormalized tadpole contribution in terms of the Hurwitz zeta function\r
+ζ(s, a),\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = ieκ\r
+DeB\r
+\u0010 π\r
+eB\r
+\u0011− D\r
+2\r
+Γ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\r
+tr(r+ϵ0f)\r
+×\r
+"\r
+− 2\r
+− D\r
+2\r
+\u0010m2\r
+eB\r
+\u0011 D\r
+2 −1\r
+−\r
+D\r
+2\r
+ζ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+, 1 +\r
+m2\r
+2eB\r
+\u0011\r
++\r
+\u0010D\r
+2\r
+− 1\r
+\u0011 m2\r
+2eB\r
+ζ\r
+\u0010\r
+2 −\r
+D\r
+2\r
+, 1 +\r
+m2\r
+2eB\r
+\u0011\r
++\r
+2\r
+1− D\r
+2\r
+3\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\u0010m2\r
+eB\r
+\u0011 D\r
+2 −2\r
+#\r
+.\r
+(5.7)\r
+– 14 –
+
+However, note that, unlike the renormalization which we performed on the irreducible\r
+contribution Γ\r
+(irr)\r
+spin, this one is nothing new; the contribution of the tadpole linear in the field\r
+corresponds to the diagram shown in Fig. 8, which makes it clear that this subtraction is just\r
+a special case (the zero-momentum limit) of the QED photon wave function renormalization,\r
+TADPOLEN\r
+k k\r
+Figure 8. Tadpole diagram expanded to linear order in the field.\r
+Note that, differently from the irreducible contribution, for the tadpole contribution\r
+the renormalization completely removes the part linear in the field, leaving only terms of\r
+cubic or higher order in the field.\r
+Let us also give the corresponding result for the scalar loop:\r
+Γ¯\r
+(tadpole)\r
+scal (k0 = −k, ϵ0; k, ε; F) = −\r
+ieκ\r
+32π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T2\r
+e\r
+−m2T\r
+×\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+tr \u0014\u0010\r
+cotZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
++\r
+1\r
+3\r
+tr (Zϵ0f)\r
+\u001B\r
+. (5.8)\r
+Analogously to the spinor loop, one obtains the following representation for the scalar case:\r
+Γ¯\r
+(tadpole)\r
+scal (k0 = −k, ϵ0; k, ε; F) = −\r
+2ieκ\r
+DeB\r
+\u0010 2π\r
+eB\r
+\u0011− D\r
+2\r
+Γ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\r
+tr(r+ϵ0f)\r
+×\r
+"\r
+D\r
+2\r
+ζ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+,\r
+1\r
+2\r
++\r
+m2\r
+2eB\r
+\u0011\r
++\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011 m2\r
+2eB\r
+ζ\r
+\u0010\r
+2 −\r
+D\r
+2\r
+,\r
+1\r
+2\r
++\r
+m2\r
+2eB\r
+\u0011\r
++\r
+2\r
+− D\r
+2\r
+3\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\u0010m2\r
+eB\r
+\u0011 D\r
+2 −2\r
+#\r
+. (5.9)\r
+6 Third contribution to electromagnetic photon-graviton conversion\r
+For the other reducible contribution, corresponding to the third diagram in Fig. 2, we\r
+can use eqs. (3.7), (3.8), with k\r
+′ = k0 = −k, and our results for the vacuum polarization\r
+tensor in a constant field from subsection 3.3. Like the tadpole contribution, it has a UV\r
+divergence from the field-independent part of the vacuum polarization tensor. This part\r
+corresponds to the right-hand diagram of Fig. 2, but with the loop fermion taken in vacuum,\r
+and according to the LSZ formalism is not to be taken into account in the calculation of the\r
+– 15 –
+
+on-shell amplitude. Using our result (3.23) for the on-shell renormalized one-loop vacuum\r
+polarization tensor in the constant field, and putting things together, we have\r
+Γ¯\r
+(ext)\r
+spin (k0 = −k, ϵ0; k, ε; F) = vF β\u0010\r
+Π¯ βα\r
+spin(k; F) − Π¯ βα\r
+spin(k; 0)\u0011\r
+εα , (6.1)\r
+with\r
+υF = iκ\r
+{ϵ0, F} · k0\r
+k\r
+2\r
+0\r
+= −iκ\r
+{ϵ0, F} · k\r
+k\r
+2\r
+, (6.2)\r
+Π¯ βα\r
+spin(k; F) = e\r
+2\r
+8π\r
+2\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+˜I\r
+βα\r
+spin e\r
+−T k·Φ12·k\r
++\r
+2\r
+3\r
+\r
+δ\r
+βαk2 − kβ\r
+k\r
+α\r
+\u0001\r
+\u001B\r
+, (6.3)\r
+and ˜I\r
+βα\r
+spin as given in (3.20). Note that this contribution, too, after renormalization starts\r
+with terms cubic in F, and that on-shell it has an IR divergence through the pole in (6.2).\r
+A proper treatment of the on-shell limit requires a somewhat different interpretation of\r
+the third diagram, namely as a correction to the tree-level amplitude due to the modified\r
+dispersion relation of the photon in the field [44]. In the presence of an external field, the\r
+physical photon eigenmodes no longer satisfy the vacuum on-shell condition k\r
+2 = 0; instead,\r
+their propagation is governed by the dispersion relation k\r
+2 + Π(k) = 0, where Π denotes\r
+the photon polarization tensor, leading in general to a field induced deviation from k\r
+2 = 0.\r
+The corresponding amplitude for a scalar loop is simply obtained by replacing Π¯ βα\r
+spin(k; F)\r
+with Π¯ βα\r
+scal(k; F) in (6.1).\r
+7 Weak-field expansion of the tadpole contribution\r
+Since phenomenological applications are primarily concerned with the regime of weak ex\u0002ternal fields, we briefly discuss the tadpole contribution in the limit of a weak magnetic\r
+background,\r
+eB ≪ m2. (6.1)\r
+In this regime, the proper-time integrals admit a systematic asymptotic expansion in powers\r
+of the dimensionless ratio eB/m2.\r
+For definiteness, we present the weak-field expansion only for the spinor loop, since the\r
+scalar case follows by an entirely analogous procedure. To derive this expansion, it is con\u0002venient to return to the proper-time representation of the spinor tadpole contribution given\r
+in Eq. (5.6), prior to performing the z-integration. Specializing to D = 4, the hyperbolic\r
+functions appearing in the integrand can be expanded for small\r
+z = eBT , (6.2)\r
+which is justified since the proper-time integral is exponentially dominated by values T ∼\r
+1/m2in the weak-field regime.\r
+– 16 –
+
+A compact representation of the weak-field expansion follows from the series represen\u0002tation of the integrand in Eq. (5.6),\r
+z\r
+3\r
++ coth z − z coth2z =\r
+X∞\r
+n=2\r
+2\r
+2nB2n\r
+(2n − 1)! z\r
+2n−1\r
+, (6.3)\r
+where Bn denotes the Bernoulli numbers. Substituting this expansion into the proper-time\r
+integral and carrying out the integration term by term yields the following closed-form\r
+weak-field expansion for the renormalized spinor tadpole contribution:\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = −\r
+ieκ\r
+4eB\r
+(2π)\r
+−2\r
+(eB)\r
+2\r
+tr(r+ϵ0f)\r
+×\r
+X∞\r
+n=2\r
+2\r
+2nB2n\r
+(2n − 1)!\r
+\u0010eB\r
+m2\r
+\u00112n−2\r
+Γ(2n − 2). (6.4)\r
+The corresponding weak-field expansion for the scalar loop can be obtained by the same\r
+method and will not be displayed here.\r
+8 Ward identities for the photon-graviton amplitude in a constant field\r
+Finally, let us discuss how the Ward identities work for the photon-graviton amplitude in\r
+a constant field, returning to the off-shell unrenormalized amplitudes. Here there is no\r
+difference between the scalar and spinor-loop cases. It is easy to see that the gauge Ward\r
+identity holds for each of the three contributions separately, i.e.\r
+Γ\r
+(irr),(tadpole),(ext)(−k, ϵ0; k, δε; F) = 0 , (7.1)\r
+where δεµ\r
+i = k\r
+µ\r
+.\r
+For the gravitational Ward identity, defined by the transformation\r
+δϵµν\r
+0 = k\r
+µ\r
+0\r
+ζ\r
+ν\r
+0 + ζ\r
+µ\r
+0\r
+k\r
+ν\r
+0\r
+, (7.2)\r
+a slight extension of the manipulations of the appendix of [21] shows that the inclusion of\r
+the one-photon amplitude leads to\r
+Γ\r
+(irr)(k0, δϵ0; k, ε; F) = Γ(k0 + k, ε˜; F) + Γ(k0, ε˜F ; k, ε; F), (7.3)\r
+where on the right-hand side we have now the one- and two-photon amplitudes, and\r
+ε˜\r
+µ\r
+i ≡ κ(k\r
+µ\r
+i\r
+ε\r
+ν\r
+i − ε\r
+µ\r
+i\r
+k\r
+ν\r
+i\r
+)ζ0ν = κ(fi· ζ0)\r
+µ\r
+,\r
+ϵ˜\r
+µ\r
+F ≡ −iκ(F · ζ0)\r
+µ\r
+. (7.4)\r
+However, the first term on the right-hand side of (7.3) vanishes when setting k0 = −k.\r
+Using\r
+δυµ\r
+F = −ε˜\r
+µ\r
+F − iκ\r
+k0 · F · ζ0\r
+k\r
+2\r
+0\r
+k\r
+µ\r
+0\r
+, (7.5)\r
+– 17 –
+
+we can get from (7.3) the following on-shell Ward identity connecting Γ\r
+(irr)\r
+spin and Γ\r
+(ext)\r
+spin ,\r
+Γ\r
+(irr)(−k, δϵ0; k, ε; F) + Γ(ext)(−k, δϵ0; k, ε; F) = 0 , (7.6)\r
+while the tadpole contribution on-shell becomes invariant by itself,\r
+Γ\r
+(tadpole)(−k, δϵ0; k, ε; F) = 0 , (7.7)\r
+as can be easily seen from (5.2) using the on-shell relations k\r
+2 = ε · k = ζ0 · k0 = 0.\r
+9 Conclusions\r
+In this work we have re-examined electromagnetic photon–graviton conversion in a con\u0002stant external field within Einstein–Maxwell theory at the one-loop level. Although pho\u0002ton–graviton conversion in an electromagnetic field might eventually find applications in a\r
+broader range of physical contexts, here we have focused on its dichroism aspect, motivated\r
+by the analysis of Ref. [44], which demonstrated that this process provides the leading\r
+Standard Model contribution to magnetic dichroism, despite its small absolute magnitude\r
+under realistic conditions.\r
+Our main result is the identification and explicit evaluation of a non-vanishing tadpole\r
+contribution to the one-loop photon–graviton conversion amplitude, corresponding to the\r
+middle diagram in Fig. 2. Contrary to long-standing assumptions, this diagram does not\r
+vanish once the infrared behavior of the connecting photon propagator is treated correctly\r
+in dimensional regularization. Using the worldline formalism, we have provided a unified\r
+calculation of all one-loop contributions — irreducible, tadpole, and other reducible — for\r
+scalar and spinor loops in a general constant electromagnetic background.\r
+Although the tadpole diagram contributes to the full one-loop amplitude, it is irrelevant\r
+for magnetic dichroism already at a structural level. From (5.6) we see that the magnetic\r
+tadpole contribution depends on the photon and graviton polarizations through a global\r
+factor tr(F ϵ0f), which (for on-shell gravitons) is proportional to the tree-level amplitude\r
+Γ\r
+(tree)(k0, ϵ0; k, ε; F) of eq. (1.1), implying identical photon–graviton conversion rates for\r
+the two photon polarizations. Consequently, the magnetic dichroism remains unchanged,\r
+and the analysis of Ahlers et al. [44] is not affected by the presence of the tadpole diagram.\r
+In the weak-field regime eB/m2 ≪ 1, relevant for phenomenological applications, the\r
+tadpole contribution is moreover parametrically suppressed compared to the irreducible\r
+one-loop contribution. In the strong-field limit eB/m2 ≫ 1, the relative importance of dif\u0002ferent one-loop contributions can change qualitatively, as has been demonstrated in related\r
+contexts [71]. In such regimes, tadpole-type contributions may play a more prominent role\r
+in the overall amplitude, which could be relevant not only from a theoretical standpoint but\r
+also in extensions of the Standard Model involving light or weakly charged particles, such\r
+as mini-charged particles [72], for which strong-field effects can become physically relevant.\r
+Independently of these phenomenological considerations, the inclusion of the tadpole di\u0002agram is conceptually important. It completes the one-loop description of photon–graviton\r
+conversion in external fields and clarifies its close connection to other one-particle reducible\r
+– 18 –
+
+effects in background-field QED. Our results thus provide a consistent and complete frame\u0002work for future studies, including strong-field backgrounds, non-standard charged sectors,\r
+and higher-loop corrections.\r
+A Einstein-Maxwell theory\r
+In our euclidean conventions, the action for a scalar field coupled to electromagnetism and\r
+gravity is\r
+S[ϕ, ϕ∗; g, A] = Zd\r
+Dx\r
+√\r
+g\r
+h\r
+g\r
+µν(∂µ − ieAµ)ϕ∗\r
+(∂ν + ieAν)ϕ + (m2 + ξR)ϕ\r
+∗ϕ\r
+i\r
+. (A.1)\r
+In the spin 1/2 case, the euclidean action for a Dirac field Ψ coupled to electromagnetism\r
+and gravity is given by\r
+S[Ψ, Ψ; ¯ e, A] = Zd\r
+Dx\r
+√\r
+g Ψ( ¯ ∇/ + m)Ψ (A.2)\r
+where the vielbein e\r
+a\r
+µ and the spin connection ωµab appear inside the Dirac operator\r
+∇/ = γ\r
+a\r
+e\r
+µ\r
+a∇µ , ∇µ = ∂µ + ieAµ +\r
+1\r
+4\r
+ωµabγ\r
+a\r
+γ\r
+b\r
+. (A.3)\r
+Moreover, we will need also the interaction between photons and gravitons, which is de\u0002scribed by the action of Einstein-Maxwell theory (in euclidean conventions)\r
+S[g, A] = Zd\r
+Dx\r
+√\r
+g\r
+\u0012\r
+−\r
+1\r
+2κ\r
+2\r
+R +\r
+1\r
+4\r
+FµνF\r
+µν\u0013\r
+(A.4)\r
+where κ\r
+2 = 8πGN . Let us expand this action to quadratic order in the fields. Expanding\r
+gµν = δµν + κhµν and Aµ = A¯\r
+µ + aµ, so that Fµν = F¯µν + fµν, and using the short-hand\r
+notation h ≡ δ\r
+µνhµν, one obtains the following quadratic approximation in the fluctuations\r
+(hµν, aµ) around the background (δµν, A¯\r
+µ):\r
+S(2) =\r
+Z\r
+d\r
+Dx\r
+\u001A\r
+1\r
+4\r
+(∂αhµν)\r
+2 −\r
+1\r
+8\r
+(∂αh)\r
+2 −\r
+1\r
+2\r
+\u0012\r
+∂\r
+αhαµ −\r
+1\r
+2\r
+∂µh\r
+\u00132\r
++\r
+1\r
+2\r
+(∂µaν)\r
+2 −\r
+1\r
+2\r
+(∂\r
+µ\r
+aµ)\r
+2\r
+−\r
+κ\r
+2\r
+hµν\u0010F¯µαF¯ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯2\r
+\u0011\r
+− κhµν\u0010F¯µαf\r
+ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯αβfαβ\u0011\r
++\r
+κ\r
+2\r
+4\r
+h\u00101\r
+8\r
+h\r
+2 −\r
+1\r
+4\r
+h\r
+2\r
+µν\u0011\r
+F¯2 + h\r
+µνhαβF¯\r
+µαF¯\r
+νβ + (2h\r
+µαhν\r
+α − hhµν)F¯\r
+µβF¯\r
+ν\r
+β\r
+i\u001B\r
+.\r
+(A.5)\r
+In the second line of this expression, we recognize the linear coupling −\r
+κ\r
+2\r
+hµνT¯µν of the\r
+graviton hµν to the stress tensor of the background electromagnetic field\r
+T¯µν = F¯µαF¯ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯2\r
+. (A.6)\r
+– 19 –
+
+The existence of this tadpole vertex indicates that the nontrivial background stress tensor\r
+tends to curve space. The third line in (A.5) gives instead the tree-level graviton-photon\r
+conversion in the electromagnetic background. Using plane waves\r
+hµν(x) = ϵ0µν e\r
+ik0x\r
+, aα(x) = εα e\r
+ikx (A.7)\r
+we get for this conversion term the vertex (deleting now the ‘bar’ on F)\r
+∆S(2) = (2π)\r
+DδD(k0 + k) ϵ0µνεα (−iκ)\r
+h\r
+F\r
+µαkν − (F · k)µ\r
+δ\r
+να +\r
+1\r
+2\r
+δ\r
+µν(F · k)α\r
+i\r
+.\r
+The two-point functions (which we denote by Π), in either coordinate or momentum\r
+space, are contained in S(2) (or in the quadratic part of the full effective action Γ(2) =\r
+−S(2) + Γ(1−loop)\r
+(2) + · · ·) as follows 1\r
+S(2) =\r
+Z\r
+d\r
+Dx\r
+\u001A\r
+1\r
+2\r
+hµν(x)Πµν,λρ(−i∂)hλρ(x) + 1\r
+2\r
+aα(x)Παβ(−i∂)aβ(x)\r
++hµν(x)Πµν,α(−i∂)aα(x) −\r
+κ\r
+2\r
+hµν(x)T¯µν(x)\r
+\u001B\r
+=\r
+Z\r
+d\r
+Dk\r
+(2π)D\r
+\u001A\r
+1\r
+2\r
+hµν(−k)Πµν,λρ(k)hλρ(k) + 1\r
+2\r
+aα(−k)Παβ(k)aβ(k)\r
++hµν(−k)Πµν,α(k)aα(k) −\r
+κ\r
+2\r
+hµν(−k)T¯µν(k)\r
+\u001B\r
+. (A.8)\r
+The equations of motion in terms of these two-point functions then read\r
+δaα(−k) : Παβ(k)aβ(k) + Πµν,α(−k)hµν(k) = 0 (A.9)\r
+δhµν(−k) : Πµν,λρ(k)hλρ(k) + Πµν,α(k)aα(k) = κ\r
+2\r
+T¯µν(k) (A.10)\r
+and, in particular, one obtains from (A.5)\r
+Π\r
+αβ\r
+tree(k) = k\r
+2\r
+δ\r
+αβ − kα\r
+k\r
+β\r
+, (A.11)\r
+Π\r
+µν,α\r
+tree (k) = −\r
+iκ\r
+2\r
+C\r
+µν,α (A.12)\r
+with\r
+C\r
+µν,α = Fµαkν + Fναkµ −\r
+\r
+F · k\r
+\u0001µ\r
+δ\r
+να −\r
+\r
+F · k\r
+\u0001ν\r
+δ\r
+µα +\r
+\r
+F · k\r
+\u0001α\r
+δ\r
+µν (A.13)\r
+depicted in Fig. 1.\r
+From the cubic fluctuations, we will still need the term coupling the graviton to two\r
+photons:\r
+S\r
+Gγγ\r
+(3) = −\r
+κ\r
+2\r
+Z\r
+d\r
+Dx hµν\u0010\r
+f\r
+µαfν\r
+α −\r
+1\r
+4\r
+δ\r
+µνf2\r
+\u0011\r
+. (A.14)\r
+1We Fourier transform fields as hµν(k) = R\r
+d\r
+Dx e−ikx hµν(x), with inverse Fourier transform given by\r
+hµν(x) = R\r
+dDk\r
+(2π)D hµν(k) eikx\r
+.\r
+– 20 –
+
+B Worldline Green’s functions and determinants in a constant field\r
+Define Zµν ≡ eFµνT .\r
+B.1 Periodic case\r
+Determinant factor:\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+. (B.1)\r
+Worldline Green’s function and its derivatives:\r
+GB12 =\r
+T\r
+2Z2\r
+\u0012\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 + iZG˙ B12 − 1\r
+\u0013\r
+, (B.2)\r
+G˙B12 =\r
+i\r
+Z\r
+\u0012\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 − 1\r
+\u0013\r
+, (B.3)\r
+G¨B12 = 2δ12 −\r
+2\r
+T\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 (B.4)\r
+Symmetry properties:\r
+GB12 = G\r
+T\r
+B21, G˙B12 = −G˙T\r
+B21, G¨B12 = G¨T\r
+B21. (B.5)\r
+Coincidence limits:\r
+GB(τ, τ ) = T\r
+2\r
+\u0010cot Z\r
+Z\r
+−\r
+1\r
+Z2\r
+\u0011\r
+, (B.6)\r
+G˙B(τ, τ ) = icotZ − i\r
+Z\r
+, (B.7)\r
+G¨B(τ, τ ) = 2δ(0) −\r
+2\r
+T\r
+Z cot Z . (B.8)\r
+Weak-field expansion:\r
+GB12 = GB12 −\r
+1\r
+6\r
+−\r
+i\r
+3\r
+G˙ B12GB12Z +\r
+\u0010 1\r
+3T\r
+G\r
+2\r
+B12 −\r
+T\r
+90\r
+\u0011\r
+Z\r
+2 + O(Z3\r
+), (B.9)\r
+G˙B12 = G˙ B12 + 2i\r
+\u0010GB12\r
+T\r
+−\r
+1\r
+6\r
+\u0011\r
+Z +\r
+2\r
+3T\r
+G˙ B12GB12Z\r
+2 + O(Z3\r
+), (B.10)\r
+G¨B12 = 2δ12 −\r
+2\r
+T\r
++\r
+2\r
+T\r
+iG˙ B12Z − 4\r
+\u0010GB12\r
+T\r
+−\r
+1\r
+6\r
+\u0011\r
+Z\r
+2 + O(Z3\r
+) . (B.11)\r
+Even-odd decomposition:\r
+For the purpose of simplifying integrals, it will often be convenient to decompose the\r
+constant-field worldline Green’s functions as\r
+GB12 = SB12 + AB12 (B.12)\r
+where SB denotes the even and AB the odd part as a power series in F. Note that SB is\r
+symmetric as a Lorentz matrix and AB antisymmetric, which motivates our notation.\r
+Special constant fields:\r
+– 21 –
+
+• Parallel electric and magnetic fields:\r
+in the generic case, it is possible to find a Lorentz system where E and B both point\r
+along the z - axis. If we further assume, for definiteness, that E · B > 0, then we can\r
+take them both to point along the positive z-axis, E = (0, 0, E), B = (0, 0, B). The\r
+euclidean field strength tensor then takes the form\r
+F =\r
+\r
+\r
+0 B 0 0\r
+−B 0 0 0\r
+0 0 0 iE\r
+0 0 −iE 0\r
+\r
+\r
+. (B.13)\r
+Defining z+ ≡ eBT and z− ≡ ieET, the determinant factor (B.1) can then be written\r
+as\r
+det− 1\r
+2\r
+\u0014\r
+sin Z\r
+Z\r
+\u0015\r
+=\r
+z+z−\r
+sinh z+ sinh z−\r
+=\r
+eBT\r
+sinh eBT\r
+eET\r
+sin eET\r
+. (B.14)\r
+We further define Lorentz matrices g+, g−, and r+, r− by\r
+g+ ≡\r
+\r
+\r
+1 0 0 0\r
+0 1 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+\r
+, g− ≡\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 1 0\r
+0 0 0 1\r
+\r
+\r
+,\r
+(B.15)\r
+r+ ≡\r
+\r
+\r
+0 1 0 0\r
+−1 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+\r
+, r− ≡\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 1\r
+0 0 −1 0\r
+\r
+\r
+.\r
+Then one can show the following matrix decompositions of the worldline Green’s\r
+functions\r
+S\r
+µν\r
+B12 = −\r
+T\r
+2\r
+X\r
+α=±\r
+AB12(zα)\r
+zα\r
+g\r
+µν\r
+α , (B.16)\r
+A\r
+µν\r
+B12 =\r
+iT\r
+2\r
+X\r
+α=±\r
+SB12(zα) − G˙ B12\r
+zα\r
+r\r
+µν\r
+α , (B.17)\r
+S˙\r
+µν\r
+B12 =\r
+X\r
+α=±\r
+SB12(zα) g\r
+µν\r
+α , (B.18)\r
+A˙\r
+µν\r
+B12 = −i\r
+X\r
+α=±\r
+AB12(zα) r\r
+µν\r
+α , (B.19)\r
+S¨µν\r
+B12 = G¨B12δ\r
+µν −\r
+2\r
+T\r
+X\r
+α=±\r
+zαAB12(zα) g\r
+µν\r
+α , (B.20)\r
+A¨µν\r
+B12 =\r
+2i\r
+T\r
+X\r
+α=±\r
+zαSB12(zα) r\r
+µν\r
+α . (B.21)\r
+– 22 –
+
+These decompositions involve essentially only the two scalar, dimensionless functions\r
+SB12 and AB12,\r
+SB12(z) = sinh(z G˙ B12)\r
+sinh z\r
+, (B.22)\r
+AB12(z) = cosh(z G˙ B12)\r
+sinh z\r
+−\r
+1\r
+z\r
+. (B.23)\r
+Of those only AB12 has a non-vanishing coincidence limit,\r
+ABii = coth z −\r
+1\r
+z\r
+. (B.24)\r
+Let us also write down the first few terms of the weak field expansions of these\r
+functions,\r
+SB12(z) = G˙ B12\u0014\r
+1 −\r
+2\r
+3\r
+GB12\r
+T\r
+z\r
+2 +\r
+\u0010 2\r
+45\r
+GB12\r
+T\r
++\r
+2\r
+15\r
+G2\r
+B12\r
+T2\r
+\u0011\r
+z\r
+4 + O(z6\r
+)\r
+\u0015\r
+, (B.25)\r
+AB12(z) = \u00101\r
+3\r
+− 2\r
+GB12\r
+T\r
+\u0011\r
+z +\r
+\u0010\r
+−\r
+1\r
+45\r
++\r
+2\r
+3\r
+G2\r
+B12\r
+T2\r
+\u0011\r
+z\r
+3 + O(z5\r
+) . (B.26)\r
+• The purely magnetic field case:\r
+We let the magnetic field point along the positive z-axis and denote z = eBT. Then\r
+the determinant factor (B.1) becomes\r
+det− 1\r
+2\r
+\u0014\r
+sin Z\r
+Z\r
+\u0015\r
+=\r
+z\r
+sinh z\r
+. (B.27)\r
+The decompositions (B.16) - (B.21) now involve only the three matrices g+, g− and\r
+r+:\r
+GB(τ1, τ2) = GB12 g− −\r
+T\r
+2z\r
+AB12(z)g+ +\r
+T\r
+2z\r
+\u0010\r
+SB12(z) − G˙ B12\u0011\r
+ir+ , (B.28)\r
+G˙B(τ1, τ2) = G˙ B12 g− + SB12(z)g+ − AB12(z)ir+ , (B.29)\r
+G¨B(τ1, τ2) = G¨B121l −\r
+2z\r
+T\r
+AB12(z)g+ +\r
+2z\r
+T\r
+SB12(z)ir+ . (B.30)\r
+The coincidence limits (B.6) - (B.8) turn into\r
+GB(τ, τ ) = −\r
+T\r
+6\r
+g− −\r
+T\r
+2z\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+g+ = −\r
+T\r
+6\r
+1l −\r
+T\r
+2z\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+−\r
+z\r
+3\r
+\u0013\r
+g+ ,\r
+(B.31)\r
+G˙B(τ, τ ) = −\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+ir+ , (B.32)\r
+G¨B(τ, τ ) = 2\u0010δ(0) −\r
+1\r
+T\r
+\u0011\r
+1l −\r
+2z\r
+T\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+g+ . (B.33)\r
+• The purely electric field case:\r
+To obtain the analogue of the magnetic formulas (B.27) - (B.33) for a purely electric\r
+field pointing into the z-direction, just replace z = eBT by z = ieET and interchange\r
++ ↔ − everywhere.\r
+– 23 –
+
+• The crossed-field case:\r
+In a “crossed field”, defined by E ⊥ B, E = B, both invariants B2 − E2 and E · B\r
+vanish. For such a field F\r
+3 = 0, so that the power series (B.9)-(B.11) break off after\r
+their quadratic terms. The worldline correlators thus can be represented by the terms\r
+given there.\r
+The determinant factor becomes unity.\r
+B.2 Anti-periodic case\r
+Determinant factor:\r
+det\r
+1\r
+2\r
+\u0002\r
+cos Z\r
+\u0003\r
+. (B.34)\r
+Worldline Green’s function and its derivative:\r
+GF (τ1, τ2) = GF12\r
+e\r
+−iZG˙ B12\r
+cosZ\r
+, (B.35)\r
+G˙\r
+F (τ1, τ2) = 2δ12 +\r
+2i\r
+T\r
+GF12\r
+Z\r
+cos Z\r
+e\r
+−iZG˙ B12\r
+. (B.36)\r
+Symmetry properties:\r
+GF12 = −GT\r
+F21, G˙\r
+F12 = G˙T\r
+F21 . (B.37)\r
+Coincidence limits:\r
+GF (τ, τ ) = −itanZ , (B.38)\r
+G˙\r
+F (τ, τ ) = 2δ(0) + 2\r
+T\r
+Z tan Z . (B.39)\r
+Weak-field expansion:\r
+GF12 = GF12 − iGF12G˙ B12Z + 2GF12\r
+GB12\r
+T\r
+Z\r
+2 + O(Z3\r
+), (B.40)\r
+G˙\r
+F12 = 2δ12 +\r
+2\r
+T\r
+iZGF12 +\r
+2\r
+T\r
+GF12G˙ B12Z\r
+2 + O(Z3\r
+) . (B.41)\r
+Even-odd decomposition:\r
+GF = SF + AF . (B.42)\r
+Special constant fields:\r
+• Parallel electric and magnetic fields:\r
+With the same notation as in the periodic case above,\r
+det\r
+1\r
+2\r
+\u0002\r
+cos Z\r
+\u0003\r
+= cosh z+ cosh z− = cosh(eBT) cos(eET), (B.43)\r
+– 24 –
+
+S\r
+µν\r
+F12 =\r
+X\r
+α=±\r
+SF12(zα) g\r
+µν\r
+α , (B.44)\r
+A\r
+µν\r
+F12 = −\r
+X\r
+α=±\r
+AF12(zα)irµν\r
+α , (B.45)\r
+S˙\r
+µν\r
+F12 = G˙\r
+F121l −\r
+2\r
+T\r
+X\r
+α=±\r
+AF12(zα) g\r
+µν\r
+α , (B.46)\r
+A˙\r
+µν\r
+F12 =\r
+2\r
+T\r
+X\r
+α=±\r
+zαSF12(zα)irµν\r
+α . (B.47)\r
+The scalar, dimensionless coefficient functions appearing in these formulas are\r
+SF12(z) = GF12\r
+cosh(z G˙ B12)\r
+cosh(z)\r
+, (B.48)\r
+AF12(z) = GF12\r
+sinh(z G˙ B12)\r
+cosh(z)\r
+. (B.49)\r
+Of those, it is AF12 that has a non-vanishing coincidence limit\r
+AF ii = tanh z . (B.50)\r
+As for the periodic case above, let us also write down the first few terms of the weak\r
+field expansions of these functions:\r
+SF12(z) = GF12\u00141 − 2\r
+GB12\r
+T\r
+z\r
+2 +\r
+2\r
+3\r
+\u0010GB12\r
+T\r
++\r
+G2\r
+B12\r
+T2\r
+\u0011\r
+z\r
+4 + O(z6\r
+)\r
+\u0015\r
+, (B.51)\r
+AF12(z) = GF12G˙ B12\u0014\r
+z −\r
+\u00101\r
+3\r
++\r
+2\r
+3\r
+GB12\r
+T\r
+\u0011\r
+z\r
+3 + O(z5\r
+)\r
+\u0015\r
+. (B.52)\r
+• The purely magnetic field case:\r
+With the same notations as for the periodic case above, the determinant factor be\u0002comes\r
+det\r
+1\r
+2\r
+\u0002\r
+cosZ\r
+\u0003\r
+= cosh z . (B.53)\r
+The worldline correlators (B.35), (B.36) specialize to\r
+GF (τ1, τ2) = GF12 g− + SF12(z)g+ − AF12(z)ir+ , (B.54)\r
+G˙\r
+F (τ1, τ2) = G˙F121l −\r
+2z\r
+T\r
+AF12(z)g+ +\r
+2z\r
+T\r
+SF12(z)ir+ (B.55)\r
+with coincidence limits\r
+GF (τ, τ ) = −tanh z ir+ , (B.56)\r
+G˙\r
+F (τ, τ ) = 2δ(0)1l −\r
+2z\r
+T\r
+tanh z g+ . (B.57)\r
+• The purely electric field case:\r
+The rules for the transition from the magnetic to the electric field are the same as for\r
+the periodic case above.\r
+– 25 –
+
+• The crossed-field case:\r
+As in the periodic case, for a crossed field the determinant factor becomes unity,\r
+and the worldline correlators are given exactly by their weak-field expansion to order\r
+O(F\r
+2\r
+), (B.40) and (B.41).\r
+Acknowledgments\r
+We would like to thank F. Fillion-Gourdeau and A. Ilderton for helpful discussions and\r
+correspondence.\r
+References\r
+[1] W. K. De Logi and A. R. Mickelson, Phys. Rev. D 16, 2915 (1977).\r
+[2] M. Atsumi, Progress of Theoretical Physics 63, 312 (1980).\r
+[3] S.Y. Choi, J.S. Shim, and H.S. Song, Phys. Rev. D 48, 2953 (1993), arXiv:hep-th/9306250,\r
+Phys. Rev. D 51, 2751 (1995), arXiv:hep-th/9411092.\r
+[4] N. E. J. Bjerrum-Bohr, J. F. Donoghue and B. R. Holstein, Phys. Rev. D 67, 084033 (2003),\r
+arXiv:hep-th/0211071.\r
+[5] S. Hu and F. Zhou, Progress of Theoretical and Experimental Physics 7, 073B10 (2020).\r
+[6] B.R. Holstein, Phys. Rev. D 74, 085002 (2006), arXiv:gr-qc/0607054\r
+Am. J. Phys. 74, 1002 (2006), arXiv:hep-ph/0607187.\r
+[7] F.A. Berends and R. Gastmans, Ann. Phys. 98 (1976) 225.\r
+[8] P. Bittar, S. Fichet and L. de Souza, Phys. Rev. D 112, 045009 (2025),\r
+arXiv:hep-th/2404.07254.\r
+[9] V. P. Frolov, W. Israel, and S. N. Solodukhin, Phys. Rev. D 54, 2732 (1996),\r
+arXiv:hep-th/9602105.\r
+[10] N. K. Nielsen, Annals Phys. 327, 861 (2012), arXiv:hep-th/1109.2699.\r
+[11] I. Y. Park, Progress of Theoretical and Experimental Physics 2021, 013B03 (2021),\r
+arXiv:gr-qc/1807.11595.\r
+[12] M.E. Gertsenshtein, Sov. Phys. JETP 14 (1962) 84.\r
+[13] Ya. B. Zel’dovich and I.D. Novikov, The structure and evolution of the universe, Rel.\r
+Astrophys. Vol. 2 (1983), Chicago University Press.\r
+[14] G. Raffelt and L. Stodolsky, Phys. Rev. D37, 1237 (1988).\r
+[15] H. N. Long, D.V. Soa, and T. A. Tran, Mod. Phys. Lett. A9 (1994) 3619,\r
+arXiv:astro-ph/9410003.\r
+[16] J. C. R. Magueijo, Phys. Rev. D49 (1994) 671.\r
+[17] P. Chen, Phys. Rev. Lett. 74 (1995) 634; erratum-ibid. 74 (1995) 3091.\r
+[18] A.N. Cillis and D. Harari, Phys. Rev. D54 (1996) 4757, arXiv:astro-ph/9609200.\r
+[19] C. Deffayet and J.-P. Uzan, Phys. Rev. D62 (2000) 063507, arXiv:hep-ph/0002129.\r
+– 26 –
+
+[20] A. Ejlli, D. Ejlli, A.M. Cruise, G. Pisano and H. Grote, Eur. Phys. J. C 79 (2019) 1032,\r
+arXiv:gr-qc/1908.00232.\r
+[21] F. Bastianelli and C. Schubert, JHEP 0502, 069 (2005), arXiv:gr-qc/0412095.\r
+[22] M.J. Strassler, Nucl. Phys. B 385 (1992) 145, arXiv:hep-ph/9205205.\r
+[23] M.G. Schmidt and C. Schubert, Phys. Lett. B 318, 438 (1993), arXiv:hep-th/9309055.\r
+[24] R. Zh. Shaisultanov, Phys. Lett. B 378 (1996) 354, arXiv:hep-th/9512142.\r
+[25] S.L. Adler and C. Schubert, Phys. Rev. Lett. 77 (1996) 1695, arXiv:hep-th/9605035.\r
+[26] M. Reuter, M. G. Schmidt and C. Schubert, Ann. Phys. (N.Y.) 259 (1997) 313,\r
+arXiv:hep-th/9610191.\r
+[27] C. Schubert, Phys. Rept. 355, 73 (2001), arXiv:hep-th/0101036.\r
+[28] F. Bastianelli and A. Zirotti, Nucl. Phys. B 642, 372 (2002), arXiv:hep-th/0205182.\r
+[29] F. Bastianelli, O. Corradini and A. Zirotti, JHEP 0401 023 (2004), arXiv:hep-th/0312064.\r
+[30] F. Bastianelli, O. Corradini and A. Zirotti, Phys. Rev. D 67, 104009 (2003),\r
+arXiv:hep-th/0211134.\r
+[31] F. Bastianelli and P. van Nieuwenhuizen, Path integrals and anomalies in curved space,\r
+Cambridge University press, 2006.\r
+[32] W. Dittrich, R. Shaisultanov, Phys. Rev. D 62 (2000) 045024, arXiv:hep-th/0001171.\r
+[33] C. Schubert, Nucl. Phys. B 585, 407 (2000), arXiv:hep-ph/0001288.\r
+[34] W. Dittrich and M. Reuter, Effective Lagrangians in Quantum Electrodynamics, Springer\r
+1985.\r
+[35] V. I. Ritus, Sov. Phys. JETP 42, 774 (1975).\r
+[36] W. Dittrich and H. Gies, Probing the Quantum Vacuum, Springer 2000.\r
+[37] F. Bastianelli, U. Nucamendi, C. Schubert, and V. M. Villanueva, JHEP 0711 (2007) 099,\r
+arXiv:gr-qc/0710.5572.\r
+[38] L. Maiani, R. Petronzio, E. Zavattini, Phys. Lett. B 175, 359 (1986).\r
+[39] P. Sikivie, Phys. Rev. Lett. 51, 1415 (1983); Erratum: Phys. Rev. Lett. 52, 695 (1984).\r
+[40] A. Mirizzi, G. G. Raffelt, P. D. Serpico, Lect. Notes Phys. 741, 115 (2006),\r
+arXiv:astro-ph/0607415.\r
+[41] E. Masaki, A. Aoki, J. Soda, Phys. Rev. D 96, 043519 (2017), arXiv:astro-ph/1702.08843.\r
+[42] S. Villalba-Chávez, Nucl. Phys. B 881, 391 (2014), arXiv:hep-ph/1308.4033.\r
+[43] H. Tam and Q. Tang, Nucl. Phys. B 716, 435 (2012), arXiv:hep-ph/1107.1712.\r
+[44] M. Ahlers, J. Jaeckel and A. Ringwald, Phys. Rev. D 79 075017 (2009),\r
+arXiv:hep-ph/0812.3150.\r
+[45] R. Schützhold, Phys. Rev. Lett. 135, 171501 (2025), arXiv:gr-qc/2502.10221.\r
+[46] F. Fillion-Gourdeau and S. MacLean, Phys. Rev. D 111, 122004 (2025),\r
+arXiv:gr-qc/2506.05534.\r
+[47] A. T. Schmitt, Y. Joly et al, Optica 8, 56 (2021), arXiv:physics.ins-det/2003.00849.\r
+[48] B. Marx, K. S. Schulze et al, Phys. Rev. Lett. 110, 254801 (2013).\r
+– 27 –
+
+[49] H. Bernhardt, A. T. Schmitt et al, Phys. Rev. Res. 2, 023365 (2020).\r
+[50] S-J. Chen, H-H. Mei and W-T Ni, Mod. Phys. Lett. A 22, 2815 (2007),\r
+arXiv:hep-ex/0611050.\r
+[51] F. Della Valle, A. Ejlli et al, Eur. Phys. J. C. 76, 1 (2016), arXiv:physics.optics /1510.08052.\r
+[52] A. Ejlli, F. Della Valle et al, Phys. Rept. 871, 1 (2020), arXiv:physics.optics /2005.12913.\r
+[53] G. Zavattini, F. Della Valle et al, Eur. Phys. J. C. 82, 1 (2022),\r
+arXiv:physics.optics/2110.03943.\r
+[54] E.S. Fradkin, D.M. Gitman, S.M. Shvartsman, Quantum Electrodynamics with Unstable\r
+Vacuum, Springer 1991.\r
+[55] H. Gies and F. Karbstein, JHEP 1703 (2017) 108, arXiv:hep-th/1612.07251.\r
+[56] F. Karbstein, JHEP 10, 075 (2017), arXiv:hep-th/1709.03819.\r
+[57] F. Karbstein, JHEP 01, 057 (2022), arXiv:hep-th/2109.04823.\r
+[58] M. Bordag and I. G. Pirozhenko, MDPI Physics 6, 237 (2024).\r
+[59] J. P. Edwards and C. Schubert, Nucl. Phys. B 923 (2017) 339, arXiv:hep-th/1704.00482.\r
+[60] N. Ahmadiniaz, F. Bastianelli, O. Corradini, J. P. Edwards and C. Schubert, Nucl. Phys. B\r
+924 (2017) 377, arXiv:hep-th/1704.05040.\r
+[61] N. Ahmadiniaz, J. P. Edwards and A. Ilderton, JHEP 05 (2019) 038,\r
+arXiv:hep-th/1901.09416.\r
+[62] N. Ahmadiniaz, F. Bastianelli, F. Karbstein and C. Schubert, Proceedings of Sixteenth\r
+Marcel Grossmann Meeting on General Relativity, July 5-10, 2021, Eds. R. Ruffini and\r
+Gregory V. Vereshchagin, World Scientific, February 2023, 4393-4400,\r
+arXiv:hep-ph/2111.01980.\r
+[63] F. Bastianelli, O. Corradini, J. M. Dávila and C. Schubert, Phys. Lett. B 716, 345 (2012),\r
+arXiv:hep-th/1202.4502.\r
+[64] N. Ahmadiniaz, F.M. Balli, O. Corradini, J.M. Dávila and C. Schubert, Nucl. Phys. B 950\r
+(2020) 114877, arXiv:hep-th/1908.03425.\r
+[65] F. Bastianelli and C. Schubert, Worldline Path Integrals and Quantum Field Theory,\r
+Cambridge University Press (To appear).\r
+[66] E. Leader and E. Predazzi, J. Phys. G 40 (2013) 075001, arXiv:hep-ph/1101.3425.\r
+[67] N. Ahmadiniaz and C. Schubert, Eur. Phys. Lett. 130 (2020) 41001,\r
+arXiv:hep-th/2001.00885.\r
+[68] N. Ahmadiniaz, M. A. Lopez-Lopez and C. Schubert, Phys. Lett. B 852 (2024) 138610,\r
+arXiv:hep-th/2312.07047.\r
+[69] M.A. Lopez Lopez, Phys. Lett. B 860 (2025) 139157, arXiv:hep-th/2408.16474.\r
+[70] I. Ahumada, P. Copinger and J.P. Edwards, Phys. Rev. D 112 (2025) 096024,\r
+arXiv:hep-th/2507.22308.\r
+[71] F. Karbstein, Phys. Rev. Lett. 122 (2019) 211602, arXiv:hep-th/1903.06998.\r
+[72] B. Döbrich, H. Gies, N. Neitz, F. Karbstein, Phys. Rev. Lett. 109 (2012) 131802,\r
+arXiv:hep-ph/1203.2533.\r
+– 28 –"""
+
+[metadata]
+title = "arxiv 2601.23279v1 ahmadiniaz 2026 photon graviton mixing"
+authors = ["Unknown"]
+arxiv = "2601.23279v1"
+year = 2026
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Prepared for submission to JHEP\r
+One loop photon-graviton mixing in an\r
+electromagnetic field: Part 3\r
+N. Ahmadiniaz,a F. Bastianelli,b F. Karbsteinc and C. Schubert d,1\r
+aHelmholtz-Zentrum Dresden-Rossendorf, Bautzner Landstraße 400, 01328 Dresden, Germany\r
+bDipartimento di Fisica ed Astronomia, Università di Bologna, Via Irnerio 46, I-40126 Bologna,\r
+Italy and INFN, Sezione di Bologna, Via Irnerio 46, I-40126 Bologna, Italy\r
+cHelmholtz-Institut Jena, Fröbelstieg 3, 07743 Jena, Germany and Theoretisch-Physikalisches In\u0002stitut, Friedrich-Schiller-Universität Jena, Max-Wien-Platz 1, 07743 Jena, Germany\r
+dFacultad de Ciencias Físico-Matemáticas, Universidad Michoacana de San Nicolás de Hidalgo,\r
+Avenida Francisco J. Mújica, 58060 Morelia, Michoacán, Mexico\r
+E-mail: n.ahmadiniaz@hzdr.de, bastianelli@bo.infn.it,\r
+felix.karbstein@uni-jena.de, christianschubert137@gmail.com\r
+Abstract: Photon-graviton conversion in an electromagnetic field is a well-known predic\u0002tion of Einstein-Maxwell theory. First discussed at tree-level by Gertsenshtein in 1962, more\r
+recently it has been shown to lead to magnetic dichroism starting from one-loop. While\r
+previously only two diagrams were assumed to contribute to this one-loop photon-graviton\r
+amplitude in a constant electromagnetic field, here we point out the existence of a third\r
+one involving a tadpole subdiagram. As shown by H. Gies and one of the authors in 2016\r
+for the pure QED case, such diagrams cannot be omitted in general even though the tad\u0002pole formally vanishes. After a short review of the calculation of one-loop photon-graviton\r
+amplitudes in the worldline formalism, we use this formalism for a unified calculation of all\r
+three diagrams. Although phenomenologically this amplitude is mainly of interest for the\r
+case of the spinor loop in a magnetic field, here we will also include the scalar loop and the\r
+electric field component, since the computational effort is essentially the same. We show\r
+that the tadpole diagram, although contributing to the amplitude, does not contribute to\r
+the magnetic dichroism. The gravitational Ward identity provides a useful check.\r
+1Corresponding author\r
+arXiv:2601.23279v1 [hep-th] 30 Jan 2026
+
+Contents"""
+
+[[sections]]
+number = "1"
+title = "Introduction 1"
+text = ""
+
+[[sections]]
+number = "2"
+title = "One-loop amplitudes with one graviton and N photons 5"
+text = ""
+
+[[sections]]
+number = "2.1"
+title = "Irreducible contribution 5"
+text = ""
+
+[[sections]]
+number = "2.2"
+title = "Reducible contribution 6"
+text = ""
+
+[[sections]]
+number = "3"
+title = "Inclusion of a constant electromagnetic field 7"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "General procedure 7"
+text = ""
+
+[[sections]]
+number = "3.2"
+title = "The photon tadpole 8"
+text = ""
+
+[[sections]]
+number = "3.3"
+title = "The vacuum-polarization tensor in a constant field 9"
+text = ""
+
+[[sections]]
+number = "4"
+title = "Irreducible contribution to electromagnetic photon-graviton conversion 11"
+text = ""
+
+[[sections]]
+number = "5"
+title = "Tadpole contribution to electromagnetic photon-graviton conversion 13"
+text = ""
+
+[[sections]]
+number = "6"
+title = "Third contribution to electromagnetic photon-graviton conversion 15"
+text = ""
+
+[[sections]]
+number = "7"
+title = "Weak-field expansion of the tadpole contribution 16"
+text = ""
+
+[[sections]]
+number = "8"
+title = "Ward identities for the photon-graviton amplitude in a constant field 17"
+text = ""
+
+[[sections]]
+number = "9"
+title = "Conclusions 18"
+text = """
+A Einstein-Maxwell theory 19\r
+B Worldline Green’s functions and determinants in a constant field 21\r
+B.1 Periodic case 21\r
+B.2 Anti-periodic case 24"""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+Although processes in Einstein-Maxwell theory are presently not of direct experimental\r
+relevance, they are of great theoretical interest, and much effort has gone into their study\r
+both at the tree-level [1–6] and the one-loop level [7–11].\r
+A particularly well-studied process is photon-graviton conversion in a magnetic field.\r
+Einstein-Maxwell theory contains a tree-level vertex involving two photons and one graviton,\r
+Fig. 1.\r
+– 1 –
+
+1)\r
+2)\r
+k\r
+k0\r
+k0\r
+3)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0\r
+30)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0\r
+300)\r
+p p0\r
+k k0\r
++\r
+p p0\r
+k0 k\r
++\r
+p p0\r
+k k0"""
+
+[[sections]]
+number = "1"
+title = "Figure 1. Tree-level vertex photon-photon-graviton vertex."
+text = """
+Replacing one of the photons by an electromagnetic field Fµν, one can convert this\r
+vertex into the following amplitude for photon-graviton conversion in the field (or the inverse\r
+process),\r
+Γ\r
+(tree)(k0, ϵ0; k, ε; F) = ϵ0µνεαΠ\r
+µν,α\r
+(tree)(k; F), Π\r
+µν,α\r
+(tree)(k; F) = −\r
+iκ\r
+2\r
+C\r
+µν,α\r
+, (1.1)\r
+where k0, ϵ0 (k, ε) are the graviton (photon) momentum and polarisation, and the tensor\r
+C\r
+µν,α is given by\r
+C\r
+µν,α = Fµαkν + Fναkµ −\r
+\r
+F · k\r
+\u0001µ\r
+δ\r
+να −\r
+\r
+F · k\r
+\u0001ν\r
+δ\r
+µα +\r
+\r
+F · k\r
+\u0001α\r
+δ\r
+µν\r
+. (1.2)\r
+This is well-known, but we give a derivation in appendix A for completeness.\r
+An important application of this amplitude is the conversion of electromagnetic waves\r
+into gravitational waves (and vice-versa) in an external magnetic field, as pointed out by\r
+Gertsenshtein as early as 1962 [12]. At the tree level, these processes and the associated\r
+photon-graviton conversion have since been studied by many authors [13–20]. However, it\r
+is only in 2005 that two of the present authors [21] calculated the one-loop correction to\r
+the amplitude (1.1) due to the diagram shown in Fig. 2 on the left, with either a scalar or\r
+spinor loop.\r
+4)\r
+p p0\r
+k0 = k + k0\r
+k\r
+k0\r
+=========\r
+p p0\r
+k0\r
+k0\r
+k\r
+=========\r
+6)\r
+k k\r
+7)\r
+k k\r
++\r
+k k\r
++\r
+k k\r
+2\r
+Γ\r
+(irr) Γ(tadpole) Γ(ext)\r
+Figure 2. The three one-loop contributions to electromagnetic photon–graviton conversion. Here\r
+“irr” and “ext” denote the irreducible and “extra” contributions, respectively.\r
+Here we employ the usual double-line notation for the full propagator in the constant\r
+external field (Fig. 3).\r
+Using the then novel worldline representation of photon-graviton amplitudes [22–31]\r
+they obtained compact parameter integral representations for this amplitude and for both\r
+– 2 –
+
+Γ , where 1-loop\r
+HE [A¯] =\r
+= + + + ···\r
+FIG. 1: Diagrammatic representation of the one-loop Heisenberg-Euler effective action. The \r
+ble line denotes the dressed fermion propagator accounting for arbitrarily many couplings t\r
+external field A¯, represented by the wiggly lines ending at crosses.\r
+with Γl-loop\r
+HE ∼ (α\r
+π )l−1, where α = e24π " 1137 is the fine-structure constant; we use the Heavi\r
+Lorentz System with c = ! = 1. At each loop order l, Γl-loop\r
+HE = !\r
+x Ll-loop\r
+HE accounts fo\r
+infinite number of couplings to the external field, and thus is fully nonperturbative in \r
+parameter eA¯. For completeness, we sketch the expansion to two-loop order in the follow\r
+We begin by noting that the fermionic integral in Eq. (7) can be written as a funct\r
+determinant,\r
+iSψ[A¯ + q] = ln det"−iD/[A¯ + q] + m\r
+#\r
+. \r
+If evaluated at q = 0, this quantity amounts to the one-loop Heisenberg-Euler effective ac\r
+in the external field A¯, i.e., Γ1-loop\r
+HE [A¯] = Sψ[A¯]; for a graphical representation, cf. Fi\r
+Since Sψ is a one-loop expression, the two-loop order of the Schwinger functional is alr\r
+obtained by performing the photonic fluctuation integral ∼ Dq to Gaußian order. For \r
+we expand Sψ about the external field A¯,\r
+Sψ[A¯ + q] = Sψ[A¯] + $ %S(1)\r
+ψ [A¯]\r
+&µ\r
+qµ +\r
+1\r
+2\r
+$ $ qµ\r
+%\r
+S(2)\r
+ψ [A¯]\r
+&µν\r
+qν + O(q3), \r
+where we employed the shorthand notation\r
+%\r
+S(n)\r
+ψ\r
+&σ1...σn\r
+[A¯] := δnSψ[A]\r
+δAσ1 ... δAσn\r
+'\r
+'\r
+'\r
+'\r
+A=A¯\r
+. \r
+The first-order term corresponds to a one-loop photon current induced by the field A¯, \r
+the Hessian is related to the one-loop photon polarization tensor Πµν [A¯] := %S(2)\r
+ψ\r
+&µ\r
+evaluated in the external field A¯; for completeness note that this definition of the ph\r
+polarization tensor differs from that of [57] by an overall minus sign. To Gaußian orde\r
+ignore the terms of O(q3) in the exponent, resulting in\r
+eiW[A¯] " eiSψ[A¯]\r
+$\r
+Dq e\r
+i\r
+! %\r
+S(1)\r
+ψ [A¯]\r
+&µ\r
+qµ− i\r
+2\r
+!! qµ\r
+%\r
+D−1−Π[A¯]\r
+&µν\r
+qν . \r
+Figure 3. Full scalar or spinor propagator in a constant field.\r
+the scalar and spinor loop cases. Those representations are of the same type as the ones\r
+that one finds for the better-known one-loop photon vacuum polarisation in a constant field,\r
+computed either in the worldline formalism [32, 33] or the Feynman diagram approach (see\r
+[34–36] and refs. therein).\r
+Although numerically these one-loop corrections for realistic field strengths are small\r
+(suppressed by a factor of α) compared to the tree-level ones, in the subsequent study [37]\r
+an important qualitative difference emerged: while the tree-level photon-graviton conver\u0002sion amplitude in the field gives (contrary to the superficially similar case of photon-axion\r
+conversion [14, 38–43]) equal conversion rates for both photon polarisations, at the one-loop\r
+level this rate starts becoming polarisation-dependent. This leads to dichroism, and further\r
+analysis by Ahlers et al. [44], who undertook an exhaustive search for other sources of\r
+magnetic dichroism showed that, although magnetic photon-graviton conversion is a very\r
+small effect under realistic conditions, remarkably it is still the leading such effect in the\r
+whole Standard Model. Their analysis of magnetic dichroism was also more complete in\r
+taking the right-hand diagram of Fig. 2 into account, which contributes to it at the same\r
+order in α.\r
+Even so, from their numbers it is clear that this effect will hardly be accessible to\r
+experiment in the near future, a conclusion that is consistent with recent detailed feasibility\r
+and sensitivity studies of light-induced gravitational effects using interferometric techniques\r
+[45, 46]. Nevertheless, this is of course presently the case for all process involving gravitons,\r
+and in the long run we would still consider magnetic dichroism due to photon-graviton\r
+conversion as a leading contender in the quest for an eventual experimental demonstration\r
+of the existence of the graviton. This is because (i) it involves only a single gravitational\r
+coupling (ii) it does not require a direct measurement of the graviton itself and (iii) dichroism\r
+can be measured with high precision using optical cavities [47–53].\r
+The main purpose of the present paper is to point out the existence of yet another dia\u0002gram contributing to electromagnetic photon-graviton conversion at the same order, shown\r
+in the middle of Fig. 2, or more precisely its non-vanishing. This requires some explanation.\r
+Prior to 2017 it had generally been assumed, and even stated in QED textbooks (see, e.g.,\r
+[34, 54]) that the one-photon tadpole diagram in a constant electromagnetic field Fig. 4\r
+vanishes, and therefore also any diagram containing it.\r
+The argument goes as follows:\r
+1. A constant field emits only photons with zero energy-momentum, thus there is a factor\r
+of δ(k).\r
+– 3 –
+
+kµ\r
+Figure 4. One-photon amplitude in a constant electromagnetic field.\r
+2. Because of gauge invariance, this diagram in a momentum expansion starts with the\r
+term linear in momentum.\r
+3. δ(k)k\r
+µ = 0.\r
+Since the tadpole thus formally vanishes, it has been assumed for decades that also any\r
+diagram containing it can be discarded, for example, the “handcuff” contribution Fig. 5 to\r
+the two-loop Euler-Heisenberg Lagrangian [34, 35].\r
++ + + ...\r
+3: One-particle reducible diagrams constituting the last term in Eq. (26). For the definition\r
+e double line, cf. Fig. 1.\r
+Γ2-loop\r
+HE [A¯]= +\r
+4: Diagrams constituting the two-loop Heisenberg-Euler effective action. Obviously, we have\r
+p\r
+= Γ2-loop\r
+HE\r
+!\r
+!\r
+1PI+Γ2-loop\r
+HE\r
+!\r
+!\r
+1PR. Note that the first diagram amounts to the leftmost one in Fig. 2,\r
+e it is drawn in a slightly different way; for the definition of the double line, cf. Fig. 1.\r
+sponding to the Dyson series of the full one-loop resummed photon propagator. In the\r
+erm of Eq. (26), this resummed propagator interconnects two one-loop photon currents\r
+(1)\r
+ψ [A¯]\r
+#\r
+. All the diagrams arising when adopting the expansion (29) in the last term in\r
+26) are one-particle reducible; see Fig. 3.\r
+turn, the two-loop Heisenberg-Euler effective action consists of a 1PI and a 1PR\r
+am and is given by\r
+Γ2-loop\r
+HE [A¯] = 1"""
+
+[[sections]]
+number = "2"
+title = "Tr(DΠ[A¯])"
+text = """
+$ %& '\r
+=:Γ2-loop\r
+HE\r
+!\r
+!\r
+1PI\r
++\r
+1\r
+2\r
+( ( "\r
+S(1)\r
+ψ [A¯]\r
+#\r
+µ\r
+Dµν "S(1)\r
+ψ [A¯]\r
+#\r
+ν\r
+$ %& '\r
+=:Γ2-loop\r
+HE\r
+!\r
+!\r
+1PR\r
+. (30)\r
+he existence as a matter of principle of the 1PR term in Eq. (30) has been known for a\r
+time. It has, however, been argued that this term vanishes for constant external fields\r
+4]. Let us reproduce this argument for reasons of completeness: a crucial building block\r
+e 1PR term is "S(1)\r
+ψ [A¯]\r
+#\r
+ν, which corresponds to the one-loop photon current which will\r
+alled j\r
+µ\r
+1-loop[A¯] below. For a constant external field, j\r
+µ\r
+1-loop[A¯] does not depend on any\r
+etime point x either. On the other hand, j\r
+µ\r
+1-loop[A¯] is a Lorentz 4-vector. The vector\r
+x of the current can only be generated from the building blocks F¯, ∂ and x. However,\r
+onstant fields ∂µFνκ = 0 and for an x independent current, all conceivable combinations\r
+one vector index vanish and so does the current (an explicit verification of this fact in\r
+entum space is given below).\r
+While this part of the argument holds true in the full analysis, it does not necessarily\r
+Figure 5. “Handcuff” diagram in a constant field.\r
+However, in 2016 H. Gies and one of the authors [55] noted that such diagrams can\r
+give finite values because of the infrared divergence of the connecting photon propagator.\r
+In dimensional regularization, the key integral is\r
+Z\r
+d\r
+Dk δD(k)\r
+k\r
+µkν\r
+k\r
+2\r
+=\r
+η\r
+µν\r
+D\r
+. (1.3)\r
+Applying this integral to the handcuff diagram one finds a non-vanishing result, which\r
+can be expressed in the following simple way in terms of the one-loop Euler-Heisenberg\r
+Lagrangian [56, 57] (see also [58])\r
+L\r
+1PR\r
+spin =\r
+1\r
+2\r
+∂L\r
+(EH)\r
+spin\r
+∂Fµν\r
+∂L\r
+(EH)\r
+spin\r
+∂Fµν\r
+,\r
+(the superscript ‘1PR’ stands for “one-particle reducible”).\r
+Eq. (2) follows straightforwardly from Eq. (4).\r
+Prior to the recent analysis performed in Ref. [1], this contribution was believed to vanish\r
+in constant fields [7, 9], based on the argument that (2π)dδ(d)(k) kα = 0 in Eq. (5), thereby\r
+missing the subtlety that, upon convolution with the infrared divergent photon propagator,\r
+the current (5) might induce finite 1PR tadpole contributions in Feynman diagrams. Finally,\r
+note that L2-loop\r
+HE may alternatively be viewed as a one-loop calculation performed with the\r
+charged particle propagator in the constant field already accounting for quantum corrections\r
+at one-loop level. The latter is depicted in Fig. 2. Identifying the in- and outgoing charged\r
++\r
+FIG. 2: One-loop corrections to the charged particle propagator in an external electromagnetic\r
+field.\r
+particle lines in Fig. 2 to form loops, the diagrams shown in Fig. 1 are recovered.\r
+B. Charged particle propagators in constant electromagnetic fields\r
+Meanwhile, Refs. [5, 6] have explicitly determined the one-loop tadpole corrections for\r
+the propagators of both charged scalar and spinor particles in constant fields within the\r
+worldline formalism. The respective Feynman diagram is depicted in Fig. 2 (right). Their\r
+finding is that in momentum space this 1PR contribution to the charged particle propagator\r
+can be expressed similarly to Eq. (2) as\r
+Figure 6. Full scalar or spinor propagator in a constant field.\r
+Similarly, [59, 60] found that the one-loop tadpole contribution to the scalar or spinor\r
+propagator in a constant field (Fig.6) is also non-vanishing, and given by\r
+S\r
+1PR(p) = ∂S(p)\r
+∂Fµν\r
+∂L\r
+(EH)\r
+∂Fµν\r
+,\r
+– 4 –
+
+where S(p) denotes the tree-level propagator in the field, see also [61].\r
+Below we perform the similar, albeit more complicated, calculation of the middle dia\u0002gram of Fig. 2. Moreover, we provide a unified calculation of all three diagrams using the\r
+worldline formalism, and show that, although the tadpole diagram contributes to the am\u0002plitude, it leaves the magnetic dichroism unchanged. Although our main interest is in the\r
+magnetic field and spinor loop case, we will perform all calculations in a general constant\r
+field and for both the scalar and spinor loop, since in the worldline formalism this essen\u0002tially does not imply any extra computational effort. All formulas required to specialize the\r
+field to a purely magnetic one (as well as a purely electric or crossed-field one) are given in\r
+appendix B.\r
+The organization of the paper is as follows. In section 2 we review the worldline\r
+representation of the one-loop photon-graviton amplitudes with a scalar or spinor loop in\r
+vacuum, including a short discussion of the gauge and gravitational Ward identities. In\r
+section 3 we show how to incorporate an external constant electromagnetic field. Section 4\r
+summarizes the worldline calculation of [21, 37] of the “main” or “irreducible” contributions\r
+Γ\r
+(irr) to these amplitudes, while section 6 analyzes the contribution Γ(ext). The central\r
+section is 5 where we derive the new “tadpole” contributions Γ\r
+(tadpole). In section 7 we\r
+study the weak-field expansion of the tadpole contribution in a magnetic field. In section\r
+8 we verify the gravitational Ward identities for these amplitudes, which also provides a\r
+non-trivial check. Section 9 offers our conclusions. Appendix A establishes our conventions\r
+for Einstein-Maxwell theory, while in appendix B we collect some useful formulas involving\r
+the worldline Green’s functions and determinants in a constant field.\r
+Partial results of this work were presented in [62]."""
+
+[[sections]]
+number = "2"
+title = "One-loop amplitudes with one graviton and N photons"
+text = """
+We shortly summarize the worldline approach to the calculation of the one-loop amplitudes\r
+involving a scalar or spinor in the loop and one graviton and N photons, first in vacuum\r
+[28–31, 63, 64]. These amplitudes have an irreducible contribution, where all the external\r
+legs are directly attached to the loop, and a reducible one, where the graviton is attached\r
+to one of the photons."""
+
+[[sections]]
+number = "2.1"
+title = "Irreducible contribution"
+text = """
+The irreducible spinor/scalar loop contribution to the one-graviton N-photon amplitude is\r
+given by [65]\r
+Γ\r
+(irr)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = \u0012\r
+−2\r
+1\r
+\u0013\r
+(−ie)\r
+N\r
+\u0010\r
+−\r
+κ\r
+4\r
+\u0011Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2\r
+×\r
+D\r
+V\r
+G\r
+spin\r
+scal \u0001[k0, ϵ0] V\r
+γ\r
+\r
+spin\r
+scal \u0001[k1, ε1] · · · V\r
+γ\r
+\r
+spin\r
+scal \u0001[kN , εN ]\r
+E\r
+. (2.1)\r
+Here e and κ are the electromagnetic and gravitational couplings, m the mass and T the\r
+proper-time of the loop scalar or spinor. k0 and ϵ0 denote the graviton momentum and\r
+– 5 –
+
+polarization tensor, the remaining ki\r
+’s and εi’s the photon ones. V\r
+G and Vγ denote the\r
+graviton and photon vertex operators,\r
+V\r
+γ\r
+scal[k, ε] = Z T\r
+0\r
+dτ ε · x˙(τ ) eik·x(τ), (2.2)\r
+V\r
+γ\r
+spin[k, ε] = Z T\r
+0\r
+dτ hε · x˙(τ ) − iψ(τ ) · f · ψ(τ )\r
+i\r
+e\r
+ik·x(τ)\r
+, (2.3)\r
+V\r
+G\r
+scal[k0, ϵ0] = ϵ0µν Z T\r
+0\r
+dτhx˙\r
+µ\r
+(τ ) ˙x\r
+ν\r
+(τ ) + a\r
+µ\r
+(τ )a\r
+ν\r
+(τ ) + b\r
+µ\r
+(τ )c\r
+ν\r
+(τ )\r
+i\r
+e\r
+ik0·x(τ)\r
+, (2.4)\r
+V\r
+G\r
+spin[k0, ϵ0] = ϵ0µν Z T\r
+0\r
+dτhx˙\r
+µ\r
+(τ ) ˙x\r
+ν\r
+(τ ) + a\r
+µ\r
+(τ )a\r
+ν\r
+(τ ) + b\r
+µ\r
+(τ )c\r
+ν\r
+(τ )\r
++ψ\r
+µ\r
+(τ )ψ˙ν(τ ) + α\r
+µ\r
+(τ )α\r
+ν\r
+(τ ) + ix˙\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ )ψ(τ ) · k\r
+i\r
+e\r
+ik0·x(τ)\r
+, (2.5)\r
+and fµν = kµεν − kνεµ the linearized photon field-strength tensor. The Wick contractions\r
+⟨· · · ⟩ are to be performed using the set of worldline correlators\r
+⟨x\r
+µ\r
+(τ )x\r
+ν\r
+(τ\r
+′\r
+)⟩ = −GB(τ, τ ′), (2.6)\r
+⟨ψ\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ\r
+′\r
+)⟩ =\r
+1"""
+
+[[sections]]
+number = "2"
+title = "GF (τ, τ ′), (2.7)"
+text = """
+⟨a\r
+µ\r
+(τ )a\r
+ν\r
+(τ\r
+′\r
+)⟩ = 2δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.8)\r
+⟨b\r
+µ\r
+(τ )c\r
+ν\r
+(τ\r
+′\r
+)⟩ = −4δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.9)\r
+⟨α\r
+µ\r
+(τ )α\r
+ν\r
+(τ\r
+′\r
+)⟩ = 2δ(τ − τ\r
+′\r
+)δ\r
+µν\r
+, (2.10)\r
+with the worldline Green’s functions\r
+GB(τ, τ ′) = | τ − τ\r
+′\r
+| −(τ − τ\r
+′\r
+)\r
+2\r
+T\r
+, (2.11)\r
+GF (τ, τ ′) = sgn(τ − τ\r
+′\r
+). (2.12)"""
+
+[[sections]]
+number = "2.2"
+title = "Reducible contribution"
+text = """
+The reducible contribution to the N-photon/one graviton amplitude, where the graviton is\r
+attached to one of the photons, usually would be constructed by sewing together the N\u0002photon amplitude and the photon-photon-graviton vertex of Fig. 1. For the analogous case\r
+of the scalar tree-level propagator dressed with N photons and one graviton, D\r
+(red)pp′\r
+N,1\r
+, it was\r
+shown in [64] that the effect of this sewing can be expressed by the following replacement\r
+rule\r
+D\r
+(red)pp′\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = X\r
+N\r
+i=1\r
+D\r
+pp′\r
+N,0\r
+(k1, ε1; . . . ; ki + k0, υi; . . . ; kN , εN ),\r
+with an effective photon polarization vector\r
+υi ≡ −κ\r
+{ϵ0, fi} · (ki + k0)\r
+(ki + k0)\r
+2\r
+= −κ\r
+ϵ0 · fi· k0 + fi· ϵ0 · ki\r
+2k0 · ki\r
+. (2.13)\r
+– 6 –
+
+Here we observe that the same replacement rule applies as well for the one-loop N-photon/one\r
+graviton amplitudes with either a scalar or a spinor loop. For the scalar loop this is obvious\r
+from the fact that our derivation of that rule in [64] did not make use at all of the boundary\r
+conditions imposed on the scalar path integral. But neither did we use the specific form\r
+of the scalar vertex operator, and the reader can easily convince herself that changing the\r
+scalar vertex operator into a spinor one will not make a difference here. Thus, without\r
+further ado, we can write down the reducible part of the spinor/scalar loop contribution to\r
+the one-graviton N-photon amplitude as\r
+Γ\r
+(red)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ) = X\r
+N\r
+i=1\r
+Γ\r
+spin\r
+scal \u0001\r
+N,0\r
+(k1, ε1; . . . ; ki + k0, υi; . . . ; kN , εN ), (2.14)\r
+where υ\r
+µ\r
+i\r
+is the same as in (2.13)."""
+
+[[sections]]
+number = "3"
+title = "Inclusion of a constant electromagnetic field"
+text = ""
+
+[[sections]]
+number = "3.1"
+title = "General procedure"
+text = """
+The generalisation of the formalism to the case of the photon-graviton amplitudes in a\r
+constant electromagnetic field is straightforward and proceeds essentially as in the purely\r
+electromagnetic case [24, 26, 27, 33, 68–70]: the master formulas (2.1) acquire an additional\r
+determinant factor\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tanZ\r
+\u0015\r
+(Spinor loop), (3.1)\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sinZ\r
+\u0015\r
+(Scalar loop), (3.2)\r
+(Zµν ≡ eFµνT), and the worldline Green’s functions GB, GF have to be replaced by their\r
+constant-field versions GB, GF ,\r
+GB(τ, τ ′) = T\r
+2Z\r
+\u0012\r
+e\r
+−iG˙ B(τ,τ′)Z − cos Z\r
+sin Z\r
++ iG˙ B(τ, τ ′)\r
+\u0013\r
+,\r
+GF (τ, τ ′) = GF (τ, τ ′)\r
+e\r
+−iZG˙ B(τ,τ′)\r
+cosZ\r
+. (3.3)\r
+Since these Green’s functions have a non-trivial Lorentz structure, the Wick-contraction\r
+rules (2.6), (2.7) generalise in the form\r
+⟨x\r
+µ\r
+(τ )x\r
+ν\r
+(τ\r
+′\r
+)⟩F = −Gµν\r
+B\r
+(τ, τ ′\r
+), (3.4)\r
+⟨ψ\r
+µ\r
+(τ )ψ\r
+ν\r
+(τ\r
+′\r
+)⟩F =\r
+1\r
+2\r
+G\r
+µν\r
+F\r
+(τ, τ ′), (3.5)\r
+with the Wick-contraction rules for the ghosts unchanged.\r
+Thus the vacuum master formula (2.1) directly generalises to the constant-field back\u0002ground as\r
+Γ\r
+(irr)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ; F) = \u0012\r
+−2\r
+1\r
+\u0013\r
+(−ie)\r
+N\r
+\u0010\r
+−\r
+κ\r
+4\r
+\u0011Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2 det\r
+1\r
+2\r
+\u0014\u0012Z/tanZ\r
+Z/sinZ\r
+\u0013\u0015\r
+×\r
+D\r
+V\r
+G\r
+spin\r
+scal \u0001[k0, ϵ0] V\r
+γ\r
+\r
+spin\r
+scal \u0001[k1, ε1] · · · V\r
+γ\r
+\r
+spin\r
+scal \u0001[kN , εN ]\r
+E\r
+F\r
+. (3.6)\r
+– 7 –
+
+The rule (2.14) for the construction of the reducible contributions, where the graviton\r
+gets attached to one of the photons, is also not affected by the presence of the external\r
+field.\r
+At the one-graviton level, the only really new aspect arising from the presence of the\r
+external field is that there is now a second type of reducible contributions, since the graviton\r
+can now be attached also to one of the photons emitted by the external field, see Fig. 7.\r
+Figure 7. Field-induced type of reducible contributions.\r
+It is easy to see that the contribution of this diagram, to be called Γ\r
+(ext)\r
+N,1\r
+, can be\r
+obtained from the purely photonic amplitude with N +1 photons in the field by the following\r
+modification of (2.14),\r
+Γ\r
+(ext)\r
+\r
+spin\r
+scal \u0001\r
+N,1\r
+(k0, ϵ0; . . . ; kN , εN ; F) = Γ\r
+spin\r
+scal \u0001\r
+N+1,0\r
+(k0, υF ; k1, ε1; . . . ; . . . ; kN , εN ; F), (3.7)\r
+where now\r
+υF ≡ iκ\r
+{ϵ0, F} · k0\r
+k\r
+2\r
+0\r
+. (3.8)"""
+
+[[sections]]
+number = "3.2"
+title = "The photon tadpole"
+text = """
+For starters, let us work out (3.6) for the pure QED case with one and two photons. For\r
+the tadpole (Fig. 4) with a scalar loop, this yields\r
+Γscal(k, ε; F) = −e(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT\r
+T\r
+(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+×\r
+Z T\r
+0\r
+dτ ε · G˙B(τ, τ ) · k exph\r
+1\r
+2\r
+k · GB(τ, τ ) · k\r
+i\r
+. (3.9)\r
+Using the coincidence limits (B.6), (B.7) this can be written more explicitly as\r
+Γscal(k, ε; F) = −ie(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+×ε ·\r
+\u0010\r
+cotZ − 1\r
+Z\r
+\u0011\r
+· k exp\u0014\r
+T\r
+4\r
+k ·\r
+\u0010cotZ\r
+Z\r
+−"""
+
+[[sections]]
+number = "1"
+title = "Z2"
+text = """
+\u0011\r
+· k\r
+\u0015\r
+. (3.10)\r
+To get the corresponding quantity for spinor QED, we have to include the spin part of\r
+the photon vertex operator, change the determinant factor, and to supply the usual global\r
+– 8 –
+
+factor of −2. This yields\r
+Γspin(k, ε; F) = 2ie(2π)\r
+Dδ\r
+D(k)\r
+Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+×ε ·\r
+\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· k exp\u0014\r
+T\r
+4\r
+k ·\r
+\u0010cotZ\r
+Z\r
+−"""
+
+[[sections]]
+number = "1"
+title = "Z2"
+text = """
+\u0011\r
+· k\r
+\u0015\r
+. (3.11)\r
+Note that, as mentioned in the introduction, the expressions (3.10), (3.11) formally vanish\r
+on account of the factor δ\r
+D(k) kµ\r
+."""
+
+[[sections]]
+number = "3.3"
+title = "The vacuum-polarization tensor in a constant field"
+text = """
+For N = 2 in the scalar case we find the integrand\r
+D\r
+V\r
+γ\r
+scal[k1, ε1]V\r
+γ\r
+scal[k2, ε2]\r
+E\r
+F\r
+=\r
+h\r
+ε1 · G¨B12 · ε2 − ε1 · G˙B1i· ki ε2 · G˙B2j · kj\r
+i\r
+e\r
+1\r
+2\r
+ki·GBij ·kj\r
+,\r
+(3.12)\r
+where summation over i, j = 1, 2 is understood. We use momentum conservation to write\r
+k = k1 = −k2. Removing the second derivative in the first term by an IBP in τ1, the\r
+integrand becomes\r
+h\r
+ε1 · G˙B12 · ε2 k · G˙B12 · k + ε1 ·\r
+\u0010\r
+G˙B12 − G˙B\r
+\u0011\r
+· k ε2 ·\r
+\u0010\r
+G˙B21 − G˙B\r
+\u0011\r
+· k\r
+i\r
+e\r
+−k·(GB12−GB)·k\r
+, (3.13)\r
+where we have introduced the further notation of indicating the constant coincidence limit\r
+of a Green’s function by the omission of its argument, G˙B ≡ G˙Bii etc. The content of the\r
+brackets then turns into ε1µI\r
+µν\r
+scalε2ν,\r
+I\r
+µν\r
+scal = G˙\r
+µν\r
+B12k · G˙B12 · k +\r
+\u0010\r
+G˙B12 − G˙B\r
+\u0011µλ\u0010\r
+G˙B21 − G˙B\r
+\u0011νκ\r
+k\r
+κ\r
+k\r
+λ\r
+. (3.14)\r
+Next we would like to use the fact that the integrand contains terms which integrate to zero\r
+due to antisymmetry under the exchange τ1 ↔ τ2. Thus we decompose the constant-field\r
+worldline Green’s function as\r
+GB12 = SB12 + AB12 , (3.15)\r
+where SBij denotes the even (SBii ≡ SB) and ABij the odd part (ABii ≡ AB) as a power\r
+series in F. Only the Lorentz even part of GBij contributes in the exponent,\r
+k · (GB12 − GB) · k = k ·\r
+\r
+SB12 − SB\r
+\u0001\r
+· k ≡ T k · Φ12 · k . (3.16)\r
+I\r
+µν\r
+scal turns, after decomposing all factors of G˙Bij as above, and deleting all τ - odd terms,\r
+into\r
+˜I\r
+µν\r
+scal ≡\r
+\u001A\r
+S˙\r
+µν\r
+B12S˙κλ\r
+B12 − S˙\r
+µλ\r
+B12S˙νκ\r
+B12 +\r
+\u0010\r
+A˙B12 − A˙B\r
+\u0011µλ\u0010\r
+A˙B12 − A˙B\r
+\u0011νκ\u001B\r
+k\r
+κ\r
+k\r
+λ\r
+.\r
+(3.17)\r
+– 9 –
+
+In this way we obtain the following integral representations for the dimensionally regularized\r
+constant-field vacuum polarization tensor in scalar QED:\r
+Π\r
+µν\r
+scal(k; F) = −\r
+e\r
+2\r
+(4π)\r
+D"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+T\r
+2− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015 Z 1\r
+0\r
+du1\r
+˜I\r
+µν\r
+scal e\r
+−T k·Φ12·k\r
+.\r
+(3.18)\r
+As usual we have rescaled to the unit circle and set u2 = 0.\r
+For spinor QED, the formula corresponding to (3.14) is [33]\r
+I\r
+µν\r
+spin = G˙\r
+µν\r
+B12k · G˙B12 · k − GµνF12k · GF12 · k (3.19)\r
+−\r
+\u0014\u0010\r
+G˙B − GF − G˙B12\u0011µλ\u0010G˙B21 − G˙B + GF\r
+\u0011νκ\r
++ G\r
+µλ\r
+F12G\r
+νκ\r
+F21\u0015\r
+k\r
+κ\r
+k\r
+λ\r
+and (3.17) generalizes to\r
+˜I\r
+µν\r
+spin ≡\r
+\u001A\u0010\r
+S˙\r
+µν\r
+B12S˙κλ\r
+B12 − S˙\r
+µλ\r
+B12S˙νκ\r
+B12\u0011\r
+−\r
+\u0010\r
+S\r
+µν\r
+F12S\r
+κλ\r
+F12 − Sµλ\r
+F12S\r
+νκ\r
+F12\u0011\r
++\r
+\u0010\r
+A˙B12 − A˙B + AF\r
+\u0011µλ\u0010\r
+A˙B12 − A˙B + AF\r
+\u0011νκ\r
+−Aµλ\r
+F12A\r
+νκ\r
+F12\u001B\r
+k\r
+κ\r
+k\r
+λ\r
+. (3.20)\r
+Taking the global factor of −2 and the change of the field-dependent determinant factor\r
+(3.2) into account, (3.18) generalizes to\r
+Π\r
+µν\r
+spin(k; F) = 2 e\r
+2\r
+(4π)\r
+D"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+T\r
+2− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015 Z 1\r
+0\r
+du1\r
+˜I\r
+µν\r
+spin e\r
+−T k·Φ12·k\r
+.\r
+(3.21)\r
+As is well-known, the constant field vacuum polarization tensors contain the UV diver\u0002gences of the ordinary vacuum polarization tensors, but no further ones, so that on-shell\r
+renormalization can be performed by subtraction of the integrand at zero field strength\r
+and momentum. In this way we find for the renormalized vacuum polarization tensors\r
+(indicating the renormalisation by a ‘bar’) [33]\r
+Π¯ µν\r
+scal(k; F) = −\r
+e\r
+2\r
+16π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+˜I\r
+µν\r
+scal e\r
+−T k·Φ12·k\r
+−\r
+\r
+δ\r
+µνk2 − kµ\r
+k\r
+ν\r
+\u0001\r
+(1 − 2u1)\r
+2\r
+\u001B\r
+, (3.22)\r
+Π¯ µν\r
+spin(k; F) = e\r
+2\r
+8π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+˜I\r
+µν\r
+spin e\r
+−T k·Φ12·k\r
++4δ\r
+µνk2 − kµ\r
+k\r
+ν\r
+\u0001\r
+u1(1 − u1)\r
+\u001B\r
+. (3.23)\r
+The remaining u1 - integral can be brought into a more standard form by a transformation\r
+of variables v = G˙ B12 = 1 − 2u1.\r
+The matrix decomposition formulas of appendix B can be used to write these integral\r
+representations more explicitly (for the generic case of parallel electric and magnetic fields\r
+this has been done in [33]).\r
+– 10 –"""
+
+[[sections]]
+number = "4"
+title = "Irreducible contribution to electromagnetic photon-graviton conver\u0002sion"
+text = """
+We now turn to applying this formalism to the electromagnetic photon-graviton conversion\r
+amplitude, starting with the irreducible contribution Γ\r
+(irr)\r
+spin. Using the machinery developed\r
+above, its worldline representation can be written as\r
+Γ\r
+(irr)\r
+spin(k0, ϵ0; k, ε; F) = −2(−ie)(−\r
+κ\r
+4\r
+)\r
+Z ∞\r
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(4πT)\r
+− D\r
+2 det− 1\r
+2\r
+\u0014\r
+tan(Z)\r
+Z\r
+\u0015\r
+×\r
+D\r
+V\r
+G\r
+spin[k0, ϵ0]V\r
+γ\r
+spin[k, ε]\r
+E\r
+F\r
+. (4.1)\r
+Performing the Wick contractions according to the rules for the constant-field case, eqs.\r
+(3.4) and (3.5), stripping off ϵ0, ε as in (1.1), and eliminating k0 through k0 = −k, the\r
+result can be written as\r
+Π\r
+µν,α\r
+spin (k; F) = −\r
+eκ\r
+2(4π)\r
+D"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+e\r
+−m2T T− D\r
+2 det− 12\r
+h\r
+tanZ\r
+Z\r
+i\r
+×\r
+Z T\r
+0\r
+dτ1\r
+Z T\r
+0\r
+dτ2 e\r
+−k·G¯B12·k\r
+\r
+J\r
+µν,α\r
+scal + J\r
+(µν),α\r
+ψ\r
+\u0001\r
+, (4.2)\r
+where in J\r
+µν,α\r
+scal we have collected all terms that come from the purely orbital part of the\r
+vertex operators, and J\r
+(µν),α\r
+ψ ≡\r
+1\r
+2\r
+\r
+J\r
+(µν),α\r
+ψ + J\r
+(νµ),α\r
+ψ\r
+\u0001\r
+contains all the terms involving the\r
+spin of the loop fermion. Here G¯B12 ≡ GB12 − GB is the modified Green’s function obtained\r
+by subtracting its coincidence limit. Using the symmetry properties (B.5) and (B.37), the\r
+result can be written as\r
+J\r
+µν,α\r
+scal =\r
+\u0010\r
+G¨µν\r
+B11 − 2δ11δ\r
+µν\u0011\u0010k · G˙B12\u0011α\r
++\r
+h\r
+G¨µα\r
+B12\u0010\r
+G˙B12 · k\r
+\u0011ν\r
++\r
+\u0010\r
+µ ↔ ν\r
+\u0011i\r
+−\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+G˙B12 · k\r
+\u0011ν\u0010\r
+k · G˙B12\u0011α\r
+, (4.3)\r
+J\r
+µν,α\r
+ψ =\r
+h\r
+G˙\r
+µν\r
+F11 − 2δ11δ\r
+µν +\r
+\u0010\r
+GF11 · k\r
+\u0011ν\u0010\r
+G˙B12 · k\r
+\u0011µi\u0010 GF22 · k\u0011α\r
+−\r
+\u0010\r
+GF12 · k\r
+\u0011µ\r
+G˙να\r
+F12 + G\r
+µα\r
+F12\u0010\r
+G˙\r
+F12 · k\r
+\u0011ν\r
++\r
+h\r
+−Gνα\r
+F12\u0010\r
+k · GF12 · k\r
+\u0011\r
++\r
+\u0010\r
+GF12 · k\r
+\u0011ν\u0010\r
+k · GF12\u0011α\r
+i\u0010 G˙B12 · k\r
+\u0011µ\r
+−\r
+\u0010\r
+G˙\r
+µν\r
+F11 − 2δ11δ\r
+µν\u0011\u0010 k · G˙B12\u0011α\r
+−\r
+h\r
+G¨µν\r
+B11 − 2δ11δ\r
+µν −\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+G˙B12 · k\r
+\u0011νi\u0010 GF22 · k\u0011α\r
++\r
+h\r
+G¨µα\r
+B12 −\r
+\u0010\r
+G˙B12 · k\r
+\u0011µ\u0010\r
+k · G˙B12\u0011α\r
+i\u0010 GF11 · k\u0011ν\r
+. (4.4)\r
+It will be useful to add to J\r
+µν,α\r
+scal e\r
+−k·GB12·k\r
+the total derivative term\r
+−\r
+1\r
+2\r
+∂\r
+∂τ1\r
+h\r
+G˙\r
+µα\r
+B12\u0010\r
+G˙B12 · k\r
+\u0011ν\r
+e\r
+−k·GB12·k +\r
+\u0010\r
+µ ↔ ν\r
+\u0011i. (4.5)\r
+– 11 –
+
+We can then replace J\r
+µν,α\r
+scal + J\r
+(µν),α\r
+ψ\r
+by\r
+J\r
+µν,α\r
+spin = J\r
+µν,α\r
+spin,1 + J\r
+(µν),α\r
+spin,2 + J\r
+(µν),α\r
+spin,3\r
+(4.6)\r
+where\r
+J\r
+µν,α\r
+spin,1 = −\r
+\u0010\r
+G¨µν\r
+B11 − G˙\r
+µν\r
+F11\u0011h\r
+G˙B21 + GF22\u0001\r
+· k\r
+iα\r
+,\r
+J\r
+µν,α\r
+spin,2 = −G˙\r
+µα\r
+B12\u0010\r
+G¨B12 · k\r
+\u0011ν\r
++ G\r
+µα\r
+F12\u0010\r
+G˙\r
+F12 · k\r
+\u0011ν\r
++ G¨να\r
+B12h\r
+G˙B12 + GF11\u0001· k\r
+iµ\r
+−G˙να\r
+F12\u0010\r
+GF12 · k\r
+\u0011µ\r
+,\r
+J\r
+µν,α\r
+spin,3 =\r
+\u0010\r
+G˙B12 · k\r
+\u0011µnh\r
+G˙B12 + GF11\u0001\r
+· k\r
+iνh\r
+G˙B21 + GF22\u0001\r
+· k\r
+iα\r
+−\r
+\u0010\r
+GF12k\r
+\u0011ν\u0010\r
+GF21k\r
+\u0011α\r
++ G˙\r
+να\r
+B12k · G˙B12 · k − Gνα\r
+F12k · GF12 · k\r
+o\r
+. (4.7)\r
+Before proceeding further, let us use this integral representation to analyse the general\r
+structure of this amplitude. Although our calculation is nonperturbative in the external\r
+field, we can use the series expansions of GB, G˙B, G¨B and GF , G˙\r
+F in the field, whose first few\r
+terms are given in (B.9) - (B.11) and (B.40), (B.41), to compute the amplitude involving a\r
+given number of interactions with the field. It is then immediately seen that this amplitude\r
+is nonzero only if this number of interactions is odd, since otherwise the τ1,2 integrations\r
+vanish by antisymmetry.\r
+The leading term in this expansion in the background field is UV divergent. In dimen\u0002sional regularisation, this divergence is [21]\r
+Π\r
+µν,α\r
+spin,div(k; F) = −\r
+4\r
+3\r
+ie2κ\r
+(4π)\r
+2"""
+
+[[sections]]
+number = "1"
+title = "D − 4"
+text = """
+C\r
+µν,α(k), (4.8)\r
+where C\r
+µν,α is the same tensor that appeared in the tree-level amplitude, eq. (1.2). This\r
+was to be expected since the amplitude must be multiplicatively renormalizable (although\r
+quantum gravity is not a renormalizable theory, amplitudes in Einstein-Maxwell theory\r
+involving gravitational fields and gravitons only externally are still renormalizable by power\r
+counting). Renormalization is performed by subtracting the amplitude at zero field strength\r
+and zero momentum, leading to the following form of the renormalized amplitude Π¯ :\r
+Π¯ µν,α\r
+spin (k; F) = −\r
+eκ\r
+32π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T3\r
+e\r
+−m2T\r
+(4.9)\r
+×\r
+\u001A\r
+det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i Z T\r
+0\r
+dτ1\r
+Z T\r
+0\r
+dτ2 e\r
+−k·GB12·kJ\r
+µν,α\r
+spin +\r
+4\r
+3\r
+iT2eCµν,α\u001B.\r
+Once more this can still be simplified using the decompositions GB,F = SB,F + AB,F where\r
+S\r
+µν\r
+B,F contains the even powers of F\r
+µν in the power series representation of G\r
+µν\r
+B,F , and A\r
+µν\r
+B,F\r
+the odd ones. After this replacement all terms in the integrand are either symmetric or\r
+antisymmetric under the exchange τ1 ↔ τ2, and the antisymmetric ones can be deleted\r
+since their τ1,2 - integrals vanish. Further, as usual, we rescale τi = T ui, i = 1, 2, and set\r
+– 12 –
+
+u2 = 0. This leads to\r
+Π¯ µν,α\r
+spin (k; F) = −\r
+eκ\r
+32π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+(\r
+det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i Z 1\r
+0\r
+du1\r
+× e\r
+−k·SB12·k X\r
+3\r
+m=1\r
+J˜\r
+(µν),α\r
+spin,m +\r
+4\r
+3\r
+ieCµν,α), (4.10)\r
+where\r
+J˜µν,α\r
+spin,1 =\r
+\u0010\r
+S¨µν\r
+B11 − S˙\r
+µν\r
+F11)\r
+\u0010\r
+k ·\r
+\r
+A˙B12 + AF22\u0001\r
+\u0011α\r
+,\r
+J˜µν,α\r
+spin,2 = −S˙\r
+µα\r
+B12\u0010\r
+A¨B12 · k\r
+\u0011ν\r
++ S\r
+µα\r
+F12\u0010\r
+A˙\r
+F12 · k\r
+\u0011ν\r
++ A¨να\r
+B12\u0010\r
+S˙B12 · k\r
+\u0011µ\r
+− A˙να\r
+F12\u0010\r
+SF12 · k\r
+\u0011µ\r
+− A˙\r
+µα\r
+B12\u0010\r
+S¨B12 · k\r
+\u0011ν\r
++ A\r
+µα\r
+F12\u0010\r
+S˙\r
+F12 · k\r
+\u0011ν\r
++S¨να\r
+B12\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011µ\r
+− S˙να\r
+F12\u0010\r
+AF12 · k\r
+\u0011µ\r
+,\r
+J˜µν,α\r
+spin,3 = −\r
+\u0010\r
+S˙B12 · k\r
+\u0011µh\u0010 S˙B12 · k\u0011ν\u0010\r
+k ·\r
+\r
+A˙B12 + AF11\u0001\r
+\u0011α\r
+−\r
+\u0010\r
+SF12 · k\r
+\u0011ν\u0010\r
+k · AF12\u0011α\r
++\r
+\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011ν\u0010\r
+k · S˙B12\u0011α\r
+−\r
+\u0010\r
+AF12 · k\r
+\u0011ν\u0010\r
+k · SF12\u0011α\r
+− A˙\r
+να\r
+B12k · S˙B12 · k + A\r
+να\r
+F12k · SF12 · k\r
+i\r
+−\r
+\u0010\r
+A˙B12 · k\r
+\u0011µh\u0010 S˙B12 · k\u0011ν\u0010\r
+k · S˙B12\u0011α\r
+−\r
+\u0010\r
+SF12 · k\r
+\u0011ν\u0010\r
+k · SF12\u0011α\r
++\r
+\u0010 \r
+A˙B12 + AF11\u0001· k\r
+\u0011ν\u0010\r
+k ·\r
+\r
+A˙B12 + AF11\u0001\r
+\u0011α\r
+−\r
+\u0010\r
+AF12 · k\r
+\u0011ν\u0010\r
+k · AF12\u0011α\r
+− S˙να\r
+B12k · S˙B12 · k + S\r
+να\r
+F12k · SF12 · k\r
+i\r
+. (4.11)\r
+It is then straightforward to write the integrands more explicitly using the decomposition\r
+formulas of appendix B.\r
+The corresponding result for the scalar loop is obtained by omitting all terms involving\r
+the fermionic worldline Green’s function, changing det− 1\r
+2\r
+h\r
+tan(Z)\r
+Z\r
+i\r
+to det− 1\r
+2\r
+h\r
+sin(Z)\r
+Z\r
+i\r
+, and\r
+multiplying by a global factor of −\r
+1\r
+2\r
+."""
+
+[[sections]]
+number = "5"
+title = "Tadpole contribution to electromagnetic photon-graviton conversion"
+text = """
+The tadpole contribution (middle diagram in Fig. 2) can be constructed using our result\r
+(3.11) for the one-photon amplitude in the field, replacing k by k\r
+′\r
+, ε by the υ of (2.13), and\r
+integrating over k\r
+′\r
+. This gives\r
+Γ\r
+(tadpole)\r
+spin (k0, ϵ0; k, ε; F) = 2ieκ Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015 Z\r
+d\r
+Dk′\r
+δ\r
+D(k′\r
+)\r
+k\r
+′2\r
+×k\r
+′\r
+·\r
+\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· {ϵ0, f} · k\r
+′\r
+exp\u0014\r
+T\r
+4\r
+k\r
+′\r
+·\r
+\u0010cotZ\r
+Z\r
+−"""
+
+[[sections]]
+number = "1"
+title = "Z2"
+text = """
+\u0011\r
+· k\r
+′\r
+\u0015\r
+(5.1)\r
+(we have also used the antisymmetry of the Lorentz matrix cotZ + tanZ − 1\r
+Z\r
+). In the\r
+presence of the delta function, the factor exp[k\r
+′\r
+· · · k\r
+′\r
+] can be replaced by unity since the\r
+– 13 –
+
+prefactor already contains two powers of k\r
+′\r
+. Applying the integral formula (1.3) leads to\r
+Γ\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; F) = 4\r
+D\r
+ieκ Z ∞\r
+0\r
+dT(4πT)\r
+− D\r
+2 e\r
+−m2T\r
+×det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+tr \u0014\u0010cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
+. (5.2)\r
+This contribution, too, for D = 4, contains a UV divergence, stemming from the terms\r
+linear in the field. Thus to calculate it we can replace the determinant factor with unity,\r
+and under the trace make the replacement\r
+cotZ + tanZ − 1\r
+Z\r
+≈\r
+2"""
+
+[[sections]]
+number = "3"
+title = "Z . (5.3)"
+text = """
+Extracting the pole in dimensional regularization we get\r
+Γ\r
+(tadpole)\r
+spin,div (k0 = −k, ϵ0; k, ε; F) = −\r
+4\r
+3\r
+ie2κ\r
+(4π)\r
+2"""
+
+[[sections]]
+number = "1"
+title = "D − 4"
+text = """
+tr (F ϵ0f) . (5.4)\r
+As usual, we remove it by a subtraction at the integrand level, and the renormalized tadpole\r
+contribution becomes\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; F) = ieκ\r
+16π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T2\r
+e\r
+−m2T\r
+×\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+tr \u0014\u0010\r
+cotZ + tanZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
+−\r
+2\r
+3\r
+tr (Zϵ0f)\r
+\u001B\r
+. (5.5)\r
+Specializing to a constant magnetic background pointing along the z-axis (see Appendix B),\r
+we rewrite the renormalized expression in D dimensions in order to perform the proper-time\r
+integral within dimensional regularization. Now the renormalized tadpole contribution is\r
+given by\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = −\r
+ieκ\r
+D\r
+(2π)\r
+− D\r
+2 tr(r+ϵ0f)\r
+Z ∞\r
+0\r
+dT T − D\r
+2 e\r
+−m2T\r
+×\r
+\u001A\r
+z\r
+3\r
++ coth z − z coth2z\r
+\u001B\r
+(5.6)\r
+with z = eBT and Z = zr+. The z-integral can be carried out in closed form, leading to an\r
+expression of the renormalized tadpole contribution in terms of the Hurwitz zeta function\r
+ζ(s, a),\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = ieκ\r
+DeB\r
+\u0010 π\r
+eB\r
+\u0011− D\r
+2\r
+Γ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\r
+tr(r+ϵ0f)\r
+×\r
+"\r
+− 2\r
+− D\r
+2\r
+\u0010m2\r
+eB\r
+\u0011 D\r
+2 −1\r
+−\r
+D\r
+2\r
+ζ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+, 1 +\r
+m2\r
+2eB\r
+\u0011\r
++\r
+\u0010D\r
+2\r
+− 1\r
+\u0011 m2\r
+2eB\r
+ζ\r
+\u0010\r
+2 −\r
+D\r
+2\r
+, 1 +\r
+m2\r
+2eB\r
+\u0011\r
++\r
+2\r
+1− D\r
+2\r
+3\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\u0010m2\r
+eB\r
+\u0011 D\r
+2 −2\r
+#\r
+.\r
+(5.7)\r
+– 14 –
+
+However, note that, unlike the renormalization which we performed on the irreducible\r
+contribution Γ\r
+(irr)\r
+spin, this one is nothing new; the contribution of the tadpole linear in the field\r
+corresponds to the diagram shown in Fig. 8, which makes it clear that this subtraction is just\r
+a special case (the zero-momentum limit) of the QED photon wave function renormalization,\r
+TADPOLEN\r
+k k\r
+Figure 8. Tadpole diagram expanded to linear order in the field.\r
+Note that, differently from the irreducible contribution, for the tadpole contribution\r
+the renormalization completely removes the part linear in the field, leaving only terms of\r
+cubic or higher order in the field.\r
+Let us also give the corresponding result for the scalar loop:\r
+Γ¯\r
+(tadpole)\r
+scal (k0 = −k, ϵ0; k, ε; F) = −\r
+ieκ\r
+32π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T2\r
+e\r
+−m2T\r
+×\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+tr \u0014\u0010\r
+cotZ − 1\r
+Z\r
+\u0011\r
+· ϵ0 · f\r
+\u0015\r
++\r
+1\r
+3\r
+tr (Zϵ0f)\r
+\u001B\r
+. (5.8)\r
+Analogously to the spinor loop, one obtains the following representation for the scalar case:\r
+Γ¯\r
+(tadpole)\r
+scal (k0 = −k, ϵ0; k, ε; F) = −\r
+2ieκ\r
+DeB\r
+\u0010 2π\r
+eB\r
+\u0011− D\r
+2\r
+Γ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\r
+tr(r+ϵ0f)\r
+×\r
+"\r
+D\r
+2\r
+ζ\r
+\u0010\r
+1 −\r
+D\r
+2\r
+,\r
+1\r
+2\r
++\r
+m2\r
+2eB\r
+\u0011\r
++\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011 m2\r
+2eB\r
+ζ\r
+\u0010\r
+2 −\r
+D\r
+2\r
+,\r
+1\r
+2\r
++\r
+m2\r
+2eB\r
+\u0011\r
++\r
+2\r
+− D\r
+2\r
+3\r
+\u0010\r
+1 −\r
+D\r
+2\r
+\u0011\u0010m2\r
+eB\r
+\u0011 D\r
+2 −2\r
+#\r
+. (5.9)"""
+
+[[sections]]
+number = "6"
+title = "Third contribution to electromagnetic photon-graviton conversion"
+text = """
+For the other reducible contribution, corresponding to the third diagram in Fig. 2, we\r
+can use eqs. (3.7), (3.8), with k\r
+′ = k0 = −k, and our results for the vacuum polarization\r
+tensor in a constant field from subsection 3.3. Like the tadpole contribution, it has a UV\r
+divergence from the field-independent part of the vacuum polarization tensor. This part\r
+corresponds to the right-hand diagram of Fig. 2, but with the loop fermion taken in vacuum,\r
+and according to the LSZ formalism is not to be taken into account in the calculation of the\r
+– 15 –
+
+on-shell amplitude. Using our result (3.23) for the on-shell renormalized one-loop vacuum\r
+polarization tensor in the constant field, and putting things together, we have\r
+Γ¯\r
+(ext)\r
+spin (k0 = −k, ϵ0; k, ε; F) = vF β\u0010\r
+Π¯ βα\r
+spin(k; F) − Π¯ βα\r
+spin(k; 0)\u0011\r
+εα , (6.1)\r
+with\r
+υF = iκ\r
+{ϵ0, F} · k0\r
+k\r
+2\r
+0\r
+= −iκ\r
+{ϵ0, F} · k\r
+k\r
+2\r
+, (6.2)\r
+Π¯ βα\r
+spin(k; F) = e\r
+2\r
+8π"""
+
+[[sections]]
+number = "2"
+title = "Z ∞"
+text = """
+0\r
+dT\r
+T\r
+e\r
+−m2T\r
+Z 1\r
+0\r
+du1\r
+\u001A\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+tan Z\r
+\u0015\r
+˜I\r
+βα\r
+spin e\r
+−T k·Φ12·k\r
++\r
+2\r
+3\r
+\r
+δ\r
+βαk2 − kβ\r
+k\r
+α\r
+\u0001\r
+\u001B\r
+, (6.3)\r
+and ˜I\r
+βα\r
+spin as given in (3.20). Note that this contribution, too, after renormalization starts\r
+with terms cubic in F, and that on-shell it has an IR divergence through the pole in (6.2).\r
+A proper treatment of the on-shell limit requires a somewhat different interpretation of\r
+the third diagram, namely as a correction to the tree-level amplitude due to the modified\r
+dispersion relation of the photon in the field [44]. In the presence of an external field, the\r
+physical photon eigenmodes no longer satisfy the vacuum on-shell condition k\r
+2 = 0; instead,\r
+their propagation is governed by the dispersion relation k\r
+2 + Π(k) = 0, where Π denotes\r
+the photon polarization tensor, leading in general to a field induced deviation from k\r
+2 = 0.\r
+The corresponding amplitude for a scalar loop is simply obtained by replacing Π¯ βα\r
+spin(k; F)\r
+with Π¯ βα\r
+scal(k; F) in (6.1)."""
+
+[[sections]]
+number = "7"
+title = "Weak-field expansion of the tadpole contribution"
+text = """
+Since phenomenological applications are primarily concerned with the regime of weak ex\u0002ternal fields, we briefly discuss the tadpole contribution in the limit of a weak magnetic\r
+background,\r
+eB ≪ m2. (6.1)\r
+In this regime, the proper-time integrals admit a systematic asymptotic expansion in powers\r
+of the dimensionless ratio eB/m2.\r
+For definiteness, we present the weak-field expansion only for the spinor loop, since the\r
+scalar case follows by an entirely analogous procedure. To derive this expansion, it is con\u0002venient to return to the proper-time representation of the spinor tadpole contribution given\r
+in Eq. (5.6), prior to performing the z-integration. Specializing to D = 4, the hyperbolic\r
+functions appearing in the integrand can be expanded for small\r
+z = eBT , (6.2)\r
+which is justified since the proper-time integral is exponentially dominated by values T ∼\r
+1/m2in the weak-field regime.\r
+– 16 –
+
+A compact representation of the weak-field expansion follows from the series represen\u0002tation of the integrand in Eq. (5.6),\r
+z\r
+3\r
++ coth z − z coth2z =\r
+X∞\r
+n=2\r
+2\r
+2nB2n\r
+(2n − 1)! z\r
+2n−1\r
+, (6.3)\r
+where Bn denotes the Bernoulli numbers. Substituting this expansion into the proper-time\r
+integral and carrying out the integration term by term yields the following closed-form\r
+weak-field expansion for the renormalized spinor tadpole contribution:\r
+Γ¯\r
+(tadpole)\r
+spin (k0 = −k, ϵ0; k, ε; B) = −\r
+ieκ\r
+4eB\r
+(2π)\r
+−2\r
+(eB)\r
+2\r
+tr(r+ϵ0f)\r
+×\r
+X∞\r
+n=2\r
+2\r
+2nB2n\r
+(2n − 1)!\r
+\u0010eB\r
+m2\r
+\u00112n−2\r
+Γ(2n − 2). (6.4)\r
+The corresponding weak-field expansion for the scalar loop can be obtained by the same\r
+method and will not be displayed here."""
+
+[[sections]]
+number = "8"
+title = "Ward identities for the photon-graviton amplitude in a constant field"
+text = """
+Finally, let us discuss how the Ward identities work for the photon-graviton amplitude in\r
+a constant field, returning to the off-shell unrenormalized amplitudes. Here there is no\r
+difference between the scalar and spinor-loop cases. It is easy to see that the gauge Ward\r
+identity holds for each of the three contributions separately, i.e.\r
+Γ\r
+(irr),(tadpole),(ext)(−k, ϵ0; k, δε; F) = 0 , (7.1)\r
+where δεµ\r
+i = k\r
+µ\r
+.\r
+For the gravitational Ward identity, defined by the transformation\r
+δϵµν\r
+0 = k\r
+µ\r
+0\r
+ζ\r
+ν\r
+0 + ζ\r
+µ\r
+0\r
+k\r
+ν\r
+0\r
+, (7.2)\r
+a slight extension of the manipulations of the appendix of [21] shows that the inclusion of\r
+the one-photon amplitude leads to\r
+Γ\r
+(irr)(k0, δϵ0; k, ε; F) = Γ(k0 + k, ε˜; F) + Γ(k0, ε˜F ; k, ε; F), (7.3)\r
+where on the right-hand side we have now the one- and two-photon amplitudes, and\r
+ε˜\r
+µ\r
+i ≡ κ(k\r
+µ\r
+i\r
+ε\r
+ν\r
+i − ε\r
+µ\r
+i\r
+k\r
+ν\r
+i\r
+)ζ0ν = κ(fi· ζ0)\r
+µ\r
+,\r
+ϵ˜\r
+µ\r
+F ≡ −iκ(F · ζ0)\r
+µ\r
+. (7.4)\r
+However, the first term on the right-hand side of (7.3) vanishes when setting k0 = −k.\r
+Using\r
+δυµ\r
+F = −ε˜\r
+µ\r
+F − iκ\r
+k0 · F · ζ0\r
+k\r
+2\r
+0\r
+k\r
+µ\r
+0\r
+, (7.5)\r
+– 17 –
+
+we can get from (7.3) the following on-shell Ward identity connecting Γ\r
+(irr)\r
+spin and Γ\r
+(ext)\r
+spin ,\r
+Γ\r
+(irr)(−k, δϵ0; k, ε; F) + Γ(ext)(−k, δϵ0; k, ε; F) = 0 , (7.6)\r
+while the tadpole contribution on-shell becomes invariant by itself,\r
+Γ\r
+(tadpole)(−k, δϵ0; k, ε; F) = 0 , (7.7)\r
+as can be easily seen from (5.2) using the on-shell relations k\r
+2 = ε · k = ζ0 · k0 = 0."""
+
+[[sections]]
+number = "9"
+title = "Conclusions"
+text = """
+In this work we have re-examined electromagnetic photon–graviton conversion in a con\u0002stant external field within Einstein–Maxwell theory at the one-loop level. Although pho\u0002ton–graviton conversion in an electromagnetic field might eventually find applications in a\r
+broader range of physical contexts, here we have focused on its dichroism aspect, motivated\r
+by the analysis of Ref. [44], which demonstrated that this process provides the leading\r
+Standard Model contribution to magnetic dichroism, despite its small absolute magnitude\r
+under realistic conditions.\r
+Our main result is the identification and explicit evaluation of a non-vanishing tadpole\r
+contribution to the one-loop photon–graviton conversion amplitude, corresponding to the\r
+middle diagram in Fig. 2. Contrary to long-standing assumptions, this diagram does not\r
+vanish once the infrared behavior of the connecting photon propagator is treated correctly\r
+in dimensional regularization. Using the worldline formalism, we have provided a unified\r
+calculation of all one-loop contributions — irreducible, tadpole, and other reducible — for\r
+scalar and spinor loops in a general constant electromagnetic background.\r
+Although the tadpole diagram contributes to the full one-loop amplitude, it is irrelevant\r
+for magnetic dichroism already at a structural level. From (5.6) we see that the magnetic\r
+tadpole contribution depends on the photon and graviton polarizations through a global\r
+factor tr(F ϵ0f), which (for on-shell gravitons) is proportional to the tree-level amplitude\r
+Γ\r
+(tree)(k0, ϵ0; k, ε; F) of eq. (1.1), implying identical photon–graviton conversion rates for\r
+the two photon polarizations. Consequently, the magnetic dichroism remains unchanged,\r
+and the analysis of Ahlers et al. [44] is not affected by the presence of the tadpole diagram.\r
+In the weak-field regime eB/m2 ≪ 1, relevant for phenomenological applications, the\r
+tadpole contribution is moreover parametrically suppressed compared to the irreducible\r
+one-loop contribution. In the strong-field limit eB/m2 ≫ 1, the relative importance of dif\u0002ferent one-loop contributions can change qualitatively, as has been demonstrated in related\r
+contexts [71]. In such regimes, tadpole-type contributions may play a more prominent role\r
+in the overall amplitude, which could be relevant not only from a theoretical standpoint but\r
+also in extensions of the Standard Model involving light or weakly charged particles, such\r
+as mini-charged particles [72], for which strong-field effects can become physically relevant.\r
+Independently of these phenomenological considerations, the inclusion of the tadpole di\u0002agram is conceptually important. It completes the one-loop description of photon–graviton\r
+conversion in external fields and clarifies its close connection to other one-particle reducible\r
+– 18 –
+
+effects in background-field QED. Our results thus provide a consistent and complete frame\u0002work for future studies, including strong-field backgrounds, non-standard charged sectors,\r
+and higher-loop corrections.\r
+A Einstein-Maxwell theory\r
+In our euclidean conventions, the action for a scalar field coupled to electromagnetism and\r
+gravity is\r
+S[ϕ, ϕ∗; g, A] = Zd\r
+Dx\r
+√\r
+g\r
+h\r
+g\r
+µν(∂µ − ieAµ)ϕ∗\r
+(∂ν + ieAν)ϕ + (m2 + ξR)ϕ\r
+∗ϕ\r
+i\r
+. (A.1)\r
+In the spin 1/2 case, the euclidean action for a Dirac field Ψ coupled to electromagnetism\r
+and gravity is given by\r
+S[Ψ, Ψ; ¯ e, A] = Zd\r
+Dx\r
+√\r
+g Ψ( ¯ ∇/ + m)Ψ (A.2)\r
+where the vielbein e\r
+a\r
+µ and the spin connection ωµab appear inside the Dirac operator\r
+∇/ = γ\r
+a\r
+e\r
+µ\r
+a∇µ , ∇µ = ∂µ + ieAµ +\r
+1\r
+4\r
+ωµabγ\r
+a\r
+γ\r
+b\r
+. (A.3)\r
+Moreover, we will need also the interaction between photons and gravitons, which is de\u0002scribed by the action of Einstein-Maxwell theory (in euclidean conventions)\r
+S[g, A] = Zd\r
+Dx\r
+√\r
+g\r
+\u0012\r
+−\r
+1\r
+2κ"""
+
+[[sections]]
+number = "2"
+title = "R +"
+text = "1"
+
+[[sections]]
+number = "4"
+title = "FµνF"
+text = """
+µν\u0013\r
+(A.4)\r
+where κ\r
+2 = 8πGN . Let us expand this action to quadratic order in the fields. Expanding\r
+gµν = δµν + κhµν and Aµ = A¯\r
+µ + aµ, so that Fµν = F¯µν + fµν, and using the short-hand\r
+notation h ≡ δ\r
+µνhµν, one obtains the following quadratic approximation in the fluctuations\r
+(hµν, aµ) around the background (δµν, A¯\r
+µ):\r
+S(2) =\r
+Z\r
+d\r
+Dx\r
+\u001A\r
+1\r
+4\r
+(∂αhµν)\r
+2 −\r
+1\r
+8\r
+(∂αh)\r
+2 −\r
+1\r
+2\r
+\u0012\r
+∂\r
+αhαµ −\r
+1\r
+2\r
+∂µh\r
+\u00132\r
++\r
+1\r
+2\r
+(∂µaν)\r
+2 −\r
+1\r
+2\r
+(∂\r
+µ\r
+aµ)\r
+2\r
+−\r
+κ\r
+2\r
+hµν\u0010F¯µαF¯ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯2\r
+\u0011\r
+− κhµν\u0010F¯µαf\r
+ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯αβfαβ\u0011\r
++\r
+κ\r
+2\r
+4\r
+h\u00101\r
+8\r
+h\r
+2 −\r
+1\r
+4\r
+h\r
+2\r
+µν\u0011\r
+F¯2 + h\r
+µνhαβF¯\r
+µαF¯\r
+νβ + (2h\r
+µαhν\r
+α − hhµν)F¯\r
+µβF¯\r
+ν\r
+β\r
+i\u001B\r
+.\r
+(A.5)\r
+In the second line of this expression, we recognize the linear coupling −\r
+κ\r
+2\r
+hµνT¯µν of the\r
+graviton hµν to the stress tensor of the background electromagnetic field\r
+T¯µν = F¯µαF¯ν\r
+α −\r
+1\r
+4\r
+δ\r
+µνF¯2\r
+. (A.6)\r
+– 19 –
+
+The existence of this tadpole vertex indicates that the nontrivial background stress tensor\r
+tends to curve space. The third line in (A.5) gives instead the tree-level graviton-photon\r
+conversion in the electromagnetic background. Using plane waves\r
+hµν(x) = ϵ0µν e\r
+ik0x\r
+, aα(x) = εα e\r
+ikx (A.7)\r
+we get for this conversion term the vertex (deleting now the ‘bar’ on F)\r
+∆S(2) = (2π)\r
+DδD(k0 + k) ϵ0µνεα (−iκ)\r
+h\r
+F\r
+µαkν − (F · k)µ\r
+δ\r
+να +\r
+1\r
+2\r
+δ\r
+µν(F · k)α\r
+i\r
+.\r
+The two-point functions (which we denote by Π), in either coordinate or momentum\r
+space, are contained in S(2) (or in the quadratic part of the full effective action Γ(2) =\r
+−S(2) + Γ(1−loop)\r
+(2) + · · ·) as follows 1\r
+S(2) =\r
+Z\r
+d\r
+Dx\r
+\u001A\r
+1\r
+2\r
+hµν(x)Πµν,λρ(−i∂)hλρ(x) + 1\r
+2\r
+aα(x)Παβ(−i∂)aβ(x)\r
++hµν(x)Πµν,α(−i∂)aα(x) −\r
+κ\r
+2\r
+hµν(x)T¯µν(x)\r
+\u001B\r
+=\r
+Z\r
+d\r
+Dk\r
+(2π)D\r
+\u001A\r
+1\r
+2\r
+hµν(−k)Πµν,λρ(k)hλρ(k) + 1\r
+2\r
+aα(−k)Παβ(k)aβ(k)\r
++hµν(−k)Πµν,α(k)aα(k) −\r
+κ\r
+2\r
+hµν(−k)T¯µν(k)\r
+\u001B\r
+. (A.8)\r
+The equations of motion in terms of these two-point functions then read\r
+δaα(−k) : Παβ(k)aβ(k) + Πµν,α(−k)hµν(k) = 0 (A.9)\r
+δhµν(−k) : Πµν,λρ(k)hλρ(k) + Πµν,α(k)aα(k) = κ"""
+
+[[sections]]
+number = "2"
+title = "T¯µν(k) (A.10)"
+text = """
+and, in particular, one obtains from (A.5)\r
+Π\r
+αβ\r
+tree(k) = k\r
+2\r
+δ\r
+αβ − kα\r
+k\r
+β\r
+, (A.11)\r
+Π\r
+µν,α\r
+tree (k) = −\r
+iκ\r
+2\r
+C\r
+µν,α (A.12)\r
+with\r
+C\r
+µν,α = Fµαkν + Fναkµ −\r
+\r
+F · k\r
+\u0001µ\r
+δ\r
+να −\r
+\r
+F · k\r
+\u0001ν\r
+δ\r
+µα +\r
+\r
+F · k\r
+\u0001α\r
+δ\r
+µν (A.13)\r
+depicted in Fig. 1.\r
+From the cubic fluctuations, we will still need the term coupling the graviton to two\r
+photons:\r
+S\r
+Gγγ\r
+(3) = −\r
+κ\r
+2\r
+Z\r
+d\r
+Dx hµν\u0010\r
+f\r
+µαfν\r
+α −\r
+1\r
+4\r
+δ\r
+µνf2\r
+\u0011\r
+. (A.14)\r
+1We Fourier transform fields as hµν(k) = R\r
+d\r
+Dx e−ikx hµν(x), with inverse Fourier transform given by\r
+hµν(x) = R\r
+dDk\r
+(2π)D hµν(k) eikx\r
+.\r
+– 20 –
+
+B Worldline Green’s functions and determinants in a constant field\r
+Define Zµν ≡ eFµνT .\r
+B.1 Periodic case\r
+Determinant factor:\r
+det\r
+1\r
+2\r
+\u0014\r
+Z\r
+sin Z\r
+\u0015\r
+. (B.1)\r
+Worldline Green’s function and its derivatives:\r
+GB12 =\r
+T\r
+2Z2\r
+\u0012\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 + iZG˙ B12 − 1\r
+\u0013\r
+, (B.2)\r
+G˙B12 =\r
+i\r
+Z\r
+\u0012\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 − 1\r
+\u0013\r
+, (B.3)\r
+G¨B12 = 2δ12 −\r
+2\r
+T\r
+Z\r
+sinZ\r
+e\r
+−iZG˙ B12 (B.4)\r
+Symmetry properties:\r
+GB12 = G\r
+T\r
+B21, G˙B12 = −G˙T\r
+B21, G¨B12 = G¨T\r
+B21. (B.5)\r
+Coincidence limits:\r
+GB(τ, τ ) = T\r
+2\r
+\u0010cot Z\r
+Z\r
+−"""
+
+[[sections]]
+number = "1"
+title = "Z2"
+text = """
+\u0011\r
+, (B.6)\r
+G˙B(τ, τ ) = icotZ − i\r
+Z\r
+, (B.7)\r
+G¨B(τ, τ ) = 2δ(0) −\r
+2\r
+T\r
+Z cot Z . (B.8)\r
+Weak-field expansion:\r
+GB12 = GB12 −\r
+1\r
+6\r
+−\r
+i"""
+
+[[sections]]
+number = "3"
+title = "G˙ B12GB12Z +"
+text = """
+\u0010 1\r
+3T\r
+G"""
+
+[[sections]]
+number = "2"
+title = "B12 −"
+text = """
+T\r
+90\r
+\u0011\r
+Z\r
+2 + O(Z3\r
+), (B.9)\r
+G˙B12 = G˙ B12 + 2i\r
+\u0010GB12\r
+T\r
+−\r
+1\r
+6\r
+\u0011\r
+Z +\r
+2\r
+3T\r
+G˙ B12GB12Z\r
+2 + O(Z3\r
+), (B.10)\r
+G¨B12 = 2δ12 −\r
+2\r
+T\r
++\r
+2\r
+T\r
+iG˙ B12Z − 4\r
+\u0010GB12\r
+T\r
+−\r
+1\r
+6\r
+\u0011\r
+Z\r
+2 + O(Z3\r
+) . (B.11)\r
+Even-odd decomposition:\r
+For the purpose of simplifying integrals, it will often be convenient to decompose the\r
+constant-field worldline Green’s functions as\r
+GB12 = SB12 + AB12 (B.12)\r
+where SB denotes the even and AB the odd part as a power series in F. Note that SB is\r
+symmetric as a Lorentz matrix and AB antisymmetric, which motivates our notation.\r
+Special constant fields:\r
+– 21 –
+
+• Parallel electric and magnetic fields:\r
+in the generic case, it is possible to find a Lorentz system where E and B both point\r
+along the z - axis. If we further assume, for definiteness, that E · B > 0, then we can\r
+take them both to point along the positive z-axis, E = (0, 0, E), B = (0, 0, B). The\r
+euclidean field strength tensor then takes the form\r
+F =\r
+\r
+"""
+
+[[sections]]
+number = "0"
+title = "B 0 0"
+text = """
+−B 0 0 0\r
+0 0 0 iE\r
+0 0 −iE 0\r
+\r
+\r
+. (B.13)\r
+Defining z+ ≡ eBT and z− ≡ ieET, the determinant factor (B.1) can then be written\r
+as\r
+det− 1\r
+2\r
+\u0014\r
+sin Z\r
+Z\r
+\u0015\r
+=\r
+z+z−\r
+sinh z+ sinh z−\r
+=\r
+eBT\r
+sinh eBT\r
+eET\r
+sin eET\r
+. (B.14)\r
+We further define Lorentz matrices g+, g−, and r+, r− by\r
+g+ ≡\r
+\r
+\r
+1 0 0 0\r
+0 1 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+\r
+, g− ≡\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 1 0\r
+0 0 0 1\r
+\r
+\r
+,\r
+(B.15)\r
+r+ ≡\r
+\r
+\r
+0 1 0 0\r
+−1 0 0 0\r
+0 0 0 0\r
+0 0 0 0\r
+\r
+\r
+, r− ≡\r
+\r
+\r
+0 0 0 0\r
+0 0 0 0\r
+0 0 0 1\r
+0 0 −1 0\r
+\r
+\r
+.\r
+Then one can show the following matrix decompositions of the worldline Green’s\r
+functions\r
+S\r
+µν\r
+B12 = −\r
+T\r
+2\r
+X\r
+α=±\r
+AB12(zα)\r
+zα\r
+g\r
+µν\r
+α , (B.16)\r
+A\r
+µν\r
+B12 =\r
+iT\r
+2\r
+X\r
+α=±\r
+SB12(zα) − G˙ B12\r
+zα\r
+r\r
+µν\r
+α , (B.17)\r
+S˙\r
+µν\r
+B12 =\r
+X\r
+α=±\r
+SB12(zα) g\r
+µν\r
+α , (B.18)\r
+A˙\r
+µν\r
+B12 = −i\r
+X\r
+α=±\r
+AB12(zα) r\r
+µν\r
+α , (B.19)\r
+S¨µν\r
+B12 = G¨B12δ\r
+µν −\r
+2\r
+T\r
+X\r
+α=±\r
+zαAB12(zα) g\r
+µν\r
+α , (B.20)\r
+A¨µν\r
+B12 =\r
+2i\r
+T\r
+X\r
+α=±\r
+zαSB12(zα) r\r
+µν\r
+α . (B.21)\r
+– 22 –
+
+These decompositions involve essentially only the two scalar, dimensionless functions\r
+SB12 and AB12,\r
+SB12(z) = sinh(z G˙ B12)\r
+sinh z\r
+, (B.22)\r
+AB12(z) = cosh(z G˙ B12)\r
+sinh z\r
+−\r
+1\r
+z\r
+. (B.23)\r
+Of those only AB12 has a non-vanishing coincidence limit,\r
+ABii = coth z −\r
+1\r
+z\r
+. (B.24)\r
+Let us also write down the first few terms of the weak field expansions of these\r
+functions,\r
+SB12(z) = G˙ B12\u0014\r
+1 −\r
+2"""
+
+[[sections]]
+number = "3"
+title = "GB12"
+text = """
+T\r
+z\r
+2 +\r
+\u0010 2"""
+
+[[sections]]
+number = "45"
+title = "GB12"
+text = """
+T\r
++\r
+2"""
+
+[[sections]]
+number = "15"
+title = "G2"
+text = """
+B12\r
+T2\r
+\u0011\r
+z\r
+4 + O(z6\r
+)\r
+\u0015\r
+, (B.25)\r
+AB12(z) = \u00101\r
+3\r
+− 2\r
+GB12\r
+T\r
+\u0011\r
+z +\r
+\u0010\r
+−\r
+1\r
+45\r
++\r
+2"""
+
+[[sections]]
+number = "3"
+title = "G2"
+text = """
+B12\r
+T2\r
+\u0011\r
+z\r
+3 + O(z5\r
+) . (B.26)\r
+• The purely magnetic field case:\r
+We let the magnetic field point along the positive z-axis and denote z = eBT. Then\r
+the determinant factor (B.1) becomes\r
+det− 1\r
+2\r
+\u0014\r
+sin Z\r
+Z\r
+\u0015\r
+=\r
+z\r
+sinh z\r
+. (B.27)\r
+The decompositions (B.16) - (B.21) now involve only the three matrices g+, g− and\r
+r+:\r
+GB(τ1, τ2) = GB12 g− −\r
+T\r
+2z\r
+AB12(z)g+ +\r
+T\r
+2z\r
+\u0010\r
+SB12(z) − G˙ B12\u0011\r
+ir+ , (B.28)\r
+G˙B(τ1, τ2) = G˙ B12 g− + SB12(z)g+ − AB12(z)ir+ , (B.29)\r
+G¨B(τ1, τ2) = G¨B121l −\r
+2z\r
+T\r
+AB12(z)g+ +\r
+2z\r
+T\r
+SB12(z)ir+ . (B.30)\r
+The coincidence limits (B.6) - (B.8) turn into\r
+GB(τ, τ ) = −\r
+T\r
+6\r
+g− −\r
+T\r
+2z\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+g+ = −\r
+T\r
+6\r
+1l −\r
+T\r
+2z\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+−\r
+z\r
+3\r
+\u0013\r
+g+ ,\r
+(B.31)\r
+G˙B(τ, τ ) = −\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+ir+ , (B.32)\r
+G¨B(τ, τ ) = 2\u0010δ(0) −\r
+1\r
+T\r
+\u0011\r
+1l −\r
+2z\r
+T\r
+\u0012\r
+coth z −\r
+1\r
+z\r
+\u0013\r
+g+ . (B.33)\r
+• The purely electric field case:\r
+To obtain the analogue of the magnetic formulas (B.27) - (B.33) for a purely electric\r
+field pointing into the z-direction, just replace z = eBT by z = ieET and interchange\r
++ ↔ − everywhere.\r
+– 23 –
+
+• The crossed-field case:\r
+In a “crossed field”, defined by E ⊥ B, E = B, both invariants B2 − E2 and E · B\r
+vanish. For such a field F\r
+3 = 0, so that the power series (B.9)-(B.11) break off after\r
+their quadratic terms. The worldline correlators thus can be represented by the terms\r
+given there.\r
+The determinant factor becomes unity.\r
+B.2 Anti-periodic case\r
+Determinant factor:\r
+det\r
+1\r
+2\r
+\u0002\r
+cos Z\r
+\u0003\r
+. (B.34)\r
+Worldline Green’s function and its derivative:\r
+GF (τ1, τ2) = GF12\r
+e\r
+−iZG˙ B12\r
+cosZ\r
+, (B.35)\r
+G˙\r
+F (τ1, τ2) = 2δ12 +\r
+2i\r
+T\r
+GF12\r
+Z\r
+cos Z\r
+e\r
+−iZG˙ B12\r
+. (B.36)\r
+Symmetry properties:\r
+GF12 = −GT\r
+F21, G˙\r
+F12 = G˙T\r
+F21 . (B.37)\r
+Coincidence limits:\r
+GF (τ, τ ) = −itanZ , (B.38)\r
+G˙\r
+F (τ, τ ) = 2δ(0) + 2\r
+T\r
+Z tan Z . (B.39)\r
+Weak-field expansion:\r
+GF12 = GF12 − iGF12G˙ B12Z + 2GF12\r
+GB12\r
+T\r
+Z\r
+2 + O(Z3\r
+), (B.40)\r
+G˙\r
+F12 = 2δ12 +\r
+2\r
+T\r
+iZGF12 +\r
+2\r
+T\r
+GF12G˙ B12Z\r
+2 + O(Z3\r
+) . (B.41)\r
+Even-odd decomposition:\r
+GF = SF + AF . (B.42)\r
+Special constant fields:\r
+• Parallel electric and magnetic fields:\r
+With the same notation as in the periodic case above,\r
+det\r
+1\r
+2\r
+\u0002\r
+cos Z\r
+\u0003\r
+= cosh z+ cosh z− = cosh(eBT) cos(eET), (B.43)\r
+– 24 –
+
+S\r
+µν\r
+F12 =\r
+X\r
+α=±\r
+SF12(zα) g\r
+µν\r
+α , (B.44)\r
+A\r
+µν\r
+F12 = −\r
+X\r
+α=±\r
+AF12(zα)irµν\r
+α , (B.45)\r
+S˙\r
+µν\r
+F12 = G˙\r
+F121l −\r
+2\r
+T\r
+X\r
+α=±\r
+AF12(zα) g\r
+µν\r
+α , (B.46)\r
+A˙\r
+µν\r
+F12 =\r
+2\r
+T\r
+X\r
+α=±\r
+zαSF12(zα)irµν\r
+α . (B.47)\r
+The scalar, dimensionless coefficient functions appearing in these formulas are\r
+SF12(z) = GF12\r
+cosh(z G˙ B12)\r
+cosh(z)\r
+, (B.48)\r
+AF12(z) = GF12\r
+sinh(z G˙ B12)\r
+cosh(z)\r
+. (B.49)\r
+Of those, it is AF12 that has a non-vanishing coincidence limit\r
+AF ii = tanh z . (B.50)\r
+As for the periodic case above, let us also write down the first few terms of the weak\r
+field expansions of these functions:\r
+SF12(z) = GF12\u00141 − 2\r
+GB12\r
+T\r
+z\r
+2 +\r
+2\r
+3\r
+\u0010GB12\r
+T\r
++\r
+G2\r
+B12\r
+T2\r
+\u0011\r
+z\r
+4 + O(z6\r
+)\r
+\u0015\r
+, (B.51)\r
+AF12(z) = GF12G˙ B12\u0014\r
+z −\r
+\u00101\r
+3\r
++\r
+2"""
+
+[[sections]]
+number = "3"
+title = "GB12"
+text = """
+T\r
+\u0011\r
+z\r
+3 + O(z5\r
+)\r
+\u0015\r
+. (B.52)\r
+• The purely magnetic field case:\r
+With the same notations as for the periodic case above, the determinant factor be\u0002comes\r
+det\r
+1\r
+2\r
+\u0002\r
+cosZ\r
+\u0003\r
+= cosh z . (B.53)\r
+The worldline correlators (B.35), (B.36) specialize to\r
+GF (τ1, τ2) = GF12 g− + SF12(z)g+ − AF12(z)ir+ , (B.54)\r
+G˙\r
+F (τ1, τ2) = G˙F121l −\r
+2z\r
+T\r
+AF12(z)g+ +\r
+2z\r
+T\r
+SF12(z)ir+ (B.55)\r
+with coincidence limits\r
+GF (τ, τ ) = −tanh z ir+ , (B.56)\r
+G˙\r
+F (τ, τ ) = 2δ(0)1l −\r
+2z\r
+T\r
+tanh z g+ . (B.57)\r
+• The purely electric field case:\r
+The rules for the transition from the magnetic to the electric field are the same as for\r
+the periodic case above.\r
+– 25 –
+
+• The crossed-field case:\r
+As in the periodic case, for a crossed field the determinant factor becomes unity,\r
+and the worldline correlators are given exactly by their weak-field expansion to order\r
+O(F\r
+2\r
+), (B.40) and (B.41).\r
+Acknowledgments\r
+We would like to thank F. Fillion-Gourdeau and A. Ilderton for helpful discussions and\r
+correspondence.\r
+References\r
+[1] W. K. De Logi and A. R. Mickelson, Phys. Rev. D 16, 2915 (1977).\r
+[2] M. Atsumi, Progress of Theoretical Physics 63, 312 (1980).\r
+[3] S.Y. Choi, J.S. Shim, and H.S. Song, Phys. Rev. D 48, 2953 (1993), arXiv:hep-th/9306250,\r
+Phys. Rev. D 51, 2751 (1995), arXiv:hep-th/9411092.\r
+[4] N. E. J. Bjerrum-Bohr, J. F. Donoghue and B. R. Holstein, Phys. Rev. D 67, 084033 (2003),\r
+arXiv:hep-th/0211071.\r
+[5] S. Hu and F. Zhou, Progress of Theoretical and Experimental Physics 7, 073B10 (2020).\r
+[6] B.R. Holstein, Phys. Rev. D 74, 085002 (2006), arXiv:gr-qc/0607054\r
+Am. J. Phys. 74, 1002 (2006), arXiv:hep-ph/0607187.\r
+[7] F.A. Berends and R. Gastmans, Ann. Phys. 98 (1976) 225.\r
+[8] P. Bittar, S. Fichet and L. de Souza, Phys. Rev. D 112, 045009 (2025),\r
+arXiv:hep-th/2404.07254.\r
+[9] V. P. Frolov, W. Israel, and S. N. Solodukhin, Phys. Rev. D 54, 2732 (1996),\r
+arXiv:hep-th/9602105.\r
+[10] N. K. Nielsen, Annals Phys. 327, 861 (2012), arXiv:hep-th/1109.2699.\r
+[11] I. Y. Park, Progress of Theoretical and Experimental Physics 2021, 013B03 (2021),\r
+arXiv:gr-qc/1807.11595.\r
+[12] M.E. Gertsenshtein, Sov. Phys. JETP 14 (1962) 84.\r
+[13] Ya. B. Zel’dovich and I.D. Novikov, The structure and evolution of the universe, Rel.\r
+Astrophys. Vol. 2 (1983), Chicago University Press.\r
+[14] G. Raffelt and L. Stodolsky, Phys. Rev. D37, 1237 (1988).\r
+[15] H. N. Long, D.V. Soa, and T. A. Tran, Mod. Phys. Lett. A9 (1994) 3619,\r
+arXiv:astro-ph/9410003.\r
+[16] J. C. R. Magueijo, Phys. Rev. D49 (1994) 671.\r
+[17] P. Chen, Phys. Rev. Lett. 74 (1995) 634; erratum-ibid. 74 (1995) 3091.\r
+[18] A.N. Cillis and D. Harari, Phys. Rev. D54 (1996) 4757, arXiv:astro-ph/9609200.\r
+[19] C. Deffayet and J.-P. Uzan, Phys. Rev. D62 (2000) 063507, arXiv:hep-ph/0002129.\r
+– 26 –
+
+[20] A. Ejlli, D. Ejlli, A.M. Cruise, G. Pisano and H. Grote, Eur. Phys. J. C 79 (2019) 1032,\r
+arXiv:gr-qc/1908.00232.\r
+[21] F. Bastianelli and C. Schubert, JHEP 0502, 069 (2005), arXiv:gr-qc/0412095.\r
+[22] M.J. Strassler, Nucl. Phys. B 385 (1992) 145, arXiv:hep-ph/9205205.\r
+[23] M.G. Schmidt and C. Schubert, Phys. Lett. B 318, 438 (1993), arXiv:hep-th/9309055.\r
+[24] R. Zh. Shaisultanov, Phys. Lett. B 378 (1996) 354, arXiv:hep-th/9512142.\r
+[25] S.L. Adler and C. Schubert, Phys. Rev. Lett. 77 (1996) 1695, arXiv:hep-th/9605035.\r
+[26] M. Reuter, M. G. Schmidt and C. Schubert, Ann. Phys. (N.Y.) 259 (1997) 313,\r
+arXiv:hep-th/9610191.\r
+[27] C. Schubert, Phys. Rept. 355, 73 (2001), arXiv:hep-th/0101036.\r
+[28] F. Bastianelli and A. Zirotti, Nucl. Phys. B 642, 372 (2002), arXiv:hep-th/0205182.\r
+[29] F. Bastianelli, O. Corradini and A. Zirotti, JHEP 0401 023 (2004), arXiv:hep-th/0312064.\r
+[30] F. Bastianelli, O. Corradini and A. Zirotti, Phys. Rev. D 67, 104009 (2003),\r
+arXiv:hep-th/0211134.\r
+[31] F. Bastianelli and P. van Nieuwenhuizen, Path integrals and anomalies in curved space,\r
+Cambridge University press, 2006.\r
+[32] W. Dittrich, R. Shaisultanov, Phys. Rev. D 62 (2000) 045024, arXiv:hep-th/0001171.\r
+[33] C. Schubert, Nucl. Phys. B 585, 407 (2000), arXiv:hep-ph/0001288.\r
+[34] W. Dittrich and M. Reuter, Effective Lagrangians in Quantum Electrodynamics, Springer\r
+1985.\r
+[35] V. I. Ritus, Sov. Phys. JETP 42, 774 (1975).\r
+[36] W. Dittrich and H. Gies, Probing the Quantum Vacuum, Springer 2000.\r
+[37] F. Bastianelli, U. Nucamendi, C. Schubert, and V. M. Villanueva, JHEP 0711 (2007) 099,\r
+arXiv:gr-qc/0710.5572.\r
+[38] L. Maiani, R. Petronzio, E. Zavattini, Phys. Lett. B 175, 359 (1986).\r
+[39] P. Sikivie, Phys. Rev. Lett. 51, 1415 (1983); Erratum: Phys. Rev. Lett. 52, 695 (1984).\r
+[40] A. Mirizzi, G. G. Raffelt, P. D. Serpico, Lect. Notes Phys. 741, 115 (2006),\r
+arXiv:astro-ph/0607415.\r
+[41] E. Masaki, A. Aoki, J. Soda, Phys. Rev. D 96, 043519 (2017), arXiv:astro-ph/1702.08843.\r
+[42] S. Villalba-Chávez, Nucl. Phys. B 881, 391 (2014), arXiv:hep-ph/1308.4033.\r
+[43] H. Tam and Q. Tang, Nucl. Phys. B 716, 435 (2012), arXiv:hep-ph/1107.1712.\r
+[44] M. Ahlers, J. Jaeckel and A. Ringwald, Phys. Rev. D 79 075017 (2009),\r
+arXiv:hep-ph/0812.3150.\r
+[45] R. Schützhold, Phys. Rev. Lett. 135, 171501 (2025), arXiv:gr-qc/2502.10221.\r
+[46] F. Fillion-Gourdeau and S. MacLean, Phys. Rev. D 111, 122004 (2025),\r
+arXiv:gr-qc/2506.05534.\r
+[47] A. T. Schmitt, Y. Joly et al, Optica 8, 56 (2021), arXiv:physics.ins-det/2003.00849.\r
+[48] B. Marx, K. S. Schulze et al, Phys. Rev. Lett. 110, 254801 (2013).\r
+– 27 –
+
+[49] H. Bernhardt, A. T. Schmitt et al, Phys. Rev. Res. 2, 023365 (2020).\r
+[50] S-J. Chen, H-H. Mei and W-T Ni, Mod. Phys. Lett. A 22, 2815 (2007),\r
+arXiv:hep-ex/0611050.\r
+[51] F. Della Valle, A. Ejlli et al, Eur. Phys. J. C. 76, 1 (2016), arXiv:physics.optics /1510.08052.\r
+[52] A. Ejlli, F. Della Valle et al, Phys. Rept. 871, 1 (2020), arXiv:physics.optics /2005.12913.\r
+[53] G. Zavattini, F. Della Valle et al, Eur. Phys. J. C. 82, 1 (2022),\r
+arXiv:physics.optics/2110.03943.\r
+[54] E.S. Fradkin, D.M. Gitman, S.M. Shvartsman, Quantum Electrodynamics with Unstable\r
+Vacuum, Springer 1991.\r
+[55] H. Gies and F. Karbstein, JHEP 1703 (2017) 108, arXiv:hep-th/1612.07251.\r
+[56] F. Karbstein, JHEP 10, 075 (2017), arXiv:hep-th/1709.03819.\r
+[57] F. Karbstein, JHEP 01, 057 (2022), arXiv:hep-th/2109.04823.\r
+[58] M. Bordag and I. G. Pirozhenko, MDPI Physics 6, 237 (2024).\r
+[59] J. P. Edwards and C. Schubert, Nucl. Phys. B 923 (2017) 339, arXiv:hep-th/1704.00482.\r
+[60] N. Ahmadiniaz, F. Bastianelli, O. Corradini, J. P. Edwards and C. Schubert, Nucl. Phys. B\r
+924 (2017) 377, arXiv:hep-th/1704.05040.\r
+[61] N. Ahmadiniaz, J. P. Edwards and A. Ilderton, JHEP 05 (2019) 038,\r
+arXiv:hep-th/1901.09416.\r
+[62] N. Ahmadiniaz, F. Bastianelli, F. Karbstein and C. Schubert, Proceedings of Sixteenth\r
+Marcel Grossmann Meeting on General Relativity, July 5-10, 2021, Eds. R. Ruffini and\r
+Gregory V. Vereshchagin, World Scientific, February 2023, 4393-4400,\r
+arXiv:hep-ph/2111.01980.\r
+[63] F. Bastianelli, O. Corradini, J. M. Dávila and C. Schubert, Phys. Lett. B 716, 345 (2012),\r
+arXiv:hep-th/1202.4502.\r
+[64] N. Ahmadiniaz, F.M. Balli, O. Corradini, J.M. Dávila and C. Schubert, Nucl. Phys. B 950\r
+(2020) 114877, arXiv:hep-th/1908.03425.\r
+[65] F. Bastianelli and C. Schubert, Worldline Path Integrals and Quantum Field Theory,\r
+Cambridge University Press (To appear).\r
+[66] E. Leader and E. Predazzi, J. Phys. G 40 (2013) 075001, arXiv:hep-ph/1101.3425.\r
+[67] N. Ahmadiniaz and C. Schubert, Eur. Phys. Lett. 130 (2020) 41001,\r
+arXiv:hep-th/2001.00885.\r
+[68] N. Ahmadiniaz, M. A. Lopez-Lopez and C. Schubert, Phys. Lett. B 852 (2024) 138610,\r
+arXiv:hep-th/2312.07047.\r
+[69] M.A. Lopez Lopez, Phys. Lett. B 860 (2025) 139157, arXiv:hep-th/2408.16474.\r
+[70] I. Ahumada, P. Copinger and J.P. Edwards, Phys. Rev. D 112 (2025) 096024,\r
+arXiv:hep-th/2507.22308.\r
+[71] F. Karbstein, Phys. Rev. Lett. 122 (2019) 211602, arXiv:hep-th/1903.06998.\r
+[72] B. Döbrich, H. Gies, N. Neitz, F. Karbstein, Phys. Rev. Lett. 109 (2012) 131802,\r
+arXiv:hep-ph/1203.2533.\r
+– 28 –"""
+
+[[equations]]
+latex = """
+%S(1)\r
+ψ [A¯]\r
+&µ\r
+qµ +\r
+1\r
+2"""
+display = false
+
+[[equations]]
+latex = """
+qµ\r
+%\r
+S(2)\r
+ψ [A¯]\r
+&µν\r
+qν + O(q3), \r
+where we employed the shorthand notation\r
+%\r
+S(n)\r
+ψ\r
+&σ1...σn\r
+[A¯] := δnSψ[A]\r
+δAσ1 ... δAσn\r
+'\r
+'\r
+'\r
+'\r
+A=A¯\r
+. \r
+The first-order term corresponds to a one-loop photon current induced by the field A¯, \r
+the Hessian is related to the one-loop photon polarization tensor Πµν [A¯] := %S(2)\r
+ψ\r
+&µ\r
+evaluated in the external field A¯; for completeness note that this definition of the ph\r
+polarization tensor differs from that of [57] by an overall minus sign. To Gaußian orde\r
+ignore the terms of O(q3) in the exponent, resulting in\r
+eiW[A¯] " eiSψ[A¯]"""
+display = false
+
+[[equations]]
+latex = """
+%& '\r
+=:Γ2-loop\r
+HE\r
+!\r
+!\r
+1PI\r
++\r
+1\r
+2\r
+( ( "\r
+S(1)\r
+ψ [A¯]\r
+#\r
+µ\r
+Dµν "S(1)\r
+ψ [A¯]\r
+#\r
+ν"""
+display = false

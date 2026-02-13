@@ -1,0 +1,1112 @@
+Quantum Ising Model on (2+1)-Dimensional Anti–de Sitter Space
+using Tensor Networks
+Simon Catterall,1, ∗ Alexander F. Kemper,2, † Yannick Meurice,3, ‡ Abhishek Samlodia,1, § and Goksu Can Toga2, ¶
+1
+2
+3
+
+Syracuse University, Department of Physics, Syracuse, NY 13244, USA
+
+Department of Physics and Astronomy, North Carolina State University, Raleigh, NC 27695, USA
+
+Department of Physics and Astronomy, University of Iowa 30 N Dubuque St, Iowa City, IA 52242, USA
+
+arXiv:2512.20838v1 [hep-lat] 23 Dec 2025
+
+(Dated: December 25, 2025)
+We study the quantum Ising model on (2+1)-dimensional anti-de Sitter space using Matrix Product States (MPS) and Matrix Product Operators (MPOs). Our spatial lattices correspond to regular
+tessellations of hyperbolic space with coordination number seven. We find the ground state of this
+model using the Density Matrix Renormalization Group (DMRG) algorithm which allowed us to
+probe lattices that range in size up to 232 sites. We explore the bulk phase diagram of the theory
+and find disordered and ordered phases separated by a phase transition. We find that the boundaryboundary spin correlation function exhibits power law scaling deep in the disordered phase of the
+Ising model consistent with the anti-de Sitter background. By tracing out the bulk indices, we are
+able to compute the density matrix for the boundary theory. At the critical point, we find the
+entanglement entropy exhibits the logarithmic dependence of boundary length expected for a onedimensional CFT but away from this, we see a linear scaling. In comparison, the full system exhibits
+a volume law scaling, which is expected in chaotic and highly connected systems. We also measure
+Out-of-time-Ordered-Correlators (OTOCs) to explore the scrambling behavior of the theory.
+
+I.
+
+INTRODUCTION
+
+Gravitational theories are conjectured to be holographic
+in nature; that is the gravitational degrees of freedom
+associated with some region of spacetime can be represented by quantum fields residing on the boundary of that
+region [1, 2]. In the case of an anti-de Sitter spacetime,
+the aysymptotic boundary is flat, and the boundary degrees of freedom are encoded in a conformal field theory
+[3]. This holographic correspondence typically maps a
+weakly coupled bulk gravitational theory to a strongly
+coupled boundary theory. This motivates one to try
+to study such theories using non-perturbative methods.
+Since Monte Carlo methods cannot be used for these systems because of sign problems one is led to investigate
+numerical methods that can be used in a Hamiltonian formulation. In principle, such calculations could be done
+using quantum computers, but this is not feasible with
+current hardware and algorithms. In (1+1) dimensions,
+classical tensor network methods provide extremely efficient alternatives [4, 5]. However, it is generally thought
+that such methods will not be effective when they are
+lifted to (2+1) dimensional systems [5] due to the need for
+very large bond dimensions. In this paper we will show
+that the constant ratio of bulk to boundary sites, which
+is typical of hyperbolic lattices, allows us to use MPS
+methods reliably in system sizes larger than a regular 2d
+
+∗ smcatter@syr.edu
+† akemper@ncsu.edu
+‡ yannick-meurice@uiowa.edu
+§ asamlodi@syr.edu
+¶ gctoga@ncsu.edu
+
+square lattice. In fact these methods can be adapted to
+study such systems with as many as a few hundred lattice
+sites.
+Specifically, we have used methods based on Matrix
+Product States (MPS) to study the ground state and time
+evolution of the quantum Ising model formulated on a
+discretization of two-dimensional hyperbolic space, which
+we can think of as a spatial slice of three-dimensional
+anti-de Sitter space. We investigate the phase structure
+of this theory and the properties of the associated boundary theory which is gotten by tracing out the bulk degrees
+of freedom. It should be noted from the outset that since
+the bulk tessellation is fixed the construction does not
+include any gravitational fluctuations, so any effective
+boundary theory likely does not contain a local energymomentum tensor. Nevertheless, the model can be seen
+as a step along the path toward the construction of a
+true discrete holographic model that can be explored using future quantum computers.
+Using tensor networks or quantum circuits to simulate
+holographic physics is not a new idea, and there have
+been a great number of earlier studies on related topics.
+The most well-known is the Multi-Scale Renormalization
+Ansatz (MERA)[6], which uses a set of disentangling matrices to remove local entanglement between sites thereby
+achieving the entanglement scaling expected for gapless theories. In addition there have been a plethora of
+works where tensor networks have been implemented using hyperbolic tessellations [7–11], in addition to tessellations of superconducting qubits[12, 13] and circuit implementations of hyperbolic tessellations[14, 15]. It has
+been shown that Matchgate Tensor network calculations,
+which can be related to disordered Ising models, capture
+
+2
+
+FIG. 1: A summary of our MPS construction adapted to hyperbolic tessellations.
+
+holographic expectations very well[16, 17].
+Our work, in contrast, starts with a disorder-free mixed
+field Ising model and uses a matrix product state (MPS)
+ansatz to capture the wavefunction of low-lying states.
+To obtain the ground state of this system, we use the
+Density Matrix Renormalization Group (DMRG) algorithm [18]. In addition to this, we also study the dynamical properties of this model by representing the Hamiltonian as a Matrix Product Operator (MPO) and implementing time evolution by using the Time Evolving Block
+Decimation (TEBD) algorithm [19]. Using TEBD we calculate Out-of-Time-Ordered Correlators (OTOCs)[20–
+25] and investigate quantum chaos and information propagation in this system.
+Our goal in this paper is to see how far we can push
+simple tensor network methods like TEBD and DMRG
+to study holographic physics and where these approaches
+break down, signaling the need for better algorithms or
+the use of quantum algorithms.
+II.
+
+ISING MODEL ON ANTI-DE SITTER SPACE
+
+The Hamiltonian we study is given by,
+
+
+X
+X
+HIsing = − Jzz
+Zj Zk +
+(Jx Xj + mZj )
+⟨j,k⟩
+
+(1)
+
+j
+
+where X, Y, Z represent standard Pauli matrices
+σ x , σ y , σ z respectively and {j, k} are lattice site indices.
+Jzz is the nearest neighbor coupling applied on sites that
+are connected on the tessellation, and Jx is the transverse
+coupling. We add a small mass m to break the model’s
+Z2 symmetry which is required to lift the degeneracy in
+the ground state of the system.
+We study this model using Hamiltonian-based, quantuminspired tensor networks - Matrix Product States (MPS) -
+
+which give an approximate representation of the quantum
+state of a many-body system. As is well known, the MPS
+ansatz is inherently a one-dimensional construction, but
+it is possible to generalize the method by building an
+MPS that snakes through a two-dimensional lattice. This
+approach performs well for simulating strip geometries,
+but it is limited due to the scaling of the entanglement
+entropy in the extra dimension, which requires very large
+bond dimensions as the extra dimension size grows larger.
+Our objective in this work is to find out if this approach
+can be used to simulate models defined on hyperbolic tessellations, in which a large proportion of spins live on the
+boundary of the lattice, which limits the amount of long
+range interaction needed to capture the 2d dynamics.
+The ground state of the model is found using the Density
+Matrix Renormalization (DMRG) method. The DMRG
+algorithm provides an efficient and systematically improvable framework for simulating strongly correlated
+quantum many-body systems in one spatial dimension
+[4, 5]. Within this framework, DMRG operates as a variational optimization algorithm over the MPS manifold, delivering ground states and low-lying excitations with controllable accuracy as the bond dimension χbond increases.
+Importantly, for high-energy and lattice gauge theory applications, MPS-based approaches can explicitly incorporate gauge symmetries into the local tensor structure,
+thereby enabling ab initio Hamiltonian simulations of
+confinement, string breaking, and non-equilibrium dynamics without suffering from sign problems. This makes
+tensor networks a powerful complementary tool to Monte
+Carlo methods, offering a controlled and versatile route
+to explore regimes of lattice field theories that are otherwise inaccessible. [18, 19, 26–29]
+Time evolution is implemented via the Time Evolving
+Block Decimation (TEBD) algorithm. Other time evolution algorithms like Time Dependent Variational principle (TDVP)[30] could also be useful for this setup, which
+
+3
+An MPO can be applied to an MPS in the following way:
+X
+′
+′
+′
+′
+(W s1 ,s1 W s2 ,s2 . . . )(M s1 M s2 ) |⃗s⟩
+Ô |ψ⟩ =
+
+8
+
+s,s′
+
+6
+
+=
+
+XX
+
+=
+
+XX
+
+=
+
+X
+
+χ
+
+s,s′ a,b
+
+4
+
+s,s′ a,b
+
+2
+
+s
+
+0
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+Jzz / Jx
+FIG. 2: Bulk phase transition for 12x12 square lattice
+flat space Ising model with m = 0.001
+
+we plan to explore in future work. Before we move on
+to the details of the hyperbolic construction let’s review
+the basics of MPS/MPO methods. In general any quantum state can be expanded on the tensor product of the
+Hilbert spaces associated with the quantum spins on each
+lattice site
+
+Ψ=
+
+X
+i1 ,...iN
+
+ci1 ...iN |s1 ⟩ ⊗ |s2 ⟩ ⊗ · · · |sN ⟩
+
+(2)
+
+The MPS ansatz assumes that the coefficients ci1 ...iN can
+be written as the trace of a product of matrices M of size
+χbond - the bond dimension:
+ci1 ...iN = Tr M i1 . . . M
+
+
+iN
+
+(3)
+
+s ,s′
+
+s ,s′
+
+s ,s′
+
+s′
+
+s′
+
+s ,s′
+
+s′
+
+1
+(W1,b1 1 1 M1,a
+)(Wb12,b22 Ma12,a2 ) . . . |⃗s⟩
+1
+
+N s1 N s2 . . . |σ⟩
+
+(5)
+
+After contraction, this returns an MPS with a higher
+bond dimension but of the same form. Using these two
+building blocks, we can then obtain the ground state
+of a quantum system represented by an MPS using the
+DMRG algorithm, which uses a variational method on
+the matrix parameters to find an approximation to the
+ground state. To capture dynamics one can represent
+the time evolution operator as an MPO and implement
+discrete Trotter time evolution of the MPS.
+In our model, we start from a tessellation of twodimensional hyperbolic space H 2 and obtain a onedimensional MPS chain by winding out from the center of
+the tessellation along successive layers until the boundary is reached. The order of the matrices in the MPS
+ansatz follows the order of the sites as shown in Fig. 1
+for a (3, 7) triangulated lattice consisting of 29 vertices
+(3-layers) where the edges represent the 2 body interactions and spins are located at the vertices. Grey edges
+represent the original MPS description and the red edges
+represent the long-range interactions needed to capture
+the 2d characteristics.
+
+III.
+
+RESULTS
+
+In this section we show results obtained using the DMRG
+algorithm implemented within the ITensor module [31].
+
+A.
+
+The size of χbond controls the amount of entanglement
+that can be faithfully captured in the approximation.
+This construction is particularly well-suited for systems
+whose low-energy states satisfy an area law, such as those
+encountered in spin chains and gauge theories discretized
+on one-dimensional spatial lattices. To describe operators we use a Matrix Product Operator(MPO) description, which can be given as,
+
+s′
+
+1
+(W1,b1 1 1 Wb12,b22 . . . )(M1,a
+Ma12,a2 . . . ) |⃗s⟩
+1
+
+Bulk properties
+
+As a sanity check of our implementation of 2d MPS
+method, we first simulate the flat two-dimensional Ising
+model on a square lattice, whose bulk phase transition
+can be captured by the magnetic susceptibility given by
+
+
+
+  X 2
+1  X
+Zj Zk −
+Zj 
+(6)
+χ=
+Nsites
+j
+j,k
+
+Ô =
+
+X
+s,s′
+
+′
+
+′
+
+Tr(W s1 ,s1 . . . W sN ,sN ) |s1 ⟩⊗· · · |sN ⟩ ⟨s′1 |⊗· · · ⟨s′N |
+
+(4)
+MPOs provide a natural representation for local Hamiltonians, which we use in our DMRG and TEBD studies.
+
+This is shown in Fig. 2. The observed critical point at
+Jzz /Jx ∼ 0.33 is in good agreement with the value obtained by previous tensor network studies in two dimensions [32] confirming that our implementation can capture 2d physics.
+
+4
+
+3.0
+31.790215
+2.5
+2.0
+
+31.790205
+
+χ
+
+∆EGS
+
+31.790210
+
+31.790200
+
+1.5
+
+31.790195
+
+1.0
+
+31.790190
+31.790185
+
+Jzz /Jx = 0.31
+200
+
+400
+
+600
+
+0.5
+0.1
+
+800
+
+0.2
+
+FIG. 3: Energy of the ground state v/s bond-dimension
+χ for Jzz /Jx = 0.31 for three layer lattice
+# of layers # of vertices # of boundary vertices
+3
+29
+21
+4
+85
+54
+5
+232
+147
+
+0.3
+
+0.4
+
+0.5
+
+Jzz / Jx
+
+χbond
+
+FIG. 4: Bulk phase transition for Ising model on
+five-layer tesselated AdS3 with m = 0.001.
+
+0.8
+
+Now that we have some confidence that our implementation works for a square lattice, let’s first check the convergence of the ground state energy as a function of bond dimension for the case of a hyperbolic lattice. Fig. 3 shows
+the ground state energy obtained using the DMRG algorithm as we increase the bond-dimension χbond at coupling Jzz /Jx = 0.31 for a three-layer tessellation. We
+see that the ground state energy converges quickly with
+increasing bond dimension and levels off at bond dimensions higher than 400. Similar to the flat case to capture
+the phase transition, we investigate the magnetic susceptibility. In Fig. 4 and Fig. 5, we plot the magnetic susceptibility and magnetization, respectively, as a function
+of coupling for the hyperbolic lattice model of five-layer
+tessellation. Right of this transition point, we have the
+disordered phase, and to the left of it we have the ordered
+phase.
+
+hσz i/Nsites
+
+0.6
+
+TABLE I: Lattice volume for (3,7) hyperbolic
+tessellation
+
+0.4
+0.2
+0.0
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+Jzz / Jx
+FIG. 5: Magnetization for Ising model on five-layer
+tesselated AdS3 with m = 0.001.
+
+can plot this as a function of distance between source
+and sink along the boundary. The correlation function is
+defined as,
+C(r) =
+
+1 X
+δ(r − |j − k|) (⟨Zj Zk ⟩ − ⟨Zj ⟩⟨Zk ⟩) (7)
+Nb
+j,k∈δD
+
+Table I lists the number of points for three different lattice volumes used in this work. The last column shows
+the number of boundary points in a given tessellation.
+
+B.
+
+Boundary Correlators
+
+It is interesting to study the spin correlation function
+when both source and sink points are restricted to the
+boundary of the tessellated disk δD. In particular, we
+
+where Nb is the number of boundary vertices in the triangulation and r is the boundary distance between the
+source and sink.
+This has been studied before using classical simulations
+of scalars and Ising spins in hyperbolic space [33, 34]. In
+particular, one expects the correlator to be determined
+by the minimal length lattice path between source and
+sink, which, for the hyperbolic space, runs through the
+bulk. Because of the structure of the tessellation, this
+
+5
+V = 29, 3-layers
+
+ln (C)
+
+−4
+−6
+
+5
+
+B = 1.0
+Layer - 3
+Layer - 4
+
+4
+
+B
+
+Jzz = 0.1
+Jzz = 0.15
+Jzz = 0.2
+Jzz = 0.25
+Jzz = 0.3
+Jzz = 0.32
+
+3
+
+−8
+2
+−10
+1.0
+
+1.5
+
+2.0
+
+1
+
+ln (r)
+
+0.05
+
+0.10
+
+0.15
+
+0.20
+
+0.25
+
+0.30
+
+Jzz /Jx
+
+FIG. 6: Boundary correlators for a 3-layer hyperbolic
+lattice with m = 0.001. Solid lines represent best fit
+lines, and points represent data from simulations that
+have been smoothed out as mentioned in the text.
+
+parameter, Jzz /Jx at m = 0.001. Our fits confirm that
+the boundary-boundary correlation function decays as a
+power law, as expected.
+
+V = 85, 4-layers
+
+Notice that the power approaches a minimum as the bulk
+coupling is tuned towards its critical value. For reference,
+we draw on the plot a horizontal line corresponding to
+that expected for a two-dimensional free fermion. This
+above mentioned minimal value lies close to that of a
+two-dimensional free fermion.
+
+ln (C)
+
+−4
+−6
+−8
+−10
+
+FIG. 8: Variation of power B, obtained from fits with
+m = 0.001
+
+C.
+
+Jzz = 0.15
+Jzz = 0.2
+Jzz = 0.25
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+ln (r)
+
+FIG. 7: Boundary correlators for a 4-layer hyperbolic
+lattice with m = 0.001. Solid lines represent best fit
+lines, and points represent data from simulations that
+have been smoothed out as mentioned in the text.
+
+minimal path length scales only logarithmically with the
+boundary separation. This in turn, has the effect of producing a power law dependence on boundary distance
+even for a theory that is gapped in the bulk.
+To analyze the correlators, we first fold the data about
+r = (Nb − 1)/2 points and then use the data smoothing
+procedure as explained in [35] with a smoothing window
+of three lattice spacings. Then we fit a power law function
+f (r) = Ar−B + D to this folded and smoothed data.
+Fig. 6 and Fig. 7 shows these correlator fits for the
+three and four layer lattice. Fig. 8 shows how the power
+obtained from these fits varies as a function of the bulk
+
+Out of time ordered correlators(OTOCs)
+
+In this section, we calculate out-of-time-ordered correlators in the infinite temperature limit, which are defined
+as
+Oij (t) = ⟨||[Zi (t), Zj (0)]||2 ⟩
+
+
+= 2 1 − Re[⟨Zi† (t)Zj (0)† Zi (t)Zj (0)⟩]
+
+(8)
+(9)
+
+where, lattice site i is the source point and j is the sink.
+We obtain the time evolved operators Zi (t) by expressing
+the Hamiltonian as an MPO and implementing Heisenberg evolution via the time-evolving block decimation
+(TEBD) algorithm. The system’s state is represented as
+an MPS, and time evolution under the Hamiltonian H
+is implemented using a Trotter–Suzuki decomposition of
+the evolution operator e−iHt into a sequence of two-site
+unitary gates. After each local gate application, singular value decomposition (SVD) is used to truncate small
+Schmidt coefficients, keeping the MPS within a fixed
+bond dimension [5, 36–38].
+These time-dependent correlators probe how the information in an initial local quantum state spreads throughout the system as a result of the dynamics. Generically,
+
+6
+
+Our results for the time dependence of OTOCs initialized
+at both the center and a boundary site are given in Fig. 9
+and Fig. 10, respectively. The generic form of these corresponds to a rapid rise and then an oscillating approach
+to an equilibrium plateau. From the initial rapid exponential growth in these OTOCs, we extract Lyapunov
+exponents characterizing the chaotic nature of the dynamics. One example of such a fit is given in Fig. 11
+It is also useful to construct heatmap plots that show the
+magnitude of the OTOC as a function of position for several successive times. These are shown in Fig. 12(a,b,c)
+at three different time-slices for an initial source at the
+center site and Fig. 12(d,e,f) when the source is at the
+first boundary site. The sources are diamond shaped and
+colored in red. In both cases we observe the spreading of
+the quantum state as a function of time in agreement with
+expectations. Notice in the case of the center source, the
+signal spreads in a way that is approximately consistent
+with the symmetries of the lattice.
+In the case where the source is placed on the boundary,
+we see that information propagates towards the bulk first
+and not along the boundary, this is consistent with the
+geodesics in hyperbolic spaces, where the shortest path
+between two boundary sites is not on the boundary but
+goes through the bulk. However, our MPS ansatz does
+not exhibit exact rotational symmetry, and this is reflected in the heatmap plots, Fig. 12
+D.
+
+j=9
+j = 10
+j = 11
+
+1.2
+
+1 − O0j (t)
+
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+0.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+t
+
+FIG. 9: OTOC with source at first boundary node i = 8
+and sink at nodes on the boundary of the lattice, at
+Jzz /Jx = 0.3 for 3-layer lattice
+
+1.0
+0.8
+
+1 − O0j (t)
+
+local quantum information is scrambled into non-local
+degrees of freedom under time evolution. It is closely
+related to the problem of thermalization in quantum systems and to the presence of chaotic dynamics. In the latter case quantum information spreads exponentially fast
+through a system and allows one to define a Lyapunov
+exponent from the behavior of the OTOC in a manner
+similar to a classical chaotic system. Holographic systems corresponding to black holes are thought to furnish
+examples of so-called fast scramblers, and so it is interesting to look for such behavior in our toy holographic
+model.
+
+0.6
+0.4
+j=1
+j=3
+j=5
+
+0.2
+0.0
+0.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+t
+
+FIG. 10: OTOC with source at center node i = 0 and
+sink at nodes in the bulk of the lattice, at Jzz /Jx = 0.3
+for 3-layer lattice
+
+Sub-region entropies
+
+In this subsection, we will study the scaling of the entanglement entropy Sℓ = −Tr [ρ(ℓ) log (ρ(ℓ))] with respect
+to the subsystem size ℓ. In general, to calculate the entanglement entropy, the system with L spins is divided
+into two subsystems A and B of size ℓ and L − ℓ respectively and the resultant density matrix is defined by
+
+full system and then tracing over the bulk indices. This
+requires partial traces over the full density matrix of the
+spins on the hyperbolic graph. To do this, we make use
+of the routines provided in the ITensorEntropyTools.jl
+module [39].
+
+where ρ(ℓ) denotes the eigenvalues of the reduced density
+matrix.
+
+Once the reduced density matrix corresponding to the
+boundary is obtained, we divide the boundary into two
+regions to investigate the scaling of the Von-Neumann
+Entropy of the boundary theory with respect to the subsystem size.
+
+Initially, let us focus just on the effective boundary theory
+which can be obtained by constructing the density matrix
+from the MPS corresponding to the ground state of the
+
+We observe that the boundary entanglement entropy
+scales logarithmically with subregion length at the critical point (see Fig. 13). The fitted central charge (ob-
+
+ρ(ℓ) = TrB |Ψ⟩ ⟨Ψ|
+
+(10)
+
+7
+behavior well.
+data
+fit
+
+0.14
+0.12
+
+IV.
+
+SUMMARY AND CONCLUSION
+
+1 − O89(t)
+
+0.10
+0.08
+0.06
+0.04
+0.02
+0.00
+0.00
+
+0.02
+
+0.04
+
+0.06
+
+0.08
+
+t
+
+FIG. 11: Exponential fit to OTOC with source at first
+boundary node i = 8 and sink at j = 9 where
+Jzz /Jx = 0.3 for 3-layer lattice. The fit function is :
+aebx + c, a = 0.0054(32), b = 48.4(7.5), c = −0.036(13)
+tained by a simple least squares procedure) is consistent
+with unity, which might be expected if the boundary CFT
+at the bulk critical point corresponded to a free Dirac
+fermion. Away from the critical point and deeper in the
+disordered phase, we see a linear behavior (see Fig. 14).
+From our boundary correlator results, one would have
+expected that the boundary theory would be governed
+by a CFT even when the bulk is gapped. However, our
+measurement of the entanglement scaling shows no evidence of this, which we interpret as arising from the fact
+that one expects the boundary theory to be governed by
+a non-local Hamiltonian for a generic value of the bulk
+coupling. This shows the drawback of this method in
+simulating AdS/CFT physics compared to MERA and
+similar constructions, where a critical boundary theory is
+built iteratively, and a logarithm is observed for all couplings. It is possible that the desired logarithmic scaling
+will show up at bigger volumes with much larger bond dimension, but with our current computational resources,
+we see no evidence of this.
+We can also compute the entanglement entropy for the
+full system by progressively tracing out subregions starting from the central node. In this case, we find that
+the entropy peaks when the subregion reaches the first
+boundary node and then decreases. This is true both
+at criticality and away from it in the disordered phase.
+Fig. 15 shows these findings for a four-layer lattice, respectively. This kind of behavior is known as volume law
+scaling and is expected to appear in highly connected
+and chaotic systems [40]. Interestingly, MPS methods
+that normally exhibit area law scaling capture this volume law scaling behavior when overlaid on a hyperbolic
+tessellation, which shows us that even though our description fails to capture the criticality of the boundary
+theory accurately, it still manages to capture the bulk
+
+In this work we have shown that using the matrix product state ansatz and a variety of standard tensor network
+algorithms, one can study simple Hamiltonian theories
+residing on tessellations of hyperbolic space. In the continuum limit, this enables us to probe quantum field theories on three-dimensional anti-de Sitter space. In practice, we have studied the quantum Ising model as the
+simplest system in this class and have restricted our calculations to systems with no more than 232 spins. Notice
+that this is still vastly larger than what could be achieved
+using exact diagonalization.
+One can think of this lattice system as a simple discrete
+model for understanding certain aspects of holography.
+To this end, we have computed spatial boundary correlation functions at fixed time and for different values
+of the bulk coupling, finding a power law behavior for
+any value of the bulk coupling in the disordered phase,
+as one expects on the basis of the (discrete) symmetries
+of hyperbolic space. Indeed our results suggest that the
+boundary theory corresponds to a free fermion CFT when
+the bulk is tuned to criticality.
+Our computations of the boundary entanglement entropy
+however, show that the logarithmic dependence on subregion size expected for a true CFT is only realized at
+the bulk critical point - away from this coupling, a linear scaling is seen. We attribute this to the fact that
+the effective CFT gotten by tracing out the bulk degrees
+of freedom is generically non-local unless we tune to the
+bulk critical point.
+We have also examined out-of-time-ordered (OTOC) correlators for both bulk and boundary spins. We are able
+to fit the short-time behavior to an exponential function
+and extract a corresponding Lyapunov exponent. There
+seems to be some evidence of scrambling.
+In general our measurements of dynamics highlight some
+of the problems associated with the MPS ansatz - we see a
+lack of rotational invariance in the heatmaps that showcase time evolution. In addition, the tensor approach
+appears to be limited to modest system sizes of just a
+few hundred degrees of freedom. To simulate larger systems we will need to employ better classical algorithms
+or quantum computers.
+
+8
+
+t = 0.035
+
+t = 0.055
+
+t = 0.075
+
+0.05
+
+0.05
+
+0.05
+
+0.04
+
+0.04
+
+0.04
+
+0.03
+
+0.03
+
+0.03
+
+0.02
+
+0.02
+
+0.02
+
+0.01
+
+0.01
+
+0.01
+
+0.00
+
+0.00
+
+0.00
+
+(a) t = 0.035, source at center node
+
+(b) t = 0.055, source at center node
+
+(c) t = 0.075, source at center node
+
+t = 0.015
+
+t = 0.035
+
+t = 0.075
+
+0.0020
+
+0.0020
+
+0.0020
+
+0.0015
+
+0.0015
+
+0.0015
+
+0.0010
+
+0.0010
+
+0.0010
+
+0.0005
+
+0.0005
+
+0.0005
+
+0.0000
+
+0.0000
+
+0.0000
+
+(d) t = 0.015, source at first boundary
+node
+
+(e) t = 0.035, source at first boundary
+node
+
+(f) t = 0.075, source at first boundary
+node
+
+FIG. 12: Heatmaps for OTOCs showing information spreading for two case: [(a), (b) and (c)] when the center node
+is the source point while all other nodes act as sink and [(d), (e) and (f)] when the first boundary node is the source
+point and all other nodes act as sink.
+
+9
+
+data
+fit
+
+0.9
+
+Jzz /Jx = 0.1
+
+1.0
+
+Jzz /Jx = 0.25
+
+0.8
+0.8
+
+S`
+
+S`
+
+0.7
+0.6
+
+0.4
+
+0.5
+
+0.2
+
+0.4
+
+0.0
+
+0.3
+
+5
+
+10
+
+15
+
+`
+
+data
+fit
+
+0.30
+
+S`
+
+0.25
+0.20
+0.15
+0.10
+
+0
+
+5
+
+10
+
+0
+
+20
+
+40
+
+60
+
+80
+
+`
+
+FIG. 13: Variation of entanglement entropy with
+subregion length for Jzz /Jx = 0.32 and 3-layer lattice.
+The fit function is (c/6) log2 (x/a + b) where
+c = 1.030(49), a = 3.97(43) and b = 1.658(25).
+
+0.05
+
+0.6
+
+15
+
+`
+
+FIG. 14: Variation of entanglement entropy with
+subregion length for Jzz /Jx = 0.15 and 3-layer lattice.
+The fit function is f (x) = ax + b where a = 0.01500(12)
+and b = 0.0449(14)
+
+FIG. 15: Variation of bulk entanglement entropy with
+subregion length for Jzz /Jx = 0.25, 0.1 and a 4-layer
+lattice.
+
+10
+ACKNOWLEDGMENTS
+
+Numerical computations were performed at Syracuse
+University HTC Campus Grid under NSF award ACI1341006.
+We acknowledge support from U.S. De-
+
+[1] L. Susskind, Journal of Mathematical Physics 36, 6377
+(1995).
+[2] R. Bousso, Rev. Mod. Phys. 74, 825 (2002).
+[3] J. M. Maldacena, Advances in Theoretical and Mathematical Physics 2, 231 (1998).
+[4] S. R. White, Phys. Rev. Lett. 69, 2863 (1992).
+[5] U. Schollwöck, Annals of Physics 326, 96 (2011).
+[6] B. Swingle, Physical Review D 86, 065007 (2012).
+[7] B. Swingle, Constructing holographic spacetimes using
+entanglement renormalization (2012), arXiv:1209.3304
+[hep-th].
+[8] S. Singh, N. A. McMahon, and G. K. Brennen, Physical Review D 97, 026013 (2018), arXiv:1702.00392 [condmat].
+[9] S. Dey, A. Chen, P. Basteiro, A. Fritzsche, M. Greiter, M. Kaminski, P. M. Lenggenhager, R. Meyer,
+R. Sorbello, A. Stegmaier, R. Thomale, J. Erdmenger, and I. Boettcher, Simulating Holographic Conformal Field Theories on Hyperbolic Lattices (2024),
+arXiv:2404.03062 [cond-mat] version: 1.
+[10] M. Asaduzzaman, S. Catterall, Y. Meurice, and G. C.
+Toga, Physical Review D 109, 054513 (2024).
+[11] G. C. Toga, A. Samlodia, and A. F. Kemper, arXiv
+preprint arXiv:2503.00114 (2025).
+[12] A. J. Kollár, M. Fitzpatrick, and A. A. Houck, Nature
+571, 45 (2019).
+[13] I. Boettcher, P. Bienias, R. Belyansky, A. J. Kollár, and
+A. V. Gorshkov, Physical review. A 102, 10 (2020).
+[14] Y.-Y. Li, M. O. Sajid, and J. Unmuth-Yockey, Phys. Rev.
+D 110, 034507 (2024), arXiv:2312.10544 [hep-lat].
+[15] P. M. Lenggenhager, A. Stegmaier, L. K. Upreti, T. Hofmann, T. Helbig, A. Vollhardt, M. Greiter, C. H. Lee,
+S. Imhof, H. Brand, et al., Nature communications 13,
+4373 (2022).
+[16] A. Jahn, M. Gluza, C. Verhoeven, S. Singh, and J. Eisert, Journal of High Energy Physics 2022, 111 (2022),
+arXiv:2110.02972 [quant-ph].
+[17] A. Jahn, M. Gluza, F. Pastawski, and J. Eisert, Holography and criticality in matchgate tensor networks (2018),
+arXiv:1711.03109 [quant-ph].
+[18] S. R. White, Phys. Rev. Lett. 69, 2863 (1992).
+[19] U. Schollwöck, Annals of Physics 326, 96 (2011).
+[20] Y. Sekino and L. Susskind, Journal of High Energy
+Physics 2008, 065 (2008), arXiv:0808.2096 [hep-th,
+
+partment of Energy grants DE-SC0019139 and DESC0009998. GCT and AFK acknowledges financial support from the National Science Foundation under award
+No. 2325080: PIF: Software-Tailored Architecture for
+Quantum Co-Design.
+
+physics:quant-ph].
+[21] J. Maldacena, S. H. Shenker, and D. Stanford, JHEP 08,
+106, arXiv:1503.01409 [hep-th].
+[22] B. Swingle, G. Bentsen, M. Schleier-Smith, and P. Hayden, Physical Review A 94, 040302 (2016).
+[23] S. Xu and B. Swingle, Nature Physics 16, 199 (2020).
+[24] B. Swingle, Nature Physics 14, 988 (2018).
+[25] S. Xu and B. Swingle, PRX quantum 5, 010201 (2024).
+[26] G. Catarina and B. Murta, Eur. Phys. J. B 96, 111
+(2023), arXiv:2304.13395 [cond-mat.str-el].
+[27] R. Orús, Annals of Physics 349, 117 (2014).
+[28] M. C. Bañuls, K. Cichy, J. I. Cirac, K. Jansen, and
+H. Saito, J. High Energy Phys. 2013 (11), 158.
+[29] M. C. Bañuls, R. Blatt, J. Catani, A. Celi, J. I. Cirac,
+M. Dalmonte, L. Fallani, K. Jansen, M. Lewenstein,
+S. Montangero, C. A. Muschik, B. Reznik, E. Rico,
+L. Tagliacozzo, K. Van Acoleyen, F. Verstraete, U.-J.
+Wiese, and P. Zoller, Eur. Phys. J. D 74, 165 (2020).
+[30] J. Haegeman, J. I. Cirac, T. J. Osborne, I. Pižorn, H. Verschelde, and F. Verstraete, Physical review letters 107,
+070601 (2011).
+[31] M. Fishman, S. R. White, and E. M. Stoudenmire, SciPost Phys. Codebases , 4 (2022).
+[32] J. Jordan, R. Orús, G. Vidal, F. Verstraete, and J. I.
+Cirac, Phys. Rev. Lett. 101, 250602 (2008).
+[33] M. Asaduzzaman, S. Catterall, J. Hubisz, R. Nelson, and
+J. Unmuth-Yockey, Phys. Rev. D 102, 034511 (2020),
+arXiv:2005.12726 [hep-lat].
+[34] M. Asaduzzaman, S. Catterall, J. Hubisz, R. Nelson, and
+J. Unmuth-Yockey, Phys. Rev. D 106, 054506 (2022),
+arXiv:2112.00184 [hep-lat].
+[35] M. Asaduzzaman, S. Catterall, and A. Samlodia, Phys.
+Rev. D 109, 106010 (2024), arXiv:2401.15467 [hep-lat].
+[36] G. Vidal, Phys. Rev. Lett. 91, 147902 (2003).
+[37] G. Vidal, Phys. Rev. Lett. 93, 040502 (2004).
+[38] A. J. Daley, C. Kollath, U. Schollwöck, and G. Vidal, J.
+Stat. Mech. , P04005 (2004).
+[39] R. Levy, Itensorentropytools.jl, https://github.
+com/ryanlevy/ITensorEntropyTools.jl?tab=
+readme-ov-file.
+[40] J. Eisert, M. Cramer, and M. B. Plenio, Reviews of modern physics 82, 277 (2010).
+
+

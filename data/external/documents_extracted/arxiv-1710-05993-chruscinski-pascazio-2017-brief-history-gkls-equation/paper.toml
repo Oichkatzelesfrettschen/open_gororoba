@@ -1,0 +1,1808 @@
+equations = []
+tables = []
+full_text = """
+A Brief History of the GKLS Equation\r
+Dariusz Chru´sci´nski\r
+Institute of Physics, Faculty of Physics, Astronomy and Informatics\r
+Nicolaus Copernicus University, Grudzi¸adzka 5/7, 87–100 Toru´n, Poland\r
+email: darch@fizyka.umk.pl\r
+Saverio Pascazio\r
+Dipartimento di Fisica and MECENAS, Universit`a di Bari, I-70126 Bari, Italy\r
+Istituto Nazionale di Ottica (INO-CNR), I-50125 Firenze, Italy\r
+INFN, Sezione di Bari, I-70126 Bari, Italy\r
+e-mail: saverio.pascazio@ba.infn.it\r
+November 7, 2017\r
+Abstract\r
+We reconstruct the chain of events, intuitions and ideas that led to the formulation of the\r
+Gorini, Kossakowski, Lindblad and Sudarshan equation.\r
+1 Introduction\r
+If you take any two historical events and you ask whether there are similarities and\r
+differences, the answer is always going to be both “yes” and “no.” At some sufficiently\r
+fine level of detail there will be differences, and at some sufficiently abstract level there\r
+will be similarities. The question we want to ask in the two cases we are considering,\r
+[. . .] is whether the level at which there are similarities is, in fact, a significant one. [1]\r
+The articles written by Vittorio Gorini, Andrzej Kossakowski and George Sudarshan (GKS) [2],\r
+and G¨oran Lindblad [3] belong to the list of the most influential papers in theoretical physics.\r
+They were published almost at the same time: the former [2] in May 1976 and the latter [3]\r
+in June 1976. Interestingly, they were also submitted simultaneously: [2] on March 19th, 1975,\r
+and [3] on April 7th, 1975. Archive and on-line submission did not exist in the ’70s, so both\r
+papers were very probably in gestation at the same time.\r
+It is always difficult to reconstruct facts from (necessarily incomplete) data. This is the\r
+work of historians. Things are even more complicated when one has to reconstruct how ideas\r
+are born, and when and where. We decided to resort to the wisdom of Noam Chomsky [1]\r
+and analyze events, as well as detailed technical findings. However, while writing this note, we\r
+realized that one cannot just compare two articles or (worse) two equations: after all, GKS and\r
+Lindblad derived and published a very similar equation at the same time. It is more interesting\r
+to compare hypotheses and derivation, and the way the necessary concepts are formulated. Ideas\r
+are born in complicated fashions. Environments, influences, conferences, discussions, scientific\r
+literature are but a number of factors that play a crucial role.\r
+Michel Berry, in his beautiful webpage, quotes Andr´e Gide:\r
+1\r
+arXiv:1710.05993v2 [quant-ph] 4 Nov 2017
+
+Everything has been said before, but since nobody listens we have to keep going back\r
+and beginning all over again.1\r
+True. But after all this article must be kept finite, and we shall abstain from going back to\r
+Aristotle. The only way out of this dilemma is to try and define Chomsky’s “level of detail at\r
+which there are similarities” and decide whether it is a significant one. This will entail a certain\r
+degree of arbitrariness. We ask our readers to make allowance for our superficiality.\r
+Let us mention a few facts. In 1972, Andrzej Kossakowski published a largely un-noticed\r
+article [4] in which he proposed an axiomatic definition of dynamical semigroup. From March\r
+26th to April 6th, 1973, Vittorio Gorini attended the conference “Foundations of quantum\r
+mechanics and ordered linear spaces”, in Marburg, where he listened to talks by E. Størmer\r
+and K. Kraus, who both mentioned the notion of complete positivity. From September to\r
+December 1974 Vittorio Gorini and Andrzej Kossakowski were both visiting George Sudarshan,\r
+at the University of Texas at Austin.2 G¨oran Lindblad used to work alone. He defended his\r
+thesis in May 1974. In December 1974 he participated in the Symposium on Mathematical\r
+Physics, organized in Toru´n by Roman Ingarden — Kossakowski’s PhD supervisor. He sent an\r
+interesting recollection letter of those times to the organizers of the 48th SMP meeting. This\r
+letter is reproduced in Sect. 8. In January 1975 Gorini went to visit Lindblad in Stockholm,\r
+on the way back from Texas. Kossakowski never met Lindblad. The two articles that concern\r
+us here [2, 3] were submitted between March and April 1975. In 1980 Kraus spent a sabbatical\r
+year at the University of Texas at Austin; besides George Sudarshan, there were John Archibald\r
+Wheeler, Arno B¨ohm and William Wootters.\r
+We shall consider these facts in the following. Now let us clarify what this article is not. It\r
+is not a review paper. It is not tutorial. It does not contain novel results. It does assume some\r
+familiarity with dissipative quantum systems and notation. It makes full use of our personal\r
+interactions with the four protagonists of this story. Figure 1 shows a 1975 picture taken in\r
+Torun, Poland, in Roman Ingarden’s office.\r
+2 Formulation of the Problem\r
+The evolution of a closed (isolated) quantum system is described by the Schr¨odinger equation\r
+(here and henceforth, Planck’s constant ~ = 1)\r
+iψ˙ = Hψ ←→ ψt = Utψ0 , (1)\r
+where ψ is the wave function, H the Hamiltonian, the dot denotes time derivative and Ut = e\r
+−iHt\r
+is a one-parameter group. This translates into the so-called von Neumann equation for the\r
+density matrix ρ\r
+ρ˙ = −i[H, ρ] ←→ ρt = Utρ0U\r
+†\r
+t\r
+. (2)\r
+If the quantum system is “open”, namely not isolated, and immersed in an environment with\r
+which it interacts, the above equation is not valid and must be replaced by the following evolution\r
+law\r
+ρ\r
+0 = Λρ =\r
+X\r
+α\r
+KαρK†\r
+α, (3)\r
+where P\r
+α K†\r
+αKα = I. Notice that if the summation is made up of a single addendum K = U =\r
+e\r
+−iHt, (3) reduces to (2). Notice also that (3) is not a differential equation, but rather takes a\r
+“snapshot” of the quantum state at a particular time t\r
+0\r
+: ρ\r
+0 = ρt\r
+0 .\r
+1Toutes choses sont dites d´ej`a; mais comme personne n’´ecoute, il faut toujours recommencer. (French can be more\r
+concise, once in a while.)\r
+2Gorini had already visited Sudarshan in Texas from Fall 1971 to Spring 1973, but they were working on the\r
+classification of positive (not completely positive) maps.\r
+2
+
+Figure 1: Picture taken in Prof. Ingarden’s office (December 1975). From left to right: Roman Ingarden,\r
+Andrzej Kossakowski, George Sudarshan and Vittorio Gorini.\r
+Equation (3) defines a quantum channel and Λ is usually called a superoperator. It is\r
+assumed to be linear, it must preserve trace and hermiticity, and it must be completely positive.\r
+We shall delve into these properties in the following.\r
+In the Markovian approximation, (3) yields the following differential (“master”) equation\r
+ρ˙ = Lρ ←→ ρt = e\r
+tLρ0 , (4)\r
+where L is the generator of a (one-parameter) quantum dynamical semigroup. The evolution\r
+(4) inherits from (3) linearity, trace- and hermiticity-preservation, and complete positivity.\r
+Our focus will be on the mathematical structure of (4), but also on (3). Physicists did not\r
+pay much attention to open quantum systems until rather recently, when, with the advent of\r
+the quantum era, topics such as quantum information and quantum technologies became crucial\r
+for the foundations and applications of quantum mechanics.\r
+3 The Structure of the GKLS Generator\r
+The central problem addressed by Gorini, Kossakowski, Sudarshan and Lindblad (GKLS) [2, 3]\r
+was the characterization of the generator L of a quantum dynamical semigroup. Consider\r
+quantum states, represented by density operators ρ ∈ T+(H) (positive trace-class operators) with\r
+||ρ||1 = Trρ = 1. The axioms for a dynamical semigroup had been elaborated by Kossakowski\r
+in 1972 [4] (see also [5]): it is a one-parameter family of maps Λt : T (H) → T (H) satisfying\r
+1. Λt is a positive map, i.e. Λt : T+(H) → T+(H),\r
+2. Λt is strongly continuous,\r
+3. ΛtΛs = Λt+s, for all t, s ≥ 0 (Markov property).\r
+3
+
+Now, the celebrated Hille-Yosida theorem [6] states that there exists a densely defined generator\r
+Lρ = limt→0\r
+1\r
+t\r
+(Λtρ − ρ), (5)\r
+such that\r
+Λ˙\r
+t = LΛt , (6)\r
+together with the initial condition limt→0 Λtρ = ρ. The problem is to characterize the properties\r
+of L such that the solution of (6) defines a dynamical semigroup Λt. This problem is still open\r
+nowadays.\r
+In their two seminal papers [2, 3], GKLS considered a restricted problem: first of all they\r
+focused on a subclass of positive maps — completely positive maps (see Sect. 5). Moreover,\r
+1. GKS considered only finite-dimensional Hilbert spaces, i.e. dim H = N < ∞.\r
+2. Lindblad considered the infinite-dimensional case, but replaced strong continuity by uni\u0002form continuity. This considerably simplifies the analysis, since uniform continuity implies\r
+that the corresponding generator (5) defines a bounded operator (see [7] for the analysis\r
+of unbounded generators).\r
+A few technical details will help us clarify. Let MN denote the algebra of N × N complex\r
+matrices. GKS worked in the Schr¨odinger picture and arrived at the following result:\r
+Theorem 1 (Theorem 2.2 in [2]). A linear operator L : MN → MN is the generator of a\r
+completely positive semigroup of MN if it can be expressed in the following form\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+N\r
+X2−1\r
+k,l=1\r
+ckl\u0010[Fk, ρF∗\r
+l\r
+] + [Fkρ, F∗\r
+l\r
+]\r
+\u0011\r
+, (7)\r
+where H = H∗, trH = 0, trFk = 0, tr(FkF\r
+∗\r
+l\r
+) = δkl, k, l = 1, 2, . . . , N2−1, and [ckl] is a complex\r
+positive matrix.\r
+We shall call (7) the GKS form of the GKLS generator and [ckl] the Kossakowski matrix.\r
+Given a basis Fk, the generator is fully determined by the Hamiltonian H and the Kossakowski\r
+matrix.\r
+On the other hand, Lindblad worked in the Heisenberg picture at the level of B(H) — the\r
+algebra of bounded operators on H. Using completely different techniques he arrived at\r
+Theorem 2 (Theorem 2 in [3]). A linear operator L\r
+∗\r
+: B(H) → B(H) is the generator of a\r
+completely positive semigroup if and only if\r
+L\r
+∗X = i[H, X] +X\r
+j\r
+\u0010\r
+V\r
+∗\r
+j XVj −\r
+1\r
+2\r
+{V\r
+∗\r
+j Vj , X}\r
+\u0011\r
+, (8)\r
+where Vj ,\r
+P\r
+j\r
+V\r
+∗\r
+j Vj ∈ B(H), {A, B} = AB + BA, and H is a self-adjoint element in B(H).\r
+The corresponding generator in the Schr¨odinger picture is of the form\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+X\r
+j\r
+\u0010\r
+[Vj , ρV ∗\r
+j\r
+] + [Vjρ, V ∗\r
+j\r
+]\r
+\u0011\r
+. (9)\r
+We shall call (9) the Lindblad form of the GKLS generator. Observe that in (9) the choice\r
+of H and Vj is not unique, whereas in (7), after fixing the basis Fl, the traceless Hamiltonian is\r
+uniquely defined.\r
+4
+
+Remark 1. By GKLS (or standard) form of the generator one usually understands\r
+Lρ = −i[H, ρ] + Φρ −\r
+1\r
+2\r
+{Φ\r
+∗\r
+I, ρ} , (10)\r
+where H is a self-adjoint operator in the Hilbert space of the system H, Φ is a completely\r
+positive map, and Φ∗stands for its dual (Heisenberg picture). Equivalently, representing\r
+Φρ =\r
+X\r
+j\r
+VjρV ∗\r
+j\r
+, (11)\r
+one gets\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+X\r
+j\r
+(2VjρV ∗\r
+j − V\r
+∗\r
+j Vjρ − ρV ∗j Vj ). (12)\r
+In the unbounded case there are examples of generators which are not of the standard form\r
+(cf. [7]).\r
+This is what GKLS obtained in 1975–1976. A few years later, Alicki and Lendi [8] published\r
+a monograph, presenting both the theory and physical applications of Markovian semigroups.\r
+Modern monographs include Weiss [9], Breuer and Petruccione [10], and Rivas and Huelga [11].3\r
+4 Master (Kinetic) Equations before GKLS\r
+Master equations — also known as kinetic equations — were used to describe dissipative phe\u0002nomena long before the GKLS articles. Let us briefly review their interesting history. It is of\r
+great interest to analyze the structure of these equations, that in some cases is very similar to\r
+GKLS. In general (but not always), physicists cared about positivity and trace-preservation.\r
+Nobody knew (and bothered) about complete positivity before GKLS.\r
+4.1 Landau’s approach to the damping problem\r
+Already in 1927 Landau [12] derived a kinetic equation for the elements of the density matrix of\r
+the radiation field interacting with charged matter (in the dipole approximation). Remarkably,\r
+in the same article Landau introduced for the first time the concept of density matrix (that would\r
+be defined in a more formal way the same year by von Neumann [13]). In modern language the\r
+Landau equation may be (re)written as follows\r
+ρ˙ =\r
+1\r
+2\r
+γ(2aρa∗ − ρa∗a − a\r
+∗\r
+aρ), (13)\r
+where a and a\r
+∗ are the annihilation and creation operators for the radiation field, and γ > 0 is\r
+a damping constant. This is the correct form of the master equation. Notice that a and a\r
+∗ are\r
+unbounded.\r
+4.2 Optical potential\r
+In optics, the interaction between light and a refractive and absorptive medium is described\r
+by introducing a complex refractive index, whose imaginary component absorbs light. In close\r
+analogy, during the golden years of nuclear physics, the so-called “optical potentials” were often\r
+used to describe the coherent scattering of slow neutrons travelling through matter [14–17]. The\r
+3\r
+Interestingly, R. Alicki, H.-P. Breuer, F. Petruccione and S. Huelga were among the participants of the 48th SMP\r
+in Toru´n.\r
+5
+
+scattering and absorption of nucleons (such as neutrons) by nuclei was treated by averaging\r
+effective neutron-nucleus interaction potentials over many nuclei, to yield a neutron-matter\r
+(complex) optical potential.\r
+We use in the following modern language. Let V ≥ 0 be a non-negative operator (“optical”\r
+potential). The non-Hermitian “Hamiltonian”\r
+H0 = H − iV , (14)\r
+yields the evolution\r
+ψ = e\r
+(−iH−V )tψ0 , (15)\r
+where ψ0 is the initial wave function and V is switched on at some instant of time or some\r
+position in space (when the particle impinges on the nucleus). The density matrix evolves\r
+according to\r
+ρ˙ = −i[H, ρ] − (V ρ + ρV ). (16)\r
+The trace is not preserved and probabilities are not conserved (particle absorption). Notice that\r
+if V were not positive-defined, probabilities would be allowed to become larger than 1 (particle\r
+creation). Optical potentials have played an important role in nuclear physics.\r
+4.3 Lamb equation\r
+Lamb, analyzing the theory of the optical maser [18], considered the following equation for the\r
+(unnormalized) density matrix ρ of a 2-level atom (equation (18) in [18]):\r
+ρ˙ = −i[H, ρ] −\r
+1\r
+2\r
+(Γρ + ρΓ), (17)\r
+where Γ is a diagonal matrix with positive diagonal elements γ1 and γ2, the decay constants of\r
+the two states of the atom. This equation generates the legitimate evolution\r
+ρ0 −→ ρt = e\r
+(−iH− 1\r
+2 Γ)t\r
+ρ0e\r
+(iH− 1\r
+2 Γ)t\r
+, (18)\r
+but it is not trace-preserving. Like with an optical potential (preceding subsection) positivity\r
+of Γ implies tr ˙ρ < 0.\r
+Compare (16) and (17) with (12): the (jump) terms 2V ρV and ΓρΓ are missing. It is clear\r
+that the Lamb equation (17) may be “cured” by adding to the r.h.s. an additional term “Φρ”,\r
+where Φ is an arbitrary completely positive map such that Φ∗I = Γ. In this way, Lamb’s\r
+becomes a legitimate GKLS equation. Similarly for (16).\r
+4.4 Redfield equation\r
+Redfield, using the Born-Markov approximation, derived the following Markovian master equa\u0002tion [19]\r
+ρ˙ = −i[H, ρ] −\r
+X\r
+α\r
+[Vα, Xαρ − ρX†\r
+α] , (19)\r
+where the operators Vk are defined via the system–bath interaction Hamiltonian HI =\r
+P\r
+α\r
+Vα ⊗ Bα,\r
+and\r
+Xα =\r
+X\r
+β\r
+Z∞\r
+0\r
+hαβ(τ )Veβ(−τ )dτ , (20)\r
+hαβ(t) = tr(Beα(t)BβρB) being the two-point bath correlation function, ρB the initial state of\r
+the bath, and tilde stands for the interaction picture. It is obvious that trρt = trρ0. However,\r
+the positivity of ρt is not guaranteed (cf. the detailed discussion in [20]).\r
+6
+
+4.5 Quantum optics\r
+Master equations of the form (4) for the density operator ρ, with L having the form of GKLS\r
+generator (5)–(7), were used in quantum optics long before the GKLS articles [2,3]. For example,\r
+the Stuttgart group (Weidlich, Haake, Risken and Haken) [21–23], working on the theory of the\r
+laser, derived the following equation for the statistical operator R of the laser field\r
+R˙ = −i[H, R] + \u0010∂R\r
+∂t\r
+\u0011\r
+incoh\r
+, (21)\r
+where the incoherent term is given by\r
+\u0010∂R\r
+∂t\r
+\u0011\r
+incoh\r
+= ν([b, Rb∗] + [bR, b∗]) + δ([b\r
+∗\r
+, Rb] + [b\r
+∗R, b]), (22)\r
+b and b\r
+∗ are the annihilation and creation operators of the field mode, ν is determined by the\r
+coupling between the laser field and the atoms, and\r
+δ = e\r
+−Ω~/kT ν , (23)\r
+with T being the temperature of the atoms. Moreover, the same authors recovered the well\u0002known formula for the mean number of thermal photons\r
+nth(T) = δ\r
+ν − δ\r
+=\r
+1\r
+e\r
+Ω~/kT − 1\r
+. (24)\r
+This proves that the master equation (21) properly describes the interaction of the laser field\r
+with atomic matter. Clearly, (21) has exactly the form of (12), with V1 =\r
+√\r
+2ν b and V2 =\r
+√\r
+2δ b∗,\r
+showing that the GKLS master equation worked perfectly well ten years before GKLS’s papers\r
+[2, 3]. This research is summarized in Haken’s book [24] and the review papers by Haake [25]\r
+and Agarwal [26]. The same equation was independently used at the same time by Shen [27]\r
+and the slightly isolated Russian school of Belavin et al. [28] and Zel’dovich et al. [29] (this list\r
+is by no means exhaustive).\r
+4.6 Davies approach to Markovian Master Equations\r
+In a series of papers [30 – 33] (see also the book [34]) Davies presented a general approach to\r
+Markovian master equations (6) using the so-called weak-coupling limit. Based on the Nakajima\u0002Zwanzig projection techniques [35,36] (see also [37,38]) and van Hove’s idea of time rescaling [39],\r
+Davies derived the following form of the generator (in the interaction picture)\r
+Lρ =\r
+X\r
+ω\r
+X\r
+α,β\r
+n\r
+− isαβ(ω)[V\r
+†\r
+β\r
+(ω)Vα(ω), ρ]\r
++\r
+1\r
+2\r
+bhαβ(ω)([Vα(ω)ρ, V †\r
+β\r
+(ω)] + [Vα(ω), ρV †\r
+β\r
+(ω)])o, (25)\r
+where ω are the Bohr frequencies of the system Hamiltonian, bhαβ(ω) denotes the Fourier trans\u0002form of the two-point correlation function, and\r
+sαβ(ω) = 1\r
+2π\r
+P\r
+Z∞\r
+−∞\r
+bhαβ(ξ)\r
+ξ − ω\r
+dξ , (26)\r
+with P denoting the principal part. Bochner’s theorem [40] implies that the Kossakowski matrix\r
+cαβ =\r
+1\r
+2\r
+P\r
+ω\r
+bhαβ(ω) is positive definite and hence the generator defined by (25) is a legitimate\r
+GKLS generator. It is usually called a Davies generator and many physical systems are properly\r
+described by (25).\r
+7
+
+4.7 Quantum stochastic processes\r
+In the ’70s there was a parallel activity on quantum stochastic processes. This topic is closely\r
+related to the notion of complete positivity and has a nontrivial overlap with the theory of master\r
+equations developed by GKLS. For a historical review of this interesting activity, see [41].\r
+5 Complete Positivity and its Appearance in Physics\r
+Let us now look at a central hypothesis in the derivation of a quantum master equation. The\r
+very concept of complete positivity was introduced by Stinespring in a seminal paper [42]. Let\r
+us recall that a linear map Φ between two C\r
+∗\r
+-algebras A and B is positive if Φa ≥ 0 for each\r
+a ≥ 0 (a ≥ 0 if a = xx∗for some x ∈ A). Now, one calls a linear map Φ k-positive if the\r
+k-amplification\r
+1lk ⊗ Φ : Mk ⊗ A −→ Mk ⊗ B , (27)\r
+is positive, Mk being the algebra of k × k complex matrices. Finally, Φ is completely positive\r
+(CP) if it is k-positive for all k ∈ N. A remarkable result due to Stinespring consists in the\r
+following\r
+Theorem 3. Let A be a unital C\r
+∗\r
+-algebra and let Φ : A → B(H) be a CP map. Then there\r
+exists a Hilbert space K, a unital ∗-homomorphism π : A → B(K), and a bounded operator\r
+V : H → K, with ||ΦI|| = ||V ||2, such that\r
+Φa = V π(a)V\r
+∗\r
+, (28)\r
+for all a ∈ A.\r
+The notion of CP maps slowly appeared in the mathematical literature in the ’60s. Naka\u0002mura, Takesaki and Umegaki [43] proved that “the conditional expectation in a not necessarily\r
+commutative probability is completely positive in the sense of Stinespring”. In his review on\r
+positive maps [44] Størmer included completely positive maps and introduced the notion of pos\u0002itive decomposable map (see also [45] and the recent monograph [46]). In a seminal paper [47],\r
+Woronowicz showed that all maps Φ : Mn → Mm with mn ≤ 6, if positive, are automatically\r
+decomposable. Another seminal paper developing the concept of completely positive maps is\r
+due to Arveson [48], who introduced the notions of completely bounded, completely contractive\r
+and completely isometric maps (see the recent monograph [49]).\r
+In physics the importance of completely positive maps was first recognized by the German\r
+school of mathematical physics (Ludwig, Haag, Kraus, Hellwig and others) [50 – 53]. In his\r
+seminal paper [54], Kraus introduced the notion of quantum operation Φ. Let us quote from [55]:\r
+. . . for physical reason the mapping Φ must have still another property, called com\u0002plete positivity and being somehow stronger than “ordinary” positivity, such that the\r
+mapping Φ is given by\r
+ΦA =\r
+Xr\r
+α\r
+KαAK∗\r
+α. (29)\r
+This is the celebrated Kraus representation. Interestingly, a few years later Choi [56, 57]\r
+derived (29) without the knowledge of Kraus’ work (GKLS cite both Kraus and Choi). Choi\r
+observed that in a finite-dimensional setting the map Φ is completely positive if and only if the\r
+following (so-called Choi) matrix\r
+C = (1ln ⊗ Φ)P\r
++\r
+n\r
+, (30)\r
+is positive definite (P\r
++\r
+n\r
+is a projector onto the maximally entangled state in C\r
+n ⊗ Cn, and\r
+1ln is the identity map in Mn). Remarkably, complete positivity reduces to the positivity of\r
+8
+
+1ln ⊗ Φ on a single projector P\r
++\r
+n\r
+. It is therefore clear that complete positivity introduces a great\r
+simplification for the analysis of dynamical maps and the corresponding master equations.\r
+How did GKLS learn about complete positivity? The Advanced Study Institute on “Founda\u0002tions of Quantum Mechanics and Ordered Linear Spaces” was held in Marburg between March\r
+26th and April 6th, 1973. In the introduction to the Proceedings of this meeting one reads:\r
+Mathematicians and physicists participated in the meeting. The lectures of the Insti\u0002tute were intended to prepare a common basis for discussion between mathematicians\r
+and physicists for the future research and on foundations of quantum mechanics by or\u0002dered linear spaces. A series of lectures (“Course”) provided a coherent introduction\r
+into the field of ordered normed vector spaces and their application to the foundation\r
+of quantum mechanics. Additional lectures treated special mathematical and physical\r
+topics, which were in more or less connection to the lectures of the course.\r
+In the list of mathematical lectures one finds a lecture by E. Størmer on “Positive linear maps\r
+of C\r
+∗\r
+-algebras”. The list of physics lectures contains those of G. Ludwig on “Measuring and\r
+preparing processes” and K. Kraus on “Operations and effects in the Hilbert space formulation\r
+of quantum theory”. V. Gorini contributed with the talk “Irreversibility and dynamical maps\r
+of statistical operators”. After the Marburg meeting Gorini went to Texas and spread the\r
+good news of complete positivity to Kossakowski and Sudarshan. He then met Lindblad in\r
+Stockholm in January 1975 (see Lindblad’s recollection in Sect. 8). Lindblad was already aware\r
+of this concept, having used it in his 1974 proof of a fundamental property of quantum relative\r
+entropy [58] (quantum relative entropy is monotonic with respect to completely positive trace\r
+preserving maps, called nowadays quantum channels).\r
+6 Positivity vs. Complete Positivity — the Great Simpli\u0002fication\r
+Due to Stinespring’s theorem, completely positive maps are fully characterized. The problem\r
+of the characterization of positive maps is still open and is equivalent to the characterization\r
+of the entangled states of bipartite quantum systems [59, 60]. In the beginning of the ’70s Kos\u0002sakowski (still without the knowledge of complete positivity) addressed the problem of finding\r
+the necessary and sufficient conditions for a bounded generator L of the semigroup of positive\r
+maps Λt = e\r
+tL for t ≥ 0. Note that if Λt is trace-preserving and hermiticity-preserving (i.e.\r
+ΛtX∗ = (ΛtX)\r
+∗\r
+), then any (bounded) generator must have the standard form (10)\r
+Lρ = −i[H, ρ] + Φρ −\r
+1\r
+2\r
+{Φ\r
+∗\r
+I, ρ} , (31)\r
+with Φ a hermiticity-preserving map. GKLS proved that the corresponding dynamical map e\r
+tL\r
+is completely positive iff the map Φ is completely positive as well. What happens if e\r
+tL is only\r
+positive? In such a case, the positivity of Φ is only sufficient, but not necessary! Kossakowski\r
+proved the following [61]\r
+Theorem 4. A bounded linear operator L on T (H) generates a dynamical semigroup Λt if and\r
+only if for every resolution of identity PiPj = δijPi, trPi < ∞, and P\r
+i Pi = IH one has\r
+tr(PiLPj ) ≥ 0 , i 6= j , (32)\r
+and P\r
+i\r
+tr(PiLPj ) = 0.\r
+Unfortunately, the general structure of L satisfying (32) is not known. It is clear that if\r
+dim H = N < ∞, then L has the structure defined by (7), but there is no simple condition for\r
+9
+
+the matrix [ckl]. As an example [62] consider N = 2 and\r
+Lρ =\r
+X\r
+3\r
+k=1\r
+γk(σkρσk − ρ), (33)\r
+that is, the Kossakowski matrix ckl = γkδkl is diagonal. L is a GKLS generator iff γk ≥ 0, that\r
+is, the map Φρ =\r
+P3\r
+k=1 γkσkρσk is completely positive. However, L satisfies (32) iff\r
+γ1 + γ2 ≥ 0 , γ2 + γ3 ≥ 0 , γ3 + γ1 ≥ 0 . (34)\r
+These conditions, which are much weaker than γk ≥ 0, do not guarantee the positivity of the\r
+map Φ. For example, by taking γ1 = γ2 = −γ3 = 1 one finds Φρ = σ1ρσ1 + σ2ρσ2 − σ3ρσ3\r
+which is not positive, although the γ’s satisfy the conditions (34). It is therefore clear that the\r
+positivity of Φ is not necessary for the positivity of the dynamical map e\r
+tL.\r
+A similar problem was addressed in 1969 by Belavin et al. [28]. They analyzed the following\r
+kinetic equation (equation (14) in [28])\r
+ρ˙ =\r
+1\r
+2\r
+X\r
+N\r
+i,j=1\r
+γij (2AiρA†\r
+j − A\r
+†\r
+jAiρ − ρA†jAi). (35)\r
+Clearly, being not aware of complete positivity, they simply looked for the evolution ρ0 → ρt =\r
+Λtρ0 realized by a family of positive maps Λt. If N = 1 they showed that ρt is a legitimate\r
+density matrix for all t ≥ 0 iff γ > 0 (in this case there is only a single γ). Hence for a single\r
+dissipation/decoherence channel the correct form of the generator was already known in 1969!\r
+The authors claimed: it is not difficult to generalize the proof given here to the case N > 1.\r
+The answer they provided (without proof) reads: the matrix [γij ] has to be positive definite.\r
+Clearly, this is very intuitive, but as we know this condition is both necessary and sufficient for\r
+complete positivity, but it is not necessary for the simple positivity required in [28]. This example\r
+shows that the condition for the positivity of the Kossakowski matrix [γij ] was anticipated as a\r
+natural generalization of positivity for a single dissipative channel. However, only GKLS proved\r
+the consistency of this condition with the complete positivity of the dynamical map. The spirit\r
+of the article by Belavin et al. [28] is nonetheless very close to that of the GKLS papers. It is\r
+unfortunate that their work is not well known.4\r
+In his recent book, Weinberg [64] wrote: The Lindblad equation can be derived as a straight\u0002forward application of an earlier result by A. Kossakowski [4], eq. (77). This interesting state\u0002ment can be considered correct or incorrect (depending on the viewpoint and level of rigor one\r
+adopts) and shows how delicate questions of priority can be. In his 1972 paper Kossakowski\r
+wrote the right equation using only positivity, and from those premises one cannot obtain the\r
+GKLS equation, whose proof requires complete positivity.\r
+7 The Mystery of Sudarshan-Mathews-Rau Paper\r
+In 1961 Sudarshan, Mathews, and Rau [65] published a remarkable paper entitled Stochastic\r
+Dynamics of Quantum Mechanical Systems. In the abstract the authors state:\r
+The most general dynamical law for a quantum mechanical system with a finite num\u0002ber of levels is formulated. A fundamental role is played by the so-called “dynamical\r
+4The article by Belavin et al. [28] has been recently cited in [63]. We wonder if this is because one of the authors\r
+– Victor Albert – participated in the 48th SMP. If our guess is correct, this proves that the SMP meetings can be\r
+particularly useful for young and promising physicists!\r
+10
+
+matrix” whose properties are stated in a sequence of theorems. A necessary and suffi\u0002cient criterion for distinguishing dynamical matrices corresponding to a Hamiltonian\r
+time-dependence is formulated.\r
+Sudarshan, Mathews, and Rau analyzed the evolution of the density matrix represented by the\r
+following linear relation\r
+ρrs(t) = X\r
+r\r
+0\r
+,s0\r
+Ars,r0s\r
+0 (t, t0)ρr0s0 (t0) (36)\r
+and found that ρrs(t) defines a density matrix for t > t0 if and only if the A matrix satisfies the\r
+following properties:\r
+Asr,s0r\r
+0 = Ars,r0s\r
+0 , (Hermiticity)\r
+X\r
+r,s,r0,s0\r
+xrxsArs,r0s\r
+0yr0ys0 ≥ 0 , (positivity) (37)\r
+X\r
+r\r
+Arr,r0s\r
+0 = δr0s0 . (trace-preservation).\r
+If one knows how to represent a matrix satisfying the above properties, the problem is solved.\r
+However, as the authors remarked, these conditions are fairly complicated. In order to solve the\r
+problem they proposed to analyze the matrix B defined by\r
+Brr0\r
+,ss0 := Ars,r0s\r
+0 . (38)\r
+In modern language, B, which was named dynamical matrix in [65], is nothing but the realign\u0002ment of A (see e.g. [66]). Now, the authors claimed (without proof) that properties (37) lead\r
+to the following properties of B\r
+Brr0\r
+,ss0 = Bss0\r
+,rr0 , (Hermiticity)\r
+X\r
+r,s,r0,s0\r
+zrr0Brr0\r
+,ss0zss0 ≥ 0 , (positivity) (39)\r
+X\r
+r\r
+Brr0\r
+,rs0 = δr\r
+0s0 , (trace-preservation).\r
+Finally, they derived the remarkable result that B satisfies (39) if and only if there exists a set\r
+of parameters µα ≥ 0, and a collection of n × n complex matrices Wα, such that\r
+Brr0\r
+,ss0 =\r
+nX2\r
+α=1\r
+µα(Wα)rr0 (Wα)ss0 . (40)\r
+In such a case, the evolution of ρ is realized via\r
+ρ 7−→\r
+nX2\r
+α=1\r
+µαWαρW†\r
+α , (41)\r
+where µα ≥ 0, and Pn\r
+2\r
+α=1 µαW†\r
+αWα = I. This is nothing but the celebrated Kraus representation\r
+(29) of a quantum channel, derived almost ten years before Kraus [54]! How was it possible\r
+to derive the Kraus representation without making any use of completely positive maps? Note\r
+that in passing from (37) to (39) there is a gap. The second condition for B should read\r
+X\r
+r,s,r0,s0\r
+xrxsBrr0\r
+,ss0yr\r
+0ys0 ≥ 0 . (42)\r
+11
+
+This condition states that the dynamical matrix B is not necessarily positive but only block\u0002positive (cf. [66]). This was a prophetic error, anticipating the Kraus representation of a quan\u0002tum channel. It is clear that this remarkable paper was written too early and the community\r
+in 1961 was not prepared to grasp its elegance and predictive power!\r
+In modern language, B is nothing but the Choi matrix corresponding to the dynamical\r
+map, and condition (39) is, as Choi proved in 1975 [57], equivalent to complete positivity.\r
+The weaker condition (42) was proved by Jamio lkowski [67] to be equivalent to the positivity\r
+of the map. The correspondence “map ←→ B-matrix” is usually called Choi-Jamio lkowski\r
+isomorphism. Actually, such correspondence and its properties were analyzed by de Pillis [68]\r
+in 1967 (Kossakowski cited [68] in his 1972 paper [4], in connection with semi-groups of positive\r
+maps). See also the recent review [69]. Clearly, this correspondence was already noted in [65].\r
+8 Recollection from G¨oran Lindblad\r
+Unfortunately, G¨oran Lindblad was unable to participate in the 48th SMP meeting in Toru´n.\r
+However, he sent the following “recollection slide” to the organizers:\r
+In the Spring of 1974 I received a letter from Professor Ingarden (dated June 22)\r
+inviting me to take part and give a seminar on entropy and related problems (the\r
+subject of my recent thesis). I answered that I would be glad to come, but that I would\r
+prefer to talk about some even more recent results on quantum dynamical semigroups.\r
+I had only just realized that the CP condition makes the structure so much simpler.\r
+In fact, after passing my thesis in May 1974, I went back to my desk to consider the\r
+problem, and after a week or so I realized that I knew how to make an ‘if and only if\r
+proof ’. I was quite euphoric for a week or two, and then considered how and where\r
+to publish.\r
+When I got Prof. Ingarden’s letter, I decided to use the conference for a first\r
+announcement.\r
+After my talk (December 5) Prof. Ingarden told me that he had received news from\r
+Texas of similar results. Later, in January 1975, Vittorio Gorini passed through\r
+Stockholm on his way back home, and we could compare things and agree that there\r
+was a good deal of overlap, in fact the results were essentially the same, save for the\r
+mathematical machinery.\r
+9 Conclusions and Outlook\r
+In retrospect, there were a number of concomitant factors that led to the precise mathematical\r
+formulation of the evolution equations for open quantum dynamical systems. The chronology of\r
+some of these episodes is summarized in Table 1. We leave to the wisdom of Noam Chomsky [1]\r
+the final judgement on the “level of significance” at which there are differences and similarities.\r
+In our humble opinion, there are many similarities, and also a few differences, among the\r
+seminal articles discussed in this note. We venture to suggest that (4), with (7), (9) and (10),\r
+be named “Gorini-Kossakowski-Lindblad-Sudarshan (GKLS) equation” and (3) the “Kraus\u0002Stinespring-Sudarshan (KSS) representation”.\r
+Acknowledgments\r
+D. C. was partially supported by the National Science Centre project number 2015/17/B/ST2/02026.\r
+S. P. was partially supported by INFN through the project “QUANTUM”. S. P. would like to\r
+12
+
+Date Event\r
+1955 Stinespring publishes [42]\r
+1961 Sudarshan, Mathews, and Rau publish [65]\r
+1971 Kraus publishes [54]\r
+1972 Kossakowski publishes [4]\r
+26 March – 6 April 1973 Gorini attends Marburg conference, where\r
+Størmer and Kraus mention complete\r
+positivity\r
+May 1974 Lindblad submits [58]\r
+September – December 1974 Gorini and Kossakowski visit Sudarshan in\r
+Texas\r
+December 1974 Lindblad visits Ingarden in Toru´n\r
+January 1975 Gorini visits Lindblad in Stockholm\r
+1975 Choi publishes [57]\r
+March and April 1975 GKLS articles [2, 3] are submitted\r
+1980 Kraus spends sabbatical year at University\r
+of Texas at Austin; Sudarshan, Wheeler,\r
+A. B¨ohm and Wootters are there\r
+1983 Kraus publishes [55]\r
+Table 1: Chronology\r
+thank the organizers of the 48th Symposium on Mathematical Physics (Toru´n, June 10–12,\r
+2016) for the invitation and kind hospitality.\r
+References\r
+[1] N. Chomsky, The Chomsky Reader, Pantheon Books, New York, Monthly Review Archives\r
+37, 1 (1985) [Monthly Review Foundation, New York, US].\r
+[2] V. Gorini, A. Kossakowski, and E. C. G. Sudarshan, Completely positive dynamical semi\u0002groups of N-level systems, J. Math. Phys. 17, 821 (1976).\r
+[3] G. Lindblad, On the generators of quantum dynamical semigroups, Commun. Math. Phys.\r
+48, 119 (1976).\r
+[4] A. Kossakowski, On Quantum statistical mechanics of non-Hamiltonian systems, Rep.\r
+Math. Phys. 3, 247 (1972).\r
+13
+
+[5] R. S. Ingarden and A. Kossakowski, On the connection of nonequilibrium information ther\u0002modynamics with non-Hamiltonian quantum mechanics of open systems, Ann. Phys. 89,\r
+451 (1975).\r
+[6] K. Yosida, Functional Analysis, Springer-Verlag, 1995.\r
+[7] I. Siemon, A. S. Holevo, and R. F. Werner, Unbounded generators of dynamical semigroups,\r
+(to appear in Open Sys. Information Dyn.).\r
+[8] R. Alicki and K. Lendi, Quantum Dynamical Semigroups and Applications, Springer, 1987.\r
+[9] U. Weiss, Quantum Dissipative Systems, World Scientific, 2000.\r
+[10] H.-P. Breuer and F. Petruccione, The Theory of Open Quantum Systems, Oxford Univ.\r
+Press, 2007.\r
+[11] A. Rivas and S. F. Huelga, ´ Open Quantum Systems. An Introduction, Springer, 2012.\r
+[12] L. D. Landau, Das D¨ampfungsproblem in der Wellenmechanik, Z. Physik 45, 430 (1927)\r
+[see Collected Papers of L. D. Landau, Pergamon Press, 1965, p. 8].\r
+[13] J. von Neumann, Wahrscheinlichkeitstheoretischer Aufbau der Quantenmechanik, G¨ottinger\r
+Nachrichten, 1, 245 (1927).\r
+[14] E. Fermi, Sul moto dei neutroni nelle sostanze indrogenate, Ricerca Scientifica 7, 13 (1936).\r
+[15] E. Fermi and W. H. Zinn, Phys. Soc. Cambridge Conf. Rep. 92, Chicago, 1947. [See Enrico\r
+Fermi, Collected Papers, E. Segr`e, ed., Univ. of Chicago Press, 1962, p. 220.]\r
+[16] E. Fermi, Polarization of high energy protons scattered by nuclei, Nuovo Cimento 11, 407\r
+(1954).\r
+[17] H. Feshbach, C. E. Porter, and V. F. Weisskopf, Model for nuclear reactions with neutrons,\r
+Phys. Rev. 96, 448 (1954).\r
+[18] W. E. Lamb, The theory of an optical maser, Phys. Rev. 134, 1429 (1964).\r
+[19] A. G. Redfield, The theory of relaxation processes, Adv. Magn. Res. 1, 1 (1965).\r
+[20] F. Benatti and R. Floreanini, Open quantum dynamics: complete positivity and entangle\u0002ment, Int. J. Mod. Phys. B 19, 3063 (2005).\r
+[21] W. Weidlich and F. Haake, Coherence-properties of the statistical operator in a laser model,\r
+Z. Physik 185, 30 (1965).\r
+[22] W. Weidlich, H. Risken, and F. Haken, Quantummechanical solutions of the laser mas\u0002terequation I, Z. Physik 201, 396 (1967).\r
+[23] W. Weidlich, H. Risken, and F. Haken, Quantummechanical solutions of the laser mas\u0002terequation II, Z. Physik 204, 223 (1967).\r
+[24] H. Haken, Laser Theory, Handbook of Physis, Springer-Verlag, 1970.\r
+[25] F. Haake, Statistical treatment of open systems by generalised master equations, in Springer\r
+Tracts in Modern Physics, Vol. 66, Springer-Verlag, Berlin, 1973, pp. 98–168.\r
+[26] G. S. Agarwal, I Master Equation Methods in Quantum Optics, in Progress in Optics, E.\r
+Wolf, ed., North-Holland, Amsterdam, 1973, Vol. XI, pp. 1–76.\r
+[27] Y. R. Shen, Quantum statistics of nonlinear optics, Phys. Rev. 155, 921 (1967).\r
+[28] A. A. Belavin, B. Ya. Zel’dovich, A. M. Perelomov, and V. S. Popov, Relaxation of quantum\r
+systems with equidistant spectra, Zh. Eksp. Teor. Fiz. 56, 264 (1969) [Sov. Phys. – JETP\r
+29, 145 (1969)].\r
+[29] B. Ya. Zel’dovich, A. M. Perelomov, and V. S. Popov, Relaxation of quantum oscillator ,\r
+Zh. Eksp. Tear. Fiz. 55, 589 (1968) [Sov. Phys. – JETP 28, 308]. (1969)].\r
+14
+
+[30] E. B. Davies, Quantum stochastic processes, Commun. Math. Phys. 15, 277 (1969).\r
+[31] E. B. Davies, Quantum stochastic processes. II, Commun. Math. Phys. 19, 83 (1970).\r
+[32] E. B. Davies, The harmonic oscillator in a heat bath, Commun. Math. Phys. 33, 171 (1973).\r
+[33] E. B. Davies, Markovian master equations, Commun. Math. Phys. 39, 91 (1974).\r
+[34] E. B. Davies, Quantum Theory of Open Systems, New York, Academic Press, 1976.\r
+[35] S. Nakajima, On Quantum theory of transport phenomena, Prog. Theor. Phys. 20, 948\r
+(1958).\r
+[36] R. Zwanzig, Ensemble method in the theory of irreversibility, J. Chem. Phys. 33, 1338\r
+(1960).\r
+[37] R. Kubo, M. Toda, and N. Hashitsume, Statistical Physics II: Nonequilibrium Statistical\r
+Mechanics, Springer, 1995.\r
+[38] C.W. Gardiner and P. Zoller, Quantum Noise, Springer, 2000.\r
+[39] L. Van Hove, Quantum-mechanical perturbations giving rise to a statistical transport equa\u0002tion, Physica 21, 517 (1955).\r
+[40] M. Reed and B. Simon, Methods of Modern Mathematical Physics, vol. II, Academic Press,\r
+1975.\r
+[41] L. Accardi and Y. G. Lu, The first 40 years of GKSL generators and some proposal for the\r
+future, Open Sys. Information Dyn. 24, 1740002 (2017).\r
+[42] W. F. Stinespring, Positive functions on C\r
+∗\r
+-algebras, Proc. Amer. Math. Soc. 6, 211 (1955).\r
+[43] M. Nakamura, M. Takesaki, and H. Umegaki, A Remark on the expectations of operator\r
+algebras, Kodai Math. Sem. Rep. 12, 82 (1960).\r
+[44] E. Størmer, Positive linear maps of operator algebras, Acta Math. 110, 233 (1963).\r
+[45] E. Størmer, Positive linear maps of C\r
+∗\r
+-algebras, Lect. Notes Phys. 29, 85 (1974).\r
+[46] E. Størmer, Positive Linear Maps of Operator Algebras, Springer, 2012.\r
+[47] S. L. Woronowicz, Positive maps of low dimensional matrix algebras, Rep. Math. Phys. 10,\r
+165 (1976).\r
+[48] W. B. Arveson, Subalgebras of C\r
+∗\r
+-algebras, Acta Mathematica 123, 141 (1969).\r
+[49] V. Paulsen, Completely Bounded Maps and Operator Algebras, Cambridge Univ. Press,\r
+2003.\r
+[50] G. Ludwig, Attempt of an axiomatic foundation of quantum mechanics and more general\r
+theories. III, Commun. Math. Phys. 9, 1 (1968).\r
+[51] K.-E. Hellwig and K. Kraus, Pure operations and measurements, Commun. Math. Phys.\r
+11, 241 (1968).\r
+[52] K.-E. Hellwig and K. Kraus, Operations and measurements II, Commun. Math. Phys. 16,\r
+142 (1970).\r
+[53] S. Doplicher, R. Haag, and J. E. Roberts, Local observables and particle statistics I, Com\u0002mun. Math. Phys. 23, 199 (1971).\r
+[54] K. Kraus, General state changes in quantum theory, Ann. Phys. 64, 311 (1971).\r
+[55] K. Kraus States, Effects and Operations: Fundamental Notions of Quantum Theory, Lect.\r
+Notes Phys., Springer-Verlag, Berlin, 1983.\r
+[56] M. D. Choi, Positive linear maps on C\r
+∗\r
+-algebras, J. Canad. Math. 24, 520 (1972).\r
+[57] M. D. Choi, Completely positive linear maps on complex matrices, Lin. Alg. Appl. 10, 285\r
+(1975).\r
+15
+
+[58] G. Lindblad, Completely positive maps and entropy inequalities, Commun. Math. Phys. 40,\r
+147 (1975).\r
+[59] M. A. Nielsen and I. L. Chuang, Quantum Computation and Quantum Information, Cam\u0002bridge Univ. Press, 2000.\r
+[60] R. Horodecki, P. Horodecki, M. Horodecki, and K. Horodecki, Quantum entanglement, Rev.\r
+Mod. Phys. 81, 865 (2009).\r
+[61] A. Kossakowski, On Necessary and sufficient conditions for a generator of a quantum\r
+dynamical semi-group, Bull. Acad. Pol. Sci. Ser. Math. Astr. Phys. 20, 1021 (1972).\r
+[62] A. Kossakowski, On the general form of the generator of a dynamical semi-group for the\r
+spin 1/2 system, Bull. Acad. Pol. Sci. Ser. Math. Astr. Phys. 21, 649 (1973).\r
+[63] V. V. Albert, B. Bradlyn, M. Fraas, and L. Jiang, Geometry and response of lindbladians,\r
+Phys. Rev. X 6, 041031 (2016).\r
+[64] S. Weinberg, Lectures on Quantum Mechanics, Cambridge Univ. Press, 2015, footnote 14,\r
+p. 242.\r
+[65] E. C. G. Sudarshan, P. M. Mathews, and J. Rau, Stochastic dynamics of quantum\u0002mechanical systems, Phys. Rev. 121, 920 (1961).\r
+[66] I. Bengtsson and K. Zyczkowski, ˙ Geometry of Quantum States: An Introduction to Quan\u0002tum Entanglement, Cambridge Univ. Press, 2006.\r
+[67] A. Jamio lkowski, Linear transformations which preserve trace and positive semidefiniteness\r
+of operators, Rep. Math. Phys. 3, 275 (1972).\r
+[68] J. de Pillis, Linear transformations which preserve Hermitian and positive semidefinite\r
+operators, Pac. J. Math. 23, 129 (1967).\r
+[69] D. Chru´sci´nski and G. Sarbicki, Entanglement witnesses: construction, analysis and clas\u0002sification, J. Phys. A: Math. Theor. 47, 483001 (2014).\r
+16"""
+
+[metadata]
+title = "arxiv 1710.05993 chruscinski pascazio 2017 brief history gkls equation"
+authors = ["Unknown"]
+arxiv = "1710.05993"
+year = 2017
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+A Brief History of the GKLS Equation\r
+Dariusz Chru´sci´nski\r
+Institute of Physics, Faculty of Physics, Astronomy and Informatics\r
+Nicolaus Copernicus University, Grudzi¸adzka 5/7, 87–100 Toru´n, Poland\r
+email: darch@fizyka.umk.pl\r
+Saverio Pascazio\r
+Dipartimento di Fisica and MECENAS, Universit`a di Bari, I-70126 Bari, Italy\r
+Istituto Nazionale di Ottica (INO-CNR), I-50125 Firenze, Italy\r
+INFN, Sezione di Bari, I-70126 Bari, Italy\r
+e-mail: saverio.pascazio@ba.infn.it\r
+November 7, 2017\r
+Abstract\r
+We reconstruct the chain of events, intuitions and ideas that led to the formulation of the\r
+Gorini, Kossakowski, Lindblad and Sudarshan equation."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+If you take any two historical events and you ask whether there are similarities and\r
+differences, the answer is always going to be both “yes” and “no.” At some sufficiently\r
+fine level of detail there will be differences, and at some sufficiently abstract level there\r
+will be similarities. The question we want to ask in the two cases we are considering,\r
+[. . .] is whether the level at which there are similarities is, in fact, a significant one. [1]\r
+The articles written by Vittorio Gorini, Andrzej Kossakowski and George Sudarshan (GKS) [2],\r
+and G¨oran Lindblad [3] belong to the list of the most influential papers in theoretical physics.\r
+They were published almost at the same time: the former [2] in May 1976 and the latter [3]\r
+in June 1976. Interestingly, they were also submitted simultaneously: [2] on March 19th, 1975,\r
+and [3] on April 7th, 1975. Archive and on-line submission did not exist in the ’70s, so both\r
+papers were very probably in gestation at the same time.\r
+It is always difficult to reconstruct facts from (necessarily incomplete) data. This is the\r
+work of historians. Things are even more complicated when one has to reconstruct how ideas\r
+are born, and when and where. We decided to resort to the wisdom of Noam Chomsky [1]\r
+and analyze events, as well as detailed technical findings. However, while writing this note, we\r
+realized that one cannot just compare two articles or (worse) two equations: after all, GKS and\r
+Lindblad derived and published a very similar equation at the same time. It is more interesting\r
+to compare hypotheses and derivation, and the way the necessary concepts are formulated. Ideas\r
+are born in complicated fashions. Environments, influences, conferences, discussions, scientific\r
+literature are but a number of factors that play a crucial role.\r
+Michel Berry, in his beautiful webpage, quotes Andr´e Gide:\r
+1\r
+arXiv:1710.05993v2 [quant-ph] 4 Nov 2017
+
+Everything has been said before, but since nobody listens we have to keep going back\r
+and beginning all over again.1\r
+True. But after all this article must be kept finite, and we shall abstain from going back to\r
+Aristotle. The only way out of this dilemma is to try and define Chomsky’s “level of detail at\r
+which there are similarities” and decide whether it is a significant one. This will entail a certain\r
+degree of arbitrariness. We ask our readers to make allowance for our superficiality.\r
+Let us mention a few facts. In 1972, Andrzej Kossakowski published a largely un-noticed\r
+article [4] in which he proposed an axiomatic definition of dynamical semigroup. From March\r
+26th to April 6th, 1973, Vittorio Gorini attended the conference “Foundations of quantum\r
+mechanics and ordered linear spaces”, in Marburg, where he listened to talks by E. Størmer\r
+and K. Kraus, who both mentioned the notion of complete positivity. From September to\r
+December 1974 Vittorio Gorini and Andrzej Kossakowski were both visiting George Sudarshan,\r
+at the University of Texas at Austin.2 G¨oran Lindblad used to work alone. He defended his\r
+thesis in May 1974. In December 1974 he participated in the Symposium on Mathematical\r
+Physics, organized in Toru´n by Roman Ingarden — Kossakowski’s PhD supervisor. He sent an\r
+interesting recollection letter of those times to the organizers of the 48th SMP meeting. This\r
+letter is reproduced in Sect. 8. In January 1975 Gorini went to visit Lindblad in Stockholm,\r
+on the way back from Texas. Kossakowski never met Lindblad. The two articles that concern\r
+us here [2, 3] were submitted between March and April 1975. In 1980 Kraus spent a sabbatical\r
+year at the University of Texas at Austin; besides George Sudarshan, there were John Archibald\r
+Wheeler, Arno B¨ohm and William Wootters.\r
+We shall consider these facts in the following. Now let us clarify what this article is not. It\r
+is not a review paper. It is not tutorial. It does not contain novel results. It does assume some\r
+familiarity with dissipative quantum systems and notation. It makes full use of our personal\r
+interactions with the four protagonists of this story. Figure 1 shows a 1975 picture taken in\r
+Torun, Poland, in Roman Ingarden’s office."""
+
+[[sections]]
+number = "2"
+title = "Formulation of the Problem"
+text = """
+The evolution of a closed (isolated) quantum system is described by the Schr¨odinger equation\r
+(here and henceforth, Planck’s constant ~ = 1)\r
+iψ˙ = Hψ ←→ ψt = Utψ0 , (1)\r
+where ψ is the wave function, H the Hamiltonian, the dot denotes time derivative and Ut = e\r
+−iHt\r
+is a one-parameter group. This translates into the so-called von Neumann equation for the\r
+density matrix ρ\r
+ρ˙ = −i[H, ρ] ←→ ρt = Utρ0U\r
+†\r
+t\r
+. (2)\r
+If the quantum system is “open”, namely not isolated, and immersed in an environment with\r
+which it interacts, the above equation is not valid and must be replaced by the following evolution\r
+law\r
+ρ\r
+0 = Λρ =\r
+X\r
+α\r
+KαρK†\r
+α, (3)\r
+where P\r
+α K†\r
+αKα = I. Notice that if the summation is made up of a single addendum K = U =\r
+e\r
+−iHt, (3) reduces to (2). Notice also that (3) is not a differential equation, but rather takes a\r
+“snapshot” of the quantum state at a particular time t\r
+0\r
+: ρ\r
+0 = ρt\r
+0 .\r
+1Toutes choses sont dites d´ej`a; mais comme personne n’´ecoute, il faut toujours recommencer. (French can be more\r
+concise, once in a while.)\r
+2Gorini had already visited Sudarshan in Texas from Fall 1971 to Spring 1973, but they were working on the\r
+classification of positive (not completely positive) maps.\r
+2
+
+Figure 1: Picture taken in Prof. Ingarden’s office (December 1975). From left to right: Roman Ingarden,\r
+Andrzej Kossakowski, George Sudarshan and Vittorio Gorini.\r
+Equation (3) defines a quantum channel and Λ is usually called a superoperator. It is\r
+assumed to be linear, it must preserve trace and hermiticity, and it must be completely positive.\r
+We shall delve into these properties in the following.\r
+In the Markovian approximation, (3) yields the following differential (“master”) equation\r
+ρ˙ = Lρ ←→ ρt = e\r
+tLρ0 , (4)\r
+where L is the generator of a (one-parameter) quantum dynamical semigroup. The evolution\r
+(4) inherits from (3) linearity, trace- and hermiticity-preservation, and complete positivity.\r
+Our focus will be on the mathematical structure of (4), but also on (3). Physicists did not\r
+pay much attention to open quantum systems until rather recently, when, with the advent of\r
+the quantum era, topics such as quantum information and quantum technologies became crucial\r
+for the foundations and applications of quantum mechanics."""
+
+[[sections]]
+number = "3"
+title = "The Structure of the GKLS Generator"
+text = """
+The central problem addressed by Gorini, Kossakowski, Sudarshan and Lindblad (GKLS) [2, 3]\r
+was the characterization of the generator L of a quantum dynamical semigroup. Consider\r
+quantum states, represented by density operators ρ ∈ T+(H) (positive trace-class operators) with\r
+||ρ||1 = Trρ = 1. The axioms for a dynamical semigroup had been elaborated by Kossakowski\r
+in 1972 [4] (see also [5]): it is a one-parameter family of maps Λt : T (H) → T (H) satisfying\r
+1. Λt is a positive map, i.e. Λt : T+(H) → T+(H),\r
+2. Λt is strongly continuous,\r
+3. ΛtΛs = Λt+s, for all t, s ≥ 0 (Markov property).\r
+3
+
+Now, the celebrated Hille-Yosida theorem [6] states that there exists a densely defined generator\r
+Lρ = limt→0\r
+1\r
+t\r
+(Λtρ − ρ), (5)\r
+such that\r
+Λ˙\r
+t = LΛt , (6)\r
+together with the initial condition limt→0 Λtρ = ρ. The problem is to characterize the properties\r
+of L such that the solution of (6) defines a dynamical semigroup Λt. This problem is still open\r
+nowadays.\r
+In their two seminal papers [2, 3], GKLS considered a restricted problem: first of all they\r
+focused on a subclass of positive maps — completely positive maps (see Sect. 5). Moreover,"""
+
+[[sections]]
+number = "1"
+title = "GKS considered only finite-dimensional Hilbert spaces, i.e. dim H = N < ∞."
+text = """
+2. Lindblad considered the infinite-dimensional case, but replaced strong continuity by uni\u0002form continuity. This considerably simplifies the analysis, since uniform continuity implies\r
+that the corresponding generator (5) defines a bounded operator (see [7] for the analysis\r
+of unbounded generators).\r
+A few technical details will help us clarify. Let MN denote the algebra of N × N complex\r
+matrices. GKS worked in the Schr¨odinger picture and arrived at the following result:\r
+Theorem 1 (Theorem 2.2 in [2]). A linear operator L : MN → MN is the generator of a\r
+completely positive semigroup of MN if it can be expressed in the following form\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+N\r
+X2−1\r
+k,l=1\r
+ckl\u0010[Fk, ρF∗\r
+l\r
+] + [Fkρ, F∗\r
+l\r
+]\r
+\u0011\r
+, (7)\r
+where H = H∗, trH = 0, trFk = 0, tr(FkF\r
+∗\r
+l\r
+) = δkl, k, l = 1, 2, . . . , N2−1, and [ckl] is a complex\r
+positive matrix.\r
+We shall call (7) the GKS form of the GKLS generator and [ckl] the Kossakowski matrix.\r
+Given a basis Fk, the generator is fully determined by the Hamiltonian H and the Kossakowski\r
+matrix.\r
+On the other hand, Lindblad worked in the Heisenberg picture at the level of B(H) — the\r
+algebra of bounded operators on H. Using completely different techniques he arrived at\r
+Theorem 2 (Theorem 2 in [3]). A linear operator L\r
+∗\r
+: B(H) → B(H) is the generator of a\r
+completely positive semigroup if and only if\r
+L\r
+∗X = i[H, X] +X\r
+j\r
+\u0010\r
+V\r
+∗\r
+j XVj −\r
+1\r
+2\r
+{V\r
+∗\r
+j Vj , X}\r
+\u0011\r
+, (8)\r
+where Vj ,\r
+P\r
+j\r
+V\r
+∗\r
+j Vj ∈ B(H), {A, B} = AB + BA, and H is a self-adjoint element in B(H).\r
+The corresponding generator in the Schr¨odinger picture is of the form\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+X\r
+j\r
+\u0010\r
+[Vj , ρV ∗\r
+j\r
+] + [Vjρ, V ∗\r
+j\r
+]\r
+\u0011\r
+. (9)\r
+We shall call (9) the Lindblad form of the GKLS generator. Observe that in (9) the choice\r
+of H and Vj is not unique, whereas in (7), after fixing the basis Fl, the traceless Hamiltonian is\r
+uniquely defined."""
+
+[[sections]]
+number = "4"
+title = "Remark 1. By GKLS (or standard) form of the generator one usually understands"
+text = """
+Lρ = −i[H, ρ] + Φρ −\r
+1\r
+2\r
+{Φ\r
+∗\r
+I, ρ} , (10)\r
+where H is a self-adjoint operator in the Hilbert space of the system H, Φ is a completely\r
+positive map, and Φ∗stands for its dual (Heisenberg picture). Equivalently, representing\r
+Φρ =\r
+X\r
+j\r
+VjρV ∗\r
+j\r
+, (11)\r
+one gets\r
+Lρ = −i[H, ρ] + 1\r
+2\r
+X\r
+j\r
+(2VjρV ∗\r
+j − V\r
+∗\r
+j Vjρ − ρV ∗j Vj ). (12)\r
+In the unbounded case there are examples of generators which are not of the standard form\r
+(cf. [7]).\r
+This is what GKLS obtained in 1975–1976. A few years later, Alicki and Lendi [8] published\r
+a monograph, presenting both the theory and physical applications of Markovian semigroups.\r
+Modern monographs include Weiss [9], Breuer and Petruccione [10], and Rivas and Huelga [11].3"""
+
+[[sections]]
+number = "4"
+title = "Master (Kinetic) Equations before GKLS"
+text = """
+Master equations — also known as kinetic equations — were used to describe dissipative phe\u0002nomena long before the GKLS articles. Let us briefly review their interesting history. It is of\r
+great interest to analyze the structure of these equations, that in some cases is very similar to\r
+GKLS. In general (but not always), physicists cared about positivity and trace-preservation.\r
+Nobody knew (and bothered) about complete positivity before GKLS."""
+
+[[sections]]
+number = "4.1"
+title = "Landau’s approach to the damping problem"
+text = """
+Already in 1927 Landau [12] derived a kinetic equation for the elements of the density matrix of\r
+the radiation field interacting with charged matter (in the dipole approximation). Remarkably,\r
+in the same article Landau introduced for the first time the concept of density matrix (that would\r
+be defined in a more formal way the same year by von Neumann [13]). In modern language the\r
+Landau equation may be (re)written as follows\r
+ρ˙ =\r
+1\r
+2\r
+γ(2aρa∗ − ρa∗a − a\r
+∗\r
+aρ), (13)\r
+where a and a\r
+∗ are the annihilation and creation operators for the radiation field, and γ > 0 is\r
+a damping constant. This is the correct form of the master equation. Notice that a and a\r
+∗ are\r
+unbounded."""
+
+[[sections]]
+number = "4.2"
+title = "Optical potential"
+text = """
+In optics, the interaction between light and a refractive and absorptive medium is described\r
+by introducing a complex refractive index, whose imaginary component absorbs light. In close\r
+analogy, during the golden years of nuclear physics, the so-called “optical potentials” were often\r
+used to describe the coherent scattering of slow neutrons travelling through matter [14–17]. The\r
+3\r
+Interestingly, R. Alicki, H.-P. Breuer, F. Petruccione and S. Huelga were among the participants of the 48th SMP\r
+in Toru´n.\r
+5
+
+scattering and absorption of nucleons (such as neutrons) by nuclei was treated by averaging\r
+effective neutron-nucleus interaction potentials over many nuclei, to yield a neutron-matter\r
+(complex) optical potential.\r
+We use in the following modern language. Let V ≥ 0 be a non-negative operator (“optical”\r
+potential). The non-Hermitian “Hamiltonian”\r
+H0 = H − iV , (14)\r
+yields the evolution\r
+ψ = e\r
+(−iH−V )tψ0 , (15)\r
+where ψ0 is the initial wave function and V is switched on at some instant of time or some\r
+position in space (when the particle impinges on the nucleus). The density matrix evolves\r
+according to\r
+ρ˙ = −i[H, ρ] − (V ρ + ρV ). (16)\r
+The trace is not preserved and probabilities are not conserved (particle absorption). Notice that\r
+if V were not positive-defined, probabilities would be allowed to become larger than 1 (particle\r
+creation). Optical potentials have played an important role in nuclear physics."""
+
+[[sections]]
+number = "4.3"
+title = "Lamb equation"
+text = """
+Lamb, analyzing the theory of the optical maser [18], considered the following equation for the\r
+(unnormalized) density matrix ρ of a 2-level atom (equation (18) in [18]):\r
+ρ˙ = −i[H, ρ] −\r
+1\r
+2\r
+(Γρ + ρΓ), (17)\r
+where Γ is a diagonal matrix with positive diagonal elements γ1 and γ2, the decay constants of\r
+the two states of the atom. This equation generates the legitimate evolution\r
+ρ0 −→ ρt = e\r
+(−iH− 1\r
+2 Γ)t\r
+ρ0e\r
+(iH− 1\r
+2 Γ)t\r
+, (18)\r
+but it is not trace-preserving. Like with an optical potential (preceding subsection) positivity\r
+of Γ implies tr ˙ρ < 0.\r
+Compare (16) and (17) with (12): the (jump) terms 2V ρV and ΓρΓ are missing. It is clear\r
+that the Lamb equation (17) may be “cured” by adding to the r.h.s. an additional term “Φρ”,\r
+where Φ is an arbitrary completely positive map such that Φ∗I = Γ. In this way, Lamb’s\r
+becomes a legitimate GKLS equation. Similarly for (16)."""
+
+[[sections]]
+number = "4.4"
+title = "Redfield equation"
+text = """
+Redfield, using the Born-Markov approximation, derived the following Markovian master equa\u0002tion [19]\r
+ρ˙ = −i[H, ρ] −\r
+X\r
+α\r
+[Vα, Xαρ − ρX†\r
+α] , (19)\r
+where the operators Vk are defined via the system–bath interaction Hamiltonian HI =\r
+P\r
+α\r
+Vα ⊗ Bα,\r
+and\r
+Xα =\r
+X\r
+β\r
+Z∞\r
+0\r
+hαβ(τ )Veβ(−τ )dτ , (20)\r
+hαβ(t) = tr(Beα(t)BβρB) being the two-point bath correlation function, ρB the initial state of\r
+the bath, and tilde stands for the interaction picture. It is obvious that trρt = trρ0. However,\r
+the positivity of ρt is not guaranteed (cf. the detailed discussion in [20]).\r
+6"""
+
+[[sections]]
+number = "4.5"
+title = "Quantum optics"
+text = """
+Master equations of the form (4) for the density operator ρ, with L having the form of GKLS\r
+generator (5)–(7), were used in quantum optics long before the GKLS articles [2,3]. For example,\r
+the Stuttgart group (Weidlich, Haake, Risken and Haken) [21–23], working on the theory of the\r
+laser, derived the following equation for the statistical operator R of the laser field\r
+R˙ = −i[H, R] + \u0010∂R\r
+∂t\r
+\u0011\r
+incoh\r
+, (21)\r
+where the incoherent term is given by\r
+\u0010∂R\r
+∂t\r
+\u0011\r
+incoh\r
+= ν([b, Rb∗] + [bR, b∗]) + δ([b\r
+∗\r
+, Rb] + [b\r
+∗R, b]), (22)\r
+b and b\r
+∗ are the annihilation and creation operators of the field mode, ν is determined by the\r
+coupling between the laser field and the atoms, and\r
+δ = e\r
+−Ω~/kT ν , (23)\r
+with T being the temperature of the atoms. Moreover, the same authors recovered the well\u0002known formula for the mean number of thermal photons\r
+nth(T) = δ\r
+ν − δ\r
+=\r
+1\r
+e\r
+Ω~/kT − 1\r
+. (24)\r
+This proves that the master equation (21) properly describes the interaction of the laser field\r
+with atomic matter. Clearly, (21) has exactly the form of (12), with V1 =\r
+√\r
+2ν b and V2 =\r
+√\r
+2δ b∗,\r
+showing that the GKLS master equation worked perfectly well ten years before GKLS’s papers\r
+[2, 3]. This research is summarized in Haken’s book [24] and the review papers by Haake [25]\r
+and Agarwal [26]. The same equation was independently used at the same time by Shen [27]\r
+and the slightly isolated Russian school of Belavin et al. [28] and Zel’dovich et al. [29] (this list\r
+is by no means exhaustive)."""
+
+[[sections]]
+number = "4.6"
+title = "Davies approach to Markovian Master Equations"
+text = """
+In a series of papers [30 – 33] (see also the book [34]) Davies presented a general approach to\r
+Markovian master equations (6) using the so-called weak-coupling limit. Based on the Nakajima\u0002Zwanzig projection techniques [35,36] (see also [37,38]) and van Hove’s idea of time rescaling [39],\r
+Davies derived the following form of the generator (in the interaction picture)\r
+Lρ =\r
+X\r
+ω\r
+X\r
+α,β\r
+n\r
+− isαβ(ω)[V\r
+†\r
+β\r
+(ω)Vα(ω), ρ]\r
++\r
+1\r
+2\r
+bhαβ(ω)([Vα(ω)ρ, V †\r
+β\r
+(ω)] + [Vα(ω), ρV †\r
+β\r
+(ω)])o, (25)\r
+where ω are the Bohr frequencies of the system Hamiltonian, bhαβ(ω) denotes the Fourier trans\u0002form of the two-point correlation function, and\r
+sαβ(ω) = 1\r
+2π\r
+P\r
+Z∞\r
+−∞\r
+bhαβ(ξ)\r
+ξ − ω\r
+dξ , (26)\r
+with P denoting the principal part. Bochner’s theorem [40] implies that the Kossakowski matrix\r
+cαβ =\r
+1\r
+2\r
+P\r
+ω\r
+bhαβ(ω) is positive definite and hence the generator defined by (25) is a legitimate\r
+GKLS generator. It is usually called a Davies generator and many physical systems are properly\r
+described by (25).\r
+7"""
+
+[[sections]]
+number = "4.7"
+title = "Quantum stochastic processes"
+text = """
+In the ’70s there was a parallel activity on quantum stochastic processes. This topic is closely\r
+related to the notion of complete positivity and has a nontrivial overlap with the theory of master\r
+equations developed by GKLS. For a historical review of this interesting activity, see [41]."""
+
+[[sections]]
+number = "5"
+title = "Complete Positivity and its Appearance in Physics"
+text = """
+Let us now look at a central hypothesis in the derivation of a quantum master equation. The\r
+very concept of complete positivity was introduced by Stinespring in a seminal paper [42]. Let\r
+us recall that a linear map Φ between two C\r
+∗\r
+-algebras A and B is positive if Φa ≥ 0 for each\r
+a ≥ 0 (a ≥ 0 if a = xx∗for some x ∈ A). Now, one calls a linear map Φ k-positive if the\r
+k-amplification\r
+1lk ⊗ Φ : Mk ⊗ A −→ Mk ⊗ B , (27)\r
+is positive, Mk being the algebra of k × k complex matrices. Finally, Φ is completely positive\r
+(CP) if it is k-positive for all k ∈ N. A remarkable result due to Stinespring consists in the\r
+following\r
+Theorem 3. Let A be a unital C\r
+∗\r
+-algebra and let Φ : A → B(H) be a CP map. Then there\r
+exists a Hilbert space K, a unital ∗-homomorphism π : A → B(K), and a bounded operator\r
+V : H → K, with ||ΦI|| = ||V ||2, such that\r
+Φa = V π(a)V\r
+∗\r
+, (28)\r
+for all a ∈ A.\r
+The notion of CP maps slowly appeared in the mathematical literature in the ’60s. Naka\u0002mura, Takesaki and Umegaki [43] proved that “the conditional expectation in a not necessarily\r
+commutative probability is completely positive in the sense of Stinespring”. In his review on\r
+positive maps [44] Størmer included completely positive maps and introduced the notion of pos\u0002itive decomposable map (see also [45] and the recent monograph [46]). In a seminal paper [47],\r
+Woronowicz showed that all maps Φ : Mn → Mm with mn ≤ 6, if positive, are automatically\r
+decomposable. Another seminal paper developing the concept of completely positive maps is\r
+due to Arveson [48], who introduced the notions of completely bounded, completely contractive\r
+and completely isometric maps (see the recent monograph [49]).\r
+In physics the importance of completely positive maps was first recognized by the German\r
+school of mathematical physics (Ludwig, Haag, Kraus, Hellwig and others) [50 – 53]. In his\r
+seminal paper [54], Kraus introduced the notion of quantum operation Φ. Let us quote from [55]:\r
+. . . for physical reason the mapping Φ must have still another property, called com\u0002plete positivity and being somehow stronger than “ordinary” positivity, such that the\r
+mapping Φ is given by\r
+ΦA =\r
+Xr\r
+α\r
+KαAK∗\r
+α. (29)\r
+This is the celebrated Kraus representation. Interestingly, a few years later Choi [56, 57]\r
+derived (29) without the knowledge of Kraus’ work (GKLS cite both Kraus and Choi). Choi\r
+observed that in a finite-dimensional setting the map Φ is completely positive if and only if the\r
+following (so-called Choi) matrix\r
+C = (1ln ⊗ Φ)P\r
++\r
+n\r
+, (30)\r
+is positive definite (P\r
++\r
+n\r
+is a projector onto the maximally entangled state in C\r
+n ⊗ Cn, and\r
+1ln is the identity map in Mn). Remarkably, complete positivity reduces to the positivity of\r
+8
+
+1ln ⊗ Φ on a single projector P\r
++\r
+n\r
+. It is therefore clear that complete positivity introduces a great\r
+simplification for the analysis of dynamical maps and the corresponding master equations.\r
+How did GKLS learn about complete positivity? The Advanced Study Institute on “Founda\u0002tions of Quantum Mechanics and Ordered Linear Spaces” was held in Marburg between March\r
+26th and April 6th, 1973. In the introduction to the Proceedings of this meeting one reads:\r
+Mathematicians and physicists participated in the meeting. The lectures of the Insti\u0002tute were intended to prepare a common basis for discussion between mathematicians\r
+and physicists for the future research and on foundations of quantum mechanics by or\u0002dered linear spaces. A series of lectures (“Course”) provided a coherent introduction\r
+into the field of ordered normed vector spaces and their application to the foundation\r
+of quantum mechanics. Additional lectures treated special mathematical and physical\r
+topics, which were in more or less connection to the lectures of the course.\r
+In the list of mathematical lectures one finds a lecture by E. Størmer on “Positive linear maps\r
+of C\r
+∗\r
+-algebras”. The list of physics lectures contains those of G. Ludwig on “Measuring and\r
+preparing processes” and K. Kraus on “Operations and effects in the Hilbert space formulation\r
+of quantum theory”. V. Gorini contributed with the talk “Irreversibility and dynamical maps\r
+of statistical operators”. After the Marburg meeting Gorini went to Texas and spread the\r
+good news of complete positivity to Kossakowski and Sudarshan. He then met Lindblad in\r
+Stockholm in January 1975 (see Lindblad’s recollection in Sect. 8). Lindblad was already aware\r
+of this concept, having used it in his 1974 proof of a fundamental property of quantum relative\r
+entropy [58] (quantum relative entropy is monotonic with respect to completely positive trace\r
+preserving maps, called nowadays quantum channels)."""
+
+[[sections]]
+number = "6"
+title = "Positivity vs. Complete Positivity — the Great Simpli\u0002fication"
+text = """
+Due to Stinespring’s theorem, completely positive maps are fully characterized. The problem\r
+of the characterization of positive maps is still open and is equivalent to the characterization\r
+of the entangled states of bipartite quantum systems [59, 60]. In the beginning of the ’70s Kos\u0002sakowski (still without the knowledge of complete positivity) addressed the problem of finding\r
+the necessary and sufficient conditions for a bounded generator L of the semigroup of positive\r
+maps Λt = e\r
+tL for t ≥ 0. Note that if Λt is trace-preserving and hermiticity-preserving (i.e.\r
+ΛtX∗ = (ΛtX)\r
+∗\r
+), then any (bounded) generator must have the standard form (10)\r
+Lρ = −i[H, ρ] + Φρ −\r
+1\r
+2\r
+{Φ\r
+∗\r
+I, ρ} , (31)\r
+with Φ a hermiticity-preserving map. GKLS proved that the corresponding dynamical map e\r
+tL\r
+is completely positive iff the map Φ is completely positive as well. What happens if e\r
+tL is only\r
+positive? In such a case, the positivity of Φ is only sufficient, but not necessary! Kossakowski\r
+proved the following [61]\r
+Theorem 4. A bounded linear operator L on T (H) generates a dynamical semigroup Λt if and\r
+only if for every resolution of identity PiPj = δijPi, trPi < ∞, and P\r
+i Pi = IH one has\r
+tr(PiLPj ) ≥ 0 , i 6= j , (32)\r
+and P\r
+i\r
+tr(PiLPj ) = 0.\r
+Unfortunately, the general structure of L satisfying (32) is not known. It is clear that if\r
+dim H = N < ∞, then L has the structure defined by (7), but there is no simple condition for\r
+9
+
+the matrix [ckl]. As an example [62] consider N = 2 and\r
+Lρ =\r
+X\r
+3\r
+k=1\r
+γk(σkρσk − ρ), (33)\r
+that is, the Kossakowski matrix ckl = γkδkl is diagonal. L is a GKLS generator iff γk ≥ 0, that\r
+is, the map Φρ =\r
+P3\r
+k=1 γkσkρσk is completely positive. However, L satisfies (32) iff\r
+γ1 + γ2 ≥ 0 , γ2 + γ3 ≥ 0 , γ3 + γ1 ≥ 0 . (34)\r
+These conditions, which are much weaker than γk ≥ 0, do not guarantee the positivity of the\r
+map Φ. For example, by taking γ1 = γ2 = −γ3 = 1 one finds Φρ = σ1ρσ1 + σ2ρσ2 − σ3ρσ3\r
+which is not positive, although the γ’s satisfy the conditions (34). It is therefore clear that the\r
+positivity of Φ is not necessary for the positivity of the dynamical map e\r
+tL.\r
+A similar problem was addressed in 1969 by Belavin et al. [28]. They analyzed the following\r
+kinetic equation (equation (14) in [28])\r
+ρ˙ =\r
+1\r
+2\r
+X\r
+N\r
+i,j=1\r
+γij (2AiρA†\r
+j − A\r
+†\r
+jAiρ − ρA†jAi). (35)\r
+Clearly, being not aware of complete positivity, they simply looked for the evolution ρ0 → ρt =\r
+Λtρ0 realized by a family of positive maps Λt. If N = 1 they showed that ρt is a legitimate\r
+density matrix for all t ≥ 0 iff γ > 0 (in this case there is only a single γ). Hence for a single\r
+dissipation/decoherence channel the correct form of the generator was already known in 1969!\r
+The authors claimed: it is not difficult to generalize the proof given here to the case N > 1.\r
+The answer they provided (without proof) reads: the matrix [γij ] has to be positive definite.\r
+Clearly, this is very intuitive, but as we know this condition is both necessary and sufficient for\r
+complete positivity, but it is not necessary for the simple positivity required in [28]. This example\r
+shows that the condition for the positivity of the Kossakowski matrix [γij ] was anticipated as a\r
+natural generalization of positivity for a single dissipative channel. However, only GKLS proved\r
+the consistency of this condition with the complete positivity of the dynamical map. The spirit\r
+of the article by Belavin et al. [28] is nonetheless very close to that of the GKLS papers. It is\r
+unfortunate that their work is not well known.4\r
+In his recent book, Weinberg [64] wrote: The Lindblad equation can be derived as a straight\u0002forward application of an earlier result by A. Kossakowski [4], eq. (77). This interesting state\u0002ment can be considered correct or incorrect (depending on the viewpoint and level of rigor one\r
+adopts) and shows how delicate questions of priority can be. In his 1972 paper Kossakowski\r
+wrote the right equation using only positivity, and from those premises one cannot obtain the\r
+GKLS equation, whose proof requires complete positivity."""
+
+[[sections]]
+number = "7"
+title = "The Mystery of Sudarshan-Mathews-Rau Paper"
+text = """
+In 1961 Sudarshan, Mathews, and Rau [65] published a remarkable paper entitled Stochastic\r
+Dynamics of Quantum Mechanical Systems. In the abstract the authors state:\r
+The most general dynamical law for a quantum mechanical system with a finite num\u0002ber of levels is formulated. A fundamental role is played by the so-called “dynamical\r
+4The article by Belavin et al. [28] has been recently cited in [63]. We wonder if this is because one of the authors\r
+– Victor Albert – participated in the 48th SMP. If our guess is correct, this proves that the SMP meetings can be\r
+particularly useful for young and promising physicists!\r
+10
+
+matrix” whose properties are stated in a sequence of theorems. A necessary and suffi\u0002cient criterion for distinguishing dynamical matrices corresponding to a Hamiltonian\r
+time-dependence is formulated.\r
+Sudarshan, Mathews, and Rau analyzed the evolution of the density matrix represented by the\r
+following linear relation\r
+ρrs(t) = X\r
+r\r
+0\r
+,s0\r
+Ars,r0s\r
+0 (t, t0)ρr0s0 (t0) (36)\r
+and found that ρrs(t) defines a density matrix for t > t0 if and only if the A matrix satisfies the\r
+following properties:\r
+Asr,s0r\r
+0 = Ars,r0s\r
+0 , (Hermiticity)\r
+X\r
+r,s,r0,s0\r
+xrxsArs,r0s\r
+0yr0ys0 ≥ 0 , (positivity) (37)\r
+X\r
+r\r
+Arr,r0s\r
+0 = δr0s0 . (trace-preservation).\r
+If one knows how to represent a matrix satisfying the above properties, the problem is solved.\r
+However, as the authors remarked, these conditions are fairly complicated. In order to solve the\r
+problem they proposed to analyze the matrix B defined by\r
+Brr0\r
+,ss0 := Ars,r0s\r
+0 . (38)\r
+In modern language, B, which was named dynamical matrix in [65], is nothing but the realign\u0002ment of A (see e.g. [66]). Now, the authors claimed (without proof) that properties (37) lead\r
+to the following properties of B\r
+Brr0\r
+,ss0 = Bss0\r
+,rr0 , (Hermiticity)\r
+X\r
+r,s,r0,s0\r
+zrr0Brr0\r
+,ss0zss0 ≥ 0 , (positivity) (39)\r
+X\r
+r\r
+Brr0\r
+,rs0 = δr\r
+0s0 , (trace-preservation).\r
+Finally, they derived the remarkable result that B satisfies (39) if and only if there exists a set\r
+of parameters µα ≥ 0, and a collection of n × n complex matrices Wα, such that\r
+Brr0\r
+,ss0 =\r
+nX2\r
+α=1\r
+µα(Wα)rr0 (Wα)ss0 . (40)\r
+In such a case, the evolution of ρ is realized via\r
+ρ 7−→\r
+nX2\r
+α=1\r
+µαWαρW†\r
+α , (41)\r
+where µα ≥ 0, and Pn\r
+2\r
+α=1 µαW†\r
+αWα = I. This is nothing but the celebrated Kraus representation\r
+(29) of a quantum channel, derived almost ten years before Kraus [54]! How was it possible\r
+to derive the Kraus representation without making any use of completely positive maps? Note\r
+that in passing from (37) to (39) there is a gap. The second condition for B should read\r
+X\r
+r,s,r0,s0\r
+xrxsBrr0\r
+,ss0yr\r
+0ys0 ≥ 0 . (42)\r
+11
+
+This condition states that the dynamical matrix B is not necessarily positive but only block\u0002positive (cf. [66]). This was a prophetic error, anticipating the Kraus representation of a quan\u0002tum channel. It is clear that this remarkable paper was written too early and the community\r
+in 1961 was not prepared to grasp its elegance and predictive power!\r
+In modern language, B is nothing but the Choi matrix corresponding to the dynamical\r
+map, and condition (39) is, as Choi proved in 1975 [57], equivalent to complete positivity.\r
+The weaker condition (42) was proved by Jamio lkowski [67] to be equivalent to the positivity\r
+of the map. The correspondence “map ←→ B-matrix” is usually called Choi-Jamio lkowski\r
+isomorphism. Actually, such correspondence and its properties were analyzed by de Pillis [68]\r
+in 1967 (Kossakowski cited [68] in his 1972 paper [4], in connection with semi-groups of positive\r
+maps). See also the recent review [69]. Clearly, this correspondence was already noted in [65]."""
+
+[[sections]]
+number = "8"
+title = "Recollection from G¨oran Lindblad"
+text = """
+Unfortunately, G¨oran Lindblad was unable to participate in the 48th SMP meeting in Toru´n.\r
+However, he sent the following “recollection slide” to the organizers:\r
+In the Spring of 1974 I received a letter from Professor Ingarden (dated June 22)\r
+inviting me to take part and give a seminar on entropy and related problems (the\r
+subject of my recent thesis). I answered that I would be glad to come, but that I would\r
+prefer to talk about some even more recent results on quantum dynamical semigroups.\r
+I had only just realized that the CP condition makes the structure so much simpler.\r
+In fact, after passing my thesis in May 1974, I went back to my desk to consider the\r
+problem, and after a week or so I realized that I knew how to make an ‘if and only if\r
+proof ’. I was quite euphoric for a week or two, and then considered how and where\r
+to publish.\r
+When I got Prof. Ingarden’s letter, I decided to use the conference for a first\r
+announcement.\r
+After my talk (December 5) Prof. Ingarden told me that he had received news from\r
+Texas of similar results. Later, in January 1975, Vittorio Gorini passed through\r
+Stockholm on his way back home, and we could compare things and agree that there\r
+was a good deal of overlap, in fact the results were essentially the same, save for the\r
+mathematical machinery."""
+
+[[sections]]
+number = "9"
+title = "Conclusions and Outlook"
+text = """
+In retrospect, there were a number of concomitant factors that led to the precise mathematical\r
+formulation of the evolution equations for open quantum dynamical systems. The chronology of\r
+some of these episodes is summarized in Table 1. We leave to the wisdom of Noam Chomsky [1]\r
+the final judgement on the “level of significance” at which there are differences and similarities.\r
+In our humble opinion, there are many similarities, and also a few differences, among the\r
+seminal articles discussed in this note. We venture to suggest that (4), with (7), (9) and (10),\r
+be named “Gorini-Kossakowski-Lindblad-Sudarshan (GKLS) equation” and (3) the “Kraus\u0002Stinespring-Sudarshan (KSS) representation”.\r
+Acknowledgments\r
+D. C. was partially supported by the National Science Centre project number 2015/17/B/ST2/02026.\r
+S. P. was partially supported by INFN through the project “QUANTUM”. S. P. would like to"""
+
+[[sections]]
+number = "12"
+title = "Date Event"
+text = ""
+
+[[sections]]
+number = "1955"
+title = "Stinespring publishes [42]"
+text = ""
+
+[[sections]]
+number = "1961"
+title = "Sudarshan, Mathews, and Rau publish [65]"
+text = ""
+
+[[sections]]
+number = "1971"
+title = "Kraus publishes [54]"
+text = ""
+
+[[sections]]
+number = "1972"
+title = "Kossakowski publishes [4]"
+text = ""
+
+[[sections]]
+number = "26"
+title = "March – 6 April 1973 Gorini attends Marburg conference, where"
+text = """
+Størmer and Kraus mention complete\r
+positivity\r
+May 1974 Lindblad submits [58]\r
+September – December 1974 Gorini and Kossakowski visit Sudarshan in\r
+Texas\r
+December 1974 Lindblad visits Ingarden in Toru´n\r
+January 1975 Gorini visits Lindblad in Stockholm"""
+
+[[sections]]
+number = "1975"
+title = "Choi publishes [57]"
+text = "March and April 1975 GKLS articles [2, 3] are submitted"
+
+[[sections]]
+number = "1980"
+title = "Kraus spends sabbatical year at University"
+text = """
+of Texas at Austin; Sudarshan, Wheeler,\r
+A. B¨ohm and Wootters are there"""
+
+[[sections]]
+number = "1983"
+title = "Kraus publishes [55]"
+text = """
+Table 1: Chronology\r
+thank the organizers of the 48th Symposium on Mathematical Physics (Toru´n, June 10–12,\r
+2016) for the invitation and kind hospitality.\r
+References\r
+[1] N. Chomsky, The Chomsky Reader, Pantheon Books, New York, Monthly Review Archives\r
+37, 1 (1985) [Monthly Review Foundation, New York, US].\r
+[2] V. Gorini, A. Kossakowski, and E. C. G. Sudarshan, Completely positive dynamical semi\u0002groups of N-level systems, J. Math. Phys. 17, 821 (1976).\r
+[3] G. Lindblad, On the generators of quantum dynamical semigroups, Commun. Math. Phys.\r
+48, 119 (1976).\r
+[4] A. Kossakowski, On Quantum statistical mechanics of non-Hamiltonian systems, Rep.\r
+Math. Phys. 3, 247 (1972).\r
+13
+
+[5] R. S. Ingarden and A. Kossakowski, On the connection of nonequilibrium information ther\u0002modynamics with non-Hamiltonian quantum mechanics of open systems, Ann. Phys. 89,\r
+451 (1975).\r
+[6] K. Yosida, Functional Analysis, Springer-Verlag, 1995.\r
+[7] I. Siemon, A. S. Holevo, and R. F. Werner, Unbounded generators of dynamical semigroups,\r
+(to appear in Open Sys. Information Dyn.).\r
+[8] R. Alicki and K. Lendi, Quantum Dynamical Semigroups and Applications, Springer, 1987.\r
+[9] U. Weiss, Quantum Dissipative Systems, World Scientific, 2000.\r
+[10] H.-P. Breuer and F. Petruccione, The Theory of Open Quantum Systems, Oxford Univ.\r
+Press, 2007.\r
+[11] A. Rivas and S. F. Huelga, ´ Open Quantum Systems. An Introduction, Springer, 2012.\r
+[12] L. D. Landau, Das D¨ampfungsproblem in der Wellenmechanik, Z. Physik 45, 430 (1927)\r
+[see Collected Papers of L. D. Landau, Pergamon Press, 1965, p. 8].\r
+[13] J. von Neumann, Wahrscheinlichkeitstheoretischer Aufbau der Quantenmechanik, G¨ottinger\r
+Nachrichten, 1, 245 (1927).\r
+[14] E. Fermi, Sul moto dei neutroni nelle sostanze indrogenate, Ricerca Scientifica 7, 13 (1936).\r
+[15] E. Fermi and W. H. Zinn, Phys. Soc. Cambridge Conf. Rep. 92, Chicago, 1947. [See Enrico\r
+Fermi, Collected Papers, E. Segr`e, ed., Univ. of Chicago Press, 1962, p. 220.]\r
+[16] E. Fermi, Polarization of high energy protons scattered by nuclei, Nuovo Cimento 11, 407\r
+(1954).\r
+[17] H. Feshbach, C. E. Porter, and V. F. Weisskopf, Model for nuclear reactions with neutrons,\r
+Phys. Rev. 96, 448 (1954).\r
+[18] W. E. Lamb, The theory of an optical maser, Phys. Rev. 134, 1429 (1964).\r
+[19] A. G. Redfield, The theory of relaxation processes, Adv. Magn. Res. 1, 1 (1965).\r
+[20] F. Benatti and R. Floreanini, Open quantum dynamics: complete positivity and entangle\u0002ment, Int. J. Mod. Phys. B 19, 3063 (2005).\r
+[21] W. Weidlich and F. Haake, Coherence-properties of the statistical operator in a laser model,\r
+Z. Physik 185, 30 (1965).\r
+[22] W. Weidlich, H. Risken, and F. Haken, Quantummechanical solutions of the laser mas\u0002terequation I, Z. Physik 201, 396 (1967).\r
+[23] W. Weidlich, H. Risken, and F. Haken, Quantummechanical solutions of the laser mas\u0002terequation II, Z. Physik 204, 223 (1967).\r
+[24] H. Haken, Laser Theory, Handbook of Physis, Springer-Verlag, 1970.\r
+[25] F. Haake, Statistical treatment of open systems by generalised master equations, in Springer\r
+Tracts in Modern Physics, Vol. 66, Springer-Verlag, Berlin, 1973, pp. 98–168.\r
+[26] G. S. Agarwal, I Master Equation Methods in Quantum Optics, in Progress in Optics, E.\r
+Wolf, ed., North-Holland, Amsterdam, 1973, Vol. XI, pp. 1–76.\r
+[27] Y. R. Shen, Quantum statistics of nonlinear optics, Phys. Rev. 155, 921 (1967).\r
+[28] A. A. Belavin, B. Ya. Zel’dovich, A. M. Perelomov, and V. S. Popov, Relaxation of quantum\r
+systems with equidistant spectra, Zh. Eksp. Teor. Fiz. 56, 264 (1969) [Sov. Phys. – JETP\r
+29, 145 (1969)].\r
+[29] B. Ya. Zel’dovich, A. M. Perelomov, and V. S. Popov, Relaxation of quantum oscillator ,\r
+Zh. Eksp. Tear. Fiz. 55, 589 (1968) [Sov. Phys. – JETP 28, 308]. (1969)].\r
+14
+
+[30] E. B. Davies, Quantum stochastic processes, Commun. Math. Phys. 15, 277 (1969).\r
+[31] E. B. Davies, Quantum stochastic processes. II, Commun. Math. Phys. 19, 83 (1970).\r
+[32] E. B. Davies, The harmonic oscillator in a heat bath, Commun. Math. Phys. 33, 171 (1973).\r
+[33] E. B. Davies, Markovian master equations, Commun. Math. Phys. 39, 91 (1974).\r
+[34] E. B. Davies, Quantum Theory of Open Systems, New York, Academic Press, 1976.\r
+[35] S. Nakajima, On Quantum theory of transport phenomena, Prog. Theor. Phys. 20, 948\r
+(1958).\r
+[36] R. Zwanzig, Ensemble method in the theory of irreversibility, J. Chem. Phys. 33, 1338\r
+(1960).\r
+[37] R. Kubo, M. Toda, and N. Hashitsume, Statistical Physics II: Nonequilibrium Statistical\r
+Mechanics, Springer, 1995.\r
+[38] C.W. Gardiner and P. Zoller, Quantum Noise, Springer, 2000.\r
+[39] L. Van Hove, Quantum-mechanical perturbations giving rise to a statistical transport equa\u0002tion, Physica 21, 517 (1955).\r
+[40] M. Reed and B. Simon, Methods of Modern Mathematical Physics, vol. II, Academic Press,\r
+1975.\r
+[41] L. Accardi and Y. G. Lu, The first 40 years of GKSL generators and some proposal for the\r
+future, Open Sys. Information Dyn. 24, 1740002 (2017).\r
+[42] W. F. Stinespring, Positive functions on C\r
+∗\r
+-algebras, Proc. Amer. Math. Soc. 6, 211 (1955).\r
+[43] M. Nakamura, M. Takesaki, and H. Umegaki, A Remark on the expectations of operator\r
+algebras, Kodai Math. Sem. Rep. 12, 82 (1960).\r
+[44] E. Størmer, Positive linear maps of operator algebras, Acta Math. 110, 233 (1963).\r
+[45] E. Størmer, Positive linear maps of C\r
+∗\r
+-algebras, Lect. Notes Phys. 29, 85 (1974).\r
+[46] E. Størmer, Positive Linear Maps of Operator Algebras, Springer, 2012.\r
+[47] S. L. Woronowicz, Positive maps of low dimensional matrix algebras, Rep. Math. Phys. 10,\r
+165 (1976).\r
+[48] W. B. Arveson, Subalgebras of C\r
+∗\r
+-algebras, Acta Mathematica 123, 141 (1969).\r
+[49] V. Paulsen, Completely Bounded Maps and Operator Algebras, Cambridge Univ. Press,\r
+2003.\r
+[50] G. Ludwig, Attempt of an axiomatic foundation of quantum mechanics and more general\r
+theories. III, Commun. Math. Phys. 9, 1 (1968).\r
+[51] K.-E. Hellwig and K. Kraus, Pure operations and measurements, Commun. Math. Phys.\r
+11, 241 (1968).\r
+[52] K.-E. Hellwig and K. Kraus, Operations and measurements II, Commun. Math. Phys. 16,\r
+142 (1970).\r
+[53] S. Doplicher, R. Haag, and J. E. Roberts, Local observables and particle statistics I, Com\u0002mun. Math. Phys. 23, 199 (1971).\r
+[54] K. Kraus, General state changes in quantum theory, Ann. Phys. 64, 311 (1971).\r
+[55] K. Kraus States, Effects and Operations: Fundamental Notions of Quantum Theory, Lect.\r
+Notes Phys., Springer-Verlag, Berlin, 1983.\r
+[56] M. D. Choi, Positive linear maps on C\r
+∗\r
+-algebras, J. Canad. Math. 24, 520 (1972).\r
+[57] M. D. Choi, Completely positive linear maps on complex matrices, Lin. Alg. Appl. 10, 285\r
+(1975).\r
+15
+
+[58] G. Lindblad, Completely positive maps and entropy inequalities, Commun. Math. Phys. 40,\r
+147 (1975).\r
+[59] M. A. Nielsen and I. L. Chuang, Quantum Computation and Quantum Information, Cam\u0002bridge Univ. Press, 2000.\r
+[60] R. Horodecki, P. Horodecki, M. Horodecki, and K. Horodecki, Quantum entanglement, Rev.\r
+Mod. Phys. 81, 865 (2009).\r
+[61] A. Kossakowski, On Necessary and sufficient conditions for a generator of a quantum\r
+dynamical semi-group, Bull. Acad. Pol. Sci. Ser. Math. Astr. Phys. 20, 1021 (1972).\r
+[62] A. Kossakowski, On the general form of the generator of a dynamical semi-group for the\r
+spin 1/2 system, Bull. Acad. Pol. Sci. Ser. Math. Astr. Phys. 21, 649 (1973).\r
+[63] V. V. Albert, B. Bradlyn, M. Fraas, and L. Jiang, Geometry and response of lindbladians,\r
+Phys. Rev. X 6, 041031 (2016).\r
+[64] S. Weinberg, Lectures on Quantum Mechanics, Cambridge Univ. Press, 2015, footnote 14,\r
+p. 242.\r
+[65] E. C. G. Sudarshan, P. M. Mathews, and J. Rau, Stochastic dynamics of quantum\u0002mechanical systems, Phys. Rev. 121, 920 (1961).\r
+[66] I. Bengtsson and K. Zyczkowski, ˙ Geometry of Quantum States: An Introduction to Quan\u0002tum Entanglement, Cambridge Univ. Press, 2006.\r
+[67] A. Jamio lkowski, Linear transformations which preserve trace and positive semidefiniteness\r
+of operators, Rep. Math. Phys. 3, 275 (1972).\r
+[68] J. de Pillis, Linear transformations which preserve Hermitian and positive semidefinite\r
+operators, Pac. J. Math. 23, 129 (1967).\r
+[69] D. Chru´sci´nski and G. Sarbicki, Entanglement witnesses: construction, analysis and clas\u0002sification, J. Phys. A: Math. Theor. 47, 483001 (2014).\r
+16"""
+
+[[figures]]
+label = "fig:1"
+page_num = 3
+image_path = "images/image_p3_1.png"

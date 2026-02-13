@@ -1,0 +1,4 @@
+= E[Rt+1 + v⇡(St+1),St =s, At =⇡0(s)] (by (4.6))
+= E⇡0[Rt+1 + v⇡(St+1),St =s]
+ E⇡0[Rt+1 + q⇡(St+1, ⇡0(St+1)),St =s] (by (4.7))
+= E⇡0[Rt+1 + E[Rt+2 + v⇡(St+2),St+1, At+1 =⇡0(St+1)],St =s]

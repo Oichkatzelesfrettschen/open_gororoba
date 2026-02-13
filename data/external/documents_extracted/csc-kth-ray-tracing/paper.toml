@@ -1,0 +1,690 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 1 (4) \r
+1 Hamilton-Jacobi equations \r
+A Hamilton-Jacobi differential equation (one space dimension) is of the form \r
++ ( ) = 0 t x q f q\r
+It is related to a conservation law by v = qx, \r
+vt + f (v)x = 0\r
+so methods for conservation laws are useful. But the conservation law is obtained by \r
+differentiation, so needs other initial (and boundary) conditions. \r
+Conservation laws are mathematical expressions of basic facts like mass and energy \r
+conservation, whereas Hamilton-Jacobi equations are related to optimization and optimal \r
+control problems. Lab 6 treats the problem of finding the fastest way from every point in a \r
+domain to its boundary. \r
+2 Short wave asymptotics: The Eikonal equation and \r
+ray-tracing \r
+We will develop here the eikonal equation which is a common short-wavelength asymptotic \r
+approximation to wave propagation problems. Consider a time-harmonic solution \r
+q e v(x, y) iωt = to the wave equation \r
+( , )( ) 2\r
+tt qxx qyy q = c x y +\r
+giving the Helmholtz equation \r
+2 2 2 ( , ) 0, x y k x y v + Δy = Δ = ∂ + ∂\r
+in a domain of size L. The wave-number is defined as \r
+( , )\r
+2\r
+c(x, y) x y\r
+k\r
+λ\r
+ω π = =\r
+The wave (phase) speed c and the wavelength λ depend on (x,y). For accuracy, the \r
+discretization must resolve the wavelength, with O(10) cells per wavelength. A typical \r
+example would be calculation of reflections from a 10 m object of 10 mm microwaves, \r
+requiring about 104\r
+ cells in each of three space dimensions, or 1012 cells. This is infeasible on \r
+today’s hardware. \r
+Now, let us represent the solution by its phase k0S(x,y) (the reference wave number k0 is \r
+defined below) and amplitude A(x,y), both real, \r
+( , ) 0 ( , ) ik S x y v = A x y ⋅ e (*) \r
+and one derives (Exercise: do it!) the equations \r
+0\r
+2 0\r
+2 2 2 − 0 ∇ + + Δ =\r
+∇ ⋅∇ + Δ =\r
+k S A k A A\r
+A S A S\r
+as imaginary and real parts of the Helmholtz equation with (*). The first line is the “transport \r
+equation” for the amplitude, which may be written \r
+( ) 0 2 ∇ ⋅ A ∇S =\r
+from which one can compute A once S is known. \r
+When k (and k0) are large, the two first terms of the second line must balance, almost \r
+everywhere, and the result is the Eikonal equation \r
+( , )\r
+( , ) ( , ), 0\r
+0\r
+2 2\r
+c x y\r
+c\r
+k\r
+k x y ∇S = n x y n = =\r
+where n is called the index of refraction, and c0 is the wave speed in a reference medium, \r
+like vacuum (for electromagnetic waves). For electromagnetic waves in the visual spectrum, \r
+in most materials, n is between 1 and 3, but “esoteric” active materials may be designed with \r
+a larger range of n. 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 2 (4) \r
+3 Eikonal equation and shortest distance \r
+To understand the solutions, we first consider n = 1, a constant. Then, \r
+p − q = ∫ ∫ ∇ p + q − p ⋅ p − q = p − q ≤ p − q\r
+1\r
+0\r
+1\r
+0\r
+S( ) S( ) S( t( ))dt ( ) cosθ (t)dt\r
+On the other hand, we may trace a ray from p by following the gradient of S: \r
+dX / ds = ∇S(X),X(0) = p\r
+Since the modulus of dX/ds is one, s must be the arclength along the ray. Now, for an X on \r
+the ray, \r
+X p\r
+X (X( )) − (p) = ∫∇ (X( ))⋅ = ≥ ( ) −\r
+0\r
+dt s s\r
+dt\r
+d S s S S t\r
+s\r
+and the two inequalities show that \r
+S(X(s)) − S(p) = X(s) − p\r
+so the rays are straight lines. Let us set S = 0 on a closed curve Γ, and trace rays from all \r
+points on Γ, following the normals to the curve, giving values of S along the rays. As long as \r
+the normals do not cross, all points on an iso-curve L of S have the same distance to Γ, and \r
+that is the shortest distance from L to Γ. If the normals cross, the ray construction leads to a \r
+multi-valued S; we define a unique S as the smallest of the different possible values. It is then \r
+clear that: \r
+ The solution S(x,y) to the Eikonal equation, with boundary value S = 0 on Γ, is the \r
+ shortest distance from (x,y) to Γ. \r
+3.1 Variable n \r
+If the index of refraction varies, the rays are no longer straight, and the solution instead gives \r
+the shortest times for traveling from (x,y) to Γ. It is still possible to trace the rays and \r
+construct S. We have, for each coordinate i of X, \r
+∑ ∑ ∑ = = = ∂\r
+∂\r
+∂\r
+∂ = ∂\r
+∂ ⋅ ∂ ∂\r
+∂ ⋅ = ∂ ∂\r
+∂ = ∂\r
+∂ = N\r
+i j j\r
+N\r
+j j i j\r
+N\r
+j\r
+j\r
+j i\r
+i\r
+i\r
+i\r
+x\r
+S\r
+x x\r
+S\r
+x x\r
+S\r
+dt\r
+dX\r
+x x\r
+S\r
+dt\r
+d X\r
+x\r
+S\r
+dt\r
+dX\r
+1\r
+2\r
+1\r
+2\r
+1\r
+2\r
+2\r
+2\r
+( ) 2\r
+1 , \u001F \r
+or, the ray-tracing equation, \r
+n n\r
+dt\r
+d = ∇ 2\r
+2X\r
+Taking the scalar product of the ray-tracing equation with dX/dt gives \r
+n\r
+dt\r
+dX\r
+n\r
+dt\r
+dX\r
+dt\r
+d\r
+dt\r
+dn X t\r
+dt\r
+dX\r
+n\r
+dt\r
+dX\r
+dt\r
+d X\r
+= ⇒ = ⎟\r
+⎟\r
+⎠\r
+⎞\r
+⎜\r
+⎜\r
+⎝\r
+⎛ −\r
+⋅ = ∇ ⋅ =\r
+0\r
+2\r
+1\r
+( ( ))\r
+2\r
+1\r
+2\r
+1\r
+2\r
+2\r
+2\r
+2\r
+2\r
+2\r
+so dt = ds/n where ds is the arclength element along the ray. This explains the shortest \r
+travel time property. \r
+3.2 Snell’s law of refraction \r
+Consider the common case of piecewise constant n. In a region of constant n, the rays are \r
+straight, and at discontinuities of n, they turn with a discontinuous tangent, following Snell’s \r
+law of refraction, \r
+1 1 2 2 n sinθ = n sinθ\r
+where θ is the angle made by the ray with the normal plane of discontinuity; the incoming and \r
+outgoing rays and the normal are in a plane, the (x,y)-plane with y the normal direction. \r
+Proof: \r
+Since n varies only with y, we have 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 3 (4) \r
+tanθ\r
+0 ., 2\r
+2\r
+u\r
+dt\r
+dy u const\r
+dt\r
+dx\r
+dt\r
+d x = ⇒ = = =\r
+θ θ 2\r
+2\r
+2 2 2\r
+2 2\r
+sin\r
+) tan( un\r
+u\r
+u\r
+dt\r
+dy\r
+dt\r
+dx ⎟ = + = = ⎠\r
+⎞ ⎜\r
+⎝\r
+⎛ ⎟ + ⎠⎞ ⎜\r
+⎝\r
+⎛\r
+Example: Sound in stratified media. \r
+Suppose that n(y) has a sinusoidal variation, \r
+n = 1 + a cosy\r
+Rays are emitted at the origin. Calculate the ray shapes. \r
+a y\r
+d\r
+d y\r
+d\r
+d x 0, sin 2\r
+2\r
+2\r
+2\r
+= = − τ τ\r
+We get x = bτ (some b, depending on the launch angle α) and \r
+y\r
+b\r
+a\r
+dx\r
+d y sin 2 2\r
+2\r
+= −\r
+For small α, we obtain \r
+b\r
+x a\r
+a\r
+b\r
+y(x) = tanα ⋅ sin\r
+Note that all these rays cross at \r
+ y = 0, = ,m =1,2,... a\r
+mb\r
+xm\r
+π\r
+the convergence zones, well known from submarine movies. \r
+4 The H-J Eikonal equation \r
+The Eikonal equation is non-linear and it is not immediately clear how to discretize and solve \r
+it numerically. Introducing a “time” t (with dimension length, so is actually distance), \r
+consider \r
+St + ∇S − n(x, y) = 0\r
+which we will use to solve the Eikonal equation numerically by explicit schemes for \r
+conservation laws. \r
+4.1 Analysis of linearization \r
+A perturbation s to the steady solution S (the existence of which we assume for now) \r
+satisfies (The verification is left for the Homework) \r
+S\r
+S\r
+s s t ∇\r
+∇\r
++ U ⋅∇ = 0 ,U =\r
+which is hyperbolic, and the boundary/initial value problem with boundary condition s = 0 on \r
+Γ is well-posed. Given some initial condition, the steady state ( 0 ∂s = ) at a point P is reached \r
+in finite “time” equal to the shortest distance between P and Γ, because the velocity U has \r
+magnitude 1. An explicit time stepping scheme can compute the solution in time proportional \r
+to the number of gridpoints x max number of cells from a point to Γ. \r
+The Lax-Friedrichs scheme is \r
+( )( ) ⎥\r
+⎥\r
+⎦\r
+⎤\r
+⎢\r
+⎢\r
+⎣\r
+⎡ − + − − Δ\r
+Δ\r
+− + + + =\r
++ − + −\r
++ − + − +\r
+( , ) 2\r
+( ) 4\r
+1\r
+2\r
+, 1 , 1\r
+2\r
+1, 1,\r
+1, 1, , 1 , 1\r
+1\r
+i j ni j ni j ni j ni j\r
+n\r
+i j ni j ni j ni j nij\r
+S S S S n x y\r
+x\r
+t\r
+S S S S S\r
+If used on the linearized problem, with velocity ) U = (cosα,sinα it has von Neumann \r
+amplification factor 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 4 (4) \r
+(cos cos ) ( )( ) sin ,sin cos ,sin , , , 2\r
+1 θ θ θ θ ⋅ α α θ θ ≤ π\r
+Δ\r
+Δ = x + y − x x x y x\r
+t G i\r
+… to be finished in the homework."""
+
+[metadata]
+title = "CSC KTH Ray Tracing"
+authors = ["Unknown"]
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 1 (4)"""
+
+[[sections]]
+number = "1"
+title = "Hamilton-Jacobi equations"
+text = """
+A Hamilton-Jacobi differential equation (one space dimension) is of the form \r
++ ( ) = 0 t x q f q\r
+It is related to a conservation law by v = qx, \r
+vt + f (v)x = 0\r
+so methods for conservation laws are useful. But the conservation law is obtained by \r
+differentiation, so needs other initial (and boundary) conditions. \r
+Conservation laws are mathematical expressions of basic facts like mass and energy \r
+conservation, whereas Hamilton-Jacobi equations are related to optimization and optimal \r
+control problems. Lab 6 treats the problem of finding the fastest way from every point in a \r
+domain to its boundary."""
+
+[[sections]]
+number = "2"
+title = "Short wave asymptotics: The Eikonal equation and"
+text = """
+ray-tracing \r
+We will develop here the eikonal equation which is a common short-wavelength asymptotic \r
+approximation to wave propagation problems. Consider a time-harmonic solution \r
+q e v(x, y) iωt = to the wave equation \r
+( , )( ) 2\r
+tt qxx qyy q = c x y +\r
+giving the Helmholtz equation \r
+2 2 2 ( , ) 0, x y k x y v + Δy = Δ = ∂ + ∂\r
+in a domain of size L. The wave-number is defined as \r
+( , )\r
+2\r
+c(x, y) x y\r
+k\r
+λ\r
+ω π = =\r
+The wave (phase) speed c and the wavelength λ depend on (x,y). For accuracy, the \r
+discretization must resolve the wavelength, with O(10) cells per wavelength. A typical \r
+example would be calculation of reflections from a 10 m object of 10 mm microwaves, \r
+requiring about 104\r
+ cells in each of three space dimensions, or 1012 cells. This is infeasible on \r
+today’s hardware. \r
+Now, let us represent the solution by its phase k0S(x,y) (the reference wave number k0 is \r
+defined below) and amplitude A(x,y), both real, \r
+( , ) 0 ( , ) ik S x y v = A x y ⋅ e (*) \r
+and one derives (Exercise: do it!) the equations \r
+0\r
+2 0\r
+2 2 2 − 0 ∇ + + Δ =\r
+∇ ⋅∇ + Δ =\r
+k S A k A A\r
+A S A S\r
+as imaginary and real parts of the Helmholtz equation with (*). The first line is the “transport \r
+equation” for the amplitude, which may be written \r
+( ) 0 2 ∇ ⋅ A ∇S =\r
+from which one can compute A once S is known. \r
+When k (and k0) are large, the two first terms of the second line must balance, almost \r
+everywhere, and the result is the Eikonal equation \r
+( , )\r
+( , ) ( , ), 0\r
+0\r
+2 2\r
+c x y\r
+c\r
+k\r
+k x y ∇S = n x y n = =\r
+where n is called the index of refraction, and c0 is the wave speed in a reference medium, \r
+like vacuum (for electromagnetic waves). For electromagnetic waves in the visual spectrum, \r
+in most materials, n is between 1 and 3, but “esoteric” active materials may be designed with \r
+a larger range of n. 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 2 (4)"""
+
+[[sections]]
+number = "3"
+title = "Eikonal equation and shortest distance"
+text = """
+To understand the solutions, we first consider n = 1, a constant. Then, \r
+p − q = ∫ ∫ ∇ p + q − p ⋅ p − q = p − q ≤ p − q\r
+1\r
+0\r
+1"""
+
+[[sections]]
+number = "0"
+title = "S( ) S( ) S( t( ))dt ( ) cosθ (t)dt"
+text = """
+On the other hand, we may trace a ray from p by following the gradient of S: \r
+dX / ds = ∇S(X),X(0) = p\r
+Since the modulus of dX/ds is one, s must be the arclength along the ray. Now, for an X on \r
+the ray, \r
+X p\r
+X (X( )) − (p) = ∫∇ (X( ))⋅ = ≥ ( ) −\r
+0\r
+dt s s\r
+dt\r
+d S s S S t\r
+s\r
+and the two inequalities show that \r
+S(X(s)) − S(p) = X(s) − p\r
+so the rays are straight lines. Let us set S = 0 on a closed curve Γ, and trace rays from all \r
+points on Γ, following the normals to the curve, giving values of S along the rays. As long as \r
+the normals do not cross, all points on an iso-curve L of S have the same distance to Γ, and \r
+that is the shortest distance from L to Γ. If the normals cross, the ray construction leads to a \r
+multi-valued S; we define a unique S as the smallest of the different possible values. It is then \r
+clear that: \r
+ The solution S(x,y) to the Eikonal equation, with boundary value S = 0 on Γ, is the \r
+ shortest distance from (x,y) to Γ."""
+
+[[sections]]
+number = "3.1"
+title = "Variable n"
+text = """
+If the index of refraction varies, the rays are no longer straight, and the solution instead gives \r
+the shortest times for traveling from (x,y) to Γ. It is still possible to trace the rays and \r
+construct S. We have, for each coordinate i of X, \r
+∑ ∑ ∑ = = = ∂\r
+∂\r
+∂\r
+∂ = ∂\r
+∂ ⋅ ∂ ∂\r
+∂ ⋅ = ∂ ∂\r
+∂ = ∂\r
+∂ = N\r
+i j j\r
+N\r
+j j i j\r
+N\r
+j\r
+j\r
+j i\r
+i\r
+i\r
+i\r
+x\r
+S\r
+x x\r
+S\r
+x x\r
+S\r
+dt\r
+dX\r
+x x\r
+S\r
+dt\r
+d X\r
+x\r
+S\r
+dt\r
+dX\r
+1\r
+2\r
+1\r
+2\r
+1\r
+2\r
+2\r
+2\r
+( ) 2\r
+1 , \u001F \r
+or, the ray-tracing equation, \r
+n n\r
+dt\r
+d = ∇ 2\r
+2X\r
+Taking the scalar product of the ray-tracing equation with dX/dt gives \r
+n\r
+dt\r
+dX\r
+n\r
+dt\r
+dX\r
+dt\r
+d\r
+dt\r
+dn X t\r
+dt\r
+dX\r
+n\r
+dt\r
+dX\r
+dt\r
+d X\r
+= ⇒ = ⎟\r
+⎟\r
+⎠\r
+⎞\r
+⎜\r
+⎜\r
+⎝\r
+⎛ −\r
+⋅ = ∇ ⋅ =\r
+0\r
+2\r
+1\r
+( ( ))\r
+2\r
+1\r
+2\r
+1\r
+2\r
+2\r
+2\r
+2\r
+2\r
+2\r
+so dt = ds/n where ds is the arclength element along the ray. This explains the shortest \r
+travel time property."""
+
+[[sections]]
+number = "3.2"
+title = "Snell’s law of refraction"
+text = """
+Consider the common case of piecewise constant n. In a region of constant n, the rays are \r
+straight, and at discontinuities of n, they turn with a discontinuous tangent, following Snell’s \r
+law of refraction, \r
+1 1 2 2 n sinθ = n sinθ\r
+where θ is the angle made by the ray with the normal plane of discontinuity; the incoming and \r
+outgoing rays and the normal are in a plane, the (x,y)-plane with y the normal direction. \r
+Proof: \r
+Since n varies only with y, we have 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 3 (4) \r
+tanθ\r
+0 ., 2\r
+2\r
+u\r
+dt\r
+dy u const\r
+dt\r
+dx\r
+dt\r
+d x = ⇒ = = =\r
+θ θ 2\r
+2\r
+2 2 2\r
+2 2\r
+sin\r
+) tan( un\r
+u\r
+u\r
+dt\r
+dy\r
+dt\r
+dx ⎟ = + = = ⎠\r
+⎞ ⎜\r
+⎝\r
+⎛ ⎟ + ⎠⎞ ⎜\r
+⎝\r
+⎛\r
+Example: Sound in stratified media. \r
+Suppose that n(y) has a sinusoidal variation, \r
+n = 1 + a cosy\r
+Rays are emitted at the origin. Calculate the ray shapes. \r
+a y\r
+d\r
+d y\r
+d\r
+d x 0, sin 2\r
+2\r
+2\r
+2\r
+= = − τ τ\r
+We get x = bτ (some b, depending on the launch angle α) and \r
+y\r
+b\r
+a\r
+dx\r
+d y sin 2 2\r
+2\r
+= −\r
+For small α, we obtain \r
+b\r
+x a\r
+a\r
+b\r
+y(x) = tanα ⋅ sin\r
+Note that all these rays cross at \r
+ y = 0, = ,m =1,2,... a\r
+mb\r
+xm\r
+π\r
+the convergence zones, well known from submarine movies."""
+
+[[sections]]
+number = "4"
+title = "The H-J Eikonal equation"
+text = """
+The Eikonal equation is non-linear and it is not immediately clear how to discretize and solve \r
+it numerically. Introducing a “time” t (with dimension length, so is actually distance), \r
+consider \r
+St + ∇S − n(x, y) = 0\r
+which we will use to solve the Eikonal equation numerically by explicit schemes for \r
+conservation laws."""
+
+[[sections]]
+number = "4.1"
+title = "Analysis of linearization"
+text = """
+A perturbation s to the steady solution S (the existence of which we assume for now) \r
+satisfies (The verification is left for the Homework) \r
+S\r
+S\r
+s s t ∇\r
+∇\r
++ U ⋅∇ = 0 ,U =\r
+which is hyperbolic, and the boundary/initial value problem with boundary condition s = 0 on \r
+Γ is well-posed. Given some initial condition, the steady state ( 0 ∂s = ) at a point P is reached \r
+in finite “time” equal to the shortest distance between P and Γ, because the velocity U has \r
+magnitude 1. An explicit time stepping scheme can compute the solution in time proportional \r
+to the number of gridpoints x max number of cells from a point to Γ. \r
+The Lax-Friedrichs scheme is \r
+( )( ) ⎥\r
+⎥\r
+⎦\r
+⎤\r
+⎢\r
+⎢\r
+⎣\r
+⎡ − + − − Δ\r
+Δ\r
+− + + + =\r
++ − + −\r
++ − + − +\r
+( , ) 2\r
+( ) 4\r
+1\r
+2\r
+, 1 , 1\r
+2\r
+1, 1,\r
+1, 1, , 1 , 1\r
+1\r
+i j ni j ni j ni j ni j\r
+n\r
+i j ni j ni j ni j nij\r
+S S S S n x y\r
+x\r
+t\r
+S S S S S\r
+If used on the linearized problem, with velocity ) U = (cosα,sinα it has von Neumann \r
+amplification factor 
+
+CSC Nada DN2255 Spring 11 - Differential Equations II \r
+JOp p 4 (4) \r
+(cos cos ) ( )( ) sin ,sin cos ,sin , , , 2\r
+1 θ θ θ θ ⋅ α α θ θ ≤ π\r
+Δ\r
+Δ = x + y − x x x y x\r
+t G i\r
+… to be finished in the homework."""

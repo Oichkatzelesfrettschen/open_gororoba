@@ -1,0 +1,767 @@
+equations = []
+tables = []
+figures = []
+full_text = """
+Soft486 on NetBSD 11 i386: Legacy Soft-Float, FPU\r
+Emulation, and 386SX/386DX Compatibility\r
+Scope and assumptions\r
+This report focuses on what it would take to run the NetBSD 11 i386 lineage (RC1 now; final release targeted\r
+for later February 2026) on systems as old as 386SX/386DX, while also supporting 486SX/486DX-class\r
+machines—including configurations without a hardware x87 FPU. \r
+Assumptions (explicit, because feasibility depends on them):\r
+The target baseline is the NetBSD 11.0_RC1 i386 distribution model (installer kernels + base\r
+userland), with “NetBSD 11 final” meaning the same branch (netbsd-11) stabilized, not a wholesale re\u0002architecture. \r
+“Fully utilize” old CPUs is interpreted as: boot a usable multiuser system (at least console), run a\r
+meaningful subset of base userland and pkgsrc, and preserve correctness where feasible—even if\r
+performance is poor on 386SX-class hardware. This is consistent with NetBSD’s own\r
+acknowledgement that “extremely memory starved systems” need custom/manual installs. \r
+If the goal is instead “run the stock NetBSD 11 i386 binaries unchanged on a 386SX,” then success\r
+requires instruction + architectural feature emulation at the kernel boundary (and potentially deeper\r
+VM/pmap changes), not merely recompiling a few components. (This is a design choice discussed\r
+later; it is not implied to be easy.) \r
+NetBSD 11 RC1 i386 baseline in February 2026\r
+Official CPU and FPU requirements today\r
+NetBSD 11.0_RC1’s i386 installation notes are unambiguous:\r
+It “runs on all i486 or later PC-compatible systems,”\r
+and “requires a numeric co-processor,”\r
+with supported processors enumerated as i486DX (or compatible), i486SX with an i487 installed, or\r
+Pentium-compatible or later. \r
+This is a double constraint: minimum integer ISA baseline of i486-class, and minimum floating-point\r
+capability equivalent to an x87 being present (either integrated like 486DX or via “i487” upgrade path). \r
+The NetBSD/i386 port page also frames i386 as an i486+ port “with x87 math coprocessors,” consistent with\r
+the INSTALL notes. \r
+1\r
+• \r
+1\r
+• \r
+2\r
+• \r
+3\r
+• \r
+• \r
+• \r
+2\r
+2\r
+4\r
+1
+
+Release engineering reality check\r
+NetBSD’s release engineering status page states NetBSD 11.0 is currently in RC1 and “expected before the\r
+end of February 2026,” with the CVS branch tag netbsd-11 . \r
+Third-party coverage (e.g., entity["organization","Phoronix","tech news site"]) confirms RC1 availability in\r
+early February 2026. \r
+A key (often-missed) detail: the kernel is already built “soft-float”\r
+Even though the distribution requires an x87 coprocessor for i386, the kernel build for i386 is compiled\r
+with:\r
+CFLAGS+= -msoft-float\r
+and explicitly disables MMX/SSE/AVX ( -mno-mmx -mno-sse -mno-avx ). \r
+That is: the i386 kernel itself avoids generating x87 instructions (and avoids relying on later SIMD\r
+extensions). \r
+This matters because it separates two problems:\r
+Kernel viability on old CPUs (instruction set + MMU features + privileged instructions).\r
+Userland floating point viability (does userland execute x87 instructions; if so, do we have a\r
+hardware x87 or an emulator; alternatively, can we produce a soft-float userland). \r
+What “legacy softfloat” meant in NetBSD/i386 and why it’s missing\r
+now\r
+Two distinct historical mechanisms\r
+Historically, NetBSD/i386 used (at least) two approaches for “machines without FPUs,” which are easy to\r
+conflate:\r
+Kernel x87 instruction emulation (MATH_EMULATE): trap x87 opcodes and emulate them in\r
+software. NetBSD’s own early change logs note that if you wanted the math emulator you needed\r
+the MATH_EMULATE kernel config option. \r
+Soft-float userland: build userland binaries (and especially libm consumers) so they do not emit x87\r
+instructions, making them runnable even when no FPU exists (or when MATH_EMULATE is absent/\r
+insufficient). \r
+By 2006, NetBSD release notes explicitly describe reducing kernel size/speed by removing “support for\r
+actual i386 CPUs” and “math coprocessor emulation” from common kernels, keeping such support only in\r
+certain SMALL/TINY variants. \r
+5\r
+6\r
+• \r
+• 7\r
+7\r
+1. \r
+2. \r
+8\r
+1. \r
+9\r
+2. \r
+10\r
+3\r
+2
+
+By early 2008, context from the port-i386 mailing list shows the tension between these approaches:\r
+entity["people","Perry E. Metzger","netbsd contributor"] acknowledged real x86 systems/SoCs\r
+without FPUs and stated “Soft-float userland mostly works,” while also noting that lack of FPU makes\r
+the situation “more complicated.” \r
+entity["people","Alan Barrett","netbsd contributor"] argued that /rescue and install ramdisk\r
+images should be linked against a soft-float libm and ideally avoid floating point entirely for\r
+maximum hardware reach. \r
+entity["people","Matthias Drochner","netbsd developer"] stated kernel FP emulation “was fine”\r
+but “was removed about a month ago,” and highlighted the compiler flag -mno-fancy-math-387\r
+as a historic mitigation to keep generated FP within what an emulator can handle. \r
+The modern landscape in NetBSD 10/11\r
+NetBSD 11.0_RC1 i386’s INSTALL requirements (“numeric co-processor required”) are consistent with a world\r
+where:\r
+stock userland emits x87 instructions, and\r
+the kernel does not promise to emulate x87 on i386 for machines lacking an FPU. \r
+A modern community effort exists to restore x87 emulation: the i486SX_soft_FPU project describes\r
+reviving the MATH_EMULATE option for NetBSD 10.x and later (i.e., undoing removal) and notes real-world\r
+correctness limitations in some transcendentals/precision-sensitive paths. \r
+This project is not official NetBSD, but it is evidence that (a) there is demand, and (b) a practical patch\r
+strategy starts by reintroducing MATH_EMULATE integration points and then chasing correctness gaps.\r
+386SX/386DX vs 486SX/486DX: what’s actually “missing” for a\r
+soft486\r
+The phrase “missing instructions that 486DX has” is only part of the compatibility story. For NetBSD-class\r
+kernels, some architectural deltas (e.g., paging protection semantics) can dominate.\r
+image_group{"layout":"carousel","aspect_ratio":"1:1","query":["Intel 80386SX chip photo","Intel 80486DX\r
+chip photo","Intel 80387SX coprocessor photo","Intel i487SX upgrade chip photo"],"num_per_query":1}\r
+The i486 instruction and system feature deltas that matter most\r
+A widely used consolidated instruction summary lists the i486-added instructions as:\r
+BSWAP\r
+CMPXCHG\r
+XADD\r
+INVLPG\r
+INVD\r
+• \r
+11\r
+• \r
+12\r
+• \r
+13\r
+• \r
+• 2\r
+14\r
+14\r
+• \r
+• \r
+• \r
+• \r
+• \r
+3
+
+WBINVD\r
+From a “soft486 on 386SX” perspective, these split into two buckets:\r
+User-mode visible (ring 3) additions (must be handled to run i486-built userland binaries on i386):\r
+BSWAP , CMPXCHG , XADD . \r
+Privileged/system additions (ring 0) (must be handled only if the kernel itself uses them or if you run\r
+i486-built kernel code on i386):\r
+INVLPG , INVD , WBINVD . \r
+NetBSD’s own config machinery still contains hints that i386-vs-non-i386 differences exist in build-time file\r
+selection; for example, an i386-specific Blowfish CBC assembly file is included only when not building for\r
+i386_cpu —and it is annotated as depending on byte-swap behavior (historically tied to i486+). \r
+The 486 paging protection feature: CR0.WP indirection and why it killed “real i386”\r
+kernels\r
+NetBSD’s historical release notes explicitly cite the key reason “actual i386 CPUs” were removed from\r
+common kernels: i386 CPUs “lack write protection in supervisor mode,” and supporting them requires a\r
+“costly workaround.” \r
+That statement points at the x86 control bit usually described as CR0.WP: when set, supervisor-mode writes\r
+should respect read-only page protection; when clear, supervisor-mode writes can bypass read-only page\r
+attributes. \r
+For OS design, the capability described by CR0.WP is closely related to efficient and correct implementation\r
+of copy-on-write and page protection semantics when the kernel touches user mappings. \r
+So, for a “soft486 layer” aspiring to make a 386SX behave like a 486DX to the OS:\r
+Emulating a few opcodes ( BSWAP , CMPXCHG , XADD ) is not sufficient.\r
+You need an answer to “how will the VM system get 486-style supervisor write protection semantics\r
+(or safe substitutes) on 386 paging hardware?” \r
+FPU delta: 486DX vs (386SX/486SX)\r
+NetBSD 11.0_RC1 i386 requires an x87-class coprocessor. \r
+On 486DX, that’s integrated. \r
+On 486SX, it is absent, and the INSTALL notes effectively require “i487 numeric co-processor\r
+installed” (a historically common upgrade path) rather than supporting emulation. \r
+On 386SX/386DX systems, x87 FPUs are external (e.g., 387-class), and a “no FPU” configuration must\r
+be supported either by kernel emulation (MATH_EMULATE) or soft-float userland. \r
+• 15\r
+15\r
+15\r
+16\r
+3\r
+17\r
+18\r
+• \r
+• \r
+19\r
+2\r
+• \r
+• \r
+2\r
+• \r
+20\r
+4
+
+NetBSD 11 i386 source touchpoints relevant to softfloat and soft486\r
+This section extracts the most relevant NetBSD 11 branch facts from the i386 kernel config/build\r
+infrastructure and boot/CPU identification code.\r
+Kernel build flags already move in the “386-friendly” direction\r
+NetBSD 11 i386 kernels are compiled with -msoft-float and with MMX/SSE/AVX explicitly disabled. \r
+Implications:\r
+Kernel code should not depend on an x87 FPU to execute. \r
+Any remaining “runs only on CPUs with FPUs” constraint is driven by userland ABI/code generation,\r
+installer tooling, and the absence of a kernel x87 emulator in the supported configuration set—not\r
+by the kernel using FP internally. \r
+The boot CPU identification logic still distinguishes i386 and i486\r
+Even on the NetBSD-release-11 tree, the i386 locore.S CPU-identification pathway includes an explicit\r
+“is386” path setting a CPU type constant for a 386-class CPU, followed by a “try486” path. \r
+This is a subtle but important point:\r
+The codebase has not completely forgotten what an i386 is. \r
+But distribution policy (INSTALL notes) still sets the supported floor at i486-class systems with an\r
+x87-capable coprocessor. \r
+Kernel configuration variants exist for “tiny” systems\r
+The netbsd-11 i386 config directory still ships multiple kernel configuration files, including\r
+GENERIC_TINY , INSTALL_TINY , and similarly minimal profiles. \r
+This aligns with the INSTALL guidance that “memory starved systems” can be handled by custom/stripped\r
+kernels (though not fully documented). \r
+A practical architecture for a “soft486” layer on 386SX\r
+There are two fundamentally different end-states people mean by “soft486.” NetBSD’s historical discussion\r
+shows both were considered: kernel-side emulation, and userland rebuilt to avoid FP and/or new opcodes.\r
+Strategy: rebuild NetBSD/i386 as a true i386 + soft-float userland\r
+This is closest to “legacy softfloat” as discussed on the mailing lists: make userland avoid generating x87\r
+(and avoid i486-only integer instructions), so the absence of an FPU and the absence of i486 opcodes is not\r
+fatal.\r
+7\r
+• 7\r
+• \r
+21\r
+22\r
+• 22\r
+• \r
+23\r
+24\r
+25\r
+26\r
+5
+
+Key ingredients (as implied by historical discussions):\r
+A policy that /rescue and installer RAMdisk utilities should not depend on x87 FP and should\r
+prefer integer arithmetic where feasible. \r
+System libraries (notably libm ) built in soft-float form for the baseline userland, so they function\r
+on “least-capable hardware we support.” \r
+Compiler/toolchain settings (or build rules) that prevent “fancy” 387-oriented instruction selection\r
+when targeting an emulator or soft-float path; historically, -mno-fancy-math-387 is explicitly\r
+cited as relevant. \r
+Tradeoffs:\r
+Correctness and maintainability can improve (fewer traps, no partial emulators), but performance\r
+will be extremely low on 386SX-class hardware.\r
+This is closest to a “clean-room” rebuild of the distribution sets for an i386 -true minimum, rather\r
+than running stock binaries. \r
+Strategy: keep NetBSD 11 i486+ userland and emulate upward on 386SX\r
+This is the strictest reading of “build a full soft486 emulation layer atop the 386SX.”\r
+At minimum, this means:\r
+#UD invalid-opcode emulation for i486-only usermode instructions ( BSWAP , CMPXCHG , XADD )\r
+to run i486-built binaries. \r
+x87 emulation (or soft-float userland) to satisfy NetBSD’s distribution requirement that userland\r
+expects FP availability. \r
+A credible plan for the supervisor write-protection gap (the CR0.WP issue) that NetBSD previously\r
+called out as the reason real i386 CPUs were removed from common kernels. \r
+Where this becomes “full soft486” rather than “opcode patching” is item (3): the VM system must not silently\r
+break protection semantics. NetBSD’s own wording implies this was historically solved by a workaround, but\r
+it was considered costly enough to motivate dropping i386 from common kernels. \r
+Emulation burden by instruction/feature\r
+BSWAP (userland): can be emulated via shifts/rotates or bytewise operations; high frequency in endian\r
+conversions and crypto. NetBSD i386 still carries build-time considerations around byte-swap usage in some\r
+assembly paths. \r
+CMPXCHG / XADD (userland): emulate-able but semantically delicate: they underpin lock-free atomics. A\r
+software substitute likely devolves to kernel-assisted or lock-based primitives, especially if any SMP\r
+semantics are expected. \r
+INVLPG / WBINVD / INVD (kernel/system): only required if you are trying to run i486-targeted kernel code\r
+on i386, or if some privileged path assumes these exist. A 386-compatible kernel can often substitute\r
+different mechanisms (e.g., full TLB flushes), but that becomes part of the “soft486 kernel ABI” problem\r
+rather than userland emulation. \r
+• \r
+12\r
+• \r
+12\r
+• \r
+13\r
+• \r
+• \r
+27\r
+1. \r
+15\r
+2. \r
+28\r
+3. \r
+19\r
+3\r
+29\r
+30\r
+31\r
+6
+
+x87 FPU presence: NetBSD’s i386 distribution explicitly expects it; restoring that expectation on 486SX/\r
+386SX via emulation is feasible but correctness is nontrivial. The modern patch project restoring\r
+MATH_EMULATE reports incomplete coverage and correctness/precision issues in some math paths—\r
+exactly the kind of problems one should expect from partial x87 emulation relative to strict libm\r
+expectations. \r
+Feasibility synthesis\r
+NetBSD 11 i386, as shipped in RC1, is explicitly positioned as an i486+ platform that requires an x87-\r
+equivalent coprocessor. \r
+From the sources above, the path to “fully utilize 386SX/386DX and 486SX with NetBSD 11 i386” is best\r
+framed as two coupled restorations:\r
+Restoring or recreating a supported “no-FPU” story (either via kernel x87 emulation reborn as \r
+MATH_EMULATE , or via a distribution built with soft-float userland and careful library/installer\r
+constraints). \r
+Restoring a supported “real i386” story—which is much harder than opcode emulation, because\r
+NetBSD itself cites the supervisor write-protection gap as a primary driver for dropping i386 CPUs\r
+from common kernels, implying deep VM/pmap implications. \r
+The most actionable near-term “soft486” win—based on NetBSD 11 RC1’s explicit policy and the modern\r
+patch ecosystem—is likely:\r
+486SX support via revived kernel FPU emulation (so userland can keep using x87 instructions),\r
+potentially combined with the older advice to keep /rescue and installer tooling off floating point\r
+where practical. \r
+Whereas a truly robust “386SX runs NetBSD 11 i386” story requires:\r
+either rebuilding a true i386 baseline distribution (soft-float + no i486-only opcodes), \r
+or implementing an ambitious compatibility layer that addresses not only i486 usermode opcodes\r
+but also the i386 paging protection deficit that NetBSD historically labeled costly. \r
+NetBSD Release Engineering\r
+https://wiki.netbsd.org/releng/?utm_source=chatgpt.com\r
+cdn.netbsd.org\r
+https://cdn.netbsd.org/pub/NetBSD/NetBSD-11.0_RC1/i386/INSTALL.txt\r
+Significant changes from NetBSD 3.0 to 4.0\r
+https://www.netbsd.org/changes/changes-4.0.html\r
+NetBSD/i386\r
+https://wiki.netbsd.org/ports/i386/?utm_source=chatgpt.com\r
+NetBSD 11.0-RC1 Available For Testing With Enhanced ...\r
+https://www.phoronix.com/news/NetBSD-11.0-RC1?utm_source=chatgpt.com\r
+32\r
+23\r
+• \r
+33\r
+• \r
+19\r
+• \r
+34\r
+• \r
+• \r
+35\r
+1 5\r
+2 8 20 21 23 25 28 32 34\r
+3 19\r
+4\r
+6\r
+7
+
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/Makefile.i386\r
+Significant changes from NetBSD 0.8 to 0.9\r
+https://www.netbsd.org/changes/changes-0.9.html?utm_source=chatgpt.com\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/01/12/msg000051.html\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/01/14/msg000095.html\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/02/15/msg000204.html\r
+Bring back FPU emulation for i486SX CPU on NetBSD\r
+https://github.com/mezantrop/i486SX_soft_FPU?utm_source=chatgpt.com\r
+List of x86 instructions\r
+https://en.wikipedia.org/wiki/List_of_x86_instructions?utm_source=chatgpt.com\r
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/files.i386\r
+whats the purpose of x86 cr0 WP bit?\r
+https://stackoverflow.com/questions/15275059/whats-the-purpose-of-x86-cr0-wp-bit?utm_source=chatgpt.com\r
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/i386/locore.S\r
+conf\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/\r
+7\r
+9\r
+10 11 26 27 35\r
+12 33\r
+13\r
+14\r
+15 29 30 31\r
+16\r
+17 18\r
+22\r
+24\r
+8"""
+
+[metadata]
+title = "Soft486 on NetBSD 11 i386  Legacy Soft Float, FPU Emulation, and 386SX 386DX Compatibility"
+authors = ["Unknown"]
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+Soft486 on NetBSD 11 i386: Legacy Soft-Float, FPU\r
+Emulation, and 386SX/386DX Compatibility\r
+Scope and assumptions\r
+This report focuses on what it would take to run the NetBSD 11 i386 lineage (RC1 now; final release targeted\r
+for later February 2026) on systems as old as 386SX/386DX, while also supporting 486SX/486DX-class\r
+machines—including configurations without a hardware x87 FPU. \r
+Assumptions (explicit, because feasibility depends on them):\r
+The target baseline is the NetBSD 11.0_RC1 i386 distribution model (installer kernels + base\r
+userland), with “NetBSD 11 final” meaning the same branch (netbsd-11) stabilized, not a wholesale re\u0002architecture. \r
+“Fully utilize” old CPUs is interpreted as: boot a usable multiuser system (at least console), run a\r
+meaningful subset of base userland and pkgsrc, and preserve correctness where feasible—even if\r
+performance is poor on 386SX-class hardware. This is consistent with NetBSD’s own\r
+acknowledgement that “extremely memory starved systems” need custom/manual installs. \r
+If the goal is instead “run the stock NetBSD 11 i386 binaries unchanged on a 386SX,” then success\r
+requires instruction + architectural feature emulation at the kernel boundary (and potentially deeper\r
+VM/pmap changes), not merely recompiling a few components. (This is a design choice discussed\r
+later; it is not implied to be easy.) \r
+NetBSD 11 RC1 i386 baseline in February 2026\r
+Official CPU and FPU requirements today\r
+NetBSD 11.0_RC1’s i386 installation notes are unambiguous:\r
+It “runs on all i486 or later PC-compatible systems,”\r
+and “requires a numeric co-processor,”\r
+with supported processors enumerated as i486DX (or compatible), i486SX with an i487 installed, or\r
+Pentium-compatible or later. \r
+This is a double constraint: minimum integer ISA baseline of i486-class, and minimum floating-point\r
+capability equivalent to an x87 being present (either integrated like 486DX or via “i487” upgrade path). \r
+The NetBSD/i386 port page also frames i386 as an i486+ port “with x87 math coprocessors,” consistent with\r
+the INSTALL notes. \r
+1\r
+• \r
+1\r
+• \r
+2\r
+• \r
+3\r
+• \r
+• \r
+• \r
+2\r
+2\r
+4"""
+
+[[sections]]
+number = "1"
+title = "Release engineering reality check"
+text = """
+NetBSD’s release engineering status page states NetBSD 11.0 is currently in RC1 and “expected before the\r
+end of February 2026,” with the CVS branch tag netbsd-11 . \r
+Third-party coverage (e.g., entity["organization","Phoronix","tech news site"]) confirms RC1 availability in\r
+early February 2026. \r
+A key (often-missed) detail: the kernel is already built “soft-float”\r
+Even though the distribution requires an x87 coprocessor for i386, the kernel build for i386 is compiled\r
+with:\r
+CFLAGS+= -msoft-float\r
+and explicitly disables MMX/SSE/AVX ( -mno-mmx -mno-sse -mno-avx ). \r
+That is: the i386 kernel itself avoids generating x87 instructions (and avoids relying on later SIMD\r
+extensions). \r
+This matters because it separates two problems:\r
+Kernel viability on old CPUs (instruction set + MMU features + privileged instructions).\r
+Userland floating point viability (does userland execute x87 instructions; if so, do we have a\r
+hardware x87 or an emulator; alternatively, can we produce a soft-float userland). \r
+What “legacy softfloat” meant in NetBSD/i386 and why it’s missing\r
+now\r
+Two distinct historical mechanisms\r
+Historically, NetBSD/i386 used (at least) two approaches for “machines without FPUs,” which are easy to\r
+conflate:\r
+Kernel x87 instruction emulation (MATH_EMULATE): trap x87 opcodes and emulate them in\r
+software. NetBSD’s own early change logs note that if you wanted the math emulator you needed\r
+the MATH_EMULATE kernel config option. \r
+Soft-float userland: build userland binaries (and especially libm consumers) so they do not emit x87\r
+instructions, making them runnable even when no FPU exists (or when MATH_EMULATE is absent/\r
+insufficient). \r
+By 2006, NetBSD release notes explicitly describe reducing kernel size/speed by removing “support for\r
+actual i386 CPUs” and “math coprocessor emulation” from common kernels, keeping such support only in\r
+certain SMALL/TINY variants. \r
+5\r
+6\r
+• \r
+• 7\r
+7\r
+1. \r
+2. \r
+8\r
+1. \r
+9\r
+2. \r
+10\r
+3\r
+2
+
+By early 2008, context from the port-i386 mailing list shows the tension between these approaches:\r
+entity["people","Perry E. Metzger","netbsd contributor"] acknowledged real x86 systems/SoCs\r
+without FPUs and stated “Soft-float userland mostly works,” while also noting that lack of FPU makes\r
+the situation “more complicated.” \r
+entity["people","Alan Barrett","netbsd contributor"] argued that /rescue and install ramdisk\r
+images should be linked against a soft-float libm and ideally avoid floating point entirely for\r
+maximum hardware reach. \r
+entity["people","Matthias Drochner","netbsd developer"] stated kernel FP emulation “was fine”\r
+but “was removed about a month ago,” and highlighted the compiler flag -mno-fancy-math-387\r
+as a historic mitigation to keep generated FP within what an emulator can handle. \r
+The modern landscape in NetBSD 10/11\r
+NetBSD 11.0_RC1 i386’s INSTALL requirements (“numeric co-processor required”) are consistent with a world\r
+where:\r
+stock userland emits x87 instructions, and\r
+the kernel does not promise to emulate x87 on i386 for machines lacking an FPU. \r
+A modern community effort exists to restore x87 emulation: the i486SX_soft_FPU project describes\r
+reviving the MATH_EMULATE option for NetBSD 10.x and later (i.e., undoing removal) and notes real-world\r
+correctness limitations in some transcendentals/precision-sensitive paths. \r
+This project is not official NetBSD, but it is evidence that (a) there is demand, and (b) a practical patch\r
+strategy starts by reintroducing MATH_EMULATE integration points and then chasing correctness gaps.\r
+386SX/386DX vs 486SX/486DX: what’s actually “missing” for a\r
+soft486\r
+The phrase “missing instructions that 486DX has” is only part of the compatibility story. For NetBSD-class\r
+kernels, some architectural deltas (e.g., paging protection semantics) can dominate.\r
+image_group{"layout":"carousel","aspect_ratio":"1:1","query":["Intel 80386SX chip photo","Intel 80486DX\r
+chip photo","Intel 80387SX coprocessor photo","Intel i487SX upgrade chip photo"],"num_per_query":1}\r
+The i486 instruction and system feature deltas that matter most\r
+A widely used consolidated instruction summary lists the i486-added instructions as:\r
+BSWAP\r
+CMPXCHG\r
+XADD\r
+INVLPG\r
+INVD\r
+• \r
+11\r
+• \r
+12\r
+• \r
+13\r
+• \r
+• 2\r
+14\r
+14\r
+• \r
+• \r
+• \r
+• \r
+•"""
+
+[[sections]]
+number = "3"
+title = "WBINVD"
+text = """
+From a “soft486 on 386SX” perspective, these split into two buckets:\r
+User-mode visible (ring 3) additions (must be handled to run i486-built userland binaries on i386):\r
+BSWAP , CMPXCHG , XADD . \r
+Privileged/system additions (ring 0) (must be handled only if the kernel itself uses them or if you run\r
+i486-built kernel code on i386):\r
+INVLPG , INVD , WBINVD . \r
+NetBSD’s own config machinery still contains hints that i386-vs-non-i386 differences exist in build-time file\r
+selection; for example, an i386-specific Blowfish CBC assembly file is included only when not building for\r
+i386_cpu —and it is annotated as depending on byte-swap behavior (historically tied to i486+). \r
+The 486 paging protection feature: CR0.WP indirection and why it killed “real i386”\r
+kernels\r
+NetBSD’s historical release notes explicitly cite the key reason “actual i386 CPUs” were removed from\r
+common kernels: i386 CPUs “lack write protection in supervisor mode,” and supporting them requires a\r
+“costly workaround.” \r
+That statement points at the x86 control bit usually described as CR0.WP: when set, supervisor-mode writes\r
+should respect read-only page protection; when clear, supervisor-mode writes can bypass read-only page\r
+attributes. \r
+For OS design, the capability described by CR0.WP is closely related to efficient and correct implementation\r
+of copy-on-write and page protection semantics when the kernel touches user mappings. \r
+So, for a “soft486 layer” aspiring to make a 386SX behave like a 486DX to the OS:\r
+Emulating a few opcodes ( BSWAP , CMPXCHG , XADD ) is not sufficient.\r
+You need an answer to “how will the VM system get 486-style supervisor write protection semantics\r
+(or safe substitutes) on 386 paging hardware?” \r
+FPU delta: 486DX vs (386SX/486SX)\r
+NetBSD 11.0_RC1 i386 requires an x87-class coprocessor. \r
+On 486DX, that’s integrated. \r
+On 486SX, it is absent, and the INSTALL notes effectively require “i487 numeric co-processor\r
+installed” (a historically common upgrade path) rather than supporting emulation. \r
+On 386SX/386DX systems, x87 FPUs are external (e.g., 387-class), and a “no FPU” configuration must\r
+be supported either by kernel emulation (MATH_EMULATE) or soft-float userland. \r
+• 15\r
+15\r
+15\r
+16\r
+3\r
+17\r
+18\r
+• \r
+• \r
+19\r
+2\r
+• \r
+• \r
+2\r
+• \r
+20"""
+
+[[sections]]
+number = "4"
+title = "NetBSD 11 i386 source touchpoints relevant to softfloat and soft486"
+text = """
+This section extracts the most relevant NetBSD 11 branch facts from the i386 kernel config/build\r
+infrastructure and boot/CPU identification code.\r
+Kernel build flags already move in the “386-friendly” direction\r
+NetBSD 11 i386 kernels are compiled with -msoft-float and with MMX/SSE/AVX explicitly disabled. \r
+Implications:\r
+Kernel code should not depend on an x87 FPU to execute. \r
+Any remaining “runs only on CPUs with FPUs” constraint is driven by userland ABI/code generation,\r
+installer tooling, and the absence of a kernel x87 emulator in the supported configuration set—not\r
+by the kernel using FP internally. \r
+The boot CPU identification logic still distinguishes i386 and i486\r
+Even on the NetBSD-release-11 tree, the i386 locore.S CPU-identification pathway includes an explicit\r
+“is386” path setting a CPU type constant for a 386-class CPU, followed by a “try486” path. \r
+This is a subtle but important point:\r
+The codebase has not completely forgotten what an i386 is. \r
+But distribution policy (INSTALL notes) still sets the supported floor at i486-class systems with an\r
+x87-capable coprocessor. \r
+Kernel configuration variants exist for “tiny” systems\r
+The netbsd-11 i386 config directory still ships multiple kernel configuration files, including\r
+GENERIC_TINY , INSTALL_TINY , and similarly minimal profiles. \r
+This aligns with the INSTALL guidance that “memory starved systems” can be handled by custom/stripped\r
+kernels (though not fully documented). \r
+A practical architecture for a “soft486” layer on 386SX\r
+There are two fundamentally different end-states people mean by “soft486.” NetBSD’s historical discussion\r
+shows both were considered: kernel-side emulation, and userland rebuilt to avoid FP and/or new opcodes.\r
+Strategy: rebuild NetBSD/i386 as a true i386 + soft-float userland\r
+This is closest to “legacy softfloat” as discussed on the mailing lists: make userland avoid generating x87\r
+(and avoid i486-only integer instructions), so the absence of an FPU and the absence of i486 opcodes is not\r
+fatal.\r
+7\r
+• 7\r
+• \r
+21\r
+22\r
+• 22\r
+• \r
+23\r
+24\r
+25\r
+26"""
+
+[[sections]]
+number = "5"
+title = "Key ingredients (as implied by historical discussions):"
+text = """
+A policy that /rescue and installer RAMdisk utilities should not depend on x87 FP and should\r
+prefer integer arithmetic where feasible. \r
+System libraries (notably libm ) built in soft-float form for the baseline userland, so they function\r
+on “least-capable hardware we support.” \r
+Compiler/toolchain settings (or build rules) that prevent “fancy” 387-oriented instruction selection\r
+when targeting an emulator or soft-float path; historically, -mno-fancy-math-387 is explicitly\r
+cited as relevant. \r
+Tradeoffs:\r
+Correctness and maintainability can improve (fewer traps, no partial emulators), but performance\r
+will be extremely low on 386SX-class hardware.\r
+This is closest to a “clean-room” rebuild of the distribution sets for an i386 -true minimum, rather\r
+than running stock binaries. \r
+Strategy: keep NetBSD 11 i486+ userland and emulate upward on 386SX\r
+This is the strictest reading of “build a full soft486 emulation layer atop the 386SX.”\r
+At minimum, this means:\r
+#UD invalid-opcode emulation for i486-only usermode instructions ( BSWAP , CMPXCHG , XADD )\r
+to run i486-built binaries. \r
+x87 emulation (or soft-float userland) to satisfy NetBSD’s distribution requirement that userland\r
+expects FP availability. \r
+A credible plan for the supervisor write-protection gap (the CR0.WP issue) that NetBSD previously\r
+called out as the reason real i386 CPUs were removed from common kernels. \r
+Where this becomes “full soft486” rather than “opcode patching” is item (3): the VM system must not silently\r
+break protection semantics. NetBSD’s own wording implies this was historically solved by a workaround, but\r
+it was considered costly enough to motivate dropping i386 from common kernels. \r
+Emulation burden by instruction/feature\r
+BSWAP (userland): can be emulated via shifts/rotates or bytewise operations; high frequency in endian\r
+conversions and crypto. NetBSD i386 still carries build-time considerations around byte-swap usage in some\r
+assembly paths. \r
+CMPXCHG / XADD (userland): emulate-able but semantically delicate: they underpin lock-free atomics. A\r
+software substitute likely devolves to kernel-assisted or lock-based primitives, especially if any SMP\r
+semantics are expected. \r
+INVLPG / WBINVD / INVD (kernel/system): only required if you are trying to run i486-targeted kernel code\r
+on i386, or if some privileged path assumes these exist. A 386-compatible kernel can often substitute\r
+different mechanisms (e.g., full TLB flushes), but that becomes part of the “soft486 kernel ABI” problem\r
+rather than userland emulation. \r
+• \r
+12\r
+• \r
+12\r
+• \r
+13\r
+• \r
+• \r
+27\r
+1. \r
+15\r
+2. \r
+28\r
+3. \r
+19\r
+3\r
+29\r
+30\r
+31\r
+6
+
+x87 FPU presence: NetBSD’s i386 distribution explicitly expects it; restoring that expectation on 486SX/\r
+386SX via emulation is feasible but correctness is nontrivial. The modern patch project restoring\r
+MATH_EMULATE reports incomplete coverage and correctness/precision issues in some math paths—\r
+exactly the kind of problems one should expect from partial x87 emulation relative to strict libm\r
+expectations. \r
+Feasibility synthesis\r
+NetBSD 11 i386, as shipped in RC1, is explicitly positioned as an i486+ platform that requires an x87-\r
+equivalent coprocessor. \r
+From the sources above, the path to “fully utilize 386SX/386DX and 486SX with NetBSD 11 i386” is best\r
+framed as two coupled restorations:\r
+Restoring or recreating a supported “no-FPU” story (either via kernel x87 emulation reborn as \r
+MATH_EMULATE , or via a distribution built with soft-float userland and careful library/installer\r
+constraints). \r
+Restoring a supported “real i386” story—which is much harder than opcode emulation, because\r
+NetBSD itself cites the supervisor write-protection gap as a primary driver for dropping i386 CPUs\r
+from common kernels, implying deep VM/pmap implications. \r
+The most actionable near-term “soft486” win—based on NetBSD 11 RC1’s explicit policy and the modern\r
+patch ecosystem—is likely:\r
+486SX support via revived kernel FPU emulation (so userland can keep using x87 instructions),\r
+potentially combined with the older advice to keep /rescue and installer tooling off floating point\r
+where practical. \r
+Whereas a truly robust “386SX runs NetBSD 11 i386” story requires:\r
+either rebuilding a true i386 baseline distribution (soft-float + no i486-only opcodes), \r
+or implementing an ambitious compatibility layer that addresses not only i486 usermode opcodes\r
+but also the i386 paging protection deficit that NetBSD historically labeled costly. \r
+NetBSD Release Engineering\r
+https://wiki.netbsd.org/releng/?utm_source=chatgpt.com\r
+cdn.netbsd.org\r
+https://cdn.netbsd.org/pub/NetBSD/NetBSD-11.0_RC1/i386/INSTALL.txt\r
+Significant changes from NetBSD 3.0 to 4.0\r
+https://www.netbsd.org/changes/changes-4.0.html\r
+NetBSD/i386\r
+https://wiki.netbsd.org/ports/i386/?utm_source=chatgpt.com\r
+NetBSD 11.0-RC1 Available For Testing With Enhanced ...\r
+https://www.phoronix.com/news/NetBSD-11.0-RC1?utm_source=chatgpt.com\r
+32\r
+23\r
+• \r
+33\r
+• \r
+19\r
+• \r
+34\r
+• \r
+• \r
+35\r
+1 5\r
+2 8 20 21 23 25 28 32 34\r
+3 19\r
+4\r
+6\r
+7
+
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/Makefile.i386\r
+Significant changes from NetBSD 0.8 to 0.9\r
+https://www.netbsd.org/changes/changes-0.9.html?utm_source=chatgpt.com\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/01/12/msg000051.html\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/01/14/msg000095.html\r
+Re: MATH_EMULATE\r
+https://mail-index.netbsd.org/port-i386/2008/02/15/msg000204.html\r
+Bring back FPU emulation for i486SX CPU on NetBSD\r
+https://github.com/mezantrop/i486SX_soft_FPU?utm_source=chatgpt.com\r
+List of x86 instructions\r
+https://en.wikipedia.org/wiki/List_of_x86_instructions?utm_source=chatgpt.com\r
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/files.i386\r
+whats the purpose of x86 cr0 WP bit?\r
+https://stackoverflow.com/questions/15275059/whats-the-purpose-of-x86-cr0-wp-bit?utm_source=chatgpt.com\r
+mirrors.mit.edu\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/i386/locore.S\r
+conf\r
+https://mirrors.mit.edu/NetBSD/NetBSD-release-11/src/sys/arch/i386/conf/\r
+7\r
+9\r
+10 11 26 27 35\r
+12 33\r
+13\r
+14\r
+15 29 30 31\r
+16\r
+17 18\r
+22\r
+24\r
+8"""

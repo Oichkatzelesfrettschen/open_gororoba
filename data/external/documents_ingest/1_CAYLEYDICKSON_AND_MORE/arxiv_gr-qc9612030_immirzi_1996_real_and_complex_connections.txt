@@ -1,0 +1,486 @@
+DFUP-118/96, gr-qc/9612030
+
+Real and complex connections for canonical gravity
+Giorgio Immirzi∗
+
+arXiv:gr-qc/9612030v1 12 Dec 1996
+
+Dipartimento di Fisica, Università di Perugia, and I.N.F.N., sezione di Perugia
+via A. Pascoli, 6100 Perugia, Italy
+(December 2, 1996)
+
+Abstract
+Both real and complex connections have been used for canonical gravity: the
+complex connection has SL(2, C) as gauge group, while the real connection
+has SU (2) as gauge group. We show that there is an arbitrary parameter β
+which enters in the definition of the real connection, in the Poisson brackets,
+and therefore in the scale of the discrete spectra one finds for areas and
+volumes in the corresponding quantum theory. A value for β could be could
+be singled out in the quantum theory by the Hamiltonian constraint, or by
+the rotation to the complex Ashtekar connection.
+04.20.Fy, 4.60.-m, 4.60.Ds
+
+Typeset using REVTEX
+
+∗ e–mail: immirzi@perugia.infn.it
+
+1
+
+I. INTRODUCTION
+
+A lot of recent work in canonical quantum gravity is based on using as canonical variables
+the pair (E ia , Aia ), where E ia is a triad of density weight one and Aia a real SU(2) connection;
+these variables were introduced by Barbero [1] as an alternative to the complex Ashtekar
+variables [2]. For SU(2) to be the gauge group for general relativity we have to fix the local
+inertial frames, choosing what is called ”time gauge”; once this choice is made, it will be
+shown that there is a certain freedom in the choice of the connection, parametrized by a
+variable β. No particular real real value of β has a geometric motivation, and any one gives
+an acceptable, if somewhat bizarre, SU(2) connection. The choice β = i gives the Ashtekar
+variables, requires that we impose reality conditions on the variables, but restores the full
+invariance of the canonical theory under local Lorentz transformations; as an additional
+benefit, this choice simplifies the expression of the hamiltonian constraint considerably.
+The difference between these choices becomes important when we attempt to quantize the
+theory. It is difficult to find a scalar product if the gauge group is SL(2, C), even in simplified
+cases [3]. On the contrary, for gauge invariant functionals of a SU(2) connection, the metric
+being well defined, one can study the spectrum of operators that can be interpreted as
+representing the area of a surface and the volume of a region in space [4]; both these spectra
+turn out to be discrete [5–8], indicating a discrete structure of space at the Planck scale.
+Unfortunately, the arbitrary parameter β multiplies the scale of these spectra, and therefore
+the results are meaningless unless we find a way to fix this constant. Since the constant
+β appears explicitly in the expression of the Hamiltonian constraint, it may be that that
+solutions to this constraint exist only for particular values, most likely β = 1. An alternative,
+but strictly related possibility would be that β = 1 is required because it is the value for
+which a rotation to the Ashtekar variables is possible [9,10], restoring the gauge group
+SL(2, C). Both these goals have been attempted in recent work [11].
+II. CONNECTIONS.
+
+A canonical
+formulation of general relativity may be obtained starting from the action
+1 R
+S = 4κ
+ǫIJKL eI ∧eJ ∧RKL (where I, J, . . . = 0, 1, 2, 3, eI are vierbeins, RKL is the curvature
+2–form of the Levi–Civita connection ΩIJ , and κ := (8πGN ewton )/c3 ), then taking space slices
+Σt : t(x) =const. with a vector ta : ta ∂a t = 1 related to the unit normal to the slice na by
+ta = Nna + N a , or na = −N∂a t. If at this stage we partially fix the O(3, 1) gauge freedom
+choosing ”time gauge”, i.e. setting:
+e0a = −na = N∂a t
+
+(1)
+
+we are left with invariance under local O(3) transformations with eia , i = 1, 2, 3 space–like
+providing a local frame on the slice and the inverse 3–metric q ab = eia eib . The pull–back
+of ΩIJ to the space slice gives the 3–d Levi–Civita connection Γia := 12 qab ǫjik Ωjk
+b , and the
+i
+b 0i
+ib
+extrinsic curvature Ka := qa Ωb = e Kab . Instead of the A.D.M. variables (qab , π ab :=
+√
+q(K ab − q ab K)), we can take the pair [9]:
+1
+√
+(E ia := ǫ̃abc ǫijk ejb ekc = q eia ,
+2
+2
+
+Kai )
+
+(2)
+
+From the definitions it follows that for small variations:
+1
+Kai δE ia = √ Kab δ(E ia E i ) =
+2 q
+1
+1
+1
+= (πab − π qab )δ(qq ab ) = − π ab δqab
+2q
+2
+2
+
+(3)
+
+and therefore the only non vanishing Poisson-brackets are:
+{Kai (x), E jb (y)} = κδab δ ij δ(x, y)
+
+(4)
+
+i
+With the connection Γia we can compute covariant derivatives Da and the curvature Rab
+,
+and write the constraints of the theory in the form:
+
+Gi := ǫijk Kaj E ka ≈ 0
+Vc := qbc ∇a π ab = 2Eia D[a Kc]i ≈ 0
+1
+1
+H := √ (π ab πab − π 2 − q R) =
+q
+2
+
+
+1
+[a b]
+i
+= √
+2Ei Ej Kaj Kbi + ǫijk E ia E jb Rab
+≈0
+det E
+
+(5)
+
+The first constraint has been added to the A.D.M. ones to make sure that Kab is symmetrical.
+The trouble with this formulation is that Γia is a derived quantity, that can be expressed
+in terms of E ia , its derivatives and its inverse solving the 9 linear equations it satisfies:
+Da E ia = 0
+
+;
+
+(b
+
+c)
+
+ǫijk Eia Ej Da Ek = 0
+
+(6)
+
+To obtain a connection that is in some sense a conjugate quantity to the triads we may
+follow [1] and change our basic variables, for some β to be fixed, to:
+(E ia , A(β)i
+:= Γia + β Kai )
+a
+
+(7)
+
+By the properties of the Levi–Civita connection, we find:
+E ia δA(β)i
+= βE ia δKai + E ia δΓia =
+a
+= βE ia δKai + ∂a (ǫ̃abc ekb δekc )
+
+(8)
+
+so that the only non vanishing Poisson brackets are:
+jb
+i b
+{A(β)i
+a (x), E (y)} = βκ δj δa δ(x, y)
+
+(9)
+
+Unlike Kai , A(β)i
+transforms like an SU(2) connection for any β, so that one can have Da(β)
+a
+R
+(β)i
+a
+derivatives, a curvature Fab , and for any path γ a ”transporters” gγ := P exp( τi A(β)i
+a dγ ).
+Geometrically, all this is perhaps a bit artificial: we are using a connection with torsion, and
+we are smuggling the dynamics of the theory in this torsion.
+With some algebra one finds that the constraints eq. (5) can be rewritten in the form:
+
+3
+
+Da(β) E ia = βGi ≈ 0
+(β)i
+
+= β Vb + β 2 Kbj Gj ≈ 0
+(1 + β 2 ) [a b] i j
+ǫijk
+(β)k
+E ia E jb Fab − 2 q
+Ei Ej Ka Kb
+H=q
+det(E)
+det(E)
++... ≈ 0
+E ia Fab
+
+(10)
+
+where the dots are terms proportional to βGi and its derivatives.
+Clearly,
+q complications will come from the last constraint, in particular from its overall
+factor 1/ det(E) and from the messy term proportional to (1 + β 2 ). The quickest way to
+get rid of it would be to take βq
+= i, which is Ashtekar’s original choice [2](together with the
+idea of absorbing the factor 1/ det(E) in the Lagrange multiplier). But this choice can be
+motivated by much more than the simplification of the constraints: in fact for this value of
+β the variables eq.(7) can be defined quite generally, without the gauge choice eq. (1), as the
+pull–back to the space slice of the self–dual connection, and of the self–dual product of two
+vierbeins:
+0i
+:= qab (− 12 ǫijk Ωjk
+b + iΩb )
+det(eIa ) i
+i I J
+E ia := −ǫabc CIJ
+eb ec = −2i
+CIJ nb eIb eJa
+N
+
+i
+Aa(i)i := qab CIJ
+ΩIJ
+b
+
+(11)
+(12)
+
+i
+here CIJ
+projects antisymmetric tensors to the (1, 0) representation of SL(2, C), i.e. selects
+i
+i
+the self–dual part, so that ǫIJKL CKL
+= 2iCIJ
+. This definition of the basic variables coincides
+with eq. (2) if we assume ”time gauge”, eq. (1), but we have to add to the constraints eq. (10)
+the reality conditions:
+
+E ia E ib = real ;
+
+(b
+
+c)
+
+ǫijk Eia Ej Da(i) Ek = imaginary
+
+(13)
+
+On the other hand, adopting this connection we retain the Lorentz group as gauge group of
+the canonical theory1 .
+Because of the obvious complications of dealing with complex variables and with the noncompact gauge group SL(2, C), the alternative choice β = 1, the ”Barbero connection”, has
+been used in all the more recent work. In Euclidean (++++) gravity the second term of H
+is proportional to (1 − β 2 ), and the choice β = 1 is natural, just like β = i was ”natural”
+for the (–+++) signature, but that is not particularly relevant, unless somehow we learn to
+”Wick–rotate” the theory. Otherwise, there is no obvious geometric meaning, and nothing
+special about the value β = 1, and and we can leave β arbitrary (but real > 0) in the
+following.
+One can also introduce a Poisson bracket preserving map on the algebra of functions on
+phase space which, in a certain sense, allow us to change β. Following Thiemann [10], one
+notices that
+
+1 It is not often emphasized that the derivation of the Ashtekar variables does not require any
+
+gauge fixing, but it is obvious from their original definitions; for ex. the alternative definition given
+for E ia in eq.(12) is a direct transcription of eq.1.13b of [12]
+
+4
+
+Z
+
+T :=
+
+Kai E ia d3 x
+
+Σ
+
+(14)
+
+from eq. (4) and the properties of Levi–Civita connections has the following Poisson brackets:
+{T, E ia } = E ia ;
+
+{T, Γia } = 0 ;
+
+{T, Kai } = −Kai
+
+(15)
+
+It follows that if we indicate the Hamiltonian evolution induced by some H on a function f
+on phase space by the map:
+t2
+{{f, H}, H} + . . .
+2!
+
+(16)
+
+WT (t) ◦ A(β)i
+= Γia + βet Kai
+a
+
+(17)
+
+WH (t) ◦ f := f + t{f, H} +
+we shall have:
+WT (t) ◦ E ia = e−t E ia ;
+
+At a more speculative level, we can think of choosing t = iπ/2 and using this map to perform
+a rotation from the β = 1 to the Ashtekar connection [10,9], similar to a ”Wick rotation”,
+a possibility that is particularly exciting in the quantum case.
+III. QUANTIZATION.
+
+To quantize the theory we may use the connection representation, in which states are
+functionals of A(β)i
+a (x), and
+E ia
+
+→
+
+Ê ia :=
+
+βκh̄ δ
+i δA(β)i
+a
+
+(18)
+
+The important states turn out to be ”spin net states”, which are an obvious generalization of
+Wilson loops. Given a net n in 3–space with V vertices joined by (analytic) paths γ1 , . . . , γL ,
+we assign: to each line an orientation, hence a ”transporter” gl , and a spin sl = 0, 12 , 1, . . .,
+sl
+v
+so that γl → Dmm
+′ (gl ); to each vertex v an SU(2) invariant tensor Cm ,..,m , in such a way
+a
+d
+that:
+ψn ({gl }) =
+
+XY
+
+v
+C...
+
+{m} v
+
+Y
+l
+
+D..sl (gl )
+
+(19)
+
+is gauge invariant. If gl ∈ SU(2), and we indicate by dgl the Haar measure, the ψn that we
+can associate to a given net form a Hilbert space with the scalar product:
+< ψn′ |ψn >=
+
+Z
+
+ψ n′ ψn
+
+Y
+
+dgl
+
+(20)
+
+Ashtekar and collaborators have discovered (see e.g. [6]) that if one considers all possible
+nets, then the set of these states is dense in the Hilbert space of gauge invariant functionals
+of A(β) . In this sense eq.(20) induces a measure DA(β) in this space. One can therefore
+define a Rovelli–Smolin ”loop transform” [13], and focus on states which have support on
+”weaves” [4], huge nets with mesh sizes of the order of the Planck length. In recent work
+these states have been used to find the spectrum of the operators that correspond to the
+5
+
+area of a surface S and to the volume of a region R, and to investigate the operator form of
+the constraints.
+Very briefly: if the surface S intersects a subset L of lines of the net, does not touch the
+vertices, has no line lying on it, carefully regularizing the operator (first taking the square
+root, then removing the regulator), one finds :
+Â(S)ψn = :
+
+Z
+
+s
+
+q
+
+d2 σ na nb Ê ia Ê ib : ψn =
+
+= (βh̄κ)
+
+Xq
+
+sl (sl + 1) ψn
+
+(21)
+
+l∈L
+
+This basic result has been extended in various directions, in particular to the volume operator
+[5–8]. On the other hand, there is no known way to extend it to the theory based on the
+Ashtekar connection: all operators seem to have the wrong hermiticity, whatever scalar
+product we use.
+However, it is clear from eq. (21) that the discrete spectra one gets for areas and volumes
+cannot at this stage be interpreted as evidence for a discrete structure of space, because of
+the arbitrariness of β. The key ingredients we have used are the gauge invariance and the
+commutation relations that correspond to the Poisson brackets eq. (9), and we must conclude
+that by themselves they are not enough to fix the scale of the theory.
+The quantization program requires therefore that we find some good reason to fix β. I
+can imagine two ways in which this could happen. One could argue that a larger group
+than SU(2) is necessary, as suggested for instance by the experience of current algebra,
+and that one should insist on using the Ashtekar connection, overcoming the dificulties that
+have been found; or that the states considered should be restricted by more than just gauge
+invariance, in particular by the Hamiltonian constraint. In fact, it may well be that given
+the way in which β enters eq. (10), the Wheeler De Witt equation Ĥ · Ψ = 0 will turn out
+to have solutions only for particular values of β, a possibility that could be investigated in
+Thiemann’s proposed realisation of Ĥ [11].
+That these two ways may be related, or be the same, is indicated by another remarkable
+Poisson bracket identity deduced by Thiemann:
+(
+
+√
+ǫ
+(β)k
+√ ijk E ia E jb Fab
+, det E
+det E
+
+)
+
+= 2β 2 κE ia Kai δ(x, y)
+
+(22)
+
+If at the quantum level we could handle the Hamiltonian constraint and the volume, and
+translate this equation, we would be able to implement the ”Wick rotation” from the Barbero
+to the Ashtekar connection representation.
+At the same time, it is also important to establish whether the discreteness of areas and
+volumes follows from the kinematics, which embody the equivalence principle, or requires
+the Hamiltonian constraint, i.e. the Einstein equations: because the discreteness of areas
+may be used to establish the proportionality between area and entropy [14], and this relation
+can be used to derive the Einstein equations themselves, understood as equations of state
+[15].
+
+6
+
+IV. CONCLUSION
+
+We have seen that one can formulate canonical gravity as either a SL(2, C) or an SU(2)
+connection theory, but that in the latter case an arbitrary parameter β occurs in the basic
+Poisson brackets; at the same time, present mathematical technics can only cope with a
+quantum theory based on the group SU(2). However, no meaningful result on the spectra
+of operators can be obtained unless we either fix this parameter, or learn how to handle a
+theory based on the group SL(2, C).
+ACKNOWLEDGEMENTS
+
+This work is part of a talk given at the II Conference on Constrained Systems and
+Quantum Gravity, which took place in Santa Margherita Ligure last september. I would like
+to thank Prof. Vittorio De Alfaro for inviting me to talk at this meeting, and Carlo Rovelli
+for comments and discussions.
+
+7
+
+REFERENCES
+[1] J. F. Barbero, Phys. Rev. D 51, 5507 (1995).
+[2] A. Ashtekar, Phys. Rev. Lett. 57, 2244 (1986); Phys.Rev. D36, 1587 (1986).
+[3] G. Immirzi, Class. and Quantum Gravity, 13, 2385 (1996).
+[4] A. Ashtekar, C. Rovelli and L. Smolin, Phys. Rev. Lett.69, 237 (1992).
+[5] R. De Pietri and C. Rovelli, Phys. Rev.D54, 2664 (1996).
+[6] A. Ashtekar and J. Lewandoski, gr-qc/9602046.
+[7] J. Lewandoski, gr-qc/9602035.
+[8] T. Thiemann, gr-qc/9606091.
+[9] A. Ashtekar, Phys. Rev. D 53, 2865 (1996).
+[10] T. Thiemann, Class. and Quantum Gravity, 13, 1383 (1996).
+[11] T.Thiemann, gr-qc/9606088, 89, 90.
+[12] A. Ashtekar, New perspectives in canonical gravity (with invited contributions), Bibliopolis, Napoli 1988.
+[13] C. Rovelli and L. Smolin, Phys. Rev. Lett.61, 1155 (1988).
+[14] C. Rovelli, Phys. Rev. Lett., 77, 3288 (1996).
+[15] T. Jacobson, Phys. Rev. Lett., 75, 1260 (1995).
+
+8
+
+

@@ -1,0 +1,2491 @@
+equations = []
+tables = []
+full_text = """
+arXiv:hep-th/9409089v2 28 Sep 1994\r
+SU-ITP-94-33\r
+September 1994\r
+hep-th/9409089\r
+The World as a Hologram\r
+Leonard Susskind\r
+Department of Physics\r
+Stanford University, Stanford, CA 94305-4060\r
+ABSTRACT\r
+According to ’t Hooft the combination of quantum mechanics and gravity requires the\r
+three dimensional world to be an image of data that can be stored on a two dimensional\r
+projection much like a holographic image.\r
+The two dimensional description only requires one discrete degree of freedom per Planck\r
+area and yet it is rich enough to describe all three dimensional phenomena. After outlining\r
+’t Hooft’s proposal I give a preliminary informal description of how it may be implemented.\r
+One finds a basic requirement that particles must grow in size as their momenta are increased\r
+far above the Planck scale. The consequences for high energy particle collisions are described.\r
+The phenomena of particle growth with momentum was previously discussed in the\r
+context of string theory and was related to information spreading near black hole horizons.\r
+The considerations of this paper indicate that the effect is much more rapid at all but the\r
+earliest times. In fact the rate of spreading is found to saturate the bound from causality.\r
+Finally we consider string theory as a possible realization of ’t Hooft’s idea. The light\r
+front lattice string model of Klebanov and Susskind is reviewed and its similarities with the\r
+holographic theory are demonstrated. The agreement between the two requires unproven\r
+but plausible assumptions about the nonperturbative behavior of string theory. Very similar\r
+ideas to those in this paper have long been held by Charles Thorn.\r
+PACS categories: 04.70.Dy, 04.60.Ds, 11.25.Mj, 97.60.Lf\r
+⋆ susskind@dormouse.stanford.edu\r
+1
+
+1. Counting Degrees of Freedom\r
+Most physicists believe that the degrees of freedom of the world consist of fields filling\r
+space. Some theorists believe that this may be an overestimate and that a small distance\r
+cutoff will be required in order to make sense of quantum gravity. According to this philos\u0002ophy the world is about as rich in structure as a three dimensional discrete lattice theory\r
+with a spacing of order the the Planck length. In this paper I will follow ’t Hooft and argue\r
+for a far more radical decrease in the number of degrees of freedom. Instead of a three\r
+dimensional lattice, a full description of nature requires only a two dimensional lattice at\r
+the spatial boundaries of the world. In a certain sense the world is two dimensional and not\r
+three dimensional as previously supposed. The view I will describe combines the ideas of\r
+Gerard ’t Hooft [1], Charles Thorn [2] and myself [3] and rests on the profound insights of\r
+Jacob Bekenstein concerning the maximum entropy of a region of space [4]. I have made\r
+an effort to keep the equations as few and simple as possible in order to not obscure the\r
+underlying physical concepts. The reader will find technical details and equations in the\r
+quoted references.\r
+Let us temporarily suppose the world is a 3 dimensional lattice of spin like degrees of\r
+freedom. For definiteness assume the lattice spacing is the Planck length lp and that each\r
+site is equipped with a spin which can be in one of two states. For example a lattice fermion\r
+field theory would be of this type. Now consider the number of distinct orthogonal quantum\r
+states in a region of space of volume V .\r
+N(V ) = 2n(1.1)\r
+Where n is the number of sites in V . The logarithm of N(V ) is the maximum possible\r
+entropy in V and satisfies\r
+log N(V ) = n log 2 = V log 2/lp\r
+3\r
+(1.2)\r
+More generally one expects that if the energy density is bounded then the maximum\r
+entropy is proportional to the volume of space. It is hard to avoid this conclusion in any\r
+theory in which the laws of nature are reasonably local. Nevertheless there is good reason\r
+2
+
+to believe that the correct result in the quantum theory of gravity is that the maximum\r
+entropy is proportional to the area and not the volume of the region. The argument is due\r
+to Bekenstein and goes as follows.\r
+Most of the states described in eq.(1.2) have energy so large that a black hole would\r
+form with a size larger than V . Furthermore the entropy of a black hole is given by the\r
+Bekenstein Hawking formula\r
+S =\r
+area\r
+lp\r
+2\r
+log 2 = area\r
+4G\r
+(1.3)\r
+Now suppose a region of space inside V was found to have an entropy in excess of the\r
+entropy of a black hole just big enough to fit in V but with smaller energy. By throwing\r
+in additional matter such black hole could be formed. Since the entropy of the black hole\r
+would be smaller than the original entropy the second law would be violated. Bekenstein\r
+concludes that the maximum entropy of the region V is given not by eq.(1.2) but by eq.(1.3).\r
+’t Hooft has proposed a very radical interpretation of Bekenstein’s observation [1]. According\r
+to ’t Hooft it must be possible to describe all phenomena within V by a set of degrees of\r
+freedom which reside on the surface bounding V . The number of degrees of freedom should\r
+be no larger than that of a two dimensional lattice with approximately one binary degree of\r
+freedom per Planck area. In other words the world is in a certain sense a two dimensional\r
+lattice of spins.\r
+’t Hooft further imagines that in the limit of a very large region the bounding surface\r
+can be taken to be a flat plane at infinity. In some way, the phenomena taking place in\r
+three dimensional space can be projected onto a distant ”viewing screen” with no loss of\r
+information. In what follows I will refer to such a two dimensional surface as a “screen”\r
+and its discrete lattice sites as “pixels”. A pixel can only store one bit of information and is\r
+therefore either lit or dark. ’t Hooft has made the analogy with a hologram which stores a\r
+three dimensional image on a two dimensional film. As in the case of the hologram the flat\r
+two dimensional image must be rich enough to code the full rotationally invariant description\r
+of three dimensional objects.\r
+Another completely different line of reasoning leads to the conclusion that the world is\r
+two dimensional. Klebanov and I [5] and independently Charles Thorn [2] have discovered\r
+3
+
+that string theory in the light front gauge has the form of a two plus one dimensional theory\r
+with no explicit mention of a longitudinal direction. In the work of Klebanov and myself the\r
+transverse two dimensional space is taken to be a discrete lattice with no continuum limit\r
+required. Thus we find similarities between string theory and ’t Hooft’s holographic idea. In\r
+this paper I will describe both viewpoints and explain their relationship. We will find that\r
+with one plausible assumption about the nonperturbative behavior of super string theory, it\r
+is an exact realization of the holographic world.\r
+The mapping between 3+1 dimensional events and their image on the distant screen can\r
+be qualitatively described in semiclassical terms but the reader should keep in mind that the\r
+full description is necessarily quantum mechanical. We will begin with static configurations.\r
+I will assume that all matter is composed of elementary structureless constituents that I will\r
+call partons. Bits might be a better term but I will save it to denote the unit of information.\r
+The presence of a parton is represented on the screen by projecting it according to the\r
+following rule. Take light rays which pass through the screen at right angles to the screen.\r
+Among these light rays, one will pass through the location of the parton as in fig.[1].\r
+SCREEN\r
+parton\r
+light ray\r
+FIGURE 1. A single parton being projected to the screen\r
+By this means the location xm is mapped to a point X⊥. If the screen is oriented\r
+perpendicular to the z axis then the image on the screen is a point [X, Y ]. We will say that\r
+the presence of the parton is recorded by lighting the pixel at [X, Y ]. we want to show that\r
+4
+
+no distribution of matter will ever require more than one bit of information per Planck area\r
+on the screen. Let us begin with a maximally dense object, a black hole. It will be assumed\r
+that the entropy is found on the horizon and that no more than one bit per Planck area can\r
+stored there. Now map the horizon to the screen according to the aforementioned rule. The\r
+result is shown in fig.[2].\r
+FIGURE 2.A black hole projected to the screen\r
+The image on the screen is a disc whose area is comparable to that of the horizon. We\r
+wish to know whether an area element on the screen is larger or smaller than the corre\u0002sponding element on the horizon. If it is smaller, the information density on the screen\r
+must exceed the bound of one bit per Planck area. That this does not happen is insured by\r
+the standard focusing theorem of general relativity [6]. If a is the area of a bundle of light\r
+rays then the focusing theorem states that the second derivative of √\r
+a with respect to an\r
+appropriate path parameter is always zero or negative. Because the light rays in question all\r
+intersect the screen parallel to the z axis the path derivative vanishes at the screen. Since the\r
+second derivative is negative the area element at the horizon is smaller than at the screen.\r
+Let us now try to increase the area density of information by hiding a second black hole\r
+behind the first. We will find ourselves frustrated by the lensing property of the original\r
+black hole. We find the image of the second hole forming a ring around the first as in fig.[3].\r
+5
+
+FIGURE 3. You can’t hide behind a black hole. The shaded areas represent the region\r
+occupied by light rays from the screen to the black holes.\r
+Again the focusing theorem insures that the density in the ring does not exceed the\r
+bound. It is interesting to consider the sequence of images that would result from slowly\r
+passing the first black hole in front of the second in an attempt to eclipse it. This is shown\r
+in fig.[4].\r
+1 2\r
+3 4\r
+FIGURE 4. One black hole passes behind another\r
+The images behave as if they were formed of an incompressible fluid.\r
+The image of a parton on the screen will generally not be unique in which case there will\r
+6
+
+be more than one ray from the parton to the screen which satisfies the criteria for defining an\r
+image. In this case we will assume that the state of the screen is a quantum superposition.\r
+The image of the parton can be in any one of the possible locations.\r
+As another example consider a long column of length L and radius R. The axis of the\r
+column is oriented along the z direction. We would like to fill the column with as large an\r
+entropy as possible at the minimum cost in energy so as to minimize the focusing effects of\r
+its gravitational field. Therefore we fill it with massless quanta of minimum energy. The\r
+minimum energy of such a quantum is of order 1/R. Let the number of such quanta be of\r
+order N. The maximum number of bits of information that can be stored in this manner is\r
+also of order N. Let us suppose that the column density of information just saturates the\r
+bound of 1 bit per Planck area.\r
+N/R2 ∼ 1/lp\r
+2 ∼ 1/G (1.4)\r
+The total energy in the column is\r
+Etotal ≈ R/lp\r
+2\r
+(1.5)\r
+and the energy per unit length is\r
+Etotal/L ≈ R/LG (1.6)\r
+Assume the image of the column forms a disc with radius ∼ R. We wish to ask where\r
+the image of a point behind the column would be located. In particular, does it lie outside\r
+the dense image of the column? To answer this, we consider a light ray originating at the\r
+screen at a radius a bit larger than R. The ray propagates under the gravitational influence\r
+of of the column and is thus bent toward the axis. A simple calculation shows that the ray\r
+will intersect the axis approximately at the end of the column. This is consistent with the\r
+requirement that matter placed behind the column will cast its image beyond the dense disc\r
+of the column.\r
+Let us now relax the requirement that the three dimensional world is static. Instead of\r
+coding a point of space on the screen we want to code an event (x, t). As before we use\r
+7
+
+light rays passing through the event and intersecting the screen at right angles. Consider a\r
+single instant of time at the screen. All the perpendicular light rays which hit the screen at\r
+that instant form a three dimensional ”light front”. We may introduce a set of light front\r
+coordinates by gauge fixing the metric of space-time to have the form\r
+ds2 = g+−dx+dx− + g+idx+dxi + gijdxidxj(1.7)\r
+where the components x\r
+i\r
+refer to transverse space and (x\r
++, x−) are light like linear combi\u0002nations of the time and z coordinates. Assume that at x\r
+− = ∞ the metric has the flat form\r
+with g+− = 1, g+i = 0, gij = δij . We may identify x\r
++ = z + t, x− = t − z. The screen will be\r
+identified as the surface x\r
+− = ∞. The trajectories\r
+x\r
++ = const\r
+x\r
+i = const (1.8)\r
+are easily seen to be lightlike geodesics and the surface x\r
++ = const is a light front. We\r
+will follow the standard practice of using x\r
++ as a time coordinate when doing light front\r
+quantization . As we have seen it is also the time at the screen.\r
+The mapping from 3+1 dimensional space to the screen is now especially simple. A point\r
+x\r
+µ = (x+, x−, xi\r
+) is mapped to the point (x\r
++, xi\r
+). Thus we arrive at the following statement\r
+of ’t Hooft’s holographic principle:\r
+In the light front quantization of quantum gravity, the theory can be formulated with\r
+no direct reference to the longitudinal direction x\r
+− and the transverse space may be taken\r
+to be a discrete lattice. The lattice is composed of binary pixels with spacing of order the\r
+Planck length. We may find it convenient to consider larger lattice spacing and have a larger\r
+number of configurations at each site but the net result should be one bit per Planck cell.\r
+The obvious question now arises as to how we code the longitudinal location of a parton.\r
+Before addressing this question it is necessary to review light front quantization and the\r
+parton concept. These concepts are familiar to people currently working on QCD and origi\u0002nated in work on deep inelastic scattering in the late 60’s and early 70’s. They are probably\r
+not very familiar to people working on black holes and gravitational physics [7].\r
+8
+
+2. Light Front Quantization and Partons\r
+In this section I will review some very basic concepts of light front quantization for\r
+conventional field theories such as QCD. For simplicity I will write the formulae for scalar φ\r
+3\r
+theory. Light front coordinates are introduced as in eq (1.7) but with the metric chosen flat.\r
+The coordinate x\r
++ is used as a time coordinate. The light like surfaces x+ = const play the\r
+role of instantaneous spatial hypersurfaces. Partons such as quarks or gluons are described by\r
+a transverse position X⊥ or transverse momentum Q⊥ and a positive longitudinal momentum\r
+p−. In addition a parton may carry internal quantum numbers and a spin degree of freedom\r
+which I will suppress.\r
+Light front creation and annihilation operators a\r
++(X⊥, k−) , a−(X⊥, k−) create and\r
+annihilate particles in the usual way. The naive (classical) free Hamiltonian has the form\r
+H0 =\r
+Z\r
+d\r
+2P⊥dp−\r
+a\r
++(p)[P2\r
+⊥ + M2\r
+]a\r
+−(p)\r
+2p−\r
+(2.1)\r
+where M is the mass of the parton. Classical interactions take the form\r
+HI = λ\r
+Z\r
+d\r
+3\r
+p d3q\r
+a\r
++(p)a+(q)a−(p + q)F(p−/q−)\r
+p\r
+[(p−)(q−)(p− + q−)]\r
++ h.c. (2.2)\r
+where the functions F are simple rational functions that depend on the spins of the particles\r
+involved. For scalar particles they are constants. In addition there may also be terms with\r
+higher powers of the creation and annihilation operators.\r
+The operators a\r
+± have canonical commutation or anti commutation relations\r
+[a\r
+−(p) , a+(q)] = δ2\r
+(P⊥ − Q⊥) δ(p− − q−) (2.3)\r
+We will be especially interested in the properties of the theory under longitudinal boosts\r
+which act according to\r
+p− → e\r
+ω\r
+p−\r
+P⊥ → P⊥ (2.4)\r
+where ω is the hyperbolic boost angle.\r
+9
+
+The operators a\r
++ , a− naively transform as\r
+a(P⊥, p−) → e\r
+ω\r
+2 a(P⊥, eω\r
+p−) (2.5)\r
+The Hamiltonian transforms as\r
+H → He−ω(2.6)\r
+An important advantage of the light front method is that the vacuum is the naive Fock space\r
+vacuum annihilated by all the a\r
+−. On top of this vacuum we erect a space of parton states\r
+by acting with the a\r
++ operators\r
+|k1 k2.....i = a\r
++(k1)a+(k2)...|0i (2.7).\r
+The Hamiltonian acts in this space.\r
+According to the most naive view of the theory the Hamiltonian is the classical one and\r
+the eigenvectors are well defined convergent superpositions of Fock space states. Boosting a\r
+system along the z axis is supposed to be straightforward. Each parton momentum trans\u0002forms according to eq.(2.4). The transformation simply acts as a scale transformation of the\r
+longitudinal momentum axis. According to this naive view a longitudinal boost preserves\r
+the transverse dimensions of a system and rescales or Lorentz contracts all longitudinal di\u0002mensions. However, the correct description is far more complicated due to various kinds of\r
+divergences which occur in the theory [8].\r
+The boost problem has a close analogy with the problem of scale invariance in ordinary\r
+quantum field theory. Classical scale invariance will usually be destroyed by divergent high\r
+frequency effects and even if it is possible to preserve it , the invariance is realized in some\r
+anomalous form. For example, fields will have anomalous dimensions which will cause them\r
+to transform in a noncanonical manner. Before discussing boosts I will review the subtleties\r
+of scale invariance in the language of Hamiltonian quantum mechanics.\r
+The degrees of freedom are the spatial Fourier modes φ(p) where the spatial momentum\r
+p is any real 3 vector. For our purposes it will be important to cut the theory off in the\r
+infrared. This may be done by simply eliminating modes with momenta less than some\r
+cutoff κ. Alternatively we could put the system in a finite box of size κ\r
+−1\r
+.\r
+10
+
+Suppose the classical theory has scale invariance under which all momenta including the\r
+infrared regulator κ rescale\r
+p → λp (2.8)\r
+The naive scale invariance would imply the following:\r
+1) The spectrum of the Hamiltonian rescales under (2.8). Each eigenvalue of Ei maps\r
+to a rescaled value.\r
+Ei → λEi (2.9)\r
+2) The wave functionals of the eigenvectors transform in a naive way.\r
+Ψi[φ(p)] → Ψi[λφ(λp)] (2.10)\r
+Each fluctuation of wave number p simply stretches to wave number λp.\r
+The problem with the naive view is that the low and high frequencies are not at all\r
+decoupled [9]. This causes divergences in integrations over large momenta which make\r
+everything infinite. To define the theory an ultraviolet cutoff must be supplied. From\r
+an operational point of view the use of an ultraviolet cutoff is always correlated with a\r
+particular experimental setup. A given apparatus will be sensitive to frequencies up to some\r
+maximum ν. Beyond that frequency the apparatus cannot see. For example, an ordinary\r
+particle detector cannot detect the very frequent and rapid fluctuations of baryon number in\r
+the vacuum that take place with GUT scale frequency. On the other hand if the detector has\r
+internal processes of sufficiently high frequency, then these fluctuations become visible. For\r
+example the detector could contain a vessel with radiation at GUT scale temperatures. This\r
+connection between apparatus and ultraviolet frequency cutoff is fundamental and should\r
+be kept in mind in what follows.\r
+The mathematical description of the cutoff theory will not have modes with momentum\r
+higher than the ultraviolet cutoff ν. It will have a Hamiltonian Hν, energy levels Eν, and\r
+wave functionals Ψν. Now consider a scale transformation by which I mean a rescaling of\r
+11
+
+the infrared cutoff, leaving the ultraviolet cutoff fixed. In general the energy levels will not\r
+simply rescale and we will say that scale invariance is broken. There may however be special\r
+Hamiltonians that I will call ”fixed point Hamiltonians” that preserve certain features of the\r
+scale invariance. In particular for such Hamiltonians, whenthe infrared cutoff κ is rescaled\r
+the energy spectrum scales just as in (2.9). Such a theory is said to be scale invariant.\r
+Although the energies transform naively in fixed point theories the wave functionals do\r
+not. The transformation properties are far more complex than (2.10). A fluctuation or bare\r
+quantum may transform into a superposition of several bare quanta. To see why this is so it\r
+is helpful to think of the rescaling operation in another equivalent way. Instead of decreasing\r
+the infrared cutoff κ while holding fixed the ultraviolet cutoff ν, we increase ν, while holding\r
+κ fixed. In a fixed point theory these are equivalent because things only depend on the ratio\r
+of the two cutoffs. However the perspective is a bit different. When we increase ν we uncover\r
+new degrees of freedom at short distances which were previously not part of the description.\r
+Bare field quanta of the more coarse grained description are found to have structure at the\r
+new scale. A bare gluon is found to have an amplitude to be a closely spaced quark pair\r
+while a quark has an amplitude to contain a nearby gluon. For this reason the action of the\r
+dilatation generator on the Schrodinger picture wave functional is generally very complicated\r
+and theorists avoid talking about it. However the problems resurface when trying to unravel\r
+the intricacies of very high energy scattering . Now let us return to the problem of boosts.\r
+The momentum space integrals of light front perturbation theory can diverge at high\r
+frequency in two ways. The most obvious way is at large values of the transverse momen\u0002tum. These divergences reflect the usual short distance singularities that are familiar from\r
+covariant perturbation theory. We will return to these divergences but for the moment let us\r
+temporarily suppress them by assuming that transverse momentum integrals are finite and\r
+dominated by values of P⊥ of order some characteristic scale in the problem. For example\r
+in QCD the confinement scale of 300 mev is natural. In the quantum theory of gravity the\r
+Planck mass would be the appropriate scale. The characteristic momentum scale will be\r
+denoted M.\r
+The second form of high frequency divergence that can occur involves integrals over\r
+p−. The range of such integrals is always restricted to values of p− which are less than the\r
+total longitudinal momentum p−(tot). From the form of eq.(2.1) we see that the energy of\r
+a parton diverges when p− tends to zero. This region describes large distances in the x−\r
+12
+
+coordinate but small distances in x\r
++. The divergences in this region are not connected with\r
+scale transformation anomalies but rather anomalies in the behavior of Lorentz boosts.\r
+An example of such a divergence involves the probability for a single physical particle\r
+of momentum (p− + q−) to be a pair of partons of momentum p− and q−. In second order\r
+perturbation theory it is given by\r
+Z\r
+dq−|hp + q|HI|p, qi|2[E(p + q) − E(p) − E(q)]−2(2.11)\r
+Using (2.2)we find that the integrand behaves like\r
+q−F\r
+2\r
+(p−/q−)\r
+as q− → 0. Furthermore, if the low momentum parton has spin J, the function F has the\r
+form (q−)\r
+−J\r
+in this limit. Evidently the probability diverges for J ≥ 1. These divergences\r
+indicate that the population of partons can become infinite at low longitudinal momentum\r
+thus invalidating the naive picture.\r
+It is useful to imagine the degrees of freedom a\r
+±(p) being laid out on the p− axis. The\r
+length of the axis is finite and given by p−(tot). A longitudinal boost is represented as a\r
+scale transformation of this axis. Lorentz invariance requires perfect scale invariance with the\r
+Hamiltonian transforming according to eq.(2.6). The divergences at low p− can potentially\r
+disrupt the classical invariance in a manner similar to the way ordinary divergences can ruin\r
+scale invariance. As in that case we must introduce a cutoff. This time the cutoff is on\r
+low values of p−. Thus we introduce a cutoff which eliminates all p− less than ǫ and search\r
+for a fixed point of the renormalization group. Such fixed points classify the possible boost\r
+invariant theories. The problem of finding and understanding such fixed points in gauge\r
+theories is extremely complicated and is equivalent to understanding the behavior of matter\r
+under extreme boosts [10]. This is not the place for a technical review of the work currently\r
+taking place in this area but we will need to understand some of the basic logic.\r
+We begin by imagining that we have a set of detectors or apparatuses that are sensitive\r
+to frequencies up to some maximum of order M2ǫ\r
+−1\r
+. An appropriate description should be\r
+possible with longitudinal momenta cutoff at p− = ǫ. It is important to keep in mind this\r
+connection between the cutoff procedure and an apparatus.\r
+13
+
+The system with cutoff ǫ is described by a Hamiltonian H(ǫ) which will not in general\r
+have the classical form. Let us fix the total longitudinal momentum to be p−(tot). The\r
+Hamiltonian then has a set of energy levels Ei(ǫ) and wave functions Ψi(ǫ). Longitudinal\r
+boost invariance or fixed point behavior requires the energies to be independent of ǫ but says\r
+nothing simple about the wave functions.\r
+Now consider boosting the total momentum (equivalently decreasing ǫ) by a factor λ.\r
+Each energy level must map into a new level with energy Ei\r
+λ\r
+. Again, in general nothing\r
+simple can be said about the wave functions except that they should be obtained by some\r
+unitary mapping from the original wave functions. This mapping is the boost operator. It\r
+should be borne in mind throughout that the boost operation really represents the relative\r
+boost between a system and an apparatus with a resolution time of order ǫ.\r
+The problem of determining fixed points and the behavior of the wave functions under\r
+boosts in QCD is not a well developed subject [8]. I will describe some simple possible\r
+behaviors of the boost operation that have been discussed in the past. These behaviors\r
+do not represent established fixed points but are simplified models. The real behavior of a\r
+theory like QCD is probably a good deal more complicated.\r
+1) The Einstein Lorentz Fixed Point\r
+In very simple field theories with no divergences the wave function of a physical particle or\r
+system of particles is a convergent Fock space state with a finite average number of partons.\r
+If the cutoff ǫ is sufficiently small the probability to find a parton with p− < ǫ is vanishingly\r
+small. Boosting the system is trivial. Each parton shifts to its boosted position. Transverse\r
+sizes are invariant and longitudinal sizes contract. Most likely no real 3+1 dimensional\r
+quantum field theory works this way.\r
+2) The Feynman Bjorken Fixed Point\r
+In the case of gauge theories longitudinal divergences induce a divergent distribution of\r
+partons at low p−. According to the Feynman Bjorken model [11], [12] [7], the number of\r
+partons per unit p− behaves like\r
+dn\r
+dp−\r
+∼\r
+1\r
+p−\r
+(2.12)\r
+Introducing a high frequency (p− < ǫ) cutoff is more serious this time since it eliminates\r
+degrees of freedom which are present in the hadron. In this case when a boost doubles the\r
+14
+
+longitudinal momentum of each parton, a hole is left in the region ǫ < p− < 2ǫ. New partons\r
+must be added to fill this region. In other words the boost operator must contain an extra\r
+term which acts as a source of partons of low p−. These are the partons that Feynman\r
+called the ”wee” partons. The wee partons create interesting anomalies in the behavior of\r
+matter under boosts. For example, because they always carry low longitudinal momentum\r
+they contribute a cloud which does not Lorentz contract [13]. Furthermore they tend to be\r
+found at progressively larger transverse distances from the center of mass. For example in\r
+simple Regge approximations their average distance satisfies [7]\r
+R\r
+2\r
+⊥(wee) ∼ log p−(tot)\r
+ǫ\r
+(2.13)\r
+In the Feynman Bjorken model the quantum numbers of a hadron are carried by ”va\u0002lence” partons which carry finite fractions of the total momentum and therefore behave as\r
+in the Einstein Lorentz case. Thus the spatial distributions of charge, baryon number and\r
+angular momentum Lorentz contract and do not transversely spread. This is necessary in a\r
+conventional field theory in order that the local current operators be well defined.\r
+The cutoff ǫ is arbitrary but just as in ordinary renormalization theory, physical appli\u0002cations may make a particular choice most convenient. In general a given experiment will\r
+be sensitive to frequencies up to some maximum. For example in the case of a high energy\r
+particle colliding with a fixed target the target determines some range of frequencies that\r
+it is sensitive to. Retaining higher frequencies in the description only leads to unnecessary\r
+complexity. The consequences of eq.(2.13) in such a case would be logarithmic increase of\r
+the cross section with energy. We see here the interplay between the behavior of the boost\r
+operation, the low p− partons and very high energy scattering amplitudes.\r
+3) The K.S. Fixed Point\r
+Divergences at large transverse momentum can alter the boost operation. To understand\r
+this we must generalize the cutoff procedure so that we cutoff all modes with frequency\r
+greater than some value ν\r
+K2\r
+⊥ + m2\r
+2k−\r
+> ν (2.14)\r
+Once again we can eliminate the effects of the cutoff by either letting ν → 0 or p− → ∞.\r
+Let us keep ν fixed. The phase space for partons is shown in fig[5].\r
+15
+
+P\r
+P\r
+FIGURE 5. Parton phase space\r
+Consider a low longitudinal momentum parton. The interaction terms in H allow that\r
+parton to split into two partons, each with smaller p− than the original [14] [15]. From fig\r
+[5] it is obvious that the transverse momentum of the pair must be small. This insures that\r
+the probability for the original parton to to become a pair is small (now ignoring divergences\r
+at low p−). Now boost the system so that the parton has a much larger p−. The transverse\r
+phase space for it to split is much bigger. If the theory has transverse divergences then\r
+that probability will become large as the system is boosted. Eventually the parton will be\r
+replaced by two or more partons closely spaced in transverse space. The effect continues as\r
+the system is boosted so that the partons reveal transverse fine structure within structure\r
+ad infinitum. Thus the K.S. fixed point boost operator contains terms which continuously\r
+create wee partons which migrate to larger p−. As they do so they split into short distance\r
+pairs which continue to migrate and split. The new consequence for high energy scattering\r
+is the existence of processes involving large transverse momentum jets.\r
+4) The Free String Fixed Point\r
+I will now describe a behavior that is not found in ordinary field theory but occurs in\r
+string theory. Before discussing real string theory it is interesting to describe it in parton\r
+terms [3]. Let us start with a single parton of longitudinal momentum of order ǫ. Now boost\r
+it to twice its original momentum. Instead of finding a parton of twice the momentum we\r
+16
+
+find two partons, each of the original momentum ǫ. The two partons have a transverse wave\r
+function that is rotationally symmetric and is peaked at a transverse radial distance ls =\r
+√\r
+α′\r
+where α\r
+′\r
+is the usual dimensional string constant. Now double the momentum again. Each\r
+of the two partons is resolved into two more with similar wave function. Unlike the K.S.\r
+case the evolution does not create pairs of smaller and smaller transverse size. Moreover no\r
+parton is ever found with p− > ǫ. All partons are wee. The idea that string theory is a\r
+parton theory of wee partons has also been emphasized in the past by Charles Thorn[2].\r
+After n iterations the total number of partons is 2n and the total longitudinal momentum\r
+is\r
+p−(tot) = ǫ2\r
+n\r
+(2.15)\r
+It is also easy to show that after many iterations the transverse density of partons relative\r
+to the center of mass is gaussian with radius satisfying\r
+R\r
+2\r
+⊥ = l\r
+2\r
+sn = l\r
+2\r
+s\r
+log(p−/ǫ) (2.16)\r
+We might also expect no Lorentz contraction to take place since all partons are wee.\r
+The implications of such a parton model for high energy cross sections are interesting.\r
+Let a particle collide with a fixed target. Also suppose that the scattering is weak enough that\r
+the total cross section is additive in the constituent partons. Since the number of partons is\r
+proportional to the momentum of the incident particle the cross section grows linearly with\r
+laboratory energy. However, this behavior together with eq.(2.16) can not persist indefinitely\r
+without violating unitarity. Either the addition of partons will eventually lead to shadowing\r
+corrections or the geometric size of the parton cloud will have to grow more quickly. As we\r
+shall see the latter option is correct.\r
+Now let us compare the string-like parton model with real string theory in the light\r
+front frame. I will work in units in which ls = 1. A free string is described by a transverse\r
+coordinate X⊥(σ, x+) which is a function of the parameter σ and the light front time x\r
++. It\r
+is convenient to allow σ to run from zero to p−(tot). A longitudinal boost is then seen to be\r
+a rescaling of σ. The operator X⊥ can be expanded in normal modes Xl and the center of\r
+mass X⊥(cm)\r
+17
+
+X⊥(σ, x−) − X⊥(cm) = X∞\r
+1\r
+\u001A\r
+Xl exp\r
+il(σ − x\r
++)\r
+p−\r
++ X˜\r
+l exp\r
+il(σ + x\r
++)\r
+p−\r
+\u001B\r
+(2.17)\r
+Consider the mean square size of the string\r
+R\r
+2\r
+⊥ = h[(X⊥(σ) − X⊥(cm)]2\r
+i (2.18)\r
+The matrix element gets a contribution from each mode and the result diverges\r
+R\r
+2\r
+⊥ =\r
+X∞\r
+1\r
+1\r
+l\r
+= log(∞) (2.19)\r
+The problem is that we have not introduced a high frequency cutoff. From (2.17)we see that\r
+the frequency of the lth mode is l/p−. The highest allowable frequency when the cutoff is\r
+in place is of order 1\r
+ǫ\r
+so that the highest allowable mode is\r
+lmax =\r
+p−\r
+ǫ\r
+(2.20)\r
+The logarithmic divergence is now replaced by (2.16)\r
+To compute the longitudinal size of a string is more subtle . String theory does not\r
+endow the string with an independent longitudinal coordinate. The coordinate x\r
+−(σ) is\r
+determined in terms of the transverse coordinates. The longitudinal size was computed in\r
+[3] where it was found to also diverge if no high frequency cutoff was used. This time the\r
+divergence is quadratic and gives\r
+R\r
+2\r
+− =\r
+1\r
+ǫ\r
+2\r
+(2.21)\r
+The longitudinal size does not Lorentz contract as p− increases.\r
+One other feature of the string wave function involves the length of the transverse pro\u0002jection of the string as p− increases. It was shown in ref[16] that as the number of modes\r
+of the string increases the transverse length of string increases linearly. This means that\r
+the string length is proportional to p−. To understand the connection with the free string\r
+parton model we picture the string as made up of string bits of length ls. We see that the\r
+number of bits or partons is proportional to p− and each bit is wee.\r
+18
+
+The scale invariance associated with boosts is familiar in string theory in another form.\r
+According to the usual rules of light front string theory the total range of the parame\u0002ter σ is from zero to p−(tot). Therefore a boost is realized as a rescaling of σ. In other\r
+words the boost-scale invariance is equivalent to invariance with respect to world sheet scale\r
+transformations. As is well known, this invariance places strong restrictions on the possible\r
+backgrounds in which strings can propagate. Among these restrictions are Einstein’s, and\r
+Maxwell’s equations as well as Yang Mills equations..\r
+Before returning to the discussion of the holographic world I want to describe one more\r
+idea that originated in attempts to do numerical QCD work using light front methods. It\r
+involves a method of regulating the low p− divergences. It consists of replacing the infinite\r
+x− axis by a periodic box of size 1/ǫ. This has the effect of replacing the p− axis by a discrete\r
+lattice with spacing ǫ. The smallest allowable longitudinal momentum is ǫ. This method of\r
+regularization will prove particularly convenient in the next section.\r
+3. The growth of Particles With Momentum\r
+In order to code the longitudinal motion of systems on the screen we will assume that\r
+longitudinal momentum comes in discrete units of size ǫ. Eventually, to get exact results\r
+ǫ should tend to zero but as for ordinary cutoffs it is usually more convenient to choose it\r
+according to some physical criterion involving an experimental situation.\r
+Consider a single pixel at transverse position X⊥. Since a pixel can record only a single\r
+bit of information it can at most record the presence or absence of a parton but not its state\r
+of longitudinal motion. Therefore we will assume a lit pixel at X⊥ represents a parton of\r
+minimal longitudinal momentum ǫ. Now increase the momentum to twice the minimum.\r
+Since a pixel can not be lit twice we are forced to light two pixels. In general a system\r
+with momentum p− = N ǫ will be identified with N lit pixels. A system is boosted to large\r
+momentum not by boosting its partons but by increasing their number. In other words all\r
+partons are wee and no two of them may occupy the same pixel.\r
+The relationship between this behavior and the free string fixed point described in the\r
+last section is straightforward. Crudely speaking when the momentum is doubled each parton\r
+must be replaced by two with a average separation which we call ls. That scale could be as\r
+19
+
+small as the Planck scale lp or it could be larger. The ratio is a dimensionless number g\r
+lp = gls (3.1)\r
+If g is very small the evolution of the parton distribution as it is boosted is, at first, uncon\u0002strained by the condition that the density not exceed 1\r
+l\r
+2\r
+p\r
+and it develops according to the free\r
+string behavior. However, since the number of partons increases like p− but the radius of the\r
+distribution increases only logarithmically, a point will come at which the density becomes\r
+l\r
+−2\r
+p\r
+. At this point the area of the system must begin to increase more rapidly. Eventually\r
+the area occupied by the particle must grow like\r
+A ∼ lp\r
+2 p−\r
+ǫ\r
+(3.2)\r
+The constant g is nothing but the string interaction coupling constant. No matter how\r
+small it is, interactions will become important when the number of modes becomes so large\r
+that the density gets to be g\r
+−2\r
+in string units. The basic requirement for consistency with\r
+the bound on area density is that the effect of interaction is so repulsive that the partons\r
+create an incompressible fluid.\r
+The prediction that the size of a transplankian particle should grow so rapidly with\r
+momentum at first seems nonsensical, especially since the coefficient involves the parameter\r
+ǫ. To see that it is not absurd we consider a gedanken experiment to measure the radius of\r
+a high energy particle (projectile). The projectile is allowed to collide with a fixed particle\r
+(target) at an impact parameter b. The momentum of the projectile will be varied but the\r
+target is to be kept fixed. Any momentum dependence in the behavior of the collision will\r
+be attributable to variations in the properties of the particle.\r
+Strictly speaking the collision cross section is infinite because of the long range tail of\r
+the gravitational field. However if the impact parameter is very large the collision will result\r
+in a very weak nudge of the target. We will ignore such gentle barely detectable events. If\r
+the impact parameter is very small, a highly inelastic collision may result. The maximum\r
+impact parameter for which such a “real” collision will take place with significant probability\r
+is a measure of the size of the projectile [18].\r
+20
+
+Although no data exists or is ever likely to exist for the superplanckian collisions we are\r
+considering, the answer is easily guessed from semiclassical considerations. Let the center of\r
+mass energy of the collision be\r
+Ecm =\r
+√\r
+s (3.3)\r
+In the center of mass frame both particles are relativistic. Classical general relativity tells\r
+us that if the impact parameter is of order\r
+b ∼ G\r
+√\r
+s (3.4)\r
+or smaller, a black hole will form. The formation of a black hole is a highly inelastic event\r
+which definitely disrupts the target.\r
+Returning to the Laboratory frame we find that the condition for black hole formation\r
+is\r
+b < Gp\r
+(ET plab) (3.5)\r
+where ET is the energy of the target and plab is the projectile momentum in the lab frame.\r
+Evidently the area of the projectile grows at least as fast as\r
+A ≈ lp\r
+4ET plab (3.6)\r
+Thus it is seen that the prediction that the area grows as p− is borne out. Furthermore by\r
+comparing (3.6)with (3.2)we find that the role of the parameter ǫ is played by\r
+ǫ =\r
+1\r
+ET lp\r
+2\r
+In fact it is not surprising that the ability of a target apparatus to detect high frequencies\r
+should be limited, through the uncertainty principle, by its energy. The same correspondence\r
+between target energy and resolution time is also found in weakly coupled string theory. In\r
+that case an incoming projectile has an area which grows according to (2.16). Interpreting\r
+21
+
+ǫ as being inversely proportional to target energy would imply that the interaction region\r
+grows logarithmically with center of mass energy. This is the usual consequence of Regge\r
+behavior.\r
+4. Boosts, Black Holes and Wee Partons\r
+Consider the region of space-time near the horizon of a massive black hole. To a very\r
+good approximation it may be replaced by flat Minkowski space-time. In terms of ordinary\r
+cartesian coordinates the metric is given by\r
+ds2 = dT2 − dZ2 − dXidXi(4.1)\r
+While in terms of schwarzschild coordinates the same space-time is given by\r
+ds2 = ( dt\r
+4MG)\r
+2\r
+ρ\r
+2 − dρ2 − dXi\r
+dXi(4.2)\r
+In (4.2)we have used the coordinate ρ which denotes proper distance from the horizon instead\r
+of the usual radial coordinate r. The Minkowski and Schwarzschild coordinates are related\r
+by\r
+Z = ρcosh(t/4MG)\r
+T = ρsinh(t/4MG) (4.3)\r
+The horizon of the black hole is the surface t = ∞.\r
+The effect of a Schwarzschild time translation on the Minkowski coordinates is a hyper\u0002bolic rotation by angle\r
+∆ω =\r
+∆t\r
+4MG (4.4)\r
+In other words it is a boost. Following the progress of a system as it approaches the horizon of\r
+a black hole is tantamount to following its behavior under Lorentz boost as the magnitude\r
+22
+
+of the boost parameter increases indefinitely. Any attempt to describe matter from the\r
+standpoint of an observer outside a black hole must come to grips with the issues of the\r
+previous sections.\r
+The same point can be made in another way. As a particle falls toward the horizon it\r
+is accelerated from the point of view of a static observer. The momentum of the particle\r
+increases like\r
+p → exp(t/4MG) (4.5)\r
+To give a proper account of the particle from the Schwarzschild frame we must have a\r
+description which is valid at ever increasing momentum.\r
+Furthermore the infalling matter is ”detected” by target particles, namely the outgoing\r
+thermal Hawking radiation. In the Schwarzschild frame, near the horizon, these particles\r
+have a fixed energy distribution centered near the Planck energy. The situation is essentially\r
+the same as when a high energy particle interacts with a fixed target.\r
+Let us therefore consider the implications of the various behaviors described in sections\r
+2 and 3.\r
+1) Einstein Lorentz\r
+The particle is described as a fixed population of partons with no wee partons. As the\r
+particle falls, the Schwarzschild description sees a particle of fixed transverse size. Longi\u0002tudinally the particle contracts exponentially rapidly in accord with (4.5). Eventually it\r
+occupies an vanishingly thin layer just above the horizon. This is the picture most theorists\r
+have in mind.\r
+2) Feynman Bjorken\r
+Next add wee partons to the picture. As the particle approaches the horizon we find an\r
+expanding halo that spreads out over the horizon and refuses to Lorentz contract. However\r
+the halo carries a negligible fraction of the momentum. The charge, angular momentum,\r
+isospin, baryon number, etc. are carried as in the more naive Einstein Lorentz case.\r
+3) K.S.\r
+23
+
+Adding the effects of large P⊥ degrees of freedom we find that the formerly point like\r
+partons dissociate into small groups of partons, each of which further dissociates into yet\r
+smaller groups ad infinitum ( or until the planck or string scale is reached.)\r
+4) Free String\r
+In this case as a particle falls toward the horizon its partons dissociate into pairs. The\r
+evolution is similar to the replication of a dilute collection of microorganisms on a petri dish\r
+[17]. As long as the density remains much lower than the Planck density the area of the\r
+distribution grows logarithmically.\r
+R\r
+2\r
+⊥ = l\r
+2\r
+s\r
+log p− (4.6)\r
+Since the particle is composed entirely of wee partons it does not contract longitudinally\r
+and therefore it fills a nondecreasing layer above the horizon. Furthermore the various\r
+attributes which distinguish the particle type are spread according to (4.6). Using (4.5)we\r
+find that the particle grows with Schwarzschild time according to\r
+R\r
+2\r
+⊥ = l\r
+2\r
+s\r
+t\r
+4MG (4.7)\r
+As explained in [3], (4.7)represents a sufficiently rapid growth rate for the particle to cover\r
+the horizon in a time short by comparison with the evaporation time\r
+tspread =\r
+M3G3\r
+l\r
+2\r
+s\r
+(4.8)\r
+As the particle or string grows the density at the center also grows like the momentum.\r
+As we have seen the density will approach the Planck density after which the system must\r
+spread more rapidly. Eventually the area of the infalling particle will grow in proportion to\r
+its momentum.\r
+A ∼ Gexp(t/4MG) (4.9)\r
+With this more rapid rate of growth the horizon is covered in a much shorter length of time\r
+than given in (4.8). The corrected formula is\r
+24
+
+tspread = 4MGlog(M2G\r
+2\r
+) (4.10)\r
+The spreading rate predicted by (4.9)appears to be closely connected to another basic\r
+physical principle. It is exactly the fastest rate consistent with causality [19]. To see why we\r
+need to introduce the idea of the stretched horizon. This is a surface a fixed proper distance,\r
+ρ0, from the horizon where infalling matter collects. The numerical value of the distance\r
+does not matter. In terms of Minkowski coordinates the stretched horizon is given by\r
+Z\r
+2 − T2 = ρ2\r
+0\r
+(4.11)\r
+Now suppose an event occurs at some point of the stretched horizon. With no loss of\r
+generality we may take that point to be\r
+X\r
+i = 0\r
+T = 0\r
+Z = ρ0 (4.12)\r
+The signal from this event is bounded by the forward light cone defined by\r
+T\r
+2 = (Z − ρ0)2 + R2\r
+⊥ (4.13)\r
+where R2\r
+⊥ = XiXi\r
+. The intersection of the light cone with the stretched horizon is\r
+R\r
+2\r
+⊥ = 2Zρ0 − 2ρ\r
+2\r
+0\r
+(4.14)\r
+For large Schwarzschild time this becomes\r
+25
+
+R\r
+2\r
+⊥ = ρ\r
+2\r
+0\r
+exp(t/4MG) (4.15)\r
+which agrees with (4.9). The same exponential growth governs the spreading of a classical\r
+perturbation on the stretched horizon.\r
+Thus far, I have mainly emphasized the anomalous transverse behavior of matter under\r
+extreme boosts and the implications for black hole physics. Let me now turn to the impor\u0002tance of the breakdown of Lorentz contraction. Once again start with the Einstein Lorentz\r
+behavior. A chunk of matter will occupy a longitudinal extension of order its inverse mo\u0002mentum. Using (4.5)we find\r
+∆ρ ∼ exp [−t/4MG] (4.16)\r
+As seen by the observer outside the horizon, the matter contracts into an indefinitely thin\r
+layer. For this reason, the horizon can accommodate arbitrary amounts of Einstein Lorentz\r
+matter.\r
+Wee partons, by contrast, are not subject to Lorentz contraction. This implies that in\r
+the Feynman Bjorken model, the halo of wee partons eternally ”floats” above the horizon at\r
+a distance of order 10−13cm as it transversley spreads. The remaining valence partons carry\r
+the various currents which contract onto the horizon as in the Einstein Lorentz case.\r
+By contrast, both the holographic theory and string theory require all partons to be\r
+wee. No Lorentz contraction takes place and the entire structure of the string floats on\r
+the stretched horizon. I have explained in previous articles how this behavior prevents the\r
+accumulation of arbitrarily large quantities of information near the horizon of a black hole.\r
+Thus we are led full circle back to Bekenstein’s principle that black holes bound the entropy\r
+of a region of space to be proportional to its area.\r
+26
+
+5. Lattice String theory\r
+Ordinary bosonic string theory has been written in a form which may help establish the\r
+relationship between string theory and the holographic principles described in the previous\r
+sections [5][2]. I will not reconstruct the theory here but instead the salient features will be\r
+listed and described. Details can be found in the original reference.\r
+1) The theory is a light front quantum theory. The transverse plane is replaced by a\r
+discrete lattice with spacing ls. The lattice spacing is kept FIXED throughout. A lower\r
+longitudinal momentum cutoff ǫ is introduced so that p− comes in discrete units.\r
+2) The theory is a gauge theory. On each link of the transverse lattice N × N matrix\r
+fields exist. These fields have no x\r
+− dependence. The matrix fields create and annihilate\r
+string bits which carry N × N matrix indices. In [5] it was assumed that the fields were\r
+bosonic but could just as well have been fermionic. The physical states are gauge invariant\r
+and consist of occupied closed paths of links. Each string bit carries a single ǫ unit of\r
+longitudinal momentum. The number of string bits in a closed string is given by\r
+n = p−/ǫ (5.1)\r
+A closed configuration of string bits can be mapped to the periodic σ parameter space.\r
+Each string bit corresponds to an interval δσ of size ǫ. The range of σ is from zero to p−. A\r
+given closed string defines a discretized version of a string configuration X⊥(σ).\r
+3) The dynamics is provided by a Hamiltonian containing terms both quadratic and\r
+quartic in the matrix fields. The quartic terms are similar to plaquette terms in lattice\r
+gauge theory. In the limit N → ∞ the space of connected strings is closed under the action\r
+of the hamiltonian. An equivalent discretized string Hamiltonian describes the dynamics\r
+and spectrum.\r
+4) Despite the fact that the transverse lattice spacing is fixed, in the limit ǫ → 0 and\r
+N → ∞ the resulting theory exactly reproduces free string theory. All continuous space-time\r
+symmetries are restored and the spectrum and vertex operators exactly reproduce continuum\r
+free string theory.\r
+5) For N not equal to infinity there are splitting and joining interactions similar to those\r
+in string perturbation theory. The string coupling constant is given by\r
+27
+
+g =\r
+1\r
+N\r
+(5.2)\r
+It was not proven in [5] that the 1/N expansion produces string perturbation theory But\r
+judging from similar examples, it probably does. Once again to get exact agreement the\r
+limit ǫ → 0 is necessary. Unfortunately no supersymmetric version exists so it is not at the\r
+moment possible to eliminate the tachyon instability.\r
+The theory described above is obviously in many ways similar to the holographic theory\r
+described in earlier sections. However the most important element has not been discussed yet.\r
+What happens to string theory when the string density gets large? It is to be emphasized that\r
+this will happen, even for just a single particle, as the mode cutoff increases. Furthermore, no\r
+matter how small we make g, the density eventually increases to the point where interactions\r
+become important.\r
+There is no question that when the number of string bits passing through a link becomes\r
+of order N2interactions become very strong. This is most obvious in the case of fermionic\r
+string bits. The maximum number of fermionic string bits kinematically allowed on a link\r
+is N2. An effective infinite repulsion must prevent more than this number of string bits on\r
+a link. Just this number of string bits per link corresponds to one bit per Planck area.\r
+In the bosonic case nonlinear effects do become important and it is possible at this point\r
+that it becomes energetically prohibitive to further increase the density. If it can be shown\r
+that the string density can not exceed 1/l2\r
+p and that the good features of lattice string theory\r
+survive beyond perturbation theory ( supersymmetry will surely be important here ) then\r
+lattice string theory is a concrete example of a holographic theory. I believe that this is an\r
+extremely important problem for string theorists who want to show that string theory really\r
+exists and defines a quantum theory of gravity.\r
+28
+
+6. Information Spreading\r
+Let us now consider a system composed of several ordinary particles separated by some\r
+large transverse distance of orderL. As p−(tot)\r
+ǫ\r
+increases to L\r
+2\r
+l\r
+2\r
+p\r
+the individual particles grow\r
+until they begin to overlap. If we further increase the momentum, one of two things may\r
+happen. The action of the boost operator could conceivably lead to an increasing transverse\r
+separation of the particles so that each maintains its spatial integrity. The other extreme\r
+is that the spatial identity of the individual particles is lost and they merge into a single\r
+disc whose area is proportional to p−(tot). This I believe is the far more reasonable answer.\r
+Before arguing in favor of this possibility I will describe the proposal a bit more fully.\r
+First take a single particle and boost it to extreme momentum so that its area is macro\u0002scopic. Now consider a patch of the screen inside the image disc. The patch may also be\r
+macroscopic but it is assumed significantly smaller than the disc. The region within the\r
+patch may be described by a density matrix ρ(patch). We now wish to know how much\r
+information about the particular state of the particle is contained in ρ(patch). As we shall\r
+see the only answer which is consistent with what we know about black holes is there is\r
+essentially no information in ρ(patch). In other words the identity of the particle gets lost\r
+unless we look at the global and very complex correlations involving the whole disc. This\r
+kind of behavior has been brilliantly analyzed by D. Page [20].\r
+Now consider several particles which are so extremely boosted that their image discs\r
+completely lose their individuality and are replaced by one large disc. Once again I assume\r
+that the state of the system can not be recovered by local measurements involving small\r
+patches. Two arguments, both involving black holes, will now be given to support these\r
+assumptions.\r
+First, let us consider an experimental arrangement to resolve a pair of well separated\r
+particles moving along the z axis with transverse separation L. A target particle at rest\r
+is introduced. As in sect.3 the energy of the target determines the cutoff ǫ. At first if the\r
+momentum is relatively low the target collides with at most, one of the particles, the other\r
+continuing on its way. To see the second particle the target must be moved.\r
+Now let p−(tot)become much larger than ǫL2\r
+l\r
+2\r
+p\r
+. In this event the black hole which forms will\r
+generally swallow both particles and the pair will behave like a single particle. Furthermore,\r
+from the resulting quasithermal collision products it will be very difficult to reconstruct the\r
+29
+
+original system.\r
+One can obtain more insight into the local properties of the image disc by considering\r
+the matter falling toward a horizon. As we have seen, the evolution is generated by the\r
+boost operator. As we know, the local properties of the stretched horizon of a black hole\r
+are described by a thermal density matrix. Such a local thermal state has lost almost all\r
+information about the details of the infalling matter. Therefore it must be a property of the\r
+boost operator that it locally obliterates the distinctions between states.\r
+We can now imagine the following gedanken calculation to confirm this picture. We\r
+consider a single physical particle composed of p−\r
+ǫ\r
+string bits. For definiteness we can use\r
+the yet to be discovered lattice version of interacting supersymmetric light front string theory.\r
+Now let p− grow enormous and consider a small but macroscopic patch centered near the\r
+center of mass of the particle. First we would like to see that ρ(patch) becomes independent of\r
+the initial particle. Moreover the relation with the black hole horizon suggests a quantitative\r
+test. Given the density matrix, an entropy for the patch may be computed\r
+S = −T rρ(patch)Log[ρ(patch)]\r
+This should tend to the universal horizon entropy\r
+S =\r
+area\r
+4G\r
+7. Discussion\r
+Perhaps the most disturbing feature of the theory I have outlined is the is the continual\r
+presence of the parameter ǫ. One should of course expect that this parameter eventually\r
+disappears from the ordinary, on shell, S matrix elements that are usually considered the\r
+proper business of string theory. We may of course declare that this is the only allowable\r
+business. In so doing, with a single blow we not only eliminate reference to ǫ but we also\r
+solve the great paradox of black hole quantum mechanics. Simply put, in string theory the\r
+formation and evaporation of a black hole must be described by an S matrix because string\r
+30
+
+theory is an S matrix theory. Obviously this is an unsatisfactory conclusion to the debate.\r
+In particular it would not permit us to discuss physics from the viewpoint of a freely falling\r
+observer, falling into a black hole. This is a severe limitation indeed since we ourselves may\r
+well be entering the horizon of an enormous black hole. We have no way of knowing.\r
+The parameter ǫ is the price we pay for a more detailed space time description which\r
+allows any discussion of these sorts of issues. Furthermore this parameter is not without\r
+physical meaning. As Bohr emphasized the discussion of a physical process is incomplete\r
+without a specification of the apparatus. In particular the time resolution of the apparatus\r
+plays a central role in any effort to describe a theory which has arbitrarily high frequency\r
+internal motions as string theory has. The apparatus in question may be a particle detector,\r
+an atom, or the Hawking radiation emitted from a black hole’s horizon.\r
+Starting with the Bekenstein ’t Hooft view of information and area we have been led to\r
+an extremely unconventional view of the quantum theory of gravity. In particular all those\r
+concepts which derive from the idea of a gravitational field independently fluctuating in each\r
+Planckian volume element have no place in the present theory. For example, the idea of\r
+Planck scale space-time foam or more generally, the notion of a path integral over a 3+1\r
+dimensional metric may make no sense. In fact it is unclear that there is any domain of\r
+phenomena in which the conventional gravitational field should be treated as something to\r
+be integrated over at least with anything like the usual integrand. At best there might be\r
+a region between the string scale and the Planck scale where a semiclassical approximation\r
+to a weakly fluctuating gravitational field might hold. It is clear that if the present ideas\r
+are correct then by the time that the planck scale is reached, the number of nonredundant\r
+degrees of freedom is infinitely smaller than what is ordinarily envisioned. It seems to me\r
+that this must have an important long range effect on gravitational research.\r
+In the short term there are a number of areas in which progress can be made. First a\r
+better understanding of the concept of fixed points and their relation to Lorentz boosts and\r
+high energy scattering is possible in ordinary field theories like QCD [8].\r
+Secondly, for string theory to provide an interesting candidate for a holographic theory,\r
+several missing ingredients have to be filled in. The first would be to show that the 1/N\r
+expansion reproduces the bosonic string perturbation expansion. However, even if this can\r
+be done, the theory can not be analyzed nonperturbatively because of the tachyon instability.\r
+Therefore it is very important to determine if the lattice model can be supersymmetrized.\r
+31
+
+Assuming this is possible, we can then attack the nonperturbative issues. From the present\r
+point of view the most important questions would be the following:\r
+Does the theory retain its good features nonperturbatively. In particular are the contin\u0002uous symmetries such as translation, rotation, and full Lorentz symmetry left intact?\r
+In the limit of vanishing cutoff, is the density of string bounded at about N2 bits per\r
+link?\r
+If these questions can be answered in the affirmative then string theory provides us with\r
+a concrete example of a holographic world.\r
+Acknowledgements:\r
+During the month of July of this year I visited Gerard ’t Hooft in Utrecht. Much of\r
+my thinking about these problems was stimulated by our discussions during this time. The\r
+idea that the world is in a sense two dimensional is ’t Hooft’s but it resonated very closely\r
+with my own thinking about horizons and strings. The way of implementing the idea, and\r
+its possible connections with string theory, is mine but it was very heavily influenced by our\r
+conversations.\r
+I would like to thank both ’t Hooft and John Preskill for emphasizing that information\r
+can and should spread at the causal limit as matter approaches a horizon.\r
+Finally I benefitted from discussions with Kenneth Wilson and Robert Perry, about\r
+boosts and renormalization fixed points in light front quantum mechanics and Lev Lipatov\r
+about high energy scattering.\r
+32
+
+REFERENCES\r
+1. G ’t Hooft, Dimensional Reduction in Quantum Gravity, Utrecht Preprint THU-93/26,\r
+gr-qc/9310006\r
+2. C. Thorn Published in Sakharov Conf on Physics, Moscow, (91):447-454\r
+3. L. Susskind, Phys. Rev. D49 (1994), 6606.\r
+4. J. D. Bekenstein, Phys Rev D49 (1994), 1912\r
+5. I. Klebanov and L. susskind, Nucl. Phys. B309 (1988), 175\r
+6. C Misner, K. Thorne and J. Wheeler Gravitation (1970) WH Freeman and Co.\r
+7. J. Kogut and L. Susskind, Physics Reports 8,no 2 (1973), 75\r
+8. R. Perry and K. Wilson, Nucl. Phys. B403 (1993), 587.\r
+9. J. Kogut and K. Wilson, Physics Reports 12C (1974), 75\r
+10. L. Lipatov, Jetp Lett 59 (1994), 596, A.H.Mueller CU-TP-640, n.d. (94) hep\u0002th/9408245\r
+11. R. P. Feynman, Third Topical Conference in High Energy Collisions of Hadrons,\r
+Stoney Brook,N.Y. Sept 1969\r
+12. J.D. Bjorken and E. Paschos,, Phys. Rev. 185 (1969), 1975\r
+13. J. D. Bjorken, Conf, Intern. on Duality and Symmetry in Hadron Physics, Tel Aviv ,\r
+(1971)\r
+14. J. Kogut and L. Susskind, Phys Rev D9 (1974), 697,3391\r
+15. G. Altarelli and G Parisi, Nucl. Phys. B126 (1977), 298\r
+16. M. Karliner, I Klebanov and L. Susskind, Int. Journ. Mod. Phys. A3 (1988),\r
+17. A. Mezhlumian, A. Peet, and L. Thorlacius, String Thermalization Near a Black Hole\r
+Horizon, preprint SU-ITP-94-4, NSF-ITP-94-17, February 1994, hep-th/9402125.\r
+18. G. Veneziano, DST workshop on Particle Physics: Superstring Theory, Kanpur 1987,\r
+ed. H.S.Mani and R. Ramachandran (World Scientific, Singapore) p.1; Superstring ’89\r
+Workshop, Texas A&M University, ed. R. Arnowitt et al. (World Scientific, Singapore)\r
+p. 86, and references therein.\r
+33
+
+19. Private communication, J. Preskill and G. ’t Hooft\r
+20. D. N. Page, Phys. Rev. Lett. 71 (1993), 1291.\r
+34"""
+
+[metadata]
+title = "arxiv hep th9409089 susskind 1994 world as hologram"
+authors = ["Unknown"]
+year = 1994
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:hep-th/9409089v2 28 Sep 1994\r
+SU-ITP-94-33\r
+September 1994\r
+hep-th/9409089\r
+The World as a Hologram\r
+Leonard Susskind\r
+Department of Physics\r
+Stanford University, Stanford, CA 94305-4060\r
+ABSTRACT\r
+According to ’t Hooft the combination of quantum mechanics and gravity requires the\r
+three dimensional world to be an image of data that can be stored on a two dimensional\r
+projection much like a holographic image.\r
+The two dimensional description only requires one discrete degree of freedom per Planck\r
+area and yet it is rich enough to describe all three dimensional phenomena. After outlining\r
+’t Hooft’s proposal I give a preliminary informal description of how it may be implemented.\r
+One finds a basic requirement that particles must grow in size as their momenta are increased\r
+far above the Planck scale. The consequences for high energy particle collisions are described.\r
+The phenomena of particle growth with momentum was previously discussed in the\r
+context of string theory and was related to information spreading near black hole horizons.\r
+The considerations of this paper indicate that the effect is much more rapid at all but the\r
+earliest times. In fact the rate of spreading is found to saturate the bound from causality.\r
+Finally we consider string theory as a possible realization of ’t Hooft’s idea. The light\r
+front lattice string model of Klebanov and Susskind is reviewed and its similarities with the\r
+holographic theory are demonstrated. The agreement between the two requires unproven\r
+but plausible assumptions about the nonperturbative behavior of string theory. Very similar\r
+ideas to those in this paper have long been held by Charles Thorn.\r
+PACS categories: 04.70.Dy, 04.60.Ds, 11.25.Mj, 97.60.Lf\r
+⋆ susskind@dormouse.stanford.edu\r
+1"""
+
+[[sections]]
+number = "1"
+title = "Counting Degrees of Freedom"
+text = """
+Most physicists believe that the degrees of freedom of the world consist of fields filling\r
+space. Some theorists believe that this may be an overestimate and that a small distance\r
+cutoff will be required in order to make sense of quantum gravity. According to this philos\u0002ophy the world is about as rich in structure as a three dimensional discrete lattice theory\r
+with a spacing of order the the Planck length. In this paper I will follow ’t Hooft and argue\r
+for a far more radical decrease in the number of degrees of freedom. Instead of a three\r
+dimensional lattice, a full description of nature requires only a two dimensional lattice at\r
+the spatial boundaries of the world. In a certain sense the world is two dimensional and not\r
+three dimensional as previously supposed. The view I will describe combines the ideas of\r
+Gerard ’t Hooft [1], Charles Thorn [2] and myself [3] and rests on the profound insights of\r
+Jacob Bekenstein concerning the maximum entropy of a region of space [4]. I have made\r
+an effort to keep the equations as few and simple as possible in order to not obscure the\r
+underlying physical concepts. The reader will find technical details and equations in the\r
+quoted references.\r
+Let us temporarily suppose the world is a 3 dimensional lattice of spin like degrees of\r
+freedom. For definiteness assume the lattice spacing is the Planck length lp and that each\r
+site is equipped with a spin which can be in one of two states. For example a lattice fermion\r
+field theory would be of this type. Now consider the number of distinct orthogonal quantum\r
+states in a region of space of volume V .\r
+N(V ) = 2n(1.1)\r
+Where n is the number of sites in V . The logarithm of N(V ) is the maximum possible\r
+entropy in V and satisfies\r
+log N(V ) = n log 2 = V log 2/lp\r
+3\r
+(1.2)\r
+More generally one expects that if the energy density is bounded then the maximum\r
+entropy is proportional to the volume of space. It is hard to avoid this conclusion in any\r
+theory in which the laws of nature are reasonably local. Nevertheless there is good reason\r
+2
+
+to believe that the correct result in the quantum theory of gravity is that the maximum\r
+entropy is proportional to the area and not the volume of the region. The argument is due\r
+to Bekenstein and goes as follows.\r
+Most of the states described in eq.(1.2) have energy so large that a black hole would\r
+form with a size larger than V . Furthermore the entropy of a black hole is given by the\r
+Bekenstein Hawking formula\r
+S =\r
+area\r
+lp\r
+2\r
+log 2 = area\r
+4G\r
+(1.3)\r
+Now suppose a region of space inside V was found to have an entropy in excess of the\r
+entropy of a black hole just big enough to fit in V but with smaller energy. By throwing\r
+in additional matter such black hole could be formed. Since the entropy of the black hole\r
+would be smaller than the original entropy the second law would be violated. Bekenstein\r
+concludes that the maximum entropy of the region V is given not by eq.(1.2) but by eq.(1.3).\r
+’t Hooft has proposed a very radical interpretation of Bekenstein’s observation [1]. According\r
+to ’t Hooft it must be possible to describe all phenomena within V by a set of degrees of\r
+freedom which reside on the surface bounding V . The number of degrees of freedom should\r
+be no larger than that of a two dimensional lattice with approximately one binary degree of\r
+freedom per Planck area. In other words the world is in a certain sense a two dimensional\r
+lattice of spins.\r
+’t Hooft further imagines that in the limit of a very large region the bounding surface\r
+can be taken to be a flat plane at infinity. In some way, the phenomena taking place in\r
+three dimensional space can be projected onto a distant ”viewing screen” with no loss of\r
+information. In what follows I will refer to such a two dimensional surface as a “screen”\r
+and its discrete lattice sites as “pixels”. A pixel can only store one bit of information and is\r
+therefore either lit or dark. ’t Hooft has made the analogy with a hologram which stores a\r
+three dimensional image on a two dimensional film. As in the case of the hologram the flat\r
+two dimensional image must be rich enough to code the full rotationally invariant description\r
+of three dimensional objects.\r
+Another completely different line of reasoning leads to the conclusion that the world is\r
+two dimensional. Klebanov and I [5] and independently Charles Thorn [2] have discovered\r
+3
+
+that string theory in the light front gauge has the form of a two plus one dimensional theory\r
+with no explicit mention of a longitudinal direction. In the work of Klebanov and myself the\r
+transverse two dimensional space is taken to be a discrete lattice with no continuum limit\r
+required. Thus we find similarities between string theory and ’t Hooft’s holographic idea. In\r
+this paper I will describe both viewpoints and explain their relationship. We will find that\r
+with one plausible assumption about the nonperturbative behavior of super string theory, it\r
+is an exact realization of the holographic world.\r
+The mapping between 3+1 dimensional events and their image on the distant screen can\r
+be qualitatively described in semiclassical terms but the reader should keep in mind that the\r
+full description is necessarily quantum mechanical. We will begin with static configurations.\r
+I will assume that all matter is composed of elementary structureless constituents that I will\r
+call partons. Bits might be a better term but I will save it to denote the unit of information.\r
+The presence of a parton is represented on the screen by projecting it according to the\r
+following rule. Take light rays which pass through the screen at right angles to the screen.\r
+Among these light rays, one will pass through the location of the parton as in fig.[1].\r
+SCREEN\r
+parton\r
+light ray\r
+FIGURE 1. A single parton being projected to the screen\r
+By this means the location xm is mapped to a point X⊥. If the screen is oriented\r
+perpendicular to the z axis then the image on the screen is a point [X, Y ]. We will say that\r
+the presence of the parton is recorded by lighting the pixel at [X, Y ]. we want to show that\r
+4
+
+no distribution of matter will ever require more than one bit of information per Planck area\r
+on the screen. Let us begin with a maximally dense object, a black hole. It will be assumed\r
+that the entropy is found on the horizon and that no more than one bit per Planck area can\r
+stored there. Now map the horizon to the screen according to the aforementioned rule. The\r
+result is shown in fig.[2].\r
+FIGURE 2.A black hole projected to the screen\r
+The image on the screen is a disc whose area is comparable to that of the horizon. We\r
+wish to know whether an area element on the screen is larger or smaller than the corre\u0002sponding element on the horizon. If it is smaller, the information density on the screen\r
+must exceed the bound of one bit per Planck area. That this does not happen is insured by\r
+the standard focusing theorem of general relativity [6]. If a is the area of a bundle of light\r
+rays then the focusing theorem states that the second derivative of √\r
+a with respect to an\r
+appropriate path parameter is always zero or negative. Because the light rays in question all\r
+intersect the screen parallel to the z axis the path derivative vanishes at the screen. Since the\r
+second derivative is negative the area element at the horizon is smaller than at the screen.\r
+Let us now try to increase the area density of information by hiding a second black hole\r
+behind the first. We will find ourselves frustrated by the lensing property of the original\r
+black hole. We find the image of the second hole forming a ring around the first as in fig.[3].\r
+5
+
+FIGURE 3. You can’t hide behind a black hole. The shaded areas represent the region\r
+occupied by light rays from the screen to the black holes.\r
+Again the focusing theorem insures that the density in the ring does not exceed the\r
+bound. It is interesting to consider the sequence of images that would result from slowly\r
+passing the first black hole in front of the second in an attempt to eclipse it. This is shown\r
+in fig.[4].\r
+1 2\r
+3 4\r
+FIGURE 4. One black hole passes behind another\r
+The images behave as if they were formed of an incompressible fluid.\r
+The image of a parton on the screen will generally not be unique in which case there will\r
+6
+
+be more than one ray from the parton to the screen which satisfies the criteria for defining an\r
+image. In this case we will assume that the state of the screen is a quantum superposition.\r
+The image of the parton can be in any one of the possible locations.\r
+As another example consider a long column of length L and radius R. The axis of the\r
+column is oriented along the z direction. We would like to fill the column with as large an\r
+entropy as possible at the minimum cost in energy so as to minimize the focusing effects of\r
+its gravitational field. Therefore we fill it with massless quanta of minimum energy. The\r
+minimum energy of such a quantum is of order 1/R. Let the number of such quanta be of\r
+order N. The maximum number of bits of information that can be stored in this manner is\r
+also of order N. Let us suppose that the column density of information just saturates the\r
+bound of 1 bit per Planck area.\r
+N/R2 ∼ 1/lp\r
+2 ∼ 1/G (1.4)\r
+The total energy in the column is\r
+Etotal ≈ R/lp\r
+2\r
+(1.5)\r
+and the energy per unit length is\r
+Etotal/L ≈ R/LG (1.6)\r
+Assume the image of the column forms a disc with radius ∼ R. We wish to ask where\r
+the image of a point behind the column would be located. In particular, does it lie outside\r
+the dense image of the column? To answer this, we consider a light ray originating at the\r
+screen at a radius a bit larger than R. The ray propagates under the gravitational influence\r
+of of the column and is thus bent toward the axis. A simple calculation shows that the ray\r
+will intersect the axis approximately at the end of the column. This is consistent with the\r
+requirement that matter placed behind the column will cast its image beyond the dense disc\r
+of the column.\r
+Let us now relax the requirement that the three dimensional world is static. Instead of\r
+coding a point of space on the screen we want to code an event (x, t). As before we use\r
+7
+
+light rays passing through the event and intersecting the screen at right angles. Consider a\r
+single instant of time at the screen. All the perpendicular light rays which hit the screen at\r
+that instant form a three dimensional ”light front”. We may introduce a set of light front\r
+coordinates by gauge fixing the metric of space-time to have the form\r
+ds2 = g+−dx+dx− + g+idx+dxi + gijdxidxj(1.7)\r
+where the components x\r
+i\r
+refer to transverse space and (x\r
++, x−) are light like linear combi\u0002nations of the time and z coordinates. Assume that at x\r
+− = ∞ the metric has the flat form\r
+with g+− = 1, g+i = 0, gij = δij . We may identify x\r
++ = z + t, x− = t − z. The screen will be\r
+identified as the surface x\r
+− = ∞. The trajectories\r
+x\r
++ = const\r
+x\r
+i = const (1.8)\r
+are easily seen to be lightlike geodesics and the surface x\r
++ = const is a light front. We\r
+will follow the standard practice of using x\r
++ as a time coordinate when doing light front\r
+quantization . As we have seen it is also the time at the screen.\r
+The mapping from 3+1 dimensional space to the screen is now especially simple. A point\r
+x\r
+µ = (x+, x−, xi\r
+) is mapped to the point (x\r
++, xi\r
+). Thus we arrive at the following statement\r
+of ’t Hooft’s holographic principle:\r
+In the light front quantization of quantum gravity, the theory can be formulated with\r
+no direct reference to the longitudinal direction x\r
+− and the transverse space may be taken\r
+to be a discrete lattice. The lattice is composed of binary pixels with spacing of order the\r
+Planck length. We may find it convenient to consider larger lattice spacing and have a larger\r
+number of configurations at each site but the net result should be one bit per Planck cell.\r
+The obvious question now arises as to how we code the longitudinal location of a parton.\r
+Before addressing this question it is necessary to review light front quantization and the\r
+parton concept. These concepts are familiar to people currently working on QCD and origi\u0002nated in work on deep inelastic scattering in the late 60’s and early 70’s. They are probably\r
+not very familiar to people working on black holes and gravitational physics [7].\r
+8"""
+
+[[sections]]
+number = "2"
+title = "Light Front Quantization and Partons"
+text = """
+In this section I will review some very basic concepts of light front quantization for\r
+conventional field theories such as QCD. For simplicity I will write the formulae for scalar φ\r
+3\r
+theory. Light front coordinates are introduced as in eq (1.7) but with the metric chosen flat.\r
+The coordinate x\r
++ is used as a time coordinate. The light like surfaces x+ = const play the\r
+role of instantaneous spatial hypersurfaces. Partons such as quarks or gluons are described by\r
+a transverse position X⊥ or transverse momentum Q⊥ and a positive longitudinal momentum\r
+p−. In addition a parton may carry internal quantum numbers and a spin degree of freedom\r
+which I will suppress.\r
+Light front creation and annihilation operators a\r
++(X⊥, k−) , a−(X⊥, k−) create and\r
+annihilate particles in the usual way. The naive (classical) free Hamiltonian has the form\r
+H0 =\r
+Z\r
+d\r
+2P⊥dp−\r
+a\r
++(p)[P2\r
+⊥ + M2\r
+]a\r
+−(p)\r
+2p−\r
+(2.1)\r
+where M is the mass of the parton. Classical interactions take the form\r
+HI = λ\r
+Z\r
+d\r
+3\r
+p d3q\r
+a\r
++(p)a+(q)a−(p + q)F(p−/q−)\r
+p\r
+[(p−)(q−)(p− + q−)]\r
++ h.c. (2.2)\r
+where the functions F are simple rational functions that depend on the spins of the particles\r
+involved. For scalar particles they are constants. In addition there may also be terms with\r
+higher powers of the creation and annihilation operators.\r
+The operators a\r
+± have canonical commutation or anti commutation relations\r
+[a\r
+−(p) , a+(q)] = δ2\r
+(P⊥ − Q⊥) δ(p− − q−) (2.3)\r
+We will be especially interested in the properties of the theory under longitudinal boosts\r
+which act according to\r
+p− → e\r
+ω\r
+p−\r
+P⊥ → P⊥ (2.4)\r
+where ω is the hyperbolic boost angle."""
+
+[[sections]]
+number = "9"
+title = "The operators a"
+text = """
++ , a− naively transform as\r
+a(P⊥, p−) → e\r
+ω\r
+2 a(P⊥, eω\r
+p−) (2.5)\r
+The Hamiltonian transforms as\r
+H → He−ω(2.6)\r
+An important advantage of the light front method is that the vacuum is the naive Fock space\r
+vacuum annihilated by all the a\r
+−. On top of this vacuum we erect a space of parton states\r
+by acting with the a\r
++ operators\r
+|k1 k2.....i = a\r
++(k1)a+(k2)...|0i (2.7).\r
+The Hamiltonian acts in this space.\r
+According to the most naive view of the theory the Hamiltonian is the classical one and\r
+the eigenvectors are well defined convergent superpositions of Fock space states. Boosting a\r
+system along the z axis is supposed to be straightforward. Each parton momentum trans\u0002forms according to eq.(2.4). The transformation simply acts as a scale transformation of the\r
+longitudinal momentum axis. According to this naive view a longitudinal boost preserves\r
+the transverse dimensions of a system and rescales or Lorentz contracts all longitudinal di\u0002mensions. However, the correct description is far more complicated due to various kinds of\r
+divergences which occur in the theory [8].\r
+The boost problem has a close analogy with the problem of scale invariance in ordinary\r
+quantum field theory. Classical scale invariance will usually be destroyed by divergent high\r
+frequency effects and even if it is possible to preserve it , the invariance is realized in some\r
+anomalous form. For example, fields will have anomalous dimensions which will cause them\r
+to transform in a noncanonical manner. Before discussing boosts I will review the subtleties\r
+of scale invariance in the language of Hamiltonian quantum mechanics.\r
+The degrees of freedom are the spatial Fourier modes φ(p) where the spatial momentum\r
+p is any real 3 vector. For our purposes it will be important to cut the theory off in the\r
+infrared. This may be done by simply eliminating modes with momenta less than some\r
+cutoff κ. Alternatively we could put the system in a finite box of size κ\r
+−1\r
+.\r
+10
+
+Suppose the classical theory has scale invariance under which all momenta including the\r
+infrared regulator κ rescale\r
+p → λp (2.8)\r
+The naive scale invariance would imply the following:\r
+1) The spectrum of the Hamiltonian rescales under (2.8). Each eigenvalue of Ei maps\r
+to a rescaled value.\r
+Ei → λEi (2.9)\r
+2) The wave functionals of the eigenvectors transform in a naive way.\r
+Ψi[φ(p)] → Ψi[λφ(λp)] (2.10)\r
+Each fluctuation of wave number p simply stretches to wave number λp.\r
+The problem with the naive view is that the low and high frequencies are not at all\r
+decoupled [9]. This causes divergences in integrations over large momenta which make\r
+everything infinite. To define the theory an ultraviolet cutoff must be supplied. From\r
+an operational point of view the use of an ultraviolet cutoff is always correlated with a\r
+particular experimental setup. A given apparatus will be sensitive to frequencies up to some\r
+maximum ν. Beyond that frequency the apparatus cannot see. For example, an ordinary\r
+particle detector cannot detect the very frequent and rapid fluctuations of baryon number in\r
+the vacuum that take place with GUT scale frequency. On the other hand if the detector has\r
+internal processes of sufficiently high frequency, then these fluctuations become visible. For\r
+example the detector could contain a vessel with radiation at GUT scale temperatures. This\r
+connection between apparatus and ultraviolet frequency cutoff is fundamental and should\r
+be kept in mind in what follows.\r
+The mathematical description of the cutoff theory will not have modes with momentum\r
+higher than the ultraviolet cutoff ν. It will have a Hamiltonian Hν, energy levels Eν, and\r
+wave functionals Ψν. Now consider a scale transformation by which I mean a rescaling of\r
+11
+
+the infrared cutoff, leaving the ultraviolet cutoff fixed. In general the energy levels will not\r
+simply rescale and we will say that scale invariance is broken. There may however be special\r
+Hamiltonians that I will call ”fixed point Hamiltonians” that preserve certain features of the\r
+scale invariance. In particular for such Hamiltonians, whenthe infrared cutoff κ is rescaled\r
+the energy spectrum scales just as in (2.9). Such a theory is said to be scale invariant.\r
+Although the energies transform naively in fixed point theories the wave functionals do\r
+not. The transformation properties are far more complex than (2.10). A fluctuation or bare\r
+quantum may transform into a superposition of several bare quanta. To see why this is so it\r
+is helpful to think of the rescaling operation in another equivalent way. Instead of decreasing\r
+the infrared cutoff κ while holding fixed the ultraviolet cutoff ν, we increase ν, while holding\r
+κ fixed. In a fixed point theory these are equivalent because things only depend on the ratio\r
+of the two cutoffs. However the perspective is a bit different. When we increase ν we uncover\r
+new degrees of freedom at short distances which were previously not part of the description.\r
+Bare field quanta of the more coarse grained description are found to have structure at the\r
+new scale. A bare gluon is found to have an amplitude to be a closely spaced quark pair\r
+while a quark has an amplitude to contain a nearby gluon. For this reason the action of the\r
+dilatation generator on the Schrodinger picture wave functional is generally very complicated\r
+and theorists avoid talking about it. However the problems resurface when trying to unravel\r
+the intricacies of very high energy scattering . Now let us return to the problem of boosts.\r
+The momentum space integrals of light front perturbation theory can diverge at high\r
+frequency in two ways. The most obvious way is at large values of the transverse momen\u0002tum. These divergences reflect the usual short distance singularities that are familiar from\r
+covariant perturbation theory. We will return to these divergences but for the moment let us\r
+temporarily suppress them by assuming that transverse momentum integrals are finite and\r
+dominated by values of P⊥ of order some characteristic scale in the problem. For example\r
+in QCD the confinement scale of 300 mev is natural. In the quantum theory of gravity the\r
+Planck mass would be the appropriate scale. The characteristic momentum scale will be\r
+denoted M.\r
+The second form of high frequency divergence that can occur involves integrals over\r
+p−. The range of such integrals is always restricted to values of p− which are less than the\r
+total longitudinal momentum p−(tot). From the form of eq.(2.1) we see that the energy of\r
+a parton diverges when p− tends to zero. This region describes large distances in the x−\r
+12
+
+coordinate but small distances in x\r
++. The divergences in this region are not connected with\r
+scale transformation anomalies but rather anomalies in the behavior of Lorentz boosts.\r
+An example of such a divergence involves the probability for a single physical particle\r
+of momentum (p− + q−) to be a pair of partons of momentum p− and q−. In second order\r
+perturbation theory it is given by\r
+Z\r
+dq−|hp + q|HI|p, qi|2[E(p + q) − E(p) − E(q)]−2(2.11)\r
+Using (2.2)we find that the integrand behaves like\r
+q−F\r
+2\r
+(p−/q−)\r
+as q− → 0. Furthermore, if the low momentum parton has spin J, the function F has the\r
+form (q−)\r
+−J\r
+in this limit. Evidently the probability diverges for J ≥ 1. These divergences\r
+indicate that the population of partons can become infinite at low longitudinal momentum\r
+thus invalidating the naive picture.\r
+It is useful to imagine the degrees of freedom a\r
+±(p) being laid out on the p− axis. The\r
+length of the axis is finite and given by p−(tot). A longitudinal boost is represented as a\r
+scale transformation of this axis. Lorentz invariance requires perfect scale invariance with the\r
+Hamiltonian transforming according to eq.(2.6). The divergences at low p− can potentially\r
+disrupt the classical invariance in a manner similar to the way ordinary divergences can ruin\r
+scale invariance. As in that case we must introduce a cutoff. This time the cutoff is on\r
+low values of p−. Thus we introduce a cutoff which eliminates all p− less than ǫ and search\r
+for a fixed point of the renormalization group. Such fixed points classify the possible boost\r
+invariant theories. The problem of finding and understanding such fixed points in gauge\r
+theories is extremely complicated and is equivalent to understanding the behavior of matter\r
+under extreme boosts [10]. This is not the place for a technical review of the work currently\r
+taking place in this area but we will need to understand some of the basic logic.\r
+We begin by imagining that we have a set of detectors or apparatuses that are sensitive\r
+to frequencies up to some maximum of order M2ǫ\r
+−1\r
+. An appropriate description should be\r
+possible with longitudinal momenta cutoff at p− = ǫ. It is important to keep in mind this\r
+connection between the cutoff procedure and an apparatus.\r
+13
+
+The system with cutoff ǫ is described by a Hamiltonian H(ǫ) which will not in general\r
+have the classical form. Let us fix the total longitudinal momentum to be p−(tot). The\r
+Hamiltonian then has a set of energy levels Ei(ǫ) and wave functions Ψi(ǫ). Longitudinal\r
+boost invariance or fixed point behavior requires the energies to be independent of ǫ but says\r
+nothing simple about the wave functions.\r
+Now consider boosting the total momentum (equivalently decreasing ǫ) by a factor λ.\r
+Each energy level must map into a new level with energy Ei\r
+λ\r
+. Again, in general nothing\r
+simple can be said about the wave functions except that they should be obtained by some\r
+unitary mapping from the original wave functions. This mapping is the boost operator. It\r
+should be borne in mind throughout that the boost operation really represents the relative\r
+boost between a system and an apparatus with a resolution time of order ǫ.\r
+The problem of determining fixed points and the behavior of the wave functions under\r
+boosts in QCD is not a well developed subject [8]. I will describe some simple possible\r
+behaviors of the boost operation that have been discussed in the past. These behaviors\r
+do not represent established fixed points but are simplified models. The real behavior of a\r
+theory like QCD is probably a good deal more complicated.\r
+1) The Einstein Lorentz Fixed Point\r
+In very simple field theories with no divergences the wave function of a physical particle or\r
+system of particles is a convergent Fock space state with a finite average number of partons.\r
+If the cutoff ǫ is sufficiently small the probability to find a parton with p− < ǫ is vanishingly\r
+small. Boosting the system is trivial. Each parton shifts to its boosted position. Transverse\r
+sizes are invariant and longitudinal sizes contract. Most likely no real 3+1 dimensional\r
+quantum field theory works this way.\r
+2) The Feynman Bjorken Fixed Point\r
+In the case of gauge theories longitudinal divergences induce a divergent distribution of\r
+partons at low p−. According to the Feynman Bjorken model [11], [12] [7], the number of\r
+partons per unit p− behaves like\r
+dn\r
+dp−\r
+∼\r
+1\r
+p−\r
+(2.12)\r
+Introducing a high frequency (p− < ǫ) cutoff is more serious this time since it eliminates\r
+degrees of freedom which are present in the hadron. In this case when a boost doubles the\r
+14
+
+longitudinal momentum of each parton, a hole is left in the region ǫ < p− < 2ǫ. New partons\r
+must be added to fill this region. In other words the boost operator must contain an extra\r
+term which acts as a source of partons of low p−. These are the partons that Feynman\r
+called the ”wee” partons. The wee partons create interesting anomalies in the behavior of\r
+matter under boosts. For example, because they always carry low longitudinal momentum\r
+they contribute a cloud which does not Lorentz contract [13]. Furthermore they tend to be\r
+found at progressively larger transverse distances from the center of mass. For example in\r
+simple Regge approximations their average distance satisfies [7]\r
+R\r
+2\r
+⊥(wee) ∼ log p−(tot)\r
+ǫ\r
+(2.13)\r
+In the Feynman Bjorken model the quantum numbers of a hadron are carried by ”va\u0002lence” partons which carry finite fractions of the total momentum and therefore behave as\r
+in the Einstein Lorentz case. Thus the spatial distributions of charge, baryon number and\r
+angular momentum Lorentz contract and do not transversely spread. This is necessary in a\r
+conventional field theory in order that the local current operators be well defined.\r
+The cutoff ǫ is arbitrary but just as in ordinary renormalization theory, physical appli\u0002cations may make a particular choice most convenient. In general a given experiment will\r
+be sensitive to frequencies up to some maximum. For example in the case of a high energy\r
+particle colliding with a fixed target the target determines some range of frequencies that\r
+it is sensitive to. Retaining higher frequencies in the description only leads to unnecessary\r
+complexity. The consequences of eq.(2.13) in such a case would be logarithmic increase of\r
+the cross section with energy. We see here the interplay between the behavior of the boost\r
+operation, the low p− partons and very high energy scattering amplitudes.\r
+3) The K.S. Fixed Point\r
+Divergences at large transverse momentum can alter the boost operation. To understand\r
+this we must generalize the cutoff procedure so that we cutoff all modes with frequency\r
+greater than some value ν\r
+K2\r
+⊥ + m2\r
+2k−\r
+> ν (2.14)\r
+Once again we can eliminate the effects of the cutoff by either letting ν → 0 or p− → ∞.\r
+Let us keep ν fixed. The phase space for partons is shown in fig[5].\r
+15
+
+P\r
+P\r
+FIGURE 5. Parton phase space\r
+Consider a low longitudinal momentum parton. The interaction terms in H allow that\r
+parton to split into two partons, each with smaller p− than the original [14] [15]. From fig\r
+[5] it is obvious that the transverse momentum of the pair must be small. This insures that\r
+the probability for the original parton to to become a pair is small (now ignoring divergences\r
+at low p−). Now boost the system so that the parton has a much larger p−. The transverse\r
+phase space for it to split is much bigger. If the theory has transverse divergences then\r
+that probability will become large as the system is boosted. Eventually the parton will be\r
+replaced by two or more partons closely spaced in transverse space. The effect continues as\r
+the system is boosted so that the partons reveal transverse fine structure within structure\r
+ad infinitum. Thus the K.S. fixed point boost operator contains terms which continuously\r
+create wee partons which migrate to larger p−. As they do so they split into short distance\r
+pairs which continue to migrate and split. The new consequence for high energy scattering\r
+is the existence of processes involving large transverse momentum jets.\r
+4) The Free String Fixed Point\r
+I will now describe a behavior that is not found in ordinary field theory but occurs in\r
+string theory. Before discussing real string theory it is interesting to describe it in parton\r
+terms [3]. Let us start with a single parton of longitudinal momentum of order ǫ. Now boost\r
+it to twice its original momentum. Instead of finding a parton of twice the momentum we\r
+16
+
+find two partons, each of the original momentum ǫ. The two partons have a transverse wave\r
+function that is rotationally symmetric and is peaked at a transverse radial distance ls =\r
+√\r
+α′\r
+where α\r
+′\r
+is the usual dimensional string constant. Now double the momentum again. Each\r
+of the two partons is resolved into two more with similar wave function. Unlike the K.S.\r
+case the evolution does not create pairs of smaller and smaller transverse size. Moreover no\r
+parton is ever found with p− > ǫ. All partons are wee. The idea that string theory is a\r
+parton theory of wee partons has also been emphasized in the past by Charles Thorn[2].\r
+After n iterations the total number of partons is 2n and the total longitudinal momentum\r
+is\r
+p−(tot) = ǫ2\r
+n\r
+(2.15)\r
+It is also easy to show that after many iterations the transverse density of partons relative\r
+to the center of mass is gaussian with radius satisfying\r
+R\r
+2\r
+⊥ = l\r
+2\r
+sn = l\r
+2\r
+s\r
+log(p−/ǫ) (2.16)\r
+We might also expect no Lorentz contraction to take place since all partons are wee.\r
+The implications of such a parton model for high energy cross sections are interesting.\r
+Let a particle collide with a fixed target. Also suppose that the scattering is weak enough that\r
+the total cross section is additive in the constituent partons. Since the number of partons is\r
+proportional to the momentum of the incident particle the cross section grows linearly with\r
+laboratory energy. However, this behavior together with eq.(2.16) can not persist indefinitely\r
+without violating unitarity. Either the addition of partons will eventually lead to shadowing\r
+corrections or the geometric size of the parton cloud will have to grow more quickly. As we\r
+shall see the latter option is correct.\r
+Now let us compare the string-like parton model with real string theory in the light\r
+front frame. I will work in units in which ls = 1. A free string is described by a transverse\r
+coordinate X⊥(σ, x+) which is a function of the parameter σ and the light front time x\r
++. It\r
+is convenient to allow σ to run from zero to p−(tot). A longitudinal boost is then seen to be\r
+a rescaling of σ. The operator X⊥ can be expanded in normal modes Xl and the center of\r
+mass X⊥(cm)"""
+
+[[sections]]
+number = "17"
+title = "X⊥(σ, x−) − X⊥(cm) = X∞"
+text = """
+1\r
+\u001A\r
+Xl exp\r
+il(σ − x\r
++)\r
+p−\r
++ X˜\r
+l exp\r
+il(σ + x\r
++)\r
+p−\r
+\u001B\r
+(2.17)\r
+Consider the mean square size of the string\r
+R\r
+2\r
+⊥ = h[(X⊥(σ) − X⊥(cm)]2\r
+i (2.18)\r
+The matrix element gets a contribution from each mode and the result diverges\r
+R\r
+2\r
+⊥ =\r
+X∞\r
+1\r
+1\r
+l\r
+= log(∞) (2.19)\r
+The problem is that we have not introduced a high frequency cutoff. From (2.17)we see that\r
+the frequency of the lth mode is l/p−. The highest allowable frequency when the cutoff is\r
+in place is of order 1\r
+ǫ\r
+so that the highest allowable mode is\r
+lmax =\r
+p−\r
+ǫ\r
+(2.20)\r
+The logarithmic divergence is now replaced by (2.16)\r
+To compute the longitudinal size of a string is more subtle . String theory does not\r
+endow the string with an independent longitudinal coordinate. The coordinate x\r
+−(σ) is\r
+determined in terms of the transverse coordinates. The longitudinal size was computed in\r
+[3] where it was found to also diverge if no high frequency cutoff was used. This time the\r
+divergence is quadratic and gives\r
+R\r
+2\r
+− =\r
+1\r
+ǫ\r
+2\r
+(2.21)\r
+The longitudinal size does not Lorentz contract as p− increases.\r
+One other feature of the string wave function involves the length of the transverse pro\u0002jection of the string as p− increases. It was shown in ref[16] that as the number of modes\r
+of the string increases the transverse length of string increases linearly. This means that\r
+the string length is proportional to p−. To understand the connection with the free string\r
+parton model we picture the string as made up of string bits of length ls. We see that the\r
+number of bits or partons is proportional to p− and each bit is wee.\r
+18
+
+The scale invariance associated with boosts is familiar in string theory in another form.\r
+According to the usual rules of light front string theory the total range of the parame\u0002ter σ is from zero to p−(tot). Therefore a boost is realized as a rescaling of σ. In other\r
+words the boost-scale invariance is equivalent to invariance with respect to world sheet scale\r
+transformations. As is well known, this invariance places strong restrictions on the possible\r
+backgrounds in which strings can propagate. Among these restrictions are Einstein’s, and\r
+Maxwell’s equations as well as Yang Mills equations..\r
+Before returning to the discussion of the holographic world I want to describe one more\r
+idea that originated in attempts to do numerical QCD work using light front methods. It\r
+involves a method of regulating the low p− divergences. It consists of replacing the infinite\r
+x− axis by a periodic box of size 1/ǫ. This has the effect of replacing the p− axis by a discrete\r
+lattice with spacing ǫ. The smallest allowable longitudinal momentum is ǫ. This method of\r
+regularization will prove particularly convenient in the next section."""
+
+[[sections]]
+number = "3"
+title = "The growth of Particles With Momentum"
+text = """
+In order to code the longitudinal motion of systems on the screen we will assume that\r
+longitudinal momentum comes in discrete units of size ǫ. Eventually, to get exact results\r
+ǫ should tend to zero but as for ordinary cutoffs it is usually more convenient to choose it\r
+according to some physical criterion involving an experimental situation.\r
+Consider a single pixel at transverse position X⊥. Since a pixel can record only a single\r
+bit of information it can at most record the presence or absence of a parton but not its state\r
+of longitudinal motion. Therefore we will assume a lit pixel at X⊥ represents a parton of\r
+minimal longitudinal momentum ǫ. Now increase the momentum to twice the minimum.\r
+Since a pixel can not be lit twice we are forced to light two pixels. In general a system\r
+with momentum p− = N ǫ will be identified with N lit pixels. A system is boosted to large\r
+momentum not by boosting its partons but by increasing their number. In other words all\r
+partons are wee and no two of them may occupy the same pixel.\r
+The relationship between this behavior and the free string fixed point described in the\r
+last section is straightforward. Crudely speaking when the momentum is doubled each parton\r
+must be replaced by two with a average separation which we call ls. That scale could be as\r
+19
+
+small as the Planck scale lp or it could be larger. The ratio is a dimensionless number g\r
+lp = gls (3.1)\r
+If g is very small the evolution of the parton distribution as it is boosted is, at first, uncon\u0002strained by the condition that the density not exceed 1\r
+l\r
+2\r
+p\r
+and it develops according to the free\r
+string behavior. However, since the number of partons increases like p− but the radius of the\r
+distribution increases only logarithmically, a point will come at which the density becomes\r
+l\r
+−2\r
+p\r
+. At this point the area of the system must begin to increase more rapidly. Eventually\r
+the area occupied by the particle must grow like\r
+A ∼ lp\r
+2 p−\r
+ǫ\r
+(3.2)\r
+The constant g is nothing but the string interaction coupling constant. No matter how\r
+small it is, interactions will become important when the number of modes becomes so large\r
+that the density gets to be g\r
+−2\r
+in string units. The basic requirement for consistency with\r
+the bound on area density is that the effect of interaction is so repulsive that the partons\r
+create an incompressible fluid.\r
+The prediction that the size of a transplankian particle should grow so rapidly with\r
+momentum at first seems nonsensical, especially since the coefficient involves the parameter\r
+ǫ. To see that it is not absurd we consider a gedanken experiment to measure the radius of\r
+a high energy particle (projectile). The projectile is allowed to collide with a fixed particle\r
+(target) at an impact parameter b. The momentum of the projectile will be varied but the\r
+target is to be kept fixed. Any momentum dependence in the behavior of the collision will\r
+be attributable to variations in the properties of the particle.\r
+Strictly speaking the collision cross section is infinite because of the long range tail of\r
+the gravitational field. However if the impact parameter is very large the collision will result\r
+in a very weak nudge of the target. We will ignore such gentle barely detectable events. If\r
+the impact parameter is very small, a highly inelastic collision may result. The maximum\r
+impact parameter for which such a “real” collision will take place with significant probability\r
+is a measure of the size of the projectile [18].\r
+20
+
+Although no data exists or is ever likely to exist for the superplanckian collisions we are\r
+considering, the answer is easily guessed from semiclassical considerations. Let the center of\r
+mass energy of the collision be\r
+Ecm =\r
+√\r
+s (3.3)\r
+In the center of mass frame both particles are relativistic. Classical general relativity tells\r
+us that if the impact parameter is of order\r
+b ∼ G\r
+√\r
+s (3.4)\r
+or smaller, a black hole will form. The formation of a black hole is a highly inelastic event\r
+which definitely disrupts the target.\r
+Returning to the Laboratory frame we find that the condition for black hole formation\r
+is\r
+b < Gp\r
+(ET plab) (3.5)\r
+where ET is the energy of the target and plab is the projectile momentum in the lab frame.\r
+Evidently the area of the projectile grows at least as fast as\r
+A ≈ lp\r
+4ET plab (3.6)\r
+Thus it is seen that the prediction that the area grows as p− is borne out. Furthermore by\r
+comparing (3.6)with (3.2)we find that the role of the parameter ǫ is played by\r
+ǫ ="""
+
+[[sections]]
+number = "1"
+title = "ET lp"
+text = """
+2\r
+In fact it is not surprising that the ability of a target apparatus to detect high frequencies\r
+should be limited, through the uncertainty principle, by its energy. The same correspondence\r
+between target energy and resolution time is also found in weakly coupled string theory. In\r
+that case an incoming projectile has an area which grows according to (2.16). Interpreting\r
+21
+
+ǫ as being inversely proportional to target energy would imply that the interaction region\r
+grows logarithmically with center of mass energy. This is the usual consequence of Regge\r
+behavior."""
+
+[[sections]]
+number = "4"
+title = "Boosts, Black Holes and Wee Partons"
+text = """
+Consider the region of space-time near the horizon of a massive black hole. To a very\r
+good approximation it may be replaced by flat Minkowski space-time. In terms of ordinary\r
+cartesian coordinates the metric is given by\r
+ds2 = dT2 − dZ2 − dXidXi(4.1)\r
+While in terms of schwarzschild coordinates the same space-time is given by\r
+ds2 = ( dt\r
+4MG)\r
+2\r
+ρ\r
+2 − dρ2 − dXi\r
+dXi(4.2)\r
+In (4.2)we have used the coordinate ρ which denotes proper distance from the horizon instead\r
+of the usual radial coordinate r. The Minkowski and Schwarzschild coordinates are related\r
+by\r
+Z = ρcosh(t/4MG)\r
+T = ρsinh(t/4MG) (4.3)\r
+The horizon of the black hole is the surface t = ∞.\r
+The effect of a Schwarzschild time translation on the Minkowski coordinates is a hyper\u0002bolic rotation by angle\r
+∆ω =\r
+∆t\r
+4MG (4.4)\r
+In other words it is a boost. Following the progress of a system as it approaches the horizon of\r
+a black hole is tantamount to following its behavior under Lorentz boost as the magnitude\r
+22
+
+of the boost parameter increases indefinitely. Any attempt to describe matter from the\r
+standpoint of an observer outside a black hole must come to grips with the issues of the\r
+previous sections.\r
+The same point can be made in another way. As a particle falls toward the horizon it\r
+is accelerated from the point of view of a static observer. The momentum of the particle\r
+increases like\r
+p → exp(t/4MG) (4.5)\r
+To give a proper account of the particle from the Schwarzschild frame we must have a\r
+description which is valid at ever increasing momentum.\r
+Furthermore the infalling matter is ”detected” by target particles, namely the outgoing\r
+thermal Hawking radiation. In the Schwarzschild frame, near the horizon, these particles\r
+have a fixed energy distribution centered near the Planck energy. The situation is essentially\r
+the same as when a high energy particle interacts with a fixed target.\r
+Let us therefore consider the implications of the various behaviors described in sections\r
+2 and 3.\r
+1) Einstein Lorentz\r
+The particle is described as a fixed population of partons with no wee partons. As the\r
+particle falls, the Schwarzschild description sees a particle of fixed transverse size. Longi\u0002tudinally the particle contracts exponentially rapidly in accord with (4.5). Eventually it\r
+occupies an vanishingly thin layer just above the horizon. This is the picture most theorists\r
+have in mind.\r
+2) Feynman Bjorken\r
+Next add wee partons to the picture. As the particle approaches the horizon we find an\r
+expanding halo that spreads out over the horizon and refuses to Lorentz contract. However\r
+the halo carries a negligible fraction of the momentum. The charge, angular momentum,\r
+isospin, baryon number, etc. are carried as in the more naive Einstein Lorentz case.\r
+3) K.S.\r
+23
+
+Adding the effects of large P⊥ degrees of freedom we find that the formerly point like\r
+partons dissociate into small groups of partons, each of which further dissociates into yet\r
+smaller groups ad infinitum ( or until the planck or string scale is reached.)\r
+4) Free String\r
+In this case as a particle falls toward the horizon its partons dissociate into pairs. The\r
+evolution is similar to the replication of a dilute collection of microorganisms on a petri dish\r
+[17]. As long as the density remains much lower than the Planck density the area of the\r
+distribution grows logarithmically.\r
+R\r
+2\r
+⊥ = l\r
+2\r
+s\r
+log p− (4.6)\r
+Since the particle is composed entirely of wee partons it does not contract longitudinally\r
+and therefore it fills a nondecreasing layer above the horizon. Furthermore the various\r
+attributes which distinguish the particle type are spread according to (4.6). Using (4.5)we\r
+find that the particle grows with Schwarzschild time according to\r
+R\r
+2\r
+⊥ = l\r
+2\r
+s\r
+t\r
+4MG (4.7)\r
+As explained in [3], (4.7)represents a sufficiently rapid growth rate for the particle to cover\r
+the horizon in a time short by comparison with the evaporation time\r
+tspread =\r
+M3G3\r
+l\r
+2\r
+s\r
+(4.8)\r
+As the particle or string grows the density at the center also grows like the momentum.\r
+As we have seen the density will approach the Planck density after which the system must\r
+spread more rapidly. Eventually the area of the infalling particle will grow in proportion to\r
+its momentum.\r
+A ∼ Gexp(t/4MG) (4.9)\r
+With this more rapid rate of growth the horizon is covered in a much shorter length of time\r
+than given in (4.8). The corrected formula is\r
+24
+
+tspread = 4MGlog(M2G\r
+2\r
+) (4.10)\r
+The spreading rate predicted by (4.9)appears to be closely connected to another basic\r
+physical principle. It is exactly the fastest rate consistent with causality [19]. To see why we\r
+need to introduce the idea of the stretched horizon. This is a surface a fixed proper distance,\r
+ρ0, from the horizon where infalling matter collects. The numerical value of the distance\r
+does not matter. In terms of Minkowski coordinates the stretched horizon is given by\r
+Z\r
+2 − T2 = ρ2\r
+0\r
+(4.11)\r
+Now suppose an event occurs at some point of the stretched horizon. With no loss of\r
+generality we may take that point to be\r
+X\r
+i = 0\r
+T = 0\r
+Z = ρ0 (4.12)\r
+The signal from this event is bounded by the forward light cone defined by\r
+T\r
+2 = (Z − ρ0)2 + R2\r
+⊥ (4.13)\r
+where R2\r
+⊥ = XiXi\r
+. The intersection of the light cone with the stretched horizon is\r
+R\r
+2\r
+⊥ = 2Zρ0 − 2ρ\r
+2\r
+0\r
+(4.14)\r
+For large Schwarzschild time this becomes\r
+25
+
+R\r
+2\r
+⊥ = ρ\r
+2\r
+0\r
+exp(t/4MG) (4.15)\r
+which agrees with (4.9). The same exponential growth governs the spreading of a classical\r
+perturbation on the stretched horizon.\r
+Thus far, I have mainly emphasized the anomalous transverse behavior of matter under\r
+extreme boosts and the implications for black hole physics. Let me now turn to the impor\u0002tance of the breakdown of Lorentz contraction. Once again start with the Einstein Lorentz\r
+behavior. A chunk of matter will occupy a longitudinal extension of order its inverse mo\u0002mentum. Using (4.5)we find\r
+∆ρ ∼ exp [−t/4MG] (4.16)\r
+As seen by the observer outside the horizon, the matter contracts into an indefinitely thin\r
+layer. For this reason, the horizon can accommodate arbitrary amounts of Einstein Lorentz\r
+matter.\r
+Wee partons, by contrast, are not subject to Lorentz contraction. This implies that in\r
+the Feynman Bjorken model, the halo of wee partons eternally ”floats” above the horizon at\r
+a distance of order 10−13cm as it transversley spreads. The remaining valence partons carry\r
+the various currents which contract onto the horizon as in the Einstein Lorentz case.\r
+By contrast, both the holographic theory and string theory require all partons to be\r
+wee. No Lorentz contraction takes place and the entire structure of the string floats on\r
+the stretched horizon. I have explained in previous articles how this behavior prevents the\r
+accumulation of arbitrarily large quantities of information near the horizon of a black hole.\r
+Thus we are led full circle back to Bekenstein’s principle that black holes bound the entropy\r
+of a region of space to be proportional to its area.\r
+26"""
+
+[[sections]]
+number = "5"
+title = "Lattice String theory"
+text = """
+Ordinary bosonic string theory has been written in a form which may help establish the\r
+relationship between string theory and the holographic principles described in the previous\r
+sections [5][2]. I will not reconstruct the theory here but instead the salient features will be\r
+listed and described. Details can be found in the original reference.\r
+1) The theory is a light front quantum theory. The transverse plane is replaced by a\r
+discrete lattice with spacing ls. The lattice spacing is kept FIXED throughout. A lower\r
+longitudinal momentum cutoff ǫ is introduced so that p− comes in discrete units.\r
+2) The theory is a gauge theory. On each link of the transverse lattice N × N matrix\r
+fields exist. These fields have no x\r
+− dependence. The matrix fields create and annihilate\r
+string bits which carry N × N matrix indices. In [5] it was assumed that the fields were\r
+bosonic but could just as well have been fermionic. The physical states are gauge invariant\r
+and consist of occupied closed paths of links. Each string bit carries a single ǫ unit of\r
+longitudinal momentum. The number of string bits in a closed string is given by\r
+n = p−/ǫ (5.1)\r
+A closed configuration of string bits can be mapped to the periodic σ parameter space.\r
+Each string bit corresponds to an interval δσ of size ǫ. The range of σ is from zero to p−. A\r
+given closed string defines a discretized version of a string configuration X⊥(σ).\r
+3) The dynamics is provided by a Hamiltonian containing terms both quadratic and\r
+quartic in the matrix fields. The quartic terms are similar to plaquette terms in lattice\r
+gauge theory. In the limit N → ∞ the space of connected strings is closed under the action\r
+of the hamiltonian. An equivalent discretized string Hamiltonian describes the dynamics\r
+and spectrum.\r
+4) Despite the fact that the transverse lattice spacing is fixed, in the limit ǫ → 0 and\r
+N → ∞ the resulting theory exactly reproduces free string theory. All continuous space-time\r
+symmetries are restored and the spectrum and vertex operators exactly reproduce continuum\r
+free string theory.\r
+5) For N not equal to infinity there are splitting and joining interactions similar to those\r
+in string perturbation theory. The string coupling constant is given by\r
+27
+
+g =\r
+1\r
+N\r
+(5.2)\r
+It was not proven in [5] that the 1/N expansion produces string perturbation theory But\r
+judging from similar examples, it probably does. Once again to get exact agreement the\r
+limit ǫ → 0 is necessary. Unfortunately no supersymmetric version exists so it is not at the\r
+moment possible to eliminate the tachyon instability.\r
+The theory described above is obviously in many ways similar to the holographic theory\r
+described in earlier sections. However the most important element has not been discussed yet.\r
+What happens to string theory when the string density gets large? It is to be emphasized that\r
+this will happen, even for just a single particle, as the mode cutoff increases. Furthermore, no\r
+matter how small we make g, the density eventually increases to the point where interactions\r
+become important.\r
+There is no question that when the number of string bits passing through a link becomes\r
+of order N2interactions become very strong. This is most obvious in the case of fermionic\r
+string bits. The maximum number of fermionic string bits kinematically allowed on a link\r
+is N2. An effective infinite repulsion must prevent more than this number of string bits on\r
+a link. Just this number of string bits per link corresponds to one bit per Planck area.\r
+In the bosonic case nonlinear effects do become important and it is possible at this point\r
+that it becomes energetically prohibitive to further increase the density. If it can be shown\r
+that the string density can not exceed 1/l2\r
+p and that the good features of lattice string theory\r
+survive beyond perturbation theory ( supersymmetry will surely be important here ) then\r
+lattice string theory is a concrete example of a holographic theory. I believe that this is an\r
+extremely important problem for string theorists who want to show that string theory really\r
+exists and defines a quantum theory of gravity.\r
+28"""
+
+[[sections]]
+number = "6"
+title = "Information Spreading"
+text = """
+Let us now consider a system composed of several ordinary particles separated by some\r
+large transverse distance of orderL. As p−(tot)\r
+ǫ\r
+increases to L\r
+2\r
+l\r
+2\r
+p\r
+the individual particles grow\r
+until they begin to overlap. If we further increase the momentum, one of two things may\r
+happen. The action of the boost operator could conceivably lead to an increasing transverse\r
+separation of the particles so that each maintains its spatial integrity. The other extreme\r
+is that the spatial identity of the individual particles is lost and they merge into a single\r
+disc whose area is proportional to p−(tot). This I believe is the far more reasonable answer.\r
+Before arguing in favor of this possibility I will describe the proposal a bit more fully.\r
+First take a single particle and boost it to extreme momentum so that its area is macro\u0002scopic. Now consider a patch of the screen inside the image disc. The patch may also be\r
+macroscopic but it is assumed significantly smaller than the disc. The region within the\r
+patch may be described by a density matrix ρ(patch). We now wish to know how much\r
+information about the particular state of the particle is contained in ρ(patch). As we shall\r
+see the only answer which is consistent with what we know about black holes is there is\r
+essentially no information in ρ(patch). In other words the identity of the particle gets lost\r
+unless we look at the global and very complex correlations involving the whole disc. This\r
+kind of behavior has been brilliantly analyzed by D. Page [20].\r
+Now consider several particles which are so extremely boosted that their image discs\r
+completely lose their individuality and are replaced by one large disc. Once again I assume\r
+that the state of the system can not be recovered by local measurements involving small\r
+patches. Two arguments, both involving black holes, will now be given to support these\r
+assumptions.\r
+First, let us consider an experimental arrangement to resolve a pair of well separated\r
+particles moving along the z axis with transverse separation L. A target particle at rest\r
+is introduced. As in sect.3 the energy of the target determines the cutoff ǫ. At first if the\r
+momentum is relatively low the target collides with at most, one of the particles, the other\r
+continuing on its way. To see the second particle the target must be moved.\r
+Now let p−(tot)become much larger than ǫL2\r
+l\r
+2\r
+p\r
+. In this event the black hole which forms will\r
+generally swallow both particles and the pair will behave like a single particle. Furthermore,\r
+from the resulting quasithermal collision products it will be very difficult to reconstruct the\r
+29
+
+original system.\r
+One can obtain more insight into the local properties of the image disc by considering\r
+the matter falling toward a horizon. As we have seen, the evolution is generated by the\r
+boost operator. As we know, the local properties of the stretched horizon of a black hole\r
+are described by a thermal density matrix. Such a local thermal state has lost almost all\r
+information about the details of the infalling matter. Therefore it must be a property of the\r
+boost operator that it locally obliterates the distinctions between states.\r
+We can now imagine the following gedanken calculation to confirm this picture. We\r
+consider a single physical particle composed of p−\r
+ǫ\r
+string bits. For definiteness we can use\r
+the yet to be discovered lattice version of interacting supersymmetric light front string theory.\r
+Now let p− grow enormous and consider a small but macroscopic patch centered near the\r
+center of mass of the particle. First we would like to see that ρ(patch) becomes independent of\r
+the initial particle. Moreover the relation with the black hole horizon suggests a quantitative\r
+test. Given the density matrix, an entropy for the patch may be computed\r
+S = −T rρ(patch)Log[ρ(patch)]\r
+This should tend to the universal horizon entropy\r
+S =\r
+area\r
+4G"""
+
+[[sections]]
+number = "7"
+title = "Discussion"
+text = """
+Perhaps the most disturbing feature of the theory I have outlined is the is the continual\r
+presence of the parameter ǫ. One should of course expect that this parameter eventually\r
+disappears from the ordinary, on shell, S matrix elements that are usually considered the\r
+proper business of string theory. We may of course declare that this is the only allowable\r
+business. In so doing, with a single blow we not only eliminate reference to ǫ but we also\r
+solve the great paradox of black hole quantum mechanics. Simply put, in string theory the\r
+formation and evaporation of a black hole must be described by an S matrix because string\r
+30
+
+theory is an S matrix theory. Obviously this is an unsatisfactory conclusion to the debate.\r
+In particular it would not permit us to discuss physics from the viewpoint of a freely falling\r
+observer, falling into a black hole. This is a severe limitation indeed since we ourselves may\r
+well be entering the horizon of an enormous black hole. We have no way of knowing.\r
+The parameter ǫ is the price we pay for a more detailed space time description which\r
+allows any discussion of these sorts of issues. Furthermore this parameter is not without\r
+physical meaning. As Bohr emphasized the discussion of a physical process is incomplete\r
+without a specification of the apparatus. In particular the time resolution of the apparatus\r
+plays a central role in any effort to describe a theory which has arbitrarily high frequency\r
+internal motions as string theory has. The apparatus in question may be a particle detector,\r
+an atom, or the Hawking radiation emitted from a black hole’s horizon.\r
+Starting with the Bekenstein ’t Hooft view of information and area we have been led to\r
+an extremely unconventional view of the quantum theory of gravity. In particular all those\r
+concepts which derive from the idea of a gravitational field independently fluctuating in each\r
+Planckian volume element have no place in the present theory. For example, the idea of\r
+Planck scale space-time foam or more generally, the notion of a path integral over a 3+1\r
+dimensional metric may make no sense. In fact it is unclear that there is any domain of\r
+phenomena in which the conventional gravitational field should be treated as something to\r
+be integrated over at least with anything like the usual integrand. At best there might be\r
+a region between the string scale and the Planck scale where a semiclassical approximation\r
+to a weakly fluctuating gravitational field might hold. It is clear that if the present ideas\r
+are correct then by the time that the planck scale is reached, the number of nonredundant\r
+degrees of freedom is infinitely smaller than what is ordinarily envisioned. It seems to me\r
+that this must have an important long range effect on gravitational research.\r
+In the short term there are a number of areas in which progress can be made. First a\r
+better understanding of the concept of fixed points and their relation to Lorentz boosts and\r
+high energy scattering is possible in ordinary field theories like QCD [8].\r
+Secondly, for string theory to provide an interesting candidate for a holographic theory,\r
+several missing ingredients have to be filled in. The first would be to show that the 1/N\r
+expansion reproduces the bosonic string perturbation expansion. However, even if this can\r
+be done, the theory can not be analyzed nonperturbatively because of the tachyon instability.\r
+Therefore it is very important to determine if the lattice model can be supersymmetrized.\r
+31
+
+Assuming this is possible, we can then attack the nonperturbative issues. From the present\r
+point of view the most important questions would be the following:\r
+Does the theory retain its good features nonperturbatively. In particular are the contin\u0002uous symmetries such as translation, rotation, and full Lorentz symmetry left intact?\r
+In the limit of vanishing cutoff, is the density of string bounded at about N2 bits per\r
+link?\r
+If these questions can be answered in the affirmative then string theory provides us with\r
+a concrete example of a holographic world.\r
+Acknowledgements:\r
+During the month of July of this year I visited Gerard ’t Hooft in Utrecht. Much of\r
+my thinking about these problems was stimulated by our discussions during this time. The\r
+idea that the world is in a sense two dimensional is ’t Hooft’s but it resonated very closely\r
+with my own thinking about horizons and strings. The way of implementing the idea, and\r
+its possible connections with string theory, is mine but it was very heavily influenced by our\r
+conversations.\r
+I would like to thank both ’t Hooft and John Preskill for emphasizing that information\r
+can and should spread at the causal limit as matter approaches a horizon.\r
+Finally I benefitted from discussions with Kenneth Wilson and Robert Perry, about\r
+boosts and renormalization fixed points in light front quantum mechanics and Lev Lipatov\r
+about high energy scattering."""
+
+[[sections]]
+number = "32"
+title = "REFERENCES"
+text = """
+1. G ’t Hooft, Dimensional Reduction in Quantum Gravity, Utrecht Preprint THU-93/26,\r
+gr-qc/9310006"""
+
+[[sections]]
+number = "2"
+title = "C. Thorn Published in Sakharov Conf on Physics, Moscow, (91):447-454"
+text = ""
+
+[[sections]]
+number = "3"
+title = "L. Susskind, Phys. Rev. D49 (1994), 6606."
+text = ""
+
+[[sections]]
+number = "4"
+title = "J. D. Bekenstein, Phys Rev D49 (1994), 1912"
+text = ""
+
+[[sections]]
+number = "5"
+title = "I. Klebanov and L. susskind, Nucl. Phys. B309 (1988), 175"
+text = ""
+
+[[sections]]
+number = "6"
+title = "C Misner, K. Thorne and J. Wheeler Gravitation (1970) WH Freeman and Co."
+text = ""
+
+[[sections]]
+number = "7"
+title = "J. Kogut and L. Susskind, Physics Reports 8,no 2 (1973), 75"
+text = ""
+
+[[sections]]
+number = "8"
+title = "R. Perry and K. Wilson, Nucl. Phys. B403 (1993), 587."
+text = ""
+
+[[sections]]
+number = "9"
+title = "J. Kogut and K. Wilson, Physics Reports 12C (1974), 75"
+text = "10. L. Lipatov, Jetp Lett 59 (1994), 596, A.H.Mueller CU-TP-640, n.d. (94) hep\u0002th/9408245"
+
+[[sections]]
+number = "11"
+title = "R. P. Feynman, Third Topical Conference in High Energy Collisions of Hadrons,"
+text = "Stoney Brook,N.Y. Sept 1969"
+
+[[sections]]
+number = "12"
+title = "J.D. Bjorken and E. Paschos,, Phys. Rev. 185 (1969), 1975"
+text = """
+13. J. D. Bjorken, Conf, Intern. on Duality and Symmetry in Hadron Physics, Tel Aviv ,\r
+(1971)"""
+
+[[sections]]
+number = "14"
+title = "J. Kogut and L. Susskind, Phys Rev D9 (1974), 697,3391"
+text = ""
+
+[[sections]]
+number = "15"
+title = "G. Altarelli and G Parisi, Nucl. Phys. B126 (1977), 298"
+text = ""
+
+[[sections]]
+number = "16"
+title = "M. Karliner, I Klebanov and L. Susskind, Int. Journ. Mod. Phys. A3 (1988),"
+text = """
+17. A. Mezhlumian, A. Peet, and L. Thorlacius, String Thermalization Near a Black Hole\r
+Horizon, preprint SU-ITP-94-4, NSF-ITP-94-17, February 1994, hep-th/9402125."""
+
+[[sections]]
+number = "18"
+title = "G. Veneziano, DST workshop on Particle Physics: Superstring Theory, Kanpur 1987,"
+text = """
+ed. H.S.Mani and R. Ramachandran (World Scientific, Singapore) p.1; Superstring ’89\r
+Workshop, Texas A&M University, ed. R. Arnowitt et al. (World Scientific, Singapore)\r
+p. 86, and references therein.\r
+33"""
+
+[[sections]]
+number = "19"
+title = "Private communication, J. Preskill and G. ’t Hooft"
+text = ""
+
+[[sections]]
+number = "20"
+title = "D. N. Page, Phys. Rev. Lett. 71 (1993), 1291."
+text = "34"
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+image_path = "images/image_p1_1.png"
+
+[[figures]]
+label = "fig:2"
+page_num = 3
+image_path = "images/image_p3_2.png"
+
+[[figures]]
+label = "fig:3"
+page_num = 3
+image_path = "images/image_p3_3.png"
+
+[[figures]]
+label = "fig:4"
+page_num = 5
+image_path = "images/image_p5_4.png"
+
+[[figures]]
+label = "fig:5"
+page_num = 9
+image_path = "images/image_p9_5.png"
+
+[[figures]]
+label = "fig:6"
+page_num = 9
+image_path = "images/image_p9_6.png"
+
+[[figures]]
+label = "fig:7"
+page_num = 9
+image_path = "images/image_p9_7.png"
+
+[[figures]]
+label = "fig:8"
+page_num = 10
+image_path = "images/image_p10_8.png"
+
+[[figures]]
+label = "fig:9"
+page_num = 14
+image_path = "images/image_p14_9.png"
+
+[[figures]]
+label = "fig:10"
+page_num = 14
+image_path = "images/image_p14_10.png"
+
+[[figures]]
+label = "fig:11"
+page_num = 14
+image_path = "images/image_p14_11.png"
+
+[[figures]]
+label = "fig:12"
+page_num = 15
+image_path = "images/image_p15_12.png"
+
+[[figures]]
+label = "fig:13"
+page_num = 15
+image_path = "images/image_p15_13.png"
+
+[[figures]]
+label = "fig:14"
+page_num = 17
+image_path = "images/image_p17_14.png"
+
+[[figures]]
+label = "fig:15"
+page_num = 18
+image_path = "images/image_p18_15.png"
+
+[[figures]]
+label = "fig:16"
+page_num = 18
+image_path = "images/image_p18_16.png"
+
+[[figures]]
+label = "fig:17"
+page_num = 18
+image_path = "images/image_p18_17.png"
+
+[[figures]]
+label = "fig:18"
+page_num = 18
+image_path = "images/image_p18_18.png"
+
+[[figures]]
+label = "fig:19"
+page_num = 18
+image_path = "images/image_p18_19.png"
+
+[[figures]]
+label = "fig:20"
+page_num = 18
+image_path = "images/image_p18_20.png"
+
+[[figures]]
+label = "fig:21"
+page_num = 20
+image_path = "images/image_p20_21.png"
+
+[[figures]]
+label = "fig:22"
+page_num = 20
+image_path = "images/image_p20_22.png"
+
+[[figures]]
+label = "fig:23"
+page_num = 21
+image_path = "images/image_p21_23.png"
+
+[[figures]]
+label = "fig:24"
+page_num = 21
+image_path = "images/image_p21_24.png"
+
+[[figures]]
+label = "fig:25"
+page_num = 21
+image_path = "images/image_p21_25.png"
+
+[[figures]]
+label = "fig:26"
+page_num = 21
+image_path = "images/image_p21_26.png"
+
+[[figures]]
+label = "fig:27"
+page_num = 22
+image_path = "images/image_p22_27.png"
+
+[[figures]]
+label = "fig:28"
+page_num = 22
+image_path = "images/image_p22_28.png"
+
+[[figures]]
+label = "fig:29"
+page_num = 24
+image_path = "images/image_p24_29.png"
+
+[[figures]]
+label = "fig:30"
+page_num = 24
+image_path = "images/image_p24_30.png"
+
+[[figures]]
+label = "fig:31"
+page_num = 28
+image_path = "images/image_p28_31.png"
+
+[[figures]]
+label = "fig:32"
+page_num = 29
+image_path = "images/image_p29_32.png"
+
+[[figures]]
+label = "fig:33"
+page_num = 29
+image_path = "images/image_p29_33.png"
+
+[[figures]]
+label = "fig:34"
+page_num = 29
+image_path = "images/image_p29_34.png"
+
+[[figures]]
+label = "fig:35"
+page_num = 30
+image_path = "images/image_p30_35.png"
+
+[[figures]]
+label = "fig:36"
+page_num = 30
+image_path = "images/image_p30_36.png"
+
+[[figures]]
+label = "fig:37"
+page_num = 32
+image_path = "images/image_p32_37.png"
