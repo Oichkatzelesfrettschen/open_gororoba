@@ -20,8 +20,7 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
 use vacuum_frustration::vietoris_rips::{
-    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix,
-    VietorisRipsComplex,
+    compute_betti_numbers_at_time, compute_persistent_homology, DistanceMatrix, VietorisRipsComplex,
 };
 
 #[derive(Parser, Debug)]
@@ -390,10 +389,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Auto-compute epsilon bounds from distance distribution if not specified
     if args.epsilon_min <= 0.0 || args.epsilon_max <= 0.0 {
         let bounds = auto_epsilon_bounds(&dist_matrix);
-        println!(
-            "  Auto epsilon bounds: [{:.4}, {:.4}]",
-            bounds.0, bounds.1
-        );
+        println!("  Auto epsilon bounds: [{:.4}, {:.4}]", bounds.0, bounds.1);
         if args.epsilon_min <= 0.0 {
             args.epsilon_min = bounds.0;
         }
@@ -496,12 +492,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  r(b_0, frustration_proxy) = {:.4}", r_b0_frust);
 
     // Permutation null model test
-    println!(
-        "  Running {} permutation tests...",
-        args.n_permutations
+    println!("  Running {} permutation tests...", args.n_permutations);
+    let (p_value, null_mean, null_std) = permutation_test(
+        r_b0_frust,
+        &b0_values,
+        &frust_proxy,
+        args.n_permutations,
+        12345,
     );
-    let (p_value, null_mean, null_std) =
-        permutation_test(r_b0_frust, &b0_values, &frust_proxy, args.n_permutations, 12345);
     println!(
         "  p-value = {:.4}, null: mean={:.4}, std={:.4}",
         p_value, null_mean, null_std

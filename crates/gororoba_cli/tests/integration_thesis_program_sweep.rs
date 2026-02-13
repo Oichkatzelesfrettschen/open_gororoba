@@ -69,9 +69,9 @@ fn thesis_program_sweep_writes_all_artifacts() {
 
     let paths = [
         out_dir.join("thesis1_scalar_tov_sweep.toml"),
-        out_dir.join("thesis2_thickening_threshold.toml"),
+        out_dir.join("thesis2_power_law_viscosity_v2.toml"),
         out_dir.join("thesis3_epoch_alignment.toml"),
-        out_dir.join("thesis4_latency_law_suite.toml"),
+        out_dir.join("thesis4_latency_law_suite_v2.toml"),
     ];
 
     for path in &paths {
@@ -83,7 +83,7 @@ fn thesis_program_sweep_writes_all_artifacts() {
     assert!(t1.contains("[summary]"));
 
     let t2 = fs::read_to_string(&paths[1]).expect("read thesis2 artifact");
-    assert!(t2.contains("threshold_radians"));
+    assert!(t2.contains("power_law_associator"));
     assert!(t2.contains("verdict ="));
 
     let t3 = fs::read_to_string(&paths[2]).expect("read thesis3 artifact");
@@ -91,7 +91,7 @@ fn thesis_program_sweep_writes_all_artifacts() {
     assert!(t3.contains("plateau_label"));
 
     let t4 = fs::read_to_string(&paths[3]).expect("read thesis4 artifact");
-    assert!(t4.contains("inverse_square_r2"));
+    assert!(t4.contains("r2_inverse_square"));
     assert!(t4.contains("latency_law"));
 
     fs::remove_dir_all(out_dir).expect("remove temp output dir");
