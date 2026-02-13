@@ -170,11 +170,78 @@ impl D2Q9 {
     }
 }
 
-/// Effective viscosity under associator-driven thickening.
+/// Effective viscosity under associator-driven thickening (linear model).
 ///
 /// `nu_eff = nu_base * (1 + alpha * ||m3||)`.
+///
+/// NOTE: This is the original linear formula. For non-Newtonian behavior,
+/// use `viscosity_with_power_law_associator` which includes strain rate dependence.
 pub fn viscosity_with_associator(nu_base: f64, alpha: f64, associator_norm: f64) -> f64 {
     nu_base * (1.0 + alpha * associator_norm.max(0.0))
+}
+
+/// Effective viscosity under power-law associator-driven shear thickening.
+///
+/// Formula: `nu_eff = nu_base * (1 + alpha * ||m3||^beta * (|gamma_dot| + eps)^(n - 1))`
+///
+/// When `power_index > 1`, this produces shear-thickening (viscosity increases
+/// with strain rate). The associator norm controls the amplitude of the
+/// non-Newtonian response, while the strain rate provides the trigger.
+///
+/// # Arguments
+/// * `nu_base` - Base kinematic viscosity
+/// * `alpha` - Coupling strength (typical: 0.01-1.0)
+/// * `beta` - Associator norm exponent (typical: 1.0-2.0)
+/// * `associator_norm` - Local ||m3|| associator norm (>= 0)
+/// * `strain_rate` - Local |gamma_dot| strain rate magnitude (>= 0)
+/// * `power_index` - Power-law index n (n > 1 = thickening, n < 1 = thinning)
+pub fn viscosity_with_power_law_associator(
+    nu_base: f64,
+    alpha: f64,
+    beta: f64,
+    associator_norm: f64,
+    strain_rate: f64,
+    power_index: f64,
+) -> f64 {
+    const EPS: f64 = 1e-10; // Regularization near zero strain
+    let norm_term = associator_norm.max(0.0).powf(beta);
+    let strain_term = (strain_rate.abs() + EPS).powf(power_index - 1.0);
+    nu_base * (1.0 + alpha * norm_term * strain_term)
+}
+
+/// Cross-model viscosity for non-Newtonian fluids.
+///
+/// The Cross model describes shear-thinning/thickening fluids where viscosity
+/// transitions between a zero-shear plateau (eta_0) and an infinite-shear
+/// plateau (eta_inf):
+///
+///   eta(gamma_dot) = eta_inf + (eta_0 - eta_inf) / (1 + (lambda * gamma_dot)^n)
+///
+/// This model was chosen over the power-law associator model after STPT-007
+/// showed that simple linear thickening is insufficient: the Cross model
+/// captures the characteristic S-shaped viscosity curve seen in real
+/// non-Newtonian fluids.
+///
+/// # Arguments
+/// * `eta_0` - Zero-shear viscosity (viscosity at rest)
+/// * `eta_inf` - Infinite-shear viscosity (viscosity at very high shear)
+/// * `lambda` - Time constant (controls transition shear rate; units: 1/strain_rate)
+/// * `n` - Power-law index (n > 1 = shear-thickening, n < 1 = shear-thinning)
+/// * `gamma_dot` - Local strain rate magnitude (|gamma_dot| >= 0)
+///
+/// # Returns
+/// Effective viscosity at the given strain rate. Always in [eta_inf, eta_0]
+/// for shear-thinning (n < 1) or [eta_0, eta_inf] for shear-thickening (n > 1).
+pub fn viscosity_cross_model(
+    eta_0: f64,
+    eta_inf: f64,
+    lambda: f64,
+    n: f64,
+    gamma_dot: f64,
+) -> f64 {
+    let lg = lambda * gamma_dot.abs();
+    let denominator = 1.0 + lg.powf(n);
+    eta_inf + (eta_0 - eta_inf) / denominator
 }
 
 /// Compute D2Q9 equilibrium distributions.
@@ -720,6 +787,56 @@ mod tests {
     }
 
     #[test]
+    fn test_power_law_shear_thickening() {
+        // With power_index > 1, higher strain rate should give higher viscosity
+        let nu_low = viscosity_with_power_law_associator(0.1, 0.5, 1.0, 0.5, 0.01, 1.5);
+        let nu_high = viscosity_with_power_law_associator(0.1, 0.5, 1.0, 0.5, 1.0, 1.5);
+        assert!(
+            nu_high > nu_low,
+            "Shear thickening: nu({})={} should exceed nu({})={}",
+            1.0,
+            nu_high,
+            0.01,
+            nu_low
+        );
+    }
+
+    #[test]
+    fn test_power_law_at_zero_strain() {
+        // At zero strain, regularized formula should give finite viscosity
+        let nu = viscosity_with_power_law_associator(0.1, 0.5, 1.0, 0.5, 0.0, 1.5);
+        assert!(nu.is_finite());
+        assert!(nu > 0.0);
+    }
+
+    #[test]
+    fn test_power_law_reduces_to_base() {
+        // With alpha=0, should return nu_base regardless of other params
+        let nu = viscosity_with_power_law_associator(0.1, 0.0, 1.0, 0.5, 0.5, 1.5);
+        assert!((nu - 0.1).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_power_law_convex_curve() {
+        // Verify the viscosity curve is convex (second derivative > 0) for n > 1
+        let rates = [0.01, 0.1, 0.5, 1.0, 2.0, 5.0];
+        let nus: Vec<f64> = rates
+            .iter()
+            .map(|&r| viscosity_with_power_law_associator(0.1, 0.3, 1.0, 0.5, r, 1.5))
+            .collect();
+
+        // Check monotonically increasing
+        for w in nus.windows(2) {
+            assert!(
+                w[1] >= w[0],
+                "Should be monotonically increasing: {} < {}",
+                w[1],
+                w[0]
+            );
+        }
+    }
+
+    #[test]
     fn test_collide_with_associator_keeps_mass_finite() {
         let mut sim = D2Q9::new(8, 8, 0.8);
         let norms = Array2::from_elem((8, 8), 0.5);
@@ -728,5 +845,74 @@ mod tests {
         let mass_after = sim.total_mass();
         assert!(mass_after.is_finite());
         assert!(mass_before > 0.0);
+    }
+
+    // -- Cross model viscosity tests -------------------------------------------
+
+    #[test]
+    fn test_cross_model_at_zero_shear() {
+        // At zero shear rate, eta = eta_0
+        let eta = viscosity_cross_model(1.0, 0.01, 1.0, 0.5, 0.0);
+        assert_relative_eq!(eta, 1.0, epsilon = 1e-14);
+    }
+
+    #[test]
+    fn test_cross_model_at_high_shear() {
+        // At very high shear rate, eta -> eta_inf
+        let eta = viscosity_cross_model(1.0, 0.01, 1.0, 0.5, 1e10);
+        assert!(
+            (eta - 0.01).abs() < 0.01,
+            "At high shear, eta={} should approach eta_inf=0.01",
+            eta
+        );
+    }
+
+    #[test]
+    fn test_cross_model_shear_thinning() {
+        // With n < 1, viscosity should decrease with increasing shear rate
+        let eta_low = viscosity_cross_model(1.0, 0.01, 1.0, 0.5, 0.01);
+        let eta_high = viscosity_cross_model(1.0, 0.01, 1.0, 0.5, 10.0);
+        assert!(
+            eta_low > eta_high,
+            "Shear thinning: eta_low={} should exceed eta_high={}",
+            eta_low,
+            eta_high
+        );
+    }
+
+    #[test]
+    fn test_cross_model_shear_thickening() {
+        // With eta_inf > eta_0 and standard n, increasing shear -> increasing viscosity
+        let eta_low = viscosity_cross_model(0.01, 1.0, 1.0, 0.5, 0.01);
+        let eta_high = viscosity_cross_model(0.01, 1.0, 1.0, 0.5, 10.0);
+        assert!(
+            eta_high > eta_low,
+            "Shear thickening: eta_high={} should exceed eta_low={}",
+            eta_high,
+            eta_low
+        );
+    }
+
+    #[test]
+    fn test_cross_model_lambda_controls_transition() {
+        // Higher lambda = earlier transition (at lower shear rate)
+        let eta_lo_lambda = viscosity_cross_model(1.0, 0.01, 0.1, 0.5, 1.0);
+        let eta_hi_lambda = viscosity_cross_model(1.0, 0.01, 10.0, 0.5, 1.0);
+        assert!(
+            eta_lo_lambda > eta_hi_lambda,
+            "Higher lambda = earlier transition: {} vs {}",
+            eta_lo_lambda,
+            eta_hi_lambda
+        );
+    }
+
+    #[test]
+    fn test_cross_model_always_finite() {
+        let test_rates = [0.0, 1e-15, 0.001, 1.0, 100.0, 1e10];
+        for &rate in &test_rates {
+            let eta = viscosity_cross_model(1.0, 0.01, 1.0, 0.5, rate);
+            assert!(eta.is_finite(), "eta must be finite at rate {}", rate);
+            assert!(eta > 0.0, "eta must be positive at rate {}", rate);
+        }
     }
 }

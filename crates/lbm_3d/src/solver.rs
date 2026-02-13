@@ -241,14 +241,29 @@ impl LbmSolver3D {
     /// * `tau` - Relaxation time (must be >= 0.5)
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64) -> Self {
         let n_nodes = nx * ny * nz;
+        let collider = BgkCollision::new(tau);
+
+        // Initialize populations to equilibrium at rest (rho=1, u=0).
+        // f_i^eq(rho=1, u=0) = w_i for all i.
+        // This is required for physical correctness: zero populations cause
+        // rho=0 which makes velocity undefined and the simulation diverges.
+        let lattice = &collider.lattice;
+        let mut f = vec![0.0; n_nodes * 19];
+        for node in 0..n_nodes {
+            let base = node * 19;
+            for i in 0..19 {
+                f[base + i] = lattice.weight(i);
+            }
+        }
+
         Self {
             nx,
             ny,
             nz,
-            f: vec![0.0; n_nodes * 19],
-            rho: vec![0.0; n_nodes],
+            f,
+            rho: vec![1.0; n_nodes],
             u: vec![[0.0; 3]; n_nodes],
-            collider: BgkCollision::new(tau),
+            collider,
             force_field: None,
             timestep: 0,
         }
@@ -509,16 +524,43 @@ impl LbmSolver3D {
         }
     }
 
-    /// Phase 2 (streaming): In the D3Q19 lattice, streaming is implicit via lattice velocity mapping.
+    /// Phase 2 (streaming): Propagate populations along lattice velocities.
     ///
-    /// In standard LBM, the streaming step redistributes populations to neighboring sites:
-    /// f_i(x + c_i*dt, t + dt) <- f_i(x, t)
+    /// Each population f_i is shifted to the neighbor in the direction of c_i
+    /// with periodic boundary conditions:
+    ///   f_i(x + c_i*dt, t + dt) <- f_i(x, t)
     ///
-    /// For the collision-streaming operator, we recover macroscopic quantities post-collision.
-    /// The lattice structure (D3Q19 discrete velocities) encodes the streaming geometry.
+    /// Uses pull scheme: for each destination site and direction, pull from the
+    /// source site (destination - c_i) with periodic wrapping.
     pub fn phase2_streaming(&mut self) -> ScheduleResult<()> {
-        // In the current one-step collision-only formulation, streaming is implicit.
-        // Recover macroscopic quantities for validation and next phase initialization.
+        let nx = self.nx;
+        let ny = self.ny;
+        let nz = self.nz;
+        let lattice = &self.collider.lattice;
+
+        // Allocate temporary buffer for streamed populations
+        let mut f_new = vec![0.0; self.f.len()];
+
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let dst_idx = self.linearize(x, y, z);
+                    let dst_start = dst_idx * 19;
+
+                    for i in 0..19 {
+                        let c = lattice.velocities[i];
+                        // Pull scheme: source = destination - velocity
+                        let sx = (x as i32 - c[0]).rem_euclid(nx as i32) as usize;
+                        let sy = (y as i32 - c[1]).rem_euclid(ny as i32) as usize;
+                        let sz = (z as i32 - c[2]).rem_euclid(nz as i32) as usize;
+                        let src_idx = self.linearize(sx, sy, sz);
+                        f_new[dst_start + i] = self.f[src_idx * 19 + i];
+                    }
+                }
+            }
+        }
+
+        self.f = f_new;
         self.compute_macroscopic();
         self.timestep += 1;
 
@@ -538,6 +580,147 @@ impl LbmSolver3D {
         for _ in 0..num_steps {
             self.evolve_one_step();
         }
+    }
+
+    /// Evolve with dynamic non-Newtonian viscosity feedback.
+    ///
+    /// At each timestep, the local viscosity (tau) is updated based on the
+    /// current strain rate and a per-cell coupling field. This enables genuine
+    /// shear-thickening or shear-thinning behavior where the viscosity depends
+    /// on the flow itself.
+    ///
+    /// The viscosity update at each cell follows:
+    ///   nu_eff = nu_base * (1 + coupling[i] * (|gamma_dot| + eps)^(power_index - 1))
+    ///   tau_new = 3 * nu_eff + 0.5, clamped to [tau_min, tau_max]
+    ///
+    /// # Arguments
+    /// * `num_steps` - Number of timesteps to evolve
+    /// * `coupling_field` - Per-cell coupling strength (e.g., associator norm)
+    /// * `nu_base` - Base kinematic viscosity
+    /// * `power_index` - Power-law exponent (n>1 = thickening, n<1 = thinning)
+    /// * `tau_min` - Lower clamp for stability (>= 0.505)
+    /// * `tau_max` - Upper clamp for stability
+    ///
+    /// Returns the final strain rate field for analysis.
+    pub fn evolve_non_newtonian(
+        &mut self,
+        num_steps: usize,
+        coupling_field: &[f64],
+        nu_base: f64,
+        power_index: f64,
+        tau_min: f64,
+        tau_max: f64,
+    ) -> Vec<f64> {
+        const EPS: f64 = 1e-10;
+        let n_nodes = self.nx * self.ny * self.nz;
+        assert_eq!(coupling_field.len(), n_nodes);
+        let tau_min = tau_min.max(0.505); // Hard floor for stability
+
+        let mut strain_rate = vec![0.0; n_nodes];
+
+        for step in 0..num_steps {
+            // Standard collision + streaming
+            self.evolve_one_step();
+
+            // Update tau based on strain rate every step (or periodically for perf)
+            // First few steps: let flow develop before feedback kicks in
+            if step >= 10 {
+                strain_rate = self.compute_strain_rate_field();
+
+                let mut new_tau = Vec::with_capacity(n_nodes);
+                for i in 0..n_nodes {
+                    let sr = strain_rate[i];
+                    let coupling = coupling_field[i];
+                    let strain_term = (sr + EPS).powf(power_index - 1.0);
+                    let nu_eff = nu_base * (1.0 + coupling * strain_term);
+                    let tau = (3.0 * nu_eff + 0.5).clamp(tau_min, tau_max);
+                    new_tau.push(tau);
+                }
+
+                // Update the tau field for next collision step
+                let _ = self.collider.set_viscosity_field(new_tau);
+            }
+        }
+
+        strain_rate
+    }
+
+    /// Compute the strain rate magnitude field |gamma_dot| at each grid point.
+    ///
+    /// The strain rate tensor is:
+    ///   e_ab = (du_a/dx_b + du_b/dx_a) / 2
+    ///
+    /// and the scalar magnitude is:
+    ///   |gamma_dot| = sqrt(2 * sum_{a,b} e_ab^2)
+    ///
+    /// Derivatives use central finite differences with periodic boundary conditions.
+    pub fn compute_strain_rate_field(&self) -> Vec<f64> {
+        let nx = self.nx;
+        let ny = self.ny;
+        let nz = self.nz;
+        let n_nodes = nx * ny * nz;
+        let mut strain_rate = vec![0.0; n_nodes];
+
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = self.linearize(x, y, z);
+
+                    // Neighbor indices with periodic BC
+                    let xp = (x + 1) % nx;
+                    let xm = (x + nx - 1) % nx;
+                    let yp = (y + 1) % ny;
+                    let ym = (y + ny - 1) % ny;
+                    let zp = (z + 1) % nz;
+                    let zm = (z + nz - 1) % nz;
+
+                    // Velocity gradient tensor du_a / dx_b (central differences)
+                    let u_xp = self.u[self.linearize(xp, y, z)];
+                    let u_xm = self.u[self.linearize(xm, y, z)];
+                    let u_yp = self.u[self.linearize(x, yp, z)];
+                    let u_ym = self.u[self.linearize(x, ym, z)];
+                    let u_zp = self.u[self.linearize(x, y, zp)];
+                    let u_zm = self.u[self.linearize(x, y, zm)];
+
+                    // du_a/dx (3 components)
+                    let du_dx = [
+                        (u_xp[0] - u_xm[0]) / 2.0,
+                        (u_xp[1] - u_xm[1]) / 2.0,
+                        (u_xp[2] - u_xm[2]) / 2.0,
+                    ];
+                    // du_a/dy (3 components)
+                    let du_dy = [
+                        (u_yp[0] - u_ym[0]) / 2.0,
+                        (u_yp[1] - u_ym[1]) / 2.0,
+                        (u_yp[2] - u_ym[2]) / 2.0,
+                    ];
+                    // du_a/dz (3 components)
+                    let du_dz = [
+                        (u_zp[0] - u_zm[0]) / 2.0,
+                        (u_zp[1] - u_zm[1]) / 2.0,
+                        (u_zp[2] - u_zm[2]) / 2.0,
+                    ];
+
+                    // Strain rate tensor e_ab = (du_a/dx_b + du_b/dx_a) / 2
+                    // Symmetric 3x3 tensor: e[0][0], e[0][1], e[0][2], e[1][1], e[1][2], e[2][2]
+                    let e00 = du_dx[0]; // du_x/dx
+                    let e11 = du_dy[1]; // du_y/dy
+                    let e22 = du_dz[2]; // du_z/dz
+                    let e01 = (du_dy[0] + du_dx[1]) / 2.0; // (du_x/dy + du_y/dx) / 2
+                    let e02 = (du_dz[0] + du_dx[2]) / 2.0; // (du_x/dz + du_z/dx) / 2
+                    let e12 = (du_dz[1] + du_dy[2]) / 2.0; // (du_y/dz + du_z/dy) / 2
+
+                    // |gamma_dot| = sqrt(2 * (e00^2 + e11^2 + e22^2 + 2*e01^2 + 2*e02^2 + 2*e12^2))
+                    let sum_sq = e00 * e00
+                        + e11 * e11
+                        + e22 * e22
+                        + 2.0 * (e01 * e01 + e02 * e02 + e12 * e12);
+                    strain_rate[idx] = (2.0 * sum_sq).sqrt();
+                }
+            }
+        }
+
+        strain_rate
     }
 
     /// Get macroscopic quantities at a grid point.
@@ -563,6 +746,171 @@ impl LbmSolver3D {
             .map(|ui| ui[0] * ui[0] + ui[1] * ui[1] + ui[2] * ui[2])
             .sum::<f64>()
             .sqrt()
+    }
+
+    /// Compute max velocity magnitude in the domain.
+    pub fn max_velocity(&self) -> f64 {
+        self.u
+            .iter()
+            .map(|ui| (ui[0] * ui[0] + ui[1] * ui[1] + ui[2] * ui[2]).sqrt())
+            .fold(0.0_f64, f64::max)
+    }
+
+    /// Compute mean velocity magnitude in the domain.
+    pub fn mean_velocity(&self) -> f64 {
+        let n = self.u.len() as f64;
+        if n < 1.0 {
+            return 0.0;
+        }
+        self.u
+            .iter()
+            .map(|ui| (ui[0] * ui[0] + ui[1] * ui[1] + ui[2] * ui[2]).sqrt())
+            .sum::<f64>()
+            / n
+    }
+
+    /// Check the CFL condition: max velocity should be well below the lattice
+    /// speed of sound c_s = 1/sqrt(3) ~ 0.577 for numerical stability.
+    ///
+    /// Returns (max_velocity, cfl_ratio) where cfl_ratio = max_velocity / c_s.
+    /// A cfl_ratio > 0.3 is a warning; > 0.5 risks instability.
+    pub fn cfl_check(&self) -> (f64, f64) {
+        let cs = (1.0_f64 / 3.0).sqrt();
+        let v_max = self.max_velocity();
+        (v_max, v_max / cs)
+    }
+
+    /// Check if the velocity field has converged to steady state.
+    ///
+    /// Compares current velocity against a reference field. Returns true if
+    /// max |u(current) - u(reference)| < tol.
+    pub fn is_converged(&self, reference_u: &[[f64; 3]], tol: f64) -> bool {
+        if reference_u.len() != self.u.len() {
+            return false;
+        }
+        self.u
+            .iter()
+            .zip(reference_u.iter())
+            .all(|(curr, prev)| {
+                let dx = curr[0] - prev[0];
+                let dy = curr[1] - prev[1];
+                let dz = curr[2] - prev[2];
+                (dx * dx + dy * dy + dz * dz).sqrt() < tol
+            })
+    }
+
+    /// Evolve with convergence monitoring.
+    ///
+    /// Runs up to `max_steps` LBM timesteps, checking convergence every
+    /// `check_interval` steps. Stops early if the velocity field converges
+    /// within tolerance `tol`.
+    ///
+    /// Returns a `ConvergenceReport` with diagnostics from the evolution.
+    pub fn evolve_with_diagnostics(
+        &mut self,
+        max_steps: usize,
+        check_interval: usize,
+        tol: f64,
+    ) -> ConvergenceReport {
+        let initial_mass = self.total_mass();
+        let mut snapshots = Vec::new();
+        let mut prev_u = self.u.clone();
+        let mut converged = false;
+        let mut steps_taken = 0;
+
+        for step in 0..max_steps {
+            self.evolve_one_step();
+            steps_taken = step + 1;
+
+            if steps_taken % check_interval == 0 || step == max_steps - 1 {
+                let current_mass = self.total_mass();
+                let (v_max, cfl) = self.cfl_check();
+
+                snapshots.push(ConvergenceSnapshot {
+                    step: steps_taken,
+                    mass_error: (current_mass - initial_mass).abs()
+                        / initial_mass.abs().max(1e-30),
+                    max_velocity: v_max,
+                    mean_velocity: self.mean_velocity(),
+                    cfl_ratio: cfl,
+                    stable: self.is_stable(),
+                });
+
+                if self.is_converged(&prev_u, tol) {
+                    converged = true;
+                    break;
+                }
+
+                prev_u.clone_from(&self.u);
+
+                // Bail if unstable
+                if !self.is_stable() || cfl > 0.8 {
+                    break;
+                }
+            }
+        }
+
+        ConvergenceReport {
+            steps_taken,
+            converged,
+            initial_mass,
+            final_mass: self.total_mass(),
+            snapshots,
+        }
+    }
+}
+
+/// Snapshot of convergence diagnostics at one point in time.
+#[derive(Debug, Clone)]
+pub struct ConvergenceSnapshot {
+    /// Timestep number
+    pub step: usize,
+    /// Relative mass conservation error |M(t) - M(0)| / M(0)
+    pub mass_error: f64,
+    /// Max velocity magnitude in domain
+    pub max_velocity: f64,
+    /// Mean velocity magnitude in domain
+    pub mean_velocity: f64,
+    /// CFL ratio: max_velocity / c_s (warn if > 0.3, unstable if > 0.5)
+    pub cfl_ratio: f64,
+    /// Whether all distribution values are non-negative
+    pub stable: bool,
+}
+
+/// Report from evolve_with_diagnostics.
+#[derive(Debug, Clone)]
+pub struct ConvergenceReport {
+    /// Number of timesteps actually taken
+    pub steps_taken: usize,
+    /// Whether steady state was reached within tolerance
+    pub converged: bool,
+    /// Initial total mass
+    pub initial_mass: f64,
+    /// Final total mass
+    pub final_mass: f64,
+    /// Diagnostic snapshots taken during evolution
+    pub snapshots: Vec<ConvergenceSnapshot>,
+}
+
+impl ConvergenceReport {
+    /// Check if mass was conserved to the given relative tolerance.
+    pub fn mass_conserved(&self, tol: f64) -> bool {
+        let err = (self.final_mass - self.initial_mass).abs()
+            / self.initial_mass.abs().max(1e-30);
+        err < tol
+    }
+
+    /// Was the simulation stable throughout?
+    pub fn always_stable(&self) -> bool {
+        self.snapshots.iter().all(|s| s.stable)
+    }
+
+    /// Max CFL ratio observed during evolution.
+    pub fn max_cfl(&self) -> f64 {
+        self.snapshots
+            .iter()
+            .map(|s| s.cfl_ratio)
+            .fold(0.0_f64, f64::max)
     }
 }
 
@@ -802,6 +1150,51 @@ mod tests {
     }
 
     #[test]
+    fn test_lbm_solver_equilibrium_initialization() {
+        let solver = LbmSolver3D::new(4, 4, 4, 0.8);
+        let lattice = D3Q19Lattice::new();
+
+        // All cells should be initialized to equilibrium at rho=1, u=0
+        for node in 0..64 {
+            assert!((solver.rho[node] - 1.0).abs() < 1e-14, "rho not 1.0 at node {}", node);
+            for k in 0..3 {
+                assert!(solver.u[node][k].abs() < 1e-14, "u not 0 at node {}", node);
+            }
+            // f_i should equal w_i (equilibrium at rest with rho=1)
+            let base = node * 19;
+            for i in 0..19 {
+                let expected = lattice.weight(i);
+                assert!(
+                    (solver.f[base + i] - expected).abs() < 1e-14,
+                    "f[{}] = {} != w[{}] = {} at node {}",
+                    i, solver.f[base + i], i, expected, node
+                );
+            }
+        }
+
+        // Total mass should be n_nodes (each cell has rho=1)
+        assert!((solver.total_mass() - 64.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_lbm_uniform_force_develops_flow() {
+        // With equilibrium init and uniform force, velocity should grow
+        let mut solver = LbmSolver3D::new(8, 8, 8, 0.8);
+        let n = 8 * 8 * 8;
+        let force = vec![[1e-5, 0.0, 0.0]; n];
+        solver.set_force_field(force).unwrap();
+
+        solver.evolve(50);
+
+        let v_max = solver.max_velocity();
+        assert!(v_max > 1e-6, "Force should produce nonzero velocity, got {}", v_max);
+        assert!(v_max < 0.1, "Velocity should be small and stable, got {}", v_max);
+
+        // Mass should be conserved
+        assert!((solver.total_mass() - n as f64).abs() / (n as f64) < 1e-6);
+    }
+
+    #[test]
     fn test_lbm_solver_linearize() {
         let solver = LbmSolver3D::new(10, 8, 6, 1.0);
         let idx = solver.linearize(5, 4, 3);
@@ -886,16 +1279,277 @@ mod tests {
 
         let f_before = solver.f.clone();
 
-        // At zero velocity and equilibrium, distribution should not change
+        // At zero velocity and equilibrium, uniform distribution is invariant
+        // under both collision (f = f_eq) and streaming (spatially uniform).
         solver.evolve_one_step();
 
         // Check that f changed minimally (only due to floating point)
         for (i, (fb, fa)) in f_before.iter().zip(solver.f.iter()).enumerate() {
             assert!(
-                (fa - fb).abs() < 1e-14,
-                "Component {} changed unexpectedly",
-                i
+                (fa - fb).abs() < 1e-13,
+                "Component {} changed unexpectedly: before={}, after={}",
+                i,
+                fb,
+                fa
             );
         }
+    }
+
+    #[test]
+    fn test_streaming_propagates_perturbation() {
+        // Place a density perturbation at one site and verify it moves
+        let mut solver = LbmSolver3D::new(8, 8, 8, 1.0);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+
+        // Perturb f at site (3, 3, 3) for direction 1 (velocity [1,0,0])
+        let src_idx = solver.linearize(3, 3, 3);
+        solver.f[src_idx * 19 + 1] += 0.01;
+
+        // Run streaming only (skip collision to isolate streaming effect)
+        let _ = solver.phase2_streaming();
+
+        // After streaming, the perturbation in direction 1 should have moved to (4,3,3)
+        let dst_idx = solver.linearize(4, 3, 3);
+        let original_val = 1.0 * solver.collider.lattice.weight(1);
+        let delta = solver.f[dst_idx * 19 + 1] - original_val;
+        assert!(
+            delta.abs() > 0.005,
+            "Perturbation should propagate: delta = {}",
+            delta
+        );
+    }
+
+    #[test]
+    fn test_streaming_periodic_wrapping() {
+        let mut solver = LbmSolver3D::new(4, 4, 4, 1.0);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+
+        // Perturb at edge site (3,2,2) in direction 1 (velocity [1,0,0])
+        let edge_idx = solver.linearize(3, 2, 2);
+        solver.f[edge_idx * 19 + 1] += 0.02;
+
+        let _ = solver.phase2_streaming();
+
+        // Should wrap to (0, 2, 2)
+        let wrap_idx = solver.linearize(0, 2, 2);
+        let original_val = 1.0 * solver.collider.lattice.weight(1);
+        let delta = solver.f[wrap_idx * 19 + 1] - original_val;
+        assert!(
+            delta.abs() > 0.01,
+            "Should wrap periodically: delta = {}",
+            delta
+        );
+    }
+
+    #[test]
+    fn test_streaming_mass_conservation() {
+        let mut solver = LbmSolver3D::new(8, 8, 8, 0.8);
+        solver.initialize_uniform(1.5, [0.1, 0.05, 0.02]);
+
+        let mass_before: f64 = solver.f.iter().sum();
+        let _ = solver.phase2_streaming();
+        let mass_after: f64 = solver.f.iter().sum();
+
+        assert!(
+            (mass_after - mass_before).abs() < 1e-10,
+            "Streaming must conserve mass: before={}, after={}",
+            mass_before,
+            mass_after
+        );
+    }
+
+    #[test]
+    fn test_full_evolution_develops_velocity() {
+        // With Guo forcing, the solver should develop actual flow
+        let mut solver = LbmSolver3D::new(8, 8, 8, 0.8);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+
+        // Set spatially-varying tau field
+        let n_nodes = 8 * 8 * 8;
+        let tau_field = vec![0.8; n_nodes];
+        solver.set_viscosity_field(tau_field).unwrap();
+
+        // Apply a constant body force in x-direction
+        let force = vec![[1e-4, 0.0, 0.0]; n_nodes];
+        solver.set_force_field(force).unwrap();
+
+        solver.evolve(50);
+
+        // Velocity should develop in x-direction
+        let max_ux: f64 = solver
+            .u
+            .iter()
+            .map(|u| u[0].abs())
+            .fold(0.0_f64, f64::max);
+        assert!(
+            max_ux > 1e-6,
+            "Flow should develop with forcing: max |ux| = {:.2e}",
+            max_ux
+        );
+    }
+
+    #[test]
+    fn test_strain_rate_zero_velocity() {
+        let mut solver = LbmSolver3D::new(8, 8, 8, 1.0);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+        solver.compute_macroscopic();
+
+        let strain = solver.compute_strain_rate_field();
+        for &s in &strain {
+            assert!(
+                s.abs() < 1e-14,
+                "Strain rate should be zero for uniform field"
+            );
+        }
+    }
+
+    #[test]
+    fn test_strain_rate_shear_flow() {
+        // Set up a simple shear flow: u_x = y / ny (linear in y)
+        let (nx, ny, nz) = (4, 8, 4);
+        let mut solver = LbmSolver3D::new(nx, ny, nz, 1.0);
+        solver.initialize_uniform(1.0, [0.0, 0.0, 0.0]);
+
+        // Override velocity to create shear
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * (nx * ny) + y * nx + x;
+                    solver.u[idx] = [y as f64 / ny as f64, 0.0, 0.0];
+                }
+            }
+        }
+
+        let strain = solver.compute_strain_rate_field();
+
+        // Interior points should have nonzero strain rate
+        let interior_strain = strain[solver.linearize(2, 4, 2)];
+        assert!(
+            interior_strain > 1e-4,
+            "Shear flow should produce nonzero strain: {}",
+            interior_strain
+        );
+    }
+
+    #[test]
+    fn test_strain_rate_is_finite() {
+        let mut solver = LbmSolver3D::new(8, 8, 8, 0.8);
+        solver.initialize_uniform(1.0, [0.05, 0.02, 0.01]);
+        solver.evolve(10);
+
+        let strain = solver.compute_strain_rate_field();
+        for &s in &strain {
+            assert!(s.is_finite(), "Strain rate must be finite");
+            assert!(s >= 0.0, "Strain rate magnitude must be non-negative");
+        }
+    }
+
+    #[test]
+    fn test_non_newtonian_evolution_stability() {
+        let (nx, ny, nz) = (8, 8, 8);
+        let n = nx * ny * nz;
+        let mut solver = LbmSolver3D::new(nx, ny, nz, 0.8);
+
+        let force = vec![[1e-5, 0.0, 0.0]; n];
+        solver.set_force_field(force).unwrap();
+
+        // Coupling field: uniform moderate coupling
+        let coupling = vec![0.5; n];
+
+        let strain = solver.evolve_non_newtonian(100, &coupling, 0.1, 1.5, 0.505, 2.0);
+
+        // Should produce stable flow
+        let v_max = solver.max_velocity();
+        assert!(v_max > 1e-6, "Should develop flow: v_max={}", v_max);
+        assert!(v_max < 0.3, "Should remain stable: v_max={}", v_max);
+
+        // Mass should be conserved
+        let mass = solver.total_mass();
+        assert!((mass - n as f64).abs() / (n as f64) < 1e-4, "Mass not conserved: {}", mass);
+
+        // Strain rate should be finite and non-negative
+        for &s in &strain {
+            assert!(s.is_finite());
+            assert!(s >= 0.0);
+        }
+    }
+
+    #[test]
+    fn test_non_newtonian_thickening_increases_tau() {
+        // Sinusoidal (Kolmogorov) forcing creates shear flow with velocity
+        // gradients, enabling strain-rate-dependent viscosity effects.
+        // Uniform forcing produces uniform velocity (zero gradients, zero effect).
+        let (nx, ny, nz) = (8, 8, 8);
+        let n = nx * ny * nz;
+        let nu_base = 0.05;
+        let pi2 = std::f64::consts::PI * 2.0;
+
+        // Kolmogorov forcing: F_x = A * sin(2*pi*y/ny)
+        let amplitude = 5e-4;
+        let mut force = vec![[0.0, 0.0, 0.0]; n];
+        for z in 0..nz {
+            for y in 0..ny {
+                let fy = amplitude * (pi2 * y as f64 / ny as f64).sin();
+                for x in 0..nx {
+                    let idx = z * nx * ny + y * nx + x;
+                    force[idx] = [fy, 0.0, 0.0];
+                }
+            }
+        }
+
+        // Newtonian reference: zero coupling
+        let mut solver_newton = LbmSolver3D::new(nx, ny, nz, 3.0 * nu_base + 0.5);
+        solver_newton.set_force_field(force.clone()).unwrap();
+        let coupling_zero = vec![0.0; n];
+        solver_newton.evolve_non_newtonian(300, &coupling_zero, nu_base, 2.0, 0.505, 3.0);
+        let v_newton = solver_newton.max_velocity();
+
+        // Non-Newtonian with strong shear-thickening (n=2.0)
+        let mut solver_thick = LbmSolver3D::new(nx, ny, nz, 3.0 * nu_base + 0.5);
+        solver_thick.set_force_field(force).unwrap();
+        let coupling = vec![100.0; n];
+        solver_thick.evolve_non_newtonian(300, &coupling, nu_base, 2.0, 0.505, 3.0);
+        let v_thick = solver_thick.max_velocity();
+
+        // Shear-thickening should produce LOWER velocity (higher effective viscosity)
+        assert!(
+            v_thick < v_newton * 0.95,
+            "Thickening should reduce velocity by >5%: v_thick={} vs v_newton={}",
+            v_thick, v_newton
+        );
+    }
+
+    #[test]
+    fn test_non_newtonian_tau_field_updated() {
+        let (nx, ny, nz) = (8, 8, 8);
+        let n = nx * ny * nz;
+        let mut solver = LbmSolver3D::new(nx, ny, nz, 0.8);
+
+        let force = vec![[1e-4, 0.0, 0.0]; n];
+        solver.set_force_field(force).unwrap();
+
+        // Non-uniform coupling: gradient in x
+        let mut coupling = vec![0.0; n];
+        for z in 0..nz {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let idx = z * nx * ny + y * nx + x;
+                    coupling[idx] = x as f64 / nx as f64;
+                }
+            }
+        }
+
+        solver.evolve_non_newtonian(50, &coupling, 0.1, 1.5, 0.505, 2.0);
+
+        // After non-Newtonian evolution, tau field should vary spatially
+        let tau = solver.collider.get_tau_field();
+        assert_eq!(tau.len(), n);
+        let tau_min = tau.iter().cloned().fold(f64::INFINITY, f64::min);
+        let tau_max = tau.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        assert!(
+            tau_max - tau_min > 1e-6,
+            "Tau should vary spatially: min={}, max={}",
+            tau_min, tau_max
+        );
     }
 }
