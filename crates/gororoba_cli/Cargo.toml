@@ -219,8 +219,40 @@ name = "thesis-program-sweep"
 path = "src/bin/thesis_program_sweep.rs"
 
 [[bin]]
+name = "gororoba-studio"
+path = "src/bin/gororoba_studio.rs"
+
+[[bin]]
 name = "e027-topology-analyzer"
 path = "src/bin/e027_topology_analyzer.rs"
+
+[[bin]]
+name = "e027-topology-v2"
+path = "src/bin/e027_topology_v2.rs"
+
+[[bin]]
+name = "lattice-filtration-analyzer"
+path = "src/bin/lattice_filtration_analyzer.rs"
+
+[[bin]]
+name = "neural-homotopy-trainer"
+path = "src/bin/neural_homotopy_trainer.rs"
+
+[[bin]]
+name = "thesis-lab"
+path = "src/bin/thesis_lab.rs"
+
+[[bin]]
+name = "thesis2-kolmogorov-2d"
+path = "src/bin/thesis2_kolmogorov_2d.rs"
+
+[[bin]]
+name = "thesis-synthesis-engine"
+path = "src/bin/thesis_synthesis_engine.rs"
+
+[[bin]]
+name = "thesis-cross-tx3"
+path = "src/bin/thesis_cross_tx3.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
@@ -241,6 +273,7 @@ snia_core = { path = "../snia_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
+gororoba_engine = { path = "../gororoba_engine" }
 tda = { workspace = true }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
@@ -249,6 +282,8 @@ rand_chacha = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+axum = { workspace = true }
+tokio = { workspace = true }
 csv = { workspace = true }
 num-complex = { workspace = true }
 plotters = { workspace = true }
