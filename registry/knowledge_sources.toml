@@ -4,10 +4,10 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 6
+tracked_markdown_count = 10
 manual_source_count = 0
-markdown_mirror_count = 5
-generated_markdown_count = 1
+markdown_mirror_count = 8
+generated_markdown_count = 2
 artifact_report_count = 0
 transcript_input_count = 0
 
@@ -21,14 +21,13 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "115708525014230af7301c42fa8c7593545c30d8cc7b752728464f6eca2bb7ae"
-size_bytes = 2136
-line_count = 55
+sha256 = "28fe248d96b8f6a8540d963bf9e3513584ab01fdc4eb50f142878e66073f8572"
+size_bytes = 198
+line_count = 7
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 17
-link_sample = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "apps/", "apps/gororoba_studio/", "build/", "crates/"]
+link_count = 0
 
 [[document]]
 id = "DOC-0002"
@@ -40,14 +39,13 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "5a70cb4aea8061cc01664ec8eb3aafa132b19a26fbfad8114460e81cf19197d7"
-size_bytes = 370
-line_count = 12
+sha256 = "226551bdd4e7c30807fc2a2afe180ac5dde118cbde0602a8f90376b3af15ac76"
+size_bytes = 192
+line_count = 7
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 2
-link_sample = ["AGENTS.md", "apps/"]
+link_count = 0
 
 [[document]]
 id = "DOC-0003"
@@ -59,14 +57,13 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "d36ea900c6260b5d91a9081a67a9e564bf3fa3ba72a7beb82141b0fdf6042b0e"
-size_bytes = 359
-line_count = 12
+sha256 = "aab3880208207c03a55058287c3ca26962fbe48a22a4311dc7a17584049a8460"
+size_bytes = 192
+line_count = 7
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 2
-link_sample = ["AGENTS.md", "apps/"]
+link_count = 0
 
 [[document]]
 id = "DOC-0004"
@@ -78,17 +75,34 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "5285bf8312f2de5b65f05ca871925dfd8894b816ffeaaccf5fc19f5c7f062f6c"
-size_bytes = 988
-line_count = 40
+sha256 = "a18c9c16e9f89dd167c56159c4fa05a56a8fea8449e88980a2ae19590af5fbdc"
+size_bytes = 218
+line_count = 7
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 10
-link_sample = ["AGENTS.md", "apps/gororoba_studio/README.md", "registry/next_actions.toml", "registry/requirements.toml", "registry/roadmap.toml", "registry/todo.toml", "reports/frontend_app_design_options_2026_02_12.toml"]
+link_count = 0
 
 [[document]]
 id = "DOC-0005"
+path = "apps/gororoba_studio/README.md"
+title = "Requirements: Gororoba Studio (Rust Web App)"
+kind = "generated_markdown"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "none"
+sha256 = "fc34a266b657b0fad5ef7d7695c4db3704700900c662fe582c897d9d1d5c78d8"
+size_bytes = 1264
+line_count = 41
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 16
+link_sample = ["GET /api/health", "GET /api/history", "GET /api/pipelines", "POST /api/benchmark/{experiment_id}", "POST /api/reproducibility/{experiment_id}", "POST /api/run-suite", "POST /api/run/{experiment_id}"]
+
+[[document]]
+id = "DOC-0006"
 path = "crates/lbm_3d_cuda/README.md"
 title = "Readme"
 kind = "generated_markdown"
@@ -106,7 +120,61 @@ link_count = 7
 link_sample = ["docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md", "registry/requirements.toml", "registry/requirements_narrative.toml"]
 
 [[document]]
-id = "DOC-0006"
+id = "DOC-0007"
+path = "curated/README.md"
+title = "Curated Artifacts (Legacy / Mixed Provenance)"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "3ef738f76c74f156c924843769f722640036972016cdbe43f0e8071b1b9ffd13"
+size_bytes = 205
+line_count = 7
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+
+[[document]]
+id = "DOC-0008"
+path = "data/artifacts/README.md"
+title = "README"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "6e28290a38009d1e4e45aa5295cb0a2719d14544ebc21b6be93e3b8fa8ce635c"
+size_bytes = 166
+line_count = 7
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+
+[[document]]
+id = "DOC-0009"
+path = "data/csv/README.md"
+title = "Data Index: CSV Datasets"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "00297a7ae564dfabba8e9c3b8749d472cd8cb4fbd424e76a961be4a86c18b337"
+size_bytes = 184
+line_count = 7
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+
+[[document]]
+id = "DOC-0010"
 path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"

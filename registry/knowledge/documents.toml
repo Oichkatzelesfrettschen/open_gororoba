@@ -5,12 +5,12 @@
 [knowledge_documents]
 generated_at = "deterministic"
 raw_capture_count = 1
-skipped_generated_count = 5
+skipped_generated_count = 9
 authoritative = false
 normalization_required = true
 
 [[document]]
-id = "DOC-0006"
+id = "DOC-0010"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"
@@ -18,7 +18,7 @@ migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0006.toml"
+document_toml = "registry/knowledge/docs/DOC-0010.toml"
 
 [[document]]
 id = "DOC-0001"
@@ -58,9 +58,45 @@ skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0005"
+source_path = "apps/gororoba_studio/README.md"
+title = "Requirements: Gororoba Studio (Rust Web App)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0006"
 source_path = "crates/lbm_3d_cuda/README.md"
 title = "Readme"
 kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0007"
+source_path = "curated/README.md"
+title = "Curated Artifacts (Legacy / Mixed Provenance)"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0008"
+source_path = "data/artifacts/README.md"
+title = "README"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0009"
+source_path = "data/csv/README.md"
+title = "Data Index: CSV Datasets"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
