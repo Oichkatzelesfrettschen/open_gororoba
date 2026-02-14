@@ -345,3 +345,21 @@ description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether frus
 name = "claims-consolidate"
 crate = "gororoba_cli"
 description = "Claims registry consolidation pipeline: normalize statuses, enrich metadata, build cross-reference graph, merge duplicates, resolve conflict markers"
+
+[[binary]]
+name = "kubo-frustration-transport"
+crate = "gororoba_cli"
+description = "Kubo linear-response transport coefficients for CD-interpolated frustrated Heisenberg chain with GPU acceleration via cuSOLVER"
+experiment = "E-034"
+
+[[binary]]
+name = "kubo-coupling-analysis"
+crate = "gororoba_cli"
+description = "First-principles viscosity coupling derivation: fine lambda sweep, temperature dependence, analytical fits, and recommended coupling parameters from Kubo Drude weight ratios"
+experiment = "E-034"
+
+[[binary]]
+name = "validate-j1j2-kubo"
+crate = "gororoba_cli"
+description = "J1-J2 spin chain transport validation: Drude ratio, ballistic fraction, C_V phase detection, and CD interpolation cross-validation diagnostics"
+experiment = "E-034"

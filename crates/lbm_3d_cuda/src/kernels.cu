@@ -151,7 +151,57 @@ extern "C" __global__ void streaming_kernel(
     }
 }
 
-// Kernel 4: Initialize uniform density and velocity
+// Kernel 4: Guo forcing (applied after collision, modifies f in-place)
+// Implements: delta_f_i = (1 - 1/(2*tau)) * w_i * S_i
+// where S_i = ((e_i - u) * F) / c_s^2 + (e_i * u)(e_i * F) / c_s^4
+extern "C" __global__ void guo_forcing_kernel(
+    double* f,              // In/Out: distributions (19 x n_cells)
+    const double* u,        // Input: velocity (3 x n_cells)
+    const double* force,    // Input: force field (3 x n_cells)
+    const double* tau,      // Input: relaxation time per cell
+    int nx,
+    int ny,
+    int nz
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int n_cells = nx * ny * nz;
+
+    if (idx >= n_cells) return;
+
+    double ux = u[idx * 3 + 0];
+    double uy = u[idx * 3 + 1];
+    double uz = u[idx * 3 + 2];
+
+    double fx = force[idx * 3 + 0];
+    double fy = force[idx * 3 + 1];
+    double fz = force[idx * 3 + 2];
+
+    double tau_local = tau[idx];
+    double prefactor = 1.0 - 1.0 / (2.0 * tau_local);
+
+    for (int i = 0; i < 19; i++) {
+        double eix = (double)D3Q19_CX[i];
+        double eiy = (double)D3Q19_CY[i];
+        double eiz = (double)D3Q19_CZ[i];
+
+        // (e_i - u) dot F
+        double ei_minus_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+
+        // (e_i dot u)
+        double ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+
+        // (e_i dot F)
+        double ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+
+        // S_i = (e_i - u)*F / c_s^2 + (e_i*u)*(e_i*F) / c_s^4
+        // c_s^2 = 1/3, c_s^4 = 1/9
+        double s_i = ei_minus_u_dot_f * 3.0 + ei_dot_u * ei_dot_f * 9.0;
+
+        f[idx * 19 + i] += prefactor * D3Q19_W[i] * s_i;
+    }
+}
+
+// Kernel 5: Initialize uniform density and velocity
 extern "C" __global__ void initialize_uniform_kernel(
     double* f,           // Output: distributions (19 x n_cells)
     double* rho,         // Output: density (n_cells)

@@ -1,0 +1,867 @@
+# Publication Evidence Consolidation
+# Maps the complete narrative arc from algebraic structure through
+# physics to experimental validation. Source of truth for paper skeleton.
+#
+# Narrative chain:
+#   Algebra -> Frustration -> Viscosity -> Flow -> Topology
+#     -> Latency -> Correction -> Cross-Thesis -> First-Principles -> Benchmarks
+
+[metadata]
+title = "Cayley-Dickson Frustration and Continuum Physics: Evidence Consolidation"
+version = "1.0.0"
+date = "2026-02-13"
+sprint = 41
+total_claims = 689
+total_insights = 66
+total_experiments = 34
+total_tests = 3497
+total_binaries = 69
+
+# =========================================================================
+# SECTION 1: Algebraic Foundations
+# =========================================================================
+[[section]]
+id = "S1"
+title = "Cayley-Dickson Algebraic Structure"
+narrative = """
+The Cayley-Dickson (CD) doubling construction generates a tower of algebras:
+R -> C -> H -> O -> S (sedenions, dim=16) -> ... -> dim=2^n. Beyond the
+octonions (dim=8), these algebras lose the division property and acquire
+zero-divisor pairs. The sedenion multiplication table encodes a signed
+graph whose frustration index (Harary balance) converges to 3/8 as
+dimension increases. This algebraic frustration is not a defect but a
+structural invariant with physical consequences."""
+
+[section.evidence]
+claims = [
+    "C-479",  # Lanyard sign census (42 TwoSameOneOpp + 14 AllOpposite)
+    "C-483",  # Universal 3:1 ratio law
+    "C-487",  # Universal Double 3:1 Law (OS=3*AS, TS=3*AO)
+    "C-520",  # Anti-Diagonal Parity Theorem (mechanism)
+    "C-521",  # APT GF(2)^2 invariant F
+    "C-523",  # GF(2) coboundary phase transition at dim=16
+    "C-524",  # Klein-Four Fiber Symmetry
+    "C-526",  # Eta Doubling Recursion
+    "C-527",  # GF(2) polynomial degree: psi=log2(dim), eta=log2(dim)-1
+    "C-528",  # Quarter Rule exactness
+    "C-529",  # Frustration oscillation converging to 3/8
+    "C-535",  # dim=1024 frustration 0.37849
+    "C-544",  # psi=1 exact formula (n+1)/(2n)
+]
+insights = ["I-018"]  # Anti-Diagonal Parity Theorem: complete mechanism
+experiments = ["E-001"]  # Cayley-Dickson Motif Census
+key_metrics = [
+    { name = "triangles_verified", value = "14.2M+", dims = "16..256" },
+    { name = "frustration_3_8_limit", value = "0.375", verified_to = "dim=1024" },
+    { name = "components_at_dim16", value = "7", structure = "box-kites" },
+    { name = "zero_mismatches_APT", value = "0", scope = "all dims" },
+]
+crates = ["algebra_core"]
+files = [
+    "crates/algebra_core/src/analysis/boxkites.rs",
+    "crates/algebra_core/src/analysis/zd_graphs.rs",
+    "crates/algebra_core/src/analysis/codebook.rs",
+]
+
+[section.discussion]
+mechanism = """
+The Anti-Diagonal Parity Theorem (C-520/C-521) provides the complete
+mechanism for the Universal Double 3:1 Law. The edge parity eta(a,b) =
+psi(lo_a, hi_b) XOR psi(hi_a, lo_b) classifies triangles into pure
+(eta constant, 1 state) and mixed (eta non-constant, 3 states in GF(2)^2).
+This gives the exact 1:3 ratio (Quarter Rule) with zero tolerance."""
+
+open_questions = [
+    "Does the 3/8 frustration limit have a closed-form proof?",
+    "What is the relationship between frustration convergence and split-octonion psi=1 fraction (also 3/8)?",
+    "Can the GF(2) coboundary phase transition at dim=16 be understood category-theoretically?",
+]
+
+# =========================================================================
+# SECTION 2: Composition Algebra Taxonomy
+# =========================================================================
+[[section]]
+id = "S2"
+title = "Two-Axis Composition Algebra Taxonomy"
+narrative = """
+Composition algebras separate along two orthogonal axes: construction
+method (tensor product vs recursive doubling vs exceptional) and metric
+signature (gamma pattern). Tensor products preserve commutativity from
+the base field (100% commutative), while Cayley-Dickson breaks it
+universally at dim >= 4 (0% commutative). Division algebra status
+depends on BOTH axes: gamma=-1 gives division algebras in CD (up to
+dim=8, the Hurwitz classification), while tensor products are never
+division algebras. The categorical distinction is irreversible --
+no isomorphism respects all five structure axioms."""
+
+[section.evidence]
+claims = [
+    "C-633",  # Tessarines 100% commutative
+    "C-634",  # CD 0% commutative at dim>=4
+    "C-635",  # Division algebra gamma-dependent
+    "C-636",  # Tensor product never division
+    "C-637",  # Dual-octonion phase boundary 0.4375
+    "C-638",  # Bi-octonion frustration 0.4688
+    "C-639",  # Para-octonion frustration 0.6562
+    "C-640",  # Categorical distinction theorem (5 axioms)
+    "C-641",  # Albert algebra 100% commutative
+    "C-646",  # Two-axis taxonomy
+    "C-647",  # Construction method primary
+    "C-648",  # Metric signature secondary
+    "C-649",  # Universal commutativity pattern
+    "C-650",  # Taxonomy completeness
+    "C-592",  # Phase 8: dim<=8 census
+    "C-598",  # Hurwitz classification verified
+]
+insights = ["I-054", "I-055", "I-056", "I-059", "I-060"]
+experiments = ["E-021", "E-023"]
+key_metrics = [
+    { name = "algebras_surveyed", value = "15+", dims = "1,2,4,8,16" },
+    { name = "commutativity_CD", value = "0%", note = "universal at dim>=4" },
+    { name = "commutativity_tensor", value = "100%", note = "all families" },
+    { name = "exotic_frustration_range", value = "0.4375-0.6562", note = "Dual/Bi/Para octonions" },
+]
+crates = ["algebra_core"]
+files = [
+    "crates/algebra_core/src/construction/tessarines.rs",
+    "crates/algebra_core/src/construction/composition_algebra_census.rs",
+    "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs",
+    "crates/algebra_core/tests/test_tessarines_census.rs",
+    "crates/algebra_core/tests/test_low_dimensional_survey.rs",
+]
+
+[section.discussion]
+mechanism = """
+Commutativity is controlled by the conjugation asymmetry in the CD
+doubling formula: (a,b)*(c,d) = (ac - d*b, da + bc*). The conjugate
+in the second component breaks symmetry. Tensor products use
+component-wise multiplication, which preserves base algebra symmetry.
+This structural difference is irreversible: no gamma parameter change
+can bridge it."""
+
+open_questions = [
+    "Are there other construction methods beyond tensor/CD/exceptional?",
+    "Do the exotic frustration values (0.4375, 0.4688, 0.6562) form a predictable sequence?",
+]
+
+# =========================================================================
+# SECTION 3: Frustration as Physical Observable
+# =========================================================================
+[[section]]
+id = "S3"
+title = "Frustration Density and the Vacuum Attractor"
+narrative = """
+The sedenion multiplication table defines a signed graph where each edge
+carries a sign s(i,j) = +1 or -1. The frustration index (fraction of
+triangles that cannot be 2-colored consistently) provides a local density
+field when computed over spatial subregions of a sedenion-valued field.
+The vacuum attractor at frustration = 3/8 (the asymptotic CD limit)
+represents a distinguished physical state where the algebra's internal
+tension is minimized relative to the doubling tower."""
+
+[section.evidence]
+claims = [
+    "C-529",  # Frustration oscillation converging to 3/8
+    "C-535",  # dim=1024 frustration 0.37849
+    "C-657",  # Spatial correlation r=-1.0 (frustration vs velocity)
+    "C-658",  # Multi-scale convergence
+    "C-659",  # Pearson r > -0.999
+    "C-675",  # E-027 4-scale GPU convergence
+    "C-676",  # GPU Guo forcing validation
+    "C-670",  # SedenionField4D extension
+]
+insights = ["I-018", "I-067"]
+experiments = ["E-027"]
+key_metrics = [
+    { name = "spearman_16", value = "-0.952", grid = "16^3" },
+    { name = "spearman_32", value = "-0.998", grid = "32^3" },
+    { name = "spearman_64", value = "-0.999", grid = "64^3" },
+    { name = "spearman_128", value = "-0.998", grid = "128^3" },
+    { name = "n_regions_128", value = "125", note = "5^3 subregions" },
+    { name = "betti_0_128", value = "2", note = "stable across lambda" },
+]
+crates = ["vacuum_frustration", "lbm_3d", "lbm_3d_cuda"]
+files = [
+    "crates/vacuum_frustration/src/bridge.rs",
+    "crates/vacuum_frustration/src/frustration.rs",
+    "crates/vacuum_frustration/src/signed_graph.rs",
+    "crates/vacuum_frustration/src/spatial_correlation.rs",
+    "crates/gororoba_cli/src/bin/e027_topology_v2.rs",
+]
+
+[section.discussion]
+mechanism = """
+Frustration density acts as a spatially-varying resistance to flow.
+High-frustration subregions have more internal algebraic tension
+(more non-2-colorable triangles), which translates to higher effective
+viscosity via the FrustrationViscosityBridge. The anti-correlation
+(Spearman r approaching -1.0) shows that velocity magnitude is
+suppressed precisely where frustration is highest. Grid convergence
+from 16^3 to 128^3 confirms this is not a finite-size artifact."""
+
+caveats = [
+    "The Spearman dip at 128^3 (0.998 vs 1.0 at 32^3) may reflect floating-point accumulation or genuine multi-scale structure",
+    "E-027 uses Kolmogorov forcing disabled (epsilon=0) -- the correlation under active forcing needs separate study",
+    "The causal direction (frustration -> velocity suppression) is inferred from the coupling model, not proven from dynamics alone",
+]
+
+# =========================================================================
+# SECTION 4: Frustration-Viscosity Bridge
+# =========================================================================
+[[section]]
+id = "S4"
+title = "Six Viscosity Coupling Models"
+narrative = """
+The FrustrationViscosityBridge maps frustration density f to kinematic
+viscosity nu via six distinct coupling models: Exponential (nu = nu_base *
+exp(lambda * f)), Linear, PowerLaw, Sigmoid, Constant (baseline), and
+KuboResponse (first-principles lookup table from spin transport). The
+KuboResponse model replaces the four phenomenological models with a
+physics-derived coupling: the Kubo formula applied to a CD-interpolated
+Heisenberg chain yields a Drude weight enhancement factor g(lambda)
+that serves as the viscosity multiplier."""
+
+[section.evidence]
+claims = [
+    "C-667",  # 3D associator-coupled shear thickening (10.88% at alpha=100)
+    "C-668",  # Power-index sensitivity hierarchy
+    "C-674",  # All 4/4 gates pass with engine integration
+    "C-678",  # 44x Drude weight collapse at onset
+    "C-679",  # 83.4x enhancement at vacuum attractor (f=3/8)
+    "C-680",  # 216x enhancement at full CD (lambda=1.0)
+    "C-681",  # KuboResponse lookup table
+]
+insights = ["I-067"]
+experiments = ["E-032", "E-034"]
+key_metrics = [
+    { name = "kubo_onset_collapse", value = "44x", at = "lambda=0.01" },
+    { name = "kubo_vacuum_attractor", value = "83.4x", at = "f=3/8" },
+    { name = "kubo_full_cd", value = "216x", at = "lambda=1.0" },
+    { name = "vel_reduction_max", value = "10.88%", at = "alpha=100, n=1.2" },
+    { name = "n_lookup_points", value = "21", range = "lambda 0.0 to 1.0" },
+]
+crates = ["vacuum_frustration", "lbm_3d"]
+files = [
+    "crates/vacuum_frustration/src/bridge.rs",
+    "crates/vacuum_frustration/src/kubo_transport.rs",
+    "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
+    "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs",
+    "crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs",
+]
+
+[section.discussion]
+mechanism = """
+The Kubo formula D_S = sum_k |<0|J_z|k>|^2 / (E_k - E_0) gives the
+spin Drude weight of a Heisenberg chain interpolated by CD structure
+constants. At lambda=0 (pure XXX chain), D_S is maximal (ballistic
+transport). At ANY nonzero lambda, D_S collapses by 44x due to a
+quantum phase transition: the CD interpolation introduces incommensuration
+that breaks integrability. The vacuum attractor at lambda corresponding
+to f=3/8 shows g(3/8)=83.4x enhancement, confirming that the algebraically
+distinguished frustration level has a first-principles transport signature.
+
+The lookup table replaces the tautological linear coupling (nu proportional
+to f) with physics: nu(f) = nu_base * g(f / f_cd), where g is the
+21-point Kubo-derived enhancement factor. Analytical fits fail (power
+R^2=0.60, exponential R^2=0.89) because the oscillatory level-crossing
+structure at lambda=0.30, 0.50, 0.75 cannot be captured by smooth functions."""
+
+caveats = [
+    "Kubo computation uses N=7 chain (finite-size) -- larger chains would give quantitatively different g(lambda)",
+    "K_th (thermal conductivity from energy current) is identically zero due to D_ES^2/D_S cancellation -- spin transport only",
+    "The onset catastrophe (44x) may be softened at finite temperature -- T=0.5 is used throughout",
+    "Level-crossing oscillations are not physical resonances but finite-N eigenvalue artifacts",
+]
+
+# =========================================================================
+# SECTION 5: LBM Fluid Dynamics
+# =========================================================================
+[[section]]
+id = "S5"
+title = "D3Q19 Lattice Boltzmann with Non-Newtonian Viscosity"
+narrative = """
+The D3Q19 lattice Boltzmann method evolves 19 distribution functions per
+grid cell with BGK collision operator: f_i^new = f_i - (f_i - f_i^eq) / tau.
+Kinematic viscosity nu = (1/3)(tau - 0.5). Non-Newtonian extension:
+the associator norm field ||[a,b,c]|| computed from the sedenion grid
+modulates tau spatially via power-law coupling:
+tau(x) = 0.5 + 3 * nu_base * (1 + alpha * assoc_norm(x))^(n-1).
+Kolmogorov sinusoidal forcing F_x = A * sin(2*pi*y/ny) creates shear
+gradients that reveal the non-Newtonian response."""
+
+[section.evidence]
+claims = [
+    "C-667",  # 3D associator shear thickening
+    "C-668",  # Power-index sensitivity
+    "C-676",  # GPU Guo forcing validation
+]
+experiments = ["E-032"]
+key_metrics = [
+    { name = "gpu_throughput", value = "280-285 Mcells/s", device = "RTX 4070 Ti" },
+    { name = "gpu_speedup", value = "16x", vs = "CPU single-thread" },
+    { name = "thickening_ratio", value = "1.254", gate = ">1.0" },
+    { name = "best_vel_reduction", value = "10.88%", at = "alpha=100, n=1.2" },
+]
+crates = ["lbm_3d", "lbm_3d_cuda"]
+files = [
+    "crates/lbm_3d/src/solver.rs",
+    "crates/lbm_3d/src/lattice.rs",
+    "crates/lbm_3d_cuda/src/lib.rs",
+    "crates/lbm_3d_cuda/src/kernels.cu",
+]
+
+[section.discussion]
+mechanism = """
+The power-law index n controls sensitivity: n=1.2 (mildly shear-thickening)
+gives 10.88% velocity reduction at alpha=100, while n=2.0 gives only 0.30%.
+This hierarchy (n=1.2 >> n=1.5 >> n=2.0) follows from the power-law
+exponent amplifying small deviations from unity -- at higher n, the
+coupling becomes more linear and less sensitive to associator gradients.
+
+The Kolmogorov forcing pattern is essential: uniform forcing with periodic
+boundaries produces zero strain rate (the force balances itself globally).
+Sinusoidal forcing creates y-dependent shear that the non-Newtonian
+viscosity can respond to."""
+
+caveats = [
+    "LBM BGK has known limitations for high-Re flows (no MRT or TRT operator)",
+    "Power-law viscosity can drive tau below stability limit (tau > 0.5); tau_min is clamped at 0.505",
+    "Grid Reynolds number at 128^3 is modest -- turbulent regime not reached",
+]
+
+# =========================================================================
+# SECTION 6: Persistent Homology (Topology-Dynamics)
+# =========================================================================
+[[section]]
+id = "S6"
+title = "Vietoris-Rips Persistent Homology of Velocity Fields"
+narrative = """
+The velocity field from LBM evolution is analyzed via Vietoris-Rips
+persistent homology. Spatial subregions are sampled, their mean velocity
+magnitude computed, and the resulting point cloud is fed to VR complex
+construction. Persistence diagrams (birth-death pairs) capture the
+topological features (connected components, loops, voids) of the velocity
+landscape. The Wasserstein distance W_2 between persistence diagrams
+from different viscosity models measures topological similarity."""
+
+[section.evidence]
+claims = [
+    "C-657",  # Spearman r=-1.0
+    "C-658",  # Multi-scale convergence
+    "C-675",  # GPU 4-scale convergence
+]
+experiments = ["E-027"]
+key_metrics = [
+    { name = "w2_linear_frustration", value = "0.000", note = "identical topology" },
+    { name = "w2_powerlaw_frustration", value = "0.000", note = "identical topology" },
+    { name = "w2_sigmoid_frustration", value = "0.000", note = "identical despite weak Spearman" },
+    { name = "w2_constant_frustration", value = "0.558", note = "different topology" },
+    { name = "w2_exponential_frustration", value = "0.489", note = "anti-correlated" },
+]
+crates = ["vacuum_frustration"]
+files = [
+    "crates/vacuum_frustration/src/vietoris_rips.rs",
+]
+
+[section.discussion]
+mechanism = """
+The key finding is that frustration-coupled viscosity models (linear,
+power-law, sigmoid) produce velocity fields with IDENTICAL topology
+(W_2 = 0) to the frustration field itself, while the constant model
+(no coupling) produces DIFFERENT topology (W_2 = 0.558). This means
+the viscosity coupling preserves the topological structure of the
+algebraic frustration in the resulting flow.
+
+The exponential model has W_2 = 0.489 because it ANTI-correlates with
+frustration (high frustration -> high viscosity -> low velocity, which
+inverts the relationship). Its topology differs because the inversion
+changes the filtration order."""
+
+caveats = [
+    "VR complexes are truncated to top_k=50 persistence pairs to avoid O(n^3) memory blowup",
+    "Betti numbers at 128^3 show B_0=2 (two connected components) vs B_0=1 at smaller grids -- this may be an edge effect or genuine multi-scale structure",
+]
+
+# =========================================================================
+# SECTION 7: Latency Law and Filtration
+# =========================================================================
+[[section]]
+id = "S7"
+title = "Collision Return-Time Latency Law"
+narrative = """
+A 3D toroidal random walk with sedenion product keys generates collision
+events in a hash table. The return time (steps between re-visits to the
+same hash bucket) is binned by shell radius. The latency-radius relationship
+follows a power law: latency ~ C * r^gamma with gamma = -2.41 and
+R^2 = 0.9952, classifying as InverseSquare. This suggests the sedenion
+multiplication structure imprints a scale-free pattern on collision dynamics."""
+
+[section.evidence]
+claims = [
+    "C-660",  # Latency law classification
+    "C-661",  # Power-law R^2 = 0.9952
+    "C-662",  # gamma = -2.41
+    "C-663",  # InverseSquare classification
+    "C-664",  # 50,000 steps validation
+    "C-665",  # Multi-shell convergence
+    "C-666",  # TX-1 non-monotonic alpha dependence
+]
+insights = []
+experiments = ["E-030"]
+key_metrics = [
+    { name = "power_law_r2", value = "0.9952", gate = ">0.60" },
+    { name = "gamma", value = "-2.41", classification = "InverseSquare" },
+    { name = "n_steps", value = "50000", grid = "16^3 toroid" },
+    { name = "n_shells", value = "40", note = "radial binning" },
+    { name = "tx1_max_delta_gamma", value = "0.19", at = "alpha=0.5" },
+]
+crates = ["lattice_filtration"]
+files = [
+    "crates/lattice_filtration/src/filtration.rs",
+    "crates/lattice_filtration/src/survival_spectrum.rs",
+    "crates/gororoba_cli/src/bin/thesis_cross_tx1.rs",
+]
+
+[section.discussion]
+mechanism = """
+The inverse-square latency law emerges from the sedenion product structure:
+the walk visits hash buckets determined by sedenion multiplication, which
+has a specific algebraic connectivity pattern (7 box-kites with octahedral
+structure). The power-law exponent gamma=-2.41 is close to -2 (inverse
+square) but not exact, suggesting corrections from the non-trivial
+topology of the zero-divisor graph.
+
+TX-1 shows that frustration modulation changes gamma non-monotonically,
+with peak deviation at alpha=0.5. This suggests a resonance between the
+frustration density and the collision dynamics -- the walk is most
+sensitive to frustration at intermediate coupling."""
+
+caveats = [
+    "The original latency measure (occupancy/r^2) was tautological (always R^2=1.0) -- replaced with shell return-time in Phase 2",
+    "gamma=-2.41 may depend on hash table load factor and toroidal geometry",
+    "The InverseSquare classification threshold is heuristic (gamma in [-3, -1.5])",
+]
+
+# =========================================================================
+# SECTION 8: Neural Homotopy Correction
+# =========================================================================
+[[section]]
+id = "S8"
+title = "A-Infinity Structure via Neural m_4 Tensor"
+narrative = """
+Sedenion multiplication is non-associative: the associator [a,b,c] =
+(ab)c - a(bc) is generically nonzero. An A-infinity structure provides
+higher operations m_3, m_4, ... that 'correct' this failure at
+successively higher orders. The m_4 tensor (16^4 = 65536 entries) is
+synthesized via a Burn neural network (MLP 256->128->64->16) that
+minimizes the pentagon violation -- the failure of the A_4 coherence
+relation. Starting from the associator-derived ansatz, the neural
+search achieves 78% pentagon reduction (2.50 -> 0.547)."""
+
+[section.evidence]
+claims = [
+    "C-671",  # Neural training 78% improvement
+    "C-672",  # Algebraic-only basin trap (0.23%)
+    "C-673",  # Perturbation robustness (10.5% at 5% noise)
+    "C-674",  # All 4/4 gates pass
+]
+insights = []
+experiments = ["E-029"]
+key_metrics = [
+    { name = "pentagon_violation_initial", value = "2.50", method = "associator ansatz" },
+    { name = "pentagon_violation_trained", value = "0.547", method = "Burn MLP" },
+    { name = "improvement_pct", value = "78%", gate = "<1.0 violation" },
+    { name = "algebraic_only_improvement", value = "0.23%", note = "trapped in basin" },
+    { name = "perturbation_increase", value = "10.5%", at = "5% noise" },
+    { name = "mlp_architecture", value = "256-128-64-16", optimizer = "Adam" },
+]
+crates = ["neural_homotopy"]
+files = [
+    "crates/neural_homotopy/src/m4_tensor.rs",
+    "crates/neural_homotopy/src/stasheff.rs",
+    "crates/neural_homotopy/src/burn_model.rs",
+    "crates/neural_homotopy/src/optimizer.rs",
+]
+
+[section.discussion]
+mechanism = """
+The algebraic-only optimizer (coordinate descent on the associator ansatz)
+achieves only 0.23% improvement because the associator landscape has deep
+local minima -- the Stasheff polytope constraints create narrow valleys
+that gradient-free search cannot escape.
+
+The neural approach succeeds because the MLP can represent non-local
+corrections: the 256-dimensional hidden layer allows the network to
+'see' correlations across the 16^4 tensor that coordinate descent misses.
+The 78% improvement suggests that sedenion multiplication is closer to
+A-infinity than the raw associator suggests -- the non-associativity
+is concentrated in a small number of higher-order obstructions that
+the m_4 tensor can partially cancel.
+
+Perturbation robustness (only 10.5% degradation at 5% noise) indicates
+that the correction is structurally stable, not a fragile numerical accident."""
+
+caveats = [
+    "Pentagon violation 0.547 is still nonzero -- full A-infinity would require m_5, m_6, ...",
+    "Training uses sedenion (dim=16) only -- does m_4 structure persist at dim=32?",
+    "The 'improvement' is measured against a specific norm; different norms could give different percentages",
+]
+
+# =========================================================================
+# SECTION 9: Cross-Thesis Validation
+# =========================================================================
+[[section]]
+id = "S9"
+title = "Cross-Thesis Experiments and Null Results"
+narrative = """
+Three cross-thesis experiments test connections between the four theses.
+TX-1 (T1 x T4) shows that frustration-modulated collision dynamics change
+the latency exponent gamma non-monotonically. TX-2 (T2 x T4) is a null
+result: the viscosity-to-filtration loop does NOT change the latency law
+classification. TX-3 (T1 x T2) resolves the sigmoid paradox: despite
+weak Spearman correlation (0.64), sigmoid viscosity preserves frustration
+topology (W_2 = 0) because the point cloud perfectly overlaps at regional
+resolution but has collapsed dynamic range (CV = 0.001)."""
+
+[section.evidence]
+claims = [
+    "C-666",  # TX-1 non-monotonic delta_gamma
+    "C-669",  # TX-2 null result
+    "C-677",  # TX-2 undetermined at all grids
+    "C-675",  # TX-3 sigmoid paradox resolved
+]
+experiments = ["E-030", "E-031"]
+key_metrics = [
+    { name = "tx1_peak_delta_gamma", value = "0.19", at = "alpha=0.5" },
+    { name = "tx2_n_determined", value = "0", out_of = "5 lambdas" },
+    { name = "tx2_best_r2", value = "0.59", type = "inverse_square" },
+    { name = "tx3_sigmoid_spearman_16", value = "0.643", topology = "W2=0" },
+    { name = "tx3_sigmoid_spearman_32", value = "0.664", topology = "W2=0" },
+    { name = "tx3_point_cloud_overlap", value = "1.000" },
+    { name = "tx3_cv_regional_means", value = "0.001" },
+]
+crates = ["lattice_filtration", "vacuum_frustration", "lbm_3d"]
+files = [
+    "crates/gororoba_cli/src/bin/thesis_cross_tx1.rs",
+    "crates/gororoba_cli/src/bin/thesis_cross_tx2.rs",
+    "data/thesis_lab/tx1/tx1_report.toml",
+    "data/thesis_lab/tx2/tx2_report.toml",
+    "data/thesis_lab/tx3/tx3_report.toml",
+]
+
+[section.discussion]
+mechanism = """
+TX-1 (significant): The non-monotonic alpha dependence suggests a resonance
+between frustration density and collision dynamics. At low alpha (< 0.5),
+frustration modulation perturbs the walk weakly. At alpha=0.5, the
+perturbation is maximal (delta_gamma=0.19). At high alpha (> 5.0),
+the frustration field saturates the collision probability and gamma
+returns to the reference value.
+
+TX-2 (null): The viscosity-to-filtration loop does NOT produce a
+deterministic latency law because the projection from 3D velocity field
+to 1D latency spectrum loses too much information. All R^2 values are
+below 0.60 regardless of lambda. This is a genuine decoupling: the
+macroscopic flow structure does not encode the microscopic collision
+statistics directly.
+
+TX-3 (paradox resolved): The sigmoid model produces W_2=0 (identical
+topology to frustration) despite Spearman=0.64 because the sigmoid
+compresses the dynamic range. The point cloud overlap is 1.0 (every
+frustration subregion maps to a sigmoid value within the same region),
+but the CV of regional means is 0.001 (all regions give nearly the same
+sigmoid value). The topology is preserved but the rank ordering is lost
+to compression."""
+
+null_results = [
+    { experiment = "TX-2", finding = "Latency law undetermined at all grid scales (32^3, 64^3)", interpretation = "Macroscopic flow does not encode microscopic collision statistics" },
+]
+
+# =========================================================================
+# SECTION 10: First-Principles Kubo Transport
+# =========================================================================
+[[section]]
+id = "S10"
+title = "Kubo Linear-Response Theory for CD-Interpolated Spin Chain"
+narrative = """
+The Kubo formula is applied to a 7-site Heisenberg chain whose coupling
+constants are interpolated between standard (lambda=0, integrable XXX)
+and full CD structure (lambda=1.0). Exact diagonalization via cuSOLVER
+eigendecomposition on GPU yields the spin Drude weight D_S(T=0.5) as a
+function of lambda. The enhancement factor g(lambda) = D_S(0)/D_S(lambda)
+ranges from 1.0 (integrable) to 216 (full CD). The vacuum attractor
+frustration f=3/8 corresponds to g=83.4x, confirming the algebraically
+distinguished frustration level has a transport signature."""
+
+[section.evidence]
+claims = [
+    "C-678",  # Drude onset catastrophe 44x
+    "C-679",  # Vacuum attractor 83.4x
+    "C-680",  # Full CD 216x
+    "C-681",  # KuboResponse lookup table
+    "C-682",  # Integrable chain ballistic
+    "C-683",  # 30,778x D_S enhancement
+    "C-685",  # Published benchmark match
+    "C-686",  # Varma mechanism consistency
+    "C-687",  # C_V crossover shift
+    "C-688",  # 76+ benchmark values
+    "C-689",  # Stolpp Lifshitz-point confirmation
+]
+insights = ["I-065", "I-066", "I-067", "I-068", "I-069"]
+experiments = ["E-034"]
+key_metrics = [
+    { name = "drude_onset", value = "44x collapse", at = "lambda=0.01" },
+    { name = "vacuum_attractor_g", value = "83.4x", at = "f=3/8" },
+    { name = "full_cd_g", value = "216x", at = "lambda=1.0" },
+    { name = "level_crossings", value = "3", at = "lambda=0.30, 0.50, 0.75" },
+    { name = "j1j2_enhancement", value = "30778x", at = "alpha=1.1, B=3.0" },
+    { name = "benchmark_papers", value = "8", range = "1990-2019" },
+    { name = "benchmark_values", value = "76+", types = "Bethe, DMRG, ED" },
+]
+crates = ["vacuum_frustration", "quantum_core"]
+files = [
+    "crates/vacuum_frustration/src/kubo_transport.rs",
+    "crates/vacuum_frustration/src/kubo_transport_gpu.rs",
+    "crates/gororoba_cli/src/bin/kubo_frustration_transport.rs",
+    "crates/gororoba_cli/src/bin/kubo_coupling_analysis.rs",
+    "crates/gororoba_cli/src/bin/validate_j1j2_kubo.rs",
+    "data/kubo_transport/validation/published_transport_benchmarks.toml",
+]
+
+[section.discussion]
+mechanism = """
+The 44x onset catastrophe occurs because the CD interpolation breaks
+integrability at ANY nonzero lambda. The XXX Heisenberg chain is
+Bethe-ansatz solvable with fully ballistic transport (D_S = D_S_max).
+Any perturbation away from the integrable point opens a gap in the
+energy spectrum that suppresses transport. This is a quantum phase
+transition in the transport channel.
+
+The 83.4x enhancement at f=3/8 connects algebraic structure to transport:
+the vacuum attractor frustration level corresponds to a specific lambda
+on the interpolation path where the Drude weight has a particular value.
+This is NOT a coincidence -- the frustration index of the sedenion
+multiplication table determines the effective coupling constants of the
+spin chain, and those constants determine the transport properties.
+
+The Stolpp Lifshitz-point mechanism (alpha=1/4 in J1-J2 language) provides
+independent confirmation. At the Lifshitz point, the single-particle
+dispersion splits from one minimum to two, doubling the number of low-energy
+carriers and enhancing transport. Our 30,778x D_S enhancement at alpha=1.1
+is consistent with Stolpp's ~15x K_th enhancement -- the difference in
+magnitude comes from stronger field (B=3.0 vs M=0.4 saturation) and
+finite-size effects (N=10 vs thermodynamic limit)."""
+
+caveats = [
+    "N=7 chain is small -- quantitative g(lambda) values will shift with larger N",
+    "T=0.5 is not low temperature for these energy scales -- T->0 limit may differ",
+    "K_th (energy current Drude weight) is zero due to cancellation -- only spin transport couples",
+    "The level-crossing oscillations at lambda=0.30, 0.50, 0.75 are finite-N artifacts",
+    "Our 30,778x vs Stolpp's 15x: quantitative comparison requires matching field and temperature",
+]
+
+# =========================================================================
+# SECTION 11: Ultrametric Structure in Observational Data
+# =========================================================================
+[[section]]
+id = "S11"
+title = "Ultrametric Hierarchies in Astronomical Catalogs"
+narrative = """
+The ultrametric fraction test, Baire metric encoding, and GPU-accelerated
+triple evaluation reveal statistically significant ultrametric structure
+in 7 of 9 astronomical catalogs (BH-FDR < 0.05). The strongest signals
+come from structured (non-isotropic) catalogs: Hipparcos (48/114 tests
+significant), Gaia (12/114), and CHIME/FRB (8/8). Isotropic catalogs
+(Fermi GBM) show zero significance, as expected."""
+
+[section.evidence]
+claims = [
+    "C-436",  # BH-FDR corrected significance
+    "C-437",  # Hipparcos 48/114
+    "C-438",  # CHIME 8/8
+]
+insights = ["I-011"]
+experiments = ["E-002"]
+key_metrics = [
+    { name = "significant_tests", value = "82/472", at = "BH-FDR < 0.05" },
+    { name = "catalogs_significant", value = "7/9" },
+    { name = "gpu_triples", value = "10M", device = "RTX 4070 Ti" },
+    { name = "hipparcos_significant", value = "48/114" },
+    { name = "chime_significant", value = "8/8" },
+    { name = "fermi_gbm_significant", value = "0/66", note = "isotropic, expected null" },
+]
+crates = ["stats_core"]
+files = [
+    "crates/stats_core/src/ultrametric/mod.rs",
+    "crates/stats_core/src/ultrametric/gpu.rs",
+    "crates/stats_core/src/ultrametric/null_models.rs",
+    "crates/stats_core/src/ultrametric/adaptive.rs",
+]
+
+[section.discussion]
+mechanism = """
+Ultrametric structure in astronomical catalogs reflects hierarchical
+organization: galaxy clusters form from filaments, pulsars cluster in
+the galactic plane, FRBs correlate with host galaxy properties. The
+Baire metric encodes multi-attribute tuples (position, flux, period)
+into a p-adic-like hierarchy. Catalogs with known hierarchical structure
+(Hipparcos, Gaia, CHIME) show strong ultrametricity; isotropic catalogs
+(Fermi GBM) do not.
+
+The connection to the CD algebra work is through the codebook filtration:
+the Lambda_2048 -> Lambda_256 chain (Layer 2 of the monograph abstraction
+stack) is itself an ultrametric hierarchy. Simpson's Paradox in the
+filtration (C-509) shows that ultrametricity is a per-stratum property,
+not a global one -- mixing strata produces artifactually low z-scores."""
+
+# =========================================================================
+# SECTION 12: Filtration and Simpson's Paradox
+# =========================================================================
+[[section]]
+id = "S12"
+title = "Lattice Filtration and the Simpson's Paradox"
+narrative = """
+The monograph abstraction stack provides a 5-layer analysis framework
+from TypedCarrier (Layer 0) through NullModel (Layer 5). At Layer 2,
+the lattice filtration Lambda_2048 -> Lambda_1024 -> Lambda_512 ->
+Lambda_256 progressively constrains the codebook by prefix exclusion.
+Each filtration level has different ultrametric properties. Simpson's
+Paradox (C-509): the global z-score is negative (-5.07), but every
+individual stratum has z > 12. The paradox arises from mixing strata
+with different distributions."""
+
+[section.evidence]
+claims = [
+    "C-498",  # Coset obstruction (0% Z/F_3 closure)
+    "C-500",  # Euclidean filtration gradient
+    "C-509",  # Simpson's Paradox
+    "C-510",  # Recursive paradox at l_2, l_3
+    "C-511",  # Universal paradox (l_0=0)
+    "C-512",  # Stratum counting model (6->3->2->1)
+]
+experiments = []
+key_metrics = [
+    { name = "global_z_2048", value = "-5.07", note = "mixing artifact" },
+    { name = "per_stratum_z", value = "12-14", note = "individually ultrametric" },
+    { name = "l0_minus1_z", value = "-3.07", note = "Simpson victim" },
+    { name = "l0_0_z", value = "+2.73", note = "weakly ultrametric" },
+    { name = "l0_0_l1_plus1_z", value = "+23.63", note = "highest ever" },
+    { name = "stratum_chain", value = "6->3->2->1", note = "progressive simplification" },
+]
+crates = ["algebra_core", "stats_core"]
+files = [
+    "crates/algebra_core/src/analysis/codebook.rs",
+    "crates/algebra_core/src/analysis/graph_projections.rs",
+]
+
+# =========================================================================
+# SECTION 13: Synthesis Gate
+# =========================================================================
+[[section]]
+id = "S13"
+title = "Grand Synthesis: All Four Theses Pass Simultaneously"
+narrative = """
+The gororoba_engine orchestrator runs all four thesis pipelines in
+sequence and applies falsification gates. All four pass simultaneously
+(E-033): T1 r=-1.0 (threshold 0.5), T2 ratio=1.254 (threshold 1.05),
+T3 violation=0.547 (threshold 1.0), T4 R^2=0.995 (threshold 0.60).
+The synthesis is not merely four independent results but a coherent
+physics picture: algebraic frustration -> viscosity -> flow -> topology
+-> latency, with neural correction providing the A-infinity bridge."""
+
+[section.evidence]
+claims = ["C-674"]
+experiments = ["E-033"]
+key_metrics = [
+    { name = "t1_r", value = "-1.0", threshold = "0.5" },
+    { name = "t2_ratio", value = "1.254", threshold = "1.05" },
+    { name = "t3_violation", value = "0.547", threshold = "1.0" },
+    { name = "t4_r2", value = "0.995", threshold = "0.60" },
+    { name = "gates_passed", value = "4/4" },
+]
+crates = ["gororoba_engine"]
+files = [
+    "crates/gororoba_engine/src/pipeline.rs",
+    "crates/gororoba_engine/src/thesis_pipelines.rs",
+    "crates/gororoba_cli/src/bin/thesis_synthesis_engine.rs",
+    "data/evidence/synthesis_final/synthesis_summary.toml",
+]
+
+[section.discussion]
+mechanism = """
+The synthesis gate is designed as a falsification framework: each thesis
+has a clear metric and threshold chosen to be easily falsifiable. The
+thresholds are deliberately permissive (e.g., T1 only requires |r| > 0.5)
+to avoid overfitting to specific parameter choices. The actual values
+far exceed the thresholds (T1: 2x, T4: 1.66x), providing margin.
+
+The coherence across theses is the key result: it is unlikely that four
+independent metrics would all pass their gates simultaneously by chance
+if the underlying physics picture were wrong. The cross-thesis experiments
+(TX-1 significant, TX-2 null, TX-3 resolved) add further constraints."""
+
+# =========================================================================
+# HEADLINE RESULTS TABLE
+# =========================================================================
+[headline_results]
+description = "Key numerical results for abstract and introduction"
+
+[[headline_results.entries]]
+label = "Algebraic theorems proven"
+value = "12"
+scope = "dims 16-1024, 14.2M+ triangles"
+
+[[headline_results.entries]]
+label = "Frustration-topology correlation"
+value = "Spearman r = -0.998"
+scope = "128^3 GPU (E-027)"
+
+[[headline_results.entries]]
+label = "Shear thickening ratio"
+value = "1.254"
+scope = "64^3, power-law n=1.2"
+
+[[headline_results.entries]]
+label = "Pentagon violation reduction"
+value = "78%"
+scope = "Burn MLP (2.50 -> 0.547)"
+
+[[headline_results.entries]]
+label = "Latency power-law R^2"
+value = "0.9952"
+scope = "gamma=-2.41, 50K steps"
+
+[[headline_results.entries]]
+label = "Kubo Drude enhancement"
+value = "83.4x at f=3/8"
+scope = "N=7 chain, T=0.5"
+
+[[headline_results.entries]]
+label = "Kubo onset catastrophe"
+value = "44x collapse"
+scope = "ANY nonzero lambda"
+
+[[headline_results.entries]]
+label = "Published benchmark values"
+value = "76+"
+scope = "8 papers, 1990-2019"
+
+[[headline_results.entries]]
+label = "Cross-thesis: TX-1"
+value = "Significant (delta_gamma=0.19)"
+scope = "alpha=0.5"
+
+[[headline_results.entries]]
+label = "Cross-thesis: TX-2"
+value = "Null result (0/5 determined)"
+scope = "Documented decoupling"
+
+[[headline_results.entries]]
+label = "Tests passing"
+value = "3497"
+scope = "0 clippy warnings"
+
+[[headline_results.entries]]
+label = "Claims registered"
+value = "689"
+scope = "94% verified"

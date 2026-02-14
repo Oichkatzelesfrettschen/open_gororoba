@@ -163,17 +163,17 @@ extern "C" __global__ void apt_census_kernel(
     unsigned int ak = node_a[k];
     unsigned int bk = node_b[k];
 
-    // Bounds check
-    if (ai >= dim_half || bi >= dim_half || aj >= dim_half || bj >= dim_half
-        || ak >= dim_half || bk >= dim_half) {
+    // Bounds check: lo indices in [1, dim/2), hi indices in [dim/2, dim)
+    if (ai >= dim || bi >= dim || aj >= dim || bj >= dim
+        || ak >= dim || bk >= dim) {
         return;
     }
 
     // Compute eta values via anti-diagonal parity theorem:
-    // eta(u,v) = psi(u_lo, v_hi) XOR psi(u_hi, v_lo)
-    unsigned char eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-    unsigned char eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-    unsigned char eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+    // eta(u,v) = psi(lo_u, hi_v) XOR psi(hi_u, lo_v)
+    unsigned char eta_ij = psi(dim, ai, bj) ^ psi(dim, bi, aj);
+    unsigned char eta_ik = psi(dim, ai, bk) ^ psi(dim, bi, ak);
+    unsigned char eta_jk = psi(dim, aj, bk) ^ psi(dim, bj, ak);
 
     // Classify triangle:
     // Pure iff all three eta values are equal (constant eta across edges)
@@ -448,11 +448,12 @@ impl GpuDimensionalEngine {
             let ak = ak as usize;
             let bk = bk as usize;
 
-            // Nodes are cross-assessor pairs in dimension indices (not normalized to [0, dim/2))
+            // Nodes are cross-assessor pairs: (lo, hi) with lo in [1,dim/2), hi in [dim/2,dim)
             if ai < dim && bi < dim && aj < dim && bj < dim && ak < dim && bk < dim {
-                let eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-                let eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-                let eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+                // Anti-diagonal parity: eta(u,v) = psi(lo_u, hi_v) XOR psi(lo_v, hi_u)
+                let eta_ij = psi(dim, ai, bj) ^ psi(dim, aj, bi);
+                let eta_ik = psi(dim, ai, bk) ^ psi(dim, ak, bi);
+                let eta_jk = psi(dim, aj, bk) ^ psi(dim, ak, bj);
 
                 if eta_ij == eta_ik && eta_ik == eta_jk {
                     pure_count += 1;
@@ -581,9 +582,10 @@ impl GpuDimensionalEngine {
             let (ak, bk) = (nodes[k].0 as usize, nodes[k].1 as usize);
 
             if ai < dim && bi < dim && aj < dim && bj < dim && ak < dim && bk < dim {
-                let eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-                let eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-                let eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+                // Anti-diagonal parity: eta(u,v) = psi(lo_u, hi_v) XOR psi(lo_v, hi_u)
+                let eta_ij = psi(dim, ai, bj) ^ psi(dim, aj, bi);
+                let eta_ik = psi(dim, ai, bk) ^ psi(dim, ak, bi);
+                let eta_jk = psi(dim, aj, bk) ^ psi(dim, ak, bj);
 
                 if eta_ij == eta_ik && eta_ik == eta_jk {
                     pure_count += 1;
@@ -715,9 +717,10 @@ extern "C" __global__ void apt_census_wide_kernel(
     unsigned int aj = node_a[j], bj = node_b[j];
     unsigned int ak = node_a[k], bk = node_b[k];
 
-    unsigned char eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-    unsigned char eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-    unsigned char eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+    // Anti-diagonal parity: eta(u,v) = psi(lo_u, hi_v) XOR psi(lo_v, hi_u)
+    unsigned char eta_ij = psi(dim, ai, bj) ^ psi(dim, aj, bi);
+    unsigned char eta_ik = psi(dim, ai, bk) ^ psi(dim, ak, bi);
+    unsigned char eta_jk = psi(dim, aj, bk) ^ psi(dim, ak, bj);
 
     if (eta_ij == eta_ik && eta_ik == eta_jk) {
         atomicAdd(pure_count, 1);

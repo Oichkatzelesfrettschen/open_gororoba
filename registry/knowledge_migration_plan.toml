@@ -258,8 +258,6 @@ source_markdown = [
 authoritative_toml = ["registry/entrypoint_docs.toml"]
 generated_mirror = [
   "AGENTS.md",
-  "CLAUDE.md",
-  "GEMINI.md",
   "README.md",
   "curated/README.md",
   "curated/01_theory_frameworks/README_COQ.md",
@@ -267,9 +265,9 @@ generated_mirror = [
   "data/artifacts/README.md",
   "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
 ]
-strategy = "toml_primary_generated_mirror"
+strategy = "toml_primary_generated_mirror_with_manual_overlay_exceptions"
 status = "complete"
-notes = "Tracked entrypoint markdown files are now generated from registry/entrypoint_docs.toml."
+notes = "Entrypoint markdown is TOML-first except CLAUDE.md and GEMINI.md, which are immutable manual stubs that must not be rewritten by export pipelines."
 
 [[domain]]
 id = "KM-020"

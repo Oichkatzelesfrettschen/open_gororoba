@@ -52,6 +52,8 @@ MIRROR_TO_TOML = {
     "docs/book/src/registry/experiments.md": "registry/experiments.toml",
 }
 
+IMMUTABLE_AGENT_OVERLAYS = {"CLAUDE.md", "GEMINI.md"}
+
 
 def _toml_backing_for_path(path: str) -> str:
     if path in MIRROR_TO_TOML:
@@ -122,6 +124,8 @@ def _title_from_markdown(text: str, fallback: str) -> str:
 
 
 def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
+    if path in IMMUTABLE_AGENT_OVERLAYS:
+        return ("manual_source", "manual", False)
     if path in MIRROR_TO_TOML and path.startswith("data/artifacts/"):
         return ("markdown_mirror", "generated", True)
     if path.startswith("reports/"):

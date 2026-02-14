@@ -3231,6 +3231,7 @@ dependencies = [
  "optics_core",
  "pyo3",
  "quantum_core",
+ "sha2",
  "spectral_core",
  "stats_core",
 ]
@@ -7763,6 +7764,7 @@ dependencies = [
  "cosmology_core",
  "criterion",
  "cudarc 0.19.1",
+ "nalgebra 0.33.2",
  "petgraph 0.7.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",

@@ -6,9 +6,9 @@ authoritative = true
 updated = "2026-02-10"
 source_markdown = "docs/CLAIMS_TASKS.md"
 table_count = 3
-task_count = 212
+task_count = 213
 section_count = 20
-canonical_status_task_count = 212
+canonical_status_task_count = 213
 noncanonical_status_task_count = 0
 canonical_status_tokens = ["TODO", "IN_PROGRESS", "PARTIAL", "DONE", "REFUTED", "DEFERRED", "BLOCKED"]
 
@@ -25,7 +25,7 @@ task_count = 0
 [[section]]
 id = "CTS-003"
 name = "Active tasks (start here)"
-task_count = 31
+task_count = 32
 
 [[section]]
 id = "CTS-004"
@@ -3291,3 +3291,18 @@ task = "Strang splitting convergence demo + validation smoke check."
 output_artifacts = ["examples/strang_splitting_demo.py", "src/scripts/validation/validate_strang_splitting_convergence.py", "tests/test_strang_splitting_demo.py"]
 output_artifacts_raw = "`examples/strang_splitting_demo.py`, `src/scripts/validation/validate_strang_splitting_convergence.py`, `tests/test_strang_splitting_demo.py`"
 source_line = 241
+
+[[task]]
+id = "CTASK-0213"
+claim_id = "C-453"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 213
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Ingest hypercomplex species taxonomy and derived claim candidates into canonical claim/ticket lanes with verify-refute hooks."
+output_artifacts = ["reports/hypercomplex_species_taxonomy_2026_02_14.toml", "reports/hypercomplex_taxonomy_claims_2026_02_14.toml", "reports/sensational_primary_source_mapping_2026_02_14.toml"]
+output_artifacts_raw = "`reports/hypercomplex_species_taxonomy_2026_02_14.toml`, `reports/hypercomplex_taxonomy_claims_2026_02_14.toml`, `reports/sensational_primary_source_mapping_2026_02_14.toml`"
+source_line = 999

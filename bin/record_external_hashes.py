@@ -7,6 +7,11 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
+try:  # Optional pyo3 bridge.
+    import gororoba_py  # type: ignore
+except Exception:  # pragma: no cover - environment dependent
+    gororoba_py = None  # type: ignore
+
 
 @dataclass(frozen=True)
 class FileHash:
@@ -16,7 +21,24 @@ class FileHash:
     sha256: str
 
 
-def sha256_file(path: Path) -> str:
+def sha256_file(path: Path, backend: str) -> str:
+    if backend not in {"auto", "pyo3", "python"}:
+        raise ValueError("sha backend must be one of: auto, pyo3, python")
+
+    if backend in {"auto", "pyo3"}:
+        if gororoba_py is not None and hasattr(gororoba_py, "py_sha256_file"):
+            try:
+                out = str(gororoba_py.py_sha256_file(str(path)))
+                if out and len(out) == 64:
+                    return out
+            except Exception as exc:
+                if backend == "pyo3":
+                    raise RuntimeError(
+                        f"pyo3 sha256 backend failed for {path}: {exc}"
+                    ) from exc
+        elif backend == "pyo3":
+            raise RuntimeError("pyo3 backend selected but gororoba_py is unavailable")
+
     h = hashlib.sha256()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
@@ -42,6 +64,11 @@ def main() -> int:
         default=Path("data/external/PROVENANCE.local.json"),
         help="Output JSON path (default: data/external/PROVENANCE.local.json).",
     )
+    parser.add_argument(
+        "--sha-backend",
+        default="auto",
+        help="Checksum backend: auto, pyo3, or python.",
+    )
     args = parser.parse_args()
 
     root: Path = args.root
@@ -57,13 +84,14 @@ def main() -> int:
                 path=rel,
                 size_bytes=st.st_size,
                 mtime_utc=iso_utc_from_timestamp(st.st_mtime),
-                sha256=sha256_file(path),
+                sha256=sha256_file(path, args.sha_backend),
             )
         )
 
     payload = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "root": root.as_posix(),
+        "hash_backend": args.sha_backend,
         "hashes": [e.__dict__ for e in entries],
     }
 
@@ -75,4 +103,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

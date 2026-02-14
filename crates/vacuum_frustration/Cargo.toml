@@ -8,6 +8,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 algebra_core = { path = "../algebra_core", version = "0.1" }
 cosmology_core = { path = "../cosmology_core", version = "0.1" }
+nalgebra = { workspace = true }
 petgraph = { workspace = true }
 rayon = { workspace = true }
 serde = { workspace = true, features = ["derive"] }

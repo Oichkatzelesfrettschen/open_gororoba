@@ -5,7 +5,7 @@
 updated = "2026-02-13"
 status = "active"
 status_token = "ACTIVE"
-item_count = 18
+item_count = 20
 status_allowlist = ["open", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -229,3 +229,26 @@ dependencies = []
 acceptance_criteria = ["128^3 LBM converges within 500 steps.", "T2 shear thickening ratio consistent with 64^3 extrapolation.", "GPU wall time under 5 minutes on RTX 4070 Ti."]
 evidence_refs = ["crates/lbm_3d_cuda/"]
 
+[[item]]
+id = "T-019"
+area = "provenance"
+title = "Hypercomplex Intake Batch Reconciliation"
+description = "Complete RI-2026-02-14 URL intake: fetch all sources with provenance hashes, map sensational headlines to primary papers, and wire unresolved mappings into claims/tickets."
+priority = "high"
+status = "open"
+status_token = "OPEN"
+dependencies = ["NA-001", "C-452", "C-453"]
+acceptance_criteria = ["All RI registry rows have fetch outcome and SHA256 or explicit failure trace.", "Primary-source mapping exists or unresolved rationale is recorded for every sensational headline.", "Any evidence-bearing additions are linked into claims/tickets using TOML-first updates."]
+evidence_refs = ["registry/research_intake_2026_02_14.toml", "plans/research_hypercomplex_ingest_roadmap_2026_02_14.toml"]
+
+[[item]]
+id = "T-020"
+area = "taxonomy"
+title = "Hypercomplex Taxonomy Registry Integration"
+description = "Promote report-level taxonomy and claim candidates into canonical claim/task/ticket lanes with explicit verify-refute criteria and source anchors."
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["T-019", "NA-031", "C-452", "C-453"]
+acceptance_criteria = ["Quaternion/octonion/sedenion/pathion species rows have invariant columns in machine-readable form.", "Derived claim candidates have verify/refute criteria and source references.", "Open evidence gaps are mirrored in claims_tasks and next_actions with stable IDs."]
+evidence_refs = ["reports/hypercomplex_species_taxonomy_2026_02_14.toml", "reports/hypercomplex_taxonomy_claims_2026_02_14.toml", "reports/research_rescope_execution_2026_02_14.toml"]

@@ -19,6 +19,8 @@ import fnmatch
 import tomllib
 from pathlib import Path
 
+IMMUTABLE_AGENT_OVERLAYS = {"CLAUDE.md", "GEMINI.md"}
+
 
 def _escape(text: str) -> str:
     esc = (
@@ -88,8 +90,6 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
 def _generated_mirror_patterns() -> list[str]:
     return [
         "AGENTS.md",
-        "CLAUDE.md",
-        "GEMINI.md",
         "README.md",
         "curated/README.md",
         "curated/01_theory_frameworks/README_COQ.md",
@@ -209,7 +209,11 @@ def main() -> int:
         if toml_backing:
             source_refs = [toml_backing] + [ref for ref in source_refs if ref != toml_backing]
 
-        if (path.startswith("docs/") and path.count("/") == 1) or _is_generated_mirror(path):
+        if path in IMMUTABLE_AGENT_OVERLAYS:
+            mode = "toml_manual_source"
+            header_required = False
+            notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
+        elif (path.startswith("docs/") and path.count("/") == 1) or _is_generated_mirror(path):
             mode = "toml_generated_mirror"
             header_required = True
             notes = "Generated from TOML registries and overlays."

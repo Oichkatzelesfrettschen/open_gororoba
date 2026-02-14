@@ -12,6 +12,10 @@
 use numpy::{IntoPyArray, PyArray1};
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
+use sha2::{Digest, Sha256};
+use std::fs::File;
+use std::io::{BufReader, Read};
+use std::path::Path;
 
 // Re-export core crates
 use algebra_core::{
@@ -223,6 +227,28 @@ fn py_trace_geodesic(
 #[pyfunction]
 fn py_frechet_distance(p: Vec<f64>, q: Vec<f64>) -> f64 {
     frechet_distance(&p, &q)
+}
+
+/// Compute SHA256 for a file path (Rust backend for Python ingestion scripts).
+#[pyfunction]
+fn py_sha256_file(path: &str) -> PyResult<String> {
+    let file_path = Path::new(path);
+    let file = File::open(file_path).map_err(|e| {
+        PyValueError::new_err(format!("failed to open file {}: {e}", file_path.display()))
+    })?;
+    let mut reader = BufReader::new(file);
+    let mut digest = Sha256::new();
+    let mut chunk = [0u8; 1024 * 1024];
+    loop {
+        let read = reader.read(&mut chunk).map_err(|e| {
+            PyValueError::new_err(format!("failed to read file {}: {e}", file_path.display()))
+        })?;
+        if read == 0 {
+            break;
+        }
+        digest.update(&chunk[..read]);
+    }
+    Ok(format!("{:x}", digest.finalize()))
 }
 
 // ============================================================================
@@ -561,6 +587,7 @@ fn gororoba_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // Statistics functions
     m.add_function(wrap_pyfunction!(py_frechet_distance, m)?)?;
+    m.add_function(wrap_pyfunction!(py_sha256_file, m)?)?;
 
     // Materials functions
     m.add_function(wrap_pyfunction!(py_build_absorber_stack, m)?)?;

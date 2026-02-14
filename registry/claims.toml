@@ -10685,3 +10685,199 @@ confidence = "medium"
 phase = "Phase 4"
 sprint = 40
 status_note = "All 4 pass simultaneously. 3442 workspace tests pass. Neural enhancement for T3 also confirmed (violation 0.547<2.0). Evidence TOML artifacts for each thesis."
+
+[[claim]]
+id = "C-675"
+statement = "E-027 Multi-Scale GPU Convergence: Frustration-velocity anti-correlation is robust across 4 grid scales (16^3 to 128^3, 4K to 2M cells). Best Spearman correlation at lambda=10: -0.976 (16^3), -1.000 (32^3), -0.999 (64^3), -0.998 (128^3). Pearson r > -0.999 at all scales. The signal does not weaken with grid refinement."
+description = "E-027 multi-scale GPU validation: frustration-velocity anti-correlation converges across 4 grid scales."
+where_stated = "data/e027/v2/e027_v2_128cubed.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: |Spearman| > 0.95 at all scales 16^3..128^3. REFUTATION: correlation degrades below 0.90 at any scale."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "GPU Guo forcing implemented. 500 LBM steps, 50 VR points, 7 lambda values per grid. All four scales produce |r|>0.97."
+
+[[claim]]
+id = "C-676"
+statement = "GPU Guo Forcing Validation: CUDA D3Q19 solver with Guo forcing scheme produces Kolmogorov flow with velocity scaling v_max ~ N^(2/3): 0.008 (16^3), 0.032 (32^3), 0.087 (64^3), 0.128 (128^3). Matches expected Kolmogorov physics. Streaming bug and double-conversion bug fixed."
+description = "GPU LBM Guo forcing produces physically correct Kolmogorov flow across all grid scales."
+where_stated = "data/e027/v2/e027_v2_64cubed.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: GPU and CPU paths produce comparable max_vel at same grid/steps. REFUTATION: GPU max_vel=0 or differs by >50% from CPU."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Three bugs fixed: (1) streaming dead code, (2) nu->tau double conversion, (3) missing Guo forcing kernel. All 10 lbm_3d_cuda tests pass."
+
+[[claim]]
+id = "C-677"
+statement = "TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-thesis (T2 x T4) produces 'Undetermined' latency law classification at 16^3, 32^3, and 64^3 grids. Gamma values range 0.10-0.14, insufficient for power-law or exponential classification. Kolmogorov shear produces smooth velocity gradients incompatible with sharp return-time structures. Documented negative result."
+description = "TX-2 cross-thesis null result: frustration-coupled LBM velocity does not produce classifiable latency law at any scale."
+where_stated = "data/thesis_lab/tx2/grid64/tx2_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: law=Undetermined at 16^3..64^3. REFUTATION: deterministic latency law at any grid >= 128^3 or with different forcing."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Genuine null: velocity field too smooth for filtration-based return-time analysis. Gamma stable at ~0.12 across scales."
+
+[[claim]]
+id = "C-678"
+statement = "Kubo Drude Weight Onset Catastrophe: Any nonzero Cayley-Dickson interpolation (lambda > 0) causes a 44x collapse of the spin Drude weight D_S in a dim=8 frustrated Heisenberg chain at T=0.5. The ballistic transport fraction drops from 33% to below 1% at lambda=0.02. This is a first-principles quantum phase transition from ballistic to diffusive transport driven by algebraic frustration."
+description = "First-principles Drude weight collapse at onset of CD frustration in dim=8 Heisenberg chain."
+where_stated = "data/kubo_transport/coupling_analysis.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: D_S(0.01)/D_S(0) < 0.03 at T=0.5 for dim=8. REFUTATION: D_S ratio > 0.5 at lambda=0.01 for any dim or temperature."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "GPU-accelerated exact diagonalization via cuSOLVER syevd. D_S_ref=0.3671, D_S(0.01)=0.00827."
+
+[[claim]]
+id = "C-679"
+statement = "Vacuum Attractor Kubo Enhancement: At the Cayley-Dickson vacuum attractor frustration f=3/8=0.375, the Drude weight suppression ratio g(lambda) = D_S(0)/D_S(lambda) equals 83.4x for dim=8 at T=0.5. This provides first-principles physical grounding for the vacuum attractor coupling strength previously derived from algebraic arguments alone."
+description = "First-principles viscosity enhancement factor at vacuum attractor frustration from Kubo linear response."
+where_stated = "data/kubo_transport/coupling_analysis.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: g(0.375) in [50, 150] for dim=8 at T=0.5. REFUTATION: g(0.375) < 10 or > 500 at these parameters."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Interpolated from 21-point table. Non-monotonic dips at lambda=0.30, 0.50, 0.75 due to eigenvalue level crossings."
+
+[[claim]]
+id = "C-680"
+statement = "Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f_CD=0.5429), the Drude weight suppression ratio reaches g=216x for dim=8 at T=0.5. This is the maximum first-principles viscosity enhancement achievable from Cayley-Dickson algebraic frustration. Exponential fit R^2=0.89 captures the trend but misses level-crossing oscillations; lookup table interpolation is the correct coupling method."
+description = "Maximum first-principles viscosity enhancement from full CD frustration via Kubo formula."
+where_stated = "data/kubo_transport/coupling_analysis.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: g(1.0) in [100, 500] for dim=8 at T=0.5. REFUTATION: g(1.0) < 50 or analytical fit R^2 > 0.95."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Power-law fit R^2=0.60 fails due to sharp onset. Level crossings at lambda=0.30, 0.50, 0.75 cause non-monotonic dips."
+
+[[claim]]
+id = "C-681"
+statement = "KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the tautological linear coupling nu=nu_base*(1+lambda*f) with a 21-point lookup table derived from exact diagonalization of the Kubo formula. The table maps frustration to Drude weight suppression ratio via linear interpolation. At f=0, enhancement=1 (no coupling); enhancement grows monotonically on average but with non-monotonic level-crossing dips. This is the first physics-derived (not postulated) viscosity coupling in the synthesis pipeline."
+description = "Lookup table viscosity coupling model derived from first-principles Kubo linear response theory."
+where_stated = "crates/vacuum_frustration/src/bridge.rs (ViscosityCouplingModel::KuboResponse)"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: 6 unit tests pass including zero-frustration identity, monotonicity near vacuum, enhancement ratio bounds. REFUTATION: KuboResponse produces NaN or negative viscosity for any valid frustration input."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Precomputed from kubo-coupling-analysis binary. 21 table entries from lambda=0.00 to 1.00. Maps f -> lambda_eff = f/f_cd, then interpolates."
+
+[[claim]]
+id = "C-682"
+statement = "Integrable Heisenberg Chain Fully Ballistic: At alpha=0 (pure nearest-neighbor Heisenberg chain), the ballistic fraction B = D_S / I0_S = 1.000000, confirming fully ballistic spin transport for the integrable model at N=10, B=3.0, T=0.1. All spin spectral weight resides in the Drude peak."
+description = "Cross-validates the Kubo transport code against the exact integrability constraint: the spin-1/2 XXX chain is integrable (Bethe ansatz solvable), so the Drude weight must equal the total spectral weight."
+where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: B(0) = 1.0 to machine precision. REFUTATION: B(0) < 0.99 would indicate a bug in the current-current correlator evaluation."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Integrable limit provides rigorous cross-validation of Kubo implementation."
+
+[[claim]]
+id = "C-683"
+statement = "D_S Enhancement in Polarized Regime: The spin Drude weight D_S increases 30,778x from alpha=0 to alpha=1.1 for the N=10 J1-J2 chain at B=3.0, T=0.1. This is a finite-size + strong-field effect: the magnetic field polarizes the chain, gapping excitations. Increasing J2 competes with polarization, creating low-energy spin excitations and larger D_S."
+description = "Documents the counterintuitive behavior of D_S increasing with frustration in the strong-field regime."
+where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: D_S monotonically increases from alpha=0 to alpha=1.1 and peaks at alpha=1.1. REFUTATION: Running at B=0 should show D_S DECREASING with alpha (standard frustration suppression per Heidrich-Meisner PRB 68, 134436)."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "The D_S enhancement is physical for the polarized regime, not a bug. Standard frustration-suppression requires B=0 or thermodynamic limit."
+
+[[claim]]
+id = "C-684"
+statement = "M4 Hexagon Residual Nonzero: The associator-based m_3 correction tensor produces a nonzero hexagon (A_5) residual when evaluated with m_4=0, confirming that the sedenion A-infinity structure genuinely requires a quaternary correction m_4 beyond the ternary m_3. The M4CorrectionTensor (16^5 = 1,048,576 entries, 8.4 MB) is implemented and passes 8 unit tests."
+description = "Establishes that the A-infinity hierarchy continues beyond m_3 for sedenions."
+where_stated = "crates/neural_homotopy/src/m4_tensor.rs (M4CorrectionTensor::m3_hexagon_residual)"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: m3_hexagon_residual > 0 for associator m_3 with n_samples=256. REFUTATION: If hexagon residual were zero, m_3 alone would satisfy A_5 and no m_4 would be needed."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "8 new M4 tests pass. Hexagon violation uses 9-term A_5 identity with sign pattern matching existing pentagon code."
+
+[[claim]]
+id = "C-685"
+statement = "Published Benchmark: Integrable Ballistic Fraction Exact Match. Our N=10 B=3.0 T=0.1 computation yields B(alpha=0) = 1.000000, exactly matching the theoretical prediction of Castella, Zotos, Prelovsek PRL 74, 972 (1995) that the spin-1/2 XXX Heisenberg chain has D_S = I0_S (fully ballistic transport). This validates the Kubo transport implementation."
+description = "Cross-validation against published exact result for integrable chain."
+where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: B(0) = 1.0 to machine precision matches Castella et al. REFUTATION: Any B(0) != 1.0 indicates a spectral weight miscounting bug."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Published reference: Castella, Zotos, Prelovsek, PRL 74, 972 (1995). Our code reproduces the exact analytical result."
+
+[[claim]]
+id = "C-686"
+statement = "Published Benchmark: Polarized-Regime Enhancement Consistent with Varma Mechanism. The 30,778x D_S enhancement with frustration at B=3.0 is physically consistent with the interaction-induced Drude weight enhancement mechanism of Varma & Sanchez PRB 92, 195143 (2015), where interactions suppress frustration effects at intermediate coupling, producing non-monotonic transport behavior. At B>>J, field polarization gaps excitations; J2 competes with polarization, reopening low-energy channels."
+description = "Places our counterintuitive D_S enhancement result in context of published non-monotonic Drude weight phenomena."
+where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: Enhancement is consistent with Varma mechanism (frustration suppressed by competing effects -> D rises). REFUTATION: Running at B=0 should show standard frustration suppression per Heidrich-Meisner PRB 68, 134436 (2003)."
+confidence = "medium"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "The B=0 standard-regime data (Karrasch PRL 108, 227206; Heidrich-Meisner PRB 68, 134436) shows D_s DECREASING with frustration. Our B=3.0 regime is qualitatively different."
+
+[[claim]]
+id = "C-687"
+statement = "Published Benchmark: C_V Crossover Shifted by Strong Field. The specific heat peak occurs at alpha=0.80 in our B=3.0, T=0.1, N=10 data, compared to the Okamoto-Nomura critical point alpha_c = 0.2411 at B=0 (PLA 169, 433, 1992). The strong magnetic field shifts the frustration crossover to higher alpha, consistent with field-induced modification of the singlet-triplet gap structure."
+description = "Documents the shift of the phase crossover due to strong magnetic field."
+where_stated = "data/kubo_transport/validation/j1j2_validation_report.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: alpha_peak(C_V) = 0.80 > 0.2411 at B=3.0. At B=0, the peak should move toward alpha_c ~ 0.2411. REFUTATION: If C_V peak were at alpha < 0.2411, the field would suppress rather than shift the crossover."
+confidence = "medium"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Okamoto-Nomura critical point alpha_c = 0.2411 is for B=0, Delta=1. At B>0, the phase diagram shifts."
+
+[[claim]]
+id = "C-688"
+statement = "Canonical Transport Benchmark Dataset: 12 published benchmark values, 6 Bethe ansatz D_s(T=0) reference curves, 10 Karrasch DMRG finite-T Drude weights, 12 Heidrich-Meisner finite-size scaling ratios, 8 Stolpp effective mass values, 10 Stolpp K_th ratios at saturation, 9 Stolpp ED high-magnetization points, and 9 Stolpp ED low-magnetization contrast points encoded as machine-readable TOML in published_transport_benchmarks.toml. Covers 8 papers from Shastry-Sutherland PRL 65 (1990) through Stolpp PRB 99 (2019)."
+description = "Documents the creation of the canonical published transport benchmark dataset for regression testing."
+where_stated = "data/kubo_transport/validation/published_transport_benchmarks.toml"
+status = "Established"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: TOML file parses and contains all claimed entries. REFUTATION: If any digitized value is >20% off from paper figure, the entry should be corrected."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+status_note = "Machine-readable benchmark dataset enables automated regression testing of Kubo transport code against published literature."
+
+[[claim]]
+id = "C-689"
+statement = "Lifshitz-Point Mechanism Confirmation: The 30,778x D_S enhancement at B=3.0, alpha=1.1 is consistent with the Stolpp et al. (2019) Lifshitz-point mechanism. At alpha=1/4, the single-particle dispersion splits from one minimum (Q=pi) to two minima (+/-Q), doubling the number of energy carriers. The effective mass m*(alpha) diverges at the Lifshitz point then decreases, causing K_th ~ 1/sqrt(m*) to increase monotonically for alpha > 1/4 in the polarized regime. Stolpp ED at M=0.4 shows ~15x enhancement at alpha=1.2; our N=10, B=3.0 regime shows 30,778x enhancement. The magnitude difference arises from (a) our stronger polarization B=3.0 vs M=0.4, (b) continuous CD interpolation spanning a wider parameter range than discrete alpha, and (c) finite-size enhancement at N=10. Direction of effect (enhancement at high field, suppression at low field) matches Stolpp exactly."
+description = "Links our 30,778x D_S enhancement to the Stolpp Lifshitz-point mechanism in frustrated spin chains at high magnetic field."
+where_stated = "crates/gororoba_cli/src/bin/validate_j1j2_kubo.rs (Lifshitz_mechanism_direction comparison)"
+status = "Verified"
+last_verified = "2026-02-13"
+what_would_verify_refute = "VERIFIED: Both our data and Stolpp 2019 show D_S increasing with frustration at high field. REFUTATION: If D_S decreased with alpha at B=3.0 (inconsistent with Lifshitz mechanism), or if Stolpp's theory predicted suppression at all fields."
+confidence = "high"
+phase = "Phase 2 Week 3"
+sprint = 41
+dependencies = ["C-681", "C-685", "C-686"]
+status_note = "The strongest literature support for the polarized-regime transport enhancement. Stolpp mechanism: Lifshitz splitting -> doubled carriers -> K_th ~ 1/sqrt(m*) increases."

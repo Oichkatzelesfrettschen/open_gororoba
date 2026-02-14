@@ -281,38 +281,40 @@ fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) ->
     let bridge = FrustrationViscosityBridge::new(16);
     let n_cells = nx * ny * nz;
 
-    // Frustration -> viscosity -> tau
+    // Frustration -> viscosity (nu). GPU solver converts nu -> tau internally.
     let viscosity = bridge.frustration_to_viscosity(frustration, 1.0 / 3.0, lambda);
     let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
-    let tau_field: Vec<f64> = viscosity.iter().map(|&nu| 3.0 * nu + 0.5).collect();
 
-    // Initialize GPU solver
+    // Initialize GPU solver at rest with continuous Kolmogorov forcing
     let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(nx, ny, nz, 1.0)
         .expect("Failed to initialize GPU solver");
 
     solver
-        .set_viscosity_field(&tau_field)
+        .set_viscosity_field(&viscosity)
         .expect("viscosity field length should match grid");
 
-    // Initialize with Kolmogorov shear profile (GPU lacks Guo forcing)
-    let rho_init = vec![1.0; n_cells];
+    solver
+        .initialize_uniform(1.0, [0.0, 0.0, 0.0])
+        .expect("Failed to initialize uniform fields");
+
+    // Kolmogorov forcing: F_x = A * sin(2*pi*y/ny), applied every timestep via Guo scheme
     let force_amp = 5e-4;
     let pi2 = std::f64::consts::PI * 2.0;
-    let mut u_init = vec![[0.0; 3]; n_cells];
+    let mut force_field = vec![[0.0; 3]; n_cells];
     for z in 0..nz {
         for y in 0..ny {
             for x in 0..nx {
                 let idx = z * (nx * ny) + y * nx + x;
                 let yn = y as f64 / ny as f64;
-                u_init[idx] = [force_amp * (pi2 * yn).sin(), 0.0, 0.0];
+                force_field[idx] = [force_amp * (pi2 * yn).sin(), 0.0, 0.0];
             }
         }
     }
     solver
-        .initialize_custom(&rho_init, &u_init)
-        .expect("Failed to initialize custom fields");
+        .set_force_field(&force_field)
+        .expect("Failed to set force field");
 
-    // Evolve and sync to host
+    // Evolve with Guo forcing and sync to host
     solver.evolve(cfg.lbm_steps).expect("GPU evolution failed");
 
     // Extract velocity from host-side data

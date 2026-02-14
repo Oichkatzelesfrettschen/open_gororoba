@@ -5,7 +5,7 @@
 updated = "2026-02-12"
 status = "active"
 status_token = "ACTIVE"
-action_count = 30
+action_count = 31
 status_allowlist = ["todo", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -372,3 +372,15 @@ status_token = "TODO"
 dependencies = []
 acceptance_criteria = ["claims-consolidate full --dry-run shows no regressions.", "Cross-link count monotonically increases.", "registry-check passes after each run."]
 evidence_refs = ["crates/gororoba_cli/src/bin/claims_consolidate.rs", "registry/claims.toml"]
+
+[[action]]
+id = "NA-031"
+area = "provenance"
+title = "Sensational Primary Evidence Closure"
+description = "Close unresolved sensational mappings (RI-026, RI-027, RI-032) by obtaining direct provider citations or demoting them to non-evidence narrative references."
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["T-019"]
+acceptance_criteria = ["Each unresolved sensational row has either a direct primary source URL or an explicit non-evidence demotion note.", "Blocked paywall/challenge traces are captured with deterministic hashes.", "Registry/ticket links are updated for every mapping decision."]
+evidence_refs = ["reports/sensational_primary_source_mapping_2026_02_14.toml", "data/papers/sensational_primary/2026_02_14/manifest.tsv", "reports/sensational_primary_validation_2026_02_14.toml"]

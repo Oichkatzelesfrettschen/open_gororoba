@@ -338,34 +338,33 @@ fn evolve_lbm_gpu(
     solver.set_viscosity_field(viscosity_field)?;
 
     if verbose {
-        eprintln!("  Initializing velocity field with shear profile...");
+        eprintln!("  Initializing with Kolmogorov forcing...");
     }
 
-    // Create shear velocity profile on CPU (same as CPU solver)
     let n_cells = grid_size * grid_size * grid_size;
-    let rho_init = vec![1.0; n_cells];
-    let mut u_init = vec![[0.0, 0.0, 0.0]; n_cells];
 
+    // Initialize at rest with Kolmogorov forcing (continuous Guo scheme)
+    solver.initialize_uniform(1.0, [0.0, 0.0, 0.0])?;
+
+    let force_amp = 5e-4;
+    let pi2 = std::f64::consts::PI * 2.0;
+    let mut force_field = vec![[0.0; 3]; n_cells];
     for z in 0..grid_size {
         for y in 0..grid_size {
             for x in 0..grid_size {
                 let idx = z * (grid_size * grid_size) + y * grid_size + x;
-                let z_normalized = (z as f64) / (grid_size as f64);
-                // Linear shear: u_x increases from 0.005 to 0.015 across z-direction
-                let u_x = 0.01 + 0.005 * (z_normalized - 0.5);
-                u_init[idx] = [u_x, 0.0, 0.0];
+                let yn = y as f64 / grid_size as f64;
+                force_field[idx] = [force_amp * (pi2 * yn).sin(), 0.0, 0.0];
             }
         }
     }
-
-    // Upload custom velocity field to GPU and initialize distributions
-    solver.initialize_custom(&rho_init, &u_init)?;
+    solver.set_force_field(&force_field)?;
 
     if verbose {
-        eprintln!("[5/10] Evolving LBM for {} steps on GPU...", lbm_steps);
+        eprintln!("[5/10] Evolving LBM for {} steps on GPU with Guo forcing...", lbm_steps);
     }
 
-    // Evolve on GPU (includes automatic sync to host at end)
+    // Evolve on GPU with continuous forcing (includes automatic sync to host at end)
     solver.evolve(lbm_steps)?;
 
     if verbose {

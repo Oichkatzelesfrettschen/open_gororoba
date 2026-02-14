@@ -25,18 +25,18 @@ pub struct LbmSolver3DCuda {
 
     // Device memory buffers
     d_f: CudaSlice<f64>, // Distributions (19 x n_cells)
-    #[allow(dead_code)]
-    d_f_tmp: CudaSlice<f64>, // Temp buffer (unused in fused collision-streaming)
+    d_f_tmp: CudaSlice<f64>, // Temp buffer for streaming double-buffer swap
     d_rho: CudaSlice<f64>, // Density (n_cells)
     d_u: CudaSlice<f64>, // Velocity (3 x n_cells)
     d_tau: CudaSlice<f64>, // Relaxation time (n_cells) - spatially varying!
+    d_force: Option<CudaSlice<f64>>, // Force field (3 x n_cells) - for Guo forcing
 
     // Compiled kernels
     compute_macro_kernel: CudaFunction,
     collision_kernel: CudaFunction,
-    #[allow(dead_code)]
-    streaming_kernel: CudaFunction, // Unused in fused collision-streaming
+    streaming_kernel: CudaFunction,
     init_kernel: CudaFunction,
+    guo_forcing_kernel: CudaFunction,
 
     // Host-side state (for CPU fallback and data export)
     pub rho: Vec<f64>,
@@ -68,6 +68,9 @@ impl LbmSolver3DCuda {
         let init_kernel = module
             .load_function("initialize_uniform_kernel")
             .context("Kernel initialize_uniform_kernel not found")?;
+        let guo_forcing_kernel = module
+            .load_function("guo_forcing_kernel")
+            .context("Kernel guo_forcing_kernel not found")?;
 
         // Allocate device memory.
         let d_f = stream
@@ -105,10 +108,12 @@ impl LbmSolver3DCuda {
             d_rho,
             d_u,
             d_tau,
+            d_force: None,
             compute_macro_kernel,
             collision_kernel,
             streaming_kernel,
             init_kernel,
+            guo_forcing_kernel,
             rho,
             u,
         })
@@ -144,6 +149,43 @@ impl LbmSolver3DCuda {
             .context("Failed to upload tau field to GPU")?;
 
         Ok(())
+    }
+
+    /// Set spatially-varying force field for Guo forcing (applied every timestep)
+    ///
+    /// Each cell gets a force vector [F_x, F_y, F_z]. For Kolmogorov flow,
+    /// use F_x = A * sin(2*pi*y/ny), F_y = 0, F_z = 0.
+    pub fn set_force_field(&mut self, force: &[[f64; 3]]) -> Result<()> {
+        if force.len() != self.n_cells {
+            anyhow::bail!(
+                "Force field length {} does not match grid size {}",
+                force.len(),
+                self.n_cells
+            );
+        }
+
+        // Flatten [fx0, fy0, fz0, fx1, fy1, fz1, ...] matching d_u layout
+        let force_flat: Vec<f64> = force
+            .iter()
+            .flat_map(|&[fx, fy, fz]| [fx, fy, fz])
+            .collect();
+
+        let d_force = self
+            .stream
+            .clone_htod(&force_flat)
+            .context("Failed to upload force field to GPU")?;
+        self.d_force = Some(d_force);
+        Ok(())
+    }
+
+    /// Clear the force field (disables Guo forcing)
+    pub fn clear_force_field(&mut self) {
+        self.d_force = None;
+    }
+
+    /// Check if a force field is set
+    pub fn has_force_field(&self) -> bool {
+        self.d_force.is_some()
     }
 
     /// Get current viscosity field from GPU
@@ -351,8 +393,7 @@ impl LbmSolver3DCuda {
         Ok(())
     }
 
-    /// Stream distributions to neighbor cells (unused in fused collision-streaming)
-    #[allow(dead_code)]
+    /// Stream distributions to neighbor cells (D3Q19 propagation).
     fn streaming(&mut self) -> Result<()> {
         // 3D grid of threads
         let block_dim = (8, 8, 8); // 512 threads per block
@@ -401,14 +442,47 @@ impl LbmSolver3DCuda {
         Ok(())
     }
 
-    /// Single LBM step (collision only, streaming implicit)
-    ///
-    /// Matches CPU solver's fused collision-streaming approach where
-    /// distributions are updated in-place and no explicit propagation occurs.
+    /// Single LBM step: macroscopic -> collision -> forcing -> streaming.
     pub fn step(&mut self) -> Result<()> {
         self.compute_macroscopic()?;
         self.collision()?;
-        // NOTE: NO streaming - fused approach like CPU solver
+        if self.d_force.is_some() {
+            self.apply_guo_forcing()?;
+        }
+        self.streaming()?;
+        Ok(())
+    }
+
+    /// Apply Guo forcing term to distributions (modifies f in-place after collision).
+    fn apply_guo_forcing(&mut self) -> Result<()> {
+        let d_force = self
+            .d_force
+            .as_ref()
+            .expect("apply_guo_forcing called without force field");
+
+        let block_size = 256;
+        let grid_size = self.n_cells.div_ceil(block_size);
+
+        let config = LaunchConfig {
+            grid_dim: (grid_size as u32, 1, 1),
+            block_dim: (block_size as u32, 1, 1),
+            shared_mem_bytes: 0,
+        };
+
+        let mut builder = self.stream.launch_builder(&self.guo_forcing_kernel);
+        builder.arg(&mut self.d_f);
+        builder.arg(&self.d_u);
+        builder.arg(d_force);
+        builder.arg(&self.d_tau);
+        let nx_i32 = self.nx as i32;
+        let ny_i32 = self.ny as i32;
+        let nz_i32 = self.nz as i32;
+        builder.arg(&nx_i32);
+        builder.arg(&ny_i32);
+        builder.arg(&nz_i32);
+
+        unsafe { builder.launch(config) }.context("Failed to launch guo_forcing_kernel")?;
+
         Ok(())
     }
 
@@ -458,8 +532,9 @@ impl TwoPhaseSystem for LbmSolver3DCuda {
     }
 
     fn execute_phase2(&mut self) -> ScheduleResult<()> {
-        // NO explicit streaming - fused collision-streaming like CPU solver
-        // Streaming is implicit in D3Q19 lattice structure
+        self.streaming().map_err(|e| {
+            ScheduleError::StateInvalid(format!("CUDA phase2 streaming failure: {e}"))
+        })?;
         Ok(())
     }
 }

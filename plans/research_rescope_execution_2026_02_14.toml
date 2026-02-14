@@ -1,0 +1,284 @@
+# Rescoped execution roadmap after Python-first/pyo3 pivot.
+
+[roadmap]
+id = "RM-2026-02-14-rescope-v2"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+task_count = 50
+scope = "python-first orchestration, pyo3 provenance bridge, sensational-source mapping, claims-evidence wiring, validation"
+
+[[phase]]
+id = "P1"
+name = "Policy and Lane Stabilization"
+step_range = "R2-001..R2-010"
+
+[[phase]]
+id = "P2"
+name = "Provenance Consolidation"
+step_range = "R2-011..R2-020"
+
+[[phase]]
+id = "P3"
+name = "Sensational to Primary Mapping"
+step_range = "R2-021..R2-029"
+
+[[phase]]
+id = "P4"
+name = "Hypercomplex Taxonomy and Claims"
+step_range = "R2-030..R2-040"
+
+[[phase]]
+id = "P5"
+name = "Verification and Reporting"
+step_range = "R2-041..R2-050"
+
+[[task]]
+id = "R2-001"
+status = "done"
+title = "Confirm immutable overlay policy for CLAUDE.md and GEMINI.md"
+
+[[task]]
+id = "R2-002"
+status = "done"
+title = "Confirm Python-first orchestration path for intake"
+
+[[task]]
+id = "R2-003"
+status = "done"
+title = "Confirm pyo3 hash bridge availability from Python"
+
+[[task]]
+id = "R2-004"
+status = "done"
+title = "Re-snapshot intake state from registry and reports"
+
+[[task]]
+id = "R2-005"
+status = "done"
+title = "Load gororoba provenance/claims/registry workflow skills"
+
+[[task]]
+id = "R2-006"
+status = "done"
+title = "Reconcile dirty worktree context and avoid unrelated files"
+
+[[task]]
+id = "R2-007"
+status = "done"
+title = "Persist this 50-step rescope roadmap to plans/"
+
+[[task]]
+id = "R2-008"
+status = "done"
+title = "Define phase boundaries and explicit success criteria"
+
+[[task]]
+id = "R2-009"
+status = "done"
+title = "Add stop/go checks for policy boundaries"
+
+[[task]]
+id = "R2-010"
+status = "done"
+title = "Create deterministic rerun command bundle"
+
+[[task]]
+id = "R2-011"
+status = "done"
+title = "Audit intake output files for stale retries and classify retain/archive"
+
+[[task]]
+id = "R2-012"
+status = "done"
+title = "Build consolidated resolved index from primary + retry runs"
+
+[[task]]
+id = "R2-013"
+status = "done"
+title = "Build consolidated resolved provenance TOML"
+
+[[task]]
+id = "R2-014"
+status = "done"
+title = "Record backend provenance tags for consolidated outputs"
+
+[[task]]
+id = "R2-015"
+status = "done"
+title = "Verify every consolidated row has hash/path or explicit failure trace"
+
+[[task]]
+id = "R2-016"
+status = "done"
+title = "Add verifier for consolidated intake integrity"
+
+[[task]]
+id = "R2-017"
+status = "done"
+title = "Run consolidated intake integrity verifier"
+
+[[task]]
+id = "R2-018"
+status = "done"
+title = "Wire verifier command into reproducible command bundle"
+
+[[task]]
+id = "R2-019"
+status = "done"
+title = "Refresh summary report from consolidated artifacts"
+
+[[task]]
+id = "R2-020"
+status = "done"
+title = "Emit execution ledger for provenance lane"
+
+[[task]]
+id = "R2-021"
+status = "done"
+title = "Normalize sensational URL corpus into canonical mapping table"
+
+[[task]]
+id = "R2-022"
+status = "done"
+title = "De-duplicate repeated sensational URLs preserving alias lineage"
+
+[[task]]
+id = "R2-023"
+status = "done"
+title = "Map each sensational headline to candidate primary source(s)"
+
+[[task]]
+id = "R2-024"
+status = "done"
+title = "Web-verify candidate primary sources and confidence scores"
+
+[[task]]
+id = "R2-025"
+status = "done"
+title = "Resolve low-confidence mappings with rationale rows"
+
+[[task]]
+id = "R2-026"
+status = "done"
+title = "Persist sensational mapping in dedicated TOML artifact"
+
+[[task]]
+id = "R2-027"
+status = "done"
+title = "Extract minimal bibliographic metadata per mapped source"
+
+[[task]]
+id = "R2-028"
+status = "done"
+title = "Download mapped primary papers into canonical storage"
+
+[[task]]
+id = "R2-029"
+status = "done"
+title = "Capture blocked/paywalled traces deterministically"
+
+[[task]]
+id = "R2-030"
+status = "done"
+title = "Build quaternion species taxonomy with invariant columns"
+
+[[task]]
+id = "R2-031"
+status = "done"
+title = "Build octonion species taxonomy with invariant columns"
+
+[[task]]
+id = "R2-032"
+status = "done"
+title = "Build sedenion species taxonomy with invariant columns"
+
+[[task]]
+id = "R2-033"
+status = "done"
+title = "Build pathion/chingon/routon/voudon ladder taxonomy"
+
+[[task]]
+id = "R2-034"
+status = "done"
+title = "Translate taxonomy rows into testable claim statements"
+
+[[task]]
+id = "R2-035"
+status = "done"
+title = "Define verify/refute criteria for each new claim"
+
+[[task]]
+id = "R2-036"
+status = "done"
+title = "Map new claims to where-stated and evidence refs"
+
+[[task]]
+id = "R2-037"
+status = "done"
+title = "Update claims_tasks entries for open evidence gaps"
+
+[[task]]
+id = "R2-038"
+status = "done"
+title = "Update next_actions with unresolved high-priority mappings"
+
+[[task]]
+id = "R2-039"
+status = "done"
+title = "Update todo entries for intake reconciliation milestones"
+
+[[task]]
+id = "R2-040"
+status = "done"
+title = "Publish gap matrix report (done/in-progress/blocked/missing-evidence)"
+
+[[task]]
+id = "R2-041"
+status = "pending"
+title = "Run registry cross-reference verifier after TOML updates"
+
+[[task]]
+id = "R2-042"
+status = "pending"
+title = "Run markdown governance parity and immutability verifiers"
+
+[[task]]
+id = "R2-043"
+status = "pending"
+title = "Run ASCII verifier on all touched files"
+
+[[task]]
+id = "R2-044"
+status = "pending"
+title = "Run targeted clippy checks for touched Rust crates"
+
+[[task]]
+id = "R2-045"
+status = "pending"
+title = "Run targeted Python compile checks for touched scripts"
+
+[[task]]
+id = "R2-046"
+status = "pending"
+title = "Refresh quick-context chunk index with new artifacts"
+
+[[task]]
+id = "R2-047"
+status = "pending"
+title = "Emit deterministic command ledger with timestamps"
+
+[[task]]
+id = "R2-048"
+status = "pending"
+title = "Emit unresolved-risk section with blockers and scope cuts"
+
+[[task]]
+id = "R2-049"
+status = "pending"
+title = "Emit final change summary with verification outcomes"
+
+[[task]]
+id = "R2-050"
+status = "pending"
+title = "Queue next-step options for continued execution"
