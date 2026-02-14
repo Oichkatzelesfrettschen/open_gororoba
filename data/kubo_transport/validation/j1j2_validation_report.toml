@@ -1,0 +1,541 @@
+# J1-J2 Kubo Transport Validation Report
+
+[metadata]
+method = "Kubo linear-response, exact diagonalization"
+chain_length = 10
+magnetic_field = 3
+temperature = 0.1
+backend = "GPU"
+n_j1j2_points = 30
+n_interp_points = 21
+
+[j1j2_summary]
+alpha_peak_ds = 1.1000
+ds_peak = 4.571658e-1
+ds_enhancement_at_peak = 30778.1
+alpha_peak_cv = 0.8000
+cv_peak = 0.919429
+ds_at_majumdar_ghosh = 1.065577e-3
+ballistic_fraction_integrable = 1.000000
+ds_ref_alpha0 = 1.485362e-5
+
+[interpolation_summary]
+ds_quaternion = 3.671499e-1
+ds_sedenion = 1.699269e-3
+g_full_suppression = 216.1
+onset_lambda = 0.05
+onset_suppression = 44.4
+
+[physics_interpretation]
+# At B=3.0, T=0.1, N=10: strong-field polarized regime.
+# D_S increases with alpha because J2 competes with field polarization,
+# creating low-energy spin excitations (depolarization effect).
+# Standard frustration-suppression requires B=0 or N->infinity.
+integrable_check = "PASS: B(0) ~ 1.0 (fully ballistic at alpha=0)"
+monotonic_increase_to_peak = true
+mg_enhancement = 71.7
+
+# Per-point J1-J2 diagnostics
+[[j1j2_diagnostic]]
+alpha = 0.0000
+drude_weight_spin = 1.485362e-5
+total_weight_spin = 1.485362e-5
+total_weight_energy = 9.5478
+specific_heat = 0.006473
+drude_enhancement = 1.0000
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.0500
+drude_weight_spin = 1.801652e-5
+total_weight_spin = 1.801652e-5
+total_weight_energy = 8.3865
+specific_heat = 0.007138
+drude_enhancement = 1.2129
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.1000
+drude_weight_spin = 2.185167e-5
+total_weight_spin = 2.185167e-5
+total_weight_energy = 7.4139
+specific_heat = 0.008044
+drude_enhancement = 1.4711
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.1500
+drude_weight_spin = 2.680470e-5
+total_weight_spin = 2.680470e-5
+total_weight_energy = 6.6546
+specific_heat = 0.009298
+drude_enhancement = 1.8046
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.2000
+drude_weight_spin = 3.398878e-5
+total_weight_spin = 3.398878e-5
+total_weight_energy = 6.1398
+specific_heat = 0.011074
+drude_enhancement = 2.2882
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.2500
+drude_weight_spin = 4.613024e-5
+total_weight_spin = 4.613024e-5
+total_weight_energy = 5.9080
+specific_heat = 0.013669
+drude_enhancement = 3.1057
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.3000
+drude_weight_spin = 6.974910e-5
+total_weight_spin = 6.974911e-5
+total_weight_energy = 6.0076
+specific_heat = 0.017610
+drude_enhancement = 4.6958
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.3500
+drude_weight_spin = 1.201259e-4
+total_weight_spin = 1.201259e-4
+total_weight_energy = 6.4999
+specific_heat = 0.023864
+drude_enhancement = 8.0873
+ballistic_fraction = 1.000000
+transport_frustration = 0.000000
+
+[[j1j2_diagnostic]]
+alpha = 0.4000
+drude_weight_spin = 2.325136e-4
+total_weight_spin = 2.325138e-4
+total_weight_energy = 7.4631
+specific_heat = 0.034206
+drude_enhancement = 15.6537
+ballistic_fraction = 0.999999
+transport_frustration = 0.000001
+
+[[j1j2_diagnostic]]
+alpha = 0.4500
+drude_weight_spin = 4.872523e-4
+total_weight_spin = 4.872531e-4
+total_weight_energy = 8.9981
+specific_heat = 0.051880
+drude_enhancement = 32.8036
+ballistic_fraction = 0.999998
+transport_frustration = 0.000002
+
+[[j1j2_diagnostic]]
+alpha = 0.5000
+drude_weight_spin = 1.065577e-3
+total_weight_spin = 1.065580e-3
+total_weight_energy = 11.2377
+specific_heat = 0.082639
+drude_enhancement = 71.7385
+ballistic_fraction = 0.999997
+transport_frustration = 0.000003
+
+[[j1j2_diagnostic]]
+alpha = 0.5500
+drude_weight_spin = 2.372318e-3
+total_weight_spin = 2.372331e-3
+total_weight_energy = 14.3579
+specific_heat = 0.136145
+drude_enhancement = 159.7131
+ballistic_fraction = 0.999995
+transport_frustration = 0.000005
+
+[[j1j2_diagnostic]]
+alpha = 0.6000
+drude_weight_spin = 5.300886e-3
+total_weight_spin = 5.300944e-3
+total_weight_energy = 18.5947
+specific_heat = 0.227027
+drude_enhancement = 356.8751
+ballistic_fraction = 0.999989
+transport_frustration = 0.000011
+
+[[j1j2_diagnostic]]
+alpha = 0.6500
+drude_weight_spin = 1.178475e-2
+total_weight_spin = 1.178503e-2
+total_weight_energy = 24.2595
+specific_heat = 0.372845
+drude_enhancement = 793.3928
+ballistic_fraction = 0.999976
+transport_frustration = 0.000024
+
+[[j1j2_diagnostic]]
+alpha = 0.7000
+drude_weight_spin = 2.584696e-2
+total_weight_spin = 2.584841e-2
+total_weight_energy = 31.7299
+specific_heat = 0.581157
+drude_enhancement = 1740.1123
+ballistic_fraction = 0.999944
+transport_frustration = 0.000056
+
+[[j1j2_diagnostic]]
+alpha = 0.7500
+drude_weight_spin = 5.513416e-2
+total_weight_spin = 5.514200e-2
+total_weight_energy = 41.3302
+specific_heat = 0.811391
+drude_enhancement = 3711.8344
+ballistic_fraction = 0.999858
+transport_frustration = 0.000142
+
+[[j1j2_diagnostic]]
+alpha = 0.8000
+drude_weight_spin = 1.111592e-1
+total_weight_spin = 1.112009e-1
+total_weight_energy = 52.8862
+specific_heat = 0.919429
+drude_enhancement = 7483.6488
+ballistic_fraction = 0.999626
+transport_frustration = 0.000374
+
+[[j1j2_diagnostic]]
+alpha = 0.8500
+drude_weight_spin = 2.013876e-1
+total_weight_spin = 2.015899e-1
+total_weight_energy = 64.8398
+specific_heat = 0.735442
+drude_enhancement = 13558.1548
+ballistic_fraction = 0.998996
+transport_frustration = 0.001004
+
+[[j1j2_diagnostic]]
+alpha = 0.9000
+drude_weight_spin = 3.086579e-1
+total_weight_spin = 3.094916e-1
+total_weight_energy = 74.2393
+specific_heat = 0.450838
+drude_enhancement = 20779.9865
+ballistic_fraction = 0.997306
+transport_frustration = 0.002694
+
+[[j1j2_diagnostic]]
+alpha = 0.9500
+drude_weight_spin = 3.916226e-1
+total_weight_spin = 3.944192e-1
+total_weight_energy = 79.8810
+specific_heat = 0.509491
+drude_enhancement = 26365.4735
+ballistic_fraction = 0.992910
+transport_frustration = 0.007090
+
+[[j1j2_diagnostic]]
+alpha = 1.0000
+drude_weight_spin = 4.318446e-1
+total_weight_spin = 4.396603e-1
+total_weight_energy = 84.2499
+specific_heat = 0.787693
+drude_enhancement = 29073.3613
+ballistic_fraction = 0.982223
+transport_frustration = 0.017777
+
+[[j1j2_diagnostic]]
+alpha = 1.0500
+drude_weight_spin = 4.474385e-1
+total_weight_spin = 4.664576e-1
+total_weight_energy = 89.6953
+specific_heat = 0.901659
+drude_enhancement = 30123.2039
+ballistic_fraction = 0.959227
+transport_frustration = 0.040773
+
+[[j1j2_diagnostic]]
+alpha = 1.1000
+drude_weight_spin = 4.571658e-1
+total_weight_spin = 4.981341e-1
+total_weight_energy = 95.4500
+specific_heat = 0.724379
+drude_enhancement = 30778.0822
+ballistic_fraction = 0.917756
+transport_frustration = 0.082244
+
+[[j1j2_diagnostic]]
+alpha = 1.1500
+drude_weight_spin = 4.571329e-1
+total_weight_spin = 5.340244e-1
+total_weight_energy = 98.4527
+specific_heat = 0.408993
+drude_enhancement = 30775.8686
+ballistic_fraction = 0.856015
+transport_frustration = 0.143985
+
+[[j1j2_diagnostic]]
+alpha = 1.2000
+drude_weight_spin = 4.272420e-1
+total_weight_spin = 5.505142e-1
+total_weight_energy = 96.5041
+specific_heat = 0.282519
+drude_enhancement = 28763.4972
+ballistic_fraction = 0.776078
+transport_frustration = 0.223922
+
+[[j1j2_diagnostic]]
+alpha = 1.2500
+drude_weight_spin = 3.592682e-1
+total_weight_spin = 5.294706e-1
+total_weight_energy = 91.0350
+specific_heat = 0.420169
+drude_enhancement = 24187.2536
+ballistic_fraction = 0.678542
+transport_frustration = 0.321458
+
+[[j1j2_diagnostic]]
+alpha = 1.3000
+drude_weight_spin = 2.691316e-1
+total_weight_spin = 4.792672e-1
+total_weight_energy = 85.4340
+specific_heat = 0.592707
+drude_enhancement = 18118.9266
+ballistic_fraction = 0.561548
+transport_frustration = 0.438452
+
+[[j1j2_diagnostic]]
+alpha = 1.3500
+drude_weight_spin = 1.796592e-1
+total_weight_spin = 4.217960e-1
+total_weight_energy = 80.6922
+specific_heat = 0.668040
+drude_enhancement = 12095.3190
+ballistic_fraction = 0.425939
+transport_frustration = 0.574061
+
+[[j1j2_diagnostic]]
+alpha = 1.4000
+drude_weight_spin = 1.065417e-1
+total_weight_spin = 3.752723e-1
+total_weight_energy = 79.4362
+specific_heat = 0.676765
+drude_enhancement = 7172.7757
+ballistic_fraction = 0.283905
+transport_frustration = 0.716095
+
+[[j1j2_diagnostic]]
+alpha = 1.4500
+drude_weight_spin = 5.887187e-2
+total_weight_spin = 3.516301e-1
+total_weight_energy = 80.2240
+specific_heat = 0.673227
+drude_enhancement = 3963.4703
+ballistic_fraction = 0.167426
+transport_frustration = 0.832574
+
+# Per-point CD interpolation diagnostics
+[[interpolation_diagnostic]]
+lambda = 0.0000
+drude_weight_spin = 3.671499e-1
+total_weight_spin = 1.099512e0
+total_weight_energy = 0.0000
+drude_suppression = 1.0000
+
+[[interpolation_diagnostic]]
+lambda = 0.0500
+drude_weight_spin = 8.270375e-3
+total_weight_spin = 1.018735e0
+total_weight_energy = 0.0675
+drude_suppression = 44.3934
+
+[[interpolation_diagnostic]]
+lambda = 0.1000
+drude_weight_spin = 8.074009e-3
+total_weight_spin = 9.488832e-1
+total_weight_energy = 0.2737
+drude_suppression = 45.4731
+
+[[interpolation_diagnostic]]
+lambda = 0.1500
+drude_weight_spin = 7.900645e-3
+total_weight_spin = 8.915067e-1
+total_weight_energy = 0.6364
+drude_suppression = 46.4709
+
+[[interpolation_diagnostic]]
+lambda = 0.2000
+drude_weight_spin = 7.749960e-3
+total_weight_spin = 8.467590e-1
+total_weight_energy = 1.1814
+drude_suppression = 47.3744
+
+[[interpolation_diagnostic]]
+lambda = 0.2500
+drude_weight_spin = 7.604064e-3
+total_weight_spin = 8.136799e-1
+total_weight_energy = 1.9344
+drude_suppression = 48.2834
+
+[[interpolation_diagnostic]]
+lambda = 0.3000
+drude_weight_spin = 8.403203e-3
+total_weight_spin = 7.907102e-1
+total_weight_energy = 2.9151
+drude_suppression = 43.6917
+
+[[interpolation_diagnostic]]
+lambda = 0.3500
+drude_weight_spin = 7.228284e-3
+total_weight_spin = 7.761673e-1
+total_weight_energy = 4.1365
+drude_suppression = 50.7935
+
+[[interpolation_diagnostic]]
+lambda = 0.4000
+drude_weight_spin = 6.960776e-3
+total_weight_spin = 7.685414e-1
+total_weight_energy = 5.6063
+drude_suppression = 52.7455
+
+[[interpolation_diagnostic]]
+lambda = 0.4500
+drude_weight_spin = 6.630030e-3
+total_weight_spin = 7.666134e-1
+total_weight_energy = 7.3298
+drude_suppression = 55.3768
+
+[[interpolation_diagnostic]]
+lambda = 0.5000
+drude_weight_spin = 7.023433e-3
+total_weight_spin = 7.694568e-1
+total_weight_energy = 9.3127
+drude_suppression = 52.2750
+
+[[interpolation_diagnostic]]
+lambda = 0.5500
+drude_weight_spin = 5.797898e-3
+total_weight_spin = 7.763891e-1
+total_weight_energy = 11.5633
+drude_suppression = 63.3247
+
+[[interpolation_diagnostic]]
+lambda = 0.6000
+drude_weight_spin = 5.319030e-3
+total_weight_spin = 7.869111e-1
+total_weight_energy = 14.0945
+drude_suppression = 69.0257
+
+[[interpolation_diagnostic]]
+lambda = 0.6500
+drude_weight_spin = 4.817408e-3
+total_weight_spin = 8.006535e-1
+total_weight_energy = 16.9254
+drude_suppression = 76.2132
+
+[[interpolation_diagnostic]]
+lambda = 0.7000
+drude_weight_spin = 4.307774e-3
+total_weight_spin = 8.173345e-1
+total_weight_energy = 20.0824
+drude_suppression = 85.2296
+
+[[interpolation_diagnostic]]
+lambda = 0.7500
+drude_weight_spin = 4.159574e-3
+total_weight_spin = 8.367299e-1
+total_weight_energy = 23.6007
+drude_suppression = 88.2662
+
+[[interpolation_diagnostic]]
+lambda = 0.8000
+drude_weight_spin = 3.317088e-3
+total_weight_spin = 8.586520e-1
+total_weight_energy = 27.5242
+drude_suppression = 110.6844
+
+[[interpolation_diagnostic]]
+lambda = 0.8500
+drude_weight_spin = 2.857330e-3
+total_weight_spin = 8.829347e-1
+total_weight_energy = 31.9065
+drude_suppression = 128.4940
+
+[[interpolation_diagnostic]]
+lambda = 0.9000
+drude_weight_spin = 2.431611e-3
+total_weight_spin = 9.094251e-1
+total_weight_energy = 36.8098
+drude_suppression = 150.9904
+
+[[interpolation_diagnostic]]
+lambda = 0.9500
+drude_weight_spin = 2.044719e-3
+total_weight_spin = 9.379775e-1
+total_weight_energy = 42.3047
+drude_suppression = 179.5601
+
+[[interpolation_diagnostic]]
+lambda = 1.0000
+drude_weight_spin = 1.699269e-3
+total_weight_spin = 9.684511e-1
+total_weight_energy = 48.4680
+drude_suppression = 216.0634
+
+# Published benchmark comparisons from spin-transport literature
+[[published_comparison]]
+label = "Integrable_ballistic"
+reference = "Castella, Zotos, Prelovsek, PRL 74, 972 (1995)"
+regime = "alpha=0: spin current commutes with H -> B(0)=1.0 exactly"
+published_value = 1.000000e0
+our_value = 1.000000e0
+unit = "B(0) = D_S / I0_S"
+agreement = "EXACT MATCH"
+
+[[published_comparison]]
+label = "D_S_T0_integrable"
+reference = "Shastry & Sutherland, PRL 65, 243 (1990)"
+regime = "alpha=0, T=0, B=0: D_s = pi/4 J ~ 0.785J (per site)"
+published_value = 7.853982e-1
+our_value = 1.485362e-5
+unit = "D_s per site / J"
+agreement = "DIFFERENT REGIME: our data at T=0.1, B=3.0, N=10"
+
+[[published_comparison]]
+label = "Frustration_response_direction"
+reference = "Heidrich-Meisner et al., JMMM 272-276 (2004); Varma & Sanchez, PRB 92 (2015)"
+regime = "B=0: D_s decreases with alpha. B>>J: D_s increases (polarization competition)"
+published_value = -1.000000e0
+our_value = 3.077808e4
+unit = "sign of dD_S/dalpha (-1=suppression, >1=enhancement)"
+agreement = "CONSISTENT: B>>J regime shows enhancement (Varma mechanism)"
+
+[[published_comparison]]
+label = "CD_dimension_suppression"
+reference = "This work (C-683, E-034)"
+regime = "lambda=0->1 interpolation: quaternion->sedenion algebra"
+published_value = "N/A"
+our_value = 2.160634e2
+unit = "g(1.0) = D_S(quat) / D_S(sed)"
+agreement = "PHYSICALLY REASONABLE: sedenion frustration suppresses transport"
+
+[[published_comparison]]
+label = "Lifshitz_mechanism_direction"
+reference = "Stolpp et al., PRB 99, 134413 (2019), Figs. 7, 10a"
+regime = "Near saturation: K_th INCREASES with alpha past Lifshitz point (alpha=1/4). Stolpp ED: ~15x at alpha=1.2. Our B=3, N=10: ~30778x"
+published_value = 1.500000e1
+our_value = 3.077808e4
+unit = "enhancement ratio X(alpha)/X(0)"
+agreement = "CONSISTENT: both show high-field frustration enhancement (Lifshitz mechanism)"
+
+[[published_comparison]]
+label = "CV_crossover_alpha"
+reference = "Okamoto & Nomura, PLA 169, 433 (1992); HM2003 Fig. 4"
+regime = "B=0: critical alpha_c ~ 0.2411. Our B=3: C_V peak at alpha=0.80"
+published_value = 2.411000e-1
+our_value = 8.000000e-1
+unit = "alpha at C_V peak"
+agreement = "SHIFTED: strong field moves crossover to higher alpha"
+

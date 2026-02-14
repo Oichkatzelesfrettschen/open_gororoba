@@ -1,0 +1,98 @@
+[metadata]
+experiment = "E-027"
+version = 2
+grid_size = 16
+lbm_steps = 100
+n_sub = 2
+max_points = 200
+epsilon = 0.000000
+gpu = true
+
+[[lambda_sweep]]
+lambda = 0.500
+spearman_r = -0.952381
+pearson_r = -0.998978
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.327731
+lbm_max_velocity = 0.00682342
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 1.000
+spearman_r = -0.952381
+pearson_r = -0.999042
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.322252
+lbm_max_velocity = 0.00688129
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 1.500
+spearman_r = -0.952381
+pearson_r = -0.999104
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.316893
+lbm_max_velocity = 0.00693985
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 2.000
+spearman_r = -0.952381
+pearson_r = -0.999163
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.311652
+lbm_max_velocity = 0.00699904
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 3.000
+spearman_r = -0.976190
+pearson_r = -0.999273
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.301509
+lbm_max_velocity = 0.00711914
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 5.000
+spearman_r = -0.976190
+pearson_r = -0.999465
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.282498
+lbm_max_velocity = 0.00736475
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 200
+
+[[lambda_sweep]]
+lambda = 10.000
+spearman_r = -0.976190
+pearson_r = -0.999797
+n_regions = 8
+mean_frustration = 0.551663
+mean_viscosity = 0.241448
+lbm_max_velocity = 0.00798970
+betti_0 = 1
+betti_1 = 1
+n_vr_points = 200
+
+[summary]
+n_lambdas = 7
+best_abs_spearman = 0.976190
+significant = true

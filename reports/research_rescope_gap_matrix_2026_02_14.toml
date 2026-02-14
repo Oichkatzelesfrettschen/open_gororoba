@@ -1,0 +1,84 @@
+# Gap matrix for rescope execution lane.
+
+[matrix]
+id = "RESCOPE-GAP-MATRIX-2026-02-14"
+generated_at_utc = "2026-02-14T03:27:30Z"
+status = "active"
+row_count = 12
+done_count = 8
+in_progress_count = 1
+blocked_count = 1
+missing_evidence_count = 2
+
+[[row]]
+id = "GM-001"
+component = "Policy lane (CLAUDE/GEMINI stubs)"
+status = "done"
+evidence = "reports/research_rescope_stop_go_2026_02_14.toml"
+
+[[row]]
+id = "GM-002"
+component = "Intake consolidated artifacts"
+status = "done"
+evidence = "data/external/intake/2026_02_14_hypercomplex_news/index_resolved.tsv"
+
+[[row]]
+id = "GM-003"
+component = "Intake integrity verification"
+status = "done"
+evidence = "src/verification/verify_research_intake_integrity.py"
+
+[[row]]
+id = "GM-004"
+component = "Sensational URL normalization and dedupe"
+status = "done"
+evidence = "reports/sensational_url_mapping_2026_02_14.tsv"
+
+[[row]]
+id = "GM-005"
+component = "Primary-source mapping with confidence"
+status = "done"
+evidence = "reports/sensational_primary_source_mapping_2026_02_14.toml"
+
+[[row]]
+id = "GM-006"
+component = "Primary-source download bundle"
+status = "done"
+evidence = "data/papers/sensational_primary/2026_02_14/manifest.tsv"
+
+[[row]]
+id = "GM-007"
+component = "Paywall/challenge trace capture"
+status = "blocked"
+evidence = "data/papers/sensational_primary/2026_02_14/manifest.tsv"
+notes = "Science and APS DOI targets currently return bot-challenge pages."
+
+[[row]]
+id = "GM-008"
+component = "Hypercomplex species taxonomy"
+status = "done"
+evidence = "reports/hypercomplex_species_taxonomy_2026_02_14.toml"
+
+[[row]]
+id = "GM-009"
+component = "Taxonomy-derived testable claims"
+status = "done"
+evidence = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml"
+
+[[row]]
+id = "GM-010"
+component = "Registry hooks for new evidence gaps"
+status = "done"
+evidence = "registry/claims_tasks.toml"
+
+[[row]]
+id = "GM-011"
+component = "Unresolved sensational mappings (RI-026/027/032)"
+status = "missing_evidence"
+evidence = "reports/sensational_primary_validation_2026_02_14.toml"
+
+[[row]]
+id = "GM-012"
+component = "Remaining verification and cleanup tranche (R2-041..R2-050)"
+status = "in_progress"
+evidence = "plans/research_rescope_execution_2026_02_14.toml"

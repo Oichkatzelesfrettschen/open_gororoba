@@ -1,0 +1,2 @@
+id	topic	resource_class	status	method	size_bytes	sha256	output_path	error
+RI-001	quaternion_taxonomy	reference_wiki	ok	curl	267635	1978dab86c77bdb6b89159b5e66b5d27931536a7d2e19d8600a17f38814186ea	data/external/intake/2026_02_14_hypercomplex_news/raw/RI-001.html	

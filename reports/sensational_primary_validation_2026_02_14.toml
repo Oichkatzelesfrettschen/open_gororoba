@@ -1,0 +1,47 @@
+# Validation summary for sensational-to-primary mapping lane.
+
+[validation]
+id = "SENSATIONAL-PRIMARY-VALIDATION-2026-02-14"
+generated_at_utc = "2026-02-14T03:22:30Z"
+mapping_path = "reports/sensational_primary_source_mapping_2026_02_14.toml"
+download_manifest = "data/papers/sensational_primary/2026_02_14/manifest.tsv"
+entry_count = 8
+resolved_count = 5
+unresolved_count = 3
+download_target_count = 11
+download_ok_count = 6
+download_blocked_count = 5
+download_failed_count = 0
+
+[[unresolved]]
+id = "RI-026"
+reason = "Video-only aggregator payload without DOI/arXiv citation."
+next_action = "Trace provider transcript/references from Astrum source channel."
+
+[[unresolved]]
+id = "RI-027"
+reason = "Video-only aggregator payload without DOI/arXiv citation."
+next_action = "Trace Underknown source notes for referenced studies."
+
+[[unresolved]]
+id = "RI-032"
+reason = "Video transcript narrative lacks direct citation links."
+next_action = "Collect provider metadata or parallel reporting with explicit paper linkage."
+
+[[blocked]]
+id = "RI-028"
+target_url = "https://doi.org/10.1126/science.adl2348"
+trace_path = "data/papers/sensational_primary/2026_02_14/ri-028-primary-1.html"
+block_type = "bot_challenge"
+
+[[blocked]]
+id = "RI-030"
+target_url = "https://doi.org/10.1103/PhysRevD.110.116016"
+trace_path = "data/papers/sensational_primary/2026_02_14/ri-030-primary-4.html"
+block_type = "bot_challenge"
+
+[[blocked]]
+id = "RI-034"
+target_url = "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+trace_path = "data/papers/sensational_primary/2026_02_14/ri-034-candidate-9.html"
+block_type = "bot_challenge"

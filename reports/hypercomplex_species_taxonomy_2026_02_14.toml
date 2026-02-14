@@ -1,0 +1,462 @@
+# Hypercomplex species taxonomy with invariant columns.
+
+[meta]
+id = "HYPERCOMPLEX-TAXONOMY-2026-02-14"
+generated_at_utc = "2026-02-14T03:24:00Z"
+status = "active"
+row_count = 32
+source_registry = "registry/research_intake_2026_02_14.toml"
+notes = "Invariant fields focus on algebraic regime, scalar-extension axis, and construction type."
+
+[[species]]
+id = "Q-001"
+family = "quaternion"
+label = "Hamilton quaternions H"
+construction_type = "classical_base_object"
+dimension_real = "4"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = true
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-001"]
+
+[[species]]
+id = "Q-002"
+family = "quaternion"
+label = "Split quaternions"
+construction_type = "signature_variant"
+dimension_real = "4"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-002"]
+
+[[species]]
+id = "Q-003"
+family = "quaternion"
+label = "Hyperbolic quaternions term"
+construction_type = "terminology_variant"
+dimension_real = "4"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-003"]
+notes = "Term can be used as synonym for split quaternions or as alternate multiplication convention."
+
+[[species]]
+id = "Q-004"
+family = "quaternion"
+label = "Biquaternions (H tensor C)"
+construction_type = "scalar_extension"
+dimension_real = "8"
+base_scalar = "C over R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-005"]
+
+[[species]]
+id = "Q-005"
+family = "quaternion"
+label = "Dual quaternions"
+construction_type = "scalar_extension"
+dimension_real = "8"
+base_scalar = "dual numbers over R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-005", "RI-011"]
+
+[[species]]
+id = "Q-006"
+family = "quaternion"
+label = "Quaternion algebras (a,b)_F"
+construction_type = "base_field_generalization"
+dimension_real = "4 over F"
+base_scalar = "general field F"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-004", "RI-013"]
+notes = "Division property depends on parameters and field."
+
+[[species]]
+id = "Q-007"
+family = "quaternion"
+label = "Lipschitz quaternions"
+construction_type = "arithmetic_order"
+dimension_real = "4 lattice in H"
+base_scalar = "Z-subring in H"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-001", "RI-012"]
+
+[[species]]
+id = "Q-008"
+family = "quaternion"
+label = "Hurwitz quaternions"
+construction_type = "arithmetic_order"
+dimension_real = "4 lattice in H"
+base_scalar = "maximal order in H"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-001", "RI-012"]
+
+[[species]]
+id = "Q-009"
+family = "quaternion"
+label = "Quaternion Clifford realization"
+construction_type = "presentation_embedding"
+dimension_real = "4"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = true
+zero_divisors = false
+evidence_tier = "medium"
+source_refs = ["RI-013", "RI-016"]
+
+[[species]]
+id = "Q-010"
+family = "quaternion"
+label = "Tensor multiquaternions H tensor n"
+construction_type = "tensor_tower"
+dimension_real = "4^n"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-023", "RI-024"]
+
+[[species]]
+id = "Q-011"
+family = "quaternion"
+label = "Quad-quaternions"
+construction_type = "tensor_tower_special_case"
+dimension_real = "16"
+base_scalar = "R"
+associative = true
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "low"
+source_refs = ["RI-023", "RI-024"]
+notes = "Usage is literature-dependent and naming is not universally standardized."
+
+[[species]]
+id = "O-001"
+family = "octonion"
+label = "Real division octonions O"
+construction_type = "classical_base_object"
+dimension_real = "8"
+base_scalar = "R"
+associative = false
+alternative = true
+division_algebra = true
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-007"]
+
+[[species]]
+id = "O-002"
+family = "octonion"
+label = "Split octonions"
+construction_type = "signature_variant"
+dimension_real = "8"
+base_scalar = "R"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-008"]
+
+[[species]]
+id = "O-003"
+family = "octonion"
+label = "Octonion algebras over general field"
+construction_type = "base_field_generalization"
+dimension_real = "8 over F"
+base_scalar = "general field/ring"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-008", "RI-013"]
+notes = "Split/non-split and division behavior depend on base field and algebra class."
+
+[[species]]
+id = "O-004"
+family = "octonion"
+label = "Bioctonions (O tensor C)"
+construction_type = "scalar_extension"
+dimension_real = "16"
+base_scalar = "C over R"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-010"]
+
+[[species]]
+id = "O-005"
+family = "octonion"
+label = "Dual octonions"
+construction_type = "scalar_extension"
+dimension_real = "16"
+base_scalar = "dual numbers over R"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-011"]
+
+[[species]]
+id = "O-006"
+family = "octonion"
+label = "Octonion integers (octavians)"
+construction_type = "arithmetic_order"
+dimension_real = "8 lattice in O"
+base_scalar = "Z-lattice in O"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-012", "RI-009"]
+
+[[species]]
+id = "O-007"
+family = "octonion"
+label = "Cayley-Dickson octonion model"
+construction_type = "presentation_embedding"
+dimension_real = "8"
+base_scalar = "R"
+associative = false
+alternative = true
+division_algebra = true
+zero_divisors = false
+evidence_tier = "high"
+source_refs = ["RI-013", "RI-015"]
+
+[[species]]
+id = "O-008"
+family = "octonion"
+label = "Zorn vector-matrix split model"
+construction_type = "presentation_embedding"
+dimension_real = "8"
+base_scalar = "R"
+associative = false
+alternative = true
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-008", "RI-013"]
+
+[[species]]
+id = "S-001"
+family = "sedenion"
+label = "Cayley-Dickson sedenions"
+construction_type = "cayley_dickson_stage"
+dimension_real = "16"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-014", "RI-015"]
+
+[[species]]
+id = "S-002"
+family = "sedenion"
+label = "Split sedenions"
+construction_type = "signature_variant"
+dimension_real = "16"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-015", "RI-017"]
+
+[[species]]
+id = "S-003"
+family = "sedenion"
+label = "Complexified sedenions"
+construction_type = "scalar_extension"
+dimension_real = "32"
+base_scalar = "C over R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-017"]
+
+[[species]]
+id = "S-004"
+family = "sedenion"
+label = "Dual sedenions"
+construction_type = "scalar_extension"
+dimension_real = "32"
+base_scalar = "dual numbers over R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-018"]
+
+[[species]]
+id = "S-005"
+family = "sedenion"
+label = "Integral sedenion constructions"
+construction_type = "arithmetic_order"
+dimension_real = "16 lattice over Z"
+base_scalar = "Z-based variants"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-019", "RI-021"]
+
+[[species]]
+id = "S-006"
+family = "sedenion"
+label = "Overloaded sedenion labels"
+construction_type = "terminology_variant"
+dimension_real = "16"
+base_scalar = "varies"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-014", "RI-024"]
+notes = "Some sources use sedenion for non-Cayley-Dickson 16D systems."
+
+[[species]]
+id = "P-001"
+family = "pathion_ladder"
+label = "Pathions (trigintaduonions)"
+construction_type = "cayley_dickson_stage"
+dimension_real = "32"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-020", "RI-024"]
+
+[[species]]
+id = "P-002"
+family = "pathion_ladder"
+label = "Chingons (64-nions)"
+construction_type = "cayley_dickson_stage"
+dimension_real = "64"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-023", "RI-024"]
+
+[[species]]
+id = "P-003"
+family = "pathion_ladder"
+label = "Routons (128-nions)"
+construction_type = "cayley_dickson_stage"
+dimension_real = "128"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-023", "RI-024"]
+
+[[species]]
+id = "P-004"
+family = "pathion_ladder"
+label = "Voudons (256-nions)"
+construction_type = "cayley_dickson_stage"
+dimension_real = "256"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-023", "RI-024"]
+
+[[species]]
+id = "P-005"
+family = "pathion_ladder"
+label = "Parameterized split Cayley-Dickson families"
+construction_type = "parameterized_family"
+dimension_real = "2^n"
+base_scalar = "R or general field/ring"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "high"
+source_refs = ["RI-013", "RI-015", "RI-024"]
+
+[[species]]
+id = "P-006"
+family = "pathion_ladder"
+label = "Complex and dual higher-stage extensions"
+construction_type = "scalar_extension"
+dimension_real = "2^(n+1) real-equivalent"
+base_scalar = "C or dual numbers"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-022", "RI-023", "RI-024"]
+
+[[species]]
+id = "P-007"
+family = "pathion_ladder"
+label = "Cayley-Dickson loops Q_n"
+construction_type = "multiplicative_substructure"
+dimension_real = "unit-loop object"
+base_scalar = "R"
+associative = false
+alternative = false
+division_algebra = false
+zero_divisors = true
+evidence_tier = "medium"
+source_refs = ["RI-023", "RI-024"]

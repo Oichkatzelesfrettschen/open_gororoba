@@ -1,0 +1,23 @@
+channels = []
+
+[metadata]
+grid_size = 32
+lbm_steps = 2500
+nu_base = 0.333
+lambda = 50.0
+
+[correlation]
+t_statistic = nan
+p_value = 1.0
+effect_size = 0.0
+mean_frustration_channels = nan
+mean_frustration_background = nan
+n_channel = 0
+n_background = 32768
+n_channels_detected = 0
+
+[null_model]
+p_value = 0.009900990099009901
+n_permutations = 100
+stopped_early = true
+stop_reason = "SignificantEarly"

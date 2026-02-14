@@ -1,0 +1,61 @@
+# R3 rescope snapshot after R2 consolidation/mapping/taxonomy work.
+
+[snapshot]
+id = "R3-SNAPSHOT-2026-02-14"
+generated_at_utc = "2026-02-14T03:27:13Z"
+status = "active"
+scope = "python-first orchestration, pyo3 hashing, provenance and claim wiring, verification completion"
+overlay_policy = "claude_gemini_stubs_immutable_for_this_lane"
+overlay_files = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md"]
+skills = ["gororoba-claims-evidence-workflow", "gororoba-provenance-workflow", "gororoba-registry-workflow", "gororoba-toml-lane"]
+
+[[artifact]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_resolved.tsv"
+class = "resolved_index"
+status = "present"
+
+[[artifact]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml"
+class = "resolved_provenance"
+status = "present"
+
+[[artifact]]
+path = "reports/research_intake_artifact_audit_2026_02_14.toml"
+class = "audit"
+status = "present"
+
+[[artifact]]
+path = "reports/sensational_primary_source_mapping_2026_02_14.toml"
+class = "mapping"
+status = "present"
+
+[[artifact]]
+path = "reports/hypercomplex_species_taxonomy_2026_02_14.toml"
+class = "taxonomy"
+status = "present"
+
+[[artifact]]
+path = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml"
+class = "taxonomy_claims"
+status = "present"
+
+[[artifact]]
+path = "reports/research_rescope_gap_matrix_2026_02_14.toml"
+class = "gap_matrix"
+status = "present"
+
+[[lane_target]]
+path = "plans/research_rescope_execution_2026_02_14.toml"
+reason = "sync R2 status drift and complete remaining verification tranche"
+
+[[lane_target]]
+path = "reports/repo_quick_context_chunks_2026_02_14.toml"
+reason = "refresh chunk references for new reports and scripts"
+
+[[lane_target]]
+path = "reports/research_intake_command_bundle_2026_02_14.toml"
+reason = "append R3 reproducible command set"
+
+[[lane_target]]
+path = "reports/research_intake_execution_ledger_2026_02_14.toml"
+reason = "extend command outcomes for R3 tranche"

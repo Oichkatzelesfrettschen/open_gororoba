@@ -1,0 +1,50 @@
+[metadata]
+experiment = "E-027"
+version = 2
+grid_size = 64
+lbm_steps = 500
+n_sub = 4
+max_points = 50
+epsilon = 0.000000
+gpu = true
+
+[[lambda_sweep]]
+lambda = 20.000
+spearman_r = -0.999588
+pearson_r = -0.999844
+n_regions = 64
+mean_frustration = 0.551575
+mean_viscosity = 0.180413
+lbm_max_velocity = 0.08586153
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 50
+
+[[lambda_sweep]]
+lambda = 50.000
+spearman_r = -0.978617
+pearson_r = -0.991900
+n_regions = 64
+mean_frustration = 0.551575
+mean_viscosity = 0.085550
+lbm_max_velocity = 0.06693290
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 50
+
+[[lambda_sweep]]
+lambda = 100.000
+spearman_r = -0.954487
+pearson_r = -0.958606
+n_regions = 64
+mean_frustration = 0.551575
+mean_viscosity = 0.033622
+lbm_max_velocity = 0.03953064
+betti_0 = 1
+betti_1 = 0
+n_vr_points = 50
+
+[summary]
+n_lambdas = 3
+best_abs_spearman = 0.999588
+significant = true

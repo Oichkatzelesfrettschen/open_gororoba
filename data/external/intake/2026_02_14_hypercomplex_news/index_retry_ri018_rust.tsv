@@ -1,0 +1,2 @@
+id	topic	resource_class	status	method	size_bytes	sha256	output_path	error
+RI-018	sedenion_taxonomy	primary_paper_or_publisher	ok	curl	117760	b8c4545290289f994b0ff9d5dacc238f68aaa999de09bc9859e52d7ab2216853	data/external/intake/2026_02_14_hypercomplex_news/raw/RI-018.pdf	

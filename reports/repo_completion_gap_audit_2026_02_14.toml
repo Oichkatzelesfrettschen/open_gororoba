@@ -1,0 +1,148 @@
+# Repository completion gap audit focused on open items and verification debt.
+
+[audit]
+id = "REPO-GAP-2026-02-14"
+created = "2026-02-14"
+scope = "registry open items, ticket drift, docs stubs, unresolved integration work"
+status = "active"
+finding_count = 20
+
+[[finding]]
+id = "RG-001"
+severity = "high"
+path = "reports/todo_placeholder_audit.toml"
+title = "Large unresolved placeholder surface"
+detail = "Large TODO/FIXME inventory remains and still drives recurring unresolved reports."
+
+[[finding]]
+id = "RG-002"
+severity = "high"
+path = "registry/next_actions.toml"
+title = "High-priority next actions remain open"
+detail = "Multiple NA entries are still TODO and need ownership + deadline updates."
+
+[[finding]]
+id = "RG-003"
+severity = "high"
+path = "registry/todo.toml"
+title = "Publication and claim validation backlog is open"
+detail = "T-006 through T-018 remain open; this blocks paper and validation closure."
+
+[[finding]]
+id = "RG-004"
+severity = "high"
+path = "registry/claims_tasks.toml"
+title = "Claims tasks still include TODO/BLOCKED entries"
+detail = "Open CTASK rows need either execution evidence or explicit deferral rationale."
+
+[[finding]]
+id = "RG-005"
+severity = "high"
+path = "registry/claim_tickets.toml"
+title = "Ticket reconciliation not complete"
+detail = "Warp-physics reconciliation and related ticket checks remain open."
+
+[[finding]]
+id = "RG-006"
+severity = "high"
+path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+title = "Acceptance checklist still partial"
+detail = "Ticket checklist and linked evidence chain need completion."
+
+[[finding]]
+id = "RG-007"
+severity = "medium"
+path = "reports/tickets_inventory.md"
+title = "Ticket inventory drift"
+detail = "Inventory references TODO tickets whose docs are not consistently present."
+
+[[finding]]
+id = "RG-008"
+severity = "medium"
+path = "registry/knowledge/docs/DOC-0241.toml"
+title = "Knowledge ticket status drift"
+detail = "Knowledge mirror still marks A5/A6/A7 as TODO and requires synchronization."
+
+[[finding]]
+id = "RG-009"
+severity = "medium"
+path = "registry/knowledge/docs/DOC-0242.toml"
+title = "Legacy TODO scan remains active"
+detail = "Old scan content still appears as current reference material."
+
+[[finding]]
+id = "RG-010"
+severity = "medium"
+path = "registry/reports_narratives.toml"
+title = "Narrative report stale fragments"
+detail = "Older FIXME/TODO narratives are still embedded and need refresh."
+
+[[finding]]
+id = "RG-011"
+severity = "medium"
+path = "registry/markdown_payload_chunks.toml"
+title = "Stale mirrored payload chunks"
+detail = "Payload mirrors preserve old unresolved TODO scan fragments."
+
+[[finding]]
+id = "RG-012"
+severity = "medium"
+path = "registry/embedded_markdown_chunks.toml"
+title = "Embedded markdown mirrors include stale diagnostics"
+detail = "Regeneration is needed after backlog cleanup to avoid repeating obsolete warnings."
+
+[[finding]]
+id = "RG-013"
+severity = "high"
+path = "docs/latex/llm_scaffold_paper.tex"
+title = "LaTeX scaffold still contains TODO sections"
+detail = "Core paper sections and proof tables are still placeholder-level."
+
+[[finding]]
+id = "RG-014"
+severity = "high"
+path = "crates/vacuum_frustration/src/besag_clifford_cuda.rs"
+title = "GPU pipeline integration unfinished"
+detail = "Current path does not fully execute intended downstream validation stages."
+
+[[finding]]
+id = "RG-015"
+severity = "medium"
+path = "reports/frontend_unresolved_risks_2026_02_12.toml"
+title = "Unresolved risk register remains open"
+detail = "Mitigations for catalog hardcoding and GPU lane parity are pending."
+
+[[finding]]
+id = "RG-016"
+severity = "medium"
+path = "crates/gororoba_cli/src/claims/verify.rs"
+title = "Fixture-level TODO residue"
+detail = "Test fixtures still embed TODO-oriented sample data that may mislead audits."
+
+[[finding]]
+id = "RG-017"
+severity = "low"
+path = "GEMINI.md"
+title = "GEMINI overlay is intentionally stub-only"
+detail = "This file should remain a compatibility stub and defer to AGENTS.md, not carry generated body content."
+
+[[finding]]
+id = "RG-018"
+severity = "low"
+path = "CLAUDE.md"
+title = "CLAUDE overlay is intentionally stub-only"
+detail = "This file should remain a compatibility stub and defer to AGENTS.md, not carry generated body content."
+
+[[finding]]
+id = "RG-019"
+severity = "low"
+path = "registry/entrypoint_docs.toml"
+title = "Legacy exporter must keep assistant overlays immutable"
+detail = "CLAUDE.md and GEMINI.md are manual stubs and must be excluded from TOML legacy export writes."
+
+[[finding]]
+id = "RG-020"
+severity = "low"
+path = "registry/research_intake_2026_02_14.toml"
+title = "New intake mapping rows include provisional primary-source links"
+detail = "Some sensational headline mappings are provisional and require secondary validation."

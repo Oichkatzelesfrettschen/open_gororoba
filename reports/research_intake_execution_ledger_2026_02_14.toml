@@ -1,0 +1,56 @@
+# Execution ledger for rescope provenance lane.
+
+[ledger]
+id = "RI-EXEC-LEDGER-2026-02-14"
+generated_at_utc = "2026-02-14T03:17:00Z"
+status = "active"
+entry_count = 7
+
+[[entry]]
+id = "LE-001"
+command = "python3 src/scripts/analysis/consolidate_research_intake_outputs.py"
+status = "success"
+exit_code = 0
+outcome = "Generated index_resolved.tsv, provenance_resolved.toml, and artifact audit."
+
+[[entry]]
+id = "LE-002"
+command = "python3 src/verification/verify_research_intake_integrity.py"
+status = "success"
+exit_code = 0
+outcome = "Resolved intake verified with 34 entries, 34 success, 0 failure."
+
+[[entry]]
+id = "LE-003"
+command = "python3 src/verification/verify_toml_generated_mirror_immutability.py"
+status = "success"
+exit_code = 0
+outcome = "Immutability checks passed."
+
+[[entry]]
+id = "LE-004"
+command = "python3 src/verification/verify_markdown_governance_parity.py"
+status = "success"
+exit_code = 0
+outcome = "Governance parity checks passed."
+
+[[entry]]
+id = "LE-005"
+command = "rg -n 'research_intake_fetch' crates/gororoba_cli/Cargo.toml crates/gororoba_cli/src/bin registry/binaries.toml"
+status = "success"
+exit_code = 0
+outcome = "No matches; legacy Rust intake binary references absent."
+
+[[entry]]
+id = "LE-006"
+command = "python3 src/scripts/analysis/fetch_research_intake_batch.py --help >/dev/null"
+status = "success"
+exit_code = 0
+outcome = "Python-first intake entrypoint available."
+
+[[entry]]
+id = "LE-007"
+command = "python3 src/scripts/analysis/consolidate_research_intake_outputs.py && python3 src/verification/verify_research_intake_integrity.py"
+status = "success"
+exit_code = 0
+outcome = "Consolidation + verification end-to-end rerun succeeded."
