@@ -1,0 +1,49 @@
+# Deterministic rerun bundle for RI-2026-02-14-hypercomplex-news.
+
+[bundle]
+id = "RI-CMD-BUNDLE-2026-02-14"
+generated_at_utc = "2026-02-14T03:16:00Z"
+scope = "python-first intake, pyo3 hashing, targeted retry, consolidation, integrity verification"
+command_count = 6
+
+[[command]]
+id = "CMD-001"
+phase = "fetch"
+description = "Primary full intake run with firefox fallback and pyo3 hashing."
+command = "python3 src/scripts/analysis/fetch_research_intake_batch.py --sha-backend pyo3 --firefox-fallback"
+expected = "index.tsv + provenance.toml with 34 entries"
+
+[[command]]
+id = "CMD-002"
+phase = "fetch"
+description = "Targeted RI-018 retry with longer timeout."
+command = "python3 src/scripts/analysis/fetch_research_intake_batch.py --ids RI-018 --timeout-seconds 60 --output-suffix _retry_ri018_pyo3 --sha-backend pyo3"
+expected = "index_retry_ri018_pyo3.tsv resolves RI-018"
+
+[[command]]
+id = "CMD-003"
+phase = "consolidate"
+description = "Consolidate primary + retry outputs to canonical resolved artifacts."
+command = "python3 src/scripts/analysis/consolidate_research_intake_outputs.py"
+expected = "index_resolved.tsv + provenance_resolved.toml + artifact audit report"
+
+[[command]]
+id = "CMD-004"
+phase = "verify"
+description = "Verify resolved intake integrity and hash/path invariants."
+command = "python3 src/verification/verify_research_intake_integrity.py"
+expected = "OK with success=34 and failure=0"
+
+[[command]]
+id = "CMD-005"
+phase = "policy"
+description = "Verify TOML-generated mirror immutability for markdown governance."
+command = "python3 src/verification/verify_toml_generated_mirror_immutability.py"
+expected = "exit 0"
+
+[[command]]
+id = "CMD-006"
+phase = "policy"
+description = "Verify markdown governance parity."
+command = "python3 src/verification/verify_markdown_governance_parity.py"
+expected = "exit 0"

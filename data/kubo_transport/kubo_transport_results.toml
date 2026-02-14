@@ -1,0 +1,507 @@
+# Kubo linear-response transport from CD structure constants
+# First-principles derivation -- no arbitrary lambda coupling
+# Reference: Stolpp et al., arXiv:1809.08429 (2018)
+
+[metadata]
+method = "Kubo linear-response, exact diagonalization"
+reference = "arXiv:1809.08429"
+j1j2_chain_length = 10
+j1j2_field_b = 3
+j1j2_temperature = 0.1
+backend = "GPU"
+
+[[cd_transport]]
+dim = 4
+temperature = 0.1
+frustration = 1
+specific_heat = 0.00013848033564300977
+drude_weight_spin = 0.00000000000000000000000000000000000007875256492279966
+total_weight_energy = 64.5771229277934
+total_weight_spin = 0.7853976796498512
+
+[[cd_transport]]
+dim = 4
+temperature = 0.2
+frustration = 1
+specific_heat = 0.06660880094550015
+drude_weight_spin = 0.00000000000000000000000000000000000014737529903967932
+total_weight_energy = 32.23361362721351
+total_weight_spin = 0.784459147798449
+
+[[cd_transport]]
+dim = 4
+temperature = 0.5
+frustration = 1
+specific_heat = 0.9530788292928944
+drude_weight_spin = 0.000000000000000000000000000000000015629348740025524
+total_weight_energy = 10.97819750577006
+total_weight_spin = 0.6897040397583841
+
+[[cd_transport]]
+dim = 4
+temperature = 1
+frustration = 1
+specific_heat = 0.6238497195536085
+drude_weight_spin = 0.00000000000000000000000000000000004078164810868054
+total_weight_energy = 3.1719906895205785
+total_weight_spin = 0.4293803542342527
+
+[[cd_transport]]
+dim = 4
+temperature = 2
+frustration = 1
+specific_heat = 0.17221075367156574
+drude_weight_spin = 0.000000000000000000000000000000000037904285521313977
+total_weight_energy = 0.7366794185450521
+total_weight_spin = 0.214677692840568
+
+[[cd_transport]]
+dim = 4
+temperature = 5
+frustration = 1
+specific_heat = 0.025217361622529633
+drude_weight_spin = 0.00000000000000000000000000000000002026930502362048
+total_weight_energy = 0.10620215783405218
+total_weight_spin = 0.08214898631618722
+
+[[cd_transport]]
+dim = 8
+temperature = 0.1
+frustration = 0.5428571428571428
+specific_heat = 0.7219774046077987
+drude_weight_spin = 0.00000000028275324213107367
+total_weight_energy = 224.223536543273
+total_weight_spin = 1.1773401990326304
+
+[[cd_transport]]
+dim = 8
+temperature = 0.2
+frustration = 0.5428571428571428
+specific_heat = 0.6032894871889738
+drude_weight_spin = 0.000007738558057568382
+total_weight_energy = 124.78288129738681
+total_weight_spin = 1.0766342312633297
+
+[[cd_transport]]
+dim = 8
+temperature = 0.5
+frustration = 0.5428571428571428
+specific_heat = 1.288462307216939
+drude_weight_spin = 0.00169926909528526
+total_weight_energy = 48.46799046201129
+total_weight_spin = 0.9684511385271353
+
+[[cd_transport]]
+dim = 8
+temperature = 1
+frustration = 0.5428571428571428
+specific_heat = 1.3732692846959988
+drude_weight_spin = 0.0061094460366834715
+total_weight_energy = 20.16210130085232
+total_weight_spin = 0.809579331188095
+
+[[cd_transport]]
+dim = 8
+temperature = 2
+frustration = 0.5428571428571428
+specific_heat = 0.750530303774499
+drude_weight_spin = 0.006466620565649915
+total_weight_energy = 6.4021186411903965
+total_weight_spin = 0.5342993584906989
+
+[[cd_transport]]
+dim = 8
+temperature = 5
+frustration = 0.5428571428571428
+specific_heat = 0.15583428160142995
+drude_weight_spin = 0.003150568435830869
+total_weight_energy = 1.090921089033951
+total_weight_spin = 0.2347242525881825
+
+[[j1j2_transport]]
+alpha = 0
+frustration = 0
+drude_weight_spin = 0.000014853616477360544
+total_weight_energy = 9.547845875292076
+total_weight_spin = 0.000014853616561552015
+specific_heat = 0.0064730663382306375
+
+[[j1j2_transport]]
+alpha = 0.05
+frustration = 0
+drude_weight_spin = 0.000018016520193488157
+total_weight_energy = 8.386536040566961
+total_weight_spin = 0.000018016520287881322
+specific_heat = 0.007137667344636611
+
+[[j1j2_transport]]
+alpha = 0.1
+frustration = 0
+drude_weight_spin = 0.000021851671643382547
+total_weight_energy = 7.4138585960110985
+total_weight_spin = 0.00002185167171958683
+specific_heat = 0.008043824064429828
+
+[[j1j2_transport]]
+alpha = 0.15000000000000002
+frustration = 0
+drude_weight_spin = 0.000026804701635611362
+total_weight_energy = 6.6546374332486415
+total_weight_spin = 0.00002680470166231847
+specific_heat = 0.00929814662526951
+
+[[j1j2_transport]]
+alpha = 0.2
+frustration = 0
+drude_weight_spin = 0.00003398877848197612
+total_weight_energy = 6.139803930150217
+total_weight_spin = 0.000033988778621197465
+specific_heat = 0.011074170092228997
+
+[[j1j2_transport]]
+alpha = 0.25
+frustration = 0
+drude_weight_spin = 0.00004613024181253978
+total_weight_energy = 5.907976157458723
+total_weight_spin = 0.000046130243444040324
+specific_heat = 0.013668743832795371
+
+[[j1j2_transport]]
+alpha = 0.30000000000000004
+frustration = 0
+drude_weight_spin = 0.00006974909730602726
+total_weight_energy = 6.00759958376623
+total_weight_spin = 0.0000697491073698874
+specific_heat = 0.01761035010474643
+
+[[j1j2_transport]]
+alpha = 0.35000000000000003
+frustration = 0
+drude_weight_spin = 0.00012012587659790481
+total_weight_energy = 6.499903530569045
+total_weight_spin = 0.00012012592447038544
+specific_heat = 0.023863904360155175
+
+[[j1j2_transport]]
+alpha = 0.4
+frustration = 0
+drude_weight_spin = 0.00023251357369328488
+total_weight_energy = 7.463060324904618
+total_weight_spin = 0.00023251377490717307
+specific_heat = 0.034206248426471575
+
+[[j1j2_transport]]
+alpha = 0.45
+frustration = 0
+drude_weight_spin = 0.00048725233001443866
+total_weight_energy = 8.998133615280299
+total_weight_spin = 0.0004872531301147487
+specific_heat = 0.05188030903298113
+
+[[j1j2_transport]]
+alpha = 0.5
+frustration = 0
+drude_weight_spin = 0.0010655768589213875
+total_weight_energy = 11.237658492794571
+total_weight_spin = 0.0010655800230362342
+specific_heat = 0.08263938767925083
+
+[[j1j2_transport]]
+alpha = 0.55
+frustration = 0
+drude_weight_spin = 0.0023723175983551875
+total_weight_energy = 14.357850024583357
+total_weight_spin = 0.0023723306089403055
+specific_heat = 0.1361450927404917
+
+[[j1j2_transport]]
+alpha = 0.6000000000000001
+frustration = 0
+drude_weight_spin = 0.005300886496166133
+total_weight_energy = 18.594703133890373
+total_weight_spin = 0.005300944112154471
+specific_heat = 0.22702657104929358
+
+[[j1j2_transport]]
+alpha = 0.65
+frustration = 0
+drude_weight_spin = 0.011784752577025435
+total_weight_energy = 24.259505619488028
+total_weight_spin = 0.011785031223919912
+specific_heat = 0.37284533918438
+
+[[j1j2_transport]]
+alpha = 0.7000000000000001
+frustration = 0
+drude_weight_spin = 0.025846960426039886
+total_weight_energy = 31.729868465931066
+total_weight_spin = 0.025848411247290846
+specific_heat = 0.5811572692238087
+
+[[j1j2_transport]]
+alpha = 0.75
+frustration = 0
+drude_weight_spin = 0.055134164298467174
+total_weight_energy = 41.33020711863317
+total_weight_spin = 0.055142000296911534
+specific_heat = 0.8113910847853845
+
+[[j1j2_transport]]
+alpha = 0.8
+frustration = 0
+drude_weight_spin = 0.11115924960693116
+total_weight_energy = 52.88622546907205
+total_weight_spin = 0.11120085835227679
+specific_heat = 0.9194291505167485
+
+[[j1j2_transport]]
+alpha = 0.8500000000000001
+frustration = 0
+drude_weight_spin = 0.20138763148272704
+total_weight_energy = 64.83977893923893
+total_weight_spin = 0.20158994512395603
+specific_heat = 0.7354423983613856
+
+[[j1j2_transport]]
+alpha = 0.9
+frustration = 0
+drude_weight_spin = 0.30865794928533197
+total_weight_energy = 74.23926496914962
+total_weight_spin = 0.30949162362528343
+specific_heat = 0.4508376918408885
+
+[[j1j2_transport]]
+alpha = 0.9500000000000001
+frustration = 0
+drude_weight_spin = 0.3916226320422207
+total_weight_energy = 79.8809514813108
+total_weight_spin = 0.3944192239238865
+specific_heat = 0.5094905492427415
+
+[[j1j2_transport]]
+alpha = 1
+frustration = 0
+drude_weight_spin = 0.43184455910089364
+total_weight_energy = 84.24992661794306
+total_weight_spin = 0.43966031251467097
+specific_heat = 0.7876933943364861
+
+[[j1j2_transport]]
+alpha = 1.05
+frustration = 0
+drude_weight_spin = 0.4474385183731042
+total_weight_energy = 89.69532527540727
+total_weight_spin = 0.46645759597767555
+specific_heat = 0.9016594629656538
+
+[[j1j2_transport]]
+alpha = 1.1
+frustration = 0
+drude_weight_spin = 0.4571658293216042
+total_weight_energy = 95.4499776338023
+total_weight_spin = 0.4981341398802045
+specific_heat = 0.7243788857266509
+
+[[j1j2_transport]]
+alpha = 1.1500000000000001
+frustration = 0
+drude_weight_spin = 0.45713294853785047
+total_weight_energy = 98.45269809272283
+total_weight_spin = 0.5340244448731563
+specific_heat = 0.40899347609979486
+
+[[j1j2_transport]]
+alpha = 1.2000000000000002
+frustration = 0
+drude_weight_spin = 0.4272419563034674
+total_weight_energy = 96.50412997877679
+total_weight_spin = 0.5505141577515628
+specific_heat = 0.2825188542274759
+
+[[j1j2_transport]]
+alpha = 1.25
+frustration = 0
+drude_weight_spin = 0.35926818856994047
+total_weight_energy = 91.03504809597416
+total_weight_spin = 0.5294705951079874
+specific_heat = 0.42016860776499243
+
+[[j1j2_transport]]
+alpha = 1.3
+frustration = 0
+drude_weight_spin = 0.2691315873140506
+total_weight_energy = 85.43404460622752
+total_weight_spin = 0.47926724166862833
+specific_heat = 0.5927069591635359
+
+[[j1j2_transport]]
+alpha = 1.35
+frustration = 0
+drude_weight_spin = 0.17965922888195185
+total_weight_energy = 80.6922291372762
+total_weight_spin = 0.4217960031262864
+specific_heat = 0.6680396811020728
+
+[[j1j2_transport]]
+alpha = 1.4000000000000001
+frustration = 0
+drude_weight_spin = 0.10654165902897833
+total_weight_energy = 79.43619646659857
+total_weight_spin = 0.37527232730036214
+specific_heat = 0.6767650422759175
+
+[[j1j2_transport]]
+alpha = 1.4500000000000002
+frustration = 0
+drude_weight_spin = 0.058871868097257044
+total_weight_energy = 80.22401093607547
+total_weight_spin = 0.3516301364180347
+specific_heat = 0.6732272710337384
+
+[[interpolation]]
+lambda = 0
+frustration = 0
+drude_weight_spin = 0.36714989416719535
+total_weight_energy = 0
+total_weight_spin = 1.0995124742151492
+
+[[interpolation]]
+lambda = 0.05
+frustration = 0
+drude_weight_spin = 0.008270374924649649
+total_weight_energy = 0.06747700679567512
+total_weight_spin = 1.0187345543809003
+
+[[interpolation]]
+lambda = 0.1
+frustration = 0
+drude_weight_spin = 0.008074009372240782
+total_weight_energy = 0.27373331047050203
+total_weight_spin = 0.9488832346936004
+
+[[interpolation]]
+lambda = 0.15000000000000002
+frustration = 0
+drude_weight_spin = 0.007900644914791031
+total_weight_energy = 0.6363990311195196
+total_weight_spin = 0.8915067226921437
+
+[[interpolation]]
+lambda = 0.2
+frustration = 0
+drude_weight_spin = 0.007749960493915636
+total_weight_energy = 1.1814489501117262
+total_weight_spin = 0.846758988311167
+
+[[interpolation]]
+lambda = 0.25
+frustration = 0
+drude_weight_spin = 0.007604063590616164
+total_weight_energy = 1.9344183330025926
+total_weight_spin = 0.8136799146798414
+
+[[interpolation]]
+lambda = 0.30000000000000004
+frustration = 0
+drude_weight_spin = 0.008403203376840673
+total_weight_energy = 2.9151138780791643
+total_weight_spin = 0.7907102177672591
+
+[[interpolation]]
+lambda = 0.35000000000000003
+frustration = 0
+drude_weight_spin = 0.007228283841737218
+total_weight_energy = 4.1364834792524325
+total_weight_spin = 0.7761672711389777
+
+[[interpolation]]
+lambda = 0.4
+frustration = 0
+drude_weight_spin = 0.006960776452931637
+total_weight_energy = 5.60628010670826
+total_weight_spin = 0.7685414174150288
+
+[[interpolation]]
+lambda = 0.45
+frustration = 0
+drude_weight_spin = 0.006630029997479804
+total_weight_energy = 7.329816745768146
+total_weight_spin = 0.7666133845007679
+
+[[interpolation]]
+lambda = 0.5
+frustration = 0
+drude_weight_spin = 0.007023433427465696
+total_weight_energy = 9.312726683754414
+total_weight_spin = 0.7694567684030396
+
+[[interpolation]]
+lambda = 0.55
+frustration = 0.5428571428571428
+drude_weight_spin = 0.005797898419005082
+total_weight_energy = 11.563319756066907
+total_weight_spin = 0.7763890605663183
+
+[[interpolation]]
+lambda = 0.6000000000000001
+frustration = 0.5428571428571428
+drude_weight_spin = 0.005319030488350032
+total_weight_energy = 14.09450464299307
+total_weight_spin = 0.7869111449689105
+
+[[interpolation]]
+lambda = 0.65
+frustration = 0.5428571428571428
+drude_weight_spin = 0.004817407999703272
+total_weight_energy = 16.925361455666046
+total_weight_spin = 0.8006535180275013
+
+[[interpolation]]
+lambda = 0.7000000000000001
+frustration = 0.5428571428571428
+drude_weight_spin = 0.004307774199581691
+total_weight_energy = 20.082426713266337
+total_weight_spin = 0.8173345068923603
+
+[[interpolation]]
+lambda = 0.75
+frustration = 0.5428571428571428
+drude_weight_spin = 0.00415957404036368
+total_weight_energy = 23.600689568689354
+total_weight_spin = 0.8367299419311017
+
+[[interpolation]]
+lambda = 0.8
+frustration = 0.5428571428571428
+drude_weight_spin = 0.0033170880930150372
+total_weight_energy = 27.52424076193597
+total_weight_spin = 0.8586519748143977
+
+[[interpolation]]
+lambda = 0.8500000000000001
+frustration = 0.5428571428571428
+drude_weight_spin = 0.0028573304243550853
+total_weight_energy = 31.906482486274136
+total_weight_spin = 0.8829347439572577
+
+[[interpolation]]
+lambda = 0.9
+frustration = 0.5428571428571428
+drude_weight_spin = 0.0024316107213254866
+total_weight_energy = 36.80980383138165
+total_weight_spin = 0.9094251386816905
+
+[[interpolation]]
+lambda = 0.9500000000000001
+frustration = 0.5428571428571428
+drude_weight_spin = 0.0020447191591182173
+total_weight_energy = 42.304653005768905
+total_weight_spin = 0.9379774599307771
+
+[[interpolation]]
+lambda = 1
+frustration = 0.5428571428571428
+drude_weight_spin = 0.00169926909528526
+total_weight_energy = 48.46799046201129
+total_weight_spin = 0.9684511385271353
+

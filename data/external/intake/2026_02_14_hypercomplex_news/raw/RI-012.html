@@ -1,0 +1,133 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<p><TITLE> Integral Octonions (Part 1) </TITLE>
+<!-- BEGIN HEADER -->
+<BODY bgcolor="#FFFFFF">
+<TABLE WIDTH = 100%> <TR>
+<TD WIDTH=10%>
+<A HREF = "index.html">
+   <img width = "50" border = none; src="last.jpg"></A>
+<TD WIDTH=80%>
+<CENTER>
+</CENTER>
+<TD WIDTH=10%>
+<A HREF = "integers_2.html">
+  <img width = "50" border = none; src="next.jpg">
+</A>
+</TABLE>
+
+<H4> July 23, 2013 </H4>
+<H2> Integral Octonions (Part 1)</H2>
+<H4> John Baez </H4>
+<!-- END HEADER -->
+
+One of the great things about the group isomorphism</p>
+
+$$   \mathrm{PSL}(2,\mathbb{R}) \cong \mathrm{SO}_0(2,1)  $$
+
+<p>is that it gives us two ways to think about the symmetry group of the hyperbolic plane.  On the one hand, it consists of <a href = "http://en.wikipedia.org/wiki/PSL%282,R%29#M.C3.B6bius_transformations">fractional linear transformations</a> with real entries:</p>
+
+$$   z \mapsto \frac{a z + b}{c z + d}   \quad a,b,c,d\in \mathbb{R} $$
+
+<p>acting on the upper half-plane in \(\mathbb{C}\), which is one way to think about the hyperbolic plane.  On the other hand, it's the identity component of the Lorentz group of 3d spacetime, acting on the hyperboloid </p>
+
+$$  \{(t,x,y) \in \mathbb{R}^{3} :  t^2 - x^2 - y^2 = 1 , t &gt; 0\} $$
+
+<p>which is <i>another</i> way to think about the hyperbolic plane.</p>
+
+<p>But the really great thing is that because the field \(\mathbb{R}\) contains the integers as a discrete subring, \(\mathrm{PSL}(2,\mathbb{R})\) contains the <a href = "http://en.wikipedia.org/wiki/Modular_group">modular group</a> \(\mathrm{PSL}(2,\mathbb{Z})\) as a discrete subgroup, acting on the hyperbolic plane with fundamental domains like this:</p>
+
+<p><div align = "center"><img src = "http://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/ModularGroup-FundamentalDomain-01.png/600px-ModularGroup-FundamentalDomain-01.png" alt = ""/></div></p>
+
+<p>This connects the Lorentz group of 3d spacetime to <i>number theory</i>... thanks to things like the theory of modular forms.  Part of the point is that \(\mathrm{PSL}(2,\mathbb{Z})\) is not just a discrete subgroup of \(\mathrm{PSL}(2,\mathbb{R})\).  It's an <a href = "http://en.wikipedia.org/wiki/Arithmetic_group">arithmetic group</a>!    Very very roughly, this is like an algebraic group, but defined using some ring resembling the integers, rather than a field.</p>
+
+<p>And here is where a further marvelous fact comes into play.  The algebra of octonions \(\mathbb{O}\) contains a (nonassociative!) discrete subring \(\mathbf{O}\), sometimes called the <a href = "http://math.ucr.edu/home/baez/week194.html"><b>Cayley integers</b></a>, <b>Coxeter integers</b>, or <b>octavians</b>.  If you ignore the fact that you can multiply octonions, you can think of the octonions as forming an 8-dimensional real inner product space... and then the Cayley integers form a lattice in this vector space, which is, up to a rescaling, <i>nothing other than <a href = "http://en.wikipedia.org/wiki/E8_lattice">the \(\mathrm{E}_8\) root lattice!</a></i>  </p>
+
+<p>So, each Cayley integer has 240 nearest neighbors, arranged in a pattern like this:</p>
+
+<p><div align = "center"><img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/E8_graph.svg/480px-E8_graph.svg.png" alt = ""/></div></p>
+
+<p>which you should imagine in 8 dimensions.</p>
+
+<p>That's already great.  But the Cayley integers are closed under multiplication, and this makes even more magic happen!</p>
+
+<p>For example, it lets us define an arithmetic subgroup \(\mathrm{PSL}(2,\mathbf{O})\) of the group </p>
+
+$$   \mathrm{PSL}(2,\mathbb{O}) \cong \mathrm{SO}_0(9,1)  $$
+
+<p>This acts on the 9-dimensional hyperbolic space</p>
+
+$$  \{x \in \mathbb{R}^{10} :\;  x_0^2 - x_1^2 - \cdots - x_9^2 = 1 , \; x_0 &gt; 0\} $$
+
+<p>Even better, this marvelous discrete group acting on 9d hyperbolic space is related to \(\mathrm{E}_8\).  In fact, \(\mathrm{PSL}(2,\mathbf{O})\) is the even part of the <a href = "http://en.wikipedia.org/wiki/Coxeter_group">Coxeter group</a> \(\mathrm{E}_{10}\), which arises from a <a href = "http://en.wikipedia.org/wiki/Coxeter%E2%80%93Dynkin_diagram">Coxeter diagram</a> like that of \(\mathrm{E}_8\), but longer:</p>
+
+<p><div align = "center"><img src = "../../mathematical/e10_dynkin.png" alt = ""/></div></p>
+
+<p>This group has one generator \(s_i\) for each dot, with relations
+
+$$  s_i^2 = 1 $$
+
+for each dot, 
+
+$$ s_i s_j s_i = s_j s_i s_j $$
+
+for any pair of dots connected by an edge, and
+
+$$  s_i s_j = s_j s_i $$
+
+for pairs <i>not</i> connected by an edge.  Each of these generators acts as reflection across a hyperplane in 9-dimensional hyperbolic space.  So, it's called a <a href = "http://en.wikipedia.org/wiki/Coxeter-Dynkin_diagram#Hyperbolic_Coxeter_groups">hyperbolic Coxeter group</a>.  The subgroup generated by products of <i>two</i> generators is called the even part of this group, and it's the same as \(\mathrm{PSL}_2(\mathbf{O})\).</p>
+
+<p>The same thing happens in a much simpler way for \(\mathrm{PSL}_2(\mathbb{Z})\): it's the even part of a hyperbolic Coxeter group acting on the hyperbolic plane with fundamental domains like this:</p>
+
+<p><div align = "center"><img src = "../../mathematical/(2,3,infinity)_tiling.png"></div></p>
+
+<p>You get these by taking fundamental domains for \(\mathrm{PSL}_2(\mathbb{Z})\), which I showed you before in the upper half-plane, and chopping them in half.</p>
+
+<p>So, thanks to Cayley integers, we know there is a similar but much more glorious picture in 9-dimensional hyperbolic space!  Unfortunately this blog is too low-dimensional to contain it.</p>
+
+<p>This Coxeter diagram:</p>
+
+<p><div align = "center"><img src = "../../mathematical/e10_dynkin.png" alt = ""/></div></p>
+
+<p> can also be seen as a <a href = "http://en.wikipedia.org/wiki/Dynkin_diagram">Dynkin diagram</a> &mdash; of a dangerously big kind, since it gives an <i>infinite-dimensional</i> Lie algebra, a <a href = "http://en.wikipedia.org/wiki/Kac%E2%80%93Moody_algebra">hyperbolic Kac&ndash;Moody algebra</a>.  This Lie algebra <i>also</i> goes by the name of \(\mathrm{E}_{10}\), and it's closely related to the Coxeter group I just described: the Coxeter group is the <a href = "http://en.wikipedia.org/wiki/Weyl_group">Weyl group</a> of the Lie algebra.   </p>
+
+<p>The Lie algebra \(\mathrm{E}_{10}\) has tantalizing and mysterious connections to physics.   Ideally, I would explain something about them in this series.  At the very least, I want to say how hyperbolic Coxeter groups like \(\mathrm{E}_{10}\) are related to <a href = "http://arxiv.org/abs/0907.3048">supersymmetric quantum cosmological billiard balls</a>!    But the paper I want to recommend to you today:</p>
+
+<p><ul>
+<li> Axel Kleinschmidt, Hermann Nicolai, Jakob Palmkvist, <a href = "http://arxiv.org/abs/0805.3018">Hyperbolic Weyl groups and the four normed division algebras</a>.</li></ul></p>
+
+<p>has somewhat less cosmic goals, so it's a good place to start.  It describes how the isomorphisms</p>
+
+$$
+\begin{array}{ccl}
+          \mathrm{PSL}(2,\mathbb{R})& \cong &\mathrm{SO}_0(2,1)   \\
+          \mathrm{PSL}(2,\mathbb{C})& \cong &\mathrm{SO}_0(3,1)   \\
+          \mathrm{PSL}(2,\mathbb{H})& \cong &\mathrm{SO}_0(5,1)   \\
+          \mathrm{PSL}(2,\mathbb{O})& \cong &\mathrm{SO}_0(9,1) .
+\end{array}
+$$
+
+<p>work, with an emphasis on the subtleties introduced by noncommutativity (for the quaternions \(\mathbb{H}\) and octonions \(\mathbb{O}\)) and nonassociativity (for \(\mathbb{O}\)).   It describes various subrings of 'integers' in \(\mathbb{R}, \mathbb{C}, \mathbb{H}\) and \(\mathbb{O}\) and how these give rise to arithmetic groups.   And, it describes how these are related to hyperbolic Coxeter groups.  This is tremendously pretty math even if you don't care about the potential applications to (fun, far-out, highly theoretical, not-yet-experimentally-testable) physics.</p>
+
+<hr>
+You can also read comments <a href = "http://golem.ph.utexas.edu/category/2013/07/integral_octonions_part_1.html">on the <i>n</i>-Category Caf&eacute;</a>, and make your own comments or ask questions there!  </p>
+
+<HR><P>
+<!-- BEGIN FOOTER -->
+<P>
+<TABLE WIDTH = 100%> <TR>
+<TD WIDTH=10%>
+<A HREF = "integers_1.html">
+   <img width = "50" border = none; src="last.jpg"></A>
+<TD WIDTH=80%>
+<CENTER>
+</CENTER>
+<TD WIDTH=10%>
+<A HREF = "integers_2.html">
+  <img width = "50" border = none; src="next.jpg">
+</A>
+</TABLE>
+&#169; 2013  John Baez<br>
+baez@math.removethis.ucr.andthis.edu <br>
+<b><A HREF="../README.html">home</A></b>
+<!-- END FOOTER -->

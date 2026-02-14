@@ -1,0 +1,4 @@
+id	topic	resource_class	status	method	size_bytes	sha256	output_path	error
+RI-004	quaternion_taxonomy	primary_paper_or_publisher	ok	firefox_headless_screenshot	100741	fd32116f3daf73950750774f9a18c57f65356988f1e2e16fc25fb4bb939d7b1f	data/external/intake/2026_02_14_hypercomplex_news/raw/RI-004.png	
+RI-018	sedenion_taxonomy	primary_paper_or_publisher	failed	none	0			curl:curl: (28) Operation timed out after 12002 milliseconds with 0 bytes received;wget:wget_failed;firefox:timeout_expired
+RI-021	pathion_ladder	secondary_host	ok	firefox_headless_screenshot	54735	a6ec2e7d9b72899edc68498fc67976e853b0e2709fae5f9454e6b47a4af35faf	data/external/intake/2026_02_14_hypercomplex_news/raw/RI-021.png	

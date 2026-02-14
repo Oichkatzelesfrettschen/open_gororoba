@@ -1,0 +1,47 @@
+# Consolidated artifact classification for research intake reruns.
+[audit]
+id = "RI-2026-02-14-hypercomplex-news-artifact-audit"
+generated_at_utc = "2026-02-14T03:14:00.924363+00:00"
+intake_root = "data/external/intake/2026_02_14_hypercomplex_news"
+file_count = 7
+selected_retry_count = 1
+resolved_failure_count = 1
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index.tsv"
+class = "primary_canonical"
+recommended_action = "retain"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox.tsv"
+class = "retry_obsolete"
+recommended_action = "archive_keep"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox_profile.tsv"
+class = "retry_obsolete"
+recommended_action = "archive_keep"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018.tsv"
+class = "retry_obsolete"
+recommended_action = "archive_keep"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_pyo3.tsv"
+class = "retry_resolution_canonical"
+recommended_action = "retain"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_rust.tsv"
+class = "retry_obsolete_legacy_rust"
+recommended_action = "archive_keep"
+
+[[artifact_file]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_smoke_pyo3.tsv"
+class = "smoke_validation_only"
+recommended_action = "retain_optional"
+
+[[resolution]]
+id = "RI-018"
+resolved_by = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_pyo3.tsv"

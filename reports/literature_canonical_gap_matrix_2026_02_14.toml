@@ -1,0 +1,732 @@
+# Canonical literature gap matrix for quaternion-family and lifted families (octonion/sedenion/pathion/chingon/routon/etc).
+# Generated from local manifests + bibliography plus a curated canonical checklist.
+
+[meta]
+updated = "2026-02-14"
+status = "active"
+status_token = "ACTIVE"
+authoritative = false
+report_id = "LITCANON-2026-02-14"
+
+[inputs]
+reference_tomls = ["registry/bibliography_normalized.toml", "data/external/documents_ingest/MANIFEST.toml", "papers/MANIFEST.toml"]
+downloaded_roots = ["data/external/documents_ingest", "papers/pdf"]
+extracted_roots = ["data/external/documents_extracted", "papers/extracted"]
+
+[counts]
+reference_record_count = 374
+downloaded_record_count = 184
+extracted_record_count = 183
+matrix_cell_count = 48
+canonical_checklist_count = 15
+canonical_missing_in_reference_count = 8
+canonical_missing_downloaded_count = 9
+canonical_missing_extracted_count = 9
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "plain"
+query_form = "\\bquaternions?\\b"
+reference_hits = 3
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = ["BIBN-0075", "BIBN-0094", "BIBN-0133"]
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "co"
+query_form = "\\bcoquaternions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "bi"
+query_form = "\\bbiquaternions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "split"
+query_form = "\\bsplit[- ]quaternions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "tri"
+query_form = "\\btriquaternions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "quaternion"
+modifier = "lambda"
+query_form = "\\blambdaquaternions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "plain"
+query_form = "\\boctonions?\\b"
+reference_hits = 8
+downloaded_hits = 4
+extracted_hits = 3
+reference_samples = ["BIBN-0061", "BIBN-0075", "BIBN-0125", "BIBN-0133", "ING-arxiv-2601-18433v1-clifford-split-octonion-conformal-space"]
+downloaded_samples = ["data/external/documents_ingest/1_cayleydickson_and_more/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf", "data/external/documents_ingest/1_cayleydickson_and_more/arxiv_math0105155_baez_2002_octonions.pdf", "data/external/documents_ingest/e10 billiards, octonion locality, and zero\\u2011divisor skies.pdf", "papers/pdf/baez_2002_math0105155_octonions.pdf"]
+extracted_samples = ["data/external/documents_extracted/arxiv-2601-18433v1-clifford-split-octonion-conformal-space/paper.toml", "data/external/documents_extracted/arxiv-math0105155-baez-2002-octonions/paper.toml", "data/external/documents_extracted/e10-billiards-octonion-locality-and-zero-divisor-skies/paper.toml"]
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "co"
+query_form = "\\bcooctonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "bi"
+query_form = "\\bbioctonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "split"
+query_form = "\\bsplit[- ]octonions?\\b"
+reference_hits = 1
+downloaded_hits = 1
+extracted_hits = 1
+reference_samples = ["ING-arxiv-2601-18433v1-clifford-split-octonion-conformal-space"]
+downloaded_samples = ["data/external/documents_ingest/1_cayleydickson_and_more/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf"]
+extracted_samples = ["data/external/documents_extracted/arxiv-2601-18433v1-clifford-split-octonion-conformal-space/paper.toml"]
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "tri"
+query_form = "\\btrioctonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "octonion"
+modifier = "lambda"
+query_form = "\\blambdaoctonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "plain"
+query_form = "\\bsedenions?\\b"
+reference_hits = 16
+downloaded_hits = 6
+extracted_hits = 3
+reference_samples = ["BIBN-0071", "BIBN-0075", "BIBN-0081", "BIBN-0083", "BIBN-0085"]
+downloaded_samples = ["data/external/documents_ingest/1_cayleydickson_and_more/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "data/external/documents_ingest/1_cayleydickson_and_more/arxiv_2512.07210v1_automorphisms_sedenions.pdf", "data/external/documents_ingest/1_cayleydickson_and_more/de_marrais_2007_07040112_sedenions_xor.pdf", "papers/pdf/de_marrais_2007_07040112_sedenions_xor.pdf", "papers/pdf/reggiani_2025_251207210_automorphisms_sedenions.pdf"]
+extracted_samples = ["data/external/documents_extracted/arxiv-2308-14768-tang-tang-2023-sedenion-su5-generations/paper.toml", "data/external/documents_extracted/arxiv-2512-07210v1-automorphisms-sedenions/paper.toml", "data/external/documents_extracted/de-marrais-2007-07040112-sedenions-xor/paper.toml"]
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "co"
+query_form = "\\bcosedenions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "bi"
+query_form = "\\bbisedenions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "split"
+query_form = "\\bsplit[- ]sedenions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "tri"
+query_form = "\\btrisedenions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "sedenion"
+modifier = "lambda"
+query_form = "\\blambdasedenions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "plain"
+query_form = "\\bpathions?(?:\\d+)?\\b"
+reference_hits = 4
+downloaded_hits = 3
+extracted_hits = 3
+reference_samples = ["BIBN-0081", "ING-pathions1", "ING-pathions2", "ING-pathions3"]
+downloaded_samples = ["data/external/documents_ingest/1_cayleydickson_and_more/pathions1.pdf", "data/external/documents_ingest/1_cayleydickson_and_more/pathions2.pdf", "data/external/documents_ingest/1_cayleydickson_and_more/pathions3.pdf"]
+extracted_samples = ["data/external/documents_extracted/pathions1/paper.toml", "data/external/documents_extracted/pathions2/paper.toml", "data/external/documents_extracted/pathions3/paper.toml"]
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "co"
+query_form = "\\bcopathions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "bi"
+query_form = "\\bbipathions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "split"
+query_form = "\\bsplit[- ]pathions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "tri"
+query_form = "\\btripathions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "pathion"
+modifier = "lambda"
+query_form = "\\blambdapathions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "plain"
+query_form = "\\bchingons?(?:\\d+)?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "co"
+query_form = "\\bcochingons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "bi"
+query_form = "\\bbichingons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "split"
+query_form = "\\bsplit[- ]chingons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "tri"
+query_form = "\\btrichingons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "chingon"
+modifier = "lambda"
+query_form = "\\blambdachingons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "plain"
+query_form = "\\broutons?(?:\\d+)?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "co"
+query_form = "\\bcoroutons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "bi"
+query_form = "\\bbiroutons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "split"
+query_form = "\\bsplit[- ]routons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "tri"
+query_form = "\\btriroutons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "routon"
+modifier = "lambda"
+query_form = "\\blambdaroutons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "plain"
+query_form = "\\btrigintaduonions?\\b"
+reference_hits = 2
+downloaded_hits = 2
+extracted_hits = 1
+reference_samples = ["ING-arxiv-0907-2047v3-trigintaduonion-subalgebra-structure", "CUR-brown-2009-09072047"]
+downloaded_samples = ["data/external/documents_ingest/1_cayleydickson_and_more/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf", "papers/pdf/brown_2009_09072047_trigintaduonion_subalgebra.pdf"]
+extracted_samples = ["data/external/documents_extracted/arxiv-0907-2047v3-trigintaduonion-subalgebra-structure/paper.toml"]
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "co"
+query_form = "\\bcotrigintaduonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "bi"
+query_form = "\\bbitrigintaduonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "split"
+query_form = "\\bsplit[- ]trigintaduonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "tri"
+query_form = "\\btritrigintaduonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "trigintaduonion"
+modifier = "lambda"
+query_form = "\\blambdatrigintaduonions?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "plain"
+query_form = "\\bvoudons?(?:\\d+)?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "co"
+query_form = "\\bcovoudons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "bi"
+query_form = "\\bbivoudons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "split"
+query_form = "\\bsplit[- ]voudons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "tri"
+query_form = "\\btrivoudons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[variant_matrix]]
+base = "voudon"
+modifier = "lambda"
+query_form = "\\blambdavoudons?\\b"
+reference_hits = 0
+downloaded_hits = 0
+extracted_hits = 0
+reference_samples = []
+downloaded_samples = []
+extracted_samples = []
+
+[[canonical_check]]
+id = "CAN-QUAT-1853-HAMILTON"
+family = "quaternion"
+title = "Lectures on Quaternions"
+authors = "W. R. Hamilton"
+year = 1853
+source_url = "https://openlibrary.org/books/OL23304291M/Lectures_on_quaternions"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-QUAT-1866-HAMILTON"
+family = "quaternion"
+title = "Elements of Quaternions"
+authors = "W. R. Hamilton"
+year = 1866
+source_url = "https://openlibrary.org/books/OL23677996M/Elements_of_quaternions"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-QUAT-1867-TAIT"
+family = "quaternion"
+title = "An Elementary Treatise on Quaternions"
+authors = "P. G. Tait"
+year = 1867
+source_url = "https://archive.org/details/elementarytreat00tailuoft"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-QUAT-1845-CAYLEY"
+family = "quaternion"
+title = "On Jacobi's Elliptic Functions ... and on Quaternions"
+authors = "A. Cayley"
+year = 1845
+source_url = "https://zenodo.org/records/1430243"
+arxiv = ""
+present_reference_toml = true
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-COQ-1849-COCKLE-SYSTEMS"
+family = "coquaternion/split-quaternion"
+title = "On systems of algebra involving more than one imaginary"
+authors = "J. Cockle"
+year = 1849
+source_url = "https://doi.org/10.1080/14786444908646169"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-COQ-1849-COCKLE-NEW-IMAGINARY"
+family = "coquaternion/split-quaternion"
+title = "On a new imaginary in algebra"
+authors = "J. Cockle"
+year = 1849
+source_url = "https://doi.org/10.1080/14786444808646059"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-BIQ-1911-CONWAY"
+family = "biquaternion"
+title = "The Theory of Biquaternions"
+authors = "A. W. Conway"
+year = 1911
+source_url = "https://archive.org/details/theoryofbiquater00conwrich"
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-OCT-2002-BAEZ"
+family = "octonion"
+title = "The Octonions"
+authors = "J. C. Baez"
+year = 2002
+source_url = "https://arxiv.org/abs/math/0105155"
+arxiv = "math/0105155"
+present_reference_toml = true
+present_downloaded = true
+present_extracted = true
+
+[[canonical_check]]
+id = "CAN-SED-1998-MORENO"
+family = "sedenion"
+title = "The zero divisors of the Cayley-Dickson algebras over the real numbers"
+authors = "G. Moreno"
+year = 1998
+source_url = "https://arxiv.org/abs/q-alg/9710013"
+arxiv = "q-alg/9710013"
+present_reference_toml = true
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-SED-2005-MORENO"
+family = "sedenion"
+title = "Constructing zero divisors in the higher dimensional Cayley-Dickson algebras"
+authors = "G. Moreno"
+year = 2005
+source_url = "https://arxiv.org/abs/math/0512517"
+arxiv = "math/0512517"
+present_reference_toml = true
+present_downloaded = true
+present_extracted = true
+
+[[canonical_check]]
+id = "CAN-SED-2004-CAWAGAS"
+family = "sedenion"
+title = "On the structure and zero divisors of the Cayley-Dickson sedenion algebra"
+authors = "R. E. Cawagas"
+year = 2004
+source_url = "https://doi.org/10.7151/dmgaa.1088"
+arxiv = ""
+present_reference_toml = true
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-PATH-2009-CAWAGAS-ETAL"
+family = "pathion/trigintaduonion"
+title = "Subalgebra Structure of the Trigintaduonions"
+authors = "R. E. Cawagas et al."
+year = 2009
+source_url = "https://arxiv.org/abs/0907.2047"
+arxiv = "0907.2047"
+present_reference_toml = true
+present_downloaded = true
+present_extracted = true
+
+[[canonical_check]]
+id = "CAN-PATH-2007-DEMARRAIS"
+family = "pathion"
+title = "Catamaran Sails and Spindles, Zero-Divisor Geometry, and the Eightfold Way"
+authors = "R. P. C. de Marrais"
+year = 2007
+source_url = "https://arxiv.org/abs/0704.0026"
+arxiv = "0704.0026"
+present_reference_toml = true
+present_downloaded = true
+present_extracted = true
+
+[[canonical_check]]
+id = "CAN-CHINGON-UNSET"
+family = "chingon"
+title = "No stable canonical publication identified in current crawl"
+authors = ""
+year = 0
+source_url = ""
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false
+
+[[canonical_check]]
+id = "CAN-ROUTON-UNSET"
+family = "routon"
+title = "No stable canonical publication identified in current crawl"
+authors = ""
+year = 0
+source_url = ""
+arxiv = ""
+present_reference_toml = false
+present_downloaded = false
+present_extracted = false

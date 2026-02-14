@@ -1,0 +1,35 @@
+# Consolidated fetch summary from Python ingestion + pyo3 hash bridge runs.
+[summary]
+id = "RI-2026-02-14-hypercomplex-news"
+generated_at_utc = "2026-02-14T03:14:30Z"
+primary_index = "data/external/intake/2026_02_14_hypercomplex_news/index.tsv"
+retry_indices = ["data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox_profile.tsv", "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018.tsv", "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_rust.tsv", "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_pyo3.tsv"]
+resolved_index = "data/external/intake/2026_02_14_hypercomplex_news/index_resolved.tsv"
+resolved_provenance = "data/external/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml"
+artifact_audit = "reports/research_intake_artifact_audit_2026_02_14.toml"
+selected_retry_index = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_pyo3.tsv"
+integrity_verifier = "src/verification/verify_research_intake_integrity.py"
+integrity_status = "pass"
+entry_count = 34
+primary_success_count = 33
+primary_failure_count = 1
+consolidated_success_count = 34
+consolidated_failure_count = 0
+hash_backend = "pyo3"
+notes = "Primary run executed with Python script and Rust pyo3 hash bridge. RI-018 timed out at 12s and was resolved by targeted 60s retry; consolidation now emits canonical resolved index/provenance."
+
+[[retry_resolution]]
+id = "RI-018"
+status = "resolved"
+retry_index = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_pyo3.tsv"
+resolution_method = "curl"
+
+[[artifact_classification]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_firefox.tsv"
+class = "retry_obsolete"
+recommended_action = "archive_keep"
+
+[[artifact_classification]]
+path = "data/external/intake/2026_02_14_hypercomplex_news/index_retry_ri018_rust.tsv"
+class = "retry_obsolete_legacy_rust"
+recommended_action = "archive_keep"

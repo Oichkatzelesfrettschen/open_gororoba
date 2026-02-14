@@ -1,0 +1,92 @@
+# Context-chunk index for fast repo onboarding under token limits.
+
+[context_index]
+id = "CTX-2026-02-14-open_gororoba"
+created = "2026-02-14"
+status = "active"
+chunk_count = 12
+strategy = "scan chunks independently, then merge only relevant chunks"
+
+[[chunk]]
+id = "CTX-01"
+name = "Governance and Entrypoints"
+priority = "high"
+paths = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "registry/entrypoint_docs.toml"]
+purpose = "Operating contract, user-facing overlays, and entrypoint generation state."
+
+[[chunk]]
+id = "CTX-02"
+name = "Project Metadata and Roadmaps"
+priority = "high"
+paths = ["registry/project.toml", "registry/roadmap.toml", "registry/roadmap_narrative.toml", "registry/next_actions.toml", "registry/todo.toml"]
+purpose = "Global status, sprint metadata, and current high-priority backlog."
+
+[[chunk]]
+id = "CTX-03"
+name = "Claims and Evidence Core"
+priority = "high"
+paths = ["registry/claims.toml", "registry/claims_tasks.toml", "registry/claim_tickets.toml", "registry/insights.toml", "registry/experiments.toml"]
+purpose = "Claim lifecycle, task states, and evidence links."
+
+[[chunk]]
+id = "CTX-04"
+name = "External Sources and Provenance"
+priority = "high"
+paths = ["registry/external_sources.toml", "docs/external_sources/INDEX.md", "data/external/PROVENANCE.local.json", "registry/provenance_sources.toml"]
+purpose = "External source tracking and reproducibility anchors."
+
+[[chunk]]
+id = "CTX-05"
+name = "Intake Batch 2026-02-14"
+priority = "high"
+paths = ["registry/research_intake_2026_02_14.toml", "data/external/intake/2026_02_14_hypercomplex_news/provenance.toml", "reports/research_intake_2026_02_14_summary.toml"]
+purpose = "Current URL intake, fetched artifacts, and final retrieval status."
+
+[[chunk]]
+id = "CTX-06"
+name = "Rust Workspace Topology"
+priority = "high"
+paths = ["Cargo.toml", "crates/algebra_core/", "crates/vacuum_frustration/", "crates/gororoba_cli/", "crates/lbm_3d_cuda/"]
+purpose = "Primary Rust crates relevant to algebra, experiments, and GPU lanes."
+
+[[chunk]]
+id = "CTX-07"
+name = "Verification Gates"
+priority = "high"
+paths = ["Makefile", "src/verification/", "src/scripts/analysis/export_registry_markdown_mirrors.py", "src/scripts/analysis/normalize_external_sources_registry.py"]
+purpose = "Quality gates, schema checks, and mirror generation controls."
+
+[[chunk]]
+id = "CTX-08"
+name = "Publication Pipeline"
+priority = "medium"
+paths = ["registry/publication_evidence.toml", "docs/latex/", "papers/MANIFEST.toml", "data/papers/transport/"]
+purpose = "Paper scaffolding and publication evidence chain."
+
+[[chunk]]
+id = "CTX-09"
+name = "Dotfiles and Claude Runtime"
+priority = "medium"
+paths = ["~/.claude/.mcp.json", "~/.claude.json", "~/.config/Claude/claude_desktop_config.json", ".claude/settings.local.json"]
+purpose = "Runtime configuration and path-linkage diagnostics."
+
+[[chunk]]
+id = "CTX-10"
+name = "Gap Audits"
+priority = "medium"
+paths = ["reports/repo_completion_gap_audit_2026_02_14.toml", "reports/claude_dotfiles_gap_audit_2026_02_14.toml", "reports/todo_placeholder_audit.toml"]
+purpose = "Current unresolved work and remediation priorities."
+
+[[chunk]]
+id = "CTX-11"
+name = "Knowledge Atom Layer"
+priority = "low"
+paths = ["registry/knowledge/claim_atoms.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/docs/"]
+purpose = "Structured atomized mirrors and derived document metadata."
+
+[[chunk]]
+id = "CTX-12"
+name = "Execution Replay Commands"
+priority = "medium"
+paths = ["plans/research_hypercomplex_ingest_roadmap_2026_02_14.toml", "reports/research_intake_url_mapping_2026_02_14.tsv"]
+purpose = "Re-entry plan and reproducible URL map for continued work."

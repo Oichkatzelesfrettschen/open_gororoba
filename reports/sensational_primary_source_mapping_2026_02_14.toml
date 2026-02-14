@@ -1,0 +1,147 @@
+# Sensational headline to primary-source mapping derived from deterministic MSN detail payloads.
+
+[mapping]
+id = "SENSATIONAL-PRIMARY-MAP-2026-02-14"
+generated_at_utc = "2026-02-14T03:19:00Z"
+status = "active"
+entry_count = 8
+resolved_count = 5
+unresolved_count = 3
+msn_manifest = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail_manifest.tsv"
+notes = "Primary URLs prioritize peer-reviewed papers or first-party releases. Aggregator/video-only items stay unresolved until direct citation evidence appears."
+
+[[item]]
+id = "RI-026"
+topic = "sensational_black_holes"
+headline = "This new theory suggests black holes may not be objects"
+provider = "Astrum"
+msn_content_id = "AA1Wc13D"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-026_AA1Wc13D.json"
+normalized_url = "https://www.msn.com/en-us/news/opinion/this-new-theory-suggests-black-holes-may-not-be-objects/vi-AA1Wc13D"
+source_href = "https://cpcvideouploaderprod.blob.core.windows.net/aa1qqjnt-aa1qqjo9/202602120839146632.mp4"
+published_at = "2026-02-12T08:43:29Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "unresolved"
+primary_source_url = ""
+confidence = "low"
+evidence = "MSN detail payload resolves to provider video blob with no DOI/arXiv/journal link in transcript payload."
+next_action = "Obtain provider transcript with explicit citation or independent source chain."
+
+[[item]]
+id = "RI-027"
+topic = "sensational_hypervelocity_star"
+headline = "Hypervelocity star crossing solar system"
+provider = "Underknown"
+msn_content_id = "AA1We2NG"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-027_AA1We2NG.json"
+normalized_url = "https://www.msn.com/en-us/money/news/hypervelocity-star-crossing-solar-system/vi-AA1We2NG"
+source_href = "https://s3.amazonaws.com/ve1/0004204dfc59eb7e2438df1ab0b02c6c.mp4"
+published_at = "2026-02-12T17:45:50Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "unresolved"
+primary_source_url = ""
+confidence = "low"
+evidence = "MSN detail payload resolves to source video blob and contains no direct scholarly citation."
+next_action = "Trace provider script or channel notes for explicit paper/source references."
+
+[[item]]
+id = "RI-028"
+topic = "sensational_inside_out_system"
+headline = "Astronomers detect a solar system they say should not be possible"
+provider = "CNN"
+msn_content_id = "AA1WeDTi"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-028_AA1WeDTi.json"
+normalized_url = "https://www.msn.com/en-us/news/technology/astronomers-detect-a-solar-system-they-say-should-not-be-possible/ar-AA1WeDTi"
+source_href = "https://www.cnn.com/2026/02/12/science/solar-system-inside-out-planets?cid=external-feeds_iluminar_msn"
+published_at = "2026-02-12T20:14:43Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "resolved"
+primary_source_url = "https://doi.org/10.1126/science.adl2348"
+candidate_primary_urls = ["https://doi.org/10.1126/science.adl2348", "https://www.science.org/doi/10.1126/science.adl2348"]
+confidence = "high"
+evidence = "MSN detail body includes explicit DOI link 10.1126/science.adl2348."
+
+[[item]]
+id = "RI-029"
+topic = "sensational_fusion"
+headline = "Sam Altman's fusion startup Helion Energy hits 150 million degree plasma temperature"
+provider = "Fortune"
+msn_content_id = "AA1WhoFB"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-029_AA1WhoFB.json"
+normalized_url = "https://www.msn.com/en-us/news/technology/sam-altman-s-fusion-startup-helion-energy-hits-150-million-degree-plasma-temperature-a-milestone-that-could-bring-first-grid-power-in-2028/ar-AA1WhoFB"
+source_href = "https://fortune.com/2026/02/13/sam-altman-fusion-helion-energy-milestone-doubters-grid-power-2028/"
+published_at = "2026-02-13T10:00:00Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "resolved"
+primary_source_url = "https://www.helionenergy.com/articles/helion-achieves-new-fusion-energy-milestones/"
+candidate_primary_urls = ["https://www.helionenergy.com/articles/helion-achieves-new-fusion-energy-milestones/"]
+confidence = "medium"
+evidence = "Company first-party release dated 2026-02-13 states 150 million degrees Celsius Polaris milestone."
+
+[[item]]
+id = "RI-030"
+topic = "sensational_magic_particles"
+headline = "Scientists stunned as 'magic' particles suddenly appear in LHC"
+provider = "Morning Overview"
+msn_content_id = "AA1Wd7BX"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-030_AA1Wd7BX.json"
+normalized_url = "https://www.msn.com/en-us/news/technology/scientists-stunned-as-magic-particles-suddenly-appear-in-lhc/ar-AA1Wd7BX"
+source_href = "https://morningoverview.com/scientists-stunned-as-magic-particles-suddenly-appear-in-lhc/"
+published_at = "2026-02-12T13:45:00Z"
+alias_count_from_user_prompt = 2
+primary_source_status = "resolved"
+primary_source_url = "https://doi.org/10.1103/PhysRevD.110.116016"
+candidate_primary_urls = ["https://doi.org/10.1103/PhysRevD.110.116016", "https://link.aps.org/doi/10.1103/PhysRevD.110.116016"]
+confidence = "high"
+evidence = "Corroborated by SciTechDaily source chain citing 'Magic states of top quarks' DOI 10.1103/PhysRevD.110.116016."
+
+[[item]]
+id = "RI-032"
+topic = "sensational_stellar_physics"
+headline = "The discovery that could rewrite stellar physics"
+provider = "Celestium"
+msn_content_id = "AA1W49tB"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-032_AA1W49tB.json"
+normalized_url = "https://www.msn.com/en-us/video/news/the-discovery-that-could-rewrite-stellar-physics/vi-AA1W49tB"
+source_href = "https://cpcvideouploaderprod.blob.core.windows.net/aa1birzk-aa1birzx/202602101357142148.mp4"
+published_at = "2026-02-10T14:05:23Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "unresolved"
+primary_source_url = ""
+confidence = "low"
+evidence = "MSN payload is provider video transcript and does not expose an explicit DOI/arXiv citation."
+next_action = "Extract full provider transcript metadata or linked references before claiming specific paper mapping."
+
+[[item]]
+id = "RI-033"
+topic = "sensational_quantum_wave"
+headline = "Thousands of sodium atoms merge into 1 wave, warping quantum reality"
+provider = "Morning Overview"
+msn_content_id = "AA1VLmch"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-033_AA1VLmch.json"
+normalized_url = "https://www.msn.com/en-us/news/technology/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/ar-AA1VLmch"
+source_href = "https://morningoverview.com/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/"
+published_at = "2026-02-05T20:15:00Z"
+alias_count_from_user_prompt = 1
+primary_source_status = "resolved"
+primary_source_url = "https://doi.org/10.1038/s41586-025-09917-9"
+candidate_primary_urls = ["https://doi.org/10.1038/s41586-025-09917-9", "https://www.nature.com/articles/s41586-025-09917-9"]
+confidence = "high"
+evidence = "Live Science-linked source chain cites Nature article URL s41586-025-09917-9 on sodium nanoparticle interferometry."
+
+[[item]]
+id = "RI-034"
+topic = "sensational_gravitational_wave"
+headline = "Record-breaking gravitational wave puts Einstein's relativity to its toughest test yet"
+provider = "Live Science"
+msn_content_id = "AA1WhEIq"
+msn_detail_payload = "data/external/intake/2026_02_14_hypercomplex_news/msn_detail/RI-034_AA1WhEIq.json"
+normalized_url = "https://www.msn.com/en-us/news/technology/record-breaking-gravitational-wave-puts-einstein-s-relativity-to-its-toughest-test-yet-and-proves-him-right-again/ar-AA1WhEIq"
+source_href = "https://www.livescience.com/physics-mathematics/record-breaking-gravitational-wave-puts-einsteins-relativity-to-its-toughest-test-yet-and-proves-him-right-again"
+published_at = "2026-02-13T11:00:00Z"
+alias_count_from_user_prompt = 2
+primary_source_status = "resolved"
+primary_source_url = "https://arxiv.org/abs/2509.08099"
+candidate_primary_urls = ["https://arxiv.org/abs/2509.08099", "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n", "https://news.cornell.edu/stories/2026/01/gravitational-wave-signal-tests-einsteins-theory-general-relativity"]
+confidence = "high"
+evidence = "Live Science source chain references GW250114 analyses; Cornell release links PRL paper and arXiv record 2509.08099."

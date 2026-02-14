@@ -1,0 +1,36 @@
+# Stop/go policy checks for rescope execution lane.
+
+[stop_go]
+id = "RESCOPE-STOP-GO-2026-02-14"
+generated_at_utc = "2026-02-14T03:15:00Z"
+status = "go"
+check_count = 4
+
+[[check]]
+id = "SG-001"
+title = "CLAUDE/GEMINI stub immutability gate"
+command = "python3 src/verification/verify_toml_generated_mirror_immutability.py"
+status = "pass"
+exit_code = 0
+
+[[check]]
+id = "SG-002"
+title = "Markdown governance parity"
+command = "python3 src/verification/verify_markdown_governance_parity.py"
+status = "pass"
+exit_code = 0
+
+[[check]]
+id = "SG-003"
+title = "Legacy Rust intake binary removed from active references"
+command = "rg -n 'research_intake_fetch' crates/gororoba_cli/Cargo.toml crates/gororoba_cli/src/bin registry/binaries.toml"
+status = "pass"
+exit_code = 0
+notes = "No matches."
+
+[[check]]
+id = "SG-004"
+title = "Python-first intake + pyo3 hash bridge still available"
+command = "python3 src/scripts/analysis/fetch_research_intake_batch.py --help"
+status = "pass"
+exit_code = 0

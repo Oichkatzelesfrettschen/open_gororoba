@@ -1,0 +1,56 @@
+# Claude + dotfiles reconciliation audit for open_gororoba.
+
+[audit]
+id = "CLAUDE-DOTFILES-GAP-2026-02-14"
+created = "2026-02-14"
+scope = "home-level claude config, dotfiles claude config, project metadata paths"
+status = "active"
+finding_count = 6
+
+[[finding]]
+id = "CDG-001"
+severity = "high"
+title = "Stale project path in ~/.claude.json"
+evidence = "~/.claude.json references /home/eirikr/Github/open_gororoba/convos, which is absent."
+risk = "Project metadata traversal can fail or silently skip expected memory context."
+recommended_action = "Remove stale convos path or recreate directory with explicit ownership."
+
+[[finding]]
+id = "CDG-002"
+severity = "high"
+title = "Divergent MCP surfaces between ~/.claude and ~/dotfiles/.claude"
+evidence = "Home and dotfiles trees expose non-identical MCP server lists and plugin assumptions."
+risk = "Session behavior differs by launcher and can break reproducibility."
+recommended_action = "Define one canonical source of truth and sync downstream copies deterministically."
+
+[[finding]]
+id = "CDG-003"
+severity = "medium"
+title = "Desktop and CLI launchers may resolve MCP config differently"
+evidence = "~/.config/Claude/claude_desktop_config.json duplicates portions of MCP wiring with separate invocation paths."
+risk = "Different tool availability across desktop vs CLI sessions."
+recommended_action = "Align desktop config with canonical .mcp.json and add a drift check."
+
+[[finding]]
+id = "CDG-004"
+severity = "medium"
+title = "Global Claude todo store is oversized and decoupled from repo TOML task canon"
+evidence = "~/.claude/todos contains many agent files not mapped to registry/todo.toml or registry/next_actions.toml."
+risk = "Agents may follow stale local todos instead of repository canonical task state."
+recommended_action = "Prune stale todo shards and document registry-first policy in Claude project memory."
+
+[[finding]]
+id = "CDG-005"
+severity = "low"
+title = "Repo-local .claude settings are minimal while global runtime is complex"
+evidence = ".claude/settings.local.json only includes small local preferences."
+risk = "Implicit global assumptions can surprise contributors."
+recommended_action = "Add a short repo-local runtime notes file pointing to authoritative MCP/task paths."
+
+[[finding]]
+id = "CDG-006"
+severity = "low"
+title = "Firefox headless fallback can fail when default profile is in use"
+evidence = "Retry run showed profile lock until isolated --no-remote --profile fallback was added."
+risk = "Fallback capture silently degrades for blocked URLs."
+recommended_action = "Keep isolated profile strategy in fetch tooling and include timeout caps."
