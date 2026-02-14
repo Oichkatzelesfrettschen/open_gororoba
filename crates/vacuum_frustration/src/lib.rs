@@ -14,14 +14,17 @@ pub mod balance;
 pub mod bridge;
 pub mod frustration;
 pub mod frustration_energy;
+pub mod kubo_transport;
 pub mod percolation;
 pub mod signed_graph;
 pub mod spatial_correlation;
 pub mod vietoris_rips;
 
-// GPU-accelerated null model testing (optional feature)
+// GPU-accelerated modules (optional feature)
 #[cfg(feature = "gpu")]
 pub mod besag_clifford_cuda;
+#[cfg(feature = "gpu")]
+pub mod kubo_transport_gpu;
 
 // Re-export key types for ergonomics
 pub use apt_sedenion::{AptSedenionField, FrustrationStats};

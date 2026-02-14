@@ -811,9 +811,14 @@ def export_entrypoint_docs(repo_root: Path, out_path: Path) -> None:
 def export_entrypoint_docs_legacy(repo_root: Path) -> None:
     data = _load_toml(repo_root / "registry/entrypoint_docs.toml")
     docs = data.get("document", [])
+    immutable_overlays = {"CLAUDE.md", "GEMINI.md"}
     for row in docs:
         path = str(row.get("path", "")).strip()
         if not path:
+            continue
+        if path in immutable_overlays:
+            # Policy: these compatibility stubs are tracked manually and must
+            # never be rewritten by TOML export pipelines.
             continue
         body = str(row.get("body_markdown", "")).strip()
         title = str(row.get("title", "")).strip() or Path(path).stem

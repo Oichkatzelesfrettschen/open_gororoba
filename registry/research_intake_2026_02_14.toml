@@ -1,0 +1,353 @@
+# Hypercomplex and science-news intake batch requested on 2026-02-14.
+# This file is intentionally TOML-first and machine-readable.
+
+[research_intake]
+id = "RI-2026-02-14-hypercomplex-news"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+owner = "codex"
+policy = "preserve_original_url_and_normalized_url"
+entry_count = 34
+download_root = "data/external/intake/2026_02_14_hypercomplex_news"
+notes = "Primary-source mapping is strict for papers and best-effort for sensational headlines."
+
+[[entry]]
+id = "RI-001"
+topic = "quaternion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Classical_Hamiltonian_quaternions?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Classical_Hamiltonian_quaternions"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Baseline quaternion definition page."
+
+[[entry]]
+id = "RI-002"
+topic = "quaternion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Split-quaternion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Split-quaternion"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Split/coquaternion entry."
+
+[[entry]]
+id = "RI-003"
+topic = "quaternion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Hyperbolic_quaternion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Hyperbolic_quaternion"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Terminology-collision entry for hyperbolic quaternion."
+
+[[entry]]
+id = "RI-004"
+topic = "quaternion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://www.sciencedirect.com/science/article/pii/S0024379516300386?utm_source=chatgpt.com"
+normalized_url = "https://www.sciencedirect.com/science/article/pii/S0024379516300386"
+primary_source_url = "https://www.sciencedirect.com/science/article/pii/S0024379516300386"
+retrieval_priority = "high"
+notes = "ScienceDirect paper link; may require publisher access."
+
+[[entry]]
+id = "RI-005"
+topic = "quaternion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://link.springer.com/content/pdf/10.1155/2008/213293.pdf?utm_source=chatgpt.com"
+normalized_url = "https://link.springer.com/content/pdf/10.1155/2008/213293.pdf"
+primary_source_url = "https://doi.org/10.1155/2008/213293"
+retrieval_priority = "high"
+notes = "Publisher PDF target for quaternion-related reference."
+
+[[entry]]
+id = "RI-006"
+topic = "noise_filtering"
+resource_class = "forum_noise"
+original_url = "https://www.reddit.com/r/nonsense/comments/m6m2sy/did_the_third_policeman_exist_at_all_part_1/?utm_source=chatgpt.com"
+normalized_url = "https://www.reddit.com/r/nonsense/comments/m6m2sy/did_the_third_policeman_exist_at_all_part_1/"
+primary_source_url = ""
+retrieval_priority = "low"
+notes = "Non-scholarly reference included for explicit filtering/audit."
+
+[[entry]]
+id = "RI-007"
+topic = "octonion_taxonomy"
+resource_class = "primary_paper_or_notes"
+original_url = "https://math.ucr.edu/home/baez/octonions/octonions.pdf?utm_source=chatgpt.com"
+normalized_url = "https://math.ucr.edu/home/baez/octonions/octonions.pdf"
+primary_source_url = "https://arxiv.org/abs/math/0105155"
+retrieval_priority = "high"
+notes = "Baez octonions survey PDF mirror."
+
+[[entry]]
+id = "RI-008"
+topic = "octonion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Split-octonion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Split-octonion"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Split-octonion summary."
+
+[[entry]]
+id = "RI-009"
+topic = "octonion_taxonomy"
+resource_class = "primary_paper_or_notes"
+original_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf?utm_source=chatgpt.com"
+normalized_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf"
+primary_source_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf"
+retrieval_priority = "high"
+notes = "Petersson E8 octonionic structure note."
+
+[[entry]]
+id = "RI-010"
+topic = "octonion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Bioctonion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Bioctonion"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Complexified octonion entry."
+
+[[entry]]
+id = "RI-011"
+topic = "octonion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://link.springer.com/article/10.1007/s13324-016-0144-6?utm_source=chatgpt.com"
+normalized_url = "https://link.springer.com/article/10.1007/s13324-016-0144-6"
+primary_source_url = "https://doi.org/10.1007/s13324-016-0144-6"
+retrieval_priority = "high"
+notes = "Dual number coefficient octonion paper."
+
+[[entry]]
+id = "RI-012"
+topic = "octonion_taxonomy"
+resource_class = "primary_paper_or_notes"
+original_url = "https://math.ucr.edu/home/baez/octonions/integers/integers_1.html?utm_source=chatgpt.com"
+normalized_url = "https://math.ucr.edu/home/baez/octonions/integers/integers_1.html"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Baez octonion integers notes."
+
+[[entry]]
+id = "RI-013"
+topic = "cayley_dickson_foundations"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Construction overview."
+
+[[entry]]
+id = "RI-014"
+topic = "sedenion_taxonomy"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Sedenion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Sedenion"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Sedenion summary."
+
+[[entry]]
+id = "RI-015"
+topic = "sedenion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://link.springer.com/article/10.1007/s10958-020-04930-x?utm_source=chatgpt.com"
+normalized_url = "https://link.springer.com/article/10.1007/s10958-020-04930-x"
+primary_source_url = "https://doi.org/10.1007/s10958-020-04930-x"
+retrieval_priority = "high"
+notes = "Split-sedenion paper."
+
+[[entry]]
+id = "RI-016"
+topic = "cayley_dickson_foundations"
+resource_class = "reference_notes"
+original_url = "https://ncatlab.org/nlab/show/Cayley-Dickson%2Bconstruction?utm_source=chatgpt.com"
+normalized_url = "https://ncatlab.org/nlab/show/Cayley-Dickson%2Bconstruction"
+primary_source_url = ""
+retrieval_priority = "medium"
+notes = "nLab conceptual reference."
+
+[[entry]]
+id = "RI-017"
+topic = "sedenion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://link.springer.com/article/10.1140/epjc/s10052-023-11923-y?utm_source=chatgpt.com"
+normalized_url = "https://link.springer.com/article/10.1140/epjc/s10052-023-11923-y"
+primary_source_url = "https://doi.org/10.1140/epjc/s10052-023-11923-y"
+retrieval_priority = "high"
+notes = "Complexified sedenion paper."
+
+[[entry]]
+id = "RI-018"
+topic = "sedenion_taxonomy"
+resource_class = "primary_paper_or_publisher"
+original_url = "https://koreascience.kr/article/JAKO201401657870716.pdf?utm_source=chatgpt.com"
+normalized_url = "https://koreascience.kr/article/JAKO201401657870716.pdf"
+primary_source_url = "https://koreascience.kr/article/JAKO201401657870716.pdf"
+retrieval_priority = "high"
+notes = "Dual sedenion PDF source."
+
+[[entry]]
+id = "RI-019"
+topic = "sedenion_taxonomy"
+resource_class = "primary_paper_or_notes"
+original_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf?utm_source=chatgpt.com"
+normalized_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf"
+primary_source_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf"
+retrieval_priority = "high"
+notes = "North-Cayley-Dickson E8 note."
+
+[[entry]]
+id = "RI-020"
+topic = "pathion_ladder"
+resource_class = "primary_paper_or_preprint"
+original_url = "https://arxiv.org/vc/math/papers/0207/0207003v1.pdf"
+normalized_url = "https://arxiv.org/vc/math/papers/0207/0207003v1.pdf"
+primary_source_url = "https://arxiv.org/abs/math/0207003"
+retrieval_priority = "high"
+notes = "Versioned preprint PDF."
+
+[[entry]]
+id = "RI-021"
+topic = "pathion_ladder"
+resource_class = "secondary_host"
+original_url = "https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process"
+normalized_url = "https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process"
+primary_source_url = ""
+retrieval_priority = "medium"
+notes = "ResearchGate host; locate publisher or arXiv primary if available."
+
+[[entry]]
+id = "RI-022"
+topic = "pathion_ladder"
+resource_class = "primary_paper_or_preprint"
+original_url = "https://arxiv.org/abs/1102.5151"
+normalized_url = "https://arxiv.org/abs/1102.5151"
+primary_source_url = "https://arxiv.org/pdf/1102.5151.pdf"
+retrieval_priority = "high"
+notes = "ArXiv abstract link."
+
+[[entry]]
+id = "RI-023"
+topic = "pathion_ladder"
+resource_class = "primary_paper_or_preprint"
+original_url = "https://arxiv.org/pdf/math/0207003"
+normalized_url = "https://arxiv.org/pdf/math/0207003"
+primary_source_url = "https://arxiv.org/abs/math/0207003"
+retrieval_priority = "high"
+notes = "ArXiv PDF alias."
+
+[[entry]]
+id = "RI-024"
+topic = "pathion_ladder"
+resource_class = "reference_wiki"
+original_url = "https://en.wikipedia.org/wiki/Trigintaduonion?utm_source=chatgpt.com"
+normalized_url = "https://en.wikipedia.org/wiki/Trigintaduonion"
+primary_source_url = ""
+retrieval_priority = "medium"
+notes = "Terminology summary for 32D step."
+
+[[entry]]
+id = "RI-025"
+topic = "pathion_ladder"
+resource_class = "code_repo"
+original_url = "https://github.com/discretegames/hypercomplex?utm_source=chatgpt.com"
+normalized_url = "https://github.com/discretegames/hypercomplex"
+primary_source_url = "https://github.com/discretegames/hypercomplex"
+retrieval_priority = "medium"
+notes = "Implementation-adjacent codebase."
+
+[[entry]]
+id = "RI-026"
+topic = "sensational_black_holes"
+resource_class = "aggregator_news_video"
+original_url = "https://www.msn.com/en-us/news/opinion/this-new-theory-suggests-black-holes-may-not-be-objects/vi-AA1Wc13D?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=34"
+normalized_url = "https://www.msn.com/en-us/news/opinion/this-new-theory-suggests-black-holes-may-not-be-objects/vi-AA1Wc13D"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Primary source unresolved at intake time; likely upstream to a secondary science-news article."
+
+[[entry]]
+id = "RI-027"
+topic = "sensational_hypervelocity_star"
+resource_class = "aggregator_news_video"
+original_url = "https://www.msn.com/en-us/money/news/hypervelocity-star-crossing-solar-system/vi-AA1We2NG?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=37#details"
+normalized_url = "https://www.msn.com/en-us/money/news/hypervelocity-star-crossing-solar-system/vi-AA1We2NG"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Primary source unresolved at intake time."
+
+[[entry]]
+id = "RI-028"
+topic = "sensational_inside_out_system"
+resource_class = "aggregator_news_article"
+original_url = "https://www.msn.com/en-us/news/technology/astronomers-detect-a-solar-system-they-say-should-not-be-possible/ar-AA1WeDTi?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=39"
+normalized_url = "https://www.msn.com/en-us/news/technology/astronomers-detect-a-solar-system-they-say-should-not-be-possible/ar-AA1WeDTi"
+primary_source_url = "https://www.science.org/doi/10.1126/science.adl2348"
+retrieval_priority = "high"
+notes = "Mapped to Science paper on LHS 1903 inside-out system."
+
+[[entry]]
+id = "RI-029"
+topic = "sensational_fusion"
+resource_class = "aggregator_news_article"
+original_url = "https://www.msn.com/en-us/news/technology/sam-altman-s-fusion-startup-helion-energy-hits-150-million-degree-plasma-temperature-a-milestone-that-could-bring-first-grid-power-in-2028/ar-AA1WhoFB?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=47"
+normalized_url = "https://www.msn.com/en-us/news/technology/sam-altman-s-fusion-startup-helion-energy-hits-150-million-degree-plasma-temperature-a-milestone-that-could-bring-first-grid-power-in-2028/ar-AA1WhoFB"
+primary_source_url = "https://www.helionenergy.com/articles/helion-achieves-new-fusion-energy-milestones/"
+retrieval_priority = "high"
+notes = "Mapped to official Helion release dated 2026-02-13."
+
+[[entry]]
+id = "RI-030"
+topic = "sensational_magic_particles"
+resource_class = "aggregator_news_article"
+original_url = "https://www.msn.com/en-us/news/technology/scientists-stunned-as-magic-particles-suddenly-appear-in-lhc/ar-AA1Wd7BX?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=50"
+normalized_url = "https://www.msn.com/en-us/news/technology/scientists-stunned-as-magic-particles-suddenly-appear-in-lhc/ar-AA1Wd7BX"
+primary_source_url = "https://doi.org/10.1103/PhysRevD.110.116016"
+retrieval_priority = "high"
+notes = "Mapped to PRD paper 'Magic states of top quarks'."
+
+[[entry]]
+id = "RI-031"
+topic = "sensational_magic_particles"
+resource_class = "secondary_news_article"
+original_url = "https://scitechdaily.com/magic-particles-the-large-hadron-colliders-quantum-computing-breakthrough/"
+normalized_url = "https://scitechdaily.com/magic-particles-the-large-hadron-colliders-quantum-computing-breakthrough/"
+primary_source_url = "https://doi.org/10.1103/PhysRevD.110.116016"
+retrieval_priority = "high"
+notes = "Secondary coverage mapped to same PRD source."
+
+[[entry]]
+id = "RI-032"
+topic = "sensational_stellar_physics"
+resource_class = "aggregator_news_video"
+original_url = "https://www.msn.com/en-us/video/news/the-discovery-that-could-rewrite-stellar-physics/vi-AA1W49tB?ocid=msedgdhp&t=10#details"
+normalized_url = "https://www.msn.com/en-us/video/news/the-discovery-that-could-rewrite-stellar-physics/vi-AA1W49tB"
+primary_source_url = "https://doi.org/10.3847/2041-8213/acd780"
+retrieval_priority = "high"
+notes = "Provisional mapping to stellar-magnetism paper; requires manual confirmation."
+
+[[entry]]
+id = "RI-033"
+topic = "sensational_quantum_wave"
+resource_class = "aggregator_news_article"
+original_url = "https://www.msn.com/en-us/news/technology/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/ar-AA1VLmch?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=54"
+normalized_url = "https://www.msn.com/en-us/news/technology/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/ar-AA1VLmch"
+primary_source_url = ""
+retrieval_priority = "high"
+notes = "Primary source unresolved at intake time; likely interferometry/BEC paper."
+
+[[entry]]
+id = "RI-034"
+topic = "sensational_gravitational_wave"
+resource_class = "aggregator_news_article"
+original_url = "https://www.msn.com/en-us/news/technology/record-breaking-gravitational-wave-puts-einstein-s-relativity-to-its-toughest-test-yet-and-proves-him-right-again/ar-AA1WhEIq?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=89"
+normalized_url = "https://www.msn.com/en-us/news/technology/record-breaking-gravitational-wave-puts-einstein-s-relativity-to-its-toughest-test-yet-and-proves-him-right-again/ar-AA1WhEIq"
+primary_source_url = "https://arxiv.org/abs/2509.08099"
+retrieval_priority = "high"
+notes = "Mapped to GW250114 spectroscopy preprint and companion PRL thread."

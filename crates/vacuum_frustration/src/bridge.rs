@@ -423,6 +423,27 @@ pub enum ViscosityCouplingModel {
     Constant {
         nu_base: f64,
     },
+
+    /// Kubo linear-response coupling: nu(f) = nu_base * g(f/f_cd).
+    ///
+    /// Derived from FIRST PRINCIPLES via the Kubo formula for spin
+    /// transport in CD Heisenberg models (arXiv:1809.08429). The Drude
+    /// weight ratio g(lambda) = D_S(0)/D_S(lambda) measures how much
+    /// frustration suppresses ballistic spin transport. This suppression
+    /// maps directly to viscosity enhancement: more frustrated = more
+    /// viscous.
+    ///
+    /// The lookup table stores precomputed (lambda, g) pairs from exact
+    /// diagonalization. Default table: CD dim=8, T=0.5, 21 points.
+    /// Key physics: g(0) = 1.0 (unfrustrated), g(1.0) = 216 (full CD).
+    /// At the vacuum attractor (f=3/8): g ~ 83 (83x viscosity enhancement).
+    KuboResponse {
+        nu_base: f64,
+        /// Graph frustration index of the full CD model (normalizes f -> lambda).
+        f_cd: f64,
+        /// Precomputed (lambda, drude_ratio) pairs, sorted by lambda.
+        table: Vec<(f64, f64)>,
+    },
 }
 
 impl ViscosityCouplingModel {
@@ -451,6 +472,18 @@ impl ViscosityCouplingModel {
                 nu_low + (nu_high - nu_low) / (1.0 + exponent.exp())
             }
             Self::Constant { nu_base } => *nu_base,
+            Self::KuboResponse {
+                nu_base,
+                f_cd,
+                table,
+            } => {
+                if table.is_empty() || *f_cd < 1e-10 {
+                    return *nu_base;
+                }
+                let lambda = (frustration / f_cd).clamp(0.0, 1.0);
+                let g = interpolate_table(table, lambda);
+                nu_base * g
+            }
         }
     }
 
@@ -462,6 +495,7 @@ impl ViscosityCouplingModel {
             Self::PowerLaw { .. } => "power_law",
             Self::Sigmoid { .. } => "sigmoid",
             Self::Constant { .. } => "constant",
+            Self::KuboResponse { .. } => "kubo_response",
         }
     }
 
@@ -491,17 +525,29 @@ impl ViscosityCouplingModel {
             Self::Constant { nu_base } => {
                 format!("Constant: nu={:.4}", nu_base)
             }
+            Self::KuboResponse {
+                nu_base,
+                f_cd,
+                table,
+            } => {
+                let g_max = table.last().map_or(1.0, |(_, g)| *g);
+                format!(
+                    "KuboResponse: nu_base={:.4}, f_cd={:.4}, g_max={:.1}, {} pts",
+                    nu_base, f_cd, g_max, table.len()
+                )
+            }
         }
     }
 
     /// Standard set of competing models for experiment-lab comparison.
     ///
-    /// Returns 5 models with reasonable default parameters:
+    /// Returns 6 models with reasonable default parameters:
     /// 1. Exponential (original model, lambda=2.0)
     /// 2. Linear (alpha=1.0)
     /// 3. PowerLaw (n=1.5, superlinear)
     /// 4. Sigmoid (sharp transition at F=0.38)
     /// 5. Constant (null hypothesis)
+    /// 6. KuboResponse (first-principles from ED, dim=8)
     pub fn standard_suite(nu_base: f64) -> Vec<Self> {
         vec![
             Self::Exponential {
@@ -523,8 +569,76 @@ impl ViscosityCouplingModel {
                 f_crit: VACUUM_ATTRACTOR + 0.005,
             },
             Self::Constant { nu_base },
+            Self::kubo_default(nu_base),
         ]
     }
+
+    /// Default Kubo coupling derived from CD dim=8 at T=0.5.
+    ///
+    /// Uses the precomputed Drude weight ratio table from exact
+    /// diagonalization of the octonion Heisenberg model. The table
+    /// captures the full lambda dependence including level-crossing
+    /// oscillations at lambda=0.30, 0.50, 0.75.
+    pub fn kubo_default(nu_base: f64) -> Self {
+        Self::KuboResponse {
+            nu_base,
+            f_cd: 0.5428571428571428,
+            table: kubo_dim8_table(),
+        }
+    }
+}
+
+/// Linear interpolation in a sorted (x, y) lookup table.
+fn interpolate_table(table: &[(f64, f64)], x: f64) -> f64 {
+    if table.is_empty() {
+        return 1.0;
+    }
+    if x <= table[0].0 {
+        return table[0].1;
+    }
+    if x >= table[table.len() - 1].0 {
+        return table[table.len() - 1].1;
+    }
+    for i in 0..table.len() - 1 {
+        if x >= table[i].0 && x < table[i + 1].0 {
+            let frac = (x - table[i].0) / (table[i + 1].0 - table[i].0);
+            return table[i].1 * (1.0 - frac) + table[i + 1].1 * frac;
+        }
+    }
+    table[table.len() - 1].1
+}
+
+/// Precomputed Drude weight ratio table for CD dim=8 at T=0.5.
+///
+/// g(lambda) = D_S(lambda=0) / D_S(lambda) from exact diagonalization
+/// of the CD Heisenberg model with 7 sites (128 Hilbert states).
+/// Reference: D_S(0) = 0.3671.
+///
+/// 21-point table (every 5th lambda value from the 101-point sweep).
+fn kubo_dim8_table() -> Vec<(f64, f64)> {
+    vec![
+        (0.00, 1.0),
+        (0.05, 44.39),
+        (0.10, 45.47),
+        (0.15, 46.47),
+        (0.20, 47.37),
+        (0.25, 48.28),
+        (0.30, 43.69),
+        (0.35, 50.79),
+        (0.40, 52.75),
+        (0.45, 55.38),
+        (0.50, 52.27),
+        (0.55, 63.32),
+        (0.60, 69.03),
+        (0.65, 76.21),
+        (0.70, 85.23),
+        (0.75, 88.27),
+        (0.80, 110.68),
+        (0.85, 128.49),
+        (0.90, 150.99),
+        (0.95, 179.56),
+        (1.00, 216.06),
+    ]
 }
 
 /// 4D spatial Sedenion field abstraction.
@@ -1022,9 +1136,9 @@ mod tests {
     }
 
     #[test]
-    fn test_standard_suite_has_five_models() {
+    fn test_standard_suite_has_six_models() {
         let suite = ViscosityCouplingModel::standard_suite(0.1);
-        assert_eq!(suite.len(), 5);
+        assert_eq!(suite.len(), 6);
 
         let labels: Vec<&str> = suite.iter().map(|m| m.label()).collect();
         assert!(labels.contains(&"exponential"));
@@ -1032,6 +1146,7 @@ mod tests {
         assert!(labels.contains(&"power_law"));
         assert!(labels.contains(&"sigmoid"));
         assert!(labels.contains(&"constant"));
+        assert!(labels.contains(&"kubo_response"));
     }
 
     #[test]
@@ -1056,6 +1171,92 @@ mod tests {
             assert!(!model.description().is_empty());
             assert!(!model.label().is_empty());
         }
+    }
+
+    // ---- KuboResponse model tests ----
+
+    #[test]
+    fn test_kubo_response_at_zero_frustration() {
+        let model = ViscosityCouplingModel::kubo_default(1.0 / 3.0);
+        let nu = model.compute(0.0);
+        // At f=0, lambda=0, g=1.0, so nu = nu_base
+        assert!(
+            (nu - 1.0 / 3.0).abs() < 1e-10,
+            "At zero frustration, KuboResponse should return nu_base, got {}",
+            nu
+        );
+    }
+
+    #[test]
+    fn test_kubo_response_monotonic_near_vacuum() {
+        let model = ViscosityCouplingModel::kubo_default(0.1);
+        // Near the vacuum attractor, viscosity should increase with frustration
+        let nu_low = model.compute(0.30);
+        let nu_vac = model.compute(0.375);
+        let nu_high = model.compute(0.45);
+        assert!(
+            nu_low < nu_vac,
+            "nu should increase toward vacuum: nu(0.30)={} > nu(0.375)={}",
+            nu_low, nu_vac
+        );
+        assert!(
+            nu_vac < nu_high,
+            "nu should increase beyond vacuum: nu(0.375)={} > nu(0.45)={}",
+            nu_vac, nu_high
+        );
+    }
+
+    #[test]
+    fn test_kubo_response_enhancement_ratio() {
+        let model = ViscosityCouplingModel::kubo_default(1.0);
+        let nu_zero = model.compute(0.0);
+        let nu_full = model.compute(0.5429); // full CD frustration
+        let ratio = nu_full / nu_zero;
+        // Full CD: g(1.0) = 216, so ratio should be ~216
+        assert!(
+            ratio > 200.0 && ratio < 230.0,
+            "Full CD enhancement ratio should be ~216, got {}",
+            ratio
+        );
+    }
+
+    #[test]
+    fn test_kubo_response_vacuum_attractor_enhancement() {
+        let model = ViscosityCouplingModel::kubo_default(1.0);
+        let nu_zero = model.compute(0.0);
+        let nu_vac = model.compute(VACUUM_ATTRACTOR);
+        let ratio = nu_vac / nu_zero;
+        // At vacuum: f=0.375, lambda=0.375/0.5429=0.691, g~83
+        assert!(
+            ratio > 60.0 && ratio < 110.0,
+            "Vacuum attractor enhancement should be ~83, got {}",
+            ratio
+        );
+    }
+
+    #[test]
+    fn test_kubo_response_all_finite() {
+        let model = ViscosityCouplingModel::kubo_default(0.1);
+        for i in 0..100 {
+            let f = i as f64 * 0.01;
+            let nu = model.compute(f);
+            assert!(
+                nu.is_finite() && nu > 0.0,
+                "KuboResponse not finite/positive at f={}: nu={}",
+                f, nu
+            );
+        }
+    }
+
+    #[test]
+    fn test_interpolate_table_boundary() {
+        let table = vec![(0.0, 1.0), (0.5, 50.0), (1.0, 100.0)];
+        assert!((interpolate_table(&table, -0.1) - 1.0).abs() < 1e-10);
+        assert!((interpolate_table(&table, 0.0) - 1.0).abs() < 1e-10);
+        assert!((interpolate_table(&table, 0.25) - 25.5).abs() < 1e-10);
+        assert!((interpolate_table(&table, 0.5) - 50.0).abs() < 1e-10);
+        assert!((interpolate_table(&table, 1.0) - 100.0).abs() < 1e-10);
+        assert!((interpolate_table(&table, 1.5) - 100.0).abs() < 1e-10);
     }
 
     // ---- SedenionField4D tests ----

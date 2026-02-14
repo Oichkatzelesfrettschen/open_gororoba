@@ -21,3 +21,4 @@ gr_core = { path = "../gr_core" }
 pyo3 = { workspace = true, features = ["extension-module"] }
 numpy = { workspace = true }
 num-complex = { workspace = true }
+sha2 = { workspace = true }

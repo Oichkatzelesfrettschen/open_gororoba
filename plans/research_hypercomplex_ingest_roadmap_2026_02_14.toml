@@ -1,0 +1,409 @@
+# Granular execution roadmap for hypercomplex + sensational-news intake.
+
+[roadmap]
+id = "RM-2026-02-14-hypercomplex-ingest"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+task_count = 80
+scope = "dotfiles audit, repo gaps, source normalization, fetch/provenance, claims/evidence integration, rust validation"
+
+[[task]]
+id = "RM-001"
+status = "done"
+title = "Activate MCP tool discovery and relevant tool surfaces"
+
+[[task]]
+id = "RM-002"
+status = "done"
+title = "Load open_gororoba workflow skills"
+
+[[task]]
+id = "RM-003"
+status = "done"
+title = "Snapshot git branch and dirty worktree state"
+
+[[task]]
+id = "RM-004"
+status = "done"
+title = "Inventory top-level repository structure"
+
+[[task]]
+id = "RM-005"
+status = "done"
+title = "Capture recent commit history for project context"
+
+[[task]]
+id = "RM-006"
+status = "done"
+title = "Inspect ~/.claude global state"
+
+[[task]]
+id = "RM-007"
+status = "done"
+title = "Inspect repo-local .claude settings"
+
+[[task]]
+id = "RM-008"
+status = "done"
+title = "Inspect ~/.claude.json and desktop config linkage"
+
+[[task]]
+id = "RM-009"
+status = "done"
+title = "Inspect requirements and entrypoint overlay state"
+
+[[task]]
+id = "RM-010"
+status = "done"
+title = "Inspect project registry and sprint metadata"
+
+[[task]]
+id = "RM-011"
+status = "done"
+title = "Inspect external source registry and manifest architecture"
+
+[[task]]
+id = "RM-012"
+status = "done"
+title = "Launch parallel agents for gaps and lineage reports"
+
+[[task]]
+id = "RM-013"
+status = "in_progress"
+title = "Merge source URL mapping with local intake registry"
+
+[[task]]
+id = "RM-014"
+status = "pending"
+title = "Build consolidated open-task baseline from todo/next-actions/claims_tasks"
+
+[[task]]
+id = "RM-015"
+status = "pending"
+title = "Build TODO/FIXME hotspot severity table"
+
+[[task]]
+id = "RM-016"
+status = "pending"
+title = "Build registry/ticket staleness table"
+
+[[task]]
+id = "RM-017"
+status = "pending"
+title = "Build Claude config divergence table"
+
+[[task]]
+id = "RM-018"
+status = "pending"
+title = "Document stale .claude project path risks"
+
+[[task]]
+id = "RM-019"
+status = "pending"
+title = "Propose canonical Claude config alignment policy"
+
+[[task]]
+id = "RM-020"
+status = "done"
+title = "Create machine-readable URL intake registry"
+
+[[task]]
+id = "RM-021"
+status = "pending"
+title = "De-duplicate full URL corpus and map aliases"
+
+[[task]]
+id = "RM-022"
+status = "done"
+title = "Normalize tracking-heavy URLs to canonical URLs"
+
+[[task]]
+id = "RM-023"
+status = "done"
+title = "Classify each URL by source class"
+
+[[task]]
+id = "RM-024"
+status = "pending"
+title = "Map each sensational headline to primary publication source"
+
+[[task]]
+id = "RM-025"
+status = "pending"
+title = "Score confidence for primary-source mapping rows"
+
+[[task]]
+id = "RM-026"
+status = "done"
+title = "Create deterministic download target layout"
+
+[[task]]
+id = "RM-027"
+status = "done"
+title = "Implement Python curl/wget/firefox fetch script with pyo3 hash bridge"
+
+[[task]]
+id = "RM-028"
+status = "pending"
+title = "Run full intake fetch on all entries"
+
+[[task]]
+id = "RM-029"
+status = "pending"
+title = "Persist response metadata and timestamps"
+
+[[task]]
+id = "RM-030"
+status = "pending"
+title = "Persist fetched artifacts with deterministic names"
+
+[[task]]
+id = "RM-031"
+status = "pending"
+title = "Compute SHA256 hashes for every artifact"
+
+[[task]]
+id = "RM-032"
+status = "pending"
+title = "Generate provenance.toml and index.tsv outputs"
+
+[[task]]
+id = "RM-033"
+status = "pending"
+title = "Attempt direct PDF acquisition for every paper-like URL"
+
+[[task]]
+id = "RM-034"
+status = "pending"
+title = "Resolve arXiv abs links to canonical PDF links"
+
+[[task]]
+id = "RM-035"
+status = "pending"
+title = "Resolve Springer and ScienceDirect downloader paths"
+
+[[task]]
+id = "RM-036"
+status = "pending"
+title = "Capture paywall/block failures as trace artifacts"
+
+[[task]]
+id = "RM-037"
+status = "pending"
+title = "Extract minimal bibliographic metadata per artifact"
+
+[[task]]
+id = "RM-038"
+status = "pending"
+title = "Map fetched papers against existing papers/MANIFEST IDs"
+
+[[task]]
+id = "RM-039"
+status = "pending"
+title = "Create IDs for net-new papers not yet tracked"
+
+[[task]]
+id = "RM-040"
+status = "pending"
+title = "Update paper manifest entries for net-new papers"
+
+[[task]]
+id = "RM-041"
+status = "pending"
+title = "Place paper PDFs in canonical project locations"
+
+[[task]]
+id = "RM-042"
+status = "pending"
+title = "Create extraction stubs for newly fetched papers"
+
+[[task]]
+id = "RM-043"
+status = "pending"
+title = "Decide whether to integrate new dossiers into registry/external_sources.toml"
+
+[[task]]
+id = "RM-044"
+status = "pending"
+title = "If integrated, update normalize_external_sources SOURCE_META map"
+
+[[task]]
+id = "RM-045"
+status = "pending"
+title = "Regenerate external sources markdown mirrors"
+
+[[task]]
+id = "RM-046"
+status = "pending"
+title = "Link intake IDs to affected claims and open claim inbox entries"
+
+[[task]]
+id = "RM-047"
+status = "pending"
+title = "Draft quaternion species taxonomy with invariant columns"
+
+[[task]]
+id = "RM-048"
+status = "pending"
+title = "Draft octonion species taxonomy with invariant columns"
+
+[[task]]
+id = "RM-049"
+status = "pending"
+title = "Draft sedenion species taxonomy with invariant columns"
+
+[[task]]
+id = "RM-050"
+status = "pending"
+title = "Draft pathion/chingon/routon/voudon ladder taxonomy"
+
+[[task]]
+id = "RM-051"
+status = "pending"
+title = "Mark overloaded terminology with verification caveats"
+
+[[task]]
+id = "RM-052"
+status = "pending"
+title = "Cross-link taxonomy artifacts into bibliography and source indexes"
+
+[[task]]
+id = "RM-053"
+status = "pending"
+title = "Build sensational-claim to primary-evidence triage table"
+
+[[task]]
+id = "RM-054"
+status = "pending"
+title = "Mark unsupported sensational claims as unverified"
+
+[[task]]
+id = "RM-055"
+status = "pending"
+title = "Derive testable hypotheses from new claims"
+
+[[task]]
+id = "RM-056"
+status = "pending"
+title = "Define verify/refute criteria for each new hypothesis"
+
+[[task]]
+id = "RM-057"
+status = "pending"
+title = "Draft executable experiment decomposition for testable hypotheses"
+
+[[task]]
+id = "RM-058"
+status = "pending"
+title = "Update registry/todo.toml with deferred intake follow-ups"
+
+[[task]]
+id = "RM-059"
+status = "pending"
+title = "Update registry/next_actions.toml with high-priority unresolved mappings"
+
+[[task]]
+id = "RM-060"
+status = "pending"
+title = "Update registry/claims_tasks.toml where claim evidence gaps are discovered"
+
+[[task]]
+id = "RM-061"
+status = "pending"
+title = "Preserve GEMINI.md as stub-only overlay with AGENTS.md authority"
+
+[[task]]
+id = "RM-062"
+status = "pending"
+title = "Add verifier check to reject non-stub GEMINI overlay drift"
+
+[[task]]
+id = "RM-063"
+status = "pending"
+title = "Preserve CLAUDE.md as stub-only overlay with AGENTS.md authority"
+
+[[task]]
+id = "RM-064"
+status = "pending"
+title = "Add verifier check to reject non-stub CLAUDE overlay drift"
+
+[[task]]
+id = "RM-065"
+status = "pending"
+title = "Update requirements narrative for any new tooling dependencies"
+
+[[task]]
+id = "RM-066"
+status = "pending"
+title = "Regenerate requirements mirrors and module requirements outputs"
+
+[[task]]
+id = "RM-067"
+status = "pending"
+title = "Create context-limited quickstart index for future sessions"
+
+[[task]]
+id = "RM-068"
+status = "pending"
+title = "Add chunked navigation pointers across registry/docs/crates"
+
+[[task]]
+id = "RM-069"
+status = "pending"
+title = "Add reproducible command bundle for full intake rebuild"
+
+[[task]]
+id = "RM-070"
+status = "pending"
+title = "Run registry normalization/export scripts with PYTHONWARNINGS=error"
+
+[[task]]
+id = "RM-071"
+status = "pending"
+title = "Run verification scripts for modified registry/doc lanes"
+
+[[task]]
+id = "RM-072"
+status = "pending"
+title = "Run rustfmt/clippy checks for touched Rust lanes"
+
+[[task]]
+id = "RM-073"
+status = "pending"
+title = "Run crate-scoped Rust tests for touched components"
+
+[[task]]
+id = "RM-074"
+status = "pending"
+title = "Run workspace clippy with -D warnings"
+
+[[task]]
+id = "RM-075"
+status = "pending"
+title = "Run full recursive workspace tests"
+
+[[task]]
+id = "RM-076"
+status = "pending"
+title = "Run supplemental Python verifiers for new scripts"
+
+[[task]]
+id = "RM-077"
+status = "pending"
+title = "Fix any warning/error regressions and re-run gates"
+
+[[task]]
+id = "RM-078"
+status = "pending"
+title = "Re-run failed downloads and refresh provenance hashes"
+
+[[task]]
+id = "RM-079"
+status = "pending"
+title = "Update project-level roadmap or publication evidence links as needed"
+
+[[task]]
+id = "RM-080"
+status = "pending"
+title = "Publish final gap report and verification summary"

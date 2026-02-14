@@ -713,6 +713,30 @@ dataset_refs = []
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
+id = "E-034"
+title = "Kubo Linear-Response Frustration-Viscosity Coupling Derivation"
+binary = "kubo-coupling-analysis"
+binary_registered = true
+binary_experiment_declared = "E-034"
+method = "GPU-accelerated exact diagonalization of dim=8 Heisenberg chain with CD interpolation. Fine lambda sweep (100 points) at T=0.5: compute spin Drude weight D_S, thermal Drude weight K_th, integrated spectral weight I0_S, and ballistic fraction B=D_S/I0_S. Temperature dependence at 6 probe lambdas. Analytical fits (power law, exponential) and recommended coupling parameters."
+input = "CD octonion multiplication table at dim=8, J1-J2 chain Hamiltonian, Kubo current-current correlator"
+output = ["data/kubo_transport/coupling_analysis.toml"]
+run = "cargo run --release --features gpu --bin kubo-coupling-analysis"
+run_command_sha256 = ""
+claims = ["C-678", "C-679", "C-680", "C-681"]
+claim_refs = ["C-678", "C-679", "C-680", "C-681"]
+deterministic = true
+seed = 42
+gpu = true
+status = "complete"
+status_token = "COMPLETE"
+lineage_id = "XL-032"
+input_path_refs = []
+output_path_refs = ["data/kubo_transport/coupling_analysis.toml"]
+dataset_refs = []
+reproducibility_class = "fully_deterministic"
+
+[[experiment]]
 id = "E-032"
 title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
 binary = "thesis2-3d-thickening"

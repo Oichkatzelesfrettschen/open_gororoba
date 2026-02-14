@@ -599,3 +599,69 @@ confidence = "high"
 verified_date = "2026-02-12"
 phase = "Phase 2 Week 3"
 sprint = 39
+
+[[insight]]
+id = "I-067"
+title = "First-Principles Kubo Coupling Replaces Tautological Viscosity Postulate"
+insight = "The Kubo linear-response formula applied to a CD-interpolated Heisenberg chain reveals that algebraic frustration causes a quantum phase transition in transport: the spin Drude weight D_S collapses by 44x at ANY nonzero CD coupling (lambda=0.01), converting ballistic transport to diffusive. This provides a first-principles derivation of the frustration-viscosity coupling, replacing the tautological nu=nu_base*(1+lambda*f). Key features: (1) onset catastrophe -- sharp 44x collapse, not gradual, (2) non-monotonic level-crossing dips at lambda=0.30, 0.50, 0.75, (3) vacuum attractor enhancement g(3/8)=83.4x agrees with independent algebraic prediction, (4) analytical fits fail (power R^2=0.60, exp R^2=0.89) -- lookup table is the correct representation. The thermal Drude weight K_th is identically zero due to D_ES^2/D_S cancellation, making spin transport the sole relevant channel."
+supporting_evidence = ["C-678", "C-679", "C-680", "C-681", "data/kubo_transport/coupling_analysis.toml"]
+related_claims = ["C-678", "C-679", "C-680", "C-681"]
+experimental_support = ["E-034"]
+confidence = "high"
+verified_date = "2026-02-13"
+phase = "Phase 2 Week 3"
+sprint = 41
+
+[[insight]]
+id = "I-068"
+title = "Varma Mechanism Explains Polarized-Regime Transport Enhancement"
+body = """The 30,778x D_S enhancement with frustration at B=3.0, T=0.1, N=10 appears paradoxical
+against the standard result that frustration suppresses spin transport (Heidrich-Meisner PRB 68,
+134436). The resolution comes from two independent published mechanisms:
+
+(1) Varma & Sanchez PRB 92, 195143 (2015) showed that Drude weight can increase with frustration
+in a regime where competing interactions suppress the frustrating effects. This produces non-monotonic
+transport: D first rises (frustration suppressed by interactions), then falls (CDW fluctuations).
+
+(2) In the strong-field polarized regime (B=3J >> T=0.1J), the external field gaps all spin excitations.
+Increasing J2 (frustration) competes with polarization, reopening low-energy channels. The mechanism
+is opposite to zero-field: at B=0, J2 gaps the spectrum; at B>>J, J2 ungaps it.
+
+These are distinct from the standard Karrasch (PRL 108, 2012) picture where D_S decreases monotonically
+with anisotropy Delta at B=0. The three regimes (B=0 integrable, B=0 frustrated, B>>J frustrated)
+have qualitatively different transport physics, now documented with published benchmark comparisons."""
+related_claims = ["C-683", "C-685", "C-686", "C-687"]
+date = "2026-02-13"
+sprint = 41
+
+[[insight]]
+id = "I-069"
+title = "Stolpp Lifshitz-Point Mechanism: Microscopic Origin of High-Field Transport Enhancement"
+body = """Stolpp et al. PRB 99, 134413 (2019) provides the microscopic mechanism for the observation
+in I-068: at the Lifshitz point (alpha=1/4 = J2/J1), the single-particle magnon dispersion
+epsilon_k(alpha) = J(cos k + alpha cos 2k) splits from one minimum at Q=pi to two degenerate
+minima at +/-Q. This has three consequences:
+
+(1) CARRIER DOUBLING: Two Fermi surfaces instead of one. Near saturation, transport carriers are
+dilute fermions near these minima. Doubling the minima doubles the available transport channels.
+
+(2) EFFECTIVE MASS DIVERGENCE: The inverse effective mass 1/m*(alpha) = J(1-4*alpha) vanishes at
+alpha=1/4, creating an effective mass divergence. For alpha > 1/4, 1/m*(alpha) = J(4*alpha - 1/(4*alpha))
+increases monotonically, so K_th ~ 1/sqrt(m*) also increases.
+
+(3) FIELD POLARITY INVERSION: At B=0, frustration opens a gap (dimer phase for alpha > 0.2411),
+SUPPRESSING transport: D_E(alpha)/D_E(0) drops to ~0.25 at alpha=0.7. At B ~ B_sat, frustration
+ENHANCES transport: K_th(alpha)/K_th(0) reaches ~15x at alpha=1.2 (ED, M=0.4, T/J=0.1). This
+field polarity inversion is the key physics: same frustration parameter, opposite transport effect.
+
+Our 30,778x D_S enhancement at B=3.0, N=10 is quantitatively larger than Stolpp's 15x because:
+(a) stronger field B=3.0 produces deeper polarization, (b) N=10 is further from thermodynamic limit,
+(c) CD interpolation spans continuous lambda from quaternion to sedenion (wider parameter range than
+discrete alpha). But the DIRECTION of the effect -- enhancement at high field -- matches exactly.
+
+The asymptotic formula K_th(alpha)/K_th(0) ~ 4*alpha (Stolpp Eq. 40 + Fig. 7) provides the scaling
+law for transport enhancement by frustration in the polarized regime. This is the theoretical
+foundation for the first-principles Kubo coupling model (C-681)."""
+related_claims = ["C-681", "C-683", "C-685", "C-686", "C-689"]
+date = "2026-02-13"
+sprint = 41

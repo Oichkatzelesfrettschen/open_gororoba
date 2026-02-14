@@ -5,19 +5,27 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 3442
-claim_count = 674
-insight_count = 63
-experiment_count = 31
-complete_experiment_count = 5
+test_count = 3497
+claim_count = 689
+insight_count = 66
+experiment_count = 34
+complete_experiment_count = 7
 paper_count = 19
-binary_count = 66
+binary_count = 69
+
+[sprints.s41]
+number = 41
+date = "2026-02-13"
+test_count = 3497
+claim_count = 689
+insight_count = 66
+summary = "First-principles Kubo coupling: GPU-accelerated exact diagonalization of CD-interpolated Heisenberg chain via cuSOLVER syevd. Drude onset catastrophe (44x collapse at lambda=0.01), vacuum attractor enhancement g(3/8)=83.4x, full CD enhancement g(1.0)=216x. ViscosityCouplingModel::KuboResponse lookup table replaces tautological linear coupling. Cross-thesis TX-1 non-monotonic delta_gamma, TX-2 null result documented, TX-3 sigmoid paradox resolved. Literature validation: 5 papers analyzed (Karrasch PRL 108, HM PRB 68, HM JMMM 272, Varma PRB 92, Stolpp PRB 99), canonical benchmark dataset with 76+ reference values including Stolpp Lifshitz-point mechanism (alpha=1/4 dispersion splitting, K_th~1/sqrt(m*), field-polarity inversion). Stolpp confirms 30,778x D_S enhancement direction at high field. Claims C-666..C-689, I-065..I-069, E-030..E-034. 3497 tests, 0 clippy warnings."
 
 [sprints.s40]
 number = 40
 date = "2026-02-12"
-test_count = 3442
-claim_count = 674
+test_count = 3466
+claim_count = 676
 insight_count = 63
 summary = "Phase 3: Burn neural correction tensor training (train_burn_correction, MLP 256->128->64->16, Adam optimizer, MSE on associator-derived targets). Pentagon violation reduced 78% (2.50->0.547). Phase 4: Engine integration -- T3 pipeline with neural stream, use_neural flag, production() config. E-029 evidence: neural (0.547), algebraic-only (2.494), perturbed (0.589). Synthesis engine: 4/4 theses pass gate simultaneously (T1 r=-1.0, T2 ratio=1.254, T3 opt improved, T4 R2=0.995). Claims C-671..C-674, I-066, E-029 complete, E-033 added. 3442 tests, 0 clippy warnings."
 

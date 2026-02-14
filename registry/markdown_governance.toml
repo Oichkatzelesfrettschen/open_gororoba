@@ -5,8 +5,8 @@
 generated_at = "deterministic"
 authoritative = true
 document_count = 10
-toml_generated_mirror_count = 8
-toml_manual_source_count = 2
+toml_generated_mirror_count = 6
+toml_manual_source_count = 4
 
 [[document]]
 path = "AGENTS.md"
@@ -21,19 +21,19 @@ notes = "Generated from TOML registries and overlays."
 path = "CLAUDE.md"
 id = "MDG-0002"
 kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
+mode = "toml_manual_source"
+header_required = false
 source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
-notes = "Generated from TOML registries and overlays."
+notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
 path = "GEMINI.md"
 id = "MDG-0003"
 kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
+mode = "toml_manual_source"
+header_required = false
 source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
-notes = "Generated from TOML registries and overlays."
+notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
 
 [[document]]
 path = "README.md"

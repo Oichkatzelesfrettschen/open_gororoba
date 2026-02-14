@@ -104,7 +104,10 @@ rayon = "1.10"
 wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.)
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
-cudarc = { version = "0.19", default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading", "cuda-version-from-build-system"] }
+cudarc = { version = "0.19", default-features = false, features = [
+    "std", "driver", "nvrtc", "dynamic-loading", "cuda-version-from-build-system",
+    "cublas", "cufft", "curand", "cusolver",
+] }
 
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
 # Note: burn backends are optional at crate level, not workspace level

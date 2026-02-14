@@ -267,6 +267,18 @@ name = "thesis-cross-tx2"
 path = "src/bin/thesis_cross_tx2.rs"
 
 [[bin]]
+name = "kubo-frustration-transport"
+path = "src/bin/kubo_frustration_transport.rs"
+
+[[bin]]
+name = "kubo-coupling-analysis"
+path = "src/bin/kubo_coupling_analysis.rs"
+
+[[bin]]
+name = "validate-j1j2-kubo"
+path = "src/bin/validate_j1j2_kubo.rs"
+
+[[bin]]
 name = "claims-consolidate"
 path = "src/bin/claims_consolidate.rs"
 
@@ -319,6 +331,11 @@ env_logger = { workspace = true }
 tempfile = { workspace = true }
 
 [features]
-default = []
-gpu = ["lbm_3d_cuda"]
+default = ["gpu"]
+gpu = [
+    "lbm_3d_cuda",
+    "algebra_core/gpu",
+    "quantum_core/gpu",
+    "vacuum_frustration/gpu",
+]
 hdf5-export = ["data_core/hdf5-export"]
