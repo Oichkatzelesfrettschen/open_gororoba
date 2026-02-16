@@ -1,0 +1,24 @@
+# Reconciliation report for source infrastructure lanes.
+
+[report]
+id = "SINFRA-RECON-2026-02-15"
+generated_at = "2026-02-15"
+authoritative = true
+total_artifact_count = 8409
+lane_total_count = 8409
+
+[[lane_summary]]
+name = "datasets"
+artifact_count = 1128
+
+[[lane_summary]]
+name = "slides_artifacts"
+artifact_count = 0
+
+[[lane_summary]]
+name = "papers_pdf"
+artifact_count = 259
+
+[[lane_summary]]
+name = "web_references"
+artifact_count = 7022

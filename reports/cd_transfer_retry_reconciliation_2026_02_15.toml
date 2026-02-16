@@ -1,0 +1,148 @@
+# Transfer + mirror retry reconciliation report.
+
+[report]
+id = "CD-TRANSFER-RETRY-RECON-2026-02-15"
+created = "2026-02-15"
+status = "completed"
+authoritative = true
+
+[copy_session]
+source_roots = ["/home/eirikr/Documents", "/home/eirikr/Downloads"]
+source_manifest = "data/external/intake/2026_02_15_cayley_dickson_sources/transfer_manifests/copy_manifest_final.tsv"
+destination_root = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs"
+copied_total = 328
+copied_documents_primary = 324
+copied_downloads = 4
+copied_pdf = 47
+copied_md = 269
+copied_toml = 5
+copied_txt = 5
+
+[mirror_retry]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/mirror_retry_results_normalized.tsv"
+pdf_dir = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success"
+total_attempts = 28
+http_403_count = 7
+http_404_count = 9
+ok_nonpdf_count = 6
+pdf_ok_count = 6
+
+[mirror_retry_round2]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/mirror_retry_results_round2.tsv"
+pdf_dir = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success"
+pdf_added_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success_added.tsv"
+total_attempts = 14
+http_403_count = 7
+ok_nonpdf_count = 6
+pdf_ok_count = 1
+notes = "No net new unique PDF artifact; recovered PDF hash already existed in prior rounds."
+
+[mirror_retry_round3]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/mirror_retry_results_round3.tsv"
+pdf_dir = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/pdf_success"
+pdf_added_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/pdf_success_added.tsv"
+total_attempts = 18
+http_503_count = 3
+http_404_count = 1
+http_405_count = 1
+ok_nonpdf_count = 12
+pdf_ok_count = 1
+notes = "Eakin landing pages are reachable; direct PDF endpoints still did not return a PDF in this environment."
+
+[canonical_source_index]
+path = "registry/cayley_dickson_canonical_sources.toml"
+minimum_requirement = "1 paper/document/artifact => >= 1 functional link"
+notes = "This report keeps verbose retry provenance; canonical-source TOML is the minimal operational view."
+
+[global_artifact_source_of_truth]
+path = "registry/artifact_source_of_truth.toml"
+reconciliation_report = "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml"
+notes = "Use the global source-of-truth registry for cross-domain artifact status; keep this report for retry provenance."
+
+[[mirror_retry_pdf_success]]
+id = "MSP-4"
+url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+canonical_pdf_name = "mccrimmon_1985_pjm_117_1_p10.pdf"
+sha256 = "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"
+size_download = 1613071
+
+[[mirror_retry_pdf_success]]
+id = "IASTATE-BITSTREAM"
+url = "https://dr.lib.iastate.edu/server/api/core/bitstreams/7acefa00-fdc3-4691-a20f-4a3494587690/content"
+canonical_pdf_name = "bremner_hentzel_2001_identities_iastate.pdf"
+sha256 = "a2fd5e4710bf45b20aafbed067904ed97dafd753e6c6d66896d28543d4150131"
+size_download = 247969
+
+[[mirror_retry_pdf_success]]
+id = "ARXIV-V1"
+url = "https://arxiv.org/pdf/1602.02317v1"
+canonical_pdf_name = "bales_2016_alternate_cd_1602.02317v1.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+size_download = 191938
+
+[[mirror_retry_pdf_success]]
+id = "ARXIV-V2"
+url = "https://arxiv.org/pdf/1602.02317v2"
+canonical_pdf_name = "bales_2016_alternate_cd_1602.02317v2.pdf"
+sha256 = "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766"
+size_download = 192196
+
+[[mirror_retry_pdf_success]]
+id = "ARXIV-V1-PDF"
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+canonical_pdf_name = "bales_2016_alternate_cd_1602.02317v1_dup.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+size_download = 191938
+
+[[mirror_retry_pdf_success]]
+id = "ARCHIVE-DIRECT"
+url = "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+canonical_pdf_name = "bales_2016_alternate_cd_1602.02317_archive.pdf"
+sha256 = "e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8"
+size_download = 189748
+
+[paper_level_resolution]
+resolved_paper_count = 3
+unresolved_paper_count = 1
+functional_linked_paper_count = 4
+direct_pdf_linked_paper_count = 3
+papers_without_working_mirror_count = 0
+functional_minimum_requirement_met = true
+resolved_by_alternate_links = true
+
+[[paper_level_status]]
+paper_id = "PR-001"
+key = "EAKIN_SATHAYE_1990"
+status = "landing_links_ok_pdf_gated"
+doi = "10.1016/0021-8693(90)90221-9"
+canonical_functional_url = "https://doi.org/10.1016/0021-8693(90)90221-9"
+secondary_functional_urls = ["https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219", "https://www.sciencedirect.com/science/article/pii/0021869390902219", "https://www.sciencedirect.com/journal/journal-of-algebra/vol/129/issue/2"]
+canonical_unresolved_url = "https://core.ac.uk/download/pdf/82141950.pdf"
+blocked_pdf_variants = ["https://core.ac.uk/download/pdf/82141950.pdf?download=1", "https://core.ac.uk/download/82141950.pdf", "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf", "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true", "https://www.sciencedirect.com/science/article/pii/S0021869390902219/pdfft?isDTMRedir=true&download=true"]
+companion_open_pdf_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success/moreno_2005_companion_math0510397.pdf"
+notes = "Direct PDF remains unavailable in this environment; companion arXiv paper is stored separately and not treated as a replacement."
+
+[[paper_level_status]]
+paper_id = "PR-002"
+key = "MCCRIMMON_1985"
+status = "resolved_pdf"
+doi = "10.2140/pjm.1985.117.163"
+canonical_pdf_name = "mccrimmon_1985_pjm_117_1_p10.pdf"
+canonical_functional_url = "https://msp.org/pjm/1985/117-1/p10.xhtml"
+
+[[paper_level_status]]
+paper_id = "PR-003"
+key = "BREMNER_HENTZEL_2001"
+status = "resolved_pdf"
+doi = "10.1081/AGB-100105036"
+canonical_pdf_name = "bremner_hentzel_2001_identities_iastate.pdf"
+canonical_functional_url = "https://dr.lib.iastate.edu/server/api/core/bitstreams/7acefa00-fdc3-4691-a20f-4a3494587690/content"
+
+[[paper_level_status]]
+paper_id = "PR-004"
+key = "BALES_2016_ALT_CD"
+status = "resolved_pdf"
+doi = "10.48550/arXiv.1602.02317"
+canonical_pdf_name = "bales_2016_alternate_cd_1602.02317v1.pdf"
+canonical_functional_url = "https://arxiv.org/pdf/1602.02317v1"
+notes = "URL permutations such as arxiv current PDF, export.arxiv, and ftp are no longer tracked as unresolved because paper-level PDF retrieval succeeded."

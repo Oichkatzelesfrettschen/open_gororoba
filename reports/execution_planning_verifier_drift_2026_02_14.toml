@@ -1,0 +1,166 @@
+# Execution-planning verifier drift snapshot.
+# Captured before remediation.
+
+[report]
+id = "EPVD-2026-02-14"
+created = "2026-02-14"
+status = "captured"
+authoritative = true
+verifier = "src/verification/verify_registry_execution_planning.py"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py"
+exit_code = 1
+
+[summary]
+failure_count = 38
+
+[[failure]]
+index = 1
+message = "experiments experiment_count metadata mismatch"
+
+[[failure]]
+index = 2
+message = "experiments deterministic_count metadata mismatch"
+
+[[failure]]
+index = 3
+message = "experiments gpu_count metadata mismatch"
+
+[[failure]]
+index = 4
+message = "experiments seeded_count metadata mismatch"
+
+[[failure]]
+index = 5
+message = "experiment[E-016] binary_experiment_declared mismatch: E-006"
+
+[[failure]]
+index = 6
+message = "experiment[E-016] binary registry experiment mismatch: E-006"
+
+[[failure]]
+index = 7
+message = "experiment[E-029] run_command_sha256 mismatch"
+
+[[failure]]
+index = 8
+message = "experiment[E-030] unknown lineage_id"
+
+[[failure]]
+index = 9
+message = "experiment[E-030] run_command_sha256 mismatch"
+
+[[failure]]
+index = 10
+message = "experiment[E-031] unknown lineage_id"
+
+[[failure]]
+index = 11
+message = "experiment[E-031] run_command_sha256 mismatch"
+
+[[failure]]
+index = 12
+message = "experiment[E-033] unknown lineage_id"
+
+[[failure]]
+index = 13
+message = "experiment[E-033] run_command_sha256 mismatch"
+
+[[failure]]
+index = 14
+message = "experiment[E-034] unknown lineage_id"
+
+[[failure]]
+index = 15
+message = "experiment[E-034] run_command_sha256 mismatch"
+
+[[failure]]
+index = 16
+message = "experiment[E-032] unknown lineage_id"
+
+[[failure]]
+index = 17
+message = "experiment[E-032] run_command_sha256 mismatch"
+
+[[failure]]
+index = 18
+message = "missing lineage row for experiment: E-031"
+
+[[failure]]
+index = 19
+message = "missing lineage row for experiment: E-032"
+
+[[failure]]
+index = 20
+message = "missing lineage row for experiment: E-034"
+
+[[failure]]
+index = 21
+message = "missing lineage row for experiment: E-030"
+
+[[failure]]
+index = 22
+message = "missing lineage row for experiment: E-033"
+
+[[failure]]
+index = 23
+message = "lineage[XL-017] unknown binary"
+
+[[failure]]
+index = 24
+message = "lineage[XL-018] unknown binary"
+
+[[failure]]
+index = 25
+message = "lineage[XL-019] unknown binary"
+
+[[failure]]
+index = 26
+message = "lineage[XL-020] unknown binary"
+
+[[failure]]
+index = 27
+message = "lineage[XL-021] unknown binary"
+
+[[failure]]
+index = 28
+message = "lineage[XL-022] unknown binary"
+
+[[failure]]
+index = 29
+message = "lineage[XL-023] unknown binary"
+
+[[failure]]
+index = 30
+message = "lineage[XL-024] unknown binary"
+
+[[failure]]
+index = 31
+message = "lineage edge[XLE-00133] unknown binary ref: entropy-trap"
+
+[[failure]]
+index = 32
+message = "lineage edge[XLE-00141] unknown binary ref: he4-superfluid"
+
+[[failure]]
+index = 33
+message = "lineage edge[XLE-00151] unknown binary ref: he4-superfluid"
+
+[[failure]]
+index = 34
+message = "lineage edge[XLE-00155] unknown binary ref: "
+
+[[failure]]
+index = 35
+message = "lineage edge[XLE-00156] unknown binary ref: "
+
+[[failure]]
+index = 36
+message = "lineage edge[XLE-00157] unknown binary ref: "
+
+[[failure]]
+index = 37
+message = "lineage edge[XLE-00158] unknown binary ref: "
+
+[[failure]]
+index = 38
+message = "lineage edge[XLE-00159] unknown binary ref: "

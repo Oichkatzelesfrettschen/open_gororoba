@@ -303,15 +303,15 @@ artifacts = [
 id = "W5-024"
 status = "done"
 priority = "high"
-title = "Wave 5 acceptance gate"
-description = "Bundle strict wave checks into one target and require pass before merge."
+title = "Registry acceptance gate (legacy Wave 5)"
+description = "Bundle strict registry checks into one canonical target and require pass before merge; preserve legacy aliases for compatibility."
 artifacts = [
   "Makefile",
-  "registry-wave5",
-  "registry-wave5-batch1",
-  "registry-wave5-batch2",
-  "registry-wave5-batch3",
-  "registry-wave5-batch4",
+  "registry-acceptance-gate",
+  "registry-semantic-atoms-gate",
+  "registry-evidence-provenance-gate",
+  "registry-integrity-resolution-gate",
+  "registry-execution-planning-gate",
 ]
 
 [[task]]

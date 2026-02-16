@@ -1,0 +1,57 @@
+report_date = "2026-02-14"
+lane = "evidence_provenance"
+blocker = "derivation skeleton_count metadata mismatch"
+status = "fixed"
+
+[root_cause]
+summary = "The derivation registry metadata was stale after proof skeleton growth."
+details = "registry/knowledge/proof_skeletons.toml had 730 skeleton rows, while registry/knowledge/derivation_steps.toml still recorded skeleton_count = 700 from an earlier generation. The verifier compares derivation metadata against current proof skeleton rows, so the lane failed."
+
+[fix]
+summary = "Regenerated evidence-provenance lane registries using canonical naming while preserving compatibility wrappers."
+actions = [
+  "Ran canonical builder entrypoint: src/scripts/analysis/build_registry_evidence_provenance.py (compatibility backend remains src/scripts/analysis/build_wave5_batch2_registries.py).",
+  "Kept canonical verification entrypoint and compatibility backend intact: src/verification/verify_registry_evidence_provenance.py and src/verification/verify_wave5_batch2_registries.py.",
+  "Updated derived registry metadata so derivation skeleton_count matches current proof skeleton rows."
+]
+
+[observed_counts]
+proof_skeleton_rows = 730
+pre_fix_derivation_skeleton_count = 700
+post_fix_derivation_skeleton_count = 730
+
+[[command_outcome]]
+phase = "pre_fix_validation"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py"
+exit_code = 1
+result = "failed_as_expected"
+key_output = "ERROR: evidence-provenance registry lane verification failed (legacy wave5-batch2 script). - derivation skeleton_count metadata mismatch"
+
+[[command_outcome]]
+phase = "regeneration"
+command = "python3 src/scripts/analysis/build_registry_evidence_provenance.py"
+exit_code = 0
+result = "success"
+key_output = "Wrote evidence-provenance registry lane artifacts (legacy wave5-batch2 script): derivations=3078 bibliography=190 provenance=63 paragraphs=722"
+
+[[command_outcome]]
+phase = "post_fix_validation"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py"
+exit_code = 0
+result = "success"
+key_output = "OK: evidence-provenance registry lane verified (legacy wave5-batch2 script). derivations=3078 bibliography_normalized=190 provenance_records=63 narrative_paragraphs=722"
+
+[[command_outcome]]
+phase = "gate"
+command = "make registry-evidence-provenance-gate"
+exit_code = 0
+result = "success"
+key_output = "OK: evidence-provenance registry lane complete (legacy wave5-batch2 compatibility)."
+
+[[residual_risk]]
+risk = "Future proof skeleton edits can reintroduce metadata drift if derivation registry is not regenerated in the same change set."
+mitigation = "Keep running make registry-evidence-provenance-gate in the same lane where proof skeletons change."
+
+[[residual_risk]]
+risk = "Builder currently rewrites all evidence-provenance lane outputs together."
+mitigation = "For minimal churn workflows, maintain lane ownership discipline and run the gate immediately after regeneration to confirm deterministic parity."

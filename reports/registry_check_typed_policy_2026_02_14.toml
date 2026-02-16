@@ -1,0 +1,72 @@
+# Registry-check typed policy hardening and counter/check stability report.
+
+[report]
+id = "registry-check-typed-policy-2026-02-14"
+date = "2026-02-14"
+owner_scope = [
+  "crates/gororoba_cli/src/bin/registry_check.rs",
+  "crates/gororoba_cli/src/bin/project_counter_sync.rs",
+]
+roadmap_steps = [23, 25]
+status = "completed"
+
+[decision]
+policy_flag = "--typed-policy"
+allowed_modes = ["warn", "error", "off"]
+default_mode = "warn"
+decision_summary = "Typed schema validation is now an explicit, user-configurable policy in registry-check; default stays warn to preserve current green-path behavior while enabling strict enforcement in CI via --typed-policy error."
+
+[rationale]
+why_default_is_warn = "Current registry state has typed drift in monograph/artifact files; making error the default today would immediately fail standard runs that currently pass with warnings."
+why_error_mode_exists = "Provides an immediate hard-fail path for stricter lanes and future default promotion when schema alignment lands."
+why_off_mode_exists = "Allows explicit temporary bypass for migration windows while preserving parse-sweep and all other checks."
+message_policy = "All typed drift output now includes policy context (policy=warn or policy=error), and off mode prints an explicit skip message."
+
+[[delta]]
+file = "crates/gororoba_cli/src/bin/registry_check.rs"
+change = "Added TypedPolicy enum + clap ValueEnum argument: --typed-policy {warn,error,off} with default warn."
+impact = "Typed schema checks are now explicitly policy-driven; warn increments warnings, error increments errors, off skips typed checks with a clear status line."
+
+[[delta]]
+file = "crates/gororoba_cli/src/bin/registry_check.rs"
+change = "Replaced unconditional typed-schema warning loop with mode-aware handling and explicit no-drift messaging."
+impact = "Behavior is deterministic and operator-visible; typed drift severity is configurable without touching binary drift logic."
+
+[[delta]]
+file = "crates/gororoba_cli/src/bin/project_counter_sync.rs"
+change = "No source changes."
+impact = "Counter/check stability confirmed by check-mode run."
+
+[binary_drift_guard]
+status = "unchanged"
+details = "Existing Cargo.toml <-> binaries.toml strict drift checks remain ERROR-level and were not relaxed or refactored."
+
+[verification]
+required_commands = [
+  "cargo check -p gororoba_cli --bin registry-check --bin project-counter-sync",
+  "cargo run -p gororoba_cli --bin project-counter-sync -- --check",
+  "cargo run -p gororoba_cli --bin registry-check",
+]
+required_command_results = [
+  "pass",
+  "pass",
+  "pass (Registry check: PASS with 7 warnings)",
+]
+
+[verification_additional]
+commands = [
+  "cargo run -p gororoba_cli --bin registry-check -- --typed-policy off",
+  "cargo run -p gororoba_cli --bin registry-check -- --typed-policy error",
+]
+results = [
+  "pass (typed checks explicitly skipped; PASS with 5 warnings)",
+  "expected fail (typed drift promoted to 2 errors; FAIL with 2 errors, 5 warnings)",
+]
+
+[dependencies]
+blocking = [
+  "Defaulting typed policy to error depends on typed-schema alignment in registry/monograph.toml and registry/data_artifact_narratives.toml by the registry schema/content workstream.",
+]
+non_blocking = [
+  "No dependency on project-counter-sync changes for this tranche.",
+]

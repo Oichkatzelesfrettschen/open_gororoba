@@ -1,0 +1,82 @@
+# RQ-021 core shim inversion report for execution-planning lane.
+
+[report]
+id = "RQ-021-core-shim-inversion-batch4"
+date = "2026-02-14"
+repository = "open_gororoba"
+status = "completed_with_external_gate_blocker"
+ownership_scope = [
+  "src/scripts/analysis/build_registry_execution_planning.py",
+  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "src/verification/verify_registry_execution_planning.py",
+  "src/verification/verify_wave5_batch4_registries.py",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+]
+
+[implementation]
+canonical_build_promoted = true
+canonical_verify_promoted = true
+legacy_build_reduced_to_shim = true
+legacy_verify_reduced_to_shim = true
+verifier_semantics_preserved = true
+canonical_stdout_canonicalized = true
+legacy_shim_deprecation_guidance_deterministic = true
+
+[canonical]
+build_entrypoint = "src/scripts/analysis/build_registry_execution_planning.py"
+verify_entrypoint = "src/verification/verify_registry_execution_planning.py"
+canonical_build_status_line = "Wrote execution-planning registry lane artifacts (canonical build_registry_execution_planning.py): ..."
+canonical_verify_ok_line = "OK: execution-planning registry lane verified (canonical verify_registry_execution_planning.py). ..."
+canonical_verify_error_line = "ERROR: execution-planning registry lane verification failed (canonical verify_registry_execution_planning.py)."
+
+[legacy_shim]
+build_entrypoint = "src/scripts/analysis/build_wave5_batch4_registries.py"
+verify_entrypoint = "src/verification/verify_wave5_batch4_registries.py"
+build_deprecation_line = "DEPRECATED: src/scripts/analysis/build_wave5_batch4_registries.py is a legacy alias. Use src/scripts/analysis/build_registry_execution_planning.py."
+verify_deprecation_line = "DEPRECATED: src/verification/verify_wave5_batch4_registries.py is a legacy alias. Use src/verification/verify_registry_execution_planning.py."
+
+[[validation_run]]
+phase = "required_commands_initial"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py"
+exit_code = 0
+status = "pass"
+notes = "Passed when run before scope restoration, after lane artifacts were freshly built."
+
+[[validation_run]]
+phase = "required_commands_initial"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch4_registries.py"
+exit_code = 0
+status = "pass"
+notes = "Passed and printed deterministic deprecation guidance."
+
+[[validation_run]]
+phase = "required_commands_initial"
+command = "make registry-execution-planning-gate"
+exit_code = 2
+status = "failed_external"
+notes = "Failed at verify_markdown_owner_map.py due unrelated missing owner mapping for reports/breakthrough_shi_geodesics_2026_02_14.md."
+
+[[validation_run]]
+phase = "required_commands_final_scope_state"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py"
+exit_code = 1
+status = "fails_on_preexisting_registry_state"
+notes = "After restoring non-owned generated files to keep ownership boundaries, verifier reports existing execution-planning registry drift."
+
+[[validation_run]]
+phase = "required_commands_final_scope_state"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch4_registries.py"
+exit_code = 1
+status = "fails_on_preexisting_registry_state"
+notes = "Legacy shim delegates correctly and surfaces the same canonical verifier failures."
+
+[[validation_run]]
+phase = "required_commands"
+command = "python3 -m py_compile src/scripts/analysis/build_registry_execution_planning.py src/scripts/analysis/build_wave5_batch4_registries.py src/verification/verify_registry_execution_planning.py src/verification/verify_wave5_batch4_registries.py"
+exit_code = 0
+status = "pass"
+notes = "Compilation check passed for all touched Python files."
+
+[scope_control]
+non_owned_files_restored_after_gate = true
+restoration_reason = "make registry-execution-planning-gate rewrote generated registry artifacts outside ownership scope"

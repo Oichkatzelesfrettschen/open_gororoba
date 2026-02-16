@@ -6,12 +6,12 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 3497
-claim_count = 689
+claim_count = 694
 insight_count = 66
-experiment_count = 34
-complete_experiment_count = 7
+experiment_count = 32
+complete_experiment_count = 0
 paper_count = 19
-binary_count = 69
+binary_count = 79
 
 [sprints.s41]
 number = 41

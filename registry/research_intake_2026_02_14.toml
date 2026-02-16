@@ -21,6 +21,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Classical_Hamiltonian_quaternion
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Baseline quaternion definition page."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-002"
@@ -31,6 +33,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Split-quaternion"
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Split/coquaternion entry."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-003"
@@ -41,6 +45,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Hyperbolic_quaternion"
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Terminology-collision entry for hyperbolic quaternion."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-004"
@@ -51,6 +57,8 @@ normalized_url = "https://www.sciencedirect.com/science/article/pii/S00243795163
 primary_source_url = "https://www.sciencedirect.com/science/article/pii/S0024379516300386"
 retrieval_priority = "high"
 notes = "ScienceDirect paper link; may require publisher access."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-005"
@@ -61,6 +69,8 @@ normalized_url = "https://link.springer.com/content/pdf/10.1155/2008/213293.pdf"
 primary_source_url = "https://doi.org/10.1155/2008/213293"
 retrieval_priority = "high"
 notes = "Publisher PDF target for quaternion-related reference."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-006"
@@ -71,6 +81,8 @@ normalized_url = "https://www.reddit.com/r/nonsense/comments/m6m2sy/did_the_thir
 primary_source_url = ""
 retrieval_priority = "low"
 notes = "Non-scholarly reference included for explicit filtering/audit."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-007"
@@ -81,6 +93,8 @@ normalized_url = "https://math.ucr.edu/home/baez/octonions/octonions.pdf"
 primary_source_url = "https://arxiv.org/abs/math/0105155"
 retrieval_priority = "high"
 notes = "Baez octonions survey PDF mirror."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-008"
@@ -91,6 +105,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Split-octonion"
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Split-octonion summary."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-009"
@@ -101,6 +117,8 @@ normalized_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/peterss
 primary_source_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf"
 retrieval_priority = "high"
 notes = "Petersson E8 octonionic structure note."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-010"
@@ -111,6 +129,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Bioctonion"
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Complexified octonion entry."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-011"
@@ -121,6 +141,8 @@ normalized_url = "https://link.springer.com/article/10.1007/s13324-016-0144-6"
 primary_source_url = "https://doi.org/10.1007/s13324-016-0144-6"
 retrieval_priority = "high"
 notes = "Dual number coefficient octonion paper."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-012"
@@ -131,6 +153,8 @@ normalized_url = "https://math.ucr.edu/home/baez/octonions/integers/integers_1.h
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Baez octonion integers notes."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-013"
@@ -141,6 +165,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construct
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Construction overview."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-014"
@@ -151,6 +177,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Sedenion"
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Sedenion summary."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-015"
@@ -161,6 +189,8 @@ normalized_url = "https://link.springer.com/article/10.1007/s10958-020-04930-x"
 primary_source_url = "https://doi.org/10.1007/s10958-020-04930-x"
 retrieval_priority = "high"
 notes = "Split-sedenion paper."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-016"
@@ -171,6 +201,8 @@ normalized_url = "https://ncatlab.org/nlab/show/Cayley-Dickson%2Bconstruction"
 primary_source_url = ""
 retrieval_priority = "medium"
 notes = "nLab conceptual reference."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-017"
@@ -181,6 +213,8 @@ normalized_url = "https://link.springer.com/article/10.1140/epjc/s10052-023-1192
 primary_source_url = "https://doi.org/10.1140/epjc/s10052-023-11923-y"
 retrieval_priority = "high"
 notes = "Complexified sedenion paper."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-018"
@@ -191,6 +225,8 @@ normalized_url = "https://koreascience.kr/article/JAKO201401657870716.pdf"
 primary_source_url = "https://koreascience.kr/article/JAKO201401657870716.pdf"
 retrieval_priority = "high"
 notes = "Dual sedenion PDF source."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-019"
@@ -201,6 +237,8 @@ normalized_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/peterss
 primary_source_url = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf"
 retrieval_priority = "high"
 notes = "North-Cayley-Dickson E8 note."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-020"
@@ -211,6 +249,8 @@ normalized_url = "https://arxiv.org/vc/math/papers/0207/0207003v1.pdf"
 primary_source_url = "https://arxiv.org/abs/math/0207003"
 retrieval_priority = "high"
 notes = "Versioned preprint PDF."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-021"
@@ -221,6 +261,8 @@ normalized_url = "https://www.researchgate.net/publication/2414187_Identities_Fo
 primary_source_url = ""
 retrieval_priority = "medium"
 notes = "ResearchGate host; locate publisher or arXiv primary if available."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-022"
@@ -231,6 +273,8 @@ normalized_url = "https://arxiv.org/abs/1102.5151"
 primary_source_url = "https://arxiv.org/pdf/1102.5151.pdf"
 retrieval_priority = "high"
 notes = "ArXiv abstract link."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-023"
@@ -241,6 +285,8 @@ normalized_url = "https://arxiv.org/pdf/math/0207003"
 primary_source_url = "https://arxiv.org/abs/math/0207003"
 retrieval_priority = "high"
 notes = "ArXiv PDF alias."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-024"
@@ -251,6 +297,8 @@ normalized_url = "https://en.wikipedia.org/wiki/Trigintaduonion"
 primary_source_url = ""
 retrieval_priority = "medium"
 notes = "Terminology summary for 32D step."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-025"
@@ -261,6 +309,8 @@ normalized_url = "https://github.com/discretegames/hypercomplex"
 primary_source_url = "https://github.com/discretegames/hypercomplex"
 retrieval_priority = "medium"
 notes = "Implementation-adjacent codebase."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-026"
@@ -271,6 +321,8 @@ normalized_url = "https://www.msn.com/en-us/news/opinion/this-new-theory-suggest
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Primary source unresolved at intake time; likely upstream to a secondary science-news article."
+reconciliation_status = "unresolved"
+unresolved_reason = "Video-only aggregator payload without DOI/arXiv citation in MSN detail payload."
 
 [[entry]]
 id = "RI-027"
@@ -281,6 +333,8 @@ normalized_url = "https://www.msn.com/en-us/money/news/hypervelocity-star-crossi
 primary_source_url = ""
 retrieval_priority = "high"
 notes = "Primary source unresolved at intake time."
+reconciliation_status = "unresolved"
+unresolved_reason = "Video-only aggregator payload without DOI/arXiv citation in MSN detail payload."
 
 [[entry]]
 id = "RI-028"
@@ -288,9 +342,11 @@ topic = "sensational_inside_out_system"
 resource_class = "aggregator_news_article"
 original_url = "https://www.msn.com/en-us/news/technology/astronomers-detect-a-solar-system-they-say-should-not-be-possible/ar-AA1WeDTi?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=39"
 normalized_url = "https://www.msn.com/en-us/news/technology/astronomers-detect-a-solar-system-they-say-should-not-be-possible/ar-AA1WeDTi"
-primary_source_url = "https://www.science.org/doi/10.1126/science.adl2348"
+primary_source_url = "https://doi.org/10.1126/science.adl2348"
 retrieval_priority = "high"
 notes = "Mapped to Science paper on LHS 1903 inside-out system."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-029"
@@ -301,6 +357,8 @@ normalized_url = "https://www.msn.com/en-us/news/technology/sam-altman-s-fusion-
 primary_source_url = "https://www.helionenergy.com/articles/helion-achieves-new-fusion-energy-milestones/"
 retrieval_priority = "high"
 notes = "Mapped to official Helion release dated 2026-02-13."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-030"
@@ -311,6 +369,8 @@ normalized_url = "https://www.msn.com/en-us/news/technology/scientists-stunned-a
 primary_source_url = "https://doi.org/10.1103/PhysRevD.110.116016"
 retrieval_priority = "high"
 notes = "Mapped to PRD paper 'Magic states of top quarks'."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-031"
@@ -321,6 +381,8 @@ normalized_url = "https://scitechdaily.com/magic-particles-the-large-hadron-coll
 primary_source_url = "https://doi.org/10.1103/PhysRevD.110.116016"
 retrieval_priority = "high"
 notes = "Secondary coverage mapped to same PRD source."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-032"
@@ -328,9 +390,11 @@ topic = "sensational_stellar_physics"
 resource_class = "aggregator_news_video"
 original_url = "https://www.msn.com/en-us/video/news/the-discovery-that-could-rewrite-stellar-physics/vi-AA1W49tB?ocid=msedgdhp&t=10#details"
 normalized_url = "https://www.msn.com/en-us/video/news/the-discovery-that-could-rewrite-stellar-physics/vi-AA1W49tB"
-primary_source_url = "https://doi.org/10.3847/2041-8213/acd780"
+primary_source_url = ""
 retrieval_priority = "high"
 notes = "Provisional mapping to stellar-magnetism paper; requires manual confirmation."
+reconciliation_status = "unresolved"
+unresolved_reason = "Video transcript lacks direct citation links; mapped DOI remains provisional and unverified."
 
 [[entry]]
 id = "RI-033"
@@ -338,9 +402,11 @@ topic = "sensational_quantum_wave"
 resource_class = "aggregator_news_article"
 original_url = "https://www.msn.com/en-us/news/technology/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/ar-AA1VLmch?ocid=msedgdhp&pc=U531&cvid=698fd3d6e19f41919856886d91a52d7f&ei=54"
 normalized_url = "https://www.msn.com/en-us/news/technology/thousands-of-sodium-atoms-merge-into-1-wave-warping-quantum-reality/ar-AA1VLmch"
-primary_source_url = ""
+primary_source_url = "https://doi.org/10.1038/s41586-025-09917-9"
 retrieval_priority = "high"
 notes = "Primary source unresolved at intake time; likely interferometry/BEC paper."
+reconciliation_status = "resolved"
+unresolved_reason = ""
 
 [[entry]]
 id = "RI-034"
@@ -351,3 +417,5 @@ normalized_url = "https://www.msn.com/en-us/news/technology/record-breaking-grav
 primary_source_url = "https://arxiv.org/abs/2509.08099"
 retrieval_priority = "high"
 notes = "Mapped to GW250114 spectroscopy preprint and companion PRL thread."
+reconciliation_status = "resolved"
+unresolved_reason = ""

@@ -1,0 +1,64 @@
+[report]
+id = "shim_inversion_batch3_2026_02_14"
+date = "2026-02-14"
+scope = "RQ-020 core"
+status = "pass"
+status_token = "PASS"
+
+[ownership]
+files = [
+  "src/scripts/analysis/build_registry_integrity_resolution.py",
+  "src/scripts/analysis/build_wave5_batch3_registries.py",
+  "src/verification/verify_registry_integrity_resolution.py",
+  "src/verification/verify_wave5_batch3_registries.py",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+]
+
+[implementation]
+canonical_source_of_truth = [
+  "src/scripts/analysis/build_registry_integrity_resolution.py",
+  "src/verification/verify_registry_integrity_resolution.py",
+]
+legacy_deprecated_shims = [
+  "src/scripts/analysis/build_wave5_batch3_registries.py",
+  "src/verification/verify_wave5_batch3_registries.py",
+]
+schema_signature_behavior = "unchanged"
+canonical_output_canonicalized = true
+legacy_deprecation_guidance_deterministic = true
+
+[[change]]
+path = "src/scripts/analysis/build_registry_integrity_resolution.py"
+summary = "Promoted to source-of-truth build implementation for integrity-resolution lane; retains registry construction and schema-signature algorithm while emitting canonical user-facing success text."
+
+[[change]]
+path = "src/verification/verify_registry_integrity_resolution.py"
+summary = "Promoted to source-of-truth verification implementation for integrity-resolution lane; validation logic unchanged and user-facing success/error text canonicalized."
+
+[[change]]
+path = "src/scripts/analysis/build_wave5_batch3_registries.py"
+summary = "Converted to thin deprecated shim that prints deterministic guidance and delegates to canonical build main()."
+
+[[change]]
+path = "src/verification/verify_wave5_batch3_registries.py"
+summary = "Converted to thin deprecated shim that prints deterministic guidance and delegates to canonical verify main()."
+
+[[validation]]
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py"
+exit_code = 0
+output = "OK: integrity-resolution registry lane verified (canonical registry-integrity-resolution script). markers=71 lacunae=166"
+
+[[validation]]
+command = "PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch3_registries.py"
+exit_code = 0
+output = "DEPRECATED: src/verification/verify_wave5_batch3_registries.py is a legacy alias. Use src/verification/verify_registry_integrity_resolution.py.\\nOK: integrity-resolution registry lane verified (canonical registry-integrity-resolution script). markers=71 lacunae=166"
+
+[[validation]]
+command = "make registry-integrity-resolution-gate"
+exit_code = 0
+output = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=71 lacunae=166 schema_signatures=22\\nPYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py\\nOK: integrity-resolution registry lane verified (canonical registry-integrity-resolution script). markers=71 lacunae=166\\nPYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py\\nOK: schema signatures verified for 22 registries.\\nPYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py\\nOK: cross-registry references verified. checks claims=5880 insights=33 experiments=265 sources=0 datasets=12\\nOK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
+
+[[validation]]
+command = "python3 -m py_compile src/scripts/analysis/build_registry_integrity_resolution.py src/scripts/analysis/build_wave5_batch3_registries.py src/verification/verify_registry_integrity_resolution.py src/verification/verify_wave5_batch3_registries.py"
+exit_code = 0
+output = ""

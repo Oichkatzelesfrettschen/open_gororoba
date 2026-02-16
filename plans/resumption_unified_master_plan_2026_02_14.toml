@@ -1,0 +1,303 @@
+# Unified Master Plan: Warp Ring & Open Gororoba Synthesis
+# Status: Active
+# Date: 2026-02-14
+
+[plan]
+authoritative = true
+phase_count = 5
+step_count = 55
+
+[phase.1]
+name = "Analysis & Validation (Reynolds Independence)"
+goal = "Confirm physical scaling laws in decaying turbulence data."
+
+[[phase.1.step]]
+id = 1
+action = "Load all `warp_experiment_c_topology_*.csv` files into a Python analysis script."
+validation = "Dataframes loaded."
+
+[[phase.1.step]]
+id = 2
+action = "Normalize time axis by Eddy Turnover Time ($T_{eddy} = L/U_{rms}$)."
+validation = "Time columns t_norm created."
+
+[[phase.1.step]]
+id = 3
+action = "Normalize Enstrophy by initial value $\Omega(0)$."
+validation = "Omega_norm columns created."
+
+[[phase.1.step]]
+id = 4
+action = "Plot $\Omega_{norm}$ vs $t_{norm}$ for 8^3, 16^3, 32^3."
+validation = "Decay curves generated."
+
+[[phase.1.step]]
+id = 5
+action = "Calculate decay exponent $\alpha$ where $\Omega \sim t^{-\alpha}$."
+validation = "Alpha values derived (expect ~1.2-1.4)."
+
+[[phase.1.step]]
+id = 6
+action = "Verify if $\alpha$ converges as $N \to 32$."
+validation = "Convergence check passed/failed."
+
+[[phase.1.step]]
+id = 7
+action = "Plot Betti-1 vs $t_{norm}$ to identify topological persistence."
+validation = "Topological lifetime plots."
+
+[[phase.1.step]]
+id = 8
+action = "Correlate Betti-1 plateaus with Enstrophy inflection points."
+validation = "Correlation coefficients computed."
+
+[[phase.1.step]]
+id = 9
+action = "Generate `reports/reynolds_scaling_analysis.md` summarizing findings."
+validation = "Report exists."
+
+[[phase.1.step]]
+id = 10
+action = "Commit analysis scripts and reports to repo."
+validation = "Git clean."
+
+[phase.2]
+name = "Physics Implementation (Warp Mechanism)"
+goal = "Implement the E7-derived frustration term in LBM."
+
+[[phase.2.step]]
+id = 11
+action = "Define `FrustrationField` trait in `gororoba_engine`."
+validation = "Trait compiles."
+
+[[phase.2.step]]
+id = 12
+action = "Implement `E7SpectralFilter` using precomputed root system."
+validation = "Filter struct exists."
+
+[[phase.2.step]]
+id = 13
+action = "Integrate `cufft` 3D FFT into `LbmSolver3DCuda` (optimize existing stub)."
+validation = "FFT benchmarked on GPU."
+
+[[phase.2.step]]
+id = 14
+action = "Implement `apply_frustration` kernel in CUDA (spectral masking)."
+validation = "Kernel compiles."
+
+[[phase.2.step]]
+id = 15
+action = "Wire `apply_frustration` into `LbmSolver3DCuda::step()` loop."
+validation = "Simulation runs with forcing."
+
+[[phase.2.step]]
+id = 16
+action = "Create `warp-ring-forcing` binary to test just the forcing term."
+validation = "Binary runs."
+
+[[phase.2.step]]
+id = 17
+action = "Tune coupling constant $\lambda$ for stability (avoid blowup)."
+validation = "Stable run for 1000 steps."
+
+[[phase.2.step]]
+id = 18
+action = "Implement `Helicity` measurement (v · w) in CUDA kernel."
+validation = "Helicity data available."
+
+[[phase.2.step]]
+id = 19
+action = "Verify chirality breaking (non-zero mean helicity) under Warp forcing."
+validation = "Chirality confirmed."
+
+[[phase.2.step]]
+id = 20
+action = "Update `WARP_RING_PHYSICS.md` with implementation details."
+validation = "Docs updated."
+
+[phase.3]
+name = "High-Res Production (128^3)"
+goal = "Run full scale Warp Ring simulation with verified Gaussian E7 forcing."
+
+[[phase.3.step]]
+id = 21
+action = "Configure `warp-gpu-experiment` for Experiment D (Warp Ring)."
+validation = "Experiment D config ready."
+
+[[phase.3.step]]
+id = 22
+action = "Allocate 128^3 grid memory on GPU (check VRAM usage)."
+validation = "Allocation succeeds."
+
+[[phase.3.step]]
+id = 23
+action = "Initialize with Gaussian Splatting Projector (Anti-LARP)."
+validation = "Projector verified (frustration_e7.rs)."
+
+[[phase.3.step]]
+id = 24
+action = "Run 128^3 simulation for 500 steps (Proof of Stability)."
+validation = "Run completes."
+
+[[phase.3.step]]
+id = 25
+action = "Export simulation trace to HDF5 (Zero-Log Policy)."
+validation = "H5 files created."
+
+[[phase.3.step]]
+id = 26
+action = "Snapshot full 3D velocity field every 5k steps (HDF5)."
+validation = "H5 files created."
+
+[[phase.3.step]]
+id = 27
+action = "Render 3D isosurfaces of vorticity using `gororoba_studio`."
+validation = "Images generated."
+
+[[phase.3.step]]
+id = 28
+action = "Analyze vortex reconnection events in the Warp regime."
+validation = "Reconnection stats."
+
+[[phase.3.step]]
+id = 29
+action = "Compare decay rate of Warp Ring vs Standard Ring."
+validation = "Comparison plot."
+
+[[phase.3.step]]
+id = 30
+action = "Archive production data to `data/h5/warp_production`."
+validation = "Data secured."
+
+[phase.4]
+name = "Synthesis & Publication"
+goal = "Finalize the Warp Ring hypothesis and publish artifacts."
+
+[[phase.4.step]]
+id = 31
+action = "Synthesize all results into `data/artifacts/WARP_RING_REPORT.md`."
+validation = "Report complete."
+
+[[phase.4.step]]
+id = 32
+action = "Generate publication-quality plots (matplotlib/pgfplots)."
+validation = "PDF plots ready."
+
+[[phase.4.step]]
+id = 33
+action = "Update `registry/claims.toml` with new evidence."
+validation = "Claims updated."
+
+[[phase.4.step]]
+id = 34
+action = "Update `registry/experiments.toml` with Experiment D."
+validation = "Experiments registry updated."
+
+[[phase.4.step]]
+id = 35
+action = "Run full repo audit (ascii, toml, links)."
+validation = "Audit pass."
+
+[[phase.4.step]]
+id = 36
+action = "Create release tag `v0.2.0-warp-ring`."
+validation = "Tag created."
+
+[[phase.4.step]]
+id = 37
+action = "Draft 'Warp Ring' blog post/paper abstract."
+validation = "Draft ready."
+
+[[phase.4.step]]
+id = 38
+action = "Prepare `Dockerfile` for reproducible replication."
+validation = "Docker build passes."
+
+[[phase.4.step]]
+id = 39
+action = "Final manual review of all docs."
+validation = "Review done."
+
+[[phase.4.step]]
+id = 40
+action = "Submit final handoff report."
+validation = "Mission complete."
+
+[phase.5]
+name = "Basemark + Precision Matrix + BF16 Fastpath"
+goal = "Establish truthful N^3 basemarks, fix GPU timing/FFT/telemetry, and iterate BF16 fastpath before re-running authoritative 300s production."
+
+[[phase.5.step]]
+id = 41
+action = "Fix cuFFT forcing path: remove device-to-device `CudaSlice::clone()` copies, reuse solver buffers, bind cuFFT plan to solver stream, and normalize IFFT with 1/(N^3)."
+validation = "gororoba_cli builds with --features gpu; forcing path reuses buffers; no dtod clones in the hot loop."
+
+[[phase.5.step]]
+id = 42
+action = "Extend GPU solver control surface: add `initialize_uniform`, `initialize_custom`, `set_force_field`, `set_viscosity_field`, and `evolve` on `LbmSolver3DCuda` plus matching CUDA kernels where needed."
+validation = "`warp-gpu-experiment`, `percolation-experiment`, and E-027 GPU path compile and run."
+
+[[phase.5.step]]
+id = 43
+action = "Make timing truthful: add `TimingMode` to warp runner and default GPU lanes to CUDA event timing (or explicit sync) so timing histograms represent device work, not async launch overhead."
+validation = "Timing TOMLs show realistic step times for 128^3 and 256^3 (no microsecond p50 artifacts)."
+
+[[phase.5.step]]
+id = 44
+action = "Add a Rust-native `warp-basemark-suite` binary: run N^3 basemark matrix and emit HDF5 artifacts, timing TOMLs, and a consolidated basemark report."
+validation = "`cargo run -p gororoba_cli --bin warp-basemark-suite --features gpu,hdf5-export --` completes and emits a `reports/warp_basemark_report_YYYY_MM_DD.toml`."
+
+[[phase.5.step]]
+id = 45
+action = "Run basemark lane (default 45s): GPU matrix for 32^3, 128^3, 256^3 in FP32/BF16 (plus CPU 32^3 FP64 baseline) and gate artifacts fail-closed."
+validation = "`warp-acceptance-gate` passes on all basemark H5 outputs."
+
+[[phase.5.step]]
+id = 46
+action = "Fill the missing 32^3 300s lane: run 32^3 for 300 seconds (at least BF16, optionally FP32 reference) and gate artifacts."
+validation = "A 32^3 300s H5 artifact exists on disk and passes `warp-acceptance-gate`."
+
+[[phase.5.step]]
+id = 47
+action = "Upgrade telemetry: implement NVML sampling via `nvml-wrapper` with fallback to `nvidia-smi`; attach telemetry CSV to production and basemark suites."
+validation = "Telemetry CSV is emitted reliably without needing shell-only workflows."
+
+[[phase.5.step]]
+id = 48
+action = "Kernel geometry tuning: add block-dim override and/or autotune for the fused LBM kernel; record best settings per resolution in a TOML tuning registry."
+validation = "Basemark shows >=3% BF16 improvement at 128^3 and 256^3 vs prior baseline before re-running 300s production."
+
+[[phase.5.step]]
+id = 49
+action = "Write physics + numerics derivation: document D3Q19 BGK update, tau-viscosity mapping, stability notes, scaling with N^3, and why async GPU timing requires events/sync."
+validation = "`docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md` exists and matches current implementation."
+
+[[phase.5.step]]
+id = 50
+action = "Re-run authoritative 300s production after fastpath gate: BF16 128^3 and BF16 256^3 with telemetry and truthful timing enabled."
+validation = "New `data/h5/production/<timestamp>/warp_ring_128_BF16_300s.h5` and `warp_ring_256_BF16_300s.h5` exist plus timing + telemetry reports."
+
+[[phase.5.step]]
+id = 51
+action = "Emit consolidated fastpath report TOML after 300s rerun."
+validation = "`reports/warp_bf16_300s_fastpath_report_YYYY_MM_DD.toml` exists."
+
+[[phase.5.step]]
+id = 52
+action = "Add GPU FP64 reference precision (kernels + reductions) for basemark/behavior reference (not a speed target)."
+validation = "Basemark suite can run GPU FP64 at 32^3 and gates still pass."
+
+[[phase.5.step]]
+id = 53
+action = "Add CPU FP32 and CPU BF16-storage solver variants with Rayon parallelism and SIMD where available (Zen3: AVX2/FMA; no AVX512 BF16)."
+validation = "CPU basemark can run FP64/FP32/BF16-storage at 32^3 and passes invariants within tolerances."
+
+[[phase.5.step]]
+id = 54
+action = "Add cross-precision invariant tests (small 8^3 and 16^3): rho_mean drift bounds across CPU/GPU and FP32/BF16/FP64 reference where available."
+validation = "`cargo test --workspace` passes under --features gpu."
+
+[[phase.5.step]]
+id = 55
+action = "Add a basemark analyzer (Rust binary) that reads timing TOMLs + telemetry CSV and prints a normalized comparison table into `reports/`."
+validation = "Analyzer emits a single table report suitable for committing as evidence."

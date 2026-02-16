@@ -1,0 +1,120 @@
+# Operational residue canonicalization execution report for RQ-022 and RQ-023.
+
+[report]
+id = "ORC-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "completed_with_residual_caveats"
+source_queue = "reports/control_plane_residue_inventory_2026_02_14.toml"
+execution_scope = "RQ-022,RQ-023"
+
+[scope]
+owned_files = [
+  "src/scripts/analysis/build_markdown_inventory_registry.py",
+  "src/verification/verify_toml_inventory_registry.py",
+  "registry/toml_inventory.toml",
+  "registry/markdown_payload_chunks.toml",
+  "reports/operational_residue_canonicalization_2026_02_14.toml",
+]
+edits_outside_scope = false
+
+[[residue_execution]]
+id = "RQ-022"
+status = "completed"
+priority = "medium"
+category = "operational"
+path = "src/verification/verify_toml_inventory_registry.py"
+legacy_reference = "registry/wave4_roadmap.toml required_core entry"
+canonical_replacement = "registry/control_plane_roadmap.toml"
+action_summary = "Required-core canonicalized to control_plane mirror; archival legacy check moved to explicit compatibility block."
+before_evidence = [
+  "pre-change rg: src/verification/verify_toml_inventory_registry.py:82: \"registry/wave4_roadmap.toml\"",
+  "pre-change required_core contained only legacy roadmap path for this lane",
+]
+after_evidence = [
+  "post-change required_core contains \"registry/control_plane_roadmap.toml\"",
+  "post-change archival_compat_required_if_present contains \"registry/wave4_roadmap.toml\"",
+  "post-change check extraction: verifier_required_has_control_plane=true",
+  "post-change check extraction: verifier_required_has_wave4=false",
+  "post-change check extraction: verifier_archival_has_wave4=true",
+]
+compatibility_semantics = "Legacy roadmap remains archival/compatibility-gated and is only enforced when present on disk."
+
+[[residue_execution]]
+id = "RQ-023"
+status = "completed"
+priority = "medium"
+category = "operational"
+path = "src/scripts/analysis/build_markdown_inventory_registry.py"
+legacy_reference = "registry/wave4_roadmap.toml in non_destination_registries"
+canonical_replacement = "registry/control_plane_roadmap.toml"
+action_summary = "Non-destination policy list now uses control_plane mirror; legacy roadmap exclusion retained in explicit archival policy set."
+before_evidence = [
+  "pre-change rg: src/scripts/analysis/build_markdown_inventory_registry.py:267: \"registry/wave4_roadmap.toml\"",
+  "pre-change non_destination_registries used legacy roadmap path",
+]
+after_evidence = [
+  "post-change non_destination_registries contains \"registry/control_plane_roadmap.toml\"",
+  "post-change archival_non_destination_registries contains \"registry/wave4_roadmap.toml\"",
+  "post-change check extraction: builder_main_has_control_plane=true",
+  "post-change check extraction: builder_main_has_wave4=false",
+  "post-change check extraction: builder_archival_has_wave4=true",
+]
+compatibility_semantics = "Archival roadmap remains excluded from destination inference without being treated as active canonical policy path."
+
+[[command_run]]
+id = "CMD-001"
+command = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py --out /tmp/markdown_inventory_rq022_rq023.toml"
+exit_code = 0
+stdout = "Wrote /tmp/markdown_inventory_rq022_rq023.toml with 212 markdown records."
+
+[[command_run]]
+id = "CMD-002"
+command = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_toml_inventory_registry.py --out registry/toml_inventory.toml"
+exit_code = 0
+stdout = "Wrote /home/eirikr/Github/open_gororoba/registry/toml_inventory.toml with 1658 TOML records."
+
+[[command_run]]
+id = "CMD-003"
+command = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py --payload-out /tmp/markdown_payloads_rq022_rq023.toml --chunks-out registry/markdown_payload_chunks.toml"
+exit_code = 0
+stdout = "Wrote structured markdown payload registries: documents=218 chunks=31189 third_party_cache=13"
+
+[[command_run]]
+id = "CMD-004"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py"
+exit_code = 1
+stdout = "ERROR: Control-plane TOML inventory verification failed.; - parse_error_count=2 (expected 0); - reports/e027_decision_protocol.toml: parse_ok=false; - reports/todo_placeholder_audit.toml: parse_ok=false"
+
+[[command_run]]
+id = "CMD-005"
+command = "python3 tomllib parse check for registry/toml_inventory.toml and registry/markdown_payload_chunks.toml"
+exit_code = 0
+stdout = "OK: parsed registry/toml_inventory.toml; OK: parsed registry/markdown_payload_chunks.toml"
+
+[[command_run]]
+id = "CMD-006"
+command = "python extraction check for active-vs-archival roadmap path placement"
+exit_code = 0
+stdout = "builder_main_has_control_plane=true; builder_main_has_wave4=false; builder_archival_has_wave4=true; verifier_required_has_control_plane=true; verifier_required_has_wave4=false; verifier_archival_has_wave4=true"
+
+[residue_grep_post]
+control_plane_in_toml_inventory = true
+wave4_in_toml_inventory = true
+wave4_in_markdown_payload_chunks = false
+wave5_or_wave6_path_residue_in_owned_outputs = true
+notes = "Wave4 persists in toml inventory as archival compatibility data; wave5/wave6 residues remain transitional planning artifacts (RQ-024 scope)."
+
+[[residual_caveat]]
+id = "RC-001"
+severity = "medium"
+description = "Verifier CMD-004 failed due unrelated parse errors in reports/e027_decision_protocol.toml and reports/todo_placeholder_audit.toml."
+impact = "Does not block RQ-022/RQ-023 canonical path migration in owned builder/verifier logic."
+ownership = "outside_owned_scope"
+
+[[residual_caveat]]
+id = "RC-002"
+severity = "low"
+description = "Legacy wave5/wave6 path strings remain in owned generated outputs as inventory/chunked content from existing registries/markdown; this is transitional residue tracked by RQ-024."
+impact = "Operational wave4 logic residue addressed; broader transitional nomenclature remains by design/pending queue execution."
+ownership = "tracked_residue_queue"

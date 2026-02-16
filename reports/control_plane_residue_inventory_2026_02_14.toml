@@ -1,0 +1,927 @@
+# Control-plane residue inventory for legacy wave*/registry-wave* naming.
+# Scope constrained to Makefile + src/ + registry/ + plans/ + docs/.
+
+[report]
+id = "CPRI-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+authoritative = true
+ownership_scope = "reports/control_plane_residue_inventory_2026_02_14.toml"
+snapshot_note = "Point-in-time scan while concurrent agents were active in unrelated files; RQ-024 owned-scope deltas are captured in report.rq024_refresh."
+
+[report.rq024_refresh]
+updated = "2026-02-14"
+status = "completed"
+scope = "owned planning + generated artifacts only"
+ownership_scope = [
+  "registry/roadmap.toml",
+  "plans/resumption_unified_master_plan_2026_02_14.toml",
+  "registry/toml_inventory.toml",
+  "registry/markdown_payload_chunks.toml",
+]
+delta_note = "RQ-024 canonicalization reduced targeted legacy residue in owned active planning/generated artifacts; one archival-path residue token remains in toml inventory."
+
+[report.rq024_refresh.target_counts_before]
+wave5_plan_path = 5
+registry_wave5_alias = 2
+wave6_gate_alias = 2
+total = 9
+
+[report.rq024_refresh.target_counts_after]
+wave5_plan_path = 1
+registry_wave5_alias = 0
+wave6_gate_alias = 0
+total = 1
+
+[report.rq024_refresh.target_counts_delta]
+wave5_plan_path = -4
+registry_wave5_alias = -2
+wave6_gate_alias = -2
+total = -8
+
+[scan]
+roots = ["Makefile", "src/", "registry/", "plans/", "docs/"]
+legacy_line_pattern = "(?<![A-Za-z0-9_])(registry-wave[a-z0-9_-]*|wave[0-9][a-z0-9_-]*)(?![A-Za-z0-9_])"
+legacy_token_pattern = "(?<![A-Za-z0-9_])(registry-wave[a-z0-9_-]*|wave[0-9][a-z0-9_-]*)(?![A-Za-z0-9_])"
+path_name_pattern = "(registry-wave|wave[0-9])"
+broad_wave_prefix_pattern = "(?<![A-Za-z0-9_])(registry-wave[a-z0-9_-]*|wave[a-z0-9_-]*)(?![A-Za-z0-9_])"
+method = "rg line hits + rg token hits + rg --files path-name hits, then file-level category classification."
+legacy_filter_note = "Legacy filter requires wave+digit or registry-wave prefix to exclude scientific wave/wavelet prose."
+
+[scan.coverage]
+makefile_scanned = true
+src_scanned = true
+registry_scanned = true
+plans_scanned = true
+docs_scanned = true
+
+[counts]
+legacy_line_hits = 150
+legacy_token_hits = 161
+legacy_path_name_hits = 11
+legacy_files_with_hits = 22
+broad_wave_prefix_line_hits = 611
+filtered_out_non_legacy_line_hits = 461
+
+[counts.legacy_line_hits_by_root]
+makefile = 63
+src = 22
+registry = 62
+plans = 3
+docs = 0
+
+[counts.broad_wave_prefix_line_hits_by_root]
+makefile = 63
+src = 40
+registry = 495
+plans = 3
+docs = 10
+
+[counts.by_category]
+operational_line_hits = 6
+operational_token_hits = 6
+transitional_line_hits = 136
+transitional_token_hits = 147
+archival_line_hits = 8
+archival_token_hits = 8
+
+[counts.path_name_hits_by_category]
+operational = 0
+transitional = 8
+archival = 3
+
+[docs_scan]
+legacy_hits = 0
+note = "docs/ had broad wave-prefix matches only (for example gravitational-waves, wavelets), but no legacy waveN/registry-wave residue."
+
+[[replacement_map]]
+legacy = "registry-wave3"
+canonical = "registry-csv-pipeline-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave4"
+canonical = "registry-control-plane-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-verify-wave4"
+canonical = "registry-verify-control-plane"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5"
+canonical = "registry-acceptance-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch1-build"
+canonical = "registry-build-semantic-atoms"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-verify-wave5-batch1"
+canonical = "registry-verify-semantic-atoms"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch1"
+canonical = "registry-semantic-atoms-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch2-build"
+canonical = "registry-build-evidence-provenance"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-verify-wave5-batch2"
+canonical = "registry-verify-evidence-provenance"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch2"
+canonical = "registry-evidence-provenance-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch3-build"
+canonical = "registry-build-integrity-resolution"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-verify-wave5-batch3"
+canonical = "registry-verify-integrity-resolution"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch3"
+canonical = "registry-integrity-resolution-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch4-build"
+canonical = "registry-build-execution-planning"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-verify-wave5-batch4"
+canonical = "registry-verify-execution-planning"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry-wave5-batch4"
+canonical = "registry-execution-planning-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "wave6-gate"
+canonical = "governance-gate"
+type = "target"
+
+[[replacement_map]]
+legacy = "registry/wave4_roadmap.toml"
+canonical = "registry/control_plane_roadmap.toml"
+type = "path"
+
+[[replacement_map]]
+legacy = "registry/wave5_toml_granularization_plan.toml"
+canonical = "registry/strict_toml_granularization_plan.toml"
+type = "path"
+
+[[replacement_map]]
+legacy = "registry/wave6_toml_source_enforcement_plan.toml"
+canonical = "registry/toml_source_enforcement_plan.toml"
+type = "path"
+
+[[replacement_map]]
+legacy = "src/scripts/analysis/build_wave5_batch1_registries.py"
+canonical = "src/scripts/analysis/build_registry_semantic_atoms.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/scripts/analysis/build_wave5_batch2_registries.py"
+canonical = "src/scripts/analysis/build_registry_evidence_provenance.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/scripts/analysis/build_wave5_batch3_registries.py"
+canonical = "src/scripts/analysis/build_registry_integrity_resolution.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/scripts/analysis/build_wave5_batch4_registries.py"
+canonical = "src/scripts/analysis/build_registry_execution_planning.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/verification/verify_wave5_batch1_registries.py"
+canonical = "src/verification/verify_registry_semantic_atoms.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/verification/verify_wave5_batch2_registries.py"
+canonical = "src/verification/verify_registry_evidence_provenance.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/verification/verify_wave5_batch3_registries.py"
+canonical = "src/verification/verify_registry_integrity_resolution.py"
+type = "script_entrypoint"
+
+[[replacement_map]]
+legacy = "src/verification/verify_wave5_batch4_registries.py"
+canonical = "src/verification/verify_registry_execution_planning.py"
+type = "script_entrypoint"
+
+[[legacy_lexeme]]
+token = "registry-wave"
+occurrences = 1
+categories = ["transitional"]
+canonical_replacement = "registry-* functional lane/gate names (drop wildcard legacy heading)"
+
+[[legacy_lexeme]]
+token = "registry-wave3"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-csv-pipeline-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave4"
+occurrences = 9
+categories = ["transitional", "archival"]
+canonical_replacement = "registry-control-plane-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5"
+occurrences = 7
+categories = ["transitional"]
+canonical_replacement = "registry-acceptance-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch1"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-semantic-atoms-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch1-build"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-build-semantic-atoms"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch2"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-evidence-provenance-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch2-build"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-build-evidence-provenance"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch3"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-integrity-resolution-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch3-build"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-build-integrity-resolution"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch4"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-execution-planning-gate"
+
+[[legacy_lexeme]]
+token = "registry-wave5-batch4-build"
+occurrences = 5
+categories = ["transitional"]
+canonical_replacement = "registry-build-execution-planning"
+
+[[legacy_lexeme]]
+token = "wave4"
+occurrences = 7
+categories = ["transitional", "archival"]
+canonical_replacement = "phase-neutral control-plane naming"
+
+[[legacy_lexeme]]
+token = "wave4_roadmap"
+occurrences = 12
+categories = ["operational", "transitional", "archival"]
+canonical_replacement = "control_plane_roadmap"
+
+[[legacy_lexeme]]
+token = "wave5"
+occurrences = 2
+categories = ["transitional"]
+canonical_replacement = "strict_toml_granularization_plan"
+
+[[legacy_lexeme]]
+token = "wave5-batch1"
+occurrences = 11
+categories = ["transitional"]
+canonical_replacement = "semantic-atoms lane naming"
+
+[[legacy_lexeme]]
+token = "wave5-batch2"
+occurrences = 11
+categories = ["transitional"]
+canonical_replacement = "evidence-provenance lane naming"
+
+[[legacy_lexeme]]
+token = "wave5-batch3"
+occurrences = 11
+categories = ["transitional"]
+canonical_replacement = "integrity-resolution lane naming"
+
+[[legacy_lexeme]]
+token = "wave5-batch4"
+occurrences = 11
+categories = ["transitional"]
+canonical_replacement = "execution-planning lane naming"
+
+[[legacy_lexeme]]
+token = "wave5_toml_granularization_plan"
+occurrences = 10
+categories = ["operational", "transitional"]
+canonical_replacement = "strict_toml_granularization_plan"
+
+[[legacy_lexeme]]
+token = "wave6"
+occurrences = 9
+categories = ["transitional", "archival"]
+canonical_replacement = "toml_source_enforcement_plan"
+
+[[legacy_lexeme]]
+token = "wave6-gate"
+occurrences = 8
+categories = ["transitional"]
+canonical_replacement = "governance-gate"
+
+[[legacy_lexeme]]
+token = "wave6_toml_source_enforcement_plan"
+occurrences = 7
+categories = ["operational", "transitional"]
+canonical_replacement = "toml_source_enforcement_plan"
+
+[[categorized_entry]]
+category = "operational"
+path = "registry/markdown_payload_chunks.toml"
+line_hits = 1
+token_hits = 1
+line_refs = [100108]
+legacy_tokens = ["wave5_toml_granularization_plan"]
+canonical_replacements = ["registry/strict_toml_granularization_plan.toml"]
+classification_basis = "Active generated registry payload consumed by runtime verifiers/builders."
+
+[[categorized_entry]]
+category = "operational"
+path = "registry/toml_inventory.toml"
+line_hits = 3
+token_hits = 3
+line_refs = [18716, 18730, 18744]
+legacy_tokens = ["wave4_roadmap", "wave5_toml_granularization_plan", "wave6_toml_source_enforcement_plan"]
+canonical_replacements = ["registry/control_plane_roadmap.toml", "registry/strict_toml_granularization_plan.toml", "registry/toml_source_enforcement_plan.toml"]
+classification_basis = "Active control-plane inventory registry used by policy/verifier gates."
+
+[[categorized_entry]]
+category = "operational"
+path = "src/scripts/analysis/build_markdown_inventory_registry.py"
+line_hits = 1
+token_hits = 1
+line_refs = [267]
+legacy_tokens = ["wave4_roadmap"]
+canonical_replacements = ["registry/control_plane_roadmap.toml"]
+classification_basis = "Builder logic still hardcodes a legacy roadmap path in non-destination policy list."
+
+[[categorized_entry]]
+category = "operational"
+path = "src/verification/verify_toml_inventory_registry.py"
+line_hits = 1
+token_hits = 1
+line_refs = [82]
+legacy_tokens = ["wave4_roadmap"]
+canonical_replacements = ["registry/control_plane_roadmap.toml"]
+classification_basis = "Verifier required-core set still uses the legacy control-plane roadmap path."
+
+[[categorized_entry]]
+category = "transitional"
+path = "Makefile"
+line_hits = 63
+token_hits = 73
+line_refs = [3, 26, 33, 34, 35, 36, 44, 127, 128, 409, 410, 412, 413, 423, 431, 432, 434, 435, 437, 438, 447, 455, 456, 458, 459, 461, 462, 479, 487, 488, 490, 491, 493, 494, 506, 514, 515, 517, 518, 520, 521, 526, 527, 634, 635, 880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 898]
+legacy_tokens = ["registry-wave", "registry-wave3", "registry-wave4", "registry-wave5", "registry-wave5-batch1", "registry-wave5-batch1-build", "registry-wave5-batch2", "registry-wave5-batch2-build", "registry-wave5-batch3", "registry-wave5-batch3-build", "registry-wave5-batch4", "registry-wave5-batch4-build", "wave4", "wave5-batch1", "wave5-batch2", "wave5-batch3", "wave5-batch4", "wave6-gate"]
+canonical_replacements = [
+  "registry-wave3 -> registry-csv-pipeline-gate",
+  "registry-wave4 -> registry-control-plane-gate",
+  "registry-verify-wave4 -> registry-verify-control-plane",
+  "registry-wave5 -> registry-acceptance-gate",
+  "registry-wave5-batch1-build -> registry-build-semantic-atoms",
+  "registry-verify-wave5-batch1 -> registry-verify-semantic-atoms",
+  "registry-wave5-batch1 -> registry-semantic-atoms-gate",
+  "registry-wave5-batch2-build -> registry-build-evidence-provenance",
+  "registry-verify-wave5-batch2 -> registry-verify-evidence-provenance",
+  "registry-wave5-batch2 -> registry-evidence-provenance-gate",
+  "registry-wave5-batch3-build -> registry-build-integrity-resolution",
+  "registry-verify-wave5-batch3 -> registry-verify-integrity-resolution",
+  "registry-wave5-batch3 -> registry-integrity-resolution-gate",
+  "registry-wave5-batch4-build -> registry-build-execution-planning",
+  "registry-verify-wave5-batch4 -> registry-verify-execution-planning",
+  "registry-wave5-batch4 -> registry-execution-planning-gate",
+  "wave6-gate -> governance-gate",
+]
+classification_basis = "Compatibility alias targets and deprecation help text remain active runtime entrypoints."
+
+[[categorized_entry]]
+category = "transitional"
+path = "plans/resumption_unified_master_plan_2026_02_14.toml"
+line_hits = 3
+token_hits = 3
+line_refs = [24, 1441, 1506]
+legacy_tokens = ["registry-wave5", "wave6-gate"]
+canonical_replacements = ["registry-acceptance-gate", "governance-gate"]
+classification_basis = "Active migration planning file preserving alias traceability text."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/control_plane_naming_standards.toml"
+line_hits = 21
+token_hits = 21
+line_refs = [35, 41, 47, 53, 66, 82, 83, 84, 104, 105, 106, 126, 127, 128, 150, 151, 152, 169, 181, 182, 183]
+legacy_tokens = ["registry-wave3", "registry-wave4", "registry-wave5", "registry-wave5-batch1", "registry-wave5-batch1-build", "registry-wave5-batch2", "registry-wave5-batch2-build", "registry-wave5-batch3", "registry-wave5-batch3-build", "registry-wave5-batch4", "registry-wave5-batch4-build", "wave4_roadmap", "wave5-batch1", "wave5-batch2", "wave5-batch3", "wave5-batch4", "wave5_toml_granularization_plan", "wave6-gate", "wave6_toml_source_enforcement_plan"]
+canonical_replacements = ["registry-csv-pipeline-gate", "registry-control-plane-gate", "registry-acceptance-gate", "registry-build-semantic-atoms", "registry-verify-semantic-atoms", "registry-semantic-atoms-gate", "registry-build-evidence-provenance", "registry-verify-evidence-provenance", "registry-evidence-provenance-gate", "registry-build-integrity-resolution", "registry-verify-integrity-resolution", "registry-integrity-resolution-gate", "registry-build-execution-planning", "registry-verify-execution-planning", "registry-execution-planning-gate", "governance-gate", "registry/control_plane_roadmap.toml", "registry/strict_toml_granularization_plan.toml", "registry/toml_source_enforcement_plan.toml"]
+classification_basis = "Authoritative migration policy table intentionally maps legacy aliases to canonical names."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/control_plane_roadmap.toml"
+line_hits = 5
+token_hits = 6
+line_refs = [2, 10, 11, 17, 34]
+legacy_tokens = ["wave4", "wave4_roadmap"]
+canonical_replacements = ["control_plane_roadmap", "registry/control_plane_roadmap.toml"]
+classification_basis = "Canonical mirror keeps legacy IDs/labels for provenance and compatibility linkage."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/phase_plan_canonical_mirrors.toml"
+line_hits = 9
+token_hits = 9
+line_refs = [27, 28, 29, 44, 46, 61, 62, 63, 64]
+legacy_tokens = ["wave4", "wave4_roadmap", "wave5", "wave5_toml_granularization_plan", "wave6", "wave6_toml_source_enforcement_plan"]
+canonical_replacements = ["registry/control_plane_roadmap.toml", "registry/strict_toml_granularization_plan.toml", "registry/toml_source_enforcement_plan.toml"]
+classification_basis = "Compatibility mirror index for archival wave-labeled plans."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/roadmap.toml"
+line_hits = 2
+token_hits = 2
+line_refs = [142, 145]
+legacy_tokens = ["wave5_toml_granularization_plan"]
+canonical_replacements = ["registry/strict_toml_granularization_plan.toml"]
+classification_basis = "Active planning registry still references legacy Wave 5 path in workstream outputs/evidence."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/strict_toml_granularization_plan.toml"
+line_hits = 5
+token_hits = 5
+line_refs = [2, 10, 17, 45, 46]
+legacy_tokens = ["wave5", "wave5_toml_granularization_plan"]
+canonical_replacements = ["strict_toml_granularization_plan", "registry/strict_toml_granularization_plan.toml"]
+classification_basis = "Canonical mirror intentionally carries legacy Wave 5 provenance metadata."
+
+[[categorized_entry]]
+category = "transitional"
+path = "registry/toml_source_enforcement_plan.toml"
+line_hits = 8
+token_hits = 8
+line_refs = [2, 10, 11, 16, 17, 32, 33, 34]
+legacy_tokens = ["wave6", "wave6_toml_source_enforcement_plan"]
+canonical_replacements = ["toml_source_enforcement_plan", "registry/toml_source_enforcement_plan.toml"]
+classification_basis = "Canonical mirror intentionally carries legacy Wave 6 provenance metadata."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch1_registries.py"
+line_hits = 2
+token_hits = 2
+line_refs = [7, 884]
+legacy_tokens = ["wave5-batch1"]
+canonical_replacements = ["src/scripts/analysis/build_registry_semantic_atoms.py"]
+classification_basis = "Legacy compatibility script name retained; canonical build wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch2_registries.py"
+line_hits = 2
+token_hits = 2
+line_refs = [7, 842]
+legacy_tokens = ["wave5-batch2"]
+canonical_replacements = ["src/scripts/analysis/build_registry_evidence_provenance.py"]
+classification_basis = "Legacy compatibility script name retained; canonical build wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch3_registries.py"
+line_hits = 2
+token_hits = 2
+line_refs = [7, 803]
+legacy_tokens = ["wave5-batch3"]
+canonical_replacements = ["src/scripts/analysis/build_registry_integrity_resolution.py"]
+classification_basis = "Legacy compatibility script name retained; canonical build wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch4_registries.py"
+line_hits = 2
+token_hits = 2
+line_refs = [7, 957]
+legacy_tokens = ["wave5-batch4"]
+canonical_replacements = ["src/scripts/analysis/build_registry_execution_planning.py"]
+classification_basis = "Legacy compatibility script name retained; canonical build wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch1_registries.py"
+line_hits = 3
+token_hits = 3
+line_refs = [7, 363, 371]
+legacy_tokens = ["wave5-batch1"]
+canonical_replacements = ["src/verification/verify_registry_semantic_atoms.py"]
+classification_basis = "Legacy compatibility verifier name retained; canonical verifier wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch2_registries.py"
+line_hits = 3
+token_hits = 3
+line_refs = [7, 314, 322]
+legacy_tokens = ["wave5-batch2"]
+canonical_replacements = ["src/verification/verify_registry_evidence_provenance.py"]
+classification_basis = "Legacy compatibility verifier name retained; canonical verifier wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch3_registries.py"
+line_hits = 3
+token_hits = 3
+line_refs = [7, 165, 173]
+legacy_tokens = ["wave5-batch3"]
+canonical_replacements = ["src/verification/verify_registry_integrity_resolution.py"]
+classification_basis = "Legacy compatibility verifier name retained; canonical verifier wrapper already exists."
+
+[[categorized_entry]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch4_registries.py"
+line_hits = 3
+token_hits = 3
+line_refs = [7, 573, 581]
+legacy_tokens = ["wave5-batch4"]
+canonical_replacements = ["src/verification/verify_registry_execution_planning.py"]
+classification_basis = "Legacy compatibility verifier name retained; canonical verifier wrapper already exists."
+
+[[categorized_entry]]
+category = "archival"
+path = "registry/wave4_roadmap.toml"
+line_hits = 6
+token_hits = 6
+line_refs = [3, 175, 194, 201, 208, 222]
+legacy_tokens = ["registry-wave4", "wave4", "wave4_roadmap"]
+canonical_mirror = "registry/control_plane_roadmap.toml"
+classification_basis = "Historical immutable Wave 4 snapshot retained for provenance."
+
+[[categorized_entry]]
+category = "archival"
+path = "registry/wave6_toml_source_enforcement_plan.toml"
+line_hits = 2
+token_hits = 2
+line_refs = [4, 5]
+legacy_tokens = ["wave6"]
+canonical_mirror = "registry/toml_source_enforcement_plan.toml"
+classification_basis = "Historical immutable Wave 6 snapshot retained for provenance."
+
+[[path_name_residue]]
+category = "archival"
+path = "registry/wave4_roadmap.toml"
+canonical_name = "registry/control_plane_roadmap.toml"
+action = "Keep immutable archival file; route all active writes/reads through canonical mirror."
+
+[[path_name_residue]]
+category = "archival"
+path = "registry/wave5_toml_granularization_plan.toml"
+canonical_name = "registry/strict_toml_granularization_plan.toml"
+action = "Keep immutable archival file; route all active writes/reads through canonical mirror."
+
+[[path_name_residue]]
+category = "archival"
+path = "registry/wave6_toml_source_enforcement_plan.toml"
+canonical_name = "registry/toml_source_enforcement_plan.toml"
+action = "Keep immutable archival file; route all active writes/reads through canonical mirror."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch1_registries.py"
+canonical_name = "src/verification/verify_registry_semantic_atoms.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch2_registries.py"
+canonical_name = "src/verification/verify_registry_evidence_provenance.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch3_registries.py"
+canonical_name = "src/verification/verify_registry_integrity_resolution.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/verification/verify_wave5_batch4_registries.py"
+canonical_name = "src/verification/verify_registry_execution_planning.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch1_registries.py"
+canonical_name = "src/scripts/analysis/build_registry_semantic_atoms.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch2_registries.py"
+canonical_name = "src/scripts/analysis/build_registry_evidence_provenance.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch3_registries.py"
+canonical_name = "src/scripts/analysis/build_registry_integrity_resolution.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[[path_name_residue]]
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch4_registries.py"
+canonical_name = "src/scripts/analysis/build_registry_execution_planning.py"
+action = "Convert to thin deprecated shim, then remove after alias sunset."
+
+[remediation_queue]
+item_count = 24
+goal = "Next tranche removes runtime alias surfaces first, then script/path residue, while preserving archival immutability."
+ordering = "priority_tier asc, id asc"
+
+[[remediation_item]]
+id = "RQ-001"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave3"
+canonical_replacement = "registry-csv-pipeline-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave3."
+
+[[remediation_item]]
+id = "RQ-002"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave4"
+canonical_replacement = "registry-control-plane-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave4."
+
+[[remediation_item]]
+id = "RQ-003"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-verify-wave4"
+canonical_replacement = "registry-verify-control-plane"
+action = "Delete legacy alias target/help/phony exposure for registry-verify-wave4."
+
+[[remediation_item]]
+id = "RQ-004"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5"
+canonical_replacement = "registry-acceptance-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5."
+
+[[remediation_item]]
+id = "RQ-005"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch1-build"
+canonical_replacement = "registry-build-semantic-atoms"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch1-build."
+
+[[remediation_item]]
+id = "RQ-006"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-verify-wave5-batch1"
+canonical_replacement = "registry-verify-semantic-atoms"
+action = "Delete legacy alias target/help/phony exposure for registry-verify-wave5-batch1."
+
+[[remediation_item]]
+id = "RQ-007"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch1"
+canonical_replacement = "registry-semantic-atoms-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch1."
+
+[[remediation_item]]
+id = "RQ-008"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch2-build"
+canonical_replacement = "registry-build-evidence-provenance"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch2-build."
+
+[[remediation_item]]
+id = "RQ-009"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-verify-wave5-batch2"
+canonical_replacement = "registry-verify-evidence-provenance"
+action = "Delete legacy alias target/help/phony exposure for registry-verify-wave5-batch2."
+
+[[remediation_item]]
+id = "RQ-010"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch2"
+canonical_replacement = "registry-evidence-provenance-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch2."
+
+[[remediation_item]]
+id = "RQ-011"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch3-build"
+canonical_replacement = "registry-build-integrity-resolution"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch3-build."
+
+[[remediation_item]]
+id = "RQ-012"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-verify-wave5-batch3"
+canonical_replacement = "registry-verify-integrity-resolution"
+action = "Delete legacy alias target/help/phony exposure for registry-verify-wave5-batch3."
+
+[[remediation_item]]
+id = "RQ-013"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch3"
+canonical_replacement = "registry-integrity-resolution-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch3."
+
+[[remediation_item]]
+id = "RQ-014"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch4-build"
+canonical_replacement = "registry-build-execution-planning"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch4-build."
+
+[[remediation_item]]
+id = "RQ-015"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-verify-wave5-batch4"
+canonical_replacement = "registry-verify-execution-planning"
+action = "Delete legacy alias target/help/phony exposure for registry-verify-wave5-batch4."
+
+[[remediation_item]]
+id = "RQ-016"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "registry-wave5-batch4"
+canonical_replacement = "registry-execution-planning-gate"
+action = "Delete legacy alias target/help/phony exposure for registry-wave5-batch4."
+
+[[remediation_item]]
+id = "RQ-017"
+priority_tier = 1
+priority = "high"
+category = "transitional"
+path = "Makefile"
+legacy_reference = "wave6-gate"
+canonical_replacement = "governance-gate"
+action = "Delete legacy alias target/help/phony exposure for wave6-gate."
+
+[[remediation_item]]
+id = "RQ-018"
+priority_tier = 2
+priority = "medium"
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch1_registries.py; src/verification/verify_wave5_batch1_registries.py"
+legacy_reference = "wave5-batch1 script names/messages"
+canonical_replacement = "build_registry_semantic_atoms.py; verify_registry_semantic_atoms.py"
+action = "Collapse legacy batch1 files to thin shims, move all user-facing output to canonical lane names."
+
+[[remediation_item]]
+id = "RQ-019"
+priority_tier = 2
+priority = "medium"
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch2_registries.py; src/verification/verify_wave5_batch2_registries.py"
+legacy_reference = "wave5-batch2 script names/messages"
+canonical_replacement = "build_registry_evidence_provenance.py; verify_registry_evidence_provenance.py"
+action = "Collapse legacy batch2 files to thin shims, move all user-facing output to canonical lane names."
+
+[[remediation_item]]
+id = "RQ-020"
+priority_tier = 2
+priority = "medium"
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch3_registries.py; src/verification/verify_wave5_batch3_registries.py"
+legacy_reference = "wave5-batch3 script names/messages"
+canonical_replacement = "build_registry_integrity_resolution.py; verify_registry_integrity_resolution.py"
+action = "Collapse legacy batch3 files to thin shims, move all user-facing output to canonical lane names."
+
+[[remediation_item]]
+id = "RQ-021"
+priority_tier = 2
+priority = "medium"
+category = "transitional"
+path = "src/scripts/analysis/build_wave5_batch4_registries.py; src/verification/verify_wave5_batch4_registries.py"
+legacy_reference = "wave5-batch4 script names/messages"
+canonical_replacement = "build_registry_execution_planning.py; verify_registry_execution_planning.py"
+action = "Collapse legacy batch4 files to thin shims, move all user-facing output to canonical lane names."
+
+[[remediation_item]]
+id = "RQ-022"
+priority_tier = 2
+priority = "medium"
+category = "operational"
+path = "src/verification/verify_toml_inventory_registry.py"
+legacy_reference = "registry/wave4_roadmap.toml required_core entry"
+canonical_replacement = "registry/control_plane_roadmap.toml"
+action = "Switch required_core canonical path; if archival presence is still required, check legacy file in a separate archival block."
+
+[[remediation_item]]
+id = "RQ-023"
+priority_tier = 2
+priority = "medium"
+category = "operational"
+path = "src/scripts/analysis/build_markdown_inventory_registry.py"
+legacy_reference = "registry/wave4_roadmap.toml in non_destination_registries"
+canonical_replacement = "registry/control_plane_roadmap.toml"
+action = "Replace legacy roadmap path in policy list and keep archival exclusion logic explicit."
+
+[[remediation_item]]
+id = "RQ-024"
+priority_tier = 3
+priority = "low"
+category = "transitional"
+path = "registry/roadmap.toml; plans/resumption_unified_master_plan_2026_02_14.toml; registry/toml_inventory.toml; registry/markdown_payload_chunks.toml"
+legacy_reference = "wave5_toml_granularization_plan path and registry-wave5/wave6-gate narrative strings"
+canonical_replacement = "strict_toml_granularization_plan path and canonical gate names"
+action = "Update planning text to canonical names, then regenerate downstream inventory/chunk registries to remove stale operational residue."
+execution_status = "completed"
+execution_report = "reports/rq024_planning_canonicalization_2026_02_14.toml"
+observed_delta_total = -8
+observed_residual_total = 1

@@ -1,0 +1,787 @@
+# Reconciliation summary for artifact_source_of_truth.toml
+
+[report]
+id = "ASOT-RECON-2026-02-15"
+updated = "2026-02-15"
+authoritative = true
+artifact_count = 8409
+downloaded_count = 8128
+downloadable_count = 195
+blocked_count = 13
+citation_only_no_link_count = 73
+unverified_count = 0
+missing_minimum_requirement_count = 86
+
+[[missing_minimum_requirement]]
+key = "doi:10.1080/14786444808646059"
+title = "https://doi.org/10.1080/14786444808646059"
+status = "blocked"
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/7::ASOT_0025_philmags_tandf_only", "registry/source_lanes/web_references.toml::artifact_ref/21::ASOT-0025", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/27::ASOT-0025", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/5::CAN-COQ-1849-COCKLE-NEW-IMAGINARY"]
+all_links = ["https://doi.org/10.1080/14786444808646059", "https://www.tandfonline.com/doi/pdf/10.1080/14786444808646059", "https://www.tandfonline.com/doi/epdf/10.1080/14786444808646059", "https://www.tandfonline.com/toc/tphm14/33/220"]
+nonworking_mirrors = ["https://doi.org/10.1080/14786444808646059", "https://www.tandfonline.com/doi/pdf/10.1080/14786444808646059", "https://www.tandfonline.com/doi/epdf/10.1080/14786444808646059", "https://www.tandfonline.com/toc/tphm14/33/220"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "doi:10.25490/a97f-egyk"
+title = "Joint declaration of data citation principles:"
+status = "blocked"
+source_refs = ["docs/SOURCE_INFRASTRUCTURE_BEST_PRACTICES_2026_02_15.md:36", "registry/source_lanes/web_references.toml::artifact_ref/44::ASOT-0054"]
+all_links = ["https://doi.org/10.25490/a97f-egyk"]
+nonworking_mirrors = ["https://doi.org/10.25490/a97f-egyk"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:abbott_r_et_al_2020_gw190521_a_binary_black_hole_merger_with_a_total_mass_of_150_solar_masses_physical_review_letters_125_10_101102"
+title = "**Abbott, R., et al.** (2020). *GW190521: A Binary Black Hole Merger with a Total Mass of 150 Solar Masses*. Physical Review Letters, 125(10), 101102."
+status = "citation_only_no_link"
+source_refs = ["BIB-0010"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:anderson_d_f_livingston_p_s_1999_the_zero_divisor_graph_of_a_commutative_ring_journal_of_algebra_217_2_434_447"
+title = "**Anderson, D. F., & Livingston, P. S.** (1999). *The zero-divisor graph of a commutative ring*. Journal of Algebra 217(2), 434-447."
+status = "citation_only_no_link"
+source_refs = ["BIB-0164"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:antoniadis_j_et_al_ipta_2022_the_international_pulsar_timing_array_second_data_release_search_for_an_isotropic_gravitational_wave_background_mnras_510_4_4873_4887"
+title = "**Antoniadis, J., et al. (IPTA).** (2022). *The International Pulsar Timing Array second data release: Search for an isotropic gravitational wave background*. MNRAS 510(4), 4873-4887."
+status = "citation_only_no_link"
+source_refs = ["BIB-0181"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:bales_j_w_2023_the_cayley_dickson_algebras_and_their_combinatorics_bulletin_of_the_malaysian_mathematical_sciences_society"
+title = "**Bales, J. W.** (2023). *The Cayley-Dickson Algebras and their Combinatorics*. Bulletin of the Malaysian Mathematical Sciences Society."
+status = "citation_only_no_link"
+source_refs = ["BIB-0160"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:bardeen_j_m_1973_timelike_and_null_geodesics_in_the_kerr_metric_in_black_holes_les_astres_occlus_ed_dewitt_dewitt_gordon_and_breach_pp_215_239"
+title = "**Bardeen, J. M.** (1973). *Timelike and null geodesics in the Kerr metric*. In: Black Holes (Les Astres Occlus), ed. DeWitt & DeWitt, Gordon and Breach, pp. 215-239."
+status = "citation_only_no_link"
+source_refs = ["BIB-0011"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:besag_j_clifford_p_1991_sequential_monte_carlo_p_values_biometrika_78_2_301_304"
+title = "**Besag, J., & Clifford, P.** (1991). *Sequential Monte Carlo p-values*. Biometrika 78(2), 301-304."
+status = "citation_only_no_link"
+source_refs = ["BIB-0171"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:bohren_c_f_huffman_d_r_1983_absorption_and_scattering_of_light_by_small_particles_wiley"
+title = "**Bohren, C. F., & Huffman, D. R.** (1983). *Absorption and Scattering of Light by Small Particles*. Wiley."
+status = "citation_only_no_link"
+source_refs = ["BIB-0177"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:borcherds_r_e_1992_monstrous_moonshine_and_monstrous_lie_superalgebras_invent_math_109_405_444"
+title = "**Borcherds, R. E.** (1992). *Monstrous moonshine and monstrous Lie superalgebras*. Invent. Math. 109, 405-444."
+status = "citation_only_no_link"
+source_refs = ["BIB-0115"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:boyer_r_h_lindquist_r_w_1967_maximal_analytic_extension_of_the_kerr_metric_journal_of_mathematical_physics_8_2_265_281"
+title = "**Boyer, R. H., & Lindquist, R. W.** (1967). *Maximal analytic extension of the Kerr metric*. Journal of Mathematical Physics 8(2), 265-281."
+status = "citation_only_no_link"
+source_refs = ["BIB-0176"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:bradley_p_e_2008_on_p_adic_classification_p_adic_numbers_ultrametric_analysis_and_applications_1_4_271_285"
+title = "**Bradley, P. E.** (2008). *On p-adic classification*. p-Adic Numbers, Ultrametric Analysis and Applications, 1(4), 271-285."
+status = "citation_only_no_link"
+source_refs = ["BIB-0169"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:bradley_p_e_2010_ultrametric_approximation_of_distances_mathematics_in_computer_science_4_2_3_233_244"
+title = "**Bradley, P. E.** (2010). *Ultrametric approximation of distances*. Mathematics in Computer Science 4(2-3), 233-244."
+status = "citation_only_no_link"
+source_refs = ["BIB-0170"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:casimir_h_b_g_1948_on_the_attraction_between_two_perfectly_conducting_plates_proc_k_ned_akad_wet_51_793_795"
+title = "**Casimir, H. B. G.** (1948). *On the attraction between two perfectly conducting plates*. Proc. K. Ned. Akad. Wet. 51, 793-795."
+status = "citation_only_no_link"
+source_refs = ["BIB-0141"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:cayley_a_1845_on_jacobi_s_elliptic_functions_in_reply_to_the_rev_b_bronwin_and_on_quaternions"
+title = "**Cayley, A.** (1845). *On Jacobi's Elliptic Functions, in reply to the Rev. B. Bronwin; and on Quaternions*."
+status = "citation_only_no_link"
+source_refs = ["BIB-0094"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:collingwood_d_h_mcgovern_w_m_1993_nilpotent_orbits_in_semisimple_lie_algebras_van_nostrand_reinhold"
+title = "**Collingwood, D. H., & McGovern, W. M.** (1993). *Nilpotent Orbits in Semisimple Lie Algebras*. Van Nostrand Reinhold."
+status = "citation_only_no_link"
+source_refs = ["BIB-0124"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:conway_j_h_norton_s_p_1979_monstrous_moonshine_bull_london_math_soc_11_308_339"
+title = "**Conway, J. H., & Norton, S. P.** (1979). *Monstrous Moonshine*. Bull. London Math. Soc. 11, 308-339."
+status = "citation_only_no_link"
+source_refs = ["BIB-0114"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:conway_j_h_sloane_n_j_a_1999_sphere_packings_lattices_and_groups_springer_3rd_ed"
+title = "**Conway, J. H., & Sloane, N. J. A.** (1999). *Sphere Packings, Lattices and Groups*. Springer, 3rd ed."
+status = "citation_only_no_link"
+source_refs = ["BIB-0127"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:cunningham_c_t_bardeen_j_m_1973_the_optical_appearance_of_a_star_orbiting_an_extreme_kerr_black_hole_apj_183_237"
+title = "**Cunningham, C. T., & Bardeen, J. M.** (1973). *The Optical Appearance of a Star Orbiting an Extreme Kerr Black Hole*. ApJ 183, 237."
+status = "citation_only_no_link"
+source_refs = ["BIB-0012"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:de_marrais_r_p_c_undated_flying_higher_than_a_box_kite_kite_chain_middens_sand_mandalas_and_zero_divisor_patterns_in_the_2_n_ions_beyond_the_sedenions_unpublished_manuscript_contains_the_canonical_strut_table_7_box_kites_x_6_assessor_pairs_kite_chain_midden_definitions_emanation_table_structure_168_cells_each_psl_2_7_and_15_sand_mandala_layouts_for_32d_pathions_extracted_to_docs_external_sources_de_marrais_flying_higher_md"
+title = "**de Marrais, R. P. C.** (undated). *Flying Higher Than A Box-Kite: Kite-Chain Middens, Sand Mandalas, and Zero-Divisor Patterns in the 2^n-ions Beyond the Sedenions*. Unpublished manuscript. Contains the canonical strut table (7 box-kites x 6 assessor pairs), kite-chain midden definitions, emanation table structure (168 cells each, |PSL(2,7)|), and 15 sand mandala layouts for 32D pathions. Extracted to `docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md`."
+status = "citation_only_no_link"
+source_refs = ["BIB-0081"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:demeyer_f_r_mckenzie_t_schneider_k_2002_the_zero_divisor_graph_of_a_commutative_semigroup_semigroup_forum_65_206_214"
+title = "**DeMeyer, F. R., McKenzie, T., & Schneider, K.** (2002). *The zero-divisor graph of a commutative semigroup*. Semigroup Forum 65, 206-214."
+status = "citation_only_no_link"
+source_refs = ["BIB-0166"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:derjaguin_b_v_rabinovich_y_i_churaev_n_v_1978_direct_measurement_of_molecular_forces_nature_272_313_318"
+title = "**Derjaguin, B. V., Rabinovich, Y. I., & Churaev, N. V.** (1978). *Direct measurement of molecular forces*. Nature 272, 313-318."
+status = "citation_only_no_link"
+source_refs = ["BIB-0144"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:distler_j_garibaldi_s_2010_there_is_no_theory_of_everything_inside_e8_commun_math_phys_298_419_436"
+title = "**Distler, J., & Garibaldi, S.** (2010). *There is no \"Theory of Everything\" inside E8*. Commun. Math. Phys. 298, 419-436."
+status = "citation_only_no_link"
+source_refs = ["BIB-0140"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:dixon_g_m_1994_division_algebras_octonions_quaternions_complex_numbers_and_the_algebraic_design_of_physics_springer"
+title = "**Dixon, G. M.** (1994). *Division Algebras: Octonions, Quaternions, Complex Numbers and the Algebraic Design of Physics*. Springer."
+status = "citation_only_no_link"
+source_refs = ["BIB-0133"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:draine_b_t_2003_scattering_by_interstellar_dust_grains_i_optical_and_ultraviolet_apj_598_1017"
+title = "**Draine, B. T.** (2003). *Scattering by interstellar dust grains. I. Optical and ultraviolet*. ApJ 598, 1017."
+status = "citation_only_no_link"
+source_refs = ["BIB-0178"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2019_first_m87_event_horizon_telescope_results_ii_array_and_instrumentation_apjl_875_l2"
+title = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. II. Array and Instrumentation*. ApJL 875, L2."
+status = "citation_only_no_link"
+source_refs = ["BIB-0182"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2019_first_m87_event_horizon_telescope_results_iii_data_processing_and_calibration_apjl_875_l3"
+title = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. III. Data Processing and Calibration*. ApJL 875, L3."
+status = "citation_only_no_link"
+source_refs = ["BIB-0183"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2019_first_m87_event_horizon_telescope_results_iv_imaging_the_central_supermassive_black_hole_apjl_875_l4"
+title = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. IV. Imaging the Central Supermassive Black Hole*. ApJL 875, L4."
+status = "citation_only_no_link"
+source_refs = ["BIB-0184"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2019_first_m87_event_horizon_telescope_results_v_physical_origin_of_the_asymmetric_ring_apjl_875_l5"
+title = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. V. Physical Origin of the Asymmetric Ring*. ApJL 875, L5."
+status = "citation_only_no_link"
+source_refs = ["BIB-0185"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2019_first_m87_event_horizon_telescope_results_vi_the_shadow_and_mass_of_the_central_black_hole_apjl_875_l6"
+title = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. VI. The Shadow and Mass of the Central Black Hole*. ApJL 875, L6."
+status = "citation_only_no_link"
+source_refs = ["BIB-0186"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:eht_collaboration_2022_first_sagittarius_a_event_horizon_telescope_results_i_apjl_930_l12"
+title = "**EHT Collaboration.** (2022). *First Sagittarius A* Event Horizon Telescope Results. I.* ApJL 930, L12."
+status = "citation_only_no_link"
+source_refs = ["BIB-0016"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:frenkel_i_lepowsky_j_meurman_a_1988_vertex_operator_algebras_and_the_monster_academic_press"
+title = "**Frenkel, I., Lepowsky, J., & Meurman, A.** (1988). *Vertex Operator Algebras and the Monster*. Academic Press."
+status = "citation_only_no_link"
+source_refs = ["BIB-0117"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:furey_c_2018a_three_generations_two_unbroken_gauge_symmetries_and_one_eight_dimensional_algebra_phys_lett_b_785_84_89"
+title = "**Furey, C.** (2018a). *Three generations, two unbroken gauge symmetries, and one eight-dimensional algebra*. Phys. Lett. B 785, 84-89."
+status = "citation_only_no_link"
+source_refs = ["BIB-0131"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:furey_c_gillard_a_b_sherwin_m_2024_clifford_algebra_cl_8_and_three_generations_of_fermions_eur_phys_j_c_84"
+title = "**Furey, C., Gillard, A. B., & Sherwin, M.** (2024). *Clifford algebra Cl(8) and three generations of fermions*. Eur. Phys. J. C 84."
+status = "citation_only_no_link"
+source_refs = ["BIB-0137"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:gaberdiel_m_r_zwiebach_b_1997_tensor_constructions_of_open_string_theories_i_ii_nucl_phys_b_505_569_624"
+title = "**Gaberdiel, M. R., & Zwiebach, B.** (1997). *Tensor constructions of open string theories I, II*. Nucl. Phys. B 505, 569-624."
+status = "citation_only_no_link"
+source_refs = ["BIB-0122"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:gannon_t_2006_moonshine_beyond_the_monster_the_bridge_connecting_algebra_modular_forms_and_physics_cambridge_university_press"
+title = "**Gannon, T.** (2006). *Moonshine beyond the Monster: The Bridge Connecting Algebra, Modular Forms and Physics*. Cambridge University Press."
+status = "citation_only_no_link"
+source_refs = ["BIB-0116"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:gresnigt_n_g_gourlay_l_varma_a_2023_toward_a_three_generation_model_of_standard_model_fermions_based_on_cayley_dickson_sedenions_phys_part_nucl_54_1006_1010"
+title = "**Gresnigt, N. G., Gourlay, L., & Varma, A.** (2023). *Toward a Three Generation Model of Standard Model Fermions Based on Cayley-Dickson Sedenions*. Phys. Part. Nucl. 54, 1006-1010."
+status = "citation_only_no_link"
+source_refs = ["BIB-0136"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:gugenheim_v_k_a_m_stasheff_j_d_1991_on_perturbations_and_a_infinity_structures_bulletin_de_la_societe_mathematique_de_belgique_38_237_246"
+title = "**Gugenheim, V. K. A. M., & Stasheff, J. D.** (1991). *On perturbations and A-infinity structures*. Bulletin de la Societe Mathematique de Belgique, 38, 237-246."
+status = "citation_only_no_link"
+source_refs = ["BIB-0070"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:guterman_a_zhilina_s_2023_on_doubly_alternative_zero_divisors_in_cayley_dickson_algebras_j_math_sci"
+title = "**Guterman, A., & Zhilina, S.** (2023). *On Doubly Alternative Zero Divisors in Cayley-Dickson Algebras*. J. Math. Sci."
+status = "citation_only_no_link"
+source_refs = ["BIB-0092"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:gwpy_2023_a_python_package_for_gravitational_wave_astrophysics"
+title = "**GWpy.** (2023). *A Python package for gravitational-wave astrophysics*."
+status = "citation_only_no_link"
+source_refs = ["BIB-0149"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:harper_p_g_1955_single_band_motion_of_conduction_electrons_in_a_uniform_magnetic_field_proc_phys_soc_a_68_874"
+title = "**Harper, P. G.** (1955). *Single Band Motion of Conduction Electrons in a Uniform Magnetic Field*. Proc. Phys. Soc. A 68, 874."
+status = "citation_only_no_link"
+source_refs = ["BIB-0026"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:hirschfeld_j_w_p_1998_projective_geometries_over_finite_fields_oxford_mathematical_monographs_2nd_ed"
+title = "**Hirschfeld, J. W. P.** (1998). *Projective Geometries over Finite Fields*. Oxford Mathematical Monographs, 2nd ed."
+status = "citation_only_no_link"
+source_refs = ["BIB-0163"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:jarvis_nist_landing_page_accessed_2026_01_27_https_jarvis_nist_gov"
+title = "**JARVIS (NIST) landing page**. (Accessed 2026-01-27). https://jarvis.nist.gov/"
+status = "citation_only_no_link"
+source_refs = ["BIB-0129"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:kac_v_g_1990_infinite_dimensional_lie_algebras_cambridge_university_press_3rd_ed"
+title = "**Kac, V. G.** (1990). *Infinite-Dimensional Lie Algebras*. Cambridge University Press, 3rd ed."
+status = "citation_only_no_link"
+source_refs = ["BIB-0109"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:kolmogorov_a_n_1941_the_local_structure_of_turbulence_in_incompressible_viscous_fluid_for_very_large_reynolds_numbers_proc_ussr_acad_sci_30_299_303"
+title = "**Kolmogorov, A. N.** (1941). *The local structure of turbulence in incompressible viscous fluid for very large Reynolds numbers*. Proc. USSR Acad. Sci. 30, 299-303."
+status = "citation_only_no_link"
+source_refs = ["BIB-0045"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:kraichnan_r_h_1967_inertial_ranges_in_two_dimensional_turbulence_phys_fluids_10_1417_1423"
+title = "**Kraichnan, R. H.** (1967). *Inertial Ranges in Two-Dimensional Turbulence*. Phys. Fluids 10, 1417-1423."
+status = "citation_only_no_link"
+source_refs = ["BIB-0044"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:leonhardt_u_philbin_t_2010_geometry_and_light_the_science_of_invisibility_dover"
+title = "**Leonhardt, U., & Philbin, T.** (2010). *Geometry and Light: The Science of Invisibility*. Dover."
+status = "citation_only_no_link"
+source_refs = ["BIB-0058"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:mandelbrot_b_b_1990_negative_fractal_dimensions_and_multifractals_physica_a_163_306_315"
+title = "**Mandelbrot, B. B.** (1990). *Negative fractal dimensions and multifractals*. Physica A 163, 306-315."
+status = "citation_only_no_link"
+source_refs = ["BIB-0047"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:mathis_j_s_rumpl_w_nordsieck_k_h_1977_the_size_distribution_of_interstellar_grains_apj_217_425_433"
+title = "**Mathis, J. S., Rumpl, W., & Nordsieck, K. H.** (1977). *The size distribution of interstellar grains*. ApJ 217, 425-433."
+status = "citation_only_no_link"
+source_refs = ["BIB-0179"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:moreno_g_1998_the_zero_divisors_of_the_cayley_dickson_algebras_over_the_real_numbers_boletin_de_la_sociedad_matematica_mexicana_4_1_13_28_cited_by_reggiani_2024_original_source_for_the_bundle_topology_picture"
+title = "**Moreno, G.** (1998). *The zero divisors of the Cayley-Dickson algebras over the real numbers*. *Boletin de la Sociedad Matematica Mexicana* 4(1), 13-28. (Cited by Reggiani 2024; original source for the bundle/topology picture.)"
+status = "citation_only_no_link"
+source_refs = ["BIB-0089"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:mulay_s_b_2002_cycles_and_symmetries_of_zero_divisors_communications_in_algebra_30_7_3533_3558"
+title = "**Mulay, S. B.** (2002). *Cycles and symmetries of zero-divisors*. Communications in Algebra 30(7), 3533-3558."
+status = "citation_only_no_link"
+source_refs = ["BIB-0165"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:murtagh_f_2004_on_ultrametricity_data_coding_and_computation_journal_of_classification_21_2_167_184"
+title = "**Murtagh, F.** (2004). *On ultrametricity, data coding, and computation*. Journal of Classification 21(2), 167-184."
+status = "citation_only_no_link"
+source_refs = ["BIB-0168"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:nielsen_m_a_chuang_i_l_2000_quantum_computation_and_quantum_information_cambridge_university_press"
+title = "**Nielsen, M. A., & Chuang, I. L.** (2000). *Quantum Computation and Quantum Information*. Cambridge University Press."
+status = "citation_only_no_link"
+source_refs = ["BIB-0034"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:north_b_v_curtis_d_sham_p_c_2002_a_note_on_the_calculation_of_empirical_p_values_from_monte_carlo_procedures_american_journal_of_human_genetics_71_2_439_441"
+title = "**North, B. V., Curtis, D., & Sham, P. C.** (2002). *A note on the calculation of empirical P values from Monte Carlo procedures*. American Journal of Human Genetics 71(2), 439-441."
+status = "citation_only_no_link"
+source_refs = ["BIB-0173"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:novikov_i_d_thorne_k_s_1973_astrophysics_of_black_holes_in_black_holes_les_astres_occlus_ed_dewitt_dewitt_gordon_and_breach_pp_343_450"
+title = "**Novikov, I. D., & Thorne, K. S.** (1973). *Astrophysics of Black Holes*. In: Black Holes (Les Astres Occlus), ed. DeWitt & DeWitt, Gordon and Breach, pp. 343-450."
+status = "citation_only_no_link"
+source_refs = ["BIB-0175"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:ohno_k_2020_symplectic_ray_tracing_based_on_hamiltonian_optics_in_gradient_index_media_josa_a_37_3"
+title = "**Ohno, K.** (2020). *Symplectic ray tracing based on Hamiltonian optics in gradient-index media*. JOSA A 37(3)."
+status = "citation_only_no_link"
+source_refs = ["BIB-0055"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:page_d_n_thorne_k_s_1974_disk_accretion_onto_a_black_hole_time_averaged_structure_of_accretion_disk_astrophysical_journal_191_499_506"
+title = "**Page, D. N., & Thorne, K. S.** (1974). *Disk-accretion onto a black hole. Time-averaged structure of accretion disk*. Astrophysical Journal 191, 499-506."
+status = "citation_only_no_link"
+source_refs = ["BIB-0174"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:parisi_g_sourlas_n_1979_random_magnetic_fields_supersymmetry_and_negative_dimensions_phys_rev_lett_43_744"
+title = "**Parisi, G., & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Phys. Rev. Lett. 43, 744."
+status = "citation_only_no_link"
+source_refs = ["BIB-0046"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:pfenning_m_j_ford_l_h_1997_the_unphysical_nature_of_warp_drive_cqg_14_1743_1751"
+title = "**Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of \"Warp Drive\"*. CQG 14, 1743-1751."
+status = "citation_only_no_link"
+source_refs = ["BIB-0019"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:phipson_b_smyth_g_k_2010_permutation_p_values_should_never_be_zero_calculating_exact_p_values_when_permutations_are_randomly_drawn_statistical_applications_in_genetics_and_molecular_biology_9_1_article_39"
+title = "**Phipson, B., & Smyth, G. K.** (2010). *Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn*. Statistical Applications in Genetics and Molecular Biology 9(1), Article 39."
+status = "citation_only_no_link"
+source_refs = ["BIB-0172"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:polster_b_1998_a_geometrical_picture_book_springer"
+title = "**Polster, B.** (1998). *A Geometrical Picture Book*. Springer."
+status = "citation_only_no_link"
+source_refs = ["BIB-0162"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:qiskit_2023_an_open_source_framework_for_quantum_computing_ibm"
+title = "**Qiskit.** (2023). *An Open-Source Framework for Quantum Computing*. IBM."
+status = "citation_only_no_link"
+source_refs = ["BIB-0148"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:rammal_r_toulouse_g_virasoro_m_a_1986_ultrametricity_for_physicists_reviews_of_modern_physics_58_3_765"
+title = "**Rammal, R., Toulouse, G., & Virasoro, M. A.** (1986). *Ultrametricity for physicists*. Reviews of Modern Physics 58(3), 765."
+status = "citation_only_no_link"
+source_refs = ["BIB-0167"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:saniga_m_holweck_f_pracna_p_2015_cayley_dickson_algebras_and_finite_geometry_discrete_and_computational_geometry_arxiv_1405_6888"
+title = "**Saniga, M., Holweck, F., & Pracna, P.** (2015). *Cayley-Dickson algebras and finite geometry*. Discrete and Computational Geometry, arXiv:1405.6888."
+status = "citation_only_no_link"
+source_refs = ["BIB-0161"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:schafer_r_d_1966_an_introduction_to_nonassociative_algebras_academic_press_reprinted_dover_1995"
+title = "**Schafer, R. D.** (1966). *An Introduction to Nonassociative Algebras*. Academic Press (reprinted Dover, 1995)."
+status = "citation_only_no_link"
+source_refs = ["BIB-0157"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:sharma_a_1987_ray_trace_algorithms_for_grin_media_applied_optics_26_15_2943"
+title = "**Sharma, A.** (1987). *Ray trace algorithms for GRIN media*. Applied Optics 26(15), 2943."
+status = "citation_only_no_link"
+source_refs = ["BIB-0054"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:sharma_a_kumar_d_v_ghatak_a_k_1982_tracing_rays_through_graded_index_media_a_new_method_applied_optics_21_6"
+title = "**Sharma, A., Kumar, D. V., & Ghatak, A. K.** (1982). *Tracing rays through graded-index media: a new method*. Applied Optics 21(6)."
+status = "citation_only_no_link"
+source_refs = ["BIB-0053"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:sheng_c_et_al_2020_optical_analogues_to_the_equatorial_kerr_newman_black_hole_comm_phys_nature_3_384"
+title = "**Sheng, C., et al.** (2020). *Optical analogues to the equatorial Kerr-Newman black hole*. Comm. Phys. (Nature) 3, 384."
+status = "citation_only_no_link"
+source_refs = ["BIB-0060"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:smith_j_d_h_1995_a_left_loop_on_the_15_sphere_journal_of_algebra_176_1_128_138"
+title = "**Smith, J. D. H.** (1995). *A left loop on the 15-sphere*. Journal of Algebra 176(1), 128-138."
+status = "citation_only_no_link"
+source_refs = ["BIB-0159"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:springer_t_a_veldkamp_f_d_2000_octonions_jordan_algebras_and_exceptional_groups_springer"
+title = "**Springer, T. A., & Veldkamp, F. D.** (2000). *Octonions, Jordan Algebras and Exceptional Groups*. Springer."
+status = "citation_only_no_link"
+source_refs = ["BIB-0125"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:stasheff_j_d_1963_homotopy_associativity_of_h_spaces_i_ii_trans_amer_math_soc_108_275_312"
+title = "**Stasheff, J. D.** (1963). *Homotopy associativity of H-spaces I, II*. Trans. Amer. Math. Soc. 108, 275-312."
+status = "citation_only_no_link"
+source_refs = ["BIB-0118"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:stone_b_d_forbes_g_w_1990_optimal_interpolants_for_runge_kutta_ray_tracing_in_inhomogeneous_media_josa_a_7_2_248_254"
+title = "**Stone, B. D., & Forbes, G. W.** (1990). *Optimal interpolants for Runge-Kutta ray tracing in inhomogeneous media*. JOSA A 7(2), 248-254."
+status = "citation_only_no_link"
+source_refs = ["BIB-0052"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:taibleson_m_h_1975_fourier_analysis_on_local_fields_princeton_university_press"
+title = "**Taibleson, M. H.** (1975). *Fourier Analysis on Local Fields*. Princeton University Press."
+status = "citation_only_no_link"
+source_refs = ["BIB-0107"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:vladimirov_v_s_volovich_i_v_zelenov_e_i_1994_p_adic_analysis_and_mathematical_physics_world_scientific"
+title = "**Vladimirov, V. S., Volovich, I. V., & Zelenov, E. I.** (1994). *p-adic Analysis and Mathematical Physics*. World Scientific."
+status = "citation_only_no_link"
+source_refs = ["BIB-0106"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "title:will_c_m_2018_theory_and_experiment_in_gravitational_physics_2nd_ed_cambridge_university_press"
+title = "**Will, C. M.** (2018). *Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press."
+status = "citation_only_no_link"
+source_refs = ["BIB-0190"]
+all_links = []
+nonworking_mirrors = []
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:http://matu1.math.auckland.ac.nz/~king/preprints/chaoq.htm"
+title = "Flying Higher Than A Box-Kite"
+status = "blocked"
+source_refs = ["XS-005"]
+all_links = ["http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm", "http://exo.com/~palmer/ISSS2000ab.html"]
+nonworking_mirrors = ["http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm", "http://exo.com/~palmer/ISSS2000ab.html"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://academic.oup.com/ptep/article-pdf/2014/1/013a03/4432616/ptt110.pdf"
+title = "https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"
+status = "blocked"
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/16::ASOT_8232_oup_ptt110", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/7::LFI-008", "registry/source_lanes/papers_pdf.toml::artifact_ref/203::ASOT-8236", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/30::ASOT-8232"]
+all_links = ["https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"]
+nonworking_mirrors = ["https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://archive.org/details/elementarytreat00tailuoft"
+title = "https://archive.org/details/elementarytreat00tailuoft"
+status = "blocked"
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/17::ASOT_8233_archive_direct_pdf", "registry/source_lanes/papers_pdf.toml::artifact_ref/204::ASOT-8237", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/4::ASOT-8233", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/2::CAN-QUAT-1867-TAIT"]
+all_links = ["https://archive.org/details/elementarytreat00tailuoft", "https://archive.org/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"]
+nonworking_mirrors = ["https://archive.org/details/elementarytreat00tailuoft", "https://archive.org/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://archive.org/details/theoryofbiquater00conwrich"
+title = "https://archive.org/details/theoryofbiquater00conwrich"
+status = "blocked"
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/18::ASOT_8234_archive_direct_pdf", "registry/source_lanes/papers_pdf.toml::artifact_ref/205::ASOT-8238", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/5::ASOT-8234", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/6::CAN-BIQ-1911-CONWAY"]
+all_links = ["https://archive.org/details/theoryofbiquater00conwrich", "https://archive.org/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"]
+nonworking_mirrors = ["https://archive.org/details/theoryofbiquater00conwrich", "https://archive.org/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/unknown"
+title = "Monograph: Composition Algebras and Physical Applications"
+status = "blocked"
+source_refs = ["registry/source_lanes/web_references.toml::artifact_ref/6979::ASOT-8318", "registry/third_party_markdown_cache.toml::external_source/0", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/6::ASOT-8313"]
+all_links = ["https://arxiv.org/abs/unknown"]
+nonworking_mirrors = ["https://arxiv.org/abs/unknown"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"
+title = "**Kinyon, M. K., & Sagle, A. A.** (2006). *Subalgebras of the real sedenions*. Canadian Mathematical Bulletin 49(4), 566-581. [PDF](https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf)."
+status = "blocked"
+source_refs = ["BIB-0083", "docs/BIBLIOGRAPHY.md:180", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:166", "registry/bibliography.toml::entry/82::BIB-0083", "registry/bibliography_normalized.toml::entry/82::BIBN-0083", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/19::ASOT_8341_cms_math_pdf", "registry/source_lanes/papers_pdf.toml::artifact_ref/226::ASOT-8346", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/7::ASOT-8341"]
+all_links = ["https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf", "https://cms.math.ca/wp-content/uploads/2020/01/cmb49-4-6.pdf"]
+nonworking_mirrors = ["https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf", "https://cms.math.ca/wp-content/uploads/2020/01/cmb49-4-6.pdf"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://journals.aps.org/prl/abstract/10.1103/physrevlett.43.744"
+title = "**Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744)."
+status = "blocked"
+source_refs = ["BIB-0097", "registry/bibliography.toml::entry/96::BIB-0097", "registry/bibliography_normalized.toml::entry/96::BIBN-0097", "registry/source_lanes/web_references.toml::artifact_ref/6995::ASOT-8355"]
+all_links = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
+nonworking_mirrors = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://ncatlab.org/nlab/show/monstrous+moonshine"
+title = "**nLab contributors.** *Monstrous Moonshine*. [nLab](https://ncatlab.org/nlab/show/Monstrous+Moonshine)."
+status = "blocked"
+source_refs = ["BIB-0153"]
+all_links = ["https://ncatlab.org/nlab/show/Monstrous+Moonshine"]
+nonworking_mirrors = ["https://ncatlab.org/nlab/show/Monstrous+Moonshine"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://raw.githubusercontent.com/ncatlab/nlab-content/master/pages/monstrous%20moonshine.md"
+title = "https://raw.githubusercontent.com/ncatlab/nlab-content/master/pages/monstrous%20moonshine.md"
+status = "blocked"
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/20::ASOT_8368_nlab_github_raw", "registry/source_lanes/web_references.toml::artifact_ref/7007::ASOT-8377"]
+all_links = ["https://raw.githubusercontent.com/ncatlab/nlab-content/master/pages/monstrous%20moonshine.md"]
+nonworking_mirrors = ["https://raw.githubusercontent.com/ncatlab/nlab-content/master/pages/monstrous%20moonshine.md"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://www.researchgate.net/profile/john-bales/publication/238738095_a_tree_for_computing_the_cayley-dickson_twist/links/0a85e53a8b63445499000000/a-tree-for-computing-the-cayley-dickson-twist.pdf"
+title = "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"
+status = "blocked"
+source_refs = ["registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/21::LFI-022", "registry/source_lanes/papers_pdf.toml::artifact_ref/248::ASOT-8389", "reports/blocked_artifact_retry_plan_2026_02_15.toml::artifact/31::ASOT-8381"]
+all_links = ["https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"]
+nonworking_mirrors = ["https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"]
+unverified_mirrors = []
+
+[[missing_minimum_requirement]]
+key = "url:https://www.researchgate.net/publication/2414187_identities_for_algebras_obtained_from_the_cayley-dickson_process"
+title = "https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process"
+status = "blocked"
+source_refs = ["registry/research_intake_2026_02_14.toml::entry/20::RI-021"]
+all_links = ["https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process"]
+nonworking_mirrors = ["https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process"]
+unverified_mirrors = []

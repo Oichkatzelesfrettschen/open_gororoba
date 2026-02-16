@@ -1,0 +1,374 @@
+# Warp BF16 precision + finite-gate evidence report.
+# Runtime date: 2026-02-15 (UTC).
+
+[report]
+id = "WARP-BF16-PRECISION-GATE-2026-02-15"
+created = "2026-02-15"
+status = "completed"
+authoritative = true
+scope = "Rust-native 20s precision matrix + production lane with post-run rho_mean finite gate"
+
+[protocol]
+runtime_per_case_seconds = 20.0
+trace_stride = 10
+gate_dataset = "/simulation/trace/rho_mean"
+gate_method = "data_core::quality::validate_rho_trace"
+gate_threshold_abs_drift_final = 0.005
+gate_threshold_std_dev = 0.005
+acceptance_rule = "Fail-closed; artifact accepted only if post-write rho gate passes"
+
+[commands]
+precision_matrix = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-precision-matrix -- 20 10 8,16,32,64 FP32,BF16 data/h5/precision_bench_20260215"
+production_suite = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-production-suite -- 20 20 10 BF16 1"
+rho_gate_wildcard = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin rho-trace-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\""
+production_suite_300s_bf16 = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-production-suite -- 300 300 10 BF16 0"
+production_suite_300s_bf16_log = "build_warp_production_bf16_300s_20260215_194431.log"
+production_suite_300s_bf16_telemetry = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-production-suite -- 300 300 10 BF16 0"
+production_suite_300s_bf16_telemetry_log = "build_warp_production_bf16_300s_telemetry_20260215_200507.log"
+acceptance_gate_new_lane = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-acceptance-gate -- \"data/h5/production/20260215-200556/*.h5\""
+acceptance_gate_consolidated = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-acceptance-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\" \"data/h5/production/20260215-194515/*.h5\" \"data/h5/production/20260215-200556/*.h5\""
+
+[[case]]
+resolution = 8
+precision = "FP32"
+steps_per_sec = 49698.27
+mlups = 25.45
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_8_FP32.h5"
+
+[[case]]
+resolution = 8
+precision = "BF16"
+steps_per_sec = 50348.78
+mlups = 25.78
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_8_BF16.h5"
+
+[[case]]
+resolution = 16
+precision = "FP32"
+steps_per_sec = 43045.18
+mlups = 176.31
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_16_FP32.h5"
+
+[[case]]
+resolution = 16
+precision = "BF16"
+steps_per_sec = 44013.72
+mlups = 180.28
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_16_BF16.h5"
+
+[[case]]
+resolution = 32
+precision = "FP32"
+steps_per_sec = 18657.12
+mlups = 611.36
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_32_FP32.h5"
+
+[[case]]
+resolution = 32
+precision = "BF16"
+steps_per_sec = 19023.60
+mlups = 623.37
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_32_BF16.h5"
+
+[[case]]
+resolution = 64
+precision = "FP32"
+steps_per_sec = 3567.78
+mlups = 935.27
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_64_FP32.h5"
+
+[[case]]
+resolution = 64
+precision = "BF16"
+steps_per_sec = 3772.96
+mlups = 989.06
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/precision_bench_20260215/warp_ring_64_BF16.h5"
+
+[[case]]
+resolution = 128
+precision = "BF16"
+steps_per_sec = 493.13
+mlups = 1034.17
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-071912/warp_ring_128_BF16_20s.h5"
+
+[[case]]
+resolution = 128
+precision = "FP32"
+steps_per_sec = 465.40
+mlups = 976.02
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/production/20260215-071912/warp_ring_128_FP32_20s.h5"
+
+[[case]]
+resolution = 256
+precision = "BF16"
+steps_per_sec = 57.24
+mlups = 960.36
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-071912/warp_ring_256_BF16_20s.h5"
+
+[[case]]
+resolution = 256
+precision = "FP32"
+steps_per_sec = 54.17
+mlups = 908.79
+drift = 1.192e-7
+std_dev = 0.0
+artifact = "data/h5/production/20260215-071912/warp_ring_256_FP32_20s.h5"
+
+[[comparison]]
+resolution = 8
+bf16_over_fp32_steps_per_sec = 1.0131
+
+[[comparison]]
+resolution = 16
+bf16_over_fp32_steps_per_sec = 1.0225
+
+[[comparison]]
+resolution = 32
+bf16_over_fp32_steps_per_sec = 1.0196
+
+[[comparison]]
+resolution = 64
+bf16_over_fp32_steps_per_sec = 1.0575
+
+[[comparison]]
+resolution = 128
+bf16_over_fp32_steps_per_sec = 1.0596
+
+[[comparison]]
+resolution = 256
+bf16_over_fp32_steps_per_sec = 1.0567
+
+[summary]
+files_gated = 12
+finite_gate = "pass"
+all_cases_finite = true
+bf16_speedup_geometric_mean = 1.0380
+bf16_speedup_arithmetic_mean = 1.0382
+notes = "BF16 stays numerically stable under rho gate while yielding ~3.8 percent mean speedup over FP32 in this lane."
+
+[extended_confirmation]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-production-suite -- 60 60 10 BF16 0"
+finite_gate = "pass"
+files_gated = 2
+
+[consolidated_gate]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin rho-trace-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\""
+finite_gate = "pass"
+files_gated = 14
+
+[simulation_trace_gate]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin simulation-trace-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\""
+status = "pass"
+files_gated = 14
+checked_datasets = ["/simulation/trace/time", "/simulation/trace/rho_mean", "/simulation/trace/enstrophy", "/simulation/trace/algebra_norm"]
+checks = ["all_finite", "equal_length", "time_monotonic_nondecreasing", "rho_quality_thresholds"]
+
+[recursive_hdf5_numeric_gate]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin hdf5-numeric-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\""
+status = "pass"
+files_gated = 14
+datasets_total = 56
+numeric_checked = 56
+unsupported_numeric_layouts = 0
+datasets_with_non_finite = 0
+acceptance_rule = "Fail-closed. Accept artifacts only when both simulation-trace-gate and recursive_hdf5_numeric_gate pass."
+
+[burnin_300s]
+status = "pass"
+out_dir = "data/h5/production/20260215-194515"
+artifacts = ["data/h5/production/20260215-194515/warp_ring_128_BF16_300s.h5", "data/h5/production/20260215-194515/warp_ring_256_BF16_300s.h5"]
+finite_gate = "pass"
+
+[simulation_trace_gate_consolidated_300s]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin simulation-trace-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\" \"data/h5/production/20260215-194515/*.h5\""
+status = "pass"
+files_gated = 16
+
+[recursive_hdf5_numeric_gate_consolidated_300s]
+command = "cargo run -p gororoba_cli --features gpu,hdf5-export --bin hdf5-numeric-gate -- \"data/h5/precision_bench_20260215/*.h5\" \"data/h5/production/20260215-071912/*.h5\" \"data/h5/production/20260215-072336/*.h5\" \"data/h5/production/20260215-194515/*.h5\""
+status = "pass"
+files_gated = 16
+datasets_total = 64
+numeric_checked = 64
+unsupported_numeric_layouts = 0
+datasets_with_non_finite = 0
+acceptance_rule = "Fail-closed. Accept artifacts only when both consolidated simulation and recursive numeric gates pass."
+
+[burnin_300s_telemetry]
+status = "pass"
+out_dir = "data/h5/production/20260215-200556"
+artifacts = ["data/h5/production/20260215-200556/warp_ring_128_BF16_300s.h5", "data/h5/production/20260215-200556/warp_ring_256_BF16_300s.h5"]
+timing_reports = ["data/h5/production/20260215-200556/timing_128_BF16_300s.toml", "data/h5/production/20260215-200556/timing_256_BF16_300s.toml"]
+gpu_telemetry_csv = "data/h5/production/20260215-200556/gpu_telemetry.csv"
+finite_gate = "pass"
+
+[warp_acceptance_gate_new_lane]
+status = "pass"
+files_gated = 2
+datasets_total = 8
+numeric_checked = 8
+unsupported_numeric_layouts = 0
+datasets_with_non_finite = 0
+
+[warp_acceptance_gate_consolidated]
+status = "pass"
+files_gated = 18
+datasets_total = 72
+numeric_checked = 72
+unsupported_numeric_layouts = 0
+datasets_with_non_finite = 0
+acceptance_rule = "Fail-closed. Default artifact acceptance command is warp-acceptance-gate."
+
+[timing_histogram_300s_telemetry]
+res128_mean_us = 1544.40
+res128_p50_us = 1.70
+res128_p90_us = 2782.93
+res128_p99_us = 17221.16
+res128_max_us = 39254.29
+res128_peak_bin_lower_us = 1.45
+res128_peak_bin_upper_us = 1964.09
+res128_peak_bin_count = 127376
+res256_mean_us = 12006.40
+res256_p50_us = 1.80
+res256_p90_us = 22601.03
+res256_p99_us = 137112.02
+res256_max_us = 213494.53
+res256_peak_bin_lower_us = 1.49
+res256_peak_bin_upper_us = 10676.14
+res256_peak_bin_count = 14957
+interpretation = "Long-tail step latency exists at both sizes and is significantly heavier at 256^3, which contributes to lower sustained throughput."
+
+[thermal_telemetry_300s]
+samples_ok = 592
+temp_c_mean = 53.83
+temp_c_min = 39.00
+temp_c_max = 56.00
+sm_clock_mhz_mean = 2831.17
+sm_clock_mhz_min = 540.00
+sm_clock_mhz_max = 2850.00
+mem_clock_mhz_mean = 10242.55
+power_w_mean = 153.89
+power_w_max = 156.23
+gpu_util_pct_mean = 99.73
+gpu_util_pct_min = 11.00
+gpu_util_pct_max = 100.00
+first60_temp_c_mean = 51.95
+last60_temp_c_mean = 53.80
+first60_sm_clock_mhz_mean = 2797.25
+last60_sm_clock_mhz_mean = 2835.00
+first60_power_w_mean = 151.76
+last60_power_w_mean = 153.44
+interpretation = "No thermal-throttle signature observed: clocks remain high and temperature remains below throttle regimes."
+
+[burnin_300s_telemetry_vs_60s]
+delta_128_steps_percent = -6.38
+delta_256_steps_percent = -5.17
+interpretation = "Throughput is below 60s lane despite stable clocks and moderate temperatures, so thermal throttling is unlikely to be the primary cause."
+
+[[extended_case]]
+resolution = 128
+precision = "BF16"
+duration_seconds = 60.0
+steps_per_sec = 503.89
+mlups = 1056.73
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-072336/warp_ring_128_BF16_60s.h5"
+
+[[extended_case]]
+resolution = 256
+precision = "BF16"
+duration_seconds = 60.0
+steps_per_sec = 58.40
+mlups = 979.74
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-072336/warp_ring_256_BF16_60s.h5"
+
+[[extended_case]]
+resolution = 128
+precision = "BF16"
+duration_seconds = 300.0
+steps_per_sec = 472.23
+mlups = 990.33
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-194515/warp_ring_128_BF16_300s.h5"
+
+[[extended_case]]
+resolution = 256
+precision = "BF16"
+duration_seconds = 300.0
+steps_per_sec = 53.97
+mlups = 905.40
+drift = 0.0
+std_dev = 0.0
+artifact = "data/h5/production/20260215-194515/warp_ring_256_BF16_300s.h5"
+
+[burnin_300s_vs_60s]
+delta_128_steps_percent = -6.28
+delta_256_steps_percent = -7.59
+interpretation = "Baseline pre-telemetry 300s run: long-run throughput was below 60s lane while numerical stability stayed clean (drift=0, std=0)."
+
+[[next_action]]
+id = "NA-001"
+priority = "high"
+action = "Promote rho-trace-gate as default artifact acceptance command for wildcard HDF5 checks."
+status = "closed"
+closure = "Replaced by warp-acceptance-gate as default fail-closed acceptance command."
+evidence = ["crates/gororoba_cli/src/bin/warp_acceptance_gate.rs", "agents.toml", "reports/warp_bf16_precision_gate_report_2026_02_15.toml"]
+
+[[next_action]]
+id = "NA-002"
+priority = "high"
+action = "Run 300s burn-in at 128^3 and 256^3 in BF16 with same fail-closed rho gate."
+status = "closed"
+closure = "Executed twice (baseline 300s and telemetry-instrumented 300s), both passed finite and acceptance gates."
+evidence = ["data/h5/production/20260215-194515", "data/h5/production/20260215-200556", "build_warp_production_bf16_300s_20260215_194431.log", "build_warp_production_bf16_300s_telemetry_20260215_200507.log"]
+
+[[next_action]]
+id = "NA-003"
+priority = "medium"
+action = "Capture per-step wall-clock histogram and kernel occupancy to explain BF16 speedup growth at larger grids."
+status = "partial"
+closure = "Per-step wall-clock histogram captured; kernel occupancy tooling unavailable in environment (no ncu/nvprof)."
+evidence = ["data/h5/production/20260215-200556/timing_128_BF16_300s.toml", "data/h5/production/20260215-200556/timing_256_BF16_300s.toml"]
+follow_up = "Add Nsight Compute CLI lane when profiler tooling is available to capture achieved occupancy metrics."
+
+[[next_action]]
+id = "NA-004"
+priority = "high"
+action = "Instrument sustained-clock and thermal telemetry during 300s runs to explain the 6-8 percent throughput drop versus 60s."
+status = "closed"
+closure = "Implemented telemetry sampler in warp-production-suite and captured 300s GPU telemetry CSV."
+evidence = ["crates/gororoba_cli/src/bin/warp_production_suite.rs", "data/h5/production/20260215-200556/gpu_telemetry.csv"]
+
+[[next_action]]
+id = "NA-005"
+priority = "high"
+action = "Add CI-facing acceptance target that chains simulation-trace-gate plus hdf5-numeric-gate over all production artifacts."
+status = "closed"
+closure = "Added CI step and unified warp-acceptance-gate command that chains strict trace and recursive numeric checks."
+evidence = [".github/workflows/ci.yml", "crates/gororoba_cli/src/bin/warp_acceptance_gate.rs"]

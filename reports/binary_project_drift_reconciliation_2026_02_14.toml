@@ -1,0 +1,98 @@
+# Reconciliation report for registry-check binary drift and project counter drift.
+
+[meta]
+report_id = "binary-project-drift-reconciliation-2026-02-14"
+date = "2026-02-14"
+workspace = "open_gororoba"
+scope = [
+  "crates/gororoba_cli/Cargo.toml",
+  "crates/gororoba_cli/src/bin/*",
+  "registry/binaries.toml",
+  "registry/experiments.toml",
+  "registry/project.toml"
+]
+
+[reconciliation]
+approach = "preferred_add_minimal_bin_entrypoints"
+resolved_binary_drift = true
+resolved_project_count_drift = true
+notes = [
+  "Added seven minimal Rust bin entrypoints and matching [[bin]] targets in crates/gororoba_cli/Cargo.toml.",
+  "Kept registry/binaries.toml and registry/experiments.toml entries intact to preserve existing experiment references.",
+  "Synchronized [project] counters via project-counter-sync."
+]
+
+[[binary_resolution]]
+name = "albert-algebra-structure-census"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/albert_algebra_structure_census.rs"
+
+[[binary_resolution]]
+name = "composition-algebra-taxonomy"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/composition_algebra_taxonomy.rs"
+
+[[binary_resolution]]
+name = "entropy-trap"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/entropy_trap.rs"
+
+[[binary_resolution]]
+name = "he4-superfluid"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/he4_superfluid.rs"
+
+[[binary_resolution]]
+name = "registry-event-tracker"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/registry_event_tracker.rs"
+
+[[binary_resolution]]
+name = "tessarines-mixed-quaternions-census"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/tessarines_mixed_quaternions_census.rs"
+
+[[binary_resolution]]
+name = "third-party-source-verifier"
+status = "added_to_cargo"
+path = "crates/gororoba_cli/src/bin/third_party_source_verifier.rs"
+
+[project_counter_changes]
+complete_experiment_count_before = 6
+complete_experiment_count_after = 0
+binary_count_before = 70
+binary_count_after = 77
+sync_command = "cargo run -q -p gororoba_cli --bin project-counter-sync --"
+sync_exit_code = 0
+
+[[command_outcome]]
+command = "cargo check -p gororoba_cli"
+exit_code = 0
+status = "pass"
+summary = "gororoba_cli checked successfully."
+
+[[command_outcome]]
+command = "cargo run -q -p gororoba_cli --bin project-counter-sync -- --check"
+exit_code = 0
+status = "pass"
+summary = "project-counter-sync reports already synchronized."
+
+[[command_outcome]]
+command = "cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy warn"
+exit_code = 0
+status = "pass_with_warnings"
+summary = "Registry check passed with warnings; binary and project count drift errors are resolved."
+warning_count = 4
+warnings = [
+  "typed schema drift: registry/monograph.toml missing field title",
+  "typed schema drift: registry/data_artifact_narratives.toml missing field artifacts",
+  "claim ID gaps warning (545 gaps)",
+  "insight ID gaps warning (3 gaps)"
+]
+
+[residual_risks]
+open_items = [
+  "Seven added binaries are placeholder entrypoints and do not yet implement workflow logic beyond startup messaging.",
+  "Typed-schema drift warnings in non-owned registry files remain and may be promoted to failures if typed-policy is changed to error.",
+  "Claim/insight ID gap warnings remain pre-existing registry hygiene issues outside this ownership scope."
+]

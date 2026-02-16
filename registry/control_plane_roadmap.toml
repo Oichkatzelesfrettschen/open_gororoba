@@ -1,0 +1,41 @@
+# Canonical mirror for historical Wave 4 roadmap.
+# Archival original remains immutable at registry/wave4_roadmap.toml.
+
+[meta]
+authoritative = true
+updated = "2026-02-14"
+mirror_created = "2026-02-14"
+intent = "Phase-neutral canonical entry point for control-plane roadmap history."
+canonical_path = "registry/control_plane_roadmap.toml"
+legacy_path = "registry/wave4_roadmap.toml"
+source_table = "wave4_roadmap"
+canonical_table = "control_plane_roadmap"
+
+[control_plane_roadmap]
+id = "CONTROL-PLANE-ROADMAP"
+legacy_id = "WAVE-4"
+legacy_label = "wave4"
+title = "TOML-first control plane hardening"
+status = "in_progress"
+objective = "Enforce one-source-of-truth TOML registries and eliminate markdown state drift."
+phase_count = 5
+task_count = 32
+
+[provenance]
+legacy_updated = "2026-02-10"
+legacy_sha256 = "59c159c64c389e96ef750120196ad0cf59d35e797eeb25d4f7ae2852811f7697"
+legacy_line_count = 259
+task_status_complete = 27
+task_status_in_progress = 4
+task_status_pending = 2
+chronology_policy = "Preserve original phase/task IDs and completion state as archival truth."
+
+[compatibility]
+legacy_aliases = ["registry/wave4_roadmap.toml", "wave4_roadmap", "WAVE-4"]
+canonical_aliases = ["registry/control_plane_roadmap.toml", "control_plane_roadmap", "CONTROL-PLANE-ROADMAP"]
+bidirectional_mapping = true
+
+[archival_policy]
+legacy_mutation = "forbidden"
+canonical_mutation = "allowed_with_provenance"
+backport_to_legacy = "never"

@@ -1,0 +1,280 @@
+# Canonical promotion ledger for hypercomplex taxonomy candidates.
+# Derived from reports/hypercomplex_taxonomy_claims_2026_02_14.toml for T-020 ingestion.
+
+[meta]
+id = "HYPERCOMPLEX-TAXONOMY-PROMOTION-2026-02-14"
+generated_at_utc = "2026-02-14T22:16:50Z"
+status = "active"
+tracker_ref = "T-020"
+source_claim_report = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml"
+source_taxonomy_registry = "registry/hypercomplex_taxonomy.toml"
+candidate_count = 16
+claim_ready_count = 16
+task_ready_count = 12
+ticket_ready_count = 4
+notes = "Promotion ledger for downstream claim/task/ticket ingestion with explicit verify/refute intent fields."
+
+[readiness_policy]
+claim_lane = "supported evidence status plus explicit verify and refute intent."
+task_lane = "taxonomy algebra candidate with deterministic verification scope."
+ticket_lane = "candidate requires multi-source provenance closure workflow."
+
+[counts]
+taxonomy_claim_candidates = 12
+sensational_primary_mapping_candidates = 4
+
+[[promotion]]
+id = "HCTP-001"
+source_claim_id = "HC-CL-001"
+candidate_kind = "taxonomy_claim"
+statement = "Hamilton quaternions over R are associative, alternative, and division."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (Q-001)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-001)"
+source_refs = ["RI-001"]
+taxonomy_species_refs = ["Q-001"]
+evidence_status = "supported"
+verify_intent = "Verify standard quaternion multiplication table and nonzero inverse existence."
+refute_intent = "Refute by finding a non-associative triple product."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-002"
+source_claim_id = "HC-CL-002"
+candidate_kind = "taxonomy_claim"
+statement = "Split quaternions contain zero divisors and are not division algebras."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (Q-002)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-002)"
+source_refs = ["RI-002"]
+taxonomy_species_refs = ["Q-002"]
+evidence_status = "supported"
+verify_intent = "Construct nonzero x,y with xy=0."
+refute_intent = "Refute if every nonzero element is invertible."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-003"
+source_claim_id = "HC-CL-003"
+candidate_kind = "taxonomy_claim"
+statement = "Biquaternions H tensor C are associative but lose division over real embedding due to zero divisors."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (Q-004)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-003)"
+source_refs = ["RI-005"]
+taxonomy_species_refs = ["Q-004"]
+evidence_status = "supported"
+verify_intent = "Show matrix realization with determinant-zero nonzero elements."
+refute_intent = "Refute if the algebra remains division under the stated embedding."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-004"
+source_claim_id = "HC-CL-004"
+candidate_kind = "taxonomy_claim"
+statement = "Dual quaternions inherit zero divisors from dual-number coefficients."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (Q-005)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-004)"
+source_refs = ["RI-005", "RI-011"]
+taxonomy_species_refs = ["Q-005"]
+evidence_status = "supported"
+verify_intent = "Exhibit a nilpotent dual component and a non-invertible nonzero element."
+refute_intent = "Refute with full invertibility under the same coefficient regime."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-005"
+source_claim_id = "HC-CL-005"
+candidate_kind = "taxonomy_claim"
+statement = "Real octonions O are alternative but non-associative and division."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (O-001)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-005)"
+source_refs = ["RI-007"]
+taxonomy_species_refs = ["O-001"]
+evidence_status = "supported"
+verify_intent = "Verify alternativity identities and find a non-associative triple while preserving nonzero inverses."
+refute_intent = "Refute by showing associativity or loss of invertibility for a nonzero element."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-006"
+source_claim_id = "HC-CL-006"
+candidate_kind = "taxonomy_claim"
+statement = "Split octonions are alternative but not division and possess zero divisors."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (O-002)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-006)"
+source_refs = ["RI-008"]
+taxonomy_species_refs = ["O-002"]
+evidence_status = "supported"
+verify_intent = "Construct an isotropic-norm element leading to a zero divisor."
+refute_intent = "Refute by proving every nonzero element is invertible."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-007"
+source_claim_id = "HC-CL-007"
+candidate_kind = "taxonomy_claim"
+statement = "Sedenions from Cayley-Dickson doubling are non-associative, non-alternative, and have zero divisors."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (S-001)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-007)"
+source_refs = ["RI-014", "RI-015"]
+taxonomy_species_refs = ["S-001"]
+evidence_status = "supported"
+verify_intent = "Check failure of alternativity identities and provide an explicit zero-divisor pair."
+refute_intent = "Refute by establishing alternativity or removing all nontrivial zero divisors."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-008"
+source_claim_id = "HC-CL-008"
+candidate_kind = "taxonomy_claim"
+statement = "Complexified and dual sedenions remain non-division with zero-divisor structure."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (S-003,S-004)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-008)"
+source_refs = ["RI-017", "RI-018"]
+taxonomy_species_refs = ["S-003", "S-004"]
+evidence_status = "supported"
+verify_intent = "Show inherited nilpotent or isotropic structure after scalar extension."
+refute_intent = "Refute by proving a division property for the stated extensions."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-009"
+source_claim_id = "HC-CL-009"
+candidate_kind = "taxonomy_claim"
+statement = "Pathions correspond to the 32-dimensional Cayley-Dickson stage after sedenions."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (P-001)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-009)"
+source_refs = ["RI-020", "RI-024"]
+taxonomy_species_refs = ["P-001"]
+evidence_status = "supported"
+verify_intent = "Confirm the doubling chain dimensions 1,2,4,8,16,32 and the naming equivalence."
+refute_intent = "Refute by showing a conflicting stage order or name-to-dimension mapping."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-010"
+source_claim_id = "HC-CL-010"
+candidate_kind = "taxonomy_claim"
+statement = "Chingon, routon, and voudon labels map to 64, 128, and 256 dimensions in the same ladder."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (P-002,P-003,P-004)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-010)"
+source_refs = ["RI-023", "RI-024"]
+taxonomy_species_refs = ["P-002", "P-003", "P-004"]
+evidence_status = "supported"
+verify_intent = "Validate naming conventions in cited references and dimension mapping to 2^n stages."
+refute_intent = "Refute if labels map to non-2^n dimensions or conflicting stage names."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-011"
+source_claim_id = "HC-CL-011"
+candidate_kind = "taxonomy_claim"
+statement = "For n>=4 Cayley-Dickson stages, algebras are not division and generally have zero divisors."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (S-001,P-001..P-004)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-011)"
+source_refs = ["RI-014", "RI-024"]
+taxonomy_species_refs = ["S-001", "P-001", "P-002", "P-003", "P-004"]
+evidence_status = "supported"
+verify_intent = "Construct zero divisors at the sedenion stage and propagate the construction across higher stages."
+refute_intent = "Refute by proving full invertibility for all nonzero elements at any stage n>=4."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-012"
+source_claim_id = "HC-CL-012"
+candidate_kind = "taxonomy_claim"
+statement = "Cayley-Dickson parameterized variants form a genuine species axis independent of naming."
+where_stated = "reports/hypercomplex_species_taxonomy_2026_02_14.toml (P-005)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-012)"
+source_refs = ["RI-013", "RI-015"]
+taxonomy_species_refs = ["P-005"]
+evidence_status = "supported"
+verify_intent = "Show non-isomorphic algebras under parameter choices over a fixed base."
+refute_intent = "Refute if all parameter choices collapse to one isomorphism class."
+claim_lane_ready = true
+task_lane_ready = true
+ticket_lane_ready = false
+
+[[promotion]]
+id = "HCTP-013"
+source_claim_id = "HC-CL-013"
+candidate_kind = "sensational_primary_mapping"
+statement = "MSN sensational item RI-028 maps to Science DOI 10.1126/science.adl2348 with high confidence."
+where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-028)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-013)"
+source_refs = ["RI-028"]
+taxonomy_species_refs = []
+evidence_status = "supported"
+verify_intent = "Verify DOI 10.1126/science.adl2348 appears in the source chain and matches the claimed planetary-system result."
+refute_intent = "Refute if the DOI is absent from the chain or resolves to an unrelated result."
+claim_lane_ready = true
+task_lane_ready = false
+ticket_lane_ready = true
+
+[[promotion]]
+id = "HCTP-014"
+source_claim_id = "HC-CL-014"
+candidate_kind = "sensational_primary_mapping"
+statement = "MSN sensational item RI-030 maps to PhysRevD 10.1103/PhysRevD.110.116016 through secondary-source citation chain."
+where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-030)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-014)"
+source_refs = ["RI-030", "RI-031"]
+taxonomy_species_refs = []
+evidence_status = "supported"
+verify_intent = "Verify DOI 10.1103/PhysRevD.110.116016 appears in the linked source chain and title matches the stated topic."
+refute_intent = "Refute if citation-chain links do not resolve to that DOI or if topic alignment fails."
+claim_lane_ready = true
+task_lane_ready = false
+ticket_lane_ready = true
+
+[[promotion]]
+id = "HCTP-015"
+source_claim_id = "HC-CL-015"
+candidate_kind = "sensational_primary_mapping"
+statement = "MSN sensational item RI-033 maps to Nature article 10.1038/s41586-025-09917-9."
+where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-033)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-015)"
+source_refs = ["RI-033"]
+taxonomy_species_refs = []
+evidence_status = "supported"
+verify_intent = "Verify DOI 10.1038/s41586-025-09917-9 appears in the linked chain and aligns with nanoparticle interferometry coverage."
+refute_intent = "Refute if DOI resolution or topical linkage does not match the cited source chain."
+claim_lane_ready = true
+task_lane_ready = false
+ticket_lane_ready = true
+
+[[promotion]]
+id = "HCTP-016"
+source_claim_id = "HC-CL-016"
+candidate_kind = "sensational_primary_mapping"
+statement = "MSN sensational item RI-034 maps to GW250114 analysis with arXiv 2509.08099 and PRL short DOI references."
+where_stated = "reports/sensational_primary_source_mapping_2026_02_14.toml (RI-034)"
+evidence_anchor = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml (HC-CL-016)"
+source_refs = ["RI-034"]
+taxonomy_species_refs = []
+evidence_status = "supported"
+verify_intent = "Verify Cornell/arXiv records and linked references cover GW250114 spectroscopy and relativity-test context."
+refute_intent = "Refute if arXiv or linked journal references fail to support the claimed GW250114 mapping."
+claim_lane_ready = true
+task_lane_ready = false
+ticket_lane_ready = true

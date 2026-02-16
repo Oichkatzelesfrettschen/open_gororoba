@@ -1940,9 +1940,9 @@ order_index = 158
 group = "Primary Research & Data Sources"
 section = "Cayley-Dickson Algebras (Additional)"
 citation_markdown = "**Eakin, P. M., & Sathaye, A.** (1990). *On automorphisms and derivations of Cayley-Dickson algebras*. Journal of Algebra 129(2), 263-278."
-notes = ["*Automorphism structure of Cayley-Dickson algebras beyond octonions.*"]
-urls = []
-dois = []
+notes = ["*Automorphism structure of Cayley-Dickson algebras beyond octonions.*", "*Canonical DOI/landing links are tracked; direct PDF endpoints remained gated in non-browser fetches as of 2026-02-15.*"]
+urls = ["https://doi.org/10.1016/0021-8693(90)90221-9", "https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219", "https://www.sciencedirect.com/science/article/pii/0021869390902219"]
+dois = ["10.1016/0021-8693(90)90221-9"]
 source_line = 349
 
 [[entry]]

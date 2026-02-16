@@ -3,9 +3,9 @@
 
 [claim_tickets]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-14"
 source_markdown_glob = "docs/tickets/*.md"
-ticket_count = 10
+ticket_count = 11
 
 [[ticket]]
 id = "TICKET-C001-C050"
@@ -196,3 +196,22 @@ acceptance_checks = []
 goal_summary = "Elevate the \"Silicon-Gold-Ice VIII\" Warp Ring simulation from cinematic pseudo-physics to a rigorously defended Analogue Optics experiment (Phase 6.5 -> Phase 7.0)."
 done_checkboxes = 0
 open_checkboxes = 8
+
+[[ticket]]
+id = "TICKET-RI-2026-02-14-TRIAGE"
+title = "Ticket: RI-2026-02-14 intake provenance triage"
+source_markdown = "docs/tickets/INDEX.md"
+ticket_kind = "GENERAL"
+owner = "agent"
+created = "2026-02-14"
+status_raw = "TODO"
+status_token = "TODO"
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = ["C-691", "C-692", "C-693", "C-694"]
+backlog_reports = ["reports/intake_promotion_to_canonical_2026_02_14.toml"]
+deliverable_links = ["registry/research_intake_2026_02_14.toml", "registry/hypercomplex_taxonomy_promotion.toml", "registry/todo.toml", "reports/intake_promotion_to_canonical_2026_02_14.toml"]
+acceptance_checks = []
+goal_summary = "VERIFY intent: close or upgrade unresolved/high-risk mappings from RI-2026-02-14 by replaying source chains and requiring direct primary-source anchors. REFUTE intent: if source-chain closure fails for a candidate mapping, keep or move it to unresolved/high-risk state with explicit rationale instead of promoting it as established."
+done_checkboxes = 0
+open_checkboxes = 4

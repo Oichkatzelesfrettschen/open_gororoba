@@ -1,0 +1,154 @@
+# Tranche 2 execution ledger for planning tracker synchronization campaign.
+
+[ledger]
+id = "TRANCHE2-EXEC-LEDGER-2026-02-14"
+date = "2026-02-14"
+status = "active"
+scope = "Tracker synchronization for alias parity closure, typed schema strict-pass readiness, binary/project drift reconciliation, strict residue inventory closure, and tranche-4 canonicalization/gate pass continuation."
+completed_count = 5
+in_progress_count = 3
+queued_count = 3
+ownership_entry_count = 4
+tranche4_followup_ledger = "reports/tranche4_execution_ledger_2026_02_14.toml"
+
+[terminology]
+policy = "Canonical control-plane and registry terminology in active planning artifacts."
+legacy_alias_references_allowed = true
+
+[tranche4_extension]
+status = "completed"
+summary = "Tracked tranche-4 outcomes are synchronized: batch1..batch4 shim inversion, RQ-024 canonicalization, and runtime/strict gate pass state after fixes."
+evidence_refs = [
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+]
+
+[[completed]]
+id = "TR2-C-001"
+title = "Alias parity closure"
+status = "done"
+owner_lane = "control-plane naming maintainers"
+tracker_refs = ["NA-024", "T-013"]
+evidence_refs = ["reports/control_plane_closure_draft_2026_02_14.toml", "reports/control_plane_naming_scope_2026_02_14.toml"]
+
+[[completed]]
+id = "TR2-C-002"
+title = "Typed schema strict-pass readiness"
+status = "done"
+owner_lane = "registry schema maintainers"
+tracker_refs = ["NA-003", "T-004"]
+evidence_refs = ["reports/registry_check_typed_policy_2026_02_14.toml", "reports/typed_schema_alignment_2026_02_14.toml"]
+
+[[completed]]
+id = "TR2-C-003"
+title = "Binary/project drift reconciliation"
+status = "done"
+owner_lane = "registry drift maintainers"
+tracker_refs = ["NA-014", "NA-015", "T-013"]
+evidence_refs = ["reports/binary_project_drift_reconciliation_2026_02_14.toml"]
+
+[[completed]]
+id = "TR2-C-004"
+title = "Strict residue inventory completed"
+status = "done"
+owner_lane = "control-plane reporting maintainers"
+tracker_refs = ["NA-024", "T-013"]
+evidence_refs = ["reports/control_plane_residue_inventory_2026_02_14.toml", "reports/tranche2_execution_ledger_2026_02_14.toml"]
+
+[[completed]]
+id = "TR2-C-005"
+title = "Tranche-4 canonicalization and runtime strict-pass synchronization"
+status = "done"
+owner_lane = "planning tracker maintainers"
+tracker_refs = ["NA-024", "T-013"]
+evidence_refs = [
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+]
+
+[[in_progress]]
+id = "TR2-I-001"
+title = "External port license gate"
+status = "in_progress"
+owner_lane = "porting and licensing maintainers"
+tracker_refs = ["NA-021"]
+evidence_refs = []
+
+[[in_progress]]
+id = "TR2-I-002"
+title = "Sensational primary evidence closure"
+status = "in_progress"
+owner_lane = "provenance maintainers"
+tracker_refs = ["NA-031"]
+evidence_refs = ["reports/sensational_primary_source_mapping_2026_02_14.toml", "reports/sensational_primary_validation_2026_02_14.toml"]
+
+[[in_progress]]
+id = "TR2-I-003"
+title = "Hypercomplex taxonomy registry integration"
+status = "in_progress"
+owner_lane = "taxonomy and claims maintainers"
+tracker_refs = ["T-020"]
+evidence_refs = ["reports/hypercomplex_species_taxonomy_2026_02_14.toml", "reports/hypercomplex_taxonomy_claims_2026_02_14.toml"]
+
+[[queued]]
+id = "TR2-Q-001"
+title = "Pure-Rust port boundaries"
+status = "queued"
+owner_lane = "architecture maintainers"
+tracker_refs = ["NA-023"]
+evidence_refs = []
+
+[[queued]]
+id = "TR2-Q-002"
+title = "Studio dynamic registry catalog"
+status = "queued"
+owner_lane = "studio frontend maintainers"
+tracker_refs = ["NA-025"]
+evidence_refs = ["plans/ultra_frontend_harmonization_roadmap_2026_02_12.toml"]
+
+[[queued]]
+id = "TR2-Q-003"
+title = "Hypercomplex intake batch reconciliation"
+status = "queued"
+owner_lane = "research intake maintainers"
+tracker_refs = ["T-019"]
+evidence_refs = ["registry/research_intake_2026_02_14.toml", "reports/research_intake_execution_ledger_2026_02_14.toml"]
+
+[[ownership]]
+lane = "control-plane naming"
+owner = "control-plane naming maintainers"
+artifacts = ["reports/control_plane_closure_draft_2026_02_14.toml", "reports/control_plane_naming_scope_2026_02_14.toml", "reports/control_plane_residue_inventory_2026_02_14.toml"]
+responsibility = "Keep alias parity closure evidence current and preserve canonical naming policy."
+
+[[ownership]]
+lane = "registry schema and strict policy"
+owner = "registry schema maintainers"
+artifacts = ["reports/registry_check_typed_policy_2026_02_14.toml", "reports/typed_schema_alignment_2026_02_14.toml", "registry/next_actions.toml", "registry/todo.toml"]
+responsibility = "Maintain strict-pass readiness and typed schema policy traceability."
+
+[[ownership]]
+lane = "binary and project drift"
+owner = "registry drift maintainers"
+artifacts = ["reports/binary_project_drift_reconciliation_2026_02_14.toml", "registry/binaries.toml", "registry/project.toml"]
+responsibility = "Prevent drift between Cargo bin declarations and registry/project counters."
+
+[[ownership]]
+lane = "tracker synchronization"
+owner = "planning tracker maintainers"
+artifacts = [
+  "plans/resumption_unified_master_plan_2026_02_14.toml",
+  "registry/next_actions.toml",
+  "registry/todo.toml",
+  "reports/tranche2_execution_ledger_2026_02_14.toml",
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+]
+responsibility = "Keep completed, in-progress, and queued tranche states synchronized with evidence links."
+
+[consistency]
+report_paths_checked = 9
+missing_report_paths = 0
+status = "pass"

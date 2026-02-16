@@ -1,0 +1,351 @@
+schema = "open_gororoba.agents.v2"
+source_of_truth = true
+updated_on = "2026-02-15"
+
+[rust_native_policy_top]
+enforced = true
+repo_mode = "rust_native"
+cargo_first = true
+no_new_shell_workflow_drivers = true
+no_new_python_workflow_drivers = true
+no_new_make_wrappers_for_rust_ops = true
+cargo_toml_is_authoritative_for_rust_workflows = true
+note = "This repository is Rust-native. Add operational workflows as Cargo binaries, not shell/python/make wrappers."
+
+[shared]
+canonical_file = "agents.toml"
+rust_tooling_catalog = "docs/rust-tooling-packages.toml"
+rust_tooling_note = "Rust package and tool inventory lives in docs/rust-tooling-packages.toml."
+
+[shared.project]
+name = "open_gororoba"
+kind = "computational_physics_research_platform"
+summary = "Rust-first scientific workspace linking Cayley-Dickson algebra, LBM fluid dynamics, TDA, and cosmological observables."
+workspace_crates = 24
+cli_binaries = 82
+registry_model = "toml_first"
+
+[[shared.path]]
+path = "crates/"
+purpose = "Rust workspace crates for core math, physics domains, orchestration, CLI binaries, and Python bindings."
+
+[[shared.path]]
+path = "src/"
+purpose = "Python package code, verification scripts, and analysis helpers."
+
+[[shared.path]]
+path = "tests/"
+purpose = "Python pytest suites and integration checks."
+
+[[shared.path]]
+path = "registry/"
+purpose = "Canonical TOML records for claims, roadmap, standards, and governance state."
+
+[[shared.path]]
+path = "docs/"
+purpose = "Generated markdown mirrors and long-form documentation assets."
+
+[[shared.path]]
+path = "data/"
+purpose = "Artifacts, datasets, and experiment outputs."
+
+[[shared.path]]
+path = "apps/"
+purpose = "Studio and app assets."
+
+[[shared.command]]
+id = "rust.build.workspace"
+cmd = "cargo build --workspace -j$(nproc)"
+purpose = "full workspace build"
+
+[[shared.command]]
+id = "rust.test.workspace"
+cmd = "cargo test --workspace -j$(nproc)"
+purpose = "run workspace tests"
+
+[[shared.command]]
+id = "rust.test.focused"
+cmd = "cargo test -p <crate> <test_name>"
+purpose = "run focused Rust test loop"
+
+[[shared.command]]
+id = "rust.clippy.workspace"
+cmd = "cargo clippy --workspace -j$(nproc) -- -D warnings"
+purpose = "warnings-as-errors lint gate"
+
+[[shared.command]]
+id = "rust.smoke"
+cmd = "cargo clippy --workspace -j$(nproc) -- -D warnings && cargo test --workspace -j$(nproc)"
+purpose = "composite Rust gate: clippy plus tests"
+
+[[shared.command]]
+id = "rust.studio.run"
+cmd = "cargo run -p gororoba_cli --bin gororoba-studio -- --host 127.0.0.1 --port 8088"
+purpose = "launch gororoba studio via Cargo entrypoint"
+
+[[shared.command]]
+id = "rust.warp.precision_matrix"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-precision-matrix -- <duration_s> <trace_stride> <sizes_csv> <precisions_csv> <out_dir>"
+purpose = "Rust-native precision matrix with mandatory rho finite/quality gate"
+
+[[shared.command]]
+id = "rust.warp.gpu_smoke"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-gpu-smoke -- <duration_s> <trace_stride> <out_dir>"
+purpose = "Rust-native short GPU smoke gate (8^3 and 16^3, FP32 and BF16)"
+
+[[shared.command]]
+id = "rust.warp.production_suite"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-production-suite -- <duration_128_s> <duration_256_s> <trace_stride> <precision> <run_fp32_reference_0_or_1> [telemetry_csv_path_optional]"
+purpose = "Rust-native staged production acceptance lane (128^3 and 256^3) with per-step timing TOML and optional GPU telemetry CSV emission"
+
+[[shared.command]]
+id = "rust.warp.rho_trace_gate"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin rho-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+purpose = "Rust-native wildcard artifact gate for /simulation/trace/rho_mean (replaces h5dump loops)"
+
+[[shared.command]]
+id = "rust.warp.simulation_trace_gate"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin simulation-trace-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+purpose = "Rust-native strict trace gate for /simulation/trace/{time,rho_mean,enstrophy,algebra_norm}"
+
+[[shared.command]]
+id = "rust.warp.hdf5_numeric_gate"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin hdf5-numeric-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+purpose = "Rust-native recursive gate across all HDF5 datasets; fails on numeric NaN/Inf and unsupported numeric layouts"
+
+[[shared.command]]
+id = "rust.warp.acceptance_gate"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-acceptance-gate -- <h5_path_or_glob> [more_paths_or_globs]"
+purpose = "Default fail-closed artifact acceptance command that chains strict simulation-trace checks and recursive numeric HDF5 checks"
+
+[[shared.command]]
+id = "rust.warp.ring_3d"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-ring-3d --"
+purpose = "full 3D warp ring path with fail-closed rho quality gate"
+
+[[shared.command]]
+id = "rust.bench"
+cmd = "cargo bench -p <crate>"
+purpose = "criterion benchmarks"
+
+[[shared.command]]
+id = "rust.release"
+cmd = "cargo build --release --workspace -j$(nproc)"
+purpose = "optimized release build"
+
+[[shared.architecture_tier]]
+order = 1
+name = "foundation"
+description = "Core numerical and algorithmic crates with no internal tier dependency requirements."
+crates = ["algebra_core", "stats_core", "spectral_core", "lbm_core", "data_core", "control_core", "optics_core", "scrolls_core", "docpipe"]
+
+[[shared.architecture_tier]]
+order = 2
+name = "domain_physics"
+description = "Physics and domain models built on foundation crates."
+crates = ["gr_core", "cosmology_core", "materials_core", "quantum_core", "snia_core"]
+
+[[shared.architecture_tier]]
+order = 3
+name = "synthesis"
+description = "Cross-domain synthesis and high-fidelity simulation lanes."
+crates = ["vacuum_frustration", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "cosmic_scheduler"]
+
+[[shared.architecture_tier]]
+order = 4
+name = "orchestration"
+description = "Execution surface and integration boundaries."
+crates = ["gororoba_engine", "gororoba_cli", "gororoba_py", "gororoba_contracts"]
+
+[[shared.four_thesis_pipeline]]
+order = 1
+name = "vacuum_frustration"
+summary = "Cayley-Dickson algebraic structure perturbs lattice transport behavior."
+
+[[shared.four_thesis_pipeline]]
+order = 2
+name = "filtration_cascade"
+summary = "Persistent homology traces topological phase behavior in modified flow fields."
+
+[[shared.four_thesis_pipeline]]
+order = 3
+name = "neural_homotopy"
+summary = "Neural models learn residual structure between analytic and simulated dynamics."
+
+[[shared.four_thesis_pipeline]]
+order = 4
+name = "synthesis"
+summary = "Combined outputs are compared against cosmological observables."
+
+[shared.runtime_model]
+gpu_default = "cpu_only"
+gpu_enable_cmd = "cargo build --workspace --features gpu -j$(nproc)"
+gpu_note = "CUDA support is feature-gated; cudarc uses NVRTC runtime compilation."
+clock_model = "two_phase"
+phi1 = "collision_or_preparation"
+phi2 = "streaming_or_execution"
+
+[shared.registry]
+source_of_truth = "registry/*.toml"
+generated_mirror = "docs/*.md"
+mirror_command = "cargo run -p gororoba_cli --bin registry-emit --"
+do_not_edit_generated_markdown = true
+schema_signature_file = "registry/schema_signatures.toml"
+schema_hash_count = 22
+
+[[shared.registry_table]]
+file = "registry/claims.toml"
+purpose = "scientific claims with status and evidence links"
+
+[[shared.registry_table]]
+file = "registry/insights.toml"
+purpose = "insight catalog and synthesis observations"
+
+[[shared.registry_table]]
+file = "registry/experiments.toml"
+purpose = "experiment catalog and methodological records"
+
+[[shared.registry_table]]
+file = "registry/binaries.toml"
+purpose = "CLI binary inventory and descriptions"
+
+[[shared.registry_table]]
+file = "registry/project.toml"
+purpose = "project-level metadata and aggregate counts"
+
+[[shared.registry_table]]
+file = "registry/roadmap.toml"
+purpose = "roadmap source used for docs mirror generation"
+
+[[shared.registry_table]]
+file = "registry/schema_signatures.toml"
+purpose = "integrity signatures for registry schema and records"
+
+[[shared.registry_table]]
+file = "registry/engineering_standards.toml"
+purpose = "toolchain and engineering standards"
+
+[shared.conventions]
+ascii_only = true
+warnings_as_errors = true
+nightly_toolchain_required = true
+workspace_dependency_rule = "Define shared dependencies in root Cargo.toml; use workspace=true in crate manifests."
+error_handling_libraries = "thiserror"
+error_handling_binaries = "anyhow"
+panics_in_library_code = "forbidden"
+autobins_policy = "explicit_only"
+conventional_commit_required = true
+
+[[shared.pitfall]]
+id = "PIT-001"
+issue = "nalgebra is pinned to 0.33"
+impact = "naive upgrades can break compatibility with current dependency graph"
+mitigation = "do not upgrade without full compatibility review"
+
+[[shared.pitfall]]
+id = "PIT-002"
+issue = "cudarc kernels compile via NVRTC at runtime"
+impact = "assuming build-time nvcc can lead to wrong setup or debugging path"
+mitigation = "debug runtime kernel strings and feature-gated execution path"
+
+[[shared.pitfall]]
+id = "PIT-003"
+issue = "hdf5 must use hdf5-metno"
+impact = "using upstream hdf5 crate can break with HDF5 2.0 systems"
+mitigation = "keep package = hdf5-metno, version 0.12"
+
+[[shared.pitfall]]
+id = "PIT-004"
+issue = "LBM f_i initialized to zero leads to NaN instability"
+impact = "invalid simulation startup state"
+mitigation = "initialize f_i to lattice weights"
+
+[[shared.pitfall]]
+id = "PIT-005"
+issue = "hurst crate has GPL-3.0 implications"
+impact = "license-policy conflicts if used casually"
+mitigation = "respect current project license constraints and policy checks"
+
+[[shared.pitfall]]
+id = "PIT-006"
+issue = "burn 0.16 optimizer API details are easy to misapply"
+impact = "training code breaks with stale patterns"
+mitigation = "use AdamConfig::new().init() and pass lr via optim.step()"
+
+[[shared.pitfall]]
+id = "PIT-007"
+issue = "Clippy modernization requirements are strict"
+impact = "CI fails for legacy patterns"
+mitigation = "prefer is_multiple_of and std::io::Error::other forms"
+
+[[shared.pitfall]]
+id = "PIT-008"
+issue = "Large Vietoris-Rips complexes can OOM"
+impact = "topology jobs can fail unpredictably"
+mitigation = "truncate point sets before expensive distance computations"
+
+[[shared.pitfall]]
+id = "PIT-009"
+issue = "Uniform forcing with periodic BC can nullify strain"
+impact = "simulation may not exhibit intended dynamics"
+mitigation = "use non-uniform forcing patterns where required"
+
+[[shared.reference]]
+path = "registry/engineering_standards.toml"
+note = "canonical engineering standards"
+
+[[shared.reference]]
+path = "registry/roadmap.toml"
+note = "roadmap source"
+
+[[shared.reference]]
+path = "docs/ROADMAP.md"
+note = "roadmap markdown mirror"
+
+[[shared.reference]]
+path = "docs/MATH_CONVENTIONS.md"
+note = "math conventions and notation guidance"
+
+[[shared.reference]]
+path = "docs/book/src/glossary.md"
+note = "domain glossary"
+
+[[shared.reference]]
+path = ".github/workflows/ci.yml"
+note = "CI gate definitions"
+
+[agents.codex]
+entry_stub = "AGENTS.md"
+shared_section = "shared"
+agent_section = "agents.codex"
+role = "default_coding_agent"
+
+[agents.codex.guidance]
+style = "concise_repo_specific_contributor_guide"
+emphasis = ["project_structure", "daily_build_test_commands", "coding_conventions", "commit_and_pr_hygiene"]
+
+[agents.claude]
+entry_stub = "CLAUDE.md"
+shared_section = "shared"
+agent_section = "agents.claude"
+role = "operational_quickstart_overlay"
+
+[agents.claude.guidance]
+style = "command_first_architecture_aware"
+emphasis = ["daily_driver_commands", "architecture_tiers", "registry_workflow", "common_pitfalls", "cross_references"]
+
+[agents.gemini]
+entry_stub = "GEMINI.md"
+shared_section = "shared"
+agent_section = "agents.gemini"
+role = "analysis_context_overlay"
+
+[agents.gemini.guidance]
+style = "high_level_system_map_with_execution_hooks"
+emphasis = ["project_overview", "four_thesis_pipeline", "technology_stack", "quality_gates", "operational_constraints"]
+
+[rust_native_policy_bottom]
+enforced = true
+repo_mode = "rust_native"
+cargo_first = true
+repeat_notice = "REMINDER: Rust-native repo. Implement and run workflow entrypoints via Cargo binaries declared in Cargo.toml."

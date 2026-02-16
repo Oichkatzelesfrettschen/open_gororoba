@@ -139,10 +139,10 @@ priority = "high"
 status = "active"
 status_token = "ACTIVE"
 description = "Reduce remaining narrative free-text by moving claims, equations, proofs, provenance, and planning metadata into stricter TOML schemas."
-primary_outputs = ["registry/wave5_toml_granularization_plan.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/proof_skeletons.toml", "registry/knowledge/derivation_steps.toml", "registry/bibliography_normalized.toml"]
+primary_outputs = ["registry/strict_toml_granularization_plan.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/proof_skeletons.toml", "registry/knowledge/derivation_steps.toml", "registry/bibliography_normalized.toml"]
 dependencies = []
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["registry/bibliography_normalized.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/proof_skeletons.toml", "registry/wave5_toml_granularization_plan.toml"]
+evidence_refs = ["registry/bibliography_normalized.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/proof_skeletons.toml", "registry/strict_toml_granularization_plan.toml"]
 
 [[workstream]]
 id = "WS-THESIS-002"

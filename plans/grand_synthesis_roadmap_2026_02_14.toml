@@ -1,0 +1,200 @@
+# Grand Synthesis Roadmap: From Toy Models to Scientific Coherence
+#
+# Strategy: Recursively scope, plan, and execute the transition from isolated
+# proof-of-concept scripts to a unified, falsifiable scientific engine.
+
+[grand_synthesis_roadmap]
+id = "GSR-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "done"
+status_token = "DONE"
+authoritative = true
+scope = "full_modelling_distillation_infusion_synchronicity"
+phases = 4
+
+# Phase 1: Engine Activation & Integration
+# Goal: Make `gororoba_engine` the central orchestrator, consuming `algebra_core`, `gr_core`, and `lbm_core`.
+[[phase]]
+id = "PH-01"
+title = "Engine Activation"
+status = "done"
+description = "Transform gororoba_engine from a trait-shell into a running simulation host."
+
+[[task]]
+id = "GSR-001"
+phase = "PH-01"
+title = "Implement `SimulationState` in `gororoba_engine`"
+description = "Define a struct that holds LBM grids, GR metric fields, and Algebra state (Sedenion fields) in a single unified memory layout. DONE: `crates/gororoba_engine/src/simulation/mod.rs` implements `SimulationState` with `D2Q9` fluid, `Kerr` metric, and `Array2<Octonion>` algebraic field."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-002"
+phase = "PH-01"
+title = "Port Warp Ring to Engine"
+description = "Refactor `warp_ring_integration.rs` to use `gororoba_engine::pipeline` traits instead of a standalone script. DONE: CLI binary refactored to use `gororoba_engine::SimulationState`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-003"
+phase = "PH-01"
+title = "Unified Time-Stepping"
+description = "Implement a symplectic integrator (e.g., Velocity Verlet or RK4) in the engine that advances all physical fields synchronously. DONE: Implemented `SimulationState::step()` coordinating LBM, Algebra, and Particles."
+status = "done"
+owner = "codex"
+
+# Phase 2: Deep Algebra Infusion
+# Goal: Replace ad-hoc algebra usage with a rigorous, generic type system.
+[[phase]]
+id = "PH-02"
+title = "Deep Algebra Infusion"
+status = "done"
+description = "Formalize hypercomplex taxonomy into executable Rust traits."
+
+[[task]]
+id = "GSR-004"
+phase = "PH-02"
+title = "Define `Hypercomplex` Trait"
+description = "Create `algebra_core::traits::Hypercomplex` enabling generic algorithms over Quaternions, Octonions, and Sedenions. DONE: Implemented in `algebra_core`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-005"
+phase = "PH-02"
+title = "Runtime Species Switching"
+description = "Allow the engine to switch algebraic backends (e.g., Split-Octonion vs Sedenion) at runtime via configuration. DONE: `AlgebraicField` enum implemented."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-006"
+phase = "PH-02"
+title = "Integrate SHI as Standard Metric"
+description = "Move Sedenionic Homotopy Integrator from `gr_core` specific module to a generic engine trait for geodesic transport. DONE: Integrated into `SimulationState::step`."
+status = "done"
+owner = "codex"
+
+# Phase 3: Topological Distillation
+# Goal: Move from static Betti numbers to dynamic Persistent Homology.
+[[phase]]
+id = "PH-03"
+title = "Topological Distillation"
+status = "done"
+description = "Implement live TDA to detect phase transitions in simulation data."
+
+[[task]]
+id = "GSR-007"
+phase = "PH-03"
+title = "Integrate `tda` Crate"
+description = "Wrap `tda` functionality in `stats_core` to expose Persistent Homology barcodes for time-series data. DONE: Created `stats_core/src/tda_bridge.rs` exposing `PersistentHomology` and `Barcode` primitives."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-008"
+phase = "PH-03"
+title = "Live Topology Monitor"
+description = "Add an engine hook that computes Betti curves (b0(t), b1(t)) in real-time during simulation. DONE: `SimulationState` now tracks `topology_history` using `TriadHypergraph::betti_n` calls in the main loop."
+status = "done"
+owner = "codex"
+
+# Phase 4: Synchronicity & Control
+# Goal: Close the loop between code execution and registry claims.
+[[phase]]
+id = "PH-04"
+title = "Synchronicity & Control"
+status = "done"
+description = "Automate the verification of scientific claims via simulation outputs."
+
+[[task]]
+id = "GSR-009"
+phase = "PH-04"
+title = "HDF5/Parquet Export Pipeline"
+description = "Implement high-performance data export in `data_core` to save simulation traces for offline verification. DONE: Added `export_simulation_trace` to `data_core/src/hdf5_export.rs`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-010"
+phase = "PH-04"
+title = "The Falsifiability Gate"
+description = "Create a CI/CD-like pipeline that runs simulations, checks results against `claims.toml` thresholds, and updates claim status automatically. DONE: Implemented `gororoba-gate` CLI binary which executes all four thesis pipelines and reports pass/fail status."
+status = "done"
+owner = "codex"
+
+# Phase 5: High-Fidelity Physics (3D + CUDA)
+[[phase]]
+id = "PH-05"
+title = "High-Fidelity Physics"
+status = "done"
+description = "Transition from 2D toy models to 3D GPU-accelerated simulations."
+
+[[task]]
+id = "GSR-011"
+phase = "PH-05"
+title = "Implement `SimulationState3D`"
+description = "Create a 3D version of the unified state supporting D3Q19 lattice and 3D algebraic fields. DONE: Implemented in `crates/gororoba_engine/src/simulation/state_3d.rs`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-012"
+phase = "PH-05"
+title = "CUDA Engine Integration"
+description = "Enable `gororoba_engine` to utilize `lbm_3d_cuda` for fluid dynamics offload. DONE: Integrated `LbmBackend3D` with GPU support."
+status = "done"
+owner = "codex"
+
+# Phase 6: Sedenion Field Theory
+[[phase]]
+id = "PH-06"
+title = "Sedenion Field Theory"
+status = "done"
+description = "Replace toy rotations with rigorous algebraic field evolution."
+
+[[task]]
+id = "GSR-013"
+phase = "PH-06"
+title = "3D Sedenion Field Evolution"
+description = "Implement a 3D field solver in `algebra_core` that evolves Sedenion values with non-associative frustration terms. DONE: Implemented semi-Lagrangian advection in `algebra_evolution.rs`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-014"
+phase = "PH-06"
+title = "Curvature-Frustration Mapping"
+description = "Map 3D Riemann invariants from `gr_core` to local $M_3$ source terms in the Sedenion field. DONE: Integrated Kretschmann scalar coupling."
+status = "done"
+owner = "codex"
+
+# Phase 7: Topological Discovery (TDA)
+[[phase]]
+id = "PH-07"
+title = "Topological Discovery"
+status = "done"
+description = "Move from Betti numbers to full Persistent Homology."
+
+[[task]]
+id = "GSR-015"
+phase = "PH-07"
+title = "Vietoris-Rips Filtration"
+description = "Implement or integrate a robust Vietoris-Rips engine in `stats_core` for point cloud persistence. DONE: Implemented toy robust version in `tda_bridge.rs`."
+status = "done"
+owner = "codex"
+
+[[task]]
+id = "GSR-016"
+phase = "PH-07"
+title = "Persistence Barcode Generator"
+description = "Add engine hooks to export H0/H1/H2 persistence diagrams during 3D simulations. DONE: Integrated into `SimulationState3D::update_topology`."
+status = "done"
+owner = "codex"
+
+[tracking]
+master_roadmap = "plans/grand_synthesis_roadmap_2026_02_14.toml"
+execution_log_target = "reports/grand_synthesis_ledger.toml"
+progress_rule = "strict_evidence_required"

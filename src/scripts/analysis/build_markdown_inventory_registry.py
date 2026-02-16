@@ -264,9 +264,13 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
         "registry/markdown_inventory.toml",
         "registry/markdown_corpus_registry.toml",
         "registry/toml_inventory.toml",
-        "registry/wave4_roadmap.toml",
+        "registry/control_plane_roadmap.toml",
         "registry/markdown_origin_audit.toml",
         "registry/markdown_owner_map.toml",
+    }
+    archival_non_destination_registries = {
+        # Preserve immutable archival roadmap exclusion while active logic uses canonical mirror path.
+        "registry/wave4_roadmap.toml",
     }
 
     def add(path: str, src: str) -> None:
@@ -312,7 +316,7 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
 
     for reg in sorted((root / "registry").glob("*.toml")):
         reg_rel = reg.relative_to(root).as_posix()
-        if reg_rel in non_destination_registries:
+        if reg_rel in non_destination_registries or reg_rel in archival_non_destination_registries:
             continue
         data = tomllib.loads(reg.read_text(encoding="utf-8"))
         walk(data, reg_rel)

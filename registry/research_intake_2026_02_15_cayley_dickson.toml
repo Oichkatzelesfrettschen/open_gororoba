@@ -1,0 +1,508 @@
+# Lambda-first Cayley-Dickson intake and synthesis lane (TOML-first).
+
+[research_intake]
+id = "RI-2026-02-15-cayley-dickson-lambda-first"
+created = "2026-02-15"
+updated = "2026-02-15"
+status = "active"
+owner = "codex"
+policy = "non_sprawl_expand_existing_claims_experiments"
+batch_root = "data/external/intake/2026_02_15_cayley_dickson_sources/batches"
+batch_count = 4
+file_count = 382
+pdf_count = 224
+next25_item_count = 25
+next25_source_file = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml"
+next25_narrative_file = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/theory_narrative_next25.md"
+carry_forward_unresolved_url = "https://core.ac.uk/download/pdf/82141950.pdf"
+lambda_focus = "Treat lambda as the first control variable across existing experiments before minting any new experiment IDs."
+linked_experiments = ["E-027", "E-029", "E-031", "E-034", "E-035"]
+linked_claims = ["C-657", "C-671", "C-677", "C-678", "C-681", "C-682"]
+
+[[batch]]
+name = "sedenions"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions"
+file_count = 59
+pdf_count = 31
+status = "copied"
+
+[[batch]]
+name = "hypercomplex"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex"
+file_count = 182
+pdf_count = 135
+status = "copied"
+
+[[batch]]
+name = "sedenions_addenda"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda"
+file_count = 57
+pdf_count = 28
+status = "copied"
+
+[[batch]]
+name = "cd_synthesis_axes"
+path = "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes"
+file_count = 84
+pdf_count = 30
+status = "copied"
+
+[[unresolved]]
+id = "UR-001"
+url = "https://core.ac.uk/download/pdf/82141950.pdf"
+status = "hard_failure_404"
+note = "carry_forward_original"
+
+[[lane_item]]
+id = "LFI-001"
+source_claim_id = "CDS-C-0001"
+source_experiment_id = "CDS-E-0001"
+module = "m0/nomenclature"
+source_url = "https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-002"
+source_claim_id = "CDS-C-0002"
+source_experiment_id = "CDS-E-0002"
+module = "m0/nomenclature"
+source_url = "https://en.wikipedia.org/wiki/Trigintaduonion"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-003"
+source_claim_id = "CDS-C-0003"
+source_experiment_id = "CDS-E-0003"
+module = "m0/nomenclature"
+source_url = "https://english.stackexchange.com/questions/234607/what-comes-after-the-ducentiquinquagintasexions"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-004"
+source_claim_id = "CDS-C-0004"
+source_experiment_id = "CDS-E-0004"
+module = "m1/construction"
+source_url = "https://mysite.science.uottawa.ca/neher/Papers/alternative/2.3.Cayley-Dickson%20process.pdf"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-005"
+source_claim_id = "CDS-C-0005"
+source_experiment_id = "CDS-E-0005"
+module = "m1/construction"
+source_url = "https://math.mit.edu/~hrm/palestine/schafer-nonassociative-algebras.pdf"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-006"
+source_claim_id = "CDS-C-0006"
+source_experiment_id = "CDS-E-0006"
+module = "m1/construction"
+source_url = "https://msp.org/pjm/1967/20-3/pjm-v20-n3-p03-s.pdf"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-007"
+source_claim_id = "CDS-C-0007"
+source_experiment_id = "CDS-E-0007"
+module = "m1/construction"
+source_url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-008"
+source_claim_id = "CDS-C-0008"
+source_experiment_id = "CDS-E-0008"
+module = "m2/identity-regime"
+source_url = "https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"
+anchor_experiment_id = "E-034"
+anchor_claim_id = "C-681"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-009"
+source_claim_id = "CDS-C-0009"
+source_experiment_id = "CDS-E-0009"
+module = "m3/zero-divisors"
+source_url = "https://arxiv.org/pdf/math/0207003"
+anchor_experiment_id = "E-027"
+anchor_claim_id = "C-657"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-010"
+source_claim_id = "CDS-C-0010"
+source_experiment_id = "CDS-E-0010"
+module = "m3/zero-divisors"
+source_url = "https://arxiv.org/pdf/math/0403113"
+anchor_experiment_id = "E-027"
+anchor_claim_id = "C-657"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-011"
+source_claim_id = "CDS-C-0011"
+source_experiment_id = "CDS-E-0011"
+module = "m3/zero-divisors"
+source_url = "https://arxiv.org/pdf/math/0603281"
+anchor_experiment_id = "E-027"
+anchor_claim_id = "C-657"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-012"
+source_claim_id = "CDS-C-0012"
+source_experiment_id = "CDS-E-0012"
+module = "m3/zero-divisors"
+source_url = "https://arxiv.org/pdf/0704.0026"
+anchor_experiment_id = "E-027"
+anchor_claim_id = "C-657"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-013"
+source_claim_id = "CDS-C-0013"
+source_experiment_id = "CDS-E-0013"
+module = "m3/zero-divisors"
+source_url = "https://content.wolfram.com/uploads/sites/13/2023/02/17-2-3.pdf"
+anchor_experiment_id = "E-027"
+anchor_claim_id = "C-657"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-014"
+source_claim_id = "CDS-C-0014"
+source_experiment_id = "CDS-E-0014"
+module = "m5/loops"
+source_url = "https://arxiv.org/pdf/1102.5151"
+anchor_experiment_id = "E-029"
+anchor_claim_id = "C-671"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-015"
+source_claim_id = "CDS-C-0015"
+source_experiment_id = "CDS-E-0015"
+module = "m5/loops"
+source_url = "https://projecteuclid.org/journals/journal-of-generalized-lie-theory-and-applications/volume-6/issue-none/Automorphism-Groups-of-Cayley-Dickson-Loops/jglta/1505440830.pdf"
+anchor_experiment_id = "E-029"
+anchor_claim_id = "C-671"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-016"
+source_claim_id = "CDS-C-0016"
+source_experiment_id = "CDS-E-0016"
+module = "m5/loops"
+source_url = "https://arxiv.org/pdf/math/0412390"
+anchor_experiment_id = "E-029"
+anchor_claim_id = "C-671"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-017"
+source_claim_id = "CDS-C-0017"
+source_experiment_id = "CDS-E-0017"
+module = "m5/loops"
+source_url = "https://www.hilarispublisher.com/open-access/cayleydickson-algebras-and-loops-1736-4337-1-101.pdf"
+anchor_experiment_id = "E-029"
+anchor_claim_id = "C-671"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-018"
+source_claim_id = "CDS-C-0018"
+source_experiment_id = "CDS-E-0018"
+module = "m6/representation"
+source_url = "https://arxiv.org/pdf/1405.6888"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-019"
+source_claim_id = "CDS-C-0019"
+source_experiment_id = "CDS-E-0019"
+module = "m6/representation"
+source_url = "https://www.astro.sk/~msaniga/pub/ftp/ceedeenions.pdf"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-020"
+source_claim_id = "CDS-C-0020"
+source_experiment_id = "CDS-E-0020"
+module = "m6/representation"
+source_url = "https://arxiv.org/pdf/1602.02317"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-021"
+source_claim_id = "CDS-C-0021"
+source_experiment_id = "CDS-E-0021"
+module = "m6/representation"
+source_url = "https://arxiv.org/pdf/1602.02843"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-022"
+source_claim_id = "CDS-C-0022"
+source_experiment_id = "CDS-E-0022"
+module = "m6/representation"
+source_url = "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-023"
+source_claim_id = "CDS-C-0023"
+source_experiment_id = "CDS-E-0023"
+module = "m6/representation"
+source_url = "https://www.math.fsu.edu/~hoeij/2021/Thesis-3.3.pdf"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-024"
+source_claim_id = "CDS-C-0024"
+source_experiment_id = "CDS-E-0024"
+module = "m6/representation"
+source_url = "https://github.com/thoppe/Cayley-Dickson"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[lane_item]]
+id = "LFI-025"
+source_claim_id = "CDS-C-0025"
+source_experiment_id = "CDS-E-0025"
+module = "m6/representation"
+source_url = "https://pypi.org/project/hypercomplex/"
+anchor_experiment_id = "E-031"
+anchor_claim_id = "C-677"
+action = "integrate_as_lambda_supporting_infrastructure"
+status = "integrated"
+
+[[novel_thesis]]
+id = "LFT-001"
+title = "Lambda Critical Window Detection"
+statement = "Transport and topology metrics should be monitored as piecewise-smooth functions of lambda, with explicit detection of critical windows where curvature spikes."
+anchor_experiments = ["E-034", "E-027"]
+anchor_claims = ["C-678", "C-679", "C-657", "C-658"]
+status = "proposed"
+
+[[novel_thesis]]
+id = "LFT-002"
+title = "Zero-Divisor Motif Priors for Lambda Scheduling"
+statement = "Zero-divisor motif density should be used as a prior for lambda schedule selection before expensive transport sweeps."
+anchor_experiments = ["E-027", "E-031"]
+anchor_claims = ["C-657", "C-659", "C-677"]
+status = "proposed"
+
+[[novel_thesis]]
+id = "LFT-003"
+title = "Loop-Automorphism Regularization of Homotopy Search"
+statement = "Loop automorphism constraints should regularize m3 and higher correction search to reduce overfitting in neural homotopy runs."
+anchor_experiments = ["E-029"]
+anchor_claims = ["C-671", "C-672", "C-684"]
+status = "proposed"
+
+[[novel_thesis]]
+id = "LFT-004"
+title = "Representation Invariance Check for Lambda Effects"
+statement = "Observed lambda response classes should remain stable across equivalent representation choices when mapped through the same CD stage semantics."
+anchor_experiments = ["E-031", "E-035"]
+anchor_claims = ["C-677", "C-682"]
+status = "proposed"
+
+[[novel_thesis]]
+id = "LFT-005"
+title = "Identity-Regime Guardrails for Coupling Models"
+statement = "Each lambda-coupling claim should declare the identity regime assumptions explicitly to avoid invalid cross-stage extrapolation."
+anchor_experiments = ["E-034", "E-031"]
+anchor_claims = ["C-681", "C-682"]
+status = "proposed"
+
+[[pilot_test]]
+id = "LFP-001"
+objective = "Detect lambda critical windows from Kubo lookup curvature."
+run = "cargo run --release --features gpu --bin kubo-coupling-analysis"
+expected_artifact = "data/kubo_transport/coupling_analysis.toml"
+related_thesis = "LFT-001"
+
+[[pilot_test]]
+id = "LFP-002"
+objective = "Re-run topology-frustration sweep with explicit lambda curvature diagnostics."
+run = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
+expected_artifact = "data/e027/e027_topology_NNNcubed.toml"
+related_thesis = "LFT-001"
+
+[[pilot_test]]
+id = "LFP-003"
+objective = "Inject loop-based regularization toggles into neural homotopy and compare residual stability."
+run = "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --batch-size 8 --seed 42"
+expected_artifact = "data/evidence/e029_neural_homotopy.toml"
+related_thesis = "LFT-003"
+
+[[pilot_test]]
+id = "LFP-004"
+objective = "Run TX-2 lambda sweep with representation-invariance checks on output class labels."
+run = "cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500"
+expected_artifact = "data/thesis_lab/tx2/tx2_report.toml"
+related_thesis = "LFT-004"
+
+[[pilot_test]]
+id = "LFP-005"
+objective = "Audit coupling-claim assumptions against identity-regime declarations before promotion."
+run = "cargo run --release --bin registry_check"
+expected_artifact = "stdout"
+related_thesis = "LFT-005"
+
+[supplemental_copy]
+manifest_path = "data/external/intake/2026_02_15_cayley_dickson_sources/transfer_manifests/copy_manifest_final.tsv"
+destination_root = "data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs"
+copied_total = 328
+copied_documents_primary = 324
+copied_downloads = 4
+
+[mirror_retry]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/mirror_retry_results_normalized.tsv"
+pdf_success_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success"
+total_attempts = 28
+pdf_ok_count = 6
+http_403_count = 7
+http_404_count = 9
+
+[mirror_retry_round2]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/mirror_retry_results_round2.tsv"
+pdf_success_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success"
+pdf_added_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success_added.tsv"
+total_attempts = 14
+pdf_ok_count = 1
+ok_nonpdf_count = 6
+http_403_count = 7
+notes = "Round-2 recovered only a companion substitute PDF; hash matched prior storage, so no net new unique artifact."
+
+[mirror_retry_round3]
+results_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/mirror_retry_results_round3.tsv"
+pdf_success_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/pdf_success"
+pdf_added_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/pdf_success_added.tsv"
+total_attempts = 18
+pdf_ok_count = 1
+ok_nonpdf_count = 12
+http_503_count = 3
+http_404_count = 1
+http_405_count = 1
+notes = "Round-3 confirmed functional landing links for Eakin-Sathaye, but direct PDF routes remained gated or non-PDF."
+
+[reconciliation]
+report_path = "reports/cd_transfer_retry_reconciliation_2026_02_15.toml"
+
+[canonical_source_index]
+path = "registry/cayley_dickson_canonical_sources.toml"
+policy = "One working canonical link per paper; non-working mirrors retained only as manual intervention references."
+minimum_requirement = "1 paper/document/artifact => >= 1 functional link"
+
+[global_artifact_source_of_truth]
+path = "registry/artifact_source_of_truth.toml"
+reconciliation_report = "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml"
+policy = "Global registry across bibliography, external sources, and intake retry ledgers."
+
+
+[bibliography_resolution]
+paper_resolution_count = 4
+resolved_paper_count = 3
+unresolved_paper_count = 1
+functional_linked_paper_count = 4
+direct_pdf_linked_paper_count = 3
+papers_without_working_mirror_count = 0
+functional_minimum_requirement_met = true
+policy = "paper_level_status_preferred_over_url_permutations"
+
+[[paper_resolution]]
+paper_id = "PR-001"
+key = "EAKIN_SATHAYE_1990"
+title = "On automorphisms and derivations of Cayley-Dickson algebras"
+doi = "10.1016/0021-8693(90)90221-9"
+status = "landing_links_ok_pdf_gated"
+canonical_functional_url = "https://doi.org/10.1016/0021-8693(90)90221-9"
+secondary_functional_urls = ["https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219", "https://www.sciencedirect.com/science/article/pii/0021869390902219", "https://www.sciencedirect.com/journal/journal-of-algebra/vol/129/issue/2"]
+canonical_unresolved_url = "https://core.ac.uk/download/pdf/82141950.pdf"
+blocked_pdf_variants = ["https://core.ac.uk/download/pdf/82141950.pdf?download=1", "https://core.ac.uk/download/82141950.pdf", "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf", "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true", "https://www.sciencedirect.com/science/article/pii/S0021869390902219/pdfft?isDTMRedir=true&download=true"]
+companion_open_pdf_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success/moreno_2005_companion_math0510397.pdf"
+notes = "Functional landing links are available, but direct Eakin-Sathaye PDF endpoints still return HTML or gateway errors in this environment."
+
+[[paper_resolution]]
+paper_id = "PR-002"
+key = "MCCRIMMON_1985"
+title = "Derivations and Cayley derivations of generalized Cayley-Dickson algebras"
+doi = "10.2140/pjm.1985.117.163"
+status = "resolved_pdf"
+canonical_functional_url = "https://msp.org/pjm/1985/117-1/p10.xhtml"
+canonical_pdf_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success/mccrimmon_1985_pjm_117_1_p10.pdf"
+notes = "Resolved via corrected MSP direct PDF endpoint."
+
+[[paper_resolution]]
+paper_id = "PR-003"
+key = "BREMNER_HENTZEL_2001"
+title = "Identities for algebras obtained from the Cayley-Dickson process"
+doi = "10.1081/AGB-100105036"
+status = "resolved_pdf"
+canonical_functional_url = "https://dr.lib.iastate.edu/server/api/core/bitstreams/7acefa00-fdc3-4691-a20f-4a3494587690/content"
+canonical_pdf_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success/bremner_hentzel_2001_identities_iastate.pdf"
+notes = "Resolved via Iowa State bitstream mirror while Taylor and ResearchGate direct links were gated."
+
+[[paper_resolution]]
+paper_id = "PR-004"
+key = "BALES_2016_ALT_CD"
+title = "An Alternate Cayley-Dickson Product"
+doi = "10.48550/arXiv.1602.02317"
+status = "resolved_pdf"
+canonical_functional_url = "https://arxiv.org/pdf/1602.02317v1"
+canonical_pdf_path = "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success/bales_2016_alternate_cd_1602.02317v1.pdf"
+notes = "Resolved via arXiv v1/v2 and Internet Archive direct mirror; withdrawn current-version endpoint remains unavailable."

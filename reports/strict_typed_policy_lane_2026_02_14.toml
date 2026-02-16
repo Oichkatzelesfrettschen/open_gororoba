@@ -1,0 +1,78 @@
+# Strict typed-policy lane integration report.
+
+[report]
+id = "strict-typed-policy-lane-2026-02-14"
+date = "2026-02-14"
+status = "completed"
+owner_scope = [
+  "Makefile",
+  ".github/workflows/ci.yml",
+  "reports/strict_typed_policy_lane_2026_02_14.toml",
+]
+
+[decision.strict_target]
+canonical_target = "registry-verify-typed-policy-error"
+command = "cargo run --release --bin registry-check -- --typed-policy error"
+naming_rationale = "Uses function-first canonical make naming (`registry-verify-*`) and encodes strict policy mode explicitly as `error`."
+
+[decision.default_typed_policy]
+selected = "warn"
+changed_binary_behavior = false
+decision_summary = "Default --typed-policy remains warn; strict enforcement is introduced as an explicit lane target and CI step."
+rationale = [
+  "Preserves existing registry-check default behavior and avoids unplanned binary contract changes.",
+  "Canonical CI contract keeps governance-gate and registry-acceptance-gate as primary commands.",
+  "Strict typed-policy enforcement is still guaranteed in CI via a dedicated supplemental command.",
+]
+
+[changes.makefile]
+added_phony = ["registry-verify-typed-policy-error"]
+added_target = "registry-verify-typed-policy-error"
+added_target_command = "cargo run --release --bin registry-check -- --typed-policy error"
+help_updates = [
+  "Added strict typed-policy target in Quality section.",
+  "Added strict typed-policy lane in Gates (tiered) section.",
+]
+
+[changes.ci]
+workflow = ".github/workflows/ci.yml"
+job = "canonical-registry-contract"
+primary_contract_commands = [
+  "make governance-gate",
+  "make registry-acceptance-gate",
+]
+added_step_name = "Strict typed-policy registry lane"
+added_step_command = "PYTHONWARNINGS=error make registry-verify-typed-policy-error"
+step_order = [
+  "Canonical governance gate",
+  "Canonical registry acceptance gate",
+  "Strict typed-policy registry lane",
+]
+
+[[validation]]
+command = "make -n registry-verify-typed-policy-error"
+exit_code = 0
+outcome = "pass"
+stdout = "cargo run --release --bin registry-check -- --typed-policy error"
+
+[[validation]]
+command = "make -n governance-gate"
+exit_code = 0
+outcome = "pass"
+stdout = "Dry-run lists canonical governance commands plus summary echo lines."
+
+[[validation]]
+command = "make -n registry-acceptance-gate"
+exit_code = 0
+outcome = "pass"
+stdout = "Dry-run lists semantic/evidence/integrity/execution lane commands plus acceptance summary echo line."
+
+[[validation]]
+command = "python3 -c 'import yaml,sys; yaml.safe_load(open(\".github/workflows/ci.yml\"))'"
+exit_code = 0
+outcome = "pass"
+fallback_used = false
+stdout = ""
+
+[final_state]
+contract_alignment = "governance-gate and registry-acceptance-gate remain primary canonical CI contract commands; strict typed-policy lane is additive."

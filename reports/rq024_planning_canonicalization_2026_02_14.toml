@@ -1,0 +1,89 @@
+# RQ-024 planning canonicalization execution report.
+
+[report]
+id = "RQ024-PLAN-CANON-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "completed"
+authoritative = true
+ownership_scope = [
+  "registry/roadmap.toml",
+  "plans/resumption_unified_master_plan_2026_02_14.toml",
+  "registry/toml_inventory.toml",
+  "registry/markdown_payload_chunks.toml",
+  "reports/control_plane_residue_inventory_2026_02_14.toml",
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+]
+notes = [
+  "Counts track RQ-024 target residue families in owned active planning/generated artifacts.",
+  "Term-family IDs are used to avoid reinserting legacy residue strings in this report payload.",
+]
+
+[measurement]
+method = "python string-count pass over owned active planning/generated artifacts"
+scanned_files = [
+  "registry/roadmap.toml",
+  "plans/resumption_unified_master_plan_2026_02_14.toml",
+  "registry/toml_inventory.toml",
+  "registry/markdown_payload_chunks.toml",
+]
+
+[[term_family]]
+id = "TF-001"
+label = "wave5_plan_path_alias"
+description = "Legacy Wave 5 plan-path alias references in active planning/generated artifacts."
+canonical_target = "strict_toml_granularization_plan path"
+before = 5
+after = 1
+delta = -4
+
+[[term_family]]
+id = "TF-002"
+label = "registry_acceptance_gate_alias"
+description = "Legacy acceptance-gate alias references in active planning/generated artifacts."
+canonical_target = "registry-acceptance-gate"
+before = 2
+after = 0
+delta = -2
+
+[[term_family]]
+id = "TF-003"
+label = "governance_gate_alias"
+description = "Legacy governance-gate alias references in active planning/generated artifacts."
+canonical_target = "governance-gate"
+before = 2
+after = 0
+delta = -2
+
+[totals]
+before = 9
+after = 1
+delta = -8
+residual_explanation = "Single residual hit is archival path-name inventory presence in registry/toml_inventory.toml."
+
+[[file_delta]]
+path = "registry/roadmap.toml"
+before = 2
+after = 0
+delta = -2
+
+[[file_delta]]
+path = "plans/resumption_unified_master_plan_2026_02_14.toml"
+before = 3
+after = 0
+delta = -3
+
+[[file_delta]]
+path = "registry/toml_inventory.toml"
+before = 1
+after = 1
+delta = 0
+
+[[file_delta]]
+path = "registry/markdown_payload_chunks.toml"
+before = 3
+after = 0
+delta = -3
+
+[artifacts]
+control_plane_snapshot = "reports/control_plane_residue_inventory_2026_02_14.toml"

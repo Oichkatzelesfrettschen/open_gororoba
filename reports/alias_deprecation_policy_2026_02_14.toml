@@ -1,0 +1,205 @@
+# Legacy alias deprecation policy and coverage report.
+# Tracks horizon dates, ownership, and removal criteria coverage for preserved aliases.
+
+[report]
+id = "ADP-2026-02-14"
+created = "2026-02-14"
+status = "active"
+authoritative = true
+scope = "Deprecation horizon, owner assignment, and removal criteria coverage for control-plane legacy aliases"
+
+[inputs]
+policy_registry = "registry/control_plane_naming_standards.toml"
+makefile = "Makefile"
+compat_matrix = "reports/control_plane_naming_compat_matrix_2026_02_14.toml"
+closure_report = "reports/control_plane_closure_draft_2026_02_14.toml"
+sources = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+]
+
+[deprecation_horizon]
+id = "ALIAS-HORIZON-2026-02-14"
+start_date = "2026-02-14"
+review_date = "2026-05-15"
+earliest_removal_date = "2026-08-14"
+date_basis = "Concrete ISO dates are mandatory for review and removal decisions."
+
+[makefile_messaging]
+target_deprecation_format = "DEPRECATED: make <alias> is a legacy alias. Use make <canonical>."
+help_deprecation_format = "DEPRECATED: make <alias> is a legacy alias. Use make <canonical>."
+status = "standardized"
+
+[coverage]
+alias_groups_total = 8
+legacy_aliases_total = 28
+legacy_aliases_with_owner = 28
+legacy_aliases_with_removal_criteria = 28
+aliases_missing_owner = []
+aliases_missing_removal_criteria = []
+coverage_complete = true
+
+[removal_criteria_contract]
+criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes aliases in the group.",
+  "One review cycle validates canonical targets as the only operational entrypoints for the group.",
+  "Any removal patch updates Makefile, naming policy, and compatibility reports in the same change set.",
+]
+
+[[alias_group]]
+id = "AG-001"
+lane_or_gate = "LANE-CSV-PIPELINE"
+owner = "registry data pipeline maintainers"
+canonical_targets = ["registry-csv-pipeline-gate"]
+legacy_aliases = ["registry-wave3"]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave3.",
+  "One review cycle passes with governance-gate and registry-acceptance-gate usage staying canonical in automation.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-002"
+lane_or_gate = "LANE-CONTROL-PLANE"
+owner = "registry control-plane maintainers"
+canonical_targets = ["registry-control-plane-gate"]
+legacy_aliases = ["registry-wave4"]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave4.",
+  "One review cycle passes with registry-control-plane-gate remaining the only documented operational contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-003"
+lane_or_gate = "LANE-SEMANTIC-ATOMS"
+owner = "registry semantic-atoms maintainers"
+canonical_targets = [
+  "registry-build-semantic-atoms",
+  "registry-verify-semantic-atoms",
+  "registry-semantic-atoms-gate",
+]
+legacy_aliases = [
+  "registry-wave5-batch1-build",
+  "registry-verify-wave5-batch1",
+  "registry-wave5-batch1",
+  "registry-strict-toml-batch1-build",
+  "registry-verify-strict-toml-batch1",
+  "registry-strict-toml-batch1",
+]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch1 wave/strict alias target.",
+  "One review cycle passes with registry-build-semantic-atoms, registry-verify-semantic-atoms, and registry-semantic-atoms-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-004"
+lane_or_gate = "LANE-EVIDENCE-PROVENANCE"
+owner = "registry evidence-provenance maintainers"
+canonical_targets = [
+  "registry-build-evidence-provenance",
+  "registry-verify-evidence-provenance",
+  "registry-evidence-provenance-gate",
+]
+legacy_aliases = [
+  "registry-wave5-batch2-build",
+  "registry-verify-wave5-batch2",
+  "registry-wave5-batch2",
+  "registry-strict-toml-batch2-build",
+  "registry-verify-strict-toml-batch2",
+  "registry-strict-toml-batch2",
+]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch2 wave/strict alias target.",
+  "One review cycle passes with registry-build-evidence-provenance, registry-verify-evidence-provenance, and registry-evidence-provenance-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-005"
+lane_or_gate = "LANE-INTEGRITY-RESOLUTION"
+owner = "registry integrity-resolution maintainers"
+canonical_targets = [
+  "registry-build-integrity-resolution",
+  "registry-verify-integrity-resolution",
+  "registry-integrity-resolution-gate",
+]
+legacy_aliases = [
+  "registry-wave5-batch3-build",
+  "registry-verify-wave5-batch3",
+  "registry-wave5-batch3",
+  "registry-strict-toml-batch3-build",
+  "registry-verify-strict-toml-batch3",
+  "registry-strict-toml-batch3",
+]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch3 wave/strict alias target.",
+  "One review cycle passes with registry-build-integrity-resolution, registry-verify-integrity-resolution, and registry-integrity-resolution-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-006"
+lane_or_gate = "LANE-EXECUTION-PLANNING"
+owner = "registry execution-planning maintainers"
+canonical_targets = [
+  "registry-build-execution-planning",
+  "registry-verify-execution-planning",
+  "registry-execution-planning-gate",
+]
+legacy_aliases = [
+  "registry-wave5-batch4-build",
+  "registry-verify-wave5-batch4",
+  "registry-wave5-batch4",
+  "registry-strict-toml-batch4-build",
+  "registry-verify-strict-toml-batch4",
+  "registry-strict-toml-batch4",
+]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch4 wave/strict alias target.",
+  "One review cycle passes with registry-build-execution-planning, registry-verify-execution-planning, and registry-execution-planning-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-007"
+lane_or_gate = "GATE-REGISTRY-ACCEPTANCE"
+owner = "registry gate maintainers"
+canonical_targets = ["registry-acceptance-gate"]
+legacy_aliases = ["registry-wave5"]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave5.",
+  "One review cycle passes with registry-acceptance-gate as the only documented acceptance contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
+
+[[alias_group]]
+id = "AG-008"
+lane_or_gate = "GATE-GOVERNANCE"
+owner = "governance gate maintainers"
+canonical_targets = ["governance-gate"]
+legacy_aliases = ["wave6-gate"]
+horizon_ref = "ALIAS-HORIZON-2026-02-14"
+removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes wave6-gate.",
+  "One review cycle passes with governance-gate as the only documented governance contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+coverage_status = "complete"
