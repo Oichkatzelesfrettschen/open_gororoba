@@ -1,0 +1,15 @@
+HTTP/2 403 
+date: Sun, 15 Feb 2026 20:05:23 GMT
+content-type: text/plain; charset=UTF-8
+content-length: 16
+x-frame-options: SAMEORIGIN
+referrer-policy: same-origin
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+set-cookie: __cf_bm=FYrtgXGlkhmfefrGBbDh7MMEzcbdCVPE_QwrYOforL4-1771185923-1.0.1.1-fQfCsN76niOQFrFoZPbu1B.hiDI44HQw5ozLaBTPecR5lbOxPrrGVn3KHj6DeA0hpIFfKjH4ZgKHDnPJRFKcJHCcmUKMC7smIOWduBuszJc; path=/; expires=Sun, 15-Feb-26 20:35:23 GMT; domain=.researchgate.net; HttpOnly; Secure; SameSite=None
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+cross-origin-opener-policy: same-origin
+server: cloudflare
+cf-ray: 9ce76b76ad5f7b5d-LAX
+alt-svc: h3=":443"; ma=86400
+

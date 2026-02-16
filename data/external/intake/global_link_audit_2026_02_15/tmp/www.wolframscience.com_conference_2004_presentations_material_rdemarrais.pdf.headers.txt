@@ -1,0 +1,11 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:38 GMT
+server: Generic Web Server
+set-cookie: WR_SID=8abca6f6.64ae50b5e0006; path=/; max-age=315360000; domain=.wolframscience.com
+last-modified: Mon, 02 Feb 2026 15:04:05 GMT
+etag: "738b9-649d8a257d7c7"
+accept-ranges: bytes
+content-length: 473273
+content-type: application/pdf
+content-security-policy: upgrade-insecure-requests
+

@@ -1,0 +1,37 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 23:17:36 GMT
+content-type: text/html; charset=utf-8
+location: https://ncatlab.org/nlab/show/E%E2%82%88
+server: cloudflare
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: no-cache
+x-runtime: 5
+set-cookie: instiki_session=75639c14ae320fc2edd9e2650e0acea9; path=/; HttpOnly
+strict-transport-security: max-age=31536000
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 1; mode=block
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.rawgit.com; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' https://ncatlab.org *; report-uri /cspreport
+cf-cache-status: DYNAMIC
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=e7G%2FOgohgyAX%2Fnm2NCRF10g8Xcq%2FXnC%2B1BAhRIyarQeXUwj6jI%2BKbQKITWPOXDmM213nRdZN5deDG8HKB0ZZKPm0kLJzBfEO3CxS"}]}
+cf-ray: 9ce885015d36c1fe-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:36 GMT
+content-type: text/html; charset=utf-8
+server: cloudflare
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: private, max-age=0, must-revalidate
+x-runtime: 18
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=qswgb%2BKrHiR8Ebd1%2FzIHpu3uy3obpHmL2ch2QuCrp0LsE3aJycX2zLGpJIrPtp5757KCvsIKuirkJA8YWzKzuIvgR1oC1YgGBytV"}]}
+strict-transport-security: max-age=31536000
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 1; mode=block
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.rawgit.com; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' https://ncatlab.org *; report-uri /cspreport
+cf-cache-status: DYNAMIC
+content-encoding: zstd
+cf-ray: 9ce885045b4bc1fe-LAX
+alt-svc: h3=":443"; ma=86400
+

@@ -1,0 +1,57 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:31 GMT
+content-type: text/html;charset=utf-8
+location: https://link.aps.org/doi/10.1103/PhysRevLett.49.405
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Mon, 16 Feb 2026 00:17:09 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=zdhKIJ6hfXsoFuGKN0z1Zg47bjJraOPrd0sx1NZ92IrngnSO0g8Zc9gB31L1ssr0rY86SamYl8Wa%2BlWM7Jv%2BoIJ2yUDo9A%3D%3D"}]}
+cf-ray: 9ce884ea5f5a08d8-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html;charset=utf-8
+location: https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.49.405
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+x-frame-options: SAMEORIGIN
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-permitted-cross-domain-policies: none
+cf-cache-status: DYNAMIC
+speculation-rules: "/cdn-cgi/speculation"
+set-cookie: __cf_bm=xTOLX3dU17tsPu9RyuBafSBaFM_Jwbg6K6k6Kkwhv2Q-1771197451.9722123-1.0.1.1-QthJYbij_7s8wfQiZlFMewZP0h6KUrwq_e4gK2z2RKgwZLiiLBw1Oa__CF_FXLPKLcNg14m3k2qohyXenHy56q_SUQd_ZWegS8FA.LYjp3UZze7oyQU0tjoJFrhoZIVY; HttpOnly; Secure; Path=/; Domain=aps.org; Expires=Sun, 15 Feb 2026 23:47:32 GMT
+server: cloudflare
+cf-ray: 9ce884eadb1550a9-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 403 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html; charset=UTF-8
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),browsing-topics=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),interest-cohort=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=()
+referrer-policy: same-origin
+server-timing: chlray;desc="9ce884ebbe747c7d"
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+set-cookie: __cf_bm=q7B4Ll.kC3T020FGu_fjyjigpbx76nbsjohGcuWJLYw-1771197452-1.0.1.1-eyEpRGfLvkVsROjnXcHZ6YGIph97tmKmxNb0hVnmPx70Aezzh5jV2Z02uTuUnpvUcoZOtUAt6Wbs4wnj9XanuYUo0hezXojvrvqoi6887w8; path=/; expires=Sun, 15-Feb-26 23:47:32 GMT; domain=.aps.org; HttpOnly; Secure; SameSite=None
+vary: Accept-Encoding
+speculation-rules: "/cdn-cgi/speculation"
+server: cloudflare
+cf-ray: 9ce884ebbe747c7d-LAX
+content-encoding: br
+alt-svc: h3=":443"; ma=86400
+

@@ -1,0 +1,17 @@
+HTTP/2 200 
+x-frame-options: SAMEORIGIN
+server: Google Frontend
+last-modified: Tue, 01 Dec 2009 10:00:37 GMT
+content-security-policy: frame-ancestors 'none'
+cache-control: max-age=3600
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+x-cloud-trace-context: 682faa7e69b34267bfa82902a23c0a66
+accept-ranges: bytes
+age: 95576
+date: Sun, 15 Feb 2026 23:17:27 GMT
+x-served-by: cache-lga21950-LGA, cache-lga21933-LGA, cache-hhr-khhr2060051-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197447.124374,VS0,VE1
+content-length: 43748
+

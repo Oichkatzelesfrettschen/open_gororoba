@@ -1,0 +1,30 @@
+HTTP/2 301 
+x-cloud-trace-context: 96f49e7fa7a157618de2dbb4386a32b1
+via: 1.1 varnish, 1.1 varnish, 1.1 varnish
+server: Google Frontend
+location: /pdf/1602.02317
+content-type: text/html; charset=utf-8
+accept-ranges: bytes
+age: 0
+date: Sun, 15 Feb 2026 20:05:27 GMT
+x-served-by: cache-lga21929-LGA, cache-lga21932-LGA, cache-hhr-khhr2060038-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0, 0
+x-timer: S1771185927.981590,VS0,VE141
+strict-transport-security: max-age=300
+content-length: 217
+
+HTTP/2 404 
+server: Varnish
+retry-after: 0
+content-type: text/html
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 20:05:27 GMT
+via: 1.1 varnish
+x-served-by: cache-hhr-khhr2060038-HHR
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1771185927.132648,VS0,VE162
+strict-transport-security: max-age=300
+content-length: 126
+

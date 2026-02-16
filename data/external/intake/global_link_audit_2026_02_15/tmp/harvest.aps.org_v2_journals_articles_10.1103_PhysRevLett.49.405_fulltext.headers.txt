@@ -1,0 +1,20 @@
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://harvest.aps.org:443/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:26 GMT
+content-type: application/pdf
+content-length: 249122
+etag: "eaba412a1891db647de8f4f08be885f5f80f45d7"
+content-disposition: inline; filename=PhysRevLett.49.405.pdf
+x-content-type-options: nosniff
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+x-permitted-cross-domain-policies: none
+

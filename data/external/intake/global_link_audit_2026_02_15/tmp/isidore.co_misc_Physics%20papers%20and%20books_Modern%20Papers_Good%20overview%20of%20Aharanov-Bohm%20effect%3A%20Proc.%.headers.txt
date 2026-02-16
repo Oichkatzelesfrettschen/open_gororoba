@@ -1,0 +1,16 @@
+HTTP/2 200 
+x-robots-tag: all
+server: Apache/2.4.66 (Unix) OpenSSL/3.5.5
+strict-transport-security: max-age=63072000
+public-key-pins: pin-sha256="C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="; pin-sha256="diGVwiVYbubAI3RW4hB9xU8e/CH2GnkuvVFZE8zmgzI="; max-age=5184000; includeSubDomains
+content-security-policy: default-src https: data: 'unsafe-inline'
+last-modified: Tue, 02 Sep 2014 18:02:30 GMT
+etag: "154ac6-50218ec457980"
+accept-ranges: bytes
+content-length: 1395398
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+content-type: application/pdf
+date: Sun, 15 Feb 2026 23:17:33 GMT
+

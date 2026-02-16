@@ -1,0 +1,33 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:33 GMT
+content-type: text/html;charset=utf-8
+location: https://arxiv.org/abs/2411.18881
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:17:45 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=3cwIHUl2Ve8PanvhHE%2BOv7woZ3CaTLV6hXCiGd9QXkKnE6U8%2FXk%2FWpGXqCyCUQ9SaEYup6zUSsPQxeFKFVxd8H%2BNSIwJKA%3D%3D"}]}
+cf-ray: 9ce884f14e5dd7ac-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+x-cloud-trace-context: 579415cd175dbe54c341f3eac918afb7
+last-modified: Mon, 02 Dec 2024 01:16:56 GMT
+content-type: text/html; charset=utf-8
+server: Google Frontend
+content-security-policy: frame-ancestors 'none'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+x-frame-options: SAMEORIGIN
+cache-control: max-age=3600
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:33 GMT
+age: 243306
+x-served-by: cache-lga21989-LGA, cache-lga21926-LGA, cache-hhr-khhr2060044-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197453.077998,VS0,VE1
+content-length: 45353
+

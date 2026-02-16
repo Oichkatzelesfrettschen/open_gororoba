@@ -1,0 +1,1740 @@
+
+
+
+	
+
+
+<!-- MHS 07/09/2024 A -->
+<!-- Change MCQ numbers 7/9/24 -->
+
+
+
+
+
+
+
+<!-- journals_links_bs5 starts here --> 
+<!-- 7 March -->
+
+
+   
+   <!-- using bs5-wide_journals -->
+   <!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="citation_journal_title" content="Transactions of the American Mathematical Society">
+<meta name="citation_journal_abbrev" content="Trans. Amer. Math. Soc.">
+<meta name="citation_abstract_html_url" content="https://www.ams.org/tran/1963-108-02/S0002-9947-1963-0158400-5/">
+<meta name="citation_pdf_url" content="https://www.ams.org/tran/1963-108-02/S0002-9947-1963-0158400-5/S0002-9947-1963-0158400-5.pdf">
+<meta name="citation_issn" content="0002-9947">
+<meta name="citation_issn" content="1088-6850">
+<meta name="citation_author" content="Stasheff, James Dillon">
+<meta name="citation_title" content="Homotopy associativity of 𝐻-spaces. II">
+<meta name="citation_publication_date" content="1963">
+<meta name="citation_volume" content="108">
+<meta name="citation_issue" content="2">
+<meta name="citation_firstpage" content="293">
+<meta name="citation_lastpage" content="312">
+<meta name="citation_doi" content="10.1090/S0002-9947-1963-0158400-5">
+<meta name="citation_reference" content="citation_author=Adams, J. F.; citation_author=Hilton, P. J.; citation_title=On the chain algebra of a loop space; citation_journal_title=Comment. Math. Helv.; citation_issn=0010-2571; citation_publication_date=1956; citation_volume=30; citation_firstpage=305; citation_lastpage=330; citation_doi=10.1007/BF02564350">
+<meta name="citation_reference" content="citation_author=Cartan, Henri; citation_author=Eilenberg, Samuel; citation_title=Homological algebra; citation_publisher=Princeton University Press, Princeton, N. J.; citation_publication_date=1956">
+<meta name="citation_reference" content="citation_author=Copeland, Arthur H., Jr.; citation_title=On 𝐻-spaces with two non-trivial homotopy groups; citation_journal_title=Proc. Amer. Math. Soc.; citation_issn=0002-9939; citation_publication_date=1957; citation_volume=8; citation_firstpage=184; citation_lastpage=191; citation_doi=10.2307/2032837">
+<meta name="citation_reference" content="citation_author=Hilton, P. J.; citation_author=Wylie, S.; citation_title=Homology theory: An introduction to algebraic topology; citation_publisher=Cambridge University Press, New York; citation_publication_date=1960">
+<meta name="citation_reference" content="citation_author=Massey, W. S.; citation_title=Some higher order cohomology operations; citation_conference_title=Symposium internacional de topología algebraica International symposium on algebraic topology; citation_publication_date=1958; citation_firstpage=145; citation_lastpage=154">
+<meta name="citation_reference" content="citation_author=Moore, John C.; citation_title=On the homology of 𝐾(𝜋,𝑛); citation_journal_title=Proc. Nat. Acad. Sci. U.S.A.; citation_issn=0027-8424; citation_publication_date=1957; citation_volume=43; citation_firstpage=409; citation_lastpage=411; citation_doi=10.1073/pnas.43.5.409">
+<meta name="citation_reference" content="citation_author=Serre, Jean-Pierre; citation_title=Homologie singulière des espaces fibrés. Applications; citation_journal_title=Ann. of Math. (2); citation_issn=0003-486X; citation_publication_date=1951; citation_volume=54; citation_firstpage=425; citation_lastpage=505; citation_doi=10.2307/1969485">
+<meta name="citation_reference" content="citation_author=Stasheff, James Dillon; citation_title=On extensions of 𝐻-spaces; citation_journal_title=Trans. Amer. Math. Soc.; citation_issn=0002-9947; citation_publication_date=1962; citation_volume=105; citation_firstpage=126; citation_lastpage=135; citation_doi=10.2307/1993924">
+<meta name="citation_reference" content="citation_author=Sugawara, Masahiro; citation_title=On the homotopy-commutativity of groups and loop spaces; citation_journal_title=Mem. Coll. Sci. Univ. Kyoto Ser. A. Math.; citation_issn=0368-8887; citation_publication_date=1960/61; citation_volume=33; citation_firstpage=257; citation_lastpage=269; citation_doi=10.1215/kjm/1250775911">
+<meta name="citation_reference" content="citation_author=Suzuki, Haruo; citation_title=On the Eilenberg-MacLane invariants of loop spaces; citation_journal_title=J. Math. Soc. Japan; citation_issn=0025-5645; citation_publication_date=1956; citation_volume=8; citation_firstpage=93; citation_lastpage=101; citation_doi=10.2969/jmsj/00820093">
+<meta name="citation_reference" content="citation_author=Uehara, Hiroshi; citation_author=Massey, W. S.; citation_title=The Jacobi identity for Whitehead products; citation_conference_title=Algebraic geometry and topology. A symposium in honor of S. Lefschetz; citation_publication_date=1957; citation_firstpage=361; citation_lastpage=377">
+<meta name="citation_reference" content="citation_author=Whitehead, George W.; citation_title=The homology suspension; citation_conference_title=Colloque de topologie algébrique, Louvain, 1956; citation_publication_date=1957; citation_firstpage=89; citation_lastpage=95">
+
+    <title>AMS :: Transactions of the American Mathematical Society</title>
+<!-- Framework bs5-wide_journals.html -->
+<!-- Favorites Icon -->
+    <!-- Favorites Icons -->
+<link rel="shortcut icon" type="image/x-icon" href="https://www.ams.org/images/Logo-Favicon.png">
+<link rel="icon" type="image/x-icon" href="https://www.ams.org/images/Logo-Favicon.png">
+<link rel="icon" type="image/png" href="https://www.ams.org/images/Logo-Favicon.png">
+    <!-- Analytics -->
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-26G4XFTR63"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-26G4XFTR63');
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P3772VN');</script>
+<!-- End Google Tag Manager -->
+	
+    <!-- Google Analytics 4 Code -->
+    <!-- google tag manager code inserted by txm on 14 nov 2019 -->
+<!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PQJKQL');</script>
+  <!-- End Google Tag Manager -->
+  <!--end tag manager from txm-->
+
+  <script>
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-2791151-1', 'auto', {'allowLinker': true });
+ga('require', 'linker');
+ga('linker:autoLink', ['www.ams.org','bookstore.ams.org','ebus.ams.org']);
+ga('set', 'hostname', 'www.ams.org');
+ga('require', 'linkid');
+ga('require', 'displayfeatures');
+ga('send', 'pageview');
+
+function amsTrackEvent (category, action, label) {
+	ga('send', 'event', category, action, label);
+}
+
+function amsTrackPageview (page) {
+	ga('send', 'pageview', page);
+}
+
+function amsAddTracking () {
+	var contentDiv = document.getElementById('amsContentDiv');
+	if (!contentDiv) return 0;
+	var aTags = contentDiv.getElementsByTagName('A');
+	for (i = 0; i < aTags.length; i++) {
+		var url = aTags[i].href;
+		url = url.replace(/.*ams.org/,'');
+		if (url.match(/\.htm(l)?$/i) || ! url.match(/\./) ) { 
+			continue;	
+		}
+		if (document.addEventListener) {
+			aTags[i].addEventListener('click', function () { amsTrackPageview(url) }, false);
+		}
+		else {
+			aTags[i].attachEvent('onclick', function () { amsTrackPageview(url) });
+		}
+	}
+}
+
+if (window.addEventListener)
+    window.addEventListener('load', amsAddTracking, false);
+else if (window.attachEvent)
+    window.attachEvent('onload', amsAddTracking);
+
+</script>
+
+
+  
+    <!-- End Google Analytics 4 Code -->
+    <!-- Hotjar -->
+    <!-- Placed by txm 15 July 2024 Hotjar Tracking Code for https://www.ams.org/ bs5 framework -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:1104779,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "s54zfl7gmg");
+</script>
+
+    <!-- Feed and tracker -->
+    
+<!-- rss feed for feed readers -->
+<link rel="alternate" type="application/rss+xml" title="AMS News" href="https://www.ams.org/cgi-bin/content/news_items.cgi?rss=1" />
+
+    <!-- Metadata -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.ams.org/#organization",
+  "name": "American Mathematical Society",
+  "legalName": "American Mathematical Society",
+  "url": "https://www.ams.org",
+  "logo": "https://www.ams.org/images/content/logo.png",
+  "foundingDate": "1888",
+  "foundingLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "New York City",
+      "addressRegion": "NY",
+      "addressCountry": "US"
+    }
+  },
+  "description": "The American Mathematical Society advances research and connects the global mathematical community through publications, meetings, advocacy, and professional services.",
+  "knowsAbout": [
+    "Mathematics research",
+    "Scholarly publishing",
+    "Peer review",
+    "Scientific journals",
+    "Professional meetings",
+    "Mathematics education"
+  ],
+  "sameAs": [
+    "https://www.facebook.com/amermathsoc",
+    "https://twitter.com/amermathsoc",
+    "https://www.linkedin.com/company/american-mathematical-society"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "201 Charles Street",
+    "addressLocality": "Providence",
+    "addressRegion": "RI",
+    "postalCode": "02904-2213",
+    "addressCountry": "US"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+1-800-321-4267",
+      "contactType": "General Inquiries",
+      "contactOption": "TollFree",
+      "areaServed": "Worldwide",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "16:15"
+      }
+    }
+  ],
+  "department": [
+    {
+      "@type": "Organization",
+      "name": "Membership",
+      "description": "Recruitment, engagement, and retention of AMS members.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "201 Charles Street",
+        "addressLocality": "Providence",
+        "addressRegion": "RI",
+        "postalCode": "02904",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Programs",
+      "description": "Professional development programs supporting mathematicians at all career stages.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "201 Charles Street",
+        "addressLocality": "Providence",
+        "addressRegion": "RI",
+        "postalCode": "02904",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Development",
+      "description": "Philanthropic programs supporting the mission and long-term sustainability of the AMS.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "201 Charles Street",
+        "addressLocality": "Providence",
+        "addressRegion": "RI",
+        "postalCode": "02904",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Office of Government Relations",
+      "description": "Representation of the mathematical community in public policy and federal advocacy.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "700 Pennsylvania Avenue SE, Suite 570",
+        "addressLocality": "Washington",
+        "addressRegion": "DC",
+        "postalCode": "20003-2551",
+        "addressCountry": "US"
+      }
+    }
+  ],
+  "subOrganization": {
+    "@type": "Organization",
+    "@id": "https://mathscinet.ams.org/#organization",
+    "name": "Mathematical Reviews (MathSciNet)",
+    "brand": {
+      "@type": "Brand",
+      "name": "MathSciNet"
+    },
+    "description": "Comprehensive reviews and bibliographic data for the world's mathematical research literature.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "535 W. William St., Suite 210",
+      "addressLocality": "Ann Arbor",
+      "addressRegion": "MI",
+      "postalCode": "48103",
+      "addressCountry": "US"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-734-996-5259",
+      "contactType": "MathSciNet Support",
+      "areaServed": "Worldwide",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    }
+  }
+}
+</script>
+
+    <!-- end metadata -->
+    <!-- CSS head link-->
+    <!-- March 6 2025 -->
+
+<!-- rss feed for feed readers -->
+<link rel="alternate" type="application/rss+xml" title="AMS News" href="https://www.ams.org/cgi-bin/content/news_items.cgi?rss=1" />
+
+<!-- Prefetch -->
+<link rel="dns-prefetch" href="https://maxcdn.bootstrapcdn.com" />
+<link rel="dns-prefetch" href="https://ajax.googleapis.com" />
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+
+   <!-- Beginning head-link_journals.html on WWW, QA, THOR -->
+   <!-- Bootstrap CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- 2024 Redesign -->
+   <link href="/css/2024BS5FinalJRNL.css" rel="stylesheet">
+   <link href="/css/www-nav.css" rel="stylesheet">
+   <link href="/css/global-code.css" rel="stylesheet">
+   <!-- End head-link_journals.html on WWW, QA, THOR -->
+
+
+
+    <!-- end CSS -->
+    <!-- Fontawesome script -->
+    <script src="https://kit.fontawesome.com/2ad6d7fbd6.js" crossorigin="anonymous" defer></script>
+    <!-- MathJax -->
+    
+    <!-- GDPR -->
+    <link rel="stylesheet" type="text/css" href="/css/cookieconsent.min.css">
+<script src="/js/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#edeff5",
+      "text": "#000000"
+    },
+    "button": {
+      "background": "#2f5fd0"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right",
+  "content": {
+    "message": "This website uses cookies to ensure you get the best experience on our website.",
+    "href": "/privacy",
+    "dismiss": "Okay",
+    "link": "Learn more about our privacy policy"
+  }
+})});
+</script>
+	
+    <!-- new global nav js -->
+<!-- 
+    <script src="/js/www-nav.js"></script>
+ -->
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3772VN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <input type="hidden" id="ams_class_id" value="1">
+    <div class="container-fluid">
+        <!-- header content on journals -->
+		   
+			  <!-- using www-nav on journals -->
+			    <header class="container-fluid">
+    <nav class="ams-nav ams-nav--quick" aria-label="quick">
+        <a href="#main" class="ams-nav__skiplink">Skip to main content </a>
+        <a href="/" class="ams-nav__logo">
+            <span class="ams-nav__logo__inner">
+                <svg role="image" aria-label="American Mathematical Society Logo, to the homepage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 92" width="350px" height="92px"><style>.amsLogoSVG{--logoPathColor: currentColor;fill:var(--logoPathColor);stroke:var(--logoPathColor);stroke-width:0.21}.blue{--logoPathColor:#0057b8}.orange{--logoPathColor:#e87722}.gray{--logoPathColor:#98a4ae}</style><path class="amsLogoSVG blue" d="M53.75 24.12c.63-1.73.85-2.06 1.17-2.06.31 0 .52.27 1.16 1.9.79 2 9.06 23.76 12.27 31.78 1.9 4.7 3.42 5.53 4.53 5.84.8.27 1.58.32 2.11.32.32 0 .52.05.52.32 0 .31-.47.42-1.05.42-.79 0-4.63 0-8.26-.1-1-.06-1.58-.06-1.58-.37 0-.2.16-.32.37-.37.31-.1.63-.58.31-1.42l-4.9-12.96c-.1-.2-.2-.32-.47-.32H48.62c-.27 0-.43.16-.52.43l-3.17 9.33a11.2 11.2 0 0 0-.74 3.52c0 1.06 1.1 1.53 2 1.53h.52c.37 0 .53.11.53.32 0 .31-.32.42-.8.42-1.25 0-3.52-.16-4.1-.16-.58 0-3.48.16-5.95.16-.68 0-1-.1-1-.42 0-.2.2-.32.47-.32.36 0 1.1-.05 1.53-.1 2.42-.32 3.47-2.32 4.42-4.97l11.96-32.73Zm5.48 21.1c.27 0 .27-.16.2-.37l-5-14.23c-.26-.78-.52-.78-.79 0l-4.62 14.23c-.11.27 0 .36.15.36zm65.09 10.69c.2 1.9.58 4.85 2.84 5.59 1.53.47 2.9.47 3.43.47.27 0 .43.05.43.27 0 .32-.48.47-1.1.47-1.17 0-6.85-.05-8.8-.2-1.21-.11-1.48-.27-1.48-.52 0-.21.1-.32.36-.37.27-.05.32-.94.21-1.9l-2.53-27.35h-.16l-12.9 27.4c-1.1 2.32-1.26 2.8-1.74 2.8-.36 0-.63-.52-1.63-2.43a895.97 896.81 0 0 1-6.16-12.22c-.47-.95-6.37-13.6-6.95-15.03h-.2l-2.12 24.46c-.04.85-.04 1.8-.04 2.7 0 .78.58 1.47 1.37 1.63.9.2 1.68.27 2 .27.2 0 .42.1.42.27 0 .36-.32.47-.95.47-1.95 0-4.47-.16-4.9-.16-.46 0-3 .16-4.41.16-.52 0-.9-.11-.9-.47 0-.16.27-.27.52-.27.42 0 .79 0 1.58-.16 1.73-.31 1.89-2.38 2.1-4.38l3.8-34.37c.04-.58.26-.94.58-.94.31 0 .52.2.79.79l16.11 33.15 15.48-33.1c.21-.47.43-.84.8-.84.35 0 .51.42.62 1.42l3.53 32.41zm12.74 6.06c-.74-.36-.78-.58-.78-2 0-2.63.2-4.74.26-5.59.05-.58.16-.85.43-.85.31 0 .36.16.36.58 0 .48 0 1.22.16 1.96.78 3.9 4.26 5.37 7.79 5.37 5.05 0 7.52-3.64 7.52-7.01 0-3.64-1.53-5.75-6.06-9.48l-2.37-1.96c-5.59-4.58-6.85-7.85-6.85-11.43 0-5.64 4.22-9.49 10.9-9.49 2.07 0 3.6.21 4.9.53 1 .2 1.42.26 1.84.26.43 0 .53.11.53.37 0 .25-.21 2-.21 5.59 0 .85-.11 1.21-.36 1.21-.32 0-.37-.27-.43-.68a9.06 9.06 0 0 0-.68-2.63c-.31-.57-1.73-2.79-6.58-2.79-3.63 0-6.48 2.27-6.48 6.11 0 3 1.37 4.9 6.42 8.85l1.48 1.17c6.22 4.9 7.7 8.17 7.7 12.38 0 2.16-.85 6.16-4.48 8.74a13.9 13.91 0 0 1-7.94 2.22c-2.48 0-4.9-.36-7.05-1.41z"/><path d="M40.98 77.17a1.22 1.22 0 1 0-1.33 2.05 1.22 1.22 0 0 0 1.33-2.05M9.86 52.27a3.78 3.78 0 1 0-6.35-4.11 3.78 3.78 0 0 0 6.35 4.11M13 56.2a3.35 3.35 0 1 0-3.65 5.62A3.35 3.35 0 0 0 13 56.2m5.23 7.34a2.91 2.91 0 1 0-3.17 4.88 2.91 2.91 0 0 0 3.17-4.88m5.93 5.52a2.5 2.5 0 1 0-2.72 4.2 2.5 2.5 0 1 0 2.72-4.2m6.1 3.92a2.07 2.07 0 1 0-2.25 3.49 2.07 2.07 0 0 0 2.25-3.49m5.65 2.48a1.62 1.63 0 0 0-2.27.48c-.5.77-.28 1.79.49 2.27.76.5 1.78.28 2.26-.48.5-.77.28-1.79-.48-2.27M7.74 42.14a4.2 4.21 0 1 0-7.07-4.57 4.2 4.21 0 0 0 7.07 4.57m-5.47-9.9a4.63 4.63 0 1 0 5.04-7.76 4.63 4.63 0 0 0-5.04 7.77" class="amsLogoSVG blue"/><path d="M27.22 65.4a1.2 1.2 0 0 0-1.51-.8 1.2 1.2 0 0 0-.8 1.5 1.22 1.22 0 0 0 2.32-.7m-7.86-39.12a3.78 3.79 0 1 0-2.22-7.24 3.78 3.79 0 0 0 2.22 7.24m-.11 5.04a3.34 3.35 0 1 0-6.4 1.95 3.34 3.35 0 0 0 6.4-1.95m-.7 9a2.92 2.92 0 1 0-5.59 1.72 2.92 2.92 0 0 0 5.59-1.73m1 8.04a2.5 2.5 0 1 0-1.67 3.1 2.5 2.5 0 0 0 1.66-3.1m2.16 6.94a2.07 2.07 0 1 0-3.95 1.21 2.07 2.07 0 0 0 3.95-1.2m2.72 5.52a1.64 1.64 0 1 0-3.13.96 1.64 1.64 0 1 0 3.13-.96m-.18-43.66a4.2 4.2 0 1 0-2.46-8.04 4.2 4.2 0 0 0 2.46 8.04m2.17-11.1a4.63 4.63 0 1 0 8.85-2.72 4.63 4.63 0 0 0-8.85 2.73" class="amsLogoSVG orange"/><path d="M24.8 48.77a1.21 1.21 0 0 0-.65-1.6 1.21 1.21 0 0 0-1.58.65 1.21 1.21 0 0 0 .64 1.59 1.21 1.21 0 0 0 1.59-.64m19.08-35a3.78 3.78 0 1 0 2.94-6.96 3.78 3.78 0 0 0-2.94 6.96m-3.3 3.78a3.36 3.36 0 0 0-6.16-2.62 3.36 3.36 0 0 0 6.15 2.62m-6.31 6.43a2.92 2.92 0 1 0-5.38-2.28 2.92 2.92 0 0 0 5.38 2.28m-4.4 6.8a2.5 2.5 0 1 0-4.6-1.94 2.5 2.5 0 0 0 4.6 1.94m-2.81 6.7a2.07 2.07 0 0 0-1.09-2.7 2.06 2.06 0 1 0 1.1 2.7m-1.46 6a1.65 1.65 0 0 0-.88-2.16 1.641.64 0 0 0-2.14.87 1.65 1.65 0 0 0 3.03 1.29M53.49 9.92a4.2 4.2 0 1 0 3.27-7.73 4.2 4.2 0 0 0-3.27 7.73m8.78-7.1a4.62 4.62 0 1 0 8.5 3.61 4.62 4.62 0 0 0-8.5-3.61" class="amsLogoSVG gray"/><path class="amsLogoSVG blue" d="m172.3 26.4.5-.02a19.79 19.8 0 0 0 1.7.06c.44 0 .51-.22.51-.35 0-.07-.02-.32-.4-.32h-.22c-.25 0-.64-.12-.64-.45 0-.36.1-.87.3-1.4l1.29-3.85c.02-.06.03-.06.05-.06h4.7l2.03 5.38c.05.12.06.24.03.3l-.03.03c-.25.07-.29.26-.29.33 0 .3.32.3.73.33h.1c.98.04 2.19.05 3.42.05.51 0 .62-.2.62-.35 0-.12-.05-.32-.4-.32-.2 0-.5-.02-.82-.12-.46-.13-1.03-.51-1.76-2.32-.94-2.35-2.94-7.58-4.14-10.7l-.94-2.43c-.25-.66-.37-.9-.64-.9-.26 0-.39.26-.64.97l-4.94 13.52c-.41 1.14-.81 1.82-1.69 1.93a5.57 5.58 0 0 1-.6.04c-.22 0-.38.13-.38.31 0 .36.44.36.6.36.69 0 1.45-.03 1.96-.05zm3.46-7.53 1.88-5.77 2.02 5.77h-3.91zm12.8 7.57c.35 0 .83-.02 1.2-.05l.42-.02h.33c.37.03.95.06 1.45.06.44 0 .52-.2.52-.35 0-.17-.18-.32-.33-.32-.14 0-.4-.02-.7-.1-.31-.08-.31-.29-.31-.36 0-.3 0-.64.02-.92l.7-7.85 1.47 3.07.75 1.53a159.93 160.08 0 0 0 2.24 4.3c.38.7.52.95.81.95.3 0 .44-.26.84-1.08l4.37-8.96.86 8.81c.04.27.02.42 0 .48a.33.33 0 0 0-.21.31c0 .3.4.35.7.38.71.07 2.86.1 3.28.1.35 0 .57-.13.57-.34 0-.19-.13-.32-.33-.32-.19 0-.66 0-1.18-.17-.62-.2-.78-.97-.86-1.76l-1.31-11.37c-.07-.55-.3-.66-.46-.66-.27 0-.4.27-.46.4l-5.42 11.16-5.62-11.18c-.17-.33-.41-.39-.56-.39-.2 0-.36.2-.4.49l-1.4 12.09-.02.18c-.07.67-.14 1.08-.56 1.15h-.07c-.23.05-.35.06-.47.06-.2 0-.37.13-.37.32 0 .13.06.35.5.35zm21.38-13.7.63.03c.5.08.58.26.63.86.05.59.05 1.1.05 3.98v3.26c0 1.81 0 3.24-.11 3.98v.06c-.1.54-.15.73-.35.77l-.23.03a1.9 1.9 0 0 1-.34.05c-.22 0-.33.17-.33.33 0 .12.06.33.49.33.25 0 .6-.02 1.11-.05l.81-.03c.3 0 .78 0 1.59.05h.44c.76.04 1.7.06 2.9.06.73 0 1.06 0 1.23-.6.1-.42.26-1.69.26-1.84 0-.4-.21-.46-.31-.46-.3 0-.34.28-.38.44-.1.73-.36.97-.76 1.14-.47.18-1.37.18-1.85.18-1.88 0-2.08-.23-2.11-1.3v-4.66c.47 0 2.34.02 2.82.08.74.09.8.3.84.45.07.2.07.39.07.55 0 .24.16.35.32.35.21 0 .35-.2.35-.52l.08-1.2c.03-.38.09-.64.12-.8a1 1 0 0 0 .04-.22c0-.23-.15-.33-.3-.33-.13 0-.21.1-.32.22l-.07.08c-.14.14-.35.17-.83.2-.3.04-1.79.04-3.11.04v-5.04c.45-.01 2.38 0 2.67.05 1.04.13 1.13.25 1.22.45.07.18.1.45.1.58 0 .39.25.42.32.42.19 0 .3-.17.35-.34a13.06 13.07 0 0 0 .13-1.23c.02-.32.07-.5.1-.65.03-.1.05-.17.05-.24 0-.27-.14-.35-.26-.35-.09 0-.17.04-.23.06l-.06.02-.12.03c-.19.02-.45.07-.74.08H212c-.44 0-1.28-.03-1.94-.03-.31 0-.48.1-.48.32 0 .17.17.33.32.33zm12.2 0 .63.03c.5.08.58.26.63.86.05.59.05 1.1.05 3.98v3.26c0 1.81 0 3.24-.11 3.98v.05c-.1.55-.15.73-.36.78-.16.03-.4.08-.55.08-.22 0-.33.17-.33.33 0 .12.07.33.49.33.5 0 1.48-.05 1.8-.06h.3c.4 0 1.34.06 2.15.06.45 0 .49-.26.49-.33a.32.32 0 0 0-.33-.33 6.1 6.1 0 0 1-.82-.08c-.45-.06-.55-.28-.61-.83-.09-.75-.09-2.17-.09-3.96v-.42l2.4.04q.06 0 .11.05l.79 1.03c.39.52.84 1.13 1.27 1.67 1.1 1.4 1.8 2.32 2.67 2.77.53.29 1.08.39 2.13.39h1.2c.22 0 .64 0 .64-.33a.34.34 0 0 0-.35-.33c-.1 0-.29 0-.65-.06-.5-.07-1.08-.27-2.03-1.24-1.04-1.08-2.27-2.63-3.72-4.42l-.17-.22c1.58-1.38 2.28-2.7 2.28-4.25 0-1.54-1.16-2.5-1.4-2.66a6.4 6.4 0 0 0-3.67-.84l-1.74.02-.65.02h-.3l-1.97-.04c-.31 0-.48.1-.48.33 0 .17.17.32.33.32zm3.32.5.01-.05a7.7 7.7 0 0 1 1.34-.11c1.96 0 3.12 1.3 3.12 3.45 0 1.23-.4 2.23-1.08 2.68-.4.28-.88.3-1.33.3-.88 0-1.8-.14-2-.25-.06-.04-.06-.06-.06-.1v-5.94zm12.64-.5c.12 0 .35.02.54.06.28.06.43.2.48.83.04.59.04 1.1.04 3.98v3.26c0 1.42 0 3.16-.1 4-.08.56-.14.77-.37.82-.16.03-.39.08-.54.08-.22 0-.33.17-.33.33 0 .12.06.33.48.33.43 0 1.13-.04 1.55-.05l.34-.01h.21c.4 0 1.36.06 2.18.06.45 0 .49-.26.49-.33a.33.33 0 0 0-.33-.33c-.16 0-.55-.03-.85-.08-.42-.06-.48-.27-.55-.83-.08-.75-.08-2.18-.08-3.99v-3.26c0-2.87 0-3.4.02-3.98.04-.63.14-.77.54-.86.2-.03.31-.03.45-.03.16 0 .32-.17.32-.33 0-.22-.16-.33-.48-.33l-1.63.04h-.61l-1.62-.04c-.31 0-.48.11-.48.33 0 .16.13.33.33.33zm9.22 11.92c1.58 1.38 3.63 2.02 6.42 2.02.73 0 2.53-.03 3.52-.42.4-.16.47-.27.59-.66a19.39 19.4 0 0 0 .46-2.42c0-.2-.15-.44-.35-.44-.28 0-.33.22-.38.41-.06.3-.3 1.07-.7 1.46-.68.69-1.55.82-3.02.82a6.54 6.55 0 0 1-6.72-6.52c0-1.65.2-3.36 1.66-4.7.88-.84 2.25-1.24 4.19-1.24 1.5 0 2.94.38 3.66.98.43.34.74 1.03.74 1.7 0 .2 0 .58.32.58.14 0 .37-.07.4-.56l.03-.92c0-.34 0-.7.02-.97l.06-.78.03-.29c0-.1-.04-.37-.42-.37-.52-.02-1.03-.11-1.6-.22l-.33-.06c-1-.16-2.11-.22-2.82-.22-2.59 0-4.53.67-5.96 2.04a7.51 7.52 0 0 0-2.2 5.17c0 2.37.8 4.26 2.39 5.63zm12.45 1.78c.52 0 1.13-.02 1.53-.05l.41-.01a21.13 21.15 0 0 0 1.71.06c.41 0 .46-.23.46-.33 0-.15-.1-.32-.38-.32h-.17c-.18 0-.47-.04-.47-.33 0-.3.1-.73.27-1.18l1.09-2.96.02-.03h4.43l1.72 4.24c.03.07.03.13.02.17a.15.15 0 0 1-.1.09l-.04.02c-.08.02-.2.08-.2.28 0 .27.32.28.7.3h.15c.86.04 1.94.05 3.03.05.53 0 .62-.2.62-.33 0-.2-.17-.32-.43-.32a2.5 2.5 0 0 1-.7-.1c-.33-.11-.82-.26-1.53-1.93l-2.71-6.66c-.92-2.25-1.7-4.2-1.88-4.58l-.1-.23c-.14-.3-.25-.55-.52-.55-.26 0-.38.24-.61.84l-4.51 11.58c-.38.96-.73 1.5-1.47 1.59a4.4 4.4 0 0 1-.54.04c-.2 0-.35.15-.35.32 0 .22.18.33.54.33zm4.9-6.28 1.74-4.95 1.84 4.95zM276 26.44c.6 0 1.19-.04 1.54-.05l.31-.01.28.01c.36.03.97.05 1.75.05.43 0 .52-.18.52-.33a.33.33 0 0 0-.33-.32c-.2 0-.6-.03-.91-.11-.39-.1-.56-.4-.6-1.94l-.21-8.26 4.64 4.9c2.05 2.13 4.8 4.85 5 5.02 1.08 1 1.3 1.17 1.57 1.17.32 0 .32-.25.32-1.5l.05-10.84c0-1.17.06-1.34.53-1.43.21-.04.34-.04.43-.04.23 0 .4-.18.4-.35 0-.32-.39-.32-.53-.32-.53 0-.97.03-1.28.04h-.76c-.4-.01-1-.04-1.59-.04-.17 0-.54 0-.54.32 0 .2.13.35.32.35.15 0 .57.02.91.09.42.07.55.3.57 1.55l.18 8.81-.75-.78c-.93-1-2.21-2.37-3.46-3.65-1.98-2.03-3.87-4.03-5-5.22l-1.06-1.1-.08-.09c-.28-.29-.55-.53-.8-.53-.38 0-.43.53-.43 1.11v10.62c0 1.66-.07 2.03-.41 2.13-.25.09-.6.1-.73.1a.33.33 0 0 0-.32.32c0 .33.35.33.48.33zm-88.6 21.59c.03.32 0 .52 0 .6a.32.32 0 0 0-.25.32c0 .33.43.36.78.4.83.07 3.2.13 3.64.13.6 0 .65-.29.65-.37 0-.09-.04-.3-.35-.3-.21 0-.76 0-1.36-.18-.78-.25-.96-1.25-1.06-2.16L188 33.1c-.04-.3-.08-.75-.44-.75-.29 0-.4.28-.48.44l-6.24 13.34-6.5-13.35c-.1-.23-.22-.43-.48-.43-.08 0-.37.03-.41.54l-1.56 14.2v.08c-.1.88-.21 1.48-.73 1.57-.32.06-.45.06-.62.06-.23 0-.4.12-.4.3 0 .16.1.37.55.37.37 0 .93-.02 1.34-.05l.49-.02h.38c.44.03 1.1.06 1.64.06.14 0 .57 0 .57-.38 0-.16-.16-.29-.35-.29-.14 0-.44-.02-.79-.1a.52.52 0 0 1-.42-.5c0-.38 0-.76.02-1.1l.82-9.58a415.33 415.72 0 0 0 2.67 5.74l.1.2a356.2 356.54 0 0 0 2.44 4.84l.05.09c.44.82.54 1.02.79 1.02.3 0 .38-.18.73-.95l5.26-11.16.99 10.71zm17.05.52c.04.07.04.13.03.17a.15.15 0 0 1-.1.08l-.05.03c-.07.02-.2.08-.2.28 0 .26.32.27.71.3h.15c.86.04 1.94.05 3.03.05.53 0 .61-.2.61-.33 0-.2-.17-.33-.42-.33a2.5 2.5 0 0 1-.7-.1c-.33-.1-.83-.25-1.53-1.92l-2.71-6.66c-.92-2.26-1.71-4.2-1.88-4.58l-.11-.23c-.13-.3-.24-.55-.51-.55s-.39.24-.62.84l-4.5 11.58c-.38.96-.73 1.49-1.47 1.59a4.4 4.4 0 0 1-.55.03c-.19 0-.35.16-.35.33 0 .22.18.33.55.33.52 0 1.12-.03 1.52-.05l.42-.01a21.13 21.15 0 0 0 1.7.06c.42 0 .47-.23.47-.33 0-.16-.1-.33-.38-.33h-.17c-.18 0-.47-.03-.47-.32 0-.3.1-.73.26-1.18l1.1-2.96.02-.04h4.42l1.72 4.25zm-2.17-5.36h-3.58l1.74-4.95zm14.52-6.83c1.8.04 2.08.44 2.13.86l.03.2c0 .17.03.5.32.5.17 0 .35-.15.35-.43 0-.09 0-.33.03-.63l.05-1.5c0-.1 0-.4-.27-.4l-.28.04-.29.05a8.97 8.97 0 0 1-1.34.09h-7.22c-.21 0-.94-.03-1.48-.09-.3-.04-.49-.1-.62-.16a.7.7 0 0 0-.25-.06c-.19 0-.26.2-.36.43l-.02.08-.12.56c-.2.9-.3 1.35-.3 1.47 0 .2.17.32.32.32.2 0 .32-.1.35-.27a2.5 2.5 0 0 1 .3-.57c.24-.37.65-.49 1.79-.51l2.58-.04v7.6c0 1.8 0 3.23-.09 3.98-.07.58-.18.79-.43.85-.22.05-.4.08-.52.08a.3.3 0 0 0-.33.32c0 .22.16.33.48.33l1.66-.05.32-.01h.25c.44.02 1.34.06 2.12.06.45 0 .49-.26.49-.33a.32.32 0 0 0-.33-.33c-.17 0-.6-.05-.85-.08-.45-.07-.52-.3-.59-.83-.09-.75-.09-2.18-.09-3.99v-7.59l2.21.04zm20.62 12.77c0-.17-.12-.33-.35-.33a6 6 0 0 1-.82-.08c-.44-.06-.48-.26-.55-.83-.1-.83-.1-2.57-.1-3.99v-3.26c0-2.87 0-3.4.04-3.98.05-.65.16-.78.5-.86.23-.03.34-.03.46-.03.18 0 .35-.16.35-.33 0-.15-.09-.33-.51-.33l-1.54.04h-.6l-1.93-.04c-.32 0-.49.11-.49.33 0 .16.14.33.33.33l.63.03c.49.08.57.23.6.86a85 85 0 0 1 .06 4.02V41h-7.84v-.31c0-2.85 0-3.43.02-4.01.04-.64.13-.78.53-.87.21-.03.32-.03.45-.03.17 0 .33-.17.33-.33 0-.22-.16-.33-.49-.33l-1.6.04h-.56c-.44-.01-1.28-.04-1.92-.04-.31 0-.48.11-.48.33 0 .17.17.33.32.33l.63.03c.5.08.59.26.63.87.05.58.05 1.1.05 3.97v3.27c0 1.8 0 3.23-.1 3.97v.05c-.1.55-.15.73-.37.78-.16.03-.39.08-.55.08-.21 0-.32.17-.32.33 0 .12.06.33.48.33.43 0 1.14-.04 1.58-.05l.34-.01h.2c.4 0 1.34.06 2.17.06.45 0 .49-.26.49-.33a.33.33 0 0 0-.33-.33c-.16 0-.55-.03-.85-.08-.42-.06-.48-.27-.54-.83-.09-.75-.09-2.16-.09-3.94v-1.78h7.84v1.78c0 1.77 0 3.17-.08 3.92-.08.58-.14.79-.4.85-.21.05-.4.08-.51.08-.22 0-.33.17-.33.33 0 .22.16.33.48.33.42 0 1.18-.04 1.6-.05l.3-.01h.26c.44 0 1.32.06 2.12.06.49 0 .51-.28.51-.33zm11.96-2.52c-.3 0-.34.28-.38.43-.1.73-.36.97-.76 1.14-.47.19-1.37.19-1.85.19-1.88 0-2.07-.23-2.11-1.31V42.4c.47 0 2.34.02 2.82.08.74.09.8.3.84.45.07.2.07.4.07.55 0 .24.16.35.32.35.21 0 .35-.2.35-.52l.08-1.19c.03-.39.09-.64.12-.81a1 1 0 0 0 .04-.22c0-.23-.15-.33-.3-.33-.13 0-.21.1-.32.22l-.07.09c-.13.13-.35.17-.83.2-.3.04-1.79.04-3.1.04v-5.05c.44 0 2.37 0 2.66.05 1.04.14 1.14.26 1.22.45.07.18.1.45.1.58 0 .4.25.43.32.43.19 0 .3-.17.36-.34a13.06 13.07 0 0 0 .12-1.24c.02-.31.07-.5.1-.64.03-.1.05-.17.05-.24 0-.27-.14-.36-.26-.36-.09 0-.17.04-.23.06l-.06.03-.12.02c-.19.03-.45.08-.74.09h-4.85c-.44-.01-1.28-.04-1.94-.04-.31 0-.48.11-.48.33 0 .17.17.33.32.33l.63.03c.5.08.59.26.63.86.05.59.05 1.1.05 3.98v3.26c0 1.81 0 3.24-.1 3.98v.06c-.1.54-.15.73-.36.77l-.23.03c-.12.03-.24.05-.34.05-.22 0-.32.17-.32.33 0 .12.06.33.48.33.25 0 .6-.02 1.11-.05l.82-.03c.29 0 .77 0 1.58.05h.44c.76.04 1.7.06 2.9.06.73 0 1.06 0 1.23-.6.11-.42.27-1.69.27-1.84 0-.4-.22-.46-.32-.46zm22.2 2.2c-.19 0-.67 0-1.2-.18-.6-.2-.77-.97-.85-1.76l-1.31-11.37c-.07-.55-.3-.66-.46-.66-.27 0-.4.27-.46.4l-5.42 11.16-5.62-11.18c-.17-.33-.41-.39-.56-.39-.2 0-.36.2-.4.49l-1.39 12.09-.02.18c-.08.67-.15 1.08-.57 1.15h-.06c-.23.05-.35.06-.48.06-.2 0-.37.14-.37.32 0 .13.06.35.5.35.35 0 .83-.02 1.2-.05l.42-.02h.33c.37.03.95.06 1.45.06.44 0 .52-.2.52-.35 0-.17-.18-.32-.33-.32-.14 0-.4-.02-.7-.1-.31-.08-.31-.29-.31-.36 0-.3 0-.64.02-.92l.7-7.85 1.47 3.07.75 1.53a159.93 160.08 0 0 0 2.24 4.3c.38.7.52.95.81.95.3 0 .44-.26.84-1.08l4.37-8.96.86 8.81c.04.27.02.42 0 .48a.33.33 0 0 0-.21.31c0 .3.4.35.7.38.71.07 2.86.1 3.28.1.35 0 .57-.13.57-.34 0-.19-.13-.32-.33-.32zm16.28 0a2.5 2.5 0 0 1-.7-.1c-.33-.11-.83-.26-1.53-1.93l-2.71-6.66c-.92-2.26-1.71-4.2-1.88-4.58l-.11-.23c-.13-.3-.24-.55-.51-.55s-.39.24-.62.84l-4.5 11.58c-.38.96-.73 1.49-1.47 1.59a4.4 4.4 0 0 1-.55.03c-.19 0-.35.16-.35.33 0 .22.18.33.55.33.52 0 1.12-.03 1.52-.05l.42-.01a21.13 21.15 0 0 0 1.7.06c.42 0 .47-.23.47-.33 0-.16-.1-.33-.38-.33h-.17c-.18 0-.47-.03-.47-.32 0-.3.1-.73.26-1.18l1.1-2.96.02-.04h4.42l1.72 4.25c.04.07.04.13.03.17a.15.15 0 0 1-.1.08l-.05.03c-.07.02-.2.08-.2.28 0 .26.32.27.7.3h.15c.86.04 1.94.05 3.03.05.54 0 .62-.2.62-.33 0-.2-.17-.33-.42-.33zm-5.91-5.62h-3.59l1.75-4.95zm17.14-8.21-.28.03-.29.05a8.97 8.97 0 0 1-1.34.09h-7.22c-.21 0-.94-.03-1.48-.09-.3-.03-.49-.1-.62-.16a.7.7 0 0 0-.25-.06c-.19 0-.26.21-.36.43l-.02.08-.12.56c-.2.9-.3 1.35-.3 1.47 0 .2.17.33.32.33.2 0 .32-.1.35-.28a2.5 2.5 0 0 1 .3-.57c.24-.37.65-.49 1.79-.51l2.58-.04v7.6c0 1.8 0 3.23-.09 3.98-.07.59-.18.8-.43.85-.22.05-.4.09-.52.09a.3.3 0 0 0-.33.31c0 .22.16.33.48.33l1.66-.05.32-.01h.25c.44.02 1.34.06 2.12.06.45 0 .49-.25.49-.33a.32.32 0 0 0-.33-.33c-.17 0-.6-.04-.85-.08-.45-.07-.52-.3-.59-.82-.09-.76-.09-2.19-.09-4v-7.59l2.21.04c1.8.04 2.08.44 2.13.86l.03.2c0 .17.03.5.32.5.17 0 .35-.15.35-.43 0-.09 0-.33.03-.63l.05-1.5c0-.1 0-.4-.27-.4zm7.68 13.82c-.15 0-.54-.03-.85-.08-.42-.06-.48-.27-.54-.83-.09-.75-.09-2.18-.09-3.99v-3.26c0-2.87 0-3.4.03-3.98.03-.63.13-.77.53-.86.2-.03.32-.03.45-.03.17 0 .33-.17.33-.33 0-.22-.16-.33-.49-.33l-1.62.04h-.62l-1.61-.04c-.32 0-.48.11-.48.33 0 .16.13.33.32.33.12 0 .35.02.55.06.28.06.42.2.47.83.05.59.05 1.1.05 3.98v3.26c0 1.42-.01 3.16-.11 4-.07.56-.13.77-.36.82-.16.03-.4.08-.55.08-.22 0-.33.17-.33.33 0 .12.06.33.49.33.42 0 1.12-.04 1.55-.05l.34-.01h.2c.4 0 1.36.06 2.19.06.44 0 .48-.26.48-.33a.33.33 0 0 0-.33-.33zm15.68-3.04c-.28 0-.33.22-.38.41-.06.3-.3 1.07-.69 1.46-.69.69-1.56.82-3.02.82a6.54 6.55 0 0 1-6.73-6.52c0-1.65.2-3.36 1.66-4.7.89-.85 2.25-1.25 4.2-1.25 1.5 0 2.94.4 3.65.99.44.34.74 1.03.74 1.7 0 .2 0 .58.33.58.13 0 .36-.08.4-.56l.02-.92c0-.34 0-.7.03-.97l.06-.78.02-.29c0-.11-.04-.38-.41-.38-.52 0-1.03-.1-1.61-.21l-.33-.07c-1-.15-2.1-.21-2.81-.21-2.6 0-4.53.66-5.96 2.03a7.51 7.52 0 0 0-2.2 5.18c0 2.37.8 4.26 2.38 5.63 1.59 1.38 3.64 2.02 6.42 2.02.73 0 2.53-.03 3.53-.42.39-.16.46-.27.58-.65a19.39 19.4 0 0 0 .46-2.43c0-.2-.15-.44-.35-.44zm16.19 3.04a2.5 2.5 0 0 1-.7-.1c-.33-.1-.83-.25-1.53-1.92l-2.72-6.66c-.92-2.26-1.7-4.2-1.87-4.58l-.11-.23c-.14-.3-.25-.55-.51-.55-.27 0-.39.24-.62.84l-4.5 11.58c-.38.96-.73 1.49-1.47 1.59a4.4 4.4 0 0 1-.55.03c-.2 0-.35.16-.35.33 0 .22.18.33.55.33.52 0 1.12-.03 1.52-.05l.41-.01a21.13 21.15 0 0 0 1.71.06c.41 0 .46-.23.46-.33 0-.16-.1-.33-.37-.33h-.17c-.18 0-.47-.03-.47-.32 0-.3.1-.73.26-1.18l1.1-2.96.02-.04h4.42l1.72 4.25c.04.07.04.13.02.17a.15.15 0 0 1-.1.08l-.04.03c-.07.02-.2.08-.2.28 0 .26.32.27.7.3h.15c.86.04 1.94.05 3.03.05.53 0 .62-.2.62-.33 0-.2-.17-.33-.42-.33zm-5.92-5.61h-3.58l1.74-4.95zm16.98 3.33c-.2 0-.33.15-.38.4-.06.37-.21.72-.4.95-.4.46-1.16.5-2.18.5-1.4 0-2.15-.13-2.42-.4-.32-.28-.34-1.71-.34-4.02v-3.3c0-2.88 0-3.4.02-3.99.05-.64.15-.8.56-.88l.62-.04c.16 0 .33-.13.33-.31 0-.12-.06-.33-.49-.33l-1.78.04h-.62c-.42-.02-1.24-.04-1.9-.04-.31 0-.48.1-.48.33 0 .17.17.32.32.32l.63.04c.5.07.59.25.63.86.05.58.05 1.1.05 3.98v3.26c0 1.8 0 3.24-.1 3.98v.05c-.1.54-.15.73-.37.77-.16.04-.39.09-.55.09-.21 0-.32.17-.32.33 0 .12.06.32.48.32.3 0 .7-.02 1.12-.05.36-.02.69-.02.77-.02l1.52.02h.55c.91.07 1.98.09 3.34.09 1 0 1.2-.05 1.39-.63.16-.56.29-1.7.29-1.9 0-.4-.2-.47-.31-.47zM176.68 62.83l-.6-.48c-2.04-1.59-2.58-2.34-2.58-3.52 0-1.4 1-2.35 2.5-2.35 1.78 0 2.38.74 2.56 1.05.1.21.24.78.27 1.04.02.15.06.43.35.43.32 0 .32-.43.32-.68 0-1.16.05-1.84.08-2.13v-.17c0-.22-.14-.33-.4-.33-.15 0-.3-.01-.72-.1a8.34 8.34 0 0 0-2.06-.23c-2.8 0-4.69 1.65-4.69 4.1 0 1.5.5 2.89 2.9 4.87l.98.8c1.92 1.57 2.44 2.39 2.44 3.78 0 1.4-1 2.72-2.94 2.72-.78 0-2.66-.21-3.04-2.09-.06-.3-.06-.58-.06-.76 0-.11 0-.43-.32-.43-.3 0-.34.37-.36.52l-.02.26c-.04.43-.08 1.17-.08 2.06 0 .6.02.79.42.98.84.41 1.82.6 3 .6 1.32 0 2.49-.32 3.38-.94a4.69 4.7 0 0 0 1.93-3.76c0-1.7-.53-3.11-3.25-5.26zm13.51-4.96a7.54 7.54 0 0 0-7.78 7.41 7.25 7.25 0 0 0 7.67 7.46 7.63 7.63 0 0 0 7.87-7.74c0-4.41-3.12-7.13-7.76-7.13zm-.1 1.06c2.75 0 5.54 2.04 5.54 6.6 0 1.01-.24 6.08-5 6.08-3.52 0-5.87-2.74-5.87-6.82 0-3.67 1.99-5.86 5.33-5.86zm23.17 9.86c-.28 0-.33.22-.38.41-.06.3-.3 1.07-.69 1.46-.69.69-1.56.82-3.03.82a6.54 6.55 0 0 1-6.72-6.52c0-1.65.2-3.36 1.66-4.7.88-.85 2.25-1.25 4.2-1.25 1.5 0 2.94.4 3.65.99.44.34.74 1.03.74 1.7 0 .2 0 .58.33.58.13 0 .36-.08.4-.56l.02-.92c0-.34 0-.7.03-.97l.06-.78.02-.3c0-.1-.04-.37-.41-.37-.52 0-1.03-.1-1.61-.22l-.33-.06c-1-.15-2.1-.21-2.81-.21-2.6 0-4.53.66-5.96 2.03a7.51 7.52 0 0 0-2.2 5.18c0 2.37.8 4.26 2.38 5.63 1.59 1.38 3.63 2.02 6.42 2.02.73 0 2.53-.03 3.53-.42.38-.16.46-.27.58-.66a19.39 19.4 0 0 0 .46-2.42c0-.2-.15-.44-.35-.44zm8.77 3.04c-.16 0-.54-.03-.85-.08-.42-.06-.48-.27-.54-.83-.09-.75-.09-2.18-.09-3.99v-3.26c0-2.87 0-3.4.03-3.98.03-.63.13-.77.53-.86.2-.03.32-.03.45-.03.17 0 .33-.17.33-.33 0-.22-.16-.33-.49-.33l-1.62.04h-.62l-1.61-.04c-.32 0-.49.11-.49.33 0 .16.14.33.33.33.12 0 .35.02.55.06.28.06.42.2.47.83.05.59.05 1.1.05 3.98v3.26c0 1.42-.01 3.16-.11 4-.07.56-.13.77-.36.82-.16.03-.4.08-.55.08-.22 0-.33.17-.33.33 0 .12.06.33.49.33.42 0 1.12-.04 1.55-.05l.34-.01h.2c.4 0 1.36.06 2.18.06.45 0 .49-.26.49-.33a.33.33 0 0 0-.33-.33zm12.3-2.2c-.3 0-.34.29-.38.44-.1.73-.36.97-.76 1.14-.47.19-1.37.19-1.85.19-1.88 0-2.08-.23-2.11-1.31v-4.66c.47 0 2.34.02 2.82.08.74.09.8.3.84.45.07.2.07.4.07.55 0 .24.16.35.32.35.21 0 .35-.2.35-.52l.08-1.19c.03-.39.09-.64.12-.81a1 1 0 0 0 .04-.22c0-.23-.15-.33-.3-.33-.13 0-.21.1-.32.22l-.07.09c-.13.13-.35.16-.83.2-.3.04-1.79.04-3.1.04v-5.05c.44 0 2.37 0 2.66.05 1.04.13 1.14.26 1.22.45.07.18.1.45.1.58 0 .39.25.43.32.43.19 0 .3-.17.36-.34a13.06 13.07 0 0 0 .12-1.24c.02-.32.07-.5.1-.64.03-.1.05-.17.05-.25 0-.26-.14-.35-.26-.35-.09 0-.17.04-.23.06l-.06.03-.12.02c-.19.03-.45.07-.74.09h-4.85a50.8 50.8 0 0 0-1.94-.04c-.31 0-.48.11-.48.33 0 .17.17.33.32.33l.63.03c.5.07.59.26.63.86.05.59.05 1.1.05 3.98v3.26c0 1.81 0 3.24-.1 3.98v.06c-.1.53-.15.73-.36.77l-.23.03c-.12.03-.24.05-.34.05-.22 0-.32.17-.32.33 0 .12.06.33.48.33.25 0 .6-.02 1.11-.05l.82-.03c.29 0 .77 0 1.58.05h.44c.76.04 1.7.06 2.9.06.73 0 1.06 0 1.23-.6.11-.42.27-1.7.27-1.84 0-.4-.22-.46-.32-.46zm14.4-11.62-.27.03-.3.05a8.97 8.97 0 0 1-1.34.09h-7.22c-.2 0-.93-.03-1.48-.09-.3-.03-.48-.1-.62-.16a.7.7 0 0 0-.25-.06c-.18 0-.26.21-.35.43l-.03.08-.12.56c-.2.9-.29 1.35-.29 1.47 0 .2.16.33.32.33.2 0 .31-.1.35-.28a2.5 2.5 0 0 1 .29-.57c.24-.37.65-.49 1.8-.51l2.57-.04v7.6c0 1.8 0 3.23-.08 3.98-.07.58-.18.8-.44.85-.22.05-.4.09-.52.09a.3.3 0 0 0-.33.31c0 .22.16.33.49.33l1.66-.05.31-.01h.26c.43.02 1.33.06 2.12.06.45 0 .48-.26.48-.33a.32.32 0 0 0-.32-.33c-.17 0-.6-.04-.85-.08-.45-.07-.52-.3-.6-.83-.08-.75-.08-2.18-.08-3.98v-7.6l2.2.04c1.8.04 2.09.44 2.14.86l.02.2c.01.16.04.5.33.5.17 0 .35-.15.35-.43 0-.09 0-.33.02-.63l.05-1.5c0-.1 0-.4-.26-.4zm14.9.12-1.34.02-.54.01h-.32l-1-.04c-.43 0-.49.18-.49.29 0 .18.16.32.41.39.1.02.19.07.19.3 0 .23-.1.52-.3.87l-.78 1.32a123.7 123.7 0 0 0-2.2 3.78l-3.33-5.5-.02-.06c-.11-.2-.2-.39-.2-.58 0-.04 0-.09.11-.13.22-.09.43-.17.43-.37 0-.31-.33-.31-.44-.31-.52 0-1.06.02-1.4.03h-.68l-1.47-.03c-.36 0-.42.2-.42.31 0 .2.17.35.37.35.12 0 .46.08.7.23.3.21.76.6 1.22 1.3.65.97 3.23 5.08 3.38 5.36.26.5.39.84.39 1.8v1.6c0 .29 0 1.08-.05 1.83-.05.62-.2.77-.44.82-.22.05-.4.09-.52.09-.22 0-.33.17-.33.33 0 .21.16.32.49.32.41 0 1.17-.03 1.57-.05h.55c.43.02 1.35.05 2.15.05.36 0 .49-.18.49-.32a.33.33 0 0 0-.33-.33c-.17 0-.6-.05-.85-.09-.4-.06-.54-.25-.59-.8-.06-.76-.06-1.55-.06-1.84v-1.92c0-.48-.02-.94.23-1.44.4-.79 3.09-5.14 3.7-5.85.4-.5.56-.67.9-.87.27-.14.6-.22.8-.22.26 0 .43-.2.43-.37 0-.18-.17-.3-.43-.3z"/><path d="M53.91 80.72h1.31l1.7 8.82h-1.34l-.46-2.3h-4.08l-1.44 2.3h-1.26zm-2.29 5.53h3.33l-.7-4.32-2.62 4.32zm12.59-5.52h1.15l-1.66 7.83-.16.98H62.4l.18-.98c-.13.17-.31.42-.67.64a3.3 3.3 0 0 1-1.62.45c-.8 0-2.54-.43-1.97-3.12.5-2.33 2.03-3.35 3.48-3.35 1.32 0 1.6.78 1.68 1.05l.74-3.5zm-1.26 3.96c-.18-.32-.57-.62-1.22-.62-1.69 0-2.11 2.04-2.2 2.45-.23 1.09-.21 2.34 1.2 2.34 1.8 0 2.22-1.99 2.32-2.46.18-.89.08-1.39-.1-1.71zm2.97-1.28h1.28l.92 4.87 2.95-4.87h1.27l-3.99 6.13H67.2l-1.26-6.13zm10.14 6.13a3.03 3.03 0 0 1 .08-.92 2.49 2.49 0 0 1-2.12 1.11c-1.4 0-2-.79-1.78-1.8.11-.49.44-1.28 1.46-1.8.74-.36 1.72-.4 2.2-.4.3 0 .47.01.83.04.15-.76.23-1.1.06-1.36-.16-.3-.65-.4-.99-.4-1.16 0-1.39.79-1.45 1.04H73.2c.1-.31.23-.74.67-1.16a3.31 3.31 0 0 1 2.12-.66c.88 0 1.78.28 1.97.9.12.36.07.65.01.95L77.31 88c-.03.1-.18.91-.23 1.54h-1.04zm-.15-3c-.46 0-2.2 0-2.47 1.24-.08.39 0 1.07 1.04 1.07.59 0 1.08-.23 1.46-.66.34-.41.42-.75.63-1.61a4.85 4.85 0 0 0-.64-.04zm4.38-2.42.14-.7h1.15l-.2.99c.2-.26.81-1.12 2.2-1.12.55 0 2.17.2 1.77 2.09l-.87 4.16H83.3l.83-3.9c.08-.4.1-.76-.11-1.05-.23-.28-.6-.41-1-.41-.83 0-1.73.6-2 1.83l-.73 3.53h-1.15zm10.62 1.26c.04-.28.17-1.29-.94-1.29-1.59 0-1.98 1.85-2.07 2.3-.27 1.27-.22 2.43 1 2.43.98 0 1.47-.72 1.61-1.33h1.17a2.98 2.98 0 0 1-2.95 2.2c-.4 0-1.34-.1-1.84-.8-.28-.42-.5-1.07-.23-2.34.53-2.54 2.25-3.3 3.48-3.3.4 0 1.3.08 1.72.75.34.52.26 1.03.22 1.37H90.9zm3.06-1.97h1.15l-1.31 6.13h-1.15zm.43-2.66h1.38L95.52 82h-1.38zm2.81 3.37.15-.7h1.15l-.2.99c.19-.26.8-1.12 2.2-1.12.54 0 2.17.2 1.77 2.09l-.87 4.16h-1.18l.82-3.9c.09-.4.11-.76-.1-1.05a1.28 1.28 0 0 0-1.01-.41c-.82 0-1.72.6-1.99 1.83l-.74 3.53h-1.15zm7.27 5.9c-.1.67.09 1.2 1.18 1.2 1.6 0 1.86-1.17 2.22-2.83-.7 1.01-1.87 1.04-2.23 1.04-.56 0-1.35-.12-1.72-.75-.4-.62-.4-1.45-.22-2.26.45-2.07 1.88-3.1 3.38-3.1 1.23 0 1.56.62 1.73.93l.2-.84h1.1l-.26 1.12-.8 3.83c-.32 1.48-.5 2.08-.85 2.54-.71.98-1.93 1.1-2.78 1.1-2.45 0-2.28-1.15-2.15-1.98h1.23zm3.1-2.06c.32-.31.56-.64.8-1.76.15-.76.08-1.21-.15-1.52a1.47 1.47 0 0 0-1.21-.54c-1.46 0-1.97 1.47-2.12 2.25-.21.94-.19 2.18 1.22 2.18a1.9 1.9 0 0 0 1.46-.6zm7.84-3.3c.09-.4.16-.83.21-1.25h1.16l-.23 1.2a2.2 2.2 0 0 1 1.72-1.22c.35-.05.6-.04.8-.02l-.24 1.12-.2-.05h-.33c-1.36 0-1.84.8-2.06 1.85l-.7 3.26h-1.16l1.05-4.89zm4.95 2.03c-.3 1.27.02 2.2 1.28 2.2.74 0 1.43-.38 1.71-1.27h1.15c-.1.3-.25.8-.79 1.29a3.27 3.27 0 0 1-2.27.81c-1.93 0-2.59-1.2-2.19-3.14.26-1.21.72-2.2 1.83-2.89a3.38 3.38 0 0 1 1.76-.45c2.75 0 2.17 2.43 1.94 3.44h-4.4zm3.4-.81c.14-.59.28-1.81-1.14-1.81-.74 0-1.74.45-2.04 1.8zm3.12 1.84c-.11.46-.02 1.11 1.1 1.11.47 0 .85-.08 1.16-.38.16-.16.28-.37.32-.57.13-.6-.28-.7-1.15-.92-1.23-.3-2.23-.55-1.97-1.84.23-1.12 1.37-1.85 2.79-1.85.76 0 1.8.22 2.01.96.09.34.02.63-.04.88h-1.17c.23-.92-.55-1-.97-1-.17 0-1.25 0-1.44.87-.11.56.4.69.7.77 1.61.4 1.95.5 2.24.84.27.32.3.74.22 1.14a2.42 2.43 0 0 1-1.16 1.55c-.6.33-1.28.42-1.9.42-1.25 0-2.3-.51-1.97-2h1.21zm6.36-1.03c-.3 1.27.02 2.2 1.28 2.2a1.7 1.7 0 0 0 1.7-1.27h1.16c-.1.3-.25.8-.79 1.29a3.27 3.27 0 0 1-2.28.81c-1.92 0-2.58-1.2-2.18-3.14.26-1.21.72-2.2 1.83-2.89a3.38 3.38 0 0 1 1.76-.45c2.75 0 2.17 2.43 1.94 3.44h-4.4zm3.4-.81c.13-.59.28-1.81-1.14-1.81-.74 0-1.74.45-2.05 1.8zm5.8 3.66a3.03 3.03 0 0 1 .09-.92 2.49 2.49 0 0 1-2.12 1.11c-1.4 0-2-.79-1.78-1.8a2.6 2.6 0 0 1 1.45-1.8c.74-.36 1.72-.4 2.2-.4.3 0 .48.01.83.04.16-.76.23-1.1.06-1.36-.16-.3-.64-.4-.98-.4-1.16 0-1.4.79-1.45 1.04h-1.15c.1-.31.23-.74.66-1.16a3.33 3.33 0 0 1 2.12-.66c.89 0 1.78.28 1.98.9.12.36.07.65 0 .95L143.7 88c-.02.1-.18.91-.23 1.54h-1.04zm-.15-3c-.46 0-2.2 0-2.47 1.24-.09.39 0 1.07 1.04 1.07.58 0 1.08-.23 1.45-.66.34-.41.43-.75.63-1.61a4.85 4.85 0 0 0-.64-.04zm4.3-1.88c.08-.4.16-.83.2-1.25h1.17l-.23 1.2a2.2 2.2 0 0 1 1.72-1.22c.35-.05.6-.04.8-.02l-.25 1.12-.2-.05h-.33c-1.36 0-1.84.8-2.06 1.85l-.69 3.26h-1.16l1.04-4.89zm8 .72c.04-.28.18-1.29-.94-1.29-1.59 0-1.97 1.85-2.07 2.3-.27 1.27-.22 2.43 1 2.43.99 0 1.47-.72 1.62-1.33h1.16a2.98 2.98 0 0 1-2.94 2.2c-.42 0-1.35-.1-1.85-.8-.27-.42-.5-1.07-.23-2.34.54-2.54 2.26-3.3 3.48-3.3.4 0 1.31.08 1.72.75.34.52.27 1.03.22 1.37h-1.16zm2.99-4.65h1.16l-.75 3.58a2.85 2.85 0 0 1 2.2-1.02c.65 0 1.53.23 1.72.98.07.25.09.54-.1 1.44l-.8 3.83h-1.18l.76-3.63c.13-.54.37-1.73-.95-1.73-.85 0-1.4.52-1.61.81a3.27 3.27 0 0 0-.46 1.3l-.7 3.25h-1.16zm5.81 7.34h1.36l-.32 1.47h-1.35zm13.22-4.96c0-.3.12-1.53-1.57-1.53-2.12 0-2.97 2.17-3.29 3.64-.35 1.66-.25 3.46 1.76 3.46.53 0 1.08-.14 1.54-.52.39-.34.54-.72.62-.93h1.34c-.54 1.74-2.29 2.45-3.8 2.45-3.1 0-3.13-2.72-2.77-4.43.4-1.86 1.71-4.64 4.85-4.64 1.25 0 2.9.5 2.62 2.5h-1.31zm2.56 1.55c.08-.4.16-.83.2-1.25h1.17l-.23 1.2a2.2 2.2 0 0 1 1.72-1.22c.35-.05.6-.04.8-.02l-.25 1.12-.2-.05h-.33c-1.36 0-1.84.8-2.06 1.85l-.69 3.26h-1.16l1.04-4.89zm4.95 2.03c-.29 1.27.03 2.2 1.29 2.2a1.7 1.7 0 0 0 1.7-1.27h1.16c-.1.3-.26.8-.8 1.29a3.27 3.27 0 0 1-2.27.81c-1.92 0-2.58-1.2-2.18-3.14.26-1.21.72-2.2 1.83-2.89a3.38 3.38 0 0 1 1.76-.45c2.74 0 2.17 2.43 1.94 3.44h-4.4zm3.4-.81c.13-.59.27-1.81-1.14-1.81-.74 0-1.75.45-2.05 1.8zm5.8 3.66a3.03 3.03 0 0 1 .08-.92 2.49 2.49 0 0 1-2.12 1.11c-1.4 0-2-.79-1.78-1.8.11-.49.44-1.28 1.46-1.8.74-.36 1.72-.4 2.2-.4.3 0 .47.01.83.04.15-.76.23-1.1.06-1.36-.16-.3-.65-.4-.99-.4-1.16 0-1.39.79-1.45 1.04h-1.15c.1-.31.23-.74.67-1.16a3.31 3.31 0 0 1 2.12-.66c.88 0 1.78.28 1.97.9.12.36.07.65 0 .95l-.66 2.93c-.03.1-.19.91-.24 1.54h-1.04zm-.15-3c-.46 0-2.2 0-2.47 1.24-.08.39.01 1.07 1.04 1.07.59 0 1.08-.23 1.46-.66.34-.41.42-.75.63-1.61a4.85 4.85 0 0 0-.64-.04zm3.57-3.15h1.09l.26-1.29 1.23-.36-.35 1.65h1.36l-.18.84h-1.37l-.77 3.67c-.06.3-.17.81.64.81.23 0 .46-.03.56-.06l-.18.89a5.9 5.9 0 0 1-.96.07c-1.06 0-1.5-.3-1.29-1.3l.86-4.1h-1.09l.19-.83zm5.01.02h1.15l-1.3 6.13h-1.16zm.44-2.66h1.38L203.3 82h-1.38zm2.8 3.37.15-.7h1.16l-.21.99c.2-.26.81-1.12 2.2-1.12.55 0 2.17.2 1.77 2.09l-.87 4.16h-1.17l.82-3.9c.08-.4.1-.76-.1-1.05a1.32 1.32 0 0 0-1.02-.41c-.82 0-1.72.6-1.98 1.83l-.74 3.53h-1.15zm7.28 5.9c-.1.67.08 1.2 1.17 1.2 1.6 0 1.87-1.17 2.22-2.83-.7 1.01-1.86 1.04-2.23 1.04-.56 0-1.34-.12-1.72-.75-.39-.62-.39-1.45-.22-2.26.45-2.07 1.88-3.1 3.38-3.1 1.24 0 1.57.62 1.74.93l.19-.84h1.11l-.26 1.12-.81 3.83c-.32 1.48-.5 2.08-.85 2.54-.72.98-1.94 1.1-2.78 1.1-2.44 0-2.27-1.15-2.14-1.98h1.22zm3.09-2.06c.31-.31.56-.64.79-1.76.15-.76.08-1.21-.15-1.52a1.47 1.47 0 0 0-1.21-.54c-1.46 0-1.96 1.47-2.12 2.25-.2.94-.18 2.18 1.22 2.18.67 0 1.12-.24 1.47-.6zm11.1-2.58c.04-.28.18-1.29-.94-1.29-1.58 0-1.97 1.85-2.07 2.3-.27 1.27-.22 2.43 1 2.43.99 0 1.47-.72 1.62-1.33h1.16a2.98 2.98 0 0 1-2.94 2.2c-.41 0-1.35-.1-1.84-.8-.28-.42-.5-1.07-.23-2.34.53-2.54 2.25-3.3 3.47-3.3.4 0 1.31.08 1.72.75.34.52.27 1.03.22 1.37h-1.16zm5.73-2.12c2.44 0 2.59 1.92 2.32 3.21-.38 1.8-1.72 3.29-3.8 3.29-2.09 0-2.72-1.41-2.33-3.2.32-1.52 1.4-3.3 3.8-3.3zm-1.28 5.64c.87 0 2-.62 2.38-2.47.33-1.52-.2-2.32-1.28-2.32-.73 0-2.02.46-2.43 2.37-.26 1.26.03 2.42 1.33 2.42zm5.92-4.78.14-.7h1.15l-.2.99c.2-.26.81-1.12 2.2-1.12.55 0 2.17.2 1.77 2.09l-.88 4.16h-1.18l.83-3.9c.08-.4.1-.76-.11-1.05-.23-.28-.6-.41-1-.41-.83 0-1.73.6-2 1.83l-.73 3.53h-1.16l1.16-5.42zm7.45 0 .14-.7h1.16l-.21.99c.2-.26.81-1.12 2.2-1.12.55 0 2.17.2 1.77 2.09l-.88 4.16h-1.18l.83-3.9c.08-.4.1-.76-.11-1.05-.23-.28-.6-.41-1-.41-.83 0-1.73.6-2 1.83l-.73 3.53h-1.15l1.15-5.42zm7.57 2.57c-.29 1.27.03 2.2 1.29 2.2a1.7 1.7 0 0 0 1.7-1.27H256c-.1.3-.25.8-.78 1.29a3.27 3.27 0 0 1-2.28.81c-1.93 0-2.58-1.2-2.18-3.14.25-1.21.71-2.2 1.83-2.89a3.38 3.38 0 0 1 1.75-.45c2.74 0 2.17 2.43 1.94 3.44h-4.4zm3.4-.81c.14-.59.28-1.81-1.13-1.81-.74 0-1.75.45-2.05 1.8zm6.44-.5c.04-.28.17-1.29-.95-1.29-1.58 0-1.97 1.85-2.07 2.3-.26 1.27-.22 2.43 1 2.43.99 0 1.47-.72 1.62-1.33h1.16a2.98 2.98 0 0 1-2.94 2.2c-.41 0-1.35-.1-1.84-.8-.28-.42-.5-1.07-.23-2.34.53-2.54 2.25-3.3 3.47-3.3.4 0 1.31.08 1.72.75.34.52.27 1.03.22 1.37h-1.16zm2.1-1.99h1.09l.26-1.29 1.23-.36-.36 1.65h1.37l-.18.84h-1.37l-.77 3.67c-.06.3-.17.81.64.81.23 0 .46-.03.56-.06l-.18.89a5.9 5.9 0 0 1-.96.07c-1.06 0-1.5-.3-1.29-1.3l.86-4.1h-1.09l.19-.83zm5.01.02h1.15l-1.3 6.13h-1.16zm.44-2.66h1.38l-.27 1.26h-1.38zm5.62 2.5c2.45 0 2.6 1.93 2.33 3.22-.4 1.8-1.72 3.29-3.8 3.29-2.1 0-2.71-1.41-2.34-3.2.32-1.52 1.41-3.3 3.8-3.3zm-1.27 5.65c.86 0 1.98-.62 2.37-2.47.33-1.52-.2-2.32-1.28-2.32-.73 0-2.01.46-2.43 2.37-.26 1.26.03 2.42 1.34 2.42zm5.91-4.78.15-.7h1.15l-.21.99c.2-.26.81-1.12 2.2-1.12.55 0 2.17.2 1.77 2.09l-.88 4.16h-1.18l.83-3.9c.08-.4.1-.76-.11-1.05-.23-.28-.6-.41-1-.41-.83 0-1.73.6-2 1.83l-.73 3.53h-1.15l1.15-5.42zm7.32 3.6c-.11.46 0 1.11 1.1 1.11.47 0 .85-.08 1.16-.38.16-.16.28-.37.32-.57.13-.6-.28-.7-1.15-.92-1.23-.3-2.23-.55-1.97-1.84.23-1.12 1.37-1.85 2.8-1.85.75 0 1.78.22 2 .96.09.34.03.63-.03.88h-1.18c.23-.92-.54-1-.96-1-.17 0-1.24 0-1.44.87-.1.56.4.69.7.77 1.62.4 1.96.5 2.25.84.26.32.3.74.21 1.14a2.42 2.43 0 0 1-1.16 1.55 3.9 3.9 0 0 1-1.9.42c-1.25 0-2.3-.51-1.96-2h1.2zm5.27.35h1.36l-.32 1.47h-1.36z" class="amsLogoSVG gray"/></svg>
+            </span>
+        </a>
+        <div class="ams-nav--quick__container">
+            <ul class="ams-nav--quick__list">
+                <li>
+                    <details id="nav-signin" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--quick__signin__summary ams-nav__animated-details--summary__marker">Sign in <i
+                                class="fa-light fa-arrow-right-to-bracket" aria-hidden="true"></i></summary>
+                        <ul class="ams-nav--quick__signin__list">
+                            <li><a
+                                    href="https://ebus.ams.org/ebus/Register.aspx?_gl=1*164hf4g*_ga*OTgwODg1MjE0LjE2OTUzOTE1OTM.*_ga_26G4XFTR63*MTcxODcxMjQ3NS4yODkuMS4xNzE4NzEzNDA5LjAuMC4w">New
+                                    to AMS?<br>Register now.</a></li>
+                            <li><a href="https://ebus.ams.org/ebus/MyAccount.aspx">Your Account</a></li>
+                            <li><a href="https://ebus.ams.org/ebus/MyAccount/PurchaseHistory.aspx">Your
+                                    Purchases</a></li>
+                            <li><a href="https://ebus.ams.org/ebus/Giving/DonationHistory.aspx">Your
+                                    Donations</a></li>
+                            <li><a href="https://ebus.ams.org/ebus/MyAccount/DirectoryListing.aspx">Your
+                                    Member Directory Listing</a></li>
+                            <li>
+                                <hr>
+                            </li>
+                            <li><a href="https://ebus.ams.org/ebus/Meetings/EventCalendar.aspx">Register
+                                    for a Meeting</a></li>
+                            <li><a href="https://ebus.ams.org/ebus/Membership/MemberDirectory.aspx">AMS
+                                    Member Directory</a></li>
+                        </ul>
+                    </details>
+                </li>
+                <li><a href="https://mathscinet.ams.org/">MathSciNet</a></li>
+                <li><a
+                        href="https://bookstore.ams.org/?_gl=1*zbr2c0*_ga*OTgwODg1MjE0LjE2OTUzOTE1OTM.*_ga_26G4XFTR63*MTcxODYyMjkzMC4yODguMS4xNzE4NjM0NDg5LjAuMC4w">Bookstore</a>
+                </li>
+                <li><a href="/cart">My Cart <i class="fal fa-shopping-cart" aria-hidden="true"></i></a></li>
+                <li><a href="/custserv">Help <i class="fal fa-question-square" aria-hidden="true"></i></a></li>
+                <li class="ams-nav--quick__list__search">
+                    <script async src="https://cse.google.com/cse.js?cx=433170aa8883642d1"></script>
+                    <div class="gcse-searchbox-only">[Google Custom Search placeholder]</div>
+                    <!-- NOTE: GCSE creates form element-->
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav aria-label="main" class="ams-nav ams-nav--main">
+        <details open data-js="mobileNav">
+            <summary class="ams-nav--main__button">
+                <span class="ams-nav--main__button__marker" aria-hidden="true">
+                    <i class="fa fa-solid fa-bars"></i>
+                    <i class="fa fa-sharp fa-regular fa-xmark"></i>
+                </span>
+                Navigate the site
+            </summary>
+            <ul class="ams-nav--main__list">
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Publications</summary>
+                        <div class="ams-nav--main__level1">
+                            <div role="list" class="ams-nav--main__level1__list">
+                                <div role="listitem" class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="./publications/"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        Publications
+                                        Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Over 100 years of
+                                        publishing excellence</span>
+                                </div>
+                                <div>
+                                    <div role="listitem">
+                                        <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                            href="./book-series/">Books</a>
+                                        <ul>
+                                            <li>
+                                                <a class="ams-nav--main__level1__link"
+                                                    href="https://bookstore.ams.org">Bookstore</a>
+                                            </li>
+                                            <li>
+                                                <a class="ams-nav--main__level1__link" href="/arc/books/">Book Author
+                                                    Resources</a>
+                                            </li>
+                                            <li>
+                                                <a class="ams-nav--main__level1__link" href="/submit-proposal/submit-proposal">Submit a Book
+                                                    Proposal</a>
+                                            </li>
+                                            <li>
+                                                <a class="ams-nav--main__level1__link" href="/pubpermissions/">Rights,
+                                                    Licensing,
+                                                    Permissions</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div role="listitem" class="ams-nav--main__level1__list__col1"><a
+                                            class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                            href="/open-math-notes">Open Math
+                                            Notes</a>
+                                        <ul>
+                                            <li><a class="ams-nav--main__level1__link"
+                                                    href="/open-math-notes/omn-faq">Frequently Asked
+                                                    Questions</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div role="listitem">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/journals">Journals</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/journals#memberjournals">Member
+                                                Journals</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/journals#research">Research
+                                                Journals</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/journals#translation">Translation
+                                                Journals</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/journals#distributed">Distributed
+                                                Journals</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/open-access">Open Access Journals</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/policies">Guidelines and Policies</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/arc/journals/index.html">Journal
+                                                Author
+                                                Resources</a></li>
+                                    </ul>
+                                </div>
+                                <div role="listitem">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/librarian">Librarian
+                                        Resources</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/ebooks/ebooks">eBook Collections</a></li>
+                                        <li><a class="ams-nav--main__level1__link"
+                                                href="/counter-compliant-usage-statistics">COUNTER
+                                                Usage Statistics</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/cgi-bin/click_access/inquiry.pl">My
+                                                Subscriptions</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/subscriberinfo">Subscription
+                                                Information</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/journals-license">Licensing
+                                                Information</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div role="listitem">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/math-reviews">Mathematical Reviews/MathSciNet&reg;</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link"
+                                                href="https://mathscinet.ams.org/mathscinet">MathSciNet&reg;</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="https://mathscinet.ams.org/mresubs/index.html">Reviewer Home</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/mathsciprice">MathSciNet&reg; Subscriptions</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Membership</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/membership"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        Membership
+                                        Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Welcome to your membership
+                                        center</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Membership Choices</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link ams-nav--main__level1__link__membership"
+                                                href="https://ebus.ams.org/ebus/Membership/JoinAMS.aspx?_gl=1*1jqqdo7*_ga*OTgwODg1MjE0LjE2OTUzOTE1OTM.*_ga_26G4XFTR63*MTcxODk3NDc3MS4yOTMuMS4xNzE4OTc2MTQ4LjAuMC4w"><i
+                                                    class="fa fa-handshake" aria-hidden="true"></i> Join the Society</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link ams-nav--main__level1__link__membership"
+                                                href="https://ebus.ams.org/ebus/Membership/RenewyourAMSMembership.aspx?_gl=1*1jqqdo7*_ga*OTgwODg1MjE0LjE2OTUzOTE1OTM.*_ga_26G4XFTR63*MTcxODk3NDc3MS4yOTMuMS4xNzE4OTc2MTQ4LjAuMC4w"><i
+                                                    class="fa fa-address-card" aria-hidden="true"></i> Renew your
+                                                Membership</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link ams-nav--main__level1__link__membership"
+                                                href="/givemembership"><i class="fa fa-gift" aria-hidden="true"></i>
+                                                Gift a Membership</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/membership#indiv">Individual
+                                        Membership</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/benefits">Member Benefits</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/cml">Member Directory</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/mem-reciprocity">Reciprocating
+                                                Societies</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/mem-develop">Members in Developing
+                                                Countries</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/institutional">Institutional
+                                        Membership</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/institutional#domestic">Domestic
+                                                Institutions</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/international-members">International
+                                                Institutions</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/two-year">Two-Year Institutions</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/studentchapters">Graduate Student
+                                                Chapter
+                                                Program</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Other Member Types</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/corporate">Corporate Memberships</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/mem-associates">Associate
+                                                Memberships</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Meetings &amp;
+                            Conferences</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/meetings"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i> Meetings
+                                        &amp; Conferences
+                                        Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Engage with colleagues and
+                                        the latest research</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/national">National
+                                        Meetings</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="http://jointmathematicsmeetings.org/">Joint
+                                                Mathematics Meetings</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/national">Upcoming JMMs</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/national_past.html">Previous JMMs</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/lectures">Special Lectures</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/peps">Professional Enhancement
+                                                Programs
+                                                (PEPs)</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/sectional-index">Sectional
+                                        Meetings</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/sectional.html">Upcoming
+                                                Sectionals</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/sectional_past.html">Previous
+                                                Sectionals</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/sectional-papers">Presenting
+                                                Papers</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/hosting">Hosting Sectionals</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Other Meetings,
+                                        Conferences
+                                        &amp; Workshops</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/international-index">International
+                                                Meetings</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/calendar/mathcalendar.pl">Mathematics
+                                                Calendar</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/short-course-general">Short
+                                                Courses</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Meetings Resources</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/suggestspeaker">Suggest a Speaker</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/meetings-grants">AMS Meetings
+                                                Grants</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/abstracts">Submitting Abstracts</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link"
+                                                href="/welcoming-environment-policy">Welcoming
+                                                Environment Policy</a></li>
+                                        <li><a class="ams-nav--main__level1__link"
+                                                href="/https://mathsafe.org/mathsafe/mathsafe-home">MathSafe –
+                                                supporting
+                                                safe meetings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">News &amp;
+                            Outreach</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/publicoutreach"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i> News &
+                                        Outreach Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Explore news, images,
+                                        posters, and mathematical essays</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/news">News from the
+                                        AMS</a>
+                                    <ul>
+                                        <li>
+
+			<a class="ams-nav--main__level1__link" href="/featurestories">Feature Stories</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/info-for-journalists">Information for
+                                                Journalists</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/news?article_type=obits">In Memoriam</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="https://mathvoices.ams.org/">Math Voices</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://mathvoices.ams.org/featurecolumn/">Feature Column</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://mathvoices.ams.org/mathmedia/">Math in
+                                                the Media</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://mathvoices.ams.org/teachingandlearning/">Column on
+                                                Teaching
+                                                and Learning</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Explorations</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/edi-community">Recognizing Diverse
+                                                Mathematicians</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/posters">AMS Posters</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/math-and-music">Mathematics &
+                                                Music</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/math-imagery">Mathematical Imagery</a>
+                                        </li>
+                                        <li><a class="ams-nav--main__level1__link" href="/mathmoments">Mathematical Moments</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Grants &amp;
+                            Awards</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/grants-awards"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i> Grants
+                                        &amp; Awards
+                                        Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Resources and
+                                        opportunities to further your mathematical pursuits</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Grants</a>
+		                <ul>
+		                <li><a class="ams-nav--main__level1__link" href="/ams-backstop-grants">AMS Backstop Grants</a></li>
+
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/travel-grants">Research &amp; Travel
+                                                Grants</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/meetings-child-care-grants">Child Care
+                                                Grants
+                                                for Meetings</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/emp-epsilon">Young Scholars Program
+                                                Grants</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Honors &amp; Awards</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/awards">Awards</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/ams-fellows">Fellows of the AMS</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/ams-fellowships">AMS
+                                        Fellowships</a>
+                                    <ul>
+                                        <li><a class="ams-nav--main__level1__link" href="/bergman-fellow">Stefan Bergman
+                                                Fellowship</a>
+                                        </li>
+                                        <li> <a class="ams-nav--main__level1__link" href="/Birman-fellow">Birman Fellowship</a></li>
+                                        <li> <a class="ams-nav--main__level1__link" href="/emp-centflyer">Centennial
+                                                Fellowship</a></li>
+                                        <li><a class="ams-nav--main__level1__link" href="/Claytor-Gilmer">Claytor-Gilmer
+                                                Fellowship</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Learning &amp;
+                            Careers</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/learning-careers"><i class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        Learning &amp; Careers Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Resources to support
+                                        advanced mathematics teaching and learning</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/students">For
+                                        Students</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/high-school">High School</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/undergraduate">Undergraduate</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/graduate">Graduate</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/find-graduate-programs">Find Graduate
+                                                Programs</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/math-alliance">Math Alliance at the AMS</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/leaders">For
+                                        Faculty &amp;
+                                        Leaders</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/chairsworkshop">Department Chairs
+                                                Workshop</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://mathvoices.ams.org/teachingandlearning/">Column on
+                                                Teaching
+                                                &amp; Learning</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://mathvoices.ams.org/mathmedia/">Math in
+                                                the Media</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/emp-survey">Salary &amp; Departmental
+                                                Data</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Jobs</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/employment-services">Employment
+                                                Services</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="https://www.mathjobs.org/">MathJobs</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/begin/">BEGIN Careers</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/profdev">Professional
+                                        Development</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/mrc">Mathematics Research
+                                                Communities</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/opportunities">Mathematical
+                                                Opportunities
+                                                Listing</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="https://www.mathprograms.org/">MathPrograms</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Government
+                            Relations</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/government"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        Government Relations Home</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Advocating for the
+                                        mathematical sciences</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Elevating Mathematics in
+                                        Congress</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="/letters-statements-legislation">Letters,
+                                                Statements, &amp; Legislation</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/congressional-briefings">Congressional
+                                                Briefings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Legislative Priorities</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/dc-issues">Federal Issues of
+                                                Concern</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/dc-budgetprimer">Federal Budget
+                                                Process</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Get Involved</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/dc-prepare">Advocacy Resources</a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/Contact-Us">Contact Us</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">DC-Based Fellowships</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="/ams-congressional-fellowship">Congressional
+                                                Fellowship</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/massmediafellow">Mass Media
+                                                Fellowship</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/dc-case-fellowship">Catalyzing
+                                                Advocacy in
+                                                Science &amp; Engineering (CASE) Fellowship</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">Giving</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/support-ams"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        Giving to the AMS</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Your gifts make great
+                                        things happen for mathematics</span>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/giving_op">What You
+                                        Can
+                                        Support</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/giving/2020Fund">The 2020 Fund</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/nextgen">Next Generation Fund</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/birman-fellowship-fund">Birman
+                                                Fellowship for
+                                                Women Scholars</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/child-care-grants">JMM Child Care
+                                                Grants</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/support-mrc">Mathematics Research
+                                                Communities</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/mdc">MathSciNet for Developing
+                                                Countries</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/create-a-legacy">Create a
+                                        Legacy</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/in-honor-of">Make a Tribute Gift</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/named-endowed-funds">Create a
+                                                Permanent
+                                                Fund</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/establish-prize-award">Establish a
+                                                Prize,
+                                                Award or Fellowship</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link"
+                                                href="/including-the-ams-in-your-will">Bequests and
+                                                Charitable Estate Planning</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/honoring">Honoring
+                                        Your
+                                        Gift</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/donorstories">Donor Stories</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/donor-wall">Donor Wall of Honor</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/fiske-society">Thomas S. Fiske
+                                                Society</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/gift-society">AMS Contributors
+                                                Society</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/ams-gardens">AMS Gardens</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title"
+                                        href="/giving-resources">Giving
+                                        Resources</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/committees/comm-all.html#DEVELOP">AMS
+                                                Development Committee</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/giftacceptance">AMS Gift Acceptance
+                                                Policy</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/contactus">Contact Us</a>
+		      </li>
+		      <li> <a class="ams-nav--main__level1__link ams-nav--main__level1__link__membership" href="https://ebus.ams.org/ebus/Default.aspx?TabID=1536&_ga=2.157571834.1370057648.1755000425-1827845544.1719408389&_gl=1*2pec02*_ga*MTgyNzg0NTU0NC4xNzE5NDA4Mzg5*_ga_26G4XFTR63*czE3NTUxNzYyOTYkbzEyMyRnMSR0MTc1NTE4Njg3MSRqNTckbDAkaDA." data-cta="make-a-gift" data-cta-location="Global_Nav_Link" data-journey="Giving"><i class="fa-solid fa-hand-holding-circle-dollar"></i> Donate Now</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+                <li class="ams-nav--main__list__item">
+                    <details name="megamenu" data-js="autoclose" class="ams-nav__animated-details">
+                        <summary class="ams-nav--main__level1__button ams-nav__animated-details--summary__marker">About the AMS</summary>
+                        <div class="ams-nav--main__level1">
+                            <ul class="ams-nav--main__level1__list">
+                                <li class="ams-nav--main__level1__list__title">
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title" href="/about"><i
+                                            class="fa-duotone fa-house" aria-hidden="true"></i>
+                                        About the AMS</a>
+                                    <span class="ams-nav--main__level1__list__title__tagline">Advancing research.
+                                        Connecting the mathematics community</span>
+                                </li>
+                                <li><a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Our Organization</a>
+		    <ul>
+		       <li><a class="ams-nav--main__level1__link" href="/accessibility">Accessibility</a></li>
+                       <li><a class="ams-nav--main__level1__link" href="/diversity">Equal Opportunity and Fairness</a></li>
+                       <li><a class="ams-nav--main__level1__link" href="/ams-jobs">Jobs at AMS</a></li>
+                       <li><a class="ams-nav--main__level1__link" href="/reach"> Contact Us</a></li>
+                       <li><a class="ams-nav--main__level1__link" href="/custserv">Customer Service</a></li>
+                    </ul>
+                                </li>
+                       <li><a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Leadership</a>
+		    <ul>
+		      <li><a class="ams-nav--main__level1__link" href="/exec-staff">Executive Staff</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/officers">Officers</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/member-board">Board of Trustees</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/member-council">Council</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/exec-comm/ec">Executive Committee</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/presidents">Presidents</a></li>
+                      <li><a class="ams-nav--main__level1__link" href="/gov-committees">Committees</a></li>
+                      </ul>
+                                </li>
+                                <li>
+                                    <a class="ams-nav--main__level1__link ams-nav--main__level1__link--title">Governance Operations</a>
+                                    <ul>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/bylaws">Bylaws</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/election-info">Elections</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/sec-governancemeetings">Calendar of
+                                                Meetings</a>
+                                        </li>
+                                        <li>
+                                            <a class="ams-nav--main__level1__link" href="/sec-ams-policystatements">Policy
+                                                Statements
+                                                &amp; Guidelines</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </li>
+            </ul>
+        </details>
+    </nav>
+<!-- js for new nav - PK -->
+    <script src="/js/www-nav.js"></script>
+  </header>
+
+			  <!-- using www-nav on journals -->
+		     
+        <!-- end header content on journals -->
+    </div>
+    <main class="container" id="main">
+        <div class="row g-5 mt-2" id="maincontent">
+		   <!-- site alert  on journals -->
+		   <script src="/js/alert.js"></script>
+<link href="/css/alert.css" rel="stylesheet preload" as="style" />
+
+<span id="amsAlerts"></span>
+<span id="alertSnippet" style="display:none">
+<span id="alertSnippet" style="display:none;">
+  <div id="wwwdown" class="amsAlert" role="alert" alertType="Maintenance" alertActive="true" alertPersist="true" alertStart="2025-04-23T00:00:00" alertEnd="2025-04-24T08:00:00">
+    <h4 class="alert-heading">AMS Website Down</h4>
+    <p>On Thursday, April 24th, 2025 from 5:30 AM ? 8:00 AM we will be performing maintenance on our website. During this time, the site will be unavailable.</p>
+  </div>
+</span>
+
+</span>
+
+		   <!-- end site alert  on journals -->
+		   <!-- Breadcrumb on journals -->
+		   <span class="d-none"><nav aria-label="Breadcrumb" id="Breadcrumb" class="mt-3 ms-2 container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/" onclick="_gaq.push(['_trackEvent','Breadcrumb', 'Home', location.pathname]);">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><strong>Transactions of the American Mathematical Society</strong></li>
+  </ol>
+</nav>
+</span>
+		   <!-- End breadcrumb on journals --> 
+        </div>
+    </main>
+<!-- jquery for older applications -->
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- BS% bundle -->      
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+   <!-- using bs5-wide_journals -->
+
+
+
+<link href="/css/journals2022_bs5.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+<!-- journals_links_bs5 ends here --> 
+
+
+
+
+
+
+
+
+
+
+
+<!-- Beginning of stylesheet and JavaScript stuff for Journals framework. -->
+
+
+<style>
+/* TOC entry */
+article h2 {
+  color: #484848;
+  margin-top: 25px !important;
+  margin-bottom: 20px !important;
+	text-align: center;
+}
+article .contentList dl {
+  /*border-bottom: 1px solid #E3E1E1!important;*/
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+}
+article .contentList dt a:link {
+  color: #565454;
+  /*text-decoration: underline;*/
+}
+.mathviewerPdfLink{
+	font-weight: 600;
+}
+.reqestPermissionsLink{
+	font-weight: 600;
+	float: right;
+}
+
+/* end TOC entry */
+</style>
+
+
+
+
+
+<script src="/js/ajax.js" type="text/javascript"></script>
+<script type="text/javascript">
+var addPairingListener = true;
+var testForPairingInst = true;
+var showCurrentPairingInfo = true;
+var doPairing = false;
+</script>
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script type="text/javascript" src="/js/ams/amspairing.js"></script>
+   <link rel="alternate" type="application/rss+xml" title="Transactions of the American Mathematical Society" href="/rss/tran.rss" />
+
+<!-- End of stylesheet and JavaScript stuff for Journals framework -->
+
+
+   <!-- begin NEW journals display -->
+
+	<div class="container">
+
+<!-- Revised header for bs5 journals -->
+<header class="jumbotron mt-5" id="jumbotron-jams">
+   <div class="row px-3">
+	  <section class="col-2 d-none d-md-block" id="journallogo">
+		 <script type="text/javascript" src="/journals/javascript/jams_nav.js"></script>
+		 <a href="javascript: goto_most_recent_tran()" aria-controls="currissue" role="tab">
+		 <nav id="volissue"><small>CURRENT ISSUE:</small><br>
+			<script>
+			   var currentissue = most_recent_tran_issue();
+			   document.currentScript.insertAdjacentHTML(
+				  'beforebegin',
+				  currentissue
+			   )
+			</script>
+		 </nav>
+		 </a> 
+		 <img src="https://www.ams.org/journals/images/tran-cover.png" width="215" height="285" alt="Transactions of the American Mathematical Society" class="img-fluid"> 
+	  </section>
+	  <section class="col-10" id="journaldescription">
+		 <h1>Transactions of the American Mathematical Society</h1>
+		 <p>Published by the American Mathematical Society since 1900, Transactions of the American Mathematical Society is devoted to longer research articles in all areas of pure and applied mathematics. </p>
+
+		 <p><span id="issn">				  ISSN 1088-6850 (online) 				  ISSN 0002-9947
+				   (print) 
+			   
+			 		 </span></p>
+
+		 <p id="mcqintro">The 2024 MCQ for Transactions of the American Mathematical Society is <strong>1.48 </strong>. <a href="#mcq1" data-bs-toggle="collapse" aria-expanded="false" aria-controls="mcq1">What is MCQ?</a></p>
+		 <div class="collapse" id="mcq1"> <small>What is MCQ? The Mathematical Citation Quotient (MCQ) measures journal impact by looking at citations over a five-year period. <a href="https://mathscinet.ams.org/mathscinet/search/journal/profile?groupId=3285" target="_blank">Subscribers to MathSciNet</a> may click through for more detailed information.</small> </div>
+	  </section>
+   </div>
+</header>
+<!-- Here ends the revised header for bs5 journals -->
+
+
+
+
+
+
+
+
+	 <main>
+	   <section class="row">
+		  <nav class="col-md-3">
+			<!-- MHS 4/17/23 -->
+<nav class="journals-list-group"> 	
+<script type="text/javascript" src="/journals/javascript/tran_nav.js"></script>
+
+<a href="/journals/journals"><i class="fa-sharp fa-solid fa-house"></i> Journals Home</a> 
+<a href="/epubsearch">eContent Search</a>	
+<a href="/abouttran" class="">About Transactions of the American Mathematical Society</a>		
+
+
+<a href="/tranedit" class="">Editorial Board</a> 
+
+
+
+<a href="/tran/transubmit.html" class="">Author and Submission Information</a>
+
+<a href="/policies/policies" class="" target="_blank">Journal Policies</a> 
+<a href="/subscriberinfo" class="" target="_blank">Subscription Information</a> 
+<a href="/jemail" class="" target="_blank"> Journal Email Notifications</a>
+   <hr>
+   <a href="/pairing/pair_my_device.html"><i class="fa fa-globe" aria-hidden="true"></i> Remote Access</a>	  
+</nav>	
+
+		  </nav>
+		  <article class="col-md-9">
+	  
+		  <section>
+			 			 <!-- MHS 3/28/23 A -->
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+<div class="row mb-3">
+   <ul class="nav nav-tabs">
+	  <li class="nav-item "> 
+		 <script type="text/javascript" src="/journals/javascript/tran_nav.js"></script>
+		 <a class="nav-link " href="javascript: goto_most_recent_tran()" aria-controls="currissue" role="tab"> Current volume </a> 
+	  </li>
+
+	  <li class="nav-item "> 
+	   
+		 <a class="nav-link " href="/cgi-bin/mstrack/accepted_papers/tran?active=press" aria-controls="press" role="tab">Articles in press
+		 </a>
+	  
+	  </li>
+
+	  <li class="nav-item "> 
+	  
+		 <a class="nav-link"  href="/journals/tran/0000-000-00?active=recent">
+		  Recently published</a> 
+	  
+	  </li>
+
+	  <li class="nav-item "> 
+	  <a class="nav-link" href="/journals/tran/all_issues.html?active=allissues">
+	  All 
+	   issues : 1900 &ndash; Present 	  </a>
+	  </li>
+   </ul>
+</div>
+          
+<!-- 
+	   <div class="row">
+		  <!~~ Nav tabs   ~~>
+		  <ul class="nav nav-tabs">
+			 <li role="presentation" class="">
+				<script type="text/javascript" src="/journals/javascript/tran_nav.js"></script>
+				   <a href="javascript: goto_most_recent_tran()" aria-controls="currissue" role="tab">
+				   Current volume </a>
+			 </li>
+			 <li role="presentation" class="">
+				 <!~~ && !request_uri.match('mstrack') ~~> 
+				   <a href="/cgi-bin/mstrack/accepted_papers/tran?active=press" aria-controls="press" role="tab">Articles in press
+				   </a>
+				
+			 </li>  
+   
+			 <li role="presentation" class="">
+				
+				   <a href="/journals/tran/0000-000-00?active=recent">
+					Recently published</a> 
+				
+			 </li>
+
+			 <li role="presentation" class="">
+			   <a href="/journals/tran/all_issues.html?active=allissues">
+			   All 
+			    issues : 1900 &ndash; Present 			  </a>
+		  
+			 </li>
+		  </ul>
+
+		  <script src="/js/abstracts/ajaxcall.js"></script>
+
+	   </div>
+ -->
+   
+
+
+			 <p>&nbsp;</p>
+
+			 <style>
+			 #navCell { display: none;}  
+			 </style>
+		  
+			 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/journals/javascript/references.js" type="text/javascript"></script>
+<script async src="/js/mj.js"></script>
+
+<!-- share -->                
+          
+<script src="https://platform-api.sharethis.com/js/sharethis.js#property=598c93d1e2587a001253a011&product=unknown" async="async"></script>
+<!-- ShareThis BEGIN -->
+<div class="sharethis-inline-share-buttons"></div>
+<!-- ShareThis END -->                 
+<!-- end share -->
+
+<article class="col-md-12">
+    <header>
+
+    <h2>Homotopy associativity of $H$-spaces. II<br>
+    <small>HTML articles powered by AMS MathViewer <a href="/AMSMathViewer"><i class="fa fa-info-circle" aria-label="about MathViewer"></i></a></small></h2>
+    <dl>
+        <dd>by
+<a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Stasheff%2C%20James%20Dillon">James Dillon Stasheff</a>
+<!-- 
+            <span class="pull-right">                    <a href="S0002-9947-1963-0158400-5.pdf"><small>PDF</small></a>
+            </span>
+ -->
+        </dd>
+
+        <dd>Trans. Amer. Math. Soc. <strong>108</strong> (1963), 293-312<!-- 
+            <span class="pull-right"><a href="https://www.copyright.com/openurl.do?issn=1088-6850&WT.mc.it=American%20Mathematical%20Society" target="_blank">Request permission</a></span>
+ -->        </dd>
+		<dd>
+DOI: https://doi.org/10.1090/S0002-9947-1963-0158400-5
+		</dd>
+		<dd>        </dd>
+		<dd class="mathviewerPDFLink">				   <a href="S0002-9947-1963-0158400-5.pdf"><small>PDF</small></a> |
+            <a href="https://www.copyright.com/openurl.do?issn=1088-6850&WT.mc.it=American%20Mathematical%20Society" target="_blank">Request permission</a> 		</dd>
+    </dl>
+
+    </header>
+
+
+
+    <section id="references">
+    <details>
+        <summary>References</summary>
+        <ul><li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Adams%2C%20J.%20F.">J. F. Adams</a> and <a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Hilton%2C%20P.%20J.">P. J. Hilton</a>, <em>On the chain algebra of a loop space</em>, Comment. Math. Helv. <strong>30</strong> (1956), 305–330.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=77929">MR <strong>77929</strong></a>, DOI <a href="https://doi.org/10.1007/BF02564350">10.1007/BF02564350</a></li>
+
+
+H. Cartan, Séminaire, Ecole Normale Supérieure, 1954-55.
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Cartan%2C%20Henri">Henri Cartan</a> and <a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Eilenberg%2C%20Samuel">Samuel Eilenberg</a>, <em>Homological algebra</em>, Princeton University Press, Princeton, N. J., 1956.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=0077480">MR <strong>0077480</strong></a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Copeland%2C%20Arthur%20H.%2C%20Jr.">Arthur H. Copeland Jr.</a>, <a href="/proc/1957-008-01/S0002-9939-1957-0083737-0/" class="amsJournalReferenceTitle"><em>On $H$-spaces with two non-trivial homotopy groups</em></a>, <a href="/proc/">Proc. Amer. Math. Soc.</a> <a href="/proc/1957-008-01/"><strong>8</strong></a> (1957), 184–191.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=83737">MR <strong>83737</strong></a>, DOI <a href="/proc/1957-008-01/S0002-9939-1957-0083737-0/">10.1090/S0002-9939-1957-0083737-0</a></li>
+
+
+P. J. Hilton, <em>Homotopy theory and duality</em> (mimeographed), Cornell University, 1959.
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Hilton%2C%20P.%20J.">P. J. Hilton</a> and <a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Wylie%2C%20S.">S. Wylie</a>, <em>Homology theory: An introduction to algebraic topology</em>, Cambridge University Press, New York, 1960.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=0115161">MR <strong>0115161</strong></a>, DOI <a href="https://doi.org/10.1017/CBO9780511569289">10.1017/CBO9780511569289</a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Massey%2C%20W.%20S.">W. S. Massey</a>, <em>Some higher order cohomology operations</em>, Symposium internacional de topología algebraica International symposium on algebraic topology, Universidad Nacional Autónoma de México and UNESCO, Mexico City, 1958, pp. 145–154.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=0098366">MR <strong>0098366</strong></a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Moore%2C%20John%20C.">John C. Moore</a>, <em>On the homology of $K(\pi ,\,n)$</em>, Proc. Nat. Acad. Sci. U.S.A. <strong>43</strong> (1957), 409–411.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=111026">MR <strong>111026</strong></a>, DOI <a href="https://doi.org/10.1073/pnas.43.5.409">10.1073/pnas.43.5.409</a></li>
+
+
+—, Seminario J. C. Moore (duplicated), Inst. de Matematicas de la Univ. Nacional Autónoma de México, 1958.
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Serre%2C%20Jean-Pierre">Jean-Pierre Serre</a>, <em>Homologie singulière des espaces fibrés. Applications</em>, Ann. of Math. (2) <strong>54</strong> (1951), 425–505 (French).  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=45386">MR <strong>45386</strong></a>, DOI <a href="https://doi.org/10.2307/1969485">10.2307/1969485</a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Stasheff%2C%20James%20Dillon">James Dillon Stasheff</a>, <a href="/tran/1962-105-01/S0002-9947-1962-0178469-0/" class="amsJournalReferenceTitle"><em>On extensions of $H$-spaces</em></a>, <a href="/tran/">Trans. Amer. Math. Soc.</a> <a href="/tran/1962-105-01/"><strong>105</strong></a> (1962), 126–135.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=178469">MR <strong>178469</strong></a>, DOI <a href="/tran/1962-105-01/S0002-9947-1962-0178469-0/">10.1090/S0002-9947-1962-0178469-0</a></li>
+
+
+—, <em>Homotopy associativity of H-spaces</em>. I, Trans. Amer. Math. Soc. <strong>108</strong> (1963), 275-292.
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Sugawara%2C%20Masahiro">Masahiro Sugawara</a>, <em>On the homotopy-commutativity of groups and loop spaces</em>, Mem. Coll. Sci. Univ. Kyoto Ser. A. Math. <strong>33</strong> (1960/61), 257–269.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=120645">MR <strong>120645</strong></a>, DOI <a href="https://doi.org/10.1215/kjm/1250775911">10.1215/kjm/1250775911</a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Suzuki%2C%20Haruo">Haruo Suzuki</a>, <em>On the Eilenberg-MacLane invariants of loop spaces</em>, J. Math. Soc. Japan <strong>8</strong> (1956), 93–101.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=81476">MR <strong>81476</strong></a>, DOI <a href="https://doi.org/10.2969/jmsj/00820093">10.2969/jmsj/00820093</a></li>
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Uehara%2C%20Hiroshi">Hiroshi Uehara</a> and <a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Massey%2C%20W.%20S.">W. S. Massey</a>, <em>The Jacobi identity for Whitehead products</em>, Algebraic geometry and topology. A symposium in honor of S. Lefschetz, Princeton University Press, Princeton, N.J., 1957, pp. 361–377.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=0091473">MR <strong>0091473</strong></a></li>
+
+
+B. L. van der Waerden, <em>Modern algebra</em>, Ungar, New York, 1953.
+
+
+<li><a href="https://mathscinet.ams.org/mathscinet/search/authors.html?authorName=Whitehead%2C%20George%20W.">George W. Whitehead</a>, <em>The homology suspension</em>, Colloque de topologie algébrique, Louvain, 1956, Georges Thone, Liège; Masson &amp; Cie, Paris, 1957, pp. 89–95.  <a href="https://mathscinet.ams.org/mathscinet-getitem?mr=0094794">MR <strong>0094794</strong></a></li>
+
+        </ul>
+    </details>
+    </section>
+        <section id="similar">
+        <details>
+        <summary>Similar Articles</summary>
+        <ul>
+
+        <li>
+        Retrieve articles in <em>Transactions of the American Mathematical Society</em>
+        with MSC:
+        <a href="/joursearch/servlet/DoSearch?f1=msc&v1=55.40&jrnl=one&onejrnl=tran">55.40</a>
+        </li>
+
+        <li>
+        Retrieve articles in all journals
+        with MSC:
+        <a href="/joursearch/servlet/DoSearch?f1=msc&v1=55.40">55.40</a>
+        </ul>
+        </details>
+        </section>
+    <section id="additionalinformation">
+    <details open>
+      <summary>Bibliographic Information</summary>
+      <ul>
+<li>&copy; Copyright 1963
+American Mathematical Society</li>
+
+      <li>Journal: Trans. Amer. Math. Soc. <strong>108</strong> (1963), 293-312 </li>
+<li>MSC: Primary 55.40
+<li>DOI: https://doi.org/10.1090/S0002-9947-1963-0158400-5</li>
+
+<li>MathSciNet review: <a href = "https://mathscinet.ams.org/mathscinet-getitem?mr=158400">0158400</a></li>
+
+      </ul>
+    </details>
+  </section>
+</article>
+
+		  </section>
+	  
+		  </article>
+	   </section>
+	 </main>
+   </div> <!--Container-->
+
+
+   <!-- end NEW journals display -->
+
+
+
+<hr class="mx-auto">
+<footer id="pagefooter" class="text-center">
+  <div class="container text-center">
+    <div class="row"> 
+      <!-- Contact Information -->
+      <div class="col-12 mb-1">
+        <p> American Mathematical Society &middot; <a href="https://goo.gl/maps/ZvJdkQEC79p" title="Google map 201 Charles Street Providence, Rhode Island" aria-label="Google map to AMS headquarters"> 201 Charles Street Providence, Rhode Island 02904-2213 </a> &middot; <a href="/reach" aria-label="Contact Us">Contact Us</a> </p>
+      </div>
+      <!-- Fontawesome script --> 
+      <script src="https://kit.fontawesome.com/2ad6d7fbd6.js" crossorigin="anonymous" defer></script> 
+      <!-- Social Shares -->
+      <nav class="col-12 mb-1" aria-label="Social media links">
+        <ul class="list-inline">
+          <li class="list-inline-item"> <a href="https://www.facebook.com/amermathsoc" class="link-dark" title="Follow us on Facebook" aria-label="View the AMS on Facebook"> <i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
+          <li class="list-inline-item"> <a href="https://bsky.app/profile/amermathsoc.bsky.social" class="link-dark" title="Follow us on Bluesky" aria-label="View the AMS on Bluesky"> <i class="fa-brands fa-bluesky"></i></a></li>
+          <li class="list-inline-item"> <a href="https://twitter.com/amermathsoc" class="link-dark" title="Follow us on X" aria-label="View the AMS on X"> <i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a></li>
+          <li class="list-inline-item"> <a href="https://www.linkedin.com/company/51001" class="link-dark" title="Follow us on LinkedIn" aria-label="View the AMS on LinkedIn"> <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a></li>
+          <li class="list-inline-item"> <a href="https://www.instagram.com/amermathsoc" class="link-dark" title="Follow us on Instagram" aria-label="View the AMS on Instagram"> <i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li>
+          <li class="list-inline-item"> <a href="https://www.youtube.com/amermathsoc" class="link-dark" title="Follow us on YouTube" aria-label="View the AMS on YouTube"> <i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
+        </ul>
+      </nav>
+      
+      <!-- Legal and Trademark Information -->
+      <div class="col-12">
+        <p><small> &copy; <a href="/copyright" aria-label="Copyright policy">Copyright</a> <span id="copyYear">2024</span> American Mathematical Society &middot; <a href="/privacy" aria-label="Privacy statement">View Our Privacy Statement</a> &middot; <a href="/tou" aria-label="Terms of use">Terms of Use</a> &middot; <a href="/accessibility" aria-label="Accessibility policy">Accessibility</a> </small></p>
+        <p><small> AMS, American Mathematical Society, the tri-colored AMS logo, and Advancing research, Creating connections, are trademarks and service marks of the American Mathematical Society and registered in the U.S. Patent and Trademark Office. </small></p>
+      </div>
+    </div>
+  </div>
+  <script>
+      // Dynamically update the copyright year
+      document.getElementById('copyYear').textContent = new Date().getFullYear();
+    </script> 
+</footer>
+
+
+
+
+

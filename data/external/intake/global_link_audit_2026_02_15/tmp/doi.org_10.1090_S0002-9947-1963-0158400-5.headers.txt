@@ -1,0 +1,38 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:31 GMT
+content-type: text/html;charset=utf-8
+location: https://www.ams.org/tran/1963-108-02/S0002-9947-1963-0158400-5/
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:43:00 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=5ZEe7XulkqbXxLdLykrTfcod%2FMzxREqP3YGm%2BmuhHU%2FmcqS6KvtbBPVSeK4IDXuHI6BcyttxF4hgFbF6CrCELTtLdQPvZQ%3D%3D"}]}
+cf-ray: 9ce884e588d21289-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/1.1 302 Found
+Date: Sun, 15 Feb 2026 23:17:31 GMT
+Server: Apache
+X-Frame-Options: SAMEORIGIN
+Location: https://www.ams.org/journals/tran/1963-108-02/S0002-9947-1963-0158400-5/
+Content-Length: 256
+Content-Type: text/html; charset=iso-8859-1
+
+HTTP/1.1 200 OK
+Date: Sun, 15 Feb 2026 23:17:31 GMT
+Server: Apache
+Set-Cookie: AMS_BP37qb3Zu9=135df53b.64ae50aed9a95; path=/;HttpOnly;Secure
+X-Frame-Options: SAMEORIGIN
+Vary: Accept-Encoding,User-Agent
+Content-Encoding: gzip
+X-UA-Compatible: IE=edge
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Cache-Control: no-store
+Content-Length: 27184
+Content-Type: text/html
+

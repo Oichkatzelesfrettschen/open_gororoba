@@ -1,0 +1,18 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:35 GMT
+content-type: text/html; charset=utf-8
+server: cloudflare
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: private, max-age=0, must-revalidate
+x-runtime: 3
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Y%2Byw4p%2F5hAbfxUL7fXpzHvA5wKDOLlQRBIf4v6aC2AmpkX7dm7Ydw6IgrtvMK8NqEy4Wo8dwzxpuWTrwqRPJj7nSlgVMu%2FpHlSrl"}]}
+strict-transport-security: max-age=31536000
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 1; mode=block
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.rawgit.com; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' https://ncatlab.org *; report-uri /cspreport
+cf-cache-status: DYNAMIC
+content-encoding: zstd
+cf-ray: 9ce885012ab22abc-LAX
+alt-svc: h3=":443"; ma=86400
+

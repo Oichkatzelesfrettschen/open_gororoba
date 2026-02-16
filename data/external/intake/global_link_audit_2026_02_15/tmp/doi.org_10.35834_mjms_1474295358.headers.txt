@@ -1,0 +1,37 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html;charset=utf-8
+location: https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.full
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:54:59 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=TVNCNcVNvD7xkTrUj68%2F4OEeyn1p4QUehm8%2Fr%2Fv8rCl9PJLzOVwNhpYCNAZPvyZ77DmafBg%2BoJc9E1M5z00Rm8o67bshsA%3D%3D"}]}
+cf-ray: 9ce884ef99fe1028-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+cache-control: private
+content-type: text/html; charset=utf-8
+content-encoding: gzip
+vary: Accept-Encoding
+server: Microsoft-IIS/10.0
+set-cookie: ASP.NET_SessionId=d2uftuwtjzdsecwavq3gm42y; path=/; secure; HttpOnly; SameSite=None
+x-aspnetmvc-version: 5.2
+x-aspnet-version: 4.0.30319
+set-cookie: ASP.NET_SessionId=d2uftuwtjzdsecwavq3gm42y; path=/; secure; HttpOnly; SameSite=None
+set-cookie: __RequestVerificationToken=cfNekWo4a8Hjb940kERdynGXvpmqC9-2MBklC64h4y5GMOpNd0nCsdDZ0EhCZImKZ52ViB_f1pRwAv8uH2BPkVRytSY1; path=/; secure; HttpOnly
+x-powered-by: ASP.NET
+x-frame-options: SAMEORIGIN
+date: Sun, 15 Feb 2026 23:17:32 GMT
+set-cookie: nlbi_2482420=s1kECriHUQCw0VUW6OT8qQAAAABVkaWfG7LK+IfzhXdEXkqh; HttpOnly; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+set-cookie: visid_incap_2482420=X5z6w+VNR4ipoRlQw9xR4wxUkmkAAAAAQUIPAAAAAACOOIsT2Sx6mniOLli81vQD; expires=Mon, 15 Feb 2027 09:19:13 GMT; HttpOnly; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+set-cookie: incap_ses_198_2482420=Q2T6WZqlImg981zKEXC/AgxUkmkAAAAAxGhyrtzX5aHYC1mKyXpgCQ==; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+strict-transport-security: max-age=31536000
+x-cdn: Imperva
+x-iinfo: 52-60664777-60498354 pNNy RT(1771197452938 18) q(0 0 0 -1) r(2 2) U12
+

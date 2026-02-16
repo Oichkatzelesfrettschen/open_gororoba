@@ -1,0 +1,48 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:31 GMT
+content-type: text/html;charset=utf-8
+location: https://iopscience.iop.org/article/10.1088/1367-2630/8/10/247
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:55:15 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=RK0BHcHpSH4FvTXFTuCrn41vNeKWKFUlseJWZZTzE9jFft4u0ThtbGG9MbyeEA62k1lDqAIz3vQ7opw6CEpPQ50o1dAPZw%3D%3D"}]}
+cf-ray: 9ce884e549af4747-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+content-type: text/html;charset=UTF-8
+set-cookie: __uzma=1796ff36-9148-4850-a598-12d04ba6c0f0; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: __uzmb=1771197451; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: __uzme=1838; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: __uzmc=506751031565; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: __uzmd=1771197451; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: __uzmf=7f90001796ff36-9148-4850-a598-12d04ba6c0f01-17711974515670-002cd72be6de6dd9b1110; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+set-cookie: uzmx=7f9000eaf8ceab-3f58-491d-8737-18d09cfd81b01-17711974515670-162c2ffd72c8577c10; Domain=.iop.org; HttpOnly; path=/; Expires=Sun, 16-Aug-26 23:17:31 GMT; Max-Age=15724800; SameSite=Lax
+date: Sun, 15 Feb 2026 23:17:31 GMT
+set-cookie: AWSALB=qAyvIyUOdIZb2ac31E7goCu4cQ1/vDLd4MG37BW0EYqfh5erYSHJ9j+5fFZaGWnoceqJPYs6iimlCdNcT2L1lWkQACau6SXyl6/gp2NQ0rcx3HyJAMkbqKbUPGdN; Expires=Sun, 22 Feb 2026 23:17:31 GMT; Path=/
+set-cookie: AWSALBCORS=qAyvIyUOdIZb2ac31E7goCu4cQ1/vDLd4MG37BW0EYqfh5erYSHJ9j+5fFZaGWnoceqJPYs6iimlCdNcT2L1lWkQACau6SXyl6/gp2NQ0rcx3HyJAMkbqKbUPGdN; Expires=Sun, 22 Feb 2026 23:17:31 GMT; Path=/; SameSite=None; Secure
+permissions-policy: usb=(),payment=()
+referrer-policy: strict-origin-when-cross-origin
+x-frame-options: DENY
+set-cookie: JSESSIONID=A51A925A06D387D0500F570BCF591A2F; Path=/; Secure; HttpOnly
+set-cookie: IOP_session_live=%2F%2F1771197451672%7C9d7b592b-e990-48cd-a5fc-fd3796328ab5%7C77849434-d265-4a76-bbeb-405685890019%7C%7C%7C%7C%7C%7C%7C%7C%7Cguest%2F935cb90ea673b3896fe6c3321f4b3eaf; Path=/; Domain=.iop.org; HttpOnly; Secure
+iop_licence_id: guest
+iop_primary_institution_identity_id: guest
+iop_session_id: 9d7b592b-e990-48cd-a5fc-fd3796328ab5
+iop_associated_identity_ids: guest,
+iop_session_map: iop_session_id=9d7b592b-e990-48cd-a5fc-fd3796328ab5&identity_ids=guest%2C&license_id=guest&ics_session_id=77849434-d265-4a76-bbeb-405685890019&request_id=73f78f22-b601-48a7-8d94-3c7d1a9788e5&identity_id_primary=guest&
+iop_page_type: FULLTEXT_ARTICLE
+tdm-reservation: 1
+tdm-policy: https://iopscience.iop.org/tdmrep.json
+iop_is_vor: yes
+iop_cachedhtml: true
+vary: accept-encoding
+content-language: en
+strict-transport-security: max-age=31536000
+content-encoding: gzip
+

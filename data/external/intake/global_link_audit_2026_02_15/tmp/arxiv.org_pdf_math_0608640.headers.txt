@@ -1,0 +1,18 @@
+HTTP/2 200 
+x-cloud-trace-context: accf2fde4ae809da650fe425d07c73b2
+server: Google Frontend
+content-disposition: inline; filename="0608640v2.pdf"
+etag: CIf50rTzgooDEAE=
+content-type: application/pdf
+last-modified: Sat, 30 Nov 2024 01:27:05 GMT
+link: <https://arxiv.org/pdf/math/0608640>; rel='canonical'
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+age: 267030
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21942-LGA, cache-lga21935-LGA, cache-hhr-khhr2060052-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197449.631478,VS0,VE0
+content-length: 208813
+

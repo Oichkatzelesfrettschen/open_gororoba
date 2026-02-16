@@ -1,0 +1,32 @@
+HTTP/2 301 
+x-cloud-trace-context: 1c5faaeab64042722c7eeb18c2ccbc85
+content-type: text/html; charset=utf-8
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+location: /pdf/math/0510397
+accept-ranges: bytes
+age: 0
+date: Sun, 15 Feb 2026 20:18:16 GMT
+x-served-by: cache-lga21931-LGA, cache-lga21980-LGA, cache-hhr-khhr2060042-HHR
+x-cache: MISS, MISS, MISS
+x-timer: S1771186696.088397,VS0,VE154
+content-length: 221
+
+HTTP/2 200 
+content-disposition: inline; filename="0510397v1.pdf"
+x-cloud-trace-context: 980f109eab1aecc2402cb284dbbbee90
+last-modified: Thu, 19 Jan 2023 19:54:28 GMT
+content-type: application/pdf
+server: Google Frontend
+link: <https://arxiv.org/pdf/math/0510397>; rel='canonical'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+etag: CMvUyue01PwCEAE=
+access-control-allow-origin: *
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 20:18:16 GMT
+age: 0
+x-served-by: cache-lga21993-LGA, cache-lga21951-LGA, cache-hhr-khhr2060042-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771186696.260549,VS0,VE324
+content-length: 81628
+

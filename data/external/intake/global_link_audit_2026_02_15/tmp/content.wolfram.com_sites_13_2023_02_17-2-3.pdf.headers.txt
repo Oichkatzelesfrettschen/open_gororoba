@@ -1,0 +1,16 @@
+HTTP/2 200 
+content-type: application/pdf
+last-modified: Tue, 26 Sep 2023 00:00:30 GMT
+content-encoding: gzip
+x-amz-server-side-encryption: AES256
+server: AmazonS3
+date: Sun, 15 Feb 2026 20:51:49 GMT
+etag: W/"fed83456062e72bf3de2bb961fa6bf34"
+vary: accept-encoding
+via: 1.1 e03197159f8aaf8b951ead0d21237556.cloudfront.net (CloudFront)
+age: 8740
+vary: Origin
+x-cache: Hit from cloudfront
+x-amz-cf-pop: LAX53-P4
+x-amz-cf-id: _KoAAM_kPs1khMt64TnmRdZtFAKYQbaiio1RZxk6AtUP5dYgQKVCVA==
+

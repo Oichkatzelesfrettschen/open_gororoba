@@ -1,0 +1,9 @@
+HTTP/2 200 
+content-type: text/html
+cache-control: no-cache, no-store
+content-length: 1157
+x-iinfo: 52-58014482-0 pNNN RT(1771185927709 16) q(0 -1 -1 6) r(0 -1) B12(14,0,0) U2
+strict-transport-security: max-age=31536000
+set-cookie: visid_incap_2482420=p6g2XNeeTOGsiGiOWGJPYgcnkmkAAAAAQUIPAAAAAADGsPLO9lmtjHo9ujWG0CL2; expires=Mon, 15 Feb 2027 09:19:13 GMT; HttpOnly; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+set-cookie: incap_ses_198_2482420=Cdr5KKRN50qA4bHJEXC/AgcnkmkAAAAAg64z9F9FLr40e7uuOS/wdw==; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+

@@ -1,0 +1,16 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:33 GMT
+content-type: text/html;charset=utf-8
+location: http://www.discuss.wmie.uz.zgora.pl/al/index.php?doi=10.7151/dmgaa.1088
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:54:59 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=i3cKyCe1w4QgiVribA2vCI4HUzdCHuxTUwWanSMeen894F%2FycfMHqwLxiHzFTTq4FPYxZNv6oPZKKfy3tQDZ1PQ8o3efLw%3D%3D"}]}
+cf-ray: 9ce884f38bfe5f80-LAX
+alt-svc: h3=":443"; ma=86400
+

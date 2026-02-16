@@ -1,0 +1,21 @@
+HTTP/2 200 
+x-guploader-uploadid: AGQBYWxrpMKVaaO-1Ec0QL5TkM5SivsaQT4Vqh_jbqkMW5rjWkyjW8jFv7_oE0-HYPLmOlx0
+x-goog-generation: 1767938915469741
+x-goog-metageneration: 2
+x-goog-stored-content-encoding: identity
+x-goog-stored-content-length: 4057396
+x-goog-hash: crc32c=1qYvMg==
+x-goog-hash: md5=6OhFih4Hv5kP3BS/UaygSA==
+x-goog-storage-class: STANDARD
+accept-ranges: bytes
+content-length: 4057396
+server: UploadServer
+date: Sun, 15 Feb 2026 23:13:12 GMT
+expires: Mon, 16 Feb 2026 00:13:12 GMT
+cache-control: public, max-age=3600
+age: 264
+last-modified: Fri, 09 Jan 2026 06:08:35 GMT
+etag: "e8e8458a1e07bf990fdc14bf51aca048"
+content-type: text/csv
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+

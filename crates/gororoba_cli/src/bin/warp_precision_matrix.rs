@@ -132,7 +132,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     println!();
-    println!("[GATE] Post-run finite check on /simulation/trace/rho_mean");
+    println!("[GATE] Post-run warp acceptance gate");
     gate_h5_outputs(&artifacts)?;
     println!("DONE: matrix complete and finite gate passed");
     Ok(())

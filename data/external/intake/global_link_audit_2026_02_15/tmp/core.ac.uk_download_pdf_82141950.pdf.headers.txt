@@ -1,0 +1,44 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 23:17:28 GMT
+content-length: 0
+location: https://files01.core.ac.uk/download/pdf/82141950.pdf
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=r%2FTAzGFc6MR1%2BM4HKKJKHfHn%2Bj9w87BpKRD4OqQg1p5seGq3dTuKAr7sJPFncaXQO75R3dw62j%2BYFVq1Ky3PJHJvGmjmf5Avv9U%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9ce884d74bf878e9-LAX
+
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:29 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+x-frame-options: SAMEORIGIN, SAMEORIGIN
+x-frame-options: SAMEORIGIN
+access-control-allow-methods: POST, GET, OPTIONS
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Frame-Options
+cache-control: no-cache, private
+location: /reader/82141950
+strict-transport-security: max-age=157680000
+set-cookie: _ga=GA1.3.35fa6adc-d3c9-4739-a91b-13393bc869f6; expires=Tue, 15-Feb-2028 23:17:29 GMT; Max-Age=63072000; path=/; domain=core.ac.uk
+vary: User-Agent
+cf-cache-status: BYPASS
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=GKi2WdwPTqQFzu0BHanXsqBpJP7qesHzN3nBPMV62P%2F0Mu7KCXyHuHiSXGUtLRHmGXXsf%2BLdsHP0mZhVNfijUnvEkJhkE7p0pp%2BAyy%2B0osu1WQ%3D%3D"}]}
+cf-ray: 9ce884d7aee872d5-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 503 
+date: Sun, 15 Feb 2026 23:17:29 GMT
+content-type: text/html; charset=iso-8859-1
+server: cloudflare
+x-frame-options: SAMEORIGIN, SAMEORIGIN
+access-control-allow-methods: POST, GET, OPTIONS
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Frame-Options
+vary: User-Agent
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=KPpMfU5mfj8PaiTm9iKGf%2Bwt9PbpsQOrQkuhxclxhKj%2FTGkGT6lgmYMDeskWpdphxrY1aLMXM2lcGZrONYYAlTJudInknFp3FJduM6owf1dJnA%3D%3D"}]}
+cf-ray: 9ce884dadeb672d5-LAX
+alt-svc: h3=":443"; ma=86400
+

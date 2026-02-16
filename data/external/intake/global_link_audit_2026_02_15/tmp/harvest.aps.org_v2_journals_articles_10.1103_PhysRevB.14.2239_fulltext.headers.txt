@@ -1,0 +1,20 @@
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://harvest.aps.org:443/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:26 GMT
+content-type: application/pdf
+content-length: 1199756
+etag: "b08250310cca6c43f02bbc8b4a16d88c8771298c"
+content-disposition: inline; filename=PhysRevB.14.2239.pdf
+x-content-type-options: nosniff
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+x-permitted-cross-domain-policies: none
+

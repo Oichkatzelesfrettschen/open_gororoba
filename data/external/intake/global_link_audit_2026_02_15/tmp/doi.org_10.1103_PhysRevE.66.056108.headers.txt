@@ -1,0 +1,41 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:31 GMT
+content-type: text/html;charset=utf-8
+location: https://link.aps.org/doi/10.1103/PhysRevE.66.056108
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:43:00 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=tJ3C6SO5uBqsO7djZMOLGnXCXyzVf7X%2F%2Ffj8wQyLSxe275OdrBCIdMM2FBK6ipPLcW9g%2FmG2jVc82ajGOh297nY9I3%2BtzA%3D%3D"}]}
+cf-ray: 9ce884e9c954cba2-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 403 
+date: Sun, 15 Feb 2026 23:17:31 GMT
+content-type: text/html; charset=UTF-8
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),browsing-topics=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),interest-cohort=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=()
+referrer-policy: same-origin
+server-timing: chlray;desc="9ce884eaac0008fc"
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+set-cookie: __cf_bm=DEEL1qscNhWYuWhXWtOrtj9EFq4Lz9nlZW3bk09BDrM-1771197451-1.0.1.1-jX6BKIVOtIE2a8LFC1HcCjQlQpiPCNQpfFlWPs1iHx6imQQcA71kFpjlNyp3OkmAbXIf_SkS77oahL9Q1HQhHyM8LkEiAX0owycBIzmJ9vQ; path=/; expires=Sun, 15-Feb-26 23:47:31 GMT; domain=.aps.org; HttpOnly; Secure; SameSite=None
+vary: Accept-Encoding
+speculation-rules: "/cdn-cgi/speculation"
+server: cloudflare
+cf-ray: 9ce884eaac0008fc-LAX
+content-encoding: br
+alt-svc: h3=":443"; ma=86400
+

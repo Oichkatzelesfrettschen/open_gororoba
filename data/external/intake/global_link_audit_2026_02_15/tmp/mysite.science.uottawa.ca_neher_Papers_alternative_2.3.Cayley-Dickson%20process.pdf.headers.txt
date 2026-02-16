@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sun, 15 Feb 2026 23:17:35 GMT
+Content-Type: application/pdf
+Content-Length: 1130658
+Last-Modified: Thu, 08 Nov 2007 18:42:44 GMT
+Connection: keep-alive
+ETag: "473358a4-1140a2"
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: https://uniweb.uottawa.ca
+Content-Security-Policy: frame-src www.google.com 'self'
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Accept-Ranges: bytes
+

@@ -1,0 +1,111 @@
+*****************************************************************************
+     PXUpdate V1.10        (c) PLEXTOR SA/NV (EUROPE)              21-5-99   
+     Port to UNIX          (c) Jörg Schilling                      19-07-99
+     Plextor Firmware Update program        
+*****************************************************************************
+
+  Usage
+  -----
+
+  Type PXUpdate at the command prompt, followed by the filename and/or
+  an option code.
+
+  Command line options
+  --------------------
+
+   -l		displays a list of installed Plextor drives
+   -id:x        x=SCSI ID (default=-1)
+   -ha:x        x=hostadapter (default=0)
+   dev=scsidev	specify a SCSI device (see cdrecord man page for details)
+   -all		upgrade all upgradable Plextor drives
+
+   The -ha and -id options may not work on all operating systems.
+   The preferred way is to use the dev= option. This is the OS independent
+   and portable SCSI device specifier.
+
+   On Operating systems that do not support SCSI bus scanning, you need to
+   use the dev= option.
+
+   If -id or dev= is missing the drive(s) which will be used for the upgrade will be 
+   determined by the specified upgrade file.
+   If -id, dev= and -all are missing, the program will ask for each drive if 
+   you want to upgrade them.
+
+
+   Examples
+   --------
+
+   PXUpdate -l
+   Display a list of all installed Plextor drives
+
+   PXUpdate 40ts101.bin
+   After scanning the file to see for which drive it is intended, the program
+   will ask for each drive if you want to upgrade them.
+   You can select y (yes), n (no) or a (all).   
+
+   PXUpdate r412c106.bin -all
+   Updates all PlexWriters in program mode with firmware V1.06.
+   The file r412c106.bin must be in the same directory.
+
+   PXUpdate /tmp/r820t103.bin -id:2
+   Updates the PlexWriter 8/20 at hostadapter 0 and SCSI ID 2 with firmware 
+   V1.03. The file r820t103.bin must be located in /tmp
+
+  Procedure for upgrading PX-R412C
+  --------------------------------
+
+   1. Jumper (DIP SW) setting.
+
+   First of all you need to install a jumper to enable download.
+	
+   Note : Please be careful when you set this jumper .
+   Do not install the jumper when the power is on.
+	      	       
+   Rear side of view of PX-R412C :
+	
+	                    BLOCK
+	        SCSI-ID     | FLASH
+	        | | |       | |
+	        . . . . . . . .   
+	        . . . . . .|. .|   SCSI connector
+         PCB side          ----- <- jumper
+		        
+ 
+    Install the jumper as above between BLOCK and FLASH on the PCB side(!)
+    only.
+    The other jumpers have no influence .
+    
+   2. LED display.
+
+    If the jumper setting is OK, switch on the power.
+    All 4 LED's should blink simultaneously as shown below.
+	
+	DISC ON 1X 2X
+	  o  o  o  o  <- blinking.
+	
+    If they do not, please verify the jumper setting again.
+	
+   3. How to use PXUpdate.
+	
+	Step 1. connect PX-R412C with jumper setting as indicated under 1.
+	Step 2. check LED's as indicated under 2. 
+	Step 3. execute PXUpdate (see Usage)
+		
+   4. Verify the update of the FLASH ROM.
+   
+   Remove the jumper.
+   
+   Check INQUIRY string of PX-R412C for the new version.
+
+PLEXTOR EUROPE
+Excelsiorlaan 1, 
+B-1930 Zaventem, 
+Belgium.
+Phone: 32-2-725-5522 
+FAX: 32-2-725-9495
+E-Mail : SOFTWARE@PLEXTOR.BE
+
+Jörg Schilling
+E-Mail: schilling@fokus.gmd.de
+Url:    http://www.fokus.gmd.de/usr/schilling
+

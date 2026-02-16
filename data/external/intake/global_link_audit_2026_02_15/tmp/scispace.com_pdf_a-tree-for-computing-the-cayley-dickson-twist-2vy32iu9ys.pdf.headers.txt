@@ -1,0 +1,16 @@
+HTTP/2 405 
+server: CloudFront
+date: Sun, 15 Feb 2026 23:17:36 GMT
+content-length: 2117
+x-amzn-waf-action: captcha
+cache-control: no-store, max-age=0
+content-type: text/html; charset=UTF-8
+access-control-allow-origin: *
+access-control-max-age: 86400
+access-control-allow-methods: OPTIONS,GET,POST
+access-control-expose-headers: x-amzn-waf-action
+x-cache: Error from cloudfront
+via: 1.1 84ea8508ea3b90a0de8caf2ad877403c.cloudfront.net (CloudFront)
+x-amz-cf-pop: LAX54-P2
+x-amz-cf-id: 7luLa1BU7Et5OsJnq1sQeb7_LiLXVJTbv00thMdKFWkmskOAW7K4Fw==
+

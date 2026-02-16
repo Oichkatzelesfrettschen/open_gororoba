@@ -1,0 +1,31 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 17:37:24 GMT
+content-type: text/html;charset=utf-8
+location: https://linkinghub.elsevier.com/retrieve/pii/0021869390902219
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 17:55:15 GMT
+link: <https://dul.usage.elsevier.com/doi/>; rel=dul
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=OtsU2tmZozzu7dWZaEPcsrTDGgYmqVLhjRIWpkI1IS%2BUexHsDLSZtAyZ5%2Fqv%2F1BCEwHdNkoAf%2F7KLSPZU2Gv5FsyRynRbg%3D%3D"}]}
+cf-ray: 9ce692ad5dedad59-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 17:37:24 GMT
+content-type: text/html;charset=UTF-8
+content-length: 2669
+set-cookie: JSESSIONID=6EEFA3B2BB2BA1829299F243260679B0; Path=/retrieve; Secure; HttpOnly
+pragma: no-cache
+cache-control: no-cache, no-store, must-revalidate
+expires: Thu, 01 Jan 1970 00:00:00 GMT
+set-cookie: visitorId=ITotAxaSGtGqzwixiszf; Max-Age=2147483647; Expires=Fri, 05 Mar 2094 20:51:31 GMT; Path=/
+p3p: CP="NON DSP COR CUR ADM DEV TAI PSA PSD OUR IND UNI NAV STA PRE COM INT CNT",policyref="https://linkinghub.elsevier.com/retrieve/static/P3P/IHUB-p3p.xml"
+tdm-reservation: 1
+tdm-policy: https://www.elsevier.com/tdm/tdmrep-policy.json
+content-language: en-US
+

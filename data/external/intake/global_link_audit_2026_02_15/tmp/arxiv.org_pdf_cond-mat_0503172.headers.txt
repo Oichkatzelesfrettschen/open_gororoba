@@ -1,0 +1,18 @@
+HTTP/2 200 
+content-type: application/pdf
+content-disposition: inline; filename="0503172v2.pdf"
+access-control-allow-origin: *
+etag: CNv9m8/O0/wCEAE=
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Thu, 19 Jan 2023 12:17:16 GMT
+x-cloud-trace-context: 893513be0bfbfe20b5e994a78deb8853
+server: Google Frontend
+link: <https://arxiv.org/pdf/cond-mat/0503172>; rel='canonical'
+accept-ranges: bytes
+age: 327506
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21986-LGA, cache-lga21921-LGA, cache-hhr-khhr2060028-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197448.499121,VS0,VE0
+content-length: 378658
+

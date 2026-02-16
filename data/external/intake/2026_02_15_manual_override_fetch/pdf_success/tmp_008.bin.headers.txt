@@ -1,0 +1,18 @@
+HTTP/2 200 
+cache-control: private
+content-type: application/pdf
+server: Microsoft-IIS/10.0
+x-aspnetmvc-version: 5.2
+x-aspnet-version: 4.0.30319
+set-cookie: ASP.NET_SessionId=wd4wcphww2fayrasnqvkewza; path=/; secure; HttpOnly; SameSite=None
+x-powered-by: ASP.NET
+x-frame-options: SAMEORIGIN
+date: Sun, 15 Feb 2026 23:11:56 GMT
+content-length: 177030
+set-cookie: nlbi_2482420=cIFGep0UqmXKDOvz6OT8qQAAAAAHMOmidcyqY8tQWXLw1LWS; HttpOnly; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+set-cookie: visid_incap_2482420=CFLAwUBlQ6Kb6WnctRc/z7tSkmkAAAAAQUIPAAAAAAB6GGQgu4685s6bC6NXtqT5; expires=Mon, 15 Feb 2027 07:23:01 GMT; HttpOnly; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+set-cookie: incap_ses_1839_2482420=kEhwHLFuXHbZfM7EOnGFGbtSkmkAAAAAIdR2mTowIMLoDXZAU/yNrA==; path=/; Domain=.projecteuclid.org; Secure; SameSite=None
+strict-transport-security: max-age=31536000
+x-cdn: Imperva
+x-iinfo: 14-34934130-34904832 pNNy RT(1771197116615 59) q(0 0 0 0) r(0 0) U2
+

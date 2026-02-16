@@ -1,0 +1,10 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 20:28:51 GMT
+content-type: text/html;charset=UTF-8
+set-cookie: JSESSIONID=EE7A895E91106386CA73D7733E886639; Path=/retrieve; Secure; HttpOnly
+set-cookie: visitorId=Tjy7co5VmrzUfSRffGyv; Max-Age=2147483647; Expires=Fri, 05 Mar 2094 23:42:58 GMT; Path=/
+p3p: CP="NON DSP COR CUR ADM DEV TAI PSA PSD OUR IND UNI NAV STA PRE COM INT CNT",policyref="https://linkinghub.elsevier.com/retrieve/static/P3P/IHUB-p3p.xml"
+tdm-reservation: 1
+tdm-policy: https://www.elsevier.com/tdm/tdmrep-policy.json
+content-language: en-US
+

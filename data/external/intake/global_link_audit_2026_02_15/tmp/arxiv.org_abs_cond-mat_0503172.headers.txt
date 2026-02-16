@@ -1,0 +1,30 @@
+HTTP/1.1 301 Moved Permanently
+Connection: close
+Content-Length: 0
+Server: Varnish
+Retry-After: 0
+Location: https://arxiv.org/abs/cond-mat/0503172
+Accept-Ranges: bytes
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Via: 1.1 varnish
+X-Served-By: cache-hhr-khhr2060050-HHR
+X-Cache: HIT
+X-Timer: S1771197446.653450,VS0,VE0
+
+HTTP/2 200 
+content-security-policy: frame-ancestors 'none'
+x-frame-options: SAMEORIGIN
+server: Google Frontend
+x-cloud-trace-context: fd99f7192e38cd9ebe828309a6598f35
+cache-control: max-age=3600
+last-modified: Thu, 20 Nov 2014 01:09:27 GMT
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+accept-ranges: bytes
+age: 271837
+date: Sun, 15 Feb 2026 23:17:25 GMT
+x-served-by: cache-lga21986-LGA, cache-lga21966-LGA, cache-hhr-khhr2060047-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197446.699506,VS0,VE1
+content-length: 46813
+

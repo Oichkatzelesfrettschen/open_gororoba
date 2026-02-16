@@ -1,0 +1,35 @@
+HTTP/1.1 301 Moved Permanently
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Content-Length: 0
+Connection: keep-alive
+Location: https://www.innerx.net/~tsmith/Ndalg.html
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=O%2BijSGuxW223WwNRiE2wSiOuQ11DsLZtgQPX8ROhL1gMOLq23dC7KQGNtNGCarTy%2Bsidf2Gao2ndulHJr3TzEQ7OXcDbzJrt2Wv2HV9j"}]}
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Server: cloudflare
+CF-RAY: 9ce884c45b4ecb7e-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 403 
+date: Sun, 15 Feb 2026 23:17:26 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+x-powered-by: PHP/8.2.30
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+content-security-policy: default-src * data:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'
+referrer-policy: no-referrer-when-downgrade
+x-permitted-cross-domain-policies: none
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+x-content-type-options: nosniff
+feature-policy: camera 'none'; fullscreen 'self'; geolocation *; microphone 'self' https://www.innerx.net/*
+cross-origin-opener-policy: same-origin
+clear-site-data: *
+access-control-allow-origin: *
+cross-origin-resource-policy: same-origin
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=djTzTJM%2BUys1P0EMErV4%2BQ5%2FBbeGVD8mZjqIk3L%2FqEe02bpaIXBMdNRBwdQeD9KSZtXoXTugpIIky0rdnxhCmTjKtRdO2p7hRM30isT%2B"}]}
+content-encoding: zstd
+cf-ray: 9ce884c4c815314f-LAX
+alt-svc: h3=":443"; ma=86400
+

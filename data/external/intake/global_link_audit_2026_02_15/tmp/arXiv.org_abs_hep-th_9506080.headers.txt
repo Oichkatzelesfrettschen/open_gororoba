@@ -1,0 +1,30 @@
+HTTP/1.1 301 Moved Permanently
+Connection: close
+Content-Length: 0
+Server: Varnish
+Retry-After: 0
+Location: https://arxiv.org/abs/hep-th/9506080
+Accept-Ranges: bytes
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Via: 1.1 varnish
+X-Served-By: cache-hhr-khhr2060034-HHR
+X-Cache: HIT
+X-Timer: S1771197446.653395,VS0,VE0
+
+HTTP/2 200 
+x-cloud-trace-context: 5e19312030d9329bbac3b43c275e6726
+last-modified: Mon, 30 Nov 2009 23:34:47 GMT
+content-type: text/html; charset=utf-8
+server: Google Frontend
+content-security-policy: frame-ancestors 'none'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+x-frame-options: SAMEORIGIN
+cache-control: max-age=3600
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:25 GMT
+age: 198934
+x-served-by: cache-lga21986-LGA, cache-lga21979-LGA, cache-hhr-khhr2060056-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197446.707478,VS0,VE1
+content-length: 42712
+

@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>
+The HoTT Book | Homotopy Type Theory</title>
+<link rel="profile" href="https://gmpg.org/xfn/11" />
+<link rel="stylesheet" type="text/css" media="all" href="https://s2.wp.com/wp-content/themes/pub/twentyten/style.css?m=1659017451i&amp;ver=20190507" />
+<link rel="pingback" href="https://homotopytypetheory.org/xmlrpc.php">
+<meta name='robots' content='max-image-preview:large' />
+
+<!-- Async WordPress.com Remote Login -->
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+					+ '//' + window.location.hostname
+					+ '&postid=1557'
+					+ '&is_singular=';
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly9ob21vdG9weXR5cGV0aGVvcnkub3Jn"
+		+ "&wpcomid=21082110"
+		+ "&time=1758402203";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+<link rel='dns-prefetch' href='//s2.wp.com' />
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//s1.wp.com' />
+<link rel='dns-prefetch' href='//widgets.wp.com' />
+<link rel="alternate" type="application/rss+xml" title="Homotopy Type Theory &raquo; Feed" href="https://homotopytypetheory.org/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Homotopy Type Theory &raquo; Comments Feed" href="https://homotopytypetheory.org/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Homotopy Type Theory &raquo; The HoTT Book Comments Feed" href="https://homotopytypetheory.org/book/feed/" />
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+	<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s2.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1751981882i&ver=6.8.2-alpha-60439"}};
+/*! This file is auto-generated */
+!function(s,n){var o,i,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),a=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===a[t]})}function u(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);for(var n=e.getImageData(16,16,1,1),a=0;a<n.data.length;a++)if(0!==n.data[a])return!1;return!0}function f(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\udedf")}return!1}function g(e,t,n,a){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):s.createElement("canvas"),o=r.getContext("2d",{willReadFrequently:!0}),i=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(function(e){i[e]=t(o,e,n,a)}),i}function t(e){var t=s.createElement("script");t.src=e,t.defer=!0,s.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",i=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){s.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+g.toString()+"("+[JSON.stringify(i),f.toString(),p.toString(),u.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"}),r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=function(e){c(n=e.data),r.terminate(),t(n)})}catch(e){}c(n=g(i,f,p,u))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-1' href='https://s2.wp.com/wp-content/mu-plugins/likes/jetpack-likes.css?m=1743883414i&cssminify=yes' type='text/css' media='all' />
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-2-1' href='/_static/??-eJylzFsKgCAQQNENlWNhr49oLWmDWZOKj6LdF22hz8uFA5cvlbMJbQJPWRsbQec3JQb9noBw1py1jIPMhhaQ5NRekpFhDjfEdBMyFWMB/6C04vFB0zFWnRBDM/C+2h4i4jhW&cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+.has-text-align-justify{text-align:justify;}
+</style>
+<style id='classic-theme-styles-inline-css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-4-1' href='/_static/??-eJyVzDEOgCAMQNELiQU1Jg7Gs2AlDYpAaInx9ro5O/7hfbiywhTFRYEcKvnIQPXN1RVSa0h4MOxOssVDBXunKoqK34DlDq5F5gb+LIoVH4k/vpyzGYe+03oyw/4AcmU1KQ==&cssminify=yes' type='text/css' media='all' />
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-6-1' href='/_static/??-eJzTLy/QzcxLzilNSS3WzyrWz01NyUxMzUnNTc0rQeEU5CRWphbp5qSmJyZX6uVm5uklFxfr6OPTDpRD5sM02efaGpoZmFkYGRuZGmQBAHPvL0Y=&cssminify=yes' type='text/css' media='all' />
+<style id='jetpack-sharing-buttons-style-inline-css'>
+.jetpack-sharing-buttons__services-list{display:flex;flex-direction:row;flex-wrap:wrap;gap:0;list-style-type:none;margin:5px;padding:0}.jetpack-sharing-buttons__services-list.has-small-icon-size{font-size:12px}.jetpack-sharing-buttons__services-list.has-normal-icon-size{font-size:16px}.jetpack-sharing-buttons__services-list.has-large-icon-size{font-size:24px}.jetpack-sharing-buttons__services-list.has-huge-icon-size{font-size:36px}@media print{.jetpack-sharing-buttons__services-list{display:none!important}}.editor-styles-wrapper .wp-block-jetpack-sharing-buttons{gap:0;padding-inline-start:0}ul.jetpack-sharing-buttons__services-list.has-background{padding:1.25em 2.375em}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-8-1' href='/_static/??/wp-content/mu-plugins/core-compat/wp-mediaelement.css,/wp-content/mu-plugins/wpcom-bbpress-premium-themes.css?m=1432920480j&cssminify=yes' type='text/css' media='all' />
+<style id='global-styles-inline-css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #fff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--blue: #0066cc;--wp--preset--color--medium-gray: #666;--wp--preset--color--light-gray: #f1f1f1;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--font-family--albert-sans: 'Albert Sans', sans-serif;--wp--preset--font-family--alegreya: Alegreya, serif;--wp--preset--font-family--arvo: Arvo, serif;--wp--preset--font-family--bodoni-moda: 'Bodoni Moda', serif;--wp--preset--font-family--bricolage-grotesque: 'Bricolage Grotesque', sans-serif;--wp--preset--font-family--cabin: Cabin, sans-serif;--wp--preset--font-family--chivo: Chivo, sans-serif;--wp--preset--font-family--commissioner: Commissioner, sans-serif;--wp--preset--font-family--cormorant: Cormorant, serif;--wp--preset--font-family--courier-prime: 'Courier Prime', monospace;--wp--preset--font-family--crimson-pro: 'Crimson Pro', serif;--wp--preset--font-family--dm-mono: 'DM Mono', monospace;--wp--preset--font-family--dm-sans: 'DM Sans', sans-serif;--wp--preset--font-family--dm-serif-display: 'DM Serif Display', serif;--wp--preset--font-family--domine: Domine, serif;--wp--preset--font-family--eb-garamond: 'EB Garamond', serif;--wp--preset--font-family--epilogue: Epilogue, sans-serif;--wp--preset--font-family--fahkwang: Fahkwang, sans-serif;--wp--preset--font-family--figtree: Figtree, sans-serif;--wp--preset--font-family--fira-sans: 'Fira Sans', sans-serif;--wp--preset--font-family--fjalla-one: 'Fjalla One', sans-serif;--wp--preset--font-family--fraunces: Fraunces, serif;--wp--preset--font-family--gabarito: Gabarito, system-ui;--wp--preset--font-family--ibm-plex-mono: 'IBM Plex Mono', monospace;--wp--preset--font-family--ibm-plex-sans: 'IBM Plex Sans', sans-serif;--wp--preset--font-family--ibarra-real-nova: 'Ibarra Real Nova', serif;--wp--preset--font-family--instrument-serif: 'Instrument Serif', serif;--wp--preset--font-family--inter: Inter, sans-serif;--wp--preset--font-family--josefin-sans: 'Josefin Sans', sans-serif;--wp--preset--font-family--jost: Jost, sans-serif;--wp--preset--font-family--libre-baskerville: 'Libre Baskerville', serif;--wp--preset--font-family--libre-franklin: 'Libre Franklin', sans-serif;--wp--preset--font-family--literata: Literata, serif;--wp--preset--font-family--lora: Lora, serif;--wp--preset--font-family--merriweather: Merriweather, serif;--wp--preset--font-family--montserrat: Montserrat, sans-serif;--wp--preset--font-family--newsreader: Newsreader, serif;--wp--preset--font-family--noto-sans-mono: 'Noto Sans Mono', sans-serif;--wp--preset--font-family--nunito: Nunito, sans-serif;--wp--preset--font-family--open-sans: 'Open Sans', sans-serif;--wp--preset--font-family--overpass: Overpass, sans-serif;--wp--preset--font-family--pt-serif: 'PT Serif', serif;--wp--preset--font-family--petrona: Petrona, serif;--wp--preset--font-family--piazzolla: Piazzolla, serif;--wp--preset--font-family--playfair-display: 'Playfair Display', serif;--wp--preset--font-family--plus-jakarta-sans: 'Plus Jakarta Sans', sans-serif;--wp--preset--font-family--poppins: Poppins, sans-serif;--wp--preset--font-family--raleway: Raleway, sans-serif;--wp--preset--font-family--roboto: Roboto, sans-serif;--wp--preset--font-family--roboto-slab: 'Roboto Slab', serif;--wp--preset--font-family--rubik: Rubik, sans-serif;--wp--preset--font-family--rufina: Rufina, serif;--wp--preset--font-family--sora: Sora, sans-serif;--wp--preset--font-family--source-sans-3: 'Source Sans 3', sans-serif;--wp--preset--font-family--source-serif-4: 'Source Serif 4', serif;--wp--preset--font-family--space-mono: 'Space Mono', monospace;--wp--preset--font-family--syne: Syne, sans-serif;--wp--preset--font-family--texturina: Texturina, serif;--wp--preset--font-family--urbanist: Urbanist, sans-serif;--wp--preset--font-family--work-sans: 'Work Sans', sans-serif;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}.has-albert-sans-font-family{font-family: var(--wp--preset--font-family--albert-sans) !important;}.has-alegreya-font-family{font-family: var(--wp--preset--font-family--alegreya) !important;}.has-arvo-font-family{font-family: var(--wp--preset--font-family--arvo) !important;}.has-bodoni-moda-font-family{font-family: var(--wp--preset--font-family--bodoni-moda) !important;}.has-bricolage-grotesque-font-family{font-family: var(--wp--preset--font-family--bricolage-grotesque) !important;}.has-cabin-font-family{font-family: var(--wp--preset--font-family--cabin) !important;}.has-chivo-font-family{font-family: var(--wp--preset--font-family--chivo) !important;}.has-commissioner-font-family{font-family: var(--wp--preset--font-family--commissioner) !important;}.has-cormorant-font-family{font-family: var(--wp--preset--font-family--cormorant) !important;}.has-courier-prime-font-family{font-family: var(--wp--preset--font-family--courier-prime) !important;}.has-crimson-pro-font-family{font-family: var(--wp--preset--font-family--crimson-pro) !important;}.has-dm-mono-font-family{font-family: var(--wp--preset--font-family--dm-mono) !important;}.has-dm-sans-font-family{font-family: var(--wp--preset--font-family--dm-sans) !important;}.has-dm-serif-display-font-family{font-family: var(--wp--preset--font-family--dm-serif-display) !important;}.has-domine-font-family{font-family: var(--wp--preset--font-family--domine) !important;}.has-eb-garamond-font-family{font-family: var(--wp--preset--font-family--eb-garamond) !important;}.has-epilogue-font-family{font-family: var(--wp--preset--font-family--epilogue) !important;}.has-fahkwang-font-family{font-family: var(--wp--preset--font-family--fahkwang) !important;}.has-figtree-font-family{font-family: var(--wp--preset--font-family--figtree) !important;}.has-fira-sans-font-family{font-family: var(--wp--preset--font-family--fira-sans) !important;}.has-fjalla-one-font-family{font-family: var(--wp--preset--font-family--fjalla-one) !important;}.has-fraunces-font-family{font-family: var(--wp--preset--font-family--fraunces) !important;}.has-gabarito-font-family{font-family: var(--wp--preset--font-family--gabarito) !important;}.has-ibm-plex-mono-font-family{font-family: var(--wp--preset--font-family--ibm-plex-mono) !important;}.has-ibm-plex-sans-font-family{font-family: var(--wp--preset--font-family--ibm-plex-sans) !important;}.has-ibarra-real-nova-font-family{font-family: var(--wp--preset--font-family--ibarra-real-nova) !important;}.has-instrument-serif-font-family{font-family: var(--wp--preset--font-family--instrument-serif) !important;}.has-inter-font-family{font-family: var(--wp--preset--font-family--inter) !important;}.has-josefin-sans-font-family{font-family: var(--wp--preset--font-family--josefin-sans) !important;}.has-jost-font-family{font-family: var(--wp--preset--font-family--jost) !important;}.has-libre-baskerville-font-family{font-family: var(--wp--preset--font-family--libre-baskerville) !important;}.has-libre-franklin-font-family{font-family: var(--wp--preset--font-family--libre-franklin) !important;}.has-literata-font-family{font-family: var(--wp--preset--font-family--literata) !important;}.has-lora-font-family{font-family: var(--wp--preset--font-family--lora) !important;}.has-merriweather-font-family{font-family: var(--wp--preset--font-family--merriweather) !important;}.has-montserrat-font-family{font-family: var(--wp--preset--font-family--montserrat) !important;}.has-newsreader-font-family{font-family: var(--wp--preset--font-family--newsreader) !important;}.has-noto-sans-mono-font-family{font-family: var(--wp--preset--font-family--noto-sans-mono) !important;}.has-nunito-font-family{font-family: var(--wp--preset--font-family--nunito) !important;}.has-open-sans-font-family{font-family: var(--wp--preset--font-family--open-sans) !important;}.has-overpass-font-family{font-family: var(--wp--preset--font-family--overpass) !important;}.has-pt-serif-font-family{font-family: var(--wp--preset--font-family--pt-serif) !important;}.has-petrona-font-family{font-family: var(--wp--preset--font-family--petrona) !important;}.has-piazzolla-font-family{font-family: var(--wp--preset--font-family--piazzolla) !important;}.has-playfair-display-font-family{font-family: var(--wp--preset--font-family--playfair-display) !important;}.has-plus-jakarta-sans-font-family{font-family: var(--wp--preset--font-family--plus-jakarta-sans) !important;}.has-poppins-font-family{font-family: var(--wp--preset--font-family--poppins) !important;}.has-raleway-font-family{font-family: var(--wp--preset--font-family--raleway) !important;}.has-roboto-font-family{font-family: var(--wp--preset--font-family--roboto) !important;}.has-roboto-slab-font-family{font-family: var(--wp--preset--font-family--roboto-slab) !important;}.has-rubik-font-family{font-family: var(--wp--preset--font-family--rubik) !important;}.has-rufina-font-family{font-family: var(--wp--preset--font-family--rufina) !important;}.has-sora-font-family{font-family: var(--wp--preset--font-family--sora) !important;}.has-source-sans-3-font-family{font-family: var(--wp--preset--font-family--source-sans-3) !important;}.has-source-serif-4-font-family{font-family: var(--wp--preset--font-family--source-serif-4) !important;}.has-space-mono-font-family{font-family: var(--wp--preset--font-family--space-mono) !important;}.has-syne-font-family{font-family: var(--wp--preset--font-family--syne) !important;}.has-texturina-font-family{font-family: var(--wp--preset--font-family--texturina) !important;}.has-urbanist-font-family{font-family: var(--wp--preset--font-family--urbanist) !important;}.has-work-sans-font-family{font-family: var(--wp--preset--font-family--work-sans) !important;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-10-1' href='https://s2.wp.com/wp-content/mu-plugins/jetpack-mu-wpcom-plugin/sun/jetpack_vendor/automattic/jetpack-mu-wpcom/src/build/verbum-comments/verbum-comments.css?m=1753279645i&cssminify=yes' type='text/css' media='all' />
+<link rel='stylesheet' id='verbum-gutenberg-css-css' href='https://widgets.wp.com/verbum-block-editor/block-editor.css?ver=1738686361' media='all' />
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-12-1' href='/_static/??-eJyFjsEOwjAMQ3+IECaxiR0Q37JVoRTaplpSVfv7hRsTEtxsy88ytgKOs1JW1AclEix1Rm0WrJbiHNm95OhEDvivK7pGglYcpy8gVSix+pAFF7JRb9KjtT7sL8gTg12ZNHDeGbjHKSxv9Jau3dCdzv3YX8bnBqh7UWU=&cssminify=yes' type='text/css' media='all' />
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-14-1' href='/_static/??-eJyNjcsKAjEMRX/IGtQZBxfip0hMS9sxTYppGfx7H7gRN+7ugcs5sFRHKi1Ig9Jd5R6zGMyhVaTrh8G6QFHfORhYwlvw6P39PbPENZmt4G/ROQuBKWVkxxrVvuBH1lIoz2waILJekF+HUzlupnG3nQ77YZwfuRJIaQ==&cssminify=yes' type='text/css' media='all' />
+<script type="text/javascript" id="jetpack-mu-wpcom-settings-js-before">
+/* <![CDATA[ */
+var JETPACK_MU_WPCOM_SETTINGS = {"assetsUrl":"https:\/\/s1.wp.com\/wp-content\/mu-plugins\/jetpack-mu-wpcom-plugin\/sun\/jetpack_vendor\/automattic\/jetpack-mu-wpcom\/src\/build\/"};
+/* ]]> */
+</script>
+<script crossorigin='anonymous' type='text/javascript'  src='https://s1.wp.com/wp-content/js/rlt-proxy.js?m=1720530689i'></script>
+<script type="text/javascript" id="rlt-proxy-js-after">
+/* <![CDATA[ */
+	rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+/* ]]> */
+</script>
+<script type="text/javascript" crossorigin='anonymous' src="https://s0.wp.com/wp-content/plugins/gutenberg-core/v20.6.0/build/hooks/index.min.js?m=1744959081i&amp;ver=84e753e2b66eb7028d38" id="wp-hooks-js"></script>
+<script type="text/javascript" crossorigin='anonymous' src="https://s0.wp.com/wp-content/plugins/gutenberg-core/v20.6.0/build/i18n/index.min.js?m=1744959081i&amp;ver=bd5a2533e717a1043151" id="wp-i18n-js"></script>
+<script type="text/javascript" id="wp-i18n-js-after">
+/* <![CDATA[ */
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+/* ]]> */
+</script>
+<script type="text/javascript" id="wpcom-actionbar-placeholder-js-extra">
+/* <![CDATA[ */
+var actionbardata = {"siteID":"21082110","postID":"1557","siteURL":"https:\/\/homotopytypetheory.org","xhrURL":"https:\/\/homotopytypetheory.org\/wp-admin\/admin-ajax.php","nonce":"a2104c67ac","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","shortlink":"https:\/\/wp.me\/P1qsq2-p7","i18n":{"followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/reader\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar","shortLinkCopied":"Shortlink copied to clipboard."}};
+/* ]]> */
+</script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://hottheory.wordpress.com/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress.com" />
+<link rel="canonical" href="https://homotopytypetheory.org/book/" />
+<link rel='shortlink' href='https://wp.me/P1qsq2-p7' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fhomotopytypetheory.org%2Fbook%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fhomotopytypetheory.org%2Fbook%2F&amp;for=wpcom-auto-discovery" />
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The HoTT Book" />
+<meta property="og:url" content="https://homotopytypetheory.org/book/" />
+<meta property="og:description" content="Homotopy Type Theory: Univalent Foundations of Mathematics The Univalent Foundations Program Institute for Advanced Study Buy a hardcover copy for $21.00. [620 pages, 6&#8243; × 9&#8243; size, hard…" />
+<meta property="article:published_time" content="2013-03-12T01:57:34+00:00" />
+<meta property="article:modified_time" content="2025-01-28T02:53:15+00:00" />
+<meta property="og:site_name" content="Homotopy Type Theory" />
+<meta property="og:image" content="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=208" />
+<meta property="og:image:width" content="208" />
+<meta property="og:image:height" content="300" />
+<meta property="og:image:alt" content="Homotopy type theory: Univalent foundations of mathematics" />
+<meta property="og:locale" content="en_US" />
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom" />
+<meta name="twitter:text:title" content="The HoTT Book" />
+<meta name="twitter:image" content="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=144" />
+<meta name="twitter:image:alt" content="Homotopy type theory: Univalent foundations of mathematics" />
+<meta name="twitter:card" content="summary" />
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="shortcut icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=32" sizes="16x16" />
+<link rel="icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=32" sizes="16x16" />
+<link rel="apple-touch-icon" href="https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=114" />
+<link rel='openid.server' href='https://homotopytypetheory.org/?openidserver=1' />
+<link rel='openid.delegate' href='https://homotopytypetheory.org/' />
+<link rel="search" type="application/opensearchdescription+xml" href="https://homotopytypetheory.org/osd.xml" title="Homotopy Type Theory" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="description" content="Homotopy Type Theory: Univalent Foundations of Mathematics The Univalent Foundations Program Institute for Advanced Study Buy a hardcover copy for $21.00. [620 pages, 6&quot; × 9&quot; size, hardcover, first-edition-1277-g3274cb3] Buy a paperback copy for $14.00. [620 pages, 6&quot; × 9&quot; size, paperback, first-edition-1277-g3274cb3] Download PDF for on-screen viewing. [490+ pages, letter size, in color, with&hellip;" />
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-image: url("https://hottheory.files.wordpress.com/2011/03/blankblackboard.jpg"); background-position: left top; background-size: auto; background-repeat: repeat; background-attachment: scroll; }
+</style>
+	</head>
+
+<body class="wp-singular page-template-default page page-id-1557 custom-background wp-theme-pubtwentyten customizer-styles-applied jetpack-reblog-enabled">
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="branding" role="banner">
+								<div id="site-title">
+					<span>
+						<a href="https://homotopytypetheory.org/" title="Homotopy Type Theory" rel="home">Homotopy Type Theory</a>
+					</span>
+				</div>
+				<div id="site-description"></div>
+
+									<a class="home-link" href="https://homotopytypetheory.org/" title="Homotopy Type Theory" rel="home">
+						<img src="https://homotopytypetheory.org/wp-content/uploads/2021/01/ffffff-1.png" width="1" height="1" alt="" />
+					</a>
+								</div><!-- #branding -->
+
+			<div id="access" role="navigation">
+								<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+				<div class="menu-header"><ul id="menu-basic" class="menu"><li id="menu-item-1567" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-1567"><a href="https://homotopytypetheory.org/">Home</a></li>
+<li id="menu-item-1563" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1563"><a href="https://homotopytypetheory.org/blog/">Blog</a></li>
+<li id="menu-item-5074" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5074"><a href="https://ncatlab.org/nlab/show/formalized+libraries+of+homotopy+type+theory">Code</a></li>
+<li id="menu-item-1562" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1562"><a href="https://homotopytypetheory.org/events/">Events</a></li>
+<li id="menu-item-1565" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1565"><a href="https://homotopytypetheory.org/links/">Links</a></li>
+<li id="menu-item-1566" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1566"><a href="https://homotopytypetheory.org/references/">References</a></li>
+<li id="menu-item-1568" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-1557 current_page_item menu-item-1568"><a href="https://homotopytypetheory.org/book/" aria-current="page">The Book</a></li>
+</ul></div>			</div><!-- #access -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+
+	<div id="main">
+
+		<div id="container">
+			<div id="content" role="main">
+
+			
+
+				<div id="post-1557" class="post-1557 page type-page status-publish hentry">
+											<h1 class="entry-title">The HoTT Book</h1>
+					
+					<div class="entry-content">
+						<p><img data-attachment-id="1819" data-permalink="https://homotopytypetheory.org/book/cover-web/" data-orig-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png" data-orig-size="300,432" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="cover-web" data-image-description="" data-image-caption="&lt;p&gt;Homotopy type theory: Univalent foundations of mathematics&lt;/p&gt;
+" data-medium-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=208" data-large-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=300" class="size-medium wp-image-1819" style="margin-left:20px" src="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=208&#038;h=300" alt="Homotopy type theory: Univalent foundations of mathematics" width="208" height="300" align="right" srcset="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=208 208w, https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=104 104w, https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png 300w" sizes="(max-width: 208px) 100vw, 208px" /></p>
+<p><strong><em>Homotopy Type Theory:</em></strong><br />
+<strong><em>Univalent Foundations of Mathematics</em></strong><br />
+The Univalent Foundations Program<br />
+Institute for Advanced Study</p>
+<ul>
+<li><a title="HoTT book hardcover" href="http://www.lulu.com/shop/univalent-foundations-project/homotopy-type-theory-hardcover/hardcover/product-21076997.html">Buy a hardcover copy for $21.00.</a><br />
+<span style="font-size:75%">[620 pages, 6&#8243; × 9&#8243; size, hardcover, first-edition-1277-g3274cb3]</span></li>
+<li><a title="HoTT book paperback" href="http://www.lulu.com/shop/univalent-foundations-project/homotopy-type-theory-paperback/paperback/product-21077021.html">Buy a paperback copy for $14.00.</a><br />
+<span style="font-size:75%">[620 pages, 6&#8243; × 9&#8243; size, paperback, first-edition-1277-g3274cb3]</span></li>
+<li><a title="HoTT book online" href="https://hott.github.io/book/hott-online.pdf.html">Download PDF for on-screen viewing.</a><br />
+<span style="font-size:75%">[490+ pages, letter size, in color, with color links]</span></li>
+<li><a title="HoTT book for ebooks" href="https://hott.github.io/book/hott-ebook.pdf.html">Download PDF for e-books.</a><br />
+<span style="font-size:75%">[622+ pages, size 6&#8243; × 9&#8243;, small margins, black and white]</span></li>
+<li><a title="HoTT book for letter printing" href="https://hott.github.io/book/hott-letter.pdf.html">Download PDF for printing on letter paper</a> and <a href="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-letter.pdf">color cover</a>.<br />
+<span style="font-size:75%">[492+ pages, letter size, black and white, separate color cover]</span></li>
+<li><a title="HoTT book for A4 printing" href="https://hott.github.io/book/hott-a4.pdf.html">Download PDF for printing on A4 paper</a> and <a href="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-a4.pdf">color cover</a>.<br />
+<span style="font-size:75%">[454+ pages, A4 size, black and white, separate color cover]</span></li>
+<li><a title="Errata for HoTT book" href="https://hott.github.io/book/errata.pdf.html">Download errata</a> for previous versions (see below).</li>
+<li><a title="HoTT book nightly builds" href="https://github.com/HoTT/book/wiki/Nightly-Builds">Nightly builds page</a> (with direct links to the most recent versions; the above &#8220;released&#8221; versions are redirects to these)</li>
+</ul>
+<h4>About the book</h4>
+<p><a href="http://computingreviews.com/recommend/bestof/notableitems_2013.cfm"><img data-attachment-id="1819" data-permalink="https://homotopytypetheory.org/book/cover-web/" data-orig-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png" data-orig-size="300,432" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="cover-web" data-image-description="" data-image-caption="&lt;p&gt;Homotopy type theory: Univalent foundations of mathematics&lt;/p&gt;
+" data-medium-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=208" data-large-file="https://homotopytypetheory.org/wp-content/uploads/2013/03/cover-web.png?w=300" class="size-medium wp-image-1819" style="margin-left:15px;margin-bottom:15px" src="https://homotopytypetheory.org/wp-content/uploads/2013/03/notablebookcr2013.jpg?w=300&#038;h=248" alt="NotableBookCR2013"   align="right" /></a><br />
+Homotopy type theory is a new branch of mathematics that combines aspects of several different fields in a surprising way. It is based on a recently discovered connection between homotopy theory and type theory. It touches on topics as seemingly distant as the homotopy groups of spheres, the algorithms for type checking, and the definition of weak ∞-groupoids. Homotopy type theory offers a new &#8220;univalent&#8221; foundation of mathematics, in which a central role is played by Voevodsky&#8217;s univalence axiom and higher inductive types. The present book is intended as a first systematic exposition of the basics of univalent foundations, and a collection of examples of this new style of reasoning — but without requiring the reader to know or learn any formal logic, or to use any computer proof assistant. We believe that univalent foundations will eventually become a viable alternative to set theory as the &#8220;implicit foundation&#8221; for the unformalized mathematics done by most mathematicians.</p>
+<h4>Feedback</h4>
+<p>We have released the book under a permissive Creative Commons licence which allows <a href="https://vimeo.com/68761218">everyone to participate</a> and improve it. We would love to hear your comments, suggestions, and corrections. The best way to provide feedback is by <a title="Create a new issue about the HoTT book" href="https://github.com/HoTT/book/issues?state=open" target="_blank" rel="noopener">creating an issue</a> on the <a title="The github.com book repository" href="https://github.com/HoTT/book" target="_blank" rel="noopener">github.com book repository</a>. Git users may also fork the book and make pull requests. (Would you like to understand the last sentence? <a title="Learn git" href="http://try.github.io/levels/1/challenges/1" target="_blank" rel="noopener">Learn git in 15 minutes!</a>)</p>
+<h4>Updates</h4>
+<p>This is the first (and to date, only) edition of the book. For the benefit of all readers, the available PDF and printed copies are being updated on a rolling basis with minor corrections and clarifications as we receive them. Every copy has a version marker that can be found on the title page and is of the form &#8220;first-edition-XX-gYYYYYYY&#8221;, where XX is a natural number and YYYYYYY is the git commit hash that uniquely identifies the exact version. Higher values of XX indicate more recent copies. The date and version marker of the most recent update can be found on the <a href="https://github.com/HoTT/book/wiki/Nightly-Builds">nightly builds</a> page.</p>
+<p>A list of corrections and clarifications that have been made so far (except for trivial formatting and spacing changes), along with the version marker in which they were first made, can be found in the <a href="https://homotopytypetheory.org/wp-content/uploads/2013/03/errata-611-ga1a258c.pdf">errata file</a>. While the page numbering may differ between copies with different version markers (and indeed, already differs between the letter/A4 and printed/ebook copies with the same version marker), we promise that the numbering of chapters, sections, theorems, and equations will remain constant, and no new mathematical content will be added, unless and until there is a second edition.</p>
+<h4>Citing the book</h4>
+<p>Since the book has no &#8220;publisher&#8221; in the traditional sense, it may not be obvious how to cite it. Here is one possible BibTeX entry:</p>
+<pre>@Book{hottbook,
+  author =    {The {Univalent Foundations Program}},
+  title =     {Homotopy Type Theory: Univalent Foundations of Mathematics},
+  publisher = {\url{https://homotopytypetheory.org/book}},
+  address =   {Institute for Advanced Study},
+  year =      2013}
+</pre>
+<h4>Translations</h4>
+<p>While the original authors of the book take no responsibility for the correctness of any translations, as a public service we include here links to any translations of it that we are aware of.</p>
+<ul>
+<li><a href="https://henrychern.wordpress.com/wp-content/uploads/2022/10/hott2.pdf">Russian</a>, by HenryChern
+</ul>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer"
+				data-shared="sharing-twitter-1557"
+				class="share-twitter sd-button share-icon"
+				href="https://homotopytypetheory.org/book/?share=twitter"
+				target="_blank"
+				aria-labelledby="sharing-twitter-1557"
+				>
+				<span id="sharing-twitter-1557" hidden>Click to share on X (Opens in new window)</span>
+				<span>X</span>
+			</a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer"
+				data-shared="sharing-facebook-1557"
+				class="share-facebook sd-button share-icon"
+				href="https://homotopytypetheory.org/book/?share=facebook"
+				target="_blank"
+				aria-labelledby="sharing-facebook-1557"
+				>
+				<span id="sharing-facebook-1557" hidden>Click to share on Facebook (Opens in new window)</span>
+				<span>Facebook</span>
+			</a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-21082110-1557-68cf169b0d35e' data-src='//widgets.wp.com/likes/index.html?ver=20250920#blog_id=21082110&amp;post_id=1557&amp;origin=hottheory.wordpress.com&amp;obj_id=21082110-1557-68cf169b0d35e&amp;domain=homotopytypetheory.org' data-name='like-post-frame-21082110-1557-68cf169b0d35e' data-title='Like or Reblog'><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class='loading'>Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div></div>																	</div><!-- .entry-content -->
+				</div><!-- #post-1557 -->
+
+				
+			<div id="comments">
+
+
+			<h3 id="comments-title">
+			56 Responses to <em>The HoTT Book</em>			</h3>
+
+
+			<ol class="commentlist">
+						<li class="comment even thread-even depth-1" id="li-comment-4204">
+		<div id="comment-4204">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://github.com/victoredwardocallaghan" class="url" rel="ugc external nofollow">Edward O'Callaghan</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-4204">
+				25 June 2013 at 09:20</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I love how you have developed this book and for this reason I will buy a couple of copies.<br />
+One for myself and one for someone I know.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=4204#respond" data-commentid="4204" data-postid="1557" data-belowelement="comment-4204" data-respondelement="respond" data-replyto="Reply to Edward O&#039;Callaghan" aria-label="Reply to Edward O&#039;Callaghan">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5503">
+		<div id="comment-5503">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="https://plus.google.com/103416070288920608429" class="url" rel="ugc external nofollow">Jason Gross</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-5503">
+				14 September 2013 at 21:25</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>This is now available on google books at <a href="http://books.google.com/books?id=LkDUKMv3yp0C" rel="nofollow ugc">http://books.google.com/books?id=LkDUKMv3yp0C</a>.  Perhaps the list should be updated?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=5503#respond" data-commentid="5503" data-postid="1557" data-belowelement="comment-5503" data-respondelement="respond" data-replyto="Reply to Jason Gross" aria-label="Reply to Jason Gross">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment byuser comment-author-gluejar even thread-even depth-1" id="li-comment-12753">
+		<div id="comment-12753">
+			<div class="comment-author vcard">
+								<cite class="fn">gluejar</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-12753">
+				26 December 2013 at 11:12</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Google books doesn&#8217;t know about the the ebook. </p>
+<p>Internet Archive does, and has conversions to other formats: <a href="https://archive.org/details/HottOnline" rel="nofollow ugc">https://archive.org/details/HottOnline</a></p>
+<p>Unglue.it has added it to their list of CC licensed ebooks: <a href="https://unglue.it/work/128678/" rel="nofollow ugc">https://unglue.it/work/128678/</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=12753#respond" data-commentid="12753" data-postid="1557" data-belowelement="comment-12753" data-respondelement="respond" data-replyto="Reply to gluejar" aria-label="Reply to gluejar">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-13961">
+		<div id="comment-13961">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://sirinath.wordpress.com" class="url" rel="ugc external nofollow">sirinath</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-13961">
+				4 January 2014 at 02:53</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>When is the 2nd edition planed?</p>
+<p>Perhaps you could have 1st edition revision x merging the errata and format changes and perhaps minor additions. Waiting for the second edition may be a bit too long.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=13961#respond" data-commentid="13961" data-postid="1557" data-belowelement="comment-13961" data-respondelement="respond" data-replyto="Reply to sirinath" aria-label="Reply to sirinath">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-2" id="li-comment-14701">
+		<div id="comment-14701">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-14701">
+				8 January 2014 at 13:12</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>As explained above under &#8220;Updates&#8221;, new versions of the first edition incorporating the errata are already being posted periodically.  There are not yet any plans for a second edition.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=14701#respond" data-commentid="14701" data-postid="1557" data-belowelement="comment-14701" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="li-comment-25957">
+		<div id="comment-25957">
+			<div class="comment-author vcard">
+								<cite class="fn">Marco</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-25957">
+				4 June 2014 at 06:15</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>There link to the paperback version seems dead right now.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=25957#respond" data-commentid="25957" data-postid="1557" data-belowelement="comment-25957" data-respondelement="respond" data-replyto="Reply to Marco" aria-label="Reply to Marco">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-2" id="li-comment-25960">
+		<div id="comment-25960">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-25960">
+				4 June 2014 at 11:56</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Yeah, lulu changed their software and broke the cover image.  Andrej is working on it (go Andrej!).</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=25960#respond" data-commentid="25960" data-postid="1557" data-belowelement="comment-25960" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment odd alt depth-3" id="li-comment-25965">
+		<div id="comment-25965">
+			<div class="comment-author vcard">
+								<cite class="fn">Marco</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-25965">
+				4 June 2014 at 17:09</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Now everything seems to work, the paperback version is back, great job. On the plus side i&#8217;ve noticed that this problem made the paperback version jump to &#8220;first-edition-667-g42d8475&#8221; from the &#8220;-611&#8221; of the pdf.<br />
+Are the physical copy printed on demand from the last github&#8217;s sources or lulu has a stock of books which is updated with the new releases only when the remaining stock is low?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=25965#respond" data-commentid="25965" data-postid="1557" data-belowelement="comment-25965" data-respondelement="respond" data-replyto="Reply to Marco" aria-label="Reply to Marco">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-4" id="li-comment-25977">
+		<div id="comment-25977">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-25977">
+				4 June 2014 at 23:23</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Lulu prints on demand from the most recent version that&#8217;s been uploaded to their servers by us.  We don&#8217;t do that for every github commit, of course. Usually we update the lulu and pdf versions together, but to fix this problem I guess Andrej had to upload a new version.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=25977#respond" data-commentid="25977" data-postid="1557" data-belowelement="comment-25977" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-26832">
+		<div id="comment-26832">
+			<div class="comment-author vcard">
+								<cite class="fn">Henry</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-26832">
+				6 July 2014 at 17:26</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for using Lulu and not expensive publishers like Springer-Verlag.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=26832#respond" data-commentid="26832" data-postid="1557" data-belowelement="comment-26832" data-respondelement="respond" data-replyto="Reply to Henry" aria-label="Reply to Henry">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-29426">
+		<div id="comment-29426">
+			<div class="comment-author vcard">
+								<cite class="fn">Sébastien Noton</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-29426">
+				12 September 2014 at 08:18</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks<br />
+A lot<br />
+For  the  Creative Commons licence<br />
+A for the content</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=29426#respond" data-commentid="29426" data-postid="1557" data-belowelement="comment-29426" data-respondelement="respond" data-replyto="Reply to Sébastien Noton" aria-label="Reply to Sébastien Noton">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment odd alt depth-2" id="li-comment-29427">
+		<div id="comment-29427">
+			<div class="comment-author vcard">
+								<cite class="fn">Sébastien Noton</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-29427">
+				12 September 2014 at 08:19</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>And for the content 🙂</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=29427#respond" data-commentid="29427" data-postid="1557" data-belowelement="comment-29427" data-respondelement="respond" data-replyto="Reply to Sébastien Noton" aria-label="Reply to Sébastien Noton">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment byuser comment-author-taraathan even thread-odd thread-alt depth-1" id="li-comment-80050">
+		<div id="comment-80050">
+			<div class="comment-author vcard">
+								<cite class="fn">taraathan</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-80050">
+				5 May 2015 at 11:12</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I am struggling with the exercises even in the first chapter, and when I am finished I am not sure if I have the right answer. Would it be possible to publish some of the solutions to the exercises?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=80050#respond" data-commentid="80050" data-postid="1557" data-belowelement="comment-80050" data-respondelement="respond" data-replyto="Reply to taraathan" aria-label="Reply to taraathan">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-2" id="li-comment-80076">
+		<div id="comment-80076">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-80076">
+				5 May 2015 at 16:10</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>A few solutions (basically, those that anyone happened to be motivated to write up) are available in the file <tt>exercise_solutions.tex</tt> in the <a href="https://github.com/HoTT/book" rel="nofollow">github repository</a>.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=80076#respond" data-commentid="80076" data-postid="1557" data-belowelement="comment-80076" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-84005">
+		<div id="comment-84005">
+			<div class="comment-author vcard">
+								<cite class="fn">Will Fourie</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-84005">
+				8 June 2015 at 03:24</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>How have you published this?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=84005#respond" data-commentid="84005" data-postid="1557" data-belowelement="comment-84005" data-respondelement="respond" data-replyto="Reply to Will Fourie" aria-label="Reply to Will Fourie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-2" id="li-comment-84037">
+		<div id="comment-84037">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-84037">
+				8 June 2015 at 12:52</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>We posted the PDF online here, and we made a Lulu account so that people can buy a printed version.  It took a bit of effort to get the formatting correct for Lulu, but overall it wasn&#8217;t very hard.  Is that what you mean?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=84037#respond" data-commentid="84037" data-postid="1557" data-belowelement="comment-84037" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment even depth-3" id="li-comment-84038">
+		<div id="comment-84038">
+			<div class="comment-author vcard">
+								<cite class="fn">Will Fourie</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-84038">
+				8 June 2015 at 12:57</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Well mainly how you managed to print and publish a copy that you could sell while also giving it away for free. I wouldn&#8217;t have thought most publishers would allow that &#8211; how did you manage to get the physical copies printed?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=84038#respond" data-commentid="84038" data-postid="1557" data-belowelement="comment-84038" data-respondelement="respond" data-replyto="Reply to Will Fourie" aria-label="Reply to Will Fourie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt depth-3" id="li-comment-84040">
+		<div id="comment-84040">
+			<div class="comment-author vcard">
+								<cite class="fn">Will Fourie</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-84040">
+				8 June 2015 at 12:59</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Ah, I see now, Lulu seems like a good service.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=84040#respond" data-commentid="84040" data-postid="1557" data-belowelement="comment-84040" data-respondelement="respond" data-replyto="Reply to Will Fourie" aria-label="Reply to Will Fourie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-87800">
+		<div id="comment-87800">
+			<div class="comment-author vcard">
+								<cite class="fn">Walter Kehowski</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-87800">
+				11 July 2015 at 18:02</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>The book is beautifully typeset! It would be instructive to see the latex (or context?) preamble for this book.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=87800#respond" data-commentid="87800" data-postid="1557" data-belowelement="comment-87800" data-respondelement="respond" data-replyto="Reply to Walter Kehowski" aria-label="Reply to Walter Kehowski">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-2" id="li-comment-87843">
+		<div id="comment-87843">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-87843">
+				11 July 2015 at 23:50</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>You can find it in the github repository (linked above).</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=87843#respond" data-commentid="87843" data-postid="1557" data-belowelement="comment-87843" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-91065">
+		<div id="comment-91065">
+			<div class="comment-author vcard">
+								<cite class="fn">Will Fourie</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-91065">
+				31 August 2015 at 11:37</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Hi, me again. I&#8217;m currently just about to enter my first year of an undergraduate degree, but I&#8217;ve been reading ahead for about a year now, and so have a decent grasp at basic abstract algebra (up to Galois), very basic analysis, linear algebra, number theory, and axiomatic set theory (not much, I know, but there&#8217;s only so much one can do while still doing A-levels). I started learning about axiomatic set theory (specifically the book on ZFC by P. Suppes) because I really like knowing at least roughly the logical path from the basic assumptions to what I&#8217;m currently learning. I feel it helps my understanding somewhat. </p>
+<p>The problem I found was that, in fact, ZFC was not really practiced in any of my other books &#8211; for example they write that N is a subset of Q, or that every field is a subset of its polynomial ring, in my Abstract Algebra book. This had me looking for a more suitable foundation, and after having a look at ETCS as well as some non-ETCS category theory I eventually stumbled here. Exams and so on distracted me for a bit, until now. </p>
+<p>Given my background, do you think I&#8217;d be able to get through this book? What kind of a level of mathematical maturity is assumed? More to the point, is it worth me trying to learn this? I have this niggling fear that if I learn from this book and then come to think in terms of types and write as such I&#8217;ll find it nearly impossible to fit in new information without having to file it into &#8216;Non-Hott&#8217; and &#8216;Hott&#8217; mathematics. I&#8217;m somewhat afraid that it won&#8217;t be possible for me to complete a problem sheet, for example, while using HoTT, because it will seem like nonsense from the point of view of my professors. </p>
+<p>Are these fears unfounded? Can I learn HoTT and work in HoTT while still keeping recognisable notational conventions and thought patterns? How much does using HoTT as my foundation affect my mathematical practise? Can I just avoid some of the more idiosyncratic parts of it when I need to?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=91065#respond" data-commentid="91065" data-postid="1557" data-belowelement="comment-91065" data-respondelement="respond" data-replyto="Reply to Will Fourie" aria-label="Reply to Will Fourie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-steveawodey bypostauthor odd alt depth-2" id="li-comment-91556">
+		<div id="comment-91556">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.andrew.cmu.edu/user/awodey" class="url" rel="ugc external nofollow">Steve Awodey</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-91556">
+				8 September 2015 at 19:24</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>You should post to the HoTT-Cafe google group.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=91556#respond" data-commentid="91556" data-postid="1557" data-belowelement="comment-91556" data-respondelement="respond" data-replyto="Reply to Steve Awodey" aria-label="Reply to Steve Awodey">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-100441">
+		<div id="comment-100441">
+			<div class="comment-author vcard">
+								<cite class="fn">Steven Meyerson</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-100441">
+				15 April 2016 at 19:42</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Notify me of new posts via email.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=100441#respond" data-commentid="100441" data-postid="1557" data-belowelement="comment-100441" data-respondelement="respond" data-replyto="Reply to Steven Meyerson" aria-label="Reply to Steven Meyerson">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="li-comment-117654">
+		<div id="comment-117654">
+			<div class="comment-author vcard">
+								<cite class="fn">Wojciech Karpiel</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-117654">
+				12 April 2018 at 02:01</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>PDF download links give 404.<br />
+Here are working links: <a href="https://github.com/HoTT/book/wiki/Nightly-Builds" rel="nofollow ugc">https://github.com/HoTT/book/wiki/Nightly-Builds</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=117654#respond" data-commentid="117654" data-postid="1557" data-belowelement="comment-117654" data-respondelement="respond" data-replyto="Reply to Wojciech Karpiel" aria-label="Reply to Wojciech Karpiel">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-2" id="li-comment-117681">
+		<div id="comment-117681">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-117681">
+				12 April 2018 at 17:59</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>They work for me right now.  Occasionally the server that hosts the redirects goes down, but it usually comes back up quickly.  The nightly build page is also linked from up top.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=117681#respond" data-commentid="117681" data-postid="1557" data-belowelement="comment-117681" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-130888">
+		<div id="comment-130888">
+			<div class="comment-author vcard">
+								<cite class="fn">gbd_628</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-130888">
+				4 February 2019 at 15:12</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>The current link to the PDF yields a 404 error:</p>
+<p><a href="https://hott.github.io/book/nightly/hott-online-1194-g81c15ec.pdf" target="_blank" rel="noopener noreferrer nofollow">Click to access hott-online-1194-g81c15ec.pdf</a></p>
+<p>A bit of rooting around yields the most current version to be located here instead:</p>
+<p><a href="https://hott.github.io/book/nightly/hott-online-1198-geeccc59.pdf" target="_blank" rel="noopener noreferrer nofollow">Click to access hott-online-1198-geeccc59.pdf</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=130888#respond" data-commentid="130888" data-postid="1557" data-belowelement="comment-130888" data-respondelement="respond" data-replyto="Reply to gbd_628" aria-label="Reply to gbd_628">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment even depth-2" id="li-comment-130889">
+		<div id="comment-130889">
+			<div class="comment-author vcard">
+								<cite class="fn">gbd_628</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-130889">
+				4 February 2019 at 15:17</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Note: All of the other free links are also currently down, with the exception of the nightly github page, which contains the correct links to all of them.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=130889#respond" data-commentid="130889" data-postid="1557" data-belowelement="comment-130889" data-respondelement="respond" data-replyto="Reply to gbd_628" aria-label="Reply to gbd_628">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-2" id="li-comment-130916">
+		<div id="comment-130916">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-130916">
+				4 February 2019 at 18:28</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for reporting, I think maybe now I see what the problem is; will try to fix.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=130916#respond" data-commentid="130916" data-postid="1557" data-belowelement="comment-130916" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment even depth-3" id="li-comment-131007">
+		<div id="comment-131007">
+			<div class="comment-author vcard">
+								<cite class="fn">Mehran Baghi</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-131007">
+				5 February 2019 at 04:48</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>So you link to <a href="http://saunders.phil.cmu.edu/book/*" rel="nofollow ugc">http://saunders.phil.cmu.edu/book/*</a> that redirects to nightly builds.<br />
+Isn&#8217;t it better to link to webpages hosted on GitHub pages that redirects to nightly builds using javascript:<br />
+<a href="https://www.w3schools.com/howto/howto_js_redirect_webpage.asp" rel="nofollow ugc">https://www.w3schools.com/howto/howto_js_redirect_webpage.asp</a><br />
+and using Travis to automatically update the redirection with each build?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=131007#respond" data-commentid="131007" data-postid="1557" data-belowelement="comment-131007" data-respondelement="respond" data-replyto="Reply to Mehran Baghi" aria-label="Reply to Mehran Baghi">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-4" id="li-comment-131055">
+		<div id="comment-131055">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-131055">
+				5 February 2019 at 09:20</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>If you&#8217;d like to submit a pull request at the <a href="https://github.com/HoTT/book/issues/986" rel="nofollow">book repository</a>, feel free.  I&#8217;ve never learned how to configure Travis myself.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=131055#respond" data-commentid="131055" data-postid="1557" data-belowelement="comment-131055" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-137843">
+		<div id="comment-137843">
+			<div class="comment-author vcard">
+								<cite class="fn">Yiming Xu</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-137843">
+				14 March 2019 at 07:33</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I am just student trying to learn HoTT via this book, could someone please tell me where to post questions regarding understanding the book? I can see the mailing list on <a href="https://homotopytypetheory.org/links/" rel="ugc">https://homotopytypetheory.org/links/</a> but I cannot go into the chat room, it tells me:</p>
+<p> ##hott Cannot join channel (+r) &#8211; you need to be identified with services</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=137843#respond" data-commentid="137843" data-postid="1557" data-belowelement="comment-137843" data-respondelement="respond" data-replyto="Reply to Yiming Xu" aria-label="Reply to Yiming Xu">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment odd alt depth-2" id="li-comment-137853">
+		<div id="comment-137853">
+			<div class="comment-author vcard">
+								<cite class="fn">Wojciech Karpiel</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-137853">
+				14 March 2019 at 08:44</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>See <a href="https://freenode.net/kb/answer/registration" rel="nofollow ugc">https://freenode.net/kb/answer/registration</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=137853#respond" data-commentid="137853" data-postid="1557" data-belowelement="comment-137853" data-respondelement="respond" data-replyto="Reply to Wojciech Karpiel" aria-label="Reply to Wojciech Karpiel">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-153334">
+		<div id="comment-153334">
+			<div class="comment-author vcard">
+								<cite class="fn">Ian Ray</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-153334">
+				23 January 2020 at 17:35</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>The following concern is in the interest of clearing up notational confusion and I hope is not viewed as nit-picky. In Exercise 1.1 we are asked to define composition of f : A -&gt; B and g : B -&gt; C, where the composition is denoted g • f : A -&gt; C. Now, in Lemme 2.12 composition of identity paths are addressed while finding a function (x = y) -&gt; (y = z) -&gt; (x = z). We have p : x = y and q : y = z and it is stated that p • q : x = z. But in light of the homotopy notion of equalities as paths this seems overall an inconsistent choice of notation. Because p is a path from x to y and q a path from y to z. In my opinion q • p : x = z is a more consistent notation. Because the composition in truth takes x and feeds it into a path to y (via p) and then feeds y into a path to z (via q.)</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=153334#respond" data-commentid="153334" data-postid="1557" data-belowelement="comment-153334" data-respondelement="respond" data-replyto="Reply to Ian Ray" aria-label="Reply to Ian Ray">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="li-comment-153650">
+		<div id="comment-153650">
+			<div class="comment-author vcard">
+								<cite class="fn">Jizhan Huang</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-153650">
+				4 February 2020 at 10:29</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>My mathematical maturity is at most on undergraduate level. I wish and have tried to study and comprehend this book. But as I try to study, I find that I always feel the need of some prerequisites to comprehend this book, and the problem is that I don&#8217;t know how to figure out what kinds of prerequisites are needed and which prerequisites to start. Does anyone have similar experiences when facing this book? Can anyone discuss with me to help me know where to start and give some study advice on comprehending this book?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=153650#respond" data-commentid="153650" data-postid="1557" data-belowelement="comment-153650" data-respondelement="respond" data-replyto="Reply to Jizhan Huang" aria-label="Reply to Jizhan Huang">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-steveawodey bypostauthor even depth-2" id="li-comment-153654">
+		<div id="comment-153654">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.andrew.cmu.edu/user/awodey" class="url" rel="ugc external nofollow">Steve Awodey</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-153654">
+				4 February 2020 at 13:34</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>The book assumes familiarity with basic logic and topology at a level that would usually be taught in an advanced undergraduate or beginning graduate course.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=153654#respond" data-commentid="153654" data-postid="1557" data-belowelement="comment-153654" data-respondelement="respond" data-replyto="Reply to Steve Awodey" aria-label="Reply to Steve Awodey">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment odd alt depth-3" id="li-comment-153657">
+		<div id="comment-153657">
+			<div class="comment-author vcard">
+								<cite class="fn">Jizhan Huang</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-153657">
+				4 February 2020 at 17:40</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for the reply!</p>
+<p>By &#8220;topology at a level that would usually be taught in an advanced undergraduate or beginning graduate course&#8221; do you mean the level the same as &#8220;Munkres&#8217; Topology&#8221;?</p>
+<p>Actually I haven&#8217;t fully studied a text on axiomatic set thery or mathematical logic or type theory or homotopy theory or category theory. But HoTT is still appealing to me. So which prerequisite subject(s) is/are recommended to get familiar with firstly?</p>
+<p>I know a young mathematician named Evan Chen, who is currently a math PhD student at MIT, providing abundent free study materials on higher mathematics on his website, which he called &#8220;The Napkin project&#8221; ( <a href="https://web.evanchen.cc/napkin.html" rel="nofollow ugc">https://web.evanchen.cc/napkin.html</a> ) . I am guessing, can Napkin be used as a prerequisite to HoTT?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=153657#respond" data-commentid="153657" data-postid="1557" data-belowelement="comment-153657" data-respondelement="respond" data-replyto="Reply to Jizhan Huang" aria-label="Reply to Jizhan Huang">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-steveawodey bypostauthor even depth-4" id="li-comment-153660">
+		<div id="comment-153660">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.andrew.cmu.edu/user/awodey" class="url" rel="ugc external nofollow">Steve Awodey</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-153660">
+				4 February 2020 at 18:24</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>A better place for such a discussion would be the mailing lists on the Links page.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=153660#respond" data-commentid="153660" data-postid="1557" data-belowelement="comment-153660" data-respondelement="respond" data-replyto="Reply to Steve Awodey" aria-label="Reply to Steve Awodey">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-159451">
+		<div id="comment-159451">
+			<div class="comment-author vcard">
+								<cite class="fn">Julius Hamilton</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-159451">
+				19 October 2020 at 19:38</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Could you please also add the EPUB version to the versions above?<br />
+Thank you very much.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=159451#respond" data-commentid="159451" data-postid="1557" data-belowelement="comment-159451" data-respondelement="respond" data-replyto="Reply to Julius Hamilton" aria-label="Reply to Julius Hamilton">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-2" id="li-comment-159474">
+		<div id="comment-159474">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-159474">
+				20 October 2020 at 14:26</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>What epub version?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=159474#respond" data-commentid="159474" data-postid="1557" data-belowelement="comment-159474" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="li-comment-161773">
+		<div id="comment-161773">
+			<div class="comment-author vcard">
+								<cite class="fn">GeoffChurch</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-161773">
+				11 January 2021 at 12:21</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I placed an order for the paperback copy 14 days ago (28 December 2020) and received a copy with version `first-edition-1174-g29279f5`, corresponding I guess to [this commit](<a href="https://github.com/HoTT/book/commit/29279f5d00f1fdb013d5c7fbe804b49cb25e61b1" rel="nofollow ugc">https://github.com/HoTT/book/commit/29279f5d00f1fdb013d5c7fbe804b49cb25e61b1</a>) from 19 April 2018. The online pdfs are currently up-to-date with the [most recent commit](<a href="https://github.com/HoTT/book/commit/d98a32f95e1858e1b619cae02f643334f2ce9022" rel="nofollow ugc">https://github.com/HoTT/book/commit/d98a32f95e1858e1b619cae02f643334f2ce9022</a>) (version `first-edition-1274-gd98a32f`).</p>
+<p>I don&#8217;t see anything on Lulu mentioning which version is currently being shipped. Can this please be updated, and maybe we can have the current version/date be part of the book&#8217;s description on Lulu so that buyers can cross-reference before purchase?</p>
+<p>Thank you!</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=161773#respond" data-commentid="161773" data-postid="1557" data-belowelement="comment-161773" data-respondelement="respond" data-replyto="Reply to GeoffChurch" aria-label="Reply to GeoffChurch">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-2" id="li-comment-161843">
+		<div id="comment-161843">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-161843">
+				14 January 2021 at 11:45</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for the heads-up, and sorry about this!  The lulu version has now been updated (unfortunately this has to be done manually), and the links above now include the information of which version is available from lulu.  Thanks Andrej!  If the lulu version gets significantly behind the online version again, anyone can feel free to post a comment here requesting that it be updated.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=161843#respond" data-commentid="161843" data-postid="1557" data-belowelement="comment-161843" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-jasonsgross odd alt depth-3" id="li-comment-161844">
+		<div id="comment-161844">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://people.csail.mit.edu/jgross/" class="url" rel="ugc external nofollow">Jason Gross</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-161844">
+				14 January 2021 at 12:03</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I wonder if the Lulu API (<a href="https://developers.lulu.com/home" rel="nofollow ugc">https://developers.lulu.com/home</a>) allows automatic updating, or if there&#8217;s a way to script that process&#8230;</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=161844#respond" data-commentid="161844" data-postid="1557" data-belowelement="comment-161844" data-respondelement="respond" data-replyto="Reply to Jason Gross" aria-label="Reply to Jason Gross">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman even depth-4" id="li-comment-161871">
+		<div id="comment-161871">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-161871">
+				15 January 2021 at 14:44</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I expect anyone who wants to look into that would be more than welcome!  Talk to Andrej Bauer about our lulu setup.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=161871#respond" data-commentid="161871" data-postid="1557" data-belowelement="comment-161871" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-162617">
+		<div id="comment-162617">
+			<div class="comment-author vcard">
+								<cite class="fn">hatim lechgar</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-162617">
+				15 February 2021 at 10:53</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I Bought  $21.00 hard copy from lulu one month now, I still have not received it yet, Lulu support in not responding, please consider change your hardcovers Provider</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=162617#respond" data-commentid="162617" data-postid="1557" data-belowelement="comment-162617" data-respondelement="respond" data-replyto="Reply to hatim lechgar" aria-label="Reply to hatim lechgar">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment even depth-2" id="li-comment-162824">
+		<div id="comment-162824">
+			<div class="comment-author vcard">
+								<cite class="fn">hatim lechgar</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-162824">
+				23 February 2021 at 12:25</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Got the book after 20 days, shipping issue during lockdown</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=162824#respond" data-commentid="162824" data-postid="1557" data-belowelement="comment-162824" data-respondelement="respond" data-replyto="Reply to hatim lechgar" aria-label="Reply to hatim lechgar">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="li-comment-162826">
+		<div id="comment-162826">
+			<div class="comment-author vcard">
+								<cite class="fn">Steve</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-162826">
+				23 February 2021 at 12:46</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for following up.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=162826#respond" data-commentid="162826" data-postid="1557" data-belowelement="comment-162826" data-respondelement="respond" data-replyto="Reply to Steve" aria-label="Reply to Steve">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-165317">
+		<div id="comment-165317">
+			<div class="comment-author vcard">
+								<cite class="fn">Noß</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-165317">
+				6 June 2021 at 14:46</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>all pdf download links yield 404 😦</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=165317#respond" data-commentid="165317" data-postid="1557" data-belowelement="comment-165317" data-respondelement="respond" data-replyto="Reply to Noß" aria-label="Reply to Noß">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment byuser comment-author-steveawodey bypostauthor odd alt thread-even depth-1" id="li-comment-165322">
+		<div id="comment-165322">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.andrew.cmu.edu/user/awodey" class="url" rel="ugc external nofollow">Steve Awodey</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-165322">
+				6 June 2021 at 16:36</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>they seem to be working for me (now).</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=165322#respond" data-commentid="165322" data-postid="1557" data-belowelement="comment-165322" data-respondelement="respond" data-replyto="Reply to Steve Awodey" aria-label="Reply to Steve Awodey">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-169202">
+		<div id="comment-169202">
+			<div class="comment-author vcard">
+								<cite class="fn">S</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-169202">
+				9 November 2021 at 01:31</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Could you make an epub please? Or an HTML file?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=169202#respond" data-commentid="169202" data-postid="1557" data-belowelement="comment-169202" data-respondelement="respond" data-replyto="Reply to S" aria-label="Reply to S">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-mikeshulman odd alt depth-2" id="li-comment-169293">
+		<div id="comment-169293">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.sandiego.edu/~shulman" class="url" rel="ugc external nofollow">Mike Shulman</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-169293">
+				14 November 2021 at 10:38</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>There was some <a href="https://github.com/HoTT/book/issues/287" rel="nofollow ugc">abortive work on this</a> before, but it didn&#8217;t go anywhere.  I don&#8217;t think any of the original authors have the time to work on it right now.  If it&#8217;s going to happen, someone else who cares about it will have to step up to take the lead.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=169293#respond" data-commentid="169293" data-postid="1557" data-belowelement="comment-169293" data-respondelement="respond" data-replyto="Reply to Mike Shulman" aria-label="Reply to Mike Shulman">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-171553">
+		<div id="comment-171553">
+			<div class="comment-author vcard">
+								<cite class="fn">Maximilian Schnadt</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-171553">
+				9 March 2022 at 08:10</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Have you considered submitting your textbook to the AIM for inclusion in their Open Textbook Initiative? I read through the evaluation criteria and came to the conclusion that this book would fit right smack in their. Maybe under the Logic Section? Link to the AIM site: <a href="https://aimath.org/textbooks/" rel="nofollow ugc">https://aimath.org/textbooks/</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=171553#respond" data-commentid="171553" data-postid="1557" data-belowelement="comment-171553" data-respondelement="respond" data-replyto="Reply to Maximilian Schnadt" aria-label="Reply to Maximilian Schnadt">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-174759">
+		<div id="comment-174759">
+			<div class="comment-author vcard">
+								<cite class="fn">Rod Milne</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-174759">
+				14 July 2022 at 14:51</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>How do I order this book in Canada?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=174759#respond" data-commentid="174759" data-postid="1557" data-belowelement="comment-174759" data-respondelement="respond" data-replyto="Reply to Rod Milne" aria-label="Reply to Rod Milne">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-196880">
+		<div id="comment-196880">
+			<div class="comment-author vcard">
+								<cite class="fn">Cataldo1991</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-196880">
+				1 August 2023 at 08:25</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>the error pdf is cut</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=196880#respond" data-commentid="196880" data-postid="1557" data-belowelement="comment-196880" data-respondelement="respond" data-replyto="Reply to Cataldo1991" aria-label="Reply to Cataldo1991">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-198240">
+		<div id="comment-198240">
+			<div class="comment-author vcard">
+								<cite class="fn">Brian</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-198240">
+				26 March 2024 at 01:53</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>From the Lulu links above, it looks like the physical version is using <a href="https://github.com/HoTT/book/commit/3274cb3164299f3686e0f626a8ba4efbb31cb6f1" rel="nofollow ugc">this commit</a> from a little over 3 years ago. Any chance it could be updated?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=198240#respond" data-commentid="198240" data-postid="1557" data-belowelement="comment-198240" data-respondelement="respond" data-replyto="Reply to Brian" aria-label="Reply to Brian">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="li-comment-200242">
+		<div id="comment-200242">
+			<div class="comment-author vcard">
+								<cite class="fn">ConsT</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-200242">
+				23 March 2025 at 09:23</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>How to pronounce the formulas in book while reading?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=200242#respond" data-commentid="200242" data-postid="1557" data-belowelement="comment-200242" data-respondelement="respond" data-replyto="Reply to ConsT" aria-label="Reply to ConsT">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				<ul class="children">
+		<li class="comment byuser comment-author-steveawodey bypostauthor odd alt depth-2" id="li-comment-200243">
+		<div id="comment-200243">
+			<div class="comment-author vcard">
+								<cite class="fn"><a href="http://www.andrew.cmu.edu/user/awodey" class="url" rel="ugc external nofollow">Steve Awodey</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+
+				
+				
+			<div class="comment-meta commentmetadata"><a href="https://homotopytypetheory.org/book/#comment-200243">
+				23 March 2025 at 12:04</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I don&#8217;t recommend reading the book aloud : &#8211; )</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://homotopytypetheory.org/book/?replytocom=200243#respond" data-commentid="200243" data-postid="1557" data-belowelement="comment-200243" data-respondelement="respond" data-replyto="Reply to Steve Awodey" aria-label="Reply to Steve Awodey">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+			</ol>
+
+
+	
+
+	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="/book/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://homotopytypetheory.org/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+
+
+<div class="comment-form__verbum transparent"></div><div class="verbum-form-meta"><input type='hidden' name='comment_post_ID' value='1557' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+
+			<input type="hidden" name="highlander_comment_nonce" id="highlander_comment_nonce" value="d226100cad" />
+			<input type="hidden" name="verbum_show_subscription_modal" value="" /></div><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="d319eecd7e" /></p><p style="display: none !important;" class="akismet-fields-container" data-prefix="ak_"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="244"/><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script></p></form>	</div><!-- #respond -->
+	
+</div><!-- #comments -->
+
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+
+		<div id="primary" class="widget-area" role="complementary">
+						<ul class="xoxo">
+
+
+		<li id="recent-posts-2" class="widget-container widget_recent_entries">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul>
+											<li>
+					<a href="https://homotopytypetheory.org/2023/10/25/workshop-on-synthetic-algebraic-geometry/">Workshop on Synthetic Algebraic&nbsp;Geometry</a>
+									</li>
+											<li>
+					<a href="https://homotopytypetheory.org/2023/01/25/hott-2023/">HoTT 2023</a>
+									</li>
+											<li>
+					<a href="https://homotopytypetheory.org/2022/06/09/the-brunerie-number-is-2/">The Brunerie Number Is&nbsp;-2</a>
+									</li>
+											<li>
+					<a href="https://homotopytypetheory.org/2022/03/22/on-the-%e2%88%9e-topos-semantics-of-homotopy-type-theory%ef%bf%bc%ef%bf%bc/">On the ∞-topos semantics of homotopy type&nbsp;theory￼￼</a>
+									</li>
+											<li>
+					<a href="https://homotopytypetheory.org/2021/12/01/the-hott-game/">The HoTT Game</a>
+									</li>
+					</ul>
+
+		</li>			</ul>
+		</div><!-- #primary .widget-area -->
+
+
+		<div id="secondary" class="widget-area" role="complementary">
+			<ul class="xoxo">
+				<li id="categories-2" class="widget-container widget_categories"><h3 class="widget-title">Categories</h3>
+			<ul>
+					<li class="cat-item cat-item-357"><a href="https://homotopytypetheory.org/category/applications/">Applications</a>
+</li>
+	<li class="cat-item cat-item-656"><a href="https://homotopytypetheory.org/category/code/">Code</a>
+</li>
+	<li class="cat-item cat-item-9994"><a href="https://homotopytypetheory.org/category/foundations/">Foundations</a>
+</li>
+	<li class="cat-item cat-item-55824553"><a href="https://homotopytypetheory.org/category/higher-inductive-types/">Higher Inductive Types</a>
+</li>
+	<li class="cat-item cat-item-2869576"><a href="https://homotopytypetheory.org/category/homotopy-theory/">Homotopy Theory</a>
+</li>
+	<li class="cat-item cat-item-3558"><a href="https://homotopytypetheory.org/category/jobs/">Jobs</a>
+</li>
+	<li class="cat-item cat-item-9401"><a href="https://homotopytypetheory.org/category/meeting/">Meeting</a>
+</li>
+	<li class="cat-item cat-item-12227"><a href="https://homotopytypetheory.org/category/models/">Models</a>
+</li>
+	<li class="cat-item cat-item-103"><a href="https://homotopytypetheory.org/category/news/">News</a>
+</li>
+	<li class="cat-item cat-item-19368"><a href="https://homotopytypetheory.org/category/paper/">Paper</a>
+</li>
+	<li class="cat-item cat-item-196"><a href="https://homotopytypetheory.org/category/programming/">Programming</a>
+</li>
+	<li class="cat-item cat-item-22241"><a href="https://homotopytypetheory.org/category/publicity/">Publicity</a>
+</li>
+	<li class="cat-item cat-item-7409"><a href="https://homotopytypetheory.org/category/support/">Support</a>
+</li>
+	<li class="cat-item cat-item-739"><a href="https://homotopytypetheory.org/category/talk/">Talk</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://homotopytypetheory.org/category/uncategorized/">Uncategorized</a>
+</li>
+	<li class="cat-item cat-item-53161514"><a href="https://homotopytypetheory.org/category/univalence/">Univalence</a>
+</li>
+			</ul>
+
+			</li><li id="archives-2" class="widget-container widget_archive"><h3 class="widget-title">Archives</h3>
+			<ul>
+					<li><a href='https://homotopytypetheory.org/2023/10/'>October 2023</a></li>
+	<li><a href='https://homotopytypetheory.org/2023/01/'>January 2023</a></li>
+	<li><a href='https://homotopytypetheory.org/2022/06/'>June 2022</a></li>
+	<li><a href='https://homotopytypetheory.org/2022/03/'>March 2022</a></li>
+	<li><a href='https://homotopytypetheory.org/2021/12/'>December 2021</a></li>
+	<li><a href='https://homotopytypetheory.org/2021/03/'>March 2021</a></li>
+	<li><a href='https://homotopytypetheory.org/2021/01/'>January 2021</a></li>
+	<li><a href='https://homotopytypetheory.org/2020/11/'>November 2020</a></li>
+	<li><a href='https://homotopytypetheory.org/2020/10/'>October 2020</a></li>
+	<li><a href='https://homotopytypetheory.org/2020/01/'>January 2020</a></li>
+	<li><a href='https://homotopytypetheory.org/2019/05/'>May 2019</a></li>
+	<li><a href='https://homotopytypetheory.org/2019/03/'>March 2019</a></li>
+	<li><a href='https://homotopytypetheory.org/2019/02/'>February 2019</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/12/'>December 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/11/'>November 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/08/'>August 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/06/'>June 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/05/'>May 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2018/03/'>March 2018</a></li>
+	<li><a href='https://homotopytypetheory.org/2017/11/'>November 2017</a></li>
+	<li><a href='https://homotopytypetheory.org/2017/10/'>October 2017</a></li>
+	<li><a href='https://homotopytypetheory.org/2017/09/'>September 2017</a></li>
+	<li><a href='https://homotopytypetheory.org/2017/01/'>January 2017</a></li>
+	<li><a href='https://homotopytypetheory.org/2016/10/'>October 2016</a></li>
+	<li><a href='https://homotopytypetheory.org/2016/09/'>September 2016</a></li>
+	<li><a href='https://homotopytypetheory.org/2016/07/'>July 2016</a></li>
+	<li><a href='https://homotopytypetheory.org/2016/02/'>February 2016</a></li>
+	<li><a href='https://homotopytypetheory.org/2016/01/'>January 2016</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/12/'>December 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/09/'>September 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/08/'>August 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/07/'>July 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/06/'>June 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2015/01/'>January 2015</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/12/'>December 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/11/'>November 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/09/'>September 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/08/'>August 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/06/'>June 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/04/'>April 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/03/'>March 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2014/02/'>February 2014</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/12/'>December 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/10/'>October 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/08/'>August 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/07/'>July 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/06/'>June 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/05/'>May 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/04/'>April 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/03/'>March 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2013/02/'>February 2013</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/11/'>November 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/09/'>September 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/08/'>August 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/06/'>June 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/05/'>May 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/04/'>April 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/03/'>March 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2012/01/'>January 2012</a></li>
+	<li><a href='https://homotopytypetheory.org/2011/12/'>December 2011</a></li>
+	<li><a href='https://homotopytypetheory.org/2011/11/'>November 2011</a></li>
+	<li><a href='https://homotopytypetheory.org/2011/07/'>July 2011</a></li>
+	<li><a href='https://homotopytypetheory.org/2011/04/'>April 2011</a></li>
+	<li><a href='https://homotopytypetheory.org/2011/03/'>March 2011</a></li>
+			</ul>
+
+			</li><li id="linkcat-1356" class="widget-container widget_links"><h3 class="widget-title">Blogroll</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://existentialtype.wordpress.com" rel="colleague noopener" title="Robert Harper&#8217;s CS Blog" target="_blank">Existential Type</a></li>
+<li><a href="http://math.andrej.com/" rel="colleague" title="Andrej Bauer&#8217;s blog">Mathematics and Computation</a></li>
+<li><a href="http://golem.ph.utexas.edu/category/" rel="colleague" title="A group blog on math, physics and philosophy">The n-Category Café</a></li>
+<li><a href="http://www.math.ias.edu/~vladimir/Site3/Univalent_Foundations.html" rel="colleague" title="Vladimir Voevodsky&#8217;s homotopy-theoretic foundations of mathematics.">Univalent Foundations</a></li>
+
+	</ul>
+</li>
+<li id="meta-2" class="widget-container widget_meta"><h3 class="widget-title">Meta</h3>
+		<ul>
+			<li><a class="click-register" href="https://wordpress.com/start?ref=wplogin">Create account</a></li>			<li><a href="https://hottheory.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://homotopytypetheory.org/feed/">Entries feed</a></li>
+			<li><a href="https://homotopytypetheory.org/comments/feed/">Comments feed</a></li>
+
+			<li><a href="https://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>
+		</ul>
+
+		</li><li id="search-2" class="widget-container widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://homotopytypetheory.org/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form></li>			</ul>
+		</div><!-- #secondary .widget-area -->
+
+	</div><!-- #main -->
+
+	<div id="footer" role="contentinfo">
+		<div id="colophon">
+
+
+
+			<div id="site-info">
+				<a href="https://homotopytypetheory.org/" title="Homotopy Type Theory" rel="home">
+					Homotopy Type Theory				</a>
+							</div><!-- #site-info -->
+
+			<div id="site-generator">
+								<a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Blog at WordPress.com.</a>
+			</div><!-- #site-generator -->
+
+		</div><!-- #colophon -->
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<!--  -->
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/files\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/pub\/twentyten\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+	<div style="display:none">
+	</div>
+		<div id="actionbar" dir="ltr" style="display: none;"
+			class="actnbr-pub-twentyten actnbr-has-follow actnbr-has-actions">
+		<ul>
+								<li class="actnbr-btn actnbr-hidden">
+								<a class="actnbr-action actnbr-actn-follow " href="">
+			<svg class="gridicon" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path clip-rule="evenodd" d="m4 4.5h12v6.5h1.5v-6.5-1.5h-1.5-12-1.5v1.5 10.5c0 1.1046.89543 2 2 2h7v-1.5h-7c-.27614 0-.5-.2239-.5-.5zm10.5 2h-9v1.5h9zm-5 3h-4v1.5h4zm3.5 1.5h-1v1h1zm-1-1.5h-1.5v1.5 1 1.5h1.5 1 1.5v-1.5-1-1.5h-1.5zm-2.5 2.5h-4v1.5h4zm6.5 1.25h1.5v2.25h2.25v1.5h-2.25v2.25h-1.5v-2.25h-2.25v-1.5h2.25z"  fill-rule="evenodd"></path></svg>
+			<span>Subscribe</span>
+		</a>
+		<a class="actnbr-action actnbr-actn-following  no-display" href="">
+			<svg class="gridicon" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 4.5H4V15C4 15.2761 4.22386 15.5 4.5 15.5H11.5V17H4.5C3.39543 17 2.5 16.1046 2.5 15V4.5V3H4H16H17.5V4.5V12.5H16V4.5ZM5.5 6.5H14.5V8H5.5V6.5ZM5.5 9.5H9.5V11H5.5V9.5ZM12 11H13V12H12V11ZM10.5 9.5H12H13H14.5V11V12V13.5H13H12H10.5V12V11V9.5ZM5.5 12H9.5V13.5H5.5V12Z" fill="#008A20"></path><path class="following-icon-tick" d="M13.5 16L15.5 18L19 14.5" stroke="#008A20" stroke-width="1.5"></path></svg>
+			<span>Subscribed</span>
+		</a>
+							<div class="actnbr-popover tip tip-top-left actnbr-notice" id="follow-bubble">
+							<div class="tip-arrow"></div>
+							<div class="tip-inner actnbr-follow-bubble">
+															<ul>
+											<li class="actnbr-sitename">
+			<a href="https://homotopytypetheory.org">
+				<img loading='lazy' alt='' src='https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=50&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png' srcset='https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=50&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 1x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=75&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 1.5x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=100&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 2x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=150&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 3x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=200&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 4x' class='avatar avatar-50' height='50' width='50' />				Homotopy Type Theory			</a>
+		</li>
+										<div class="actnbr-message no-display"></div>
+									<form method="post" action="https://subscribe.wordpress.com" accept-charset="utf-8" style="display: none;">
+																						<div class="actnbr-follow-count">Join 294 other subscribers</div>
+																					<div>
+										<input type="email" name="email" placeholder="Enter your email address" class="actnbr-email-field" aria-label="Enter your email address" />
+										</div>
+										<input type="hidden" name="action" value="subscribe" />
+										<input type="hidden" name="blog_id" value="21082110" />
+										<input type="hidden" name="source" value="https://homotopytypetheory.org/book/" />
+										<input type="hidden" name="sub-type" value="actionbar-follow" />
+										<input type="hidden" id="_wpnonce" name="_wpnonce" value="8acc2418a9" />										<div class="actnbr-button-wrap">
+											<button type="submit" value="Sign me up">
+												Sign me up											</button>
+										</div>
+									</form>
+									<li class="actnbr-login-nudge">
+										<div>
+											Already have a WordPress.com account? <a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Fhomotopytypetheory.org%252Fbook%252F">Log in now.</a>										</div>
+									</li>
+								</ul>
+															</div>
+						</div>
+					</li>
+							<li class="actnbr-ellipsis actnbr-hidden">
+				<svg class="gridicon gridicons-ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M7 12c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm12-2c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-7 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z"/></g></svg>				<div class="actnbr-popover tip tip-top-left actnbr-more">
+					<div class="tip-arrow"></div>
+					<div class="tip-inner">
+						<ul>
+								<li class="actnbr-sitename">
+			<a href="https://homotopytypetheory.org">
+				<img loading='lazy' alt='' src='https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=50&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png' srcset='https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=50&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 1x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=75&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 1.5x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=100&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 2x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=150&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 3x, https://secure.gravatar.com/blavatar/17cafeb69ca3ce791373a3386099f92e03dd0f03b76a53292d670a553cc609e6?s=200&#038;d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png 4x' class='avatar avatar-50' height='50' width='50' />				Homotopy Type Theory			</a>
+		</li>
+								<li class="actnbr-folded-follow">
+										<a class="actnbr-action actnbr-actn-follow " href="">
+			<svg class="gridicon" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path clip-rule="evenodd" d="m4 4.5h12v6.5h1.5v-6.5-1.5h-1.5-12-1.5v1.5 10.5c0 1.1046.89543 2 2 2h7v-1.5h-7c-.27614 0-.5-.2239-.5-.5zm10.5 2h-9v1.5h9zm-5 3h-4v1.5h4zm3.5 1.5h-1v1h1zm-1-1.5h-1.5v1.5 1 1.5h1.5 1 1.5v-1.5-1-1.5h-1.5zm-2.5 2.5h-4v1.5h4zm6.5 1.25h1.5v2.25h2.25v1.5h-2.25v2.25h-1.5v-2.25h-2.25v-1.5h2.25z"  fill-rule="evenodd"></path></svg>
+			<span>Subscribe</span>
+		</a>
+		<a class="actnbr-action actnbr-actn-following  no-display" href="">
+			<svg class="gridicon" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 4.5H4V15C4 15.2761 4.22386 15.5 4.5 15.5H11.5V17H4.5C3.39543 17 2.5 16.1046 2.5 15V4.5V3H4H16H17.5V4.5V12.5H16V4.5ZM5.5 6.5H14.5V8H5.5V6.5ZM5.5 9.5H9.5V11H5.5V9.5ZM12 11H13V12H12V11ZM10.5 9.5H12H13H14.5V11V12V13.5H13H12H10.5V12V11V9.5ZM5.5 12H9.5V13.5H5.5V12Z" fill="#008A20"></path><path class="following-icon-tick" d="M13.5 16L15.5 18L19 14.5" stroke="#008A20" stroke-width="1.5"></path></svg>
+			<span>Subscribed</span>
+		</a>
+								</li>
+														<li class="actnbr-signup"><a href="https://wordpress.com/start/">Sign up</a></li>
+							<li class="actnbr-login"><a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Fhomotopytypetheory.org%252Fbook%252F">Log in</a></li>
+																<li class="actnbr-shortlink">
+										<a href="https://wp.me/P1qsq2-p7">
+											<span class="actnbr-shortlink__text">Copy shortlink</span>
+											<span class="actnbr-shortlink__icon"><svg class="gridicon gridicons-checkmark" height="16" width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M9 19.414l-6.707-6.707 1.414-1.414L9 16.586 20.293 5.293l1.414 1.414"/></g></svg></span>
+										</a>
+									</li>
+																<li class="flb-report">
+									<a href="https://wordpress.com/abuse/?report_url=https://homotopytypetheory.org/book/" target="_blank" rel="noopener noreferrer">
+										Report this content									</a>
+								</li>
+															<li class="actnbr-reader">
+									<a href="https://wordpress.com/reader/blogs/21082110/posts/1557">
+										View post in Reader									</a>
+								</li>
+															<li class="actnbr-subs">
+									<a href="https://subscribe.wordpress.com/">Manage subscriptions</a>
+								</li>
+																<li class="actnbr-fold"><a href="">Collapse this bar</a></li>
+														</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+<script>
+window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?m=1750255835i&amp;v=20250116";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?m=1738713573i&amp;v=20250204";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+</script>
+
+			<div id="jp-carousel-loading-overlay">
+			<div id="jp-carousel-loading-wrapper">
+				<span id="jp-carousel-library-loading">&nbsp;</span>
+			</div>
+		</div>
+		<div class="jp-carousel-overlay" style="display: none;">
+
+		<div class="jp-carousel-container">
+			<!-- The Carousel Swiper -->
+			<div
+				class="jp-carousel-wrap swiper jp-carousel-swiper-container jp-carousel-transitions"
+				itemscope
+				itemtype="https://schema.org/ImageGallery">
+				<div class="jp-carousel swiper-wrapper"></div>
+				<div class="jp-swiper-button-prev swiper-button-prev">
+					<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<mask id="maskPrev" mask-type="alpha" maskUnits="userSpaceOnUse" x="8" y="6" width="9" height="12">
+							<path d="M16.2072 16.59L11.6496 12L16.2072 7.41L14.8041 6L8.8335 12L14.8041 18L16.2072 16.59Z" fill="white"/>
+						</mask>
+						<g mask="url(#maskPrev)">
+							<rect x="0.579102" width="23.8823" height="24" fill="#FFFFFF"/>
+						</g>
+					</svg>
+				</div>
+				<div class="jp-swiper-button-next swiper-button-next">
+					<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<mask id="maskNext" mask-type="alpha" maskUnits="userSpaceOnUse" x="8" y="6" width="8" height="12">
+							<path d="M8.59814 16.59L13.1557 12L8.59814 7.41L10.0012 6L15.9718 12L10.0012 18L8.59814 16.59Z" fill="white"/>
+						</mask>
+						<g mask="url(#maskNext)">
+							<rect x="0.34375" width="23.8822" height="24" fill="#FFFFFF"/>
+						</g>
+					</svg>
+				</div>
+			</div>
+			<!-- The main close buton -->
+			<div class="jp-carousel-close-hint">
+				<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<mask id="maskClose" mask-type="alpha" maskUnits="userSpaceOnUse" x="5" y="5" width="15" height="14">
+						<path d="M19.3166 6.41L17.9135 5L12.3509 10.59L6.78834 5L5.38525 6.41L10.9478 12L5.38525 17.59L6.78834 19L12.3509 13.41L17.9135 19L19.3166 17.59L13.754 12L19.3166 6.41Z" fill="white"/>
+					</mask>
+					<g mask="url(#maskClose)">
+						<rect x="0.409668" width="23.8823" height="24" fill="#FFFFFF"/>
+					</g>
+				</svg>
+			</div>
+			<!-- Image info, comments and meta -->
+			<div class="jp-carousel-info">
+				<div class="jp-carousel-info-footer">
+					<div class="jp-carousel-pagination-container">
+						<div class="jp-swiper-pagination swiper-pagination"></div>
+						<div class="jp-carousel-pagination"></div>
+					</div>
+					<div class="jp-carousel-photo-title-container">
+						<h2 class="jp-carousel-photo-caption"></h2>
+					</div>
+					<div class="jp-carousel-photo-icons-container">
+						<a href="#" class="jp-carousel-icon-btn jp-carousel-icon-info" aria-label="Toggle photo metadata visibility">
+							<span class="jp-carousel-icon">
+								<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<mask id="maskInfo" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="21" height="20">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M12.7537 2C7.26076 2 2.80273 6.48 2.80273 12C2.80273 17.52 7.26076 22 12.7537 22C18.2466 22 22.7046 17.52 22.7046 12C22.7046 6.48 18.2466 2 12.7537 2ZM11.7586 7V9H13.7488V7H11.7586ZM11.7586 11V17H13.7488V11H11.7586ZM4.79292 12C4.79292 16.41 8.36531 20 12.7537 20C17.142 20 20.7144 16.41 20.7144 12C20.7144 7.59 17.142 4 12.7537 4C8.36531 4 4.79292 7.59 4.79292 12Z" fill="white"/>
+									</mask>
+									<g mask="url(#maskInfo)">
+										<rect x="0.8125" width="23.8823" height="24" fill="#FFFFFF"/>
+									</g>
+								</svg>
+							</span>
+						</a>
+												<a href="#" class="jp-carousel-icon-btn jp-carousel-icon-comments" aria-label="Toggle photo comments visibility">
+							<span class="jp-carousel-icon">
+								<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<mask id="maskComments" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="21" height="20">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M4.3271 2H20.2486C21.3432 2 22.2388 2.9 22.2388 4V16C22.2388 17.1 21.3432 18 20.2486 18H6.31729L2.33691 22V4C2.33691 2.9 3.2325 2 4.3271 2ZM6.31729 16H20.2486V4H4.3271V18L6.31729 16Z" fill="white"/>
+									</mask>
+									<g mask="url(#maskComments)">
+										<rect x="0.34668" width="23.8823" height="24" fill="#FFFFFF"/>
+									</g>
+								</svg>
+
+								<span class="jp-carousel-has-comments-indicator" aria-label="This image has comments."></span>
+							</span>
+						</a>
+											</div>
+				</div>
+				<div class="jp-carousel-info-extra">
+					<div class="jp-carousel-info-content-wrapper">
+						<div class="jp-carousel-photo-title-container">
+							<h2 class="jp-carousel-photo-title"></h2>
+						</div>
+						<div class="jp-carousel-comments-wrapper">
+															<div id="jp-carousel-comments-loading">
+									<span>Loading Comments...</span>
+								</div>
+								<div class="jp-carousel-comments"></div>
+								<div id="jp-carousel-comment-form-container">
+									<span id="jp-carousel-comment-form-spinner">&nbsp;</span>
+									<div id="jp-carousel-comment-post-results"></div>
+																														<form id="jp-carousel-comment-form">
+												<label for="jp-carousel-comment-form-comment-field" class="screen-reader-text">Write a Comment...</label>
+												<textarea
+													name="comment"
+													class="jp-carousel-comment-form-field jp-carousel-comment-form-textarea"
+													id="jp-carousel-comment-form-comment-field"
+													placeholder="Write a Comment..."
+												></textarea>
+												<div id="jp-carousel-comment-form-submit-and-info-wrapper">
+													<div id="jp-carousel-comment-form-commenting-as">
+																													<fieldset>
+																<label for="jp-carousel-comment-form-email-field">Email (Required)</label>
+																<input type="text" name="email" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-email-field" />
+															</fieldset>
+															<fieldset>
+																<label for="jp-carousel-comment-form-author-field">Name (Required)</label>
+																<input type="text" name="author" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-author-field" />
+															</fieldset>
+															<fieldset>
+																<label for="jp-carousel-comment-form-url-field">Website</label>
+																<input type="text" name="url" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-url-field" />
+															</fieldset>
+																											</div>
+													<input
+														type="submit"
+														name="submit"
+														class="jp-carousel-comment-form-button"
+														id="jp-carousel-comment-form-button-submit"
+														value="Post Comment" />
+												</div>
+											</form>
+																											</div>
+													</div>
+						<div class="jp-carousel-image-meta">
+							<div class="jp-carousel-title-and-caption">
+								<div class="jp-carousel-photo-info">
+									<h3 class="jp-carousel-caption" itemprop="caption description"></h3>
+								</div>
+
+								<div class="jp-carousel-photo-description"></div>
+							</div>
+							<ul class="jp-carousel-image-exif" style="display: none;"></ul>
+							<a class="jp-carousel-image-download" href="#" target="_blank" style="display: none;">
+								<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="19" height="18">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M5.84615 5V19H19.7775V12H21.7677V19C21.7677 20.1 20.8721 21 19.7775 21H5.84615C4.74159 21 3.85596 20.1 3.85596 19V5C3.85596 3.9 4.74159 3 5.84615 3H12.8118V5H5.84615ZM14.802 5V3H21.7677V10H19.7775V6.41L9.99569 16.24L8.59261 14.83L18.3744 5H14.802Z" fill="white"/>
+									</mask>
+									<g mask="url(#mask0)">
+										<rect x="0.870605" width="23.8823" height="24" fill="#FFFFFF"/>
+									</g>
+								</svg>
+								<span class="jp-carousel-download-text"></span>
+							</a>
+							<div class="jp-carousel-image-map" style="display: none;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</div>
+		
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/homotopytypetheory.org\/book\/":1557};
+	</script>
+				<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-2' href='/_static/??-eJyNjM0KgzAQBl9I/ag/lR6KjyK6LhJNNsHN4uuXQuvZ4wzD4EwlRcksGcHK5G11otg4p4n2H0NNMDohzD7SrtDTJT4qUi1wexDiYp4VNB3RlP3V/MX3N4T3o++aun892277AK5vOq4=&cssminify=yes' type='text/css' media='all' />
+<script type="text/javascript" id="verbum-settings-js-before">
+/* <![CDATA[ */
+window.VerbumComments = {"Log in or provide your name and email to leave a reply.":"Log in or provide your name and email to leave a reply.","Log in or provide your name and email to leave a comment.":"Log in or provide your name and email to leave a comment.","Receive web and mobile notifications for posts on this site.":"Receive web and mobile notifications for posts on this site.","Name":"Name","Email (address never made public)":"Email (address never made public)","Website (optional)":"Website (optional)","Leave a reply. (log in optional)":"Leave a reply. (log in optional)","Leave a comment. (log in optional)":"Leave a comment. (log in optional)","Log in to leave a reply.":"Log in to leave a reply.","Log in to leave a comment.":"Log in to leave a comment.","Logged in via %s":"Logged in via %s","Log out":"Log out","Email":"Email","(Address never made public)":"(Address never made public)","Instantly":"Instantly","Daily":"Daily","Reply":"Reply","Comment":"Comment","WordPress":"WordPress","Weekly":"Weekly","Notify me of new posts":"Notify me of new posts","Email me new posts":"Email me new posts","Email me new comments":"Email me new comments","Cancel":"Cancel","Write a comment...":"Write a comment...","Write a reply...":"Write a reply...","Website":"Website","Optional":"Optional","We'll keep you in the loop!":"We'll keep you in the loop!","Loading your comment...":"Loading your comment...","Discover more from":"Discover more from Homotopy Type Theory","Subscribe now to keep reading and get access to the full archive.":"Subscribe now to keep reading and get access to the full archive.","Continue reading":"Continue reading","Never miss a beat!":"Never miss a beat!","Interested in getting blog post updates? Simply click the button below to stay in the loop!":"Interested in getting blog post updates? Simply click the button below to stay in the loop!","Enter your email address":"Enter your email address","Subscribe":"Subscribe","Comment sent successfully":"Comment sent successfully","Save my name, email, and website in this browser for the next time I comment.":"Save my name, email, and website in this browser for the next time I comment.","hovercardi18n":{"Edit your profile \u2192":"Edit your profile \u2192","View profile \u2192":"View profile \u2192","Contact":"Contact","Send money":"Send money","Profile not found.":"Profile not found.","Too Many Requests.":"Too Many Requests.","Internal Server Error.":"Internal Server Error.","Sorry, we are unable to load this Gravatar profile.":"Sorry, we are unable to load this Gravatar profile."},"siteId":21082110,"postId":1557,"mustLogIn":false,"requireNameEmail":true,"commentRegistration":false,"connectURL":"https:\/\/hottheory.wordpress.com\/public.api\/connect\/?action=request&domain=homotopytypetheory.org","logoutURL":"https:\/\/hottheory.wordpress.com\/wp-login.php?action=logout&_wpnonce=d6795453a0","homeURL":"https:\/\/homotopytypetheory.org\/","subscribeToBlog":true,"subscribeToComment":true,"isJetpackCommentsLoggedIn":false,"jetpackUsername":"","jetpackUserId":0,"jetpackSignature":"","jetpackAvatar":null,"enableBlocks":true,"enableSubscriptionModal":true,"currentLocale":"en","isJetpackComments":false,"allowedBlocks":["core\/paragraph","core\/list","core\/code","core\/list-item","core\/quote","core\/image","core\/embed","core\/quote","core\/code"],"embedNonce":"c7bb39f4f0","verbumBundleUrl":"https:\/\/s2.wp.com\/wp-content\/mu-plugins\/jetpack-mu-wpcom-plugin\/sun\/jetpack_vendor\/automattic\/jetpack-mu-wpcom\/src\/features\/verbum-comments\/dist\/index.js","isRTL":false,"vbeCacheBuster":1738686361,"iframeUniqueId":0,"colorScheme":false}
+/* ]]> */
+</script>
+<script crossorigin='anonymous' type='text/javascript'  src='/_static/??/wp-content/mu-plugins/likes/queuehandler.js,/wp-includes/js/comment-reply.min.js?m=1743165756j'></script>
+<script type="text/javascript" src="https://s1.wp.com/wp-content/mu-plugins/jetpack-mu-wpcom-plugin/sun/jetpack_vendor/automattic/jetpack-mu-wpcom/src/build/verbum-comments/assets/dynamic-loader.js?m=1755011788i&amp;minify=false&amp;ver=adc3e7b923a66edb437b" id="verbum-dynamic-loader-js" defer="defer" data-wp-strategy="defer"></script>
+<script type="text/javascript" id="jetpack-carousel-js-extra">
+/* <![CDATA[ */
+var jetpackSwiperLibraryPath = {"url":"https:\/\/s2.wp.com\/wp-content\/mu-plugins\/jetpack-plugin\/sun\/_inc\/blocks\/swiper.js"};
+var jetpackCarouselStrings = {"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/homotopytypetheory.org\/wp-admin\/admin-ajax.php","nonce":"39f09b1ef4","display_exif":"1","display_comments":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","image_label":"Open image in full-screen.","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","copyright":"Copyright","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/hottheory.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Fhomotopytypetheory.org%2Fbook%2F","blog_id":"21082110","meta_data":["camera","aperture","shutter_speed","focal_length","copyright"],"stats_query_args":"blog=21082110&v=wpcom&tz=-4&user_id=0&subd=hottheory","is_public":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" id="sharing-js-js-extra">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" id="jetpack-script-data-js-before">
+/* <![CDATA[ */
+window.JetpackScriptData = {"site":{"host":"wpcom","is_wpcom_platform":true}};
+/* ]]> */
+</script>
+<script crossorigin='anonymous' type='text/javascript'  src='/_static/??-eJydUM0OgjAMfiHHJMawi/FRSN0mFthP1k7i22uAEeOBg7f2+00rpyh08Gw9S5dFHHOHnmRvOYIexAeaog5uJSRlX7j2ab0JSULm4IAZ9eYCIsskbxlHs4GkE0YWBhiqng5yv/irr0Wv1ywNKWSy4yYrQOXQ76TCgOQsi1N1XOIKcE+z2Ox4S8XyiJ/170voAckaMOY1j+i79YSru9TNWdVKnVTTvwFnHpu+'></script>
+<script type="text/javascript" id="sharing-js-js-after">
+/* <![CDATA[ */
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-twitter' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-twitter' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();
+/* ]]> */
+</script>
+
+	<script type="text/javascript">
+		(function () {
+			var wpcom_reblog = {
+				source: 'toolbar',
+
+				toggle_reblog_box_flair: function (obj_id, post_id) {
+
+					// Go to site selector. This will redirect to their blog if they only have one.
+					const postEndpoint = `https://wordpress.com/post`;
+
+					// Ideally we would use the permalink here, but fortunately this will be replaced with the 
+					// post permalink in the editor.
+					const originalURL = `${ document.location.href }?page_id=${ post_id }`; 
+					
+					const url =
+						postEndpoint +
+						'?url=' +
+						encodeURIComponent( originalURL ) +
+						'&is_post_share=true' +
+						'&v=5';
+
+					const redirect = function () {
+						if (
+							! window.open( url, '_blank' )
+						) {
+							location.href = url;
+						}
+					};
+
+					if ( /Firefox/.test( navigator.userAgent ) ) {
+						setTimeout( redirect, 0 );
+					} else {
+						redirect();
+					}
+				},
+			};
+
+			window.wpcom_reblog = wpcom_reblog;
+		})();
+	</script>
+	<iframe src='https://widgets.wp.com/likes/master.html?ver=20250920#ver=20250920' scrolling='no' id='likes-master' name='likes-master' style='display:none;'></iframe>
+	<div id='likes-other-gravatars' role="dialog" aria-hidden="true" tabindex="-1"><div class="likes-text"><span>%d</span></div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+	<script src="//stats.wp.com/w.js?68" defer></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'21082110','blog_tz':'-4','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'21082110','v':'wpcom','tz':'-4','user_id':'0','post':'1557','subd':'hottheory'}]);
+_stq.push(['extra', {'crypt':'UE5tW3cvZGQ/JUs1UEpSZlVhejB0d25DRnx2OFhsPXhjZXlCL3FyPUJXeUguSlt1TT9GOHg9TF1UNzhUSmxpdnlQSXdrMzFVPTk9WnpQbWVDWXNZQjhmM1NfNi1pUXQsbn4/L2lkcz1bS1s5WXxlNF1fV1AmZHQ2eEpwdzlpeTNYYUJbPSVkZDBVaDZKUU5BYmxLM0VUOXcyaUxUYlk/eWxRWmpkVThyJkdIUz1MLlEs'}]);
+_stq.push([ 'clickTrackerInit', '21082110', '1557' ]);
+</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<meta id="bilmur" property="bilmur:data" content="" data-provider="wordpress.com" data-service="simple" data-site-tz="America/New_York" data-custom-props="{&quot;logged_in&quot;:&quot;0&quot;,&quot;wptheme&quot;:&quot;pub\/twentyten&quot;,&quot;wptheme_is_block&quot;:&quot;0&quot;}"  >
+		<script defer src="/wp-content/js/bilmur.min.js?i=16&amp;m=202538"></script> 	
+<script>
+(function() {
+	'use strict';
+
+	const fetches = {};
+	const promises = {};
+	const urls = {
+		'wp-polyfill': 'https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?m=1744646400i&ver=3.15.0',
+		'verbum': 'https://s2.wp.com/wp-content/mu-plugins/jetpack-mu-wpcom-plugin/sun/jetpack_vendor/automattic/jetpack-mu-wpcom/src/build/verbum-comments/verbum-comments.js?m=1758188387i&minify=false&ver=ef5e8367c6e52cccc2f9'
+	};
+	const loaders = {
+		'verbum': () => {
+			fetchExternalScript('wp-polyfill');
+			fetchExternalScript('verbum');
+			promises['wp-polyfill'] = promises['wp-polyfill'] || loadWPScript('wp-polyfill');
+			promises['verbum'] = promises['verbum'] || promises['wp-polyfill'].then( () => loadWPScript('verbum') );
+			return promises['verbum'];
+		},
+		
+	};
+	const scriptExtras = {
+		
+	};
+
+	window.WP_Enqueue_Dynamic_Script = {
+		loadScript: (handle) => {
+			if (!loaders[handle]) {
+				console.error('WP_Enqueue_Dynamic_Script: unregistered script `' + handle + '`.');
+			}
+			return loaders[handle]();
+		}
+	};
+
+	function fetchExternalScript(handle) {
+		if (!urls[handle]) {
+			return Promise.resolve();
+		}
+
+		fetches[handle] = fetches[handle] || fetch(urls[handle], { mode: 'no-cors' });
+		return fetches[handle];
+	}
+
+	function runExtraScript(handle, type, index) {
+		const id = 'wp-enqueue-dynamic-script:' + handle + ':' + type + ':' + (index + 1);
+		const template = document.getElementById(id);
+		if (!template) {
+			return Promise.reject();
+		}
+
+		const script = document.createElement( 'script' );
+		script.innerHTML = template.innerHTML;
+		document.body.appendChild( script );
+		return Promise.resolve();
+	}
+
+	function loadExternalScript(handle) {
+		if (!urls[handle]) {
+			return Promise.resolve();
+		}
+
+		return fetches[handle].then(() => {
+			return new Promise((resolve, reject) => {
+				const script = document.createElement('script');
+				script.onload = () => resolve();
+				script.onerror = (e) => reject(e);
+				script.src = urls[handle];
+				document.body.appendChild(script);
+			});
+		});
+	}
+
+	function loadExtra(handle, pos) {
+		const count = (scriptExtras[handle] && scriptExtras[handle][pos]) || 0;
+		let promise = Promise.resolve();
+
+		for (let i = 0; i < count; i++) {
+			promise = promise.then(() => runExtraScript(handle, pos, i));
+		}
+
+		return promise;
+	}
+
+	function loadWPScript(handle) {
+		// Core loads scripts in this order. See: https://github.com/WordPress/WordPress/blob/a59eb9d39c4fcba834b70c9e8dfd64feeec10ba6/wp-includes/class-wp-scripts.php#L428.
+		return loadExtra(handle, 'translations')
+			.then(() => loadExtra(handle, 'before'))
+			.then(() => loadExternalScript(handle))
+			.then(() => loadExtra(handle, 'after'));
+	}
+} )();
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+HTTP/1.1 301 Moved Permanently
+Connection: close
+Content-Length: 0
+Server: Varnish
+Retry-After: 0
+Location: https://arxiv.org/abs/quant-ph/0206098
+Accept-Ranges: bytes
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Via: 1.1 varnish
+X-Served-By: cache-hhr-khhr2060043-HHR
+X-Cache: HIT
+X-Timer: S1771197446.740472,VS0,VE0
+
+HTTP/2 200 
+x-cloud-trace-context: c4ea0f9a7cef88cd217f10a853f47439
+last-modified: Tue, 01 Dec 2009 00:14:21 GMT
+content-type: text/html; charset=utf-8
+server: Google Frontend
+content-security-policy: frame-ancestors 'none'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+x-frame-options: SAMEORIGIN
+cache-control: max-age=3600
+accept-ranges: bytes
+age: 203744
+date: Sun, 15 Feb 2026 23:17:25 GMT
+x-served-by: cache-lga21942-LGA, cache-lga21963-LGA, cache-hhr-khhr2060030-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197446.782622,VS0,VE0
+content-length: 45029
+

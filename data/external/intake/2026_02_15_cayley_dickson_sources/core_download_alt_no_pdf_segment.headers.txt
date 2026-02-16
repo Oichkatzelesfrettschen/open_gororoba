@@ -1,0 +1,9 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 17:39:00 GMT
+content-length: 0
+location: https://files01.core.ac.uk/download/82141950.pdf
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=aPicqdQF7UmbfXq9NjUvn5LrBhRDsJHS%2BH46iiyIjDN2mOyZ6DLNbTkKfl54VQWtVdgWp5lSDetZQ8HYiF6OIIaR%2B8X1l%2FBHO0g%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9ce69509cba3d498-LAX
+

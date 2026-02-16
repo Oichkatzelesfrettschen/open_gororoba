@@ -1,0 +1,38 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 23:17:36 GMT
+server: nginx
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+vary: Cookie,origin
+location: /27694559/
+content-type: text/html; charset=utf-8
+referrer-policy: same-origin
+x-frame-options: DENY
+x-content-type-options: nosniff
+cross-origin-opener-policy: same-origin
+content-encoding: gzip
+set-cookie: ncbi_sid=ABB86199992264D3_33247SID; Domain=.nih.gov; expires=Mon, 15 Feb 2027 23:17:36 GMT; HttpOnly; Max-Age=31536000; Path=/; Secure
+x-ua-compatible: IE=Edge
+x-xss-protection: 1; mode=block
+via: 1.1 google
+alt-svc: clear
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:36 GMT
+server: nginx
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+vary: origin
+content-type: text/html; charset=utf-8
+cache-control: private
+referrer-policy: same-origin
+x-frame-options: DENY
+x-content-type-options: nosniff
+cross-origin-opener-policy: same-origin
+content-encoding: gzip
+set-cookie: pm-csrf=AsKySQeRDCMv9JpWjcyHc5YM8fkCmqeQ; expires=Sun, 14 Feb 2027 23:17:36 GMT; HttpOnly; Max-Age=31449600; Path=/; SameSite=Lax; Secure
+set-cookie: pm-sessionid=od3325394pniro1ex9ky18xvo4berk8g; expires=Mon, 16 Feb 2026 07:17:36 GMT; HttpOnly; Max-Age=28800; Path=/; Secure
+set-cookie: ncbi_sid=C0D28C94991C0CB3_64899SID; Domain=.nih.gov; expires=Mon, 15 Feb 2027 23:17:36 GMT; HttpOnly; Max-Age=31536000; Path=/; Secure
+x-ua-compatible: IE=Edge
+x-xss-protection: 1; mode=block
+via: 1.1 google
+alt-svc: clear
+

@@ -1,0 +1,12 @@
+HTTP/2 200 
+server: nginx
+date: Sun, 15 Feb 2026 23:17:37 GMT
+content-type: application/pdf
+content-length: 415492
+strict-transport-security: max-age=63072000
+last-modified: Fri, 10 May 2024 04:56:48 GMT
+etag: "65704-618125cfc3b5d"
+accept-ranges: bytes
+x-content-type-options: nosniff
+cache-control: max-age=63072000, public
+
