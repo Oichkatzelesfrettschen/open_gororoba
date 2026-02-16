@@ -50,6 +50,51 @@ pub fn evaluate_r1_closed_form(n: usize, adj_signs: &[i8], cumul_signs: &[i8]) -
     result
 }
 
+/// Statistics for an amplitude chamber.
+#[derive(Debug, Clone)]
+pub struct ChamberStats {
+    pub adj_signs: Vec<i8>,
+    pub cumul_signs: Vec<i8>,
+    pub amplitude: i8,
+    pub frustration: f64,
+}
+
+/// Enumerates all possible sign combinations for n gluons and returns stats.
+/// Total chambers = 2^(2*(n-2)).
+pub fn enumerate_chambers(n: usize) -> Vec<ChamberStats> {
+    if n < 3 { return Vec::new(); }
+    let num_pairs = n - 2;
+    let total_chambers = 1 << (2 * num_pairs);
+    
+    let mut stats = Vec::with_capacity(total_chambers);
+    
+    for i in 0..total_chambers {
+        let mut adj = Vec::with_capacity(num_pairs);
+        let mut cum = Vec::with_capacity(num_pairs);
+        
+        for j in 0..num_pairs {
+            // bits 2j and 2j+1
+            let adj_bit = (i >> (2 * j)) & 1;
+            let cum_bit = (i >> (2 * j + 1)) & 1;
+            
+            adj.push(if adj_bit == 1 { 1 } else { -1 });
+            cum.push(if cum_bit == 1 { 1 } else { -1 });
+        }
+        
+        let amplitude = evaluate_r1_closed_form(n, &adj, &cum);
+        let frustration = compute_sign_graph_frustration(&adj, &cum);
+        
+        stats.push(ChamberStats {
+            adj_signs: adj,
+            cumul_signs: cum,
+            amplitude,
+            frustration,
+        });
+    }
+    
+    stats
+}
+
 /// Compute sign graph frustration index.
 ///
 /// Measures the inconsistency in the sign assignment.

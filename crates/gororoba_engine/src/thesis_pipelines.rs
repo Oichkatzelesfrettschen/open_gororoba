@@ -483,6 +483,8 @@ pub struct Thesis5Pipeline {
     pub c_a: f64,
     /// Minimum correlation (Spearman r) to pass (should be negative)
     pub correlation_threshold: f64,
+    /// Initial state type: "triplet" or "singlet"
+    pub initial_state: String,
 }
 
 impl Default for Thesis5Pipeline {
@@ -493,6 +495,7 @@ impl Default for Thesis5Pipeline {
             c_f: 10.0,
             c_a: 1.0,
             correlation_threshold: -0.8,
+            initial_state: "triplet".to_string(),
         }
     }
 }
@@ -505,8 +508,9 @@ impl ThesisPipeline for Thesis5Pipeline {
     fn execute(&self) -> ThesisEvidence {
         use vacuum_frustration::SedenionField;
         use spin_tomography_core::{AlgebraicTriad, SpinEvent, TomographyMoments, TwoQubitState};
-        use cd_spin_bridge::{DecoherenceMap, apply_depolarizing_channel};
+        use cd_spin_bridge::DecoherenceMap;
         use nalgebra::Matrix3;
+        use rand::prelude::*;
 
         // 1. Generate CD Medium
         let mut field = SedenionField::uniform(self.grid_size, self.grid_size, self.grid_size);
@@ -530,9 +534,6 @@ impl ThesisPipeline for Thesis5Pipeline {
         let map = DecoherenceMap::new(self.c_f, self.c_a, 0.0, 1.0);
         let mut gamma_values = Vec::new();
         
-        // Collect gamma values from the field
-        // Since fields are flattened or accessed by index, we iterate linear
-        // Assuming frustration_density and associator_norm have same layout/size
         let len = frustration_density.len();
         for i in 0..len {
             let f = frustration_density[i];
@@ -541,92 +542,41 @@ impl ThesisPipeline for Thesis5Pipeline {
         }
 
         // 3. Bin by Gamma and Simulate Tomography
-        // Create bins for gamma
         let min_gamma = gamma_values.iter().fold(f64::INFINITY, |a, &b| a.min(b));
         let max_gamma = gamma_values.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
         
         let n_bins = 10;
-        let bin_width = (max_gamma - min_gamma) / n_bins as f64;
+        let bin_width = (max_gamma - min_gamma).max(1e-9) / n_bins as f64;
         
-        // Accumulators per bin
         let mut bin_moments = vec![TomographyMoments::new(); n_bins];
         let mut bin_counts = vec![0; n_bins];
         let mut bin_gamma_sums = vec![0.0; n_bins];
 
-        // Initial state: Triplet-like (P = 1/3)
-        // a=0, b=0, T=I/3 ? No, T=I implies P=1. 
-        // Triplet state |T+> = (|01> + |10>)/sqrt(2)? 
-        // STAR reference P=1/3 corresponds to random triplet mixture:
-        // rho = 1/4 (I + sigma.sigma) => T_ij = delta_ij, Tr(T)=3, P=1.
-        // Wait, STAR says "parallel spins ... P=1/3".
-        // If T=I (fully correlated parallel), P=1.
-        // Let's check the text again. "parallel spins -> P=1/3 ... antiparallel -> P=-1".
-        // P = 1/3 <sigma . sigma>.
-        // For triplet |11>, <sigma z . sigma z> = 1. <sigma x . sigma x> = 0 (if product state?).
-        // If they mean random mixture of |11>, |00>, and (|01>+|10>), averaging to isotropy.
-        // An isotropic triplet state has <sigma.sigma> = 1.
-        // Then P = 1/3 * 1 = 1/3.
-        // So target initial state should be isotropic triplet.
-        // T_ij = 1/3 * delta_ij.
-        // Then Tr(T) = 1. P = 1/3.
+        // Initial state selection
+        let initial_t = match self.initial_state.as_str() {
+            "triplet" => Matrix3::<f64>::identity().scale(1.0/3.0),
+            "singlet" => Matrix3::<f64>::identity().scale(-1.0),
+            _ => Matrix3::<f64>::zeros(),
+        };
         
-        let initial_t = Matrix3::<f64>::identity().scale(1.0/3.0);
-        let initial_rho = TwoQubitState::from_ab_t(
-            &Vector3::zeros(), 
-            &Vector3::zeros(), 
-            &initial_t
-        );
-
         let mut rng = rand::thread_rng();
 
-        for &gamma in &gamma_values {
+        // Simulate statistics across the gamma distribution
+        for _ in 0..(self.events_per_bin * n_bins) {
+            // Pick a random gamma from the field distribution
+            let idx = rng.gen_range(0..gamma_values.len());
+            let gamma = gamma_values[idx];
+            
             let bin_idx = ((gamma - min_gamma) / bin_width).floor() as usize;
             let bin_idx = bin_idx.min(n_bins - 1);
 
-            // Apply decoherence
-            let _rho_decayed = apply_depolarizing_channel(&initial_rho, gamma);
-            
-            // Extract P_expected from rho_decayed for verification (cheating?)
-            // No, we should simulate measurement.
-            // But for efficiency in this loop, we can just extract the analytical P from rho_decayed
-            // and add noise, or use the estimator on synthetic events.
-            // Let's do synthetic events to verify the estimator too.
-            
-            // Generate ONE event per field cell (or few) to build statistics
-            // Sampling from rho is expensive if we do rejection sampling per cell.
-            // Let's just create "events" that statistically match rho.
-            // P_scalar = Tr(T_decayed)/3. 
-            // We can just accumulate analytical moments + noise.
-            // Or better: just generate a few random analyzer directions and weight them?
-            // "Probability p(n1, n2) ~ 1 + ... n1 T n2"
-            
-            // For speed in this thesis pipeline, we can simulate the "limit of infinite statistics"
-            // per bin by just taking the analytical P from rho_decayed.
-            // But the instruction said "Synthetic event generation".
-            // Let's do a simplified sampling:
-            // For each gamma sample, generate 1 event.
-            
-            // Random analyzers
-            let n1 = random_direction(&mut rng);
-            let n2 = random_direction(&mut rng);
-            
-            // Calculate weight w ~ probability
-            // rho expanded: 1/4 (I + sum T_ij sigma_i sigma_j) (since a=b=0)
-            // prob ~ 1 + n1^T T n2
-            // Depolarizing channel: rho -> (1-p)rho + p I/4, so T -> (1-p) T.
-            // With p = 1 - exp(-gamma), the scaling factor is exp(-gamma).
             let factor = (-gamma).exp();
             let t_decayed = initial_t * factor;
             
-            // The probability density for (n1, n2) is (1 + 9 n1 . T n2) / (4pi)^2 ?
-            // The factor 9 comes from the estimators.
-            // Actually prob = (1 + alpha1 alpha2 n1 . T n2).
-            // Let's assume alpha=1.
-            let prob = 1.0 + (n1.transpose() * t_decayed * n2)[(0,0)];
+            let n1 = random_direction(&mut rng);
+            let n2 = random_direction(&mut rng);
             
-            // Rejection sampling or importance weighting?
-            // Importance weighting is faster.
-            // Generate uniform n1, n2. Assign weight = prob.
+            let prob = 1.0 + (n1.transpose() * t_decayed * n2)[(0,0)];
             let event = SpinEvent::new(n1, n2, 1.0, 1.0).with_weight(prob);
             let triad = AlgebraicTriad::default();
             
@@ -638,14 +588,23 @@ impl ThesisPipeline for Thesis5Pipeline {
         // 4. Compute Results
         let mut bin_p = Vec::new();
         let mut bin_gamma = Vec::new();
+        let mut bin_negativity = Vec::new();
 
         for i in 0..n_bins {
             if bin_counts[i] > 0 {
                 let avg_gamma = bin_gamma_sums[i] / bin_counts[i] as f64;
-                let p = bin_moments[i].p_scalar();
+                let (a, b, t) = bin_moments[i].estimate();
+                let p = t.trace() / 3.0;
+                
+                // Reconstruct state to compute negativity
+                let state = TwoQubitState::from_ab_t(&a, &b, &t);
+                let neg = state.negativity();
                 
                 bin_gamma.push(avg_gamma);
                 bin_p.push(p);
+                bin_negativity.push(neg);
+                
+                // Track anisotropy range or mean? Let's just track mean in message
             }
         }
 
@@ -657,16 +616,24 @@ impl ThesisPipeline for Thesis5Pipeline {
 
         ThesisEvidence {
             thesis_id: 5,
-            label: format!("T5 Spin Decoherence (c_f={}, c_a={})", self.c_f, self.c_a),
+            label: format!("T5 Spin Decoherence ({}, c_f={})", self.initial_state, self.c_f),
             metric_value: correlation,
             threshold: self.correlation_threshold,
             passes_gate: passes,
             messages: vec![
+                format!("Initial State: {}", self.initial_state),
                 format!("Spearman r(gamma, P) = {:.4}", correlation),
                 format!("Gamma range: [{:.4}, {:.4}]", min_gamma, max_gamma),
                 format!("P range: [{:.4}, {:.4}]", 
                     bin_p.iter().cloned().fold(f64::INFINITY, f64::min),
                     bin_p.iter().cloned().fold(f64::NEG_INFINITY, f64::max)
+                ),
+                format!("Negativity range: [{:.4}, {:.4}]",
+                    bin_negativity.iter().cloned().fold(f64::INFINITY, f64::min),
+                    bin_negativity.iter().cloned().fold(f64::NEG_INFINITY, f64::max)
+                ),
+                format!("Mean Anisotropy: {:.4}", 
+                    bin_moments.iter().filter(|m| m.weight_sum > 0.0).map(|m| m.anisotropy()).sum::<f64>() / n_bins as f64
                 ),
             ],
         }

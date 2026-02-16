@@ -379,6 +379,18 @@ name = "thesis-synthesis"
 path = "src/bin/thesis_synthesis.rs"
 
 [[bin]]
+name = "qgp-parameter-optimizer"
+path = "src/bin/qgp_parameter_optimizer.rs"
+
+[[bin]]
+name = "lhc-2025-qgp-synthesis"
+path = "src/bin/lhc_2025_qgp_synthesis.rs"
+
+[[bin]]
+name = "amplitude-frustration-survey"
+path = "src/bin/amplitude_frustration_survey.rs"
+
+[[bin]]
 name = "spin-decoherence-pipeline"
 path = "src/bin/spin_decoherence_pipeline.rs"
 
@@ -404,6 +416,8 @@ vacuum_frustration = { path = "../vacuum_frustration" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
+spin_tomography_core = { path = "../spin_tomography_core" }
+cd_spin_bridge = { path = "../cd_spin_bridge" }
 tda = { workspace = true }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }

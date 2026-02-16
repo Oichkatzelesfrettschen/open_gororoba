@@ -123,6 +123,13 @@ impl TwoQubitState {
     pub fn is_entangled(&self) -> bool {
         self.negativity() > 1e-10
     }
+
+    /// Computes the Jordan product of two states: (A*B + B*A) / 2.
+    /// Result is Hermitian if both inputs are Hermitian.
+    pub fn jordan_product(&self, other: &Self) -> Self {
+        let res = (self.rho * other.rho + other.rho * self.rho) * Complex64::from(0.5);
+        Self { rho: res }
+    }
 }
 
 // Helper for Kronecker product of 2x2 matrices

@@ -86,4 +86,11 @@ impl TomographyMoments {
         let (_, _, t) = self.estimate();
         t.trace() / 3.0
     }
+
+    /// Returns the polarization anisotropy: T_zz - 0.5 * (T_xx + T_yy).
+    /// For isotropic states, this should be near 0.
+    pub fn anisotropy(&self) -> f64 {
+        let (_, _, t) = self.estimate();
+        t[(2, 2)] - 0.5 * (t[(0, 0)] + t[(1, 1)])
+    }
 }
