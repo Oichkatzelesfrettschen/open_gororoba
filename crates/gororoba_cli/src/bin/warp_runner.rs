@@ -12,6 +12,8 @@ use lbm_3d_cuda::Precision;
 use std::error::Error;
 use std::path::{Path, PathBuf};
 
+const LBM_TAU_BENCH: f64 = 0.6;
+
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BackendKind {
@@ -48,6 +50,24 @@ pub struct BenchCase {
     pub h5_output: Option<PathBuf>,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub struct KolmogorovForcingSpec {
+    pub tau: f64,
+    pub nu: f64,
+    pub cs: f64,
+    pub mode_y: usize,
+    pub k_y: f64,
+    pub re_target: f64,
+    pub re_effective: f64,
+    pub max_mach: f64,
+    pub mach_effective: f64,
+    pub u_target: f64,
+    pub acceleration_amplitude: f64,
+    pub body_force_density_amplitude: f64,
+    pub viscous_time_steps: f64,
+    pub power_injection_density: f64,
+}
+
 #[derive(Debug, Clone)]
 pub struct StepTimingBin {
     pub lower_us: f64,
@@ -80,6 +100,7 @@ pub struct BenchCaseReport {
     pub sample_count: usize,
     pub quality: RhoTraceQuality,
     pub step_timing: StepTimingStats,
+    pub forcing: KolmogorovForcingSpec,
     pub h5_output: Option<PathBuf>,
 }
 
@@ -186,12 +207,133 @@ fn compute_step_timing_stats(step_times_us: &[f64], histogram_bins: usize) -> St
     }
 }
 
-fn build_kolmogorov_force_field(nx: usize, ny: usize, nz: usize, amplitude: f64) -> Vec<[f64; 3]> {
+fn parse_env_f64(name: &str, default: f64) -> Result<f64, Box<dyn Error>> {
+    match std::env::var(name) {
+        Ok(raw) => raw.parse::<f64>().map_err(|e| {
+            std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{name} must be a finite float, got '{raw}': {e}"),
+            )
+            .into()
+        }),
+        Err(std::env::VarError::NotPresent) => Ok(default),
+        Err(e) => Err(std::io::Error::other(format!("failed to read {name}: {e}")).into()),
+    }
+}
+
+fn parse_env_usize(name: &str, default: usize) -> Result<usize, Box<dyn Error>> {
+    match std::env::var(name) {
+        Ok(raw) => raw.parse::<usize>().map_err(|e| {
+            std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{name} must be a positive integer, got '{raw}': {e}"),
+            )
+            .into()
+        }),
+        Err(std::env::VarError::NotPresent) => Ok(default),
+        Err(e) => Err(std::io::Error::other(format!("failed to read {name}: {e}")).into()),
+    }
+}
+
+/// Derive sinusoidal Kolmogorov forcing from the steady incompressible NS balance.
+///
+/// We model:
+///   u_x(y) = U0 * sin(k y),   f_x(y) = F0 * sin(k y)
+/// and use:
+///   0 = nu * d2(u_x)/dy2 + f_x  =>  F0 = nu * k^2 * U0
+///
+/// In lattice units:
+///   nu = c_s^2 * (tau - 0.5), c_s^2 = 1/3, dt = dx = rho0 = 1 (default).
+///
+/// The characteristic velocity U0 is set by a target forcing-scale Reynolds number
+/// and clipped by a low-Mach cap:
+///   Re_target = U0 / (nu * k),  U0 <= Ma_max * c_s.
+fn derive_kolmogorov_forcing_spec(ny: usize, tau: f64) -> Result<KolmogorovForcingSpec, Box<dyn Error>> {
+    if ny == 0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "ny must be > 0 for Kolmogorov forcing",
+        )
+        .into());
+    }
+    if tau <= 0.5 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("tau must be > 0.5 for positive viscosity, got {tau}"),
+        )
+        .into());
+    }
+
+    let mode_y = parse_env_usize("GOROROBA_KOLMO_MODE_Y", 1)?.max(1);
+    let re_target = parse_env_f64("GOROROBA_KOLMO_RE_TARGET", 64.0)?;
+    let max_mach = parse_env_f64("GOROROBA_KOLMO_MAX_MACH", 0.08)?;
+    let rho0 = parse_env_f64("GOROROBA_KOLMO_RHO0", 1.0)?;
+    if !re_target.is_finite() || re_target <= 0.0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("GOROROBA_KOLMO_RE_TARGET must be finite and > 0, got {re_target}"),
+        )
+        .into());
+    }
+    if !max_mach.is_finite() || max_mach <= 0.0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("GOROROBA_KOLMO_MAX_MACH must be finite and > 0, got {max_mach}"),
+        )
+        .into());
+    }
+    if !rho0.is_finite() || rho0 <= 0.0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("GOROROBA_KOLMO_RHO0 must be finite and > 0, got {rho0}"),
+        )
+        .into());
+    }
+
+    let cs2: f64 = 1.0 / 3.0;
+    let cs = f64::sqrt(cs2);
+    let nu = cs2 * (tau - 0.5);
+    let k_y = std::f64::consts::TAU * mode_y as f64 / ny as f64;
+    let u_from_re = re_target * nu * k_y;
+    let u_from_mach = max_mach * cs;
+    let u_target = u_from_re.min(u_from_mach);
+    let re_effective = u_target / (nu * k_y);
+    let mach_effective = u_target / cs;
+    let acceleration_amplitude = nu * k_y * k_y * u_target;
+    let body_force_density_amplitude = rho0 * acceleration_amplitude;
+    let viscous_time_steps = 1.0 / (nu * k_y * k_y);
+    let power_injection_density = 0.5 * body_force_density_amplitude * u_target;
+
+    Ok(KolmogorovForcingSpec {
+        tau,
+        nu,
+        cs,
+        mode_y,
+        k_y,
+        re_target,
+        re_effective,
+        max_mach,
+        mach_effective,
+        u_target,
+        acceleration_amplitude,
+        body_force_density_amplitude,
+        viscous_time_steps,
+        power_injection_density,
+    })
+}
+
+fn build_kolmogorov_force_field(
+    nx: usize,
+    ny: usize,
+    nz: usize,
+    mode_y: usize,
+    acceleration_amplitude: f64,
+) -> Vec<[f64; 3]> {
     let mut force = vec![[0.0f64; 3]; nx * ny * nz];
     for z in 0..nz {
         for y in 0..ny {
-            let phase = std::f64::consts::TAU * (y as f64) / ny as f64;
-            let fx = amplitude * phase.sin();
+            let phase = std::f64::consts::TAU * mode_y as f64 * (y as f64) / ny as f64;
+            let fx = acceleration_amplitude * phase.sin();
             for x in 0..nx {
                 let idx = x + nx * (y + ny * z);
                 force[idx] = [fx, 0.0, 0.0];
@@ -239,6 +381,37 @@ pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result
     if let Some(h5) = report.h5_output.as_deref() {
         out.push_str(&format!("h5_output = \"{}\"\n", h5.display()));
     }
+    out.push_str("\n[forcing]\n");
+    out.push_str("model = \"kolmogorov_ns_balance\"\n");
+    out.push_str(&format!("tau = {:.6}\n", report.forcing.tau));
+    out.push_str(&format!("nu = {:.9}\n", report.forcing.nu));
+    out.push_str(&format!("cs = {:.9}\n", report.forcing.cs));
+    out.push_str(&format!("mode_y = {}\n", report.forcing.mode_y));
+    out.push_str(&format!("k_y = {:.9}\n", report.forcing.k_y));
+    out.push_str(&format!("re_target = {:.6}\n", report.forcing.re_target));
+    out.push_str(&format!("re_effective = {:.6}\n", report.forcing.re_effective));
+    out.push_str(&format!("max_mach = {:.6}\n", report.forcing.max_mach));
+    out.push_str(&format!("mach_effective = {:.6}\n", report.forcing.mach_effective));
+    out.push_str(&format!("u_target = {:.9}\n", report.forcing.u_target));
+    out.push_str(&format!(
+        "acceleration_amplitude = {:.9e}\n",
+        report.forcing.acceleration_amplitude
+    ));
+    out.push_str(&format!(
+        "body_force_density_amplitude = {:.9e}\n",
+        report.forcing.body_force_density_amplitude
+    ));
+    out.push_str(&format!(
+        "viscous_time_steps = {:.3}\n",
+        report.forcing.viscous_time_steps
+    ));
+    out.push_str(&format!(
+        "power_injection_density = {:.9e}\n",
+        report.forcing.power_injection_density
+    ));
+    out.push_str(
+        "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); f_x=F0*sin(k*y)\"\n",
+    );
     out.push_str("\n[timing]\n");
     out.push_str(&format!("sample_count = {}\n", report.step_timing.sample_count));
     out.push_str(&format!("min_us = {:.6}\n", report.step_timing.min_us));
@@ -264,6 +437,7 @@ fn export_bench_trace(
     resolution: usize,
     backend: BackendKind,
     precision: Precision,
+    forcing: &KolmogorovForcingSpec,
     total_steps: usize,
     elapsed_secs: f64,
     time_hist: &[f64],
@@ -292,8 +466,14 @@ fn export_bench_trace(
         config: WarpRingConfig {
             resolution,
             steps: total_steps,
-            tau: 0.6,
-            forcing_type: "E7_Bench_Filter".to_string(),
+            tau: forcing.tau,
+            forcing_type: format!(
+                "Kolmogorov_NS_Derived(mode_y={},Re_target={:.3},Ma_max={:.3},F0={:.3e})",
+                forcing.mode_y,
+                forcing.re_target,
+                forcing.max_mach,
+                forcing.acceleration_amplitude
+            ),
             coupling_lambda: 0.95,
             initial_condition: "Uniform_Rho1_U0".to_string(),
         },
@@ -322,11 +502,12 @@ fn export_bench_trace(
 }
 
 pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
+    let forcing = derive_kolmogorov_forcing_spec(case.resolution, LBM_TAU_BENCH)?;
     let config = SimulationConfig3D {
         nx: case.resolution,
         ny: case.resolution,
         nz: case.resolution,
-        tau: 0.6,
+        tau: forcing.tau,
         use_gpu: matches!(case.backend, BackendKind::Gpu),
         precision: case.precision,
         algebra_params: FieldParams::default(),
@@ -334,13 +515,14 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         coupling_algebra_fluid: 0.1,
     };
     let mut state = SimulationState3D::new(config)?;
-    let forcing = build_kolmogorov_force_field(
+    let force_field = build_kolmogorov_force_field(
         case.resolution,
         case.resolution,
         case.resolution,
-        1.0e-4,
+        forcing.mode_y,
+        forcing.acceleration_amplitude,
     );
-    state.fluid.try_set_force_field(&forcing)?;
+    state.fluid.try_set_force_field(&force_field)?;
     state.frustration = Some(Box::new(E7SpectralFilter::new(
         case.resolution,
         case.resolution,
@@ -440,6 +622,7 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
                 case.resolution,
                 case.backend,
                 case.precision,
+                &forcing,
                 steps,
                 elapsed,
                 &time_hist,
@@ -472,6 +655,7 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         sample_count: rho_hist.len(),
         quality,
         step_timing,
+        forcing,
         h5_output: case.h5_output.clone(),
     })
 }
@@ -505,6 +689,15 @@ pub fn print_case_report(report: &BenchCaseReport) {
         report.step_timing.min_us,
         report.step_timing.max_us,
         report.step_timing.sample_count
+    );
+    println!(
+        "     forcing: model=kolmogorov_ns_balance, mode_y={}, F0={:.3e}, U0={:.3e}, Re_target={:.2}, Re_effective={:.2}, Ma={:.3}",
+        report.forcing.mode_y,
+        report.forcing.acceleration_amplitude,
+        report.forcing.u_target,
+        report.forcing.re_target,
+        report.forcing.re_effective,
+        report.forcing.mach_effective
     );
     if let Some(path) = report.h5_output.as_deref() {
         println!("HDF5_TRACE: {}", path.display());
