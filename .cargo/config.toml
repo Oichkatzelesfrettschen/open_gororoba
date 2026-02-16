@@ -4,6 +4,8 @@
 [build]
 # Use all available cores for compilation
 jobs = 12
+# Use sccache for compilation caching (verified installed)
+rustc-wrapper = "sccache"
 
 [target.'cfg(target_arch = "x86_64")']
 # Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)

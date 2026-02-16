@@ -197,7 +197,7 @@ chrome_devtools_startup_probe = "PASS"
 desktop_commander_startup_probe = "PASS"
 markitdown_startup_probe = "PASS"
 semgrep_startup_probe = "PASS"
-mcp_smoke_verify_script = "PASS_25_SERVERS"
+mcp_smoke_verify_script = "PASS_BASELINE_7"
 rust_docs_startup_probe = "PASS_HANDSHAKE_CLOSE"
 fetch_fetch = "FAIL_TRANSPORT_CLOSED"
 containers_run_command = "FAIL_NO_CONTAINER_laravel_app_dev"
@@ -205,7 +205,7 @@ postgres_startup_probe = "FAIL_NO_DATABASE_URL_OR_CONNREFUSED"
 shell_startup_probe = "FAIL_RUNTIME_WARNING_COROUTINE_NOT_AWAITED"
 youtube_transcript_get_transcript = "FAIL_LIST_TRANSCRIPTS_ATTR_MISSING"
 disabled_servers = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
-last_checked_utc = "2026-02-11T19:59:59Z"
+last_checked_utc = "2026-02-16T01:56:18Z"
 
 [command_matrix]
 required = [

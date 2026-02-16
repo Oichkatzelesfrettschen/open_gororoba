@@ -1,0 +1,264 @@
+# Manual mirror overrides injected from user-provided recovery list.
+# These are supplemental sources; the authoritative master is registry/artifact_source_of_truth.toml.
+
+[mirror_overrides]
+id = "MIRROR-OVERRIDES-2026-02-15"
+updated = "2026-02-15"
+authoritative = false
+policy = "Add best-available direct PDF endpoints and stable alternates when canonical sources are blocked; preserve the original blocked URL as the first URL for stable merging."
+fetch_lane_script = "src/scripts/analysis/fetch_manual_override_pdfs.py"
+fetch_lane_provenance_ledger = "registry/provenance_manual_override_fetch_2026_02_15.toml"
+
+# --- Top-level stubborn items ---
+
+[[mirror_override]]
+id = "BROWN_1972_scholarsmine"
+artifact_key_hint = "BROWN_1972"
+title = "Harmon Caril Brown (1972) dissertation - ScholarsMine endpoints"
+urls = [
+  "https://scholarsmine.mst.edu/doctoral_dissertations/2088/",
+  "https://scholarsmine.mst.edu/cgi/viewcontent.cgi?article=3090&context=doctoral_dissertations&download=1",
+  "https://scholarsmine.mst.edu/cgi/viewcontent.cgi?article=3088&context=doctoral_dissertations&download=1",
+  "https://scholarsmine.mst.edu/cgi/viewcontent.cgi?article=3090&context=doctoral_dissertations&format=pdf",
+  "https://scholarsmine.mst.edu/cgi/viewcontent.cgi?article=3088&context=doctoral_dissertations&format=pdf",
+]
+notes = "Brown_1972 is already cached from CORE; these are for direct-PDF reproducibility if ScholarsMine unblocks."
+
+[[mirror_override]]
+id = "EAKIN_SATHAYE_1990_elsevier_pdf"
+artifact_key_hint = "EAKIN_SATHAYE_1990"
+title = "Eakin & Sathaye (1990) Journal of Algebra - PDF endpoints"
+doi_list = ["10.1016/0021-8693(90)90221-9"]
+urls = [
+  "https://doi.org/10.1016/0021-8693(90)90221-9",
+  "https://www.sciencedirect.com/science/article/pii/0021869390902219",
+  "https://www.sciencedirect.com/science/article/pii/S0021869390902219/pdfft",
+  "https://www.sciencedirect.com/science/article/pii/S0021869390902219/pdfft?isDTMRedir=true&download=true",
+  "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true",
+  "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf",
+  "https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219",
+]
+notes = "Likely requires manual browser / institutional context; keep for retry."
+
+[[mirror_override]]
+id = "MCCRIMMON_1985_euclid_mirror"
+artifact_key_hint = "MCCRIMMON_1985"
+title = "McCrimmon (1985) PJM - Project Euclid PDF mirror"
+doi_list = ["10.2140/pjm.1985.117.163"]
+urls = [
+  "https://msp.org/pjm/1985/117-1/p10.xhtml",
+  "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+  "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf",
+]
+
+[[mirror_override]]
+id = "BREMNER_HENTZEL_2001_iastate_mirror"
+artifact_key_hint = "BREMNER_HENTZEL_2001"
+title = "Bremner & Hentzel (2001) - institutional copy + publisher"
+doi_list = ["10.1081/AGB-100105036"]
+urls = [
+  "https://doi.org/10.1081/AGB-100105036",
+  "https://dr.lib.iastate.edu/server/api/core/bitstreams/7acefa00-fdc3-4691-a20f-4a3494587690/content",
+  "https://www.tandfonline.com/doi/pdf/10.1081/AGB-100105036",
+  "https://www.tandfonline.com/doi/epdf/10.1081/AGB-100105036",
+]
+
+[[mirror_override]]
+id = "BALES_2016_arxiv_withdrawn_versions"
+artifact_key_hint = "BALES_2016_ALT_CD"
+title = "Bales (2016) arXiv 1602.02317 - explicit versions and alternates"
+doi_list = ["10.35834/mjms/1474295358"]
+urls = [
+  "https://arxiv.org/abs/1602.02317",
+  "https://arxiv.org/pdf/1602.02317v1.pdf",
+  "https://arxiv.org/pdf/1602.02317v2.pdf",
+  "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf",
+  "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf",
+]
+
+# --- Blocked ASOT items with additional OA mirrors ---
+
+[[mirror_override]]
+id = "ASOT_0022_large_annihilators_arxiv"
+artifact_key_hint = "doi:10.1080/00927870701724094"
+doi_list = ["10.1080/00927870701724094"]
+urls = [
+  "https://doi.org/10.1080/00927870701724094",
+  "https://arxiv.org/pdf/math/0511691.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_0024_stinga_torrea_arxiv"
+artifact_key_hint = "doi:10.1080/03605301003735680"
+doi_list = ["10.1080/03605301003735680"]
+urls = [
+  "https://doi.org/10.1080/03605301003735680",
+  "https://arxiv.org/pdf/0910.2569.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_0025_philmags_tandf_only"
+artifact_key_hint = "doi:10.1080/14786444808646059"
+doi_list = ["10.1080/14786444808646059"]
+urls = [
+  "https://doi.org/10.1080/14786444808646059",
+  "https://www.tandfonline.com/doi/pdf/10.1080/14786444808646059",
+  "https://www.tandfonline.com/doi/epdf/10.1080/14786444808646059",
+  "https://www.tandfonline.com/toc/tphm14/33/220",
+]
+
+[[mirror_override]]
+id = "ASOT_0026_cockle_zenodo"
+artifact_key_hint = "doi:10.1080/14786444908646169"
+doi_list = ["10.1080/14786444908646169"]
+urls = [
+  "https://doi.org/10.1080/14786444908646169",
+  "https://zenodo.org/record/1431095/files/article.pdf",
+  "https://www.tandfonline.com/doi/pdf/10.1080/14786444908646169",
+]
+
+[[mirror_override]]
+id = "ASOT_0030_berry_1984_mirrors"
+artifact_key_hint = "doi:10.1098/rspa.1984.0023"
+doi_list = ["10.1098/rspa.1984.0023"]
+urls = [
+  "https://doi.org/10.1098/rspa.1984.0023",
+  "https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1984.0023",
+  "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_APS_physrev_pdf_candidates"
+artifact_key_hint = "APS direct PDF + harvest fulltext"
+urls = [
+  "https://doi.org/10.1103/PhysRev.124.925",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRev.124.925/fulltext",
+  "https://journals.aps.org/pr/pdf/10.1103/PhysRev.124.925",
+  "https://doi.org/10.1103/PhysRevB.14.2239",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext",
+  "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.14.2239",
+  "https://doi.org/10.1103/PhysRevD.23.287",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.23.287/fulltext",
+  "https://journals.aps.org/prd/pdf/10.1103/PhysRevD.23.287",
+  "https://doi.org/10.1103/PhysRevLett.43.744",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext",
+  "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.43.744",
+  "https://doi.org/10.1103/PhysRevLett.49.405",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext",
+  "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.49.405",
+  "https://doi.org/10.1103/PhysRevLett.69.2863",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.69.2863/fulltext",
+  "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.69.2863",
+  "https://doi.org/10.1103/PhysRevLett.71.3697",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.71.3697/fulltext",
+  "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.71.3697",
+  "https://doi.org/10.1103/PhysRevLett.78.5",
+  "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.78.5/fulltext",
+  "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.78.5",
+]
+notes = "These URLs are expected to merge via DOI identity; if DOI is blocked, harvest fulltext is still a functional non-PDF mirror."
+
+[[mirror_override]]
+id = "ASOT_0047_sage_pubmed"
+artifact_key_hint = "doi:10.1177/2156587216668109"
+doi_list = ["10.1177/2156587216668109"]
+urls = [
+  "https://doi.org/10.1177/2156587216668109",
+  "https://pubmed.ncbi.nlm.nih.gov/27694559",
+  "https://journals.sagepub.com/doi/pdf/10.1177/2156587216668109",
+]
+
+[[mirror_override]]
+id = "ASOT_0062_cawagas_2004_bibliotekanauki"
+artifact_key_hint = "doi:10.7151/dmgaa.1088"
+doi_list = ["10.7151/dmgaa.1088"]
+urls = [
+  "https://doi.org/10.7151/DMGAA.1088",
+  "https://bibliotekanauki.pl/articles/729117.pdf",
+  "https://pldml.icm.edu.pl/pldml/element/bwmeta1.element.bwnjournal-article-doi-10_7151_dmgaa_1088/c/dmgaa.1088",
+]
+
+[[mirror_override]]
+id = "ASOT_8219_fix_arxiv_math_0403113"
+artifact_key_hint = "url:http://arxiv.org/abs.math.ra/0403113"
+urls = [
+  "http://arXiv.org/abs.math.RA/0403113",
+  "https://arxiv.org/abs/math/0403113",
+  "https://arxiv.org/pdf/math/0403113.pdf",
+  "https://export.arxiv.org/pdf/math/0403113.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8229_auckland_archive"
+artifact_key_hint = "url:http://matu1.math.auckland.ac.nz/~king/preprints/chaoq.htm"
+urls = [
+  "http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm",
+  "https://web.archive.org/web/*/http://matu1.math.auckland.ac.nz/~king/preprints/chaoq.htm",
+  "https://web.archive.org/web/*/http://exo.com/~palmer/ISSS2000ab.html",
+]
+
+[[mirror_override]]
+id = "ASOT_8231_wolfram_archive"
+artifact_key_hint = "url:http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"
+urls = [
+  "http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf",
+  "https://web.archive.org/web/*/http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8232_oup_ptt110"
+artifact_key_hint = "url:https://academic.oup.com/ptep/article-pdf/2014/1/013a03/4432616/ptt110.pdf"
+urls = [
+  "https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8233_archive_direct_pdf"
+artifact_key_hint = "url:https://archive.org/details/elementarytreat00tailuoft"
+urls = [
+  "https://archive.org/details/elementarytreat00tailuoft",
+  "https://archive.org/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8234_archive_direct_pdf"
+artifact_key_hint = "url:https://archive.org/details/theoryofbiquater00conwrich"
+urls = [
+  "https://archive.org/details/theoryofbiquater00conwrich",
+  "https://archive.org/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8341_cms_math_pdf"
+artifact_key_hint = "url:https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"
+urls = [
+  "https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf",
+  "https://cms.math.ca/wp-content/uploads/2020/01/cmb49-4-6.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8368_nlab_github_raw"
+artifact_key_hint = "url:https://ncatlab.org/nlab/show/monstrous+moonshine"
+urls = [
+  "https://ncatlab.org/nlab/show/Monstrous+Moonshine",
+  "https://ncatlab.org/nlab/raw/monstrous+moonshine",
+  "https://raw.githubusercontent.com/ncatlab/nlab-content/master/pages/monstrous%20moonshine.md",
+]
+
+[[mirror_override]]
+id = "ASOT_8374_cambridge_to_arxiv"
+artifact_key_hint = "url:https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/c66016da3a1bb600e57d975d3e8d83bc"
+urls = [
+  "https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/C66016DA3A1BB600E57D975D3E8D83BC",
+  "https://arxiv.org/abs/2311.18594",
+  "https://arxiv.org/pdf/2311.18594.pdf",
+]
+
+[[mirror_override]]
+id = "ASOT_8381_bales_tree_scispace"
+artifact_key_hint = "url:https://www.researchgate.net/profile/john-bales/publication/238738095_a_tree_for_computing_the_cayley-dickson_twist/links/0a85e53a8b63445499000000/a-tree-for-computing-the-cayley-dickson-twist.pdf"
+urls = [
+  "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf",
+  "https://scispace.com/pdf/a-tree-for-computing-the-cayley-dickson-twist-2vy32iu9ys.pdf",
+  "https://doi.org/10.35834/MJMS/1316027241",
+]

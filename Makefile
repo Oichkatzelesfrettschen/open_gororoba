@@ -1,6 +1,6 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -23,21 +23,26 @@
 .PHONY: registry-markdown-origin-audit
 .PHONY: registry-knowledge-atoms registry-verify-knowledge-atoms
 .PHONY: registry-artifact-scrolls registry-verify-artifact-scrolls
-.PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
+.PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-control-plane registry-control-plane-gate registry-verify-wave4 registry-wave4
 .PHONY: registry-verify-markdown-toml-first
 .PHONY: registry-embedded-markdown registry-verify-embedded-markdown
-.PHONY: registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
-.PHONY: registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-wave5
-.PHONY: registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
-.PHONY: registry-wave5-batch4-build registry-verify-wave5-batch4 registry-wave5-batch4
+.PHONY: registry-build-semantic-atoms registry-verify-semantic-atoms registry-semantic-atoms-gate
+.PHONY: registry-build-evidence-provenance registry-verify-evidence-provenance registry-evidence-provenance-gate
+.PHONY: registry-build-integrity-resolution registry-verify-integrity-resolution registry-integrity-resolution-gate
+.PHONY: registry-build-execution-planning registry-verify-execution-planning registry-execution-planning-gate
+.PHONY: registry-strict-toml-batch1-build registry-verify-strict-toml-batch1 registry-strict-toml-batch1 registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
+.PHONY: registry-strict-toml-batch2-build registry-verify-strict-toml-batch2 registry-strict-toml-batch2 registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-acceptance-gate registry-wave5
+.PHONY: registry-strict-toml-batch3-build registry-verify-strict-toml-batch3 registry-strict-toml-batch3 registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
+.PHONY: registry-strict-toml-batch4-build registry-verify-strict-toml-batch4 registry-strict-toml-batch4 registry-wave5-batch4-build registry-verify-wave5-batch4 registry-wave5-batch4
 .PHONY: registry-verify-schema-signatures registry-verify-crossrefs
+.PHONY: registry-verify-typed-policy-error
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
 .PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
 .PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
 .PHONY: registry-csv-scroll-pipeline registry-verify-csv-scroll-pipeline
-.PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-wave3
+.PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-csv-pipeline-gate registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
@@ -56,6 +61,8 @@ MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
 MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
 PGO_DIR ?= /tmp/pgo-data
+SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
+SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CONTRACT_DATE).toml
 
 # ---- Environment setup ----
 
@@ -98,7 +105,7 @@ lint-all-fix-safe: install
 check: registry-verify-markdown-owner test lint smoke
 	@echo "OK: check suite complete."
 
-# Wave 6 governance verifier targets
+# Governance verifier targets
 registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
@@ -119,6 +126,9 @@ governance-gate: registry-verify-markdown-inventory registry-verify-markdown-own
 	@echo ""
 	@echo "To run full validation pipeline including ASCII check:"
 	@echo "  make check && make ascii-check"
+
+wave6-gate: governance-gate
+	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
 # Pre-push review lane (recommended before push/sync to origin)
 pre-push-gate: rust-smoke governance-gate ascii-check
@@ -162,7 +172,7 @@ smoke: install
 	$(PYTHON) bin/ascii_check.py --check
 	$(MAKE) registry-verify-markdown-owner
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_manifest_providers.py
+	cargo run -p gororoba_cli --bin claims-verify -- --check providers
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
 	$(MAKE) verify-pantheon-physicsforge-mapping
@@ -392,63 +402,132 @@ registry-verify-markdown-owner: registry-markdown-inventory
 registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
 	@echo "OK: markdown TOML-first owner/inventory gates verified."
 
-registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
+registry-verify-control-plane: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
 
-registry-wave4: registry-verify-wave4
-	@echo "OK: Wave 4 control-plane registry lane complete."
+registry-control-plane-gate: registry-verify-control-plane
+	@echo "OK: control-plane registry lane complete."
 
-registry-wave5-batch1-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch1_registries.py
+registry-verify-wave4: registry-verify-control-plane
+	@echo "DEPRECATED: make registry-verify-wave4 is a legacy alias. Use make registry-verify-control-plane."
+
+registry-wave4: registry-control-plane-gate
+	@echo "DEPRECATED: make registry-wave4 is a legacy alias. Use make registry-control-plane-gate."
+
+registry-strict-toml-batch1-build:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py
 
-registry-verify-wave5-batch1: registry-wave5-batch1-build
-	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch1_registries.py
+registry-verify-strict-toml-batch1: registry-strict-toml-batch1-build
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py
 
-registry-wave5-batch1: registry-verify-wave5-batch1
-	@echo "OK: Wave 5 batch 1 strict TOML registries complete."
+registry-strict-toml-batch1: registry-verify-strict-toml-batch1
+	@echo "OK: semantic-atoms registry lane complete (legacy wave5-batch1 compatibility)."
 
-registry-wave5-batch2-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch2_registries.py
+registry-build-semantic-atoms: registry-strict-toml-batch1-build
 
-registry-verify-wave5-batch2: registry-wave5-batch2-build
-	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch2_registries.py
+registry-verify-semantic-atoms: registry-verify-strict-toml-batch1
 
-registry-wave5-batch2: registry-verify-wave5-batch2
-	@echo "OK: Wave 5 batch 2 strict TOML registries complete."
+registry-semantic-atoms-gate: registry-strict-toml-batch1
 
-registry-wave5-batch3-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch3_registries.py
+registry-wave5-batch1-build: registry-strict-toml-batch1-build
+	@echo "DEPRECATED: make registry-wave5-batch1-build is a legacy alias. Use make registry-build-semantic-atoms."
 
-registry-verify-schema-signatures:
+registry-verify-wave5-batch1: registry-verify-strict-toml-batch1
+	@echo "DEPRECATED: make registry-verify-wave5-batch1 is a legacy alias. Use make registry-verify-semantic-atoms."
+
+registry-wave5-batch1: registry-strict-toml-batch1
+	@echo "DEPRECATED: make registry-wave5-batch1 is a legacy alias. Use make registry-semantic-atoms-gate."
+
+registry-strict-toml-batch2-build: registry-strict-toml-batch1-build
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_evidence_provenance.py
+
+registry-verify-strict-toml-batch2: registry-strict-toml-batch2-build
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py
+
+registry-strict-toml-batch2: registry-verify-strict-toml-batch2
+	@echo "OK: evidence-provenance registry lane complete (legacy wave5-batch2 compatibility)."
+
+registry-build-evidence-provenance: registry-strict-toml-batch2-build
+
+registry-verify-evidence-provenance: registry-verify-strict-toml-batch2
+
+registry-evidence-provenance-gate: registry-strict-toml-batch2
+
+registry-wave5-batch2-build: registry-strict-toml-batch2-build
+	@echo "DEPRECATED: make registry-wave5-batch2-build is a legacy alias. Use make registry-build-evidence-provenance."
+
+registry-verify-wave5-batch2: registry-verify-strict-toml-batch2
+	@echo "DEPRECATED: make registry-verify-wave5-batch2 is a legacy alias. Use make registry-verify-evidence-provenance."
+
+registry-wave5-batch2: registry-strict-toml-batch2
+	@echo "DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
+
+registry-strict-toml-batch3-build:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py
+
+registry-verify-schema-signatures: registry-strict-toml-batch3-build
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
 
 registry-verify-crossrefs:
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 
-registry-verify-wave5-batch3: registry-wave5-batch3-build
-	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch3_registries.py
+registry-verify-strict-toml-batch3: registry-strict-toml-batch3-build
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 
-registry-wave5-batch3: registry-verify-wave5-batch3
-	@echo "OK: Wave 5 batch 3 strict TOML registries complete."
+registry-strict-toml-batch3: registry-verify-strict-toml-batch3
+	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
 
-registry-wave5-batch4-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch4_registries.py
+registry-build-integrity-resolution: registry-strict-toml-batch3-build
 
-registry-verify-wave5-batch4: registry-wave5-batch4-build registry-markdown-inventory
-	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch4_registries.py
+registry-verify-integrity-resolution: registry-verify-strict-toml-batch3
+
+registry-integrity-resolution-gate: registry-strict-toml-batch3
+
+registry-wave5-batch3-build: registry-strict-toml-batch3-build
+	@echo "DEPRECATED: make registry-wave5-batch3-build is a legacy alias. Use make registry-build-integrity-resolution."
+
+registry-verify-wave5-batch3: registry-verify-strict-toml-batch3
+	@echo "DEPRECATED: make registry-verify-wave5-batch3 is a legacy alias. Use make registry-verify-integrity-resolution."
+
+registry-wave5-batch3: registry-strict-toml-batch3
+	@echo "DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make registry-integrity-resolution-gate."
+
+registry-strict-toml-batch4-build:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_execution_planning.py
+
+registry-verify-strict-toml-batch4: registry-strict-toml-batch4-build registry-markdown-inventory
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
-registry-wave5-batch4: registry-verify-wave5-batch4
-	@echo "OK: Wave 5 batch 4 strict TOML registries complete."
+registry-strict-toml-batch4: registry-verify-strict-toml-batch4
+	@echo "OK: execution-planning registry lane complete (legacy wave5-batch4 compatibility)."
 
-registry-wave5: registry-wave5-batch1 registry-wave5-batch2 registry-wave5-batch3 registry-wave5-batch4
-	@echo "OK: Wave 5 acceptance gate complete."
+registry-build-execution-planning: registry-strict-toml-batch4-build
+
+registry-verify-execution-planning: registry-verify-strict-toml-batch4
+
+registry-execution-planning-gate: registry-strict-toml-batch4
+
+registry-wave5-batch4-build: registry-strict-toml-batch4-build
+	@echo "DEPRECATED: make registry-wave5-batch4-build is a legacy alias. Use make registry-build-execution-planning."
+
+registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
+	@echo "DEPRECATED: make registry-verify-wave5-batch4 is a legacy alias. Use make registry-verify-execution-planning."
+
+registry-wave5-batch4: registry-strict-toml-batch4
+	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
+
+registry-acceptance-gate: registry-semantic-atoms-gate registry-evidence-provenance-gate registry-integrity-resolution-gate registry-execution-planning-gate
+	@echo "OK: registry acceptance gate complete."
+
+registry-wave5: registry-acceptance-gate
+	@echo "DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
 
 registry-csv-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_inventory_registry.py
@@ -553,12 +632,15 @@ registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv
 registry-verify-csv-corpus-coverage: registry-csv-inventory registry-verify-project-csv-split registry-verify-csv-holdings
 	PYTHONWARNINGS=error python3 src/verification/verify_csv_corpus_coverage.py
 
-registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-verify-csv-scroll-pipeline
+registry-csv-pipeline-gate: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-verify-csv-scroll-pipeline
+
+registry-wave3: registry-csv-pipeline-gate
+	@echo "DEPRECATED: make registry-wave3 is a legacy alias. Use make registry-csv-pipeline-gate."
 
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
 
-registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-wave3 registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-wave4
+registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-pipeline-gate registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-control-plane-gate
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
@@ -584,8 +666,19 @@ registry-verify-mirrors: registry-export-markdown
 		echo "SKIP: legacy mirror immutability checks disabled in strict markdown-free publish profile."; \
 	fi
 
-registry: registry-refresh registry-data
+registry-sync-project-counters:
+	cargo run --release --bin project-counter-sync
+
+registry: registry-refresh registry-data registry-sync-project-counters
 	cargo run --release --bin registry-check
+
+registry-verify-typed-policy-error:
+	cargo run --release --bin registry-check -- --typed-policy error
+
+synthesis-execution-contract:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_synthesis_gate_rollup.py \
+		--date-token "$(SYNTHESIS_CONTRACT_DATE)" \
+		--report-path "$(SYNTHESIS_CONTRACT_REPORT)"
 
 docs-publish: registry-verify-mirrors
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
@@ -783,21 +876,43 @@ help:
 	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
 	@echo "    make cargo-deny-check     Enforce deny.toml (advisories, bans, licenses, sources)"
 	@echo "    make registry             Validate TOML registry consistency"
-	@echo "    make registry-wave4       Validate markdown/TOML control-plane + atom extraction gates"
-	@echo "    make registry-wave3       Validate project/external/archive CSV scroll pipeline lanes"
-	@echo "    make registry-wave5-batch1 Build+verify strict claims/equation/proof/payload TOML registries"
-	@echo "    make registry-wave5-batch2 Build+verify strict derivation/bibliography/provenance/paragraph TOML registries"
-	@echo "    make registry-wave5-batch3 Build+verify strict contradiction/signature/crossref TOML registries"
-	@echo "    make registry-wave5-batch4 Build+verify strict experiment/planning/requirements TOML registries"
-	@echo "    make registry-wave5       Run full Wave 5 acceptance gate (batch1 + batch2 + batch3 + batch4)"
+	@echo "    make registry-verify-typed-policy-error Strict registry-check typed-policy lane (--typed-policy error)"
+	@echo "    make synthesis-execution-contract Run full synthesis execution contract and emit rollup TOML"
+	@echo "    make registry-control-plane-gate Validate markdown/TOML control-plane + atom extraction gates"
+	@echo "    make registry-csv-pipeline-gate  Validate project/external/archive CSV scroll pipeline lanes"
+	@echo "    make registry-semantic-atoms-gate      Build+verify claims/equation/proof/payload TOML lanes"
+	@echo "    make registry-evidence-provenance-gate Build+verify derivation/bibliography/provenance/paragraph lanes"
+	@echo "    make registry-integrity-resolution-gate Build+verify contradiction/lacuna/schema/crossref lanes"
+	@echo "    make registry-execution-planning-gate  Build+verify experiment/planning/requirements lanes"
+	@echo "    make registry-acceptance-gate    Run full registry acceptance gate (semantic-atoms + evidence-provenance + integrity-resolution + execution-planning)"
 	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
 	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo "    make registry-verify-markdown-toml-first Verify markdown owner/inventory TOML-first hard gate"
 	@echo "    MARKDOWN_EXPORT=1 make docs-publish Export mirrors in strict mode (out-of-tree, no legacy writes)"
+	@echo "  Deprecated legacy aliases (compatibility-only entrypoints):"
+	@echo "    make registry-wave5              DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
+	@echo "    make registry-wave5-batch1-build DEPRECATED: make registry-wave5-batch1-build is a legacy alias. Use make registry-build-semantic-atoms."
+	@echo "    make registry-verify-wave5-batch1 DEPRECATED: make registry-verify-wave5-batch1 is a legacy alias. Use make registry-verify-semantic-atoms."
+	@echo "    make registry-wave5-batch1       DEPRECATED: make registry-wave5-batch1 is a legacy alias. Use make registry-semantic-atoms-gate."
+	@echo "    make registry-wave5-batch2-build DEPRECATED: make registry-wave5-batch2-build is a legacy alias. Use make registry-build-evidence-provenance."
+	@echo "    make registry-verify-wave5-batch2 DEPRECATED: make registry-verify-wave5-batch2 is a legacy alias. Use make registry-verify-evidence-provenance."
+	@echo "    make registry-wave5-batch2       DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
+	@echo "    make registry-wave5-batch3-build DEPRECATED: make registry-wave5-batch3-build is a legacy alias. Use make registry-build-integrity-resolution."
+	@echo "    make registry-verify-wave5-batch3 DEPRECATED: make registry-verify-wave5-batch3 is a legacy alias. Use make registry-verify-integrity-resolution."
+	@echo "    make registry-wave5-batch3       DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make registry-integrity-resolution-gate."
+	@echo "    make registry-wave5-batch4-build DEPRECATED: make registry-wave5-batch4-build is a legacy alias. Use make registry-build-execution-planning."
+	@echo "    make registry-verify-wave5-batch4 DEPRECATED: make registry-verify-wave5-batch4 is a legacy alias. Use make registry-verify-execution-planning."
+	@echo "    make registry-wave5-batch4       DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
+	@echo "    make registry-wave4              DEPRECATED: make registry-wave4 is a legacy alias. Use make registry-control-plane-gate."
+	@echo "    make registry-verify-wave4       DEPRECATED: make registry-verify-wave4 is a legacy alias. Use make registry-verify-control-plane."
+	@echo "    make registry-wave3              DEPRECATED: make registry-wave3 is a legacy alias. Use make registry-csv-pipeline-gate."
+	@echo "    make wave6-gate                  DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 	@echo ""
 	@echo "  Gates (tiered):"
 	@echo "    make governance-gate      5 TOML registry checks (inventory, owner, schema, crossrefs, governance)"
+	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
+	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
 	@echo "    make pre-push-gate        rust-smoke + governance-gate + ascii-check"
 	@echo "    make pre-push-gate-strict dep-audit + cargo-deny + mcp-smoke + pre-push-gate"
 	@echo ""

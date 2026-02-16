@@ -1,0 +1,58 @@
+# Workstream B report: MCP consolidation to a small always-on baseline.
+
+[report]
+id = "RPT-MCP-CONSOLIDATION-2026-02-16"
+created_utc = "2026-02-16T01:56:18Z"
+status = "completed"
+owner = "codex"
+scope = "Consolidate Codex/Claude/Gemini/Copilot MCP configs to a 7-server baseline; keep other servers on-demand; ensure make mcp-smoke passes."
+
+[baseline]
+enabled_servers = ["filesystem", "git", "github", "ripgrep", "rust", "rust-docs", "time"]
+on_demand_servers = [
+  "arxiv",
+  "bash",
+  "calculator",
+  "chrome-devtools",
+  "context7",
+  "desktop-commander",
+  "dotfiles-orchestrator",
+  "file-finder",
+  "markitdown",
+  "math",
+  "memory",
+  "ollama",
+  "playwright",
+  "puppeteer",
+  "python",
+  "semgrep",
+  "sequential-thinking",
+  "sqlite",
+]
+disabled_servers = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
+
+[repo_authority]
+matrix = "registry/mcp_server_matrix.toml"
+smoke_verifier = "src/verification/verify_mcp_smoke.py"
+make_target = "make mcp-smoke"
+notes = "The registry MCP matrix is the canonical expected enabled set; client configs are treated as runtime surfaces and must match the matrix for smoke parity."
+
+[client_config_paths]
+codex_primary = "/home/eirikr/.codex/config.toml"
+codex_secondary = "/home/eirikr/.codex/mcp-config.json"
+claude = "/home/eirikr/.claude/.mcp.json"
+gemini = "/home/eirikr/.gemini/settings.json"
+copilot_primary = "/home/eirikr/.copilot/mcp-config.json"
+copilot_secondary = "/home/eirikr/.copilot/config/settings.json"
+
+[home_edit_hygiene]
+backup_suffix = ".bak-20260216_015531"
+codex_toml_policy = "Keep baseline [mcp_servers.*] enabled; comment out non-baseline servers so they are available as on-demand snippets."
+json_policy = "JSON configs cannot carry comments; keep only baseline entries under mcpServers."
+
+[verification]
+command = "PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py"
+result = "pass"
+expected_enabled_count = 7
+notes = "MCP smoke passed for 7 servers with cross-client parity. rust-docs probe uses startup_handshake_close as an accepted PASS mode."
+

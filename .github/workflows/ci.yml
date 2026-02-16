@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  canonical-registry-contract:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -16,6 +16,24 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Check (tests + lint + smoke)
+      - name: Install project
         run: |
-          PYTHONWARNINGS=error make check
+          PYTHONWARNINGS=error make install
+      - name: Canonical governance gate
+        run: |
+          PYTHONWARNINGS=error make governance-gate
+      - name: Canonical registry acceptance gate
+        run: |
+          PYTHONWARNINGS=error make registry-acceptance-gate
+      - name: Strict typed-policy registry lane
+        run: |
+          PYTHONWARNINGS=error make registry-verify-typed-policy-error
+      - name: Synthesis execution contract rollup
+        run: |
+          PYTHONWARNINGS=error make synthesis-execution-contract
+      - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
+        if: ${{ matrix.python-version == '3.11' && hashFiles('data/h5/**/*.h5') != '' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libhdf5-dev
+          cargo run -p gororoba_cli --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
