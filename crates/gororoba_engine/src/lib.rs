@@ -9,6 +9,8 @@ pub mod correction_layer;
 pub mod dynamics_field;
 pub mod parity_filter;
 pub mod pipeline;
+pub mod pipelines;
+pub mod simulation;
 pub mod thesis_pipelines;
 pub mod topology_geometry;
 pub mod traits;
@@ -16,6 +18,8 @@ pub mod verification_layer;
 
 pub use adaptive_gpu::{choose_backend, ComputeBackend};
 pub use pipeline::GororobaEngine;
+pub use simulation::{SimulationConfig, SimulationState, SimulationConfig3D, SimulationState3D};
+pub use pipelines::warp_ring::WarpRingPipeline;
 pub use thesis_pipelines::{
     Thesis1Pipeline, Thesis2Pipeline, Thesis3Pipeline, Thesis4Pipeline,
 };

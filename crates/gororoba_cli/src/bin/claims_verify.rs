@@ -154,20 +154,49 @@ fn main() {
             }
         }
         "providers" => {
-            let manifest_path = repo_root.join("docs/DATASET_MANIFEST.md");
+            let registry_path = repo_root.join("registry/external_sources.toml");
             let fetch_path = repo_root.join("crates/gororoba_cli/src/bin/fetch_datasets.rs");
-            if manifest_path.exists() && fetch_path.exists() {
-                if let (Ok(manifest), Ok(fetch_src)) = (
-                    std::fs::read_to_string(&manifest_path),
-                    std::fs::read_to_string(&fetch_path),
-                ) {
-                    let f = verify::verify_dataset_providers(&manifest, &fetch_src);
-                    if !run_check("dataset_providers", f) {
-                        all_ok = false;
+
+            if !registry_path.exists() {
+                eprintln!("ERROR: Missing registry/external_sources.toml");
+                all_ok = false;
+            }
+            if !fetch_path.exists() {
+                eprintln!("ERROR: Missing crates/gororoba_cli/src/bin/fetch_datasets.rs");
+                all_ok = false;
+            }
+
+            if all_ok {
+                let registry_text = match std::fs::read_to_string(&registry_path) {
+                    Ok(t) => t,
+                    Err(e) => {
+                        eprintln!("ERROR: Cannot read registry/external_sources.toml: {e}");
+                        process::exit(2);
                     }
+                };
+                let fetch_src = match std::fs::read_to_string(&fetch_path) {
+                    Ok(t) => t,
+                    Err(e) => {
+                        eprintln!(
+                            "ERROR: Cannot read crates/gororoba_cli/src/bin/fetch_datasets.rs: {e}"
+                        );
+                        process::exit(2);
+                    }
+                };
+
+                let chk = verify::verify_dataset_providers(&registry_text, &fetch_src);
+                for w in chk.warnings.iter().take(50) {
+                    eprintln!("WARN [dataset_providers]: {w}");
                 }
-            } else {
-                eprintln!("SKIP: manifest or fetch source not found");
+                if chk.warnings.len() > 50 {
+                    eprintln!(
+                        "WARN [dataset_providers]: ... plus {} more warnings",
+                        chk.warnings.len() - 50
+                    );
+                }
+                if !run_check("dataset_providers", chk.failures) {
+                    all_ok = false;
+                }
             }
         }
         _ => unreachable!("clap validates check type"),

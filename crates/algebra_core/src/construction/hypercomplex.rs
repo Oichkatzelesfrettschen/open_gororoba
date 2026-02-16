@@ -47,6 +47,7 @@ use crate::physics::octonion_field::{
     measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
     DispersionResult, EvolutionResult, FieldParams, Octonion, FANO_TRIPLES,
 };
+use crate::traits::Hypercomplex;
 
 /// Known algebra dimensions in the Cayley-Dickson tower.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -180,8 +181,39 @@ pub struct ZeroDivisorResults {
 ///
 /// Provides a cohesive API for all Cayley-Dickson operations including
 /// multiplication, zero-divisor search, and structural analysis.
+#[derive(Clone)]
 pub struct HypercomplexAlgebra {
     dim: usize,
+}
+
+impl Hypercomplex for HypercomplexAlgebra {
+    fn dimension(&self) -> usize {
+        self.dim
+    }
+
+    fn multiply(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
+        self.multiply(a, b)
+    }
+
+    fn conjugate(&self, a: &[f64]) -> Vec<f64> {
+        self.conjugate(a)
+    }
+
+    fn norm_sq(&self, a: &[f64]) -> f64 {
+        self.norm_sq(a)
+    }
+
+    fn basis(&self, i: usize) -> Vec<f64> {
+        self.basis(i)
+    }
+
+    fn is_associative(&self) -> bool {
+        self.algebra_type().is_some_and(|a| a.is_associative())
+    }
+
+    fn is_alternative(&self) -> bool {
+        self.algebra_type().is_some_and(|a| a.is_alternative())
+    }
 }
 
 impl HypercomplexAlgebra {

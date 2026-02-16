@@ -71,6 +71,7 @@ pub mod penrose;
 pub mod photon_graviton;
 pub mod scattering;
 pub mod schwarzschild;
+pub mod sedenion_geodesic;
 pub mod spacetime_algebra;
 pub mod spectral_bands;
 pub mod synchrotron;
@@ -82,7 +83,8 @@ pub use kerr::{
 };
 
 pub use metric::{
-    full_curvature, ChristoffelComponents, CurvatureResult, MetricComponents, SpacetimeMetric,
+    full_curvature, ChristoffelComponents, CurvatureResult, MetricComponents, Minkowski,
+    SpacetimeMetric,
 };
 
 pub use schwarzschild::Schwarzschild;

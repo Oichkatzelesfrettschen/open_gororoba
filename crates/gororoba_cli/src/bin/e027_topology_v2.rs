@@ -19,6 +19,8 @@
 
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
+#[cfg(feature = "gpu")]
+use lbm_3d_cuda::Precision;
 use std::fmt::Write as _;
 use vacuum_frustration::bridge::{FrustrationViscosityBridge, SedenionField};
 use vacuum_frustration::spatial_correlation::{spatial_correlation, SpatialCorrelationResult};
@@ -286,7 +288,7 @@ fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) ->
     let mean_viscosity = viscosity.iter().sum::<f64>() / viscosity.len() as f64;
 
     // Initialize GPU solver at rest with continuous Kolmogorov forcing
-    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(nx, ny, nz, 1.0)
+    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(nx, ny, nz, 1.0, Precision::FP32)
         .expect("Failed to initialize GPU solver");
 
     solver
@@ -318,13 +320,14 @@ fn run_single_lambda_gpu(frustration: &[f64], lambda: f64, cfg: &SweepConfig) ->
     solver.evolve(cfg.lbm_steps).expect("GPU evolution failed");
 
     // Extract velocity from host-side data
-    let mut lbm_velocity = Vec::with_capacity(n_cells);
+    let mut lbm_velocity: Vec<[f64; 3]> = Vec::with_capacity(n_cells);
     let mut lbm_max_velocity = 0.0_f64;
     for i in 0..n_cells {
         let u = solver.u[i];
-        let mag = (u[0] * u[0] + u[1] * u[1] + u[2] * u[2]).sqrt();
+        let u64 = [u[0] as f64, u[1] as f64, u[2] as f64];
+        let mag = (u64[0] * u64[0] + u64[1] * u64[1] + u64[2] * u64[2]).sqrt();
         lbm_max_velocity = lbm_max_velocity.max(mag);
-        lbm_velocity.push(u);
+        lbm_velocity.push(u64);
     }
 
     // Spatial correlation

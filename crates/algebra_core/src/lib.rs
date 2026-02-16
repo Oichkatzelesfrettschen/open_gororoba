@@ -23,12 +23,14 @@ pub mod error;
 pub mod experimental;
 pub mod lie;
 pub mod physics;
+pub mod traits;
 pub mod universal_algebra;
 
 pub mod gpu;
 
 pub use error::{AlgebraError, AlgebraResult};
 pub use universal_algebra::UniversalAlgebra;
+pub use traits::Hypercomplex;
 
 // Re-export core algebra functions from construction
 pub use construction::cayley_dickson::{

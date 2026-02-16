@@ -33,6 +33,12 @@ pub const FANO_TRIPLES: [(usize, usize, usize); 7] = [
 /// Octonion (8 components: 1 real + 7 imaginary).
 pub type Octonion = [f64; 8];
 
+/// Sedenion (16 components).
+pub type Sedenion = [f64; 16];
+
+/// Pathion (32 components).
+pub type Pathion = [f64; 32];
+
 /// Build structure constant table from Fano plane.
 ///
 /// Returns table[i][j] = (sign, k) for e_i * e_j = sign * e_k.

@@ -10,13 +10,16 @@ license = "MIT OR Apache-2.0"
 lbm_3d = { path = "../lbm_3d" }
 cosmic_scheduler = { path = "../cosmic_scheduler" }
 cudarc = { workspace = true }
+half = { workspace = true }
 anyhow = { workspace = true }
+num-complex = { workspace = true }
 
 [dev-dependencies]
 approx = "0.5"
 
 [features]
 default = []
+cufft = ["cudarc/cufft"]
 
 [[bench]]
 name = "gpu_performance"

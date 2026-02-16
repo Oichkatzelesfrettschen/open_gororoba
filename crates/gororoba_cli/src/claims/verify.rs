@@ -295,49 +295,108 @@ pub fn verify_task_artifact_links(tasks_text: &str, repo_root: &Path) -> Vec<Str
     failures
 }
 
-/// Verify dataset manifest providers against Rust source.
-///
-/// Cross-checks DATASET_MANIFEST.md provider names against those registered
-/// in fetch_datasets.rs.
-pub fn verify_dataset_providers(manifest_text: &str, fetch_source: &str) -> Vec<String> {
-    static PROVIDER_RE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"Box::new\(\s*([A-Za-z0-9_]+Provider)").expect("valid regex"));
+/// Result of verifying dataset providers against the Rust fetch registry.
+#[derive(Debug, Default)]
+pub struct DatasetProvidersCheck {
+    pub failures: Vec<String>,
+    pub warnings: Vec<String>,
+    pub manifest_provider_count: usize,
+    pub rust_provider_count: usize,
+}
 
-    let mut failures = Vec::new();
+/// Verify dataset provider tokens declared in `registry/external_sources.toml`
+/// exist in the Rust fetch registry (`fetch_datasets.rs`).
+///
+/// Policy:
+/// - One-way subset check: every Provider token in the provider-manifest
+///   narrative must exist in Rust.
+/// - Rust may include extra providers not yet documented; these are warnings.
+pub fn verify_dataset_providers(external_sources_registry: &str, fetch_source: &str) -> DatasetProvidersCheck {
+    static PROVIDER_TOKEN_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"([A-Za-z0-9_]+Provider)").expect("valid regex"));
+    static RUST_PROVIDER_RE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"Box::new\(\s*[A-Za-z0-9_:]*?([A-Za-z0-9_]+Provider)\)")
+            .expect("valid regex")
+    });
+
+    let mut out = DatasetProvidersCheck::default();
 
     // Extract provider names from Rust source.
-    let rust_providers: BTreeSet<String> = PROVIDER_RE
+    let rust_providers: BTreeSet<String> = RUST_PROVIDER_RE
         .captures_iter(fetch_source)
         .map(|c| c[1].to_string())
         .collect();
+    out.rust_provider_count = rust_providers.len();
 
-    // Extract provider names from manifest table.
-    let manifest_providers: BTreeSet<String> = iter_table_rows(manifest_text)
-        .iter()
-        .filter(|row| row.cells.len() >= 2)
-        .filter_map(|row| {
-            let name = row.cells[0].trim();
-            // Must be like "FooProvider" (not just "Provider" header).
-            if name.ends_with("Provider") && name.len() > "Provider".len() {
-                Some(name.to_string())
-            } else {
-                None
-            }
-        })
-        .collect();
-
-    for p in &rust_providers {
-        if !manifest_providers.contains(p) {
-            failures.push(format!("Provider {p} in Rust source but not in manifest"));
-        }
-    }
-    for p in &manifest_providers {
-        if !rust_providers.contains(p) {
-            failures.push(format!("Provider {p} in manifest but not in Rust source"));
-        }
+    if rust_providers.is_empty() {
+        out.failures
+            .push("No Provider tokens parsed from fetch_datasets.rs".to_string());
+        return out;
     }
 
-    failures
+    // Extract provider names from the external sources TOML registry, limited
+    // to the provider-manifest narrative documents.
+    let registry: toml::Value = match toml::from_str(external_sources_registry) {
+        Ok(v) => v,
+        Err(e) => {
+            out.failures
+                .push(format!("Failed to parse registry/external_sources.toml: {e}"));
+            return out;
+        }
+    };
+
+    let mut manifest_providers: BTreeSet<String> = BTreeSet::new();
+    let documents = match registry.get("document").and_then(|v| v.as_array()) {
+        Some(arr) => arr,
+        None => {
+            out.failures.push(
+                "registry/external_sources.toml: missing [[document]] array".to_string(),
+            );
+            return out;
+        }
+    };
+
+    for doc in documents {
+        let authority_level = doc
+            .get("authority_level")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .trim();
+        if authority_level != "provider_manifest" {
+            continue;
+        }
+        let body = doc
+            .get("body_markdown")
+            .and_then(|v| v.as_str())
+            .unwrap_or("");
+        for cap in PROVIDER_TOKEN_RE.captures_iter(body) {
+            manifest_providers.insert(cap[1].to_string());
+        }
+    }
+
+    out.manifest_provider_count = manifest_providers.len();
+    if manifest_providers.is_empty() {
+        out.failures.push(
+            "No Provider tokens parsed from registry/external_sources.toml provider_manifest docs"
+                .to_string(),
+        );
+        return out;
+    }
+
+    // Fail if manifest providers are missing in Rust registry.
+    for p in manifest_providers.difference(&rust_providers) {
+        out.failures.push(format!(
+            "Provider {p} in provider manifest but missing from Rust fetch registry"
+        ));
+    }
+
+    // Warn if Rust has providers not yet documented in manifest.
+    for p in rust_providers.difference(&manifest_providers) {
+        out.warnings
+            .push(format!("Provider {p} in Rust fetch registry but not documented in provider manifest"));
+    }
+
+    out
 }
 
 /// Run all verification checks and return combined results.
@@ -399,18 +458,49 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
     summaries.push(format!("evidence_links: {} issues", f.len()));
     all_failures.extend(f);
 
-    // 7. Dataset providers.
-    let manifest_path = repo_root.join("docs/DATASET_MANIFEST.md");
+    // 7. Dataset providers (registry provider-manifest -> Rust fetch registry).
+    let registry_path = repo_root.join("registry/external_sources.toml");
     let fetch_path = repo_root.join("crates/gororoba_cli/src/bin/fetch_datasets.rs");
-    if manifest_path.exists() && fetch_path.exists() {
-        if let (Ok(manifest), Ok(fetch_src)) = (
-            std::fs::read_to_string(&manifest_path),
-            std::fs::read_to_string(&fetch_path),
-        ) {
-            let f = verify_dataset_providers(&manifest, &fetch_src);
-            summaries.push(format!("dataset_providers: {} issues", f.len()));
-            all_failures.extend(f);
+    let mut registry_text: Option<String> = None;
+    let mut fetch_src: Option<String> = None;
+
+    if !registry_path.exists() {
+        all_failures.push("Missing registry/external_sources.toml".to_string());
+    } else {
+        match std::fs::read_to_string(&registry_path) {
+            Ok(t) => registry_text = Some(t),
+            Err(e) => all_failures.push(format!("Cannot read registry/external_sources.toml: {e}")),
         }
+    }
+
+    if !fetch_path.exists() {
+        all_failures.push("Missing crates/gororoba_cli/src/bin/fetch_datasets.rs".to_string());
+    } else {
+        match std::fs::read_to_string(&fetch_path) {
+            Ok(t) => fetch_src = Some(t),
+            Err(e) => all_failures.push(format!(
+                "Cannot read crates/gororoba_cli/src/bin/fetch_datasets.rs: {e}"
+            )),
+        }
+    }
+
+    if let (Some(registry_text), Some(fetch_src)) = (registry_text.as_deref(), fetch_src.as_deref()) {
+        let chk = verify_dataset_providers(registry_text, fetch_src);
+        summaries.push(format!(
+            "dataset_providers: {} failures ({} warnings)",
+            chk.failures.len(),
+            chk.warnings.len()
+        ));
+        for w in chk.warnings.iter().take(50) {
+            summaries.push(format!("WARN: {w}"));
+        }
+        if chk.warnings.len() > 50 {
+            summaries.push(format!(
+                "WARN: ... plus {} more dataset provider warnings",
+                chk.warnings.len() - 50
+            ));
+        }
+        all_failures.extend(chk.failures);
     }
 
     if all_failures.is_empty() {
@@ -518,22 +608,35 @@ mod tests {
 
     #[test]
     fn test_verify_dataset_providers() {
-        let manifest = "\
+        let registry = r#"
+[[document]]
+authority_level = "provider_manifest"
+body_markdown = '''
 | Provider | Description |
 | --- | --- |
 | FooProvider | Fetch foo |
 | BarProvider | Fetch bar |
-";
-        let source = "Box::new(FooProvider::new()), Box::new(BarProvider::new())";
-        let failures = verify_dataset_providers(manifest, source);
-        assert!(failures.is_empty());
+'''
+"#;
+        let source = "Box::new(FooProvider), Box::new(BarProvider)";
+        let chk = verify_dataset_providers(registry, source);
+        assert!(chk.failures.is_empty(), "Got failures: {:?}", chk.failures);
     }
 
     #[test]
     fn test_verify_dataset_providers_mismatch() {
-        let manifest = "| Provider | Desc |\n| --- | --- |\n| FooProvider | x |\n";
-        let source = "Box::new(BarProvider::new())";
-        let failures = verify_dataset_providers(manifest, source);
-        assert_eq!(failures.len(), 2); // FooProvider in manifest only, BarProvider in source only
+        let registry = r#"
+[[document]]
+authority_level = "provider_manifest"
+body_markdown = '''
+| Provider | Desc |
+| --- | --- |
+| FooProvider | x |
+'''
+"#;
+        let source = "Box::new(BarProvider)";
+        let chk = verify_dataset_providers(registry, source);
+        assert_eq!(chk.failures.len(), 1, "Got: {:?}", chk.failures);
+        assert_eq!(chk.warnings.len(), 1, "Got: {:?}", chk.warnings);
     }
 }
