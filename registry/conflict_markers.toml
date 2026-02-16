@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 71
-high_severity_count = 67
+marker_count = 72
+high_severity_count = 68
 medium_severity_count = 4
 low_severity_count = 0
 kind_count = 2
@@ -1084,6 +1084,22 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0068"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["T-PPT-NEED"]
+source_registry = "registry/claims.toml"
+source_document = "T-PPT-NEED"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0069"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1099,7 +1115,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0069"
+id = "CM-0070"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1115,7 +1131,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0070"
+id = "CM-0071"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1131,7 +1147,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0071"
+id = "CM-0072"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
