@@ -1,0 +1,144 @@
+# Workstream C audit: external sources intake promotion (manual override fetch lane 2026-02-15).
+
+[report]
+id = "WORKSTREAM-C-EXTERNAL-SOURCES-INTAKE-PROMOTION-2026-02-16"
+created = "2026-02-16"
+updated = "2026-02-16"
+status = "completed"
+owner = "codex"
+scope = "Inspect intake vs canonical papers for duplicates/tmp artifacts; verify promoted PDFs exist in canonical dir; validate provenance ledger consistency; suggest reference+cleanup."
+
+[paths]
+intake_dir = "data/external/intake/2026_02_15_manual_override_fetch"
+intake_pdf_dir = "data/external/intake/2026_02_15_manual_override_fetch/pdf_success"
+canonical_papers_dir = "data/external/papers"
+mirror_overrides_toml = "registry/manual_mirror_overrides_2026_02_15.toml"
+fetch_lane_provenance_ledger = "registry/provenance_manual_override_fetch_2026_02_15.toml"
+
+[intake_attempts]
+total_attempts = 39
+status_counts = { ok_nonpdf = 2, pdf_ok = 14, http_403 = 17, http_404 = 3, http_503 = 2, http_405 = 1 }
+pdf_success_rows = 14
+unique_pdf_successes = 13
+duplicate_sha_detected = 1
+duplicate_sha_note = "fetch_attempts.tsv has 2 pdf_ok rows for ASOT_8219_fix_arxiv_math_0403113 (arxiv.org + export.arxiv.org); only 1 PDF stored."
+
+[intake_pdf_success_dir]
+pdf_files = 13
+tmp_bin_files = 25
+tmp_headers_files = 39
+tmp_curl_err_files = 39
+tmp_bins_total_bytes = 1080751
+tmp_headers_total_bytes = 53567
+tmp_curl_err_total_bytes = 21265
+tmp_trace_policy = "Kept in intake for HTTP debugging; consider moving to a subdir if directory hygiene matters."
+
+[promotion_verification]
+canonical_dir_expected = "data/external/papers"
+all_pdf_successes_present_in_canonical = true
+missing_canonical_pdfs = []
+notes = "All 14 rows in pdf_success_added.tsv reference a canonical_pdf_name that exists under data/external/papers (13 unique by sha)."
+
+[provenance_ledger_consistency]
+ledger_path = "registry/provenance_manual_override_fetch_2026_02_15.toml"
+artifact_blocks = 13
+missing_paths = 0
+sha_or_size_mismatches = 0
+status = "pass"
+notes = "For every [[artifact]] entry: canonical_path and intake_path exist; sha256 and size_bytes match file contents."
+
+[papers_pdf_scan]
+pdf_files_scanned = 178
+non_pdf_signature_count = 1
+non_pdf_files = ["data/external/papers/Malitson_1962_Sapphire.pdf"]
+duplicate_sha_pdf_groups = 6
+
+[[papers_pdf_duplicate]]
+sha256 = "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45"
+files = [
+  "data/external/papers/de_marrais_2000_math0011260.pdf",
+  "data/external/papers/de_marrais_math0011260.pdf",
+]
+introduced_by_manual_override_fetch = false
+note = "Same bytes stored twice under different basenames."
+
+[[papers_pdf_duplicate]]
+sha256 = "3e616e77962260040e3def02a4d7aac3152ee62a76fa8d5a8262b64b34c96ed9"
+files = [
+  "data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf",
+  "data/external/papers/lvc_2021_2111.03634_population_properties_gwtc3.pdf",
+]
+introduced_by_manual_override_fetch = false
+note = "Same bytes stored twice (GWTC-3 population properties)."
+
+[[papers_pdf_duplicate]]
+sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+files = [
+  "data/external/papers/asot_8219_fix_arxiv_math_0403113_arxiv_org_pdf_math_0403113_pdf.pdf",
+  "data/external/papers/de_marrais_2004_math0403113_boxkites_III.pdf",
+]
+introduced_by_manual_override_fetch = true
+note = "Manual override fetch promoted a PDF that already existed in canonical_papers_dir under a different name."
+
+[[papers_pdf_duplicate]]
+sha256 = "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029"
+files = [
+  "data/external/papers/asot_0024_stinga_torrea_arxiv_arxiv_org_pdf_0910_2569_pdf.pdf",
+  "data/external/papers/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.pdf",
+]
+introduced_by_manual_override_fetch = true
+note = "Manual override fetch promoted a PDF that already existed in canonical_papers_dir under a different name."
+
+[[papers_pdf_duplicate]]
+sha256 = "8d7401dfae3ffe3d7abc1faa7252bc6423ec0e4784ed7a2e9118d9c18aefed68"
+files = [
+  "data/external/papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf",
+  "data/external/papers/gwtc3_2021_arxiv2111.03606.pdf",
+]
+introduced_by_manual_override_fetch = false
+note = "Same bytes stored twice (GWTC-3 compact binary coalescences)."
+
+[[papers_pdf_duplicate]]
+sha256 = "d2539a55d6c63c598ee00b26bc1e7320a77c6fcdd58d17663ef7cdca2af1bc1b"
+files = [
+  "data/external/papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf",
+  "data/external/papers/arxiv_quant-ph0301032_mirror.pdf",
+]
+introduced_by_manual_override_fetch = false
+note = "Same bytes stored twice (mirror copy)."
+
+[notes]
+papers_non_pdf_details = "data/external/papers/Malitson_1962_Sapphire.pdf is HTML (404 page), not a PDF. It is byte-identical to data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Malitson_1962_Sapphire.pdf."
+cross_dir_duplicate_observation = "Some duplicate-sha groups in data/external/papers also appear to have additional identical copies under data/external/documents_ingest/...; that broader dedupe is out of scope for this Workstream C pass."
+
+[keep_vs_promote]
+keep_in_intake = [
+  "data/external/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "data/external/intake/2026_02_15_manual_override_fetch/pdf_success_added.tsv",
+  "data/external/intake/2026_02_15_manual_override_fetch/pdf_success/*.pdf",
+  "data/external/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_*.bin*",
+  "data/external/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_*.headers.txt",
+  "data/external/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_*.curl.err",
+]
+promoted_to_canonical = [
+  "data/external/papers/<canonical_pdf_name from pdf_success_added.tsv>",
+]
+optional_prune_after_promotion = [
+  "If storage pressure exists: delete intake copies of successful PDFs after verifying sha256 match to canonical, and update the provenance ledger if intake_path is meant to remain resolvable.",
+]
+
+[recommendations]
+reference_provenance_ledger_from = "registry/manual_mirror_overrides_2026_02_15.toml (already updated in this branch)"
+proposed_reference_rationale = "manual_mirror_overrides is the lane input and is already included in artifact_source_of_truth source_files; pointing to the provenance ledger creates a traceable input->execution->canonical chain."
+
+cleanup_tmp_trace_options = [
+  "Option A: keep tmp_*.bin*, *.headers.txt, *.curl.err in intake pdf_success (status quo).",
+  "Option B: move tmp_* trace artifacts under data/external/intake/2026_02_15_manual_override_fetch/pdf_success/trace/ and regenerate any path-indexed provenance inventory that expects the old locations (for example, data/external/PROVENANCE.local.json if treated as authoritative).",
+]
+
+canonical_dedupe_policy = "Prefer one canonical PDF per sha256. Represent alternate names/URLs via registry metadata rather than duplicating bytes."
+manual_override_specific_dedupe = [
+  "For sha=3ebb75... keep de_marrais_2004_math0403113_boxkites_III.pdf and treat asot_8219_fix_* as an alias in the artifact registry (or vice versa), then remove the redundant on-disk duplicate after updating references.",
+  "For sha=8790df... keep stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.pdf and treat asot_0024_* as an alias in the artifact registry (or vice versa), then remove the redundant on-disk duplicate after updating references.",
+]
+papers_non_pdf_action = "Treat Malitson_1962_Sapphire.pdf as a blocked/non-pdf trace artifact: relocate out of canonical_papers_dir or rename with correct extension, and update registry references accordingly (avoid silent substitution)."
