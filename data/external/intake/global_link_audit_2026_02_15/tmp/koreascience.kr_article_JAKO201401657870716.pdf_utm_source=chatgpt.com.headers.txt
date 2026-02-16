@@ -1,0 +1,22 @@
+HTTP/1.1 200 OK
+Date: Sun, 15 Feb 2026 23:17:34 GMT
+Content-Security-Policy: default-src 'self' https://koreascience.kr https://ocean.kisti.re.kr; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; object-src 'self' https://koreascience.kr https://ocean.kisti.re.kr; connect-src 'self' https://koreascience.kr https://www.google-analytics.com https://stats.g.doubleclick.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://koreascience.kr https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' https://koreascience.kr https://ocean.kisti.re.kr https://www.google-analytics.com https://data.doi.or.kr data:; frame-src 'self' https://koreascience.kr https://ocean.kisti.re.kr https://data.doi.or.kr; frame-ancestors 'self' https://koreascience.kr https://ocean.kisti.re.kr https://www.koreanoncology.or.kr http://www.kjrs.or.kr http://kjrs.or.kr https://www.ksdt.kr https://ksdt.kr/ http://smarttourism.khu.ac.kr http://www.kstp.or.kr https://www.ksdb.org https://www.ejmsb.org https://www.ekjps.org https://www.kosfaj.org https://www.jkmood.org https://www.ejast.org https://www.ejast.org https://www.jksaa.org https://www.jkiees.org https://www.ekosfop.or.kr https://www.e-fas.org https://www.woodj.org https://www.eksss.org https://www.eksss.org https://www.eksss.org https://www.jkila.org https://www.jkila.org http://journal.rubber.or.kr http://journal.cg-korea.org http://journal.kfs21.or.kr http://old.kjrs.or.kr https://www.janss.kr https://www.snak.or.kr www.e-fppi.org http://journal.tribology.kr; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; 
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Content-Transfer-Encoding: binary;
+Content-Disposition: inline;filename="PROPERTIES%20OF%20HYPERHOLOMORPHIC%20FUNCTIONS%20ON%20DUAL%20SEDENION%20NUMBERS.pdf";filename*=utf-8''PROPERTIES%20OF%20HYPERHOLOMORPHIC%20FUNCTIONS%20ON%20DUAL%20SEDENION%20NUMBERS.pdf
+Content-Length: 117760
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-store
+Pragma: no-cache
+Referrer-Policy: no-referrer
+Expires: 0
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: name=value; path=/; MaxAge=-1; SameSite=Lax; Secure; HttpOnly
+Set-Cookie: JSESSIONID=6485400ABCD03CFEBD31406CD48428B1.ks_right; Path=/; Secure; HttpOnly; HttpOnly; Secure; SameSite=Lax
+Set-Cookie: WMONID=-GG1J-7IB8F; Expires=Tue, 16-Feb-2027 08:17:34 GMT; Path=/; HttpOnly; Secure; SameSite=Lax
+Set-Cookie: name=value; Path=/; Max-Age=3600; SameSite=Lax; Secure; HttpOnly
+Content-Type: application/pdf;charset=UTF-8
+

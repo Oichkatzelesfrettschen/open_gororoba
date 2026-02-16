@@ -1,0 +1,27 @@
+HTTP/2 301 
+x-cloud-trace-context: 3fa2725634e48bbb011bb1ceec986137
+content-type: text/html; charset=utf-8
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+location: /pdf/1602.02317
+accept-ranges: bytes
+age: 0
+date: Sun, 15 Feb 2026 20:05:26 GMT
+x-served-by: cache-lga21924-LGA, cache-lga21951-LGA, cache-hhr-khhr2060045-HHR
+x-cache: MISS, MISS, MISS
+x-timer: S1771185926.393229,VS0,VE187
+content-length: 217
+
+HTTP/2 404 
+x-cloud-trace-context: 6d01129408e16b08719804d5d6e1426b
+content-type: text/html; charset=utf-8
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+age: 158081
+date: Sun, 15 Feb 2026 20:05:26 GMT
+x-served-by: cache-lga21986-LGA, cache-lga21949-LGA, cache-hhr-khhr2060045-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1771185927.589728,VS0,VE68
+content-length: 10451
+

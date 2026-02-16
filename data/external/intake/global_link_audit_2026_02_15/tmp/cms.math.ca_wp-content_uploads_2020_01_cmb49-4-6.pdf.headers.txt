@@ -1,0 +1,15 @@
+HTTP/2 404 
+x-powered-by: PHP/8.4.17
+expires: Wed, 11 Jan 1984 05:00:00 GMT
+cache-control: no-cache, must-revalidate, max-age=0, no-store, private
+content-type: text/html; charset=UTF-8
+x-ua-compatible: IE=edge
+link: <https://cms.math.ca/wp-json/>; rel="https://api.w.org/"
+x-litespeed-cache: hit
+content-encoding: br
+vary: Accept-Encoding
+content-length: 21756
+date: Sun, 15 Feb 2026 23:17:28 GMT
+server: LiteSpeed
+alt-svc: h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"
+

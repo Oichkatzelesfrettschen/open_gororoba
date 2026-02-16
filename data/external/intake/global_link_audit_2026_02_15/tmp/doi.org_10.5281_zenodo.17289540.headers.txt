@@ -1,0 +1,58 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:33 GMT
+content-type: text/html;charset=utf-8
+location: https://zenodo.org/doi/10.5281/zenodo.17289540
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:17:45 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=p5Ta574%2Bomc9dBHiz8Uw1z2GTOIRczUZNBFos9KUvUrt%2FG0IAS5CJH5f4RHmR9Jvsi8krltefS%2FC2aLaJRBxjWSFkowjnQ%3D%3D"}]}
+cf-ray: 9ce884f35ba016df-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/1.1 302 FOUND
+server: nginx
+date: Sun, 15 Feb 2026 23:17:33 GMT
+content-type: text/html; charset=utf-8
+content-length: 257
+location: https://zenodo.org/records/17289540
+x-ratelimit-limit: 133
+x-ratelimit-remaining: 132
+x-ratelimit-reset: 1771197514
+retry-after: 60
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+content-security-policy: default-src 'self' fonts.googleapis.com *.gstatic.com data: 'unsafe-inline' 'unsafe-eval' blob: zenodo-broker.web.cern.ch zenodo-broker-qa.web.cern.ch maxcdn.bootstrapcdn.com cdnjs.cloudflare.com ajax.googleapis.com webanalytics.web.cern.ch
+strict-transport-security: max-age=31556926; includeSubDomains
+referrer-policy: strict-origin-when-cross-origin
+set-cookie: session=770cb16f7b35e561_6992540d.jkspJ9qMhnku6u90VoRkjsQ5s-U; Expires=Fri, 20 Feb 2026 23:17:33 GMT; Secure; HttpOnly; Path=/; SameSite=Lax
+x-source: ui
+
+HTTP/1.1 200 OK
+server: nginx
+date: Sun, 15 Feb 2026 23:17:34 GMT
+content-type: text/html; charset=utf-8
+transfer-encoding: chunked
+vary: Accept-Encoding
+link: <https://doi.org/10.5281/zenodo.17289540> ; rel="cite-as" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/dcat+xml" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/ld+json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/ld+json;profile="https://datapackage.org/profiles/2.0/datapackage.json"" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/marcxml+xml" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.citationstyles.csl+json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.datacite.datacite+json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.datacite.datacite+xml" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.geo+json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.inveniordm.v1+json" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.inveniordm.v1.full+csv" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/vnd.inveniordm.v1.simple+csv" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/x-bibtex" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="application/x-dc+xml" , <https://zenodo.org/api/records/17289540> ; rel="describedby" ; type="text/x-bibliography" , <https://zenodo.org/records/17289540/files/UOR-Foundation/atlas-embeddings-v0.1.0.zip> ; rel="item" ; type="application/zip" , <https://opensource.org/licenses/MIT> ; rel="license" , <https://schema.org/SoftwareSourceCode> ; rel="type" , <https://schema.org/AboutPage> ; rel="type" , <https://zenodo.org/api/records/17289540> ; rel="linkset" ; type="application/linkset+json"
+x-ratelimit-limit: 133
+x-ratelimit-remaining: 131
+x-ratelimit-reset: 1771197514
+retry-after: 59
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+content-security-policy: default-src 'self' fonts.googleapis.com *.gstatic.com data: 'unsafe-inline' 'unsafe-eval' blob: zenodo-broker.web.cern.ch zenodo-broker-qa.web.cern.ch maxcdn.bootstrapcdn.com cdnjs.cloudflare.com ajax.googleapis.com webanalytics.web.cern.ch
+strict-transport-security: max-age=31556926; includeSubDomains
+referrer-policy: strict-origin-when-cross-origin
+set-cookie: session=beb099346619dc45_6992540e.oaCHCYsJOySR7kvdArszkSUnduU; Expires=Fri, 20 Feb 2026 23:17:34 GMT; Secure; HttpOnly; Path=/; SameSite=Lax
+x-source: ui
+content-encoding: gzip
+

@@ -1,0 +1,217 @@
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!-- saved from url=(0061)https://linkinghub.elsevier.com/retrieve/pii/S0092867404010001 -->
+<html xmlns="https://www.w3.org/TR/xhtml1/strict">
+<head>
+    <title>Elsevier: Article Locator Error - Article Not Recognized</title>
+
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <meta content="MSHTML 6.00.2900.2180" name=GENERATOR>
+    <meta name="robots" content="NOINDEX">
+    <meta name="tdm-reservation" content="1" />
+	<meta name="tdm-policy" content="https://www.elsevier.com/tdm/tdmrep-policy.json" />
+    
+    <link rel="stylesheet" title="Default Styles" href="/retrieve/static/css/articleLocatorNew.css">
+    <link rel="stylesheet" type="text/css" href="/retrieve/static/css/footer.css">
+
+    <script type="text/JavaScript" src="/retrieve/static/script/siteCatalystHelper.js"/>
+    <script src="https://assets.adobedtm.com/4a848ae9611a/519188bfaff2/launch-d9c9ae460653.min.js"/>
+    <script language="JavaScript">
+		var prefs;
+		var help;		
+		var timerStart = Date.now();
+		var pageName = "Article Not Found";
+		
+		function openHelpWindow()
+        {
+        	prefs = window.open("/retrieve/help","Help","width=750,height=500,scrollbars=yes,status=no,menubar=no");
+        	if (window.focus) {prefs.focus()}
+        }
+		
+		function openWindow() 
+		{ 
+			prefs = window.open("preferred5.asp","Preferences","width=750,height=500,scrollbars=yes,status=no,menubar=no"); 
+			if (window.focus) {prefs.focus()}	
+		}
+	</script>
+	<script language="JavaScript">
+		function countChars(field, maxLength){
+			if(field.value.length > maxLength){
+				field.value = field.value.substr(0,maxLength);
+			}
+		}
+	</script>
+</head>
+
+<div class="body" id ="trackErrorPage">
+<script type="text/javascript">
+ function trackErrorPage() {
+	 try
+	 {
+	 siteCatalyst.clickEventTrack(document.getElementById('id').value);
+	 }catch(e)
+	 {
+		 
+	 }
+	}
+ trackErrorPage();
+  </script>
+  <tr style="display:none;">
+  <td colspan="2">
+<input type="hidden" name="id" value="S0021869390902219" id="id"/>  </td>
+</tr>
+
+<div id="globalheader">
+
+<!--div id="globalheader"-->
+
+	<div id="orangeRow"></div>
+
+	<div id="headerRow">
+
+       <div id="left"><a href=""><img id="logo" src="/retrieve/static/images/els_logo.gif" alt="Elsevier Logo" title="Elsevier Logo"></a></div>
+           <div id="rightE">
+		   <div id="rightImage">
+		   <img src="/retrieve/static/images/icon_error_24x24.gif" alt="Error Message" title="Error Message"></div>
+
+		   <div id="rightText" style="vertical-align:top"><h1> Requested article is not found in IHub.</h1>
+				   </div>
+		 </div>
+ 
+	</div>
+
+            <div class="clear"></div>
+
+</div>
+
+<div class="textBody">
+<div class="ae_form">
+	<div class="field">
+		<span class="url_label">			
+				URL:  
+		</span>	
+			<span class="url_text">
+				
+				<nobr>https://linkinghub.elsevier.com/retrieve/pii/S00218693909022</nobr>
+				
+				<nobr>19</nobr>
+				
+			</span>			
+	</div>
+		<div class="field">
+			<span class="url_label">Date/Time of Error:</span> <span class="inputs">02/15/2026 11:17:35 PM<br></span>
+	</div>
+
+	<div class="field">
+			<span class="url_label">Referring URL:</span> <span class="inputs"><br></span>
+	</div>
+			<br><br>
+		<div class="field">
+        <span class="content_block">Please help us correct this problem.</span><br>
+		<span class="content_block">Enter the title, source, and authors of the article you are looking for in the box below.</span>
+		<form id="SubmitErrorInfo" name="SubmitErrorInfo" onsubmit="return true;" action="/retrieve/SubmitErrorInfo" method="post"  style="MARGIN: 0px">
+			<input type="hidden" name="URL"	value="https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219" />
+			<input type="hidden" name="Date"	value="02/15/2026 11:17:35 PM" />
+			<input type="hidden" name="RefURL"	value="" />
+			<input type = "hidden" name = "errorName" value = "ArticleNotFoundError"/>			
+			<span class="content_block">
+				<textarea name="Description" class="inputBox" cols="70" rows="8" onkeyup="countChars(this,2000)"></textarea>
+			</span><br><br>
+			<span class="content_block">
+				<input type="image" src="/retrieve/static/images/btn_send.gif" border="0" style="vertical-align:middle" alt="Send" title="Send"/>
+			</span><br><br>	
+		</form>
+		</div>
+	</div>
+
+		<!--/div-->
+ <!--
+		<div class="preferredRow"><a href="javascript:openWindow()"><img src="images/icon_update.gif" title="" alt="" border="0" style="vertical-align:middle">  Update your preferred Elsevier websites</a>
+		</div>  
+	-->	
+	</div></div>
+
+		
+	  <script language=JavaScript type="text/javascript">
+		function openHelpFile(){
+			// Start - Changes for webstar 2650700		
+			  help = window.open("https://linkinghub.elsevier.com/retrieve/help", "Help","width=750,height=600,scrollbars=yes,status=no,menubar=no"); 
+			// End - Changes for webstar 2650700
+			if (window.focus) {help.focus()}	
+		}
+		function openWindowTerms() { 
+			prefs = window.open("/retrieve/dynamic/ihubTerms.jsp","Terms","width=750,height=600,scrollbars=yes,status=no,menubar=no"); 
+			if (window.focus) {prefs.focus()}	
+		}
+		function openWindowPrivacy() { 
+			prefs = window.open("/retrieve/dynamic/ihubPrivacy.jsp","Privacy","width=750,height=600,scrollbars=yes,status=no,menubar=no"); 
+			if (window.focus) {prefs.focus()}	
+		}
+		function openWindowFinder() { 
+			prefs = window.open("/retrieve/dynamic/aboutArticleFinder.jsp","About","width=750,height=500,scrollbars=yes,status=no,menubar=no"); 
+			if (window.focus) {prefs.focus()}	
+		}
+	</script>
+	
+ <div style="display: flex; align-items: center; justify-content: space-between;" class="footerBody">
+    <div class="footerLeftImage">
+        <a href="/retrieve">
+            <img id=logo title="Elsevier Logo" alt="Elsevier Logo" src="/retrieve/static/images/els_logo.gif">
+        </a>
+    </div>
+    <div style="text-align: left;" class="footerCenterLinks">
+        
+            <div>
+            Copyright © 2026 Elsevier B.V., its licensors, and contributors. All rights are reserved, including those for text and data mining, AI training, and similar technologies. For all open access content, the Creative Commons licensing terms apply.
+            </div>
+            <div>
+                We use cookies to help provide and enhance our service and tailor content.  By continuing you agree to the
+                <a class="ihubFooterLinkBlue" href="/retrieve/dynamic/ihubCookiePage.jsp" target="_blank"> 
+                    use of cookies</a>.
+            </div>
+            <div class="footerCenterLinksContent">
+            <div class="footerCenterLinksContentLinks">
+                <a class="ihubFooterLinkBlue" href="/retrieve">About Article Locator</a>
+                <wbr>             
+                <a class="ihubFooterLinkBlue" href="https://service.elsevier.com/app/contact/supporthub/sciencedirect/">Feedback</a>
+                <wbr>
+                <a class="ihubFooterLinkBlue" href="/retrieve/dynamic/ihubTerms.jsp" onclick="openWindowTerms();return false;" target="_Terms">Terms and conditions</a>
+                <wbr>
+                <a class="ihubFooterLinkBlue" href="https://www.elsevier.com/legal/privacy-policy">Privacy policy</a>
+            </div>
+        </div>
+    </div>
+    <div class="footerRightImage">
+        <a href="https://www.relx.com/" rel="nofollow">
+            <img class="footerRelxImage"
+                 src="/retrieve/static/images/relexLogo.svg" alt="Elsevier Logo"
+                 title="wordmark-relx-group">
+        </a>
+    </div>
+</div>
+
+	
+    
+ 
+     
+    <script>
+		siteCatalyst.pageDataLoad({
+			businessUnit : 'ELS:RP:ST',
+            environment : 'prod',
+            language : 'en',
+            loadTime : (Date.now()-timerStart).toString(),
+            loadTimestamp : Date.now().toString(),
+            name : pageName,
+            productName : 'IH',
+            type : 'NP-GP',   
+            accessType : 'ih:anon_guest',
+            ipAddress : '71.84.237.76',
+            errorType : 'ae-Article Not Available Error'
+		});
+    </script>
+</html>

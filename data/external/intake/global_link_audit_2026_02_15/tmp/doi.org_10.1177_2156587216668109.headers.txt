@@ -1,0 +1,55 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html;charset=utf-8
+location: http://journals.sagepub.com/doi/10.1177/2156587216668109
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:54:59 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=khSPhvRJg0j5ww%2BpSSLqR43Q6uvzmgIVaf7tjFUeuxhVUx2hNoVdhKkoUqmWD7jft%2BeBscvn47lYbD1HrdGBekDuZsI%3D"}]}
+cf-ray: 9ce884ec4822ef7a-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/1.1 301 Moved Permanently
+Date: Sun, 15 Feb 2026 23:17:32 GMT
+Content-Type: text/html
+Content-Length: 167
+Connection: keep-alive
+Cache-Control: max-age=3600
+Expires: Mon, 16 Feb 2026 00:17:32 GMT
+Location: https://journals.sagepub.com/doi/10.1177/2156587216668109
+Vary: Accept-Encoding
+Server: cloudflare
+CF-RAY: 9ce884ed1a755121-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html;charset=UTF-8
+content-encoding: gzip
+set-cookie: JSESSIONID=C32FF44F05BD028CD93AD6C65D432C1C; Path=/; Secure; HttpOnly
+set-cookie: MAID=sP1kWcCYWk7++tWOY76KdA==; path=/; domain=.journals.sagepub.com; secure; HttpOnly; expires=Sat, 12 Dec 2026 23:17:32 GMT
+set-cookie: MACHINE_LAST_SEEN=2026-02-15T15%3A17%3A32.428-08%3A00; path=/; domain=.journals.sagepub.com; secure; HttpOnly; expires=Sat, 12 Dec 2026 23:17:32 GMT
+set-cookie: JSESSIONID=C32FF44F05BD028CD93AD6C65D432C1C; path=/; domain=.journals.sagepub.com; secure; HttpOnly; SameSite=None
+p3p: CP="NOI DSP ADM OUR IND OTC"
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+strict-transport-security: max-age=600
+x-frame-options: SAMEORIGIN
+cache-control: no-cache
+x-webstats-respid: e90c81318c90d7f5b899e206f54deefa
+link: </products/sage/releasedAssets/css/build-c99bfa42d539ba85a10b.css>; rel=preload; as=style;
+link: </products/sage/releasedAssets/js/main.bundle-5e06827985c3025abf1c.js>; rel=preload; as=script;
+link: </wro/62c0a7ddc652525332289775ab33af10de04e5c6~product.css>; rel=preload; as=style; nopush
+link: </wro/62c0a7ddc652525332289775ab33af10de04e5c6~product.js>; rel=preload; as=script; nopush
+link: <https://fonts.googleapis.com>; rel=preconnect; crossorigin
+link: <https://fonts.gstatic.com>; rel=preconnect; crossorigin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: 9ce884ed89d1d88e-LAX
+alt-svc: h3=":443"; ma=86400
+

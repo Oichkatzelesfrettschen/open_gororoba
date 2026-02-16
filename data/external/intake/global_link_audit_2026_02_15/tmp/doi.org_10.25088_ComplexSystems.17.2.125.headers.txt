@@ -1,0 +1,28 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:32 GMT
+content-type: text/html;charset=utf-8
+location: https://www.complex-systems.com/abstracts/v17_i02_a03/
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:55:15 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ih6eFBZ%2FN1zvv%2BWXOP9aRbsTfWBZtJBczBqzXIOCqA2PGfP7KSROcfQ8FGu0xR%2BlgOrbjUJqD6X32pDWeICgh69RCwFlBQ%3D%3D"}]}
+cf-ray: 9ce884ecdc83b6a4-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/1.1 200 OK
+Date: Sun, 15 Feb 2026 23:17:32 GMT
+Server: Apache
+Set-Cookie: WR_SID=71.84.237.76.1771197452644056; path=/; expires=Wed, 13-Feb-36 23:17:32 GMT; domain=.complex-systems.com
+X-Powered-By: PHP/5.4.16
+X-Pingback: https://www.complex-systems.com/xmlrpc.php
+Link: <https://www.complex-systems.com/?p=2514>; rel=shortlink
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Content-Length: 3664
+Content-Type: text/html; charset=UTF-8
+

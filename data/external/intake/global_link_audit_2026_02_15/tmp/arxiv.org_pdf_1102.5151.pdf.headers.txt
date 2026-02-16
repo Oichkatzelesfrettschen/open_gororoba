@@ -1,0 +1,32 @@
+HTTP/2 301 
+server: Google Frontend
+location: /pdf/1102.5151
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+x-cloud-trace-context: d9ab26b941512e229e1347d0f7ea1769
+accept-ranges: bytes
+age: 265
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21989-LGA, cache-lga21962-LGA, cache-hhr-khhr2060027-HHR
+x-cache: MISS, MISS, HIT
+x-timer: S1771197448.263566,VS0,VE1
+content-length: 215
+
+HTTP/2 200 
+server: Google Frontend
+last-modified: Thu, 19 Jan 2023 02:02:57 GMT
+link: <https://arxiv.org/pdf/1102.5151>; rel='canonical'
+etag: CK7vmqfF0vwCEAE=
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: application/pdf
+content-disposition: inline; filename="1102.5151v2.pdf"
+x-cloud-trace-context: ce4bc28025ef3a76deb436ce89660a36
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:28 GMT
+age: 278991
+x-served-by: cache-lga21956-LGA, cache-lga21931-LGA, cache-hhr-khhr2060027-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197448.279171,VS0,VE1
+content-length: 663591
+

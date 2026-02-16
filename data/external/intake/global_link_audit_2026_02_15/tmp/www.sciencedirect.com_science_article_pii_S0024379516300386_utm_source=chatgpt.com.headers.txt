@@ -1,0 +1,27 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:39 GMT
+content-type: text/html; charset=utf-8
+content-encoding: br
+cf-ray: 9ce885145b5fda3a-LAX
+cf-cache-status: BYPASS
+cache-control: no-store, no-cache, max-age=0
+set-cookie: EUID=eae5f27b-d912-4251-858b-2f98b3ab89da;Version=1;Comment=;SameSite=None;Domain=.sciencedirect.com;Path=/;Secure;Expires=Sat, 15 Aug 2026 23:17:38 GMT
+set-cookie: sd_session_id=40739dbb90432840f30bf0a45ef3d0dfc432gxrqa;Version=1;Comment=;SameSite=None;Domain=.sciencedirect.com;Path=/;Secure;HttpOnly
+set-cookie: MIAMISESSION=e07a78de-04dc-4645-9889-6d167b9f9ac7:3948650258;Version=1;Comment=;SameSite=None;Domain=.sciencedirect.com;Path=/;Secure;HttpOnly
+set-cookie: id_ab=AEG;Version=1;Comment=;SameSite=None;Domain=.sciencedirect.com;Path=/;Secure;Expires=Mon, 15 Mar 2027 23:17:38 GMT
+set-cookie: __cf_bm=1no2sv6E4xWh0O1wB8y1DI1ra0KHN7bUCniyYt34e5Q-1771197459-1.0.1.1-QewdVx4.55DLr_rRC.nfRcjtwj5Y_1AM7HySK6KmIkxQL_8tzLwRqEOkYMOkPZmeVwh0pmov6GqmV71Q1luI6xxaDPbou1bWiGpd66Ok5W8; path=/; expires=Sun, 15-Feb-26 23:47:39 GMT; domain=.sciencedirect.com; HttpOnly; Secure; SameSite=None
+set-cookie: _cfuvid=31KwdRXYfwAEUJUERGkZdMT_OmJP4GKU8GkOVS9M8Vg-1771197459048-0.0.1.1-604800000; path=/; domain=.sciencedirect.com; HttpOnly; Secure; SameSite=None
+strict-transport-security: max-age=2678400; preload
+vary: accept-encoding
+pragma: no-cache
+x-content-type-options: nosniff
+x-els-platform: sdfe
+x-region: us-east-1
+x-router: true
+x-xss-protection: 1; mode=block
+x-correlation-id: arp-8203e726-1517-4d94-8db9-5d1263f58443
+x-sdfe-corr-id: arp-8203e726-1517-4d94-8db9-5d1263f58443
+tdm-policy: https://www.elsevier.com/tdm/tdmrep-policy.json
+tdm-reservation: 1
+server: cloudflare
+

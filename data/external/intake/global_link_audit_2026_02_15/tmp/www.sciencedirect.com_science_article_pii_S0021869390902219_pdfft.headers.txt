@@ -1,0 +1,15 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 23:17:38 GMT
+content-type: text/html
+content-encoding: br
+x-cra-clearance: 1
+set-cookie: __cf_bm=agfuGvexd4_wZ8otsdHgXj2Gr4Cuk5BEaDipa_yX5J8-1771197458-1.0.1.1-D9QpQt.fvO9ayxebLmlhmkx9NpmvHFAiGxDD1mlDrRS7ZlR5u_Rs86xZeA4.IKIFs.ZhDrtuGUQVPpGVtbPp5ORsMyIeaqVWpxXQdcQZNC0; path=/; expires=Sun, 15-Feb-26 23:47:38 GMT; domain=.sciencedirect.com; HttpOnly; Secure; SameSite=None
+set-cookie: _cfuvid=.t_TgqLkULlQ7.LtynERDVJlBRuRuzClhCpOp6mnkZY-1771197458453-0.0.1.1-604800000; path=/; domain=.sciencedirect.com; HttpOnly; Secure; SameSite=None
+vary: Accept-Encoding
+strict-transport-security: max-age=2678400; preload
+x-content-type-options: nosniff
+tdm-policy: https://www.elsevier.com/tdm/tdmrep-policy.json
+tdm-reservation: 1
+server: cloudflare
+cf-ray: 9ce88513284a2f1d-LAX
+

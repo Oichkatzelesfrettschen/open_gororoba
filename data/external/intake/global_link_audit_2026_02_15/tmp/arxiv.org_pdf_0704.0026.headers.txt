@@ -1,0 +1,18 @@
+HTTP/2 200 
+content-disposition: inline; filename="0704.0026v3.pdf"
+x-cloud-trace-context: bf6ad94c7c52146d55fd7e8a7ad803f7
+last-modified: Tue, 17 Jan 2023 19:40:54 GMT
+content-type: application/pdf
+server: Google Frontend
+link: <https://arxiv.org/pdf/0704.0026>; rel='canonical'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+etag: CLeHpYauz/wCEAE=
+access-control-allow-origin: *
+accept-ranges: bytes
+age: 740243
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21984-LGA, cache-lga21927-LGA, cache-hhr-khhr2060043-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197448.218343,VS0,VE0
+content-length: 201711
+

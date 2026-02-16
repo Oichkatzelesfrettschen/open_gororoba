@@ -1,0 +1,33 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:33 GMT
+content-type: text/html;charset=utf-8
+location: https://arxiv.org/abs/2512.13002
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:55:58 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=1Kl8alh8XgX1tX17eh3bBltkHcydCuRzTbaSpDv0Zcqg8r9E3BMf3IhBv4UuCn6FPQN2Xe5cN9CiyyfzQsFEK8c8kWprkw%3D%3D"}]}
+cf-ray: 9ce884f22d1f1d4d-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+cache-control: max-age=3600
+last-modified: Tue, 16 Dec 2025 02:14:39 GMT
+x-cloud-trace-context: 333fa17c5c43cd5d2cd6a259f2fe5d0c
+x-frame-options: SAMEORIGIN
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+content-security-policy: frame-ancestors 'none'
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:33 GMT
+age: 247067
+x-served-by: cache-lga21984-LGA, cache-lga21966-LGA, cache-hhr-khhr2060049-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197453.272659,VS0,VE1
+content-length: 45305
+

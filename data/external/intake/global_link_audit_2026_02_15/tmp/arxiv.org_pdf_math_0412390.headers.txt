@@ -1,0 +1,18 @@
+HTTP/2 200 
+content-disposition: inline; filename="0412390v1.pdf"
+x-cloud-trace-context: 507e56db4b9ab657a1ba17edeab37869
+last-modified: Thu, 19 Jan 2023 11:16:03 GMT
+content-type: application/pdf
+server: Google Frontend
+link: <https://arxiv.org/pdf/math/0412390>; rel='canonical'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+etag: CMyf2vfA0/wCEAE=
+access-control-allow-origin: *
+accept-ranges: bytes
+age: 780154
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21957-LGA, cache-lga21981-LGA, cache-hhr-khhr2060050-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197449.593188,VS0,VE1
+content-length: 239721
+

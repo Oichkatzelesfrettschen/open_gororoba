@@ -1,0 +1,17 @@
+HTTP/2 200 
+server: Google Frontend
+content-type: text/html; charset=utf-8
+x-cloud-trace-context: 71d60e26d8e53068433dd921f1bbacf4
+content-security-policy: frame-ancestors 'none'
+x-frame-options: SAMEORIGIN
+cache-control: max-age=3600
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Tue, 20 Jun 2006 07:45:55 GMT
+accept-ranges: bytes
+age: 1053607
+date: Sun, 15 Feb 2026 23:17:27 GMT
+x-served-by: cache-lga21990-LGA, cache-lga21949-LGA, cache-hhr-khhr2060054-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197448.982263,VS0,VE1
+content-length: 47796
+

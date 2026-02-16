@@ -1,0 +1,32 @@
+HTTP/2 308 
+date: Sun, 15 Feb 2026 20:18:03 GMT
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+content-security-policy: default-src 'self' *.core.ac.uk core.ac.uk;script-src 'self' *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com blob: data:;script-src-elem 'self' *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com blob: data: 'unsafe-inline' 'unsafe-eval';worker-src 'self' *.logrocket.com *.lgrckt-in.com blob: data:;style-src 'self' 'unsafe-inline';img-src 'self' *.core.ac.uk core.ac.uk data: *.openstreetmap.org *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com;connect-src 'self' *.core.ac.uk core.ac.uk sentry.io *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com;object-src 'none';media-src 'self' data: *.logrocket.com *.lgrckt-in.com;child-src 'self' blob: *.logrocket.com *.lgrckt-in.com
+location: /works/82141950/
+refresh: 0;url=/works/82141950/
+cf-cache-status: DYNAMIC
+set-cookie: ApplicationGatewayAffinityCORS=f70e6cf46d16076e90fb2d165378b2f3; Path=/; SameSite=None; Secure
+set-cookie: ApplicationGatewayAffinity=f70e6cf46d16076e90fb2d165378b2f3; Path=/
+set-cookie: __cflb=0H28vFPZireWaZjaNbzXKocSjtqRQpuBrUg8CavSSww; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sun, 15 Feb 2026 20:48:03 GMT
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=tJqA3lk3USfHpBGVCAe22KfeDUc2B5f5HyN6olPXc19F2m9KBr%2BKFn%2F7r9G2onoxRk2dO5kSOCtK%2Bjp9l0vZI8281SrqIQtowm0%3D"}]}
+server: cloudflare
+cf-ray: 9ce77e003e2290fe-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 20:18:13 GMT
+content-type: text/html; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+content-security-policy: default-src 'self' *.core.ac.uk core.ac.uk;script-src 'self' *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com blob: data:;script-src-elem 'self' *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com blob: data: 'unsafe-inline' 'unsafe-eval';worker-src 'self' *.logrocket.com *.lgrckt-in.com blob: data:;style-src 'self' 'unsafe-inline';img-src 'self' *.core.ac.uk core.ac.uk data: *.openstreetmap.org *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com;connect-src 'self' *.core.ac.uk core.ac.uk sentry.io *.google-analytics.com *.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com *.logrocket.com *.lgrckt-in.com;object-src 'none';media-src 'self' data: *.logrocket.com *.lgrckt-in.com;child-src 'self' blob: *.logrocket.com *.lgrckt-in.com
+x-powered-by: Next.js
+set-cookie: ApplicationGatewayAffinityCORS=f70e6cf46d16076e90fb2d165378b2f3; Path=/; SameSite=None; Secure
+set-cookie: ApplicationGatewayAffinity=f70e6cf46d16076e90fb2d165378b2f3; Path=/
+set-cookie: __cflb=0H28vFPZireWaZjaNbzXKocSjtqRQpuBreNoDPjw4DT; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sun, 15 Feb 2026 20:48:13 GMT
+cache-control: private, no-cache, no-store, max-age=0, must-revalidate
+vary: Accept-Encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=TqmXPW8gFtXMwFO0vuhnkNMTz%2FMenU5i9qX0mEQy%2BMOkCe2sK1QZ%2B4eL78Qc22fNggrwgkMNjXeo1Lqgn2DQnG3EbpADuZw%2BITw%3D"}]}
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: 9ce77e01496190fe-LAX
+alt-svc: h3=":443"; ma=86400
+

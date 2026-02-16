@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Date: Sun, 15 Feb 2026 23:17:37 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.1 mod_auth_gssapi/1.6.3 mod_perl/2.0.12 Perl/v5.32.1
+Strict-Transport-Security: max-age=63072000; includeSubdomains; preload
+X-Frame-Options: SAMEORIGIN
+Content-Security-Policy: frame-ancestors https://www.astro.sk/ https://www.ta3.sk/ http://www.astro.sk/ http://www.ta3.sk/  https://sas.astro.sk/  https://sas.ta3.sk/  http://sas.astro.sk/  http://sas.ta3.sk/  https://wwwWRK.astro.sk/  https://wwwWRK.ta3.sk/  http://wwwWRK.astro.sk/  http://wwwWRK.ta3.sk/ ;
+Last-Modified: Tue, 08 Dec 2015 12:09:33 GMT
+ETag: "6040a-52661d8b55940"
+Accept-Ranges: bytes
+Content-Length: 394250
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/pdf
+

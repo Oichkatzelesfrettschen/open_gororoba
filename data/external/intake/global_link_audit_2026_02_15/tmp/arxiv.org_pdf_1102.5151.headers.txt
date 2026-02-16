@@ -1,0 +1,18 @@
+HTTP/2 200 
+server: Google Frontend
+last-modified: Thu, 19 Jan 2023 02:02:57 GMT
+link: <https://arxiv.org/pdf/1102.5151>; rel='canonical'
+etag: CK7vmqfF0vwCEAE=
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: application/pdf
+content-disposition: inline; filename="1102.5151v2.pdf"
+x-cloud-trace-context: ce4bc28025ef3a76deb436ce89660a36
+accept-ranges: bytes
+age: 278991
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21956-LGA, cache-lga21931-LGA, cache-hhr-khhr2060033-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197448.210971,VS0,VE0
+content-length: 663591
+

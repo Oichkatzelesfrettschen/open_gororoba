@@ -1,0 +1,17 @@
+HTTP/2 200 
+date: Sun, 15 Feb 2026 20:17:51 GMT
+content-type: text/html; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+content-security-policy: default-src 'self' *.core.ac.uk core.ac.uk;script-src 'self' *.google-analytics.com 'unsafe-eval' *.googletagmanager.com *.cloudflareinsights.com;style-src 'self' fonts.googleapis.com fonts.gstatic.com 'unsafe-inline';font-src 'self' fonts.googleapis.com fonts.gstatic.com;img-src 'self' *.core.ac.uk core.ac.uk data: blob: *.google-analytics.com stats.g.doubleclick.net *.googletagmanager.com *.cloudflareinsights.com;connect-src *
+x-powered-by: Next.js
+set-cookie: ApplicationGatewayAffinityCORS=f70e6cf46d16076e90fb2d165378b2f3; Path=/; SameSite=None; Secure
+set-cookie: ApplicationGatewayAffinity=f70e6cf46d16076e90fb2d165378b2f3; Path=/
+set-cookie: __cflb=0H28vFPZireWaZjaNbzXKocSjtqRQpuCC3gdMAFKg6Z; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sun, 15 Feb 2026 20:47:51 GMT
+cache-control: private, no-cache, no-store, max-age=0, must-revalidate
+vary: Accept-Encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ZFYpebICnnGrdVnxGAKq7AEe51Jgp%2Fp0kbI0e%2BZuDrCkxRZb%2Ba5a7%2BvdyvlWruOFtK09%2BIx4uYszLtKZOY1eLftgvRLsko0pHBk%3D"}]}
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: 9ce77db94996cdb0-LAX
+alt-svc: h3=":443"; ma=86400
+

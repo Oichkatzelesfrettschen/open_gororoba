@@ -1,0 +1,44 @@
+HTTP/1.1 301 MOVED PERMANENTLY
+server: nginx
+date: Sun, 15 Feb 2026 23:11:59 GMT
+content-type: text/html; charset=utf-8
+content-length: 255
+location: /records/1431095/files/article.pdf
+x-ratelimit-limit: 133
+x-ratelimit-remaining: 132
+x-ratelimit-reset: 1771197180
+retry-after: 60
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+content-security-policy: default-src 'self' fonts.googleapis.com *.gstatic.com data: 'unsafe-inline' 'unsafe-eval' blob: zenodo-broker.web.cern.ch zenodo-broker-qa.web.cern.ch maxcdn.bootstrapcdn.com cdnjs.cloudflare.com ajax.googleapis.com webanalytics.web.cern.ch
+strict-transport-security: max-age=31556926; includeSubDomains
+referrer-policy: strict-origin-when-cross-origin
+set-cookie: session=7469bce569800418_699252bf.wsltSjKvMSPZnl_zAMLgiqjUjrI; Expires=Fri, 20 Feb 2026 23:11:59 GMT; Secure; HttpOnly; Path=/; SameSite=Lax
+x-source: ui
+
+HTTP/1.1 200 OK
+server: nginx
+date: Sun, 15 Feb 2026 23:11:59 GMT
+content-type: application/octet-stream
+content-length: 702621
+content-disposition: attachment; filename=article.pdf
+set-cookie: session=7636caa6160f96ea_699252bf.kWg-na5Zn8lD9yLFFVK0DSh_YIE; Expires=Fri, 20 Feb 2026 23:11:59 GMT; Secure; HttpOnly; Path=/; SameSite=Lax
+oc-checksum: MD5:bd9547985da9a5d3313a39fc938e8139
+accept-ranges: bytes
+content-type: application/octet-stream
+content-security-policy: default-src 'self' fonts.googleapis.com *.gstatic.com data: 'unsafe-inline' 'unsafe-eval' blob: zenodo-broker.web.cern.ch zenodo-broker-qa.web.cern.ch maxcdn.bootstrapcdn.com cdnjs.cloudflare.com ajax.googleapis.com webanalytics.web.cern.ch
+x-content-type-options: nosniff
+x-download-options: noopen
+x-permitted-cross-domain-policies: none
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-ratelimit-limit: 133
+x-ratelimit-remaining: 131
+x-ratelimit-reset: 1771197180
+retry-after: 60
+strict-transport-security: max-age=31556926; includeSubDomains
+referrer-policy: strict-origin-when-cross-origin
+x-source: files-primary
+

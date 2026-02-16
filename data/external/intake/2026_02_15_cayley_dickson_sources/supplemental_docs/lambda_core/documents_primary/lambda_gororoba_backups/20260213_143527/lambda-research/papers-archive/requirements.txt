@@ -1,0 +1,20 @@
+# Lambda Calculus Papers Archive - Python Dependencies
+# Required packages for paper download and management scripts
+
+# HTTP client for downloads
+requests>=2.28.0
+
+# Async HTTP client for verification
+aiohttp>=3.8.0
+
+# SSL certificate handling
+certifi>=2022.0.0
+
+# Optional: Enhanced BibTeX parsing (if needed in future)
+# bibtexparser>=1.4.0
+
+# Optional: PDF text extraction (if implementing full-text search)
+# PyPDF2>=3.0.0
+
+# Optional: Progress bars for downloads
+# tqdm>=4.64.0

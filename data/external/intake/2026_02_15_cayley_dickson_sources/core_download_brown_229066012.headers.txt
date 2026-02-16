@@ -1,0 +1,33 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 17:40:33 GMT
+content-length: 0
+location: https://files01.core.ac.uk/download/229066012.pdf
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=3tfD3tl98nulRrxzd8%2FDPPw2gpc4mL18nJtwx0VfN5LVEQAGpXwX5UCzGLyVr7x1YLQfW9wZCjXs5AZ0GbPO1WTCOBrmbMwO59A%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9ce6974ddf435e6f-LAX
+
+HTTP/2 200 
+date: Sun, 15 Feb 2026 17:40:56 GMT
+content-type: application/pdf
+content-length: 3539055
+server: cloudflare
+x-frame-options: SAMEORIGIN, SAMEORIGIN
+x-frame-options: SAMEORIGIN
+access-control-allow-methods: POST, GET, OPTIONS
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Frame-Options
+cache-control: public
+link: <https://core.ac.uk/reader/229066012>; rel="canonical"
+accept-ranges: bytes
+last-modified: Tue, 12 May 2020 16:01:42 GMT
+etag: "36006f-5a57594566580"
+strict-transport-security: max-age=157680000
+set-cookie: _ga=GA1.3.f7dda3a7-0623-459e-9d73-598e57c299f5; expires=Tue, 15-Feb-2028 17:40:55 GMT; Max-Age=63071999; path=/; domain=core.ac.uk
+vary: User-Agent
+cf-cache-status: BYPASS
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=KTzPyAQh1qDuqxk9DOB89u533GgViw5HailACzlQGYgQGSA8N2tg3mbjn46QOI8pxh8zW0zJKyce7yoHOzGH9NstIDyj7%2FjBVkBUw%2BpFs9AaCg%3D%3D"}]}
+cf-ray: 9ce6974e18730908-LAX
+alt-svc: h3=":443"; ma=86400
+

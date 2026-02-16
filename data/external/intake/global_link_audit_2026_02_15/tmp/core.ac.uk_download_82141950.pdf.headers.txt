@@ -1,0 +1,44 @@
+HTTP/2 301 
+date: Sun, 15 Feb 2026 23:17:28 GMT
+content-length: 0
+location: https://files01.core.ac.uk/download/82141950.pdf
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=kbIviRC32qL9OcxcSlKFqn4GM93D8ZCsJjveNbKBkDDZdFnc596AGpcadSJzS%2BGzAqID3Lc8u9BjInyN6UWdxsEpR%2FaXlGTOXZw%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9ce884d73b5e2f37-LAX
+
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:29 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+x-frame-options: SAMEORIGIN, SAMEORIGIN
+x-frame-options: SAMEORIGIN
+access-control-allow-methods: POST, GET, OPTIONS
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Frame-Options
+cache-control: no-cache, private
+location: /reader/82141950
+strict-transport-security: max-age=157680000
+set-cookie: _ga=GA1.3.bef0845b-fd67-43d9-b81c-5404d9077a2d; expires=Tue, 15-Feb-2028 23:17:29 GMT; Max-Age=63072000; path=/; domain=core.ac.uk
+vary: User-Agent
+cf-cache-status: BYPASS
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=mnke3CUoE5jSrDx4mOfweJ1mcW5WQ2c6ov%2F7qt5xweSqS0ynciP5zvcnXw0SDPje7NEg0Qo0FD%2F928xrkV%2BDntu7SHomI%2F%2ByKgQT7cQUVXjAMw%3D%3D"}]}
+cf-ray: 9ce884d78fa57bb6-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 503 
+date: Sun, 15 Feb 2026 23:17:29 GMT
+content-type: text/html; charset=iso-8859-1
+server: cloudflare
+x-frame-options: SAMEORIGIN, SAMEORIGIN
+access-control-allow-methods: POST, GET, OPTIONS
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Frame-Options
+vary: User-Agent
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Uu7AKZN4Mxp8zPJTMN5Mau9iu6%2BX6xfRpokDgzLk%2F%2FVwHbs6MSpBVaxaL6vWk9C3MY4yTr7Ou3pmSd3OpdZ%2Ba0yrfP9wNj%2F5qan3T0Bn1lRavQ%3D%3D"}]}
+cf-ray: 9ce884dad8c17bb6-LAX
+alt-svc: h3=":443"; ma=86400
+

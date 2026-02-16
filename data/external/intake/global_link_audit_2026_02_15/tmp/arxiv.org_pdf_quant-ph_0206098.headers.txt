@@ -1,0 +1,18 @@
+HTTP/2 200 
+x-cloud-trace-context: cc82a76caaa73a5e4637592d61ffe273;o=1
+server: Google Frontend
+content-disposition: inline; filename="0206098v1.pdf"
+etag: CM28lY3rgooDEAE=
+content-type: application/pdf
+last-modified: Sat, 30 Nov 2024 00:49:55 GMT
+link: <https://arxiv.org/pdf/quant-ph/0206098>; rel='canonical'
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+age: 129699
+date: Sun, 15 Feb 2026 23:17:28 GMT
+x-served-by: cache-lga21991-LGA, cache-lga21958-LGA, cache-hhr-khhr2060040-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197449.646773,VS0,VE0
+content-length: 166525
+

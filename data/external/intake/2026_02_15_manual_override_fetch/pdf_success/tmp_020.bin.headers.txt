@@ -1,0 +1,25 @@
+HTTP/2 403 
+date: Sun, 15 Feb 2026 23:12:01 GMT
+content-type: text/html; charset=UTF-8
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),browsing-topics=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),interest-cohort=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=()
+referrer-policy: same-origin
+server-timing: chlray;desc="9ce87cd87b93d7a7"
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+set-cookie: __cf_bm=r4ryOlmE8otMzk3fglhyu2o.xcydHm6.iF.O7YyF2wk-1771197121-1.0.1.1-M99akh_VOe8Nz47D4przeFM2A3l8j_AnJtR6r3vRkdPZDeUE7RsQT89aLSAbW0nN0eyJJtS_wu9uzn62XpYQV.PWFogdFSQC9E8_QLqe8A0; path=/; expires=Sun, 15-Feb-26 23:42:01 GMT; domain=.aps.org; HttpOnly; Secure; SameSite=None
+vary: Accept-Encoding
+speculation-rules: "/cdn-cgi/speculation"
+server: cloudflare
+cf-ray: 9ce87cd87b93d7a7-LAX
+content-encoding: br
+alt-svc: h3=":443"; ma=86400
+

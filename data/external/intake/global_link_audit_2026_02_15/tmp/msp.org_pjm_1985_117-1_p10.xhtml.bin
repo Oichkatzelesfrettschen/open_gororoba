@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="citation_title" content=
+  "Derivations and Cayley derivations of generalized Cayley-Dickson algebras" />
+  <meta name="citation_journal_title" content=
+  "Pacific Journal of Mathematics" />
+  <meta name="citation_volume" content="117" />
+  <meta name="citation_issue" content="1" />
+  <meta name="citation_firstpage" content="163" />
+  <meta name="citation_lastpage" content="182" />
+  <meta name="citation_publication_date" content="1985-03-01" />
+  <meta name="citation_pdf_url" content="http://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf" />
+  <meta name="citation_author" content="McCrimmon, Kevin" />
+<meta name="citation_fulltext_world_readable" content="" />
+<meta name="citation_issn" content="0030-8730" />
+<meta name="citation_publisher" content="Mathematical Sciences Publishers" />
+
+  <title>Pacific Journal of Mathematics Vol. 117, No. 1, 1985</title>
+  <link href="/pjm/etc/journal.css?v=2025-11-20" type="text/css" rel="stylesheet" />
+  <link href="/pjm/etc/abstract.css" type="text/css" rel="stylesheet" />
+  <link rel="shortcut icon" href="/pjm/etc/favicon.ico" />
+  <script type="text/javascript" src="/pjm/etc/cover.js">
+</script>
+  <script type="text/javascript" src="/pjm/etc/journal.js">
+</script>
+  <script type="text/javascript" src="/pjm/etc/archive.js">
+</script>
+</head>
+
+<body onload="javascript:void(0);">
+  <table cellspacing="0" cellpadding="0" class="masthead" id=
+  "masthead-area">
+    <tr>
+      <td class="volume-h" onclick=
+      "javascript:window.location='index.xhtml';">
+        <h4>Vol. 117, No. 1, 1985</h4>
+      </td>
+    </tr>
+  </table>
+
+  <table cellspacing="0" cellpadding="0" class="main" id="main-area">
+    <tr>
+      <td class="activity-column" id="activity-area">
+            <table cellspacing="0" cellpadding="0" class="action">
+        <tr>
+          <td>
+              <table cellspacing="0" cellpadding="0" width="100%">
+              <tr>
+                  <td class="action-title-area"><div class="action-title">Recent Issues</div></td>
+              </tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 340:</a>
+                    <a class="about" href="/pjm/2026/340-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2026/340-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 339:</a>
+                    <a class="about" href="/pjm/2025/339-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2025/339-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 338:</a>
+                    <a class="about" href="/pjm/2025/338-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2025/338-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 337:</a>
+                    <a class="about" href="/pjm/2025/337-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2025/337-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 336:</a>
+                    <a class="about" href="/pjm/2025/336-1/index.xhtml">1</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 335:</a>
+                    <a class="about" href="/pjm/2025/335-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2025/335-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 334:</a>
+                    <a class="about" href="/pjm/2025/334-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2025/334-2/index.xhtml">2</a></td></tr>
+              <tr><td class="issues-area"><a class="link-label">Vol. 333:</a>
+                    <a class="about" href="/pjm/2024/333-1/index.xhtml">1</a>&#xA0;
+                    <a class="about" href="/pjm/2024/333-2/index.xhtml">2</a></td></tr>
+              <tr><td><img class="separator" src="/pjm/etc/z.gif" alt=""/></td></tr>
+
+              <tr><td class="issues-area">
+                        <a class="link-label">Online Archive</a></td></tr>
+                          <tr><td class="issues-area">
+                        <a class="link-label">Volume:</a><input type="text" value=""
+                        id="otherVolume" style="width:3em;" size="3" maxlength="3" tabindex='1'
+                        onkeyup="javascript:validateField(this);"></input></td></tr>
+              <tr><td class="issues-area">
+                                        <a class="link-label">Issue:</a></td></tr>
+              <tr><td class="available-issues-area">
+                      <div id="N1" class="link-d">
+                        <a class="issue" href="javascript:void(0);" tabindex='2'
+                            onclick="javascript:viewIssue('otherVolume',1);">1</a></div>&#xA0;
+                      <div id="N2" class="link-d">
+                        <a class="issue" href="javascript:void(0);" tabindex='3'
+                            onclick="javascript:viewIssue('otherVolume',2);">2</a></div>&#xA0;
+                      <div id="N3" class="link-d">
+                        <a class="issue" href="javascript:void(0);" tabindex='4'
+                            onclick="javascript:viewIssue('otherVolume',3);">3</a></div>&#xA0;
+                      <div id="N4" class="link-d">
+                        <a class="issue" href="javascript:void(0);" tabindex='5'
+                            onclick="javascript:viewIssue('otherVolume',4);">4</a></div></td></tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      	  <table cellspacing="0" cellpadding="0" class="pause">		
+	  	<tr>
+		  <td class="action-end">
+		     <img src="/pjm/etc/z.gif" alt=""/>
+		  </td>	<!-- underline (close) the action area above -->
+		</tr>
+		<tr>
+		  <td class="pause">
+		    <img src="/pjm/etc/z.gif" alt=""/>
+		  </td>	<!-- create white space between sections -->
+		</tr>
+	  </table>
+
+      	  <table cellspacing="0" cellpadding="0" class="action">
+        <tr>
+		  <td>
+		  	<table cellspacing="0" cellpadding="0" width="100%">
+			  <tr>
+			  	<td class="action-title-area"><div class="action-title">The Journal</div></td>
+			  </tr>
+
+<tr><td class="about-area">
+  <a class="about" href="/pjm/about/journal/about.html">About the journal</a></td></tr>
+<tr><td class="about-area">
+    <a class="about" href="/pjm/about/journal/policies.html">Ethics and policies</a></td></tr>
+<tr><td class="about-area">
+    <a class="about" href="/pjm/about/journal/peer.html">Peer-review process</a></td></tr>
+
+<tr><td>&#xa0;</td></tr>
+
+<tr><td class="about-area">
+  <a class="about" href="/pjm/about/journal/submissions.html">Submission guidelines</a></td></tr>
+<!--journal specific link -->
+<tr><td class="about-area">
+  <a class="about" href="https://ef.msp.org/submit/pjm" target="_blank">Submission form</a></td></tr>
+<!-- journal specific link -->
+<tr><td class="about-area">
+  <a class="about" href="/pjm/about/journal/editorial.html">Editorial board</a></td></tr>
+<tr><td class="about-area">
+  <a class="about" href="/pjm/about/journal/officers.html">Officers</a></td></tr>
+
+<tr><td>&#xa0;</td></tr>
+
+<!-- journal specific link -->
+<tr><td class="about-area">
+  <a class="about" href="https://msp.org/publications/journals/#pjm">Subscriptions</a></td></tr>
+
+<tr><td>&#xa0;</td></tr>
+
+<tr><td class="about-area issn">
+ISSN 1945-5844 (electronic)
+</td></tr>
+<tr><td class="about-area issn">
+ISSN 0030-8730 (print)
+</td></tr>
+
+<tr><td>&#xa0;</td></tr>
+
+<tr><td class="about-area">
+  <a class="about" href="/pjm/about/journal/specialissues.html">Special Issues</a></td></tr>
+
+<!-- journal specific link -->
+<tr><td class="about-area">
+  <a class="about" href="/index/ai.php?jpath=pjm">Author index</a></td></tr>
+<!-- journal specific link -->
+<tr><td class="about-area">
+  <a class="about" href="/soon/coming.php?jpath=pjm">To appear</a></td></tr>
+
+<tr><td>&#xa0;</td></tr>
+
+<tr><td class="about-area">
+  <a class="about" href="https://msp.org/p">Other MSP journals</a></td></tr>
+
+
+			</table>
+		  </td>
+		</tr>
+	  </table>
+
+
+<script async="true" defer="true"  src="https://eye.msp.org/app.js"></script>
+<noscript><img src="https://eye.msp.org/image.gif" alt="" /></noscript>
+</td>
+
+      <td class="content-column" id="content-area">
+        <table cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="title-area">
+              <a class="title" href=
+              "/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf">Derivations and
+              Cayley derivations of generalized Cayley-Dickson algebras</a>
+
+              <h3>Kevin Mor McCrimmon</h3>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="page-numbers">
+                Vol. 117 (1985), No. 1, 163–182
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="paper-doi">
+                DOI: <a href="http://dx.doi.org/10.2140/pjm.1985.117.163">10.2140/pjm.1985.117.163</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" cellpadding="0" class="article">
+          <tr>
+            <td class="article-area">
+              <h5>Abstract</h5>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="article-area">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <!-- Generic HTML abstract--><p class = "indent">The Cayley-Dickson doubling
+process can be continued past the quaternions and octonions to obtain an infinite
+series of algebras of dimension <span 
+class="cmr-10">2</span><sup><span 
+class="cmmi-7">n</span></sup>. After <span 
+class="cmmi-10">n </span><span 
+class="cmr-10">= 3 </span>these algebras are no longer
+composition algebras. R. D. Schafer established the surprising result that the
+derivation algebras stop growing at <span 
+class="cmmi-10">n </span><span 
+class="cmr-10">= 3</span>. Schafer&#x2019;s proof assumed the scalars were a
+field of characteristic <span 
+class="cmmi-10">&#x2260;</span><span 
+class="cmr-10">2</span><span 
+class="cmmi-10">,</span><span 
+class="cmr-10">3</span>. In this paper we will give a different proof of his result
+which works for arbitrary rings of scalars, making use of the concept of a Cayley
+derivation.</p>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" cellpadding="0" class="article">
+          <tr>
+            <td class="article-area">
+              <h5>Mathematical Subject Classification 2000</h5>
+
+              <div class="keywords">
+                Primary: 17A15
+              </div>
+
+              <div class="keywords">
+                Secondary: 17B60
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" cellpadding="0" class="article">
+          <tr>
+            <td class="article-area">
+              <h5>Milestones</h5>
+
+              <div class="keywords">
+                Received: 18 April 1983
+              </div>
+
+              <div class="keywords">
+                Published: 1 March 1985
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" cellpadding="0" class="article">
+          <tr>
+            <td class="article-area">
+              <h5>Authors</h5>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0" cellpadding="0" class="author-contact">
+          <tr>
+            <td class="author-name" colspan="2">Kevin Mor McCrimmon</td>
+          </tr>
+
+          <tr>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table cellspacing="0" cellpadding="0" class="pause">
+          <tr>
+            <td class="action-end"><img src="/pjm/etc/z.gif" alt="" /></td>
+          </tr>
+        </table>
+      </td>
+
+      <td id="content-area-end"></td>
+    </tr>
+  </table>
+
+  <table cellspacing="0" cellpadding="0" id="footer-area">
+    <tr>
+      <td class="box-footer" onclick=
+      "javascript:window.location='http://mathscipub.org/';">
+        <img src="/mod/images/msp-logo.png" alt=
+        "Mathematical Sciences Publishers" />
+
+        <p class="copyright">© Copyright 1985 Pacific Journal of
+        Mathematics. All rights reserved.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,118 @@
+HTTP/2 302 
+date: Sun, 15 Feb 2026 23:17:30 GMT
+content-type: text/html;charset=utf-8
+location: https://www.nature.com/articles/s41467-021-23358-8
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sun, 15 Feb 2026 23:43:00 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=7x%2FkupGhPLYo4gqAw0NQPpRa5DEmdyvi62jV8zlDOijzhIrNiznyi00gbPNEisKrxBgO8xBhPRE%2B4b5iduLkOoWO7xiN0Q%3D%3D"}]}
+cf-ray: 9ce884e17a2ec213-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 303 
+location: https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Farticles%2Fs41467-021-23358-8
+content-type: text/html
+via: 1.1 google, 1.1 varnish
+server: Oscar Platform 0.2075.0
+strict-transport-security: max-age=31536000;preload
+x-vcap-request-id: 91020763-0203-45cd-7c50-d99ea8eaf617
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:30 GMT
+x-served-by: cache-hhr-khhr2060022-HHR, cache-hhr-khhr2060049-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1771197451.601586,VS0,VE216
+vary: x-forwarded-host, upgrade-insecure-requests
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 150
+
+HTTP/2 302 
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-security-policy: frame-ancestors 'none';
+expires: 0
+location: https://idp.nature.com/transit?redirect_uri=https%3A%2F%2Fwww.nature.com%2Farticles%2Fs41467-021-23358-8&code=41bd6e7f-5ca0-4400-9be7-7ba58f444e07
+pragma: no-cache
+set-cookie: idp_session=sVERSION_1692b5fcd-836b-4dc6-a266-bfa2ccc6fa19; Domain=.nature.com; Path=/; Secure; SameSite=None; HttpOnly
+set-cookie: idp_session_http=hVERSION_12f25af34-b9c4-4942-bcbb-074014dfff41; Domain=.nature.com; Path=/; HttpOnly
+set-cookie: idp_marker=0b5df12f-2835-437b-bf0c-a68b8992909d; Domain=.nature.com; Path=/; Max-Age=34560000; HttpOnly
+strict-transport-security: max-age=31536000 ; includeSubDomains
+traceparent: 00-182b135a5a9245f44eb78a4560c3cb2b-c06108945cb6b866-01
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-vcap-request-id: 182b135a-5a92-45f4-4eb7-8a4560c3cb2b
+x-xss-protection: 1; mode=block
+via: 1.1 google, 1.1 varnish
+x-cdn-origin: SNPaaS
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:31 GMT
+x-served-by: cache-hhr-khhr2060043-HHR
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1771197451.853401,VS0,VE168
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-language: en-US
+content-security-policy: frame-ancestors 'none';
+expires: 0
+location: https://www.nature.com/articles/s41467-021-23358-8?error=cookies_not_supported&code=41bd6e7f-5ca0-4400-9be7-7ba58f444e07
+pragma: no-cache
+strict-transport-security: max-age=31536000 ; includeSubDomains
+traceparent: 00-1f9af244ea6045344c4c0cbb68173d13-b23d3cff3f864bca-01
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-vcap-request-id: 1f9af244-ea60-4534-4c4c-0cbb68173d13
+x-xss-protection: 1; mode=block
+via: 1.1 google, 1.1 varnish
+x-cdn-origin: SNPaaS
+accept-ranges: bytes
+date: Sun, 15 Feb 2026 23:17:31 GMT
+x-served-by: cache-hhr-khhr2060043-HHR
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1771197451.031634,VS0,VE154
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 200 
+x-dump-request-bodies: 0
+x-vcap-request-id: bd5d32bb-99b0-4da7-7059-2be0e5dae128
+tracestate: gorouter=4877df2bf1c585d0
+tracestate: gorouter=4877df2bf1c585d0
+traceparent: 00-bd5d32bb99b04da770592be0e5dae128-6cf3ec47794fe523-01
+traceparent: 00-bd5d32bb99b04da770592be0e5dae128-78e395aaa69a9f10-01
+x-b3-traceid: caa1c2253e6cbe33
+x-sn-servicetimems: 155
+content-type: text/html; charset="UTF-8"
+strict-transport-security: max-age=31536000;preload
+accept-ranges: bytes
+x-b3-sampled: 1
+content-encoding: gzip
+x-frame-options: DENY
+set-cookie: CONTENT_USAGE_SESSIONID="utterlyidle:v1:NWY2ZDhjOTUtOWVkNC00MjYyLWI5ZGYtZGVmMzMxMDRmNTk0"; Domain=.nature.com; Path=/; Secure=; HttpOnly=
+set-cookie: user.uuid.v2="fd204c43-d5cb-489d-b86f-334508cf71bb"; Expires=Fri, 15 May 2026 23:17:31 GMT; Path=/; secure; HttpOnly
+x-xss-protection: 1; mode=block
+via: 1.1 google, 1.1 varnish
+x-content-type-options: nosniff
+x-b3-spanid: c3c9f95f804600d3
+server: Oscar Platform 0.2075.0
+x-forwarded-host: www.nature.com
+age: 0
+cache-control: private, must-revalidate
+date: Sun, 15 Feb 2026 23:17:31 GMT
+x-served-by: cache-hhr-khhr2060051-HHR, cache-hhr-khhr2060049-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1771197451.196462,VS0,VE382
+vary: X-Frame-Options,X-Oscar-Cache-Mode, Accept-Encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+

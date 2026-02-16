@@ -1,0 +1,46 @@
+HTTP/1.1 301 Moved Permanently
+Connection: close
+Content-Length: 0
+Server: Varnish
+Retry-After: 0
+Location: https://arxiv.org/abs/math.GM/0011260
+Accept-Ranges: bytes
+Date: Sun, 15 Feb 2026 23:17:25 GMT
+Via: 1.1 varnish
+X-Served-By: cache-hhr-khhr2060054-HHR
+X-Cache: HIT
+X-Timer: S1771197446.653473,VS0,VE0
+
+HTTP/2 301 
+x-frame-options: SAMEORIGIN
+server: Google Frontend
+location: /abs/math/0011260
+content-security-policy: frame-ancestors 'none'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+x-cloud-trace-context: 9307fb6d011321a989fcb66f460c6028
+accept-ranges: bytes
+age: 265
+date: Sun, 15 Feb 2026 23:17:25 GMT
+x-served-by: cache-lga21930-LGA, cache-lga21969-LGA, cache-hhr-khhr2060027-HHR
+x-cache: MISS, MISS, HIT
+x-timer: S1771197446.699668,VS0,VE0
+content-length: 221
+
+HTTP/2 200 
+x-cloud-trace-context: 075f7b0e012180349112ca158f1c72b9
+content-type: text/html; charset=utf-8
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Mon, 30 Nov 2009 17:19:30 GMT
+cache-control: max-age=3600
+x-frame-options: SAMEORIGIN
+content-security-policy: frame-ancestors 'none'
+server: Google Frontend
+accept-ranges: bytes
+age: 230502
+date: Sun, 15 Feb 2026 23:17:25 GMT
+x-served-by: cache-lga21984-LGA, cache-lga21946-LGA, cache-hhr-khhr2060027-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1771197446.713557,VS0,VE0
+content-length: 47097
+

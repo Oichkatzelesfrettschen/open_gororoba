@@ -1,0 +1,6111 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Gravitational Wave Open Science Center" />
+    <meta name="keywords" content="gravitational waves, open data" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>GWTC-3-confident</title>
+    <link
+      rel="shortcut icon"
+      href="/static/images/icons/gwosc-fav.ico"
+    />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/solid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/fontawesome.min.js"></script>
+    <!-- Popperjs -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha256-BRqBN7dYgABqtY9Hd4ynE+1slnEw+roEPFzQ7TRRfcg="
+      crossorigin="anonymous"
+    ></script>
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <!-- Gwosc style and scripts -->
+    <link rel="stylesheet" href="/static/css/gwosc.css" />
+    <script src="/static/js/gwosc.js"></script>
+
+    
+<!-- Get RWD-Table from CDN (see issue #655) -->
+<script src="https://cdn.jsdelivr.net/npm/RWD-Table-Patterns@6.1.3/dist/js/rwd-table.min.js"
+        integrity="sha256-WbKUg9Ta9YxMjv1j0q3XaXonesYtFBZXF/vA43Iuxok="
+        crossorigin="anonymous">
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/RWD-Table-Patterns@6.1.3/dist/css/rwd-table.min.css"
+      integrity="sha256-+Tvx/K+1gRdQKKEbjo2cTH740apU/fDuLI3QmNTdIKY="
+      crossorigin="anonymous"
+>
+<script>
+  $(document).ready(function () {
+    $("#events-per-page-sel").on("change", function () {
+      const url_params = new URLSearchParams(window.location.search);
+      url_params.delete("page");
+      url_params.delete("pagesize");
+      pagesize = $("#events-per-page-sel").val();
+      if (pagesize == "all") {
+        url_params.append("pagesize", "all");
+      } else {
+        url_params.append("page", 1);
+        url_params.append("pagesize", pagesize);
+      }
+      window.location.href = location.pathname + "?" + url_params;
+    });
+
+    // Initialize RWD-Table options
+    $(function() {
+      $('.table-responsive').responsiveTable({
+        pattern: "priority-columns",
+        sortable: true,
+        // We use a special comparison function to properly handle columns of floating point values.
+        // See issue #655.
+        // `a` and `b` are arrays [value of the row (as string), index]
+        // so we usually only use the first element.
+        // `dir` is the direction of sorting
+        compareFunction: function(a, b, dir) {
+          // Try to compare as floats
+          // We don't convert `a[0]` and `b[0]` to floats otherwise string comparison doesn't work
+          // Missing values are represented as "--" so parseFloat return NaN
+          // Therefore, they are handled as strings
+          a0 = isNaN(parseFloat(a[0])) ? a[0] : parseFloat(a[0])
+          b0 = isNaN(parseFloat(b[0])) ? b[0] : parseFloat(b[0])
+          if (typeof(a0) === "number" && typeof(b0) === "number") {
+            return a0 < b0 ? -dir : dir;
+          }
+          // Compare as strings (this is similar to the default sort function)
+          return a[0].localeCompare(b[0], undefined, {numeric: true}) < 0 ? -dir : dir
+        },
+      });
+    });
+  });
+</script>
+<style>
+  .directions-box {
+    margin-bottom: 2em;
+    padding: 1em;
+  }
+  .directions-box > * {
+    margin-top: 2em;
+  }
+  .download-options {
+    margin-block: 2em;
+  }
+  .table-responsive table :not(sup, sub) {
+    font-size: var(--step--1);
+  }
+  .table-responsive table :is(sup, sub) {
+    font-size: var(--step--2);
+  }
+  .table-responsive table * {
+    white-space: nowrap;
+  }
+  .table-responsive table th {
+    background-color: var(--clr-primary);
+    color: var(--clr-neutral-100);
+  }
+  .table-responsive table.focus-on tbody tr.focused td {
+    background-color: black;
+    color: var(--clr-accent);
+  }
+  .table-responsive table.focus-on tbody tr.focused td a {
+    color: var(--clr-accent);
+  }
+  .pagination {
+    margin-block: 1em;
+  }
+</style>
+
+  </head>
+
+  <body>
+    <header class="primary-header">
+      <div class="brand-logo">
+        <a href="/">
+          <img src="/static/images/gwosc_logo.svg" alt="GWOSC logo" />
+        </a>
+      </div>
+      <nav class="primary-nav" role="navigation" id="top-menu">
+        <ul class="nav-list">
+          <li class="nav-list-item">
+            Get Data
+            <ul class="nav-sublist">
+              <li class="nav-sublist-item"><a href="/data/">Data Sets</a></li>
+              <li class="nav-sublist-item">
+                <a href="/eventapi/">Events and Catalogs</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/timeline/">Timelines</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-list-item">
+            Tutorials
+            <ul class="nav-sublist">
+              <li class="nav-sublist-item">
+                <a href="/path/">Learning Path</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/tutorials/">Tutorials</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/workshops/">Workshops</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-list-item">
+            Software
+            <ul class="nav-sublist">
+              <li class="nav-sublist-item">
+                <a href="/interactive/">Web Apps</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/gps/">GPS Time Converter</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/mysources/">Source Visibility Check</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/software/">Libraries</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/api/">API Documentation</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-list-item">
+            About
+            <ul class="nav-sublist">
+              <li class="nav-sublist-item">
+                <a href="/about/">About GWOSC</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/acknowledgement/">Acknowledge</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/contact/">Contact Us</a>
+              </li>
+              <li class="nav-sublist-item">
+                <a href="/projects/">Papers and Projects</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <button class="mobile-nav-toggle">
+        <img
+          class="hamburger-icon"
+          src="/static/images/hamburger_menu.svg"
+          alt=""
+        />
+      </button>
+    </header>
+
+    <main>
+      <nav class="contextual-menu">
+        
+      </nav>
+      
+      <div class="main-container">
+        
+<div class="tiny-menu">
+  <a href="/eventapi"
+    ><i class="fa-solid fa-arrows-rotate"></i> New Search</a
+  >
+  &nbsp; &nbsp;
+  <a href="/eventportaldocs"
+    ><i class="fa-solid fa-circle-question"></i> Help</a
+  >
+</div>
+
+<h1 class="h1-docs">GWTC-3-confident</h1>
+
+<div class="directions-box">
+  <div class="alert alert-info">
+    <p>Confident events from the O3b observing run for LIGO and Virgo, as described in the GWTC-3 catalog paper. These candidate events have a probability of astrophysical origin (probability of being a gravitational-wave signal versus being instrumental noise) assuming a compact binary (such as a binary black hole, neutron star-black hole binary or binary neutron star) coalescence source of greater than 0.5 based upon results of at least one of the search pipelines. These events are also included in a cumulative list of <a href='/eventapi/html/GWTC'>all GWTC events</a> published to date.  Details and additional data products are linked from the <a href='/GWTC-3'>documentation page</a>.</p>
+  </div>
+  
+  
+
+  <ul style="list-style-type: square">
+    <li>Toggle columns on/off with Display button at right.</li>
+    <li>Click an event name for all versions and more information.</li>
+    <li>
+      Values in the table below are from the <b>Default SEARCH</b> and
+      <b>Default PE</b> cases found in the individual event's page.
+    </li>
+    <li>
+      See <a href="/eventportaldocs/">Event Portal Usage Notes</a> for more
+      details.
+    </li>
+  </ul>
+  <div class="num-events-box">List contains 35 events.</div>
+</div>
+
+<div data-responsive-table-toolbar="events-table"></div>
+<div
+  class="table-responsive"
+>
+  <table
+    class="table table-bordered table-striped table-hover"
+    id="events-table"
+  >
+    <thead>
+      <tr>
+        <th scope="col" data-priority="1">Name</th>
+        <th scope="col" data-priority="1">Version</th>
+        <th scope="col" data-priority="3">Release</th>
+        <th>GPS</th>
+
+        
+        <th data-priority="5" style="min-width: 50px">
+          Mass 1 (M<sub>&#9737;</sub>)
+        </th>
+        
+        <th data-priority="5" style="min-width: 50px">
+          Mass 2 (M<sub>&#9737;</sub>)
+        </th>
+        
+        <th data-priority="6" style="min-width: 50px">
+          Network SNR
+        </th>
+        
+        <th data-priority="6" style="min-width: 50px">
+          Distance (Mpc)
+        </th>
+        
+        <th data-priority="6" style="min-width: 50px">
+          &chi;<sub>eff</sub>
+        </th>
+        
+        <th data-priority="6" style="min-width: 50px">
+          Total Mass (M<sub>&#9737;</sub>)
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          Chirp Mass (M<sub>&#9737;</sub>)
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          Detector Frame Chirp Mass (M<sub>&#9737;</sub>)
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          Redshift
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          False Alarm Rate (yr<sup>-1</sup>)
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          P<sub>astro</sub>
+        </th>
+        
+        <th data-priority="0" style="min-width: 50px">
+          Final Mass (M<sub>&#9737;</sub>)
+        </th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200322_091133/v1/">GW200322_091133</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1268903511.3">1268903511.3</td>
+
+        
+        
+        <td data-value="38.0">
+          
+          
+          38 
+          <span class="supsub"
+            ><sup>+130</sup>
+            <sub>-22</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="11.3">
+          
+          
+          11.3 
+          <span class="supsub"
+            ><sup>+24.3</sup>
+            <sub>-6.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4.5">
+          
+          
+          4.5 
+          <span class="supsub"
+            ><sup>+2.7</sup>
+            <sub>-3.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3500.0">
+          
+          
+          3500 
+          <span class="supsub"
+            ><sup>+12500</sup>
+            <sub>-2200</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.27">
+          
+          
+          0.27 
+          <span class="supsub"
+            ><sup>+0.54</sup>
+            <sub>-0.58</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="50.0">
+          
+          
+          50 
+          <span class="supsub"
+            ><sup>+132</sup>
+            <sub>-22</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="15.0">
+          
+          
+          15.0 
+          <span class="supsub"
+            ><sup>+29.5</sup>
+            <sub>-4.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.59">
+          
+          
+          0.59 
+          <span class="supsub"
+            ><sup>+1.43</sup>
+            <sub>-0.32</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="140.0">
+          
+          
+          140 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.61501">
+          
+          
+          0.62 
+          
+        </td>
+        
+        
+        
+        <td data-value="48.0">
+          
+          
+          48 
+          <span class="supsub"
+            ><sup>+132</sup>
+            <sub>-22</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200316_215756/v1/">GW200316_215756</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1268431094.1">1268431094.1</td>
+
+        
+        
+        <td data-value="13.1">
+          
+          
+          13.1 
+          <span class="supsub"
+            ><sup>+10.2</sup>
+            <sub>-2.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.8">
+          
+          
+          7.8 
+          <span class="supsub"
+            ><sup>+2.0</sup>
+            <sub>-2.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.3">
+          
+          
+          10.3 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1120.0">
+          
+          
+          1120 
+          <span class="supsub"
+            ><sup>+480</sup>
+            <sub>-440</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.13">
+          
+          
+          0.13 
+          <span class="supsub"
+            ><sup>+0.27</sup>
+            <sub>-0.10</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="21.2">
+          
+          
+          21.2 
+          <span class="supsub"
+            ><sup>+7.2</sup>
+            <sub>-2.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.75">
+          
+          
+          8.75 
+          <span class="supsub"
+            ><sup>+0.62</sup>
+            <sub>-0.55</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.22">
+          
+          
+          0.22 
+          <span class="supsub"
+            ><sup>+0.08</sup>
+            <sub>-0.08</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="20.2">
+          
+          
+          20.2 
+          <span class="supsub"
+            ><sup>+7.4</sup>
+            <sub>-1.9</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200311_115853/v1/">GW200311_115853</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1267963151.3">1267963151.3</td>
+
+        
+        
+        <td data-value="34.2">
+          
+          
+          34.2 
+          <span class="supsub"
+            ><sup>+6.4</sup>
+            <sub>-3.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.7">
+          
+          
+          27.7 
+          <span class="supsub"
+            ><sup>+4.1</sup>
+            <sub>-5.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.8">
+          
+          
+          17.8 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1170.0">
+          
+          
+          1170 
+          <span class="supsub"
+            ><sup>+280</sup>
+            <sub>-400</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.02">
+          
+          
+          -0.02 
+          <span class="supsub"
+            ><sup>+0.16</sup>
+            <sub>-0.20</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="61.9">
+          
+          
+          61.9 
+          <span class="supsub"
+            ><sup>+5.3</sup>
+            <sub>-4.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="26.6">
+          
+          
+          26.6 
+          <span class="supsub"
+            ><sup>+2.4</sup>
+            <sub>-2.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.23">
+          
+          
+          0.23 
+          <span class="supsub"
+            ><sup>+0.05</sup>
+            <sub>-0.07</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="59.0">
+          
+          
+          59.0 
+          <span class="supsub"
+            ><sup>+4.8</sup>
+            <sub>-3.9</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200308_173609/v1/">GW200308_173609</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1267724187.7">1267724187.7</td>
+
+        
+        
+        <td data-value="60.0">
+          
+          
+          60 
+          <span class="supsub"
+            ><sup>+166</sup>
+            <sub>-29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="24.0">
+          
+          
+          24 
+          <span class="supsub"
+            ><sup>+36</sup>
+            <sub>-13</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4.7">
+          
+          
+          4.7 
+          <span class="supsub"
+            ><sup>+2.5</sup>
+            <sub>-2.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7100.0">
+          
+          
+          7100 
+          <span class="supsub"
+            ><sup>+13900</sup>
+            <sub>-4400</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.16">
+          
+          
+          0.16 
+          <span class="supsub"
+            ><sup>+0.58</sup>
+            <sub>-0.49</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="92.0">
+          
+          
+          92.0 
+          <span class="supsub"
+            ><sup>+169.0</sup>
+            <sub>-48.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="34.0">
+          
+          
+          34 
+          <span class="supsub"
+            ><sup>+44</sup>
+            <sub>-18</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="1.04">
+          
+          
+          1.04 
+          <span class="supsub"
+            ><sup>+1.47</sup>
+            <sub>-0.57</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="2.4">
+          
+          
+          2.4 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.8566">
+          
+          
+          0.86 
+          
+        </td>
+        
+        
+        
+        <td data-value="88.0">
+          
+          
+          88 
+          <span class="supsub"
+            ><sup>+169</sup>
+            <sub>-47</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200306_093714/v1/">GW200306_093714</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1267522652.1">1267522652.1</td>
+
+        
+        
+        <td data-value="28.3">
+          
+          
+          28.3 
+          <span class="supsub"
+            ><sup>+17.1</sup>
+            <sub>-7.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="14.8">
+          
+          
+          14.8 
+          <span class="supsub"
+            ><sup>+6.5</sup>
+            <sub>-6.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.8">
+          
+          
+          7.8 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="2100.0">
+          
+          
+          2100 
+          <span class="supsub"
+            ><sup>+1700</sup>
+            <sub>-1100</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.32">
+          
+          
+          0.32 
+          <span class="supsub"
+            ><sup>+0.28</sup>
+            <sub>-0.46</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="43.9">
+          
+          
+          43.9 
+          <span class="supsub"
+            ><sup>+11.8</sup>
+            <sub>-7.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.5">
+          
+          
+          17.5 
+          <span class="supsub"
+            ><sup>+3.5</sup>
+            <sub>-3.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.38">
+          
+          
+          0.38 
+          <span class="supsub"
+            ><sup>+0.24</sup>
+            <sub>-0.18</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="24.0">
+          
+          
+          24 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.81156">
+          
+          
+          0.81 
+          
+        </td>
+        
+        
+        
+        <td data-value="41.7">
+          
+          
+          41.7 
+          <span class="supsub"
+            ><sup>+12.3</sup>
+            <sub>-6.9</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200302_015811/v1/">GW200302_015811</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1267149509.5">1267149509.5</td>
+
+        
+        
+        <td data-value="37.8">
+          
+          
+          37.8 
+          <span class="supsub"
+            ><sup>+8.7</sup>
+            <sub>-8.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="20.0">
+          
+          
+          20.0 
+          <span class="supsub"
+            ><sup>+8.1</sup>
+            <sub>-5.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.8">
+          
+          
+          10.8 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1480.0">
+          
+          
+          1480 
+          <span class="supsub"
+            ><sup>+1020</sup>
+            <sub>-700</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.01">
+          
+          
+          0.01 
+          <span class="supsub"
+            ><sup>+0.25</sup>
+            <sub>-0.26</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="57.8">
+          
+          
+          57.8 
+          <span class="supsub"
+            ><sup>+9.6</sup>
+            <sub>-6.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="23.4">
+          
+          
+          23.4 
+          <span class="supsub"
+            ><sup>+4.7</sup>
+            <sub>-3.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.28">
+          
+          
+          0.28 
+          <span class="supsub"
+            ><sup>+0.16</sup>
+            <sub>-0.12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.11">
+          
+          
+          0.11 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.90643">
+          
+          
+          0.91 
+          
+        </td>
+        
+        
+        
+        <td data-value="55.5">
+          
+          
+          55.5 
+          <span class="supsub"
+            ><sup>+8.9</sup>
+            <sub>-6.6</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200225_060421/v1/">GW200225_060421</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1266645879.3">1266645879.3</td>
+
+        
+        
+        <td data-value="19.3">
+          
+          
+          19.3 
+          <span class="supsub"
+            ><sup>+5.0</sup>
+            <sub>-3.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="14.0">
+          
+          
+          14.0 
+          <span class="supsub"
+            ><sup>+2.8</sup>
+            <sub>-3.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="12.5">
+          
+          
+          12.5 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1150.0">
+          
+          
+          1150 
+          <span class="supsub"
+            ><sup>+510</sup>
+            <sub>-530</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.12">
+          
+          
+          -0.12 
+          <span class="supsub"
+            ><sup>+0.17</sup>
+            <sub>-0.28</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="33.5">
+          
+          
+          33.5 
+          <span class="supsub"
+            ><sup>+3.6</sup>
+            <sub>-3.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="14.2">
+          
+          
+          14.2 
+          <span class="supsub"
+            ><sup>+1.5</sup>
+            <sub>-1.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.22">
+          
+          
+          0.22 
+          <span class="supsub"
+            ><sup>+0.09</sup>
+            <sub>-0.10</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.000011">
+          
+           &le; 
+          1.1e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="32.1">
+          
+          
+          32.1 
+          <span class="supsub"
+            ><sup>+3.5</sup>
+            <sub>-2.8</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200224_222234/v1/">GW200224_222234</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1266618172.4">1266618172.4</td>
+
+        
+        
+        <td data-value="40.0">
+          
+          
+          40.0 
+          <span class="supsub"
+            ><sup>+6.7</sup>
+            <sub>-4.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="32.7">
+          
+          
+          32.7 
+          <span class="supsub"
+            ><sup>+4.8</sup>
+            <sub>-7.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="20.0">
+          
+          
+          20.0 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1710.0">
+          
+          
+          1710 
+          <span class="supsub"
+            ><sup>+500</sup>
+            <sub>-650</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.1">
+          
+          
+          0.10 
+          <span class="supsub"
+            ><sup>+0.15</sup>
+            <sub>-0.16</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="72.3">
+          
+          
+          72.3 
+          <span class="supsub"
+            ><sup>+7.2</sup>
+            <sub>-5.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="31.1">
+          
+          
+          31.1 
+          <span class="supsub"
+            ><sup>+3.3</sup>
+            <sub>-2.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.32">
+          
+          
+          0.32 
+          <span class="supsub"
+            ><sup>+0.08</sup>
+            <sub>-0.11</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="68.7">
+          
+          
+          68.7 
+          <span class="supsub"
+            ><sup>+6.7</sup>
+            <sub>-4.8</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200220_124850/v1/">GW200220_124850</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1266238148.1">1266238148.1</td>
+
+        
+        
+        <td data-value="38.9">
+          
+          
+          38.9 
+          <span class="supsub"
+            ><sup>+14.1</sup>
+            <sub>-8.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.9">
+          
+          
+          27.9 
+          <span class="supsub"
+            ><sup>+9.2</sup>
+            <sub>-9.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.5">
+          
+          
+          8.5 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4000.0">
+          
+          
+          4000 
+          <span class="supsub"
+            ><sup>+2800</sup>
+            <sub>-2200</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.07">
+          
+          
+          -0.07 
+          <span class="supsub"
+            ><sup>+0.27</sup>
+            <sub>-0.33</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="67.0">
+          
+          
+          67 
+          <span class="supsub"
+            ><sup>+17</sup>
+            <sub>-12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="28.2">
+          
+          
+          28.2 
+          <span class="supsub"
+            ><sup>+7.3</sup>
+            <sub>-5.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.66">
+          
+          
+          0.66 
+          <span class="supsub"
+            ><sup>+0.36</sup>
+            <sub>-0.31</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="30.0">
+          
+          
+          30 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.82579">
+          
+          
+          0.83 
+          
+        </td>
+        
+        
+        
+        <td data-value="64.0">
+          
+          
+          64 
+          <span class="supsub"
+            ><sup>+16</sup>
+            <sub>-11</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200220_061928/v1/">GW200220_061928</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1266214786.7">1266214786.7</td>
+
+        
+        
+        <td data-value="87.0">
+          
+          
+          87 
+          <span class="supsub"
+            ><sup>+40</sup>
+            <sub>-23</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="61.0">
+          
+          
+          61 
+          <span class="supsub"
+            ><sup>+26</sup>
+            <sub>-25</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.2">
+          
+          
+          7.2 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="6000.0">
+          
+          
+          6000 
+          <span class="supsub"
+            ><sup>+4800</sup>
+            <sub>-3100</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.06">
+          
+          
+          0.06 
+          <span class="supsub"
+            ><sup>+0.40</sup>
+            <sub>-0.38</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="148.0">
+          
+          
+          148 
+          <span class="supsub"
+            ><sup>+55</sup>
+            <sub>-33</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="62.0">
+          
+          
+          62 
+          <span class="supsub"
+            ><sup>+23</sup>
+            <sub>-15</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.9">
+          
+          
+          0.90 
+          <span class="supsub"
+            ><sup>+0.55</sup>
+            <sub>-0.40</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="6.8">
+          
+          
+          6.8 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.62376">
+          
+          
+          0.62 
+          
+        </td>
+        
+        
+        
+        <td data-value="141.0">
+          
+          
+          141 
+          <span class="supsub"
+            ><sup>+51</sup>
+            <sub>-31</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200219_094415/v1/">GW200219_094415</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1266140673.1">1266140673.1</td>
+
+        
+        
+        <td data-value="37.5">
+          
+          
+          37.5 
+          <span class="supsub"
+            ><sup>+10.1</sup>
+            <sub>-6.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.9">
+          
+          
+          27.9 
+          <span class="supsub"
+            ><sup>+7.4</sup>
+            <sub>-8.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.7">
+          
+          
+          10.7 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3400.0">
+          
+          
+          3400 
+          <span class="supsub"
+            ><sup>+1700</sup>
+            <sub>-1500</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.08">
+          
+          
+          -0.08 
+          <span class="supsub"
+            ><sup>+0.23</sup>
+            <sub>-0.29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="65.0">
+          
+          
+          65.0 
+          <span class="supsub"
+            ><sup>+12.6</sup>
+            <sub>-8.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.6">
+          
+          
+          27.6 
+          <span class="supsub"
+            ><sup>+5.6</sup>
+            <sub>-3.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.57">
+          
+          
+          0.57 
+          <span class="supsub"
+            ><sup>+0.22</sup>
+            <sub>-0.22</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00099">
+          
+          
+          0.00099 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="62.2">
+          
+          
+          62.2 
+          <span class="supsub"
+            ><sup>+11.7</sup>
+            <sub>-7.8</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200216_220804/v1/">GW200216_220804</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1265926102.8">1265926102.8</td>
+
+        
+        
+        <td data-value="51.0">
+          
+          
+          51 
+          <span class="supsub"
+            ><sup>+22</sup>
+            <sub>-13</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="30.0">
+          
+          
+          30 
+          <span class="supsub"
+            ><sup>+14</sup>
+            <sub>-16</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.1">
+          
+          
+          8.1 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3800.0">
+          
+          
+          3800 
+          <span class="supsub"
+            ><sup>+3000</sup>
+            <sub>-2000</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.1">
+          
+          
+          0.10 
+          <span class="supsub"
+            ><sup>+0.34</sup>
+            <sub>-0.36</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="81.0">
+          
+          
+          81 
+          <span class="supsub"
+            ><sup>+20</sup>
+            <sub>-14</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="32.9">
+          
+          
+          32.9 
+          <span class="supsub"
+            ><sup>+9.3</sup>
+            <sub>-8.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.63">
+          
+          
+          0.63 
+          <span class="supsub"
+            ><sup>+0.37</sup>
+            <sub>-0.29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.35">
+          
+          
+          0.35 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.77277">
+          
+          
+          0.77 
+          
+        </td>
+        
+        
+        
+        <td data-value="78.0">
+          
+          
+          78 
+          <span class="supsub"
+            ><sup>+19</sup>
+            <sub>-13</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200210_092254/v1/">GW200210_092254</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1265361792.9">1265361792.9</td>
+
+        
+        
+        <td data-value="24.1">
+          
+          
+          24.1 
+          <span class="supsub"
+            ><sup>+7.5</sup>
+            <sub>-4.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="2.83">
+          
+          
+          2.83 
+          <span class="supsub"
+            ><sup>+0.47</sup>
+            <sub>-0.42</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.4">
+          
+          
+          8.4 
+          <span class="supsub"
+            ><sup>+0.5</sup>
+            <sub>-0.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="940.0">
+          
+          
+          940 
+          <span class="supsub"
+            ><sup>+430</sup>
+            <sub>-340</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.02">
+          
+          
+          0.02 
+          <span class="supsub"
+            ><sup>+0.22</sup>
+            <sub>-0.21</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.0">
+          
+          
+          27.0 
+          <span class="supsub"
+            ><sup>+7.1</sup>
+            <sub>-4.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="6.56">
+          
+          
+          6.56 
+          <span class="supsub"
+            ><sup>+0.38</sup>
+            <sub>-0.40</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.19">
+          
+          
+          0.19 
+          <span class="supsub"
+            ><sup>+0.08</sup>
+            <sub>-0.06</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1.2">
+          
+          
+          1.2 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.54462">
+          
+          
+          0.54 
+          
+        </td>
+        
+        
+        
+        <td data-value="26.7">
+          
+          
+          26.7 
+          <span class="supsub"
+            ><sup>+7.2</sup>
+            <sub>-4.3</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200209_085452/v1/">GW200209_085452</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1265273710.1">1265273710.1</td>
+
+        
+        
+        <td data-value="35.6">
+          
+          
+          35.6 
+          <span class="supsub"
+            ><sup>+10.5</sup>
+            <sub>-6.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.1">
+          
+          
+          27.1 
+          <span class="supsub"
+            ><sup>+7.8</sup>
+            <sub>-7.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="9.6">
+          
+          
+          9.6 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3400.0">
+          
+          
+          3400 
+          <span class="supsub"
+            ><sup>+1900</sup>
+            <sub>-1800</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.12">
+          
+          
+          -0.12 
+          <span class="supsub"
+            ><sup>+0.24</sup>
+            <sub>-0.30</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="62.6">
+          
+          
+          62.6 
+          <span class="supsub"
+            ><sup>+13.9</sup>
+            <sub>-9.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="26.7">
+          
+          
+          26.7 
+          <span class="supsub"
+            ><sup>+6.0</sup>
+            <sub>-4.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.57">
+          
+          
+          0.57 
+          <span class="supsub"
+            ><sup>+0.25</sup>
+            <sub>-0.26</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.046">
+          
+          
+          0.046 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.97236">
+          
+          
+          0.97 
+          
+        </td>
+        
+        
+        
+        <td data-value="59.9">
+          
+          
+          59.9 
+          <span class="supsub"
+            ><sup>+13.1</sup>
+            <sub>-8.9</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200208_222617/v1/">GW200208_222617</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1265235995.9">1265235995.9</td>
+
+        
+        
+        <td data-value="51.0">
+          
+          
+          51 
+          <span class="supsub"
+            ><sup>+103</sup>
+            <sub>-30</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="12.3">
+          
+          
+          12.3 
+          <span class="supsub"
+            ><sup>+9.2</sup>
+            <sub>-5.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.4">
+          
+          
+          7.4 
+          <span class="supsub"
+            ><sup>+1.4</sup>
+            <sub>-1.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4100.0">
+          
+          
+          4100 
+          <span class="supsub"
+            ><sup>+4400</sup>
+            <sub>-2000</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.45">
+          
+          
+          0.45 
+          <span class="supsub"
+            ><sup>+0.42</sup>
+            <sub>-0.46</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="63.0">
+          
+          
+          63 
+          <span class="supsub"
+            ><sup>+100</sup>
+            <sub>-26</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="19.8">
+          
+          
+          19.8 
+          <span class="supsub"
+            ><sup>+10.5</sup>
+            <sub>-5.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.66">
+          
+          
+          0.66 
+          <span class="supsub"
+            ><sup>+0.53</sup>
+            <sub>-0.29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4.8">
+          
+          
+          4.8 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.70006">
+          
+          
+          0.70 
+          
+        </td>
+        
+        
+        
+        <td data-value="61.0">
+          
+          
+          61 
+          <span class="supsub"
+            ><sup>+99</sup>
+            <sub>-26</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200208_130117/v1/">GW200208_130117</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1265202095.9">1265202095.9</td>
+
+        
+        
+        <td data-value="37.7">
+          
+          
+          37.7 
+          <span class="supsub"
+            ><sup>+9.3</sup>
+            <sub>-6.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.4">
+          
+          
+          27.4 
+          <span class="supsub"
+            ><sup>+6.3</sup>
+            <sub>-7.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.8">
+          
+          
+          10.8 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="2230.0">
+          
+          
+          2230 
+          <span class="supsub"
+            ><sup>+1020</sup>
+            <sub>-850</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.07">
+          
+          
+          -0.07 
+          <span class="supsub"
+            ><sup>+0.21</sup>
+            <sub>-0.27</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="65.3">
+          
+          
+          65.3 
+          <span class="supsub"
+            ><sup>+8.1</sup>
+            <sub>-6.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.7">
+          
+          
+          27.7 
+          <span class="supsub"
+            ><sup>+3.7</sup>
+            <sub>-3.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.4">
+          
+          
+          0.40 
+          <span class="supsub"
+            ><sup>+0.15</sup>
+            <sub>-0.14</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00031">
+          
+          
+          0.00031 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="62.5">
+          
+          
+          62.5 
+          <span class="supsub"
+            ><sup>+7.5</sup>
+            <sub>-6.4</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200202_154313/v1/">GW200202_154313</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1264693411.5">1264693411.5</td>
+
+        
+        
+        <td data-value="10.1">
+          
+          
+          10.1 
+          <span class="supsub"
+            ><sup>+3.5</sup>
+            <sub>-1.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.3">
+          
+          
+          7.3 
+          <span class="supsub"
+            ><sup>+1.1</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.8">
+          
+          
+          10.8 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="410.0">
+          
+          
+          410 
+          <span class="supsub"
+            ><sup>+150</sup>
+            <sub>-160</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.04">
+          
+          
+          0.04 
+          <span class="supsub"
+            ><sup>+0.13</sup>
+            <sub>-0.06</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.58">
+          
+          
+          17.58 
+          <span class="supsub"
+            ><sup>+1.78</sup>
+            <sub>-0.67</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.49">
+          
+          
+          7.49 
+          <span class="supsub"
+            ><sup>+0.24</sup>
+            <sub>-0.20</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.09">
+          
+          
+          0.09 
+          <span class="supsub"
+            ><sup>+0.03</sup>
+            <sub>-0.03</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="16.76">
+          
+          
+          16.76 
+          <span class="supsub"
+            ><sup>+1.87</sup>
+            <sub>-0.66</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200129_065458/v1/">GW200129_065458</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1264316116.4">1264316116.4</td>
+
+        
+        
+        <td data-value="34.5">
+          
+          
+          34.5 
+          <span class="supsub"
+            ><sup>+9.9</sup>
+            <sub>-3.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="29.0">
+          
+          
+          29.0 
+          <span class="supsub"
+            ><sup>+3.3</sup>
+            <sub>-9.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="26.8">
+          
+          
+          26.8 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="890.0">
+          
+          
+          890 
+          <span class="supsub"
+            ><sup>+260</sup>
+            <sub>-370</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.11">
+          
+          
+          0.11 
+          <span class="supsub"
+            ><sup>+0.11</sup>
+            <sub>-0.16</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="63.3">
+          
+          
+          63.3 
+          <span class="supsub"
+            ><sup>+4.5</sup>
+            <sub>-3.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.2">
+          
+          
+          27.2 
+          <span class="supsub"
+            ><sup>+2.1</sup>
+            <sub>-2.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.18">
+          
+          
+          0.18 
+          <span class="supsub"
+            ><sup>+0.05</sup>
+            <sub>-0.07</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="60.2">
+          
+          
+          60.2 
+          <span class="supsub"
+            ><sup>+4.1</sup>
+            <sub>-3.2</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200128_022011/v1/">GW200128_022011</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1264213229.9">1264213229.9</td>
+
+        
+        
+        <td data-value="42.2">
+          
+          
+          42.2 
+          <span class="supsub"
+            ><sup>+11.6</sup>
+            <sub>-8.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="32.6">
+          
+          
+          32.6 
+          <span class="supsub"
+            ><sup>+9.5</sup>
+            <sub>-9.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.6">
+          
+          
+          10.6 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3400.0">
+          
+          
+          3400 
+          <span class="supsub"
+            ><sup>+2100</sup>
+            <sub>-1800</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.12">
+          
+          
+          0.12 
+          <span class="supsub"
+            ><sup>+0.24</sup>
+            <sub>-0.25</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="75.0">
+          
+          
+          75 
+          <span class="supsub"
+            ><sup>+17</sup>
+            <sub>-12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="32.0">
+          
+          
+          32.0 
+          <span class="supsub"
+            ><sup>+7.5</sup>
+            <sub>-5.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.56">
+          
+          
+          0.56 
+          <span class="supsub"
+            ><sup>+0.28</sup>
+            <sub>-0.28</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.0043">
+          
+          
+          0.0043 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="71.0">
+          
+          
+          71 
+          <span class="supsub"
+            ><sup>+16</sup>
+            <sub>-11</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200115_042309/v2/">GW200115_042309</a>
+          </b>
+        </td>
+        <td data-value="2">v2</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1263097407.7">1263097407.7</td>
+
+        
+        
+        <td data-value="5.9">
+          
+          
+          5.9 
+          <span class="supsub"
+            ><sup>+2.0</sup>
+            <sub>-2.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1.44">
+          
+          
+          1.44 
+          <span class="supsub"
+            ><sup>+0.85</sup>
+            <sub>-0.28</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="11.3">
+          
+          
+          11.3 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="290.0">
+          
+          
+          290 
+          <span class="supsub"
+            ><sup>+150</sup>
+            <sub>-100</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.15">
+          
+          
+          -0.15 
+          <span class="supsub"
+            ><sup>+0.23</sup>
+            <sub>-0.42</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.4">
+          
+          
+          7.4 
+          <span class="supsub"
+            ><sup>+1.7</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="2.43">
+          
+          
+          2.43 
+          <span class="supsub"
+            ><sup>+0.05</sup>
+            <sub>-0.07</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.06">
+          
+          
+          0.06 
+          <span class="supsub"
+            ><sup>+0.03</sup>
+            <sub>-0.02</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="7.2">
+          
+          
+          7.2 
+          <span class="supsub"
+            ><sup>+1.8</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW200112_155838/v1/">GW200112_155838</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1262879936.0">1262879936.0</td>
+
+        
+        
+        <td data-value="35.6">
+          
+          
+          35.6 
+          <span class="supsub"
+            ><sup>+6.7</sup>
+            <sub>-4.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="28.3">
+          
+          
+          28.3 
+          <span class="supsub"
+            ><sup>+4.4</sup>
+            <sub>-5.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="19.8">
+          
+          
+          19.8 
+          <span class="supsub"
+            ><sup>+0.1</sup>
+            <sub>-0.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1250.0">
+          
+          
+          1250 
+          <span class="supsub"
+            ><sup>+430</sup>
+            <sub>-460</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.06">
+          
+          
+          0.06 
+          <span class="supsub"
+            ><sup>+0.15</sup>
+            <sub>-0.15</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="63.9">
+          
+          
+          63.9 
+          <span class="supsub"
+            ><sup>+5.7</sup>
+            <sub>-4.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="27.4">
+          
+          
+          27.4 
+          <span class="supsub"
+            ><sup>+2.6</sup>
+            <sub>-2.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.24">
+          
+          
+          0.24 
+          <span class="supsub"
+            ><sup>+0.07</sup>
+            <sub>-0.08</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="60.8">
+          
+          
+          60.8 
+          <span class="supsub"
+            ><sup>+5.3</sup>
+            <sub>-4.3</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191230_180458/v1/">GW191230_180458</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1261764316.4">1261764316.4</td>
+
+        
+        
+        <td data-value="49.4">
+          
+          
+          49.4 
+          <span class="supsub"
+            ><sup>+14.0</sup>
+            <sub>-9.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="37.0">
+          
+          
+          37 
+          <span class="supsub"
+            ><sup>+11</sup>
+            <sub>-12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.4">
+          
+          
+          10.4 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4300.0">
+          
+          
+          4300 
+          <span class="supsub"
+            ><sup>+2100</sup>
+            <sub>-1900</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.05">
+          
+          
+          -0.05 
+          <span class="supsub"
+            ><sup>+0.26</sup>
+            <sub>-0.31</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="86.0">
+          
+          
+          86 
+          <span class="supsub"
+            ><sup>+19</sup>
+            <sub>-12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="36.5">
+          
+          
+          36.5 
+          <span class="supsub"
+            ><sup>+8.2</sup>
+            <sub>-5.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.69">
+          
+          
+          0.69 
+          <span class="supsub"
+            ><sup>+0.26</sup>
+            <sub>-0.27</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.05">
+          
+          
+          0.050 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.96159">
+          
+          
+          0.96 
+          
+        </td>
+        
+        
+        
+        <td data-value="82.0">
+          
+          
+          82 
+          <span class="supsub"
+            ><sup>+17</sup>
+            <sub>-11</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191222_033537/v1/">GW191222_033537</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1261020955.1">1261020955.1</td>
+
+        
+        
+        <td data-value="45.1">
+          
+          
+          45.1 
+          <span class="supsub"
+            ><sup>+10.9</sup>
+            <sub>-8.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="34.7">
+          
+          
+          34.7 
+          <span class="supsub"
+            ><sup>+9.3</sup>
+            <sub>-10.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="12.5">
+          
+          
+          12.5 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3000.0">
+          
+          
+          3000 
+          <span class="supsub"
+            ><sup>+1700</sup>
+            <sub>-1700</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.04">
+          
+          
+          -0.04 
+          <span class="supsub"
+            ><sup>+0.20</sup>
+            <sub>-0.25</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="79.0">
+          
+          
+          79 
+          <span class="supsub"
+            ><sup>+16</sup>
+            <sub>-11</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="33.8">
+          
+          
+          33.8 
+          <span class="supsub"
+            ><sup>+7.1</sup>
+            <sub>-5.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.51">
+          
+          
+          0.51 
+          <span class="supsub"
+            ><sup>+0.23</sup>
+            <sub>-0.26</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="75.5">
+          
+          
+          75.5 
+          <span class="supsub"
+            ><sup>+15.3</sup>
+            <sub>-9.9</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191219_163120/v1/">GW191219_163120</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1260808298.4">1260808298.4</td>
+
+        
+        
+        <td data-value="31.1">
+          
+          
+          31.1 
+          <span class="supsub"
+            ><sup>+2.2</sup>
+            <sub>-2.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1.17">
+          
+          
+          1.17 
+          <span class="supsub"
+            ><sup>+0.07</sup>
+            <sub>-0.06</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="9.1">
+          
+          
+          9.1 
+          <span class="supsub"
+            ><sup>+0.5</sup>
+            <sub>-0.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="550.0">
+          
+          
+          550 
+          <span class="supsub"
+            ><sup>+240</sup>
+            <sub>-160</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.0">
+          
+          
+          0.00 
+          <span class="supsub"
+            ><sup>+0.07</sup>
+            <sub>-0.09</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="32.3">
+          
+          
+          32.3 
+          <span class="supsub"
+            ><sup>+2.2</sup>
+            <sub>-2.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4.31">
+          
+          
+          4.31 
+          <span class="supsub"
+            ><sup>+0.12</sup>
+            <sub>-0.17</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.11">
+          
+          
+          0.11 
+          <span class="supsub"
+            ><sup>+0.05</sup>
+            <sub>-0.03</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="4.0">
+          
+          
+          4.0 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.8224">
+          
+          
+          0.82 
+          
+        </td>
+        
+        
+        
+        <td data-value="32.2">
+          
+          
+          32.2 
+          <span class="supsub"
+            ><sup>+2.2</sup>
+            <sub>-2.7</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191216_213338/v1/">GW191216_213338</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1260567236.4">1260567236.4</td>
+
+        
+        
+        <td data-value="12.1">
+          
+          
+          12.1 
+          <span class="supsub"
+            ><sup>+4.6</sup>
+            <sub>-2.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.7">
+          
+          
+          7.7 
+          <span class="supsub"
+            ><sup>+1.6</sup>
+            <sub>-1.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="18.6">
+          
+          
+          18.6 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="340.0">
+          
+          
+          340 
+          <span class="supsub"
+            ><sup>+120</sup>
+            <sub>-130</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.11">
+          
+          
+          0.11 
+          <span class="supsub"
+            ><sup>+0.13</sup>
+            <sub>-0.06</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="19.8">
+          
+          
+          19.80 
+          <span class="supsub"
+            ><sup>+2.70</sup>
+            <sub>-0.93</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.33">
+          
+          
+          8.33 
+          <span class="supsub"
+            ><sup>+0.22</sup>
+            <sub>-0.19</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.07">
+          
+          
+          0.07 
+          <span class="supsub"
+            ><sup>+0.02</sup>
+            <sub>-0.03</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="18.87">
+          
+          
+          18.87 
+          <span class="supsub"
+            ><sup>+2.81</sup>
+            <sub>-0.93</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191215_223052/v1/">GW191215_223052</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1260484270.3">1260484270.3</td>
+
+        
+        
+        <td data-value="24.9">
+          
+          
+          24.9 
+          <span class="supsub"
+            ><sup>+7.1</sup>
+            <sub>-4.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="18.1">
+          
+          
+          18.1 
+          <span class="supsub"
+            ><sup>+3.8</sup>
+            <sub>-4.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="11.2">
+          
+          
+          11.2 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1930.0">
+          
+          
+          1930 
+          <span class="supsub"
+            ><sup>+890</sup>
+            <sub>-860</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.04">
+          
+          
+          -0.04 
+          <span class="supsub"
+            ><sup>+0.17</sup>
+            <sub>-0.21</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="43.3">
+          
+          
+          43.3 
+          <span class="supsub"
+            ><sup>+5.3</sup>
+            <sub>-4.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="18.4">
+          
+          
+          18.4 
+          <span class="supsub"
+            ><sup>+2.2</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.35">
+          
+          
+          0.35 
+          <span class="supsub"
+            ><sup>+0.13</sup>
+            <sub>-0.14</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="41.4">
+          
+          
+          41.4 
+          <span class="supsub"
+            ><sup>+5.1</sup>
+            <sub>-4.1</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191204_171526/v1/">GW191204_171526</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1259514944.0">1259514944.0</td>
+
+        
+        
+        <td data-value="11.7">
+          
+          
+          11.7 
+          <span class="supsub"
+            ><sup>+3.3</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.4">
+          
+          
+          8.4 
+          <span class="supsub"
+            ><sup>+1.3</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.4">
+          
+          
+          17.4 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="640.0">
+          
+          
+          640 
+          <span class="supsub"
+            ><sup>+200</sup>
+            <sub>-260</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.16">
+          
+          
+          0.16 
+          <span class="supsub"
+            ><sup>+0.08</sup>
+            <sub>-0.05</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="20.19">
+          
+          
+          20.19 
+          <span class="supsub"
+            ><sup>+1.64</sup>
+            <sub>-0.95</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.56">
+          
+          
+          8.56 
+          <span class="supsub"
+            ><sup>+0.41</sup>
+            <sub>-0.28</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.13">
+          
+          
+          0.13 
+          <span class="supsub"
+            ><sup>+0.04</sup>
+            <sub>-0.05</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="19.18">
+          
+          
+          19.18 
+          <span class="supsub"
+            ><sup>+1.71</sup>
+            <sub>-0.93</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191204_110529/v1/">GW191204_110529</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1259492747.5">1259492747.5</td>
+
+        
+        
+        <td data-value="27.3">
+          
+          
+          27.3 
+          <span class="supsub"
+            ><sup>+10.8</sup>
+            <sub>-5.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="19.2">
+          
+          
+          19.2 
+          <span class="supsub"
+            ><sup>+5.5</sup>
+            <sub>-6.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.9">
+          
+          
+          8.9 
+          <span class="supsub"
+            ><sup>+0.4</sup>
+            <sub>-0.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1900.0">
+          
+          
+          1900 
+          <span class="supsub"
+            ><sup>+1700</sup>
+            <sub>-1100</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.05">
+          
+          
+          0.05 
+          <span class="supsub"
+            ><sup>+0.25</sup>
+            <sub>-0.26</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="47.1">
+          
+          
+          47.1 
+          <span class="supsub"
+            ><sup>+9.1</sup>
+            <sub>-7.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="19.8">
+          
+          
+          19.8 
+          <span class="supsub"
+            ><sup>+3.6</sup>
+            <sub>-3.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.34">
+          
+          
+          0.34 
+          <span class="supsub"
+            ><sup>+0.25</sup>
+            <sub>-0.18</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3.3">
+          
+          
+          3.3 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.74239">
+          
+          
+          0.74 
+          
+        </td>
+        
+        
+        
+        <td data-value="45.0">
+          
+          
+          45.0 
+          <span class="supsub"
+            ><sup>+8.7</sup>
+            <sub>-7.5</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191129_134029/v1/">GW191129_134029</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1259070047.1">1259070047.1</td>
+
+        
+        
+        <td data-value="10.7">
+          
+          
+          10.7 
+          <span class="supsub"
+            ><sup>+4.1</sup>
+            <sub>-2.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="6.7">
+          
+          
+          6.7 
+          <span class="supsub"
+            ><sup>+1.5</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="13.1">
+          
+          
+          13.1 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="790.0">
+          
+          
+          790 
+          <span class="supsub"
+            ><sup>+260</sup>
+            <sub>-330</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.06">
+          
+          
+          0.06 
+          <span class="supsub"
+            ><sup>+0.16</sup>
+            <sub>-0.08</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.5">
+          
+          
+          17.5 
+          <span class="supsub"
+            ><sup>+2.4</sup>
+            <sub>-1.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.31">
+          
+          
+          7.31 
+          <span class="supsub"
+            ><sup>+0.43</sup>
+            <sub>-0.28</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.16">
+          
+          
+          0.16 
+          <span class="supsub"
+            ><sup>+0.05</sup>
+            <sub>-0.06</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00001">
+          
+           &le; 
+          1.0e-05 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="16.8">
+          
+          
+          16.8 
+          <span class="supsub"
+            ><sup>+2.5</sup>
+            <sub>-1.2</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191127_050227/v1/">GW191127_050227</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1258866165.5">1258866165.5</td>
+
+        
+        
+        <td data-value="53.0">
+          
+          
+          53 
+          <span class="supsub"
+            ><sup>+47</sup>
+            <sub>-20</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="24.0">
+          
+          
+          24 
+          <span class="supsub"
+            ><sup>+17</sup>
+            <sub>-14</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="9.2">
+          
+          
+          9.2 
+          <span class="supsub"
+            ><sup>+0.7</sup>
+            <sub>-0.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3400.0">
+          
+          
+          3400 
+          <span class="supsub"
+            ><sup>+3100</sup>
+            <sub>-1900</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.18">
+          
+          
+          0.18 
+          <span class="supsub"
+            ><sup>+0.34</sup>
+            <sub>-0.36</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="80.0">
+          
+          
+          80 
+          <span class="supsub"
+            ><sup>+39</sup>
+            <sub>-22</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="29.9">
+          
+          
+          29.9 
+          <span class="supsub"
+            ><sup>+11.7</sup>
+            <sub>-9.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.57">
+          
+          
+          0.57 
+          <span class="supsub"
+            ><sup>+0.40</sup>
+            <sub>-0.29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.25">
+          
+          
+          0.25 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.73996">
+          
+          
+          0.74 
+          
+        </td>
+        
+        
+        
+        <td data-value="76.0">
+          
+          
+          76 
+          <span class="supsub"
+            ><sup>+39</sup>
+            <sub>-21</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191126_115259/v1/">GW191126_115259</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1258804397.6">1258804397.6</td>
+
+        
+        
+        <td data-value="12.1">
+          
+          
+          12.1 
+          <span class="supsub"
+            ><sup>+5.5</sup>
+            <sub>-2.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.3">
+          
+          
+          8.3 
+          <span class="supsub"
+            ><sup>+1.9</sup>
+            <sub>-2.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.3">
+          
+          
+          8.3 
+          <span class="supsub"
+            ><sup>+0.2</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1620.0">
+          
+          
+          1620 
+          <span class="supsub"
+            ><sup>+740</sup>
+            <sub>-740</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.21">
+          
+          
+          0.21 
+          <span class="supsub"
+            ><sup>+0.15</sup>
+            <sub>-0.11</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="20.7">
+          
+          
+          20.7 
+          <span class="supsub"
+            ><sup>+3.4</sup>
+            <sub>-2.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.65">
+          
+          
+          8.65 
+          <span class="supsub"
+            ><sup>+0.95</sup>
+            <sub>-0.71</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.3">
+          
+          
+          0.30 
+          <span class="supsub"
+            ><sup>+0.12</sup>
+            <sub>-0.13</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="3.2">
+          
+          
+          3.2 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.70041">
+          
+          
+          0.70 
+          
+        </td>
+        
+        
+        
+        <td data-value="19.6">
+          
+          
+          19.6 
+          <span class="supsub"
+            ><sup>+3.5</sup>
+            <sub>-2.0</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191113_071753/v1/">GW191113_071753</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1257664691.8">1257664691.8</td>
+
+        
+        
+        <td data-value="29.0">
+          
+          
+          29 
+          <span class="supsub"
+            ><sup>+12</sup>
+            <sub>-14</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="5.9">
+          
+          
+          5.9 
+          <span class="supsub"
+            ><sup>+4.4</sup>
+            <sub>-1.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.9">
+          
+          
+          7.9 
+          <span class="supsub"
+            ><sup>+0.5</sup>
+            <sub>-1.1</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1370.0">
+          
+          
+          1370 
+          <span class="supsub"
+            ><sup>+1150</sup>
+            <sub>-620</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.0">
+          
+          
+          0.00 
+          <span class="supsub"
+            ><sup>+0.37</sup>
+            <sub>-0.29</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="34.5">
+          
+          
+          34.5 
+          <span class="supsub"
+            ><sup>+10.5</sup>
+            <sub>-9.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="10.7">
+          
+          
+          10.7 
+          <span class="supsub"
+            ><sup>+1.1</sup>
+            <sub>-1.0</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.26">
+          
+          
+          0.26 
+          <span class="supsub"
+            ><sup>+0.18</sup>
+            <sub>-0.11</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="26.0">
+          
+          
+          26 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.68339">
+          
+          
+          0.68 
+          
+        </td>
+        
+        
+        
+        <td data-value="34.0">
+          
+          
+          34 
+          <span class="supsub"
+            ><sup>+11</sup>
+            <sub>-10</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191109_010717/v1/">GW191109_010717</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1257296855.2">1257296855.2</td>
+
+        
+        
+        <td data-value="65.0">
+          
+          
+          65 
+          <span class="supsub"
+            ><sup>+11</sup>
+            <sub>-11</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="47.0">
+          
+          
+          47 
+          <span class="supsub"
+            ><sup>+15</sup>
+            <sub>-13</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="17.3">
+          
+          
+          17.3 
+          <span class="supsub"
+            ><sup>+0.5</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1290.0">
+          
+          
+          1290 
+          <span class="supsub"
+            ><sup>+1130</sup>
+            <sub>-650</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.29">
+          
+          
+          -0.29 
+          <span class="supsub"
+            ><sup>+0.42</sup>
+            <sub>-0.31</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="112.0">
+          
+          
+          112 
+          <span class="supsub"
+            ><sup>+20</sup>
+            <sub>-16</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="47.5">
+          
+          
+          47.5 
+          <span class="supsub"
+            ><sup>+9.6</sup>
+            <sub>-7.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.25">
+          
+          
+          0.25 
+          <span class="supsub"
+            ><sup>+0.18</sup>
+            <sub>-0.12</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.00018">
+          
+          
+          0.00018 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="107.0">
+          
+          
+          107 
+          <span class="supsub"
+            ><sup>+18</sup>
+            <sub>-15</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191105_143521/v1/">GW191105_143521</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1256999739.9">1256999739.9</td>
+
+        
+        
+        <td data-value="10.7">
+          
+          
+          10.7 
+          <span class="supsub"
+            ><sup>+3.7</sup>
+            <sub>-1.6</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.7">
+          
+          
+          7.7 
+          <span class="supsub"
+            ><sup>+1.4</sup>
+            <sub>-1.9</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="9.7">
+          
+          
+          9.7 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="1150.0">
+          
+          
+          1150 
+          <span class="supsub"
+            ><sup>+430</sup>
+            <sub>-480</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="-0.02">
+          
+          
+          -0.02 
+          <span class="supsub"
+            ><sup>+0.13</sup>
+            <sub>-0.09</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="18.5">
+          
+          
+          18.5 
+          <span class="supsub"
+            ><sup>+2.1</sup>
+            <sub>-1.3</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.82">
+          
+          
+          7.82 
+          <span class="supsub"
+            ><sup>+0.61</sup>
+            <sub>-0.45</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.23">
+          
+          
+          0.23 
+          <span class="supsub"
+            ><sup>+0.07</sup>
+            <sub>-0.09</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.012">
+          
+          
+          0.012 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.99">
+          
+           &ge; 
+          0.99 
+          
+        </td>
+        
+        
+        
+        <td data-value="17.6">
+          
+          
+          17.6 
+          <span class="supsub"
+            ><sup>+2.1</sup>
+            <sub>-1.2</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+      <tr>
+        <td data-value="">
+          <b>
+            <a href="/eventapi/html/GWTC-3-confident/GW191103_012549/v1/">GW191103_012549</a>
+          </b>
+        </td>
+        <td data-value="1">v1</td>
+        <td data-value="GWTC-3-confident">
+          <a href="/eventapi/html/GWTC-3-confident/">
+            GWTC-3-confident
+          </a>
+        </td>
+        <td data-value="1256779567.5">1256779567.5</td>
+
+        
+        
+        <td data-value="11.8">
+          
+          
+          11.8 
+          <span class="supsub"
+            ><sup>+6.2</sup>
+            <sub>-2.2</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="7.9">
+          
+          
+          7.9 
+          <span class="supsub"
+            ><sup>+1.7</sup>
+            <sub>-2.4</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.9">
+          
+          
+          8.9 
+          <span class="supsub"
+            ><sup>+0.3</sup>
+            <sub>-0.5</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="990.0">
+          
+          
+          990 
+          <span class="supsub"
+            ><sup>+500</sup>
+            <sub>-470</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.21">
+          
+          
+          0.21 
+          <span class="supsub"
+            ><sup>+0.16</sup>
+            <sub>-0.10</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="20.0">
+          
+          
+          20.0 
+          <span class="supsub"
+            ><sup>+3.7</sup>
+            <sub>-1.8</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="8.34">
+          
+          
+          8.34 
+          <span class="supsub"
+            ><sup>+0.66</sup>
+            <sub>-0.57</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="">
+           --
+          
+        </td>
+        
+        
+        
+        <td data-value="0.2">
+          
+          
+          0.20 
+          <span class="supsub"
+            ><sup>+0.09</sup>
+            <sub>-0.09</sub></span
+          >
+          
+        </td>
+        
+        
+        
+        <td data-value="0.46">
+          
+          
+          0.46 
+          
+        </td>
+        
+        
+        
+        <td data-value="0.94318">
+          
+          
+          0.94 
+          
+        </td>
+        
+        
+        
+        <td data-value="19.0">
+          
+          
+          19.0 
+          <span class="supsub"
+            ><sup>+3.8</sup>
+            <sub>-1.7</sub></span
+          >
+          
+        </td>
+        
+        
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+
+
+<ul class="pagination">
+  
+  <li class="page-item disabled"><a class="page-link">First</a></li>
+  
+  
+  <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+  
+  <li class="page-item">
+    <a class="page-link"
+      >Page 1 of 1</a
+    >
+  </li>
+  
+  <li class="page-item disabled"><a class="page-link">&raquo;</a></li>
+  
+  
+  <li class="page-item disabled"><a class="page-link">Last</a></li>
+  
+</ul>
+
+
+<div class="form-inline">
+  <label for="events-per-page-sel">Events per page:</label>
+  <select id="events-per-page-sel">
+    
+    <option value="20" >20</option>
+    
+    <option value="50" selected>50</option>
+    
+    <option value="100" >100</option>
+    
+    <option value="all" >
+      Show All
+    </option>
+  </select>
+  of 35 events
+</div>
+<div class="download-options">
+  <p>
+Download table as: <a href="/eventapi/ascii/GWTC-3-confident/" download>ASCII</a> -
+  <a href="/api/v2/catalogs/GWTC-3-confident/events?include-default-parameters=true&amp;format=csv" download>CSV</a>
+  </p>
+  <p>
+    Or <a href="/api/v2/catalogs/GWTC-3-confident/events?include-default-parameters=true&amp;format=api">query the API</a> for a JSON format.
+  </p>
+</div>
+
+      </div>
+      
+      <div id="toast-box"></div>
+    </main>
+
+    <footer>
+      <div class="footer-container container">
+        <div class="sponsor-list">
+          <div class="sponsor-row">
+            <div class="sponsor-icon-container sponsor-nsf">
+              <a href="https://www.nsf.gov/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/nsf_logo.png"
+                  alt="NSF logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-infn">
+              <a href="https://home.infn.it/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/infn_logo.png"
+                  alt="INFN logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-cnrs">
+              <a href="https://www.cnrs.fr/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/cnrs_logo.png"
+                  alt="CNRS logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-ego">
+              <a href="https://www.ego-gw.it/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/ego_logo.png"
+                  alt="EGO logo"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="sponsor-row">
+            <div class="sponsor-icon-container sponsor-lsc">
+              <a href="https://www.ligo.org/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/lsc_logo.png"
+                  alt="LSC logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-ligo">
+              <a href="https://www.ligo.caltech.edu/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/ligo_logo.png"
+                  alt="LIGO logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-virgo">
+              <a href="https://www.virgo-gw.eu/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/virgo_logo.png"
+                  alt="Virgo logo"
+                />
+              </a>
+            </div>
+            <div class="sponsor-icon-container sponsor-kagra">
+              <a href="https://gwcenter.icrr.u-tokyo.ac.jp/en/" target="_blank">
+                <img
+                  class="sponsor-icon"
+                  src="/static/images/footer_icons/monotone/kagra_logo.png"
+                  alt="Kagra logo"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p>Other Related Sites</p>
+          <ul class="useful-sites">
+            <li>
+              <a class="accent-color" href="/detector_status/" target="_blank"
+                >Detector Status</a
+              >
+            </li>
+            <li>
+              <a
+                class="accent-color"
+                href="https://gracedb.ligo.org"
+                target="_blank"
+                >Low Latency Alerts</a
+              >
+            </li>
+            <li>
+              <a
+                class="accent-color"
+                href="https://zenodo.org/communities/ligo-virgo-kagra/"
+                target="_blank"
+                >Analysis Results on Zenodo.org</a
+              >
+            </li>
+            <li>
+              <a
+                class="accent-color"
+                href="https://ask.igwn.org/"
+                target="_blank"
+                >The gravitational wave community forum
+              </a>
+            </li>
+            <li>
+              <a class="accent-color" href="/join/">Join our email list </a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-acknowledge">
+          <a
+            class="accent-color"
+            rel="license"
+            href="https://creativecommons.org/licenses/by/4.0/"
+          >
+            <img
+              id="cc-logo"
+              alt="Creative Commons License"
+              src="/static/images/by.png"
+              width="100px"
+              ;
+            />
+          </a>
+          <p>
+            Data released under a
+            <a
+              class="accent-color"
+              href="https://creativecommons.org/licenses/by/4.0/"
+              >CC BY 4.0 License</a
+            >.
+          </p>
+          <p>
+            Please follow
+            <a class="accent-color" href="/acknowledgement/"
+              >acknowledgement guidelines</a
+            >.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

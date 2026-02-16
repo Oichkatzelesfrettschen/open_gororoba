@@ -1,0 +1,40 @@
+override_id	url	http_code	content_type	size_download	is_pdf	status	note	checked_at
+EAKIN_SATHAYE_1990_elsevier_pdf	https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf	200	text/html	13826	0	ok_nonpdf		2026-02-15
+MCCRIMMON_1985_euclid_mirror	https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf	200	application/pdf	1613071	1	pdf_ok		2026-02-15
+MCCRIMMON_1985_euclid_mirror	https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf	200	application/pdf	1450466	1	pdf_ok		2026-02-15
+BREMNER_HENTZEL_2001_iastate_mirror	https://www.tandfonline.com/doi/pdf/10.1081/AGB-100105036	403	text/html; charset=UTF-8	6176	0	http_403		2026-02-15
+BREMNER_HENTZEL_2001_iastate_mirror	https://www.tandfonline.com/doi/epdf/10.1081/AGB-100105036	403	text/html; charset=UTF-8	6151	0	http_403		2026-02-15
+BALES_2016_arxiv_withdrawn_versions	https://arxiv.org/pdf/1602.02317v1.pdf	200	application/pdf	191938	1	pdf_ok		2026-02-15
+BALES_2016_arxiv_withdrawn_versions	https://arxiv.org/pdf/1602.02317v2.pdf	200	application/pdf	192196	1	pdf_ok		2026-02-15
+BALES_2016_arxiv_withdrawn_versions	https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf	200	application/pdf	177030	1	pdf_ok		2026-02-15
+BALES_2016_arxiv_withdrawn_versions	https://archive.org/download/arxiv-1602.02317/1602.02317.pdf	200	application/pdf	189748	1	pdf_ok		2026-02-15
+ASOT_0022_large_annihilators_arxiv	https://arxiv.org/pdf/math/0511691.pdf	200	application/pdf	374167	1	pdf_ok		2026-02-15
+ASOT_0024_stinga_torrea_arxiv	https://arxiv.org/pdf/0910.2569.pdf	200	application/pdf	362590	1	pdf_ok		2026-02-15
+ASOT_0025_philmags_tandf_only	https://www.tandfonline.com/doi/pdf/10.1080/14786444808646059	403	text/html; charset=UTF-8	6116	0	http_403		2026-02-15
+ASOT_0025_philmags_tandf_only	https://www.tandfonline.com/doi/epdf/10.1080/14786444808646059	403	text/html; charset=UTF-8	6113	0	http_403		2026-02-15
+ASOT_0026_cockle_zenodo	https://zenodo.org/record/1431095/files/article.pdf	200	application/octet-stream	702621	1	pdf_ok		2026-02-15
+ASOT_0026_cockle_zenodo	https://www.tandfonline.com/doi/pdf/10.1080/14786444908646169	403	text/html; charset=UTF-8	6133	0	http_403		2026-02-15
+ASOT_0030_berry_1984_mirrors	https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1984.0023	403	text/html; charset=UTF-8	6371	0	http_403		2026-02-15
+ASOT_0030_berry_1984_mirrors	https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf	200	application/pdf	1395398	1	pdf_ok		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/pr/pdf/10.1103/PhysRev.124.925	403	text/html; charset=UTF-8	6112	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prb/pdf/10.1103/PhysRevB.14.2239	403	text/html; charset=UTF-8	6171	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prd/pdf/10.1103/PhysRevD.23.287	403	text/html; charset=UTF-8	6124	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.43.744	403	text/html; charset=UTF-8	6143	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.49.405	403	text/html; charset=UTF-8	6170	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.69.2863	403	text/html; charset=UTF-8	6167	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.71.3697	403	text/html; charset=UTF-8	6141	0	http_403		2026-02-15
+ASOT_APS_physrev_pdf_candidates	https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.78.5	403	text/html; charset=UTF-8	6097	0	http_403		2026-02-15
+ASOT_0047_sage_pubmed	https://journals.sagepub.com/doi/pdf/10.1177/2156587216668109	403	text/html; charset=UTF-8	6335	0	http_403		2026-02-15
+ASOT_0062_cawagas_2004_bibliotekanauki	https://bibliotekanauki.pl/articles/729117.pdf	200	application/octet-stream	393173	1	pdf_ok		2026-02-15
+ASOT_8219_fix_arxiv_math_0403113	https://arxiv.org/pdf/math/0403113.pdf	200	application/pdf	206494	1	pdf_ok		2026-02-15
+ASOT_8219_fix_arxiv_math_0403113	https://export.arxiv.org/pdf/math/0403113.pdf	200	application/pdf	206494	1	pdf_ok		2026-02-15
+ASOT_8231_wolfram_archive	http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf	404	text/html; charset=UTF-8	66726	0	http_404		2026-02-15
+ASOT_8231_wolfram_archive	https://web.archive.org/web/*/http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf	200	text/html	35793	0	ok_nonpdf		2026-02-15
+ASOT_8232_oup_ptt110	https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf	403	text/html; charset=UTF-8	6331	0	http_403		2026-02-15
+ASOT_8233_archive_direct_pdf	https://archive.org/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf	503	text/html; charset=UTF-8	155677	0	http_503		2026-02-15
+ASOT_8234_archive_direct_pdf	https://archive.org/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf	503	text/html; charset=UTF-8	155678	0	http_503		2026-02-15
+ASOT_8341_cms_math_pdf	https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf	404	text/html; charset=UTF-8	21756	0	http_404		2026-02-15
+ASOT_8341_cms_math_pdf	https://cms.math.ca/wp-content/uploads/2020/01/cmb49-4-6.pdf	404	text/html; charset=UTF-8	21756	0	http_404		2026-02-15
+ASOT_8374_cambridge_to_arxiv	https://arxiv.org/pdf/2311.18594.pdf	200	application/pdf	532709	1	pdf_ok		2026-02-15
+ASOT_8381_bales_tree_scispace	https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf	403	text/html; charset=UTF-8	12193	0	http_403		2026-02-15
+ASOT_8381_bales_tree_scispace	https://scispace.com/pdf/a-tree-for-computing-the-cayley-dickson-twist-2vy32iu9ys.pdf	405	text/html; charset=UTF-8	2117	0	http_405		2026-02-15

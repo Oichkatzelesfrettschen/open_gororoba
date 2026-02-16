@@ -1,0 +1,23 @@
+HTTP/2 403 
+date: Sun, 15 Feb 2026 23:17:36 GMT
+content-type: text/html; charset=UTF-8
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),browsing-topics=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),interest-cohort=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=()
+referrer-policy: same-origin
+server-timing: chlray;desc="9ce885083deef7c9"
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+set-cookie: __cf_bm=Bpbjy4OvJruu.sY_p.yxZ5fVi0DEaytjH.PesT_8iF8-1771197456-1.0.1.1-um8Q3ez1lVdCXYiLIU2vrEAg64yDR0VZEPKorPZItB6UljLCK_YFTiEdYBK9.Ifj2qBerXGP49NmCioNrYhSCTap9ilyQg39JIjXRMNT1Qk; path=/; expires=Sun, 15-Feb-26 23:47:36 GMT; domain=.royalsocietypublishing.org; HttpOnly; Secure; SameSite=None
+vary: Accept-Encoding
+server: cloudflare
+cf-ray: 9ce885083deef7c9-LAX
+content-encoding: gzip
+
