@@ -1698,3 +1698,13 @@ canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
 requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+
+[[owner]]
+id = "MOWN-0189"
+path = "reports/LHC_2025_QGP_Full_Synthesis.md"
+scope = "reports"
+canonical_toml = "reports/LHC_2025_QGP_Synthesis.toml"
+owner_group = "reports_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+
