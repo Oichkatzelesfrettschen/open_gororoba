@@ -5,9 +5,9 @@ use data_core::hdf5_export::{
     read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
 };
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
-use gororoba_engine::simulation::{E7SpectralFilter, SimulationConfig3D, SimulationState3D};
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
+use gororoba_engine::simulation::{E7SpectralFilter, SimulationConfig3D, SimulationState3D};
 use lbm_3d_cuda::Precision;
 use std::error::Error;
 use std::path::{Path, PathBuf};
@@ -248,7 +248,10 @@ fn parse_env_usize(name: &str, default: usize) -> Result<usize, Box<dyn Error>> 
 /// The characteristic velocity U0 is set by a target forcing-scale Reynolds number
 /// and clipped by a low-Mach cap:
 ///   Re_target = U0 / (nu * k),  U0 <= Ma_max * c_s.
-fn derive_kolmogorov_forcing_spec(ny: usize, tau: f64) -> Result<KolmogorovForcingSpec, Box<dyn Error>> {
+fn derive_kolmogorov_forcing_spec(
+    ny: usize,
+    tau: f64,
+) -> Result<KolmogorovForcingSpec, Box<dyn Error>> {
     if ny == 0 {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -343,7 +346,10 @@ fn build_kolmogorov_force_field(
     force
 }
 
-pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result<(), Box<dyn Error>> {
+pub fn write_step_timing_report(
+    path: &Path,
+    report: &BenchCaseReport,
+) -> Result<(), Box<dyn Error>> {
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)?;
     }
@@ -389,9 +395,15 @@ pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result
     out.push_str(&format!("mode_y = {}\n", report.forcing.mode_y));
     out.push_str(&format!("k_y = {:.9}\n", report.forcing.k_y));
     out.push_str(&format!("re_target = {:.6}\n", report.forcing.re_target));
-    out.push_str(&format!("re_effective = {:.6}\n", report.forcing.re_effective));
+    out.push_str(&format!(
+        "re_effective = {:.6}\n",
+        report.forcing.re_effective
+    ));
     out.push_str(&format!("max_mach = {:.6}\n", report.forcing.max_mach));
-    out.push_str(&format!("mach_effective = {:.6}\n", report.forcing.mach_effective));
+    out.push_str(&format!(
+        "mach_effective = {:.6}\n",
+        report.forcing.mach_effective
+    ));
     out.push_str(&format!("u_target = {:.9}\n", report.forcing.u_target));
     out.push_str(&format!(
         "acceleration_amplitude = {:.9e}\n",
@@ -413,7 +425,10 @@ pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result
         "notes = \"F0 = nu*k^2*U0; U0=min(Re_target*nu*k, max_mach*cs); f_x=F0*sin(k*y)\"\n",
     );
     out.push_str("\n[timing]\n");
-    out.push_str(&format!("sample_count = {}\n", report.step_timing.sample_count));
+    out.push_str(&format!(
+        "sample_count = {}\n",
+        report.step_timing.sample_count
+    ));
     out.push_str(&format!("min_us = {:.6}\n", report.step_timing.min_us));
     out.push_str(&format!("max_us = {:.6}\n", report.step_timing.max_us));
     out.push_str(&format!("mean_us = {:.6}\n", report.step_timing.mean_us));
@@ -469,10 +484,7 @@ fn export_bench_trace(
             tau: forcing.tau,
             forcing_type: format!(
                 "Kolmogorov_NS_Derived(mode_y={},Re_target={:.3},Ma_max={:.3},F0={:.3e})",
-                forcing.mode_y,
-                forcing.re_target,
-                forcing.max_mach,
-                forcing.acceleration_amplitude
+                forcing.mode_y, forcing.re_target, forcing.max_mach, forcing.acceleration_amplitude
             ),
             coupling_lambda: 0.95,
             initial_condition: "Uniform_Rho1_U0".to_string(),
@@ -608,7 +620,8 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         step_times_us.push(elapsed * 1.0e6);
     }
     let steps_per_sec = steps as f64 / elapsed.max(1.0e-12);
-    let mlups = (steps_per_sec * (case.resolution * case.resolution * case.resolution) as f64) / 1.0e6;
+    let mlups =
+        (steps_per_sec * (case.resolution * case.resolution * case.resolution) as f64) / 1.0e6;
     let thresholds = RhoQualityThresholds::default();
     let quality = validate_rho_trace(&rho_hist, thresholds)
         .map_err(|e| std::io::Error::other(format!("rho quality gate failed: {e}")))?;
@@ -790,10 +803,7 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
             }
 
             let quality = validate_rho_trace(&rho, thresholds).map_err(|e| {
-                std::io::Error::other(format!(
-                    "{}: rho quality gate failed: {e}",
-                    path.display()
-                ))
+                std::io::Error::other(format!("{}: rho quality gate failed: {e}", path.display()))
             })?;
             println!(
                 "[OK]   {}: samples={}, drift={:.3e}, std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}",
@@ -819,9 +829,9 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
     #[cfg(not(feature = "hdf5-export"))]
     {
         let _ = paths;
-        Err(std::io::Error::other(
-            "cannot run warp acceptance gate without hdf5-export feature",
+        Err(
+            std::io::Error::other("cannot run warp acceptance gate without hdf5-export feature")
+                .into(),
         )
-        .into())
     }
 }

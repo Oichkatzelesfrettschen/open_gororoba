@@ -190,22 +190,12 @@ fn spawn_gpu_telemetry_sampler_nvml(
                 "{:.3},{},{},{},{},{:.3},{},{},{}",
                 elapsed_s,
                 timestamp,
-                temp_c
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
-                sm_clock_mhz
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
-                mem_clock_mhz
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
+                temp_c.map(|v| v.to_string()).unwrap_or_default(),
+                sm_clock_mhz.map(|v| v.to_string()).unwrap_or_default(),
+                mem_clock_mhz.map(|v| v.to_string()).unwrap_or_default(),
                 power_w.unwrap_or(0.0),
-                gpu_util_pct
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
-                mem_util_pct
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
+                gpu_util_pct.map(|v| v.to_string()).unwrap_or_default(),
+                mem_util_pct.map(|v| v.to_string()).unwrap_or_default(),
                 status
             );
 
@@ -231,4 +221,3 @@ pub fn spawn_gpu_telemetry_sampler(
     }
     spawn_gpu_telemetry_sampler_nvidia_smi(out_path, interval)
 }
-
