@@ -294,6 +294,11 @@ crate = "gororoba_cli"
 description = "Basemark lane for warp ring emitting HDF5 + timing TOML per case plus a consolidated basemark summary report"
 
 [[binary]]
+name = "warp-fastpath-suite"
+crate = "gororoba_cli"
+description = "Automated BF16 block-dim sweep plus tuned 300s production rerun and fastpath comparison report generation"
+
+[[binary]]
 name = "rho-trace-gate"
 crate = "gororoba_cli"
 description = "Fail-closed gate for /simulation/trace/rho_mean across one or more HDF5 artifacts"

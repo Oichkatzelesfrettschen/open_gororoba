@@ -1,0 +1,83 @@
+schema = "open_gororoba.warp_fastpath_analysis.v1"
+generated_at_utc = "2026-02-16T19:20:00Z"
+
+[status]
+run_32_300s_h5 = "data/h5/precision_bench_20260215-211252_32_300s/warp_ring_32_BF16_300s.h5"
+run_32_300s_timing = "data/h5/precision_bench_20260215-211252_32_300s/timing_32_BF16_300s.toml"
+run_128_300s_h5 = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4/warp_ring_128_GPU_BF16_300s.h5"
+run_128_300s_timing = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4/timing_128_GPU_BF16_300s.toml"
+run_256_300s_h5 = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4/warp_ring_256_GPU_BF16_300s.h5"
+run_256_300s_timing = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4/timing_256_GPU_BF16_300s.toml"
+
+[new_execution]
+sweep_root = "data/h5/basemarks/20260216-184137_bf16_blockdim_sweep"
+winning_block_dim = "8x4x4"
+winning_env_key = "GOROROBA_LBM_BLOCK_DIM"
+production_dir = "data/h5/production/20260216-184137_bf16_fastpath_8_4_4"
+comparison_report = "reports/warp_bf16_fastpath_comparison_report_2026_02_16_185912.toml"
+
+[metrics.current_vs_untuned_20260215_211758]
+mlups_128_old = 812.078703
+mlups_128_new = 912.147182
+delta_128_pct = 12.3225
+mlups_256_old = 772.196759
+mlups_256_new = 834.985402
+delta_256_pct = 8.1312
+geom_mlups_old = 791.886698
+geom_mlups_new = 872.713917
+delta_geom_pct = 10.2069
+
+[metrics.current_vs_prior_best_20260215_215445]
+mlups_128_old_best = 1041.849521
+mlups_128_current = 912.147182
+delta_128_pct = -12.4492
+mlups_256_old_best = 1073.509417
+mlups_256_current = 834.985402
+delta_256_pct = -22.2191
+geom_mlups_old_best = 1057.571870
+geom_mlups_current = 872.713917
+delta_geom_pct = -17.4786
+note = "Indicates regime drift relative to prior best lane. Current winner is best within the current sweep, but absolute throughput is lower than the earlier 16x4x2 fastpath run."
+
+[signatures]
+timing_regime_split = "Confirmed: legacy 20260215-200556 is launch-like (p50 ~1.7us/1.8us), while event-timed lanes are kernel-like (ms scale)."
+invariant_signature = "Confirmed: rho_mean remains exactly 1.0 with zero drift/std in all new 300s outputs."
+trace_content_signature = "Confirmed: enstrophy and algebra_norm traces are zero-filled in warp_runner exports for these runs and are currently non-discriminative for physics-state differences."
+telemetry_signature = "Stable high utilization and no obvious thermal throttling: temp_avg=52.42C, temp_max=55C, sm_clock_avg=2835 MHz, power_avg=151.05 W, gpu_util_avg=99.53%."
+
+[trace_cadence_p90_tail]
+method = "Count timing histogram bins where lower_us >= p90_us; compare against expected steps/trace_stride."
+trace_stride = 10
+ratio_128_current = 1.000046
+ratio_256_current = 0.999933
+ratio_128_prior_best = 1.000007
+ratio_256_prior_best = 0.999687
+interpretation = "The high-latency tail mass tracks steps/trace_stride almost exactly, consistent with deterministic periodic trace/reduction cadence rather than random jitter."
+
+[[conjecture]]
+id = "WF-C1"
+statement = "The dominant long-tail timing events are deterministic trace/reduction/DTOH synchronization points, not random GPU stalls."
+evidence = "Tail-to-trace ratio ~1 across 128^3/256^3 and across two independent 300s fastpath runs."
+falsifiable_test = "Re-run with trace_stride=5 and trace_stride=20; if this conjecture is right, tail-count should scale proportionally with 1/trace_stride."
+run_command = "cargo run --release --bin warp-fastpath-suite --features 'gpu,hdf5-export' -- 45 120 5"
+
+[[conjecture]]
+id = "WF-C2"
+statement = "Current BF16 enstrophy zeros are instrumentation/quantization-limited in this lane, not necessarily absence of dynamics."
+evidence = "Current exports show zero enstrophy/algebra_norm traces while rho and throughput remain healthy and stable."
+falsifiable_test = "Run matched FP32/BF16 with stronger but still low-Mach physical forcing and compare non-zero enstrophy recovery in BF16."
+run_command = "GOROROBA_KOLMO_MODE_Y=4 GOROROBA_KOLMO_RE_TARGET=128 cargo run --release --bin warp-precision-suite --features 'gpu,hdf5-export' -- matrix 60 10 128 FP32,BF16 data/h5/precision_bench_kolmo_mode4 gpu cuda_events 1 1 1"
+
+[[conjecture]]
+id = "WF-C3"
+statement = "Block-dim optimum is regime-dependent and can drift with forcing/timing/export behavior, so one historical winner should not be hard-coded globally."
+evidence = "Current sweep winner is 8x4x4; earlier best report selected 16x4x2 with significantly higher absolute MLUPS in that prior regime."
+falsifiable_test = "Two-pass interleaved A/B test of 8x4x4 vs 16x4x2 under identical run order and durations; verify whether ordering/thermal effects explain the drift."
+run_command = "for dim in 8x4x4 16x4x2 16x4x2 8x4x4; do GOROROBA_LBM_BLOCK_DIM=$dim cargo run --release --bin warp-precision-suite --features 'gpu,hdf5-export' -- matrix 120 10 128,256 BF16 data/h5/basemarks/interleaved_ab gpu cuda_events 1 1 1; done"
+
+[[conjecture]]
+id = "WF-C4"
+statement = "With Mach-capped forcing, effective Reynolds scaling Re_effective ~ Ny and forcing amplitude F0 ~ Ny^(-2) can shift flow character as resolution changes, even at fixed tau/mode."
+evidence = "Current timing reports include forced-parameter fields showing Re_effective doubles and F0 quarters from 128^3 to 256^3."
+falsifiable_test = "Sweep mode_y to hold k approximately fixed across resolutions and test whether performance/trace signatures become more resolution-invariant."
+run_command = "Run 128^3 with mode_y=1 and 256^3 with mode_y=2 at matched Ma cap, then compare timing-tail and enstrophy behavior."
