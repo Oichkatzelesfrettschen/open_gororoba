@@ -1,7 +1,7 @@
 use algebra_core::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::{
-    export_experiment_contract, export_rho_quality_metrics, export_simulation_trace, read_rho_mean_trace,
+    export_experiment_contract, export_rho_quality_metrics, export_simulation_trace,
     read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
 };
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds, RhoTraceQuality};
