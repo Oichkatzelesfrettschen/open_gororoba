@@ -64,13 +64,13 @@ impl SplitOctonion {
         let p2 = [other.components[4], other.components[5], other.components[6], other.components[7]];
 
         let q1q2 = quat_mul(&q1, &q2);
-        let p2p1c = quat_mul(&p2, &quat_conj(&p1));
+        let p2cp1 = quat_mul(&quat_conj(&p2), &p1);
         let p2q1 = quat_mul(&p2, &q1);
         let p1q2c = quat_mul(&p1, &quat_conj(&q2));
 
         let mut res = [0.0; 8];
         for i in 0..4 {
-            res[i] = q1q2[i] + p2p1c[i];
+            res[i] = q1q2[i] + p2cp1[i];
             res[i+4] = p2q1[i] + p1q2c[i];
         }
         Self { components: res }
