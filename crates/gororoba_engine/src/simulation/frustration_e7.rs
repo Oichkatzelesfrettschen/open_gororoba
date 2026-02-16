@@ -2,7 +2,9 @@ use crate::simulation::state_3d::{FrustrationField3D, LbmBackend3D};
 use algebra_core::lie::e7_geometry::generate_e7_roots;
 use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
 use ndarray::{Array3, Zip};
-use anyhow::{Context, Result};
+#[cfg(feature = "gpu")]
+use anyhow::Context;
+use anyhow::Result;
 
 /// Frustration field derived from E7 Lie algebra roots.
 pub struct E7SpectralFilter {
@@ -75,6 +77,8 @@ impl FrustrationField3D for E7SpectralFilter {
             LbmBackend3D::Cpu(solver) => self.calculate_enstrophy_cpu(solver, nx, ny, nz) as f32,
             #[cfg(feature = "gpu")]
             LbmBackend3D::Gpu(solver) => solver.calculate_enstrophy()?,
+            #[cfg(not(feature = "gpu"))]
+            LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
         };
 
         let alpha = (enstrophy / self.enstrophy_crit).tanh();
@@ -144,7 +148,8 @@ impl FrustrationField3D for E7SpectralFilter {
                     }
                 }
             }
-
+            #[cfg(not(feature = "gpu"))]
+            LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
         }
         Ok(())
     }

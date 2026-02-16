@@ -37,6 +37,7 @@ THIRD_PARTY_PATTERNS = (
     ".pytest_cache/README.md",
     "*/site-packages/*/LICENSE.md",
     "*/site-packages/*/licenses/*.md",
+    "data/external/intake/*",
 )
 
 IGNORED_PREFIXES = (
@@ -95,6 +96,7 @@ DESTINATION_OVERRIDES = {
     "docs/generated/ROADMAP_REGISTRY_MIRROR.md": "registry/roadmap.toml",
     "docs/generated/TODO_REGISTRY_MIRROR.md": "registry/todo.toml",
     "docs/claims/INDEX.md": "registry/claims_domains.toml",
+    "docs/DATASET_MANIFEST.md": "registry/external_sources.toml",
     "crates/lbm_3d_cuda/README.md": "registry/entrypoint_docs.toml",
 }
 

@@ -14,6 +14,7 @@ use pgfplots::axis::plot::Plot2D;
 use pgfplots::axis::Axis;
 use pgfplots::Picture;
 use std::error::Error;
+#[cfg(feature = "hdf5-export")]
 use std::path::Path;
 
 #[derive(Parser)]
@@ -112,7 +113,7 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
     for (alpha, rho) in &sweep_results {
         plot_rho
             .coordinates
-            .push(((*alpha as f64), *rho as f64).into());
+            .push(((*alpha as f64), *rho).into());
     }
 
     let mut axis = Axis::new();
@@ -130,11 +131,11 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
     let latex_content = format!(r#"\documentclass{{standalone}}
 \usepackage{{pgfplots}}
 \pgfplotsset{{compat=1.18}}
-\begin{{document}}
-{}
-\end{{document}}
-"#,
- picture.to_string());
+	\begin{{document}}
+	{}
+	\end{{document}}
+	"#,
+        picture);
     std::fs::write("thesis_standalone.tex", latex_content)?;
     info!("Standalone LaTeX wrapper saved to thesis_standalone.tex");
 

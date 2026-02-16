@@ -103,15 +103,15 @@ fn main() -> Result<(), Box<dyn Error>> {
             "HDF5_NUMERIC_GATE: PASS ({} files checked; recursive numeric NaN/Inf scan)",
             checked_files
         );
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(feature = "hdf5-export"))]
     {
         let _ = paths;
-        return Err(std::io::Error::other(
+        Err(std::io::Error::other(
             "hdf5-numeric-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin hdf5-numeric-gate -- <paths>",
         )
-        .into());
+        .into())
     }
 }

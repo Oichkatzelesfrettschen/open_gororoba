@@ -1,3 +1,4 @@
+pub mod amplitudes;
 pub mod billiard_sim;
 pub mod clifford;
 pub mod m3;

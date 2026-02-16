@@ -101,6 +101,7 @@ pub fn sedenion_homotopy_step(
 mod tests {
     use super::*;
     use crate::kerr::Kerr;
+    use std::f64::consts::FRAC_PI_2;
 
     #[test]
     fn test_sedenion_coherence_near_horizon() {
@@ -108,9 +109,9 @@ mod tests {
         let r_h = kerr.outer_horizon();
         
         // Coherence far away
-        let state_far = compute_sedenion_coherence(&kerr, 100.0, PI/2.0);
+        let state_far = compute_sedenion_coherence(&kerr, 100.0, FRAC_PI_2);
         // Coherence near horizon
-        let state_near = compute_sedenion_coherence(&kerr, r_h + 0.1, PI/2.0);
+        let state_near = compute_sedenion_coherence(&kerr, r_h + 0.1, FRAC_PI_2);
         
         // Frustration should be higher near the horizon due to extreme frame dragging
         assert!(state_near.vector_frustration > state_far.vector_frustration);
@@ -120,7 +121,7 @@ mod tests {
     fn test_homotopy_step_reduces_drift() {
         let kerr = Kerr::new(1.0, 0.5);
         let r = 5.0;
-        let theta = PI/2.0;
+        let theta = FRAC_PI_2;
         let vr = -0.1;
         let vtheta = 0.01;
         let h = 0.01;

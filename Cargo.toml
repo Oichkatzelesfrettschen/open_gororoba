@@ -31,7 +31,7 @@ members = [
     "crates/lbm_3d_cuda",
     "crates/lattice_filtration",
     "crates/neural_homotopy",
-    "crates/gororoba_engine", "crates/gororoba_contracts",
+    "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge",
 ]
 
 # Shared dependencies across workspace

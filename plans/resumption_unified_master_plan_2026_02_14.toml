@@ -102,7 +102,7 @@ validation = "Stable run for 1000 steps."
 
 [[phase.2.step]]
 id = 18
-action = "Implement `Helicity` measurement (v · w) in CUDA kernel."
+action = "Implement `Helicity` measurement (v dot w) in CUDA kernel."
 validation = "Helicity data available."
 
 [[phase.2.step]]
