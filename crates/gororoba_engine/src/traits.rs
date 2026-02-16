@@ -1,5 +1,7 @@
 //! Core traits for the six-layer engine pipeline.
 
+use serde::{Serialize, Deserialize};
+
 /// Shared state propagated through pipeline layers.
 #[derive(Debug, Clone, Default)]
 pub struct PipelineState {
@@ -46,7 +48,7 @@ pub trait VerificationLayer {
 // ---------------------------------------------------------------------------
 
 /// Evidence produced by a thesis pipeline run.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThesisEvidence {
     /// Which thesis (1-4)
     pub thesis_id: usize,

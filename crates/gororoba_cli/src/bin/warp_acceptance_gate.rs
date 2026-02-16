@@ -2,17 +2,22 @@
 use data_core::hdf5_export::{
     read_simulation_trace_component, scan_hdf5_numeric_datasets, NumericDatasetScanStatus,
 };
+#[cfg(feature = "hdf5-export")]
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
+#[cfg(feature = "hdf5-export")]
 use std::collections::BTreeSet;
 use std::error::Error;
+#[cfg(feature = "hdf5-export")]
 use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
+#[cfg(feature = "hdf5-export")]
 struct CliArgs {
     allow_empty: bool,
     inputs: Vec<String>,
 }
 
+#[cfg(feature = "hdf5-export")]
 fn parse_args() -> Result<CliArgs, Box<dyn Error>> {
     let mut allow_empty = false;
     let mut inputs = Vec::new();
@@ -44,6 +49,7 @@ fn parse_args() -> Result<CliArgs, Box<dyn Error>> {
     })
 }
 
+#[cfg(feature = "hdf5-export")]
 fn expand_inputs(inputs: &[String], allow_empty: bool) -> Result<Vec<PathBuf>, Box<dyn Error>> {
     let mut paths = BTreeSet::new();
     for input in inputs {
@@ -81,20 +87,22 @@ fn expand_inputs(inputs: &[String], allow_empty: bool) -> Result<Vec<PathBuf>, B
     Ok(paths.into_iter().collect())
 }
 
+#[cfg(feature = "hdf5-export")]
 fn all_finite(values: &[f64]) -> bool {
     values.iter().all(|v| v.is_finite())
 }
 
+#[cfg(feature = "hdf5-export")]
 fn nondecreasing(values: &[f64]) -> bool {
     values.windows(2).all(|w| w[1] >= w[0])
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
-    let cli = parse_args()?;
 
     #[cfg(feature = "hdf5-export")]
     {
+        let cli = parse_args()?;
         let paths = expand_inputs(&cli.inputs, cli.allow_empty)?;
         if paths.is_empty() {
             if cli.allow_empty {
@@ -219,15 +227,14 @@ fn main() -> Result<(), Box<dyn Error>> {
             thresholds.max_abs_drift_final,
             thresholds.max_std_dev
         );
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(feature = "hdf5-export"))]
     {
-        let _ = cli;
-        return Err(std::io::Error::other(
+        Err(std::io::Error::other(
             "warp-acceptance-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin warp-acceptance-gate -- <paths>",
         )
-        .into());
+        .into())
     }
 }

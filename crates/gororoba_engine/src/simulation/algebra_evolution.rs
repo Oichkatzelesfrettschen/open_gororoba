@@ -37,6 +37,8 @@ fn advect_sedenion_field(
             // Need to ensure solver.u is synced
             solver.u.iter().map(|&[fx, fy, fz]| [fx as f64, fy as f64, fz as f64]).collect()
         }
+        #[cfg(not(feature = "gpu"))]
+        LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
     };
 
     for z in 0..nz {

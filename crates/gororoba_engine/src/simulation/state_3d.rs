@@ -1,4 +1,6 @@
-use anyhow::{Context, Result};
+#[cfg(feature = "gpu")]
+use anyhow::Context;
+use anyhow::Result;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use lbm_3d::solver::LbmSolver3D;
 use algebra_core::physics::octonion_field::FieldParams;

@@ -243,6 +243,7 @@ pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result
 }
 
 #[cfg(feature = "hdf5-export")]
+#[allow(clippy::too_many_arguments)]
 fn export_bench_trace(
     out_path: &Path,
     resolution: usize,
@@ -366,7 +367,7 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
             }
         }
         steps += 1;
-        if steps % case.trace_stride == 0 {
+        if steps.is_multiple_of(case.trace_stride) {
             time_hist.push(start.elapsed().as_secs_f64());
             rho_hist.push(state.fluid.try_mean_density()?);
         }
@@ -573,13 +574,15 @@ pub fn gate_h5_outputs(paths: &[PathBuf]) -> Result<(), Box<dyn Error>> {
             thresholds.max_abs_drift_final,
             thresholds.max_std_dev
         );
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(feature = "hdf5-export"))]
     {
         let _ = paths;
-        return Err(std::io::Error::other("cannot run warp acceptance gate without hdf5-export feature")
-            .into());
+        Err(std::io::Error::other(
+            "cannot run warp acceptance gate without hdf5-export feature",
+        )
+        .into())
     }
 }

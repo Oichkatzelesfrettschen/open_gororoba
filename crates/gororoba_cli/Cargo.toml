@@ -335,6 +335,10 @@ name = "warp-precision-matrix"
 path = "src/bin/warp_precision_matrix.rs"
 
 [[bin]]
+name = "warp-precision-suite"
+path = "src/bin/warp_precision_suite.rs"
+
+[[bin]]
 name = "warp-gpu-smoke"
 path = "src/bin/warp_gpu_smoke.rs"
 
@@ -373,6 +377,10 @@ path = "src/bin/warp_lbm_step_test.rs"
 [[bin]]
 name = "thesis-synthesis"
 path = "src/bin/thesis_synthesis.rs"
+
+[[bin]]
+name = "spin-decoherence-pipeline"
+path = "src/bin/spin_decoherence_pipeline.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }

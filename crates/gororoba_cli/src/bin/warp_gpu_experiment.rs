@@ -283,11 +283,14 @@ fn compute_padic_spectrum_3d(field_hat: &Array3<Complex64>, prime: u64) -> (Vec<
 
     // Helper for p-adic valuation
     fn vp(n: usize, p: u64) -> i32 {
-        if n == 0 { return 0; }
+        if n == 0 {
+            return 0;
+        }
         let mut v = 0;
         let mut m = n;
-        while m % (p as usize) == 0 {
-            m /= p as usize;
+        let p_usize = p as usize;
+        while m.is_multiple_of(p_usize) {
+            m /= p_usize;
             v += 1;
         }
         v
@@ -390,8 +393,8 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
         let mut rng = rand::thread_rng();
         use rand::Rng;
         let mut u_init = vec![[0.0; 3]; nx*ny*nz];
-        for i in 0..nx*ny*nz {
-            u_init[i] = [
+        for v in &mut u_init {
+            *v = [
                 0.05 + rng.gen_range(-0.01..0.01),
                 rng.gen_range(-0.01..0.01),
                 rng.gen_range(-0.01..0.01)

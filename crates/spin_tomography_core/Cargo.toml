@@ -1,0 +1,10 @@
+[package]
+name = "spin_tomography_core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nalgebra.workspace = true
+num-complex.workspace = true
+thiserror.workspace = true
+algebra_core = { path = "../algebra_core" }

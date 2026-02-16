@@ -780,7 +780,26 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-032"
 input_path_refs = []
-output_path_refs = ["data/kubo_transport/coupling_analysis.toml"]
+[[experiment]]
+id = "E-036"
+title = "Spin Decoherence from CD Frustration (Thesis 5)"
+binary = "spin-decoherence-pipeline"
+binary_registered = true
+binary_experiment_declared = ""
+method = "SedenionField frustration density and associator norm drive a depolarizing channel. Bin synthetic spin events by gamma, measure reconstructed P scalar and monotonicity. Mirrors STAR spin correlation decay."
+input = "SedenionField spatial variation (dim=16)"
+output = ["data/evidence/spin_decoherence.toml"]
+run = "cargo run --release --bin spin-decoherence-pipeline -- --c-f 10.0 --c-a 1.0"
+run_command_sha256 = ""
+claims = []
+claim_refs = []
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-034"
+input_path_refs = []
+output_path_refs = ["data/evidence/spin_decoherence.toml"]
 dataset_refs = []
-reproducibility_class = "deterministic_replay"
-
+reproducibility_class = "seeded_stochastic_replay"

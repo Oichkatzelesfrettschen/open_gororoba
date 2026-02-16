@@ -7,11 +7,13 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 rayon = { workspace = true }
-algebra_core = { path = "../algebra_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
-lattice_filtration = { path = "../lattice_filtration" }
-neural_homotopy = { path = "../neural_homotopy" }
 lbm_core = { path = "../lbm_core" }
+neural_homotopy = { path = "../neural_homotopy" }
+lattice_filtration = { path = "../lattice_filtration" }
+spin_tomography_core = { path = "../spin_tomography_core" }
+cd_spin_bridge = { path = "../cd_spin_bridge" }
+algebra_core = { path = "../algebra_core" }
 stats_core = { path = "../stats_core" }
 lbm_3d = { path = "../lbm_3d" }
 quantum_core = { path = "../quantum_core" }
@@ -23,8 +25,12 @@ spectral_core = { version = "0.1.0", path = "../spectral_core" }
 ndarray.workspace = true
 num-complex.workspace = true
 anyhow.workspace = true
+lbm_3d_cuda = { path = "../lbm_3d_cuda" }
 cudarc = { workspace = true, optional = true }
-lbm_3d_cuda = { version = "0.1.0", path = "../lbm_3d_cuda", optional = true }
+nalgebra.workspace = true
+log.workspace = true
+rand.workspace = true
+statrs.workspace = true
 
 [dev-dependencies]
 proptest = "1.5"
@@ -35,6 +41,5 @@ name = "pipeline_bench"
 harness = false
 
 [features]
-gpu = ["lbm_3d_cuda", "lbm_3d_cuda/cufft", "algebra_core/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
+gpu = ["lbm_3d_cuda/cufft", "algebra_core/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
 cufft = []
-lbm_3d_cuda = ["dep:lbm_3d_cuda"]

@@ -89,6 +89,11 @@ cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-preci
 purpose = "Rust-native precision matrix with mandatory rho finite/quality gate"
 
 [[shared.command]]
+id = "rust.warp.precision_suite"
+cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-precision-suite -- <bench|matrix> ..."
+purpose = "Unified Rust-native precision suite entrypoint that subsumes single-case bench and matrix sweep workflows"
+
+[[shared.command]]
 id = "rust.warp.gpu_smoke"
 cmd = "cargo run -p gororoba_cli --features \"gpu,hdf5-export\" --bin warp-gpu-smoke -- <duration_s> <trace_stride> <out_dir>"
 purpose = "Rust-native short GPU smoke gate (8^3 and 16^3, FP32 and BF16)"

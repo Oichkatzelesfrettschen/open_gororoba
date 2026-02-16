@@ -1026,6 +1026,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "cd_spin_bridge"
+version = "0.1.0"
+dependencies = [
+ "algebra_core",
+ "nalgebra 0.33.2",
+ "num-complex",
+ "spin_tomography_core",
+ "vacuum_frustration",
+]
+
+[[package]]
 name = "cff-parser"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3283,6 +3294,7 @@ version = "0.1.0"
 dependencies = [
  "algebra_core",
  "anyhow",
+ "cd_spin_bridge",
  "criterion",
  "cudarc 0.19.1",
  "gr_core",
@@ -3290,15 +3302,20 @@ dependencies = [
  "lbm_3d",
  "lbm_3d_cuda",
  "lbm_core",
+ "log",
+ "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "neural_homotopy",
  "num-complex",
  "petgraph 0.7.1",
  "proptest",
  "quantum_core",
+ "rand 0.8.5",
  "rayon",
  "serde",
  "spectral_core",
+ "spin_tomography_core",
+ "statrs",
  "stats_core",
  "toml",
  "vacuum_frustration",
@@ -6991,6 +7008,16 @@ checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
 dependencies = [
  "lock_api",
  "portable-atomic",
+]
+
+[[package]]
+name = "spin_tomography_core"
+version = "0.1.0"
+dependencies = [
+ "algebra_core",
+ "nalgebra 0.33.2",
+ "num-complex",
+ "thiserror 2.0.18",
 ]
 
 [[package]]

@@ -1,5 +1,6 @@
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_simulation_trace_component;
+#[cfg(feature = "hdf5-export")]
 use data_core::quality::{validate_rho_trace, RhoQualityThresholds};
 use std::collections::BTreeSet;
 use std::error::Error;
@@ -39,10 +40,12 @@ fn expand_inputs(inputs: &[String]) -> Result<Vec<PathBuf>, Box<dyn Error>> {
     Ok(paths.into_iter().collect())
 }
 
+#[cfg(feature = "hdf5-export")]
 fn all_finite(values: &[f64]) -> bool {
     values.iter().all(|v| v.is_finite())
 }
 
+#[cfg(feature = "hdf5-export")]
 fn nondecreasing(values: &[f64]) -> bool {
     values.windows(2).all(|w| w[1] >= w[0])
 }
@@ -136,15 +139,15 @@ fn main() -> Result<(), Box<dyn Error>> {
             thresholds.max_abs_drift_final,
             thresholds.max_std_dev
         );
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(feature = "hdf5-export"))]
     {
         let _ = paths;
-        return Err(std::io::Error::other(
+        Err(std::io::Error::other(
             "simulation-trace-gate requires hdf5-export feature: cargo run -p gororoba_cli --features hdf5-export --bin simulation-trace-gate -- <paths>",
         )
-        .into());
+        .into())
     }
 }
