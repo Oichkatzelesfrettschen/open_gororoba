@@ -30,6 +30,19 @@ pub struct SpectralTriad {
     pub energy_transfer: f64,
 }
 
+/// Triad interaction in 3D spectral space (k, p, q) with k + p + q = 0.
+#[derive(Debug, Clone)]
+pub struct SpectralTriad3D {
+    /// Wavevector indices of mode k
+    pub k: [i32; 3],
+    /// Wavevector indices of mode p
+    pub p: [i32; 3],
+    /// Wavevector indices of mode q
+    pub q: [i32; 3],
+    /// Energy transfer T(k|p,q) for this triad
+    pub energy_transfer: f64,
+}
+
 /// Result of 2D FFT: complex amplitudes on the (kx, ky) grid.
 #[derive(Debug, Clone)]
 pub struct SpectralField {
@@ -50,10 +63,27 @@ impl SpectralField {
     }
 }
 
+/// Result of 3D FFT: complex amplitudes on the (kx, ky, kz) grid.
+#[derive(Debug, Clone)]
+pub struct SpectralField3D {
+    /// Complex Fourier coefficients (nx, ny, nz)
+    pub coeffs: Array3<Complex<f64>>,
+    pub nx: usize,
+    pub ny: usize,
+    pub nz: usize,
+}
+
+impl SpectralField3D {
+    /// Access coefficient at wavevector indices (kx, ky, kz).
+    pub fn get(&self, kx: i32, ky: i32, kz: i32) -> Complex<f64> {
+        let ix = kx.rem_euclid(self.nx as i32) as usize;
+        let iy = ky.rem_euclid(self.ny as i32) as usize;
+        let iz = kz.rem_euclid(self.nz as i32) as usize;
+        self.coeffs[[ix, iy, iz]]
+    }
+}
+
 /// Compute 2D FFT of a real scalar field.
-///
-/// Uses row-column decomposition: 1D FFT on each row (axis 1),
-/// then 1D FFT on each column (axis 0) of the result.
 pub fn fft2d(field: &Array2<f64>) -> SpectralField {
     let (nx, ny) = field.dim();
     let mut planner = FftPlanner::new();
@@ -84,6 +114,66 @@ pub fn fft2d(field: &Array2<f64>) -> SpectralField {
         coeffs: transformed,
         nx,
         ny,
+    }
+}
+
+/// Compute 3D FFT of a real scalar field.
+pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
+    let (nx, ny, nz) = field.dim();
+    let mut planner = FftPlanner::new();
+
+    let mut transformed = Array3::<Complex<f64>>::zeros((nx, ny, nz));
+
+    // Fill transformed with complex values
+    for ix in 0..nx {
+        for iy in 0..ny {
+            for iz in 0..nz {
+                transformed[[ix, iy, iz]] = Complex::new(field[[ix, iy, iz]], 0.0);
+            }
+        }
+    }
+
+    // Z-wise
+    let fft_z = planner.plan_fft_forward(nz);
+    for ix in 0..nx {
+        for iy in 0..ny {
+            let mut buffer: Vec<Complex<f64>> = (0..nz).map(|iz| transformed[[ix, iy, iz]]).collect();
+            fft_z.process(&mut buffer);
+            for (iz, val) in buffer.iter().enumerate() {
+                transformed[[ix, iy, iz]] = *val;
+            }
+        }
+    }
+
+    // Y-wise
+    let fft_y = planner.plan_fft_forward(ny);
+    for ix in 0..nx {
+        for iz in 0..nz {
+            let mut buffer: Vec<Complex<f64>> = (0..ny).map(|iy| transformed[[ix, iy, iz]]).collect();
+            fft_y.process(&mut buffer);
+            for (iy, val) in buffer.iter().enumerate() {
+                transformed[[ix, iy, iz]] = *val;
+            }
+        }
+    }
+
+    // X-wise
+    let fft_x = planner.plan_fft_forward(nx);
+    for iy in 0..ny {
+        for iz in 0..nz {
+            let mut buffer: Vec<Complex<f64>> = (0..nx).map(|ix| transformed[[ix, iy, iz]]).collect();
+            fft_x.process(&mut buffer);
+            for (ix, val) in buffer.iter().enumerate() {
+                transformed[[ix, iy, iz]] = *val;
+            }
+        }
+    }
+
+    SpectralField3D {
+        coeffs: transformed,
+        nx,
+        ny,
+        nz,
     }
 }
 
@@ -202,6 +292,80 @@ pub fn ifft3d(spectral: &Array3<Complex<f64>>) -> Array3<f64> {
     Array3::from_shape_fn((nx, ny, nz), |(ix, iy, iz)| {
         transformed[[ix, iy, iz]].re * norm
     })
+}
+
+/// Extract dominant triads from 3D velocity field components.
+pub fn extract_dominant_triads_3d(
+    u: &Array3<f64>,
+    v: &Array3<f64>,
+    w: &Array3<f64>,
+    threshold: f64,
+) -> Vec<SpectralTriad3D> {
+    let (nx, ny, nz) = u.dim();
+    let u_hat = fft3d(u);
+    let v_hat = fft3d(v);
+    let w_hat = fft3d(w);
+    let norm = (nx * ny * nz) as f64;
+
+    // Combined velocity amplitude
+    let amplitude = |kx: i32, ky: i32, kz: i32| -> f64 {
+        let au = u_hat.get(kx, ky, kz).norm();
+        let av = v_hat.get(kx, ky, kz).norm();
+        let aw = w_hat.get(kx, ky, kz).norm();
+        (au * au + av * av + aw * aw).sqrt() / norm
+    };
+
+    let kx_max = (nx / 8) as i32; // More restrictive for 3D performance
+    let ky_max = (ny / 8) as i32;
+    let kz_max = (nz / 8) as i32;
+
+    let mut triads = Vec::new();
+
+    for kx1 in -kx_max..=kx_max {
+        for ky1 in -ky_max..=ky_max {
+            for kz1 in -kz_max..=kz_max {
+                if kx1 == 0 && ky1 == 0 && kz1 == 0 { continue; }
+                let a_k = amplitude(kx1, ky1, kz1);
+                if a_k < threshold * 0.1 { continue; }
+
+                for kx2 in -kx_max..=kx_max {
+                    for ky2 in -ky_max..=ky_max {
+                        for kz2 in -kz_max..=kz_max {
+                            if kx2 == 0 && ky2 == 0 && kz2 == 0 { continue; }
+                            if kx1 == kx2 && ky1 == ky2 && kz1 == kz2 { continue; }
+
+                            let qx = -(kx1 + kx2);
+                            let qy = -(ky1 + ky2);
+                            let qz = -(kz1 + kz2);
+
+                            if qx.abs() > kx_max || qy.abs() > ky_max || qz.abs() > kz_max { continue; }
+                            if qx == 0 && qy == 0 && qz == 0 { continue; }
+
+                            // Canonical ordering
+                            let mut triple = [(kx1, ky1, kz1), (kx2, ky2, kz2), (qx, qy, qz)];
+                            triple.sort();
+                            if (kx1, ky1, kz1) != triple[0] || (kx2, ky2, kz2) != triple[1] { continue; }
+
+                            let a_p = amplitude(kx2, ky2, kz2);
+                            let a_q = amplitude(qx, qy, qz);
+                            let product = a_k * a_p * a_q;
+
+                            if product > threshold {
+                                triads.push(SpectralTriad3D {
+                                    k: [kx1, ky1, kz1],
+                                    p: [kx2, ky2, kz2],
+                                    q: [qx, qy, qz],
+                                    energy_transfer: 0.0, // Placeholder
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    triads
 }
 
 /// Extract dominant triads from 2D velocity field components.

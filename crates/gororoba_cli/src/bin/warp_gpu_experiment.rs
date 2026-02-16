@@ -13,25 +13,22 @@
 
 use clap::Parser;
 use log::{info, warn};
-use ndarray::{Array3, ArrayView3, Zip};
+use ndarray::{Array3, Zip};
 use num_complex::Complex64;
-use rayon::prelude::*;
 use std::error::Error;
 use std::f64::consts::PI;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
-use std::time::Instant;
 
 // Import core modules
 use algebra_core::lie::e7_geometry::generate_e7_roots;
-use lbm_core::{simulate_kolmogorov_flow, D2Q9};
+use lbm_core::simulate_kolmogorov_flow;
 use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
-use spectral_core::warp_physics::{padic_power_spectrum, WarpRingConfig};
 use stats_core::hypergraph::TriadHypergraph;
 
 #[cfg(feature = "gpu")]
-use lbm_3d_cuda::LbmSolver3DCuda;
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -112,7 +109,7 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
     // Try GPU first
     #[cfg(feature = "gpu")]
     {
-        if let Ok(mut solver) = LbmSolver3DCuda::new(nx, ny, nz, tau) {
+        if let Ok(mut solver) = LbmSolver3DCuda::new(nx, ny, nz, tau, Precision::FP32) {
             info!("Using GPU LBM Solver (D3Q19)");
             // Initialize with Kolmogorov-like forcing (random initial velocity)
             let mut rng = rand::thread_rng();
@@ -144,7 +141,12 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                 // Check stability
                 if t % 10 == 0 {
                     solver.sync_to_host()?;
-                    let enstrophy = compute_enstrophy_3d(&solver.u, nx, ny, nz);
+                    let u_vec_f64: Vec<[f64; 3]> = solver
+                        .u
+                        .iter()
+                        .map(|v| [v[0] as f64, v[1] as f64, v[2] as f64])
+                        .collect();
+                    let enstrophy = compute_enstrophy_3d(&u_vec_f64, nx, ny, nz);
                     if enstrophy.is_nan() || enstrophy > 1e6 {
                         warn!("Blowup detected at step {} (Enstrophy: {:.2e})", t, enstrophy);
                         return Ok(t);
@@ -152,14 +154,13 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
 
                     // Apply Filter
                     if use_filter {
-                        let u_vec = &solver.u;
                         // Flatten [ [ux,uy,uz], ... ] to separate arrays for FFT?
                         // ndfft expects Array3.
-                        let mut ux = Array3::zeros((nx, ny, nz));
-                        let mut uy = Array3::zeros((nx, ny, nz));
-                        let mut uz = Array3::zeros((nx, ny, nz));
+                        let mut ux = Array3::<f64>::zeros((nx, ny, nz));
+                        let mut uy = Array3::<f64>::zeros((nx, ny, nz));
+                        let mut uz = Array3::<f64>::zeros((nx, ny, nz));
                         
-                        for (idx, vel) in u_vec.iter().enumerate() {
+                        for (idx, vel) in u_vec_f64.iter().enumerate() {
                             let z = idx / (nx * ny);
                             let y = (idx % (nx * ny)) / nx;
                             let x = idx % nx;
@@ -174,7 +175,7 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                         apply_filter_3d(&mut uz, e7_mask.as_ref().unwrap());
 
                         // Write back
-                        let mut u_new = u_vec.clone();
+                        let mut u_new = u_vec_f64.clone();
                         for (idx, vel) in u_new.iter_mut().enumerate() {
                             let z = idx / (nx * ny);
                             let y = (idx % (nx * ny)) / nx;
@@ -185,7 +186,9 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
                         }
                         
                         // Reset solver with filtered velocity
-                        solver.initialize_custom(&solver.rho, &u_new)?;
+                        let rho_clone: Vec<f64> =
+                            solver.rho.iter().map(|v| *v as f64).collect();
+                        solver.initialize_custom(&rho_clone, &u_new)?;
                     }
                 }
             }
@@ -197,7 +200,7 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
 
     // CPU Fallback (2D D2Q9)
     info!("Using CPU LBM Solver (D2Q9 - 2D Approximation)");
-    let mut flow = simulate_kolmogorov_flow(nx, ny, tau, 1e-4, 1, 1); // Init
+    let _flow = simulate_kolmogorov_flow(nx, ny, tau, 1e-4, 1, 1); // Init
     
     // We assume simulate_kolmogorov_flow returns a struct with step() or we run loop manually?
     // lbm_core::simulate_kolmogorov_flow runs the WHOLE simulation.
@@ -373,14 +376,15 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
     let steps = args.steps;
     
     // Output file
-    let path = Path::new("data/csv/warp_experiment_c_topology.csv");
+    let path_str = format!("data/csv/warp_experiment_c_topology_{}.csv", nx);
+    let path = Path::new(&path_str);
     let mut file = File::create(path)?;
     writeln!(file, "step,enstrophy,betti_1,active_triads")?;
 
     #[cfg(feature = "gpu")]
     {
-        let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.6)?; // Low viscosity
-        solver.initialize_uniform(1.0, [0.05, 0.0, 0.0])?; // Shear init handled internally or via noise
+        let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.6, Precision::FP32)?; // Low viscosity
+        solver.initialize_uniform(1.0_f32, [0.05_f32, 0.0_f32, 0.0_f32])?; // Shear init handled internally or via noise
         
         // Add random noise
         let mut rng = rand::thread_rng();
@@ -400,13 +404,18 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
 
             if t % 50 == 0 {
                 solver.sync_to_host()?;
-                let enstrophy = compute_enstrophy_3d(&solver.u, nx, ny, nz);
+                let u_vec_f64: Vec<[f64; 3]> = solver
+                    .u
+                    .iter()
+                    .map(|v| [v[0] as f64, v[1] as f64, v[2] as f64])
+                    .collect();
+                let enstrophy = compute_enstrophy_3d(&u_vec_f64, nx, ny, nz);
                 
                 // Topological Analysis
                 // 1. FFT
                 // 2. Find triads (k,p,q) such that |u_k||u_p||u_q| > Threshold
                 // 3. Build Hypergraph
-                let (betti_1, triad_count) = compute_topology(&solver.u, nx, ny, nz);
+                let (betti_1, triad_count) = compute_topology(&u_vec_f64, nx, ny, nz);
                 
                 info!("Step {}: Enstrophy={:.4e}, Betti-1={}, Triads={}", t, enstrophy, betti_1, triad_count);
                 writeln!(file, "{},{:.6e},{},{}", t, enstrophy, betti_1, triad_count)?;
@@ -505,7 +514,7 @@ fn compute_enstrophy_3d(u: &[[f64; 3]], nx: usize, ny: usize, nz: usize) -> f64 
                 let ym = (y + ny - 1) % ny;
                 let zm = (z + nz - 1) % nz;
                 
-                let u_c = u[idx(x,y,z)];
+                let _u_c = u[idx(x,y,z)];
                 
                 // Partial derivs (central diff)
                 // dy_uz - dz_uy

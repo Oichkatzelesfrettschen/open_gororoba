@@ -328,7 +328,13 @@ fn evolve_lbm_gpu(
     }
 
     // Create GPU solver with placeholder tau (will be replaced by viscosity field)
-    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(grid_size, grid_size, grid_size, 0.6)?;
+    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(
+        grid_size,
+        grid_size,
+        grid_size,
+        0.6,
+        lbm_3d_cuda::Precision::FP32,
+    )?;
 
     if verbose {
         eprintln!("  Setting spatially-varying viscosity field...");
@@ -372,7 +378,11 @@ fn evolve_lbm_gpu(
     }
 
     // Return velocity field (already synced to host by evolve())
-    Ok(solver.u)
+    Ok(solver
+        .u
+        .iter()
+        .map(|v| [v[0] as f64, v[1] as f64, v[2] as f64])
+        .collect())
 }
 
 // Helper: Generate APT-evolved Sedenion field with frustration

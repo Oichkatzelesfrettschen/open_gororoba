@@ -159,6 +159,10 @@ name = "registry-check"
 path = "src/bin/registry_check.rs"
 
 [[bin]]
+name = "project-counter-sync"
+path = "src/bin/project_counter_sync.rs"
+
+[[bin]]
 name = "migrate-insights"
 path = "src/bin/migrate_insights.rs"
 
@@ -189,6 +193,14 @@ path = "src/bin/registry_emit.rs"
 [[bin]]
 name = "warp-ring-integration"
 path = "src/bin/warp_ring_integration.rs"
+
+[[bin]]
+name = "warp-gpu-experiment"
+path = "src/bin/warp_gpu_experiment.rs"
+
+[[bin]]
+name = "warp-ring-3d"
+path = "src/bin/warp_ring_3d.rs"
 
 [[bin]]
 name = "dimensional-census"
@@ -279,8 +291,88 @@ name = "validate-j1j2-kubo"
 path = "src/bin/validate_j1j2_kubo.rs"
 
 [[bin]]
+name = "entropy-trap"
+path = "src/bin/entropy_trap.rs"
+
+[[bin]]
+name = "he4-superfluid"
+path = "src/bin/he4_superfluid.rs"
+
+[[bin]]
+name = "tessarines-mixed-quaternions-census"
+path = "src/bin/tessarines_mixed_quaternions_census.rs"
+
+[[bin]]
+name = "albert-algebra-structure-census"
+path = "src/bin/albert_algebra_structure_census.rs"
+
+[[bin]]
+name = "composition-algebra-taxonomy"
+path = "src/bin/composition_algebra_taxonomy.rs"
+
+[[bin]]
+name = "registry-event-tracker"
+path = "src/bin/registry_event_tracker.rs"
+
+[[bin]]
+name = "third-party-source-verifier"
+path = "src/bin/third_party_source_verifier.rs"
+
+[[bin]]
 name = "claims-consolidate"
 path = "src/bin/claims_consolidate.rs"
+
+[[bin]]
+name = "gororoba-gate"
+path = "src/bin/gororoba_gate.rs"
+
+[[bin]]
+name = "warp-bench-precision"
+path = "src/bin/warp_bench_precision.rs"
+
+[[bin]]
+name = "warp-precision-matrix"
+path = "src/bin/warp_precision_matrix.rs"
+
+[[bin]]
+name = "warp-gpu-smoke"
+path = "src/bin/warp_gpu_smoke.rs"
+
+[[bin]]
+name = "warp-production-suite"
+path = "src/bin/warp_production_suite.rs"
+
+[[bin]]
+name = "warp-basemark-suite"
+path = "src/bin/warp_basemark_suite.rs"
+
+[[bin]]
+name = "rho-trace-gate"
+path = "src/bin/rho_trace_gate.rs"
+
+[[bin]]
+name = "simulation-trace-gate"
+path = "src/bin/simulation_trace_gate.rs"
+
+[[bin]]
+name = "hdf5-numeric-gate"
+path = "src/bin/hdf5_numeric_gate.rs"
+
+[[bin]]
+name = "warp-acceptance-gate"
+path = "src/bin/warp_acceptance_gate.rs"
+
+[[bin]]
+name = "warp-enstrophy-test"
+path = "src/bin/warp_enstrophy_test.rs"
+
+[[bin]]
+name = "warp-lbm-step-test"
+path = "src/bin/warp_lbm_step_test.rs"
+
+[[bin]]
+name = "thesis-synthesis"
+path = "src/bin/thesis_synthesis.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
@@ -294,6 +386,8 @@ spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
+cudarc = { workspace = true, optional = true }
+nvml-wrapper = { workspace = true, optional = true }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 scrolls_core = { path = "../scrolls_core" }
@@ -326,6 +420,12 @@ walkdir = { workspace = true }
 glob = { workspace = true }
 log = { workspace = true }
 env_logger = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+gororoba_contracts = { path = "../gororoba_contracts" }
+pgfplots = "0.5.1"
+chrono = "0.4"
+latex = "0.3.1"
 
 [dev-dependencies]
 tempfile = { workspace = true }
@@ -334,8 +434,12 @@ tempfile = { workspace = true }
 default = ["gpu"]
 gpu = [
     "lbm_3d_cuda",
+    "lbm_3d_cuda/cufft",
+    "dep:cudarc",
+    "dep:nvml-wrapper",
     "algebra_core/gpu",
     "quantum_core/gpu",
     "vacuum_frustration/gpu",
+    "gororoba_engine/gpu",
 ]
 hdf5-export = ["data_core/hdf5-export"]

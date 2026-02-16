@@ -6,6 +6,7 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
+rayon = { workspace = true }
 algebra_core = { path = "../algebra_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 lattice_filtration = { path = "../lattice_filtration" }
@@ -17,6 +18,13 @@ quantum_core = { path = "../quantum_core" }
 petgraph = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 toml = { workspace = true }
+gr_core = { version = "0.1.0", path = "../gr_core" }
+spectral_core = { version = "0.1.0", path = "../spectral_core" }
+ndarray.workspace = true
+num-complex.workspace = true
+anyhow.workspace = true
+cudarc = { workspace = true, optional = true }
+lbm_3d_cuda = { version = "0.1.0", path = "../lbm_3d_cuda", optional = true }
 
 [dev-dependencies]
 proptest = "1.5"
@@ -25,3 +33,8 @@ criterion = { workspace = true }
 [[bench]]
 name = "pipeline_bench"
 harness = false
+
+[features]
+gpu = ["lbm_3d_cuda", "lbm_3d_cuda/cufft", "algebra_core/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
+cufft = []
+lbm_3d_cuda = ["dep:lbm_3d_cuda"]

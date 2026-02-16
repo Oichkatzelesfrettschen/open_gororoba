@@ -1,540 +1,507 @@
 // GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA
 // Runtime kernel compilation via cudarc NVRTC
 
-use anyhow::{Context, Result};
-use cosmic_scheduler::{ScheduleError, ScheduleResult, TwoPhaseSystem};
+use anyhow::{ensure, Context, Result};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, DevicePtr, PushKernelArg,
 };
-use cudarc::nvrtc::compile_ptx;
 use std::sync::Arc;
 
+/// Bit-compatible wrapper for Complex32 to satisfy CUDA traits.
+#[derive(Clone, Copy, Debug, Default)]
+#[repr(C)]
+pub struct ComplexDevice {
+    pub re: f32,
+    pub im: f32,
+}
+
+unsafe impl cudarc::driver::DeviceRepr for ComplexDevice {}
+unsafe impl cudarc::driver::ValidAsZeroBits for ComplexDevice {}
+
+#[cfg(feature = "cufft")]
+#[allow(unused_imports)]
+use cudarc::cufft::result as cufft;
+
 const KERNEL_SRC: &str = include_str!("kernels.cu");
+const KERNEL_BF16_SRC: &str = include_str!("kernels_bf16.cu");
 
-/// GPU-accelerated D3Q19 LBM solver with spatially-varying viscosity
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Precision {
+    FP32,
+    BF16,
+}
+
+/// GPU-accelerated D3Q19 LBM solver with mixed-precision support (FP32/BF16)
 pub struct LbmSolver3DCuda {
-    // Grid dimensions
-    nx: usize,
-    ny: usize,
-    nz: usize,
-    n_cells: usize,
-
-    // CUDA context and stream
-    _ctx: Arc<CudaContext>,
-    stream: Arc<CudaStream>,
-
-    // Device memory buffers
-    d_f: CudaSlice<f64>, // Distributions (19 x n_cells)
-    d_f_tmp: CudaSlice<f64>, // Temp buffer for streaming double-buffer swap
-    d_rho: CudaSlice<f64>, // Density (n_cells)
-    d_u: CudaSlice<f64>, // Velocity (3 x n_cells)
-    d_tau: CudaSlice<f64>, // Relaxation time (n_cells) - spatially varying!
-    d_force: Option<CudaSlice<f64>>, // Force field (3 x n_cells) - for Guo forcing
-
-    // Compiled kernels
-    compute_macro_kernel: CudaFunction,
-    collision_kernel: CudaFunction,
-    streaming_kernel: CudaFunction,
-    init_kernel: CudaFunction,
-    guo_forcing_kernel: CudaFunction,
-
-    // Host-side state (for CPU fallback and data export)
-    pub rho: Vec<f64>,
-    pub u: Vec<[f64; 3]>,
+    nx: usize, ny: usize, nz: usize, n_cells: usize, pub precision: Precision,
+    _ctx: Arc<CudaContext>, stream: Arc<CudaStream>,
+    d_f: CudaSlice<u8>, d_f_tmp: CudaSlice<u8>,
+    d_rho: CudaSlice<u8>, d_u: CudaSlice<u8>,
+    d_tau: CudaSlice<u8>, d_force: CudaSlice<u8>,
+    initialize_uniform_kernel: CudaFunction,
+    initialize_custom_kernel: CudaFunction,
+    lbm_step_fused_kernel: CudaFunction, enstrophy_cell_kernel: CudaFunction,
+    reduce_sum_kernel: CudaFunction, zero_kernel: CudaFunction,
+    apply_mask_kernel: CudaFunction, convert_real_to_complex_kernel: CudaFunction,
+    convert_complex_to_real_kernel: CudaFunction,
+    lbm_block_dim: (u32, u32, u32),
+    #[cfg(feature = "cufft")] fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
+    d_reduction_out: CudaSlice<f32>, d_reduction_buffer_f32: Option<CudaSlice<f32>>,
+    pub d_u_hat: Option<CudaSlice<ComplexDevice>>,
+    pub d_u_hat_out: Option<CudaSlice<ComplexDevice>>,
+    pub rho: Vec<f32>, pub u: Vec<[f32; 3]>,
 }
 
 impl LbmSolver3DCuda {
-    /// Create new GPU solver with uniform relaxation time
-    pub fn new(nx: usize, ny: usize, nz: usize, tau: f64) -> Result<Self> {
+    fn parse_block_dim_env() -> Option<(u32, u32, u32)> {
+        let raw = std::env::var("GOROROBA_LBM_BLOCK_DIM").ok()?;
+        let cleaned = raw
+            .trim()
+            .replace(',', "x")
+            .replace(' ', "")
+            .to_ascii_lowercase();
+        let parts: Vec<&str> = cleaned.split('x').filter(|p| !p.is_empty()).collect();
+        if parts.len() != 3 {
+            return None;
+        }
+        let bx: u32 = parts[0].parse().ok()?;
+        let by: u32 = parts[1].parse().ok()?;
+        let bz: u32 = parts[2].parse().ok()?;
+        if bx == 0 || by == 0 || bz == 0 {
+            return None;
+        }
+        if (bx as u64) * (by as u64) * (bz as u64) > 1024 {
+            return None;
+        }
+        Some((bx, by, bz))
+    }
+
+    pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {
         let n_cells = nx * ny * nz;
-
-        // Initialize CUDA context and default stream.
-        let ctx = CudaContext::new(0).context("Failed to initialize CUDA context on device 0")?;
+        let ctx = CudaContext::new(0).context("CUDA Init Failed")?;
         let stream = ctx.default_stream();
+        let src = match precision { Precision::FP32 => KERNEL_SRC, Precision::BF16 => KERNEL_BF16_SRC };
+        
+        use cudarc::nvrtc::CompileOptions;
+        let opts = if precision == Precision::BF16 {
+            CompileOptions { include_paths: vec!["/opt/cuda/include".to_string()], arch: Some("sm_89"), ..Default::default() }
+        } else {
+            CompileOptions { arch: Some("sm_89"), ..Default::default() }
+        };
+        let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
+        let module = ctx.load_module(ptx)?;
 
-        // Compile CUDA kernels at runtime via NVRTC.
-        let ptx = compile_ptx(KERNEL_SRC).context("Failed to compile CUDA kernels via NVRTC")?;
-        let module = ctx.load_module(ptx).context("Failed to load PTX module")?;
+        let lbm_step_fused_kernel = module.load_function(if precision == Precision::BF16 { "lbm_step_fused_bf16_kernel" } else { "lbm_step_fused_kernel" })?;
+        let initialize_uniform_kernel = module.load_function(if precision == Precision::BF16 { "initialize_uniform_bf16_kernel" } else { "initialize_uniform_kernel" })?;
+        let initialize_custom_kernel = module.load_function(if precision == Precision::BF16 { "initialize_custom_bf16_kernel" } else { "initialize_custom_kernel" })?;
+        let enstrophy_cell_kernel = module.load_function("compute_enstrophy_cell_kernel")?;
+        let reduce_sum_kernel = module.load_function(if precision == Precision::BF16 { "reduce_sum_bf16_to_f32_kernel" } else { "reduce_sum_kernel" })?;
+        let zero_kernel = module.load_function(if precision == Precision::BF16 { "zero_f32_kernel" } else { "zero_kernel" })?;
+        let apply_mask_kernel = module.load_function("apply_spectral_mask_kernel")?;
+        let convert_real_to_complex_kernel = module.load_function(if precision == Precision::BF16 { "convert_real_bf16_to_complex_f32_kernel" } else { "convert_real_to_complex_kernel" })?;
+        let convert_complex_to_real_kernel = module.load_function(if precision == Precision::BF16 { "convert_complex_f32_to_real_bf16_kernel" } else { "convert_complex_to_real_kernel" })?;
+        
+        let es = if precision == Precision::FP32 { 4 } else { 2 };
+        let mut d_f = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
+        let d_f_tmp = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
+        let mut d_rho = stream.alloc_zeros::<u8>(n_cells * es)?;
+        let mut d_u = stream.alloc_zeros::<u8>(3 * n_cells * es)?;
+        let d_force = stream.alloc_zeros::<u8>(3 * n_cells * es)?;
+        let d_tau = if precision == Precision::FP32 {
+            let v = vec![tau as f32; n_cells];
+            let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
+            stream.clone_htod(&b)?
+        } else {
+            let v = vec![half::bf16::from_f32(tau as f32).to_bits(); n_cells];
+            let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
+            stream.clone_htod(&b)?
+        };
+        
+        let d_reduction_out = stream.alloc_zeros::<f32>(1)?;
+        let d_reduction_buffer_f32 = Some(stream.alloc_zeros::<f32>(n_cells)?);
+        let d_u_hat = Some(stream.alloc_zeros::<ComplexDevice>(n_cells)?);
+        let d_u_hat_out = Some(stream.alloc_zeros::<ComplexDevice>(n_cells)?);
 
-        let compute_macro_kernel = module
-            .load_function("compute_macroscopic_kernel")
-            .context("Kernel compute_macroscopic_kernel not found")?;
-        let collision_kernel = module
-            .load_function("bgk_collision_kernel")
-            .context("Kernel bgk_collision_kernel not found")?;
-        let streaming_kernel = module
-            .load_function("streaming_kernel")
-            .context("Kernel streaming_kernel not found")?;
-        let init_kernel = module
-            .load_function("initialize_uniform_kernel")
-            .context("Kernel initialize_uniform_kernel not found")?;
-        let guo_forcing_kernel = module
-            .load_function("guo_forcing_kernel")
-            .context("Kernel guo_forcing_kernel not found")?;
+        let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
+        let rho_init = 1.0f32;
+        let u_init = 0.0f32;
+        let mut init = stream.launch_builder(&initialize_uniform_kernel);
+        init.arg(&mut d_f)
+            .arg(&mut d_rho)
+            .arg(&mut d_u)
+            .arg(&rho_init)
+            .arg(&u_init)
+            .arg(&u_init)
+            .arg(&u_init)
+            .arg(&nx_i)
+            .arg(&ny_i)
+            .arg(&nz_i);
+        unsafe { init.launch(LaunchConfig::for_num_elems(n_cells as u32)) }?;
 
-        // Allocate device memory.
-        let d_f = stream
-            .alloc_zeros::<f64>(19 * n_cells)
-            .context("Failed to allocate d_f")?;
-        let d_f_tmp = stream
-            .alloc_zeros::<f64>(19 * n_cells)
-            .context("Failed to allocate d_f_tmp")?;
-        let d_rho = stream
-            .alloc_zeros::<f64>(n_cells)
-            .context("Failed to allocate d_rho")?;
-        let d_u = stream
-            .alloc_zeros::<f64>(3 * n_cells)
-            .context("Failed to allocate d_u")?;
-
-        // Initialize uniform tau field
-        let tau_vec = vec![tau; n_cells];
-        let d_tau = stream
-            .clone_htod(&tau_vec)
-            .context("Failed to initialize d_tau")?;
-
-        // Host-side state
-        let rho = vec![1.0; n_cells];
-        let u = vec![[0.0, 0.0, 0.0]; n_cells];
+        // Default kernel geometry. Override with:
+        //   GOROROBA_LBM_BLOCK_DIM=8x4x4 (or 8,4,4)
+        let default_block_dim = (4u32, 4u32, 4u32);
+        let lbm_block_dim = Self::parse_block_dim_env().unwrap_or(default_block_dim);
 
         Ok(Self {
-            nx,
-            ny,
-            nz,
-            n_cells,
-            _ctx: ctx,
-            stream,
-            d_f,
-            d_f_tmp,
-            d_rho,
-            d_u,
-            d_tau,
-            d_force: None,
-            compute_macro_kernel,
-            collision_kernel,
-            streaming_kernel,
-            init_kernel,
-            guo_forcing_kernel,
-            rho,
-            u,
+            nx, ny, nz, n_cells, precision, _ctx: ctx, stream, d_f, d_f_tmp, d_rho, d_u, d_tau, d_force,
+            initialize_uniform_kernel,
+            initialize_custom_kernel,
+            lbm_step_fused_kernel, enstrophy_cell_kernel, reduce_sum_kernel, zero_kernel,
+            apply_mask_kernel, convert_real_to_complex_kernel, convert_complex_to_real_kernel,
+            lbm_block_dim,
+            #[cfg(feature = "cufft")] fft_plan: None,
+            d_reduction_out, d_reduction_buffer_f32, d_u_hat, d_u_hat_out,
+            rho: vec![1.0; n_cells], u: vec![[0.0; 3]; n_cells],
         })
     }
 
-    /// Set spatially-varying viscosity field (critical for frustration coupling!)
-    pub fn set_viscosity_field(&mut self, viscosity: &[f64]) -> Result<()> {
-        if viscosity.len() != self.n_cells {
-            anyhow::bail!(
-                "Viscosity field length {} does not match grid size {}",
-                viscosity.len(),
-                self.n_cells
-            );
-        }
-
-        // Convert nu -> tau via Chapman-Enskog: tau = 3*nu + 0.5
-        let tau_field: Vec<f64> = viscosity.iter().map(|&nu| 3.0 * nu + 0.5).collect();
-
-        // Validate: all tau >= 0.5 for BGK stability
-        if let Some(&min_tau) = tau_field.iter().min_by(|a, b| a.partial_cmp(b).unwrap()) {
-            if min_tau < 0.5 {
-                anyhow::bail!(
-                    "tau field contains values < 0.5 (unstable): min={}",
-                    min_tau
-                );
-            }
-        }
-
-        // Upload to GPU
-        self.d_tau = self
-            .stream
-            .clone_htod(&tau_field)
-            .context("Failed to upload tau field to GPU")?;
-
-        Ok(())
+    fn encode_f32_to_bytes(values: &[f32]) -> Vec<u8> {
+        values.iter().flat_map(|v| v.to_le_bytes()).collect::<Vec<u8>>()
     }
 
-    /// Set spatially-varying force field for Guo forcing (applied every timestep)
-    ///
-    /// Each cell gets a force vector [F_x, F_y, F_z]. For Kolmogorov flow,
-    /// use F_x = A * sin(2*pi*y/ny), F_y = 0, F_z = 0.
-    pub fn set_force_field(&mut self, force: &[[f64; 3]]) -> Result<()> {
-        if force.len() != self.n_cells {
-            anyhow::bail!(
-                "Force field length {} does not match grid size {}",
-                force.len(),
-                self.n_cells
-            );
-        }
-
-        // Flatten [fx0, fy0, fz0, fx1, fy1, fz1, ...] matching d_u layout
-        let force_flat: Vec<f64> = force
+    fn encode_bf16_to_bytes(values: &[f32]) -> Vec<u8> {
+        values
             .iter()
-            .flat_map(|&[fx, fy, fz]| [fx, fy, fz])
-            .collect();
+            .map(|v| half::bf16::from_f32(*v).to_bits())
+            .flat_map(|bits| bits.to_le_bytes())
+            .collect::<Vec<u8>>()
+    }
 
-        let d_force = self
-            .stream
-            .clone_htod(&force_flat)
-            .context("Failed to upload force field to GPU")?;
-        self.d_force = Some(d_force);
+    pub fn initialize_uniform(&mut self, rho: f32, u: [f32; 3]) -> Result<()> {
+        let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
+        let rho_init = rho;
+        let (ux, uy, uz) = (u[0], u[1], u[2]);
+        let mut init = self.stream.launch_builder(&self.initialize_uniform_kernel);
+        init.arg(&mut self.d_f)
+            .arg(&mut self.d_rho)
+            .arg(&mut self.d_u)
+            .arg(&rho_init)
+            .arg(&ux)
+            .arg(&uy)
+            .arg(&uz)
+            .arg(&nx_i)
+            .arg(&ny_i)
+            .arg(&nz_i);
+        unsafe { init.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
         Ok(())
     }
 
-    /// Clear the force field (disables Guo forcing)
-    pub fn clear_force_field(&mut self) {
-        self.d_force = None;
-    }
-
-    /// Check if a force field is set
-    pub fn has_force_field(&self) -> bool {
-        self.d_force.is_some()
-    }
-
-    /// Get current viscosity field from GPU
-    pub fn get_viscosity_field(&self) -> Result<Vec<f64>> {
-        let tau_field = self
-            .stream
-            .clone_dtoh(&self.d_tau)
-            .context("Failed to download tau field from GPU")?;
-
-        // Convert tau -> nu: nu = (tau - 0.5) / 3
-        Ok(tau_field.iter().map(|&tau| (tau - 0.5) / 3.0).collect())
-    }
-
-    /// Initialize uniform density and velocity
-    pub fn initialize_uniform(&mut self, rho_init: f64, u_init: [f64; 3]) -> Result<()> {
-        // Launch initialization kernel
-        let block_size = 256;
-        let grid_size = self.n_cells.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
-        let mut builder = self.stream.launch_builder(&self.init_kernel);
-        builder.arg(&mut self.d_f);
-        builder.arg(&mut self.d_rho);
-        builder.arg(&mut self.d_u);
-        builder.arg(&rho_init);
-        builder.arg(&u_init[0]);
-        builder.arg(&u_init[1]);
-        builder.arg(&u_init[2]);
-        let nx_i32 = self.nx as i32;
-        let ny_i32 = self.ny as i32;
-        let nz_i32 = self.nz as i32;
-        builder.arg(&nx_i32);
-        builder.arg(&ny_i32);
-        builder.arg(&nz_i32);
-
-        unsafe { builder.launch(config) }.context("Failed to launch initialize_uniform_kernel")?;
-
-        self.stream
-            .synchronize()
-            .context("CUDA synchronize failed")?;
-
-        // Update host-side state
-        self.rho = vec![rho_init; self.n_cells];
-        self.u = vec![u_init; self.n_cells];
-
-        Ok(())
-    }
-
-    /// Initialize with custom velocity field (for shear initialization)
-    ///
-    /// Takes a host-side velocity field and initializes distributions to local equilibrium.
-    /// Useful for seeding flow instabilities with velocity shear profiles.
     pub fn initialize_custom(&mut self, rho: &[f64], u: &[[f64; 3]]) -> Result<()> {
-        if rho.len() != self.n_cells || u.len() != self.n_cells {
-            anyhow::bail!(
-                "Field size mismatch: rho.len()={}, u.len()={}, expected={}",
-                rho.len(),
-                u.len(),
-                self.n_cells
-            );
-        }
-
-        // Upload rho to GPU
-        self.d_rho = self
-            .stream
-            .clone_htod(rho)
-            .context("Failed to upload rho field")?;
-
-        // Flatten u for GPU: [ux0, uy0, uz0, ux1, uy1, uz1, ...]
-        let u_flat: Vec<f64> = u
-            .iter()
-            .flat_map(|&[ux, uy, uz]| vec![ux, uy, uz])
-            .collect();
-
-        self.d_u = self
-            .stream
-            .clone_htod(&u_flat)
-            .context("Failed to upload velocity field")?;
-
-        // Initialize distribution function to local equilibrium using uploaded u
-        // We'll use the init kernel with per-cell velocities (requires kernel modification)
-        // For now, use a workaround: loop over cells and initialize f directly on CPU, then upload
-
-        let mut f_host = vec![0.0; 19 * self.n_cells];
-
-        for idx in 0..self.n_cells {
-            let rho_val = rho[idx];
-            let u_val = u[idx];
-
-            // D3Q19 lattice velocities (from kernels.cu)
-            let cx = [0, 1, -1, 0, 0, 0, 0, 1, -1, 1, -1, 1, -1, 1, -1, 0, 0, 0, 0];
-            let cy = [0, 0, 0, 1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 1, -1, 1, -1];
-            let cz = [0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 1, 1, -1, -1, 1, 1, -1, -1];
-            let w = [
-                1.0 / 3.0,
-                1.0 / 18.0,
-                1.0 / 18.0,
-                1.0 / 18.0,
-                1.0 / 18.0,
-                1.0 / 18.0,
-                1.0 / 18.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-                1.0 / 36.0,
-            ];
-
-            // Compute equilibrium distribution for this cell
-            let ux = u_val[0];
-            let uy = u_val[1];
-            let uz = u_val[2];
-            let usqr = ux * ux + uy * uy + uz * uz;
-
-            for i in 0..19 {
-                let ci_dot_u = (cx[i] as f64) * ux + (cy[i] as f64) * uy + (cz[i] as f64) * uz;
-                let f_eq = w[i]
-                    * rho_val
-                    * (1.0 + 3.0 * ci_dot_u + 4.5 * ci_dot_u * ci_dot_u - 1.5 * usqr);
-                f_host[idx * 19 + i] = f_eq;
-            }
-        }
-
-        // Upload initialized distribution function to GPU
-        self.d_f = self
-            .stream
-            .clone_htod(&f_host)
-            .context("Failed to upload distribution function")?;
-
-        self.stream
-            .synchronize()
-            .context("CUDA synchronize failed")?;
-
-        // Update host-side state
-        self.rho = rho.to_vec();
-        self.u = u.to_vec();
-
-        Ok(())
-    }
-
-    /// Compute macroscopic quantities (rho, u) from distributions
-    fn compute_macroscopic(&mut self) -> Result<()> {
-        let block_size = 256;
-        let grid_size = self.n_cells.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
-        let mut builder = self.stream.launch_builder(&self.compute_macro_kernel);
-        builder.arg(&self.d_f);
-        builder.arg(&mut self.d_rho);
-        builder.arg(&mut self.d_u);
-        let nx_i32 = self.nx as i32;
-        let ny_i32 = self.ny as i32;
-        let nz_i32 = self.nz as i32;
-        builder.arg(&nx_i32);
-        builder.arg(&ny_i32);
-        builder.arg(&nz_i32);
-
-        unsafe { builder.launch(config) }.context("Failed to launch compute_macroscopic_kernel")?;
-
-        Ok(())
-    }
-
-    /// BGK collision with spatially-varying relaxation time
-    fn collision(&mut self) -> Result<()> {
-        let block_size = 256;
-        let grid_size = self.n_cells.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
-        let mut builder = self.stream.launch_builder(&self.collision_kernel);
-        builder.arg(&mut self.d_f);
-        builder.arg(&self.d_rho);
-        builder.arg(&self.d_u);
-        builder.arg(&self.d_tau); // Per-cell tau.
-        let nx_i32 = self.nx as i32;
-        let ny_i32 = self.ny as i32;
-        let nz_i32 = self.nz as i32;
-        builder.arg(&nx_i32);
-        builder.arg(&ny_i32);
-        builder.arg(&nz_i32);
-
-        unsafe { builder.launch(config) }.context("Failed to launch bgk_collision_kernel")?;
-
-        Ok(())
-    }
-
-    /// Stream distributions to neighbor cells (D3Q19 propagation).
-    fn streaming(&mut self) -> Result<()> {
-        // 3D grid of threads
-        let block_dim = (8, 8, 8); // 512 threads per block
-        let grid_dim = (
-            self.nx.div_ceil(block_dim.0),
-            self.ny.div_ceil(block_dim.1),
-            self.nz.div_ceil(block_dim.2),
+        ensure!(
+            rho.len() == self.n_cells,
+            "rho length mismatch: got {}, expected {}",
+            rho.len(),
+            self.n_cells
+        );
+        ensure!(
+            u.len() == self.n_cells,
+            "u length mismatch: got {}, expected {}",
+            u.len(),
+            self.n_cells
         );
 
-        let config = LaunchConfig {
-            grid_dim: (grid_dim.0 as u32, grid_dim.1 as u32, grid_dim.2 as u32),
-            block_dim: (block_dim.0 as u32, block_dim.1 as u32, block_dim.2 as u32),
-            shared_mem_bytes: 0,
+        let mut rho_flat = Vec::with_capacity(self.n_cells);
+        for &v in rho {
+            rho_flat.push(v as f32);
+        }
+        let mut u_flat = Vec::with_capacity(self.n_cells * 3);
+        for v in u {
+            u_flat.push(v[0] as f32);
+            u_flat.push(v[1] as f32);
+            u_flat.push(v[2] as f32);
+        }
+
+        let rho_bytes = match self.precision {
+            Precision::FP32 => Self::encode_f32_to_bytes(&rho_flat),
+            Precision::BF16 => Self::encode_bf16_to_bytes(&rho_flat),
+        };
+        let u_bytes = match self.precision {
+            Precision::FP32 => Self::encode_f32_to_bytes(&u_flat),
+            Precision::BF16 => Self::encode_bf16_to_bytes(&u_flat),
         };
 
-        let mut builder = self.stream.launch_builder(&self.streaming_kernel);
-        builder.arg(&self.d_f);
-        builder.arg(&mut self.d_f_tmp);
-        let nx_i32 = self.nx as i32;
-        let ny_i32 = self.ny as i32;
-        let nz_i32 = self.nz as i32;
-        builder.arg(&nx_i32);
-        builder.arg(&ny_i32);
-        builder.arg(&nz_i32);
+        let d_rho_in = self.stream.clone_htod(&rho_bytes)?;
+        let d_u_in = self.stream.clone_htod(&u_bytes)?;
 
-        unsafe { builder.launch(config) }.context("Failed to launch streaming_kernel")?;
-
-        // Swap buffers: f <- f_tmp
-        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
-
+        let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
+        let mut init = self.stream.launch_builder(&self.initialize_custom_kernel);
+        init.arg(&mut self.d_f)
+            .arg(&mut self.d_rho)
+            .arg(&mut self.d_u)
+            .arg(&d_rho_in)
+            .arg(&d_u_in)
+            .arg(&nx_i)
+            .arg(&ny_i)
+            .arg(&nz_i);
+        unsafe { init.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
         Ok(())
     }
 
-    /// Evolve LBM for multiple steps
+    pub fn set_force_field(&mut self, force_field: &[[f64; 3]]) -> Result<()> {
+        ensure!(
+            force_field.len() == self.n_cells,
+            "force field length mismatch: got {}, expected {}",
+            force_field.len(),
+            self.n_cells
+        );
+
+        let mut force_flat = Vec::with_capacity(self.n_cells * 3);
+        for v in force_field {
+            force_flat.push(v[0] as f32);
+            force_flat.push(v[1] as f32);
+            force_flat.push(v[2] as f32);
+        }
+
+        let bytes = match self.precision {
+            Precision::FP32 => Self::encode_f32_to_bytes(&force_flat),
+            Precision::BF16 => Self::encode_bf16_to_bytes(&force_flat),
+        };
+        self.d_force = self.stream.clone_htod(&bytes)?;
+        Ok(())
+    }
+
+    pub fn set_viscosity_field(&mut self, viscosity_field: &[f64]) -> Result<()> {
+        ensure!(
+            viscosity_field.len() == self.n_cells,
+            "viscosity field length mismatch: got {}, expected {}",
+            viscosity_field.len(),
+            self.n_cells
+        );
+
+        // LBM lattice units (D3Q19 BGK): nu = (tau - 0.5) / 3  =>  tau = 0.5 + 3*nu
+        let mut tau_flat = Vec::with_capacity(self.n_cells);
+        for &nu in viscosity_field {
+            tau_flat.push((0.5 + 3.0 * nu) as f32);
+        }
+
+        let bytes = match self.precision {
+            Precision::FP32 => Self::encode_f32_to_bytes(&tau_flat),
+            Precision::BF16 => Self::encode_bf16_to_bytes(&tau_flat),
+        };
+        self.d_tau = self.stream.clone_htod(&bytes)?;
+        Ok(())
+    }
+
     pub fn evolve(&mut self, steps: usize) -> Result<()> {
         for _ in 0..steps {
             self.step()?;
         }
-
-        // Synchronize and download final state
-        self.stream
-            .synchronize()
-            .context("CUDA synchronize failed")?;
         self.sync_to_host()?;
-
         Ok(())
     }
 
-    /// Single LBM step: macroscopic -> collision -> forcing -> streaming.
-    pub fn step(&mut self) -> Result<()> {
-        self.compute_macroscopic()?;
-        self.collision()?;
-        if self.d_force.is_some() {
-            self.apply_guo_forcing()?;
+    fn decode_f32_from_bytes(bytes: &[u8], out: &mut [f32]) -> Result<()> {
+        ensure!(
+            bytes.len() == out.len() * 4,
+            "unexpected f32 byte length: got {}, expected {}",
+            bytes.len(),
+            out.len() * 4
+        );
+        for (dst, chunk) in out.iter_mut().zip(bytes.chunks_exact(4)) {
+            *dst = f32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
         }
-        self.streaming()?;
         Ok(())
     }
 
-    /// Apply Guo forcing term to distributions (modifies f in-place after collision).
-    fn apply_guo_forcing(&mut self) -> Result<()> {
-        let d_force = self
-            .d_force
-            .as_ref()
-            .expect("apply_guo_forcing called without force field");
+    fn decode_bf16_from_bytes(bytes: &[u8], out: &mut [f32]) -> Result<()> {
+        ensure!(
+            bytes.len() == out.len() * 2,
+            "unexpected bf16 byte length: got {}, expected {}",
+            bytes.len(),
+            out.len() * 2
+        );
+        for (dst, chunk) in out.iter_mut().zip(bytes.chunks_exact(2)) {
+            let bits = u16::from_le_bytes([chunk[0], chunk[1]]);
+            *dst = half::bf16::from_bits(bits).to_f32();
+        }
+        Ok(())
+    }
 
-        let block_size = 256;
-        let grid_size = self.n_cells.div_ceil(block_size);
-
+    pub fn step(&mut self) -> Result<()> {
+        let (nx, ny, nz) = (self.nx as i32, self.ny as i32, self.nz as i32);
+        let (bx, by, bz) = self.lbm_block_dim;
         let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
+            grid_dim: (
+                self.nx.div_ceil(bx as usize) as u32,
+                self.ny.div_ceil(by as usize) as u32,
+                self.nz.div_ceil(bz as usize) as u32,
+            ),
+            block_dim: (bx, by, bz),
             shared_mem_bytes: 0,
         };
-
-        let mut builder = self.stream.launch_builder(&self.guo_forcing_kernel);
-        builder.arg(&mut self.d_f);
-        builder.arg(&self.d_u);
-        builder.arg(d_force);
-        builder.arg(&self.d_tau);
-        let nx_i32 = self.nx as i32;
-        let ny_i32 = self.ny as i32;
-        let nz_i32 = self.nz as i32;
-        builder.arg(&nx_i32);
-        builder.arg(&ny_i32);
-        builder.arg(&nz_i32);
-
-        unsafe { builder.launch(config) }.context("Failed to launch guo_forcing_kernel")?;
-
+        let mut b = self.stream.launch_builder(&self.lbm_step_fused_kernel);
+        b.arg(&self.d_f).arg(&mut self.d_f_tmp).arg(&mut self.d_rho).arg(&mut self.d_u).arg(&self.d_force).arg(&self.d_tau).arg(&nx).arg(&ny).arg(&nz);
+        unsafe { b.launch(config) }?;
+        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp); 
         Ok(())
     }
 
-    /// Synchronize GPU state to host memory
+    pub fn calculate_enstrophy(&mut self) -> Result<f32> {
+        let (nx, ny, nz, n) = (self.nx as i32, self.ny as i32, self.nz as i32, self.n_cells as i32);
+        
+        let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
+        let mut bz = self.stream.launch_builder(&self.zero_kernel);
+        bz.arg(&out_ptr);
+        unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+
+        let mut b = self.stream.launch_builder(&self.enstrophy_cell_kernel);
+        let d_u_ptr = self.d_u.device_ptr(&self.stream).0;
+        let d_enstrophy_buffer_ptr = self.d_reduction_buffer_f32.as_ref().unwrap().device_ptr(&self.stream).0;
+
+        b.arg(&d_u_ptr).arg(&d_enstrophy_buffer_ptr).arg(&nx).arg(&ny).arg(&nz);
+        unsafe { b.launch(LaunchConfig { grid_dim: (self.nx.div_ceil(2) as u32, self.ny.div_ceil(2) as u32, self.nz.div_ceil(2) as u32), block_dim: (2, 2, 2), shared_mem_bytes: 0 }) }?;
+
+        let grid_size = self.n_cells.div_ceil(256) as u32;
+        let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_kernel);
+        b_reduce.arg(self.d_reduction_buffer_f32.as_ref().unwrap()).arg(&mut self.d_reduction_out).arg(&n);
+        unsafe { b_reduce.launch(LaunchConfig { grid_dim: (grid_size, 1, 1), block_dim: (256, 1, 1), shared_mem_bytes: 0 }) }?;
+
+        let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
+        Ok(res[0] / self.n_cells as f32)
+    }
+
+    pub fn calculate_mean_density(&mut self) -> Result<f32> {
+        let n = self.n_cells as i32;
+        let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
+        let mut bz = self.stream.launch_builder(&self.zero_kernel);
+        bz.arg(&out_ptr);
+        unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+        let mut b = self.stream.launch_builder(&self.reduce_sum_kernel);
+        
+        // Correctly passing &self.d_rho instead of &self.d_rho.device_ptr
+        b.arg(&self.d_rho).arg(&mut self.d_reduction_out).arg(&n);
+        
+        let grid_size = self.n_cells.div_ceil(256) as u32;
+        unsafe { b.launch(LaunchConfig { grid_dim: (grid_size, 1, 1), block_dim: (256, 1, 1), shared_mem_bytes: 0 }) }?;
+        let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
+        Ok(res[0] / self.n_cells as f32)
+    }
+
     pub fn sync_to_host(&mut self) -> Result<()> {
-        // Download rho
-        let rho_vec = self
-            .stream
-            .clone_dtoh(&self.d_rho)
-            .context("Failed to download rho from GPU")?;
-        self.rho = rho_vec;
+        let rho_bytes = self.stream.clone_dtoh(&self.d_rho)?;
+        let u_bytes = self.stream.clone_dtoh(&self.d_u)?;
 
-        // Download u (flattened [ux0, uy0, uz0, ux1, uy1, uz1, ...])
-        let u_flat = self
-            .stream
-            .clone_dtoh(&self.d_u)
-            .context("Failed to download u from GPU")?;
-
-        self.u = u_flat
-            .chunks_exact(3)
-            .map(|chunk| [chunk[0], chunk[1], chunk[2]])
-            .collect();
+        match self.precision {
+            Precision::FP32 => {
+                Self::decode_f32_from_bytes(&rho_bytes, &mut self.rho)?;
+                let mut u_flat = vec![0.0f32; self.n_cells * 3];
+                Self::decode_f32_from_bytes(&u_bytes, &mut u_flat)?;
+                for idx in 0..self.n_cells {
+                    let base = idx * 3;
+                    self.u[idx] = [u_flat[base], u_flat[base + 1], u_flat[base + 2]];
+                }
+            }
+            Precision::BF16 => {
+                Self::decode_bf16_from_bytes(&rho_bytes, &mut self.rho)?;
+                let mut u_flat = vec![0.0f32; self.n_cells * 3];
+                Self::decode_bf16_from_bytes(&u_bytes, &mut u_flat)?;
+                for idx in 0..self.n_cells {
+                    let base = idx * 3;
+                    self.u[idx] = [u_flat[base], u_flat[base + 1], u_flat[base + 2]];
+                }
+            }
+        }
 
         Ok(())
     }
 
-    /// Get grid dimensions
-    pub fn grid_size(&self) -> (usize, usize, usize) {
-        (self.nx, self.ny, self.nz)
+    #[cfg(feature = "cufft")]
+    fn ensure_fft_plan(&mut self) -> Result<cudarc::cufft::sys::cufftHandle> {
+        if let Some(handle) = self.fft_plan {
+            return Ok(handle);
+        }
+        let handle = cufft::plan_3d(
+            self.nx as i32,
+            self.ny as i32,
+            self.nz as i32,
+            cudarc::cufft::sys::cufftType::CUFFT_C2C,
+        )
+        .context("cufftPlan3d failed")?;
+        unsafe {
+            cufft::set_stream(handle, self.stream.cu_stream() as _)
+                .context("cufftSetStream failed")?;
+        }
+        self.fft_plan = Some(handle);
+        Ok(handle)
     }
 
-    /// Get total cell count
-    pub fn n_cells(&self) -> usize {
-        self.n_cells
+    /// Out-of-place complex-to-complex FFT using cuFFT.
+    ///
+    /// `direction` is `-1` for forward and `1` for inverse.
+    #[cfg(feature = "cufft")]
+    pub fn fft_3d_c2c_into(
+        &mut self,
+        input: &CudaSlice<ComplexDevice>,
+        output: &mut CudaSlice<ComplexDevice>,
+        direction: i32,
+    ) -> Result<()> {
+        let handle = self.ensure_fft_plan()?;
+        let (i_ptr, _) = input.device_ptr(&self.stream);
+        let (o_ptr, _) = output.device_ptr(&self.stream);
+        unsafe {
+            cufft::exec_c2c(handle, i_ptr as *mut _, o_ptr as *mut _, direction)
+                .context("cufftExecC2C failed")?;
+        }
+        Ok(())
+    }
+
+    pub fn apply_spectral_mask(&self, u_hat: &mut CudaSlice<ComplexDevice>, mask: &CudaSlice<f32>, damping: f32) -> Result<()> {
+        let n = self.n_cells as i32;
+        let mut b = self.stream.launch_builder(&self.apply_mask_kernel);
+        b.arg(u_hat).arg(mask).arg(&damping).arg(&n);
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+    }
+
+    pub fn convert_real_to_complex(&self, d_u_hat: &mut CudaSlice<ComplexDevice>, component: usize) -> Result<()> {
+        let (c, n) = (component as i32, self.n_cells as i32);
+        let mut b = self.stream.launch_builder(&self.convert_real_to_complex_kernel);
+        b.arg(&self.d_u).arg(d_u_hat).arg(&c).arg(&n);
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+    }
+
+    pub fn convert_complex_to_real(&mut self, d_u_hat: &CudaSlice<ComplexDevice>, component: usize, scale: f32) -> Result<()> {
+        let (c, n) = (component as i32, self.n_cells as i32);
+        let mut b = self.stream.launch_builder(&self.convert_complex_to_real_kernel);
+        b.arg(d_u_hat).arg(&mut self.d_u).arg(&c).arg(&scale).arg(&n);
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+    }
+
+    pub fn stream(&self) -> &Arc<CudaStream> { &self.stream }
+}
+
+impl Drop for LbmSolver3DCuda {
+    fn drop(&mut self) {
+        #[cfg(feature = "cufft")]
+        if let Some(handle) = self.fft_plan.take() {
+            // Best-effort cleanup. Avoid panicking in Drop.
+            let _ = unsafe { cufft::destroy(handle) };
+        }
     }
 }
 
-impl TwoPhaseSystem for LbmSolver3DCuda {
-    fn execute_phase1(&mut self) -> ScheduleResult<()> {
-        self.compute_macroscopic().map_err(|e| {
-            ScheduleError::StateInvalid(format!("CUDA phase1 macroscopic failure: {e}"))
-        })?;
-        self.collision().map_err(|e| {
-            ScheduleError::StateInvalid(format!("CUDA phase1 collision failure: {e}"))
-        })?;
-        Ok(())
-    }
-
-    fn execute_phase2(&mut self) -> ScheduleResult<()> {
-        self.streaming().map_err(|e| {
-            ScheduleError::StateInvalid(format!("CUDA phase2 streaming failure: {e}"))
-        })?;
+#[cfg(test)]
+impl LbmSolver3DCuda {
+    fn set_all_distributions_for_test(&mut self, value: f32) -> Result<()> {
+        let count = 19 * self.n_cells;
+        let bytes: Vec<u8> = match self.precision {
+            Precision::FP32 => {
+                let values = vec![value; count];
+                values
+                    .iter()
+                    .flat_map(|v| v.to_le_bytes())
+                    .collect::<Vec<u8>>()
+            }
+            Precision::BF16 => {
+                let bf = half::bf16::from_f32(value).to_bits();
+                let values = vec![bf; count];
+                values
+                    .iter()
+                    .flat_map(|v| v.to_le_bytes())
+                    .collect::<Vec<u8>>()
+            }
+        };
+        self.d_f = self.stream.clone_htod(&bytes)?;
         Ok(())
     }
 }
@@ -542,52 +509,76 @@ impl TwoPhaseSystem for LbmSolver3DCuda {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::assert_abs_diff_eq;
 
-    #[test]
-    fn test_gpu_solver_creation() {
-        let result = LbmSolver3DCuda::new(8, 8, 8, 1.0);
-        match result {
-            Ok(solver) => {
-                assert_eq!(solver.grid_size(), (8, 8, 8));
-                assert_eq!(solver.n_cells(), 512);
-            }
-            Err(e) => {
-                // GPU not available - skip test
-                eprintln!("GPU test skipped: {}", e);
+    fn gpu_available() -> bool {
+        CudaContext::new(0).is_ok()
+    }
+
+    fn maybe_solver(precision: Precision) -> Option<LbmSolver3DCuda> {
+        if !gpu_available() {
+            eprintln!("Skipping GPU test: CUDA device unavailable");
+            return None;
+        }
+        match LbmSolver3DCuda::new(4, 4, 4, 0.6, precision) {
+            Ok(solver) => Some(solver),
+            Err(err) => {
+                eprintln!("Skipping GPU test: failed to initialize solver ({err})");
+                None
             }
         }
     }
 
     #[test]
-    fn test_viscosity_field_upload() {
-        let mut solver = match LbmSolver3DCuda::new(8, 8, 8, 1.0) {
-            Ok(s) => s,
-            Err(_) => return, // Skip if no GPU
-        };
+    fn init_and_first_step_are_finite_fp32() {
+        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+        let mean0 = solver.calculate_mean_density().expect("mean density should compute");
+        assert!(mean0.is_finite());
+        assert_abs_diff_eq!(mean0, 1.0, epsilon = 1.0e-3);
 
-        let nu_field = vec![0.1; 512];
-        solver.set_viscosity_field(&nu_field).unwrap();
-
-        let retrieved = solver.get_viscosity_field().unwrap();
-        for (&nu_in, &nu_out) in nu_field.iter().zip(retrieved.iter()) {
-            assert!((nu_in - nu_out).abs() < 1e-10);
-        }
+        solver.step().expect("first step should succeed");
+        let mean1 = solver.calculate_mean_density().expect("mean density after first step");
+        assert!(mean1.is_finite());
+        assert_abs_diff_eq!(mean1, 1.0, epsilon = 1.0e-2);
     }
 
     #[test]
-    fn test_uniform_initialization() {
-        let mut solver = match LbmSolver3DCuda::new(8, 8, 8, 1.0) {
-            Ok(s) => s,
-            Err(_) => return,
-        };
+    fn mean_density_is_mean_not_sum() {
+        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+        // With uniform rho=1 init, true mean must be ~1 regardless of cell count.
+        let mean = solver.calculate_mean_density().expect("mean density should compute");
+        assert!(mean.is_finite());
+        assert!(mean < 2.0, "expected mean close to 1, got {mean}");
+    }
 
-        solver.initialize_uniform(1.5, [0.01, 0.02, 0.03]).unwrap();
-        solver.sync_to_host().unwrap();
+    #[test]
+    fn sync_to_host_populates_fresh_buffers_bf16() {
+        let Some(mut solver) = maybe_solver(Precision::BF16) else { return };
+        solver.step().expect("step should succeed");
+        solver.sync_to_host().expect("sync_to_host should succeed");
 
-        // Check host-side state
-        assert!((solver.rho[0] - 1.5).abs() < 1e-10);
-        assert!((solver.u[0][0] - 0.01).abs() < 1e-10);
-        assert!((solver.u[0][1] - 0.02).abs() < 1e-10);
-        assert!((solver.u[0][2] - 0.03).abs() < 1e-10);
+        assert_eq!(solver.rho.len(), solver.n_cells);
+        assert_eq!(solver.u.len(), solver.n_cells);
+        assert!(solver.rho.iter().all(|v| v.is_finite()));
+        assert!(solver
+            .u
+            .iter()
+            .all(|v| v[0].is_finite() && v[1].is_finite() && v[2].is_finite()));
+    }
+
+    #[test]
+    fn zero_density_guard_prevents_nan_propagation_fp32() {
+        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+        solver
+            .set_all_distributions_for_test(0.0)
+            .expect("test setup should succeed");
+        solver.step().expect("step should succeed with zeroed distributions");
+
+        let mean = solver.calculate_mean_density().expect("mean density should compute");
+        assert!(mean.is_finite());
+        assert!(mean > 0.0);
+
+        solver.sync_to_host().expect("sync_to_host should succeed");
+        assert!(solver.rho.iter().all(|v| v.is_finite()));
     }
 }

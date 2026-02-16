@@ -105,6 +105,21 @@ pub trait SpacetimeMetric {
     }
 }
 
+/// Flat Minkowski metric.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct Minkowski;
+
+impl SpacetimeMetric for Minkowski {
+    fn metric_components(&self, _x: &[f64; DIM]) -> MetricComponents {
+        let mut g = [[0.0; DIM]; DIM];
+        g[T][T] = -1.0;
+        g[R][R] = 1.0;
+        g[THETA][THETA] = 1.0;
+        g[PHI][PHI] = 1.0;
+        g
+    }
+}
+
 /// Compute Christoffel symbols numerically via centered finite differences.
 ///
 /// Gamma^alpha_{mu nu} = (1/2) g^{alpha beta} (g_{beta mu,nu} + g_{beta nu,mu} - g_{mu nu,beta})
@@ -388,20 +403,6 @@ pub fn invert_4x4_symmetric(m: &MetricComponents) -> MetricComponents {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    /// Flat Minkowski metric for testing.
-    struct Minkowski;
-
-    impl SpacetimeMetric for Minkowski {
-        fn metric_components(&self, _x: &[f64; DIM]) -> MetricComponents {
-            let mut g = [[0.0; DIM]; DIM];
-            g[T][T] = -1.0;
-            g[R][R] = 1.0;
-            g[THETA][THETA] = 1.0;
-            g[PHI][PHI] = 1.0;
-            g
-        }
-    }
 
     #[test]
     fn test_minkowski_inverse() {

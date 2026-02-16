@@ -29,10 +29,14 @@ pub mod geophysical;
 #[cfg(feature = "hdf5-export")]
 pub mod hdf5_export;
 pub mod provenance;
+pub mod quality;
 pub mod registry;
 
 pub use fetcher::{compute_sha256, download_to_file, download_to_string};
 pub use fetcher::{DatasetProvider, FetchConfig, FetchError};
+pub use quality::{
+    assess_rho_trace, validate_rho_trace, RhoQualityError, RhoQualityThresholds, RhoTraceQuality,
+};
 
 pub use catalogs::aflow::{
     fetch_aflow_dataset, parse_aflow_json, parse_aflow_records, AflowMaterial, AflowProvider,

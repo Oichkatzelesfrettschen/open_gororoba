@@ -116,6 +116,9 @@ cudarc = { version = "0.19", default-features = false, features = [
     "cublas", "cufft", "curand", "cusolver",
 ] }
 
+# GPU telemetry (NVML). Used for Rust-native sampling without shelling out.
+nvml-wrapper = "0.10"
+
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
 # Note: burn backends are optional at crate level, not workspace level
 burn = { version = "0.16", features = ["train", "autodiff"] }
