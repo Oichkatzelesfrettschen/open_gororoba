@@ -1,0 +1,132 @@
+[report]
+id = "markdown_owner_map_generated_docs_fix_2026_02_14"
+date = "2026-02-14"
+scope = "registry/markdown_owner_map.toml"
+status = "completed_with_external_gate_failure"
+added_mapping_count = 22
+document_count_before = 150
+document_count_after = 172
+
+[[added_mapping]]
+id = "MOWN-0151"
+path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
+canonical_toml = "registry/bibliography.toml"
+
+[[added_mapping]]
+id = "MOWN-0152"
+path = "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/book_docs.toml"
+
+[[added_mapping]]
+id = "MOWN-0153"
+path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/claims_domains.toml"
+
+[[added_mapping]]
+id = "MOWN-0154"
+path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/claims.toml"
+
+[[added_mapping]]
+id = "MOWN-0155"
+path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/claims_tasks.toml"
+
+[[added_mapping]]
+id = "MOWN-0156"
+path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/claim_tickets.toml"
+
+[[added_mapping]]
+id = "MOWN-0157"
+path = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
+canonical_toml = "registry/artifact_scrolls.toml"
+
+[[added_mapping]]
+id = "MOWN-0158"
+path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/docs_convos.toml"
+
+[[added_mapping]]
+id = "MOWN-0159"
+path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
+canonical_toml = "registry/docs_root_narratives.toml"
+
+[[added_mapping]]
+id = "MOWN-0160"
+path = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/entrypoint_docs.toml"
+
+[[added_mapping]]
+id = "MOWN-0161"
+path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/experiments.toml"
+
+[[added_mapping]]
+id = "MOWN-0162"
+path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
+canonical_toml = "registry/external_sources.toml"
+
+[[added_mapping]]
+id = "MOWN-0163"
+path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/insights.toml"
+
+[[added_mapping]]
+id = "MOWN-0164"
+path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
+canonical_toml = "registry/knowledge_migration_plan.toml"
+
+[[added_mapping]]
+id = "MOWN-0165"
+path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+canonical_toml = "registry/markdown_governance.toml"
+
+[[added_mapping]]
+id = "MOWN-0166"
+path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
+canonical_toml = "registry/navigator.toml"
+
+[[added_mapping]]
+id = "MOWN-0167"
+path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/next_actions.toml"
+
+[[added_mapping]]
+id = "MOWN-0168"
+path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
+canonical_toml = "registry/reports_narratives.toml"
+
+[[added_mapping]]
+id = "MOWN-0169"
+path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
+canonical_toml = "registry/requirements.toml"
+
+[[added_mapping]]
+id = "MOWN-0170"
+path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
+canonical_toml = "registry/research_narratives.toml"
+
+[[added_mapping]]
+id = "MOWN-0171"
+path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
+canonical_toml = "registry/roadmap.toml"
+
+[[added_mapping]]
+id = "MOWN-0172"
+path = "docs/generated/TODO_REGISTRY_MIRROR.md"
+canonical_toml = "registry/todo.toml"
+
+[[command_result]]
+name = "verify_markdown_owner_map"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py"
+exit_code = 0
+status = "pass"
+output = "OK: markdown owner map verified. All in-scope markdown has explicit canonical TOML ownership."
+
+[[command_result]]
+name = "governance_gate"
+command = "make governance-gate"
+exit_code = 2
+status = "fail_external_blocker"
+output = "ERROR: registry schema signature verification failed. schema_sha/content_sha/shape_json mismatch for registry/knowledge/derivation_steps.toml."

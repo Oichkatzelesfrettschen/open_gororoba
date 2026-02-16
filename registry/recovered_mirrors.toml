@@ -1,0 +1,183 @@
+# Recovered mirror candidates generated from blocked artifact recovery.
+
+[recovered_mirrors]
+id = "RECOVERED-MIRRORS-2026-02-15"
+generated_at = "2026-02-15"
+authoritative = false
+policy = "Supplemental mirrors discovered by automated recovery; master registry remains authoritative after rebuild+verify."
+
+[[recovered_mirror]]
+id = "ASOT-0021"
+artifact_key = "doi:10.1073/pnas.0402717101"
+title = "**Mazur, P. O., & Mottola, E.** (2004). *Gravitational vacuum condensate stars*. PNAS 101, 9545-9550. DOI: 10.1073/pnas.0402717101."
+blocked_urls = ["https://doi.org/10.1073/pnas.0402717101"]
+recovered_urls = ["https://pubmed.ncbi.nlm.nih.gov/15210982", "https://arxiv.org/pdf/gr-qc/0407075", "http://arxiv.org/abs/gr-qc/0407075"]
+recommended_url = "https://arxiv.org/pdf/gr-qc/0407075"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1073/pnas.0402717101"]
+
+[[recovered_mirror]]
+id = "ASOT-0023"
+artifact_key = "doi:10.1080/03605300600987306"
+title = "**Caffarelli, L., & Silvestre, L.** (2007). *An extension problem related to the fractional Laplacian*. Communications in Partial Differential Equations, 32(7-9), 1245-1260. DOI: 10.1080/03605300600987306."
+blocked_urls = ["https://doi.org/10.1080/03605300600987306"]
+recovered_urls = ["https://arxiv.org/pdf/math/0608640", "http://arxiv.org/abs/math/0608640"]
+recommended_url = "https://arxiv.org/pdf/math/0608640"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1080/03605300600987306"]
+
+[[recovered_mirror]]
+id = "ASOT-0031"
+artifact_key = "doi:10.1103/physrev.124.925"
+title = "**Brans, C., & Dicke, R. H.** (1961). *Mach's principle and a relativistic theory of gravitation*. Physical Review 124(3), 925-935. DOI: 10.1103/PhysRev.124.925."
+blocked_urls = ["https://doi.org/10.1103/PhysRev.124.925"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRev.124.925/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRev.124.925/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRev.124.925", "10.1103/PhysRev.124.925/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0032"
+artifact_key = "doi:10.1103/physrevb.14.2239"
+title = "**Hofstadter, D. R.** (1976). *Energy levels and wave functions of Bloch electrons in rational and irrational magnetic fields*. Phys. Rev. B 14, 2239-2249. DOI: 10.1103/PhysRevB.14.2239."
+blocked_urls = ["https://doi.org/10.1103/PhysRevB.14.2239"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevB.14.2239", "10.1103/PhysRevB.14.2239/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0034"
+artifact_key = "doi:10.1103/physrevd.23.287"
+title = "**Bekenstein, J. D.** (1981). *Universal upper bound on the entropy-to-energy ratio for bounded systems*. Phys. Rev. D 23, 287-298. DOI: 10.1103/PhysRevD.23.287."
+blocked_urls = ["https://doi.org/10.1103/PhysRevD.23.287"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.23.287/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.23.287/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevD.23.287", "10.1103/PhysRevD.23.287/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0035"
+artifact_key = "doi:10.1103/physreve.66.056108"
+title = "**Laskin, N.** (2002). *Fractional Schrodinger equation*. Physical Review E, 66, 056108. DOI: 10.1103/PhysRevE.66.056108."
+blocked_urls = ["https://doi.org/10.1103/PhysRevE.66.056108"]
+recovered_urls = ["https://arxiv.org/pdf/quant-ph/0206098", "http://arxiv.org/abs/quant-ph/0206098", "https://pubmed.ncbi.nlm.nih.gov/12513557", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevE.66.056108/fulltext"]
+recommended_url = "https://arxiv.org/pdf/quant-ph/0206098"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevE.66.056108", "10.1103/PhysRevE.66.056108/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0036"
+artifact_key = "doi:10.1103/physrevlett.43.744"
+title = "Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS]()."
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.43.744", "https://doi.org/10.1103/physrevlett.43.744"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.43.744", "10.1103/physrevlett.43.744", "10.1103/PhysRevLett.43.744/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0037"
+artifact_key = "doi:10.1103/physrevlett.49.405"
+title = "**Thouless, D. J., Kohmoto, M., Nightingale, M. P., & den Nijs, M.** (TKNN) (1982). *Quantized Hall Conductance in a Two-Dimensional Periodic Potential*. Phys. Rev. Lett. 49, 405. DOI: 10.1103/PhysRevLett.49.405."
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.49.405"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.49.405", "10.1103/PhysRevLett.49.405/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0038"
+artifact_key = "doi:10.1103/physrevlett.69.2863"
+title = "**White, S. R.** (1992). *Density matrix formulation for quantum renormalization groups*. Phys. Rev. Lett. 69, 2863. DOI: 10.1103/PhysRevLett.69.2863."
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.69.2863"]
+recovered_urls = ["https://pubmed.ncbi.nlm.nih.gov/10046608", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.69.2863/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.69.2863/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.69.2863", "10.1103/PhysRevLett.69.2863/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0039"
+artifact_key = "doi:10.1103/physrevlett.71.3697"
+title = "**Hatsugai, Y.** (1993). *Chern number and edge states in the integer quantum Hall effect*. Phys. Rev. Lett. 71, 3697. DOI: 10.1103/PhysRevLett.71.3697."
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.71.3697"]
+recovered_urls = ["https://pubmed.ncbi.nlm.nih.gov/10055049", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.71.3697/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.71.3697/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.71.3697", "10.1103/PhysRevLett.71.3697/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0040"
+artifact_key = "doi:10.1103/physrevlett.78.5"
+title = "**Lamoreaux, S. K.** (1997). *Demonstration of the Casimir Force in the 0.6 to 6 um Range*. Phys. Rev. Lett. 78, 5-8. DOI: 10.1103/PhysRevLett.78.5."
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.78.5"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.78.5/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.78.5/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.78.5", "10.1103/PhysRevLett.78.5/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-0045"
+artifact_key = "doi:10.1143/jpsj.74.1674"
+title = "**Fukui, T., Hatsugai, Y., & Suzuki, H.** (2005). *Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances*. J. Phys. Soc. Jpn. 74, 1674-1677. DOI: 10.1143/JPSJ.74.1674."
+blocked_urls = ["https://doi.org/10.1143/JPSJ.74.1674"]
+recovered_urls = ["https://arxiv.org/pdf/cond-mat/0503172", "http://arxiv.org/abs/cond-mat/0503172"]
+recommended_url = "https://arxiv.org/pdf/cond-mat/0503172"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1143/JPSJ.74.1674"]
+
+[[recovered_mirror]]
+id = "ASOT-0047"
+artifact_key = "doi:10.1177/2156587216668109"
+title = "Effects of Singing Bowl Sound Meditation on Mood, Tension, and Well-being"
+blocked_urls = ["https://doi.org/10.1177/2156587216668109"]
+recovered_urls = ["https://pubmed.ncbi.nlm.nih.gov/27694559", "https://doaj.org/article/bf90469a705d4041ab700d2ae0dc9501"]
+recommended_url = "https://pubmed.ncbi.nlm.nih.gov/27694559"
+recommended_status = "ok_nonpdf"
+tier = "medium_recoverable"
+doi_list = ["10.1177/2156587216668109"]
+
+[[recovered_mirror]]
+id = "ASOT-8318"
+artifact_key = "url:https://arxiv.org/pdf/1602.02317"
+title = "https://arxiv.org/pdf/1602.02317"
+blocked_urls = ["https://arxiv.org/pdf/1602.02317"]
+recovered_urls = ["https://arxiv.org/pdf/1602.02317v1", "https://arxiv.org/pdf/1602.02317v1.pdf", "https://arxiv.org/pdf/1602.02317v2", "https://arxiv.org/pdf/1602.02317v2.pdf", "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"]
+recommended_url = "https://arxiv.org/pdf/1602.02317v1"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = []
+
+[[recovered_mirror]]
+id = "ASOT-8349"
+artifact_key = "url:https://journals.aps.org/prl/abstract/10.1103/physrevlett.43.744"
+title = "**Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744)."
+blocked_urls = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
+recovered_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"]
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = ["10.1103/PhysRevLett.43.744", "10.1103/PhysRevLett.43.744/fulltext"]
+
+[[recovered_mirror]]
+id = "ASOT-8360"
+artifact_key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
+title = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
+blocked_urls = ["https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"]
+recovered_urls = ["https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"]
+recommended_url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+recommended_status = "pdf_ok"
+tier = "high_recoverable"
+doi_list = []

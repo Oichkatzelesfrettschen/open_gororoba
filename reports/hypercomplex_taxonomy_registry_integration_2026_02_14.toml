@@ -1,0 +1,55 @@
+# Integration summary for hypercomplex taxonomy promotion ledger (T-020 slice).
+
+[meta]
+id = "HYPERCOMPLEX-TAXONOMY-REGISTRY-INTEGRATION-2026-02-14"
+generated_at_utc = "2026-02-14T22:16:50Z"
+status = "active"
+tracker_ref = "T-020"
+source_taxonomy_registry = "registry/hypercomplex_taxonomy.toml"
+source_claim_report = "reports/hypercomplex_taxonomy_claims_2026_02_14.toml"
+source_promotion_ledger = "registry/hypercomplex_taxonomy_promotion.toml"
+notes = "Counts summarize candidate readiness for claim/task/ticket ingestion lanes."
+
+[counts]
+candidate_total = 16
+claim_ready_total = 16
+task_ready_total = 12
+ticket_ready_total = 4
+
+[counts.by_kind]
+taxonomy_claim_candidates = 12
+sensational_primary_mapping_candidates = 4
+
+[lane_claims]
+ready_count = 16
+ready_candidate_ids = ["HC-CL-001", "HC-CL-002", "HC-CL-003", "HC-CL-004", "HC-CL-005", "HC-CL-006", "HC-CL-007", "HC-CL-008", "HC-CL-009", "HC-CL-010", "HC-CL-011", "HC-CL-012", "HC-CL-013", "HC-CL-014", "HC-CL-015", "HC-CL-016"]
+not_ready_count = 0
+not_ready_candidate_ids = []
+
+[lane_tasks]
+ready_count = 12
+ready_candidate_ids = ["HC-CL-001", "HC-CL-002", "HC-CL-003", "HC-CL-004", "HC-CL-005", "HC-CL-006", "HC-CL-007", "HC-CL-008", "HC-CL-009", "HC-CL-010", "HC-CL-011", "HC-CL-012"]
+not_ready_count = 4
+not_ready_candidate_ids = ["HC-CL-013", "HC-CL-014", "HC-CL-015", "HC-CL-016"]
+not_ready_reason = "Candidates HC-CL-013..HC-CL-016 require multi-source provenance-chain closure and are promoted to ticket lane."
+
+[lane_tickets]
+ready_count = 4
+ready_candidate_ids = ["HC-CL-013", "HC-CL-014", "HC-CL-015", "HC-CL-016"]
+not_ready_count = 12
+not_ready_candidate_ids = ["HC-CL-001", "HC-CL-002", "HC-CL-003", "HC-CL-004", "HC-CL-005", "HC-CL-006", "HC-CL-007", "HC-CL-008", "HC-CL-009", "HC-CL-010", "HC-CL-011", "HC-CL-012"]
+not_ready_reason = "Candidates HC-CL-001..HC-CL-012 are already task-ready and do not require separate ticket intake."
+
+[consistency]
+ledger_candidate_count = 16
+ledger_claim_ready_count = 16
+ledger_task_ready_count = 12
+ledger_ticket_ready_count = 4
+counts_match = true
+status = "pass"
+
+[validation]
+toml_parse_check = "pass"
+internal_count_check = "pass"
+files_checked = ["registry/hypercomplex_taxonomy.toml", "registry/hypercomplex_taxonomy_promotion.toml", "reports/hypercomplex_taxonomy_registry_integration_2026_02_14.toml"]
+check_note = "python3 tomllib parse and computed lane-count consistency checks passed."

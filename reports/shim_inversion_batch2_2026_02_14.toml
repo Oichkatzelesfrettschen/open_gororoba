@@ -1,0 +1,42 @@
+report_id = "shim_inversion_batch2_2026_02_14"
+date = "2026-02-14"
+task = "RQ-019 core"
+status = "completed"
+
+owned_files = [
+  "src/scripts/analysis/build_registry_evidence_provenance.py",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_registry_evidence_provenance.py",
+  "src/verification/verify_wave5_batch2_registries.py",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+]
+
+[changes]
+canonical_build_promoted = true
+canonical_verify_promoted = true
+legacy_build_converted_to_deprecated_shim = true
+legacy_verify_converted_to_deprecated_shim = true
+skeleton_count_parity_preserved = true
+skeleton_count_parity_detail = "Canonical builder retains metadata parity as skeleton_count = len(proof_rows)."
+canonical_user_facing_output_canonicalized = true
+legacy_shim_deprecation_guidance_explicit = true
+
+[[commands]]
+cmd = "PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py"
+exit_code = 0
+summary = "OK: canonical evidence-provenance registries verified. derivations=3078 bibliography_normalized=190 provenance_records=63 narrative_paragraphs=722"
+
+[[commands]]
+cmd = "PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch2_registries.py"
+exit_code = 0
+summary = "DEPRECATED shim warning emitted, then canonical verification passed with derivations=3078 bibliography_normalized=190 provenance_records=63 narrative_paragraphs=722"
+
+[[commands]]
+cmd = "make registry-evidence-provenance-gate"
+exit_code = 0
+summary = "Build + canonical verify passed; lane completion message emitted."
+
+[[commands]]
+cmd = "python3 -m py_compile src/scripts/analysis/build_registry_evidence_provenance.py src/scripts/analysis/build_wave5_batch2_registries.py src/verification/verify_registry_evidence_provenance.py src/verification/verify_wave5_batch2_registries.py"
+exit_code = 0
+summary = "No output; compilation succeeded for all touched Python files."

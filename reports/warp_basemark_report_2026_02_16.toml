@@ -1,0 +1,46 @@
+# Warp basemark summary (Rust-native, TOML-first)
+schema = "open_gororoba.warp_basemark.v1"
+timestamp = "20260216-021731"
+out_dir = "data/h5/basemarks/_smoke_basemark"
+duration_secs = 1.000000
+trace_stride = 2
+timing_mode = "cuda_events"
+
+[[case]]
+resolution = 8
+backend = "CPU"
+precision = "FP64"
+timing_mode = "launch_only"
+elapsed_secs = 1.000033
+steps = 11969
+steps_per_sec = 11968.604916
+mlups = 6.127926
+samples = 5984
+rho_final = 1.000000000
+rho_abs_drift_final = 2.220446049e-16
+rho_std = 0.000000000e0
+step_timing_p50_us = 75.121000
+step_timing_p90_us = 117.832000
+step_timing_p99_us = 156.123200
+h5_output = "data/h5/basemarks/_smoke_basemark/warp_ring_8_CPU_FP64_1s.h5"
+timing_output = "data/h5/basemarks/_smoke_basemark/timing_8_CPU_FP64_1s.toml"
+
+[[case]]
+resolution = 8
+backend = "GPU"
+precision = "FP32"
+timing_mode = "cuda_events"
+elapsed_secs = 1.000020
+steps = 21139
+steps_per_sec = 21138.573402
+mlups = 10.822950
+samples = 10569
+rho_final = 1.000000119
+rho_abs_drift_final = 1.192092896e-7
+rho_std = 0.000000000e0
+step_timing_p50_us = 9.216000
+step_timing_p90_us = 67.039996
+step_timing_p99_us = 90.451843
+h5_output = "data/h5/basemarks/_smoke_basemark/warp_ring_8_GPU_FP32_1s.h5"
+timing_output = "data/h5/basemarks/_smoke_basemark/timing_8_GPU_FP32_1s.toml"
+

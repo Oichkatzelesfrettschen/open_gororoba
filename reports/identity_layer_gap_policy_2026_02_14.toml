@@ -1,0 +1,86 @@
+# Identity-layer gap governance implementation report.
+
+[report]
+id = "identity-layer-gap-policy-2026-02-14"
+date = "2026-02-14"
+status = "completed_with_preexisting_counter_drift"
+owner_scope = [
+  "crates/gororoba_cli/src/bin/registry_check.rs",
+  "registry/identity_gap_policy.toml",
+  "reports/identity_layer_gap_policy_2026_02_14.toml",
+]
+
+[design]
+objective = "Govern claim/insight ID gaps with explicit policy modes and baseline file support while preserving existing typed-policy behavior."
+kept_behavior = "Typed-schema policy (--typed-policy warn/error/off) code path and semantics were left intact."
+implementation_summary = [
+  "Added CLI flags: --identity-gap-policy {warn,error,off} and --identity-gap-policy-file <path>.",
+  "Added governed gap policy parser with ID tokens and inclusive range tokens (for example I-061..I-063).",
+  "Changed claim/insight gap checks to classify output into governed-intent gaps and drift beyond baseline.",
+  "Mapped drift severity to policy mode: warn=>warning, error=>error, off=>skip identity-gap checks.",
+]
+
+[policy_surface]
+default_mode = "warn"
+default_file = "registry/identity_gap_policy.toml"
+mode_values = ["warn", "error", "off"]
+file_sections = ["[claims]", "[insights]"]
+file_field = "governed_gap_ids"
+allowed_token_forms = ["C-123", "C-123..C-130", "I-061", "I-061..I-063"]
+
+[baseline]
+claims_governed_gap_ids = []
+insights_governed_gap_ids = ["I-061..I-063"]
+baseline_rationale = "Current insights registry intentionally reserves IDs 061..063; claim IDs are contiguous in current state."
+
+[[validation]]
+command = "cargo check -p gororoba_cli --bin registry-check"
+exit_code = 0
+outcome = "pass"
+key_lines = [
+  "Checking gororoba_cli v0.1.0",
+  "Finished `dev` profile [optimized + debuginfo] target(s)",
+]
+
+[[validation]]
+command = "cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy error"
+exit_code = 1
+outcome = "fail (pre-existing project counter drift outside ownership scope)"
+key_lines = [
+  "Typed schema policy: error (no typed schema drift detected)",
+  "Identity gap (insights): governed-intent gaps: 3 (I-061..I-063)",
+  "Identity gap (insights): drift beyond baseline: none",
+  "ERROR: project.toml claim_count=690 but claims.toml has 694 entries",
+]
+
+[[validation]]
+command = "cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy error --identity-gap-policy error --identity-gap-policy-file registry/identity_gap_policy.toml"
+exit_code = 1
+outcome = "strict identity mode executed; governed baseline handled with no identity-gap drift error"
+key_lines = [
+  "Identity gap policy: error (loaded baseline from registry/identity_gap_policy.toml)",
+  "Identity gap (insights): governed-intent gaps: 3 (I-061..I-063)",
+  "Identity gap (insights): drift beyond baseline: none",
+  "ERROR: project.toml claim_count=690 but claims.toml has 694 entries",
+]
+
+[[validation]]
+command = "tmp_policy=$(mktemp) && cat >$tmp_policy <<'EOF2' [claims] governed_gap_ids = [] [insights] governed_gap_ids = [] EOF2; cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy error --identity-gap-policy error --identity-gap-policy-file $tmp_policy"
+exit_code = 1
+outcome = "strict identity drift demonstration: baseline removal promotes reserved insight gaps to error"
+key_lines = [
+  "Identity gap policy: error (loaded baseline from /tmp/...)",
+  "ERROR: Identity gap (insights) drift beyond baseline (policy=error): 3 (I-061..I-063)",
+  "Registry check: FAIL (2 errors, 3 warnings)",
+]
+
+[[validation]]
+command = "python3 - <<'PY'\nimport tomllib\nfrom pathlib import Path\nfor path in [Path('registry/identity_gap_policy.toml'), Path('reports/identity_layer_gap_policy_2026_02_14.toml')]:\n    with path.open('rb') as f:\n        tomllib.load(f)\nprint('ok')\nPY"
+exit_code = 0
+outcome = "pass"
+key_lines = ["ok"]
+
+[notes]
+preexisting_non_scope_failures = [
+  "project.toml claim_count counter drift (690 vs claims.toml 694)",
+]

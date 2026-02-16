@@ -1,0 +1,88 @@
+# External source recovery and provenance summary for Cayley-Dickson requests.
+
+[report]
+id = "CAYLEY-DICKSON-SOURCE-RECOVERY-2026-02-15"
+created = "2026-02-15"
+status = "completed"
+authoritative = true
+scope = "Recover Brown 1972 thesis PDF, attempt Eakin-Sathaye 1990 PDF, and capture issue-level alternate paper seed list."
+
+[inputs]
+intake_dir = "data/external/intake/2026_02_15_cayley_dickson_sources"
+normalized_fetch_table = "data/external/intake/2026_02_15_cayley_dickson_sources/fetch_results_all_normalized.tsv"
+requested_endpoint_attempts = 16
+
+[attempt_summary]
+total_attempts = 16
+http_200 = 4
+pdf_payloads = 1
+blocked_4xx = 10
+timeout_or_unavailable = 1
+result = "Brown recovered; Eakin full text unresolved from attempted endpoints."
+
+[brown_1972]
+status = "recovered"
+title = "Structure of zero divisors, and other algebraic structures, in higher dimensional real Cayley-Dickson algebras"
+author = "Harmon Caril Brown"
+core_work_id = 67198489
+core_download_url = "https://core.ac.uk/download/229066012.pdf"
+canonical_pdf_path = "data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+canonical_pdf_sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+canonical_pdf_size_bytes = 3539055
+pages = 89
+text_extract_path = "data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.txt"
+text_extract_sha256 = "0598c448fea2492f4c26dca0450f5ab31eb8fc3555de0ef5bb5ea84f8002dd48"
+validation = ["pdfinfo title/author/pages", "sha256 digest", "pdftotext extract present"]
+
+[eakin_sathaye_1990]
+status = "metadata_recovered_full_text_blocked"
+title = "On automorphisms and derivations of Cayley-Dickson algebras"
+doi = "10.1016/0021-8693(90)90221-9"
+openalex_work_id = "https://openalex.org/W2077459879"
+open_access_is_oa = false
+open_access_oa_url = ""
+core_output_id = 82141950
+core_output_endpoint = "https://api.core.ac.uk/v2/articles/get/82141950"
+core_download_endpoint = "https://core.ac.uk/download/82141950.pdf"
+science_direct_article = "https://www.sciencedirect.com/science/article/pii/0021869390902219"
+science_direct_pdfft = "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true"
+science_direct_pdf_alt = "https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf"
+blockers = [
+  "CORE direct download returned 404 HTML in this environment.",
+  "ScienceDirect endpoints returned 403 HTML in this environment.",
+  "S3 provider URL from CORE metadata returned 403 AccessDenied XML."
+]
+
+[core_identifier_notes]
+issue = "CORE path ambiguity observed between works and outputs id spaces for user-provided 82141950 links."
+observed_endpoints = [
+  "https://core.ac.uk/works/82141950",
+  "https://api.core.ac.uk/v2/articles/get/82141950",
+]
+resolution = "Use CORE output metadata for Eakin and CORE search hit work 67198489 for Brown download URL."
+
+[journal_issue_seed]
+journal = "Journal of Algebra"
+volume = 129
+issue = 2
+issue_entry_count = 15
+issue_list_path = "data/external/intake/2026_02_15_cayley_dickson_sources/journal_of_algebra_v129_i2_dois.tsv"
+notes = "Issue DOI list captured for alternate paper triage if Eakin full text remains closed."
+
+[reproducibility]
+fetch_results_all_path = "data/external/intake/2026_02_15_cayley_dickson_sources/fetch_results_all.tsv"
+fetch_results_all_normalized_path = "data/external/intake/2026_02_15_cayley_dickson_sources/fetch_results_all_normalized.tsv"
+brown_core_search_json = "data/external/intake/2026_02_15_cayley_dickson_sources/core_search_brown.json"
+eakin_core_output_json = "data/external/intake/2026_02_15_cayley_dickson_sources/core_output_82141950.json"
+eakin_openalex_json = "data/external/intake/2026_02_15_cayley_dickson_sources/openalex_eakin_1990.json"
+crossref_issue_json = "data/external/intake/2026_02_15_cayley_dickson_sources/crossref_jalg_v129_i2.json"
+
+[[next_action]]
+id = "CD-SRC-NA-001"
+priority = "high"
+action = "If licensed access is available, retry Eakin/Sathaye via authenticated publisher route and store deterministic fetch log."
+
+[[next_action]]
+id = "CD-SRC-NA-002"
+priority = "medium"
+action = "Pick one to three OA-alternate papers from v129 issue list and ingest full text for parallel theorem-context coverage."

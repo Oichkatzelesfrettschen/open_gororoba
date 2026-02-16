@@ -1,0 +1,369 @@
+# Retry plan for blocked artifact recovery
+
+[retry_plan]
+id = "BLOCKED-RETRY-2026-02-15"
+generated_at = "2026-02-15"
+artifact_count = 33
+
+[[artifact]]
+id = "ASOT-0062"
+key = "doi:10.7151/dmgaa.1088"
+title = "**Cawagas, R. E.** (2004). *On the structure and zero divisors of the Cayley-Dickson sedenion algebra*. Discussiones Mathematicae -- General Algebra and Applications 24(2), 251-265. DOI: 10.7151/dmgaa.1088."
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.7151/dmgaa.1088"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8219"
+key = "url:http://arxiv.org/abs.math.ra/0403113"
+title = "Suppressing 'Sleeper Cell' Structures in the Sedenions and 2N-ions\" (\"BK3\"),"
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["http://arXiv.org/abs.math.RA/0403113"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8229"
+key = "url:http://matu1.math.auckland.ac.nz/~king/preprints/chaoq.htm"
+title = "Flying Higher Than A Box-Kite"
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm", "http://exo.com/~palmer/ISSS2000ab.html"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8231"
+key = "url:http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"
+title = "Buck',\""
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8233"
+key = "url:https://archive.org/details/elementarytreat00tailuoft"
+title = "An Elementary Treatise on Quaternions"
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://archive.org/details/elementarytreat00tailuoft"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8234"
+key = "url:https://archive.org/details/theoryofbiquater00conwrich"
+title = "The Theory of Biquaternions"
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://archive.org/details/theoryofbiquater00conwrich"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8313"
+key = "url:https://arxiv.org/abs/unknown"
+title = "Monograph: Composition Algebras and Physical Applications"
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://arxiv.org/abs/unknown"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8341"
+key = "url:https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"
+title = "**Kinyon, M. K., & Sagle, A. A.** (2006). *Subalgebras of the real sedenions*. Canadian Mathematical Bulletin 49(4), 566-581. [PDF](https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf)."
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8368"
+key = "url:https://ncatlab.org/nlab/show/monstrous+moonshine"
+title = "**nLab contributors.** *Monstrous Moonshine*. [nLab](https://ncatlab.org/nlab/show/Monstrous+Moonshine)."
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://ncatlab.org/nlab/show/Monstrous+Moonshine"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8374"
+key = "url:https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/c66016da3a1bb600e57d975d3e8d83bc"
+title = "**Dotsenko, V.** (2025). *Stable homology of wheeled operads*. Compositio Mathematica. [Cambridge Core](https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/C66016DA3A1BB600E57D975D3E8D83BC)."
+tier = "hard_blocked"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/C66016DA3A1BB600E57D975D3E8D83BC"]
+new_working_urls = []
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-0021"
+key = "doi:10.1073/pnas.0402717101"
+title = "**Mazur, P. O., & Mottola, E.** (2004). *Gravitational vacuum condensate stars*. PNAS 101, 9545-9550. DOI: 10.1073/pnas.0402717101."
+tier = "high_recoverable"
+recommended_url = "https://arxiv.org/pdf/gr-qc/0407075"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1073/pnas.0402717101"]
+new_working_urls = ["https://pubmed.ncbi.nlm.nih.gov/15210982", "https://arxiv.org/pdf/gr-qc/0407075", "http://arxiv.org/abs/gr-qc/0407075"]
+manual_candidates = ["https://doi.org/10.1073/pnas.0402717101", "https://www.pnas.org/doi/pdf/10.1073/pnas.0402717101", "http://doi.org/10.1073/pnas.0402717101", "https://pnas.org/doi/full/10.1073/pnas.0402717101", "https://pnas.org/doi/pdf/10.1073/pnas.0402717101"]
+
+[[artifact]]
+id = "ASOT-0023"
+key = "doi:10.1080/03605300600987306"
+title = "**Caffarelli, L., & Silvestre, L.** (2007). *An extension problem related to the fractional Laplacian*. Communications in Partial Differential Equations, 32(7-9), 1245-1260. DOI: 10.1080/03605300600987306."
+tier = "high_recoverable"
+recommended_url = "https://arxiv.org/pdf/math/0608640"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1080/03605300600987306"]
+new_working_urls = ["https://arxiv.org/pdf/math/0608640", "http://arxiv.org/abs/math/0608640"]
+manual_candidates = ["https://doi.org/10.1080/03605300600987306", "http://www.tandfonline.com/doi/abs/10.1080/03605300600987306", "http://www.tandfonline.com/doi/pdf/10.1080/03605300600987306"]
+
+[[artifact]]
+id = "ASOT-0031"
+key = "doi:10.1103/physrev.124.925"
+title = "**Brans, C., & Dicke, R. H.** (1961). *Mach's principle and a relativistic theory of gravitation*. Physical Review 124(3), 925-935. DOI: 10.1103/PhysRev.124.925."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRev.124.925/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRev.124.925"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRev.124.925/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRev.124.925", "https://doi.org/10.1103/physrev.124.925", "https://link.aps.org/doi/10.1103/PhysRev.124.925", "http://link.aps.org/article/10.1103/PhysRev.124.925"]
+
+[[artifact]]
+id = "ASOT-0032"
+key = "doi:10.1103/physrevb.14.2239"
+title = "**Hofstadter, D. R.** (1976). *Energy levels and wave functions of Bloch electrons in rational and irrational magnetic fields*. Phys. Rev. B 14, 2239-2249. DOI: 10.1103/PhysRevB.14.2239."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevB.14.2239"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.14.2239/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevB.14.2239", "https://doi.org/10.1103/physrevb.14.2239", "https://link.aps.org/doi/10.1103/PhysRevB.14.2239", "http://link.aps.org/article/10.1103/PhysRevB.14.2239"]
+
+[[artifact]]
+id = "ASOT-0034"
+key = "doi:10.1103/physrevd.23.287"
+title = "**Bekenstein, J. D.** (1981). *Universal upper bound on the entropy-to-energy ratio for bounded systems*. Phys. Rev. D 23, 287-298. DOI: 10.1103/PhysRevD.23.287."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.23.287/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevD.23.287"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.23.287/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevD.23.287", "https://doi.org/10.1103/physrevd.23.287", "https://link.aps.org/doi/10.1103/PhysRevD.23.287", "http://link.aps.org/article/10.1103/PhysRevD.23.287"]
+
+[[artifact]]
+id = "ASOT-0035"
+key = "doi:10.1103/physreve.66.056108"
+title = "**Laskin, N.** (2002). *Fractional Schrodinger equation*. Physical Review E, 66, 056108. DOI: 10.1103/PhysRevE.66.056108."
+tier = "high_recoverable"
+recommended_url = "https://arxiv.org/pdf/quant-ph/0206098"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevE.66.056108"]
+new_working_urls = ["https://arxiv.org/pdf/quant-ph/0206098", "http://arxiv.org/abs/quant-ph/0206098", "https://pubmed.ncbi.nlm.nih.gov/12513557", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevE.66.056108/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevE.66.056108", "https://doi.org/10.1103/physreve.66.056108", "https://link.aps.org/doi/10.1103/PhysRevE.66.056108", "http://link.aps.org/article/10.1103/PhysRevE.66.056108"]
+
+[[artifact]]
+id = "ASOT-0036"
+key = "doi:10.1103/physrevlett.43.744"
+title = "Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS]()."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.43.744", "https://doi.org/10.1103/physrevlett.43.744"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevLett.43.744", "https://doi.org/10.1103/physrevlett.43.744", "https://link.aps.org/doi/10.1103/PhysRevLett.43.744", "http://link.aps.org/article/10.1103/PhysRevLett.43.744"]
+
+[[artifact]]
+id = "ASOT-0037"
+key = "doi:10.1103/physrevlett.49.405"
+title = "**Thouless, D. J., Kohmoto, M., Nightingale, M. P., & den Nijs, M.** (TKNN) (1982). *Quantized Hall Conductance in a Two-Dimensional Periodic Potential*. Phys. Rev. Lett. 49, 405. DOI: 10.1103/PhysRevLett.49.405."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.49.405"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.49.405/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevLett.49.405", "http://link.aps.org/pdf/10.1103/PhysRevLett.49.405", "https://doi.org/10.1103/physrevlett.49.405", "https://link.aps.org/doi/10.1103/PhysRevLett.49.405", "http://link.aps.org/article/10.1103/PhysRevLett.49.405"]
+
+[[artifact]]
+id = "ASOT-0038"
+key = "doi:10.1103/physrevlett.69.2863"
+title = "**White, S. R.** (1992). *Density matrix formulation for quantum renormalization groups*. Phys. Rev. Lett. 69, 2863. DOI: 10.1103/PhysRevLett.69.2863."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.69.2863/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.69.2863"]
+new_working_urls = ["https://pubmed.ncbi.nlm.nih.gov/10046608", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.69.2863/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevLett.69.2863", "https://doi.org/10.1103/physrevlett.69.2863", "https://link.aps.org/doi/10.1103/PhysRevLett.69.2863", "http://link.aps.org/article/10.1103/PhysRevLett.69.2863"]
+
+[[artifact]]
+id = "ASOT-0039"
+key = "doi:10.1103/physrevlett.71.3697"
+title = "**Hatsugai, Y.** (1993). *Chern number and edge states in the integer quantum Hall effect*. Phys. Rev. Lett. 71, 3697. DOI: 10.1103/PhysRevLett.71.3697."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.71.3697/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.71.3697"]
+new_working_urls = ["https://pubmed.ncbi.nlm.nih.gov/10055049", "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.71.3697/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevLett.71.3697", "https://doi.org/10.1103/physrevlett.71.3697", "https://link.aps.org/doi/10.1103/PhysRevLett.71.3697", "http://link.aps.org/article/10.1103/PhysRevLett.71.3697"]
+
+[[artifact]]
+id = "ASOT-0040"
+key = "doi:10.1103/physrevlett.78.5"
+title = "**Lamoreaux, S. K.** (1997). *Demonstration of the Casimir Force in the 0.6 to 6 um Range*. Phys. Rev. Lett. 78, 5-8. DOI: 10.1103/PhysRevLett.78.5."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.78.5/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1103/PhysRevLett.78.5"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.78.5/fulltext"]
+manual_candidates = ["https://doi.org/10.1103/PhysRevLett.78.5", "https://doi.org/10.1103/physrevlett.78.5", "https://link.aps.org/doi/10.1103/PhysRevLett.78.5", "http://link.aps.org/article/10.1103/PhysRevLett.78.5"]
+
+[[artifact]]
+id = "ASOT-0045"
+key = "doi:10.1143/jpsj.74.1674"
+title = "**Fukui, T., Hatsugai, Y., & Suzuki, H.** (2005). *Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances*. J. Phys. Soc. Jpn. 74, 1674-1677. DOI: 10.1143/JPSJ.74.1674."
+tier = "high_recoverable"
+recommended_url = "https://arxiv.org/pdf/cond-mat/0503172"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://doi.org/10.1143/JPSJ.74.1674"]
+new_working_urls = ["https://arxiv.org/pdf/cond-mat/0503172", "http://arxiv.org/abs/cond-mat/0503172"]
+manual_candidates = ["https://doi.org/10.1143/JPSJ.74.1674", "https://doi.org/10.1143/jpsj.74.1674", "https://journals.jps.jp/doi/10.1143/JPSJ.74.1674", "https://journals.jps.jp/doi/pdf/10.1143/JPSJ.74.1674"]
+
+[[artifact]]
+id = "ASOT-8318"
+key = "url:https://arxiv.org/pdf/1602.02317"
+title = "https://arxiv.org/pdf/1602.02317"
+tier = "high_recoverable"
+recommended_url = "https://arxiv.org/pdf/1602.02317v1"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://arxiv.org/pdf/1602.02317"]
+new_working_urls = ["https://arxiv.org/pdf/1602.02317v1", "https://arxiv.org/pdf/1602.02317v1.pdf", "https://arxiv.org/pdf/1602.02317v2", "https://arxiv.org/pdf/1602.02317v2.pdf", "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"]
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-8349"
+key = "url:https://journals.aps.org/prl/abstract/10.1103/physrevlett.43.744"
+title = "**Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744)."
+tier = "high_recoverable"
+recommended_url = "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
+new_working_urls = ["http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.43.744/fulltext"]
+manual_candidates = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744", "https://doi.org/10.1103/PhysRevLett.43.744", "https://doi.org/10.1103/physrevlett.43.744", "https://link.aps.org/doi/10.1103/PhysRevLett.43.744", "http://link.aps.org/article/10.1103/PhysRevLett.43.744"]
+
+[[artifact]]
+id = "ASOT-8360"
+key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
+title = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
+tier = "high_recoverable"
+recommended_url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+recommended_status = "pdf_ok"
+blocked_urls = ["https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"]
+new_working_urls = ["https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"]
+manual_candidates = []
+
+[[artifact]]
+id = "ASOT-0022"
+key = "doi:10.1080/00927870701724094"
+title = "**Biss, D. K., Dugger, D., & Isaksen, D. C.** (2008). *Large annihilators in Cayley-Dickson algebras*. *Communications in Algebra* 36(2), 632-664. (Cited by Reggiani 2024; annihilator structure.)"
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.1080/00927870701724094"]
+new_working_urls = []
+manual_candidates = ["https://doi.org/10.1080/00927870701724094", "http://www.tandfonline.com/doi/abs/10.1080/00927870701724094", "http://www.tandfonline.com/doi/pdf/10.1080/00927870701724094"]
+
+[[artifact]]
+id = "ASOT-0024"
+key = "doi:10.1080/03605301003735680"
+title = "**Stinga, P. R., & Torrea, J. L.** (2010). *Extension problem and Harnack's inequality for some fractional operators*. Communications in Partial Differential Equations, 35(11), 2092-2122. DOI: 10.1080/03605301003735680."
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.1080/03605301003735680"]
+new_working_urls = []
+manual_candidates = ["https://doi.org/10.1080/03605301003735680", "http://www.tandfonline.com/doi/abs/10.1080/03605301003735680", "http://www.tandfonline.com/doi/pdf/10.1080/03605301003735680"]
+
+[[artifact]]
+id = "ASOT-0025"
+key = "doi:10.1080/14786444808646059"
+title = "On a new imaginary in algebra"
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.1080/14786444808646059"]
+new_working_urls = []
+manual_candidates = ["https://doi.org/10.1080/14786444808646059", "https://www.tandfonline.com/doi/full/10.1080/14786444808646059", "https://www.tandfonline.com/doi/pdf/10.1080/14786444808646059"]
+
+[[artifact]]
+id = "ASOT-0026"
+key = "doi:10.1080/14786444908646169"
+title = "On systems of algebra involving more than one imaginary"
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.1080/14786444908646169"]
+new_working_urls = []
+manual_candidates = ["https://doi.org/10.1080/14786444908646169", "https://www.tandfonline.com/doi/full/10.1080/14786444908646169", "https://www.tandfonline.com/doi/pdf/10.1080/14786444908646169"]
+
+[[artifact]]
+id = "ASOT-0030"
+key = "doi:10.1098/rspa.1984.0023"
+title = "**Berry, M. V.** (1984). *Quantal Phase Factors Accompanying Adiabatic Changes*. Proc. R. Soc. Lond. A 392, 45-57. DOI: 10.1098/rspa.1984.0023."
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://doi.org/10.1098/rspa.1984.0023"]
+new_working_urls = []
+manual_candidates = ["https://doi.org/10.1098/rspa.1984.0023", "https://royalsocietypublishing.org/rspa/article/392/1802/45/15579/Quantal-phase-factors-accompanying-adiabatic", "https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1984.0023", "https://royalsocietypublishing.org/rspa/article-pdf/392/1802/45/65511/rspa.1984.0023.pdf"]
+
+[[artifact]]
+id = "ASOT-8232"
+key = "url:https://academic.oup.com/ptep/article-pdf/2014/1/013a03/4432616/ptt110.pdf"
+title = "https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"]
+new_working_urls = []
+manual_candidates = ["https://academic.oup.com/ptep/article-pdf/2014/1/013A03/4432616/ptt110.pdf"]
+
+[[artifact]]
+id = "ASOT-8381"
+key = "url:https://www.researchgate.net/profile/john-bales/publication/238738095_a_tree_for_computing_the_cayley-dickson_twist/links/0a85e53a8b63445499000000/a-tree-for-computing-the-cayley-dickson-twist.pdf"
+title = "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"
+tier = "manual_intervention"
+recommended_url = ""
+recommended_status = ""
+blocked_urls = ["https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"]
+new_working_urls = []
+manual_candidates = ["https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf"]
+
+[[artifact]]
+id = "ASOT-0047"
+key = "doi:10.1177/2156587216668109"
+title = "Effects of Singing Bowl Sound Meditation on Mood, Tension, and Well-being"
+tier = "medium_recoverable"
+recommended_url = "https://pubmed.ncbi.nlm.nih.gov/27694559"
+recommended_status = "ok_nonpdf"
+blocked_urls = ["https://doi.org/10.1177/2156587216668109"]
+new_working_urls = ["https://pubmed.ncbi.nlm.nih.gov/27694559", "https://doaj.org/article/bf90469a705d4041ab700d2ae0dc9501"]
+manual_candidates = ["https://doi.org/10.1177/2156587216668109", "https://journals.sagepub.com/doi/pdf/10.1177/2156587216668109", "http://doi.org/10.1177/2156587216668109", "http://journals.sagepub.com/doi/10.1177/2156587216668109", "http://journals.sagepub.com/doi/pdf/10.1177/2156587216668109", "http://journals.sagepub.com/doi/full-xml/10.1177/2156587216668109"]

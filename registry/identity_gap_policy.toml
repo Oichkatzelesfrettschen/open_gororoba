@@ -1,0 +1,13 @@
+# Governed baseline for identity-layer gaps consumed by registry-check.
+
+[identity_gap_policy]
+version = 1
+updated = "2026-02-14"
+owner = "S121-S131"
+notes = "Claims are contiguous in current state; insights intentionally reserve I-061..I-063."
+
+[claims]
+governed_gap_ids = []
+
+[insights]
+governed_gap_ids = ["I-061..I-063"]

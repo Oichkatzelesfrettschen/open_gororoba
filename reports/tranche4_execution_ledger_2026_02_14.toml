@@ -1,0 +1,146 @@
+# Tranche 4 execution ledger for control-plane canonicalization and gate revalidation sync.
+
+[ledger]
+id = "TRANCHE4-EXEC-LEDGER-2026-02-14"
+date = "2026-02-14"
+status = "active"
+scope = "Shim inversion completion across batch1..batch4, RQ-024 planning canonicalization, and runtime plus strict-check pass synchronization after fixes."
+completed_count = 3
+in_progress_count = 2
+queued_count = 2
+ownership_entry_count = 4
+source_ledgers = ["reports/tranche2_execution_ledger_2026_02_14.toml"]
+successor_ledger = "reports/tranche5_execution_ledger_2026_02_14.toml"
+
+[terminology]
+policy = "Use canonical control-plane and registry terminology in active planning artifacts; keep legacy wave labels only as explicit compatibility aliases."
+legacy_alias_references_allowed = true
+
+[[completed]]
+id = "TR4-C-001"
+title = "Shim inversion completed for batch1..batch4"
+status = "done"
+owner_lane = "registry lane maintainers"
+tracker_refs = ["RQ-018", "RQ-019", "RQ-020", "RQ-021"]
+evidence_refs = [
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+]
+
+[[completed]]
+id = "TR4-C-002"
+title = "RQ-024 planning canonicalization completed"
+status = "done"
+owner_lane = "planning tracker maintainers"
+tracker_refs = ["RQ-024", "NA-024"]
+evidence_refs = [
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "reports/control_plane_residue_inventory_2026_02_14.toml",
+]
+
+[[completed]]
+id = "TR4-C-003"
+title = "Runtime gates and strict checks passing after fixes"
+status = "done"
+owner_lane = "control-plane CI and registry schema maintainers"
+tracker_refs = ["NA-024", "T-013"]
+evidence_refs = [
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+  "reports/strict_typed_policy_lane_2026_02_14.toml",
+]
+
+[[in_progress]]
+id = "TR4-I-001"
+title = "Alias usage review checkpoint execution"
+status = "in_progress"
+owner_lane = "control-plane naming maintainers"
+tracker_refs = ["NT-001"]
+evidence_refs = [
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+]
+
+[[in_progress]]
+id = "TR4-I-002"
+title = "Deprecation horizon monitoring through review window"
+status = "in_progress"
+owner_lane = "control-plane reporting maintainers"
+tracker_refs = ["ALIAS-HORIZON-2026-02-14"]
+evidence_refs = [
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+]
+
+[[queued]]
+id = "TR4-Q-001"
+title = "Prepare earliest-removal patch set"
+status = "queued"
+owner_lane = "control-plane naming maintainers"
+tracker_refs = ["NT-002"]
+evidence_refs = [
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+]
+
+[[queued]]
+id = "TR4-Q-002"
+title = "Canonical mirrors for historical phase plans"
+status = "queued"
+owner_lane = "control-plane archival maintainers"
+tracker_refs = ["NT-003"]
+evidence_refs = [
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/control_plane_naming_scope_2026_02_14.toml",
+]
+
+[[ownership]]
+lane = "Shim inversion lanes (semantic-atoms, evidence-provenance, integrity-resolution, execution-planning)"
+owner = "registry lane maintainers"
+artifacts = [
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+]
+responsibility = "Keep canonical scripts as source-of-truth entrypoints while retaining deterministic legacy compatibility shims."
+
+[[ownership]]
+lane = "Runtime gate and strict-check validation"
+owner = "control-plane CI and registry schema maintainers"
+artifacts = [
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+  "reports/strict_typed_policy_lane_2026_02_14.toml",
+]
+responsibility = "Keep governance-gate and registry-acceptance-gate passing at runtime and keep strict typed-policy checks green."
+
+[[ownership]]
+lane = "Planning canonicalization and tracker sync"
+owner = "planning tracker maintainers"
+artifacts = [
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "plans/resumption_unified_master_plan_2026_02_14.toml",
+  "registry/next_actions.toml",
+  "registry/todo.toml",
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+]
+responsibility = "Maintain canonical terminology in active planning text and keep tracker status/evidence links synchronized."
+
+[[ownership]]
+lane = "Alias deprecation horizon and queued cleanup"
+owner = "control-plane naming and archival maintainers"
+artifacts = [
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+]
+responsibility = "Execute review and removal queue milestones without removing aliases before policy criteria are met."
+
+[consistency]
+report_paths_checked = 17
+missing_report_paths = 0
+status = "pass"

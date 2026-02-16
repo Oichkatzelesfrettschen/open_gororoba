@@ -21,7 +21,17 @@ experiment = "E-005"
 name = "gravastar-sweep"
 crate = "gororoba_cli"
 description = "TOV parameter sweep for three-layer gravastar models"
-experiment = "E-006"
+
+[[binary]]
+name = "entropy-trap"
+crate = "gororoba_cli"
+description = "Seven-channel TCMT entropy trap and absorption sweep"
+experiment = "E-017"
+
+[[binary]]
+name = "he4-superfluid"
+crate = "gororoba_cli"
+description = "Helium-4 superfluid thermodynamics and Gross-Pitaevskii validation suite"
 
 [[binary]]
 name = "grin-trace"
@@ -199,6 +209,11 @@ crate = "gororoba_cli"
 description = "Validate TOML registry for internal consistency"
 
 [[binary]]
+name = "project-counter-sync"
+crate = "gororoba_cli"
+description = "Synchronize top-level [project] counters with claims/insights/experiments/binaries registries"
+
+[[binary]]
 name = "migrate-insights"
 crate = "gororoba_cli"
 description = "Migrate insights from markdown INSIGHTS.md to TOML registry"
@@ -237,6 +252,66 @@ description = "Emit optional non-canonical views (markdown, bibtex, tex, pgfplot
 name = "warp-ring-integration"
 crate = "gororoba_cli"
 description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim warp -> metamaterial TMM filter -> E7 algebra -> hypergraph topology -> GRIN lensing -> visualization"
+
+[[binary]]
+name = "warp-gpu-experiment"
+crate = "gororoba_cli"
+description = "Warp turbulence experiment suite (GPU lane): E7 viscosity filter, p-adic spectral tuning, and topology precursor diagnostics"
+
+[[binary]]
+name = "warp-ring-3d"
+crate = "gororoba_cli"
+description = "3D warp ring runner (N^3) with fail-closed rho quality gates and optional HDF5 export"
+
+[[binary]]
+name = "warp-bench-precision"
+crate = "gororoba_cli"
+description = "Single-case warp ring runner emitting HDF5 artifact plus timing TOML report"
+
+[[binary]]
+name = "warp-precision-matrix"
+crate = "gororoba_cli"
+description = "Warp ring matrix runner: sweep N^3 sizes and FP32/BF16 precision with acceptance gating"
+
+[[binary]]
+name = "warp-gpu-smoke"
+crate = "gororoba_cli"
+description = "Short GPU smoke lane for warp ring (8^3 and 16^3, FP32/BF16) with acceptance gating"
+
+[[binary]]
+name = "warp-production-suite"
+crate = "gororoba_cli"
+description = "Production lane for warp ring (128^3 and 256^3) with timing report, telemetry sampling, and acceptance gating"
+
+[[binary]]
+name = "warp-basemark-suite"
+crate = "gororoba_cli"
+description = "Basemark lane for warp ring emitting HDF5 + timing TOML per case plus a consolidated basemark summary report"
+
+[[binary]]
+name = "rho-trace-gate"
+crate = "gororoba_cli"
+description = "Fail-closed gate for /simulation/trace/rho_mean across one or more HDF5 artifacts"
+
+[[binary]]
+name = "simulation-trace-gate"
+crate = "gororoba_cli"
+description = "Fail-closed gate for /simulation/trace/{time,rho_mean,enstrophy,algebra_norm} datasets in HDF5 artifacts"
+
+[[binary]]
+name = "hdf5-numeric-gate"
+crate = "gororoba_cli"
+description = "Fail-closed recursive numeric NaN/Inf gate across all numeric HDF5 datasets in an artifact"
+
+[[binary]]
+name = "warp-enstrophy-test"
+crate = "gororoba_cli"
+description = "GPU enstrophy smoke test for warp ring kernels (guards NaN/Inf and reduction correctness)"
+
+[[binary]]
+name = "warp-lbm-step-test"
+crate = "gororoba_cli"
+description = "GPU LBM step smoke test for warp ring kernels across FP32/BF16"
 
 [[binary]]
 name = "dimensional-census"
@@ -342,9 +417,49 @@ crate = "gororoba_cli"
 description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether frustration-derived LBM flow produces coherent latency law"
 
 [[binary]]
+name = "tessarines-mixed-quaternions-census"
+crate = "gororoba_cli"
+description = "Census workflow for tessarines vs mixed-quaternions categorical distinctions"
+experiment = "E-021"
+
+[[binary]]
+name = "albert-algebra-structure-census"
+crate = "gororoba_cli"
+description = "Albert algebra commutativity and exceptional-structure census workflow"
+experiment = "E-022"
+
+[[binary]]
+name = "composition-algebra-taxonomy"
+crate = "gororoba_cli"
+description = "Two-axis composition algebra taxonomy and classification workflow"
+experiment = "E-023"
+
+[[binary]]
+name = "registry-event-tracker"
+crate = "gororoba_cli"
+description = "Registry event tracking and reconciliation infrastructure workflow"
+experiment = "E-024"
+
+[[binary]]
+name = "third-party-source-verifier"
+crate = "gororoba_cli"
+description = "Third-party source verification and ingestion infrastructure workflow"
+experiment = "E-026"
+
+[[binary]]
 name = "claims-consolidate"
 crate = "gororoba_cli"
 description = "Claims registry consolidation pipeline: normalize statuses, enrich metadata, build cross-reference graph, merge duplicates, resolve conflict markers"
+
+[[binary]]
+name = "gororoba-gate"
+crate = "gororoba_cli"
+description = "Run falsifiability-gate sweeps across thesis pipelines and report pass/fail evidence"
+
+[[binary]]
+name = "thesis-synthesis"
+crate = "gororoba_cli"
+description = "Run integrated 3D thesis synthesis simulation with topology trace distillation outputs"
 
 [[binary]]
 name = "kubo-frustration-transport"
@@ -363,3 +478,8 @@ name = "validate-j1j2-kubo"
 crate = "gororoba_cli"
 description = "J1-J2 spin chain transport validation: Drude ratio, ballistic fraction, C_V phase detection, and CD interpolation cross-validation diagnostics"
 experiment = "E-034"
+
+[[binary]]
+name = "warp-acceptance-gate"
+crate = "gororoba_cli"
+description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks"

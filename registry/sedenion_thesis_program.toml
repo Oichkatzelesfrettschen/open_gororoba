@@ -1,13 +1,13 @@
 # Sedenion thesis execution program (TOML-first, falsifiability-first).
 
 [sedenion_thesis_program]
-updated = "2026-02-12"
+updated = "2026-02-15"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
 scope = "pure_rust_workspace"
 thesis_count = 4
-task_count = 36
+task_count = 44
 source_repositories = [
   "~/Github/open_gororoba",
   "~/Github/MathScienceCompendium",
@@ -607,6 +607,119 @@ completed_date = "2026-02-12"
 resolution = "All gates pass: clippy 0 warnings, 3162 tests, ASCII clean, governance gate, schema signatures, cargo deny."
 dependencies = ["STPT-029", "STPT-030", "STPT-031", "STPT-032", "STPT-033", "STPT-034", "STPT-035"]
 deliverables = ["reports/thesis_program_gate_report.toml", "reports/thesis_program_phase_report.toml"]
+
+[[task]]
+id = "STPT-037"
+thesis_id = "STP-T4"
+title = "Migrate external Cayley-Dickson source batches into open_gororoba intake lane"
+owner = "provenance_lane"
+responsibility = "copy and preserve source batches under canonical intake path"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-036"]
+deliverables = ["data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions", "data/external/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex", "data/external/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda", "data/external/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes"]
+
+[[task]]
+id = "STPT-038"
+thesis_id = "STP-T4"
+title = "Register lambda-first intake metadata for copied Cayley-Dickson batches"
+owner = "registry_lane"
+responsibility = "encode intake metadata and unresolved URLs in canonical registry TOML"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-037"]
+deliverables = ["registry/research_intake_2026_02_15_cayley_dickson.toml"]
+
+[[task]]
+id = "STPT-039"
+thesis_id = "STP-T4"
+title = "Integrate next-25 distilled source items into lambda-first lane"
+owner = "claims_lane"
+responsibility = "map 25 distilled items onto existing claim and experiment IDs"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-038"]
+deliverables = ["registry/research_intake_2026_02_15_cayley_dickson.toml"]
+
+[[task]]
+id = "STPT-040"
+thesis_id = "STP-T4"
+title = "Carry unresolved-source risk set into canonical intake governance"
+owner = "provenance_lane"
+responsibility = "retain original and hard-failure URLs for retry workflows"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-038"]
+deliverables = ["registry/research_intake_2026_02_15_cayley_dickson.toml", "reports/cayley_dickson_source_recovery_2026_02_15.toml"]
+
+[[task]]
+id = "STPT-041"
+thesis_id = "STP-T4"
+title = "Lambda-first execution plan binding for existing experiments"
+owner = "execution_lane"
+responsibility = "bind intake modules to existing experiments E-027/E029/E031/E034/E035 without creating new experiment IDs"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-039"]
+deliverables = ["registry/research_intake_2026_02_15_cayley_dickson.toml"]
+
+
+[[task]]
+id = "STPT-042"
+thesis_id = "STP-T4"
+title = "Copy supplemental lambda/linear/HoTT documents into open_gororoba intake lane"
+owner = "provenance_lane"
+responsibility = "copy-only migration from Documents and Downloads with dedupe manifests"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-041"]
+deliverables = ["data/external/intake/2026_02_15_cayley_dickson_sources/supplemental_docs", "data/external/intake/2026_02_15_cayley_dickson_sources/transfer_manifests/copy_manifest_final.tsv"]
+
+[[task]]
+id = "STPT-043"
+thesis_id = "STP-T4"
+title = "Execute stubborn mirror retries and capture canonical fetch ledger"
+owner = "provenance_lane"
+responsibility = "retry CORE, MSP, Taylor, ScienceDirect, ResearchGate, arXiv alternates and persist normalized outcomes"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-042"]
+deliverables = ["data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/mirror_retry_results_normalized.tsv", "data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/pdf_success"]
+
+[[task]]
+id = "STPT-044"
+thesis_id = "STP-T4"
+title = "Publish transfer and retry reconciliation report with unresolved carry-forward URLs"
+owner = "registry_lane"
+responsibility = "integrate summary into registry intake lane and preserve unresolved URL visibility"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-15"
+dependencies = ["STPT-043"]
+deliverables = ["reports/cd_transfer_retry_reconciliation_2026_02_15.toml", "registry/research_intake_2026_02_15_cayley_dickson.toml"]
 
 [tracking]
 master_roadmap = "registry/sedenion_thesis_program.toml"

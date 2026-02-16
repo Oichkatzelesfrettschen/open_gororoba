@@ -162,7 +162,7 @@ priority = "high"
 
 [[task]]
 id = "FR-027"
-title = "Run wave5 registry verifier for touched registries"
+title = "Run registry acceptance verifier for touched registries"
 status = "done"
 priority = "high"
 

@@ -1,0 +1,107 @@
+# NA-021 external-port license gate decision report (Pantheon + PhysicsForge scope).
+
+[report]
+id = "NA-021-external-port-license-gate-2026-02-14"
+date = "2026-02-14"
+authoritative = true
+task = "NA-021"
+method = "Registry-only audit from owned Pantheon/PhysicsForge alignment and ported-file provenance registries."
+owner_scope = [
+  "registry/pantheon_physicsforge_license_alignment.toml",
+  "registry/pantheon_physicsforge_ported_files.toml",
+  "reports/external_port_license_gate_2026_02_14.toml",
+]
+
+[policy_basis]
+required_license = "GPL-2.0-only"
+reject_verbatim_copy = true
+required_prefixes = ["crates/snia_core/src"]
+
+[observed_inventory]
+external_candidate_total = 2
+ported_file_total = 12
+external_ported_row_total = 8
+native_ported_row_total = 4
+
+[[candidate]]
+name = "pantheon"
+decision = "allow"
+ported_row_count = 8
+rationale = "Repository license evidence is GPLv2/GPL-2.0-only aligned with policy, and all imported rows are rewrite-mode with license checks enabled."
+license_evidence = [
+  "registry/pantheon_physicsforge_license_alignment.toml repository[pantheon] license_file_detected=GPLv2-text metadata_license_text=GPL-2.0-only",
+  "registry/pantheon_physicsforge_ported_files.toml origin=pantheon rows=8 copy_mode=rewrite license_checked=true",
+]
+required_remediation = [
+  "Keep copy_mode as rewrite for all future imported rows.",
+  "Keep license_checked=true and reject any verbatim copy request.",
+  "Keep imported file paths under crates/snia_core/src.",
+]
+
+[[candidate]]
+name = "PhysicsForge"
+decision = "allow"
+ported_row_count = 0
+rationale = "Repository license evidence is GPLv2/GPL-2.0-only aligned with policy; no file-level imports are currently registered, so no conflicting row-level state exists."
+license_evidence = [
+  "registry/pantheon_physicsforge_license_alignment.toml repository[PhysicsForge] license_file_detected=GPLv2-text metadata_license_text=GPL-2.0-only",
+  "registry/pantheon_physicsforge_ported_files.toml origin=PhysicsForge rows=0 (no direct imports registered yet)",
+]
+required_remediation = [
+  "Before first direct import, add file-level rows with origin=PhysicsForge in registry/pantheon_physicsforge_ported_files.toml.",
+  "For each new row, set copy_mode=rewrite and license_checked=true.",
+  "Keep imported file paths under crates/snia_core/src and provide source_mapping_ids.",
+]
+
+[totals]
+candidate_total = 2
+allow_total = 2
+blocked_total = 0
+needs_legal_review_total = 0
+
+[[consistency_check]]
+id = "CC-001"
+rule = "allow_total + blocked_total + needs_legal_review_total == candidate_total"
+lhs = 2
+rhs = 2
+status = "pass"
+
+[[consistency_check]]
+id = "CC-002"
+rule = "sum(candidate.ported_row_count) == observed_inventory.external_ported_row_total"
+lhs = 8
+rhs = 8
+status = "pass"
+
+[[consistency_check]]
+id = "CC-003"
+rule = "observed_inventory.external_ported_row_total + observed_inventory.native_ported_row_total == observed_inventory.ported_file_total"
+lhs = 12
+rhs = 12
+status = "pass"
+
+[[consistency_check]]
+id = "CC-004"
+rule = "observed_inventory.external_candidate_total == totals.candidate_total"
+lhs = 2
+rhs = 2
+status = "pass"
+
+[gate_decision]
+status = "pass_with_required_remediation"
+summary = "All external candidates are license-compatible with GPL-2.0-only policy. Direct imports remain gated by rewrite-only provenance discipline and per-file registration."
+
+[deterministic_checklist]
+purpose = "Run before any new direct import from external repositories."
+commands = [
+  "python3 -c \"import tomllib,pathlib; [tomllib.loads(pathlib.Path(p).read_text()) for p in ['registry/pantheon_physicsforge_license_alignment.toml','registry/pantheon_physicsforge_ported_files.toml','reports/external_port_license_gate_2026_02_14.toml']]; print('toml_parse_ok')\"",
+  "python3 -c \"import tomllib,pathlib; d=tomllib.loads(pathlib.Path('registry/pantheon_physicsforge_license_alignment.toml').read_text()); req=d['license_alignment']['required_license']; assert all(r.get('metadata_license_text')==req for r in d['repository']); print('repo_license_alignment_ok')\"",
+  "python3 -c \"import tomllib,pathlib; la=tomllib.loads(pathlib.Path('registry/pantheon_physicsforge_license_alignment.toml').read_text()); pf=tomllib.loads(pathlib.Path('registry/pantheon_physicsforge_ported_files.toml').read_text()); ext={r['name'].lower() for r in la['repository']}; rows=[x for x in pf['ported_file'] if x['origin'].lower() in ext]; assert all(x['copy_mode']=='rewrite' for x in rows); assert all(x['license_checked'] for x in rows); print('external_provenance_rows_ok', len(rows))\"",
+  "python3 -c \"import tomllib,pathlib; r=tomllib.loads(pathlib.Path('reports/external_port_license_gate_2026_02_14.toml').read_text()); t=r['totals']; assert t['allow_total']+t['blocked_total']+t['needs_legal_review_total']==t['candidate_total']; print('report_total_consistency_ok')\"",
+]
+expected_results = [
+  "toml_parse_ok",
+  "repo_license_alignment_ok",
+  "external_provenance_rows_ok 8",
+  "report_total_consistency_ok",
+]

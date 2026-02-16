@@ -1,0 +1,293 @@
+# Control-plane naming compatibility matrix.
+# Canonical targets are authoritative; legacy aliases remain compatibility entrypoints.
+
+[report]
+id = "CPNCM-2026-02-14"
+created = "2026-02-14"
+status = "active"
+authoritative = true
+scope = "Canonical and legacy target compatibility for control-plane naming lanes and gates"
+
+[inputs]
+policy_registry = "registry/control_plane_naming_standards.toml"
+makefile = "Makefile"
+ci_workflow = ".github/workflows/ci.yml"
+sources = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  ".github/workflows/ci.yml",
+]
+
+[summary]
+canonical_contract_targets = ["governance-gate", "registry-acceptance-gate"]
+canonical_matrix_rows = 8
+legacy_aliases_total = 28
+legacy_aliases_resolved_in_makefile = 28
+legacy_aliases_unresolved_in_makefile = 0
+legacy_aliases_with_owner = 28
+legacy_aliases_with_removal_criteria = 28
+legacy_alias_horizon_defined = true
+legacy_alias_governance_coverage_complete = true
+shim_inversion_batches_completed = 4
+canonical_lane_scripts_are_source_of_truth = true
+legacy_batch_scripts_are_compat_shims = true
+rq024_planning_canonicalization_completed = true
+runtime_gates_passing_after_fixes = true
+strict_checks_passing_after_fixes = true
+unresolved_aliases = []
+
+[tranche4_sync]
+status = "completed"
+summary = "Batch1..batch4 shim inversion is complete, RQ-024 planning canonicalization is complete, and runtime/strict revalidation is passing."
+evidence_refs = [
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+]
+
+[deprecation_horizon]
+id = "ALIAS-HORIZON-2026-02-14"
+start_date = "2026-02-14"
+review_date = "2026-05-15"
+earliest_removal_date = "2026-08-14"
+source_policy = "registry/control_plane_naming_standards.toml"
+tracking_report = "reports/alias_deprecation_policy_2026_02_14.toml"
+
+[ci_contract]
+workflow_job = "canonical-registry-contract"
+primary_contract_commands = ["make governance-gate", "make registry-acceptance-gate"]
+legacy_alias_commands_in_ci = []
+intent = "CI validates canonical gate contracts directly while preserving alias compatibility in Makefile."
+
+[[compat_row]]
+id = "CM-001"
+lane_or_gate = "LANE-CSV-PIPELINE"
+canonical_targets = ["registry-csv-pipeline-gate"]
+legacy_alias_targets = ["registry-wave3"]
+resolution = ["registry-wave3 -> registry-csv-pipeline-gate"]
+intent = "Keep legacy wave3 invocations valid while establishing function-first canonical naming for CSV lane checks."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry data pipeline maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave3.",
+  "One review cycle passes with governance-gate and registry-acceptance-gate usage staying canonical in automation.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+]
+
+[[compat_row]]
+id = "CM-002"
+lane_or_gate = "LANE-CONTROL-PLANE"
+canonical_targets = ["registry-control-plane-gate"]
+legacy_alias_targets = ["registry-wave4"]
+resolution = ["registry-wave4 -> registry-control-plane-gate"]
+intent = "Preserve wave4 compatibility while enforcing control-plane terminology as canonical."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry control-plane maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave4.",
+  "One review cycle passes with registry-control-plane-gate remaining the only documented operational contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+]
+
+[[compat_row]]
+id = "CM-003"
+lane_or_gate = "LANE-SEMANTIC-ATOMS"
+canonical_targets = [
+  "registry-build-semantic-atoms",
+  "registry-verify-semantic-atoms",
+  "registry-semantic-atoms-gate",
+]
+legacy_alias_targets = [
+  "registry-wave5-batch1-build",
+  "registry-verify-wave5-batch1",
+  "registry-wave5-batch1",
+  "registry-strict-toml-batch1-build",
+  "registry-verify-strict-toml-batch1",
+  "registry-strict-toml-batch1",
+]
+resolution = [
+  "registry-wave5-batch1-build -> registry-strict-toml-batch1-build -> registry-build-semantic-atoms",
+  "registry-verify-wave5-batch1 -> registry-verify-strict-toml-batch1 -> registry-verify-semantic-atoms",
+  "registry-wave5-batch1 -> registry-strict-toml-batch1 -> registry-semantic-atoms-gate",
+  "registry-strict-toml-batch1-build -> registry-build-semantic-atoms",
+  "registry-verify-strict-toml-batch1 -> registry-verify-semantic-atoms",
+  "registry-strict-toml-batch1 -> registry-semantic-atoms-gate",
+]
+intent = "Phase and strict-batch aliases resolve into the semantic-atoms lane so callers can migrate without behavior drift."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry semantic-atoms maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch1 wave/strict alias target.",
+  "One review cycle passes with registry-build-semantic-atoms, registry-verify-semantic-atoms, and registry-semantic-atoms-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+]
+
+[[compat_row]]
+id = "CM-004"
+lane_or_gate = "LANE-EVIDENCE-PROVENANCE"
+canonical_targets = [
+  "registry-build-evidence-provenance",
+  "registry-verify-evidence-provenance",
+  "registry-evidence-provenance-gate",
+]
+legacy_alias_targets = [
+  "registry-wave5-batch2-build",
+  "registry-verify-wave5-batch2",
+  "registry-wave5-batch2",
+  "registry-strict-toml-batch2-build",
+  "registry-verify-strict-toml-batch2",
+  "registry-strict-toml-batch2",
+]
+resolution = [
+  "registry-wave5-batch2-build -> registry-strict-toml-batch2-build -> registry-build-evidence-provenance",
+  "registry-verify-wave5-batch2 -> registry-verify-strict-toml-batch2 -> registry-verify-evidence-provenance",
+  "registry-wave5-batch2 -> registry-strict-toml-batch2 -> registry-evidence-provenance-gate",
+  "registry-strict-toml-batch2-build -> registry-build-evidence-provenance",
+  "registry-verify-strict-toml-batch2 -> registry-verify-evidence-provenance",
+  "registry-strict-toml-batch2 -> registry-evidence-provenance-gate",
+]
+intent = "Legacy wave and strict aliases stay callable while the evidence/provenance lane name is canonical."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry evidence-provenance maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch2 wave/strict alias target.",
+  "One review cycle passes with registry-build-evidence-provenance, registry-verify-evidence-provenance, and registry-evidence-provenance-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = [
+  "registry/control_plane_naming_standards.toml",
+  "Makefile",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+  "reports/gate_validation_runtime_2026_02_14.toml",
+]
+
+[[compat_row]]
+id = "CM-005"
+lane_or_gate = "LANE-INTEGRITY-RESOLUTION"
+canonical_targets = [
+  "registry-build-integrity-resolution",
+  "registry-verify-integrity-resolution",
+  "registry-integrity-resolution-gate",
+]
+legacy_alias_targets = [
+  "registry-wave5-batch3-build",
+  "registry-verify-wave5-batch3",
+  "registry-wave5-batch3",
+  "registry-strict-toml-batch3-build",
+  "registry-verify-strict-toml-batch3",
+  "registry-strict-toml-batch3",
+]
+resolution = [
+  "registry-wave5-batch3-build -> registry-strict-toml-batch3-build -> registry-build-integrity-resolution",
+  "registry-verify-wave5-batch3 -> registry-verify-strict-toml-batch3 -> registry-verify-integrity-resolution",
+  "registry-wave5-batch3 -> registry-strict-toml-batch3 -> registry-integrity-resolution-gate",
+  "registry-strict-toml-batch3-build -> registry-build-integrity-resolution",
+  "registry-verify-strict-toml-batch3 -> registry-verify-integrity-resolution",
+  "registry-strict-toml-batch3 -> registry-integrity-resolution-gate",
+]
+intent = "Compatibility aliases route into integrity-resolution canonical names without changing verifier/build semantics."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry integrity-resolution maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch3 wave/strict alias target.",
+  "One review cycle passes with registry-build-integrity-resolution, registry-verify-integrity-resolution, and registry-integrity-resolution-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = ["registry/control_plane_naming_standards.toml", "Makefile"]
+
+[[compat_row]]
+id = "CM-006"
+lane_or_gate = "LANE-EXECUTION-PLANNING"
+canonical_targets = [
+  "registry-build-execution-planning",
+  "registry-verify-execution-planning",
+  "registry-execution-planning-gate",
+]
+legacy_alias_targets = [
+  "registry-wave5-batch4-build",
+  "registry-verify-wave5-batch4",
+  "registry-wave5-batch4",
+  "registry-strict-toml-batch4-build",
+  "registry-verify-strict-toml-batch4",
+  "registry-strict-toml-batch4",
+]
+resolution = [
+  "registry-wave5-batch4-build -> registry-strict-toml-batch4-build -> registry-build-execution-planning",
+  "registry-verify-wave5-batch4 -> registry-verify-strict-toml-batch4 -> registry-verify-execution-planning",
+  "registry-wave5-batch4 -> registry-strict-toml-batch4 -> registry-execution-planning-gate",
+  "registry-strict-toml-batch4-build -> registry-build-execution-planning",
+  "registry-verify-strict-toml-batch4 -> registry-verify-execution-planning",
+  "registry-strict-toml-batch4 -> registry-execution-planning-gate",
+]
+intent = "Execution/planning canonical naming is primary while wave/strict aliases are retained for compatibility callers."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry execution-planning maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes any batch4 wave/strict alias target.",
+  "One review cycle passes with registry-build-execution-planning, registry-verify-execution-planning, and registry-execution-planning-gate as the only operational entrypoints.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = ["registry/control_plane_naming_standards.toml", "Makefile"]
+
+[[compat_row]]
+id = "CM-007"
+lane_or_gate = "GATE-REGISTRY-ACCEPTANCE"
+canonical_targets = ["registry-acceptance-gate"]
+legacy_alias_targets = ["registry-wave5"]
+resolution = ["registry-wave5 -> registry-acceptance-gate"]
+intent = "Route phase-labeled acceptance invocations into the stable canonical aggregate acceptance gate."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "registry gate maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes registry-wave5.",
+  "One review cycle passes with registry-acceptance-gate as the only documented acceptance contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = ["registry/control_plane_naming_standards.toml", "Makefile", ".github/workflows/ci.yml"]
+
+[[compat_row]]
+id = "CM-008"
+lane_or_gate = "GATE-GOVERNANCE"
+canonical_targets = ["governance-gate"]
+legacy_alias_targets = ["wave6-gate"]
+resolution = [
+  "wave6-gate -> governance-gate",
+  "wave6-gate emits deprecation guidance to migrate invocations to governance-gate",
+  "governance-gate remains wired directly in Makefile and CI as canonical policy gate",
+]
+intent = "Governance checks keep governance-gate canonical while preserving wave6-gate as compatibility-only migration alias."
+status = "resolved"
+deprecation_horizon_ref = "ALIAS-HORIZON-2026-02-14"
+legacy_alias_owner = "governance gate maintainers"
+legacy_alias_removal_criteria = [
+  "No CI workflow, required script, or documented operator runbook invokes wave6-gate.",
+  "One review cycle passes with governance-gate as the only documented governance contract.",
+  "Alias removal patch updates Makefile, policy, and compatibility reports in the same change set.",
+]
+evidence_refs = ["registry/control_plane_naming_standards.toml", "Makefile", ".github/workflows/ci.yml"]

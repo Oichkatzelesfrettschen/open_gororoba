@@ -1,0 +1,14 @@
+# Lane: slides_artifacts
+
+[lane]
+id = "SLANE-SLIDES_ARTIFACTS-2026-02-15"
+name = "slides_artifacts"
+description = "Slides, decks, archives, notebooks, and non-dataset non-paper binary artifacts."
+generated_at = "2026-02-15"
+artifact_count = 0
+downloaded_count = 0
+downloadable_count = 0
+blocked_count = 0
+citation_only_no_link_count = 0
+unverified_count = 0
+missing_minimum_requirement_count = 0

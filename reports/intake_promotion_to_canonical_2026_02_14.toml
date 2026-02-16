@@ -1,0 +1,62 @@
+# Intake promotion summary for canonical registry lanes.
+
+[intake_promotion]
+id = "INTAKE-PROMOTION-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "completed"
+task_scope = "S132-S141"
+owner = "codex"
+source_intake_files = ["registry/research_intake_2026_02_14.toml", "registry/hypercomplex_taxonomy_promotion.toml"]
+promotion_policy = "Conservative and evidence-linked: promote only non-duplicate, high-signal mappings plus unresolved/high-risk triage actions."
+
+[promoted_counts]
+claims_added = 4
+edges_added = 17
+todo_items_added = 4
+claim_tickets_added = 1
+
+[claims]
+promoted_ids = ["C-691", "C-692", "C-693", "C-694"]
+source_hctp_ids = ["HCTP-013", "HCTP-014", "HCTP-015"]
+source_ri_ids = ["RI-026", "RI-027", "RI-028", "RI-030", "RI-031", "RI-032", "RI-033"]
+rationale = "Promoted one intake-status anchor claim plus three primary-mapping candidates with explicit verify/refute boundaries."
+
+[todo]
+promoted_ids = ["T-021", "T-022", "T-023", "T-024"]
+ri_unresolved_ids = ["RI-026", "RI-027", "RI-032"]
+ri_high_risk_ids = ["RI-034"]
+rationale = "All unresolved entries were converted into explicit high-priority closure tasks; RI-034 was retained as high-risk pending independent replay."
+
+[claim_tickets]
+promoted_ids = ["TICKET-RI-2026-02-14-TRIAGE"]
+rationale = "Escalation ticket created to keep unresolved/high-risk intake mappings in a canonical triage lane."
+
+[deferred]
+hctp_claim_candidates_total = 16
+hctp_claim_candidates_promoted = 3
+hctp_claim_candidates_deferred = 13
+deferred_hctp_ids = ["HCTP-001", "HCTP-002", "HCTP-003", "HCTP-004", "HCTP-005", "HCTP-006", "HCTP-007", "HCTP-008", "HCTP-009", "HCTP-010", "HCTP-011", "HCTP-012", "HCTP-016"]
+deferred_reason = "Avoided flooding canonical lanes with taxonomy facts already represented by existing claims, and deferred HCTP-016 until source-chain hardening is complete."
+
+[verify_refute_intent]
+claims = "Each promoted claim includes explicit VERIFY intent and REFUTE intent in `what_would_verify_refute`."
+todo = "Each promoted todo includes explicit VERIFY intent and REFUTE intent in `acceptance_criteria`."
+claim_tickets = "The promoted ticket goal summary encodes explicit VERIFY/REFUTE triage intent."
+
+[validation]
+toml_parse = "pass"
+id_uniqueness = "pass"
+reference_checks = "pass"
+checks_run = [
+  "tomllib parse: registry/claims.toml",
+  "tomllib parse: registry/claims_evidence_edges.toml",
+  "tomllib parse: registry/todo.toml",
+  "tomllib parse: registry/claim_tickets.toml",
+  "claim ID uniqueness and presence for C-691..C-694",
+  "edge ID uniqueness and edge_count parity (1946)",
+  "todo ID uniqueness and item_count parity (24)",
+  "ticket ID uniqueness and ticket_count parity (11)",
+  "new edge -> claim_id reference validity",
+  "new ticket claims_referenced and source_markdown existence",
+]

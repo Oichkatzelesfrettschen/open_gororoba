@@ -1,0 +1,66 @@
+report_date = "2026-02-14"
+scope = [
+  "crates/data_core/src/registry.rs",
+  "crates/gororoba_cli/src/bin/registry_check.rs",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+]
+
+authoring_goal = "Eliminate typed-schema drift for registry/monograph.toml and registry/data_artifact_narratives.toml in registry-check strict mode while keeping non-typed checks unchanged."
+
+[before]
+command = "cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy error"
+exit_code = 1
+stdout_stderr_snippet = '''
+Registry TOML parse sweep: 1306 files parsed
+ERROR: typed schema drift (policy=error): registry/monograph.toml failed typed validation (data_core::registry::MonographRegistry): TOML parse error at line 4, column 1
+  |
+4 | [monograph]
+  | ^^^^^^^^^^^
+missing field `title`
+
+ERROR: typed schema drift (policy=error): registry/data_artifact_narratives.toml failed typed validation (data_core::registry::ArtifactRegistry): TOML parse error at line 1, column 1
+  |
+1 | # Data artifact narratives registry (TOML-first).
+  | ^
+missing field `artifacts`
+'''
+
+[changes]
+summary = "Updated typed registry deserialization in data_core to accept canonical wrappers and legacy shapes for monograph and data artifact narratives."
+items = [
+  "MonographRegistry: accept canonical [[document]] wrapper (alias on volumes), while preserving legacy volume wrappers.",
+  "MonographMeta/Volume: allow canonical fields (updated/authoritative/document_count/path/body_markdown) and legacy fields together via serde defaults/aliases.",
+  "ArtifactRegistry: accept canonical [data_artifact_narratives] header and [[document]] entries while preserving legacy [artifacts]/[[artifact]] support.",
+  "ArtifactsMeta/ArtifactEntry: include canonical narrative fields with defaults while keeping legacy fields available.",
+]
+
+[validation.cargo_check]
+command = "cargo check -p data_core -p gororoba_cli --bin registry-check"
+exit_code = 0
+stdout_stderr_snippet = '''
+Checking data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+Checking gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+Finished `dev` profile [optimized + debuginfo] target(s) in 0.70s
+'''
+
+[validation.registry_check_strict]
+command = "cargo run -q -p gororoba_cli --bin registry-check -- --typed-policy error"
+exit_code = 0
+stdout_stderr_snippet = '''
+Registry TOML parse sweep: 1306 files parsed
+Typed schema policy: error (no typed schema drift detected)
+WARNING: 545 claim ID gaps: C-126, C-127, C-128, C-129, C-130... and 540 more
+Claims: 689 entries, 689 unique IDs, range C-001..C-689
+WARNING: 3 insight ID gaps: I-061, I-062, I-063
+Insights: 66 entries, IDs "I-001".."I-069"
+Experiments: 32 entries
+Binaries: 77 entries
+Project: found (vopen_gororoba)
+
+Registry check: PASS with 2 warnings
+'''
+
+[outcome]
+typed_drift_monograph = "resolved"
+typed_drift_data_artifact_narratives = "resolved"
+non_typed_behavior = "unchanged (existing warning checks still run)"

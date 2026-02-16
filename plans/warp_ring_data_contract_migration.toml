@@ -1,0 +1,17 @@
+# Plan: Warp Ring Data Contract Formalization
+# Goal: Unify experiment artifacts under a rigorous schema.
+
+[contracts]
+crate = "crates/gororoba_contracts"
+schema = "WarpRingExperiment"
+
+[migration]
+step_1 = "Define WarpRingExperiment struct in gororoba_contracts"
+step_2 = "Update data_core to use gororoba_contracts"
+step_3 = "Implement HDF5 serialization for Contract"
+step_4 = "Update warp-ring-3d binary to output Contract"
+
+[validation]
+metric_1 = "Type safety (Serde)"
+metric_2 = "Schema versioning"
+metric_3 = "Interoperability (Python bridge)"

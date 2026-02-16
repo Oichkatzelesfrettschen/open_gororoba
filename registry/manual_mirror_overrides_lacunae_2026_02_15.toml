@@ -1,0 +1,656 @@
+# Manual mirror overrides injected from user-provided "glaring lacunae" list.
+# These are supplemental sources; the authoritative master is registry/artifact_source_of_truth.toml.
+
+[mirror_overrides]
+id = "MIRROR-OVERRIDES-LACUNAE-2026-02-15"
+updated = "2026-02-15"
+authoritative = false
+policy = "Add best-available direct PDF endpoints and stable alternates for missing quaternion/Clifford/E8/materials sources; preserve landing/DOI/arXiv pages alongside direct PDF when available."
+
+# -------------------------
+# E8 / Quaternions / E8-adjacent math
+# -------------------------
+
+[[mirror_override]]
+id = "BAEZ_2017_FROM_ICOSAHEDRON_TO_E8"
+artifact_key_hint = "arxiv:1712.06436"
+title = "Baez (2017) From the Icosahedron to E8"
+urls = [
+  "https://arxiv.org/abs/1712.06436",
+  "https://arxiv.org/pdf/1712.06436.pdf",
+]
+
+[[mirror_override]]
+id = "BAEZ_2023_ICOSIDODECAHEDRON"
+artifact_key_hint = "arxiv:2309.15774"
+title = "Baez (2023) The Icosidodecahedron"
+urls = [
+  "https://arxiv.org/abs/2309.15774",
+  "https://arxiv.org/pdf/2309.15774.pdf",
+]
+
+[[mirror_override]]
+id = "DECHANT_2015_BIRTH_OF_E8"
+artifact_key_hint = "doi:10.1098/rspa.2015.0504"
+title = "Dechant (2015) The birth of E8 out of the spinors of the icosahedron"
+doi_list = ["10.1098/rspa.2015.0504"]
+urls = [
+  "https://doi.org/10.1098/rspa.2015.0504",
+  "https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.2015.0504",
+]
+
+# -------------------------
+# Cayley-Dickson analysis / PDE
+# -------------------------
+
+[[mirror_override]]
+id = "LUDKOVSKY_2009_TWO_SIDED_LAPLACE"
+artifact_key_hint = "doi:10.1007/s10958-009-9316-3"
+title = "Ludkovsky (2009) Two-sided Laplace transformation over Cayley-Dickson algebras"
+doi_list = ["10.1007/S10958-009-9316-3"]
+urls = [
+  "https://doi.org/10.1007/S10958-009-9316-3",
+  "https://link.springer.com/content/pdf/10.1007/s10958-009-9316-3.pdf",
+]
+
+# -------------------------
+# Quaternion / Clifford / crystallography (Hitzer and adjacent)
+# -------------------------
+
+[[mirror_override]]
+id = "HITZER_2015_ORTHOGONAL_PLANES_SPLIT"
+artifact_key_hint = "doi:10.1088/1742-6596/597/1/012042"
+title = "Hitzer (2015) Orthogonal planes split of quaternions"
+doi_list = ["10.1088/1742-6596/597/1/012042"]
+urls = [
+  "https://doi.org/10.1088/1742-6596/597/1/012042",
+  "https://iopscience.iop.org/article/10.1088/1742-6596/597/1/012042/pdf",
+]
+
+[[mirror_override]]
+id = "HITZER_2010_CRYSTAL_PLANES_WILEY"
+artifact_key_hint = "doi:10.1002/MMA.1442"
+title = "Hitzer (2010) Crystal planes and reciprocal space in Clifford geometric algebra"
+doi_list = ["10.1002/MMA.1442"]
+urls = [
+  "https://doi.org/10.1002/MMA.1442",
+  "https://onlinelibrary.wiley.com/doi/epdf/10.1002/MMA.1442",
+]
+
+[[mirror_override]]
+id = "HITZER_ICHIKAWA_2013_SUBPERIODIC_GROUPS"
+artifact_key_hint = "doi:10.1007/s00006-013-0404-6"
+title = "Hitzer & Ichikawa (2013) Crystallographic subperiodic groups in Clifford GA"
+doi_list = ["10.1007/S00006-013-0404-6"]
+urls = [
+  "https://doi.org/10.1007/S00006-013-0404-6",
+  "https://link.springer.com/content/pdf/10.1007/s00006-013-0404-6.pdf",
+]
+
+[[mirror_override]]
+id = "HITZER_PERWASS_2010_SPACE_GROUP_VIS"
+artifact_key_hint = "doi:10.1007/s00006-010-0214-z"
+title = "Hitzer & Perwass (2010) Interactive 3D space group visualization with CLUCalc"
+doi_list = ["10.1007/S00006-010-0214-Z"]
+urls = [
+  "https://doi.org/10.1007/S00006-010-0214-Z",
+  "https://link.springer.com/content/pdf/10.1007/s00006-010-0214-z.pdf",
+]
+
+# -------------------------
+# Materials science / solid state (quaternion + E8 / quasicrystal)
+# -------------------------
+
+[[mirror_override]]
+id = "ROWENHORST_2022_EBSD_DUAL_PHASE_STEEL"
+artifact_key_hint = "doi:10.1107/s1600576722004265"
+title = "Rowenhorst et al. (2022) Dual-phase steel microstructure using EBSD workflow"
+doi_list = ["10.1107/S1600576722004265"]
+urls = [
+  "https://doi.org/10.1107/S1600576722004265",
+  "https://onlinelibrary.wiley.com/doi/epdf/10.1107/S1600576722004265",
+]
+
+[[mirror_override]]
+id = "MEAS_SCI_TECH_2016_QUATERNION_CORRELATION"
+artifact_key_hint = "doi:10.1088/0957-0233/27/9/095006"
+title = "Quaternion correlation for tracking crystal motions (2016)"
+doi_list = ["10.1088/0957-0233/27/9/095006"]
+urls = [
+  "https://doi.org/10.1088/0957-0233/27/9/095006",
+  "https://iopscience.iop.org/article/10.1088/0957-0233/27/9/095006/pdf",
+]
+
+[[mirror_override]]
+id = "APS_2019_GROWTH_INTERACTIONS_ICOSA_QC"
+artifact_key_hint = "doi:10.1103/PhysRevMaterials.3.093403"
+title = "Growth interactions between icosahedral quasicrystals (PhysRevMaterials 2019)"
+doi_list = ["10.1103/PhysRevMaterials.3.093403"]
+urls = [
+  "https://doi.org/10.1103/PhysRevMaterials.3.093403",
+  "https://journals.aps.org/prmaterials/pdf/10.1103/PhysRevMaterials.3.093403",
+]
+
+[[mirror_override]]
+id = "MDPI_2024_FIBONACCI_ICOSAGRID_E8_PART_I"
+artifact_key_hint = "doi:10.3390/cryst14020152"
+title = "From the Fibonacci Icosagrid to E8 (Part I) (MDPI Crystals 2024)"
+doi_list = ["10.3390/cryst14020152"]
+urls = [
+  "https://doi.org/10.3390/cryst14020152",
+  "https://www.mdpi.com/2073-4352/14/2/152/pdf",
+]
+
+[[mirror_override]]
+id = "MDPI_2024_FIBONACCI_ICOSAGRID_E8_PART_II"
+artifact_key_hint = "doi:10.3390/cryst14020194"
+title = "From the Fibonacci Icosagrid to E8 (Part II) (MDPI Crystals 2024)"
+doi_list = ["10.3390/cryst14020194"]
+urls = [
+  "https://doi.org/10.3390/cryst14020194",
+  "https://www.mdpi.com/2073-4352/14/2/194/pdf",
+]
+
+[[mirror_override]]
+id = "PSSB_1987_METALLIC_GLASSES_CHIRAL_NEMATIC"
+artifact_key_hint = "doi:10.1002/PSSB.2221440107"
+title = "Metallic glasses and chiral nematic liquid crystals (PSSB 1987)"
+doi_list = ["10.1002/PSSB.2221440107"]
+urls = [
+  "https://doi.org/10.1002/PSSB.2221440107",
+  "https://onlinelibrary.wiley.com/doi/epdf/10.1002/PSSB.2221440107",
+]
+
+# -------------------------
+# Composition / symmetric composition / magic square / Okubo / Albert
+# -------------------------
+
+[[mirror_override]]
+id = "PETERSSON_2007_COMP_ALG_RINGS"
+artifact_key_hint = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/comp-alg-rings.pdf"
+title = "Petersson (2007) Composition algebras over commutative rings"
+urls = [
+  "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/comp-alg-rings.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_1997_SYMMETRIC_COMP_CORE"
+artifact_key_hint = "core:82171593"
+title = "Elduque (1997) Symmetric Composition Algebras (CORE mirror)"
+urls = [
+  "https://core.ac.uk/download/pdf/82171593.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_2005_SYMMETRIC_COMP_ARXIV"
+artifact_key_hint = "arxiv:math/0507282"
+title = "Elduque (2005) Symmetric composition algebras / magic square references"
+urls = [
+  "https://arxiv.org/pdf/math/0507282.pdf",
+  "https://arxiv.org/abs/math/0507282",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_SLIDES_LIEJOR"
+artifact_key_hint = "url:https://personal.unizar.es/elduque/Talks/LieJor.pdf"
+title = "Elduque slides LieJor (Symmetric compositions / Magic Square / Triality)"
+urls = [
+  "https://personal.unizar.es/elduque/Talks/LieJor.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_MAGIC_SQUARE_PDF"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"
+title = "Elduque (2004/2005) The Magic Square and Symmetric Compositions"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_OKUBO_UPPSALA_SLIDES"
+artifact_key_hint = "url:https://personal.unizar.es/elduque/Talks/OkuboAlgebras_Uppsala.pdf"
+title = "Elduque slides Okubo algebras"
+urls = [
+  "https://personal.unizar.es/elduque/Talks/OkuboAlgebras_Uppsala.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_2013_OKUBO_AUT_DER_IDEMP"
+artifact_key_hint = "arxiv:1310.5455"
+title = "Elduque (2013) Okubo algebras: automorphisms, derivations and idempotents"
+urls = [
+  "https://arxiv.org/abs/1310.5455",
+  "https://arxiv.org/pdf/1310.5455.pdf",
+]
+
+[[mirror_override]]
+id = "ELDUQUE_TRIALITY_CIRM_SLIDES"
+artifact_key_hint = "url:https://www.cirm-math.fr/RepOrga/2076/Slides/Elduque.pdf"
+title = "Elduque slides Triality / Hurwitz algebras"
+urls = [
+  "https://www.cirm-math.fr/RepOrga/2076/Slides/Elduque.pdf",
+]
+
+[[mirror_override]]
+id = "JAFARI_2016_PARA_OCTONIONS"
+artifact_key_hint = "marmara:para_octonions"
+title = "Jafari (2016) On the para-octonions"
+urls = [
+  "https://openaccess.marmara.edu.tr/bitstreams/42973323-5109-4234-a5bc-36c2bffa02ff/download",
+]
+
+[[mirror_override]]
+id = "SMITH_VOJTECHOVSKY_OKUBO_QUASIGROUPS"
+artifact_key_hint = "url:https://jdhsmith.math.iastate.edu/math/OKUBOQGP.pdf"
+title = "Smith & Vojtechovsky Okubo quasigroups"
+urls = [
+  "https://jdhsmith.math.iastate.edu/math/OKUBOQGP.pdf",
+]
+
+[[mirror_override]]
+id = "PETERSSON_2012_ALBERT_ALGEBRAS_FIELDS"
+artifact_key_hint = "url:https://www.fields.utoronto.ca/programs/scientific/11-12/exceptional/Alb.-alg.-Ottawa-2012-Vii-new.pdf"
+title = "Petersson (2012) Albert algebras (Fields Institute notes)"
+urls = [
+  "https://www.fields.utoronto.ca/programs/scientific/11-12/exceptional/Alb.-alg.-Ottawa-2012-Vii-new.pdf",
+]
+
+[[mirror_override]]
+id = "GPR_2023_ALBERT_ALG_Z_LOOS"
+artifact_key_hint = "url:https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf"
+title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z and other rings"
+urls = [
+  "https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf",
+]
+
+[[mirror_override]]
+id = "GPR_2023_ALBERT_ALG_Z_FERNI"
+artifact_key_hint = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/fms_2300007_fn.pdf"
+title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z (alternate host)"
+urls = [
+  "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/fms_2300007_fn.pdf",
+]
+
+[[mirror_override]]
+id = "GPR_SOLNS_PDF"
+artifact_key_hint = "url:https://www.garibaldibros.com/linked-files/GPR-solns.pdf"
+title = "Garibaldi-Petersson-Racine solutions/errata companion"
+urls = [
+  "https://www.garibaldibros.com/linked-files/GPR-solns.pdf",
+]
+
+[[mirror_override]]
+id = "KOLLROSS_2018_F4_TRIALITY"
+artifact_key_hint = "url:https://www.f08.uni-stuttgart.de/.content/media/downloads/Mathematik/mathematische_berichte/2018/2018-003.pdf"
+title = "Kollross (2018) Octonions, triality, exceptional Lie algebra F4"
+urls = [
+  "https://www.f08.uni-stuttgart.de/.content/media/downloads/Mathematik/mathematische_berichte/2018/2018-003.pdf",
+]
+
+[[mirror_override]]
+id = "KARIGIANNIS_2019_INTRO_G2"
+artifact_key_hint = "url:https://cmsa.fas.harvard.edu/media/intro-G2-notes-1.pdf"
+title = "Karigiannis (2019) Introduction to G2 geometry"
+urls = [
+  "https://cmsa.fas.harvard.edu/media/intro-G2-notes-1.pdf",
+]
+
+[[mirror_override]]
+id = "SALAMON_WALPUSKI_2017_NOTES_OCTONIONS"
+artifact_key_hint = "url:https://people.math.ethz.ch/~salamon/PREPRINTS/Octonions.pdf"
+title = "Salamon & Walpuski (2017) Notes on the octonions"
+urls = [
+  "https://people.math.ethz.ch/~salamon/PREPRINTS/Octonions.pdf",
+]
+
+[[mirror_override]]
+id = "LACKMANN_OP2_PDF"
+artifact_key_hint = "url:https://www.matrix-inst.org.au/wp_Matrix2016/wp-content/uploads/2019/01/Lackmann.pdf"
+title = "Lackmann The octonionic projective plane OP^2"
+urls = [
+  "https://www.matrix-inst.org.au/wp_Matrix2016/wp-content/uploads/2019/01/Lackmann.pdf",
+]
+
+# -------------------------
+# Moufang / Paige / Zorn matrices
+# -------------------------
+
+[[mirror_override]]
+id = "VOJTECHOVSKY_2007_GENERATORS_MOUFANG"
+artifact_key_hint = "arxiv:math/0701701"
+title = "Vojtechovsky (2007) Generators for finite simple Moufang loops"
+urls = [
+  "https://arxiv.org/abs/math/0701701",
+  "https://arxiv.org/pdf/math/0701701.pdf",
+]
+
+[[mirror_override]]
+id = "WELLS_2010_ZORN_VECTOR_MATRICES_THESIS"
+artifact_key_hint = "iowa_state:79b32677-687d-4469-979a-df3da9fcf6db"
+title = "Wells (2010) Zorn vector matrices over commutative rings and loops (thesis/dissertation)"
+urls = [
+  "https://dr.lib.iastate.edu/bitstreams/79b32677-687d-4469-979a-df3da9fcf6db/download",
+]
+
+[[mirror_override]]
+id = "DML_2010_ZORN_VECTOR_MATRICES_PAIGE_LOOPS"
+artifact_key_hint = "dml:10338.dmlcz/140113"
+title = "Zorn vector matrices and Paige loops (DML mirror)"
+urls = [
+  "https://dml.cz/bitstream/handle/10338.dmlcz/140113/CommentatMathUnivCarolRetro_51-2010-2_20.pdf",
+]
+
+# -------------------------
+# Signal / image / hypercomplex Fourier and wavelets
+# -------------------------
+
+[[mirror_override]]
+id = "SAID_2006_FAST_COMPLEXIFIED_QFFT"
+artifact_key_hint = "arxiv:math/0603578"
+title = "Said et al. (2006) Fast complexified quaternion Fourier transform"
+urls = [
+  "https://arxiv.org/abs/math/0603578",
+  "https://arxiv.org/pdf/math/0603578.pdf",
+]
+
+[[mirror_override]]
+id = "BLASZCZYK_2019_OCTONION_FOURIER_3D"
+artifact_key_hint = "arxiv:1905.12631"
+title = "Blaszczyk (2019) Generalization of the octonion Fourier transform to 3-D"
+urls = [
+  "https://arxiv.org/abs/1905.12631",
+  "https://arxiv.org/pdf/1905.12631.pdf",
+]
+
+[[mirror_override]]
+id = "GRIGORYAN_2017_SPIE_2D_ODFT_FAST"
+artifact_key_hint = "url:https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/Art_spie20172dODFT.pdf"
+title = "Grigoryan et al. (2017) 2-D Octonion Discrete Fourier Transform: Fast Algorithms"
+urls = [
+  "https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/Art_spie20172dODFT.pdf",
+]
+
+[[mirror_override]]
+id = "BLASZCZYK_2020_WUT_DISCRETE_OFT"
+artifact_key_hint = "url:https://repo.pw.edu.pl/docstore/download/WUTbf02dba4bb844d4e958c55ec5a66a9de/WUT729391fd969a453c882f92ef89a09358.pdf"
+title = "Blaszczyk et al. (2020) Discrete octonion Fourier transform (WUT repository)"
+urls = [
+  "https://repo.pw.edu.pl/docstore/download/WUTbf02dba4bb844d4e958c55ec5a66a9de/WUT729391fd969a453c882f92ef89a09358.pdf",
+]
+
+[[mirror_override]]
+id = "BAHRI_2011_QUATERNION_WAVELET_CORE"
+artifact_key_hint = "core:25485331"
+title = "Bahri (2011) Two-dimensional quaternion wavelet transform (CORE mirror)"
+urls = [
+  "https://core.ac.uk/download/pdf/25485331.pdf",
+]
+
+[[mirror_override]]
+id = "HITZER_2013_CRYSTAL_PLANES_ARXIV"
+artifact_key_hint = "arxiv:1306.1646"
+title = "Hitzer (2013) Crystal planes and reciprocal space in Clifford GA (arXiv)"
+urls = [
+  "https://arxiv.org/abs/1306.1646",
+  "https://arxiv.org/pdf/1306.1646.pdf",
+]
+
+# -------------------------
+# EBSD / rotations / orientation distributions (quaternion infrastructure)
+# -------------------------
+
+[[mirror_override]]
+id = "ROWENHORST_2015_CONSISTENT_ROTATIONS"
+artifact_key_hint = "url:https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf"
+title = "Rowenhorst et al. (2015) Consistent representations of and conversions between 3D rotations"
+urls = [
+  "https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf",
+]
+
+[[mirror_override]]
+id = "BRITTON_2016_EBSD_TUTORIAL"
+artifact_key_hint = "url:https://www.dora.lib4ri.ch/empa/islandora/object/empa%3A2673/datastream/PDF/Britton-2016-Tutorial-%28published_version%29.pdf"
+title = "Britton et al. (2016) Tutorial: Crystal orientations and EBSD"
+urls = [
+  "https://www.dora.lib4ri.ch/empa/islandora/object/empa%3A2673/datastream/PDF/Britton-2016-Tutorial-%28published_version%29.pdf",
+]
+
+[[mirror_override]]
+id = "DE_GRAEF_2024_CLIFFORD_TORUS_TEXTURES"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"
+title = "De Graef (2024) Applications of the Clifford torus to material textures"
+urls = [
+  "https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf",
+]
+
+[[mirror_override]]
+id = "HE_JONAS_2007_RODRIGUES_FRANK_SPACE"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"
+title = "He & Jonas (2007) Orientation relationships in Rodrigues-Frank space"
+urls = [
+  "https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf",
+]
+
+[[mirror_override]]
+id = "MORAWIEC_FIELD_1996_RODRIGUES_PARAMETERIZATION"
+artifact_key_hint = "url:https://www.imim.pl/personal/adam.morawiec/A_Morawiec_Web_Page/Publications/1996_PhilMag.pdf"
+title = "Morawiec & Field (1996) Rodrigues parameterization for orientation distributions"
+urls = [
+  "https://www.imim.pl/personal/adam.morawiec/A_Morawiec_Web_Page/Publications/1996_PhilMag.pdf",
+]
+
+[[mirror_override]]
+id = "KRAKOW_2017_MISORIENTATION_CAMBRIDGE"
+artifact_key_hint = "url:https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf"
+title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Cambridge)"
+urls = [
+  "https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf",
+]
+
+[[mirror_override]]
+id = "KRAKOW_2017_MISORIENTATION_GLASGOW"
+artifact_key_hint = "url:https://eprints.gla.ac.uk/205247/1/205247.pdf"
+title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Glasgow mirror)"
+urls = [
+  "https://eprints.gla.ac.uk/205247/1/205247.pdf",
+]
+
+[[mirror_override]]
+id = "QUEY_2018_NEARLY_UNIFORM_ORIENTATION_SAMPLING"
+artifact_key_hint = "url:https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"
+title = "Quey-Villani-Maurice (2018) Nearly uniform sampling of crystal orientations"
+urls = [
+  "https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf",
+]
+
+[[mirror_override]]
+id = "MORAWIEC_LECTURE_ROTATION_PARAMETERIZATIONS"
+artifact_key_hint = "url:https://www.imim.pl/PHD/www.imim-phd.edu.pl/contents/Lectures/MORAWIEC%20An%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf"
+title = "Morawiec lecture notes Rotation/orientation parameterizations"
+urls = [
+  "https://www.imim.pl/PHD/www.imim-phd.edu.pl/contents/Lectures/MORAWIEC%20An%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf",
+]
+
+[[mirror_override]]
+id = "CMU_LECTURE_DESCRIPTIONS_OF_ORIENTATION"
+artifact_key_hint = "url:https://pajarito.materials.cmu.edu/lectures/L20-Descriptions-of-Orientation-TugceOzturk_27750-12Apr16.pdf"
+title = "CMU lecture Descriptions of Orientation"
+urls = [
+  "https://pajarito.materials.cmu.edu/lectures/L20-Descriptions-of-Orientation-TugceOzturk_27750-12Apr16.pdf",
+]
+
+[[mirror_override]]
+id = "PSU_EBSD_NOTES"
+artifact_key_hint = "url:https://sites.esm.psu.edu/~mcd18/EBSD.PDF"
+title = "EBSD notes (Penn State) (quaternion formalism)"
+urls = [
+  "https://sites.esm.psu.edu/~mcd18/EBSD.PDF",
+]
+
+[[mirror_override]]
+id = "KUNZE_SCHAEBEN_2004_BINGHAM_DISTRIBUTION"
+artifact_key_hint = "doi:10.1023/B:MATG.0000048799.56445.59"
+title = "Kunze & Schaeben (2004) Bingham distribution of quaternions (texture analysis)"
+doi_list = ["10.1023/B:MATG.0000048799.56445.59"]
+urls = [
+  "https://link.springer.com/content/pdf/10.1023/B%3AMATG.0000048799.56445.59.pdf",
+  "https://doi.org/10.1023/B:MATG.0000048799.56445.59",
+]
+
+[[mirror_override]]
+id = "NIEZGODA_2016_SYMMETRIZED_BINGHAM"
+artifact_key_hint = "arxiv:1603.07291"
+title = "Niezgoda et al. (2016) Symmetrized Bingham distribution for texture"
+urls = [
+  "https://arxiv.org/abs/1603.07291",
+  "https://arxiv.org/pdf/1603.07291.pdf",
+]
+
+[[mirror_override]]
+id = "GLOVER_2013_QUAT_BINGHAM_FILTER"
+artifact_key_hint = "url:https://dspace.mit.edu/bitstream/handle/1721.1/78248/MIT-CSAIL-TR-2013-005.pdf"
+title = "Glover (2013) Tracking 3-D rotations with the Quaternion Bingham Filter"
+urls = [
+  "https://dspace.mit.edu/bitstream/handle/1721.1/78248/MIT-CSAIL-TR-2013-005.pdf",
+]
+
+# -------------------------
+# Quasicrystals / E8 / quaternionic lattices
+# -------------------------
+
+[[mirror_override]]
+id = "TSAI_2008_ICOSAHEDRAL_ORDER_QC"
+artifact_key_hint = "url:https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/Tsai2008.pdf"
+title = "Tsai (2008) Icosahedral clusters and stability of quasicrystals"
+urls = [
+  "https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/Tsai2008.pdf",
+]
+
+[[mirror_override]]
+id = "STEINHARDT_2012_QC_HISTORY"
+artifact_key_hint = "url:https://paulsteinhardt.org/wp-content/uploads/2020/10/Steinhardt_Rendiconti-Lincei-2012.pdf"
+title = "Steinhardt (2012) Quasicrystals: a brief history of the impossible"
+urls = [
+  "https://paulsteinhardt.org/wp-content/uploads/2020/10/Steinhardt_Rendiconti-Lincei-2012.pdf",
+]
+
+[[mirror_override]]
+id = "SADOC_E8_LATTICE_QUASICRYSTALS_RG"
+artifact_key_hint = "url:https://www.researchgate.net/profile/jean-francois-sadoc/publication/243298250_the_e8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/the-e8-lattice-and-quasicrystals.pdf"
+title = "Sadoc The E8 lattice and quasicrystals (ResearchGate mirror; may be blocked)"
+urls = [
+  "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf",
+]
+notes = "If blocked, keep as manual-intervention mirror and seek alternate author/institutional host."
+
+[[mirror_override]]
+id = "HUANG_2024_QUASICRYSTALS_DISSERTATION_DIVA"
+artifact_key_hint = "diva:1910472"
+title = "Huang (2024) Synthesis and Characterization of Quasicrystals and Approximants (dissertation)"
+urls = [
+  "https://www.diva-portal.org/smash/get/diva2%3A1910472/FULLTEXT01.pdf",
+]
+
+[[mirror_override]]
+id = "KING_CORE_QUATERNIONS_LATTICES"
+artifact_key_hint = "core:81416999"
+title = "King Crystallographic and Quasicrystallographic Lattices from Quaternions (CORE mirror)"
+urls = [
+  "https://core.ac.uk/download/pdf/81416999.pdf",
+]
+
+[[mirror_override]]
+id = "CORRADETTI_2023_JORDAN_ALG_ICOSAHEDRAL_CNP"
+artifact_key_hint = "arxiv:2303.12219"
+title = "Corradetti et al. (2023) Jordan algebras over icosahedral cut-and-project quasicrystals"
+urls = [
+  "https://arxiv.org/abs/2303.12219",
+  "https://arxiv.org/pdf/2303.12219.pdf",
+]
+
+[[mirror_override]]
+id = "DIXON_1995_OCTONIONS_E8_LAMBDA16"
+artifact_key_hint = "arxiv:hep-th/9501007"
+title = "Dixon (1995) Octonions: E8 lattice to Lambda16"
+urls = [
+  "https://arxiv.org/abs/hep-th/9501007",
+  "https://arxiv.org/pdf/hep-th/9501007.pdf",
+]
+
+# -------------------------
+# Crystal symmetry operations (quaternion / biquaternion)
+# -------------------------
+
+[[mirror_override]]
+id = "MDPI_2024_CRYSTALLOGRAPHIC_QUATERNIONS"
+artifact_key_hint = "doi:10.3390/sym16070818"
+title = "Katrusiak & Llenga (2024) Crystallographic Quaternions (MDPI Symmetry)"
+doi_list = ["10.3390/sym16070818"]
+urls = [
+  "https://doi.org/10.3390/sym16070818",
+  "https://www.mdpi.com/2073-8994/16/7/818/pdf",
+]
+
+[[mirror_override]]
+id = "PREPRINTS_2024_QUATERNION_BIQUATERNION_REPRESENTATIONS"
+artifact_key_hint = "preprints:202409.1146"
+title = "Katrusiak (2024) Quaternion and Biquaternion representations (preprints.org)"
+urls = [
+  "https://www.preprints.org/manuscript/202409.1146/v1/download",
+]
+
+# -------------------------
+# Dataset references (landing/DOI only; do not auto-download here)
+# -------------------------
+
+[[mirror_override]]
+id = "DATASET_DRYAD_STINVILLE_202x"
+artifact_key_hint = "doi:10.5061/dryad.83bk3j9sj"
+title = "Dryad dataset: Multi-modal dataset of a polycrystalline metallic material"
+doi_list = ["10.5061/dryad.83bk3j9sj"]
+urls = [
+  "https://doi.org/10.5061/dryad.83bk3j9sj",
+]
+notes = "Dataset download may be large; keep as registry reference and fetch via a dedicated dataset lane when needed."
+
+[[mirror_override]]
+id = "DATASET_ZENODO_DEFORMED_IRON_EBSD"
+artifact_key_hint = "zenodo:1214829"
+title = "Zenodo dataset: Deformed Iron EBSD data set"
+urls = [
+  "https://zenodo.org/records/1214829",
+]
+notes = "Dataset download may be large; keep as registry reference and fetch via a dedicated dataset lane when needed."
+
+[[mirror_override]]
+id = "DATASET_MENDELEY_TI64V_3D_EBSD"
+artifact_key_hint = "mendeley:c5x7ckcfsp"
+title = "Mendeley Data: 3D-EBSD data and analysis of Ti-6Al-4V (R3)"
+urls = [
+  "https://data.mendeley.com/datasets/c5x7ckcfsp/1",
+]
+
+[[mirror_override]]
+id = "DATASET_MENDELEY_GRAIN_GROWTH_SIM_2D"
+artifact_key_hint = "mendeley:rw5b9k847w"
+title = "Mendeley Data: Anisotropic grain growth simulations in 2D (quaternion orientations)"
+urls = [
+  "https://data.mendeley.com/datasets/rw5b9k847w/1",
+]
+
+[[mirror_override]]
+id = "DATASET_DREAM3D_EBSD_TUTORIAL"
+artifact_key_hint = "url:https://dream3d.bluequartz.net/Help/2_Tutorials/EBSDReconstruction/"
+title = "Dream3D tutorial: EBSD Reconstruction"
+urls = [
+  "https://dream3d.bluequartz.net/Help/2_Tutorials/EBSDReconstruction/",
+]
+
+[[mirror_override]]
+id = "H5EBSD_FORMAT_LANDING"
+artifact_key_hint = "url:https://link.springer.com/article/10.1186/2193-9772-3-4"
+title = "h5ebsd format paper landing (Springer)"
+urls = [
+  "https://link.springer.com/article/10.1186/2193-9772-3-4",
+]
+

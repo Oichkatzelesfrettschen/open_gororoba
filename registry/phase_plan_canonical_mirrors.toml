@@ -1,0 +1,71 @@
+# Canonical mirror index for historical phase-labeled planning registries.
+# This file defines canonical<->legacy mapping without mutating archival originals.
+
+[meta]
+authoritative = true
+updated = "2026-02-14"
+owner = "historical-plan canonical mirror mapping and standards linkage"
+purpose = "Index canonical mirror paths for legacy wave-labeled plans with explicit provenance."
+
+[roadmap_alignment]
+completed_steps = [30, 31, 35]
+scope = "canonical mirrors, mirror index mapping, naming standards linkage"
+
+[policy]
+legacy_files_are_archival = true
+legacy_mutation = "forbidden"
+canonical_paths_are_write_targets = true
+canonical_mutation = "allowed_with_provenance"
+backport_to_legacy = "never"
+chronology_requirement = "Carry legacy IDs, source updated date, and sha256 fingerprint in every canonical mirror."
+
+[[mapping]]
+id = "PLAN-MIRROR-001"
+intent = "Wave 4 control-plane roadmap mapped to phase-neutral canonical name."
+canonical_path = "registry/control_plane_roadmap.toml"
+canonical_table = "control_plane_roadmap"
+legacy_path = "registry/wave4_roadmap.toml"
+legacy_table = "wave4_roadmap"
+legacy_phase_label = "wave4"
+legacy_plan_id = "WAVE-4"
+legacy_updated = "2026-02-10"
+legacy_sha256 = "59c159c64c389e96ef750120196ad0cf59d35e797eeb25d4f7ae2852811f7697"
+legacy_line_count = 259
+phase_count = 5
+task_count = 32
+status_snapshot = "in_progress"
+bidirectional_mapping = true
+
+[[mapping]]
+id = "PLAN-MIRROR-002"
+intent = "Wave 5 granularization plan mapped to strict TOML canonical name."
+canonical_path = "registry/strict_toml_granularization_plan.toml"
+canonical_table = "strict_toml_granularization_plan"
+legacy_path = "registry/wave5_toml_granularization_plan.toml"
+legacy_table = "plan"
+legacy_phase_label = "wave5"
+legacy_plan_id = "WAVE5-TOML-GRANULARIZATION"
+legacy_updated = "2026-02-10"
+legacy_sha256 = "87f0f6cadf9d5567b96e42b8456dd4357fb02f6c5fc551bdbeecb2f13cb5829b"
+legacy_line_count = 328
+phase_count = 0
+task_count = 25
+status_snapshot = "active"
+bidirectional_mapping = true
+
+[[mapping]]
+id = "PLAN-MIRROR-003"
+intent = "Wave 6 TOML-source enforcement plan mapped to phase-neutral canonical name."
+canonical_path = "registry/toml_source_enforcement_plan.toml"
+canonical_table = "toml_source_enforcement_plan"
+legacy_path = "registry/wave6_toml_source_enforcement_plan.toml"
+legacy_table = "wave6"
+legacy_phase_label = "wave6"
+legacy_plan_id = "wave6"
+legacy_updated = "2026-02-10"
+legacy_sha256 = "2a53196b8141e8a1dab9aa234a71561d258ac1e303182096191b43892e0889ee"
+legacy_line_count = 284
+phase_count = 0
+task_count = 24
+status_snapshot = "active"
+bidirectional_mapping = true

@@ -1,0 +1,162 @@
+# Control-plane naming scope report.
+# Goal: phase-neutral canonical names for registry lanes and gates.
+
+[report]
+id = "CPNS-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+authoritative = true
+scope = "Makefile registry targets, verification/build entrypoints, plan references, and current control-plane tranche artifacts"
+snapshot_note = "Counts are point-in-time and were captured while concurrent agents were active."
+
+[scan]
+pattern = "\\bwave[0-9]+\\b|Wave [0-9]|registry-wave[0-9]"
+paths = ["Makefile", "src/", "registry/", "plans/", "docs/"]
+total_matches = 240
+
+[distribution]
+makefile_matches = 58
+src_verification_matches = 30
+src_analysis_matches = 36
+registry_matches = 94
+registry_legacy_matches = 19
+plans_matches = 3
+
+[tranche_scan]
+pattern = "\\bwave[0-9]+\\b|registry-wave[0-9]|wave6-gate|registry-acceptance-gate|governance-gate"
+paths = [
+  ".github/workflows/ci.yml",
+  "reports/control_plane_naming_scope_2026_02_14.toml",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+]
+total_matches = 56
+
+[tranche_distribution]
+workflow_matches = 2
+scope_report_matches = 7
+compat_matrix_matches = 40
+closure_draft_matches = 7
+
+[canonicalization_status]
+makefile_gates = "canonicalized with compatibility aliases"
+ci_contract = "canonical gates enforced in CI lane: governance-gate + registry-acceptance-gate"
+script_entrypoints = "canonical wrappers added and wired in Makefile"
+planning_docs = "active plans use canonical names with legacy aliases for traceability"
+compatibility_matrix = "published with canonical->legacy resolution chains and intent statements"
+closure_draft = "published with residual risks, ownership, and next-tranche proposal"
+unresolved_aliases = "wave6-gate remains policy-declared but Makefile-unwired"
+historical_wave_documents = "retained (not rewritten) to preserve chronology and source traceability"
+
+[[high_residue_file]]
+path = "Makefile"
+match_count = 58
+classification = "operational"
+notes = "References include intentional compatibility aliases (registry-wave3/4/5 and wave5-batch names)."
+
+[[high_residue_file]]
+path = "registry/legacy_markdown_interfaces.toml"
+match_count = 19
+classification = "historical_archive"
+notes = "Legacy transcript payload; do not rewrite unless running explicit archival normalization."
+
+[[high_residue_file]]
+path = "registry/control_plane_naming_standards.toml"
+match_count = 19
+classification = "operational_policy"
+notes = "Contains explicit legacy alias mappings by design."
+
+[[high_residue_file]]
+path = "registry/wave4_roadmap.toml"
+match_count = 18
+classification = "historical_plan"
+notes = "Historical execution roadmap; keep stable for provenance unless migrating to canonical mirror."
+
+[[high_residue_file]]
+path = "src/scripts/analysis/build_wave5_batch1_registries.py"
+match_count = 9
+classification = "legacy_compat_script"
+notes = "Legacy wave5 wrapper retained as compatibility bridge to canonical semantic-atoms lane."
+
+[[high_residue_file]]
+path = "registry/phase_plan_canonical_mirrors.toml"
+match_count = 8
+classification = "operational_mirror"
+notes = "Canonical mirror inventory references historical wave plans for traceability."
+
+[[high_residue_file]]
+path = "registry/wave6_toml_source_enforcement_plan.toml"
+match_count = 7
+classification = "historical_plan"
+notes = "Historical phase plan file name and contents still phase-tagged."
+
+[[work_item]]
+id = "CN-001"
+priority = "high"
+status = "done"
+title = "Canonical gate taxonomy in Makefile"
+description = "Use function-first names for registry lanes and aggregate gate; keep legacy aliases."
+evidence_refs = ["Makefile", "registry/control_plane_naming_standards.toml"]
+
+[[work_item]]
+id = "CN-002"
+priority = "high"
+status = "done"
+title = "Canonical script entrypoints"
+description = "Add canonical wrappers for build/verify lanes and wire Makefile to canonical scripts."
+evidence_refs = [
+  "src/scripts/analysis/build_registry_semantic_atoms.py",
+  "src/scripts/analysis/build_registry_evidence_provenance.py",
+  "src/scripts/analysis/build_registry_integrity_resolution.py",
+  "src/scripts/analysis/build_registry_execution_planning.py",
+  "src/verification/verify_registry_semantic_atoms.py",
+  "src/verification/verify_registry_evidence_provenance.py",
+  "src/verification/verify_registry_integrity_resolution.py",
+  "src/verification/verify_registry_execution_planning.py",
+  "Makefile",
+]
+
+[[work_item]]
+id = "CN-003"
+priority = "medium"
+status = "todo"
+title = "Deprecation messaging for legacy wave aliases"
+description = "Add explicit deprecation notes in help output and optional warning wrappers for legacy alias invocation."
+evidence_refs = ["Makefile", "registry/control_plane_naming_standards.toml"]
+
+[[work_item]]
+id = "CN-004"
+priority = "low"
+status = "todo"
+title = "Historical plan mirror canonicalization"
+description = "Create canonical mirrors for phase-labeled historical plans (wave4/wave5/wave6) without mutating original archives."
+evidence_refs = [
+  "registry/wave4_roadmap.toml",
+  "registry/wave5_toml_granularization_plan.toml",
+  "registry/wave6_toml_source_enforcement_plan.toml",
+]
+
+[[work_item]]
+id = "CN-005"
+priority = "high"
+status = "done"
+title = "CI canonical gate contract lane"
+description = "Set CI to run governance-gate and registry-acceptance-gate as primary contract checks."
+evidence_refs = [".github/workflows/ci.yml"]
+
+[[work_item]]
+id = "CN-006"
+priority = "high"
+status = "done"
+title = "Canonical and legacy compatibility matrix"
+description = "Document canonical targets, legacy aliases, Makefile resolution chains, and naming intent."
+evidence_refs = ["reports/control_plane_naming_compat_matrix_2026_02_14.toml", "registry/control_plane_naming_standards.toml", "Makefile"]
+
+[[work_item]]
+id = "CN-007"
+priority = "medium"
+status = "done"
+title = "Tranche closure draft with residual risks"
+description = "Capture closure posture, ownership, open risks, and next-tranche actions for naming canonicalization."
+evidence_refs = ["reports/control_plane_closure_draft_2026_02_14.toml", "reports/control_plane_naming_scope_2026_02_14.toml"]

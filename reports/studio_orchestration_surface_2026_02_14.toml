@@ -1,0 +1,113 @@
+[report]
+id = "RPT-STUDIO-ORCHESTRATION-SURFACE-2026-02-14"
+updated = "2026-02-14"
+task_slice = "S147-S152"
+ownership_scope = [
+  "crates/gororoba_cli/src/bin/gororoba_studio.rs",
+  "reports/studio_orchestration_surface_2026_02_14.toml",
+]
+status = "implemented"
+
+[contract]
+api_version = "studio.v1"
+service = "gororoba-studio"
+compatibility = "existing endpoints preserved; orchestration surface added via new endpoint and additive version metadata"
+
+[[endpoint]]
+path = "/api/version"
+method = "GET"
+change = "additive fields"
+added_fields = [
+  "orchestration_lane_count",
+  "orchestration_queue_item_count",
+  "orchestration_warning_count",
+]
+notes = "Existing fields remain unchanged; callers can ignore new fields."
+
+[[endpoint]]
+path = "/api/orchestration"
+method = "GET"
+response = "OrchestrationSurfaceResponse"
+notes = "New orchestration contract for lane health feed, promotion queue summary, and evidence links."
+
+[orchestration_surface]
+root_fields = [
+  "api_version",
+  "lane_health_feed",
+  "promotion_queue_summary",
+  "warnings",
+]
+lane_health_fields = [
+  "lane_id",
+  "lane_label",
+  "source_kind",
+  "source_path",
+  "status",
+  "summary",
+  "evidence_links",
+]
+queue_item_fields = [
+  "queue_item_id",
+  "queue_kind",
+  "source_path",
+  "status",
+  "summary",
+  "evidence_links",
+]
+
+[[lane_feed_source]]
+path = "reports/gate_validation_runtime_2026_02_14.toml"
+kind = "gate_artifact"
+lane_id = "runtime-gates"
+
+[[lane_feed_source]]
+path = "reports/tranche5_execution_ledger_2026_02_14.toml"
+kind = "ledger_artifact"
+lane_id = "tracker-synchronization"
+
+[[lane_feed_source]]
+path = "reports/research_intake_execution_ledger_2026_02_14.toml"
+kind = "ledger_artifact"
+lane_id = "research-intake-execution"
+
+[[queue_feed_source]]
+path = "registry/hypercomplex_taxonomy_promotion.toml"
+kind = "promotion"
+
+[[queue_feed_source]]
+path = "reports/research_intake_reconciliation_2026_02_14.toml"
+kind = "reconciliation"
+
+[[queue_feed_source]]
+path = "reports/binary_project_drift_reconciliation_2026_02_14.toml"
+kind = "reconciliation"
+
+[fallback_behavior]
+deterministic = true
+policy = "fixed feed path set; missing/unreadable/invalid feed produces stable fallback lane or queue item with status='missing' and deterministic warning text"
+fallback_lane_count = 3
+fallback_queue_source_count = 3
+
+[[test_addition]]
+name = "orchestration_surface_uses_deterministic_fallback_for_missing_feeds"
+purpose = "Verifies stable fallback lane/queue shape when all feed files are absent."
+
+[[test_addition]]
+name = "orchestration_surface_parses_lane_and_queue_evidence_links"
+purpose = "Verifies parsing of lane health, queue items, and evidence_links from synthetic TOML feeds."
+
+[[test_addition]]
+name = "orchestration_contract_exposes_lane_health_and_queue_summary"
+purpose = "Verifies `/api/orchestration` contract shape and non-empty evidence links per item."
+
+[[validation]]
+command = "cargo check -p gororoba_cli --bin gororoba-studio"
+status = "pass"
+exit_code = 0
+summary = "Compiled gororoba-studio successfully."
+
+[[validation]]
+command = "cargo test -p gororoba_cli --bin gororoba-studio orchestration -- --nocapture"
+status = "pass"
+exit_code = 0
+summary = "3 orchestration-focused tests passed (fallback, feed parsing, endpoint contract)."

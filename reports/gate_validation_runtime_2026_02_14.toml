@@ -1,0 +1,84 @@
+# Runtime gate validation ledger for governance + registry acceptance gates.
+
+[report]
+id = "GATEVAL-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+authoritative = true
+status = "completed"
+scope = "Runtime execution of canonical gates after tranche-1/tranche-3 updates"
+
+[commands]
+governance_gate_runtime = "make governance-gate"
+registry_acceptance_gate_runtime = "make registry-acceptance-gate"
+
+[[attempt]]
+id = "ATTEMPT-001"
+result = "failed"
+command = "make governance-gate"
+failure_summary = "registry schema signature mismatches for claims/experiments/insights after registry edits"
+resolved_by = "Regenerated integrity-resolution lane schema signatures"
+
+[[attempt]]
+id = "ATTEMPT-002"
+result = "failed"
+command = "make governance-gate"
+failure_summary = "markdown owner map missing generated docs/*_REGISTRY_MIRROR.md mappings"
+resolved_by = "Added MOWN-0151..MOWN-0172 mappings in markdown owner map"
+
+[[attempt]]
+id = "ATTEMPT-003"
+result = "failed"
+command = "make registry-acceptance-gate"
+failure_summary = "evidence-provenance derivation_steps skeleton_count metadata mismatch"
+resolved_by = "Regenerated evidence-provenance lane and refreshed schema signatures"
+
+[[attempt]]
+id = "ATTEMPT-004"
+result = "failed"
+command = "make registry-acceptance-gate"
+failure_summary = "semantic-atoms verifier thresholds out of sync with current canonical data"
+resolved_by = "Applied policy-based threshold recalibration in semantic-atoms verifier"
+
+[[attempt]]
+id = "ATTEMPT-005"
+result = "passed"
+command = "make governance-gate"
+
+[[attempt]]
+id = "ATTEMPT-006"
+result = "passed"
+command = "make registry-acceptance-gate"
+
+[[resolved_blocker]]
+id = "GB-001"
+area = "schema_signatures"
+evidence = [
+  "reports/operational_residue_canonicalization_2026_02_14.toml",
+]
+
+[[resolved_blocker]]
+id = "GB-002"
+area = "markdown_owner_map"
+evidence = [
+  "reports/markdown_owner_map_generated_docs_fix_2026_02_14.toml",
+]
+
+[[resolved_blocker]]
+id = "GB-003"
+area = "evidence_provenance"
+evidence = [
+  "reports/evidence_provenance_skeleton_count_fix_2026_02_14.toml",
+]
+
+[[resolved_blocker]]
+id = "GB-004"
+area = "semantic_atoms"
+evidence = [
+  "reports/semantic_atoms_gate_threshold_recalibration_2026_02_14.toml",
+]
+
+[final_state]
+governance_gate = "pass"
+registry_acceptance_gate = "pass"
+open_blockers = 0

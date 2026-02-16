@@ -1,0 +1,53 @@
+[catalog]
+id = "studio_pipeline_catalog"
+updated = "2026-02-14"
+authoritative = true
+pipeline_count = 4
+
+[[pipeline]]
+id = "thesis-1"
+title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
+hypothesis = "Frustration density and viscosity should remain strongly coupled in spatial slices."
+primary_metric = "Spearman correlation"
+quick_profile = "8^3 field, subregions=2"
+full_profile = "16^3 field, subregions=2"
+experiment_id = "E-027"
+lineage_id = "XL-025"
+registry_binary = "e027-topology-analyzer"
+artifact_paths = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
+
+[[pipeline]]
+id = "thesis-2"
+title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
+hypothesis = "Associator-coupled viscosity should increase with strain-rate under non-Newtonian conditions."
+primary_metric = "Viscosity ratio (high/low)"
+quick_profile = "alpha=0.4, n=1.25"
+full_profile = "alpha=0.5, n=1.5"
+experiment_id = "E-032"
+lineage_id = "XL-030"
+registry_binary = "thesis2-3d-thickening"
+artifact_paths = ["data/thesis_lab/thesis2_3d/thesis2_3d.toml"]
+
+[[pipeline]]
+id = "thesis-3"
+title = "A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Validation)"
+hypothesis = "Loss plateaus should align with interpretable epoch markers while preserving hubble consistency."
+primary_metric = "Plateau count"
+quick_profile = "32 epochs"
+full_profile = "96 epochs"
+experiment_id = "E-029"
+lineage_id = "XL-027"
+registry_binary = "neural-homotopy-trainer"
+artifact_paths = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
+
+[[pipeline]]
+id = "thesis-4"
+title = "TX-1: Frustration-Modulated Collision Dynamics (T1 x T4)"
+hypothesis = "Collision return-time statistics should exhibit inverse-square style scaling."
+primary_metric = "Inverse-square R^2"
+quick_profile = "500 steps"
+full_profile = "2000 steps"
+experiment_id = "E-030"
+lineage_id = "XL-028"
+registry_binary = "thesis-cross-tx1"
+artifact_paths = ["data/thesis_lab/tx1/tx1_report.toml"]

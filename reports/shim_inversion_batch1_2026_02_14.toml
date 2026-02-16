@@ -1,0 +1,77 @@
+report_id = "shim_inversion_batch1_2026_02_14"
+report_date = "2026-02-14"
+
+[ownership_scope]
+files = [
+  "src/scripts/analysis/build_registry_semantic_atoms.py",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
+  "src/verification/verify_registry_semantic_atoms.py",
+  "src/verification/verify_wave5_batch1_registries.py",
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+]
+
+[before]
+canonical_build = "wrapper delegating to build_wave5_batch1_registries.py"
+canonical_verify = "wrapper delegating to verify_wave5_batch1_registries.py"
+legacy_build = "full implementation"
+legacy_verify = "full implementation"
+canonical_runtime_success_build = "Wrote semantic-atoms registry lane artifacts (legacy wave5-batch1 script): ..."
+canonical_runtime_failure_verify = "ERROR: semantic-atoms registry lane verification failed (legacy wave5-batch1 script)."
+canonical_runtime_success_verify = "OK: semantic-atoms registry lane verified (legacy wave5-batch1 script). ..."
+legacy_shim_guidance = "none"
+
+[after]
+canonical_build = "full implementation"
+canonical_verify = "full implementation"
+legacy_build = "deprecated shim delegating to canonical build"
+legacy_verify = "deprecated shim delegating to canonical verify"
+canonical_runtime_success_build = "Wrote semantic-atoms registry lane artifacts: ..."
+canonical_runtime_failure_verify = "ERROR: semantic-atoms registry lane verification failed."
+canonical_runtime_success_verify = "OK: semantic-atoms registry lane verified. ..."
+legacy_build_guidance = "DEPRECATED: src/scripts/analysis/build_wave5_batch1_registries.py is a compatibility shim; use src/scripts/analysis/build_registry_semantic_atoms.py."
+legacy_verify_guidance = "DEPRECATED: src/verification/verify_wave5_batch1_registries.py is a compatibility shim; use src/verification/verify_registry_semantic_atoms.py."
+semantic_atoms_calibration_logic = "Retained unchanged in canonical verifier: MIN_CLAIMS_WITH_EVIDENCE_COVERAGE=0.95, EQUATION_ATOMS_BASELINE_COUNT=130, EQUATION_ATOMS_BASELINE_CLAIMS=689, EQUATION_ATOMS_DENSITY_REGRESSION_TOLERANCE=0.95, EQUATION_ATOMS_ABSOLUTE_MIN=120, plus existing min_equation_atoms formula and coverage formula."
+
+[[command_outcome]]
+command = "PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py"
+context = "workspace"
+exit_code = 1
+key_lines = [
+  "ERROR: semantic-atoms registry lane verification failed.",
+  "- claims_atoms claim_id set does not match canonical claims set.",
+  "- markdown_payloads missing paths: 1",
+  "-   missing: reports/breakthrough_shi_geodesics_2026_02_14.md",
+]
+
+[[command_outcome]]
+command = "PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch1_registries.py"
+context = "workspace"
+exit_code = 1
+key_lines = [
+  "DEPRECATED: src/verification/verify_wave5_batch1_registries.py is a compatibility shim; use src/verification/verify_registry_semantic_atoms.py.",
+  "ERROR: semantic-atoms registry lane verification failed.",
+  "- claims_atoms claim_id set does not match canonical claims set.",
+  "- markdown_payloads missing paths: 1",
+  "-   missing: reports/breakthrough_shi_geodesics_2026_02_14.md",
+]
+
+[[command_outcome]]
+command = "make registry-semantic-atoms-gate"
+context = "isolated temporary worktree with current Makefile copied in"
+exit_code = 2
+key_lines = [
+  "PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py",
+  "Wrote semantic-atoms registry lane artifacts: claims_atoms=689 claim_edges=1926 equation_atoms_v2=130 equation_symbols=293 proof_skeletons=730",
+  "PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py",
+  "Wrote structured markdown payload registries: documents=10 chunks=82 third_party_cache=0",
+  "PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py",
+  "ERROR: semantic-atoms registry lane verification failed.",
+  "- expected third_party_cache markdown documents, found none.",
+]
+notes = "Isolated worktree used to avoid touching non-owned files in the main workspace."
+
+[[command_outcome]]
+command = "python3 -m py_compile src/scripts/analysis/build_registry_semantic_atoms.py src/scripts/analysis/build_wave5_batch1_registries.py src/verification/verify_registry_semantic_atoms.py src/verification/verify_wave5_batch1_registries.py"
+context = "workspace"
+exit_code = 0
+key_lines = ["(no output)"]

@@ -1,0 +1,63 @@
+# Engineering Standards & Style Guide (Canonical Registry)
+# Formalized from RUST_STYLE_GUIDE.md
+
+[engineering_standards]
+authoritative = true
+updated = "2026-02-14"
+status = "active"
+
+[engineering_standards.toolchain]
+channel = "nightly"
+reason = "Required for cudarc, nvrtc, and SIMD intrinsics"
+edition = "2021"
+lockfile_policy = "checked_in"
+ci_strictness = "deny_warnings"
+
+[engineering_standards.formatting]
+tool = "rustfmt"
+trigger = "pre-commit"
+import_grouping = "std_external_crate"
+
+[engineering_standards.linting]
+tool = "clippy"
+policy = "cargo clippy --all-targets --all-features -- -D warnings"
+allowed_lints_policy = "explicit_justification_required"
+license_check = "cargo-deny"
+
+[engineering_standards.architecture]
+backend_pattern = "trait_based"
+backend_examples = ["LbmBackend3D enum (Cpu/Gpu)"]
+configuration = "serde_toml"
+state_management = "struct_owned"
+global_statics_policy = "forbidden_except_managed_caches"
+
+[engineering_standards.error_handling]
+libraries = "thiserror"
+applications = "anyhow"
+panics_policy = "forbidden_in_lib_unless_safety_documented"
+
+[engineering_standards.gpu_safety]
+feature_gate = "gpu"
+ffi_encapsulation = "lbm_3d_cuda crate"
+unsafe_policy = "comment_invariants"
+
+[engineering_standards.testing]
+unit_tests = "colocated_in_src"
+integration_tests = "tests_directory"
+property_testing = "proptest"
+benchmarking = "criterion"
+
+[engineering_standards.documentation]
+public_api = "warn_missing_docs"
+math_format = "latex_or_ascii_approx"
+
+[engineering_standards.version_control]
+commit_style = "conventional_commits"
+dependency_policy = "no_git_deps_in_release"
+
+[engineering_standards.crate_roles]
+gororoba_engine = "orchestration_config_traits"
+lbm_core = "pure_cpu_kernels"
+lbm_3d_cuda = "gpu_ffi_nvrtc"
+algebra_core = "abstract_math_types"
+gororoba_cli = "binary_entry_points"

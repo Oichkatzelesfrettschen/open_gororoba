@@ -1,0 +1,193 @@
+schema = "gororoba.rust.tooling.v1"
+generated_on = "2026-02-14"
+source = "paru pacman"
+
+[[pkg]]
+name = "rustup"
+version = "1.28.2-4.1"
+track = "requested"
+desc = "Rust toolchain installer and multi-toolchain switcher"
+why = "pin stable beta nightly and cross targets"
+
+[[pkg]]
+name = "rust-analyzer"
+version = "20260202-1.1"
+track = "requested"
+desc = "Rust language server for IDE code intel"
+why = "editor diagnostics and refactors"
+
+[[pkg]]
+name = "bacon"
+version = "3.22.0-1.1"
+track = "requested"
+desc = "Background checker for fast edit-compile feedback"
+why = "continuous local quality loop"
+
+[[pkg]]
+name = "cargo-watch"
+version = "8.5.3-1.3"
+track = "requested"
+desc = "Watch mode runner that reruns cargo commands on change"
+why = "auto-rerun tests or checks while coding"
+
+[[pkg]]
+name = "sccache"
+version = "0.12.0-1.1"
+track = "requested"
+desc = "Shared compiler cache to speed up rebuilds"
+why = "reuse compile artifacts across builds"
+
+[[pkg]]
+name = "just"
+version = "1.46.0-1.1"
+track = "requested"
+desc = "Simple task runner for project command recipes"
+why = "single command entrypoints for team workflows"
+
+[[pkg]]
+name = "cargo-nextest"
+version = "0.9.127-1.1"
+track = "requested"
+desc = "Fast modern test runner for large Rust suites"
+why = "parallel tests with richer output"
+
+[[pkg]]
+name = "cargo-llvm-cov"
+version = "0.8.4-1.1"
+track = "requested"
+desc = "LLVM source coverage workflow for Rust"
+why = "coverage gates for CI and local QA"
+
+[[pkg]]
+name = "cargo-audit"
+version = "0.22.1-1.1"
+track = "requested"
+desc = "RustSec vulnerability scanner for Cargo.lock"
+why = "security checks before release"
+
+[[pkg]]
+name = "cargo-deny"
+version = "0.19.0-1.1"
+track = "requested"
+desc = "Dependency policy checker for licenses bans advisories"
+why = "enforce dependency and license policy"
+
+[[pkg]]
+name = "cargo-outdated"
+version = "0.18.0-1"
+track = "requested"
+desc = "Detects outdated dependencies in manifests"
+why = "plan upgrades proactively"
+
+[[pkg]]
+name = "cargo-edit"
+version = "0.13.8-1.1"
+track = "requested"
+desc = "CLI add remove upgrade helpers for dependencies"
+why = "safe fast dependency edits"
+
+[[pkg]]
+name = "cargo-udeps"
+version = "0.1.60-1.1"
+track = "requested"
+desc = "Finds unused dependencies in Cargo.toml"
+why = "shrink dependency surface"
+
+[[pkg]]
+name = "cargo-msrv"
+version = "0.18.4-1.1"
+track = "requested"
+desc = "Detects minimum supported Rust version"
+why = "document and enforce compiler floor"
+
+[[pkg]]
+name = "cargo-expand"
+version = "1.0.121-1.1"
+track = "requested"
+desc = "Shows macro expansion for proc-macro debugging"
+why = "debug derives and macro codegen"
+
+[[pkg]]
+name = "cargo-bloat"
+version = "0.12.1-1.3"
+track = "requested"
+desc = "Binary size attribution by crate and symbol"
+why = "reduce binary size by impact"
+
+[[pkg]]
+name = "cargo-flamegraph"
+version = "0.6.11-1.1"
+track = "requested"
+desc = "One-command flamegraph profiling driver"
+why = "quick hotspot visibility"
+
+[[pkg]]
+name = "cargo-release"
+version = "0.25.22-1.1"
+track = "requested"
+desc = "Release workflow automation for crates"
+why = "repeatable version tag publish flow"
+
+[[pkg]]
+name = "cargo-generate"
+version = "0.23.7-2.1"
+track = "requested"
+desc = "Scaffold crates from git templates"
+why = "bootstrap new internal crates quickly"
+
+[[pkg]]
+name = "cargo-binstall"
+version = "1.17.5-1.1"
+track = "requested"
+desc = "Install cargo binaries from prebuilt artifacts"
+why = "faster installs for cargo tools"
+
+[[pkg]]
+name = "wasm-pack"
+version = "0.14.0-1.1"
+track = "requested"
+desc = "Build and package Rust crates for WebAssembly"
+why = "build wasm libraries for browser and node"
+
+[[pkg]]
+name = "trunk"
+version = "0.21.14-1.1"
+track = "requested"
+desc = "WASM web app asset pipeline and dev server"
+why = "serve and bundle rust wasm frontends"
+
+[[pkg]]
+name = "wasmtime"
+version = "41.0.3-1.1"
+track = "requested"
+desc = "Standalone WebAssembly runtime and CLI"
+why = "run wasm modules outside browser"
+
+[[pkg]]
+name = "cargo-dist"
+version = "0.30.3-1.1"
+track = "extra"
+desc = "Build distribute and publish installable artifacts"
+why = "ship installable release artifacts"
+
+[[pkg]]
+name = "cargo-machete"
+version = "0.9.1-1.1"
+track = "extra"
+desc = "Fast unused dependency detector"
+why = "complement udeps with fast scan"
+
+[[pkg]]
+name = "cargo-semver-checks"
+version = "0.46.0-1.1"
+track = "extra"
+desc = "API semver regression checker"
+why = "catch breaking API changes pre-release"
+
+[[pkg]]
+name = "taplo-cli"
+version = "0.10.0-1.1"
+track = "extra"
+desc = "TOML formatter and linter toolkit"
+why = "keep toml clean and consistent"
+

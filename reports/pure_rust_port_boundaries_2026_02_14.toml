@@ -1,0 +1,402 @@
+# NA-023 execution slice: clean-room pure-Rust module boundaries.
+
+[report]
+id = "NA023-PURE-RUST-BOUNDARIES-2026-02-14"
+updated = "2026-02-14"
+source_ref = "NA-023"
+status = "active"
+status_token = "ACTIVE"
+authoritative = false
+scope = "clean_room_module_boundaries_for_high_value_external_candidates"
+
+[clean_room_contract]
+source_copy_allowed = false
+behavior_reference_only = true
+license_gate_dependency = "NA-021"
+provenance_required = true
+acceptance_hooks_required = true
+
+[selection_basis]
+ranking_inputs = [
+  "impact_on_active_next_actions_and_thesis_lanes",
+  "existing_rust_crate_footprint_and_testability",
+  "clean_room_risk_reduction_under_license_constraints",
+  "acceptance_hook_coverage_in_current_repo",
+]
+primary_refs = [
+  "registry/next_actions.toml",
+  "registry/next_actions_narrative.toml",
+  "reports/port_ingest_reaudit.toml",
+  "reports/clean_room_port_math_spec_2026_02_12.toml",
+]
+
+[[boundary]]
+id = "PB-001"
+priority = 1
+title = "D2Q9 clean-room collision and viscosity boundary"
+external_candidate = "MathScienceCompendium/src/mathphysics/quantum_lattice_boltzmann.py"
+external_repo = "external_ref:MathScienceCompendium"
+ownership_crate = "crates/lbm_core"
+ownership_module = "crates/lbm_core/src/lib.rs"
+value_case = "Highest leverage for collision and viscosity lanes with mature in-repo test coverage."
+in_contract = [
+  "Accept only numeric lattice inputs and immutable associator norm arrays.",
+  "Require explicit lattice dimensions and tau at boundary entry.",
+  "No runtime file IO or network calls in solver entrypoints.",
+]
+out_contract = [
+  "Return deterministic density and velocity fields for identical inputs.",
+  "Expose mass history and error metrics as plain Rust structs only.",
+  "No side effects outside crate-owned memory state.",
+]
+forbidden_coupling = [
+  "No direct Python FFI or subprocess execution of external reference code.",
+  "No direct registry TOML writes from simulation code paths.",
+  "No dependence on quantum_core or docpipe internals.",
+]
+acceptance_test_hooks = [
+  "crates/lbm_core/src/lib.rs::test_mass_conservation",
+  "crates/lbm_core/src/lib.rs::test_poiseuille_accuracy",
+  "crates/lbm_core/src/lib.rs::test_collide_with_associator_keeps_mass_finite",
+]
+acceptance_commands = [
+  "cargo test -p lbm_core test_mass_conservation",
+  "cargo test -p lbm_core test_poiseuille_accuracy",
+  "cargo test -p lbm_core test_collide_with_associator_keeps_mass_finite",
+]
+path_refs = [
+  "crates/lbm_core/src/lib.rs",
+  "crates/lbm_core/Cargo.toml",
+]
+
+[[boundary]]
+id = "PB-002"
+priority = 2
+title = "Scalar frustration-to-viscosity bridge boundary"
+external_candidate = "PhysicsForge/simulation/cpp/scalar_lattice.cpp"
+external_repo = "external_ref:PhysicsForge"
+ownership_crate = "crates/vacuum_frustration"
+ownership_module = "crates/vacuum_frustration/src/bridge.rs"
+value_case = "Directly supports Thesis 1 scalar bridge behavior with existing integration hooks."
+in_contract = [
+  "Accept only typed scalar field tensors and deterministic configuration structs.",
+  "Require explicit run flags for optional heavy checks.",
+  "Use algebra_core only through public APIs.",
+]
+out_contract = [
+  "Emit scalar frustration maps and viscosity vectors with deterministic ordering.",
+  "Surface omega bounds and bridge diagnostics in plain data structs.",
+  "Guarantee finite, non-negative viscosity outputs for valid inputs.",
+]
+forbidden_coupling = [
+  "No direct dependency on lbm_core private state or private modules.",
+  "No runtime mutation of claims or registry artifacts.",
+  "No implicit randomization without an explicit seeded parameter.",
+]
+acceptance_test_hooks = [
+  "crates/vacuum_frustration/src/bridge.rs::test_frustration_to_viscosity_vacuum",
+  "crates/vacuum_frustration/src/bridge.rs::test_frustration_density_par_matches_sequential",
+  "crates/vacuum_frustration/tests/integration_test.rs::test_scalar_frustration_bridge_integration",
+]
+acceptance_commands = [
+  "cargo test -p vacuum_frustration test_frustration_to_viscosity_vacuum",
+  "cargo test -p vacuum_frustration test_frustration_density_par_matches_sequential",
+  "cargo test -p vacuum_frustration test_scalar_frustration_bridge_integration",
+]
+path_refs = [
+  "crates/vacuum_frustration/src/bridge.rs",
+  "crates/vacuum_frustration/tests/integration_test.rs",
+  "crates/vacuum_frustration/Cargo.toml",
+]
+
+[[boundary]]
+id = "PB-003"
+priority = 3
+title = "Cayley-Dickson algebra kernel boundary"
+external_candidate = "MathScienceCompendium/src/mathphysics/algebras/cayley_dickson.py"
+external_repo = "external_ref:MathScienceCompendium"
+ownership_crate = "crates/algebra_core"
+ownership_module = "crates/algebra_core/src/construction/cayley_dickson.rs"
+value_case = "Core algebra correctness anchor used by multiple downstream crates."
+in_contract = [
+  "Accept basis vectors, signatures, and dimensions as explicit typed parameters.",
+  "Keep multiplication, conjugation, and norm operators pure and deterministic.",
+  "Expose zero-divisor scans through stable function signatures.",
+]
+out_contract = [
+  "Return basis-product signs and products without hidden mutable global state.",
+  "Emit zero-divisor and associator metrics in reproducible ordering.",
+  "Preserve public API compatibility for downstream crates using algebra_core.",
+]
+forbidden_coupling = [
+  "No coupling to physics-specific crates inside construction layer.",
+  "No dependence on docpipe or registry crates for math kernel logic.",
+  "No runtime external source loading from data/external during kernel calls.",
+]
+acceptance_test_hooks = [
+  "crates/algebra_core/src/construction/cayley_dickson.rs::test_sedenion_non_associative",
+  "crates/algebra_core/src/construction/cayley_dickson.rs::test_find_zero_divisors_sedenion",
+  "crates/algebra_core/src/construction/cayley_dickson.rs::test_all_signatures_dim16_commutativity",
+]
+acceptance_commands = [
+  "cargo test -p algebra_core test_sedenion_non_associative",
+  "cargo test -p algebra_core test_find_zero_divisors_sedenion",
+  "cargo test -p algebra_core test_all_signatures_dim16_commutativity",
+]
+path_refs = [
+  "crates/algebra_core/src/construction/cayley_dickson.rs",
+  "crates/algebra_core/Cargo.toml",
+]
+
+[[boundary]]
+id = "PB-004"
+priority = 4
+title = "Equation catalog extraction and merge boundary"
+external_candidate = "PhysicsForge/scripts/equation_extractor.py"
+external_repo = "external_ref:PhysicsForge"
+ownership_crate = "crates/docpipe"
+ownership_module = "crates/docpipe/src/equation_catalog.rs"
+value_case = "High-value migration lane already represented in docpipe with stable fixture tests."
+in_contract = [
+  "Accept equation rows from text, pdf_text, and pdf_ocr streams only.",
+  "Require deterministic normalization and signature generation for dedupe.",
+  "Consume module inventory as explicit path list input, never global scan by default.",
+]
+out_contract = [
+  "Emit canonical EquationCatalog rows with deterministic ordering.",
+  "Emit parity and gap reports as typed structs and TOML output.",
+  "Guarantee stable classification categories for identical input fixtures.",
+]
+forbidden_coupling = [
+  "No shelling to external Python scripts in clean-room Rust path.",
+  "No network fetches during catalog build.",
+  "No direct dependency from equation catalog core to gororoba_engine runtime.",
+]
+acceptance_test_hooks = [
+  "crates/docpipe/tests/equation_catalog_pipeline.rs::dedupe_and_classification_behavior",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs::parity_and_gap_reports_are_stable",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs::csv_conversion_and_toml_writer",
+]
+acceptance_commands = [
+  "cargo test -p docpipe dedupe_and_classification_behavior",
+  "cargo test -p docpipe parity_and_gap_reports_are_stable",
+  "cargo test -p docpipe csv_conversion_and_toml_writer",
+]
+path_refs = [
+  "crates/docpipe/src/equation_catalog.rs",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs",
+  "crates/docpipe/Cargo.toml",
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+]
+
+[[boundary]]
+id = "PB-005"
+priority = 5
+title = "Typed-term and training-data boundary for m4 search"
+external_candidate = "lambda-research/language_cores_and_typed_term_generators"
+external_repo = "external_ref:lambda-research"
+ownership_crate = "crates/neural_homotopy"
+ownership_module = "crates/neural_homotopy/src/training_data.rs"
+value_case = "Supports Thesis 3 tensor synthesis while preserving deterministic training-data contracts."
+in_contract = [
+  "Accept deterministic basis tables and pair encodings only.",
+  "Separate dataset construction from optimizer/runtime training loops.",
+  "Use explicit configs for epoch counts and tolerance thresholds.",
+]
+out_contract = [
+  "Emit bounded-size multiplication samples with stable indexing.",
+  "Expose encoded training rows through typed structs only.",
+  "Keep reproducible score outputs in [0,1] for alignment metrics.",
+]
+forbidden_coupling = [
+  "No implicit dependency on GPU backend for dataset generation.",
+  "No direct dependency on external model-serving endpoints.",
+  "No hidden stochastic augmentation without explicit seed input.",
+]
+acceptance_test_hooks = [
+  "crates/neural_homotopy/src/training_data.rs::test_samples_cover_full_basis_product_space",
+  "crates/neural_homotopy/src/training_data.rs::test_encode_pair_bounds",
+  "crates/neural_homotopy/tests/integration_test.rs::test_training_trace_and_hubble_alignment",
+]
+acceptance_commands = [
+  "cargo test -p neural_homotopy test_samples_cover_full_basis_product_space",
+  "cargo test -p neural_homotopy test_encode_pair_bounds",
+  "cargo test -p neural_homotopy test_training_trace_and_hubble_alignment",
+]
+path_refs = [
+  "crates/neural_homotopy/src/training_data.rs",
+  "crates/neural_homotopy/tests/integration_test.rs",
+  "crates/neural_homotopy/Cargo.toml",
+]
+
+[[boundary]]
+id = "PB-006"
+priority = 6
+title = "PEPS boundary contraction CPU/GPU split boundary"
+external_candidate = "external_tensor_network_references_for_boundary_mps_behavior"
+external_repo = "reference_behavior_only"
+ownership_crate = "crates/quantum_core"
+ownership_module = "crates/quantum_core/src/peps.rs"
+value_case = "Explicitly aligned with active PEPS boundary-contraction scaling target in NA narrative."
+in_contract = [
+  "Accept PEPS tensors and contraction rows as typed complex arrays only.",
+  "CPU and GPU paths share identical function-level input schema.",
+  "GPU usage is optional and feature-gated.",
+]
+out_contract = [
+  "Return deterministic contraction outputs with CPU fallback safety.",
+  "Preserve expectation and entropy interfaces for small-grid validation.",
+  "Keep mismatch and empty-input behavior explicitly defined.",
+]
+forbidden_coupling = [
+  "No hard dependency on CUDA for baseline correctness path.",
+  "No cross-crate mutation of simulation state in contraction functions.",
+  "No direct registry or filesystem writes from contraction hot path.",
+]
+acceptance_test_hooks = [
+  "crates/quantum_core/src/peps.rs::test_peps_product_state_entropy_zero",
+  "crates/quantum_core/src/peps.rs::test_peps_entropy_boundary_cases",
+  "crates/quantum_core/src/gpu/peps.rs::test_gpu_contract_rows_correctness",
+]
+acceptance_commands = [
+  "cargo test -p quantum_core test_peps_product_state_entropy_zero",
+  "cargo test -p quantum_core test_peps_entropy_boundary_cases",
+  "cargo test -p quantum_core --features gpu test_gpu_contract_rows_correctness",
+]
+path_refs = [
+  "crates/quantum_core/src/peps.rs",
+  "crates/quantum_core/src/gpu/peps.rs",
+  "crates/quantum_core/Cargo.toml",
+  "registry/next_actions_narrative.toml",
+]
+
+[acceptance_hook_policy]
+mode = "crate_scoped_and_targeted"
+full_workspace_gate_required = false
+notes = "Run only boundary-local hooks for NA-023 execution slices; escalate to full gates only after merge-ready integration."
+
+[path_cross_reference]
+method = "repo_filesystem_exists_check"
+checked_on = "2026-02-14"
+checked_paths = 24
+missing_paths = 0
+
+[[path_check]]
+path = "registry/next_actions.toml"
+exists = true
+used_by = ["selection_basis"]
+
+[[path_check]]
+path = "registry/next_actions_narrative.toml"
+exists = true
+used_by = ["selection_basis", "PB-006"]
+
+[[path_check]]
+path = "reports/port_ingest_reaudit.toml"
+exists = true
+used_by = ["selection_basis"]
+
+[[path_check]]
+path = "reports/clean_room_port_math_spec_2026_02_12.toml"
+exists = true
+used_by = ["selection_basis"]
+
+[[path_check]]
+path = "crates/lbm_core/src/lib.rs"
+exists = true
+used_by = ["PB-001"]
+
+[[path_check]]
+path = "crates/lbm_core/Cargo.toml"
+exists = true
+used_by = ["PB-001"]
+
+[[path_check]]
+path = "crates/vacuum_frustration/src/bridge.rs"
+exists = true
+used_by = ["PB-002"]
+
+[[path_check]]
+path = "crates/vacuum_frustration/tests/integration_test.rs"
+exists = true
+used_by = ["PB-002"]
+
+[[path_check]]
+path = "crates/vacuum_frustration/Cargo.toml"
+exists = true
+used_by = ["PB-002"]
+
+[[path_check]]
+path = "crates/algebra_core/src/construction/cayley_dickson.rs"
+exists = true
+used_by = ["PB-003"]
+
+[[path_check]]
+path = "crates/algebra_core/Cargo.toml"
+exists = true
+used_by = ["PB-003"]
+
+[[path_check]]
+path = "crates/docpipe/src/equation_catalog.rs"
+exists = true
+used_by = ["PB-004"]
+
+[[path_check]]
+path = "crates/docpipe/tests/equation_catalog_pipeline.rs"
+exists = true
+used_by = ["PB-004"]
+
+[[path_check]]
+path = "crates/docpipe/Cargo.toml"
+exists = true
+used_by = ["PB-004"]
+
+[[path_check]]
+path = "registry/pantheon_physicsforge_migration_matrix.toml"
+exists = true
+used_by = ["PB-004"]
+
+[[path_check]]
+path = "crates/neural_homotopy/src/training_data.rs"
+exists = true
+used_by = ["PB-005"]
+
+[[path_check]]
+path = "crates/neural_homotopy/tests/integration_test.rs"
+exists = true
+used_by = ["PB-005"]
+
+[[path_check]]
+path = "crates/neural_homotopy/Cargo.toml"
+exists = true
+used_by = ["PB-005"]
+
+[[path_check]]
+path = "crates/quantum_core/src/peps.rs"
+exists = true
+used_by = ["PB-006"]
+
+[[path_check]]
+path = "crates/quantum_core/src/gpu/peps.rs"
+exists = true
+used_by = ["PB-006"]
+
+[[path_check]]
+path = "crates/quantum_core/Cargo.toml"
+exists = true
+used_by = ["PB-006"]
+
+[[path_check]]
+path = "registry/experiments.toml"
+exists = true
+used_by = ["PB-006"]
+
+[[path_check]]
+path = "registry/pantheon_physicsforge_migration_todo.toml"
+exists = true
+used_by = ["PB-004"]
+
+[[path_check]]
+path = "crates/gororoba_engine/tests/integration_test.rs"
+exists = true
+used_by = ["integration_reference"]

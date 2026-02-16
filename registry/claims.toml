@@ -10881,3 +10881,68 @@ phase = "Phase 2 Week 3"
 sprint = 41
 dependencies = ["C-681", "C-685", "C-686"]
 status_note = "The strongest literature support for the polarized-regime transport enhancement. Stolpp mechanism: Lifshitz splitting -> doubled carriers -> K_th ~ 1/sqrt(m*) increases."
+
+[[claim]]
+id = "C-690"
+statement = "The Sedenionic Homotopy Integrator (SHI) models Kerr null geodesics by preserving algebraic coherence, mapping frame-dragging to sedenionic associativity drift via trilinear M3 gradients."
+where_stated = "`crates/gr_core/src/sedenion_geodesic.rs`, `reports/breakthrough_shi_geodesics_2026_02_14.md`"
+status = "Verified"
+last_verified = "2026-02-14"
+what_would_verify_refute = "Rust tests in `sedenion_geodesic.rs` verify that 'Homotopy Force' corrections diverge from linear Euler steps as $r \\to r_h$, tracking monotonic increase in algebraic frustration near the event horizon."
+confidence = "high"
+phase = "GR"
+
+[[claim]]
+id = "C-691"
+statement = "Intake batch RI-2026-02-14-hypercomplex-news currently has 34 entries with 31 resolved source mappings and exactly 3 unresolved mappings (RI-026, RI-027, RI-032), all tied to aggregator video payloads lacking direct DOI/arXiv links in the intake record."
+description = "Canonical intake-status claim used to scope unresolved triage work before adding additional science-news mapping claims."
+where_stated = "registry/research_intake_2026_02_14.toml"
+status = "Established"
+last_verified = "2026-02-14"
+what_would_verify_refute = "VERIFY intent: parse `registry/research_intake_2026_02_14.toml` and confirm `entry_count=34` plus unresolved set `{RI-026, RI-027, RI-032}`. REFUTE intent: any canonical intake snapshot with a different unresolved count or different unresolved IDs."
+confidence = "high"
+phase = "provenance"
+sprint = 41
+status_note = "Promoted conservatively as a bookkeeping claim to anchor triage tasks and escalation tickets."
+
+[[claim]]
+id = "C-692"
+statement = "Primary-source mapping candidate: RI-028 ('inside-out system' aggregator headline) maps to DOI 10.1126/science.adl2348."
+description = "Promotes HCTP-013 into the canonical claim lane with explicit verify/refute intent."
+where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-013), registry/research_intake_2026_02_14.toml (RI-028)"
+status = "Open"
+last_verified = "2026-02-14"
+what_would_verify_refute = "VERIFY intent: trace RI-028 source chain and confirm DOI `10.1126/science.adl2348` is explicitly linked and topic-aligned. REFUTE intent: DOI is absent from the chain or resolves to unrelated content."
+confidence = "medium"
+phase = "provenance"
+sprint = 41
+dependencies = ["C-691"]
+status_note = "Kept as Proposed until DOI-chain verification is rerun in the canonical provenance workflow."
+
+[[claim]]
+id = "C-693"
+statement = "Primary-source mapping candidate: RI-030/RI-031 ('magic particles' coverage chain) maps to DOI 10.1103/PhysRevD.110.116016."
+description = "Promotes HCTP-014 into the canonical claim lane with a strict citation-chain verification boundary."
+where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-014), registry/research_intake_2026_02_14.toml (RI-030, RI-031)"
+status = "Open"
+last_verified = "2026-02-14"
+what_would_verify_refute = "VERIFY intent: confirm both RI-030 and RI-031 chains resolve to DOI `10.1103/PhysRevD.110.116016` with matching article context. REFUTE intent: chain breaks, DOI mismatch, or topic mismatch."
+confidence = "medium"
+phase = "provenance"
+sprint = 41
+dependencies = ["C-691"]
+status_note = "Promoted with medium confidence; verification remains chain-based and not yet independently replayed in this promotion pass."
+
+[[claim]]
+id = "C-694"
+statement = "Primary-source mapping candidate: RI-033 maps to Nature DOI 10.1038/s41586-025-09917-9."
+description = "Promotes HCTP-015 into the canonical claim lane while preserving verify/refute scope."
+where_stated = "registry/hypercomplex_taxonomy_promotion.toml (HCTP-015), registry/research_intake_2026_02_14.toml (RI-033)"
+status = "Open"
+last_verified = "2026-02-14"
+what_would_verify_refute = "VERIFY intent: confirm RI-033 chain includes DOI `10.1038/s41586-025-09917-9` and the linked paper aligns with the described phenomenon. REFUTE intent: DOI is missing, unresolved, or topically unrelated."
+confidence = "medium"
+phase = "provenance"
+sprint = 41
+dependencies = ["C-691"]
+status_note = "Promoted conservatively as a mapping claim pending independent replay of the citation chain."

@@ -1,0 +1,52 @@
+[report]
+id = "RPT-STUDIO-DYNAMIC-REGISTRY-CATALOG-2026-02-14"
+updated = "2026-02-14"
+task_id = "NA-025"
+ownership_scope = ["crates/gororoba_cli/src/bin/gororoba_studio.rs", "registry/studio_pipeline_catalog.toml", "reports/studio_dynamic_registry_catalog_2026_02_14.toml"]
+
+[before]
+catalog_input = "registry/experiments.toml"
+catalog_strategy = "hard-coded thesis descriptors + fuzzy experiment matching"
+fallback_mode = "full fallback to default hard-coded descriptors when experiments registry read/parse failed"
+warnings = ["missing thesis registry mapping", "mapped thesis without artifact paths"]
+
+[after]
+catalog_input = "registry/studio_pipeline_catalog.toml"
+catalog_strategy = "canonical catalog merged onto default descriptors by thesis id"
+fallback_mode = "full fallback on file read/parse failure, plus field-level fallback for partial/malformed entries"
+warnings = ["catalog entry missing id", "per-thesis missing required fields", "missing thesis entries", "unknown thesis ids ignored", "duplicate thesis ids (last entry wins)"]
+catalog_source_value_on_success = "registry"
+catalog_source_value_on_failure = "fallback"
+
+[[behavior_diff]]
+topic = "Descriptor source"
+before = "Title and registry metadata came indirectly from experiments registry matching logic."
+after = "Title/hypothesis/metric/profile/registry metadata come directly from studio_pipeline_catalog entries."
+
+[[behavior_diff]]
+topic = "Failure handling"
+before = "Any experiments registry parse/read failure switched all descriptors to static defaults."
+after = "Catalog parse/read failure still falls back fully, while valid but incomplete entries now keep fallback values per missing field."
+
+[[behavior_diff]]
+topic = "Warning precision"
+before = "Warnings were mapping-oriented and coarse."
+after = "Warnings identify missing required fields per thesis entry and malformed/unknown catalog rows."
+
+[[command]]
+cmd = "cargo check -p gororoba_cli --bin gororoba-studio"
+status = "pass"
+exit_code = 0
+summary = "Compiled gororoba-studio successfully."
+
+[[command]]
+cmd = "cargo test -p gororoba_cli --bin gororoba-studio registry_catalog -- --nocapture"
+status = "pass"
+exit_code = 0
+summary = "2 catalog-loading unit tests passed; 11 other tests filtered out."
+
+[[command]]
+cmd = "python3 - <<'PY' ... tomllib.load('registry/studio_pipeline_catalog.toml') ... PY"
+status = "pass"
+exit_code = 0
+summary = "TOML parse check succeeded with 4 pipeline entries."

@@ -1,0 +1,59 @@
+# Canonical mirror for historical Wave 5 TOML granularization plan.
+# Archival original remains immutable at registry/wave5_toml_granularization_plan.toml.
+
+[meta]
+authoritative = true
+updated = "2026-02-14"
+mirror_created = "2026-02-14"
+intent = "Phase-neutral canonical entry point for strict TOML granularization planning history."
+canonical_path = "registry/strict_toml_granularization_plan.toml"
+legacy_path = "registry/wave5_toml_granularization_plan.toml"
+source_table = "plan"
+canonical_table = "strict_toml_granularization_plan"
+
+[strict_toml_granularization_plan]
+id = "STRICT-TOML-GRANULARIZATION-PLAN"
+legacy_id = "WAVE5-TOML-GRANULARIZATION"
+legacy_label = "wave5"
+status = "active"
+owner = "core-integrator"
+objective = "Convert remaining high-information narrative corpora into strict TOML schemas and reduce free-text fields."
+scope = [
+  "claims decomposition",
+  "equation atoms",
+  "proof skeletons",
+  "source provenance",
+  "dataset metadata harmonization",
+]
+quality_policy = [
+  "warnings_as_errors",
+  "ascii_only",
+  "toml_first",
+  "deterministic_build_outputs",
+]
+task_count = 25
+
+[provenance]
+legacy_updated = "2026-02-10"
+legacy_sha256 = "87f0f6cadf9d5567b96e42b8456dd4357fb02f6c5fc551bdbeecb2f13cb5829b"
+legacy_line_count = 328
+task_status_done = 25
+chronology_policy = "Preserve original W5 task IDs and completion state as archival truth."
+
+[compatibility]
+legacy_aliases = [
+  "registry/wave5_toml_granularization_plan.toml",
+  "wave5_toml_granularization_plan",
+  "WAVE5-TOML-GRANULARIZATION",
+]
+canonical_aliases = [
+  "registry/strict_toml_granularization_plan.toml",
+  "strict_toml_granularization_plan",
+  "STRICT-TOML-GRANULARIZATION-PLAN",
+]
+bidirectional_mapping = true
+
+[archival_policy]
+legacy_mutation = "forbidden"
+canonical_mutation = "allowed_with_provenance"
+backport_to_legacy = "never"

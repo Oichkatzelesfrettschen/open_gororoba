@@ -1,0 +1,76 @@
+# Synthesis execution contract rollup.
+
+[report]
+id = "synthesis-execution-contract-2026-02-14"
+date = "2026-02-14"
+date_token = "2026_02_14"
+status = "completed"
+target = "synthesis-execution-contract"
+rollup_path = "reports/synthesis_execution_contract_2026_02_14.toml"
+overall_outcome = "pass"
+all_commands_passed = true
+success_count = 4
+failure_count = 0
+skipped_count = 0
+
+[commands]
+governance_gate = "make governance-gate"
+registry_acceptance_gate = "make registry-acceptance-gate"
+typed_policy_strict = "make registry-verify-typed-policy-error"
+project_counter_sync_check = "cargo run --release --bin project-counter-sync -- --check"
+
+[summary]
+first_failure_step = ""
+first_failure_command = ""
+
+[[step]]
+order = 1
+id = "governance_gate"
+label = "governance-gate"
+command = "make governance-gate"
+exit_code = 0
+outcome = "pass"
+started_utc = "2026-02-14T22:56:09Z"
+finished_utc = "2026-02-14T22:56:13Z"
+duration_seconds = 3.509
+stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\nPYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py\nPYTHONWARNINGS=error venv/bin/python3 src/verification/verify_markdown_governance_removal_policy.py\nPASS: Removal reason validation (all non-active have reason, all active empty)\nPASS: Third-party markdown lock validation\nPASS: Removal status enum validation (all values valid)\n\nMarkdown governance status summary:\n  Total documents: 174\n  Active: 174\n  Candidate for removal: 0\n  Deprecated: 0\n  Locked: 0\nOK: cross-registry references verified. checks claims=5919 insights=33 experiments=265 sources=0 datasets=12\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=71 lacunae=166 schema_signatures=22\nPYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py\nOK: schema signatures verified for 22 registries.\nWrote /home/eirikr/Github/open_gororoba/registry/markdown_inventory.toml with 214 \n...[truncated]..."
+stderr_excerpt = ""
+
+[[step]]
+order = 2
+id = "registry_acceptance_gate"
+label = "registry-acceptance-gate"
+command = "make registry-acceptance-gate"
+exit_code = 0
+outcome = "pass"
+started_utc = "2026-02-14T22:56:13Z"
+finished_utc = "2026-02-14T22:56:17Z"
+duration_seconds = 4.242
+stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_execution_planning.py\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py\nWrote execution-planning registry lane artifacts (canonical build_registry_execution_planning.py): experiments=32 lineages=32 lineage_edges=193 roadmap=10 todo=24 next_actions=31 req_modules=12 module_packages=98 module_commands=28\nWrote semantic-atoms registry lane artifacts: claims_atoms=694 claim_edges=1933 equation_atoms_v2=145 equation_symbols=311 proof_skeletons=735\nPYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_payload_registries.py\nWrote integrity-resolution registry lane artifacts (canonical registry-integrity-resolution script): conflict_markers=71 lacunae=166 schema_signatures=22\nPYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py\nOK: integrity-resolution registry lane verified (canonical registry-integrity-resolution\n...[truncated]..."
+stderr_excerpt = ""
+
+[[step]]
+order = 3
+id = "typed_policy_strict"
+label = "registry-verify-typed-policy-error"
+command = "make registry-verify-typed-policy-error"
+exit_code = 0
+outcome = "pass"
+started_utc = "2026-02-14T22:56:17Z"
+finished_utc = "2026-02-14T22:56:19Z"
+duration_seconds = 2.130
+stdout_excerpt = "make[1]: Entering directory '/home/eirikr/Github/open_gororoba'\ncargo run --release --bin registry-check -- --typed-policy error\nRegistry TOML parse sweep: 1310 files parsed\nTyped schema policy: error (no typed schema drift detected)\nIdentity gap policy: warn (loaded baseline from registry/identity_gap_policy.toml)\nIdentity gap (claims): governed-intent gaps: none\nIdentity gap (claims): drift beyond baseline: none\nClaims: 694 entries, 694 unique IDs, range C-001..C-694\nIdentity gap (insights): governed-intent gaps: 3 (I-061..I-063)\nIdentity gap (insights): drift beyond baseline: none\nInsights: 66 entries, IDs \"I-001\"..\"I-069\"\nExperiments: 32 entries\nBinaries: 79 entries\nProject: found (vopen_gororoba)\n\nRegistry check: PASS (no errors, no warnings)\nmake[1]: Leaving directory '/home/eirikr/Github/open_gororoba'"
+stderr_excerpt = "Finished `release` profile [optimized] target(s) in 0.22s\n     Running `target/release/registry-check --typed-policy error`"
+
+[[step]]
+order = 4
+id = "project_counter_sync_check"
+label = "project-counter-sync --check"
+command = "cargo run --release --bin project-counter-sync -- --check"
+exit_code = 0
+outcome = "pass"
+started_utc = "2026-02-14T22:56:19Z"
+finished_utc = "2026-02-14T22:56:19Z"
+duration_seconds = 0.269
+stdout_excerpt = "project-counter-sync: already synchronized"
+stderr_excerpt = "Finished `release` profile [optimized] target(s) in 0.22s\n     Running `target/release/project-counter-sync --check`"

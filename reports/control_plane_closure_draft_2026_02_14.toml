@@ -1,0 +1,161 @@
+# Control-plane canonical naming closure draft.
+# Covers roadmap tranche steps 36, 38, 39, and 40.
+
+[report]
+id = "CPCD-2026-02-14"
+created = "2026-02-14"
+status = "draft"
+authoritative = false
+scope = "CI canonical contract, compatibility reporting, scope refresh, tranche closure proposal, and tranche-4 synchronization outcomes"
+
+[tranche]
+roadmap_steps = [36, 38, 39, 40]
+completion_state = "completed"
+deliverables = [
+  "registry/control_plane_naming_standards.toml",
+  ".github/workflows/ci.yml",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+  "reports/control_plane_naming_scope_2026_02_14.toml",
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+]
+completed_findings = [
+  "CI now runs canonical gates directly: governance-gate and registry-acceptance-gate.",
+  "Governance alias parity is implemented: wave6-gate resolves to governance-gate with deprecation guidance.",
+  "Compatibility matrix documents canonical targets, legacy aliases, resolution chains, and intent.",
+  "Naming policy now defines alias deprecation horizon metadata with explicit dates: start=2026-02-14, review=2026-05-15, earliest_removal=2026-08-14.",
+  "Every preserved legacy alias group now has an assigned owner and explicit removal criteria in policy and reports.",
+  "Scope report refreshed with current residue counts and tranche status notes.",
+  "Shim inversion is complete for batch1..batch4: legacy batch scripts are compatibility shims, and canonical scripts are source-of-truth entrypoints.",
+  "RQ-024 planning canonicalization is complete with observed residue reduction from 9 to 1 in owned active planning/generated artifacts.",
+  "Runtime gate revalidation is passing after fixes: governance-gate and registry-acceptance-gate both pass in final state.",
+  "Strict check revalidation is passing after fixes: registry-check strict typed-policy error mode reports PASS.",
+]
+
+[closure_assessment]
+canonical_contract_enforced_in_ci = true
+compatibility_documented = true
+scope_recounted = true
+deprecation_horizon_defined = true
+legacy_alias_owner_coverage_complete = true
+legacy_alias_removal_criteria_coverage_complete = true
+shim_inversion_batches_complete = true
+rq024_canonicalization_complete = true
+runtime_gate_revalidation_pass = true
+strict_check_revalidation_pass = true
+ready_to_close_tranche = true
+blocking_item_count = 0
+
+[evidence]
+refs = [
+  "reports/shim_inversion_batch1_2026_02_14.toml",
+  "reports/shim_inversion_batch2_2026_02_14.toml",
+  "reports/shim_inversion_batch3_2026_02_14.toml",
+  "reports/shim_inversion_batch4_2026_02_14.toml",
+  "reports/rq024_planning_canonicalization_2026_02_14.toml",
+  "reports/gate_validation_runtime_2026_02_14.toml",
+  "reports/typed_schema_alignment_2026_02_14.toml",
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+]
+
+[deprecation_horizon]
+id = "ALIAS-HORIZON-2026-02-14"
+start_date = "2026-02-14"
+review_date = "2026-05-15"
+earliest_removal_date = "2026-08-14"
+source_policy = "registry/control_plane_naming_standards.toml"
+source_compat_matrix = "reports/control_plane_naming_compat_matrix_2026_02_14.toml"
+source_alias_policy = "reports/alias_deprecation_policy_2026_02_14.toml"
+
+[alias_governance_coverage]
+alias_groups_total = 8
+legacy_aliases_total = 28
+legacy_aliases_with_owner = 28
+legacy_aliases_with_removal_criteria = 28
+coverage_complete = true
+
+[[residual_risk]]
+id = "RISK-001"
+severity = "low"
+area = "alias-deprecation-tail"
+description = "Legacy aliases remain enabled until at least the earliest removal date (2026-08-14) to protect downstream operator scripts."
+impact = "Functional behavior is stable, but delayed migration by consumers can postpone cleanup."
+owner = "legacy alias lane owners"
+mitigation = "Track alias usage through the 2026-05-15 review window and keep canonical targets prominent in CI/help output."
+
+[[residual_risk]]
+id = "RISK-002"
+severity = "low"
+area = "early-removal-regression"
+description = "Removing aliases before confirming no CI/runbook/operator dependency would risk breaking established invocations."
+impact = "Premature alias removal could create avoidable operational failures."
+owner = "control-plane maintainers"
+mitigation = "Enforce removal criteria checks and block any removal PR before the review date and usage audit."
+
+[[residual_risk]]
+id = "RISK-003"
+severity = "low"
+area = "historical-residue"
+description = "Wave-labeled historical plans and archives remain intentionally phase-tagged for provenance and chronology."
+impact = "Residue counts will remain non-zero even with canonical operational naming."
+owner = "control-plane archival maintainers"
+mitigation = "If required, add canonical mirror docs while preserving immutable historical originals."
+
+[[ownership]]
+stream = "CI canonical contract lane"
+owner = "control-plane CI maintainers"
+artifacts = [".github/workflows/ci.yml"]
+responsibility = "Keep governance-gate and registry-acceptance-gate as the primary CI contract unless policy is revised."
+
+[[ownership]]
+stream = "Compatibility and scope reporting"
+owner = "control-plane reporting maintainers"
+artifacts = [
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+  "reports/control_plane_naming_scope_2026_02_14.toml",
+  "reports/control_plane_closure_draft_2026_02_14.toml",
+  "reports/tranche4_execution_ledger_2026_02_14.toml",
+]
+responsibility = "Refresh counts, alias resolution status, closure state, and tranche synchronization ledgers for each naming tranche."
+
+[[ownership]]
+stream = "Alias horizon and removal governance"
+owner = "control-plane naming maintainers"
+artifacts = [
+  "registry/control_plane_naming_standards.toml",
+  "reports/control_plane_naming_compat_matrix_2026_02_14.toml",
+  "reports/alias_deprecation_policy_2026_02_14.toml",
+]
+responsibility = "Maintain horizon dates, owner assignment, and removal criteria coverage for all preserved legacy aliases."
+
+[[next_tranche_proposal]]
+id = "NT-001"
+priority = "medium"
+title = "Run alias usage review checkpoint"
+description = "Execute the scheduled 2026-05-15 review to verify whether legacy aliases are still required."
+acceptance_criteria = [
+  "Usage audit results are documented for all 28 preserved legacy aliases.",
+  "Each lane/gate owner records keep/remove decisions against removal criteria.",
+]
+
+[[next_tranche_proposal]]
+id = "NT-002"
+priority = "medium"
+title = "Prepare earliest-removal patch set"
+description = "If review criteria are met, prepare a removal patch candidate no earlier than 2026-08-14."
+acceptance_criteria = [
+  "Patch candidate removes only aliases that satisfy owner-approved criteria.",
+  "Compatibility matrix and alias policy reports are updated in lockstep with any removals.",
+]
+
+[[next_tranche_proposal]]
+id = "NT-003"
+priority = "low"
+title = "Canonical mirrors for historical phase plans"
+description = "Provide canonical mirror documents for wave-labeled historical plans while preserving original immutable archives."
+acceptance_criteria = [
+  "Historical files remain unchanged.",
+  "Canonical mirrors provide traceable cross-links to originals.",
+]

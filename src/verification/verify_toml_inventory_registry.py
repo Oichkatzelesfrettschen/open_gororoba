@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Verify Wave 4 TOML inventory coverage and role consistency.
+Verify control-plane TOML inventory coverage and role consistency.
 """
 
 from __future__ import annotations
@@ -79,11 +79,18 @@ def main() -> int:
         "registry/toml_inventory.toml",
         "registry/csv_inventory.toml",
         "registry/csv_migration_scope.toml",
-        "registry/wave4_roadmap.toml",
+        "registry/control_plane_roadmap.toml",
     }
     for path in sorted(required_core):
         if path not in doc_path_set:
             failures.append(f"missing required TOML inventory path: {path}")
+
+    archival_compat_required_if_present = {
+        "registry/wave4_roadmap.toml",
+    }
+    for path in sorted(archival_compat_required_if_present):
+        if (repo_root / path).is_file() and path not in doc_path_set:
+            failures.append(f"missing archival compatibility TOML inventory path: {path}")
 
     expected_destinations: set[str] = set()
     for row in md_inv.get("document", []):
@@ -97,12 +104,12 @@ def main() -> int:
             failures.append(f"markdown destination missing from TOML inventory: {destination}")
 
     if failures:
-        print("ERROR: Wave 4 TOML inventory verification failed.")
+        print("ERROR: Control-plane TOML inventory verification failed.")
         for failure in failures:
             print(f"- {failure}")
         return 1
 
-    print("OK: Wave 4 TOML inventory coverage and role checks passed.")
+    print("OK: Control-plane TOML inventory coverage and role checks passed.")
     return 0
 
 
