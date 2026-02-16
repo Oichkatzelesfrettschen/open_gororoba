@@ -1,0 +1,5 @@
+centrality_min,centrality_max,p_h_percent,p_h_err_stat,p_h_err_sys,system,energy_gev
+0,10,0.02,0.01,0.005,Pb-Pb,5360
+10,30,0.05,0.015,0.008,Pb-Pb,5360
+30,50,0.12,0.02,0.01,Pb-Pb,5360
+50,80,0.18,0.03,0.015,Pb-Pb,5360

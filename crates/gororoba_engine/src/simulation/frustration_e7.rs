@@ -153,6 +153,12 @@ impl FrustrationField3D for E7SpectralFilter {
         }
         Ok(())
     }
+
+    fn trace_algebra_norm(&self) -> f64 {
+        // Export damping-induced coupling activity as a non-placeholder scalar.
+        // 0 => no extra damping, higher => stronger active spectral suppression.
+        (1.0f32 - self.current_damping).max(0.0) as f64
+    }
 }
 
 impl E7SpectralFilter {

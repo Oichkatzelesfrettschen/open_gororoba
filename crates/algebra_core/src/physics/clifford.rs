@@ -156,6 +156,26 @@ impl CliffordAlgebra {
     }
 }
 
+pub fn majorana_conformal_cl42_generators() -> Vec<GammaMatrix> {
+    use crate::construction::split_octonion::SplitOctonion;
+    let mut generators = Vec::new();
+    
+    // Use imaginary units e1..e6 as generators for cl(4,2)
+    for i in 1..7 {
+        let ei = SplitOctonion::basis(i);
+        let m = ei.left_multiplication_matrix();
+        // Convert 8x8 real to complex DMatrix
+        let mut cm = GammaMatrix::zeros(8, 8);
+        for r in 0..8 {
+            for c in 0..8 {
+                cm[(r, c)] = Complex64::new(m[(r, c)], 0.0);
+            }
+        }
+        generators.push(cm);
+    }
+    generators
+}
+
 /// Standard Model fermion charges from Cl(6) representation.
 #[derive(Debug, Clone)]
 pub struct FermionCharges {
@@ -282,6 +302,42 @@ mod tests {
         // Check electron charge
         let e = &charges[3];
         assert!((e.em_charge - (-1.0)).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_majorana_cl42_relations() {
+        let generators = majorana_conformal_cl42_generators();
+        assert_eq!(generators.len(), 6);
+        
+        // Check squares: {e1, e2, e3} square to -1, {e4, e5, e6} square to +1
+        // Mapping from SplitOctonion squares:
+        // e1^2 = -1, e2^2 = -1, e3^2 = -1
+        // e4^2 = 1, e5^2 = 1, e6^2 = 1
+        // This corresponds to signature (3, 3) or (4, 2) depending on convention
+        // Gazeau page 31: (-, -, +, +, +, +) -> (2, 4) or (4, 2)
+        
+        // Verify anticommutation: {gi, gj} = 2 * eta_ij * I
+        for i in 0..6 {
+            for j in 0..6 {
+                let anticomm = &generators[i] * &generators[j] + &generators[j] * &generators[i];
+                let expected_diag = if i == j {
+                    if i < 3 { -2.0 } else { 2.0 }
+                } else {
+                    0.0
+                };
+                
+                for r in 0..8 {
+                    for c in 0..8 {
+                        let val = anticomm[(r, c)];
+                        if r == c {
+                            assert!((val.re - expected_diag).abs() < 1e-8);
+                        } else {
+                            assert!(val.norm() < 1e-8);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #[test]

@@ -186,6 +186,21 @@ fn compute_step_timing_stats(step_times_us: &[f64], histogram_bins: usize) -> St
     }
 }
 
+fn build_kolmogorov_force_field(nx: usize, ny: usize, nz: usize, amplitude: f64) -> Vec<[f64; 3]> {
+    let mut force = vec![[0.0f64; 3]; nx * ny * nz];
+    for z in 0..nz {
+        for y in 0..ny {
+            let phase = std::f64::consts::TAU * (y as f64) / ny as f64;
+            let fx = amplitude * phase.sin();
+            for x in 0..nx {
+                let idx = x + nx * (y + ny * z);
+                force[idx] = [fx, 0.0, 0.0];
+            }
+        }
+    }
+    force
+}
+
 pub fn write_step_timing_report(path: &Path, report: &BenchCaseReport) -> Result<(), Box<dyn Error>> {
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)?;
@@ -253,6 +268,8 @@ fn export_bench_trace(
     elapsed_secs: f64,
     time_hist: &[f64],
     rho_hist: &[f64],
+    enstrophy_hist: &[f64],
+    algebra_norm_hist: &[f64],
     quality: &RhoTraceQuality,
     thresholds: RhoQualityThresholds,
 ) -> Result<(), Box<dyn Error>> {
@@ -281,7 +298,7 @@ fn export_bench_trace(
             initial_condition: "Uniform_Rho1_U0".to_string(),
         },
         results: WarpRingResults {
-            final_enstrophy: 0.0,
+            final_enstrophy: *enstrophy_hist.last().unwrap_or(&0.0),
             mean_density: *rho_hist.last().unwrap_or(&f64::NAN),
             betti_1_persistence: None,
             execution_time_s: elapsed_secs,
@@ -293,9 +310,13 @@ fn export_bench_trace(
         },
     };
     export_experiment_contract(out_path, &contract)?;
-    let enstrophy = vec![0.0; time_hist.len()];
-    let algebra_norm = vec![0.0; time_hist.len()];
-    export_simulation_trace(out_path, time_hist, rho_hist, &enstrophy, &algebra_norm)?;
+    export_simulation_trace(
+        out_path,
+        time_hist,
+        rho_hist,
+        enstrophy_hist,
+        algebra_norm_hist,
+    )?;
     export_rho_quality_metrics(out_path, quality, thresholds)?;
     Ok(())
 }
@@ -313,6 +334,13 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         coupling_algebra_fluid: 0.1,
     };
     let mut state = SimulationState3D::new(config)?;
+    let forcing = build_kolmogorov_force_field(
+        case.resolution,
+        case.resolution,
+        case.resolution,
+        1.0e-4,
+    );
+    state.fluid.try_set_force_field(&forcing)?;
     state.frustration = Some(Box::new(E7SpectralFilter::new(
         case.resolution,
         case.resolution,
@@ -325,6 +353,8 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
     let mut steps = 0usize;
     let mut time_hist = Vec::new();
     let mut rho_hist = Vec::new();
+    let mut enstrophy_hist = Vec::new();
+    let mut algebra_norm_hist = Vec::new();
     let mut step_times_us = Vec::new();
 
     while start.elapsed().as_secs_f64() < case.duration_secs {
@@ -370,11 +400,25 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         if steps.is_multiple_of(case.trace_stride) {
             time_hist.push(start.elapsed().as_secs_f64());
             rho_hist.push(state.fluid.try_mean_density()?);
+            enstrophy_hist.push(state.fluid.try_enstrophy()?);
+            let algebra_norm = state
+                .frustration
+                .as_ref()
+                .map(|field| field.trace_algebra_norm())
+                .unwrap_or(0.0);
+            algebra_norm_hist.push(algebra_norm);
         }
     }
     if time_hist.is_empty() {
         time_hist.push(start.elapsed().as_secs_f64());
         rho_hist.push(state.fluid.try_mean_density()?);
+        enstrophy_hist.push(state.fluid.try_enstrophy()?);
+        let algebra_norm = state
+            .frustration
+            .as_ref()
+            .map(|field| field.trace_algebra_norm())
+            .unwrap_or(0.0);
+        algebra_norm_hist.push(algebra_norm);
     }
 
     let elapsed = start.elapsed().as_secs_f64();
@@ -400,6 +444,8 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
                 elapsed,
                 &time_hist,
                 &rho_hist,
+                &enstrophy_hist,
+                &algebra_norm_hist,
                 &quality,
                 thresholds,
             )?;

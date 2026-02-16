@@ -12,5 +12,6 @@ pub mod non_associative;
 pub mod octonion;
 pub mod octonion_geometry;
 pub mod padic;
+pub mod split_octonion;
 pub mod tessarines;
 pub mod wheels;

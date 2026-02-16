@@ -2296,3 +2296,63 @@ notes = ["*Reference monograph for PPN interpretation and experimental-gravity m
 urls = []
 dois = []
 source_line = 424
+
+[[entry]]
+id = "BIB-0191"
+order_index = 191
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+citation_markdown = "**Bremner, M., & Hentzel, I.** (2001). *Identities for algebras obtained from the Cayley-Dickson process*. Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036."
+notes = ["*Determines multilinear identities of degree <= 5 for sedenions; confirms flexible and Jordan identities.*"]
+urls = []
+dois = ["10.1081/AGB-100105036"]
+
+[[entry]]
+id = "BIB-0192"
+order_index = 192
+group = "Primary Research & Data Sources"
+section = "Cayley-Dickson Identities and Structure"
+citation_markdown = "**Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [arXiv:2512.07210](https://arxiv.org/abs/2512.07210)."
+notes = ["*Extends Fano plane to 15D Fano volume; derives Aut(S) ~ G2.*"]
+urls = ["https://arxiv.org/abs/2512.07210"]
+dois = []
+
+[[entry]]
+id = "BIB-0193"
+order_index = 193
+group = "Primary Research & Data Sources"
+section = "QCD and Spin Correlation"
+citation_markdown = "**STAR Collaboration.** (2026). *Measuring spin correlation between quarks during QCD confinement*. Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0."
+notes = ["*Evidence of spin coherence in Lambda-AntiLambda pairs; observed decoherence trend.*"]
+urls = []
+dois = ["10.1038/s41586-025-09920-0"]
+
+[[entry]]
+id = "BIB-0194"
+order_index = 194
+group = "Primary Research & Data Sources"
+section = "Scattering Amplitudes"
+citation_markdown = "**Guevara, A., et al.** (2026). *Single-minus gluon tree amplitudes are nonzero*. [arXiv:2602.12176](https://arxiv.org/abs/2602.12176)."
+notes = ["*Derives non-vanishing single-minus amplitudes in half-collinear kinematics; discrete sign-logic closed form.*"]
+urls = ["https://arxiv.org/abs/2602.12176"]
+dois = []
+
+[[entry]]
+id = "BIB-0195"
+order_index = 195
+group = "Primary Research & Data Sources"
+section = "Conformal Space and Inflation"
+citation_markdown = "**Gazeau, J.-P., Pejhan, H., & Todorov, I.** (2026). *Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions*. [arXiv:2601.18433](https://arxiv.org/abs/2601.18433)."
+notes = ["*Monograph on conformal symmetry and split-octonionic fabric of inflationary dynamics.*"]
+urls = ["https://arxiv.org/abs/2601.18433"]
+dois = []
+
+[[entry]]
+id = "BIB-0196"
+order_index = 196
+group = "Primary Research & Data Sources"
+section = "Unification Theories"
+citation_markdown = "**Alvarez, P. D., Izaurieta, F., & Quinzacara, C.** (2026). *Towards an Action Principle Unifying the Standard Model and Gravity*. [arXiv:2601.19734](https://arxiv.org/abs/2601.19734)."
+notes = ["*Unification via Clifford-algebraic invariant in a ghost-free quadratic gravity framework.*"]
+urls = ["https://arxiv.org/abs/2601.19734"]
+dois = []

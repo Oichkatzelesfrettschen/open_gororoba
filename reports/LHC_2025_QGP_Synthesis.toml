@@ -1,0 +1,9 @@
+thesis_id = 6
+label = "LHC 2025 QGP Synthesis"
+alice_p_h_mean_predicted = 0.3833333333333333
+cms_sign_challenge_resolved = true
+messages = [
+  "ALICE global polarization matched",
+  "CMS azimuthal challenge analyzed",
+  "Restoration mapped to attractor"
+]

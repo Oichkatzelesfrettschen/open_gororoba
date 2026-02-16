@@ -23,6 +23,10 @@ struct Args {
     #[arg(long, default_value_t = 1.0)]
     c_a: f64,
 
+    /// Initial state type: "triplet" or "singlet"
+    #[arg(long, default_value = "triplet")]
+    initial_state: String,
+
     /// Output file
     #[arg(long, default_value = "data/evidence/spin_decoherence.toml")]
     output: String,
@@ -37,6 +41,7 @@ fn main() {
         events_per_bin: args.events_per_bin,
         c_f: args.c_f,
         c_a: args.c_a,
+        initial_state: args.initial_state,
         ..Default::default()
     };
 

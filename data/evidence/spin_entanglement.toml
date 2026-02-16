@@ -1,0 +1,12 @@
+thesis_id = 5
+label = "T5 Spin Decoherence (singlet, c_f=10)"
+metric_value = 1.0
+threshold = -0.8
+passes_gate = false
+messages = [
+    "Initial State: singlet",
+    "Spearman r(gamma, P) = 1.0000",
+    "Gamma range: [0.0000, 3.9063]",
+    "P range: [-1.0148, -0.0284]",
+    "Negativity range: [0.0000, 0.5167]",
+]

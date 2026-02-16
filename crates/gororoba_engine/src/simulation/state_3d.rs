@@ -30,6 +30,13 @@ pub enum LbmBackend3D {
 /// Trait for a 3D frustration field.
 pub trait FrustrationField3D: Send + Sync {
     fn apply(&mut self, fluid: &mut LbmBackend3D, nx: usize, ny: usize, nz: usize) -> Result<()>;
+
+    /// Optional scalar diagnostic exported in warp traces as `algebra_norm`.
+    ///
+    /// Implementations may return a physically motivated coupling-strength proxy.
+    fn trace_algebra_norm(&self) -> f64 {
+        0.0
+    }
 }
 
 /// Trait for a 3D algebraic field.
@@ -67,6 +74,67 @@ impl LbmBackend3D {
 
     pub fn mean_density(&mut self) -> f64 {
         self.try_mean_density().unwrap_or(1.0)
+    }
+
+    pub fn try_enstrophy(&mut self) -> Result<f64> {
+        fn enstrophy_from_cpu_velocity(solver: &LbmSolver3D) -> f64 {
+            let (nx, ny, nz) = (solver.nx, solver.ny, solver.nz);
+            let idx = |x: usize, y: usize, z: usize| -> usize { x + nx * (y + ny * z) };
+            let mut enstrophy = 0.0f64;
+            for z in 0..nz {
+                for y in 0..ny {
+                    for x in 0..nx {
+                        let xp = (x + 1) % nx;
+                        let xm = (x + nx - 1) % nx;
+                        let yp = (y + 1) % ny;
+                        let ym = (y + ny - 1) % ny;
+                        let zp = (z + 1) % nz;
+                        let zm = (z + nz - 1) % nz;
+                        let duz_dy = (solver.u[idx(x, yp, z)][2] - solver.u[idx(x, ym, z)][2]) * 0.5;
+                        let duy_dz = (solver.u[idx(x, y, zp)][1] - solver.u[idx(x, y, zm)][1]) * 0.5;
+                        let dux_dz = (solver.u[idx(x, y, zp)][0] - solver.u[idx(x, y, zm)][0]) * 0.5;
+                        let duz_dx = (solver.u[idx(xp, y, z)][2] - solver.u[idx(xm, y, z)][2]) * 0.5;
+                        let duy_dx = (solver.u[idx(xp, y, z)][1] - solver.u[idx(xm, y, z)][1]) * 0.5;
+                        let dux_dy = (solver.u[idx(x, yp, z)][0] - solver.u[idx(x, ym, z)][0]) * 0.5;
+                        let wx = duz_dy - duy_dz;
+                        let wy = dux_dz - duz_dx;
+                        let wz = duy_dx - dux_dy;
+                        enstrophy += wx * wx + wy * wy + wz * wz;
+                    }
+                }
+            }
+            enstrophy / (nx * ny * nz) as f64
+        }
+
+        match self {
+            LbmBackend3D::Cpu(solver) => Ok(enstrophy_from_cpu_velocity(solver)),
+            #[cfg(feature = "gpu")]
+            LbmBackend3D::Gpu(solver) => Ok(
+                solver
+                    .calculate_enstrophy()
+                    .context("failed to compute GPU enstrophy")? as f64,
+            ),
+            #[cfg(not(feature = "gpu"))]
+            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+                "GPU backend unavailable: build gororoba_engine with --features gpu"
+            )),
+        }
+    }
+
+    pub fn try_set_force_field(&mut self, force_field: &[[f64; 3]]) -> Result<()> {
+        match self {
+            LbmBackend3D::Cpu(solver) => solver
+                .set_force_field(force_field.to_vec())
+                .map_err(|e| anyhow::anyhow!("failed to set CPU force field: {e}")),
+            #[cfg(feature = "gpu")]
+            LbmBackend3D::Gpu(solver) => solver
+                .set_force_field(force_field)
+                .context("failed to set GPU force field"),
+            #[cfg(not(feature = "gpu"))]
+            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+                "GPU backend unavailable: build gororoba_engine with --features gpu"
+            )),
+        }
     }
 
     pub fn try_velocity(
