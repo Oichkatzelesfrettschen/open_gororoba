@@ -780,6 +780,55 @@ status = "active"
 status_token = "ACTIVE"
 lineage_id = "XL-032"
 input_path_refs = []
+
+[[experiment]]
+id = "E-036"
+title = "STAR Spin Correlation Decoherence Analysis"
+binary = "spin-decoherence-pipeline"
+binary_registered = true
+binary_experiment_declared = ""
+method = "Mapping of STAR 2026 spin correlation data to CD frustration density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit."
+input = "data/external/lhc_2025/ (STAR-like synthetic chains)"
+output = ["data/evidence/spin_decoherence.toml"]
+run = "cargo run --release --bin spin-decoherence-pipeline"
+run_command_sha256 = ""
+claims = ["T-SPIN-CD", "T-PPT-NEED"]
+claim_refs = ["T-SPIN-CD", "T-PPT-NEED"]
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-034"
+input_path_refs = []
+output_path_refs = ["data/evidence/spin_decoherence.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-037"
+title = "Single-Minus Amplitude Frustration Survey"
+binary = "amplitude-frustration-survey"
+binary_registered = true
+binary_experiment_declared = ""
+method = "Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic frustration landscape (zero-frustration chambers)."
+input = "None (algebraic logic)"
+output = ["data/evidence/amplitude_frustration.toml"]
+run = "cargo run --release --bin amplitude-frustration-survey"
+run_command_sha256 = ""
+claims = ["T-AMPLITUDE-FRUSTRATION-MINIMA", "T-CHAMBER-DISCRETE"]
+claim_refs = ["T-AMPLITUDE-FRUSTRATION-MINIMA", "T-CHAMBER-DISCRETE"]
+deterministic = true
+seed = 42
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-035"
+input_path_refs = []
+output_path_refs = ["data/evidence/amplitude_frustration.toml"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
 [[experiment]]
 id = "E-038"
 title = "LHC 2025 QGP Spin Synthesis"
