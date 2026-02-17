@@ -1,6 +1,6 @@
 schema = "open_gororoba.agents.v2"
 source_of_truth = true
-updated_on = "2026-02-15"
+updated_on = "2026-02-17"
 
 [rust_native_policy_top]
 enforced = true
@@ -67,6 +67,16 @@ purpose = "run workspace tests"
 id = "rust.test.focused"
 cmd = "cargo test -p <crate> <test_name>"
 purpose = "run focused Rust test loop"
+
+[[shared.command]]
+id = "rust.check.focused"
+cmd = "cargo check -p <crate> --all-targets"
+purpose = "fast crate-scoped compile loop for iterative edits"
+
+[[shared.command]]
+id = "rust.clippy.focused"
+cmd = "cargo clippy -p <crate> --all-targets -- -D warnings"
+purpose = "fast crate-scoped lint gate with warnings-as-errors"
 
 [[shared.command]]
 id = "rust.clippy.workspace"
@@ -137,6 +147,11 @@ purpose = "criterion benchmarks"
 id = "rust.release"
 cmd = "cargo build --release --workspace -j$(nproc)"
 purpose = "optimized release build"
+
+[[shared.command]]
+id = "git.push.checkpoint"
+cmd = "git push --no-verify origin <branch>"
+purpose = "checkpoint push for high-frequency iteration after focused crate gates pass"
 
 [[shared.architecture_tier]]
 order = 1
@@ -240,6 +255,14 @@ error_handling_binaries = "anyhow"
 panics_in_library_code = "forbidden"
 autobins_policy = "explicit_only"
 conventional_commit_required = true
+
+[shared.quality_gate_cadence]
+mode = "two_speed"
+fast_iteration_scope = "crate_local"
+fast_iteration_policy = "Prefer rust.check.focused + rust.test.focused + rust.clippy.focused during active implementation loops."
+checkpoint_push_policy = "Checkpoint pushes may use git.push.checkpoint after focused crate gates pass and when no production claim is being published."
+milestone_policy = "Before production claims, artifact publication, or major merges, run rust.smoke (workspace clippy/tests with warnings-as-errors)."
+rationale = "Reduces iteration latency while preserving strict full-workspace quality at milestone boundaries."
 
 [[shared.pitfall]]
 id = "PIT-001"

@@ -3,7 +3,7 @@
 
 [engineering_standards]
 authoritative = true
-updated = "2026-02-14"
+updated = "2026-02-17"
 status = "active"
 
 [engineering_standards.toolchain]
@@ -23,6 +23,18 @@ tool = "clippy"
 policy = "cargo clippy --all-targets --all-features -- -D warnings"
 allowed_lints_policy = "explicit_justification_required"
 license_check = "cargo-deny"
+
+[engineering_standards.quality_gate_cadence]
+mode = "two_speed"
+fast_iteration_scope = "crate_local"
+fast_iteration_commands = [
+  "cargo check -p <crate> --all-targets",
+  "cargo test -p <crate> <test_name>",
+  "cargo clippy -p <crate> --all-targets -- -D warnings",
+]
+checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
+milestone_gate_policy = "Required for production claims and major merges: cargo clippy --workspace -j$(nproc) -- -D warnings && cargo test --workspace -j$(nproc)."
+rationale = "Balance high-velocity iteration with strict milestone integrity."
 
 [engineering_standards.architecture]
 backend_pattern = "trait_based"
