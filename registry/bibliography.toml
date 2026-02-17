@@ -2376,3 +2376,53 @@ citation_markdown = "**Adams, J. F.** (1960). *On the non-existence of elements 
 notes = ["*Proves R, C, H, O are the only normed division algebras over the reals; the algebraic foundation for the Thesis 4 subalgebra retention pattern.*"]
 urls = []
 dois = ["10.2307/1970147"]
+
+[[entry]]
+id = "BIB-0199"
+order_index = 199
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Rakic, A. D., Djurisic, A. B., Elazar, J. M., & Majewski, M. L.** (1998). *Optical properties of metallic films for vertical-cavity optoelectronic devices*. Applied Optics 37(22), 5271-5283. DOI: 10.1364/AO.37.005271."
+notes = ["*Canonical 11-metal Drude-Lorentz parameter set; source for Be, Cr, Ni, Pd, Pt, Ti, W optical models in Sprint 43.*"]
+urls = []
+dois = ["10.1364/AO.37.005271"]
+
+[[entry]]
+id = "BIB-0200"
+order_index = 200
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Servoin, J. L., Luspin, Y., & Gervais, F.** (1980). *Infrared dispersion in SrTiO3 at high temperature*. Physical Review B 22(11), 5501-5506. DOI: 10.1103/PhysRevB.22.5501."
+notes = ["*IR phonon oscillator parameters for SrTiO3 (3-mode model); source for soft-mode soft-mode frequency near 11 meV.*"]
+urls = []
+dois = ["10.1103/PhysRevB.22.5501"]
+
+[[entry]]
+id = "BIB-0201"
+order_index = 201
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Okimoto, Y., Katsufuji, T., Ishikawa, T., Urushibara, A., Arima, T., & Tokura, Y.** (1995). *Anomalous variation of optical spectra with spin polarization in double-exchange ferromagnet: La_{1-x}Sr_xMnO_3*. Physical Review Letters 75(1), 109-112. DOI: 10.1103/PhysRevLett.75.109."
+notes = ["*Optical conductivity and Mott gap structure in perovskite titanates; informs LaTiO3 absorption model.*"]
+urls = []
+dois = ["10.1103/PhysRevLett.75.109"]
+
+[[entry]]
+id = "BIB-0202"
+order_index = 202
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**Barman, S. R., & Sarma, D. D.** (1995). *Electronic structures of TiO and NiO within the density functional theory*. Physical Review B 51(19), 13401-13404. DOI: 10.1103/PhysRevB.51.13401."
+notes = ["*Band structure and optical properties of TiO (metallic); source for TiO Drude and interband parameters.*"]
+urls = []
+dois = ["10.1103/PhysRevB.51.13401"]
+
+[[entry]]
+id = "BIB-0203"
+order_index = 203
+group = "Primary Research & Data Sources"
+section = "Materials & Optics"
+citation_markdown = "**van Mechelen, J. L. M., van der Marel, D., Grimaldi, C., Kuzmenko, A. B., Armitage, N. P., Reyren, N., Hagemann, H., & Baeriswyl, I. H.** (2008). *Electron-phonon interaction and charge carrier mass enhancement in SrTiO3*. Physical Review Letters 100(22), 226403. DOI: 10.1103/PhysRevLett.100.226403."
+notes = ["*Extended Drude analysis of doped SrTiO3; demonstrates frequency-dependent scattering and non-Fermi-liquid character.*"]
+urls = []
+dois = ["10.1103/PhysRevLett.100.226403"]

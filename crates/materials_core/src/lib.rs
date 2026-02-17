@@ -64,36 +64,39 @@ pub use viscosity_database::{
 };
 
 pub use optical_database::{
-    aluminum_drude,
-    copper_drude,
-    ev_to_omega,
-    germanium_optical,
-    get_material,
-    // Pre-defined materials
-    gold_drude,
-    gold_drude_lorentz,
-    lifshitz_integrand_te,
-    list_materials,
-    omega_to_ev,
-    // Casimir utilities
-    reflection_te,
-    reflection_tm,
-    silica_optical,
-    silicon_nitride_optical,
-    silicon_optical,
-    silver_drude,
-    silver_drude_lorentz,
-    // Conversions
-    wavelength_to_omega,
-    DrudeLorentzParams,
-    // Models
-    DrudeParams,
-    LorentzOscillator as OpticalLorentzOscillator,
-    // Database
-    MaterialEntry,
-    MaterialType as OpticalMaterialType,
-    C,
     // Constants
-    EV_TO_RADS,
-    HBAR_EV_S,
+    C, EV_TO_RADS, HBAR_EV_S,
+    // Conversions
+    ev_to_omega, omega_to_ev, wavelength_to_omega,
+    // Models
+    DrudeLorentzParams, DrudeParams,
+    ExtendedDrudeParams, ScatteringModel,
+    LorentzOscillator as OpticalLorentzOscillator,
+    // Database types
+    CasimirModelFlag, MaterialEntry, MaterialType as OpticalMaterialType,
+    // Database access
+    get_material, list_materials,
+    // Pre-defined metals (original)
+    gold_drude, gold_drude_lorentz,
+    silver_drude, silver_drude_lorentz,
+    copper_drude, copper_drude_lorentz,
+    aluminum_drude, aluminum_drude_lorentz,
+    // Rakic metals
+    beryllium_drude, beryllium_drude_lorentz,
+    chromium_drude, chromium_drude_lorentz,
+    nickel_drude, nickel_drude_lorentz,
+    palladium_drude, palladium_drude_lorentz,
+    platinum_drude, platinum_drude_lorentz,
+    titanium_drude, titanium_drude_lorentz,
+    tungsten_drude, tungsten_drude_lorentz,
+    // Semiconductors / dielectrics
+    silicon_optical, germanium_optical, silica_optical, silicon_nitride_optical,
+    // C-418 gap materials
+    alumina_optical, diamond_optical, quartz_optical, tio2_optical,
+    // Titanates
+    tio_optical, srtio3_optical, srtio3_doped_optical, latio3_optical,
+    // TCOs
+    azo_optical, doped_silicon_optical,
+    // Casimir utilities
+    lifshitz_integrand_te, reflection_te, reflection_tm,
 };

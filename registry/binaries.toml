@@ -531,3 +531,8 @@ description = "Compute lambda coupling strength for all materials in registry, o
 name = "demo-real-materials"
 crate = "gororoba_cli"
 description = "Demonstration of E-027 frustration-viscosity experiment grounded in real physical materials properties"
+
+[[binary]]
+name = "demo-optical-titanates"
+crate = "gororoba_cli"
+description = "Optical database and titanate material families demo: Rakic metals, C-418 gap materials, titanates, TCOs, extended Drude, falsifiable theses"

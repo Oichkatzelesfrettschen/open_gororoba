@@ -5,13 +5,29 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 3524
-claim_count = 700
+test_count = 3559
+claim_count = 708
 insight_count = 66
 experiment_count = 36
 complete_experiment_count = 0
 paper_count = 19
-binary_count = 101
+binary_count = 102
+
+[sprints.s43]
+number = 43
+date = "2026-02-17"
+test_count = 3559
+claim_count = 708
+insight_count = 66
+summary = "Drude Metals and Titanate Families Expansion: Optical database expanded from 8 to 25 materials. Rakic 11-metal canonical set (Be, Cr, Ni, Pd, Pt, Ti, W with Drude-Lorentz fits). C-418 gap materials (Al2O3, Diamond, Quartz, TiO2). Titanate family (TiO metallic, SrTiO3 phononic, SrTiO3:n doped, LaTiO3 Mott insulator). TCOs (AZO, doped Si). ConductiveOxide MaterialType. MaterialEntry provenance fields (validity_range_ev, temperature_k, doping_info, CasimirModelFlag). Extended Drude infrastructure with 5 ScatteringModel variants (Constant, LinearInOmega, PowerLaw, DrudeSmith, Tabulated). demo-optical-titanates binary with 4 falsifiable thesis demonstrations. BIB-0199..0203. Claims C-697..C-702."
+
+[sprints.s42]
+number = 42
+date = "2026-02-17"
+test_count = 3529
+claim_count = 696
+insight_count = 66
+summary = "Math Formalization + Provenance Closure: Chevalley-Tits E7 basis with extraspecial 2-cocycle (5 tests). Proof skeletons PRS-00736/PRS-00737. Source triangulation for Thesis 4. Evidence closure for RI-026/027/032. Claims C-695 (Jacobi identity), C-696 (8D codomain lock). BIB-0197 (Bott-Milnor), BIB-0198 (Adams)."
 
 [sprints.s41]
 number = 41
