@@ -247,7 +247,10 @@ fn parse_duration_from_filename(name: &str) -> u64 {
 
 fn find_h5_file(dir: &Path, resolution: usize) -> Result<PathBuf, Box<dyn Error>> {
     let mut candidates: Vec<(u64, PathBuf)> = Vec::new();
-    let prefix = format!("warp_ring_{}_GPU_BF16_", resolution);
+    let prefixes = [
+        format!("warp_ring_{}_GPU_BF16_", resolution),
+        format!("warp_ring_{}_BF16_", resolution),
+    ];
     for entry in std::fs::read_dir(dir)? {
         let path = entry?.path();
         if !path.is_file() {
@@ -256,7 +259,7 @@ fn find_h5_file(dir: &Path, resolution: usize) -> Result<PathBuf, Box<dyn Error>
         let Some(name) = path.file_name().and_then(|s| s.to_str()) else {
             continue;
         };
-        if name.starts_with(&prefix) && name.ends_with(".h5") {
+        if name.ends_with(".h5") && prefixes.iter().any(|prefix| name.starts_with(prefix)) {
             candidates.push((parse_duration_from_filename(name), path));
         }
     }

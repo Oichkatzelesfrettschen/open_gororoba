@@ -3,7 +3,7 @@
 
 use anyhow::{ensure, Context, Result};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, DevicePtr, PushKernelArg,
+    CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, LaunchConfig, PushKernelArg,
 };
 use std::sync::Arc;
 
@@ -33,23 +33,38 @@ pub enum Precision {
 
 /// GPU-accelerated D3Q19 LBM solver with mixed-precision support (FP32/BF16)
 pub struct LbmSolver3DCuda {
-    nx: usize, ny: usize, nz: usize, n_cells: usize, pub precision: Precision,
-    _ctx: Arc<CudaContext>, stream: Arc<CudaStream>,
-    d_f: CudaSlice<u8>, d_f_tmp: CudaSlice<u8>,
-    d_rho: CudaSlice<u8>, d_u: CudaSlice<u8>,
-    d_tau: CudaSlice<u8>, d_force: CudaSlice<u8>,
+    nx: usize,
+    ny: usize,
+    nz: usize,
+    n_cells: usize,
+    pub precision: Precision,
+    _ctx: Arc<CudaContext>,
+    stream: Arc<CudaStream>,
+    d_f: CudaSlice<u8>,
+    d_f_tmp: CudaSlice<u8>,
+    d_rho: CudaSlice<u8>,
+    d_u: CudaSlice<u8>,
+    d_tau: CudaSlice<u8>,
+    d_force: CudaSlice<u8>,
     initialize_uniform_kernel: CudaFunction,
     initialize_custom_kernel: CudaFunction,
-    lbm_step_fused_kernel: CudaFunction, enstrophy_cell_kernel: CudaFunction,
-    reduce_sum_kernel: CudaFunction, zero_kernel: CudaFunction,
-    apply_mask_kernel: CudaFunction, convert_real_to_complex_kernel: CudaFunction,
+    lbm_step_fused_kernel: CudaFunction,
+    enstrophy_cell_kernel: CudaFunction,
+    reduce_sum_rho_kernel: CudaFunction,
+    reduce_sum_f32_kernel: CudaFunction,
+    zero_kernel: CudaFunction,
+    apply_mask_kernel: CudaFunction,
+    convert_real_to_complex_kernel: CudaFunction,
     convert_complex_to_real_kernel: CudaFunction,
     lbm_block_dim: (u32, u32, u32),
-    #[cfg(feature = "cufft")] fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
-    d_reduction_out: CudaSlice<f32>, d_reduction_buffer_f32: Option<CudaSlice<f32>>,
+    #[cfg(feature = "cufft")]
+    fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
+    d_reduction_out: CudaSlice<f32>,
+    d_reduction_buffer_f32: Option<CudaSlice<f32>>,
     pub d_u_hat: Option<CudaSlice<ComplexDevice>>,
     pub d_u_hat_out: Option<CudaSlice<ComplexDevice>>,
-    pub rho: Vec<f32>, pub u: Vec<[f32; 3]>,
+    pub rho: Vec<f32>,
+    pub u: Vec<[f32; 3]>,
 }
 
 impl LbmSolver3DCuda {
@@ -80,27 +95,68 @@ impl LbmSolver3DCuda {
         let n_cells = nx * ny * nz;
         let ctx = CudaContext::new(0).context("CUDA Init Failed")?;
         let stream = ctx.default_stream();
-        let src = match precision { Precision::FP32 => KERNEL_SRC, Precision::BF16 => KERNEL_BF16_SRC };
-        
+        let src = match precision {
+            Precision::FP32 => KERNEL_SRC,
+            Precision::BF16 => KERNEL_BF16_SRC,
+        };
+
         use cudarc::nvrtc::CompileOptions;
         let opts = if precision == Precision::BF16 {
-            CompileOptions { include_paths: vec!["/opt/cuda/include".to_string()], arch: Some("sm_89"), ..Default::default() }
+            CompileOptions {
+                include_paths: vec!["/opt/cuda/include".to_string()],
+                arch: Some("sm_89"),
+                ..Default::default()
+            }
         } else {
-            CompileOptions { arch: Some("sm_89"), ..Default::default() }
+            CompileOptions {
+                arch: Some("sm_89"),
+                ..Default::default()
+            }
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
         let module = ctx.load_module(ptx)?;
 
-        let lbm_step_fused_kernel = module.load_function(if precision == Precision::BF16 { "lbm_step_fused_bf16_kernel" } else { "lbm_step_fused_kernel" })?;
-        let initialize_uniform_kernel = module.load_function(if precision == Precision::BF16 { "initialize_uniform_bf16_kernel" } else { "initialize_uniform_kernel" })?;
-        let initialize_custom_kernel = module.load_function(if precision == Precision::BF16 { "initialize_custom_bf16_kernel" } else { "initialize_custom_kernel" })?;
+        let lbm_step_fused_kernel = module.load_function(if precision == Precision::BF16 {
+            "lbm_step_fused_bf16_kernel"
+        } else {
+            "lbm_step_fused_kernel"
+        })?;
+        let initialize_uniform_kernel = module.load_function(if precision == Precision::BF16 {
+            "initialize_uniform_bf16_kernel"
+        } else {
+            "initialize_uniform_kernel"
+        })?;
+        let initialize_custom_kernel = module.load_function(if precision == Precision::BF16 {
+            "initialize_custom_bf16_kernel"
+        } else {
+            "initialize_custom_kernel"
+        })?;
         let enstrophy_cell_kernel = module.load_function("compute_enstrophy_cell_kernel")?;
-        let reduce_sum_kernel = module.load_function(if precision == Precision::BF16 { "reduce_sum_bf16_to_f32_kernel" } else { "reduce_sum_kernel" })?;
-        let zero_kernel = module.load_function(if precision == Precision::BF16 { "zero_f32_kernel" } else { "zero_kernel" })?;
+        let reduce_sum_rho_kernel = module.load_function(if precision == Precision::BF16 {
+            "reduce_sum_bf16_to_f32_kernel"
+        } else {
+            "reduce_sum_kernel"
+        })?;
+        let reduce_sum_f32_kernel = module.load_function("reduce_sum_kernel")?;
+        let zero_kernel = module.load_function(if precision == Precision::BF16 {
+            "zero_f32_kernel"
+        } else {
+            "zero_kernel"
+        })?;
         let apply_mask_kernel = module.load_function("apply_spectral_mask_kernel")?;
-        let convert_real_to_complex_kernel = module.load_function(if precision == Precision::BF16 { "convert_real_bf16_to_complex_f32_kernel" } else { "convert_real_to_complex_kernel" })?;
-        let convert_complex_to_real_kernel = module.load_function(if precision == Precision::BF16 { "convert_complex_f32_to_real_bf16_kernel" } else { "convert_complex_to_real_kernel" })?;
-        
+        let convert_real_to_complex_kernel =
+            module.load_function(if precision == Precision::BF16 {
+                "convert_real_bf16_to_complex_f32_kernel"
+            } else {
+                "convert_real_to_complex_kernel"
+            })?;
+        let convert_complex_to_real_kernel =
+            module.load_function(if precision == Precision::BF16 {
+                "convert_complex_f32_to_real_bf16_kernel"
+            } else {
+                "convert_complex_to_real_kernel"
+            })?;
+
         let es = if precision == Precision::FP32 { 4 } else { 2 };
         let mut d_f = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
         let d_f_tmp = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
@@ -116,7 +172,7 @@ impl LbmSolver3DCuda {
             let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
             stream.clone_htod(&b)?
         };
-        
+
         let d_reduction_out = stream.alloc_zeros::<f32>(1)?;
         let d_reduction_buffer_f32 = Some(stream.alloc_zeros::<f32>(n_cells)?);
         let d_u_hat = Some(stream.alloc_zeros::<ComplexDevice>(n_cells)?);
@@ -144,20 +200,46 @@ impl LbmSolver3DCuda {
         let lbm_block_dim = Self::parse_block_dim_env().unwrap_or(default_block_dim);
 
         Ok(Self {
-            nx, ny, nz, n_cells, precision, _ctx: ctx, stream, d_f, d_f_tmp, d_rho, d_u, d_tau, d_force,
+            nx,
+            ny,
+            nz,
+            n_cells,
+            precision,
+            _ctx: ctx,
+            stream,
+            d_f,
+            d_f_tmp,
+            d_rho,
+            d_u,
+            d_tau,
+            d_force,
             initialize_uniform_kernel,
             initialize_custom_kernel,
-            lbm_step_fused_kernel, enstrophy_cell_kernel, reduce_sum_kernel, zero_kernel,
-            apply_mask_kernel, convert_real_to_complex_kernel, convert_complex_to_real_kernel,
+            lbm_step_fused_kernel,
+            enstrophy_cell_kernel,
+            reduce_sum_rho_kernel,
+            reduce_sum_f32_kernel,
+            zero_kernel,
+            apply_mask_kernel,
+            convert_real_to_complex_kernel,
+            convert_complex_to_real_kernel,
             lbm_block_dim,
-            #[cfg(feature = "cufft")] fft_plan: None,
-            d_reduction_out, d_reduction_buffer_f32, d_u_hat, d_u_hat_out,
-            rho: vec![1.0; n_cells], u: vec![[0.0; 3]; n_cells],
+            #[cfg(feature = "cufft")]
+            fft_plan: None,
+            d_reduction_out,
+            d_reduction_buffer_f32,
+            d_u_hat,
+            d_u_hat_out,
+            rho: vec![1.0; n_cells],
+            u: vec![[0.0; 3]; n_cells],
         })
     }
 
     fn encode_f32_to_bytes(values: &[f32]) -> Vec<u8> {
-        values.iter().flat_map(|v| v.to_le_bytes()).collect::<Vec<u8>>()
+        values
+            .iter()
+            .flat_map(|v| v.to_le_bytes())
+            .collect::<Vec<u8>>()
     }
 
     fn encode_bf16_to_bytes(values: &[f32]) -> Vec<u8> {
@@ -331,15 +413,28 @@ impl LbmSolver3DCuda {
             shared_mem_bytes: 0,
         };
         let mut b = self.stream.launch_builder(&self.lbm_step_fused_kernel);
-        b.arg(&self.d_f).arg(&mut self.d_f_tmp).arg(&mut self.d_rho).arg(&mut self.d_u).arg(&self.d_force).arg(&self.d_tau).arg(&nx).arg(&ny).arg(&nz);
+        b.arg(&self.d_f)
+            .arg(&mut self.d_f_tmp)
+            .arg(&mut self.d_rho)
+            .arg(&mut self.d_u)
+            .arg(&self.d_force)
+            .arg(&self.d_tau)
+            .arg(&nx)
+            .arg(&ny)
+            .arg(&nz);
         unsafe { b.launch(config) }?;
-        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp); 
+        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
         Ok(())
     }
 
     pub fn calculate_enstrophy(&mut self) -> Result<f32> {
-        let (nx, ny, nz, n) = (self.nx as i32, self.ny as i32, self.nz as i32, self.n_cells as i32);
-        
+        let (nx, ny, nz, n) = (
+            self.nx as i32,
+            self.ny as i32,
+            self.nz as i32,
+            self.n_cells as i32,
+        );
+
         let (out_ptr, _) = self.d_reduction_out.device_ptr(&self.stream);
         let mut bz = self.stream.launch_builder(&self.zero_kernel);
         bz.arg(&out_ptr);
@@ -347,15 +442,43 @@ impl LbmSolver3DCuda {
 
         let mut b = self.stream.launch_builder(&self.enstrophy_cell_kernel);
         let d_u_ptr = self.d_u.device_ptr(&self.stream).0;
-        let d_enstrophy_buffer_ptr = self.d_reduction_buffer_f32.as_ref().unwrap().device_ptr(&self.stream).0;
+        let d_enstrophy_buffer_ptr = self
+            .d_reduction_buffer_f32
+            .as_ref()
+            .unwrap()
+            .device_ptr(&self.stream)
+            .0;
 
-        b.arg(&d_u_ptr).arg(&d_enstrophy_buffer_ptr).arg(&nx).arg(&ny).arg(&nz);
-        unsafe { b.launch(LaunchConfig { grid_dim: (self.nx.div_ceil(2) as u32, self.ny.div_ceil(2) as u32, self.nz.div_ceil(2) as u32), block_dim: (2, 2, 2), shared_mem_bytes: 0 }) }?;
+        b.arg(&d_u_ptr)
+            .arg(&d_enstrophy_buffer_ptr)
+            .arg(&nx)
+            .arg(&ny)
+            .arg(&nz);
+        unsafe {
+            b.launch(LaunchConfig {
+                grid_dim: (
+                    self.nx.div_ceil(2) as u32,
+                    self.ny.div_ceil(2) as u32,
+                    self.nz.div_ceil(2) as u32,
+                ),
+                block_dim: (2, 2, 2),
+                shared_mem_bytes: 0,
+            })
+        }?;
 
         let grid_size = self.n_cells.div_ceil(256) as u32;
-        let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_kernel);
-        b_reduce.arg(self.d_reduction_buffer_f32.as_ref().unwrap()).arg(&mut self.d_reduction_out).arg(&n);
-        unsafe { b_reduce.launch(LaunchConfig { grid_dim: (grid_size, 1, 1), block_dim: (256, 1, 1), shared_mem_bytes: 0 }) }?;
+        let mut b_reduce = self.stream.launch_builder(&self.reduce_sum_f32_kernel);
+        b_reduce
+            .arg(self.d_reduction_buffer_f32.as_ref().unwrap())
+            .arg(&mut self.d_reduction_out)
+            .arg(&n);
+        unsafe {
+            b_reduce.launch(LaunchConfig {
+                grid_dim: (grid_size, 1, 1),
+                block_dim: (256, 1, 1),
+                shared_mem_bytes: 0,
+            })
+        }?;
 
         let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
         Ok(res[0] / self.n_cells as f32)
@@ -367,13 +490,19 @@ impl LbmSolver3DCuda {
         let mut bz = self.stream.launch_builder(&self.zero_kernel);
         bz.arg(&out_ptr);
         unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
-        let mut b = self.stream.launch_builder(&self.reduce_sum_kernel);
-        
+        let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
+
         // Correctly passing &self.d_rho instead of &self.d_rho.device_ptr
         b.arg(&self.d_rho).arg(&mut self.d_reduction_out).arg(&n);
-        
+
         let grid_size = self.n_cells.div_ceil(256) as u32;
-        unsafe { b.launch(LaunchConfig { grid_dim: (grid_size, 1, 1), block_dim: (256, 1, 1), shared_mem_bytes: 0 }) }?;
+        unsafe {
+            b.launch(LaunchConfig {
+                grid_dim: (grid_size, 1, 1),
+                block_dim: (256, 1, 1),
+                shared_mem_bytes: 0,
+            })
+        }?;
         let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
         Ok(res[0] / self.n_cells as f32)
     }
@@ -446,28 +575,55 @@ impl LbmSolver3DCuda {
         Ok(())
     }
 
-    pub fn apply_spectral_mask(&self, u_hat: &mut CudaSlice<ComplexDevice>, mask: &CudaSlice<f32>, damping: f32) -> Result<()> {
+    pub fn apply_spectral_mask(
+        &self,
+        u_hat: &mut CudaSlice<ComplexDevice>,
+        mask: &CudaSlice<f32>,
+        damping: f32,
+    ) -> Result<()> {
         let n = self.n_cells as i32;
         let mut b = self.stream.launch_builder(&self.apply_mask_kernel);
         b.arg(u_hat).arg(mask).arg(&damping).arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        Ok(())
     }
 
-    pub fn convert_real_to_complex(&self, d_u_hat: &mut CudaSlice<ComplexDevice>, component: usize) -> Result<()> {
+    pub fn convert_real_to_complex(
+        &self,
+        d_u_hat: &mut CudaSlice<ComplexDevice>,
+        component: usize,
+    ) -> Result<()> {
         let (c, n) = (component as i32, self.n_cells as i32);
-        let mut b = self.stream.launch_builder(&self.convert_real_to_complex_kernel);
+        let mut b = self
+            .stream
+            .launch_builder(&self.convert_real_to_complex_kernel);
         b.arg(&self.d_u).arg(d_u_hat).arg(&c).arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        Ok(())
     }
 
-    pub fn convert_complex_to_real(&mut self, d_u_hat: &CudaSlice<ComplexDevice>, component: usize, scale: f32) -> Result<()> {
+    pub fn convert_complex_to_real(
+        &mut self,
+        d_u_hat: &CudaSlice<ComplexDevice>,
+        component: usize,
+        scale: f32,
+    ) -> Result<()> {
         let (c, n) = (component as i32, self.n_cells as i32);
-        let mut b = self.stream.launch_builder(&self.convert_complex_to_real_kernel);
-        b.arg(d_u_hat).arg(&mut self.d_u).arg(&c).arg(&scale).arg(&n);
-        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?; Ok(())
+        let mut b = self
+            .stream
+            .launch_builder(&self.convert_complex_to_real_kernel);
+        b.arg(d_u_hat)
+            .arg(&mut self.d_u)
+            .arg(&c)
+            .arg(&scale)
+            .arg(&n);
+        unsafe { b.launch(LaunchConfig::for_num_elems(self.n_cells as u32)) }?;
+        Ok(())
     }
 
-    pub fn stream(&self) -> &Arc<CudaStream> { &self.stream }
+    pub fn stream(&self) -> &Arc<CudaStream> {
+        &self.stream
+    }
 }
 
 impl Drop for LbmSolver3DCuda {
@@ -531,29 +687,41 @@ mod tests {
 
     #[test]
     fn init_and_first_step_are_finite_fp32() {
-        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
-        let mean0 = solver.calculate_mean_density().expect("mean density should compute");
+        let Some(mut solver) = maybe_solver(Precision::FP32) else {
+            return;
+        };
+        let mean0 = solver
+            .calculate_mean_density()
+            .expect("mean density should compute");
         assert!(mean0.is_finite());
         assert_abs_diff_eq!(mean0, 1.0, epsilon = 1.0e-3);
 
         solver.step().expect("first step should succeed");
-        let mean1 = solver.calculate_mean_density().expect("mean density after first step");
+        let mean1 = solver
+            .calculate_mean_density()
+            .expect("mean density after first step");
         assert!(mean1.is_finite());
         assert_abs_diff_eq!(mean1, 1.0, epsilon = 1.0e-2);
     }
 
     #[test]
     fn mean_density_is_mean_not_sum() {
-        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+        let Some(mut solver) = maybe_solver(Precision::FP32) else {
+            return;
+        };
         // With uniform rho=1 init, true mean must be ~1 regardless of cell count.
-        let mean = solver.calculate_mean_density().expect("mean density should compute");
+        let mean = solver
+            .calculate_mean_density()
+            .expect("mean density should compute");
         assert!(mean.is_finite());
         assert!(mean < 2.0, "expected mean close to 1, got {mean}");
     }
 
     #[test]
     fn sync_to_host_populates_fresh_buffers_bf16() {
-        let Some(mut solver) = maybe_solver(Precision::BF16) else { return };
+        let Some(mut solver) = maybe_solver(Precision::BF16) else {
+            return;
+        };
         solver.step().expect("step should succeed");
         solver.sync_to_host().expect("sync_to_host should succeed");
 
@@ -568,13 +736,19 @@ mod tests {
 
     #[test]
     fn zero_density_guard_prevents_nan_propagation_fp32() {
-        let Some(mut solver) = maybe_solver(Precision::FP32) else { return };
+        let Some(mut solver) = maybe_solver(Precision::FP32) else {
+            return;
+        };
         solver
             .set_all_distributions_for_test(0.0)
             .expect("test setup should succeed");
-        solver.step().expect("step should succeed with zeroed distributions");
+        solver
+            .step()
+            .expect("step should succeed with zeroed distributions");
 
-        let mean = solver.calculate_mean_density().expect("mean density should compute");
+        let mean = solver
+            .calculate_mean_density()
+            .expect("mean density should compute");
         assert!(mean.is_finite());
         assert!(mean > 0.0);
 

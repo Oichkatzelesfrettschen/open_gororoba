@@ -286,7 +286,7 @@ description = "Short GPU smoke lane for warp ring (8^3 and 16^3, FP32/BF16) with
 [[binary]]
 name = "warp-production-suite"
 crate = "gororoba_cli"
-description = "Production lane for warp ring (128^3 and 256^3) with timing report, telemetry sampling, and acceptance gating"
+description = "Production lane for warp ring (128^3 and 256^3) with timing report, telemetry sampling, and canonical_300s_measured acceptance gating"
 
 [[binary]]
 name = "warp-basemark-suite"
@@ -296,7 +296,7 @@ description = "Basemark lane for warp ring emitting HDF5 + timing TOML per case 
 [[binary]]
 name = "warp-fastpath-suite"
 crate = "gororoba_cli"
-description = "Automated BF16 block-dim sweep plus tuned 300s production rerun and fastpath comparison report generation"
+description = "Automated BF16 block-dim sweep plus tuned 300s production rerun and fastpath comparison report generation with canonical_300s_measured production gating"
 
 [[binary]]
 name = "warp-fastpath-analyze"
@@ -497,4 +497,4 @@ experiment = "E-034"
 [[binary]]
 name = "warp-acceptance-gate"
 crate = "gororoba_cli"
-description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks"
+description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks and TOML policy-driven canonical_300s_measured thresholds"

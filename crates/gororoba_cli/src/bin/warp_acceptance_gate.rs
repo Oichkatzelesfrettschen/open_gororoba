@@ -8,6 +8,10 @@ use data_core::quality::{
     validate_rho_trace, validate_scalar_trace_signal, RhoQualityThresholds, ScalarTraceThresholds,
 };
 #[cfg(feature = "hdf5-export")]
+use gororoba_cli::warp_gate_policy::{
+    load_warp_gate_policy, CANONICAL_REQUIRED_SPECTRAL_CHANNELS, CANONICAL_REQUIRED_TRACE_CHANNELS,
+};
+#[cfg(feature = "hdf5-export")]
 use std::collections::BTreeSet;
 use std::error::Error;
 #[cfg(feature = "hdf5-export")]
@@ -209,6 +213,15 @@ fn model_lock_fraction(measured: &[f64], model: &[f64], abs_eps: f64, rel_eps: f
     locked as f64 / n as f64
 }
 
+#[cfg(feature = "hdf5-export")]
+fn nonzero_fraction(values: &[f64], abs_eps: f64) -> f64 {
+    if values.is_empty() {
+        return 0.0;
+    }
+    let nonzero = values.iter().filter(|v| v.abs() > abs_eps).count();
+    nonzero as f64 / values.len() as f64
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
 
@@ -229,6 +242,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
 
         let thresholds = RhoQualityThresholds::default();
+        let loaded_policy = if matches!(
+            cli.profile,
+            GateProfile::Canonical300s | GateProfile::Canonical300sMeasured
+        ) {
+            Some(load_warp_gate_policy()?)
+        } else {
+            None
+        };
         let mut file_count = 0usize;
         let mut datasets_total = 0usize;
         let mut numeric_checked = 0usize;
@@ -307,26 +328,20 @@ fn main() -> Result<(), Box<dyn Error>> {
                 std::io::Error::other(format!("{}: rho quality gate failed: {e}", path.display()))
             })?;
 
+            let mut measured_summary = String::new();
             if matches!(
                 cli.profile,
                 GateProfile::Canonical300s | GateProfile::Canonical300sMeasured
             ) {
+                let loaded = loaded_policy.as_ref().ok_or_else(|| {
+                    std::io::Error::other("canonical profile requested without loaded policy")
+                })?;
+                let policy = &loaded.policy;
                 let nonzero_thresholds = ScalarTraceThresholds {
-                    // Canonical traces can be near-steady for some physically valid
-                    // channels (e.g., power injection proxy in quasi-laminar regimes),
-                    // so we require finite + non-zero magnitude and avoid mandatory
-                    // variance for those channels.
-                    min_abs_max: 1.0e-14,
-                    min_std_dev: 0.0,
+                    min_abs_max: policy.canonical_scalar_signal.min_abs_max,
+                    min_std_dev: policy.canonical_scalar_signal.min_std_dev,
                 };
-                let required_channels = [
-                    "u_rms",
-                    "mach_eff",
-                    "re_eff",
-                    "power_injection_proxy",
-                    "dissipation_proxy",
-                ];
-                for channel in required_channels {
+                for channel in CANONICAL_REQUIRED_TRACE_CHANNELS {
                     let values = require_trace_component(path, channel, n)?;
                     validate_scalar_trace_signal(channel, &values, nonzero_thresholds).map_err(
                         |e| {
@@ -338,8 +353,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     )?;
                 }
                 let enstrophy_thresholds = ScalarTraceThresholds {
-                    min_abs_max: 1.0e-20,
-                    min_std_dev: 0.0,
+                    min_abs_max: policy.canonical_enstrophy_signal.min_abs_max,
+                    min_std_dev: policy.canonical_enstrophy_signal.min_std_dev,
                 };
                 validate_scalar_trace_signal("enstrophy", &enstrophy, enstrophy_thresholds)
                     .map_err(|e| {
@@ -370,13 +385,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     ))
                     .into());
                 }
-                for channel in [
-                    "k_peak",
-                    "total_power",
-                    "slope",
-                    "triad_count",
-                    "triad_clustering",
-                ] {
+                for channel in CANONICAL_REQUIRED_SPECTRAL_CHANNELS {
                     let values =
                         read_simulation_spectral_component(path, channel).map_err(|e| {
                             std::io::Error::other(format!(
@@ -406,9 +415,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
             if cli.profile == GateProfile::Canonical300sMeasured {
+                let loaded = loaded_policy.as_ref().ok_or_else(|| {
+                    std::io::Error::other("measured profile requested without loaded policy")
+                })?;
+                let policy = &loaded.policy;
                 let measured_thresholds = ScalarTraceThresholds {
-                    min_abs_max: 1.0e-20,
-                    min_std_dev: 0.0,
+                    min_abs_max: policy.measured_enstrophy_signal.min_abs_max,
+                    min_std_dev: policy.measured_enstrophy_signal.min_std_dev,
                 };
                 let enstrophy_measured = require_trace_component(path, "enstrophy_measured", n)?;
                 validate_scalar_trace_signal(
@@ -424,8 +437,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 })?;
 
                 let algebra_thresholds = ScalarTraceThresholds {
-                    min_abs_max: 1.0e-20,
-                    min_std_dev: 0.0,
+                    min_abs_max: policy.measured_algebra_norm_signal.min_abs_max,
+                    min_std_dev: policy.measured_algebra_norm_signal.min_std_dev,
                 };
                 validate_scalar_trace_signal("algebra_norm", &algebra_norm, algebra_thresholds)
                     .map_err(|e| {
@@ -438,11 +451,12 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let u_rms = require_trace_component(path, "u_rms", n)?;
                 let u_rms_model = require_trace_component(path, "u_rms_model", n)?;
                 let lock_fraction = model_lock_fraction(&u_rms, &u_rms_model, 1.0e-14, 1.0e-6);
-                if lock_fraction >= 0.999 {
+                if lock_fraction >= policy.u_rms_model_lock_max_fraction {
                     return Err(std::io::Error::other(format!(
-                        "{}: u_rms is model-locked (fraction={:.6}); measured activity gate failed",
+                        "{}: u_rms is model-locked (fraction={:.6} >= {:.6}); measured activity gate failed",
                         path.display(),
-                        lock_fraction
+                        lock_fraction,
+                        policy.u_rms_model_lock_max_fraction
                     ))
                     .into());
                 }
@@ -454,13 +468,14 @@ fn main() -> Result<(), Box<dyn Error>> {
                             path.display()
                         ))
                     })?;
+                let spectral_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.measured_spectral_total_power_signal.min_abs_max,
+                    min_std_dev: policy.measured_spectral_total_power_signal.min_std_dev,
+                };
                 validate_scalar_trace_signal(
                     "spectral_total_power",
                     &spectral_total_power,
-                    ScalarTraceThresholds {
-                        min_abs_max: 1.0e-24,
-                        min_std_dev: 0.0,
-                    },
+                    spectral_thresholds,
                 )
                 .map_err(|e| {
                     std::io::Error::other(format!(
@@ -468,6 +483,59 @@ fn main() -> Result<(), Box<dyn Error>> {
                         path.display()
                     ))
                 })?;
+
+                let enstrophy_measured_nonzero_fraction = nonzero_fraction(
+                    &enstrophy_measured,
+                    policy.measured_enstrophy_signal.min_abs_max,
+                );
+                if enstrophy_measured_nonzero_fraction
+                    < policy.measured_enstrophy_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: measured enstrophy nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        enstrophy_measured_nonzero_fraction,
+                        policy.measured_enstrophy_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                let algebra_norm_nonzero_fraction = nonzero_fraction(
+                    &algebra_norm,
+                    policy.measured_algebra_norm_signal.min_abs_max,
+                );
+                if algebra_norm_nonzero_fraction < policy.measured_algebra_norm_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: algebra_norm nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        algebra_norm_nonzero_fraction,
+                        policy.measured_algebra_norm_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                let spectral_total_power_nonzero_fraction = nonzero_fraction(
+                    &spectral_total_power,
+                    policy.measured_spectral_total_power_signal.min_abs_max,
+                );
+                if spectral_total_power_nonzero_fraction
+                    < policy.measured_spectral_total_power_nonzero_fraction_min
+                {
+                    return Err(std::io::Error::other(format!(
+                        "{}: spectral_total_power nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        spectral_total_power_nonzero_fraction,
+                        policy.measured_spectral_total_power_nonzero_fraction_min
+                    ))
+                    .into());
+                }
+                measured_summary = format!(
+                    ", enstrophy_measured_nonzero_fraction={:.4}, algebra_norm_nonzero_fraction={:.4}, spectral_total_power_nonzero_fraction={:.4}, u_rms_model_lock_fraction={:.6}, policy={}",
+                    enstrophy_measured_nonzero_fraction,
+                    algebra_norm_nonzero_fraction,
+                    spectral_total_power_nonzero_fraction,
+                    lock_fraction,
+                    loaded.source_path.display()
+                );
             }
 
             file_count += 1;
@@ -476,7 +544,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             unsupported_layouts += report.unsupported_numeric_layouts;
             non_finite_numeric_datasets += report.datasets_with_non_finite;
             println!(
-                "[OK]   {}: profile={}, n={}, rho_final={:.6}, rho_drift={:.3e}, rho_std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}",
+                "[OK]   {}: profile={}, n={}, rho_final={:.6}, rho_drift={:.3e}, rho_std={:.3e}, datasets_total={}, numeric_checked={}, unsupported={}, non_finite_numeric_datasets={}{}",
                 path.display(),
                 cli.profile.as_str(),
                 n,
@@ -486,7 +554,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 report.datasets_total,
                 report.numeric_checked,
                 report.unsupported_numeric_layouts,
-                report.datasets_with_non_finite
+                report.datasets_with_non_finite,
+                measured_summary
             );
         }
 

@@ -12,8 +12,8 @@ use std::process::Command;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
 use warp_runner::{
-    gate_h5_outputs, print_case_report, run_case, write_step_timing_report, BackendKind, BenchCase,
-    BenchCaseReport, TimingMode,
+    gate_h5_outputs_with_profile, print_case_report, run_case, write_step_timing_report,
+    BackendKind, BenchCase, BenchCaseReport, GateProfile, TimingMode,
 };
 
 #[derive(Debug, Clone)]
@@ -457,7 +457,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             mlups_values.push(artifact.report.mlups);
         }
 
-        gate_h5_outputs(&artifacts)?;
+        gate_h5_outputs_with_profile(&artifacts, GateProfile::Canonical300s)?;
         let geom_mlups = geometric_mean(&mlups_values);
         println!(
             "  [SCORE] block_dim={} geom_mlups={:.6}",
@@ -549,7 +549,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             production_artifacts.push(out_h5);
             production_records.insert(res, artifact);
         }
-        gate_h5_outputs(&production_artifacts)?;
+        gate_h5_outputs_with_profile(&production_artifacts, GateProfile::Canonical300sMeasured)?;
         Ok(())
     })();
 
@@ -713,22 +713,39 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut enstrophy_zero_all = true;
     let mut algebra_zero_all = true;
-    for artifact in production_records.values() {
+    let mut quantization_lines = Vec::new();
+    for (&res, artifact) in &production_records {
         if !trace_component_all_zero(&artifact.h5_path, "enstrophy")? {
             enstrophy_zero_all = false;
         }
         if !trace_component_all_zero(&artifact.h5_path, "algebra_norm")? {
             algebra_zero_all = false;
         }
+        quantization_lines.push(format!(
+            "{}^3 delta_f_over_ulp={:.3e}",
+            res, artifact.report.forcing.bf16_delta_to_ulp_ratio
+        ));
     }
     let trace_content_signature = if enstrophy_zero_all && algebra_zero_all {
-        "enstrophy and algebra_norm traces are zero-filled in current exports; not yet discriminative for physics-state differences.".to_string()
+        format!(
+            "enstrophy and algebra_norm traces are zero-filled in current exports; likely BF16 forcing quantization-limited ({})",
+            quantization_lines.join(", ")
+        )
     } else if enstrophy_zero_all {
-        "enstrophy traces are zero-filled but algebra_norm has non-zero structure.".to_string()
+        format!(
+            "enstrophy traces are zero-filled but algebra_norm has non-zero structure ({}).",
+            quantization_lines.join(", ")
+        )
     } else if algebra_zero_all {
-        "algebra_norm traces are zero-filled but enstrophy has non-zero structure.".to_string()
+        format!(
+            "algebra_norm traces are zero-filled but enstrophy has non-zero structure ({}).",
+            quantization_lines.join(", ")
+        )
     } else {
-        "enstrophy and algebra_norm traces both contain non-zero structure.".to_string()
+        format!(
+            "enstrophy and algebra_norm traces both contain non-zero structure ({}).",
+            quantization_lines.join(", ")
+        )
     };
 
     let report_path = unique_report_path();

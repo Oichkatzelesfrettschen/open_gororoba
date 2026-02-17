@@ -215,6 +215,13 @@ extern "C" __global__ void reduce_sum_bf16_to_f32_kernel(const __nv_bfloat16* in
     atomicAdd(out, sum);
 }
 
+extern "C" __global__ void reduce_sum_kernel(const float* in, float* out, int n) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    float sum = 0.0f;
+    for (int i = idx; i < n; i += blockDim.x * gridDim.x) sum += in[i];
+    atomicAdd(out, sum);
+}
+
 extern "C" __global__ void apply_spectral_mask_kernel(ComplexDeviceF* u_hat, const float* mask, float damping, int n_cells) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < n_cells && mask[idx] < 0.5f) { u_hat[idx].re *= damping; u_hat[idx].im *= damping; }
