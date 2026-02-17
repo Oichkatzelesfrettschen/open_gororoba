@@ -410,6 +410,10 @@ path = "src/bin/compute-all-lambdas.rs"
 name = "demo-real-materials"
 path = "src/bin/demo_real_materials.rs"
 
+[[bin]]
+name = "demo-optical-titanates"
+path = "src/bin/demo_optical_titanates.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }

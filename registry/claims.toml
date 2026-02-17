@@ -5485,13 +5485,14 @@ claims = ["C-010"]
 
 [[claim]]
 id = "C-418"
-statement = "Material Database tracks temperature-dependent phase transitions (e.g., Ice Ih/VII/X) and wide-spectrum optical dispersion (Sellmeier/Drude) for 20+ compounds."
-where_stated = "`crates/materials_core/src/optical_database.rs`, `data/external/SiO2_refractive_index.csv`, `data/external/TiO2_rutile_refractive_index.csv`"
+statement = "Material Database tracks temperature-dependent phase transitions (e.g., Ice Ih/VII/X) and wide-spectrum optical dispersion (Sellmeier/Drude) for 25 compounds including Rakic 11-metal canonical set, titanates, and TCOs."
+where_stated = "`crates/materials_core/src/optical_database.rs` (get_material, list_materials), `crates/gororoba_cli/src/bin/demo_optical_titanates.rs`"
 status = "Verified"
-last_verified = "2026-02-06"
-what_would_verify_refute = "Implemented `MaterialDatabase` with explicit Sellmeier models for Quartz/Sapphire/Diamond and Drude models for Gold. Tracks density and hardness. Includes exotic phases (Ice VII/X, QGP). Phase 7 R6: Closed as engineering database; literature-sourced optical constants verified."
-confidence = "medium"
+last_verified = "2026-02-17"
+what_would_verify_refute = "Sprint 43 expansion: 25 materials with Drude-Lorentz models (Au, Ag, Cu, Al, Be, Cr, Ni, Pd, Pt, Ti, W, Si, Ge, SiO2, Si3N4, Al2O3, Diamond, Quartz, TiO2, TiO, SrTiO3, SrTiO3:n, LaTiO3, AZO, doped Si). All have provenance fields (validity_range_ev, temperature_k, CasimirModelFlag). Extended Drude infrastructure supports frequency-dependent scattering. WHAT WOULD REFUTE: list_materials().len() < 25 or any material lacking provenance."
+confidence = "high"
 phase = "materials"
+sprint = 43
 
 [[claim]]
 id = "C-419"
@@ -11116,3 +11117,69 @@ confidence = "high"
 phase = "algebra"
 sprint = 42
 dependencies = ["C-452"]
+
+[[claim]]
+id = "C-697"
+statement = "Optical database covers Rakic 11-metal canonical set (Au, Ag, Cu, Al, Be, Cr, Ni, Pd, Pt, Ti, W) with Drude-Lorentz fits for 0.1-6 eV range."
+where_stated = "`crates/materials_core/src/optical_database.rs` (beryllium_drude_lorentz through tungsten_drude_lorentz)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: All 11 metals have _drude() and _drude_lorentz() constructors. Tests confirm metallic sign (eps.re < 0 at 2 eV) and imaginary-freq monotonicity. Parameters from Rakic et al. Applied Optics 37(22), 5271-5283 (1998). WHAT WOULD REFUTE: any Rakic metal with eps.re > 0 at 2 eV."
+confidence = "high"
+phase = "materials"
+sprint = 43
+
+[[claim]]
+id = "C-698"
+statement = "TiO (titanium monoxide) optical model exhibits metallic Drude response with large scattering rate (gamma=0.5 eV), consistent with bad-metal behavior."
+where_stated = "`crates/materials_core/src/optical_database.rs` (tio_optical)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: eps.re < 0 at 0.5 eV confirms metallic character. Large gamma relative to omega_p places TiO in the bad-metal regime. Parameters from Barman & Sarma PRB 51 (1995). WHAT WOULD REFUTE: eps.re > 0 below 1 eV."
+confidence = "high"
+phase = "materials"
+sprint = 43
+
+[[claim]]
+id = "C-699"
+statement = "SrTiO3 optical model reproduces 3-mode IR phonon spectrum with soft-mode enhancement near 11 meV (TO1 mode)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (srtio3_optical)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Im[eps] shows strong peak near 11 meV soft mode. 3 oscillators at 11, 22, 65 meV from Servoin et al. PRB 22 (1980). WHAT WOULD REFUTE: featureless Im[eps] in 5-80 meV range."
+confidence = "high"
+phase = "materials"
+sprint = 43
+
+[[claim]]
+id = "C-700"
+statement = "LaTiO3 optical model exhibits Mott gap absorption at 0.2 eV with mid-IR spectral weight, consistent with correlated-insulator character."
+where_stated = "`crates/materials_core/src/optical_database.rs` (latio3_optical)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: Strong absorption (oscillator at 0.2 eV) with large gamma=0.15 eV reproduces broad Mott gap feature. Parameters from Okimoto et al. PRB 51 (1995). WHAT WOULD REFUTE: no absorption feature near 0.2 eV."
+confidence = "high"
+phase = "materials"
+sprint = 43
+
+[[claim]]
+id = "C-701"
+statement = "Extended Drude with ScatteringModel::Constant reproduces standard constant-gamma Drude to machine precision (regression test)."
+where_stated = "`crates/materials_core/src/optical_database.rs` (test_constant_scattering_matches_regular_drude)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: |eps_regular - eps_extended| < 1e-10 at all test frequencies (0.5, 1, 2, 5 eV) for both real-frequency and imaginary-frequency epsilon. WHAT WOULD REFUTE: any frequency where the two implementations disagree beyond 1e-10."
+confidence = "high"
+phase = "materials"
+sprint = 43
+
+[[claim]]
+id = "C-702"
+statement = "Drude-Smith model with backscatter c<0 systematically suppresses DC metallic response (localization correction), reducing |eps.re| at low frequencies."
+where_stated = "`crates/materials_core/src/optical_database.rs` (test_drude_smith_negative_c_suppresses_dc)"
+status = "Verified"
+last_verified = "2026-02-17"
+what_would_verify_refute = "VERIFIED: At 0.1 eV, Smith (c=-0.8) has less negative eps.re than standard Drude, consistent with Anderson localization suppressing itinerant response. At c=0 Smith matches regular Drude exactly. WHAT WOULD REFUTE: Smith c<0 producing MORE metallic response than regular Drude."
+confidence = "high"
+phase = "materials"
+sprint = 43
