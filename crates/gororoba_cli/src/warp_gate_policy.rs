@@ -29,9 +29,11 @@ pub struct WarpGatePolicy {
     pub canonical_scalar_signal: ScalarSignalThreshold,
     pub canonical_enstrophy_signal: ScalarSignalThreshold,
     pub measured_enstrophy_signal: ScalarSignalThreshold,
+    pub measured_u_rms_signal: ScalarSignalThreshold,
     pub measured_algebra_norm_signal: ScalarSignalThreshold,
     pub measured_spectral_total_power_signal: ScalarSignalThreshold,
     pub measured_enstrophy_nonzero_fraction_min: f64,
+    pub measured_u_rms_nonzero_fraction_min: f64,
     pub measured_algebra_norm_nonzero_fraction_min: f64,
     pub measured_spectral_total_power_nonzero_fraction_min: f64,
     pub u_rms_model_lock_max_fraction: f64,
@@ -52,6 +54,10 @@ impl Default for WarpGatePolicy {
                 min_abs_max: 1.0e-20,
                 min_std_dev: 0.0,
             },
+            measured_u_rms_signal: ScalarSignalThreshold {
+                min_abs_max: 1.0e-14,
+                min_std_dev: 0.0,
+            },
             measured_algebra_norm_signal: ScalarSignalThreshold {
                 min_abs_max: 1.0e-20,
                 min_std_dev: 0.0,
@@ -61,6 +67,7 @@ impl Default for WarpGatePolicy {
                 min_std_dev: 0.0,
             },
             measured_enstrophy_nonzero_fraction_min: 0.01,
+            measured_u_rms_nonzero_fraction_min: 0.01,
             measured_algebra_norm_nonzero_fraction_min: 0.01,
             measured_spectral_total_power_nonzero_fraction_min: 0.01,
             u_rms_model_lock_max_fraction: 0.999,
@@ -102,11 +109,14 @@ struct Canonical300sToml {
 struct Canonical300sMeasuredToml {
     enstrophy_measured_min_abs_max: Option<f64>,
     enstrophy_measured_min_std_dev: Option<f64>,
+    u_rms_min_abs_max: Option<f64>,
+    u_rms_min_std_dev: Option<f64>,
     algebra_norm_min_abs_max: Option<f64>,
     algebra_norm_min_std_dev: Option<f64>,
     spectral_total_power_min_abs_max: Option<f64>,
     spectral_total_power_min_std_dev: Option<f64>,
     enstrophy_measured_nonzero_fraction_min: Option<f64>,
+    u_rms_nonzero_fraction_min: Option<f64>,
     algebra_norm_nonzero_fraction_min: Option<f64>,
     spectral_total_power_nonzero_fraction_min: Option<f64>,
     u_rms_model_lock_max_fraction: Option<f64>,
@@ -150,6 +160,12 @@ fn apply_canonical_300s_measured_overrides(
         if let Some(v) = src.enstrophy_measured_min_std_dev {
             policy.measured_enstrophy_signal.min_std_dev = v;
         }
+        if let Some(v) = src.u_rms_min_abs_max {
+            policy.measured_u_rms_signal.min_abs_max = v;
+        }
+        if let Some(v) = src.u_rms_min_std_dev {
+            policy.measured_u_rms_signal.min_std_dev = v;
+        }
         if let Some(v) = src.algebra_norm_min_abs_max {
             policy.measured_algebra_norm_signal.min_abs_max = v;
         }
@@ -164,6 +180,9 @@ fn apply_canonical_300s_measured_overrides(
         }
         if let Some(v) = src.enstrophy_measured_nonzero_fraction_min {
             policy.measured_enstrophy_nonzero_fraction_min = v;
+        }
+        if let Some(v) = src.u_rms_nonzero_fraction_min {
+            policy.measured_u_rms_nonzero_fraction_min = v;
         }
         if let Some(v) = src.algebra_norm_nonzero_fraction_min {
             policy.measured_algebra_norm_nonzero_fraction_min = v;

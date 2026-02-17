@@ -98,7 +98,7 @@ fn test_polytropic_sweep_gamma_dependence() {
     // Critical gamma (if found) should be in sweep range
     if let Some(gamma_crit) = results.gamma_critical {
         assert!(
-            gamma_crit >= 1.0 && gamma_crit <= 2.5,
+            (1.0..=2.5).contains(&gamma_crit),
             "Critical gamma {} should be in sweep range",
             gamma_crit
         );

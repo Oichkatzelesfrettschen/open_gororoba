@@ -1523,6 +1523,16 @@ pub fn gate_h5_outputs_with_profile(
                     })?;
 
                 let u_rms = require_trace_component(path, "u_rms", n)?;
+                let u_rms_thresholds = ScalarTraceThresholds {
+                    min_abs_max: policy.measured_u_rms_signal.min_abs_max,
+                    min_std_dev: policy.measured_u_rms_signal.min_std_dev,
+                };
+                validate_scalar_trace_signal("u_rms", &u_rms, u_rms_thresholds).map_err(|e| {
+                    std::io::Error::other(format!(
+                        "{}: measured u_rms gate failed: {e}",
+                        path.display()
+                    ))
+                })?;
                 let u_rms_model = require_trace_component(path, "u_rms_model", n)?;
                 let lock_fraction = model_lock_fraction(&u_rms, &u_rms_model, 1.0e-14, 1.0e-6);
                 if lock_fraction >= policy.u_rms_model_lock_max_fraction {
@@ -1602,9 +1612,21 @@ pub fn gate_h5_outputs_with_profile(
                     ))
                     .into());
                 }
+                let u_rms_nonzero_fraction =
+                    nonzero_fraction(&u_rms, policy.measured_u_rms_signal.min_abs_max);
+                if u_rms_nonzero_fraction < policy.measured_u_rms_nonzero_fraction_min {
+                    return Err(std::io::Error::other(format!(
+                        "{}: u_rms nonzero coverage too low ({:.6} < {:.6})",
+                        path.display(),
+                        u_rms_nonzero_fraction,
+                        policy.measured_u_rms_nonzero_fraction_min
+                    ))
+                    .into());
+                }
                 measured_summary = format!(
-                    ", enstrophy_measured_nonzero_fraction={:.4}, algebra_norm_nonzero_fraction={:.4}, spectral_total_power_nonzero_fraction={:.4}, u_rms_model_lock_fraction={:.6}, policy={}",
+                    ", enstrophy_measured_nonzero_fraction={:.4}, u_rms_nonzero_fraction={:.4}, algebra_norm_nonzero_fraction={:.4}, spectral_total_power_nonzero_fraction={:.4}, u_rms_model_lock_fraction={:.6}, policy={}",
                     enstrophy_measured_nonzero_fraction,
+                    u_rms_nonzero_fraction,
                     algebra_norm_nonzero_fraction,
                     spectral_total_power_nonzero_fraction,
                     lock_fraction,

@@ -1,0 +1,237 @@
+schema = "open_gororoba.warp_fastpath_analysis.v3"
+generated_at_utc = "2026-02-17T03:30:38.985057792+00:00"
+
+[inputs]
+production_dir = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2"
+baseline_dir = "data/h5/production/20260215-211758_precision_suite_rerun"
+legacy_dir = "data/h5/production/20260215-200556"
+trace_stride = 10
+
+[methods]
+timing_tail_method = "count histogram mass with lower_us >= p90_us and compare to steps/trace_stride"
+fidelity_method = "quantify measured-vs-model lock, fallback fractions, and spectral nonzero richness"
+timing_regime_classifier = "launch_like if p50<=50us && mean_step<=200us && p99/p50>=10; kernel_like if p50>=500us && mean_step>=500us; else transitional"
+overhead_decomposition_method = "estimate base(p50) + per-trace reduction(p90-p50) + per-trace dtoh tail(p99-p90)"
+trace_spectral_method = "naive DFT on demeaned trace for rho/enstrophy/u_rms, dominant frequency/harmonic/slope extraction"
+invariant_pack_method = "moment pack (mean/std/skew/kurtosis/lag1/entropy) + cross-correlation matrix"
+measured_gate_policy_source = "registry/engineering_standards.toml"
+invariant_method = "rho_mean final/drift/std using default rho quality thresholds"
+
+[[case]]
+resolution = 128
+h5_path = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/warp_ring_128_GPU_BF16_300s.h5"
+timing_path = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/timing_128_GPU_BF16_300s.toml"
+steps = 130141
+steps_per_sec = 433.453136
+mlups = 909.017110
+p50_us = 973.824024
+p90_us = 3118.527889
+p99_us = 6250.630379
+timing_regime = "kernel_like"
+timing_regime_mean_step_us = 2307.054482
+timing_regime_p90_to_p50 = 3.202353
+timing_regime_p99_to_p50 = 6.418645
+timing_regime_rationale = ">=500us p50 and mean step implies kernel-time-dominated timing"
+baseline_mlups = 812.078703
+delta_mlups_vs_baseline_pct = 11.9371
+tail_count = 13014
+tail_to_trace_ratio = 1.000000
+overhead_expected_trace_events = 13014
+overhead_observed_total_us = 300242377.298200
+overhead_base_step_total_us = 126734432.307384
+overhead_est_reduction_total_us = 27911176.099110
+overhead_est_dtoh_total_us = 40761181.804860
+overhead_est_total_us = 195406790.211354
+overhead_closure_error_pct = -34.916985
+rho_final = 1.000000000000
+rho_abs_drift_final = 0.000000000e0
+rho_std_dev = 0.000000000e0
+rho_mean = 1.000000000000
+rho_trace_std = 0.000000000e0
+rho_nonzero_fraction = 1.000000
+enstrophy_nonzero_fraction = 1.000000
+enstrophy_measured_present = true
+enstrophy_measured_nonzero_fraction = 1.000000
+enstrophy_fallback_fraction = 0.000000
+enstrophy_both_zero_fraction = 0.000000
+algebra_norm_nonzero_fraction = 1.000000
+u_rms_nonzero_fraction = 1.000000
+u_rms_model_present = true
+u_rms_model_lock_fraction = 0.000000
+spectral_total_power_present = true
+spectral_total_power_nonzero_fraction = 1.000000
+spectral_total_power_std_dev = 3.830422141e-10
+trace_spectral_sample_count = 13014
+trace_spectral_dt_seconds = 2.303331804e-2
+trace_spectral_rho_dom_freq_hz = 3.336051092e-3
+trace_spectral_rho_dom_period_s = 2.997556010e2
+trace_spectral_rho_dom_power = 0.000000000e0
+trace_spectral_rho_total_power = 0.000000000e0
+trace_spectral_rho_harmonic2_ratio = 0.000000000e0
+trace_spectral_rho_loglog_slope = 0.000000000e0
+trace_spectral_enstrophy_dom_freq_hz = 1.788123386e0
+trace_spectral_enstrophy_dom_period_s = 5.592455242e-1
+trace_spectral_enstrophy_dom_power = 1.169236597e-24
+trace_spectral_enstrophy_total_power = 6.751150689e-21
+trace_spectral_enstrophy_harmonic2_ratio = 8.509958961e-1
+trace_spectral_enstrophy_loglog_slope = -3.223067524e-4
+trace_spectral_u_rms_dom_freq_hz = 3.336051092e-3
+trace_spectral_u_rms_dom_period_s = 2.997556010e2
+trace_spectral_u_rms_dom_power = 7.162653915e-14
+trace_spectral_u_rms_total_power = 6.718394017e-13
+trace_spectral_u_rms_harmonic2_ratio = 9.745263779e-1
+trace_spectral_u_rms_loglog_slope = -1.809164038e0
+invariant_rho_mean = 1.000000000000
+invariant_rho_std = 0.000000000e0
+invariant_rho_skew = 0.000000000e0
+invariant_rho_kurtosis_excess = 0.000000000e0
+invariant_rho_lag1_autocorr = 0.000000000e0
+invariant_rho_entropy_bits = 0.000000000e0
+invariant_enstrophy_mean = 0.000000261729
+invariant_enstrophy_std = 1.161949278e-10
+invariant_enstrophy_skew = 1.139649626e2
+invariant_enstrophy_kurtosis_excess = 1.299367184e4
+invariant_enstrophy_lag1_autocorr = 0.000000000e0
+invariant_enstrophy_entropy_bits = 1.161089323e-3
+invariant_algebra_norm_mean = 0.000135482237
+invariant_algebra_norm_std = 1.584065075e-7
+invariant_algebra_norm_skew = 1.138605000e2
+invariant_algebra_norm_kurtosis_excess = 1.297786016e4
+invariant_algebra_norm_lag1_autocorr = 1.143754634e-3
+invariant_algebra_norm_entropy_bits = 1.161089323e-3
+invariant_u_rms_mean = 0.000881587694
+invariant_u_rms_std = 1.159171602e-6
+invariant_u_rms_skew = 4.080828687e0
+invariant_u_rms_kurtosis_excess = 1.465316277e1
+invariant_u_rms_lag1_autocorr = 9.992062481e-1
+invariant_u_rms_entropy_bits = 2.907224788e-1
+invariant_corr_rho_enstrophy = 0.000000000e0
+invariant_corr_rho_u_rms = 0.000000000e0
+invariant_corr_enstrophy_u_rms = 0.000000000e0
+invariant_lag1_corr_enstrophy_u_rms = 0.000000000e0
+
+[[case]]
+resolution = 256
+h5_path = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/warp_ring_256_GPU_BF16_300s.h5"
+timing_path = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/timing_256_GPU_BF16_300s.toml"
+steps = 13652
+steps_per_sec = 45.013445
+mlups = 755.200286
+p50_us = 9085.439682
+p90_us = 32983.243179
+p99_us = 62613.442955
+timing_regime = "kernel_like"
+timing_regime_mean_step_us = 22215.584699
+timing_regime_p90_to_p50 = 3.630341
+timing_regime_p99_to_p50 = 6.891625
+timing_regime_rationale = ">=500us p50 and mean step implies kernel-time-dominated timing"
+baseline_mlups = 772.196759
+delta_mlups_vs_baseline_pct = -2.2011
+tail_count = 1365
+tail_to_trace_ratio = 1.000000
+overhead_expected_trace_events = 1365
+overhead_observed_total_us = 303287162.313393
+overhead_base_step_total_us = 124034422.538664
+overhead_est_reduction_total_us = 32620501.773405
+overhead_est_dtoh_total_us = 40445222.694240
+overhead_est_total_us = 197100147.006309
+overhead_closure_error_pct = -35.012038
+rho_final = 1.000000000000
+rho_abs_drift_final = 0.000000000e0
+rho_std_dev = 0.000000000e0
+rho_mean = 1.000000000000
+rho_trace_std = 0.000000000e0
+rho_nonzero_fraction = 1.000000
+enstrophy_nonzero_fraction = 1.000000
+enstrophy_measured_present = true
+enstrophy_measured_nonzero_fraction = 1.000000
+enstrophy_fallback_fraction = 0.000000
+enstrophy_both_zero_fraction = 0.000000
+algebra_norm_nonzero_fraction = 1.000000
+u_rms_nonzero_fraction = 1.000000
+u_rms_model_present = true
+u_rms_model_lock_fraction = 0.000000
+spectral_total_power_present = true
+spectral_total_power_nonzero_fraction = 1.000000
+spectral_total_power_std_dev = 1.776498417e-10
+trace_spectral_sample_count = 1365
+trace_spectral_dt_seconds = 2.172506660e-1
+trace_spectral_rho_dom_freq_hz = 3.372144933e-3
+trace_spectral_rho_dom_period_s = 2.965471591e2
+trace_spectral_rho_dom_power = 0.000000000e0
+trace_spectral_rho_total_power = 0.000000000e0
+trace_spectral_rho_harmonic2_ratio = 0.000000000e0
+trace_spectral_rho_loglog_slope = 0.000000000e0
+trace_spectral_enstrophy_dom_freq_hz = 1.952471916e0
+trace_spectral_enstrophy_dom_period_s = 5.121712593e-1
+trace_spectral_enstrophy_dom_power = 1.590734133e-22
+trace_spectral_enstrophy_total_power = 8.985672893e-20
+trace_spectral_enstrophy_harmonic2_ratio = 0.000000000e0
+trace_spectral_enstrophy_loglog_slope = -1.387909811e-3
+trace_spectral_u_rms_dom_freq_hz = 3.372144933e-3
+trace_spectral_u_rms_dom_period_s = 2.965471591e2
+trace_spectral_u_rms_dom_power = 8.295113443e-14
+trace_spectral_u_rms_total_power = 7.205061784e-13
+trace_spectral_u_rms_harmonic2_ratio = 9.705039685e-1
+trace_spectral_u_rms_loglog_slope = -1.913243930e0
+invariant_rho_mean = 1.000000000000
+invariant_rho_std = 0.000000000e0
+invariant_rho_skew = 0.000000000e0
+invariant_rho_kurtosis_excess = 0.000000000e0
+invariant_rho_lag1_autocorr = 0.000000000e0
+invariant_rho_entropy_bits = 0.000000000e0
+invariant_enstrophy_mean = 0.000000262505
+invariant_enstrophy_std = 4.239262411e-10
+invariant_enstrophy_skew = 3.681412089e1
+invariant_enstrophy_kurtosis_excess = 1.355519263e3
+invariant_enstrophy_lag1_autocorr = 0.000000000e0
+invariant_enstrophy_entropy_bits = 8.686338233e-3
+invariant_algebra_norm_mean = 0.000134909764
+invariant_algebra_norm_std = 4.212839756e-7
+invariant_algebra_norm_skew = 3.671592689e1
+invariant_algebra_norm_kurtosis_excess = 1.350683966e3
+invariant_algebra_norm_lag1_autocorr = -1.291692550e-2
+invariant_algebra_norm_entropy_bits = 8.686338233e-3
+invariant_u_rms_mean = 0.000881608361
+invariant_u_rms_std = 1.200421741e-6
+invariant_u_rms_skew = 3.906166860e0
+invariant_u_rms_kurtosis_excess = 1.325813953e1
+invariant_u_rms_lag1_autocorr = 9.929258828e-1
+invariant_u_rms_entropy_bits = 3.070428888e-1
+invariant_corr_rho_enstrophy = 0.000000000e0
+invariant_corr_rho_u_rms = 0.000000000e0
+invariant_corr_enstrophy_u_rms = 1.117708735e-1
+invariant_lag1_corr_enstrophy_u_rms = 1.126298769e-1
+
+[aggregate]
+case_count = 2
+geom_mlups_tuned = 828.546910
+geom_mlups_baseline = 791.886698
+delta_geom_mlups_vs_baseline_pct = 4.6295
+rho_gate_pass = true
+launch_like_case_count = 0
+kernel_like_case_count = 2
+transitional_case_count = 0
+mean_tail_to_trace_ratio = 1.000000
+measured_activity_gate_pass = true
+
+[signatures]
+timing_regime_split = "Legacy p50 (1.700us/1.800us) is launch-like while tuned p50 (973.824us/9085.440us) is kernel-like."
+periodic_trace_overhead_fingerprint = "128^3 tail_count=13014 tail_to_trace_ratio=1.000000; 256^3 tail_count=1365 tail_to_trace_ratio=1.000000"
+invariant_signature = "rho_mean remained exactly 1.0 with zero drift/std in all analyzed runs."
+measurement_fidelity_signature = "Measured-vs-model fidelity summary: 128^3 enstrophy_measured_present=true, u_rms_model_present=true, spectral_total_power_present=true, enstrophy_measured_nonzero=1.000, fallback_fraction=0.000, both_zero_fraction=0.000, u_rms_model_lock=0.000, spectral_total_power_nonzero=1.000; 256^3 enstrophy_measured_present=true, u_rms_model_present=true, spectral_total_power_present=true, enstrophy_measured_nonzero=1.000, fallback_fraction=0.000, both_zero_fraction=0.000, u_rms_model_lock=0.000, spectral_total_power_nonzero=1.000"
+
+[[conjecture]]
+id = "WFA-C1"
+statement = "High-latency tail mass is primarily deterministic trace cadence overhead, not random jitter."
+falsifiable_test = "Run identical 300s lanes at trace_stride=5,10,20 and test if tail_to_trace_ratio remains approximately 1 while absolute tail count scales with 1/stride."
+
+[[conjecture]]
+id = "WFA-C2"
+statement = "Low measured enstrophy activity in BF16 can be instrumentation/model-lock dominated even when throughput and rho invariants look healthy."
+falsifiable_test = "Run matched FP32/BF16 with identical forcing and compare enstrophy_measured_nonzero_fraction and u_rms_model_lock_fraction under canonical_300s gating."
+
+[[conjecture]]
+id = "WFA-C3"
+statement = "A physically valid fastpath requires both performance gain and measured activity gain (nonzero spectral and enstrophy_measured channels)."
+falsifiable_test = "Adopt measured_activity_gate_pass as a required gate before claiming production-grade physics fidelity."

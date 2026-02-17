@@ -36,6 +36,14 @@ checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration o
 milestone_gate_policy = "Required for production claims and major merges: cargo clippy --workspace -j$(nproc) -- -D warnings && cargo test --workspace -j$(nproc)."
 rationale = "Balance high-velocity iteration with strict milestone integrity."
 
+[engineering_standards.gpu_run_cadence]
+default_run_class = "smoke_or_short_basemark"
+default_duration_seconds = 20
+default_sweep_repeats = 1
+avoid_concurrent_long_gpu_lanes = true
+production_300s_policy = "Run only on explicit request, or when measured-gate/fastpath changes require fresh production evidence."
+rationale = "Keep iteration cycles fast while reserving long production lanes for explicit, evidence-driven checkpoints."
+
 [engineering_standards.architecture]
 backend_pattern = "trait_based"
 backend_examples = ["LbmBackend3D enum (Cpu/Gpu)"]
@@ -87,11 +95,14 @@ enstrophy_min_std_dev = 0.0
 [engineering_standards.warp_gate_profiles.canonical_300s_measured]
 enstrophy_measured_min_abs_max = 1.0e-20
 enstrophy_measured_min_std_dev = 0.0
+u_rms_min_abs_max = 1.0e-14
+u_rms_min_std_dev = 0.0
 algebra_norm_min_abs_max = 1.0e-20
 algebra_norm_min_std_dev = 0.0
 spectral_total_power_min_abs_max = 1.0e-24
 spectral_total_power_min_std_dev = 0.0
 enstrophy_measured_nonzero_fraction_min = 0.01
+u_rms_nonzero_fraction_min = 0.01
 algebra_norm_nonzero_fraction_min = 0.01
 spectral_total_power_nonzero_fraction_min = 0.01
 u_rms_model_lock_max_fraction = 0.999

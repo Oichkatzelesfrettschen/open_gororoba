@@ -1,0 +1,187 @@
+schema = "open_gororoba.warp_bf16_fastpath_comparison.v1"
+generated_at_utc = "2026-02-17T03:30:00.129612190+00:00"
+status = "pass"
+
+[system]
+cpu = "AMD Ryzen 5 5600X3D 6-Core Processor"
+gpu = "NVIDIA GeForce RTX 4070 Ti"
+cuda = "13.1"
+
+[inputs]
+baseline_dir = "data/h5/production/20260217-010742_bf16_fastpath_measured_v1_16_4_2"
+legacy_dir = "data/h5/production/20260215-200556"
+sweep_root = "data/h5/basemarks/20260217-025713_bf16_blockdim_sweep"
+sweep_scores = "data/h5/basemarks/20260217-025713_bf16_blockdim_sweep/blockdim_sweep_scores.txt"
+production_dir = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2"
+
+[sweep]
+method = "BF16 matrix sweep at selected resolutions with cuda_events; confidence-aware winner by geometric mean LCB95 across per-resolution repeats"
+winning_block_dim = "16x4x2"
+sweep_repeats = 3
+baseline_block_dim = "4x4x4"
+min_improvement_pct = 1.000000
+env_key = "GOROROBA_LBM_BLOCK_DIM"
+
+[[sweep.candidate]]
+block_dim = "16x4x2"
+repeats_128 = 3
+mlups_mean_128 = 892.818384
+mlups_std_128 = 22.994259
+mlups_ci95_halfwidth_128 = 26.020454
+mlups_128_r1 = 922.964904
+mlups_128_r2 = 867.186031
+mlups_128_r3 = 888.304216
+repeats_256 = 3
+mlups_mean_256 = 736.297331
+mlups_std_256 = 8.624409
+mlups_ci95_halfwidth_256 = 9.759438
+mlups_256_r1 = 732.207981
+mlups_256_r2 = 728.390695
+mlups_256_r3 = 748.293315
+geom_mlups_mean = 810.789611
+geom_mlups_lcb95 = 793.575164
+geom_mlups_ucb95 = 827.952857
+
+[[sweep.candidate]]
+block_dim = "8x8x2"
+repeats_128 = 3
+mlups_mean_128 = 939.358268
+mlups_std_128 = 36.343802
+mlups_ci95_halfwidth_128 = 41.126883
+mlups_128_r1 = 976.383896
+mlups_128_r2 = 951.718338
+mlups_128_r3 = 889.972569
+repeats_256 = 3
+mlups_mean_256 = 698.435998
+mlups_std_256 = 26.944785
+mlups_ci95_halfwidth_256 = 30.490894
+mlups_256_r1 = 730.198111
+mlups_256_r2 = 664.322874
+mlups_256_r3 = 700.787008
+geom_mlups_mean = 809.988660
+geom_mlups_lcb95 = 774.576823
+geom_mlups_ucb95 = 845.400493
+
+[[sweep.candidate]]
+block_dim = "8x4x4"
+repeats_128 = 3
+mlups_mean_128 = 878.948070
+mlups_std_128 = 42.108485
+mlups_ci95_halfwidth_128 = 47.650237
+mlups_128_r1 = 938.170148
+mlups_128_r2 = 843.929081
+mlups_128_r3 = 854.744980
+repeats_256 = 3
+mlups_mean_256 = 711.125189
+mlups_std_256 = 16.830048
+mlups_ci95_halfwidth_256 = 19.044992
+mlups_256_r1 = 692.492799
+mlups_256_r2 = 733.267190
+mlups_256_r3 = 707.615576
+geom_mlups_mean = 790.596048
+geom_mlups_lcb95 = 758.501659
+geom_mlups_ucb95 = 822.541460
+
+[[sweep.candidate]]
+block_dim = "4x4x4"
+repeats_128 = 3
+mlups_mean_128 = 852.312940
+mlups_std_128 = 38.870402
+mlups_ci95_halfwidth_128 = 43.986001
+mlups_128_r1 = 857.126265
+mlups_128_r2 = 802.482801
+mlups_128_r3 = 897.329755
+repeats_256 = 3
+mlups_mean_256 = 657.123756
+mlups_std_256 = 15.913844
+mlups_ci95_halfwidth_256 = 18.008210
+mlups_256_r1 = 644.280925
+mlups_256_r2 = 679.550543
+mlups_256_r3 = 647.539799
+geom_mlups_mean = 748.381641
+geom_mlups_lcb95 = 718.758870
+geom_mlups_ucb95 = 777.894637
+
+[[sweep.candidate]]
+block_dim = "4x4x8"
+repeats_128 = 3
+mlups_mean_128 = 819.784963
+mlups_std_128 = 9.664943
+mlups_ci95_halfwidth_128 = 10.936913
+mlups_128_r1 = 813.601672
+mlups_128_r2 = 833.433212
+mlups_128_r3 = 812.320006
+repeats_256 = 3
+mlups_mean_256 = 618.408065
+mlups_std_256 = 33.844688
+mlups_ci95_halfwidth_256 = 38.298870
+mlups_256_r1 = 664.356125
+mlups_256_r2 = 607.043355
+mlups_256_r3 = 583.824717
+geom_mlups_mean = 712.012383
+geom_mlups_lcb95 = 684.996490
+geom_mlups_ucb95 = 738.607350
+
+[comparison]
+untuned_run_dir = "data/h5/production/20260217-010742_bf16_fastpath_measured_v1_16_4_2"
+tuned_run_dir = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2"
+
+[[comparison.case]]
+resolution = 256
+untuned_steps_per_sec = 48.731537
+untuned_mlups = 817.579516
+untuned_p50_us = 8370.032310
+untuned_p90_us = 33799.373627
+untuned_p99_us = 55893.871689
+tuned_steps_per_sec = 45.013445
+tuned_mlups = 755.200286
+tuned_p50_us = 9085.439682
+tuned_p90_us = 32983.243179
+tuned_p99_us = 62613.442955
+delta_steps_per_sec_pct = -7.6297
+delta_mlups_pct = -7.6297
+delta_p50_us_pct = 8.5472
+delta_p90_us_pct = -2.4146
+delta_p99_us_pct = 12.0220
+
+[[comparison.case]]
+resolution = 128
+untuned_steps_per_sec = 472.949086
+untuned_mlups = 991.846121
+untuned_p50_us = 972.832024
+untuned_p90_us = 2691.967916
+untuned_p99_us = 5335.252266
+tuned_steps_per_sec = 433.453136
+tuned_mlups = 909.017110
+tuned_p50_us = 973.824024
+tuned_p90_us = 3118.527889
+tuned_p99_us = 6250.630379
+delta_steps_per_sec_pct = -8.3510
+delta_mlups_pct = -8.3510
+delta_p50_us_pct = 0.1020
+delta_p90_us_pct = 15.8457
+delta_p99_us_pct = 17.1572
+
+[comparison.aggregate]
+geom_mlups_untuned = 900.507119
+geom_mlups_tuned = 828.546910
+delta_geom_mlups_pct = -7.9911
+scaling_exponent_steps_per_sec_untuned = 3.2788
+scaling_exponent_steps_per_sec_tuned = 3.2674
+
+[analysis_signatures]
+timing_regime_signature = "Legacy data/h5/production/20260215-200556 appears launch-like (p50 1.700us/1.800us); tuned run data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2 is kernel-like (p50 973.824us/9085.440us)."
+trace_periodic_tail_signature = "High-latency tail vs trace cadence (trace_stride=10): 128^3: tail_count=13014 expected_trace_events=13014 ratio=1.000; 256^3: tail_count=1365 expected_trace_events=1365 ratio=1.000"
+invariant_signature = "rho_mean remained exactly 1.0 with zero drift/std across tuned production runs (128^3: rho_final=1.000000000000, drift=0.000e0, std=0.000e0; 256^3: rho_final=1.000000000000, drift=0.000e0, std=0.000e0)"
+trace_content_signature = "enstrophy and algebra_norm traces both contain non-zero structure (128^3 delta_f_over_ulp=1.000e0, 256^3 delta_f_over_ulp=1.000e0)."
+
+[artifacts]
+telemetry_csv = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/gpu_telemetry.csv"
+run_tuned_128_h5 = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/warp_ring_128_GPU_BF16_300s.h5"
+run_tuned_128_timing = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/timing_128_GPU_BF16_300s.toml"
+run_tuned_256_h5 = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/warp_ring_256_GPU_BF16_300s.h5"
+run_tuned_256_timing = "data/h5/production/20260217-025713_bf16_fastpath_measured_v2_16_4_2/timing_256_GPU_BF16_300s.toml"
+
+[gate]
+result = "pass"
+notes = "warp acceptance gate passed for sweep candidates and tuned production outputs"

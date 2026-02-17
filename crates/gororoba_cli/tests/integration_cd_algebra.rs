@@ -160,8 +160,9 @@ fn test_octonion_associator_nonzero() {
     // Some triples have zero associator, some don't
     // This specific triple should be non-associative
     assert!(
-        assoc_norm > 0.0 || assoc_norm == 0.0,
-        "Octonion associator computation failed"
+        assoc_norm > 1e-12,
+        "Expected non-zero octonion associator for (e1,e2,e4), got {}",
+        assoc_norm
     );
 }
 

@@ -29,8 +29,19 @@ struct TimingSnapshot {
 #[derive(Debug, Clone)]
 struct CandidateScore {
     block_dim: (u32, u32, u32),
-    per_resolution_mlups: BTreeMap<usize, f64>,
-    geom_mlups: f64,
+    per_resolution: BTreeMap<usize, ResolutionRepeatStats>,
+    geom_mlups_mean: f64,
+    geom_mlups_lcb95: f64,
+    geom_mlups_ucb95: f64,
+}
+
+#[derive(Debug, Clone)]
+struct ResolutionRepeatStats {
+    repeats: usize,
+    mlups_values: Vec<f64>,
+    mean_mlups: f64,
+    std_mlups: f64,
+    ci95_halfwidth: f64,
 }
 
 #[derive(Debug, Clone)]
@@ -42,7 +53,7 @@ struct RunArtifact {
 
 fn usage() -> &'static str {
     "Usage:
-  warp-fastpath-suite [sweep_duration_s=45] [prod_duration_s=300] [trace_stride=10] [block_dims_csv=16x4x2,8x8x2,8x4x4,4x4x8,4x4x4] [resolutions_csv=128,256] [baseline_dir=data/h5/production/20260215-211758_precision_suite_rerun] [legacy_dir=data/h5/production/20260215-200556] [out_tag=bf16_fastpath] [forcing_profile=<env/default>]
+  warp-fastpath-suite [sweep_duration_s=45] [prod_duration_s=300] [trace_stride=10] [block_dims_csv=16x4x2,8x8x2,8x4x4,4x4x8,4x4x4] [resolutions_csv=128,256] [baseline_dir=data/h5/production/20260215-211758_precision_suite_rerun] [legacy_dir=data/h5/production/20260215-200556] [out_tag=bf16_fastpath] [forcing_profile=<env/default>] [sweep_repeats=3] [min_improvement_pct=1.0]
 
 Runs:
 1) BF16 block-dim sweep (cuda_events) at selected resolutions
@@ -122,6 +133,36 @@ fn geometric_mean(values: &[f64]) -> f64 {
         0.0
     } else {
         (log_sum / n as f64).exp()
+    }
+}
+
+fn arithmetic_mean(values: &[f64]) -> f64 {
+    if values.is_empty() {
+        return 0.0;
+    }
+    values.iter().sum::<f64>() / values.len() as f64
+}
+
+fn std_dev(values: &[f64], mean: f64) -> f64 {
+    if values.len() < 2 {
+        return 0.0;
+    }
+    let var = values
+        .iter()
+        .map(|v| {
+            let d = *v - mean;
+            d * d
+        })
+        .sum::<f64>()
+        / values.len() as f64;
+    var.sqrt()
+}
+
+fn ci95_halfwidth(values: &[f64], std: f64) -> f64 {
+    if values.len() < 2 {
+        0.0
+    } else {
+        1.96 * std / (values.len() as f64).sqrt()
     }
 }
 
@@ -390,6 +431,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         .unwrap_or_else(|| PathBuf::from("data/h5/production/20260215-200556"));
     let out_tag = args.get(8).map(String::as_str).unwrap_or("bf16_fastpath");
     let forcing_profile_name = args.get(9).map(String::as_str);
+    let sweep_repeats: usize = args.get(10).map_or(Ok(3usize), |s| s.parse())?;
+    let min_improvement_pct: f64 = args.get(11).map_or(Ok(1.0f64), |s| s.parse())?;
 
     if args.iter().any(|a| a == "-h" || a == "--help") {
         println!("{}", usage());
@@ -404,6 +447,20 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             "trace_stride must be >= 1",
+        )
+        .into());
+    }
+    if sweep_repeats == 0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "sweep_repeats must be >= 1",
+        )
+        .into());
+    }
+    if !min_improvement_pct.is_finite() {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "min_improvement_pct must be finite",
         )
         .into());
     }
@@ -427,8 +484,14 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("=== Warp BF16 Fastpath Suite ===");
     println!(
-        "sweep_duration_s={:.2}, prod_duration_s={:.2}, trace_stride={}, block_dims={}, resolutions={}",
-        sweep_duration_secs, prod_duration_secs, trace_stride, block_dims_csv, resolutions_csv
+        "sweep_duration_s={:.2}, prod_duration_s={:.2}, trace_stride={}, block_dims={}, resolutions={}, sweep_repeats={}, min_improvement_pct={:.3}",
+        sweep_duration_secs,
+        prod_duration_secs,
+        trace_stride,
+        block_dims_csv,
+        resolutions_csv,
+        sweep_repeats,
+        min_improvement_pct
     );
     println!("baseline_dir={}", baseline_dir.display());
     println!("legacy_dir={}", legacy_dir.display());
@@ -451,57 +514,120 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("[SWEEP] block_dim={}", dim_tag);
 
         let mut artifacts = Vec::new();
-        let mut per_resolution_mlups = BTreeMap::new();
-        let mut mlups_values = Vec::new();
+        let mut per_resolution = BTreeMap::new();
+        let mut geom_input_mean = Vec::new();
+        let mut geom_input_lcb = Vec::new();
+        let mut geom_input_ucb = Vec::new();
 
         for &res in &resolutions {
-            let out_h5 = candidate_dir.join(format!(
-                "warp_ring_{}_GPU_BF16_{}s.h5",
-                res,
-                sweep_duration_secs.round() as u64
-            ));
-            let timing_path = candidate_dir.join(format!(
-                "timing_{}_GPU_BF16_{}s.toml",
-                res,
-                sweep_duration_secs.round() as u64
-            ));
+            let mut mlups_values = Vec::new();
+            for repeat_idx in 0..sweep_repeats {
+                let out_h5 = candidate_dir.join(format!(
+                    "warp_ring_{}_GPU_BF16_{}s_r{}.h5",
+                    res,
+                    sweep_duration_secs.round() as u64,
+                    repeat_idx + 1
+                ));
+                let timing_path = candidate_dir.join(format!(
+                    "timing_{}_GPU_BF16_{}s_r{}.toml",
+                    res,
+                    sweep_duration_secs.round() as u64,
+                    repeat_idx + 1
+                ));
+                println!(
+                    "  [RUN] res={} repeat={}/{} out={} timing={}",
+                    res,
+                    repeat_idx + 1,
+                    sweep_repeats,
+                    out_h5.display(),
+                    timing_path.display()
+                );
+                let artifact = run_bf16_case(
+                    res,
+                    sweep_duration_secs,
+                    trace_stride,
+                    out_h5.clone(),
+                    timing_path,
+                    forcing_profile_name,
+                )?;
+                artifacts.push(out_h5);
+                mlups_values.push(artifact.report.mlups);
+            }
+            let mean_mlups = arithmetic_mean(&mlups_values);
+            let std_mlups = std_dev(&mlups_values, mean_mlups);
+            let ci95 = ci95_halfwidth(&mlups_values, std_mlups);
             println!(
-                "  [RUN] res={} out={} timing={}",
-                res,
-                out_h5.display(),
-                timing_path.display()
+                "  [STATS] res={} mean_mlups={:.6} std_mlups={:.6} ci95_halfwidth={:.6}",
+                res, mean_mlups, std_mlups, ci95
             );
-            let artifact = run_bf16_case(
+            per_resolution.insert(
                 res,
-                sweep_duration_secs,
-                trace_stride,
-                out_h5.clone(),
-                timing_path,
-                forcing_profile_name,
-            )?;
-            artifacts.push(out_h5);
-            per_resolution_mlups.insert(res, artifact.report.mlups);
-            mlups_values.push(artifact.report.mlups);
+                ResolutionRepeatStats {
+                    repeats: sweep_repeats,
+                    mlups_values: mlups_values.clone(),
+                    mean_mlups,
+                    std_mlups,
+                    ci95_halfwidth: ci95,
+                },
+            );
+            geom_input_mean.push(mean_mlups);
+            geom_input_lcb.push((mean_mlups - ci95).max(1.0e-12));
+            geom_input_ucb.push((mean_mlups + ci95).max(1.0e-12));
         }
 
         gate_h5_outputs_with_profile(&artifacts, GateProfile::Canonical300s)?;
-        let geom_mlups = geometric_mean(&mlups_values);
+        let geom_mlups_mean = geometric_mean(&geom_input_mean);
+        let geom_mlups_lcb95 = geometric_mean(&geom_input_lcb);
+        let geom_mlups_ucb95 = geometric_mean(&geom_input_ucb);
         println!(
-            "  [SCORE] block_dim={} geom_mlups={:.6}",
-            dim_tag, geom_mlups
+            "  [SCORE] block_dim={} geom_mlups_mean={:.6} geom_mlups_lcb95={:.6} geom_mlups_ucb95={:.6}",
+            dim_tag, geom_mlups_mean, geom_mlups_lcb95, geom_mlups_ucb95
         );
         candidate_scores.push(CandidateScore {
             block_dim,
-            per_resolution_mlups,
-            geom_mlups,
+            per_resolution,
+            geom_mlups_mean,
+            geom_mlups_lcb95,
+            geom_mlups_ucb95,
         });
     }
 
-    candidate_scores.sort_by(|a, b| b.geom_mlups.total_cmp(&a.geom_mlups));
+    candidate_scores.sort_by(|a, b| {
+        b.geom_mlups_lcb95
+            .total_cmp(&a.geom_mlups_lcb95)
+            .then_with(|| b.geom_mlups_mean.total_cmp(&a.geom_mlups_mean))
+    });
     let winner = candidate_scores
         .first()
         .ok_or_else(|| std::io::Error::other("no candidate scores computed for block-dim sweep"))?;
     let winning_dim_tag = block_dim_tag(winner.block_dim);
+    let baseline_block_dim = std::env::var("GOROROBA_FASTPATH_BASELINE_BLOCK_DIM")
+        .ok()
+        .and_then(|v| parse_block_dim_token(&v))
+        .unwrap_or((4, 4, 4));
+    let baseline_score = candidate_scores
+        .iter()
+        .find(|c| c.block_dim == baseline_block_dim);
+    if let Some(base) = baseline_score {
+        let required_lcb = base.geom_mlups_ucb95 * (1.0 + min_improvement_pct / 100.0);
+        if winner.geom_mlups_lcb95 < required_lcb {
+            return Err(std::io::Error::other(format!(
+                "winner {} is not statistically above baseline {} with min_improvement_pct={:.3}: winner_lcb95={:.6} < required={:.6} (baseline_ucb95={:.6})",
+                winning_dim_tag,
+                block_dim_tag(baseline_block_dim),
+                min_improvement_pct,
+                winner.geom_mlups_lcb95,
+                required_lcb,
+                base.geom_mlups_ucb95
+            ))
+            .into());
+        }
+    } else {
+        eprintln!(
+            "[WARN] baseline block dim {} not present in sweep candidate list; skipping statistical superiority check",
+            block_dim_tag(baseline_block_dim)
+        );
+    }
     println!();
     println!("[WINNER] GOROROBA_LBM_BLOCK_DIM={}", winning_dim_tag);
 
@@ -514,11 +640,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     for score in &candidate_scores {
         let tag = block_dim_tag(score.block_dim);
         sweep_score_text.push_str(&format!(
-            "block_dim={} geom_mlups={:.6}",
-            tag, score.geom_mlups
+            "block_dim={} geom_mlups_mean={:.6} geom_mlups_lcb95={:.6} geom_mlups_ucb95={:.6}",
+            tag, score.geom_mlups_mean, score.geom_mlups_lcb95, score.geom_mlups_ucb95
         ));
-        for (res, mlups) in &score.per_resolution_mlups {
-            sweep_score_text.push_str(&format!(" mlups_{}={:.6}", res, mlups));
+        for (res, stats) in &score.per_resolution {
+            sweep_score_text.push_str(&format!(
+                " mlups_mean_{}={:.6} mlups_std_{}={:.6} mlups_ci95_halfwidth_{}={:.6}",
+                res, stats.mean_mlups, res, stats.std_mlups, res, stats.ci95_halfwidth
+            ));
         }
         sweep_score_text.push('\n');
     }
@@ -817,10 +946,17 @@ fn main() -> Result<(), Box<dyn Error>> {
     ));
 
     out.push_str("[sweep]\n");
-    out.push_str(
-        "method = \"BF16 matrix sweep at selected resolutions with cuda_events; winner by geometric mean MLUPS\"\n",
-    );
+    out.push_str("method = \"BF16 matrix sweep at selected resolutions with cuda_events; confidence-aware winner by geometric mean LCB95 across per-resolution repeats\"\n");
     out.push_str(&format!("winning_block_dim = \"{}\"\n", winning_dim_tag));
+    out.push_str(&format!("sweep_repeats = {}\n", sweep_repeats));
+    out.push_str(&format!(
+        "baseline_block_dim = \"{}\"\n",
+        block_dim_tag(baseline_block_dim)
+    ));
+    out.push_str(&format!(
+        "min_improvement_pct = {:.6}\n",
+        min_improvement_pct
+    ));
     out.push_str("env_key = \"GOROROBA_LBM_BLOCK_DIM\"\n\n");
     for score in &candidate_scores {
         out.push_str("[[sweep.candidate]]\n");
@@ -828,10 +964,21 @@ fn main() -> Result<(), Box<dyn Error>> {
             "block_dim = \"{}\"\n",
             block_dim_tag(score.block_dim)
         ));
-        for (res, mlups) in &score.per_resolution_mlups {
-            out.push_str(&format!("mlups_{} = {:.6}\n", res, mlups));
+        for (res, stats) in &score.per_resolution {
+            out.push_str(&format!("repeats_{} = {}\n", res, stats.repeats));
+            out.push_str(&format!("mlups_mean_{} = {:.6}\n", res, stats.mean_mlups));
+            out.push_str(&format!("mlups_std_{} = {:.6}\n", res, stats.std_mlups));
+            out.push_str(&format!(
+                "mlups_ci95_halfwidth_{} = {:.6}\n",
+                res, stats.ci95_halfwidth
+            ));
+            for (idx, value) in stats.mlups_values.iter().enumerate() {
+                out.push_str(&format!("mlups_{}_r{} = {:.6}\n", res, idx + 1, value));
+            }
         }
-        out.push_str(&format!("geom_mlups = {:.6}\n\n", score.geom_mlups));
+        out.push_str(&format!("geom_mlups_mean = {:.6}\n", score.geom_mlups_mean));
+        out.push_str(&format!("geom_mlups_lcb95 = {:.6}\n", score.geom_mlups_lcb95));
+        out.push_str(&format!("geom_mlups_ucb95 = {:.6}\n\n", score.geom_mlups_ucb95));
     }
 
     out.push_str("[comparison]\n");
