@@ -1,6 +1,7 @@
 mod warp_runner;
 mod warp_telemetry;
 
+use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 use lbm_3d_cuda::Precision;
 use std::error::Error;
 use std::path::PathBuf;
@@ -45,7 +46,25 @@ fn run_case_and_collect(
     run_precision: Precision,
     duration_secs: f64,
     trace_stride: usize,
+    forcing_profile_name: Option<&str>,
 ) -> Result<(), Box<dyn Error>> {
+    let forcing_profile = load_warp_forcing_profile(forcing_profile_name, resolution)?;
+    apply_warp_forcing_env(&forcing_profile.values);
+    println!(
+        "[FORCING_PROFILE] name={}, source={}, resolution={}, per_resolution_override={}, mode_y={}, Re_target={:.3}, Ma_max={:.3}, rho0={:.3}, bf16_min_delta_ulp_ratio={:.3}, enforce_mode_floor={}, enforce_mode_floor_all_precisions={}",
+        forcing_profile.profile_name,
+        forcing_profile.source_path.display(),
+        forcing_profile.resolution,
+        forcing_profile.used_resolution_override,
+        forcing_profile.values.mode_y_requested,
+        forcing_profile.values.re_target,
+        forcing_profile.values.max_mach,
+        forcing_profile.values.rho0,
+        forcing_profile.values.bf16_min_delta_ulp_ratio,
+        forcing_profile.values.bf16_enforce_mode_floor,
+        forcing_profile.values.enforce_mode_floor_all_precisions
+    );
+
     let out_path = out_dir.join(format!(
         "warp_ring_{}_{}_{:.0}s.h5",
         resolution,
@@ -109,6 +128,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             )
         })?;
     let telemetry_csv = args.get(6).map(PathBuf::from);
+    let forcing_profile_name = args.get(7).map(String::as_str);
 
     if duration_128_s <= 0.0 || duration_256_s <= 0.0 {
         return Err(
@@ -145,17 +165,22 @@ fn main() -> Result<(), Box<dyn Error>> {
         telemetry_path.display()
     );
     println!(
-        "forcing_env: GOROROBA_KOLMO_MODE_Y={}, GOROROBA_KOLMO_RE_TARGET={}, GOROROBA_KOLMO_MAX_MACH={}, GOROROBA_KOLMO_RHO0={}",
+        "forcing_env(initial): GOROROBA_KOLMO_MODE_Y={}, GOROROBA_KOLMO_RE_TARGET={}, GOROROBA_KOLMO_MAX_MACH={}, GOROROBA_KOLMO_RHO0={}",
         env_or_default("GOROROBA_KOLMO_MODE_Y", "1"),
         env_or_default("GOROROBA_KOLMO_RE_TARGET", "64.0"),
         env_or_default("GOROROBA_KOLMO_MAX_MACH", "0.08"),
         env_or_default("GOROROBA_KOLMO_RHO0", "1.0")
     );
     println!(
-        "forcing_env: GOROROBA_BF16_MIN_DELTA_ULP_RATIO={}, GOROROBA_BF16_ENFORCE_MODE_FLOOR={}, GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS={}",
+        "forcing_env(initial): GOROROBA_BF16_MIN_DELTA_ULP_RATIO={}, GOROROBA_BF16_ENFORCE_MODE_FLOOR={}, GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS={}",
         env_or_default("GOROROBA_BF16_MIN_DELTA_ULP_RATIO", "1.0e-2"),
         env_or_default("GOROROBA_BF16_ENFORCE_MODE_FLOOR", "true"),
         env_or_default("GOROROBA_ENFORCE_MODE_FLOOR_ALL_PRECISIONS", "false")
+    );
+    println!(
+        "forcing_profile_selector: cli_arg={:?}, env_GOROROBA_WARP_FORCING_PROFILE={}",
+        forcing_profile_name,
+        env_or_default("GOROROBA_WARP_FORCING_PROFILE", "<unset>")
     );
 
     let mut artifacts = Vec::new();
@@ -168,6 +193,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             precision,
             duration_128_s,
             trace_stride,
+            forcing_profile_name,
         )?;
         run_case_and_collect(
             &out_dir,
@@ -176,6 +202,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             precision,
             duration_256_s,
             trace_stride,
+            forcing_profile_name,
         )?;
 
         if run_fp32_reference {
@@ -186,6 +213,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 Precision::FP32,
                 duration_128_s,
                 trace_stride,
+                forcing_profile_name,
             )?;
             run_case_and_collect(
                 &out_dir,
@@ -194,6 +222,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 Precision::FP32,
                 duration_256_s,
                 trace_stride,
+                forcing_profile_name,
             )?;
         }
 

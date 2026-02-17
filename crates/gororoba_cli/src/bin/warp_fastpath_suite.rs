@@ -1,6 +1,7 @@
 mod warp_runner;
 mod warp_telemetry;
 
+use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 #[cfg(feature = "hdf5-export")]
 use data_core::hdf5_export::read_simulation_trace_component;
 use lbm_3d_cuda::Precision;
@@ -41,7 +42,7 @@ struct RunArtifact {
 
 fn usage() -> &'static str {
     "Usage:
-  warp-fastpath-suite [sweep_duration_s=45] [prod_duration_s=300] [trace_stride=10] [block_dims_csv=16x4x2,8x8x2,8x4x4,4x4x8,4x4x4] [resolutions_csv=128,256] [baseline_dir=data/h5/production/20260215-211758_precision_suite_rerun] [legacy_dir=data/h5/production/20260215-200556] [out_tag=bf16_fastpath]
+  warp-fastpath-suite [sweep_duration_s=45] [prod_duration_s=300] [trace_stride=10] [block_dims_csv=16x4x2,8x8x2,8x4x4,4x4x8,4x4x4] [resolutions_csv=128,256] [baseline_dir=data/h5/production/20260215-211758_precision_suite_rerun] [legacy_dir=data/h5/production/20260215-200556] [out_tag=bf16_fastpath] [forcing_profile=<env/default>]
 
 Runs:
 1) BF16 block-dim sweep (cuda_events) at selected resolutions
@@ -298,7 +299,25 @@ fn run_bf16_case(
     trace_stride: usize,
     out_h5: PathBuf,
     timing_path: PathBuf,
+    forcing_profile_name: Option<&str>,
 ) -> Result<RunArtifact, Box<dyn Error>> {
+    let forcing_profile = load_warp_forcing_profile(forcing_profile_name, resolution)?;
+    apply_warp_forcing_env(&forcing_profile.values);
+    println!(
+        "    [FORCING_PROFILE] name={}, source={}, resolution={}, per_resolution_override={}, mode_y={}, Re_target={:.3}, Ma_max={:.3}, rho0={:.3}, bf16_min_delta_ulp_ratio={:.3}, enforce_mode_floor={}, enforce_mode_floor_all_precisions={}",
+        forcing_profile.profile_name,
+        forcing_profile.source_path.display(),
+        forcing_profile.resolution,
+        forcing_profile.used_resolution_override,
+        forcing_profile.values.mode_y_requested,
+        forcing_profile.values.re_target,
+        forcing_profile.values.max_mach,
+        forcing_profile.values.rho0,
+        forcing_profile.values.bf16_min_delta_ulp_ratio,
+        forcing_profile.values.bf16_enforce_mode_floor,
+        forcing_profile.values.enforce_mode_floor_all_precisions
+    );
+
     let report = run_case(&BenchCase {
         resolution,
         precision: Precision::BF16,
@@ -370,6 +389,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from("data/h5/production/20260215-200556"));
     let out_tag = args.get(8).map(String::as_str).unwrap_or("bf16_fastpath");
+    let forcing_profile_name = args.get(9).map(String::as_str);
 
     if args.iter().any(|a| a == "-h" || a == "--help") {
         println!("{}", usage());
@@ -413,6 +433,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("baseline_dir={}", baseline_dir.display());
     println!("legacy_dir={}", legacy_dir.display());
     println!("sweep_root={}", sweep_root.display());
+    println!(
+        "forcing_profile_selector: cli_arg={:?}, env_GOROROBA_WARP_FORCING_PROFILE={}",
+        forcing_profile_name,
+        std::env::var("GOROROBA_WARP_FORCING_PROFILE")
+            .unwrap_or_else(|_| "<unset>".to_string())
+    );
 
     let mut candidate_scores = Vec::new();
 
@@ -451,6 +477,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 trace_stride,
                 out_h5.clone(),
                 timing_path,
+                forcing_profile_name,
             )?;
             artifacts.push(out_h5);
             per_resolution_mlups.insert(res, artifact.report.mlups);
@@ -545,6 +572,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 trace_stride,
                 out_h5.clone(),
                 timing_path,
+                forcing_profile_name,
             )?;
             production_artifacts.push(out_h5);
             production_records.insert(res, artifact);

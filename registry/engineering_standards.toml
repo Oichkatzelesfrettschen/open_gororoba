@@ -97,7 +97,7 @@ spectral_total_power_nonzero_fraction_min = 0.01
 u_rms_model_lock_max_fraction = 0.999
 
 [engineering_standards.warp_forcing_profiles]
-default = "kolmogorov_bf16_measured_v1"
+default = "canonical_300s_matched_fp32_bf16_v1"
 
 [engineering_standards.warp_forcing_profiles.kolmogorov_bf16_measured_v1]
 re_target = 192.0
@@ -108,3 +108,33 @@ bf16_min_delta_ulp_ratio = 0.05
 bf16_enforce_mode_floor = true
 enforce_mode_floor_all_precisions = true
 rationale = "Use low-Mach NS-balanced Kolmogorov forcing while enforcing cross-precision mode matching to avoid BF16-vs-FP32 physics drift from precision-dependent mode_y selection."
+
+[engineering_standards.warp_forcing_profiles.canonical_300s_matched_fp32_bf16_v1]
+re_target = 192.0
+max_mach = 0.12
+rho0 = 1.0
+mode_y_requested = 1
+bf16_min_delta_ulp_ratio = 1.0
+bf16_enforce_mode_floor = true
+enforce_mode_floor_all_precisions = true
+rationale = "Canonical production profile: matched FP32/BF16 forcing envelope with low-Mach NS balance and BF16 quantization-resolving mode floor applied consistently across precisions."
+
+[[engineering_standards.warp_forcing_profiles.canonical_300s_matched_fp32_bf16_v1.per_resolution]]
+resolution = 128
+mode_y_requested = 1
+re_target = 192.0
+max_mach = 0.12
+rho0 = 1.0
+bf16_min_delta_ulp_ratio = 1.0
+bf16_enforce_mode_floor = true
+enforce_mode_floor_all_precisions = true
+
+[[engineering_standards.warp_forcing_profiles.canonical_300s_matched_fp32_bf16_v1.per_resolution]]
+resolution = 256
+mode_y_requested = 1
+re_target = 192.0
+max_mach = 0.12
+rho0 = 1.0
+bf16_min_delta_ulp_ratio = 1.0
+bf16_enforce_mode_floor = true
+enforce_mode_floor_all_precisions = true
